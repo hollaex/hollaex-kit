@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import {
 	Table,
 	Button,
@@ -9,12 +9,18 @@ import {
 	Checkbox,
 	Radio,
 	Space,
+	Select,
 } from 'antd';
 import { requestUserLogins, requestUserLoginsDownload } from './actions';
 import { formatDate } from 'utils';
 import { COUNTRIES_OPTIONS } from '../../../utils/countries';
-import { CloseOutlined } from '@ant-design/icons';
-
+import {
+	CloseOutlined,
+	ExclamationCircleOutlined,
+	ExclamationCircleFilled,
+} from '@ant-design/icons';
+import Coins from '../Coins';
+import './CeFi.scss';
 const CeFi = () => {
 	const [userData, setUserData] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
@@ -31,7 +37,7 @@ const CeFi = () => {
 	const [displayStakePoolCreation, setDisplayStatePoolCreation] = useState(
 		true
 	);
-	const [step, setStep] = useState(5);
+	const [step, setStep] = useState(9);
 
 	const columns = [
 		{
@@ -193,8 +199,67 @@ const CeFi = () => {
 		setQueryFilters({ ...queryFilters, currentTablePage: count });
 	};
 
+	const renderErrorMsg = () => {
+		return (
+			<div className="d-flex align-items-center error-container">
+				<span className="error">
+					{' '}
+					<ExclamationCircleFilled />
+				</span>
+				<span className="balance-error-text pl-2">
+					{' '}
+					There doesn't seem to be any available balance for this coins.
+				</span>
+			</div>
+		);
+	};
+
 	const renderStakePoolCreationModal = () => {
 		if (step === 1) {
+			return (
+				<>
+					<h1 style={{ fontWeight: '600', color: 'white' }}>
+						Create a stake pool
+					</h1>
+
+					<h3
+						style={{
+							fontWeight: '600',
+							color: 'white',
+							marginBottom: 40,
+							marginTop: 30,
+						}}
+					>
+						Select asset
+					</h3>
+
+					<div className="otc-Container">
+						<div className="mb-5">
+							<div className="mb-2">Asset</div>
+							<Select
+								showSearch
+								className="select-box"
+								placeholder="Select value"
+								// value={filter.value}
+								onChange={(e) => {}}
+							></Select>
+						</div>
+
+						<div className="mb-4">
+							<div className="d-flex align-items-center coin-image">
+								<div className=" mr-3">
+									<Coins type={'xht'} />
+								</div>
+								<div>
+									Description of the coin. This info is the same as the info
+									used in the new /assets page.
+								</div>
+							</div>
+						</div>
+					</div>
+				</>
+			);
+		} else if (step === 2) {
 			return (
 				<>
 					<h1 style={{ fontWeight: '600', color: 'white' }}>
@@ -225,7 +290,7 @@ const CeFi = () => {
 					</div>
 				</>
 			);
-		} else if (step === 2) {
+		} else if (step === 3) {
 			return (
 				<>
 					<h1 style={{ fontWeight: '600', color: 'white' }}>
@@ -289,7 +354,7 @@ const CeFi = () => {
 					</div>
 				</>
 			);
-		} else if (step === 3) {
+		} else if (step === 4) {
 			return (
 				<>
 					<h1 style={{ fontWeight: '600', color: 'white' }}>
@@ -450,7 +515,7 @@ const CeFi = () => {
 					</div>
 				</>
 			);
-		} else if (step === 4) {
+		} else if (step === 5) {
 			return (
 				<>
 					<h1 style={{ fontWeight: '600', color: 'white' }}>
@@ -504,7 +569,7 @@ const CeFi = () => {
 					</div>
 				</>
 			);
-		} else if (step === 5) {
+		} else if (step === 6) {
 			return (
 				<>
 					<h1 style={{ fontWeight: '600', color: 'white' }}>
@@ -554,6 +619,298 @@ const CeFi = () => {
 					</div>
 				</>
 			);
+		} else if (step === 7) {
+			return (
+				<>
+					<h1 style={{ fontWeight: '600', color: 'white' }}>
+						Create a stake pool
+					</h1>
+
+					<h3
+						style={{
+							fontWeight: '600',
+							color: 'white',
+							marginBottom: 40,
+							marginTop: 30,
+						}}
+					>
+						Funding account source
+					</h3>
+
+					<h5
+						style={{
+							fontWeight: '600',
+							color: 'white',
+							marginBottom: 20,
+							marginTop: 30,
+						}}
+					>
+						Set rewards source
+					</h5>
+
+					<div className="otc-Container">
+						<div>
+							<div>Set the source of the inventory funds</div>
+							{/* <div className="sub-content mb-3">
+								<div>
+									Inventory are funds used for satisfying all users orders.
+								</div>
+								<div>
+									It is the responsibility of the operator to allocate an
+									adequate amount of both assets.{' '}
+								</div>
+								<div>
+									Simply define an account with sufficient balance that will
+									be used to source inventory from.
+								</div>
+							</div> */}
+						</div>
+
+						<div className="mb-5">
+							<div className="mb-2">Account to source inventory from</div>
+							<div className="d-flex align-items-center">
+								<Select
+									ref={(inp) => {}}
+									showSearch
+									placeholder="admin@exchange.com"
+									className="user-search-field"
+									onSearch={(text) => {}}
+									filterOption={() => true}
+									// value={}
+									onChange={(text) => {}}
+									showAction={['focus', 'click']}
+								></Select>
+								<div className="edit-link" onClick={() => {}}>
+									Edit
+								</div>
+							</div>
+						</div>
+						<div className="mb-4">Available balance on :</div>
+						<div className="mb-4">
+							<div className="d-flex align-items-center coin-image">
+								<div className=" mr-3">
+									<Coins type={'xht'} />
+								</div>
+								<div>
+									Bitcoin
+									{0}
+								</div>
+							</div>
+							{renderErrorMsg()}
+						</div>
+
+						<div className="message" style={{ marginBottom: 40 }}>
+							<div className="icon">
+								<ExclamationCircleOutlined />
+							</div>
+							<div className="message-subHeading">
+								Please check if the amounts are sufficiently sustainable before
+								proceeding.
+							</div>
+						</div>
+					</div>
+				</>
+			);
+		} else if (step === 8) {
+			return (
+				<>
+					<h1 style={{ fontWeight: '600', color: 'white' }}>
+						Review and confirm stake pool
+					</h1>
+
+					<div className="otc-Container">
+						<Fragment>
+							<div className="grey-warning">
+								<div className="warning-text">!</div>
+								<div>
+									<div className="sub-title">
+										Please check the details carefully.
+									</div>
+									<div className="description">
+										To avoid delays it is important to take the time to review
+										the accuracy of the details below
+									</div>
+								</div>
+							</div>
+						</Fragment>
+						<div
+							className="d-flex preview-container"
+							style={{
+								display: 'flex',
+								justifyContent: 'space-around',
+							}}
+						>
+							<div className="d-flex flex-container left-container">
+								<div>
+									<Coins
+										nohover
+										large
+										small
+										type={'xht'}
+										// fullname={getFullName(previewData && previewData.pair_base)}
+									/>
+								</div>
+							</div>
+							<div className="right-container">
+								<div className="right-content">
+									<div className="title font-weight-bold">Desk assets</div>
+									<div>Base market pair:</div>
+									<div>Price market pair:</div>
+								</div>
+								<div className="right-content">
+									<div className="title font-weight-bold">Parameters</div>
+
+									<div>Max size:</div>
+									<div>Min size: </div>
+								</div>
+								<div className="right-content">
+									<div className="title font-weight-bold">Price</div>
+									<div>Type: Static</div>
+									<div>Sell at: </div>
+									<div>buy at: </div>
+								</div>
+								<div className="right-content">
+									<div className="title font-weight-bold">Hedge</div>
+								</div>
+								<div className="right-content">
+									<div className="title font-weight-bold">Fund Source</div>
+									<div>Account: </div>
+									<div></div>
+									<div></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</>
+			);
+		} else if (step === 9) {
+			return (
+				<>
+					<h1 style={{ fontWeight: '600', color: 'white' }}>Open pool</h1>
+
+					<h5
+						style={{
+							fontWeight: '600',
+							color: 'white',
+							marginBottom: 40,
+							marginTop: 30,
+						}}
+					>
+						Open this pool to the public for staking.
+					</h5>
+
+					<div style={{ color: 'white', marginBottom: 30, padding: 10 }}>
+						<div
+							style={{
+								border: '1px solid grey',
+								width: '100%',
+								maxHeight: 400,
+								padding: '0 20px',
+							}}
+						>
+							<h1
+								style={{
+									width: 160,
+									textAlign: 'center',
+									fontSize: 14,
+									marginTop: -10,
+									marginLeft: -10,
+									backgroundColor: '#27339D',
+									color: 'white',
+								}}
+							>
+								REVIEW POOL CONFIG
+							</h1>
+
+							<div style={{ overflowY: 'auto', height: 300, marginTop: 10 }}>
+								<div>
+									<span style={{ fontWeight: 'bold' }}>Stake asset:</span> ABC
+									Token (ABC)
+								</div>
+								<div>
+									<span style={{ fontWeight: 'bold' }}>Pool name:</span> Test
+									sake
+								</div>
+								<div>
+									<span style={{ fontWeight: 'bold' }}>Min amount:</span> 1,000
+									ABC{' '}
+								</div>
+								<div>
+									<span style={{ fontWeight: 'bold' }}>Max amount:</span>{' '}
+									1,000,000,000 ABC{' '}
+								</div>
+								<div>
+									<span style={{ fontWeight: 'bold' }}>Duration: </span>3,000
+									days
+								</div>
+								<div>
+									<span style={{ fontWeight: 'bold' }}>
+										Slash on principle:
+									</span>{' '}
+									10%{' '}
+								</div>
+								<div>
+									<span style={{ fontWeight: 'bold' }}>
+										Slash on earnings:{' '}
+									</span>
+									100%{' '}
+								</div>
+								<div>
+									<span style={{ fontWeight: 'bold' }}>Disclamiers:</span>
+								</div>
+								<div>
+									<span style={{ fontWeight: 'bold' }}>Account:</span>{' '}
+									operator@account.com{' '}
+								</div>
+								<div>
+									<span style={{ fontWeight: 'bold' }}>ABC:</span> 1,000,000
+								</div>
+								<div>
+									<span style={{ fontWeight: 'bold' }}>APY:</span> 5%{' '}
+								</div>
+								<div>
+									<span style={{ fontWeight: 'bold' }}>Duration:</span> 1,000
+									days
+								</div>
+							</div>
+						</div>
+
+						<div style={{ marginTop: 15 }}>
+							Want to change something within the pool?{' '}
+							<span style={{ textDecoration: 'underline' }}>
+								Reconfigure it here.
+							</span>
+						</div>
+						<div
+							style={{
+								padding: 20,
+								marginTop: 20,
+								backgroundColor: '#FFFFFF',
+								color: '#27339D',
+								fontWeight: '500',
+							}}
+						>
+							Note, the pool will be{' '}
+							<span style={{ fontWeight: '700' }}>unconfigurable</span> upon
+							opening.
+						</div>
+
+						<div style={{ marginBottom: 20, marginTop: 20 }}>
+							<div
+								style={{ fontWeight: 'bold', fontSize: 16, marginBottom: 4 }}
+							>
+								Do you understand?
+							</div>
+							<Input
+								style={{ backgroundColor: 'rgba(0,0,0,0.1)', color: 'white' }}
+								placeholder="Type 'I UNDERSTAND' to proceed"
+								onClick={() => {}}
+								// value={}
+							/>
+						</div>
+					</div>
+				</>
+			);
 		}
 	};
 	return (
@@ -600,7 +957,7 @@ const CeFi = () => {
 						<Button
 							onClick={async () => {
 								let currentStep = step + 1;
-								setStep(currentStep === 7 ? 6 : currentStep);
+								setStep(currentStep === 10 ? 9 : currentStep);
 							}}
 							style={{
 								backgroundColor: '#288500',
