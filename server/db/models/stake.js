@@ -52,11 +52,6 @@ module.exports = function (sequelize, DataTypes) {
 				allowNull: false,
 				defaultValue: 0,
 			},
-			slashing_reward: {
-				type: DataTypes.INTEGER,
-				allowNull: false,
-				defaultValue: 0,
-			},
 			early_unstake: {
 				type: DataTypes.BOOLEAN,
 				allowNull: false

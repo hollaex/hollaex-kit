@@ -21,7 +21,9 @@ import {
 } from '@ant-design/icons';
 import Coins from '../Coins';
 import './CeFi.scss';
-const CeFi = () => {
+const { Option } = Select;
+
+const CeFi = ({ coins }) => {
 	const [userData, setUserData] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [queryValues, setQueryValues] = useState({});
@@ -35,9 +37,28 @@ const CeFi = () => {
 	});
 
 	const [displayStakePoolCreation, setDisplayStatePoolCreation] = useState(
-		true
+		false
 	);
-	const [step, setStep] = useState(9);
+	const [step, setStep] = useState(1);
+
+	const [stakePoolCreation, setStakePoolCreation] = useState({
+		name: null,
+		currency: null,
+		account_id: null,
+		apy: null,
+		duration: null,
+		slashing: null,
+		slashing_principle_percentage: null,
+		slashing_earning_percentage: null,
+		early_unstake: true,
+		min_amount: null,
+		max_amount: null,
+		status: null,
+		onboarding: null,
+		disclaimer: null,
+		perpetual_stake: null,
+		slash_earnings: null,
+	});
 
 	const columns = [
 		{
@@ -240,22 +261,36 @@ const CeFi = () => {
 								showSearch
 								className="select-box"
 								placeholder="Select value"
-								// value={filter.value}
-								onChange={(e) => {}}
-							></Select>
+								value={stakePoolCreation.currency}
+								onChange={(e) => {
+									setStakePoolCreation({
+										...stakePoolCreation,
+										currency: e,
+									});
+								}}
+							>
+								{Object.keys(coins).map((key) => (
+									<Option value={key}>{coins[key].fullname}</Option>
+								))}
+							</Select>
 						</div>
 
-						<div className="mb-4">
-							<div className="d-flex align-items-center coin-image">
-								<div className=" mr-3">
-									<Coins type={'xht'} />
-								</div>
-								<div>
-									Description of the coin. This info is the same as the info
-									used in the new /assets page.
+						{stakePoolCreation.currency && (
+							<div className="mb-4">
+								<div className="d-flex align-items-center coin-image">
+									<div className=" mr-3">
+										<Coins type={stakePoolCreation.currency} />
+									</div>
+									<div>
+										<div
+											dangerouslySetInnerHTML={{
+												__html: coins[stakePoolCreation.currency].description,
+											}}
+										/>
+									</div>
 								</div>
 							</div>
-						</div>
+						)}
 					</div>
 				</>
 			);
@@ -284,8 +319,13 @@ const CeFi = () => {
 						<Input
 							style={{ backgroundColor: 'rgba(0,0,0,0.1)', color: 'white' }}
 							placeholder="Input the name of the staking pool"
-							onClick={() => {}}
-							// value={}
+							onChange={(e) =>
+								setStakePoolCreation({
+									...stakePoolCreation,
+									name: e.target.value,
+								})
+							}
+							value={stakePoolCreation.name}
 						/>
 					</div>
 				</>
@@ -317,10 +357,15 @@ const CeFi = () => {
 							Set APY reward rate to distribute
 						</div>
 						<Input
-							style={{ backgroundColor: 'rgba(0,0,0,0.1)' }}
-							placeholder="Input the name of the staking pool"
-							onClick={() => {}}
-							// value={}
+							style={{ backgroundColor: 'rgba(0,0,0,0.1)', color: 'white' }}
+							placeholder="Set annual percentage yield rate"
+							onChange={(e) =>
+								setStakePoolCreation({
+									...stakePoolCreation,
+									apy: e.target.value,
+								})
+							}
+							value={stakePoolCreation.apy}
 						/>
 					</div>
 
@@ -333,25 +378,38 @@ const CeFi = () => {
 							Staking duration
 						</div>
 						<Input
-							style={{ backgroundColor: 'rgba(0,0,0,0.1)' }}
+							style={{ backgroundColor: 'rgba(0,0,0,0.1)', color: 'white' }}
 							placeholder="Input the days users should stake for"
-							onClick={() => {}}
-							// value={}
+							onChange={(e) =>
+								setStakePoolCreation({
+									...stakePoolCreation,
+									duration: e.target.value,
+								})
+							}
+							value={stakePoolCreation.duration}
 						/>
 					</div>
 					<div>
 						<Checkbox
-							onChange={(e) => {}}
+							onChange={(e) => {
+								setStakePoolCreation({
+									...stakePoolCreation,
+									perpetual_stake: e.target.checked,
+								});
+							}}
 							style={{ color: 'white', marginBottom: 5 }}
+							checked={stakePoolCreation.perpetual_stake}
 						>
 							Perpetual staking
 						</Checkbox>
 					</div>
-					<div style={{ marginLeft: 20, color: '#FFAA00', marginBottom: 30 }}>
-						Note: Allow users to unstake at any time. Perpetual staking is
-						intended for staking pools with a flexible, low-maintenance, and
-						stable reward rate. Kindly set the APY accordingly.
-					</div>
+					{stakePoolCreation.perpetual_stake && (
+						<div style={{ marginLeft: 20, color: '#FFAA00', marginBottom: 30 }}>
+							Note: Allow users to unstake at any time. Perpetual staking is
+							intended for staking pools with a flexible, low-maintenance, and
+							stable reward rate. Kindly set the APY accordingly.
+						</div>
+					)}
 				</>
 			);
 		} else if (step === 4) {
@@ -396,26 +454,35 @@ const CeFi = () => {
 
 					<div style={{ marginBottom: 40 }}>
 						<Radio.Group
-							onChange={() => {}}
-							// value={value}
+							onChange={(e) => {
+								setStakePoolCreation({
+									...stakePoolCreation,
+									early_unstake: e.target.value,
+								});
+							}}
+							value={stakePoolCreation.early_unstake}
 						>
 							<Space direction="vertical">
-								<Radio style={{ color: 'white' }} value={1}>
+								<Radio style={{ color: 'white' }} value={true}>
 									Yes
 								</Radio>
-								<Radio style={{ color: 'white' }} value={2}>
+								<Radio style={{ color: 'white' }} value={false}>
 									No
 								</Radio>
 							</Space>
 						</Radio.Group>
-						<div style={{ color: '#FFAA00', marginTop: 10 }}>
-							Once users have committed to the staking pool, they won't be able
-							to unstake their funds until the term is finished.
-						</div>
-						<div style={{ color: '#FFAA00', fontWeight: 'bold' }}>
-							{' '}
-							Use with Caution.
-						</div>
+						{!stakePoolCreation.early_unstake && (
+							<>
+								<div style={{ color: '#FFAA00', marginTop: 10 }}>
+									Once users have committed to the staking pool, they won't be
+									able to unstake their funds until the term is finished.
+								</div>
+								<div style={{ color: '#FFAA00', fontWeight: 'bold' }}>
+									{' '}
+									Use with Caution.
+								</div>
+							</>
+						)}
 					</div>
 
 					<h3
@@ -424,6 +491,7 @@ const CeFi = () => {
 							color: 'white',
 							marginBottom: 40,
 							marginTop: 30,
+							opacity: !stakePoolCreation.early_unstake ? 0.4 : 1,
 						}}
 					>
 						Slashing rules
@@ -435,20 +503,34 @@ const CeFi = () => {
 							color: 'white',
 							marginTop: 20,
 							marginBottom: 10,
+							opacity: !stakePoolCreation.early_unstake ? 0.4 : 1,
 						}}
 					>
 						Principle
 					</h4>
 
 					<div style={{ marginBottom: 30 }}>
-						<div style={{ fontWeight: 'bold', fontSize: 16, marginBottom: 4 }}>
+						<div
+							style={{
+								fontWeight: 'bold',
+								fontSize: 16,
+								marginBottom: 4,
+								opacity: !stakePoolCreation.early_unstake ? 0.4 : 1,
+							}}
+						>
 							Slash on principle
 						</div>
 						<Input
-							style={{ backgroundColor: 'rgba(0,0,0,0.1)' }}
+							style={{ backgroundColor: 'rgba(0,0,0,0.1)', color: 'white' }}
 							placeholder="Input the percentage to be deducted"
-							onClick={() => {}}
-							// value={}
+							disabled={!stakePoolCreation.early_unstake}
+							onChange={(e) =>
+								setStakePoolCreation({
+									...stakePoolCreation,
+									slashing_principle_percentage: e.target.value,
+								})
+							}
+							value={stakePoolCreation.slashing_principle_percentage}
 						/>
 					</div>
 
@@ -458,6 +540,7 @@ const CeFi = () => {
 							color: 'white',
 							marginTop: 20,
 							marginBottom: 20,
+							opacity: !stakePoolCreation.early_unstake ? 0.4 : 1,
 						}}
 					>
 						Earnings
@@ -469,45 +552,59 @@ const CeFi = () => {
 							color: 'white',
 							marginTop: 20,
 							marginBottom: 10,
+							opacity: !stakePoolCreation.early_unstake ? 0.4 : 1,
 						}}
 					>
 						Deduct percentage of earnings
 					</h5>
-					<div style={{ marginBottom: 40 }}>
+					<div
+						style={{
+							marginBottom: 40,
+							opacity: !stakePoolCreation.early_unstake ? 0.4 : 1,
+						}}
+					>
 						<Radio.Group
-							onChange={() => {}}
+							onChange={(e) => {
+								setStakePoolCreation({
+									...stakePoolCreation,
+									slash_earnings: e.target.value,
+								});
+							}}
 							// value={value}
 							style={{ width: '100%' }}
 						>
 							<Space direction="vertical" style={{ width: '100%' }}>
-								<Radio style={{ color: 'white' }} value={1}>
+								<Radio style={{ color: 'white' }} value={true}>
 									Yes
 								</Radio>
 
-								<div
-									style={{ marginBottom: 10, marginTop: 10, marginLeft: 20 }}
-								>
+								{stakePoolCreation.slash_earnings && (
 									<div
-										style={{
-											fontWeight: 'bold',
-											fontSize: 16,
-											marginBottom: 4,
-											color: 'white',
-										}}
+										style={{ marginBottom: 10, marginTop: 10, marginLeft: 20 }}
 									>
-										Slash on earnings
+										<div
+											style={{
+												fontWeight: 'bold',
+												fontSize: 16,
+												marginBottom: 4,
+												color: 'white',
+											}}
+										>
+											Slash on earnings
+										</div>
+										<Input
+											style={{
+												backgroundColor: 'rgba(0,0,0,0.1)',
+												width: '100%',
+											}}
+											placeholder="Input the percentage to be deducted"
+											onClick={() => {}}
+											// value={}
+										/>
 									</div>
-									<Input
-										style={{
-											backgroundColor: 'rgba(0,0,0,0.1)',
-											width: '100%',
-										}}
-										placeholder="Input the percentage to be deducted"
-										onClick={() => {}}
-										// value={}
-									/>
-								</div>
-								<Radio style={{ color: 'white' }} value={2}>
+								)}
+
+								<Radio style={{ color: 'white' }} value={false}>
 									No
 								</Radio>
 							</Space>
@@ -551,8 +648,13 @@ const CeFi = () => {
 						<Input
 							style={{ backgroundColor: 'rgba(0,0,0,0.1)', color: 'white' }}
 							placeholder="Input min amount that can be staked"
-							onClick={() => {}}
-							// value={}
+							onChange={(e) =>
+								setStakePoolCreation({
+									...stakePoolCreation,
+									min_amount: e.target.value,
+								})
+							}
+							value={stakePoolCreation.min_amount}
 						/>
 					</div>
 
@@ -563,8 +665,13 @@ const CeFi = () => {
 						<Input
 							style={{ backgroundColor: 'rgba(0,0,0,0.1)', color: 'white' }}
 							placeholder="Input max amount that can be staked"
-							onClick={() => {}}
-							// value={}
+							onChange={(e) =>
+								setStakePoolCreation({
+									...stakePoolCreation,
+									max_amount: e.target.value,
+								})
+							}
+							value={stakePoolCreation.max_amount}
 						/>
 					</div>
 				</>
@@ -603,7 +710,13 @@ const CeFi = () => {
 					</div>
 					<div style={{ marginBottom: 30, textAlign: 'center' }}>
 						<Input.TextArea
-							// value={}
+							onChange={(e) =>
+								setStakePoolCreation({
+									...stakePoolCreation,
+									disclaimer: e.target.value,
+								})
+							}
+							value={stakePoolCreation.disclaimer}
 							style={{
 								color: 'white',
 								backgroundColor: 'rgba(0,0,0,0.1)',
@@ -612,7 +725,6 @@ const CeFi = () => {
 								marginBottom: 10,
 								marginTop: 10,
 							}}
-							onChange={(e) => {}}
 							placeholder="Input a disclaimer or more details about the pool"
 							rows={3}
 						/>
@@ -937,12 +1049,17 @@ const CeFi = () => {
 							flexDirection: 'row',
 							gap: 15,
 							justifyContent: 'space-between',
+							marginTop: 30,
 						}}
 					>
 						<Button
 							onClick={() => {
 								let currentStep = step - 1;
-								setStep(currentStep <= 0 ? 1 : currentStep);
+								if (currentStep <= 0) {
+									setDisplayStatePoolCreation(false);
+								} else {
+									setStep(currentStep);
+								}
 							}}
 							style={{
 								backgroundColor: '#288500',
@@ -957,7 +1074,11 @@ const CeFi = () => {
 						<Button
 							onClick={async () => {
 								let currentStep = step + 1;
-								setStep(currentStep === 10 ? 9 : currentStep);
+								if (currentStep >= 10) {
+									setDisplayStatePoolCreation(false);
+								} else {
+									setStep(currentStep);
+								}
 							}}
 							style={{
 								backgroundColor: '#288500',
@@ -1011,58 +1132,18 @@ const CeFi = () => {
 				</div>
 				<div style={{ marginTop: 20 }}>
 					<div className="d-flex">
-						<span>Off</span>
+						<span style={{ marginRight: 3 }}>Off</span>
 						<Switch
 						// checked={}
 						// onClick={}
 						/>
-						<span>On</span>
+						<span style={{ marginLeft: 3 }}>On</span>
 					</div>
 				</div>
 			</div>
 			<div>
-				<div style={{ marginTop: 20 }}>
-					{/* <SessionFilters
-						applyFilters={(filters) => {
-							setQueryValues(filters);
-						}}
-						fieldKeyValue={fieldKeyValue}
-						defaultFilters={defaultFilters}
-					/> */}
-				</div>
+				<div style={{ marginTop: 20 }}></div>
 				<div className="mt-5">
-					{/* <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-						<span
-							onClick={(e) => {
-								requestDownload();
-							}}
-							className="mb-2 underline-text cursor-pointer"
-							style={{ cursor: 'pointer' }}
-						>
-							Download below CSV table
-						</span>
-						<div>
-							<span>
-								<Button
-									onClick={() => {
-										requestSessions(queryFilters.page, queryFilters.limit);
-									}}
-									style={{
-										backgroundColor: '#288500',
-										color: 'white',
-										flex: 1,
-										height: 35,
-										marginRight: 10,
-									}}
-									type="default"
-								>
-									Refresh
-								</Button>
-							</span>
-							<span>Total: {queryFilters.total || '-'}</span>
-						</div>
-					</div> */}
-
 					<div className="mt-4 ">
 						<Spin spinning={isLoading}>
 							<Table

@@ -6,7 +6,7 @@ import CeFi from './CeFi';
 
 const TabPane = Tabs.TabPane;
 
-const Stakes = () => {
+const Stakes = (props) => {
 	const [activeTab, setActiveTab] = useState('0');
 
 	const handleTabChange = (key) => {
@@ -21,9 +21,9 @@ const Stakes = () => {
 				onChange={handleTabChange}
 			>
 				<TabPane tab="CeFi" key="0">
-					<CeFi />
+					<CeFi coins={props.coins} />
 				</TabPane>
-				<TabPane tab="UserStaking" key="1">
+				<TabPane tab="User Staking" key="1">
 					<UserStaking />
 				</TabPane>
 			</Tabs>
