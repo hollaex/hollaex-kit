@@ -77,7 +77,11 @@ module.exports = function (sequelize, DataTypes) {
 			disclaimer: {
 				type: DataTypes.STRING,
 				allowNull: true
-			}
+			},
+			paused_date: {
+				type: DataTypes.DATE,
+				allowNull: true,
+			},
 		},
 		{
 			timestamps: true,

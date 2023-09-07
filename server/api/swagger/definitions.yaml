@@ -1527,3 +1527,42 @@ definitions:
     properties:
       id:
         type: integer
+  StakePool:
+    type: object
+    properties:
+      name:
+        type: string
+        maxLength: 256
+      user_id:
+        type: number
+        format: int32
+      currency:
+        type: string
+      account_id:
+        type: number
+        format: int32
+      apy:
+        type: number
+        format: double
+      duration:
+        type: ['number', 'null']
+      slashing:
+       type: ['boolean', 'null']
+      slashing_percentage:
+        type: number
+        format: int32
+      early_unstake:
+        type: boolean
+      min_amount:
+        type: number
+        format: double
+      max_amount:
+        type: number
+        format: double
+      status:
+        type: string
+        enum: [uninitialized, active, paused, terminated]
+      onboarding:
+        type: ['boolean', 'null']
+      disclaimer:
+        type: ['string', 'null']

@@ -66,6 +66,7 @@ const createExchangeStakes = (req, res) => {
 		max_amount,
 		onboarding,
 		disclaimer,
+		status
 	 } = req.swagger.params.data.value;
 
 	loggerAdmin.verbose(
@@ -84,6 +85,7 @@ const createExchangeStakes = (req, res) => {
 		max_amount,
 		onboarding,
 		disclaimer,
+		status
 	);
 
 	toolsLib.stake.createExchangeStakePool({
@@ -100,6 +102,8 @@ const createExchangeStakes = (req, res) => {
 		max_amount,
 		onboarding,
 		disclaimer,
+		status,
+		user_id: req.auth.sub.id
 	})
 		.then((data) => {
 			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));

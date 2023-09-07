@@ -3306,7 +3306,7 @@ paths:
       x-token-permissions:
         - can_read
   /admin/stakes:
-    x-swagger-router-controller: admin
+    x-swagger-router-controller: stake
     get:
       description: Get exchange stakes for admin
       operationId: getExchangeStakes
@@ -3377,96 +3377,18 @@ paths:
       x-token-permissions:
         - can_read
   /admin/stake:
-    x-swagger-router-controller: admin
+    x-swagger-router-controller: stake
     post:
       description: Create exchange stakes for admin
       operationId: createExchangeStakes
       tags:
         - Admin
       parameters:
-        - in: query
-          name: name
-          description: The name of the stake pool.
-          required: false
-          type: string
-        - in: query
-          name: user_id
-          description: The ID of the creator of the stake pool.
-          required: false
-          type: number
-          format: int32
-        - in: query
-          name: currency
-          description: The currency associated with the stake pool.
-          required: false
-          type: string
-        - in: query
-          name: account_id
-          description: The ID of the account used for stake rewards and fund transfers.
-          required: false
-          type: number
-          format: int32
-        - in: query
-          name: apy
-          description: Annual percentage yield as a reward percentage for stakers.
-          required: false
-          type: number
-          format: double
-        - in: query
-          name: duration
-          description: The duration of the stake in days, months, years, or infinite.
-          required: false
-          type: string
-        - in: query
-          name: slashing
-          description: Whether the stake pool has slashing rules.
-          required: false
-          type: boolean
-        - in: query
-          name: slashing_percentage
-          description: The percentage of slashing applied if enabled.
-          required: false
-          type: number
-          format: int32
-        - in: query
-          name: slashing_reward
-          description: The percentage of reward slashed if enabled.
-          required: false
-          type: number
-          format: int32
-        - in: query
-          name: early_unstake
-          description: Whether early unstaking is allowed.
-          required: false
-          type: boolean
-        - in: query
-          name: min_amount
-          description: The minimum amount that can be staked.
-          required: false
-          type: number
-          format: double
-        - in: query
-          name: max_amount
-          description: The maximum amount that can be staked.
-          required: false
-          type: number
-          format: double
-        - in: query
-          name: status
-          description: The status of the stake pool.
-          required: false
-          type: string
-          enum: [uninitialized, active, paused, terminated]
-        - in: query
-          name: onboarding
-          description: Whether users can onboard and add funds to the stake pool.
-          required: false
-          type: boolean
-        - in: query
-          name: disclaimer
-          description: Custom text displayed to users before staking.
-          required: false
-          type: string
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/StakePool"
       responses:
         200:
           description: Success
@@ -3489,89 +3411,11 @@ paths:
       tags:
         - Admin
       parameters:
-        - in: query
-          name: name
-          description: The name of the stake pool.
-          required: false
-          type: string
-        - in: query
-          name: user_id
-          description: The ID of the creator of the stake pool.
-          required: false
-          type: number
-          format: int32
-        - in: query
-          name: currency
-          description: The currency associated with the stake pool.
-          required: false
-          type: string
-        - in: query
-          name: account_id
-          description: The ID of the account used for stake rewards and fund transfers.
-          required: false
-          type: number
-          format: int32
-        - in: query
-          name: apy
-          description: Annual percentage yield as a reward percentage for stakers.
-          required: false
-          type: number
-          format: double
-        - in: query
-          name: duration
-          description: The duration of the stake in days, months, years, or infinite.
-          required: false
-          type: string
-        - in: query
-          name: slashing
-          description: Whether the stake pool has slashing rules.
-          required: false
-          type: boolean
-        - in: query
-          name: slashing_percentage
-          description: The percentage of slashing applied if enabled.
-          required: false
-          type: number
-          format: int32
-        - in: query
-          name: slashing_reward
-          description: The percentage of reward slashed if enabled.
-          required: false
-          type: number
-          format: int32
-        - in: query
-          name: early_unstake
-          description: Whether early unstaking is allowed.
-          required: false
-          type: boolean
-        - in: query
-          name: min_amount
-          description: The minimum amount that can be staked.
-          required: false
-          type: number
-          format: double
-        - in: query
-          name: max_amount
-          description: The maximum amount that can be staked.
-          required: false
-          type: number
-          format: double
-        - in: query
-          name: status
-          description: The status of the stake pool.
-          required: false
-          type: string
-          enum: [uninitialized, active, paused, terminated]
-        - in: query
-          name: onboarding
-          description: Whether users can onboard and add funds to the stake pool.
-          required: false
-          type: boolean
-        - in: query
-          name: disclaimer
-          description: Custom text displayed to users before staking.
-          required: false
-          type: string
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/StakePool"
       responses:
         200:
           description: Success
@@ -3594,12 +3438,11 @@ paths:
       tags:
         - Admin
       parameters:
-        - in: query
-          name: id
-          description: Unique identifier for the stake.
-          required: false
-          type: number
-          format: int32
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/IdObject"
       responses:
         200:
           description: Success
@@ -3617,7 +3460,7 @@ paths:
       x-security-scopes:
         - admin
   /admin/stakers:
-    x-swagger-router-controller: admin
+    x-swagger-router-controller: stake
     get:
       description: Get exchange stakers of users for admin
       operationId: getExchangeStakers

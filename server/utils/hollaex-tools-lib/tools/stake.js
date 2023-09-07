@@ -9,7 +9,7 @@ const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { client } = require('./database/redis');
 const { getUserByKitId } = require('./user');
 const { subscribedToCoin, validatePair, getKitTier, getKitConfig, getAssetsPrices, getQuickTrades, getKitCoin } = require('./common');
-const { transferAssetByKitIds } = require('./wallet');
+const { transferAssetByKitIds, getUserBalanceByKitId } = require('./wallet');
 const { sendEmail } = require('../../../mail');
 const { MAILTYPE } = require('../../../mail/strings');
 const { verifyBearerTokenPromise } = require('./security');
@@ -170,15 +170,13 @@ const createExchangeStakePool = async (stake) => {
         throw new Error('account id does not exist in the server');
     }
     
-    const balance = await getUserBalanceByKitId(accountOwner);
+    const balance = await getUserBalanceByKitId(account_id);
     let symbols = {};
 
     for (const key of Object.keys(balance)) {
         if (key.includes('available') && balance[key]) {
             let symbol = key?.split('_')?.[0];
-            if (symbol && assets.includes(symbol)) {
-                symbols[symbol] = balance[key];
-            }
+            symbols[symbol] = balance[key];
         }
     }
 
@@ -256,9 +254,7 @@ const updateExchangeStakePool = async (id, data) => {
         for (const key of Object.keys(balance)) {
             if (key.includes('available') && balance[key]) {
                 let symbol = key?.split('_')?.[0];
-                if (symbol && assets.includes(symbol)) {
-                    symbols[symbol] = balance[key];
-                }
+                symbols[symbol] = balance[key];
             }
         }
 

@@ -56,17 +56,17 @@ const CeFi = ({ coins }) => {
 		account_id: null,
 		apy: null,
 		duration: null,
-		slashing: null,
+		slashing: true,
 		slashing_principle_percentage: null,
 		slashing_earning_percentage: null,
 		early_unstake: true,
 		min_amount: null,
 		max_amount: null,
-		status: null,
-		onboarding: null,
+		status: 'uninitialized',
 		disclaimer: null,
 		perpetual_stake: null,
 		slash_earnings: null,
+		onboarding: false,
 	});
 	const [emailOptions, setEmailOptions] = useState([]);
 	const [selectedEmailData, setSelectedEmailData] = useState({});
