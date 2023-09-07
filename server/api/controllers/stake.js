@@ -1,6 +1,6 @@
 'use strict';
 
-const { loggerBroker } = require('../../config/logger');
+const { loggerBroker, loggerAdmin } = require('../../config/logger');
 const { INIT_CHANNEL } = require('../../constants');
 const { publisher } = require('../../db/pubsub');
 const toolsLib = require('hollaex-tools-lib');
@@ -50,7 +50,69 @@ const getExchangeStakes = (req, res) => {
 };
 
 const createExchangeStakes = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/stake/getExchangeStakes/auth', req.auth);
 
+	const {  
+		name,
+		currency,
+		account_id,
+		apy,
+		duration,
+		slashing,
+		slashing_principle_percentage,
+		slashing_earning_percentage,
+		early_unstake,
+		min_amount,
+		max_amount,
+		onboarding,
+		disclaimer,
+	 } = req.swagger.params.data.value;
+
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/stake/createExchangeStakes data',
+		name,
+		currency,
+		account_id,
+		apy,
+		duration,
+		slashing,
+		slashing_principle_percentage,
+		slashing_earning_percentage,
+		early_unstake,
+		min_amount,
+		max_amount,
+		onboarding,
+		disclaimer,
+	);
+
+	toolsLib.stake.createExchangeStakePool({
+		name,
+		currency,
+		account_id,
+		apy,
+		duration,
+		slashing,
+		slashing_principle_percentage,
+		slashing_earning_percentage,
+		early_unstake,
+		min_amount,
+		max_amount,
+		onboarding,
+		disclaimer,
+	})
+		.then((data) => {
+			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/stake/createExchangeStakes err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
 }
 
 const updateExchangeStakes = (req, res) => {

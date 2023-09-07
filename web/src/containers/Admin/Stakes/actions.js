@@ -3,6 +3,10 @@ import querystring from 'query-string';
 import { requestAuthenticated } from 'utils';
 import moment from 'moment';
 
+const toQueryString = (values) => {
+	return querystring.stringify(values);
+};
+
 export const getExchangeSessions = (values) => {
 	const queryValues =
 		values && Object.keys(values).length ? querystring.stringify(values) : '';
@@ -88,4 +92,23 @@ export const requestUserLoginsDownload = (values) => {
 			link.click();
 		})
 		.catch((err) => {});
+};
+
+export const requestUsers = (values) => {
+	let url = '/admin/users';
+	if (values) {
+		url = `/admin/users?${toQueryString(values)}`;
+	}
+	return requestAuthenticated(url);
+};
+
+export const requestUserData = (values) =>
+	requestAuthenticated(`/admin/users?${toQueryString(values)}`);
+
+export const createStakePool = (data) => {
+	return axios({
+		method: 'POST',
+		url: `/admin/stake`,
+		data,
+	});
 };

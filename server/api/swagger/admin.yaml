@@ -3376,6 +3376,8 @@ paths:
         - admin
       x-token-permissions:
         - can_read
+  /admin/stake:
+    x-swagger-router-controller: admin
     post:
       description: Create exchange stakes for admin
       operationId: createExchangeStakes
@@ -3470,10 +3472,6 @@ paths:
           description: Success
           schema:
             $ref: "#/definitions/ObjectResponse"
-        202:
-          description: CSV
-          schema:
-            type: string
         default:
           description: Error
           schema:
@@ -3579,10 +3577,6 @@ paths:
           description: Success
           schema:
             $ref: "#/definitions/ObjectResponse"
-        202:
-          description: CSV
-          schema:
-            type: string
         default:
           description: Error
           schema:
@@ -3611,10 +3605,6 @@ paths:
           description: Success
           schema:
             $ref: "#/definitions/ObjectResponse"
-        202:
-          description: CSV
-          schema:
-            type: string
         default:
           description: Error
           schema:

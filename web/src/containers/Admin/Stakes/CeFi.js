@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect, Fragment, useRef } from 'react';
 import {
 	Table,
 	Button,
@@ -10,10 +10,18 @@ import {
 	Radio,
 	Space,
 	Select,
+	message,
 } from 'antd';
-import { requestUserLogins, requestUserLoginsDownload } from './actions';
+import {
+	requestUserLogins,
+	requestUserLoginsDownload,
+	requestUsers,
+	requestUserData,
+	createStakePool,
+} from './actions';
 import { formatDate } from 'utils';
 import { COUNTRIES_OPTIONS } from '../../../utils/countries';
+import _debounce from 'lodash/debounce';
 import {
 	CloseOutlined,
 	ExclamationCircleOutlined,
@@ -24,6 +32,7 @@ import './CeFi.scss';
 const { Option } = Select;
 
 const CeFi = ({ coins }) => {
+	const searchRef = useRef(null);
 	const [userData, setUserData] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [queryValues, setQueryValues] = useState({});
@@ -59,6 +68,13 @@ const CeFi = ({ coins }) => {
 		perpetual_stake: null,
 		slash_earnings: null,
 	});
+	const [emailOptions, setEmailOptions] = useState([]);
+	const [selectedEmailData, setSelectedEmailData] = useState({});
+
+	const [balanceData, setBalanceData] = useState({});
+
+	const [selectedCurrencyBalance, setSelectedCurrencyBalance] = useState();
+	const [confirmText, setConfirmText] = useState();
 
 	const columns = [
 		{
@@ -172,6 +188,12 @@ const CeFi = ({ coins }) => {
 	];
 
 	useEffect(() => {
+		let pairBase = balanceData[`${stakePoolCreation.currency}_available`] || 0;
+		setSelectedCurrencyBalance(pairBase);
+	}, [balanceData]);
+
+	useEffect(() => {
+		getAllUserData();
 		// setIsLoading(true);
 		// requestSessions(queryFilters.page, queryFilters.limit);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -181,6 +203,25 @@ const CeFi = ({ coins }) => {
 		// requestSessions(queryFilters.page, queryFilters.limit);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [queryValues]);
+
+	const getUserBalance = async (id) => {
+		try {
+			const res = await requestUserData({ id });
+			if (res && res.data) {
+				setBalanceData(res.data[0]?.balance);
+			}
+		} catch (err) {
+			let errMsg =
+				err.data && err.data.message ? err.data.message : err.message;
+			message.error(errMsg);
+		}
+	};
+
+	const handleEditInput = () => {
+		if (searchRef && searchRef.current && searchRef.current.focus) {
+			searchRef.current.focus();
+		}
+	};
 
 	const requestDownload = () => {
 		return requestUserLoginsDownload({ ...queryValues, format: 'csv' });
@@ -233,6 +274,53 @@ const CeFi = ({ coins }) => {
 				</span>
 			</div>
 		);
+	};
+
+	const handleEmailChange = (value) => {
+		let emailId = parseInt(value);
+		let emailData = {};
+		emailOptions &&
+			emailOptions.forEach((item) => {
+				if (item.value === emailId) {
+					emailData = item;
+				}
+			});
+
+		setSelectedEmailData(emailData);
+		getUserBalance(emailId);
+		setStakePoolCreation({
+			...stakePoolCreation,
+			account_id: emailId,
+		});
+
+		handleSearch(emailData.label);
+	};
+
+	const getAllUserData = async (params = {}) => {
+		try {
+			const res = await requestUsers(params);
+			if (res && res.data) {
+				const userData = res.data.map((user) => ({
+					label: user.email,
+					value: user.id,
+				}));
+				setEmailOptions(userData);
+			}
+		} catch (error) {
+			console.log('error', error);
+		}
+	};
+
+	const searchUser = (searchText, type) => {
+		getAllUserData({ search: searchText }, type);
+	};
+
+	const handleSearch = _debounce(searchUser, 1000);
+
+	const onHandleCreateStakePool = async () => {
+		try {
+			await createStakePool(stakePoolCreation);
+		} catch (error) {}
 	};
 
 	const renderStakePoolCreationModal = () => {
@@ -387,6 +475,7 @@ const CeFi = ({ coins }) => {
 								})
 							}
 							value={stakePoolCreation.duration}
+							disabled={stakePoolCreation.perpetual_stake}
 						/>
 					</div>
 					<div>
@@ -570,7 +659,7 @@ const CeFi = ({ coins }) => {
 									slash_earnings: e.target.value,
 								});
 							}}
-							// value={value}
+							value={stakePoolCreation.slash_earnings}
 							style={{ width: '100%' }}
 						>
 							<Space direction="vertical" style={{ width: '100%' }}>
@@ -595,11 +684,17 @@ const CeFi = ({ coins }) => {
 										<Input
 											style={{
 												backgroundColor: 'rgba(0,0,0,0.1)',
+												color: 'white',
 												width: '100%',
 											}}
 											placeholder="Input the percentage to be deducted"
-											onClick={() => {}}
-											// value={}
+											onChange={(e) =>
+												setStakePoolCreation({
+													...stakePoolCreation,
+													slashing_earning_percentage: e.target.value,
+												})
+											}
+											value={stakePoolCreation.slashing_principle_percentage}
 										/>
 									</div>
 								)}
@@ -782,17 +877,24 @@ const CeFi = ({ coins }) => {
 							<div className="mb-2">Account to source inventory from</div>
 							<div className="d-flex align-items-center">
 								<Select
-									ref={(inp) => {}}
+									ref={(inp) => {
+										searchRef.current = inp;
+									}}
 									showSearch
 									placeholder="admin@exchange.com"
 									className="user-search-field"
-									onSearch={(text) => {}}
+									onSearch={(text) => handleSearch(text)}
 									filterOption={() => true}
-									// value={}
-									onChange={(text) => {}}
+									value={selectedEmailData && selectedEmailData.label}
+									onChange={(text) => handleEmailChange(text)}
 									showAction={['focus', 'click']}
-								></Select>
-								<div className="edit-link" onClick={() => {}}>
+								>
+									{emailOptions &&
+										emailOptions.map((email) => (
+											<Option key={email.value}>{email.label}</Option>
+										))}
+								</Select>
+								<div className="edit-link" onClick={handleEditInput}>
 									Edit
 								</div>
 							</div>
@@ -801,14 +903,15 @@ const CeFi = ({ coins }) => {
 						<div className="mb-4">
 							<div className="d-flex align-items-center coin-image">
 								<div className=" mr-3">
-									<Coins type={'xht'} />
+									<Coins type={stakePoolCreation.currency} />
 								</div>
 								<div>
-									Bitcoin
-									{0}
+									{stakePoolCreation.currency &&
+										coins[stakePoolCreation.currency].fullname}
+									: {selectedCurrencyBalance}
 								</div>
 							</div>
-							{renderErrorMsg()}
+							{!selectedCurrencyBalance && renderErrorMsg()}
 						</div>
 
 						<div className="message" style={{ marginBottom: 40 }}>
@@ -849,46 +952,87 @@ const CeFi = ({ coins }) => {
 							className="d-flex preview-container"
 							style={{
 								display: 'flex',
-								justifyContent: 'space-around',
+								// justifyContent: 'space-around',
 							}}
 						>
-							<div className="d-flex flex-container left-container">
+							<div
+								className="d-flex flex-container left-container"
+								style={{ marginLeft: 30 }}
+							>
 								<div>
 									<Coins
 										nohover
 										large
 										small
-										type={'xht'}
+										type={stakePoolCreation.currency}
 										// fullname={getFullName(previewData && previewData.pair_base)}
 									/>
 								</div>
 							</div>
-							<div className="right-container">
+							<div className="right-container" style={{ marginLeft: 30 }}>
 								<div className="right-content">
-									<div className="title font-weight-bold">Desk assets</div>
-									<div>Base market pair:</div>
-									<div>Price market pair:</div>
+									<div className="title font-weight-bold">Asset</div>
+									<div>
+										Stake asset:{' '}
+										{stakePoolCreation.currency &&
+											coins[stakePoolCreation.currency].fullname}{' '}
+										({stakePoolCreation.currency})
+									</div>
 								</div>
 								<div className="right-content">
-									<div className="title font-weight-bold">Parameters</div>
+									<div className="title font-weight-bold">
+										Min and max parameters
+									</div>
 
-									<div>Max size:</div>
-									<div>Min size: </div>
+									<div>
+										Max size: {stakePoolCreation.min_amount}{' '}
+										{stakePoolCreation.currency}
+									</div>
+									<div>
+										Min size: {stakePoolCreation.max_amount}{' '}
+										{stakePoolCreation.currency}
+									</div>
+								</div>
+
+								<div className="right-content">
+									<div className="title font-weight-bold">Duration</div>
+
+									<div>
+										Duration:{' '}
+										{stakePoolCreation.duration ||
+											'No duration, Perpetual staking'}
+									</div>
 								</div>
 								<div className="right-content">
-									<div className="title font-weight-bold">Price</div>
-									<div>Type: Static</div>
-									<div>Sell at: </div>
-									<div>buy at: </div>
+									<div className="title font-weight-bold">Slashing rules</div>
+									<div>
+										Slash on principle:{' '}
+										{stakePoolCreation.slashing_principle_percentage + '%' ||
+											'-'}{' '}
+									</div>
+									<div>
+										{' '}
+										Slash on earnings:{' '}
+										{stakePoolCreation.slashing_earning_percentage + '%' ||
+											'-'}{' '}
+									</div>
+									<div>Disclamiers: {stakePoolCreation.disclaimer || '-'} </div>
 								</div>
 								<div className="right-content">
-									<div className="title font-weight-bold">Hedge</div>
+									<div className="title font-weight-bold">
+										Funding account source
+									</div>
+									<div>Account: {selectedEmailData?.label} </div>
+									<div>
+										{' '}
+										{stakePoolCreation.currency}: {selectedCurrencyBalance}{' '}
+									</div>
 								</div>
 								<div className="right-content">
-									<div className="title font-weight-bold">Fund Source</div>
-									<div>Account: </div>
-									<div></div>
-									<div></div>
+									<div className="title font-weight-bold">
+										Distribution rate
+									</div>
+									<div>APY: {stakePoolCreation.apy + '%'} </div>
 								</div>
 							</div>
 						</div>
@@ -936,52 +1080,60 @@ const CeFi = ({ coins }) => {
 
 							<div style={{ overflowY: 'auto', height: 300, marginTop: 10 }}>
 								<div>
-									<span style={{ fontWeight: 'bold' }}>Stake asset:</span> ABC
-									Token (ABC)
+									<span style={{ fontWeight: 'bold' }}>Stake asset: </span>
+									{stakePoolCreation.currency &&
+										coins[stakePoolCreation.currency].fullname}{' '}
+									({stakePoolCreation.currency})
 								</div>
 								<div>
-									<span style={{ fontWeight: 'bold' }}>Pool name:</span> Test
-									sake
+									<span style={{ fontWeight: 'bold' }}>Pool name: </span>
+									{stakePoolCreation.name}
 								</div>
 								<div>
-									<span style={{ fontWeight: 'bold' }}>Min amount:</span> 1,000
-									ABC{' '}
+									<span style={{ fontWeight: 'bold' }}>Min amount: </span>
+									{stakePoolCreation.min_amount} {stakePoolCreation.currency}{' '}
 								</div>
 								<div>
-									<span style={{ fontWeight: 'bold' }}>Max amount:</span>{' '}
-									1,000,000,000 ABC{' '}
+									<span style={{ fontWeight: 'bold' }}>Max amount: </span>
+									{stakePoolCreation.max_amount} {stakePoolCreation.currency}{' '}
 								</div>
 								<div>
-									<span style={{ fontWeight: 'bold' }}>Duration: </span>3,000
-									days
+									<span style={{ fontWeight: 'bold' }}>Duration: </span>
+									{stakePoolCreation.duration} days
 								</div>
 								<div>
 									<span style={{ fontWeight: 'bold' }}>
 										Slash on principle:
 									</span>{' '}
-									10%{' '}
+									{stakePoolCreation.slashing_principle_percentage}%{' '}
 								</div>
 								<div>
 									<span style={{ fontWeight: 'bold' }}>
 										Slash on earnings:{' '}
 									</span>
-									100%{' '}
+									{stakePoolCreation.slashing_earning_percentage}%{' '}
 								</div>
 								<div>
-									<span style={{ fontWeight: 'bold' }}>Disclamiers:</span>
+									<span style={{ fontWeight: 'bold' }}>Disclamiers: </span>
+									{stakePoolCreation.disclaimer}
 								</div>
 								<div>
 									<span style={{ fontWeight: 'bold' }}>Account:</span>{' '}
-									operator@account.com{' '}
+									{selectedEmailData.label}{' '}
 								</div>
 								<div>
-									<span style={{ fontWeight: 'bold' }}>ABC:</span> 1,000,000
+									<span style={{ fontWeight: 'bold' }}>
+										{stakePoolCreation.currency}:{' '}
+									</span>
+									{selectedCurrencyBalance}
 								</div>
 								<div>
-									<span style={{ fontWeight: 'bold' }}>APY:</span> 5%{' '}
+									<span style={{ fontWeight: 'bold' }}>APY:</span>{' '}
+									{stakePoolCreation.apy}%{' '}
 								</div>
 								<div>
-									<span style={{ fontWeight: 'bold' }}>Duration:</span> 1,000
+									<span style={{ fontWeight: 'bold' }}>Duration: </span>
+									{stakePoolCreation.duration}
 									days
 								</div>
 							</div>
@@ -1016,8 +1168,8 @@ const CeFi = ({ coins }) => {
 							<Input
 								style={{ backgroundColor: 'rgba(0,0,0,0.1)', color: 'white' }}
 								placeholder="Type 'I UNDERSTAND' to proceed"
-								onClick={() => {}}
-								// value={}
+								onChange={(e) => setConfirmText(e.target.value)}
+								value={confirmText}
 							/>
 						</div>
 					</div>
@@ -1075,6 +1227,7 @@ const CeFi = ({ coins }) => {
 							onClick={async () => {
 								let currentStep = step + 1;
 								if (currentStep >= 10) {
+									await onHandleCreateStakePool();
 									setDisplayStatePoolCreation(false);
 								} else {
 									setStep(currentStep);
@@ -1085,8 +1238,10 @@ const CeFi = ({ coins }) => {
 								color: 'white',
 								flex: 1,
 								height: 35,
+								opacity: step === 9 && confirmText !== 'I UNDERSTAND' ? 0.4 : 1,
 							}}
 							type="default"
+							disabled={step === 9 && confirmText !== 'I UNDERSTAND'}
 						>
 							Next
 						</Button>
@@ -1134,8 +1289,8 @@ const CeFi = ({ coins }) => {
 					<div className="d-flex">
 						<span style={{ marginRight: 3 }}>Off</span>
 						<Switch
-						// checked={}
-						// onClick={}
+							checked={true}
+							// onClick={}
 						/>
 						<span style={{ marginLeft: 3 }}>On</span>
 					</div>
