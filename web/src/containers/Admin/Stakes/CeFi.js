@@ -11,16 +11,18 @@ import {
 	Space,
 	Select,
 	message,
+	Tooltip,
 } from 'antd';
+import { Link } from 'react-router';
 import {
-	requestUserLogins,
-	requestUserLoginsDownload,
+	requestStakePools,
+	requestStakePoolsDownload,
 	requestUsers,
 	requestUserData,
 	createStakePool,
 } from './actions';
-import { formatDate } from 'utils';
 import { COUNTRIES_OPTIONS } from '../../../utils/countries';
+import moment from 'moment';
 import _debounce from 'lodash/debounce';
 import {
 	CloseOutlined,
@@ -75,6 +77,7 @@ const CeFi = ({ coins }) => {
 
 	const [selectedCurrencyBalance, setSelectedCurrencyBalance] = useState();
 	const [confirmText, setConfirmText] = useState();
+	const [isShowBalance, setIsShowBalance] = useState(false);
 
 	const columns = [
 		{
@@ -84,10 +87,10 @@ const CeFi = ({ coins }) => {
 			render: (currency, data) => {
 				return (
 					<div className="d-flex">
-						<Button className="ant-btn green-btn ant-tooltip-open ant-btn-primary">
-							{data?.currency}
-						</Button>
-						{/* <div className="ml-3">{data.User.email}</div> */}
+						<Coins type={data.currency} />
+						<span style={{ position: 'relative', left: 5, top: 8 }}>
+							{data.currency && coins[data.currency].fullname}
+						</span>
 					</div>
 				);
 			},
@@ -113,7 +116,27 @@ const CeFi = ({ coins }) => {
 			dataIndex: 'status',
 			key: 'status',
 			render: (user_id, data) => {
-				return <div className="d-flex">(Display Balance)</div>;
+				return (
+					<div className="d-flex align-items-center">
+						<div className="mr-2">User ID: </div>
+						<div className="mr-3">{renderUser(data.user_id)}</div>{' '}
+						{isShowBalance ? (
+							<div>
+								<div>
+									{data.currency}:{' '}
+									{balanceData[`${data.currency}_available`] || 0}
+								</div>
+							</div>
+						) : (
+							<div
+								style={{ textDecoration: 'underline', cursor: 'pointer' }}
+								onClick={() => getUserBalance(data.user_id, true)}
+							>
+								(display balance)
+							</div>
+						)}
+					</div>
+				);
 			},
 		},
 		{
@@ -122,9 +145,9 @@ const CeFi = ({ coins }) => {
 			key: 'amlunt',
 			render: (user_id, data) => {
 				return (
-					<div className="d-flex">
-						<div>Max: 12321</div>
-						<div>Max: 12321</div>
+					<div>
+						<div>Min: {data.min_amount}</div>
+						<div>Max: {data.max_amount}</div>
 					</div>
 				);
 			},
@@ -134,7 +157,7 @@ const CeFi = ({ coins }) => {
 			dataIndex: 'duration',
 			key: 'duration',
 			render: (user_id, data) => {
-				return <div className="d-flex">{data?.duration}</div>;
+				return <div className="d-flex">{data?.duration} days</div>;
 			},
 		},
 		{
@@ -142,7 +165,20 @@ const CeFi = ({ coins }) => {
 			dataIndex: 'slashing',
 			key: 'slashing',
 			render: (user_id, data) => {
-				return <div className="d-flex">{data?.slashing}</div>;
+				return (
+					<div>
+						{data.slashing_principle_percentage ? (
+							<div>-{data.slashing_principle_percentage}% on principle</div>
+						) : (
+							'-'
+						)}
+						{data.slashing_earning_percentage ? (
+							<div>-{data.slashing_earning_percentage}% on earnings</div>
+						) : (
+							'-'
+						)}
+					</div>
+				);
 			},
 		},
 		{
@@ -150,7 +186,7 @@ const CeFi = ({ coins }) => {
 			dataIndex: 'apy',
 			key: 'apy',
 			render: (user_id, data) => {
-				return <div className="d-flex">{data?.apy}</div>;
+				return <div className="d-flex">{data?.apy}%</div>;
 			},
 		},
 		{
@@ -174,7 +210,21 @@ const CeFi = ({ coins }) => {
 			dataIndex: 'onboarding',
 			key: 'onboarding',
 			render: (user_id, data) => {
-				return <div className="d-flex">{data?.onboarding}</div>;
+				return (
+					<div className="d-flex">
+						{data?.onboarding ? 'Open' : 'Closed'}
+						<span
+							style={{
+								textDecoration: 'underline',
+								cursor: 'pointer',
+								marginLeft: 2,
+							}}
+						>
+							{' '}
+							(Edit)
+						</span>
+					</div>
+				);
 			},
 		},
 		{
@@ -182,7 +232,24 @@ const CeFi = ({ coins }) => {
 			dataIndex: 'status',
 			key: 'status',
 			render: (user_id, data) => {
-				return <div className="d-flex">{data?.status}</div>;
+				return (
+					<div className="d-flex">
+						{data?.status
+							.split(' ')
+							.map((word) => `${word[0].toUpperCase()}${word.slice(1)}`)
+							.join('')}
+						<span
+							style={{
+								textDecoration: 'underline',
+								cursor: 'pointer',
+								marginLeft: 2,
+							}}
+						>
+							{' '}
+							(Edit)
+						</span>
+					</div>
+				);
 			},
 		},
 	];
@@ -194,21 +261,33 @@ const CeFi = ({ coins }) => {
 
 	useEffect(() => {
 		getAllUserData();
-		// setIsLoading(true);
-		// requestSessions(queryFilters.page, queryFilters.limit);
+		setIsLoading(true);
+		requestStakes(queryFilters.page, queryFilters.limit);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	useEffect(() => {
-		// requestSessions(queryFilters.page, queryFilters.limit);
+		requestStakes(queryFilters.page, queryFilters.limit);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [queryValues]);
 
-	const getUserBalance = async (id) => {
+	const renderUser = (id) => (
+		<Tooltip placement="bottom" title={`SEE USER ${id} DETAILS`}>
+			<Button type="primary" className="green-btn">
+				<Link to={`/admin/user?id=${id}`}>{id}</Link>
+			</Button>
+		</Tooltip>
+	);
+	const formatDate = (date) => {
+		return moment(date).format('DD/MMM/YYYY, hh:mmA ').toUpperCase();
+	};
+
+	const getUserBalance = async (id, isShowBalance) => {
 		try {
 			const res = await requestUserData({ id });
 			if (res && res.data) {
 				setBalanceData(res.data[0]?.balance);
+				setIsShowBalance(isShowBalance);
 			}
 		} catch (err) {
 			let errMsg =
@@ -224,12 +303,12 @@ const CeFi = ({ coins }) => {
 	};
 
 	const requestDownload = () => {
-		return requestUserLoginsDownload({ ...queryValues, format: 'csv' });
+		return requestStakePoolsDownload({ ...queryValues, format: 'csv' });
 	};
 
-	const requestSessions = (page = 1, limit = 50) => {
+	const requestStakes = (page = 1, limit = 50) => {
 		setIsLoading(true);
-		requestUserLogins({ page, limit, ...queryValues })
+		requestStakePools({ page, limit, ...queryValues })
 			.then((response) => {
 				setUserData(
 					page === 1 ? response.data : [...userData, ...response.data]
@@ -256,7 +335,7 @@ const CeFi = ({ coins }) => {
 		const pageCount = count % 5 === 0 ? 5 : count % 5;
 		const apiPageTemp = Math.floor(count / 5);
 		if (limit === pageSize * pageCount && apiPageTemp >= page && isRemaining) {
-			requestSessions(page + 1, limit);
+			requestStakes(page + 1, limit);
 		}
 		setQueryFilters({ ...queryFilters, currentTablePage: count });
 	};
@@ -290,7 +369,7 @@ const CeFi = ({ coins }) => {
 		getUserBalance(emailId);
 		setStakePoolCreation({
 			...stakePoolCreation,
-			account_id: emailId,
+			account_id: Number(emailId),
 		});
 
 		handleSearch(emailData.label);
@@ -348,7 +427,7 @@ const CeFi = ({ coins }) => {
 							<Select
 								showSearch
 								className="select-box"
-								placeholder="Select value"
+								placeholder="Select asset"
 								value={stakePoolCreation.currency}
 								onChange={(e) => {
 									setStakePoolCreation({
@@ -450,7 +529,7 @@ const CeFi = ({ coins }) => {
 							onChange={(e) =>
 								setStakePoolCreation({
 									...stakePoolCreation,
-									apy: e.target.value,
+									apy: Number(e.target.value),
 								})
 							}
 							value={stakePoolCreation.apy}
@@ -471,7 +550,7 @@ const CeFi = ({ coins }) => {
 							onChange={(e) =>
 								setStakePoolCreation({
 									...stakePoolCreation,
-									duration: e.target.value,
+									duration: Number(e.target.value),
 								})
 							}
 							value={stakePoolCreation.duration}
@@ -616,7 +695,7 @@ const CeFi = ({ coins }) => {
 							onChange={(e) =>
 								setStakePoolCreation({
 									...stakePoolCreation,
-									slashing_principle_percentage: e.target.value,
+									slashing_principle_percentage: Number(e.target.value),
 								})
 							}
 							value={stakePoolCreation.slashing_principle_percentage}
@@ -691,7 +770,7 @@ const CeFi = ({ coins }) => {
 											onChange={(e) =>
 												setStakePoolCreation({
 													...stakePoolCreation,
-													slashing_earning_percentage: e.target.value,
+													slashing_earning_percentage: Number(e.target.value),
 												})
 											}
 											value={stakePoolCreation.slashing_principle_percentage}
@@ -746,7 +825,7 @@ const CeFi = ({ coins }) => {
 							onChange={(e) =>
 								setStakePoolCreation({
 									...stakePoolCreation,
-									min_amount: e.target.value,
+									min_amount: Number(e.target.value),
 								})
 							}
 							value={stakePoolCreation.min_amount}
@@ -763,7 +842,7 @@ const CeFi = ({ coins }) => {
 							onChange={(e) =>
 								setStakePoolCreation({
 									...stakePoolCreation,
-									max_amount: e.target.value,
+									max_amount: Number(e.target.value),
 								})
 							}
 							value={stakePoolCreation.max_amount}

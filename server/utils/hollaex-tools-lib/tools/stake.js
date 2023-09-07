@@ -17,6 +17,8 @@ const { Op } = require('sequelize');
 const { loggerBroker } = require('../../../config/logger');
 const { isArray } = require('lodash');
 const BigNumber = require('bignumber.js');
+const { paginationQuery, timeframeQuery, orderingQuery } = require('./database/helpers');
+const dbQuery = require('./database/query');
 
 const {
 	NO_DATA_FOR_CSV,
@@ -193,7 +195,8 @@ const createExchangeStakePool = async (stake) => {
             'apy',
             'duration',
             'slashing',
-            'slashing_percentage',
+            'slashing_earning_percentage',
+            'slashing_principle_percentage',
             'early_unstake',
             'min_amount',
             'max_amount',
@@ -284,7 +287,8 @@ const updateExchangeStakePool = async (id, data) => {
             'apy',
             'duration',
             'slashing',
-            'slashing_percentage',
+            'slashing_earning_percentage',
+            'slashing_principle_percentage',
             'early_unstake',
             'min_amount',
             'max_amount',
