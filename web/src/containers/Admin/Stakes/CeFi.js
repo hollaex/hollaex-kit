@@ -79,6 +79,11 @@ const CeFi = ({ coins }) => {
 	const [confirmText, setConfirmText] = useState();
 	const [isShowBalance, setIsShowBalance] = useState(false);
 
+	const [displayOnboarding, setDisplayOnboarding] = useState(false);
+
+	const [displayStatusModel, setDisplayStatusModel] = useState(false);
+
+	const [selectedPool, setSelectedPool] = useState();
 	const columns = [
 		{
 			title: 'Asset',
@@ -202,7 +207,11 @@ const CeFi = ({ coins }) => {
 			dataIndex: 'edit',
 			key: 'edit',
 			render: (user_id, data) => {
-				return <div className="d-flex">Edit</div>;
+				return (
+					<div style={{ textDecoration: 'underline', cursor: 'pointer' }}>
+						Edit
+					</div>
+				);
 			},
 		},
 		{
@@ -214,6 +223,9 @@ const CeFi = ({ coins }) => {
 					<div className="d-flex">
 						{data?.onboarding ? 'Open' : 'Closed'}
 						<span
+							onClick={() => {
+								setDisplayOnboarding(true);
+							}}
 							style={{
 								textDecoration: 'underline',
 								cursor: 'pointer',
@@ -239,6 +251,12 @@ const CeFi = ({ coins }) => {
 							.map((word) => `${word[0].toUpperCase()}${word.slice(1)}`)
 							.join('')}
 						<span
+							onClick={async () => {
+								setSelectedPool(data);
+								await getAllUserData({ id: data.account_id });
+								await getUserBalance(data.account_id);
+								setDisplayStatusModel(true);
+							}}
 							style={{
 								textDecoration: 'underline',
 								cursor: 'pointer',
@@ -1323,6 +1341,303 @@ const CeFi = ({ coins }) => {
 							disabled={step === 9 && confirmText !== 'I UNDERSTAND'}
 						>
 							Next
+						</Button>
+					</div>
+				</Modal>
+			)}
+			{displayOnboarding && (
+				<Modal
+					maskClosable={false}
+					closeIcon={<CloseOutlined style={{ color: 'white' }} />}
+					bodyStyle={{
+						backgroundColor: '#27339D',
+						marginTop: 60,
+					}}
+					visible={displayOnboarding}
+					footer={null}
+					onCancel={() => {
+						setDisplayOnboarding(false);
+					}}
+				>
+					<h1 style={{ fontWeight: '600', color: 'white' }}>Pool onboarding</h1>
+
+					<h5
+						style={{
+							fontWeight: '600',
+							color: 'white',
+							marginBottom: 40,
+							marginTop: 10,
+						}}
+					>
+						Block new users for staking by pausing the onboarding below.
+					</h5>
+
+					<Radio.Group
+						onChange={(e) => {
+							//  e.target.value,
+						}}
+						// value={stakePoolCreation.early_unstake}
+					>
+						<Space direction="vertical">
+							<Radio
+								style={{
+									color: 'white',
+									fontWeight: 'bold',
+									fontSize: 16,
+									marginBottom: 3,
+								}}
+								value={true}
+							>
+								Open onboarding
+							</Radio>
+							<Radio
+								style={{ color: 'white', fontWeight: 'bold', fontSize: 16 }}
+								value={false}
+							>
+								Close onboarding
+							</Radio>
+						</Space>
+					</Radio.Group>
+
+					<div
+						style={{
+							display: 'flex',
+							flexDirection: 'row',
+							gap: 15,
+							justifyContent: 'space-between',
+							marginTop: 30,
+						}}
+					>
+						<Button
+							onClick={() => {
+								setDisplayOnboarding(false);
+							}}
+							style={{
+								backgroundColor: '#288500',
+								color: 'white',
+								flex: 1,
+								height: 35,
+							}}
+							type="default"
+						>
+							Back
+						</Button>
+						<Button
+							onClick={async () => {}}
+							style={{
+								backgroundColor: '#288500',
+								color: 'white',
+								flex: 1,
+								height: 35,
+							}}
+							type="default"
+						>
+							Proceed
+						</Button>
+					</div>
+				</Modal>
+			)}
+
+			{displayStatusModel && (
+				<Modal
+					maskClosable={false}
+					closeIcon={<CloseOutlined style={{ color: 'white' }} />}
+					bodyStyle={{
+						backgroundColor: '#27339D',
+						marginTop: 60,
+					}}
+					visible={displayStatusModel}
+					width={600}
+					footer={null}
+					onCancel={() => {
+						setDisplayStatusModel(false);
+					}}
+				>
+					<h1 style={{ fontWeight: '600', color: 'white' }}>Pool Status</h1>
+
+					<div
+						style={{
+							fontWeight: '600',
+							color: 'white',
+							marginBottom: 40,
+							marginTop: 20,
+						}}
+					>
+						Change the status of your staking pool below. Pausing the pool will
+						stop the issuance of rewards and will also stop the flow of new
+						users from adding new stakes. After pausing, there will be the
+						option to 'Settle' and close the pool.
+					</div>
+
+					<Radio.Group
+						onChange={(e) => {
+							//  e.target.value,
+						}}
+						// value={stakePoolCreation.early_unstake}
+						style={{ width: '70%' }}
+					>
+						<Space direction="vertical" style={{ width: '100%' }}>
+							<Radio
+								style={{
+									color: 'white',
+									fontWeight: 'bold',
+									fontSize: 16,
+									marginBottom: 3,
+								}}
+								value={'active'}
+							>
+								Open
+							</Radio>
+							<Radio
+								style={{ color: 'white', fontWeight: 'bold', fontSize: 16 }}
+								value={'paused'}
+							>
+								Pause the pool and stop rewards
+								<div
+									style={{
+										backgroundColor: '#E16900',
+										fontSize: 13,
+										padding: 20,
+										marginLeft: 30,
+										marginTop: 10,
+										color: 'white',
+										width: 500,
+										textWrap: 'wrap',
+									}}
+								>
+									Stopping rewards abruptly could harm platform confidence. To
+									transition smoothly, consider closing the onboarding first and
+									allow all active stakers to finish their term.
+								</div>
+							</Radio>
+
+							<Radio
+								style={{ color: 'white', fontWeight: 'bold', fontSize: 16 }}
+								value={'terminated'}
+							>
+								Close onboarding
+								<div
+									style={{
+										padding: 10,
+										marginLeft: 30,
+										color: 'white',
+										width: 500,
+										textWrap: 'wrap',
+										borderLeft: '1px solid white',
+									}}
+								>
+									<div>Settlement time: 24 hours</div>
+									<div>Required to settle: 1,920,321 ABC</div>
+									<div>
+										Source wallet: {emailOptions[0].label}:{' '}
+										{balanceData[`${selectedPool.currency}_available`] || 0}{' '}
+										{selectedPool.currency}
+									</div>
+									<div
+										style={{
+											backgroundColor: 'white',
+											fontSize: 13,
+											padding: 10,
+											marginTop: 10,
+											color: '#27339D',
+											width: 450,
+											textWrap: 'wrap',
+										}}
+									>
+										You must pause the pool before closing and settling the pool
+									</div>
+
+									<div
+										style={{
+											backgroundColor: '#FF6600',
+											fontSize: 13,
+											padding: 10,
+											marginTop: 10,
+											color: 'white',
+											width: 450,
+											textWrap: 'wrap',
+										}}
+									>
+										Note: Closing the pool before allowing users to complete
+										their staking duration term may erode the trust in your
+										exchange. Please consider allowing all users to finish
+										staking.
+									</div>
+
+									<div
+										style={{
+											backgroundColor: '#E10000',
+											fontSize: 13,
+											padding: 10,
+											marginTop: 10,
+											color: 'white',
+											width: 450,
+											textWrap: 'wrap',
+										}}
+									>
+										You have insufficient funds to close the staking pool!
+									</div>
+									<div style={{ marginBottom: 20, marginTop: 20 }}>
+										<div
+											style={{
+												fontWeight: 'bold',
+												fontSize: 16,
+												marginBottom: 4,
+											}}
+										>
+											Do you understand?
+										</div>
+										<Input
+											style={{
+												backgroundColor: 'rgba(0,0,0,0.1)',
+												color: 'white',
+											}}
+											placeholder="Type 'I UNDERSTAND' to proceed"
+											onChange={(e) => {
+												// setConfirmText(e.target.value)
+											}}
+											// value={confirmText}
+										/>
+									</div>
+								</div>
+							</Radio>
+						</Space>
+					</Radio.Group>
+
+					<div
+						style={{
+							display: 'flex',
+							flexDirection: 'row',
+							gap: 15,
+							justifyContent: 'space-between',
+							marginTop: 30,
+						}}
+					>
+						<Button
+							onClick={() => {
+								setDisplayStatusModel(false);
+							}}
+							style={{
+								backgroundColor: '#288500',
+								color: 'white',
+								flex: 1,
+								height: 35,
+							}}
+							type="default"
+						>
+							Back
+						</Button>
+						<Button
+							onClick={async () => {}}
+							style={{
+								backgroundColor: '#288500',
+								color: 'white',
+								flex: 1,
+								height: 35,
+							}}
+							type="default"
+						>
+							Proceed
 						</Button>
 					</div>
 				</Modal>
