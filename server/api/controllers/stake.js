@@ -50,7 +50,7 @@ const getExchangeStakes = (req, res) => {
 };
 
 const createExchangeStakes = (req, res) => {
-	loggerAdmin.verbose(req.uuid, 'controllers/stake/getExchangeStakes/auth', req.auth);
+	loggerAdmin.verbose(req.uuid, 'controllers/stake/createExchangeStakes/auth', req.auth);
 
 	const {  
 		name,
@@ -120,7 +120,75 @@ const createExchangeStakes = (req, res) => {
 }
 
 const updateExchangeStakes = (req, res) => {
+loggerAdmin.verbose(req.uuid, 'controllers/stake/updateExchangeStakes/auth', req.auth);
 
+	const {
+		id,
+		name,
+		currency,
+		account_id,
+		apy,
+		duration,
+		slashing,
+		slashing_principle_percentage,
+		slashing_earning_percentage,
+		early_unstake,
+		min_amount,
+		max_amount,
+		onboarding,
+		disclaimer,
+		status
+	 } = req.swagger.params.data.value;
+
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/stake/updateExchangeStakes data',
+		id,
+		name,
+		currency,
+		account_id,
+		apy,
+		duration,
+		slashing,
+		slashing_principle_percentage,
+		slashing_earning_percentage,
+		early_unstake,
+		min_amount,
+		max_amount,
+		onboarding,
+		disclaimer,
+		status
+	);
+
+	toolsLib.stake.updateExchangeStakePool(id, {
+		name,
+		currency,
+		account_id,
+		apy,
+		duration,
+		slashing,
+		slashing_principle_percentage,
+		slashing_earning_percentage,
+		early_unstake,
+		min_amount,
+		max_amount,
+		onboarding,
+		disclaimer,
+		status,
+		user_id: req.auth.sub.id
+	})
+		.then((data) => {
+			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/stake/updateExchangeStakes err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
 }
 
 const deleteExchangeStakes = (req, res) => {

@@ -1530,6 +1530,8 @@ definitions:
   StakePool:
     type: object
     properties:
+      id:
+         type: ['number', 'null']
       name:
         type: string
         maxLength: 256

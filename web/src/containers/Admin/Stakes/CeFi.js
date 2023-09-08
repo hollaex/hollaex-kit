@@ -20,6 +20,7 @@ import {
 	requestUsers,
 	requestUserData,
 	createStakePool,
+	updateStakePool,
 } from './actions';
 import { COUNTRIES_OPTIONS } from '../../../utils/countries';
 import moment from 'moment';
@@ -77,8 +78,10 @@ const CeFi = ({ coins }) => {
 
 	const [selectedCurrencyBalance, setSelectedCurrencyBalance] = useState();
 	const [confirmText, setConfirmText] = useState();
+	const [confirmTextClosePool, setConfirmTextClosePool] = useState();
 	const [isShowBalance, setIsShowBalance] = useState(false);
-
+	const [poolStatus, setPoolStatus] = useState();
+	const [poolOnboarding, setPoolOnboarding] = useState();
 	const [displayOnboarding, setDisplayOnboarding] = useState(false);
 
 	const [displayStatusModel, setDisplayStatusModel] = useState(false);
@@ -224,6 +227,8 @@ const CeFi = ({ coins }) => {
 						{data?.onboarding ? 'Open' : 'Closed'}
 						<span
 							onClick={() => {
+								setSelectedPool(data);
+								setPoolOnboarding(data.onboarding);
 								setDisplayOnboarding(true);
 							}}
 							style={{
@@ -253,6 +258,7 @@ const CeFi = ({ coins }) => {
 						<span
 							onClick={async () => {
 								setSelectedPool(data);
+								setPoolStatus(data.status);
 								await getAllUserData({ id: data.account_id });
 								await getUserBalance(data.account_id);
 								setDisplayStatusModel(true);
@@ -1374,9 +1380,9 @@ const CeFi = ({ coins }) => {
 
 					<Radio.Group
 						onChange={(e) => {
-							//  e.target.value,
+							setPoolOnboarding(e.target.value);
 						}}
-						// value={stakePoolCreation.early_unstake}
+						value={poolOnboarding}
 					>
 						<Space direction="vertical">
 							<Radio
@@ -1423,7 +1429,19 @@ const CeFi = ({ coins }) => {
 							Back
 						</Button>
 						<Button
-							onClick={async () => {}}
+							onClick={async () => {
+								try {
+									await updateStakePool({
+										id: selectedPool.id,
+										onboarding: poolOnboarding,
+									});
+									requestStakes(queryFilters.page, queryFilters.limit);
+									setDisplayOnboarding(false);
+									message.success('Changes saved.');
+								} catch (error) {
+									message.error(error.response.data.message);
+								}
+							}}
 							style={{
 								backgroundColor: '#288500',
 								color: 'white',
@@ -1471,9 +1489,9 @@ const CeFi = ({ coins }) => {
 
 					<Radio.Group
 						onChange={(e) => {
-							//  e.target.value,
+							setPoolStatus(e.target.value);
 						}}
-						// value={stakePoolCreation.early_unstake}
+						value={poolStatus}
 						style={{ width: '70%' }}
 					>
 						<Space direction="vertical" style={{ width: '100%' }}>
@@ -1533,19 +1551,22 @@ const CeFi = ({ coins }) => {
 										{balanceData[`${selectedPool.currency}_available`] || 0}{' '}
 										{selectedPool.currency}
 									</div>
-									<div
-										style={{
-											backgroundColor: 'white',
-											fontSize: 13,
-											padding: 10,
-											marginTop: 10,
-											color: '#27339D',
-											width: 450,
-											textWrap: 'wrap',
-										}}
-									>
-										You must pause the pool before closing and settling the pool
-									</div>
+									{selectedPool.status !== 'paused' && (
+										<div
+											style={{
+												backgroundColor: 'white',
+												fontSize: 13,
+												padding: 10,
+												marginTop: 10,
+												color: '#27339D',
+												width: 450,
+												textWrap: 'wrap',
+											}}
+										>
+											You must pause the pool before closing and settling the
+											pool
+										</div>
+									)}
 
 									<div
 										style={{
@@ -1594,9 +1615,9 @@ const CeFi = ({ coins }) => {
 											}}
 											placeholder="Type 'I UNDERSTAND' to proceed"
 											onChange={(e) => {
-												// setConfirmText(e.target.value)
+												setConfirmTextClosePool(e.target.value);
 											}}
-											// value={confirmText}
+											value={confirmTextClosePool}
 										/>
 									</div>
 								</div>
@@ -1628,7 +1649,19 @@ const CeFi = ({ coins }) => {
 							Back
 						</Button>
 						<Button
-							onClick={async () => {}}
+							onClick={async () => {
+								try {
+									await updateStakePool({
+										id: selectedPool.id,
+										status: poolStatus,
+									});
+									requestStakes(queryFilters.page, queryFilters.limit);
+									setDisplayStatusModel(false);
+									message.success('Changes saved.');
+								} catch (error) {
+									message.error(error.response.data.message);
+								}
+							}}
 							style={{
 								backgroundColor: '#288500',
 								color: 'white',

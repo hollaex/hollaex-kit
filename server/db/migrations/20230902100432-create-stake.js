@@ -25,7 +25,6 @@ module.exports = {
 			},
 			currency: {
 				type: Sequelize.STRING,
-				unique: true,
 				allowNull: false
 			},
 			account_id: {

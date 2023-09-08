@@ -18,7 +18,6 @@ module.exports = function (sequelize, DataTypes) {
 			},
 			currency: {
 				type: DataTypes.STRING,
-				unique: true,
 				allowNull: false
 			},
 			account_id: {

@@ -112,3 +112,11 @@ export const createStakePool = (data) => {
 		data,
 	});
 };
+
+export const updateStakePool = (data) => {
+	return axios({
+		method: 'PUT',
+		url: `/admin/stake`,
+		data,
+	});
+};

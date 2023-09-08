@@ -228,21 +228,21 @@ const updateExchangeStakePool = async (id, data) => {
     } = data;
     
     if(status !== 'uninitialized' && (
-        currency !== stakePool.currency 
-        || name !== stakePool.name 
-        || account_id !== stakePool.account_id 
-        || duration !== stakePool.duration 
-        || slashing !== stakePool.slashing 
-        || early_unstake !== stakePool.early_unstake 
-        || min_amount !== stakePool.min_amount 
-        || max_amount !== stakePool.max_amount 
-        || slashing_principle_percentage !== stakePool.slashing_principle_percentage 
-        || slashing_earning_percentage !== stakePool.slashing_earning_percentage 
+        (currency && currency !== stakePool.currency)
+        || (name && name !== stakePool.name)
+        || (account_id && account_id !== stakePool.account_id)
+        || (duration && duration !== stakePool.duration)
+        || (slashing && slashing !== stakePool.slashing)
+        || (early_unstake && early_unstake !== stakePool.early_unstake)
+        || (min_amount && min_amount !== stakePool.min_amount)
+        || (max_amount && max_amount !== stakePool.max_amount)
+        || (slashing_principle_percentage && slashing_principle_percentage !== stakePool.slashing_principle_percentage)
+        || (slashing_earning_percentage && slashing_earning_percentage !== stakePool.slashing_earning_percentage)
     )) {
          throw new Error('Cannot modify the fields when the stake pool is not uninitialized');
     }
 
-    if (onboarding && status === 'uninitialized') {
+    if (onboarding && stakePool.status === 'uninitialized') {
           throw new Error('Onboarding cannot be active while the status is uninitialized');
     }
   
@@ -250,7 +250,7 @@ const updateExchangeStakePool = async (id, data) => {
           throw new Error('Cannot terminated stake pool while it is not paused');
     }
 
-    if (status === 'terminated' && stakePool.duration) {
+    if (status === 'terminated') {
         const balance = await getUserBalanceByKitId(accountOwner);
         let symbols = {};
         
@@ -273,12 +273,12 @@ const updateExchangeStakePool = async (id, data) => {
 
     const updatedStakePool = {
 		...stakePool.get({ plain: true }),
-		...data,
+		...Object.fromEntries(Object.entries(data).filter(([_, v]) => v != null)),
 	};
 
 	validateExchangeStake(updatedStakePool);
 
-	return brokerPair.update(updatedStakePool, {
+	return stakePool.update(updatedStakePool, {
 		fields: [
 			'name',
             'user_id',
