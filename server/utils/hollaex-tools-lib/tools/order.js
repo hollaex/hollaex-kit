@@ -370,7 +370,7 @@ const dustPriceEstimate = async (user_id, opts, { assets, spread, maker_id, quot
 	for (const key of Object.keys(balance)) {
 		if (key.includes('balance') && balance[key]) {
 			let symbol = key?.split('_')?.[0];
-			if(new BigNumber(balance[`${symbol}_balance`]).comparedTo(new BigNumber(balance[`${symbol}_available`])) !== 0) {
+			if (symbol && assets.includes(symbol) && new BigNumber(balance[`${symbol}_balance`]).comparedTo(new BigNumber(balance[`${symbol}_available`])) !== 0) {
 				throw new Error(symbol + ' ' + BALANCE_NOT_AVAILABLE);
 			}
 			if (symbol && assets.includes(symbol)) {
@@ -424,7 +424,7 @@ const dustUserBalance = async (user_id, opts, { assets, spread, maker_id, quote 
 		for (const key of Object.keys(balance)) {
 			if (key.includes('balance') && balance[key]) {
 				let symbol = key?.split('_')?.[0];
-				if(new BigNumber(balance[`${symbol}_balance`]).comparedTo(new BigNumber(balance[`${symbol}_available`])) !== 0) {
+				if (symbol && assets.includes(symbol) && new BigNumber(balance[`${symbol}_balance`]).comparedTo(new BigNumber(balance[`${symbol}_available`])) !== 0) {
 					throw new Error(symbol + ' ' + BALANCE_NOT_AVAILABLE);
 				}
 				if (symbol && assets.includes(symbol)) {
