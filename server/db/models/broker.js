@@ -58,7 +58,7 @@ module.exports = function (sequelize, DataTypes) {
 				allowNull: true
 			},
 			spread: {
-				type: DataTypes.INTEGER,
+				type: DataTypes.DOUBLE,
 				defaultValue: 0,
 				allowNull: true
 			},
