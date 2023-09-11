@@ -90,8 +90,11 @@ paths:
           name: assets
           description: The list of assets to get the mini charts for
           required: true
-          type: string
-          maxLength: 256
+          type: array
+          items:
+            type: string
+            maxLength: 256
+            minItems: 1
         - in: query
           name: from
           description: Start Date
