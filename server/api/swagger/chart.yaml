@@ -77,4 +77,46 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
+  /minicharts:
+    x-swagger-router-controller: public
+    get:
+      description: Get trade history HOLCV for all pairs
+      operationId: getMiniCharts
+      tags:
+        - Public
+        - Chart
+      parameters:
+        - in: query
+          name: assets
+          description: The list of assets to get the mini charts for
+          required: true
+          type: string
+          maxLength: 256
+        - in: query
+          name: from
+          description: Start Date
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: to
+          description: End data
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: quote
+          description: tQuote asset to receive prices based on
+          required: false
+          type: string
+          maxLength: 256
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
   
