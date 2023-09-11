@@ -5,7 +5,7 @@ const { SERVER_PATH } = require('../constants');
 const { getModel } = require('./database/model');
 const { fetchBrokerQuote, generateRandomToken, isFairPriceForBroker } = require('./broker');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
-const { INVALID_SYMBOL, NO_DATA_FOR_CSV, USER_NOT_FOUND, USER_NOT_REGISTERED_ON_NETWORK, TOKEN_EXPIRED, BROKER_NOT_FOUND, BROKER_PAUSED, BROKER_SIZE_EXCEED, QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED, QUICK_TRADE_ORDER_CURRENT_PRICE_ERROR, QUICK_TRADE_VALUE_IS_TOO_SMALL, FAIR_PRICE_BROKER_ERROR, AMOUNT_NEGATIVE_ERROR, QUICK_TRADE_CONFIG_NOT_FOUND, QUICK_TRADE_TYPE_NOT_SUPPORTED, PRICE_NOT_FOUND, INVALID_PRICE, INVALID_SIZE } = require(`${SERVER_PATH}/messages`);
+const { INVALID_SYMBOL, NO_DATA_FOR_CSV, USER_NOT_FOUND, USER_NOT_REGISTERED_ON_NETWORK, TOKEN_EXPIRED, BROKER_NOT_FOUND, BROKER_PAUSED, BROKER_SIZE_EXCEED, QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED, QUICK_TRADE_ORDER_CURRENT_PRICE_ERROR, QUICK_TRADE_VALUE_IS_TOO_SMALL, FAIR_PRICE_BROKER_ERROR, AMOUNT_NEGATIVE_ERROR, QUICK_TRADE_CONFIG_NOT_FOUND, QUICK_TRADE_TYPE_NOT_SUPPORTED, PRICE_NOT_FOUND, INVALID_PRICE, INVALID_SIZE, BALANCE_NOT_AVAILABLE } = require(`${SERVER_PATH}/messages`);
 const { parse } = require('json2csv');
 const { subscribedToPair, getKitTier, getDefaultFees, getAssetsPrices, getPublicTrades, getQuickTrades } = require('./common');
 const { reject } = require('bluebird');
@@ -368,8 +368,11 @@ const dustPriceEstimate = async (user_id, opts, { assets, spread, maker_id, quot
 	let symbols = {};
 
 	for (const key of Object.keys(balance)) {
-		if (key.includes('available') && balance[key]) {
+		if (key.includes('balance') && balance[key]) {
 			let symbol = key?.split('_')?.[0];
+			if(new BigNumber(balance[`${symbol}_balance`]).comparedTo(new BigNumber(balance[`${symbol}_available`])) !== 0) {
+				throw new Error(symbol + ' ' + BALANCE_NOT_AVAILABLE);
+			}
 			if (symbol && assets.includes(symbol)) {
 				symbols[symbol] = balance[key];
 			}
@@ -419,8 +422,11 @@ const dustUserBalance = async (user_id, opts, { assets, spread, maker_id, quote 
 		let symbols = {};
 
 		for (const key of Object.keys(balance)) {
-			if (key.includes('available') && balance[key]) {
+			if (key.includes('balance') && balance[key]) {
 				let symbol = key?.split('_')?.[0];
+				if(new BigNumber(balance[`${symbol}_balance`]).comparedTo(new BigNumber(balance[`${symbol}_available`])) !== 0) {
+					throw new Error(symbol + ' ' + BALANCE_NOT_AVAILABLE);
+				}
 				if (symbol && assets.includes(symbol)) {
 					symbols[symbol] = balance[key];
 				}
