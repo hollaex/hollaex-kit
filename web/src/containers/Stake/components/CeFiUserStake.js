@@ -25,6 +25,7 @@ import { formatDate } from 'utils';
 import {
 	requestStakePools,
 	createStaker,
+	requestStakers,
 } from 'containers/Admin/Stakes/actions';
 
 const TabPane = Tabs.TabPane;
@@ -87,7 +88,7 @@ const CeFiUserStake = () => {
 			dataIndex: 'earnt',
 			key: 'earnt',
 			render: (user_id, data) => {
-				return <div className="d-flex">{data?.amount}</div>;
+				return <div className="d-flex">{data?.reward}</div>;
 			},
 		},
 		{
@@ -109,6 +110,10 @@ const CeFiUserStake = () => {
 	useEffect(() => {
 		requestStakePools().then((res) => {
 			setStakePools(res.data);
+		});
+
+		requestStakers().then((res) => {
+			setUserStakeData(res.data);
 		});
 	}, []);
 

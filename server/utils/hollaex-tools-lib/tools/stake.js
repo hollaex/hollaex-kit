@@ -77,7 +77,7 @@ const distributeStakingRewards = async (stakers, rewards, account_id, currency) 
 
 const updateStakerRewardData = async (user_id) => {
 
-    const stakers = await getModel('staker').findOne({ where: { user_id } });
+    const stakers = await getModel('staker').findAll({ where: { user_id } });
 
     for (const staker of stakers) {
 
@@ -155,7 +155,7 @@ const getExchangeStakePools = async (opts = {
         .then(async (stakePools) => {
             
             //Calculate reward amount per stake pool
-            for (const stakePool of stakePools) {
+            for (const stakePool of stakePools.data) {
                 const stakers = await fetchStakers(stakePool.id);
                 const rewards = await calculateStakingRewards(stakers, stakePool);
                 stakePool.reward = rewards.total;
@@ -280,6 +280,10 @@ const updateExchangeStakePool = async (id, data) => {
           throw new Error('Cannot terminated stake pool while it is not paused');
     }
 
+    if (status === 'paused') {
+        data.paused_date = new Date();
+    }
+
     if (status === 'terminated') {
         const balance = await getUserBalanceByKitId(accountOwner);
         let symbols = {};
@@ -348,16 +352,16 @@ const getExchangeStakers = async (
 	const query = {
 		where: {
             created_at: timeframe,
-            ...(user_id && { user_id })
+            ...(opts.user_id && { user_id: opts.user_id })
 		},
 		order: [ordering],
 		...(!opts.format && pagination),
 	}
 
          
-    if (user_id){
+    if (opts.user_id){
         // calculate reward and update the record
-        await updateStakerRewardData(user_id);
+        await updateStakerRewardData(opts.user_id);
     }
 
 
@@ -375,7 +379,7 @@ const getExchangeStakers = async (
 				}
 			});
 	} else {
-		return dbQuery.findAndCountAllWithRows('stake', query);
+		return dbQuery.findAndCountAllWithRows('staker', query);
     }
     
 }
@@ -456,11 +460,6 @@ const deleteExchangeStaker = async (staker_id, user_id) => {
     if (stakePool.status !== 'active') {
           throw new Error('Cannot unstake in a pool that is not active');
     }
-
-    if (stakePool.duration == null) {
-        throw new Error('Cannot unstake in a pool with perpatual duration');
-    }
-
 
     // check if matured for unstaking or not
     const stakePoolCreationDate = moment(stakePool.created_at);

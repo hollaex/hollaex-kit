@@ -77,6 +77,12 @@ export const requestStakePools = (values) => {
 	return requestAuthenticated(`/admin/stakes?${queryValues}`);
 };
 
+export const requestStakers = (values) => {
+	const queryValues =
+		values && Object.keys(values).length ? querystring.stringify(values) : '';
+	return requestAuthenticated(`/stake?${queryValues}`);
+};
+
 export const requestStakePoolsDownload = (values) => {
 	const query = querystring.stringify(values);
 	return axios({
