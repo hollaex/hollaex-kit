@@ -204,19 +204,19 @@ const createStaker = (req, res) => {
 
 	const {  
 		stake_id,
-		amoount
+		amount
 	 } = req.swagger.params.data.value;
 
 	loggerAdmin.verbose(
 		req.uuid,
 		'controllers/stake/createStaker data',
 		stake_id,
-		amoount
+		amount
 	);
 
 	toolsLib.stake.createExchangeStaker(
 		stake_id,
-		amoount,
+		amount,
 		req.auth.sub.id
 		)
 		.then((data) => {
