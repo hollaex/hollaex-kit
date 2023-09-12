@@ -151,7 +151,18 @@ const getExchangeStakePools = async (opts = {
 				}
 			});
 	} else {
-		return dbQuery.findAndCountAllWithRows('stake', query);
+        return dbQuery.findAndCountAllWithRows('stake', query)
+        .then(async (stakePools) => {
+            
+            //Calculate reward amount per stake pool
+            for (const stakePool of stakePools) {
+                const stakers = await fetchStakers(stakePool.id);
+                const rewards = await calculateStakingRewards(stakers, stakePool);
+                stakePool.reward = rewards.total;
+            }
+
+            return stakePools;
+        })
 	}
 };
 
