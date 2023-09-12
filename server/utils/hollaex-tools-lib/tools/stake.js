@@ -176,7 +176,7 @@ const createExchangeStakePool = async (stake) => {
     let symbols = {};
 
     for (const key of Object.keys(balance)) {
-        if (key.includes('available') && balance[key]) {
+        if (key.includes('balance') && balance[key]) {
             let symbol = key?.split('_')?.[0];
             symbols[symbol] = balance[key];
         }
@@ -255,7 +255,7 @@ const updateExchangeStakePool = async (id, data) => {
         let symbols = {};
         
         for (const key of Object.keys(balance)) {
-            if (key.includes('available') && balance[key]) {
+            if (key.includes('balance') && balance[key]) {
                 let symbol = key?.split('_')?.[0];
                 symbols[symbol] = balance[key];
             }
@@ -313,10 +313,67 @@ const getExchangeStakers = (
 
 }
 
+const createExchangeStaker = async (stake_id, amount, user_id) => {
+    const stakePool = await getModel('stake').findOne({ where: { id: stake_id } });
+   
+    if (!stakePool.onboarding) {
+          throw new Error('Stake pool is not active for accepting users');
+    }
+
+    if (stakePool.status !== 'active') {
+          throw new Error('Cannot stake in a pool what is not active');
+    }
+
+    const balance = await getUserBalanceByKitId(stakePool.account_id);
+    let symbols = {};
+
+    for (const key of Object.keys(balance)) {
+        if (key.includes('balance') && balance[key]) {
+            let symbol = key?.split('_')?.[0];
+            symbols[symbol] = balance[key];
+        }
+    }
+
+    if (new BigNumber(symbols[stakePool.currency]).comparedTo(new BigNumber(amount)) !== 1) {
+        throw new Error('You do not have enough funds for the amount set');
+    }
+
+    if (new BigNumber(amount).comparedTo(new BigNumber(stakePool.max_amount)) === 1) {
+        throw new Error('the amount is higher than the max amount set for the stake pool');
+    }
+
+    if (new BigNumber(amount).comparedTo(new BigNumber(stakePool.min_amount)) !== 1) {
+        throw new Error('the amount is lower than the min amount set for the stake pool');
+    }
+
+    const staker = {
+        user_id,
+        stake_id,
+        amount,
+        currency: stakePool.currency,
+        status: 'staking',
+    }
+
+    return getModel('staker').create(staker, {
+		fields: [
+			'user_id',
+            'stake_id',
+            'amount',
+            'currency',
+            'status',
+		]
+	});
+}
+
+const deleteExchangeStaker = (staker_id) => {
+
+}
 
 module.exports = {
 	getExchangeStakePools,
     createExchangeStakePool,
     updateExchangeStakePool,
-    getExchangeStakers
+    getExchangeStakers,
+    createExchangeStaker,
+    deleteExchangeStaker
 };

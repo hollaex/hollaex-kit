@@ -120,3 +120,11 @@ export const updateStakePool = (data) => {
 		data,
 	});
 };
+
+export const createStaker = (data) => {
+	return axios({
+		method: 'POST',
+		url: `/stake`,
+		data,
+	});
+};

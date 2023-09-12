@@ -1,0 +1,37 @@
+paths:
+  /stake:
+    x-swagger-router-controller: stake
+    post:
+      description: Create staker for user
+      operationId: createStaker
+      tags:
+        - User
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              stake_id:
+                type: number
+                format: int32
+              amount:
+                type: number
+                format: double
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - user

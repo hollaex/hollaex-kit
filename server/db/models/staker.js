@@ -50,7 +50,13 @@ module.exports = function (sequelize, DataTypes) {
 		{
 			timestamps: true,
 			underscored: true,
-			tableName: 'Stakers'
+			tableName: 'Stakers',
+			indexes: [
+    		    {
+    		        unique: true,
+    		        fields: ['user_id', 'stake_id']
+    		    }
+    		],
 		}
 	);
 

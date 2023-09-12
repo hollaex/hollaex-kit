@@ -199,10 +199,45 @@ const getExchangeStakers = (req, res) => {
 
 }
 
+const createStaker = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/stake/createStaker/auth', req.auth);
+
+	const {  
+		stake_id,
+		amoount
+	 } = req.swagger.params.data.value;
+
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/stake/createStaker data',
+		stake_id,
+		amoount
+	);
+
+	toolsLib.stake.createExchangeStaker(
+		stake_id,
+		amoount,
+		req.auth.sub.id
+		)
+		.then((data) => {
+			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/stake/createStaker err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+}
+
 module.exports = {
 	getExchangeStakes,
 	createExchangeStakes,
 	updateExchangeStakes,
 	deleteExchangeStakes,
-	getExchangeStakers
+	getExchangeStakers,
+	createStaker
 };
