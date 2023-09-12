@@ -75,7 +75,21 @@ const distributeStakingRewards = async (stakers, rewards, account_id, currency) 
     }
 }
 
-const updateUserRewardData = async () => {
+const updateStakerRewardData = async (user_id) => {
+
+    const stakers = await getModel('staker').findOne({ where: { user_id } });
+
+    for (const staker of stakers) {
+
+        const stakePool = await getModel('stake').findOne({ where: { id: staker.stake_id } });
+        const rewards = calculateStakingRewards([staker], stakePool);
+
+        await staker.update({ reward: rewards.total }, {
+            fields: [
+                'reward'
+            ]
+        });
+    }
 
 }
 
@@ -304,7 +318,7 @@ const updateExchangeStakePool = async (id, data) => {
 }
 
 
-const getExchangeStakers = (
+const getExchangeStakers = async (
     opts = {
         user_id: null,
         limit: null,
@@ -332,6 +346,7 @@ const getExchangeStakers = (
          
     if (user_id){
         // calculate reward and update the record
+        await updateStakerRewardData(user_id);
     }
 
 
@@ -467,5 +482,5 @@ module.exports = {
     getExchangeStakers,
     createExchangeStaker,
     deleteExchangeStaker,
-    updateUserRewardData
+    updateStakerRewardData
 };
