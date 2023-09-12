@@ -688,8 +688,8 @@ const CeFiUserStake = () => {
 							onClick={async () => {
 								try {
 									await createStaker({
-										skate_id: selectedPool.id,
-										amount: stakerAmount,
+										stake_id: selectedPool.id,
+										amount: Number(stakerAmount),
 									});
 									message.success(`Successfuly staked in ${selectedPool.name}`);
 								} catch (error) {
