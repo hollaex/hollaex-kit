@@ -317,6 +317,28 @@ const createStaker = (req, res) => {
 		});
 }
 
+const deleteExchangeStaker = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/stake/deleteExchangeStaker auth',
+		req.auth
+	);
+
+	toolsLib.stake.deleteExchangeStaker(req.swagger.params.data.value.id, req.auth.sub.id)
+		.then(() => {
+			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
+			return res.json({ message: 'Successfully deleted stake.' });
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/broker/stake err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+}
+
 module.exports = {
 	getExchangeStakes,
 	createExchangeStakes,
@@ -324,5 +346,6 @@ module.exports = {
 	deleteExchangeStakes,
 	getExchangeStakersForAdmin,
 	getExchangeStakersForUser,
-	createStaker
+	createStaker,
+	deleteExchangeStaker
 };

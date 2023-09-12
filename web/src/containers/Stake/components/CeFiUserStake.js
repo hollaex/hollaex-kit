@@ -26,7 +26,9 @@ import {
 	requestStakePools,
 	createStaker,
 	requestStakers,
+	deleteStaker
 } from 'containers/Admin/Stakes/actions';
+import moment from 'moment';
 
 const TabPane = Tabs.TabPane;
 
@@ -98,8 +100,18 @@ const CeFiUserStake = () => {
 			render: (user_id, data) => {
 				return (
 					<div className="d-flex" style={{ gap: 20 }}>
-						<AntBtn className="ant-btn green-btn ant-tooltip-open ant-btn-primary">
-							STAKE
+						<AntBtn 
+						disabled={data.stake.duration ? data.stake.early_unstake ? false : !isUnstackable(data.stake) : false}
+						onClick={async () => {
+							try {
+								await deleteStaker(data.id);
+								message.success(`Successfuly unstaked in ${data.id}`);
+							} catch (error) {
+								message.error(error.response.data.message);
+							}
+						}}
+						className="ant-btn green-btn ant-tooltip-open ant-btn-primary">
+							{data.stake.early_unstake ? 'UNSTAKE EARLY' : 'UNSTAKE'}
 						</AntBtn>
 					</div>
 				);
@@ -116,6 +128,16 @@ const CeFiUserStake = () => {
 			setUserStakeData(res.data);
 		});
 	}, []);
+
+	const isUnstackable = (stakePool) => {
+
+		const stakePoolCreationDate = moment(stakePool.created_at);
+		const now = moment();
+		const numberOfDaysPassed = stakePoolCreationDate.diff(now, 'days');
+
+		return numberOfDaysPassed !== 0 && numberOfDaysPassed % stakePool.duration === 0;
+
+	}
 
 	const readBeforeActionModel = () => {
 		return (

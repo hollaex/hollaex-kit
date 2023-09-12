@@ -134,3 +134,12 @@ export const createStaker = (data) => {
 		data,
 	});
 };
+
+
+export const deleteStaker = (data) => {
+	return axios({
+		method: 'POST',
+		url: `/stake`,
+		data,
+	});
+};

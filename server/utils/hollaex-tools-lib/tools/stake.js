@@ -35,7 +35,7 @@ const calculateStakingRewards = async (stakers, stakePool, earlyUnstake = false)
         const mountlyEarningAmount = annualEarning / 12;
 
         const stakerCreationDate = moment(staker.created_at);
-        const now = moment();
+        const now = (stakePool.status === 'paused') ? moment(stakePool.paused_date) : moment();
 
         const totalStakingDays = stakerCreationDate.diff(now, 'days');
         const amountEarned =  (mountlyEarningAmount * totalStakingDays) / 30
@@ -77,11 +77,11 @@ const distributeStakingRewards = async (stakers, rewards, account_id, currency) 
 
 const updateStakerRewardData = async (user_id) => {
 
-    const stakers = await getModel('staker').findAll({ where: { user_id } });
+    const stakers = await getModel('staker').findAll({ where: { user_id, status: 'staking' } });
 
     for (const staker of stakers) {
 
-        const stakePool = await getModel('stake').findOne({ where: { id: staker.stake_id } });
+        const stakePool = await getModel('stake').findOne({ where: { id: staker.stake_id,  status: 'active' } });
         const rewards = calculateStakingRewards([staker], stakePool);
 
         await staker.update({ reward: rewards.total }, {
@@ -156,6 +156,7 @@ const getExchangeStakePools = async (opts = {
             
             //Calculate reward amount per stake pool
             for (const stakePool of stakePools.data) {
+                if (!stakePool.onboarding || stakePool.status === 'terminated') continue;
                 const stakers = await fetchStakers(stakePool.id);
                 const rewards = await calculateStakingRewards(stakers, stakePool);
                 stakePool.reward = rewards.total;
@@ -354,7 +355,13 @@ const getExchangeStakers = async (
             created_at: timeframe,
             ...(opts.user_id && { user_id: opts.user_id })
 		},
-		order: [ordering],
+        order: [ordering],
+        include: [
+			{
+				model: getModel('stake'),
+				as: 'stake',
+			}
+		],
 		...(!opts.format && pagination),
 	}
 
@@ -466,21 +473,20 @@ const deleteExchangeStaker = async (staker_id, user_id) => {
     const now = moment();
     const numberOfDaysPassed = stakePoolCreationDate.diff(now, 'days');
 
-    if (numberOfDaysPassed % stakePool.duration !== 0) {
-        throw new Error('Cannot unstake in a pool with perpatual duration');
+    if (stakePool.duration && numberOfDaysPassed === 0 && numberOfDaysPassed % stakePool.duration !== 0) {
+        throw new Error('Cannot unstake, period is not over');
     }
 
-    if (!stakePool.early_unstake) {
-        throw new Error('Cannot unstake in a pool that does not have early unstake option');
-    }
-
+    const rewards = calculateStakingRewards([staker], stakePool, stakePool.early_unstake);
     const updatedStaker = {
         ...staker,
         status: 'unstaking',
+        reward: rewards.total
     }
     return stakePool.update(updatedStaker, {
 		fields: [
-            'status'
+            'status',
+            'reward'
 		]
 	});
 }
