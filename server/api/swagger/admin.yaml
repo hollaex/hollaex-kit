@@ -3463,7 +3463,7 @@ paths:
     x-swagger-router-controller: stake
     get:
       description: Get exchange stakers of users for admin
-      operationId: getExchangeStakers
+      operationId: getExchangeStakersForAdmin
       tags:
         - Admin
       parameters:

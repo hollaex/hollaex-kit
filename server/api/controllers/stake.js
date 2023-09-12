@@ -195,8 +195,92 @@ const deleteExchangeStakes = (req, res) => {
 
 }
 
-const getExchangeStakers = (req, res) => {
+const getExchangeStakersForAdmin = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/stake/getExchangeStakersAdmin/auth', req.auth);
 
+	const { user_id, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
+
+	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1) {
+		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
+	}
+	
+	if (order_by.value && typeof order_by.value !== 'string') {
+		loggerAdmin.error(
+			req.uuid,
+			'controllers/stake/getExchangeStakersAdmin invalid order_by',
+			order_by.value
+		);
+		return res.status(400).json({ message: 'Invalid order by' });
+	}
+
+	toolsLib.stake.getExchangeStakers({
+		user_id: user_id.value,
+		limit: limit.value,
+		page: page.value,
+		order_by: order_by.value,
+		order: order.value,
+		start_date: start_date.value,
+		end_date: end_date.value,
+		format: format.value
+	}
+	)
+		.then((data) => {
+			if (format.value === 'csv') {
+				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-logins.csv`);
+				res.set('Content-Type', 'text/csv');
+				return res.status(202).send(data);
+			} else {
+				return res.json(data);
+			}
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/stake/getExchangeStakersAdmin', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+}
+
+const getExchangeStakersForUser = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/stake/getExchangeStakersForUser/auth', req.auth);
+
+	const { limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
+
+	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1) {
+		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
+	}
+	
+	if (order_by.value && typeof order_by.value !== 'string') {
+		loggerAdmin.error(
+			req.uuid,
+			'controllers/stake/getExchangeStakersForUser invalid order_by',
+			order_by.value
+		);
+		return res.status(400).json({ message: 'Invalid order by' });
+	}
+
+	toolsLib.stake.getExchangeStakers({
+		user_id: req.auth.sub.id,
+		limit: limit.value,
+		page: page.value,
+		order_by: order_by.value,
+		order: order.value,
+		start_date: start_date.value,
+		end_date: end_date.value,
+		format: format.value
+	}
+	)
+		.then((data) => {
+			if (format.value === 'csv') {
+				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-logins.csv`);
+				res.set('Content-Type', 'text/csv');
+				return res.status(202).send(data);
+			} else {
+				return res.json(data);
+			}
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/stake/getExchangeStakersForUser', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
 }
 
 const createStaker = (req, res) => {
@@ -238,6 +322,7 @@ module.exports = {
 	createExchangeStakes,
 	updateExchangeStakes,
 	deleteExchangeStakes,
-	getExchangeStakers,
+	getExchangeStakersForAdmin,
+	getExchangeStakersForUser,
 	createStaker
 };

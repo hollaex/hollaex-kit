@@ -300,8 +300,8 @@ const updateExchangeStakePool = async (id, data) => {
 
 
 const getExchangeStakers = (
-    user_id, 
     opts = {
+        user_id: null,
         limit: null,
         page: null,
         order_by: null,
@@ -311,6 +311,37 @@ const getExchangeStakers = (
         format: null
 }) => {
 
+    const pagination = paginationQuery(opts.limit, opts.page);
+	const ordering = orderingQuery(opts.order_by, opts.order);
+	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
+
+	const query = {
+		where: {
+            created_at: timeframe,
+            ...(user_id && { user_id })
+		},
+		order: [ordering],
+		...(!opts.format && pagination),
+	}
+
+     	
+	if (opts.format) {
+		return dbQuery.fetchAllRecords('staker', query)
+			.then((stakes) => {
+				if (opts.format && opts.format === 'csv') {
+					if (stakes.data.length === 0) {
+						throw new Error(NO_DATA_FOR_CSV);
+					}
+					const csv = parse(stakes.data, Object.keys(stakes.data[0]));
+					return csv;
+				} else {
+					return stakes;
+				}
+			});
+	} else {
+		return dbQuery.findAndCountAllWithRows('stake', query);
+    }
+    
 }
 
 const createExchangeStaker = async (stake_id, amount, user_id) => {
