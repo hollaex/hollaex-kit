@@ -89,6 +89,10 @@ module.exports = {
 				type: Sequelize.STRING,
 				allowNull: true,
 			},
+			paused_date: {
+				allowNull: true,
+				type: Sequelize.DATE,
+			},
 			created_at: {
 				allowNull: false,
 				type: Sequelize.DATE,
