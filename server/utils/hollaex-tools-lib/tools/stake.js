@@ -19,6 +19,7 @@ const { isArray } = require('lodash');
 const BigNumber = require('bignumber.js');
 const { paginationQuery, timeframeQuery, orderingQuery } = require('./database/helpers');
 const dbQuery = require('./database/query');
+const moment = require('moment');
 
 const {
 	NO_DATA_FOR_CSV,
@@ -72,6 +73,10 @@ const distributeStakingRewards = async (stakers, rewards, account_id, currency) 
         // TO DO: EDGE CASE WHEN SOME STAKERS FAIL TO GET UNSTAKED FOR SOME REASON
 	})
     }
+}
+
+const updateUserRewardData = async () => {
+
 }
 
 const fetchStakers = async (stakePoolId) => {
@@ -324,7 +329,12 @@ const getExchangeStakers = (
 		...(!opts.format && pagination),
 	}
 
-     	
+         
+    if (user_id){
+        // calculate reward and update the record
+    }
+
+
 	if (opts.format) {
 		return dbQuery.fetchAllRecords('staker', query)
 			.then((stakes) => {
@@ -346,13 +356,17 @@ const getExchangeStakers = (
 
 const createExchangeStaker = async (stake_id, amount, user_id) => {
     const stakePool = await getModel('stake').findOne({ where: { id: stake_id } });
+
+    if (!stakePool) {
+        throw new Error('Stake pool does not exist');
+    }
    
     if (!stakePool.onboarding) {
           throw new Error('Stake pool is not active for accepting users');
     }
 
     if (stakePool.status !== 'active') {
-          throw new Error('Cannot stake in a pool what is not active');
+          throw new Error('Cannot stake in a pool that is not active');
     }
 
     const balance = await getUserBalanceByKitId(stakePool.account_id);
@@ -396,8 +410,54 @@ const createExchangeStaker = async (stake_id, amount, user_id) => {
 	});
 }
 
-const deleteExchangeStaker = (staker_id) => {
+const deleteExchangeStaker = async (staker_id, user_id) => {
+    const staker = await getModel('staker').findOne({ where: { id: staker_id, user_id } });
 
+    if (!staker) {
+        throw new Error('Staker does not exist');
+    }
+
+    const stakePool = await getModel('stake').findOne({ where: { id: staker.stake_id } });
+
+    if (!stakePool) {
+        throw new Error('Stake pool does not exist');
+    }
+   
+    if (!stakePool.onboarding) {
+        throw new Error('Stake pool is not active for unstaking');
+    }
+
+    if (stakePool.status !== 'active') {
+          throw new Error('Cannot unstake in a pool that is not active');
+    }
+
+    if (stakePool.duration == null) {
+        throw new Error('Cannot unstake in a pool with perpatual duration');
+    }
+
+
+    // check if matured for unstaking or not
+    const stakePoolCreationDate = moment(stakePool.created_at);
+    const now = moment();
+    const numberOfDaysPassed = stakePoolCreationDate.diff(now, 'days');
+
+    if (numberOfDaysPassed % stakePool.duration !== 0) {
+        throw new Error('Cannot unstake in a pool with perpatual duration');
+    }
+
+    if (!stakePool.early_unstake) {
+        throw new Error('Cannot unstake in a pool that does not have early unstake option');
+    }
+
+    const updatedStaker = {
+        ...staker,
+        status: 'unstaking',
+    }
+    return stakePool.update(updatedStaker, {
+		fields: [
+            'status'
+		]
+	});
 }
 
 module.exports = {
@@ -406,5 +466,6 @@ module.exports = {
     updateExchangeStakePool,
     getExchangeStakers,
     createExchangeStaker,
-    deleteExchangeStaker
+    deleteExchangeStaker,
+    updateUserRewardData
 };
