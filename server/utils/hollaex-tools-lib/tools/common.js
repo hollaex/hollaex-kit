@@ -456,6 +456,15 @@ const getCharts = (from, to, resolution, opts = {
 	return getNodeLib().getCharts(from, to, resolution, opts);
 };
 
+const getMiniCharts = (assets, opts = {
+	from: null, 
+	to: null, 
+	quote: null,
+	additionalHeaders: null
+}) => {
+	return getNodeLib().getMiniCharts(assets, opts);
+};
+
 const getUdfConfig = (opts = {
 	additionalHeaders: null
 }) => {
@@ -843,6 +852,7 @@ module.exports = {
 	getOrderbooks,
 	getChart,
 	getCharts,
+	getMiniCharts,
 	getUdfConfig,
 	getUdfHistory,
 	getUdfSymbols,
