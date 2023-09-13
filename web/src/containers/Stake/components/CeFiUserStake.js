@@ -152,7 +152,7 @@ const CeFiUserStake = () => {
 	const isUnstackable = (stakePool) => {
 		const stakePoolCreationDate = moment(stakePool.created_at);
 		const now = moment();
-		const numberOfDaysPassed = stakePoolCreationDate.diff(now, 'days');
+		const numberOfDaysPassed = now.diff(stakePoolCreationDate, 'days');
 
 		return (
 			numberOfDaysPassed !== 0 && numberOfDaysPassed % stakePool.duration === 0

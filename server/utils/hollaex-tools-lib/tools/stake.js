@@ -37,7 +37,7 @@ const calculateStakingRewards = async (stakers, stakePool, earlyUnstake = false)
         const stakerCreationDate = moment(staker.created_at);
         const now = (stakePool.status === 'paused') ? moment(stakePool.paused_date) : moment();
 
-        const totalStakingDays = stakerCreationDate.diff(now, 'days');
+        const totalStakingDays = now.diff(stakerCreationDate, 'days');
         const amountEarned =  (mountlyEarningAmount * totalStakingDays) / 30
 
         rewards[staker.user_id] = amountEarned;
@@ -470,9 +470,9 @@ const deleteExchangeStaker = async (staker_id, user_id) => {
     // check if matured for unstaking or not
     const stakePoolCreationDate = moment(stakePool.created_at);
     const now = moment();
-    const numberOfDaysPassed = stakePoolCreationDate.diff(now, 'days');
+    const numberOfDaysPassed = now.diff(stakePoolCreationDate, 'days');
 
-    if (stakePool.duration && numberOfDaysPassed === 0 && numberOfDaysPassed % stakePool.duration !== 0) {
+    if (stakePool.duration && numberOfDaysPassed === 0 && (numberOfDaysPassed % stakePool.duration !== 0)) {
         throw new Error('Cannot unstake, period is not over');
     }
 
