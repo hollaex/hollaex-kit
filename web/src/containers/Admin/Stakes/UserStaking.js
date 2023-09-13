@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { message, Table, Button, Spin, Modal } from 'antd';
-import {
-	getExchangeSessions,
-	getExchangeSessionsCsv,
-	revokeSession,
-} from './actions';
+import { message, Table, Button, Spin, Modal, Input } from 'antd';
+import { requestStakers } from './actions';
 import { formatDate } from 'utils';
 import { CloseOutlined } from '@ant-design/icons';
 import { COUNTRIES_OPTIONS } from '../../../utils/countries';
@@ -34,7 +30,7 @@ const UserStaking = () => {
 				return (
 					<div className="d-flex">
 						<Button className="ant-btn green-btn ant-tooltip-open ant-btn-primary">
-							{data?.login?.user_id}
+							{data?.user_id}
 						</Button>
 						{/* <div className="ml-3">{data.User.email}</div> */}
 					</div>
@@ -42,15 +38,23 @@ const UserStaking = () => {
 			},
 		},
 		{
-			title: 'Last seen (Most recent first)',
-			dataIndex: 'last_seen',
-			key: 'last_seen',
+			title: 'Asset',
+			dataIndex: 'currency',
+			key: 'currency',
 			render: (user_id, data) => {
-				return <div className="d-flex">{formatDate(data?.last_seen)}</div>;
+				return <div className="d-flex">{data?.stake?.currency}</div>;
 			},
 		},
 		{
-			title: 'Stake started',
+			title: 'Pool name',
+			dataIndex: 'name',
+			key: 'name',
+			render: (user_id, data) => {
+				return <div className="d-flex">{data?.stake?.name}</div>;
+			},
+		},
+		{
+			title: 'Start date',
 			dataIndex: 'created_at',
 			key: 'created_at',
 			render: (user_id, data) => {
@@ -58,89 +62,66 @@ const UserStaking = () => {
 			},
 		},
 		{
-			title: 'Stake Expiry',
-			dataIndex: 'expiry_date',
-			key: 'expiry_date',
+			title: 'End date / maturity',
+			dataIndex: 'created_at',
+			key: 'created_at',
 			render: (user_id, data) => {
-				return <div className="d-flex">{formatDate(data?.expiry_date)}</div>;
+				return <div className="d-flex">{formatDate(data?.created_at)}</div>;
 			},
 		},
 		{
-			title: 'Status',
-			dataIndex: 'status',
-			key: 'status',
+			title: 'Slash',
+			dataIndex: 'slash',
+			key: 'slash',
 			render: (user_id, data) => {
-				let revokeStatus =
-					new Date().getTime() < new Date(data?.expiry_date).getTime();
-				if (data.status === false) revokeStatus = false;
-
 				return (
-					<div className="d-flex" style={{ gap: 20 }}>
-						<div style={{ position: 'relative', top: 6, color: '#ccc' }}>
-							{' '}
-							{revokeStatus ? 'Active' : 'Expired'}
-						</div>
-						{revokeStatus && (
-							<Button
-								onClick={(e) => {
-									e.stopPropagation();
-									setSelectedSession(data);
-									setDisplayRevokeModal(true);
-								}}
-								className="ant-btn green-btn ant-tooltip-open ant-btn-primary"
-							>
-								Revoke
-							</Button>
-						)}
+					<div className="d-flex">
+						{data?.stake?.slashing ? <span>Active</span> : <span>NA</span>}
 					</div>
 				);
 			},
 		},
-	];
-
-	const fieldKeyValue = {
-		last_seen: {
-			type: 'dropdown',
-			label: 'Time seen within',
-			options: [
-				{ label: 'None', value: -1 },
-				{ label: 'Last 1 hour', value: '1h' },
-				{ label: 'Last 24 hours', value: '24h' },
-			],
-		},
-		status: {
-			type: 'dropdown',
-			label: 'Status',
-			options: [
-				{ label: 'None', value: -1 },
-				{ label: 'Active', value: true },
-				{ label: 'Expired', value: false },
-			],
-		},
-	};
-
-	const defaultFilters = [
 		{
-			field: 'status',
-			type: 'dropdown',
-			label: 'Status',
-			value: null,
-			options: [
-				{ label: 'None', value: -1 },
-				{ label: 'Active', value: true },
-				{ label: 'Expired', value: false },
-			],
+			title: 'Principle',
+			dataIndex: 'amount',
+			key: 'amount',
+			render: (user_id, data) => {
+				return (
+					<div className="d-flex">
+						{data?.amount} {data?.stake?.currency?.toUpperCase()}{' '}
+					</div>
+				);
+			},
 		},
 		{
-			field: 'last_seen',
-			type: 'dropdown',
-			label: 'Time seen within',
-			value: '1h',
-			options: [
-				{ label: 'None', value: -1 },
-				{ label: 'Last 1 hour', value: '1h' },
-				{ label: 'Last 24 hours', value: '24h' },
-			],
+			title: 'Earnings',
+			dataIndex: 'reward',
+			key: 'reward',
+			render: (user_id, data) => {
+				return (
+					<div className="d-flex">
+						{data?.reward} {data?.stake?.currency?.toUpperCase()}
+					</div>
+				);
+			},
+		},
+		{
+			title: 'Earnings',
+			dataIndex: 'status',
+			key: 'status',
+			render: (user_id, data) => {
+				return (
+					<div className="d-flex">
+						{data?.status === 'unstaking' ? (
+							<span>Unstaking...</span>
+						) : data?.status === 'staking' ? (
+							<span>Active</span>
+						) : (
+							<span>Closed</span>
+						)}
+					</div>
+				);
+			},
 		},
 	];
 
@@ -151,12 +132,12 @@ const UserStaking = () => {
 	}, []);
 
 	useEffect(() => {
-		// requestSessions(queryFilters.page, queryFilters.limit);
+		requestExchangeStakers(queryFilters.page, queryFilters.limit);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [queryValues]);
 
 	const requestDownload = () => {
-		return getExchangeSessionsCsv({ ...queryValues, format: 'csv' });
+		// return getExchangeSessionsCsv({ ...queryValues, format: 'csv' });
 	};
 
 	const renderRowContent = ({ login }) => {
@@ -178,9 +159,9 @@ const UserStaking = () => {
 		);
 	};
 
-	const requestSessions = (page = 1, limit = 50) => {
+	const requestExchangeStakers = (page = 1, limit = 50) => {
 		setIsLoading(true);
-		getExchangeSessions({ page, limit, ...queryValues })
+		requestStakers({ page, limit, ...queryValues })
 			.then((response) => {
 				setUserData(
 					page === 1 ? response.data : [...userData, ...response.data]
@@ -207,7 +188,7 @@ const UserStaking = () => {
 		const pageCount = count % 5 === 0 ? 5 : count % 5;
 		const apiPageTemp = Math.floor(count / 5);
 		if (limit === pageSize * pageCount && apiPageTemp >= page && isRemaining) {
-			requestSessions(page + 1, limit);
+			requestExchangeStakers(page + 1, limit);
 		}
 		setQueryFilters({ ...queryFilters, currentTablePage: count });
 	};
@@ -219,9 +200,18 @@ const UserStaking = () => {
 
 	return (
 		<div>
+			<div style={{ color: 'white', fontWeight: 'bold' }}>
+				User active stakes
+			</div>
 			<div style={{ color: '#ccc' }}>
-				Below are details of currently active user sessions. Revoking a stake
-				will log the user out from their account.
+				Track the users that are staking, and when their stake is maturing.
+			</div>
+
+			<div style={{ color: '#ccc', marginTop: 20 }}>
+				<span style={{ fontWeight: 'bold', color: 'white' }}>Note:</span>{' '}
+				Unstaking requires 1 day to settle. (an email will be sent to notify of
+				any unstaking events) After settlement the user will automatically
+				receive their initial stake amount (principle) and their earnings.
 			</div>
 			<div>
 				<div style={{ marginTop: 20 }}>
@@ -235,17 +225,44 @@ const UserStaking = () => {
 				</div>
 				<div className="mt-5">
 					<div style={{ display: 'flex', justifyContent: 'space-between' }}>
-						<span
+						{/* <span
 							onClick={(e) => {
 								requestDownload();
 							}}
 							className="mb-2 underline-text cursor-pointer"
 							style={{ cursor: 'pointer' }}
 						>
-							Download below CSV table
+							Search user
+						</span> */}
+						<span>
+							<div>Search user</div>
+							<div style={{ display: 'flex', gap: 10 }}>
+								<Input
+									style={{}}
+									placeholder="Search User ID, Email or username"
+									// onChange={(e) =>
+									// 	{}
+									// }
+									// value={stakePoolCreation.name}
+								/>
+
+								<Button
+									onClick={() => {}}
+									style={{
+										backgroundColor: '#288500',
+										color: 'white',
+										flex: 1,
+										height: 35,
+										marginRight: 10,
+									}}
+									type="default"
+								>
+									Refresh
+								</Button>
+							</div>
 						</span>
 						<div>
-							<span>
+							{/* <span>
 								<Button
 									onClick={() => {
 										requestSessions(queryFilters.page, queryFilters.limit);
@@ -261,9 +278,52 @@ const UserStaking = () => {
 								>
 									Refresh
 								</Button>
-							</span>
-							<span>Total: {queryFilters.total || '-'}</span>
+							</span> */}
+							{/* <span>Total: {queryFilters.total || '-'}</span> */}
+							<div>
+								<span style={{ fontWeight: 'bold' }}>Total stakers:</span> 3
+								users
+							</div>
+							<div>
+								<span style={{ fontWeight: 'bold' }}>Appox. stake value:</span>{' '}
+								3,213 USDT
+							</div>
+							<div>-</div>
+							<div>
+								<span style={{ fontWeight: 'bold' }}>Value unstaking:</span>{' '}
+								1,021 USDT
+							</div>
 						</div>
+					</div>
+
+					<div
+						style={{
+							padding: 10,
+							backgroundColor: '#FF0000',
+							display: 'flex',
+							justifyContent: 'space-between',
+							alignItems: 'center',
+							marginTop: 20,
+						}}
+					>
+						<span>
+							Insufficient funds to settle! Fill the source ABC wallet account:
+							User 1 (operator@account.com)
+						</span>
+						<span>
+							<Button
+								onClick={() => {}}
+								style={{
+									backgroundColor: '#FF0000',
+									color: 'white',
+									flex: 1,
+									marginRight: 10,
+								}}
+								type="default"
+							>
+								VIEW SOURCE WALLET
+							</Button>
+						</span>
 					</div>
 
 					<div className="mt-4 ">
@@ -272,7 +332,7 @@ const UserStaking = () => {
 								className="blue-admin-table"
 								columns={columns}
 								dataSource={userData}
-								expandedRowRender={renderRowContent}
+								// expandedRowRender={renderRowContent}
 								expandRowByClick={true}
 								rowKey={(data) => {
 									return data.id;
@@ -285,89 +345,6 @@ const UserStaking = () => {
 						</Spin>
 					</div>
 				</div>
-
-				<Modal
-					maskClosable={false}
-					closeIcon={<CloseOutlined style={{ color: 'white' }} />}
-					bodyStyle={{
-						backgroundColor: '#27339D',
-					}}
-					visible={displayRevokeModal}
-					footer={null}
-					onCancel={() => {
-						handleSessionModal();
-					}}
-				>
-					<div
-						style={{
-							fontWeight: '600',
-							color: 'white',
-							fontSize: 18,
-							marginBottom: 20,
-						}}
-					>
-						Revoke stake
-					</div>
-					<div style={{ marginBottom: 30 }}>
-						Are you sure you want to revoke this stake?
-					</div>
-					<div style={{ marginBottom: 20 }}>This will log the user out.</div>
-					<div
-						style={{
-							display: 'flex',
-							flexDirection: 'row',
-							gap: 15,
-							justifyContent: 'space-between',
-							marginBottom: 20,
-						}}
-					>
-						<Button
-							onClick={() => {
-								handleSessionModal();
-							}}
-							style={{
-								backgroundColor: '#288500',
-								color: 'white',
-								flex: 1,
-								height: 35,
-							}}
-							type="default"
-						>
-							Back
-						</Button>
-						<Button
-							onClick={async () => {
-								try {
-									const res = await revokeSession(selectedSession.id);
-									setUserData((prevState) => {
-										const newState = [...prevState];
-										const Index = newState.findIndex(
-											(stake) => stake.id === res.data.id
-										);
-										if (Index > 0) {
-											newState[Index].status = false;
-										}
-
-										return newState;
-									});
-									message.success('Stake revoked.');
-									handleSessionModal();
-								} catch (error) {
-									message.error(error.message);
-								}
-							}}
-							style={{
-								backgroundColor: '#288500',
-								color: 'white',
-								flex: 1,
-								height: 35,
-							}}
-							type="default"
-						>
-							Confirm
-						</Button>
-					</div>
-				</Modal>
 			</div>
 		</div>
 	);

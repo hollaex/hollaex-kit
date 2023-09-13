@@ -135,10 +135,9 @@ export const createStaker = (data) => {
 	});
 };
 
-
 export const deleteStaker = (data) => {
 	return axios({
-		method: 'POST',
+		method: 'DELETE',
 		url: `/stake`,
 		data,
 	});

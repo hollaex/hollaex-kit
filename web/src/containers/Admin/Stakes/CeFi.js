@@ -202,7 +202,11 @@ const CeFi = ({ coins }) => {
 			dataIndex: 'earning',
 			key: 'earning',
 			render: (user_id, data) => {
-				return <div className="d-flex">{data?.earnings}</div>;
+				return (
+					<div className="d-flex">
+						{data?.reward} {data.currency.toUpperCase()}
+					</div>
+				);
 			},
 		},
 		{

@@ -26,7 +26,7 @@ import {
 	requestStakePools,
 	createStaker,
 	requestStakers,
-	deleteStaker
+	deleteStaker,
 } from 'containers/Admin/Stakes/actions';
 import moment from 'moment';
 
@@ -100,19 +100,39 @@ const CeFiUserStake = () => {
 			render: (user_id, data) => {
 				return (
 					<div className="d-flex" style={{ gap: 20 }}>
-						<AntBtn 
-						disabled={data.stake.duration ? data.stake.early_unstake ? false : !isUnstackable(data.stake) : false}
-						onClick={async () => {
-							try {
-								await deleteStaker(data.id);
-								message.success(`Successfuly unstaked in ${data.id}`);
-							} catch (error) {
-								message.error(error.response.data.message);
-							}
-						}}
-						className="ant-btn green-btn ant-tooltip-open ant-btn-primary">
-							{data.stake.early_unstake ? 'UNSTAKE EARLY' : 'UNSTAKE'}
-						</AntBtn>
+						{data.status === 'unstaking' ? (
+							<span style={{ color: '#FF9900', fontWeight: 'bold' }}>
+								UNSTAKING...
+							</span>
+						) : data.status === 'closed' ? (
+							'UNSTAKED'
+						) : (
+							<AntBtn
+								disabled={
+									data.stake.duration
+										? data.stake.early_unstake
+											? false
+											: !isUnstackable(data.stake)
+										: false
+								}
+								onClick={async () => {
+									try {
+										await deleteStaker({ id: data.id });
+
+										requestStakers().then((res) => {
+											setUserStakeData(res.data);
+										});
+
+										message.success(`Successfuly unstaked in ${data.id}`);
+									} catch (error) {
+										message.error(error.response.data.message);
+									}
+								}}
+								className="ant-btn green-btn ant-tooltip-open ant-btn-primary"
+							>
+								{data.stake.early_unstake ? 'UNSTAKE EARLY' : 'UNSTAKE'}
+							</AntBtn>
+						)}
 					</div>
 				);
 			},
@@ -130,14 +150,14 @@ const CeFiUserStake = () => {
 	}, []);
 
 	const isUnstackable = (stakePool) => {
-
 		const stakePoolCreationDate = moment(stakePool.created_at);
 		const now = moment();
 		const numberOfDaysPassed = stakePoolCreationDate.diff(now, 'days');
 
-		return numberOfDaysPassed !== 0 && numberOfDaysPassed % stakePool.duration === 0;
-
-	}
+		return (
+			numberOfDaysPassed !== 0 && numberOfDaysPassed % stakePool.duration === 0
+		);
+	};
 
 	const readBeforeActionModel = () => {
 		return (

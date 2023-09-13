@@ -64,14 +64,13 @@ const distributeStakingRewards = async (stakers, rewards, account_id, currency) 
         // TO DO: STAKER UNSTAKING STATUS
 
         await transferAssetByKitIds(account_id, staker.id, currency, rewards[staker.id], 'Admin transfer stake', staker.email, {
-		additionalHeaders: {
-			'x-forwarded-for': req.headers['x-forwarded-for']
-		}
+		    additionalHeaders: {
+		    	'x-forwarded-for': req.headers['x-forwarded-for']
+		    }})
 
-        // TO DO: STAKER CLOSED STATUS
+         // TO DO: STAKER CLOSED STATUS
 
         // TO DO: EDGE CASE WHEN SOME STAKERS FAIL TO GET UNSTAKED FOR SOME REASON
-	})
     }
 }
 
@@ -93,8 +92,8 @@ const updateStakerRewardData = async (user_id) => {
 
 }
 
-const fetchStakers = async (stakePoolId) => {
-    return getModel('staker').findAll({ where: { stake_id: stakePoolId } });
+const fetchStakers = async (stakePoolId, status = 'staking') => {
+    return getModel('staker').findAll({ where: { stake_id: stakePoolId, status } });
 }
 
 const validateExchangeStake = (stake) => {
@@ -110,7 +109,7 @@ const validateExchangeStake = (stake) => {
     if (new BigNumber(stake.apy).comparedTo(0) !== 1) {
 		throw new Error('Stake apy must be bigger than zero.');
 	} 
-    if (new BigNumber(stake.duration).comparedTo(0) !== 1) {
+    if (stake.duration && new BigNumber(stake.duration).comparedTo(0) !== 1) {
 		throw new Error('Stake duration must be bigger than zero.');
 	} 
 }
@@ -483,7 +482,7 @@ const deleteExchangeStaker = async (staker_id, user_id) => {
         status: 'unstaking',
         reward: rewards.total
     }
-    return stakePool.update(updatedStaker, {
+    return staker.update(updatedStaker, {
 		fields: [
             'status',
             'reward'
