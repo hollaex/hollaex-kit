@@ -7,7 +7,7 @@ const cachePeriods = {
 	'chart': 40,
 	'charts': 40,
 	'oracle': 60,
-	'minicharts': 60 * 10 // 5 minute
+	'minichart': 60 * 10 // 5 minute
 };
 
 const createRequest = (verb, url, headers, opts = { data: null, formData: null }, baseUrl = null) => {
