@@ -68,7 +68,7 @@ module.exports = {
         	uniqueKeys: {
         	  staker_composite_index: {
         	    customIndex: true,
-        	    fields: ['user_id', 'stake_id']
+        	    fields: ['user_id', 'stake_id', 'closing']
         	  }
         	}
       	}
