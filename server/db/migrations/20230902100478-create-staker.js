@@ -53,6 +53,10 @@ module.exports = {
 				type: Sequelize.DATE,
 				allowNull: true,
 			},
+			unstaked_date: {
+				type: Sequelize.DATE,
+				allowNull: true,
+			},
 			created_at: {
 				allowNull: false,
 				type: Sequelize.DATE,

@@ -45,6 +45,10 @@ module.exports = function (sequelize, DataTypes) {
 			closing: {
 				type: DataTypes.DATE,
 				allowNull: true
+			},
+			unstaked_date: {
+				type: DataTypes.DATE,
+				allowNull: true
 			}
 		},
 		{

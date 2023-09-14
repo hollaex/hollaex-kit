@@ -26,30 +26,60 @@ const {
 } = require(`${SERVER_PATH}/messages`);
 
 
-const calculateStakingRewards = async (stakers, stakePool, earlyUnstake = false) => {
+const calculateStakingRewards = async (stakers, stakePool) => {
     const rewards = { total: 0 };
 
+    let isSlashed = false;
     for (const staker of stakers) {
 
         const annualEarning = (staker.amount * stakePool.apy) / 100;
         const mountlyEarningAmount = annualEarning / 12;
 
         const stakerCreationDate = moment(staker.created_at);
-        const now = (stakePool.status === 'paused') ? moment(stakePool.paused_date) : moment();
 
-        const totalStakingDays = now.diff(stakerCreationDate, 'days');
+        // if paused, stakepool is supposed to stop calculating rewarding, we set the date to paused_date in this case.
+        // if not paused, we set the date to current date(now) 
+        let stakingDate = (stakePool.status === 'paused') ? moment(stakePool.paused_date) : moment();
+
+        const unstakedDate= staker.unstaked_date && moment(staker.unstaked_date);
+        const closedDate = staker.closing && moment(staker.closing);
+
+
+        // If we unstaked before the closing date, it means we unstaked early, set isSlashed to true in this case.
+        // If there is no closing date, it means we are in a perpatual stake pool, so no slashing.
+        if (closedDate && unstakedDate && closedDate > unstakedDate) {
+            isSlashed = true;
+        }
+
+
+        // If the stakepool is paused and unstaked date is less than paused date, we should stop calculating rewarding at this point.
+        if (unstakedDate && unstakedDate < stakingDate) {
+            stakingDate = unstakedDate;
+        }
+
+
+        // If the current date is after the closing date, we should stop calculating rewarding after closing date.
+        // If there is no closing date, It means we are in a perpatual stake pool, we keep calculating rewarding until user unstakes.
+        if (closedDate && closedDate < stakingDate) {
+            stakingDate = closedDate;
+        }
+     
+
+        const totalStakingDays = stakingDate.diff(stakerCreationDate, 'days');
         const amountEarned =  (mountlyEarningAmount * totalStakingDays) / 30
 
         rewards[staker.user_id] = amountEarned;
 
-        if (earlyUnstake) {
-            const slashingPrincipleTotal = (staker.amount / stakePool.slashing_principle_percentage) / 100;
-            const slashingEarningTotal = (amountEarned / stakePool.slashing_earning_percentage) / 100;
+        if (isSlashed) {
+            const mountlySlashingPrinciple = ((staker.amount * stakePool.slashing_principle_percentage) / 100) / 12;
 
-            rewards[staker.user_id] -= slashingPrincipleTotal;
-            rewards[staker.user_id] -= slashingEarningTotal;
+            const slashingPrinciple = (mountlySlashingPrinciple * totalStakingDays) / 30;
 
-            // TO DO: Negative Reward Edge Case
+            const slashingEarning = (amountEarned * stakePool.slashing_earning_percentage) / 100;
+
+            rewards[staker.user_id] -= slashingPrinciple;
+            rewards[staker.user_id] -= slashingEarning;
+
         }
 
         rewards.total += rewards[staker.user_id]
@@ -61,6 +91,7 @@ const calculateStakingRewards = async (stakers, stakePool, earlyUnstake = false)
 
 const distributeStakingRewards = async (stakers, rewards, account_id, currency) => {
     for (const staker of stakers) {
+        
         // TO DO: STAKER UNSTAKING STATUS
 
         await transferAssetByKitIds(account_id, staker.id, currency, rewards[staker.id], 'Admin transfer stake', staker.email, {
@@ -92,8 +123,8 @@ const updateStakerRewardData = async (user_id) => {
 
 }
 
-const fetchStakers = async (stakePoolId, status = 'staking') => {
-    return getModel('staker').findAll({ where: { stake_id: stakePoolId, status } });
+const fetchStakers = async (stakePoolId) => {
+    return getModel('staker').findAll({ where: { stake_id: stakePoolId } });
 }
 
 const validateExchangeStake = (stake) => {
@@ -476,7 +507,7 @@ const deleteExchangeStaker = async (staker_id, user_id) => {
         throw new Error('Cannot unstake, period is not over');
     }
 
-    const rewards = calculateStakingRewards([staker], stakePool, stakePool.early_unstake);
+    const rewards = calculateStakingRewards([staker], stakePool);
     const updatedStaker = {
         ...staker,
         status: 'unstaking',
