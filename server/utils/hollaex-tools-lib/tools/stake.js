@@ -52,7 +52,7 @@ const calculateStakingRewards = async (stakers, stakePool) => {
         }
 
 
-        // If the stakepool is paused and unstaked date is less than paused date, we should stop calculating rewarding at this point.
+        // If the stakepool is paused or active and unstaked date is less than that date, we should stop calculating rewarding at this point.
         if (unstakedDate && unstakedDate < stakingDate) {
             stakingDate = unstakedDate;
         }
