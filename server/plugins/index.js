@@ -199,7 +199,11 @@ const unstakingCheckRunner = () => {
 				await toolsLib.wallet.transferAssetByKitIds(stakePool.account_id, staker.id, stakePool.currency, staker.reward, 'Admin transfer stake', user.email, {
 					additionalHeaders: {
 						'x-forwarded-for': req.headers['x-forwarded-for']
-					}})
+					}});
+
+				await staker.update({ status: 'closed' }, {
+					fields: ['status']
+				});
 		
 			}
 
