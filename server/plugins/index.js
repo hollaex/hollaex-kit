@@ -19,6 +19,8 @@ const lodash = require('lodash');
 const pluginProcess = path.join(__dirname, './plugin-process.js');
 const { Worker } = require('worker_threads');
 const  { createProxyMiddleware, fixRequestBody } = require('http-proxy-middleware');
+const validTimezones = require('tz-offset/generated/offsets.json');
+const toolsLib = require('hollaex-tools-lib');
 
 let app;
 let pluginWorkerThread;
@@ -152,6 +154,68 @@ const installPlugin = async (plugin) => {
 };
 
 
+
+const getTimezone = () => {
+	const kitTimezone = toolsLib.getKitSecrets().emails.timezone;
+	return isNumber(validTimezones[kitTimezone]) ? kitTimezone : 'Etc/UTC';
+};
+
+const unstakingCheckRunner = () => {
+	cron.schedule('*/60 * * * * *', async () => {
+		loggerPlugin.verbose(
+			'/plugins unstaking status check start'
+		);
+		try {
+			const stakerModel = getModel('staker');
+			const stakePoolModel = getModel('stake');
+			const stakerData = await stakerModel.findAll({ status: 'unstaking' });
+
+			for (const staker of stakerData) {
+				const user = await getUserByKitId(staker.user_id);
+				const stakePool = await stakePoolModel.findOne({ id: staker.stake_id });
+
+				const balance = await getUserBalanceByKitId(stakePool.account_id);
+				let symbols = {};
+				
+				for (const key of Object.keys(balance)) {
+					if (key.includes('available') && balance[key]) {
+						let symbol = key?.split('_')?.[0];
+						symbols[symbol] = balance[key];
+					}
+				}
+
+				if (new BigNumber(symbols[stakePool.currency]).comparedTo(new BigNumber(staker.reward)) !== 1) {
+					return sendEmail(
+						MAILTYPE.ALERT,
+						user.email,
+						{
+							type: 'Unstaking failed',
+							data: `User id ${user.id} failed to unstake, not enough funds`
+						},
+						user.settings
+					);
+				}
+
+				await toolsLib.wallet.transferAssetByKitIds(stakePool.account_id, staker.id, stakePool.currency, staker.reward, 'Admin transfer stake', user.email, {
+					additionalHeaders: {
+						'x-forwarded-for': req.headers['x-forwarded-for']
+					}})
+		
+			}
+
+
+		} catch (err) {
+			loggerPlugin.error(
+				'/plugins unstaking status check error:',
+				err.message
+			);
+		}
+	}, {
+		scheduled: true,
+		timezone: getTimezone()
+	});
+}
+
 checkStatus()
 	.then(async () => {
 		loggerPlugin.info(
@@ -159,6 +223,7 @@ checkStatus()
 			'Initializing Plugin Server...'
 		);
 
+		unstakingCheckRunner();
 		app = express();
 
 		app.use(morgan(morganType, { stream }));

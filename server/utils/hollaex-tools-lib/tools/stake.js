@@ -237,7 +237,7 @@ const createExchangeStakePool = async (stake) => {
     let symbols = {};
 
     for (const key of Object.keys(balance)) {
-        if (key.includes('balance') && balance[key]) {
+        if (key.includes('available') && balance[key]) {
             let symbol = key?.split('_')?.[0];
             symbols[symbol] = balance[key];
         }
@@ -320,7 +320,7 @@ const updateExchangeStakePool = async (id, data) => {
         let symbols = {};
         
         for (const key of Object.keys(balance)) {
-            if (key.includes('balance') && balance[key]) {
+            if (key.includes('available') && balance[key]) {
                 let symbol = key?.split('_')?.[0];
                 symbols[symbol] = balance[key];
             }
@@ -440,7 +440,7 @@ const createExchangeStaker = async (stake_id, amount, user_id) => {
     let symbols = {};
 
     for (const key of Object.keys(balance)) {
-        if (key.includes('balance') && balance[key]) {
+        if (key.includes('available') && balance[key]) {
             let symbol = key?.split('_')?.[0];
             symbols[symbol] = balance[key];
         }
