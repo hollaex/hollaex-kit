@@ -21,6 +21,11 @@ const { Worker } = require('worker_threads');
 const  { createProxyMiddleware, fixRequestBody } = require('http-proxy-middleware');
 const validTimezones = require('tz-offset/generated/offsets.json');
 const toolsLib = require('hollaex-tools-lib');
+const cron = require('node-cron');
+const { MAILTYPE } = require('../mail/strings');
+const { sendEmail } = require('../mail');
+const { isNumber } = require('lodash');
+const BigNumber = require('bignumber.js');
 
 let app;
 let pluginWorkerThread;
@@ -166,15 +171,15 @@ const unstakingCheckRunner = () => {
 			'/plugins unstaking status check start'
 		);
 		try {
-			const stakerModel = getModel('staker');
-			const stakePoolModel = getModel('stake');
+			const stakerModel = toolsLib.database.getModel('staker');
+			const stakePoolModel = toolsLib.database.getModel('stake');
 			const stakerData = await stakerModel.findAll({ status: 'unstaking' });
 
 			for (const staker of stakerData) {
-				const user = await getUserByKitId(staker.user_id);
+				const user = await toolsLib.user.getUserByKitId(staker.user_id);
 				const stakePool = await stakePoolModel.findOne({ id: staker.stake_id });
 
-				const balance = await getUserBalanceByKitId(stakePool.account_id);
+				const balance = await toolsLib.wallet.getUserBalanceByKitId(stakePool.account_id);
 				let symbols = {};
 				
 				for (const key of Object.keys(balance)) {
@@ -196,10 +201,7 @@ const unstakingCheckRunner = () => {
 					);
 				}
 
-				await toolsLib.wallet.transferAssetByKitIds(stakePool.account_id, staker.id, stakePool.currency, staker.reward, 'Admin transfer stake', user.email, {
-					additionalHeaders: {
-						'x-forwarded-for': req.headers['x-forwarded-for']
-					}});
+				await toolsLib.wallet.transferAssetByKitIds(stakePool.account_id, staker.id, stakePool.currency, staker.reward, 'Admin transfer stake', user.email, undefined);
 
 				await staker.update({ status: 'closed' }, {
 					fields: ['status']

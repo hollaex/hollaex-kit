@@ -91,19 +91,20 @@ const calculateStakingRewards = async (stakers, stakePool) => {
 
 const distributeStakingRewards = async (stakers, rewards, account_id, currency) => {
     for (const staker of stakers) {
-        
-        // TO DO: STAKER UNSTAKING STATUS
 
-        await transferAssetByKitIds(account_id, staker.id, currency, rewards[staker.id], 'Admin transfer stake', staker.email, {
-		    additionalHeaders: {
-		    	'x-forwarded-for': req.headers['x-forwarded-for']
-		    }})
+        await staker.update({ status: 'unstaking' }, {
+	        	fields: ['status']
+	    });
 
-         // TO DO: STAKER CLOSED STATUS
+        await transferAssetByKitIds(account_id, staker.id, currency, rewards[staker.id], 'Admin transfer stake', staker.email, undefined);
 
-        // TO DO: EDGE CASE WHEN SOME STAKERS FAIL TO GET UNSTAKED FOR SOME REASON
+        await staker.update({ status: 'closed' }, {
+	        	fields: ['status']
+	    });
+
     }
 }
+
 
 const updateStakerRewardData = async (user_id) => {
 
@@ -478,7 +479,7 @@ const createExchangeStaker = async (stake_id, amount, user_id) => {
 }
 
 const deleteExchangeStaker = async (staker_id, user_id) => {
-    const staker = await getModel('staker').findOne({ where: { id: staker_id, user_id } });
+    const staker = await getModel('staker').findOne({ where: { id: staker_id, user_id, status: 'active' } });
 
     if (!staker) {
         throw new Error('Staker does not exist');
