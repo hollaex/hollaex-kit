@@ -26,6 +26,7 @@ const { MAILTYPE } = require('../mail/strings');
 const { sendEmail } = require('../mail');
 const { isNumber } = require('lodash');
 const BigNumber = require('bignumber.js');
+const moment = require('moment');
 
 let app;
 let pluginWorkerThread;
@@ -201,7 +202,8 @@ const unstakingCheckRunner = () => {
 					);
 				}
 
-				await toolsLib.wallet.transferAssetByKitIds(stakePool.account_id, staker.id, stakePool.currency, staker.reward, 'Admin transfer stake', user.email, undefined);
+				const amountAfterSlash =  (new BigNumber(staker.reward).minus(new BigNumber(staker.slashed))).toNumber();
+				await toolsLib.wallet.transferAssetByKitIds(stakePool.account_id, staker.id, stakePool.currency, amountAfterSlash, 'Admin transfer stake', user.email, undefined);
 
 				await staker.update({ status: 'closed' }, {
 					fields: ['status']
@@ -222,6 +224,48 @@ const unstakingCheckRunner = () => {
 	});
 }
 
+const updateRewardsCheckRunner = () => {
+	cron.schedule('0 0 0 * * *', async () => {
+		loggerPlugin.verbose(
+			'/plugins update rewards check start'
+		);
+		try {
+			const stakerModel = toolsLib.database.getModel('staker');
+			const stakePoolModel = toolsLib.database.getModel('stake');
+			const stakePools = await stakePoolModel.findAll({ where: { status: 'active' } });
+
+			for (const stakePool of stakePools) {
+				const stakers = await stakerModel.findAll({ where: { status: 'staking' } });
+
+				 for (const staker of stakers) {
+					const annualEarning = new BigNumber(staker.amount).multipliedBy(new BigNumber(stakePool.apy)).dividedBy(100);
+					const dailyEarningAmount = annualEarning.dividedBy(12 * 30);
+
+					let stakingDate = moment();
+					const closedDate = staker.closing && moment(staker.closing);
+
+					// If the current date is after the closing date, we should stop calculating rewarding after closing date.
+					// If there is no closing date, It means we are in a perpatual stake pool, we keep calculating rewarding until user unstakes.
+					if (closedDate && closedDate < stakingDate) {
+						continue;
+					}
+					
+					await stakerModel.increment('reward', { by: dailyEarningAmount.toNumber(), where: { id: staker.id }});
+    			}
+			}
+
+		} catch (err) {
+			loggerPlugin.error(
+				'/plugins update rewards check error:',
+				err.message
+			);
+		}
+	}, {
+		scheduled: true,
+		timezone: getTimezone()
+	});
+}
+
 checkStatus()
 	.then(async () => {
 		loggerPlugin.info(
@@ -230,6 +274,7 @@ checkStatus()
 		);
 
 		unstakingCheckRunner();
+		updateRewardsCheckRunner();
 		app = express();
 
 		app.use(morgan(morganType, { stream }));

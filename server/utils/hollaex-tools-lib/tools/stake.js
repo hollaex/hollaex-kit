@@ -1,21 +1,11 @@
 'use strict';
 
 const { getModel } = require('./database/model');
-const math = require('mathjs');
-const randomString = require('random-string');
 const { SERVER_PATH } = require('../constants');
-const { EXCHANGE_PLAN_INTERVAL_TIME, EXCHANGE_PLAN_PRICE_SOURCE } = require(`${SERVER_PATH}/constants`)
-const { getNodeLib } = require(`${SERVER_PATH}/init`);
-const { client } = require('./database/redis');
 const { getUserByKitId } = require('./user');
-const { subscribedToCoin, validatePair, getKitTier, getKitConfig, getAssetsPrices, getQuickTrades, getKitCoin } = require('./common');
+const { subscribedToCoin } = require('./common');
 const { transferAssetByKitIds, getUserBalanceByKitId } = require('./wallet');
-const { sendEmail } = require('../../../mail');
-const { MAILTYPE } = require('../../../mail/strings');
-const { verifyBearerTokenPromise } = require('./security');
 const { Op } = require('sequelize');
-const { loggerBroker } = require('../../../config/logger');
-const { isArray } = require('lodash');
 const BigNumber = require('bignumber.js');
 const { paginationQuery, timeframeQuery, orderingQuery } = require('./database/helpers');
 const dbQuery = require('./database/query');
@@ -26,102 +16,73 @@ const {
 } = require(`${SERVER_PATH}/messages`);
 
 
-const calculateStakingRewards = async (stakers, stakePool) => {
-    const rewards = { total: 0 };
 
+const calculateSlashAmount = (staker, stakePool) => {
+    let slashedAmount = 0;
     let isSlashed = false;
-    for (const staker of stakers) {
-
-        const annualEarning = (staker.amount * stakePool.apy) / 100;
-        const mountlyEarningAmount = annualEarning / 12;
-
-        const stakerCreationDate = moment(staker.created_at);
-
-        // if paused, stakepool is supposed to stop calculating rewarding, we set the date to paused_date in this case.
-        // if not paused, we set the date to current date(now) 
-        let stakingDate = (stakePool.status === 'paused') ? moment(stakePool.paused_date) : moment();
-
-        const unstakedDate= staker.unstaked_date && moment(staker.unstaked_date);
-        const closedDate = staker.closing && moment(staker.closing);
 
 
-        // If we unstaked before the closing date, it means we unstaked early, set isSlashed to true in this case.
-        // If there is no closing date, it means we are in a perpatual stake pool, so no slashing.
-        if (closedDate && unstakedDate && closedDate > unstakedDate) {
-            isSlashed = true;
-        }
+    const unstakedDate = moment();
+    const closedDate = staker.closing && moment(staker.closing);
 
 
-        // If the stakepool is paused or active and unstaked date is less than that date, we should stop calculating rewarding at this point.
-        if (unstakedDate && unstakedDate < stakingDate) {
-            stakingDate = unstakedDate;
-        }
-
-
-        // If the current date is after the closing date, we should stop calculating rewarding after closing date.
-        // If there is no closing date, It means we are in a perpatual stake pool, we keep calculating rewarding until user unstakes.
-        if (closedDate && closedDate < stakingDate) {
-            stakingDate = closedDate;
-        }
-     
-
-        const totalStakingDays = stakingDate.diff(stakerCreationDate, 'days');
-        const amountEarned =  (mountlyEarningAmount * totalStakingDays) / 30
-
-        rewards[staker.user_id] = amountEarned;
-
-        if (isSlashed) {
-            const mountlySlashingPrinciple = ((staker.amount * stakePool.slashing_principle_percentage) / 100) / 12;
-
-            const slashingPrinciple = (mountlySlashingPrinciple * totalStakingDays) / 30;
-
-            const slashingEarning = (amountEarned * stakePool.slashing_earning_percentage) / 100;
-
-            rewards[staker.user_id] -= slashingPrinciple;
-            rewards[staker.user_id] -= slashingEarning;
-
-        }
-
-        rewards.total += rewards[staker.user_id]
+    // If we unstaked before the closing date, it means we unstaked early, set isSlashed to true in this case.
+    // If there is no closing date, it means we are in a perpatual stake pool, so no slashing.
+    if (closedDate && unstakedDate && closedDate > unstakedDate) {
+        isSlashed = true;
     }
 
+    if (isSlashed) {
 
-    return rewards;
+        let slashingPrinciple = 0;
+        let slashingEarning = 0;
+
+        if (stakePool.slashing_principle_percentage) {
+            const stakeAmount = new BigNumber(staker.amount);
+            const slashingPrinciplePercentage = new BigNumber(stakePool.slashing_principle_percentage);
+            const mountlySlashingPrinciple = stakeAmount.multipliedBy(slashingPrinciplePercentage).dividedBy(100 * 12);
+
+            const totalStakingDays = unstakedDate.diff(moment(), 'days');
+            slashingPrinciple = mountlySlashingPrinciple.multipliedBy(totalStakingDays).dividedBy(30);
+        }
+   
+
+        if (stakePool.slashing_earning_percentage) {
+            const stakerReward = new BigNumber(staker.reward);
+            const slashingEarningPercentage = new BigNumber(stakePool.slashing_earning_percentage);
+            slashingEarning = stakerReward.multipliedBy(slashingEarningPercentage).dividedBy(100);
+
+        }
+
+        slashedAmount = slashingPrinciple.plus(slashingEarning);
+
+    }
+
+    return slashedAmount;
 }
 
-const distributeStakingRewards = async (stakers, rewards, account_id, currency) => {
+const calculateStakingRewards = async (stakers) => {
+    const rewards = stakers.map(staker => staker.reward).reduce((a, b) => a + b, 0);
+    const slashes = stakers.map(staker => staker.slashed).reduce((a, b) => a + b, 0);
+
+    return (new BigNumber(rewards).plus(new BigNumber(slashes))).toNumber();
+}
+
+
+const distributeStakingRewards = async (stakers, reward, account_id, currency) => {
     for (const staker of stakers) {
 
         await staker.update({ status: 'unstaking' }, {
 	        	fields: ['status']
 	    });
 
-        await transferAssetByKitIds(account_id, staker.id, currency, rewards[staker.id], 'Admin transfer stake', staker.email, undefined);
+        await transferAssetByKitIds(account_id, staker.id, currency, reward, 'Admin transfer stake', staker.email, undefined);
 
         await staker.update({ status: 'closed' }, {
 	        	fields: ['status']
 	    });
 
     }
-}
-
-
-const updateStakerRewardData = async (user_id) => {
-
-    const stakers = await getModel('staker').findAll({ where: { user_id, status: 'staking' } });
-
-    for (const staker of stakers) {
-
-        const stakePool = await getModel('stake').findOne({ where: { id: staker.stake_id,  status: 'active' } });
-        const rewards = calculateStakingRewards([staker], stakePool);
-
-        await staker.update({ reward: rewards.total }, {
-            fields: [
-                'reward'
-            ]
-        });
-    }
-
 }
 
 const getSourceAccountBalance = async (account_id, coin) => {
@@ -204,8 +165,7 @@ const getExchangeStakePools = async (opts = {
             for (const stakePool of stakePools.data) {
                 if (!stakePool.onboarding || stakePool.status === 'terminated') continue;
                 const stakers = await fetchStakers(stakePool.id);
-                const rewards = await calculateStakingRewards(stakers, stakePool);
-                stakePool.reward = rewards.total;
+                stakePool.reward = calculateStakingRewards(stakers);
             }
 
             return stakePools;
@@ -335,13 +295,13 @@ const updateExchangeStakePool = async (id, data) => {
         const balance = await getSourceAccountBalance(stakePool.account_id, stakePool.currency);
   
         const stakers = await getModel('staker').findAll({ where: { stake_id: stakePool.id, status: { [Op.or]: ['staking', 'unstaking'] } } });
-        const rewards = await calculateStakingRewards(stakers, stakePool);
+        const reward = await calculateStakingRewards(stakers);
 
 
-        if(new BigNumber(balance).comparedTo(new BigNumber(rewards.total)) !== 1) {
+        if(new BigNumber(balance).comparedTo(new BigNumber(reward)) !== 1) {
             throw new Error('There is not enough balance in the funding account, You cannot settle this stake pool');
         }
-        await distributeStakingRewards(stakers, rewards, stakePool.account_id, stakePool.currency);
+        await distributeStakingRewards(stakers, reward, stakePool.account_id, stakePool.currency);
        
     }
 
@@ -409,11 +369,6 @@ const getExchangeStakers = async (
 	}
 
          
-    if (opts.user_id){
-        // calculate reward and update the record
-        await updateStakerRewardData(opts.user_id);
-    }
-
 
 	if (opts.format) {
 		return dbQuery.fetchAllRecords('staker', query)
@@ -515,17 +470,18 @@ const deleteExchangeStaker = async (staker_id, user_id) => {
         throw new Error('Cannot unstake, period is not over');
     }
 
-    const rewards = calculateStakingRewards([staker], stakePool);
+    const slashedAmount = calculateSlashAmount(staker, stakePool);
     const updatedStaker = {
         ...staker,
         status: 'unstaking',
-        reward: rewards.total,
+        slashed: slashedAmount,
         unstaked_date: new Date()
     }
     return staker.update(updatedStaker, {
 		fields: [
             'status',
             'reward',
+            'slashed',
             'unstaked_date'
 		]
 	});
@@ -538,5 +494,4 @@ module.exports = {
     getExchangeStakers,
     createExchangeStaker,
     deleteExchangeStaker,
-    updateStakerRewardData
 };
