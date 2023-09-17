@@ -102,7 +102,7 @@ const UserStaking = () => {
 			render: (user_id, data) => {
 				return (
 					<div className="d-flex">
-						{data?.reward} {data?.stake?.currency?.toUpperCase()}
+						{data?.reward - data?.slashed} {data?.stake?.currency?.toUpperCase()}
 					</div>
 				);
 			},
