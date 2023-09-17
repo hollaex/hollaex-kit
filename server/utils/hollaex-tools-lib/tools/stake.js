@@ -441,7 +441,7 @@ const createExchangeStaker = async (stake_id, amount, user_id) => {
 }
 
 const deleteExchangeStaker = async (staker_id, user_id) => {
-    const staker = await getModel('staker').findOne({ where: { id: staker_id, user_id, status: 'active' } });
+    const staker = await getModel('staker').findOne({ where: { id: staker_id, user_id, status: 'staking' } });
 
     if (!staker) {
         throw new Error('Staker does not exist');
