@@ -448,7 +448,7 @@ const CeFiUserStake = () => {
 							</div>
 						)}
 
-						{!selectedPool.early_unstake && (
+						{selectedPool.duration && !selectedPool.early_unstake ? (
 							<div
 								style={{
 									padding: 20,
@@ -463,6 +463,8 @@ const CeFiUserStake = () => {
 									pool as unstaking before the term will not be possible.
 								</div>
 							</div>
+						) : (
+							<></>
 						)}
 					</div>
 					<div

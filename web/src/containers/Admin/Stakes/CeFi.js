@@ -60,8 +60,8 @@ const CeFi = ({ coins }) => {
 		apy: null,
 		duration: null,
 		slashing: true,
-		slashing_principle_percentage: null,
-		slashing_earning_percentage: null,
+		slashing_principle_percentage: 0,
+		slashing_earning_percentage: 0,
 		early_unstake: true,
 		min_amount: null,
 		max_amount: null,
@@ -166,7 +166,11 @@ const CeFi = ({ coins }) => {
 			dataIndex: 'duration',
 			key: 'duration',
 			render: (user_id, data) => {
-				return <div className="d-flex">{data?.duration} days</div>;
+				return (
+					<div className="d-flex">
+						{data?.duration ? `${data.duration} days` : 'Perpetual Staking'}
+					</div>
+				);
 			},
 		},
 		{
@@ -594,8 +598,13 @@ const CeFi = ({ coins }) => {
 								setStakePoolCreation({
 									...stakePoolCreation,
 									perpetual_stake: e.target.checked,
-									...(e.target.checked && { early_unstake: false }),
-									...(e.target.checked && { duration: 0 }),
+									...(e.target.checked && {
+										early_unstake: false,
+										slashing: false,
+										duration: 0,
+										slashing_principle_percentage: 0,
+										slashing_earning_percentage: 0,
+									}),
 								});
 							}}
 							style={{ color: 'white', marginBottom: 5 }}
@@ -1257,8 +1266,9 @@ const CeFi = ({ coins }) => {
 								</div>
 								<div>
 									<span style={{ fontWeight: 'bold' }}>Duration: </span>
-									{stakePoolCreation.duration}
-									days
+									{stakePoolCreation.duration
+										? `${stakePoolCreation.duration} days`
+										: 'Perpetual Staking'}
 								</div>
 							</div>
 						</div>
