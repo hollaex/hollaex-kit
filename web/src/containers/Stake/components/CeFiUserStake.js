@@ -99,7 +99,11 @@ const CeFiUserStake = () => {
 			dataIndex: 'expiry_date',
 			key: 'expiry_date',
 			render: (user_id, data) => {
-				return <div className="d-flex">{formatDate(data?.closing)}</div>;
+				return (
+					<div className="d-flex">
+						{data?.closing ? formatDate(data?.closing) : 'Perpetual'}
+					</div>
+				);
 			},
 		},
 		{
