@@ -53,7 +53,7 @@ const CeFi = ({ coins }) => {
 	);
 	const [step, setStep] = useState(1);
 
-	const [stakePoolCreation, setStakePoolCreation] = useState({
+	const defaultStakePool = {
 		name: null,
 		currency: null,
 		account_id: null,
@@ -70,7 +70,8 @@ const CeFi = ({ coins }) => {
 		perpetual_stake: null,
 		slash_earnings: null,
 		onboarding: false,
-	});
+	};
+	const [stakePoolCreation, setStakePoolCreation] = useState(defaultStakePool);
 	const [emailOptions, setEmailOptions] = useState([]);
 	const [selectedEmailData, setSelectedEmailData] = useState({});
 
@@ -204,7 +205,7 @@ const CeFi = ({ coins }) => {
 			render: (user_id, data) => {
 				return (
 					<div className="d-flex">
-						{data?.reward} {data.currency.toUpperCase()}
+						{data?.reward} {data?.reward ? data.currency.toUpperCase() : ''}
 					</div>
 				);
 			},
@@ -594,6 +595,7 @@ const CeFi = ({ coins }) => {
 									...stakePoolCreation,
 									perpetual_stake: e.target.checked,
 									...(e.target.checked && { early_unstake: false }),
+									...(e.target.checked && { duration: 0 }),
 								});
 							}}
 							style={{ color: 'white', marginBottom: 5 }}
@@ -1358,7 +1360,16 @@ const CeFi = ({ coins }) => {
 									currentStep = 5;
 								}
 								if (currentStep >= 10) {
-									await onHandleCreateStakePool();
+									try {
+										await createStakePool(stakePoolCreation);
+										setStakePoolCreation(defaultStakePool);
+										setStep(1);
+										requestStakes(queryFilters.page, queryFilters.limit);
+										message.success('Stake pool created.');
+									} catch (error) {
+										message.error(error.response.data.message);
+										return;
+									}
 									setDisplayStatePoolCreation(false);
 								} else {
 									setStep(currentStep);

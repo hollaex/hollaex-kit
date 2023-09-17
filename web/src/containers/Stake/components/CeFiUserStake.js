@@ -323,9 +323,9 @@ const CeFiUserStake = () => {
 									value={stakerAmount}
 								/>
 							</div>
-							<div style={{ color: '#FF0000', marginTop: 10 }}>
+							{/* <div style={{ color: '#FF0000', marginTop: 10 }}>
 								Staking pool's maximum amount allowed is 1,000 ABC
-							</div>
+							</div> */}
 						</div>
 					</div>
 					<div
@@ -702,7 +702,7 @@ const CeFiUserStake = () => {
 
 								setUserStakeData(stakers.data);
 
-								setConfirmStake(true);
+								setConfirmStake(false);
 
 								setConfirmation(false);
 								setStakeDetails(false);

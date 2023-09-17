@@ -124,6 +124,21 @@ const updateStakerRewardData = async (user_id) => {
 
 }
 
+const getSourceAccountBalance = async (account_id, coin) => {
+        
+    const balance = await getUserBalanceByKitId(account_id);
+    let symbols = {};
+
+    for (const key of Object.keys(balance)) {
+        if (key.includes('available') && balance[key]) {
+            let symbol = key?.split('_')?.[0];
+            symbols[symbol] = balance[key];
+        }
+    }
+
+    return symbols[coin];
+}
+
 const fetchStakers = async (stakePoolId) => {
     return getModel('staker').findAll({ where: { stake_id: stakePoolId } });
 }
@@ -234,20 +249,14 @@ const createExchangeStakePool = async (stake) => {
         throw new Error('account id does not exist in the server');
     }
     
-    const balance = await getUserBalanceByKitId(account_id);
-    let symbols = {};
+    const balance = await getSourceAccountBalance(account_id, currency);
 
-    for (const key of Object.keys(balance)) {
-        if (key.includes('available') && balance[key]) {
-            let symbol = key?.split('_')?.[0];
-            symbols[symbol] = balance[key];
-        }
-    }
-
-    if (new BigNumber(symbols[currency]).comparedTo(new BigNumber(max_amount)) !== 1) {
+    if (new BigNumber(balance).comparedTo(new BigNumber(max_amount)) !== 1) {
         throw new Error('funding account does not have enough coins for the max amount set for the stake pool');
     }
 
+    stake.slashing = (stake.slashing_principle_percentage || stake.slashing_earning_percentage) ? true : false;
+     
 	return getModel('stake').create(stake, {
 		fields: [
 			'name',
@@ -264,6 +273,8 @@ const createExchangeStakePool = async (stake) => {
             'max_amount',
             'status',
             'onboarding',
+            'disclaimer',
+            'paused_date'
 		]
 	});
 };
@@ -321,20 +332,13 @@ const updateExchangeStakePool = async (id, data) => {
     }
 
     if (status === 'terminated') {
-        const balance = await getUserBalanceByKitId(accountOwner);
-        let symbols = {};
-        
-        for (const key of Object.keys(balance)) {
-            if (key.includes('available') && balance[key]) {
-                let symbol = key?.split('_')?.[0];
-                symbols[symbol] = balance[key];
-            }
-        }
-
-        const stakers = await getModel('staker').findAll({ where: { stake_id: stakePool.id, status: { in: ['staking', 'unstaking'] } } });
+        const balance = await getSourceAccountBalance(stakePool.account_id, stakePool.currency);
+  
+        const stakers = await getModel('staker').findAll({ where: { stake_id: stakePool.id, status: { [Op.or]: ['staking', 'unstaking'] } } });
         const rewards = await calculateStakingRewards(stakers, stakePool);
 
-        if(new BigNumber(symbols[stakePool.currency]).comparedTo(new BigNumber(rewards.total)) !== 1) {
+
+        if(new BigNumber(balance).comparedTo(new BigNumber(rewards.total)) !== 1) {
             throw new Error('There is not enough balance in the funding account, You cannot settle this stake pool');
         }
         await distributeStakingRewards(stakers, rewards, stakePool.account_id, stakePool.currency);
@@ -343,9 +347,10 @@ const updateExchangeStakePool = async (id, data) => {
 
     const updatedStakePool = {
 		...stakePool.get({ plain: true }),
-		...Object.fromEntries(Object.entries(data).filter(([_, v]) => v != null)),
-        slashing: (slashing_principle_percentage || slashing_earning_percentage) ? true : false
+		...Object.fromEntries(Object.entries(data).filter(([_, v]) => v != null))
 	};
+
+    updatedStakePool.slashing = (updatedStakePool.slashing_principle_percentage || updatedStakePool.slashing_earning_percentage) ? true : false;
 
 	validateExchangeStake(updatedStakePool);
 
@@ -365,6 +370,8 @@ const updateExchangeStakePool = async (id, data) => {
             'max_amount',
             'status',
             'onboarding',
+            'disclaimer',
+            'paused_date'
 		]
 	});
 }
@@ -442,17 +449,9 @@ const createExchangeStaker = async (stake_id, amount, user_id) => {
           throw new Error('Cannot stake in a pool that is not active');
     }
 
-    const balance = await getUserBalanceByKitId(stakePool.account_id);
-    let symbols = {};
+    const balance = await getSourceAccountBalance(stakePool.account_id, stakePool.currency);
 
-    for (const key of Object.keys(balance)) {
-        if (key.includes('available') && balance[key]) {
-            let symbol = key?.split('_')?.[0];
-            symbols[symbol] = balance[key];
-        }
-    }
-
-    if (new BigNumber(symbols[stakePool.currency]).comparedTo(new BigNumber(amount)) !== 1) {
+    if (new BigNumber(balance).comparedTo(new BigNumber(amount)) !== 1) {
         throw new Error('You do not have enough funds for the amount set');
     }
 
@@ -480,6 +479,8 @@ const createExchangeStaker = async (stake_id, amount, user_id) => {
             'amount',
             'currency',
             'status',
+            'closing',
+            'unstaked_date'
 		]
 	});
 }
@@ -524,7 +525,8 @@ const deleteExchangeStaker = async (staker_id, user_id) => {
     return staker.update(updatedStaker, {
 		fields: [
             'status',
-            'reward'
+            'reward',
+            'unstaked_date'
 		]
 	});
 }
