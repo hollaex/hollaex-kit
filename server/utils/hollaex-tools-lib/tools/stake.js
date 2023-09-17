@@ -61,7 +61,7 @@ const calculateSlashAmount = (staker, stakePool) => {
     return slashedAmount.toNumber();
 }
 
-const calculateStakingRewards = async (stakers) => {
+const calculateStakingRewards = (stakers) => {
     const rewards = stakers.map(staker => staker.reward).reduce((a, b) => a + b, 0);
     const slashes = stakers.map(staker => staker.slashed).reduce((a, b) => a + b, 0);
 
