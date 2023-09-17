@@ -67,7 +67,11 @@ const CeFiUserStake = () => {
 			dataIndex: 'amount',
 			key: 'amount',
 			render: (user_id, data) => {
-				return <div className="d-flex">{data?.amount}</div>;
+				return (
+					<div className="d-flex">
+						{data?.amount} {data?.currency.toUpperCase()}
+					</div>
+				);
 			},
 		},
 		{
@@ -111,7 +115,11 @@ const CeFiUserStake = () => {
 			dataIndex: 'earnt',
 			key: 'earnt',
 			render: (user_id, data) => {
-				return <div className="d-flex">{data?.reward}</div>;
+				return (
+					<div className="d-flex">
+						{data?.reward - data?.slashed} {data?.currency.toUpperCase()}
+					</div>
+				);
 			},
 		},
 		{
