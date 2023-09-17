@@ -190,19 +190,21 @@ const unstakingCheckRunner = () => {
 					}
 				}
 
-				if (new BigNumber(symbols[stakePool.currency]).comparedTo(new BigNumber(staker.reward)) !== 1) {
-					return sendEmail(
+				const amountAfterSlash =  (new BigNumber(staker.reward).minus(new BigNumber(staker.slashed))).toNumber();
+				if (new BigNumber(symbols[stakePool.currency]).comparedTo(amountAfterSlash) !== 1) {
+					sendEmail(
 						MAILTYPE.ALERT,
 						user.email,
 						{
 							type: 'Unstaking failed',
-							data: `User id ${user.id} failed to unstake, not enough funds`
+							data: `User id ${user.id} failed to unstake, not enough funds, currency ${stakePool.currency}, amount to transfer: ${amountAfterSlash}`
 						},
 						user.settings
 					);
+
+					continue;
 				}
 
-				const amountAfterSlash =  (new BigNumber(staker.reward).minus(new BigNumber(staker.slashed))).toNumber();
 				await toolsLib.wallet.transferAssetByKitIds(stakePool.account_id, staker.id, stakePool.currency, amountAfterSlash, 'Admin transfer stake', user.email, undefined);
 
 				await staker.update({ status: 'closed' }, {
