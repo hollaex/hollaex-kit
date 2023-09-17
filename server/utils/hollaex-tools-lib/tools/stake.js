@@ -34,8 +34,8 @@ const calculateSlashAmount = (staker, stakePool) => {
 
     if (isSlashed) {
 
-        let slashingPrinciple = 0;
-        let slashingEarning = 0;
+        let slashingPrinciple = new BigNumber(0);
+        let slashingEarning = new BigNumber(0);
 
         if (stakePool.slashing_principle_percentage) {
             const stakeAmount = new BigNumber(staker.amount);
@@ -58,7 +58,7 @@ const calculateSlashAmount = (staker, stakePool) => {
 
     }
 
-    return slashedAmount;
+    return slashedAmount.toNumber();
 }
 
 const calculateStakingRewards = async (stakers) => {
