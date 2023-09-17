@@ -108,7 +108,7 @@ const UserStaking = () => {
 			},
 		},
 		{
-			title: 'Earnings',
+			title: 'Status',
 			dataIndex: 'status',
 			key: 'status',
 			render: (user_id, data) => {
