@@ -2542,8 +2542,6 @@ const restoreUserAccount = (req, res) => {
 		});
 };
 
-
-
 module.exports = {
 	createInitialAdmin,
 	getAdminKit,
