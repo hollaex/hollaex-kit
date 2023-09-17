@@ -18,7 +18,7 @@ const {
 
 
 const calculateSlashAmount = (staker, stakePool) => {
-    let slashedAmount = 0;
+    let slashedAmount = new BigNumber(0);
     let isSlashed = false;
 
 
