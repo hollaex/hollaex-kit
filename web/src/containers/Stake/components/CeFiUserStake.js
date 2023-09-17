@@ -937,9 +937,9 @@ const CeFiUserStake = () => {
 									const stakes = await requestStakePools();
 									setStakePools(stakes.data);
 
-									message.success(
-										`Successfuly unstaked in ${selectedStaker.id}`
-									);
+									// message.success(
+									// 	`Successfuly unstaked in ${selectedStaker.id}`
+									// );
 								} catch (error) {
 									message.error(error.response.selectedStaker.message);
 								}
@@ -1000,8 +1000,7 @@ const CeFiUserStake = () => {
 								You've successfully unstaked ABC
 							</h2>
 							<div style={{ marginTop: 20 }}>
-								<span style={{ fontWeight: 'bold' }}>Amount to receive:</span>{' '}
-								900 ABC
+								<span style={{ fontWeight: 'bold' }}>Amount to receive:</span> -
 							</div>
 							<div>(Requires 24 hours to settle)</div>
 						</div>
