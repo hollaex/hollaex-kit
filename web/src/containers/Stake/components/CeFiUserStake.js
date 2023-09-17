@@ -1216,10 +1216,16 @@ const CeFiUserStake = () => {
 										</div>
 										<h3 style={{ color: 'white' }}>{pool.name}</h3>
 										<div>
-											<span style={{ fontWeight: 'bold', color: 'white' }}>
-												Duration:
-											</span>{' '}
-											{pool.duration} days
+											{pool.duration ? (
+												<>
+													<span style={{ fontWeight: 'bold', color: 'white' }}>
+														Duration:
+													</span>{' '}
+													{pool.duration} days
+												</>
+											) : (
+												'Perpetual Staking'
+											)}
 										</div>
 										<div>
 											<span style={{ fontWeight: 'bold', color: 'white' }}>
