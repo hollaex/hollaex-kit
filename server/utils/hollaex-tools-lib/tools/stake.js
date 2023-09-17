@@ -289,6 +289,10 @@ const updateExchangeStakePool = async (id, data) => {
         onboarding,
     } = data;
     
+    if (stakePool.status === 'terminated') {
+        throw new Error('Cannot modify terminated stake pool');
+    }
+
     if(status !== 'uninitialized' && (
         (currency && currency !== stakePool.currency)
         || (name && name !== stakePool.name)
@@ -327,7 +331,7 @@ const updateExchangeStakePool = async (id, data) => {
             }
         }
 
-        const stakers = await fetchStakers(stakePool.id);
+        const stakers = await getModel('staker').findAll({ where: { stake_id: stakePool.id, status: { in: ['staking', 'unstaking'] } } });
         const rewards = await calculateStakingRewards(stakers, stakePool);
 
         if(new BigNumber(symbols[stakePool.currency]).comparedTo(new BigNumber(rewards.total)) !== 1) {
@@ -340,6 +344,7 @@ const updateExchangeStakePool = async (id, data) => {
     const updatedStakePool = {
 		...stakePool.get({ plain: true }),
 		...Object.fromEntries(Object.entries(data).filter(([_, v]) => v != null)),
+        slashing: (slashing_principle_percentage || slashing_earning_percentage) ? true : false
 	};
 
 	validateExchangeStake(updatedStakePool);
@@ -465,6 +470,7 @@ const createExchangeStaker = async (stake_id, amount, user_id) => {
         amount,
         currency: stakePool.currency,
         status: 'staking',
+        ...(stakePool.duration && { closing: moment().add(stakePool.duration, 'days') })
     }
 
     return getModel('staker').create(staker, {
@@ -512,7 +518,8 @@ const deleteExchangeStaker = async (staker_id, user_id) => {
     const updatedStaker = {
         ...staker,
         status: 'unstaking',
-        reward: rewards.total
+        reward: rewards.total,
+        unstaked_date: new Date()
     }
     return staker.update(updatedStaker, {
 		fields: [

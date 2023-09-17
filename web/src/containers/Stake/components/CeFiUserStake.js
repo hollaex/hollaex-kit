@@ -21,7 +21,6 @@ import {
 	ExclamationCircleOutlined,
 	ExclamationCircleFilled,
 } from '@ant-design/icons';
-import { formatDate } from 'utils';
 import {
 	requestStakePools,
 	createStaker,
@@ -29,6 +28,7 @@ import {
 	deleteStaker,
 } from 'containers/Admin/Stakes/actions';
 import moment from 'moment';
+import '../CeFiStake.scss';
 
 const TabPane = Tabs.TabPane;
 
@@ -51,6 +51,7 @@ const CeFiUserStake = () => {
 	const [selectedPool, setSelectedPool] = useState();
 
 	const [stakerAmount, setStakerAmount] = useState();
+	const [selectedStaker, setSelectedStaker] = useState();
 
 	const columns = [
 		{
@@ -58,7 +59,7 @@ const CeFiUserStake = () => {
 			dataIndex: 'name',
 			key: 'name',
 			render: (user_id, data) => {
-				return <div className="d-flex">{data?.name}</div>;
+				return <div className="d-flex">{data?.stake?.name}</div>;
 			},
 		},
 		{
@@ -67,6 +68,22 @@ const CeFiUserStake = () => {
 			key: 'amount',
 			render: (user_id, data) => {
 				return <div className="d-flex">{data?.amount}</div>;
+			},
+		},
+		{
+			title: 'RATE',
+			dataIndex: 'apy',
+			key: 'apy',
+			render: (user_id, data) => {
+				return <div className="d-flex">{data?.stake?.apy}%</div>;
+			},
+		},
+		{
+			title: 'DURATION',
+			dataIndex: 'duration',
+			key: 'duration',
+			render: (user_id, data) => {
+				return <div className="d-flex">{data?.stake?.duration} days</div>;
 			},
 		},
 		{
@@ -82,7 +99,7 @@ const CeFiUserStake = () => {
 			dataIndex: 'expiry_date',
 			key: 'expiry_date',
 			render: (user_id, data) => {
-				return <div className="d-flex">{formatDate(data?.expiry_date)}</div>;
+				return <div className="d-flex">{formatDate(data?.closing)}</div>;
 			},
 		},
 		{
@@ -116,17 +133,8 @@ const CeFiUserStake = () => {
 										: false
 								}
 								onClick={async () => {
-									try {
-										await deleteStaker({ id: data.id });
-
-										requestStakers().then((res) => {
-											setUserStakeData(res.data);
-										});
-
-										message.success(`Successfuly unstaked in ${data.id}`);
-									} catch (error) {
-										message.error(error.response.data.message);
-									}
+									setSelectedStaker(data);
+									setReviewUnstake(true);
 								}}
 								className="ant-btn green-btn ant-tooltip-open ant-btn-primary"
 							>
@@ -148,6 +156,10 @@ const CeFiUserStake = () => {
 			setUserStakeData(res.data);
 		});
 	}, []);
+
+	const formatDate = (date) => {
+		return moment(date).format('DD/MMM/YYYY').toUpperCase();
+	};
 
 	const isUnstackable = (stakePool) => {
 		const stakePoolCreationDate = moment(stakePool.created_at);
@@ -287,13 +299,16 @@ const CeFiUserStake = () => {
 								height: 200,
 							}}
 						>
-							<h3 style={{ color: 'white' }}>ABC Flexible Yield Stake Plan</h3>
+							<h3 style={{ color: 'white' }}>{selectedPool.name}</h3>
 							<div>-</div>
-							<div>APY: 4.5%</div>
+							<div>APY: {selectedPool.apy}%</div>
 						</div>
 						<div style={{ width: '100%' }}>
 							<div>
-								<span style={{ fontWeight: 'bold' }}>ABC available:</span> 1,000
+								<span style={{ fontWeight: 'bold' }}>
+									{selectedPool.currency} available:
+								</span>{' '}
+								1,000
 							</div>
 							<div>
 								<span style={{ fontWeight: 'bold' }}>Amount to stake:</span>
@@ -376,57 +391,79 @@ const CeFiUserStake = () => {
 				>
 					<div>
 						<h1 style={{ color: 'white' }}>Duration</h1>
-						<div>Lock up duration: 365 days (12/12/23)</div>
+						<div>
+							Lock up duration: {selectedPool.duration || 'Perpetual'}
+							{/* 365 days (12/12/23) */}
+						</div>
 						<div>-</div>
 
-						<h4 style={{ color: 'white' }}>Slashing</h4>
-						<div>Penalty upon initial stake principle: -10% </div>
-						<div>Forfeiture of earnings: -10%</div>
+						{selectedPool.slashing && (
+							<>
+								<h4 style={{ color: 'white' }}>Slashing</h4>
+								<div>
+									Penalty upon initial stake principle: -
+									{selectedPool.slashing_principle_percentage}%{' '}
+								</div>
+								<div>
+									Forfeiture of earnings: -
+									{selectedPool.slashing_earning_percentage}%
+								</div>
+							</>
+						)}
 
-						<div
-							style={{
-								padding: 20,
-								backgroundColor: '#FF0000',
-								marginTop: 20,
-								fontSize: 12,
-							}}
-						>
-							<div>! Slashing rules are enforced in this pool</div>
-							<div>
-								Keep in mind that opting to withdraw your funds prior to the
-								designated duration will incur a penalty, as outlined in the
-								slashing rules mentioned above. Prior to committing to a staking
-								period, it's crucial to assess your financial stability, as
-								initiating an early unstaking process could lead to a decrease
-								in the overall value of your initial stake.
+						{selectedPool.slashing && (
+							<div
+								style={{
+									padding: 20,
+									backgroundColor: '#FF0000',
+									marginTop: 20,
+									fontSize: 12,
+								}}
+							>
+								<div>! Slashing rules are enforced in this pool</div>
+								<div>
+									Keep in mind that opting to withdraw your funds prior to the
+									designated duration will incur a penalty, as outlined in the
+									slashing rules mentioned above. Prior to committing to a
+									staking period, it's crucial to assess your financial
+									stability, as initiating an early unstaking process could lead
+									to a decrease in the overall value of your initial stake.
+								</div>
 							</div>
-						</div>
+						)}
 
-						<div
-							style={{
-								padding: 20,
-								backgroundColor: '#388200',
-								marginTop: 20,
-								fontSize: 12,
-							}}
-						>
-							<div>
-								This pool allows you to unstake at anytime without consequence.
+						{!selectedPool.duration && (
+							<div
+								style={{
+									padding: 20,
+									backgroundColor: '#388200',
+									marginTop: 20,
+									fontSize: 12,
+								}}
+							>
+								<div>
+									This pool allows you to unstake at anytime without
+									consequence.
+								</div>
 							</div>
-						</div>
+						)}
 
-						<div
-							style={{
-								padding: 20,
-								backgroundColor: '#FF6F00',
-								marginTop: 20,
-								fontSize: 12,
-							}}
-						>
-							<div>
-								This pool allows you to unstake at anytime without consequence.
+						{!selectedPool.early_unstake && (
+							<div
+								style={{
+									padding: 20,
+									backgroundColor: '#FF6F00',
+									marginTop: 20,
+									fontSize: 12,
+								}}
+							>
+								<div>
+									This pool locks you in for the full duration. Please consider
+									your financial sustainability before committing to the staking
+									pool as unstaking before the term will not be possible.
+								</div>
 							</div>
-						</div>
+						)}
 					</div>
 					<div
 						style={{
@@ -491,13 +528,21 @@ const CeFiUserStake = () => {
 				>
 					<div>
 						<h1 style={{ color: 'white' }}>Check stake details</h1>
-						<div>Staking pool: ABC Flexible Yield Stake Plan</div>
-						<div>Annual percentage yield: 1% APY</div>
-						<div>Duration: 365 days (12/12/23) </div>
-						<div>Penalty upon initial stake principle: -10%</div>
-						<div>Forfeiture of earnings: -10%</div>
+						<div>Staking pool{selectedPool.name}</div>
+						<div>Annual percentage yield: {selectedPool.apy}% APY</div>
+						<div>Duration: {selectedPool.duration} days </div>
+						<div>
+							Penalty upon initial stake principle: -
+							{selectedPool.slashing_principle_percentage}%
+						</div>
+						<div>
+							Forfeiture of earnings: -
+							{selectedPool.slashing_earning_percentage}%
+						</div>
 
-						<div style={{ marginTop: 20 }}>Stake amount: 1,000 ABC</div>
+						<div style={{ marginTop: 20 }}>
+							Stake amount: {stakerAmount} {selectedPool.currency.toUpperCase()}
+						</div>
 						<hr />
 
 						<div style={{ marginTop: 30 }}>
@@ -589,7 +634,9 @@ const CeFiUserStake = () => {
 								height: 200,
 							}}
 						>
-							<h3 style={{ color: 'white' }}>Confirm ABC Stake</h3>
+							<h3 style={{ color: 'white' }}>
+								Confirm {selectedPool.currency.toUpperCase()} Stake
+							</h3>
 						</div>
 						<div style={{ width: '100%' }}>
 							<div>
@@ -638,8 +685,30 @@ const CeFiUserStake = () => {
 						</AntBtn>
 						<AntBtn
 							onClick={async () => {
-								setConfirmStake(false);
-								setConfirmation(true);
+								try {
+									await createStaker({
+										stake_id: selectedPool.id,
+										amount: Number(stakerAmount),
+									});
+									message.success(`Successfuly staked in ${selectedPool.name}`);
+								} catch (error) {
+									message.error(error.response.data.message);
+								}
+
+								const stakes = await requestStakePools();
+								setStakePools(stakes.data);
+
+								const stakers = await requestStakers();
+
+								setUserStakeData(stakers.data);
+
+								setConfirmStake(true);
+
+								setConfirmation(false);
+								setStakeDetails(false);
+								setDuration(false);
+								setStakeAmount(false);
+								setReadBeforeAction(false);
 							}}
 							style={{
 								backgroundColor: '#5D63FF',
@@ -691,7 +760,9 @@ const CeFiUserStake = () => {
 								textAlign: 'center',
 							}}
 						>
-							<h3 style={{ color: 'white' }}>1,000 ABC</h3>
+							<h3 style={{ color: 'white' }}>
+								{stakerAmount} {selectedPool.currency.toUpperCase()}
+							</h3>
 							<div>Successfully staked</div>
 							<div style={{ marginTop: 30, marginBottom: 30 }}>-</div>
 							<div style={{ fontSize: 12, fontWeight: 'bold' }}>
@@ -720,6 +791,8 @@ const CeFiUserStake = () => {
 						<AntBtn
 							onClick={() => {
 								setConfirmation(false);
+								setStakerAmount();
+								setSelectedPool();
 							}}
 							style={{
 								backgroundColor: '#5D63FF',
@@ -729,27 +802,14 @@ const CeFiUserStake = () => {
 							}}
 							type="default"
 						>
-							Back
+							Close
 						</AntBtn>
 						<AntBtn
 							onClick={async () => {
-								try {
-									await createStaker({
-										stake_id: selectedPool.id,
-										amount: Number(stakerAmount),
-									});
-									message.success(`Successfuly staked in ${selectedPool.name}`);
-								} catch (error) {
-									message.error(error.response.data.message);
-								}
-
-								setSelectedPool();
 								setConfirmation(false);
-								setConfirmStake(false);
-								setStakeDetails(false);
-								setDuration(false);
-								setStakeAmount(false);
-								setReadBeforeAction(false);
+								handleTabChange('1');
+								setStakerAmount();
+								setSelectedPool();
 							}}
 							style={{
 								backgroundColor: '#5D63FF',
@@ -802,25 +862,28 @@ const CeFiUserStake = () => {
 						>
 							<h3 style={{ color: 'white' }}>Review and unstake</h3>
 							<div>
-								<span style={{ fontWeight: 'bold' }}>Time remaining:</span> 255
-								days (12/12/23)
+								<span style={{ fontWeight: 'bold' }}>Time remaining:</span>{' '}
+								{selectedStaker?.stake?.duration}
+								days ({formatDate(selectedStaker?.stake?.duration)})
 							</div>
 							<div>
 								<span style={{ fontWeight: 'bold' }}>
 									Penalty upon initial stake principle:
 								</span>{' '}
-								-100 ABC (-10%)
+								-- {selectedStaker.currency} (-
+								{selectedStaker?.stake?.slashing_principle_percentage}%)
 							</div>
 							<div>
 								<span style={{ fontWeight: 'bold' }}>
 									Forfeiture of earnings:
 								</span>{' '}
-								0 ABC (-10%)
+								-- {selectedStaker.currency} (-
+								{selectedStaker?.stake?.slashing_earning_percentage}%)
 							</div>
 
 							<div style={{ marginTop: 20 }}>
-								<span style={{ fontWeight: 'bold' }}>Amount to receive:</span>{' '}
-								900 ABC
+								<span style={{ fontWeight: 'bold' }}>Amount to receive:</span> -{' '}
+								{selectedStaker.currency}
 							</div>
 							<div>(Requires 24 hours to settle)</div>
 						</div>
@@ -850,6 +913,23 @@ const CeFiUserStake = () => {
 						</AntBtn>
 						<AntBtn
 							onClick={async () => {
+								try {
+									await deleteStaker({ id: selectedStaker.id });
+
+									requestStakers().then((res) => {
+										setUserStakeData(res.data);
+									});
+
+									const stakes = await requestStakePools();
+									setStakePools(stakes.data);
+
+									message.success(
+										`Successfuly unstaked in ${selectedStaker.id}`
+									);
+								} catch (error) {
+									message.error(error.response.selectedStaker.message);
+								}
+
 								setReviewUnstake(false);
 								setUnstakeConfirm(true);
 							}}
@@ -1019,6 +1099,12 @@ const CeFiUserStake = () => {
 							}}
 						>
 							{stakePools.map((pool) => {
+								const alreadyStaked =
+									(userStakeData || [])?.filter(
+										(staker) =>
+											staker.stake_id == pool.id && staker.status !== 'closed'
+									)?.length > 0;
+
 								return (
 									<div
 										style={{
@@ -1119,7 +1205,7 @@ const CeFiUserStake = () => {
 											<span style={{ fontWeight: 'bold', color: 'white' }}>
 												Duration:
 											</span>{' '}
-											{pool.duration}
+											{pool.duration} days
 										</div>
 										<div>
 											<span style={{ fontWeight: 'bold', color: 'white' }}>
@@ -1130,11 +1216,11 @@ const CeFiUserStake = () => {
 										<div>-</div>
 										<div>
 											<span style={{ fontWeight: 'bold' }}>Min:</span>{' '}
-											{pool.min_amount} {pool.currency}
+											{pool.min_amount} {pool.currency.toUpperCase()}
 										</div>
 										<div>
 											<span style={{ fontWeight: 'bold' }}>Max:</span>{' '}
-											{pool.max_amount} {pool.currency}
+											{pool.max_amount} {pool.currency.toUpperCase()}
 										</div>
 										<div>
 											<AntBtn
@@ -1142,6 +1228,7 @@ const CeFiUserStake = () => {
 													setReadBeforeAction(true);
 													setSelectedPool(pool);
 												}}
+												disabled={alreadyStaked}
 												style={{
 													marginTop: 30,
 													backgroundColor: '#5D63FF',
@@ -1153,10 +1240,11 @@ const CeFiUserStake = () => {
 													display: 'flex',
 													justifyContent: 'center',
 													alignItems: 'center',
+													opacity: alreadyStaked ? 0.4 : 1,
 												}}
 											>
 												{' '}
-												STAKE{' '}
+												{alreadyStaked ? 'STAKED' : 'STAKE'}{' '}
 											</AntBtn>
 										</div>
 									</div>
@@ -1199,20 +1287,20 @@ const CeFiUserStake = () => {
 								<div>
 									<div style={{ marginBottom: 20 }}>
 										<div>Estimated value of total staked</div>
-										<div style={{ fontSize: 18 }}>USDT 0: (VIEW)</div>
+										<div style={{ fontSize: 18 }}>USDT 0</div>
 									</div>
 									<div>
 										<div>Estimated value of earnings</div>
-										<div style={{ fontSize: 18 }}>USDT 0: (VIEW)</div>
+										<div style={{ fontSize: 18 }}>USDT 0</div>
 									</div>
 								</div>
 							</div>
 						</div>
 
-						<div className="mt-4 ">
+						<div className="mt-4">
 							<Spin spinning={isLoading}>
 								<Table
-									className="blue-admin-table"
+									className="cefi_stake"
 									columns={columns}
 									dataSource={userStakeData}
 									expandRowByClick={true}

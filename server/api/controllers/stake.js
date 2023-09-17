@@ -192,7 +192,25 @@ loggerAdmin.verbose(req.uuid, 'controllers/stake/updateExchangeStakes/auth', req
 }
 
 const deleteExchangeStakes = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/stake/deleteExchangeStakes auth',
+		req.auth
+	);
 
+	toolsLib.stake.updateExchangeStakePool(req.swagger.params.data.value.id, { status: 'terminated' })
+		.then(() => {
+			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
+			return res.json({ message: 'Successfully deleted stake pool.' });
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/broker/deleteExchangeStakes err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
 }
 
 const getExchangeStakersForAdmin = (req, res) => {

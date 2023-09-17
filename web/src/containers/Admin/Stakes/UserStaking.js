@@ -42,7 +42,9 @@ const UserStaking = () => {
 			dataIndex: 'currency',
 			key: 'currency',
 			render: (user_id, data) => {
-				return <div className="d-flex">{data?.stake?.currency}</div>;
+				return (
+					<div className="d-flex">{data?.stake?.currency.toUpperCase()}</div>
+				);
 			},
 		},
 		{
@@ -281,22 +283,22 @@ const UserStaking = () => {
 							</span> */}
 							{/* <span>Total: {queryFilters.total || '-'}</span> */}
 							<div>
-								<span style={{ fontWeight: 'bold' }}>Total stakers:</span> 3
+								<span style={{ fontWeight: 'bold' }}>Total stakers:</span> -
 								users
 							</div>
 							<div>
 								<span style={{ fontWeight: 'bold' }}>Appox. stake value:</span>{' '}
-								3,213 USDT
+								- USDT
 							</div>
 							<div>-</div>
 							<div>
-								<span style={{ fontWeight: 'bold' }}>Value unstaking:</span>{' '}
-								1,021 USDT
+								<span style={{ fontWeight: 'bold' }}>Value unstaking:</span> -
+								USDT
 							</div>
 						</div>
 					</div>
 
-					<div
+					{/* <div
 						style={{
 							padding: 10,
 							backgroundColor: '#FF0000',
@@ -324,7 +326,7 @@ const UserStaking = () => {
 								VIEW SOURCE WALLET
 							</Button>
 						</span>
-					</div>
+					</div> */}
 
 					<div className="mt-4 ">
 						<Spin spinning={isLoading}>

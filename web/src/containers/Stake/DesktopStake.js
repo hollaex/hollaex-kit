@@ -209,13 +209,15 @@ class Stake extends Component {
 		return (
 			<div className="presentation_container apply_rtl wallet-wrapper">
 				<div className="d-flex align-end justify-content-between">
-					{/* <IconTitle
-						stringId="STAKE.TITLE"
-						text={STRINGS['STAKE.TITLE']}
-						iconPath={ICONS['TAB_STAKE']}
-						iconId="TAB_STAKE"
-						textType="title"
-					/> */}
+					{this.state.selectedStaking === 'defi' && (
+						<IconTitle
+							stringId="STAKE.TITLE"
+							text={STRINGS['STAKE.TITLE']}
+							iconPath={ICONS['TAB_STAKE']}
+							iconId="TAB_STAKE"
+							textType="title"
+						/>
+					)}
 
 					{this.state.selectedStaking === 'defi' && <Account />}
 				</div>
@@ -243,14 +245,18 @@ class Stake extends Component {
 					<div className="d-flex">
 						<span style={{ marginRight: 5 }}>DeFi Staking</span>
 						<Switch
-							checked={true}
-							// onClick={}
+							checked={this.state.selectedStaking === 'cefi'}
+							onClick={(checked) => {
+								this.setState({
+									selectedStaking: checked ? 'cefi' : 'defi',
+								});
+							}}
 						/>
 						<span style={{ marginLeft: 5 }}>CeFi Staking</span>
 					</div>
 				</div>
 
-				<CeFiUserStake />
+				{this.state.selectedStaking === 'cefi' && <CeFiUserStake />}
 				{this.state.selectedStaking === 'defi' && (
 					<>
 						<div

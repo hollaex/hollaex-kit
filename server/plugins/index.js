@@ -166,7 +166,7 @@ const getTimezone = () => {
 };
 
 const unstakingCheckRunner = () => {
-	cron.schedule('*/60 * * * * *', async () => {
+	cron.schedule('0 0 0 * * *', async () => {
 		loggerPlugin.verbose(
 			'/plugins unstaking status check start'
 		);

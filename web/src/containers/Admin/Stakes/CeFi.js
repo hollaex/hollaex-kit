@@ -263,8 +263,10 @@ const CeFi = ({ coins }) => {
 							onClick={async () => {
 								setSelectedPool(data);
 								setPoolStatus(data.status);
-								await getAllUserData({ id: data.account_id });
-								await getUserBalance(data.account_id);
+								await Promise.all([
+									getAllUserData({ id: data.account_id }),
+									getUserBalance(data.account_id),
+								]);
 								setDisplayStatusModel(true);
 							}}
 							style={{
@@ -591,6 +593,7 @@ const CeFi = ({ coins }) => {
 								setStakePoolCreation({
 									...stakePoolCreation,
 									perpetual_stake: e.target.checked,
+									...(e.target.checked && { early_unstake: false }),
 								});
 							}}
 							style={{ color: 'white', marginBottom: 5 }}
@@ -654,6 +657,10 @@ const CeFi = ({ coins }) => {
 								setStakePoolCreation({
 									...stakePoolCreation,
 									early_unstake: e.target.value,
+									...(!e.target.value && {
+										slashing_principle_percentage: null,
+									}),
+									...(!e.target.value && { slashing_earning_percentage: null }),
 								});
 							}}
 							value={stakePoolCreation.early_unstake}
@@ -770,7 +777,11 @@ const CeFi = ({ coins }) => {
 							style={{ width: '100%' }}
 						>
 							<Space direction="vertical" style={{ width: '100%' }}>
-								<Radio style={{ color: 'white' }} value={true}>
+								<Radio
+									style={{ color: 'white' }}
+									value={true}
+									disabled={!stakePoolCreation.early_unstake}
+								>
 									Yes
 								</Radio>
 
@@ -801,12 +812,16 @@ const CeFi = ({ coins }) => {
 													slashing_earning_percentage: Number(e.target.value),
 												})
 											}
-											value={stakePoolCreation.slashing_principle_percentage}
+											value={stakePoolCreation.slashing_earning_percentage}
 										/>
 									</div>
 								)}
 
-								<Radio style={{ color: 'white' }} value={false}>
+								<Radio
+									style={{ color: 'white' }}
+									value={false}
+									disabled={!stakePoolCreation.early_unstake}
+								>
 									No
 								</Radio>
 							</Space>
@@ -1314,6 +1329,11 @@ const CeFi = ({ coins }) => {
 						<Button
 							onClick={() => {
 								let currentStep = step - 1;
+
+								if (stakePoolCreation.perpetual_stake && currentStep === 4) {
+									currentStep = 3;
+								}
+
 								if (currentStep <= 0) {
 									setDisplayStatePoolCreation(false);
 								} else {
@@ -1333,6 +1353,10 @@ const CeFi = ({ coins }) => {
 						<Button
 							onClick={async () => {
 								let currentStep = step + 1;
+
+								if (stakePoolCreation.perpetual_stake && currentStep === 4) {
+									currentStep = 5;
+								}
 								if (currentStep >= 10) {
 									await onHandleCreateStakePool();
 									setDisplayStatePoolCreation(false);
@@ -1549,7 +1573,7 @@ const CeFi = ({ coins }) => {
 									}}
 								>
 									<div>Settlement time: 24 hours</div>
-									<div>Required to settle: 1,920,321 ABC</div>
+									<div>Required to settle: -</div>
 									<div>
 										Source wallet: {emailOptions[0].label}:{' '}
 										{balanceData[`${selectedPool.currency}_available`] || 0}{' '}
