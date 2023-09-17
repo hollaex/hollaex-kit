@@ -283,7 +283,7 @@ const updateExchangeStakePool = async (id, data) => {
           throw new Error('Onboarding cannot be active while the status is uninitialized');
     }
   
-    if (status === 'terminated' && !stakePool.status === 'paused') {
+    if (status === 'terminated' && stakePool.status !== 'paused') {
           throw new Error('Cannot terminated stake pool while it is not paused');
     }
 
