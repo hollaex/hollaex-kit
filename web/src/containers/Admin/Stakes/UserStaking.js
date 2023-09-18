@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { message, Table, Button, Spin, Modal, Input } from 'antd';
+import { Table, Button, Spin, Input } from 'antd';
 import { requestStakers } from './actions';
-import { formatDate } from 'utils';
-import { CloseOutlined } from '@ant-design/icons';
-import { COUNTRIES_OPTIONS } from '../../../utils/countries';
+import moment from 'moment';
 
 const UserStaking = () => {
 	const [userData, setUserData] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
-	const [queryValues, setQueryValues] = useState({ last_seen: '1h' });
+	const [queryValues, setQueryValues] = useState();
 	const [queryFilters, setQueryFilters] = useState({
 		total: 0,
 		page: 1,
@@ -18,9 +16,14 @@ const UserStaking = () => {
 		isRemaining: true,
 	});
 
-	const [displayRevokeModal, setDisplayRevokeModal] = useState(false);
+	const [userQuery, setUserQuery] = useState({ search: null });
 
-	const [selectedSession, setSelectedSession] = useState();
+	const statuses = {
+		staking: 2,
+		unstaking: 1,
+		closed: 3,
+	};
+
 	const columns = [
 		{
 			title: 'User Id',
@@ -68,7 +71,11 @@ const UserStaking = () => {
 			dataIndex: 'created_at',
 			key: 'created_at',
 			render: (user_id, data) => {
-				return <div className="d-flex">{formatDate(data?.created_at)}</div>;
+				return (
+					<div className="d-flex">
+						{data?.closing ? formatDate(data?.closing) : 'Perpetual'}
+					</div>
+				);
 			},
 		},
 		{
@@ -102,7 +109,8 @@ const UserStaking = () => {
 			render: (user_id, data) => {
 				return (
 					<div className="d-flex">
-						{data?.reward - data?.slashed} {data?.stake?.currency?.toUpperCase()}
+						{data?.reward - data?.slashed}{' '}
+						{data?.stake?.currency?.toUpperCase()}
 					</div>
 				);
 			},
@@ -129,7 +137,7 @@ const UserStaking = () => {
 
 	useEffect(() => {
 		// setIsLoading(true);
-		// requestSessions(queryFilters.page, queryFilters.limit);
+		requestExchangeStakers(queryFilters.page, queryFilters.limit);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -138,27 +146,8 @@ const UserStaking = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [queryValues]);
 
-	const requestDownload = () => {
-		// return getExchangeSessionsCsv({ ...queryValues, format: 'csv' });
-	};
-
-	const renderRowContent = ({ login }) => {
-		return (
-			<div>
-				<div>
-					<span style={{ fontWeight: 'bold' }}>Country:</span>{' '}
-					{COUNTRIES_OPTIONS.find(
-						(country) => country?.value === login?.country
-					)?.label || '-'}
-				</div>
-				<div>
-					<span style={{ fontWeight: 'bold' }}>IP Address:</span> {login?.ip}
-				</div>
-				<div>
-					<span style={{ fontWeight: 'bold' }}>Device:</span> {login?.device}
-				</div>
-			</div>
-		);
+	const formatDate = (date) => {
+		return moment(date).format('DD/MMM/YYYY, hh:mmA ').toUpperCase();
 	};
 
 	const requestExchangeStakers = (page = 1, limit = 50) => {
@@ -193,11 +182,6 @@ const UserStaking = () => {
 			requestExchangeStakers(page + 1, limit);
 		}
 		setQueryFilters({ ...queryFilters, currentTablePage: count });
-	};
-
-	const handleSessionModal = () => {
-		setDisplayRevokeModal(false);
-		setSelectedSession();
 	};
 
 	return (
@@ -242,14 +226,14 @@ const UserStaking = () => {
 								<Input
 									style={{}}
 									placeholder="Search User ID, Email or username"
-									// onChange={(e) =>
-									// 	{}
-									// }
-									// value={stakePoolCreation.name}
+									onChange={(e) => setUserQuery({ search: e.target.value })}
+									value={userQuery.search}
 								/>
 
 								<Button
-									onClick={() => {}}
+									onClick={() => {
+										setQueryValues(userQuery);
+									}}
 									style={{
 										backgroundColor: '#288500',
 										color: 'white',
@@ -283,8 +267,8 @@ const UserStaking = () => {
 							</span> */}
 							{/* <span>Total: {queryFilters.total || '-'}</span> */}
 							<div>
-								<span style={{ fontWeight: 'bold' }}>Total stakers:</span> -
-								users
+								<span style={{ fontWeight: 'bold' }}>Total stakers:</span>{' '}
+								{queryFilters.total} users
 							</div>
 							<div>
 								<span style={{ fontWeight: 'bold' }}>Appox. stake value:</span>{' '}
@@ -333,7 +317,9 @@ const UserStaking = () => {
 							<Table
 								className="blue-admin-table"
 								columns={columns}
-								dataSource={userData}
+								dataSource={userData.sort((a, b) => {
+									return statuses[a.status] - statuses[b.status];
+								})}
 								// expandedRowRender={renderRowContent}
 								expandRowByClick={true}
 								rowKey={(data) => {

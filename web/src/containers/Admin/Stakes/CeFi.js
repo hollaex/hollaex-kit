@@ -16,13 +16,11 @@ import {
 import { Link } from 'react-router';
 import {
 	requestStakePools,
-	requestStakePoolsDownload,
 	requestUsers,
 	requestUserData,
 	createStakePool,
 	updateStakePool,
 } from './actions';
-import { COUNTRIES_OPTIONS } from '../../../utils/countries';
 import moment from 'moment';
 import _debounce from 'lodash/debounce';
 import {
@@ -38,7 +36,7 @@ const CeFi = ({ coins }) => {
 	const searchRef = useRef(null);
 	const [userData, setUserData] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
-	const [queryValues, setQueryValues] = useState({});
+	const [queryValues] = useState({});
 	const [queryFilters, setQueryFilters] = useState({
 		total: 0,
 		page: 1,
@@ -88,6 +86,7 @@ const CeFi = ({ coins }) => {
 	const [displayStatusModel, setDisplayStatusModel] = useState(false);
 
 	const [selectedPool, setSelectedPool] = useState();
+	const [editMode, setEditMode] = useState(false);
 	const columns = [
 		{
 			title: 'Asset',
@@ -220,7 +219,19 @@ const CeFi = ({ coins }) => {
 			key: 'edit',
 			render: (user_id, data) => {
 				return (
-					<div style={{ textDecoration: 'underline', cursor: 'pointer' }}>
+					<div
+						onClick={async () => {
+							setEditMode(true);
+							await handleEmailChange(data.account_id);
+							setDisplayStatePoolCreation(true);
+							setStakePoolCreation({
+								...data,
+								perpetual_stake: data.duration ? true : false,
+								slash_earnings: data.slashing_earning_percentage ? true : false,
+							});
+						}}
+						style={{ textDecoration: 'underline', cursor: 'pointer' }}
+					>
 						Edit
 					</div>
 				);
@@ -292,6 +303,7 @@ const CeFi = ({ coins }) => {
 	useEffect(() => {
 		let pairBase = balanceData[`${stakePoolCreation.currency}_available`] || 0;
 		setSelectedCurrencyBalance(pairBase);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [balanceData]);
 
 	useEffect(() => {
@@ -335,10 +347,6 @@ const CeFi = ({ coins }) => {
 		if (searchRef && searchRef.current && searchRef.current.focus) {
 			searchRef.current.focus();
 		}
-	};
-
-	const requestDownload = () => {
-		return requestStakePoolsDownload({ ...queryValues, format: 'csv' });
 	};
 
 	const requestStakes = (page = 1, limit = 50) => {
@@ -431,18 +439,18 @@ const CeFi = ({ coins }) => {
 
 	const handleSearch = _debounce(searchUser, 1000);
 
-	const onHandleCreateStakePool = async () => {
-		try {
-			await createStakePool(stakePoolCreation);
-		} catch (error) {}
-	};
+	// const onHandleCreateStakePool = async () => {
+	// 	try {
+	// 		await createStakePool(stakePoolCreation);
+	// 	} catch (error) {}
+	// };
 
 	const renderStakePoolCreationModal = () => {
 		if (step === 1) {
 			return (
 				<>
 					<h1 style={{ fontWeight: '600', color: 'white' }}>
-						Create a stake pool
+						{!editMode ? 'Create a' : 'Edit'} stake pool
 					</h1>
 
 					<h3
@@ -500,7 +508,7 @@ const CeFi = ({ coins }) => {
 			return (
 				<>
 					<h1 style={{ fontWeight: '600', color: 'white' }}>
-						Create a stake pool
+						{!editMode ? 'Create a' : 'Edit'} stake pool
 					</h1>
 
 					<h3
@@ -536,7 +544,7 @@ const CeFi = ({ coins }) => {
 			return (
 				<>
 					<h1 style={{ fontWeight: '600', color: 'white' }}>
-						Create a stake pool
+						{!editMode ? 'Create a' : 'Edit'} stake pool
 					</h1>
 
 					<h3
@@ -600,6 +608,7 @@ const CeFi = ({ coins }) => {
 									perpetual_stake: e.target.checked,
 									...(e.target.checked && {
 										early_unstake: false,
+
 										slashing: false,
 										duration: 0,
 										slashing_principle_percentage: 0,
@@ -626,7 +635,7 @@ const CeFi = ({ coins }) => {
 			return (
 				<>
 					<h1 style={{ fontWeight: '600', color: 'white' }}>
-						Create a stake pool
+						{!editMode ? 'Create a' : 'Edit'} stake pool
 					</h1>
 
 					<h3
@@ -844,7 +853,7 @@ const CeFi = ({ coins }) => {
 			return (
 				<>
 					<h1 style={{ fontWeight: '600', color: 'white' }}>
-						Create a stake pool
+						{!editMode ? 'Create a' : 'Edit'} stake pool
 					</h1>
 
 					<h3
@@ -879,7 +888,7 @@ const CeFi = ({ coins }) => {
 							onChange={(e) =>
 								setStakePoolCreation({
 									...stakePoolCreation,
-									min_amount: Number(e.target.value),
+									min_amount: e.target.value,
 								})
 							}
 							value={stakePoolCreation.min_amount}
@@ -896,7 +905,7 @@ const CeFi = ({ coins }) => {
 							onChange={(e) =>
 								setStakePoolCreation({
 									...stakePoolCreation,
-									max_amount: Number(e.target.value),
+									max_amount: e.target.value,
 								})
 							}
 							value={stakePoolCreation.max_amount}
@@ -908,7 +917,7 @@ const CeFi = ({ coins }) => {
 			return (
 				<>
 					<h1 style={{ fontWeight: '600', color: 'white' }}>
-						Create a stake pool
+						{!editMode ? 'Create a' : 'Edit'} stake pool
 					</h1>
 
 					<h3
@@ -963,7 +972,7 @@ const CeFi = ({ coins }) => {
 			return (
 				<>
 					<h1 style={{ fontWeight: '600', color: 'white' }}>
-						Create a stake pool
+						{!editMode ? 'Create a' : 'Edit'} stake pool
 					</h1>
 
 					<h3
@@ -1371,11 +1380,23 @@ const CeFi = ({ coins }) => {
 								}
 								if (currentStep >= 10) {
 									try {
-										await createStakePool(stakePoolCreation);
+										stakePoolCreation.min_amount = Number(
+											stakePoolCreation.min_amount
+										);
+										stakePoolCreation.max_amount = Number(
+											stakePoolCreation.max_amount
+										);
+										if (!editMode) {
+											await createStakePool(stakePoolCreation);
+										} else {
+											await updateStakePool(stakePoolCreation);
+										}
 										setStakePoolCreation(defaultStakePool);
 										setStep(1);
 										requestStakes(queryFilters.page, queryFilters.limit);
-										message.success('Stake pool created.');
+										message.success(
+											`Stake pool ${!editMode ? 'created' : 'edited'}.`
+										);
 									} catch (error) {
 										message.error(error.response.data.message);
 										return;
@@ -1393,7 +1414,15 @@ const CeFi = ({ coins }) => {
 								opacity: step === 9 && confirmText !== 'I UNDERSTAND' ? 0.4 : 1,
 							}}
 							type="default"
-							disabled={step === 9 && confirmText !== 'I UNDERSTAND'}
+							disabled={
+								(step === 9 && confirmText !== 'I UNDERSTAND') ||
+								(step === 1 && !stakePoolCreation.currency) ||
+								(step === 2 && !stakePoolCreation.name) ||
+								(step === 3 && !stakePoolCreation.apy) ||
+								(step === 5 && !stakePoolCreation.min_amount) ||
+								(step === 5 && !stakePoolCreation.max_amount) ||
+								(step === 7 && !stakePoolCreation.account_id)
+							}
 						>
 							Next
 						</Button>
@@ -1594,11 +1623,14 @@ const CeFi = ({ coins }) => {
 									}}
 								>
 									<div>Settlement time: 24 hours</div>
-									<div>Required to settle: -</div>
+									<div>
+										Required to settle: {selectedPool?.reward}{' '}
+										{selectedPool.currency.toUpperCase()}
+									</div>
 									<div>
 										Source wallet: {emailOptions[0].label}:{' '}
 										{balanceData[`${selectedPool.currency}_available`] || 0}{' '}
-										{selectedPool.currency}
+										{selectedPool.currency.toUpperCase()}
 									</div>
 									{selectedPool.status !== 'paused' && (
 										<div
@@ -1718,6 +1750,7 @@ const CeFi = ({ coins }) => {
 								height: 35,
 							}}
 							type="default"
+							disabled={confirmTextClosePool !== 'I UNDERSTAND'}
 						>
 							Proceed
 						</Button>
@@ -1740,6 +1773,8 @@ const CeFi = ({ coins }) => {
 				<div>
 					<Button
 						onClick={() => {
+							setEditMode(false);
+							setStakePoolCreation(defaultStakePool);
 							setDisplayStatePoolCreation(true);
 						}}
 						style={{

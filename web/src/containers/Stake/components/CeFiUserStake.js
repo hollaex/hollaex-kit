@@ -1,26 +1,17 @@
-import React, { useState, useEffect, Fragment, useRef } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import mathjs from 'mathjs';
-import classnames from 'classnames';
-import { ClockCircleOutlined } from '@ant-design/icons';
+import React, { useState, useEffect } from 'react';
+
 import {
 	Button as AntBtn,
-	Switch,
 	Tabs,
 	Modal,
 	Input,
-	InputNumber,
 	Spin,
 	Table,
 	message,
+	Progress,
 } from 'antd';
 
-import {
-	CloseOutlined,
-	ExclamationCircleOutlined,
-	ExclamationCircleFilled,
-} from '@ant-design/icons';
+import { CloseOutlined } from '@ant-design/icons';
 import {
 	requestStakePools,
 	createStaker,
@@ -52,6 +43,15 @@ const CeFiUserStake = () => {
 
 	const [stakerAmount, setStakerAmount] = useState();
 	const [selectedStaker, setSelectedStaker] = useState();
+	const [queryValues] = useState();
+	const [queryFilters, setQueryFilters] = useState({
+		total: 0,
+		page: 1,
+		pageSize: 10,
+		limit: 50,
+		currentTablePage: 1,
+		isRemaining: true,
+	});
 
 	const columns = [
 		{
@@ -86,15 +86,46 @@ const CeFiUserStake = () => {
 			title: 'DURATION',
 			dataIndex: 'duration',
 			key: 'duration',
-			render: (user_id, data) => {
-				return <div className="d-flex">{data?.stake?.duration} days</div>;
+			render: (_user_id, data) => {
+				return (
+					<div className="d-flex">
+						{data?.stake?.duration ? (
+							<span
+								style={{
+									display: 'flex',
+									flexDirection: 'row',
+									width: 120,
+									gap: 10,
+								}}
+							>
+								<div style={{ flex: 1 }}>
+									<Progress
+										percent={
+											((data?.stake?.duration -
+												calculateRemainingDays(
+													data?.stake?.duration,
+													data?.created_at
+												)) *
+												100) /
+											data?.stake?.duration
+										}
+										showInfo={false}
+									/>
+								</div>
+								<div style={{ flex: 1 }}>{data?.stake?.duration} days</div>
+							</span>
+						) : (
+							'∞ Perpetual'
+						)}{' '}
+					</div>
+				);
 			},
 		},
 		{
 			title: 'STARTED',
 			dataIndex: 'created_at',
 			key: 'created_at',
-			render: (user_id, data) => {
+			render: (_user_id, data) => {
 				return <div className="d-flex">{formatDate(data?.created_at)}</div>;
 			},
 		},
@@ -102,10 +133,10 @@ const CeFiUserStake = () => {
 			title: 'END',
 			dataIndex: 'expiry_date',
 			key: 'expiry_date',
-			render: (user_id, data) => {
+			render: (_user_id, data) => {
 				return (
 					<div className="d-flex">
-						{data?.closing ? formatDate(data?.closing) : 'Perpetual'}
+						{data?.closing ? formatDate(data?.closing) : '∞ Perpetual'}
 					</div>
 				);
 			},
@@ -114,7 +145,7 @@ const CeFiUserStake = () => {
 			title: 'EARNT',
 			dataIndex: 'earnt',
 			key: 'earnt',
-			render: (user_id, data) => {
+			render: (_user_id, data) => {
 				return (
 					<div className="d-flex">
 						{data?.reward - data?.slashed} {data?.currency.toUpperCase()}
@@ -126,7 +157,7 @@ const CeFiUserStake = () => {
 			title: 'Stake',
 			dataIndex: 'status',
 			key: 'status',
-			render: (user_id, data) => {
+			render: (_user_id, data) => {
 				return (
 					<div className="d-flex" style={{ gap: 20 }}>
 						{data.status === 'unstaking' ? (
@@ -141,7 +172,7 @@ const CeFiUserStake = () => {
 									data.stake.duration
 										? data.stake.early_unstake
 											? false
-											: !isUnstackable(data.stake)
+											: !isUnstackable(data.stake, data.createdAt)
 										: false
 								}
 								onClick={async () => {
@@ -150,7 +181,10 @@ const CeFiUserStake = () => {
 								}}
 								className="ant-btn green-btn ant-tooltip-open ant-btn-primary"
 							>
-								{data.stake.early_unstake ? 'UNSTAKE EARLY' : 'UNSTAKE'}
+								{data.stake.early_unstake &&
+								calculateRemainingDays(data?.stake?.duration, data.created_at)
+									? 'UNSTAKE EARLY'
+									: 'UNSTAKE'}
 							</AntBtn>
 						)}
 					</div>
@@ -164,23 +198,62 @@ const CeFiUserStake = () => {
 			setStakePools(res.data);
 		});
 
-		requestStakers().then((res) => {
-			setUserStakeData(res.data);
-		});
+		setTimeout(() => {
+			requestExchangeStakers();
+		}, 1000);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+
+	useEffect(() => {
+		requestExchangeStakers(queryFilters.page, queryFilters.limit);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [queryValues]);
+
+	const requestExchangeStakers = (page = 1, limit = 50) => {
+		setIsLoading(true);
+		requestStakers({ page, limit, ...queryValues })
+			.then((response) => {
+				setUserStakeData(
+					page === 1 ? response.data : [...userStakeData, ...response.data]
+				);
+
+				setQueryFilters({
+					total: response.count,
+					fetched: true,
+					page,
+					currentTablePage: page === 1 ? 1 : queryFilters.currentTablePage,
+					isRemaining: response.count > page * limit,
+				});
+
+				setIsLoading(false);
+			})
+			.catch((error) => {
+				// const message = error.message;
+				setIsLoading(false);
+			});
+	};
+
+	const pageChange = (count, pageSize) => {
+		const { page, limit, isRemaining } = queryFilters;
+		const pageCount = count % 5 === 0 ? 5 : count % 5;
+		const apiPageTemp = Math.floor(count / 5);
+		if (limit === pageSize * pageCount && apiPageTemp >= page && isRemaining) {
+			requestExchangeStakers(page + 1, limit);
+		}
+		setQueryFilters({ ...queryFilters, currentTablePage: count });
+	};
 
 	const formatDate = (date) => {
 		return moment(date).format('DD/MMM/YYYY').toUpperCase();
 	};
 
-	const isUnstackable = (stakePool) => {
-		const stakePoolCreationDate = moment(stakePool.created_at);
+	const isUnstackable = (stakePool, createdAt) => {
+		const startingDate = moment(createdAt);
 		const now = moment();
-		const numberOfDaysPassed = now.diff(stakePoolCreationDate, 'days');
+		const numberOfDaysPassed = now.diff(startingDate, 'days');
 
-		return (
-			numberOfDaysPassed !== 0 && numberOfDaysPassed % stakePool.duration === 0
-		);
+		const isUnstacklable = numberOfDaysPassed - stakePool.duration;
+		return isUnstacklable;
 	};
 
 	const readBeforeActionModel = () => {
@@ -318,7 +391,7 @@ const CeFiUserStake = () => {
 						<div style={{ width: '100%' }}>
 							<div>
 								<span style={{ fontWeight: 'bold' }}>
-									{selectedPool.currency} available:
+									{selectedPool.currency.toUpperCase()} available:
 								</span>{' '}
 								1,000
 							</div>
@@ -712,9 +785,7 @@ const CeFiUserStake = () => {
 								const stakes = await requestStakePools();
 								setStakePools(stakes.data);
 
-								const stakers = await requestStakers();
-
-								setUserStakeData(stakers.data);
+								requestExchangeStakers();
 
 								setConfirmStake(false);
 
@@ -877,27 +948,47 @@ const CeFiUserStake = () => {
 							<h3 style={{ color: 'white' }}>Review and unstake</h3>
 							<div>
 								<span style={{ fontWeight: 'bold' }}>Time remaining:</span>{' '}
-								{selectedStaker?.stake?.duration}
-								days ({formatDate(selectedStaker?.stake?.duration)})
+								{selectedStaker?.stake?.duration ? (
+									<>
+										{calculateRemainingDays(
+											selectedStaker?.stake?.duration,
+											selectedStaker.created_at
+										)}{' '}
+										days (
+										{selectedStaker?.stake?.duration &&
+											formatDate(selectedStaker?.created_at)}
+										)
+									</>
+								) : (
+									'Perpetual'
+								)}
 							</div>
 							<div>
 								<span style={{ fontWeight: 'bold' }}>
 									Penalty upon initial stake principle:
 								</span>{' '}
-								-- {selectedStaker.currency} (-
-								{selectedStaker?.stake?.slashing_principle_percentage}%)
+								{/* -- {selectedStaker.currency} */}
+								(-
+								{selectedStaker?.stake?.slashing_principle_percentage
+									? `${selectedStaker?.stake?.slashing_principle_percentage}%`
+									: '-'}
+								)
 							</div>
 							<div>
 								<span style={{ fontWeight: 'bold' }}>
 									Forfeiture of earnings:
 								</span>{' '}
-								-- {selectedStaker.currency} (-
-								{selectedStaker?.stake?.slashing_earning_percentage}%)
+								{/* -- {selectedStaker.currency} */}
+								(-
+								{selectedStaker?.stake?.slashing_earning_percentage
+									? `${selectedStaker?.stake?.slashing_earning_percentage}%`
+									: '-'}
+								)
 							</div>
 
 							<div style={{ marginTop: 20 }}>
-								<span style={{ fontWeight: 'bold' }}>Amount to receive:</span> -{' '}
-								{selectedStaker.currency}
+								<span style={{ fontWeight: 'bold' }}>Amount to receive:</span>{' '}
+								{selectedStaker.reward} {selectedStaker.currency.toUpperCase()}
 							</div>
 							<div>(Requires 24 hours to settle)</div>
 						</div>
@@ -930,9 +1021,7 @@ const CeFiUserStake = () => {
 								try {
 									await deleteStaker({ id: selectedStaker.id });
 
-									requestStakers().then((res) => {
-										setUserStakeData(res.data);
-									});
+									requestExchangeStakers();
 
 									const stakes = await requestStakePools();
 									setStakePools(stakes.data);
@@ -955,7 +1044,7 @@ const CeFiUserStake = () => {
 							}}
 							type="default"
 						>
-							PROCEED
+							UNSTAKE
 						</AntBtn>
 					</div>
 				</Modal>
@@ -997,10 +1086,12 @@ const CeFiUserStake = () => {
 							}}
 						>
 							<h2 style={{ color: 'white' }}>
-								You've successfully unstaked ABC
+								You've successfully unstaked{' '}
+								{selectedStaker.currency.toUpperCase()}
 							</h2>
 							<div style={{ marginTop: 20 }}>
-								<span style={{ fontWeight: 'bold' }}>Amount to receive:</span> -
+								<span style={{ fontWeight: 'bold' }}>Amount to receive:</span>{' '}
+								{selectedStaker.reward} {selectedStaker.currency.toUpperCase()}
 							</div>
 							<div>(Requires 24 hours to settle)</div>
 						</div>
@@ -1017,6 +1108,7 @@ const CeFiUserStake = () => {
 						<AntBtn
 							onClick={() => {
 								setUnstakeConfirm(false);
+								setSelectedStaker();
 							}}
 							style={{
 								backgroundColor: '#5D63FF',
@@ -1031,6 +1123,7 @@ const CeFiUserStake = () => {
 						<AntBtn
 							onClick={async () => {
 								setUnstakeConfirm(false);
+								setSelectedStaker();
 							}}
 							style={{
 								backgroundColor: '#5D63FF',
@@ -1050,6 +1143,14 @@ const CeFiUserStake = () => {
 
 	const handleTabChange = (key) => {
 		setActiveTab(key);
+	};
+
+	const calculateRemainingDays = (duration, createdAt) => {
+		const startingDate = moment(createdAt);
+		const stakinDays = moment().diff(startingDate, 'days');
+		const remaininDays = duration - stakinDays;
+
+		return remaininDays;
 	};
 
 	return (
@@ -1112,11 +1213,13 @@ const CeFiUserStake = () => {
 							}}
 						>
 							{stakePools.map((pool) => {
-								const alreadyStaked =
-									(userStakeData || [])?.filter(
-										(staker) =>
-											staker.stake_id == pool.id && staker.status !== 'closed'
-									)?.length > 0;
+								// const alreadyStaked =
+								// 	(userStakeData || [])?.filter(
+								// 		(staker) =>
+								// 			staker.stake_id == pool.id && staker.status !== 'closed'
+								// 	)?.length > 0;
+
+								const alreadyStaked = false;
 
 								return (
 									<div
@@ -1325,6 +1428,10 @@ const CeFiUserStake = () => {
 									expandRowByClick={true}
 									rowKey={(data) => {
 										return data.id;
+									}}
+									pagination={{
+										current: queryFilters.currentTablePage,
+										onChange: pageChange,
 									}}
 								/>
 							</Spin>
