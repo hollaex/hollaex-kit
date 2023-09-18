@@ -237,7 +237,7 @@ const updateRewardsCheckRunner = () => {
 			const stakePools = await stakePoolModel.findAll({ where: { status: 'active' } });
 
 			for (const stakePool of stakePools) {
-				const stakers = await stakerModel.findAll({ where: { status: 'staking' } });
+				const stakers = await stakerModel.findAll({ where: { stake_id: stakePool.id, status: 'staking' } });
 
 				 for (const staker of stakers) {
 					const annualEarning = new BigNumber(staker.amount).multipliedBy(new BigNumber(stakePool.apy)).dividedBy(100);
