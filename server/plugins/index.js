@@ -205,7 +205,9 @@ const unstakingCheckRunner = () => {
 					continue;
 				}
 
-				await toolsLib.wallet.transferAssetByKitIds(stakePool.account_id, staker.id, stakePool.currency, amountAfterSlash, 'Admin transfer stake', user.email, undefined);
+				if (amountAfterSlash > 0) {
+					await toolsLib.wallet.transferAssetByKitIds(stakePool.account_id, staker.id, stakePool.currency, amountAfterSlash, 'Admin transfer stake', user.email, undefined);
+				}
 
 				await staker.update({ status: 'closed' }, {
 					fields: ['status']
