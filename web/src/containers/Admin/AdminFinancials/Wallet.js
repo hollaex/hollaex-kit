@@ -144,7 +144,9 @@ const Wallet = () => {
 			</div>
 			<div className="mt-5">
 				<span
-					onClick={(e) => { requestDownload(); }}
+					onClick={(e) => {
+						requestDownload();
+					}}
 					className="mb-2 underline-text cursor-pointer"
 				>
 					Download below CSV table

@@ -7,7 +7,7 @@ import {
 	Coin,
 	ActionNotification,
 } from 'components';
-import Ionicon from 'react-ionicons';
+import { CloseOutlined } from '@ant-design/icons';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 
@@ -44,10 +44,9 @@ const AmountContent = ({
 		<Fragment>
 			<ActionNotification
 				text={
-					<Ionicon
-						icon="md-close"
-						fontSize="24px"
-						className="action_notification-image"
+					<CloseOutlined
+						style={{ fontSize: '24px' }}
+						className="action_notification-image secondary-text"
 					/>
 				}
 				onClick={onClose}

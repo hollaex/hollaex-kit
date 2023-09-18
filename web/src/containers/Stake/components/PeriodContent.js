@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import { Radio } from 'antd';
 import mathjs from 'mathjs';
 import { EditWrapper, Button, IconTitle, ActionNotification } from 'components';
-import Ionicon from 'react-ionicons';
+import { CloseOutlined } from '@ant-design/icons';
 import STRINGS from 'config/localizedStrings';
 import { getEstimatedRemainingTime, roundDuration } from 'utils/eth';
 import withConfig from 'components/ConfigProvider/withConfig';
@@ -37,10 +37,9 @@ const PeriodContent = ({
 		<Fragment>
 			<ActionNotification
 				text={
-					<Ionicon
-						icon="md-close"
-						fontSize="24px"
-						className="action_notification-image"
+					<CloseOutlined
+						style={{ fontSize: '24px' }}
+						className="action_notification-image secondary-text"
 					/>
 				}
 				onClick={onClose}

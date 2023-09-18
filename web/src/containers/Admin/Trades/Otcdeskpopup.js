@@ -147,6 +147,7 @@ const Otcdeskpopup = ({
 		kitPlan !== 'crypto' && 'coinbase',
 		kitPlan !== 'crypto' && 'bitfinex2',
 		kitPlan !== 'crypto' && 'kraken',
+		kitPlan !== 'crypto' && 'bybit',
 	];
 	useEffect(() => {
 		if (
@@ -470,6 +471,9 @@ const Otcdeskpopup = ({
 			)}
 			{_toLower(kit?.info?.plan) !== 'crypto' && (
 				<Option value="kraken">Kraken</Option>
+			)}
+			{_toLower(kit?.info?.plan) !== 'crypto' && (
+				<Option value="bybit">Bybit</Option>
 			)}
 			{hasOracle && <Option value="oracle">Hollaex Oracle</Option>}
 			{/* {_toLower(kit?.info?.plan) !== 'crypto' && <Option value="uniswap">Uniswap</Option>} */}
@@ -1181,7 +1185,8 @@ const Otcdeskpopup = ({
 											)}
 
 											<div className="mt-3 ">
-												Price quote expiry time (seconds)
+												Price quote expiry time in seconds{' '}
+												<span>(30 seconds is recommended)</span>.
 											</div>
 											<Input
 												type="number"
@@ -1280,6 +1285,12 @@ const Otcdeskpopup = ({
 												type="primary"
 												className="green-btn"
 												onClick={() => {
+													if (spreadMul.quote_expiry_time < 10) {
+														message.error(
+															'Quote Expiry time cannot be smaller than 10'
+														);
+														return;
+													}
 													if (!formula) {
 														message.warning(
 															'Please input formula in Advanced section'

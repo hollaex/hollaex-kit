@@ -80,6 +80,7 @@ subscriber.on('message', (channel, message) => {
 
 const updateAllConfig = (newConfigurations, newSecrets, newFrozenUsers) => {
 	configuration = newConfigurations;
+	if (!configuration?.kit?.info?.plan) configuration.kit.info.plan = 'basic';
 	secrets = newSecrets;
 	frozenUsers = newFrozenUsers;
 };
@@ -567,6 +568,13 @@ exports.EXPLORERS = {
 			baseUrl: 'https://etcblockexplorer.com',
 			txPath: '/tx'
 		}
+	],
+	arb: [
+		{
+			name: 'Arbiscan Explorer',
+			baseUrl: 'https://arbiscan.io',
+			txPath: '/tx'
+		}
 	]
 };
 
@@ -624,10 +632,10 @@ exports.EXCHANGE_PLAN_INTERVAL_TIME = {
 	boost: 60
 };
 exports.EXCHANGE_PLAN_PRICE_SOURCE = {
-	fiat: ['hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'uniswap'],
-	boost: ['hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'uniswap'],
+	fiat: ['hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'bybit', 'uniswap'],
+	boost: ['hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'bybit', 'uniswap'],
 	crypto: ['hollaex', 'oracle', 'binance'],
-	ALL: [ 'hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'uniswap']
+	ALL: [ 'hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'bybit', 'uniswap']
 };
 
 

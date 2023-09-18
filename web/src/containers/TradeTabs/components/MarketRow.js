@@ -13,7 +13,6 @@ class MarketRow extends Component {
 			loading,
 			index,
 			isAsset = false,
-			constants,
 		} = this.props;
 
 		const {
@@ -26,9 +25,12 @@ class MarketRow extends Component {
 			icon_id,
 			volume_native_text,
 			symbol,
-			pairTwo,
+			pairBase,
 			fullname,
+			sourceType: type,
 		} = market;
+
+		const isBrokerage = type === 'network' || type === 'broker';
 
 		return (
 			<tr
@@ -70,19 +72,29 @@ class MarketRow extends Component {
 				</td>
 				{isAsset && (
 					<td>
-						{pairTwo.symbol === constants.native_currency ? (
-							<EditWrapper stringId="MARKET_ROW.NATIVE">
-								{STRINGS['MARKET_ROW.NATIVE']}
+						{type === 'network' ? (
+							<EditWrapper stringId="DIGITAL_ASSETS.NETWORK">
+								{STRINGS['DIGITAL_ASSETS.NETWORK']}
+							</EditWrapper>
+						) : type === 'broker' ? (
+							<EditWrapper stringId="DIGITAL_ASSETS.BROKER">
+								{STRINGS['DIGITAL_ASSETS.BROKER']}
 							</EditWrapper>
 						) : (
-							<EditWrapper stringId="MARKET_ROW.NO_NATIVE">
-								{STRINGS['MARKET_ROW.NO_NATIVE']}
+							<EditWrapper stringId="DIGITAL_ASSETS.ORDERBOOK">
+								{STRINGS['DIGITAL_ASSETS.ORDERBOOK']}
 							</EditWrapper>
 						)}
 					</td>
 				)}
 				<td>
-					<PriceChange market={market} />
+					{isBrokerage ? (
+						<EditWrapper stringId="DIGITAL_ASSETS.BROKERAGE">
+							{STRINGS['DIGITAL_ASSETS.BROKERAGE']}
+						</EditWrapper>
+					) : (
+						<PriceChange market={market} key={key} />
+					)}
 				</td>
 				{!isAsset && (
 					<td>
@@ -121,30 +133,36 @@ class MarketRow extends Component {
 							<div className="icon-container">
 								<div
 									className={
-										pairTwo.type === 'blockchain'
+										pairBase.type === 'blockchain'
 											? 'squar-box'
-											: pairTwo.type === 'fiat'
+											: pairBase.type === 'fiat'
 											? 'circle-icon'
 											: 'triangle-icon'
 									}
 								/>
 							</div>
-							<div className="ml-1 caps-first">{pairTwo.type}</div>
+							<div className="ml-1 caps-first">{pairBase.type}</div>
 						</div>
 					</td>
 				)}
 				<td className="td-chart">
-					<SparkLine
-						data={
-							!chartData[key] ||
-							(chartData[key] &&
-								chartData[key].close &&
-								chartData[key].close.length < 2)
-								? { close: [0.1, 0.1, 0.1], open: [] }
-								: chartData[key]
-						}
-						containerProps={{ style: { height: '100%', width: '100%' } }}
-					/>
+					{isBrokerage ? (
+						<EditWrapper stringId="DIGITAL_ASSETS.BROKERAGE">
+							{STRINGS['DIGITAL_ASSETS.BROKERAGE']}
+						</EditWrapper>
+					) : (
+						<SparkLine
+							data={
+								!chartData[key] ||
+								(chartData[key] &&
+									chartData[key].close &&
+									chartData[key].close.length < 2)
+									? { close: [0.1, 0.1, 0.1], open: [] }
+									: chartData[key]
+							}
+							containerProps={{ style: { height: '100%', width: '100%' } }}
+						/>
+					)}
 				</td>
 			</tr>
 		);

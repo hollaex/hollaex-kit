@@ -71,7 +71,7 @@ const subscribedToCoin = (coin) => {
 };
 
 const subscribedToPair = (pair) => {
-	return getKitPairs().includes(pair);
+	return (getKitPairs().includes(pair) || getQuickTradePairs().includes(pair));
 };
 
 const getKitTiers = () => {
@@ -80,6 +80,10 @@ const getKitTiers = () => {
 
 const getKitTier = (tier) => {
 	return GET_TIERS()[tier];
+};
+
+const getQuickTradePairs = () => {
+	return (getQuickTrades() || []).map(config => config.symbol);
 };
 
 const isValidTierLevel = (level) => {
@@ -450,6 +454,15 @@ const getCharts = (from, to, resolution, opts = {
 	additionalHeaders: null
 }) => {
 	return getNodeLib().getCharts(from, to, resolution, opts);
+};
+
+const getMiniCharts = (assets, opts = {
+	from: null, 
+	to: null, 
+	quote: null,
+	additionalHeaders: null
+}) => {
+	return getNodeLib().getMiniCharts(assets, opts);
 };
 
 const getUdfConfig = (opts = {
@@ -839,6 +852,7 @@ module.exports = {
 	getOrderbooks,
 	getChart,
 	getCharts,
+	getMiniCharts,
 	getUdfConfig,
 	getUdfHistory,
 	getUdfSymbols,
@@ -871,4 +885,5 @@ module.exports = {
 	getQuickTrades,
 	getNetworkQuickTrades,
 	parseNumber,
+	getQuickTradePairs
 };

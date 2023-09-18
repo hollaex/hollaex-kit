@@ -3,6 +3,7 @@
 	"APP_SUB_TITLE": "Open Crypto Exchange",
 	"LOGOUT_CONFIRM_TEXT": "Are you sure you want to logout?",
 	"ADD_TRADING_PAIR": "Select a market",
+	"TRADE_TOOLS": "Tools",
 	"CANCEL_BASE_WITHDRAWAL": "Cancel {0} Withdrawal",
 	"CANCEL_WITHDRAWAL": "Cancel Withdrawal",
 	"CANCEL_WITHDRAWAL_POPUP_CONFIRM": "Do you want to cancel your pending withdrawal of:",
@@ -185,7 +186,8 @@
 		"TITLE": "Input you security codes",
 		"LABEL": "Input code (please check your email)",
 		"PLACEHOLDER": "Input the code sent to your email",
-		"FORM_TITLE": "A unique code was sent to your email that is required to finish the process. Please input the code sent to your email below along with your OTP code.",
+		"FORM_TITLE_TEXT": "A unique code was sent to your email that is required to finish the process. Please input the code sent to your email below{0}.",
+		"OTP_NOTE": " along with your OTP code",
 		"BUTTON": "submit",
 		"ERROR_INVALID": "The code you've entered is incorrect. Please try again",
 		"OTP_LABEL": "2FA Code (OTP)",
@@ -458,6 +460,7 @@
 		"TITLE_INTERFACE": "Interface",
 		"TITLE_LANGUAGE": "Language",
 		"TITLE_CHAT": "Chat",
+		"TITLE_ACCOUNT": "Account",
 		"TITLE_AUDIO_CUE": "Audio Cues",
 		"TITLE_MANAGE_RISK": "Manage Risk",
 		"ORDERBOOK_LEVEL": "Orderbook Levels (Max 20)",
@@ -495,6 +498,27 @@
 			"ADJUST": "(ADJUST PERCENTAGE)",
 			"ACTIVATE_RISK_MANAGEMENT": "Activate Risk Management",
 			"WARNING_POP_UP": "Warning pop ups"
+		},
+		"DELETE_ACCOUNT": {
+			"ACCESS": {
+				"TEXT": "Want to delete your account? Click {0}.",
+				"LINK": "here",
+				"DANGER_ZONE": {
+					"TITLE": "Danger Zone",
+					"TEXT": "Deleting your account will make both your account and funds inaccessible.",
+					"PROCEED": "Proceed",
+					"CANCEL": "Cancel"
+				}
+			},
+			"CONFIRMATION": {
+				"TITLE": "Delete Account",
+				"TEXT_1": "Deleting your account will permanently remove all your data from the exchange. This action is irreversible.",
+				"TEXT_2": "TYPE {0} to confirm account deletion.",
+				"KEY": "I UNDERSTAND",
+				"DELETE": "DELETE",
+				"CANCEL": "Cancel",
+				"PLACEHOLDER": "Type here"
+			}
 		}
 	},
 	"USER_APPS": {
@@ -709,7 +733,10 @@
 		"COMPLETED": "Matured",
 		"COMPLETED_TOOLTIP": "Stake is mature. Continue staking to earn more rewards or unstake to claim rewards.",
 		"CONNECT_ERROR": "Please check your wallet",
-		"INSTALL_METAMASK": "You must install Metamask into your browser: https://metamask.io/download.html",
+		"INSTALL_METAMASK_DETAILS": {
+			"TITLE": "Install MetaMask",
+			"PROMPT": "You must install Metamask into your browser: {0}"
+		},
 		"INSTALL_METAMASK_TITLE": "MetaMask not detected",
 		"REWARDS": {
 			"0": { "CARD": "Earn rewards (no bonuses)", "TEXT": "regular rewards." },
@@ -1385,10 +1412,6 @@
 		}
 	},
 	"ASSET_INFO_PAGE": "Asset info page",
-	"MARKET_ROW": {
-		"NATIVE": "Native",
-		"NO_NATIVE": "No native source"
-	},
 	"DIGITAL_ASSETS": {
 		"DIGITAL_ASSETS_TITLE": "Digital assets",
 		"GO_BACK": "Go back",
@@ -1397,7 +1420,11 @@
 		"QUICK_TRADE": "QUICK TRADE",
 		"MARKETS": "MARKETS",
 		"WALLET": "WALLET",
-		"PRICE_SOURCE": "Price source"
+		"PRICE_SOURCE": "Price source",
+		"ORDERBOOK": "Orderbook",
+		"NETWORK": "Network Broker OTC",
+		"BROKER": "Local Broker OTC",
+		"BROKERAGE": "NA - (Brokerage)"
 	},
 	"HOLLAEX_TOKEN": {
 		"REMOVE_FAVOURITES": "Remove from favourites",
@@ -1413,6 +1440,13 @@
 		"MORE": "More",
 		"INFO": "info",
 		"TRADE": "TRADE",
+		"QUICK_TRADE": "QUICK TRADE {0}",
+		"PRICES": {
+			"TITLE": "Prices",
+			"QUICK_TRADE": "Quick Trade",
+			"SUBTITLE": "To view buy and sell prices for {0} visit {1}",
+			"FOOTER": "Market taker trading fees are applied to all trades executed through the Quick Trade."
+		},
 		"LIST": "Want to list your digital assets?",
 		"WEBSITE": "Website",
 		"EXPLORER": "Explorer"

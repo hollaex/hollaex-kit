@@ -127,14 +127,14 @@ const Sessions = ({ icons: ICONS, setSnackNotification, setNotification }) => {
 				stringId="SESSIONS.CONTENT.TITLE"
 				title={STRINGS['SESSIONS.CONTENT.TITLE']}
 				notification={
-					<div className="login-history_notifications-wrapper">
+					<div className="action_notification-container">
 						{!isMobile && (
 							<ActionNotification
 								stringId="SESSIONS.CONTENT.DOWNLOAD"
 								text={STRINGS['SESSIONS.CONTENT.DOWNLOAD']}
 								iconId="DATA"
 								iconPath={ICONS['DATA']}
-								className="download-logins"
+								className="blue-icon"
 								onClick={downloadSessions}
 								disable={fetching || sessions.count <= 0}
 							/>
@@ -144,7 +144,7 @@ const Sessions = ({ icons: ICONS, setSnackNotification, setNotification }) => {
 							text={STRINGS['REFRESH']}
 							iconId="REFRESH"
 							iconPath={STATIC_ICONS['REFRESH']}
-							className="refresh-history"
+							className="blue-icon"
 							onClick={refresh}
 							disable={fetching}
 						/>

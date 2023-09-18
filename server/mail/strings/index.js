@@ -27,6 +27,7 @@ const MAILTYPE = {
 	BANK_VERIFIED: 'bank_verified',
 	CONFIRM_EMAIL: 'confirm_email',
 	LOCKED_ACCOUNT: 'locked_account',
+	USER_DELETED: 'user_deleted',
 
 	// USER_VERIFICATION_REJECT split
 	USER_ID_VERIFICATION_REJECT: 'user_id_verification_reject',

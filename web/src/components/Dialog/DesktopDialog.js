@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Modal from 'react-modal';
-import Ionicon from 'react-ionicons';
+import { CloseOutlined } from '@ant-design/icons';
 import { Button, ActionNotification } from 'components';
 import STRINGS from 'config/localizedStrings';
 import { getClasesForLanguage, getLanguage } from 'utils/string';
@@ -53,10 +53,9 @@ class Dialog extends PureComponent {
 				{showCloseText && !closeButton && (
 					<ActionNotification
 						text={
-							<Ionicon
-								icon="md-close"
-								fontSize="24px"
-								className="action_notification-image"
+							<CloseOutlined
+								style={{ fontSize: '24px' }}
+								className="action_notification-image secondary-text"
 							/>
 						}
 						onClick={this.onRequestClose}

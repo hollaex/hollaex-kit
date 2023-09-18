@@ -59,7 +59,11 @@
 		"SECTION_3_CARD_5_TEXT": "We can take an extra care for your needs and have an online professional to help with your issues and inquiries.",
 		"SECTION_3_CARD_6_TITLE": "KYC INTEGRATION",
 		"SECTION_3_CARD_6_TEXT": "Flexible and integrable modules to apply KYC and user verification methods in different jurisdiction.",
-		"SECTION_3_BUTTON_1": "View Demo"
+		"SECTION_3_BUTTON_1": "View Demo",
+		"MAIN_TITLE": "暗号通貨取引所",
+		"MAIN_TEXT": "暗号資産を簡単に売買できます。メールアドレスでサインアップするだけで、主要な暗号資産を年中無休で取引できます。",
+		"TRADE_CRYPTO": "取引を開始する",
+		"VIEW_EXCHANGE": "ビュー交換"
 	},
 	"FOOTER": {
 		"FOOTER_LANGUAGE_TEXT": "LANGUAGE",
@@ -104,7 +108,9 @@
 			"SECTION_6_LINK_9": "YouTube"
 		},
 		"CLICK_HERE": "click here",
-		"VISIT_HERE": "visit here"
+		"VISIT_HERE": "visit here",
+		"TERMS_OF_SERVICE": "利用規約",
+		"PRIVACY_POLICY": "プライバシーポリシー"
 	},
 	"ACCOUNTS": {
 		"TITLE": "マイページ",
@@ -117,7 +123,10 @@
 		"TAB_SUMMARY": "マイページ",
 		"TAB_HISTORY": "履歴",
 		"TAB_API": "API",
-		"TAB_SIGNOUT": "ログアウト"
+		"TAB_SIGNOUT": "ログアウト",
+		"TAB_APPS": "アプリ",
+		"TAB_STAKE": "ステーク",
+		"TAB_FIAT": "フィアットコントロール"
 	},
 	"CONTACT_FORM": {
 		"CATEGORY_LABEL": "お問い合わせの種類",
@@ -154,14 +163,17 @@
 		"INCREASE_LIMIT": "限度額の増加が必要ですか？",
 		"QR_CODE": "このQRコードをスキャンして、お客様専用の入金アドレスへ入金できます。",
 		"NO_DATA": "利用可能な情報がありません。",
-		"FULL_MESSAGE_LIMIT": "{0}: {1} {2} {3}"
+		"FULL_MESSAGE_LIMIT": "{0}: {1} {2} {3}",
+		"QR_CODE_TITLE": "{0} 入金情報"
 	},
 	"LOGIN": {
 		"LOGIN_TO": "{0}にログイン",
 		"CANT_LOGIN": "ログインにお困りですか？",
 		"NO_ACCOUNT": "アカウントをお持ちでないですか？",
 		"CREATE_ACCOUNT": "アカウント作成",
-		"HELP": "ヘルプ"
+		"HELP": "ヘルプ",
+		"LOOKING_PRICES": "価格をお探しですか?",
+		"VIEW_MARKETS": "マーケットを見る"
 	},
 	"FORM_FIELDS": {
 		"EMAIL_LABEL": "メール",
@@ -190,7 +202,9 @@
 		"USER_EXIST": "既に登録されたメールアドレスです。",
 		"ACCEPT_TERMS": "利用規約およびプライバシーポリシーに同意してください。",
 		"STEP": "間違った値, step is {0}",
-		"ONLY_NUMBERS": "数字のみ入力可能です。"
+		"ONLY_NUMBERS": "数字のみ入力可能です。",
+		"MIN_VALUE_NE": "値は {0} より大きくなければなりません。",
+		"MAX_VALUE_NE": "値は {0} より小さい必要があります。"
 	},
 	"NOTIFICATIONS": {
 		"BUTTONS": {
@@ -218,14 +232,30 @@
 		"OTP_TITLE": "認証番号",
 		"OTP_HELP": "ヘルプ",
 		"OTP_BUTTON": "確認",
-		"ERROR_INVALID": "無効なOTPコードです。"
+		"ERROR_INVALID": "無効なOTPコードです。",
+		"OTP_FORM_INFO": "続行するには6桁のコードを入力してください",
+		"OTP_FORM_SUBNOTE_LINE_1": "コードは、2 要素認証 (2FA) または OTP コードとも呼ばれます。",
+		"OTP_FORM_SUBNOTE_LINE_2": "コードを紛失した場合は、サポートまでご連絡ください。"
 	},
 	"QUICK_TRADE_COMPONENT": {
 		"TITLE": "クイック取引",
 		"TOTAL_COST": "総額",
-		"BUTTON": "{0}",
+		"BUTTON": "注文の確認",
 		"INPUT": "{0}を{1}",
-		"TRADE_TITLE": "{0} {1}"
+		"TRADE_TITLE": "{0} {1}",
+		"INFO": "仮想通貨を取引するための最も速くて簡単な方法",
+		"CHANGE_TEXT": "変化",
+		"HIGH_24H": "24時間高",
+		"LOW_24H": "24時間低",
+		"BEST_BID": "最高の入札",
+		"BEST_ASK": "ベストアスク",
+		"FOOTER_TEXT": "クイック取引手数料はマーケットテイカーレートを使用します",
+		"FOOTER_TEXT_1": "出典",
+		"GO_TO_TEXT": "に行く",
+		"SOURCE_TEXT": "ブローカーOTC取引",
+		"SOURCE_TEXT_NETWORK": "ネットワークブローカーのOTC取引",
+		"VISIT": "訪問{0}",
+		"ASSET_INFO_PAGE": "アセット情報ページ"
 	},
 	"PREVIOUS_PAGE": "前のページ",
 	"NEXT_PAGE": "次のページ",
@@ -278,7 +308,9 @@
 	},
 	"VERIFICATION_EMAIL_REQUEST": {
 		"TITLE": "認証メールの再送信",
-		"BUTTON": "認証メールを再送信する"
+		"BUTTON": "認証メールを再送信する",
+		"SUBTITLE": "以下で別のメール認証リクエストを行ってください",
+		"SUPPORT": "サポート問い合わせ先"
 	},
 	"VERIFICATION_EMAIL_REQUEST_SUCCESS": {
 		"TITLE": "認証メールが再送信されました。",
@@ -438,7 +470,9 @@
 					"LIST_ITEM_3": "有効期間内の書類であり、満了日が鮮明に見えること",
 					"WARNING_1": "有効なパスポートのみ許可されます。高画質の写真またはスキャンされたイメージファイルを提出してください。：",
 					"WARNING_2": "提出する書類が本人の物か確認してください。間違った書類や偽造された書類の使用は法的処分およびアカウントが凍結処理されますのでご注意ください。",
-					"WARNING_3": "パスポートは居住証明書として提出できません。"
+					"WARNING_3": "パスポートは居住証明書として提出できません。",
+					"LIST_ITEM_0": "すべてのドキュメントの合計サイズは {0}mb を超えてはなりません",
+					"VIOLATION_ERROR": "アップロードされたすべてのドキュメントの合計サイズがアップロード制限の {0}mb を超えています。続行するには、より小さいファイルをアップロードしてください。"
 				},
 				"POR": {
 					"SECTION_1_TEXT_1": "本人確認手続きを早めるため、次をご確認ください：",
@@ -487,7 +521,18 @@
 			"LIST_ITEM_1": "出金限度額の増加",
 			"LIST_ITEM_2": "入金限度額の増加",
 			"LIST_ITEM_3": "低い手数料"
-		}
+		},
+		"EMAIL_VERIFICATION": "確認メールを送信",
+		"VERIFICATION_SENT": "確認送信済み",
+		"VERIFICATION_SENT_INFO": "メールを確認し、リンクをクリックしてメールを確認します。",
+		"OKAY": "わかった",
+		"TITLE_PAYMENT": "支払い方法を追加する",
+		"PAYMENT_VERIFICATION": "支払いの検証",
+		"START_PAYMENT_VERIFICATION": "検証の開始",
+		"PAYMENT_VERIFICATION_TEXT_1": "以下にお支払いアカウントの詳細を追加してください。",
+		"PAYMENT_VERIFICATION_TEXT_2": "認証が完了すると、アカウントにはさまざまな通貨の引き出しおよび入金方法が追加されるようになります。",
+		"ADD_ANOTHER_PAYMENT_METHOD": "別の支払い方法を追加する",
+		"PAYMENT_VERIFICATION_HELP_TEXT": "このセクションを確認するには、{0} セクションを完了する必要があります。"
 	},
 	"USER_SETTINGS": {
 		"TITLE_TEXT_1": "環境設定ができます。",
@@ -544,7 +589,10 @@
 		"TEXT_DOWNLOAD": "履歴をダウンロード",
 		"TRADES": "取引",
 		"DEPOSITS": "入金",
-		"WITHDRAWALS": "出金"
+		"WITHDRAWALS": "出金",
+		"ORDERID": "注文ID",
+		"TRIGGER_STOP_PRICE": "トリガー/ストップ価格",
+		"TIME_OF_LAST_TRADE": "前回の取引時刻"
 	},
 	"ACCOUNT_SECURITY": {
 		"TITLE_TEXT": "2段階認証、パスワード、APIキー、その他のセキュリティ関連機能でアカウントのセキュリティ設定を調整できます。",
@@ -612,7 +660,9 @@
 			"CONTENT": {
 				"TITLE": "Logins History",
 				"MESSAGE": "Below is login history list with details IP, country and time details. If you see any suspicious activity you should change your password and contact support"
-			}
+			},
+			"IP_ADDRESS": "IPアドレス",
+			"TIME": "日付時刻"
 		},
 		"FREEZE": {
 			"TITLE": "Freeze Account",
@@ -698,7 +748,7 @@
 	"WITHDRAWALS_FORM_FEE_COMMON_LABEL": "取引手数料",
 	"WITHDRAWALS_FORM_FEE_PLACEHOLDER": "Type the amount of {0} you wish to use in the fee of the transaction",
 	"DEPOSIT_BANK_REFERENCE": "Add this \"{0}\" code to the bank transation to identify the deposit",
-	"QUOTE_SUCCESS_REVIEW_MESSAGE": "You have successfully {0} {1} {2} for {3} {4}",
+	"QUOTE_SUCCESS_REVIEW_MESSAGE": "{0} {1} {2} が成功しました",
 	"COUNTDOWN_ERROR_MESSAGE": "Countdown is finished",
 	"WITHDRAW_PAGE": {
 		"BANK_TO_WITHDRAW": "Bank to Withdraw to",
@@ -717,7 +767,10 @@
 		"CONFIRM_VIA_EMAIL_3": "the withdrawal via your email within 5 minutes.",
 		"WITHDRAW_CONFIRM_SUCCESS_1": "Your withdrawal request is confirmed. It will be processed shortly.",
 		"WITHDRAW_CONFIRM_SUCCESS_2": "In order to view your withdrawal status please visit your withdrawal history page.",
-		"GO_WITHDRAWAL_HISTORY": "Go To Withdrawal History"
+		"GO_WITHDRAWAL_HISTORY": "Go To Withdrawal History",
+		"MESSAGE_FEE_COIN": "{0}の取引手数料",
+		"WITHDRAWALS_FORM_ERROR_TITLE": "不正な転送情報",
+		"WITHDRAWALS_FORM_ERROR": "資金移動が失敗しました。電子メールに資金を送信するには、ユーザーがこの取引所内のアカウントを持っている必要があります。メールアドレスが正しいことを確認して、もう一度お試しください。"
 	},
 	"WALLET_BUTTON_BASE_DEPOSIT": "入金",
 	"WALLET_BUTTON_BASE_WITHDRAW": "出金",
@@ -830,7 +883,8 @@
 		"CHAT_MESSAGE_BOX_PLACEHOLDER": "メッセージ",
 		"SIGN_UP_CHAT": "ログインしてチャットする",
 		"JOIN_CHAT": "チャットユーザー名の設定",
-		"TROLLBOX": "Trollbox ({0})"
+		"TROLLBOX": "Trollbox ({0})",
+		"SET_USERNAME": "チャットするユーザー名を設定"
 	},
 	"INVALID_USERNAME": "ユーザー名には3～15文字の半角英小文字、数字、_のみご利用可能です。",
 	"USERNAME_TAKEN": "このユーザー名は既に使用されています。別のユーザー名でお試しください。",
@@ -918,7 +972,7 @@
 		"REQUEST_ACCOUNT_UPGRADE": "アカウントのアップグレード申請",
 		"FEES_AND_LIMIT": "{0}の手数料および入出金限度額",
 		"FEES_AND_LIMIT_TXT_1": "仮想通貨のトレーダーになることは新しい始まりを意味します。リスクを負って多くの取引を賢く行うことによって、アカウントをアップグレードすることができます。",
-		"FEES_AND_LIMIT_TXT_2": "アカウントのレベルによって手数料や入出金限度額が異なります。より詳しい情報は{0}を参考してください。",
+		"FEES_AND_LIMIT_TXT_2": "各アカウントには独自の手数料と入出金制限があります。",
 		"DEPOSIT_WITHDRAWAL_ALLOWENCE": "入出金限度額",
 		"TRADING_FEE_STRUCTURE": "取引手数料",
 		"WITHDRAWAL": "出金",
@@ -976,19 +1030,34 @@
 		"WAVE_NUMBER": "ウェーブナンバー",
 		"DISCOUNT": "( {0}%割引 )",
 		"MY_FEES_LIMITS": "手数料と限度額",
-		"VIEW_MORE_MARKETS": "もっと見る"
+		"VIEW_MORE_MARKETS": "もっと見る",
+		"DEPOSIT_AND_WITHDRAWAL_FEES": "入出金手数料",
+		"DEPOSITS": "預金",
+		"WITHDRAWALS": "引き出し",
+		"TITLE_OF_ACCOUNT": "{0} アカウント",
+		"MARKETS": "市場",
+		"CHANGE_24H": "24時間変更可能",
+		"VOLUME_24H": "24時間のボリューム",
+		"VIEW_VERIFICATION": "確認を表示",
+		"EARN_COMMISSION": "コミッションを獲得する",
+		"ID_VERIFICATION": "本人確認："
 	},
 	"REFERRAL_LINK": {
 		"TITLE": "お友達招待",
-		"INFO_TEXT": "リンクをシェアして友達に紹介できます。このリンクを通して登録すると、{0}%が割引されます。",
+		"INFO_TEXT": "このリンクを配布して友達を紹介し、他の人をオンボーディングして特典を受けてください。",
 		"COPY_FIELD_LABEL": "以下のリンクを友達と共有してコミッションを獲得できます：",
 		"REFERRED_USER_COUT": "{0}ユーザーを招待しました",
-		"COPY_LINK_BUTTON": "招待リンクをコピーする"
+		"COPY_LINK_BUTTON": "招待リンクをコピーする",
+		"VIEW": "意見",
+		"TABLE_TITLE": "成功したすべての紹介",
+		"USER": "ユーザー/メールアドレス",
+		"TIME": "サインアップの時間"
 	},
 	"NOT_LOGGEDIN": {
 		"TXT_1": "取引を始めるにはログインしてください。",
 		"TXT_2": "{0}または、{1}",
-		"LOGIN_HERE": "ログインする"
+		"LOGIN_HERE": "ログインする",
+		"TEXT_GENERAL": "閲覧するにはログインする必要があります"
 	},
 	"USER_LEVEL": "ユーザーレベル",
 	"LIMIT_AMOUNT": "限度額",
@@ -1013,9 +1082,21 @@
 	"OPEN_WALLET": "Open wallet",
 	"LIMITS_BLOCK": {
 		"HEADER_ROW_DESCRIPTION": "すべての資産に対する24時間の入出金限度額（アカウントレベル {0})",
-		"HEADER_ROW_AMOUNT": "24時間数量 ({0})"
+		"HEADER_ROW_AMOUNT": "24時間数量 ({0})",
+		"HEADER_ROW_TYPE": "タイプ (すべてのアセット)"
 	},
-	"MARKETS_TABLE": { "VIEW_MARKETS": "もっと見る" },
+	"MARKETS_TABLE": {
+		"VIEW_MARKETS": "もっと見る",
+		"TITLE": "ライブマーケット",
+		"MARKETS": "市場",
+		"LAST_PRICE": "最終価格",
+		"CHANGE_24H": "変更（24時間）",
+		"VOLUME_24h": "ボリューム（24時間）",
+		"CHART_24H": "チャート（24時間）",
+		"TRADING_SYMBOL": "取引シンボル",
+		"TYPE": "タイプ",
+		"SOURCE": "ソース"
+	},
 	"MARKET_OPTIONS": { "LIST": "リスト", "CARD": "カード" },
 	"ALL": "すべて",
 	"ASSET_TXT": "資産",
@@ -1036,5 +1117,613 @@
 	"ORDER_ENTRY_ADVANCED": "アドバンス",
 	"ESTIMATED_PRICE": "推定価格",
 	"VIEW_ALL": "すべてを見る",
-	"TRIGGER_PRICE": "トリガー価格"
+	"TRIGGER_PRICE": "トリガー価格",
+	"NO_ACTIVE_ORDERS": "注文が検出されませんでした。プロまたはクイック取引ページで注文を出します",
+	"NO_ACTIVE_TRADES": "まだ取引はないようです",
+	"NO_ACTIVE_DEPOSITS": "まだ入金はないようです。",
+	"NO_ACTIVE_WITHDRAWALS": "まだ引き出しはないようです",
+	"CONVERT": "変換",
+	"SWAP": "スイッチ",
+	"TO": "に",
+	"NA": "該当なし",
+	"QR_CODE": {
+		"SCAN": "スキャン",
+		"SHOW": "QRを表示",
+		"NO_RESULT": "検索結果はありません",
+		"NOT_FOUND": "見つかりません",
+		"PERMISSION_DENIED": "アクセス拒否"
+	},
+	"EMAIL_CODE_FORM": {
+		"TITLE": "セキュリティコードを入力してください",
+		"LABEL": "コードを入力してください（メールをご確認ください）",
+		"PLACEHOLDER": "メールに送られたコードを入力してください",
+		"FORM_TITLE": "プロセスを完了するために必要な一意のコードがメールに送信されました。以下の電子メールに送信されたコードを OTP コードとともに入力してください。",
+		"BUTTON": "送信",
+		"ERROR_INVALID": "入力したコードは間違っています。もう一度試してください",
+		"OTP_LABEL": "2FA コード (OTP)",
+		"OTP_PLACEHOLDER": "6 桁の 2 要素認証コードを入力してください"
+	},
+	"USER_APPS": {
+		"TITLE": "あなたの交換アプリ",
+		"SUBTITLE": "以下の Exchange アカウント アプリケーション情報と追加機能。",
+		"ALL_APPS": {
+			"TAB_TITLE": "すべてのアプリ",
+			"TITLE": "アプリを交換する",
+			"SUBTITLE": "以下のアプリを選択して「追加」ボタンをクリックするだけで、Exchange アカウントからさらに多くの機能を利用できます。",
+			"SEARCH_PLACEHOLDER": "アプリを検索...",
+			"ADD": {
+				"SUCCESSFUL": "新しいアプリが正常に追加されました。",
+				"FAILED": "何か問題が発生しました"
+			}
+		},
+		"MY_APPS": {
+			"TAB_TITLE": "私のアプリ",
+			"TITLE": "私の交換アプリ",
+			"SUBTITLE": "以下はアクティブな Exchange アプリケーションです。クリックして各アプリケーションの情報や機能を展開し、追加/削除することができます。アプリは、交換エクスペリエンスにより多くの機能を提供するように設計されています。"
+		},
+		"TABLE": {
+			"APP_NAME": "アプリ名",
+			"DESCRIPTION": "説明",
+			"ACTION": "アクション",
+			"CONFIGURE": "構成、設定",
+			"VIEW_APP": "アプリを見る",
+			"ADD": "追加",
+			"NOT_FOUND": "このアプリが見つかりません...",
+			"RETRY": "別の検索語を試してください"
+		},
+		"APP_DETAILS": {
+			"BACK_PLACEHOLDER": "{0} {1}",
+			"BACK_TO_APPS": "私のアプリに",
+			"BACK": "戻る"
+		},
+		"CONFIGURE": {
+			"TITLE": "アプリの設定",
+			"SUBTITLE": "以下のようにアプリを設定します。",
+			"REMOVE": "アプリを削除する",
+			"TEXT": "アプリに問題がある場合は、下のヘルプをクリックしてご連絡ください。",
+			"BACK": "戻る",
+			"HELP": "ヘルプ"
+		},
+		"REMOVE": {
+			"TITLE": "アプリを削除する",
+			"SUBTITLE": "これにより、アプリが「マイアプリ」リストから削除されます。",
+			"TEXT": "このアプリを削除してもよろしいですか?",
+			"BACK": "戻る",
+			"CONFIRM": "確認"
+		}
+	},
+	"STAKE": {
+		"NETWORK_WARNING": "互換性のないネットワーク。ネットワークを {0} に変更してください",
+		"EARN": "得る",
+		"TITLE": "ステーク",
+		"MODAL_TITLE": "賭けて {0} を獲得しましょう",
+		"REVIEW_MODAL_TITLE": "賭け金を確認して確認する",
+		"AVAILABLE_TOKEN": "{0} ({1}) をステーキング可能: {2}",
+		"DEFI_TITLE": "DeFi資産ステーキング",
+		"DEFI_TEXT": "ステーキングDeFiスタイルでは、取引所の外で自分のウォレットを使用します。開始するには接続を確立する必要があります。接続すると、ウォレットから直接ステーキングして収益を開始できます。",
+		"GET_STAKES": "賭け金を獲得する",
+		"CURRENT_ETH_BLOCK": "現在の ETH ブロック: {0}",
+		"ON_EXCHANGE_XHT": "交換残高 {0}: {1} {2}",
+		"LOGIN_HERE": "ここでログイン",
+		"MOVE_XHT": "{0}を移動",
+		"ESTIMATED_STAKED": "賭け金総額の推定値",
+		"ESTIMATED_EARNINGS": "収益の見積額",
+		"CONNECT_WALLET": "ウォレットを接続する",
+		"BACK": "戻る",
+		"NEXT": "次",
+		"REVIEW": "レビュー",
+		"ESTIMATED": "東。",
+		"BLOCK": "ブロック",
+		"CANCEL": "キャンセル",
+		"PROCEED": "続行",
+		"GO_TO_WALLET": "財布に行く",
+		"AMOUNT_LABEL": "賭け金額",
+		"PERIOD_SUBTITLE": "長く賭ければ賭けるほど、より多くの報酬が得られます。以下からステーキング期間を選択してください。",
+		"STAKE_AND_EARN_DETAILS": "~{0} を賭けて {1} を獲得しましょう",
+		"PREDICTED_EARNINGS": "予想収益",
+		"VARIABLE_TITLE": "変数*",
+		"VARIABLE_TEXT": "*{0} 変動金利の仕組みについて。",
+		"READ_MORE": "続きを読む",
+		"CURRENT_BLOCK": "現在のブロック: {0}",
+		"END_BLOCK": "終了ブロック: {0}",
+		"DURATION": "間隔",
+		"END_ON_BLOCK": "ブロックで終了: {0}",
+		"SLASHING_TITLE": "スラッシュ（早期アンステーク）",
+		"SLASHING_TEXT_1": "賭け金の原則の {0}%",
+		"SLASHING_TEXT_2": "すべての収益は没収される",
+		"REVIEW_NOTE": "期間はイーサリアム ブロックのタイミングによって測定されます。早期にステーキングを解除すると、ステーク原則の一定の割合が差し引かれ、収益が没収されるため、ステーキングする前に上記の詳細を確認してください。",
+		"WAITING_TITLE": "確認を待ちます",
+		"WAITING_TEXT": "ウォレットでこの取引を確認してください",
+		"PENDING_TEXT": "トランザクションは保留中です...",
+		"CHECKING_ALLOWANCE": "{0} の許容量を確認しています...",
+		"WAITING_PROMPT": "{0} {1} {2}",
+		"WAITING_STAKE": "賭け金額を確認する",
+		"WAITING_WITHDRAW": "支出を許可する",
+		"WAITING_UNSTAKE": "ステークを解除する",
+		"WAITING_STAKE_ING": "ステーキング保留中",
+		"WAITING_WITHDRAW_ING": "支出許可の処理",
+		"WAITING_UNSTAKE_ING": "アンステーキング",
+		"SUCCESSFUL_STAKE_TITLE": "{0} のステークに成功しました",
+		"SUCCESSFUL_STAKE_AMOUNT": "賭け金額",
+		"SUCCESSFUL_STAKE_DURATION_KEY": "間隔",
+		"SUCCESSFUL_STAKE_DURATION_DEF": "ブロック {0} で終了 ({1})",
+		"SUCCESSFUL_STAKE_DESTINATION": "行き先",
+		"SUCCESSFUL_UNSTAKE_ADDRESS": "私のアドレス",
+		"OKAY": "わかった",
+		"ERROR_TITLE": "エラー: {0} は拒否されました",
+		"ERROR_SUBTITLE": "これが間違いだった場合は、戻って再試行できます",
+		"SUCCESSFUL_UNSTAKE_TITLE": "{0} のステークを解除しました",
+		"SUCCESSFUL_UNSTAKE_AMOUNT": "受け取る合計",
+		"EARNINGS": "収益",
+		"ORIGINAL_AMOUNT": "元の賭け金額",
+		"CONNECT_A_WALLET": "ウォレットに接続する",
+		"CONNECT_WALLET_TABLE": "{0}: 過去のステークイベントを見る",
+		"ZERO_STAKES": "賭け金ゼロ",
+		"PENDING_TRANSACTIONS": "保留中 {0} {1}",
+		"VIEW_ON": "{0} で見る",
+		"BLOCKCHAIN": "ブロックチェーン",
+		"VIEW_POT": "配信POTを見る",
+		"COMPLETED": "成熟した",
+		"COMPLETED_TOOLTIP": "ステークは成熟しています。ステークを続けてさらに多くの報酬を獲得するか、ステークを解除して報酬を獲得してください。",
+		"CONNECT_ERROR": "財布を確認してください",
+		"INSTALL_METAMASK": "Metamask をブラウザにインストールする必要があります: https://metamask.io/download.html",
+		"INSTALL_METAMASK_TITLE": "メタマスクが検出されない"
+	},
+	"UNSTAKE": {
+		"TITLE": "ステークを解除する",
+		"EARLY_TITLE": "早めにステークを解除する",
+		"EARLY_WARNING_TITLE": "早めにステークを解除しようとしているようです",
+		"EARLY_WARNING_TEXT_1": "これにより、当初の元本賭け金の一部が差し引かれ、すべての収益が没収される可能性があります。",
+		"EARLY_WARNING_TEXT_2": "続行してもよろしいですか?",
+		"BACK": "戻る",
+		"REVIEW": "ステークを削除する",
+		"DURATION": "東。熟成期間",
+		"CANCEL": "キャンセル",
+		"PROCEED": "続行",
+		"EARNINGS_FORFEITED": "没収された収益",
+		"PRICE_FORMAT": "{0} {1}",
+		"EST_PENDING": "東。保留中: {0}",
+		"AMOUNT_SLASHED": "削減額*",
+		"AMOUNT_TO_RECEIVE": "受け取る金額",
+		"SLASH_FOOTNOTE": "※削減された金額はすべて残りのステーカーに分配されます。当初の元本からの減額額、没収される収益、残りの期間を考慮し、早期にステーキングを解除することで失われた価値がコストに見合うかどうかを判断してください。",
+		"AMOUNT_NOTE": "金額はウォレットアドレスに分配されます",
+		"TOTAL_EARNT": "総収入",
+		"PENDING_EARNINGS": "保留中の収益*",
+		"PENDING_EARNINGS_FOOTNOTE": "*保留中の収益とは、決済されていない金額であり、合計受取金額に追加するにはブロックチェーントランザクションが必要です。"
+	},
+	"STAKE_TABLE": {
+		"CURRENCY": "通貨",
+		"AVAILABLE": "ステーク可能",
+		"TOTAL": "賭け金総額",
+		"REWARD_RATE": "報酬率",
+		"EARNINGS": "収益",
+		"STAKE": "ステーク",
+		"VARIABLE": "変数"
+	},
+	"STAKE_LIST": {
+		"AMOUNT": "賭け金額",
+		"DURATION": "東。成熟期間",
+		"START": "ステーキングを開始しました",
+		"END": "エンドステーク",
+		"EARNINGS": "収益",
+		"STAKE": "ステーク"
+	},
+	"STAKE_DETAILS": {
+		"BACK_SUBTITLE": "{0} ステーキングページへ",
+		"GO_BACK": "戻る",
+		"CONTRACT_SUBTITLE": "トークンコントラクト: {0}",
+		"VIEW_MORE": "もっと見る",
+		"VIEW": "意見",
+		"TOKEN": "{0} トークン",
+		"TABS": {
+			"PUBLIC_INFO": "公開情報",
+			"DISTRIBUTIONS": "分布",
+			"MY_STAKING": "私のステーキング"
+		},
+		"PUBLIC_INFO": {
+			"TITLE": "ステーキング情報",
+			"SUBTITLE": "以下は、{0} ({1}) のステーキング トークノミクスです。",
+			"TOTAL_DISTRIBUTED_REWARDS": "配布された報酬の合計 ({0})",
+			"POT_BALANCE": "POTバランス",
+			"UNCLAIMED_REWARDS": "未請求の報酬",
+			"TOTAL_STAKED": "賭け金総額",
+			"REWARD_RATE": "報酬率",
+			"MY_STAKE": "私の賭け金 ({0}%)",
+			"MY_STAKE_PERCENTLESS": "私の賭け金",
+			"OTHER_STAKE": "他の出資者 ({0}%)",
+			"EVENTS_TITLE": "最近配布された報酬"
+		},
+		"DISTRIBUTIONS": {
+			"TITLE": "{0} 個の報酬を配布しました",
+			"SUBTITLE": "以下は、{0} のステーカーに対して行われた分配の履歴リストです。",
+			"TIME": "時間配分",
+			"TRANSACTION_ID": "トランザクションID",
+			"AMOUNT": "分配金額"
+		},
+		"MY_STAKING": {
+			"TITLE": "私のステーキング",
+			"SUBTITLE": "以下に、{0} ステーキングに関連する情報といくつかの歴史的な出来事が表示されます。",
+			"EVENTS_TITLE": "歴史的なステークの出来事",
+			"TIME": "時間",
+			"EVENT": "イベント",
+			"TRANSACTION_ID": "トランザクションID",
+			"AMOUNT": "額"
+		}
+	},
+	"MOVE_XHT": {
+		"TITLE": "XHTの移動",
+		"TEXT_1": "XHTをステークするには、まずXHTを自分のウォレットに移動する必要があります。",
+		"TEXT_2": "現在接続されているウォレットのアドレスは次のとおりです。",
+		"LABEL": "ウォレットアドレス",
+		"TEXT_3": "上記のウォレットアドレスが安全であることを確認することが重要です。 XHTは上記のウォレットアドレスに移動されます。"
+	},
+	"MOVE_AMOUNT": {
+		"TITLE": "投入量",
+		"PROMPT": "移動したい量を入力します。",
+		"BALANCE": "{0} 残高: {1}",
+		"LABEL": "移動量",
+		"FEE": "取引手数料: {0} {1}"
+	},
+	"SIDES_VERBS": { "buy": "買った", "sell": "売られた" },
+	"AVERAGE": "平均",
+	"ORDER_HISTORY": "注文履歴",
+	"CURRENCY_WALLET": {
+		"BACK": "戻る",
+		"WALLET_PAGE": "{0} ウォレット ページへ",
+		"LEARN_MORE": "もっと詳しく知る",
+		"ABOUT": "{0}について"
+	},
+	"DEPOSIT_FORM_NETWORK_WARNING": "選択したネットワークが送信者のウォレット ネットワークと互換性があることを確認してください",
+	"DEPOSIT_FORM_MIN_WARNING": "{0} {1} 以上の入金のみ受け付けます。この最低閾値を下回る入金は資金を永久に失うことになります。",
+	"DEPOSIT_FORM_TITLE_WARNING_DESTINATION_TAG": "アカウントに正常に入金するために必要なアドレスとタグの両方を入力します。",
+	"WITHDRAW_PAGE_DESTINATION_TAG_NONE": "なし",
+	"WITHDRAW_PAGE_DESTINATION_TAG_MESSAGE": "宛先タグ: {0}",
+	"WITHDRAW_PAGE_NETWORK_TYPE_MESSAGE": "{0} アドレス ネットワーク タイプ: {1}",
+	"WITHDRAWALS_FORM_FEE_WARNING": "{0} ({1}) はこの資産を引き出すための要件です",
+	"WITHDRAWALS_FORM_DESTINATION_TAG_WARNING": "受信アドレスにタグが必要かどうかを確認します。メモ、デジタル ID、ラベル、メモとも呼ばれます。",
+	"WITHDRAWALS_FORM_NETWORK_PLACEHOLDER": "ネットワークを選択してください",
+	"WITHDRAWALS_FORM_FEE_COMMON_LABEL_COIN": "取引手数料 ({0})",
+	"24H_MAX": "24時間最高:",
+	"24H_MIN": "24時間低",
+	"24H_VAL": "24H Vol",
+	"WALLET_HIDE_ZERO_BALANCE": "ゼロ残高を非表示にする",
+	"WALLET_ESTIMATED_TOTAL_BALANCE": "推定総残高",
+	"WALLET_ASSETS_SEARCH_TXT": "検索",
+	"QUICK_TRADE_SUCCESS": "成功！",
+	"QUICK_TRADE_INSUFFICIENT_FUND": "残高不足",
+	"QUICK_TRADE_INSUFFICIENT_FUND_MESSAGE": "この取引を完了するにはウォレットに十分な資金がありません。",
+	"QUICK_TRADE_BROKER_NOT_AVAILABLE_MESSAGE": "ブローカー OTC 取引は現在利用できません。",
+	"ABOUT_LINK": "{0}について",
+	"DEVELOPERS_TOKEN": {
+		"API_KEY": "APIキー",
+		"SECRET_KEY": "秘密鍵",
+		"ACCESS": "アクセス",
+		"BASIC_ACCESS": "基本的なアクセス",
+		"BASIC_ACCESS_PROMPT": "この API キーがアクセスできるものを選択します。",
+		"READING_ACCESS": "読書（財布の残高など）",
+		"TRADING_ACCESS": "取引",
+		"IP_ACCESS": "IPアクセス",
+		"IP_ACCESS_PROMPT": "この API キーでどの IP アドレスが機能するかを構成します。",
+		"ANY_IP_ADDRESS": "任意の IP アドレス",
+		"ONLY_TRUSTED_IPS": "信頼できる IP のみ",
+		"ADD_IP_PH": "IPアドレスを入力します。複数のIPを追加できます",
+		"ADD_IP": "追加",
+		"ADVANCED_ACCESS": "高度なアクセス",
+		"ADVANCED_ACCESS_PROMPT": "信頼できる IP をアクティブ化する必要があります。",
+		"WITHDRAWAL_ACCESS": "引き出し",
+		"SAVE": "保存",
+		"BEWARE": "出金には一定のリスクが伴うことに注意してください。"
+	},
+	"ORDER_TYPE": "タイプ",
+	"TRIGGER_CONDITIONS": "トリガー条件",
+	"TRANSACTION_STATUS": {
+		"PENDING": "保留中",
+		"REJECTED": "拒否されました",
+		"COMPLETED": "完了"
+	},
+	"DEPOSIT_STATUS": {
+		"NEW": "新しい",
+		"SEARCH_FIELD_LABEL": "トランザクションIDを貼り付けてください",
+		"CHECK_DEPOSIT_STATUS": "入金状況を確認する",
+		"SEARCH_BLOCKCHAIN_FOR_DEPOSIT": "入金のブロックチェーンを検索する",
+		"STATUS_DESCRIPTION": "以下のトランザクション ID (ハッシュ) を渡すことで、入金状況を確認できます。",
+		"TRANSACTION_ID": "トランザクションID（ハッシュ）",
+		"SEARCH_SUCCESS": "検索完了",
+		"ADDRESS_FIELD_LABEL": "住所を貼り付けてください",
+		"CURRENCY_FIELD_LABEL": "通貨を選択してください",
+		"DESTINATION_TAG_LABEL": "タグ (オプション)",
+		"MEMO_LABEL": "メモ（任意）",
+		"DESTINATION_TAG_PLACEHOLDER": "タグを貼り付けてください",
+		"MEMO_PLACEHOLDER": "メモを貼り付けます"
+	},
+	"CANCEL_ORDERS": {
+		"HEADING": "注文をキャンセルする",
+		"SUB_HEADING": "すべての注文をキャンセルする",
+		"INFO_1": "これにより、{0} マーケットのオープン注文がキャンセルされます。",
+		"INFO_2": "開いている注文をすべてキャンセルしてもよろしいですか?"
+	},
+	"AMOUNT_IN": "金額",
+	"SUMMARY_MARKETS": {
+		"HOLLAEX": "デジタル資産をリストしたいですか? HollaEx で独自のマーケットを始めましょう {0} {1}",
+		"WHITE_LABEL": "白いラベル",
+		"SOLUTION": "解決",
+		"VISIT_COIN_INFO_PAGE": "コイン情報ページ {0} にアクセスしてください",
+		"HERE": "ここ"
+	},
+	"PAGE_UNDER_CONSTRUCTION": "このページは作成中です。すぐにこのページに再度アクセスしてください。",
+	"UNDEFINED_ERROR_TITLE": "不明なエラーが発生しました",
+	"UNDEFINED_ERROR": "おお！不明なエラーが発生しました。これは接続の問題、またはその他のさまざまな問題である可能性があります。後でもう一度試すか、更新してみてください。",
+	"REFRESH": "リフレッシュ",
+	"FEE_REDUCTION": "料金の減額",
+	"FEE_REDUCTION_DESCRIPTION": "*あなたのアカウントには手数料割引が適用されています。割引は、アカウントに基づいて取引手数料に適用されます。",
+	"CHANGE_PASSWORD_FAILED": "パスワードの変更に失敗しました",
+	"SPEND_AMOUNT": "支出額",
+	"ESTIMATE_RECEIVE_AMOUNT": "受取予定額",
+	"TOOLS": {
+		"ORDERBOOK": "オーダーブック",
+		"CHART": "チャート",
+		"PUBLIC_SALES": "一般販売",
+		"ORDER_ENTRY": "注文入力",
+		"RECENT_TRADES": "最近の取引",
+		"OPEN_ORDERS": "オープンオーダー",
+		"WALLET": "財布",
+		"DEPTH_CHART": "深度チャート",
+		"COMING_SOON": "近日公開"
+	},
+	"RESET_LAYOUT": "レイアウトをリセット",
+	"WALLET_BALANCE_LOADING": "バランス読み込み中...",
+	"CONNECT_VIA_DESKTOP": {
+		"TITLE": "デスクトップ経由で接続する",
+		"SUBTITLE": "現時点では、モバイルデバイスを介した DeFi ステーキングはサポートされていません。",
+		"TEXT": "ウォレットを接続するには、デスクトップ/ラップトップ コンピューターを使用してください。"
+	},
+	"ORDER_HISTORY_CLOSED": "閉まっている",
+	"FIAT": {
+		"UNVERIFIED": {
+			"TITLE": "完全な検証",
+			"TEXT": "{0} を行うには、銀行口座情報の確認を含む確認を完了する必要があります。下の「続行」ボタンをクリックしてください。",
+			"DEPOSIT": "デポジット",
+			"WITHDRAWAL": "撤退"
+		},
+		"REVIEW_DEPOSIT": {
+			"TITLE": "入金内容の確認と確認",
+			"SUBTITLE": "以下の入金詳細をチェックして、すべてが正しいことを確認してください。",
+			"FORMAT": "{0} {1}",
+			"AMOUNT": "預金の額",
+			"FEE": "入金手数料",
+			"TRANSACTION_ID": "トランザクションID",
+			"NOTE": "遅延を避けるために、入金金額、メモ、トランザクション ID が上記の詳細と一致していることを確認してください。問題が発生した場合は、サポートにお問い合わせください。",
+			"BACK": "戻る",
+			"PROCEED": "続行"
+		}
+	},
+	"DEPOSIT_FEE_NOTE": "アカウントに入金される合計金額は、入金手数料を差し引いた金額となりますのでご注意ください",
+	"AMOUNT_LABEL": "入金額を入力します（実際の金額と一致する必要があります）",
+	"TRANSACTION_ID_LABEL": "入金のトランザクションIDを入力してください",
+	"FEE_LABEL": "入金手数料",
+	"AMOUNT_FORMAT": "{0} {1}",
+	"PENDING_DEPOSIT_TITLE": "デポジット保留中",
+	"PENDING_DEPOSIT_TEXT_1": "あなたのデポジットは現在検証待ちのキューにあり、クリアされるまで保留状態のままになります。",
+	"PENDING_DEPOSIT_TEXT_2": "通常、入金は 24 時間以内に清算されますが、入金額から手数料を差し引いた清算後、残高に入金されるまでに最大 48 時間かかる場合があります。",
+	"DEPOSIT_HOME_NOTE": "入金するには、自分の銀行口座から入金する金額を入力してください。遅延を避けるため、以下に入力する金額が、銀行口座から送金する、または送金した実際の金額と一致していることを確認してください。",
+	"DEPOSIT_TXID_NOTE": "入金の遅延を避けるため、銀行入金の際は、取引のメモまたはメッセージ内に上に表示された固有のメモを必ず入力してください。以下の金額が実際に銀行から入金した金額と一致していること、および取引完了後に銀行から提供された取引 ID を含めていることを確認してください。",
+	"DEPOSIT_BANK_TEXT": "入金には以下の銀行詳細を使用してください。",
+	"MIN_DEPOSIT": "最低入金額",
+	"MAX_DEPOSIT": "入金額の上限",
+	"BACK": "戻る",
+	"DONE": "終わり",
+	"PENDING_WITHDRAWAL_TITLE": "出金保留中",
+	"PENDING_WITHDRAWAL_TEXT_1": "あなたの出金は現在検証中のため、手続きが完了するまで保留状態になります。",
+	"DEPOSIT_AMOUNT_MIN_VALIDATION": "トランザクションが小さすぎるため送信できません。より多くの量を試してください。",
+	"DEPOSIT_AMOUNT_MAX_VALIDATION": "トランザクションが大きすぎて送信できません。より少ない量をお試しください。",
+	"ACCOUNT_NAME": "アカウント名",
+	"ACCOUNT_NUMBER": "口座番号",
+	"BANK_NAME": "銀行名",
+	"VERIFY_BANK_WITHDRAW": "出金するには、銀行詳細の確認を含む確認を完了する必要があります。下の「続行」ボタンをクリックしてください。",
+	"VERIFICATION_TITLE": "完全な検証",
+	"WITHDRAW_NOTE": "注意: 自分名義の口座にのみ出金できます。",
+	"USER_PAYMENT": { "TITLE": "支払い" },
+	"QUOTE_CONFIRMATION_MSG_TEXT_1": "下記内容をご確認の上、ご注文をお願いいたします。",
+	"QUOTE_CONFIRMATION_MSG_TEXT_2": "受け取る金額は概算であり、取引手数料は含まれません",
+	"ORDER_EXPIRED_MSG": "注文の有効期限が切れました。リフレッシュしてください！",
+	"WITHDRAWALS_FORM_METHOD": "方法",
+	"WITHDRAWALS_FORM_ADDRESS_EXCHANGE": "ユーザーの電子メールを交換する",
+	"WITHDRAWALS_FORM_EXCHANGE_PLACEHOLDER": "この交換にユーザーの電子メールを入力してください",
+	"WITHDRAWALS_FORM_MAIL_INFO": "この取引所にあるユーザーの HollaEx アカウントのメールアドレスを入力すると、無料で転送できます。",
+	"DUST": {
+		"TITLE": "ウォレットダスター",
+		"LINK": "ウォレットダスター",
+		"TOOLTIP": "極小のウォレット残高（ダスト）を暗号通貨に変換",
+		"BACK_PLACEHOLDER": "{0} {1}",
+		"BACK_TO_WALLET": "私の財布に",
+		"BACK": "戻る",
+		"ESTIMATED_TOTAL": "推定総粉塵値",
+		"CONVERT_ALL": "変換",
+		"NO_DUST": "ダスト資産はありません!",
+		"SECTION": {
+			"TITLE": "ウォレットダストを変換する",
+			"TEXT_1": "{0} {1} 以下の値を保持するすべてのウォレット残高を変換します。",
+			"TEXT_2": "すべての会話は {0} ({1}) で解決されます。"
+		},
+		"CONFIRMATION": {
+			"TITLE": "ダストを変換する",
+			"SUBTITLE": "変換される資産",
+			"BACK": "戻る",
+			"CONFIRM": "確認",
+			"GET": "あなたは得ます",
+			"FEE": "両替手数料",
+			"PLEASE": "ご注意ください",
+			"NOTE": "24 時間ごとにダストを {0} に変換できます。 {1} {2} 未満の残高のみが変換されます。"
+		},
+		"SUCCESSFUL": {
+			"TITLE": "ダスト変換成功！",
+			"TEXT": "受け取りました",
+			"VIEW_HISTORY": "履歴を見る",
+			"CLOSE": "近い"
+		}
+	},
+	"ASSET_INFO_PAGE": "アセット情報ページ",
+	"MARKET_ROW": {
+		"NATIVE": "ネイティブ",
+		"NO_NATIVE": "ネイティブソースがない"
+	},
+	"DIGITAL_ASSETS": {
+		"DIGITAL_ASSETS_TITLE": "デジタル資産",
+		"GO_BACK": "戻る",
+		"ASSETS_INFO": "以下はプラットフォーム上で利用可能なアセットです。",
+		"ASSETS_INFO_DETAIL": "詳細については、以下のリストのアセットをクリックしてください。",
+		"QUICK_TRADE": "クイックトレード",
+		"MARKETS": "市場",
+		"WALLET": "財布",
+		"PRICE_SOURCE": "価格ソース"
+	},
+	"HOLLAEX_TOKEN": {
+		"REMOVE_FAVOURITES": "お気に入りから削除",
+		"ADD_FAVOURITES": "お気に入りに追加",
+		"GO_BACK": " 戻る",
+		"BALANCE": "バランス：",
+		"OPEN_WALLET": "(ウォレットを開く)",
+		"ABOUT": "だいたい",
+		"VIEW": "もっと見る",
+		"COMING_SOON": "近日公開...",
+		"NO_DESCRIPTION": "このデジタル資産には現在説明がありません。",
+		"STAKE": "ステーク",
+		"MORE": "もっと",
+		"INFO": "情報",
+		"TRADE": "トレード",
+		"LIST": "デジタル資産をリストしたいですか?",
+		"WEBSITE": "Webサイト",
+		"EXPLORER": "冒険者"
+	},
+	"ACCORDIAN": {
+		"ACCORDIAN_ASSETS": "すべてのウォレット資産",
+		"ACCORDIAN_INFO": "アセット情報ページ",
+		"ACCORDIAN_HISTORY": "歴史"
+	},
+	"ASYNC_LINK": {
+		"TITLE": "ページが自動的に開きませんか?",
+		"TEXT": "ブラウザがページをブロックしている可能性があります。代わりに、以下のリンクをコピーして貼り付けてみてください。"
+	},
+	"TERMS_OF_SERVICES": {
+		"TO_GET_ACCESS": "アクセスするには、次のアドレスに連絡してください"
+	},
+	"FEES_AND_LIMITS": {
+		"LINK": "料金と制限を表示する",
+		"COIN_PAGE_LINK": "取引手数料と制限",
+		"BACK": { "PLACEHOLDER": "{0} {1}", "BACK": "戻る", "TO": "要約へ" },
+		"TITLE": "料金と制限",
+		"SEARCH_PLACEHOLDER": "検索...",
+		"TABS": {
+			"TRADING_FEES": {
+				"TITLE": "取引手数料",
+				"TABLE": {
+					"TITLE": "市場取引手数料",
+					"SUBTITLE": "以下は市場の個別の取引手数料ルールです。",
+					"HEADER": {
+						"MARKET": "市場",
+						"MAKER": "メーカー取引手数料（指値注文）",
+						"TAKER": "テイカー取引手数料（成行注文）"
+					}
+				}
+			},
+			"WITHDRAWAL_FEES": {
+				"TITLE": "出金手数料",
+				"TABLE": {
+					"TITLE": "退会時に差し引かれる手数料",
+					"SUBTITLE": "以下は資産を引き出す際のすべての手数料です。",
+					"NOT_ALLOWED": "禁じられている",
+					"HEADER": {
+						"CURRENCY": "通貨・資産",
+						"DEPOSIT": "入金手数料",
+						"WITHDRAWAL": "出金手数料"
+					}
+				}
+			},
+			"WITHDRAWAL_LIMITS": {
+				"TITLE": "出金限度額",
+				"TABLE_1": {
+					"TITLE": "独立した出金制限",
+					"SUBTITLE": "独自の独立した 24 時間出金ルールに従う集合制限ルールから切り離された資産:",
+					"HEADER": { "CURRENCY": "通貨・資産", "LIMIT": "24時間制限" },
+					"LIMIT_TEXT": "（すべての資産が一括出金限度額を共有する）"
+				},
+				"TABLE_2": {
+					"TITLE": "共同共通標準出金限度額",
+					"SUBTITLE": "以下は、すべて同じ標準の 24 時間出金制限額ルールを共有する資産です。"
+				}
+			}
+		}
+	},
+	"STATUS_TEXT": {
+		"INCOMPLETE": "不完全な",
+		"PENDING": "保留中",
+		"REJECTED": "拒否されました",
+		"VERIFIED": "検証済み"
+	},
+	"LOGINS_HISTORY": {
+		"TAB": "ログイン履歴",
+		"CONTENT": {
+			"TITLE": "ログイン試行記録",
+			"SUBTITLE": "アカウントで失敗したすべてのログイン試行の履歴記録と、その原因となる可能性があります。",
+			"DOWNLOAD_HISTORY": "ダウンロード_履歴",
+			"FILTER": {
+				"STATUS": "スターテス",
+				"ALL": "全て",
+				"FAILED": "失敗した",
+				"SUCCESS": "成功"
+			},
+			"TABLE": {
+				"HEADER": {
+					"LAST_SEEN": {
+						"TITLE": "最後に見たのは",
+						"DESCRIPTION": "(最新のものから順)"
+					},
+					"FAILED_ATTEMPTS": "失敗した試行",
+					"COUNTRY": "国",
+					"IP_ADDRESS": "IPアドレス"
+				},
+				"CELL": {
+					"FAILED_LOGIN": "ログイン失敗: {0}x",
+					"SUCCESS": "成功",
+					"DEVICE": "デバイス"
+				}
+			}
+		}
+	},
+	"SESSIONS": {
+		"TAB": "セッション",
+		"CONTENT": {
+			"TITLE": "アクティブセッション",
+			"SUBTITLE": {
+				"TEXT": "以下はアカウントのアクティブなセッションです。アクティブなセッションを終了するには、{0} をクリックすると、そのセッションがログアウトされます。",
+				"LINK": "取り消す"
+			},
+			"DOWNLOAD": "ダウンロード",
+			"TABLE": {
+				"HEADER": {
+					"LAST_SEEN": {
+						"TITLE": "最後に見たのは",
+						"DESCRIPTION": "(最新のものから順)"
+					},
+					"SESSION_STARTED": "セッションが開始されました",
+					"SESSION_EXPIRY": "セッションの有効期限",
+					"STATUS": "スターテス"
+				},
+				"CELL": {
+					"ACTIVE": "アクティブ",
+					"COUNTRY": "国",
+					"IP_ADDRESS": "IPアドレス",
+					"DEVICE": "デバイス",
+					"LOGIN_TIME": "ログイン成功時間"
+				}
+			},
+			"NOTIFICATION": "セッションが取り消された/ログアウトされました",
+			"MODAL": {
+				"TITLE": "セッションを取り消す",
+				"PROMPT": "このセッションを取り消してログアウトしてもよろしいですか?",
+				"BACK": "戻る",
+				"CONFIRM": "確認"
+			}
+		}
+	}
 }

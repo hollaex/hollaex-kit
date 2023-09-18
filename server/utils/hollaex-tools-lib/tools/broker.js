@@ -41,7 +41,8 @@ const {
 	COIN_INPUT_MISSING,
 	AMOUNTS_MISSING,
 	REBALANCE_SYMBOL_MISSING,
-	PRICE_NOT_FOUND
+	PRICE_NOT_FOUND,
+	QUOTE_EXPIRY_TIME_ERROR
 } = require(`${SERVER_PATH}/messages`);
 
 const validateBrokerPair = (brokerPair) => {
@@ -69,6 +70,7 @@ const setExchange = (data) => {
         timeout: 5000,
         ...(data.api_key && { 'apiKey': data.api_key }),
         ...(data.api_secret && { 'secret': data.api_secret }),
+		options: { "defaultType": "spot" }
     })
 
     if (data.id) {
@@ -436,8 +438,17 @@ const reverseTransaction = async (orderData) => {
 				})
 
 				const formattedRebalancingSymbol = broker.rebalancing_symbol && broker.rebalancing_symbol.split('-').join('/').toUpperCase();
-				exchange.createOrder(formattedRebalancingSymbol, 'market', side, size)
-					.catch((err) => { notifyUser(err.message, broker.user_id); });
+				if (exchangeKey === 'bybit') {
+					const orderbook = await exchange.fetchOrderBook(formattedRebalancingSymbol);
+					const price = side === 'buy' ? orderbook['asks'][0][0] * 1.01 : orderbook['bids'][0][0] * 0.99;
+
+					exchange.createOrder(formattedRebalancingSymbol, 'limit', side, size, price)
+						.catch((err) => { notifyUser(err.message, broker.user_id); });
+				}
+				else {
+					exchange.createOrder(formattedRebalancingSymbol, 'market', side, size)
+						.catch((err) => { notifyUser(err.message, broker.user_id); });
+				}
 			}
 		}
 	} catch (err) {
@@ -475,6 +486,10 @@ const createBrokerPair = async (brokerPair) => {
 
 			if (type !== 'manual' && (!spread || !quote_expiry_time || !formula)) {
 				throw new Error(DYNAMIC_BROKER_CREATE_ERROR);
+			}
+
+			if (quote_expiry_time < 10) {
+				throw new Error(QUOTE_EXPIRY_TIME_ERROR);
 			}
 
 			if (type !== 'manual' && exchangeInfo.plan === 'basic') {
@@ -544,13 +559,17 @@ const updateBrokerPair = async (id, data) => {
 		type,
 		account,
 		formula,
-		rebalancing_symbol
+		rebalancing_symbol,
+		quote_expiry_time
 	} = data;
 
 	const exchangeInfo = getKitConfig().info;
 
 	if (type !== 'manual' && exchangeInfo.plan === 'basic') {
 		throw new Error(DYNAMIC_BROKER_EXCHANGE_PLAN_ERROR);
+	}
+	if (quote_expiry_time < 10) {
+		throw new Error(QUOTE_EXPIRY_TIME_ERROR);
 	}
 
 

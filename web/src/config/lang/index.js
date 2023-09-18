@@ -13,6 +13,9 @@ import pt from './pt.json';
 import tr from './tr.json';
 import mn from './mn.json';
 import ur from './ur.json';
+import it from './it.json';
+import ru from './ru.json';
+import nl from './nl.json';
 
 export default {
 	en,
@@ -23,11 +26,14 @@ export default {
 	ar,
 	fr,
 	es,
+	pt,
 	vi,
 	id,
 	zh,
-	pt,
 	tr,
 	mn,
-	ur
+	ur,
+	it,
+	ru,
+	nl,
 };

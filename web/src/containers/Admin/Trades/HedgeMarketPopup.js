@@ -13,7 +13,7 @@ const Pophedge = ({
 	setHedgeSymbol,
 	hedgeSymbol,
 	hedgeApi,
-	hedge
+	hedge,
 }) => {
 	const [filter, setFilter] = useState();
 	return (
@@ -32,7 +32,9 @@ const Pophedge = ({
 						placeholder="Search market name or symbols"
 						id="marketkey mb-2"
 						value={hedgeSymbol}
-						onChange={(e) => { setFilter(e.target.value) }}
+						onChange={(e) => {
+							setFilter(e.target.value);
+						}}
 					/>
 					<div className="email-option-wrapper mt-5">
 						<div className="d-flex table-header email-header">
@@ -41,21 +43,29 @@ const Pophedge = ({
 							{/* <div>PRICE</div> */}
 						</div>
 						<div className="overflow">
-							{hedgeMarkets?.filter(m => filter ? m?.symbol?.toLowerCase()?.includes(filter?.toLowerCase()) : true).map((data, index) => {
-								return (
-									<div
-										key={index}
-										className="email-option"
-										onClick={() => setHedgeSymbol(data.symbol)}
-									>
-										<div className="d-flex w-85">
-											<div className="w-50">{hedgeApi.charAt(0).toUpperCase() + hedgeApi.slice(1)}</div>
-											<div className="w-50">{data.symbol}</div>
-											{/* <div className="w-50 preview_text">{'-'}</div> */}
+							{hedgeMarkets
+								?.filter((m) =>
+									filter
+										? m?.symbol?.toLowerCase()?.includes(filter?.toLowerCase())
+										: true
+								)
+								.map((data, index) => {
+									return (
+										<div
+											key={index}
+											className="email-option"
+											onClick={() => setHedgeSymbol(data.symbol)}
+										>
+											<div className="d-flex w-85">
+												<div className="w-50">
+													{hedgeApi.charAt(0).toUpperCase() + hedgeApi.slice(1)}
+												</div>
+												<div className="w-50">{data.symbol}</div>
+												{/* <div className="w-50 preview_text">{'-'}</div> */}
+											</div>
 										</div>
-									</div>
-								);
-							})}
+									);
+								})}
 						</div>
 					</div>
 					<div className="d-flex mt-4 justify-content-center align-items-center">
