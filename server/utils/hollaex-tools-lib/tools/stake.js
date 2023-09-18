@@ -42,7 +42,9 @@ const calculateSlashAmount = (staker, stakePool) => {
             const slashingPrinciplePercentage = new BigNumber(stakePool.slashing_principle_percentage);
             const mountlySlashingPrinciple = stakeAmount.multipliedBy(slashingPrinciplePercentage).dividedBy(100 * 12);
 
-            const totalStakingDays = unstakedDate.diff(moment(), 'days');
+            const stakerCreationDate = moment(staker.created_at);
+
+            const totalStakingDays = unstakedDate.diff(stakerCreationDate, 'days');
             slashingPrinciple = mountlySlashingPrinciple.multipliedBy(totalStakingDays).dividedBy(30);
         }
    
