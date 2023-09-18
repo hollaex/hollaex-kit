@@ -37,7 +37,7 @@ const CeFiUserStake = () => {
 
 	const [isLoading, setIsLoading] = useState(false);
 
-	const [userStakeData, setUserStakeData] = useState(false);
+	const [userStakeData, setUserStakeData] = useState([]);
 	const [stakePools, setStakePools] = useState([]);
 	const [selectedPool, setSelectedPool] = useState();
 
@@ -448,6 +448,7 @@ const CeFiUserStake = () => {
 								height: 35,
 							}}
 							type="default"
+							disabled={!stakerAmount}
 						>
 							Next
 						</AntBtn>
@@ -1145,6 +1146,34 @@ const CeFiUserStake = () => {
 		setActiveTab(key);
 	};
 
+	const accumulateAmount = (stakes) => {
+		const res = Array.from(
+			stakes.reduce(
+				//eslint-disable-next-line
+				(m, { currency, amount }) =>
+					m.set(currency, (m.get(currency) || 0) + amount),
+				new Map()
+			),
+			([currency, amount]) => ({ currency, amount })
+		);
+
+		return res;
+	};
+
+	const accumulateReward = (stakes) => {
+		const res = Array.from(
+			stakes.reduce(
+				//eslint-disable-next-line
+				(m, { currency, reward, slashed }) =>
+					m.set(currency, (m.get(currency) || 0) + (reward - slashed)),
+				new Map()
+			),
+			([currency, reward]) => ({ currency, reward })
+		);
+
+		return res;
+	};
+
 	const calculateRemainingDays = (duration, createdAt) => {
 		const startingDate = moment(createdAt);
 		const stakinDays = moment().diff(startingDate, 'days');
@@ -1199,7 +1228,14 @@ const CeFiUserStake = () => {
 							>
 								<div>
 									<div>Current staking value:</div>
-									<div>USDT 0: (VIEW)</div>
+									{/* <div>USDT 0: (VIEW)</div> */}
+									<div>
+										{accumulateAmount(userStakeData).map((stake) => (
+											<div>
+												{stake.currency.toUpperCase()}: {stake.amount}
+											</div>
+										))}
+									</div>
 								</div>
 							</div>
 						</div>
@@ -1409,11 +1445,23 @@ const CeFiUserStake = () => {
 								<div>
 									<div style={{ marginBottom: 20 }}>
 										<div>Estimated value of total staked</div>
-										<div style={{ fontSize: 18 }}>USDT 0</div>
+										<div style={{ fontSize: 18 }}>
+											{accumulateAmount(userStakeData).map((stake) => (
+												<div>
+													{stake.currency.toUpperCase()}: {stake.amount}
+												</div>
+											))}
+										</div>
 									</div>
 									<div>
 										<div>Estimated value of earnings</div>
-										<div style={{ fontSize: 18 }}>USDT 0</div>
+										<div style={{ fontSize: 18 }}>
+											{accumulateReward(userStakeData).map((stake) => (
+												<div>
+													{stake.currency.toUpperCase()}: {stake.reward}
+												</div>
+											))}
+										</div>
 									</div>
 								</div>
 							</div>
