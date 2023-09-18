@@ -67,16 +67,7 @@ module.exports = {
 				type: Sequelize.DATE,
 				defaultValue: Sequelize.literal('NOW()'),
 			},
-		},
-		{
-        	uniqueKeys: {
-        	  staker_composite_index: {
-        	    customIndex: true,
-        	    fields: ['user_id', 'stake_id']
-        	  }
-        	}
-      	}
-		);
+		});
 	},
 
 	down: async (queryInterface, Sequelize) => {
