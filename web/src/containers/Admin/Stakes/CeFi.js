@@ -232,6 +232,7 @@ const CeFi = ({ coins, features }) => {
 				return (
 					<div
 						onClick={async () => {
+							if (data.status === 'terminated') return;
 							setEditMode(true);
 							await handleEmailChange(data.account_id);
 							setDisplayStatePoolCreation(true);
