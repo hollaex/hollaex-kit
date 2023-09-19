@@ -532,7 +532,7 @@ const deleteExchangeStaker = async (staker_id, user_id) => {
     const now = moment();
     const startingDate = moment(staker.created_at);
 	const stakinDays = now.diff(startingDate, 'days');
-    const remaininDays = stakePool.duration - stakinDays;
+    const remaininDays = (stakePool?.duration || 0) - stakinDays;
         
     if (stakePool.duration && remaininDays > 0) {
         throw new Error('Cannot unstake, period is not over');
