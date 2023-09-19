@@ -67,18 +67,22 @@ const calculateStakingRewards = (stakers) => {
     const rewards = stakers.map(staker => staker.reward).reduce((a, b) => a + b, 0);
     const slashes = stakers.map(staker => staker.slashed).reduce((a, b) => a + b, 0);
 
-    return (new BigNumber(rewards).plus(new BigNumber(slashes))).toNumber();
+    return (new BigNumber(rewards).minus(new BigNumber(slashes))).toNumber();
 }
 
+const calculateStakingAmount = (stakers) => {
+    const totalAmount = stakers.map(staker => staker.amount).reduce((a, b) => a + b, 0);
+    return totalAmount;
+}
 
-const distributeStakingRewards = async (stakers, reward, account_id, currency) => {
+const distributeStakingRewards = async (stakers, totalAmount, account_id, currency) => {
     for (const staker of stakers) {
 
         await staker.update({ status: 'unstaking' }, {
 	        	fields: ['status']
-	    });
+        });
 
-        await transferAssetByKitIds(account_id, staker.id, currency, reward, 'Admin transfer stake', staker.email, undefined);
+        await transferAssetByKitIds(account_id, staker.id, currency, totalAmount, 'Admin transfer stake', staker.email, undefined);
 
         await staker.update({ status: 'closed' }, {
 	        	fields: ['status']
@@ -358,13 +362,14 @@ const updateExchangeStakePool = async (id, data) => {
         const balance = await getSourceAccountBalance(stakePool.account_id, stakePool.currency);
   
         const stakers = await getModel('staker').findAll({ where: { stake_id: stakePool.id, status: { [Op.or]: ['staking', 'unstaking'] } } });
-        const reward = await calculateStakingRewards(stakers);
+        const reward = calculateStakingRewards(stakers);
+        const totalAmount = calculateStakingAmount(stakers)
+        const amountWithReward = new BigNumber(totalAmount).plus(new BigNumber(reward)).toNumber();
 
-
-        if(new BigNumber(balance).comparedTo(new BigNumber(reward)) !== 1) {
+        if(new BigNumber(balance).comparedTo(amountWithReward) !== 1) {
             throw new Error('There is not enough balance in the funding account, You cannot settle this stake pool');
         }
-        await distributeStakingRewards(stakers, reward, stakePool.account_id, stakePool.currency);
+        await distributeStakingRewards(stakers, amountWithReward, stakePool.account_id, stakePool.currency);
        
     }
 

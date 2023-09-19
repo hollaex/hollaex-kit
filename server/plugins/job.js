@@ -37,14 +37,15 @@ const unstakingCheckRunner = () => {
 					}
 				}
 
-				const amountAfterSlash =  (new BigNumber(staker.reward).minus(new BigNumber(staker.slashed))).toNumber();
-				if (new BigNumber(symbols[stakePool.currency]).comparedTo(amountAfterSlash) !== 1) {
+				const amountAfterSlash =  new BigNumber(staker.reward).minus(new BigNumber(staker.slashed));
+				const totalAmount = (new BigNumber(staker.amount).plus(amountAfterSlash)).toNumber();
+				if (new BigNumber(symbols[stakePool.currency]).comparedTo(totalAmount) !== 1) {
 					sendEmail(
 						MAILTYPE.ALERT,
 						user.email,
 						{
 							type: 'Unstaking failed',
-							data: `User id ${user.id} failed to unstake, not enough funds, currency ${stakePool.currency}, amount to transfer: ${amountAfterSlash}`
+							data: `User id ${user.id} failed to unstake, not enough funds, currency ${stakePool.currency}, amount to transfer: ${totalAmount}`
 						},
 						user.settings
 					);
@@ -52,8 +53,8 @@ const unstakingCheckRunner = () => {
 					continue;
 				}
 
-				if (amountAfterSlash > 0) {
-					await toolsLib.wallet.transferAssetByKitIds(stakePool.account_id, staker.id, stakePool.currency, amountAfterSlash, 'Admin transfer stake', user.email, undefined);
+				if (totalAmount > 0) {
+					await toolsLib.wallet.transferAssetByKitIds(stakePool.account_id, staker.id, stakePool.currency, totalAmount, 'Admin transfer stake', user.email, undefined);
 				}
 
 				await staker.update({ status: 'closed' }, {
