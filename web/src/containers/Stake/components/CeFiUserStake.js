@@ -1062,7 +1062,8 @@ const CeFiUserStake = ({ balance, coins }) => {
 									// 	`Successfuly unstaked in ${selectedStaker.id}`
 									// );
 								} catch (error) {
-									message.error(error.response.selectedStaker.message);
+									message.error(error.response.data.message);
+									return;
 								}
 
 								setReviewUnstake(false);
