@@ -103,8 +103,10 @@ export const renderRowContent = ({
 	fee,
 	created_at,
 	currency,
+	fee_coin,
 	type,
 	coins,
+	network
 }) => {
 	return (
 		<div>
@@ -115,16 +117,18 @@ export const renderRowContent = ({
 				Amount:{' '}
 				{formatCurrencyByIncrementalUnit(
 					amount,
-					coins?.[currency?.toLocaleLowerCase()]?.increment_unit
+					coins?.[currency?.toLocaleLowerCase()]?.increment_unit,
+					true
 				)}
 			</div>
 			<div>
 				Fee:{' '}
-				{formatCurrencyByIncrementalUnit(
-					fee,
-					coins?.[currency?.toLocaleLowerCase()]?.increment_unit
-				)}{' '}
-				{currency}
+				{fee}{' '}
+				{fee_coin}
+			</div>
+			<div>
+				Network:{' '}
+				{network}
 			</div>
 			<div>Timestamp: {formatDate(created_at)}</div>
 			{description && <div>Description: {description}</div>}
