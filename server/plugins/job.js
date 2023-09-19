@@ -53,14 +53,25 @@ const unstakingCheckRunner = () => {
 					continue;
 				}
 
-				if (totalAmount > 0) {
-					await toolsLib.wallet.transferAssetByKitIds(stakePool.account_id, staker.id, stakePool.currency, totalAmount, 'Admin transfer stake', user.email, undefined);
-				}
-
-				await staker.update({ status: 'closed' }, {
+                await staker.update({ status: 'closed' }, {
 					fields: ['status']
 				});
 		
+
+				try {
+                    await toolsLib.wallet.transferAssetByKitIds(stakePool.account_id, user.id, stakePool.currency, totalAmount, 'Admin transfer stake', user.email);
+                } catch (error) {
+                      sendEmail(
+                        MAILTYPE.ALERT,
+                        user.email,
+                        {
+                            type: 'Unstaking failed',
+                            data: `User id ${user.id} failed to unstake, Error: ${error.message}`
+                        },
+                        user.settings
+                    );
+                }
+
 			}
 
 

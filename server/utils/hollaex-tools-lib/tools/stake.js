@@ -78,19 +78,28 @@ const calculateStakingAmount = (stakers) => {
 const distributeStakingRewards = async (stakers, account_id, currency) => {
     for (const staker of stakers) {
 
-        await staker.update({ status: 'unstaking' }, {
+        await staker.update({ status: 'closed' }, {
 	        	fields: ['status']
         });
 
         const amountAfterSlash =  new BigNumber(staker.reward).minus(new BigNumber(staker.slashed));
         const totalAmount = (new BigNumber(staker.amount).plus(amountAfterSlash)).toNumber();
 
-        await transferAssetByKitIds(account_id, staker.id, currency, totalAmount, 'Admin transfer stake', staker.email, undefined);
+        const user = await getUserByKitId(staker.user_id);
 
-        await staker.update({ status: 'closed' }, {
-	        	fields: ['status']
-	    });
-
+        try {
+            await transferAssetByKitIds(account_id, user.id, currency, totalAmount, 'Admin transfer stake', user.email);
+        } catch (error) {
+            sendEmail(
+                MAILTYPE.ALERT,
+                user.email,
+                {
+                    type: 'Unstaking failed',
+                    data: `User id ${user.id} Error: ${error.message}`
+                },
+                user.settings
+            );
+        }
     }
 }
 // const calculateStakingRewards = async (stakers, stakePool) => {
@@ -498,6 +507,11 @@ const createExchangeStaker = async (stake_id, amount, user_id) => {
         ...(stakePool.duration && { closing: moment().add(stakePool.duration, 'days') })
     }
 
+    const user = await getUserByKitId(user_id);
+
+    await transferAssetByKitIds(user_id, stakePool.account_id, stakePool.currency, amount, 'User transfer stake', user.email);
+
+
     const stakerData = await getModel('staker').create(staker, {
 		fields: [
 			'user_id',
@@ -509,8 +523,6 @@ const createExchangeStaker = async (stake_id, amount, user_id) => {
             'unstaked_date'
 		]
     });
-
-    await transferAssetByKitIds(staker.id, stakePool.account_id, stakePool.currency, amount, 'User transfer stake', staker.email);
 
     return stakerData;
 }
