@@ -232,8 +232,19 @@ class Transactions extends Component {
 	};
 
 	onClickFilters = () => {
+		const { queryParams } = this.state;
+		let data = {};
+		if (queryParams.status === 'dismiss') {
+			data = { dismissed: true };
+		} else if (queryParams.status === 'reject') {
+			data = { rejected: true };
+		} else if (queryParams.status === 'status') {
+			data = { status: true };
+		} else {
+			data = { status: false, dismissed: false, rejected: false };
+		}
 		this.requestDeposits(
-			{ ...this.props.initialData, ...this.state.queryParams },
+			{ ...this.props.initialData, ...data },
 			this.props.queryParams
 		);
 	};
