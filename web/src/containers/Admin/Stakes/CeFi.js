@@ -30,10 +30,11 @@ import {
 } from '@ant-design/icons';
 import Coins from '../Coins';
 import BigNumber from 'bignumber.js';
+import { updateConstants } from '../General/action';
 import './CeFi.scss';
 const { Option } = Select;
 
-const CeFi = ({ coins }) => {
+const CeFi = ({ coins, features }) => {
 	const searchRef = useRef(null);
 	const [userData, setUserData] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
@@ -51,6 +52,7 @@ const CeFi = ({ coins }) => {
 		false
 	);
 	const [step, setStep] = useState(1);
+	const [selectedPoolId, setSelectedPoolId] = useState();
 
 	const defaultStakePool = {
 		name: null,
@@ -88,6 +90,8 @@ const CeFi = ({ coins }) => {
 
 	const [selectedPool, setSelectedPool] = useState();
 	const [editMode, setEditMode] = useState(false);
+	const [hasCefiStaking, setHasCefiStaking] = useState(features.cefi_stake);
+
 	const columns = [
 		{
 			title: 'Asset',
@@ -128,8 +132,8 @@ const CeFi = ({ coins }) => {
 				return (
 					<div className="d-flex align-items-center">
 						<div className="mr-2">User ID: </div>
-						<div className="mr-3">{renderUser(data.user_id)}</div>{' '}
-						{isShowBalance ? (
+						<div className="mr-3">{renderUser(data.account_id)}</div>{' '}
+						{isShowBalance && selectedPoolId === data.id ? (
 							<div>
 								<div>
 									{data.currency}:{' '}
@@ -139,7 +143,7 @@ const CeFi = ({ coins }) => {
 						) : (
 							<div
 								style={{ textDecoration: 'underline', cursor: 'pointer' }}
-								onClick={() => getUserBalance(data.user_id, true)}
+								onClick={() => getUserBalance(data.account_id, true, data.id)}
 							>
 								(display balance)
 							</div>
@@ -336,12 +340,13 @@ const CeFi = ({ coins }) => {
 		return moment(date).format('DD/MMM/YYYY, hh:mmA ').toUpperCase();
 	};
 
-	const getUserBalance = async (id, isShowBalance) => {
+	const getUserBalance = async (id, isShowBalance, selectedPoolId) => {
 		try {
 			const res = await requestUserData({ id });
 			if (res && res.data) {
 				setBalanceData(res.data[0]?.balance);
 				setIsShowBalance(isShowBalance);
+				if (selectedPoolId) setSelectedPoolId(selectedPoolId);
 			}
 		} catch (err) {
 			let errMsg =
@@ -1676,7 +1681,7 @@ const CeFi = ({ coins }) => {
 										staking.
 									</div>
 
-									<div
+									{/* <div
 										style={{
 											backgroundColor: '#E10000',
 											fontSize: 13,
@@ -1688,7 +1693,7 @@ const CeFi = ({ coins }) => {
 										}}
 									>
 										You have insufficient funds to close the staking pool!
-									</div>
+									</div> */}
 									<div style={{ marginBottom: 20, marginTop: 20 }}>
 										<div
 											style={{
@@ -1748,6 +1753,7 @@ const CeFi = ({ coins }) => {
 									});
 									requestStakes(queryFilters.page, queryFilters.limit);
 									setDisplayStatusModel(false);
+									setConfirmTextClosePool();
 									message.success('Changes saved.');
 								} catch (error) {
 									message.error(error.response.data.message);
@@ -1787,12 +1793,14 @@ const CeFi = ({ coins }) => {
 							setStakePoolCreation(defaultStakePool);
 							setDisplayStatePoolCreation(true);
 						}}
+						disabled={!hasCefiStaking}
 						style={{
 							backgroundColor: '#288500',
 							color: 'white',
 							flex: 1,
 							height: 35,
 							marginRight: 10,
+							opacity: !hasCefiStaking ? 0.4 : 1,
 						}}
 						type="default"
 					>
@@ -1810,8 +1818,23 @@ const CeFi = ({ coins }) => {
 					<div className="d-flex">
 						<span style={{ marginRight: 3 }}>Off</span>
 						<Switch
-							checked={true}
-							// onClick={}
+							checked={hasCefiStaking}
+							onClick={async (value) => {
+								try {
+									await updateConstants({
+										kit: {
+											features: {
+												...features,
+												cefi_stake: value,
+											},
+										},
+									});
+									message.success('Changes saved.');
+									setHasCefiStaking(value);
+								} catch (err) {
+									message.error(err?.data?.message);
+								}
+							}}
 						/>
 						<span style={{ marginLeft: 3 }}>On</span>
 					</div>
@@ -1820,11 +1843,18 @@ const CeFi = ({ coins }) => {
 			<div>
 				<div style={{ marginTop: 20 }}></div>
 				<div className="mt-5">
-					<div className="mt-4 ">
+					<div
+						className="mt-4 "
+						style={{
+							opacity: !hasCefiStaking ? 0.4 : 1,
+							pointerEvents: !hasCefiStaking ? 'none' : 'visible',
+						}}
+					>
 						<Spin spinning={isLoading}>
 							<Table
 								className="blue-admin-table"
 								columns={columns}
+								// rowClassName={record => record.status === 'terminated' && "disabled-row"}
 								dataSource={userData}
 								expandRowByClick={true}
 								rowKey={(data) => {

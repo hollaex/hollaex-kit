@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Spin, Input } from 'antd';
-import { requestStakers } from './actions';
+import { requestStakersByAdmin } from './actions';
 import moment from 'moment';
 import BigNumber from 'bignumber.js';
+import { ExclamationCircleFilled } from '@ant-design/icons';
 
 const UserStaking = ({ coins }) => {
 	const [userData, setUserData] = useState([]);
@@ -17,7 +18,7 @@ const UserStaking = ({ coins }) => {
 		isRemaining: true,
 	});
 
-	const [userQuery, setUserQuery] = useState({ search: null });
+	const [userQuery, setUserQuery] = useState({ user_id: null });
 
 	const statuses = {
 		staking: 2,
@@ -131,7 +132,10 @@ const UserStaking = ({ coins }) => {
 				return (
 					<div className="d-flex">
 						{data?.status === 'unstaking' ? (
-							<span>Unstaking...</span>
+							<span>
+								<ExclamationCircleFilled style={{ color: 'red' }} />{' '}
+								Unstaking...
+							</span>
 						) : data?.status === 'staking' ? (
 							<span>Active</span>
 						) : (
@@ -160,7 +164,7 @@ const UserStaking = ({ coins }) => {
 
 	const requestExchangeStakers = (page = 1, limit = 50) => {
 		setIsLoading(true);
-		requestStakers({ page, limit, ...queryValues })
+		requestStakersByAdmin({ page, limit, ...queryValues })
 			.then((response) => {
 				setUserData(
 					page === 1 ? response.data : [...userData, ...response.data]
@@ -190,6 +194,36 @@ const UserStaking = ({ coins }) => {
 			requestExchangeStakers(page + 1, limit);
 		}
 		setQueryFilters({ ...queryFilters, currentTablePage: count });
+	};
+
+	const accumulateStakeValue = (stakes) => {
+		const res = Array.from(
+			stakes.reduce(
+				//eslint-disable-next-line
+				(m, { currency, amount }) =>
+					m.set(currency, (m.get(currency) || 0) + amount),
+				new Map()
+			),
+			([currency, amount]) => ({ currency, amount })
+		);
+
+		return res;
+	};
+
+	const accumulateUnstakeValue = (stakes) => {
+		const res = Array.from(
+			stakes
+				.filter((stake) => stake.status === 'unstaking')
+				.reduce(
+					//eslint-disable-next-line
+					(m, { currency, amount }) =>
+						m.set(currency, (m.get(currency) || 0) + amount),
+					new Map()
+				),
+			([currency, amount]) => ({ currency, amount })
+		);
+
+		return res;
 	};
 
 	return (
@@ -233,9 +267,9 @@ const UserStaking = ({ coins }) => {
 							<div style={{ display: 'flex', gap: 10 }}>
 								<Input
 									style={{}}
-									placeholder="Search User ID, Email or username"
-									onChange={(e) => setUserQuery({ search: e.target.value })}
-									value={userQuery.search}
+									placeholder="Search User ID"
+									onChange={(e) => setUserQuery({ user_id: e.target.value })}
+									value={userQuery.user_id}
 								/>
 
 								<Button
@@ -278,14 +312,26 @@ const UserStaking = ({ coins }) => {
 								<span style={{ fontWeight: 'bold' }}>Total stakers:</span>{' '}
 								{queryFilters.total} users
 							</div>
-							<div>
-								<span style={{ fontWeight: 'bold' }}>Appox. stake value:</span>{' '}
-								- USDT
+							<div style={{ display: 'flex' }}>
+								Appox. stake value:{' '}
+								{accumulateStakeValue(userData).map((stake) => (
+									<div>
+										<span style={{ fontWeight: 'bold' }}></span> {stake.amount}{' '}
+										{stake.currency.toUpperCase()}
+									</div>
+								))}
 							</div>
 							<div>-</div>
 							<div>
-								<span style={{ fontWeight: 'bold' }}>Value unstaking:</span> -
-								USDT
+								<div style={{ display: 'flex' }}>
+									Value unstaking:{' '}
+									{accumulateUnstakeValue(userData).map((stake) => (
+										<div>
+											<span style={{ fontWeight: 'bold' }}></span>{' '}
+											{stake.amount} {stake.currency.toUpperCase()}
+										</div>
+									))}
+								</div>
 							</div>
 						</div>
 					</div>

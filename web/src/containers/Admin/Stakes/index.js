@@ -21,7 +21,7 @@ const Stakes = (props) => {
 				onChange={handleTabChange}
 			>
 				<TabPane tab="CeFi" key="0">
-					<CeFi coins={props.coins} />
+					<CeFi coins={props.coins} features={props.features} />
 				</TabPane>
 				<TabPane tab="User Staking" key="1">
 					<UserStaking coins={props.coins} />
@@ -32,6 +32,7 @@ const Stakes = (props) => {
 };
 
 const mapStateToProps = (state) => ({
+	features: state.app.constants.features,
 	pluginNames: state.app.pluginNames,
 	coins: state.app.coins,
 	constants: state.app.constants,
