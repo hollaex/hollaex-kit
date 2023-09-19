@@ -256,21 +256,24 @@ const CeFi = ({ coins, features }) => {
 				return (
 					<div className="d-flex">
 						{data?.onboarding ? 'Open' : 'Closed'}
-						<span
-							onClick={() => {
-								setSelectedPool(data);
-								setPoolOnboarding(data.onboarding);
-								setDisplayOnboarding(true);
-							}}
-							style={{
-								textDecoration: 'underline',
-								cursor: 'pointer',
-								marginLeft: 2,
-							}}
-						>
-							{' '}
-							(Edit)
-						</span>
+
+						{data?.status !== 'terminated' && (
+							<span
+								onClick={() => {
+									setSelectedPool(data);
+									setPoolOnboarding(data.onboarding);
+									setDisplayOnboarding(true);
+								}}
+								style={{
+									textDecoration: 'underline',
+									cursor: 'pointer',
+									marginLeft: 2,
+								}}
+							>
+								{' '}
+								(Edit)
+							</span>
+						)}
 					</div>
 				);
 			},
@@ -286,25 +289,27 @@ const CeFi = ({ coins, features }) => {
 							.split(' ')
 							.map((word) => `${word[0].toUpperCase()}${word.slice(1)}`)
 							.join('')}
-						<span
-							onClick={async () => {
-								setSelectedPool(data);
-								setPoolStatus(data.status);
-								await Promise.all([
-									getAllUserData({ id: data.account_id }),
-									getUserBalance(data.account_id),
-								]);
-								setDisplayStatusModel(true);
-							}}
-							style={{
-								textDecoration: 'underline',
-								cursor: 'pointer',
-								marginLeft: 2,
-							}}
-						>
-							{' '}
-							(Edit)
-						</span>
+						{data?.status !== 'terminated' && (
+							<span
+								onClick={async () => {
+									setSelectedPool(data);
+									setPoolStatus(data.status);
+									await Promise.all([
+										getAllUserData({ id: data.account_id }),
+										getUserBalance(data.account_id),
+									]);
+									setDisplayStatusModel(true);
+								}}
+								style={{
+									textDecoration: 'underline',
+									cursor: 'pointer',
+									marginLeft: 2,
+								}}
+							>
+								{' '}
+								(Edit)
+							</span>
+						)}
 					</div>
 				);
 			},
@@ -1627,61 +1632,62 @@ const CeFi = ({ coins, features }) => {
 								value={'terminated'}
 							>
 								Close onboarding
-								<div
-									style={{
-										padding: 10,
-										marginLeft: 30,
-										color: 'white',
-										width: 500,
-										textWrap: 'wrap',
-										borderLeft: '1px solid white',
-									}}
-								>
-									<div>Settlement time: 24 hours</div>
-									<div>
-										Required to settle: {selectedPool?.reward}{' '}
-										{selectedPool.currency.toUpperCase()}
-									</div>
-									<div>
-										Source wallet: {emailOptions[0].label}:{' '}
-										{balanceData[`${selectedPool.currency}_available`] || 0}{' '}
-										{selectedPool.currency.toUpperCase()}
-									</div>
-									{selectedPool.status !== 'paused' && (
+								{poolStatus === 'terminated' && (
+									<div
+										style={{
+											padding: 10,
+											marginLeft: 30,
+											color: 'white',
+											width: 500,
+											textWrap: 'wrap',
+											borderLeft: '1px solid white',
+										}}
+									>
+										<div>Settlement time: 24 hours</div>
+										<div>
+											Required to settle: {selectedPool?.reward}{' '}
+											{selectedPool.currency.toUpperCase()}
+										</div>
+										<div>
+											Source wallet: {emailOptions[0].label}:{' '}
+											{balanceData[`${selectedPool.currency}_available`] || 0}{' '}
+											{selectedPool.currency.toUpperCase()}
+										</div>
+										{selectedPool.status !== 'paused' && (
+											<div
+												style={{
+													backgroundColor: 'white',
+													fontSize: 13,
+													padding: 10,
+													marginTop: 10,
+													color: '#27339D',
+													width: 450,
+													textWrap: 'wrap',
+												}}
+											>
+												You must pause the pool before closing and settling the
+												pool
+											</div>
+										)}
+
 										<div
 											style={{
-												backgroundColor: 'white',
+												backgroundColor: '#FF6600',
 												fontSize: 13,
 												padding: 10,
 												marginTop: 10,
-												color: '#27339D',
+												color: 'white',
 												width: 450,
 												textWrap: 'wrap',
 											}}
 										>
-											You must pause the pool before closing and settling the
-											pool
+											Note: Closing the pool before allowing users to complete
+											their staking duration term may erode the trust in your
+											exchange. Please consider allowing all users to finish
+											staking.
 										</div>
-									)}
 
-									<div
-										style={{
-											backgroundColor: '#FF6600',
-											fontSize: 13,
-											padding: 10,
-											marginTop: 10,
-											color: 'white',
-											width: 450,
-											textWrap: 'wrap',
-										}}
-									>
-										Note: Closing the pool before allowing users to complete
-										their staking duration term may erode the trust in your
-										exchange. Please consider allowing all users to finish
-										staking.
-									</div>
-
-									{/* <div
+										{/* <div
 										style={{
 											backgroundColor: '#E10000',
 											fontSize: 13,
@@ -1694,29 +1700,30 @@ const CeFi = ({ coins, features }) => {
 									>
 										You have insufficient funds to close the staking pool!
 									</div> */}
-									<div style={{ marginBottom: 20, marginTop: 20 }}>
-										<div
-											style={{
-												fontWeight: 'bold',
-												fontSize: 16,
-												marginBottom: 4,
-											}}
-										>
-											Do you understand?
+										<div style={{ marginBottom: 20, marginTop: 20 }}>
+											<div
+												style={{
+													fontWeight: 'bold',
+													fontSize: 16,
+													marginBottom: 4,
+												}}
+											>
+												Do you understand?
+											</div>
+											<Input
+												style={{
+													backgroundColor: 'rgba(0,0,0,0.1)',
+													color: 'white',
+												}}
+												placeholder="Type 'I UNDERSTAND' to proceed"
+												onChange={(e) => {
+													setConfirmTextClosePool(e.target.value);
+												}}
+												value={confirmTextClosePool}
+											/>
 										</div>
-										<Input
-											style={{
-												backgroundColor: 'rgba(0,0,0,0.1)',
-												color: 'white',
-											}}
-											placeholder="Type 'I UNDERSTAND' to proceed"
-											onChange={(e) => {
-												setConfirmTextClosePool(e.target.value);
-											}}
-											value={confirmTextClosePool}
-										/>
 									</div>
-								</div>
+								)}
 							</Radio>
 						</Space>
 					</Radio.Group>
@@ -1764,9 +1771,17 @@ const CeFi = ({ coins, features }) => {
 								color: 'white',
 								flex: 1,
 								height: 35,
+								opacity:
+									poolStatus === 'terminated' &&
+									confirmTextClosePool !== 'I UNDERSTAND'
+										? 0.4
+										: 1,
 							}}
 							type="default"
-							disabled={confirmTextClosePool !== 'I UNDERSTAND'}
+							disabled={
+								poolStatus === 'terminated' &&
+								confirmTextClosePool !== 'I UNDERSTAND'
+							}
 						>
 							Proceed
 						</Button>
