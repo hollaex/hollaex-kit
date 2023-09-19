@@ -476,7 +476,12 @@ const createExchangeStaker = async (stake_id, amount, user_id) => {
     if (!stakePool) {
         throw new Error('Stake pool does not exist');
     }
+    const user = await getUserByKitId(user_id);
    
+    if (!user) {
+        throw new Error('User not found');
+    }
+
     if (!stakePool.onboarding) {
           throw new Error('Stake pool is not active for accepting users');
     }
@@ -508,7 +513,6 @@ const createExchangeStaker = async (stake_id, amount, user_id) => {
         ...(stakePool.duration && { closing: moment().add(stakePool.duration, 'days') })
     }
 
-    const user = await getUserByKitId(user_id);
 
     await transferAssetByKitIds(user_id, stakePool.account_id, stakePool.currency, amount, 'User transfer stake', user.email);
 
@@ -529,6 +533,13 @@ const createExchangeStaker = async (stake_id, amount, user_id) => {
 }
 
 const deleteExchangeStaker = async (staker_id, user_id) => {
+
+    const user = await getUserByKitId(user_id);
+   
+    if (!user) {
+        throw new Error('User not found');
+    }
+    
     const staker = await getModel('staker').findOne({ where: { id: staker_id, user_id, status: 'staking' } });
 
     if (!staker) {
