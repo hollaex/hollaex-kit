@@ -490,7 +490,7 @@ const createExchangeStaker = async (stake_id, amount, user_id) => {
         ...(stakePool.duration && { closing: moment().add(stakePool.duration, 'days') })
     }
 
-    return getModel('staker').create(staker, {
+    const stakerData = await getModel('staker').create(staker, {
 		fields: [
 			'user_id',
             'stake_id',
@@ -500,7 +500,11 @@ const createExchangeStaker = async (stake_id, amount, user_id) => {
             'closing',
             'unstaked_date'
 		]
-	});
+    });
+
+    await transferAssetByKitIds(staker.id, stakePool.account_id, stakePool.currency, amount, 'User transfer stake', staker.email);
+
+    return stakerData;
 }
 
 const deleteExchangeStaker = async (staker_id, user_id) => {
@@ -525,11 +529,12 @@ const deleteExchangeStaker = async (staker_id, user_id) => {
     }
 
     // check if matured for unstaking or not
-    const stakePoolCreationDate = moment(stakePool.created_at);
     const now = moment();
-    const numberOfDaysPassed = now.diff(stakePoolCreationDate, 'days');
-
-    if (stakePool.duration && numberOfDaysPassed === 0 && (numberOfDaysPassed % stakePool.duration !== 0)) {
+    const startingDate = moment(staker.created_at);
+	const stakinDays = now.diff(startingDate, 'days');
+    const remaininDays = duration - stakinDays;
+        
+    if (stakePool.duration && remaininDays > 0) {
         throw new Error('Cannot unstake, period is not over');
     }
 
