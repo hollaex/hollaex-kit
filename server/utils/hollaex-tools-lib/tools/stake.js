@@ -75,12 +75,15 @@ const calculateStakingAmount = (stakers) => {
     return totalAmount;
 }
 
-const distributeStakingRewards = async (stakers, totalAmount, account_id, currency) => {
+const distributeStakingRewards = async (stakers, account_id, currency) => {
     for (const staker of stakers) {
 
         await staker.update({ status: 'unstaking' }, {
 	        	fields: ['status']
         });
+
+        const amountAfterSlash =  new BigNumber(staker.reward).minus(new BigNumber(staker.slashed));
+        const totalAmount = (new BigNumber(staker.amount).plus(amountAfterSlash)).toNumber();
 
         await transferAssetByKitIds(account_id, staker.id, currency, totalAmount, 'Admin transfer stake', staker.email, undefined);
 
@@ -369,7 +372,7 @@ const updateExchangeStakePool = async (id, data) => {
         if(new BigNumber(balance).comparedTo(amountWithReward) !== 1) {
             throw new Error('There is not enough balance in the funding account, You cannot settle this stake pool');
         }
-        await distributeStakingRewards(stakers, amountWithReward, stakePool.account_id, stakePool.currency);
+        await distributeStakingRewards(stakers, stakePool.account_id, stakePool.currency);
        
     }
 
