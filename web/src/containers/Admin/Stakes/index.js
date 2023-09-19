@@ -24,7 +24,7 @@ const Stakes = (props) => {
 					<CeFi coins={props.coins} />
 				</TabPane>
 				<TabPane tab="User Staking" key="1">
-					<UserStaking />
+					<UserStaking coins={props.coins} />
 				</TabPane>
 			</Tabs>
 		</div>

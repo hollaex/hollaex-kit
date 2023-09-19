@@ -243,7 +243,6 @@ const getExchangeStakePools = async (opts = {
             
             //Calculate reward amount per stake pool
             for (const stakePool of stakePools.data) {
-                if (!stakePool.onboarding || stakePool.status === 'terminated') continue;
                 const stakers = await fetchStakers(stakePool.id);
                 stakePool.reward = calculateStakingRewards(stakers);
             }

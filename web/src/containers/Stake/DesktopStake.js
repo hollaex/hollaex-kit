@@ -313,7 +313,12 @@ class Stake extends Component {
 					</div>
 				</div>
 
-				{this.state.selectedStaking === 'cefi' && <CeFiUserStake />}
+				{this.state.selectedStaking === 'cefi' && (
+					<CeFiUserStake
+						balance={this.props.balance}
+						coins={this.props.coins}
+					/>
+				)}
 				{this.state.selectedStaking === 'defi' && (
 					<>
 						<div

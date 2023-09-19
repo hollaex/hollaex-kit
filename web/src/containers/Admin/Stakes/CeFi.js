@@ -29,6 +29,7 @@ import {
 	ExclamationCircleFilled,
 } from '@ant-design/icons';
 import Coins from '../Coins';
+import BigNumber from 'bignumber.js';
 import './CeFi.scss';
 const { Option } = Select;
 
@@ -206,9 +207,15 @@ const CeFi = ({ coins }) => {
 			dataIndex: 'earning',
 			key: 'earning',
 			render: (user_id, data) => {
+				const incrementUnit = coins[data.currency].increment_unit;
+				const decimalPoint = new BigNumber(incrementUnit).dp();
+				const sourceAmount =
+					data?.reward &&
+					new BigNumber(data?.reward).decimalPlaces(decimalPoint).toNumber();
+
 				return (
 					<div className="d-flex">
-						{data?.reward} {data?.reward ? data.currency.toUpperCase() : ''}
+						{sourceAmount} {sourceAmount ? data.currency.toUpperCase() : ''}
 					</div>
 				);
 			},
@@ -226,7 +233,7 @@ const CeFi = ({ coins }) => {
 							setDisplayStatePoolCreation(true);
 							setStakePoolCreation({
 								...data,
-								perpetual_stake: data.duration ? true : false,
+								perpetual_stake: data.duration ? false : true,
 								slash_earnings: data.slashing_earning_percentage ? true : false,
 							});
 						}}
@@ -678,9 +685,9 @@ const CeFi = ({ coins }) => {
 									...stakePoolCreation,
 									early_unstake: e.target.value,
 									...(!e.target.value && {
-										slashing_principle_percentage: null,
+										slashing_principle_percentage: 0,
 									}),
-									...(!e.target.value && { slashing_earning_percentage: null }),
+									...(!e.target.value && { slashing_earning_percentage: 0 }),
 								});
 							}}
 							value={stakePoolCreation.early_unstake}
@@ -1334,6 +1341,9 @@ const CeFi = ({ coins }) => {
 					footer={null}
 					onCancel={() => {
 						setDisplayStatePoolCreation(false);
+						setStakePoolCreation(defaultStakePool);
+						setSelectedPool();
+						setStep(1);
 					}}
 				>
 					<div>{renderStakePoolCreationModal()}</div>

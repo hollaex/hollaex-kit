@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Table, Button, Spin, Input } from 'antd';
 import { requestStakers } from './actions';
 import moment from 'moment';
+import BigNumber from 'bignumber.js';
 
-const UserStaking = () => {
+const UserStaking = ({ coins }) => {
 	const [userData, setUserData] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [queryValues, setQueryValues] = useState();
@@ -107,10 +108,17 @@ const UserStaking = () => {
 			dataIndex: 'reward',
 			key: 'reward',
 			render: (user_id, data) => {
+				const incrementUnit = coins[data.currency].increment_unit;
+				const decimalPoint = new BigNumber(incrementUnit).dp();
+				const sourceAmount =
+					data?.reward &&
+					new BigNumber(data?.reward - data?.slashed)
+						.decimalPlaces(decimalPoint)
+						.toNumber();
+
 				return (
 					<div className="d-flex">
-						{data?.reward - data?.slashed}{' '}
-						{data?.stake?.currency?.toUpperCase()}
+						{sourceAmount} {data?.stake?.currency?.toUpperCase()}
 					</div>
 				);
 			},

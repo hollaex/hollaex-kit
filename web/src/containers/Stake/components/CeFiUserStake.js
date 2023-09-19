@@ -19,11 +19,12 @@ import {
 	deleteStaker,
 } from 'containers/Admin/Stakes/actions';
 import moment from 'moment';
+import BigNumber from 'bignumber.js';
 import '../CeFiStake.scss';
 
 const TabPane = Tabs.TabPane;
 
-const CeFiUserStake = () => {
+const CeFiUserStake = ({ balance, coins }) => {
 	const [activeTab, setActiveTab] = useState('0');
 
 	const [readBeforeAction, setReadBeforeAction] = useState(false);
@@ -40,7 +41,7 @@ const CeFiUserStake = () => {
 	const [userStakeData, setUserStakeData] = useState([]);
 	const [stakePools, setStakePools] = useState([]);
 	const [selectedPool, setSelectedPool] = useState();
-
+	const [confirmText, setConfirmText] = useState();
 	const [stakerAmount, setStakerAmount] = useState();
 	const [selectedStaker, setSelectedStaker] = useState();
 	const [queryValues] = useState();
@@ -146,9 +147,17 @@ const CeFiUserStake = () => {
 			dataIndex: 'earnt',
 			key: 'earnt',
 			render: (_user_id, data) => {
+				const incrementUnit = coins[data.currency].increment_unit;
+				const decimalPoint = new BigNumber(incrementUnit).dp();
+				const sourceAmount =
+					data?.reward &&
+					new BigNumber(data?.reward - data?.slashed)
+						.decimalPlaces(decimalPoint)
+						.toNumber();
+
 				return (
 					<div className="d-flex">
-						{data?.reward - data?.slashed} {data?.currency.toUpperCase()}
+						{sourceAmount} {data?.currency.toUpperCase()}
 					</div>
 				);
 			},
@@ -172,7 +181,9 @@ const CeFiUserStake = () => {
 									data.stake.duration
 										? data.stake.early_unstake
 											? false
-											: !isUnstackable(data.stake, data.createdAt)
+											: isUnstackable(data.stake, data.createdAt) < 0
+											? true
+											: false
 										: false
 								}
 								onClick={async () => {
@@ -393,7 +404,7 @@ const CeFiUserStake = () => {
 								<span style={{ fontWeight: 'bold' }}>
 									{selectedPool.currency.toUpperCase()} available:
 								</span>{' '}
-								1,000
+								{balance[`${selectedPool.currency}_available`]}
 							</div>
 							<div>
 								<span style={{ fontWeight: 'bold' }}>Amount to stake:</span>
@@ -438,6 +449,24 @@ const CeFiUserStake = () => {
 						</AntBtn>
 						<AntBtn
 							onClick={async () => {
+								if (stakerAmount < selectedPool.min_amount) {
+									message.error(
+										`Staking pool's minimum amount allowed is ${
+											selectedPool.min_amount
+										} ${selectedPool.currency.toUpperCase()}`
+									);
+									return;
+								}
+
+								if (stakerAmount > selectedPool.max_amount) {
+									message.error(
+										`Staking pool's maximum amount allowed is ${
+											selectedPool.max_amount
+										} ${selectedPool.currency.toUpperCase()} `
+									);
+									return;
+								}
+
 								setStakeAmount(false);
 								setDuration(true);
 							}}
@@ -478,7 +507,7 @@ const CeFiUserStake = () => {
 					<div>
 						<h1 style={{ color: 'white' }}>Duration</h1>
 						<div>
-							Lock up duration: {selectedPool.duration || 'Perpetual'}
+							Lock up duration: {`${selectedPool.duration} days` || 'Perpetual'}
 							{/* 365 days (12/12/23) */}
 						</div>
 						<div>-</div>
@@ -741,8 +770,8 @@ const CeFiUserStake = () => {
 								<Input
 									style={{ backgroundColor: 'rgba(0,0,0,0.1)', color: 'white' }}
 									placeholder="Type 'I UNDERSTAND'"
-									onChange={(e) => {}}
-									// value={}
+									onChange={(e) => setConfirmText(e.target.value)}
+									value={confirmText}
 								/>
 							</div>
 						</div>
@@ -781,6 +810,7 @@ const CeFiUserStake = () => {
 									message.success(`Successfuly staked in ${selectedPool.name}`);
 								} catch (error) {
 									message.error(error.response.data.message);
+									return;
 								}
 
 								const stakes = await requestStakePools();
@@ -802,6 +832,7 @@ const CeFiUserStake = () => {
 								flex: 1,
 								height: 35,
 							}}
+							disabled={confirmText !== 'I UNDERSTAND'}
 							type="default"
 						>
 							I UNDERSTAND, STAKE
@@ -1456,11 +1487,22 @@ const CeFiUserStake = () => {
 									<div>
 										<div>Estimated value of earnings</div>
 										<div style={{ fontSize: 18 }}>
-											{accumulateReward(userStakeData).map((stake) => (
-												<div>
-													{stake.currency.toUpperCase()}: {stake.reward}
-												</div>
-											))}
+											{accumulateReward(userStakeData).map((stake) => {
+												const incrementUnit =
+													coins[stake.currency].increment_unit;
+												const decimalPoint = new BigNumber(incrementUnit).dp();
+												const sourceAmount =
+													stake?.reward &&
+													new BigNumber(stake?.reward)
+														.decimalPlaces(decimalPoint)
+														.toNumber();
+
+												return (
+													<div>
+														{stake.currency.toUpperCase()}: {sourceAmount}
+													</div>
+												);
+											})}
 										</div>
 									</div>
 								</div>
