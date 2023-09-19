@@ -10,6 +10,7 @@ const BigNumber = require('bignumber.js');
 const { paginationQuery, timeframeQuery, orderingQuery } = require('./database/helpers');
 const dbQuery = require('./database/query');
 const moment = require('moment');
+const { sendEmail } = require('../../../mail');
 
 const {
 	NO_DATA_FOR_CSV,
