@@ -13,7 +13,7 @@ import {
 
 import { CloseOutlined } from '@ant-design/icons';
 import {
-	requestStakePools,
+	requestUserStakePools,
 	createStaker,
 	requestStakers,
 	deleteStaker,
@@ -206,13 +206,12 @@ const CeFiUserStake = ({ balance, coins }) => {
 	];
 
 	useEffect(() => {
-		requestStakePools().then((res) => {
+		requestUserStakePools().then((res) => {
 			setStakePools(res.data);
 		});
 
-		setTimeout(() => {
-			requestExchangeStakers();
-		}, 1000);
+		requestExchangeStakers();
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -814,7 +813,7 @@ const CeFiUserStake = ({ balance, coins }) => {
 									return;
 								}
 
-								const stakes = await requestStakePools();
+								const stakes = await requestUserStakePools();
 								setStakePools(stakes.data);
 
 								requestExchangeStakers();
@@ -1056,7 +1055,7 @@ const CeFiUserStake = ({ balance, coins }) => {
 
 									requestExchangeStakers();
 
-									const stakes = await requestStakePools();
+									const stakes = await requestUserStakePools();
 									setStakePools(stakes.data);
 
 									// message.success(

@@ -53,7 +53,7 @@ class Stake extends Component {
 		super(prop);
 		this.state = {
 			activeTab: '1',
-			selectedStaking: 'cefi',
+			selectedStaking: 'defi',
 			readBeforeAction: false,
 			stakeAmount: false,
 			duration: false,
