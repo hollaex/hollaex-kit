@@ -15,6 +15,28 @@ const { MAILTYPE } = require('../../../mail/strings');
 
 const {
 	NO_DATA_FOR_CSV,
+    STAKE_INVALID_STATUS,
+    STAKE_ONBOARDING_STATUS_ERROR,
+    STAKE_PERPETUAL_CONDITION_ERROR,
+    ACCOUNT_ID_NOT_EXIST,
+    SOURCE_ACCOUNT_INSUFFICIENT_BALANCE,
+    STAKE_POOL_NOT_FOUND,
+    TERMINATED_STAKE_POOL_INVALID_ACTION,
+    INVALID_STAKE_POOL_ACTION,
+    INVALID_ONBOARDING_ACTION,
+    INVALID_TERMINATION_ACTION,
+    FUNDING_ACCOUNT_INSUFFICIENT_BALANCE,
+    STAKE_POOL_NOT_EXIST,
+    USER_NOT_FOUND,
+    STAKE_POOL_ACCEPT_USER_ERROR,
+    STAKE_POOL_NOT_ACTIVE,
+    AMOUNT_INSUFFICIENT_ERROR,
+    STAKE_POOL_MAX_AMOUNT_ERROR,
+    STAKE_POOL_MIN_AMOUNT_ERROR,
+    STAKER_NOT_EXIST,
+    STAKE_POOL_NOT_ACTIVE_FOR_UNSTAKING_ONBOARDING,
+    STAKE_POOL_NOT_ACTIVE_FOR_UNSTAKING_STATUS,
+    UNSTAKE_PERIOD_ERROR,
 } = require(`${SERVER_PATH}/messages`);
 
 
@@ -202,6 +224,23 @@ const validateExchangeStake = (stake) => {
     if (stake.duration && new BigNumber(stake.duration).comparedTo(0) !== 1) {
 		throw new Error('Stake duration must be bigger than zero.');
 	} 
+
+    if (stake.slashing_principle_percentage && new BigNumber(stake.slashing_principle_percentage).comparedTo(100) === 1) {
+		throw new Error('Stake slash principle cannot be bigger than 100.');
+	} 
+
+    if (stake.slashing_earning_percentage && new BigNumber(stake.slashing_earning_percentage).comparedTo(100) === 1) {
+		throw new Error('Stake slash earnings cannot be bigger than 100.');
+	} 
+
+    if (stake.slashing_principle_percentage && new BigNumber(stake.slashing_principle_percentage).comparedTo(0) !== 1) {
+		throw new Error('Stake slash principle cannot be smaller than 0.');
+	} 
+
+    if (stake.slashing_earning_percentage && new BigNumber(stake.slashing_earning_percentage).comparedTo(0) !== 1) {
+		throw new Error('Stake slash earnings cannot be smaller than 0.');
+	} 
+
 }
 
 const getExchangeStakePools = async (opts = {
@@ -269,15 +308,15 @@ const createExchangeStakePool = async (stake) => {
     } = stake;
     
     if (status !== 'uninitialized') {
-        throw new Error('Status cannot be other than uninitialized when creating stake pool for the first time');
+        throw new Error(STAKE_INVALID_STATUS);
     }
 
     if (onboarding) {
-          throw new Error('Onboarding cannot be true when creating stake pool for the first time');
+          throw new Error(STAKE_ONBOARDING_STATUS_ERROR);
     }
 
     if (!duration && (early_unstake || slashing)) {
-        throw new Error('Cannot creation stake pool with perpetual duration and early stake set to true');
+        throw new Error(STAKE_PERPETUAL_CONDITION_ERROR);
     }
 
     if (!subscribedToCoin(currency)) {
@@ -287,13 +326,13 @@ const createExchangeStakePool = async (stake) => {
     const accountOwner = await getUserByKitId(account_id);
 
     if (!accountOwner) {
-        throw new Error('account id does not exist in the server');
+        throw new Error(ACCOUNT_ID_NOT_EXIST);
     }
     
     const balance = await getSourceAccountBalance(account_id, currency);
 
     if (new BigNumber(balance).comparedTo(new BigNumber(max_amount)) !== 1) {
-        throw new Error('funding account does not have enough coins for the max amount set for the stake pool');
+        throw new Error(SOURCE_ACCOUNT_INSUFFICIENT_BALANCE);
     }
 
     stake.slashing = (stake.slashing_principle_percentage || stake.slashing_earning_percentage) ? true : false;
@@ -323,7 +362,7 @@ const createExchangeStakePool = async (stake) => {
 const updateExchangeStakePool = async (id, data) => {
    	const stakePool = await getModel('stake').findOne({ where: { id } });
 	if (!stakePool) {
-		throw new Error('Stake pool not found');
+		throw new Error(STAKE_POOL_NOT_FOUND);
 	}
 
     const {
@@ -342,7 +381,7 @@ const updateExchangeStakePool = async (id, data) => {
     } = data;
     
     if (stakePool.status === 'terminated') {
-        throw new Error('Cannot modify terminated stake pool');
+        throw new Error(TERMINATED_STAKE_POOL_INVALID_ACTION);
     }
 
     if(status !== 'uninitialized' && (
@@ -357,15 +396,15 @@ const updateExchangeStakePool = async (id, data) => {
         || (slashing_principle_percentage && slashing_principle_percentage !== stakePool.slashing_principle_percentage)
         || (slashing_earning_percentage && slashing_earning_percentage !== stakePool.slashing_earning_percentage)
     )) {
-         throw new Error('Cannot modify the fields when the stake pool is not uninitialized');
+         throw new Error(INVALID_STAKE_POOL_ACTION);
     }
 
     if (onboarding && stakePool.status === 'uninitialized') {
-          throw new Error('Onboarding cannot be active while the status is uninitialized');
+          throw new Error(INVALID_ONBOARDING_ACTION);
     }
   
     if (status === 'terminated' && stakePool.status !== 'paused') {
-          throw new Error('Cannot terminated stake pool while it is not paused');
+          throw new Error(INVALID_TERMINATION_ACTION);
     }
 
     if (status === 'paused') {
@@ -381,7 +420,7 @@ const updateExchangeStakePool = async (id, data) => {
         const amountWithReward = new BigNumber(totalAmount).plus(new BigNumber(reward)).toNumber();
 
         if(new BigNumber(balance).comparedTo(amountWithReward) !== 1) {
-            throw new Error('There is not enough balance in the funding account, You cannot settle this stake pool');
+            throw new Error(FUNDING_ACCOUNT_INSUFFICIENT_BALANCE);
         }
         await distributeStakingRewards(stakers, stakePool.account_id, stakePool.currency, stakePool.user_id);
        
@@ -475,34 +514,34 @@ const createExchangeStaker = async (stake_id, amount, user_id) => {
     const stakePool = await getModel('stake').findOne({ where: { id: stake_id } });
 
     if (!stakePool) {
-        throw new Error('Stake pool does not exist');
+        throw new Error(STAKE_POOL_NOT_EXIST);
     }
     const user = await getUserByKitId(user_id);
    
     if (!user) {
-        throw new Error('User not found');
+        throw new Error(USER_NOT_FOUND);
     }
 
     if (!stakePool.onboarding) {
-          throw new Error('Stake pool is not active for accepting users');
+          throw new Error(STAKE_POOL_ACCEPT_USER_ERROR);
     }
 
     if (stakePool.status !== 'active') {
-          throw new Error('Cannot stake in a pool that is not active');
+          throw new Error(STAKE_POOL_NOT_ACTIVE);
     }
 
     const balance = await getSourceAccountBalance(stakePool.account_id, stakePool.currency);
 
     if (new BigNumber(balance).comparedTo(new BigNumber(amount)) !== 1) {
-        throw new Error('You do not have enough funds for the amount set');
+        throw new Error(AMOUNT_INSUFFICIENT_ERROR);
     }
 
     if (new BigNumber(amount).comparedTo(new BigNumber(stakePool.max_amount)) === 1) {
-        throw new Error('the amount is higher than the max amount set for the stake pool');
+        throw new Error(STAKE_POOL_MAX_AMOUNT_ERROR);
     }
 
     if (new BigNumber(amount).comparedTo(new BigNumber(stakePool.min_amount)) !== 1) {
-        throw new Error('the amount is lower than the min amount set for the stake pool');
+        throw new Error(STAKE_POOL_MIN_AMOUNT_ERROR);
     }
 
     const staker = {
@@ -538,27 +577,27 @@ const deleteExchangeStaker = async (staker_id, user_id) => {
     const user = await getUserByKitId(user_id);
    
     if (!user) {
-        throw new Error('User not found');
+        throw new Error(USER_NOT_FOUND);
     }
     
     const staker = await getModel('staker').findOne({ where: { id: staker_id, user_id, status: 'staking' } });
 
     if (!staker) {
-        throw new Error('Staker does not exist');
+        throw new Error(STAKER_NOT_EXIST);
     }
 
     const stakePool = await getModel('stake').findOne({ where: { id: staker.stake_id } });
 
     if (!stakePool) {
-        throw new Error('Stake pool does not exist');
+        throw new Error(STAKE_POOL_NOT_EXIST);
     }
    
     if (!stakePool.onboarding) {
-        throw new Error('Stake pool is not active for unstaking');
+        throw new Error(STAKE_POOL_NOT_ACTIVE_FOR_UNSTAKING_ONBOARDING);
     }
 
     if (stakePool.status !== 'active') {
-          throw new Error('Cannot unstake in a pool that is not active');
+          throw new Error(STAKE_POOL_NOT_ACTIVE_FOR_UNSTAKING_STATUS);
     }
 
     // check if matured for unstaking or not
@@ -568,7 +607,7 @@ const deleteExchangeStaker = async (staker_id, user_id) => {
     const remaininDays = (stakePool?.duration || 0) - stakinDays;
         
     if (stakePool.duration && remaininDays > 0) {
-        throw new Error('Cannot unstake, period is not over');
+        throw new Error(UNSTAKE_PERIOD_ERROR);
     }
 
     const slashedAmount = calculateSlashAmount(staker, stakePool);
