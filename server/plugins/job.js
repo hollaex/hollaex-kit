@@ -61,15 +61,15 @@ const unstakingCheckRunner = () => {
 				try {
                     await toolsLib.wallet.transferAssetByKitIds(stakePool.account_id, user.id, stakePool.currency, totalAmount, 'Admin transfer stake', user.email);
                 } catch (error) {
-					const sourceAccount = await getUserByKitId(stakePool.account_id);
+					const adminAccount = await getUserByKitId(stakePool.user_id);
 					sendEmail(
 						MAILTYPE.ALERT,
-						sourceAccount.email,
+						adminAccount.email,
 						{
 							type: 'Error! Unstaking failed for an exchange user',
 							data: `Unstaking failed while transfering funds for user id ${user.id} Error message: ${error.message}`
 						},
-						sourceAccount.settings
+						adminAccount.settings
 					);
                 }
 

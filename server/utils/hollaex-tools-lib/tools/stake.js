@@ -77,7 +77,7 @@ const calculateStakingAmount = (stakers) => {
     return totalAmount;
 }
 
-const distributeStakingRewards = async (stakers, account_id, currency) => {
+const distributeStakingRewards = async (stakers, account_id, currency, admin_id) => {
     for (const staker of stakers) {
 
         await staker.update({ status: 'closed' }, {
@@ -92,15 +92,15 @@ const distributeStakingRewards = async (stakers, account_id, currency) => {
         try {
             await transferAssetByKitIds(account_id, user.id, currency, totalAmount, 'Admin transfer stake', user.email);
         } catch (error) {
-            const sourceAccount = await getUserByKitId(account_id);
+            const adminAccount = await getUserByKitId(admin_id);
             sendEmail(
                 MAILTYPE.ALERT,
-                sourceAccount.email,
+                adminAccount.email,
                 {
                     type: 'Error! Unstaking failed for an exchange user',
                     data: `Unstaking failed while transfering funds for user id ${user.id} Error message: ${error.message}`
                 },
-                sourceAccount.settings
+                adminAccount.settings
             );
         }
     }
@@ -383,7 +383,7 @@ const updateExchangeStakePool = async (id, data) => {
         if(new BigNumber(balance).comparedTo(amountWithReward) !== 1) {
             throw new Error('There is not enough balance in the funding account, You cannot settle this stake pool');
         }
-        await distributeStakingRewards(stakers, stakePool.account_id, stakePool.currency);
+        await distributeStakingRewards(stakers, stakePool.account_id, stakePool.currency, stakePool.user_id);
        
     }
 
