@@ -61,7 +61,7 @@ const unstakingCheckRunner = () => {
 				try {
                     await toolsLib.wallet.transferAssetByKitIds(stakePool.account_id, user.id, stakePool.currency, totalAmount, 'Admin transfer stake', user.email);
                 } catch (error) {
-					const adminAccount = await getUserByKitId(stakePool.user_id);
+					const adminAccount = await toolsLib.user.getUserByKitId(stakePool.user_id);
 					sendEmail(
 						MAILTYPE.ALERT,
 						adminAccount.email,
