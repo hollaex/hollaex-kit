@@ -11,6 +11,7 @@ const { paginationQuery, timeframeQuery, orderingQuery } = require('./database/h
 const dbQuery = require('./database/query');
 const moment = require('moment');
 const { sendEmail } = require('../../../mail');
+const { MAILTYPE } = require('../../../mail/strings');
 
 const {
 	NO_DATA_FOR_CSV,
@@ -91,14 +92,15 @@ const distributeStakingRewards = async (stakers, account_id, currency) => {
         try {
             await transferAssetByKitIds(account_id, user.id, currency, totalAmount, 'Admin transfer stake', user.email);
         } catch (error) {
+            const sourceAccount = await getUserByKitId(account_id);
             sendEmail(
                 MAILTYPE.ALERT,
-                user.email,
+                sourceAccount.email,
                 {
-                    type: 'Unstaking failed',
-                    data: `User id ${user.id} Error: ${error.message}`
+                    type: 'Error! Unstaking failed for an exchange user',
+                    data: `Unstaking failed while transfering funds for user id ${user.id} Error message: ${error.message}`
                 },
-                user.settings
+                sourceAccount.settings
             );
         }
     }
