@@ -21,11 +21,11 @@ const unstakingCheckRunner = () => {
 		try {
 			const stakerModel = toolsLib.database.getModel('staker');
 			const stakePoolModel = toolsLib.database.getModel('stake');
-			const stakerData = await stakerModel.findAll({ status: 'unstaking' });
+			const stakerData = await stakerModel.findAll({ where: { status: 'unstaking' } });
 
 			for (const staker of stakerData) {
 				const user = await toolsLib.user.getUserByKitId(staker.user_id);
-				const stakePool = await stakePoolModel.findOne({ id: staker.stake_id });
+				const stakePool = await stakePoolModel.findOne({ where: { id: staker.stake_id } });
 
 				const balance = await toolsLib.wallet.getUserBalanceByKitId(stakePool.account_id);
 				let symbols = {};
