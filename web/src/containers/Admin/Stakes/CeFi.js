@@ -31,10 +31,11 @@ import {
 import Coins from '../Coins';
 import BigNumber from 'bignumber.js';
 import { updateConstants } from '../General/action';
+import { handleUpgrade } from 'utils/utils';
 import './CeFi.scss';
 const { Option } = Select;
 
-const CeFi = ({ coins, features }) => {
+const CeFi = ({ coins, features, kit }) => {
 	const searchRef = useRef(null);
 	const [userData, setUserData] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
@@ -91,6 +92,8 @@ const CeFi = ({ coins, features }) => {
 	const [selectedPool, setSelectedPool] = useState();
 	const [editMode, setEditMode] = useState(false);
 	const [hasCefiStaking, setHasCefiStaking] = useState(features.cefi_stake);
+
+	const isUpgrade = handleUpgrade(kit.info);
 
 	const columns = [
 		{
@@ -1302,7 +1305,12 @@ const CeFi = ({ coins, features }) => {
 
 						<div style={{ marginTop: 15 }}>
 							Want to change something within the pool?{' '}
-							<span style={{ textDecoration: 'underline' }}>
+							<span
+								onClick={() => {
+									setStep(1);
+								}}
+								style={{ textDecoration: 'underline', cursor: 'pointer' }}
+							>
 								Reconfigure it here.
 							</span>
 						</div>
@@ -1809,14 +1817,14 @@ const CeFi = ({ coins, features }) => {
 							setStakePoolCreation(defaultStakePool);
 							setDisplayStatePoolCreation(true);
 						}}
-						disabled={!hasCefiStaking}
+						disabled={!hasCefiStaking || isUpgrade}
 						style={{
 							backgroundColor: '#288500',
 							color: 'white',
 							flex: 1,
 							height: 35,
 							marginRight: 10,
-							opacity: !hasCefiStaking ? 0.4 : 1,
+							opacity: !hasCefiStaking || isUpgrade ? 0.4 : 1,
 						}}
 						type="default"
 					>
@@ -1825,37 +1833,64 @@ const CeFi = ({ coins, features }) => {
 				</div>
 			</div>
 
-			<div style={{ marginLeft: 15, marginTop: 10 }}>
-				<div style={{ fontSize: 18, marginBottom: 5 }}>Allow CeFi Staking</div>
-				<div>
-					Allow your users to CeFi stake and earn rewards on your exchange.
-				</div>
-				<div style={{ marginTop: 20 }}>
-					<div className="d-flex">
-						<span style={{ marginRight: 3 }}>Off</span>
-						<Switch
-							checked={hasCefiStaking}
-							onClick={async (value) => {
-								try {
-									await updateConstants({
-										kit: {
-											features: {
-												...features,
-												cefi_stake: value,
+			<div style={{ display: 'flex', justifyContent: 'space-between' }}>
+				<div style={{ marginLeft: 15, marginTop: 10 }}>
+					<div style={{ fontSize: 18, marginBottom: 5 }}>
+						Allow CeFi Staking
+					</div>
+					<div>
+						Allow your users to CeFi stake and earn rewards on your exchange.
+					</div>
+					<div style={{ marginTop: 20 }}>
+						<div className="d-flex">
+							<span style={{ marginRight: 3 }}>Off</span>
+							<Switch
+								checked={hasCefiStaking}
+								disabled={isUpgrade}
+								onClick={async (value) => {
+									try {
+										await updateConstants({
+											kit: {
+												features: {
+													...features,
+													cefi_stake: value,
+												},
 											},
-										},
-									});
-									message.success('Changes saved.');
-									setHasCefiStaking(value);
-								} catch (err) {
-									message.error(err?.data?.message);
-								}
-							}}
-						/>
-						<span style={{ marginLeft: 3 }}>On</span>
+										});
+										message.success('Changes saved.');
+										setHasCefiStaking(value);
+									} catch (err) {
+										message.error(err?.data?.message);
+									}
+								}}
+							/>
+							<span style={{ marginLeft: 3 }}>On</span>
+						</div>
 					</div>
 				</div>
+				{isUpgrade && (
+					<div className="d-flex">
+						<div className="d-flex align-items-center justify-content-between upgrade-section mt-2 mb-5">
+							<div>
+								<div className="font-weight-bold">Create Staking Pool</div>
+								<div>Customize interest rate rewards for your coin.</div>
+							</div>
+							<div className="ml-5 button-wrapper">
+								<a
+									href="https://dash.hollaex.com/billing"
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									<Button type="primary" className="w-100">
+										Upgrade Now
+									</Button>
+								</a>
+							</div>
+						</div>
+					</div>
+				)}
 			</div>
+
 			<div>
 				<div style={{ marginTop: 20 }}></div>
 				<div className="mt-5">

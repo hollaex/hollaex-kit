@@ -237,3 +237,35 @@ paths:
         - user
       x-token-permissions:
         - can_read
+  /stake/slash-estimate:
+    x-swagger-router-controller: stake
+    get:
+      description: Get slash amount for unstaking admin
+      operationId: unstakeEstimateSlash
+      tags:
+        - User
+      parameters:
+        - in: query
+          name: id
+          description: Unique identifier for the staker entry.
+          required: false
+          type: number
+          format: int32
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - user
+      x-token-permissions:
+        - can_read

@@ -248,3 +248,4 @@ exports.STAKER_NOT_EXIST = 'Staker does not exist';
 exports.STAKE_POOL_NOT_ACTIVE_FOR_UNSTAKING_ONBOARDING = 'Stake pool is not active for unstaking';
 exports.STAKE_POOL_NOT_ACTIVE_FOR_UNSTAKING_STATUS = 'Cannot unstake in a pool that is not active';
 exports.UNSTAKE_PERIOD_ERROR = 'Cannot unstake, period is not over';
+exports.STAKE_UNSUPPORTED_EXCHANGE_PLAN = 'Your current exchange plan does not support cefi staking feature';

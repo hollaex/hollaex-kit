@@ -17,6 +17,7 @@ import {
 	createStaker,
 	requestStakers,
 	deleteStaker,
+	getSlashEstimate,
 } from 'containers/Admin/Stakes/actions';
 import moment from 'moment';
 import BigNumber from 'bignumber.js';
@@ -187,8 +188,14 @@ const CeFiUserStake = ({ balance, coins }) => {
 										: false
 								}
 								onClick={async () => {
-									setSelectedStaker(data);
-									setReviewUnstake(true);
+									try {
+										const slashedEstimate = await getSlashEstimate(data.id);
+										data.slashedAmount = slashedEstimate.slashedAmount;
+										setSelectedStaker(data);
+										setReviewUnstake(true);
+									} catch (error) {
+										message.error(error.response.data.message);
+									}
 								}}
 								style={{ backgroundColor: '#5D63FF', color: 'white' }}
 								className="ant-btn green-btn ant-tooltip-open ant-btn-primary"
@@ -441,6 +448,7 @@ const CeFiUserStake = ({ balance, coins }) => {
 					>
 						<AntBtn
 							onClick={() => {
+								setReadBeforeAction(true);
 								setStakeAmount(false);
 							}}
 							style={{
@@ -599,6 +607,7 @@ const CeFiUserStake = ({ balance, coins }) => {
 					>
 						<AntBtn
 							onClick={() => {
+								setStakeAmount(true);
 								setDuration(false);
 							}}
 							style={{
@@ -690,6 +699,7 @@ const CeFiUserStake = ({ balance, coins }) => {
 					>
 						<AntBtn
 							onClick={() => {
+								setDuration(true);
 								setStakeDetails(false);
 							}}
 							style={{
@@ -798,6 +808,7 @@ const CeFiUserStake = ({ balance, coins }) => {
 					>
 						<AntBtn
 							onClick={() => {
+								setStakeDetails(true);
 								setConfirmStake(false);
 							}}
 							style={{
@@ -841,6 +852,7 @@ const CeFiUserStake = ({ balance, coins }) => {
 								color: 'white',
 								flex: 1,
 								height: 35,
+								opacity: confirmText !== 'I UNDERSTAND' ? 0.4 : 1,
 							}}
 							disabled={confirmText !== 'I UNDERSTAND'}
 							type="default"
@@ -998,7 +1010,7 @@ const CeFiUserStake = ({ balance, coins }) => {
 										)}{' '}
 										days (
 										{selectedStaker?.stake?.duration &&
-											formatDate(selectedStaker?.created_at)}
+											formatDate(selectedStaker?.closing)}
 										)
 									</>
 								) : (
@@ -1030,7 +1042,8 @@ const CeFiUserStake = ({ balance, coins }) => {
 
 							<div style={{ marginTop: 20 }}>
 								<span style={{ fontWeight: 'bold' }}>Amount to receive:</span>{' '}
-								{selectedStaker.reward} {selectedStaker.currency.toUpperCase()}
+								{selectedStaker.slashedAmount}{' '}
+								{selectedStaker.currency.toUpperCase()}
 							</div>
 							<div>(Requires 24 hours to settle)</div>
 						</div>

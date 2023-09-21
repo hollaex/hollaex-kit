@@ -3,7 +3,7 @@
 const { getModel } = require('./database/model');
 const { SERVER_PATH } = require('../constants');
 const { getUserByKitId } = require('./user');
-const { subscribedToCoin } = require('./common');
+const { subscribedToCoin, getKitConfig } = require('./common');
 const { transferAssetByKitIds, getUserBalanceByKitId } = require('./wallet');
 const { Op } = require('sequelize');
 const BigNumber = require('bignumber.js');
@@ -37,6 +37,7 @@ const {
     STAKE_POOL_NOT_ACTIVE_FOR_UNSTAKING_ONBOARDING,
     STAKE_POOL_NOT_ACTIVE_FOR_UNSTAKING_STATUS,
     UNSTAKE_PERIOD_ERROR,
+    STAKE_UNSUPPORTED_EXCHANGE_PLAN
 } = require(`${SERVER_PATH}/messages`);
 
 
@@ -127,68 +128,7 @@ const distributeStakingRewards = async (stakers, account_id, currency, admin_id)
         }
     }
 }
-// const calculateStakingRewards = async (stakers, stakePool) => {
-//     const rewards = { total: 0 };
 
-//     let isSlashed = false;
-//     for (const staker of stakers) {
-
-//         const annualEarning = (staker.amount * stakePool.apy) / 100;
-//         const mountlyEarningAmount = annualEarning / 12;
-
-//         const stakerCreationDate = moment(staker.created_at);
-
-//         // if paused, stakepool is supposed to stop calculating rewarding, we set the date to paused_date in this case.
-//         // if not paused, we set the date to current date(now) 
-//         let stakingDate = (stakePool.status === 'paused') ? moment(stakePool.paused_date) : moment();
-
-//         const unstakedDate= staker.unstaked_date && moment(staker.unstaked_date);
-//         const closedDate = staker.closing && moment(staker.closing);
-
-
-//         // If we unstaked before the closing date, it means we unstaked early, set isSlashed to true in this case.
-//         // If there is no closing date, it means we are in a perpatual stake pool, so no slashing.
-//         if (closedDate && unstakedDate && closedDate > unstakedDate) {
-//             isSlashed = true;
-//         }
-
-
-//         // If the stakepool is paused or active and unstaked date is less than that date, we should stop calculating rewarding at this point.
-//         if (unstakedDate && unstakedDate < stakingDate) {
-//             stakingDate = unstakedDate;
-//         }
-
-
-//         // If the current date is after the closing date, we should stop calculating rewarding after closing date.
-//         // If there is no closing date, It means we are in a perpatual stake pool, we keep calculating rewarding until user unstakes.
-//         if (closedDate && closedDate < stakingDate) {
-//             stakingDate = closedDate;
-//         }
-     
-
-//         const totalStakingDays = stakingDate.diff(stakerCreationDate, 'days');
-//         const amountEarned =  (mountlyEarningAmount * totalStakingDays) / 30
-
-//         rewards[staker.user_id] = amountEarned;
-
-//         if (isSlashed) {
-//             const mountlySlashingPrinciple = ((staker.amount * stakePool.slashing_principle_percentage) / 100) / 12;
-
-//             const slashingPrinciple = (mountlySlashingPrinciple * totalStakingDays) / 30;
-
-//             const slashingEarning = (amountEarned * stakePool.slashing_earning_percentage) / 100;
-
-//             rewards[staker.user_id] -= slashingPrinciple;
-//             rewards[staker.user_id] -= slashingEarning;
-
-//         }
-
-//         rewards.total += rewards[staker.user_id]
-//     }
-
-
-//     return rewards;
-// }
 const getSourceAccountBalance = async (account_id, coin) => {
         
     const balance = await getUserBalanceByKitId(account_id);
@@ -216,7 +156,7 @@ const validateExchangeStake = (stake) => {
 		throw new Error('Stake maximum amount must be bigger than zero.');
 	} 
     if (new BigNumber(stake.max_amount).comparedTo(new BigNumber(stake.min_amount)) !== 1) {
-		throw new Error('Stake maximum amount cannot be bigger than maximum amount');
+		throw new Error('Stake minimum amount cannot be bigger than maximum amount');
 	} 
     if (new BigNumber(stake.apy).comparedTo(0) !== 1) {
 		throw new Error('Stake apy must be bigger than zero.');
@@ -317,6 +257,12 @@ const createExchangeStakePool = async (stake) => {
 
     if (!subscribedToCoin(currency)) {
            throw new Error('Invalid coin ' + currency);
+    }
+
+    const exchangeInfo = getKitConfig().info;
+
+    if(!exchangeInfo.STAKE_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
+        throw new Error(STAKE_UNSUPPORTED_EXCHANGE_PLAN);
     }
 
     const accountOwner = await getUserByKitId(account_id);
@@ -526,9 +472,9 @@ const createExchangeStaker = async (stake_id, amount, user_id) => {
           throw new Error(STAKE_POOL_NOT_ACTIVE);
     }
 
-    const balance = await getSourceAccountBalance(stakePool.account_id, stakePool.currency);
+    const userBalance = await getSourceAccountBalance(user_id, stakePool.currency);
 
-    if (new BigNumber(balance).comparedTo(new BigNumber(amount)) !== 1) {
+    if (new BigNumber(userBalance).comparedTo(new BigNumber(amount)) !== 1) {
         throw new Error(AMOUNT_INSUFFICIENT_ERROR);
     }
 
@@ -623,6 +569,24 @@ const deleteExchangeStaker = async (staker_id, user_id) => {
 	});
 }
 
+const unstakeEstimateSlash = async (staker_id) => {
+    const staker = await getModel('staker').findOne({ where: { id: staker_id } });
+
+    if (!staker) {
+        throw new Error(STAKER_NOT_EXIST);
+    }
+
+    const stakePool = await getModel('stake').findOne({ where: { id: staker.stake_id } });
+
+    if (!stakePool) {
+        throw new Error(STAKE_POOL_NOT_EXIST);
+    }
+   
+    const slashedAmount = calculateSlashAmount(staker, stakePool);
+
+    return { slashedAmount };
+}
+
 module.exports = {
 	getExchangeStakePools,
     createExchangeStakePool,
@@ -630,4 +594,5 @@ module.exports = {
     getExchangeStakers,
     createExchangeStaker,
     deleteExchangeStaker,
+    unstakeEstimateSlash
 };

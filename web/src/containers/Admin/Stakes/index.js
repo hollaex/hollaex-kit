@@ -21,7 +21,11 @@ const Stakes = (props) => {
 				onChange={handleTabChange}
 			>
 				<TabPane tab="CeFi" key="0">
-					<CeFi coins={props.coins} features={props.features} />
+					<CeFi
+						coins={props.coins}
+						features={props.features}
+						kit={props.constants}
+					/>
 				</TabPane>
 				<TabPane tab="User Staking" key="1">
 					<UserStaking coins={props.coins} />

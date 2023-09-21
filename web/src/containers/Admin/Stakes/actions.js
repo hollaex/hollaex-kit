@@ -154,3 +154,7 @@ export const deleteStaker = (data) => {
 		data,
 	});
 };
+
+export const getSlashEstimate = (id) => {
+	return requestAuthenticated(`/stake/slash-estimate?id=${id}`);
+};
