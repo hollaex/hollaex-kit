@@ -160,11 +160,14 @@ const getColumns = (
 				verified &&
 				(exchange.plan === 'basic' ||
 					exchange.plan === 'crypto' ||
-					exchange.plan === 'fiat')
+					exchange.plan === 'fiat' ||
+					exchange.plan === 'boost')
 			) {
 				if (
 					(exchange.plan === 'basic' && basicCoins.includes(data.symbol)) ||
-					((exchange.plan === 'crypto' || exchange.plan === 'fiat') &&
+					((exchange.plan === 'crypto' ||
+						exchange.plan === 'fiat' ||
+						exchange.plan === 'boost') &&
 						data &&
 						(data.type === 'blockchain' || data.type === 'fiat'))
 				) {
