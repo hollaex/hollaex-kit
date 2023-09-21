@@ -16,8 +16,10 @@ const getFilters = (coinOptions) => [
 		placeholder: 'Status',
 		key: 'status',
 		options: [
-			{ value: 'true', text: 'Confirmed' },
-			{ value: 'false', text: 'Pending' },
+			{ value: 'status', text: 'Completed' },
+			{ value: 'pending', text: 'Pending' },
+			{ value: 'dismiss', text: 'Dismissed' },
+			{ value: 'reject', text: 'Rejected' },
 		],
 	},
 	{

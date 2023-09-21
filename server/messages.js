@@ -226,7 +226,7 @@ exports.INVALID_PRICE = 'Invalid price';
 exports.INVALID_SIZE = 'Invalid size';
 exports.NO_IP_FOUND = 'Request can not be processed';
 exports.QUOTE_EXPIRY_TIME_ERROR= 'Quote expiry time cannot be smaller than 10';
-
+exports.BALANCE_NOT_AVAILABLE = 'cannot be used for dust, check if the coins are locked';
 exports.STAKE_INVALID_STATUS = 'Status cannot be other than uninitialized when creating stake pool for the first time';
 exports.STAKE_ONBOARDING_STATUS_ERROR = 'Onboarding cannot be true when creating stake pool for the first time';
 exports.STAKE_PERPETUAL_CONDITION_ERROR = 'Cannot creation stake pool with perpetual duration and early stake set to true';
