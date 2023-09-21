@@ -299,18 +299,20 @@ class Stake extends Component {
 						justifyContent: 'center',
 					}}
 				>
-					<div className="d-flex">
-						<span style={{ marginRight: 5 }}>DeFi Staking</span>
-						<Switch
-							checked={this.state.selectedStaking === 'cefi'}
-							onClick={(checked) => {
-								this.setState({
-									selectedStaking: checked ? 'cefi' : 'defi',
-								});
-							}}
-						/>
-						<span style={{ marginLeft: 5 }}>CeFi Staking</span>
-					</div>
+					{this.props?.constants?.features?.cefi_stake && (
+						<div className="d-flex">
+							<span style={{ marginRight: 5 }}>DeFi Staking</span>
+							<Switch
+								checked={this.state.selectedStaking === 'cefi'}
+								onClick={(checked) => {
+									this.setState({
+										selectedStaking: checked ? 'cefi' : 'defi',
+									});
+								}}
+							/>
+							<span style={{ marginLeft: 5 }}>CeFi Staking</span>
+						</div>
+					)}
 				</div>
 
 				{this.state.selectedStaking === 'cefi' && (
@@ -730,6 +732,7 @@ const mapStateToProps = (store) => ({
 	pending: pendingTransactionsSelector(store),
 	networksMismatch: networksMismatchSelector(store),
 	contracts: store.app.contracts,
+	constants: store.app.constants,
 });
 
 const mapDispatchToProps = (dispatch) => ({

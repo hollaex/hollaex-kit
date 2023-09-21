@@ -284,13 +284,15 @@ const CeFiUserStake = ({ balance, coins }) => {
 						setReadBeforeAction(false);
 					}}
 				>
-					<div style={{ display: 'flex' }}>
+					<div style={{ display: 'flex', gap: 30 }}>
 						<div
 							style={{
 								flex: 1,
 								display: 'flex',
 								justifyContent: 'center',
 								alignItems: 'center',
+								backgroundImage: 'url(/assets/images/staking_3.png)',
+								backgroundSize: 'cover',
 							}}
 						>
 							<h1 style={{ color: 'white' }}>Staking 101</h1>
@@ -393,6 +395,10 @@ const CeFiUserStake = ({ balance, coins }) => {
 								flexDirection: 'column',
 								alignItems: 'center',
 								height: 200,
+								backgroundImage: 'url(/assets/images/staking_2.png)',
+								backgroundSize: 'cover',
+								width: '100%',
+								marginBottom: 10,
 							}}
 						>
 							<h3 style={{ color: 'white' }}>{selectedPool.name}</h3>
@@ -749,6 +755,10 @@ const CeFiUserStake = ({ balance, coins }) => {
 								flexDirection: 'column',
 								alignItems: 'center',
 								height: 200,
+								backgroundImage: 'url(/assets/images/staking_1.png)',
+								backgroundSize: 'cover',
+								width: '100%',
+								marginBottom: 20,
 							}}
 						>
 							<h3 style={{ color: 'white' }}>
