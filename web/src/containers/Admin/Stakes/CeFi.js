@@ -631,7 +631,7 @@ const CeFi = ({ coins, features, kit }) => {
 										early_unstake: false,
 
 										slashing: false,
-										duration: 0,
+										duration: null,
 										slashing_principle_percentage: 0,
 										slashing_earning_percentage: 0,
 									}),
@@ -1262,7 +1262,9 @@ const CeFi = ({ coins, features, kit }) => {
 								</div>
 								<div>
 									<span style={{ fontWeight: 'bold' }}>Duration: </span>
-									{stakePoolCreation.duration} days
+									{stakePoolCreation.duration
+										? `${stakePoolCreation.duration} days`
+										: 'No duration, Perpetual staking'}
 								</div>
 								<div>
 									<span style={{ fontWeight: 'bold' }}>

@@ -370,7 +370,7 @@ const updateExchangeStakePool = async (id, data) => {
 
     const updatedStakePool = {
 		...stakePool.get({ plain: true }),
-		...Object.fromEntries(Object.entries(data).filter(([_, v]) => v != null))
+		...Object.fromEntries(Object.entries(data).filter(([_, v]) => v !== undefined))
 	};
 
     updatedStakePool.slashing = (updatedStakePool.slashing_principle_percentage || updatedStakePool.slashing_earning_percentage) ? true : false;
