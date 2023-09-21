@@ -2,6 +2,7 @@
 
 const { getModel } = require('./database/model');
 const { SERVER_PATH } = require('../constants');
+const { STAKE_SUPPORTED_PLANS } = require(`${SERVER_PATH}/constants`)
 const { getUserByKitId } = require('./user');
 const { subscribedToCoin, getKitConfig } = require('./common');
 const { transferAssetByKitIds, getUserBalanceByKitId } = require('./wallet');
@@ -261,7 +262,7 @@ const createExchangeStakePool = async (stake) => {
 
     const exchangeInfo = getKitConfig().info;
 
-    if(!exchangeInfo.STAKE_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
+    if(!STAKE_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
         throw new Error(STAKE_UNSUPPORTED_EXCHANGE_PLAN);
     }
 
