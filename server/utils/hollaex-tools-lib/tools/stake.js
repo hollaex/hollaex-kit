@@ -112,7 +112,7 @@ const distributeStakingRewards = async (stakers, account_id, currency, admin_id)
         const user = await getUserByKitId(staker.user_id);
 
         try {
-            await transferAssetByKitIds(account_id, user.id, currency, totalAmount, 'Admin transfer stake', user.email);
+            await transferAssetByKitIds(account_id, user.id, currency, totalAmount, 'Admin transfer stake', user.email, { category: 'stake' });
         } catch (error) {
             const adminAccount = await getUserByKitId(admin_id);
             sendEmail(
@@ -215,7 +215,7 @@ const validateExchangeStake = (stake) => {
     if (new BigNumber(stake.max_amount).comparedTo(0) !== 1) {
 		throw new Error('Stake maximum amount must be bigger than zero.');
 	} 
-       if (new BigNumber(stake.max_amount).comparedTo(new BigNumber(stake.min_amount)) !== 1) {
+    if (new BigNumber(stake.max_amount).comparedTo(new BigNumber(stake.min_amount)) !== 1) {
 		throw new Error('Stake maximum amount cannot be bigger than maximum amount');
 	} 
     if (new BigNumber(stake.apy).comparedTo(0) !== 1) {
@@ -224,19 +224,15 @@ const validateExchangeStake = (stake) => {
     if (stake.duration && new BigNumber(stake.duration).comparedTo(0) !== 1) {
 		throw new Error('Stake duration must be bigger than zero.');
 	} 
-
     if (stake.slashing_principle_percentage && new BigNumber(stake.slashing_principle_percentage).comparedTo(100) === 1) {
 		throw new Error('Stake slash principle cannot be bigger than 100.');
 	} 
-
     if (stake.slashing_earning_percentage && new BigNumber(stake.slashing_earning_percentage).comparedTo(100) === 1) {
 		throw new Error('Stake slash earnings cannot be bigger than 100.');
 	} 
-
     if (stake.slashing_principle_percentage && new BigNumber(stake.slashing_principle_percentage).comparedTo(0) !== 1) {
 		throw new Error('Stake slash principle cannot be smaller than 0.');
 	} 
-
     if (stake.slashing_earning_percentage && new BigNumber(stake.slashing_earning_percentage).comparedTo(0) !== 1) {
 		throw new Error('Stake slash earnings cannot be smaller than 0.');
 	} 
@@ -554,7 +550,7 @@ const createExchangeStaker = async (stake_id, amount, user_id) => {
     }
 
 
-    await transferAssetByKitIds(user_id, stakePool.account_id, stakePool.currency, amount, 'User transfer stake', user.email);
+    await transferAssetByKitIds(user_id, stakePool.account_id, stakePool.currency, amount, 'User transfer stake', user.email, { category: 'stake' });
 
 
     const stakerData = await getModel('staker').create(staker, {
@@ -606,7 +602,7 @@ const deleteExchangeStaker = async (staker_id, user_id) => {
 	const stakinDays = now.diff(startingDate, 'days');
     const remaininDays = (stakePool?.duration || 0) - stakinDays;
         
-    if (stakePool.duration && remaininDays > 0) {
+    if (!stakePool.early_unstake && stakePool.duration && remaininDays > 0) {
         throw new Error(UNSTAKE_PERIOD_ERROR);
     }
 
