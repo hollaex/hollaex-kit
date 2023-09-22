@@ -1075,7 +1075,7 @@ const CeFiUserStake = ({ balance, coins }) => {
 							}}
 							type="default"
 						>
-							Back
+							Cancel
 						</AntBtn>
 						<AntBtn
 							onClick={async () => {
