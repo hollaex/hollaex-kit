@@ -12,6 +12,7 @@ import {
 	Select,
 	message,
 	Tooltip,
+	InputNumber,
 } from 'antd';
 import { Link } from 'react-router';
 import {
@@ -587,13 +588,13 @@ const CeFi = ({ coins, features, kit }) => {
 						<div style={{ fontWeight: 'bold', fontSize: 16, marginBottom: 4 }}>
 							Set APY reward rate to distribute
 						</div>
-						<Input
+						<InputNumber
 							style={{ backgroundColor: 'rgba(0,0,0,0.1)', color: 'white' }}
 							placeholder="Set annual percentage yield rate"
-							onChange={(e) =>
+							onChange={(value) =>
 								setStakePoolCreation({
 									...stakePoolCreation,
-									apy: Number(e.target.value),
+									apy: value,
 								})
 							}
 							value={stakePoolCreation.apy}
@@ -764,14 +765,14 @@ const CeFi = ({ coins, features, kit }) => {
 						>
 							Slash on principle
 						</div>
-						<Input
+						<InputNumber
 							style={{ backgroundColor: 'rgba(0,0,0,0.1)', color: 'white' }}
 							placeholder="Input the percentage to be deducted"
 							disabled={!stakePoolCreation.early_unstake}
-							onChange={(e) =>
+							onChange={(value) =>
 								setStakePoolCreation({
 									...stakePoolCreation,
-									slashing_principle_percentage: Number(e.target.value),
+									slashing_principle_percentage: value,
 								})
 							}
 							value={stakePoolCreation.slashing_principle_percentage}
@@ -840,17 +841,17 @@ const CeFi = ({ coins, features, kit }) => {
 										>
 											Slash on earnings
 										</div>
-										<Input
+										<InputNumber
 											style={{
 												backgroundColor: 'rgba(0,0,0,0.1)',
 												color: 'white',
 												width: '100%',
 											}}
 											placeholder="Input the percentage to be deducted"
-											onChange={(e) =>
+											onChange={(value) =>
 												setStakePoolCreation({
 													...stakePoolCreation,
-													slashing_earning_percentage: Number(e.target.value),
+													slashing_earning_percentage: value,
 												})
 											}
 											value={stakePoolCreation.slashing_earning_percentage}
@@ -903,13 +904,13 @@ const CeFi = ({ coins, features, kit }) => {
 						<div style={{ fontWeight: 'bold', fontSize: 16, marginBottom: 4 }}>
 							Minimum stake amount
 						</div>
-						<Input
+						<InputNumber
 							style={{ backgroundColor: 'rgba(0,0,0,0.1)', color: 'white' }}
 							placeholder="Input min amount that can be staked"
-							onChange={(e) =>
+							onChange={(value) =>
 								setStakePoolCreation({
 									...stakePoolCreation,
-									min_amount: e.target.value,
+									min_amount: value,
 								})
 							}
 							value={stakePoolCreation.min_amount}
@@ -920,13 +921,13 @@ const CeFi = ({ coins, features, kit }) => {
 						<div style={{ fontWeight: 'bold', fontSize: 16, marginBottom: 4 }}>
 							Maximum stake amount
 						</div>
-						<Input
+						<InputNumber
 							style={{ backgroundColor: 'rgba(0,0,0,0.1)', color: 'white' }}
 							placeholder="Input max amount that can be staked"
-							onChange={(e) =>
+							onChange={(value) =>
 								setStakePoolCreation({
 									...stakePoolCreation,
-									max_amount: e.target.value,
+									max_amount: value,
 								})
 							}
 							value={stakePoolCreation.max_amount}
@@ -1411,12 +1412,6 @@ const CeFi = ({ coins, features, kit }) => {
 								}
 								if (currentStep >= 10) {
 									try {
-										stakePoolCreation.min_amount = Number(
-											stakePoolCreation.min_amount
-										);
-										stakePoolCreation.max_amount = Number(
-											stakePoolCreation.max_amount
-										);
 										if (!editMode) {
 											await createStakePool(stakePoolCreation);
 										} else {
@@ -1450,6 +1445,10 @@ const CeFi = ({ coins, features, kit }) => {
 								(step === 1 && !stakePoolCreation.currency) ||
 								(step === 2 && !stakePoolCreation.name) ||
 								(step === 3 && !stakePoolCreation.apy) ||
+								(step === 3 &&
+									(stakePoolCreation.perpetual_stake
+										? false
+										: !stakePoolCreation.duration)) ||
 								(step === 5 && !stakePoolCreation.min_amount) ||
 								(step === 5 && !stakePoolCreation.max_amount) ||
 								(step === 7 && !stakePoolCreation.account_id)

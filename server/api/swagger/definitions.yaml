@@ -1550,7 +1550,10 @@ definitions:
         type: ['number', 'null']
       slashing:
        type: ['boolean', 'null']
-      slashing_percentage:
+      slashing_earning_percentage:
+        type: number
+        format: int32
+      slashing_principle_percentage:
         type: number
         format: int32
       early_unstake:
