@@ -1045,7 +1045,7 @@ const CeFiUserStake = ({ balance, coins }) => {
 								{new BigNumber(selectedStaker.amount)
 									.plus(
 										new BigNumber(selectedStaker.reward).minus(
-											new Number(selectedStaker.slashedAmount)
+											new BigNumber(selectedStaker.slashedAmount)
 										)
 									)
 									.toNumber()}{' '}
