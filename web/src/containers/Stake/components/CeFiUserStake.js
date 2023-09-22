@@ -1042,7 +1042,13 @@ const CeFiUserStake = ({ balance, coins }) => {
 
 							<div style={{ marginTop: 20 }}>
 								<span style={{ fontWeight: 'bold' }}>Amount to receive:</span>{' '}
-								{selectedStaker.slashedAmount}{' '}
+								{new BigNumber(selectedStaker.amount)
+									.plus(
+										new BigNumber(selectedStaker.reward).minus(
+											new Number(selectedStaker.slashedAmount)
+										)
+									)
+									.toNumber()}{' '}
 								{selectedStaker.currency.toUpperCase()}
 							</div>
 							<div>(Requires 24 hours to settle)</div>
