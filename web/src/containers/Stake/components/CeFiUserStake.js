@@ -229,7 +229,8 @@ const CeFiUserStake = ({ balance, coins }) => {
 
 	const requestExchangeStakers = (page = 1, limit = 50) => {
 		setIsLoading(true);
-		requestStakers({ page, limit, ...queryValues })
+		// requestStakers({ page, limit, ...queryValues })
+		requestStakers({ ...queryValues })
 			.then((response) => {
 				setUserStakeData(
 					page === 1 ? response.data : [...userStakeData, ...response.data]
@@ -251,15 +252,15 @@ const CeFiUserStake = ({ balance, coins }) => {
 			});
 	};
 
-	const pageChange = (count, pageSize) => {
-		const { page, limit, isRemaining } = queryFilters;
-		const pageCount = count % 5 === 0 ? 5 : count % 5;
-		const apiPageTemp = Math.floor(count / 5);
-		if (limit === pageSize * pageCount && apiPageTemp >= page && isRemaining) {
-			requestExchangeStakers(page + 1, limit);
-		}
-		setQueryFilters({ ...queryFilters, currentTablePage: count });
-	};
+	// const pageChange = (count, pageSize) => {
+	// 	const { page, limit, isRemaining } = queryFilters;
+	// 	const pageCount = count % 5 === 0 ? 5 : count % 5;
+	// 	const apiPageTemp = Math.floor(count / 5);
+	// 	if (limit === pageSize * pageCount && apiPageTemp >= page && isRemaining) {
+	// 		requestExchangeStakers(page + 1, limit);
+	// 	}
+	// 	setQueryFilters({ ...queryFilters, currentTablePage: count });
+	// };
 
 	const formatDate = (date) => {
 		return moment(date).format('DD/MMM/YYYY').toUpperCase();
@@ -1557,10 +1558,11 @@ const CeFiUserStake = ({ balance, coins }) => {
 									rowKey={(data) => {
 										return data.id;
 									}}
-									pagination={{
-										current: queryFilters.currentTablePage,
-										onChange: pageChange,
-									}}
+									// pagination={{
+									// 	current: queryFilters.currentTablePage,
+									// 	onChange: pageChange,
+									// }}
+									pagination={false}
 								/>
 							</Spin>
 						</div>
