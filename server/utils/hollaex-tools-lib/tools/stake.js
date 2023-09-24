@@ -301,6 +301,7 @@ const createExchangeStakePool = async (stake) => {
 			'name',
             'user_id',
             'currency',
+            'reward_currency',
             'account_id',
             'apy',
             'duration',
@@ -525,6 +526,7 @@ const createExchangeStaker = async (stake_id, amount, user_id) => {
             'stake_id',
             'amount',
             'currency',
+            'reward_currency',
             'status',
             'closing',
             'unstaked_date'
