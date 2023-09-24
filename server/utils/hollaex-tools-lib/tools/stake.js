@@ -74,7 +74,7 @@ const calculateSlashAmount = async (staker, stakePool) => {
                     throw new Error('There is no price for asset for rewarding in Oracle')
                 }
 
-                slashingPrinciple = new BigNumber(conversions[stakePool.currency]).multipliedBy(slashingPrinciple).toNumber();
+                slashingPrinciple = new BigNumber(conversions[stakePool.currency]).multipliedBy(slashingPrinciple);
             }
             
         }

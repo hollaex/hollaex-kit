@@ -1043,15 +1043,23 @@ const CeFiUserStake = ({ balance, coins }) => {
 							</div>
 
 							<div style={{ marginTop: 20 }}>
-								<span style={{ fontWeight: 'bold' }}>Amount to receive:</span>{' '}
-								{new BigNumber(selectedStaker.amount)
-									.plus(
-										new BigNumber(selectedStaker.reward).minus(
-											new BigNumber(selectedStaker.slashedAmount)
-										)
-									)
-									.toNumber()}{' '}
-								{selectedStaker.currency.toUpperCase()}
+								<span style={{ fontWeight: 'bold' }}>
+									{selectedStaker.reward_currency && 'Reward'} Amount to
+									receive:
+								</span>{' '}
+								{selectedStaker.reward_currency
+									? selectedStaker.reward > 0
+										? `${new BigNumber(selectedStaker.reward)
+												.minus(new BigNumber(selectedStaker.slashedAmount))
+												.toNumber()} ${selectedStaker.reward_currency.toUpperCase()}`
+										: 'No reward amount to receive'
+									: `${new BigNumber(selectedStaker.amount)
+											.plus(
+												new BigNumber(selectedStaker.reward).minus(
+													new BigNumber(selectedStaker.slashedAmount)
+												)
+											)
+											.toNumber()} ${selectedStaker.currency.toUpperCase()}`}
 							</div>
 							<div>(Requires 24 hours to settle)</div>
 						</div>
@@ -1154,17 +1162,23 @@ const CeFiUserStake = ({ balance, coins }) => {
 								{selectedStaker.currency.toUpperCase()}
 							</h2>
 							<div style={{ marginTop: 20 }}>
-								<span style={{ fontWeight: 'bold' }}>Amount to receive:</span>{' '}
-								{new BigNumber(selectedStaker.amount)
-									.plus(
-										new BigNumber(selectedStaker.reward).minus(
-											new BigNumber(selectedStaker.slashedAmount)
-										)
-									)
-									.toNumber()}{' '}
-								{(
-									selectedStaker.reward_currency || selectedStaker.currency
-								).toUpperCase()}
+								<span style={{ fontWeight: 'bold' }}>
+									{selectedStaker.reward_currency && 'Reward'} Amount to
+									receive:
+								</span>{' '}
+								{selectedStaker.reward_currency
+									? selectedStaker.reward > 0
+										? `${new BigNumber(selectedStaker.reward)
+												.minus(new BigNumber(selectedStaker.slashedAmount))
+												.toNumber()} ${selectedStaker.reward_currency.toUpperCase()}`
+										: 'No reward amount to receive'
+									: `${new BigNumber(selectedStaker.amount)
+											.plus(
+												new BigNumber(selectedStaker.reward).minus(
+													new BigNumber(selectedStaker.slashedAmount)
+												)
+											)
+											.toNumber()} ${selectedStaker.currency.toUpperCase()}`}
 							</div>
 							<div>(Requires 24 hours to settle)</div>
 						</div>
