@@ -28,6 +28,10 @@ module.exports = function (sequelize, DataTypes) {
 				type: DataTypes.STRING,
 				allowNull: false
 			},
+			reward_currency: {
+				type: DataTypes.STRING,
+				allowNull: true
+			},
 			reward: {
 				type: DataTypes.DOUBLE,
 				allowNull: false,

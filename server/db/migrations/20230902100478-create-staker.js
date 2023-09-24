@@ -35,6 +35,10 @@ module.exports = {
 				type: Sequelize.STRING,
 				allowNull: false,
 			},
+			reward_currency: {
+				type: Sequelize.STRING,
+				allowNull: false,
+			},
 			reward: {
 				type: Sequelize.DOUBLE,
 				allowNull: false,

@@ -68,7 +68,7 @@ const unstakingCheckRunner = () => {
 					if (stakePool.reward_currency) {
 						 await toolsLib.wallet.transferAssetByKitIds(stakePool.account_id, user.id, stakePool.reward_currency, amountAfterSlash, 'Admin transfer stake', user.email, { category: 'stake' });
 					}
-					
+
 				} catch (error) {
 					const adminAccount = await toolsLib.user.getUserByKitId(stakePool.user_id);
 					sendEmail(
@@ -124,7 +124,7 @@ const updateRewardsCheckRunner = () => {
 					}
 
 					if (stakePool.reward_currency) {
-						const conversions = toolsLib.getAssetsPrices([stakePool.currency], stakePool.reward_currency, 1);
+						const conversions = await toolsLib.getAssetsPrices([stakePool.currency], stakePool.reward_currency, 1);
 						if (conversions[stakePool.currency] === -1) {
 							sendEmail(
 								MAILTYPE.ALERT,

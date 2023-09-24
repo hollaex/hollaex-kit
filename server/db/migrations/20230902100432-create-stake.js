@@ -27,6 +27,10 @@ module.exports = {
 				type: Sequelize.STRING,
 				allowNull: false
 			},
+			reward_currency: {
+				type: Sequelize.STRING,
+				allowNull: false,
+			},
 			account_id: {
 				type: Sequelize.INTEGER,
 				onDelete: 'CASCADE',

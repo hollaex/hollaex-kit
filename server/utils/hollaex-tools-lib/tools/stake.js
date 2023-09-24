@@ -43,7 +43,7 @@ const {
 
 
 
-const calculateSlashAmount = (staker, stakePool) => {
+const calculateSlashAmount = async (staker, stakePool) => {
     let slashedAmount = new BigNumber(0);
     let isSlashed = false;
 
@@ -67,6 +67,16 @@ const calculateSlashAmount = (staker, stakePool) => {
             const stakeAmount = new BigNumber(staker.amount);
             const slashingPrinciplePercentage = new BigNumber(stakePool.slashing_principle_percentage);
             slashingPrinciple = stakeAmount.multipliedBy(slashingPrinciplePercentage).dividedBy(100);
+
+            if (stakePool.reward_currency) {
+                const conversions = await getAssetsPrices([stakePool.currency], stakePool.reward_currency, 1);
+                if (conversions[stakePool.currency] === -1) {
+                    throw new Error('There is no price for asset for rewarding in Oracle')
+                }
+
+                slashingPrinciple = new BigNumber(conversions[stakePool.currency]).multipliedBy(slashingPrinciple).toNumber();
+            }
+            
         }
    
 
@@ -500,6 +510,7 @@ const createExchangeStaker = async (stake_id, amount, user_id) => {
         stake_id,
         amount,
         currency: stakePool.currency,
+        reward_currency: stakePool.reward_currency,
         status: 'staking',
         ...(stakePool.duration && { closing: moment().add(stakePool.duration, 'days') })
     }
@@ -561,7 +572,7 @@ const deleteExchangeStaker = async (staker_id, user_id) => {
         throw new Error(UNSTAKE_PERIOD_ERROR);
     }
 
-    const slashedAmount = calculateSlashAmount(staker, stakePool);
+    const slashedAmount = await calculateSlashAmount(staker, stakePool);
     const updatedStaker = {
         ...staker,
         status: 'unstaking',
@@ -591,7 +602,7 @@ const unstakeEstimateSlash = async (staker_id) => {
         throw new Error(STAKE_POOL_NOT_EXIST);
     }
    
-    const slashedAmount = calculateSlashAmount(staker, stakePool);
+    const slashedAmount = await calculateSlashAmount(staker, stakePool);
 
     return { slashedAmount };
 }

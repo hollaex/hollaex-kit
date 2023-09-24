@@ -328,7 +328,8 @@ const UserStaking = ({ coins }) => {
 									{accumulateUnstakeValue(userData).map((stake) => (
 										<div>
 											<span style={{ fontWeight: 'bold' }}></span>{' '}
-											{stake.amount} {stake.currency.toUpperCase()}
+											{stake.amount}{' '}
+											{(stake.reward_currency || stake.currency).toUpperCase()}
 										</div>
 									))}
 								</div>

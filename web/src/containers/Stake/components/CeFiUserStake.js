@@ -158,7 +158,8 @@ const CeFiUserStake = ({ balance, coins }) => {
 
 				return (
 					<div className="d-flex">
-						{sourceAmount} {data?.currency.toUpperCase()}
+						{sourceAmount}{' '}
+						{(data?.reward_currency || data?.currency).toUpperCase()}
 					</div>
 				);
 			},
@@ -1161,7 +1162,9 @@ const CeFiUserStake = ({ balance, coins }) => {
 										)
 									)
 									.toNumber()}{' '}
-								{selectedStaker.currency.toUpperCase()}
+								{(
+									selectedStaker.reward_currency || selectedStaker.currency
+								).toUpperCase()}
 							</div>
 							<div>(Requires 24 hours to settle)</div>
 						</div>
@@ -1553,7 +1556,10 @@ const CeFiUserStake = ({ balance, coins }) => {
 
 												return (
 													<div>
-														{stake.currency.toUpperCase()}: {sourceAmount}
+														{(
+															stake.reward_currency || stake.currency
+														).toUpperCase()}
+														: {sourceAmount}
 													</div>
 												);
 											})}

@@ -224,7 +224,10 @@ const CeFi = ({ coins, features, kit }) => {
 
 				return (
 					<div className="d-flex">
-						{sourceAmount} {sourceAmount ? data.currency.toUpperCase() : ''}
+						{sourceAmount}{' '}
+						{sourceAmount
+							? (data.reward_currency || data.currency).toUpperCase()
+							: ''}
 					</div>
 				);
 			},
