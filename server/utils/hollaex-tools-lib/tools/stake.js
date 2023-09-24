@@ -4,7 +4,7 @@ const { getModel } = require('./database/model');
 const { SERVER_PATH } = require('../constants');
 const { STAKE_SUPPORTED_PLANS } = require(`${SERVER_PATH}/constants`)
 const { getUserByKitId } = require('./user');
-const { subscribedToCoin, getKitConfig } = require('./common');
+const { subscribedToCoin, getKitConfig, getAssetsPrices } = require('./common');
 const { transferAssetByKitIds, getUserBalanceByKitId } = require('./wallet');
 const { Op } = require('sequelize');
 const BigNumber = require('bignumber.js');
@@ -229,6 +229,7 @@ const createExchangeStakePool = async (stake) => {
 
     const {
         currency,
+        reward_currency,
         account_id,
         duration,
         slashing,
@@ -254,6 +255,17 @@ const createExchangeStakePool = async (stake) => {
            throw new Error('Invalid coin ' + currency);
     }
 
+    if (reward_currency && !subscribedToCoin(reward_currency)) {
+           throw new Error('Invalid coin ' + reward_currency);
+    }
+
+    if (reward_currency) {
+        const conversions = await getAssetsPrices([currency], reward_currency, 1);
+        if (conversions[currency] === -1) {
+            throw new Error('There is no price for asset for rewarding in Oracle')
+        }
+    }
+    
     const exchangeInfo = getKitConfig().info;
 
     if(!STAKE_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
@@ -304,6 +316,7 @@ const updateExchangeStakePool = async (id, data) => {
 
     const {
         currency,
+        reward_currency,
         name,
         account_id,
         duration,
@@ -324,6 +337,7 @@ const updateExchangeStakePool = async (id, data) => {
     if(status !== 'uninitialized' && (
         (currency && currency !== stakePool.currency)
         || (name && name !== stakePool.name)
+        || (reward_currency && reward_currency !== stakePool.reward_currency)
         || (account_id && account_id !== stakePool.account_id)
         || (duration && duration !== stakePool.duration)
         || (slashing && slashing !== stakePool.slashing)

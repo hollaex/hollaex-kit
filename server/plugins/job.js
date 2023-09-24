@@ -38,7 +38,11 @@ const unstakingCheckRunner = () => {
 				}
 
 				const amountAfterSlash =  new BigNumber(staker.reward).minus(new BigNumber(staker.slashed));
-				const totalAmount = (new BigNumber(staker.amount).plus(amountAfterSlash)).toNumber();
+				let totalAmount;
+				if (!stakePool.reward_currency) {
+					totalAmount = (new BigNumber(staker.amount).plus(amountAfterSlash)).toNumber();
+				}
+
 				if (new BigNumber(symbols[stakePool.currency]).comparedTo(totalAmount) !== 1) {
 					sendEmail(
 						MAILTYPE.ALERT,
@@ -60,7 +64,12 @@ const unstakingCheckRunner = () => {
 
 				try {
                     await toolsLib.wallet.transferAssetByKitIds(stakePool.account_id, user.id, stakePool.currency, totalAmount, 'Admin transfer stake', user.email, { category: 'stake' });
-                } catch (error) {
+					
+					if (stakePool.reward_currency) {
+						 await toolsLib.wallet.transferAssetByKitIds(stakePool.account_id, user.id, stakePool.reward_currency, amountAfterSlash, 'Admin transfer stake', user.email, { category: 'stake' });
+					}
+					
+				} catch (error) {
 					const adminAccount = await toolsLib.user.getUserByKitId(stakePool.user_id);
 					sendEmail(
 						MAILTYPE.ALERT,
@@ -103,7 +112,7 @@ const updateRewardsCheckRunner = () => {
 
 				 for (const staker of stakers) {
 					const annualEarning = new BigNumber(staker.amount).multipliedBy(new BigNumber(stakePool.apy)).dividedBy(100);
-					const dailyEarningAmount = annualEarning.dividedBy(12 * 30);
+					let dailyEarningAmount = annualEarning.dividedBy(12 * 30).toNumber();
 
 					let stakingDate = moment();
 					const closedDate = staker.closing && moment(staker.closing);
@@ -113,8 +122,26 @@ const updateRewardsCheckRunner = () => {
 					if (closedDate && closedDate < stakingDate) {
 						continue;
 					}
+
+					if (stakePool.reward_currency) {
+						const conversions = toolsLib.getAssetsPrices([stakePool.currency], stakePool.reward_currency, 1);
+						if (conversions[stakePool.currency] === -1) {
+							sendEmail(
+								MAILTYPE.ALERT,
+								user.email,
+								{
+									type: 'Could not reward user, Price not found on oracle',
+									data: `Could not rewawrd User id ${staker.user_id}, ${stakePool.currency} not converted to ${stakePool.reward_currency} in Oracle`
+								},
+								user.settings
+							);
+							continue;
+						}
+
+						dailyEarningAmount =  new BigNumber(conversions[stakePool.currency]).multipliedBy(dailyEarningAmount).toNumber();
+					}
 					
-					await stakerModel.increment('reward', { by: dailyEarningAmount.toNumber(), where: { id: staker.id }});
+					await stakerModel.increment('reward', { by: dailyEarningAmount, where: { id: staker.id }});
     			}
 			}
 

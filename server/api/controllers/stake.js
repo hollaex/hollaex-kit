@@ -55,6 +55,7 @@ const createExchangeStakes = (req, res) => {
 	const {  
 		name,
 		currency,
+		reward_currency,
 		account_id,
 		apy,
 		duration,
@@ -74,6 +75,7 @@ const createExchangeStakes = (req, res) => {
 		'controllers/stake/createExchangeStakes data',
 		name,
 		currency,
+		reward_currency,
 		account_id,
 		apy,
 		duration,
@@ -91,6 +93,7 @@ const createExchangeStakes = (req, res) => {
 	toolsLib.stake.createExchangeStakePool({
 		name,
 		currency,
+		reward_currency,
 		account_id,
 		apy,
 		duration,
@@ -126,6 +129,7 @@ loggerAdmin.verbose(req.uuid, 'controllers/stake/updateExchangeStakes/auth', req
 		id,
 		name,
 		currency,
+		reward_currency,
 		account_id,
 		apy,
 		duration,
@@ -146,6 +150,7 @@ loggerAdmin.verbose(req.uuid, 'controllers/stake/updateExchangeStakes/auth', req
 		id,
 		name,
 		currency,
+		reward_currency,
 		account_id,
 		apy,
 		duration,
@@ -163,6 +168,7 @@ loggerAdmin.verbose(req.uuid, 'controllers/stake/updateExchangeStakes/auth', req
 	toolsLib.stake.updateExchangeStakePool(id, {
 		name,
 		currency,
+		reward_currency,
 		account_id,
 		apy,
 		duration,

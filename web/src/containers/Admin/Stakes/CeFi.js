@@ -59,6 +59,7 @@ const CeFi = ({ coins, features, kit }) => {
 	const defaultStakePool = {
 		name: null,
 		currency: null,
+		reward_currency: null,
 		account_id: null,
 		apy: null,
 		duration: null,
@@ -488,11 +489,11 @@ const CeFi = ({ coins, features, kit }) => {
 
 					<div className="otc-Container">
 						<div className="mb-5">
-							<div className="mb-2">Asset</div>
+							<div className="mb-2">Asset for staking</div>
 							<Select
 								showSearch
 								className="select-box"
-								placeholder="Select asset"
+								placeholder="Select asset for staking"
 								value={stakePoolCreation.currency}
 								onChange={(e) => {
 									setStakePoolCreation({
@@ -524,6 +525,57 @@ const CeFi = ({ coins, features, kit }) => {
 							</div>
 						)}
 					</div>
+
+					{stakePoolCreation.currency && (
+						<div className="otc-Container">
+							<div className="mb-5">
+								<div className="mb-2">Asset for rewarding</div>
+								<div style={{ color: '#ccc', marginBottom: 10 }}>
+									If you wish to reward your users in another asset, You can
+									select it here, If selected, this will be used to convert the
+									rewards from the main asset to this asset by using Oracle
+									prices. If not selected, There will be no conversion from the
+									main asset.{' '}
+								</div>
+								<Select
+									showSearch
+									className="select-box"
+									placeholder="Select asset for rewarding"
+									value={stakePoolCreation.reward_currency}
+									onChange={(e) => {
+										setStakePoolCreation({
+											...stakePoolCreation,
+											reward_currency: e,
+										});
+									}}
+								>
+									<Option value={null}>None</Option>
+									{Object.keys(coins).map((key) => (
+										<Option value={key}>{coins[key].fullname}</Option>
+									))}
+								</Select>
+							</div>
+
+							{stakePoolCreation.reward_currency && (
+								<div className="mb-4">
+									<div className="d-flex align-items-center coin-image">
+										<div className=" mr-3">
+											<Coins type={stakePoolCreation.reward_currency} />
+										</div>
+										<div>
+											<div
+												dangerouslySetInnerHTML={{
+													__html:
+														coins[stakePoolCreation.reward_currency]
+															.description,
+												}}
+											/>
+										</div>
+									</div>
+								</div>
+							)}
+						</div>
+					)}
 				</>
 			);
 		} else if (step === 2) {

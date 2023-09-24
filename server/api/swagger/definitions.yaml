@@ -1540,6 +1540,8 @@ definitions:
         format: int32
       currency:
         type: string
+      reward_currency:
+        type: ['string', 'null']
       account_id:
         type: number
         format: int32

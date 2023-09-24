@@ -1450,6 +1450,14 @@ const CeFiUserStake = ({ balance, coins }) => {
 												<span style={{ fontWeight: 'bold' }}>Max:</span>{' '}
 												{pool.max_amount} {pool.currency.toUpperCase()}
 											</div>
+											{pool?.reward_currency && (
+												<div style={{ color: 'white' }}>
+													Rewards will be paid in{' '}
+													<span style={{ fontWeight: 'bold' }}>
+														{pool.reward_currency.toUpperCase()}
+													</span>
+												</div>
+											)}
 											<div>
 												<AntBtn
 													onClick={() => {
