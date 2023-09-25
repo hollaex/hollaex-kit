@@ -429,6 +429,7 @@ const updateExchangeStakePool = async (id, data) => {
 			'name',
             'user_id',
             'currency',
+            'reward_currency',
             'account_id',
             'apy',
             'duration',
