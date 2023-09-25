@@ -21,6 +21,7 @@ import {
 } from 'containers/Admin/Stakes/actions';
 import moment from 'moment';
 import BigNumber from 'bignumber.js';
+import { Link } from 'react-router';
 import '../CeFiStake.scss';
 
 const TabPane = Tabs.TabPane;
@@ -1031,8 +1032,11 @@ const CeFiUserStake = ({ balance, coins }) => {
 								<span style={{ fontWeight: 'bold' }}>
 									Penalty upon initial stake principle:
 								</span>{' '}
-								{/* -- {selectedStaker.currency} */}
-								(-
+								{roundToIncrementUnit(
+									selectedStaker.slashedValues.slashingPrinciple,
+									selectedStaker.currency
+								)}{' '}
+								{selectedStaker.currency.toUpperCase()} (-
 								{selectedStaker?.stake?.slashing_principle_percentage
 									? `${selectedStaker?.stake?.slashing_principle_percentage}%`
 									: '-'}
@@ -1042,7 +1046,13 @@ const CeFiUserStake = ({ balance, coins }) => {
 								<span style={{ fontWeight: 'bold' }}>
 									Forfeiture of earnings:
 								</span>{' '}
-								{/* -- {selectedStaker.currency} */}
+								{roundToIncrementUnit(
+									selectedStaker.slashedValues.slashingEarning,
+									selectedStaker.reward_currency || selectedStaker.currency
+								)}{' '}
+								{(
+									selectedStaker.reward_currency || selectedStaker.currency
+								).toUpperCase()}{' '}
 								(-
 								{selectedStaker?.stake?.slashing_earning_percentage
 									? `${selectedStaker?.stake?.slashing_earning_percentage}%`
@@ -1256,7 +1266,7 @@ const CeFiUserStake = ({ balance, coins }) => {
 							}}
 							type="default"
 						>
-							VISIT WALLET
+							<Link to="/wallet">VISIT WALLET</Link>
 						</AntBtn>
 					</div>
 				</Modal>
