@@ -1,13 +1,13 @@
 'use strict';
 
-const { loggerBroker, loggerAdmin } = require('../../config/logger');
+const { loggerStake } = require('../../config/logger');
 const { INIT_CHANNEL } = require('../../constants');
 const { publisher } = require('../../db/pubsub');
 const toolsLib = require('hollaex-tools-lib');
 const { errorMessageConverter } = require('../../utils/conversion');
 
 const getExchangeStakes = (req, res) => {
-	loggerAdmin.verbose(req.uuid, 'controllers/stake/getExchangeStakes/auth', req.auth);
+	loggerStake.verbose(req.uuid, 'controllers/stake/getExchangeStakes/auth', req.auth);
 
 	const {  limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
@@ -16,7 +16,7 @@ const getExchangeStakes = (req, res) => {
 	}
 	
 	if (order_by.value && typeof order_by.value !== 'string') {
-		loggerAdmin.error(
+		loggerStake.error(
 			req.uuid,
 			'controllers/stake/getExchangeStakes invalid order_by',
 			order_by.value
@@ -44,13 +44,13 @@ const getExchangeStakes = (req, res) => {
 			}
 		})
 		.catch((err) => {
-			loggerAdmin.error(req.uuid, 'controllers/stake/getExchangeStakes', err.message);
+			loggerStake.error(req.uuid, 'controllers/stake/getExchangeStakes', err.message);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
 const createExchangeStakes = (req, res) => {
-	loggerAdmin.verbose(req.uuid, 'controllers/stake/createExchangeStakes/auth', req.auth);
+	loggerStake.verbose(req.uuid, 'controllers/stake/createExchangeStakes/auth', req.auth);
 
 	const {  
 		name,
@@ -70,7 +70,7 @@ const createExchangeStakes = (req, res) => {
 		status
 	 } = req.swagger.params.data.value;
 
-	loggerAdmin.verbose(
+	loggerStake.verbose(
 		req.uuid,
 		'controllers/stake/createExchangeStakes data',
 		name,
@@ -113,7 +113,7 @@ const createExchangeStakes = (req, res) => {
 			return res.json(data);
 		})
 		.catch((err) => {
-			loggerAdmin.error(
+			loggerStake.error(
 				req.uuid,
 				'controllers/stake/createExchangeStakes err',
 				err.message
@@ -123,7 +123,7 @@ const createExchangeStakes = (req, res) => {
 }
 
 const updateExchangeStakes = (req, res) => {
-loggerAdmin.verbose(req.uuid, 'controllers/stake/updateExchangeStakes/auth', req.auth);
+loggerStake.verbose(req.uuid, 'controllers/stake/updateExchangeStakes/auth', req.auth);
 
 	const {
 		id,
@@ -144,7 +144,7 @@ loggerAdmin.verbose(req.uuid, 'controllers/stake/updateExchangeStakes/auth', req
 		status
 	 } = req.swagger.params.data.value;
 
-	loggerAdmin.verbose(
+	loggerStake.verbose(
 		req.uuid,
 		'controllers/stake/updateExchangeStakes data',
 		id,
@@ -188,7 +188,7 @@ loggerAdmin.verbose(req.uuid, 'controllers/stake/updateExchangeStakes/auth', req
 			return res.json(data);
 		})
 		.catch((err) => {
-			loggerAdmin.error(
+			loggerStake.error(
 				req.uuid,
 				'controllers/stake/updateExchangeStakes err',
 				err.message
@@ -198,7 +198,7 @@ loggerAdmin.verbose(req.uuid, 'controllers/stake/updateExchangeStakes/auth', req
 }
 
 const deleteExchangeStakes = (req, res) => {
-	loggerAdmin.verbose(
+	loggerStake.verbose(
 		req.uuid,
 		'controllers/stake/deleteExchangeStakes auth',
 		req.auth
@@ -210,7 +210,7 @@ const deleteExchangeStakes = (req, res) => {
 			return res.json({ message: 'Successfully deleted stake pool.' });
 		})
 		.catch((err) => {
-			loggerAdmin.error(
+			loggerStake.error(
 				req.uuid,
 				'controllers/broker/deleteExchangeStakes err',
 				err.message
@@ -220,7 +220,7 @@ const deleteExchangeStakes = (req, res) => {
 }
 
 const getExchangeStakersForAdmin = (req, res) => {
-	loggerAdmin.verbose(req.uuid, 'controllers/stake/getExchangeStakersAdmin/auth', req.auth);
+	loggerStake.verbose(req.uuid, 'controllers/stake/getExchangeStakersAdmin/auth', req.auth);
 
 	const { user_id, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
@@ -229,7 +229,7 @@ const getExchangeStakersForAdmin = (req, res) => {
 	}
 	
 	if (order_by.value && typeof order_by.value !== 'string') {
-		loggerAdmin.error(
+		loggerStake.error(
 			req.uuid,
 			'controllers/stake/getExchangeStakersAdmin invalid order_by',
 			order_by.value
@@ -258,13 +258,13 @@ const getExchangeStakersForAdmin = (req, res) => {
 			}
 		})
 		.catch((err) => {
-			loggerAdmin.error(req.uuid, 'controllers/stake/getExchangeStakersAdmin', err.message);
+			loggerStake.error(req.uuid, 'controllers/stake/getExchangeStakersAdmin', err.message);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 }
 
 const getExchangeStakersForUser = (req, res) => {
-	loggerAdmin.verbose(req.uuid, 'controllers/stake/getExchangeStakersForUser/auth', req.auth);
+	loggerStake.verbose(req.uuid, 'controllers/stake/getExchangeStakersForUser/auth', req.auth);
 
 	const { limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
@@ -273,7 +273,7 @@ const getExchangeStakersForUser = (req, res) => {
 	}
 	
 	if (order_by.value && typeof order_by.value !== 'string') {
-		loggerAdmin.error(
+		loggerStake.error(
 			req.uuid,
 			'controllers/stake/getExchangeStakersForUser invalid order_by',
 			order_by.value
@@ -302,20 +302,20 @@ const getExchangeStakersForUser = (req, res) => {
 			}
 		})
 		.catch((err) => {
-			loggerAdmin.error(req.uuid, 'controllers/stake/getExchangeStakersForUser', err.message);
+			loggerStake.error(req.uuid, 'controllers/stake/getExchangeStakersForUser', err.message);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 }
 
 const createStaker = (req, res) => {
-	loggerAdmin.verbose(req.uuid, 'controllers/stake/createStaker/auth', req.auth);
+	loggerStake.verbose(req.uuid, 'controllers/stake/createStaker/auth', req.auth);
 
 	const {  
 		stake_id,
 		amount
 	 } = req.swagger.params.data.value;
 
-	loggerAdmin.verbose(
+	loggerStake.verbose(
 		req.uuid,
 		'controllers/stake/createStaker data',
 		stake_id,
@@ -332,7 +332,7 @@ const createStaker = (req, res) => {
 			return res.json(data);
 		})
 		.catch((err) => {
-			loggerAdmin.error(
+			loggerStake.error(
 				req.uuid,
 				'controllers/stake/createStaker err',
 				err.message
@@ -342,7 +342,7 @@ const createStaker = (req, res) => {
 }
 
 const deleteExchangeStaker = (req, res) => {
-	loggerAdmin.verbose(
+	loggerStake.verbose(
 		req.uuid,
 		'controllers/stake/deleteExchangeStaker auth',
 		req.auth
@@ -354,7 +354,7 @@ const deleteExchangeStaker = (req, res) => {
 			return res.json({ message: 'Successfully deleted stake.' });
 		})
 		.catch((err) => {
-			loggerAdmin.error(
+			loggerStake.error(
 				req.uuid,
 				'controllers/broker/stake err',
 				err.message
@@ -364,7 +364,7 @@ const deleteExchangeStaker = (req, res) => {
 }
 
 const unstakeEstimateSlash = (req, res) => {
-	loggerAdmin.verbose(req.uuid, 'controllers/stake/unstakeEstimateSlash/auth', req.auth);
+	loggerStake.verbose(req.uuid, 'controllers/stake/unstakeEstimateSlash/auth', req.auth);
 
 	const { id } = req.swagger.params;
 
@@ -373,7 +373,7 @@ const unstakeEstimateSlash = (req, res) => {
 			return res.json(data);
 		})
 		.catch((err) => {
-			loggerAdmin.error(req.uuid, 'controllers/stake/unstakeEstimateSlash', err.message);
+			loggerStake.error(req.uuid, 'controllers/stake/unstakeEstimateSlash', err.message);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 }
