@@ -67,16 +67,6 @@ const calculateSlashAmount = async (staker, stakePool) => {
             const stakeAmount = new BigNumber(staker.amount);
             const slashingPrinciplePercentage = new BigNumber(stakePool.slashing_principle_percentage);
             slashingPrinciple = stakeAmount.multipliedBy(slashingPrinciplePercentage).dividedBy(100);
-
-            if (stakePool.reward_currency) {
-                const conversions = await getAssetsPrices([stakePool.currency], stakePool.reward_currency, 1);
-                if (conversions[stakePool.currency] === -1) {
-                    throw new Error(NO_ORACLE_PRICE_FOUND)
-                }
-
-                slashingPrinciple = new BigNumber(conversions[stakePool.currency]).multipliedBy(slashingPrinciple);
-            }
-            
         }
 
         if (stakePool.slashing_earning_percentage) {
