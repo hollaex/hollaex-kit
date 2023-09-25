@@ -119,7 +119,10 @@ const UserStaking = ({ coins }) => {
 
 				return (
 					<div className="d-flex">
-						{sourceAmount} {data?.stake?.currency?.toUpperCase()}
+						{sourceAmount}{' '}
+						{(
+							data?.stake?.reward_currency || data?.stake?.currency
+						).toUpperCase()}
 					</div>
 				);
 			},
