@@ -22,6 +22,7 @@ import {
 import moment from 'moment';
 import BigNumber from 'bignumber.js';
 import { Link } from 'react-router';
+import STRINGS from 'config/localizedStrings';
 import '../CeFiStake.scss';
 
 const TabPane = Tabs.TabPane;
@@ -317,22 +318,14 @@ const CeFiUserStake = ({ balance, coins }) => {
 						</div>
 						<div style={{ flex: 1 }}>
 							<h4 style={{ color: 'white', fontWeight: 'bold' }}>
-								Read Before You Agree and Earn
+								{STRINGS['CEFI_STAKE.READ_BEFORE_AGREE_AND_EARN']}
 							</h4>
 							<div>
-								Locking up funds and participating in staking can indeed be a
-								profitable way to earn rewards. However, it is essential to be
-								aware that there might be penalties for early unstaking and
-								potentially long lock up periods. Therefore, it is crucial to
-								thoroughly understand the pool's rules before staking. By
-								clicking "I agree and understand" below, you acknowledge that
-								you will{' '}
+								{STRINGS['CEFI_STAKE.AGREEMENT_INTRODUCTION_1']}{' '}
 								<span style={{ fontWeight: 'bold' }}>
-									carefully read the terms in the steps to follow,
+									{STRINGS['CEFI_STAKE.AGREEMENT_INTRODUCTION_2']}
 								</span>{' '}
-								and you accept the potential risks and penalties associated with
-								early unstaking. Proceeding with this understanding will ensure
-								a more informed and secure staking experience.
+								{STRINGS['CEFI_STAKE.AGREEMENT_INTRODUCTION_3']}
 							</div>
 						</div>
 					</div>
@@ -358,7 +351,7 @@ const CeFiUserStake = ({ balance, coins }) => {
 							}}
 							type="default"
 						>
-							Back
+							{STRINGS['CEFI_STAKE.BACK_BUTTON']}
 						</AntBtn>
 						<AntBtn
 							onClick={async () => {
@@ -373,7 +366,7 @@ const CeFiUserStake = ({ balance, coins }) => {
 							}}
 							type="default"
 						>
-							I UNDERSTAND
+							{STRINGS['CEFI_STAKE.I_UNDERSTAND_BUTTON']}
 						</AntBtn>
 					</div>
 				</Modal>
@@ -431,7 +424,9 @@ const CeFiUserStake = ({ balance, coins }) => {
 								{balance[`${selectedPool.currency}_available`]}
 							</div>
 							<div>
-								<span style={{ fontWeight: 'bold' }}>Amount to stake:</span>
+								<span style={{ fontWeight: 'bold' }}>
+									{STRINGS['CEFI_STAKE.AMOUNT_TO_STAKE_LABEL']}:
+								</span>
 							</div>
 							<div style={{ marginTop: 5 }}>
 								<Input
@@ -470,7 +465,7 @@ const CeFiUserStake = ({ balance, coins }) => {
 							}}
 							type="default"
 						>
-							Back
+							{STRINGS['CEFI_STAKE.BACK_BUTTON']}
 						</AntBtn>
 						<AntBtn
 							onClick={async () => {
@@ -504,7 +499,7 @@ const CeFiUserStake = ({ balance, coins }) => {
 							type="default"
 							disabled={!stakerAmount}
 						>
-							Next
+							{STRINGS['CEFI_STAKE.NEXT_BUTTON']}
 						</AntBtn>
 					</div>
 				</Modal>
@@ -530,9 +525,12 @@ const CeFiUserStake = ({ balance, coins }) => {
 					}}
 				>
 					<div>
-						<h1 style={{ color: 'white' }}>Duration</h1>
+						<h1 style={{ color: 'white' }}>
+							{STRINGS['CEFI_STAKE.DURATION_LABEL']}
+						</h1>
 						<div>
-							Lock up duration: {`${selectedPool.duration} days` || 'Perpetual'}
+							{STRINGS['CEFI_STAKE.LOCKUP_DURATION_LABEL']}:{' '}
+							{`${selectedPool.duration} days` || 'Perpetual'}
 							{/* 365 days (12/12/23) */}
 						</div>
 						<div>-</div>
@@ -541,11 +539,15 @@ const CeFiUserStake = ({ balance, coins }) => {
 							<>
 								<h4 style={{ color: 'white' }}>Slashing</h4>
 								<div>
-									Penalty upon initial stake principle: -
-									{selectedPool.slashing_principle_percentage}%{' '}
+									{
+										STRINGS[
+											'CEFI_STAKE.PENALTY_UPON_INITIAL_STAKE_PRINCIPLE_LABEL'
+										]
+									}
+									: -{selectedPool.slashing_principle_percentage}%{' '}
 								</div>
 								<div>
-									Forfeiture of earnings: -
+									{STRINGS['CEFI_STAKE.FORFEITURE_OF_EARNINGS_LABEL']}: -
 									{selectedPool.slashing_earning_percentage}%
 								</div>
 							</>
@@ -560,15 +562,8 @@ const CeFiUserStake = ({ balance, coins }) => {
 									fontSize: 12,
 								}}
 							>
-								<div>! Slashing rules are enforced in this pool</div>
-								<div>
-									Keep in mind that opting to withdraw your funds prior to the
-									designated duration will incur a penalty, as outlined in the
-									slashing rules mentioned above. Prior to committing to a
-									staking period, it's crucial to assess your financial
-									stability, as initiating an early unstaking process could lead
-									to a decrease in the overall value of your initial stake.
-								</div>
+								<div>{STRINGS['CEFI_STAKE.SLASHING_RULES_ENFORCED_LABEL']}</div>
+								<div>{STRINGS['CEFI_STAKE.SLASHING_RULES_NOTICE']}</div>
 							</div>
 						)}
 
@@ -581,10 +576,7 @@ const CeFiUserStake = ({ balance, coins }) => {
 									fontSize: 12,
 								}}
 							>
-								<div>
-									This pool allows you to unstake at anytime without
-									consequence.
-								</div>
+								<div>{STRINGS['CEFI_STAKE.UNSTAKE_ANYTIME_LABEL']}</div>
 							</div>
 						)}
 
@@ -597,11 +589,7 @@ const CeFiUserStake = ({ balance, coins }) => {
 									fontSize: 12,
 								}}
 							>
-								<div>
-									This pool locks you in for the full duration. Please consider
-									your financial sustainability before committing to the staking
-									pool as unstaking before the term will not be possible.
-								</div>
+								<div>{STRINGS['CEFI_STAKE.FULL_DURATION_LOCK_LABEL']}</div>
 							</div>
 						) : (
 							<></>
@@ -629,7 +617,7 @@ const CeFiUserStake = ({ balance, coins }) => {
 							}}
 							type="default"
 						>
-							Back
+							{STRINGS['CEFI_STAKE.BACK_BUTTON']}
 						</AntBtn>
 						<AntBtn
 							onClick={async () => {
@@ -644,7 +632,7 @@ const CeFiUserStake = ({ balance, coins }) => {
 							}}
 							type="default"
 						>
-							Proceed
+							{STRINGS['CEFI_STAKE.PROCEED_BUTTON']}
 						</AntBtn>
 					</div>
 				</Modal>
@@ -670,34 +658,39 @@ const CeFiUserStake = ({ balance, coins }) => {
 					}}
 				>
 					<div>
-						<h1 style={{ color: 'white' }}>Check stake details</h1>
-						<div>Staking pool{selectedPool.name}</div>
-						<div>Annual percentage yield: {selectedPool.apy}% APY</div>
-						<div>Duration: {selectedPool.duration} days </div>
+						<h1 style={{ color: 'white' }}>
+							{STRINGS['CEFI_STAKE.CHECK_STAKE_DETAILS_BUTTON']}
+						</h1>
 						<div>
-							Penalty upon initial stake principle: -
-							{selectedPool.slashing_principle_percentage}%
+							{STRINGS['CEFI_STAKE.STAKING_POOL_LABEL']}: {selectedPool.name}
 						</div>
 						<div>
-							Forfeiture of earnings: -
+							{STRINGS['CEFI_STAKE.ANNUAL_PERCENTAGE_YIELD_LABEL']}:{' '}
+							{selectedPool.apy}% APY
+						</div>
+						<div>
+							{STRINGS['CEFI_STAKE.DURATION_LABEL']}: {selectedPool.duration}{' '}
+							days{' '}
+						</div>
+						<div>
+							{STRINGS['CEFI_STAKE.PENALTY_UPON_INITIAL_STAKE_PRINCIPLE_LABEL']}
+							: -{selectedPool.slashing_principle_percentage}%
+						</div>
+						<div>
+							{STRINGS['CEFI_STAKE.FORFEITURE_OF_EARNINGS_DETAILS_LABEL']}: -
 							{selectedPool.slashing_earning_percentage}%
 						</div>
 
 						<div style={{ marginTop: 20 }}>
-							Stake amount: {stakerAmount} {selectedPool.currency.toUpperCase()}
+							{STRINGS['CEFI_STAKE.STAKE_AMOUNT_LABEL']}: {stakerAmount}{' '}
+							{selectedPool.currency.toUpperCase()}
 						</div>
 						<hr />
 
 						<div style={{ marginTop: 30 }}>
-							Disclaimer: Please note that for amounts valued in USD exceeding
-							$1,000 will require completing ID verification. This value is
-							inclusive of earnings, and the platform reserves the right to
-							request additional user information.
+							{STRINGS['CEFI_STAKE.DISCLAIMER_NOTICE']}
 						</div>
-						<div>
-							Settlement: A 24h settlement period will be applied upon
-							unstaking.
-						</div>
+						<div>{STRINGS['CEFI_STAKE.SETTLEMENT_NOTICE']}</div>
 					</div>
 					<div
 						style={{
@@ -721,7 +714,7 @@ const CeFiUserStake = ({ balance, coins }) => {
 							}}
 							type="default"
 						>
-							Back
+							{STRINGS['CEFI_STAKE.BACK_BUTTON']}
 						</AntBtn>
 						<AntBtn
 							onClick={async () => {
@@ -736,7 +729,7 @@ const CeFiUserStake = ({ balance, coins }) => {
 							}}
 							type="default"
 						>
-							Proceed
+							{STRINGS['CEFI_STAKE.PROCEED_BUTTON']}
 						</AntBtn>
 					</div>
 				</Modal>
@@ -783,7 +776,8 @@ const CeFiUserStake = ({ balance, coins }) => {
 							}}
 						>
 							<h3 style={{ color: 'white' }}>
-								Confirm {selectedPool.currency.toUpperCase()} Stake
+								{STRINGS['CEFI_STAKE.CONFIRM_BUTTON']}{' '}
+								{selectedPool.currency.toUpperCase()} Stake
 							</h3>
 						</div>
 						<div style={{ width: '100%' }}>
@@ -792,10 +786,7 @@ const CeFiUserStake = ({ balance, coins }) => {
 									Here we go!{' '}
 								</span>
 							</div>
-							<div>
-								As soon as you've staked you will be committed to the rules of
-								the pool.
-							</div>
+							<div>{STRINGS['CEFI_STAKE.STAKE_RULES_NOTICE']}</div>
 							<div style={{ marginTop: 30 }}> Do you understand?</div>
 							<div style={{ marginTop: 5 }}>
 								<Input
@@ -830,7 +821,7 @@ const CeFiUserStake = ({ balance, coins }) => {
 							}}
 							type="default"
 						>
-							Back
+							{STRINGS['CEFI_STAKE.BACK_BUTTON']}
 						</AntBtn>
 						<AntBtn
 							onClick={async () => {
@@ -916,15 +907,14 @@ const CeFiUserStake = ({ balance, coins }) => {
 							<div>Successfully staked</div>
 							<div style={{ marginTop: 30, marginBottom: 30 }}>-</div>
 							<div style={{ fontSize: 12, fontWeight: 'bold' }}>
-								Congratulations!
+								{STRINGS['CEFI_STAKE.CONGRATULATIONS_NOTICE']}
 							</div>
 							<div style={{ fontSize: 12 }}>
-								Your stake will start earning rewards.
+								{STRINGS['CEFI_STAKE.EARNINGS_START_NOTICE']}
 							</div>
 							<div style={{ fontSize: 12 }}>
 								{' '}
-								You can review the progress of your stake on the Active Stakes
-								page.
+								{STRINGS['CEFI_STAKE.REVIEW_PROGRESS_LABEL']}
 							</div>
 						</div>
 					</div>
@@ -952,7 +942,7 @@ const CeFiUserStake = ({ balance, coins }) => {
 							}}
 							type="default"
 						>
-							Close
+							{STRINGS['CEFI_STAKE.CLOSE_BUTTON']}
 						</AntBtn>
 						<AntBtn
 							onClick={async () => {
@@ -1012,7 +1002,9 @@ const CeFiUserStake = ({ balance, coins }) => {
 						>
 							<h3 style={{ color: 'white' }}>Review and unstake</h3>
 							<div>
-								<span style={{ fontWeight: 'bold' }}>Time remaining:</span>{' '}
+								<span style={{ fontWeight: 'bold' }}>
+									{STRINGS['CEFI_STAKE.TIME_REMAINING_LABEL']}:
+								</span>{' '}
 								{selectedStaker?.stake?.duration ? (
 									<>
 										{calculateRemainingDays(
@@ -1030,7 +1022,7 @@ const CeFiUserStake = ({ balance, coins }) => {
 							</div>
 							<div>
 								<span style={{ fontWeight: 'bold' }}>
-									Penalty upon initial stake principle:
+									{STRINGS['CEFI_STAKE.PENALTY_UPON_INITIAL_STAKE_PRINCIPLE']}:
 								</span>{' '}
 								{roundToIncrementUnit(
 									selectedStaker.slashedValues.slashingPrinciple,
@@ -1044,7 +1036,7 @@ const CeFiUserStake = ({ balance, coins }) => {
 							</div>
 							<div>
 								<span style={{ fontWeight: 'bold' }}>
-									Forfeiture of earnings:
+									{STRINGS['CEFI_STAKE.FORFEITURE_OF_EARNINGS_LABEL']}:
 								</span>{' '}
 								{roundToIncrementUnit(
 									selectedStaker.slashedValues.slashingEarning,
@@ -1062,8 +1054,8 @@ const CeFiUserStake = ({ balance, coins }) => {
 
 							<div style={{ marginTop: 20 }}>
 								<span style={{ fontWeight: 'bold' }}>
-									{selectedStaker.reward_currency && 'Reward'} Amount to
-									receive:
+									{selectedStaker.reward_currency && 'Reward'}{' '}
+									{STRINGS['CEFI_STAKE.AMOUNT_TO_RECEIVE_LABEL']}:
 								</span>{' '}
 								{selectedStaker.reward_currency
 									? selectedStaker.reward > 0
@@ -1093,7 +1085,7 @@ const CeFiUserStake = ({ balance, coins }) => {
 											)
 											.toNumber()} ${selectedStaker.currency.toUpperCase()}`}
 							</div>
-							<div>(Requires 24 hours to settle)</div>
+							<div>({STRINGS['CEFI_STAKE.REQUIRES_24H_TO_SETTLE_NOTICE']})</div>
 						</div>
 					</div>
 					<div
@@ -1195,8 +1187,8 @@ const CeFiUserStake = ({ balance, coins }) => {
 							</h2>
 							<div style={{ marginTop: 20 }}>
 								<span style={{ fontWeight: 'bold' }}>
-									{selectedStaker.reward_currency && 'Reward'} Amount to
-									receive:
+									{selectedStaker.reward_currency && 'Reward'}{' '}
+									{STRINGS['CEFI_STAKE.AMOUNT_TO_RECEIVE_LABEL']}:
 								</span>{' '}
 								{selectedStaker.reward_currency
 									? selectedStaker.reward > 0
@@ -1226,7 +1218,7 @@ const CeFiUserStake = ({ balance, coins }) => {
 											)
 											.toNumber()} ${selectedStaker.currency.toUpperCase()}`}
 							</div>
-							<div>(Requires 24 hours to settle)</div>
+							<div>({STRINGS['CEFI_STAKE.REQUIRES_24H_TO_SETTLE_NOTICE']})</div>
 						</div>
 					</div>
 					<div
@@ -1251,7 +1243,7 @@ const CeFiUserStake = ({ balance, coins }) => {
 							}}
 							type="default"
 						>
-							CLOSE
+							{STRINGS['CEFI_STAKE.CLOSE_BUTTON']}
 						</AntBtn>
 						<AntBtn
 							onClick={async () => {
@@ -1266,7 +1258,9 @@ const CeFiUserStake = ({ balance, coins }) => {
 							}}
 							type="default"
 						>
-							<Link to="/wallet">VISIT WALLET</Link>
+							<Link to="/wallet">
+								{STRINGS['CEFI_STAKE.VISIT_WALLET_BUTTON']}
+							</Link>
 						</AntBtn>
 					</div>
 				</Modal>
@@ -1346,13 +1340,9 @@ const CeFiUserStake = ({ balance, coins }) => {
 						>
 							<div style={{ flex: 1 }}>
 								<div style={{ fontWeight: 'bold', color: 'white' }}>
-									Local CeFi Staking Pools
+									{STRINGS['CEFI_STAKE.STAKE_POOL_TITLE']}
 								</div>
-								<div style={{}}>
-									Earn rewards on assets you have stored in your local exchange
-									wallet. Simply, click 'STAKE', input the amount you'd like to
-									stake and start earning.
-								</div>
+								<div style={{}}>{STRINGS['CEFI_STAKE.INTRODUCTION_1']}</div>
 							</div>
 							<div
 								style={{
@@ -1362,7 +1352,7 @@ const CeFiUserStake = ({ balance, coins }) => {
 								}}
 							>
 								<div>
-									<div>Current staking value:</div>
+									<div>{STRINGS['CEFI_STAKE.CURRENT_STAKING_VALUE']}:</div>
 									{/* <div>USDT 0: (VIEW)</div> */}
 									<div>
 										{accumulateAmount(userStakeData).map((stake) => (
@@ -1500,7 +1490,7 @@ const CeFiUserStake = ({ balance, coins }) => {
 														<span
 															style={{ fontWeight: 'bold', color: 'white' }}
 														>
-															Duration:
+															{STRINGS['CEFI_STAKE.DURATION_LABEL']}:
 														</span>{' '}
 														{pool.duration} days
 													</>
@@ -1525,7 +1515,7 @@ const CeFiUserStake = ({ balance, coins }) => {
 											</div>
 											{pool?.reward_currency && (
 												<div style={{ color: 'white' }}>
-													Rewards will be paid in{' '}
+													{STRINGS['CEFI_STAKE.REWARDS_IN_LABEL']}{' '}
 													<span style={{ fontWeight: 'bold' }}>
 														{pool.reward_currency.toUpperCase()}
 													</span>
@@ -1575,15 +1565,13 @@ const CeFiUserStake = ({ balance, coins }) => {
 						>
 							<div style={{ flex: 1 }}>
 								<div style={{ fontWeight: 'bold', color: 'white' }}>
-									All staking events
+									{STRINGS['CEFI_STAKE.ALL_STAKING_EVENTS']}
 								</div>
 								<div style={{}}>
-									Monitor active stakes and their earnings coming from the
-									staking pools.
+									{STRINGS['CEFI_STAKE.MONITOR_ACTIVE_STAKES']}
 								</div>
 								<div style={{ marginTop: 20 }}>
-									Use the filters to find all staking historical events. All
-									earnings from completed stakes will be deposit to your wallet.
+									{STRINGS['CEFI_STAKE.USE_FILTERS_FOR_HISTORICAL_EVENTS']}
 								</div>
 							</div>
 							<div
@@ -1595,7 +1583,7 @@ const CeFiUserStake = ({ balance, coins }) => {
 							>
 								<div>
 									<div style={{ marginBottom: 20 }}>
-										<div>Estimated value of total staked</div>
+										<div>{STRINGS['CEFI_STAKE.ESTIMATED_TOTAL_STAKED']}</div>
 										<div style={{ fontSize: 18 }}>
 											{accumulateAmount(userStakeData).map((stake) => (
 												<div>
@@ -1605,7 +1593,7 @@ const CeFiUserStake = ({ balance, coins }) => {
 										</div>
 									</div>
 									<div>
-										<div>Estimated value of earnings</div>
+										<div>{STRINGS['CEFI_STAKE.ESTIMATED_EARNINGS_VALUE']}</div>
 										<div style={{ fontSize: 18 }}>
 											{accumulateReward(userStakeData).map((stake) => {
 												const incrementUnit =
