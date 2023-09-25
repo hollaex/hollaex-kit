@@ -139,7 +139,7 @@ const updateRewardsCheckRunner = () => {
 								adminAccount.email,
 								{
 									type: 'Could not reward user, Price not found on oracle',
-									data: `Could not rewawrd User id ${staker.user_id}, ${stakePool.currency} not converted to ${stakePool.reward_currency} in Oracle`
+									data: `Could not reward User id ${staker.user_id}, ${stakePool.currency} could not converted to ${stakePool.reward_currency} in Oracle`
 								},
 								adminAccount.settings
 							);
