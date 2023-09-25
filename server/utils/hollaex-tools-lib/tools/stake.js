@@ -427,7 +427,6 @@ const updateExchangeStakePool = async (id, data) => {
 	return stakePool.update(updatedStakePool, {
 		fields: [
 			'name',
-            'user_id',
             'currency',
             'reward_currency',
             'account_id',
