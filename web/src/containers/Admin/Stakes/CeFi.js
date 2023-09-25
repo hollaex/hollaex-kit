@@ -535,11 +535,13 @@ const CeFi = ({ coins, features, kit }) => {
 							<div className="mb-5">
 								<div className="mb-2">Asset for rewarding</div>
 								<div style={{ color: '#ccc', marginBottom: 10 }}>
-									If you wish to reward your users in another asset, You can
-									select it here, If selected, this will be used to convert the
-									rewards from the main asset to this asset by using Oracle
-									prices. If not selected, There will be no conversion from the
-									main asset.{' '}
+									Here you can select the asset used for the rewards payouts.
+									Normally the same asset as the staked asset is selected for
+									the reward payouts however you have the ability here to change
+									it here. If you change it to any other asset other than the
+									staked asset, the system automatically calculates and converts
+									the amount based on the estimated conversion rate between the
+									staked asset and the reward asset.{' '}
 								</div>
 								<Select
 									showSearch

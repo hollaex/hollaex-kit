@@ -39,6 +39,7 @@ const {
     STAKE_POOL_NOT_ACTIVE_FOR_UNSTAKING_STATUS,
     UNSTAKE_PERIOD_ERROR,
     STAKE_UNSUPPORTED_EXCHANGE_PLAN,
+    REWARD_CURRENCY_CANNOT_BE_SAME
     
 } = require(`${SERVER_PATH}/messages`);
 
@@ -262,6 +263,10 @@ const createExchangeStakePool = async (stake) => {
             throw new Error(NO_ORACLE_PRICE_FOUND)
         }
     }
+
+    if(reward_currency && reward_currency === currency) {
+         throw new Error(REWARD_CURRENCY_CANNOT_BE_SAME);
+    }
     
     const exchangeInfo = getKitConfig().info;
 
@@ -373,6 +378,41 @@ const updateExchangeStakePool = async (id, data) => {
         }
         await distributeStakingRewards(stakers, stakePool.account_id, stakePool.currency, stakePool.user_id);
        
+    }
+
+
+    if (currency && !subscribedToCoin(currency)) {
+           throw new Error('Invalid coin ' + currency);
+    }
+
+    if (reward_currency && !subscribedToCoin(reward_currency)) {
+           throw new Error('Invalid coin ' + reward_currency);
+    }
+
+    if (reward_currency) {
+        const conversions = await getAssetsPrices([currency], reward_currency, 1);
+        if (conversions[currency] === -1) {
+            throw new Error(NO_ORACLE_PRICE_FOUND)
+        }
+    }
+
+
+    if(reward_currency && reward_currency === currency) {
+         throw new Error(REWARD_CURRENCY_CANNOT_BE_SAME);
+    }
+
+    if (account_id) {
+        const accountOwner = await getUserByKitId(account_id);
+
+        if (!accountOwner) {
+            throw new Error(ACCOUNT_ID_NOT_EXIST);
+        }
+
+        const balance = await getSourceAccountBalance(account_id, currency);
+
+        if (new BigNumber(balance).comparedTo(new BigNumber(max_amount)) !== 1) {
+            throw new Error(SOURCE_ACCOUNT_INSUFFICIENT_BALANCE);
+        }
     }
 
     const updatedStakePool = {
