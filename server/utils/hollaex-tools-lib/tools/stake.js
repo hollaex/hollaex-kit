@@ -93,20 +93,31 @@ const calculateStakingAmount = (stakers) => {
     return totalAmount;
 }
 
-const distributeStakingRewards = async (stakers, account_id, currency, admin_id) => {
+const distributeStakingRewards = async (stakers, account_id, currency, reward_currency, admin_id) => {
     for (const staker of stakers) {
 
         await staker.update({ status: 'closed' }, {
 	        	fields: ['status']
         });
 
-        const amountAfterSlash =  new BigNumber(staker.reward).minus(new BigNumber(staker.slashed));
-        const totalAmount = (new BigNumber(staker.amount).plus(amountAfterSlash)).toNumber();
+        const amountAfterSlash =  new BigNumber(staker.reward).minus(new BigNumber(staker.slashed)).toNumber();
+        let totalAmount = staker.amount;
 
+        // If there is no reward_currency, Add them together since they are of same currency.
+        if (!reward_currency) {
+            totalAmount = (new BigNumber(staker.amount).plus(amountAfterSlash)).toNumber();
+        }
+                
         const user = await getUserByKitId(staker.user_id);
 
         try {
-            await transferAssetByKitIds(account_id, user.id, currency, totalAmount, 'Admin transfer stake', user.email, { category: 'stake' });
+            if(totalAmount > 0) {
+                await transferAssetByKitIds(account_id, user.id, currency, totalAmount, 'Admin transfer stake', user.email, { category: 'stake' });
+            }
+            if (reward_currency && amountAfterSlash > 0) { 
+                await transferAssetByKitIds(account_id, user.id, reward_currency, amountAfterSlash, 'Admin transfer stake', user.email, { category: 'stake' });
+            }
+
         } catch (error) {
             const adminAccount = await getUserByKitId(admin_id);
             sendEmail(
@@ -376,7 +387,7 @@ const updateExchangeStakePool = async (id, data) => {
         if(new BigNumber(balance).comparedTo(amountWithReward) !== 1) {
             throw new Error(FUNDING_ACCOUNT_INSUFFICIENT_BALANCE);
         }
-        await distributeStakingRewards(stakers, stakePool.account_id, stakePool.currency, stakePool.user_id);
+        await distributeStakingRewards(stakers, stakePool.account_id, stakePool.currency, stakePool.reward_currency, stakePool.user_id);
        
     }
 
