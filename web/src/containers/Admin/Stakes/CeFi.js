@@ -1723,10 +1723,10 @@ const CeFi = ({ coins, features, kit }) => {
 									>
 										<div>Settlement time: 24 hours</div>
 										<div>
-											Required to settle: {selectedPool?.reward}{' '}
+											{/* Required to settle: {selectedPool?.reward}{' '}
 											{(
 												selectedPool.reward_currency || selectedPool.currency
-											).toUpperCase()}
+											).toUpperCase()} */}
 										</div>
 										<div>
 											Source wallet: {emailOptions[0].label}:{' '}
