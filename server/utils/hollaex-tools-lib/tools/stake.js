@@ -381,12 +381,24 @@ const updateExchangeStakePool = async (id, data) => {
   
         const stakers = await getModel('staker').findAll({ where: { stake_id: stakePool.id, status: { [Op.or]: ['staking', 'unstaking'] } } });
         const reward = calculateStakingRewards(stakers);
-        const totalAmount = calculateStakingAmount(stakers)
-        const amountWithReward = new BigNumber(totalAmount).plus(new BigNumber(reward)).toNumber();
+        let totalAmount = calculateStakingAmount(stakers)
 
-        if(new BigNumber(balance).comparedTo(amountWithReward) !== 1) {
+        if (!stakePool.reward_currency) { 
+            totalAmount = new BigNumber(totalAmount).plus(new BigNumber(reward)).toNumber();
+        }
+       
+        if(new BigNumber(balance).comparedTo(totalAmount) !== 1) {
             throw new Error(FUNDING_ACCOUNT_INSUFFICIENT_BALANCE);
         }
+        
+        if(stakePool.reward_currency) {
+            const reward_balance = await getSourceAccountBalance(stakePool.account_id, stakePool.reward_currency);
+
+            if(new BigNumber(reward_balance).comparedTo(reward) !== 1) {
+                throw new Error(FUNDING_ACCOUNT_INSUFFICIENT_BALANCE);
+            }
+        }
+
         await distributeStakingRewards(stakers, stakePool.account_id, stakePool.currency, stakePool.reward_currency, stakePool.user_id);
        
     }

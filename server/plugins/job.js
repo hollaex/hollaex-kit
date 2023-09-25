@@ -54,7 +54,7 @@ const unstakingCheckRunner = () => {
 						adminAccount.email,
 						{
 							type: 'Unstaking failed',
-							data: `User id ${user.id} failed to unstake, not enough funds, currency ${stakePool.currency}${stakePool.reward_currency ? ` reward currency ${stakePool.reward_currency}` : ''}, amount to transfer: ${totalAmount}`
+							data: `User id ${user.id} failed to unstake, not enough funds, currency ${stakePool.currency}${stakePool.reward_currency ? ` reward currency ${stakePool.reward_currency}` : ''}, amount to transfer: ${totalAmount}${stakePool.reward_currency ? ` reward amount ${amountAfterSlash}` : ''}`
 						},
 						adminAccount.settings
 					);
