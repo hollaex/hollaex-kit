@@ -154,7 +154,7 @@ const validateExchangeStake = (stake) => {
     if (new BigNumber(stake.apy).comparedTo(0) !== 1) {
 		throw new Error('Stake apy must be bigger than zero.');
 	} 
-    if (stake.duration && new BigNumber(stake.duration).comparedTo(0) !== 1) {
+    if (stake.duration !== null && new BigNumber(stake.duration).comparedTo(0) !== 1) {
 		throw new Error('Stake duration must be bigger than zero.');
 	} 
     if (stake.slashing_principle_percentage && new BigNumber(stake.slashing_principle_percentage).comparedTo(100) === 1) {
@@ -245,7 +245,7 @@ const createExchangeStakePool = async (stake) => {
           throw new Error(STAKE_ONBOARDING_STATUS_ERROR);
     }
 
-    if (!duration && (early_unstake || slashing)) {
+    if (duration !== null && (early_unstake || slashing)) {
         throw new Error(STAKE_PERPETUAL_CONDITION_ERROR);
     }
 
