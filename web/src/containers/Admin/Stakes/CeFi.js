@@ -824,12 +824,17 @@ const CeFi = ({ coins, features, kit }) => {
 							style={{ backgroundColor: 'rgba(0,0,0,0.1)', color: 'white' }}
 							placeholder="Input the percentage to be deducted"
 							disabled={!stakePoolCreation.early_unstake}
-							onChange={(value) =>
+							onChange={(value) => {
+								if (value > 100) {
+									message.error('value cannot be more than 100');
+									return;
+								}
+
 								setStakePoolCreation({
 									...stakePoolCreation,
 									slashing_principle_percentage: value,
-								})
-							}
+								});
+							}}
 							value={stakePoolCreation.slashing_principle_percentage}
 						/>
 					</div>
@@ -903,12 +908,16 @@ const CeFi = ({ coins, features, kit }) => {
 												width: '100%',
 											}}
 											placeholder="Input the percentage to be deducted"
-											onChange={(value) =>
+											onChange={(value) => {
+												if (value > 100) {
+													message.error('value cannot be more than 100');
+													return;
+												}
 												setStakePoolCreation({
 													...stakePoolCreation,
 													slashing_earning_percentage: value,
-												})
-											}
+												});
+											}}
 											value={stakePoolCreation.slashing_earning_percentage}
 										/>
 									</div>
