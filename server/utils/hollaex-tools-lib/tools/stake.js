@@ -38,13 +38,16 @@ const {
     STAKE_POOL_NOT_ACTIVE_FOR_UNSTAKING_ONBOARDING,
     STAKE_POOL_NOT_ACTIVE_FOR_UNSTAKING_STATUS,
     UNSTAKE_PERIOD_ERROR,
-    STAKE_UNSUPPORTED_EXCHANGE_PLAN
+    STAKE_UNSUPPORTED_EXCHANGE_PLAN,
+    
 } = require(`${SERVER_PATH}/messages`);
 
 
 
 const calculateSlashAmount = async (staker, stakePool) => {
-    let slashedAmount = new BigNumber(0);
+    let slashingPrinciple = new BigNumber(0);
+    let slashingEarning = new BigNumber(0);
+
     let isSlashed = false;
 
 
@@ -60,9 +63,6 @@ const calculateSlashAmount = async (staker, stakePool) => {
 
     if (isSlashed) {
 
-        let slashingPrinciple = new BigNumber(0);
-        let slashingEarning = new BigNumber(0);
-
         if (stakePool.slashing_principle_percentage) {
             const stakeAmount = new BigNumber(staker.amount);
             const slashingPrinciplePercentage = new BigNumber(stakePool.slashing_principle_percentage);
@@ -71,14 +71,13 @@ const calculateSlashAmount = async (staker, stakePool) => {
             if (stakePool.reward_currency) {
                 const conversions = await getAssetsPrices([stakePool.currency], stakePool.reward_currency, 1);
                 if (conversions[stakePool.currency] === -1) {
-                    throw new Error('There is no price for asset for rewarding in Oracle')
+                    throw new Error(NO_ORACLE_PRICE_FOUND)
                 }
 
                 slashingPrinciple = new BigNumber(conversions[stakePool.currency]).multipliedBy(slashingPrinciple);
             }
             
         }
-   
 
         if (stakePool.slashing_earning_percentage) {
             const stakerReward = new BigNumber(staker.reward);
@@ -86,11 +85,9 @@ const calculateSlashAmount = async (staker, stakePool) => {
             slashingEarning = stakerReward.multipliedBy(slashingEarningPercentage).dividedBy(100);
         }
 
-        slashedAmount = slashingPrinciple.plus(slashingEarning);
-
     }
 
-    return slashedAmount.toNumber();
+    return { slashingPrinciple: slashingPrinciple.toNumber(), slashingEarning: slashingEarning.toNumber() };
 }
 
 const calculateStakingRewards = (stakers) => {
@@ -272,7 +269,7 @@ const createExchangeStakePool = async (stake) => {
     if (reward_currency) {
         const conversions = await getAssetsPrices([currency], reward_currency, 1);
         if (conversions[currency] === -1) {
-            throw new Error('There is no price for asset for rewarding in Oracle')
+            throw new Error(NO_ORACLE_PRICE_FOUND)
         }
     }
     
@@ -574,16 +571,18 @@ const deleteExchangeStaker = async (staker_id, user_id) => {
         throw new Error(UNSTAKE_PERIOD_ERROR);
     }
 
-    const slashedAmount = await calculateSlashAmount(staker, stakePool);
+    const slashedValues = await calculateSlashAmount(staker, stakePool);
     const updatedStaker = {
         ...staker,
         status: 'unstaking',
-        slashed: slashedAmount,
+        amount: new BigNumber(staker.amount).minus(new BigNumber(slashedValues.slashingPrinciple)).toNumber(),
+        slashed: slashedValues.slashingEarning,
         unstaked_date: new Date()
     }
     return staker.update(updatedStaker, {
 		fields: [
             'status',
+            'amount',
             'reward',
             'slashed',
             'unstaked_date'
@@ -606,7 +605,7 @@ const unstakeEstimateSlash = async (staker_id) => {
    
     const slashedAmount = await calculateSlashAmount(staker, stakePool);
 
-    return { slashedAmount };
+    return slashedAmount;
 }
 
 module.exports = {

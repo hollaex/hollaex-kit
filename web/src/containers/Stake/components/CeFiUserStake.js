@@ -191,7 +191,7 @@ const CeFiUserStake = ({ balance, coins }) => {
 								onClick={async () => {
 									try {
 										const slashedEstimate = await getSlashEstimate(data.id);
-										data.slashedAmount = slashedEstimate.slashedAmount;
+										data.slashedValues = slashedEstimate;
 										setSelectedStaker(data);
 										setReviewUnstake(true);
 									} catch (error) {
@@ -1050,13 +1050,24 @@ const CeFiUserStake = ({ balance, coins }) => {
 								{selectedStaker.reward_currency
 									? selectedStaker.reward > 0
 										? `${new BigNumber(selectedStaker.reward)
-												.minus(new BigNumber(selectedStaker.slashedAmount))
+												.minus(
+													new BigNumber(
+														selectedStaker.slashedValues.slashingEarning
+													)
+												)
 												.toNumber()} ${selectedStaker.reward_currency.toUpperCase()}`
 										: 'No reward amount to receive'
 									: `${new BigNumber(selectedStaker.amount)
+											.minus(
+												new BigNumber(
+													selectedStaker.slashedValues.slashingPrinciple
+												)
+											)
 											.plus(
 												new BigNumber(selectedStaker.reward).minus(
-													new BigNumber(selectedStaker.slashedAmount)
+													new BigNumber(
+														selectedStaker.slashedValues.slashingEarning
+													)
 												)
 											)
 											.toNumber()} ${selectedStaker.currency.toUpperCase()}`}
@@ -1169,13 +1180,24 @@ const CeFiUserStake = ({ balance, coins }) => {
 								{selectedStaker.reward_currency
 									? selectedStaker.reward > 0
 										? `${new BigNumber(selectedStaker.reward)
-												.minus(new BigNumber(selectedStaker.slashedAmount))
+												.minus(
+													new BigNumber(
+														selectedStaker.slashedValues.slashingEarning
+													)
+												)
 												.toNumber()} ${selectedStaker.reward_currency.toUpperCase()}`
 										: 'No reward amount to receive'
 									: `${new BigNumber(selectedStaker.amount)
+											.minus(
+												new BigNumber(
+													selectedStaker.slashedValues.slashingPrinciple
+												)
+											)
 											.plus(
 												new BigNumber(selectedStaker.reward).minus(
-													new BigNumber(selectedStaker.slashedAmount)
+													new BigNumber(
+														selectedStaker.slashedValues.slashingEarning
+													)
 												)
 											)
 											.toNumber()} ${selectedStaker.currency.toUpperCase()}`}
@@ -1250,8 +1272,11 @@ const CeFiUserStake = ({ balance, coins }) => {
 		const res = Array.from(
 			stakes.reduce(
 				//eslint-disable-next-line
-				(m, { currency, reward, slashed }) =>
-					m.set(currency, (m.get(currency) || 0) + (reward - slashed)),
+				(m, { currency, reward_currency, reward, slashed }) =>
+					m.set(
+						reward_currency || currency,
+						(m.get(reward_currency || currency) || 0) + (reward - slashed)
+					),
 				new Map()
 			),
 			([currency, reward]) => ({ currency, reward })

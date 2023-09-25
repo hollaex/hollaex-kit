@@ -249,3 +249,4 @@ exports.STAKE_POOL_NOT_ACTIVE_FOR_UNSTAKING_ONBOARDING = 'Stake pool is not acti
 exports.STAKE_POOL_NOT_ACTIVE_FOR_UNSTAKING_STATUS = 'Cannot unstake in a pool that is not active';
 exports.UNSTAKE_PERIOD_ERROR = 'Cannot unstake, period is not over';
 exports.STAKE_UNSUPPORTED_EXCHANGE_PLAN = 'Your current exchange plan does not support cefi staking feature';
+exports.NO_ORACLE_PRICE_FOUND = 'There is no price for asset for rewarding in Oracle';

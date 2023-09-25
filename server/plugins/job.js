@@ -39,6 +39,8 @@ const unstakingCheckRunner = () => {
 
 				const amountAfterSlash =  new BigNumber(staker.reward).minus(new BigNumber(staker.slashed));
 				let totalAmount;
+
+				// If there is no reward_currency, Add them together since they are of same currency.
 				if (!stakePool.reward_currency) {
 					totalAmount = (new BigNumber(staker.amount).plus(amountAfterSlash)).toNumber();
 				}
@@ -63,9 +65,11 @@ const unstakingCheckRunner = () => {
 		
 
 				try {
-                    await toolsLib.wallet.transferAssetByKitIds(stakePool.account_id, user.id, stakePool.currency, totalAmount, 'Admin transfer stake', user.email, { category: 'stake' });
+					if(totalAmount > 0) {
+                    	await toolsLib.wallet.transferAssetByKitIds(stakePool.account_id, user.id, stakePool.currency, totalAmount, 'Admin transfer stake', user.email, { category: 'stake' });
+					}
 					
-					if (stakePool.reward_currency) {
+					if (stakePool.reward_currency && amountAfterSlash > 0) {
 						 await toolsLib.wallet.transferAssetByKitIds(stakePool.account_id, user.id, stakePool.reward_currency, amountAfterSlash, 'Admin transfer stake', user.email, { category: 'stake' });
 					}
 
