@@ -1724,12 +1724,20 @@ const CeFi = ({ coins, features, kit }) => {
 										<div>Settlement time: 24 hours</div>
 										<div>
 											Required to settle: {selectedPool?.reward}{' '}
-											{selectedPool.currency.toUpperCase()}
+											{(
+												selectedPool.reward_currency || selectedPool.currency
+											).toUpperCase()}
 										</div>
 										<div>
 											Source wallet: {emailOptions[0].label}:{' '}
-											{balanceData[`${selectedPool.currency}_available`] || 0}{' '}
-											{selectedPool.currency.toUpperCase()}
+											{balanceData[
+												`${
+													selectedPool.reward_currency || selectedPool.currency
+												}_available`
+											] || 0}{' '}
+											{(
+												selectedPool.reward_currency || selectedPool.currency
+											).toUpperCase()}
 										</div>
 										{selectedPool.status !== 'paused' && (
 											<div
