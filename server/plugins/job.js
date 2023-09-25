@@ -37,7 +37,7 @@ const unstakingCheckRunner = () => {
 					}
 				}
 
-				const amountAfterSlash =  new BigNumber(staker.reward).minus(new BigNumber(staker.slashed));
+				const amountAfterSlash =  new BigNumber(staker.reward).minus(new BigNumber(staker.slashed)).toNumber();
 				let totalAmount = staker.amount;
 
 				// If there is no reward_currency, Add them together since they are of same currency.
