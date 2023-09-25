@@ -130,6 +130,7 @@ const updateRewardsCheckRunner = () => {
 					if (stakePool.reward_currency) {
 						const conversions = await toolsLib.getAssetsPrices([stakePool.currency], stakePool.reward_currency, 1);
 						if (conversions[stakePool.currency] === -1) {
+							const user = await toolsLib.user.getUserByKitId(staker.user_id);
 							sendEmail(
 								MAILTYPE.ALERT,
 								user.email,
