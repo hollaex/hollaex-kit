@@ -148,7 +148,8 @@ const CeFiUserStake = ({ balance, coins }) => {
 			dataIndex: 'earnt',
 			key: 'earnt',
 			render: (_user_id, data) => {
-				const incrementUnit = coins[data.currency].increment_unit;
+				const incrementUnit =
+					coins[data.reward_currency || data.currency].increment_unit;
 				const decimalPoint = new BigNumber(incrementUnit).dp();
 				const sourceAmount =
 					data?.reward &&
@@ -274,6 +275,13 @@ const CeFiUserStake = ({ balance, coins }) => {
 
 		const isUnstacklable = numberOfDaysPassed - stakePool.duration;
 		return isUnstacklable;
+	};
+
+	const roundToIncrementUnit = (number, currency) => {
+		const incrementUnit = coins[currency].increment_unit;
+		const decimalPoint = new BigNumber(incrementUnit).dp();
+
+		return new BigNumber(number).decimalPlaces(decimalPoint).toNumber();
 	};
 
 	const readBeforeActionModel = () => {
@@ -1049,13 +1057,16 @@ const CeFiUserStake = ({ balance, coins }) => {
 								</span>{' '}
 								{selectedStaker.reward_currency
 									? selectedStaker.reward > 0
-										? `${new BigNumber(selectedStaker.reward)
-												.minus(
-													new BigNumber(
-														selectedStaker.slashedValues.slashingEarning
+										? `${roundToIncrementUnit(
+												new BigNumber(selectedStaker.reward)
+													.minus(
+														new BigNumber(
+															selectedStaker.slashedValues.slashingEarning
+														)
 													)
-												)
-												.toNumber()} ${selectedStaker.reward_currency.toUpperCase()}`
+													.toNumber(),
+												selectedStaker.reward_currency
+										  )} ${selectedStaker.reward_currency.toUpperCase()}`
 										: 'No reward amount to receive'
 									: `${new BigNumber(selectedStaker.amount)
 											.minus(
@@ -1179,13 +1190,16 @@ const CeFiUserStake = ({ balance, coins }) => {
 								</span>{' '}
 								{selectedStaker.reward_currency
 									? selectedStaker.reward > 0
-										? `${new BigNumber(selectedStaker.reward)
-												.minus(
-													new BigNumber(
-														selectedStaker.slashedValues.slashingEarning
+										? `${roundToIncrementUnit(
+												new BigNumber(selectedStaker.reward)
+													.minus(
+														new BigNumber(
+															selectedStaker.slashedValues.slashingEarning
+														)
 													)
-												)
-												.toNumber()} ${selectedStaker.reward_currency.toUpperCase()}`
+													.toNumber(),
+												selectedStaker.reward_currency
+										  )} ${selectedStaker.reward_currency.toUpperCase()}`
 										: 'No reward amount to receive'
 									: `${new BigNumber(selectedStaker.amount)
 											.minus(

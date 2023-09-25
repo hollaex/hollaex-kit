@@ -216,7 +216,8 @@ const CeFi = ({ coins, features, kit }) => {
 			dataIndex: 'earning',
 			key: 'earning',
 			render: (user_id, data) => {
-				const incrementUnit = coins[data.currency].increment_unit;
+				const incrementUnit =
+					coins[data.reward_currency || data.currency].increment_unit;
 				const decimalPoint = new BigNumber(incrementUnit).dp();
 				const sourceAmount =
 					data?.reward &&
