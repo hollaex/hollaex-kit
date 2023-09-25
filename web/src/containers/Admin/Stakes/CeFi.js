@@ -1487,6 +1487,7 @@ const CeFi = ({ coins, features, kit }) => {
 										setStakePoolCreation(defaultStakePool);
 										setStep(1);
 										requestStakes(queryFilters.page, queryFilters.limit);
+										setConfirmText();
 										message.success(
 											`Stake pool ${!editMode ? 'created' : 'edited'}.`
 										);
