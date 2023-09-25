@@ -45,15 +45,18 @@ const unstakingCheckRunner = () => {
 					totalAmount = (new BigNumber(staker.amount).plus(amountAfterSlash)).toNumber();
 				}
 
-				if (new BigNumber(symbols[stakePool.currency]).comparedTo(totalAmount) !== 1) {
+				if (new BigNumber(symbols[stakePool.currency]).comparedTo(totalAmount) !== 1
+					|| (stakePool.reward_currency && new BigNumber(symbols[stakePool.reward_currency]).comparedTo(amountAfterSlash) !== 1)
+				) {
+					const adminAccount = await toolsLib.user.getUserByKitId(stakePool.user_id);
 					sendEmail(
 						MAILTYPE.ALERT,
-						user.email,
+						adminAccount.email,
 						{
 							type: 'Unstaking failed',
-							data: `User id ${user.id} failed to unstake, not enough funds, currency ${stakePool.currency}, amount to transfer: ${totalAmount}`
+							data: `User id ${user.id} failed to unstake, not enough funds, currency ${stakePool.currency}${stakePool.reward_currency ? ` reward currency ${stakePool.reward_currency}` : ''}, amount to transfer: ${totalAmount}`
 						},
-						user.settings
+						adminAccount.settings
 					);
 
 					continue;
