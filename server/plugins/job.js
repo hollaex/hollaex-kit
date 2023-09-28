@@ -165,6 +165,9 @@ const updateRewardsCheckRunner = () => {
 	});
 }
 
+unstakingCheckRunner();
+updateRewardsCheckRunner();
+
 module.exports = {
     unstakingCheckRunner,
     updateRewardsCheckRunner

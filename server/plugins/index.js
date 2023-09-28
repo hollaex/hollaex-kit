@@ -19,7 +19,7 @@ const lodash = require('lodash');
 const pluginProcess = path.join(__dirname, './plugin-process.js');
 const { Worker } = require('worker_threads');
 const  { createProxyMiddleware, fixRequestBody } = require('http-proxy-middleware');
-const { unstakingCheckRunner, updateRewardsCheckRunner } = require('./job');
+require('./job');
 
 
 let app;
@@ -161,8 +161,6 @@ checkStatus()
 			'Initializing Plugin Server...'
 		);
 
-		unstakingCheckRunner();
-		updateRewardsCheckRunner();
 		app = express();
 
 		app.use(morgan(morganType, { stream }));
