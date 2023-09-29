@@ -165,3 +165,15 @@ export const getExchangeBalances = (values) => {
 		})
 		.catch((err) => {});
 };
+
+export const getCoinConfiguration = () => {
+	return requestAuthenticated('/admin/coin/config');
+};
+
+export const updateCoinConfiguration = (values) => {
+	return axios({
+		method: 'PUT',
+		url: '/admin/coin/config',
+		data: values,
+	});
+};

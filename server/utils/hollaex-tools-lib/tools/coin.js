@@ -8,6 +8,8 @@ const {
 	getKitCoins,
 	getKitCoinsConfig
 } = require('./common');
+const { getModel } = require('./database/model');
+const dbQuery = require('./database/query');
 
 const getNetworkCoins = (
 	opts = {
@@ -71,6 +73,61 @@ const updateCoin = async (
 	return getNodeLib().updateCoin(code, fields, opts);
 };
 
+const updateCoinConfiguration = async (id, data) => {
+	const {
+		symbol,
+		withdrawal_fee,
+		withdrawal_fees,
+		deposit_fees,
+	} = data
+
+	const coinConfigurationModel = getModel('coinConfiguration');
+
+	const coinConfiguration = await coinConfigurationModel.findOne({ where: { id } });
+	if (!coinConfiguration) {
+		throw new Error('Coin Configuration not found');
+	}
+	if (!subscribedToCoin(symbol)) {
+           throw new Error('Invalid coin ' + symbol);
+    }
+
+	const coins = getKitCoinsConfig();
+	const coin = coins[coinConfiguration.symbol];
+
+
+	if(withdrawal_fee < coin?.withdrawal_fee) {
+		throw new Error('Withdrawal fee cannot be smaller than what is defined in network')
+	}
+
+	for(const network of Object.keys(coin?.withdrawal_fees || {})) {
+		const withdrawalFeeValue = coin?.withdrawal_fees[network]?.value;
+		if (withdrawal_fees?.[network]?.value < withdrawalFeeValue) {
+			throw new Error('Withdrawal fee cannot be smaller than what is defined in network')
+		}
+		
+	}
+
+	for(const network of Object.keys(coin?.deposit_fees || {})) {
+		const depositFeeValue = coin?.deposit_fees[network]?.value;
+		if (deposit_fees?.[network]?.value < depositFeeValue) {
+			throw new Error('Deposit fee cannot be smaller than what is defined in network')
+		}
+	}
+
+	const updatedCoinObject = {
+		...coinConfiguration.get({ plain: true }),
+		...data,
+	};
+
+
+	return coinConfiguration.update(updatedCoinObject);
+
+}
+
+const getCoinConfiguration = () => {
+	return dbQuery.findAndCountAllWithRows('coinConfiguration');
+}
+
 module.exports = {
 	subscribedToCoin,
 	getKitCoin,
@@ -78,5 +135,7 @@ module.exports = {
 	getKitCoinsConfig,
 	createCoin,
 	updateCoin,
-	getNetworkCoins
+	getNetworkCoins,
+	updateCoinConfiguration,
+	getCoinConfiguration
 };
