@@ -166,7 +166,7 @@ const checkStatus = () => {
 				if(coinConfiguration && isApplicable) {
 					configuration.coins[coin.symbol] = {
 						...coin,
-						...coinConfiguration
+						...coinConfiguration.dataValues
 					}
 				} else {
 					configuration.coins[coin.symbol] = coin;

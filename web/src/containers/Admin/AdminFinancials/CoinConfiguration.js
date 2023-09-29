@@ -63,10 +63,9 @@ const CoinConfiguration = ({ coins }) => {
 			dataIndex: 'logo',
 			key: 'logo',
 			render: (user_id, data) => {
-				// eslint-disable-next-line
 				return (
 					<div className="d-flex">
-						<img src={data?.logo} />
+						<img src={data?.logo} alt={'-'} />
 					</div>
 				);
 			},
