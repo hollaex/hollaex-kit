@@ -305,7 +305,7 @@ const TransactionLimits = ({ coins }) => {
 								marginBottom: 10,
 							}}
 						>
-							Edit Transaction Limit
+							{editMode ? 'Edit' : 'Create'} Transaction Limit
 						</div>
 						<div style={{ marginBottom: 30 }}>
 							Congifure transaction attributes
@@ -335,6 +335,7 @@ const TransactionLimits = ({ coins }) => {
 							<div style={{ marginBottom: 10 }}>
 								<div className="mb-1">Amount</div>
 								<Input
+									type="number"
 									placeholder="Enter amount"
 									value={selectedData.amount}
 									onChange={(e) => {

@@ -294,7 +294,7 @@ const updateTransactionLimit = async (id, data) => {
            throw new Error('Invalid coin ' + currency);
     }
 
-	if (limit_currency && !subscribedToCoin(limit_currency)) {
+	if (limit_currency && limit_currency !== 'default' && !subscribedToCoin(limit_currency)) {
            throw new Error('Invalid coin ' + limit_currency);
     }
 
