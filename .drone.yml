@@ -1,39 +1,39 @@
-kind: pipeline
-type: docker
-name: block_duplicated_pr_merged
+# kind: pipeline
+# type: docker
+# name: block_duplicated_pr_merged
 
-steps:
-- name: current_hollaex_kit_version
-  image: alpine
-  commands:
-  -  export PACKAGE_VERSION="$(cat version)" && echo "$PACKAGE_VERSION" > .tags_current
-  -  echo "Current Release tag is :" && cat .tags_current
+# steps:
+# - name: current_hollaex_kit_version
+#   image: alpine
+#   commands:
+#   -  export PACKAGE_VERSION="$(cat version)" && echo "$PACKAGE_VERSION" > .tags_current
+#   -  echo "Current Release tag is :" && cat .tags_current
 
-- name: previous_hollaex_kit_version
-  image: byrnedo/alpine-curl
-  commands:
-  -  curl https://raw.githubusercontent.com/hollaex/hollaex-kit/master/version > .tags_previous
-  -  echo "The previous master release tag is :" && cat .tags_previous
+# - name: previous_hollaex_kit_version
+#   image: byrnedo/alpine-curl
+#   commands:
+#   -  curl https://raw.githubusercontent.com/hollaex/hollaex-kit/master/version > .tags_previous
+#   -  echo "The previous master release tag is :" && cat .tags_previous
 
-- name: version_comparison
-  image: frolvlad/alpine-bash
-  commands:
-  -  export TAGS_CURRENT=$(cat .tags_current) && export TAGS_PREVIOUS=$(cat .tags_previous) && if [ "$TAGS_PREVIOUS" ==  "$TAGS_CURRENT" ]; then echo "Blocking the merge since the versions are same..." && exit 1; else echo "hi"; fi
+# - name: version_comparison
+#   image: frolvlad/alpine-bash
+#   commands:
+#   -  export TAGS_CURRENT=$(cat .tags_current) && export TAGS_PREVIOUS=$(cat .tags_previous) && if [ "$TAGS_PREVIOUS" ==  "$TAGS_CURRENT" ]; then echo "Blocking the merge since the versions are same..." && exit 1; else echo "hi"; fi
 
-- name: slack_noti_job_end
-  image: plugins/slack
-  settings:
-    channel: deployment
-    webhook:
-      from_secret: slack_webhook
-  when:
-    status: [failure]
+# - name: slack_noti_job_end
+#   image: plugins/slack
+#   settings:
+#     channel: deployment
+#     webhook:
+#       from_secret: slack_webhook
+#   when:
+#     status: [failure]
   
-trigger:
-  branch: 
-    - master
-  event:
-    - pull_request
+# trigger:
+#   branch: 
+#     - master
+#   event:
+#     - pull_request
 
 # ---
 
@@ -144,9 +144,6 @@ trigger:
 #   - deployment
 #   event:
 #   - push
-
----
-
 kind: pipeline
 type: docker
 name: hollaex_kit_amd64_build
@@ -282,7 +279,7 @@ steps:
     - cat .tags 
     - docker manifest create hollaex/hollaex-kit:$(cat .tags) hollaex/hollaex-kit:$(cat .tags)-amd64 hollaex/hollaex-kit:$(cat .tags)-arm64v8 --amend
     - docker manifest annotate hollaex/hollaex-kit:$(cat .tags) hollaex/hollaex-kit:$(cat .tags)-amd64 --arch amd64
-    - docker manifest annotate hollaex/hollaex-kit:$(cat .tags) hollaex/hollaex-kit:$(cat .tags)-arm64v8 --arch arm64v8
+    - docker manifest annotate hollaex/hollaex-kit:$(cat .tags) hollaex/hollaex-kit:$(cat .tags)-arm64v8 --arch arm64
     - docker manifest push hollaex/hollaex-kit:$(cat .tags)
   when:
     branch: master

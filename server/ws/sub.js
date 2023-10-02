@@ -327,8 +327,9 @@ const handleDepositWithdrawalData = (data) => {
 	switch (data.topic) {
 		case 'deposit':
 		case 'withdrawal':
-			each(getChannels()[WEBSOCKET_CHANNEL(data.topic, data.user_id)], (ws) => {
+			each(getChannels()[WEBSOCKET_CHANNEL(data.topic, data.user_network_id)], (ws) => {
 				if (ws.readyState === WebSocket.OPEN) {
+					delete data.user_network_id;
 					ws.send(JSON.stringify(data));
 				}
 			});
