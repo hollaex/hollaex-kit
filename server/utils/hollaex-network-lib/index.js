@@ -1709,6 +1709,7 @@ class HollaExNetwork {
 			transactionId: null,
 			description: null,
 			email: null,
+			category: null,
 			additionalHeaders: null
 		}
 	) {
@@ -1748,6 +1749,11 @@ class HollaExNetwork {
 		} else {
 			data.email = true;
 		}
+
+		if (opts.category && ['stake', 'referral', 'internal'].includes(opts.category)) {
+			data.category = opts.category;
+		}
+
 
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,

@@ -641,6 +641,12 @@ exports.EXCHANGE_PLAN_PRICE_SOURCE = {
 
 // BROKER CONSTANTS END
 
+//STAKE CONSTANTS START
+
+exports.STAKE_SUPPORTED_PLANS = ['crypto', 'fiat', 'boost', 'enterprise'];
+
+//STAKE CONSTANTS END
+
 exports.CUSTOM_CSS = `
 	.topbar-wrapper img {
 		content:url('${exports.GET_KIT_CONFIG().logo_image}}');

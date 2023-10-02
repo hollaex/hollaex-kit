@@ -572,6 +572,7 @@ const withdrawalBelowLimitSameCoin = async (userId, currency, limit, amount = 0)
 };
 
 const transferAssetByKitIds = (senderId, receiverId, currency, amount, description = 'Admin Transfer', email = true, opts = {
+	category: null,
 	transactionId: null,
 	additionalHeaders: null
 }) => {
