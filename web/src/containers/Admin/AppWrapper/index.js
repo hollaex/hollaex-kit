@@ -404,6 +404,8 @@ class AppWrapper extends React.Component {
 			tabParams?.isFiat === 'offRamp'
 		) {
 			return 'Fiat controls';
+		} else if (location.pathname.includes('/admin/stakes')) {
+			return 'Stakes';
 		} else if (location.pathname.includes('/admin/sessions')) {
 			return 'Sessions';
 		} else if (location.pathname.includes('/admin/financial')) {
