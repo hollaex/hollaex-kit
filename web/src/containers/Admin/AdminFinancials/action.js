@@ -177,3 +177,15 @@ export const updateCoinConfiguration = (values) => {
 		data: values,
 	});
 };
+
+export const getTransactionLimits = () => {
+	return requestAuthenticated('/admin/transaction/limit');
+};
+
+export const updateTransactionLimits = (values) => {
+	return axios({
+		method: 'PUT',
+		url: '/admin/transaction/limit',
+		data: values,
+	});
+};

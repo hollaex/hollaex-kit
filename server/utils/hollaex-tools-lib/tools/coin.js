@@ -20,6 +20,14 @@ const getNetworkCoins = (
 	return getNodeLib().getCoins(opts);
 };
 
+const findCoinConfiguration = (symbol) => {
+	return dbQuery.findOne('coinConfiguration', {
+		where: {
+			symbol
+		}
+	})
+};
+
 const createCoin = async (
 	symbol,
 	fullname,
@@ -137,5 +145,6 @@ module.exports = {
 	updateCoin,
 	getNetworkCoins,
 	updateCoinConfiguration,
-	getCoinConfiguration
+	getCoinConfiguration,
+	findCoinConfiguration
 };

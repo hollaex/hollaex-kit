@@ -119,32 +119,6 @@ const CoinConfiguration = ({ coins }) => {
 			},
 		},
 		{
-			title: 'Withdrawal Limit',
-			dataIndex: 'withdrawal_limit',
-			key: 'withdrawal_limit',
-			render: (user_id, data) => {
-				return <div className="d-flex">{data?.withdrawal_limit || '-'}</div>;
-			},
-		},
-		{
-			title: 'Deposit Limit',
-			dataIndex: 'deposit_limit',
-			key: 'deposit_limit',
-			render: (user_id, data) => {
-				return <div className="d-flex">{data?.deposit_limit || '-'}</div>;
-			},
-		},
-		{
-			title: 'Mounthly Withdrawal Limit',
-			dataIndex: 'mounthly_withdrawal_limit',
-			key: 'mounthly_withdrawal_limit',
-			render: (user_id, data) => {
-				return (
-					<div className="d-flex">{data?.mounthly_withdrawal_limit || '-'}</div>
-				);
-			},
-		},
-		{
 			title: 'Edit',
 			dataIndex: 'edit',
 			key: 'edit',
@@ -289,7 +263,7 @@ const CoinConfiguration = ({ coins }) => {
 							<Table
 								className="blue-admin-table"
 								columns={columns}
-								dataSource={coinData.sort((a, b) => a.id - b.id)}
+								dataSource={coinData || [].sort((a, b) => a.id - b.id)}
 								expandedRowRender={renderRowContent}
 								expandRowByClick={true}
 								rowKey={(data) => {
@@ -452,51 +426,6 @@ const CoinConfiguration = ({ coins }) => {
 									</div>
 								);
 							})}
-
-							<div style={{ marginBottom: 10 }}>
-								<div className="mb-1">Withdrawal Limit</div>
-								<Input
-									type="number"
-									placeholder="Enter withdrawal limit"
-									value={selectedCoin.withdrawal_limit}
-									onChange={(e) => {
-										setSelectedCoin({
-											...selectedCoin,
-											withdrawal_limit: e.target.value,
-										});
-									}}
-								/>
-							</div>
-
-							<div style={{ marginBottom: 10 }}>
-								<div className="mb-1">Deposit Limit</div>
-								<Input
-									type="number"
-									placeholder="Enter deposit limit"
-									value={selectedCoin.deposit_limit}
-									onChange={(e) => {
-										setSelectedCoin({
-											...selectedCoin,
-											deposit_limit: e.target.value,
-										});
-									}}
-								/>
-							</div>
-
-							<div style={{ marginBottom: 10 }}>
-								<div className="mb-1">Mounthly Withdrawal Limit</div>
-								<Input
-									type="number"
-									placeholder="Enter mounthly withdrawal limit"
-									value={selectedCoin.mounthly_withdrawal_limit}
-									onChange={(e) => {
-										setSelectedCoin({
-											...selectedCoin,
-											mounthly_withdrawal_limit: e.target.value,
-										});
-									}}
-								/>
-							</div>
 						</div>
 						<div
 							style={{

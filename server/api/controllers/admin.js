@@ -2496,9 +2496,6 @@ const updateCoinConfiguration = (req, res) => {
 		withdrawal_fee,
 		withdrawal_fees,
 		deposit_fees,
-		withdrawal_limit,
-		deposit_limit,
-		mounthly_withdrawal_limit,
 		active,
 	 } = req.swagger.params.data.value;
 
@@ -2510,9 +2507,6 @@ const updateCoinConfiguration = (req, res) => {
 		withdrawal_fee,
 		withdrawal_fees,
 		deposit_fees,
-		withdrawal_limit,
-		deposit_limit,
-		mounthly_withdrawal_limit,
 		active,
 	 })
 		.then((data) => {
@@ -2537,6 +2531,51 @@ const getCoinConfiguration = (req, res) => {
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
+
+const getTransactionLimits = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/getTransactionLimits/auth', req.auth);
+
+	toolsLib.tier.getTransactionLimits()
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/getTransactionLimits', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const updateTransactionLimit = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/updateTransactionLimit/auth', req.auth);
+
+	const { 
+		id,
+		tier,
+		amount,
+		currency,
+		limit_currency,
+		type,
+		period,
+	 } = req.swagger.params.data.value;
+
+	toolsLib.tier.updateTransactionLimit(id, {
+		tier,
+		amount,
+		currency,
+		limit_currency,
+		type,
+		period,
+	 })
+		.then((data) => {
+			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/updateTransactionLimit', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
 
 const getBalancesAdmin = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getBalancesAdmin/auth', req.auth);
@@ -2661,5 +2700,7 @@ module.exports = {
 	updateCoinConfiguration,
 	getCoinConfiguration,
 	getBalancesAdmin,
-	restoreUserAccount
+	restoreUserAccount,
+	getTransactionLimits,
+	updateTransactionLimit
 };

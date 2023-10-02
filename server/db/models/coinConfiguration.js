@@ -39,18 +39,6 @@ module.exports = function (sequelize, DataTypes) {
                 type: DataTypes.JSONB,
                 allowNull: true,
             },
-			withdrawal_limit: {
-                type: DataTypes.DOUBLE,
-                allowNull: true,
-            },
-			deposit_limit: {
-                type: DataTypes.DOUBLE,
-                allowNull: true,
-            },
-			mounthly_withdrawal_limit: {
-                type: DataTypes.DOUBLE,
-                allowNull: true,
-            },
             active: {
                 type: DataTypes.BOOLEAN,
                 defaultValue: true,

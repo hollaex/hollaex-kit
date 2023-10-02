@@ -48,6 +48,8 @@ model = require(path.join(__dirname, './quickTrade'))(sequelize, Sequelize.DataT
 db[model.name] = model;
 model = require(path.join(__dirname, './coinConfiguration'))(sequelize, Sequelize.DataTypes);
 db[model.name] = model;
+model = require(path.join(__dirname, './transactionLimit'))(sequelize, Sequelize.DataTypes);
+db[model.name] = model;
 
 Object.keys(db).forEach(function (modelName) {
 	if ('associate' in db[modelName]) {

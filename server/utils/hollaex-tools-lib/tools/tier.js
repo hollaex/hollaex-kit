@@ -3,7 +3,7 @@
 const { SERVER_PATH } = require('../constants');
 const dbQuery = require('./database/query');
 const { getModel } = require('./database');
-const { getKitTiers, getKitPairs, subscribedToPair, getTierLevels, getDefaultFees } = require('./common');
+const { getKitTiers, getKitPairs, subscribedToPair, getTierLevels, getDefaultFees, subscribedToCoin } = require('./common');
 const { reject, all } = require('bluebird');
 const { difference, omit, isNumber, each, isString, isBoolean } = require('lodash');
 const { publisher } = require('./database/redis');
@@ -258,10 +258,80 @@ const updateTiersLimits = (limits) => {
 		});
 };
 
+const findTransactionLimit = async (opts = {
+	id,
+	tier,
+	amount,
+	currency,
+	limit_currency,
+	type,
+	period,
+}) => {
+	const transactionLimitModel = getModel('transactionLimit');
+
+	return transactionLimitModel.findOne({ where: { 
+		...(opts.id && { id: opts.id }),
+		...(opts.tier && { tier: opts.tier }),
+		...(opts.amount && { amount: opts.amount }),
+		...(opts.currency && { currency: opts.currency }),
+		...(opts.limit_currency && { limit_currency: opts.limit_currency }),
+		...(opts.type && { type: opts.type }),
+		...(opts.period && { period: opts.period }),
+	} });
+}
+
+
+const updateTransactionLimit = async (id, data) => {
+	const {
+		tier,
+		currency,
+		limit_currency,
+		type,
+		period
+	} = data
+
+	if (currency && !subscribedToCoin(currency)) {
+           throw new Error('Invalid coin ' + currency);
+    }
+
+	if (limit_currency && !subscribedToCoin(limit_currency)) {
+           throw new Error('Invalid coin ' + limit_currency);
+    }
+
+	if (id) {
+		const transactionLimit = await findTransactionLimit({ id });
+		const updatedTransactionObject = {
+			...transactionLimit.get({ plain: true }),
+			...data,
+		};
+
+		return transactionLimit.update(updatedTransactionObject);
+
+	} else {
+		const isExist = await findTransactionLimit({ tier, period, type });
+
+		if (isExist) {
+			throw new Error('Transaction limit record already exist');
+		}
+
+		const transactionLimitModel = getModel('transactionLimit');
+
+		return transactionLimitModel.create(data);
+	}
+
+}
+
+const getTransactionLimits = () => {
+	return dbQuery.findAndCountAllWithRows('transactionLimit');
+}
+
 module.exports = {
 	findTier,
 	createTier,
 	updateTier,
 	updatePairFees,
-	updateTiersLimits
+	updateTiersLimits,
+	updateTransactionLimit,
+	getTransactionLimits,
+	findTransactionLimit
 };

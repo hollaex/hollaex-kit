@@ -1,7 +1,6 @@
 'use strict';
 
-const TABLE = 'CoinConfigurations';
-
+const TABLE = 'TransactionLimits';
 module.exports = {
 	up: (queryInterface, Sequelize) => {
 		return queryInterface.createTable(
@@ -13,38 +12,29 @@ module.exports = {
 					primaryKey: true,
 					type: Sequelize.INTEGER
 				},
-				symbol: {
-					type: Sequelize.STRING,
+				tier: {
+					type: Sequelize.INTEGER,
 					unique: true,
 					allowNull: false,
 				},
-				fullname: {
+				amount: {
+					type: Sequelize.DOUBLE,
+					allowNull: false,
+				},
+				currency: {
 					type: Sequelize.STRING,
 					allowNull: false,
 				},
-				logo: {
-					type: Sequelize.STRING,
-					allowNull: false,
-				},
-				increment_unit: {
-            	    type: Sequelize.DOUBLE,
+				limit_currency: {
+            	    type: Sequelize.STRING,
             	    allowNull: false,
             	},
-				withdrawal_fee: {
-            	    type: Sequelize.DOUBLE,
+				type: {
+            	    type: Sequelize.ENUM('withdrawal', 'deposit'),
             	    allowNull: false,
             	},
-				withdrawal_fees: {
-            	    type: Sequelize.JSONB,
-            	    allowNull: true,
-            	},
-				deposit_fees: {
-            	    type: Sequelize.JSONB,
-            	    allowNull: true,
-            	},
-            	active: {
-            	    type: Sequelize.BOOLEAN,
-            	    defaultValue: true,
+				period: {
+            	    type: Sequelize.STRING,
             	    allowNull: false,
             	},
 				created_at: {
