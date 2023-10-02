@@ -1,0 +1,17 @@
+.cefi_stake .ant-table-thead > tr > th {
+	background-color: #25262c;
+	color: white;
+	padding: 0rem 1rem;
+}
+.cefi_stake .ant-table-tbody > tr > td {
+	background-color: #25262c;
+	color: white;
+	border-bottom: 1px solid #25262c;
+}
+
+.cefi_stake .ant-table-tbody > tr.ant-table-placeholder:hover > td {
+	background-color: #25262c;
+}
+.cefi_stake .ant-table-tbody > tr.ant-table-row:hover > td {
+	background-color: #25262c;
+}

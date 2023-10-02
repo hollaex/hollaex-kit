@@ -245,6 +245,9 @@ const nestedIcons = {
 
 	REFER_ICON: '/assets/images/refer-icon.svg',
 	STAKETOKEN_ICON: '/assets/images/stake.svg',
+	STAKING_1: '/assets/images/staking_1.png',
+	STAKING_2: '/assets/images/staking_2.svg',
+	STAKING_3: '/assets/images/staking_3.svg',
 	DEFAULT_ICON: '/assets/icons/coin-graphic-not-detected.svg',
 	EXPIRED_ICON: '/assets/images/expired.svg',
 
