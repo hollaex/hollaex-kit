@@ -199,7 +199,8 @@ const RenderContentForm = ({
 						</div>
 						{(currency === 'xrp' ||
 							currency === 'xlm' ||
-							selectedNetwork === 'xlm') && (
+							selectedNetwork === 'xlm' ||
+							selectedNetwork === 'ton') && (
 							<div className="d-flex">
 								<div className="d-flex align-items-baseline field_warning_wrapper">
 									<ExclamationCircleFilled className="field_warning_icon" />
