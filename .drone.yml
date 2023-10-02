@@ -308,7 +308,6 @@ trigger:
   branch:
   - testnet
   - master
-  - deployment
   event:
   - push
 
