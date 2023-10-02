@@ -90,6 +90,7 @@ const handleCurrencyDeposit = (req, res) => {
 					topic: 'deposit',
 					action: 'insert',
 					user_id: user.id,
+					user_network_id: user.network_id,
 					data: depositData,
 					time: moment().unix()
 				}));
@@ -186,6 +187,7 @@ const handleCurrencyWithdrawal = (req, res) => {
 					topic: 'withdrawal',
 					action: 'insert',
 					user_id: user.id,
+					user_network_id: user.network_id,
 					data: data,
 					time: moment().unix()
 				}));
