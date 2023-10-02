@@ -144,9 +144,6 @@
 #   - deployment
 #   event:
 #   - push
-
----
-
 kind: pipeline
 type: docker
 name: hollaex_kit_amd64_build
