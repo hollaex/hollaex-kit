@@ -301,10 +301,7 @@ class Form extends Component {
 
 		const { dialogIsOpen, dialogOtpOpen } = this.state;
 		const hasDestinationTag =
-			currency === 'xrp' ||
-			currency === 'xlm' ||
-			selectedNetwork === 'xlm' ||
-			selectedNetwork === 'ton';
+			currency === 'xrp' || currency === 'xlm' || selectedNetwork === 'xlm';
 
 		const coinObject = coins[currency];
 
