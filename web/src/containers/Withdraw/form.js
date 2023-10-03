@@ -198,7 +198,7 @@ class Form extends Component {
 	};
 
 	onAcceptDialog = () => {
-		if (!this.props.otp_enabled) {
+		if (this.props.otp_enabled) {
 			this.setState({ dialogOtpOpen: true });
 		} else {
 			this.onCloseDialog();
@@ -301,7 +301,10 @@ class Form extends Component {
 
 		const { dialogIsOpen, dialogOtpOpen } = this.state;
 		const hasDestinationTag =
-			currency === 'xrp' || currency === 'xlm' || selectedNetwork === 'xlm';
+			currency === 'xrp' ||
+			currency === 'xlm' ||
+			selectedNetwork === 'xlm' ||
+			selectedNetwork === 'ton';
 
 		const coinObject = coins[currency];
 
