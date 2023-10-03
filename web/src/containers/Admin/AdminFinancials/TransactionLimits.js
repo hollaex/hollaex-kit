@@ -1,14 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-	message,
-	Table,
-	Button,
-	Spin,
-	Modal,
-	Input,
-	InputNumber,
-	Select,
-} from 'antd';
+import { message, Table, Button, Spin, Modal, Input, Select } from 'antd';
 import {
 	getTransactionLimits,
 	updateTransactionLimits,
