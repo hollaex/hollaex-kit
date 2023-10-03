@@ -365,7 +365,7 @@ const performWithdrawal = (userId, address, currency, amount, opts = {
 				if (limit === -1) {
 					throw new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency));
 				} else if (limit > 0) {
-					await withdrawalBelowLimit(user.network_id, currency, limit, amount, transactionLimitLast24Hours);
+					await withdrawalBelowLimit(user.network_id, currency, limit, amount, transactionLimitLast24Hours, last24HoursLimits);
 				}
 			}
 
@@ -374,7 +374,7 @@ const performWithdrawal = (userId, address, currency, amount, opts = {
 				if (limit === -1) {
 					throw new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency));
 				} else if (limit > 0) {
-					await withdrawalBelowLimit(user.network_id, currency, limit, amount, transactionLimitLastMonth);
+					await withdrawalBelowLimit(user.network_id, currency, limit, amount, transactionLimitLastMonth, lastMonthLimits);
 				}
 			}
 			return getNodeLib().performWithdrawal(user.network_id, address, currency, amount, opts);

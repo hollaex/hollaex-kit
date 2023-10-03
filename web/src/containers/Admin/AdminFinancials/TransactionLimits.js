@@ -266,7 +266,7 @@ const TransactionLimits = ({ coins }) => {
 						</div>
 					</div>
 
-					<div className="mt-4 ">
+					<div className="mt-4" style={{ marginBottom: 80 }}>
 						<Spin spinning={isLoading}>
 							<Table
 								className="blue-admin-table"
