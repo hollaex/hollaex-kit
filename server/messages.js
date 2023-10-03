@@ -227,3 +227,6 @@ exports.INVALID_SIZE = 'Invalid size';
 exports.NO_IP_FOUND = 'Request can not be processed';
 exports.QUOTE_EXPIRY_TIME_ERROR= 'Quote expiry time cannot be smaller than 10';
 exports.BALANCE_NOT_AVAILABLE = 'cannot be used for dust, check if the coins are locked';
+exports.COIN_CONFIGURATION_NOT_FOUND = 'Coin Configuration not found';
+exports.WITHDRAWAL_FEE_SMALLER_THAN_NETWORK = 'Withdrawal fee cannot be smaller than what is defined in network';
+exports.DEPOSIT_FEE_SMALLER_THAN_NETWORK = 'Deposit fee cannot be smaller than what is defined in network';

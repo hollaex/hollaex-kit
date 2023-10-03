@@ -10,6 +10,11 @@ const {
 } = require('./common');
 const { getModel } = require('./database/model');
 const dbQuery = require('./database/query');
+const {
+	COIN_CONFIGURATION_NOT_FOUND,
+	WITHDRAWAL_FEE_SMALLER_THAN_NETWORK,
+	DEPOSIT_FEE_SMALLER_THAN_NETWORK,
+} = require(`${SERVER_PATH}/messages`);
 
 const getNetworkCoins = (
 	opts = {
@@ -93,7 +98,7 @@ const updateCoinConfiguration = async (id, data) => {
 
 	const coinConfiguration = await coinConfigurationModel.findOne({ where: { id } });
 	if (!coinConfiguration) {
-		throw new Error('Coin Configuration not found');
+		throw new Error(COIN_CONFIGURATION_NOT_FOUND);
 	}
 	if (!subscribedToCoin(symbol)) {
            throw new Error('Invalid coin ' + symbol);
@@ -104,13 +109,13 @@ const updateCoinConfiguration = async (id, data) => {
 
 
 	if(withdrawal_fee < coin?.withdrawal_fee) {
-		throw new Error('Withdrawal fee cannot be smaller than what is defined in network')
+		throw new Error(WITHDRAWAL_FEE_SMALLER_THAN_NETWORK)
 	}
 
 	for(const network of Object.keys(coin?.withdrawal_fees || {})) {
 		const withdrawalFeeValue = coin?.withdrawal_fees[network]?.value;
 		if (withdrawal_fees?.[network]?.value < withdrawalFeeValue) {
-			throw new Error('Withdrawal fee cannot be smaller than what is defined in network')
+			throw new Error(WITHDRAWAL_FEE_SMALLER_THAN_NETWORK)
 		}
 		
 	}
@@ -118,7 +123,7 @@ const updateCoinConfiguration = async (id, data) => {
 	for(const network of Object.keys(coin?.deposit_fees || {})) {
 		const depositFeeValue = coin?.deposit_fees[network]?.value;
 		if (deposit_fees?.[network]?.value < depositFeeValue) {
-			throw new Error('Deposit fee cannot be smaller than what is defined in network')
+			throw new Error(DEPOSIT_FEE_SMALLER_THAN_NETWORK)
 		}
 	}
 

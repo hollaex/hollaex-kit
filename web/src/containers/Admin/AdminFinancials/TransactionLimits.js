@@ -146,7 +146,7 @@ const TransactionLimits = ({ coins }) => {
 								setSelectedData(data);
 								setDisplayDeleteModal(true);
 							}}
-							style={{ backgroundColor: 'red', color: 'white' }}
+							style={{ backgroundColor: '#cc0000', color: 'white' }}
 						>
 							Delete
 						</Button>
