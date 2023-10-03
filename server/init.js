@@ -159,7 +159,7 @@ const checkStatus = () => {
 
 				const isApplicable = isWithdrawalFeeBigger && isWithdrawalFeesBigger && isDepositFeesBigger;
 
-				if (!isApplicable) {
+				if (coinConfiguration && !isApplicable) {
 					coinConfiguration.destroy();
 				}
 
