@@ -258,6 +258,12 @@ const updateTiersLimits = (limits) => {
 		});
 };
 
+const findTransactionLimitPerTier = async (tier, period, limit_currency, type) => {
+	const transactionLimitModel = getModel('transactionLimit');
+	return transactionLimitModel.findAll({ where: { tier, limit_currency, period, type } });
+
+}
+
 const findTransactionLimit = async (opts = {
 	id,
 	tier,
@@ -308,7 +314,7 @@ const updateTransactionLimit = async (id, data) => {
 		return transactionLimit.update(updatedTransactionObject);
 
 	} else {
-		const isExist = await findTransactionLimit({ tier, period, type });
+		const isExist = await findTransactionLimit({ tier, limit_currency, period, type });
 
 		if (isExist) {
 			throw new Error('Transaction limit record already exist');
@@ -333,5 +339,6 @@ module.exports = {
 	updateTiersLimits,
 	updateTransactionLimit,
 	getTransactionLimits,
-	findTransactionLimit
+	findTransactionLimit,
+	findTransactionLimitPerTier
 };

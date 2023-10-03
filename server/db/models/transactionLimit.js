@@ -1,6 +1,7 @@
 'use strict';
 
 module.exports = function (sequelize, DataTypes) {
+
 	const TransactionLimit = sequelize.define(
 		'TransactionLimit',
 		{
@@ -12,7 +13,6 @@ module.exports = function (sequelize, DataTypes) {
 			},
 			tier: {
 				type: DataTypes.INTEGER,
-				unique: true,
 				allowNull: false,
 			},
 			amount: {

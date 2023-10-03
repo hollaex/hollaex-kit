@@ -14,7 +14,6 @@ module.exports = {
 				},
 				tier: {
 					type: Sequelize.INTEGER,
-					unique: true,
 					allowNull: false,
 				},
 				amount: {
