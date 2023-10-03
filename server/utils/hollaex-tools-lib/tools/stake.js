@@ -291,12 +291,6 @@ const createExchangeStakePool = async (stake) => {
         throw new Error(ACCOUNT_ID_NOT_EXIST);
     }
     
-    const balance = await getSourceAccountBalance(account_id, currency);
-
-    if (new BigNumber(balance).comparedTo(new BigNumber(max_amount)) !== 1) {
-        throw new Error(SOURCE_ACCOUNT_INSUFFICIENT_BALANCE);
-    }
-
     stake.slashing = (stake.slashing_principle_percentage || stake.slashing_earning_percentage) ? true : false;
      
 	return getModel('stake').create(stake, {
@@ -431,11 +425,6 @@ const updateExchangeStakePool = async (id, data) => {
             throw new Error(ACCOUNT_ID_NOT_EXIST);
         }
 
-        const balance = await getSourceAccountBalance(account_id, currency);
-
-        if (new BigNumber(balance).comparedTo(new BigNumber(max_amount)) !== 1) {
-            throw new Error(SOURCE_ACCOUNT_INSUFFICIENT_BALANCE);
-        }
     }
 
     const updatedStakePool = {
