@@ -9,7 +9,11 @@ import {
 	InputNumber,
 	Select,
 } from 'antd';
-import { getTransactionLimits, updateTransactionLimits } from './action';
+import {
+	getTransactionLimits,
+	updateTransactionLimits,
+	deleteTransactionLimit,
+} from './action';
 import { requestTiers } from '../User/actions';
 import { CloseOutlined } from '@ant-design/icons';
 import withConfig from 'components/ConfigProvider/withConfig';
@@ -38,6 +42,7 @@ const TransactionLimits = ({ coins }) => {
 		false
 	);
 
+	const [displayDeleteModal, setDisplayDeleteModal] = useState(false);
 	const columns = [
 		{
 			title: 'ID',
@@ -138,9 +143,8 @@ const TransactionLimits = ({ coins }) => {
 						<Button
 							onClick={(e) => {
 								e.stopPropagation();
-								setEditMode(true);
 								setSelectedData(data);
-								setDisplayCostumizationModal(true);
+								setDisplayDeleteModal(true);
 							}}
 							style={{ backgroundColor: 'red', color: 'white' }}
 						>
@@ -493,6 +497,82 @@ const TransactionLimits = ({ coins }) => {
 								type="default"
 							>
 								PROCEED
+							</Button>
+						</div>
+					</Modal>
+				)}
+
+				{displayDeleteModal && (
+					<Modal
+						maskClosable={false}
+						closeIcon={<CloseOutlined style={{ color: 'white' }} />}
+						bodyStyle={{
+							backgroundColor: '#27339D',
+						}}
+						visible={displayDeleteModal}
+						footer={null}
+						onCancel={() => {
+							setDisplayDeleteModal(false);
+						}}
+					>
+						<div
+							style={{
+								fontWeight: '600',
+								color: 'white',
+								fontSize: 18,
+								marginBottom: 10,
+							}}
+						>
+							Delete Transaction Limit
+						</div>
+						<div style={{ marginBottom: 30, fontSize: 18 }}>
+							Are you sure you want to delete this configuration?
+						</div>
+
+						<div
+							style={{
+								display: 'flex',
+								flexDirection: 'row',
+								gap: 15,
+								justifyContent: 'space-between',
+								marginBottom: 20,
+							}}
+						>
+							<Button
+								onClick={() => {
+									setDisplayDeleteModal(false);
+								}}
+								style={{
+									backgroundColor: '#288500',
+									color: 'white',
+									flex: 1,
+									height: 35,
+								}}
+								type="default"
+							>
+								Back
+							</Button>
+							<Button
+								onClick={async () => {
+									try {
+										await deleteTransactionLimit({ id: selectedData.id });
+										requesTransactionLimits();
+										message.success('Changes saved.');
+										setSelectedData({});
+										setDisplayDeleteModal(false);
+									} catch (error) {
+										message.error(error.response.data.message);
+									}
+								}}
+								style={{
+									backgroundColor: '#288500',
+									color: 'white',
+									flex: 1,
+									height: 35,
+								}}
+								type="default"
+							>
+								YES
 							</Button>
 						</div>
 					</Modal>

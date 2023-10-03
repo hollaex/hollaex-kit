@@ -5,8 +5,8 @@ const models = require('../models');
 
 module.exports = {
 	async up(queryInterface) {
-		const transactionLimitModel = models['TransactionLimits'];
-		const tierModel = models['Tiers'];
+		const transactionLimitModel = models['TransactionLimit'];
+		const tierModel = models['Tier'];
 		const tiers = await tierModel.findAll({});
 		const types = ['withdrawal', 'deposit'];
 

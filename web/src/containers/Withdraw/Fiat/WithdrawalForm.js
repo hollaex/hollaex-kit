@@ -124,8 +124,8 @@ class Index extends Component {
 		} = this.props;
 		const { increment_unit } = coins[currency] || DEFAULT_COIN_DATA;
 		const decimals = getDecimals(increment_unit);
-
-		if (otp_enabled) {
+		console.log({ GG: 'ASKDjka' });
+		if (!otp_enabled) {
 			this.setState({ dialogOtpOpen: true });
 		} else {
 			this.onCloseDialog();

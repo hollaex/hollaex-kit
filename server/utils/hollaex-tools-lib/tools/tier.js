@@ -258,9 +258,9 @@ const updateTiersLimits = (limits) => {
 		});
 };
 
-const findTransactionLimitPerTier = async (tier, period, limit_currency, type) => {
+const findTransactionLimitPerTier = async (tier, period, type) => {
 	const transactionLimitModel = getModel('transactionLimit');
-	return transactionLimitModel.findAll({ where: { tier, limit_currency, period, type } });
+	return transactionLimitModel.findAll({ where: { tier, period, type } });
 
 }
 
@@ -331,6 +331,17 @@ const getTransactionLimits = () => {
 	return dbQuery.findAndCountAllWithRows('transactionLimit');
 }
 
+const deleteTransactionLimit = async (id) => {
+	const transactionLimitModel = getModel('transactionLimit');
+
+	const limit = await transactionLimitModel.findOne({ where: { id } });
+
+	if (!limit) {
+		throw new Error('Record does not exist');
+	}
+	return limit.destroy();
+}
+
 module.exports = {
 	findTier,
 	createTier,
@@ -340,5 +351,6 @@ module.exports = {
 	updateTransactionLimit,
 	getTransactionLimits,
 	findTransactionLimit,
-	findTransactionLimitPerTier
+	findTransactionLimitPerTier,
+	deleteTransactionLimit
 };

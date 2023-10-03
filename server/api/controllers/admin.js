@@ -2576,6 +2576,28 @@ const updateTransactionLimit = (req, res) => {
 		});
 };
 
+const deleteTransactionLimit = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/deleteTransactionLimit', req.auth.sub);
+
+	const { id } = req.swagger.params.data.value;
+
+	loggerAdmin.info(
+		req.uuid,
+		'controllers/admin/deleteTransactionLimit',
+		'id',
+		id
+	);
+
+	toolsLib.tier.deleteTransactionLimit(id)
+		.then((result) => {
+			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
+			return res.json(result);
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/deleteTransactionLimit', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
 
 const getBalancesAdmin = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getBalancesAdmin/auth', req.auth);
@@ -2702,5 +2724,6 @@ module.exports = {
 	getBalancesAdmin,
 	restoreUserAccount,
 	getTransactionLimits,
-	updateTransactionLimit
+	updateTransactionLimit,
+	deleteTransactionLimit
 };

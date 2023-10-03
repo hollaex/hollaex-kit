@@ -189,3 +189,11 @@ export const updateTransactionLimits = (values) => {
 		data: values,
 	});
 };
+
+export const deleteTransactionLimit = (values) => {
+	return axios({
+		method: 'DELETE',
+		url: '/admin/transaction/limit',
+		data: values,
+	});
+};

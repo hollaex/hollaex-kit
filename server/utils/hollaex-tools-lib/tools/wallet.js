@@ -100,7 +100,7 @@ const getWithdrawalFee = (currency, network, amount, level) => {
 	return { fee, fee_coin };
 };
 
-const findIndependentLimit = (limits) => {
+const findIndependentLimit = (limits, limit_currency) => {
 
 	const independentLimit = limits.find(limit => limit.limit_currency === limit_currency);
 	const defaultLimit = limits.find(limit => limit.limit_currency === 'default');
@@ -181,11 +181,10 @@ async function validateWithdrawal(user, address, amount, currency, network = nul
 		}
 	}
 	
-	const last24HoursLimits = await findTransactionLimitPerTier(user.verification_level, currency, '24h', 'withdrawal');
-	const transactionLimitLast24Hours = findIndependentLimit(last24HoursLimits);
-
-	const lastMonthLimits = await findTransactionLimitPerTier(user.verification_level, currency, '1mo', 'withdrawal'); 
-	const transactionLimitLastMonth = findIndependentLimit(lastMonthLimits);
+	const last24HoursLimits = await findTransactionLimitPerTier(user.verification_level, '24h', 'withdrawal');
+	const transactionLimitLast24Hours = findIndependentLimit(last24HoursLimits, currency);
+	const lastMonthLimits = await findTransactionLimitPerTier(user.verification_level, '1mo', 'withdrawal'); 
+	const transactionLimitLastMonth = findIndependentLimit(lastMonthLimits, currency);
 
 	if (transactionLimitLast24Hours) {
 		const limit = transactionLimitLast24Hours.amount;
@@ -353,13 +352,13 @@ const performWithdrawal = (userId, address, currency, amount, opts = {
 			}
 			return all([
 				user,
-				findTransactionLimitPerTier(user.verification_level, currency, '24h', 'withdrawal'),
-				findTransactionLimitPerTier(user.verification_level, currency, '1mo', 'withdrawal'),
+				findTransactionLimitPerTier(user.verification_level, '24h', 'withdrawal'),
+				findTransactionLimitPerTier(user.verification_level, '1mo', 'withdrawal'),
 			]);
 		})
 		.then(async ([ user, last24HoursLimits, lastMonthLimits ]) => {
-			const transactionLimitLast24Hours = findIndependentLimit(last24HoursLimits);
-			const transactionLimitLastMonth = findIndependentLimit(lastMonthLimits);
+			const transactionLimitLast24Hours = findIndependentLimit(last24HoursLimits, currency);
+			const transactionLimitLastMonth = findIndependentLimit(lastMonthLimits, currency);
 
 			if (transactionLimitLast24Hours) {
 				const limit = transactionLimitLast24Hours.amount;
@@ -411,9 +410,9 @@ const withdrawalBelowLimit = async (userId, currency, limit, amount = 0, transac
 		userId
 	);
 
-	let totalWithdrawalAmount = amount;
-
+	let totalWithdrawalAmount = 0;
 	if (currency !== transactionLimit.currency) {
+
 		const convertedWithdrawalAmount = await getNodeLib().getOraclePrices([currency], {
 			quote: transactionLimit.currency,
 			amount
@@ -440,7 +439,8 @@ const withdrawalBelowLimit = async (userId, currency, limit, amount = 0, transac
 			);
 			return;
 		}
-	}
+	} else { totalWithdrawalAmount = amount }
+
 
 	const last24HourWithdrawalAmount = await getAccumulatedWithdrawals(userId, transactionLimit.limit_currency === 'default' ? null : transactionLimit.limit_currency, transactionLimit, tierLimits);
 
@@ -520,7 +520,7 @@ const getAccumulatedWithdrawals = async (userId, currency, transactionLimit, tie
 
 	if (currency) {
 		// specific currency accumulated withdrawal is only needed
-		totalWithdrawalAmount = withdrawalData[currency];
+		if(withdrawalData[currency]) totalWithdrawalAmount = withdrawalData[currency];
 		
 	} else {
 		const excludedCurrencies = tierLimits.filter(limit => limit.limit_currency !== 'default').map(limit => limit.limit_currency);
