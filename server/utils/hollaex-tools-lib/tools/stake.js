@@ -256,7 +256,7 @@ const createExchangeStakePool = async (stake) => {
           throw new Error(STAKE_ONBOARDING_STATUS_ERROR);
     }
 
-    if (duration !== null && (early_unstake || slashing)) {
+    if (duration === null && (early_unstake || slashing)) {
         throw new Error(STAKE_PERPETUAL_CONDITION_ERROR);
     }
 
