@@ -446,7 +446,7 @@ const withdrawalBelowLimit = async (userId, currency, limit, amount = 0, transac
 
 	loggerWithdrawals.verbose(
 		'toolsLib/wallet/withdrawalBelowLimit',
-		`total 24 hour ${transactionLimit.limit_currency} withdrawn amount`,
+		`total ${transactionLimit.limit_currency} withdrawn amount`,
 		last24HourWithdrawalAmount
 	);
 
@@ -459,9 +459,9 @@ const withdrawalBelowLimit = async (userId, currency, limit, amount = 0, transac
 
 	loggerWithdrawals.verbose(
 		'toolsLib/wallet/withdrawalBelowLimit',
-		'total 24 hour withdrawn amount after performing current withdrawal',
+		'total withdrawn amount after performing current withdrawal',
 		totalWithdrawalAmount,
-		'24 hour withdrawal limit',
+		'withdrawal limit',
 		limit
 	);
 
@@ -520,7 +520,7 @@ const getAccumulatedWithdrawals = async (userId, currency, transactionLimit, tie
 
 	if (currency) {
 		// specific currency accumulated withdrawal is only needed
-		if(withdrawalData[currency]) totalWithdrawalAmount = withdrawalData[currency];
+		if(withdrawalAmount[currency]) totalWithdrawalAmount = withdrawalAmount[currency];
 		
 	} else {
 		const excludedCurrencies = tierLimits.filter(limit => limit.limit_currency !== 'default').map(limit => limit.limit_currency);
