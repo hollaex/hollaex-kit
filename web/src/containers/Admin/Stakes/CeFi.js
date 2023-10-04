@@ -1972,7 +1972,7 @@ const CeFi = ({ coins, features, kit }) => {
 				<div style={{ marginTop: 20 }}></div>
 				<div className="mt-5">
 					<div
-						className="mt-4 "
+						className="mt-4 session-table"
 						style={{
 							opacity: !hasCefiStaking ? 0.4 : 1,
 							pointerEvents: !hasCefiStaking ? 'none' : 'visible',
