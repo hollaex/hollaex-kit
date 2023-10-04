@@ -73,3 +73,13 @@
 		font-family: inherit !important;
 	}
 }
+
+.currency-wallet-btn {
+	line-height: 1rem !important;
+}
+
+.layout-mobile {
+	.currency-wallet-btn {
+		line-height: 2.25rem !important;
+	}
+}

@@ -26,6 +26,7 @@ const ActionNotification = ({
 	status,
 	onClick,
 	iconId,
+	tradeClassName,
 	iconPath,
 	className,
 	reverseImage,
@@ -51,7 +52,11 @@ const ActionNotification = ({
 	return (
 		<div
 			className={classnames(
-				'action_notification-wrapper',
+				tradeClassName ? tradeClassName : 'action_notification-wrapper',
+				!tradeClassName && {
+					position: 'absolute',
+					top: '0.25rem',
+				},
 				{
 					pointer: !disable && showPointer,
 					left: textPosition === 'left',

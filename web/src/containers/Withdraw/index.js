@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import math from 'mathjs';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { formValueSelector, change } from 'redux-form';
 import { isMobile } from 'react-device-detect';
+import math from 'mathjs';
 
 import { Loader, MobileBarBack } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
@@ -31,6 +31,7 @@ import {
 import { FORM_NAME } from './form';
 import { limitNumberWithinRange } from 'utils/math';
 import { STATIC_ICONS } from 'config/icons';
+import { renderBackToWallet } from 'containers/Deposit/utils';
 
 class Withdraw extends Component {
 	state = {
@@ -339,7 +340,12 @@ class Withdraw extends Component {
 		const { currency } = this.state;
 		const { dispatch, selectedNetwork } = this.props;
 
-		if (currency === 'xrp' || currency === 'xlm' || selectedNetwork === 'xlm' || selectedNetwork === 'ton') {
+		if (
+			currency === 'xrp' ||
+			currency === 'xlm' ||
+			selectedNetwork === 'xlm' ||
+			selectedNetwork === 'ton'
+		) {
 			const [address = '', destinationTag = ''] = data?.split(':') || [];
 			dispatch(change(FORM_NAME, 'address', address));
 			dispatch(change(FORM_NAME, 'destination_tag', destinationTag));
@@ -364,6 +370,7 @@ class Withdraw extends Component {
 			icons: ICONS,
 			selectedNetwork,
 			email,
+			orders,
 		} = this.props;
 		const { links = {} } = this.props.constants;
 		const {
@@ -426,8 +433,9 @@ class Withdraw extends Component {
 						<div className="information_block">
 							<div
 								className="information_block-text_wrapper"
-								style={{ height: '1.5rem' }}
+								// style={{ height: '1.5rem' }}
 							/>
+							{renderBackToWallet()}
 							{openContactForm &&
 								renderNeedHelpAction(
 									openContactForm,
@@ -446,7 +454,8 @@ class Withdraw extends Component {
 								'withdraw',
 								links,
 								ICONS['BLUE_QUESTION'],
-								'BLUE_QUESTION'
+								'BLUE_QUESTION',
+								orders
 							)}
 							{...formProps}
 						/>
@@ -483,6 +492,7 @@ const mapStateToProps = (store) => ({
 	activeTheme: store.app.theme,
 	constants: store.app.constants,
 	config_level: store.app.config_level,
+	orders: store.order.activeOrders,
 });
 
 const mapDispatchToProps = (dispatch) => ({
