@@ -104,7 +104,7 @@ const CeFi = ({ coins, features, kit }) => {
 			key: 'currency',
 			render: (currency, data) => {
 				return (
-					<div className="d-flex">
+					<div className="d-flex" style={{ fontSize: '1rem' }}>
 						<Coins type={data.currency} />
 						<span style={{ position: 'relative', left: 5, top: 8 }}>
 							{data.currency && coins[data.currency].fullname}
@@ -118,7 +118,7 @@ const CeFi = ({ coins, features, kit }) => {
 			dataIndex: 'name',
 			key: 'name',
 			render: (user_id, data) => {
-				return <div className="d-flex">{data?.name}</div>;
+				return <div className="d-flex" style={{ fontSize: '1rem' }}>{data?.name}</div>;
 			},
 		},
 		{
@@ -126,7 +126,7 @@ const CeFi = ({ coins, features, kit }) => {
 			dataIndex: 'created_at',
 			key: 'created_at',
 			render: (user_id, data) => {
-				return <div className="d-flex">{formatDate(data?.created_at)}</div>;
+				return <div className="d-flex" style={{ fontSize: '1rem' }}>{formatDate(data?.created_at)}</div>;
 			},
 		},
 		{
@@ -135,7 +135,7 @@ const CeFi = ({ coins, features, kit }) => {
 			key: 'status',
 			render: (user_id, data) => {
 				return (
-					<div className="d-flex align-items-center">
+					<div className="d-flex align-items-center" style={{ fontSize: '1rem' }}>
 						<div className="mr-2">User ID: </div>
 						<div className="mr-3">{renderUser(data.account_id)}</div>{' '}
 						{isShowBalance && selectedPoolId === data.id ? (
@@ -163,7 +163,7 @@ const CeFi = ({ coins, features, kit }) => {
 			key: 'amlunt',
 			render: (user_id, data) => {
 				return (
-					<div>
+					<div style={{ fontSize: '1rem' }}>
 						<div>Min: {data.min_amount}</div>
 						<div>Max: {data.max_amount}</div>
 					</div>
@@ -176,7 +176,7 @@ const CeFi = ({ coins, features, kit }) => {
 			key: 'duration',
 			render: (user_id, data) => {
 				return (
-					<div className="d-flex">
+					<div className="d-flex" style={{ fontSize: '1rem' }}>
 						{data?.duration ? `${data.duration} days` : 'Perpetual Staking'}
 					</div>
 				);
@@ -188,7 +188,7 @@ const CeFi = ({ coins, features, kit }) => {
 			key: 'slashing',
 			render: (user_id, data) => {
 				return (
-					<div>
+					<div style={{ fontSize: '1rem' }}>
 						{data.slashing_principle_percentage ? (
 							<div>-{data.slashing_principle_percentage}% on principle</div>
 						) : (
@@ -208,7 +208,7 @@ const CeFi = ({ coins, features, kit }) => {
 			dataIndex: 'apy',
 			key: 'apy',
 			render: (user_id, data) => {
-				return <div className="d-flex">{data?.apy}%</div>;
+				return <div className="d-flex" style={{ fontSize: '1rem' }}>{data?.apy}%</div>;
 			},
 		},
 		{
@@ -224,7 +224,7 @@ const CeFi = ({ coins, features, kit }) => {
 					new BigNumber(data?.reward).decimalPlaces(decimalPoint).toNumber();
 
 				return (
-					<div className="d-flex">
+					<div className="d-flex" style={{ fontSize: '1rem' }}>
 						{sourceAmount}{' '}
 						{sourceAmount
 							? (data.reward_currency || data.currency).toUpperCase()
@@ -251,7 +251,7 @@ const CeFi = ({ coins, features, kit }) => {
 								slash_earnings: data.slashing_earning_percentage ? true : false,
 							});
 						}}
-						style={{ textDecoration: 'underline', cursor: 'pointer' }}
+						style={{ textDecoration: 'underline', cursor: 'pointer', fontSize: '1rem' }}
 					>
 						Edit
 					</div>
@@ -264,7 +264,7 @@ const CeFi = ({ coins, features, kit }) => {
 			key: 'onboarding',
 			render: (user_id, data) => {
 				return (
-					<div className="d-flex">
+					<div className="d-flex" style={{ fontSize: '1rem' }}>
 						{data?.onboarding ? 'Open' : 'Closed'}
 
 						{data?.status !== 'terminated' && (
@@ -294,7 +294,7 @@ const CeFi = ({ coins, features, kit }) => {
 			key: 'status',
 			render: (user_id, data) => {
 				return (
-					<div className="d-flex">
+					<div className="d-flex" style={{ fontSize: '1rem' }}>
 						{data?.status
 							.split(' ')
 							.map((word) => `${word[0].toUpperCase()}${word.slice(1)}`)
