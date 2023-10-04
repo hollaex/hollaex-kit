@@ -371,7 +371,7 @@ const UserStaking = ({ coins }) => {
 						</span>
 					</div> */}
 
-					<div className="mt-4 ">
+					<div className="mt-4 session-table">
 						<Spin spinning={isLoading}>
 							<Table
 								className="blue-admin-table"
