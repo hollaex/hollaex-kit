@@ -1,8 +1,9 @@
 @import '../../variables';
 
-.action_notification-wrapper {
-	position: absolute;
-	top: 0.25rem;
+.action_notification-wrapper,
+.trade-notify-wrapper {
+	// position: absolute;
+	// top: 0.25rem;
 	display: flex;
 	// justify-content: center;
 	align-items: center;

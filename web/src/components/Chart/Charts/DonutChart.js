@@ -68,7 +68,10 @@ class DonutChart extends Component {
 				largerValue = parseFloat(value.balancePercentage);
 			}
 		});
-		this.setState({ higherId: largerId, hoverId: currency || largerId });
+		this.setState({
+			higherId: largerId,
+			hoverId: this.props.currency ? this.props.currency : currency || largerId,
+		});
 
 		const checkFilter = data.filter((value) => value.balance > 0);
 		return !!checkFilter.length;
@@ -80,7 +83,11 @@ class DonutChart extends Component {
 
 	handleOut = () => {
 		const { currentCurrency } = this.props;
-		this.setState({ hoverId: currentCurrency || this.state.higherId });
+		this.setState({
+			hoverId: this.props.currency
+				? this.props.currency
+				: currentCurrency || this.state.higherId,
+		});
 	};
 
 	handleResize = () => {
@@ -211,7 +218,15 @@ class DonutChart extends Component {
 						className="donut-label-no-price"
 						textAnchor="middle"
 					>
-						<tspan>{STRINGS['ZERO_ASSET']}</tspan>
+						<tspan x="0" dy="0">
+							{STRINGS['ZERO_ASSET']}
+						</tspan>
+						<tspan x="0" dy="1.2em">
+							{STRINGS['ZERO_ASSET_2']}
+						</tspan>
+						<tspan x="0" dy="1.2em">
+							{STRINGS['ZERO_ASSET_3']}
+						</tspan>
 					</text>
 					{showOpenWallet && (
 						<text
