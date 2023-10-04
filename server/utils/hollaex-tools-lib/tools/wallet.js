@@ -49,7 +49,7 @@ const isValidAddress = (currency, address, network) => {
 		return WAValidator.validate(address, currency);
 	} else if (currency === 'xrp') {
 		return WAValidator.validate(address.split(':')[0], currency);
-	} else if (currency === 'etn') {
+	} else if (currency === 'etn' || currency === 'ton') {
 		// skip the validation
 		return true;
 	} else {
@@ -570,6 +570,7 @@ const getAccumulatedWithdrawals = async (userId, currency, transactionLimit, tie
 };
 
 const transferAssetByKitIds = (senderId, receiverId, currency, amount, description = 'Admin Transfer', email = true, opts = {
+	category: null,
 	transactionId: null,
 	additionalHeaders: null
 }) => {
@@ -1203,23 +1204,23 @@ const getWallets = async (
 		format: (format && (format === 'csv' || format === 'all')) ? 'all' : null, // for csv get all data
 		...opts
 	})
-	.then(async (wallets) => {
-		if (wallets.data.length > 0) {
-			const networkIds = wallets.data.map((wallet) => wallet.user_id);
-			const idDictionary = await mapNetworkIdToKitId(networkIds);
-			for (let wallet of wallets.data) {
-				const user_kit_id = idDictionary[wallet.user_id];
-				wallet.network_id = wallet.user_id;
-				wallet.user_id = user_kit_id;
-				if (wallet.User) wallet.User.id = user_kit_id;
+		.then(async (wallets) => {
+			if (wallets.data.length > 0) {
+				const networkIds = wallets.data.map((wallet) => wallet.user_id);
+				const idDictionary = await mapNetworkIdToKitId(networkIds);
+				for (let wallet of wallets.data) {
+					const user_kit_id = idDictionary[wallet.user_id];
+					wallet.network_id = wallet.user_id;
+					wallet.user_id = user_kit_id;
+					if (wallet.User) wallet.User.id = user_kit_id;
+				}
 			}
-		}
-		if(format === 'csv'){
-			const csv = parse(wallets.data, Object.keys(wallets.data[0]));
+			if(format === 'csv'){
+				const csv = parse(wallets.data, Object.keys(wallets.data[0]));
 				return csv;
-		}
-		return wallets;
-	});
+			}
+			return wallets;
+		});
 };
 
 module.exports = {

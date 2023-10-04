@@ -32,6 +32,7 @@ import {
 	AppDetails,
 	// ADMIN
 	User,
+	AdminStake,
 	Session,
 	AppWrapper as AdminContainer,
 	// Main,
@@ -421,11 +422,7 @@ export const generateRoutes = (routes = []) => {
 				<Route path="trade/:pair" name="Trade" component={Trade} />
 				<Route path="trade" name="Trade Tabs" component={AddTradeTabs} />
 				<Route path="markets" name="Trade Tabs" component={AddTradeTabs} />
-				<Route
-					path="quick-trade"
-					name="Quick Trade"
-					component={QuickTrade}
-				/>
+				<Route path="quick-trade" name="Quick Trade" component={QuickTrade} />
 				<Route
 					path="quick-trade/:pair"
 					name="Quick Trade"
@@ -483,6 +480,12 @@ export const generateRoutes = (routes = []) => {
 					path="/admin/user"
 					name="Admin User"
 					component={withAdminProps(User, 'user')}
+				/>
+
+				<Route
+					path="/admin/stakes"
+					name="Admin Stakes"
+					component={withAdminProps(AdminStake, 'stake')}
 				/>
 				<Route
 					path="/admin/sessions"

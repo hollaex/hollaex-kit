@@ -339,7 +339,12 @@ class Withdraw extends Component {
 		const { currency } = this.state;
 		const { dispatch, selectedNetwork } = this.props;
 
-		if (currency === 'xrp' || currency === 'xlm' || selectedNetwork === 'xlm') {
+		if (
+			currency === 'xrp' ||
+			currency === 'xlm' ||
+			selectedNetwork === 'xlm' ||
+			selectedNetwork === 'ton'
+		) {
 			const [address = '', destinationTag = ''] = data?.split(':') || [];
 			dispatch(change(FORM_NAME, 'address', address));
 			dispatch(change(FORM_NAME, 'destination_tag', destinationTag));

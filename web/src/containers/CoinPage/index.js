@@ -218,15 +218,17 @@ const CoinPage = ({
 											</div>
 											<StarFilled className="stared-market" />
 										</div>
-									) : !isBroker && (
-										<div className="d-flex align-items-center">
-											<span className="favourite-text-2">
-												<EditWrapper stringId="HOLLAEX_TOKEN.ADD_FAVOURITES">
-													{STRINGS['HOLLAEX_TOKEN.ADD_FAVOURITES']}
-												</EditWrapper>
-											</span>
-											<StarOutlined />
-										</div>
+									) : (
+										!isBroker && (
+											<div className="d-flex align-items-center">
+												<span className="favourite-text-2">
+													<EditWrapper stringId="HOLLAEX_TOKEN.ADD_FAVOURITES">
+														{STRINGS['HOLLAEX_TOKEN.ADD_FAVOURITES']}
+													</EditWrapper>
+												</span>
+												<StarOutlined />
+											</div>
+										)
 									)}
 								</div>
 							</div>
