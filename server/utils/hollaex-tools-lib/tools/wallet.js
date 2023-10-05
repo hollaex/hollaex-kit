@@ -100,7 +100,7 @@ const getWithdrawalFee = (currency, network, amount, level) => {
 	return { fee, fee_coin };
 };
 
-const findIndependentLimit = (limits, limit_currency) => {
+const findIndependentLimit = (limits = [], limit_currency) => {
 
 	const independentLimit = limits.find(limit => limit.limit_currency === limit_currency);
 	const defaultLimit = limits.find(limit => limit.limit_currency === 'default');
@@ -397,6 +397,48 @@ const performWithdrawalNetwork = (networkId, address, currency, amount, opts = {
 	return getNodeLib().performWithdrawal(networkId, address, currency, amount, opts);
 };
 
+const getWithdrawalLimit = async (user_id, currency, amount) => {
+	const user = await getUserByKitId(user_id);
+
+	if (!user) {
+		throw new Error(USER_NOT_FOUND);
+	} else if (!user.network_id) {
+		throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
+	}
+
+	const last24HoursLimits = await findTransactionLimitPerTier(user.verification_level, '24h', 'withdrawal');
+	const transactionLimitLast24Hours = findIndependentLimit(last24HoursLimits, currency);
+	const lastMonthLimits = await findTransactionLimitPerTier(user.verification_level, '1mo', 'withdrawal'); 
+	const transactionLimitLastMonth = findIndependentLimit(lastMonthLimits, currency);
+
+
+	let withdrawalLimits = { }
+
+	if (transactionLimitLast24Hours) {
+		const limit = transactionLimitLast24Hours.amount;
+		if (limit === -1) {
+			throw new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency));
+		} else if (limit > 0) {
+			const last24Hours = await withdrawalBelowLimit(user.network_id, currency, limit, amount, transactionLimitLast24Hours, last24HoursLimits);
+			withdrawalLimits.last24Hours = last24Hours;
+		}
+	}
+
+	if (transactionLimitLastMonth) {
+		const limit = transactionLimitLastMonth.amount;
+		if (limit === -1) {
+			throw new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency));
+		} else if (limit > 0) {
+			const lastMonth =  await withdrawalBelowLimit(user.network_id, currency, limit, amount, transactionLimitLastMonth, lastMonthLimits);
+			withdrawalLimits.lastMonth = lastMonth;
+			
+		}
+	}
+
+	return withdrawalLimits;
+
+}
+
 const withdrawalBelowLimit = async (userId, currency, limit, amount = 0, transactionLimit, tierLimits) => {
 	loggerWithdrawals.verbose(
 		'toolsLib/wallet/withdrawalBelowLimit',
@@ -471,7 +513,7 @@ const withdrawalBelowLimit = async (userId, currency, limit, amount = 0, transac
 		);
 	}
 
-	return;
+	return { totalWithdrawalAmount, limit };
 };
 
 const getAccumulatedWithdrawals = async (userId, currency, transactionLimit, tierLimits = []) => {
@@ -1250,5 +1292,6 @@ module.exports = {
 	updatePendingBurn,
 	isValidAddress,
 	validateDeposit,
-	getWallets
+	getWallets,
+	getWithdrawalLimit
 };

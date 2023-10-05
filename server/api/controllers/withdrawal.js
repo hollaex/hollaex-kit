@@ -241,6 +241,38 @@ const performDirectWithdrawal = (req, res) => {
 		});
 };
 
+const getWithdrawalLimit = (req, res) => {
+	loggerWithdrawals.verbose(
+		req.uuid,
+		'controllers/withdrawal/getWithdrawalLimit/auth',
+		req.auth
+	);
+
+	const {
+		amount,
+		currency,
+	} = req.swagger.params;
+
+
+	toolsLib.wallet.getWithdrawalLimit(
+		req.auth.sub.id,
+		currency.value,
+		amount.value,
+
+	)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerWithdrawals.error(
+				req.uuid,
+				'controllers/withdrawal/getWithdrawalLimit',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+}
+
 const getAdminWithdrawals = (req, res) => {
 	loggerWithdrawals.verbose(
 		req.uuid,
@@ -411,5 +443,6 @@ module.exports = {
 	getAdminWithdrawals,
 	getUserWithdrawals,
 	cancelWithdrawal,
-	performDirectWithdrawal
+	performDirectWithdrawal,
+	getWithdrawalLimit
 };
