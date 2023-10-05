@@ -24,21 +24,11 @@ const findTier = (level) => {
 		});
 };
 
-const createTier = (level, name, icon, description, deposit_limit, withdrawal_limit, fees = {}, note = '') => {
+const createTier = (level, name, icon, description, fees = {}, note = '') => {
 	const existingTiers = getKitTiers();
 
 	if (existingTiers[level]) {
 		return reject(new Error('Tier already exists'));
-	} else if (
-		withdrawal_limit < 0
-		&& withdrawal_limit !== -1
-	) {
-		return reject(new Error('Withdrawal limit cannot be a negative number other than -1'));
-	} else if (
-		deposit_limit < 0
-		&& deposit_limit !== -1
-	) {
-		return reject(new Error('Withdrawal limit cannot be a negative number other than -1'));
 	}
 
 	const givenMakerSymbols = Object.keys(omit(fees.maker, 'default'));
@@ -80,8 +70,6 @@ const createTier = (level, name, icon, description, deposit_limit, withdrawal_li
 		name,
 		icon,
 		description,
-		deposit_limit,
-		withdrawal_limit,
 		fees: tierFees,
 		note
 	})
@@ -106,8 +94,6 @@ const updateTier = (level, updateData) => {
 
 	if (!existingTiers[level]) {
 		return reject(new Error('Tier does not exist'));
-	} else if (updateData.deposit_limit !== undefined || updateData.withdrawal_limit !== undefined) {
-		return reject(new Error('Cannot update limits through this endpoint'));
 	} else if (updateData.fees !== undefined) {
 		return reject(new Error('Cannot update fees through this endpoint'));
 	}
@@ -209,59 +195,9 @@ const updatePairFees = (pair, fees) => {
 		});
 };
 
-const updateTiersLimits = (limits) => {
-	if (!Object.keys(limits).length === 0) {
-		return reject(new Error('No new limits given'));
-	}
-
-	const tiersToUpdate = Object.keys(limits);
-
-	if (difference(tiersToUpdate, getTierLevels()).length > 0) {
-		return reject(new Error('Invalid tier level given'));
-	}
-
-	if (Object.values(flatten(limits)).some((limit) => limit < 0 && limit !== -1)) {
-		return reject(new Error('Limits can be either -1 or GTE 0'));
-	}
-
-	return getModel('sequelize').transaction((transaction) => {
-		return all(tiersToUpdate.map(async (level) => {
-
-			const tier = await dbQuery.findOne('tier', { where: { id: level } });
-
-			const deposit_limit = isNumber(limits[level].deposit_limit) ? limits[level].deposit_limit : tier.deposit_limit;
-			const withdrawal_limit = isNumber(limits[level].withdrawal_limit) ? limits[level].withdrawal_limit : tier.withdrawal_limit;
-
-			return tier.update(
-				{ deposit_limit, withdrawal_limit },
-				{ fields: [ 'deposit_limit', 'withdrawal_limit' ], transaction }
-			);
-		}));
-	})
-		.then((data) => {
-			const updatedTiers = {};
-			each(data, (tier) => {
-				updatedTiers[tier.id] = {
-					...tier.dataValues
-				};
-			});
-
-			publisher.publish(
-				CONFIGURATION_CHANNEL,
-				JSON.stringify({
-					type: 'update',
-					data: {
-						tiers: updatedTiers
-					}
-				})
-			);
-		});
-};
-
 module.exports = {
 	findTier,
 	createTier,
 	updateTier,
-	updatePairFees,
-	updateTiersLimits
+	updatePairFees
 };

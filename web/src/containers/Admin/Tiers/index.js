@@ -303,7 +303,7 @@ const Tiers = ({ constants = {}, allCoins = [] }) => {
 						}}
 					/>
 				</TabPane>
-				<TabPane tab="Limits" key="limits">
+				{/* <TabPane tab="Limits" key="limits">
 					<Limits
 						userTiers={userTiers}
 						onEditLimit={(symbol, fullName) => {
@@ -313,7 +313,7 @@ const Tiers = ({ constants = {}, allCoins = [] }) => {
 							setTierName(fullName);
 						}}
 					/>
-				</TabPane>
+				</TabPane> */}
 				<TabPane tab="Account tiers" key="tiers">
 					<TiersContainer
 						userTiers={userTiers}
