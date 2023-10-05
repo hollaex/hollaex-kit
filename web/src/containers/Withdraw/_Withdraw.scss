@@ -188,6 +188,42 @@ $content--margin: 2rem;
 			}
 		}
 	}
+	@media screen and (max-width: 550px) {
+		.presentation_container {
+			.inner_container {
+				.information_block {
+					.information_block-text_wrapper {
+						.title {
+							font-size: 14px !important;
+						}
+						.text {
+							font-size: 12px !important;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	@media screen and (max-width: 390px) {
+		.presentation_container {
+			.inner_container {
+				.information_block {
+					.information_block-text_wrapper {
+						.title {
+							font-size: 13px !important;
+						}
+						.text {
+							font-size: 10px !important;
+						}
+					}
+				}
+				.holla-button {
+					font-size: 12px !important;
+				}
+			}
+		}
+	}
 }
 
 .review_email-wrapper {

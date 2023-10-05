@@ -118,7 +118,11 @@ const CeFi = ({ coins, features, kit }) => {
 			dataIndex: 'name',
 			key: 'name',
 			render: (user_id, data) => {
-				return <div className="d-flex" style={{ fontSize: '1rem' }}>{data?.name}</div>;
+				return (
+					<div className="d-flex" style={{ fontSize: '1rem' }}>
+						{data?.name}
+					</div>
+				);
 			},
 		},
 		{
@@ -126,7 +130,11 @@ const CeFi = ({ coins, features, kit }) => {
 			dataIndex: 'created_at',
 			key: 'created_at',
 			render: (user_id, data) => {
-				return <div className="d-flex" style={{ fontSize: '1rem' }}>{formatDate(data?.created_at)}</div>;
+				return (
+					<div className="d-flex" style={{ fontSize: '1rem' }}>
+						{formatDate(data?.created_at)}
+					</div>
+				);
 			},
 		},
 		{
@@ -135,7 +143,10 @@ const CeFi = ({ coins, features, kit }) => {
 			key: 'status',
 			render: (user_id, data) => {
 				return (
-					<div className="d-flex align-items-center" style={{ fontSize: '1rem' }}>
+					<div
+						className="d-flex align-items-center"
+						style={{ fontSize: '1rem' }}
+					>
 						<div className="mr-2">User ID: </div>
 						<div className="mr-3">{renderUser(data.account_id)}</div>{' '}
 						{isShowBalance && selectedPoolId === data.id ? (
@@ -208,7 +219,11 @@ const CeFi = ({ coins, features, kit }) => {
 			dataIndex: 'apy',
 			key: 'apy',
 			render: (user_id, data) => {
-				return <div className="d-flex" style={{ fontSize: '1rem' }}>{data?.apy}%</div>;
+				return (
+					<div className="d-flex" style={{ fontSize: '1rem' }}>
+						{data?.apy}%
+					</div>
+				);
 			},
 		},
 		{
@@ -251,7 +266,11 @@ const CeFi = ({ coins, features, kit }) => {
 								slash_earnings: data.slashing_earning_percentage ? true : false,
 							});
 						}}
-						style={{ textDecoration: 'underline', cursor: 'pointer', fontSize: '1rem' }}
+						style={{
+							textDecoration: 'underline',
+							cursor: 'pointer',
+							fontSize: '1rem',
+						}}
 					>
 						Edit
 					</div>
@@ -355,6 +374,20 @@ const CeFi = ({ coins, features, kit }) => {
 		return moment(date).format('DD/MMM/YYYY, hh:mmA ').toUpperCase();
 	};
 
+	const setAdminAccount = async (id = 1) => {
+		const res = await requestUsers({ id });
+		if (res && res.data && res.data.length > 0) {
+			setSelectedEmailData({
+				label: res.data[0].email,
+				value: res.data[0].id,
+			});
+			getUserBalance(res.data[0].id);
+			setStakePoolCreation({
+				...stakePoolCreation,
+				account_id: Number(res.data[0].id),
+			});
+		}
+	};
 	const getUserBalance = async (id, isShowBalance, selectedPoolId) => {
 		try {
 			const res = await requestUserData({ id });
@@ -503,6 +536,7 @@ const CeFi = ({ coins, features, kit }) => {
 									setStakePoolCreation({
 										...stakePoolCreation,
 										currency: e,
+										reward_currency: e,
 									});
 								}}
 							>
@@ -519,11 +553,11 @@ const CeFi = ({ coins, features, kit }) => {
 										<Coins type={stakePoolCreation.currency} />
 									</div>
 									<div>
-										<div
-											dangerouslySetInnerHTML={{
-												__html: coins[stakePoolCreation.currency].description,
-											}}
-										/>
+										<div>
+											In this wizard you can create a staking pool for{' '}
+											{stakePoolCreation.currency.toUpperCase()}. Follow the
+											procedure and select the options for your staking pool.
+										</div>
 									</div>
 								</div>
 							</div>
@@ -555,7 +589,6 @@ const CeFi = ({ coins, features, kit }) => {
 										});
 									}}
 								>
-									<Option value={null}>None</Option>
 									{Object.keys(coins).map((key) => (
 										<Option value={key}>{coins[key].fullname}</Option>
 									))}
@@ -569,13 +602,11 @@ const CeFi = ({ coins, features, kit }) => {
 											<Coins type={stakePoolCreation.reward_currency} />
 										</div>
 										<div>
-											<div
-												dangerouslySetInnerHTML={{
-													__html:
-														coins[stakePoolCreation.reward_currency]
-															.description,
-												}}
-											/>
+											<div>
+												The rewards payouts are calculated automatically
+												everyday and will be calculated based on{' '}
+												{stakePoolCreation.reward_currency.toUpperCase()}
+											</div>
 										</div>
 									</div>
 								</div>
@@ -1477,6 +1508,10 @@ const CeFi = ({ coins, features, kit }) => {
 								if (stakePoolCreation.perpetual_stake && currentStep === 4) {
 									currentStep = 5;
 								}
+
+								if (currentStep === 2) {
+									setAdminAccount(editMode ? stakePoolCreation.account_id : 1);
+								}
 								if (currentStep >= 10) {
 									try {
 										if (!editMode) {
@@ -1511,6 +1546,7 @@ const CeFi = ({ coins, features, kit }) => {
 							disabled={
 								(step === 9 && confirmText !== 'I UNDERSTAND') ||
 								(step === 1 && !stakePoolCreation.currency) ||
+								(step === 1 && !stakePoolCreation.reward_currency) ||
 								(step === 2 && !stakePoolCreation.name) ||
 								(step === 3 && !stakePoolCreation.apy) ||
 								(step === 3 &&
@@ -1682,98 +1718,102 @@ const CeFi = ({ coins, features, kit }) => {
 							>
 								Open
 							</Radio>
-							<Radio
-								style={{ color: 'white', fontWeight: 'bold', fontSize: 16 }}
-								value={'paused'}
-							>
-								Pause the pool and stop rewards
-								<div
-									style={{
-										backgroundColor: '#E16900',
-										fontSize: 13,
-										padding: 20,
-										marginLeft: 30,
-										marginTop: 10,
-										color: 'white',
-										width: 500,
-										textWrap: 'wrap',
-									}}
+							{poolStatus !== 'uninitialized' && (
+								<Radio
+									style={{ color: 'white', fontWeight: 'bold', fontSize: 16 }}
+									value={'paused'}
 								>
-									Stopping rewards abruptly could harm platform confidence. To
-									transition smoothly, consider closing the onboarding first and
-									allow all active stakers to finish their term.
-								</div>
-							</Radio>
-
-							<Radio
-								style={{ color: 'white', fontWeight: 'bold', fontSize: 16 }}
-								value={'terminated'}
-							>
-								Close onboarding
-								{poolStatus === 'terminated' && (
+									Pause the pool and stop rewards
 									<div
 										style={{
-											padding: 10,
+											backgroundColor: '#E16900',
+											fontSize: 13,
+											padding: 20,
 											marginLeft: 30,
+											marginTop: 10,
 											color: 'white',
 											width: 500,
 											textWrap: 'wrap',
-											borderLeft: '1px solid white',
 										}}
 									>
-										<div>Settlement time: 24 hours</div>
-										<div>
-											{/* Required to settle: {selectedPool?.reward}{' '}
+										Stopping rewards abruptly could harm platform confidence. To
+										transition smoothly, consider closing the onboarding first
+										and allow all active stakers to finish their term.
+									</div>
+								</Radio>
+							)}
+
+							{poolStatus !== 'uninitialized' && (
+								<Radio
+									style={{ color: 'white', fontWeight: 'bold', fontSize: 16 }}
+									value={'terminated'}
+								>
+									Close onboarding
+									{poolStatus === 'terminated' && (
+										<div
+											style={{
+												padding: 10,
+												marginLeft: 30,
+												color: 'white',
+												width: 500,
+												textWrap: 'wrap',
+												borderLeft: '1px solid white',
+											}}
+										>
+											<div>Settlement time: 24 hours</div>
+											<div>
+												{/* Required to settle: {selectedPool?.reward}{' '}
 											{(
 												selectedPool.reward_currency || selectedPool.currency
 											).toUpperCase()} */}
-										</div>
-										<div>
-											Source wallet: {emailOptions[0].label}:{' '}
-											{balanceData[
-												`${
+											</div>
+											<div>
+												Source wallet: {emailOptions[0].label}:{' '}
+												{balanceData[
+													`${
+														selectedPool.reward_currency ||
+														selectedPool.currency
+													}_available`
+												] || 0}{' '}
+												{(
 													selectedPool.reward_currency || selectedPool.currency
-												}_available`
-											] || 0}{' '}
-											{(
-												selectedPool.reward_currency || selectedPool.currency
-											).toUpperCase()}
-										</div>
-										{selectedPool.status !== 'paused' && (
+												).toUpperCase()}
+											</div>
+											{selectedPool.status !== 'paused' && (
+												<div
+													style={{
+														backgroundColor: 'white',
+														fontSize: 13,
+														padding: 10,
+														marginTop: 10,
+														color: '#27339D',
+														width: 450,
+														textWrap: 'wrap',
+													}}
+												>
+													You must pause the pool before closing and settling
+													the pool
+												</div>
+											)}
+
 											<div
 												style={{
-													backgroundColor: 'white',
+													backgroundColor: '#FF6600',
 													fontSize: 13,
 													padding: 10,
 													marginTop: 10,
-													color: '#27339D',
+													color: 'white',
 													width: 450,
 													textWrap: 'wrap',
 												}}
 											>
-												You must pause the pool before closing and settling the
-												pool
+												Note: Closing the pool before allowing users to complete
+												their staking duration term may erode the trust in your
+												exchange. Please consider allowing all users to finish
+												staking.
 											</div>
-										)}
 
-										<div
-											style={{
-												backgroundColor: '#FF6600',
-												fontSize: 13,
-												padding: 10,
-												marginTop: 10,
-												color: 'white',
-												width: 450,
-												textWrap: 'wrap',
-											}}
-										>
-											Note: Closing the pool before allowing users to complete
-											their staking duration term may erode the trust in your
-											exchange. Please consider allowing all users to finish
-											staking.
-										</div>
-
-										{/* <div
+											{/* <div
 										style={{
 											backgroundColor: '#E10000',
 											fontSize: 13,
@@ -1786,31 +1826,32 @@ const CeFi = ({ coins, features, kit }) => {
 									>
 										You have insufficient funds to close the staking pool!
 									</div> */}
-										<div style={{ marginBottom: 20, marginTop: 20 }}>
-											<div
-												style={{
-													fontWeight: 'bold',
-													fontSize: 16,
-													marginBottom: 4,
-												}}
-											>
-												Do you understand?
+											<div style={{ marginBottom: 20, marginTop: 20 }}>
+												<div
+													style={{
+														fontWeight: 'bold',
+														fontSize: 16,
+														marginBottom: 4,
+													}}
+												>
+													Do you understand?
+												</div>
+												<Input
+													style={{
+														backgroundColor: 'rgba(0,0,0,0.1)',
+														color: 'white',
+													}}
+													placeholder="Type 'I UNDERSTAND' to proceed"
+													onChange={(e) => {
+														setConfirmTextClosePool(e.target.value);
+													}}
+													value={confirmTextClosePool}
+												/>
 											</div>
-											<Input
-												style={{
-													backgroundColor: 'rgba(0,0,0,0.1)',
-													color: 'white',
-												}}
-												placeholder="Type 'I UNDERSTAND' to proceed"
-												onChange={(e) => {
-													setConfirmTextClosePool(e.target.value);
-												}}
-												value={confirmTextClosePool}
-											/>
 										</div>
-									</div>
-								)}
-							</Radio>
+									)}
+								</Radio>
+							)}
 						</Space>
 					</Radio.Group>
 

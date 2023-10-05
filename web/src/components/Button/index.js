@@ -2,8 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { EditWrapper } from 'components';
+import Image from 'components/Image';
 
 import '@material/button/dist/mdc.button.css';
+import { STATIC_ICONS } from 'config/icons';
 
 const Button = ({
 	label,
@@ -12,6 +14,9 @@ const Button = ({
 	disabled,
 	className,
 	autoFocus = false,
+	lineHeight,
+	currencyWallet,
+	btnLabel,
 }) => (
 	<button
 		type={type}
@@ -21,6 +26,7 @@ const Button = ({
 			'mdc-button',
 			'mdc-button--unelevated',
 			'holla-button-font',
+			lineHeight,
 			{
 				disabled,
 			},
@@ -29,7 +35,21 @@ const Button = ({
 		disabled={disabled}
 		autoFocus={autoFocus}
 	>
-		<EditWrapper>{label}</EditWrapper>
+		{currencyWallet && currencyWallet ? (
+			<div className="d-flex justify-content-center align-items-center">
+				<Image
+					wrapperClassName="mr-1 arrow-up-down-icon"
+					icon={
+						btnLabel && btnLabel === 'deposit'
+							? STATIC_ICONS['ARROW_DOWN']
+							: STATIC_ICONS['ARROW_UP']
+					}
+				/>
+				<EditWrapper>{label}</EditWrapper>
+			</div>
+		) : (
+			<EditWrapper>{label}</EditWrapper>
+		)}
 	</button>
 );
 

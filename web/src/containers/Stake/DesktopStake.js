@@ -319,6 +319,7 @@ class Stake extends Component {
 					<CeFiUserStake
 						balance={this.props.balance}
 						coins={this.props.coins}
+						theme={this.props.theme}
 					/>
 				)}
 				{this.state.selectedStaking === 'defi' && (
@@ -733,6 +734,7 @@ const mapStateToProps = (store) => ({
 	networksMismatch: networksMismatchSelector(store),
 	contracts: store.app.contracts,
 	constants: store.app.constants,
+	theme: store.app.theme,
 });
 
 const mapDispatchToProps = (dispatch) => ({
