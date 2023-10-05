@@ -287,6 +287,8 @@ const nestedIcons = {
 	//should move this to the plugin itself once the functionality is added
 	GENERATE_REFERENCE_NUMBER: '/assets/icons/generate-reference-number-01.svg',
 	OSKO_LOGO: '/assets/icons/osko-logo.svg',
+
+	REFRESH_ICON: '/assets/icons/refresh-icon.svg',
 };
 
 const icons = flatten(nestedIcons, options);
