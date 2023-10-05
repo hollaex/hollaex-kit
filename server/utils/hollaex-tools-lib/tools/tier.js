@@ -291,6 +291,7 @@ const updateTransactionLimit = async (id, data) => {
 	const {
 		tier,
 		currency,
+		amount,
 		limit_currency,
 		type,
 		period
@@ -303,6 +304,10 @@ const updateTransactionLimit = async (id, data) => {
 	if (limit_currency && limit_currency !== 'default' && !subscribedToCoin(limit_currency)) {
            throw new Error('Invalid coin ' + limit_currency);
     }
+
+	if (amount < 0 && amount !== -1) {
+		new Error('amount cannot be a negative number other than -1')
+	}
 
 	if (id) {
 		const transactionLimit = await findTransactionLimit({ id });
