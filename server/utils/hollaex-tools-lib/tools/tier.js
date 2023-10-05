@@ -306,7 +306,7 @@ const updateTransactionLimit = async (id, data) => {
     }
 
 	if (amount < 0 && amount !== -1) {
-		new Error('amount cannot be a negative number other than -1')
+		throw new Error('amount cannot be a negative number other than -1')
 	}
 
 	if (id) {
