@@ -53,7 +53,13 @@ class Stake extends Component {
 		super(prop);
 		this.state = {
 			activeTab: '1',
-			selectedStaking: 'defi',
+			selectedStaking:
+				this.props?.constants?.features?.cefi_stake &&
+				this.props?.constants?.features?.stake_page
+					? 'defi'
+					: this.props?.constants?.features?.cefi_stake
+					? 'cefi'
+					: 'defi',
 			readBeforeAction: false,
 			stakeAmount: false,
 			duration: false,
@@ -299,20 +305,21 @@ class Stake extends Component {
 						justifyContent: 'center',
 					}}
 				>
-					{this.props?.constants?.features?.cefi_stake && (
-						<div className="d-flex">
-							<span style={{ marginRight: 5 }}>DeFi Staking</span>
-							<Switch
-								checked={this.state.selectedStaking === 'cefi'}
-								onClick={(checked) => {
-									this.setState({
-										selectedStaking: checked ? 'cefi' : 'defi',
-									});
-								}}
-							/>
-							<span style={{ marginLeft: 5 }}>CeFi Staking</span>
-						</div>
-					)}
+					{this.props?.constants?.features?.cefi_stake &&
+						this.props?.constants?.features?.stake_page && (
+							<div className="d-flex">
+								<span style={{ marginRight: 5 }}>DeFi Staking</span>
+								<Switch
+									checked={this.state.selectedStaking === 'cefi'}
+									onClick={(checked) => {
+										this.setState({
+											selectedStaking: checked ? 'cefi' : 'defi',
+										});
+									}}
+								/>
+								<span style={{ marginLeft: 5 }}>CeFi Staking</span>
+							</div>
+						)}
 				</div>
 
 				{this.state.selectedStaking === 'cefi' && (
