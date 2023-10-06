@@ -27,6 +27,7 @@ const InterfaceForm = ({
 				quick_trade: !!values.quick_trade,
 				pro_trade: !!values.pro_trade,
 				stake_page: !!values.stake_page,
+				cefi_stake: !!values.cefi_stake,
 				home_page: isUpgrade ? false : !!values.home_page,
 				ultimate_fiat: !!values.ultimate_fiat,
 				apps: !!values.apps,
@@ -122,9 +123,31 @@ const InterfaceForm = ({
 									/>
 								</div>
 								<div className="ml-2 checkbox-txt">
-									Staking
+									Defi Staking
 									<div className="small-text">
-										(Lock coins and distribute crypto rewards)
+										(Lock coins and distribute crypto rewards for Defi)
+									</div>
+								</div>
+							</div>
+						</Checkbox>
+					</Item>
+
+					<Item name="cefi_stake" valuePropName="checked">
+						<Checkbox className="mt-3">
+							<div className="d-flex align-items-center">
+								<div className="feature-trade-box mr-1">
+									<ReactSVG
+										src={STATIC_ICONS.STAKE_FEATURE}
+										className="d-flex feature-icon justify-content-center mr-1 mt-1 ml-3 pl-1"
+										beforeInjection={(svg) => {
+											svg.setAttribute('style', 'width: 60px');
+										}}
+									/>
+								</div>
+								<div className="ml-2 checkbox-txt">
+									Cefi Staking
+									<div className="small-text">
+										(Lock coins and distribute crypto rewards for Cefi)
 									</div>
 								</div>
 							</div>

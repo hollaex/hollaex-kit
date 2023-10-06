@@ -40,13 +40,13 @@ const unstakingCheckRunner = () => {
 				const amountAfterSlash =  new BigNumber(staker.reward).minus(new BigNumber(staker.slashed)).toNumber();
 				let totalAmount = staker.amount;
 
-				// If there is no reward_currency, Add them together since they are of same currency.
-				if (!stakePool.reward_currency) {
+				// Add them together since they are of same currency.
+				if (stakePool.reward_currency === stakePool.currency) {
 					totalAmount = (new BigNumber(staker.amount).plus(amountAfterSlash)).toNumber();
 				}
 
 				if (new BigNumber(symbols[stakePool.currency]).comparedTo(totalAmount) !== 1
-					|| (stakePool.reward_currency && new BigNumber(symbols[stakePool.reward_currency]).comparedTo(amountAfterSlash) !== 1)
+					|| ((stakePool.reward_currency !== stakePool.currency) && new BigNumber(symbols[stakePool.reward_currency]).comparedTo(amountAfterSlash) !== 1)
 				) {
 					const adminAccount = await toolsLib.user.getUserByKitId(stakePool.user_id);
 					sendEmail(
@@ -72,7 +72,7 @@ const unstakingCheckRunner = () => {
                     	await toolsLib.wallet.transferAssetByKitIds(stakePool.account_id, user.id, stakePool.currency, totalAmount, 'Admin transfer stake', user.email, { category: 'stake' });
 					}
 					
-					if (stakePool.reward_currency && amountAfterSlash > 0) {
+					if (stakePool.reward_currency !== stakePool.currency && amountAfterSlash > 0) {
 						 await toolsLib.wallet.transferAssetByKitIds(stakePool.account_id, user.id, stakePool.reward_currency, amountAfterSlash, 'Admin transfer stake', user.email, { category: 'stake' });
 					}
 
@@ -130,7 +130,7 @@ const updateRewardsCheckRunner = () => {
 						continue;
 					}
 
-					if (stakePool.reward_currency) {
+					if (stakePool.reward_currency !== stakePool.currency) {
 						const conversions = await toolsLib.getAssetsPrices([stakePool.currency], stakePool.reward_currency, 1);
 						if (conversions[stakePool.currency] === -1) {
 							const adminAccount = await toolsLib.user.getUserByKitId(stakePool.user_id);
