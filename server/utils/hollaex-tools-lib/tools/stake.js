@@ -381,7 +381,7 @@ const updateExchangeStakePool = async (id, data) => {
         if (stakePool.reward_currency === stakePool.currency) { 
             totalAmount = new BigNumber(totalAmount).plus(new BigNumber(reward)).toNumber();
         }
-       
+
         if(new BigNumber(balance).comparedTo(totalAmount) !== 1) {
             throw new Error(FUNDING_ACCOUNT_INSUFFICIENT_BALANCE);
         }
@@ -647,6 +647,19 @@ const unstakeEstimateSlash = async (staker_id) => {
     return slashedAmount;
 }
 
+const unstakeEstimateSlashAdmin = async (id) => {
+    const stakePool = await getModel('stake').findOne({ where: { id } });
+
+    if (!stakePool) {
+        throw new Error(STAKE_POOL_NOT_EXIST);
+    }
+
+    const stakers = await getModel('staker').findAll({ where: { stake_id: stakePool.id, status: { [Op.or]: ['staking', 'unstaking'] } } });
+    const reward = calculateStakingRewards(stakers);
+
+    return { reward };
+}
+
 module.exports = {
 	getExchangeStakePools,
     createExchangeStakePool,
@@ -654,5 +667,6 @@ module.exports = {
     getExchangeStakers,
     createExchangeStaker,
     deleteExchangeStaker,
-    unstakeEstimateSlash
+    unstakeEstimateSlash,
+    unstakeEstimateSlashAdmin
 };

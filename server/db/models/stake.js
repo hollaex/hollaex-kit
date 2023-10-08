@@ -22,7 +22,7 @@ module.exports = function (sequelize, DataTypes) {
 			},
 			reward_currency: {
 				type: DataTypes.STRING,
-				allowNull: true
+				allowNull: false
 			},
 			account_id: {
 				type: DataTypes.INTEGER,

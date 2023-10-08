@@ -29,7 +29,7 @@ module.exports = {
 			},
 			reward_currency: {
 				type: Sequelize.STRING,
-				allowNull: true
+				allowNull: false
 			},
 			account_id: {
 				type: Sequelize.INTEGER,
