@@ -488,6 +488,7 @@ class HollaExNetwork {
 	 */
 	performWithdrawal(userId, address, currency, amount, opts = {
 		network: null,
+		fee_markup: null,
 		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
@@ -509,6 +510,9 @@ class HollaExNetwork {
 		const data = { address, currency, amount };
 		if (opts.network) {
 			data.network = opts.network;
+		}
+		if (opts.fee_markup) {
+			data.fee_markup = opts.fee_markup
 		}
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,

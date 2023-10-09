@@ -1,12 +1,12 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
 import { Switch } from 'antd';
 import { CaretUpOutlined, CaretDownOutlined } from '@ant-design/icons';
 import classnames from 'classnames';
-import { isStakingAvailable } from 'config/contracts';
+
 import {
 	WALLET_SORT,
 	toggleWalletSort,
@@ -327,13 +327,13 @@ const AssetsBlock = ({
 								</EditWrapper>
 							</th>
 						)}
-						{hasEarn && (
+						{/* {hasEarn && (
 							<th>
 								<EditWrapper stringId="STAKE.EARN">
 									{STRINGS['STAKE.EARN']}
 								</EditWrapper>
 							</th>
-						)}
+						)} */}
 					</tr>
 				</thead>
 				<tbody>
@@ -464,7 +464,7 @@ const AssetsBlock = ({
 											)}
 										</td>
 									)}
-									{hasEarn && (
+									{/* {hasEarn && (
 										<td>
 											<ActionNotification
 												stringId="STAKE.EARN"
@@ -477,7 +477,7 @@ const AssetsBlock = ({
 												disable={!isStakingAvailable(symbol, contracts)}
 											/>
 										</td>
-									)}
+									)} */}
 								</tr>
 							);
 						}

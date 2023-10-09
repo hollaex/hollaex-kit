@@ -3,15 +3,14 @@ import { bindActionCreators } from 'redux';
 import { formValueSelector } from 'redux-form';
 import { connect } from 'react-redux';
 import { isMobile } from 'react-device-detect';
+
 import { BALANCE_ERROR } from 'config/constants';
 import STRINGS from 'config/localizedStrings';
 import { getCurrencyFromName } from 'utils/currency';
 import { createAddress, cleanCreateAddress } from 'actions/userAction';
 import { NOTIFICATIONS } from 'actions/appActions';
 import { DEFAULT_COIN_DATA } from 'config/constants';
-
 import { openContactForm, setSnackNotification } from 'actions/appActions';
-
 import { MobileBarBack, Dialog, Notification } from 'components';
 import {
 	renderInformation,
@@ -21,6 +20,7 @@ import {
 import RenderContent, {
 	generateBaseInformation,
 	generateFormFields,
+	renderBackToWallet,
 } from './utils';
 import { getWallet } from 'utils/wallet';
 import QRCode from './QRCode';
@@ -249,6 +249,7 @@ class Deposit extends Component {
 			selectedNetwork,
 			router,
 			wallet,
+			orders,
 		} = this.props;
 
 		const {
@@ -284,8 +285,9 @@ class Deposit extends Component {
 						<div className="information_block">
 							<div
 								className="information_block-text_wrapper"
-								style={{ height: '1.5rem' }}
+								// style={{ height: '1.5rem' }}
 							/>
+							{renderBackToWallet()}
 							{openContactForm &&
 								renderNeedHelpAction(
 									openContactForm,
@@ -304,7 +306,8 @@ class Deposit extends Component {
 								'deposit',
 								constants.links,
 								ICONS['BLUE_QUESTION'],
-								'BLUE_QUESTION'
+								'BLUE_QUESTION',
+								orders
 							)}
 							icons={ICONS}
 							initialValues={initialValues}
@@ -376,6 +379,7 @@ const mapStateToProps = (store) => ({
 	addressRequest: store.user.addressRequest,
 	selectedNetwork: formValueSelector('GenerateWalletForm')(store, 'network'),
 	verification_level: store.user.verification_level,
+	orders: store.order.activeOrders,
 });
 
 const mapDispatchToProps = (dispatch) => ({

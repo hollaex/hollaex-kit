@@ -103,8 +103,8 @@ const distributeStakingRewards = async (stakers, account_id, currency, reward_cu
         const amountAfterSlash =  new BigNumber(staker.reward).minus(new BigNumber(staker.slashed)).toNumber();
         let totalAmount = staker.amount;
 
-        // If there is no reward_currency, Add them together since they are of same currency.
-        if (!reward_currency) {
+        //Add them together since they are of same currency.
+        if (reward_currency === currency) {
             totalAmount = (new BigNumber(staker.amount).plus(amountAfterSlash)).toNumber();
         }
                 
@@ -114,7 +114,7 @@ const distributeStakingRewards = async (stakers, account_id, currency, reward_cu
             if(totalAmount > 0) {
                 await transferAssetByKitIds(account_id, user.id, currency, totalAmount, 'Admin transfer stake', user.email, { category: 'stake' });
             }
-            if (reward_currency && amountAfterSlash > 0) { 
+            if (reward_currency !== currency && amountAfterSlash > 0) { 
                 await transferAssetByKitIds(account_id, user.id, reward_currency, amountAfterSlash, 'Admin transfer stake', user.email, { category: 'stake' });
             }
 
@@ -268,16 +268,13 @@ const createExchangeStakePool = async (stake) => {
            throw new Error('Invalid coin ' + reward_currency);
     }
 
-    if (reward_currency) {
+    if (reward_currency !== currency) {
         const conversions = await getAssetsPrices([currency], reward_currency, 1);
         if (conversions[currency] === -1) {
             throw new Error(NO_ORACLE_PRICE_FOUND)
         }
     }
 
-    if(reward_currency && reward_currency === currency) {
-         throw new Error(REWARD_CURRENCY_CANNOT_BE_SAME);
-    }
     
     const exchangeInfo = getKitConfig().info;
 
@@ -293,6 +290,10 @@ const createExchangeStakePool = async (stake) => {
     
     stake.slashing = (stake.slashing_principle_percentage || stake.slashing_earning_percentage) ? true : false;
      
+    if (!reward_currency) {
+        stake.reward_currency = currency;
+    }
+
 	return getModel('stake').create(stake, {
 		fields: [
 			'name',
@@ -377,15 +378,15 @@ const updateExchangeStakePool = async (id, data) => {
         const reward = calculateStakingRewards(stakers);
         let totalAmount = calculateStakingAmount(stakers)
 
-        if (!stakePool.reward_currency) { 
+        if (stakePool.reward_currency === stakePool.currency) { 
             totalAmount = new BigNumber(totalAmount).plus(new BigNumber(reward)).toNumber();
         }
-       
+
         if(new BigNumber(balance).comparedTo(totalAmount) !== 1) {
             throw new Error(FUNDING_ACCOUNT_INSUFFICIENT_BALANCE);
         }
         
-        if(stakePool.reward_currency) {
+        if(stakePool.reward_currency !== stakePool.currency) {
             const reward_balance = await getSourceAccountBalance(stakePool.account_id, stakePool.reward_currency);
 
             if(new BigNumber(reward_balance).comparedTo(reward) !== 1) {
@@ -413,10 +414,6 @@ const updateExchangeStakePool = async (id, data) => {
         }
     }
 
-
-    if(reward_currency && reward_currency === currency) {
-         throw new Error(REWARD_CURRENCY_CANNOT_BE_SAME);
-    }
 
     if (account_id) {
         const accountOwner = await getUserByKitId(account_id);
@@ -550,7 +547,7 @@ const createExchangeStaker = async (stake_id, amount, user_id) => {
         stake_id,
         amount,
         currency: stakePool.currency,
-        reward_currency: stakePool.reward_currency,
+        reward_currency: stakePool.reward_currency || stakePool.currency,
         status: 'staking',
         ...(stakePool.duration && { closing: moment().add(stakePool.duration, 'days') })
     }
@@ -650,6 +647,19 @@ const unstakeEstimateSlash = async (staker_id) => {
     return slashedAmount;
 }
 
+const unstakeEstimateSlashAdmin = async (id) => {
+    const stakePool = await getModel('stake').findOne({ where: { id } });
+
+    if (!stakePool) {
+        throw new Error(STAKE_POOL_NOT_EXIST);
+    }
+
+    const stakers = await getModel('staker').findAll({ where: { stake_id: stakePool.id, status: { [Op.or]: ['staking', 'unstaking'] } } });
+    const reward = calculateStakingRewards(stakers);
+
+    return { reward };
+}
+
 module.exports = {
 	getExchangeStakePools,
     createExchangeStakePool,
@@ -657,5 +667,6 @@ module.exports = {
     getExchangeStakers,
     createExchangeStaker,
     deleteExchangeStaker,
-    unstakeEstimateSlash
+    unstakeEstimateSlash,
+    unstakeEstimateSlashAdmin
 };

@@ -21,6 +21,7 @@ import {
 	requestUserData,
 	createStakePool,
 	updateStakePool,
+	getSlashEstimateAdmin,
 } from './actions';
 import moment from 'moment';
 import _debounce from 'lodash/debounce';
@@ -94,7 +95,7 @@ const CeFi = ({ coins, features, kit }) => {
 	const [selectedPool, setSelectedPool] = useState();
 	const [editMode, setEditMode] = useState(false);
 	const [hasCefiStaking, setHasCefiStaking] = useState(features.cefi_stake);
-
+	const [slashedAmount, setSlashedAmount] = useState();
 	const isUpgrade = handleUpgrade(kit.info);
 
 	const columns = [
@@ -104,7 +105,7 @@ const CeFi = ({ coins, features, kit }) => {
 			key: 'currency',
 			render: (currency, data) => {
 				return (
-					<div className="d-flex">
+					<div className="d-flex" style={{ fontSize: '1rem' }}>
 						<Coins type={data.currency} />
 						<span style={{ position: 'relative', left: 5, top: 8 }}>
 							{data.currency && coins[data.currency].fullname}
@@ -118,7 +119,11 @@ const CeFi = ({ coins, features, kit }) => {
 			dataIndex: 'name',
 			key: 'name',
 			render: (user_id, data) => {
-				return <div className="d-flex">{data?.name}</div>;
+				return (
+					<div className="d-flex" style={{ fontSize: '1rem' }}>
+						{data?.name}
+					</div>
+				);
 			},
 		},
 		{
@@ -126,7 +131,11 @@ const CeFi = ({ coins, features, kit }) => {
 			dataIndex: 'created_at',
 			key: 'created_at',
 			render: (user_id, data) => {
-				return <div className="d-flex">{formatDate(data?.created_at)}</div>;
+				return (
+					<div className="d-flex" style={{ fontSize: '1rem' }}>
+						{formatDate(data?.created_at)}
+					</div>
+				);
 			},
 		},
 		{
@@ -135,7 +144,10 @@ const CeFi = ({ coins, features, kit }) => {
 			key: 'status',
 			render: (user_id, data) => {
 				return (
-					<div className="d-flex align-items-center">
+					<div
+						className="d-flex align-items-center"
+						style={{ fontSize: '1rem' }}
+					>
 						<div className="mr-2">User ID: </div>
 						<div className="mr-3">{renderUser(data.account_id)}</div>{' '}
 						{isShowBalance && selectedPoolId === data.id ? (
@@ -163,7 +175,7 @@ const CeFi = ({ coins, features, kit }) => {
 			key: 'amlunt',
 			render: (user_id, data) => {
 				return (
-					<div>
+					<div style={{ fontSize: '1rem' }}>
 						<div>Min: {data.min_amount}</div>
 						<div>Max: {data.max_amount}</div>
 					</div>
@@ -176,7 +188,7 @@ const CeFi = ({ coins, features, kit }) => {
 			key: 'duration',
 			render: (user_id, data) => {
 				return (
-					<div className="d-flex">
+					<div className="d-flex" style={{ fontSize: '1rem' }}>
 						{data?.duration ? `${data.duration} days` : 'Perpetual Staking'}
 					</div>
 				);
@@ -188,7 +200,7 @@ const CeFi = ({ coins, features, kit }) => {
 			key: 'slashing',
 			render: (user_id, data) => {
 				return (
-					<div>
+					<div style={{ fontSize: '1rem' }}>
 						{data.slashing_principle_percentage ? (
 							<div>-{data.slashing_principle_percentage}% on principle</div>
 						) : (
@@ -208,7 +220,11 @@ const CeFi = ({ coins, features, kit }) => {
 			dataIndex: 'apy',
 			key: 'apy',
 			render: (user_id, data) => {
-				return <div className="d-flex">{data?.apy}%</div>;
+				return (
+					<div className="d-flex" style={{ fontSize: '1rem' }}>
+						{data?.apy}%
+					</div>
+				);
 			},
 		},
 		{
@@ -224,7 +240,7 @@ const CeFi = ({ coins, features, kit }) => {
 					new BigNumber(data?.reward).decimalPlaces(decimalPoint).toNumber();
 
 				return (
-					<div className="d-flex">
+					<div className="d-flex" style={{ fontSize: '1rem' }}>
 						{sourceAmount}{' '}
 						{sourceAmount
 							? (data.reward_currency || data.currency).toUpperCase()
@@ -251,7 +267,11 @@ const CeFi = ({ coins, features, kit }) => {
 								slash_earnings: data.slashing_earning_percentage ? true : false,
 							});
 						}}
-						style={{ textDecoration: 'underline', cursor: 'pointer' }}
+						style={{
+							textDecoration: 'underline',
+							cursor: 'pointer',
+							fontSize: '1rem',
+						}}
 					>
 						Edit
 					</div>
@@ -264,7 +284,7 @@ const CeFi = ({ coins, features, kit }) => {
 			key: 'onboarding',
 			render: (user_id, data) => {
 				return (
-					<div className="d-flex">
+					<div className="d-flex" style={{ fontSize: '1rem' }}>
 						{data?.onboarding ? 'Open' : 'Closed'}
 
 						{data?.status !== 'terminated' && (
@@ -294,7 +314,7 @@ const CeFi = ({ coins, features, kit }) => {
 			key: 'status',
 			render: (user_id, data) => {
 				return (
-					<div className="d-flex">
+					<div className="d-flex" style={{ fontSize: '1rem' }}>
 						{data?.status
 							.split(' ')
 							.map((word) => `${word[0].toUpperCase()}${word.slice(1)}`)
@@ -304,10 +324,15 @@ const CeFi = ({ coins, features, kit }) => {
 								onClick={async () => {
 									setSelectedPool(data);
 									setPoolStatus(data.status);
-									await Promise.all([
-										getAllUserData({ id: data.account_id }),
-										getUserBalance(data.account_id),
-									]);
+
+									if (data?.status === 'paused') {
+										await Promise.all([
+											getAllUserData({ id: data.account_id }),
+											getUserBalance(data.account_id),
+											getSlashedAmount(data.id),
+										]);
+									}
+
 									setDisplayStatusModel(true);
 								}}
 								style={{
@@ -355,6 +380,20 @@ const CeFi = ({ coins, features, kit }) => {
 		return moment(date).format('DD/MMM/YYYY, hh:mmA ').toUpperCase();
 	};
 
+	const setAdminAccount = async (id = 1) => {
+		const res = await requestUsers({ id });
+		if (res && res.data && res.data.length > 0) {
+			setSelectedEmailData({
+				label: res.data[0].email,
+				value: res.data[0].id,
+			});
+			getUserBalance(res.data[0].id);
+			setStakePoolCreation({
+				...stakePoolCreation,
+				account_id: Number(res.data[0].id),
+			});
+		}
+	};
 	const getUserBalance = async (id, isShowBalance, selectedPoolId) => {
 		try {
 			const res = await requestUserData({ id });
@@ -373,6 +412,17 @@ const CeFi = ({ coins, features, kit }) => {
 	const handleEditInput = () => {
 		if (searchRef && searchRef.current && searchRef.current.focus) {
 			searchRef.current.focus();
+		}
+	};
+
+	const getSlashedAmount = async (id) => {
+		try {
+			const slashedAmount = await getSlashEstimateAdmin(id);
+			setSlashedAmount(slashedAmount.reward);
+		} catch (err) {
+			let errMsg =
+				err.data && err.data.message ? err.data.message : err.message;
+			message.error(errMsg);
 		}
 	};
 
@@ -503,6 +553,7 @@ const CeFi = ({ coins, features, kit }) => {
 									setStakePoolCreation({
 										...stakePoolCreation,
 										currency: e,
+										reward_currency: e,
 									});
 								}}
 							>
@@ -519,11 +570,11 @@ const CeFi = ({ coins, features, kit }) => {
 										<Coins type={stakePoolCreation.currency} />
 									</div>
 									<div>
-										<div
-											dangerouslySetInnerHTML={{
-												__html: coins[stakePoolCreation.currency].description,
-											}}
-										/>
+										<div>
+											In this wizard you can create a staking pool for{' '}
+											{stakePoolCreation.currency.toUpperCase()}. Follow the
+											procedure and select the options for your staking pool.
+										</div>
 									</div>
 								</div>
 							</div>
@@ -555,7 +606,6 @@ const CeFi = ({ coins, features, kit }) => {
 										});
 									}}
 								>
-									<Option value={null}>None</Option>
 									{Object.keys(coins).map((key) => (
 										<Option value={key}>{coins[key].fullname}</Option>
 									))}
@@ -569,13 +619,11 @@ const CeFi = ({ coins, features, kit }) => {
 											<Coins type={stakePoolCreation.reward_currency} />
 										</div>
 										<div>
-											<div
-												dangerouslySetInnerHTML={{
-													__html:
-														coins[stakePoolCreation.reward_currency]
-															.description,
-												}}
-											/>
+											<div>
+												The rewards payouts are calculated automatically
+												everyday and will be calculated based on{' '}
+												{stakePoolCreation.reward_currency.toUpperCase()}
+											</div>
 										</div>
 									</div>
 								</div>
@@ -1477,6 +1525,10 @@ const CeFi = ({ coins, features, kit }) => {
 								if (stakePoolCreation.perpetual_stake && currentStep === 4) {
 									currentStep = 5;
 								}
+
+								if (currentStep === 2) {
+									setAdminAccount(editMode ? stakePoolCreation.account_id : 1);
+								}
 								if (currentStep >= 10) {
 									try {
 										if (!editMode) {
@@ -1511,6 +1563,7 @@ const CeFi = ({ coins, features, kit }) => {
 							disabled={
 								(step === 9 && confirmText !== 'I UNDERSTAND') ||
 								(step === 1 && !stakePoolCreation.currency) ||
+								(step === 1 && !stakePoolCreation.reward_currency) ||
 								(step === 2 && !stakePoolCreation.name) ||
 								(step === 3 && !stakePoolCreation.apy) ||
 								(step === 3 &&
@@ -1657,36 +1710,14 @@ const CeFi = ({ coins, features, kit }) => {
 							marginTop: 20,
 						}}
 					>
-						Change the status of your staking pool below. Pausing the pool will
-						stop the issuance of rewards and will also stop the flow of new
-						users from adding new stakes. After pausing, there will be the
-						option to 'Settle' and close the pool.
-					</div>
-
-					<Radio.Group
-						onChange={(e) => {
-							setPoolStatus(e.target.value);
-						}}
-						value={poolStatus}
-						style={{ width: '70%' }}
-					>
-						<Space direction="vertical" style={{ width: '100%' }}>
-							<Radio
-								style={{
-									color: 'white',
-									fontWeight: 'bold',
-									fontSize: 16,
-									marginBottom: 3,
-								}}
-								value={'active'}
-							>
-								Open
-							</Radio>
-							<Radio
-								style={{ color: 'white', fontWeight: 'bold', fontSize: 16 }}
-								value={'paused'}
-							>
-								Pause the pool and stop rewards
+						{selectedPool.status === 'uninitialized' ? (
+							<span style={{ fontSize: 16 }}>
+								The pool is currently uninitialized. Do you want to initialize
+								the stake pool?
+							</span>
+						) : selectedPool.status === 'active' ? (
+							<>
+								<div>Pause the pool and stop rewards</div>
 								<div
 									style={{
 										backgroundColor: '#E16900',
@@ -1703,77 +1734,137 @@ const CeFi = ({ coins, features, kit }) => {
 									transition smoothly, consider closing the onboarding first and
 									allow all active stakers to finish their term.
 								</div>
-							</Radio>
+							</>
+						) : selectedPool.status === 'paused' ? (
+							`Change the status of your staking pool below. Pausing the pool will
+							stop the issuance of rewards and will also stop the flow of new
+							users from adding new stakes. After pausing, there will be the
+							option to 'Settle' and close the pool.`
+						) : (
+							'The pool is terminated'
+						)}
+					</div>
 
-							<Radio
-								style={{ color: 'white', fontWeight: 'bold', fontSize: 16 }}
-								value={'terminated'}
-							>
-								Close onboarding
-								{poolStatus === 'terminated' && (
+					{selectedPool.status === 'paused' && (
+						<Radio.Group
+							onChange={(e) => {
+								setPoolStatus(e.target.value);
+							}}
+							value={poolStatus}
+							style={{ width: '70%' }}
+						>
+							<Space direction="vertical" style={{ width: '100%' }}>
+								{selectedPool.status === 'paused' && (
+									<Radio
+										style={{
+											color: 'white',
+											fontWeight: 'bold',
+											fontSize: 16,
+											marginBottom: 3,
+										}}
+										value={'active'}
+									>
+										Open
+									</Radio>
+								)}
+								{/* {selectedPool.status == 'active' && (
+								<Radio
+									style={{ color: 'white', fontWeight: 'bold', fontSize: 16 }}
+									value={'paused'}
+								>
+									Pause the pool and stop rewards
 									<div
 										style={{
-											padding: 10,
+											backgroundColor: '#E16900',
+											fontSize: 13,
+											padding: 20,
 											marginLeft: 30,
+											marginTop: 10,
 											color: 'white',
 											width: 500,
 											textWrap: 'wrap',
-											borderLeft: '1px solid white',
 										}}
 									>
-										<div>Settlement time: 24 hours</div>
-										<div>
-											{/* Required to settle: {selectedPool?.reward}{' '}
-											{(
-												selectedPool.reward_currency || selectedPool.currency
-											).toUpperCase()} */}
-										</div>
-										<div>
-											Source wallet: {emailOptions[0].label}:{' '}
-											{balanceData[
-												`${
-													selectedPool.reward_currency || selectedPool.currency
-												}_available`
-											] || 0}{' '}
-											{(
-												selectedPool.reward_currency || selectedPool.currency
-											).toUpperCase()}
-										</div>
-										{selectedPool.status !== 'paused' && (
+										Stopping rewards abruptly could harm platform confidence. To
+										transition smoothly, consider closing the onboarding first
+										and allow all active stakers to finish their term.
+									</div>
+								</Radio>
+							)} */}
+
+								{selectedPool.status === 'paused' && (
+									<Radio
+										style={{ color: 'white', fontWeight: 'bold', fontSize: 16 }}
+										value={'terminated'}
+									>
+										Terminate the pool
+										{poolStatus === 'terminated' && (
 											<div
 												style={{
-													backgroundColor: 'white',
-													fontSize: 13,
 													padding: 10,
-													marginTop: 10,
-													color: '#27339D',
-													width: 450,
+													marginLeft: 30,
+													color: 'white',
+													width: 500,
 													textWrap: 'wrap',
+													borderLeft: '1px solid white',
 												}}
 											>
-												You must pause the pool before closing and settling the
-												pool
-											</div>
-										)}
+												<div>Settlement time: 24 hours</div>
+												<div>
+													Total rewards to settle: {slashedAmount}{' '}
+													{(
+														selectedPool.reward_currency ||
+														selectedPool.currency
+													).toUpperCase()}
+												</div>
+												<div>
+													Source wallet: {emailOptions[0].label}:{' '}
+													{balanceData[
+														`${
+															selectedPool.reward_currency ||
+															selectedPool.currency
+														}_available`
+													] || 0}{' '}
+													{(
+														selectedPool.reward_currency ||
+														selectedPool.currency
+													).toUpperCase()}
+												</div>
+												{selectedPool.status !== 'paused' && (
+													<div
+														style={{
+															backgroundColor: 'white',
+															fontSize: 13,
+															padding: 10,
+															marginTop: 10,
+															color: '#27339D',
+															width: 450,
+															textWrap: 'wrap',
+														}}
+													>
+														You must pause the pool before closing and settling
+														the pool
+													</div>
+												)}
 
-										<div
-											style={{
-												backgroundColor: '#FF6600',
-												fontSize: 13,
-												padding: 10,
-												marginTop: 10,
-												color: 'white',
-												width: 450,
-												textWrap: 'wrap',
-											}}
-										>
-											Note: Closing the pool before allowing users to complete
-											their staking duration term may erode the trust in your
-											exchange. Please consider allowing all users to finish
-											staking.
-										</div>
+												<div
+													style={{
+														backgroundColor: '#FF6600',
+														fontSize: 13,
+														padding: 10,
+														marginTop: 10,
+														color: 'white',
+														width: 450,
+														textWrap: 'wrap',
+													}}
+												>
+													Note: Closing the pool before allowing users to
+													complete their staking duration term may erode the
+													trust in your exchange. Please consider allowing all
+													users to finish staking.
+												</div>
 
-										{/* <div
+												{/* <div
 										style={{
 											backgroundColor: '#E10000',
 											fontSize: 13,
@@ -1786,33 +1877,35 @@ const CeFi = ({ coins, features, kit }) => {
 									>
 										You have insufficient funds to close the staking pool!
 									</div> */}
-										<div style={{ marginBottom: 20, marginTop: 20 }}>
-											<div
-												style={{
-													fontWeight: 'bold',
-													fontSize: 16,
-													marginBottom: 4,
-												}}
-											>
-												Do you understand?
+												<div style={{ marginBottom: 20, marginTop: 20 }}>
+													<div
+														style={{
+															fontWeight: 'bold',
+															fontSize: 16,
+															marginBottom: 4,
+														}}
+													>
+														Do you understand?
+													</div>
+													<Input
+														style={{
+															backgroundColor: 'rgba(0,0,0,0.1)',
+															color: 'white',
+														}}
+														placeholder="Type 'I UNDERSTAND' to proceed"
+														onChange={(e) => {
+															setConfirmTextClosePool(e.target.value);
+														}}
+														value={confirmTextClosePool}
+													/>
+												</div>
 											</div>
-											<Input
-												style={{
-													backgroundColor: 'rgba(0,0,0,0.1)',
-													color: 'white',
-												}}
-												placeholder="Type 'I UNDERSTAND' to proceed"
-												onChange={(e) => {
-													setConfirmTextClosePool(e.target.value);
-												}}
-												value={confirmTextClosePool}
-											/>
-										</div>
-									</div>
+										)}
+									</Radio>
 								)}
-							</Radio>
-						</Space>
-					</Radio.Group>
+							</Space>
+						</Radio.Group>
+					)}
 
 					<div
 						style={{
@@ -1842,7 +1935,12 @@ const CeFi = ({ coins, features, kit }) => {
 								try {
 									await updateStakePool({
 										id: selectedPool.id,
-										status: poolStatus,
+										status:
+											selectedPool.status === 'uninitialized'
+												? 'active'
+												: selectedPool.status === 'active'
+												? 'paused'
+												: poolStatus,
 									});
 									requestStakes(queryFilters.page, queryFilters.limit);
 									setDisplayStatusModel(false);
@@ -1869,7 +1967,11 @@ const CeFi = ({ coins, features, kit }) => {
 								confirmTextClosePool !== 'I UNDERSTAND'
 							}
 						>
-							Proceed
+							{selectedPool.status === 'uninitialized'
+								? 'Open the pool'
+								: selectedPool.status === 'active'
+								? 'Pause the pool'
+								: 'Proceed'}
 						</Button>
 					</div>
 				</Modal>
@@ -1972,7 +2074,7 @@ const CeFi = ({ coins, features, kit }) => {
 				<div style={{ marginTop: 20 }}></div>
 				<div className="mt-5">
 					<div
-						className="mt-4 "
+						className="mt-4 session-table"
 						style={{
 							opacity: !hasCefiStaking ? 0.4 : 1,
 							pointerEvents: !hasCefiStaking ? 'none' : 'visible',
