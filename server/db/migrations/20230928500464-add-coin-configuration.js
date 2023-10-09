@@ -38,6 +38,10 @@ module.exports = {
             	    type: Sequelize.JSONB,
             	    allowNull: true,
             	},
+				fee_markup: {
+					type: Sequelize.DOUBLE,
+					allowNull: true,
+				},
 				deposit_fees: {
             	    type: Sequelize.JSONB,
             	    allowNull: true,

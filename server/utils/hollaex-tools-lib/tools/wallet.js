@@ -206,7 +206,8 @@ async function validateWithdrawal(user, address, amount, currency, network = nul
 
 	return {
 		fee,
-		fee_coin
+		fee_coin,
+		...(coinConfiguration?.fee_markup && { fee_markup: coinConfiguration.fee_markup })
 	};
 }
 
@@ -221,6 +222,7 @@ const sendRequestWithdrawalEmail = (user_id, address, amount, currency, opts = {
 }) => {
 	let fee = opts.fee;
 	let fee_coin = opts.fee_coin;
+	let fee_markup
 
 	return verifyOtpBeforeAction(user_id, opts.otpCode)
 		.then((validOtp) => {
@@ -234,6 +236,7 @@ const sendRequestWithdrawalEmail = (user_id, address, amount, currency, opts = {
 				const withdrawal = await validateWithdrawal(user, address, amount, currency, opts.network);
 				fee = withdrawal.fee;
 				fee_coin = withdrawal.fee_coin;
+				fee_markup =  withdrawal.fee_markup;
 			}
 			
 
@@ -245,6 +248,7 @@ const sendRequestWithdrawalEmail = (user_id, address, amount, currency, opts = {
 					amount,
 					fee,
 					fee_coin,
+					fee_markup,
 					transaction_id: uuid(),
 					address,
 					currency,
@@ -263,13 +267,14 @@ const withdrawalRequestEmail = (user, data, domain, ip) => {
 
 	return client.hsetAsync(WITHDRAWALS_REQUEST_KEY, token, stringData)
 		.then(() => {
-			const { email, amount, fee, fee_coin, currency, address, network } = data;
+			const { email, amount, fee, fee_coin, fee_markup, currency, address, network } = data;
 			sendEmail(
 				MAILTYPE.WITHDRAWAL_REQUEST,
 				email,
 				{
 					amount,
 					fee,
+					fee_markup,
 					fee_coin: (getKitCoin(fee_coin).display_name) ? getKitCoin(fee_coin).display_name : fee_coin,
 					currency: (getKitCoin(currency).display_name) ? getKitCoin(currency).display_name : currency,
 					transaction_id: token,
@@ -338,6 +343,7 @@ const checkTransaction = (currency, transactionId, address, network, isTestnet =
 
 const performWithdrawal = (userId, address, currency, amount, opts = {
 	network: null,
+	fee_markup: null,
 	additionalHeaders: null
 }) => {
 	if (!subscribedToCoin(currency)) {

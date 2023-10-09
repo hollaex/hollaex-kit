@@ -33,7 +33,7 @@ module.exports = {
             	    allowNull: false,
             	},
 				period: {
-            	    type: Sequelize.STRING,
+            	    type: Sequelize.ENUM('24h', '1mo'),
             	    allowNull: false,
             	},
 				created_at: {

@@ -375,6 +375,21 @@ const CoinConfiguration = ({ coins }) => {
 								/>
 							</div>
 
+							<div style={{ marginBottom: 10 }}>
+								<div className="mb-1">Fee Markup (Optional)</div>
+								<Input
+									type="number"
+									placeholder="Enter Fee Markup"
+									value={selectedCoin.fee_markup}
+									onChange={(e) => {
+										setSelectedCoin({
+											...selectedCoin,
+											fee_markup: e.target.value,
+										});
+									}}
+								/>
+							</div>
+
 							{Object.keys(selectedCoin.withdrawal_fees || {}).map(
 								(network) => {
 									return (
@@ -468,6 +483,10 @@ const CoinConfiguration = ({ coins }) => {
 										selectedCoin.mounthly_withdrawal_limit = Number(
 											selectedCoin.mounthly_withdrawal_limit
 										);
+
+										if (selectedCoin.fee_markup) {
+											selectedCoin.fee_markup = Number(selectedCoin.fee_markup);
+										}
 
 										await updateCoinConfiguration(selectedCoin);
 										requesCoinConfiguration();

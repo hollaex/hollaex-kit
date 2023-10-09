@@ -32,7 +32,7 @@ module.exports = function (sequelize, DataTypes) {
 				allowNull: false,
 			},
 			period: {
-				type: DataTypes.STRING,
+				type: DataTypes.ENUM('24h', '1mo'),
 				allowNull: false,
 			},
 		},

@@ -148,6 +148,7 @@ const performWithdrawal = (req, res) => {
 						withdrawal.amount,
 						{
 							network: withdrawal.network,
+							fee_markup: withdrawal.fee_markup,
 							additionalHeaders: {
 								'x-forwarded-for': req.headers['x-forwarded-for']
 							}

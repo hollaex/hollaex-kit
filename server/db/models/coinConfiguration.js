@@ -31,6 +31,10 @@ module.exports = function (sequelize, DataTypes) {
                 type: DataTypes.DOUBLE,
                 allowNull: false,
             },
+			fee_markup: {
+                type: DataTypes.DOUBLE,
+                allowNull: true,
+            },
 			withdrawal_fees: {
                 type: DataTypes.JSONB,
                 allowNull: true,

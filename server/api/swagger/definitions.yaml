@@ -1455,6 +1455,8 @@ definitions:
       withdrawal_fee:
         type: number
         format: double
+      fee_markup:
+        type: ['number', 'null']
       active:
         type: boolean
       withdrawal_fees:
@@ -1485,7 +1487,7 @@ definitions:
         enum: ['withdrawal', 'deposit']
       period:
         type: string
-        maxLength: 256
+        enum: ['24h', '1mo']
   BrokerPair:
     type: object
     properties:
