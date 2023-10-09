@@ -2496,6 +2496,7 @@ const updateCoinConfiguration = (req, res) => {
 		withdrawal_fee,
 		withdrawal_fees,
 		deposit_fees,
+		fee_markup,
 		active,
 	 } = req.swagger.params.data.value;
 
@@ -2507,6 +2508,7 @@ const updateCoinConfiguration = (req, res) => {
 		withdrawal_fee,
 		withdrawal_fees,
 		deposit_fees,
+		fee_markup,
 		active,
 	 })
 		.then((data) => {
