@@ -1435,34 +1435,6 @@ definitions:
       increment_price:
         type: number
         format: double
-  CoinConfiguration:
-    type: object
-    properties:
-      id:
-        type: number
-      symbol:
-        type: string
-        maxLength: 256
-      fullname:
-        type: string
-        maxLength: 256
-      logo:
-        type: string
-        maxLength: 256
-      increment_unit:
-        type: number
-        format: double
-      withdrawal_fee:
-        type: number
-        format: double
-      fee_markup:
-        type: ['number', 'null']
-      active:
-        type: boolean
-      withdrawal_fees:
-        type: ['object', 'null']
-      deposit_fees:
-        type: ['object', 'null']
   TransactionLimit:
     type: object
     properties:

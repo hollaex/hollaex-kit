@@ -212,12 +212,16 @@ const updateKitConfigSecrets = (data = {}, scopes) => {
 		})
 		.then((status) => {
 			const info = getKitConfig().info;
-			publisher.publish(
-				CONFIGURATION_CHANNEL,
-				JSON.stringify({
-					type: 'update', data: { kit: status.dataValues.kit, secrets: status.dataValues.secrets }
-				})
-			);
+			if (data?.kit?.coin_customizations) {
+				publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
+			} else {
+				publisher.publish(
+					CONFIGURATION_CHANNEL,
+					JSON.stringify({
+						type: 'update', data: { kit: status.dataValues.kit, secrets: status.dataValues.secrets }
+					})
+				);
+			}
 			return {
 				kit: { ...status.dataValues.kit, info },
 				secrets: maskSecrets(status.dataValues.secrets)

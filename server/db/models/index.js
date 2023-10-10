@@ -50,8 +50,6 @@ model = require(path.join(__dirname, './stake'))(sequelize, Sequelize.DataTypes)
 db[model.name] = model;
 model = require(path.join(__dirname, './staker'))(sequelize, Sequelize.DataTypes);
 db[model.name] = model;
-model = require(path.join(__dirname, './coinConfiguration'))(sequelize, Sequelize.DataTypes);
-db[model.name] = model;
 model = require(path.join(__dirname, './transactionLimit'))(sequelize, Sequelize.DataTypes);
 db[model.name] = model;
 

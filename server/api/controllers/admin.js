@@ -2484,56 +2484,6 @@ const updateQuickTradeConfig = (req, res) => {
 		});
 };
 
-const updateCoinConfiguration = (req, res) => {
-	loggerAdmin.verbose(req.uuid, 'controllers/admin/updateCoinConfiguration/auth', req.auth);
-
-	const { 
-		id,
-		symbol,
-		fullname,
-		logo,
-		increment_unit,
-		withdrawal_fee,
-		withdrawal_fees,
-		deposit_fees,
-		fee_markup,
-		active,
-	 } = req.swagger.params.data.value;
-
-	toolsLib.coin.updateCoinConfiguration(id, {
-		symbol,
-		fullname,
-		logo,
-		increment_unit,
-		withdrawal_fee,
-		withdrawal_fees,
-		deposit_fees,
-		fee_markup,
-		active,
-	 })
-		.then((data) => {
-			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
-			return res.json(data);
-		})
-		.catch((err) => {
-			loggerAdmin.error(req.uuid, 'controllers/admin/updateCoinConfiguration', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
-		});
-};
-
-const getCoinConfiguration = (req, res) => {
-	loggerAdmin.verbose(req.uuid, 'controllers/admin/getCoinConfiguration/auth', req.auth);
-
-	toolsLib.coin.getCoinConfiguration()
-		.then((data) => {
-			return res.json(data);
-		})
-		.catch((err) => {
-			loggerAdmin.error(req.uuid, 'controllers/admin/getCoinConfiguration', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
-		});
-};
-
 const getTransactionLimits = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getTransactionLimits/auth', req.auth);
 
@@ -2721,8 +2671,6 @@ module.exports = {
 	sendEmailByAdmin,
 	sendRawEmailByAdmin,
 	updateQuickTradeConfig,
-	updateCoinConfiguration,
-	getCoinConfiguration,
 	getBalancesAdmin,
 	restoreUserAccount,
 	getTransactionLimits,

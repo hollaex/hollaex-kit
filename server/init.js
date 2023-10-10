@@ -6,7 +6,7 @@ const moment = require('moment');
 const rp = require('request-promise');
 const { loggerInit } = require('./config/logger');
 const { Op } = require('sequelize');
-const { User, Status, Tier, Broker, QuickTrade, CoinConfiguration } = require('./db/models');
+const { User, Status, Tier, Broker, QuickTrade } = require('./db/models');
 const packageJson = require('./package.json');
 
 const { subscriber, publisher } = require('./db/pubsub');
@@ -127,59 +127,19 @@ const checkStatus = () => {
 					Tier.findAll(),
 					Broker.findAll({ attributes: ['id', 'symbol', 'buy_price', 'sell_price', 'paused', 'min_size', 'max_size']}),
 					QuickTrade.findAll(),
-					CoinConfiguration.findAll(),
 					status.dataValues
 				]);
 			}
 		})
-		.then(async ([exchange, tiers, deals, quickTrades, coinConfigurations, status]) => {
+		.then(async ([exchange, tiers, deals, quickTrades, status]) => {
 			loggerInit.info('init/checkStatus/activation', exchange.name, exchange.active);
 
 			const exchangePairs = [];
 
 			for (let coin of exchange.coins) {
-				const coinConfiguration = coinConfigurations.find(configuration => configuration.symbol === coin.symbol);
-				
-				const isWithdrawalFeeBigger = coinConfiguration?.withdrawal_fee >= coin?.withdrawal_fee;
-
-				let isWithdrawalFeesBigger = true;
-				for(const network of Object.keys(coin?.withdrawal_fees || {})) {
-					const withdrawalFeeValue = coin?.withdrawal_fees[network]?.value;
-					isWithdrawalFeesBigger = coinConfiguration?.withdrawal_fees?.[network]?.value >= withdrawalFeeValue;
-					if (!isWithdrawalFeesBigger) break;
-					
-				}
-
-				let isDepositFeesBigger = true;
-				for(const network of Object.keys(coin?.deposit_fees || {})) {
-					const depositFeeValue = coin?.deposit_fees[network]?.value;
-					isDepositFeesBigger = coinConfiguration?.deposit_fees?.[network]?.value >= depositFeeValue;
-					if (!isDepositFeesBigger) break;
-				}
-
-				const isApplicable = isWithdrawalFeeBigger && isWithdrawalFeesBigger && isDepositFeesBigger;
-
-				if (coinConfiguration && !isApplicable) {
-					coinConfiguration.destroy();
-				}
-
-				if(coinConfiguration && isApplicable) {
-					configuration.coins[coin.symbol] = {
-						...coin,
-						...coinConfiguration.dataValues
-					}
-				} else {
-					configuration.coins[coin.symbol] = coin;
-					loggerInit.info('init/checkStatus/activation adding new coin configuration', coin);
-					await CoinConfiguration.upsert(coin);
-					loggerInit.info('init/checkStatus/activation new coin configuration successfully added', coin);
-				}
-			}
-
-			// check the status of coin configurations
-			for (let coin of coinConfigurations) {
-				if (!configuration.coins[coin.symbol]) {
-					await coin.destroy();
+				configuration.coins[coin.symbol] = {
+					...coin,
+					...configuration?.kit?.coin_customizations?.[coin.symbol]
 				}
 			}
 

@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { message, Table, Button, Spin, Modal, Input, InputNumber } from 'antd';
-import { getCoinConfiguration, updateCoinConfiguration } from './action';
+import { message, Table, Button, Spin, Modal, Input } from 'antd';
 
 import { CloseOutlined } from '@ant-design/icons';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { connect } from 'react-redux';
+import { updateConstants } from '../General/action';
+import { requestAdminData } from 'actions/appActions';
 
 const CoinConfiguration = ({ coins }) => {
 	const [coinData, setCoinData] = useState([]);
+	const [coinCustomizations, setCoinCustomizations] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [queryValues] = useState();
 	// eslint-disable-next-line
@@ -28,21 +30,6 @@ const CoinConfiguration = ({ coins }) => {
 
 	const columns = [
 		{
-			title: 'ID',
-			dataIndex: 'id',
-			key: 'id',
-			render: (user_id, data) => {
-				return (
-					<div className="d-flex">
-						<Button className="ant-btn green-btn ant-tooltip-open ant-btn-primary">
-							{data?.id}
-						</Button>
-						{/* <div className="ml-3">{data.User.email}</div> */}
-					</div>
-				);
-			},
-		},
-		{
 			title: 'Symbol',
 			dataIndex: 'symbol',
 			key: 'symbol',
@@ -55,67 +42,15 @@ const CoinConfiguration = ({ coins }) => {
 			dataIndex: 'fullname',
 			key: 'fullname',
 			render: (user_id, data) => {
-				return <div className="d-flex">{data?.fullname}</div>;
+				return <div className="d-flex">{data?.fullname || '-'}</div>;
 			},
 		},
 		{
-			title: 'Logo',
-			dataIndex: 'logo',
-			key: 'logo',
+			title: 'Fee Markup',
+			dataIndex: 'fee_markup',
+			key: 'fee_markup',
 			render: (user_id, data) => {
-				return (
-					<div className="d-flex">
-						<img src={data?.logo} alt={'-'} />
-					</div>
-				);
-			},
-		},
-		{
-			title: 'Increment Unit',
-			dataIndex: 'increment_unit',
-			key: 'increment_unit',
-			render: (user_id, data) => {
-				return <div className="d-flex">{data?.increment_unit}</div>;
-			},
-		},
-		{
-			title: 'Withdrawal Fee',
-			dataIndex: 'withdrawal_fee',
-			key: 'withdrawal_fee',
-			render: (user_id, data) => {
-				return (
-					<div>
-						<div>Default: {data?.withdrawal_fee}</div>
-						<div>
-							{data?.withdrawal_fees &&
-								Object.values(data?.withdrawal_fees).map((fee) => (
-									<div>
-										{fee.symbol}: {fee.value}
-									</div>
-								))}
-						</div>
-					</div>
-				);
-			},
-		},
-		{
-			title: 'Deposit Fee',
-			dataIndex: 'deposit_fees',
-			key: 'deposit_fees',
-			render: (user_id, data) => {
-				return (
-					<div>
-						<div>
-							{data?.deposit_fees
-								? Object.values(data?.deposit_fees).map((fee) => (
-										<div>
-											{fee.symbol}: {fee.value}
-										</div>
-								  ))
-								: '-'}
-						</div>
-					</div>
-				);
+				return <div className="d-flex">{data?.fee_markup || '-'}</div>;
 			},
 		},
 		{
@@ -143,13 +78,13 @@ const CoinConfiguration = ({ coins }) => {
 	];
 
 	useEffect(() => {
-		setIsLoading(true);
+		// setIsLoading(true);
 		requesCoinConfiguration(queryFilters.page, queryFilters.limit);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	useEffect(() => {
-		requesCoinConfiguration(queryFilters.page, queryFilters.limit);
+		// requesCoinConfiguration(queryFilters.page, queryFilters.limit);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [queryValues]);
 
@@ -157,33 +92,43 @@ const CoinConfiguration = ({ coins }) => {
 		// return getExchangeSessionsCsv({ ...queryValues, format: 'csv' });
 	};
 
-	const renderRowContent = (coin) => {
-		return (
-			<div>
-				<div>
-					<span style={{ fontWeight: 'bold' }}>Estimated Price:</span>{' '}
-					{coins[coin.symbol].estimated_price}
-				</div>
-				<div>
-					<span style={{ fontWeight: 'bold' }}>Network:</span>{' '}
-					{coins?.[coin.symbol]?.network?.toUpperCase()}
-				</div>
-				<div>
-					<span style={{ fontWeight: 'bold' }}>Verified:</span>{' '}
-					{coins[coin.symbol].verified ? 'Yes' : 'No'}
-				</div>
-			</div>
-		);
-	};
+	// const renderRowContent = (coin) => {
+	// 	return (
+	// 		<div>
+	// 			<div>
+	// 				<span style={{ fontWeight: 'bold' }}>Estimated Price:</span>{' '}
+	// 				{coins[coin.symbol].estimated_price}
+	// 			</div>
+	// 			<div>
+	// 				<span style={{ fontWeight: 'bold' }}>Network:</span>{' '}
+	// 				{coins?.[coin.symbol]?.network?.toUpperCase()}
+	// 			</div>
+	// 			<div>
+	// 				<span style={{ fontWeight: 'bold' }}>Verified:</span>{' '}
+	// 				{coins[coin.symbol].verified ? 'Yes' : 'No'}
+	// 			</div>
+	// 		</div>
+	// 	);
+	// };
 
 	const requesCoinConfiguration = (page = 1, limit = 50) => {
 		setIsLoading(true);
 		// getCoinConfiguration({ page, limit, ...queryValues })
-		getCoinConfiguration()
+		requestAdminData()
 			.then((response) => {
-				setCoinData(
-					page === 1 ? response.data : [...coinData, ...response.data]
-				);
+				const data = response?.data?.kit?.coin_customizations || {};
+
+				for (const coin of Object.values(coins)) {
+					data[coin.symbol] = {
+						...(data[coin.symbol] || {
+							symbol: coin.symbol,
+							fee_markup: null,
+							fullname: coin.fullname,
+						}),
+					};
+				}
+				setCoinCustomizations(Object.values(data));
+				setCoinData(data);
 
 				setQueryFilters({
 					total: response.count,
@@ -263,9 +208,9 @@ const CoinConfiguration = ({ coins }) => {
 							<Table
 								className="blue-admin-table"
 								columns={columns}
-								dataSource={coinData || [].sort((a, b) => a.id - b.id)}
-								expandedRowRender={renderRowContent}
-								expandRowByClick={true}
+								dataSource={
+									coinCustomizations || [].sort((a, b) => a.symbol - b.symbol)
+								}
 								rowKey={(data) => {
 									return data.id;
 								}}
@@ -306,20 +251,6 @@ const CoinConfiguration = ({ coins }) => {
 						<div style={{ marginBottom: 30 }}>Congifure coin attributes</div>
 						<div style={{ marginBottom: 20 }}>
 							<div style={{ marginBottom: 10 }}>
-								<div className="mb-1">Symbol</div>
-								<Input
-									placeholder="Enter symbol"
-									value={selectedCoin.symbol}
-									onChange={(e) => {
-										setSelectedCoin({
-											...selectedCoin,
-											symbol: e.target.value,
-										});
-									}}
-								/>
-							</div>
-
-							<div style={{ marginBottom: 10 }}>
 								<div className="mb-1">Name</div>
 								<Input
 									placeholder="Enter name"
@@ -332,51 +263,9 @@ const CoinConfiguration = ({ coins }) => {
 									}}
 								/>
 							</div>
-							<div style={{ marginBottom: 10 }}>
-								<div className="mb-1">Logo(url string)</div>
-								<Input
-									placeholder="Enter logo string"
-									value={selectedCoin.logo}
-									onChange={(e) => {
-										setSelectedCoin({
-											...selectedCoin,
-											logo: e.target.value,
-										});
-									}}
-								/>
-							</div>
-							<div style={{ marginBottom: 10 }}>
-								<div className="mb-1">Increment Unit</div>
-								<Input
-									type="number"
-									placeholder="Enter increment Unit"
-									value={selectedCoin.increment_unit}
-									onChange={(e) => {
-										setSelectedCoin({
-											...selectedCoin,
-											increment_unit: e.target.value,
-										});
-									}}
-								/>
-							</div>
 
 							<div style={{ marginBottom: 10 }}>
-								<div className="mb-1">Default Withdrawal Fee</div>
-								<Input
-									type="number"
-									placeholder="Enter Default withdrawal fee"
-									value={selectedCoin.withdrawal_fee}
-									onChange={(e) => {
-										setSelectedCoin({
-											...selectedCoin,
-											withdrawal_fee: e.target.value,
-										});
-									}}
-								/>
-							</div>
-
-							<div style={{ marginBottom: 10 }}>
-								<div className="mb-1">Fee Markup (Optional)</div>
+								<div className="mb-1">Fee Markup</div>
 								<Input
 									type="number"
 									placeholder="Enter Fee Markup"
@@ -389,58 +278,6 @@ const CoinConfiguration = ({ coins }) => {
 									}}
 								/>
 							</div>
-
-							{Object.keys(selectedCoin.withdrawal_fees || {}).map(
-								(network) => {
-									return (
-										<div style={{ marginBottom: 10 }}>
-											<div className="mb-1">
-												Withdrawal Fee for {network.toUpperCase()} Network
-											</div>
-											<InputNumber
-												placeholder="Enter withdrawal fee for network"
-												value={selectedCoin.withdrawal_fees[network].value}
-												onChange={(value) => {
-													const newSelectedCoin = JSON.parse(
-														JSON.stringify(selectedCoin)
-													);
-													newSelectedCoin.withdrawal_fees[
-														network
-													].value = value;
-													setSelectedCoin({
-														...newSelectedCoin,
-													});
-												}}
-												style={{ width: '70%' }}
-											/>
-										</div>
-									);
-								}
-							)}
-
-							{Object.keys(selectedCoin.deposit_fees || {}).map((network) => {
-								return (
-									<div style={{ marginBottom: 10 }}>
-										<div className="mb-1">
-											Deposit Fee for {network.toUpperCase()} Network
-										</div>
-										<InputNumber
-											placeholder="Enter deposit fee for network"
-											value={selectedCoin.deposit_fees[network].value}
-											onChange={(value) => {
-												const newSelectedCoin = JSON.parse(
-													JSON.stringify(selectedCoin)
-												);
-												newSelectedCoin.deposit_fees[network].value = value;
-												setSelectedCoin({
-													...newSelectedCoin,
-												});
-											}}
-											style={{ width: '70%' }}
-										/>
-									</div>
-								);
-							})}
 						</div>
 						<div
 							style={{
@@ -468,27 +305,23 @@ const CoinConfiguration = ({ coins }) => {
 							<Button
 								onClick={async () => {
 									try {
-										selectedCoin.increment_unit = Number(
-											selectedCoin.increment_unit
-										);
-										selectedCoin.withdrawal_fee = Number(
-											selectedCoin.withdrawal_fee
-										);
-										selectedCoin.withdrawal_limit = Number(
-											selectedCoin.withdrawal_limit
-										);
-										selectedCoin.deposit_limit = Number(
-											selectedCoin.deposit_limit
-										);
-										selectedCoin.mounthly_withdrawal_limit = Number(
-											selectedCoin.mounthly_withdrawal_limit
-										);
-
 										if (selectedCoin.fee_markup) {
 											selectedCoin.fee_markup = Number(selectedCoin.fee_markup);
 										}
 
-										await updateCoinConfiguration(selectedCoin);
+										await updateConstants({
+											kit: {
+												coin_customizations: {
+													...coinData,
+													[selectedCoin.symbol]: {
+														symbol: selectedCoin.symbol,
+														fee_markup: selectedCoin.fee_markup,
+														fullname: selectedCoin.fullname,
+													},
+												},
+											},
+										});
+
 										requesCoinConfiguration();
 										message.success('Changes saved.');
 										handleCostumizationModal();

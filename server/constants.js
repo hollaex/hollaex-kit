@@ -200,7 +200,8 @@ exports.KIT_CONFIG_KEYS = [
 	'onramp',
 	'offramp',
 	'user_payments',
-	'dust'
+	'dust',
+	'coin_customizations'
 ];
 
 exports.KIT_SECRETS_KEYS = [
