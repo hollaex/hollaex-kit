@@ -14,6 +14,7 @@ $input-bottom_line--animation--width: 100px;
 $title-icon--height: 10rem;
 
 @import './_InputGroup.scss';
+@import './QuoteExpired';
 
 .language_rtl {
 	.quick_trade-wrapper {
@@ -96,10 +97,14 @@ $title-icon--height: 10rem;
 		}
 	}
 
+	.balance-wallet {
+		padding-bottom: 0.5rem;
+	}
+
 	.input-group__error-wrapper {
 		color: red;
-		margin-top: 0.5rem;
 		float: right;
+		min-height: auto;
 	}
 
 	.input_block-title {
