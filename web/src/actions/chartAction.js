@@ -76,3 +76,14 @@ export const getSparklines = async () => {
 
 	return chartData;
 };
+
+export const getMiniCharts = async (pairs) => {
+
+	const { data = {} } = await axios({
+			url: `/minicharts?assets=${pairs}`,
+			method: 'GET',
+	});
+
+	return data;
+}
+			

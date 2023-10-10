@@ -15,7 +15,7 @@ import { isLoggedIn } from 'utils/token';
 import { Button, EditWrapper, Dialog } from 'components';
 import STRINGS from 'config/localizedStrings';
 import InputGroup from './InputGroup';
-import { getSparklines } from 'actions/chartAction';
+import { getMiniCharts } from 'actions/chartAction';
 import { getDecimals } from 'utils/utils';
 import { MarketsSelector } from 'containers/Trade/utils';
 import Details from 'containers/QuickTrade/components/Details';
@@ -129,7 +129,7 @@ const QuickTrade = ({
 
 	const flippedPair = flipPair(symbol);
 	const isShowChartDetails =
-		(quicktradePairs[symbol] || quicktradePairs[flippedPair])?.type ===
+		true || (quicktradePairs[symbol] || quicktradePairs[flippedPair])?.type ===
 		TYPES.PRO;
 
 	const market = markets.find(
@@ -281,9 +281,17 @@ const QuickTrade = ({
 	const debouncedQuote = useRef(debounce(getQuote, 1000));
 
 	useEffect(() => {
-		getSparklines(Object.keys(pairs)).then((chartData) =>
-			setChartData(chartData)
-		);
+		// getSparklines(Object.keys(pairs)).then((chartData) =>
+		// 	setChartData(chartData)
+		// );
+		const assetValues = Object.keys(pairs).map((
+			val) => pairs[val].pair_base).toLocaleString();
+
+		getMiniCharts(assetValues)
+			.then((chartValues) =>{
+				console.log('Chart', chartValues);
+				setChartData(chartValues);
+			});
 	}, [pairs]);
 
 	useEffect(() => {
@@ -333,7 +341,7 @@ const QuickTrade = ({
 	const isExpired = time.isAfter(moment(expiry));
 
 	const { balance: userBalance } = user;
-
+	console.log('key', key);
 	const lineChartData = {
 		...chartData[key],
 		name: 'Line',
