@@ -355,15 +355,21 @@ $header-margin: 2rem;
 			}
 		}
 	}
-
+	.empty-wallet-assets_block {
+		padding: 20px !important;
+	}
 	.wallet-assets_block {
 		.donut-container {
-			width: 18rem !important;
-			min-width: 18rem !important;
+			width: 12rem !important;
+			min-width: 12rem !important;
+		}
+		.donut-container-empty {
+			width: 13rem !important;
+			min-width: 13rem !important;
 		}
 		// border-top: $wrapper-border;
 		background-color: $app-sidebar-background;
-		padding: 20px;
+		padding: 0px 20px;
 		overflow-y: auto;
 		// .action_notification-wrapper {
 		// 	margin: 0 !important;
@@ -448,6 +454,9 @@ $header-margin: 2rem;
 		}
 		.loading-row-anime.w-full {
 			width: 200px;
+		}
+		.wallet-graphic-icon {
+			opacity: 0.1;
 		}
 	}
 

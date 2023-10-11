@@ -191,8 +191,6 @@ const icons = {
 	REVOKE_KEY: '/assets/images/revoke-key-red-slash.svg',
 	SMALL_WHITE_KEY: '/assets/images/small-white-key.svg',
 	TRANSPARENT_KEY: '/assets/images/transperent-key.svg',
-	ARROW_DOWN: '/assets/images/deposit-arrow-down.svg',
-	ARROW_UP: '/assets/images/withdraw-arrow-up.svg',
 };
 
 export default icons;

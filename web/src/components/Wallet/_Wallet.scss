@@ -33,7 +33,7 @@ $sections-font--color: $colors-deactivate-color2;
 		opacity: 0.2;
 	}
 	50% {
-    	transform: scale(1.5, 1.5);
+		transform: scale(1.5, 1.5);
 		background-color: $colors-border;
 	}
 	70% {
@@ -41,7 +41,7 @@ $sections-font--color: $colors-deactivate-color2;
 		opacity: 0;
 	}
 	100% {
-    	transform: scale(1, 1);
+		transform: scale(1, 1);
 		background-color: $colors-border;
 		opacity: 0;
 	}
@@ -218,8 +218,11 @@ $sections-font--color: $colors-deactivate-color2;
 
 @media (min-width: 1920px) {
 	.wallet-wrapper {
+		.donut-container-empty {
+			height: 14rem !important;
+		}
 		.donut-container {
-			height: 19rem;
+			height: 16rem;
 
 			.donut-label-pair {
 				font-size: 1rem;
