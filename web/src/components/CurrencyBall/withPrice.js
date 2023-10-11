@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { CurrencyBall, Coin } from 'components';
+import { Coin } from 'components';
 import { formatCurrencyByIncrementalUnit } from 'utils/currency';
 import { DEFAULT_COIN_DATA } from 'config/constants';
 

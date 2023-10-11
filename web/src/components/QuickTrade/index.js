@@ -336,6 +336,7 @@ const QuickTrade = ({
 		if (!hasExpiredOnce && time.isAfter(moment(expiry))) {
 			setHasExpiredOnce(true);
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [hasExpiredOnce, time]);
 
 	const isExpired = time.isAfter(moment(expiry));

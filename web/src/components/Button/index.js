@@ -5,6 +5,7 @@ import { EditWrapper } from 'components';
 import Image from 'components/Image';
 
 import '@material/button/dist/mdc.button.css';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 const Button = ({
 	label,
@@ -16,6 +17,10 @@ const Button = ({
 	iconId,
 	iconList,
 	position,
+	lineHeight,
+	currencyWallet,
+	btnLabel,
+	icons,
 }) => {
 	const getIcon = (iconId, iconList) => (
 		<Image iconId={iconId} icon={iconList[iconId]} height={16} width={16} />
@@ -30,6 +35,7 @@ const Button = ({
 				'mdc-button',
 				'mdc-button--unelevated',
 				'holla-button-font',
+				lineHeight,
 				{
 					disabled,
 				},
@@ -38,18 +44,34 @@ const Button = ({
 			disabled={disabled}
 			autoFocus={autoFocus}
 		>
-			<EditWrapper>
-				<div
-					className={classnames('d-flex', {
-						'reverse-direction': position === 'right',
-					})}
-				>
-					{iconId && (
-						<div className="flex button-icon">{getIcon(iconId, iconList)}</div>
-					)}
-					<div>{label}</div>
+			{currencyWallet && currencyWallet ? (
+				<div className="d-flex justify-content-center align-items-center">
+					<Image
+						wrapperClassName="mr-1 arrow-up-down-icon"
+						icon={
+							btnLabel && btnLabel === 'deposit'
+								? icons['ARROW_DOWN']
+								: icons['ARROW_UP']
+						}
+					/>
+					<EditWrapper>{label}</EditWrapper>
 				</div>
-			</EditWrapper>
+			) : (
+				<EditWrapper>
+					<div
+						className={classnames('d-flex', {
+							'reverse-direction': position === 'right',
+						})}
+					>
+						{iconId && (
+							<div className="flex button-icon">
+								{getIcon(iconId, iconList)}
+							</div>
+						)}
+						<div>{label}</div>
+					</div>
+				</EditWrapper>
+			)}
 		</button>
 	);
 };
@@ -67,4 +89,4 @@ Button.defaultProps = {
 	className: '',
 };
 
-export default Button;
+export default withConfig(Button);

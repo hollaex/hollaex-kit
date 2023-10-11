@@ -211,7 +211,11 @@ class DonutChart extends Component {
 		if (!this.state.isData) {
 			return (
 				<g key={i}>
-					<path d={arcj(value)} fill={colors_currencies.noData} />
+					<path
+						d={arcj(value)}
+						fill={colors_currencies.noData}
+						fill-opacity="0.2"
+					/>
 					<text
 						transform={translate(0, -10)}
 						dy=".35em"
@@ -259,7 +263,7 @@ class DonutChart extends Component {
 						<Fragment>
 							<text
 								transform={translate(valX, valY)}
-								dy="20px"
+								dy="15px"
 								textAnchor="middle"
 								className="donut-label-percentage"
 							>
@@ -267,7 +271,7 @@ class DonutChart extends Component {
 							</text>
 							<text
 								transform={translate(valX, valY - 12)}
-								dy="20px"
+								dy="15px"
 								textAnchor="middle"
 								className="donut-label-pair"
 							>
