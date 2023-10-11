@@ -80,10 +80,28 @@ export const getSparklines = async () => {
 export const getMiniCharts = async (pairs) => {
 
 	const { data = {} } = await axios({
-			url: `/minicharts?assets=${pairs}`,
-			method: 'GET',
+		url: `/minicharts?assets=${pairs}`,
+		method: 'GET',
 	});
 
-	return data;
+	const result = {};
+	
+	Object.keys(data).map((keyVal) => {
+		data[keyVal].map(({ price, quote, symbol, time }) => {
+			let symbolKey = symbol + '-' + quote; 
+
+			if(!result[symbolKey]) {
+				result[symbolKey] = [];
+			}
+
+			result[symbolKey].push({
+				price,
+				time
+			});
+			
+		});
+	});
+
+	return result;
 }
 			
