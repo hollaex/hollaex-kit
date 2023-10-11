@@ -123,8 +123,8 @@ const CoinConfiguration = ({ coins }) => {
 						...(data[coin.symbol] || {
 							symbol: coin.symbol,
 							fee_markup: null,
-							fullname: coin.fullname,
 						}),
+						fullname: coin.fullname,
 					};
 				}
 				setCoinCustomizations(Object.values(data));
@@ -165,8 +165,8 @@ const CoinConfiguration = ({ coins }) => {
 	return (
 		<div>
 			<div style={{ color: '#ccc' }}>
-				Below are details of active coins in the exchange. You can customize
-				each coin in your exchange.
+				Below, You can add/edit extra fees for each coin available in your
+				exchange
 			</div>
 			<div>
 				<div style={{ marginTop: 20 }}></div>
@@ -246,24 +246,10 @@ const CoinConfiguration = ({ coins }) => {
 								marginBottom: 10,
 							}}
 						>
-							Edit Coin Customization
+							Edit Coin Fee Markup
 						</div>
-						<div style={{ marginBottom: 30 }}>Congifure coin attributes</div>
+						<div style={{ marginBottom: 30 }}>Congifure fee markups</div>
 						<div style={{ marginBottom: 20 }}>
-							<div style={{ marginBottom: 10 }}>
-								<div className="mb-1">Name</div>
-								<Input
-									placeholder="Enter name"
-									value={selectedCoin.fullname}
-									onChange={(e) => {
-										setSelectedCoin({
-											...selectedCoin,
-											fullname: e.target.value,
-										});
-									}}
-								/>
-							</div>
-
 							<div style={{ marginBottom: 10 }}>
 								<div className="mb-1">Fee Markup</div>
 								<Input
@@ -316,7 +302,6 @@ const CoinConfiguration = ({ coins }) => {
 													[selectedCoin.symbol]: {
 														symbol: selectedCoin.symbol,
 														fee_markup: selectedCoin.fee_markup,
-														fullname: selectedCoin.fullname,
 													},
 												},
 											},
@@ -326,7 +311,7 @@ const CoinConfiguration = ({ coins }) => {
 										message.success('Changes saved.');
 										handleCostumizationModal();
 									} catch (error) {
-										message.error(error.response.data.message);
+										message.error(error.data.message);
 									}
 								}}
 								style={{

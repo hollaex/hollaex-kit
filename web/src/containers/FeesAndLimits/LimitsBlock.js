@@ -64,25 +64,89 @@ const getLimitValue = (limit, increment_unit, baseName) => {
 //     );
 // };
 
-const getRows = (coins, level, tiers, ICONS) => {
+const getRows = (coins, level, tiers, ICONS, transaction_limits) => {
 	const { display_name: baseName, increment_unit } =
 		coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 
-	const { /*deposit_limit,*/ withdrawal_limit } = tiers[level] || {};
-
+	// const { /*deposit_limit,*/ withdrawal_limit } = transaction_limits?.find(limit => limit.tier === level)?.amount || {};
 	return (
 		<Fragment>
-			{Object.entries(coins).map(([_, { icon_id, display_name }], index) => {
-				return (
-					<tr className="table-row" key={index}>
-						<td className="table-icon td-fit" />
-						<td className="td-name td-fit">
-							<div className="d-flex align-items-center wallet-hover cursor-pointer">
-								<Coin iconId={icon_id} />
-								<div className="px-2">{display_name}</div>
-							</div>
-						</td>
-						<td>
+			{Object.entries(coins).map(
+				([_, { icon_id, display_name, symbol }], index) => {
+					const limit_24h = transaction_limits?.find(
+						(limit) =>
+							limit.limit_currency === symbol &&
+							limit.tier === Number(level) &&
+							limit.period === '24h' &&
+							limit.type === 'withdrawal'
+					);
+					const limit_24h_default = transaction_limits?.find(
+						(limit) =>
+							limit.limit_currency === 'default' &&
+							limit.tier === Number(level) &&
+							limit.period === '24h' &&
+							limit.type === 'withdrawal'
+					);
+					const limit_1mo = transaction_limits?.find(
+						(limit) =>
+							limit.limit_currency === symbol &&
+							limit.tier === Number(level) &&
+							limit.period === '1mo' &&
+							limit.type === 'withdrawal'
+					);
+					const limit_1mo_default = transaction_limits?.find(
+						(limit) =>
+							limit.limit_currency === 'default' &&
+							limit.tier === Number(level) &&
+							limit.period === '1mo' &&
+							limit.type === 'withdrawal'
+					);
+					return (
+						<tr className="table-row" key={index}>
+							<td className="table-icon td-fit" />
+							<td className="td-name td-fit">
+								<div className="d-flex align-items-center wallet-hover cursor-pointer">
+									<Coin iconId={icon_id} />
+									<div className="px-2">{display_name}</div>
+								</div>
+							</td>
+							<td>
+								{limit_24h ? (
+									getLimitValue(limit_24h.amount, increment_unit, baseName)
+								) : limit_24h_default ? (
+									<div style={{ width: '80%' }}>
+										<EditWrapper stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.LIMIT_TEXT">
+											{
+												STRINGS[
+													'FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.LIMIT_TEXT'
+												]
+											}
+										</EditWrapper>
+									</div>
+								) : (
+									'N/A'
+								)}
+							</td>
+
+							<td>
+								{limit_1mo ? (
+									getLimitValue(limit_1mo.amount, increment_unit, baseName)
+								) : limit_1mo_default ? (
+									<div style={{ width: '80%' }}>
+										<EditWrapper stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.LIMIT_TEXT">
+											{
+												STRINGS[
+													'FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.LIMIT_TEXT'
+												]
+											}
+										</EditWrapper>
+									</div>
+								) : (
+									'N/A'
+								)}
+							</td>
+
+							{/* <td>
 							{index === 0 ? (
 								getLimitValue(withdrawal_limit, increment_unit, baseName)
 							) : index === 1 ? (
@@ -94,15 +158,16 @@ const getRows = (coins, level, tiers, ICONS) => {
 									}
 								</EditWrapper>
 							) : null}
-						</td>
-					</tr>
-				);
-			})}
+						</td> */}
+						</tr>
+					);
+				}
+			)}
 		</Fragment>
 	);
 };
 
-const LimitsBlock = ({ level, coins, tiers, icons }) => {
+const LimitsBlock = ({ level, coins, tiers, icons, transaction_limits }) => {
 	return (
 		<div className="wallet-assets_block">
 			<table className="wallet-assets_block-table">
@@ -127,10 +192,19 @@ const LimitsBlock = ({ level, coins, tiers, icons }) => {
 								}
 							</EditWrapper>
 						</th>
+						<th>
+							<EditWrapper stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.HEADER.LIMIT_2">
+								{
+									STRINGS[
+										'FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.HEADER.LIMIT_2'
+									]
+								}
+							</EditWrapper>
+						</th>
 					</tr>
 				</thead>
 				<tbody className="account-limits-content font-weight-bold">
-					{getRows(coins, level, tiers, icons)}
+					{getRows(coins, level, tiers, icons, transaction_limits)}
 				</tbody>
 			</table>
 		</div>

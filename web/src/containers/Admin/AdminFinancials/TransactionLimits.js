@@ -310,7 +310,7 @@ const TransactionLimits = ({ coins }) => {
 								<div className="mb-1">Tier</div>
 								<Select
 									showSearch
-									value={selectedData.tier || null}
+									value={selectedData.tier !== null ? selectedData.tier : null}
 									placeholder="Select Tier Level"
 									style={{ color: 'black', width: '100%' }}
 									notFoundContent={'Not Found'}

@@ -14,6 +14,7 @@ const {
 	GET_EMAIL,
 	GET_COINS,
 	GET_PAIRS,
+	GET_TRANSACTION_LIMITS,
 	GET_TIERS,
 	GET_KIT_CONFIG,
 	GET_KIT_SECRETS,
@@ -212,16 +213,12 @@ const updateKitConfigSecrets = (data = {}, scopes) => {
 		})
 		.then((status) => {
 			const info = getKitConfig().info;
-			if (data?.kit?.coin_customizations) {
-				publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
-			} else {
-				publisher.publish(
-					CONFIGURATION_CHANNEL,
-					JSON.stringify({
-						type: 'update', data: { kit: status.dataValues.kit, secrets: status.dataValues.secrets }
-					})
-				);
-			}
+			publisher.publish(
+				CONFIGURATION_CHANNEL,
+				JSON.stringify({
+					type: 'update', data: { kit: status.dataValues.kit, secrets: status.dataValues.secrets }
+				})
+			);
 			return {
 				kit: { ...status.dataValues.kit, info },
 				secrets: maskSecrets(status.dataValues.secrets)
@@ -255,6 +252,18 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 				newKitConfig.user_meta[metaKey],
 				...USER_META_KEYS
 			);
+		}
+	}
+
+	if (newKitConfig.coin_customizations) {
+		for(let coin of Object.values(newKitConfig.coin_customizations)) {
+			if(!coin.hasOwnProperty('fee_markup')) {
+				throw new Error('Fee markup key does not exist');
+			}
+
+			if (coin.fee_markup < 0) {
+				throw new Error('Fee markup cannot be negative');
+			}
 		}
 	}
 
@@ -814,6 +823,11 @@ const getQuickTrades = () => {
 	return GET_QUICKTRADE();
 };
 
+const getTransactionLimits = () => {
+	return GET_TRANSACTION_LIMITS();
+};
+
+
 const getNetworkQuickTrades = () => {
 	return GET_NETWORK_QUICKTRADE();
 }
@@ -889,5 +903,6 @@ module.exports = {
 	getQuickTrades,
 	getNetworkQuickTrades,
 	parseNumber,
-	getQuickTradePairs
+	getQuickTradePairs,
+	getTransactionLimits
 };

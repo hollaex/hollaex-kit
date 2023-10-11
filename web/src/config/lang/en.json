@@ -1567,7 +1567,8 @@
 					"SUBTITLE": "Assets that are separated from the collective limit rule that follow their own independent 24h withdrawal rule:",
 					"HEADER": {
 						"CURRENCY": "Currency/asset",
-						"LIMIT": "24h limit"
+						"LIMIT": "24h limit",
+						"LIMIT_2": "1 Month limit"
 					},
 					"LIMIT_TEXT": "(Assets that all share a collective withdrawal limit amount)"
 				},

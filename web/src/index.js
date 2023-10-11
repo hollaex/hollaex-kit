@@ -64,6 +64,7 @@ import {
 	setContracts,
 	setAllContracts,
 	setBroker,
+	setTransactionLimits,
 	setQuickTrade,
 	setAdminSortData,
 	setAdminWalletSortData,
@@ -189,6 +190,7 @@ const getConfigs = async () => {
 	store.dispatch(setAllContracts(constants));
 	store.dispatch(setBroker(constants.broker));
 	store.dispatch(setQuickTrade(constants.quicktrade));
+	store.dispatch(setTransactionLimits(constants.transactionLimits));
 	// store.dispatch(setPricesAndAsset({}, constants.coins));
 
 	const orderLimits = {};

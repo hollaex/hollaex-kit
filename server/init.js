@@ -6,7 +6,7 @@ const moment = require('moment');
 const rp = require('request-promise');
 const { loggerInit } = require('./config/logger');
 const { Op } = require('sequelize');
-const { User, Status, Tier, Broker, QuickTrade } = require('./db/models');
+const { User, Status, Tier, Broker, QuickTrade, TransactionLimit } = require('./db/models');
 const packageJson = require('./package.json');
 
 const { subscriber, publisher } = require('./db/pubsub');
@@ -127,20 +127,18 @@ const checkStatus = () => {
 					Tier.findAll(),
 					Broker.findAll({ attributes: ['id', 'symbol', 'buy_price', 'sell_price', 'paused', 'min_size', 'max_size']}),
 					QuickTrade.findAll(),
+					TransactionLimit.findAll(),
 					status.dataValues
 				]);
 			}
 		})
-		.then(async ([exchange, tiers, deals, quickTrades, status]) => {
+		.then(async ([exchange, tiers, deals, quickTrades, transactionLimits, status]) => {
 			loggerInit.info('init/checkStatus/activation', exchange.name, exchange.active);
 
 			const exchangePairs = [];
 
 			for (let coin of exchange.coins) {
-				configuration.coins[coin.symbol] = {
-					...coin,
-					...configuration?.kit?.coin_customizations?.[coin.symbol]
-				}
+				configuration.coins[coin.symbol] = coin;
 			}
 
 			for (let pair of exchange.pairs) {
@@ -148,6 +146,7 @@ const checkStatus = () => {
 				configuration.pairs[pair.name] = pair;
 			}
 
+			configuration.transaction_limits = transactionLimits;
 			configuration.broker = deals;
 			configuration.networkQuickTrades = [];
 

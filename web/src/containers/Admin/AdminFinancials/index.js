@@ -53,7 +53,7 @@ const AdminFinancials = ({ router, location, user }) => {
 				<TabPane tab="Assets" key="0">
 					<Assets location={location} handleHide={handleHide} />
 				</TabPane>
-				<TabPane tab="Coin Configuration" key="1">
+				<TabPane tab="Coin Fee Markups" key="1">
 					<CoinConfiguration location={location} />
 				</TabPane>
 				<TabPane tab="Transaction Limits" key="2">

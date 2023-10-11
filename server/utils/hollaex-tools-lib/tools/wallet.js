@@ -110,7 +110,7 @@ const findIndependentLimit = (limits = [], limit_currency) => {
 
 async function validateWithdrawal(user, address, amount, currency, network = null) {
 	const coinConfiguration = getKitCoin(currency);
-
+	const coinMarkup = getKitConfig()?.coin_customizations?.[currency];
 	if (!subscribedToCoin(currency)) {
 		throw new Error(INVALID_COIN(currency));
 	}
@@ -207,7 +207,7 @@ async function validateWithdrawal(user, address, amount, currency, network = nul
 	return {
 		fee,
 		fee_coin,
-		...(coinConfiguration?.fee_markup && { fee_markup: coinConfiguration.fee_markup })
+		...(coinMarkup?.fee_markup && { fee_markup: coinMarkup.fee_markup })
 	};
 }
 

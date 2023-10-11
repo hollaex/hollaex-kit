@@ -1,11 +1,23 @@
 import { generateCoinIconId } from 'utils/icon';
 import { DEFAULT_COIN_DATA } from 'config/constants';
+import STRINGS from 'config/localizedStrings';
 
 export const modifyCoinsData = (coins) => {
 	Object.entries(coins).forEach(([key, data]) => {
 		const { display_name } = data;
 		data.display_name = (display_name ? display_name : key).toUpperCase();
 		data.icon_id = generateCoinIconId(key);
+		data.fullname =
+			STRINGS[`${data.symbol?.toUpperCase()}_FULLNAME`] || data.fullname;
+	});
+
+	return coins;
+};
+
+export const overWriteCoinNames = (coins) => {
+	Object.entries(coins).forEach(([key, data]) => {
+		data.fullname =
+			STRINGS[`${data.symbol?.toUpperCase()}_FULLNAME`] || data.fullname;
 	});
 
 	return coins;

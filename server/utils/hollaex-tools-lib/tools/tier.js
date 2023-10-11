@@ -305,6 +305,10 @@ const updateTransactionLimit = async (id, data) => {
            throw new Error('Invalid coin ' + limit_currency);
     }
 
+	if(tier && tier < 0) {
+		throw new Error('tier cannot be a negative number other than -1')
+	}
+
 	if (amount < 0 && amount !== -1) {
 		throw new Error('amount cannot be a negative number other than -1')
 	}
