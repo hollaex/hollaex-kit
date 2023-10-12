@@ -1570,7 +1570,9 @@
 						"LIMIT": "24h limit",
 						"LIMIT_2": "1 Month limit"
 					},
-					"LIMIT_TEXT": "(Assets that all share a collective withdrawal limit amount)"
+					"LIMIT_TEXT": "(Assets that all share a collective withdrawal limit amount)",
+					"LIMIT_TEXT_2": "(Limit based only on its own currency)",
+					"LIMIT_TEXT_3": "(Limit based on aggreation of other currencies)"
 				},
 				"TABLE_2": {
 					"TITLE": "Collective shared standard withdrawal limit",

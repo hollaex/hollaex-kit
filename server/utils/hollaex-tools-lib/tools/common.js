@@ -32,7 +32,7 @@ const {
 	SUPPORT_DISABLED,
 	NO_NEW_DATA
 } = require(`${SERVER_PATH}/messages`);
-const { each, difference, isPlainObject, isString, pick, isNil, omit } = require('lodash');
+const { each, difference, isPlainObject, isString, pick, isNil, omit, isNumber } = require('lodash');
 const { publisher } = require('./database/redis');
 const { sendEmail: sendSmtpEmail } = require(`${SERVER_PATH}/mail`);
 const { sendSMTPEmail: nodemailerEmail } = require(`${SERVER_PATH}/mail/utils`);
@@ -263,6 +263,10 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 
 			if (coin.fee_markup < 0) {
 				throw new Error('Fee markup cannot be negative');
+			}
+
+			if (coin.fee_markup && !isNumber(coin.fee_markup)) {
+				throw new Error('Fee markup is not a number');
 			}
 		}
 	}

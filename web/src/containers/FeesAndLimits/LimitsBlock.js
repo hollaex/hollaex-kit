@@ -1,33 +1,33 @@
 import React, { Fragment } from 'react';
 
 // import { CurrencyBall } from '../../../components';
-import { DEFAULT_COIN_DATA, BASE_CURRENCY } from 'config/constants';
+// import { DEFAULT_COIN_DATA, BASE_CURRENCY } from 'config/constants';
 import STRINGS from 'config/localizedStrings';
-import { formatToCurrency } from 'utils/currency';
+// import { formatToCurrency } from 'utils/currency';
 import { Coin, EditWrapper } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
 
-const getLimitValue = (limit, increment_unit, baseName) => {
-	if (limit === undefined || limit === null || limit === '') {
-		return 'N/A';
-	} else if (limit === 0) {
-		return (
-			<EditWrapper stringId="LEVELS.UNLIMITED">
-				{STRINGS['LEVELS.UNLIMITED']}
-			</EditWrapper>
-		);
-	} else if (limit === -1) {
-		return (
-			<EditWrapper stringId="LEVELS.BLOCKED">
-				{STRINGS['LEVELS.BLOCKED']}
-			</EditWrapper>
-		);
-	} else {
-		return increment_unit
-			? `${formatToCurrency(limit, increment_unit)} ${baseName}`
-			: `${limit} ${baseName}`;
-	}
-};
+// const getLimitValue = (limit, increment_unit, baseName) => {
+// 	if (limit === undefined || limit === null || limit === '') {
+// 		return 'N/A';
+// 	} else if (limit === 0) {
+// 		return (
+// 			<EditWrapper stringId="LEVELS.UNLIMITED">
+// 				{STRINGS['LEVELS.UNLIMITED']}
+// 			</EditWrapper>
+// 		);
+// 	} else if (limit === -1) {
+// 		return (
+// 			<EditWrapper stringId="LEVELS.BLOCKED">
+// 				{STRINGS['LEVELS.BLOCKED']}
+// 			</EditWrapper>
+// 		);
+// 	} else {
+// 		return increment_unit
+// 			? `${formatToCurrency(limit, increment_unit)} ${baseName}`
+// 			: `${limit} ${baseName}`;
+// 	}
+// };
 
 /*const getDepositRow = (currency, index, coins, level, tier) => {
 	const { symbol = '', fullname, increment_unit } =
@@ -65,8 +65,8 @@ const getLimitValue = (limit, increment_unit, baseName) => {
 // };
 
 const getRows = (coins, level, tiers, ICONS, transaction_limits) => {
-	const { display_name: baseName, increment_unit } =
-		coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+	// const { display_name: baseName, increment_unit } =
+	// 	coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 
 	// const { /*deposit_limit,*/ withdrawal_limit } = transaction_limits?.find(limit => limit.tier === level)?.amount || {};
 	return (
@@ -101,6 +101,7 @@ const getRows = (coins, level, tiers, ICONS, transaction_limits) => {
 							limit.period === '1mo' &&
 							limit.type === 'withdrawal'
 					);
+
 					return (
 						<tr className="table-row" key={index}>
 							<td className="table-icon td-fit" />
@@ -112,16 +113,29 @@ const getRows = (coins, level, tiers, ICONS, transaction_limits) => {
 							</td>
 							<td>
 								{limit_24h ? (
-									getLimitValue(limit_24h.amount, increment_unit, baseName)
-								) : limit_24h_default ? (
-									<div style={{ width: '80%' }}>
-										<EditWrapper stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.LIMIT_TEXT">
+									<div>
+										{limit_24h.amount} {limit_24h?.currency?.toUpperCase()}{' '}
+										<EditWrapper stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.LIMIT_TEXT_2">
 											{
 												STRINGS[
-													'FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.LIMIT_TEXT'
+													'FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.LIMIT_TEXT_2'
 												]
 											}
 										</EditWrapper>
+									</div>
+								) : limit_24h_default ? (
+									<div style={{ width: '80%' }}>
+										<div>
+											{limit_24h_default.amount}{' '}
+											{limit_24h_default?.currency?.toUpperCase()}{' '}
+											<EditWrapper stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.LIMIT_TEXT_3">
+												{
+													STRINGS[
+														'FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.LIMIT_TEXT_3'
+													]
+												}
+											</EditWrapper>
+										</div>
 									</div>
 								) : (
 									'N/A'
@@ -130,16 +144,29 @@ const getRows = (coins, level, tiers, ICONS, transaction_limits) => {
 
 							<td>
 								{limit_1mo ? (
-									getLimitValue(limit_1mo.amount, increment_unit, baseName)
-								) : limit_1mo_default ? (
-									<div style={{ width: '80%' }}>
-										<EditWrapper stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.LIMIT_TEXT">
+									<div>
+										{limit_1mo.amount} {limit_1mo?.currency?.toUpperCase()}{' '}
+										<EditWrapper stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.LIMIT_TEXT_2">
 											{
 												STRINGS[
-													'FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.LIMIT_TEXT'
+													'FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.LIMIT_TEXT_2'
 												]
 											}
 										</EditWrapper>
+									</div>
+								) : limit_1mo_default ? (
+									<div>
+										<div>
+											{limit_1mo_default.amount}{' '}
+											{limit_1mo_default?.currency?.toUpperCase()}{' '}
+											<EditWrapper stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.LIMIT_TEXT_3">
+												{
+													STRINGS[
+														'FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.LIMIT_TEXT_3'
+													]
+												}
+											</EditWrapper>
+										</div>
 									</div>
 								) : (
 									'N/A'
