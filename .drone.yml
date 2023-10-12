@@ -346,7 +346,7 @@ steps:
     branch: master
   
 - name: slack_noti_to_releases
-  image: bitholla/devops-tools:drone_partymaker-0.1.5
+  image: bitholla/devops-tools:drone_partymaker-220208
   environment:
     WEBHOOK_URL:
       from_secret: webhook_url
@@ -354,7 +354,7 @@ steps:
     status: [success, failure]
 
 - name: notify_to_discord_releases
-  image: bitholla/devops-tools:drone_partymaker-0.1.5
+  image: bitholla/devops-tools:drone_partymaker-220208
   channel: deployment
   settings:
     target: discord
