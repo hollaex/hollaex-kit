@@ -91,13 +91,14 @@ export const getMiniCharts = async (pairs) => {
 			let symbolKey = symbol + '-' + quote; 
 
 			if(!result[symbolKey]) {
-				result[symbolKey] = [];
+				result[symbolKey] = {
+					price:[],
+					time:[]
+				};
 			}
 
-			result[symbolKey].push({
-				price,
-				time
-			});
+			result[symbolKey].price.push(price);
+			result[symbolKey].time.push(time);
 			
 		});
 	});

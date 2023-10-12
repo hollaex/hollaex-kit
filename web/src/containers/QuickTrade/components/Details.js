@@ -6,6 +6,50 @@ import { Coin, EditWrapper, PriceChange } from 'components';
 import STRINGS from 'config/localizedStrings';
 import SparkLine from 'containers/TradeTabs/components/SparkLine';
 
+import HighchartsReact from 'highcharts-react-official';
+import Highcharts from 'highcharts';
+
+const DEFAULT_CHART_OPTIONS = {
+	tooltip: {
+		enabled: false,
+	},
+	title: {
+		text: null,
+	},
+	legend: {
+		enabled: false,
+	},
+	chart: {
+		styledMode: true,
+	},
+	xAxis: {
+		type: 'linear',
+		allowDecimals: false,
+		visible: false,
+	},
+	yAxis: {
+		visible: false,
+	},
+	plotOptions: {
+		series: {
+			className: 'main-color',
+			negativeColor: true,
+			marker: {
+				enabled: false,
+				states: {
+					hover: {
+						enabled: false,
+					},
+				},
+			},
+		},
+	},
+	pane: {
+		size: '100%',
+	},
+	
+};
+
 const Details = ({ coins, constants, market, router, lineChartData }) => {
 	const { icon_id, key, fullMarketName, ticker = {} } = market;
 	const [pairBase, pair_2] = market.key.split('-');
@@ -15,6 +59,7 @@ const Details = ({ coins, constants, market, router, lineChartData }) => {
 			router.push(`/trade/${pair}`);
 		}
 	};
+	console.log('lineChartData', lineChartData);
 
 	return (
 		<div className="trade-details-wrapper">
@@ -54,12 +99,19 @@ const Details = ({ coins, constants, market, router, lineChartData }) => {
 				</div>
 				<div className="chart w-100">
 					<div className="fade-area" />
-					<SparkLine
-						data={lineChartData || []}
+					<HighchartsReact
+						highcharts={Highcharts}
+						options={{
+							...DEFAULT_CHART_OPTIONS,
+							series: [{
+								name: 'price',
+								data: lineChartData.price,
+								pointStart: 0
+							}
+						]}}
 						containerProps={{
 							style: { height: '100%', width: '100%' },
 						}}
-						renderDefaultLine
 					/>
 				</div>
 				<div className="d-flex pb-35">
