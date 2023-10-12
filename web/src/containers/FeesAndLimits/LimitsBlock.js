@@ -7,27 +7,50 @@ import STRINGS from 'config/localizedStrings';
 import { Coin, EditWrapper } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
 
-// const getLimitValue = (limit, increment_unit, baseName) => {
-// 	if (limit === undefined || limit === null || limit === '') {
-// 		return 'N/A';
-// 	} else if (limit === 0) {
-// 		return (
-// 			<EditWrapper stringId="LEVELS.UNLIMITED">
-// 				{STRINGS['LEVELS.UNLIMITED']}
-// 			</EditWrapper>
-// 		);
-// 	} else if (limit === -1) {
-// 		return (
-// 			<EditWrapper stringId="LEVELS.BLOCKED">
-// 				{STRINGS['LEVELS.BLOCKED']}
-// 			</EditWrapper>
-// 		);
-// 	} else {
-// 		return increment_unit
-// 			? `${formatToCurrency(limit, increment_unit)} ${baseName}`
-// 			: `${limit} ${baseName}`;
-// 	}
-// };
+const getLimitValue = (transactionLimit, isDefault = false) => {
+	if (
+		transactionLimit.amount === undefined ||
+		transactionLimit.amount === null ||
+		transactionLimit.amount === ''
+	) {
+		return 'N/A';
+	} else if (transactionLimit.amount === 0) {
+		return (
+			<EditWrapper stringId="LEVELS.UNLIMITED">
+				{STRINGS['LEVELS.UNLIMITED']}
+			</EditWrapper>
+		);
+	} else if (transactionLimit.amount === -1) {
+		return (
+			<EditWrapper stringId="LEVELS.BLOCKED">
+				{STRINGS['LEVELS.BLOCKED']}
+			</EditWrapper>
+		);
+	} else {
+		return (
+			<div>
+				{transactionLimit.amount} {transactionLimit?.currency?.toUpperCase()}{' '}
+				{!isDefault ? (
+					<EditWrapper stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.LIMIT_TEXT_2">
+						{
+							STRINGS[
+								'FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.LIMIT_TEXT_2'
+							]
+						}
+					</EditWrapper>
+				) : (
+					<EditWrapper stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.LIMIT_TEXT_3">
+						{
+							STRINGS[
+								'FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.LIMIT_TEXT_3'
+							]
+						}
+					</EditWrapper>
+				)}
+			</div>
+		);
+	}
+};
 
 /*const getDepositRow = (currency, index, coins, level, tier) => {
 	const { symbol = '', fullname, increment_unit } =
@@ -113,29 +136,10 @@ const getRows = (coins, level, tiers, ICONS, transaction_limits) => {
 							</td>
 							<td>
 								{limit_24h ? (
-									<div>
-										{limit_24h.amount} {limit_24h?.currency?.toUpperCase()}{' '}
-										<EditWrapper stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.LIMIT_TEXT_2">
-											{
-												STRINGS[
-													'FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.LIMIT_TEXT_2'
-												]
-											}
-										</EditWrapper>
-									</div>
+									<div>{getLimitValue(limit_24h)}</div>
 								) : limit_24h_default ? (
 									<div style={{ width: '80%' }}>
-										<div>
-											{limit_24h_default.amount}{' '}
-											{limit_24h_default?.currency?.toUpperCase()}{' '}
-											<EditWrapper stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.LIMIT_TEXT_3">
-												{
-													STRINGS[
-														'FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.LIMIT_TEXT_3'
-													]
-												}
-											</EditWrapper>
-										</div>
+										<div>{getLimitValue(limit_24h_default, true)}</div>
 									</div>
 								) : (
 									'N/A'
@@ -144,29 +148,10 @@ const getRows = (coins, level, tiers, ICONS, transaction_limits) => {
 
 							<td>
 								{limit_1mo ? (
-									<div>
-										{limit_1mo.amount} {limit_1mo?.currency?.toUpperCase()}{' '}
-										<EditWrapper stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.LIMIT_TEXT_2">
-											{
-												STRINGS[
-													'FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.LIMIT_TEXT_2'
-												]
-											}
-										</EditWrapper>
-									</div>
+									<div>{getLimitValue(limit_1mo)}</div>
 								) : limit_1mo_default ? (
 									<div>
-										<div>
-											{limit_1mo_default.amount}{' '}
-											{limit_1mo_default?.currency?.toUpperCase()}{' '}
-											<EditWrapper stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.LIMIT_TEXT_3">
-												{
-													STRINGS[
-														'FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.LIMIT_TEXT_3'
-													]
-												}
-											</EditWrapper>
-										</div>
+										<div>{getLimitValue(limit_1mo_default, true)}</div>
 									</div>
 								) : (
 									'N/A'
