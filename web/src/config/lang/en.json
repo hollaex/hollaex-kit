@@ -1575,8 +1575,8 @@
 					"LIMIT_TEXT_3": "(Limit based on aggreation of other currencies)"
 				},
 				"TABLE_2": {
-					"TITLE": "Collective shared standard withdrawal limit",
-					"SUBTITLE": "Below are the assets that all share the same standard 24h withdrawal limit amount rule:"
+					"TITLE": "Asset withdrawal limits",
+					"SUBTITLE": "Below are the assets with their withdrawal limit amount rules:"
 				}
 			}
 		}
