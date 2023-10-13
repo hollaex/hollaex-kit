@@ -324,10 +324,16 @@ const UserStaking = ({ coins }) => {
 							<div style={{ display: 'flex', flexDirection: 'column' }}>
 								Appox. stake value:{' '}
 								{stakingAnayltics?.stakingAmount?.map((stake) => {
+									const incrementUnit = coins[stake?.currency].increment_unit;
+									const decimalPoint = new BigNumber(incrementUnit).dp();
+									const sourceAmount = new BigNumber(stake.total_amount)
+										.decimalPlaces(decimalPoint)
+										.toNumber();
+
 									return (
 										<div>
 											<span style={{ fontWeight: 'bold' }}></span>{' '}
-											{stake.total_amount} {stake?.currency?.toUpperCase()}
+											{sourceAmount} {stake?.currency?.toUpperCase()}
 										</div>
 									);
 								})}
@@ -337,10 +343,15 @@ const UserStaking = ({ coins }) => {
 								<div style={{ display: 'flex', flexDirection: 'column' }}>
 									Value unstaking:{' '}
 									{stakingAnayltics?.unstakingAmount?.map((stake) => {
+										const incrementUnit = coins[stake?.currency].increment_unit;
+										const decimalPoint = new BigNumber(incrementUnit).dp();
+										const sourceAmount = new BigNumber(stake.total_amount)
+											.decimalPlaces(decimalPoint)
+											.toNumber();
 										return (
 											<div>
 												<span style={{ fontWeight: 'bold' }}></span>{' '}
-												{stake.total_amount} {stake?.currency?.toUpperCase()}
+												{sourceAmount} {stake?.currency?.toUpperCase()}
 											</div>
 										);
 									})}
