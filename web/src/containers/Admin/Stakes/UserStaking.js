@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Spin, Input } from 'antd';
-import { requestStakersByAdmin } from './actions';
+import { requestStakersByAdmin, getStakingAnalytics } from './actions';
 import moment from 'moment';
 import BigNumber from 'bignumber.js';
 import { ExclamationCircleFilled } from '@ant-design/icons';
@@ -19,6 +19,8 @@ const UserStaking = ({ coins }) => {
 	});
 
 	const [userQuery, setUserQuery] = useState({ user_id: null });
+
+	const [stakingAnayltics, setStakingAnalytics] = useState({});
 
 	const statuses = {
 		staking: 2,
@@ -154,6 +156,9 @@ const UserStaking = ({ coins }) => {
 	useEffect(() => {
 		// setIsLoading(true);
 		requestExchangeStakers(queryFilters.page, queryFilters.limit);
+		getStakingAnalytics().then((res) => {
+			setStakingAnalytics(res.data);
+		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -200,35 +205,35 @@ const UserStaking = ({ coins }) => {
 		setQueryFilters({ ...queryFilters, currentTablePage: count });
 	};
 
-	const accumulateStakeValue = (stakes) => {
-		const res = Array.from(
-			stakes.reduce(
-				//eslint-disable-next-line
-				(m, { currency, amount }) =>
-					m.set(currency, (m.get(currency) || 0) + amount),
-				new Map()
-			),
-			([currency, amount]) => ({ currency, amount })
-		);
+	// const accumulateStakeValue = (stakes) => {
+	// 	const res = Array.from(
+	// 		stakes.reduce(
+	// 			//eslint-disable-next-line
+	// 			(m, { currency, amount }) =>
+	// 				m.set(currency, (m.get(currency) || 0) + amount),
+	// 			new Map()
+	// 		),
+	// 		([currency, amount]) => ({ currency, amount })
+	// 	);
 
-		return res;
-	};
+	// 	return res;
+	// };
 
-	const accumulateUnstakeValue = (stakes) => {
-		const res = Array.from(
-			stakes
-				.filter((stake) => stake.status === 'unstaking')
-				.reduce(
-					//eslint-disable-next-line
-					(m, { currency, amount }) =>
-						m.set(currency, (m.get(currency) || 0) + amount),
-					new Map()
-				),
-			([currency, amount]) => ({ currency, amount })
-		);
+	// const accumulateUnstakeValue = (stakes) => {
+	// 	const res = Array.from(
+	// 		stakes
+	// 			.filter((stake) => stake.status === 'unstaking')
+	// 			.reduce(
+	// 				//eslint-disable-next-line
+	// 				(m, { currency, amount }) =>
+	// 					m.set(currency, (m.get(currency) || 0) + amount),
+	// 				new Map()
+	// 			),
+	// 		([currency, amount]) => ({ currency, amount })
+	// 	);
 
-		return res;
-	};
+	// 	return res;
+	// };
 
 	return (
 		<div>
@@ -316,26 +321,29 @@ const UserStaking = ({ coins }) => {
 								<span style={{ fontWeight: 'bold' }}>Total stakers:</span>{' '}
 								{queryFilters.total} users
 							</div>
-							<div style={{ display: 'flex' }}>
+							<div style={{ display: 'flex', flexDirection: 'column' }}>
 								Appox. stake value:{' '}
-								{accumulateStakeValue(userData).map((stake) => (
-									<div>
-										<span style={{ fontWeight: 'bold' }}></span> {stake.amount}{' '}
-										{stake.currency.toUpperCase()}
-									</div>
-								))}
+								{stakingAnayltics?.stakingAmount?.map((stake) => {
+									return (
+										<div>
+											<span style={{ fontWeight: 'bold' }}></span>{' '}
+											{stake.total_amount} {stake?.currency?.toUpperCase()}
+										</div>
+									);
+								})}
 							</div>
 							<div>-</div>
 							<div>
-								<div style={{ display: 'flex' }}>
+								<div style={{ display: 'flex', flexDirection: 'column' }}>
 									Value unstaking:{' '}
-									{accumulateUnstakeValue(userData).map((stake) => (
-										<div>
-											<span style={{ fontWeight: 'bold' }}></span>{' '}
-											{stake.amount}{' '}
-											{(stake.reward_currency || stake.currency).toUpperCase()}
-										</div>
-									))}
+									{stakingAnayltics?.unstakingAmount?.map((stake) => {
+										return (
+											<div>
+												<span style={{ fontWeight: 'bold' }}></span>{' '}
+												{stake.total_amount} {stake?.currency?.toUpperCase()}
+											</div>
+										);
+									})}
 								</div>
 							</div>
 						</div>
