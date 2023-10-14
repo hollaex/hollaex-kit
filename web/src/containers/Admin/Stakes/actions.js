@@ -162,3 +162,10 @@ export const getSlashEstimate = (id) => {
 export const getSlashEstimateAdmin = (id) => {
 	return requestAuthenticated(`/admin/stake/slash-estimate?id=${id}`);
 };
+
+export const getStakingAnalytics = () => {
+	return axios({
+		method: 'GET',
+		url: `/admin/stake/analytics`,
+	});
+};
