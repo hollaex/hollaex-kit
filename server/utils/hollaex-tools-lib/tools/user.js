@@ -2209,8 +2209,6 @@ const changeKitUserEmail = async (userId, newEmail) => {
 		return reject(new Error(PROVIDE_VALID_EMAIL));
 	}
 	
-	await revokeAllUserSessions(userId);
-	
 	const userEmail = user.email;
 	if (userEmail === newEmail) {
 		throw new Error(EMAIL_IS_SAME);
@@ -2230,9 +2228,11 @@ const changeKitUserEmail = async (userId, newEmail) => {
 		throw new Error(EMAIL_EXISTS);
 	}
 
+	await revokeAllUserSessions(userId);
+
 	const updatedUser = await user.update(
 		{ email: newEmail },
-		{ fields: ['email' ], returning: true }
+		{ fields: ['email'], returning: true }
 	);
 
 	return updatedUser;
