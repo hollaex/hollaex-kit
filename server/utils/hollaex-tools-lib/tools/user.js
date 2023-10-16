@@ -54,6 +54,9 @@ const {
 	SESSION_ALREADY_REVOKED,
 	WRONG_USER_SESSION,
 	USER_ALREADY_RECOVERED,
+	CANNOT_CHANGE_ADMIN_EMAIL,
+	EMAIL_IS_SAME,
+	EMAIL_EXISTS
 } = require(`${SERVER_PATH}/messages`);
 const { publisher, client } = require('./database/redis');
 const {
@@ -2184,6 +2187,57 @@ const restoreKitUser = async (userId) => {
 	);
 };
 
+const changeKitUserEmail = async (userId, newEmail) => {
+	const user = await dbQuery.findOne('user', {
+		where: {
+			id: userId
+		},
+		attributes: [
+			'id',
+			'email',
+		]
+	});
+
+	if (!user) {
+		throw new Error(USER_NOT_FOUND);
+	}
+	if (user.is_admin) {
+		throw new Error(CANNOT_CHANGE_ADMIN_EMAIL);
+	}
+
+	if (!isEmail(newEmail)) {
+		return reject(new Error(PROVIDE_VALID_EMAIL));
+	}
+	
+	await revokeAllUserSessions(userId);
+	
+	const userEmail = user.email;
+	if (userEmail === newEmail) {
+		throw new Error(EMAIL_IS_SAME);
+	}
+
+	const isExists = await dbQuery.findOne('user', {
+		where: {
+			email: newEmail
+		},
+		attributes: [
+			'id',
+			'email',
+		]
+	});
+
+	if (isExists) {
+		throw new Error(EMAIL_EXISTS);
+	}
+	
+	const updatedUser = await user.update(
+		{ email: newEmail },
+		{ fields: ['email',], returning: true }
+	);
+
+	return updatedUser;
+};
+
 module.exports = {
 	loginUser,
 	getUserTier,
@@ -2244,5 +2298,6 @@ module.exports = {
 	getAllBalancesAdmin,
 	deleteKitUser,
 	restoreKitUser,
-	revokeAllUserSessions
+	revokeAllUserSessions,
+	changeKitUserEmail
 };

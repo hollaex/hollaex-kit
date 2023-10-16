@@ -251,3 +251,6 @@ exports.UNSTAKE_PERIOD_ERROR = 'Cannot unstake, period is not over';
 exports.STAKE_UNSUPPORTED_EXCHANGE_PLAN = 'Your current exchange plan does not support cefi staking feature';
 exports.NO_ORACLE_PRICE_FOUND = 'There is no price for asset for rewarding in Oracle';
 exports.REWARD_CURRENCY_CANNOT_BE_SAME = 'Reward currency cannot be same as the main currency'
+exports.CANNOT_CHANGE_ADMIN_EMAIL = 'Cannot change admin email';
+exports.EMAIL_IS_SAME = 'New email cannot be same as the existing one';
+exports.EMAIL_EXISTS = 'This email already exists';
