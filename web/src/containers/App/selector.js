@@ -34,6 +34,15 @@ export const menuItemsSelector = createSelector(
 						hide_from_menulist: hide_from_menulist || !features[id],
 						hide_from_bottom_nav: hide_from_bottom_nav || !features[id],
 					};
+
+					if (
+						id === 'stake_page' &&
+						(hide_from_menulist || features.cefi_stake)
+					) {
+						item.hide_from_menulist = false;
+						item.hide_from_sidebar = false;
+					}
+
 					return item;
 				}
 			);

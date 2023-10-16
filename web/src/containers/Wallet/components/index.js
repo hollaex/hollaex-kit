@@ -1,11 +1,12 @@
 import React from 'react';
-import { ActionNotification, IconTitle } from '../../../components';
+import math from 'mathjs';
+import { ActionNotification, Help, IconTitle } from '../../../components';
 import DumbField from '../../../components/Form/FormFields/DumbField';
 import {
 	generateWalletActionsText,
 	formatToCurrency,
 } from '../../../utils/currency';
-import { DEFAULT_COIN_DATA } from '../../../config/constants';
+import { BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
 import { EditWrapper } from 'components';
 
@@ -75,6 +76,23 @@ export const renderTitle = (symbol, type = 'withdraw', coins) => {
 	);
 };
 
+export const renderTotalBalance = (currency, balance, coins) => {
+	const { min } = coins[currency] || DEFAULT_COIN_DATA;
+	const balanceValue = balance[`${currency}_balance`] || 0;
+
+	return (
+		<div className="text">
+			<EditWrapper stringId="CURRENCY_WALLET.TOTAL_BALANCE">
+				{STRINGS.formatString(
+					STRINGS['CURRENCY_WALLET.TOTAL_BALANCE'],
+					formatToCurrency(balanceValue, min),
+					currency.toUpperCase()
+				)}
+			</EditWrapper>
+		</div>
+	);
+};
+
 export const renderAvailableBalanceText = (currency, balance, coins) => {
 	const { fullname, min, display_name } = coins[currency] || DEFAULT_COIN_DATA;
 	const available = formatToCurrency(balance[`${currency}_available`], min);
@@ -83,13 +101,14 @@ export const renderAvailableBalanceText = (currency, balance, coins) => {
 		<div className="text">
 			<EditWrapper
 				stringId="AVAILABLE_BALANCE_TEXT"
-				renderWrapper={(children) => <p>{children}</p>}
+				renderWrapper={(children) => <p className="mb-0">{children}</p>}
 			>
 				{STRINGS.formatString(
 					STRINGS['AVAILABLE_BALANCE_TEXT'],
 					fullname,
 					available,
-					display_name
+					display_name,
+					<Help tip={STRINGS['CURRENCY_WALLET.TOOLTIP']} />
 				)}
 			</EditWrapper>
 		</div>
@@ -114,7 +133,7 @@ export const renderNeedHelpAction = (
 );
 
 export const renderInformation = (
-	symbol,
+	symbol = BASE_CURRENCY,
 	balance,
 	openContactForm,
 	generateBaseInformation,
@@ -122,13 +141,59 @@ export const renderInformation = (
 	type = 'withdraw',
 	links = {},
 	helpIcon,
-	iconId
+	iconId,
+	orders
 ) => {
+	const { fullname, min, display_name } = coins[symbol] || DEFAULT_COIN_DATA;
+	const _available = balance[`${symbol}_available`] || 0;
+	const _balance = balance[`${symbol}_balance`] || 0;
+	const hold = math.subtract(
+		math.fraction(_balance),
+		math.fraction(_available)
+	);
+
+	const ordersOfSymbol = orders.filter((order) => {
+		if (symbol === BASE_CURRENCY) {
+			return order.side === 'buy';
+		} else {
+			return order.symbol === symbol && order.side === 'sell';
+		}
+	}).length;
+
+	const TextHolders = ({ ordersOfSymbol, currencySymbol, hold, name }) => {
+		const ordersText =
+			ordersOfSymbol > 1
+				? STRINGS['WALLET.ORDERS_PLURAL']
+				: STRINGS['WALLET.ORDERS_SINGULAR'];
+		const symbolComponent = <span className="text-uppercase">{name}</span>;
+		return (
+			<div className="text">
+				{STRINGS.formatString(
+					STRINGS['WALLET.HOLD_ORDERS'],
+					ordersOfSymbol,
+					ordersText,
+					hold,
+					currencySymbol,
+					symbolComponent
+				)}
+			</div>
+		);
+	};
+
 	return (
 		<div className="information_block">
 			<div className="information_block-text_wrapper">
 				{renderTitle(symbol, type, coins)}
+				{renderTotalBalance(symbol, balance, coins)}
 				{renderAvailableBalanceText(symbol, balance, coins)}
+				{ordersOfSymbol > 0 && (
+					<TextHolders
+						ordersOfSymbol={ordersOfSymbol}
+						currencySymbol={display_name}
+						hold={formatToCurrency(hold, min)}
+						name={display_name || fullname}
+					/>
+				)}
 			</div>
 			{openContactForm &&
 				renderNeedHelpAction(openContactForm, links, helpIcon, iconId)}

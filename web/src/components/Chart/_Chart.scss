@@ -10,9 +10,10 @@
 }
 
 .donut-label-no-price {
-	font-size: 0.7rem;
+	font-size: 9px;
 	font-weight: bold;
 	fill: $colors-black;
+	font-family: $raleway--font-family;
 }
 
 .donut-label-pair {
@@ -52,5 +53,11 @@
 	}
 	.donut-label-link {
 		font-size: 1rem;
+	}
+}
+
+@media (max-width: 768px) {
+	.donut-label-no-price {
+		font-size: 8px !important;
 	}
 }
