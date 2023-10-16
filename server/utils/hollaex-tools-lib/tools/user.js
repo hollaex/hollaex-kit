@@ -2229,10 +2229,10 @@ const changeKitUserEmail = async (userId, newEmail) => {
 	if (isExists) {
 		throw new Error(EMAIL_EXISTS);
 	}
-	
+
 	const updatedUser = await user.update(
 		{ email: newEmail },
-		{ fields: ['email',], returning: true }
+		{ fields: ['email' ], returning: true }
 	);
 
 	return updatedUser;
