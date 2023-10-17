@@ -16,11 +16,35 @@
 
 	&.disabled {
 		background-color: $colors-deactivate-color4 !important;
+
+		.button-icon {
+			svg {
+				fill: rgba(0, 0, 0, 0.38) !important;
+			}
+		}
 	}
 	&:active,
 	&:focus {
 		outline: none;
 		border: none;
+	}
+
+	.button-icon {
+		position: relative;
+		margin-right: 0.5rem;
+
+		svg {
+			fill: #fff;
+			margin-top: 0.5rem;
+		}
+	}
+
+	.reverse-direction {
+		flex-direction: row-reverse;
+		.button-icon {
+			margin-right: 0;
+			margin-left: 0.5rem;
+		}
 	}
 }
 

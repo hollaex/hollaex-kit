@@ -6,7 +6,7 @@ const { STAKE_SUPPORTED_PLANS } = require(`${SERVER_PATH}/constants`)
 const { getUserByKitId } = require('./user');
 const { subscribedToCoin, getKitConfig, getAssetsPrices } = require('./common');
 const { transferAssetByKitIds, getUserBalanceByKitId } = require('./wallet');
-const { Op } = require('sequelize');
+const { Op, fn, col } = require('sequelize');
 const BigNumber = require('bignumber.js');
 const { paginationQuery, timeframeQuery, orderingQuery } = require('./database/helpers');
 const dbQuery = require('./database/query');
@@ -660,6 +660,30 @@ const unstakeEstimateSlashAdmin = async (id) => {
     return { reward };
 }
 
+
+const fetchStakeAnalytics = async () => {
+    const stakingAmount = await getModel('staker').findAll({ 
+        attributes: [
+            'currency',
+            [fn('sum', col('amount')), 'total_amount'],
+        ],
+        group: ['currency'],
+    });
+    const unstakingAmount = await getModel('staker').findAll({ 
+        where: {  status: 'unstaking' }, 
+        attributes: [
+            'currency',
+            [fn('sum', col('amount')), 'total_amount'],
+        ],
+        group: ['currency'],
+    });
+
+    return {
+        stakingAmount,
+        unstakingAmount
+    }
+}
+
 module.exports = {
 	getExchangeStakePools,
     createExchangeStakePool,
@@ -668,5 +692,6 @@ module.exports = {
     createExchangeStaker,
     deleteExchangeStaker,
     unstakeEstimateSlash,
-    unstakeEstimateSlashAdmin
+    unstakeEstimateSlashAdmin,
+    fetchStakeAnalytics
 };

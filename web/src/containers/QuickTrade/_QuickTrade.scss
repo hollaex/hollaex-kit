@@ -22,6 +22,46 @@
 	.disabled-area {
 		opacity: 0.3;
 	}
+
+	.quote_expiry_content {
+		margin-top: 1rem;
+
+		p {
+			margin: 0;
+		}
+
+		.clock-icon {
+			margin-right: 0.75rem;
+		}
+
+		&.expired-content {
+			* {
+				color: #fe9d00;
+			}
+		}
+	}
+
+	.expiry-progress {
+		display: flex;
+		.ant-progress.ant-progress-line.ant-progress-status-normal.ant-progress-small,
+		.ant-progress-outer {
+			display: flex;
+			border-radius: 0;
+		}
+
+		.ant-progress-inner {
+			background-color: transparent;
+			border-radius: 0;
+		}
+
+		.ant-progress-bg {
+			border-radius: 0;
+		}
+	}
+
+	.expired-block {
+		opacity: 0.25;
+	}
 }
 
 .quote-countdown-wrapper {

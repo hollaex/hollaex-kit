@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
@@ -20,6 +20,7 @@ import {
 	EditWrapper,
 	Help,
 	DonutChart,
+	Image,
 } from 'components';
 import {
 	formatCurrencyByIncrementalUnit,
@@ -59,6 +60,10 @@ const AssetsBlock = ({
 	setSortModeAmount,
 	chartData,
 }) => {
+	const emptyDonut = useMemo(() => {
+		return chartData && !!chartData.length;
+	}, [chartData]);
+
 	const handleClickAmount = () => {
 		if (mode === WALLET_SORT.AMOUNT) {
 			toggleSort();
@@ -141,7 +146,13 @@ const AssetsBlock = ({
 	return showDustSection ? (
 		<DustSection goToWallet={goToWallet} />
 	) : (
-		<div className="wallet-assets_block">
+		<div
+			className={
+				emptyDonut
+					? 'wallet-assets_block'
+					: 'wallet-assets_block empty-wallet-assets_block'
+			}
+		>
 			{isMobile ? (
 				<section className="ml-4 pt-4">
 					{totalAssets.length && !loading ? (
@@ -208,9 +219,16 @@ const AssetsBlock = ({
 					<div className="d-flex align-items-center justify-content-between">
 						<div className="d-flex align-items-center">
 							<div
-								className={classnames('donut-container mb-4', {
-									'd-flex align-items-center justify-content-center loading-wrapper': !chartData.length,
-								})}
+								className={classnames(
+									`${
+										emptyDonut
+											? 'donut-container'
+											: 'donut-container donut-container-empty'
+									}`,
+									{
+										'd-flex align-items-center justify-content-center loading-wrapper': !chartData.length,
+									}
+								)}
 							>
 								{chartData.length ? (
 									<DonutChart
@@ -227,7 +245,7 @@ const AssetsBlock = ({
 								)}
 							</div>
 							{totalAssets.length && !loading ? (
-								<div>
+								<div className="mb-3">
 									<EditWrapper
 										stringId="WALLET_ESTIMATED_TOTAL_BALANCE"
 										render={(children) => (
@@ -245,7 +263,7 @@ const AssetsBlock = ({
 									>
 										{STRINGS['WALLET_ESTIMATED_TOTAL_BALANCE']}
 									</EditWrapper>
-									<div className="d-flex align-items-center">
+									<div className="d-flex align-items-center mt-2">
 										<EditWrapper stringId="DUST.TOOLTIP,DUST.LINK">
 											<Help tip={STRINGS['DUST.TOOLTIP']}>
 												<div
@@ -267,9 +285,25 @@ const AssetsBlock = ({
 								</div>
 							)}
 						</div>
+						<Image
+							icon={ICONS['WALLET_GRAPHIC']}
+							wrapperClassName="wallet-graphic-icon"
+						/>
+					</div>
+					<div className="d-flex justify-content-between pl-3 pr-3">
+						<div>
+							<EditWrapper stringId="WALLET_ASSETS_SEARCH_TXT">
+								<SearchBox
+									name="search-assets"
+									placeHolder={`${STRINGS['WALLET_ASSETS_SEARCH_TXT']}...`}
+									handleSearch={handleSearch}
+									showCross
+								/>
+							</EditWrapper>
+						</div>
 						<div className="d-flex justify-content-between zero-balance-wrapper row-reverse">
 							<div className="d-flex">
-								<div className="d-flex align-items-center">
+								<div className="d-flex align-items-center mt-4">
 									<span>
 										<EditWrapper stringId="WALLET_HIDE_ZERO_BALANCE">
 											{STRINGS['WALLET_HIDE_ZERO_BALANCE']}
@@ -283,16 +317,6 @@ const AssetsBlock = ({
 								</div>
 							</div>
 						</div>
-					</div>
-					<div className="d-flex row-reverse">
-						<EditWrapper stringId="WALLET_ASSETS_SEARCH_TXT">
-							<SearchBox
-								name="search-assets"
-								placeHolder={`${STRINGS['WALLET_ASSETS_SEARCH_TXT']}...`}
-								handleSearch={handleSearch}
-								showCross
-							/>
-						</EditWrapper>
 					</div>
 				</section>
 			)}

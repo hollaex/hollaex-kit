@@ -3501,6 +3501,27 @@ table th {
     color: var(--labels_secondary-inactive-label-text-graphics); }
   .quote-review-wrapper .disabled-area {
     opacity: 0.3; }
+  .quote-review-wrapper .quote_expiry_content {
+    margin-top: 1rem; }
+    .quote-review-wrapper .quote_expiry_content p {
+      margin: 0; }
+    .quote-review-wrapper .quote_expiry_content .clock-icon {
+      margin-right: 0.75rem; }
+    .quote-review-wrapper .quote_expiry_content.expired-content * {
+      color: #fe9d00; }
+  .quote-review-wrapper .expiry-progress {
+    display: flex; }
+    .quote-review-wrapper .expiry-progress .ant-progress.ant-progress-line.ant-progress-status-normal.ant-progress-small,
+    .quote-review-wrapper .expiry-progress .ant-progress-outer {
+      display: flex;
+      border-radius: 0; }
+    .quote-review-wrapper .expiry-progress .ant-progress-inner {
+      background-color: transparent;
+      border-radius: 0; }
+    .quote-review-wrapper .expiry-progress .ant-progress-bg {
+      border-radius: 0; }
+  .quote-review-wrapper .expired-block {
+    opacity: 0.25; }
 
 .quote-countdown-wrapper {
   display: flex;
@@ -8316,9 +8337,22 @@ table th {
     background-color: var(--specials_notifications-alerts-warnings) !important; }
   .holla-button.disabled {
     background-color: var(--labels_inactive-button) !important; }
+    .holla-button.disabled .button-icon svg {
+      fill: rgba(0, 0, 0, 0.38) !important; }
   .holla-button:active, .holla-button:focus {
     outline: none;
     border: none; }
+  .holla-button .button-icon {
+    position: relative;
+    margin-right: 0.5rem; }
+    .holla-button .button-icon svg {
+      fill: #fff;
+      margin-top: 0.5rem; }
+  .holla-button .reverse-direction {
+    flex-direction: row-reverse; }
+    .holla-button .reverse-direction .button-icon {
+      margin-right: 0;
+      margin-left: 0.5rem; }
 
 .checkbutton-wrapper {
   font-size: 1.1rem;
@@ -9211,6 +9245,18 @@ table th {
   .input-group__container:hover {
     border-color: var(--labels_important-active-labels-text-graphics); }
 
+.quick_trade-wrapper .quote-expired-block-wrapper {
+  margin-top: 1rem; }
+  .quick_trade-wrapper .quote-expired-block-wrapper .quote-expired-text p.small-text {
+    margin: 0;
+    padding: 0;
+    color: #fff; }
+  .quick_trade-wrapper .quote-expired-block-wrapper .requote-button {
+    width: 100px;
+    margin-left: 13px;
+    margin-top: 0;
+    flex-direction: row-reverse; }
+
 .language_rtl .quick_trade-wrapper {
   font-family: inherit; }
   .language_rtl .quick_trade-wrapper .input_block-title {
@@ -9268,10 +9314,12 @@ table th {
       margin-right: 0.5rem; }
   .quick_trade-wrapper .review-block-wrapper .with_price-block_amount {
     margin: 0; }
+  .quick_trade-wrapper .balance-wallet {
+    padding-bottom: 0.5rem; }
   .quick_trade-wrapper .input-group__error-wrapper {
     color: red;
-    margin-top: 0.5rem;
-    float: right; }
+    float: right;
+    min-height: auto; }
   .quick_trade-wrapper .input_block-title {
     font-size: 1.3rem;
     font-family: "Raleway Medium"; }

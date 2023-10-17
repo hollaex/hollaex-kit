@@ -3465,7 +3465,7 @@ paths:
       description: Get slash amount for stake pool
       operationId: unstakeEstimateSlashAdmin
       tags:
-        - User
+        - Admin
       parameters:
         - in: query
           name: id
@@ -3590,6 +3590,31 @@ paths:
           description: CSV
           schema:
             type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
+      x-token-permissions:
+        - can_read
+  /admin/stake/analytics:
+    x-swagger-router-controller: stake
+    get:
+      description: Get staking and unstaking amounts
+      operationId: fetchStakeAnalytics
+      tags:
+        - Admin
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
         default:
           description: Error
           schema:

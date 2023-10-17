@@ -32,6 +32,7 @@ import {
 import { getQuickTrade, executeQuickTrade } from 'actions/quickTradeActions';
 import { FieldError } from 'components/Form/FormFields/FieldWrapper';
 import { translateError } from 'components/QuickTrade/utils';
+import QuoteExpiredBlock from './QuoteExpiredBlock';
 
 const PAIR2_STATIC_SIZE = 0.000001;
 const SPENDING = {
@@ -92,6 +93,7 @@ const QuickTrade = ({
 	const [data, setData] = useState({});
 	const [mounted, setMounted] = useState(false);
 	const [expiry, setExpiry] = useState();
+	const [hasExpiredOnce, setHasExpiredOnce] = useState(false);
 	const [time, setTime] = useState(moment());
 
 	const resetForm = () => {
@@ -335,6 +337,13 @@ const QuickTrade = ({
 		}, 1000);
 	}, []);
 
+	useEffect(() => {
+		if (!hasExpiredOnce && time.isAfter(moment(expiry))) {
+			setHasExpiredOnce(true);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [hasExpiredOnce, time]);
+
 	const isExpired = time.isAfter(moment(expiry));
 
 	const { balance: userBalance } = user;
@@ -360,6 +369,16 @@ const QuickTrade = ({
 		onSelectSource(selectedTarget);
 		// ToDo: to remove that jump issue from the swap, the use Effect logic shuold be integrated to the select function
 		setTimeout(() => onSelectTarget(selectedSource), 0.1);
+	};
+
+	const onRequoteClick = () => {
+		getQuote({
+			sourceAmount,
+			targetAmount,
+			selectedSource,
+			selectedTarget,
+			spending: true,
+		});
 	};
 
 	return (
@@ -458,22 +477,30 @@ const QuickTrade = ({
 								text={coins[selectedTarget]?.display_name}
 								balance={selectedTargetBalance}
 								onClick={targetTotalBalance}
+								className="balance-wallet"
 							/>
 
-							{error ? (
+							{error?.length ? (
 								<FieldError
 									error={translateError(error)}
 									displayError={true}
 									className="input-group__error-wrapper"
 								/>
 							) : isExpired ? (
-								<FieldError
-									error={STRINGS['QUICK_TRADE_QUOTE_EXPIRED']}
-									displayError={true}
-									className="input-group__error-wrapper"
-								/>
+								<>
+									<FieldError
+										error={STRINGS['QUICK_TRADE_QUOTE_EXPIRED']}
+										displayError={true}
+										className="input-group__error-wrapper"
+									/>
+								</>
 							) : null}
-
+							{hasExpiredOnce && (
+								<QuoteExpiredBlock
+									onRequoteClick={onRequoteClick}
+									isExpired={isExpired}
+								/>
+							)}
 							<div
 								className={classnames(
 									'quick_trade-section_wrapper',
@@ -525,6 +552,8 @@ const QuickTrade = ({
 							targetAmount={targetAmount}
 							selectedTarget={selectedTarget}
 							disabled={submitting}
+							time={time}
+							expiry={expiry}
 						/>
 					) : (
 						<QuoteResult

@@ -203,9 +203,8 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 								}}
 								style={{
 									backgroundColor: '#5D63FF',
-									color: theme === 'dark' ? 'white' : 'black',
 								}}
-								className="ant-btn green-btn ant-tooltip-open ant-btn-primary"
+								className="ant-btn green-btn ant-tooltip-open ant-btn-primary stake_theme"
 							>
 								{data.stake.early_unstake &&
 								calculateRemainingDays(data?.stake?.duration, data.created_at)
@@ -294,15 +293,9 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 			<>
 				<Modal
 					maskClosable={false}
-					closeIcon={
-						<CloseOutlined
-							style={{ color: theme === 'dark' ? 'white' : 'black' }}
-						/>
-					}
-					bodyStyle={{
-						backgroundColor: theme === 'dark' ? '#303236' : '#F3F3F3',
-						marginTop: 60,
-					}}
+					closeIcon={<CloseOutlined className="stake_theme" />}
+					className="stake_table_theme stake_theme"
+					bodyStyle={{}}
 					visible={readBeforeAction}
 					width={800}
 					footer={null}
@@ -321,20 +314,18 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 								backgroundSize: 'cover',
 							}}
 						>
-							<h1 style={{ color: theme === 'dark' ? 'white' : 'black' }}>
-								Staking 101
-							</h1>
+							<h1 className="stake_theme">Staking 101</h1>
 						</div>
 						<div style={{ flex: 1 }}>
 							<h4
+								className="stake_theme"
 								style={{
-									color: theme === 'dark' ? 'white' : 'black',
 									fontWeight: 'bold',
 								}}
 							>
 								{STRINGS['CEFI_STAKE.READ_BEFORE_AGREE_AND_EARN']}
 							</h4>
-							<div style={{ color: theme === 'dark' ? 'white' : 'black' }}>
+							<div className="stake_theme">
 								{STRINGS['CEFI_STAKE.AGREEMENT_INTRODUCTION_1']}{' '}
 								<span style={{ fontWeight: 'bold' }}>
 									{STRINGS['CEFI_STAKE.AGREEMENT_INTRODUCTION_2']}
@@ -393,15 +384,9 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 			<>
 				<Modal
 					maskClosable={false}
-					closeIcon={
-						<CloseOutlined
-							style={{ color: theme === 'dark' ? 'white' : 'black' }}
-						/>
-					}
-					bodyStyle={{
-						backgroundColor: theme === 'dark' ? '#303236' : '#F3F3F3',
-						marginTop: 60,
-					}}
+					closeIcon={<CloseOutlined className="stake_theme" />}
+					className="stake_table_theme stake_theme"
+					bodyStyle={{}}
 					visible={stakeAmount}
 					width={400}
 					footer={null}
@@ -418,6 +403,7 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 						}}
 					>
 						<div
+							className="stake_theme"
 							style={{
 								display: 'flex',
 								justifyContent: 'center',
@@ -428,19 +414,16 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 								backgroundSize: 'cover',
 								width: '100%',
 								marginBottom: 10,
-								color: theme === 'dark' ? 'white' : 'black',
 							}}
 						>
-							<h3 style={{ color: theme === 'dark' ? 'white' : 'black' }}>
-								{selectedPool.name}
-							</h3>
+							<h3 className="stake_theme">{selectedPool.name}</h3>
 							<div>-</div>
 							<div>APY: {selectedPool.apy}%</div>
 						</div>
 						<div
+							className="stake_theme"
 							style={{
 								width: '100%',
-								color: theme === 'dark' ? 'white' : 'black',
 							}}
 						>
 							<div>
@@ -456,9 +439,9 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 							</div>
 							<div style={{ marginTop: 5 }}>
 								<Input
+									className="stake_theme"
 									style={{
 										backgroundColor: 'rgba(0,0,0,0.1)',
-										color: theme === 'dark' ? 'white' : 'black',
 									}}
 									placeholder="Input amount"
 									onChange={(e) => {
@@ -541,16 +524,9 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 			<>
 				<Modal
 					maskClosable={false}
-					closeIcon={
-						<CloseOutlined
-							style={{ color: theme === 'dark' ? 'white' : 'black' }}
-						/>
-					}
-					bodyStyle={{
-						backgroundColor: theme === 'dark' ? '#303236' : '#F3F3F3',
-						color: theme === 'dark' ? 'white' : 'black',
-						marginTop: 60,
-					}}
+					closeIcon={<CloseOutlined className="stake_theme" />}
+					className="stake_table_theme stake_theme"
+					bodyStyle={{}}
 					visible={duration}
 					width={420}
 					footer={null}
@@ -559,7 +535,7 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 					}}
 				>
 					<div>
-						<h1 style={{ color: theme === 'dark' ? 'white' : 'black' }}>
+						<h1 className="stake_theme">
 							{STRINGS['CEFI_STAKE.DURATION_LABEL']}
 						</h1>
 						<div>
@@ -571,9 +547,7 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 
 						{selectedPool.slashing && (
 							<>
-								<h4 style={{ color: theme === 'dark' ? 'white' : 'black' }}>
-									Slashing
-								</h4>
+								<h4 className="stake_theme">Slashing</h4>
 								<div>
 									{
 										STRINGS[
@@ -681,16 +655,9 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 			<>
 				<Modal
 					maskClosable={false}
-					closeIcon={
-						<CloseOutlined
-							style={{ color: theme === 'dark' ? 'white' : 'black' }}
-						/>
-					}
-					bodyStyle={{
-						backgroundColor: theme === 'dark' ? '#303236' : '#F3F3F3',
-						color: theme === 'dark' ? 'white' : 'black',
-						marginTop: 60,
-					}}
+					closeIcon={<CloseOutlined className="stake_theme" />}
+					className="stake_table_theme stake_theme"
+					bodyStyle={{}}
 					visible={stakeDetails}
 					width={450}
 					footer={null}
@@ -699,7 +666,7 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 					}}
 				>
 					<div>
-						<h1 style={{ color: theme === 'dark' ? 'white' : 'black' }}>
+						<h1 className="stake_theme">
 							{STRINGS['CEFI_STAKE.CHECK_STAKE_DETAILS_BUTTON']}
 						</h1>
 						<div>
@@ -783,16 +750,9 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 			<>
 				<Modal
 					maskClosable={false}
-					closeIcon={
-						<CloseOutlined
-							style={{ color: theme === 'dark' ? 'white' : 'black' }}
-						/>
-					}
-					bodyStyle={{
-						backgroundColor: theme === 'dark' ? '#303236' : '#F3F3F3',
-						color: theme === 'dark' ? 'white' : 'black',
-						marginTop: 60,
-					}}
+					closeIcon={<CloseOutlined className="stake_theme" />}
+					className="stake_table_theme stake_theme"
+					bodyStyle={{}}
 					visible={confirmStake}
 					width={400}
 					footer={null}
@@ -821,7 +781,7 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 								marginBottom: 20,
 							}}
 						>
-							<h3 style={{ color: theme === 'dark' ? 'white' : 'black' }}>
+							<h3 className="stake_theme">
 								{STRINGS['CEFI_STAKE.CONFIRM_BUTTON']}{' '}
 								{selectedPool.currency.toUpperCase()} Stake
 							</h3>
@@ -836,9 +796,9 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 							<div style={{ marginTop: 30 }}> Do you understand?</div>
 							<div style={{ marginTop: 5 }}>
 								<Input
+									className="stake_theme"
 									style={{
 										backgroundColor: 'rgba(0,0,0,0.1)',
-										color: theme === 'dark' ? 'white' : 'black',
 									}}
 									placeholder="Type 'I UNDERSTAND'"
 									onChange={(e) => setConfirmText(e.target.value)}
@@ -921,16 +881,9 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 			<>
 				<Modal
 					maskClosable={false}
-					closeIcon={
-						<CloseOutlined
-							style={{ color: theme === 'dark' ? 'white' : 'black' }}
-						/>
-					}
-					bodyStyle={{
-						backgroundColor: theme === 'dark' ? '#303236' : '#F3F3F3',
-						color: theme === 'dark' ? 'white' : 'black',
-						marginTop: 60,
-					}}
+					closeIcon={<CloseOutlined className="stake_theme" />}
+					className="stake_table_theme stake_theme"
+					bodyStyle={{}}
 					visible={confirmation}
 					width={450}
 					footer={null}
@@ -955,7 +908,7 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 								textAlign: 'center',
 							}}
 						>
-							<h3 style={{ color: theme === 'dark' ? 'white' : 'black' }}>
+							<h3 className="stake_theme">
 								{stakerAmount} {selectedPool.currency.toUpperCase()}
 							</h3>
 							<div>Successfully staked</div>
@@ -1026,16 +979,9 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 			<>
 				<Modal
 					maskClosable={false}
-					closeIcon={
-						<CloseOutlined
-							style={{ color: theme === 'dark' ? 'white' : 'black' }}
-						/>
-					}
-					bodyStyle={{
-						backgroundColor: theme === 'dark' ? '#303236' : '#F3F3F3',
-						color: theme === 'dark' ? 'white' : 'black',
-						marginTop: 60,
-					}}
+					closeIcon={<CloseOutlined className="stake_theme" />}
+					className="stake_table_theme stake_theme"
+					bodyStyle={{}}
 					visible={reviewUnstake}
 					width={400}
 					footer={null}
@@ -1059,9 +1005,7 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 								height: 200,
 							}}
 						>
-							<h3 style={{ color: theme === 'dark' ? 'white' : 'black' }}>
-								Review and unstake
-							</h3>
+							<h3 className="stake_theme">Review and unstake</h3>
 							<div>
 								<span style={{ fontWeight: 'bold' }}>
 									{STRINGS['CEFI_STAKE.TIME_REMAINING_LABEL']}:
@@ -1214,16 +1158,9 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 			<>
 				<Modal
 					maskClosable={false}
-					closeIcon={
-						<CloseOutlined
-							style={{ color: theme === 'dark' ? 'white' : 'black' }}
-						/>
-					}
-					bodyStyle={{
-						backgroundColor: theme === 'dark' ? '#303236' : '#F3F3F3',
-						color: theme === 'dark' ? 'white' : 'black',
-						marginTop: 60,
-					}}
+					closeIcon={<CloseOutlined className="stake_theme" />}
+					className="stake_table_theme stake_theme"
+					bodyStyle={{}}
 					visible={unstakeConfirm}
 					width={400}
 					footer={null}
@@ -1247,7 +1184,7 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 								height: 200,
 							}}
 						>
-							<h2 style={{ color: theme === 'dark' ? 'white' : 'black' }}>
+							<h2 className="stake_theme">
 								You've successfully unstaked{' '}
 								{selectedStaker.currency.toUpperCase()}
 							</h2>
@@ -1395,8 +1332,8 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 			>
 				<TabPane tab="POOLS" key="0">
 					<div
+						className="stake_table_theme"
 						style={{
-							backgroundColor: theme === 'dark' ? '#25262C' : '#F3F3F3',
 							width: '100%',
 							padding: 30,
 						}}
@@ -1410,9 +1347,9 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 						>
 							<div style={{ flex: 1 }}>
 								<div
+									className="stake_theme"
 									style={{
 										fontWeight: 'bold',
-										color: theme === 'dark' ? 'white' : 'black',
 									}}
 								>
 									{STRINGS['CEFI_STAKE.STAKE_POOL_TITLE']}
@@ -1461,8 +1398,8 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 
 									return (
 										<div
+											className="stakepool_card"
 											style={{
-												backgroundColor: theme === 'dark' ? '#2E2F35' : '#fff',
 												width: 330,
 												height: 300,
 												padding: 20,
@@ -1558,20 +1495,16 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 													</g>
 												</svg>
 											</div>
-											<h3
-												style={{
-													color: theme === 'dark' ? 'white' : 'black',
-												}}
-											>
+											<h3 className="stake_theme" style={{}}>
 												{pool.name}
 											</h3>
 											<div>
 												{pool.duration ? (
 													<>
 														<span
+															className="stake_theme"
 															style={{
 																fontWeight: 'bold',
-																color: theme === 'dark' ? 'white' : 'black',
 															}}
 														>
 															{STRINGS['CEFI_STAKE.DURATION_LABEL']}:
@@ -1584,9 +1517,9 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 											</div>
 											<div>
 												<span
+													className="stake_theme"
 													style={{
 														fontWeight: 'bold',
-														color: theme === 'dark' ? 'white' : 'black',
 													}}
 												>
 													APY:
@@ -1603,11 +1536,7 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 												{pool.max_amount} {pool.currency.toUpperCase()}
 											</div>
 											{pool?.reward_currency && (
-												<div
-													style={{
-														color: theme === 'dark' ? 'white' : 'black',
-													}}
-												>
+												<div className="stake_theme" style={{}}>
 													{STRINGS['CEFI_STAKE.REWARDS_IN_LABEL']}{' '}
 													<span style={{ fontWeight: 'bold' }}>
 														{pool.reward_currency.toUpperCase()}
@@ -1647,8 +1576,8 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 				</TabPane>
 				<TabPane tab="MY STAKES" key="1">
 					<div
+						className="stake_table_theme"
 						style={{
-							backgroundColor: theme === 'dark' ? '#25262C' : '#F3F3F3',
 							width: '100%',
 							padding: 30,
 						}}
@@ -1662,9 +1591,9 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 						>
 							<div style={{ flex: 1 }}>
 								<div
+									className="stake_theme"
 									style={{
 										fontWeight: 'bold',
-										color: theme === 'dark' ? 'white' : 'black',
 									}}
 								>
 									{STRINGS['CEFI_STAKE.ALL_STAKING_EVENTS']}
