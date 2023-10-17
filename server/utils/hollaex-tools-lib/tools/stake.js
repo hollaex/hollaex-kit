@@ -545,7 +545,7 @@ const createExchangeStaker = async (stake_id, amount, user_id) => {
 
     const stakers =  await getModel('staker').findAll({ where: { user_id, status: 'staking' } });
 
-    if (stakers.length > 12) {
+    if (stakers.length >= 12) {
         throw new Error(STAKE_MAX_ACTIVE);
     }
 
