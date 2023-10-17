@@ -90,8 +90,8 @@ const Details = ({ coins, constants, market, router, lineChartData }) => {
 					</div>
 					<div className="pl-6 trade_tabs-container">
 						<div className="sub-title caps">
-							<EditWrapper stringId="QUICK_TRADE_COMPONENT.CHANGE_TEXT">
-								{STRINGS['QUICK_TRADE_COMPONENT.CHANGE_TEXT']}
+							<EditWrapper stringId="QUICK_TRADE_COMPONENT.CHANGE_TEXT_7D">
+								{STRINGS['QUICK_TRADE_COMPONENT.CHANGE_TEXT_7D']}
 							</EditWrapper>
 						</div>
 						<PriceChange market={market} key={key} large />
@@ -117,8 +117,8 @@ const Details = ({ coins, constants, market, router, lineChartData }) => {
 				<div className="d-flex pb-35">
 					<div>
 						<div className="sub-title">
-							<EditWrapper stringId="QUICK_TRADE_COMPONENT.HIGH_24H">
-								{STRINGS['QUICK_TRADE_COMPONENT.HIGH_24H']}
+							<EditWrapper stringId="QUICK_TRADE_COMPONENT.HIGH_7D">
+								{STRINGS['QUICK_TRADE_COMPONENT.HIGH_7D']}
 							</EditWrapper>
 						</div>
 						<div className="d-flex">
@@ -130,8 +130,8 @@ const Details = ({ coins, constants, market, router, lineChartData }) => {
 					</div>
 					<div className="pl-6">
 						<div className="sub-title">
-							<EditWrapper stringId="QUICK_TRADE_COMPONENT.LOW_24H">
-								{STRINGS['QUICK_TRADE_COMPONENT.LOW_24H']}
+							<EditWrapper stringId="QUICK_TRADE_COMPONENT.LOW_7D">
+								{STRINGS['QUICK_TRADE_COMPONENT.LOW_7D']}
 							</EditWrapper>
 						</div>
 						<div className="d-flex">
@@ -172,8 +172,8 @@ const Details = ({ coins, constants, market, router, lineChartData }) => {
 				</div>
 				<div>
 					<div className="sub-title caps">
-						<EditWrapper stringId="SUMMARY.VOLUME_24H">
-							{STRINGS['SUMMARY.VOLUME_24H']}
+						<EditWrapper stringId="SUMMARY.VOLUME_7D">
+							{STRINGS['SUMMARY.VOLUME_7D']}
 						</EditWrapper>
 					</div>
 					<div className="d-flex">
