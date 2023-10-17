@@ -98,7 +98,7 @@ const unstakingCheckRunner = () => {
 				MAILTYPE.ALERT,
 				adminAccount.email,
 				{
-					type: 'Error in stake rewarding process!',
+					type: 'Error during unstaking process!',
 					data: err.message
 				},
 				adminAccount.settings
@@ -173,7 +173,7 @@ const updateRewardsCheckRunner = () => {
 				MAILTYPE.ALERT,
 				adminAccount.email,
 				{
-					type: 'Error in stake rewarding process!',
+					type: 'Error during stake rewarding process!',
 					data: err.message
 				},
 				adminAccount.settings
