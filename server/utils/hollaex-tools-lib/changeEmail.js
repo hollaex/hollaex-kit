@@ -7,7 +7,7 @@ const {
 	EMAIL_IS_SAME,
 	EMAIL_EXISTS
 } = require(`${SERVER_PATH}/messages`);
-
+const { isEmail } = require('validator');
 
 let userId;
 let newEmail;
