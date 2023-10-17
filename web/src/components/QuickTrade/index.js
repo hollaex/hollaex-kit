@@ -281,16 +281,15 @@ const QuickTrade = ({
 	const debouncedQuote = useRef(debounce(getQuote, 1000));
 
 	useEffect(() => {
-		
-		const assetValues = Object.keys(pairs).map((
-			val) => pairs[val].pair_base).toLocaleString();
+		const assetValues = Object.keys(coins).map((
+			val) => coins[val].code).toLocaleString();
 
 		getMiniCharts(assetValues)
 			.then((chartValues) =>{
 				setChartData(chartValues);
 			});
 
-	}, [pairs]);
+	}, [coins]);
 
 	useEffect(() => {
 		if (mounted) {
@@ -373,7 +372,7 @@ const QuickTrade = ({
 						'width-none': !isShowChartDetails,
 					})}
 				>
-					{!isMobile && isShowChartDetails && market && (
+					{!isMobile && market && (
 						<Details market={market} lineChartData={lineChartData} />
 					)}
 					<div className="d-flex flex-column trade-section">
