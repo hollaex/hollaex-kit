@@ -44,7 +44,7 @@ const ReviewOrder = ({
 
 	return (
 		<div className="quote-review-wrapper">
-			{showRisky ? <RiskyTrade setShowRisky={setShowRisky} />	:
+			{showRisky ? <RiskyTrade setShowRisky={setShowRisky} coinData={coins[selectedTarget]} onCloseDialog={onCloseDialog} />	:
 			(
 				<div>
 					<div className="mb-4">
