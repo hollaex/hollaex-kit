@@ -1786,13 +1786,18 @@ table th {
     color: var(--labels_important-active-labels-text-graphics) !important; }
     .wallet-container .accordion_wrapper .accordion_section_content_text:after {
       border-left-color: var(--calculated_important-border) !important; }
+  .wallet-container .empty-wallet-assets_block {
+    padding: 20px !important; }
   .wallet-container .wallet-assets_block {
     background-color: var(--base_wallet-sidebar-and-popup);
-    padding: 20px;
+    padding: 0px 20px;
     overflow-y: auto; }
     .wallet-container .wallet-assets_block .donut-container {
-      width: 18rem !important;
-      min-width: 18rem !important; }
+      width: 12rem !important;
+      min-width: 12rem !important; }
+    .wallet-container .wallet-assets_block .donut-container-empty {
+      width: 13rem !important;
+      min-width: 13rem !important; }
     .wallet-container .wallet-assets_block .td-wallet {
       min-width: 225px; }
       .wallet-container .wallet-assets_block .td-wallet .deposit-withdrawal-wrapper {
@@ -1845,6 +1850,8 @@ table th {
       width: 100px; }
     .wallet-container .wallet-assets_block .loading-row-anime.w-full {
       width: 200px; }
+    .wallet-container .wallet-assets_block .wallet-graphic-icon {
+      opacity: 0.1; }
   .wallet-container .accordion_wrapper .action_notification-wrapper {
     position: relative; }
   .wallet-container .action-button-wrapper {
@@ -7410,8 +7417,10 @@ table th {
     border-right-color: var(--labels_important-active-labels-text-graphics); }
 
 @media (min-width: 1920px) {
+  .wallet-wrapper .donut-container-empty {
+    height: 14rem !important; }
   .wallet-wrapper .donut-container {
-    height: 19rem; }
+    height: 16rem; }
     .wallet-wrapper .donut-container .donut-label-pair {
       font-size: 1rem; } }
 
@@ -9172,7 +9181,7 @@ table th {
   fill: var(--specials_buttons-links-and-highlights); }
 
 .donut-label-no-price {
-  font-size: 12px;
+  font-size: 9px;
   font-weight: bold;
   fill: var(--labels_secondary-inactive-label-text-graphics);
   font-family: "Raleway"; }
@@ -10901,7 +10910,9 @@ svg .stake-pending,
 svg .staking-unlock,
 svg .send-email-code,
 svg .move-xht,
-svg .connect-desktop {
+svg .connect-desktop,
+svg .wallet-graphic,
+svg .wallet-graphic-1 {
   fill: var(--labels_important-active-labels-text-graphics); }
 
 svg .deposit-history-2,
