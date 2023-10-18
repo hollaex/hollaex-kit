@@ -118,3 +118,33 @@
 		margin: auto;
 	}
 }
+
+.risky-trade-disclaimer {
+	.disclaimer-title {
+		font-size: xx-large;
+		text-align: center;
+		margin: 2rem auto;
+	}
+
+	.disclaimer-msg {
+		font-size: small;
+		margin: 2dvh auto;
+	}
+
+	.extreme-volatility-msg {
+		color:#FFAA00;
+	}
+
+	.disclaimer-checkbox span {
+		color: #fff;
+		opacity: 0.7;
+	}
+
+	.disclaimer-checkbox.disclaimer-checkbox-selected span {
+		opacity: 1;
+	}
+
+	.coin-icon-container {
+		text-align: center;
+	}
+}
