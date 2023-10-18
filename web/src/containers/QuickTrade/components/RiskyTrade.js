@@ -7,12 +7,24 @@ import classNames from 'classnames';
 
 export const RiskyTrade = ({ setShowRisky, coinData, onCloseDialog }) => {
     const [enableProceedBtn, setEnableProceedBtn] = useState(false);
-    console.log(coinData);
-    const { icon_id, fullname, display_name } = coinData;
+    const { icon_id, fullname, display_name, code } = coinData;
 
     const toggleRisk = (e) => {
         setEnableProceedBtn(e.target.checked);
+    };
+
+    const handleProceedClick = () => {
+        localstoreRiskyCoin();
+        setShowRisky(false);
+    };
+
+    const localstoreRiskyCoin = () => {
+        const localRiskyItems = localStorage.getItem('riskyItems');
+        const riskyItems = localRiskyItems ? JSON.parse(localRiskyItems)  : {};
+        riskyItems[code] = true;
+        localStorage.setItem('riskyItems', JSON.stringify(riskyItems));
     }
+
     return (
         <div className='risky-trade-disclaimer'>
             <div className="mb-4">
@@ -55,7 +67,7 @@ export const RiskyTrade = ({ setShowRisky, coinData, onCloseDialog }) => {
                 />
                 <Button
                     label={STRINGS['CONFIRM_TEXT']}
-                    onClick={() => {setShowRisky(false)}}
+                    onClick={handleProceedClick}
                     className="ml-2"
                     disabled={!enableProceedBtn}
                 />

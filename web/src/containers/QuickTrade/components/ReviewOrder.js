@@ -26,10 +26,24 @@ const ReviewOrder = ({
 	const [timeToExpiry, setTimeToExpiry] = useState(
 		moment(expiry).diff(moment(time), 'seconds')
 	);
-	const [showRisky, setShowRisky] = useState(coins[selectedTarget]?.is_risky);
+
+	const getShowCoinRisky = () => {
+		const {is_risky, code} = coins[selectedTarget];
+
+		if(is_risky) {
+			const localRiskyItems = localStorage.getItem('riskyItems');
+			const riskyItems = localRiskyItems ? JSON.parse(localRiskyItems)  : {};
+			const isNotWarn = !riskyItems[code];
+			return isNotWarn;
+		}
+
+		return false;
+	}
+
+	const [showRisky, setShowRisky] = useState(getShowCoinRisky());
 
 	const [isExpired, setIsExpired] = useState(timeToExpiry <= 0);
-
+		
 	useEffect(() => {
 		// Update the timer every second
 		const timerInterval = setInterval(() => {
