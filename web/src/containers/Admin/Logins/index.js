@@ -26,6 +26,12 @@ const LOGIN_COLUMNS = [
 		key: 'timestamp',
 		render: formatDate,
 	},
+	{
+		title: 'Success',
+		dataIndex: 'status',
+		key: 'status',
+		render: (data) => (data ? 'Yes' : 'No'),
+	},
 ];
 // const SCV_LOGIN_COLUMNS = [
 // 	{ label: 'IP', dataIndex: 'ip', key: 'ip' },
