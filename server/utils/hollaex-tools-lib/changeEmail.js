@@ -9,14 +9,8 @@ const {
 } = require(`${SERVER_PATH}/messages`);
 const { isEmail } = require('validator');
 
-let userId;
-let newEmail;
-if (process.argv.slice(2).length && process.argv.slice(2)[0].split('=')[1]) {
-	userId = process.argv.slice(2).length && process.argv.slice(2)[0].split('=')[1];
-}
-if (process.argv.slice(3).length && process.argv.slice(3)[0].split('=')[1]) {
-	newEmail = process.argv.slice(3).length && process.argv.slice(3)[0].split('=')[1];
-}
+let userId = process.env.USER_ID;
+let newEmail = process.env.EMAIL;
 
 const changeEmail = async () => {
 	const user = await dbQuery.findOne('user', {
