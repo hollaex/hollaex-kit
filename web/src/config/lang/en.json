@@ -212,7 +212,9 @@
 		"SOURCE_TEXT": "Broker OTC deal",
 		"SOURCE_TEXT_NETWORK": "Network broker OTC deal",
 		"VISIT": "Visit{0}",
-		"ASSET_INFO_PAGE": "Assets info page"
+		"ASSET_INFO_PAGE": "Assets info page",
+		"COIN_NAME": "{0} ({1})",
+		"COIN_INFORMATION": "{0} information"
 	},
 	"PREVIOUS_PAGE": "previous page",
 	"NEXT_PAGE": "next page",
@@ -1486,6 +1488,8 @@
 			"CLOSE": "close"
 		}
 	},
+	"ASSET_INFO": "Asset info",
+	"TAKER_FEES_APPLIED": "Taker fees are applied",
 	"ASSET_INFO_PAGE": "Asset info page",
 	"DIGITAL_ASSETS": {
 		"DIGITAL_ASSETS_TITLE": "Digital assets",

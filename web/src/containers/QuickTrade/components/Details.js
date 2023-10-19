@@ -59,7 +59,6 @@ const Details = ({ coins, constants, market, router, lineChartData }) => {
 			router.push(`/trade/${pair}`);
 		}
 	};
-	console.log('lineChartData', lineChartData);
 
 	return (
 		<div className="trade-details-wrapper">

@@ -155,6 +155,18 @@ $title-icon--height: 10rem;
 				margin: 0 !important;
 				width: 100% !important;
 			}
+
+			.main-coin-wrapper {
+				opacity: 0.3;
+			}
+
+			.light-grey-title {
+				color: #BBBBBB;
+			}
+
+			.grey-title {
+				color: #808080;
+			}
 		}
 
 		.f-size-16 {
@@ -372,3 +384,4 @@ $title-icon--height: 10rem;
 	width: 310px;
 	padding: 0 1rem;
 }
+

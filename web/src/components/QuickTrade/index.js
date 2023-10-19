@@ -24,6 +24,7 @@ import Footer from 'containers/QuickTrade/components/Footer';
 import Balance from 'containers/QuickTrade/components/Balance';
 import QuoteResult from 'containers/QuickTrade/QuoteResult';
 import ReviewOrder from 'containers/QuickTrade/components/ReviewOrder';
+import { NoBrokerSection } from './NoBroker';
 import { flipPair } from 'containers/QuickTrade/components/utils';
 import {
 	getSourceOptions,
@@ -380,7 +381,7 @@ const QuickTrade = ({
 			spending: true,
 		});
 	};
-
+	
 	return (
 		<Fragment>
 			<div className="quick_trade-container">
@@ -391,8 +392,11 @@ const QuickTrade = ({
 						'width-none': !isShowChartDetails,
 					})}
 				>
-					{!isMobile && market && (
-						<Details market={market} lineChartData={lineChartData} />
+					{!isMobile && (
+						market ? (
+							<Details market={market} lineChartData={lineChartData} />
+						): 
+						<NoBrokerSection coinData={coins[selectedTarget]}/> 
 					)}
 					<div className="d-flex flex-column trade-section">
 						<div className="inner-content">
