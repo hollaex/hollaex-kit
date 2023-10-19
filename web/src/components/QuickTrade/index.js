@@ -554,6 +554,7 @@ const QuickTrade = ({
 							disabled={submitting}
 							time={time}
 							expiry={expiry}
+							coins={coins}
 						/>
 					) : (
 						<QuoteResult

@@ -1448,6 +1448,12 @@
 	"WITHDRAWALS_FORM_ADDRESS_EXCHANGE": "Exchange user email",
 	"WITHDRAWALS_FORM_EXCHANGE_PLACEHOLDER": "Input user's email on this exchange",
 	"WITHDRAWALS_FORM_MAIL_INFO": "Input a user's HollaEx account email that is on this exchange and transfer for free.",
+	"RISKY_TRADE_DISCLAIMER": {
+		"MSG_1": "Please check that you indeed want to trade {0} ({1}) as this asset may carry a high risk of",
+		"MSG_2": "extreme volatility",
+		"MSG_3": "Type 'I UNDERSTAND' below to confirm that you understand that this asset's value is uncertain and not guaranteed.",
+		"UNDERSTAND_RISK_MSG": "Yes, I understand the risks"
+	},
 	"DUST": {
 		"TITLE": "Wallet duster",
 		"LINK": "Wallet duster",
