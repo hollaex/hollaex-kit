@@ -93,6 +93,16 @@ const unstakingCheckRunner = () => {
 
 
 		} catch (err) {
+			const adminAccount = await toolsLib.user.getUserByKitId(1);
+			sendEmail(
+				MAILTYPE.ALERT,
+				adminAccount.email,
+				{
+					type: 'Error during unstaking process!',
+					data: err.message
+				},
+				adminAccount.settings
+			);
 			loggerPlugin.error(
 				'/plugins unstaking status check error:',
 				err.message
@@ -127,6 +137,10 @@ const updateRewardsCheckRunner = () => {
 					// If the current date is after the closing date, we should stop calculating rewarding after closing date.
 					// If there is no closing date, It means we are in a perpatual stake pool, we keep calculating rewarding until user unstakes.
 					if (closedDate && closedDate < stakingDate) {
+						await staker.update({ status: 'unstaking', unstaked_date: new Date() }, {
+							fields: ['status', 'unstaked_date']
+						});
+				
 						continue;
 					}
 
@@ -154,6 +168,16 @@ const updateRewardsCheckRunner = () => {
 			}
 
 		} catch (err) {
+			const adminAccount = await toolsLib.user.getUserByKitId(1);
+			sendEmail(
+				MAILTYPE.ALERT,
+				adminAccount.email,
+				{
+					type: 'Error during stake rewarding process!',
+					data: err.message
+				},
+				adminAccount.settings
+			);
 			loggerPlugin.error(
 				'/plugins update rewards check error:',
 				err.message

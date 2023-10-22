@@ -39,7 +39,8 @@ const {
     STAKE_POOL_NOT_ACTIVE_FOR_UNSTAKING_STATUS,
     UNSTAKE_PERIOD_ERROR,
     STAKE_UNSUPPORTED_EXCHANGE_PLAN,
-    REWARD_CURRENCY_CANNOT_BE_SAME
+    REWARD_CURRENCY_CANNOT_BE_SAME,
+    STAKE_MAX_ACTIVE
     
 } = require(`${SERVER_PATH}/messages`);
 
@@ -540,6 +541,12 @@ const createExchangeStaker = async (stake_id, amount, user_id) => {
 
     if (new BigNumber(amount).comparedTo(new BigNumber(stakePool.min_amount)) !== 1) {
         throw new Error(STAKE_POOL_MIN_AMOUNT_ERROR);
+    }
+
+    const stakers =  await getModel('staker').findAll({ where: { user_id, status: 'staking' } });
+
+    if (stakers.length >= 12) {
+        throw new Error(STAKE_MAX_ACTIVE);
     }
 
     const staker = {
