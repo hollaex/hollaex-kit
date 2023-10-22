@@ -465,6 +465,7 @@ class App extends Component {
 					<Notification
 						type={type}
 						data={rest}
+						coins={this.props.coins}
 						onConfirm={data.onConfirm}
 						onBack={this.onCloseDialog}
 					/>

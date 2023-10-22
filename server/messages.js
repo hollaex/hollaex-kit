@@ -245,6 +245,7 @@ exports.AMOUNT_INSUFFICIENT_ERROR = 'You do not have enough funds for the amount
 exports.STAKE_POOL_MAX_AMOUNT_ERROR = 'the amount is higher than the max amount set for the stake pool';
 exports.STAKE_POOL_MIN_AMOUNT_ERROR = 'the amount is lower than the min amount set for the stake pool';
 exports.STAKER_NOT_EXIST = 'Staker does not exist';
+exports.STAKE_MAX_ACTIVE = 'Cannot have more than 12 active stakes';
 exports.STAKE_POOL_NOT_ACTIVE_FOR_UNSTAKING_ONBOARDING = 'Stake pool is not active for unstaking';
 exports.STAKE_POOL_NOT_ACTIVE_FOR_UNSTAKING_STATUS = 'Cannot unstake in a pool that is not active';
 exports.UNSTAKE_PERIOD_ERROR = 'Cannot unstake, period is not over';
