@@ -2195,6 +2195,7 @@ const changeKitUserEmail = async (userId, newEmail) => {
 		attributes: [
 			'id',
 			'email',
+			'is_admin',
 		]
 	});
 
