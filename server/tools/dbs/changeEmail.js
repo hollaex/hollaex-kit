@@ -10,6 +10,8 @@ const {
 	EMAIL_EXISTS
 } = require('../../messages');
 const { isEmail } = require('validator');
+const { sendEmail } = require('../../mail');
+const { MAILTYPE } = require('../../mail/strings');
 
 let userId = process.env.USER_ID;
 let newEmail = process.env.EMAIL;
@@ -64,6 +66,16 @@ const changeEmail = async () => {
 	const updatedUser = await user.update(
 		{ email: newEmail },
 		{ fields: ['email'], returning: true }
+	);
+
+	sendEmail(
+		MAILTYPE.ALERT,
+		null,
+		{
+			type: 'Email changed',
+			data: `User email ${userEmail} changed to ${newEmail} by admin`
+		},
+		{}
 	);
 
 	return updatedUser;
