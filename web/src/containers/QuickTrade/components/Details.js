@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import _get from 'lodash/get';
@@ -8,6 +8,7 @@ import SparkLine from 'containers/TradeTabs/components/SparkLine';
 
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts';
+import UserData from 'containers/Admin/User/UserData';
 
 const DEFAULT_CHART_OPTIONS = {
 	tooltip: {
@@ -50,13 +51,24 @@ const DEFAULT_CHART_OPTIONS = {
 	
 };
 
-const Details = ({ coins, constants, market, router, lineChartData }) => {
-	const { icon_id, key, fullMarketName, ticker = {} } = market;
-	const [pairBase, pair_2] = market.key.split('-');
 
-	const handleClick = (pair) => {
-		if (pair && router && _get(constants, 'features.pro_trade')) {
-			router.push(`/trade/${pair}`);
+const Details = ({ coins, constants, market, router, lineChartData, coinData, selectedSource, selectedTarget }) => {
+	console.log('coinData',coinData);
+	console.log('selectedSource',selectedSource);
+	console.log('selectedTarget',selectedTarget);
+	const { fullMarketName, ticker = {} } = market || {};
+	const { icon_id } = coinData;
+
+	const pairBase = selectedTarget;
+	const pair_2 = selectedSource;
+
+	const [sevenDayData, setSevenDayData] = useState(lineChartData);
+
+	console.log(coins[pairBase] && coins[pairBase].display_name)
+
+	const handleClick = () => {
+		if (selectedTarget && selectedSource  && router && _get(constants, 'features.pro_trade')) {
+			router.push(`/trade/${selectedTarget}-${selectedSource}`);
 		}
 	};
 
@@ -66,7 +78,7 @@ const Details = ({ coins, constants, market, router, lineChartData }) => {
 				<div className="d-flex pb-30">
 					<Coin iconId={icon_id} type="CS11" />
 					<div className="pl-2">
-						<div className="pairs pointer" onClick={() => handleClick(key)}>
+						<div className="pairs pointer" onClick={() => handleClick()}>
 							{coins[pairBase] && coins[pairBase].display_name}/
 							{coins[pair_2] && coins[pair_2].display_name}
 						</div>
@@ -93,7 +105,7 @@ const Details = ({ coins, constants, market, router, lineChartData }) => {
 								{STRINGS['QUICK_TRADE_COMPONENT.CHANGE_TEXT_7D']}
 							</EditWrapper>
 						</div>
-						<PriceChange market={market} key={key} large />
+						{market && <PriceChange market={market} key={selectedTarget + '-' + selectedSource} large />}
 					</div>
 				</div>
 				<div className="chart w-100">
@@ -141,47 +153,52 @@ const Details = ({ coins, constants, market, router, lineChartData }) => {
 						</div>
 					</div>
 				</div>
-				<div className="d-flex pb-35">
-					<div>
-						<div className="sub-title">
-							<EditWrapper stringId="QUICK_TRADE_COMPONENT.BEST_BID">
-								{STRINGS['QUICK_TRADE_COMPONENT.BEST_BID']}
-							</EditWrapper>
-						</div>
-						<div className="d-flex">
-							<div className="f-size-16 pr-2">{ticker.open}</div>
-							<div className="fullname">
-								{coins[pair_2] && coins[pair_2].display_name}
+				{market && (
+					<>
+						<div className="d-flex pb-35">
+							<div>
+								<div className="sub-title">
+									<EditWrapper stringId="QUICK_TRADE_COMPONENT.BEST_BID">
+										{STRINGS['QUICK_TRADE_COMPONENT.BEST_BID']}
+									</EditWrapper>
+								</div>
+								<div className="d-flex">
+									<div className="f-size-16 pr-2">{ticker.open}</div>
+									<div className="fullname">
+										{coins[pair_2] && coins[pair_2].display_name}
+									</div>
+								</div>
+							</div>
+							<div className="pl-6">
+								<div className="sub-title">
+									<EditWrapper stringId="QUICK_TRADE_COMPONENT.BEST_ASK">
+										{STRINGS['QUICK_TRADE_COMPONENT.BEST_ASK']}
+									</EditWrapper>
+								</div>
+								<div className="d-flex">
+									<div className="f-size-16 pr-2">{ticker.close}</div>
+									<div className="fullname">
+										{coins[pair_2] && coins[pair_2].display_name}
+									</div>
+								</div>
 							</div>
 						</div>
-					</div>
-					<div className="pl-6">
-						<div className="sub-title">
-							<EditWrapper stringId="QUICK_TRADE_COMPONENT.BEST_ASK">
-								{STRINGS['QUICK_TRADE_COMPONENT.BEST_ASK']}
-							</EditWrapper>
-						</div>
-						<div className="d-flex">
-							<div className="f-size-16 pr-2">{ticker.close}</div>
-							<div className="fullname">
-								{coins[pair_2] && coins[pair_2].display_name}
+						<div>
+							<div className="sub-title caps">
+								<EditWrapper stringId="SUMMARY.VOLUME_7D">
+									{STRINGS['SUMMARY.VOLUME_7D']}
+								</EditWrapper>
+							</div>
+							<div className="d-flex">
+								<div className="f-size-16 pr-2">{ticker.volume}</div>
+								<div className="fullname">
+									{coins[pairBase] && coins[pairBase].display_name}
+								</div>
 							</div>
 						</div>
-					</div>
-				</div>
-				<div>
-					<div className="sub-title caps">
-						<EditWrapper stringId="SUMMARY.VOLUME_7D">
-							{STRINGS['SUMMARY.VOLUME_7D']}
-						</EditWrapper>
-					</div>
-					<div className="d-flex">
-						<div className="f-size-16 pr-2">{ticker.volume}</div>
-						<div className="fullname">
-							{coins[pairBase] && coins[pairBase].display_name}
-						</div>
-					</div>
-				</div>
+					</>
+				)}
+
 			</div>
 		</div>
 	);
