@@ -1446,7 +1446,7 @@ const createAuditLog = (subject, adminEndpoint, method, data = {}) => {
 		if (method === 'get') {
 			data = Object.fromEntries(Object.entries(data).filter(([k, v]) => (v.value != null && excludedKeys.indexOf(k) === -1)));
 			const str = Object.keys(data).map((key) =>  "" + key + ":" + data[key].value).join(", ");
-			description = `${action} service ${methodDescriptions[method]} with ${str || 'no paramaters'}`;
+			description = `${action} service ${methodDescriptions[method]}${str ? ` with ${str}` : ''}`;
 		} 
 		else {
 			data = Object.fromEntries(Object.entries(data).filter(([k, v]) => (v != null && excludedKeys.indexOf(k) === -1)));
