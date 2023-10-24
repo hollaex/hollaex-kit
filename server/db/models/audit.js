@@ -12,17 +12,17 @@ module.exports = function (sequelize, DataTypes) {
 				primaryKey: true,
 				type: DataTypes.INTEGER
 			},
-			admin_id: {
+			subject: {
+				type: DataTypes.STRING,
+				allowNull: false
+			},
+			user_id: {
 				type: DataTypes.INTEGER,
-				allowNull: false,
+				allowNull: true,
 				references: {
 					model: 'Users',
 					key: 'id'
 				}
-			},
-			event: {
-				type: DataTypes.STRING,
-				allowNull: false
 			},
 			description: {
 				type: DataTypes.JSONB,

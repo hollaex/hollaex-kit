@@ -1427,6 +1427,45 @@ const createAudit = (adminId, event, ip, opts = {
 	});
 };
 
+
+const createAuditLog = (subject, adminEndpoint, method, data = {}) => {
+	try {
+		if (!subject) return;
+
+		const methodDescriptions = {
+			get: 'viewed',
+			post: 'inserted',
+			put: 'updated',
+			delete: 'deleted'
+		}
+		const excludedKeys = ['password', 'apiKey', 'secret', 'api-key', 'api-secret', 'hmac'];
+
+		const action = adminEndpoint.split('/').slice(1).join(' ');
+		let description;
+
+		if (method === 'get') {
+			data = Object.fromEntries(Object.entries(data).filter(([k, v]) => (v.value != null && excludedKeys.indexOf(k) === -1)));
+			const str = Object.keys(data).map((key) =>  "" + key + ":" + data[key].value).join(", ");
+			description = `${action} service ${methodDescriptions[method]} with ${str || 'no paramaters'}`;
+		} 
+		else {
+			data = Object.fromEntries(Object.entries(data).filter(([k, v]) => (v != null && excludedKeys.indexOf(k) === -1)));
+			description = `${Object.keys(data).join(', ')} field(s) ${methodDescriptions[method]} by the value(s) ${Object.values(data).join(', ')} in ${action} service`;
+			console.log({description})
+		}
+
+		return getModel('audit').create({
+			subject,
+			description,
+			user_id: data.user_id,
+			timestamp: new Date(),
+		});
+	} catch (error) {
+		return error;
+	}
+	
+}
+
 const getUserAudits = (opts = {
 	userId: null,
 	limit: null,
@@ -2273,6 +2312,7 @@ module.exports = {
 	isValidUsername,
 	createUserCryptoAddressByKitId,
 	createAudit,
+	createAuditLog,
 	getUserStatsByKitId,
 	getExchangeOperators,
 	inviteExchangeOperator,
