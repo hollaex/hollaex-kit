@@ -1428,7 +1428,7 @@ const createAudit = (adminId, event, ip, opts = {
 };
 
 
-const createAuditLog = (subject, adminEndpoint, method, data = {}) => {
+const createAuditLog = async (subject, adminEndpoint, method, data = {}) => {
 	try {
 		if (!subject) return;
 
@@ -1443,21 +1443,23 @@ const createAuditLog = (subject, adminEndpoint, method, data = {}) => {
 		const action = adminEndpoint.split('/').slice(1).join(' ');
 		let description;
 
+		let user_id;
 		if (method === 'get') {
+			user_id = data?.user_id?.value;
 			data = Object.fromEntries(Object.entries(data).filter(([k, v]) => (v.value != null && excludedKeys.indexOf(k) === -1)));
 			const str = Object.keys(data).map((key) =>  "" + key + ":" + data[key].value).join(", ");
 			description = `${action} service ${methodDescriptions[method]}${str ? ` with ${str}` : ''}`;
 		} 
 		else {
+			user_id = data?.user_id;
 			data = Object.fromEntries(Object.entries(data).filter(([k, v]) => (v != null && excludedKeys.indexOf(k) === -1)));
 			description = `${Object.keys(data).join(', ')} field(s) ${methodDescriptions[method]} by the value(s) ${Object.values(data).join(', ')} in ${action} service`;
-			console.log({description})
 		}
 
-		return getModel('audit').create({
+		await getModel('audit').create({
 			subject,
 			description,
-			user_id: data.user_id,
+			user_id,
 			timestamp: new Date(),
 		});
 	} catch (error) {
