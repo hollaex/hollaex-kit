@@ -16,9 +16,11 @@ module.exports = {
 				key: 'id',
 			},
 		})
-		console.log("D")
-		await queryInterface.removeColumn(TABLE, 'admin_id')
-		await queryInterface.removeColumn(TABLE, 'event')
+
+		await queryInterface.removeColumn(TABLE, 'admin_id');
+		await queryInterface.removeColumn(TABLE, 'event');
+		await queryInterface.removeColumn(TABLE, 'ip');
+		await queryInterface.removeColumn(TABLE, 'domain');
 		
 	},
 	down: (queryInterface, Sequelize) =>

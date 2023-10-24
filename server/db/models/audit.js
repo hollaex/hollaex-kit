@@ -28,15 +28,6 @@ module.exports = function (sequelize, DataTypes) {
 				type: DataTypes.JSONB,
 				defaultValue: DESCRIPTION
 			},
-			ip: {
-				type: DataTypes.STRING,
-				allowNull: false
-			},
-			domain: {
-				type: DataTypes.STRING,
-				allowNull: true,
-				defaultValue: ''
-			},
 			timestamp: {
 				defaultValue: DataTypes.NOW,
 				allowNull: false,
