@@ -35,6 +35,7 @@ const getExchangeStakes = (req, res) => {
 	}
 	)
 		.then((data) => {
+			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
 			if (format.value === 'csv') {
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-logins.csv`);
 				res.set('Content-Type', 'text/csv');
@@ -109,6 +110,7 @@ const createExchangeStakes = (req, res) => {
 		user_id: req.auth.sub.id
 	})
 		.then((data) => {
+			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
 			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
 			return res.json(data);
 		})
@@ -184,6 +186,7 @@ loggerStake.verbose(req.uuid, 'controllers/stake/updateExchangeStakes/auth', req
 		user_id: req.auth.sub.id
 	})
 		.then((data) => {
+			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
 			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
 			return res.json(data);
 		})
@@ -206,6 +209,7 @@ const deleteExchangeStakes = (req, res) => {
 
 	toolsLib.stake.updateExchangeStakePool(req.swagger.params.data.value.id, { status: 'terminated' })
 		.then(() => {
+			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
 			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
 			return res.json({ message: 'Successfully deleted stake pool.' });
 		})
@@ -249,6 +253,7 @@ const getExchangeStakersForAdmin = (req, res) => {
 	}
 	)
 		.then((data) => {
+			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
 			if (format.value === 'csv') {
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-logins.csv`);
 				res.set('Content-Type', 'text/csv');
