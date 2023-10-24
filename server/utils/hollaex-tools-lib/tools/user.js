@@ -1428,7 +1428,7 @@ const createAudit = (adminId, event, ip, opts = {
 };
 
 
-const createAuditLog = async (subject, adminEndpoint, method, data = {}) => {
+const createAuditLog = (subject, adminEndpoint, method, data = {}) => {
 	try {
 		if (!subject) return;
 
@@ -1456,12 +1456,12 @@ const createAuditLog = async (subject, adminEndpoint, method, data = {}) => {
 			description = `${Object.keys(data).join(', ')} field(s) ${methodDescriptions[method]} by the value(s) ${Object.values(data).join(', ')} in ${action} service`;
 		}
 
-		await getModel('audit').create({
+		return getModel('audit').create({
 			subject,
 			description,
 			user_id,
 			timestamp: new Date(),
-		});
+		}).then(res => res).catch(err => err);
 	} catch (error) {
 		return error;
 	}
