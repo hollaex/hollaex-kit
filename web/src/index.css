@@ -9479,6 +9479,8 @@ table th {
   .layout-mobile .quick_trade-wrapper .trade-details-wrapper .trade-details-content {
     width: 100%;
     height: 100%; }
+  .layout-mobile .quick_trade-wrapper .trade-details-wrapper .day-change-block {
+    text-align: right; }
 
 .layout-mobile .quick_trade-wrapper .trade-section .inner-content {
   align-items: center !important; }

@@ -381,7 +381,6 @@ const QuickTrade = ({
 			spending: true,
 		});
 	};
-	console.log('market data',market);
 	return (
 		<Fragment>
 			<div className="quick_trade-container">
@@ -393,7 +392,6 @@ const QuickTrade = ({
 					})}
 				>
 					{!isMobile && (
-						// market ? (
 							<Details 
 								market={market} 
 								selectedSource={selectedSource} 
@@ -401,8 +399,6 @@ const QuickTrade = ({
 								coinData={coins[selectedTarget]} 
 								lineChartData={lineChartData} 
 							/>
-						// ): 
-						// <NoBrokerSection coinData={coins[selectedTarget]}/> 
 					)}
 					<div className="d-flex flex-column trade-section">
 						<div className="inner-content">

@@ -202,6 +202,8 @@
 		"CHANGE_TEXT_7D": "7D Change",
 		"HIGH_7D": "7D HIGH",
 		"LOW_7D": "7D LOW",
+		"7D": "7D",
+		"1D": "1D",
 		"HIGH_24H": "24H HIGH",
 		"LOW_24H": "24H LOW",
 		"BEST_BID": "BEST BID",
