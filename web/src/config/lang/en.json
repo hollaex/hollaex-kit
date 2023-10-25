@@ -914,6 +914,8 @@
 	"FEE": "Fee",
 	"FEES": "Fees",
 	"TIME": "Time",
+	"NETWORK": "Network",
+	"CATEGORY": "Category",
 	"MORE": "More",
 	"VIEW": "View",
 	"STATUS": "Status",
