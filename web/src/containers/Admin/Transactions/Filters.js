@@ -22,15 +22,15 @@ const getFilters = (coinOptions) => [
 			{ value: 'reject', text: 'Rejected' },
 		],
 	},
-	{
-		label: 'Dismissed',
-		placeholder: 'Dismissed',
-		key: 'dismissed',
-		options: [
-			{ value: 'true', text: 'Yes' },
-			{ value: 'false', text: 'No' },
-		],
-	},
+	// {
+	// 	label: 'Dismissed',
+	// 	placeholder: 'Dismissed',
+	// 	key: 'dismissed',
+	// 	options: [
+	// 		{ value: 'true', text: 'Yes' },
+	// 		{ value: 'false', text: 'No' },
+	// 	],
+	// },
 ];
 
 export const Filters = ({

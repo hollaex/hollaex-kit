@@ -263,7 +263,7 @@ class DonutChart extends Component {
 						<Fragment>
 							<text
 								transform={translate(valX, valY)}
-								dy="15px"
+								dy="20px"
 								textAnchor="middle"
 								className="donut-label-percentage"
 							>
@@ -271,7 +271,7 @@ class DonutChart extends Component {
 							</text>
 							<text
 								transform={translate(valX, valY - 12)}
-								dy="15px"
+								dy="20px"
 								textAnchor="middle"
 								className="donut-label-pair"
 							>
