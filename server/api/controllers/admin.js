@@ -2614,8 +2614,8 @@ const changeUserEmail = (req, res) => {
 		})
 		.then((confirmed) => {
 			if (confirmed) {
-				toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
-				return toolsLib.user.changeKitUserEmail(user_id, email);
+				const auditInfo = { userEmail: req?.auth?.sub?.email, apiPath: req?.swagger?.apiPath, method: req?.swagger?.operationPath?.[2] };
+				return toolsLib.user.changeKitUserEmail(user_id, email, auditInfo);
 			} else {
 				throw new Error(INVALID_VERIFICATION_CODE);
 			}

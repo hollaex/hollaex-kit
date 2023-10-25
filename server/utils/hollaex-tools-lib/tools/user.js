@@ -2257,7 +2257,7 @@ const restoreKitUser = async (userId) => {
 	);
 };
 
-const changeKitUserEmail = async (userId, newEmail) => {
+const changeKitUserEmail = async (userId, newEmail, auditInfo) => {
 	const user = await dbQuery.findOne('user', {
 		where: {
 			id: userId
@@ -2305,6 +2305,7 @@ const changeKitUserEmail = async (userId, newEmail) => {
 		{ fields: ['email'], returning: true }
 	);
 
+	createAuditLog(auditInfo.userEmail, auditInfo.apiPath. auditInfo.method, { user_id: userId, email: userEmail  }, { user_id: userId, email: newEmail });
 	return updatedUser;
 };
 
