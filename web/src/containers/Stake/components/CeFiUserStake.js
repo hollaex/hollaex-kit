@@ -849,7 +849,8 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 								setStakePools(stakes.data);
 
 								requestExchangeStakers();
-
+								setConfirmText();
+								setStakerAmount();
 								setConfirmStake(false);
 
 								setConfirmation(false);
