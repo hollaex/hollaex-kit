@@ -20,6 +20,11 @@ export const ADMIN_PATHS = [
 		routeKey: 'user',
 	},
 	{
+		path: '/admin/audits',
+		label: 'Audits',
+		routeKey: 'audits',
+	},
+	{
 		path: '/admin/financials',
 		label: 'Assets',
 		routeKey: 'financials',

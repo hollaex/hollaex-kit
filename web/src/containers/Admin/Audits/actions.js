@@ -4,15 +4,10 @@ import axios from 'axios';
 
 const handleError = (err) => err.data;
 
-export const requestUserAudits = (id) => {
-	const query = querystring.stringify({
-		user_id: id,
-	});
-	return requestAuthenticated(`/admin/audits?${query}`)
-		.catch(handleError)
-		.then((data) => {
-			return data;
-		});
+export const requestUserAudits = (values) => {
+	const queryValues =
+		values && Object.keys(values).length ? querystring.stringify(values) : '';
+	return requestAuthenticated(`/admin/audits?${queryValues}`);
 };
 
 export const requestUserAuditsDownload = (values) => {

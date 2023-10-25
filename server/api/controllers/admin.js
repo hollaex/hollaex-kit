@@ -103,9 +103,9 @@ const putAdminKit = (req, res) => {
 		}
 	}
 
-	toolsLib.updateKitConfigSecrets(data, req.auth.scopes)
+	const auditInfo = { userEmail: req?.auth?.sub?.email, apiPath: req?.swagger?.apiPath, method: req?.swagger?.operationPath?.[2] };
+	toolsLib.updateKitConfigSecrets(data, req.auth.scopes, auditInfo)
 		.then((result) => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
 			return res.json(result);
 		})
 		.catch((err) => {
@@ -571,7 +571,7 @@ const getUserAudits = (req, res) => {
 		req.auth
 	);
 	const user_id = req.swagger.params.user_id.value;
-	const { limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
+	const { limit, page, order_by, order, start_date, end_date, format, subject } = req.swagger.params;
 
 	if (start_date.value && !isDate(start_date.value)) {
 		loggerAdmin.error(
@@ -601,7 +601,8 @@ const getUserAudits = (req, res) => {
 	}
 
 	toolsLib.user.getUserAudits({
-		userId: user_id,
+		user_id,
+		subject: subject.value,
 		limit: limit.value,
 		page: page.value,
 		orderBy: order_by.value,
@@ -611,7 +612,6 @@ const getUserAudits = (req, res) => {
 		format: format.value
 	})
 		.then((data) => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
 			if (format.value === 'csv') {
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-audits.csv`);
 				res.set('Content-Type', 'text/csv');

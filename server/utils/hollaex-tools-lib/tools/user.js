@@ -1427,8 +1427,20 @@ const createAudit = (adminId, event, ip, opts = {
 	});
 };
 
+const getUpdatedKeys = (oldData, newData) => {
+	const data = uniq([...Object.keys(oldData), ...Object.keys(newData)]);
+  
+	let keys = [];
+	for(const key of data){
+	  if(!isEqual(oldData[key], newData[key])){
+		keys.push(key);
+	  }
+	}
+  
+	return keys;
+  }
 
-const createAuditLog = (subject, adminEndpoint, method, data = {}) => {
+const createAuditLog = (subject, adminEndpoint, method, data = {}, prevData = null) => {
 	try {
 		if (!subject) return;
 
@@ -1449,6 +1461,20 @@ const createAuditLog = (subject, adminEndpoint, method, data = {}) => {
 			data = Object.fromEntries(Object.entries(data).filter(([k, v]) => (v.value != null && excludedKeys.indexOf(k) === -1)));
 			const str = Object.keys(data).map((key) =>  "" + key + ":" + data[key].value).join(", ");
 			description = `${action} service ${methodDescriptions[method]}${str ? ` with ${str}` : ''}`;
+		}
+		else if(method === 'put' && prevData) {
+			user_id = data?.user_id;
+			prevData = Object.fromEntries(Object.entries(prevData).filter(([k, v]) => (v != null && excludedKeys.indexOf(k) === -1)));
+			data = Object.fromEntries(Object.entries(data).filter(([k, v]) => (v != null && excludedKeys.indexOf(k) === -1)));
+			const updatedKeys = getUpdatedKeys(prevData, data);
+			const oldValues = updatedKeys.map(key => prevData[key]);
+			const updatedValues = updatedKeys.map(key => data[key]);
+			if(adminEndpoint === '/admin/kit') {
+				description = `${updatedKeys.join(', ')} field(s) updated to the value(s) ${JSON.stringify(updatedValues)} from  ${JSON.stringify(oldValues)} in ${action} service`;
+
+			} else {
+				description = `${updatedKeys.join(', ')} field(s) updated to the value(s) ${updatedValues.join(', ')} from  ${oldValues.join(', ')} in ${action} service`;
+			}
 		} 
 		else {
 			user_id = data?.user_id;
@@ -1469,7 +1495,8 @@ const createAuditLog = (subject, adminEndpoint, method, data = {}) => {
 }
 
 const getUserAudits = (opts = {
-	userId: null,
+	user_id: null,
+	subject: null,
 	limit: null,
 	page: null,
 	orderBy: null,
@@ -1483,7 +1510,11 @@ const getUserAudits = (opts = {
 	const ordering = orderingQuery(opts.orderBy, opts.order);
 	let options = {
 		where: {
-			timestamp: timeframe
+			timestamp: timeframe,
+			...(opts.user_id && { user_id: opts.user_id }),
+			...(opts.subject && { subject: {
+				[Op.like]: `%${opts.subject}%`
+			}}),
 		},
 		order: [ordering]
 	};
@@ -1491,8 +1522,6 @@ const getUserAudits = (opts = {
 	if (!opts.format) {
 		options = { ...options, ...pagination };
 	}
-
-	if (isNumber(opts.userId)) options.where.description = getModel('sequelize').literal(`description ->> 'user_id' = '${opts.userId}'`);
 
 	if (opts.format) {
 		return dbQuery.fetchAllRecords('audit', options)
