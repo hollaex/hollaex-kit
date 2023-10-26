@@ -2280,6 +2280,7 @@ const changeKitUserEmail = async (userId, newEmail, auditInfo) => {
 		attributes: [
 			'id',
 			'email',
+			'is_admin',
 		]
 	});
 
@@ -2318,6 +2319,16 @@ const changeKitUserEmail = async (userId, newEmail, auditInfo) => {
 	const updatedUser = await user.update(
 		{ email: newEmail },
 		{ fields: ['email'], returning: true }
+	);
+
+	sendEmail(
+		MAILTYPE.ALERT,
+		null,
+		{
+			type: 'Email changed',
+			data: `User email ${userEmail} changed to ${newEmail} by admin`
+		},
+		{}
 	);
 
 	return updatedUser;

@@ -1,43 +1,204 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
+import { withRouter, Link } from 'react-router';
 import _get from 'lodash/get';
 import { Coin, EditWrapper, PriceChange } from 'components';
 import STRINGS from 'config/localizedStrings';
-import SparkLine from 'containers/TradeTabs/components/SparkLine';
+import { Radio } from 'antd';
 
-const Details = ({ coins, constants, market, router, lineChartData }) => {
-	const { icon_id, key, fullMarketName, ticker = {} } = market;
-	const [pairBase, pair_2] = market.key.split('-');
+import HighchartsReact from 'highcharts-react-official';
+import Highcharts from 'highcharts';
+import { formatPercentage } from 'utils/currency';
 
-	const handleClick = (pair) => {
+const DEFAULT_CHART_OPTIONS = {
+	tooltip: {
+		enabled: false,
+	},
+	title: {
+		text: null,
+	},
+	legend: {
+		enabled: false,
+	},
+	chart: {
+		styledMode: true,
+	},
+	xAxis: {
+		type: 'linear',
+		allowDecimals: false,
+		visible: false,
+	},
+	yAxis: {
+		visible: false,
+	},
+	plotOptions: {
+		series: {
+			className: 'main-color',
+			negativeColor: true,
+			marker: {
+				enabled: false,
+				states: {
+					hover: {
+						enabled: false,
+					},
+				},
+			},
+		},
+	},
+	pane: {
+		size: '100%',
+	},
+	
+};
+
+
+const Details = ({ pair, coins, constants, brokerUsed, name, isNetwork, router, coinChartData }) => {
+	const [sevenDayData, setSevenDayData] = useState({});
+	const [oneDayData, setOneDayData] = useState({});
+	const [coinStats, setCoinStats] = useState({});
+	const [oneDayChartData, setOneDayChartData] = useState([]);
+	const [chartData, setChartData] = useState([]);
+	const [showSevenDay, setShowSevenDay] = useState(true);
+
+	const [pairBase, pair_2] = pair.split('-');
+	const { icon_id } = coins[pairBase];
+	
+	const getPricingData = (price) => {
+		const firstPrice = price[0];
+		const lastPrice = price[price.length-1];
+		const priceDifference = lastPrice - firstPrice;
+		const priceDifferencePercent = formatPercentage(priceDifference/firstPrice);
+
+		const low = Math.min(...price);
+		const high = Math.max(...price);
+
+		return {
+			priceDifference,
+			priceDifferencePercent,
+			low,
+			high,
+			lastPrice
+		};
+	}
+
+	const getIndexofOneDay = (dates) => {
+		const today = new Date(); // Current date
+		const oneDayAgo = new Date(today.setDate(today.getDate() - 1)); // One day ago
+
+		const index = dates.findIndex(dateString => {
+			const date = new Date(dateString);
+			return date.toDateString() === oneDayAgo.toDateString();
+		});
+
+		return index;
+	}
+
+	useEffect(() => {
+		const handleDataUpdate = () => {
+			const { price, time } = coinChartData;
+			if (price && time) {
+				const indexOneDay = getIndexofOneDay(time);
+				const oneDayChartPrices = price.slice(indexOneDay, price.length);
+				setOneDayChartData(oneDayChartPrices);
+				setOneDayData(getPricingData(oneDayChartPrices));
+				setSevenDayData(getPricingData(price));
+
+				setChartData(price);
+				showSevenDay ? setCoinStats(sevenDayData) : setCoinStats(oneDayData);
+			}
+		};
+
+		handleDataUpdate();
+	}, [coinChartData]);
+
+	const handleClick = () => {
 		if (pair && router && _get(constants, 'features.pro_trade')) {
 			router.push(`/trade/${pair}`);
 		}
 	};
 
+	const handleDayChange = (e) => {
+		const value = e.target.value;
+		
+		if(value === 'seven'){
+			setChartData(coinChartData.price);
+			setCoinStats(sevenDayData);
+			setShowSevenDay(true);
+			return
+		}
+
+		setShowSevenDay(false);
+		setCoinStats(oneDayData);
+		setChartData(oneDayChartData);
+	}
+
+	const getLink = (linkUrl, linkText) => {
+        return (
+            <div className="blue-link pointer underline-text">
+                <Link to={linkUrl}>
+                    {linkText}
+                </Link>
+            </div>
+        );
+    };
+
+	const getMarketName = () => {
+		return (
+			<div className="fullname">
+				{isNetwork ? (
+					<span>
+						<EditWrapper stringId="QUICK_TRADE_COMPONENT.SOURCE_TEXT">
+							{STRINGS['QUICK_TRADE_COMPONENT.SOURCE_TEXT_NETWORK']}
+						</EditWrapper>
+					</span>
+				) : !brokerUsed ? (
+					<span>
+						<span>{name} </span>
+						<span>
+							<EditWrapper stringId="TYPES_VALUES.market">
+								{STRINGS['TYPES_VALUES.market']}
+							</EditWrapper>
+						</span>
+					</span>
+				) : (
+					<span>
+						<EditWrapper stringId="QUICK_TRADE_COMPONENT.SOURCE_TEXT">
+							{STRINGS['QUICK_TRADE_COMPONENT.SOURCE_TEXT']}
+						</EditWrapper>
+					</span>
+				)}
+			</div>
+		)
+	}
+
 	return (
 		<div className="trade-details-wrapper">
 			<div className="trade-details-content">
-				<div className="d-flex pb-30">
+				<div className="d-flex pb-24">
 					<Coin iconId={icon_id} type="CS11" />
 					<div className="pl-2">
-						<div className="pairs pointer" onClick={() => handleClick(key)}>
+						<div className="pairs pointer" onClick={() => handleClick()}>
 							{coins[pairBase] && coins[pairBase].display_name}/
 							{coins[pair_2] && coins[pair_2].display_name}
 						</div>
-						<div className="fullname">{fullMarketName}</div>
+						{getMarketName()}
 					</div>
+				</div>
+				<div className="day-change-block">
+					<Radio.Group onChange={handleDayChange} defaultValue="seven">
+						<Radio.Button value="seven">
+							{STRINGS['QUICK_TRADE_COMPONENT.7D']}
+						</Radio.Button>
+						<Radio.Button value="one">{STRINGS['QUICK_TRADE_COMPONENT.1D']}</Radio.Button>
+					</Radio.Group>
 				</div>
 				<div className="d-flex">
 					<div>
 						<div className="sub-title caps">
-							<EditWrapper stringId="MARKETS_TABLE.LAST_PRICE">
-								{STRINGS['MARKETS_TABLE.LAST_PRICE']}
-							</EditWrapper>
+							{STRINGS['MARKETS_TABLE.LAST_PRICE']}
 						</div>
 						<div className="d-flex">
-							<div className="f-size-22 pr-2">{ticker.last}</div>
+							<div className="f-size-22 pr-2">{coinStats.lastPrice}</div>
 							<div className="fullname white-txt">
 								{coins[pair_2] && coins[pair_2].display_name}
 							</div>
@@ -45,32 +206,48 @@ const Details = ({ coins, constants, market, router, lineChartData }) => {
 					</div>
 					<div className="pl-6 trade_tabs-container">
 						<div className="sub-title caps">
-							<EditWrapper stringId="QUICK_TRADE_COMPONENT.CHANGE_TEXT">
-								{STRINGS['QUICK_TRADE_COMPONENT.CHANGE_TEXT']}
-							</EditWrapper>
+								{STRINGS[
+									showSevenDay ? 'QUICK_TRADE_COMPONENT.CHANGE_TEXT_7D' : 
+									'SUMMARY.CHANGE_24H'
+								]}
 						</div>
-						<PriceChange market={market} key={key} large />
+						<PriceChange 
+							market={{
+								priceDifference: coinStats.priceDifference,
+								priceDifferencePercent: coinStats.priceDifferencePercent
+							}} 
+							key={pair} 
+							large 
+						/>
 					</div>
 				</div>
 				<div className="chart w-100">
 					<div className="fade-area" />
-					<SparkLine
-						data={lineChartData || []}
+					<HighchartsReact
+						highcharts={Highcharts}
+						options={{
+							...DEFAULT_CHART_OPTIONS,
+							series: [{
+								name: 'price',
+								data: chartData,
+								pointStart: 0
+							}
+						]}}
 						containerProps={{
 							style: { height: '100%', width: '100%' },
 						}}
-						renderDefaultLine
 					/>
 				</div>
 				<div className="d-flex pb-35">
 					<div>
 						<div className="sub-title">
-							<EditWrapper stringId="QUICK_TRADE_COMPONENT.HIGH_24H">
-								{STRINGS['QUICK_TRADE_COMPONENT.HIGH_24H']}
-							</EditWrapper>
+							{STRINGS[showSevenDay ? 
+								'QUICK_TRADE_COMPONENT.HIGH_7D' : 
+								'QUICK_TRADE_COMPONENT.HIGH_24H'
+							]}
 						</div>
 						<div className="d-flex">
-							<div className="f-size-16 pr-2">{ticker.high}</div>
+							<div className="f-size-16 pr-2">{coinStats.high}</div>
 							<div className="fullname">
 								{coins[pair_2] && coins[pair_2].display_name}
 							</div>
@@ -78,12 +255,13 @@ const Details = ({ coins, constants, market, router, lineChartData }) => {
 					</div>
 					<div className="pl-6">
 						<div className="sub-title">
-							<EditWrapper stringId="QUICK_TRADE_COMPONENT.LOW_24H">
-								{STRINGS['QUICK_TRADE_COMPONENT.LOW_24H']}
-							</EditWrapper>
+							{STRINGS[showSevenDay ?
+								 'QUICK_TRADE_COMPONENT.LOW_7D' : 
+								 'QUICK_TRADE_COMPONENT.LOW_24H' 
+								]}
 						</div>
 						<div className="d-flex">
-							<div className="f-size-16 pr-2">{ticker.low}</div>
+							<div className="f-size-16 pr-2">{coinStats.low}</div>
 							<div className="fullname">
 								{coins[pair_2] && coins[pair_2].display_name}
 							</div>
@@ -92,43 +270,16 @@ const Details = ({ coins, constants, market, router, lineChartData }) => {
 				</div>
 				<div className="d-flex pb-35">
 					<div>
-						<div className="sub-title">
-							<EditWrapper stringId="QUICK_TRADE_COMPONENT.BEST_BID">
-								{STRINGS['QUICK_TRADE_COMPONENT.BEST_BID']}
-							</EditWrapper>
+						<div className='sub-title caps'>
+							{STRINGS['ASSET_INFO']}
 						</div>
-						<div className="d-flex">
-							<div className="f-size-16 pr-2">{ticker.open}</div>
-							<div className="fullname">
-								{coins[pair_2] && coins[pair_2].display_name}
-							</div>
-						</div>
-					</div>
-					<div className="pl-6">
-						<div className="sub-title">
-							<EditWrapper stringId="QUICK_TRADE_COMPONENT.BEST_ASK">
-								{STRINGS['QUICK_TRADE_COMPONENT.BEST_ASK']}
-							</EditWrapper>
-						</div>
-						<div className="d-flex">
-							<div className="f-size-16 pr-2">{ticker.close}</div>
-							<div className="fullname">
-								{coins[pair_2] && coins[pair_2].display_name}
-							</div>
-						</div>
-					</div>
-				</div>
-				<div>
-					<div className="sub-title caps">
-						<EditWrapper stringId="SUMMARY.VOLUME_24H">
-							{STRINGS['SUMMARY.VOLUME_24H']}
-						</EditWrapper>
-					</div>
-					<div className="d-flex">
-						<div className="f-size-16 pr-2">{ticker.volume}</div>
-						<div className="fullname">
-							{coins[pairBase] && coins[pairBase].display_name}
-						</div>
+						{getLink(
+							"/assets",
+							STRINGS.formatString(
+								STRINGS['QUICK_TRADE_COMPONENT.COIN_INFORMATION'],
+								coins[pairBase].display_name
+							)
+						)}
 					</div>
 				</div>
 			</div>
