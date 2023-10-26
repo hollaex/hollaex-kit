@@ -2320,7 +2320,6 @@ const changeKitUserEmail = async (userId, newEmail, auditInfo) => {
 		{ fields: ['email'], returning: true }
 	);
 
-	createAuditLog(auditInfo.userEmail, auditInfo.apiPath, auditInfo.method, { user_id: userId, email: userEmail  }, { user_id: userId, email: newEmail });
 	return updatedUser;
 };
 

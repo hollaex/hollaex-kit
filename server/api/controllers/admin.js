@@ -2599,8 +2599,7 @@ const changeUserEmail = (req, res) => {
 		'email_code',
 		email_code
 	);
-	const auditInfo = { userEmail: req?.auth?.sub?.email, apiPath: req?.swagger?.apiPath, method: req?.swagger?.operationPath?.[2] };
-	return toolsLib.user.changeKitUserEmail(user_id, email, auditInfo);
+
 	toolsLib.security.verifyOtpBeforeAction(user_id, otp_code)
 		.then((validOtp) => {
 			if (!validOtp) {
