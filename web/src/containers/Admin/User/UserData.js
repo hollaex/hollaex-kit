@@ -4,7 +4,7 @@ import { updateUserData } from './actions';
 import { AdminHocForm } from '../../../components';
 import { COUNTRIES_OPTIONS } from 'utils/countries';
 
-// const Form = AdminHocForm('USER_DATA', 'user_data');
+const Form = AdminHocForm('USER_DATA', 'user_data');
 
 const AddressFields = {
 	country: {
@@ -108,14 +108,13 @@ const UserData = ({
 	onChangeSuccess,
 	handleClose,
 }) => (
-	<></>
-	// <Form
-	// 	onSubmit={onSubmit(onChangeSuccess, handleClose)}
-	// 	buttonText="SAVE"
-	// 	fields={Fields}
-	// 	initialValues={generateInitialValues(initialValues)}
-	// 	buttonClass="green-btn"
-	// />
+	<Form
+		onSubmit={onSubmit(onChangeSuccess, handleClose)}
+		buttonText="SAVE"
+		fields={Fields}
+		initialValues={generateInitialValues(initialValues)}
+		buttonClass="green-btn"
+	/>
 );
 
 export default UserData;

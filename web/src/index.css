@@ -9407,10 +9407,6 @@ table th {
         width: 100% !important; }
       .quick_trade-wrapper .trade-details-wrapper .trade-details-content .main-coin-wrapper {
         opacity: 0.3; }
-      .quick_trade-wrapper .trade-details-wrapper .trade-details-content .light-grey-title {
-        color: #BBBBBB; }
-      .quick_trade-wrapper .trade-details-wrapper .trade-details-content .grey-title {
-        color: #808080; }
     .quick_trade-wrapper .trade-details-wrapper .f-size-16 {
       font-size: 16px;
       color: var(--labels_secondary-inactive-label-text-graphics);

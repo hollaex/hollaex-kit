@@ -24,7 +24,6 @@ import Footer from 'containers/QuickTrade/components/Footer';
 import Balance from 'containers/QuickTrade/components/Balance';
 import QuoteResult from 'containers/QuickTrade/QuoteResult';
 import ReviewOrder from 'containers/QuickTrade/components/ReviewOrder';
-import { NoBrokerSection } from './NoBroker';
 import { flipPair } from 'containers/QuickTrade/components/utils';
 import {
 	getSourceOptions,
@@ -131,9 +130,6 @@ const QuickTrade = ({
 	};
 
 	const flippedPair = flipPair(symbol);
-	const isShowChartDetails =
-		true || (quicktradePairs[symbol] || quicktradePairs[flippedPair])?.type ===
-		TYPES.PRO;
 
 	const market = markets.find(
 		({ pair: { pair_base, pair_2 } }) =>
@@ -388,9 +384,7 @@ const QuickTrade = ({
 				<Header />
 
 				<div
-					className={classnames('quick_trade-wrapper', 'd-flex', {
-						'width-none': !isShowChartDetails,
-					})}
+					className={classnames('quick_trade-wrapper', 'd-flex')}
 				>
 					{!isMobile && (
 							<Details 
