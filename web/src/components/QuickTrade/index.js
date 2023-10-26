@@ -350,7 +350,7 @@ const QuickTrade = ({
 	const { balance: userBalance } = user;
 
 	const lineChartData = {
-		...chartData[key],
+		...chartData[pair],
 		name: 'Line',
 		type: 'line',
 	};
@@ -381,6 +381,7 @@ const QuickTrade = ({
 			spending: true,
 		});
 	};
+
 	return (
 		<Fragment>
 			<div className="quick_trade-container">
@@ -393,11 +394,11 @@ const QuickTrade = ({
 				>
 					{!isMobile && (
 							<Details 
-								market={market} 
-								selectedSource={selectedSource} 
-								selectedTarget={selectedTarget}
-								coinData={coins[selectedTarget]} 
-								lineChartData={lineChartData} 
+								coinChartData={lineChartData} 
+								pair={pair}
+								brokerUsed={isUseBroker}
+								name={display_name}
+								isNetwork={isNetwork}
 							/>
 					)}
 					<div className="d-flex flex-column trade-section">

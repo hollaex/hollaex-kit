@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
+import { withRouter, Link } from 'react-router';
 import _get from 'lodash/get';
 import { Coin, EditWrapper, PriceChange } from 'components';
 import STRINGS from 'config/localizedStrings';
@@ -52,20 +52,17 @@ const DEFAULT_CHART_OPTIONS = {
 };
 
 
-const Details = ({ coins, constants, market, router, lineChartData, coinData, selectedSource, selectedTarget }) => {
+const Details = ({ pair, coins, constants, brokerUsed, name, isNetwork, router, coinChartData }) => {
 	const [sevenDayData, setSevenDayData] = useState({});
 	const [oneDayData, setOneDayData] = useState({});
 	const [coinStats, setCoinStats] = useState({});
 	const [oneDayChartData, setOneDayChartData] = useState([]);
-	const [charData, setChartData] = useState([]);
+	const [chartData, setChartData] = useState([]);
 	const [showSevenDay, setShowSevenDay] = useState(true);
 
-	const { fullMarketName} = market || {};
-	const { icon_id } = coinData;
-
-	const pairBase = selectedTarget;
-	const pair_2 = selectedSource;
-
+	const [pairBase, pair_2] = pair.split('-');
+	const { icon_id } = coins[pairBase];
+	
 	const getPricingData = (price) => {
 		const firstPrice = price[0];
 		const lastPrice = price[price.length-1];
@@ -97,24 +94,26 @@ const Details = ({ coins, constants, market, router, lineChartData, coinData, se
 	}
 
 	useEffect(() => {
-		const { price, time } = lineChartData;
-		if(price && time) {
+		const handleDataUpdate = () => {
+			const { price, time } = coinChartData;
+			if (price && time) {
+				const indexOneDay = getIndexofOneDay(time);
+				const oneDayChartPrices = price.slice(indexOneDay, price.length);
+				setOneDayChartData(oneDayChartPrices);
+				setOneDayData(getPricingData(oneDayChartPrices));
+				setSevenDayData(getPricingData(price));
 
-			const indexOneDay = getIndexofOneDay(time);
-			const oneDayChartPrices = price.slice(indexOneDay,price.length-1);
-			setOneDayChartData(oneDayChartPrices);
-			setOneDayData(getPricingData(oneDayChartPrices))
-			setSevenDayData(getPricingData(price));
+				setChartData(price);
+				showSevenDay ? setCoinStats(sevenDayData) : setCoinStats(oneDayData);
+			}
+		};
 
-			!charData.length && setChartData(price);
-			!Object.keys(coinStats).length && setCoinStats(sevenDayData);
-		}
-		 
-	}, [lineChartData]);
+		handleDataUpdate();
+	}, [coinChartData]);
 
 	const handleClick = () => {
-		if (selectedTarget && selectedSource  && router && _get(constants, 'features.pro_trade')) {
-			router.push(`/trade/${selectedTarget}-${selectedSource}`);
+		if (pair && router && _get(constants, 'features.pro_trade')) {
+			router.push(`/trade/${pair}`);
 		}
 	};
 
@@ -122,7 +121,7 @@ const Details = ({ coins, constants, market, router, lineChartData, coinData, se
 		const value = e.target.value;
 		
 		if(value === 'seven'){
-			setChartData(lineChartData.price);
+			setChartData(coinChartData.price);
 			setCoinStats(sevenDayData);
 			setShowSevenDay(true);
 			return
@@ -133,20 +132,59 @@ const Details = ({ coins, constants, market, router, lineChartData, coinData, se
 		setChartData(oneDayChartData);
 	}
 
+	const getLink = (linkUrl, linkText) => {
+        return (
+            <div className="blue-link pointer underline-text">
+                <Link to={linkUrl}>
+                    {linkText}
+                </Link>
+            </div>
+        );
+    };
+
+	const getMarketName = () => {
+		return (
+			<div className="fullname">
+				{isNetwork ? (
+					<span>
+						<EditWrapper stringId="QUICK_TRADE_COMPONENT.SOURCE_TEXT">
+							{STRINGS['QUICK_TRADE_COMPONENT.SOURCE_TEXT_NETWORK']}
+						</EditWrapper>
+					</span>
+				) : !brokerUsed ? (
+					<span>
+						<span>{name} </span>
+						<span>
+							<EditWrapper stringId="TYPES_VALUES.market">
+								{STRINGS['TYPES_VALUES.market']}
+							</EditWrapper>
+						</span>
+					</span>
+				) : (
+					<span>
+						<EditWrapper stringId="QUICK_TRADE_COMPONENT.SOURCE_TEXT">
+							{STRINGS['QUICK_TRADE_COMPONENT.SOURCE_TEXT']}
+						</EditWrapper>
+					</span>
+				)}
+			</div>
+		)
+	}
+
 	return (
 		<div className="trade-details-wrapper">
 			<div className="trade-details-content">
-				<div className="d-flex pb-30">
+				<div className="d-flex pb-24">
 					<Coin iconId={icon_id} type="CS11" />
 					<div className="pl-2">
 						<div className="pairs pointer" onClick={() => handleClick()}>
 							{coins[pairBase] && coins[pairBase].display_name}/
 							{coins[pair_2] && coins[pair_2].display_name}
 						</div>
-						<div className="fullname">{fullMarketName}</div>
+						{getMarketName()}
 					</div>
 				</div>
-				<div className="d-flex day-change-block">
+				<div className="day-change-block">
 					<Radio.Group onChange={handleDayChange} defaultValue="seven">
 						<Radio.Button value="seven">
 							{STRINGS['QUICK_TRADE_COMPONENT.7D']}
@@ -157,9 +195,7 @@ const Details = ({ coins, constants, market, router, lineChartData, coinData, se
 				<div className="d-flex">
 					<div>
 						<div className="sub-title caps">
-							<EditWrapper stringId="MARKETS_TABLE.LAST_PRICE">
-								{STRINGS['MARKETS_TABLE.LAST_PRICE']}
-							</EditWrapper>
+							{STRINGS['MARKETS_TABLE.LAST_PRICE']}
 						</div>
 						<div className="d-flex">
 							<div className="f-size-22 pr-2">{coinStats.lastPrice}</div>
@@ -180,7 +216,7 @@ const Details = ({ coins, constants, market, router, lineChartData, coinData, se
 								priceDifference: coinStats.priceDifference,
 								priceDifferencePercent: coinStats.priceDifferencePercent
 							}} 
-							key={selectedTarget + '-' + selectedSource} 
+							key={pair} 
 							large 
 						/>
 					</div>
@@ -193,7 +229,7 @@ const Details = ({ coins, constants, market, router, lineChartData, coinData, se
 							...DEFAULT_CHART_OPTIONS,
 							series: [{
 								name: 'price',
-								data: charData,
+								data: chartData,
 								pointStart: 0
 							}
 						]}}
@@ -230,6 +266,20 @@ const Details = ({ coins, constants, market, router, lineChartData, coinData, se
 								{coins[pair_2] && coins[pair_2].display_name}
 							</div>
 						</div>
+					</div>
+				</div>
+				<div className="d-flex pb-35">
+					<div>
+						<div className='sub-title caps'>
+							{STRINGS['ASSET_INFO']}
+						</div>
+						{getLink(
+							"/assets",
+							STRINGS.formatString(
+								STRINGS['QUICK_TRADE_COMPONENT.COIN_INFORMATION'],
+								coins[pairBase].display_name
+							)
+						)}
 					</div>
 				</div>
 			</div>
