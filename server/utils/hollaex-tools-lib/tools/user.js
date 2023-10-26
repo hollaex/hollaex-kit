@@ -1448,7 +1448,7 @@ const getValues = (data, prevData) => {
 	const oldValues = updatedKeys.map(key => prevData[key]);
 	
     updatedValues.forEach((value, index) => {
-        if(typeof value === 'object') {
+        if(typeof value === 'object' && value.constructor === Object) {
             const values = getValues(value, oldValues[index]);
             updatedKeys[index] = values.updatedKeys
             updatedValues[index] = values.updatedValues
@@ -1486,7 +1486,7 @@ const createAuditLog = (subject, adminEndpoint, method, data = {}, prevData = nu
 			prevData = Object.fromEntries(Object.entries(prevData).filter(([k, v]) => (v != null && excludedKeys.indexOf(k) === -1)));
 			data = Object.fromEntries(Object.entries(data).filter(([k, v]) => (v != null && excludedKeys.indexOf(k) === -1)));
 			const { updatedKeys, oldValues, updatedValues } = getValues(data, prevData);
-			description = `${updatedKeys.join(', ')} field(s) updated to the value(s) ${updatedValues.join(', ')} from ${oldValues.join(', ')} in ${action} service`;
+			description = `${updatedKeys.join(', ')} field(s) updated to the value(s) ${updatedValues?.join(', ')?.length > 0 ? updatedValues.join(', ') : 'Null'} from ${oldValues?.join(', ')?.length > 0 ? oldValues.join(', ') : 'Null'} in ${action} service`;
 		} 
 		else {
 			user_id = data?.user_id;
