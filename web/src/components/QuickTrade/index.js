@@ -15,7 +15,7 @@ import { isLoggedIn } from 'utils/token';
 import { Button, EditWrapper, Dialog } from 'components';
 import STRINGS from 'config/localizedStrings';
 import InputGroup from './InputGroup';
-import { getSparklines } from 'actions/chartAction';
+import { getSparklines, getMiniCharts } from 'actions/chartAction';
 import { getDecimals } from 'utils/utils';
 import { MarketsSelector } from 'containers/Trade/utils';
 import Details from 'containers/QuickTrade/components/Details';
@@ -130,9 +130,6 @@ const QuickTrade = ({
 	};
 
 	const flippedPair = flipPair(symbol);
-	const isShowChartDetails =
-		(quicktradePairs[symbol] || quicktradePairs[flippedPair])?.type ===
-		TYPES.PRO;
 
 	const market = markets.find(
 		({ pair: { pair_base, pair_2 } }) =>
@@ -283,10 +280,15 @@ const QuickTrade = ({
 	const debouncedQuote = useRef(debounce(getQuote, 1000));
 
 	useEffect(() => {
-		getSparklines(Object.keys(pairs)).then((chartData) =>
-			setChartData(chartData)
-		);
-	}, [pairs]);
+		const assetValues = Object.keys(coins).map((
+			val) => coins[val].code).toLocaleString();
+
+		getMiniCharts(assetValues)
+			.then((chartValues) =>{
+				setChartData(chartValues);
+			});
+
+	}, [coins]);
 
 	useEffect(() => {
 		if (mounted) {
@@ -344,7 +346,7 @@ const QuickTrade = ({
 	const { balance: userBalance } = user;
 
 	const lineChartData = {
-		...chartData[key],
+		...chartData[pair],
 		name: 'Line',
 		type: 'line',
 	};
@@ -382,12 +384,16 @@ const QuickTrade = ({
 				<Header />
 
 				<div
-					className={classnames('quick_trade-wrapper', 'd-flex', {
-						'width-none': !isShowChartDetails,
-					})}
+					className={classnames('quick_trade-wrapper', 'd-flex')}
 				>
-					{!isMobile && isShowChartDetails && market && (
-						<Details market={market} lineChartData={lineChartData} />
+					{!isMobile && (
+							<Details 
+								coinChartData={lineChartData} 
+								pair={pair}
+								brokerUsed={isUseBroker}
+								name={display_name}
+								isNetwork={isNetwork}
+							/>
 					)}
 					<div className="d-flex flex-column trade-section">
 						<div className="inner-content">
