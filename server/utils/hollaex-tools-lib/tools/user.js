@@ -1440,6 +1440,23 @@ const getUpdatedKeys = (oldData, newData) => {
 	return keys;
   }
 
+  const getValues = (data, prevData) => {
+	const updatedKeys = getUpdatedKeys(prevData, data);
+    const updatedValues = updatedKeys.map(key => data[key]);
+	const oldValues = updatedKeys.map(key => prevData[key]);
+	
+    updatedValues.forEach((value, index) => {
+        if(typeof value === 'object') {
+            const values = getValues(value, oldValues[index]);
+            updatedKeys[index] = values.updatedKeys
+            updatedValues[index] = values.updatedValues
+            oldValues[index] = values.oldValues;
+        }
+    })
+
+	return { updatedKeys, oldValues, updatedValues };
+}
+
 const createAuditLog = (subject, adminEndpoint, method, data = {}, prevData = null) => {
 	try {
 		if (!subject) return;
@@ -1466,15 +1483,8 @@ const createAuditLog = (subject, adminEndpoint, method, data = {}, prevData = nu
 			user_id = data?.user_id;
 			prevData = Object.fromEntries(Object.entries(prevData).filter(([k, v]) => (v != null && excludedKeys.indexOf(k) === -1)));
 			data = Object.fromEntries(Object.entries(data).filter(([k, v]) => (v != null && excludedKeys.indexOf(k) === -1)));
-			const updatedKeys = getUpdatedKeys(prevData, data);
-			const oldValues = updatedKeys.map(key => prevData[key]);
-			const updatedValues = updatedKeys.map(key => data[key]);
-			if(adminEndpoint === '/admin/kit') {
-				description = `${updatedKeys.join(', ')} field(s) updated to the value(s) ${JSON.stringify(updatedValues)} from  ${JSON.stringify(oldValues)} in ${action} service`;
-
-			} else {
-				description = `${updatedKeys.join(', ')} field(s) updated to the value(s) ${updatedValues.join(', ')} from  ${oldValues.join(', ')} in ${action} service`;
-			}
+			const { updatedKeys, oldValues, updatedValues } = getValues(data, prevData);
+			description = `${updatedKeys.join(', ')} field(s) updated to the value(s) ${updatedValues.join(', ')} from ${oldValues.join(', ')} in ${action} service`;
 		} 
 		else {
 			user_id = data?.user_id;

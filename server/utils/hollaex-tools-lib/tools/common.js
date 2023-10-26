@@ -203,7 +203,7 @@ const updateKitConfigSecrets = (data = {}, scopes, auditInfo) => {
 				updatedKitConfig.secrets = joinKitSecrets(status.dataValues.secrets, data.secrets, role);
 			}
 			const { createAuditLog } = require('./user');
-			createAuditLog(auditInfo.userEmail, auditInfo.apiPath, auditInfo.method, status.dataValues.kit, updatedKitConfig.kit);
+			createAuditLog(auditInfo.userEmail, auditInfo.apiPath, auditInfo.method, updatedKitConfig.kit, status.dataValues.kit);
 			return status.update(updatedKitConfig, {
 				fields: [
 					'kit',
