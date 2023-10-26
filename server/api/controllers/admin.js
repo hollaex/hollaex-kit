@@ -252,10 +252,9 @@ const putUserMeta = (req, res) => {
 		'overwrite',
 		overwrite
 	);
-
-	toolsLib.user.updateUserMeta(user_id, meta, { overwrite })
+	const auditInfo = { userEmail: req?.auth?.sub?.email, apiPath: req?.swagger?.apiPath, method: req?.swagger?.operationPath?.[2] };
+	toolsLib.user.updateUserMeta(user_id, meta, { overwrite }, auditInfo)
 		.then((user) => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], { meta, overwrite, user_id });
 			loggerAdmin.verbose(
 				req.uuid,
 				'controllers/admin/putUserMeta result',
@@ -282,10 +281,9 @@ const putUserNote = (req, res) => {
 	const user_id = req.swagger.params.user_id.value;
 	const { note } = req.swagger.params.data.value;
 
-
-	toolsLib.user.updateUserNote(user_id, note)
+	const auditInfo = { userEmail: req?.auth?.sub?.email, apiPath: req?.swagger?.apiPath, method: req?.swagger?.operationPath?.[2] };
+	toolsLib.user.updateUserNote(user_id, note, auditInfo)
 		.then(() => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], { user_id, note });
 			return res.json({ message: 'Success' });
 		})
 		.catch((err) => {
@@ -316,10 +314,9 @@ const putUserDiscount = (req, res) => {
 		'discount rate',
 		discount
 	);
-
-	toolsLib.user.updateUserDiscount(user_id, discount)
+	const auditInfo = { userEmail: req?.auth?.sub?.email, apiPath: req?.swagger?.apiPath, method: req?.swagger?.operationPath?.[2] };
+	toolsLib.user.updateUserDiscount(user_id, discount, auditInfo)
 		.then((data) => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], { user_id, discount });
 			loggerAdmin.info(
 				req.uuid,
 				'controllers/admin/putUserDiscount successful'
@@ -1329,10 +1326,9 @@ const putKitUserMeta = (req, res) => {
 		'description',
 		description
 	);
-
-	toolsLib.updateKitUserMeta(name, { type, required, description })
+	const auditInfo = { userEmail: req?.auth?.sub?.email, apiPath: req?.swagger?.apiPath, method: req?.swagger?.operationPath?.[2] };
+	toolsLib.updateKitUserMeta(name, { type, required, description }, auditInfo)
 		.then((result) => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
 			return res.json(result);
 		})
 		.catch((err) => {
@@ -1952,9 +1948,9 @@ const putUserInfo = (req, res) => {
 		updateData
 	);
 
-	toolsLib.user.updateUserInfo(user_id, updateData)
+	const auditInfo = { userEmail: req?.auth?.sub?.email, apiPath: req?.swagger?.apiPath, method: req?.swagger?.operationPath?.[2] };
+	toolsLib.user.updateUserInfo(user_id, updateData, auditInfo)
 		.then((data) => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
 			return res.json(data);
 		})
 		.catch((err) => {
@@ -2517,11 +2513,10 @@ const updateQuickTradeConfig = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/updateQuickTradeConfig/auth', req.auth);
 
 	const { symbol, type, active } = req.swagger.params.data.value;
-
-	toolsLib.order.updateQuickTradeConfig({ symbol, active, type }
+	const auditInfo = { userEmail: req?.auth?.sub?.email, apiPath: req?.swagger?.apiPath, method: req?.swagger?.operationPath?.[2] };
+	toolsLib.order.updateQuickTradeConfig({ symbol, active, type }, auditInfo
 	)
 		.then((data) => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
 			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
 			return res.json(data);
 		})
@@ -2604,6 +2599,8 @@ const changeUserEmail = (req, res) => {
 		'email_code',
 		email_code
 	);
+	const auditInfo = { userEmail: req?.auth?.sub?.email, apiPath: req?.swagger?.apiPath, method: req?.swagger?.operationPath?.[2] };
+	return toolsLib.user.changeKitUserEmail(user_id, email, auditInfo);
 	toolsLib.security.verifyOtpBeforeAction(user_id, otp_code)
 		.then((validOtp) => {
 			if (!validOtp) {

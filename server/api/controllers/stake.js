@@ -166,7 +166,7 @@ loggerStake.verbose(req.uuid, 'controllers/stake/updateExchangeStakes/auth', req
 		disclaimer,
 		status
 	);
-
+	const auditInfo = { userEmail: req?.auth?.sub?.email, apiPath: req?.swagger?.apiPath, method: req?.swagger?.operationPath?.[2] };
 	toolsLib.stake.updateExchangeStakePool(id, {
 		name,
 		currency,
@@ -184,9 +184,8 @@ loggerStake.verbose(req.uuid, 'controllers/stake/updateExchangeStakes/auth', req
 		disclaimer,
 		status,
 		user_id: req.auth.sub.id
-	})
+	}, auditInfo)
 		.then((data) => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
 			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
 			return res.json(data);
 		})

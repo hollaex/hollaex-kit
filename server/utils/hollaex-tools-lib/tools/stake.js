@@ -3,7 +3,7 @@
 const { getModel } = require('./database/model');
 const { SERVER_PATH } = require('../constants');
 const { STAKE_SUPPORTED_PLANS } = require(`${SERVER_PATH}/constants`)
-const { getUserByKitId } = require('./user');
+const { getUserByKitId, createAuditLog } = require('./user');
 const { subscribedToCoin, getKitConfig, getAssetsPrices } = require('./common');
 const { transferAssetByKitIds, getUserBalanceByKitId } = require('./wallet');
 const { Op, fn, col } = require('sequelize');
@@ -318,7 +318,7 @@ const createExchangeStakePool = async (stake) => {
 	});
 };
 
-const updateExchangeStakePool = async (id, data) => {
+const updateExchangeStakePool = async (id, data, auditInfo) => {
    	const stakePool = await getModel('stake').findOne({ where: { id } });
 	if (!stakePool) {
 		throw new Error(STAKE_POOL_NOT_FOUND);
@@ -434,6 +434,8 @@ const updateExchangeStakePool = async (id, data) => {
 
 	validateExchangeStake(updatedStakePool);
 
+    createAuditLog(auditInfo.userEmail, auditInfo.apiPath, auditInfo.method, updatedStakePool, stakePool.dataValues);
+    
 	return stakePool.update(updatedStakePool, {
 		fields: [
 			'name',

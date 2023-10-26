@@ -7,6 +7,7 @@ const { getKitTiers, getKitPairs, subscribedToPair, getTierLevels, getDefaultFee
 const { reject, all } = require('bluebird');
 const { difference, omit, isNumber, each, isString, isBoolean } = require('lodash');
 const { publisher } = require('./database/redis');
+const { createAuditLog } = require('./user');
 const { CONFIGURATION_CHANNEL } = require(`${SERVER_PATH}/constants`);
 const flatten = require('flat');
 
@@ -101,7 +102,7 @@ const createTier = (level, name, icon, description, deposit_limit, withdrawal_li
 		});
 };
 
-const updateTier = (level, updateData) => {
+const updateTier = (level, updateData, auditInfo) => {
 	const existingTiers = getKitTiers();
 
 	if (!existingTiers[level]) {
@@ -135,7 +136,7 @@ const updateTier = (level, updateData) => {
 			if (isBoolean(updateData.native_currency_limit)) {
 				newData.native_currency_limit = updateData.native_currency_limit;
 			}
-
+			createAuditLog(auditInfo.userEmail, auditInfo.apiPath, auditInfo.method, newData, tier.dataValues);
 			return tier.update(newData);
 		})
 		.then((tier) => {
@@ -154,7 +155,7 @@ const updateTier = (level, updateData) => {
 		});
 };
 
-const updatePairFees = (pair, fees) => {
+const updatePairFees = (pair, fees, auditInfo) => {
 	if (!subscribedToPair(pair)) {
 		return reject(new Error('Invalid pair'));
 	}
@@ -182,6 +183,8 @@ const updatePairFees = (pair, fees) => {
 			};
 			updatedFees.maker[pair] = fees[level].maker;
 			updatedFees.taker[pair] = fees[level].taker;
+
+			createAuditLog(auditInfo.userEmail, auditInfo.apiPath, auditInfo.method, updatedFees, tier.dataValues.fees);
 
 			return tier.update(
 				{ fees: updatedFees },

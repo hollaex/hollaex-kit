@@ -1183,17 +1183,18 @@ const verifyUserEmailByKitId = (kitId) => {
 		});
 };
 
-const updateUserNote = (userId, note) => {
+const updateUserNote = (userId, note, auditInfo) => {
 	return getUserByKitId(userId, false)
 		.then((user) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
 			}
+			createAuditLog(auditInfo.userEmail, auditInfo.apiPath, auditInfo.method, note, user.note);
 			return user.update({ note }, { fields: ['note'] });
 		});
 };
 
-const updateUserDiscount = (userId, discount) => {
+const updateUserDiscount = (userId, discount, auditInfo) => {
 	if (discount < 0 || discount > 100) {
 		return reject(new Error(`Invalid discount rate ${discount}. Min: 0. Max: 1`));
 	}
@@ -1212,6 +1213,7 @@ const updateUserDiscount = (userId, discount) => {
 		})
 		.then(([previousDiscountRate, user]) => {
 			if (user.discount > previousDiscountRate) {
+				createAuditLog(auditInfo.userEmail, auditInfo.apiPath, auditInfo.method, user.discount, previousDiscountRate);
 				sendEmail(
 					MAILTYPE.DISCOUNT_UPDATE,
 					user.email,
@@ -1440,7 +1442,7 @@ const getUpdatedKeys = (oldData, newData) => {
 	return keys;
   }
 
-  const getValues = (data, prevData) => {
+const getValues = (data, prevData) => {
 	const updatedKeys = getUpdatedKeys(prevData, data);
     const updatedValues = updatedKeys.map(key => data[key]);
 	const oldValues = updatedKeys.map(key => prevData[key]);
@@ -1754,7 +1756,7 @@ const inviteExchangeOperator = (invitingEmail, email, role, opts = {
 		});
 };
 
-const updateUserMeta = async (id, givenMeta = {}, opts = { overwrite: null }) => {
+const updateUserMeta = async (id, givenMeta = {}, opts = { overwrite: null }, auditInfo) => {
 	const { user_meta: referenceMeta } = getKitConfig();
 
 	const user = await getUserByKitId(id, false);
@@ -1805,7 +1807,7 @@ const updateUserMeta = async (id, givenMeta = {}, opts = { overwrite: null }) =>
 	const updatedUser = await user.update({
 		meta: updatedUserMeta
 	});
-
+	createAuditLog(auditInfo.userEmail, auditInfo.apiPath, auditInfo.method, updatedUserMeta, user.meta);
 	return pick(updatedUser, 'id', 'email', 'meta');
 };
 
@@ -1935,7 +1937,7 @@ const [mapNetworkIdToKitId, mapKitIdToNetworkId] = (() => {
 		}];
 })();
 
-const updateUserInfo = async (userId, data = {}) => {
+const updateUserInfo = async (userId, data = {}, auditInfo) => {
 	if (!isInteger(userId) || userId <= 0) {
 		throw new Error('UserId must be a positive integer');
 	}
@@ -2000,12 +2002,15 @@ const updateUserInfo = async (userId, data = {}) => {
 	if (isEmpty(updateData)) {
 		throw new Error('No fields to update');
 	}
+	const oldValues = {};
+	Object.keys(updateData).forEach(key => { oldValues[key] = user.dataValues[key] });
 
 	await user.update(
 		updateData,
 		{ fields: Object.keys(updateData) }
 	);
 
+	createAuditLog(auditInfo.userEmail, auditInfo.apiPath, auditInfo.method, updateData, oldValues);
 	return omitUserFields(user.dataValues);
 };
 

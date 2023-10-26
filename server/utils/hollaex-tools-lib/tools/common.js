@@ -652,7 +652,7 @@ const updateKitUserMeta = async (name, data = {
 	type: null,
 	description: null,
 	required: null
-}) => {
+}, auditInfo) => {
 	const existingUserMeta = getKitConfig().user_meta;
 
 	if (!existingUserMeta[name]) {
@@ -690,7 +690,8 @@ const updateKitUserMeta = async (name, data = {
 			user_meta: updatedUserMeta
 		}
 	});
-
+	const { createAuditLog } = require('./user');
+	createAuditLog(auditInfo.userEmail, auditInfo.apiPath, auditInfo.method, updatedUserMeta, existingUserMeta);
 	publisher.publish(
 		CONFIGURATION_CHANNEL,
 		JSON.stringify({
