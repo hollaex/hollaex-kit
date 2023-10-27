@@ -2673,7 +2673,4 @@ module.exports = {
 	updateQuickTradeConfig,
 	getBalancesAdmin,
 	restoreUserAccount,
-	getTransactionLimits,
-	updateTransactionLimit,
-	deleteTransactionLimit
 };
