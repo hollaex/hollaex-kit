@@ -2672,6 +2672,5 @@ module.exports = {
 	sendRawEmailByAdmin,
 	updateQuickTradeConfig,
 	getBalancesAdmin,
-	restoreUserAccount,
-
+	restoreUserAccount
 };
