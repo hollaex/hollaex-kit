@@ -1625,6 +1625,52 @@ paths:
         - bearer
       x-security-scopes:
         - admin
+  /admin/user/email:
+    x-swagger-router-controller: admin
+    put:
+      operationId: changeUserEmail
+      description: change User Email
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - email_code
+              - otp_code
+              - user_id
+              - email
+            properties:
+              email_code:
+                type: string
+                maxLength: 256
+              otp_code:
+                type: string
+                maxLength: 256
+              user_id:
+                type: number
+                format: int32
+              email:
+                type: string
+                maxLength: 256
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+      x-security-scopes:
+        - admin
   /admin/bank/verify:
     x-swagger-router-controller: admin
     post:
@@ -3542,7 +3588,7 @@ paths:
       description: Get slash amount for stake pool
       operationId: unstakeEstimateSlashAdmin
       tags:
-        - User
+        - Admin
       parameters:
         - in: query
           name: id
@@ -3667,6 +3713,31 @@ paths:
           description: CSV
           schema:
             type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
+      x-token-permissions:
+        - can_read
+  /admin/stake/analytics:
+    x-swagger-router-controller: stake
+    get:
+      description: Get staking and unstaking amounts
+      operationId: fetchStakeAnalytics
+      tags:
+        - Admin
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
         default:
           description: Error
           schema:

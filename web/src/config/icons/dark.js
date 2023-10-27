@@ -287,6 +287,11 @@ const nestedIcons = {
 	//should move this to the plugin itself once the functionality is added
 	GENERATE_REFERENCE_NUMBER: '/assets/icons/generate-reference-number-01.svg',
 	OSKO_LOGO: '/assets/icons/osko-logo.svg',
+
+	REFRESH_ICON: '/assets/icons/refresh-icon.svg',
+	WALLET_GRAPHIC: '/assets/images/wallet-background-graphic-dark-theme.svg',
+	ARROW_DOWN: '/assets/images/deposit-arrow-down.svg',
+	ARROW_UP: '/assets/images/withdraw-arrow-up.svg',
 };
 
 const icons = flatten(nestedIcons, options);

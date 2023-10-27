@@ -393,6 +393,20 @@ const unstakeEstimateSlashAdmin = (req, res) => {
 		});
 }
 
+const fetchStakeAnalytics = (req, res) => {
+
+	loggerStake.verbose(req.uuid, 'controllers/stake/fetchStakeAnalytics/auth', req.auth);
+
+	toolsLib.stake.fetchStakeAnalytics()
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerStake.error(req.uuid, 'controllers/stake/fetchStakeAnalytics', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+}
+
 module.exports = {
 	getExchangeStakes,
 	createExchangeStakes,
@@ -403,5 +417,6 @@ module.exports = {
 	createStaker,
 	deleteExchangeStaker,
 	unstakeEstimateSlash,
-	unstakeEstimateSlashAdmin
+	unstakeEstimateSlashAdmin,
+	fetchStakeAnalytics
 };
