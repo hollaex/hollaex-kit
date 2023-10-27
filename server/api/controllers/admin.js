@@ -2673,4 +2673,5 @@ module.exports = {
 	updateQuickTradeConfig,
 	getBalancesAdmin,
 	restoreUserAccount,
+
 };
