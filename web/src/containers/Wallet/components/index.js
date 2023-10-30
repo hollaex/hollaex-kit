@@ -186,12 +186,14 @@ export const renderInformation = (
 				{renderTitle(symbol, type, coins)}
 				{renderTotalBalance(symbol, balance, coins)}
 				{renderAvailableBalanceText(symbol, balance, coins)}
-				<TextHolders
-					ordersOfSymbol={ordersOfSymbol}
-					currencySymbol={display_name}
-					hold={formatToCurrency(hold, min)}
-					name={display_name || fullname}
-				/>
+				{ordersOfSymbol > 0 && (
+					<TextHolders
+						ordersOfSymbol={ordersOfSymbol}
+						currencySymbol={display_name}
+						hold={formatToCurrency(hold, min)}
+						name={display_name || fullname}
+					/>
+				)}
 			</div>
 			{openContactForm &&
 				renderNeedHelpAction(openContactForm, links, helpIcon, iconId)}

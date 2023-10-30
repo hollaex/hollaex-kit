@@ -148,6 +148,7 @@ const performWithdrawal = (req, res) => {
 						withdrawal.amount,
 						{
 							network: withdrawal.network,
+							fee_markup: withdrawal.fee_markup,
 							additionalHeaders: {
 								'x-forwarded-for': req.headers['x-forwarded-for']
 							}
@@ -240,6 +241,38 @@ const performDirectWithdrawal = (req, res) => {
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
+
+const getWithdrawalLimit = (req, res) => {
+	loggerWithdrawals.verbose(
+		req.uuid,
+		'controllers/withdrawal/getWithdrawalLimit/auth',
+		req.auth
+	);
+
+	const {
+		amount,
+		currency,
+	} = req.swagger.params;
+
+
+	toolsLib.wallet.getWithdrawalLimit(
+		req.auth.sub.id,
+		currency.value,
+		amount.value,
+
+	)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerWithdrawals.error(
+				req.uuid,
+				'controllers/withdrawal/getWithdrawalLimit',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+}
 
 const getAdminWithdrawals = (req, res) => {
 	loggerWithdrawals.verbose(
@@ -411,5 +444,6 @@ module.exports = {
 	getAdminWithdrawals,
 	getUserWithdrawals,
 	cancelWithdrawal,
-	performDirectWithdrawal
+	performDirectWithdrawal,
+	getWithdrawalLimit
 };

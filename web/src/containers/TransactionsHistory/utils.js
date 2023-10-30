@@ -775,6 +775,30 @@ export const generateWithdrawalsHeaders = (
 			},
 		},
 		{
+			stringId: 'category',
+			label: STRINGS['CATEGORY'],
+			key: 'category',
+			renderCell: (data, value, index) => {
+				return !data.category ? (
+					<td key={index}>{'-'}</td>
+				) : (
+					<td key={index}>{data.category}</td>
+				);
+			},
+		},
+		{
+			stringId: 'network',
+			label: STRINGS['NETWORK'],
+			key: 'network',
+			renderCell: (data, value, index) => {
+				return !data.network ? (
+					<td key={index}>{'-'}</td>
+				) : (
+					<td key={index}>{data.network.toUpperCase()}</td>
+				);
+			},
+		},
+		{
 			stringId: 'MORE,CANCEL,VIEW',
 			label: STRINGS['MORE'],
 			key: 'transaction_id',

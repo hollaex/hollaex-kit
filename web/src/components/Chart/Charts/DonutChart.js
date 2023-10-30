@@ -211,7 +211,11 @@ class DonutChart extends Component {
 		if (!this.state.isData) {
 			return (
 				<g key={i}>
-					<path d={arcj(value)} fill={colors_currencies.noData} />
+					<path
+						d={arcj(value)}
+						fill={colors_currencies.noData}
+						fill-opacity="0.2"
+					/>
 					<text
 						transform={translate(0, -10)}
 						dy=".35em"

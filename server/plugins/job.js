@@ -40,13 +40,13 @@ const unstakingCheckRunner = () => {
 				const amountAfterSlash =  new BigNumber(staker.reward).minus(new BigNumber(staker.slashed)).toNumber();
 				let totalAmount = staker.amount;
 
-				// If there is no reward_currency, Add them together since they are of same currency.
-				if (!stakePool.reward_currency) {
+				// Add them together since they are of same currency.
+				if (stakePool.reward_currency === stakePool.currency) {
 					totalAmount = (new BigNumber(staker.amount).plus(amountAfterSlash)).toNumber();
 				}
 
 				if (new BigNumber(symbols[stakePool.currency]).comparedTo(totalAmount) !== 1
-					|| (stakePool.reward_currency && new BigNumber(symbols[stakePool.reward_currency]).comparedTo(amountAfterSlash) !== 1)
+					|| ((stakePool.reward_currency !== stakePool.currency) && new BigNumber(symbols[stakePool.reward_currency]).comparedTo(amountAfterSlash) !== 1)
 				) {
 					const adminAccount = await toolsLib.user.getUserByKitId(stakePool.user_id);
 					sendEmail(
@@ -72,7 +72,7 @@ const unstakingCheckRunner = () => {
                     	await toolsLib.wallet.transferAssetByKitIds(stakePool.account_id, user.id, stakePool.currency, totalAmount, 'Admin transfer stake', user.email, { category: 'stake' });
 					}
 					
-					if (stakePool.reward_currency && amountAfterSlash > 0) {
+					if (stakePool.reward_currency !== stakePool.currency && amountAfterSlash > 0) {
 						 await toolsLib.wallet.transferAssetByKitIds(stakePool.account_id, user.id, stakePool.reward_currency, amountAfterSlash, 'Admin transfer stake', user.email, { category: 'stake' });
 					}
 
@@ -93,6 +93,16 @@ const unstakingCheckRunner = () => {
 
 
 		} catch (err) {
+			const adminAccount = await toolsLib.user.getUserByKitId(1);
+			sendEmail(
+				MAILTYPE.ALERT,
+				adminAccount.email,
+				{
+					type: 'Error during unstaking process!',
+					data: err.message
+				},
+				adminAccount.settings
+			);
 			loggerPlugin.error(
 				'/plugins unstaking status check error:',
 				err.message
@@ -127,10 +137,14 @@ const updateRewardsCheckRunner = () => {
 					// If the current date is after the closing date, we should stop calculating rewarding after closing date.
 					// If there is no closing date, It means we are in a perpatual stake pool, we keep calculating rewarding until user unstakes.
 					if (closedDate && closedDate < stakingDate) {
+						await staker.update({ status: 'unstaking', unstaked_date: new Date() }, {
+							fields: ['status', 'unstaked_date']
+						});
+				
 						continue;
 					}
 
-					if (stakePool.reward_currency) {
+					if (stakePool.reward_currency !== stakePool.currency) {
 						const conversions = await toolsLib.getAssetsPrices([stakePool.currency], stakePool.reward_currency, 1);
 						if (conversions[stakePool.currency] === -1) {
 							const adminAccount = await toolsLib.user.getUserByKitId(stakePool.user_id);
@@ -154,6 +168,16 @@ const updateRewardsCheckRunner = () => {
 			}
 
 		} catch (err) {
+			const adminAccount = await toolsLib.user.getUserByKitId(1);
+			sendEmail(
+				MAILTYPE.ALERT,
+				adminAccount.email,
+				{
+					type: 'Error during stake rewarding process!',
+					data: err.message
+				},
+				adminAccount.settings
+			);
 			loggerPlugin.error(
 				'/plugins update rewards check error:',
 				err.message

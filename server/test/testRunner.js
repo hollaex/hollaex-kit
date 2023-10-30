@@ -68,6 +68,7 @@ const execute = async () => {
         await mochaRunWithSleep(__dirname + "/admin/admin-user-test.js");
         await mochaRunWithSleep(__dirname + "/admin/admin-users-test.js");
         await mochaRunWithSleep(__dirname + "/admin/admin-verify-email-test.js");
+        await mochaRunWithSleep(__dirname + "/admin/admin-change-email.js");
         await mochaRunWithSleep(__dirname + "/broker/broker-test.js");
         await mochaRunWithSleep(__dirname + "/chart/chart-test.js");
         await mochaRunWithSleep(__dirname + "/chart/charts-test.js");

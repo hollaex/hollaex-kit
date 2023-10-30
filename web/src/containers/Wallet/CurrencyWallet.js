@@ -132,7 +132,8 @@ class Wallet extends Component {
 		);
 		const hasEarn = !isStakingAvailable(currency, contracts);
 		const markets = this.getAllAvailableMarkets(currency);
-		const { fullname, min, icon_id } = coins[currency] || DEFAULT_COIN_DATA;
+		const { fullname, min, icon_id, symbol } =
+			coins[currency] || DEFAULT_COIN_DATA;
 		const balanceValue = balance[`${currency}_balance`] || 0;
 		const availableBalanceValue = balance[`${currency}_available`] || 0;
 
@@ -142,7 +143,7 @@ class Wallet extends Component {
 					<Coin iconId={icon_id} type="CS12" />
 					<div className="d-flex title-wrapper">
 						<EditWrapper
-							stringId="CURRENCY_BALANCE_TEXT"
+							stringId={`${symbol?.toUpperCase()}_FULLNAME`}
 							className="fullname-label"
 						>
 							{fullname}

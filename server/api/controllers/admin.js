@@ -5,7 +5,7 @@ const toolsLib = require('hollaex-tools-lib');
 const { cloneDeep, pick } = require('lodash');
 const { all } = require('bluebird');
 const { INIT_CHANNEL, ROLES } = require('../../constants');
-const { USER_NOT_FOUND, API_KEY_NOT_PERMITTED, PROVIDE_VALID_EMAIL, INVALID_PASSWORD, USER_EXISTS, NO_DATA_FOR_CSV } = require('../../messages');
+const { USER_NOT_FOUND, API_KEY_NOT_PERMITTED, PROVIDE_VALID_EMAIL, INVALID_PASSWORD, USER_EXISTS, NO_DATA_FOR_CSV, INVALID_VERIFICATION_CODE, INVALID_OTP_CODE } = require('../../messages');
 const { sendEmail, testSendSMTPEmail, sendRawEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
 const { errorMessageConverter } = require('../../utils/conversion');
@@ -2484,6 +2484,73 @@ const updateQuickTradeConfig = (req, res) => {
 		});
 };
 
+const getTransactionLimits = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/getTransactionLimits/auth', req.auth);
+
+	toolsLib.tier.getTransactionLimits()
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/getTransactionLimits', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const updateTransactionLimit = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/updateTransactionLimit/auth', req.auth);
+
+	const { 
+		id,
+		tier,
+		amount,
+		currency,
+		limit_currency,
+		type,
+		period,
+	 } = req.swagger.params.data.value;
+
+	toolsLib.tier.updateTransactionLimit(id, {
+		tier,
+		amount,
+		currency,
+		limit_currency,
+		type,
+		period,
+	 })
+		.then((data) => {
+			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/updateTransactionLimit', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const deleteTransactionLimit = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/deleteTransactionLimit', req.auth.sub);
+
+	const { id } = req.swagger.params.data.value;
+
+	loggerAdmin.info(
+		req.uuid,
+		'controllers/admin/deleteTransactionLimit',
+		'id',
+		id
+	);
+
+	toolsLib.tier.deleteTransactionLimit(id)
+		.then((result) => {
+			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
+			return res.json(result);
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/deleteTransactionLimit', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
 const getBalancesAdmin = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getBalancesAdmin/auth', req.auth);
 
@@ -2538,6 +2605,43 @@ const restoreUserAccount = (req, res) => {
 		})
 		.catch((err) => {
 			loggerAdmin.error(req.uuid, 'controllers/user/restoreUserAccount', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const changeUserEmail = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/changeUserEmail/auth', req.auth);
+
+	const { email_code, otp_code, email, user_id } = req.swagger.params.data.value;
+
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/changeUserEmail',
+		'user_id',
+		user_id,
+		'email_code',
+		email_code
+	);
+	toolsLib.security.verifyOtpBeforeAction(user_id, otp_code)
+		.then((validOtp) => {
+			if (!validOtp) {
+				throw new Error(INVALID_OTP_CODE);
+			}
+
+			return toolsLib.security.confirmByEmail(user_id, email_code);
+		})
+		.then((confirmed) => {
+			if (confirmed) {
+				return toolsLib.user.changeKitUserEmail(user_id, email);
+			} else {
+				throw new Error(INVALID_VERIFICATION_CODE);
+			}
+		})
+		.then(() => {
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/changeUserEmail', err.message);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
@@ -2605,5 +2709,9 @@ module.exports = {
 	sendRawEmailByAdmin,
 	updateQuickTradeConfig,
 	getBalancesAdmin,
-	restoreUserAccount
+	restoreUserAccount,
+	changeUserEmail,
+	getTransactionLimits,
+	updateTransactionLimit,
+	deleteTransactionLimit
 };

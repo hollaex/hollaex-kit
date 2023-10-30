@@ -37,7 +37,7 @@ module.exports = {
 			},
 			reward_currency: {
 				type: Sequelize.STRING,
-				allowNull: true
+				allowNull: false
 			},
 			reward: {
 				type: Sequelize.DOUBLE,
