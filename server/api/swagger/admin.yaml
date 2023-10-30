@@ -943,34 +943,6 @@ paths:
         - bearer
       x-security-scopes:
         - admin
-  /admin/tiers/limits:
-    x-swagger-router-controller: tier
-    put:
-      operationId: updateTiersLimits
-      description: Update tier limits
-      tags:
-        - Admin
-      parameters:
-        - name: data
-          in: body
-          required: true
-          schema:
-            $ref: "#/definitions/TiersLimitsPut"
-      responses:
-        200:
-          description: Success
-          schema:
-            $ref: "#/definitions/MessageResponse"
-        default:
-          description: Error
-          schema:
-            $ref: "#/definitions/MessageResponse"
-      security:
-        - Token: []
-      x-security-types:
-        - bearer
-      x-security-scopes:
-        - admin
   /admin/coin:
     x-swagger-router-controller: admin
     post:

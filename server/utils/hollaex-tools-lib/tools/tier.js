@@ -24,21 +24,11 @@ const findTier = (level) => {
 		});
 };
 
-const createTier = (level, name, icon, description, deposit_limit, withdrawal_limit, fees = {}, note = '') => {
+const createTier = (level, name, icon, description, fees = {}, note = '') => {
 	const existingTiers = getKitTiers();
 
 	if (existingTiers[level]) {
 		return reject(new Error('Tier already exists'));
-	} else if (
-		withdrawal_limit < 0
-		&& withdrawal_limit !== -1
-	) {
-		return reject(new Error('Withdrawal limit cannot be a negative number other than -1'));
-	} else if (
-		deposit_limit < 0
-		&& deposit_limit !== -1
-	) {
-		return reject(new Error('Withdrawal limit cannot be a negative number other than -1'));
 	}
 
 	const givenMakerSymbols = Object.keys(omit(fees.maker, 'default'));
@@ -80,8 +70,6 @@ const createTier = (level, name, icon, description, deposit_limit, withdrawal_li
 		name,
 		icon,
 		description,
-		deposit_limit,
-		withdrawal_limit,
 		fees: tierFees,
 		note
 	})
@@ -106,8 +94,6 @@ const updateTier = (level, updateData) => {
 
 	if (!existingTiers[level]) {
 		return reject(new Error('Tier does not exist'));
-	} else if (updateData.deposit_limit !== undefined || updateData.withdrawal_limit !== undefined) {
-		return reject(new Error('Cannot update limits through this endpoint'));
 	} else if (updateData.fees !== undefined) {
 		return reject(new Error('Cannot update fees through this endpoint'));
 	}
@@ -262,7 +248,7 @@ const findTransactionLimitPerTier = async (tier, period, type) => {
 	const transactionLimitModel = getModel('transactionLimit');
 	return transactionLimitModel.findAll({ where: { tier, period, type } });
 
-}
+};
 
 const findTransactionLimit = async (opts = {
 	id,
@@ -284,7 +270,7 @@ const findTransactionLimit = async (opts = {
 		...(opts.type && { type: opts.type }),
 		...(opts.period && { period: opts.period }),
 	} });
-}
+};
 
 
 const updateTransactionLimit = async (id, data) => {
@@ -295,22 +281,22 @@ const updateTransactionLimit = async (id, data) => {
 		limit_currency,
 		type,
 		period
-	} = data
+	} = data;
 
 	if (currency && !subscribedToCoin(currency)) {
-           throw new Error('Invalid coin ' + currency);
-    }
+		throw new Error('Invalid coin ' + currency);
+	}
 
 	if (limit_currency && limit_currency !== 'default' && !subscribedToCoin(limit_currency)) {
-           throw new Error('Invalid coin ' + limit_currency);
-    }
+		throw new Error('Invalid coin ' + limit_currency);
+	}
 
 	if(tier && tier < 0) {
-		throw new Error('tier cannot be a negative number other than -1')
+		throw new Error('tier cannot be a negative number other than -1');
 	}
 
 	if (amount < 0 && amount !== -1) {
-		throw new Error('amount cannot be a negative number other than -1')
+		throw new Error('amount cannot be a negative number other than -1');
 	}
 
 	if (id) {
@@ -334,11 +320,11 @@ const updateTransactionLimit = async (id, data) => {
 		return transactionLimitModel.create(data);
 	}
 
-}
+};
 
 const getTransactionLimits = () => {
 	return dbQuery.findAndCountAllWithRows('transactionLimit');
-}
+};
 
 const deleteTransactionLimit = async (id) => {
 	const transactionLimitModel = getModel('transactionLimit');
@@ -349,7 +335,7 @@ const deleteTransactionLimit = async (id) => {
 		throw new Error('Record does not exist');
 	}
 	return limit.destroy();
-}
+};
 
 module.exports = {
 	findTier,

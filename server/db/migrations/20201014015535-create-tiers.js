@@ -19,14 +19,6 @@ module.exports = {
 					type: Sequelize.STRING,
 					allowNull: false
 				},
-				deposit_limit: {
-					type: Sequelize.DOUBLE,
-					defaultValue: 0
-				},
-				withdrawal_limit: {
-					type: Sequelize.DOUBLE,
-					defaultValue: 0
-				},
 				fees: {
 					type: Sequelize.JSONB,
 					defaultValue: {}
