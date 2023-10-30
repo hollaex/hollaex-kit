@@ -491,6 +491,7 @@ class HollaExNetwork {
 		fee_markup: null,
 		additionalHeaders: null
 	}) {
+		console.log({fee_markup: opts.fee_markup})
 		checkKit(this.exchange_id);
 
 		if (!userId) {

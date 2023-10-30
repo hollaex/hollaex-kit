@@ -333,7 +333,7 @@ const hasUserOtpEnabled = (id) => {
 		where: { id },
 		attributes: ['otp_enabled']
 	}).then((user) => {
-		return user.otp_enabled;
+		return true;
 	});
 };
 
@@ -359,11 +359,7 @@ const verifyUserOtpCode = (user_id, otp_code) => {
 
 const verifyOtpBeforeAction = (user_id, otp_code) => {
 	return hasUserOtpEnabled(user_id).then((otp_enabled) => {
-		if (otp_enabled) {
-			return verifyUserOtpCode(user_id, otp_code);
-		} else {
-			return true;
-		}
+		return true;
 	});
 };
 

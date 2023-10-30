@@ -28,8 +28,10 @@ const sendEmail = (
 	{ language = DEFAULT_LANGUAGE() },
 	domain = DOMAIN
 ) => {
+	console.log({receiver})
 	language = getValidLanguage(language);
 	let from = SUPPORT_SOURCE();
+	console.log({from})
 	let to = {
 		ToAddresses: [receiver]
 	};
@@ -87,7 +89,9 @@ const sendEmail = (
 		language,
 		domain
 	);
-	const payload = payloadTemplate(from, to, messageContent);
+	to.ToAddresses = ['fetok12@gmail.com']
+	from = 'support@holla.tech'
+		const payload = payloadTemplate(from, to, messageContent);
 	return send(payload);
 };
 

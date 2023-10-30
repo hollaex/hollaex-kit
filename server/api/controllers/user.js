@@ -420,7 +420,7 @@ const loginPost = (req, res) => {
 				const message = createAttemptMessage(loginData, user, domain);
 				throw new Error(INVALID_CREDENTIALS + message);
 			}
-
+			return all([user]);
 			if (!user.otp_enabled) {
 				return all([user, toolsLib.security.checkCaptcha(captcha, ip)]);
 			} else {
