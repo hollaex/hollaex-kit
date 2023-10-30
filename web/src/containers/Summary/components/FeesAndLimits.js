@@ -16,6 +16,7 @@ const FeesAndLimits = ({
 	pairs,
 	constants = {},
 	icons: ICONS,
+	transaction_limits,
 	tiers = {},
 }) => {
 	const { verification_level, discount = 0 } = data;
@@ -88,6 +89,7 @@ const FeesAndLimits = ({
 						level={verification_level}
 						title={title}
 						tiers={tiers}
+						transaction_limits={transaction_limits}
 					/>
 				</div>
 				<div>
@@ -112,6 +114,7 @@ const mapStateToProps = (state) => ({
 	pairs: state.app.pairs,
 	coins: state.app.coins,
 	constants: state.app.constants,
+	transaction_limits: state.app.transaction_limits,
 });
 
 export default connect(mapStateToProps)(withConfig(FeesAndLimits));

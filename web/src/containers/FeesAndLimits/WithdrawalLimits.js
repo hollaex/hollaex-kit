@@ -12,6 +12,7 @@ const WithdrawalLimits = ({
 	config_level,
 	pairs,
 	coins,
+	transaction_limits,
 	selectedLevel,
 	setSelectedLevel,
 	options,
@@ -103,6 +104,7 @@ const WithdrawalLimits = ({
 									level={selectedLevel}
 									title={''}
 									tiers={config_level}
+									transaction_limits={transaction_limits}
 								/>
 							</div>
 						</div>
@@ -116,6 +118,7 @@ const WithdrawalLimits = ({
 const mapStateToProps = (state) => {
 	return {
 		coins: state.app.coins,
+		transaction_limits: state.app.transaction_limits,
 		pairs: state.app.pairs,
 		config_level: state.app.config_level,
 		options: Object.entries(state.app.config_level).map(([key, { name }]) => ({

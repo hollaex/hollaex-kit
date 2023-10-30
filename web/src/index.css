@@ -9345,6 +9345,25 @@ table th {
       margin-right: 0.5rem; }
   .quick_trade-wrapper .review-block-wrapper .with_price-block_amount {
     margin: 0; }
+  .quick_trade-wrapper .day-change-block {
+    text-align: end;
+    margin-bottom: 1.5rem; }
+    .quick_trade-wrapper .day-change-block .ant-radio-group .ant-radio-button-wrapper {
+      background: transparent;
+      color: var(--labels_secondary-inactive-label-text-graphics);
+      border-color: var(--labels_secondary-inactive-label-text-graphics);
+      height: 28px;
+      padding: 0 12px;
+      line-height: 24px; }
+      .quick_trade-wrapper .day-change-block .ant-radio-group .ant-radio-button-wrapper:first-child {
+        border-radius: 0.5rem 0 0 0.5rem; }
+      .quick_trade-wrapper .day-change-block .ant-radio-group .ant-radio-button-wrapper:last-child {
+        border-radius: 0 0.5rem 0.5rem 0; }
+      .quick_trade-wrapper .day-change-block .ant-radio-group .ant-radio-button-wrapper::before {
+        background: #fff; }
+    .quick_trade-wrapper .day-change-block .ant-radio-group .ant-radio-button-wrapper-checked {
+      border-color: #fff;
+      color: #fff; }
   .quick_trade-wrapper .balance-wallet {
     padding-bottom: 0.5rem; }
   .quick_trade-wrapper .input-group__error-wrapper {
@@ -9361,6 +9380,8 @@ table th {
     background-color: var(--base_background); }
     .quick_trade-wrapper .trade-details-wrapper .trade-details-content {
       height: 450px; }
+      .quick_trade-wrapper .trade-details-wrapper .trade-details-content .pb-24 {
+        padding-bottom: 24px; }
       .quick_trade-wrapper .trade-details-wrapper .trade-details-content .pb-30 {
         padding-bottom: 30px; }
       .quick_trade-wrapper .trade-details-wrapper .trade-details-content .pb-35 {
@@ -9384,6 +9405,8 @@ table th {
       .quick_trade-wrapper .trade-details-wrapper .trade-details-content .trade_tabs-container {
         margin: 0 !important;
         width: 100% !important; }
+      .quick_trade-wrapper .trade-details-wrapper .trade-details-content .main-coin-wrapper {
+        opacity: 0.3; }
     .quick_trade-wrapper .trade-details-wrapper .f-size-16 {
       font-size: 16px;
       color: var(--labels_secondary-inactive-label-text-graphics);

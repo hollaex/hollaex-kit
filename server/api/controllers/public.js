@@ -28,6 +28,7 @@ const getConstants = (req, res) => {
 			pairs: toolsLib.getKitPairsConfig(),
 			broker: toolsLib.getBrokerDeals(),
 			quicktrade: toolsLib.getQuickTrades(),
+			transactionLimits: toolsLib.getTransactionLimits(),
 			networkQuickTrades: toolsLib.getNetworkQuickTrades(),
 			network: HOLLAEX_NETWORK_ENDPOINT
 		});
