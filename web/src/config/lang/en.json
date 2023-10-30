@@ -1591,13 +1591,16 @@
 					"SUBTITLE": "Assets that are separated from the collective limit rule that follow their own independent 24h withdrawal rule:",
 					"HEADER": {
 						"CURRENCY": "Currency/asset",
-						"LIMIT": "24h limit"
+						"LIMIT": "24h limit",
+						"LIMIT_2": "1 Month limit"
 					},
-					"LIMIT_TEXT": "(Assets that all share a collective withdrawal limit amount)"
+					"LIMIT_TEXT": "(Assets that all share a collective withdrawal limit amount)",
+					"LIMIT_TEXT_2": "(Limit based only on its own currency)",
+					"LIMIT_TEXT_3": "(Limit based on aggreation of other currencies)"
 				},
 				"TABLE_2": {
-					"TITLE": "Collective shared standard withdrawal limit",
-					"SUBTITLE": "Below are the assets that all share the same standard 24h withdrawal limit amount rule:"
+					"TITLE": "Asset withdrawal limits",
+					"SUBTITLE": "Below are the assets with their withdrawal limit amount rules:"
 				}
 			}
 		}

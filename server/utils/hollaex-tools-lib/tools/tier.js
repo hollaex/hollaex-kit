@@ -3,7 +3,7 @@
 const { SERVER_PATH } = require('../constants');
 const dbQuery = require('./database/query');
 const { getModel } = require('./database');
-const { getKitTiers, getKitPairs, subscribedToPair, getTierLevels, getDefaultFees } = require('./common');
+const { getKitTiers, getKitPairs, subscribedToPair, getTierLevels, getDefaultFees, subscribedToCoin } = require('./common');
 const { reject, all } = require('bluebird');
 const { difference, omit, isNumber, each, isString, isBoolean } = require('lodash');
 const { publisher } = require('./database/redis');
@@ -258,10 +258,108 @@ const updateTiersLimits = (limits) => {
 		});
 };
 
+const findTransactionLimitPerTier = async (tier, period, type) => {
+	const transactionLimitModel = getModel('transactionLimit');
+	return transactionLimitModel.findAll({ where: { tier, period, type } });
+
+}
+
+const findTransactionLimit = async (opts = {
+	id,
+	tier,
+	amount,
+	currency,
+	limit_currency,
+	type,
+	period,
+}) => {
+	const transactionLimitModel = getModel('transactionLimit');
+
+	return transactionLimitModel.findOne({ where: { 
+		...(opts.id && { id: opts.id }),
+		...(opts.tier && { tier: opts.tier }),
+		...(opts.amount && { amount: opts.amount }),
+		...(opts.currency && { currency: opts.currency }),
+		...(opts.limit_currency && { limit_currency: opts.limit_currency }),
+		...(opts.type && { type: opts.type }),
+		...(opts.period && { period: opts.period }),
+	} });
+}
+
+
+const updateTransactionLimit = async (id, data) => {
+	const {
+		tier,
+		currency,
+		amount,
+		limit_currency,
+		type,
+		period
+	} = data
+
+	if (currency && !subscribedToCoin(currency)) {
+           throw new Error('Invalid coin ' + currency);
+    }
+
+	if (limit_currency && limit_currency !== 'default' && !subscribedToCoin(limit_currency)) {
+           throw new Error('Invalid coin ' + limit_currency);
+    }
+
+	if(tier && tier < 0) {
+		throw new Error('tier cannot be a negative number other than -1')
+	}
+
+	if (amount < 0 && amount !== -1) {
+		throw new Error('amount cannot be a negative number other than -1')
+	}
+
+	if (id) {
+		const transactionLimit = await findTransactionLimit({ id });
+		const updatedTransactionObject = {
+			...transactionLimit.get({ plain: true }),
+			...data,
+		};
+
+		return transactionLimit.update(updatedTransactionObject);
+
+	} else {
+		const isExist = await findTransactionLimit({ tier, limit_currency, period, type });
+
+		if (isExist) {
+			throw new Error('Transaction limit record already exist');
+		}
+
+		const transactionLimitModel = getModel('transactionLimit');
+
+		return transactionLimitModel.create(data);
+	}
+
+}
+
+const getTransactionLimits = () => {
+	return dbQuery.findAndCountAllWithRows('transactionLimit');
+}
+
+const deleteTransactionLimit = async (id) => {
+	const transactionLimitModel = getModel('transactionLimit');
+
+	const limit = await transactionLimitModel.findOne({ where: { id } });
+
+	if (!limit) {
+		throw new Error('Record does not exist');
+	}
+	return limit.destroy();
+}
+
 module.exports = {
 	findTier,
 	createTier,
 	updateTier,
 	updatePairFees,
-	updateTiersLimits
+	updateTiersLimits,
+	updateTransactionLimit,
+	getTransactionLimits,
+	findTransactionLimit,
+	findTransactionLimitPerTier,
+	deleteTransactionLimit
 };

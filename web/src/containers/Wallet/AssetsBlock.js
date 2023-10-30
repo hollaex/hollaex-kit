@@ -398,7 +398,13 @@ const AssetsBlock = ({
 													<Coin iconId={icon_id} />
 												</Link>
 												<Link to={`/wallet/${key.toLowerCase()}`}>
-													<div className="px-2">{fullname}</div>
+													<div className="px-2">
+														<EditWrapper
+															stringId={`${symbol?.toUpperCase()}_FULLNAME`}
+														>
+															{fullname}
+														</EditWrapper>
+													</div>
 												</Link>
 											</div>
 										) : (

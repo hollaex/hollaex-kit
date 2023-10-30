@@ -309,7 +309,12 @@ export const generateFormValues = (
 				fullWidth: true,
 				ishorizontalfield: true,
 			};
-		} else if (!isEmail && (symbol === 'xlm' || selectedNetwork === 'xlm' || selectedNetwork === 'ton')) {
+		} else if (
+			!isEmail &&
+			(symbol === 'xlm' ||
+				selectedNetwork === 'xlm' ||
+				selectedNetwork === 'ton')
+		) {
 			fields.destination_tag = {
 				type: 'text',
 				stringId:
