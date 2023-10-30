@@ -26,6 +26,9 @@ module.exports = {
 				}
 			}
 		}
+
+		await queryInterface.removeColumn('Tiers', 'withdrawal_limit');
+		await queryInterface.removeColumn('Tiers', 'deposit_limit');
 	},
 
 	down: () => {
