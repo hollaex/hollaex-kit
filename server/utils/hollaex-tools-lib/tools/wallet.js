@@ -156,6 +156,14 @@ async function validateWithdrawal(user, address, amount, currency, network = nul
 
 	const balance = await getNodeLib().getUserBalance(user.network_id);
 
+	if (coinMarkup?.fee_markup) {
+		if (math.compare(coinMarkup?.fee_markup, balance[`${currency}_available`]) === 1) {
+			throw new Error(
+				`User ${currency} balance is lower than withdrawal fee markup amount "${coinMarkup?.fee_markup}"`
+			);
+		}
+	}
+
 	if (fee_coin === currency) {
 		const totalAmount =
 			fee > 0
@@ -356,33 +364,9 @@ const performWithdrawal = (userId, address, currency, amount, opts = {
 			} else if (!user.network_id) {
 				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
 			}
-			return all([
-				user,
-				findTransactionLimitPerTier(user.verification_level, '24h', 'withdrawal'),
-				findTransactionLimitPerTier(user.verification_level, '1mo', 'withdrawal'),
-			]);
+			return user
 		})
-		.then(async ([ user, last24HoursLimits, lastMonthLimits ]) => {
-			const transactionLimitLast24Hours = findIndependentLimit(last24HoursLimits, currency);
-			const transactionLimitLastMonth = findIndependentLimit(lastMonthLimits, currency);
-
-			if (transactionLimitLast24Hours) {
-				const limit = transactionLimitLast24Hours.amount;
-				if (limit === -1) {
-					throw new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency));
-				} else if (limit > 0) {
-					await withdrawalBelowLimit(user.network_id, currency, limit, amount, transactionLimitLast24Hours, last24HoursLimits);
-				}
-			}
-
-			if (transactionLimitLastMonth) {
-				const limit = transactionLimitLastMonth.amount;
-				if (limit === -1) {
-					throw new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency));
-				} else if (limit > 0) {
-					await withdrawalBelowLimit(user.network_id, currency, limit, amount, transactionLimitLastMonth, lastMonthLimits);
-				}
-			}
+		.then((user) => {
 			return getNodeLib().performWithdrawal(user.network_id, address, currency, amount, opts);
 		});
 };
@@ -527,26 +511,11 @@ const getAccumulatedWithdrawals = async (userId, currency, transactionLimit, tie
 		currency,
 		dismissed: false,
 		rejected: false,
+		format: 'all',
 		startDate: transactionLimit.period === '24h' ? moment().subtract(24, 'hours').toISOString() : moment().subtract(1, 'months').toISOString()
 	});
 
 	const withdrawalData = withdrawals.data;
-
-	if (withdrawals.count > 50) {
-		const numofPages = Math.ceil(withdrawals.count / 50);
-		for (let i = 2; i <= numofPages; i++) {
-			await sleep(500);
-
-			const withdrawals = await getNodeLib().getUserWithdrawals(userId, {
-				dismissed: false,
-				rejected: false,
-				page: i,
-				startDate: moment().subtract(24, 'hours').toISOString()
-			});
-
-			withdrawalData.push(...withdrawals.data);
-		}
-	}
 
 	loggerWithdrawals.debug(
 		'toolsLib/wallet/getAccumulatedWithdrawals',
@@ -589,8 +558,6 @@ const getAccumulatedWithdrawals = async (userId, currency, transactionLimit, tie
 				`accumulated ${withdrawalCurrency} withdrawal amount`,
 				withdrawalAmount[withdrawalCurrency]
 			);
-
-			await sleep(500);
 
 			const convertedAmount = await getNodeLib().getOraclePrices([withdrawalCurrency], {
 				quote: transactionLimit.currency,

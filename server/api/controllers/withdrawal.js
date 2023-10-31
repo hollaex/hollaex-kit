@@ -108,6 +108,13 @@ const performWithdrawal = (req, res) => {
 			if (user.verification_level < 1) {
 				throw new Error('User must upgrade verification level to perform a withdrawal');
 			}
+
+			return all([
+				withdrawal,
+				toolsLib.wallet.validateWithdrawal(user, withdrawal.address, withdrawal.amount, withdrawal.currency, withdrawal.network)
+			]);
+		})
+		.then(async (withdrawal) => {
 			if (isEmail(withdrawal.address)) {
 				const receiver = await toolsLib.user.getUserByEmail(withdrawal.address);
 				if (!receiver) {
