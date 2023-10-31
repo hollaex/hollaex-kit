@@ -93,6 +93,7 @@ const Details = ({ pair, coins, constants, brokerUsed, name, isNetwork, router, 
 		return index;
 	}
 
+	
 	useEffect(() => {
 		const handleDataUpdate = () => {
 			const { price, time } = coinChartData;
@@ -102,14 +103,33 @@ const Details = ({ pair, coins, constants, brokerUsed, name, isNetwork, router, 
 				setOneDayChartData(oneDayChartPrices);
 				setOneDayData(getPricingData(oneDayChartPrices));
 				setSevenDayData(getPricingData(price));
-
-				setChartData(price);
-				showSevenDay ? setCoinStats(sevenDayData) : setCoinStats(oneDayData);
 			}
 		};
 
 		handleDataUpdate();
-	}, [coinChartData]);
+		//  TODO: Fix react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [coinChartData, pair]);
+
+	useEffect(() => {
+		const renderSevenDays = () => {
+			setTimeout(() => {
+				setCoinStats(sevenDayData);
+				setChartData(coinChartData.price);
+			}, 0);
+		};
+
+		const renderOneDay = () => {
+			setTimeout(() => {
+				setCoinStats(oneDayData);
+				setChartData(oneDayChartData);
+			}, 0);
+		};
+
+		showSevenDay ? renderSevenDays() : renderOneDay();
+		//  TODO: Fix react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [showSevenDay, oneDayData, sevenDayData])
 
 	const handleClick = () => {
 		if (pair && router && _get(constants, 'features.pro_trade')) {
@@ -119,17 +139,7 @@ const Details = ({ pair, coins, constants, brokerUsed, name, isNetwork, router, 
 
 	const handleDayChange = (e) => {
 		const value = e.target.value;
-		
-		if(value === 'seven'){
-			setChartData(coinChartData.price);
-			setCoinStats(sevenDayData);
-			setShowSevenDay(true);
-			return
-		}
-
-		setShowSevenDay(false);
-		setCoinStats(oneDayData);
-		setChartData(oneDayChartData);
+		setShowSevenDay(value === 'seven');
 	}
 
 	const getLink = (linkUrl, linkText) => {

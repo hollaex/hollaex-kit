@@ -15,7 +15,7 @@ import { isLoggedIn } from 'utils/token';
 import { Button, EditWrapper, Dialog } from 'components';
 import STRINGS from 'config/localizedStrings';
 import InputGroup from './InputGroup';
-import { getSparklines, getMiniCharts } from 'actions/chartAction';
+import { getMiniCharts } from 'actions/chartAction';
 import { getDecimals } from 'utils/utils';
 import { MarketsSelector } from 'containers/Trade/utils';
 import Details from 'containers/QuickTrade/components/Details';
@@ -95,6 +95,7 @@ const QuickTrade = ({
 	const [expiry, setExpiry] = useState();
 	const [hasExpiredOnce, setHasExpiredOnce] = useState(false);
 	const [time, setTime] = useState(moment());
+	const [lineChartData, setLineChartData] = useState({});
 
 	const resetForm = () => {
 		setTargetAmount();
@@ -341,15 +342,17 @@ const QuickTrade = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [hasExpiredOnce, time]);
 
+	useEffect(() => {
+		setLineChartData( {
+			...chartData[pair],
+			name: 'Line',
+			type: 'line',
+		});
+	}, [pair, chartData]);
+
 	const isExpired = time.isAfter(moment(expiry));
 
 	const { balance: userBalance } = user;
-
-	const lineChartData = {
-		...chartData[pair],
-		name: 'Line',
-		type: 'line',
-	};
 
 	const selectedSourceBalance =
 		selectedSource && userBalance[`${selectedSource.toLowerCase()}_available`];
