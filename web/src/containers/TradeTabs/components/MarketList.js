@@ -115,8 +115,8 @@ const MarketList = ({
 							</th>
 							<th>
 								<div>
-									<EditWrapper stringId="MARKETS_TABLE.CHART_24H">
-										{STRINGS['MARKETS_TABLE.CHART_24H']}
+									<EditWrapper stringId="MARKETS_TABLE.CHART_7D">
+										{STRINGS['MARKETS_TABLE.CHART_7D']}
 									</EditWrapper>
 								</div>
 							</th>

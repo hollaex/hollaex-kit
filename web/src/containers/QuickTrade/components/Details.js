@@ -5,52 +5,8 @@ import _get from 'lodash/get';
 import { Coin, EditWrapper, PriceChange } from 'components';
 import STRINGS from 'config/localizedStrings';
 import { Radio } from 'antd';
-
-import HighchartsReact from 'highcharts-react-official';
-import Highcharts from 'highcharts';
 import { formatPercentage } from 'utils/currency';
-
-const DEFAULT_CHART_OPTIONS = {
-	tooltip: {
-		enabled: false,
-	},
-	title: {
-		text: null,
-	},
-	legend: {
-		enabled: false,
-	},
-	chart: {
-		styledMode: true,
-	},
-	xAxis: {
-		type: 'linear',
-		allowDecimals: false,
-		visible: false,
-	},
-	yAxis: {
-		visible: false,
-	},
-	plotOptions: {
-		series: {
-			className: 'main-color',
-			negativeColor: true,
-			marker: {
-				enabled: false,
-				states: {
-					hover: {
-						enabled: false,
-					},
-				},
-			},
-		},
-	},
-	pane: {
-		size: '100%',
-	},
-	
-};
-
+import { MiniSparkLine } from 'containers/TradeTabs/components/MiniSparkLine';
 
 const Details = ({ pair, coins, constants, brokerUsed, name, isNetwork, router, coinChartData }) => {
 	const [sevenDayData, setSevenDayData] = useState({});
@@ -233,19 +189,8 @@ const Details = ({ pair, coins, constants, brokerUsed, name, isNetwork, router, 
 				</div>
 				<div className="chart w-100">
 					<div className="fade-area" />
-					<HighchartsReact
-						highcharts={Highcharts}
-						options={{
-							...DEFAULT_CHART_OPTIONS,
-							series: [{
-								name: 'price',
-								data: chartData,
-								pointStart: 0
-							}
-						]}}
-						containerProps={{
-							style: { height: '100%', width: '100%' },
-						}}
+					<MiniSparkLine
+						chartData={chartData}
 					/>
 				</div>
 				<div className="d-flex pb-35">

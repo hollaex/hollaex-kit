@@ -8,7 +8,7 @@ import { SearchBox } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
 import STRINGS from 'config/localizedStrings';
 import { DEFAULT_COIN_DATA } from 'config/constants';
-import { getSparklines } from 'actions/chartAction';
+import { getMiniCharts } from 'actions/chartAction';
 import { EditWrapper } from 'components';
 import { MarketsSelector } from 'containers/Trade/utils';
 import MarketList from 'containers/TradeTabs/components/MarketList';
@@ -27,11 +27,14 @@ class Markets extends Component {
 	}
 
 	componentDidMount() {
-		const { pairs } = this.props;
+		const { coins } = this.props;
 		const { page, searchValue } = this.state;
 		this.constructData(page, searchValue);
+		
+		const assetValues = Object.keys(coins).map((
+			val) => coins[val].code).toLocaleString();
 
-		getSparklines(Object.keys(pairs)).then((chartData) =>
+		getMiniCharts(assetValues).then((chartData) =>
 			this.setState({ chartData })
 		);
 	}

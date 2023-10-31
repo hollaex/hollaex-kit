@@ -6,7 +6,7 @@ import _get from 'lodash/get';
 class SparkLine extends Component {
 	constructor(props) {
 		super(props);
-		const { data: { close = [], open = 0 } = {} } = this.props;
+		const { data: { close = [], open = 0, price=[] } = {} } = this.props;
 		this.state = {
 			chartOptions: {
 				tooltip: {
@@ -50,7 +50,7 @@ class SparkLine extends Component {
 					{
 						name: 'Area',
 						type: 'area',
-						data: close,
+						data: price,
 						threshold: open,
 					},
 				],

@@ -1345,6 +1345,7 @@
 		"CHANGE_24H": "Change (24 hours)",
 		"VOLUME_24h": "Volume (24 hours)",
 		"CHART_24H": "Chart (24 hours)",
+		"CHART_7D": "Chart (7 days)",
 		"VIEW_MARKETS": "View Markets",
 		"TRADING_SYMBOL": "Trading Symbol",
 		"TYPE": "Type",
