@@ -114,7 +114,7 @@ const performWithdrawal = (req, res) => {
 				toolsLib.wallet.validateWithdrawal(user, withdrawal.address, withdrawal.amount, withdrawal.currency, withdrawal.network)
 			]);
 		})
-		.then(async (withdrawal) => {
+		.then(async ([withdrawal]) => {
 			if (isEmail(withdrawal.address)) {
 				const receiver = await toolsLib.user.getUserByEmail(withdrawal.address);
 				if (!receiver) {

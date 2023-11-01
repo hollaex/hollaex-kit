@@ -340,7 +340,7 @@ class Withdraw extends Component {
 				dispatch(change(FORM_NAME, 'amount', res.data.amount));
 			})
 			.catch((err) => {
-				message.error(err.message);
+				message.error(err.response.data.message);
 			});
 	};
 
