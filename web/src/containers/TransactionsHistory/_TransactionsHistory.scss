@@ -171,6 +171,13 @@
 			}
 		}
 	}
+	.table-wrapper {
+		.table_body-wrapper.with_icon {
+			tr td:first-child.category-label {
+				border: none !important;
+			}
+		}
+	}
 	.ant-picker-clear {
 		background: none;
 	}

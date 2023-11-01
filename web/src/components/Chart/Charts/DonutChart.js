@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
+import { Link } from 'react-router';
 import EventListener from 'react-event-listener';
 import { pie, arc } from 'd3-shape';
-import { Link } from 'react-router';
 import classnames from 'classnames';
 
 import STRINGS from '../../../config/localizedStrings';
@@ -240,7 +240,9 @@ class DonutChart extends Component {
 							textAnchor="middle"
 						>
 							<Link to="/wallet" className="deposit-asset">
-								{STRINGS['DEPOSIT_ASSETS'].toUpperCase()}
+								<tspan dy="1.4em">
+									{STRINGS['DEPOSIT_ASSETS'].toUpperCase()}
+								</tspan>
 							</Link>
 						</text>
 					)}
