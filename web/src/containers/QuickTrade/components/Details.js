@@ -5,8 +5,9 @@ import _get from 'lodash/get';
 import { Coin, EditWrapper, PriceChange } from 'components';
 import STRINGS from 'config/localizedStrings';
 import { Radio } from 'antd';
-import { formatPercentage } from 'utils/currency';
+import { formatPercentage, formatToCurrency } from 'utils/currency';
 import { MiniSparkLine } from 'containers/TradeTabs/components/MiniSparkLine';
+import classNames from 'classnames';
 
 const Details = ({ pair, coins, constants, brokerUsed, name, isNetwork, router, coinChartData }) => {
 	const [sevenDayData, setSevenDayData] = useState({});
@@ -24,16 +25,18 @@ const Details = ({ pair, coins, constants, brokerUsed, name, isNetwork, router, 
 		const lastPrice = price[price.length-1];
 		const priceDifference = lastPrice - firstPrice;
 		const priceDifferencePercent = formatPercentage(priceDifference/firstPrice);
+		const formattedNumber = (val) => formatToCurrency(val, 0 , true);
 
-		const low = Math.min(...price);
-		const high = Math.max(...price);
+
+		const low = formattedNumber(Math.min(...price));
+		const high = formattedNumber(Math.max(...price));
 
 		return {
 			priceDifference,
 			priceDifferencePercent,
 			low,
 			high,
-			lastPrice
+			lastPrice: formattedNumber(lastPrice)
 		};
 	}
 
@@ -88,9 +91,9 @@ const Details = ({ pair, coins, constants, brokerUsed, name, isNetwork, router, 
 	}, [showSevenDay, oneDayData, sevenDayData])
 
 	const handleClick = () => {
-		if (pair && router && _get(constants, 'features.pro_trade')) {
+		if(!isNetwork && !brokerUsed) {
 			router.push(`/trade/${pair}`);
-		}
+		};
 	};
 
 	const handleDayChange = (e) => {
@@ -143,9 +146,11 @@ const Details = ({ pair, coins, constants, brokerUsed, name, isNetwork, router, 
 				<div className="d-flex pb-24">
 					<Coin iconId={icon_id} type="CS11" />
 					<div className="pl-2">
-						<div className="pairs pointer" onClick={() => handleClick()}>
-							{coins[pairBase] && coins[pairBase].display_name}/
-							{coins[pair_2] && coins[pair_2].display_name}
+						<div className={classNames("pairs",
+						{
+							'pointer underline': !isNetwork && !brokerUsed
+						})} onClick={handleClick}>
+							{coins[pairBase] && coins[pairBase].display_name}
 						</div>
 						{getMarketName()}
 					</div>
@@ -229,7 +234,7 @@ const Details = ({ pair, coins, constants, brokerUsed, name, isNetwork, router, 
 							{STRINGS['ASSET_INFO']}
 						</div>
 						{getLink(
-							"/assets",
+							`/assets/coin/${pairBase}`,
 							STRINGS.formatString(
 								STRINGS['QUICK_TRADE_COMPONENT.COIN_INFORMATION'],
 								coins[pairBase].display_name

@@ -9416,7 +9416,8 @@ table th {
       font-weight: bold; }
     .quick_trade-wrapper .trade-details-wrapper .pairs {
       color: var(--specials_buttons-links-and-highlights);
-      font-size: 16px;
+      font-size: 16px; }
+    .quick_trade-wrapper .trade-details-wrapper .underline {
       text-decoration: underline; }
     .quick_trade-wrapper .trade-details-wrapper .fullname {
       color: var(--labels_secondary-inactive-label-text-graphics);

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { PriceChange, EditWrapper, Coin } from 'components';
-import { MiniSparkLine } from './MiniSparkLine';
+import SparkLine from './SparkLine';
 import { formatToCurrency } from 'utils/currency';
 import STRINGS from 'config/localizedStrings';
 
@@ -31,6 +31,7 @@ class MarketRow extends Component {
 		} = market;
 
 		const isBrokerage = type === 'network' || type === 'broker';
+
 		return (
 			<tr
 				id={`market-list-row-${key}`}
@@ -150,9 +151,16 @@ class MarketRow extends Component {
 							{STRINGS['DIGITAL_ASSETS.BROKERAGE']}
 						</EditWrapper>
 					) : (
-						<MiniSparkLine
-							chartData={chartData[key]?.price}
-							isArea
+						<SparkLine
+							data={
+								!chartData[key] ||
+								(chartData[key] &&
+									chartData[key].close &&
+									chartData[key].close.length < 2)
+									? { close: [0.1, 0.1, 0.1], open: [] }
+									: chartData[key]
+							}
+							containerProps={{ style: { height: '100%', width: '100%' } }}
 						/>
 					)}
 				</td>

@@ -13,14 +13,16 @@ const QuoteExpiredBlock = ({ onRequoteClick, isExpired, icons: ICONS }) => {
 
 	return (
 		<div className="quote-expired-block-wrapper d-flex flex-row">
-			<div className="quote-expired-text">
-				<p className="small-text">
-					{STRINGS['QUICK_TRADE_QUOTE_EXPIRED_FIRST_LINE']}
-				</p>
-				<p className="small-text">
-					{STRINGS['QUICK_TRADE_QUOTE_EXPIRED_SECOND_LINE']}
-				</p>
-			</div>
+			{!disabled && (
+				<div className="quote-expired-text">
+					<p className="small-text">
+						{STRINGS['QUICK_TRADE_QUOTE_EXPIRED_FIRST_LINE']}
+					</p>
+					<p className="small-text">
+						{STRINGS['QUICK_TRADE_QUOTE_EXPIRED_SECOND_LINE']}
+					</p>
+				</div>
+			)}
 
 			<Button
 				className="requote-button"
