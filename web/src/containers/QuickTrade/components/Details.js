@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router';
-import _get from 'lodash/get';
 import { Coin, EditWrapper, PriceChange } from 'components';
 import STRINGS from 'config/localizedStrings';
 import { Radio } from 'antd';
@@ -9,7 +8,7 @@ import { formatPercentage, formatToCurrency } from 'utils/currency';
 import { MiniSparkLine } from 'containers/TradeTabs/components/MiniSparkLine';
 import classNames from 'classnames';
 
-const Details = ({ pair, coins, constants, brokerUsed, name, isNetwork, router, coinChartData }) => {
+const Details = ({ pair, coins, brokerUsed, name, isNetwork, router, coinChartData }) => {
 	const [sevenDayData, setSevenDayData] = useState({});
 	const [oneDayData, setOneDayData] = useState({});
 	const [coinStats, setCoinStats] = useState({});
