@@ -299,6 +299,10 @@ const updateTransactionLimit = async (id, data) => {
 		throw new Error('amount cannot be a negative number other than -1');
 	}
 
+	if (type === 'deposit') {
+		throw new Error('operation is not available at the moment');
+	}
+
 	if (id) {
 		const transactionLimit = await findTransactionLimit({ id });
 		const updatedTransactionObject = {
