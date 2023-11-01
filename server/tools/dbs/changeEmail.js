@@ -23,7 +23,10 @@ if (!newEmail) {
 	throw new Error('EMAIL is not set');
 }
 
-const changeEmail = async () => {
+try {
+
+	console.log(`tools/dbs/changeEmail started for ${userId} to ${newEmail}`);
+
 	const user = await User.findOne({
 		where: {
 			id: userId
@@ -78,7 +81,10 @@ const changeEmail = async () => {
 		{}
 	);
 
-	return updatedUser;
-};
+	console.log('tools/dbs/changeEmail successfully');
+	process.exit(0);
+} catch {
+	console.log('tools/dbs/changeEmail err', err);
+	process.exit(1);
 
-changeEmail();
+}
