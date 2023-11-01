@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { formValueSelector, change } from 'redux-form';
 import { isMobile } from 'react-device-detect';
 import math from 'mathjs';
+import { message } from 'antd';
 
 import { Loader, MobileBarBack } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
@@ -16,7 +17,7 @@ import {
 } from 'actions/walletActions';
 import { errorHandler } from 'components/OtpForm/utils';
 
-import { openContactForm } from 'actions/appActions';
+import { openContactForm, getWithdrawalMax } from 'actions/appActions';
 
 import WithdrawCryptocurrency from './form';
 import { generateFormValues, generateInitialValues } from './formUtils';
@@ -217,115 +218,130 @@ class Withdraw extends Component {
 			.catch(errorHandler);
 	};
 
+	// onCalculateMax = () => {
+	// 	const {
+	// 		balance,
+	// 		selectedFee = 0,
+	// 		dispatch,
+	// 		verification_level,
+	// 		coins,
+	// 		config_level = {},
+	// 		fee_coin,
+	// 		fee_type,
+	// 		selectedNetwork,
+	// 		prices,
+	// 	} = this.props;
+	// 	let { withdrawal_limit } = config_level[verification_level] || {};
+
+	// 	withdrawal_limit = 100;
+	// 	console.log({selectedFee})
+	// 	console.log({selectedNetwork})
+	// 	console.log({fee_type})
+	// 	const { currency } = this.state;
+	// 	const balanceAvailable = balance[`${currency}_available`];
+	// 	const { increment_unit, withdrawal_fees = {}, network, max: coin_max } =
+	// 		coins[currency] || DEFAULT_COIN_DATA;
+
+	// 	const oraclePrice = prices[currency];
+	// 	const has_price = oraclePrice && oraclePrice !== 0 && oraclePrice !== -1;
+	// 	const calculated_withdrawal_limit = has_price
+	// 		? math.divide(withdrawal_limit, oraclePrice)
+	// 		: coin_max;
+
+	// 	console.log({calculated_withdrawal_limit})
+	// 	console.log({prices})
+	// 	console.log({has_price})
+
+	// 	const isPercentage = fee_type === 'percentage';
+	// 	let amount = 0;
+	// 	let min;
+	// 	let max;
+
+	// 	if (withdrawal_fees && withdrawal_fees[selectedNetwork]) {
+	// 		min = withdrawal_fees[selectedNetwork].min;
+	// 		max = withdrawal_fees[selectedNetwork].max;
+	// 	} else if (!network && withdrawal_fees && withdrawal_fees[currency]) {
+	// 		min = withdrawal_fees[currency].min;
+	// 		max = withdrawal_fees[currency].max;
+	// 	}
+
+	// 	if (fee_coin && fee_coin !== currency && !isPercentage) {
+	// 		amount = math.number(math.fraction(balanceAvailable));
+	// 		if (amount < 0) {
+	// 			amount = 0;
+	// 		} else if (
+	// 			math.larger(amount, math.number(calculated_withdrawal_limit)) &&
+	// 			withdrawal_limit !== 0 &&
+	// 			withdrawal_limit !== -1
+	// 		) {
+	// 			amount = math.number(math.fraction(calculated_withdrawal_limit));
+	// 		}
+	// 	} else {
+	// 		let max_allowed = balanceAvailable;
+	// 		if (withdrawal_limit !== 0 && withdrawal_limit !== -1) {
+	// 			max_allowed = math.min(
+	// 				math.number(calculated_withdrawal_limit),
+	// 				balanceAvailable
+	// 			);
+	// 		}
+
+	// 		if (isPercentage) {
+	// 			amount = math.number(
+	// 				math.divide(
+	// 					math.fraction(max_allowed),
+	// 					math.add(
+	// 						math.fraction(math.divide(math.fraction(selectedFee), 100)),
+	// 						1
+	// 					)
+	// 				)
+	// 			);
+
+	// 			const calculatedFee = limitNumberWithinRange(
+	// 				math.multiply(
+	// 					math.fraction(amount),
+	// 					math.fraction(math.divide(math.fraction(selectedFee), 100))
+	// 				),
+	// 				min,
+	// 				max
+	// 			);
+	// 			amount = math.number(
+	// 				math.subtract(
+	// 					math.fraction(max_allowed),
+	// 					math.fraction(calculatedFee)
+	// 				)
+	// 			);
+	// 		} else {
+	// 			amount = math.number(
+	// 				math.subtract(math.fraction(max_allowed), math.fraction(selectedFee))
+	// 			);
+	// 		}
+
+	// 		if (amount < 0) {
+	// 			amount = 0;
+	// 		}
+	// 	}
+
+	// 	dispatch(
+	// 		change(
+	// 			FORM_NAME,
+	// 			'amount',
+	// 			roundNumber(amount, getDecimals(increment_unit))
+	// 		)
+	// 	);
+	// 	// }
+	// };
+
 	onCalculateMax = () => {
-		const {
-			balance,
-			selectedFee = 0,
-			dispatch,
-			verification_level,
-			coins,
-			config_level = {},
-			fee_coin,
-			fee_type,
-			selectedNetwork,
-			prices,
-		} = this.props;
-		const { withdrawal_limit } = config_level[verification_level] || {};
+		const { selectedNetwork, dispatch } = this.props;
 		const { currency } = this.state;
-		const balanceAvailable = balance[`${currency}_available`];
-		const { increment_unit, withdrawal_fees = {}, network, max: coin_max } =
-			coins[currency] || DEFAULT_COIN_DATA;
 
-		const oraclePrice = prices[currency];
-		const has_price = oraclePrice && oraclePrice !== 0 && oraclePrice !== -1;
-		const calculated_withdrawal_limit = has_price
-			? math.divide(withdrawal_limit, oraclePrice)
-			: coin_max;
-
-		const isPercentage = fee_type === 'percentage';
-		// if (currency === BASE_CURRENCY) {
-		// 	const fee = calculateBaseFee(balanceAvailable);
-		// 	const amount = math.number(
-		// 		math.subtract(math.fraction(balanceAvailable), math.fraction(fee))
-		// 	);
-		// 	dispatch(change(FORM_NAME, 'amount', math.floor(amount)));
-		// } else {
-		let amount = 0;
-		let min;
-		let max;
-
-		if (withdrawal_fees && withdrawal_fees[selectedNetwork]) {
-			min = withdrawal_fees[selectedNetwork].min;
-			max = withdrawal_fees[selectedNetwork].max;
-		} else if (!network && withdrawal_fees && withdrawal_fees[currency]) {
-			min = withdrawal_fees[currency].min;
-			max = withdrawal_fees[currency].max;
-		}
-
-		if (fee_coin && fee_coin !== currency && !isPercentage) {
-			amount = math.number(math.fraction(balanceAvailable));
-			if (amount < 0) {
-				amount = 0;
-			} else if (
-				math.larger(amount, math.number(calculated_withdrawal_limit)) &&
-				withdrawal_limit !== 0 &&
-				withdrawal_limit !== -1
-			) {
-				amount = math.number(math.fraction(calculated_withdrawal_limit));
-			}
-		} else {
-			let max_allowed = balanceAvailable;
-			if (withdrawal_limit !== 0 && withdrawal_limit !== -1) {
-				max_allowed = math.min(
-					math.number(calculated_withdrawal_limit),
-					balanceAvailable
-				);
-			}
-
-			if (isPercentage) {
-				amount = math.number(
-					math.divide(
-						math.fraction(max_allowed),
-						math.add(
-							math.fraction(math.divide(math.fraction(selectedFee), 100)),
-							1
-						)
-					)
-				);
-
-				const calculatedFee = limitNumberWithinRange(
-					math.multiply(
-						math.fraction(amount),
-						math.fraction(math.divide(math.fraction(selectedFee), 100))
-					),
-					min,
-					max
-				);
-				amount = math.number(
-					math.subtract(
-						math.fraction(max_allowed),
-						math.fraction(calculatedFee)
-					)
-				);
-			} else {
-				amount = math.number(
-					math.subtract(math.fraction(max_allowed), math.fraction(selectedFee))
-				);
-			}
-
-			if (amount < 0) {
-				amount = 0;
-			}
-		}
-
-		dispatch(
-			change(
-				FORM_NAME,
-				'amount',
-				roundNumber(amount, getDecimals(increment_unit))
-			)
-		);
-		// }
+		getWithdrawalMax(currency, selectedNetwork)
+			.then((res) => {
+				dispatch(change(FORM_NAME, 'amount', res.data.amount));
+			})
+			.catch((err) => {
+				message.error(err.message);
+			});
 	};
 
 	openQRScanner = () => {

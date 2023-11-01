@@ -35,6 +35,7 @@ const { loggerWithdrawals } = require(`${SERVER_PATH}/config/logger`);
 const { has } = require('lodash');
 const WAValidator = require('multicoin-address-validator');
 const { isEmail } = require('validator');
+const BigNumber = require('bignumber.js');
 
 const isValidAddress = (currency, address, network) => {
 	if (network === 'eth' || network === 'ethereum') {
@@ -429,6 +430,72 @@ const getWithdrawalLimit = async (user_id, currency, amount) => {
 
 }
 
+const calculateWithdrawalMax = async (user_id, currency, selectedNetwork) => {
+	const user = await getUserByKitId(user_id);
+	const balance = await getNodeLib().getUserBalance(user.network_id);
+	let amount = balance[`${currency}_available`];
+
+	const coinConfiguration = getKitCoin(currency);
+	const coinMarkup = getKitConfig()?.coin_customizations?.[currency];
+
+	const { fee, fee_coin } = getWithdrawalFee(currency, selectedNetwork, null, user.verification_level);
+	const { increment_unit } = coinConfiguration;
+
+
+	const last24HoursLimits = await findTransactionLimitPerTier(user.verification_level, '24h', 'withdrawal');
+	const transactionLimitLast24Hours = findIndependentLimit(last24HoursLimits, currency);
+	const lastMonthLimits = await findTransactionLimitPerTier(user.verification_level, '1mo', 'withdrawal'); 
+	const transactionLimitLastMonth = findIndependentLimit(lastMonthLimits, currency);
+
+	if (!transactionLimitLast24Hours) {
+		throw new Error('There is no limit rule defined for the currency ', + currency);
+	}
+
+
+	//Convert the targeted currecy to 
+	if(currency !== transactionLimitLast24Hours.currency) {
+		const convertedWithdrawalAmount = await getNodeLib().getOraclePrices([currency], {
+			quote: transactionLimitLast24Hours.currency,
+			amount
+		});
+
+		amount = convertedWithdrawalAmount[currency];
+	} 
+
+	amount = Math.min(transactionLimitLast24Hours.amount, amount);
+
+	const limit = transactionLimitLastMonth?.amount || transactionLimitLast24Hours.amount;
+	const withdrawalHistory =  await withdrawalBelowLimit(user.network_id, currency, limit, amount, transactionLimitLastMonth || transactionLimitLast24Hours, lastMonthLimits || last24HoursLimits);
+	amount = amount - withdrawalHistory.lastWithdrawalAmount;
+
+	if(currency !== transactionLimitLast24Hours.currency) {
+		const convertedWithdrawalAmount = await getNodeLib().getOraclePrices([transactionLimitLast24Hours.currency], {
+			quote: currency,
+			amount
+		});
+
+		amount = convertedWithdrawalAmount[transactionLimitLast24Hours.currency];
+	} 
+
+	if (coinMarkup?.fee_markup) {
+		amount = amount - coinMarkup?.fee_markup;
+	}
+
+	if (fee_coin && fee_coin === currency) {
+		amount = amount - fee;
+	} else {
+		// convert fee_coin 
+	}
+
+	if (amount < 0) {
+		amount = 0;
+	}
+
+	const decimalPoint = new BigNumber(increment_unit).dp();
+	amount = new BigNumber(amount).decimalPlaces(decimalPoint).toNumber();
+	return { amount };
+}
+
 const withdrawalBelowLimit = async (userId, currency, limit, amount = 0, transactionLimit, tierLimits) => {
 	loggerWithdrawals.verbose(
 		'toolsLib/wallet/withdrawalBelowLimit',
@@ -503,7 +570,7 @@ const withdrawalBelowLimit = async (userId, currency, limit, amount = 0, transac
 		);
 	}
 
-	return { totalWithdrawalAmount, limit };
+	return { totalWithdrawalAmount, lastWithdrawalAmount: last24HourWithdrawalAmount, limit };
 };
 
 const getAccumulatedWithdrawals = async (userId, currency, transactionLimit, tierLimits = []) => {
@@ -1266,5 +1333,6 @@ module.exports = {
 	isValidAddress,
 	validateDeposit,
 	getWallets,
-	getWithdrawalLimit
+	getWithdrawalLimit,
+	calculateWithdrawalMax
 };
