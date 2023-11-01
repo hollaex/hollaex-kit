@@ -8,7 +8,7 @@ import { formatPercentage, formatToCurrency } from 'utils/currency';
 import { MiniSparkLine } from 'containers/TradeTabs/components/MiniSparkLine';
 import classNames from 'classnames';
 
-const Details = ({ pair, coins, brokerUsed, name, isNetwork, router, coinChartData }) => {
+const Details = ({ pair, coins, brokerUsed, networkName, isNetwork, router, coinChartData, showTradeFees }) => {
 	const [sevenDayData, setSevenDayData] = useState({});
 	const [oneDayData, setOneDayData] = useState({});
 	const [coinStats, setCoinStats] = useState({});
@@ -100,9 +100,13 @@ const Details = ({ pair, coins, brokerUsed, name, isNetwork, router, coinChartDa
 		setShowSevenDay(value === 'seven');
 	}
 
-	const getLink = (linkUrl, linkText) => {
+	const getLink = (linkUrl, linkText, noLine) => {
         return (
-            <div className="blue-link pointer underline-text">
+            <div className={
+				classNames("blue-link pointer", {
+					'underline-text': !noLine
+				})}
+			>
                 <Link to={linkUrl}>
                     {linkText}
                 </Link>
@@ -121,7 +125,7 @@ const Details = ({ pair, coins, brokerUsed, name, isNetwork, router, coinChartDa
 					</span>
 				) : !brokerUsed ? (
 					<span>
-						<span>{name} </span>
+						<span>{networkName} </span>
 						<span>
 							<EditWrapper stringId="TYPES_VALUES.market">
 								{STRINGS['TYPES_VALUES.market']}
@@ -228,18 +232,29 @@ const Details = ({ pair, coins, brokerUsed, name, isNetwork, router, coinChartDa
 					</div>
 				</div>
 				<div className="d-flex pb-35">
-					<div>
-						<div className='sub-title caps'>
-							{STRINGS['ASSET_INFO']}
+					{showTradeFees ? 
+						(
+							<div>
+								{getLink(
+									`fees-and-limits`,
+									STRINGS['FEES_AND_LIMITS.COIN_PAGE_LINK'],
+									true
+								)}
+							</div>
+					) : (
+						<div>
+							<div className='sub-title caps'>
+								{STRINGS['ASSET_INFO']}
+							</div>
+							{getLink(
+								`/assets/coin/${pairBase}`,
+								STRINGS.formatString(
+									STRINGS['QUICK_TRADE_COMPONENT.COIN_INFORMATION'],
+									coins[pairBase].display_name
+								)
+							)}
 						</div>
-						{getLink(
-							`/assets/coin/${pairBase}`,
-							STRINGS.formatString(
-								STRINGS['QUICK_TRADE_COMPONENT.COIN_INFORMATION'],
-								coins[pairBase].display_name
-							)
-						)}
-					</div>
+					)}
 				</div>
 			</div>
 		</div>

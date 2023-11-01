@@ -394,7 +394,7 @@ const QuickTrade = ({
 								coinChartData={lineChartData} 
 								pair={pair}
 								brokerUsed={isUseBroker}
-								name={display_name}
+								networkName={display_name}
 								isNetwork={isNetwork}
 							/>
 					)}

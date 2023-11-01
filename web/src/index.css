@@ -5985,7 +5985,8 @@ table th {
       .hollaex-token-wrapper .token-wrapper .hollaex-container .info-container {
         width: 65%;
         background-color: var(--calculated_quick_trade-bg);
-        padding: 4rem; }
+        padding: 4rem;
+        text-align: justify; }
         .hollaex-token-wrapper .token-wrapper .hollaex-container .info-container .header-text {
           font-size: 16px;
           font-weight: bold;
@@ -6000,7 +6001,7 @@ table th {
             color: var(--specials_buttons-links-and-highlights);
             cursor: pointer; }
         .hollaex-token-wrapper .token-wrapper .hollaex-container .info-container .button-container {
-          margin-top: 7rem; }
+          margin-top: 3rem; }
           .hollaex-token-wrapper .token-wrapper .hollaex-container .info-container .button-container .edit-wrapper__container {
             width: 100%; }
             .hollaex-token-wrapper .token-wrapper .hollaex-container .info-container .button-container .edit-wrapper__container div {

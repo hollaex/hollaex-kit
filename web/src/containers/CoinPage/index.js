@@ -6,6 +6,7 @@ import classnames from 'classnames';
 
 import { quicktradePairSelector } from 'containers/QuickTrade/components/utils';
 import { StarFilled, StarOutlined } from '@ant-design/icons';
+import { MarketsSelector } from 'containers/Trade/utils';
 import math from 'mathjs';
 import STRINGS from 'config/localizedStrings';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
@@ -15,6 +16,12 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import { isLoggedIn } from 'utils/token';
 import { addToFavourites, removeFromFavourites } from 'actions/appActions';
 import Details from 'containers/QuickTrade/components/Details';
+
+const TYPES = {
+	PRO: 'pro',
+	BROKER: 'broker',
+	NETWORK: 'network',
+};
 
 const CoinPage = ({
 	pairs,
@@ -27,10 +34,12 @@ const CoinPage = ({
 	addToFavourites,
 	removeFromFavourites,
 	quicktradePairs,
+	markets
 }) => {
 	const {
 		params: { token: currentCoin },
 	} = router;
+
 	const currentCoinUpper = currentCoin?.toUpperCase();
 	
 	const currentQuicktradePair =
@@ -38,9 +47,15 @@ const CoinPage = ({
 			pair.split('-').includes(currentCoin)
 		);
 
+	const market = markets.find(
+		({ symbol }) => currentCoin === symbol
+	);
+	
 	const isBroker =
 		currentQuicktradePair &&
-		['network', 'broker'].includes(quicktradePairs[currentQuicktradePair].type);
+		[TYPES.NETWORK, TYPES.BROKER].includes(quicktradePairs[currentQuicktradePair].type);
+
+	const isNetwork = quicktradePairs[currentQuicktradePair].type === TYPES.NETWORK;
 
 	const [data, setData] = useState([]);
 	const [chartData, setChartData] = useState({});
@@ -107,7 +122,7 @@ const CoinPage = ({
 		router.goBack();
 	};
 
-	const pairBase_fullName = coins[currentCoin].fullname;
+	const pairBase_fullName = coins[currentCoin]?.fullname;
 
 
 	const isFavourite = (pair) => {
@@ -277,7 +292,9 @@ const CoinPage = ({
 							coinChartData={lineChartData} 
 							pair={`${currentCoin}-usdt`}
 							brokerUsed={isBroker}
-							name={currentCoin}
+							networkName={market?.display_name}
+							isNetwork={isNetwork}
+							showTradeFees
 						/>
 					</div>
 				</div>
@@ -294,6 +311,7 @@ const mapStateToProps = (store) => ({
 	favourites: store.app.favourites,
 	available_balance: store.user.balance,
 	quicktradePairs: quicktradePairSelector(store),
+	markets: MarketsSelector(store),
 });
 
 const mapDispatchToProps = (dispatch) => ({
