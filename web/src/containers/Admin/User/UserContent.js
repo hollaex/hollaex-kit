@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Tabs, Button, Breadcrumb, message, Modal } from 'antd';
 import { Link } from 'react-router';
 import { ReactSVG } from 'react-svg';
+import { Tabs, Button, Breadcrumb, message, Modal } from 'antd';
 
 import {
 	// Balance,
@@ -354,6 +354,7 @@ class UserContent extends Component {
 								recoverUser={this.openRecoverUserModel}
 								kycPluginName={kycPluginName}
 								requestUserData={requestUserData}
+								refreshAllData={refreshAllData}
 							/>
 						</div>
 					</TabPane>
