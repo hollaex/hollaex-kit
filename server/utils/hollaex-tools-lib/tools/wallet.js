@@ -486,10 +486,10 @@ const withdrawalBelowLimit = async (userId, currency, amount = 0, transactionLim
 	const transactionLimit = findLimit(transactionLimits, currency);
 
 	//last month limit can be optional. If there is no limit record for it, we don't have to run it.
-	if(!transactionLimit && period === '30') return;
+	if(!transactionLimit && period === '1mo') return;
 
-	// If there is no record for 24h, prevent the withdrawal process, last month limit can be optional.
-	if (!transactionLimit && period === '24h') {
+	// If there is no record other than last month, prevent the withdrawal process, last month limit can be optional.
+	if (!transactionLimit) {
 		throw new Error(`There is no limit rule defined for the currency ${currency}`);
 	}
 
