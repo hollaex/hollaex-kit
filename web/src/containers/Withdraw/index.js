@@ -8,9 +8,7 @@ import { message } from 'antd';
 
 import { Loader, MobileBarBack } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { DEFAULT_COIN_DATA } from 'config/constants';
-import { getCurrencyFromName, roundNumber } from 'utils/currency';
-import { getDecimals } from 'utils/utils';
+import { getCurrencyFromName } from 'utils/currency';
 import {
 	performWithdraw,
 	// requestWithdrawFee
@@ -30,7 +28,6 @@ import {
 } from '../Wallet/components';
 
 import { FORM_NAME } from './form';
-import { limitNumberWithinRange } from 'utils/math';
 import { STATIC_ICONS } from 'config/icons';
 import { renderBackToWallet } from 'containers/Deposit/utils';
 

@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import math from 'mathjs';
 import { change } from 'redux-form';
-import { getDecimals } from 'utils/utils';
-import { roundNumber } from 'utils/currency';
-import { DEFAULT_COIN_DATA } from 'config/constants';
 import { message } from 'antd';
 
 import { generateFormValues, generateInitialValues } from './FormUtils';
