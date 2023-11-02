@@ -325,29 +325,37 @@ const calculateWithdrawalMax = async (user_id, currency, selectedNetwork) => {
 
 	const last24HoursLimits = await findTransactionLimitPerTier(user.verification_level, '24h', 'withdrawal');
 	const transactionLimitLast24Hours = findLimit(last24HoursLimits, currency);
-	// const lastMonthLimits = await findTransactionLimitPerTier(user.verification_level, '1mo', 'withdrawal'); 
-	// const transactionLimitLastMonth = findLimit(lastMonthLimits, currency);
 
 	if (!transactionLimitLast24Hours) {
 		throw new Error('There is no limit rule defined for the currency ', + currency);
 	}
 
+	if(transactionLimitLast24Hours.amount === -1) throw new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency));
 
-	amount = Math.min(transactionLimitLast24Hours.amount, amount);
+	if(transactionLimitLast24Hours.amount !== 0) {
+		amount = Math.min(transactionLimitLast24Hours.amount, amount);
 
-	const withdrawalHistory =  await withdrawalBelowLimit(user.network_id, currency, amount, last24HoursLimits, '24h', false);
+		const withdrawalHistory = await withdrawalBelowLimit(user.network_id, currency, amount, last24HoursLimits, '24h', false);
+	
+		if (currency !== transactionLimitLast24Hours.currency) {
+			const convertedWithdrawalAmount = await getNodeLib().getOraclePrices([transactionLimitLast24Hours.currency], {
+				quote: currency,
+				amount: (withdrawalHistory?.withdrawalAmount || 0)
+			});
+	
+			if (convertedWithdrawalAmount[transactionLimitLast24Hours.currency] === -1) {
+				throw new Error(`No conversion found between ${currency} and ${transactionLimitLast24Hours.currency}`);
+			}
 
-	if (currency !== transactionLimitLast24Hours.currency) {
-		const convertedWithdrawalAmount = await getNodeLib().getOraclePrices([transactionLimitLast24Hours.currency], {
-			quote: currency,
-			amount: (withdrawalHistory?.withdrawalAmount || 0)
-		});
-
-		if (convertedWithdrawalAmount[transactionLimitLast24Hours.currency]) 
-			amount -= convertedWithdrawalAmount[transactionLimitLast24Hours.currency];
-	} else {
-		amount = amount - (withdrawalHistory?.withdrawalAmount || 0);
+			if (convertedWithdrawalAmount[transactionLimitLast24Hours.currency]) 
+				amount -= convertedWithdrawalAmount[transactionLimitLast24Hours.currency];
+		} else {
+			amount = amount - (withdrawalHistory?.withdrawalAmount || 0);
+		}
+	
 	}
+	
+	//Subtract the fees
 
 	if (coinMarkup?.fee_markup) {
 		amount = amount - coinMarkup?.fee_markup;
@@ -356,7 +364,16 @@ const calculateWithdrawalMax = async (user_id, currency, selectedNetwork) => {
 	if (fee_coin && fee_coin === currency) {
 		amount = amount - fee;
 	} else {
-		// convert fee_coin
+		const convertedFee = await getNodeLib().getOraclePrices([fee_coin], {
+			quote: currency,
+			amount: fee
+		});
+
+		if (convertedFee[fee_coin] === -1) {
+			throw new Error(`No conversion found between ${currency} and ${fee_coin}`);
+		}
+
+		amount = amount - convertedFee[fee_coin];
 	}
 
 	if (amount < 0) {
