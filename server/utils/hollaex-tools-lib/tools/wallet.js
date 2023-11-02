@@ -358,7 +358,7 @@ const calculateWithdrawalMax = async (user_id, currency, selectedNetwork) => {
 	//Subtract the fees
 
 	if (coinMarkup?.fee_markup) {
-		amount = amount - coinMarkup?.fee_markup;
+		amount = amount - coinMarkup.fee_markup;
 	}
 
 	if (fee_coin && fee_coin === currency) {
