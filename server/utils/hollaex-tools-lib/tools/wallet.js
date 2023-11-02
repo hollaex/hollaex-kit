@@ -341,7 +341,7 @@ const calculateWithdrawalMax = async (user_id, currency, selectedNetwork) => {
 	amount = Math.min(transactionLimitLast24Hours.amount, amount);
 
 	const withdrawalHistory =  await withdrawalBelowLimit(user.network_id, currency, amount, last24HoursLimits, '24h', false);
-	amount = amount - withdrawalHistory.withdrawalAmount;
+	amount = amount - (withdrawalHistory?.withdrawalAmount || 0);
 
 
 	if (currency !== transactionLimitLast24Hours.currency) {
