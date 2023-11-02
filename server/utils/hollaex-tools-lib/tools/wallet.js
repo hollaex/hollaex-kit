@@ -308,6 +308,10 @@ const getWithdrawalLimit = async (user_id, currency, amount) => {
 }
 
 const calculateWithdrawalMax = async (user_id, currency, selectedNetwork) => {
+	if (!subscribedToCoin(currency)) {
+		throw new Error('Invalid coin ' + currency);
+ 	}
+
 	const user = await getUserByKitId(user_id);
 	const balance = await getNodeLib().getUserBalance(user.network_id);
 	let amount = balance[`${currency}_available`];
