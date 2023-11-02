@@ -329,29 +329,21 @@ const calculateWithdrawalMax = async (user_id, currency, selectedNetwork) => {
 	}
 
 
-	if(currency !== transactionLimitLast24Hours.currency) {
-		const convertedWithdrawalAmount = await getNodeLib().getOraclePrices([currency], {
-			quote: transactionLimitLast24Hours.currency,
-			amount
-		});
-
-		amount = convertedWithdrawalAmount[currency];
-	} 
-
 	amount = Math.min(transactionLimitLast24Hours.amount, amount);
 
 	const withdrawalHistory =  await withdrawalBelowLimit(user.network_id, currency, amount, last24HoursLimits, '24h', false);
-	amount = amount - (withdrawalHistory?.withdrawalAmount || 0);
-
 
 	if (currency !== transactionLimitLast24Hours.currency) {
 		const convertedWithdrawalAmount = await getNodeLib().getOraclePrices([transactionLimitLast24Hours.currency], {
 			quote: currency,
-			amount
+			amount: (withdrawalHistory?.withdrawalAmount || 0)
 		});
 
-		amount = convertedWithdrawalAmount[transactionLimitLast24Hours.currency];
-	} 
+		if (convertedWithdrawalAmount[transactionLimitLast24Hours.currency]) 
+			amount -= convertedWithdrawalAmount[transactionLimitLast24Hours.currency];
+	} else {
+		amount = amount - (withdrawalHistory?.withdrawalAmount || 0);
+	}
 
 	if (coinMarkup?.fee_markup) {
 		amount = amount - coinMarkup?.fee_markup;
@@ -522,7 +514,7 @@ const withdrawalBelowLimit = async (userId, currency, amount = 0, transactionLim
 	}
 
 	// Get the individual coins from the transaction limit data, those will be excluded from aggregation
-	const excludedCurrencies = transactionLimits.filter(limit => limit.limit_currency !== 'default').map(limit => limit.limit_currency);
+	const excludedCurrencies = transactionLimits.filter(limit => limit.limit_currency !== 'default' && limit.limit_currency !== currency).map(limit => limit.limit_currency);
 	
 	// Accumulate the past withdrawals
 	const withdrawalAmount = await getAccumulatedWithdrawals(userId, transactionLimit, excludedCurrencies);
