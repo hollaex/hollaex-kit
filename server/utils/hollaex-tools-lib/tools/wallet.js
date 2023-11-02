@@ -305,7 +305,7 @@ const getWithdrawalLimit = async (user_id, currency, amount) => {
 
 	return withdrawalLimits;
 
-}
+};
 
 const calculateWithdrawalMax = async (user_id, currency, selectedNetwork) => {
 	if (!subscribedToCoin(currency)) {
@@ -333,7 +333,7 @@ const calculateWithdrawalMax = async (user_id, currency, selectedNetwork) => {
 	if(transactionLimitLast24Hours.amount === -1) throw new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency));
 
 	if(transactionLimitLast24Hours.amount !== 0) {
-		amount = Math.min(transactionLimitLast24Hours.amount, amount);
+		amount = BigNumber.minimum(transactionLimitLast24Hours.amount, amount)
 
 		const withdrawalHistory = await withdrawalBelowLimit(user.network_id, currency, amount, last24HoursLimits, '24h', false);
 	
@@ -348,9 +348,10 @@ const calculateWithdrawalMax = async (user_id, currency, selectedNetwork) => {
 			}
 
 			if (convertedWithdrawalAmount[transactionLimitLast24Hours.currency]) 
-				amount -= convertedWithdrawalAmount[transactionLimitLast24Hours.currency];
+				amount = new BigNumber(amount).minus(new BigNumber(convertedWithdrawalAmount[transactionLimitLast24Hours.currency])).toNumber();
+				
 		} else {
-			amount = amount - (withdrawalHistory?.withdrawalAmount || 0);
+			amount = new BigNumber(amount).minus(new BigNumber(withdrawalHistory?.withdrawalAmount || 0)).toNumber();
 		}
 	
 	}
@@ -358,11 +359,11 @@ const calculateWithdrawalMax = async (user_id, currency, selectedNetwork) => {
 	//Subtract the fees
 
 	if (coinMarkup?.fee_markup) {
-		amount = amount - coinMarkup.fee_markup;
+		amount = new BigNumber(amount).minus(new BigNumber(coinMarkup.fee_markup)).toNumber();
 	}
 
 	if (fee_coin && fee_coin === currency) {
-		amount = amount - fee;
+		amount = new BigNumber(amount).minus(new BigNumber(fee)).toNumber();
 	} else {
 		const convertedFee = await getNodeLib().getOraclePrices([fee_coin], {
 			quote: currency,
@@ -373,7 +374,7 @@ const calculateWithdrawalMax = async (user_id, currency, selectedNetwork) => {
 			throw new Error(`No conversion found between ${currency} and ${fee_coin}`);
 		}
 
-		amount = amount - convertedFee[fee_coin];
+		amount = new BigNumber(amount).minus(new BigNumber(convertedFee[fee_coin])).toNumber();
 	}
 
 	if (amount < 0) {
@@ -383,7 +384,7 @@ const calculateWithdrawalMax = async (user_id, currency, selectedNetwork) => {
 	const decimalPoint = new BigNumber(increment_unit).dp();
 	amount = new BigNumber(amount).decimalPlaces(decimalPoint).toNumber();
 	return { amount };
-}
+};
 
 const validateWithdrawal = async (user, address, amount, currency, network = null) => {
 	const coinConfiguration = getKitCoin(currency);
@@ -478,7 +479,7 @@ const validateWithdrawal = async (user, address, amount, currency, network = nul
 		fee_coin,
 		...(coinMarkup?.fee_markup && { fee_markup: coinMarkup.fee_markup })
 	};
-}
+};
 
 const withdrawalBelowLimit = async (userId, currency, amount = 0, transactionLimits, period, throwError = true) => {
 
