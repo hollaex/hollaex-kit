@@ -35,6 +35,8 @@ const xhtMarkupfee = 5;
 const xhtfee = 1;
 const xhtWithdrawalAmount = 0;
 const btcWithdrawalAmount  = 0;
+
+
 const getTestKeys = (cb) => {
     return new Promise((resolve, reject) => {
         client.hgetall("withdrawals:request", function(err, values){
