@@ -319,7 +319,7 @@ const calculateWithdrawalMax = async (user_id, currency, selectedNetwork) => {
 	const coinConfiguration = getKitCoin(currency);
 	const coinMarkup = getKitConfig()?.coin_customizations?.[currency];
 
-	const { fee, fee_coin } = getWithdrawalFee(currency, selectedNetwork, null, user.verification_level);
+	const { fee, fee_coin } = getWithdrawalFee(currency, selectedNetwork, amount, user.verification_level);
 	const { increment_unit } = coinConfiguration;
 
 
