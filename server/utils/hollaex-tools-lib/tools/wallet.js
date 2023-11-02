@@ -289,32 +289,18 @@ const getWithdrawalLimit = async (user_id, currency, amount) => {
 	}
 
 	const last24HoursLimits = await findTransactionLimitPerTier(user.verification_level, '24h', 'withdrawal');
-	const transactionLimitLast24Hours = findLimit(last24HoursLimits, currency);
 	const lastMonthLimits = await findTransactionLimitPerTier(user.verification_level, '1mo', 'withdrawal'); 
-	const transactionLimitLastMonth = findLimit(lastMonthLimits, currency);
 
+	let withdrawalLimits = {}
 
-	let withdrawalLimits = { }
-
-	if (transactionLimitLast24Hours) {
-		const limit = transactionLimitLast24Hours.amount;
-		if (limit === -1) {
-			throw new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency));
-		} else if (limit > 0) {
-			const last24Hours = await withdrawalBelowLimit(user.network_id, currency, limit, amount, transactionLimitLast24Hours, last24HoursLimits);
-			withdrawalLimits.last24Hours = last24Hours;
-		}
+	if (last24HoursLimits.length > 0) {
+		const last24Hours = await withdrawalBelowLimit(user.network_id, currency, amount, last24HoursLimits, '24h');
+		withdrawalLimits.last24Hours = last24Hours;
 	}
 
-	if (transactionLimitLastMonth) {
-		const limit = transactionLimitLastMonth.amount;
-		if (limit === -1) {
-			throw new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency));
-		} else if (limit > 0) {
-			const lastMonth =  await withdrawalBelowLimit(user.network_id, currency, limit, amount, transactionLimitLastMonth, lastMonthLimits);
-			withdrawalLimits.lastMonth = lastMonth;
-			
-		}
+	if (lastMonthLimits.length > 0) {
+		const lastMonth =  await withdrawalBelowLimit(user.network_id, currency, amount, lastMonthLimits, '1mo');
+		withdrawalLimits.lastMonth = lastMonth;
 	}
 
 	return withdrawalLimits;
@@ -354,7 +340,7 @@ const calculateWithdrawalMax = async (user_id, currency, selectedNetwork) => {
 
 	amount = Math.min(transactionLimitLast24Hours.amount, amount);
 
-	const withdrawalHistory =  await withdrawalBelowLimit(user.network_id, currency, amount, last24HoursLimits, false);
+	const withdrawalHistory =  await withdrawalBelowLimit(user.network_id, currency, amount, last24HoursLimits, '24h', false);
 	amount = amount - withdrawalHistory.withdrawalAmount;
 
 
@@ -471,7 +457,7 @@ const validateWithdrawal = async (user, address, amount, currency, network = nul
 	for (const period of ['24h', '1mo']) {
 		// Find All the transaction limit based on the tier level
 		const transactionLimits = await findTransactionLimitPerTier(user.verification_level, period, 'withdrawal');
-		await withdrawalBelowLimit(user.network_id, currency, amount, transactionLimits);
+		await withdrawalBelowLimit(user.network_id, currency, amount, transactionLimits, period);
 	}
 	
 	return {
@@ -481,7 +467,7 @@ const validateWithdrawal = async (user, address, amount, currency, network = nul
 	};
 }
 
-const withdrawalBelowLimit = async (userId, currency, amount = 0, transactionLimits, throwError = true) => {
+const withdrawalBelowLimit = async (userId, currency, amount = 0, transactionLimits, period, throwError = true) => {
 
 	/* 
 		transaction limit data consists of 6 fields
@@ -499,8 +485,8 @@ const withdrawalBelowLimit = async (userId, currency, amount = 0, transactionLim
 	//if there is no limit info based on the currency, get the default one
 	const transactionLimit = findLimit(transactionLimits, currency);
 
-	// If there is any record, prevent the withdrawal process
-	if (!transactionLimit) {
+	// If there is no record for 24h, prevent the withdrawal process, last month limit can be optional.
+	if (!transactionLimit && period === '24h') {
 		throw new Error(`There is no limit rule defined for the currency ${currency}`);
 	}
 

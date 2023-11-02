@@ -154,6 +154,7 @@ class Withdraw extends Component {
 			router: {
 				location: { query },
 			},
+			coin_customizations,
 		} = this.props;
 		const formValues = generateFormValues(
 			currency,
@@ -179,7 +180,8 @@ class Withdraw extends Component {
 			network,
 			query,
 			verification_level,
-			selectedMethod
+			selectedMethod,
+			coin_customizations
 		);
 
 		this.setState({ formValues, initialValues });
@@ -509,6 +511,7 @@ const mapStateToProps = (store) => ({
 	constants: store.app.constants,
 	config_level: store.app.config_level,
 	orders: store.order.activeOrders,
+	coin_customizations: store.app.constants.coin_customizations,
 });
 
 const mapDispatchToProps = (dispatch) => ({

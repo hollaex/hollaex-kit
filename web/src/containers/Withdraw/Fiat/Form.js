@@ -6,6 +6,7 @@ import { change } from 'redux-form';
 import { getDecimals } from 'utils/utils';
 import { roundNumber } from 'utils/currency';
 import { DEFAULT_COIN_DATA } from 'config/constants';
+import { message } from 'antd';
 
 import { generateFormValues, generateInitialValues } from './FormUtils';
 import WithdrawalForm, { FORM_NAME, selector } from './WithdrawalForm';
@@ -15,6 +16,7 @@ import {
 } from 'containers/Deposit/Fiat/utils';
 import { withdrawalOptionsSelector } from './utils';
 import withConfig from 'components/ConfigProvider/withConfig';
+import { getWithdrawalMax } from 'actions/appActions';
 
 class Form extends Component {
 	state = {
@@ -124,51 +126,63 @@ class Form extends Component {
 		this.setState({ activeTab });
 	};
 
+	// onCalculateMax = () => {
+	// 	const {
+	// 		user: { balance, verification_level },
+	// 		change,
+	// 		coins,
+	// 		currency,
+	// 		prices,
+	// 	} = this.props;
+
+	// 	const withdrawal_limit = getFiatWithdrawalLimit(verification_level);
+	// 	const { rate: withdrawal_fee } = getFiatWithdrawalFee(currency);
+	// 	const balanceAvailable = balance[`${currency}_available`];
+	// 	const { increment_unit, max: coin_max } =
+	// 		coins[currency] || DEFAULT_COIN_DATA;
+
+	// 	const oraclePrice = prices[currency];
+	// 	const has_price = oraclePrice && oraclePrice !== 0 && oraclePrice !== -1;
+	// 	const calculated_withdrawal_limit = has_price
+	// 		? math.divide(withdrawal_limit, oraclePrice)
+	// 		: coin_max;
+
+	// 	let amount = math.number(
+	// 		math.max(
+	// 			math.subtract(
+	// 				math.fraction(balanceAvailable),
+	// 				math.fraction(withdrawal_fee)
+	// 			),
+	// 			0
+	// 		)
+	// 	);
+
+	// 	if (
+	// 		withdrawal_limit !== 0 &&
+	// 		withdrawal_limit !== -1 &&
+	// 		math.larger(amount, calculated_withdrawal_limit)
+	// 	) {
+	// 		amount = calculated_withdrawal_limit;
+	// 	}
+
+	// 	change(
+	// 		FORM_NAME,
+	// 		'amount',
+	// 		roundNumber(amount, getDecimals(increment_unit))
+	// 	);
+	// 	// }
+	// };
+
 	onCalculateMax = () => {
-		const {
-			user: { balance, verification_level },
-			change,
-			coins,
-			currency,
-			prices,
-		} = this.props;
+		const { currency, change } = this.props;
 
-		const withdrawal_limit = getFiatWithdrawalLimit(verification_level);
-		const { rate: withdrawal_fee } = getFiatWithdrawalFee(currency);
-		const balanceAvailable = balance[`${currency}_available`];
-		const { increment_unit, max: coin_max } =
-			coins[currency] || DEFAULT_COIN_DATA;
-
-		const oraclePrice = prices[currency];
-		const has_price = oraclePrice && oraclePrice !== 0 && oraclePrice !== -1;
-		const calculated_withdrawal_limit = has_price
-			? math.divide(withdrawal_limit, oraclePrice)
-			: coin_max;
-
-		let amount = math.number(
-			math.max(
-				math.subtract(
-					math.fraction(balanceAvailable),
-					math.fraction(withdrawal_fee)
-				),
-				0
-			)
-		);
-
-		if (
-			withdrawal_limit !== 0 &&
-			withdrawal_limit !== -1 &&
-			math.larger(amount, calculated_withdrawal_limit)
-		) {
-			amount = calculated_withdrawal_limit;
-		}
-
-		change(
-			FORM_NAME,
-			'amount',
-			roundNumber(amount, getDecimals(increment_unit))
-		);
-		// }
+		getWithdrawalMax(currency, 'fiat')
+			.then((res) => {
+				change(FORM_NAME, 'amount', res.data.amount);
+			})
+			.catch((err) => {
+				message.error(err.response.data.message);
+			});
 	};
 
 	generateFormValues = (
