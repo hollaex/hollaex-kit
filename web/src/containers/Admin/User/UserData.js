@@ -107,14 +107,33 @@ const UserData = ({
 	readOnly = false,
 	onChangeSuccess,
 	handleClose,
-}) => (
-	<Form
-		onSubmit={onSubmit(onChangeSuccess, handleClose)}
-		buttonText="SAVE"
-		fields={Fields}
-		initialValues={generateInitialValues(initialValues)}
-		buttonClass="green-btn"
-	/>
-);
+	handleNav,
+}) => {
+	const renderEditPopup = () => {
+		return (
+			<span className="text-underline" onClick={() => handleNav('email')}>
+				Edit
+			</span>
+		);
+	};
+
+	const fieldsData = {
+		...Fields,
+		email: {
+			...Fields.email,
+			suffix: renderEditPopup(),
+		},
+	};
+
+	return (
+		<Form
+			onSubmit={onSubmit(onChangeSuccess, handleClose)}
+			buttonText="SAVE"
+			fields={fieldsData}
+			initialValues={generateInitialValues(initialValues)}
+			buttonClass="green-btn"
+		/>
+	);
+};
 
 export default UserData;
