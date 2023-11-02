@@ -1,3 +1,5 @@
+@import '../QuickTrade/components/Details';
+
 .hollaex-token-wrapper {
 	height: 100%;
 	display: flex;
@@ -112,6 +114,7 @@
 				width: 65%;
 				background-color: $quick-trade-block-background;
 				padding: 4rem;
+				text-align: justify;
 
 				.header-text {
 					font-size: 16px;
@@ -133,7 +136,7 @@
 				}
 
 				.button-container {
-					margin-top: 7rem;
+					margin-top: 3rem;
 
 					.edit-wrapper__container {
 						width: 100%;
