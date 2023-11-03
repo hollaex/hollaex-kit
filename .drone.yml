@@ -501,6 +501,13 @@ get:
 
 ---
 kind: secret
+name: webhook_url_tech
+get:
+  path: devops/data/drone-ci/secret
+  name: webhook_url_tech
+
+---
+kind: secret
 name: discord_webhook_url
 get:
   path: devops/data/drone-ci/secret
