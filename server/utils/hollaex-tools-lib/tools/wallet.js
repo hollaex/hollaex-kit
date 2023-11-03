@@ -522,7 +522,7 @@ const withdrawalBelowLimit = async (userId, currency, amount = 0, transactionLim
 		);
 	}
 
-	if (totalWithdrawalAmountLastMonth > lastMonthLimit && throwError) {
+	if (lastMonthLimit && totalWithdrawalAmountLastMonth > lastMonthLimit && throwError) {
 		throw new Error(
 			`Total withdrawn amount would exceed withdrawal limit of ${lastMonthLimit} ${transactionLimit.currency}. Withdrawn amount: ${totalWithdrawalAmountLastMonth} ${transactionLimit.currency}. Request amount: ${amount} ${currency}`
 		);
