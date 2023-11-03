@@ -574,9 +574,7 @@ const getAccumulatedWithdrawals = async (userId, transactionLimit, excludedCurre
 		// but since coins are different from each other, we will convert them to currency defined in the limit info and then accumulate them 
 		for (let withdrawalCurrency in withdrawalAmount) {
 	
-			if(excludedCurrencies.indexOf(withdrawalCurrency) > -1) {
-				continue;
-			}
+			if(excludedCurrencies.indexOf(withdrawalCurrency) > -1) continue;
 	
 			const convertedAmount = await getNodeLib().getOraclePrices([withdrawalCurrency], {
 				quote: transactionLimit.currency,
