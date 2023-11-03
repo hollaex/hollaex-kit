@@ -562,7 +562,7 @@ const getAccumulatedWithdrawals = async (userId, transactionLimit, excludedCurre
 	const withdrawalHistory = {};
 
 	const periods = ['24h'];
-	//monthly amount is optional, it is defined and bigger than we should also calculate it
+	//monthly amount is optional, if it is defined and bigger than we should also calculate it
 	if(transactionLimit?.monthly_amount > 0) periods.push('1m');
 
 	for (const period of periods) {
