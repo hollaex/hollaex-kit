@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import { formatPercentage, formatToCurrency } from 'utils/currency';
+import { formatPercentage, formatToCurrency, countDecimals } from 'utils/currency';
 import { quicktradePairSelector } from 'containers/QuickTrade/components/utils';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { getMiniCharts } from 'actions/chartAction';
@@ -26,7 +26,7 @@ class AssetsWrapper extends Component {
 		const lastPrice = price[price.length-1];
 		const priceDifference = lastPrice - firstPrice;
 		const priceDifferencePercent = formatPercentage(priceDifference/firstPrice);
-		const formattedNumber = (val) => formatToCurrency(val, 0 , true);
+		const formattedNumber = (val) => formatToCurrency(val, 0 , countDecimals(val) > 8);
 		const priceDifferencePercentVal = Number(priceDifferencePercent.replace('%',''));
 
 		return {
