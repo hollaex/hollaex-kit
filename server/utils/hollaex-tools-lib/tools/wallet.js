@@ -339,7 +339,7 @@ const calculateWithdrawalMax = async (user_id, currency, selectedNetwork) => {
 
 	if (fee_coin && fee_coin === currency) {
 		amount = new BigNumber(amount).minus(new BigNumber(fee)).toNumber();
-	} else {
+	} else if(fee_coin && fee_coin !== currency && fee > 0) {
 		const convertedFee = await getNodeLib().getOraclePrices([fee_coin], {
 			quote: currency,
 			amount: fee
