@@ -312,7 +312,7 @@ const calculateWithdrawalMax = async (user_id, currency, selectedNetwork) => {
 		const withdrawalHistory = await withdrawalBelowLimit(user.network_id, currency, amount, transactionLimits, false);
 	
 		const totalAmount = withdrawalHistory?.withdrawalAmountLastMonth || withdrawalHistory?.withdrawalAmount24Hours || 0;
-		if (currency !== transactionLimit.currency) {
+		if (currency !== transactionLimit.currency && totalAmount > 0) {
 			const convertedWithdrawalAmount = await getNodeLib().getOraclePrices([transactionLimit.currency], {
 				quote: currency,
 				amount: totalAmount
@@ -522,7 +522,7 @@ const withdrawalBelowLimit = async (userId, currency, amount = 0, transactionLim
 		);
 	}
 
-	if (lastMonthLimit && totalWithdrawalAmountLastMonth > lastMonthLimit && throwError) {
+	if (totalWithdrawalAmountLastMonth > lastMonthLimit && throwError) {
 		throw new Error(
 			`Total withdrawn amount would exceed withdrawal limit of ${lastMonthLimit} ${transactionLimit.currency}. Withdrawn amount: ${totalWithdrawalAmountLastMonth} ${transactionLimit.currency}. Request amount: ${amount} ${currency}`
 		);
