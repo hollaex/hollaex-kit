@@ -2479,6 +2479,8 @@ table th {
   .history_block-wrapper .table-wrapper .table_body-wrapper.with_icon tr td:first-child {
     border-top: 1px solid var(--calculated_secondary-border) !important;
     border-bottom: 1px solid var(--calculated_secondary-border) !important; }
+  .history_block-wrapper .table-wrapper .table_body-wrapper.with_icon tr td:first-child.category-label {
+    border: none !important; }
   .history_block-wrapper .ant-picker-clear {
     background: none; }
   .history_block-wrapper .action_notification-wrapper {
