@@ -336,7 +336,7 @@ const TransactionLimits = ({ coins }) => {
 
 							<div style={{ marginBottom: 10 }}>
 								<div className="mb-1">
-									Amount{' '}
+									Daily Amount{' '}
 									<span style={{ fontSize: 12, color: '#ccc' }}>
 										(Input 0 if you want it limitless or -1 if you want to
 										disable withdrawal for the tier.)
