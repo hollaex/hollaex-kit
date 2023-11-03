@@ -390,13 +390,13 @@ const QuickTrade = ({
 					className={classnames('quick_trade-wrapper', 'd-flex')}
 				>
 					{!isMobile && (
-							<Details 
-								coinChartData={lineChartData} 
-								pair={pair}
-								brokerUsed={isUseBroker}
-								networkName={display_name}
-								isNetwork={isNetwork}
-							/>
+						<Details 
+							coinChartData={lineChartData} 
+							pair={pair}
+							brokerUsed={isUseBroker}
+							networkName={display_name}
+							isNetwork={isNetwork}
+						/>
 					)}
 					<div className="d-flex flex-column trade-section">
 						<div className="inner-content">
