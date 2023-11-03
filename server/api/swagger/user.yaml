@@ -1298,41 +1298,6 @@ paths:
         - hmac
       x-token-permissions:
         - can_withdraw
-  /user/withdrawal/limit/estimate:
-    x-swagger-router-controller: withdrawal
-    get:
-      description: get withdrawal limits of selected currency for user
-      operationId: getWithdrawalLimit
-      tags:
-        - User
-      parameters:
-        - in: query
-          name: currency
-          description: Currency of the transaction
-          required: true
-          type: string
-          maxLength: 256
-        - in: query
-          name: amount
-          description: amount
-          required: true
-          type: number
-      responses:
-        200:
-          description: Success
-          schema:
-            $ref: "#/definitions/ObjectResponse"
-        default:
-          description: Error
-          schema:
-            $ref: "#/definitions/MessageResponse"
-      security:
-        - Token: []
-      x-security-types:
-        - bearer
-        - hmac
-      x-security-scopes:
-        - user
   /user/withdrawal/max:
     x-swagger-router-controller: withdrawal
     get:

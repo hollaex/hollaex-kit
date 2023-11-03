@@ -279,28 +279,6 @@ const performWithdrawalNetwork = (networkId, address, currency, amount, opts = {
 	return getNodeLib().performWithdrawal(networkId, address, currency, amount, opts);
 };
 
-const getWithdrawalLimit = async (user_id, currency, amount) => {
-	const user = await getUserByKitId(user_id);
-
-	if (!user) {
-		throw new Error(USER_NOT_FOUND);
-	} else if (!user.network_id) {
-		throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
-	}
-
-	const transactionLimits = await findTransactionLimitPerTier(user.verification_level, 'withdrawal'); 
-
-	let withdrawalLimits = {}
-
-	if (transactionLimits.length > 0) {
-		const limits = await withdrawalBelowLimit(user.network_id, currency, amount, transactionLimits, false);
-		withdrawalLimits = limits;
-	}
-
-	return withdrawalLimits;
-
-};
-
 const calculateWithdrawalMax = async (user_id, currency, selectedNetwork) => {
 	if (!subscribedToCoin(currency)) {
 		throw new Error('Invalid coin ' + currency);
@@ -1298,6 +1276,5 @@ module.exports = {
 	isValidAddress,
 	validateDeposit,
 	getWallets,
-	getWithdrawalLimit,
 	calculateWithdrawalMax
 };
