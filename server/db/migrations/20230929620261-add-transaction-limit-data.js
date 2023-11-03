@@ -18,10 +18,10 @@ module.exports = {
 					await transactionLimitModel.create({
 						tier: tier.id,
 						amount: type === 'withdrawal' ? tier.withdrawal_limit || 0 : tier.deposit_limit || 0,
+						monthly_amount: 0,
 						currency: status?.kit?.native_currency || 'usdt',
 						limit_currency: 'default', 
 						type, 
-						period: '24h'
 					})
 				}
 			}
