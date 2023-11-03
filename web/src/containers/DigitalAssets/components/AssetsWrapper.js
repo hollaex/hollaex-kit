@@ -21,12 +21,12 @@ class AssetsWrapper extends Component {
 	}
 
 	getPricingData = (chartData) => {
-		const { price } = chartData;
+		const { price=[] } = chartData || {};
 		const firstPrice = price[0];
 		const lastPrice = price[price.length-1];
 		const priceDifference = lastPrice - firstPrice;
 		const priceDifferencePercent = formatPercentage(priceDifference/firstPrice);
-		const formattedNumber = (val) => formatToCurrency(val, 0 , countDecimals(val) > 8);
+		const formattedNumber = (val) => formatToCurrency(val, 0 , val < 1 && countDecimals(val) > 8);
 		const priceDifferencePercentVal = Number(priceDifferencePercent.replace('%',''));
 
 		return {

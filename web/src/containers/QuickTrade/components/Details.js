@@ -24,7 +24,7 @@ const Details = ({ pair, coins, brokerUsed, networkName, isNetwork, router, coin
 		const lastPrice = price[price.length-1];
 		const priceDifference = lastPrice - firstPrice;
 		const priceDifferencePercent = formatPercentage(priceDifference/firstPrice);
-		const formattedNumber = (val) => formatToCurrency(val, low , countDecimals(val) > 8);
+		const formattedNumber = (val) => formatToCurrency(val, low , val < 1 && countDecimals(val) > 8);
 
 
 		const low = formattedNumber(Math.min(...price));
