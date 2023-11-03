@@ -202,7 +202,6 @@ const getVerifyUser = (req, res) => {
 				}
 				return res.json({
 					email,
-					verification_code: verificationCode.code,
 					message: VERIFICATION_EMAIL_MESSAGE
 				});
 			});
@@ -332,7 +331,7 @@ const loginPost = (req, res) => {
 	} = req.swagger.params.authentication.value;
 
 	const ip = req.headers['x-real-ip'];
-	const userAgent = req.headers['user-agent']
+	const userAgent = req.headers['user-agent'];
 	const result = detector.detect(userAgent);
 
 	let device = [
