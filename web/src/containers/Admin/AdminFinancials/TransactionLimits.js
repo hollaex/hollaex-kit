@@ -335,7 +335,13 @@ const TransactionLimits = ({ coins }) => {
 							</div>
 
 							<div style={{ marginBottom: 10 }}>
-								<div className="mb-1">Amount</div>
+								<div className="mb-1">
+									Amount{' '}
+									<span style={{ fontSize: 12, color: 'grey' }}>
+										(Input 0 if you want it limitless or -1 if you want to
+										disable withdrawal for the tier.)
+									</span>
+								</div>
 								<Input
 									type="number"
 									placeholder="Enter amount"
