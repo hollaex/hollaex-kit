@@ -168,9 +168,9 @@ const TransactionLimits = ({ coins }) => {
 			});
 	};
 
-	const requestDownload = () => {
-		// return getExchangeSessionsCsv({ ...queryValues, format: 'csv' });
-	};
+	// const requestDownload = () => {
+	// 	// return getExchangeSessionsCsv({ ...queryValues, format: 'csv' });
+	// };
 
 	const requesTransactionLimits = (page = 1, limit = 50) => {
 		setIsLoading(true);
