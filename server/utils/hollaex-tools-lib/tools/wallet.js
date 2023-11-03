@@ -310,6 +310,8 @@ const calculateWithdrawalMax = async (user_id, currency, selectedNetwork) => {
 	const balance = await getNodeLib().getUserBalance(user.network_id);
 	let amount = balance[`${currency}_available`];
 
+	if (amount === 0) return { amount };
+
 	const coinConfiguration = getKitCoin(currency);
 	const coinMarkup = getKitConfig()?.coin_customizations?.[currency];
 
