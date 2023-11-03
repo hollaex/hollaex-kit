@@ -1,14 +1,14 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { ReactSVG } from 'react-svg';
-import { Button, Form, Input, message, Modal, Select } from 'antd';
 import { Link } from 'react-router';
+import { ReactSVG } from 'react-svg';
+import { SubmissionError } from 'redux-form';
+import { Button, Form, Input, message, Modal, Select } from 'antd';
 import {
 	ExclamationCircleFilled,
 	CaretUpFilled,
 	CaretDownFilled,
 	UserOutlined,
 } from '@ant-design/icons';
-import { SubmissionError } from 'redux-form';
 import classnames from 'classnames';
 
 import Notes from './Notes';
@@ -22,6 +22,7 @@ import {
 	performVerificationLevelUpdate,
 	updateDiscount,
 	deleteNotes,
+	changeUserEmail,
 } from './actions';
 import {
 	validateRequired,
@@ -31,8 +32,22 @@ import {
 import { STATIC_ICONS } from 'config/icons';
 import Image from 'components/Image';
 import withConfig from 'components/ConfigProvider/withConfig';
+import { sendEmailCode } from 'actions/userAction';
 
 const VerificationForm = AdminHocForm('VERIFICATION_FORM');
+
+const ModalBtn = ({ onClick, btnName, disabled, className }) => {
+	return (
+		<Button
+			type="primary"
+			className={className}
+			onClick={onClick}
+			disabled={disabled}
+		>
+			{btnName}
+		</Button>
+	);
+};
 
 const RenderModalContent = ({
 	modalKey = '',
@@ -45,6 +60,10 @@ const RenderModalContent = ({
 	userTiers,
 	handleApply,
 	handleDiscount,
+	handleNav,
+	refreshAllData,
+	userFields,
+	setUserFields,
 }) => {
 	const [discount, setDiscount] = useState(userData.discount);
 
@@ -98,6 +117,70 @@ const RenderModalContent = ({
 		handleApply('fee-discount-confirm');
 	};
 
+	const renderHeaderSection = (type) => {
+		return (
+			<div className="d-flex align-items-center mb-3">
+				<div>
+					<ReactSVG
+						src={STATIC_ICONS.USER_DETAILS_ICON}
+						className="user-edit-icon"
+					/>
+				</div>
+				<h3>
+					{type === 'users'
+						? `Edit user ${userData.id} data`
+						: type === 'success'
+						? `User email successfully changed`
+						: `Edit user ${userData.id} email data`}
+				</h3>
+			</div>
+		);
+	};
+
+	const verifyEmail = async () => {
+		try {
+			await sendEmailCode();
+			handleNav('change-user-email');
+		} catch (error) {
+			message.error(error?.data?.message ? error.data.message : error.message);
+		}
+	};
+
+	const verifyInputCode = (value, type) => {
+		if (type === 'emailCode') {
+			setUserFields({ ...userFields, userCode: value });
+		} else {
+			setUserFields({ ...userFields, userOtp: value });
+		}
+	};
+
+	const changeEmail = async (email, user_id, email_code, otp_code) => {
+		try {
+			await changeUserEmail({ email, user_id, email_code, otp_code });
+			handleNav('success-user-email');
+		} catch (error) {
+			message.error(error?.data?.message ? error.data.message : error.message);
+		}
+	};
+
+	const validateEmail = (value) => {
+		const emailRegex = /^(.+)@(.+)\.(.+)$/;
+		const isValidEmail = emailRegex.test(value);
+		if (isValidEmail) {
+			setUserFields({ ...userFields, userEmail: value });
+		} else {
+			setUserFields({ ...userFields, userEmail: '' });
+		}
+	};
+
+	const onHandleDisabled = (type) => {
+		if (type === 'verifyEmail') {
+			return !userFields.userEmail.length;
+		} else if (type === 'verifyOtp') {
+			return userFields.userOtp.length !== 6;
+		}
+	};
+
 	switch (modalKey) {
 		case 'notes':
 			return (
@@ -114,19 +197,12 @@ const RenderModalContent = ({
 		case 'users':
 			return (
 				<div className="user-data-form">
-					<div className="d-flex align-items-center mb-3">
-						<div>
-							<ReactSVG
-								src={STATIC_ICONS.USER_DETAILS_ICON}
-								className="user-edit-icon"
-							/>
-						</div>
-						<h3>{`Edit user ${userData.id} data`}</h3>
-					</div>
+					{renderHeaderSection('users')}
 					<UserData
 						initialValues={userData}
 						onChangeSuccess={onChangeSuccess}
 						handleClose={handleClose}
+						handleNav={handleNav}
 					/>
 				</div>
 			);
@@ -235,6 +311,130 @@ const RenderModalContent = ({
 					</div>
 				</div>
 			);
+		case 'email':
+			return (
+				<div className="user-data-form">
+					{renderHeaderSection('email')}
+					<div>
+						<div className="fs-12">
+							Changing a user's email is a sensitive action. Please ensure that
+							the new email is accurate, as an incorrect email will result in
+							the user being unable to access their account.
+						</div>
+						<div className="mt-4">New user email</div>
+						<Input
+							className="mt-2 change-user-email-field"
+							defaultValue={userFields.userEmail}
+							onChange={(e) => validateEmail(e.target.value)}
+						/>
+						<div className="btn-wrapper d-flex justify-content-between mt-5">
+							<ModalBtn
+								className={'green-btn'}
+								onClick={() => handleClose()}
+								btnName={'Cancel'}
+							/>
+							<ModalBtn
+								className={'green-btn'}
+								onClick={() => handleNav('confirm-email')}
+								disabled={onHandleDisabled('verifyEmail')}
+								btnName={'Proceed'}
+							/>
+						</div>
+					</div>
+				</div>
+			);
+		case 'confirm-email':
+			return (
+				<div className="user-data-form">
+					{renderHeaderSection('email')}
+					<div>
+						<div className="fs-12">
+							Please make sure that this new user email is correct:
+						</div>
+						<div className="fs-12 mt-3 bold">{userFields.userEmail}</div>
+						<div className="btn-wrapper d-flex justify-content-between mt-5">
+							<ModalBtn
+								className={'green-btn'}
+								onClick={() => handleNav('email')}
+								btnName={'Back'}
+							/>
+							<ModalBtn
+								className={'green-btn'}
+								onClick={() => verifyEmail()}
+								btnName={'Yes, Correct, Proceed'}
+							/>
+						</div>
+					</div>
+				</div>
+			);
+		case 'change-user-email':
+			return (
+				<div className="user-data-form ">
+					<div className="bold">Change user email</div>
+					<div className="mt-3 fs-12">
+						A unique code was sent to your email that is required to finish the
+						process. Please input the code sent to your email below along with
+						your 2FA code.
+					</div>
+					<div className="bold mt-5 fs-12">
+						Input code (please check your email)
+					</div>
+					<Input
+						className="mt-2 change-user-email-field"
+						onChange={(e) => verifyInputCode(e.target.value, 'emailCode')}
+						placeholder="Input code sent to email"
+					/>
+					<div className="bold mt-5 fs-12">2FA Code (OTP)</div>
+					<Input
+						className="mt-2 change-user-email-field"
+						onChange={(e) => verifyInputCode(e.target.value)}
+						placeholder="Input 6-digit 2FA code"
+					/>
+					<div className="btn-wrapper d-flex justify-content-between mt-5">
+						<ModalBtn
+							className={'green-btn'}
+							onClick={() => handleNav('confirm-email')}
+							btnName={'Back'}
+						/>
+						<ModalBtn
+							onClick={() =>
+								changeEmail(
+									userFields.userEmail,
+									userData.id,
+									userFields.userCode,
+									userFields.userOtp
+								)
+							}
+							btnName={'Confirm'}
+							className={'green-btn'}
+							disabled={onHandleDisabled('verifyOtp')}
+						/>
+					</div>
+				</div>
+			);
+		case 'success-user-email':
+			return (
+				<div className="user-data-form">
+					{renderHeaderSection('success')}
+					<div>
+						<div className="fs-12">
+							This users email has successfully changed to:
+						</div>
+						<div className="fs-12 bold">{userFields.userEmail}</div>
+						<div className="mt-3 fs-12">
+							Please make sure the user is informed about this change to ensure
+							they will be able to login.
+						</div>
+						<div className="btn-wrapper d-flex justify-content-between mt-5">
+							<ModalBtn
+								className={'green-btn w-100'}
+								onClick={refreshAllData}
+								btnName={'Okay'}
+							/>
+						</div>
+					</div>
+				</div>
+			);
 		default:
 			return <div></div>;
 	}
@@ -255,6 +455,7 @@ const AboutData = ({
 	userTiers,
 	kycPluginName,
 	requestUserData,
+	refreshAllData,
 }) => {
 	const [isUpload, setUpload] = useState(false);
 	const [isEdit, setEdit] = useState(false);
@@ -262,6 +463,12 @@ const AboutData = ({
 	const [modalKey, setModalKey] = useState('');
 	const [isApply, setApply] = useState(false);
 	const [isDiscount, setDiscountApply] = useState(false);
+	const [userFields, setUserFields] = useState({
+		userEmail: '',
+		userCode: '',
+		userOtp: '',
+	});
+
 	useEffect(() => {
 		if (userData.discount) {
 			setDiscountApply(true);
@@ -296,6 +503,7 @@ const AboutData = ({
 		setEdit(false);
 		setModalKey('');
 		setApply(false);
+		setUserFields({ ...userFields, userEmail: '' });
 	};
 
 	const handleApply = (key, isApply = false) => {
@@ -312,6 +520,11 @@ const AboutData = ({
 			setDiscountApply(value);
 		}
 	};
+
+	const handleNav = (type) => {
+		setModalKey(type);
+	};
+
 	const {
 		email,
 		full_name,
@@ -668,77 +881,96 @@ const AboutData = ({
 					</div>
 				</div>
 				<div>
-					<div className="about-title">User info</div>
-					<div className="d-flex m-4">
-						<div className="user-info-container">
-							<DataDisplay data={userInfo} renderRow={renderRowInformation} />
-							<div>
-								<Button
-									type="primary"
-									className="green-btn"
-									size="small"
-									onClick={() => handleOpenModal('users')}
-								>
-									Edit
-								</Button>
+					<div className="about-title">
+						User info
+						<div className="mt-2 user-info-header-wrapper">
+							<div className="d-flex mt-4">
+								<div className="user-info-container">
+									<div className="user-info-label">
+										email: {userInfo && userInfo.email}
+									</div>
+									<div>
+										<Button
+											type="primary"
+											className="green-btn"
+											size="small"
+											onClick={() => handleOpenModal('email')}
+										>
+											Edit
+										</Button>
+									</div>
+								</div>
+								<div className="user-info-separator"></div>
+								<div className="user-role-container">
+									<div>{renderIcons()}</div>
+									<div className="user-info-label">Role: {renderRole()}</div>
+									<div className="ml-4">
+										<Link to="/admin/roles">
+											<Button type="primary" className="green-btn" size="small">
+												Edit
+											</Button>
+										</Link>
+									</div>
+								</div>
+								<div className="user-info-separator"></div>
+								<div className="user-level-container">
+									<div>
+										<Image
+											icon={
+												allIcons['dark'][
+													`LEVEL_ACCOUNT_ICON_${userData.verification_level}`
+												]
+											}
+											wrapperClassName="levels-icon"
+										/>
+									</div>
+									<div className="user-info-label">
+										Tier: {userData.verification_level}
+									</div>
+									<div className="ml-4">
+										<Button
+											type="primary"
+											className="green-btn"
+											size="small"
+											onClick={() => handleOpenModal('verification-levels')}
+										>
+											Edit
+										</Button>
+									</div>
+								</div>
+								<div className="user-info-separator"></div>
 							</div>
 						</div>
-						<div className="user-info-separator"></div>
-						<div className="user-role-container">
-							<div>{renderIcons()}</div>
-							<div className="user-info-label">Role: {renderRole()}</div>
-							<div className="ml-4">
-								<Link to="/admin/roles">
-									<Button type="primary" className="green-btn" size="small">
-										Edit
-									</Button>
-								</Link>
-							</div>
-						</div>
-						<div className="user-info-separator"></div>
-						<div className="user-level-container">
-							<div>
-								<Image
-									icon={
-										allIcons['dark'][
-											`LEVEL_ACCOUNT_ICON_${userData.verification_level}`
-										]
-									}
-									wrapperClassName="levels-icon"
-								/>
-							</div>
-							<div className="user-info-label">
-								Tier: {userData.verification_level}
-							</div>
-							<div className="ml-4">
-								<Button
-									type="primary"
-									className="green-btn"
-									size="small"
-									onClick={() => handleOpenModal('verification-levels')}
-								>
-									Edit
-								</Button>
-							</div>
-						</div>
-						<div className="user-info-separator"></div>
 					</div>
-					<div className="m-4">
-						{showRemaining ? (
-							<DataDisplay data={rest} renderRow={renderRowInformation} />
-						) : null}
-						<div onClick={() => setShow(!showRemaining)}>
+					<div className="d-flex justify-content-between m-4">
+						<div>
+							<DataDisplay data={userInfo} renderRow={renderRowInformation} />
 							{showRemaining ? (
-								<Fragment>
-									<span className="info-link">View less details</span>
-									<CaretUpFilled />
-								</Fragment>
-							) : (
-								<Fragment>
-									<span className="info-link">View details</span>
-									<CaretDownFilled />
-								</Fragment>
-							)}
+								<DataDisplay data={rest} renderRow={renderRowInformation} />
+							) : null}
+							<div onClick={() => setShow(!showRemaining)}>
+								{showRemaining ? (
+									<Fragment>
+										<span className="info-link">View less details</span>
+										<CaretUpFilled />
+									</Fragment>
+								) : (
+									<Fragment>
+										<span className="info-link">View details</span>
+										<CaretDownFilled />
+									</Fragment>
+								)}
+							</div>
+						</div>
+						<div>
+							<Button
+								type="primary"
+								className="green-btn"
+								size="small"
+								onClick={() => handleOpenModal('users')}
+							>
+								Edit User Data
+							</Button>
 						</div>
 					</div>
 				</div>
@@ -762,6 +994,10 @@ const AboutData = ({
 						userTiers={userTiers}
 						handleApply={handleApply}
 						handleDiscount={handleDiscount}
+						handleNav={handleNav}
+						userFields={userFields}
+						setUserFields={setUserFields}
+						refreshAllData={refreshAllData}
 					/>
 				</Modal>
 			</div>

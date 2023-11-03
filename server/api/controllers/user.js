@@ -202,7 +202,6 @@ const getVerifyUser = (req, res) => {
 				}
 				return res.json({
 					email,
-					verification_code: verificationCode.code,
 					message: VERIFICATION_EMAIL_MESSAGE
 				});
 			});
@@ -211,7 +210,6 @@ const getVerifyUser = (req, res) => {
 			.then((userEmail) => {
 				return res.json({
 					email: userEmail,
-					verification_code,
 					message: VERIFICATION_EMAIL_MESSAGE
 				});
 			});
@@ -224,12 +222,8 @@ const getVerifyUser = (req, res) => {
 	promiseQuery
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/getVerifyUser', err.message);
-			let errorMessage = errorMessageConverter(err);
-
-			if (errorMessage === USER_NOT_FOUND) {
-				errorMessage = VERIFICATION_EMAIL_MESSAGE;
-			}
-
+			// obfuscate the error message
+			let errorMessage = VERIFICATION_EMAIL_MESSAGE;
 			return res.status(err.statusCode || 400).json({ message: errorMessage });
 		});
 };
@@ -332,7 +326,7 @@ const loginPost = (req, res) => {
 	} = req.swagger.params.authentication.value;
 
 	const ip = req.headers['x-real-ip'];
-	const userAgent = req.headers['user-agent']
+	const userAgent = req.headers['user-agent'];
 	const result = detector.detect(userAgent);
 
 	let device = [

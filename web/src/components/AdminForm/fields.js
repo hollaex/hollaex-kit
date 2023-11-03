@@ -22,6 +22,7 @@ export const renderInputField = ({
 	type,
 	meta: { touched, error, warning },
 	prefix,
+	suffix,
 	placeholder,
 	className,
 	disabled = false,
@@ -39,13 +40,20 @@ export const renderInputField = ({
 			{label && <label>{label}</label>}
 			{description ? <div>{description}</div> : null}
 			<div>
-				<div className="d-flex align-items-center">
+				<div
+					className={
+						suffix
+							? 'd-flex align-items-center user-data'
+							: 'd-flex align-items-center'
+					}
+				>
 					{isTooltip ? (
 						<Tooltip placement="bottom" title={tooltipTitle}>
 							<span className="w-100">
 								<Input
 									placeholder={placeholder}
 									prefix={prefix}
+									suffix={suffix}
 									{...input}
 									type={type}
 									disabled={disabled}
@@ -57,6 +65,7 @@ export const renderInputField = ({
 						<Input
 							placeholder={placeholder}
 							prefix={prefix}
+							suffix={suffix}
 							{...input}
 							type={type}
 							disabled={disabled}

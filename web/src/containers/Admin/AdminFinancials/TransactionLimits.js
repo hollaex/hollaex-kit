@@ -407,7 +407,7 @@ const TransactionLimits = ({ coins }) => {
 									}}
 								>
 									<Option value={'withdrawal'}>Withdrawal</Option>
-									<Option value={'Deposit'}>Deposit</Option>
+									{/* <Option value={'deposit'}>Deposit</Option> */}
 								</Select>
 							</div>
 

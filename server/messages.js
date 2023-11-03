@@ -17,7 +17,7 @@ exports.INVALID_CREDENTIALS = 'Incorrect credentials.';
 exports.USER_VERIFIED = 'User is now verified';
 exports.INVALID_PASSWORD =
 	'Invalid password. It has to contain at least 8 characters, at least one digit and one character.';
-exports.VERIFICATION_EMAIL_MESSAGE = 'A verification code has been sent to your email with the code';
+exports.VERIFICATION_EMAIL_MESSAGE = 'A verification code has been sent to your email with the code if your email is in the system';
 exports.PROVIDE_VALID_EMAIL = 'Please provide a valid email';
 exports.PROVIDE_VALID_EMAIL_CODE = 'Provide a valid email or a valid verification code';
 exports.INVALID_VERIFICATION_CODE = 'Invalid verification code';
@@ -254,7 +254,7 @@ exports.STAKE_POOL_NOT_ACTIVE_FOR_UNSTAKING_STATUS = 'Cannot unstake in a pool t
 exports.UNSTAKE_PERIOD_ERROR = 'Cannot unstake, period is not over';
 exports.STAKE_UNSUPPORTED_EXCHANGE_PLAN = 'Your current exchange plan does not support cefi staking feature';
 exports.NO_ORACLE_PRICE_FOUND = 'There is no price for asset for rewarding in Oracle';
-exports.REWARD_CURRENCY_CANNOT_BE_SAME = 'Reward currency cannot be same as the main currency'
+exports.REWARD_CURRENCY_CANNOT_BE_SAME = 'Reward currency cannot be same as the main currency';
 exports.CANNOT_CHANGE_ADMIN_EMAIL = 'Cannot change admin email';
 exports.EMAIL_IS_SAME = 'New email cannot be same as the existing one';
 exports.EMAIL_EXISTS = 'This email already exists';

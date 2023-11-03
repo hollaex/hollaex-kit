@@ -1,58 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router';
-import _get from 'lodash/get';
 import { Coin, EditWrapper, PriceChange } from 'components';
 import STRINGS from 'config/localizedStrings';
 import { Radio } from 'antd';
+import { formatPercentage, formatToCurrency } from 'utils/currency';
+import { MiniSparkLine } from 'containers/TradeTabs/components/MiniSparkLine';
+import classNames from 'classnames';
 
-import HighchartsReact from 'highcharts-react-official';
-import Highcharts from 'highcharts';
-import { formatPercentage } from 'utils/currency';
-
-const DEFAULT_CHART_OPTIONS = {
-	tooltip: {
-		enabled: false,
-	},
-	title: {
-		text: null,
-	},
-	legend: {
-		enabled: false,
-	},
-	chart: {
-		styledMode: true,
-	},
-	xAxis: {
-		type: 'linear',
-		allowDecimals: false,
-		visible: false,
-	},
-	yAxis: {
-		visible: false,
-	},
-	plotOptions: {
-		series: {
-			className: 'main-color',
-			negativeColor: true,
-			marker: {
-				enabled: false,
-				states: {
-					hover: {
-						enabled: false,
-					},
-				},
-			},
-		},
-	},
-	pane: {
-		size: '100%',
-	},
-	
-};
-
-
-const Details = ({ pair, coins, constants, brokerUsed, name, isNetwork, router, coinChartData }) => {
+const Details = ({ pair, coins, brokerUsed, networkName, isNetwork, router, coinChartData, showTradeFees }) => {
 	const [sevenDayData, setSevenDayData] = useState({});
 	const [oneDayData, setOneDayData] = useState({});
 	const [coinStats, setCoinStats] = useState({});
@@ -68,16 +24,18 @@ const Details = ({ pair, coins, constants, brokerUsed, name, isNetwork, router, 
 		const lastPrice = price[price.length-1];
 		const priceDifference = lastPrice - firstPrice;
 		const priceDifferencePercent = formatPercentage(priceDifference/firstPrice);
+		const formattedNumber = (val) => formatToCurrency(val, 0 , true);
 
-		const low = Math.min(...price);
-		const high = Math.max(...price);
+
+		const low = formattedNumber(Math.min(...price));
+		const high = formattedNumber(Math.max(...price));
 
 		return {
 			priceDifference,
 			priceDifferencePercent,
 			low,
 			high,
-			lastPrice
+			lastPrice: formattedNumber(lastPrice)
 		};
 	}
 
@@ -93,6 +51,7 @@ const Details = ({ pair, coins, constants, brokerUsed, name, isNetwork, router, 
 		return index;
 	}
 
+	
 	useEffect(() => {
 		const handleDataUpdate = () => {
 			const { price, time } = coinChartData;
@@ -102,39 +61,52 @@ const Details = ({ pair, coins, constants, brokerUsed, name, isNetwork, router, 
 				setOneDayChartData(oneDayChartPrices);
 				setOneDayData(getPricingData(oneDayChartPrices));
 				setSevenDayData(getPricingData(price));
-
-				setChartData(price);
-				showSevenDay ? setCoinStats(sevenDayData) : setCoinStats(oneDayData);
 			}
 		};
 
 		handleDataUpdate();
-	}, [coinChartData]);
+		//  TODO: Fix react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [coinChartData, pair]);
+
+	useEffect(() => {
+		const renderSevenDays = () => {
+			setTimeout(() => {
+				setCoinStats(sevenDayData);
+				setChartData(coinChartData.price);
+			}, 0);
+		};
+
+		const renderOneDay = () => {
+			setTimeout(() => {
+				setCoinStats(oneDayData);
+				setChartData(oneDayChartData);
+			}, 0);
+		};
+
+		showSevenDay ? renderSevenDays() : renderOneDay();
+		//  TODO: Fix react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [showSevenDay, oneDayData, sevenDayData])
 
 	const handleClick = () => {
-		if (pair && router && _get(constants, 'features.pro_trade')) {
+		if(!isNetwork && !brokerUsed) {
 			router.push(`/trade/${pair}`);
-		}
+		};
 	};
 
 	const handleDayChange = (e) => {
 		const value = e.target.value;
-		
-		if(value === 'seven'){
-			setChartData(coinChartData.price);
-			setCoinStats(sevenDayData);
-			setShowSevenDay(true);
-			return
-		}
-
-		setShowSevenDay(false);
-		setCoinStats(oneDayData);
-		setChartData(oneDayChartData);
+		setShowSevenDay(value === 'seven');
 	}
 
-	const getLink = (linkUrl, linkText) => {
+	const getLink = (linkUrl, linkText, noLine) => {
         return (
-            <div className="blue-link pointer underline-text">
+            <div className={
+				classNames("blue-link pointer", {
+					'underline-text': !noLine
+				})}
+			>
                 <Link to={linkUrl}>
                     {linkText}
                 </Link>
@@ -153,7 +125,7 @@ const Details = ({ pair, coins, constants, brokerUsed, name, isNetwork, router, 
 					</span>
 				) : !brokerUsed ? (
 					<span>
-						<span>{name} </span>
+						<span>{networkName} </span>
 						<span>
 							<EditWrapper stringId="TYPES_VALUES.market">
 								{STRINGS['TYPES_VALUES.market']}
@@ -177,9 +149,11 @@ const Details = ({ pair, coins, constants, brokerUsed, name, isNetwork, router, 
 				<div className="d-flex pb-24">
 					<Coin iconId={icon_id} type="CS11" />
 					<div className="pl-2">
-						<div className="pairs pointer" onClick={() => handleClick()}>
-							{coins[pairBase] && coins[pairBase].display_name}/
-							{coins[pair_2] && coins[pair_2].display_name}
+						<div className={classNames("pairs",
+						{
+							'pointer underline': !isNetwork && !brokerUsed
+						})} onClick={handleClick}>
+							{coins[pairBase] && coins[pairBase].display_name}
 						</div>
 						{getMarketName()}
 					</div>
@@ -223,19 +197,8 @@ const Details = ({ pair, coins, constants, brokerUsed, name, isNetwork, router, 
 				</div>
 				<div className="chart w-100">
 					<div className="fade-area" />
-					<HighchartsReact
-						highcharts={Highcharts}
-						options={{
-							...DEFAULT_CHART_OPTIONS,
-							series: [{
-								name: 'price',
-								data: chartData,
-								pointStart: 0
-							}
-						]}}
-						containerProps={{
-							style: { height: '100%', width: '100%' },
-						}}
+					<MiniSparkLine
+						chartData={chartData}
 					/>
 				</div>
 				<div className="d-flex pb-35">
@@ -269,18 +232,29 @@ const Details = ({ pair, coins, constants, brokerUsed, name, isNetwork, router, 
 					</div>
 				</div>
 				<div className="d-flex pb-35">
-					<div>
-						<div className='sub-title caps'>
-							{STRINGS['ASSET_INFO']}
+					{showTradeFees ? 
+						(
+							<div>
+								{getLink(
+									`fees-and-limits`,
+									STRINGS['FEES_AND_LIMITS.COIN_PAGE_LINK'],
+									true
+								)}
+							</div>
+					) : (
+						<div>
+							<div className='sub-title caps'>
+								{STRINGS['ASSET_INFO']}
+							</div>
+							{getLink(
+								`/assets/coin/${pairBase}`,
+								STRINGS.formatString(
+									STRINGS['QUICK_TRADE_COMPONENT.COIN_INFORMATION'],
+									coins[pairBase].display_name
+								)
+							)}
 						</div>
-						{getLink(
-							"/assets",
-							STRINGS.formatString(
-								STRINGS['QUICK_TRADE_COMPONENT.COIN_INFORMATION'],
-								coins[pairBase].display_name
-							)
-						)}
-					</div>
+					)}
 				</div>
 			</div>
 		</div>

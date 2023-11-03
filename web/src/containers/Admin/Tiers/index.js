@@ -3,7 +3,7 @@ import { Tabs, Modal, message } from 'antd';
 import { connect } from 'react-redux';
 
 import TiersContainer from './Tiers';
-import Limits from './Limits';
+// import Limits from './Limits';
 import Fees from './Fees';
 import NewTierForm, {
 	NewTierConfirmation,
@@ -142,8 +142,8 @@ const Tiers = ({ constants = {}, allCoins = [] }) => {
 	const [editData, setData] = useState({});
 	const [selectedPair, setPair] = useState('');
 	const [buttonSubmitting, setButttonSubmitting] = useState(false);
-	const [tierName, setTierName] = useState('');
-	const [coinSymbol, setSymbol] = useState('');
+	const [tierName] = useState('');
+	const [coinSymbol] = useState('');
 	const [isNativeCoin, setIsNativeCoin] = useState(false);
 	const [isButtonSubmit, setIsButtonSubmit] = useState(false);
 	const [formData, setFormData] = useState({});
