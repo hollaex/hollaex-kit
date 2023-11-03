@@ -86,8 +86,8 @@ export const getMiniCharts = async (pairs) => {
 
 	const result = {};
 	
-	Object.keys(data).map((keyVal) => {
-		data[keyVal].map(({ price, quote, symbol, time }) => {
+	Object.keys(data).forEach((keyVal) => {
+		data[keyVal].forEach(({ price, quote, symbol, time }) => {
 			let symbolKey = symbol + '-' + quote; 
 
 			if(!result[symbolKey]) {
@@ -99,7 +99,6 @@ export const getMiniCharts = async (pairs) => {
 
 			result[symbolKey].price.push(price);
 			result[symbolKey].time.push(time);
-			
 		});
 	});
 

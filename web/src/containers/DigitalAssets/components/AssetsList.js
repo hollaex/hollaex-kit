@@ -12,13 +12,11 @@ import {
 import { Paginator, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
-import MarketRow from 'containers/TradeTabs/components/MarketRow';
+import AssetsRow from './AssetsRow';
 
 const AssetsList = ({
-	markets,
+	coinsListData,
 	handleClick,
-	chartData,
-	icons: ICONS,
 	page,
 	pageSize,
 	count,
@@ -34,10 +32,12 @@ const AssetsList = ({
 	const handleClickChange = () => {
 		if (mode === SORT.CHANGE) {
 			toggleSort();
+
 		} else {
 			setSortModeChange();
 		}
 	};
+
 
 	const renderCaret = (cell) => (
 		<div className="market-list__caret d-flex flex-direction-column mx-1 secondary-text">
@@ -53,6 +53,15 @@ const AssetsList = ({
 			/>
 		</div>
 	);
+
+	const getSortedList = () => {
+		return coinsListData.sort((a, b) => 
+			is_descending ? 
+				(parseFloat(b.priceDifferencePercentVal) - parseFloat(a.priceDifferencePercentVal)) : 
+				(parseFloat(a.priceDifferencePercentVal) - parseFloat(b.priceDifferencePercentVal))
+		)
+
+	} 
 
 	return (
 		<div className="market-list__container">
@@ -89,8 +98,8 @@ const AssetsList = ({
 							</th>
 							<th>
 								<div onClick={handleClickChange} className="d-flex pointer">
-									<EditWrapper stringId="MARKETS_TABLE.CHANGE_24H">
-										{STRINGS['MARKETS_TABLE.CHANGE_24H']}
+									<EditWrapper stringId="MARKETS_TABLE.CHANGE_7D">
+										{STRINGS['MARKETS_TABLE.CHANGE_7D']}
 									</EditWrapper>
 									{renderCaret(SORT.CHANGE)}
 								</div>
@@ -111,26 +120,24 @@ const AssetsList = ({
 							</th>
 							<th>
 								<div>
-									<EditWrapper stringId="MARKETS_TABLE.CHART_24H">
-										{STRINGS['MARKETS_TABLE.CHART_24H']}
+									<EditWrapper stringId="MARKETS_TABLE.CHART_7D">
+										{STRINGS['MARKETS_TABLE.CHART_7D']}
 									</EditWrapper>
 								</div>
 							</th>
 						</tr>
 					</thead>
 					<tbody id="market-list_tableBody">
-						{markets.map((market, index) => (
-							<MarketRow
+						{getSortedList().map((coinData, index) => (
+							<AssetsRow
 								index={index}
-								key={index}
-								icons={ICONS}
+								key={coinData.code}
 								handleClick={handleClick}
-								chartData={chartData}
-								market={market}
+								coinData={coinData}
 								loading={loading}
-								isAsset={true}
 							/>
 						))}
+						
 					</tbody>
 				</table>
 			</div>
@@ -150,10 +157,12 @@ const AssetsList = ({
 const mapStateToProps = ({
 	app: {
 		digital_assets_sort: { mode, is_descending },
+		coins: coinsData
 	},
 }) => ({
 	mode,
 	is_descending,
+	coinsData
 });
 
 const mapDispatchToProps = (dispatch) => ({
