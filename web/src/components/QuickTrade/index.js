@@ -343,11 +343,13 @@ const QuickTrade = ({
 	}, [hasExpiredOnce, time]);
 
 	useEffect(() => {
-		setLineChartData( {
-			...chartData[pair],
-			name: 'Line',
-			type: 'line',
-		});
+		setTimeout(() => {
+			setLineChartData( {
+				...chartData[pair],
+				name: 'Line',
+				type: 'line',
+			});
+		}, 0);
 	}, [pair, chartData]);
 
 	const isExpired = time.isAfter(moment(expiry));
