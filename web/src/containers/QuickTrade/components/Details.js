@@ -16,7 +16,9 @@ const Details = ({ pair, coins, brokerUsed, networkName, isNetwork, router, coin
 	const [chartData, setChartData] = useState([]);
 	const [showSevenDay, setShowSevenDay] = useState(true);
 
-	const [pairBase, pair_2] = pair.split('-');
+	const [pairBase] = pair.split('-');
+	const pair_2 = 'usdt';
+
 	const { icon_id } = coins[pairBase];
 	
 	const getPricingData = (price) => {
@@ -64,7 +66,8 @@ const Details = ({ pair, coins, brokerUsed, networkName, isNetwork, router, coin
 			}
 		};
 
-		handleDataUpdate();
+		
+		handleDataUpdate()
 		//  TODO: Fix react-hooks/exhaustive-deps
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [coinChartData, pair]);
@@ -73,7 +76,7 @@ const Details = ({ pair, coins, brokerUsed, networkName, isNetwork, router, coin
 		const renderSevenDays = () => {
 			setTimeout(() => {
 				setCoinStats(sevenDayData);
-				setChartData(coinChartData?.price || []);
+				setChartData([...coinChartData?.price || []]);
 			}, 0);
 		};
 
