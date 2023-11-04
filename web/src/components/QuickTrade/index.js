@@ -344,8 +344,10 @@ const QuickTrade = ({
 
 	useEffect(() => {
 		setTimeout(() => {
+			const pairBase = pair.split('-')[0];
+			const lineData = {...chartData[`${pairBase}-usdt`]};
 			setLineChartData( {
-				...chartData[pair],
+				...lineData,
 				name: 'Line',
 				type: 'line',
 			});
