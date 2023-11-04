@@ -22,7 +22,7 @@ module.exports = {
 						currency: status?.kit?.native_currency || 'usdt',
 						limit_currency: 'default', 
 						type, 
-					})
+					});
 				}
 			}
 		}
