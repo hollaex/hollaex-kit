@@ -1417,15 +1417,15 @@ definitions:
       amount:
         type: number
         format: double
+      monthly_amount:
+        type: number
+        format: double
       withdrawal_fee:
         type: number
         format: double
       type:
         type: string
         enum: ['withdrawal', 'deposit']
-      period:
-        type: string
-        enum: ['24h', '1mo']
   BrokerPair:
     type: object
     properties:

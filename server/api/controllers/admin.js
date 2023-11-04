@@ -2507,7 +2507,7 @@ const updateTransactionLimit = (req, res) => {
 		currency,
 		limit_currency,
 		type,
-		period,
+		monthly_amount,
 	 } = req.swagger.params.data.value;
 
 	toolsLib.tier.updateTransactionLimit(id, {
@@ -2516,7 +2516,7 @@ const updateTransactionLimit = (req, res) => {
 		currency,
 		limit_currency,
 		type,
-		period,
+		monthly_amount,
 	 })
 		.then((data) => {
 			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));

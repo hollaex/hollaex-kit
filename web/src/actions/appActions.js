@@ -649,3 +649,9 @@ export const getNetWorkURL = () => {
 	} = store.getState();
 	return network;
 };
+
+export const getWithdrawalMax = (currency, network) => {
+	return axios.get(
+		`/user/withdrawal/max?currency=${currency}&network=${network}`
+	);
+};

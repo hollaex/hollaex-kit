@@ -20,6 +20,10 @@ module.exports = {
 					type: Sequelize.DOUBLE,
 					allowNull: false,
 				},
+				monthly_amount: {
+					type: Sequelize.DOUBLE,
+					allowNull: true
+				},
 				currency: {
 					type: Sequelize.STRING,
 					allowNull: false,
@@ -30,10 +34,6 @@ module.exports = {
             	},
 				type: {
             	    type: Sequelize.ENUM('withdrawal', 'deposit'),
-            	    allowNull: false,
-            	},
-				period: {
-            	    type: Sequelize.ENUM('24h', '1mo'),
             	    allowNull: false,
             	},
 				created_at: {
