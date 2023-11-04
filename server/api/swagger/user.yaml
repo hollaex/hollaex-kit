@@ -1298,11 +1298,11 @@ paths:
         - hmac
       x-token-permissions:
         - can_withdraw
-  /user/withdrawal/limit/estimate:
+  /user/withdrawal/max:
     x-swagger-router-controller: withdrawal
     get:
-      description: get withdrawal limits of selected currency for user
-      operationId: getWithdrawalLimit
+      description: get max withdrawal amount of selected currency for user
+      operationId: getWithdrawalMax
       tags:
         - User
       parameters:
@@ -1313,10 +1313,11 @@ paths:
           type: string
           maxLength: 256
         - in: query
-          name: amount
-          description: amount
+          name: network
+          description: network
           required: true
-          type: number
+          type: string
+          maxLength: 256
       responses:
         200:
           description: Success

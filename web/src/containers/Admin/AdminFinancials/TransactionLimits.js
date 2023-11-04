@@ -32,6 +32,7 @@ const TransactionLimits = ({ coins }) => {
 	const [displayCostumizationModal, setDisplayCostumizationModal] = useState(
 		false
 	);
+	const [tierFilter, setTierFilter] = useState();
 
 	const [displayDeleteModal, setDisplayDeleteModal] = useState(false);
 	const columns = [
@@ -67,6 +68,14 @@ const TransactionLimits = ({ coins }) => {
 			},
 		},
 		{
+			title: 'Monthly Amount',
+			dataIndex: 'monthly_amount',
+			key: 'monthly_amount',
+			render: (user_id, data) => {
+				return <div className="d-flex">{data?.monthly_amount || '-'}</div>;
+			},
+		},
+		{
 			title: 'Currency',
 			dataIndex: 'currency',
 			key: 'currency',
@@ -88,18 +97,6 @@ const TransactionLimits = ({ coins }) => {
 			key: 'type',
 			render: (user_id, data) => {
 				return <div className="d-flex">{data?.type}</div>;
-			},
-		},
-		{
-			title: 'Period',
-			dataIndex: 'period',
-			key: 'period',
-			render: (user_id, data) => {
-				return (
-					<div className="d-flex">
-						{data?.period === '24h' ? '24 Hours' : '1 Month'}
-					</div>
-				);
 			},
 		},
 		{
@@ -171,9 +168,9 @@ const TransactionLimits = ({ coins }) => {
 			});
 	};
 
-	const requestDownload = () => {
-		// return getExchangeSessionsCsv({ ...queryValues, format: 'csv' });
-	};
+	// const requestDownload = () => {
+	// 	// return getExchangeSessionsCsv({ ...queryValues, format: 'csv' });
+	// };
 
 	const requesTransactionLimits = (page = 1, limit = 50) => {
 		setIsLoading(true);
@@ -226,15 +223,18 @@ const TransactionLimits = ({ coins }) => {
 				<div style={{ marginTop: 20 }}></div>
 				<div className="mt-5">
 					<div style={{ display: 'flex', justifyContent: 'space-between' }}>
-						<span
-							onClick={(e) => {
-								requestDownload();
-							}}
-							className="mb-2 underline-text cursor-pointer"
-							style={{ cursor: 'pointer' }}
-						>
-							{/* Download below CSV table */}
-						</span>
+						<div style={{ position: 'relative', bottom: 16 }}>
+							<div style={{ marginBottom: 3 }}>Search Tier</div>
+							<Input
+								value={tierFilter}
+								onChange={(e) => {
+									setTierFilter(e.target.value);
+								}}
+								style={{ width: 200 }}
+								placeholder={'Enter tier'}
+							/>
+						</div>
+
 						<div>
 							<span>
 								<Button
@@ -262,7 +262,14 @@ const TransactionLimits = ({ coins }) => {
 							<Table
 								className="blue-admin-table"
 								columns={columns}
-								dataSource={coinData || [].sort((a, b) => a.id - b.id)}
+								dataSource={(coinData || [])
+									.sort((a, b) => Number(a.tier) - Number(b.tier))
+									.filter((a) => a.type !== 'deposit')
+									.filter((a) =>
+										tierFilter?.length > 0
+											? a.tier === Number(tierFilter)
+											: true
+									)}
 								// expandedRowRender={renderRowContent}
 								// expandRowByClick={true}
 								rowKey={(data) => {
@@ -328,7 +335,13 @@ const TransactionLimits = ({ coins }) => {
 							</div>
 
 							<div style={{ marginBottom: 10 }}>
-								<div className="mb-1">Amount</div>
+								<div className="mb-1">
+									Daily Amount{' '}
+									<span style={{ fontSize: 12, color: '#ccc' }}>
+										(Input 0 if you want it limitless or -1 if you want to
+										disable withdrawal for the tier.)
+									</span>
+								</div>
 								<Input
 									type="number"
 									placeholder="Enter amount"
@@ -341,6 +354,22 @@ const TransactionLimits = ({ coins }) => {
 									}}
 								/>
 							</div>
+
+							<div style={{ marginBottom: 10 }}>
+								<div className="mb-1">Monthly Amount</div>
+								<Input
+									type="number"
+									placeholder="Enter monthly amount"
+									value={selectedData.monthly_amount}
+									onChange={(e) => {
+										setSelectedData({
+											...selectedData,
+											monthly_amount: e.target.value,
+										});
+									}}
+								/>
+							</div>
+
 							<div style={{ marginBottom: 10 }}>
 								<div className="mb-1">Currency</div>
 								<div style={{ color: '#ccc', marginBottom: 5, fontSize: 12 }}>
@@ -410,26 +439,6 @@ const TransactionLimits = ({ coins }) => {
 									{/* <Option value={'deposit'}>Deposit</Option> */}
 								</Select>
 							</div>
-
-							<div style={{ marginBottom: 10 }}>
-								<div className="mb-1">Period</div>
-								<Select
-									showSearch
-									value={selectedData.period || null}
-									placeholder="Select Period"
-									style={{ color: 'black', width: '100%' }}
-									notFoundContent={'Not Found'}
-									onChange={(value) => {
-										setSelectedData({
-											...selectedData,
-											period: value,
-										});
-									}}
-								>
-									<Option value={'24h'}>24 hours</Option>
-									<Option value={'1mo'}>1 Month</Option>
-								</Select>
-							</div>
 						</div>
 						<div
 							style={{
@@ -462,14 +471,17 @@ const TransactionLimits = ({ coins }) => {
 											!selectedData.amount ||
 											!selectedData.currency ||
 											!selectedData.limit_currency ||
-											!selectedData.type ||
-											!selectedData.period
+											!selectedData.type
 										) {
 											message.error('Please input all the fields');
 											return;
 										}
 
 										selectedData.amount = Number(selectedData.amount);
+										if (selectedData.monthly_amount)
+											selectedData.monthly_amount = Number(
+												selectedData.monthly_amount
+											);
 
 										await updateTransactionLimits(selectedData);
 										requesTransactionLimits();

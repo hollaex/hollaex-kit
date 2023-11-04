@@ -24,7 +24,9 @@ export const generateInitialValues = (
 	networks,
 	network,
 	query,
-	verification_level
+	verification_level,
+	selectedMethod,
+	coin_customizations
 ) => {
 	const { min, withdrawal_fee, withdrawal_fees } =
 		coins[symbol] || DEFAULT_COIN_DATA;
@@ -92,6 +94,9 @@ export const generateInitialValues = (
 	} else {
 		initialValues.amount = '';
 	}
+
+	const feeMarkup = coin_customizations[symbol].fee_markup;
+	if (feeMarkup) initialValues.fee += feeMarkup;
 
 	initialValues.destination_tag = '';
 	initialValues.address = '';

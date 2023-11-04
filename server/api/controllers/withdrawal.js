@@ -108,6 +108,13 @@ const performWithdrawal = (req, res) => {
 			if (user.verification_level < 1) {
 				throw new Error('User must upgrade verification level to perform a withdrawal');
 			}
+
+			return all([
+				withdrawal,
+				toolsLib.wallet.validateWithdrawal(user, withdrawal.address, withdrawal.amount, withdrawal.currency, withdrawal.network)
+			]);
+		})
+		.then(async ([withdrawal]) => {
 			if (isEmail(withdrawal.address)) {
 				const receiver = await toolsLib.user.getUserByEmail(withdrawal.address);
 				if (!receiver) {
@@ -242,23 +249,23 @@ const performDirectWithdrawal = (req, res) => {
 		});
 };
 
-const getWithdrawalLimit = (req, res) => {
+const getWithdrawalMax = (req, res) => {
 	loggerWithdrawals.verbose(
 		req.uuid,
-		'controllers/withdrawal/getWithdrawalLimit/auth',
+		'controllers/withdrawal/getWithdrawalMax/auth',
 		req.auth
 	);
 
 	const {
-		amount,
 		currency,
+		network,
 	} = req.swagger.params;
 
 
-	toolsLib.wallet.getWithdrawalLimit(
+	toolsLib.wallet.calculateWithdrawalMax(
 		req.auth.sub.id,
 		currency.value,
-		amount.value,
+		network.value,
 
 	)
 		.then((data) => {
@@ -267,7 +274,7 @@ const getWithdrawalLimit = (req, res) => {
 		.catch((err) => {
 			loggerWithdrawals.error(
 				req.uuid,
-				'controllers/withdrawal/getWithdrawalLimit',
+				'controllers/withdrawal/getWithdrawalMax',
 				err.message
 			);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
@@ -445,5 +452,5 @@ module.exports = {
 	getUserWithdrawals,
 	cancelWithdrawal,
 	performDirectWithdrawal,
-	getWithdrawalLimit
+	getWithdrawalMax
 };
