@@ -29,7 +29,7 @@ const Details = ({ pair, coins, brokerUsed, networkName, isNetwork, router, coin
 		const minVal = Math.min(...price);
 		const high = Math.max(...price);
 
-		const formattedNumber = (val) => formatToCurrency(val, minVal , val < 1 && countDecimals(val) > 8);
+		const formattedNumber = (val) => formatToCurrency(val, 0 , val < 1 && countDecimals(val) > 8);
 
 		return {
 			priceDifference,
