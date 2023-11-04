@@ -51,7 +51,7 @@ export const MiniSparkLine = ({ chartData, isArea }) => {
                 ...DEFAULT_CHART_OPTIONS,
                 series: [{
                     name: 'price',
-                    data: chartData,
+                    data: chartData?.length ? chartData : [],
                     pointStart: 0,
                     type: isArea ? 'area' : 'line',
                 }

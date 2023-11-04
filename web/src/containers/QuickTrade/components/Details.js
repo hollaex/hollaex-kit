@@ -4,7 +4,7 @@ import { withRouter, Link } from 'react-router';
 import { Coin, EditWrapper, PriceChange } from 'components';
 import STRINGS from 'config/localizedStrings';
 import { Radio } from 'antd';
-import { formatPercentage, formatToCurrency } from 'utils/currency';
+import { formatPercentage, formatToCurrency, countDecimals } from 'utils/currency';
 import { MiniSparkLine } from 'containers/TradeTabs/components/MiniSparkLine';
 import classNames from 'classnames';
 
@@ -16,7 +16,9 @@ const Details = ({ pair, coins, brokerUsed, networkName, isNetwork, router, coin
 	const [chartData, setChartData] = useState([]);
 	const [showSevenDay, setShowSevenDay] = useState(true);
 
-	const [pairBase, pair_2] = pair.split('-');
+	const [pairBase] = pair.split('-');
+	const pair_2 = 'usdt';
+
 	const { icon_id } = coins[pairBase];
 	
 	const getPricingData = (price) => {
@@ -24,7 +26,7 @@ const Details = ({ pair, coins, brokerUsed, networkName, isNetwork, router, coin
 		const lastPrice = price[price.length-1];
 		const priceDifference = lastPrice - firstPrice;
 		const priceDifferencePercent = formatPercentage(priceDifference/firstPrice);
-		const formattedNumber = (val) => formatToCurrency(val, 0 , true);
+		const formattedNumber = (val) => formatToCurrency(val, low , val < 1 && countDecimals(val) > 8);
 
 
 		const low = formattedNumber(Math.min(...price));
@@ -64,7 +66,8 @@ const Details = ({ pair, coins, brokerUsed, networkName, isNetwork, router, coin
 			}
 		};
 
-		handleDataUpdate();
+		
+		handleDataUpdate()
 		//  TODO: Fix react-hooks/exhaustive-deps
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [coinChartData, pair]);
@@ -73,7 +76,7 @@ const Details = ({ pair, coins, brokerUsed, networkName, isNetwork, router, coin
 		const renderSevenDays = () => {
 			setTimeout(() => {
 				setCoinStats(sevenDayData);
-				setChartData(coinChartData.price);
+				setChartData([...coinChartData?.price || []]);
 			}, 0);
 		};
 
@@ -87,7 +90,7 @@ const Details = ({ pair, coins, brokerUsed, networkName, isNetwork, router, coin
 		showSevenDay ? renderSevenDays() : renderOneDay();
 		//  TODO: Fix react-hooks/exhaustive-deps
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [showSevenDay, oneDayData, sevenDayData])
+	}, [showSevenDay, oneDayData, sevenDayData, pair])
 
 	const handleClick = () => {
 		if(!isNetwork && !brokerUsed) {

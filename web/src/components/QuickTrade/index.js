@@ -343,11 +343,15 @@ const QuickTrade = ({
 	}, [hasExpiredOnce, time]);
 
 	useEffect(() => {
-		setLineChartData( {
-			...chartData[pair],
-			name: 'Line',
-			type: 'line',
-		});
+		setTimeout(() => {
+			const pairBase = pair.split('-')[0];
+			const lineData = {...chartData[`${pairBase}-usdt`]};
+			setLineChartData( {
+				...lineData,
+				name: 'Line',
+				type: 'line',
+			});
+		}, 0);
 	}, [pair, chartData]);
 
 	const isExpired = time.isAfter(moment(expiry));
@@ -390,13 +394,13 @@ const QuickTrade = ({
 					className={classnames('quick_trade-wrapper', 'd-flex')}
 				>
 					{!isMobile && (
-							<Details 
-								coinChartData={lineChartData} 
-								pair={pair}
-								brokerUsed={isUseBroker}
-								networkName={display_name}
-								isNetwork={isNetwork}
-							/>
+						<Details 
+							coinChartData={lineChartData} 
+							pair={pair}
+							brokerUsed={isUseBroker}
+							networkName={display_name}
+							isNetwork={isNetwork}
+						/>
 					)}
 					<div className="d-flex flex-column trade-section">
 						<div className="inner-content">
