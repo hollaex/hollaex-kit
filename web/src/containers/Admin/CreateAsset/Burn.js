@@ -19,7 +19,7 @@ const Burn = ({
 	const [form] = Form.useForm();
 	const getAllUsers = useCallback(async (params = {}) => {
 		try {
-			const res = await requestUsers (params);
+			const res = await requestUsers(params);
 			if (res && res.data) {
 				const exchangeUsers = res.data || [];
 				setDataSource(exchangeUsers);
@@ -35,12 +35,23 @@ const Burn = ({
 
 	const handleSubmit = (values) => {
 		if (values) {
-			const { amount, user_id, description } = values;
+			const {
+				amount,
+				user_id,
+				description,
+				transaction_id,
+				status,
+				fee,
+			} = values;
+			console.log(status);
 			const formProps = {
 				currency: coinFormData.symbol,
 				amount,
 				description,
 				user_id: user_id ? parseInt(user_id, 10) : user_id,
+				fee,
+				status: Number(status) ? true : false,
+				transaction_id,
 			};
 			if (type === 'mint') {
 				handleMint(formProps);
@@ -56,9 +67,7 @@ const Burn = ({
 		try {
 			const res = await storeBurn(formValues);
 			if (res) {
-				message.success(
-					`${res.amount} ${res.currency} successfully burnt`
-				);
+				message.success(`${res.amount} ${res.currency} successfully burnt`);
 			}
 		} catch (error) {
 			if (error.data && error.data.message) {
@@ -148,6 +157,31 @@ const Burn = ({
 							<Option key={sender.id}>{sender.email}</Option>
 						))}
 					</Select>
+				</Form.Item>
+				<h3>
+					Transaction ID <span style={{ fontSize: 14 }}>(Optional)</span>
+				</h3>
+				<Form.Item name="transaction_id">
+					<Input placeholder="Transaction ID" />
+				</Form.Item>
+				<h3>
+					Status <span style={{ fontSize: 14 }}>(Optional)</span>
+				</h3>
+				<Form.Item initialValue={'1'} name="status">
+					<Select
+						placeholder="Select an user"
+						className="user-search-field"
+						autoComplete={false}
+					>
+						<Option key={'1'}>Completed</Option>
+						<Option key={'0'}>Pending</Option>
+					</Select>
+				</Form.Item>
+				<h3>
+					Fee <span style={{ fontSize: 14 }}>(Optional)</span>
+				</h3>
+				<Form.Item name="fee">
+					<InputNumber placeholder="Amount" />
 				</Form.Item>
 				<h3>Description</h3>
 				<Form.Item name="description">
