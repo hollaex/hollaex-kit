@@ -100,28 +100,28 @@ const getRows = (coins, level, tiers, ICONS, transaction_limits) => {
 						(limit) =>
 							limit.limit_currency === symbol &&
 							limit.tier === Number(level) &&
-							limit.period === '24h' &&
+							limit.amount != null &&
 							limit.type === 'withdrawal'
 					);
 					const limit_24h_default = transaction_limits?.find(
 						(limit) =>
 							limit.limit_currency === 'default' &&
 							limit.tier === Number(level) &&
-							limit.period === '24h' &&
+							limit.amount != null &&
 							limit.type === 'withdrawal'
 					);
 					const limit_1mo = transaction_limits?.find(
 						(limit) =>
 							limit.limit_currency === symbol &&
 							limit.tier === Number(level) &&
-							limit.period === '1mo' &&
+							limit.monthly_amount != null &&
 							limit.type === 'withdrawal'
 					);
 					const limit_1mo_default = transaction_limits?.find(
 						(limit) =>
 							limit.limit_currency === 'default' &&
 							limit.tier === Number(level) &&
-							limit.period === '1mo' &&
+							limit.monthly_amount != null &&
 							limit.type === 'withdrawal'
 					);
 
@@ -134,7 +134,7 @@ const getRows = (coins, level, tiers, ICONS, transaction_limits) => {
 									<div className="px-2">{display_name}</div>
 								</div>
 							</td>
-							<td>
+							<td style={{ paddingRight: 25 }}>
 								{limit_24h ? (
 									<div>{getLimitValue(limit_24h)}</div>
 								) : limit_24h_default ? (
