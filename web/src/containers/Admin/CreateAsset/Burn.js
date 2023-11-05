@@ -43,7 +43,7 @@ const Burn = ({
 				status,
 				fee,
 			} = values;
-			console.log(status);
+
 			const formProps = {
 				currency: coinFormData.symbol,
 				amount,
