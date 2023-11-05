@@ -2600,13 +2600,13 @@ const changeUserEmail = (req, res) => {
 		email_code
 	);
 
-	toolsLib.security.verifyOtpBeforeAction(user_id, otp_code)
+	toolsLib.security.verifyOtpBeforeAction(req.auth.sub.id, otp_code)
 		.then((validOtp) => {
 			if (!validOtp) {
 				throw new Error(INVALID_OTP_CODE);
 			}
 
-			return toolsLib.security.confirmByEmail(user_id, email_code);
+			return toolsLib.security.confirmByEmail(req.auth.sub.id, email_code);
 		})
 		.then((confirmed) => {
 			if (confirmed) {
