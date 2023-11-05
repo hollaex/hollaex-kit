@@ -24,7 +24,6 @@ const checkActivation = (activation_code) => {
 	};
 	return rp(options);
 };
-const models = require('../models');
 const TABLE = 'TransactionLimits';
 
 module.exports = {
