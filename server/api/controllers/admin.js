@@ -2599,7 +2599,6 @@ const changeUserEmail = (req, res) => {
 		'email_code',
 		email_code
 	);
-
 	toolsLib.security.verifyOtpBeforeAction(req.auth.sub.id, otp_code)
 		.then((validOtp) => {
 			if (!validOtp) {
