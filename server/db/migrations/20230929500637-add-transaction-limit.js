@@ -29,13 +29,13 @@ module.exports = {
 					allowNull: false,
 				},
 				limit_currency: {
-            	    type: Sequelize.STRING,
-            	    allowNull: false,
-            	},
+					type: Sequelize.STRING,
+					allowNull: false,
+				},
 				type: {
-            	    type: Sequelize.ENUM('withdrawal', 'deposit'),
-            	    allowNull: false,
-            	},
+					type: Sequelize.ENUM('withdrawal', 'deposit'),
+					allowNull: false,
+				},
 				created_at: {
 					allowNull: false,
 					type: Sequelize.DATE,

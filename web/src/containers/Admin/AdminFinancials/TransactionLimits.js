@@ -72,7 +72,11 @@ const TransactionLimits = ({ coins }) => {
 			dataIndex: 'monthly_amount',
 			key: 'monthly_amount',
 			render: (user_id, data) => {
-				return <div className="d-flex">{data?.monthly_amount || '-'}</div>;
+				return (
+					<div className="d-flex">
+						{data?.monthly_amount != null ? data?.monthly_amount : '-'}
+					</div>
+				);
 			},
 		},
 		{
@@ -338,7 +342,7 @@ const TransactionLimits = ({ coins }) => {
 								<div className="mb-1">
 									Daily Amount{' '}
 									<span style={{ fontSize: 12, color: '#ccc' }}>
-										(Input 0 if you want it limitless or -1 if you want to
+										(Input 0 if you want it unlimited or -1 if you want to
 										disable withdrawal for the tier.)
 									</span>
 								</div>
