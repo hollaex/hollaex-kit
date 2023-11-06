@@ -1,6 +1,6 @@
 'use strict';
 
-const { getUserByKitId, getUserByEmail, getUserByNetworkId, mapNetworkIdToKitId, mapKitIdToNetworkId } = require('./user');
+const { getUserByKitId, getUserByEmail, getUserByNetworkId, mapNetworkIdToKitId, mapKitIdToNetworkId, createAuditLog } = require('./user');
 const { SERVER_PATH } = require('../constants');
 const { getModel } = require('./database/model');
 const { fetchBrokerQuote, generateRandomToken, isFairPriceForBroker } = require('./broker');
@@ -316,7 +316,7 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 	}
 };
 
-const updateQuickTradeConfig = async ({ symbol, type, active }) => {
+const updateQuickTradeConfig = async ({ symbol, type, active }, auditInfo) => {
 	const QuickTrade = getModel('quickTrade');
 
 	const quickTradeData = await QuickTrade.findOne({ where: { symbol } });
@@ -330,6 +330,7 @@ const updateQuickTradeConfig = async ({ symbol, type, active }) => {
 		type,
 		active
 	};
+	createAuditLog(auditInfo.userEmail, auditInfo.apiPath, auditInfo.method, quickTradeData.dataValues, updatedConfig);
 	return quickTradeData.update(updatedConfig, { fields: ['type', 'active'], returning: true });
 };
 

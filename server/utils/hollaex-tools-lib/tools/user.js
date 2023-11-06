@@ -1183,17 +1183,18 @@ const verifyUserEmailByKitId = (kitId) => {
 		});
 };
 
-const updateUserNote = (userId, note) => {
+const updateUserNote = (userId, note, auditInfo) => {
 	return getUserByKitId(userId, false)
 		.then((user) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
 			}
+			createAuditLog(auditInfo.userEmail, auditInfo.apiPath, auditInfo.method, note, user.note);
 			return user.update({ note }, { fields: ['note'] });
 		});
 };
 
-const updateUserDiscount = (userId, discount) => {
+const updateUserDiscount = (userId, discount, auditInfo) => {
 	if (discount < 0 || discount > 100) {
 		return reject(new Error(`Invalid discount rate ${discount}. Min: 0. Max: 1`));
 	}
@@ -1212,6 +1213,7 @@ const updateUserDiscount = (userId, discount) => {
 		})
 		.then(([previousDiscountRate, user]) => {
 			if (user.discount > previousDiscountRate) {
+				createAuditLog(auditInfo.userEmail, auditInfo.apiPath, auditInfo.method, user.discount, previousDiscountRate);
 				sendEmail(
 					MAILTYPE.DISCOUNT_UPDATE,
 					user.email,
@@ -1427,8 +1429,86 @@ const createAudit = (adminId, event, ip, opts = {
 	});
 };
 
+const getUpdatedKeys = (oldData, newData) => {
+	const data = uniq([...Object.keys(oldData), ...Object.keys(newData)]);
+  
+	let keys = [];
+	for(const key of data){
+	  if(!isEqual(oldData[key], newData[key])){
+		keys.push(key);
+	  }
+	}
+  
+	return keys;
+  }
+
+const getValues = (data, prevData) => {
+	const updatedKeys = getUpdatedKeys(prevData, data);
+    const updatedValues = updatedKeys.map(key => data[key]);
+	const oldValues = updatedKeys.map(key => prevData[key]);
+	
+    updatedValues.forEach((value, index) => {
+        if(typeof value === 'object' && value.constructor === Object) {
+            const values = getValues(value, oldValues[index]);
+            updatedKeys[index] = values.updatedKeys
+            updatedValues[index] = values.updatedValues
+            oldValues[index] = values.oldValues;
+        }
+    })
+
+	return { updatedKeys, oldValues, updatedValues };
+}
+
+const createAuditLog = (subject, adminEndpoint, method, data = {}, prevData = null) => {
+	try {
+		if (!subject) return;
+
+		const methodDescriptions = {
+			get: 'viewed',
+			post: 'inserted',
+			put: 'updated',
+			delete: 'deleted'
+		}
+		const excludedKeys = ['password', 'apiKey', 'secret', 'api-key', 'api-secret', 'hmac'];
+
+		const action = adminEndpoint.split('/').slice(1).join(' ');
+		let description;
+
+		let user_id;
+		if (method === 'get') {
+			user_id = data?.user_id?.value;
+			data = Object.fromEntries(Object.entries(data).filter(([k, v]) => (v.value != null && excludedKeys.indexOf(k) === -1)));
+			const str = Object.keys(data).map((key) =>  "" + key + ":" + data[key].value).join(", ");
+			description = `${action} service ${methodDescriptions[method]}${str ? ` with ${str}` : ''}`;
+		}
+		else if(method === 'put' && prevData) {
+			user_id = data?.user_id;
+			prevData = Object.fromEntries(Object.entries(prevData).filter(([k, v]) => (v != null && excludedKeys.indexOf(k) === -1)));
+			data = Object.fromEntries(Object.entries(data).filter(([k, v]) => (v != null && excludedKeys.indexOf(k) === -1)));
+			const { updatedKeys, oldValues, updatedValues } = getValues(data, prevData);
+			description = `${updatedKeys.join(', ')} field(s) updated to the value(s) ${updatedValues?.join(', ')?.length > 0 ? updatedValues.join(', ') : 'Null'} from ${oldValues?.join(', ')?.length > 0 ? oldValues.join(', ') : 'Null'} in ${action} service`;
+		} 
+		else {
+			user_id = data?.user_id;
+			data = Object.fromEntries(Object.entries(data).filter(([k, v]) => (v != null && excludedKeys.indexOf(k) === -1)));
+			description = `${Object.keys(data).join(', ')} field(s) ${methodDescriptions[method]} by the value(s) ${Object.values(data).join(', ')} in ${action} service`;
+		}
+
+		return getModel('audit').create({
+			subject,
+			description,
+			user_id,
+			timestamp: new Date(),
+		}).then(res => res).catch(err => err);
+	} catch (error) {
+		return error;
+	}
+	
+}
+
 const getUserAudits = (opts = {
-	userId: null,
+	user_id: null,
+	subject: null,
 	limit: null,
 	page: null,
 	orderBy: null,
@@ -1442,7 +1522,11 @@ const getUserAudits = (opts = {
 	const ordering = orderingQuery(opts.orderBy, opts.order);
 	let options = {
 		where: {
-			timestamp: timeframe
+			timestamp: timeframe,
+			...(opts.user_id && { user_id: opts.user_id }),
+			...(opts.subject && { subject: {
+				[Op.like]: `%${opts.subject}%`
+			}}),
 		},
 		order: [ordering]
 	};
@@ -1450,8 +1534,6 @@ const getUserAudits = (opts = {
 	if (!opts.format) {
 		options = { ...options, ...pagination };
 	}
-
-	if (isNumber(opts.userId)) options.where.description = getModel('sequelize').literal(`description ->> 'user_id' = '${opts.userId}'`);
 
 	if (opts.format) {
 		return dbQuery.fetchAllRecords('audit', options)
@@ -1674,7 +1756,7 @@ const inviteExchangeOperator = (invitingEmail, email, role, opts = {
 		});
 };
 
-const updateUserMeta = async (id, givenMeta = {}, opts = { overwrite: null }) => {
+const updateUserMeta = async (id, givenMeta = {}, opts = { overwrite: null }, auditInfo) => {
 	const { user_meta: referenceMeta } = getKitConfig();
 
 	const user = await getUserByKitId(id, false);
@@ -1725,7 +1807,7 @@ const updateUserMeta = async (id, givenMeta = {}, opts = { overwrite: null }) =>
 	const updatedUser = await user.update({
 		meta: updatedUserMeta
 	});
-
+	createAuditLog(auditInfo.userEmail, auditInfo.apiPath, auditInfo.method, updatedUserMeta, user.meta);
 	return pick(updatedUser, 'id', 'email', 'meta');
 };
 
@@ -1855,7 +1937,7 @@ const [mapNetworkIdToKitId, mapKitIdToNetworkId] = (() => {
 		}];
 })();
 
-const updateUserInfo = async (userId, data = {}) => {
+const updateUserInfo = async (userId, data = {}, auditInfo) => {
 	if (!isInteger(userId) || userId <= 0) {
 		throw new Error('UserId must be a positive integer');
 	}
@@ -1920,12 +2002,15 @@ const updateUserInfo = async (userId, data = {}) => {
 	if (isEmpty(updateData)) {
 		throw new Error('No fields to update');
 	}
+	const oldValues = {};
+	Object.keys(updateData).forEach(key => { oldValues[key] = user.dataValues[key] });
 
 	await user.update(
 		updateData,
 		{ fields: Object.keys(updateData) }
 	);
 
+	createAuditLog(auditInfo.userEmail, auditInfo.apiPath, auditInfo.method, updateData, oldValues);
 	return omitUserFields(user.dataValues);
 };
 
@@ -2187,7 +2272,7 @@ const restoreKitUser = async (userId) => {
 	);
 };
 
-const changeKitUserEmail = async (userId, newEmail) => {
+const changeKitUserEmail = async (userId, newEmail, auditInfo) => {
 	const user = await dbQuery.findOne('user', {
 		where: {
 			id: userId
@@ -2235,7 +2320,7 @@ const changeKitUserEmail = async (userId, newEmail) => {
 		{ email: newEmail },
 		{ fields: ['email'], returning: true }
 	);
-
+	createAuditLog(auditInfo.userEmail, auditInfo.apiPath, auditInfo.method, { user_id: userId, email: userEmail  }, { user_id: userId, email: newEmail });
 	sendEmail(
 		MAILTYPE.ALERT,
 		null,
@@ -2284,6 +2369,7 @@ module.exports = {
 	isValidUsername,
 	createUserCryptoAddressByKitId,
 	createAudit,
+	createAuditLog,
 	getUserStatsByKitId,
 	getExchangeOperators,
 	inviteExchangeOperator,

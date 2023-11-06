@@ -169,7 +169,7 @@ const maskSecrets = (secrets) => {
 	return secrets;
 };
 
-const updateKitConfigSecrets = (data = {}, scopes) => {
+const updateKitConfigSecrets = (data = {}, scopes, auditInfo) => {
 	let role = 'admin';
 
 	if (!data.kit && !data.secrets) {
@@ -203,6 +203,8 @@ const updateKitConfigSecrets = (data = {}, scopes) => {
 			if (data.secrets && Object.keys(data.secrets).length > 0) {
 				updatedKitConfig.secrets = joinKitSecrets(status.dataValues.secrets, data.secrets, role);
 			}
+			const { createAuditLog } = require('./user');
+			createAuditLog(auditInfo.userEmail, auditInfo.apiPath, auditInfo.method, updatedKitConfig.kit, status.dataValues.kit);
 			return status.update(updatedKitConfig, {
 				fields: [
 					'kit',
@@ -667,7 +669,7 @@ const updateKitUserMeta = async (name, data = {
 	type: null,
 	description: null,
 	required: null
-}) => {
+}, auditInfo) => {
 	const existingUserMeta = getKitConfig().user_meta;
 
 	if (!existingUserMeta[name]) {
@@ -705,7 +707,8 @@ const updateKitUserMeta = async (name, data = {
 			user_meta: updatedUserMeta
 		}
 	});
-
+	const { createAuditLog } = require('./user');
+	createAuditLog(auditInfo.userEmail, auditInfo.apiPath, auditInfo.method, updatedUserMeta, existingUserMeta);
 	publisher.publish(
 		CONFIGURATION_CHANNEL,
 		JSON.stringify({

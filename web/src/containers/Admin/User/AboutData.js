@@ -14,7 +14,7 @@ import classnames from 'classnames';
 import Notes from './Notes';
 import UserData from './UserData';
 import { AdminHocForm } from '../../../components';
-import Audits from '../Audits';
+// import Audits from '../Audits';
 import Logins from '../Logins';
 import Verification from '../Verification';
 import DataDisplay, { renderRowInformation } from '../Verification/DataDisplay';
@@ -974,10 +974,10 @@ const AboutData = ({
 						</div>
 					</div>
 				</div>
-				<div>
+				{/* <div>
 					<div className="about-title">Audit</div>
 					<Audits userId={userData.id} />
-				</div>
+				</div> */}
 				<div>
 					<div className="about-title">Login</div>
 					<Logins userId={userData.id} />
