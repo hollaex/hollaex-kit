@@ -19,7 +19,7 @@ export function checkVerificationCode(data) {
 			.then((response) => {
 				dispatch({
 					type: 'CHECK_VERIFICATION_CODE_FULFILLED',
-					payload: response.data,
+					payload: { ...response.data, ...data },
 				});
 			})
 			.catch((error) => {
