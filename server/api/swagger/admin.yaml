@@ -1835,6 +1835,12 @@ paths:
           type: number
           format: int32
         - in: query
+          name: subject
+          description: Action Owner
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
           name: limit
           description: "Number of elements to return. Default: 50. Maximun: 100"
           required: false
@@ -1882,7 +1888,7 @@ paths:
         200:
           description: Success
           schema:
-            $ref: "#/definitions/AuditsResponse"
+            $ref: "#/definitions/ObjectResponse"
         202:
           description: CSV
           schema:

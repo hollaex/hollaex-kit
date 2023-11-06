@@ -50,8 +50,8 @@ const Button = ({
 						wrapperClassName="mr-1 arrow-up-down-icon"
 						icon={
 							btnLabel && btnLabel === 'deposit'
-								? icons['ARROW_DOWN']
-								: icons['ARROW_UP']
+								? icons['WALLET_ARROW_DOWN']
+								: icons['WALLET_ARROW_UP']
 						}
 					/>
 					<EditWrapper>{label}</EditWrapper>

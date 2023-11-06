@@ -33,6 +33,7 @@ import {
 	// ADMIN
 	User,
 	AdminStake,
+	Audits,
 	Session,
 	AppWrapper as AdminContainer,
 	// Main,
@@ -481,7 +482,11 @@ export const generateRoutes = (routes = []) => {
 					name="Admin User"
 					component={withAdminProps(User, 'user')}
 				/>
-
+				<Route
+					path="/admin/audits"
+					name="Admin Audits"
+					component={withAdminProps(Audits, 'audit')}
+				/>
 				<Route
 					path="/admin/stakes"
 					name="Admin Stakes"
