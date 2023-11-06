@@ -22,7 +22,7 @@ const {
 	PROVIDE_VALID_EMAIL,
 	INVALID_PASSWORD,
 	USER_EXISTS,
-	USER_EMAIL_IS_VERIFIED,
+	VERIFICATION_CODE_EXPIRED,
 	INVALID_VERIFICATION_CODE,
 	LOGIN_NOT_ALLOW,
 	NO_IP_FOUND,
@@ -34,6 +34,7 @@ const { each } = require('lodash');
 const { publisher } = require('../../db/pubsub');
 const { isDate } = require('moment');
 const DeviceDetector = require('node-device-detector');
+const uuid = require('uuid/v4');
 
 const VERIFY_STATUS = {
 	EMPTY: 0,
@@ -145,8 +146,10 @@ const signUpUser = (req, res) => {
 			});
 		})
 		.then((user) => {
+			const verification_code = uuid();
+			toolsLib.database.client.setexAsync(`verification_code:user${user.id}`, 5 * 60, verification_code);
 			return all([
-				toolsLib.user.getVerificationCodeByUserId(user.id),
+				verification_code,
 				user
 			]);
 		})
@@ -161,7 +164,7 @@ const signUpUser = (req, res) => {
 			sendEmail(
 				MAILTYPE.SIGNUP,
 				email,
-				verificationCode.code,
+				verificationCode,
 				{}
 			);
 
@@ -186,16 +189,27 @@ const getVerifyUser = (req, res) => {
 
 	if (email && typeof email === 'string' && isEmail(email)) {
 		email = email.toLowerCase();
-		promiseQuery = toolsLib.user.getVerificationCodeByUserEmail(email)
-			.then((verificationCode) => {
-				if (verificationCode.verified) {
-					throw new Error(USER_EMAIL_IS_VERIFIED);
+		promiseQuery = client.getAsync(`verification_code:user${req.auth.sub.id}`)
+			.then(async (verificationCode) => {
+
+				const user = await toolsLib.database.findOne('user', {
+					where: { email },
+					attributes: ['id', 'email_verified']
+				}) 
+
+				if (user.email_verified) {
+					throw new Error(USER_VERIFIED);
 				}
+
 				if (resendEmail) {
+					if(!verificationCode) {
+						verificationCode = uuid();
+						client.setexAsync(`verification_code:user${user.id}`, 5 * 60, verificationCode);
+					}
 					sendEmail(
 						MAILTYPE.SIGNUP,
 						email,
-						verificationCode.code,
+						verificationCode,
 						{},
 						domain
 					);
@@ -206,10 +220,13 @@ const getVerifyUser = (req, res) => {
 				});
 			});
 	} else if (verification_code && typeof verification_code === 'string' && isUUID(verification_code)) {
-		promiseQuery = toolsLib.user.getUserEmailByVerificationCode(verification_code)
-			.then((userEmail) => {
+		promiseQuery = client.getAsync(`verification_code:user${req.auth.sub.id}`)
+			.then((verificationCode) => {
+				if (!verificationCode) {
+					throw new Error(VERIFICATION_CODE_EXPIRED);
+				}
 				return res.json({
-					email: userEmail,
+					email: req.auth.sub.email,
 					message: VERIFICATION_EMAIL_MESSAGE
 				});
 			});
@@ -246,28 +263,33 @@ const verifyUser = (req, res) => {
 
 	toolsLib.database.findOne('user', {
 		where: { email },
-		attributes: ['id', 'email', 'settings', 'network_id']
+		attributes: ['id', 'email', 'settings', 'network_id', 'email_verified']
 	})
 		.then((user) => {
 			return all([
-				toolsLib.user.getVerificationCodeByUserId(user.id),
+				client.getAsync(`verification_code:user${user.id}`),
 				user
 			]);
 		})
 		.then(([verificationCode, user]) => {
-			if (verificationCode.verified) {
-				throw new Error(USER_EMAIL_IS_VERIFIED);
+			if (user.email_verified) {
+				throw new Error(USER_VERIFIED);
 			}
 
-			if (verification_code !== verificationCode.code) {
+			if (!verificationCode) {
+				throw new Error(VERIFICATION_CODE_EXPIRED);
+			}
+
+			if (verification_code !== verificationCode) {
 				throw new Error(INVALID_VERIFICATION_CODE);
 			}
 
+			client.delAsync(`verification_code:user${user.id}`)
 			return all([
 				user,
-				verificationCode.update(
-					{ verified: true },
-					{ fields: ['verified'] }
+				user.update(
+					{ email_verified: true },
+					{ fields: ['email_verified'] }
 				)
 			]);
 		})
