@@ -290,8 +290,8 @@ const nestedIcons = {
 
 	REFRESH_ICON: '/assets/icons/refresh-icon.svg',
 	WALLET_GRAPHIC: '/assets/images/wallet-background-graphic-dark-theme.svg',
-	ARROW_DOWN: '/assets/images/deposit-arrow-down.svg',
-	ARROW_UP: '/assets/images/withdraw-arrow-up.svg',
+	WALLET_ARROW_DOWN: '/assets/images/deposit-arrow-down.svg',
+	WALLET_ARROW_UP: '/assets/images/withdraw-arrow-up.svg',
 };
 
 const icons = flatten(nestedIcons, options);
