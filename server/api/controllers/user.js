@@ -239,7 +239,7 @@ const verifyUser = (req, res) => {
 	toolsLib.database.client.getAsync(`verification_code:user${verification_code}`)
 		.then((verificationCode) => {
 			if (!verificationCode) {
-				throw new Error('Verification code expired. Please request a new verification code from the verification tab on the dashboard');
+				throw new Error(VERIFICATION_CODE_EXPIRED);
 			}
 			verificationCode = JSON.parse(verificationCode);
 			return all([

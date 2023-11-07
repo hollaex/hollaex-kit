@@ -177,7 +177,7 @@ exports.COMMUNICATOR_CANNOT_UPDATE = (value) => `Communicator operators cannot u
 exports.MASK_VALUE_GIVEN = 'Masked value given';
 exports.NO_DATA_FOR_CSV = 'No data to convert to CSV';
 exports.USER_EMAIL_IS_VERIFIED = 'User email is already verified';
-exports.VERIFICATION_CODE_EXPIRED = 'Verification code expired';
+exports.VERIFICATION_CODE_EXPIRED = 'Verification code expired. Please request a new verification code from the verification tab on the dashboard';
 exports.PROVIDE_USER_CREDENTIALS = 'Please provide a a user\'s kit id, network id, or email';
 exports.PROVIDE_KIT_ID = 'Please provide a user\'s kit id';
 exports.PROVIDE_NETWORK_ID = 'Please provide a user\'s network id';
