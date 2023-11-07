@@ -281,15 +281,17 @@ const QuickTrade = ({
 	const debouncedQuote = useRef(debounce(getQuote, 1000));
 
 	useEffect(() => {
-		const assetValues = Object.keys(coins).map((
-			val) => coins[val].code).toLocaleString();
-
-		getMiniCharts(assetValues)
-			.then((chartValues) =>{
-				setChartData(chartValues);
-			});
-
-	}, [coins]);
+		setTimeout(() => {
+			const pairBase = pair.split('-')[1];
+			const assetValues = Object.keys(coins).map((
+				val) => coins[val].code).toLocaleString();
+				
+			getMiniCharts(assetValues, pairBase)
+				.then((chartValues) =>{
+					setChartData(chartValues);
+				});
+		}, 0);
+	}, [coins, pair]);
 
 	useEffect(() => {
 		if (mounted) {
@@ -344,8 +346,7 @@ const QuickTrade = ({
 
 	useEffect(() => {
 		setTimeout(() => {
-			const pairBase = pair.split('-')[0];
-			const lineData = {...chartData[`${pairBase}-usdt`]};
+			const lineData = {...chartData[`${pair}`]};
 			setLineChartData( {
 				...lineData,
 				name: 'Line',
