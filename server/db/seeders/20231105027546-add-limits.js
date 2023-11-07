@@ -1,33 +1,11 @@
 'use strict';
 
-const rp = require('request-promise');
-
-const {
-	HOLLAEX_NETWORK_ENDPOINT,
-	HOLLAEX_NETWORK_BASE_URL,
-	HOLLAEX_NETWORK_PATH_ACTIVATE
-} = require('../../constants');
-
 const models = require('../models');
 
-
-const checkActivation = (activation_code) => {
-	const body = {
-		activation_code
-	};
-
-	const options = {
-		method: 'POST',
-		body,
-		uri: `${HOLLAEX_NETWORK_ENDPOINT}${HOLLAEX_NETWORK_BASE_URL}${HOLLAEX_NETWORK_PATH_ACTIVATE}`,
-		json: true
-	};
-	return rp(options);
-};
 const TABLE = 'TransactionLimits';
 
 module.exports = {
-	up: async (queryInterface) => {
+	up: async () => {
 		const transactionLimitModel = models['TransactionLimit'];
 		const types = ['withdrawal', 'deposit'];
 		const tierLevels = [1, 2];
