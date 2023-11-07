@@ -5,8 +5,8 @@ module.exports = {
 	up: async (queryInterface, Sequelize) => {
 		await queryInterface.addColumn(TABLE, 'subject', {
 			type: Sequelize.STRING,
-			allowNull: false
-		})
+			allowNull: true
+		});
 		await queryInterface.addColumn(TABLE, 'user_id', {
 			type: Sequelize.INTEGER,
 			onDelete: 'CASCADE',
@@ -15,7 +15,7 @@ module.exports = {
 				model: 'Users',
 				key: 'id',
 			},
-		})
+		});
 
 		await queryInterface.removeColumn(TABLE, 'admin_id');
 		await queryInterface.removeColumn(TABLE, 'event');
@@ -23,8 +23,8 @@ module.exports = {
 		await queryInterface.removeColumn(TABLE, 'domain');
 		
 	},
-	down: (queryInterface, Sequelize) =>
-	new Promise((resolve) => {
-		resolve();
-	})
+	down: () =>
+		new Promise((resolve) => {
+			resolve();
+		})
 };

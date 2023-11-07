@@ -64,7 +64,15 @@ const TransactionLimits = ({ coins }) => {
 			dataIndex: 'amount',
 			key: 'amount',
 			render: (user_id, data) => {
-				return <div className="d-flex">{data?.amount}</div>;
+				return (
+					<div className="d-flex">
+						{data?.amount === 0
+							? 'Unlimited'
+							: data?.amount === 1
+							? 'Disabled'
+							: data?.amount}
+					</div>
+				);
 			},
 		},
 		{
@@ -74,7 +82,13 @@ const TransactionLimits = ({ coins }) => {
 			render: (user_id, data) => {
 				return (
 					<div className="d-flex">
-						{data?.monthly_amount != null ? data?.monthly_amount : '-'}
+						<div className="d-flex">
+							{data?.monthly_amount === 0 || data?.monthly_amount === null
+								? 'Unlimited'
+								: data?.monthly_amount === 1
+								? 'Disabled'
+								: data?.monthly_amount}
+						</div>
 					</div>
 				);
 			},
