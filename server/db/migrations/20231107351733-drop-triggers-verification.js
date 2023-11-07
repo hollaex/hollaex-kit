@@ -1,6 +1,5 @@
 'use strict';
 
-const TABLE = 'Audits';
 module.exports = {
 	up: async (queryInterface, Sequelize) => {
 		const drops = 
