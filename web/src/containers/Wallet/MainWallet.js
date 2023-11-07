@@ -103,11 +103,6 @@ class Wallet extends Component {
 		}
 	}
 
-	componentWillUnmount() {
-		const { isZeroBalanceHidden } = this.state;
-		localStorage.setItem(ZERO_BALANCE_KEY, isZeroBalanceHidden);
-	}
-
 	getMobileSlider = (coins, oraclePrices) => {
 		const result = {};
 		Object.keys(coins).map((key) => {
@@ -122,6 +117,7 @@ class Wallet extends Component {
 	};
 
 	onToggleZeroBalance = (isZeroBalanceHidden) => {
+		localStorage.setItem(ZERO_BALANCE_KEY, isZeroBalanceHidden);
 		this.setState({ isZeroBalanceHidden });
 	};
 

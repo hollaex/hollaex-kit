@@ -16,8 +16,7 @@ const Details = ({ pair, coins, brokerUsed, networkName, isNetwork, router, coin
 	const [chartData, setChartData] = useState([]);
 	const [showSevenDay, setShowSevenDay] = useState(true);
 
-	const [pairBase] = pair.split('-');
-	const pair_2 = 'usdt';
+	const [pairBase, pair_2] = pair.split('-');
 
 	const { icon_id } = coins[pairBase];
 	
