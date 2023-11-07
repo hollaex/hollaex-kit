@@ -93,109 +93,6 @@ let networkIdToKitId = {};
 let kitIdToNetworkId = {};
 /* Onboarding*/
 
-const signUpUser = (email, password, opts = { referral: null }) => {
-	if (!getKitConfig().new_user_is_activated) {
-		return reject(new Error(SIGNUP_NOT_AVAILABLE));
-	}
-
-	if (!email || !isEmail(email)) {
-		return reject(new Error(PROVIDE_VALID_EMAIL));
-	}
-
-	if (!isValidPassword(password)) {
-		return reject(new Error(INVALID_PASSWORD));
-	}
-
-	email = email.toLowerCase();
-
-	return dbQuery.findOne('user', {
-		where: { email },
-		attributes: ['email']
-	})
-		.then((user) => {
-			if (user) {
-				throw new Error(USER_EXISTS);
-			}
-			return getModel('sequelize').transaction((transaction) => {
-				return getModel('user').create({
-					email,
-					password,
-					verification_level: 1,
-					settings: INITIAL_SETTINGS()
-				}, { transaction })
-					.then((user) => {
-						return all([
-							createUserOnNetwork(email),
-							user
-						]);
-					})
-					.then(([networkUser, user]) => {
-						return user.update(
-							{ network_id: networkUser.id },
-							{ fields: ['network_id'], returning: true, transaction }
-						);
-					});
-			});
-		})
-		.then((user) => {
-			const verification_code = uuid();
-			client.setexAsync(`verification_code:user${user.id}`, 5 * 60, verification_code);
-			return all([
-				verification_code,
-				user
-			]);
-		})
-		.then(([verificationCode, user]) => {
-			sendEmail(
-				MAILTYPE.SIGNUP,
-				email,
-				verificationCode.code,
-				{}
-			);
-			if (opts.referral && isString(opts.referral)) {
-				checkAffiliation(opts.referral, user.id);
-			}
-			return user;
-		});
-};
-
-const verifyUser = (email, code) => {
-	email = email.toLowerCase();
-	return dbQuery.findOne('user',
-		{ where: { email }, attributes: ['id', 'email', 'settings', 'network_id', 'email_verified'] }
-	)
-		.then((user) => {
-			return all([
-				client.getAsync(`verification_code:user${user.id}`),
-				user
-			]);
-		})
-		.then(([verificationCode, user]) => {
-			if (user.email_verified) {
-				throw new Error(USER_VERIFIED);
-			}
-
-			
-			if (!verificationCode) {
-				throw new Error(VERIFICATION_CODE_EXPIRED);
-			}
-			if (code !== verificationCode) {
-				throw new Error(INVALID_VERIFICATION_CODE);
-			}
-
-			return all([
-				user,
-				user.update(
-					{ email_verified: true },
-					{ fields: ['email_verified'] }
-				)
-			]);
-		})
-		.then(([user]) => {
-			return user;
-		});
-};
-
 const createUser = (
 	email,
 	password,
@@ -2308,9 +2205,7 @@ module.exports = {
 	getUserRole,
 	updateUserSettings,
 	omitUserFields,
-	signUpUser,
 	registerUserLogin,
-	verifyUser,
 	getAllUsersAdmin,
 	updateUserRole,
 	updateUserNote,
