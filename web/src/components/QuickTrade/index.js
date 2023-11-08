@@ -96,6 +96,7 @@ const QuickTrade = ({
 	const [hasExpiredOnce, setHasExpiredOnce] = useState(false);
 	const [time, setTime] = useState(moment());
 	const [lineChartData, setLineChartData] = useState({});
+	const [allChartsData, setAllChartsData] = useState({});
 
 	const resetForm = () => {
 		setTargetAmount();
@@ -285,11 +286,18 @@ const QuickTrade = ({
 			const pairBase = pair.split('-')[1];
 			const assetValues = Object.keys(coins).map((
 				val) => coins[val].code).toLocaleString();
-				
-			getMiniCharts(assetValues, pairBase)
-				.then((chartValues) =>{
-					setChartData(chartValues);
-				});
+
+			if(allChartsData[pairBase]) {
+				setChartData(allChartsData[pairBase]);
+			} else {
+				getMiniCharts(assetValues, pairBase)
+					.then((chartValues) =>{
+						setChartData(chartValues);
+						setAllChartsData(prev => ({...prev, ...{
+							[pairBase]:chartValues
+						}}))
+					});
+				}
 		}, 0);
 	}, [coins, pair]);
 

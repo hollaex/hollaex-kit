@@ -49,7 +49,7 @@ export const roundNumber = (number = 0, decimals = 4) => {
 	}
 };
 
-export const getFormat = (min = 0, fullFormat) => {
+export const getFormat = (min = 0, fullFormat, amount) => {
 	let value = math.format(min, { notation: 'fixed' });
 	if (fullFormat) {
 		return { digit: 8, format: '0,0.[00000000]' };
@@ -63,7 +63,8 @@ export const getFormat = (min = 0, fullFormat) => {
 			.join('');
 		return { digit: point.length, format: `0,0.[${res}]` };
 	} else {
-		return { digit: 4, format: `0,0.[0000]` };
+		const [digitsBeforeDecimal, deimalValus] = amount.toString().split('.');
+		return digitsBeforeDecimal.length > 4 ?{ digit:  0, format: `0,0` } : { digit:  4, format: `0,0.[0000]` };
 	}
 };
 
@@ -74,7 +75,7 @@ export const countDecimals =  (val) => {
   
 
 export const formatToCurrency = (amount = 0, min = 0, fullFormat = false) => {
-	let formatObj = getFormat(min, fullFormat);
+	let formatObj = getFormat(min, fullFormat, amount);
 	return numbro(roundNumber(amount, formatObj.digit)).format(formatObj.format);
 };
 
