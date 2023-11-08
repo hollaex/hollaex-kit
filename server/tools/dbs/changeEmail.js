@@ -22,9 +22,6 @@ if (!userId) {
 if (!newEmail) {
 	throw new Error('EMAIL is not set');
 }
-const sleep = (milliseconds) => {
-    return new Promise(resolve => setTimeout(resolve, milliseconds))
-}
 
 const changeEmail = async () => {
 	try {
@@ -74,7 +71,7 @@ const changeEmail = async () => {
 			{ fields: ['email'], returning: true }
 		);
 
-		sendEmail(
+		await sendEmail(
 			MAILTYPE.ALERT,
 			null,
 			{
@@ -84,7 +81,6 @@ const changeEmail = async () => {
 			{}
 		);
 
-		await sleep(1000 * 5);
 		console.log('tools/dbs/changeEmail successfully');
 		process.exit(0);
 	} catch(err) {
