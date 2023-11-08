@@ -2,7 +2,7 @@
 
 const { User } = require('../../db/models');
 const toolsLib = require('hollaex-tools-lib');
-
+const { checkStatus } = require('../../init');
 const {
 	PROVIDE_VALID_EMAIL,
 	USER_NOT_FOUND,
@@ -21,6 +21,9 @@ if (!userId) {
 }
 if (!newEmail) {
 	throw new Error('EMAIL is not set');
+}
+const sleep = (milliseconds) => {
+    return new Promise(resolve => setTimeout(resolve, milliseconds))
 }
 
 const changeEmail = async () => {
@@ -81,6 +84,7 @@ const changeEmail = async () => {
 			{}
 		);
 
+		await sleep(1000 * 5);
 		console.log('tools/dbs/changeEmail successfully');
 		process.exit(0);
 	} catch(err) {
@@ -89,4 +93,7 @@ const changeEmail = async () => {
 	}
 };
 
-changeEmail();
+checkStatus()
+	.then(() => {
+		changeEmail();
+	})
