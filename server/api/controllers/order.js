@@ -352,6 +352,7 @@ const getAdminOrders = (req, res) => {
 	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1 && !user_id.value) {
 		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
 	}
+	toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
 	let promiseQuery;
 
 	if (user_id.value) {
