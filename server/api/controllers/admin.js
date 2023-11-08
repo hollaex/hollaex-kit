@@ -192,7 +192,6 @@ const getUsersAdmin = (req, res) => {
 		}
 	})
 		.then((data) => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
 			if (format.value === 'csv') {
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users.csv`);
 				res.set('Content-Type', 'text/csv');
@@ -347,7 +346,6 @@ const getAdminUserBalance = (req, res) => {
 		}
 	})
 		.then((balance) => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
 			return res.json(balance);
 		})
 		.catch((err) => {
@@ -542,7 +540,6 @@ const getAdminUserLogins = (req, res) => {
 		format: format.value
 	})
 		.then((data) => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
 			if (format.value === 'csv') {
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users-logins.csv`);
 				res.set('Content-Type', 'text/csv');
@@ -798,7 +795,6 @@ const getOperators = (req, res) => {
 		order: order.value
 	})
 		.then((operators) => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
 			return res.json(operators);
 		})
 		.catch((err) => {
@@ -873,7 +869,6 @@ const getExchangeGeneratedFees = (req, res) => {
 		}
 	})
 		.then((data) => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
 			if (format.value === 'csv') {
 				const parsedData = data && Object.values(data)[0];
 				if (!parsedData || parsedData?.length === 0) {
@@ -2190,7 +2185,6 @@ const getUserAffiliation = (req, res) => {
 		end_date: end_date.value
 	})
 		.then((data) => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
 			loggerAdmin.verbose(req.uuid, 'controllers/admin/getUserAffiliation count', data.count);
 			return res.json(data);
 		})
@@ -2207,7 +2201,6 @@ const getUserReferer = (req, res) => {
 
 	toolsLib.user.getUserReferer(user_id)
 		.then((email) => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
 			loggerAdmin.verbose(req.uuid, 'controllers/admin/getUserReferer email', email);
 			return res.json({ email });
 		})
@@ -2347,7 +2340,6 @@ const getWalletsByAdmin = (req, res) => {
 		}
 	)
 		.then((data) => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
 			if (format.value === 'csv') {
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users.csv`);
 				res.set('Content-Type', 'text/csv');
@@ -2478,7 +2470,6 @@ const getUserSessionsByAdmin = (req, res) => {
 	}
 	)
 		.then((data) => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
 			if (format.value === 'csv') {
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-logins.csv`);
 				res.set('Content-Type', 'text/csv');
@@ -2616,7 +2607,6 @@ const getBalancesAdmin = (req, res) => {
 		}
 	})
 		.then((data) => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
 			if (format.value === 'csv') {
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users.csv`);
 				res.set('Content-Type', 'text/csv');
