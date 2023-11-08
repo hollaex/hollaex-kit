@@ -2,7 +2,7 @@
 
 const { User } = require('../../db/models');
 const toolsLib = require('hollaex-tools-lib');
-
+const { checkStatus } = require('../../init');
 const {
 	PROVIDE_VALID_EMAIL,
 	USER_NOT_FOUND,
@@ -71,7 +71,7 @@ const changeEmail = async () => {
 			{ fields: ['email'], returning: true }
 		);
 
-		sendEmail(
+		await sendEmail(
 			MAILTYPE.ALERT,
 			null,
 			{
@@ -89,4 +89,7 @@ const changeEmail = async () => {
 	}
 };
 
-changeEmail();
+checkStatus()
+	.then(() => {
+		changeEmail();
+	})
