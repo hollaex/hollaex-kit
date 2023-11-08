@@ -1955,7 +1955,7 @@ const updateUserInfo = async (userId, data = {}, auditInfo) => {
 		throw new Error('User not found');
 	}
 
-	const updateData = {};
+	const updateData = { user_id: userId  };
 
 	for (const field in data) {
 		const value = data[field];
@@ -2002,7 +2002,7 @@ const updateUserInfo = async (userId, data = {}, auditInfo) => {
 	if (isEmpty(updateData)) {
 		throw new Error('No fields to update');
 	}
-	const oldValues = {};
+	const oldValues = { user_id: userId };
 	Object.keys(updateData).forEach(key => { oldValues[key] = user.dataValues[key] });
 
 	await user.update(
