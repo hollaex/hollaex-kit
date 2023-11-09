@@ -79,7 +79,7 @@ const getQuickTrade = (req, res) => {
 		receiving_currency,
 	} = req.swagger.params;
 
-	toolsLib.order.getUserQuickTrade(spending_currency?.value, spending_amount?.value, receiving_amount?.value, receiving_currency?.value, bearerToken, ip, opts)
+	toolsLib.order.getUserQuickTrade(spending_currency?.value, spending_amount?.value, receiving_amount?.value, receiving_currency?.value, bearerToken, ip, opts, req)
 		.then((order) => {
 			return res.json(order);
 		})
