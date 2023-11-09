@@ -7,6 +7,7 @@ const { fetchBrokerQuote, generateRandomToken, isFairPriceForBroker } = require(
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { INVALID_SYMBOL, NO_DATA_FOR_CSV, USER_NOT_FOUND, USER_NOT_REGISTERED_ON_NETWORK, TOKEN_EXPIRED, BROKER_NOT_FOUND, BROKER_PAUSED, BROKER_SIZE_EXCEED, QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED, QUICK_TRADE_ORDER_CURRENT_PRICE_ERROR, QUICK_TRADE_VALUE_IS_TOO_SMALL, FAIR_PRICE_BROKER_ERROR, AMOUNT_NEGATIVE_ERROR, QUICK_TRADE_CONFIG_NOT_FOUND, QUICK_TRADE_TYPE_NOT_SUPPORTED, PRICE_NOT_FOUND, INVALID_PRICE, INVALID_SIZE, BALANCE_NOT_AVAILABLE } = require(`${SERVER_PATH}/messages`);
 const { parse } = require('json2csv');
+const { BASE_SCOPES } = require(`${SERVER_PATH}/constants`);
 const { subscribedToPair, getKitTier, getDefaultFees, getAssetsPrices, getPublicTrades, getQuickTrades } = require('./common');
 const { reject } = require('bluebird');
 const { loggerOrders } = require(`${SERVER_PATH}/config/logger`);
@@ -14,7 +15,7 @@ const math = require('mathjs');
 const { has } = require('lodash');
 const { setPriceEssentials } = require('../../orderbook');
 const { getUserBalanceByKitId } = require('./wallet');
-const { verifyBearerTokenPromise } = require('./security');
+const { verifyBearerTokenPromise, verifyHmacTokenPromise} = require('./security');
 const { client } = require('./database/redis');
 const { parseNumber } = require('./common');
 const BigNumber = require('bignumber.js');
@@ -115,7 +116,7 @@ const executeUserOrder = async (user_id, opts, token) => {
 	return res;
 };
 
-const getUserQuickTrade = async (spending_currency, spending_amount, receiving_amount, receiving_currency, bearerToken, ip, opts) => {
+const getUserQuickTrade = async (spending_currency, spending_amount, receiving_amount, receiving_currency, bearerToken, ip, opts, req = null) => {
 
 	if (spending_amount) spending_amount = new BigNumber(spending_amount).toNumber();
 	if (receiving_amount) receiving_amount = new BigNumber(receiving_amount).toNumber();
@@ -139,6 +140,32 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 	}
 	if (!quickTradeConfig) throw new Error(QUICK_TRADE_CONFIG_NOT_FOUND);
 
+	let userInfo = null;
+
+	const apiKey = req.headers['api-key'];
+	if (apiKey && req) {
+		const endpointScopes = req.swagger ? req.swagger.operation['x-security-scopes'] : BASE_SCOPES;
+		const endpointPermissions = req.swagger ? req.swagger.operation['x-token-permissions'] : ['can_read'];
+		const apiSignature = req.headers ? req.headers['api-signature'] : undefined;
+		const apiExpires = req.headers ? req.headers['api-expires'] : undefined;
+		const auth = await verifyHmacTokenPromise(
+			apiKey,
+			apiSignature,
+			apiExpires,
+			req.method,
+			req.originalUrl,
+			req.body,
+			endpointScopes,
+			endpointPermissions,
+			ip);
+
+		if (auth) {
+			userInfo = {};
+			userInfo.user_id = auth.sub.id;
+			userInfo.network_id = auth.sub.networkId;
+		}
+	}
+
 	if (quickTradeConfig && quickTradeConfig.active && quickTradeConfig.type === 'broker') {
 		const broker = await getModel('broker').findOne({ where: { symbol } });
 
@@ -159,7 +186,8 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 				receiving_currency,
 				spending_amount,
 				receiving_amount
-			}
+			},
+			userInfo
 		})
 			.then((brokerQuote) => {
 				const responseObj = {
@@ -237,6 +265,8 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 				if (auth) {
 					user_id = auth.sub.id;
 				}
+			} else if (userInfo) {
+				user_id = userInfo.user_id;
 			}
 
 			if (user_id) {
@@ -271,6 +301,9 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 				user_id = auth.sub.id;
 				network_id = auth.sub.networkId;
 			}
+		} else if (userInfo) {
+			user_id = userInfo.user_id;
+			network_id = userInfo.network_id;
 		}
 
 		const responseObj = {
