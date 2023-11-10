@@ -56,7 +56,8 @@ const {
 	USER_ALREADY_RECOVERED,
 	CANNOT_CHANGE_ADMIN_EMAIL,
 	EMAIL_IS_SAME,
-	EMAIL_EXISTS
+	EMAIL_EXISTS,
+	SERVICE_NOT_SUPPORTED
 } = require(`${SERVER_PATH}/messages`);
 const { publisher, client } = require('./database/redis');
 const {
@@ -1517,6 +1518,12 @@ const getUserAudits = (opts = {
 	endDate: null,
 	format: null
 }) => {
+	const exchangeInfo = getKitConfig().info;
+
+	if(!['fiat', 'boost', 'enterprise'].includes(exchangeInfo.plan)) {
+        throw new Error(SERVICE_NOT_SUPPORTED);
+    }
+
 	const pagination = paginationQuery(opts.limit, opts.page);
 	const timeframe = timeframeQuery(opts.startDate, opts.endDate);
 	const ordering = orderingQuery(opts.orderBy, opts.order);

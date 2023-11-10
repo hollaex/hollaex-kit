@@ -3,6 +3,9 @@ import { Table, Button } from 'antd';
 import { requestUserAudits, requestUserAuditsDownload } from './actions';
 import SessionFilters from '../Sessions/SessionFilters';
 import Moment from 'react-moment';
+import _toLower from 'lodash/toLower';
+import { connect } from 'react-redux';
+import { Link } from 'react-router';
 
 // const INITIAL_STATE = {
 // 	audits: [],
@@ -70,7 +73,9 @@ const AUDIT_COLUMNS = [
 				<div className="d-flex">
 					{data?.user_id ? (
 						<Button className="ant-btn green-btn ant-tooltip-open ant-btn-primary">
-							{data?.user_id}
+							<Link to={`/admin/user?id=${data?.user_id}`}>
+								{data?.user_id}
+							</Link>
 						</Button>
 					) : (
 						'-'
@@ -93,7 +98,7 @@ const AUDIT_COLUMNS = [
 // 	{ label: 'Time', dataIndex: 'timestamp', key: 'timestamp' }
 // ];
 
-const Audits = () => {
+const Audits = ({ constants }) => {
 	const [userData, setUserData] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
 
@@ -107,18 +112,36 @@ const Audits = () => {
 		isRemaining: true,
 	});
 
+	const handleUpgrade = (info = {}) => {
+		if (
+			_toLower(info.plan) !== 'fiat' &&
+			_toLower(info.plan) !== 'boost' &&
+			_toLower(info.type) !== 'enterprise'
+		) {
+			return true;
+		} else {
+			return false;
+		}
+	};
+
+	const isUpgrade = handleUpgrade(constants.info);
 	// const state = INITIAL_STATE;
 
 	useEffect(() => {
-		setIsLoading(true);
-		handleUserAudits(queryFilters.page, queryFilters.limit);
+		if (!isUpgrade) {
+			setIsLoading(true);
+			handleUserAudits(queryFilters.page, queryFilters.limit);
+		}
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [isUpgrade]);
 
 	useEffect(() => {
-		handleUserAudits(queryFilters.page, queryFilters.limit);
+		if (!isUpgrade) {
+			handleUserAudits(queryFilters.page, queryFilters.limit);
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [queryValues]);
+	}, [queryValues, isUpgrade]);
 
 	const handleUserAudits = (page = 1, limit = 50) => {
 		setIsLoading(true);
@@ -160,44 +183,75 @@ const Audits = () => {
 
 	return (
 		<div className="app_container-content my-2 admin-user-container">
-			<div style={{ color: '#ccc', marginTop: 20, marginBottom: 30 }}>
-				Below are logs of the actions performed by admin typed users
-			</div>
-			<div style={{ marginTop: 20 }}>
-				<SessionFilters
-					applyFilters={(filters) => {
-						setQueryValues(filters);
-					}}
-					fieldKeyValue={fieldKeyValue}
-					defaultFilters={defaultFilters}
-				/>
-			</div>
-			<div
-				className="d-flex justify-content-between my-3"
-				style={{ marginTop: 20 }}
-			>
-				<div>Number of events: {queryFilters.total}</div>
-				<div
-					className="pointer download-csv-table"
-					onClick={() => requestUserAuditsDownloads()}
-				>
-					Download CSV table
+			{isUpgrade ? (
+				<div className="d-flex" style={{ marginTop: 20 }}>
+					<div className="d-flex align-items-center justify-content-between upgrade-section mt-2 mb-5">
+						<div>
+							<div className="font-weight-bold">View Audit logs</div>
+							<div>
+								Upgrade you exchange plan to monitor activities in your exchange
+							</div>
+						</div>
+						<div className="ml-5 button-wrapper">
+							<a
+								href="https://dash.hollaex.com/billing"
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								<Button type="primary" className="w-100">
+									Upgrade Now
+								</Button>
+							</a>
+						</div>
+					</div>
 				</div>
-			</div>
-			<Table
-				spinning={isLoading}
-				rowKey={(data) => {
-					return data.id;
-				}}
-				columns={AUDIT_COLUMNS}
-				dataSource={userData ? userData : 'No Data'}
-				pagination={{
-					current: queryFilters.currentTablePage,
-					onChange: pageChange,
-				}}
-			/>
+			) : (
+				<>
+					<div style={{ color: '#ccc', marginTop: 20, marginBottom: 30 }}>
+						Below are logs of the actions performed by admin typed users
+					</div>
+
+					<div style={{ marginTop: 20 }}>
+						<SessionFilters
+							applyFilters={(filters) => {
+								setQueryValues(filters);
+							}}
+							fieldKeyValue={fieldKeyValue}
+							defaultFilters={defaultFilters}
+						/>
+					</div>
+					<div
+						className="d-flex justify-content-between my-3"
+						style={{ marginTop: 20 }}
+					>
+						<div>Number of events: {queryFilters.total}</div>
+						<div
+							className="pointer download-csv-table"
+							onClick={() => requestUserAuditsDownloads()}
+						>
+							Download CSV table
+						</div>
+					</div>
+					<Table
+						spinning={isLoading}
+						rowKey={(data) => {
+							return data.id;
+						}}
+						columns={AUDIT_COLUMNS}
+						dataSource={userData ? userData : 'No Data'}
+						pagination={{
+							current: queryFilters.currentTablePage,
+							onChange: pageChange,
+						}}
+					/>
+				</>
+			)}
 		</div>
 	);
 };
 
-export default Audits;
+const mapStateToProps = (state) => ({
+	constants: state.app.constants,
+});
+
+export default connect(mapStateToProps)(Audits);
