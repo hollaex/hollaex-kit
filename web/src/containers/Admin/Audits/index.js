@@ -147,7 +147,6 @@ const Audits = ({ constants }) => {
 		setIsLoading(true);
 		requestUserAudits({ page, limit, ...queryValues })
 			.then((response) => {
-				console.log({ userData });
 				setUserData(
 					page === 1 ? response.data : [...userData, ...response.data]
 				);
