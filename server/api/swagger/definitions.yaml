@@ -1009,8 +1009,6 @@ definitions:
       - name
       - icon
       - description
-      - deposit_limit
-      - withdrawal_limit
       - fees
     properties:
       level:
@@ -1028,12 +1026,6 @@ definitions:
       note:
         type: string
         maxLength: 256
-      deposit_limit:
-        type: number
-        format: double
-      withdrawal_limit:
-        type: number
-        format: double
       fees:
         type: object
         required:
@@ -1064,8 +1056,6 @@ definitions:
       - icon
       - note
       - description
-      - deposit_limit
-      - withdrawal_limit
       - fees
     properties:
       id:
@@ -1083,12 +1073,6 @@ definitions:
       description:
         type: string
         maxLength: 256
-      deposit_limit:
-        type: number
-        format: double
-      withdrawal_limit:
-        type: number
-        format: double
       fees:
         type: object
   PairFeesPut:
@@ -1111,24 +1095,6 @@ definitions:
               type: number
               format: double
             taker:
-              type: number
-              format: double
-  TiersLimitsPut:
-    type: object
-    required:
-      - limits
-    properties:
-      limits:
-        type: object
-        minProperties: 1
-        additionalProperties:
-          type: object
-          minProperties: 1
-          properties:
-            deposit_limit:
-              type: number
-              format: double
-            withdrawal_limit:
               type: number
               format: double
   OraclePriceResponse:
@@ -1435,6 +1401,31 @@ definitions:
       increment_price:
         type: number
         format: double
+  TransactionLimit:
+    type: object
+    properties:
+      id:
+        type: ['number', 'null']
+      tier:
+        type: number
+      currency:
+        type: string
+        maxLength: 256
+      limit_currency:
+        type: string
+        maxLength: 256
+      amount:
+        type: number
+        format: double
+      monthly_amount:
+        type: number
+        format: double
+      withdrawal_fee:
+        type: number
+        format: double
+      type:
+        type: string
+        enum: ['withdrawal', 'deposit']
   BrokerPair:
     type: object
     properties:

@@ -283,7 +283,7 @@ class Earnings extends Component {
 								buttonSubmitting={buttonSubmitting}
 							/>
 						</div>
-						<div>
+						{/* <div>
 							<span
 								size="small"
 								className="download-btn"
@@ -296,7 +296,7 @@ class Earnings extends Component {
 							>
 								Download
 							</span>
-						</div>
+						</div> */}
 					</div>
 					<div>
 						<Table

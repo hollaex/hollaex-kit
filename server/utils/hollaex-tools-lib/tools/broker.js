@@ -289,7 +289,7 @@ const generateRandomToken = (user_id, symbol, side, expiryTime = 30, price, size
 };
 
 const fetchBrokerQuote = async (brokerQuote) => {
-	const { symbol, side, bearerToken, ip, orderData } = brokerQuote;
+	const { symbol, side, bearerToken, ip, orderData, userInfo } = brokerQuote;
 
 	try {
 		let user_id = null;
@@ -298,6 +298,8 @@ const fetchBrokerQuote = async (brokerQuote) => {
 			if (auth) {
 				user_id = auth.sub.id;
 			}
+		} else if (userInfo) {
+			user_id = userInfo.user_id;
 		}
 
 		// Get the broker record

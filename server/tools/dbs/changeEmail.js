@@ -2,7 +2,7 @@
 
 const { User } = require('../../db/models');
 const toolsLib = require('hollaex-tools-lib');
-
+const { checkStatus } = require('../../init');
 const {
 	PROVIDE_VALID_EMAIL,
 	USER_NOT_FOUND,
@@ -24,61 +24,72 @@ if (!newEmail) {
 }
 
 const changeEmail = async () => {
-	const user = await User.findOne({
-		where: {
-			id: userId
-		},
-		attributes: [
-			'id',
-			'email',
-		]
-	});
+	try {
+		console.log(`tools/dbs/changeEmail started for ${userId} to ${newEmail}`);
 
-	if (!user) {
-		throw new Error(USER_NOT_FOUND);
-	}
+		const user = await User.findOne({
+			where: {
+				id: userId
+			},
+			attributes: [
+				'id',
+				'email',
+			]
+		});
 
-	if (!isEmail(newEmail)) {
-		throw new Error(PROVIDE_VALID_EMAIL);
-	}
+		if (!user) {
+			throw new Error(USER_NOT_FOUND);
+		}
+
+		if (!isEmail(newEmail)) {
+			throw new Error(PROVIDE_VALID_EMAIL);
+		}
 	
-	const userEmail = user.email;
-	if (userEmail === newEmail) {
-		throw new Error(EMAIL_IS_SAME);
+		const userEmail = user.email;
+		if (userEmail === newEmail) {
+			throw new Error(EMAIL_IS_SAME);
+		}
+
+		const isExists = await User.findOne({
+			where: {
+				email: newEmail
+			},
+			attributes: [
+				'id',
+				'email',
+			]
+		});
+
+		if (isExists) {
+			throw new Error(EMAIL_EXISTS);
+		}
+
+		await toolsLib.user.revokeAllUserSessions(userId);
+
+		await user.update(
+			{ email: newEmail },
+			{ fields: ['email'], returning: true }
+		);
+
+		await sendEmail(
+			MAILTYPE.ALERT,
+			null,
+			{
+				type: 'Email changed',
+				data: `User email ${userEmail} changed to ${newEmail} by admin`
+			},
+			{}
+		);
+
+		console.log('tools/dbs/changeEmail successfully');
+		process.exit(0);
+	} catch(err) {
+		console.log('tools/dbs/changeEmail err', err);
+		process.exit(1);
 	}
-
-	const isExists = await User.findOne({
-		where: {
-			email: newEmail
-		},
-		attributes: [
-			'id',
-			'email',
-		]
-	});
-
-	if (isExists) {
-		throw new Error(EMAIL_EXISTS);
-	}
-
-	await toolsLib.user.revokeAllUserSessions(userId);
-
-	const updatedUser = await user.update(
-		{ email: newEmail },
-		{ fields: ['email'], returning: true }
-	);
-
-	sendEmail(
-		MAILTYPE.ALERT,
-		null,
-		{
-			type: 'Email changed',
-			data: `User email ${userEmail} changed to ${newEmail} by admin`
-		},
-		{}
-	);
-
-	return updatedUser;
 };
 
-changeEmail();
+checkStatus()
+	.then(() => {
+		changeEmail();
+	})

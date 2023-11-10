@@ -14,6 +14,7 @@ const {
 	GET_EMAIL,
 	GET_COINS,
 	GET_PAIRS,
+	GET_TRANSACTION_LIMITS,
 	GET_TIERS,
 	GET_KIT_CONFIG,
 	GET_KIT_SECRETS,
@@ -31,7 +32,7 @@ const {
 	SUPPORT_DISABLED,
 	NO_NEW_DATA
 } = require(`${SERVER_PATH}/messages`);
-const { each, difference, isPlainObject, isString, pick, isNil, omit } = require('lodash');
+const { each, difference, isPlainObject, isString, pick, isNil, omit, isNumber } = require('lodash');
 const { publisher } = require('./database/redis');
 const { sendEmail: sendSmtpEmail } = require(`${SERVER_PATH}/mail`);
 const { sendSMTPEmail: nodemailerEmail } = require(`${SERVER_PATH}/mail/utils`);
@@ -168,7 +169,7 @@ const maskSecrets = (secrets) => {
 	return secrets;
 };
 
-const updateKitConfigSecrets = (data = {}, scopes) => {
+const updateKitConfigSecrets = (data = {}, scopes, auditInfo) => {
 	let role = 'admin';
 
 	if (!data.kit && !data.secrets) {
@@ -202,6 +203,8 @@ const updateKitConfigSecrets = (data = {}, scopes) => {
 			if (data.secrets && Object.keys(data.secrets).length > 0) {
 				updatedKitConfig.secrets = joinKitSecrets(status.dataValues.secrets, data.secrets, role);
 			}
+			const { createAuditLog } = require('./user');
+			createAuditLog(auditInfo.userEmail, auditInfo.apiPath, auditInfo.method, updatedKitConfig.kit, status.dataValues.kit);
 			return status.update(updatedKitConfig, {
 				fields: [
 					'kit',
@@ -251,6 +254,22 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 				newKitConfig.user_meta[metaKey],
 				...USER_META_KEYS
 			);
+		}
+	}
+
+	if (newKitConfig.coin_customizations) {
+		for(let coin of Object.values(newKitConfig.coin_customizations)) {
+			if(!coin.hasOwnProperty('fee_markup')) {
+				throw new Error('Fee markup key does not exist');
+			}
+
+			if (coin.fee_markup < 0) {
+				throw new Error('Fee markup cannot be negative');
+			}
+
+			if (coin.fee_markup && !isNumber(coin.fee_markup)) {
+				throw new Error('Fee markup is not a number');
+			}
 		}
 	}
 
@@ -650,7 +669,7 @@ const updateKitUserMeta = async (name, data = {
 	type: null,
 	description: null,
 	required: null
-}) => {
+}, auditInfo) => {
 	const existingUserMeta = getKitConfig().user_meta;
 
 	if (!existingUserMeta[name]) {
@@ -688,7 +707,8 @@ const updateKitUserMeta = async (name, data = {
 			user_meta: updatedUserMeta
 		}
 	});
-
+	const { createAuditLog } = require('./user');
+	createAuditLog(auditInfo.userEmail, auditInfo.apiPath, auditInfo.method, updatedUserMeta, existingUserMeta);
 	publisher.publish(
 		CONFIGURATION_CHANNEL,
 		JSON.stringify({
@@ -810,6 +830,11 @@ const getQuickTrades = () => {
 	return GET_QUICKTRADE();
 };
 
+const getTransactionLimits = () => {
+	return GET_TRANSACTION_LIMITS();
+};
+
+
 const getNetworkQuickTrades = () => {
 	return GET_NETWORK_QUICKTRADE();
 }
@@ -885,5 +910,6 @@ module.exports = {
 	getQuickTrades,
 	getNetworkQuickTrades,
 	parseNumber,
-	getQuickTradePairs
+	getQuickTradePairs,
+	getTransactionLimits
 };

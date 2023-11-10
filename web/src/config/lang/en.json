@@ -199,6 +199,11 @@
 		"BUTTON": "Review Order",
 		"INFO": "Fastest and simplest way to trade your crypto",
 		"CHANGE_TEXT": "change",
+		"CHANGE_TEXT_7D": "7D Change",
+		"HIGH_7D": "7D HIGH",
+		"LOW_7D": "7D LOW",
+		"7D": "7D",
+		"1D": "1D",
 		"HIGH_24H": "24H HIGH",
 		"LOW_24H": "24H LOW",
 		"BEST_BID": "BEST BID",
@@ -209,7 +214,9 @@
 		"SOURCE_TEXT": "Broker OTC deal",
 		"SOURCE_TEXT_NETWORK": "Network broker OTC deal",
 		"VISIT": "Visit{0}",
-		"ASSET_INFO_PAGE": "Assets info page"
+		"ASSET_INFO_PAGE": "Assets info page",
+		"COIN_NAME": "{0} ({1})",
+		"COIN_INFORMATION": "{0} information"
 	},
 	"PREVIOUS_PAGE": "previous page",
 	"NEXT_PAGE": "next page",
@@ -582,9 +589,12 @@
 		"WITHDRAWALS": "Withdrawals",
 		"ORDERID": "Order ID",
 		"TRIGGER_STOP_PRICE": "Trigger/stop price",
-		"TIME_OF_LAST_TRADE": "Time of last trade"
+		"TIME_OF_LAST_TRADE": "Time of last trade",
+		"INTERNAL": "internal",
+		"BLOCKCHAIN": "blockchain",
+		"STAKE": "stake",
+		"REFERRAL": "referral"
 	},
-
 	"ACCOUNT_SECURITY": {
 		"TITLE_TEXT": "Adjust the security settings for your account. From Two-factor authentication, password, API keys and other security related functions.",
 		"OTP": {
@@ -1258,6 +1268,7 @@
 		"MARKETS": "Markets",
 		"CHANGE_24H": "24H Change",
 		"VOLUME_24H": "24H Volume",
+		"VOLUME_7D": "7D Volume",
 		"VIEW_MORE_MARKETS": "View more markets",
 		"VIEW_VERIFICATION": "view verification",
 		"EARN_COMMISSION": "Earn commissions",
@@ -1335,8 +1346,10 @@
 		"MARKETS": "Markets",
 		"LAST_PRICE": "Last price",
 		"CHANGE_24H": "Change (24 hours)",
+		"CHANGE_7D": "Change (7 days)",
 		"VOLUME_24h": "Volume (24 hours)",
 		"CHART_24H": "Chart (24 hours)",
+		"CHART_7D": "Chart (7 days)",
 		"VIEW_MARKETS": "View Markets",
 		"TRADING_SYMBOL": "Trading Symbol",
 		"TYPE": "Type",
@@ -1484,6 +1497,8 @@
 			"CLOSE": "close"
 		}
 	},
+	"ASSET_INFO": "Asset info",
+	"TAKER_FEES_APPLIED": "Taker fees are applied",
 	"ASSET_INFO_PAGE": "Asset info page",
 	"DIGITAL_ASSETS": {
 		"DIGITAL_ASSETS_TITLE": "Digital assets",
@@ -1533,11 +1548,9 @@
 		"TITLE": "Page not opening automatically?",
 		"TEXT": "Your browser could be blocking the page. Try copy and pasting the link below instead:"
 	},
-
 	"TERMS_OF_SERVICES": {
 		"TO_GET_ACCESS": "To get access reach out to"
 	},
-
 	"FEES_AND_LIMITS": {
 		"LINK": "view my fees and limits",
 		"COIN_PAGE_LINK": "Trading fees & limits",
@@ -1581,13 +1594,16 @@
 					"SUBTITLE": "Assets that are separated from the collective limit rule that follow their own independent 24h withdrawal rule:",
 					"HEADER": {
 						"CURRENCY": "Currency/asset",
-						"LIMIT": "24h limit"
+						"LIMIT": "Daily limit",
+						"LIMIT_2": "Monthly limit"
 					},
-					"LIMIT_TEXT": "(Assets that all share a collective withdrawal limit amount)"
+					"LIMIT_TEXT": "(Assets that all share a collective withdrawal limit amount)",
+					"LIMIT_TEXT_2": "(Limit based only on its own currency)",
+					"LIMIT_TEXT_3": "(Limit based on aggreation of other currencies)"
 				},
 				"TABLE_2": {
-					"TITLE": "Collective shared standard withdrawal limit",
-					"SUBTITLE": "Below are the assets that all share the same standard 24h withdrawal limit amount rule:"
+					"TITLE": "Asset withdrawal limits",
+					"SUBTITLE": "Below are the assets with their withdrawal limit amount rules:"
 				}
 			}
 		}

@@ -49,17 +49,13 @@ module.exports = {
 						name: 'basic',
 						description: 'basic tier',
 						icon: '',
-						deposit_limit: 0,
-						withdrawal_limit: 0,
 						fees: fees
 					},
 					{
 						id: 2,
 						name: 'vip',
 						description: 'vip tier',
-						deposit_limit: 0,
 						icon: '',
-						withdrawal_limit: 0,
 						fees: fees
 					}
 				];
@@ -67,9 +63,7 @@ module.exports = {
 					id: { type: new Sequelize.INTEGER() },
 					name: { type: new Sequelize.STRING() },
 					description: { type: new Sequelize.STRING() },
-					deposit_limit: { type: new Sequelize.DOUBLE() },
 					icon: { type: new Sequelize.STRING() },
-					withdrawal_limit: { type: new Sequelize.DOUBLE() },
 					fees: { type: new Sequelize.JSON() },
 				});
 			});

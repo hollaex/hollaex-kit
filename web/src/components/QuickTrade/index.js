@@ -15,7 +15,7 @@ import { isLoggedIn } from 'utils/token';
 import { Button, EditWrapper, Dialog } from 'components';
 import STRINGS from 'config/localizedStrings';
 import InputGroup from './InputGroup';
-import { getSparklines } from 'actions/chartAction';
+import { getMiniCharts } from 'actions/chartAction';
 import { getDecimals } from 'utils/utils';
 import { MarketsSelector } from 'containers/Trade/utils';
 import Details from 'containers/QuickTrade/components/Details';
@@ -95,6 +95,8 @@ const QuickTrade = ({
 	const [expiry, setExpiry] = useState();
 	const [hasExpiredOnce, setHasExpiredOnce] = useState(false);
 	const [time, setTime] = useState(moment());
+	const [lineChartData, setLineChartData] = useState({});
+	const [allChartsData, setAllChartsData] = useState({});
 
 	const resetForm = () => {
 		setTargetAmount();
@@ -130,9 +132,6 @@ const QuickTrade = ({
 	};
 
 	const flippedPair = flipPair(symbol);
-	const isShowChartDetails =
-		(quicktradePairs[symbol] || quicktradePairs[flippedPair])?.type ===
-		TYPES.PRO;
 
 	const market = markets.find(
 		({ pair: { pair_base, pair_2 } }) =>
@@ -283,10 +282,24 @@ const QuickTrade = ({
 	const debouncedQuote = useRef(debounce(getQuote, 1000));
 
 	useEffect(() => {
-		getSparklines(Object.keys(pairs)).then((chartData) =>
-			setChartData(chartData)
-		);
-	}, [pairs]);
+		setTimeout(() => {
+			const pairBase = pair.split('-')[1];
+			const assetValues = Object.keys(coins).map((
+				val) => coins[val].code).toLocaleString();
+
+			if(allChartsData[pairBase]) {
+				setChartData(allChartsData[pairBase]);
+			} else {
+				getMiniCharts(assetValues, pairBase)
+					.then((chartValues) =>{
+						setChartData(chartValues);
+						setAllChartsData(prev => ({...prev, ...{
+							[pairBase]:chartValues
+						}}))
+					});
+				}
+		}, 0);
+	}, [coins, pair]);
 
 	useEffect(() => {
 		if (mounted) {
@@ -339,15 +352,20 @@ const QuickTrade = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [hasExpiredOnce, time]);
 
+	useEffect(() => {
+		setTimeout(() => {
+			const lineData = {...chartData[`${pair}`]};
+			setLineChartData( {
+				...lineData,
+				name: 'Line',
+				type: 'line',
+			});
+		}, 0);
+	}, [pair, chartData]);
+
 	const isExpired = time.isAfter(moment(expiry));
 
 	const { balance: userBalance } = user;
-
-	const lineChartData = {
-		...chartData[key],
-		name: 'Line',
-		type: 'line',
-	};
 
 	const selectedSourceBalance =
 		selectedSource && userBalance[`${selectedSource.toLowerCase()}_available`];
@@ -382,12 +400,16 @@ const QuickTrade = ({
 				<Header />
 
 				<div
-					className={classnames('quick_trade-wrapper', 'd-flex', {
-						'width-none': !isShowChartDetails,
-					})}
+					className={classnames('quick_trade-wrapper', 'd-flex')}
 				>
-					{!isMobile && isShowChartDetails && market && (
-						<Details market={market} lineChartData={lineChartData} />
+					{!isMobile && (
+						<Details 
+							coinChartData={lineChartData} 
+							pair={pair}
+							brokerUsed={isUseBroker}
+							networkName={display_name}
+							isNetwork={isNetwork}
+						/>
 					)}
 					<div className="d-flex flex-column trade-section">
 						<div className="inner-content">

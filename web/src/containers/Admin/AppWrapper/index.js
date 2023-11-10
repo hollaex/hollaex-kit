@@ -426,6 +426,8 @@ class AppWrapper extends React.Component {
 			return 'API keys';
 		} else if (location.pathname.includes('/admin/billing')) {
 			return 'Billing';
+		} else if (location.pathname.includes('/admin/audits')) {
+			return 'Audits';
 		} else if (location.pathname.includes('/admin/collateral')) {
 			return 'Collateral';
 		} else if (location.pathname.includes('/admin/resources')) {

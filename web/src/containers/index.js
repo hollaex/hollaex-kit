@@ -43,6 +43,7 @@ export { default as AdminDashboard } from './Admin/Dashboard';
 export { default as User } from './Admin/User';
 export { default as AdminStake } from './Admin/Stakes';
 export { default as Session } from './Admin/Sessions';
+export { default as Audits } from './Admin/Audits';
 export { default as AppWrapper } from './Admin/AppWrapper';
 export { default as Main } from './Admin/Main';
 export { default as DepositsPage } from './Admin/DepositsPage';

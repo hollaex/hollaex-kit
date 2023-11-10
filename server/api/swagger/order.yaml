@@ -238,6 +238,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - user
   /orders:

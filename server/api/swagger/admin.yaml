@@ -943,34 +943,6 @@ paths:
         - bearer
       x-security-scopes:
         - admin
-  /admin/tiers/limits:
-    x-swagger-router-controller: tier
-    put:
-      operationId: updateTiersLimits
-      description: Update tier limits
-      tags:
-        - Admin
-      parameters:
-        - name: data
-          in: body
-          required: true
-          schema:
-            $ref: "#/definitions/TiersLimitsPut"
-      responses:
-        200:
-          description: Success
-          schema:
-            $ref: "#/definitions/MessageResponse"
-        default:
-          description: Error
-          schema:
-            $ref: "#/definitions/MessageResponse"
-      security:
-        - Token: []
-      x-security-types:
-        - bearer
-      x-security-scopes:
-        - admin
   /admin/coin:
     x-swagger-router-controller: admin
     post:
@@ -1863,6 +1835,12 @@ paths:
           type: number
           format: int32
         - in: query
+          name: subject
+          description: Action Owner
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
           name: limit
           description: "Number of elements to return. Default: 50. Maximun: 100"
           required: false
@@ -1910,7 +1888,7 @@ paths:
         200:
           description: Success
           schema:
-            $ref: "#/definitions/AuditsResponse"
+            $ref: "#/definitions/ObjectResponse"
         202:
           description: CSV
           schema:
@@ -3296,6 +3274,83 @@ paths:
           description: Success
           schema:
             $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
+  /admin/transaction/limit:
+    x-swagger-router-controller: admin
+    put:
+      description: Update transaction limits for admin
+      operationId: updateTransactionLimit
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/TransactionLimit"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
+    get:
+      description: get transaction limits for admin
+      operationId: getTransactionLimits
+      tags:
+        - Admin
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
+    delete:
+      description: delete transaction limits for admin
+      operationId: deleteTransactionLimit
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/IdObject"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
         default:
           description: Error
           schema:

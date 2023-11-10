@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Select } from 'antd';
 
 import withConfig from 'components/ConfigProvider/withConfig';
-import Markets from './components/AssetsWrapper';
+import AssetsWrapper from './components/AssetsWrapper';
 import { EditWrapper, IconTitle } from 'components';
 import STRINGS from 'config/localizedStrings';
 
@@ -96,7 +96,7 @@ const DigitalAssets = ({ router, pair, icons: ICONS, showQuickTrade }) => {
 						options={options}
 					/>
 				</div>
-				<Markets selectedSource={selectedSource} />
+				<AssetsWrapper selectedSource={selectedSource} />
 			</div>
 		</div>
 	);
