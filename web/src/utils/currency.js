@@ -63,8 +63,12 @@ export const getFormat = (min = 0, fullFormat, amount) => {
 			.join('');
 		return { digit: point.length, format: `0,0.[${res}]` };
 	} else {
-		const [digitsBeforeDecimal] = amount.toString().split('.');
-		return digitsBeforeDecimal.length > 4 ?{ digit:  0, format: `0,0` } : { digit:  4, format: `0,0.[0000]` };
+		if(amount) {
+			const [digitsBeforeDecimal] = amount?.toString().split('.');
+			return digitsBeforeDecimal.length > 4 ?{ digit:  0, format: `0,0` } : { digit:  4, format: `0,0.[0000]` };
+		} 
+
+		return  { digit:  4, format: `0,0.[0000]` };
 	}
 };
 
