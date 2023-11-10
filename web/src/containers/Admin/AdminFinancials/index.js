@@ -12,7 +12,7 @@ import Assets, { getTabParams } from './Assets';
 import './index.css';
 import Wallet from './Wallet';
 import Balances from './Balances';
-import CoinConfiguration from './CoinConfiguration';
+// import CoinConfiguration from './CoinConfiguration';
 import TransactionLimits from './TransactionLimits';
 
 const TabPane = Tabs.TabPane;
@@ -84,12 +84,12 @@ const AdminFinancials = ({ router, location, user }) => {
 				<TabPane tab="Duster" key="11">
 					<Duster />
 				</TabPane>
-				<TabPane tab="Transaction Limits" key="2">
+				<TabPane tab="Limits" key="2">
 					<TransactionLimits location={location} />
 				</TabPane>
-				<TabPane tab="Coin Fee Markups" key="1">
+				{/* <TabPane tab="Coin Fee Markups" key="1">
 					<CoinConfiguration location={location} />
-				</TabPane>
+				</TabPane> */}
 			</Tabs>
 		</div>
 	);

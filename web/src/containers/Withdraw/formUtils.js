@@ -95,8 +95,8 @@ export const generateInitialValues = (
 		initialValues.amount = '';
 	}
 
-	const feeMarkup = coin_customizations?.[symbol]?.fee_markup;
-	if (feeMarkup) initialValues.fee += feeMarkup;
+	// const feeMarkup = coin_customizations?.[symbol]?.fee_markup;
+	// if (feeMarkup) initialValues.fee += feeMarkup;
 
 	initialValues.destination_tag = '';
 	initialValues.address = '';
