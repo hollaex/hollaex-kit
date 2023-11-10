@@ -122,7 +122,7 @@ const sendRequestWithdrawalEmail = (user_id, address, amount, currency, opts = {
 }) => {
 	let fee = opts.fee;
 	let fee_coin = opts.fee_coin;
-	let fee_markup
+	// let fee_markup
 
 	return verifyOtpBeforeAction(user_id, opts.otpCode)
 		.then((validOtp) => {
@@ -136,7 +136,7 @@ const sendRequestWithdrawalEmail = (user_id, address, amount, currency, opts = {
 				const withdrawal = await validateWithdrawal(user, address, amount, currency, opts.network);
 				fee = withdrawal.fee;
 				fee_coin = withdrawal.fee_coin;
-				fee_markup =  withdrawal.fee_markup;
+				// fee_markup =  withdrawal.fee_markup;
 			}
 			
 
@@ -148,7 +148,7 @@ const sendRequestWithdrawalEmail = (user_id, address, amount, currency, opts = {
 					amount,
 					fee,
 					fee_coin,
-					fee_markup,
+					// fee_markup,
 					transaction_id: uuid(),
 					address,
 					currency,
@@ -167,14 +167,14 @@ const withdrawalRequestEmail = (user, data, domain, ip) => {
 
 	return client.hsetAsync(WITHDRAWALS_REQUEST_KEY, token, stringData)
 		.then(() => {
-			const { email, amount, fee, fee_coin, fee_markup, currency, address, network } = data;
+			const { email, amount, fee, fee_coin, currency, address, network } = data;
 			sendEmail(
 				MAILTYPE.WITHDRAWAL_REQUEST,
 				email,
 				{
 					amount,
 					fee,
-					fee_markup,
+					// fee_markup,
 					fee_coin: (getKitCoin(fee_coin).display_name) ? getKitCoin(fee_coin).display_name : fee_coin,
 					currency: (getKitCoin(currency).display_name) ? getKitCoin(currency).display_name : currency,
 					transaction_id: token,
@@ -291,7 +291,7 @@ const calculateWithdrawalMax = async (user_id, currency, selectedNetwork) => {
 	if (amount === 0) return { amount };
 
 	const coinConfiguration = getKitCoin(currency);
-	const coinMarkup = getKitConfig()?.coin_customizations?.[currency];
+	// const coinMarkup = getKitConfig()?.coin_customizations?.[currency];
 
 	const { fee, fee_coin } = getWithdrawalFee(currency, selectedNetwork, amount, user.verification_level);
 	const { increment_unit } = coinConfiguration;
@@ -334,10 +334,6 @@ const calculateWithdrawalMax = async (user_id, currency, selectedNetwork) => {
 	
 	//Subtract the fees
 
-	if (coinMarkup?.fee_markup) {
-		amount = new BigNumber(amount).minus(new BigNumber(coinMarkup.fee_markup)).toNumber();
-	}
-
 	if (fee_coin && fee_coin === currency) {
 		amount = new BigNumber(amount).minus(new BigNumber(fee)).toNumber();
 	} else if(fee_coin && fee_coin !== currency && fee > 0) {
@@ -364,7 +360,7 @@ const calculateWithdrawalMax = async (user_id, currency, selectedNetwork) => {
 
 const validateWithdrawal = async (user, address, amount, currency, network = null) => {
 	const coinConfiguration = getKitCoin(currency);
-	const coinMarkup = getKitConfig()?.coin_customizations?.[currency];
+	// const coinMarkup = getKitConfig()?.coin_customizations?.[currency];
 	if (!subscribedToCoin(currency)) {
 		throw new Error(INVALID_COIN(currency));
 	}
@@ -410,14 +406,6 @@ const validateWithdrawal = async (user, address, amount, currency, network = nul
 
 	const balance = await getNodeLib().getUserBalance(user.network_id);
 
-	if (coinMarkup?.fee_markup) {
-		if (math.compare(coinMarkup?.fee_markup, balance[`${currency}_available`]) === 1) {
-			throw new Error(
-				`User ${currency} balance is lower than withdrawal fee markup amount "${coinMarkup?.fee_markup}"`
-			);
-		}
-	}
-
 	if (fee_coin === currency) {
 		const totalAmount =
 			fee > 0
@@ -450,7 +438,7 @@ const validateWithdrawal = async (user, address, amount, currency, network = nul
 	return {
 		fee,
 		fee_coin,
-		...(coinMarkup?.fee_markup && { fee_markup: coinMarkup.fee_markup })
+		// ...(coinMarkup?.fee_markup && { fee_markup: coinMarkup.fee_markup })
 	};
 };
 
