@@ -305,6 +305,7 @@ const calculateWithdrawalMax = async (user_id, currency, selectedNetwork) => {
 	}
 
 	if(transactionLimit.amount === -1) throw new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency));
+	if(transactionLimit?.monthly_amount === -1) throw new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency));
 
 	if(transactionLimit.amount !== 0) {
 		amount = BigNumber.minimum(transactionLimit.amount, amount).toNumber();
@@ -482,6 +483,7 @@ const withdrawalBelowLimit = async (userId, currency, amount = 0, transactionLim
 
 	// if limit is -1 it means it's disabled
 	if (last24HoursLimit === -1) throw new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency));
+	if (lastMonthLimit === -1) throw new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency));
 	// if limit is 0 it means it's limitless
 	if (last24HoursLimit === 0) return;
 
