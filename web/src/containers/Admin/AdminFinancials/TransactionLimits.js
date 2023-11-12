@@ -485,8 +485,8 @@ const TransactionLimits = ({ coins }) => {
 								onClick={async () => {
 									try {
 										if (
-											!selectedData.tier ||
-											!selectedData.amount ||
+											selectedData.tier == null ||
+											selectedData.amount == null ||
 											!selectedData.currency ||
 											!selectedData.limit_currency ||
 											!selectedData.type
@@ -496,7 +496,7 @@ const TransactionLimits = ({ coins }) => {
 										}
 
 										selectedData.amount = Number(selectedData.amount);
-										if (selectedData.monthly_amount)
+										if (selectedData.monthly_amount != null)
 											selectedData.monthly_amount = Number(
 												selectedData.monthly_amount
 											);
