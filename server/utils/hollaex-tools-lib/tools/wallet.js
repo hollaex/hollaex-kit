@@ -5,7 +5,7 @@ const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 const { WITHDRAWALS_REQUEST_KEY } = require(`${SERVER_PATH}/constants`);
 const { verifyOtpBeforeAction } = require('./security');
-const { subscribedToCoin, getKitCoin, getKitSecrets, getKitConfig, sleep } = require('./common');
+const { subscribedToCoin, getKitCoin, getKitSecrets } = require('./common');
 const {
 	INVALID_OTP_CODE,
 	INVALID_WITHDRAWAL_TOKEN,
@@ -31,7 +31,6 @@ const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const moment = require('moment');
 const math = require('mathjs');
 const { parse } = require('json2csv');
-const { loggerWithdrawals } = require(`${SERVER_PATH}/config/logger`);
 const { has } = require('lodash');
 const WAValidator = require('multicoin-address-validator');
 const { isEmail } = require('validator');
@@ -107,7 +106,7 @@ const findLimit = (limits = [], currency) => {
 	const defaultLimit = limits.find(limit => limit.limit_currency === 'default');
 
 	return independentLimit || defaultLimit;
-}
+};
 
 
 
@@ -256,7 +255,7 @@ const performWithdrawal = (userId, address, currency, amount, opts = {
 			} else if (!user.network_id) {
 				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
 			}
-			return user
+			return user;
 		})
 		.then((user) => {
 			return getNodeLib().performWithdrawal(user.network_id, address, currency, amount, opts);
@@ -282,7 +281,7 @@ const performWithdrawalNetwork = (networkId, address, currency, amount, opts = {
 const calculateWithdrawalMax = async (user_id, currency, selectedNetwork) => {
 	if (!subscribedToCoin(currency)) {
 		throw new Error('Invalid coin ' + currency);
- 	}
+	}
 
 	const user = await getUserByKitId(user_id);
 	const balance = await getNodeLib().getUserBalance(user.network_id);
@@ -558,7 +557,7 @@ const getAccumulatedWithdrawals = async (userId, transactionLimit, excludedCurre
 		if (currency && withdrawalAmount[currency]) { 
 			withdrawalHistory[period] = totalWithdrawalAmount = withdrawalAmount[currency];
 			continue;
-		};
+		}
 	
 		// if the limit currency in the limit info is default, we will run this loop to accumulate the withdrawal amounts of all coin
 		// but since coins are different from each other, we will convert them to currency defined in the limit info and then accumulate them 
