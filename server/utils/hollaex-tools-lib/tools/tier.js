@@ -310,10 +310,6 @@ const updateTransactionLimit = async (id, data) => {
 		throw new Error('monthly amount cannot be lower than last 24 hour amount');
 	}
 
-	if(amount === 0 && monthly_amount > 0) {
-		throw new Error('daily amount cannot be limitless when the monthly amount has a limit');
-	}
-
 	if (type === 'deposit') {
 		throw new Error('operation is not available at the moment');
 	}

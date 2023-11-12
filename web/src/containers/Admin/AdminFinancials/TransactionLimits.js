@@ -68,7 +68,7 @@ const TransactionLimits = ({ coins }) => {
 					<div className="d-flex">
 						{data?.amount === 0
 							? 'Unlimited'
-							: data?.amount === 1
+							: data?.amount === -1
 							? 'Disabled'
 							: data?.amount}
 					</div>
@@ -85,7 +85,7 @@ const TransactionLimits = ({ coins }) => {
 						<div className="d-flex">
 							{data?.monthly_amount === 0 || data?.monthly_amount === null
 								? 'Unlimited'
-								: data?.monthly_amount === 1
+								: data?.monthly_amount === -1
 								? 'Disabled'
 								: data?.monthly_amount}
 						</div>
