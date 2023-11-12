@@ -307,15 +307,12 @@ const calculateWithdrawalMax = async (user_id, currency, selectedNetwork) => {
 	if(transactionLimit.amount === -1) throw new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency));
 	if(transactionLimit?.monthly_amount === -1) throw new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency));
 
-	amount = BigNumber.minimum(transactionLimit.amount, amount).toNumber();
+	let amountMultiplier = 1;
 
-	const withdrawalHistory = await withdrawalBelowLimit(user.network_id, currency, amount, transactionLimits, false);
-
-	const totalAmount = withdrawalHistory?.withdrawalAmountLastMonth || withdrawalHistory?.withdrawalAmount24Hours || 0;
-	if (currency !== transactionLimit.currency && totalAmount > 0) {
+	if (currency !== transactionLimit.currency) {
 		const convertedWithdrawalAmount = await getNodeLib().getOraclePrices([transactionLimit.currency], {
 			quote: currency,
-			amount: totalAmount
+			amount: 1
 		});
 
 		if (convertedWithdrawalAmount[transactionLimit.currency] === -1) {
@@ -323,12 +320,22 @@ const calculateWithdrawalMax = async (user_id, currency, selectedNetwork) => {
 		}
 
 		if (convertedWithdrawalAmount[transactionLimit.currency]) 
-			amount = new BigNumber(amount).minus(new BigNumber(convertedWithdrawalAmount[transactionLimit.currency])).toNumber();
-			
-	} else {
-		amount = new BigNumber(amount).minus(new BigNumber(totalAmount)).toNumber();
+			amountMultiplier = new BigNumber(convertedWithdrawalAmount[transactionLimit.currency]).toNumber();
 	}
+
+
+	amount = transactionLimit.amount > 0 ? BigNumber.minimum(amountMultiplier * transactionLimit.amount, amount).toNumber() : 
+	transactionLimit.monthly_amount > 0 ? BigNumber.minimum(amountMultiplier * transactionLimit.monthly_amount, amount) : amount;
+
+	const withdrawalHistory = await withdrawalBelowLimit(user.network_id, currency, amount, transactionLimits, false);
 	
+	let totalAmount = (amountMultiplier * withdrawalHistory?.withdrawalAmount24Hours) || 0;
+	if ((transactionLimit?.monthly_amount && withdrawalHistory?.withdrawalAmountLastMonth)
+		&& transactionLimit.monthly_amount < amount + (amountMultiplier * withdrawalHistory.withdrawalAmountLastMonth)) {
+			totalAmount = amountMultiplier * withdrawalHistory.withdrawalAmountLastMonth;
+	} 
+
+	amount = new BigNumber(amount).minus(new BigNumber(totalAmount)).toNumber();
 	
 	//Subtract the fees
 
@@ -554,10 +561,23 @@ const getAccumulatedWithdrawals = async (userId, transactionLimit, excludedCurre
 	
 		// if the limit currency in the limit info is a specific coin, we do not need to do accumulation based on all coins
 		// in this case, We only want to fetch the accumulated amount of the specific coin
-		if (currency) { 
-			if(withdrawalAmount[currency]) withdrawalHistory[period] = withdrawalAmount[currency];
+		if (currency && withdrawalAmount[currency]) { 
+			if (currency !== transactionLimit.currency) {
+				const convertedAmount = await getNodeLib().getOraclePrices([currency], {
+					quote: transactionLimit.currency,
+					amount: withdrawalAmount[currency]
+				});
+				if (convertedAmount[currency] === -1) {
+					throw new Error(`No conversion found between ${currency} and ${transactionLimit.currency}`);
+				}
+		
+				if (convertedAmount[currency])
+					withdrawalHistory[period] = new BigNumber(convertedAmount[currency]).toNumber();
+			} else {
+				withdrawalHistory[period] = withdrawalAmount[currency];
+			}
 			continue;
-		};
+		}
 
 		let totalWithdrawalAmount = 0;
 
