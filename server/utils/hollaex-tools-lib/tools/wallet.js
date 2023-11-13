@@ -562,20 +562,7 @@ const getAccumulatedWithdrawals = async (userId, transactionLimit, excludedCurre
 		// if the limit currency in the limit info is a specific coin, we do not need to do accumulation based on all coins
 		// in this case, We only want to fetch the accumulated amount of the specific coin
 		if (currency && withdrawalAmount[currency]) { 
-			if (currency !== transactionLimit.currency) {
-				const convertedAmount = await getNodeLib().getOraclePrices([currency], {
-					quote: transactionLimit.currency,
-					amount: withdrawalAmount[currency]
-				});
-				if (convertedAmount[currency] === -1) {
-					throw new Error(`No conversion found between ${currency} and ${transactionLimit.currency}`);
-				}
-		
-				if (convertedAmount[currency])
-					withdrawalHistory[period] = new BigNumber(convertedAmount[currency]).toNumber();
-			} else {
-				withdrawalHistory[period] = withdrawalAmount[currency];
-			}
+			withdrawalHistory[period] = withdrawalAmount[currency];
 			continue;
 		}
 

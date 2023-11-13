@@ -294,7 +294,11 @@ const updateTransactionLimit = async (id, data) => {
 		throw new Error('Invalid coin ' + limit_currency);
 	}
 
-	if(tier && tier < 0) {
+	if (limit_currency !== 'default' && limit_currency !== currency) {
+		throw new Error('currency must be same for individual limit');
+	}
+
+	if (tier && tier < 0) {
 		throw new Error('tier cannot be a negative number other than -1');
 	}
 
@@ -306,12 +310,22 @@ const updateTransactionLimit = async (id, data) => {
 		throw new Error('monthly amount cannot be a negative number other than -1');
 	}
 
-	if(monthly_amount > 0 && amount > 0 && monthly_amount < amount) {
+	if (monthly_amount > 0 && amount > 0 && monthly_amount < amount) {
 		throw new Error('monthly amount cannot be lower than last 24 hour amount');
+	}
+
+	if (amount === 0 && monthly_amount > 0) {
+		throw new Error('daily amount cannot be unlimited when the monthly amount has a limit');
 	}
 
 	if (type === 'deposit') {
 		throw new Error('operation is not available at the moment');
+	}
+
+	const isExist = await findTransactionLimit({ tier, limit_currency, type });
+
+	if (isExist) {
+		throw new Error('Transaction limit record already exist');
 	}
 
 	if (id) {
@@ -324,12 +338,6 @@ const updateTransactionLimit = async (id, data) => {
 		return transactionLimit.update(updatedTransactionObject);
 
 	} else {
-		const isExist = await findTransactionLimit({ tier, limit_currency, type });
-
-		if (isExist) {
-			throw new Error('Transaction limit record already exist');
-		}
-
 		const transactionLimitModel = getModel('transactionLimit');
 
 		return transactionLimitModel.create(data);
