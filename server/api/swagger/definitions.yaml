@@ -1418,8 +1418,7 @@ definitions:
         type: number
         format: double
       monthly_amount:
-        type: number
-        format: double
+        type: ['number', 'null']
       withdrawal_fee:
         type: number
         format: double

@@ -10,6 +10,7 @@ const { publisher } = require('./database/redis');
 const { createAuditLog } = require('./user');
 const { CONFIGURATION_CHANNEL } = require(`${SERVER_PATH}/constants`);
 const flatten = require('flat');
+const sequelize = require('sequelize');
 
 const findTier = (level) => {
 	return dbQuery.findOne('tier', {
@@ -322,14 +323,20 @@ const updateTransactionLimit = async (id, data) => {
 		throw new Error('operation is not available at the moment');
 	}
 
-	const isExist = await findTransactionLimit({ tier, limit_currency, type });
-
-	if (isExist) {
-		throw new Error('Transaction limit record already exist');
-	}
 
 	if (id) {
 		const transactionLimit = await findTransactionLimit({ id });
+		
+		if (transactionLimit.tier !== tier || 
+			transactionLimit.limit_currency !== limit_currency || 
+			transactionLimit.type !== type) {
+			const isExist = await findTransactionLimit({ tier, limit_currency, type });
+
+			if (isExist) {
+				throw new Error('Transaction limit record already exist');
+			}
+		}
+
 		const updatedTransactionObject = {
 			...transactionLimit.get({ plain: true }),
 			...data,
@@ -338,6 +345,12 @@ const updateTransactionLimit = async (id, data) => {
 		return transactionLimit.update(updatedTransactionObject);
 
 	} else {
+		const isExist = await findTransactionLimit({ tier, limit_currency, type });
+
+		if (isExist) {
+			throw new Error('Transaction limit record already exist');
+		}
+		
 		const transactionLimitModel = getModel('transactionLimit');
 
 		return transactionLimitModel.create(data);
@@ -357,6 +370,13 @@ const deleteTransactionLimit = async (id) => {
 	if (!limit) {
 		throw new Error('Record does not exist');
 	}
+
+	const isTierExits = await transactionLimitModel.findOne({ where: { tier: limit.tier, type: limit.type, id: { [sequelize.Op.not]: limit.id } } });
+
+	if (!isTierExits) {
+		throw new Error('Cannot remove this limit as it is the only limit for this tier');
+	}
+
 	return limit.destroy();
 };
 

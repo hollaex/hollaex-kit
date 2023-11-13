@@ -36,21 +36,21 @@ const TransactionLimits = ({ coins }) => {
 
 	const [displayDeleteModal, setDisplayDeleteModal] = useState(false);
 	const columns = [
-		{
-			title: 'ID',
-			dataIndex: 'id',
-			key: 'id',
-			render: (user_id, data) => {
-				return (
-					<div className="d-flex">
-						<Button className="ant-btn green-btn ant-tooltip-open ant-btn-primary">
-							{data?.id}
-						</Button>
-						{/* <div className="ml-3">{data.User.email}</div> */}
-					</div>
-				);
-			},
-		},
+		// {
+		// 	title: 'ID',
+		// 	dataIndex: 'id',
+		// 	key: 'id',
+		// 	render: (user_id, data) => {
+		// 		return (
+		// 			<div className="d-flex">
+		// 				<Button className="ant-btn green-btn ant-tooltip-open ant-btn-primary">
+		// 					{data?.id}
+		// 				</Button>
+		// 				{/* <div className="ml-3">{data.User.email}</div> */}
+		// 			</div>
+		// 		);
+		// 	},
+		// },
 		{
 			title: 'Tier',
 			dataIndex: 'tier',
