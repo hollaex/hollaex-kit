@@ -304,38 +304,47 @@ const calculateWithdrawalMax = async (user_id, currency, selectedNetwork) => {
 		throw new Error('There is no limit rule defined for the currency ', + currency);
 	}
 
-	if(transactionLimit.amount === -1) throw new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency));
-	if(transactionLimit?.monthly_amount === -1) throw new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency));
+	if (transactionLimit.amount === -1) throw new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency));
+	if (transactionLimit?.monthly_amount === -1) throw new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency));
 
-	let amountMultiplier = 1;
+	if (transactionLimit.amount > 0) {
 
-	if (currency !== transactionLimit.currency) {
-		const convertedWithdrawalAmount = await getNodeLib().getOraclePrices([transactionLimit.currency], {
-			quote: currency,
-			amount: 1
-		});
+		let amountMultiplier = 1;
 
-		if (convertedWithdrawalAmount[transactionLimit.currency] === -1) {
-			throw new Error(`No conversion found between ${currency} and ${transactionLimit.currency}`);
+		if (currency !== transactionLimit.currency) {
+			const convertedWithdrawalAmount = await getNodeLib().getOraclePrices([transactionLimit.currency], {
+				quote: currency,
+				amount: 1
+			});
+
+			if (convertedWithdrawalAmount[transactionLimit.currency] === -1) {
+				throw new Error(`No conversion found between ${currency} and ${transactionLimit.currency}`);
+			}
+
+			if (convertedWithdrawalAmount[transactionLimit.currency]) 
+				amountMultiplier = new BigNumber(convertedWithdrawalAmount[transactionLimit.currency]).toNumber();
 		}
 
-		if (convertedWithdrawalAmount[transactionLimit.currency]) 
-			amountMultiplier = new BigNumber(convertedWithdrawalAmount[transactionLimit.currency]).toNumber();
+
+		const withdrawalHistory = await withdrawalBelowLimit(user.network_id, currency, amount, transactionLimits, false);
+		const convertedLast24Amount =  (amountMultiplier * withdrawalHistory?.withdrawalAmount24Hours) || 0;
+		const convertedLastMonthAmount =  (amountMultiplier * withdrawalHistory?.withdrawalAmountLastMonth) || 0;
+
+		const dailyAmount = amountMultiplier * transactionLimit.amount;
+		const monthlyAmount = amountMultiplier * (transactionLimit.monthly_amount || 0);
+
+
+		const dailyWithdrawalLeft = new BigNumber(dailyAmount).minus(new BigNumber(convertedLast24Amount).plus(amount)).toNumber();
+		const monthlyWithdrawalLeft = transactionLimit.monthly_amount > 0 ? new BigNumber(monthlyAmount).minus(new BigNumber(convertedLastMonthAmount).plus(amount)).toNumber() : 0;
+
+		const amountToSubtract = monthlyWithdrawalLeft < dailyWithdrawalLeft ? monthlyWithdrawalLeft : dailyWithdrawalLeft;
+		if (amountToSubtract < 0) {
+			amount = new BigNumber(amount).minus(new BigNumber(amountToSubtract).absoluteValue()).toNumber();
+		}
+
+		amount = BigNumber.minimum(dailyAmount, amount).toNumber();
 	}
 
-
-	amount = transactionLimit.amount > 0 ? BigNumber.minimum(amountMultiplier * transactionLimit.amount, amount).toNumber() : 
-	transactionLimit.monthly_amount > 0 ? BigNumber.minimum(amountMultiplier * transactionLimit.monthly_amount, amount) : amount;
-
-	const withdrawalHistory = await withdrawalBelowLimit(user.network_id, currency, amount, transactionLimits, false);
-	
-	let totalAmount = (amountMultiplier * withdrawalHistory?.withdrawalAmount24Hours) || 0;
-	if ((transactionLimit?.monthly_amount && withdrawalHistory?.withdrawalAmountLastMonth)
-		&& transactionLimit.monthly_amount < amount + (amountMultiplier * withdrawalHistory.withdrawalAmountLastMonth)) {
-			totalAmount = amountMultiplier * withdrawalHistory.withdrawalAmountLastMonth;
-	} 
-
-	amount = new BigNumber(amount).minus(new BigNumber(totalAmount)).toNumber();
 	
 	//Subtract the fees
 
@@ -513,13 +522,13 @@ const withdrawalBelowLimit = async (userId, currency, amount = 0, transactionLim
 	// Compare the final amount the the limit defined in the limit info, if it exceeds the limit, we should not allow the withdrawal to happen
 	if (totalWithdrawalAmount24Hours > last24HoursLimit && throwError) {
 		throw new Error(
-			`Total withdrawn amount would exceed withdrawal limit of ${last24HoursLimit} ${transactionLimit.currency}. Withdrawn amount: ${totalWithdrawalAmount24Hours} ${transactionLimit.currency}. Request amount: ${amount} ${currency}`
+			`Total withdrawn amount would exceed withdrawal limit of ${last24HoursLimit} ${transactionLimit.currency}. Last 24 hours withdrawn amount: ${totalWithdrawalAmount24Hours} ${transactionLimit.currency}. Request amount: ${amount} ${currency}`
 		);
 	}
 
 	if (totalWithdrawalAmountLastMonth > lastMonthLimit && throwError) {
 		throw new Error(
-			`Total withdrawn amount would exceed withdrawal limit of ${lastMonthLimit} ${transactionLimit.currency}. Withdrawn amount: ${totalWithdrawalAmountLastMonth} ${transactionLimit.currency}. Request amount: ${amount} ${currency}`
+			`Total withdrawn amount would exceed withdrawal limit of ${lastMonthLimit} ${transactionLimit.currency}. Last month withdrawn amount: ${totalWithdrawalAmountLastMonth} ${transactionLimit.currency}. Request amount: ${amount} ${currency}`
 		);
 	}
 
