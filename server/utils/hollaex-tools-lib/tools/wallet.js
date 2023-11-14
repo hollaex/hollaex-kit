@@ -496,7 +496,7 @@ const withdrawalBelowLimit = async (userId, currency, amount = 0, transactionLim
 	const withdrawalAmount = await getAccumulatedWithdrawals(userId, transactionLimit, excludedCurrencies);
 
 	// Add the accumulated withdrawal amount to totalWithdrawalAmount variable. We are now done with the calculations
-	const totalWithdrawalAmount24Hours = withdrawalAmount['24h'] ? totalWithdrawalAmount.plus(new BigNumber(withdrawalAmount['24h'])).toNumber() : null;
+	const totalWithdrawalAmount24Hours = totalWithdrawalAmount.plus(new BigNumber(withdrawalAmount['24h'] || 0)).toNumber();
 	const totalWithdrawalAmountLastMonth = withdrawalAmount['1m'] ? totalWithdrawalAmount.plus(new BigNumber(withdrawalAmount['1m'])).toNumber() : null;
 
 	// Compare the final amount the the limit defined in the limit info, if it exceeds the limit, we should not allow the withdrawal to happen
