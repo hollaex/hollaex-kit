@@ -292,7 +292,6 @@ const calculateWithdrawalMax = async (user_id, currency, selectedNetwork) => {
 	const coinConfiguration = getKitCoin(currency);
 	// const coinMarkup = getKitConfig()?.coin_customizations?.[currency];
 
-	const { fee, fee_coin } = getWithdrawalFee(currency, selectedNetwork, amount, user.verification_level);
 	const { increment_unit } = coinConfiguration;
 
 
@@ -342,24 +341,6 @@ const calculateWithdrawalMax = async (user_id, currency, selectedNetwork) => {
 		}
 
 		amount = BigNumber.minimum(dailyAmount, amount).toNumber();
-	}
-
-	
-	//Subtract the fees
-
-	if (fee_coin && fee_coin === currency) {
-		amount = new BigNumber(amount).minus(new BigNumber(fee)).toNumber();
-	} else if(fee_coin && fee_coin !== currency && fee > 0) {
-		const convertedFee = await getNodeLib().getOraclePrices([fee_coin], {
-			quote: currency,
-			amount: fee
-		});
-
-		if (convertedFee[fee_coin] === -1) {
-			throw new Error(`No conversion found between ${currency} and ${fee_coin}`);
-		}
-
-		amount = new BigNumber(amount).minus(new BigNumber(convertedFee[fee_coin])).toNumber();
 	}
 
 	if (amount < 0) {
