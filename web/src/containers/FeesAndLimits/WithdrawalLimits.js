@@ -77,35 +77,71 @@ const WithdrawalLimits = ({
 							</div>
 						</div>
 						<div>
-							<IconTitle
-								stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_2.TITLE"
-								text={
-									STRINGS[
-										'FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_2.TITLE'
-									]
-								}
-								textType="title bold text-align-left"
-								iconPath={ICONS['FEES_AND_LIMITS_WITHDRAWAL_LIMITS']}
-							/>
-							<div className="py-4">
-								<div>
-									<EditWrapper stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_2.SUBTITLE">
-										{
-											STRINGS[
-												'FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_2.SUBTITLE'
-											]
-										}
-									</EditWrapper>
+							<div>
+								<IconTitle
+									stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_2.TITLE"
+									text={
+										STRINGS[
+											'FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_2.TITLE'
+										]
+									}
+									textType="title bold text-align-left"
+									iconPath={ICONS['FEES_AND_LIMITS_WITHDRAWAL_LIMITS']}
+								/>
+								<div className="py-4">
+									<div>
+										<EditWrapper stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_2.SUBTITLE">
+											{
+												STRINGS[
+													'FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_2.SUBTITLE'
+												]
+											}
+										</EditWrapper>
+									</div>
+								</div>
+								<div className="wallet-assets_block">
+									<LimitsBlock
+										coins={coins}
+										level={selectedLevel}
+										title={''}
+										tiers={config_level}
+										transaction_limits={transaction_limits}
+										type={'individual'}
+									/>
 								</div>
 							</div>
-							<div className="wallet-assets_block">
-								<LimitsBlock
-									coins={coins}
-									level={selectedLevel}
-									title={''}
-									tiers={config_level}
-									transaction_limits={transaction_limits}
+							<div>
+								<IconTitle
+									stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_3.TITLE"
+									text={
+										STRINGS[
+											'FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_3.TITLE'
+										]
+									}
+									textType="title bold text-align-left"
+									iconPath={ICONS['FEES_AND_LIMITS_WITHDRAWAL_LIMITS']}
 								/>
+								<div className="py-4">
+									<div>
+										<EditWrapper stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_3.SUBTITLE">
+											{
+												STRINGS[
+													'FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_3.SUBTITLE'
+												]
+											}
+										</EditWrapper>
+									</div>
+								</div>
+								<div className="wallet-assets_block">
+									<LimitsBlock
+										coins={coins}
+										level={selectedLevel}
+										title={''}
+										tiers={config_level}
+										transaction_limits={transaction_limits}
+										type={'default'}
+									/>
+								</div>
 							</div>
 						</div>
 					</div>
