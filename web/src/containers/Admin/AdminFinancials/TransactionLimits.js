@@ -121,7 +121,7 @@ const TransactionLimits = ({ coins }) => {
 			key: 'currency',
 			render: (user_id, data) => {
 				return (
-					<div className="d-flex">
+					<div className="d-flex" style={{ maxWidth: 400 }}>
 						{data?.limit_currency === 'default'
 							? getAccumulatedCoins(data?.tier)
 							: data?.limit_currency?.toUpperCase()}
