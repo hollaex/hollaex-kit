@@ -304,33 +304,47 @@ const calculateWithdrawalMax = async (user_id, currency, selectedNetwork) => {
 		throw new Error('There is no limit rule defined for the currency ', + currency);
 	}
 
-	if(transactionLimit.amount === -1) throw new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency));
-	if(transactionLimit?.monthly_amount === -1) throw new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency));
+	if (transactionLimit.amount === -1) throw new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency));
+	if (transactionLimit?.monthly_amount === -1) throw new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency));
 
-	if(transactionLimit.amount !== 0) {
-		amount = BigNumber.minimum(transactionLimit.amount, amount).toNumber();
+	if (transactionLimit.amount > 0) {
 
-		const withdrawalHistory = await withdrawalBelowLimit(user.network_id, currency, amount, transactionLimits, false);
-	
-		const totalAmount = withdrawalHistory?.withdrawalAmountLastMonth || withdrawalHistory?.withdrawalAmount24Hours || 0;
-		if (currency !== transactionLimit.currency && totalAmount > 0) {
+		let amountMultiplier = 1;
+
+		if (currency !== transactionLimit.currency) {
 			const convertedWithdrawalAmount = await getNodeLib().getOraclePrices([transactionLimit.currency], {
 				quote: currency,
-				amount: totalAmount
+				amount: 1
 			});
-	
+
 			if (convertedWithdrawalAmount[transactionLimit.currency] === -1) {
 				throw new Error(`No conversion found between ${currency} and ${transactionLimit.currency}`);
 			}
 
 			if (convertedWithdrawalAmount[transactionLimit.currency]) 
-				amount = new BigNumber(amount).minus(new BigNumber(convertedWithdrawalAmount[transactionLimit.currency])).toNumber();
-				
-		} else {
-			amount = new BigNumber(amount).minus(new BigNumber(totalAmount)).toNumber();
+				amountMultiplier = new BigNumber(convertedWithdrawalAmount[transactionLimit.currency]).toNumber();
 		}
-	
+
+
+		const withdrawalHistory = await withdrawalBelowLimit(user.network_id, currency, amount, transactionLimits, false);
+		const convertedLast24Amount =  (amountMultiplier * withdrawalHistory?.withdrawalAmount24Hours) || 0;
+		const convertedLastMonthAmount =  (amountMultiplier * withdrawalHistory?.withdrawalAmountLastMonth) || 0;
+
+		const dailyAmount = amountMultiplier * transactionLimit.amount;
+		const monthlyAmount = amountMultiplier * (transactionLimit.monthly_amount || 0);
+
+
+		const dailyWithdrawalLeft = new BigNumber(dailyAmount).minus(new BigNumber(convertedLast24Amount).plus(amount)).toNumber();
+		const monthlyWithdrawalLeft = transactionLimit.monthly_amount > 0 ? new BigNumber(monthlyAmount).minus(new BigNumber(convertedLastMonthAmount).plus(amount)).toNumber() : 0;
+
+		const amountToSubtract = monthlyWithdrawalLeft < dailyWithdrawalLeft ? monthlyWithdrawalLeft : dailyWithdrawalLeft;
+		if (amountToSubtract < 0) {
+			amount = new BigNumber(amount).minus(new BigNumber(amountToSubtract).absoluteValue()).toNumber();
+		}
+
+		amount = BigNumber.minimum(dailyAmount, amount).toNumber();
 	}
+
 	
 	//Subtract the fees
 
@@ -473,7 +487,7 @@ const withdrawalBelowLimit = async (userId, currency, amount = 0, transactionLim
 	if (last24HoursLimit === -1) throw new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency));
 	if (lastMonthLimit === -1) throw new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency));
 	// if limit is 0 it means it's limitless
-	if (last24HoursLimit === 0) return;
+	if (last24HoursLimit === 0 && lastMonthLimit === 0) return;
 
 	// totalWithdrawalAmount will be compared to the set limit above
 	// we initialize it with the amount we want to withdraw
@@ -502,19 +516,19 @@ const withdrawalBelowLimit = async (userId, currency, amount = 0, transactionLim
 	const withdrawalAmount = await getAccumulatedWithdrawals(userId, transactionLimit, excludedCurrencies);
 
 	// Add the accumulated withdrawal amount to totalWithdrawalAmount variable. We are now done with the calculations
-	const totalWithdrawalAmount24Hours = totalWithdrawalAmount.plus(new BigNumber(withdrawalAmount['24h'] || 0)).toNumber();
+	const totalWithdrawalAmount24Hours = withdrawalAmount['24h'] ? totalWithdrawalAmount.plus(new BigNumber(withdrawalAmount['24h'])).toNumber() : null;
 	const totalWithdrawalAmountLastMonth = withdrawalAmount['1m'] ? totalWithdrawalAmount.plus(new BigNumber(withdrawalAmount['1m'])).toNumber() : null;
 
 	// Compare the final amount the the limit defined in the limit info, if it exceeds the limit, we should not allow the withdrawal to happen
 	if (totalWithdrawalAmount24Hours > last24HoursLimit && throwError) {
 		throw new Error(
-			`Total withdrawn amount would exceed withdrawal limit of ${last24HoursLimit} ${transactionLimit.currency}. Withdrawn amount: ${totalWithdrawalAmount24Hours} ${transactionLimit.currency}. Request amount: ${amount} ${currency}`
+			`Total withdrawn amount would exceed withdrawal limit of ${last24HoursLimit} ${transactionLimit.currency}. Last 24 hours withdrawn amount: ${totalWithdrawalAmount24Hours} ${transactionLimit.currency}. Request amount: ${amount} ${currency}`
 		);
 	}
 
 	if (totalWithdrawalAmountLastMonth > lastMonthLimit && throwError) {
 		throw new Error(
-			`Total withdrawn amount would exceed withdrawal limit of ${lastMonthLimit} ${transactionLimit.currency}. Withdrawn amount: ${totalWithdrawalAmountLastMonth} ${transactionLimit.currency}. Request amount: ${amount} ${currency}`
+			`Total withdrawn amount would exceed withdrawal limit of ${lastMonthLimit} ${transactionLimit.currency}. Last month withdrawn amount: ${totalWithdrawalAmountLastMonth} ${transactionLimit.currency}. Request amount: ${amount} ${currency}`
 		);
 	}
 
@@ -529,51 +543,56 @@ const getAccumulatedWithdrawals = async (userId, transactionLimit, excludedCurre
 
 	const withdrawalHistory = {};
 
-	const periods = ['24h'];
-	//monthly amount is optional, if it is defined and bigger than we should also calculate it
+	const periods = [];
+	if(transactionLimit?.amount > 0) periods.push('24h');
 	if(transactionLimit?.monthly_amount > 0) periods.push('1m');
 
+	const withdrawals = await getNodeLib().getUserWithdrawals(userId, {
+		currency,
+		dismissed: false,
+		rejected: false,
+		format: 'all',
+		startDate: transactionLimit?.monthly_amount > 0 ? moment().subtract(1, 'months').toISOString() : moment().subtract(24, 'hours').toISOString()
+	});
+
 	for (const period of periods) {
-		const withdrawals = await getNodeLib().getUserWithdrawals(userId, {
-			currency,
-			dismissed: false,
-			rejected: false,
-			format: 'all',
-			startDate: period === '24h' ? moment().subtract(24, 'hours').toISOString() : moment().subtract(1, 'months').toISOString()
-		});
-	
 	
 		//Accumulate the amounts based on currency
-		const withdrawalData = withdrawals.data;
+		// If it's last month records, Extract the last 24 hours for daily limit calculation. 
+		const withdrawalData = (transactionLimit?.monthly_amount > 0 && period === '24h')
+		? (withdrawals.data || []).filter(withdrawal => moment(withdrawal.created_at) >= moment().subtract(24, 'hours')) 
+		: withdrawals.data;
+		
 		const withdrawalAmount = {};
-	
 		for (let withdrawal of withdrawalData) {
 			withdrawalAmount[withdrawal.currency] = new BigNumber(withdrawalAmount[withdrawal.currency] || 0).plus(withdrawal.amount).toNumber();
 		}
 	
-		let totalWithdrawalAmount = 0;
-	
 		// if the limit currency in the limit info is a specific coin, we do not need to do accumulation based on all coins
 		// in this case, We only want to fetch the accumulated amount of the specific coin
 		if (currency && withdrawalAmount[currency]) { 
-			withdrawalHistory[period] = totalWithdrawalAmount = withdrawalAmount[currency];
+			withdrawalHistory[period] = withdrawalAmount[currency];
 			continue;
-		};
-	
+		}
+
+		let totalWithdrawalAmount = 0;
+
+		const withdrawalCurrencies = Object.keys(withdrawalAmount || {});
+		const convertedAmount = withdrawalCurrencies.length > 0 && await getNodeLib().getOraclePrices(withdrawalCurrencies, {
+			quote: transactionLimit.currency,
+			amount: 1
+		});
+
 		// if the limit currency in the limit info is default, we will run this loop to accumulate the withdrawal amounts of all coin
 		// but since coins are different from each other, we will convert them to currency defined in the limit info and then accumulate them 
-		for (let withdrawalCurrency in withdrawalAmount) {
-	
-			if(excludedCurrencies.indexOf(withdrawalCurrency) > -1) continue;
-	
-			const convertedAmount = await getNodeLib().getOraclePrices([withdrawalCurrency], {
-				quote: transactionLimit.currency,
-				amount: withdrawalAmount[withdrawalCurrency]
-			});
-	
+		for (const withdrawalCurrency of withdrawalCurrencies) {
+			if (excludedCurrencies.indexOf(withdrawalCurrency) > -1) continue;
+			if (!convertedAmount[withdrawalCurrency]) continue;
 			if (convertedAmount[withdrawalCurrency] === -1) continue;
-	
-			totalWithdrawalAmount = new BigNumber(totalWithdrawalAmount).plus(convertedAmount[withdrawalCurrency]).toNumber();
+
+			const totalAmount = new BigNumber(withdrawalAmount[withdrawalCurrency]).multipliedBy(convertedAmount[withdrawalCurrency]);
+		
+			totalWithdrawalAmount = new BigNumber(totalWithdrawalAmount).plus(totalAmount).toNumber();
 		}
 	
 		withdrawalHistory[period] = totalWithdrawalAmount;
