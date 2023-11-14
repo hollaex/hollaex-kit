@@ -497,16 +497,16 @@ const withdrawalBelowLimit = async (userId, currency, amount = 0, transactionLim
 
 	// Add the accumulated withdrawal amount to totalWithdrawalAmount variable. We are now done with the calculations
 	const totalWithdrawalAmount24Hours = totalWithdrawalAmount.plus(new BigNumber(withdrawalAmount['24h'] || 0)).toNumber();
-	const totalWithdrawalAmountLastMonth = withdrawalAmount['1m'] ? totalWithdrawalAmount.plus(new BigNumber(withdrawalAmount['1m'])).toNumber() : null;
+	const totalWithdrawalAmountLastMonth = totalWithdrawalAmount.plus(new BigNumber(withdrawalAmount['1m'] || 0)).toNumber();
 
 	// Compare the final amount the the limit defined in the limit info, if it exceeds the limit, we should not allow the withdrawal to happen
-	if (totalWithdrawalAmount24Hours > last24HoursLimit && throwError) {
+	if (last24HoursLimit > 0 && totalWithdrawalAmount24Hours > last24HoursLimit && throwError) {
 		throw new Error(
 			`Total withdrawn amount would exceed withdrawal limit of ${last24HoursLimit} ${transactionLimit.currency}. Last 24 hours withdrawn amount: ${totalWithdrawalAmount24Hours} ${transactionLimit.currency}. Request amount: ${amount} ${currency}`
 		);
 	}
 
-	if (totalWithdrawalAmountLastMonth > lastMonthLimit && throwError) {
+	if (lastMonthLimit > 0 && totalWithdrawalAmountLastMonth > lastMonthLimit && throwError) {
 		throw new Error(
 			`Total withdrawn amount would exceed withdrawal limit of ${lastMonthLimit} ${transactionLimit.currency}. Last month withdrawn amount: ${totalWithdrawalAmountLastMonth} ${transactionLimit.currency}. Request amount: ${amount} ${currency}`
 		);
