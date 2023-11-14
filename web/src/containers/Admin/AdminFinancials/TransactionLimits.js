@@ -9,10 +9,11 @@ import { requestTiers } from '../User/actions';
 import { CloseOutlined } from '@ant-design/icons';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { connect } from 'react-redux';
-
+import { setTransactionLimits } from 'actions/appActions';
+import { bindActionCreators } from 'redux';
 const { Option } = Select;
 
-const TransactionLimits = ({ coins }) => {
+const TransactionLimits = ({ coins, setLimits }) => {
 	const [coinData, setCoinData] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [queryValues] = useState();
@@ -230,7 +231,7 @@ const TransactionLimits = ({ coins }) => {
 					currentTablePage: page === 1 ? 1 : queryFilters.currentTablePage,
 					isRemaining: response.count > page * limit,
 				});
-
+				setLimits(response.data);
 				setIsLoading(false);
 			})
 			.catch((error) => {
@@ -862,4 +863,11 @@ const mapStateToProps = (state) => ({
 	coins: state.app.coins,
 });
 
-export default connect(mapStateToProps)(withConfig(TransactionLimits));
+const mapDispatchToProps = (dispatch) => ({
+	setLimits: bindActionCreators(setTransactionLimits, dispatch),
+});
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withConfig(TransactionLimits));
