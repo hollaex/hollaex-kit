@@ -36,21 +36,21 @@ const TransactionLimits = ({ coins }) => {
 
 	const [displayDeleteModal, setDisplayDeleteModal] = useState(false);
 	const columns = [
-		{
-			title: 'ID',
-			dataIndex: 'id',
-			key: 'id',
-			render: (user_id, data) => {
-				return (
-					<div className="d-flex">
-						<Button className="ant-btn green-btn ant-tooltip-open ant-btn-primary">
-							{data?.id}
-						</Button>
-						{/* <div className="ml-3">{data.User.email}</div> */}
-					</div>
-				);
-			},
-		},
+		// {
+		// 	title: 'ID',
+		// 	dataIndex: 'id',
+		// 	key: 'id',
+		// 	render: (user_id, data) => {
+		// 		return (
+		// 			<div className="d-flex">
+		// 				<Button className="ant-btn green-btn ant-tooltip-open ant-btn-primary">
+		// 					{data?.id}
+		// 				</Button>
+		// 				{/* <div className="ml-3">{data.User.email}</div> */}
+		// 			</div>
+		// 		);
+		// 	},
+		// },
 		{
 			title: 'Tier',
 			dataIndex: 'tier',
@@ -68,7 +68,7 @@ const TransactionLimits = ({ coins }) => {
 					<div className="d-flex">
 						{data?.amount === 0
 							? 'Unlimited'
-							: data?.amount === 1
+							: data?.amount === -1
 							? 'Disabled'
 							: data?.amount}
 					</div>
@@ -85,7 +85,7 @@ const TransactionLimits = ({ coins }) => {
 						<div className="d-flex">
 							{data?.monthly_amount === 0 || data?.monthly_amount === null
 								? 'Unlimited'
-								: data?.monthly_amount === 1
+								: data?.monthly_amount === -1
 								? 'Disabled'
 								: data?.monthly_amount}
 						</div>
@@ -485,8 +485,8 @@ const TransactionLimits = ({ coins }) => {
 								onClick={async () => {
 									try {
 										if (
-											!selectedData.tier ||
-											!selectedData.amount ||
+											selectedData.tier == null ||
+											selectedData.amount == null ||
 											!selectedData.currency ||
 											!selectedData.limit_currency ||
 											!selectedData.type
@@ -496,7 +496,7 @@ const TransactionLimits = ({ coins }) => {
 										}
 
 										selectedData.amount = Number(selectedData.amount);
-										if (selectedData.monthly_amount)
+										if (selectedData.monthly_amount != null)
 											selectedData.monthly_amount = Number(
 												selectedData.monthly_amount
 											);
