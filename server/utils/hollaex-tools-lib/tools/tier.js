@@ -342,7 +342,7 @@ const updateTransactionLimit = async (id, data) => {
 			...data,
 		};
 
-		return transactionLimit.update(updatedTransactionObject);
+		return transactionLimit.update(updatedTransactionObject, { fields: ['amount', 'monthly_amount', 'currency', 'limit_currency', 'type'] });
 
 	} else {
 		const isExist = await findTransactionLimit({ tier, limit_currency, type });

@@ -451,6 +451,7 @@ const TransactionLimits = ({ coins }) => {
 									showSearch
 									value={selectedData.tier !== null ? selectedData.tier : null}
 									placeholder="Select Tier Level"
+									disabled={editMode}
 									style={{ color: 'black', width: '100%' }}
 									notFoundContent={'Not Found'}
 									onChange={(value) => {
@@ -628,6 +629,7 @@ const TransactionLimits = ({ coins }) => {
 									placeholder="Select Tier Level"
 									style={{ color: 'black', width: '100%' }}
 									notFoundContent={'Not Found'}
+									disabled={editMode}
 									onChange={(value) => {
 										setSelectedData({
 											...selectedData,
