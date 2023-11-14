@@ -111,7 +111,13 @@ const getRows = (coins, level, tiers, ICONS, transaction_limits, type) => {
 								style={{ cursor: 'default' }}
 							>
 								<div className="px-2">
-									There is no independent limit for this tier
+									<EditWrapper stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.NO_INDEPENDENT">
+										{
+											STRINGS[
+												'FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.NO_INDEPENDENT'
+											]
+										}
+									</EditWrapper>
 								</div>
 							</div>
 						</td>
