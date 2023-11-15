@@ -1601,7 +1601,8 @@
 					"LIMIT_TEXT_2": "(Limit based only on its own currency)",
 					"VALUED": "(Valued)",
 					"NO_INDEPENDENT": "There is no independent limit for this tier",
-					"LIMIT_TEXT_3": "(Assets that all share a collective daily withdrawal limit amount denominated in {0})"
+					"LIMIT_TEXT_3": "(Assets that all share a collective daily withdrawal limit amount denominated in {0})",
+					"LIMIT_TEXT_4": "(Assets that all share a collective monthly withdrawal limit amount denominated in {0})"
 				},
 				"TABLE_2": {
 					"TITLE": "Independent Limits",
