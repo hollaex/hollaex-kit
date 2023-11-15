@@ -9,10 +9,11 @@ import { requestTiers } from '../User/actions';
 import { CloseOutlined } from '@ant-design/icons';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { connect } from 'react-redux';
-
+import { setTransactionLimits } from 'actions/appActions';
+import { bindActionCreators } from 'redux';
 const { Option } = Select;
 
-const TransactionLimits = ({ coins }) => {
+const TransactionLimits = ({ coins, setLimits }) => {
 	const [coinData, setCoinData] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [queryValues] = useState();
@@ -32,9 +33,31 @@ const TransactionLimits = ({ coins }) => {
 	const [displayCostumizationModal, setDisplayCostumizationModal] = useState(
 		false
 	);
+	const [displayIndependentModal, setDisplayIndependentModal] = useState(false);
 	const [tierFilter, setTierFilter] = useState();
 
 	const [displayDeleteModal, setDisplayDeleteModal] = useState(false);
+
+	const getAccumulatedCoins = (tier) => {
+		const tierLimits = coinData.filter((coin) => coin.tier === tier);
+
+		let accumulatedCoins = Object.values(coins || {}).map((coin) =>
+			coin?.symbol?.toUpperCase()
+		);
+
+		for (const limit of tierLimits) {
+			if (limit.limit_currency !== 'default') {
+				const index = accumulatedCoins.indexOf(
+					limit?.limit_currency?.toUpperCase()
+				);
+				if (index > -1) {
+					accumulatedCoins.splice(index, 1);
+				}
+			}
+		}
+
+		return accumulatedCoins.join(', ');
+	};
 	const columns = [
 		// {
 		// 	title: 'ID',
@@ -70,7 +93,7 @@ const TransactionLimits = ({ coins }) => {
 							? 'Unlimited'
 							: data?.amount === -1
 							? 'Disabled'
-							: data?.amount}
+							: `${data?.amount} ${data?.currency?.toUpperCase()}`}
 					</div>
 				);
 			},
@@ -87,7 +110,7 @@ const TransactionLimits = ({ coins }) => {
 								? 'Unlimited'
 								: data?.monthly_amount === -1
 								? 'Disabled'
-								: data?.monthly_amount}
+								: `${data?.monthly_amount} ${data?.currency?.toUpperCase()}`}
 						</div>
 					</div>
 				);
@@ -98,15 +121,13 @@ const TransactionLimits = ({ coins }) => {
 			dataIndex: 'currency',
 			key: 'currency',
 			render: (user_id, data) => {
-				return <div className="d-flex">{data?.currency}</div>;
-			},
-		},
-		{
-			title: 'Limit Currency',
-			dataIndex: 'limit_currency',
-			key: 'limit_currency',
-			render: (user_id, data) => {
-				return <div className="d-flex">{data?.limit_currency}</div>;
+				return (
+					<div className="d-flex" style={{ maxWidth: 400 }}>
+						{data?.limit_currency === 'default'
+							? getAccumulatedCoins(data?.tier)
+							: data?.limit_currency?.toUpperCase()}
+					</div>
+				);
 			},
 		},
 		{
@@ -129,7 +150,11 @@ const TransactionLimits = ({ coins }) => {
 								e.stopPropagation();
 								setEditMode(true);
 								setSelectedData(data);
-								setDisplayCostumizationModal(true);
+								if (data?.limit_currency === 'default') {
+									setDisplayCostumizationModal(true);
+								} else {
+									setDisplayIndependentModal(true);
+								}
 							}}
 							style={{ backgroundColor: '#CB7300', color: 'white' }}
 						>
@@ -206,7 +231,7 @@ const TransactionLimits = ({ coins }) => {
 					currentTablePage: page === 1 ? 1 : queryFilters.currentTablePage,
 					isRemaining: response.count > page * limit,
 				});
-
+				setLimits(response.data);
 				setIsLoading(false);
 			})
 			.catch((error) => {
@@ -227,6 +252,7 @@ const TransactionLimits = ({ coins }) => {
 
 	const handleCostumizationModal = () => {
 		setDisplayCostumizationModal(false);
+		setDisplayIndependentModal(false);
 		setSelectedData({});
 		setEditMode(false);
 	};
@@ -242,51 +268,74 @@ const TransactionLimits = ({ coins }) => {
 				<div className="mt-5">
 					<div style={{ display: 'flex', justifyContent: 'space-between' }}>
 						<div style={{ position: 'relative', bottom: 16 }}>
-							<div style={{ marginBottom: 3 }}>Search Tier</div>
-							<Input
-								value={tierFilter}
-								onChange={(e) => {
-									setTierFilter(e.target.value);
-								}}
-								style={{ width: 200 }}
-								placeholder={'Enter tier'}
-							/>
-						</div>
+							<div style={{ marginBottom: 3 }}>Tiers</div>
 
-						<div>
-							<span>
-								<Button
-									onClick={() => {
-										setDisplayCostumizationModal(true);
-									}}
-									style={{
-										backgroundColor: '#288500',
-										color: 'white',
-										flex: 1,
-										height: 35,
-										marginRight: 10,
-									}}
-									type="default"
-								>
-									Create New Transaction Limit
-								</Button>
-							</span>
-							{/* <span>Total: {queryFilters.total || '-'}</span> */}
+							<Select
+								showSearch
+								value={tierFilter}
+								placeholder="Tiers"
+								style={{ color: 'black', width: 150 }}
+								notFoundContent={'Not Found'}
+								onChange={(value) => {
+									setTierFilter(value);
+								}}
+							>
+								<Option value={null}>All</Option>
+								{Object.values(userTiers || {}).map((tier) => (
+									<Option value={tier.id}>Tier {tier.id}</Option>
+								))}
+							</Select>
 						</div>
 					</div>
 
-					<div className="mt-4" style={{ marginBottom: 80 }}>
+					<div className="mt-4" style={{}}>
 						<Spin spinning={isLoading}>
+							<div
+								style={{
+									marginBottom: 10,
+									display: 'flex',
+									justifyContent: 'space-between',
+								}}
+							>
+								<div>
+									<div style={{ fontSize: 20, marginBottom: 3 }}>
+										Independent Limits
+									</div>
+									<div style={{ color: '#ccc' }}>
+										Unique daily and monthly withdrawal limits in the asset's
+										own currency.
+									</div>
+								</div>
+
+								<div>
+									<span>
+										<Button
+											onClick={() => {
+												setDisplayIndependentModal(true);
+											}}
+											style={{
+												backgroundColor: '#288500',
+												color: 'white',
+												flex: 1,
+												height: 35,
+												marginRight: 10,
+											}}
+											type="default"
+										>
+											Create Independent Limit
+										</Button>
+									</span>
+								</div>
+							</div>
 							<Table
 								className="blue-admin-table"
 								columns={columns}
 								dataSource={(coinData || [])
 									.sort((a, b) => Number(a.tier) - Number(b.tier))
 									.filter((a) => a.type !== 'deposit')
+									.filter((a) => a.limit_currency !== 'default')
 									.filter((a) =>
-										tierFilter?.length > 0
-											? a.tier === Number(tierFilter)
-											: true
+										tierFilter != null ? a.tier === Number(tierFilter) : true
 									)}
 								// expandedRowRender={renderRowContent}
 								// expandRowByClick={true}
@@ -298,20 +347,84 @@ const TransactionLimits = ({ coins }) => {
 								// 	onChange: pageChange,
 								// }}
 
-								pagination={false}
+								pagination={{ pageSize: 6 }}
+							/>
+						</Spin>
+					</div>
+
+					<div className="mt-4" style={{ marginBottom: 80 }}>
+						<Spin spinning={isLoading}>
+							<div
+								style={{
+									marginBottom: 10,
+									display: 'flex',
+									justifyContent: 'space-between',
+								}}
+							>
+								<div>
+									<div style={{ fontSize: 20, marginBottom: 3 }}>
+										Collective Aggregation Limits
+									</div>
+									<div style={{ color: '#ccc' }}>
+										Unified limit for multiple currencies. Shared standard
+										combines withdrawal limits, ensuring consistency and
+										simplification of withdrawal management.
+									</div>
+								</div>
+								<div>
+									<span>
+										<Button
+											onClick={() => {
+												setDisplayCostumizationModal(true);
+											}}
+											style={{
+												backgroundColor: '#288500',
+												color: 'white',
+												flex: 1,
+												height: 35,
+												marginRight: 10,
+											}}
+											type="default"
+										>
+											Create Collective Limit
+										</Button>
+									</span>
+								</div>
+							</div>
+							<Table
+								className="blue-admin-table"
+								columns={columns}
+								dataSource={(coinData || [])
+									.sort((a, b) => Number(a.tier) - Number(b.tier))
+									.filter((a) => a.type !== 'deposit')
+									.filter((a) => a.limit_currency === 'default')
+									.filter((a) =>
+										tierFilter != null ? a.tier === Number(tierFilter) : true
+									)}
+								// expandedRowRender={renderRowContent}
+								// expandRowByClick={true}
+								rowKey={(data) => {
+									return data.id;
+								}}
+								// pagination={{
+								// 	current: queryFilters.currentTablePage,
+								// 	onChange: pageChange,
+								// }}
+
+								pagination={{ pageSize: 6 }}
 							/>
 						</Spin>
 					</div>
 				</div>
 
-				{displayCostumizationModal && (
+				{displayIndependentModal && (
 					<Modal
 						maskClosable={false}
 						closeIcon={<CloseOutlined style={{ color: 'white' }} />}
 						bodyStyle={{
 							backgroundColor: '#27339D',
 						}}
-						visible={displayCostumizationModal}
+						visible={displayIndependentModal}
 						footer={null}
 						onCancel={() => {
 							handleCostumizationModal();
@@ -325,10 +438,12 @@ const TransactionLimits = ({ coins }) => {
 								marginBottom: 10,
 							}}
 						>
-							{editMode ? 'Edit' : 'Create'} Transaction Limit
+							Independent Withdrawal Limit
 						</div>
-						<div style={{ marginBottom: 30 }}>
-							Congifure transaction attributes
+						<div style={{ marginBottom: 30, color: '#ccc' }}>
+							Unique daily and monthly withdrawal limits in the asset's own
+							currency. Ensures autonomy and control over withdrawal rules for a
+							single listed asset.
 						</div>
 						<div style={{ marginBottom: 20 }}>
 							<div style={{ marginBottom: 10 }}>
@@ -337,6 +452,7 @@ const TransactionLimits = ({ coins }) => {
 									showSearch
 									value={selectedData.tier !== null ? selectedData.tier : null}
 									placeholder="Select Tier Level"
+									disabled={editMode}
 									style={{ color: 'black', width: '100%' }}
 									notFoundContent={'Not Found'}
 									onChange={(value) => {
@@ -348,6 +464,30 @@ const TransactionLimits = ({ coins }) => {
 								>
 									{Object.values(userTiers || {}).map((tier) => (
 										<Option value={tier.id}>{tier.id}</Option>
+									))}
+								</Select>
+							</div>
+
+							<div style={{ marginBottom: 10 }}>
+								<div className="mb-1">Currency</div>
+								<div style={{ color: '#ccc', marginBottom: 5, fontSize: 12 }}>
+									Select currency asset to be withdrawn
+								</div>
+								<Select
+									showSearch
+									value={selectedData.currency || null}
+									placeholder="Select currency"
+									style={{ color: 'black', width: '100%' }}
+									notFoundContent={'Not Found'}
+									onChange={(value) => {
+										setSelectedData({
+											...selectedData,
+											currency: value,
+										});
+									}}
+								>
+									{Object.values(coins || {}).map((coin) => (
+										<Option value={coin.symbol}>{coin.symbol}</Option>
 									))}
 								</Select>
 							</div>
@@ -387,11 +527,137 @@ const TransactionLimits = ({ coins }) => {
 									}}
 								/>
 							</div>
+						</div>
+						<div
+							style={{
+								display: 'flex',
+								flexDirection: 'row',
+								gap: 15,
+								justifyContent: 'space-between',
+								marginBottom: 20,
+							}}
+						>
+							<Button
+								onClick={() => {
+									handleCostumizationModal();
+								}}
+								style={{
+									backgroundColor: '#288500',
+									color: 'white',
+									flex: 1,
+									height: 35,
+								}}
+								type="default"
+							>
+								Back
+							</Button>
+							<Button
+								onClick={async () => {
+									try {
+										if (
+											selectedData.tier == null ||
+											selectedData.amount == null ||
+											!selectedData.currency
+										) {
+											message.error('Please input all the fields');
+											return;
+										}
 
+										selectedData.limit_currency = selectedData.currency;
+										selectedData.type = 'withdrawal';
+										selectedData.amount = Number(selectedData.amount);
+										if (selectedData.monthly_amount != null)
+											selectedData.monthly_amount = Number(
+												selectedData.monthly_amount
+											);
+
+										await updateTransactionLimits(selectedData);
+										requesTransactionLimits();
+										message.success('Changes saved.');
+										handleCostumizationModal();
+									} catch (error) {
+										message.error(error.response.data.message);
+									}
+								}}
+								style={{
+									backgroundColor: '#288500',
+									color: 'white',
+									flex: 1,
+									height: 35,
+								}}
+								type="default"
+							>
+								PROCEED
+							</Button>
+						</div>
+					</Modal>
+				)}
+
+				{displayCostumizationModal && (
+					<Modal
+						maskClosable={false}
+						closeIcon={<CloseOutlined style={{ color: 'white' }} />}
+						bodyStyle={{
+							backgroundColor: '#27339D',
+						}}
+						visible={displayCostumizationModal}
+						footer={null}
+						onCancel={() => {
+							handleCostumizationModal();
+						}}
+					>
+						<div
+							style={{
+								fontWeight: '600',
+								color: 'white',
+								fontSize: 18,
+								marginBottom: 10,
+							}}
+						>
+							Create Collective Aggregation Withdrawal Limits
+						</div>
+						<div style={{ marginBottom: 30, color: '#ccc' }}>
+							Unified limit for multiple currencies. Shared standard combines
+							withdrawal limits, ensuring consistency and simplification of
+							withdrawal management.
+						</div>
+						<div style={{ marginBottom: 20 }}>
 							<div style={{ marginBottom: 10 }}>
-								<div className="mb-1">Currency</div>
+								<div className="mb-1">Tier</div>
+								<Select
+									showSearch
+									value={selectedData.tier !== null ? selectedData.tier : null}
+									placeholder="Select Tier Level"
+									style={{ color: 'black', width: '100%' }}
+									notFoundContent={'Not Found'}
+									disabled={editMode}
+									onChange={(value) => {
+										setSelectedData({
+											...selectedData,
+											tier: value,
+										});
+									}}
+								>
+									{Object.values(userTiers || {}).map((tier) => (
+										<Option value={tier.id}>{tier.id}</Option>
+									))}
+								</Select>
+							</div>
+
+							<div style={{ marginBottom: 20, marginTop: 20 }}>
+								Currency asset collection:{' '}
+								{selectedData.tier != null
+									? getAccumulatedCoins(selectedData.tier)
+									: ''}
+							</div>
+
+							<div style={{ marginBottom: 30 }}>
+								<div className="mb-1">
+									Withdrawal value denominator currency
+								</div>
 								<div style={{ color: '#ccc', marginBottom: 5, fontSize: 12 }}>
-									Currency of the amount
+									Select currency asset denomination for determining withdrawal
+									value amounts
 								</div>
 								<Select
 									showSearch
@@ -411,51 +677,41 @@ const TransactionLimits = ({ coins }) => {
 									))}
 								</Select>
 							</div>
+
 							<div style={{ marginBottom: 10 }}>
-								<div className="mb-1">Limit Currency</div>
-								<div style={{ color: '#ccc', marginBottom: 5, fontSize: 12 }}>
-									Currency of the accumulated amount for the limit check
+								<div className="mb-1">
+									Daily Amount{' '}
+									<span style={{ fontSize: 12, color: '#ccc' }}>
+										(Input 0 if you want it unlimited or -1 if you want to
+										disable withdrawal for the tier.)
+									</span>
 								</div>
-								<Select
-									showSearch
-									value={selectedData.limit_currency || null}
-									placeholder="Select limit currency"
-									style={{ color: 'black', width: '100%' }}
-									notFoundContent={'Not Found'}
-									onChange={(value) => {
+								<Input
+									type="number"
+									placeholder="Enter amount"
+									value={selectedData.amount}
+									onChange={(e) => {
 										setSelectedData({
 											...selectedData,
-											limit_currency: value,
+											amount: e.target.value,
 										});
 									}}
-								>
-									<Option value={'default'}>
-										Aggregated (all coins in the exchange)
-									</Option>
-									{Object.values(coins || {}).map((coin) => (
-										<Option value={coin.symbol}>{coin.symbol}</Option>
-									))}
-								</Select>
+								/>
 							</div>
 
 							<div style={{ marginBottom: 10 }}>
-								<div className="mb-1">Type</div>
-								<Select
-									showSearch
-									value={selectedData.type || null}
-									placeholder="Select Type"
-									style={{ color: 'black', width: '100%' }}
-									notFoundContent={'Not Found'}
-									onChange={(value) => {
+								<div className="mb-1">Monthly Amount</div>
+								<Input
+									type="number"
+									placeholder="Enter monthly amount"
+									value={selectedData.monthly_amount}
+									onChange={(e) => {
 										setSelectedData({
 											...selectedData,
-											type: value,
+											monthly_amount: e.target.value,
 										});
 									}}
-								>
-									<Option value={'withdrawal'}>Withdrawal</Option>
-									{/* <Option value={'deposit'}>Deposit</Option> */}
-								</Select>
+								/>
 							</div>
 						</div>
 						<div
@@ -487,14 +743,14 @@ const TransactionLimits = ({ coins }) => {
 										if (
 											selectedData.tier == null ||
 											selectedData.amount == null ||
-											!selectedData.currency ||
-											!selectedData.limit_currency ||
-											!selectedData.type
+											!selectedData.currency
 										) {
 											message.error('Please input all the fields');
 											return;
 										}
 
+										selectedData.limit_currency = 'default';
+										selectedData.type = 'withdrawal';
 										selectedData.amount = Number(selectedData.amount);
 										if (selectedData.monthly_amount != null)
 											selectedData.monthly_amount = Number(
@@ -607,4 +863,11 @@ const mapStateToProps = (state) => ({
 	coins: state.app.coins,
 });
 
-export default connect(mapStateToProps)(withConfig(TransactionLimits));
+const mapDispatchToProps = (dispatch) => ({
+	setLimits: bindActionCreators(setTransactionLimits, dispatch),
+});
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withConfig(TransactionLimits));
