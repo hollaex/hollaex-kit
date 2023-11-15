@@ -540,8 +540,9 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 						</h1>
 						<div>
 							{STRINGS['CEFI_STAKE.LOCKUP_DURATION_LABEL']}:{' '}
-							{`${selectedPool.duration} days` || 'Perpetual'}
-							{/* 365 days (12/12/23) */}
+							{selectedPool.duration
+								? `${selectedPool.duration} days`
+								: 'Perpetual'}
 						</div>
 						<div>-</div>
 
@@ -1365,8 +1366,9 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 								}}
 							>
 								<div>
-									<div>{STRINGS['CEFI_STAKE.CURRENT_STAKING_VALUE']}:</div>
-									{/* <div>USDT 0: (VIEW)</div> */}
+									{userStakeData?.length > 0 && (
+										<div>{STRINGS['CEFI_STAKE.CURRENT_STAKING_VALUE']}:</div>
+									)}
 									<div>
 										{accumulateAmount(userStakeData).map((stake) => (
 											<div>
@@ -1615,7 +1617,9 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 							>
 								<div>
 									<div style={{ marginBottom: 20 }}>
-										<div>{STRINGS['CEFI_STAKE.ESTIMATED_TOTAL_STAKED']}</div>
+										{userStakeData?.length > 0 && (
+											<div>{STRINGS['CEFI_STAKE.ESTIMATED_TOTAL_STAKED']}</div>
+										)}
 										<div style={{ fontSize: 18 }}>
 											{accumulateAmount(userStakeData).map((stake) => (
 												<div>
@@ -1625,7 +1629,11 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 										</div>
 									</div>
 									<div>
-										<div>{STRINGS['CEFI_STAKE.ESTIMATED_EARNINGS_VALUE']}</div>
+										{userStakeData?.length > 0 && (
+											<div>
+												{STRINGS['CEFI_STAKE.ESTIMATED_EARNINGS_VALUE']}
+											</div>
+										)}
 										<div style={{ fontSize: 18 }}>
 											{accumulateReward(userStakeData).map((stake) => {
 												const incrementUnit =
