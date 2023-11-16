@@ -224,10 +224,10 @@ const getRowsCollective = (
 
 									<td>
 										<div style={{ fontSize: 11, color: '#ccc' }}>
-											<EditWrapper stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.LIMIT_TEXT_3">
+											<EditWrapper stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.LIMIT_TEXT_4">
 												{STRINGS.formatString(
 													STRINGS[
-														'FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.LIMIT_TEXT_3'
+														'FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.LIMIT_TEXT_4'
 													],
 													limit?.currency?.toUpperCase() || 'USDT'
 												)}
