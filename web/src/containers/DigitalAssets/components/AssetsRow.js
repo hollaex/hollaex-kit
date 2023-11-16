@@ -99,7 +99,7 @@ const AssetsRow = ({
 			</td>
 			<td className="td-chart">
 				<MiniSparkLine
-					chartData={chartData.price}
+					chartData={chartData?.price || []}
 					isArea
 				/>
 			</td>

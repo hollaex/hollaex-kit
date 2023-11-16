@@ -909,7 +909,7 @@ const settleFees = (req, res) => {
 		}
 	})
 		.then((data) => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
+			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, 'post', { user_id  });
 			return res.json(data);
 		})
 		.catch((err) => {
@@ -2157,7 +2157,6 @@ const generateDashToken = (req, res) => {
 		}
 	})
 		.then(({ token }) => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
 			if (!token) {
 				throw new Error('We could not generate the token. Please try again.');
 			}

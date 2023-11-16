@@ -20,11 +20,6 @@ export const ADMIN_PATHS = [
 		routeKey: 'user',
 	},
 	{
-		path: '/admin/audits',
-		label: 'Audits',
-		routeKey: 'audits',
-	},
-	{
 		path: '/admin/financials',
 		label: 'Assets',
 		routeKey: 'financials',
@@ -60,6 +55,11 @@ export const ADMIN_PATHS = [
 		// component: BlockchainTransaction,
 		label: 'Tiers',
 		routeKey: 'tiers',
+	},
+	{
+		path: '/admin/audits',
+		label: 'Admin Logs',
+		routeKey: 'audits',
 	},
 	{
 		path: '/admin/roles',

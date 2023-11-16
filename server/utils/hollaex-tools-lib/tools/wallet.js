@@ -5,7 +5,7 @@ const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 const { WITHDRAWALS_REQUEST_KEY } = require(`${SERVER_PATH}/constants`);
 const { verifyOtpBeforeAction } = require('./security');
-const { subscribedToCoin, getKitCoin, getKitSecrets, getKitConfig, sleep } = require('./common');
+const { subscribedToCoin, getKitCoin, getKitSecrets } = require('./common');
 const {
 	INVALID_OTP_CODE,
 	INVALID_WITHDRAWAL_TOKEN,
@@ -31,7 +31,6 @@ const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const moment = require('moment');
 const math = require('mathjs');
 const { parse } = require('json2csv');
-const { loggerWithdrawals } = require(`${SERVER_PATH}/config/logger`);
 const { has } = require('lodash');
 const WAValidator = require('multicoin-address-validator');
 const { isEmail } = require('validator');
@@ -107,7 +106,7 @@ const findLimit = (limits = [], currency) => {
 	const defaultLimit = limits.find(limit => limit.limit_currency === 'default');
 
 	return independentLimit || defaultLimit;
-}
+};
 
 
 
@@ -122,7 +121,7 @@ const sendRequestWithdrawalEmail = (user_id, address, amount, currency, opts = {
 }) => {
 	let fee = opts.fee;
 	let fee_coin = opts.fee_coin;
-	let fee_markup
+	// let fee_markup
 
 	return verifyOtpBeforeAction(user_id, opts.otpCode)
 		.then((validOtp) => {
@@ -136,7 +135,7 @@ const sendRequestWithdrawalEmail = (user_id, address, amount, currency, opts = {
 				const withdrawal = await validateWithdrawal(user, address, amount, currency, opts.network);
 				fee = withdrawal.fee;
 				fee_coin = withdrawal.fee_coin;
-				fee_markup =  withdrawal.fee_markup;
+				// fee_markup =  withdrawal.fee_markup;
 			}
 			
 
@@ -148,7 +147,7 @@ const sendRequestWithdrawalEmail = (user_id, address, amount, currency, opts = {
 					amount,
 					fee,
 					fee_coin,
-					fee_markup,
+					// fee_markup,
 					transaction_id: uuid(),
 					address,
 					currency,
@@ -167,14 +166,14 @@ const withdrawalRequestEmail = (user, data, domain, ip) => {
 
 	return client.hsetAsync(WITHDRAWALS_REQUEST_KEY, token, stringData)
 		.then(() => {
-			const { email, amount, fee, fee_coin, fee_markup, currency, address, network } = data;
+			const { email, amount, fee, fee_coin, currency, address, network } = data;
 			sendEmail(
 				MAILTYPE.WITHDRAWAL_REQUEST,
 				email,
 				{
 					amount,
 					fee,
-					fee_markup,
+					// fee_markup,
 					fee_coin: (getKitCoin(fee_coin).display_name) ? getKitCoin(fee_coin).display_name : fee_coin,
 					currency: (getKitCoin(currency).display_name) ? getKitCoin(currency).display_name : currency,
 					transaction_id: token,
@@ -256,7 +255,7 @@ const performWithdrawal = (userId, address, currency, amount, opts = {
 			} else if (!user.network_id) {
 				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
 			}
-			return user
+			return user;
 		})
 		.then((user) => {
 			return getNodeLib().performWithdrawal(user.network_id, address, currency, amount, opts);
@@ -282,7 +281,7 @@ const performWithdrawalNetwork = (networkId, address, currency, amount, opts = {
 const calculateWithdrawalMax = async (user_id, currency, selectedNetwork) => {
 	if (!subscribedToCoin(currency)) {
 		throw new Error('Invalid coin ' + currency);
- 	}
+	}
 
 	const user = await getUserByKitId(user_id);
 	const balance = await getNodeLib().getUserBalance(user.network_id);
@@ -291,9 +290,8 @@ const calculateWithdrawalMax = async (user_id, currency, selectedNetwork) => {
 	if (amount === 0) return { amount };
 
 	const coinConfiguration = getKitCoin(currency);
-	const coinMarkup = getKitConfig()?.coin_customizations?.[currency];
+	// const coinMarkup = getKitConfig()?.coin_customizations?.[currency];
 
-	const { fee, fee_coin } = getWithdrawalFee(currency, selectedNetwork, amount, user.verification_level);
 	const { increment_unit } = coinConfiguration;
 
 
@@ -304,52 +302,45 @@ const calculateWithdrawalMax = async (user_id, currency, selectedNetwork) => {
 		throw new Error('There is no limit rule defined for the currency ', + currency);
 	}
 
-	if(transactionLimit.amount === -1) throw new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency));
+	if (transactionLimit.amount === -1) throw new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency));
+	if (transactionLimit?.monthly_amount === -1) throw new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency));
 
-	if(transactionLimit.amount !== 0) {
-		amount = BigNumber.minimum(transactionLimit.amount, amount).toNumber();
+	if (transactionLimit.amount > 0) {
 
-		const withdrawalHistory = await withdrawalBelowLimit(user.network_id, currency, amount, transactionLimits, false);
-	
-		const totalAmount = withdrawalHistory?.withdrawalAmountLastMonth || withdrawalHistory?.withdrawalAmount24Hours || 0;
-		if (currency !== transactionLimit.currency && totalAmount > 0) {
+		let amountMultiplier = 1;
+
+		if (currency !== transactionLimit.currency) {
 			const convertedWithdrawalAmount = await getNodeLib().getOraclePrices([transactionLimit.currency], {
 				quote: currency,
-				amount: totalAmount
+				amount: 1
 			});
-	
+
 			if (convertedWithdrawalAmount[transactionLimit.currency] === -1) {
 				throw new Error(`No conversion found between ${currency} and ${transactionLimit.currency}`);
 			}
 
 			if (convertedWithdrawalAmount[transactionLimit.currency]) 
-				amount = new BigNumber(amount).minus(new BigNumber(convertedWithdrawalAmount[transactionLimit.currency])).toNumber();
-				
-		} else {
-			amount = new BigNumber(amount).minus(new BigNumber(totalAmount)).toNumber();
-		}
-	
-	}
-	
-	//Subtract the fees
-
-	if (coinMarkup?.fee_markup) {
-		amount = new BigNumber(amount).minus(new BigNumber(coinMarkup.fee_markup)).toNumber();
-	}
-
-	if (fee_coin && fee_coin === currency) {
-		amount = new BigNumber(amount).minus(new BigNumber(fee)).toNumber();
-	} else if(fee_coin && fee_coin !== currency && fee > 0) {
-		const convertedFee = await getNodeLib().getOraclePrices([fee_coin], {
-			quote: currency,
-			amount: fee
-		});
-
-		if (convertedFee[fee_coin] === -1) {
-			throw new Error(`No conversion found between ${currency} and ${fee_coin}`);
+				amountMultiplier = new BigNumber(convertedWithdrawalAmount[transactionLimit.currency]).toNumber();
 		}
 
-		amount = new BigNumber(amount).minus(new BigNumber(convertedFee[fee_coin])).toNumber();
+
+		const withdrawalHistory = await withdrawalBelowLimit(user.network_id, currency, amount, transactionLimits, false);
+		const convertedLast24Amount =  (amountMultiplier * withdrawalHistory?.withdrawalAmount24Hours) || 0;
+		const convertedLastMonthAmount =  (amountMultiplier * withdrawalHistory?.withdrawalAmountLastMonth) || 0;
+
+		const dailyAmount = amountMultiplier * transactionLimit.amount;
+		const monthlyAmount = amountMultiplier * (transactionLimit.monthly_amount || 0);
+
+
+		const dailyWithdrawalLeft = new BigNumber(dailyAmount).minus(new BigNumber(convertedLast24Amount).plus(amount)).toNumber();
+		const monthlyWithdrawalLeft = transactionLimit.monthly_amount > 0 ? new BigNumber(monthlyAmount).minus(new BigNumber(convertedLastMonthAmount).plus(amount)).toNumber() : 0;
+
+		const amountToSubtract = monthlyWithdrawalLeft < dailyWithdrawalLeft ? monthlyWithdrawalLeft : dailyWithdrawalLeft;
+		if (amountToSubtract < 0) {
+			amount = new BigNumber(amount).minus(new BigNumber(amountToSubtract).absoluteValue()).toNumber();
+		}
+
+		amount = BigNumber.minimum(dailyAmount, amount).toNumber();
 	}
 
 	if (amount < 0) {
@@ -363,7 +354,7 @@ const calculateWithdrawalMax = async (user_id, currency, selectedNetwork) => {
 
 const validateWithdrawal = async (user, address, amount, currency, network = null) => {
 	const coinConfiguration = getKitCoin(currency);
-	const coinMarkup = getKitConfig()?.coin_customizations?.[currency];
+	// const coinMarkup = getKitConfig()?.coin_customizations?.[currency];
 	if (!subscribedToCoin(currency)) {
 		throw new Error(INVALID_COIN(currency));
 	}
@@ -409,14 +400,6 @@ const validateWithdrawal = async (user, address, amount, currency, network = nul
 
 	const balance = await getNodeLib().getUserBalance(user.network_id);
 
-	if (coinMarkup?.fee_markup) {
-		if (math.compare(coinMarkup?.fee_markup, balance[`${currency}_available`]) === 1) {
-			throw new Error(
-				`User ${currency} balance is lower than withdrawal fee markup amount "${coinMarkup?.fee_markup}"`
-			);
-		}
-	}
-
 	if (fee_coin === currency) {
 		const totalAmount =
 			fee > 0
@@ -449,7 +432,7 @@ const validateWithdrawal = async (user, address, amount, currency, network = nul
 	return {
 		fee,
 		fee_coin,
-		...(coinMarkup?.fee_markup && { fee_markup: coinMarkup.fee_markup })
+		// ...(coinMarkup?.fee_markup && { fee_markup: coinMarkup.fee_markup })
 	};
 };
 
@@ -482,8 +465,9 @@ const withdrawalBelowLimit = async (userId, currency, amount = 0, transactionLim
 
 	// if limit is -1 it means it's disabled
 	if (last24HoursLimit === -1) throw new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency));
+	if (lastMonthLimit === -1) throw new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency));
 	// if limit is 0 it means it's limitless
-	if (last24HoursLimit === 0) return;
+	if (last24HoursLimit === 0 && lastMonthLimit === 0) return;
 
 	// totalWithdrawalAmount will be compared to the set limit above
 	// we initialize it with the amount we want to withdraw
@@ -513,18 +497,18 @@ const withdrawalBelowLimit = async (userId, currency, amount = 0, transactionLim
 
 	// Add the accumulated withdrawal amount to totalWithdrawalAmount variable. We are now done with the calculations
 	const totalWithdrawalAmount24Hours = totalWithdrawalAmount.plus(new BigNumber(withdrawalAmount['24h'] || 0)).toNumber();
-	const totalWithdrawalAmountLastMonth = withdrawalAmount['1m'] ? totalWithdrawalAmount.plus(new BigNumber(withdrawalAmount['1m'])).toNumber() : null;
+	const totalWithdrawalAmountLastMonth = totalWithdrawalAmount.plus(new BigNumber(withdrawalAmount['1m'] || 0)).toNumber();
 
 	// Compare the final amount the the limit defined in the limit info, if it exceeds the limit, we should not allow the withdrawal to happen
-	if (totalWithdrawalAmount24Hours > last24HoursLimit && throwError) {
+	if (last24HoursLimit > 0 && totalWithdrawalAmount24Hours > last24HoursLimit && throwError) {
 		throw new Error(
-			`Total withdrawn amount would exceed withdrawal limit of ${last24HoursLimit} ${transactionLimit.currency}. Withdrawn amount: ${totalWithdrawalAmount24Hours} ${transactionLimit.currency}. Request amount: ${amount} ${currency}`
+			`Total withdrawn amount would exceed withdrawal limit of ${last24HoursLimit} ${transactionLimit.currency}. Last 24 hours withdrawn amount: ${totalWithdrawalAmount24Hours} ${transactionLimit.currency}. Request amount: ${amount} ${currency}`
 		);
 	}
 
-	if (totalWithdrawalAmountLastMonth > lastMonthLimit && throwError) {
+	if (lastMonthLimit > 0 && totalWithdrawalAmountLastMonth > lastMonthLimit && throwError) {
 		throw new Error(
-			`Total withdrawn amount would exceed withdrawal limit of ${lastMonthLimit} ${transactionLimit.currency}. Withdrawn amount: ${totalWithdrawalAmountLastMonth} ${transactionLimit.currency}. Request amount: ${amount} ${currency}`
+			`Total withdrawn amount would exceed withdrawal limit of ${lastMonthLimit} ${transactionLimit.currency}. Last month withdrawn amount: ${totalWithdrawalAmountLastMonth} ${transactionLimit.currency}. Request amount: ${amount} ${currency}`
 		);
 	}
 
@@ -539,51 +523,56 @@ const getAccumulatedWithdrawals = async (userId, transactionLimit, excludedCurre
 
 	const withdrawalHistory = {};
 
-	const periods = ['24h'];
-	//monthly amount is optional, if it is defined and bigger than we should also calculate it
+	const periods = [];
+	if(transactionLimit?.amount > 0) periods.push('24h');
 	if(transactionLimit?.monthly_amount > 0) periods.push('1m');
 
+	const withdrawals = await getNodeLib().getUserWithdrawals(userId, {
+		currency,
+		dismissed: false,
+		rejected: false,
+		format: 'all',
+		startDate: transactionLimit?.monthly_amount > 0 ? moment().subtract(1, 'months').toISOString() : moment().subtract(24, 'hours').toISOString()
+	});
+
 	for (const period of periods) {
-		const withdrawals = await getNodeLib().getUserWithdrawals(userId, {
-			currency,
-			dismissed: false,
-			rejected: false,
-			format: 'all',
-			startDate: period === '24h' ? moment().subtract(24, 'hours').toISOString() : moment().subtract(1, 'months').toISOString()
-		});
-	
 	
 		//Accumulate the amounts based on currency
-		const withdrawalData = withdrawals.data;
+		// If it's last month records, Extract the last 24 hours for daily limit calculation. 
+		const withdrawalData = (transactionLimit?.monthly_amount > 0 && period === '24h')
+			? (withdrawals.data || []).filter(withdrawal => moment(withdrawal.created_at) >= moment().subtract(24, 'hours')) 
+			: withdrawals.data;
+		
 		const withdrawalAmount = {};
-	
 		for (let withdrawal of withdrawalData) {
 			withdrawalAmount[withdrawal.currency] = new BigNumber(withdrawalAmount[withdrawal.currency] || 0).plus(withdrawal.amount).toNumber();
 		}
 	
-		let totalWithdrawalAmount = 0;
-	
 		// if the limit currency in the limit info is a specific coin, we do not need to do accumulation based on all coins
 		// in this case, We only want to fetch the accumulated amount of the specific coin
 		if (currency && withdrawalAmount[currency]) { 
-			withdrawalHistory[period] = totalWithdrawalAmount = withdrawalAmount[currency];
+			withdrawalHistory[period] = withdrawalAmount[currency];
 			continue;
-		};
-	
+		}
+
+		let totalWithdrawalAmount = 0;
+
+		const withdrawalCurrencies = Object.keys(withdrawalAmount || {});
+		const convertedAmount = withdrawalCurrencies.length > 0 && await getNodeLib().getOraclePrices(withdrawalCurrencies, {
+			quote: transactionLimit.currency,
+			amount: 1
+		});
+
 		// if the limit currency in the limit info is default, we will run this loop to accumulate the withdrawal amounts of all coin
 		// but since coins are different from each other, we will convert them to currency defined in the limit info and then accumulate them 
-		for (let withdrawalCurrency in withdrawalAmount) {
-	
-			if(excludedCurrencies.indexOf(withdrawalCurrency) > -1) continue;
-	
-			const convertedAmount = await getNodeLib().getOraclePrices([withdrawalCurrency], {
-				quote: transactionLimit.currency,
-				amount: withdrawalAmount[withdrawalCurrency]
-			});
-	
+		for (const withdrawalCurrency of withdrawalCurrencies) {
+			if (excludedCurrencies.indexOf(withdrawalCurrency) > -1) continue;
+			if (!convertedAmount[withdrawalCurrency]) continue;
 			if (convertedAmount[withdrawalCurrency] === -1) continue;
-	
-			totalWithdrawalAmount = new BigNumber(totalWithdrawalAmount).plus(convertedAmount[withdrawalCurrency]).toNumber();
+
+			const totalAmount = new BigNumber(withdrawalAmount[withdrawalCurrency]).multipliedBy(convertedAmount[withdrawalCurrency]);
+		
+			totalWithdrawalAmount = new BigNumber(totalWithdrawalAmount).plus(totalAmount).toNumber();
 		}
 	
 		withdrawalHistory[period] = totalWithdrawalAmount;

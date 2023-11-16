@@ -1599,11 +1599,18 @@
 					},
 					"LIMIT_TEXT": "(Assets that all share a collective withdrawal limit amount)",
 					"LIMIT_TEXT_2": "(Limit based only on its own currency)",
-					"LIMIT_TEXT_3": "(Limit based on aggreation of other currencies)"
+					"VALUED": "(Valued)",
+					"NO_INDEPENDENT": "There is no independent limit for this tier",
+					"LIMIT_TEXT_3": "(Assets that all share a collective daily withdrawal limit amount denominated in {0})",
+					"LIMIT_TEXT_4": "(Assets that all share a collective monthly withdrawal limit amount denominated in {0})"
 				},
 				"TABLE_2": {
-					"TITLE": "Asset withdrawal limits",
-					"SUBTITLE": "Below are the assets with their withdrawal limit amount rules:"
+					"TITLE": "Independent Limits",
+					"SUBTITLE": "Assets with their own daily and monthly withdarawal limits in their own currency:"
+				},
+				"TABLE_3": {
+					"TITLE": "Collective Limits",
+					"SUBTITLE": "Combined daily and monthly withdrawal limit for a group of coins"
 				}
 			}
 		}

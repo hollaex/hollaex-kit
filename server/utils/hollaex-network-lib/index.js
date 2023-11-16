@@ -511,9 +511,9 @@ class HollaExNetwork {
 		if (opts.network) {
 			data.network = opts.network;
 		}
-		if (opts.fee_markup) {
-			data.fee_markup = opts.fee_markup
-		}
+		// if (opts.fee_markup) {
+		// 	data.fee_markup = opts.fee_markup
+		// }
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
