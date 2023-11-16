@@ -55,7 +55,7 @@ const CoinPage = ({
 		currentQuicktradePair &&
 		[TYPES.NETWORK, TYPES.BROKER].includes(quicktradePairs[currentQuicktradePair].type);
 
-	const isNetwork = quicktradePairs[currentQuicktradePair].type === TYPES.NETWORK;
+	const isNetwork = quicktradePairs[currentQuicktradePair]?.type === TYPES.NETWORK;
 
 	const [data, setData] = useState([]);
 	const [chartData, setChartData] = useState({});
