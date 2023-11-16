@@ -427,7 +427,7 @@ class AppWrapper extends React.Component {
 		} else if (location.pathname.includes('/admin/billing')) {
 			return 'Billing';
 		} else if (location.pathname.includes('/admin/audits')) {
-			return 'Audits';
+			return 'Operator Logs';
 		} else if (location.pathname.includes('/admin/collateral')) {
 			return 'Collateral';
 		} else if (location.pathname.includes('/admin/resources')) {

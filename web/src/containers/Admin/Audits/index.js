@@ -50,7 +50,7 @@ const defaultFilters = [
 	{
 		field: 'subject',
 		type: 'string',
-		label: 'Action Owner Email',
+		label: 'Operator Email',
 		value: null,
 	},
 	{
@@ -207,7 +207,7 @@ const Audits = ({ constants }) => {
 			) : (
 				<>
 					<div style={{ color: '#ccc', marginTop: 20, marginBottom: 30 }}>
-						Below are logs of the actions performed by admin typed users
+						Below are logs of the actions performed by exchange operators. It tracks and stores a list of activities done on the operator control for audit purposes.
 					</div>
 
 					<div style={{ marginTop: 20 }}>
