@@ -245,6 +245,9 @@ const nestedIcons = {
 
 	REFER_ICON: '/assets/images/refer-icon.svg',
 	STAKETOKEN_ICON: '/assets/images/stake.svg',
+	STAKING_1: '/assets/images/staking_1.png',
+	STAKING_2: '/assets/images/staking_2.svg',
+	STAKING_3: '/assets/images/staking_3.svg',
 	DEFAULT_ICON: '/assets/icons/coin-graphic-not-detected.svg',
 	EXPIRED_ICON: '/assets/images/expired.svg',
 
@@ -284,6 +287,11 @@ const nestedIcons = {
 	//should move this to the plugin itself once the functionality is added
 	GENERATE_REFERENCE_NUMBER: '/assets/icons/generate-reference-number-01.svg',
 	OSKO_LOGO: '/assets/icons/osko-logo.svg',
+
+	REFRESH_ICON: '/assets/icons/refresh-icon.svg',
+	WALLET_GRAPHIC: '/assets/images/wallet-background-graphic-dark-theme.svg',
+	WALLET_ARROW_DOWN: '/assets/images/deposit-arrow-down.svg',
+	WALLET_ARROW_UP: '/assets/images/withdraw-arrow-up.svg',
 };
 
 const icons = flatten(nestedIcons, options);

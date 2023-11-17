@@ -206,7 +206,7 @@
 .about-title {
 	border-bottom: 1px solid #c4c4c4;
 	font-weight: bold;
-	padding: 10px;
+	padding: 10px 0px;
 	margin-bottom: 8px;
 }
 .verification-docs-container {
@@ -232,6 +232,26 @@
 .user-data-form h3 {
 	color: var(--admin_panel_main_font);
 }
+.user-info-header-wrapper {
+	border-top: 1px solid #c4c4c4;
+}
+.user-data-form .btn-wrapper .green-btn {
+	background-color: #288500 !important;
+	border: 1px #288500 !important;
+	color: #ffffff;
+	width: 48%;
+	height: 35px;
+}
+.user-data-form .fs-12 {
+	font-size: 12px !important;
+}
+.user-data-form .ant-input.change-user-email-field {
+	background-color: #ffffff !important;
+	color: #000 !important;
+}
+.user-data-form .text-underline {
+	text-decoration: underline;
+}
 .user-info-container,
 .user-role-container,
 .user-level-container {
@@ -242,10 +262,6 @@
 .user-info-container {
 	width: 25rem;
 }
-/* .user-role-container {
-}
-.user-level-container { */
-/* } */
 .user-info-separator {
 	border-right: 1px solid #c4c4c4;
 	margin: 0rem 2rem;

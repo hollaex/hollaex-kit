@@ -108,6 +108,13 @@ const performWithdrawal = (req, res) => {
 			if (user.verification_level < 1) {
 				throw new Error('User must upgrade verification level to perform a withdrawal');
 			}
+
+			return all([
+				withdrawal,
+				toolsLib.wallet.validateWithdrawal(user, withdrawal.address, withdrawal.amount, withdrawal.currency, withdrawal.network)
+			]);
+		})
+		.then(async ([withdrawal]) => {
 			if (isEmail(withdrawal.address)) {
 				const receiver = await toolsLib.user.getUserByEmail(withdrawal.address);
 				if (!receiver) {
@@ -148,6 +155,7 @@ const performWithdrawal = (req, res) => {
 						withdrawal.amount,
 						{
 							network: withdrawal.network,
+							// fee_markup: withdrawal.fee_markup,
 							additionalHeaders: {
 								'x-forwarded-for': req.headers['x-forwarded-for']
 							}
@@ -241,6 +249,38 @@ const performDirectWithdrawal = (req, res) => {
 		});
 };
 
+const getWithdrawalMax = (req, res) => {
+	loggerWithdrawals.verbose(
+		req.uuid,
+		'controllers/withdrawal/getWithdrawalMax/auth',
+		req.auth
+	);
+
+	const {
+		currency,
+		network,
+	} = req.swagger.params;
+
+
+	toolsLib.wallet.calculateWithdrawalMax(
+		req.auth.sub.id,
+		currency.value,
+		network.value,
+
+	)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerWithdrawals.error(
+				req.uuid,
+				'controllers/withdrawal/getWithdrawalMax',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+}
+
 const getAdminWithdrawals = (req, res) => {
 	loggerWithdrawals.verbose(
 		req.uuid,
@@ -295,6 +335,7 @@ const getAdminWithdrawals = (req, res) => {
 		}
 	)
 		.then((data) => {
+			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
 			if (format.value === 'csv') {
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users-deposits.csv`);
 				res.set('Content-Type', 'text/csv');
@@ -411,5 +452,6 @@ module.exports = {
 	getAdminWithdrawals,
 	getUserWithdrawals,
 	cancelWithdrawal,
-	performDirectWithdrawal
+	performDirectWithdrawal,
+	getWithdrawalMax
 };

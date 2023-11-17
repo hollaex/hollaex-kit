@@ -1,7 +1,8 @@
 import React from 'react';
 import { isMobile } from 'react-device-detect';
-import { ActionNotification, Coin } from 'components';
 import { Space, Menu, Dropdown } from 'antd';
+
+import { ActionNotification, Coin } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 
@@ -11,6 +12,7 @@ const TradeInputGroup = ({
 	goToTrade,
 	icons: ICONS,
 	pairs,
+	tradeClassName,
 }) => {
 	return (
 		<Dropdown
@@ -47,6 +49,7 @@ const TradeInputGroup = ({
 					className="csv-action"
 					showActionText={isMobile}
 					disable={markets.length === 0}
+					tradeClassName={tradeClassName}
 				/>
 			</Space>
 		</Dropdown>

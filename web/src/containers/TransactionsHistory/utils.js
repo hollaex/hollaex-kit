@@ -10,7 +10,7 @@ import mathjs from 'mathjs';
 import { isMobile } from 'react-device-detect';
 
 import STRINGS from 'config/localizedStrings';
-import { Coin } from 'components';
+import { Coin, EditWrapper } from 'components';
 import {
 	EXPLORERS_ENDPOINT,
 	BASE_CURRENCY,
@@ -772,6 +772,34 @@ export const generateWithdrawalsHeaders = (
 			exportToCsv: ({ created_at = '' }) => created_at,
 			renderCell: ({ created_at = '' }, key, index) => {
 				return <td key={index}>{getFormatTimestamp(created_at)}</td>;
+			},
+		},
+		{
+			stringId: 'category',
+			label: STRINGS['CATEGORY'],
+			key: 'category',
+			renderCell: (data, value, index) => {
+				return !data.category ? (
+					<td key={index}>{'-'}</td>
+				) : (
+					<EditWrapper>
+						<td className="category-label" key={index}>
+							{STRINGS[`TRANSACTION_HISTORY.${data.category.toUpperCase()}`]}
+						</td>
+					</EditWrapper>
+				);
+			},
+		},
+		{
+			stringId: 'network',
+			label: STRINGS['NETWORK'],
+			key: 'network',
+			renderCell: (data, value, index) => {
+				return !data.network ? (
+					<td key={index}>{'-'}</td>
+				) : (
+					<td key={index}>{data.network.toUpperCase()}</td>
+				);
 			},
 		},
 		{

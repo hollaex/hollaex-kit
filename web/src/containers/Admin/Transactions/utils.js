@@ -106,7 +106,7 @@ export const renderRowContent = ({
 	fee_coin,
 	type,
 	coins,
-	network
+	network,
 }) => {
 	return (
 		<div>
@@ -122,14 +122,9 @@ export const renderRowContent = ({
 				)}
 			</div>
 			<div>
-				Fee:{' '}
-				{fee}{' '}
-				{fee_coin}
+				Fee: {fee} {fee_coin}
 			</div>
-			<div>
-				Network:{' '}
-				{network}
-			</div>
+			<div>Network: {network}</div>
 			<div>Timestamp: {formatDate(created_at)}</div>
 			{description && <div>Description: {description}</div>}
 		</div>

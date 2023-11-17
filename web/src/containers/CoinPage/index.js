@@ -3,21 +3,25 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import classnames from 'classnames';
-import { Select } from 'antd';
 
 import { quicktradePairSelector } from 'containers/QuickTrade/components/utils';
 import { StarFilled, StarOutlined } from '@ant-design/icons';
+import { MarketsSelector } from 'containers/Trade/utils';
 import math from 'mathjs';
 import STRINGS from 'config/localizedStrings';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
-import { formatPercentage } from 'utils/currency';
-import { Button, EditWrapper, Image, PriceChange, Coin } from 'components';
-import SparkLine from 'containers/TradeTabs/components/SparkLine';
-import { getSparklines } from 'actions/chartAction';
+import { Button, EditWrapper, Image, Coin } from 'components';
+import { getMiniCharts } from 'actions/chartAction';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { isLoggedIn } from 'utils/token';
 import { addToFavourites, removeFromFavourites } from 'actions/appActions';
-import { replace } from 'utils/string';
+import Details from 'containers/QuickTrade/components/Details';
+
+const TYPES = {
+	PRO: 'pro',
+	BROKER: 'broker',
+	NETWORK: 'network',
+};
 
 const CoinPage = ({
 	pairs,
@@ -30,39 +34,46 @@ const CoinPage = ({
 	addToFavourites,
 	removeFromFavourites,
 	quicktradePairs,
+	markets
 }) => {
 	const {
 		params: { token: currentCoin },
 	} = router;
-	const currentCoinUpper = currentCoin?.toUpperCase();
-	const currentPair = Object.keys(pairs).find((pair) =>
-		pair.split('-').includes(currentCoin)
-	);
 
+	const currentCoinUpper = currentCoin?.toUpperCase();
+	
 	const currentQuicktradePair =
-		!currentPair &&
 		Object.keys(quicktradePairs).find((pair) =>
 			pair.split('-').includes(currentCoin)
 		);
 
+	const market = markets.find(
+		({ symbol }) => currentCoin === symbol
+	);
+	
 	const isBroker =
 		currentQuicktradePair &&
-		['network', 'broker'].includes(quicktradePairs[currentQuicktradePair].type);
+		[TYPES.NETWORK, TYPES.BROKER].includes(quicktradePairs[currentQuicktradePair].type);
+
+	const isNetwork = quicktradePairs[currentQuicktradePair]?.type === TYPES.NETWORK;
 
 	const [data, setData] = useState([]);
 	const [chartData, setChartData] = useState({});
-	const [options, setOptions] = useState([]);
 	const [selectedPair, setselectedPair] = useState([]);
 	const [lineChartData, setLineChartData] = useState({});
 	const selectedPairCoins = selectedPair && selectedPair?.[0];
 
 	useEffect(() => {
 		handleMarket();
-		getSparklines(Object.keys(pairs)).then((chartData) => {
-			return setChartData(chartData);
-		});
+		const assetValues = Object.keys(coins).map((
+			val) => coins[val].code).toLocaleString();
+
+		getMiniCharts(assetValues)
+			.then((chartValues) =>{
+				setChartData(chartValues);
+			});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [pairs]);
+	}, []);
 
 	useEffect(() => {
 		handleOptions();
@@ -70,29 +81,15 @@ const CoinPage = ({
 	}, [data, chartData]);
 
 	const handleOptions = () => {
-		const pairOptions = [];
-		const selectedPair = data.filter((pair) => {
-			return pair?.key === currentPair;
-		});
-		const selectedPairCoin = selectedPair?.[0];
-		const pairBase = selectedPairCoin?.key.split('-')[0];
-		Object.keys(pairs).forEach((pair) => {
-			if (pair.includes(pairBase)) {
-				const replacedValue = replace(pair, '-', '/');
-				pairOptions.push({
-					value: replacedValue,
-					label: replacedValue,
-				});
-			}
-		});
+		const selectedPair = currentCoin+'-usdt';
+
 
 		const ChartData = {
-			...chartData[selectedPairCoin?.key],
+			...chartData[selectedPair],
 			name: 'Line',
 			type: 'line',
 		};
 		setLineChartData(ChartData);
-		setOptions(pairOptions);
 		setselectedPair(selectedPair);
 	};
 
@@ -109,59 +106,24 @@ const CoinPage = ({
 			const { fullname, symbol = '' } =
 				coins[pair.pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
 			const pairTwo = coins[pair.pair_2] || DEFAULT_COIN_DATA;
-			const { increment_price, increment_size } = pair;
-			const ticker = tickers[key] || {};
-			const priceDifference =
-				ticker.open === 0 ? 0 : (ticker.close || 0) - (ticker.open || 0);
-			const tickerPercent =
-				priceDifference === 0 || ticker.open === 0
-					? 0
-					: (priceDifference / ticker.open) * 100;
-			const priceDifferencePercent = isNaN(tickerPercent)
-				? formatPercentage(0)
-				: formatPercentage(tickerPercent);
+
 			return {
 				key,
 				pair,
 				symbol,
 				pairTwo,
 				fullname,
-				ticker,
-				increment_price,
-				increment_size,
-				priceDifference,
-				priceDifferencePercent,
 			};
 		});
 		setData(market);
-	};
-
-	const handleChange = (value) => {
-		const currentPair = replace(value, '/', '-');
-		const selectedPair = data.filter((pair) => {
-			return pair?.key === currentPair;
-		});
-		setselectedPair(selectedPair);
 	};
 
 	const handleBack = () => {
 		router.goBack();
 	};
 
-	const pairBase = selectedPairCoins?.key.split('-')[0];
-	const pair_2 = selectedPairCoins?.key.split('-')[1];
-	let pairBase_fullName;
-	const pair_2_display_name = coins?.[pair_2] && coins?.[pair_2]?.display_name;
-	Object.keys(coins).forEach((data) => {
-		if (coins[data].symbol === currentCoin) {
-			pairBase_fullName = coins[data].fullname;
-		}
-	});
+	const pairBase_fullName = coins[currentCoin]?.fullname;
 
-	let ticker = {};
-	if (selectedPair) {
-		ticker = selectedPair?.[0]?.ticker;
-	}
 
 	const isFavourite = (pair) => {
 		return isLoggedIn() && favourites.includes(pair);
@@ -187,6 +149,7 @@ const CoinPage = ({
 		icon_id,
 		meta: { website, explorer },
 	} = coins[currentCoin];
+
 	const topLinks = [
 		{ key: 'HOLLAEX_TOKEN.WEBSITE', link: website },
 		{ key: 'HOLLAEX_TOKEN.EXPLORER', link: explorer },
@@ -218,15 +181,17 @@ const CoinPage = ({
 											</div>
 											<StarFilled className="stared-market" />
 										</div>
-									) : !isBroker && (
-										<div className="d-flex align-items-center">
-											<span className="favourite-text-2">
-												<EditWrapper stringId="HOLLAEX_TOKEN.ADD_FAVOURITES">
-													{STRINGS['HOLLAEX_TOKEN.ADD_FAVOURITES']}
-												</EditWrapper>
-											</span>
-											<StarOutlined />
-										</div>
+									) : (
+										!isBroker && (
+											<div className="d-flex align-items-center">
+												<span className="favourite-text-2">
+													<EditWrapper stringId="HOLLAEX_TOKEN.ADD_FAVOURITES">
+														{STRINGS['HOLLAEX_TOKEN.ADD_FAVOURITES']}
+													</EditWrapper>
+												</span>
+												<StarOutlined />
+											</div>
+										)
 									)}
 								</div>
 							</div>
@@ -310,210 +275,27 @@ const CoinPage = ({
 
 						<div className="button-container">
 							<EditWrapper stringId="HOLLAEX_TOKEN.TRADE">
-								{isBroker ? (
-									<Button
-										label={STRINGS.formatString(
-											STRINGS['HOLLAEX_TOKEN.QUICK_TRADE'],
-											currentCoinUpper
-										)}
-										type="button"
-										onClick={() => handleTrade(currentQuicktradePair)}
-										className="w-100"
-									/>
-								) : (
-									<Button
-										label={`${STRINGS['HOLLAEX_TOKEN.TRADE']} ${replace(
-											selectedPairCoins?.key,
-											'-',
-											'/'
-										)}`}
-										type="button"
-										onClick={() => handleTrade(selectedPairCoins?.key)}
-										className="w-100"
-									/>
-								)}
+								<Button
+									label={STRINGS.formatString(
+										STRINGS['HOLLAEX_TOKEN.QUICK_TRADE'],
+										currentCoinUpper
+									)}
+									type="button"
+									onClick={() => handleTrade(currentQuicktradePair)}
+									className="w-100"
+								/>
 							</EditWrapper>
 						</div>
 					</div>
 					<div className="trade-details-wrapper">
-						{isBroker ? (
-							<div className="trade-details-content">
-								<div className="d-flex flex-direction-column justify-content-between">
-									<div>
-										<div className="header-text">
-											<EditWrapper stringId="HOLLAEX_TOKEN.PRICES.TITLE">
-												{STRINGS['HOLLAEX_TOKEN.PRICES.TITLE']}
-											</EditWrapper>
-										</div>
-										<div className="sub-text">
-											<EditWrapper stringId="HOLLAEX_TOKEN.PRICES.SUBTITLE">
-												{STRINGS.formatString(
-													STRINGS['HOLLAEX_TOKEN.PRICES.SUBTITLE'],
-													currentCoinUpper,
-													<span
-														onClick={() => handleTrade(currentQuicktradePair)}
-														className="blue-link pointer text-underline"
-													>
-														{STRINGS['HOLLAEX_TOKEN.PRICES.QUICK_TRADE']}
-													</span>
-												)}
-											</EditWrapper>
-										</div>
-									</div>
-									<div className="coin-bg d-flex justify-content-center align-items-center align-self-center my-4">
-										<Coin iconId={icon_id} type="CS13" />
-									</div>
-									<div>
-										<div className="sub-text">
-											<EditWrapper stringId="HOLLAEX_TOKEN.PRICES.FOOTER">
-												{STRINGS['HOLLAEX_TOKEN.PRICES.FOOTER']}
-											</EditWrapper>
-										</div>
-										<div className="pb-35">
-											<div className="blue-link pointer underline-text">
-												<Link to="fees-and-limits">
-													<EditWrapper stringId="FEES_AND_LIMITS.COIN_PAGE_LINK">
-														{STRINGS['FEES_AND_LIMITS.COIN_PAGE_LINK']}
-													</EditWrapper>
-												</Link>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						) : (
-							<div className="trade-details-content">
-								<div className="dropdown-container">
-									{options?.length > 1 && (
-										<Select
-											defaultValue={replace(currentPair, '-', '/')}
-											style={{ width: '100%' }}
-											className="coin-select custom-select-input-style elevated w-100 mb-5"
-											dropdownClassName="custom-select-style"
-											placeholder=""
-											onChange={handleChange}
-											options={options}
-										/>
-									)}
-								</div>
-								<div className="d-flex">
-									<div>
-										<div className="sub-title caps">
-											<EditWrapper stringId="MARKETS_TABLE.LAST_PRICE">
-												{STRINGS['MARKETS_TABLE.LAST_PRICE']}
-											</EditWrapper>
-										</div>
-										<div className="d-flex">
-											<div className="f-size-22 pr-2">{ticker?.last}</div>
-											<div className="fullname important-text">
-												{pair_2_display_name}
-											</div>
-										</div>
-									</div>
-									<div className="pl-6 trade_tabs-container h1">
-										<div className="sub-title caps">
-											<EditWrapper stringId="QUICK_TRADE_COMPONENT.CHANGE_TEXT">
-												{STRINGS['QUICK_TRADE_COMPONENT.CHANGE_TEXT']}
-											</EditWrapper>
-										</div>
-										{selectedPair && selectedPair?.[0] && (
-											<PriceChange
-												market={selectedPair?.[0]}
-												key={selectedPair?.[0]?.key}
-											/>
-										)}
-									</div>
-								</div>
-								<div className="chart w-100">
-									<div className="fade-area"></div>
-									<SparkLine
-										data={
-											!lineChartData ||
-											!lineChartData.close ||
-											(lineChartData &&
-												lineChartData.close &&
-												lineChartData.close.length < 2)
-												? { close: [0.1, 0.1, 0.1], open: [] }
-												: lineChartData
-										}
-										containerProps={{
-											style: { height: '100%', width: '100%' },
-										}}
-										renderDefaultLine
-									/>
-								</div>
-								<div className="d-flex pb-35">
-									<div>
-										<div className="sub-title">
-											<EditWrapper stringId="QUICK_TRADE_COMPONENT.HIGH_24H">
-												{STRINGS['QUICK_TRADE_COMPONENT.HIGH_24H']}
-											</EditWrapper>
-										</div>
-										<div className="d-flex">
-											<div className="f-size-16 pr-2">{ticker?.high}</div>
-											<div className="fullname">{pair_2_display_name}</div>
-										</div>
-									</div>
-									<div className="pl-6">
-										<div className="sub-title">
-											<EditWrapper stringId="QUICK_TRADE_COMPONENT.LOW_24H">
-												{STRINGS['QUICK_TRADE_COMPONENT.LOW_24H']}
-											</EditWrapper>
-										</div>
-										<div className="d-flex">
-											<div className="f-size-16 pr-2">{ticker?.low}</div>
-											<div className="fullname">{pair_2_display_name}</div>
-										</div>
-									</div>
-								</div>
-								<div className="d-flex pb-35">
-									<div>
-										<div className="sub-title">
-											<EditWrapper stringId="QUICK_TRADE_COMPONENT.BEST_BID">
-												{STRINGS['QUICK_TRADE_COMPONENT.BEST_BID']}
-											</EditWrapper>
-										</div>
-										<div className="d-flex">
-											<div className="f-size-16 pr-2">{ticker?.open}</div>
-											<div className="fullname">{pair_2_display_name}</div>
-										</div>
-									</div>
-									<div className="pl-6">
-										<div className="sub-title">
-											<EditWrapper stringId="QUICK_TRADE_COMPONENT.BEST_ASK">
-												{STRINGS['QUICK_TRADE_COMPONENT.BEST_ASK']}
-											</EditWrapper>
-										</div>
-										<div className="d-flex">
-											<div className="f-size-16 pr-2">{ticker?.close}</div>
-											<div className="fullname">{pair_2_display_name}</div>
-										</div>
-									</div>
-								</div>
-								<div className="pb-35">
-									<div className="sub-title caps">
-										<EditWrapper stringId="SUMMARY.VOLUME_24H">
-											{STRINGS['SUMMARY.VOLUME_24H']}
-										</EditWrapper>
-									</div>
-									<div className="d-flex">
-										<div className="f-size-16 pr-2">{ticker?.volume}</div>
-										<div className="fullname">
-											{coins?.[pairBase] && coins?.[pairBase]?.display_name}
-										</div>
-									</div>
-								</div>
-								<div className="pb-35">
-									<div className="blue-link pointer underline-text">
-										<Link to="fees-and-limits">
-											<EditWrapper stringId="FEES_AND_LIMITS.COIN_PAGE_LINK">
-												{STRINGS['FEES_AND_LIMITS.COIN_PAGE_LINK']}
-											</EditWrapper>
-										</Link>
-									</div>
-								</div>
-							</div>
-						)}
+						<Details 
+							coinChartData={lineChartData} 
+							pair={`${currentCoin}-usdt`}
+							brokerUsed={isBroker}
+							networkName={market?.display_name}
+							isNetwork={isNetwork}
+							showTradeFees
+						/>
 					</div>
 				</div>
 			</div>
@@ -529,6 +311,7 @@ const mapStateToProps = (store) => ({
 	favourites: store.app.favourites,
 	available_balance: store.user.balance,
 	quicktradePairs: quicktradePairSelector(store),
+	markets: MarketsSelector(store),
 });
 
 const mapDispatchToProps = (dispatch) => ({

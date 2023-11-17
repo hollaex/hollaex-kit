@@ -154,6 +154,7 @@ exports.GET_COINS = () => cloneDeep(configuration.coins);
 exports.GET_PAIRS = () => cloneDeep(configuration.pairs);
 exports.GET_TIERS = () => cloneDeep(configuration.tiers);
 exports.GET_KIT_CONFIG = () => cloneDeep(configuration.kit);
+exports.GET_TRANSACTION_LIMITS = () => cloneDeep(configuration.transaction_limits);
 exports.GET_KIT_SECRETS = () => cloneDeep(secrets);
 exports.GET_FROZEN_USERS = () => cloneDeep(frozenUsers);
 exports.GET_EMAIL = () => cloneDeep(configuration.email);
@@ -200,7 +201,9 @@ exports.KIT_CONFIG_KEYS = [
 	'onramp',
 	'offramp',
 	'user_payments',
-	'dust'
+	'dust',
+	'coin_customizations',
+	'transaction_limits',
 ];
 
 exports.KIT_SECRETS_KEYS = [
@@ -640,6 +643,12 @@ exports.EXCHANGE_PLAN_PRICE_SOURCE = {
 
 
 // BROKER CONSTANTS END
+
+//STAKE CONSTANTS START
+
+exports.STAKE_SUPPORTED_PLANS = ['crypto', 'fiat', 'boost', 'enterprise'];
+
+//STAKE CONSTANTS END
 
 exports.CUSTOM_CSS = `
 	.topbar-wrapper img {

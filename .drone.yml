@@ -344,17 +344,27 @@ steps:
     - hub release create -m "HollaEx Kit v$(cat .tags) Release" -t ${DRONE_BRANCH} $(cat .tags)
   when:
     branch: master
-  
+
+- name: slack_noti_to_tech
+  image: bitholla/devops-tools:drone_partymaker-220208
+  environment:
+    WEBHOOK_URL:
+      from_secret: webhook_url_tech
+  when:
+    status: [success, failure]
+    branch: testnet
+
 - name: slack_noti_to_releases
-  image: bitholla/devops-tools:drone_partymaker-0.1.5
+  image: bitholla/devops-tools:drone_partymaker-220208
   environment:
     WEBHOOK_URL:
       from_secret: webhook_url
   when:
     status: [success, failure]
+    branch: master
 
 - name: notify_to_discord_releases
-  image: bitholla/devops-tools:drone_partymaker-0.1.5
+  image: bitholla/devops-tools:drone_partymaker-220208
   channel: deployment
   settings:
     target: discord
@@ -488,6 +498,13 @@ name: webhook_url
 get:
   path: devops/data/drone-ci/secret
   name: webhook_url
+
+---
+kind: secret
+name: webhook_url_tech
+get:
+  path: devops/data/drone-ci/secret
+  name: webhook_url_tech
 
 ---
 kind: secret
