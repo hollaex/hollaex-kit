@@ -5,7 +5,6 @@ import math from 'mathjs';
 import { roundNumber } from 'utils/currency';
 import STRINGS from 'config/localizedStrings';
 import { getDecimals } from 'utils/utils';
-import { limitNumberWithinRange } from 'utils/math';
 
 const passwordRegEx = /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/;
 const usernameRegEx = /^[a-z0-9_]{3,15}$/;
@@ -105,27 +104,7 @@ export const checkBalance = (
 	max
 ) => (value = 0) => {
 	let operation;
-	if (type === 'static') {
-		operation =
-			fee > 0
-				? math.number(math.add(math.fraction(value), math.fraction(fee)))
-				: value;
-	} else {
-		const calcualtedFee = math.multiply(
-			math.fraction(value),
-			math.fraction(math.divide(math.fraction(fee), 100))
-		);
-		operation =
-			fee > 0
-				? math.number(
-						math.add(
-							math.fraction(value),
-							limitNumberWithinRange(calcualtedFee, min, max)
-						)
-				  )
-				: value;
-	}
-
+	operation = value;
 	if (operation > available) {
 		const errorMessage = coinName
 			? STRINGS.formatString(
