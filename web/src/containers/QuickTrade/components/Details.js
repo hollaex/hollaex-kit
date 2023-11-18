@@ -24,7 +24,7 @@ const Details = ({ pair, coins, brokerUsed, networkName, isNetwork, router, coin
 		const firstPrice = price[0];
 		const lastPrice = price[price.length-1];
 		const priceDifference = lastPrice - firstPrice;
-		const priceDifferencePercent = formatPercentage(priceDifference/firstPrice);
+		const priceDifferencePercent = formatPercentage(priceDifference/firstPrice*100);
 		const minVal = Math.min(...price);
 		const high = Math.max(...price);
 
