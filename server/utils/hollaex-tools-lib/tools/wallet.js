@@ -344,7 +344,7 @@ const calculateWithdrawalMax = async (user_id, currency, selectedNetwork) => {
 			&& new BigNumber(amount).plus(new BigNumber(fee)).comparedTo(balance[`${currency}_available`]) === 1
 		) {
 
-			amount = new BigNumber(BigNumber.maximum(amount, balance[`${currency}_available`])).minus(new BigNumber(fee)).toNumber();
+			amount = new BigNumber(balance[`${currency}_available`]).minus(new BigNumber(fee)).toNumber();
 		}
 
 		amount = BigNumber.minimum(dailyAmount, amount).toNumber();
