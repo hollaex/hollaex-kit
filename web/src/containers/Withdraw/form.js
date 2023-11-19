@@ -15,12 +15,11 @@ import {
 	setWithdrawEmailConfirmation,
 	setWithdrawNotificationError,
 } from './notifications';
-import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
+import { BASE_CURRENCY } from 'config/constants';
 import { calculateBaseFee } from './utils';
 import Fiat from './Fiat';
 import Image from 'components/Image';
 import STRINGS from 'config/localizedStrings';
-import { limitNumberWithinRange } from 'utils/math';
 
 import ReviewModalContent from './ReviewModalContent';
 import QRScanner from './QRScanner';
@@ -31,105 +30,15 @@ const selector = formValueSelector(FORM_NAME);
 let errorTimeOut = null;
 
 const validate = (values, props) => {
-	const { currency, coins, balance } = props;
-	const { withdrawal_fees, network: networks } =
-		coins[currency] || DEFAULT_COIN_DATA;
-	const { network } = values;
-
 	const errors = {};
 	const amount = math.fraction(values.amount || 0);
-	const fee = math.fraction(values.fee || 0);
 	const balanceAvailable = math.fraction(props.balanceAvailable || 0);
-	let fee_coin;
 
-	if (withdrawal_fees && network && withdrawal_fees[network]) {
-		const { type = 'static', min, max } = withdrawal_fees[network];
-		const isPercentage = type === 'percentage';
-
-		fee_coin = withdrawal_fees[network].symbol;
-		const hasDifferentFeeCoin =
-			!isPercentage && fee_coin && fee_coin !== currency;
-
-		const fullFeeCoinName = coins[fee_coin]?.fullname;
-		const availableFeeBalance = math.fraction(
-			balance[`${fee_coin}_available`] || 0
+	if (math.larger(amount, balanceAvailable)) {
+		errors.fee = STRINGS.formatString(
+			STRINGS['WITHDRAWALS_LOWER_BALANCE'],
+			math.number(amount)
 		);
-
-		const totalFee = isPercentage
-			? limitNumberWithinRange(
-					math.multiply(
-						amount,
-						math.fraction(math.divide(math.fraction(fee), 100))
-					),
-					min,
-					max
-			  )
-			: fee;
-		const totalTransaction = hasDifferentFeeCoin
-			? amount
-			: math.add(amount, totalFee);
-
-		if (math.larger(totalTransaction, balanceAvailable)) {
-			errors.amount = STRINGS.formatString(
-				STRINGS['WITHDRAWALS_LOWER_BALANCE'],
-				math.number(totalTransaction)
-			);
-		}
-
-		if (hasDifferentFeeCoin && math.larger(totalFee, availableFeeBalance)) {
-			errors.amount = STRINGS.formatString(
-				STRINGS['WITHDRAWALS_LOWER_BALANCE'],
-				`${math.number(totalFee)} ${fullFeeCoinName}`
-			);
-		}
-	} else if (!networks && withdrawal_fees && withdrawal_fees[currency]) {
-		const { type = 'static', min, max } = withdrawal_fees[currency];
-		const isPercentage = type === 'percentage';
-
-		fee_coin = withdrawal_fees[currency].symbol;
-		const hasDifferentFeeCoin =
-			!isPercentage && fee_coin && fee_coin !== currency;
-
-		const fullFeeCoinName = coins[fee_coin]?.fullname;
-		const availableFeeBalance = math.fraction(
-			balance[`${fee_coin}_available`] || 0
-		);
-
-		const totalFee = isPercentage
-			? limitNumberWithinRange(
-					math.multiply(
-						amount,
-						math.fraction(math.divide(math.fraction(fee), 100))
-					),
-					min,
-					max
-			  )
-			: fee;
-		const totalTransaction = hasDifferentFeeCoin
-			? amount
-			: math.add(amount, totalFee);
-
-		if (math.larger(totalTransaction, balanceAvailable)) {
-			errors.amount = STRINGS.formatString(
-				STRINGS['WITHDRAWALS_LOWER_BALANCE'],
-				math.number(totalTransaction)
-			);
-		}
-
-		if (hasDifferentFeeCoin && math.larger(totalFee, availableFeeBalance)) {
-			errors.amount = STRINGS.formatString(
-				STRINGS['WITHDRAWALS_LOWER_BALANCE'],
-				`${math.number(totalFee)} ${fullFeeCoinName}`
-			);
-		}
-	} else {
-		const totalTransaction = math.add(fee, amount);
-		if (math.larger(totalTransaction, balanceAvailable)) {
-			errors.fee = STRINGS.formatString(
-				STRINGS['WITHDRAWALS_LOWER_BALANCE'],
-				math.number(totalTransaction)
-			);
-		}
 	}
 
 	return errors;
@@ -413,6 +322,7 @@ const mapStateToForm = (state) => ({
 		'amount',
 		'captcha',
 		'fee',
+		'fee_coin',
 		'email',
 		'fee_type'
 	),
