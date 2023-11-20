@@ -2143,6 +2143,7 @@ const revokeExchangeUserSession = async (sessionId, userId = null) => {
 	});
 
 	delete updatedSession.dataValues.token;
+	updatedSession.dataValues.user_id = session.login.user_id;
 	return updatedSession.dataValues;
 };
 
