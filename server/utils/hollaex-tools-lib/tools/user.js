@@ -57,6 +57,7 @@ const {
 	CANNOT_CHANGE_ADMIN_EMAIL,
 	EMAIL_IS_SAME,
 	EMAIL_EXISTS,
+	CANNOT_CHANGE_DELETED_EMAIL,
 	SERVICE_NOT_SUPPORTED
 } = require(`${SERVER_PATH}/messages`);
 const { publisher, client } = require('./database/redis');
@@ -2305,6 +2306,10 @@ const changeKitUserEmail = async (userId, newEmail, auditInfo) => {
 	const userEmail = user.email;
 	if (userEmail === newEmail) {
 		throw new Error(EMAIL_IS_SAME);
+	}
+
+	if (userEmail.includes('_deleted')) {
+		throw new Error(CANNOT_CHANGE_DELETED_EMAIL);
 	}
 
 	const isExists = await dbQuery.findOne('user', {
