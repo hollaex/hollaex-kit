@@ -258,3 +258,4 @@ exports.REWARD_CURRENCY_CANNOT_BE_SAME = 'Reward currency cannot be same as the 
 exports.CANNOT_CHANGE_ADMIN_EMAIL = 'Cannot change admin email';
 exports.EMAIL_IS_SAME = 'New email cannot be same as the existing one';
 exports.EMAIL_EXISTS = 'This email already exists';
+exports.CANNOT_CHANGE_DELETED_EMAIL = 'Cannot change deleted email';
