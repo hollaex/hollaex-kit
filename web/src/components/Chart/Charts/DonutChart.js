@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
+import { Link } from 'react-router';
 import EventListener from 'react-event-listener';
 import { pie, arc } from 'd3-shape';
-import { Link } from 'react-router';
 import classnames from 'classnames';
 
 import STRINGS from '../../../config/localizedStrings';
@@ -68,7 +68,10 @@ class DonutChart extends Component {
 				largerValue = parseFloat(value.balancePercentage);
 			}
 		});
-		this.setState({ higherId: largerId, hoverId: currency || largerId });
+		this.setState({
+			higherId: largerId,
+			hoverId: this.props.currency ? this.props.currency : currency || largerId,
+		});
 
 		const checkFilter = data.filter((value) => value.balance > 0);
 		return !!checkFilter.length;
@@ -80,7 +83,11 @@ class DonutChart extends Component {
 
 	handleOut = () => {
 		const { currentCurrency } = this.props;
-		this.setState({ hoverId: currentCurrency || this.state.higherId });
+		this.setState({
+			hoverId: this.props.currency
+				? this.props.currency
+				: currentCurrency || this.state.higherId,
+		});
 	};
 
 	handleResize = () => {
@@ -204,14 +211,26 @@ class DonutChart extends Component {
 		if (!this.state.isData) {
 			return (
 				<g key={i}>
-					<path d={arcj(value)} fill={colors_currencies.noData} />
+					<path
+						d={arcj(value)}
+						fill={colors_currencies.noData}
+						fill-opacity="0.2"
+					/>
 					<text
 						transform={translate(0, -10)}
 						dy=".35em"
 						className="donut-label-no-price"
 						textAnchor="middle"
 					>
-						<tspan>{STRINGS['ZERO_ASSET']}</tspan>
+						<tspan x="0" dy="0">
+							{STRINGS['ZERO_ASSET']}
+						</tspan>
+						<tspan x="0" dy="1.2em">
+							{STRINGS['ZERO_ASSET_2']}
+						</tspan>
+						<tspan x="0" dy="1.2em">
+							{STRINGS['ZERO_ASSET_3']}
+						</tspan>
 					</text>
 					{showOpenWallet && (
 						<text
@@ -221,7 +240,9 @@ class DonutChart extends Component {
 							textAnchor="middle"
 						>
 							<Link to="/wallet" className="deposit-asset">
-								{STRINGS['DEPOSIT_ASSETS'].toUpperCase()}
+								<tspan dy="1.4em">
+									{STRINGS['DEPOSIT_ASSETS'].toUpperCase()}
+								</tspan>
 							</Link>
 						</text>
 					)}

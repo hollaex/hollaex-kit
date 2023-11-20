@@ -1,0 +1,35 @@
+.cefi_stake .ant-table-thead > tr > th {
+	background-color: var(--base_background);
+	color: var(--labels_important-active-labels-text-graphics);
+	padding: 0rem 1rem;
+}
+.cefi_stake .ant-table-tbody > tr > td {
+	background-color: var(--base_background);
+	color: var(--labels_important-active-labels-text-graphics);
+	border-bottom: 1px solid #25262c;
+}
+
+.cefi_stake .ant-table-tbody > tr.ant-table-placeholder:hover > td {
+	background-color: var(--base_background);
+}
+.cefi_stake .ant-table-tbody > tr.ant-table-row:hover > td {
+	background-color: var(--base_background);
+}
+.stake_theme {
+	color: var(--labels_important-active-labels-text-graphics);
+}
+
+.stake_table_theme {
+	background-color: var(--base_background);
+}
+.stakepool_card {
+	background-color: var(--base_secondary-navigation-bar);
+}
+
+.stake_theme > .ant-modal-content {
+	background-color: var(--base_background);
+}
+
+.stakepool_card > .ant-modal-content {
+	background-color: var(--base_secondary-navigation-bar);
+}

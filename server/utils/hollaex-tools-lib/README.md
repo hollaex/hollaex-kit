@@ -220,8 +220,6 @@ const tools = require('hollaex-tools-lib');
 			name: "basic",
 			icon: "",
 			description: "basic tier",
-			deposit_limit: 0.1,
-			withdrawal_limit: 0.1,
 			fees: {
 				maker: {
 					xht-usdt: 1.4,
@@ -1059,8 +1057,6 @@ const tools = require('hollaex-tools-lib');
 					"name": "tester",
 					"icon": "",
 					"description": "tester level",
-					"deposit_limit": 0,
-					"withdrawal_limit": 0,
 					"fees": {
 						"maker": {
 							"xht-usdt": 0.2
@@ -1218,40 +1214,6 @@ const tools = require('hollaex-tools-lib');
 						{...},
 						{...}
 					]
-				}
-			*/
-		});
-	```
-- `createAudit(adminId, event, ip, [opts = { userId, prevUserData, newUserData, domain }])`
-  - Create audit for a user
-  - Returns promise with audit data
-	```javascript
-	tools.user.createAudit(1, 'bank update', 127.0.0.1, {
-		userId: 99,
-		prevUserData: {
-			// bank data before
-		},
-		newUserData: {
-			// bank data before
-		},
-		domain: 'https://google.com'
-	})
-		.then((data) => {
-			/*
-				{
-					admin_id: 1
-					description: {
-						note: "0.4 eth",
-						old: {...},
-						new: {...}
-					}
-					note: "0.4 eth"
-					user_id: 99
-					domain: "https://google.com"
-					event: "bank update"
-					id: 1
-					ip: "127.0.0.1"
-					timestamp: "2020-06-30T06:07:08.328Z"
 				}
 			*/
 		});
@@ -2445,8 +2407,6 @@ const tools = require('hollaex-tools-lib');
 					"name": "tester",
 					"icon": "",
 					"description": "tester level",
-					"deposit_limit": 0,
-					"withdrawal_limit": 0,
 					"fees": {
 						"maker": {
 							"xht-usdt": 0.2
@@ -2462,14 +2422,12 @@ const tools = require('hollaex-tools-lib');
 			*/
 		});
 	```
-- `createTier(level, name, icon, description, deposit_limit, withdrawal_limit, fees = {} [, note = ''])`
+- `createTier(level, name, icon, description, fees = {} [, note = ''])`
   - Create a new tier level
   - `level` = new level
   - `name` = name of new tier
   - `icon` = url of tier icon
   - `description` = description of tier
-  - `deposit_limit` = deposit limit for tier level in native currency, `-1` for disabled, `0` for unlimited
-  - `withdrawal_limit` = withdrawal limit for tier level in native currency, `-1` for disabled, `0` for unlimited
   - `fees` = Maker and Taker fees associated with trading for tier level. `default` will be applied for all symbols. You can also pass a symbol as a key to specify a fee
   - `note` = note for tier
   - Returns promise with tier data
@@ -2479,8 +2437,6 @@ const tools = require('hollaex-tools-lib');
 		'fourth tier',
 		'url',
 		'tier that is fourth',
-		0,
-		0,
 		{
 			maker: {
 				default: 0.1,
@@ -2500,8 +2456,6 @@ const tools = require('hollaex-tools-lib');
 					"name": "fourth tier",
 					"icon": "url",
 					"description": "tier that is fourth",
-					"deposit_limit": 0,
-					"withdrawal_limit": 0,
 					"fees": {
 						"maker": {
 							"default": 0.1
@@ -2541,8 +2495,6 @@ const tools = require('hollaex-tools-lib');
 					"name": "hi",
 					"icon": "url",
 					"description": "tier that is fourth",
-					"deposit_limit": 0,
-					"withdrawal_limit": 0,
 					"fees": {
 						"maker": {
 							"default": 0.1
@@ -2576,34 +2528,6 @@ const tools = require('hollaex-tools-lib');
 			'3': {
 				maker: 0.1,
 				taker: 0.1
-			}
-		}
-	)
-		.then((data) => {
-			/*
-				{
-					[
-						{...},
-						{...}
-					]
-				}
-			*/
-		});
-	```
-- `updateTiersLimits(limits = { level: {} })`
-  - Update tiers deposit and withdrawal limits
-  - `limits` = an object with the levels to update as keys and new limits as objects
-  - Returns promise with array of all updated tiers
-	```javascript
-	tools.tier.updateTiersLimits(
-		{
-			'1': {
-				deposit_limit: 0,
-				withdrawal_limit: 0
-			},
-			'3': {
-				deposit_limit: 0.1,
-				withdrawal_limit: 0.1
 			}
 		}
 	)

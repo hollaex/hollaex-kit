@@ -19,6 +19,8 @@ const lodash = require('lodash');
 const pluginProcess = path.join(__dirname, './plugin-process.js');
 const { Worker } = require('worker_threads');
 const  { createProxyMiddleware, fixRequestBody } = require('http-proxy-middleware');
+require('./job');
+
 
 let app;
 let pluginWorkerThread;

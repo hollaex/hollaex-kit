@@ -8,6 +8,7 @@ const {
 	getKitCoins,
 	getKitCoinsConfig
 } = require('./common');
+const { getModel } = require('./database/model');
 
 const getNetworkCoins = (
 	opts = {
@@ -17,6 +18,7 @@ const getNetworkCoins = (
 ) => {
 	return getNodeLib().getCoins(opts);
 };
+
 
 const createCoin = async (
 	symbol,
@@ -70,6 +72,8 @@ const updateCoin = async (
 ) => {
 	return getNodeLib().updateCoin(code, fields, opts);
 };
+
+
 
 module.exports = {
 	subscribedToCoin,

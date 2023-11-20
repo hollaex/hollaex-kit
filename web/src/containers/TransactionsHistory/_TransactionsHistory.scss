@@ -43,7 +43,7 @@
 					font-size: 1.2rem !important;
 				}
 				td {
-					padding: 0.5rem;
+					padding: 0.75rem;
 					min-width: 9rem;
 				}
 
@@ -168,6 +168,13 @@
 			tr td:first-child {
 				border-top: 1px solid $colors-border !important;
 				border-bottom: 1px solid $colors-border !important;
+			}
+		}
+	}
+	.table-wrapper {
+		.table_body-wrapper.with_icon {
+			tr td:first-child.category-label {
+				border: none !important;
 			}
 		}
 	}

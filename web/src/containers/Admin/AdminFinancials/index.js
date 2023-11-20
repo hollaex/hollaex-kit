@@ -12,6 +12,8 @@ import Assets, { getTabParams } from './Assets';
 import './index.css';
 import Wallet from './Wallet';
 import Balances from './Balances';
+// import CoinConfiguration from './CoinConfiguration';
+import TransactionLimits from './TransactionLimits';
 
 const TabPane = Tabs.TabPane;
 
@@ -51,37 +53,43 @@ const AdminFinancials = ({ router, location, user }) => {
 				<TabPane tab="Assets" key="0">
 					<Assets location={location} handleHide={handleHide} />
 				</TabPane>
-				<TabPane tab="Summary" key="1">
+				<TabPane tab="Summary" key="3">
 					<Wallets router={router} />
 				</TabPane>
-				<TabPane tab="Wallet" key="2">
+				<TabPane tab="Wallet" key="4">
 					<Wallet />
 				</TabPane>
-				<TabPane tab="Balances" key="3">
+				<TabPane tab="Balances" key="5">
 					<Balances />
 				</TabPane>
-				<TabPane tab="Orders" key="4">
+				<TabPane tab="Orders" key="6">
 					<ExchangeOrdersContainer
 						type="orders"
 						user={user}
 						showFilters={true}
 					/>
 				</TabPane>
-				<TabPane tab="Deposits" key="5">
+				<TabPane tab="Deposits" key="7">
 					<DepositPage type="deposit" showFilters={true} />
 				</TabPane>
-				<TabPane tab="Withdrawals" key="6">
+				<TabPane tab="Withdrawals" key="8">
 					<DepositPage type="withdrawal" showFilters={true} />
 				</TabPane>
-				<TabPane tab="Earnings" key="7">
+				<TabPane tab="Earnings" key="9">
 					<Earnings />
 				</TabPane>
-				<TabPane tab="Transfers" key="8">
+				<TabPane tab="Transfers" key="10">
 					<Transfer />
 				</TabPane>
-				<TabPane tab="Duster" key="9">
+				<TabPane tab="Duster" key="11">
 					<Duster />
 				</TabPane>
+				<TabPane tab="Limits" key="2">
+					<TransactionLimits location={location} />
+				</TabPane>
+				{/* <TabPane tab="Coin Fee Markups" key="1">
+					<CoinConfiguration location={location} />
+				</TabPane> */}
 			</Tabs>
 		</div>
 	);

@@ -315,3 +315,15 @@ export const requestUserBalancesDownload = (values) => {
 		})
 		.catch((err) => {});
 };
+
+export const changeUserEmail = (values) => {
+	try {
+		const options = {
+			method: 'PUT',
+			body: JSON.stringify(values),
+		};
+		return requestAuthenticated('/admin/user/email', options);
+	} catch (error) {
+		return error;
+	}
+};

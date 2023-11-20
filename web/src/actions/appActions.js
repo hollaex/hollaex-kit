@@ -61,11 +61,13 @@ export const RISK_PORTFOLIO_ORDER_WARING = 'RISK_PORTFOLIO_ORDER_WARING';
 export const RISKY_ORDER = 'RISKY_ORDER';
 export const LOGOUT_CONFORMATION = 'LOGOUT_CONFORMATION';
 export const SET_CURRENCIES = 'SET_CURRENCIES';
+export const OVERWRITE_CURRENCY_NAMES = 'OVERWRITE_CURRENCY_NAMES';
 export const SET_USER_PAYMENTS = 'SET_USER_PAYMENTS';
 export const SET_ONRAMP = 'SET_ONRAMP';
 export const SET_OFFRAMP = 'SET_OFFRAMP';
 export const SET_BROKER = 'SET_BROKER';
 export const SET_QUICKTRADE = 'SET_QUICKTRADE';
+export const SET_TRANSACTION_LIMITS = 'SET_TRANSACTION_LIMITS';
 export const SET_CONFIG = 'SET_CONFIG';
 export const SET_PLUGINS = 'SET_PLUGINS';
 export const SET_EXPLORE_PLUGINS = 'SET_EXPLORE_PLUGINS';
@@ -388,6 +390,10 @@ export const setCurrencies = (coins) => ({
 	},
 });
 
+export const overwriteCurrencyNames = () => ({
+	type: OVERWRITE_CURRENCY_NAMES,
+});
+
 export const setUserPayments = (user_payments = {}) => ({
 	type: SET_USER_PAYMENTS,
 	payload: {
@@ -420,6 +426,13 @@ export const setQuickTrade = (quicktrade) => ({
 	type: SET_QUICKTRADE,
 	payload: {
 		quicktrade,
+	},
+});
+
+export const setTransactionLimits = (transaction_limits) => ({
+	type: SET_TRANSACTION_LIMITS,
+	payload: {
+		transaction_limits,
 	},
 });
 
@@ -635,4 +648,10 @@ export const getNetWorkURL = () => {
 		},
 	} = store.getState();
 	return network;
+};
+
+export const getWithdrawalMax = (currency, network) => {
+	return axios.get(
+		`/user/withdrawal/max?currency=${currency}&network=${network}`
+	);
 };

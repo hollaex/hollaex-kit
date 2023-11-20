@@ -79,7 +79,7 @@ const getQuickTrade = (req, res) => {
 		receiving_currency,
 	} = req.swagger.params;
 
-	toolsLib.order.getUserQuickTrade(spending_currency?.value, spending_amount?.value, receiving_amount?.value, receiving_currency?.value, bearerToken, ip, opts)
+	toolsLib.order.getUserQuickTrade(spending_currency?.value, spending_amount?.value, receiving_amount?.value, receiving_currency?.value, bearerToken, ip, opts, req)
 		.then((order) => {
 			return res.json(order);
 		})
@@ -352,7 +352,7 @@ const getAdminOrders = (req, res) => {
 	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1 && !user_id.value) {
 		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
 	}
-
+	toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
 	let promiseQuery;
 
 	if (user_id.value) {
@@ -427,6 +427,7 @@ const adminCancelOrder = (req, res) => {
 		}
 	})
 		.then((data) => {
+			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], { userId, order_id });
 			return res.json(data);
 		})
 		.catch((err) => {

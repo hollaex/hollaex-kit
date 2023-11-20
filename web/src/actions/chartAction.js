@@ -76,3 +76,32 @@ export const getSparklines = async () => {
 
 	return chartData;
 };
+
+export const getMiniCharts = async (pairs, quote='usdt') => {
+
+	const { data = {} } = await axios({
+		url: `/minicharts?assets=${pairs}&quote=${quote}`,
+		method: 'GET',
+	});
+
+	const result = {};
+	
+	Object.keys(data).forEach((keyVal) => {
+		data[keyVal].forEach(({ price, quote, symbol, time }) => {
+			let symbolKey = symbol + '-' + quote; 
+
+			if(!result[symbolKey]) {
+				result[symbolKey] = {
+					price:[],
+					time:[]
+				};
+			}
+
+			result[symbolKey].price.push(price);
+			result[symbolKey].time.push(time);
+		});
+	});
+
+	return result;
+}
+			
