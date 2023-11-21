@@ -100,7 +100,11 @@ class Form extends Component {
 		getWithdrawalMax(this.props.currency, this.props?.data?.network)
 			.then((res) => {
 				if (math.larger(this.props?.data?.amount, res?.data?.amount)) {
-					message.error('input amount is bigger than maximum allowable limit');
+					message.error(
+						`requested amount exceeds maximum withrawal limit of ${
+							res?.data?.amount
+						} ${this?.props?.currency?.toUpperCase()}`
+					);
 				} else {
 					this.setState({ dialogIsOpen: true });
 				}
