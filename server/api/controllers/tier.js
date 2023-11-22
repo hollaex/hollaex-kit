@@ -22,7 +22,7 @@ const postTier = (req, res) => {
 
 	toolsLib.tier.createTier(level, name, icon, description, fees, note)
 		.then((tier) => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
 			loggerTier.info(req.uuid, 'controllers/tier/postTier new tier created', level);
 			return res.json(tier);
 		})
@@ -45,7 +45,7 @@ const putTier = (req, res) => {
 		native_currency_limit
 	};
 
-	const auditInfo = { userEmail: req?.auth?.sub?.email, apiPath: req?.swagger?.apiPath, method: req?.swagger?.operationPath?.[2] };
+	const auditInfo = { userEmail: req?.auth?.sub?.email, sessionId: req?.session_id, apiPath: req?.swagger?.apiPath, method: req?.swagger?.operationPath?.[2] };
 	toolsLib.tier.updateTier(level, updateData, auditInfo)
 		.then((tier) => {
 			loggerTier.info(req.uuid, 'controllers/tier/putTier tier updated', level);
@@ -71,7 +71,7 @@ const updatePairFees = (req, res) => {
 		'controllers/tier/updatePairFees pair',
 		pair
 	);
-	const auditInfo = { userEmail: req?.auth?.sub?.email, apiPath: req?.swagger?.apiPath, method: req?.swagger?.operationPath?.[2] };
+	const auditInfo = { userEmail: req?.auth?.sub?.email, sessionId: req?.session_id, apiPath: req?.swagger?.apiPath, method: req?.swagger?.operationPath?.[2] };
 	toolsLib.tier.updatePairFees(pair, fees, auditInfo)
 		.then(() => {
 			loggerTier.info(
