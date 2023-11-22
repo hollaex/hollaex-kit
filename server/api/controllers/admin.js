@@ -2011,6 +2011,15 @@ const setUserBank = (req, res) => {
 
 			let sendEmail = false;
 
+			const newBankInfoLog = [];
+			const deletedBankInfoLog = [];
+			existingBankAccounts?.forEach(existingBank => {
+				const foundBank = bank_account?.find(bank => bank.id === existingBank.id);
+				if (!foundBank) {
+					deletedBankInfoLog.push(existingBank);
+				}
+			})
+			
 			const newBankAccounts = bank_account.map((bank) => {
 				let existingBank = existingBankAccounts.filter((b) => b.id === bank.id);
 				existingBank = existingBank[0];
@@ -2021,6 +2030,7 @@ const setUserBank = (req, res) => {
 					sendEmail = true;
 					bank.id = crypto.randomBytes(8).toString('hex');
 					bank.status = VERIFY_STATUS.COMPLETED;
+					newBankInfoLog.push(bank);
 					return bank;
 				}
 			});
@@ -2037,7 +2047,9 @@ const setUserBank = (req, res) => {
 					loggerAdmin.error(req.uuid, 'controllers/admin/setUserBank err', err.message);
 				}
 			}
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
+
+			newBankInfoLog.map(bank => toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], bank))
+			deletedBankInfoLog.map(bank => toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, 'delete', bank))
 			return res.json(updatedUser.bank_account);
 		})
 		.catch((err) => {
@@ -2491,7 +2503,7 @@ const revokeUserSessionByAdmin = (req, res) => {
 
 	toolsLib.user.revokeExchangeUserSession(session_id)
 		.then((data) => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
+			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], { user_id: data.user_id, ...req?.swagger?.params?.data?.value });
 			return res.json(data);
 		})
 		.catch((err) => {
