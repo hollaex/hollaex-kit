@@ -63,6 +63,14 @@ const defaultFilters = [
 
 const AUDIT_COLUMNS = [
 	{ title: 'Action Owner', dataIndex: 'subject', key: 'subject' },
+	{
+		title: 'Session ID',
+		dataIndex: 'session_id',
+		key: 'session_id',
+		render: (user_id, data) => {
+			return <div className="d-flex">{data?.session_id || '-'}</div>;
+		},
+	},
 	{ title: 'Event', dataIndex: 'description', key: 'description' },
 	{
 		title: 'Effected User',
@@ -207,7 +215,9 @@ const Audits = ({ constants }) => {
 			) : (
 				<>
 					<div style={{ color: '#ccc', marginTop: 20, marginBottom: 30 }}>
-						Below are logs of the actions performed by exchange operators. It tracks and stores a list of activities done on the operator control for audit purposes.
+						Below are logs of the actions performed by exchange operators. It
+						tracks and stores a list of activities done on the operator control
+						for audit purposes.
 					</div>
 
 					<div style={{ marginTop: 20 }}>

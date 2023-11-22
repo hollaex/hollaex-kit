@@ -434,7 +434,7 @@ const updateExchangeStakePool = async (id, data, auditInfo) => {
 
 	validateExchangeStake(updatedStakePool);
 
-    createAuditLog(auditInfo.userEmail, auditInfo.apiPath, auditInfo.method, updatedStakePool, stakePool.dataValues);
+    createAuditLog({ email: auditInfo.userEmail, session_id: auditInfo.sessionId }, auditInfo.apiPath, auditInfo.method, updatedStakePool, stakePool.dataValues);
     
 	return stakePool.update(updatedStakePool, {
 		fields: [

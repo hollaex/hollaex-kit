@@ -352,7 +352,7 @@ const getAdminOrders = (req, res) => {
 	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1 && !user_id.value) {
 		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
 	}
-	toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
+	toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
 	let promiseQuery;
 
 	if (user_id.value) {
@@ -427,7 +427,7 @@ const adminCancelOrder = (req, res) => {
 		}
 	})
 		.then((data) => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], { userId, order_id });
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], { userId, order_id });
 			return res.json(data);
 		})
 		.catch((err) => {
