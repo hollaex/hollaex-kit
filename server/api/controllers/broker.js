@@ -132,6 +132,57 @@ const testBroker = (req, res) => {
 		});
 };
 
+const testBrokerOneinch = (req, res) => {
+	loggerBroker.verbose(
+		req.uuid,
+		'controllers/broker/testBrokerOneinch get',
+		req.auth
+	);
+
+	const {
+		base_coin,
+		spread,
+		quote_coin
+	} = req.swagger.params.data.value;
+
+	toolsLib.broker.testBrokerOneinch({
+		base_coin,
+		spread,
+		quote_coin
+	})
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerBroker.error(
+				req.uuid,
+				'controllers/broker/testBrokerOneinch err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const getBrokerOneinchTokens = (req, res) => {
+	loggerBroker.verbose(
+		req.uuid,
+		'controllers/broker/getBrokerOneinchTokens get',
+		req.auth
+	);
+
+	toolsLib.broker.getBrokerOneinchTokens()
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerBroker.error(
+				req.uuid,
+				'controllers/broker/getBrokerOneinchTokens err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+}
 
 const testRebalance = (req, res) => {
 	loggerBroker.verbose(
@@ -291,5 +342,7 @@ module.exports = {
 	updateBrokerPair,
 	deleteBrokerPair,
 	getBrokerPairs,
-	getTrackedExchangeMarkets
+	getTrackedExchangeMarkets,
+	testBrokerOneinch,
+	getBrokerOneinchTokens
 };

@@ -25,6 +25,8 @@ import {
 	createTestBroker,
 	getBrokerConnect,
 	getTrackedExchangeMarkets,
+	createTestOneinch,
+	getBrokerOneinchTokens,
 } from './actions';
 import Pophedge from './HedgeMarketPopup';
 import { handleUpgrade } from 'utils/utils';
@@ -116,9 +118,10 @@ const Otcdeskpopup = ({
 	const [selectedExchange, setSelectedExchange] = useState('binance');
 	const [exchangeMarkets, setExchangeMarkets] = useState([]);
 	const [hedgeMarkets, setHedgeMarkets] = useState([]);
-	const [displayUniswap, setDisplayUniswap] = useState(false);
-	const [uniswapCoins] = useState();
-	const [selectedUniswapPairs, setSelectedUniswapPairs] = useState({});
+	const [displayOneinch, setDisplayOneinch] = useState(false);
+	const [uniswapCoins, setOneinchCoins] = useState();
+	const [selectedOneinchPairs, setSelectedOneinchPairs] = useState({});
+	const [selectedOneinchNetwork, setSelectedOneinchNetwork] = useState();
 	const [selectedMarket, setSelectedMarket] = useState();
 	const [priceResult, setPriceResult] = useState();
 	const [displayAdvancedModal, setDisplayAdvancedModal] = useState(false);
@@ -217,6 +220,12 @@ const Otcdeskpopup = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [exchangeMarkets, selectedCoinType]);
 
+	useEffect(() => {
+		getBrokerOneinchTokens().then((res) => {
+			setOneinchCoins(Object.keys(res));
+		});
+	}, []);
+
 	const handleCloseOtcChild = () => {
 		setHedgeSwitch(false);
 		setConnectpop(false);
@@ -233,8 +242,8 @@ const Otcdeskpopup = ({
 		setEditData({});
 		SetMarketPop(false);
 		setLoading(false);
-		setSelectedUniswapPairs({});
-		setDisplayUniswap(false);
+		setSelectedOneinchPairs({});
+		setDisplayOneinch(false);
 		setHedgeSymbol();
 		setMatketLink(
 			`https://api.hollaex.com/v2/ticker?symbol=${
@@ -261,19 +270,37 @@ const Otcdeskpopup = ({
 	};
 
 	const handlePriceResult = async () => {
-		// if(displayUniswap && selectedUniswapPairs.base_coin && selectedUniswapPairs.quote_coin && spreadMul.spread ){
-		// 	setSpin(true);
-		// 	const result = await createTestUniswap({ ...selectedUniswapPairs, spread: spreadMul.spread })
-		// 	setPriceResult(result);
-		// 	setSpin(false);
-		// 	return;
-		// } else { message.warning('Please select base and quite coin for uniswap and spread')}
+		if (displayOneinch) {
+			if (
+				!selectedOneinchPairs.base_coin ||
+				!selectedOneinchPairs.quote_coin ||
+				!spreadMul.spread
+			) {
+				message.warning(
+					'Please select base and quite coin for oneinch and spread'
+				);
+				return;
+			}
+
+			setSpin(true);
+			try {
+				const result = await createTestOneinch({
+					...selectedOneinchPairs,
+					spread: spreadMul.spread,
+				});
+				setPriceResult(result);
+			} catch (error) {
+				message.error(error.message);
+			}
+			setSpin(false);
+			return;
+		}
 		try {
 			if (!spreadMul.spread) {
 				message.warning('Please input spread ');
 				return;
 			}
-			if (!displayUniswap && selectedExchange && (selectedMarket || formula)) {
+			if (!displayOneinch && selectedExchange && (selectedMarket || formula)) {
 				setSpin(true);
 				const result = await createTestBroker({
 					formula,
@@ -449,8 +476,8 @@ const Otcdeskpopup = ({
 	const handleSelectedExchange = async (value) => {
 		setSelectedExchange(value);
 
-		if (value === 'uniswap') {
-			setDisplayUniswap(true);
+		if (value === 'oneinch') {
+			setDisplayOneinch(true);
 		} else {
 			if (value !== exchangeMarkets.exchange && value !== 'oracle') {
 				const markets = await getTrackedExchangeMarkets(value);
@@ -475,8 +502,10 @@ const Otcdeskpopup = ({
 			{_toLower(kit?.info?.plan) !== 'crypto' && (
 				<Option value="bybit">Bybit</Option>
 			)}
+			{_toLower(kit?.info?.plan) !== 'crypto' && (
+				<Option value="oneinch">1inch</Option>
+			)}
 			{hasOracle && <Option value="oracle">Hollaex Oracle</Option>}
-			{/* {_toLower(kit?.info?.plan) !== 'crypto' && <Option value="uniswap">Uniswap</Option>} */}
 		</>
 	);
 	const renderModalContent = () => {
@@ -1052,8 +1081,8 @@ const Otcdeskpopup = ({
 													<Select
 														defaultValue={selectedExchange}
 														onChange={async (value) => {
-															setSelectedUniswapPairs({});
-															setDisplayUniswap(false);
+															setSelectedOneinchPairs({});
+															setDisplayOneinch(false);
 															setSelectedExchange();
 															handleSelectedExchange(value);
 															handlePreviewChange(value, 'exchange_name');
@@ -1066,7 +1095,7 @@ const Otcdeskpopup = ({
 											</div>
 										)}
 
-										{!displayUniswap &&
+										{!displayOneinch &&
 											!formula &&
 											selectedExchange !== 'oracle' && (
 												<div className={isUpgrade ? 'Datahide mt-3' : ''}>
@@ -1088,53 +1117,90 @@ const Otcdeskpopup = ({
 											</div>
 										)}
 
-										{displayUniswap && (
-											<div
-												style={{
-													display: 'flex',
-													flexDirection: 'row',
-													gap: 10,
-													marginTop: 15,
-												}}
-											>
-												<Select
-													showSearch
-													value={selectedUniswapPairs?.base_coin || null}
-													placeholder="Select Base Coin"
-													style={{ color: 'black', width: '100%' }}
-													notFoundContent={'Not Found'}
-													onChange={(value) => {
-														setSelectedUniswapPairs({
-															...selectedUniswapPairs,
-															base_coin: value,
-														});
-														handlePreviewChange(value, 'uniswap_base_coin');
-													}}
-												>
-													{uniswapCoins.map((coin) => (
-														<Option value={coin}>{coin}</Option>
-													))}
-												</Select>
+										{displayOneinch && (
+											<>
+												<div>
+													<div className="mt-3 ">Blockchain</div>
+													<Select
+														showSearch
+														placeholder="Select Chain"
+														style={{ color: 'black', width: '100%' }}
+														value={selectedOneinchNetwork}
+														notFoundContent={'Not Found'}
+														onChange={(value) => {
+															setSelectedOneinchPairs({
+																quote_coin: null,
+																base_coin: null,
+															});
+															handlePreviewChange(null, 'oneinch_base_coin');
+															handlePreviewChange(null, 'oneinch_quote_coin');
+															setSelectedOneinchNetwork(value);
+															handlePreviewChange(value, 'oneinch_network');
+														}}
+													>
+														<Option value={'eth'}>{'Ethereum'}</Option>
+													</Select>
+												</div>
 
-												<Select
-													showSearch
-													value={selectedUniswapPairs?.quote_coin || null}
-													placeholder="Select Quote Coin"
-													style={{ color: 'black', width: '100%' }}
-													notFoundContent={'Not Found'}
-													onChange={(value) => {
-														setSelectedUniswapPairs({
-															...selectedUniswapPairs,
-															quote_coin: value,
-														});
-														handlePreviewChange(value, 'uniswap_quote_coin');
-													}}
-												>
-													{uniswapCoins.map((coin) => (
-														<Option value={coin}>{coin}</Option>
-													))}
-												</Select>
-											</div>
+												{selectedOneinchNetwork && (
+													<>
+														<div className="mt-3 ">Pair</div>
+														<div
+															style={{
+																display: 'flex',
+																flexDirection: 'row',
+																gap: 10,
+															}}
+														>
+															<Select
+																showSearch
+																value={selectedOneinchPairs?.base_coin || null}
+																placeholder="Select Base Coin"
+																style={{ color: 'black', width: '100%' }}
+																notFoundContent={'Not Found'}
+																onChange={(value) => {
+																	// let newValue = `${value}/${selectedOneinchNetwork}`;
+																	setSelectedOneinchPairs({
+																		...selectedOneinchPairs,
+																		base_coin: value,
+																	});
+																	handlePreviewChange(
+																		value,
+																		'oneinch_base_coin'
+																	);
+																}}
+															>
+																{(uniswapCoins || []).map((coin) => (
+																	<Option value={coin}>{coin}</Option>
+																))}
+															</Select>
+
+															<Select
+																showSearch
+																value={selectedOneinchPairs?.quote_coin || null}
+																placeholder="Select Quote Coin"
+																style={{ color: 'black', width: '100%' }}
+																notFoundContent={'Not Found'}
+																onChange={(value) => {
+																	// let newValue = `${value}/${selectedOneinchNetwork}`;
+																	setSelectedOneinchPairs({
+																		...selectedOneinchPairs,
+																		quote_coin: value,
+																	});
+																	handlePreviewChange(
+																		value,
+																		'oneinch_quote_coin'
+																	);
+																}}
+															>
+																{(uniswapCoins || []).map((coin) => (
+																	<Option value={coin}>{coin}</Option>
+																))}
+															</Select>
+														</div>
+													</>
+												)}
+											</>
 										)}
 
 										<div>
@@ -1291,7 +1357,12 @@ const Otcdeskpopup = ({
 														);
 														return;
 													}
-													if (!formula) {
+													if (!formula && selectedExchange === 'oneinch') {
+														const newFormula = `${selectedExchange}_${selectedOneinchPairs.base_coin}-${selectedOneinchPairs.quote_coin}`;
+														setFormula(newFormula);
+														handlePreviewChange(newFormula, 'formula');
+													}
+													if (!formula && selectedExchange !== 'oneinch') {
 														message.warning(
 															'Please input formula in Advanced section'
 														);
@@ -1300,6 +1371,10 @@ const Otcdeskpopup = ({
 													}
 												}}
 												disabled={
+													(displayOneinch &&
+														(!selectedOneinchNetwork ||
+															!selectedOneinchPairs.base_coin ||
+															!selectedOneinchPairs.quote_coin)) ||
 													chainlink ||
 													(!isExistsPair &&
 														!isEdit &&

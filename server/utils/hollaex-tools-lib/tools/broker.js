@@ -5,7 +5,7 @@ const math = require('mathjs');
 const ccxt = require('ccxt');
 const randomString = require('random-string');
 const { SERVER_PATH } = require('../constants');
-const { EXCHANGE_PLAN_INTERVAL_TIME, EXCHANGE_PLAN_PRICE_SOURCE } = require(`${SERVER_PATH}/constants`)
+const { EXCHANGE_PLAN_INTERVAL_TIME, EXCHANGE_PLAN_PRICE_SOURCE, ONEINCH_COINS, ONEINCH_URL, ONEINCH_KEY } = require(`${SERVER_PATH}/constants`)
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { client } = require('./database/redis');
 const { getUserByKitId } = require('./user');
@@ -18,7 +18,7 @@ const { loggerBroker } = require('../../../config/logger');
 const { isArray } = require('lodash');
 const BigNumber = require('bignumber.js');
 const connectedExchanges = {};
-
+const axios = require("axios");
 
 const {
 	TOKEN_EXPIRED,
@@ -227,30 +227,43 @@ const calculatePrice = async (side, spread, formula, refresh_interval, brokerId,
 		const selectedExchange = exchangePair[0] !== 'oracle' && setExchange({ id: `${exchangePair[0]}-broker:fetch-markets`, exchange: exchangePair[0] });
 		let marketPrice;
 
-		if (!isOracle && exchangePair[0] !== 'oracle') {
-			const formattedSymbol = exchangePair[1].split('-').join('/').toUpperCase();
-			const userCachekey = `${brokerId}-${exchangePair[1]}`;
-			marketPrice = await client.getAsync(userCachekey);
-		
-			if (!marketPrice) { 
-				const ticker = await selectedExchange.fetchTicker(formattedSymbol);
-				marketPrice = ticker.last
-				if (refresh_interval)
-					client.setexAsync(userCachekey, refresh_interval, ticker.last);
-			}
-		}
-		else {
+		if (exchangePair[0] === 'oneinch') {
 			const coins = exchangePair[1].split('-');
 			const userCachekey = `${brokerId}-${exchangePair[0]}-${exchangePair[1]}`;
 			marketPrice = await client.getAsync(userCachekey);
-
-			if (!marketPrice) {
-				const conversions = await getAssetsPrices([coins[0]], coins[1], 1);
-				marketPrice =  conversions[coins[0]];
+		
+			if (!marketPrice) { 
+				// marketPrice = await fetchOneinchPrice(coins[0].split('/')[0], coins[1].split('/')[0], coins[0].split('/')[1]);
+				marketPrice = await fetchOneinchPrice(coins[0], coins[1]);
 				if (refresh_interval)
 					client.setexAsync(userCachekey, refresh_interval, marketPrice);
 			}
-			if(marketPrice === -1) return -1;
+		} else {
+			if (!isOracle && exchangePair[0] !== 'oracle') {
+				const formattedSymbol = exchangePair[1].split('-').join('/').toUpperCase();
+				const userCachekey = `${brokerId}-${exchangePair[1]}`;
+				marketPrice = await client.getAsync(userCachekey);
+			
+				if (!marketPrice) { 
+					const ticker = await selectedExchange.fetchTicker(formattedSymbol);
+					marketPrice = ticker.last
+					if (refresh_interval)
+						client.setexAsync(userCachekey, refresh_interval, ticker.last);
+				}
+			}
+			else {
+				const coins = exchangePair[1].split('-');
+				const userCachekey = `${brokerId}-${exchangePair[0]}-${exchangePair[1]}`;
+				marketPrice = await client.getAsync(userCachekey);
+	
+				if (!marketPrice) {
+					const conversions = await getAssetsPrices([coins[0]], coins[1], 1);
+					marketPrice =  conversions[coins[0]];
+					if (refresh_interval)
+						client.setexAsync(userCachekey, refresh_interval, marketPrice);
+				}
+				if(marketPrice === -1) return -1;
+			}
 		}
 		formula = formula.replace(variable, marketPrice);
 		
@@ -354,42 +367,43 @@ const testBroker = async (data) => {
 	}
 
 };
-const testBrokerUniswap = async (data) => {
+
+const getBrokerOneinchTokens = async () => {
+	return ONEINCH_COINS;
+}
+
+
+const fetchOneinchPrice  = async (base_coin, quote_coin, chain = 1) => {
+	const url = `${ONEINCH_URL}${chain}/quote`;
+
+	const config = {
+		headers: { "Authorization": `Bearer ${ONEINCH_KEY}` },
+		params: {
+		src: ONEINCH_COINS[base_coin].token,
+		dst:  ONEINCH_COINS[quote_coin].token,
+		amount: Math.pow(10, ONEINCH_COINS[base_coin].decimals)}
+	};
+
+	const response = await axios.get(url, config);
+	const price = math.divide(response.data.toAmount, Math.pow(10, ONEINCH_COINS[quote_coin].decimals))
+	return price;
+}
+
+const testBrokerOneinch = async (data) => {
 	const { base_coin, spread, quote_coin  } = data;
-	const UNISWAP_COINS = {}
-	try {
-		if (!base_coin || !quote_coin || !UNISWAP_COINS[base_coin] || !UNISWAP_COINS[quote_coin]) {
-			throw new Error(SYMBOL_NOT_FOUND);
-		}
-		if (!spread) {
-			throw new Error(SPREAD_MISSING);
-		}
-
-		const paraSwapMin = constructSimpleSDK({ chainId: 1, axios });
-		const includeDEXS = '[Uniswap V3]';
-
-		const priceRoute = await paraSwapMin.swap.getRate({
-			srcToken: UNISWAP_COINS[base_coin].token,
-			srcDecimals: UNISWAP_COINS[base_coin].decimals,
-			destToken: UNISWAP_COINS[quote_coin].token,
-			destDecimals: UNISWAP_COINS[quote_coin].decimals,
-			amount: Math.pow(10, UNISWAP_COINS[base_coin].decimals),
-			side: SwapSide.SELL,
-			includeDEXS
-		  })
-
-		if (!priceRoute.destAmount) {
-			throw new Error(UNISWAP_PRICE_NOT_FOUND)
-		}
-
-		const price = math.divide(priceRoute.destAmount,Math.pow(10, UNISWAP_COINS[quote_coin].decimals))
-
-		return {
-			buy_price: price * (1 - (spread / 100)),
-			sell_price: price * (1 + (spread / 100))
-		}
-	} catch (err) {
-		throw new Error(err);
+	if (!base_coin || !quote_coin || !ONEINCH_COINS[base_coin] || !ONEINCH_COINS[quote_coin]) {
+		throw new Error(SYMBOL_NOT_FOUND);
+	}
+	if (!spread) {
+		throw new Error(SPREAD_MISSING);
+	}
+	
+	// const price = await fetchOneinchPrice(base_coin.split('/')[0], quote_coin.split('/')[0], base_coin.split('/')[1]);
+	const price = await fetchOneinchPrice(base_coin, quote_coin);
+	
+	return {
+		buy_price: price * (1 - (spread / 100)),
+		sell_price: price * (1 + (spread / 100))
 	}
 
 };
@@ -656,7 +670,8 @@ module.exports = {
 	testRebalance,
 	generateRandomToken,
 	fetchTrackedExchangeMarkets,
-	testBrokerUniswap,
+	testBrokerOneinch,
 	isFairPriceForBroker,
+	getBrokerOneinchTokens,
 	calculatePrice
 };

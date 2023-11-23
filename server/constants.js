@@ -641,6 +641,32 @@ exports.EXCHANGE_PLAN_PRICE_SOURCE = {
 	ALL: [ 'hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'bybit', 'uniswap']
 };
 
+exports.ONEINCH_URL = 'https://api.1inch.dev/swap/v5.2/';
+exports.ONEINCH_KEY = '7MXGPJXqRFWx07Hhemeo507zk6WJUPih';
+
+exports.ONEINCH_COINS = {
+	wbtc: { token: "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599", decimals: 8 },
+	eth: { token: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", decimals: 18 },
+	usdt: { token: "0xdAC17F958D2ee523a2206206994597C13D831ec7", decimals: 6 },
+	dai: { token: "0x6b175474e89094c44da98b954eedeac495271d0f", decimals: 18 },
+	usdc: { token: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48", decimals: 6 },
+	weth: { token: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2", decimals: 18 },
+	mkr: { token: "0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2", decimals: 18 },
+	hex: { token: '0X2B591E99AFE9F32EAA6214F7B7629768C40EEB39', decimals: 8 },
+	matic: { token: "0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0", decimals: 18 },
+	mana: { token: "0x0f5d2fb29fb7d3cfee444a200298f468908cc942", decimals: 18 },
+	sushi: { token: "0x6b3595068778dd592e39a122f4f5a5cf09c90fe2", decimals: 18 },
+	bat: { token: "0x0d8775f648430679a709e98d2b0cb6250d2887ef", decimals: 18 },
+	knc: { token: "0xdd974d5c2e2928dea5f71b9825b8b646686bd200", decimals: 18 },
+	aave: { token: '0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9', decimals: 18 },
+	link: { token: '0x514910771AF9Ca656af840dff83E8264EcF986CA', decimals: 18 },
+	sETH2: { token: '0xFe2e637202056d30016725477c5da089Ab0A043A', decimals: 18 },
+	stETH: { token: '0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84', decimals: 18 },
+	gtc: { token: '0xDe30da39c46104798bB5aA3fe8B9e0e1F348163F', decimals: 18 },
+	snt: { token: '0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F', decimals: 18 },
+	allt: { token: '0x6B0b3a982b4634aC68dD83a4DBF02311cE324181', decimals: 18 },
+}
+
 
 // BROKER CONSTANTS END
 
