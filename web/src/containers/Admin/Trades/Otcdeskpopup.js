@@ -243,6 +243,7 @@ const Otcdeskpopup = ({
 		SetMarketPop(false);
 		setLoading(false);
 		setSelectedOneinchPairs({});
+		setSelectedOneinchNetwork();
 		setDisplayOneinch(false);
 		setHedgeSymbol();
 		setMatketLink(
