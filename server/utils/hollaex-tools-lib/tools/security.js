@@ -597,7 +597,8 @@ const verifyBearerTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = fa
 					}
 
 					try {
-						await verifySession(tokenString);
+						const session = await verifySession(tokenString);
+						if (session) req.session_id = session.id;
 					} catch (err) {
 						return sendError(err.message);
 					}
@@ -738,7 +739,8 @@ const verifyBearerTokenExpressMiddleware = (scopes = BASE_SCOPES) => (req, res, 
 				}
 
 				try {
-					await verifySession(tokenString);
+					const session = await verifySession(tokenString);
+					if (session) req.session_id = session.id;
 				} catch (err) {
 					return sendError(err.message);
 				}
@@ -929,6 +931,8 @@ const verifySession = async (token) => {
 		const expirationInSeconds = getExpirationDateInSeconds(updatedSession.dataValues.expiry_date);
 		client.setexAsync(updatedSession.dataValues.token, expirationInSeconds, JSON.stringify(updatedSession.dataValues));
 	}
+
+	return session;
 }
 
 const findSession = async (token) => {

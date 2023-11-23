@@ -1191,7 +1191,7 @@ const updateUserNote = (userId, note, auditInfo) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
 			}
-			createAuditLog(auditInfo.userEmail, auditInfo.apiPath, auditInfo.method, note, user.note);
+			createAuditLog({ email: auditInfo.userEmail, session_id: auditInfo.sessionId }, auditInfo.apiPath, auditInfo.method, note, user.note);
 			return user.update({ note }, { fields: ['note'] });
 		});
 };
@@ -1215,7 +1215,7 @@ const updateUserDiscount = (userId, discount, auditInfo) => {
 		})
 		.then(([previousDiscountRate, user]) => {
 			if (user.discount > previousDiscountRate) {
-				createAuditLog(auditInfo.userEmail, auditInfo.apiPath, auditInfo.method, user.discount, previousDiscountRate);
+				createAuditLog({ email: auditInfo.userEmail, session_id: auditInfo.sessionId }, auditInfo.apiPath, auditInfo.method, user.discount, previousDiscountRate);
 				sendEmail(
 					MAILTYPE.DISCOUNT_UPDATE,
 					user.email,
@@ -1463,7 +1463,7 @@ const getValues = (data, prevData) => {
 
 const createAuditLog = (subject, adminEndpoint, method, data = {}, prevData = null) => {
 	try {
-		if (!subject) return;
+		if (!subject?.email) return;
 
 		const methodDescriptions = {
 			get: 'viewed',
@@ -1497,7 +1497,8 @@ const createAuditLog = (subject, adminEndpoint, method, data = {}, prevData = nu
 		}
 
 		return getModel('audit').create({
-			subject,
+			subject: subject.email,
+			session_id: subject?.session_id,
 			description,
 			user_id,
 			timestamp: new Date(),
@@ -1815,7 +1816,7 @@ const updateUserMeta = async (id, givenMeta = {}, opts = { overwrite: null }, au
 	const updatedUser = await user.update({
 		meta: updatedUserMeta
 	});
-	createAuditLog(auditInfo.userEmail, auditInfo.apiPath, auditInfo.method, updatedUserMeta, user.meta);
+	createAuditLog({ email: auditInfo.userEmail, session_id: auditInfo.sessionId }, auditInfo.apiPath, auditInfo.method, updatedUserMeta, user.meta);
 	return pick(updatedUser, 'id', 'email', 'meta');
 };
 
@@ -2018,7 +2019,7 @@ const updateUserInfo = async (userId, data = {}, auditInfo) => {
 		{ fields: Object.keys(updateData) }
 	);
 
-	createAuditLog(auditInfo.userEmail, auditInfo.apiPath, auditInfo.method, updateData, oldValues);
+	createAuditLog({ email: auditInfo.userEmail, session_id: auditInfo.sessionId }, auditInfo.apiPath, auditInfo.method, updateData, oldValues);
 	return omitUserFields(user.dataValues);
 };
 
@@ -2333,7 +2334,7 @@ const changeKitUserEmail = async (userId, newEmail, auditInfo) => {
 		{ email: newEmail },
 		{ fields: ['email'], returning: true }
 	);
-	createAuditLog(auditInfo.userEmail, auditInfo.apiPath, auditInfo.method, { user_id: userId, email: userEmail  }, { user_id: userId, email: newEmail });
+	createAuditLog({ email: auditInfo.userEmail, session_id: auditInfo.sessionId }, auditInfo.apiPath, auditInfo.method, { user_id: userId, email: userEmail  }, { user_id: userId, email: newEmail });
 	sendEmail(
 		MAILTYPE.ALERT,
 		null,
