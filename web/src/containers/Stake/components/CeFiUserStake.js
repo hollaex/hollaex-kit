@@ -219,9 +219,13 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 	];
 
 	useEffect(() => {
-		requestUserStakePools().then((res) => {
-			setStakePools(res.data);
-		});
+		requestUserStakePools()
+			.then((res) => {
+				setStakePools(res.data);
+			})
+			.catch((err) => {
+				message.error(err.data.message);
+			});
 
 		requestExchangeStakers();
 
