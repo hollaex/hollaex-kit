@@ -1135,129 +1135,124 @@ const Otcdeskpopup = ({
 											</div>
 										)}
 
-										{displayOneinch ||
-											(formula?.includes('oneinch') && (
-												<>
-													<div>
-														<div style={{ color: 'white', margin: '20px 0' }}>
-															1inch Api Key
-															<Input
-																value={metaObject?.key}
-																onChange={(e) => {
-																	metaObject.key = e.target.value;
-																	setMetaObject(metaObject);
-																}}
-																style={{ marginTop: 10 }}
-																placeholder="Input api key"
-															/>
-														</div>
-
-														<div className="mt-3 ">Blockchain</div>
-														<Select
-															showSearch
-															placeholder="Select Chain"
-															style={{ color: 'black', width: '100%' }}
-															value={selectedOneinchNetwork}
-															notFoundContent={'Not Found'}
-															onChange={(value) => {
-																setSelectedOneinchPairs({
-																	quote_coin: null,
-																	base_coin: null,
-																});
-																handlePreviewChange(null, 'oneinch_base_coin');
-																handlePreviewChange(null, 'oneinch_quote_coin');
-																setSelectedOneinchNetwork(value);
-																handlePreviewChange(value, 'oneinch_network');
-
-																metaObject.chain = value;
+										{(displayOneinch || formula?.includes('oneinch')) && (
+											<>
+												<div>
+													<div style={{ color: 'white', margin: '20px 0' }}>
+														1inch Api Key
+														<Input
+															value={metaObject?.key}
+															onChange={(e) => {
+																metaObject.key = e.target.value;
 																setMetaObject(metaObject);
-																handlePreviewChange(metaObject, 'meta');
 															}}
-														>
-															<Option value={'eth'}>{'Ethereum'}</Option>
-														</Select>
+															style={{ marginTop: 10 }}
+															placeholder="Input api key"
+														/>
 													</div>
 
-													{selectedOneinchNetwork && (
-														<>
-															<div className="mt-3 ">Pair</div>
-															<div
-																style={{
-																	display: 'flex',
-																	flexDirection: 'row',
-																	gap: 10,
+													<div className="mt-3 ">Blockchain</div>
+													<Select
+														showSearch
+														placeholder="Select Chain"
+														style={{ color: 'black', width: '100%' }}
+														value={selectedOneinchNetwork}
+														notFoundContent={'Not Found'}
+														onChange={(value) => {
+															setSelectedOneinchPairs({
+																quote_coin: null,
+																base_coin: null,
+															});
+															handlePreviewChange(null, 'oneinch_base_coin');
+															handlePreviewChange(null, 'oneinch_quote_coin');
+															setSelectedOneinchNetwork(value);
+															handlePreviewChange(value, 'oneinch_network');
+
+															metaObject.chain = value;
+															setMetaObject(metaObject);
+															handlePreviewChange(metaObject, 'meta');
+														}}
+													>
+														<Option value={'eth'}>{'Ethereum'}</Option>
+														<Option value={'bnb'}>{'BNB Chain'}</Option>
+														<Option value={'matic'}>{'Matic'}</Option>
+													</Select>
+												</div>
+
+												{selectedOneinchNetwork && (
+													<>
+														<div className="mt-3 ">Pair</div>
+														<div
+															style={{
+																display: 'flex',
+																flexDirection: 'row',
+																gap: 10,
+															}}
+														>
+															<Select
+																showSearch
+																value={selectedOneinchPairs?.base_coin || null}
+																placeholder="Select Base Coin"
+																style={{ color: 'black', width: '100%' }}
+																notFoundContent={'Not Found'}
+																onChange={(value) => {
+																	// let newValue = `${value}/${selectedOneinchNetwork}`;
+																	setSelectedOneinchPairs({
+																		...selectedOneinchPairs,
+																		base_coin: value,
+																	});
+																	handlePreviewChange(
+																		value,
+																		'oneinch_base_coin'
+																	);
 																}}
 															>
-																<Select
-																	showSearch
-																	value={
-																		selectedOneinchPairs?.base_coin || null
-																	}
-																	placeholder="Select Base Coin"
-																	style={{ color: 'black', width: '100%' }}
-																	notFoundContent={'Not Found'}
-																	onChange={(value) => {
-																		// let newValue = `${value}/${selectedOneinchNetwork}`;
-																		setSelectedOneinchPairs({
-																			...selectedOneinchPairs,
-																			base_coin: value,
-																		});
-																		handlePreviewChange(
-																			value,
-																			'oneinch_base_coin'
-																		);
-																	}}
-																>
-																	{[
-																		...Object.keys(
-																			uniswapCoins?.[selectedOneinchNetwork] ||
-																				{}
-																		),
-																		...Object.keys(
-																			metaObject?.customAdress || {}
-																		),
-																	].map((coin) => (
-																		<Option value={coin}>{coin}</Option>
-																	))}
-																</Select>
+																{[
+																	...Object.keys(
+																		uniswapCoins?.[selectedOneinchNetwork] || {}
+																	),
+																	...Object.keys(
+																		metaObject?.customAdress || {}
+																	),
+																].map((coin) => (
+																	<Option value={coin}>{coin}</Option>
+																))}
+															</Select>
 
-																<Select
-																	showSearch
-																	value={
-																		selectedOneinchPairs?.quote_coin || null
-																	}
-																	placeholder="Select Quote Coin"
-																	style={{ color: 'black', width: '100%' }}
-																	notFoundContent={'Not Found'}
-																	onChange={(value) => {
-																		// let newValue = `${value}/${selectedOneinchNetwork}`;
-																		setSelectedOneinchPairs({
-																			...selectedOneinchPairs,
-																			quote_coin: value,
-																		});
-																		handlePreviewChange(
-																			value,
-																			'oneinch_quote_coin'
-																		);
-																	}}
-																>
-																	{[
-																		...Object.keys(
-																			uniswapCoins?.[selectedOneinchNetwork] ||
-																				{}
-																		),
-																		...Object.keys(
-																			metaObject?.customAdress || {}
-																		),
-																	].map((coin) => (
-																		<Option value={coin}>{coin}</Option>
-																	))}
-																</Select>
-															</div>
-														</>
-													)}
-												</>
-											))}
+															<Select
+																showSearch
+																value={selectedOneinchPairs?.quote_coin || null}
+																placeholder="Select Quote Coin"
+																style={{ color: 'black', width: '100%' }}
+																notFoundContent={'Not Found'}
+																onChange={(value) => {
+																	// let newValue = `${value}/${selectedOneinchNetwork}`;
+																	setSelectedOneinchPairs({
+																		...selectedOneinchPairs,
+																		quote_coin: value,
+																	});
+																	handlePreviewChange(
+																		value,
+																		'oneinch_quote_coin'
+																	);
+																}}
+															>
+																{[
+																	...Object.keys(
+																		uniswapCoins?.[selectedOneinchNetwork] || {}
+																	),
+																	...Object.keys(
+																		metaObject?.customAdress || {}
+																	),
+																].map((coin) => (
+																	<Option value={coin}>{coin}</Option>
+																))}
+															</Select>
+														</div>
+													</>
+												)}
+											</>
+										)}
 
 										{(selectedOneinchNetwork ||
 											formula?.includes('oneinch')) && (

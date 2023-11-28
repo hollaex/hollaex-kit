@@ -665,11 +665,23 @@ exports.ONEINCH_COINS = {
 		gtc: { token: '0xDe30da39c46104798bB5aA3fe8B9e0e1F348163F', decimals: 18 },
 		snt: { token: '0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F', decimals: 18 },
 		allt: { token: '0x6B0b3a982b4634aC68dD83a4DBF02311cE324181', decimals: 18 }
+	},
+	bnb: {
+		btcb: { token: "0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c", decimals: 18 },
+		eth: { token: "0x2170Ed0880ac9A755fd29B2688956BD959F933F8", decimals: 18 },
+		usdt: { token: "0x55d398326f99059ff775485246999027b3197955", decimals: 18 },
+	},
+	matic: {
+		btcb: { token: "0x2297aEbD383787A160DD0d9F71508148769342E3", decimals: 8 },
+		weth: { token: "0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0", decimals: 18 },
+		usdt: { token: "0xc2132D05D31c914a87C6611C10748AEb04B58e8F", decimals: 6 },
 	}
 }
 
 exports.ONEINCH_CHAINS = {
 	eth: 1,
+	bnb: 56,
+	matic: 137, 
 }
 
 
