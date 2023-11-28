@@ -134,6 +134,9 @@ const Otcdeskpopup = ({
 	const [connectLoading, setLoading] = useState(false);
 	const [spin, setSpin] = useState(false);
 	const [formulaVariable, setFormulaVariable] = useState();
+	const [displayCustomPair, setDisplayCustomPair] = useState(false);
+	const [metaObject, setMetaObject] = useState({});
+	const [addToken, setAddToken] = useState();
 	const [marketLink, setMatketLink] = useState(
 		`https://api.hollaex.com/v2/ticker?symbol=${
 			pairs && pairs[0] && pairs[0].name
@@ -184,6 +187,16 @@ const Otcdeskpopup = ({
 		}
 		if (previewData.formula) {
 			setFormula(previewData.formula);
+
+			if (previewData?.formula?.includes('oneinch')) {
+				const exchangePair = previewData?.formula?.split('_');
+				const coins = exchangePair[1].split('-');
+
+				setSelectedOneinchPairs({
+					base_coin: coins[0],
+					quote_coin: coins[1],
+				});
+			}
 		}
 		if (previewData.exchange_name) {
 			handleSelectedExchange(previewData.exchange_name);
@@ -191,6 +204,9 @@ const Otcdeskpopup = ({
 		if (previewData.rebalancing_symbol) {
 			setHedgeSymbol(previewData.rebalancing_symbol);
 		}
+		setMetaObject(previewData.meta || {});
+		setSelectedOneinchNetwork(previewData?.meta?.chain);
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [previewData, selectedCoinType]);
 
@@ -222,7 +238,7 @@ const Otcdeskpopup = ({
 
 	useEffect(() => {
 		getBrokerOneinchTokens().then((res) => {
-			setOneinchCoins(Object.keys(res));
+			setOneinchCoins(res);
 		});
 	}, []);
 
@@ -271,7 +287,7 @@ const Otcdeskpopup = ({
 	};
 
 	const handlePriceResult = async () => {
-		if (displayOneinch) {
+		if (displayOneinch || formula?.includes('oneinch')) {
 			if (
 				!selectedOneinchPairs.base_coin ||
 				!selectedOneinchPairs.quote_coin ||
@@ -288,10 +304,11 @@ const Otcdeskpopup = ({
 				const result = await createTestOneinch({
 					...selectedOneinchPairs,
 					spread: spreadMul.spread,
+					meta: metaObject,
 				});
 				setPriceResult(result);
 			} catch (error) {
-				message.error(error.message);
+				message.error(error.data.message);
 			}
 			setSpin(false);
 			return;
@@ -1118,92 +1135,260 @@ const Otcdeskpopup = ({
 											</div>
 										)}
 
-										{displayOneinch && (
-											<>
-												<div>
-													<div className="mt-3 ">Blockchain</div>
-													<Select
-														showSearch
-														placeholder="Select Chain"
-														style={{ color: 'black', width: '100%' }}
-														value={selectedOneinchNetwork}
-														notFoundContent={'Not Found'}
-														onChange={(value) => {
-															setSelectedOneinchPairs({
-																quote_coin: null,
-																base_coin: null,
-															});
-															handlePreviewChange(null, 'oneinch_base_coin');
-															handlePreviewChange(null, 'oneinch_quote_coin');
-															setSelectedOneinchNetwork(value);
-															handlePreviewChange(value, 'oneinch_network');
-														}}
-													>
-														<Option value={'eth'}>{'Ethereum'}</Option>
-													</Select>
-												</div>
+										{displayOneinch ||
+											(formula?.includes('oneinch') && (
+												<>
+													<div>
+														<div style={{ color: 'white', margin: '20px 0' }}>
+															1inch Api Key
+															<Input
+																value={metaObject?.key}
+																onChange={(e) => {
+																	metaObject.key = e.target.value;
+																	setMetaObject(metaObject);
+																}}
+																style={{ marginTop: 10 }}
+																placeholder="Input api key"
+															/>
+														</div>
 
-												{selectedOneinchNetwork && (
-													<>
-														<div className="mt-3 ">Pair</div>
-														<div
-															style={{
-																display: 'flex',
-																flexDirection: 'row',
-																gap: 10,
+														<div className="mt-3 ">Blockchain</div>
+														<Select
+															showSearch
+															placeholder="Select Chain"
+															style={{ color: 'black', width: '100%' }}
+															value={selectedOneinchNetwork}
+															notFoundContent={'Not Found'}
+															onChange={(value) => {
+																setSelectedOneinchPairs({
+																	quote_coin: null,
+																	base_coin: null,
+																});
+																handlePreviewChange(null, 'oneinch_base_coin');
+																handlePreviewChange(null, 'oneinch_quote_coin');
+																setSelectedOneinchNetwork(value);
+																handlePreviewChange(value, 'oneinch_network');
+
+																metaObject.chain = value;
+																setMetaObject(metaObject);
+																handlePreviewChange(metaObject, 'meta');
 															}}
 														>
-															<Select
-																showSearch
-																value={selectedOneinchPairs?.base_coin || null}
-																placeholder="Select Base Coin"
-																style={{ color: 'black', width: '100%' }}
-																notFoundContent={'Not Found'}
-																onChange={(value) => {
-																	// let newValue = `${value}/${selectedOneinchNetwork}`;
-																	setSelectedOneinchPairs({
-																		...selectedOneinchPairs,
-																		base_coin: value,
-																	});
-																	handlePreviewChange(
-																		value,
-																		'oneinch_base_coin'
-																	);
-																}}
-															>
-																{(uniswapCoins || []).map((coin) => (
-																	<Option value={coin}>{coin}</Option>
-																))}
-															</Select>
+															<Option value={'eth'}>{'Ethereum'}</Option>
+														</Select>
+													</div>
 
-															<Select
-																showSearch
-																value={selectedOneinchPairs?.quote_coin || null}
-																placeholder="Select Quote Coin"
-																style={{ color: 'black', width: '100%' }}
-																notFoundContent={'Not Found'}
-																onChange={(value) => {
-																	// let newValue = `${value}/${selectedOneinchNetwork}`;
-																	setSelectedOneinchPairs({
-																		...selectedOneinchPairs,
-																		quote_coin: value,
-																	});
-																	handlePreviewChange(
-																		value,
-																		'oneinch_quote_coin'
-																	);
+													{selectedOneinchNetwork && (
+														<>
+															<div className="mt-3 ">Pair</div>
+															<div
+																style={{
+																	display: 'flex',
+																	flexDirection: 'row',
+																	gap: 10,
 																}}
 															>
-																{(uniswapCoins || []).map((coin) => (
-																	<Option value={coin}>{coin}</Option>
-																))}
-															</Select>
-														</div>
-													</>
-												)}
+																<Select
+																	showSearch
+																	value={
+																		selectedOneinchPairs?.base_coin || null
+																	}
+																	placeholder="Select Base Coin"
+																	style={{ color: 'black', width: '100%' }}
+																	notFoundContent={'Not Found'}
+																	onChange={(value) => {
+																		// let newValue = `${value}/${selectedOneinchNetwork}`;
+																		setSelectedOneinchPairs({
+																			...selectedOneinchPairs,
+																			base_coin: value,
+																		});
+																		handlePreviewChange(
+																			value,
+																			'oneinch_base_coin'
+																		);
+																	}}
+																>
+																	{[
+																		...Object.keys(
+																			uniswapCoins?.[selectedOneinchNetwork] ||
+																				{}
+																		),
+																		...Object.keys(
+																			metaObject?.customAdress || {}
+																		),
+																	].map((coin) => (
+																		<Option value={coin}>{coin}</Option>
+																	))}
+																</Select>
+
+																<Select
+																	showSearch
+																	value={
+																		selectedOneinchPairs?.quote_coin || null
+																	}
+																	placeholder="Select Quote Coin"
+																	style={{ color: 'black', width: '100%' }}
+																	notFoundContent={'Not Found'}
+																	onChange={(value) => {
+																		// let newValue = `${value}/${selectedOneinchNetwork}`;
+																		setSelectedOneinchPairs({
+																			...selectedOneinchPairs,
+																			quote_coin: value,
+																		});
+																		handlePreviewChange(
+																			value,
+																			'oneinch_quote_coin'
+																		);
+																	}}
+																>
+																	{[
+																		...Object.keys(
+																			uniswapCoins?.[selectedOneinchNetwork] ||
+																				{}
+																		),
+																		...Object.keys(
+																			metaObject?.customAdress || {}
+																		),
+																	].map((coin) => (
+																		<Option value={coin}>{coin}</Option>
+																	))}
+																</Select>
+															</div>
+														</>
+													)}
+												</>
+											))}
+
+										{(selectedOneinchNetwork ||
+											formula?.includes('oneinch')) && (
+											<>
+												<div className="mt-3 ">
+													<Button
+														type="primary"
+														className="green-btn"
+														onClick={() => setDisplayCustomPair(true)}
+													>
+														Add Custom Pair
+													</Button>
+												</div>
 											</>
 										)}
 
+										{displayCustomPair && (
+											<>
+												<Modal
+													visible={displayCustomPair}
+													width={type === 'remove-otcdesk' ? '480px' : '520px'}
+													onCancel={() => {
+														setDisplayCustomPair(false);
+													}}
+													footer={null}
+												>
+													<div style={{ fontWeight: '600', color: 'white' }}>
+														Add Token
+													</div>
+													<div>
+														<div style={{ color: 'white', margin: '20px 0' }}>
+															<label>Token Symbol</label>
+															<Input
+																value={addToken?.symbol}
+																onChange={(e) => {
+																	setAddToken({
+																		...addToken,
+																		symbol: e.target.value,
+																	});
+																}}
+																style={{ marginTop: 10 }}
+																placeholder="Input token symbol"
+															/>
+														</div>
+														<div style={{ color: 'white', margin: '20px 0' }}>
+															<label>Token Smart Contract</label>
+															<Input
+																value={addToken?.token}
+																onChange={(e) => {
+																	setAddToken({
+																		...addToken,
+																		token: e.target.value,
+																	});
+																}}
+																style={{ marginTop: 10 }}
+																placeholder="Input token symbol"
+															/>
+														</div>
+														<div style={{ color: 'white', margin: '20px 0' }}>
+															<label>Token Decimals</label>
+															<Input
+																value={addToken?.decimals}
+																onChange={(e) => {
+																	setAddToken({
+																		...addToken,
+																		decimals: e.target.value,
+																	});
+																}}
+																style={{ marginTop: 10 }}
+																placeholder="Input token symbol"
+															/>
+														</div>
+													</div>
+													<div
+														className="btn-wrapper"
+														style={{
+															display: 'flex',
+															flexDirection: 'row',
+															gap: 15,
+															justifyContent: 'space-between',
+														}}
+													>
+														<Button
+															style={{ backgroundColor: '#288500', width: 230 }}
+															type="primary"
+															className="green-btn"
+															onClick={() => {
+																setDisplayCustomPair(false);
+															}}
+														>
+															BACK
+														</Button>
+														<Button
+															style={{ backgroundColor: '#288500', width: 230 }}
+															type="primary"
+															className="green-btn"
+															onClick={() => {
+																if (!addToken.symbol) {
+																	message.error('Please input symbol');
+																	return;
+																}
+																if (!addToken.token) {
+																	message.error('Please input address');
+																	return;
+																}
+
+																if (!addToken.decimals) {
+																	message.error('Please input decimal');
+																	return;
+																}
+
+																if (!metaObject?.customAdress) {
+																	metaObject.customAdress = {};
+																}
+																metaObject.customAdress[addToken.symbol] = {
+																	token: addToken.token,
+																	decimals: addToken.decimals,
+																};
+
+																setMetaObject(metaObject);
+																setAddToken({});
+																handlePreviewChange(metaObject, 'meta');
+																setDisplayCustomPair(false);
+															}}
+														>
+															COMPLETE
+														</Button>
+													</div>
+												</Modal>
+											</>
+										)}
 										<div>
 											<div className="mt-3 ">
 												Percentage price spread
@@ -1374,6 +1559,7 @@ const Otcdeskpopup = ({
 												disabled={
 													(displayOneinch &&
 														(!selectedOneinchNetwork ||
+															!metaObject?.key ||
 															!selectedOneinchPairs.base_coin ||
 															!selectedOneinchPairs.quote_coin)) ||
 													chainlink ||

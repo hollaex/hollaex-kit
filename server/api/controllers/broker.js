@@ -53,6 +53,7 @@ const createBrokerPair = (req, res) => {
 		account,
 		formula,
 		spread,
+		meta
 	} = req.swagger.params.data.value;
 
 	loggerBroker.verbose(
@@ -88,6 +89,7 @@ const createBrokerPair = (req, res) => {
 		account,
 		formula,
 		spread,
+		meta
 	})
 		.then((data) => {
 			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
@@ -113,11 +115,13 @@ const testBroker = (req, res) => {
 	const {
 		formula,
 		spread,
+		meta
 	} = req.swagger.params.data.value;
 
 	toolsLib.broker.testBroker({
 		formula,
 		spread,
+		meta
 	})
 		.then((data) => {
 			return res.json(data);
@@ -142,13 +146,17 @@ const testBrokerOneinch = (req, res) => {
 	const {
 		base_coin,
 		spread,
-		quote_coin
+		quote_coin,
+		chain,
+		meta
 	} = req.swagger.params.data.value;
 
 	toolsLib.broker.testBrokerOneinch({
 		base_coin,
 		spread,
-		quote_coin
+		quote_coin,
+		chain,
+		meta
 	})
 		.then((data) => {
 			return res.json(data);
@@ -316,6 +324,7 @@ function getBrokerPairs(req, res) {
 		'rebalancing_symbol',
 		'account',
 		'spread',
+		'meta',
 		'formula'
 	];
 

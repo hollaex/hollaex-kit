@@ -1450,6 +1450,8 @@ definitions:
         maxLength: 256
       quote_expiry_time:
         type: ['number', 'null']
+      meta:
+        type: ['object', 'null']
       rebalancing_symbol:
         type: ['string', 'null']
       account:
@@ -1486,6 +1488,8 @@ definitions:
         type: number
       increment_size:
         type: number
+      meta:
+        type: object
       type:
         type: string
         maxLength: 256

@@ -447,6 +447,7 @@ const OtcDeskContainer = ({
 				formula,
 				increment_size,
 				spread,
+				meta,
 				id,
 				price_active,
 			}) => {
@@ -481,7 +482,7 @@ const OtcDeskContainer = ({
 										<div
 											className="ml-3 text-underline"
 											onClick={() => {
-												handlePrice(formula, increment_size, spread, id);
+												handlePrice(formula, increment_size, spread, id, meta);
 											}}
 										>
 											(Get price)
@@ -856,7 +857,13 @@ const OtcDeskContainer = ({
 			return price_a < price_b ? 1 : -1; // descending order
 		});
 
-	const handlePrice = async (formula, increment_size, spread, id) => {
+	const handlePrice = async (
+		formula,
+		increment_size,
+		spread,
+		id,
+		meta = {}
+	) => {
 		try {
 			setPriceLoading(id);
 			setPriceActive(true);
@@ -864,6 +871,7 @@ const OtcDeskContainer = ({
 				formula,
 				increment_size,
 				spread,
+				meta,
 			});
 
 			setBrokerData((prevState) => {

@@ -159,6 +159,8 @@ paths:
               formula:
                 type: string
                 maxLength: 1024
+              meta:
+                type: object
       responses:
         200:
           description: Success
@@ -218,6 +220,11 @@ paths:
               quote_coin:
                 type: string
                 maxLength: 256
+              chain:
+                type: string
+                maxLength: 256
+              meta:
+                type: object
       responses:
         200:
           description: Success

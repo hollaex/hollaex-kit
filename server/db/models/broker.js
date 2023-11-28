@@ -79,7 +79,10 @@ module.exports = function (sequelize, DataTypes) {
 				type: DataTypes.TEXT,
 				allowNull: true
 			},
-
+			meta: {
+				type: DataTypes.JSONB,
+				allowNull: true
+			}
 		},
 		{
 			timestamps: true,

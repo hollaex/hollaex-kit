@@ -5,7 +5,7 @@ const math = require('mathjs');
 const ccxt = require('ccxt');
 const randomString = require('random-string');
 const { SERVER_PATH } = require('../constants');
-const { EXCHANGE_PLAN_INTERVAL_TIME, EXCHANGE_PLAN_PRICE_SOURCE, ONEINCH_COINS, ONEINCH_URL, ONEINCH_KEY } = require(`${SERVER_PATH}/constants`)
+const { EXCHANGE_PLAN_INTERVAL_TIME, EXCHANGE_PLAN_PRICE_SOURCE, ONEINCH_COINS, ONEINCH_URL, ONEINCH_CHAINS } = require(`${SERVER_PATH}/constants`)
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { client } = require('./database/redis');
 const { getUserByKitId } = require('./user');
@@ -42,7 +42,9 @@ const {
 	AMOUNTS_MISSING,
 	REBALANCE_SYMBOL_MISSING,
 	PRICE_NOT_FOUND,
-	QUOTE_EXPIRY_TIME_ERROR
+	QUOTE_EXPIRY_TIME_ERROR,
+	BROKER_ONEINCH_CHAIN,
+	BROKER_ONEINCH_KEY
 } = require(`${SERVER_PATH}/messages`);
 
 const validateBrokerPair = (brokerPair) => {
@@ -82,9 +84,9 @@ const setExchange = (data) => {
 
 const getQuoteDynamicBroker = async (side, broker, user_id = null, orderData) => {
 
-	const { symbol, spread, quote_expiry_time, refresh_interval, formula, id } = broker;
+	const { symbol, spread, quote_expiry_time, refresh_interval, formula, meta, id } = broker;
 
-	const baseCurrencyPrice = await calculatePrice(side, spread, formula, refresh_interval, id);
+	const baseCurrencyPrice = await calculatePrice(side, spread, formula, refresh_interval, meta, id);
 
 	const responseObject = {
 		price: baseCurrencyPrice
@@ -194,9 +196,9 @@ const isFairPriceForBroker = async (broker) => {
 	if (broker.type !== 'dynamic') return true;
 
 	// with ccxt
-	const priceFromMarkets = await calculatePrice(null, null, broker.formula, null, broker.id, false);
+	const priceFromMarkets = await calculatePrice(null, null, broker.formula, null, broker.meta, broker.id, false);
 	// with oracle
-	const priceFromOracle = await calculatePrice(null, null, broker.formula, null, broker.id, true);
+	const priceFromOracle = await calculatePrice(null, null, broker.formula, null, broker.meta, broker.id, true);
 
 	//relative difference
 	const percDiff =  100 * Math.abs((priceFromMarkets - priceFromOracle) / ((priceFromMarkets  + priceFromOracle) / 2));
@@ -207,7 +209,7 @@ const isFairPriceForBroker = async (broker) => {
 	else return true;
 }
 
-const calculatePrice = async (side, spread, formula, refresh_interval, brokerId, isOracle = false) => {
+const calculatePrice = async (side, spread, formula, refresh_interval, meta, brokerId, isOracle = false) => {
 	const regex = /([a-zA-Z]+(?:_[a-zA-Z]+)+(?:-[a-zA-Z]+))/g;
 	const variables = formula.match(regex);
 
@@ -233,8 +235,7 @@ const calculatePrice = async (side, spread, formula, refresh_interval, brokerId,
 			marketPrice = await client.getAsync(userCachekey);
 		
 			if (!marketPrice) { 
-				// marketPrice = await fetchOneinchPrice(coins[0].split('/')[0], coins[1].split('/')[0], coins[0].split('/')[1]);
-				marketPrice = await fetchOneinchPrice(coins[0], coins[1]);
+				marketPrice = await fetchOneinchPrice(coins[0], coins[1], meta);
 				if (refresh_interval)
 					client.setexAsync(userCachekey, refresh_interval, marketPrice);
 			}
@@ -335,7 +336,7 @@ const fetchBrokerQuote = async (brokerQuote) => {
 };
 
 const testBroker = async (data) => {
-	const { formula, spread } = data;
+	const { formula, spread, meta } = data;
 	try {
 		if (spread == null) {
 			throw new Error(BROKER_FORMULA_NOT_FOUND);
@@ -350,6 +351,7 @@ const testBroker = async (data) => {
 			spread,
 			formula,
 			5,
+			meta,
 			'test:broker'
 		);
 
@@ -373,33 +375,46 @@ const getBrokerOneinchTokens = async () => {
 }
 
 
-const fetchOneinchPrice  = async (base_coin, quote_coin, chain = 1) => {
-	const url = `${ONEINCH_URL}${chain}/quote`;
+const fetchOneinchPrice = async (base_coin, quote_coin, meta = {}) => {
+
+	if (!meta.chain) {
+		throw new Error(BROKER_ONEINCH_CHAIN);
+	}
+
+	if (!meta.key) {
+		throw new Error(BROKER_ONEINCH_KEY);
+	}
+
+	const chain = meta.chain;
+	const url = `${ONEINCH_URL}${ONEINCH_CHAINS[chain]}/quote`;
+
+	const src = ONEINCH_COINS?.[chain]?.[base_coin] || meta.customAdress[base_coin];
+	const dst = ONEINCH_COINS?.[chain]?.[quote_coin] || meta.customAdress[quote_coin];
 
 	const config = {
-		headers: { "Authorization": `Bearer ${ONEINCH_KEY}` },
+		headers: { "Authorization": `Bearer ${meta.key}` },
 		params: {
-		src: ONEINCH_COINS[base_coin].token,
-		dst:  ONEINCH_COINS[quote_coin].token,
-		amount: Math.pow(10, ONEINCH_COINS[base_coin].decimals)}
+		src: src.token,
+		dst:  dst.token,
+		amount: Math.pow(10, Number(src.decimals))}
 	};
 
 	const response = await axios.get(url, config);
-	const price = math.divide(response.data.toAmount, Math.pow(10, ONEINCH_COINS[quote_coin].decimals))
+	const price = math.divide(response.data.toAmount, Math.pow(10, Number(dst.decimals)))
 	return price;
 }
 
 const testBrokerOneinch = async (data) => {
-	const { base_coin, spread, quote_coin  } = data;
-	if (!base_coin || !quote_coin || !ONEINCH_COINS[base_coin] || !ONEINCH_COINS[quote_coin]) {
+	const { base_coin, spread, quote_coin, chain, meta } = data;
+
+	if (!base_coin || !quote_coin) {
 		throw new Error(SYMBOL_NOT_FOUND);
 	}
 	if (!spread) {
 		throw new Error(SPREAD_MISSING);
 	}
 	
-	// const price = await fetchOneinchPrice(base_coin.split('/')[0], quote_coin.split('/')[0], base_coin.split('/')[1]);
-	const price = await fetchOneinchPrice(base_coin, quote_coin);
+	const price = await fetchOneinchPrice(base_coin, quote_coin, meta);
 	
 	return {
 		buy_price: price * (1 - (spread / 100)),
@@ -497,7 +512,8 @@ const createBrokerPair = async (brokerPair) => {
 				type,
 				account,
 				formula,
-				rebalancing_symbol
+				rebalancing_symbol,
+				meta
 			} = brokerPair;
 
 			if (type !== 'manual' && (!spread || !quote_expiry_time || !formula)) {
@@ -533,7 +549,7 @@ const createBrokerPair = async (brokerPair) => {
 			}
 
 			if (formula) {
-				const brokerPrice = await testBroker({ formula, spread });
+				const brokerPrice = await testBroker({ formula, spread, meta });
 				if (!Number(brokerPrice.sell_price) || !Number(brokerPrice.buy_price)) {
 					throw new Error(FORMULA_MARKET_PAIR_ERROR);
 				}
@@ -576,7 +592,8 @@ const updateBrokerPair = async (id, data) => {
 		account,
 		formula,
 		rebalancing_symbol,
-		quote_expiry_time
+		quote_expiry_time,
+		meta
 	} = data;
 
 	const exchangeInfo = getKitConfig().info;
@@ -610,7 +627,7 @@ const updateBrokerPair = async (id, data) => {
 	}
 
 	if (formula) {
-		const brokerPrice = await testBroker({ formula, spread });
+		const brokerPrice = await testBroker({ formula, spread, meta });
 		if (!Number(brokerPrice.sell_price) || !Number(brokerPrice.buy_price)) {
 			throw new Error(FORMULA_MARKET_PAIR_ERROR);
 		}
@@ -637,6 +654,7 @@ const updateBrokerPair = async (id, data) => {
 			'account',
 			'formula',
 			'spread',
+			'meta'
 		]
 	});
 };
