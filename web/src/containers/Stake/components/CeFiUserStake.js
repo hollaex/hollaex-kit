@@ -24,6 +24,7 @@ import BigNumber from 'bignumber.js';
 import { Link } from 'react-router';
 import STRINGS from 'config/localizedStrings';
 import '../CeFiStake.scss';
+import { NotLoggedIn } from 'components';
 
 const TabPane = Tabs.TabPane;
 
@@ -219,9 +220,13 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 	];
 
 	useEffect(() => {
-		requestUserStakePools().then((res) => {
-			setStakePools(res.data);
-		});
+		requestUserStakePools()
+			.then((res) => {
+				setStakePools(res.data);
+			})
+			.catch((err) => {
+				return err;
+			});
 
 		requestExchangeStakers();
 
@@ -1327,300 +1332,50 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 			{reviewUnstake && reviewUnstakeModel()}
 			{unstakeConfirm && unstakeConfirmModel()}
 
-			<Tabs
-				defaultActiveKey="0"
-				activeKey={activeTab}
-				onChange={handleTabChange}
-			>
-				<TabPane tab="POOLS" key="0">
-					<div
-						className="stake_table_theme"
-						style={{
-							width: '100%',
-							padding: 30,
-						}}
-					>
+			<NotLoggedIn>
+				<Tabs
+					defaultActiveKey="0"
+					activeKey={activeTab}
+					onChange={handleTabChange}
+				>
+					<TabPane tab="POOLS" key="0">
 						<div
+							className="stake_table_theme"
 							style={{
-								display: 'flex',
-								justifyContent: 'space-between',
-								marginBottom: 50,
+								width: '100%',
+								padding: 30,
 							}}
 						>
-							<div style={{ flex: 1 }}>
-								<div
-									className="stake_theme"
-									style={{
-										fontWeight: 'bold',
-									}}
-								>
-									{STRINGS['CEFI_STAKE.STAKE_POOL_TITLE']}
-								</div>
-								<div style={{}}>{STRINGS['CEFI_STAKE.INTRODUCTION_1']}</div>
-							</div>
 							<div
 								style={{
-									flex: 1,
 									display: 'flex',
-									justifyContent: 'flex-end',
+									justifyContent: 'space-between',
+									marginBottom: 50,
 								}}
 							>
-								<div>
-									{userStakeData?.length > 0 && (
-										<div>{STRINGS['CEFI_STAKE.CURRENT_STAKING_VALUE']}:</div>
-									)}
-									<div>
-										{accumulateAmount(userStakeData).map((stake) => (
-											<div>
-												{stake.currency.toUpperCase()}: {stake.amount}
-											</div>
-										))}
+								<div style={{ flex: 1 }}>
+									<div
+										className="stake_theme"
+										style={{
+											fontWeight: 'bold',
+										}}
+									>
+										{STRINGS['CEFI_STAKE.STAKE_POOL_TITLE']}
 									</div>
+									<div style={{}}>{STRINGS['CEFI_STAKE.INTRODUCTION_1']}</div>
 								</div>
-							</div>
-						</div>
-
-						<div
-							style={{
-								display: 'flex',
-								justifyContent: 'center',
-								gap: 15,
-								flexWrap: 'wrap',
-							}}
-						>
-							{stakePools
-								.filter((pool) => pool.status === 'active' && pool.onboarding)
-								.map((pool) => {
-									// const alreadyStaked =
-									// 	(userStakeData || [])?.filter(
-									// 		(staker) =>
-									// 			staker.stake_id == pool.id && staker.status !== 'closed'
-									// 	)?.length > 0;
-
-									const alreadyStaked = false;
-
-									return (
-										<div
-											className="stakepool_card"
-											style={{
-												width: 330,
-												height: 300,
-												padding: 20,
-												display: 'flex',
-												justifyContent: 'center',
-												flexDirection: 'column',
-												alignItems: 'center',
-												borderTop: '1px solid #E19F23',
-											}}
-										>
-											<div style={{ position: 'relative', bottom: 40 }}>
-												<svg
-													xmlns="http://www.w3.org/2000/svg"
-													xmlnsXlink="http://www.w3.org/1999/xlink"
-													width={32}
-													height={32}
-													viewBox="0 0 32 32"
-												>
-													<defs>
-														<linearGradient
-															id="c"
-															x1="50%"
-															x2="50%"
-															y1="0%"
-															y2="100%"
-														>
-															<stop
-																offset="0%"
-																stopColor="#FFF"
-																stopOpacity={0.5}
-															/>
-															<stop offset="100%" stopOpacity={0.5} />
-														</linearGradient>
-														<filter
-															id="a"
-															width="111.7%"
-															height="111.7%"
-															x="-5.8%"
-															y="-4.2%"
-															filterUnits="objectBoundingBox"
-														>
-															<feOffset
-																dy={0.5}
-																in="SourceAlpha"
-																result="shadowOffsetOuter1"
-															/>
-															<feGaussianBlur
-																in="shadowOffsetOuter1"
-																result="shadowBlurOuter1"
-																stdDeviation={0.5}
-															/>
-															<feComposite
-																in="shadowBlurOuter1"
-																in2="SourceAlpha"
-																operator="out"
-																result="shadowBlurOuter1"
-															/>
-															<feColorMatrix
-																in="shadowBlurOuter1"
-																values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.199473505 0"
-															/>
-														</filter>
-														<circle id="b" cx={15} cy={15} r={15} />
-													</defs>
-													<g fill="none">
-														<g transform="translate(1)">
-															<use
-																xlinkHref="#b"
-																fill="#000"
-																filter="url(#a)"
-															/>
-															<use xlinkHref="#b" fill="#F19F13" />
-															<use
-																xlinkHref="#b"
-																fill="url(#c)"
-																style={{
-																	mixBlendMode: 'soft-light',
-																}}
-															/>
-															<circle
-																cx={15}
-																cy={15}
-																r={14.5}
-																stroke="#000"
-																strokeLinejoin="square"
-																strokeOpacity={0.097}
-															/>
-														</g>
-														<path
-															fill="#FFF"
-															d="M22.77 12.95h4.87l.36-2h-4.71a4.78 4.78 0 0 0-2.59.86c-.28-1-3-.86-3-.86l.36-2H17l-.36 2h-1.11l.31-2h-1.15l-.42 2h-1.19l-.61 3.12-.81-3.06H9l-5 7.35h4.12l.42-1.95H7.7l2.4-3.51.9 3.53h-.9l-.39 1.93h3.06l-.25 1.34h1.2l.28-1.34h1l-.25 1.34H16l.25-1.34h1.56a3 3 0 0 0 1.87-.95 3.2 3.2 0 0 0 2.2.95h4.71l.31-1.95h-4.23c-2.91-.05-1.67-3.48.1-3.46zm-5.29 3.41h-3.12l.25-.95h3c.76.05.51.95-.13.95zm.47-2.56h-3.12l.25-.95h3c.76.05.48.99-.13.99v-.04z"
-														/>
-													</g>
-												</svg>
-											</div>
-											<h3 className="stake_theme" style={{}}>
-												{pool.name}
-											</h3>
-											<div>
-												{pool.duration ? (
-													<>
-														<span
-															className="stake_theme"
-															style={{
-																fontWeight: 'bold',
-															}}
-														>
-															{STRINGS['CEFI_STAKE.DURATION_LABEL']}:
-														</span>{' '}
-														{pool.duration} days
-													</>
-												) : (
-													'Perpetual Staking'
-												)}
-											</div>
-											<div>
-												<span
-													className="stake_theme"
-													style={{
-														fontWeight: 'bold',
-													}}
-												>
-													APY:
-												</span>{' '}
-												{pool.apy}%
-											</div>
-											<div>-</div>
-											<div>
-												<span style={{ fontWeight: 'bold' }}>Min:</span>{' '}
-												{pool.min_amount} {pool.currency.toUpperCase()}
-											</div>
-											<div>
-												<span style={{ fontWeight: 'bold' }}>Max:</span>{' '}
-												{pool.max_amount} {pool.currency.toUpperCase()}
-											</div>
-											{pool?.reward_currency && (
-												<div className="stake_theme" style={{}}>
-													{STRINGS['CEFI_STAKE.REWARDS_IN_LABEL']}{' '}
-													<span style={{ fontWeight: 'bold' }}>
-														{pool.reward_currency.toUpperCase()}
-													</span>
-												</div>
-											)}
-											<div>
-												<AntBtn
-													onClick={() => {
-														setReadBeforeAction(true);
-														setSelectedPool(pool);
-													}}
-													disabled={alreadyStaked}
-													style={{
-														marginTop: 30,
-														backgroundColor: '#5D63FF',
-														padding: 20,
-														borderRadius: 20,
-														width: 160,
-														color: 'white',
-														textAlign: 'center',
-														display: 'flex',
-														justifyContent: 'center',
-														alignItems: 'center',
-														opacity: alreadyStaked ? 0.4 : 1,
-													}}
-												>
-													{' '}
-													{alreadyStaked ? 'STAKED' : 'STAKE'}{' '}
-												</AntBtn>
-											</div>
-										</div>
-									);
-								})}
-						</div>
-					</div>
-				</TabPane>
-				<TabPane tab="MY STAKES" key="1">
-					<div
-						className="stake_table_theme"
-						style={{
-							width: '100%',
-							padding: 30,
-						}}
-					>
-						<div
-							style={{
-								display: 'flex',
-								justifyContent: 'space-between',
-								marginBottom: 50,
-							}}
-						>
-							<div style={{ flex: 1 }}>
 								<div
-									className="stake_theme"
 									style={{
-										fontWeight: 'bold',
+										flex: 1,
+										display: 'flex',
+										justifyContent: 'flex-end',
 									}}
 								>
-									{STRINGS['CEFI_STAKE.ALL_STAKING_EVENTS']}
-								</div>
-								<div style={{}}>
-									{STRINGS['CEFI_STAKE.MONITOR_ACTIVE_STAKES']}
-								</div>
-								<div style={{ marginTop: 20 }}>
-									{STRINGS['CEFI_STAKE.USE_FILTERS_FOR_HISTORICAL_EVENTS']}
-								</div>
-							</div>
-							<div
-								style={{
-									flex: 1,
-									display: 'flex',
-									justifyContent: 'flex-end',
-								}}
-							>
-								<div>
-									<div style={{ marginBottom: 20 }}>
+									<div>
 										{userStakeData?.length > 0 && (
-											<div>{STRINGS['CEFI_STAKE.ESTIMATED_TOTAL_STAKED']}</div>
+											<div>{STRINGS['CEFI_STAKE.CURRENT_STAKING_VALUE']}:</div>
 										)}
-										<div style={{ fontSize: 18 }}>
+										<div>
 											{accumulateAmount(userStakeData).map((stake) => (
 												<div>
 													{stake.currency.toUpperCase()}: {stake.amount}
@@ -1628,59 +1383,315 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 											))}
 										</div>
 									</div>
-									<div>
-										{userStakeData?.length > 0 && (
-											<div>
-												{STRINGS['CEFI_STAKE.ESTIMATED_EARNINGS_VALUE']}
-											</div>
-										)}
-										<div style={{ fontSize: 18 }}>
-											{accumulateReward(userStakeData).map((stake) => {
-												const incrementUnit =
-													coins[stake.currency].increment_unit;
-												const decimalPoint = new BigNumber(incrementUnit).dp();
-												const sourceAmount =
-													stake?.reward &&
-													new BigNumber(stake?.reward)
-														.decimalPlaces(decimalPoint)
-														.toNumber();
+								</div>
+							</div>
 
-												return (
-													<div>
-														{(
-															stake.reward_currency || stake.currency
-														).toUpperCase()}
-														: {sourceAmount}
+							<div
+								style={{
+									display: 'flex',
+									justifyContent: 'center',
+									gap: 15,
+									flexWrap: 'wrap',
+								}}
+							>
+								{stakePools
+									.filter((pool) => pool.status === 'active' && pool.onboarding)
+									.map((pool) => {
+										// const alreadyStaked =
+										// 	(userStakeData || [])?.filter(
+										// 		(staker) =>
+										// 			staker.stake_id == pool.id && staker.status !== 'closed'
+										// 	)?.length > 0;
+
+										const alreadyStaked = false;
+
+										return (
+											<div
+												className="stakepool_card"
+												style={{
+													width: 330,
+													height: 300,
+													padding: 20,
+													display: 'flex',
+													justifyContent: 'center',
+													flexDirection: 'column',
+													alignItems: 'center',
+													borderTop: '1px solid #E19F23',
+												}}
+											>
+												<div style={{ position: 'relative', bottom: 40 }}>
+													<svg
+														xmlns="http://www.w3.org/2000/svg"
+														xmlnsXlink="http://www.w3.org/1999/xlink"
+														width={32}
+														height={32}
+														viewBox="0 0 32 32"
+													>
+														<defs>
+															<linearGradient
+																id="c"
+																x1="50%"
+																x2="50%"
+																y1="0%"
+																y2="100%"
+															>
+																<stop
+																	offset="0%"
+																	stopColor="#FFF"
+																	stopOpacity={0.5}
+																/>
+																<stop offset="100%" stopOpacity={0.5} />
+															</linearGradient>
+															<filter
+																id="a"
+																width="111.7%"
+																height="111.7%"
+																x="-5.8%"
+																y="-4.2%"
+																filterUnits="objectBoundingBox"
+															>
+																<feOffset
+																	dy={0.5}
+																	in="SourceAlpha"
+																	result="shadowOffsetOuter1"
+																/>
+																<feGaussianBlur
+																	in="shadowOffsetOuter1"
+																	result="shadowBlurOuter1"
+																	stdDeviation={0.5}
+																/>
+																<feComposite
+																	in="shadowBlurOuter1"
+																	in2="SourceAlpha"
+																	operator="out"
+																	result="shadowBlurOuter1"
+																/>
+																<feColorMatrix
+																	in="shadowBlurOuter1"
+																	values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.199473505 0"
+																/>
+															</filter>
+															<circle id="b" cx={15} cy={15} r={15} />
+														</defs>
+														<g fill="none">
+															<g transform="translate(1)">
+																<use
+																	xlinkHref="#b"
+																	fill="#000"
+																	filter="url(#a)"
+																/>
+																<use xlinkHref="#b" fill="#F19F13" />
+																<use
+																	xlinkHref="#b"
+																	fill="url(#c)"
+																	style={{
+																		mixBlendMode: 'soft-light',
+																	}}
+																/>
+																<circle
+																	cx={15}
+																	cy={15}
+																	r={14.5}
+																	stroke="#000"
+																	strokeLinejoin="square"
+																	strokeOpacity={0.097}
+																/>
+															</g>
+															<path
+																fill="#FFF"
+																d="M22.77 12.95h4.87l.36-2h-4.71a4.78 4.78 0 0 0-2.59.86c-.28-1-3-.86-3-.86l.36-2H17l-.36 2h-1.11l.31-2h-1.15l-.42 2h-1.19l-.61 3.12-.81-3.06H9l-5 7.35h4.12l.42-1.95H7.7l2.4-3.51.9 3.53h-.9l-.39 1.93h3.06l-.25 1.34h1.2l.28-1.34h1l-.25 1.34H16l.25-1.34h1.56a3 3 0 0 0 1.87-.95 3.2 3.2 0 0 0 2.2.95h4.71l.31-1.95h-4.23c-2.91-.05-1.67-3.48.1-3.46zm-5.29 3.41h-3.12l.25-.95h3c.76.05.51.95-.13.95zm.47-2.56h-3.12l.25-.95h3c.76.05.48.99-.13.99v-.04z"
+															/>
+														</g>
+													</svg>
+												</div>
+												<h3 className="stake_theme" style={{}}>
+													{pool.name}
+												</h3>
+												<div>
+													{pool.duration ? (
+														<>
+															<span
+																className="stake_theme"
+																style={{
+																	fontWeight: 'bold',
+																}}
+															>
+																{STRINGS['CEFI_STAKE.DURATION_LABEL']}:
+															</span>{' '}
+															{pool.duration} days
+														</>
+													) : (
+														'Perpetual Staking'
+													)}
+												</div>
+												<div>
+													<span
+														className="stake_theme"
+														style={{
+															fontWeight: 'bold',
+														}}
+													>
+														APY:
+													</span>{' '}
+													{pool.apy}%
+												</div>
+												<div>-</div>
+												<div>
+													<span style={{ fontWeight: 'bold' }}>Min:</span>{' '}
+													{pool.min_amount} {pool.currency.toUpperCase()}
+												</div>
+												<div>
+													<span style={{ fontWeight: 'bold' }}>Max:</span>{' '}
+													{pool.max_amount} {pool.currency.toUpperCase()}
+												</div>
+												{pool?.reward_currency && (
+													<div className="stake_theme" style={{}}>
+														{STRINGS['CEFI_STAKE.REWARDS_IN_LABEL']}{' '}
+														<span style={{ fontWeight: 'bold' }}>
+															{pool.reward_currency.toUpperCase()}
+														</span>
 													</div>
-												);
-											})}
+												)}
+												<div>
+													<AntBtn
+														onClick={() => {
+															setReadBeforeAction(true);
+															setSelectedPool(pool);
+														}}
+														disabled={alreadyStaked}
+														style={{
+															marginTop: 30,
+															backgroundColor: '#5D63FF',
+															padding: 20,
+															borderRadius: 20,
+															width: 160,
+															color: 'white',
+															textAlign: 'center',
+															display: 'flex',
+															justifyContent: 'center',
+															alignItems: 'center',
+															opacity: alreadyStaked ? 0.4 : 1,
+														}}
+													>
+														{' '}
+														{alreadyStaked ? 'STAKED' : 'STAKE'}{' '}
+													</AntBtn>
+												</div>
+											</div>
+										);
+									})}
+							</div>
+						</div>
+					</TabPane>
+					<TabPane tab="MY STAKES" key="1">
+						<div
+							className="stake_table_theme"
+							style={{
+								width: '100%',
+								padding: 30,
+							}}
+						>
+							<div
+								style={{
+									display: 'flex',
+									justifyContent: 'space-between',
+									marginBottom: 50,
+								}}
+							>
+								<div style={{ flex: 1 }}>
+									<div
+										className="stake_theme"
+										style={{
+											fontWeight: 'bold',
+										}}
+									>
+										{STRINGS['CEFI_STAKE.ALL_STAKING_EVENTS']}
+									</div>
+									<div style={{}}>
+										{STRINGS['CEFI_STAKE.MONITOR_ACTIVE_STAKES']}
+									</div>
+									<div style={{ marginTop: 20 }}>
+										{STRINGS['CEFI_STAKE.USE_FILTERS_FOR_HISTORICAL_EVENTS']}
+									</div>
+								</div>
+								<div
+									style={{
+										flex: 1,
+										display: 'flex',
+										justifyContent: 'flex-end',
+									}}
+								>
+									<div>
+										<div style={{ marginBottom: 20 }}>
+											{userStakeData?.length > 0 && (
+												<div>
+													{STRINGS['CEFI_STAKE.ESTIMATED_TOTAL_STAKED']}
+												</div>
+											)}
+											<div style={{ fontSize: 18 }}>
+												{accumulateAmount(userStakeData).map((stake) => (
+													<div>
+														{stake.currency.toUpperCase()}: {stake.amount}
+													</div>
+												))}
+											</div>
+										</div>
+										<div>
+											{userStakeData?.length > 0 && (
+												<div>
+													{STRINGS['CEFI_STAKE.ESTIMATED_EARNINGS_VALUE']}
+												</div>
+											)}
+											<div style={{ fontSize: 18 }}>
+												{accumulateReward(userStakeData).map((stake) => {
+													const incrementUnit =
+														coins[stake.currency].increment_unit;
+													const decimalPoint = new BigNumber(
+														incrementUnit
+													).dp();
+													const sourceAmount =
+														stake?.reward &&
+														new BigNumber(stake?.reward)
+															.decimalPlaces(decimalPoint)
+															.toNumber();
+
+													return (
+														<div>
+															{(
+																stake.reward_currency || stake.currency
+															).toUpperCase()}
+															: {sourceAmount}
+														</div>
+													);
+												})}
+											</div>
 										</div>
 									</div>
 								</div>
 							</div>
-						</div>
 
-						<div className="mt-4">
-							<Spin spinning={isLoading}>
-								<Table
-									className="cefi_stake"
-									columns={columns}
-									dataSource={userStakeData}
-									expandRowByClick={true}
-									rowKey={(data) => {
-										return data.id;
-									}}
-									// pagination={{
-									// 	current: queryFilters.currentTablePage,
-									// 	onChange: pageChange,
-									// }}
-									pagination={false}
-								/>
-							</Spin>
+							<div className="mt-4">
+								<Spin spinning={isLoading}>
+									<Table
+										className="cefi_stake"
+										columns={columns}
+										dataSource={userStakeData}
+										expandRowByClick={true}
+										rowKey={(data) => {
+											return data.id;
+										}}
+										// pagination={{
+										// 	current: queryFilters.currentTablePage,
+										// 	onChange: pageChange,
+										// }}
+										pagination={false}
+									/>
+								</Spin>
+							</div>
 						</div>
-					</div>
-				</TabPane>
-			</Tabs>
+					</TabPane>
+				</Tabs>
+			</NotLoggedIn>
 		</div>
 	);
 };

@@ -16,7 +16,8 @@ export const menuItemsSelector = createSelector(
 				({ id }) =>
 					id !== 'stake_page' ||
 					(id === 'stake_page' &&
-						isStakingAvailable(STAKING_INDEX_COIN, contracts))
+						(features.cefi_stake ||
+							isStakingAvailable(STAKING_INDEX_COIN, contracts)))
 			)
 			.map(
 				({
