@@ -393,9 +393,9 @@ const updateLoginStatus = (loginId) => {
 };
 
 const createUserLogin = async (user, ip, device, domain, origin, referer, token, long_term, status) => {
-	const loginData = await findUserLatestLogin(user, status);
+	const loginData = status == false && await findUserLatestLogin(user, status);
 
-	if (!loginData || loginData?.status == true) {
+	if (!loginData) {
 		return registerUserLogin(user.id, ip, {
 			device,
 			domain,
