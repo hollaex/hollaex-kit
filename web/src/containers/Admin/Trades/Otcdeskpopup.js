@@ -1540,7 +1540,10 @@ const Otcdeskpopup = ({
 														);
 														return;
 													}
-													if (!formula && selectedExchange === 'oneinch') {
+													if (
+														selectedExchange === 'oneinch' ||
+														formula?.includes('oneinch')
+													) {
 														const newFormula = `${selectedExchange}_${selectedOneinchPairs.base_coin}-${selectedOneinchPairs.quote_coin}`;
 														setFormula(newFormula);
 														handlePreviewChange(newFormula, 'formula');
