@@ -46,7 +46,7 @@ const putNetworkCredentials = (req, res) => {
 
 	toolsLib.updateNetworkKeySecret(api_key, api_secret)
 		.then(() => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
 			return res.json({ message: 'Success' });
 		})
 		.catch((err) => {
@@ -83,7 +83,7 @@ const createInitialAdmin = (req, res) => {
 			return toolsLib.setExchangeInitialized();
 		})
 		.then(() => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
 			return res.status(201).json({ message: 'Success' });
 		})
 		.catch((err) => {
@@ -103,7 +103,7 @@ const putAdminKit = (req, res) => {
 		}
 	}
 
-	const auditInfo = { userEmail: req?.auth?.sub?.email, apiPath: req?.swagger?.apiPath, method: req?.swagger?.operationPath?.[2] };
+	const auditInfo = { userEmail: req?.auth?.sub?.email, sessionId: req?.session_id, apiPath: req?.swagger?.apiPath, method: req?.swagger?.operationPath?.[2] };
 	toolsLib.updateKitConfigSecrets(data, req.auth.scopes, auditInfo)
 		.then((result) => {
 			return res.json(result);
@@ -218,7 +218,7 @@ const putUserRole = (req, res) => {
 
 	toolsLib.user.updateUserRole(user_id, role)
 		.then((user) => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
 			return res.json(user);
 		})
 		.catch((err) => {
@@ -251,7 +251,7 @@ const putUserMeta = (req, res) => {
 		'overwrite',
 		overwrite
 	);
-	const auditInfo = { userEmail: req?.auth?.sub?.email, apiPath: req?.swagger?.apiPath, method: req?.swagger?.operationPath?.[2] };
+	const auditInfo = { userEmail: req?.auth?.sub?.email, sessionId: req?.session_id, apiPath: req?.swagger?.apiPath, method: req?.swagger?.operationPath?.[2] };
 	toolsLib.user.updateUserMeta(user_id, meta, { overwrite }, auditInfo)
 		.then((user) => {
 			loggerAdmin.verbose(
@@ -280,7 +280,7 @@ const putUserNote = (req, res) => {
 	const user_id = req.swagger.params.user_id.value;
 	const { note } = req.swagger.params.data.value;
 
-	const auditInfo = { userEmail: req?.auth?.sub?.email, apiPath: req?.swagger?.apiPath, method: req?.swagger?.operationPath?.[2] };
+	const auditInfo = { userEmail: req?.auth?.sub?.email, sessionId: req?.session_id, apiPath: req?.swagger?.apiPath, method: req?.swagger?.operationPath?.[2] };
 	toolsLib.user.updateUserNote(user_id, note, auditInfo)
 		.then(() => {
 			return res.json({ message: 'Success' });
@@ -313,7 +313,7 @@ const putUserDiscount = (req, res) => {
 		'discount rate',
 		discount
 	);
-	const auditInfo = { userEmail: req?.auth?.sub?.email, apiPath: req?.swagger?.apiPath, method: req?.swagger?.operationPath?.[2] };
+	const auditInfo = { userEmail: req?.auth?.sub?.email, sessionId: req?.session_id, apiPath: req?.swagger?.apiPath, method: req?.swagger?.operationPath?.[2] };
 	toolsLib.user.updateUserDiscount(user_id, discount, auditInfo)
 		.then((data) => {
 			loggerAdmin.info(
@@ -376,7 +376,7 @@ const activateUser = (req, res) => {
 
 	promiseQuery
 		.then((user) => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
 			const message = `Account ${user.email} has been ${activated ? 'activated' : 'deactivated'
 			}`;
 			return res.json({ message });
@@ -429,7 +429,7 @@ const upgradeUser = (req, res) => {
 
 	toolsLib.user.changeUserVerificationLevelById(user_id, verification_level, domain)
 		.then(() => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
 			return res.json({ message: 'Success' });
 		})
 		.catch((err) => {
@@ -453,7 +453,7 @@ const verifyEmailUser = (req, res) => {
 
 	toolsLib.user.verifyUserEmailByKitId(user_id)
 		.then((user) => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
 			sendEmail(
 				MAILTYPE.WELCOME,
 				user.email,
@@ -478,7 +478,7 @@ const flagUser = (req, res) => {
 
 	toolsLib.user.toggleFlaggedUserById(user_id)
 		.then(() => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
 			return res.json({ message: 'Success' });
 		})
 		.catch((err) => {
@@ -707,7 +707,7 @@ const transferFund = (req, res) => {
 		}
 	})
 		.then(() => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
 			return res.json({ message: 'Success' });
 		})
 		.catch((err) => {
@@ -729,7 +729,7 @@ const completeExchangeSetup = (req, res) => {
 
 	toolsLib.setExchangeSetupCompleted()
 		.then(() => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
 			return res.json({ message: 'Success' });
 		})
 		.catch((err) => {
@@ -841,7 +841,7 @@ const inviteNewOperator = (req, res) => {
 		}
 	})
 		.then(() => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
 			return res.json({ message: 'Success' });
 		})
 		.catch((err) => {
@@ -909,7 +909,7 @@ const settleFees = (req, res) => {
 		}
 	})
 		.then((data) => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, 'post', { user_id  });
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, 'post', { user_id  });
 			return res.json(data);
 		})
 		.catch((err) => {
@@ -978,7 +978,7 @@ const mintAsset = (req, res) => {
 			);
 		})
 		.then((data) => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
 			loggerAdmin.info(
 				req.uuid,
 				'controllers/admin/mintAsset successful'
@@ -1052,7 +1052,7 @@ const putMint = (req, res) => {
 		}
 	})
 		.then((data) => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
 			loggerAdmin.info(
 				req.uuid,
 				'controllers/admin/putMint successful'
@@ -1125,7 +1125,7 @@ const burnAsset = (req, res) => {
 			);
 		})
 		.then((data) => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
 			loggerAdmin.info(
 				req.uuid,
 				'controllers/admin/burnAsset successful'
@@ -1199,7 +1199,7 @@ const putBurn = (req, res) => {
 		}
 	})
 		.then((data) => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
 			loggerAdmin.info(
 				req.uuid,
 				'controllers/admin/putBurn successful'
@@ -1236,7 +1236,7 @@ const postKitUserMeta = (req, res) => {
 
 	toolsLib.addKitUserMeta(name, type, description, required)
 		.then((result) => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
 			return res.json(result);
 		})
 		.catch((err) => {
@@ -1321,7 +1321,7 @@ const putKitUserMeta = (req, res) => {
 		'description',
 		description
 	);
-	const auditInfo = { userEmail: req?.auth?.sub?.email, apiPath: req?.swagger?.apiPath, method: req?.swagger?.operationPath?.[2] };
+	const auditInfo = { userEmail: req?.auth?.sub?.email, sessionId: req?.session_id, apiPath: req?.swagger?.apiPath, method: req?.swagger?.operationPath?.[2] };
 	toolsLib.updateKitUserMeta(name, { type, required, description }, auditInfo)
 		.then((result) => {
 			return res.json(result);
@@ -1346,7 +1346,7 @@ const deleteKitUserMeta = (req, res) => {
 
 	toolsLib.deleteKitUserMeta(name)
 		.then((result) => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
 			return res.json(result);
 		})
 		.catch((err) => {
@@ -1376,7 +1376,7 @@ const adminCheckTransaction = (req, res) => {
 		}
 	})
 		.then((transaction) => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
 			return res.json({ message: 'Success', transaction });
 		})
 		.catch((err) => {
@@ -1464,7 +1464,7 @@ const createPair = (req, res) => {
 		}
 	)
 		.then((data) => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
 			return res.json(data);
 		})
 		.catch((err) => {
@@ -1543,7 +1543,7 @@ const updatePair = (req, res) => {
 		}
 	)
 		.then((data) => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
 			return res.json(data);
 		})
 		.catch((err) => {
@@ -1637,7 +1637,7 @@ const createCoin = (req, res) => {
 		}
 	)
 		.then((data) => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
 			return res.json(data);
 		})
 		.catch((err) => {
@@ -1747,7 +1747,7 @@ const updateCoin = (req, res) => {
 		}
 	)
 		.then((data) => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
 			return res.json(data);
 		})
 		.catch((err) => {
@@ -1943,7 +1943,7 @@ const putUserInfo = (req, res) => {
 		updateData
 	);
 
-	const auditInfo = { userEmail: req?.auth?.sub?.email, apiPath: req?.swagger?.apiPath, method: req?.swagger?.operationPath?.[2] };
+	const auditInfo = { userEmail: req?.auth?.sub?.email, sessionId: req?.session_id, apiPath: req?.swagger?.apiPath, method: req?.swagger?.operationPath?.[2] };
 	toolsLib.user.updateUserInfo(user_id, updateData, auditInfo)
 		.then((data) => {
 			return res.json(data);
@@ -1969,7 +1969,7 @@ const emailConfigTest = (req, res) => {
 
 	testSendSMTPEmail(receiver, smtp)
 		.then(() => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
 			loggerAdmin.error(
 				req.uuid,
 				'controllers/admin/emailConfigTest',
@@ -2011,6 +2011,15 @@ const setUserBank = (req, res) => {
 
 			let sendEmail = false;
 
+			const newBankInfoLog = [];
+			const deletedBankInfoLog = [];
+			existingBankAccounts?.forEach(existingBank => {
+				const foundBank = bank_account?.find(bank => bank.id === existingBank.id);
+				if (!foundBank) {
+					deletedBankInfoLog.push(existingBank);
+				}
+			})
+			
 			const newBankAccounts = bank_account.map((bank) => {
 				let existingBank = existingBankAccounts.filter((b) => b.id === bank.id);
 				existingBank = existingBank[0];
@@ -2021,6 +2030,7 @@ const setUserBank = (req, res) => {
 					sendEmail = true;
 					bank.id = crypto.randomBytes(8).toString('hex');
 					bank.status = VERIFY_STATUS.COMPLETED;
+					newBankInfoLog.push(bank);
 					return bank;
 				}
 			});
@@ -2037,7 +2047,9 @@ const setUserBank = (req, res) => {
 					loggerAdmin.error(req.uuid, 'controllers/admin/setUserBank err', err.message);
 				}
 			}
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
+
+			newBankInfoLog.map(bank => toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], bank))
+			deletedBankInfoLog.map(bank => toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, 'delete', bank))
 			return res.json(updatedUser.bank_account);
 		})
 		.catch((err) => {
@@ -2089,7 +2101,7 @@ const verifyUserBank = (req, res) => {
 			);
 		})
 		.then((user) => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
 			try {
 				toolsLib.sendEmail('BANK_VERIFIED', user.email, { bankAccounts: user.bank_account.filter((account) => account.status === VERIFY_STATUS.COMPLETED) }, user.settings);
 			} catch (err) {
@@ -2240,7 +2252,7 @@ const createUserByAdmin = (req, res) => {
 			});
 		})
 		.then(() => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
 			return res.status(201).json({ message: 'Success' });
 		})
 		.catch((err) => {
@@ -2292,7 +2304,7 @@ const createUserWalletByAdmin = (req, res) => {
 			});
 		})
 		.then((data) => { 
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
 			return res.status(201).json(data); 
 		})
 		.catch((err) => {
@@ -2339,7 +2351,7 @@ const getWalletsByAdmin = (req, res) => {
 		}
 	)
 		.then((data) => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
 			if (format.value === 'csv') {
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users.csv`);
 				res.set('Content-Type', 'text/csv');
@@ -2387,7 +2399,7 @@ const sendEmailByAdmin = (req, res) => {
 			);
 		})
 		.then(() => { 
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
 			return res.json({ message: 'Success' });
 		})
 		.catch((err) => {
@@ -2425,7 +2437,7 @@ const sendRawEmailByAdmin = (req, res) => {
 		text
 	)
 		.then(() => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
 			return res.json({ message: 'Success' });
 		})
 		.catch((err) => {
@@ -2491,7 +2503,7 @@ const revokeUserSessionByAdmin = (req, res) => {
 
 	toolsLib.user.revokeExchangeUserSession(session_id)
 		.then((data) => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], { user_id: data.user_id, ...req?.swagger?.params?.data?.value });
 			return res.json(data);
 		})
 		.catch((err) => {
@@ -2504,7 +2516,7 @@ const updateQuickTradeConfig = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/updateQuickTradeConfig/auth', req.auth);
 
 	const { symbol, type, active } = req.swagger.params.data.value;
-	const auditInfo = { userEmail: req?.auth?.sub?.email, apiPath: req?.swagger?.apiPath, method: req?.swagger?.operationPath?.[2] };
+	const auditInfo = { userEmail: req?.auth?.sub?.email, sessionId: req?.session_id, apiPath: req?.swagger?.apiPath, method: req?.swagger?.operationPath?.[2] };
 	toolsLib.order.updateQuickTradeConfig({ symbol, active, type }, auditInfo
 	)
 		.then((data) => {
@@ -2607,7 +2619,7 @@ const getBalancesAdmin = (req, res) => {
 		}
 	})
 		.then((data) => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
 			if (format.value === 'csv') {
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users.csv`);
 				res.set('Content-Type', 'text/csv');
@@ -2635,7 +2647,7 @@ const restoreUserAccount = (req, res) => {
 	);
 	toolsLib.user.restoreKitUser(user_id)
 		.then(() => {
-			toolsLib.user.createAuditLog(req?.auth?.sub?.email, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
 			return res.json({ message: 'Success' });
 		})
 		.catch((err) => {
@@ -2667,7 +2679,7 @@ const changeUserEmail = (req, res) => {
 		})
 		.then((confirmed) => {
 			if (confirmed) {
-				const auditInfo = { userEmail: req?.auth?.sub?.email, apiPath: req?.swagger?.apiPath, method: req?.swagger?.operationPath?.[2] };
+				const auditInfo = { userEmail: req?.auth?.sub?.email, sessionId: req?.session_id, apiPath: req?.swagger?.apiPath, method: req?.swagger?.operationPath?.[2] };
 				return toolsLib.user.changeKitUserEmail(user_id, email, auditInfo);
 			} else {
 				throw new Error(INVALID_VERIFICATION_CODE);

@@ -20,7 +20,8 @@ import { calculateBaseFee } from './utils';
 import Fiat from './Fiat';
 import Image from 'components/Image';
 import STRINGS from 'config/localizedStrings';
-
+import { message } from 'antd';
+import { getWithdrawalMax } from 'actions/appActions';
 import ReviewModalContent from './ReviewModalContent';
 import QRScanner from './QRScanner';
 
@@ -96,7 +97,21 @@ class Form extends Component {
 		if (ev && ev.preventDefault) {
 			ev.preventDefault();
 		}
-		this.setState({ dialogIsOpen: true });
+		getWithdrawalMax(this.props.currency, this.props?.data?.network)
+			.then((res) => {
+				if (math.larger(this.props?.data?.amount, res?.data?.amount)) {
+					message.error(
+						`requested amount exceeds maximum withrawal limit of ${
+							res?.data?.amount
+						} ${this?.props?.currency?.toUpperCase()}`
+					);
+				} else {
+					this.setState({ dialogIsOpen: true });
+				}
+			})
+			.catch((err) => {
+				message.error(err.response.data.message);
+			});
 	};
 
 	onCloseDialog = (ev) => {
