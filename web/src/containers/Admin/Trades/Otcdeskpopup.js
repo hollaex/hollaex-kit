@@ -189,13 +189,15 @@ const Otcdeskpopup = ({
 			setFormula(previewData.formula);
 
 			if (previewData?.formula?.includes('oneinch')) {
-				const exchangePair = previewData?.formula?.split('_');
-				const coins = exchangePair[1].split('-');
+				if (!selectedOneinchNetwork) {
+					const exchangePair = previewData?.formula?.split('_');
+					const coins = exchangePair[1].split('-');
 
-				setSelectedOneinchPairs({
-					base_coin: coins[0],
-					quote_coin: coins[1],
-				});
+					setSelectedOneinchPairs({
+						base_coin: coins[0],
+						quote_coin: coins[1],
+					});
+				}
 			}
 		}
 		if (previewData.exchange_name) {
