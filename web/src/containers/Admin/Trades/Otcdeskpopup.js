@@ -511,6 +511,9 @@ const Otcdeskpopup = ({
 			<Option value="hollaex">Hollaex Pro</Option>
 			<Option value="binance">Binance</Option>
 			{_toLower(kit?.info?.plan) !== 'crypto' && (
+				<Option value="oneinch">1inch</Option>
+			)}
+			{_toLower(kit?.info?.plan) !== 'crypto' && (
 				<Option value="coinbase">Coinbase</Option>
 			)}
 			{_toLower(kit?.info?.plan) !== 'crypto' && (
@@ -521,9 +524,6 @@ const Otcdeskpopup = ({
 			)}
 			{_toLower(kit?.info?.plan) !== 'crypto' && (
 				<Option value="bybit">Bybit</Option>
-			)}
-			{_toLower(kit?.info?.plan) !== 'crypto' && (
-				<Option value="oneinch">1inch</Option>
 			)}
 			{hasOracle && <Option value="oracle">Hollaex Oracle</Option>}
 		</>
