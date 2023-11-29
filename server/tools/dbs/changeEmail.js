@@ -7,7 +7,8 @@ const {
 	PROVIDE_VALID_EMAIL,
 	USER_NOT_FOUND,
 	EMAIL_IS_SAME,
-	EMAIL_EXISTS
+	EMAIL_EXISTS,
+	CANNOT_CHANGE_DELETED_EMAIL
 } = require('../../messages');
 const { isEmail } = require('validator');
 const { sendEmail } = require('../../mail');
@@ -48,6 +49,10 @@ const changeEmail = async () => {
 		const userEmail = user.email;
 		if (userEmail === newEmail) {
 			throw new Error(EMAIL_IS_SAME);
+		}
+		
+		if (userEmail.includes('_deleted')) {
+			throw new Error(CANNOT_CHANGE_DELETED_EMAIL);
 		}
 
 		const isExists = await User.findOne({

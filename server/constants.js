@@ -646,7 +646,7 @@ exports.EXCHANGE_PLAN_PRICE_SOURCE = {
 
 //STAKE CONSTANTS START
 
-exports.STAKE_SUPPORTED_PLANS = ['crypto', 'fiat', 'boost', 'enterprise'];
+exports.STAKE_SUPPORTED_PLANS = ['fiat', 'boost', 'enterprise'];
 
 //STAKE CONSTANTS END
 
