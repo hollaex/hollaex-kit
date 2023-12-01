@@ -355,7 +355,7 @@ const calculateWithdrawalMax = async (user_id, currency, selectedNetwork) => {
 	}
 
 	const decimalPoint = new BigNumber(increment_unit).dp();
-	amount = new BigNumber(amount).decimalPlaces(decimalPoint).toNumber();
+	amount = new BigNumber(amount).decimalPlaces(decimalPoint, BigNumber.ROUND_DOWN).toNumber();
 	return { amount };
 };
 
