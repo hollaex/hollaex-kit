@@ -291,7 +291,7 @@ const calculateWithdrawalMax = async (user_id, currency, selectedNetwork) => {
 
 	const coinConfiguration = getKitCoin(currency);
 	// const coinMarkup = getKitConfig()?.coin_customizations?.[currency];
-
+	const { fee, fee_coin } = getWithdrawalFee(currency, selectedNetwork, amount, user.verification_level);
 	const { increment_unit } = coinConfiguration;
 
 
@@ -339,6 +339,13 @@ const calculateWithdrawalMax = async (user_id, currency, selectedNetwork) => {
 		if (amountToSubtract < 0) {
 			amount = new BigNumber(amount).minus(new BigNumber(amountToSubtract).absoluteValue()).toNumber();
 		}
+		
+		if (fee_coin && fee_coin === currency
+			&& new BigNumber(amount).plus(new BigNumber(fee)).comparedTo(balance[`${currency}_available`]) === 1
+		) {
+
+			amount = new BigNumber(balance[`${currency}_available`]).minus(new BigNumber(fee)).toNumber();
+		}
 
 		amount = BigNumber.minimum(dailyAmount, amount).toNumber();
 	}
@@ -348,7 +355,7 @@ const calculateWithdrawalMax = async (user_id, currency, selectedNetwork) => {
 	}
 
 	const decimalPoint = new BigNumber(increment_unit).dp();
-	amount = new BigNumber(amount).decimalPlaces(decimalPoint).toNumber();
+	amount = new BigNumber(amount).decimalPlaces(decimalPoint, BigNumber.ROUND_DOWN).toNumber();
 	return { amount };
 };
 

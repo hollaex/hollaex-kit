@@ -363,7 +363,7 @@ const updateQuickTradeConfig = async ({ symbol, type, active }, auditInfo) => {
 		type,
 		active
 	};
-	createAuditLog(auditInfo.userEmail, auditInfo.apiPath, auditInfo.method, quickTradeData.dataValues, updatedConfig);
+	createAuditLog({ email: auditInfo.userEmail, session_id: auditInfo.sessionId }, auditInfo.apiPath, auditInfo.method, quickTradeData.dataValues, updatedConfig);
 	return quickTradeData.update(updatedConfig, { fields: ['type', 'active'], returning: true });
 };
 

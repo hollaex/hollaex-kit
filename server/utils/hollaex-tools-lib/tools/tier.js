@@ -123,7 +123,7 @@ const updateTier = (level, updateData, auditInfo) => {
 			if (isBoolean(updateData.native_currency_limit)) {
 				newData.native_currency_limit = updateData.native_currency_limit;
 			}
-			createAuditLog(auditInfo.userEmail, auditInfo.apiPath, auditInfo.method, newData, tier.dataValues);
+			createAuditLog({ email: auditInfo.userEmail, session_id: auditInfo.sessionId }, auditInfo.apiPath, auditInfo.method, newData, tier.dataValues);
 			return tier.update(newData);
 		})
 		.then((tier) => {
@@ -171,7 +171,7 @@ const updatePairFees = (pair, fees, auditInfo) => {
 			updatedFees.maker[pair] = fees[level].maker;
 			updatedFees.taker[pair] = fees[level].taker;
 
-			createAuditLog(auditInfo.userEmail, auditInfo.apiPath, auditInfo.method, updatedFees, tier.dataValues.fees);
+			createAuditLog({ email: auditInfo.userEmail, session_id: auditInfo.sessionId }, auditInfo.apiPath, auditInfo.method, updatedFees, tier.dataValues.fees);
 
 			return tier.update(
 				{ fees: updatedFees },

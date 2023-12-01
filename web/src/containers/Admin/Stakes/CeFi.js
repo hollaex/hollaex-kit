@@ -33,7 +33,7 @@ import {
 import Coins from '../Coins';
 import BigNumber from 'bignumber.js';
 import { updateConstants } from '../General/action';
-import { handleUpgrade } from 'utils/utils';
+import _toLower from 'lodash/toLower';
 import './CeFi.scss';
 const { Option } = Select;
 
@@ -96,6 +96,19 @@ const CeFi = ({ coins, features, kit }) => {
 	const [editMode, setEditMode] = useState(false);
 	const [hasCefiStaking, setHasCefiStaking] = useState(features.cefi_stake);
 	const [slashedAmount, setSlashedAmount] = useState();
+
+	const handleUpgrade = (info = {}) => {
+		if (
+			_toLower(info.plan) !== 'fiat' &&
+			_toLower(info.plan) !== 'boost' &&
+			_toLower(info.type) !== 'enterprise'
+		) {
+			return true;
+		} else {
+			return false;
+		}
+	};
+
 	const isUpgrade = handleUpgrade(kit.info);
 
 	const columns = [

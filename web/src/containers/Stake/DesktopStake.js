@@ -210,7 +210,7 @@ class Stake extends Component {
 			networksMismatch,
 		} = this.props;
 
-		const { display_name: index_display_name } = coins[STAKING_INDEX_COIN];
+		const index_display_name = coins?.[STAKING_INDEX_COIN]?.display_name;
 
 		return (
 			<div className="presentation_container apply_rtl wallet-wrapper">

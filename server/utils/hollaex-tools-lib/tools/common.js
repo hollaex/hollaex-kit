@@ -205,10 +205,10 @@ const updateKitConfigSecrets = (data = {}, scopes, auditInfo) => {
 			}
 			const { createAuditLog } = require('./user');
 			if (updatedKitConfig?.kit && Object.keys(updatedKitConfig?.kit).length > 0) {
-				createAuditLog(auditInfo.userEmail, auditInfo.apiPath, auditInfo.method, updatedKitConfig.kit, status.dataValues.kit);
+				createAuditLog({ email: auditInfo.userEmail, session_id: auditInfo.sessionId }, auditInfo.apiPath, auditInfo.method, updatedKitConfig.kit, status.dataValues.kit);
 			}
 			if (updatedKitConfig?.secrets && Object.keys(updatedKitConfig?.secrets).length > 0) {
-				createAuditLog(auditInfo.userEmail, auditInfo.apiPath, auditInfo.method, updatedKitConfig.secrets, status.dataValues.secrets);
+				createAuditLog({ email: auditInfo.userEmail, session_id: auditInfo.sessionId }, auditInfo.apiPath, auditInfo.method, updatedKitConfig.secrets, status.dataValues.secrets);
 			}
 			return status.update(updatedKitConfig, {
 				fields: [
@@ -713,7 +713,7 @@ const updateKitUserMeta = async (name, data = {
 		}
 	});
 	const { createAuditLog } = require('./user');
-	createAuditLog(auditInfo.userEmail, auditInfo.apiPath, auditInfo.method, updatedUserMeta, existingUserMeta);
+	createAuditLog({ email: auditInfo.userEmail, session_id: auditInfo.sessionId }, auditInfo.apiPath, auditInfo.method, updatedUserMeta, existingUserMeta);
 	publisher.publish(
 		CONFIGURATION_CHANNEL,
 		JSON.stringify({
