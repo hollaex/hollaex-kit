@@ -2000,6 +2000,7 @@ paths:
         - admin
         - supervisor
         - support
+        - kyc
       x-token-permissions:
         - can_read
   /admin/order:
