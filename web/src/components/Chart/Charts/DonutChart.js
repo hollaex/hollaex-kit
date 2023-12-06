@@ -318,7 +318,6 @@ class DonutChart extends Component {
 								textAnchor="middle"
 								className="donut-label-pair"
 							>
-								{' '}
 								{data.display_name === 'Others' ? 'Others' : display_name}
 							</text>
 							{showOpenWallet && (
