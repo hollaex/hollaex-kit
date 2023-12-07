@@ -152,9 +152,7 @@ class AddTradeTab extends Component {
 		if (!this.props.pair && Object.keys(pairs).length) {
 			quickPair = Object.keys(pairs)[0];
 		}
-
-		console.log(data);
-		console.log('chartData',chartData);
+		
 		return (
 			<Fragment>
 				<div id="trade-header-section"></div>
