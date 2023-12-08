@@ -251,7 +251,14 @@ const calculatePrice = async (side, spread, formula, refresh_interval, brokerId,
 					client.setexAsync(userCachekey, refresh_interval, JSON.stringify(tickers));
 			} else {
 				const tickers = JSON.parse(marketPrices);
-				marketPrice = tickers[formattedSymbol].last;
+				let ticker = tickers[formattedSymbol];
+				if (!ticker || !ticker?.last) {
+					ticker = await selectedExchange.fetchTicker(formattedSymbol);
+					tickers[formattedSymbol] = ticker;
+					if (refresh_interval)
+						client.setexAsync(userCachekey, refresh_interval, JSON.stringify(tickers));
+				}
+				marketPrice = ticker.last;
 			}
 		}
 		else {
