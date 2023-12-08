@@ -145,7 +145,7 @@ const Otcdeskpopup = ({
 		'binance',
 		'oracle',
 		kitPlan !== 'crypto' && 'coinbase',
-		kitPlan !== 'crypto' && 'bitfinex2',
+		kitPlan !== 'crypto' && 'bitfinex',
 		kitPlan !== 'crypto' && 'kraken',
 		kitPlan !== 'crypto' && 'bybit',
 	];
@@ -467,7 +467,7 @@ const Otcdeskpopup = ({
 				<Option value="coinbase">Coinbase</Option>
 			)}
 			{_toLower(kit?.info?.plan) !== 'crypto' && (
-				<Option value="bitfinex2">Bitfinex</Option>
+				<Option value="bitfinex">Bitfinex</Option>
 			)}
 			{_toLower(kit?.info?.plan) !== 'crypto' && (
 				<Option value="kraken">Kraken</Option>

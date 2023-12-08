@@ -63,7 +63,8 @@ const setExchange = (data) => {
     if (connectedExchanges[data.id]) {
         return connectedExchanges[data.id].exchange
     }
-	
+	if (data.exchange === 'bitfinex') data.exchange = 'bitfinex2';
+
     const exchangeClass = ccxt[data.exchange];
 
     const exchange = new exchangeClass({
@@ -229,12 +230,22 @@ const calculatePrice = async (side, spread, formula, refresh_interval, brokerId,
 
 		if (!isOracle && exchangePair[0] !== 'oracle') {
 			const formattedSymbol = exchangePair[1].split('-').join('/').toUpperCase();
-			const userCachekey = `${exchangePair[0]}`;
+			let userCachekey = `${exchangePair[0]}`;
 			const marketPrices = await client.getAsync(userCachekey);
 		
 			if (!marketPrices) { 
-				const tickers = await selectedExchange.fetchTickers();
-				const ticker = tickers[formattedSymbol];
+				const tickers = exchangePair[0] !== 'kraken' ? await selectedExchange.fetchTickers() : {};
+				let ticker = tickers[formattedSymbol];
+			
+				if (!ticker || !ticker?.last) {
+					ticker = await selectedExchange.fetchTicker(formattedSymbol);
+					tickers[formattedSymbol] = ticker;
+				}
+
+				if (!ticker) {
+					throw new Error(`${exchangePair[0].toUpperCase()} does not have market symbol ${formattedSymbol}`)
+				}
+
 				marketPrice = ticker.last;
 				if (refresh_interval)
 					client.setexAsync(userCachekey, refresh_interval, JSON.stringify(tickers));
