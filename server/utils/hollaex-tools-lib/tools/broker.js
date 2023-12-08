@@ -229,14 +229,18 @@ const calculatePrice = async (side, spread, formula, refresh_interval, brokerId,
 
 		if (!isOracle && exchangePair[0] !== 'oracle') {
 			const formattedSymbol = exchangePair[1].split('-').join('/').toUpperCase();
-			const userCachekey = `${brokerId}-${exchangePair[1]}`;
-			marketPrice = await client.getAsync(userCachekey);
+			const userCachekey = `${brokerId}-${exchangePair[0]}`;
+			const marketPrices = await client.getAsync(userCachekey);
 		
-			if (!marketPrice) { 
-				const ticker = await selectedExchange.fetchTicker(formattedSymbol);
-				marketPrice = ticker.last
+			if (!marketPrices) { 
+				const tickers = await selectedExchange.fetchTickers();
+				const ticker = tickers[formattedSymbol];
+				marketPrice = ticker.last;
 				if (refresh_interval)
-					client.setexAsync(userCachekey, refresh_interval, ticker.last);
+					client.setexAsync(userCachekey, refresh_interval, JSON.stringify(tickers));
+			} else {
+				const tickers = JSON.parse(marketPrices);
+				marketPrice = tickers[formattedSymbol].last;
 			}
 		}
 		else {
