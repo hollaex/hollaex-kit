@@ -229,7 +229,7 @@ const calculatePrice = async (side, spread, formula, refresh_interval, brokerId,
 
 		if (!isOracle && exchangePair[0] !== 'oracle') {
 			const formattedSymbol = exchangePair[1].split('-').join('/').toUpperCase();
-			const userCachekey = `${brokerId}-${exchangePair[0]}`;
+			const userCachekey = `${exchangePair[0]}`;
 			const marketPrices = await client.getAsync(userCachekey);
 		
 			if (!marketPrices) { 
