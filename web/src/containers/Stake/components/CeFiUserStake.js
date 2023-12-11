@@ -187,7 +187,7 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 									data.stake.duration
 										? data.stake.early_unstake
 											? false
-											: isUnstackable(data.stake, data.createdAt) < 0
+											: isUnstackable(data.stake, data.created_at) < 0
 											? true
 											: false
 										: false
