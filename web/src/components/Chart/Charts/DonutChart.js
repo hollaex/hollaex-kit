@@ -23,7 +23,7 @@ function translate(x, y) {
 // function rotate (d) {
 //     return `rotate(${180 / Math.PI * (d.startAngle + d.endAngle) / 2 + 45})`;
 // };
-
+const filterDonutPercentage = 1;
 class DonutChart extends Component {
 	state = {
 		width: 0,
@@ -164,13 +164,52 @@ class DonutChart extends Component {
 		let x = width / 2;
 		let y = height / 2 - 11;
 
+		const filterByPercentage = () => {
+			let arr = [];
+			let othersTotalPercentage = 0;
+			let othersIndex = -1;
+			let startAngle = 0;
+
+			sortedData.forEach((value, i) => {
+				const balancePercentageStr = value.data.balancePercentage;
+				if (balancePercentageStr && balancePercentageStr.includes('%')) {
+					const balancePercentage = Number(balancePercentageStr.split('%')[0]);
+					if (
+						balancePercentage > 0 &&
+						balancePercentage <= filterDonutPercentage
+					) {
+						othersTotalPercentage += balancePercentage;
+						if (othersIndex === -1) {
+							othersIndex = i;
+						}
+					} else if (balancePercentage >= filterDonutPercentage) {
+						startAngle = value.endAngle;
+						arr.push({ ...value });
+					}
+				}
+			});
+			if (othersIndex !== -1) {
+				arr[othersIndex] = {
+					...sortedData[othersIndex],
+					data: {
+						...sortedData[othersIndex].data,
+						display_name: 'Others',
+						balancePercentage: `${othersTotalPercentage.toFixed(1)}%`,
+					},
+					startAngle,
+					endAngle: nextStartAngle,
+				};
+			}
+			return arr;
+		};
+
 		return (
 			<Fragment>
 				<EventListener target="window" onResize={this.handleResize} />
 				<div id={this.props.id} className="w-100 h-100">
 					<svg width="100%" height="100%">
 						<g transform={translate(x, y)}>
-							{sortedData.map((value, i) => {
+							{filterByPercentage().map((value, i) => {
 								return this.renderSlice(value, i, width, height);
 							})}
 						</g>
@@ -265,7 +304,8 @@ class DonutChart extends Component {
 						<Fragment>
 							<text
 								transform={translate(valX, valY)}
-								dy="20px"
+								x="5px"
+								dy="25px"
 								textAnchor="middle"
 								className="donut-label-percentage"
 							>
@@ -273,11 +313,12 @@ class DonutChart extends Component {
 							</text>
 							<text
 								transform={translate(valX, valY - 12)}
-								dy="20px"
+								x="5px"
+								dy="25px"
 								textAnchor="middle"
 								className="donut-label-pair"
 							>
-								{display_name}
+								{data.display_name === 'Others' ? 'Others' : display_name}
 							</text>
 							{showOpenWallet && (
 								<text dy="5px" textAnchor="middle" className="donut-label-link">
