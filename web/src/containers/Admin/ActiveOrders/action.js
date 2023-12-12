@@ -1,4 +1,5 @@
 import { requestAuthenticated } from '../../../utils';
+import axios from 'axios';
 
 const handleError = (err) => err.data;
 
@@ -34,3 +35,5 @@ export const requestCancelOrders = (orderId, userId) => {
 			return data;
 		});
 };
+
+export const submitOrderByAdmin = (order) => axios.post('/admin/order', order);
