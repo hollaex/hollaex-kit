@@ -14,7 +14,6 @@ import {
 import { DEFAULT_COIN_DATA } from 'config/constants';
 import {
 	formatToCurrency,
-	generateWalletActionsText,
 	getCurrencyFromName,
 } from 'utils/currency';
 import STRINGS from 'config/localizedStrings';
@@ -126,10 +125,6 @@ class Wallet extends Component {
 			contracts,
 			pairs,
 		} = this.props;
-		const { depositText, withdrawText } = generateWalletActionsText(
-			currency,
-			coins
-		);
 		const hasEarn = !isStakingAvailable(currency, contracts);
 		const markets = this.getAllAvailableMarkets(currency);
 		const { fullname, min, icon_id, symbol } =
@@ -243,7 +238,7 @@ class Wallet extends Component {
 							<div className="deposit-wrapper w-75">
 								{coins[currency].allow_deposit ? (
 									<ButtonLink
-										label={depositText}
+										label={STRINGS['WALLET_BUTTON_BASE_DEPOSIT']}
 										link={`/wallet/${currency}/deposit`}
 										className="deposit-btn"
 										lineHeight="currency-wallet-btn"
@@ -256,7 +251,7 @@ class Wallet extends Component {
 							<div className="withdraw-wrapper w-25">
 								{coins[currency].allow_withdrawal ? (
 									<ButtonLink
-										label={withdrawText}
+										label={STRINGS['WALLET_BUTTON_BASE_WITHDRAW']}
 										link={`/wallet/${currency}/withdraw`}
 										lineHeight="currency-wallet-btn"
 										currencyWallet={true}
