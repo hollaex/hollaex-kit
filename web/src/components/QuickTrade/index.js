@@ -377,7 +377,7 @@ const QuickTrade = ({
 		!isLoggedIn() || !token || loading || submitting || isExpired;
 	const pairData = pairs[symbol] || {};
 	const [loadingSource, loadingTarget] =
-		spending === SPENDING.SOURCE ? [false, loading] : [loading, false];
+		spending && spending === SPENDING.SOURCE ? [false, loading] : [loading, false];
 
 	const onSwap = (selectedSource, selectedTarget) => {
 		onSelectSource(selectedTarget);
