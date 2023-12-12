@@ -198,6 +198,9 @@ const ActiveOrders = ({ pairs, userId, getThisExchangeOrder }) => {
 									setDisplayCreateOrder(false);
 									setPair('');
 									setPair(null);
+									setOrderPayload({
+										type: 'limit',
+									});
 								} catch (error) {
 									message.error(error.response.data.message);
 								}
