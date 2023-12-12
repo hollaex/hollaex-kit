@@ -81,8 +81,9 @@ const createOrderByAdmin = (req, res) => {
 	}
 
 	toolsLib.order.createUserOrderByKitId(order.user_id, order.symbol, order.side, order.size, order.type, order.price, opts)
-		.then((order) => {
-			return res.json(order);
+		.then((data) => {
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], order);
+			return res.json(data);
 		})
 		.catch((err) => {
 			loggerOrders.error(

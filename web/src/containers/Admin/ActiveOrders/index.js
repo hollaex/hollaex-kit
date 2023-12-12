@@ -196,6 +196,8 @@ const ActiveOrders = ({ pairs, userId, getThisExchangeOrder }) => {
 									});
 									message.success('Order successfully created');
 									setDisplayCreateOrder(false);
+									setPair('');
+									setPair(null);
 								} catch (error) {
 									message.error(error.response.data.message);
 								}
