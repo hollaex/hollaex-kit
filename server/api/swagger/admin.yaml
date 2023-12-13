@@ -2005,6 +2005,36 @@ paths:
         - can_read
   /admin/order:
     x-swagger-router-controller: order
+    post:
+      description: Create a new order by admin
+      operationId: createOrderByAdmin
+      tags:
+        - Admin
+      parameters:
+        - in: body
+          name: order
+          required: true
+          description: order data
+          schema:
+            $ref: "#/definitions/OrderRequestByAdmin"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/OrderResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
+      x-token-permissions:
+        - can_trade
     delete:
       operationId: adminCancelOrder
       description: Admin Cancel order
