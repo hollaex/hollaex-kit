@@ -315,7 +315,7 @@ const ActiveOrders = ({ pairs, userId, getThisExchangeOrder }) => {
 						className="green-btn"
 						type="primary"
 						onClick={() => {
-							getAllUserData();
+							if (!userId) getAllUserData();
 							setDisplayCreateOrder(true);
 						}}
 					>
