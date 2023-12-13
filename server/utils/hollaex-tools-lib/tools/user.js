@@ -2348,6 +2348,50 @@ const changeKitUserEmail = async (userId, newEmail, auditInfo) => {
 	return updatedUser;
 };
 
+const getUserBalanceHistory = (opts = {
+	user_id: null,
+	limit: null,
+	page: null,
+	orderBy: null,
+	order: null,
+	startDate: null,
+	endDate: null,
+	format: null
+}) => {
+	const pagination = paginationQuery(opts.limit, opts.page);
+	const timeframe = timeframeQuery(opts.startDate, opts.endDate);
+	const ordering = orderingQuery(opts.orderBy, opts.order);
+	let options = {
+		where: {
+			timestamp: timeframe,
+			...(opts.user_id && { user_id: opts.user_id }),
+		},
+		order: [ordering]
+	};
+
+	if (!opts.format) {
+		options = { ...options, ...pagination };
+	}
+
+	if (opts.format) {
+		return dbQuery.fetchAllRecords('balanceHistory', options)
+			.then((balance) => {
+				if (opts.format && opts.format === 'csv') {
+					if (balance.data.length === 0) {
+						throw new Error(NO_DATA_FOR_CSV);
+					}
+					const csv = parse(balance.data, Object.keys(balance.data[0]));
+					return csv;
+				} else {
+					return balance;
+				}
+			});
+	}
+	else {
+		return dbQuery.findAndCountAllWithRows('balanceHistory', options)
+	}
+};
+
 module.exports = {
 	loginUser,
 	getUserTier,
@@ -2410,5 +2454,6 @@ module.exports = {
 	deleteKitUser,
 	restoreKitUser,
 	revokeAllUserSessions,
-	changeKitUserEmail
+	changeKitUserEmail,
+	getUserBalanceHistory
 };

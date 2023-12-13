@@ -1279,6 +1279,70 @@ const userDelete = (req, res) => {
 		});
 };
 
+const getUserBalanceHistory = (req, res) => {
+	loggerUser.verbose(
+		req.uuid,
+		'controllers/admin/getUserBalanceHistory/auth',
+		req.auth
+	);
+	const { limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
+
+	if (start_date.value && !isDate(start_date.value)) {
+		loggerUser.error(
+			req.uuid,
+			'controllers/admin/getUserBalanceHistory invalid start_date',
+			start_date.value
+		);
+		return res.status(400).json({ message: 'Invalid start date' });
+	}
+
+	if (end_date.value && !isDate(end_date.value)) {
+		loggerUser.error(
+			req.uuid,
+			'controllers/admin/getUserBalanceHistory invalid end_date',
+			end_date.value
+		);
+		return res.status(400).json({ message: 'Invalid end date' });
+	}
+
+	if (order_by.value && typeof order_by.value !== 'string') {
+		loggerUser.error(
+			req.uuid,
+			'controllers/admin/getUserBalanceHistory invalid order_by',
+			order_by.value
+		);
+		return res.status(400).json({ message: 'Invalid order by' });
+	}
+
+	toolsLib.user.getUserBalanceHistory({
+		user_id: req.auth.sub.id,
+		limit: limit.value,
+		page: page.value,
+		orderBy: order_by.value,
+		order: order.value,
+		startDate: start_date.value,
+		endDate: end_date.value,
+		format: format.value
+	})
+		.then((data) => {
+			if (format.value === 'csv') {
+				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-balance_history.csv`);
+				res.set('Content-Type', 'text/csv');
+				return res.status(202).send(data);
+			} else {
+				return res.json(data);
+			}
+		})
+		.catch((err) => {
+			loggerUser.error(
+				req.uuid,
+				'controllers/admin/getUserBalanceHistory',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
 
 module.exports = {
 	signUpUser,
@@ -1309,5 +1373,6 @@ module.exports = {
 	revokeUserSession,
 	getUserSessions,
 	userLogout,
-	userDelete
+	userDelete,
+	getUserBalanceHistory
 };

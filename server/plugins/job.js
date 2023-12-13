@@ -108,6 +108,59 @@ const unstakingCheckRunner = () => {
 				err.message
 			);
 		}
+
+
+		loggerPlugin.verbose(
+			'/plugins balance history job start'
+		);
+
+		try {
+			const balanceHistoryModel = toolsLib.database.getModel('balanceHistory');
+			const statusModel = toolsLib.database.getModel('status');
+			const status = await statusModel.findOne({});
+			const users = await toolsLib.database.fetchAllRecords('user', {})
+
+			for (const user of users) {
+				const balance = await toolsLib.wallet.getUserBalanceByKitId(user.id);
+				let symbols = {};
+
+				for (const key of Object.keys(balance)) {
+					if (key.includes('available') && balance[key]) {
+						let symbol = key?.split('_')?.[0];
+						
+						symbols[symbol] = balance[key];
+					}
+				}
+
+				const coins = Object.keys(symbols);
+				const conversions = await toolsLib.getAssetsPrices(coins, status?.kit?.native_currency || 'usdt', 1);
+
+				let total = 0;
+				let history = {};
+				for (const coin of coins) {
+					if (!conversions[coin]) continue;
+					if (conversions[coin] === -1) continue;
+		
+					const nativeCurrencyValue = new BigNumber(symbols[coin]).multipliedBy(conversions[coin]);
+				
+					history[coin] = { original_value: symbols[coin], native_currency_value: nativeCurrencyValue };
+					total = new BigNumber(total).plus(nativeCurrencyValue).toNumber();
+				}
+
+
+				await balanceHistoryModel.create({
+					user_id: user.id,
+					balance: history,
+					total,
+				})
+
+			}
+		} catch (err) {
+			loggerPlugin.error(
+				'/plugin balance history job error:',
+				err.message
+			);
+		}
 	}, {
 		scheduled: true,
 		timezone: getTimezone()
