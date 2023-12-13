@@ -975,7 +975,9 @@
 		"PERCENTAGE_SHARE": "Percentage Share {0}",
 		"EARN_BY": "Earn by {0} {1}",
 		"STAKING": "staking",
-		"TOOLTIP": "Balance not in a pending state or locked up in trades (open orders)"
+		"TOOLTIP": "Balance not in a pending state or locked up in trades (open orders)",
+		"WALLET_HAS_BALANCE_PERCENTAGE": "Your wallet currently does not hold any {0}.",
+		"WALLET_DEPOSIT": "You can try depositing {0} or buying {1}"
 	},
 	"LOGOUT": "Logout",
 	"WITHDRAWALS_MIN_VALUE_ERROR": "The transaction is too small to send. Try a larger amount.",

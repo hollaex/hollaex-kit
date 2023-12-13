@@ -12,15 +12,13 @@ import {
 	ActionNotification,
 } from 'components';
 import { DEFAULT_COIN_DATA } from 'config/constants';
-import {
-	formatToCurrency,
-	getCurrencyFromName,
-} from 'utils/currency';
+import { formatToCurrency, getCurrencyFromName } from 'utils/currency';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { isStakingAvailable } from 'config/contracts';
 import TradeInputGroup from './components/TradeInputGroup';
 import { unique } from 'utils/data';
+import { STATIC_ICONS } from 'config/icons';
 
 class Wallet extends Component {
 	state = {
@@ -131,6 +129,15 @@ class Wallet extends Component {
 			coins[currency] || DEFAULT_COIN_DATA;
 		const balanceValue = balance[`${currency}_balance`] || 0;
 		const availableBalanceValue = balance[`${currency}_available`] || 0;
+
+		const isBalancePercentage =
+			chartData.length &&
+			chartData.some((value) => {
+				return (
+					currency.includes(value.symbol) &&
+					value.balancePercentage.split('%')[0] > 0
+				);
+			});
 
 		return (
 			<div className="currency-wallet-wrapper">
@@ -270,12 +277,42 @@ class Wallet extends Component {
 								)}
 							</EditWrapper>
 						</span>
-						{chartData.length ? (
+						{!isBalancePercentage ? (
+							<React.Fragment>
+								<div className="wallet-icon-wrapper">
+									<img
+										alt="deposit-icon"
+										src={STATIC_ICONS['NO_ACTIVE_DEPOSITS']}
+									/>
+								</div>
+								<EditWrapper stringId="CURRENCY_WALLET.WALLET_HAS_BALANCE_PERCENTAGE">
+									{STRINGS.formatString(
+										STRINGS['CURRENCY_WALLET.WALLET_HAS_BALANCE_PERCENTAGE'],
+										currency.toUpperCase()
+									)}
+								</EditWrapper>
+								<EditWrapper stringId="CURRENCY_WALLET.WALLET_DEPOSIT">
+									{STRINGS.formatString(
+										STRINGS['CURRENCY_WALLET.WALLET_DEPOSIT'],
+										<Link
+											className="deposit-link"
+											to={`/wallet/${currency}/withdraw`}
+										>
+											{currency.toUpperCase()}
+										</Link>,
+										<Link className="buy-link" to={`/assets/coin/${currency}`}>
+											here
+										</Link>
+									)}
+								</EditWrapper>
+							</React.Fragment>
+						) : chartData.length ? (
 							<DonutChart
 								coins={coins}
 								chartData={chartData}
 								showOpenWallet={false}
 								currency={currency}
+								isCurrencyWallet={true}
 							/>
 						) : (
 							<div className="animation-wrapper">
