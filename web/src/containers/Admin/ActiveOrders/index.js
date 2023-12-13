@@ -180,7 +180,7 @@ const ActiveOrders = ({ pairs, userId, getThisExchangeOrder }) => {
 										message.error('Please select order type');
 										return;
 									}
-									if (!orderPayload.price) {
+									if (orderPayload.type === 'limit' && !orderPayload.price) {
 										message.error('Please input pirce');
 										return;
 									}
@@ -190,6 +190,10 @@ const ActiveOrders = ({ pairs, userId, getThisExchangeOrder }) => {
 									}
 									orderPayload.size = Number(orderPayload.size);
 									orderPayload.price = Number(orderPayload.price);
+									if (orderPayload.type === 'market') {
+										delete orderPayload.price;
+									}
+
 									await submitOrderByAdmin({
 										...orderPayload,
 										user_id: userId,
