@@ -234,7 +234,7 @@ const calculatePrice = async (side, spread, formula, refresh_interval, meta, bro
 	
 			if (exchangePair[0] === 'oneinch') {
 				const coins = exchangePair[1].split('-');
-				const userCachekey = `${brokerId}-${exchangePair[0]}-${exchangePair[1]}`;
+				const userCachekey = `${exchangePair[0]}-${exchangePair[1]}`;
 				marketPrice = await client.getAsync(userCachekey);
 			
 				if (!marketPrice) { 
@@ -245,7 +245,7 @@ const calculatePrice = async (side, spread, formula, refresh_interval, meta, bro
 			}
 			else if (exchangePair[0] === 'wowmax') {
 				const coins = exchangePair[1].split('-');
-				const userCachekey = `${brokerId}-${exchangePair[0]}-${exchangePair[1]}`;
+				const userCachekey = `${exchangePair[0]}-${exchangePair[1]}`;
 				marketPrice = await client.getAsync(userCachekey);
 			
 				if (!marketPrice) { 
