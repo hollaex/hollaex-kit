@@ -2363,7 +2363,7 @@ const getUserBalanceHistory = (opts = {
 	const ordering = orderingQuery(opts.orderBy, opts.order);
 	let options = {
 		where: {
-			timestamp: timeframe,
+			created_at: timeframe,
 			...(opts.user_id && { user_id: opts.user_id }),
 		},
 		order: [ordering]
