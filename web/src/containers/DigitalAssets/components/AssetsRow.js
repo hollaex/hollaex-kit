@@ -2,13 +2,9 @@ import React from 'react';
 import { PriceChange, Coin } from 'components';
 import { MiniSparkLine } from 'containers/TradeTabs/components/MiniSparkLine';
 import STRINGS from 'config/localizedStrings';
+import { getRandomValuesFromParts } from 'utils/array';
 
-const AssetsRow = ({ 
-	coinData,
-	handleClick,
-	loading,
-	index,
-}) => {
+const AssetsRow = ({ coinData, handleClick, loading, index }) => {
 	const {
 		icon_id,
 		symbol,
@@ -19,9 +15,9 @@ const AssetsRow = ({
 		priceDifferencePercent,
 		lastPrice,
 		key,
-		networkType
+		networkType,
 	} = coinData;
-	
+
 	return (
 		<tr
 			id={`market-list-row-${key}`}
@@ -46,10 +42,8 @@ const AssetsRow = ({
 			<td>
 				{!loading ? (
 					<div>
-						<span className="title-font ml-1">
-							{lastPrice}
-						</span>
-						<span className="title-font ml-2">{"USDT"}</span>
+						<span className="title-font ml-1">{lastPrice}</span>
+						<span className="title-font ml-2">{'USDT'}</span>
 					</div>
 				) : (
 					<div
@@ -61,21 +55,19 @@ const AssetsRow = ({
 				)}
 			</td>
 			<td>
-				{networkType === 'network' ? (
-					STRINGS['DIGITAL_ASSETS.NETWORK']
-				) : type === 'broker' ? (
-					STRINGS['DIGITAL_ASSETS.BROKER']
-				) : (
-					STRINGS['DIGITAL_ASSETS.ORDERBOOK']
-				)}
+				{networkType === 'network'
+					? STRINGS['DIGITAL_ASSETS.NETWORK']
+					: type === 'broker'
+					? STRINGS['DIGITAL_ASSETS.BROKER']
+					: STRINGS['DIGITAL_ASSETS.ORDERBOOK']}
 			</td>
 			<td>
-				<PriceChange 
+				<PriceChange
 					market={{
 						priceDifference: priceDifference,
-						priceDifferencePercent: priceDifferencePercent
-					}} 
-					key={key} 
+						priceDifferencePercent: priceDifferencePercent,
+					}}
+					key={key}
 				/>
 			</td>
 			<td>
@@ -99,12 +91,12 @@ const AssetsRow = ({
 			</td>
 			<td className="td-chart">
 				<MiniSparkLine
-					chartData={chartData?.price || []}
+					chartData={getRandomValuesFromParts(chartData?.price || [])}
 					isArea
 				/>
 			</td>
 		</tr>
 	);
-}
+};
 
 export default AssetsRow;

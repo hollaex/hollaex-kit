@@ -393,9 +393,9 @@ const updateLoginStatus = (loginId) => {
 };
 
 const createUserLogin = async (user, ip, device, domain, origin, referer, token, long_term, status) => {
-	const loginData = await findUserLatestLogin(user, status);
+	const loginData = status == false && await findUserLatestLogin(user, status);
 
-	if (!loginData || loginData?.status == true) {
+	if (!loginData) {
 		return registerUserLogin(user.id, ip, {
 			device,
 			domain,
@@ -1324,7 +1324,7 @@ const getUserLogins = (opts = {
 	if (opts.userId) options.where.user_id = opts.userId;
 
 	if (opts.format) {
-		options.attributes = ['id', 'user_id', 'ip', 'device', 'domain', 'timestamp', 'createdAt', 'attempt', 'status', 'country', 'updated_at', 'created_at'];
+		options.attributes = ['id', 'user_id', 'ip', 'device', 'domain', 'timestamp', 'attempt', 'status', 'country', 'updated_at', 'created_at'];
 		return dbQuery.fetchAllRecords('login', options)
 			.then((logins) => {
 				if (opts.format && opts.format === 'csv') {
@@ -2092,7 +2092,7 @@ const getExchangeUserSessions = (opts = {
 	}
 
 	if (opts.format) {
-		query.attributes = ['id', 'login_id', 'status', 'last_seen', 'expiry_date', 'role', 'timestamp', 'created_at', 'updated_at'];
+		query.attributes = ['id', 'login_id', 'status', 'last_seen', 'expiry_date', 'role', 'created_at', 'updated_at'];
 		return dbQuery.fetchAllRecords('session', query)
 			.then((sessions) => {
 				if (opts.format && opts.format === 'csv') {

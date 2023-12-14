@@ -15,7 +15,7 @@ export const ETH_FULL_FORMAT = '0,0.[00000000]';
 export const XRP_FULL_FORMAT = '0,0.[0]';
 export const BCH_FULL_FORMAT = '0,0.[00000000]';
 export const BASE_FORMAT = '0,0.[0000]';
-export const PERCENTAGE_FORMAT = '0.[000]%';
+export const PERCENTAGE_FORMAT = '0.[00]%';
 export const DONUT_PERCENTAGE_FORMAT = '0.[0]%';
 export const AVERAGE_FORMAT = '3a';
 
@@ -63,20 +63,21 @@ export const getFormat = (min = 0, fullFormat, amount) => {
 			.join('');
 		return { digit: point.length, format: `0,0.[${res}]` };
 	} else {
-		if(amount) {
+		if (amount) {
 			const [digitsBeforeDecimal] = amount?.toString().split('.');
-			return digitsBeforeDecimal.length > 4 ?{ digit:  0, format: `0,0` } : { digit:  4, format: `0,0.[0000]` };
-		} 
+			return digitsBeforeDecimal.length > 4
+				? { digit: 0, format: `0,0` }
+				: { digit: 4, format: `0,0.[0000]` };
+		}
 
-		return  { digit:  4, format: `0,0.[0000]` };
+		return { digit: 4, format: `0,0.[0000]` };
 	}
 };
 
-export const countDecimals =  (val) => {
-	if(Math.floor(val) === val) return 0;
-	return val.toString().split(".")[1].length || 0; 
-  }
-  
+export const countDecimals = (val) => {
+	if (Math.floor(val) === val) return 0;
+	return val.toString().split('.')[1].length || 0;
+};
 
 export const formatToCurrency = (amount = 0, min = 0, fullFormat = false) => {
 	let formatObj = getFormat(min, fullFormat, amount);

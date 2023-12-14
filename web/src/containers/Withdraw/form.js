@@ -32,7 +32,7 @@ let errorTimeOut = null;
 
 const validate = (values, props) => {
 	const errors = {};
-	const amount = math.fraction(values.amount || 0);
+	const amount = math.fraction(values?.amount || 0);
 	const balanceAvailable = math.fraction(props.balanceAvailable || 0);
 
 	if (math.larger(amount, balanceAvailable)) {

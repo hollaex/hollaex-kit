@@ -635,10 +635,10 @@ exports.EXCHANGE_PLAN_INTERVAL_TIME = {
 	boost: 60
 };
 exports.EXCHANGE_PLAN_PRICE_SOURCE = {
-	fiat: ['hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'bybit', 'oneinch'],
-	boost: ['hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'bybit', 'oneinch'],
+	fiat: ['hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'bybit', 'gateio', 'oneinch'],
+	boost: ['hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'bybit', 'gateio', 'oneinch'],
 	crypto: ['hollaex', 'oracle', 'binance'],
-	ALL: [ 'hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'bybit', 'oneinch']
+	ALL: [ 'hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'bybit', 'gateio', 'oneinch']
 };
 
 exports.ONEINCH_URL = 'https://api.1inch.dev/swap/v5.2/';
@@ -689,7 +689,7 @@ exports.ONEINCH_CHAINS = {
 
 //STAKE CONSTANTS START
 
-exports.STAKE_SUPPORTED_PLANS = ['crypto', 'fiat', 'boost', 'enterprise'];
+exports.STAKE_SUPPORTED_PLANS = ['fiat', 'boost', 'enterprise'];
 
 //STAKE CONSTANTS END
 

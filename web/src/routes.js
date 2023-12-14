@@ -198,9 +198,12 @@ function loggedIn(nextState, replace) {
 
 const checkStaking = (nextState, replace) => {
 	const {
-		app: { contracts },
+		app: { contracts, features },
 	} = store.getState();
-	if (!isStakingAvailable(STAKING_INDEX_COIN, contracts)) {
+	if (
+		!features.cefi_stake &&
+		!isStakingAvailable(STAKING_INDEX_COIN, contracts)
+	) {
 		replace({
 			pathname: '/account',
 		});

@@ -18,7 +18,7 @@ const getDistributions = (state) => state.stake.distributions;
 
 const getMetamaskNetwork = (state) => state.stake.network;
 
-const getContractNetwork = (state) => state.app.contracts['xht'].network;
+const getContractNetwork = (state) => state?.app?.contracts?.['xht']?.network;
 
 export const getPots = (state) => state.stake.pots;
 

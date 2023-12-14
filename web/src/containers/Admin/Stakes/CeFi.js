@@ -33,7 +33,7 @@ import {
 import Coins from '../Coins';
 import BigNumber from 'bignumber.js';
 import { updateConstants } from '../General/action';
-import { handleUpgrade } from 'utils/utils';
+import _toLower from 'lodash/toLower';
 import './CeFi.scss';
 const { Option } = Select;
 
@@ -96,6 +96,19 @@ const CeFi = ({ coins, features, kit }) => {
 	const [editMode, setEditMode] = useState(false);
 	const [hasCefiStaking, setHasCefiStaking] = useState(features.cefi_stake);
 	const [slashedAmount, setSlashedAmount] = useState();
+
+	const handleUpgrade = (info = {}) => {
+		if (
+			_toLower(info.plan) !== 'fiat' &&
+			_toLower(info.plan) !== 'boost' &&
+			_toLower(info.type) !== 'enterprise'
+		) {
+			return true;
+		} else {
+			return false;
+		}
+	};
+
 	const isUpgrade = handleUpgrade(kit.info);
 
 	const columns = [
@@ -692,7 +705,7 @@ const CeFi = ({ coins, features, kit }) => {
 
 					<div style={{ marginBottom: 30 }}>
 						<div style={{ fontWeight: 'bold', fontSize: 16, marginBottom: 4 }}>
-							Set APY reward rate to distribute
+							Set APY reward rate to distribute (%)
 						</div>
 						<InputNumber
 							style={{ backgroundColor: 'rgba(0,0,0,0.1)', color: 'white' }}
@@ -713,7 +726,7 @@ const CeFi = ({ coins, features, kit }) => {
 
 					<div style={{ marginBottom: 30 }}>
 						<div style={{ fontWeight: 'bold', fontSize: 16, marginBottom: 4 }}>
-							Staking duration
+							Staking duration (days)
 						</div>
 						<Input
 							style={{ backgroundColor: 'rgba(0,0,0,0.1)', color: 'white' }}
@@ -869,7 +882,7 @@ const CeFi = ({ coins, features, kit }) => {
 								opacity: !stakePoolCreation.early_unstake ? 0.4 : 1,
 							}}
 						>
-							Slash on principle
+							Slash on principle (%)
 						</div>
 						<InputNumber
 							style={{ backgroundColor: 'rgba(0,0,0,0.1)', color: 'white' }}
@@ -950,7 +963,7 @@ const CeFi = ({ coins, features, kit }) => {
 												color: 'white',
 											}}
 										>
-											Slash on earnings
+											Slash on earnings (%)
 										</div>
 										<InputNumber
 											style={{
@@ -1065,7 +1078,7 @@ const CeFi = ({ coins, features, kit }) => {
 							marginTop: 30,
 						}}
 					>
-						Disclamiers
+						Disclamier
 					</h3>
 
 					<h4
@@ -1076,11 +1089,11 @@ const CeFi = ({ coins, features, kit }) => {
 							marginTop: 30,
 						}}
 					>
-						Warning disclamiers (optional)
+						Warning disclamier (optional)
 					</h4>
 
 					<div style={{ fontWeight: 'bold', fontSize: 16, marginBottom: 4 }}>
-						Add a disclamiers
+						Add a disclamier
 					</div>
 					<div style={{ marginBottom: 30, textAlign: 'center' }}>
 						<Input.TextArea
@@ -1295,7 +1308,7 @@ const CeFi = ({ coins, features, kit }) => {
 										{stakePoolCreation.slashing_earning_percentage + '%' ||
 											'-'}{' '}
 									</div>
-									<div>Disclamiers: {stakePoolCreation.disclaimer || '-'} </div>
+									<div>Disclamier: {stakePoolCreation.disclaimer || '-'} </div>
 								</div>
 								<div className="right-content">
 									<div className="title font-weight-bold">
@@ -1395,7 +1408,7 @@ const CeFi = ({ coins, features, kit }) => {
 									{stakePoolCreation.slashing_earning_percentage}%{' '}
 								</div>
 								<div>
-									<span style={{ fontWeight: 'bold' }}>Disclamiers: </span>
+									<span style={{ fontWeight: 'bold' }}>Disclamier: </span>
 									{stakePoolCreation.disclaimer}
 								</div>
 								<div>
@@ -2081,20 +2094,22 @@ const CeFi = ({ coins, features, kit }) => {
 						}}
 					>
 						<Spin spinning={isLoading}>
-							<Table
-								className="blue-admin-table"
-								columns={columns}
-								// rowClassName={record => record.status === 'terminated' && "disabled-row"}
-								dataSource={userData}
-								expandRowByClick={true}
-								rowKey={(data) => {
-									return data.id;
-								}}
-								pagination={{
-									current: queryFilters.currentTablePage,
-									onChange: pageChange,
-								}}
-							/>
+							{!isUpgrade && (
+								<Table
+									className="blue-admin-table"
+									columns={columns}
+									// rowClassName={record => record.status === 'terminated' && "disabled-row"}
+									dataSource={userData}
+									expandRowByClick={true}
+									rowKey={(data) => {
+										return data.id;
+									}}
+									pagination={{
+										current: queryFilters.currentTablePage,
+										onChange: pageChange,
+									}}
+								/>
+							)}
 						</Spin>
 					</div>
 				</div>
