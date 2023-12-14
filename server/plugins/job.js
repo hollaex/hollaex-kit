@@ -120,7 +120,11 @@ const unstakingCheckRunner = () => {
 			const status = await statusModel.findOne({});
 			const users = await toolsLib.database.fetchAllRecords('user', {})
 
-			for (const user of users) {
+			const exchangeCoins = toolsLib.getKitCoins();
+			if (exchangeCoins.length === 0) return;
+			const conversions = await toolsLib.getAssetsPrices(exchangeCoins, status?.kit?.native_currency || 'usdt', 1);
+
+			for (const user of users.data) {
 				const balance = await toolsLib.wallet.getUserBalanceByKitId(user.id);
 				let symbols = {};
 
@@ -133,7 +137,6 @@ const unstakingCheckRunner = () => {
 				}
 
 				const coins = Object.keys(symbols);
-				const conversions = await toolsLib.getAssetsPrices(coins, status?.kit?.native_currency || 'usdt', 1);
 
 				let total = 0;
 				let history = {};
@@ -141,12 +144,11 @@ const unstakingCheckRunner = () => {
 					if (!conversions[coin]) continue;
 					if (conversions[coin] === -1) continue;
 		
-					const nativeCurrencyValue = new BigNumber(symbols[coin]).multipliedBy(conversions[coin]);
+					const nativeCurrencyValue = new BigNumber(symbols[coin]).multipliedBy(conversions[coin]).toNumber();
 				
 					history[coin] = { original_value: symbols[coin], native_currency_value: nativeCurrencyValue };
 					total = new BigNumber(total).plus(nativeCurrencyValue).toNumber();
 				}
-
 
 				await balanceHistoryModel.create({
 					user_id: user.id,
