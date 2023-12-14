@@ -149,7 +149,7 @@ const unstakingCheckRunner = () => {
 					history[coin] = { original_value: symbols[coin], native_currency_value: nativeCurrencyValue };
 					total = new BigNumber(total).plus(nativeCurrencyValue).toNumber();
 				}
-
+				if (Object.keys(history).length === 0) continue;
 				await balanceHistoryModel.create({
 					user_id: user.id,
 					balance: history,
