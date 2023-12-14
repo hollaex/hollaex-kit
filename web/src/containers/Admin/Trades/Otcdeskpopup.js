@@ -26,6 +26,7 @@ import {
 	getBrokerConnect,
 	getTrackedExchangeMarkets,
 	createTestOneinch,
+	createTestWowmax,
 	getBrokerOneinchTokens,
 } from './actions';
 import Pophedge from './HedgeMarketPopup';
@@ -189,7 +190,10 @@ const Otcdeskpopup = ({
 		if (previewData.formula) {
 			setFormula(previewData.formula);
 
-			if (previewData?.formula?.includes('oneinch')) {
+			if (
+				previewData?.formula?.includes('oneinch') ||
+				previewData?.formula?.includes('wowmax')
+			) {
 				if (!selectedOneinchNetwork) {
 					const exchangePair = previewData?.formula?.split('_');
 					const coins = exchangePair[1].split('-');
@@ -290,7 +294,11 @@ const Otcdeskpopup = ({
 	};
 
 	const handlePriceResult = async () => {
-		if (displayOneinch || formula?.includes('oneinch')) {
+		if (
+			displayOneinch ||
+			formula?.includes('oneinch') ||
+			formula?.includes('wowmax')
+		) {
 			if (
 				!selectedOneinchPairs.base_coin ||
 				!selectedOneinchPairs.quote_coin ||
@@ -304,12 +312,27 @@ const Otcdeskpopup = ({
 
 			setSpin(true);
 			try {
-				const result = await createTestOneinch({
-					...selectedOneinchPairs,
-					spread: spreadMul.spread,
-					meta: metaObject,
-				});
-				setPriceResult(result);
+				if (
+					formula?.includes('oneinch') ||
+					formulaVariable?.includes('oneinch')
+				) {
+					const result = await createTestOneinch({
+						...selectedOneinchPairs,
+						spread: spreadMul.spread,
+						meta: metaObject,
+					});
+					setPriceResult(result);
+				} else if (
+					formula?.includes('wowmax') ||
+					formulaVariable?.includes('wowmax')
+				) {
+					const result = await createTestWowmax({
+						...selectedOneinchPairs,
+						spread: spreadMul.spread,
+						meta: metaObject,
+					});
+					setPriceResult(result);
+				}
 			} catch (error) {
 				message.error(error.data.message);
 			}
@@ -497,7 +520,7 @@ const Otcdeskpopup = ({
 	const handleSelectedExchange = async (value) => {
 		setSelectedExchange(value);
 
-		if (value === 'oneinch') {
+		if (value === 'oneinch' || value === 'wowmax') {
 			setDisplayOneinch(true);
 		} else {
 			if (value !== exchangeMarkets.exchange && value !== 'oracle') {
@@ -511,7 +534,7 @@ const Otcdeskpopup = ({
 		<>
 			<Option value="hollaex">Hollaex Pro</Option>
 			<Option value="binance">Binance</Option>
-			{_toLower(kit?.info?.plan) !== 'crypto' && (
+			{hasOracle && _toLower(kit?.info?.plan) !== 'crypto' && (
 				<Option value="oneinch">1inch</Option>
 			)}
 			{_toLower(kit?.info?.plan) !== 'crypto' && (
@@ -528,6 +551,9 @@ const Otcdeskpopup = ({
 			)}
 			{_toLower(kit?.info?.plan) !== 'crypto' && (
 				<Option value="gateio">Gate.io</Option>
+			)}
+			{hasOracle && _toLower(kit?.info?.plan) !== 'crypto' && (
+				<Option value="wowmax">Wowmax</Option>
 			)}
 			{hasOracle && <Option value="oracle">Hollaex Oracle</Option>}
 		</>
@@ -1141,21 +1167,35 @@ const Otcdeskpopup = ({
 											</div>
 										)}
 
-										{(displayOneinch || formula?.includes('oneinch')) && (
+										{(displayOneinch ||
+											formula?.includes('oneinch') ||
+											formula?.includes('wowmax')) && (
 											<>
 												<div>
-													<div style={{ color: 'white', margin: '20px 0' }}>
-														1inch Api Key
-														<Input
-															value={metaObject?.key}
-															onChange={(e) => {
-																metaObject.key = e.target.value;
-																setMetaObject(metaObject);
+													{
+														<div
+															style={{
+																color: 'white',
+																margin: '20px 0',
+																display:
+																	formula?.includes('oneinch') ||
+																	formulaVariable?.includes('oneinch')
+																		? 'block'
+																		: 'none',
 															}}
-															style={{ marginTop: 10 }}
-															placeholder="Input api key"
-														/>
-													</div>
+														>
+															1inch Api Key
+															<Input
+																value={metaObject?.key}
+																onChange={(e) => {
+																	metaObject.key = e.target.value;
+																	setMetaObject(metaObject);
+																}}
+																style={{ marginTop: 10 }}
+																placeholder="Input api key"
+															/>
+														</div>
+													}
 
 													<div className="mt-3 ">Blockchain</div>
 													<Select
@@ -1546,13 +1586,19 @@ const Otcdeskpopup = ({
 													}
 													if (
 														selectedExchange === 'oneinch' ||
-														formula?.includes('oneinch')
+														formula?.includes('oneinch') ||
+														selectedExchange === 'wowmax' ||
+														formula?.includes('wowmax')
 													) {
 														const newFormula = `${selectedExchange}_${selectedOneinchPairs.base_coin}-${selectedOneinchPairs.quote_coin}`;
 														setFormula(newFormula);
 														handlePreviewChange(newFormula, 'formula');
 													}
-													if (!formula && selectedExchange !== 'oneinch') {
+													if (
+														!formula &&
+														selectedExchange !== 'oneinch' &&
+														selectedExchange !== 'wowmax'
+													) {
 														message.warning(
 															'Please input formula in Advanced section'
 														);
@@ -1563,7 +1609,9 @@ const Otcdeskpopup = ({
 												disabled={
 													(displayOneinch &&
 														(!selectedOneinchNetwork ||
-															!metaObject?.key ||
+															((formulaVariable?.includes('oneinch') ||
+																formula?.includes('oneinch')) &&
+																!metaObject?.key) ||
 															!selectedOneinchPairs.base_coin ||
 															!selectedOneinchPairs.quote_coin)) ||
 													chainlink ||

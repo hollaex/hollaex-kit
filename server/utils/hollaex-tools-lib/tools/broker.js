@@ -5,7 +5,7 @@ const math = require('mathjs');
 const ccxt = require('ccxt');
 const randomString = require('random-string');
 const { SERVER_PATH } = require('../constants');
-const { EXCHANGE_PLAN_INTERVAL_TIME, EXCHANGE_PLAN_PRICE_SOURCE, ONEINCH_COINS, ONEINCH_URL, ONEINCH_CHAINS } = require(`${SERVER_PATH}/constants`)
+const { EXCHANGE_PLAN_INTERVAL_TIME, EXCHANGE_PLAN_PRICE_SOURCE, ONEINCH_COINS, ONEINCH_URL, ONEINCH_CHAINS, WOWMAX_QUOTE_URL } = require(`${SERVER_PATH}/constants`)
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { client } = require('./database/redis');
 const { getUserByKitId } = require('./user');
@@ -229,7 +229,7 @@ const calculatePrice = async (side, spread, formula, refresh_interval, meta, bro
 			throw new Error(DYNAMIC_BROKER_UNSUPPORTED);
 
 		try {
-			const selectedExchange = !['oracle', 'oneinch'].includes(exchangePair[0]) && setExchange({ id: `${exchangePair[0]}-broker:fetch-markets`, exchange: exchangePair[0] });
+			const selectedExchange = !['oracle', 'oneinch', 'wowmax'].includes(exchangePair[0]) && setExchange({ id: `${exchangePair[0]}-broker:fetch-markets`, exchange: exchangePair[0] });
 			let marketPrice;
 	
 			if (exchangePair[0] === 'oneinch') {
@@ -242,7 +242,19 @@ const calculatePrice = async (side, spread, formula, refresh_interval, meta, bro
 					if (refresh_interval)
 						client.setexAsync(userCachekey, refresh_interval, marketPrice);
 				}
-			} else {
+			}
+			else if (exchangePair[0] === 'wowmax') {
+				const coins = exchangePair[1].split('-');
+				const userCachekey = `${brokerId}-${exchangePair[0]}-${exchangePair[1]}`;
+				marketPrice = await client.getAsync(userCachekey);
+			
+				if (!marketPrice) { 
+					marketPrice = await fetchWowmaxPrice(coins[0], coins[1], meta);
+					if (refresh_interval)
+						client.setexAsync(userCachekey, refresh_interval, marketPrice);
+				}
+			}
+			else {
 				if (!isOracle && exchangePair[0] !== 'oracle') {
 					const formattedSymbol = exchangePair[1].split('-').join('/').toUpperCase();
 					const userCachekey = `${exchangePair[0]}`;
@@ -448,6 +460,50 @@ const testBrokerOneinch = async (data) => {
 		sell_price: price * (1 + (spread / 100))
 	}
 
+};
+
+const fetchWowmaxPrice = async (base_coin, quote_coin, meta = {}) => {
+
+	if (!meta.chain) {
+		throw new Error(BROKER_ONEINCH_CHAIN);
+	}
+
+	const chain = meta.chain;
+	const url = `${WOWMAX_QUOTE_URL}${ONEINCH_CHAINS[chain]}/quote`;
+
+	const src = ONEINCH_COINS?.[chain]?.[base_coin] || meta.customAdress[base_coin];
+	const dst = ONEINCH_COINS?.[chain]?.[quote_coin] || meta.customAdress[quote_coin];
+
+	const config = {
+		params: {
+			from: src.token,
+			to:  dst.token,
+			amount: 1,
+			usePMM: true
+		}
+	};
+
+	const response = await axios.get(url, config);
+	return response.data.price;
+}
+
+
+const testBrokerWowmax = async (data) => {
+	const { base_coin, spread, quote_coin, chain, meta } = data;
+
+	if (!base_coin || !quote_coin) {
+		throw new Error(SYMBOL_NOT_FOUND);
+	}
+	if (!spread) {
+		throw new Error(SPREAD_MISSING);
+	}
+	
+	const price = await fetchWowmaxPrice(base_coin, quote_coin, meta);
+	
+	return {
+		buy_price: price * (1 - (spread / 100)),
+		sell_price: price * (1 + (spread / 100))
+	}
 };
 
 const testRebalance = async (data) => {
@@ -718,5 +774,6 @@ module.exports = {
 	testBrokerOneinch,
 	isFairPriceForBroker,
 	getBrokerOneinchTokens,
-	calculatePrice
+	calculatePrice,
+	testBrokerWowmax
 };

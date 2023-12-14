@@ -171,6 +171,41 @@ const testBrokerOneinch = (req, res) => {
 		});
 };
 
+const testBrokerWowmax = (req, res) => {
+	loggerBroker.verbose(
+		req.uuid,
+		'controllers/broker/testBrokerWowmax get',
+		req.auth
+	);
+
+	const {
+		base_coin,
+		spread,
+		quote_coin,
+		chain,
+		meta
+	} = req.swagger.params.data.value;
+
+	toolsLib.broker.testBrokerWowmax({
+		base_coin,
+		spread,
+		quote_coin,
+		chain,
+		meta
+	})
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerBroker.error(
+				req.uuid,
+				'controllers/broker/testBrokerWowmax err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
 const getBrokerOneinchTokens = (req, res) => {
 	loggerBroker.verbose(
 		req.uuid,
@@ -353,5 +388,6 @@ module.exports = {
 	getBrokerPairs,
 	getTrackedExchangeMarkets,
 	testBrokerOneinch,
-	getBrokerOneinchTokens
+	getBrokerOneinchTokens,
+	testBrokerWowmax
 };

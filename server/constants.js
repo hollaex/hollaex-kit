@@ -635,13 +635,14 @@ exports.EXCHANGE_PLAN_INTERVAL_TIME = {
 	boost: 60
 };
 exports.EXCHANGE_PLAN_PRICE_SOURCE = {
-	fiat: ['hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'bybit', 'gateio', 'oneinch'],
-	boost: ['hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'bybit', 'gateio', 'oneinch'],
+	fiat: ['hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'bybit', 'gateio', 'wowmax', 'oneinch'],
+	boost: ['hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'bybit', 'gateio', 'wowmax', 'oneinch'],
 	crypto: ['hollaex', 'oracle', 'binance'],
-	ALL: [ 'hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'bybit', 'gateio', 'oneinch']
+	ALL: [ 'hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'bybit', 'gateio', 'wowmax', 'oneinch']
 };
 
 exports.ONEINCH_URL = 'https://api.1inch.dev/swap/v5.2/';
+exports.WOWMAX_QUOTE_URL = 'https://api-gateway.wowmax.exchange/chains/';
 
 exports.ONEINCH_COINS = {
 	eth: {

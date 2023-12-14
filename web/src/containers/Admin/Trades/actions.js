@@ -58,6 +58,15 @@ export const createTestOneinch = (values) => {
 	return requestAuthenticated('/broker/oneinch/test', options);
 };
 
+export const createTestWowmax = (values) => {
+	const options = {
+		method: 'POST',
+		body: JSON.stringify(values),
+	};
+
+	return requestAuthenticated('/broker/wowmax/test', options);
+};
+
 export const getBrokerOneinchTokens = () =>
 	requestAuthenticated(`/broker/oneinch`);
 
