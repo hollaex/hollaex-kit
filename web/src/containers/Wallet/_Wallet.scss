@@ -636,8 +636,20 @@ $header-margin: 2rem;
 			align-items: flex-end;
 			background-color: var(--base_wallet-sidebar-and-popup);
 			border-radius: 5px;
+			text-align: center;
 			.donut-title {
 				font-size: 16px;
+			}
+			.wallet-icon-wrapper {
+				display: flex;
+				justify-content: center;
+				margin: 10%;
+				height: 30%;
+			}
+			.deposit-link,
+			.buy-link {
+				text-decoration: underline;
+				color: #5d63ff;
 			}
 			.rounded-loading {
 				width: 80px;

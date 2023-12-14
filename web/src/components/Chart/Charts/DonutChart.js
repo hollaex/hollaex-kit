@@ -163,6 +163,7 @@ class DonutChart extends Component {
 		});
 		let x = width / 2;
 		let y = height / 2 - 11;
+		const isDonutValue = this.props && this.props.isCurrencyWallet;
 
 		const filterByPercentage = () => {
 			let arr = [];
@@ -209,9 +210,13 @@ class DonutChart extends Component {
 				<div id={this.props.id} className="w-100 h-100">
 					<svg width="100%" height="100%">
 						<g transform={translate(x, y)}>
-							{filterByPercentage().map((value, i) => {
-								return this.renderSlice(value, i, width, height);
-							})}
+							{!isDonutValue
+								? filterByPercentage().map((value, i) =>
+										this.renderSlice(value, i, width, height)
+								  )
+								: sortedData.map((value, i) =>
+										this.renderSlice(value, i, width, height)
+								  )}
 						</g>
 					</svg>
 				</div>
