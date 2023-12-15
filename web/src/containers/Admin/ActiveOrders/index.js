@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { CloseOutlined } from '@ant-design/icons';
 import PairsSection from './PairsSection';
 import { submitOrderByAdmin } from './action';
+import _debounce from 'lodash/debounce';
+import { requestUsers } from '../Stakes/actions';
 import './index.scss';
 
 const TYPE_OPTIONS = [{ value: true, label: 'Active' }];
@@ -13,6 +15,8 @@ const ActiveOrders = ({ pairs, userId, getThisExchangeOrder }) => {
 	const [pair, setPair] = useState(null);
 	const [type, setType] = useState(true);
 	const [displayCreateOrder, setDisplayCreateOrder] = useState(false);
+	const [selectedEmailData, setSelectedEmailData] = useState({});
+	const [emailOptions, setEmailOptions] = useState([]);
 	const [orderPayload, setOrderPayload] = useState({
 		type: 'limit',
 	});
@@ -31,7 +35,39 @@ const ActiveOrders = ({ pairs, userId, getThisExchangeOrder }) => {
 		});
 		return options;
 	};
+	const handleEmailChange = (value) => {
+		let emailId = parseInt(value);
+		let emailData = {};
+		emailOptions &&
+			emailOptions.forEach((item) => {
+				if (item.value === emailId) {
+					emailData = item;
+				}
+			});
+		setSelectedEmailData(emailData);
+		handleSearch(emailData.label);
+	};
 
+	const getAllUserData = async (params = {}) => {
+		try {
+			const res = await requestUsers(params);
+			if (res && res.data) {
+				const userData = res.data.map((user) => ({
+					label: user.email,
+					value: user.id,
+				}));
+				setEmailOptions(userData);
+			}
+		} catch (error) {
+			console.log('error', error);
+		}
+	};
+
+	const searchUser = (searchText, type) => {
+		getAllUserData({ search: searchText }, type);
+	};
+
+	const handleSearch = _debounce(searchUser, 1000);
 	return (
 		<div className="app_container-content">
 			{displayCreateOrder && (
@@ -53,6 +89,32 @@ const ActiveOrders = ({ pairs, userId, getThisExchangeOrder }) => {
 						You can create order for the selected user below
 					</div>
 					<div style={{ marginBottom: 30, marginTop: 10 }}>
+						{!userId && (
+							<div style={{ marginBottom: 10 }}>
+								<div className="mb-2">User</div>
+								<div className="d-flex align-items-center">
+									<Select
+										showSearch
+										placeholder="user@exchange.com"
+										className="user-search-field"
+										onSearch={(text) => handleSearch(text)}
+										filterOption={() => true}
+										style={{ width: '100%' }}
+										value={selectedEmailData && selectedEmailData.label}
+										onChange={(text) => handleEmailChange(text)}
+										showAction={['focus', 'click']}
+									>
+										{emailOptions &&
+											emailOptions.map((email) => (
+												<Select.Option key={email.value}>
+													{email.label}
+												</Select.Option>
+											))}
+									</Select>
+								</div>
+							</div>
+						)}
+
 						<div style={{ marginBottom: 10 }}>
 							<div className="mb-1">Symbol</div>
 							<Select
@@ -168,6 +230,11 @@ const ActiveOrders = ({ pairs, userId, getThisExchangeOrder }) => {
 						<Button
 							onClick={async () => {
 								try {
+									if (!userId && selectedEmailData?.value == null) {
+										message.error('Please select user');
+										return;
+									}
+
 									if (!orderPayload.size) {
 										message.error('Please input size');
 										return;
@@ -196,7 +263,7 @@ const ActiveOrders = ({ pairs, userId, getThisExchangeOrder }) => {
 
 									await submitOrderByAdmin({
 										...orderPayload,
-										user_id: userId,
+										user_id: userId || selectedEmailData?.value,
 									});
 									message.success('Order successfully created');
 									setDisplayCreateOrder(false);
@@ -248,6 +315,7 @@ const ActiveOrders = ({ pairs, userId, getThisExchangeOrder }) => {
 						className="green-btn"
 						type="primary"
 						onClick={() => {
+							if (!userId) getAllUserData();
 							setDisplayCreateOrder(true);
 						}}
 					>
