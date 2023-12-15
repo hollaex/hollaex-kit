@@ -57,7 +57,9 @@ const {
 	CANNOT_CHANGE_ADMIN_EMAIL,
 	EMAIL_IS_SAME,
 	EMAIL_EXISTS,
-	USER_VERIFIED
+	USER_VERIFIED,
+	CANNOT_CHANGE_DELETED_EMAIL,
+	SERVICE_NOT_SUPPORTED
 } = require(`${SERVER_PATH}/messages`);
 const { publisher, client } = require('./database/redis');
 const {
