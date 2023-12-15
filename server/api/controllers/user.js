@@ -173,22 +173,8 @@ const verifyUser = (req, res) => {
 	const { verification_code } = req.swagger.params.data.value;
 	const domain = req.headers['x-real-origin'];
 
-	toolsLib.user.verifyUser(null, verification_code)
-		.then((user) => {
-			publisher.publish(EVENTS_CHANNEL, JSON.stringify({
-				type: 'user',
-				data: {
-					action: 'verify',
-					user_id: user.id
-				}
-			}));
-			sendEmail(
-				MAILTYPE.WELCOME,
-				user.email,
-				{},
-				user.settings,
-				domain
-			);
+	toolsLib.user.verifyUser(null, verification_code, domain)
+		.then(() => {
 			return res.json({ message: USER_VERIFIED });
 		})
 		.catch((err) => {

@@ -73,7 +73,8 @@ const {
 	LOGIN_TIME_OUT,
 	TOKEN_TIME_LONG,
 	TOKEN_TIME_NORMAL,
-	VERIFY_STATUS
+	VERIFY_STATUS,
+	EVENTS_CHANNEL
 } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
@@ -152,6 +153,14 @@ const signUpUser = (email, password, opts = { referral: null }) => {
 			]);
 		})
 		.then(([verificationCode, user]) => {
+			publisher.publish(EVENTS_CHANNEL, JSON.stringify({
+				type: 'user',
+				data: {
+					action: 'signup',
+					user_id: user.id
+				}
+			}));
+			
 			sendEmail(
 				MAILTYPE.SIGNUP,
 				email,
@@ -165,7 +174,7 @@ const signUpUser = (email, password, opts = { referral: null }) => {
 		});
 };
 
-const verifyUser = (email, code) => {
+const verifyUser = (email, code, domain) => {
 	email = email?.toLowerCase();
 	return client.getAsync(`verification_code:user${code}`)
 		.then((verificationCode) => {
@@ -202,6 +211,20 @@ const verifyUser = (email, code) => {
 			]);
 		})
 		.then(([user]) => {
+			publisher.publish(EVENTS_CHANNEL, JSON.stringify({
+				type: 'user',
+				data: {
+					action: 'verify',
+					user_id: user.id
+				}
+			}));
+			sendEmail(
+				MAILTYPE.WELCOME,
+				user.email,
+				{},
+				user.settings,
+				domain
+			);
 			return user;
 		});
 };
