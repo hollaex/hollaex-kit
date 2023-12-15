@@ -76,10 +76,6 @@ const INITIAL_SETTINGS = () => {
 	};
 };
 
-const storeVerificationCode = (user, verification_code) => {
-	const data = { code: verification_code, id: user.id, email: user.email };
-	toolsLib.database.client.setexAsync(`verification_code:user${verification_code}`, 5 * 60, JSON.stringify(data));
-}
 
 const signUpUser = (req, res) => {
 	const {
@@ -152,7 +148,7 @@ const signUpUser = (req, res) => {
 		})
 		.then((user) => {
 			const verification_code = uuid();
-			storeVerificationCode(user, verification_code);
+			toolsLib.user.storeVerificationCode(user, verification_code);
 			return all([
 				verification_code,
 				user
@@ -202,7 +198,7 @@ const getVerifyUser = (req, res) => {
 			}
 			if (resendEmail) {
 				const verificationCode = uuid();
-				storeVerificationCode(user, verificationCode);
+				toolsLib.user.storeVerificationCode(user, verificationCode);
 
 				sendEmail(
 					MAILTYPE.SIGNUP,

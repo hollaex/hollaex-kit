@@ -56,7 +56,8 @@ const {
 	USER_ALREADY_RECOVERED,
 	CANNOT_CHANGE_ADMIN_EMAIL,
 	EMAIL_IS_SAME,
-	EMAIL_EXISTS
+	EMAIL_EXISTS,
+	USER_VERIFIED
 } = require(`${SERVER_PATH}/messages`);
 const { publisher, client } = require('./database/redis');
 const {
@@ -92,6 +93,118 @@ const moment = require('moment');
 let networkIdToKitId = {};
 let kitIdToNetworkId = {};
 /* Onboarding*/
+
+const storeVerificationCode = (user, verification_code) => {
+	const data = { code: verification_code, id: user.id, email: user.email };
+	client.setexAsync(`verification_code:user${verification_code}`, 5 * 60, JSON.stringify(data));
+}
+
+const signUpUser = (email, password, opts = { referral: null }) => {
+	if (!getKitConfig().new_user_is_activated) {
+		return reject(new Error(SIGNUP_NOT_AVAILABLE));
+	}
+
+	if (!email || !isEmail(email)) {
+		return reject(new Error(PROVIDE_VALID_EMAIL));
+	}
+
+	if (!isValidPassword(password)) {
+		return reject(new Error(INVALID_PASSWORD));
+	}
+
+	email = email.toLowerCase();
+
+	return dbQuery.findOne('user', {
+		where: { email },
+		attributes: ['email']
+	})
+		.then((user) => {
+			if (user) {
+				throw new Error(USER_EXISTS);
+			}
+			return getModel('sequelize').transaction((transaction) => {
+				return getModel('user').create({
+					email,
+					password,
+					verification_level: 1,
+					settings: INITIAL_SETTINGS()
+				}, { transaction })
+					.then((user) => {
+						return all([
+							createUserOnNetwork(email),
+							user
+						]);
+					})
+					.then(([networkUser, user]) => {
+						return user.update(
+							{ network_id: networkUser.id },
+							{ fields: ['network_id'], returning: true, transaction }
+						);
+					});
+			});
+		})
+		.then((user) => {
+			const verification_code = uuid();
+			storeVerificationCode(user, verification_code);
+			return all([
+				verification_code,
+				user
+			]);
+		})
+		.then(([verificationCode, user]) => {
+			sendEmail(
+				MAILTYPE.SIGNUP,
+				email,
+				verificationCode,
+				{}
+			);
+			if (opts.referral && isString(opts.referral)) {
+				checkAffiliation(opts.referral, user.id);
+			}
+			return user;
+		});
+};
+
+const verifyUser = (email, code) => {
+	email = email.toLowerCase();
+	toolsLib.database.client.getAsync(`verification_code:user${code}`)
+		.then((verificationCode) => {
+			if (!verificationCode) {
+				throw new Error(VERIFICATION_CODE_EXPIRED);
+			}
+			verificationCode = JSON.parse(verificationCode);
+			return all([
+				verificationCode,
+				toolsLib.database.findOne('user',
+				{ where: { id: verificationCode.id }, attributes: ['id', 'email', 'settings', 'network_id', 'email_verified'] }),
+			]);
+		})
+		.then(([verificationCode, user]) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
+
+			if (user.email_verified) {
+				throw new Error(USER_VERIFIED);
+			}
+
+			if (code !== verificationCode.code) {
+				throw new Error(INVALID_VERIFICATION_CODE);
+			}
+
+			toolsLib.database.client.delAsync(`verification_code:user${verificationCode.code}`);
+			return all([
+				user,
+				user.update(
+					{ email_verified: true },
+					{ fields: ['email_verified'] }
+				)
+			]);
+		})
+		.then(([user]) => {
+			return user;
+		});
+};
 
 const createUser = (
 	email,
@@ -2247,5 +2360,8 @@ module.exports = {
 	deleteKitUser,
 	restoreKitUser,
 	revokeAllUserSessions,
-	changeKitUserEmail
+	changeKitUserEmail,
+	storeVerificationCode,
+	signUpUser,
+	verifyUser
 };
