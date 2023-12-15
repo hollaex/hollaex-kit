@@ -99,21 +99,6 @@ const signUpUser = (req, res) => {
 		.then(() => {
 			return toolsLib.security.checkCaptcha(captcha, ip);
 		})
-		.then(() => {
-			if (!toolsLib.getKitConfig().new_user_is_activated) {
-				throw new Error(SIGNUP_NOT_AVAILABLE);
-			}
-
-			if (!email || typeof email !== 'string' || !isEmail(email)) {
-				throw new Error(PROVIDE_VALID_EMAIL);
-			}
-
-			if (!toolsLib.security.isValidPassword(password)) {
-				throw new Error(INVALID_PASSWORD);
-			}
-
-			return ip;
-		})
 		.then(() => toolsLib.user.signUpUser(email, password, { referral }))
 		.then(() => res.status(201).json({ message: USER_REGISTERED }))
 		.catch((err) => {
