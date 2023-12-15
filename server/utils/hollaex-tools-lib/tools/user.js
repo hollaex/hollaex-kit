@@ -166,8 +166,8 @@ const signUpUser = (email, password, opts = { referral: null }) => {
 };
 
 const verifyUser = (email, code) => {
-	email = email.toLowerCase();
-	toolsLib.database.client.getAsync(`verification_code:user${code}`)
+	email = email?.toLowerCase();
+	return client.getAsync(`verification_code:user${code}`)
 		.then((verificationCode) => {
 			if (!verificationCode) {
 				throw new Error(VERIFICATION_CODE_EXPIRED);
@@ -175,7 +175,7 @@ const verifyUser = (email, code) => {
 			verificationCode = JSON.parse(verificationCode);
 			return all([
 				verificationCode,
-				toolsLib.database.findOne('user',
+				dbQuery.findOne('user',
 				{ where: { id: verificationCode.id }, attributes: ['id', 'email', 'settings', 'network_id', 'email_verified'] }),
 			]);
 		})
@@ -192,7 +192,7 @@ const verifyUser = (email, code) => {
 				throw new Error(INVALID_VERIFICATION_CODE);
 			}
 
-			toolsLib.database.client.delAsync(`verification_code:user${verificationCode.code}`);
+			client.delAsync(`verification_code:user${verificationCode.code}`);
 			return all([
 				user,
 				user.update(

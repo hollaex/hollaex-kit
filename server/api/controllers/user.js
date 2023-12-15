@@ -112,69 +112,10 @@ const signUpUser = (req, res) => {
 				throw new Error(INVALID_PASSWORD);
 			}
 
-			return toolsLib.database.findOne('user', {
-				where: { email },
-				attributes: ['email']
-			});
+			return ip;
 		})
-		.then((user) => {
-			if (user) {
-				throw new Error(USER_EXISTS);
-			}
-			return toolsLib.database.getModel('sequelize').transaction((transaction) => {
-				return toolsLib.database.getModel('user').create({
-					email,
-					password,
-					verification_level: 1,
-					settings: INITIAL_SETTINGS()
-				}, { transaction })
-					.then((user) => {
-						return all([
-							toolsLib.user.createUserOnNetwork(email, {
-								additionalHeaders: {
-									'x-forwarded-for': req.headers['x-forwarded-for']
-								}
-							}),
-							user
-						]);
-					})
-					.then(([networkUser, user]) => {
-						return user.update(
-							{ network_id: networkUser.id },
-							{ fields: ['network_id'], returning: true, transaction }
-						);
-					});
-			});
-		})
-		.then((user) => {
-			const verification_code = uuid();
-			toolsLib.user.storeVerificationCode(user, verification_code);
-			return all([
-				verification_code,
-				user
-			]);
-		})
-		.then(([verificationCode, user]) => {
-			publisher.publish(EVENTS_CHANNEL, JSON.stringify({
-				type: 'user',
-				data: {
-					action: 'signup',
-					user_id: user.id
-				}
-			}));
-			sendEmail(
-				MAILTYPE.SIGNUP,
-				email,
-				verificationCode,
-				{}
-			);
-
-			if (referral) {
-				toolsLib.user.checkAffiliation(referral, user.id);
-			}
-
-			return res.status(201).json({ message: USER_REGISTERED });
-		})
+		.then(() => toolsLib.user.signUpUser(email, password, { referral }))
+		.then(() => res.status(201).json({ message: USER_REGISTERED }))
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/signUpUser', err.message);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
@@ -232,41 +173,8 @@ const verifyUser = (req, res) => {
 	const { verification_code } = req.swagger.params.data.value;
 	const domain = req.headers['x-real-origin'];
 
-	toolsLib.database.client.getAsync(`verification_code:user${verification_code}`)
-		.then((verificationCode) => {
-			if (!verificationCode) {
-				throw new Error(VERIFICATION_CODE_EXPIRED);
-			}
-			verificationCode = JSON.parse(verificationCode);
-			return all([
-				verificationCode,
-				toolsLib.database.findOne('user',
-				{ where: { id: verificationCode.id }, attributes: ['id', 'email', 'settings', 'network_id', 'email_verified'] }),
-			]);
-		})
-		.then(([verificationCode, user]) => {
-			if (!user) {
-				throw new Error(USER_NOT_FOUND);
-			}
-
-			if (user.email_verified) {
-				throw new Error(USER_VERIFIED);
-			}
-
-			if (verification_code !== verificationCode.code) {
-				throw new Error(INVALID_VERIFICATION_CODE);
-			}
-
-			toolsLib.database.client.delAsync(`verification_code:user${verificationCode.code}`);
-			return all([
-				user,
-				user.update(
-					{ email_verified: true },
-					{ fields: ['email_verified'] }
-				)
-			]);
-		})
-		.then(([user]) => {
+	toolsLib.user.verifyUser(null, verification_code)
+		.then((user) => {
 			publisher.publish(EVENTS_CHANNEL, JSON.stringify({
 				type: 'user',
 				data: {
