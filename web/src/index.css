@@ -1976,9 +1976,19 @@ table th {
       width: 35%;
       align-items: flex-end;
       background-color: var(--base_wallet-sidebar-and-popup);
-      border-radius: 5px; }
+      border-radius: 5px;
+      text-align: center; }
       .currency-wallet-wrapper .wallet-content-wrapper .donut-wrapper .donut-title {
         font-size: 16px; }
+      .currency-wallet-wrapper .wallet-content-wrapper .donut-wrapper .wallet-icon-wrapper {
+        display: flex;
+        justify-content: center;
+        margin: 10%;
+        height: 30%; }
+      .currency-wallet-wrapper .wallet-content-wrapper .donut-wrapper .deposit-link,
+      .currency-wallet-wrapper .wallet-content-wrapper .donut-wrapper .buy-link {
+        text-decoration: underline;
+        color: #5d63ff; }
       .currency-wallet-wrapper .wallet-content-wrapper .donut-wrapper .rounded-loading {
         width: 80px;
         height: 80px;

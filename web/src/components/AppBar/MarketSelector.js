@@ -168,6 +168,7 @@ class MarketSelector extends Component {
 			constants,
 			markets: allMarkets,
 			pair: activeMarket,
+			quicktrade
 		} = this.props;
 
 		const { searchResult, tabResult } = this.state;
@@ -179,6 +180,8 @@ class MarketSelector extends Component {
 
 		const tabMenuLength = markets.length;
 		const hasTabMenu = tabMenuLength !== 0;
+
+		const filterQuickTrade = quicktrade.filter(({ type }) => type !== "pro");
 
 		return (
 			<div className={classnames(wrapperClassName)}>
@@ -197,13 +200,31 @@ class MarketSelector extends Component {
 					</div>
 					<div className="scroll-view">
 						{hasTabMenu ? (
-							markets.map((market, index) => {
+							[...filterQuickTrade,...markets, ...[{ 
+								key: 'test-usdt',
+								pair: {
+									display_name: 'TEST',
+									name: 'test/usdt'
+								},
+								ticker: {
+									lose: 0.197,
+									high: 0.197,
+									last: 0.197,
+									low:  0.197,
+									open: 0.197,
+									volume: 1
+								},
+								increment_price:0.001,
+								display_name: 'TEST/USDT'
+							 }]].map((market, index) => {
 								const {
 									key,
 									pair,
 									ticker,
 									increment_price,
 									display_name,
+									symbol,
+									icon_id
 								} = market;
 
 								return (
@@ -213,14 +234,14 @@ class MarketSelector extends Component {
 											'app-bar-add-tab-content-list',
 											'd-flex align-items-center justify-content-start',
 											'pointer',
-											{ 'active-market': pair.name === activeMarket }
+											{ 'active-market': pair?.name === activeMarket }
 										)}
 									>
 										<div
 											className="pl-3 pr-2 pointer"
-											onClick={() => this.toggleFavourite(key)}
+											onClick={() => this.toggleFavourite(key || symbol)}
 										>
-											{this.isFavourite(key) ? (
+											{this.isFavourite(key || symbol) ? (
 												<StarFilled className="stared-market" />
 											) : (
 												<StarOutlined />
@@ -228,20 +249,20 @@ class MarketSelector extends Component {
 										</div>
 										<div
 											className="d-flex align-items-center justify-content-between w-100"
-											onClick={() => this.onMarketClick(key)}
+											onClick={() => this.onMarketClick(key || symbol)}
 										>
 											<div className="d-flex align-items-center">
 												<Coin
-													iconId={pair.icon_id}
+													iconId={pair?.icon_id || icon_id}
 													type={isMobile ? 'CS5' : 'CS2'}
 												/>
 												<div className="app_bar-pair-font">{display_name}:</div>
 												<div className="title-font ml-1 app-bar_add-tab-price">
-													{formatToCurrency(ticker.close, increment_price)}
+													{formatToCurrency(ticker?.close, increment_price)}
 												</div>
 											</div>
 											<div className="d-flex align-items-center mr-4">
-												<PriceChange market={market} key={key} />
+												<PriceChange market={market} key={key || symbol} />
 											</div>
 										</div>
 									</div>
@@ -289,7 +310,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (store) => {
 	const {
-		app: { pairs, coins, favourites, constants, pair },
+		app: { pairs, coins, favourites, constants, pair, quicktrade },
 	} = store;
 
 	return {
@@ -299,6 +320,7 @@ const mapStateToProps = (store) => {
 		favourites,
 		constants,
 		markets: MarketsSelector(store),
+		quicktrade,
 	};
 };
 
