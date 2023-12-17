@@ -39,7 +39,7 @@ const {
 	ACCOUNT_NOT_VERIFIED,
 	INVALID_VERIFICATION_LEVEL,
 	USER_EMAIL_NOT_VERIFIED,
-	USER_EMAIL_IS_VERIFIED,
+	VERIFICATION_CODE_EXPIRED,
 	NO_DATA_FOR_CSV,
 	PROVIDE_USER_CREDENTIALS,
 	PROVIDE_KIT_ID,
@@ -48,6 +48,7 @@ const {
 	USER_ALREADY_DEACTIVATED,
 	USER_NOT_DEACTIVATED,
 	CANNOT_CHANGE_ADMIN_ROLE,
+	USER_VERIFIED,
 	VERIFICATION_CODE_USED,
 	USER_NOT_REGISTERED_ON_NETWORK,
 	SESSION_NOT_FOUND,
@@ -74,7 +75,8 @@ const {
 	LOGIN_TIME_OUT,
 	TOKEN_TIME_LONG,
 	TOKEN_TIME_NORMAL,
-	VERIFY_STATUS
+	VERIFY_STATUS,
+	EVENTS_CHANNEL
 } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
@@ -94,6 +96,11 @@ const moment = require('moment');
 let networkIdToKitId = {};
 let kitIdToNetworkId = {};
 /* Onboarding*/
+
+const storeVerificationCode = (user, verification_code) => {
+	const data = { code: verification_code, id: user.id, email: user.email };
+	client.setexAsync(`verification_code:user${verification_code}`, 5 * 60, JSON.stringify(data));
+}
 
 const signUpUser = (email, password, opts = { referral: null }) => {
 	if (!getKitConfig().new_user_is_activated) {
@@ -140,16 +147,26 @@ const signUpUser = (email, password, opts = { referral: null }) => {
 			});
 		})
 		.then((user) => {
+			const verification_code = uuid();
+			storeVerificationCode(user, verification_code);
 			return all([
-				getVerificationCodeByUserId(user.id),
+				verification_code,
 				user
 			]);
 		})
 		.then(([verificationCode, user]) => {
+			publisher.publish(EVENTS_CHANNEL, JSON.stringify({
+				type: 'user',
+				data: {
+					action: 'signup',
+					user_id: user.id
+				}
+			}));
+			
 			sendEmail(
 				MAILTYPE.SIGNUP,
 				email,
-				verificationCode.code,
+				verificationCode,
 				{}
 			);
 			if (opts.referral && isString(opts.referral)) {
@@ -159,35 +176,57 @@ const signUpUser = (email, password, opts = { referral: null }) => {
 		});
 };
 
-const verifyUser = (email, code) => {
-	email = email.toLowerCase();
-	return dbQuery.findOne('user',
-		{ where: { email }, attributes: ['id', 'email', 'settings', 'network_id'] }
-	)
-		.then((user) => {
+const verifyUser = (email, code, domain) => {
+	email = email?.toLowerCase();
+	return client.getAsync(`verification_code:user${code}`)
+		.then((verificationCode) => {
+			if (!verificationCode) {
+				throw new Error(VERIFICATION_CODE_EXPIRED);
+			}
+			verificationCode = JSON.parse(verificationCode);
 			return all([
-				dbQuery.findOne('verification code',
-					{
-						where: { user_id: user.id },
-						attributes: ['id', 'code', 'verified', 'user_id']
-					}
-				),
-				user
+				verificationCode,
+				dbQuery.findOne('user',
+				{ where: { id: verificationCode.id }, attributes: ['id', 'email', 'settings', 'network_id', 'email_verified'] }),
 			]);
 		})
 		.then(([verificationCode, user]) => {
-			if (verificationCode.verified) {
-				throw new Error(USER_EMAIL_IS_VERIFIED);
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
 			}
+
+			if (user.email_verified) {
+				throw new Error(USER_VERIFIED);
+			}
+
 			if (code !== verificationCode.code) {
 				throw new Error(INVALID_VERIFICATION_CODE);
 			}
+
+			client.delAsync(`verification_code:user${verificationCode.code}`);
 			return all([
 				user,
-				verificationCode.update({ verified: true }, { fields: ['verified'], returning: true })
+				user.update(
+					{ email_verified: true },
+					{ fields: ['email_verified'] }
+				)
 			]);
 		})
 		.then(([user]) => {
+			publisher.publish(EVENTS_CHANNEL, JSON.stringify({
+				type: 'user',
+				data: {
+					action: 'verify',
+					user_id: user.id
+				}
+			}));
+			sendEmail(
+				MAILTYPE.WELCOME,
+				user.email,
+				{},
+				user.settings,
+				domain
+			);
 			return user;
 		});
 };
@@ -257,11 +296,7 @@ const createUser = (
 	})
 		.then((user) => {
 			return all([
-				user,
-				getModel('verification code').update(
-					{ verified: true },
-					{ where: { user_id: user.id }, fields: ['verified'] }
-				)
+				user
 			]);
 		})
 		.then(([user]) => {
@@ -430,15 +465,6 @@ const findUserLatestLogin = (user, status) => {
 /* Public Endpoints*/
 
 
-const getVerificationCodeByUserEmail = (email) => {
-	return getUserByEmail(email)
-		.then((user) => {
-			if (!user) {
-				throw new Error(USER_NOT_FOUND);
-			}
-			return getVerificationCodeByUserId(user.id);
-		});
-};
 
 const generateAffiliationCode = () => {
 	return randomString({
@@ -446,13 +472,6 @@ const generateAffiliationCode = () => {
 		numeric: true,
 		letters: true
 	}).toUpperCase();
-};
-
-const getVerificationCodeByUserId = (user_id) => {
-	return dbQuery.findOne('verification code', {
-		where: { user_id },
-		attributes: ['id', 'code', 'verified', 'user_id']
-	});
 };
 
 const getUserByAffiliationCode = (affiliationCode) => {
@@ -1148,27 +1167,6 @@ const INITIAL_SETTINGS = () => {
 	};
 };
 
-const getUserEmailByVerificationCode = (code) => {
-	return dbQuery.findOne('verification code', {
-		where: { code },
-		attributes: ['id', 'code', 'verified', 'user_id']
-	})
-		.then((verificationCode) => {
-			if (!verificationCode) {
-				throw new Error(INVALID_VERIFICATION_CODE);
-			} else if (verificationCode.verified) {
-				throw new Error(VERIFICATION_CODE_USED);
-			}
-			return dbQuery.findOne('user', {
-				where: { id: verificationCode.user_id },
-				attributes: ['email']
-			});
-		})
-		.then((user) => {
-			return user.email;
-		});
-};
-
 const verifyUserEmailByKitId = (kitId) => {
 	return getUserByKitId(kitId, false)
 		.then((user) => {
@@ -1744,12 +1742,6 @@ const inviteExchangeOperator = (invitingEmail, email, role, opts = {
 			});
 	})
 		.then(async ([user, created]) => {
-			if (created) {
-				await getModel('verification code').update(
-					{ verified: true },
-					{ where: { user_id: user.id }, fields: ['verified'] }
-				);
-			}
 			sendEmail(
 				MAILTYPE.INVITED_OPERATOR,
 				user.email,
@@ -2363,11 +2355,7 @@ module.exports = {
 	getUserRole,
 	updateUserSettings,
 	omitUserFields,
-	signUpUser,
 	registerUserLogin,
-	verifyUser,
-	getVerificationCodeByUserEmail,
-	getUserEmailByVerificationCode,
 	getAllUsersAdmin,
 	updateUserRole,
 	updateUserNote,
@@ -2392,7 +2380,6 @@ module.exports = {
 	getUsersNetwork,
 	createUserCryptoAddressByNetworkId,
 	getUserStatsByNetworkId,
-	getVerificationCodeByUserId,
 	checkAffiliation,
 	verifyUserEmailByKitId,
 	generateAffiliationCode,
@@ -2410,5 +2397,8 @@ module.exports = {
 	deleteKitUser,
 	restoreKitUser,
 	revokeAllUserSessions,
-	changeKitUserEmail
+	changeKitUserEmail,
+	storeVerificationCode,
+	signUpUser,
+	verifyUser
 };

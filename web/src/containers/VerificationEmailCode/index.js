@@ -22,7 +22,7 @@ class VerifyEmailCode extends Component {
 	UNSAFE_componentWillMount() {
 		const { code } = this.props.params;
 		if (isUUID(code)) {
-			this.props.checkVerificationData({ verification_code: code });
+			this.props.verifyCode({ verification_code: code });
 		} else {
 			this.setError(STRINGS['VERIFICATION_EMAIL.INVALID_UUID']);
 		}
