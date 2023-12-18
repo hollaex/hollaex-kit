@@ -237,6 +237,7 @@ const createUser = (
 	opts = {
 		role: 'user',
 		id: null,
+		email_verified: false,
 		additionalHeaders: null
 	}
 ) => {
@@ -273,6 +274,7 @@ const createUser = (
 					email,
 					password,
 					settings: INITIAL_SETTINGS(),
+					email_verified: opts.email_verified,
 					...roles
 				};
 
