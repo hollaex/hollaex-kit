@@ -2393,43 +2393,6 @@ const getUserBalanceHistory = (opts = {
 };
 
 
-const findClosestBalanceRecord = (date) => {
-	return userBalanceHistory.reduce((closestRecord, entry) => {
-	  const entryDate = new Date(entry.created_at).getTime();
-	  const closestDate = new Date(closestRecord.created_at).getTime();
-	  const currentDate = new Date(date).getTime();
-  
-	  if (Math.abs(currentDate - entryDate) < Math.abs(currentDate - closestDate)) {
-		return entry;
-	  }
-  
-	  return closestRecord;
-	}, userBalanceHistory[0]);
-};
-  
-const filterByInterval = (data, interval, conditionalDate) => {
-	const currentDate = new Date();
-	const dateThreshold = new Date();
-  
-	switch (interval) {
-	  case '1d':
-		dateThreshold.setDate(currentDate.getDate() - 1);
-		break;
-	  case '1m':
-		dateThreshold.setMonth(currentDate.getMonth() - 1);
-		break;
-	  case '6m':
-		dateThreshold.setMonth(currentDate.getMonth() - 6);
-		break;
-	  case '1y':
-		dateThreshold.setFullYear(currentDate.getFullYear() - 1);
-		break;
-	  default:
-		return data;
-	}
-  
-	return data.filter((entry) => (new Date(entry.created_at || entry.timestamp) >= dateThreshold) && (conditionalDate ? new Date(entry.created_at || entry.timestamp) > new Date(conditionalDate) : true));
-};
 
 const fetchUserProfitLossInfo = async (user_id) => {
 	const data = await  client.getAsync(`${user_id}user-pl-info`);
@@ -2453,6 +2416,43 @@ const fetchUserProfitLossInfo = async (user_id) => {
 	 });
 
 	userTrades?.data?.reverse();
+
+	const findClosestBalanceRecord = (date) => {
+		return userBalanceHistory.reduce((closestRecord, entry) => {
+		  const entryDate = new Date(entry.created_at).getTime();
+		  const closestDate = new Date(closestRecord.created_at).getTime();
+		  const currentDate = new Date(date).getTime();
+	  
+		  if (Math.abs(currentDate - entryDate) < Math.abs(currentDate - closestDate)) {
+			return entry;
+		  }
+	  
+		  return closestRecord;
+		}, userBalanceHistory[0]);
+	  };
+	  
+	  const filterByInterval = (data, interval, conditionalDate) => {
+		const dateThreshold = moment();
+	  
+		switch (interval) {
+		  case '1d':
+			dateThreshold.subtract(1, 'day');
+			break;
+		  case '1m':
+			dateThreshold.subtract(1, 'month');
+			break;
+		  case '6m':
+			dateThreshold.subtract(6, 'months');
+			break;
+		  case '1y':
+			dateThreshold.subtract(1, 'year');
+			break;
+		  default:
+			return data;
+		}
+	  
+		return data.filter((entry) => (moment(entry.created_at || entry.timestamp).isSameOrAfter(dateThreshold)) && (conditionalDate ? moment(entry.created_at || entry.timestamp).isAfter(moment(conditionalDate)) : true));
+	  };
 	
 	const timeIntervals = ['1d', '1m', '6m', '1y'];
 	
