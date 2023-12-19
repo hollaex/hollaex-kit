@@ -7084,6 +7084,15 @@ table th {
       .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .st0 {
         fill: var(--labels_secondary-inactive-label-text-graphics) !important;
         stroke-width: 0rem; }
+  .app-bar-add-tab-menu .app-bar-add-tab-content-no-market {
+    display: block;
+    text-align: center;
+    width: 100%;
+    margin: auto;
+    margin-top: 50%;
+    transform: translateY(-50%); }
+  .app-bar-add-tab-menu .text-underline {
+    text-decoration: underline; }
   .app-bar-add-tab-menu .app-bar-tab-setting {
     margin: 0.3rem 0.4rem 0 0.4rem;
     width: 1rem; }

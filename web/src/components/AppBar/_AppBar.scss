@@ -1029,6 +1029,19 @@ $app-menu-width: calc(100vw - 40rem);
 		}
 	}
 
+	.app-bar-add-tab-content-no-market {
+		display: block;
+		text-align: center;
+    	width: 100%;
+		margin: auto;
+		margin-top: 50%;
+		transform: translateY(-50%);
+	}
+
+	.text-underline {
+		text-decoration: underline;
+	}
+
 	.app-bar-tab-setting {
 		margin: 0.3rem 0.4rem 0 0.4rem;
 		width: 1rem;

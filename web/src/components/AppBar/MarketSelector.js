@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { object, string, func } from 'prop-types';
 import classnames from 'classnames';
 import { StarFilled, StarOutlined } from '@ant-design/icons';
-
+import { Link } from 'react-router';
 import { Slider, PriceChange, Coin } from 'components';
 import { DEFAULT_COIN_DATA } from 'config/constants';
 import STRINGS from 'config/localizedStrings';
@@ -168,7 +168,7 @@ class MarketSelector extends Component {
 			constants,
 			markets: allMarkets,
 			pair: activeMarket,
-			quicktrade
+			quicktrade,
 		} = this.props;
 
 		const { searchResult, tabResult } = this.state;
@@ -181,7 +181,7 @@ class MarketSelector extends Component {
 		const tabMenuLength = markets.length;
 		const hasTabMenu = tabMenuLength !== 0;
 
-		const filterQuickTrade = quicktrade.filter(({ type }) => type !== "pro");
+		const filterQuickTrade = quicktrade.filter(({ type }) => type !== 'pro');
 
 		return (
 			<div className={classnames(wrapperClassName)}>
@@ -200,23 +200,10 @@ class MarketSelector extends Component {
 					</div>
 					<div className="scroll-view">
 						{hasTabMenu ? (
-							[...filterQuickTrade,...markets, ...[{ 
-								key: 'test-usdt',
-								pair: {
-									display_name: 'TEST',
-									name: 'test/usdt'
-								},
-								ticker: {
-									lose: 0.197,
-									high: 0.197,
-									last: 0.197,
-									low:  0.197,
-									open: 0.197,
-									volume: 1
-								},
-								increment_price:0.001,
-								display_name: 'TEST/USDT'
-							 }]].map((market, index) => {
+							[
+								...filterQuickTrade,
+								...markets,
+							].map((market, index) => {
 								const {
 									key,
 									pair,
@@ -224,7 +211,7 @@ class MarketSelector extends Component {
 									increment_price,
 									display_name,
 									symbol,
-									icon_id
+									icon_id,
 								} = market;
 
 								return (
@@ -256,10 +243,15 @@ class MarketSelector extends Component {
 													iconId={pair?.icon_id || icon_id}
 													type={isMobile ? 'CS5' : 'CS2'}
 												/>
-												<div className="app_bar-pair-font">{display_name}:</div>
-												<div className="title-font ml-1 app-bar_add-tab-price">
-													{formatToCurrency(ticker?.close, increment_price)}
-												</div>
+												<div className="app_bar-pair-font">{display_name}</div>
+												{ticker && (
+													<>
+														<span className="app_bar-pair-font">:</span>
+														<div className="title-font ml-1 app-bar_add-tab-price">
+															{formatToCurrency(ticker?.close, increment_price)}
+														</div>
+													</>
+												)}
 											</div>
 											<div className="d-flex align-items-center mr-4">
 												<PriceChange market={market} key={key || symbol} />
@@ -269,8 +261,15 @@ class MarketSelector extends Component {
 								);
 							})
 						) : (
-							<div className="app-bar-add-tab-content-list d-flex align-items-center">
-								No data...
+							<div className="app-bar-add-tab-content-no-market">
+								{STRINGS['CANT_FIND_MARKETS']}
+								<br/>
+								{STRINGS.formatString(
+									STRINGS['TRY_VISITING_ASSETS'],
+									<Link to="assets" className="text-underline blue-link pointer">
+										{STRINGS['ASSETS_PAGE']}
+									</Link>
+								)}
 							</div>
 						)}
 					</div>
