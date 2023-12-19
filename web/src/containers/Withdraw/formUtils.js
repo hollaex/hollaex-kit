@@ -17,6 +17,7 @@ import { toFixed } from 'utils/currency';
 import { getDecimals } from 'utils/utils';
 import { getNetworkNameByKey } from 'utils/wallet';
 import { email } from 'components/AdminForm/validations';
+import math from 'mathjs';
 
 export const generateInitialValues = (
 	symbol,
@@ -388,12 +389,15 @@ export const generateFormValues = (
 
 				let result = value;
 				if (decimal < valueDecimal) {
-					result = decValue
+					const newValue = decValue
 						.toString()
 						.substring(
 							0,
 							decValue.toString().length - (valueDecimal - decimal)
 						);
+					if (math.larger(newValue, min)) {
+						result = newValue;
+					}
 				}
 				return result;
 			},

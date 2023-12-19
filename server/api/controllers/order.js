@@ -56,6 +56,45 @@ const createOrder = (req, res) => {
 		});
 };
 
+const createOrderByAdmin = (req, res) => {
+	loggerOrders.verbose(
+		req.uuid,
+		'controllers/order/createOrderByAdmin auth',
+		req.auth
+	);
+	loggerOrders.verbose(
+		req.uuid,
+		'controllers/order/createOrderByAdmin order',
+		req.swagger.params.order.value
+	);
+
+	let order = req.swagger.params.order.value;
+
+	const opts = {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	};
+
+	if (order.type === 'market') {
+		delete order.price;
+	}
+
+	toolsLib.order.createUserOrderByKitId(order.user_id, order.symbol, order.side, order.size, order.type, order.price, opts)
+		.then((data) => {
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], order);
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerOrders.error(
+				req.uuid,
+				'controllers/order/createOrderByAdmin error',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
 const getQuickTrade = (req, res) => {
 	loggerOrders.verbose(
 		req.uuid,
@@ -442,6 +481,7 @@ const adminCancelOrder = (req, res) => {
 
 module.exports = {
 	createOrder,
+	createOrderByAdmin,
 	getUserOrder,
 	cancelUserOrder,
 	getAllUserOrders,

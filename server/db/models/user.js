@@ -198,7 +198,6 @@ module.exports = function (sequelize, DataTypes) {
 
 	User.associate = (models) => {
 		User.hasMany(models.Token);
-		User.hasMany(models.VerificationCode);
 		User.hasMany(models.Broker);
 		// User.hasMany(models.VerificationImage);
 		User.hasMany(models.VerificationImage, {

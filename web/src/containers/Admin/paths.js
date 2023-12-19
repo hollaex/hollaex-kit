@@ -198,11 +198,6 @@ export const SUPERVISOR_PATH = [
 		routeKey: 'financials',
 	},
 	{
-		path: '/admin/stakes',
-		label: 'Stakes',
-		routeKey: 'stake',
-	},
-	{
 		path: '/admin/sessions',
 		label: 'Sessions',
 		routeKey: 'session',

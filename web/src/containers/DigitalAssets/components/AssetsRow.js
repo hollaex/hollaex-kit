@@ -2,6 +2,7 @@ import React from 'react';
 import { PriceChange, Coin } from 'components';
 import { MiniSparkLine } from 'containers/TradeTabs/components/MiniSparkLine';
 import STRINGS from 'config/localizedStrings';
+import { getRandomValuesFromParts } from 'utils/array';
 
 const AssetsRow = ({ 
 	coinData,
@@ -99,7 +100,7 @@ const AssetsRow = ({
 			</td>
 			<td className="td-chart">
 				<MiniSparkLine
-					chartData={chartData?.price || []}
+					chartData={getRandomValuesFromParts(chartData?.price || [])}
 					isArea
 				/>
 			</td>

@@ -14,6 +14,7 @@ import { toFixed } from 'utils/currency';
 import { HIDDEN_KEYS } from 'containers/Verification/UserPaymentVerificationHome';
 import { generateDynamicStringKey } from 'utils/id';
 import STRINGS from 'config/localizedStrings';
+import math from 'mathjs';
 
 export const generateFormValues = (
 	constants,
@@ -153,12 +154,15 @@ export const generateFormValues = (
 
 				let result = value;
 				if (decimal < valueDecimal) {
-					result = decValue
+					const newValue = decValue
 						.toString()
 						.substring(
 							0,
 							decValue.toString().length - (valueDecimal - decimal)
 						);
+					if (math.larger(newValue, min)) {
+						result = newValue;
+					}
 				}
 				return result;
 			},
