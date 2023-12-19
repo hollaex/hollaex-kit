@@ -2429,9 +2429,9 @@ const fetchUserProfitLossInfo = async (user_id) => {
 	  
 		  return closestRecord;
 		}, userBalanceHistory[0]);
-	  };
+	};
 	  
-	  const filterByInterval = (data, interval, conditionalDate) => {
+	const filterByInterval = (data, interval, conditionalDate) => {
 		const dateThreshold = moment();
 	  
 		switch (interval) {
@@ -2452,7 +2452,7 @@ const fetchUserProfitLossInfo = async (user_id) => {
 		}
 	  
 		return data.filter((entry) => (moment(entry.created_at || entry.timestamp).isSameOrAfter(dateThreshold)) && (conditionalDate ? moment(entry.created_at || entry.timestamp).isAfter(moment(conditionalDate)) : true));
-	  };
+	};
 	
 	const timeIntervals = ['1d', '1m', '6m', '1y'];
 	
