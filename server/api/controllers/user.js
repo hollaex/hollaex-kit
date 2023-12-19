@@ -1282,7 +1282,7 @@ const userDelete = (req, res) => {
 const getUserBalanceHistory = (req, res) => {
 	loggerUser.verbose(
 		req.uuid,
-		'controllers/admin/getUserBalanceHistory/auth',
+		'controllers/user/getUserBalanceHistory/auth',
 		req.auth
 	);
 	const { limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
@@ -1290,7 +1290,7 @@ const getUserBalanceHistory = (req, res) => {
 	if (start_date.value && !isDate(start_date.value)) {
 		loggerUser.error(
 			req.uuid,
-			'controllers/admin/getUserBalanceHistory invalid start_date',
+			'controllers/user/getUserBalanceHistory invalid start_date',
 			start_date.value
 		);
 		return res.status(400).json({ message: 'Invalid start date' });
@@ -1299,7 +1299,7 @@ const getUserBalanceHistory = (req, res) => {
 	if (end_date.value && !isDate(end_date.value)) {
 		loggerUser.error(
 			req.uuid,
-			'controllers/admin/getUserBalanceHistory invalid end_date',
+			'controllers/user/getUserBalanceHistory invalid end_date',
 			end_date.value
 		);
 		return res.status(400).json({ message: 'Invalid end date' });
@@ -1308,7 +1308,7 @@ const getUserBalanceHistory = (req, res) => {
 	if (order_by.value && typeof order_by.value !== 'string') {
 		loggerUser.error(
 			req.uuid,
-			'controllers/admin/getUserBalanceHistory invalid order_by',
+			'controllers/user/getUserBalanceHistory invalid order_by',
 			order_by.value
 		);
 		return res.status(400).json({ message: 'Invalid order by' });
@@ -1336,12 +1336,31 @@ const getUserBalanceHistory = (req, res) => {
 		.catch((err) => {
 			loggerUser.error(
 				req.uuid,
-				'controllers/admin/getUserBalanceHistory',
+				'controllers/user/getUserBalanceHistory',
 				err.message
 			);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
+
+const fetchUserProfitLossInfo = (req, res) => {
+	loggerUser.verbose(
+		req.uuid,
+		'controllers/user/fetchUserProfitLossInfo/auth',
+		req.auth
+	);
+
+	const user_id = req.auth.sub.id;
+
+	toolsLib.user.fetchUserProfitLossInfo(user_id)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/fetchUserProfitLossInfo', err.message);
+			return res.status(err.statusCode || 400).json({ message: 'Something went wrong' });
+		});
+}
 
 
 module.exports = {
@@ -1374,5 +1393,6 @@ module.exports = {
 	getUserSessions,
 	userLogout,
 	userDelete,
-	getUserBalanceHistory
+	getUserBalanceHistory,
+	fetchUserProfitLossInfo
 };

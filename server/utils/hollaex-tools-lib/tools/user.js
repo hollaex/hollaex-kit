@@ -2392,6 +2392,159 @@ const getUserBalanceHistory = (opts = {
 	}
 };
 
+
+const findClosestBalanceRecord = (date) => {
+	return userBalanceHistory.reduce((closestRecord, entry) => {
+	  const entryDate = new Date(entry.created_at).getTime();
+	  const closestDate = new Date(closestRecord.created_at).getTime();
+	  const currentDate = new Date(date).getTime();
+  
+	  if (Math.abs(currentDate - entryDate) < Math.abs(currentDate - closestDate)) {
+		return entry;
+	  }
+  
+	  return closestRecord;
+	}, userBalanceHistory[0]);
+};
+  
+const filterByInterval = (data, interval, conditionalDate) => {
+	const currentDate = new Date();
+	const dateThreshold = new Date();
+  
+	switch (interval) {
+	  case '1d':
+		dateThreshold.setDate(currentDate.getDate() - 1);
+		break;
+	  case '1m':
+		dateThreshold.setMonth(currentDate.getMonth() - 1);
+		break;
+	  case '6m':
+		dateThreshold.setMonth(currentDate.getMonth() - 6);
+		break;
+	  case '1y':
+		dateThreshold.setFullYear(currentDate.getFullYear() - 1);
+		break;
+	  default:
+		return data;
+	}
+  
+	return data.filter((entry) => (new Date(entry.created_at || entry.timestamp) >= dateThreshold) && (conditionalDate ? new Date(entry.created_at || entry.timestamp) > new Date(conditionalDate) : true));
+};
+
+const fetchUserProfitLossInfo = async (user_id) => {
+	const data = await  client.getAsync(`${user_id}user-pl-info`);
+	if (data) return JSON.parse(data);
+
+	const { getAllUserTradesByKitId } = require('./order');
+	const { getUserWithdrawalsByKitId, getUserDepositsByKitId } = require('./wallet');
+
+	const balanceHistoryModel = getModel('balanceHistory');
+	const startDate = moment().subtract(1, 'years').toDate();
+	const endDate = moment().toDate();
+	const timeframe = timeframeQuery(startDate, endDate);
+	const userTrades = await getAllUserTradesByKitId(user_id, null, null, null, null, null, startDate, endDate, 'all');
+	const userWithdrawals = await getUserWithdrawalsByKitId(user_id, null, null, null, null, null, null, null, null, null, null, startDate, endDate, null, null, 'all');
+	const userDeposits = await getUserDepositsByKitId(user_id, null, null, null, null, null, null, null, null, null, null, startDate, endDate, null, null, 'all'); 
+	const userBalanceHistory = await balanceHistoryModel.findAll({ 
+		where: {
+			user_id,
+			created_at: timeframe
+		}
+	 });
+
+	userTrades?.data?.reverse();
+	
+	const timeIntervals = ['1d', '1m', '6m', '1y'];
+	
+	const results = {};
+	
+	for (const interval of timeIntervals) {
+		const filteredBalanceHistory = filterByInterval(userBalanceHistory, interval, null);
+		if (!filteredBalanceHistory[0]) continue;
+    	const initialBalances = filteredBalanceHistory[0]?.balance;
+    	const initialBalanceDate = filteredBalanceHistory[0]?.created_at;
+    	const filteredTrades = filterByInterval(userTrades.data, interval, initialBalanceDate);
+		
+    	const filteredDeposits = filterByInterval(userDeposits.data, interval, initialBalanceDate);
+    	const filteredWithdrawals = filterByInterval(userWithdrawals.data, interval, initialBalanceDate);
+	  
+		if(!initialBalances) continue;
+	
+		const netInflowFromDepositsPerAsset = {};
+		filteredDeposits.forEach((deposit) => {
+		  const asset = deposit.currency.toLowerCase();
+		  if (!netInflowFromDepositsPerAsset[asset]) {
+			netInflowFromDepositsPerAsset[asset] = 0;
+		  }
+		  const closestRecord = findClosestBalanceRecord(deposit.created_at);
+		 
+		  if(closestRecord.balance[asset]) {
+			const marketPrice = closestRecord.balance[asset].native_currency_value / closestRecord.balance[asset].original_value;
+			netInflowFromDepositsPerAsset[asset] += deposit.amount * marketPrice;
+		  }
+	 
+		});
+	  
+		const netInflowFromTradesPerAsset = filteredTrades.reduce((netInflow, trade) => {
+		  const asset = trade.symbol.split('-')[0].toLowerCase();
+		  const tradeValue = trade.size * trade.price;
+	  
+		  if (!netInflow[asset]) {
+			netInflow[asset] = 0;
+		  }
+	  
+		  if (trade.side === 'buy') {
+			netInflow[asset] += tradeValue;
+		  } else if (trade.side === 'sell') {
+			netInflow[asset] -= tradeValue;
+		  }
+	  
+		  return netInflow;
+		}, {});
+	  
+		const netOutflowFromWithdrawalsPerAsset = {};
+		filteredWithdrawals.forEach((withdrawal) => {
+		  const asset = withdrawal.currency.toLowerCase();
+		  if (!netOutflowFromWithdrawalsPerAsset[asset]) {
+			netOutflowFromWithdrawalsPerAsset[asset] = 0;
+		  }
+		  const closestRecord = findClosestBalanceRecord(withdrawal.created_at);
+		  if(closestRecord.balance[asset]) { 
+			const marketPrice = closestRecord.balance[asset].native_currency_value / closestRecord.balance[asset].original_value;
+			netOutflowFromWithdrawalsPerAsset[asset] -= withdrawal.amount * marketPrice;
+		  }
+	  
+		});
+	  
+		const finalBalances = filteredBalanceHistory[filteredBalanceHistory.length - 1].balance;
+	  
+		results[interval] = {};
+		Object.keys(finalBalances).forEach((asset) => {
+		  const cumulativePNL =
+			finalBalances[asset].native_currency_value -
+			initialBalances[asset].native_currency_value -
+			(netInflowFromDepositsPerAsset[asset] || 0) -
+			(netInflowFromTradesPerAsset[asset] || 0) -
+			(netOutflowFromWithdrawalsPerAsset[asset] || 0);
+		
+			
+		  const day1Assets = initialBalances[asset].native_currency_value;
+		  const inflow = netInflowFromDepositsPerAsset[asset] || 0;
+		  const cumulativePNLPercentage =
+			cumulativePNL / (day1Assets + inflow) * 100;
+	  
+		  results[interval][asset] = {
+			cumulativePNL,
+			cumulativePNLPercentage,
+		  };
+		});
+	}
+	  
+	client.setexAsync(`${user_id}user-pl-info`, 86400, JSON.stringify(results));
+
+	return results;
+}
+
 module.exports = {
 	loginUser,
 	getUserTier,
@@ -2455,5 +2608,6 @@ module.exports = {
 	restoreKitUser,
 	revokeAllUserSessions,
 	changeKitUserEmail,
-	getUserBalanceHistory
+	getUserBalanceHistory,
+	fetchUserProfitLossInfo
 };

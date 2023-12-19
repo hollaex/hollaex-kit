@@ -727,6 +727,35 @@ paths:
         - user
       x-token-permissions:
         - can_read
+  /user/balance-pl:
+    x-swagger-router-controller: user
+    get:
+      description: Get the user p/l info
+      operationId: fetchUserProfitLossInfo
+      tags:
+        - User
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - user
+      x-token-permissions:
+        - can_read
   /user/create-address:
     x-swagger-router-controller: user
     get:
