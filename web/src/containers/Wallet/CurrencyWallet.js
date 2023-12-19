@@ -130,15 +130,6 @@ class Wallet extends Component {
 		const balanceValue = balance[`${currency}_balance`] || 0;
 		const availableBalanceValue = balance[`${currency}_available`] || 0;
 
-		const isBalancePercentage =
-			chartData.length &&
-			chartData.some((value) => {
-				return (
-					currency.includes(value.symbol) &&
-					value.balancePercentage.split('%')[0] > 0
-				);
-			});
-
 		return (
 			<div className="currency-wallet-wrapper">
 				<div className="d-flex mt-5 mb-5">
@@ -277,7 +268,7 @@ class Wallet extends Component {
 								)}
 							</EditWrapper>
 						</span>
-						{!isBalancePercentage ? (
+						{availableBalanceValue <= 0 ? (
 							<React.Fragment>
 								<div className="wallet-icon-wrapper">
 									<img
