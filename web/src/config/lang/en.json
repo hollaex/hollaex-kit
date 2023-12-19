@@ -971,11 +971,13 @@
 		"LEARN_MORE": "Learn more {0}",
 		"ABOUT": "about",
 		"TOTAL_BALANCE": "Total Balance : {0} {1}",
-		"AVAILABLE_BALANCE": "Available Bitcoin Cash Balance : {0} {1} {2}",
+		"AVAILABLE_BALANCE": "Available Balance : {0} {1} {2}",
 		"PERCENTAGE_SHARE": "Percentage Share {0}",
 		"EARN_BY": "Earn by {0} {1}",
 		"STAKING": "staking",
-		"TOOLTIP": "Balance not in a pending state or locked up in trades (open orders)"
+		"TOOLTIP": "Balance not in a pending state or locked up in trades (open orders)",
+		"WALLET_HAS_BALANCE_PERCENTAGE": "Your wallet currently does not hold any {0}.",
+		"WALLET_DEPOSIT": "You can try depositing {0} or buying {1}"
 	},
 	"LOGOUT": "Logout",
 	"WITHDRAWALS_MIN_VALUE_ERROR": "The transaction is too small to send. Try a larger amount.",
@@ -1462,7 +1464,7 @@
 	"RISKY_TRADE_DISCLAIMER": {
 		"MSG_1": "Please check that you indeed want to trade {0} ({1}) as this asset may carry a high risk of",
 		"MSG_2": "extreme volatility",
-		"MSG_3": "Type 'I UNDERSTAND' below to confirm that you understand that this asset's value is uncertain and not guaranteed.",
+		"MSG_3": "Check the box below to confirm that you understand that this asset's value is uncertain and not guaranteed.",
 		"UNDERSTAND_RISK_MSG": "Yes, I understand the risks"
 	},
 	"DUST": {

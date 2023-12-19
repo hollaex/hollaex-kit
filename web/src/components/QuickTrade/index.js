@@ -247,8 +247,6 @@ const QuickTrade = ({
 
 			if (amount && spending_currency && receiving_currency) {
 				setLoading(true);
-				setTargetAmount();
-				setSourceAmount();
 				setToken();
 				setExpiry();
 				setError();
@@ -284,20 +282,23 @@ const QuickTrade = ({
 	useEffect(() => {
 		setTimeout(() => {
 			const pairBase = pair.split('-')[1];
-			const assetValues = Object.keys(coins).map((
-				val) => coins[val].code).toLocaleString();
+			const assetValues = Object.keys(coins)
+				.map((val) => coins[val].code)
+				.toLocaleString();
 
-			if(allChartsData[pairBase]) {
+			if (allChartsData[pairBase]) {
 				setChartData(allChartsData[pairBase]);
 			} else {
-				getMiniCharts(assetValues, pairBase)
-					.then((chartValues) =>{
-						setChartData(chartValues);
-						setAllChartsData(prev => ({...prev, ...{
-							[pairBase]:chartValues
-						}}))
-					});
-				}
+				getMiniCharts(assetValues, pairBase).then((chartValues) => {
+					setChartData(chartValues);
+					setAllChartsData((prev) => ({
+						...prev,
+						...{
+							[pairBase]: chartValues,
+						},
+					}));
+				});
+			}
 		}, 0);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [coins, pair]);
@@ -355,8 +356,8 @@ const QuickTrade = ({
 
 	useEffect(() => {
 		setTimeout(() => {
-			const lineData = {...chartData[`${pair}`]};
-			setLineChartData( {
+			const lineData = { ...chartData[`${pair}`] };
+			setLineChartData({
 				...lineData,
 				name: 'Line',
 				type: 'line',
@@ -377,7 +378,9 @@ const QuickTrade = ({
 		!isLoggedIn() || !token || loading || submitting || isExpired;
 	const pairData = pairs[symbol] || {};
 	const [loadingSource, loadingTarget] =
-		spending === SPENDING.SOURCE ? [false, loading] : [loading, false];
+		spending && spending === SPENDING.SOURCE
+			? [false, loading]
+			: [loading, false];
 
 	const onSwap = (selectedSource, selectedTarget) => {
 		onSelectSource(selectedTarget);
@@ -400,12 +403,10 @@ const QuickTrade = ({
 			<div className="quick_trade-container">
 				<Header />
 
-				<div
-					className={classnames('quick_trade-wrapper', 'd-flex')}
-				>
+				<div className={classnames('quick_trade-wrapper', 'd-flex')}>
 					{!isMobile && (
-						<Details 
-							coinChartData={lineChartData} 
+						<Details
+							coinChartData={lineChartData}
 							pair={pair}
 							brokerUsed={isUseBroker}
 							networkName={display_name}

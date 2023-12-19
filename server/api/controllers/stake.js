@@ -36,6 +36,7 @@ const getExchangeStakes = (req, res) => {
 	)
 		.then((data) => {
 			if (format.value === 'csv') {
+				toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-logins.csv`);
 				res.set('Content-Type', 'text/csv');
 				return res.status(202).send(data);
@@ -252,6 +253,7 @@ const getExchangeStakersForAdmin = (req, res) => {
 	)
 		.then((data) => {
 			if (format.value === 'csv') {
+				toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-logins.csv`);
 				res.set('Content-Type', 'text/csv');
 				return res.status(202).send(data);

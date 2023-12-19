@@ -12,16 +12,13 @@ import {
 	ActionNotification,
 } from 'components';
 import { DEFAULT_COIN_DATA } from 'config/constants';
-import {
-	formatToCurrency,
-	generateWalletActionsText,
-	getCurrencyFromName,
-} from 'utils/currency';
+import { formatToCurrency, getCurrencyFromName } from 'utils/currency';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { isStakingAvailable } from 'config/contracts';
 import TradeInputGroup from './components/TradeInputGroup';
 import { unique } from 'utils/data';
+import { STATIC_ICONS } from 'config/icons';
 
 class Wallet extends Component {
 	state = {
@@ -126,10 +123,6 @@ class Wallet extends Component {
 			contracts,
 			pairs,
 		} = this.props;
-		const { depositText, withdrawText } = generateWalletActionsText(
-			currency,
-			coins
-		);
 		const hasEarn = !isStakingAvailable(currency, contracts);
 		const markets = this.getAllAvailableMarkets(currency);
 		const { fullname, min, icon_id, symbol } =
@@ -243,7 +236,7 @@ class Wallet extends Component {
 							<div className="deposit-wrapper w-75">
 								{coins[currency].allow_deposit ? (
 									<ButtonLink
-										label={depositText}
+										label={STRINGS['WALLET_BUTTON_BASE_DEPOSIT']}
 										link={`/wallet/${currency}/deposit`}
 										className="deposit-btn"
 										lineHeight="currency-wallet-btn"
@@ -256,7 +249,7 @@ class Wallet extends Component {
 							<div className="withdraw-wrapper w-25">
 								{coins[currency].allow_withdrawal ? (
 									<ButtonLink
-										label={withdrawText}
+										label={STRINGS['WALLET_BUTTON_BASE_WITHDRAW']}
 										link={`/wallet/${currency}/withdraw`}
 										lineHeight="currency-wallet-btn"
 										currencyWallet={true}
@@ -275,12 +268,42 @@ class Wallet extends Component {
 								)}
 							</EditWrapper>
 						</span>
-						{chartData.length ? (
+						{availableBalanceValue <= 0 ? (
+							<React.Fragment>
+								<div className="wallet-icon-wrapper">
+									<img
+										alt="deposit-icon"
+										src={STATIC_ICONS['NO_ACTIVE_DEPOSITS']}
+									/>
+								</div>
+								<EditWrapper stringId="CURRENCY_WALLET.WALLET_HAS_BALANCE_PERCENTAGE">
+									{STRINGS.formatString(
+										STRINGS['CURRENCY_WALLET.WALLET_HAS_BALANCE_PERCENTAGE'],
+										currency.toUpperCase()
+									)}
+								</EditWrapper>
+								<EditWrapper stringId="CURRENCY_WALLET.WALLET_DEPOSIT">
+									{STRINGS.formatString(
+										STRINGS['CURRENCY_WALLET.WALLET_DEPOSIT'],
+										<Link
+											className="deposit-link"
+											to={`/wallet/${currency}/withdraw`}
+										>
+											{currency.toUpperCase()}
+										</Link>,
+										<Link className="buy-link" to={`/assets/coin/${currency}`}>
+											here
+										</Link>
+									)}
+								</EditWrapper>
+							</React.Fragment>
+						) : chartData.length ? (
 							<DonutChart
 								coins={coins}
 								chartData={chartData}
 								showOpenWallet={false}
 								currency={currency}
+								isCurrencyWallet={true}
 							/>
 						) : (
 							<div className="animation-wrapper">
