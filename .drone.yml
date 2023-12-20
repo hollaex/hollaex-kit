@@ -148,21 +148,11 @@ kind: pipeline
 type: docker
 name: hollaex_kit_amd64_build
 
-clone:
-  disable: true
-  
 platform:
   os: linux
   arch: amd64
 
 steps:
-- name: clone
-  image: alpine/git
-  commands:
-  - git gc 
-  - git clone https://github.com/hollaex/hollaex-kit.git -b $DRONE_BRANCH.
-  - git checkout $DRONE_COMMIT
-
 - name: slack_noti_job_start_testnet
   image: plugins/slack
   settings:
@@ -316,7 +306,6 @@ volumes:
 
 trigger:
   branch:
-  - deployment
   - testnet
   - master
   event:
@@ -328,16 +317,7 @@ kind: pipeline
 type: docker
 name: slack_notify
 
-clone:
-  disable: true
-  
 steps:
-- name: clone
-  image: alpine/git
-  commands:
-  - git clone $DRONE_GIT_HTTP_URL -b $DRONE_BRANCH.
-  - git checkout $DRONE_COMMIT
-
 - name: partymaker_version_tag
   image: alpine
   commands:
@@ -409,20 +389,10 @@ kind: pipeline
 type: docker
 name: kit_v2_sandbox_deployment
 
-clone:
-  disable: true
-  
-
 depends_on:
   - hollaex_kit_amd64_build
 
 steps:
-- name: clone
-  image: alpine/git
-  commands:
-  - git clone $DRONE_GIT_HTTP_URL -b $DRONE_BRANCH.
-  - git checkout $DRONE_COMMIT
-
 - name: slack_noti_job_start
   image: plugins/slack
   settings:
@@ -471,18 +441,7 @@ kind: pipeline
 type: docker
 name: kit_v2_next_deployment
 
-clone:
-  disable: true
-  
-
 steps:
-- name: clone
-  image: alpine/git
-  commands:
-  - git clone $DRONE_GIT_HTTP_URL -b $DRONE_BRANCH.
-  - git checkout $DRONE_COMMIT
-
-
 - name: slack_noti_job_start
   image: plugins/slack
   settings:
