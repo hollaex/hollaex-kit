@@ -159,10 +159,7 @@ steps:
 - name: clone
   image: alpine/git
   commands:
-  - apk upgrade --update-cache --available
-  - apk add openssl curl
-  - curl https://github.com/hollaex/hollaex-kit.git
-  - git clone $DRONE_GIT_HTTP_URL -b $DRONE_BRANCH.
+  - git clone git@github.com:hollaex/hollaex-kit.git -b $DRONE_BRANCH.
   - git checkout $DRONE_COMMIT
 
 - name: slack_noti_job_start_testnet
