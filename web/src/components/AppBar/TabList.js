@@ -10,7 +10,7 @@ const TabList = ({
 	onTabClick,
 	markets,
 }) => {
-	console.log('markets', markets);
+
 	return (
 		<div className="d-flex align-items-center h-100">
 			{isLoggedIn() &&

@@ -201,7 +201,7 @@ class MarketSelector extends Component {
 					</div>
 					<div className="scroll-view">
 						{hasTabMenu ? (
-							[...filterQuickTrade, ...markets].map((market, index) => {
+							[...markets, ...filterQuickTrade].map((market, index) => {
 								const {
 									key,
 									pair,
