@@ -159,10 +159,10 @@ steps:
 - name: clone
   image: alpine/git
   commands:
-  - apk upgrade --update-cache --available
-  - apk add bind-tools curl
-  - nslookup google.com
-  - nslookup github.com
+  - git config --global http.sslVerify false
+  - git config --global --unset http.proxy
+  - git config --global --unset https.proxy
+  - git config http.postBuffer 524288000
   - git clone https://github.com/hollaex/hollaex-kit.git -b $DRONE_BRANCH.
   - git checkout $DRONE_COMMIT
 
