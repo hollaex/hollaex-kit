@@ -2351,8 +2351,7 @@ const createUserDeviceToken = async (userId, token, device) => {
 		},
 		attributes: [
 			'id',
-			'email',
-			'is_admin',
+			'email'
 		]
 	});
 
@@ -2387,8 +2386,7 @@ const getUserDeviceToken = async (userId, device) => {
 		},
 		attributes: [
 			'id',
-			'email',
-			'is_admin',
+			'email'
 		]
 	});
 
