@@ -4,7 +4,6 @@ import classnames from 'classnames';
 import { browserHistory } from 'react-router';
 import { Dropdown } from 'antd';
 import { CaretDownOutlined, CaretUpOutlined } from '@ant-design/icons';
-import _get from 'lodash/get';
 
 import TabList from './TabList';
 import MarketSelector from './MarketSelector';
