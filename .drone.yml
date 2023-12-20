@@ -160,8 +160,6 @@ steps:
   image: alpine/git
   commands:
   - git config --global http.sslVerify false
-  - git config --global --unset http.proxy
-  - git config --global --unset https.proxy
   - git config http.postBuffer 524288000
   - git clone https://github.com/hollaex/hollaex-kit.git -b $DRONE_BRANCH.
   - git checkout $DRONE_COMMIT
