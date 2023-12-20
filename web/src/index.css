@@ -7078,12 +7078,17 @@ table th {
   .app-bar-add-tab-menu .app-bar-add-tab-content-list {
     color: var(--labels_secondary-inactive-label-text-graphics);
     height: 2.2rem; }
+    .app-bar-add-tab-menu .app-bar-add-tab-content-list .summary-quick-icon {
+      padding: 4px; }
     .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover {
       background-color: var(--base_secondary-navigation-bar);
       color: var(--labels_secondary-inactive-label-text-graphics); }
       .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .st0 {
         fill: var(--labels_secondary-inactive-label-text-graphics) !important;
         stroke-width: 0rem; }
+      .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover .summary-quick-icon {
+        background-color: var(--calculated_tag-background);
+        border-radius: 50%; }
   .app-bar-add-tab-menu .app-bar-add-tab-content-no-market {
     display: block;
     text-align: center;

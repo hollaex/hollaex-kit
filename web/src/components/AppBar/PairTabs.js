@@ -68,13 +68,13 @@ class PairTabs extends Component {
 
 	initTabs = (pairs, activePair) => {};
 
-	onTabClick = (pair) => {
-		const { router, constants } = this.props;
+	onTabClick = (pair, isQuickTrade) => {
+		const { router } = this.props;
 		if (pair) {
-			if (_get(constants, 'features.pro_trade')) {
-				router.push(`/trade/${pair}`);
-			} else if (_get(constants, 'features.quick_trade')) {
+			if (isQuickTrade) {
 				router.push(`/quick-trade/${pair}`);
+			} else {
+				router.push(`/trade/${pair}`);
 			}
 			this.setState({ activePairTab: pair });
 		}
@@ -87,7 +87,7 @@ class PairTabs extends Component {
 			isToolsSelectorVisible,
 		} = this.state;
 
-		const { location, favourites, markets } = this.props;
+		const { location, favourites, markets, quicktrade } = this.props;
 		const market = markets.find(({ key }) => key === activePairTab) || {};
 		const {
 			key,
@@ -96,6 +96,7 @@ class PairTabs extends Component {
 			display_name,
 		} = market;
 
+		const filterQuickTrade = quicktrade.filter(({ type }) => type !== 'pro');
 		return (
 			<div className="d-flex justify-content-between">
 				<div className="market-bar d-flex align-items-center title-font apply_rtl">
@@ -175,7 +176,7 @@ class PairTabs extends Component {
 							{favourites && favourites.length > 0 && (
 								<TabList
 									items={favourites}
-									markets={markets}
+									markets={[...filterQuickTrade , ...markets]}
 									activePairTab={activePairTab}
 									onTabClick={this.onTabClick}
 								/>
@@ -226,7 +227,7 @@ class PairTabs extends Component {
 
 const mapStateToProps = (state) => {
 	const {
-		app: { language: activeLanguage, pairs, favourites, constants },
+		app: { language: activeLanguage, pairs, favourites, constants, quicktrade },
 		orderbook: { prices },
 	} = state;
 
@@ -237,6 +238,7 @@ const mapStateToProps = (state) => {
 		favourites,
 		constants,
 		markets: MarketsSelector(state),
+		quicktrade
 	};
 };
 

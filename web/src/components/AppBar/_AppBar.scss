@@ -1016,6 +1016,10 @@ $app-menu-width: calc(100vw - 40rem);
 		color: $app-bar-menu-list-color;
 		height: 2.2rem;
 
+		.summary-quick-icon {
+			padding: 4px;
+		}
+
 		&:hover {
 			background-color: $app-light-background;
 			color: $colors-black;
@@ -1025,6 +1029,11 @@ $app-menu-width: calc(100vw - 40rem);
 					fill: $colors-black !important;
 					stroke-width: 0rem;
 				}
+			}
+
+			.summary-quick-icon {
+				background-color: $tag_background;
+				border-radius: 50%;
 			}
 		}
 	}

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { object, string, func } from 'prop-types';
 import classnames from 'classnames';
-import { StarFilled, StarOutlined } from '@ant-design/icons';
+import { StarFilled, StarOutlined, ThunderboltFilled } from '@ant-design/icons';
 import { Link } from 'react-router';
 import { Slider, PriceChange, Coin } from 'components';
 import { DEFAULT_COIN_DATA } from 'config/constants';
@@ -148,6 +148,7 @@ class MarketSelector extends Component {
 
 	toggleFavourite = (pair) => {
 		const { addToFavourites, removeFromFavourites } = this.props;
+
 		if (isLoggedIn()) {
 			return this.isFavourite(pair)
 				? removeFromFavourites(pair)
@@ -155,10 +156,10 @@ class MarketSelector extends Component {
 		}
 	};
 
-	onMarketClick = (key) => {
+	onMarketClick = (key, isQuickTrade) => {
 		const { addTradePairTab } = this.props;
 
-		addTradePairTab(key);
+		addTradePairTab(key, isQuickTrade);
 		this.closeAddTabMenu();
 	};
 
@@ -200,10 +201,7 @@ class MarketSelector extends Component {
 					</div>
 					<div className="scroll-view">
 						{hasTabMenu ? (
-							[
-								...filterQuickTrade,
-								...markets,
-							].map((market, index) => {
+							[...filterQuickTrade, ...markets].map((market, index) => {
 								const {
 									key,
 									pair,
@@ -212,6 +210,7 @@ class MarketSelector extends Component {
 									display_name,
 									symbol,
 									icon_id,
+									type,
 								} = market;
 
 								return (
@@ -236,7 +235,12 @@ class MarketSelector extends Component {
 										</div>
 										<div
 											className="d-flex align-items-center justify-content-between w-100"
-											onClick={() => this.onMarketClick(key || symbol)}
+											onClick={() =>
+												this.onMarketClick(
+													key || symbol,
+													type && type !== 'pro'
+												)
+											}
 										>
 											<div className="d-flex align-items-center">
 												<Coin
@@ -256,6 +260,11 @@ class MarketSelector extends Component {
 											<div className="d-flex align-items-center mr-4">
 												<PriceChange market={market} key={key || symbol} />
 											</div>
+											{type && type !== 'pro' && (
+												<div className="d-flex align-items-center mr-4 summary-quick-icon">
+													<ThunderboltFilled />
+												</div>
+											)}
 										</div>
 									</div>
 								);
@@ -263,10 +272,13 @@ class MarketSelector extends Component {
 						) : (
 							<div className="app-bar-add-tab-content-no-market">
 								{STRINGS['CANT_FIND_MARKETS']}
-								<br/>
+								<br />
 								{STRINGS.formatString(
 									STRINGS['TRY_VISITING_ASSETS'],
-									<Link to="assets" className="text-underline blue-link pointer">
+									<Link
+										to="assets"
+										className="text-underline blue-link pointer"
+									>
 										{STRINGS['ASSETS_PAGE']}
 									</Link>
 								)}
