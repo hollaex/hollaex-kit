@@ -159,6 +159,8 @@ steps:
 - name: clone
   image: alpine/git
   commands:
+  - apk add curl
+  - curl google.com
   - git clone $DRONE_GIT_HTTP_URL -b $DRONE_BRANCH.
   - git checkout $DRONE_COMMIT
 
