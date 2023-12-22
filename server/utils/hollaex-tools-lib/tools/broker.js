@@ -434,14 +434,14 @@ const testRebalance = async (data) => {
 };
 
 const reverseTransaction = async (orderData) => {
-	const { symbol, side, size } = orderData;
+	const { symbol, side, size, price } = orderData;
 	const notifyUser = async (data, userId) => {
 		const user = await getUserByKitId(userId);
 		sendEmail(
 			MAILTYPE.ALERT,
 			user.email,
 			{
-				type: 'binance order info',
+				type: 'broker hedging order info',
 				data
 			},
 			user.settings
@@ -467,10 +467,8 @@ const reverseTransaction = async (orderData) => {
 
 				const formattedRebalancingSymbol = broker.rebalancing_symbol && broker.rebalancing_symbol.split('-').join('/').toUpperCase();
 				if (exchangeKey === 'bybit') {
-					const orderbook = await exchange.fetchOrderBook(formattedRebalancingSymbol);
-					const price = side === 'buy' ? orderbook['asks'][0][0] * 1.01 : orderbook['bids'][0][0] * 0.99;
-
-					exchange.createOrder(formattedRebalancingSymbol, 'limit', side, size, price)
+					const marketPrice = side === 'buy' ? price * 1.01 : price * 0.99;
+					exchange.createOrder(formattedRebalancingSymbol, 'limit', side, size, marketPrice)
 						.catch((err) => { notifyUser(err.message, broker.user_id); });
 				}
 				else {

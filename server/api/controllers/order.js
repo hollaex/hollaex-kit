@@ -156,8 +156,8 @@ const orderExecute = (req, res) => {
 
 	toolsLib.order.executeUserOrder(user_id, opts, token)
 		.then((result) => {
-			const { symbol, side, size } = result;
-			toolsLib.broker.reverseTransaction({ symbol, side, size });
+			const { symbol, side, size, price } = result;
+			toolsLib.broker.reverseTransaction({ symbol, side, size, price });
 			return res.json(result);
 		})
 		.catch((err) => {
