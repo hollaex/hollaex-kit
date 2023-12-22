@@ -100,7 +100,7 @@ let kitIdToNetworkId = {};
 const storeVerificationCode = (user, verification_code) => {
 	const data = { code: verification_code, id: user.id, email: user.email };
 	client.setexAsync(`verification_code:user${verification_code}`, 5 * 60, JSON.stringify(data));
-}
+};
 
 const signUpUser = (email, password, opts = { referral: null }) => {
 	if (!getKitConfig().new_user_is_activated) {
@@ -187,7 +187,7 @@ const verifyUser = (email, code, domain) => {
 			return all([
 				verificationCode,
 				dbQuery.findOne('user',
-				{ where: { id: verificationCode.id }, attributes: ['id', 'email', 'settings', 'network_id', 'email_verified'] }),
+					{ where: { id: verificationCode.id }, attributes: ['id', 'email', 'settings', 'network_id', 'email_verified'] }),
 			]);
 		})
 		.then(([verificationCode, user]) => {
@@ -461,8 +461,8 @@ const findUserLatestLogin = (user, status) => {
 	}).then(loginData => {
 		if (loginData && new Date().getTime() - new Date(loginData.updated_at).getTime() < LOGIN_TIME_OUT) return loginData;
 		return null;
-	})
-}
+	});
+};
 
 /* Public Endpoints*/
 
@@ -798,7 +798,7 @@ const getAllUsersAdmin = (opts = {
 					}
 				}
 				return { count, data };
-			})
+			});
 	}
 };
 
@@ -1437,29 +1437,29 @@ const getUpdatedKeys = (oldData, newData) => {
 	let keys = [];
 	for(const key of data){
 	  if(!isEqual(oldData[key], newData[key])){
-		keys.push(key);
+			keys.push(key);
 	  }
 	}
   
 	return keys;
-  }
+};
 
 const getValues = (data, prevData) => {
 	const updatedKeys = getUpdatedKeys(prevData, data);
-    const updatedValues = updatedKeys.map(key => data[key]);
+	const updatedValues = updatedKeys.map(key => data[key]);
 	const oldValues = updatedKeys.map(key => prevData[key]);
 	
-    updatedValues.forEach((value, index) => {
-        if(typeof value === 'object' && value.constructor === Object) {
-            const values = getValues(value, oldValues[index]);
-            updatedKeys[index] = values.updatedKeys
-            updatedValues[index] = values.updatedValues
-            oldValues[index] = values.oldValues;
-        }
-    })
+	updatedValues.forEach((value, index) => {
+		if(typeof value === 'object' && value.constructor === Object) {
+			const values = getValues(value, oldValues[index]);
+			updatedKeys[index] = values.updatedKeys;
+			updatedValues[index] = values.updatedValues;
+			oldValues[index] = values.oldValues;
+		}
+	});
 
 	return { updatedKeys, oldValues, updatedValues };
-}
+};
 
 const createAuditLog = (subject, adminEndpoint, method, data = {}, prevData = null) => {
 	try {
@@ -1470,7 +1470,7 @@ const createAuditLog = (subject, adminEndpoint, method, data = {}, prevData = nu
 			post: 'inserted',
 			put: 'updated',
 			delete: 'deleted'
-		}
+		};
 		const excludedKeys = ['password', 'apiKey', 'secret', 'api-key', 'api-secret', 'hmac'];
 
 		const action = adminEndpoint.split('/').slice(1).join(' ');
@@ -1480,7 +1480,7 @@ const createAuditLog = (subject, adminEndpoint, method, data = {}, prevData = nu
 		if (method === 'get') {
 			user_id = data?.user_id?.value;
 			data = Object.fromEntries(Object.entries(data).filter(([k, v]) => (v.value != null && excludedKeys.indexOf(k) === -1)));
-			const str = Object.keys(data).map((key) =>  "" + key + ":" + data[key].value).join(", ");
+			const str = Object.keys(data).map((key) =>  '' + key + ':' + data[key].value).join(', ');
 			description = `${action} service ${methodDescriptions[method]}${str ? ` with ${str}` : ''}`;
 		}
 		else if(method === 'put' && prevData) {
@@ -1507,7 +1507,7 @@ const createAuditLog = (subject, adminEndpoint, method, data = {}, prevData = nu
 		return error;
 	}
 	
-}
+};
 
 const getUserAudits = (opts = {
 	user_id: null,
@@ -1523,8 +1523,8 @@ const getUserAudits = (opts = {
 	const exchangeInfo = getKitConfig().info;
 
 	if(!['fiat', 'boost', 'enterprise'].includes(exchangeInfo.plan)) {
-        throw new Error(SERVICE_NOT_SUPPORTED);
-    }
+		throw new Error(SERVICE_NOT_SUPPORTED);
+	}
 
 	const pagination = paginationQuery(opts.limit, opts.page);
 	const timeframe = timeframeQuery(opts.startDate, opts.endDate);
@@ -1560,7 +1560,7 @@ const getUserAudits = (opts = {
 			});
 	}
 	else {
-		return dbQuery.findAndCountAllWithRows('audit', options)
+		return dbQuery.findAndCountAllWithRows('audit', options);
 	}
 };
 
@@ -2006,7 +2006,7 @@ const updateUserInfo = async (userId, data = {}, auditInfo) => {
 		throw new Error('No fields to update');
 	}
 	const oldValues = { user_id: userId };
-	Object.keys(updateData).forEach(key => { oldValues[key] = user.dataValues[key] });
+	Object.keys(updateData).forEach(key => { oldValues[key] = user.dataValues[key]; });
 
 	await user.update(
 		updateData,
@@ -2083,7 +2083,7 @@ const getExchangeUserSessions = (opts = {
 		],
 		order: [ordering],
 		...(!opts.format && pagination),
-	}
+	};
 
 	if (opts.format) {
 		query.attributes = ['id', 'login_id', 'status', 'last_seen', 'expiry_date', 'role', 'created_at', 'updated_at'];
@@ -2239,10 +2239,10 @@ const deleteKitUser = async (userId) => {
 	);
 
 	sendEmail(
-			MAILTYPE.USER_DELETED,
-			userEmail,
-			{},
-			user.settings
+		MAILTYPE.USER_DELETED,
+		userEmail,
+		{},
+		user.settings
 	);
 	
 	return updatedUser;

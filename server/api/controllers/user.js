@@ -138,7 +138,7 @@ const getVerifyUser = (req, res) => {
 				email,
 				message: VERIFICATION_EMAIL_MESSAGE
 			});
-		})
+		});
 	} else {
 		return res.status(400).json({
 			message: PROVIDE_VALID_EMAIL_CODE
