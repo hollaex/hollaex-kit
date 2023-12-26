@@ -58,7 +58,8 @@ const {
 	EMAIL_IS_SAME,
 	EMAIL_EXISTS,
 	CANNOT_CHANGE_DELETED_EMAIL,
-	SERVICE_NOT_SUPPORTED
+	SERVICE_NOT_SUPPORTED,
+	BALANCE_HISTORY_NOT_ACTIVE
 } = require(`${SERVER_PATH}/messages`);
 const { publisher, client } = require('./database/redis');
 const {
@@ -2358,6 +2359,8 @@ const getUserBalanceHistory = (opts = {
 	endDate: null,
 	format: null
 }) => {
+	if(!getKitConfig()?.coin_customizations?.active) { throw new Error(BALANCE_HISTORY_NOT_ACTIVE); }
+
 	const pagination = paginationQuery(opts.limit, opts.page);
 	const timeframe = timeframeQuery(opts.startDate, opts.endDate);
 	const ordering = orderingQuery(opts.orderBy, opts.order);
@@ -2395,6 +2398,9 @@ const getUserBalanceHistory = (opts = {
 
 
 const fetchUserProfitLossInfo = async (user_id) => {
+
+	if(!getKitConfig()?.coin_customizations?.active) { throw new Error(BALANCE_HISTORY_NOT_ACTIVE); }
+
 	const data = await  client.getAsync(`${user_id}user-pl-info`);
 	if (data) return JSON.parse(data);
 

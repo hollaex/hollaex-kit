@@ -278,6 +278,20 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 		}
 	}
 
+	if (newKitConfig.balance_history_config) {
+		if(!newKitConfig.balance_history_config.hasOwnProperty('currency')) {
+			throw new Error('currency does not exist');
+		}
+
+		if(!newKitConfig.balance_history_config.hasOwnProperty('active')) {
+			throw new Error('active does not exist');
+		}
+
+		if(!newKitConfig.balance_history_config.hasOwnProperty('date_enabled')) {
+			throw new Error('date enabled does not exist');
+		}
+	}
+
 	const joinedKitConfig = {};
 
 	KIT_CONFIG_KEYS.forEach((key) => {

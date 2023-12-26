@@ -203,6 +203,7 @@ exports.KIT_CONFIG_KEYS = [
 	'user_payments',
 	'dust',
 	'coin_customizations',
+	'balance_history_config',
 	'transaction_limits',
 ];
 

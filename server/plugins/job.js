@@ -121,7 +121,9 @@ const unstakingCheckRunner = () => {
 
 			const exchangeCoins = toolsLib.getKitCoins();
 			if (exchangeCoins.length === 0) return;
-			const conversions = await toolsLib.getAssetsPrices(exchangeCoins, status?.kit?.native_currency || 'usdt', 1);
+			if (!status?.kit?.balance_history_config?.active) return;
+			const native_currency = status?.kit?.balance_history_config?.currency;
+			const conversions = await toolsLib.getAssetsPrices(exchangeCoins, native_currency || 'usdt', 1);
 			const balances = await toolsLib.user.getAllBalancesAdmin({ format: 'all' });
 
 			const userBalances = balances?.data?.reduce((groups, item) => {
