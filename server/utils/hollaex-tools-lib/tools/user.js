@@ -2359,7 +2359,7 @@ const getUserBalanceHistory = (opts = {
 	endDate: null,
 	format: null
 }) => {
-	if(!getKitConfig()?.coin_customizations?.active) { throw new Error(BALANCE_HISTORY_NOT_ACTIVE); }
+	if(!getKitConfig()?.balance_history_config?.active) { throw new Error(BALANCE_HISTORY_NOT_ACTIVE); }
 
 	const pagination = paginationQuery(opts.limit, opts.page);
 	const timeframe = timeframeQuery(opts.startDate, opts.endDate);
@@ -2399,7 +2399,7 @@ const getUserBalanceHistory = (opts = {
 
 const fetchUserProfitLossInfo = async (user_id) => {
 
-	if(!getKitConfig()?.coin_customizations?.active) { throw new Error(BALANCE_HISTORY_NOT_ACTIVE); }
+	if(!getKitConfig()?.balance_history_config?.active) { throw new Error(BALANCE_HISTORY_NOT_ACTIVE); }
 
 	const data = await  client.getAsync(`${user_id}user-pl-info`);
 	if (data) return JSON.parse(data);
