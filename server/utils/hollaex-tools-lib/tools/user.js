@@ -49,7 +49,6 @@ const {
 	USER_NOT_DEACTIVATED,
 	CANNOT_CHANGE_ADMIN_ROLE,
 	USER_VERIFIED,
-	VERIFICATION_CODE_USED,
 	USER_NOT_REGISTERED_ON_NETWORK,
 	SESSION_NOT_FOUND,
 	SESSION_ALREADY_REVOKED,
@@ -130,6 +129,7 @@ const signUpUser = (email, password, opts = { referral: null }) => {
 					email,
 					password,
 					verification_level: 1,
+					email_verified: false,
 					settings: INITIAL_SETTINGS()
 				}, { transaction })
 					.then((user) => {
@@ -1436,9 +1436,9 @@ const getUpdatedKeys = (oldData, newData) => {
   
 	let keys = [];
 	for(const key of data){
-	  if(!isEqual(oldData[key], newData[key])){
+		if(!isEqual(oldData[key], newData[key])){
 			keys.push(key);
-	  }
+		}
 	}
   
 	return keys;
