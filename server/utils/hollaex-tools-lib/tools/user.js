@@ -76,11 +76,13 @@ const {
 	TOKEN_TIME_LONG,
 	TOKEN_TIME_NORMAL,
 	VERIFY_STATUS,
-	EVENTS_CHANNEL
+	EVENTS_CHANNEL,
+	SETTLEMENT_INTERVAL_ENUM,
+	REFERRAL_HISTORY_SUPPORTED_PLANS
 } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
-const { getKitConfig, isValidTierLevel, getKitTier, isDatetime } = require('./common');
+const { getKitConfig, isValidTierLevel, getKitTier, isDatetime, getKitSecrets, sendCustomEmail, emailHtmlBoilerplate, getDomain, updateKitConfigSecrets } = require('./common');
 const { isValidPassword, createSession } = require('./security');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { all, reject } = require('bluebird');
@@ -92,6 +94,8 @@ const uuid = require('uuid/v4');
 const { checkCaptcha, validatePassword, verifyOtpBeforeAction } = require('./security');
 const geoip = require('geoip-lite');
 const moment = require('moment');
+const mathjs = require('mathjs');
+const { loggerUser } = require('../../../config/logger');
 
 let networkIdToKitId = {};
 let kitIdToNetworkId = {};
@@ -2342,6 +2346,711 @@ const changeKitUserEmail = async (userId, newEmail, auditInfo) => {
 	return updatedUser;
 };
 
+const getAllAffiliations = (query = {}) => {
+	return dbQuery.findAndCountAll('affiliation', query);
+};
+
+const applyEarningRate = (amount) => {
+	const {  earning_rate: EARNING_RATE } = getKitConfig()?.referral_history_config || {};
+	return mathjs.number(
+		mathjs.multiply(
+			mathjs.bignumber(amount),
+			mathjs.divide(
+				mathjs.bignumber(EARNING_RATE),
+				mathjs.bignumber(100)
+			)
+		)
+	);
+};
+
+const addAmounts = (amount1, amount2) => {
+	return mathjs.number(
+		mathjs.add(
+			mathjs.bignumber(amount1),
+			mathjs.bignumber(amount2)
+		)
+	);
+};
+
+const adminInsufficientBalanceAlertEmail = (data = {
+	distributorEmail: null,
+	distributorNetworkId: null,
+	fees: {}
+}) => {
+	const { distributorEmail, distributorNetworkId, fees } = data;
+	const {  distributor_id: DISTRIBUTOR_ID } = getKitConfig()?.referral_history_config || {};
+
+	const amountsRequired = {
+		html: [],
+		text: []
+	};
+
+	for (let coin in fees) {
+		amountsRequired.html.push(`<li>${coin.toUpperCase()}: ${fees[coin]}`);
+		amountsRequired.text.push(`${coin.toUpperCase()}: ${fees[coin]}`);
+	}
+
+	const html = `
+	<div>
+		<p>
+			The Distrubutor account does not have sufficient balance to complete fee settlements for referer users.
+		</p>
+		<ul>
+			<li>Distributor Email: ${distributorEmail}</li>
+			<li>Distributor Kit ID: ${DISTRIBUTOR_ID}</li>
+			<li>Distributor Network ID: ${distributorNetworkId}</li>
+		</ul>
+		<p>
+			Required Amounts:
+		</p>
+		<ul>
+			${amountsRequired.html.join('')}
+		</ul>
+		<p>
+			The trades not settled in this interval will be attempted in the next interval.<br>
+			Please add funds to this distributor account or change the distributor_id to an account that has sufficient balance.
+		</p>
+	</div>
+	`;
+
+	const text = `
+		The Distrubutor account does not have sufficient balance to complete fee settlements for referer users.
+
+		Distributor Email: ${distributorEmail}
+		Distributor Kit ID: ${DISTRIBUTOR_ID}
+		Distributor Network ID: ${distributorNetworkId}
+
+		Required Amounts:
+
+		${amountsRequired.text.join('\n')}
+
+		The trades not settled in this interval will be attempted in the next interval.<br>
+		Please add funds to this distributor account or change the distributor_id to an account that has sufficient balance.
+	`;
+	const subject = 'ALERT: Insufficent Balance to Complete Referral Fee Settlements';
+
+	return sendCustomEmail(
+		getKitSecrets().emails.audit,
+		subject,
+		emailHtmlBoilerplate(html),
+		{
+			text
+		}
+	);
+};
+
+const adminTransferErrorAlertEmail = (data = {
+	userEmail: null,
+	userKitId: null,
+	userNetworkId: null,
+	fees: {}
+}) => {
+	const { userEmail, userKitId, userNetworkId, fees } = data;
+
+	const failedTransfers = {
+		html: [],
+		text: []
+	};
+
+	for (let coin in fees) {
+		failedTransfers.html.push(`
+			<ul>
+				<li>Coin: ${coin}</li>
+				<li>Amount: ${fees[coin].amount}</li>
+				<li>Error: ${fees[coin].error}</li>
+			</ul>
+		`);
+
+		failedTransfers.text.push(`
+			Coin: ${coin}
+			Amount: ${fees[coin].amount}
+			Error: ${fees[coin].error}
+		`);
+	}
+
+	const html = `
+		<div>
+			<p>
+				An error occured while settling fees to a referer user.
+			</p>
+			<ul>
+				<li>User Email: ${userEmail}</li>
+				<li>User Kit ID: ${userKitId}</li>
+				<li>User Network ID: ${userNetworkId}</li>
+			</ul>
+			<p>
+				Failed Transfers:
+			</p>
+			${failedTransfers.html.join('')}
+			<p>
+				These fees will need to be manually transferred to referer users.<br>
+				You can do so through the <a href='${getDomain()}/admin'>Operator Control Panel</a>.
+			</p>
+		</div>
+	`;
+
+	const text = `
+		An error occured while settling fees to a referer user.
+
+		User Email: ${userEmail}
+		User Kit ID: ${userKitId}
+		User Network ID: ${userNetworkId}
+
+		Failed Transfers:
+		${failedTransfers.text.join('\n')}
+
+		These fees will need to be manually transferred to referer users.
+		You can do so through the Operator Control Panel.
+	`;
+
+	const subject = 'ALERT: Error While Transferring Settled Fees to Referer';
+
+	return sendCustomEmail(
+		getKitSecrets().emails.audit,
+		subject,
+		emailHtmlBoilerplate(html),
+		{
+			text
+		}
+	);
+};
+
+const settledFeesEmail = (data = {
+	email: null,
+	fees: {}
+}) => {
+	const { email, fees } = data;
+	const {  earning_rate: EARNING_RATE } = getKitConfig()?.referral_history_config || {};
+	const amountsTransferred = {
+		html: [],
+		text: []
+	};
+
+	for (let coin in fees) {
+		amountsTransferred.html.push(`<li>${coin.toUpperCase()} Transferred: ${fees[coin]}`);
+		amountsTransferred.text.push(`${coin.toUpperCase()} Transferred: ${fees[coin]}`);
+	}
+
+	const html = `
+		<div>
+			<p>
+				Dear ${email},
+			</p>
+			<p>
+				The fees paid by your affiliated users have been settled and transferred to your account.<br>
+				Below are the details of this settlement.
+			</p>
+			<ul>
+				<li>Earning Rate Per Trade: ${EARNING_RATE}%</li>
+				${amountsTransferred.html.join('')}
+			</ul>
+			<p>
+				Regards,<br>
+				${getKitConfig().api_name} team
+			</p>
+		</div>
+	`;
+
+	const text = `
+		Dear ${email},
+
+		The fees paid by your affiliated users have been settled and transferred to your account.<br>
+		Below are the details of this settlement.
+
+		Earning Rate Per Trade: ${EARNING_RATE}%
+		${amountsTransferred.text.join('\n')}
+
+		Regards,
+		${getKitConfig().api_name} team
+	`;
+	const subject = 'Fees Settled for Affiliated Users';
+
+	return sendCustomEmail(
+		email,
+		subject,
+		emailHtmlBoilerplate(html),
+		{
+			bcc: 'default',
+			text
+		}
+	);
+};
+
+const activateReferralFeature = async () => {
+	loggerUser.info(
+		'REFERRAL PLUGIN initializing...'
+	);
+
+	const { 
+		earning_rate: EARNING_RATE, 
+		earning_period: EARNING_PERIOD, 
+		settlement_interval: SETTLEMENT_INTERVAL, 
+		distributor_id: DISTRIBUTOR_ID,
+		last_settled_trade: LAST_SETTLED_TRADE,
+		active
+	} = getKitConfig()?.referral_history_config || {};
+
+	const exchangeInfo = getKitConfig().info;
+
+	if (active && !REFERRAL_HISTORY_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
+		throw new Error('Exchange plan does not support this feature');
+	}
+	if (!isNumber(EARNING_RATE)) {
+		throw new Error('Earning rate with data type number required for plugin');
+	} else if (EARNING_RATE < 0 || EARNING_RATE > 100) {
+		throw new Error('Earning rate must be within the range of 0 ~ 100');
+	} else if (!isNumber(EARNING_PERIOD)) {
+		throw new Error('Earning period with data type number required for plugin');
+	} else if ((!isInteger(EARNING_PERIOD) || EARNING_PERIOD < 0)) {
+		throw new Error('Earning period must be an integer greater than 0');
+	} else if (!SETTLEMENT_INTERVAL_ENUM.includes(SETTLEMENT_INTERVAL)) {
+		throw new Error('Settlement interval with valid value required for plugin');
+	} else if (!isNumber(DISTRIBUTOR_ID)) {
+		throw new Error('Distributor ID required for plugin');
+	} else {
+		const user = await getUserByKitId(DISTRIBUTOR_ID, true, false);
+
+		if (!user) {
+			throw new Error('Distrubutor user does not exist');
+		}
+	}
+	const { getAllTradesNetwork } = require('./order');
+	if (!LAST_SETTLED_TRADE) {
+		loggerUser.verbose(
+			'REFERRAL PLUGIN initialization updating empty last_settled_trade to most recent trade timestamp'
+		);
+
+		const trades = await getAllTradesNetwork(
+			null,
+			1,
+			null,
+			'timestamp',
+			'desc'
+		);
+
+		let lastTradeTimestamp = moment().toISOString();
+
+		if (trades.data[0]) {
+			lastTradeTimestamp = trades.data[0].timestamp;
+		}
+
+		await updateLastSettledTrade(lastTradeTimestamp);
+	}
+}
+
+const updateLastSettledTrade = async (timestamp) => {
+
+	const referral_history_config = getKitConfig()?.referral_history_config || {};
+
+	return updateKitConfigSecrets(
+		{
+			kit: {
+				referral_history_config: {
+					...referral_history_config,
+					last_settled_trade: timestamp
+				},
+			},
+		},
+		['admin']
+	)
+};
+
+const settleFees = (currentTime) => {
+	const { 
+		earning_period: EARNING_PERIOD, 
+		distributor_id: DISTRIBUTOR_ID,
+		last_settled_trade: LAST_SETTLED_TRADE
+	} = getKitConfig()?.referral_history_config || {};
+
+	const { getAllTradesNetwork } = require('./order');
+	const { transferAssetByNetworkIds } = require('./wallet');
+	const referralHistoryModel = getModel('Referralhistory');
+
+	loggerUser.verbose(
+		'REFERRAL PLUGIN settleFees',
+		'Last settled trade timestamp:',
+		LAST_SETTLED_TRADE,
+		'Current Time:',
+		currentTime
+	);
+
+	return all([
+		getUserByKitId(DISTRIBUTOR_ID, true, true),
+		getAllTradesNetwork(
+			null,
+			null,
+			null,
+			'timestamp',
+			'desc',
+			LAST_SETTLED_TRADE ? moment(LAST_SETTLED_TRADE).add(1, 'ms').toISOString() : null,
+			null,
+			'all'
+		)
+	])
+		.then(([distributor, { count, data: trades }]) => {
+			if (!distributor) {
+				throw new Error('No distributor found');
+			}
+
+			if (count === 0) {
+				throw new Error('No trades to settle');
+			}
+
+			const lastSettledTrade = trades[0].timestamp;
+
+			loggerUser.verbose(
+				'REFERRAL PLUGIN settleFees',
+				'Exchange trades since last settlement',
+				count,
+				'Timestamp of last trade found:',
+				lastSettledTrade,
+				'Distributor account email:',
+				distributor.email,
+				'Distibutor account kit id:',
+				distributor.id
+			);
+
+			const accumulatedFees = {};
+
+			for (let trade of trades) {
+				const {
+					maker_network_id,
+					taker_network_id,
+					maker_fee,
+					taker_fee,
+					maker_fee_coin,
+					taker_fee_coin
+				} = trade;
+
+				if (maker_fee > 0 && maker_fee_coin) {
+					if (!accumulatedFees[maker_network_id]) {
+						accumulatedFees[maker_network_id] = {};
+					}
+
+					if (!isNumber(accumulatedFees[maker_network_id][maker_fee_coin])) {
+						accumulatedFees[maker_network_id][maker_fee_coin] = 0;
+					}
+
+					accumulatedFees[maker_network_id][maker_fee_coin] = addAmounts(
+						accumulatedFees[maker_network_id][maker_fee_coin],
+						maker_fee
+					);
+				}
+
+				if (taker_fee > 0 && taker_fee_coin) {
+					if (!accumulatedFees[taker_network_id]) {
+						accumulatedFees[taker_network_id] = {};
+					}
+
+					if (!isNumber(accumulatedFees[taker_network_id][taker_fee_coin])) {
+						accumulatedFees[taker_network_id][taker_fee_coin] = 0;
+					}
+
+					accumulatedFees[taker_network_id][taker_fee_coin] = addAmounts(
+						accumulatedFees[taker_network_id][taker_fee_coin],
+						taker_fee
+					);
+				}
+			}
+
+			const tradeUsers = Object.keys(accumulatedFees);
+			const tradeUsersAmount = tradeUsers.length;
+
+			if (tradeUsersAmount === 0) {
+				throw new Error('No trades made with fees');
+			}
+
+			loggerUser.debug(
+				'REFERRAL PLUGIN settleFees',
+				'Users that traded and paid fees:',
+				tradeUsersAmount
+			);
+
+			return all([
+				distributor,
+				accumulatedFees,
+				lastSettledTrade,
+				getAllAffiliations({
+					where: {
+						'$user.network_id$': tradeUsers,
+						created_at: {
+							[Op.gt]: moment(currentTime).subtract(EARNING_PERIOD, 'months').toISOString(),
+							[Op.lte]: currentTime
+						}
+					},
+					include: [
+						{
+							model: getModel('user'),
+							as: 'user',
+							attributes: [
+								'id',
+								'email',
+								'network_id'
+							]
+						},
+						{
+							model: getModel('user'),
+							as: 'referer',
+							attributes: [
+								'id',
+								'email',
+								'network_id'
+							]
+						}
+					]
+				})
+			]);
+		})
+		.then(async ([distributor, accumulatedFees, lastSettledTrade, { count, rows: affiliations }]) => {
+			const filteredFees = {};
+			const referralHistory = [];
+			if (count === 0) {
+				await updateLastSettledTrade(lastSettledTrade);
+
+				throw new Error('No trades made by affiliated users');
+			}
+
+			loggerUser.verbose(
+				'REFERRAL PLUGIN settleFees',
+				'Affiliated users that traded:',
+				count
+			);
+
+			for (let affiliation of affiliations) {
+				const refereeUser = affiliation.user;
+				const referer = affiliation.referer;
+
+				if (accumulatedFees[refereeUser.network_id]) {
+					// refererKey includes user kit id, user network id, and user email separated by colons
+					const refererKey = `${referer.id}:${referer.network_id}:${referer.email}`;
+					if (!filteredFees[refererKey]) {
+						filteredFees[refererKey] = {};
+					}
+
+					for (let coin in accumulatedFees[refereeUser.network_id]) {
+						if (!isNumber(filteredFees[refererKey][coin])) {
+							filteredFees[refererKey][coin] = 0;
+						}
+
+						filteredFees[refererKey][coin] = addAmounts(
+							filteredFees[refererKey][coin],
+							accumulatedFees[refereeUser.network_id][coin]
+						);
+
+
+						const refIndex = referralHistory.findIndex(data => data.referee === refereeUser.id && data.referer === referer.id && data.coin === coin);
+						if (refIndex >= 0) {
+							referralHistory[refIndex].accumulated_fees = filteredFees[refererKey][coin];
+						} else {
+							referralHistory.push({
+								referer: referer.id,
+								referee: refereeUser.id,
+								timestamp: lastSettledTrade,
+								coin,
+								accumulated_fees: filteredFees[refererKey][coin]
+							});
+						}
+					}
+				}
+			}
+
+			const requiredBalance = {};
+
+			for (let refererKey in filteredFees) {
+				for (let coin in filteredFees[refererKey]) {
+					filteredFees[refererKey][coin] = applyEarningRate(filteredFees[refererKey][coin]);
+
+					if (!isNumber(requiredBalance[coin])) {
+						requiredBalance[coin] = 0;
+					}
+
+					requiredBalance[coin] = addAmounts(
+						requiredBalance[coin],
+						filteredFees[refererKey][coin]
+					);
+				}
+			}
+
+			referralHistory.forEach(refHistory => {
+				refHistory.accumulated_fees = applyEarningRate(refHistory.accumulated_fees);
+			})
+
+			loggerUser.verbose(
+				'REFERRAL PLUGIN settleFees',
+				'Required balances:',
+				requiredBalance
+			);
+
+			let insufficientBalance = false;
+
+			for (let coin in requiredBalance) {
+				if (distributor.balance[`${coin}_available`] < requiredBalance[coin]) {
+					insufficientBalance = true;
+				}
+			}
+
+			if (insufficientBalance) {
+				try {
+					adminInsufficientBalanceAlertEmail({
+						distributorEmail: distributor.email,
+						distributorNetworkId: distributor.network_id,
+						fees: requiredBalance
+					});
+				} catch (err) {
+					loggerUser.error(
+						'REFERRAL PLUGIN settleFees',
+						'Error while sending insufficent balance alert:',
+						err.message
+					);
+				}
+
+				throw new Error('Distributor account does not have enough balance to complete settlement');
+			}
+
+			return all([
+				filteredFees,
+				distributor,
+				referralHistory,
+				updateLastSettledTrade(lastSettledTrade)
+			]);
+		})
+		.then(async ([accumulatedFees, distributor, referralHistory]) => {
+			for (let receiverKey in accumulatedFees) {
+				const [receiverKitId, receiverNetworkId, receiverEmail] = receiverKey.split(':');
+
+				loggerUser.verbose(
+					'REFERRAL PLUGIN settleFees',
+					'Settling fees to refer',
+					'referer user email:',
+					receiverEmail,
+					'referer user kit ID:',
+					receiverKitId,
+					'referer user network ID:',
+					receiverNetworkId
+				);
+
+				let successfulTransfers = null;
+				let failedTransfers = null;
+
+				for (let coin in accumulatedFees[receiverKey]) {
+					try {
+						loggerUser.verbose(
+							'REFERRAL PLUGIN settleFees',
+							'Attempting transfer',
+							'coin:',
+							coin,
+							'amount:',
+							accumulatedFees[receiverKey][coin]
+						);
+
+						await transferAssetByNetworkIds(
+							distributor.network_id,
+							parseInt(receiverNetworkId),
+							coin,
+							accumulatedFees[receiverKey][coin],
+							'Referral Settlement',
+							false
+						);
+
+						loggerUser.verbose(
+							'REFERRAL PLUGIN settleFees',
+							'Transfer successful',
+							'coin:',
+							coin,
+							'amount:',
+							accumulatedFees[receiverKey][coin]
+						);
+
+						if (!successfulTransfers) {
+							successfulTransfers = {};
+						}
+
+						successfulTransfers[coin] = accumulatedFees[receiverKey][coin];
+
+						try {
+							const tradeRecords = referralHistory.filter(data => data.coin = coin);
+
+							for (let record of tradeRecords) {
+								await referralHistoryModel.create(record);
+							}
+						} catch (err) {
+							loggerUser.error(
+								'REFERRAL PLUGIN createHistoryRecord',
+								'Create record failed',
+								'coin:',
+								coin,
+								'amount:',
+								accumulatedFees[receiverKey][coin],
+								'error:',
+								err.message
+							);
+						}
+					} catch (err) {
+						loggerUser.error(
+							'REFERRAL PLUGIN settleFees',
+							'Transfer failed',
+							'coin:',
+							coin,
+							'amount:',
+							accumulatedFees[receiverKey][coin],
+							'error:',
+							err.message
+						);
+
+						if (!failedTransfers) {
+							failedTransfers = {};
+						}
+
+						failedTransfers[coin] = {
+							amount: accumulatedFees[receiverKey][coin],
+							error: err.message
+						};
+					}
+				}
+
+				if (successfulTransfers) {
+					try {
+						settledFeesEmail({
+							email: receiverEmail,
+							fees: successfulTransfers
+						});
+					} catch (err) {
+						loggerUser.error(
+							'REFERRAL PLUGIN settleFees',
+							'Error while sending settled fees email:',
+							err.message
+						);
+					}
+				}
+
+				if (failedTransfers) {
+					try {
+						adminTransferErrorAlertEmail({
+							userEmail: receiverEmail,
+							userKitId: receiverKitId,
+							userNetworkId: receiverNetworkId,
+							fees: failedTransfers
+						});
+					} catch (err) {
+						loggerUser.error(
+							'REFERRAL PLUGIN settleFees',
+							'Error while sending alert email:',
+							err.message
+						);
+					}
+				}
+			}
+
+			return;
+		})
+		.catch((err) => {
+			loggerUser.error(
+				'REFERRAL PLUGIN settleFees error',
+				err.message
+			);
+		});
+};
+
 module.exports = {
 	loginUser,
 	getUserTier,
@@ -2402,5 +3111,13 @@ module.exports = {
 	changeKitUserEmail,
 	storeVerificationCode,
 	signUpUser,
-	verifyUser
+	verifyUser,
+	getAllAffiliations,
+	applyEarningRate,
+	addAmounts,
+	adminInsufficientBalanceAlertEmail,
+	adminTransferErrorAlertEmail,
+	settledFeesEmail,
+	activateReferralFeature,
+	settleFees
 };

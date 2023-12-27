@@ -24,6 +24,7 @@ const {
 	USER_META_KEYS,
 	VALID_USER_META_TYPES,
 	DOMAIN,
+	REFERRAL_HISTORY_SUPPORTED_PLANS,
 	DEFAULT_FEES
 } = require(`${SERVER_PATH}/constants`);
 const {
@@ -276,6 +277,47 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 				throw new Error('Fee markup is not a number');
 			}
 		}
+	}
+
+	if (newKitConfig.referral_history_config) {
+		const exchangeInfo = getKitConfig().info;
+
+		if (!REFERRAL_HISTORY_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
+			throw new Error('Exchange plan does not support this feature');
+		}
+
+		if (!newKitConfig.referral_history_config.hasOwnProperty('active')) {
+			throw new Error('active key does not exist');
+		}
+
+		if (!newKitConfig.referral_history_config.hasOwnProperty('earning_rate')) {
+			throw new Error('earning_rate key does not exist');
+		}
+
+		if (!newKitConfig.referral_history_config.hasOwnProperty('earning_period')) {
+			throw new Error('earning_period key does not exist');
+		}
+
+		if (!newKitConfig.referral_history_config.hasOwnProperty('settlement_interval')) {
+			throw new Error('settlement_interval key does not exist');
+		}
+
+		if (!newKitConfig.referral_history_config.hasOwnProperty('distributor_id')) {
+			throw new Error('distributor_id key does not exist');
+		}
+	
+		if (!newKitConfig.referral_history_config.hasOwnProperty('last_settled_trade')) {
+			throw new Error('last_settled_trade key does not exist');
+		}
+	
+		if(!newKitConfig.referral_history_config.hasOwnProperty('date_enabled')) {
+			throw new Error('date enabled does not exist');
+		}
+
+		if(newKitConfig?.referral_history_config?.active) {
+			activateReferralFeature();
+		}
+
 	}
 
 	const joinedKitConfig = {};

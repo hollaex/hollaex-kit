@@ -7,6 +7,8 @@ const { isNumber } = require('lodash');
 const BigNumber = require('bignumber.js');
 const moment = require('moment');
 const { loggerPlugin } = require('../config/logger');
+const { INTERVAL_CRON } = require('../constants');
+const { settleFees } = require('../utils/hollaex-tools-lib/tools/user');
 
 const getTimezone = () => {
 	const kitTimezone = toolsLib.getKitSecrets().emails.timezone;
@@ -189,10 +191,43 @@ const updateRewardsCheckRunner = () => {
 	});
 }
 
+const referralCheckRunner = async () => {
+	try {
+		const status = await statusModel.findOne({});
+
+		if (!status?.kit?.referral_history_config?.active) return;
+
+		const { settlement_interval: SETTLEMENT_INTERVAL} = status?.kit?.referral_history_config || {};
+
+		cron.schedule(INTERVAL_CRON[SETTLEMENT_INTERVAL], async () => {
+			const currentTime = moment().seconds(0).milliseconds(0).toISOString();
+			loggerPlugin.verbose(
+				'REFERRAL PLUGIN settleFees',
+				'Fee settlement started'
+			);
+			await settleFees(currentTime);
+			loggerPlugin.verbose(
+				'REFERRAL PLUGIN settleFees',
+				'Fee settlement finished'
+			);
+		}, {
+			scheduled: true,
+			timezone: getTimezone()
+	});
+	} catch (err) {
+		loggerPlugin.error(
+			'Referral check error during initialization:',
+			err.message
+		);
+	}
+}
+
 unstakingCheckRunner();
 updateRewardsCheckRunner();
+referralCheckRunner();
 
 module.exports = {
     unstakingCheckRunner,
-    updateRewardsCheckRunner
+    updateRewardsCheckRunner,
+	referralCheckRunner
 }

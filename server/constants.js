@@ -204,6 +204,7 @@ exports.KIT_CONFIG_KEYS = [
 	'dust',
 	'coin_customizations',
 	'transaction_limits',
+	'referral_history_config'
 ];
 
 exports.KIT_SECRETS_KEYS = [
@@ -649,6 +650,17 @@ exports.EXCHANGE_PLAN_PRICE_SOURCE = {
 exports.STAKE_SUPPORTED_PLANS = ['fiat', 'boost', 'enterprise'];
 
 //STAKE CONSTANTS END
+
+//REFERRAL HISTORY CONSTANTS START
+
+exports.REFERRAL_HISTORY_SUPPORTED_PLANS = ['fiat', 'boost', 'enterprise'];
+exports.SETTLEMENT_INTERVAL_ENUM = ['month', 'week', 'day'];
+exports.INTERVAL_CRON = {
+	month: '0 0 1 * *',
+	week: '0 0 * * 0',
+	day: '0 0 * * *'
+};
+//REFERRAL HISTORY CONSTANTS END
 
 exports.CUSTOM_CSS = `
 	.topbar-wrapper img {
