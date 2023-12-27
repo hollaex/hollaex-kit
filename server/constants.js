@@ -651,6 +651,10 @@ exports.STAKE_SUPPORTED_PLANS = ['fiat', 'boost', 'enterprise'];
 
 //STAKE CONSTANTS END
 
+//BALANCE HISTORY CONSTANTS START
+exports.BALANCE_HISTORY_SUPPORTED_PLANS = ['fiat', 'boost', 'enterprise'];
+//BALANCE HISTORY CONSTANTS END 
+
 exports.CUSTOM_CSS = `
 	.topbar-wrapper img {
 		content:url('${exports.GET_KIT_CONFIG().logo_image}}');

@@ -24,7 +24,8 @@ const {
 	USER_META_KEYS,
 	VALID_USER_META_TYPES,
 	DOMAIN,
-	DEFAULT_FEES
+	DEFAULT_FEES,
+	BALANCE_HISTORY_SUPPORTED_PLANS
 } = require(`${SERVER_PATH}/constants`);
 const {
 	COMMUNICATOR_CANNOT_UPDATE,
@@ -279,6 +280,12 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 	}
 
 	if (newKitConfig.balance_history_config) {
+
+		const exchangeInfo = getKitConfig().info;
+
+		if (!BALANCE_HISTORY_SUPPORTED_PLANS.includes(exchangeInfo.plan))
+			throw new Error('Exchange plan does not support this feature');
+
 		if(!newKitConfig.balance_history_config.hasOwnProperty('currency')) {
 			throw new Error('currency does not exist');
 		}
