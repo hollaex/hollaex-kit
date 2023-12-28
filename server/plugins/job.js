@@ -10,6 +10,8 @@ const { loggerPlugin } = require('../config/logger');
 const { INTERVAL_CRON } = require('../constants');
 const { settleFees } = require('../utils/hollaex-tools-lib/tools/user');
 
+let referralJobRunning = false;
+
 const getTimezone = () => {
 	const kitTimezone = toolsLib.getKitSecrets().emails.timezone;
 	return isNumber(validTimezones[kitTimezone]) ? kitTimezone : 'Etc/UTC';
@@ -110,6 +112,17 @@ const unstakingCheckRunner = () => {
 				err.message
 			);
 		}
+
+		try {
+			const statusModel = toolsLib.database.getModel('status');
+			const status = await statusModel.findOne({});
+			if (status?.kit?.referral_history_config?.active && !referralJobRunning) referralCheckRunner();
+		} catch (err) {
+			loggerPlugin.error(
+				'Referral check start error',
+				err.message
+			);
+		}
 	}, {
 		scheduled: true,
 		timezone: getTimezone()
@@ -193,11 +206,13 @@ const updateRewardsCheckRunner = () => {
 
 const referralCheckRunner = async () => {
 	try {
+		const statusModel = toolsLib.database.getModel('status');
 		const status = await statusModel.findOne({});
 
 		if (!status?.kit?.referral_history_config?.active) return;
 
-		const { settlement_interval: SETTLEMENT_INTERVAL} = status?.kit?.referral_history_config || {};
+		referralJobRunning = true;
+		const { settlement_interval: SETTLEMENT_INTERVAL } = status?.kit?.referral_history_config || {};
 
 		cron.schedule(INTERVAL_CRON[SETTLEMENT_INTERVAL], async () => {
 			const currentTime = moment().seconds(0).milliseconds(0).toISOString();
@@ -224,7 +239,7 @@ const referralCheckRunner = async () => {
 
 unstakingCheckRunner();
 updateRewardsCheckRunner();
-referralCheckRunner();
+referralCheckRunner()
 
 module.exports = {
     unstakingCheckRunner,

@@ -33,7 +33,7 @@ const {
 	SUPPORT_DISABLED,
 	NO_NEW_DATA
 } = require(`${SERVER_PATH}/messages`);
-const { each, difference, isPlainObject, isString, pick, isNil, omit, isNumber } = require('lodash');
+const { each, difference, isPlainObject, isString, pick, isNil, omit, isNumber, isDate } = require('lodash');
 const { publisher } = require('./database/redis');
 const { sendEmail: sendSmtpEmail } = require(`${SERVER_PATH}/mail`);
 const { sendSMTPEmail: nodemailerEmail } = require(`${SERVER_PATH}/mail/utils`);
@@ -306,15 +306,16 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 			throw new Error('distributor_id key does not exist');
 		}
 	
-		if (!newKitConfig.referral_history_config.hasOwnProperty('last_settled_trade')) {
-			throw new Error('last_settled_trade key does not exist');
+		if (newKitConfig.referral_history_config.hasOwnProperty('last_settled_trade') && !isDate(last_settled_trade)) {
+			throw new Error('wrong last_settled_trade format');
 		}
 	
-		if(!newKitConfig.referral_history_config.hasOwnProperty('date_enabled')) {
+		if (!newKitConfig.referral_history_config.hasOwnProperty('date_enabled')) {
 			throw new Error('date enabled does not exist');
 		}
 
 		if(newKitConfig?.referral_history_config?.active) {
+			const { activateReferralFeature } = require('./user');
 			activateReferralFeature();
 		}
 
