@@ -217,12 +217,12 @@ const referralCheckRunner = async () => {
 		cron.schedule(INTERVAL_CRON[SETTLEMENT_INTERVAL], async () => {
 			const currentTime = moment().seconds(0).milliseconds(0).toISOString();
 			loggerPlugin.verbose(
-				'REFERRAL PLUGIN settleFees',
+				'REFERRAL settleFees',
 				'Fee settlement started'
 			);
 			await settleFees(currentTime);
 			loggerPlugin.verbose(
-				'REFERRAL PLUGIN settleFees',
+				'REFERRAL settleFees',
 				'Fee settlement finished'
 			);
 		}, {
