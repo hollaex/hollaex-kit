@@ -306,19 +306,22 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 			throw new Error('distributor_id key does not exist');
 		}
 	
-		if (newKitConfig.referral_history_config.hasOwnProperty('last_settled_trade') && !isDate(last_settled_trade)) {
-			throw new Error('wrong last_settled_trade format');
-		}
-	
 		if (!newKitConfig.referral_history_config.hasOwnProperty('date_enabled')) {
 			throw new Error('date enabled does not exist');
 		}
 
-		if(newKitConfig?.referral_history_config?.active) {
+		if (newKitConfig?.referral_history_config?.active && !newKitConfig?.referral_history_config?.disableStart) {
 			const { activateReferralFeature } = require('./user');
-			activateReferralFeature();
+			activateReferralFeature({
+				earning_rate: newKitConfig?.earning_rate, 
+				earning_period: newKitConfig?.earning_period, 
+				settlement_interval: newKitConfig?.settlement_interval, 
+				distributor_id: newKitConfig?.distributor_id, 
+				last_settled_trade: newKitConfig?.last_settled_trade,
+			});
 		}
 
+		if (newKitConfig?.referral_history_config?.disableStart) delete newKitConfig.referral_history_config.disableStart;
 	}
 
 	const joinedKitConfig = {};

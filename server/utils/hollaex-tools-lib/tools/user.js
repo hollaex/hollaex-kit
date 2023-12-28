@@ -2576,9 +2576,9 @@ const settledFeesEmail = (data = {
 	);
 };
 
-const activateReferralFeature = async () => {
+const activateReferralFeature = async (data) => {
 	loggerUser.info(
-		'REFERRAL PLUGIN initializing...'
+		'REFERRAL initializing...'
 	);
 
 	const { 
@@ -2587,12 +2587,11 @@ const activateReferralFeature = async () => {
 		settlement_interval: SETTLEMENT_INTERVAL, 
 		distributor_id: DISTRIBUTOR_ID,
 		last_settled_trade: LAST_SETTLED_TRADE,
-		active
-	} = getKitConfig()?.referral_history_config || {};
+	} = data;
 
 	const exchangeInfo = getKitConfig().info;
 
-	if (active && !REFERRAL_HISTORY_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
+	if (!REFERRAL_HISTORY_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
 		throw new Error('Exchange plan does not support this feature');
 	}
 	if (!isNumber(EARNING_RATE)) {
@@ -2617,7 +2616,7 @@ const activateReferralFeature = async () => {
 	const { getAllTradesNetwork } = require('./order');
 	if (!LAST_SETTLED_TRADE) {
 		loggerUser.verbose(
-			'REFERRAL PLUGIN initialization updating empty last_settled_trade to most recent trade timestamp'
+			'REFERRAL initialization updating empty last_settled_trade to most recent trade timestamp'
 		);
 
 		const trades = await getAllTradesNetwork(
@@ -2634,11 +2633,11 @@ const activateReferralFeature = async () => {
 			lastTradeTimestamp = trades.data[0].timestamp;
 		}
 
-		await updateLastSettledTrade(lastTradeTimestamp);
+		await updateLastSettledTrade(lastTradeTimestamp, data);
 	}
 }
 
-const updateLastSettledTrade = async (timestamp) => {
+const updateLastSettledTrade = async (timestamp, configData = null) => {
 
 	const referral_history_config = getKitConfig()?.referral_history_config || {};
 
@@ -2646,12 +2645,14 @@ const updateLastSettledTrade = async (timestamp) => {
 		{
 			kit: {
 				referral_history_config: {
-					...referral_history_config,
-					last_settled_trade: timestamp
+					...(configData ? configData : referral_history_config),
+					last_settled_trade: timestamp,
+					disableStart: true
 				},
 			},
 		},
-		['admin']
+		['admin'],
+		{}
 	)
 };
 
@@ -2667,7 +2668,7 @@ const settleFees = (currentTime) => {
 	const referralHistoryModel = getModel('Referralhistory');
 
 	loggerUser.verbose(
-		'REFERRAL PLUGIN settleFees',
+		'REFERRAL settleFees',
 		'Last settled trade timestamp:',
 		LAST_SETTLED_TRADE,
 		'Current Time:',
@@ -2699,7 +2700,7 @@ const settleFees = (currentTime) => {
 			const lastSettledTrade = trades[0].timestamp;
 
 			loggerUser.verbose(
-				'REFERRAL PLUGIN settleFees',
+				'REFERRAL settleFees',
 				'Exchange trades since last settlement',
 				count,
 				'Timestamp of last trade found:',
@@ -2761,7 +2762,7 @@ const settleFees = (currentTime) => {
 			}
 
 			loggerUser.debug(
-				'REFERRAL PLUGIN settleFees',
+				'REFERRAL settleFees',
 				'Users that traded and paid fees:',
 				tradeUsersAmount
 			);
@@ -2811,7 +2812,7 @@ const settleFees = (currentTime) => {
 			}
 
 			loggerUser.verbose(
-				'REFERRAL PLUGIN settleFees',
+				'REFERRAL settleFees',
 				'Affiliated users that traded:',
 				count
 			);
@@ -2876,7 +2877,7 @@ const settleFees = (currentTime) => {
 			})
 
 			loggerUser.verbose(
-				'REFERRAL PLUGIN settleFees',
+				'REFERRAL settleFees',
 				'Required balances:',
 				requiredBalance
 			);
@@ -2898,7 +2899,7 @@ const settleFees = (currentTime) => {
 					});
 				} catch (err) {
 					loggerUser.error(
-						'REFERRAL PLUGIN settleFees',
+						'REFERRAL settleFees',
 						'Error while sending insufficent balance alert:',
 						err.message
 					);
@@ -2919,7 +2920,7 @@ const settleFees = (currentTime) => {
 				const [receiverKitId, receiverNetworkId, receiverEmail] = receiverKey.split(':');
 
 				loggerUser.verbose(
-					'REFERRAL PLUGIN settleFees',
+					'REFERRAL settleFees',
 					'Settling fees to refer',
 					'referer user email:',
 					receiverEmail,
@@ -2935,7 +2936,7 @@ const settleFees = (currentTime) => {
 				for (let coin in accumulatedFees[receiverKey]) {
 					try {
 						loggerUser.verbose(
-							'REFERRAL PLUGIN settleFees',
+							'REFERRAL settleFees',
 							'Attempting transfer',
 							'coin:',
 							coin,
@@ -2953,7 +2954,7 @@ const settleFees = (currentTime) => {
 						);
 
 						loggerUser.verbose(
-							'REFERRAL PLUGIN settleFees',
+							'REFERRAL settleFees',
 							'Transfer successful',
 							'coin:',
 							coin,
@@ -2975,7 +2976,7 @@ const settleFees = (currentTime) => {
 							}
 						} catch (err) {
 							loggerUser.error(
-								'REFERRAL PLUGIN createHistoryRecord',
+								'REFERRAL createHistoryRecord',
 								'Create record failed',
 								'coin:',
 								coin,
@@ -2987,7 +2988,7 @@ const settleFees = (currentTime) => {
 						}
 					} catch (err) {
 						loggerUser.error(
-							'REFERRAL PLUGIN settleFees',
+							'REFERRAL settleFees',
 							'Transfer failed',
 							'coin:',
 							coin,
@@ -3016,7 +3017,7 @@ const settleFees = (currentTime) => {
 						});
 					} catch (err) {
 						loggerUser.error(
-							'REFERRAL PLUGIN settleFees',
+							'REFERRAL settleFees',
 							'Error while sending settled fees email:',
 							err.message
 						);
@@ -3033,7 +3034,7 @@ const settleFees = (currentTime) => {
 						});
 					} catch (err) {
 						loggerUser.error(
-							'REFERRAL PLUGIN settleFees',
+							'REFERRAL settleFees',
 							'Error while sending alert email:',
 							err.message
 						);
@@ -3045,7 +3046,7 @@ const settleFees = (currentTime) => {
 		})
 		.catch((err) => {
 			loggerUser.error(
-				'REFERRAL PLUGIN settleFees error',
+				'REFERRAL settleFees error',
 				err.message
 			);
 		});
