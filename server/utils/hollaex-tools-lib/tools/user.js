@@ -2969,7 +2969,7 @@ const settleFees = (currentTime) => {
 						successfulTransfers[coin] = accumulatedFees[receiverKey][coin];
 
 						try {
-							const tradeRecords = referralHistory.filter(data => data.coin = coin);
+							const tradeRecords = referralHistory.filter(data => data.coin === coin);
 
 							for (let record of tradeRecords) {
 								await referralHistoryModel.create(record);
