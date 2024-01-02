@@ -5,7 +5,7 @@ const math = require('mathjs');
 const ccxt = require('ccxt');
 const randomString = require('random-string');
 const { SERVER_PATH } = require('../constants');
-const { EXCHANGE_PLAN_INTERVAL_TIME, EXCHANGE_PLAN_PRICE_SOURCE } = require(`${SERVER_PATH}/constants`)
+const { EXCHANGE_PLAN_INTERVAL_TIME, EXCHANGE_PLAN_PRICE_SOURCE, ONEINCH_COINS, ONEINCH_URL, ONEINCH_CHAINS, WOWMAX_QUOTE_URL } = require(`${SERVER_PATH}/constants`)
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { client } = require('./database/redis');
 const { getUserByKitId } = require('./user');
@@ -18,7 +18,7 @@ const { loggerBroker } = require('../../../config/logger');
 const { isArray } = require('lodash');
 const BigNumber = require('bignumber.js');
 const connectedExchanges = {};
-
+const axios = require("axios");
 
 const {
 	TOKEN_EXPIRED,
@@ -43,6 +43,8 @@ const {
 	REBALANCE_SYMBOL_MISSING,
 	PRICE_NOT_FOUND,
 	QUOTE_EXPIRY_TIME_ERROR,
+	BROKER_ONEINCH_CHAIN,
+	BROKER_ONEINCH_KEY,
 	FAILED_GET_QUOTE
 } = require(`${SERVER_PATH}/messages`);
 
@@ -84,9 +86,9 @@ const setExchange = (data) => {
 
 const getQuoteDynamicBroker = async (side, broker, user_id = null, orderData) => {
 
-	const { symbol, spread, quote_expiry_time, refresh_interval, formula, id } = broker;
+	const { symbol, spread, quote_expiry_time, refresh_interval, formula, meta, id } = broker;
 
-	const baseCurrencyPrice = await calculatePrice(side, spread, formula, refresh_interval, id);
+	const baseCurrencyPrice = await calculatePrice(side, spread, formula, refresh_interval, meta, id);
 
 	const responseObject = {
 		price: baseCurrencyPrice
@@ -196,9 +198,9 @@ const isFairPriceForBroker = async (broker) => {
 	if (broker.type !== 'dynamic') return true;
 
 	// with ccxt
-	const priceFromMarkets = await calculatePrice(null, null, broker.formula, null, broker.id, false);
+	const priceFromMarkets = await calculatePrice(null, null, broker.formula, null, broker.meta, broker.id, false);
 	// with oracle
-	const priceFromOracle = await calculatePrice(null, null, broker.formula, null, broker.id, true);
+	const priceFromOracle = await calculatePrice(null, null, broker.formula, null, broker.meta, broker.id, true);
 
 	//relative difference
 	const percDiff =  100 * Math.abs((priceFromMarkets - priceFromOracle) / ((priceFromMarkets  + priceFromOracle) / 2));
@@ -209,7 +211,7 @@ const isFairPriceForBroker = async (broker) => {
 	else return true;
 }
 
-const calculatePrice = async (side, spread, formula, refresh_interval, brokerId, isOracle = false) => {
+const calculatePrice = async (side, spread, formula, refresh_interval, meta, brokerId, isOracle = false) => {
 	const regex = /([a-zA-Z]+(?:_[a-zA-Z]+)+(?:-[a-zA-Z]+))/g;
 	const variables = formula.match(regex);
 
@@ -227,55 +229,80 @@ const calculatePrice = async (side, spread, formula, refresh_interval, brokerId,
 			throw new Error(DYNAMIC_BROKER_UNSUPPORTED);
 
 		try {
-			const selectedExchange = exchangePair[0] !== 'oracle' && setExchange({ id: `${exchangePair[0]}-broker:fetch-markets`, exchange: exchangePair[0] });
+			const selectedExchange = !['oracle', 'oneinch', 'wowmax'].includes(exchangePair[0]) && setExchange({ id: `${exchangePair[0]}-broker:fetch-markets`, exchange: exchangePair[0] });
 			let marketPrice;
 	
-			if (!isOracle && exchangePair[0] !== 'oracle') {
-				const formattedSymbol = exchangePair[1].split('-').join('/').toUpperCase();
-				const userCachekey = `${exchangePair[0]}`;
-				const marketPrices = await client.getAsync(userCachekey);
-			
-				if (!marketPrices) { 
-					const tickers = exchangePair[0] !== 'kraken' ? await selectedExchange.fetchTickers() : {};
-					let ticker = tickers[formattedSymbol];
-				
-					if (!ticker || !ticker?.last) {
-						ticker = await selectedExchange.fetchTicker(formattedSymbol);
-						tickers[formattedSymbol] = ticker;
-					}
-	
-					if (!ticker) {
-						throw new Error(`${exchangePair[0].toUpperCase()} does not have market symbol ${formattedSymbol}`)
-					}
-	
-					marketPrice = ticker.last;
-					if (refresh_interval)
-						client.setexAsync(userCachekey, refresh_interval, JSON.stringify(tickers));
-				} else {
-					const tickers = JSON.parse(marketPrices);
-					let ticker = tickers[formattedSymbol];
-					if (!ticker || !ticker?.last) {
-						ticker = await selectedExchange.fetchTicker(formattedSymbol);
-						tickers[formattedSymbol] = ticker;
-						if (refresh_interval)
-							client.setexAsync(userCachekey, refresh_interval, JSON.stringify(tickers));
-					}
-					marketPrice = ticker.last;
-				}
-			}
-			else {
+			if (exchangePair[0] === 'oneinch') {
 				const coins = exchangePair[1].split('-');
-				const userCachekey = `${brokerId}-${exchangePair[0]}-${exchangePair[1]}`;
+				const userCachekey = `${exchangePair[0]}-${exchangePair[1]}`;
 				marketPrice = await client.getAsync(userCachekey);
-	
-				if (!marketPrice) {
-					const conversions = await getAssetsPrices([coins[0]], coins[1], 1);
-					marketPrice =  conversions[coins[0]];
+			
+				if (!marketPrice) { 
+					marketPrice = await fetchOneinchPrice(coins[0], coins[1], meta);
 					if (refresh_interval)
 						client.setexAsync(userCachekey, refresh_interval, marketPrice);
 				}
-				if(marketPrice === -1) return -1;
 			}
+			else if (exchangePair[0] === 'wowmax') {
+				const coins = exchangePair[1].split('-');
+				const userCachekey = `${exchangePair[0]}-${exchangePair[1]}`;
+				marketPrice = await client.getAsync(userCachekey);
+			
+				if (!marketPrice) { 
+					marketPrice = await fetchWowmaxPrice(coins[0], coins[1], meta);
+					if (refresh_interval)
+						client.setexAsync(userCachekey, refresh_interval, marketPrice);
+				}
+			}
+			else {
+				if (!isOracle && exchangePair[0] !== 'oracle') {
+					const formattedSymbol = exchangePair[1].split('-').join('/').toUpperCase();
+					const userCachekey = `${exchangePair[0]}`;
+					const marketPrices = await client.getAsync(userCachekey);
+				
+					if (!marketPrices) { 
+						const tickers = exchangePair[0] !== 'kraken' ? await selectedExchange.fetchTickers() : {};
+						let ticker = tickers[formattedSymbol];
+					
+						if (!ticker || !ticker?.last) {
+							ticker = await selectedExchange.fetchTicker(formattedSymbol);
+							tickers[formattedSymbol] = ticker;
+						}
+		
+						if (!ticker) {
+							throw new Error(`${exchangePair[0].toUpperCase()} does not have market symbol ${formattedSymbol}`)
+						}
+		
+						marketPrice = ticker.last;
+						if (refresh_interval)
+							client.setexAsync(userCachekey, refresh_interval, JSON.stringify(tickers));
+					} else {
+						const tickers = JSON.parse(marketPrices);
+						let ticker = tickers[formattedSymbol];
+						if (!ticker || !ticker?.last) {
+							ticker = await selectedExchange.fetchTicker(formattedSymbol);
+							tickers[formattedSymbol] = ticker;
+							if (refresh_interval)
+								client.setexAsync(userCachekey, refresh_interval, JSON.stringify(tickers));
+						}
+						marketPrice = ticker.last;
+					}
+				}
+				else {
+					const coins = exchangePair[1].split('-');
+					const userCachekey = `${brokerId}-${exchangePair[0]}-${exchangePair[1]}`;
+					marketPrice = await client.getAsync(userCachekey);
+		
+					if (!marketPrice) {
+						const conversions = await getAssetsPrices([coins[0]], coins[1], 1);
+						marketPrice =  conversions[coins[0]];
+						if (refresh_interval)
+							client.setexAsync(userCachekey, refresh_interval, marketPrice);
+					}
+					if(marketPrice === -1) return -1;
+				}
+			}
+			
 			formula = formula.replace(variable, marketPrice);
 		} catch (error) {
 			throw new Error(FAILED_GET_QUOTE);
@@ -348,7 +375,7 @@ const fetchBrokerQuote = async (brokerQuote) => {
 };
 
 const testBroker = async (data) => {
-	const { formula, spread } = data;
+	const { formula, spread, meta } = data;
 	try {
 		if (spread == null) {
 			throw new Error(BROKER_FORMULA_NOT_FOUND);
@@ -363,6 +390,7 @@ const testBroker = async (data) => {
 			spread,
 			formula,
 			5,
+			meta,
 			'test:broker'
 		);
 
@@ -380,44 +408,102 @@ const testBroker = async (data) => {
 	}
 
 };
-const testBrokerUniswap = async (data) => {
-	const { base_coin, spread, quote_coin  } = data;
-	const UNISWAP_COINS = {}
-	try {
-		if (!base_coin || !quote_coin || !UNISWAP_COINS[base_coin] || !UNISWAP_COINS[quote_coin]) {
-			throw new Error(SYMBOL_NOT_FOUND);
-		}
-		if (!spread) {
-			throw new Error(SPREAD_MISSING);
-		}
 
-		const paraSwapMin = constructSimpleSDK({ chainId: 1, axios });
-		const includeDEXS = '[Uniswap V3]';
+const getBrokerOneinchTokens = async () => {
+	return ONEINCH_COINS;
+}
 
-		const priceRoute = await paraSwapMin.swap.getRate({
-			srcToken: UNISWAP_COINS[base_coin].token,
-			srcDecimals: UNISWAP_COINS[base_coin].decimals,
-			destToken: UNISWAP_COINS[quote_coin].token,
-			destDecimals: UNISWAP_COINS[quote_coin].decimals,
-			amount: Math.pow(10, UNISWAP_COINS[base_coin].decimals),
-			side: SwapSide.SELL,
-			includeDEXS
-		  })
 
-		if (!priceRoute.destAmount) {
-			throw new Error(UNISWAP_PRICE_NOT_FOUND)
-		}
+const fetchOneinchPrice = async (base_coin, quote_coin, meta = {}) => {
 
-		const price = math.divide(priceRoute.destAmount,Math.pow(10, UNISWAP_COINS[quote_coin].decimals))
-
-		return {
-			buy_price: price * (1 - (spread / 100)),
-			sell_price: price * (1 + (spread / 100))
-		}
-	} catch (err) {
-		throw new Error(err);
+	if (!meta.chain) {
+		throw new Error(BROKER_ONEINCH_CHAIN);
 	}
 
+	if (!meta.key) {
+		throw new Error(BROKER_ONEINCH_KEY);
+	}
+
+	const chain = meta.chain;
+	const url = `${ONEINCH_URL}${ONEINCH_CHAINS[chain]}/quote`;
+
+	const src = ONEINCH_COINS?.[chain]?.[base_coin] || meta.customAdress[base_coin];
+	const dst = ONEINCH_COINS?.[chain]?.[quote_coin] || meta.customAdress[quote_coin];
+
+	const config = {
+		headers: { "Authorization": `Bearer ${meta.key}` },
+		params: {
+		src: src.token,
+		dst:  dst.token,
+		amount: Math.pow(10, Number(src.decimals))}
+	};
+
+	const response = await axios.get(url, config);
+	const price = math.divide(response.data.toAmount, Math.pow(10, Number(dst.decimals)))
+	return price;
+}
+
+const testBrokerOneinch = async (data) => {
+	const { base_coin, spread, quote_coin, chain, meta } = data;
+
+	if (!base_coin || !quote_coin) {
+		throw new Error(SYMBOL_NOT_FOUND);
+	}
+	if (!spread) {
+		throw new Error(SPREAD_MISSING);
+	}
+	
+	const price = await fetchOneinchPrice(base_coin, quote_coin, meta);
+	
+	return {
+		buy_price: price * (1 - (spread / 100)),
+		sell_price: price * (1 + (spread / 100))
+	}
+
+};
+
+const fetchWowmaxPrice = async (base_coin, quote_coin, meta = {}) => {
+
+	if (!meta.chain) {
+		throw new Error(BROKER_ONEINCH_CHAIN);
+	}
+
+	const chain = meta.chain;
+	const url = `${WOWMAX_QUOTE_URL}${ONEINCH_CHAINS[chain]}/quote`;
+
+	const src = ONEINCH_COINS?.[chain]?.[base_coin] || meta.customAdress[base_coin];
+	const dst = ONEINCH_COINS?.[chain]?.[quote_coin] || meta.customAdress[quote_coin];
+
+	const config = {
+		params: {
+			from: src.token,
+			to:  dst.token,
+			amount: 1,
+			usePMM: true
+		}
+	};
+
+	const response = await axios.get(url, config);
+	return response.data.price;
+}
+
+
+const testBrokerWowmax = async (data) => {
+	const { base_coin, spread, quote_coin, chain, meta } = data;
+
+	if (!base_coin || !quote_coin) {
+		throw new Error(SYMBOL_NOT_FOUND);
+	}
+	if (!spread) {
+		throw new Error(SPREAD_MISSING);
+	}
+	
+	const price = await fetchWowmaxPrice(base_coin, quote_coin, meta);
+	
+	return {
+		buy_price: price * (1 - (spread / 100)),
+		sell_price: price * (1 + (spread / 100))
+	}
 };
 
 const testRebalance = async (data) => {
@@ -507,7 +593,8 @@ const createBrokerPair = async (brokerPair) => {
 				type,
 				account,
 				formula,
-				rebalancing_symbol
+				rebalancing_symbol,
+				meta
 			} = brokerPair;
 
 			if (type !== 'manual' && (!spread || !quote_expiry_time || !formula)) {
@@ -543,7 +630,7 @@ const createBrokerPair = async (brokerPair) => {
 			}
 
 			if (formula) {
-				const brokerPrice = await testBroker({ formula, spread });
+				const brokerPrice = await testBroker({ formula, spread, meta });
 				if (!Number(brokerPrice.sell_price) || !Number(brokerPrice.buy_price)) {
 					throw new Error(FORMULA_MARKET_PAIR_ERROR);
 				}
@@ -586,7 +673,8 @@ const updateBrokerPair = async (id, data) => {
 		account,
 		formula,
 		rebalancing_symbol,
-		quote_expiry_time
+		quote_expiry_time,
+		meta
 	} = data;
 
 	const exchangeInfo = getKitConfig().info;
@@ -620,7 +708,7 @@ const updateBrokerPair = async (id, data) => {
 	}
 
 	if (formula) {
-		const brokerPrice = await testBroker({ formula, spread });
+		const brokerPrice = await testBroker({ formula, spread, meta });
 		if (!Number(brokerPrice.sell_price) || !Number(brokerPrice.buy_price)) {
 			throw new Error(FORMULA_MARKET_PAIR_ERROR);
 		}
@@ -647,6 +735,7 @@ const updateBrokerPair = async (id, data) => {
 			'account',
 			'formula',
 			'spread',
+			'meta'
 		]
 	});
 };
@@ -680,7 +769,9 @@ module.exports = {
 	testRebalance,
 	generateRandomToken,
 	fetchTrackedExchangeMarkets,
-	testBrokerUniswap,
+	testBrokerOneinch,
 	isFairPriceForBroker,
-	calculatePrice
+	getBrokerOneinchTokens,
+	calculatePrice,
+	testBrokerWowmax
 };

@@ -159,6 +159,114 @@ paths:
               formula:
                 type: string
                 maxLength: 1024
+              meta:
+                type: object
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+      x-security-scopes:
+        - admin
+  /broker/oneinch:
+    x-swagger-router-controller: broker
+    get:
+      operationId: getBrokerOneinchTokens
+      description: get broker oneinch
+      tags:
+        - Broker
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+      x-security-scopes:
+        - admin
+  /broker/oneinch/test:
+    x-swagger-router-controller: broker
+    post:
+      operationId: testBrokerOneinch
+      description: test broker oneinch
+      tags:
+        - Broker
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              spread:
+                type: number
+              base_coin:
+                type: string
+                maxLength: 256
+              quote_coin:
+                type: string
+                maxLength: 256
+              chain:
+                type: string
+                maxLength: 256
+              meta:
+                type: object
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+      x-security-scopes:
+        - admin
+  /broker/wowmax/test:
+    x-swagger-router-controller: broker
+    post:
+      operationId: testBrokerWowmax
+      description: test broker wowmax
+      tags:
+        - Broker
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              spread:
+                type: number
+              base_coin:
+                type: string
+                maxLength: 256
+              quote_coin:
+                type: string
+                maxLength: 256
+              chain:
+                type: string
+                maxLength: 256
+              meta:
+                type: object
       responses:
         200:
           description: Success

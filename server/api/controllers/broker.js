@@ -53,6 +53,7 @@ const createBrokerPair = (req, res) => {
 		account,
 		formula,
 		spread,
+		meta
 	} = req.swagger.params.data.value;
 
 	loggerBroker.verbose(
@@ -88,6 +89,7 @@ const createBrokerPair = (req, res) => {
 		account,
 		formula,
 		spread,
+		meta
 	})
 		.then((data) => {
 			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
@@ -113,11 +115,13 @@ const testBroker = (req, res) => {
 	const {
 		formula,
 		spread,
+		meta
 	} = req.swagger.params.data.value;
 
 	toolsLib.broker.testBroker({
 		formula,
 		spread,
+		meta
 	})
 		.then((data) => {
 			return res.json(data);
@@ -132,6 +136,96 @@ const testBroker = (req, res) => {
 		});
 };
 
+const testBrokerOneinch = (req, res) => {
+	loggerBroker.verbose(
+		req.uuid,
+		'controllers/broker/testBrokerOneinch get',
+		req.auth
+	);
+
+	const {
+		base_coin,
+		spread,
+		quote_coin,
+		chain,
+		meta
+	} = req.swagger.params.data.value;
+
+	toolsLib.broker.testBrokerOneinch({
+		base_coin,
+		spread,
+		quote_coin,
+		chain,
+		meta
+	})
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerBroker.error(
+				req.uuid,
+				'controllers/broker/testBrokerOneinch err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const testBrokerWowmax = (req, res) => {
+	loggerBroker.verbose(
+		req.uuid,
+		'controllers/broker/testBrokerWowmax get',
+		req.auth
+	);
+
+	const {
+		base_coin,
+		spread,
+		quote_coin,
+		chain,
+		meta
+	} = req.swagger.params.data.value;
+
+	toolsLib.broker.testBrokerWowmax({
+		base_coin,
+		spread,
+		quote_coin,
+		chain,
+		meta
+	})
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerBroker.error(
+				req.uuid,
+				'controllers/broker/testBrokerWowmax err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const getBrokerOneinchTokens = (req, res) => {
+	loggerBroker.verbose(
+		req.uuid,
+		'controllers/broker/getBrokerOneinchTokens get',
+		req.auth
+	);
+
+	toolsLib.broker.getBrokerOneinchTokens()
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerBroker.error(
+				req.uuid,
+				'controllers/broker/getBrokerOneinchTokens err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+}
 
 const testRebalance = (req, res) => {
 	loggerBroker.verbose(
@@ -265,6 +359,7 @@ function getBrokerPairs(req, res) {
 		'rebalancing_symbol',
 		'account',
 		'spread',
+		'meta',
 		'formula'
 	];
 
@@ -291,5 +386,8 @@ module.exports = {
 	updateBrokerPair,
 	deleteBrokerPair,
 	getBrokerPairs,
-	getTrackedExchangeMarkets
+	getTrackedExchangeMarkets,
+	testBrokerOneinch,
+	getBrokerOneinchTokens,
+	testBrokerWowmax
 };

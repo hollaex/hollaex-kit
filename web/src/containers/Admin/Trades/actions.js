@@ -49,17 +49,26 @@ export const createTestBroker = (values) => {
 	return axios.post('/broker/test', { ...values });
 };
 
-export const createTestUniswap = (values) => {
+export const createTestOneinch = (values) => {
 	const options = {
 		method: 'POST',
 		body: JSON.stringify(values),
 	};
 
-	return requestAuthenticated('/broker/uniswap/test', options);
+	return requestAuthenticated('/broker/oneinch/test', options);
 };
 
-export const getBrokerUniswapTokens = () =>
-	requestAuthenticated(`/broker/uniswap`);
+export const createTestWowmax = (values) => {
+	const options = {
+		method: 'POST',
+		body: JSON.stringify(values),
+	};
+
+	return requestAuthenticated('/broker/wowmax/test', options);
+};
+
+export const getBrokerOneinchTokens = () =>
+	requestAuthenticated(`/broker/oneinch`);
 
 export const getTrackedExchangeMarkets = (exchange_name) =>
 	requestAuthenticated(`/broker/markets?exchange_name=${exchange_name}`);
