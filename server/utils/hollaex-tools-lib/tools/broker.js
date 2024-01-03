@@ -250,7 +250,7 @@ const calculatePrice = async (side, spread, formula, refresh_interval, brokerId,
 	
 
 					if (exchangePair[0] === 'bybit') {
-						marketPrice = side === 'buy' ? ticker.bid : ticker.ask;
+						marketPrice = side === 'buy' ? ticker.ask : ticker.bid;
 					} else {
 						marketPrice = ticker.last;
 					}
@@ -266,7 +266,7 @@ const calculatePrice = async (side, spread, formula, refresh_interval, brokerId,
 							client.setexAsync(userCachekey, refresh_interval, JSON.stringify(tickers));
 					}
 					if (exchangePair[0] === 'bybit') {
-						marketPrice = side === 'buy' ? ticker.bid : ticker.ask;
+						marketPrice = side === 'buy' ? ticker.ask : ticker.bid;
 					} else {
 						marketPrice = ticker.last;
 					}
