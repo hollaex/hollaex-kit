@@ -476,8 +476,10 @@ const reverseTransaction = async (orderData) => {
 
 				const formattedRebalancingSymbol = broker.rebalancing_symbol && broker.rebalancing_symbol.split('-').join('/').toUpperCase();
 				if (exchangeKey === 'bybit') {
-					const marketPrice = side === 'buy' ? price * 1.01 : price * 0.99;
-					exchange.createOrder(formattedRebalancingSymbol, 'limit', side, size, marketPrice)
+					const orderbook = await exchange.fetchOrderBook(formattedRebalancingSymbol);
+					const price = side === 'buy' ? orderbook['asks'][0][0] * 1.01 : orderbook['bids'][0][0] * 0.99;
+
+					exchange.createOrder(formattedRebalancingSymbol, 'limit', side, size, price)
 						.catch((err) => { notifyUser(err.message, broker.user_id); });
 				}
 				else {

@@ -132,6 +132,11 @@ const getQuickTrade = (req, res) => {
 		});
 };
 
+const executeHedging = async ( symbol, side, size, price ) => {
+	await toolsLib.sleep(1000);
+	toolsLib.broker.reverseTransaction({ symbol, side, size, price });
+}
+
 const orderExecute = (req, res) => {
 	loggerOrders.verbose(
 		req.uuid,
@@ -157,7 +162,7 @@ const orderExecute = (req, res) => {
 	toolsLib.order.executeUserOrder(user_id, opts, token)
 		.then((result) => {
 			const { symbol, side, size, price } = result;
-			toolsLib.broker.reverseTransaction({ symbol, side, size, price });
+			executeHedging(symbol, side, size, price);
 			return res.json(result);
 		})
 		.catch((err) => {
