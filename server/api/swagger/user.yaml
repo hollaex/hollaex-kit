@@ -655,7 +655,7 @@ paths:
         - user
       x-token-permissions:
         - can_read
-  /user/balance-history:
+  /user/history:
     x-swagger-router-controller: user
     get:
       description: Get the user balance history

@@ -2444,6 +2444,9 @@ const fetchUserProfitLossInfo = async (user_id) => {
 		  case '1d':
 			dateThreshold.subtract(1, 'day');
 			break;
+		  case '7d':
+				dateThreshold.subtract(7, 'day');
+				break;
 		  case '1m':
 			dateThreshold.subtract(1, 'month');
 			break;
@@ -2460,7 +2463,7 @@ const fetchUserProfitLossInfo = async (user_id) => {
 		return data.filter((entry) => (moment(entry.created_at || entry.timestamp).isSameOrAfter(dateThreshold)) && (conditionalDate ? moment(entry.created_at || entry.timestamp).isAfter(moment(conditionalDate)) : true));
 	};
 	
-	const timeIntervals = ['1d', '1m', '6m', '1y'];
+	const timeIntervals = ['1d', '7d', '1m', '6m', '1y'];
 	
 	const results = {};
 	
@@ -2525,7 +2528,7 @@ const fetchUserProfitLossInfo = async (user_id) => {
 		const finalBalances = filteredBalanceHistory[filteredBalanceHistory.length - 1].balance;
 	  
 		results[interval] = {};
-		Object.keys(finalBalances).forEach((asset) => {
+		Object.keys(finalBalances).forEach(async (asset) => {
 		  const cumulativePNL =
 			finalBalances[asset].native_currency_value -
 			initialBalances[asset].native_currency_value -
@@ -2539,6 +2542,7 @@ const fetchUserProfitLossInfo = async (user_id) => {
 		  const cumulativePNLPercentage =
 			cumulativePNL / (day1Assets + inflow) * 100;
 	  
+		  
 		  results[interval][asset] = {
 			cumulativePNL,
 			cumulativePNLPercentage,
@@ -2546,6 +2550,23 @@ const fetchUserProfitLossInfo = async (user_id) => {
 		});
 	}
 	  
+	if (results['7d']) {
+		let total = 0
+		const assets = Object.keys(results['7d']);
+
+		const nativeCurrency = getKitConfig()?.balance_history_config?.currency || 'usdt';
+
+		const convertedAmounts = await getNodeLib().getOraclePrices(assets, {
+			quote: nativeCurrency,
+			amount: 1
+			});
+		
+		assets?.forEach(asset => {
+			total += results['7d'][asset].cumulativePNL * convertedAmounts[asset];
+		})
+		results['7d'].total = total;
+	}
+
 	client.setexAsync(`${user_id}user-pl-info`, 86400, JSON.stringify(results));
 
 	return results;
