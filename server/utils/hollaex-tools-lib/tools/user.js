@@ -82,7 +82,7 @@ const {
 } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
-const { getKitConfig, isValidTierLevel, getKitTier, isDatetime, getKitSecrets, sendCustomEmail, emailHtmlBoilerplate, getDomain, updateKitConfigSecrets } = require('./common');
+const { getKitConfig, isValidTierLevel, getKitTier, isDatetime, getKitSecrets, sendCustomEmail, emailHtmlBoilerplate, getDomain, updateKitConfigSecrets, sleep } = require('./common');
 const { isValidPassword, createSession } = require('./security');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { all, reject } = require('bluebird');
@@ -2944,6 +2944,7 @@ const settleFees = (currentTime) => {
 							accumulatedFees[receiverKey][coin]
 						);
 
+						await sleep(1000);
 						await transferAssetByNetworkIds(
 							distributor.network_id,
 							parseInt(receiverNetworkId),
