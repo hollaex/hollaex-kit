@@ -42,6 +42,7 @@ const Burn = ({
 				transaction_id,
 				status,
 				fee,
+				address,
 			} = values;
 
 			const formProps = {
@@ -52,6 +53,7 @@ const Burn = ({
 				fee,
 				status: Number(status) ? true : false,
 				transaction_id,
+				address,
 			};
 			if (type === 'mint') {
 				handleMint(formProps);
@@ -182,6 +184,12 @@ const Burn = ({
 				</h3>
 				<Form.Item name="fee">
 					<InputNumber placeholder="Amount" />
+				</Form.Item>
+				<h3>
+					Address <span style={{ fontSize: 14 }}>(Optional)</span>
+				</h3>
+				<Form.Item name="address">
+					<Input placeholder="Address" />
 				</Form.Item>
 				<h3>Description</h3>
 				<Form.Item name="description">
