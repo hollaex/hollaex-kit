@@ -22,7 +22,7 @@ const {
 	PROVIDE_VALID_EMAIL,
 	INVALID_PASSWORD,
 	USER_EXISTS,
-	USER_EMAIL_IS_VERIFIED,
+	VERIFICATION_CODE_EXPIRED,
 	INVALID_VERIFICATION_CODE,
 	LOGIN_NOT_ALLOW,
 	NO_IP_FOUND,
@@ -34,6 +34,7 @@ const { each } = require('lodash');
 const { publisher } = require('../../db/pubsub');
 const { isDate } = require('moment');
 const DeviceDetector = require('node-device-detector');
+const uuid = require('uuid/v4');
 
 const VERIFY_STATUS = {
 	EMPTY: 0,
@@ -75,6 +76,7 @@ const INITIAL_SETTINGS = () => {
 	};
 };
 
+
 const signUpUser = (req, res) => {
 	const {
 		password,
@@ -97,80 +99,8 @@ const signUpUser = (req, res) => {
 		.then(() => {
 			return toolsLib.security.checkCaptcha(captcha, ip);
 		})
-		.then(() => {
-			if (!toolsLib.getKitConfig().new_user_is_activated) {
-				throw new Error(SIGNUP_NOT_AVAILABLE);
-			}
-
-			if (!email || typeof email !== 'string' || !isEmail(email)) {
-				throw new Error(PROVIDE_VALID_EMAIL);
-			}
-
-			if (!toolsLib.security.isValidPassword(password)) {
-				throw new Error(INVALID_PASSWORD);
-			}
-
-			return toolsLib.database.findOne('user', {
-				where: { email },
-				attributes: ['email']
-			});
-		})
-		.then((user) => {
-			if (user) {
-				throw new Error(USER_EXISTS);
-			}
-			return toolsLib.database.getModel('sequelize').transaction((transaction) => {
-				return toolsLib.database.getModel('user').create({
-					email,
-					password,
-					verification_level: 1,
-					settings: INITIAL_SETTINGS()
-				}, { transaction })
-					.then((user) => {
-						return all([
-							toolsLib.user.createUserOnNetwork(email, {
-								additionalHeaders: {
-									'x-forwarded-for': req.headers['x-forwarded-for']
-								}
-							}),
-							user
-						]);
-					})
-					.then(([networkUser, user]) => {
-						return user.update(
-							{ network_id: networkUser.id },
-							{ fields: ['network_id'], returning: true, transaction }
-						);
-					});
-			});
-		})
-		.then((user) => {
-			return all([
-				toolsLib.user.getVerificationCodeByUserId(user.id),
-				user
-			]);
-		})
-		.then(([verificationCode, user]) => {
-			publisher.publish(EVENTS_CHANNEL, JSON.stringify({
-				type: 'user',
-				data: {
-					action: 'signup',
-					user_id: user.id
-				}
-			}));
-			sendEmail(
-				MAILTYPE.SIGNUP,
-				email,
-				verificationCode.code,
-				{}
-			);
-
-			if (referral) {
-				toolsLib.user.checkAffiliation(referral, user.id);
-			}
-
-			return res.status(201).json({ message: USER_REGISTERED });
-		})
+		.then(() => toolsLib.user.signUpUser(email, password, { referral }))
+		.then(() => res.status(201).json({ message: USER_REGISTERED }))
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/signUpUser', err.message);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
@@ -179,40 +109,36 @@ const signUpUser = (req, res) => {
 
 const getVerifyUser = (req, res) => {
 	let email = req.swagger.params.email.value;
-	const verification_code = req.swagger.params.verification_code.value;
 	const resendEmail = req.swagger.params.resend.value;
 	const domain = req.headers['x-real-origin'];
 	let promiseQuery;
 
 	if (email && typeof email === 'string' && isEmail(email)) {
 		email = email.toLowerCase();
-		promiseQuery = toolsLib.user.getVerificationCodeByUserEmail(email)
-			.then((verificationCode) => {
-				if (verificationCode.verified) {
-					throw new Error(USER_EMAIL_IS_VERIFIED);
-				}
-				if (resendEmail) {
-					sendEmail(
-						MAILTYPE.SIGNUP,
-						email,
-						verificationCode.code,
-						{},
-						domain
-					);
-				}
-				return res.json({
+		promiseQuery = toolsLib.database.findOne('user', {
+			where: { email },
+			attributes: ['id', 'email', 'email_verified']
+		}).then(async (user) => {
+			if (user.email_verified) {
+				throw new Error(USER_VERIFIED);
+			}
+			if (resendEmail) {
+				const verificationCode = uuid();
+				toolsLib.user.storeVerificationCode(user, verificationCode);
+
+				sendEmail(
+					MAILTYPE.SIGNUP,
 					email,
-					message: VERIFICATION_EMAIL_MESSAGE
-				});
+					verificationCode,
+					{},
+					domain
+				);
+			}
+			return res.json({
+				email,
+				message: VERIFICATION_EMAIL_MESSAGE
 			});
-	} else if (verification_code && typeof verification_code === 'string' && isUUID(verification_code)) {
-		promiseQuery = toolsLib.user.getUserEmailByVerificationCode(verification_code)
-			.then((userEmail) => {
-				return res.json({
-					email: userEmail,
-					message: VERIFICATION_EMAIL_MESSAGE
-				});
-			});
+		});
 	} else {
 		return res.status(400).json({
 			message: PROVIDE_VALID_EMAIL_CODE
@@ -230,62 +156,10 @@ const getVerifyUser = (req, res) => {
 
 const verifyUser = (req, res) => {
 	const { verification_code } = req.swagger.params.data.value;
-	let { email } = req.swagger.params.data.value;
 	const domain = req.headers['x-real-origin'];
 
-	if (!email || typeof email !== 'string' || !isEmail(email)) {
-		loggerUser.error(
-			req.uuid,
-			'controllers/user/verifyUser invalid email',
-			email
-		);
-		return res.status(400).json({ message: 'Invalid Email' });
-	}
-
-	email = email.toLowerCase();
-
-	toolsLib.database.findOne('user', {
-		where: { email },
-		attributes: ['id', 'email', 'settings', 'network_id']
-	})
-		.then((user) => {
-			return all([
-				toolsLib.user.getVerificationCodeByUserId(user.id),
-				user
-			]);
-		})
-		.then(([verificationCode, user]) => {
-			if (verificationCode.verified) {
-				throw new Error(USER_EMAIL_IS_VERIFIED);
-			}
-
-			if (verification_code !== verificationCode.code) {
-				throw new Error(INVALID_VERIFICATION_CODE);
-			}
-
-			return all([
-				user,
-				verificationCode.update(
-					{ verified: true },
-					{ fields: ['verified'] }
-				)
-			]);
-		})
-		.then(([user]) => {
-			publisher.publish(EVENTS_CHANNEL, JSON.stringify({
-				type: 'user',
-				data: {
-					action: 'verify',
-					user_id: user.id
-				}
-			}));
-			sendEmail(
-				MAILTYPE.WELCOME,
-				user.email,
-				{},
-				user.settings,
-				domain
-			);
+	toolsLib.user.verifyUser(null, verification_code, domain)
+		.then(() => {
 			return res.json({ message: USER_VERIFIED });
 		})
 		.catch((err) => {

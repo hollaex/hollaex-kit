@@ -117,7 +117,10 @@ class InputGroup extends React.PureComponent {
 					<EditWrapper stringId={stringId}>{name}</EditWrapper>
 				</label>
 				<div className={isMobile ? 'w-100' : ''}>
-					<Group compact className="input-group__container">
+					<Group
+						compact
+						className="quick-trade-dropdown input-group__container"
+					>
 						<Select
 							open={isOpen}
 							size="default"
@@ -149,8 +152,17 @@ class InputGroup extends React.PureComponent {
 										className="d-flex"
 									>
 										<div className="d-flex align-items-center quick-trade-select-wrapper">
-											<div className="input-group__coin-icons-wrap">
-												<Coin iconId={icon_id} type="CS6" />
+											<div
+												className={
+													window.innerWidth > 768
+														? 'input-group__coin-icons-wrap'
+														: 'input-group__coin-icons-wrap_mobile-view'
+												}
+											>
+												<Coin
+													iconId={icon_id}
+													type={window.innerWidth > 768 ? 'CS7' : 'CS10'}
+												/>
 											</div>
 											<span className="pl-1">{display_name}</span>
 										</div>

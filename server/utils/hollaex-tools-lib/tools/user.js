@@ -39,7 +39,7 @@ const {
 	ACCOUNT_NOT_VERIFIED,
 	INVALID_VERIFICATION_LEVEL,
 	USER_EMAIL_NOT_VERIFIED,
-	USER_EMAIL_IS_VERIFIED,
+	VERIFICATION_CODE_EXPIRED,
 	NO_DATA_FOR_CSV,
 	PROVIDE_USER_CREDENTIALS,
 	PROVIDE_KIT_ID,
@@ -48,7 +48,7 @@ const {
 	USER_ALREADY_DEACTIVATED,
 	USER_NOT_DEACTIVATED,
 	CANNOT_CHANGE_ADMIN_ROLE,
-	VERIFICATION_CODE_USED,
+	USER_VERIFIED,
 	USER_NOT_REGISTERED_ON_NETWORK,
 	SESSION_NOT_FOUND,
 	SESSION_ALREADY_REVOKED,
@@ -74,7 +74,8 @@ const {
 	LOGIN_TIME_OUT,
 	TOKEN_TIME_LONG,
 	TOKEN_TIME_NORMAL,
-	VERIFY_STATUS
+	VERIFY_STATUS,
+	EVENTS_CHANNEL
 } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
@@ -94,6 +95,11 @@ const moment = require('moment');
 let networkIdToKitId = {};
 let kitIdToNetworkId = {};
 /* Onboarding*/
+
+const storeVerificationCode = (user, verification_code) => {
+	const data = { code: verification_code, id: user.id, email: user.email };
+	client.setexAsync(`verification_code:user${verification_code}`, 5 * 60, JSON.stringify(data));
+};
 
 const signUpUser = (email, password, opts = { referral: null }) => {
 	if (!getKitConfig().new_user_is_activated) {
@@ -123,6 +129,7 @@ const signUpUser = (email, password, opts = { referral: null }) => {
 					email,
 					password,
 					verification_level: 1,
+					email_verified: false,
 					settings: INITIAL_SETTINGS()
 				}, { transaction })
 					.then((user) => {
@@ -140,16 +147,26 @@ const signUpUser = (email, password, opts = { referral: null }) => {
 			});
 		})
 		.then((user) => {
+			const verification_code = uuid();
+			storeVerificationCode(user, verification_code);
 			return all([
-				getVerificationCodeByUserId(user.id),
+				verification_code,
 				user
 			]);
 		})
 		.then(([verificationCode, user]) => {
+			publisher.publish(EVENTS_CHANNEL, JSON.stringify({
+				type: 'user',
+				data: {
+					action: 'signup',
+					user_id: user.id
+				}
+			}));
+			
 			sendEmail(
 				MAILTYPE.SIGNUP,
 				email,
-				verificationCode.code,
+				verificationCode,
 				{}
 			);
 			if (opts.referral && isString(opts.referral)) {
@@ -159,35 +176,57 @@ const signUpUser = (email, password, opts = { referral: null }) => {
 		});
 };
 
-const verifyUser = (email, code) => {
-	email = email.toLowerCase();
-	return dbQuery.findOne('user',
-		{ where: { email }, attributes: ['id', 'email', 'settings', 'network_id'] }
-	)
-		.then((user) => {
+const verifyUser = (email, code, domain) => {
+	email = email?.toLowerCase();
+	return client.getAsync(`verification_code:user${code}`)
+		.then((verificationCode) => {
+			if (!verificationCode) {
+				throw new Error(VERIFICATION_CODE_EXPIRED);
+			}
+			verificationCode = JSON.parse(verificationCode);
 			return all([
-				dbQuery.findOne('verification code',
-					{
-						where: { user_id: user.id },
-						attributes: ['id', 'code', 'verified', 'user_id']
-					}
-				),
-				user
+				verificationCode,
+				dbQuery.findOne('user',
+					{ where: { id: verificationCode.id }, attributes: ['id', 'email', 'settings', 'network_id', 'email_verified'] }),
 			]);
 		})
 		.then(([verificationCode, user]) => {
-			if (verificationCode.verified) {
-				throw new Error(USER_EMAIL_IS_VERIFIED);
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
 			}
+
+			if (user.email_verified) {
+				throw new Error(USER_VERIFIED);
+			}
+
 			if (code !== verificationCode.code) {
 				throw new Error(INVALID_VERIFICATION_CODE);
 			}
+
+			client.delAsync(`verification_code:user${verificationCode.code}`);
 			return all([
 				user,
-				verificationCode.update({ verified: true }, { fields: ['verified'], returning: true })
+				user.update(
+					{ email_verified: true },
+					{ fields: ['email_verified'] }
+				)
 			]);
 		})
 		.then(([user]) => {
+			publisher.publish(EVENTS_CHANNEL, JSON.stringify({
+				type: 'user',
+				data: {
+					action: 'verify',
+					user_id: user.id
+				}
+			}));
+			sendEmail(
+				MAILTYPE.WELCOME,
+				user.email,
+				{},
+				user.settings,
+				domain
+			);
 			return user;
 		});
 };
@@ -198,6 +237,7 @@ const createUser = (
 	opts = {
 		role: 'user',
 		id: null,
+		email_verified: false,
 		additionalHeaders: null
 	}
 ) => {
@@ -234,6 +274,7 @@ const createUser = (
 					email,
 					password,
 					settings: INITIAL_SETTINGS(),
+					email_verified: opts.email_verified,
 					...roles
 				};
 
@@ -257,11 +298,7 @@ const createUser = (
 	})
 		.then((user) => {
 			return all([
-				user,
-				getModel('verification code').update(
-					{ verified: true },
-					{ where: { user_id: user.id }, fields: ['verified'] }
-				)
+				user
 			]);
 		})
 		.then(([user]) => {
@@ -393,9 +430,9 @@ const updateLoginStatus = (loginId) => {
 };
 
 const createUserLogin = async (user, ip, device, domain, origin, referer, token, long_term, status) => {
-	const loginData = await findUserLatestLogin(user, status);
+	const loginData = status == false && await findUserLatestLogin(user, status);
 
-	if (!loginData || loginData?.status == true) {
+	if (!loginData) {
 		return registerUserLogin(user.id, ip, {
 			device,
 			domain,
@@ -424,21 +461,12 @@ const findUserLatestLogin = (user, status) => {
 	}).then(loginData => {
 		if (loginData && new Date().getTime() - new Date(loginData.updated_at).getTime() < LOGIN_TIME_OUT) return loginData;
 		return null;
-	})
-}
+	});
+};
 
 /* Public Endpoints*/
 
 
-const getVerificationCodeByUserEmail = (email) => {
-	return getUserByEmail(email)
-		.then((user) => {
-			if (!user) {
-				throw new Error(USER_NOT_FOUND);
-			}
-			return getVerificationCodeByUserId(user.id);
-		});
-};
 
 const generateAffiliationCode = () => {
 	return randomString({
@@ -446,13 +474,6 @@ const generateAffiliationCode = () => {
 		numeric: true,
 		letters: true
 	}).toUpperCase();
-};
-
-const getVerificationCodeByUserId = (user_id) => {
-	return dbQuery.findOne('verification code', {
-		where: { user_id },
-		attributes: ['id', 'code', 'verified', 'user_id']
-	});
 };
 
 const getUserByAffiliationCode = (affiliationCode) => {
@@ -777,7 +798,7 @@ const getAllUsersAdmin = (opts = {
 					}
 				}
 				return { count, data };
-			})
+			});
 	}
 };
 
@@ -1148,27 +1169,6 @@ const INITIAL_SETTINGS = () => {
 	};
 };
 
-const getUserEmailByVerificationCode = (code) => {
-	return dbQuery.findOne('verification code', {
-		where: { code },
-		attributes: ['id', 'code', 'verified', 'user_id']
-	})
-		.then((verificationCode) => {
-			if (!verificationCode) {
-				throw new Error(INVALID_VERIFICATION_CODE);
-			} else if (verificationCode.verified) {
-				throw new Error(VERIFICATION_CODE_USED);
-			}
-			return dbQuery.findOne('user', {
-				where: { id: verificationCode.user_id },
-				attributes: ['email']
-			});
-		})
-		.then((user) => {
-			return user.email;
-		});
-};
-
 const verifyUserEmailByKitId = (kitId) => {
 	return getUserByKitId(kitId, false)
 		.then((user) => {
@@ -1436,30 +1436,30 @@ const getUpdatedKeys = (oldData, newData) => {
   
 	let keys = [];
 	for(const key of data){
-	  if(!isEqual(oldData[key], newData[key])){
-		keys.push(key);
-	  }
+		if(!isEqual(oldData[key], newData[key])){
+			keys.push(key);
+		}
 	}
   
 	return keys;
-  }
+};
 
 const getValues = (data, prevData) => {
 	const updatedKeys = getUpdatedKeys(prevData, data);
-    const updatedValues = updatedKeys.map(key => data[key]);
+	const updatedValues = updatedKeys.map(key => data[key]);
 	const oldValues = updatedKeys.map(key => prevData[key]);
 	
-    updatedValues.forEach((value, index) => {
-        if(typeof value === 'object' && value.constructor === Object) {
-            const values = getValues(value, oldValues[index]);
-            updatedKeys[index] = values.updatedKeys
-            updatedValues[index] = values.updatedValues
-            oldValues[index] = values.oldValues;
-        }
-    })
+	updatedValues.forEach((value, index) => {
+		if(typeof value === 'object' && value.constructor === Object) {
+			const values = getValues(value, oldValues[index]);
+			updatedKeys[index] = values.updatedKeys;
+			updatedValues[index] = values.updatedValues;
+			oldValues[index] = values.oldValues;
+		}
+	});
 
 	return { updatedKeys, oldValues, updatedValues };
-}
+};
 
 const createAuditLog = (subject, adminEndpoint, method, data = {}, prevData = null) => {
 	try {
@@ -1470,7 +1470,7 @@ const createAuditLog = (subject, adminEndpoint, method, data = {}, prevData = nu
 			post: 'inserted',
 			put: 'updated',
 			delete: 'deleted'
-		}
+		};
 		const excludedKeys = ['password', 'apiKey', 'secret', 'api-key', 'api-secret', 'hmac'];
 
 		const action = adminEndpoint.split('/').slice(1).join(' ');
@@ -1480,7 +1480,7 @@ const createAuditLog = (subject, adminEndpoint, method, data = {}, prevData = nu
 		if (method === 'get') {
 			user_id = data?.user_id?.value;
 			data = Object.fromEntries(Object.entries(data).filter(([k, v]) => (v.value != null && excludedKeys.indexOf(k) === -1)));
-			const str = Object.keys(data).map((key) =>  "" + key + ":" + data[key].value).join(", ");
+			const str = Object.keys(data).map((key) =>  '' + key + ':' + data[key].value).join(', ');
 			description = `${action} service ${methodDescriptions[method]}${str ? ` with ${str}` : ''}`;
 		}
 		else if(method === 'put' && prevData) {
@@ -1507,7 +1507,7 @@ const createAuditLog = (subject, adminEndpoint, method, data = {}, prevData = nu
 		return error;
 	}
 	
-}
+};
 
 const getUserAudits = (opts = {
 	user_id: null,
@@ -1523,8 +1523,8 @@ const getUserAudits = (opts = {
 	const exchangeInfo = getKitConfig().info;
 
 	if(!['fiat', 'boost', 'enterprise'].includes(exchangeInfo.plan)) {
-        throw new Error(SERVICE_NOT_SUPPORTED);
-    }
+		throw new Error(SERVICE_NOT_SUPPORTED);
+	}
 
 	const pagination = paginationQuery(opts.limit, opts.page);
 	const timeframe = timeframeQuery(opts.startDate, opts.endDate);
@@ -1560,7 +1560,7 @@ const getUserAudits = (opts = {
 			});
 	}
 	else {
-		return dbQuery.findAndCountAllWithRows('audit', options)
+		return dbQuery.findAndCountAllWithRows('audit', options);
 	}
 };
 
@@ -1744,12 +1744,6 @@ const inviteExchangeOperator = (invitingEmail, email, role, opts = {
 			});
 	})
 		.then(async ([user, created]) => {
-			if (created) {
-				await getModel('verification code').update(
-					{ verified: true },
-					{ where: { user_id: user.id }, fields: ['verified'] }
-				);
-			}
 			sendEmail(
 				MAILTYPE.INVITED_OPERATOR,
 				user.email,
@@ -2012,7 +2006,7 @@ const updateUserInfo = async (userId, data = {}, auditInfo) => {
 		throw new Error('No fields to update');
 	}
 	const oldValues = { user_id: userId };
-	Object.keys(updateData).forEach(key => { oldValues[key] = user.dataValues[key] });
+	Object.keys(updateData).forEach(key => { oldValues[key] = user.dataValues[key]; });
 
 	await user.update(
 		updateData,
@@ -2089,7 +2083,7 @@ const getExchangeUserSessions = (opts = {
 		],
 		order: [ordering],
 		...(!opts.format && pagination),
-	}
+	};
 
 	if (opts.format) {
 		query.attributes = ['id', 'login_id', 'status', 'last_seen', 'expiry_date', 'role', 'created_at', 'updated_at'];
@@ -2245,10 +2239,10 @@ const deleteKitUser = async (userId) => {
 	);
 
 	sendEmail(
-			MAILTYPE.USER_DELETED,
-			userEmail,
-			{},
-			user.settings
+		MAILTYPE.USER_DELETED,
+		userEmail,
+		{},
+		user.settings
 	);
 	
 	return updatedUser;
@@ -2363,11 +2357,7 @@ module.exports = {
 	getUserRole,
 	updateUserSettings,
 	omitUserFields,
-	signUpUser,
 	registerUserLogin,
-	verifyUser,
-	getVerificationCodeByUserEmail,
-	getUserEmailByVerificationCode,
 	getAllUsersAdmin,
 	updateUserRole,
 	updateUserNote,
@@ -2392,7 +2382,6 @@ module.exports = {
 	getUsersNetwork,
 	createUserCryptoAddressByNetworkId,
 	getUserStatsByNetworkId,
-	getVerificationCodeByUserId,
 	checkAffiliation,
 	verifyUserEmailByKitId,
 	generateAffiliationCode,
@@ -2410,5 +2399,8 @@ module.exports = {
 	deleteKitUser,
 	restoreKitUser,
 	revokeAllUserSessions,
-	changeKitUserEmail
+	changeKitUserEmail,
+	storeVerificationCode,
+	signUpUser,
+	verifyUser
 };
