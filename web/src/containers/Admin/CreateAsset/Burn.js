@@ -48,12 +48,12 @@ const Burn = ({
 			const formProps = {
 				currency: coinFormData.symbol,
 				amount,
-				description,
 				user_id: user_id ? parseInt(user_id, 10) : user_id,
-				fee,
+				...(fee && { fee }),
+				...(description && { description }),
 				status: Number(status) ? true : false,
-				transaction_id,
-				address,
+				...(transaction_id && { transaction_id }),
+				...(address && { address }),
 			};
 			if (type === 'mint') {
 				handleMint(formProps);
