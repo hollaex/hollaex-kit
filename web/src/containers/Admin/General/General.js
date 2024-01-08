@@ -1122,6 +1122,7 @@ class GeneralContent extends Component {
 						isUpgrade={isUpgrade}
 						buttonSubmitting={buttonSubmitting}
 						isFiatUpgrade={isFiatUpgrade}
+						coins={coins}
 					/>
 				) : null}
 				{activeTab === 'security' ? (

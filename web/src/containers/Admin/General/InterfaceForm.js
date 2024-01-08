@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { ReactSVG } from 'react-svg';
-import { Button, Checkbox, Form } from 'antd';
+import { Button, Checkbox, Form, Modal, Select, message } from 'antd';
 import classnames from 'classnames';
 import _isEqual from 'lodash/isEqual';
 
 import { STATIC_ICONS } from 'config/icons';
 import FormButton from 'components/FormButton/Button';
-
+import { updateConstants } from './action';
+import { CloseOutlined } from '@ant-design/icons';
 const { Item } = Form;
 
 const InterfaceForm = ({
@@ -15,9 +16,17 @@ const InterfaceForm = ({
 	isUpgrade,
 	buttonSubmitting,
 	isFiatUpgrade,
+	coins,
 }) => {
 	const [isSubmit, setIsSubmit] = useState(!buttonSubmitting);
 	const [form] = Form.useForm();
+	const [balanceHistoryCurrency, setBalanceHistoryCurrency] = useState({
+		currency: null,
+	});
+
+	const [displayBalanceHistoryModal, setDisplayBalanceHistoryModal] = useState(
+		false
+	);
 
 	const handleSubmit = (values) => {
 		let formValues = {};
@@ -28,11 +37,22 @@ const InterfaceForm = ({
 				pro_trade: !!values.pro_trade,
 				stake_page: !!values.stake_page,
 				cefi_stake: !!values.cefi_stake,
+				balance_history_config: !!values.balance_history_config,
 				home_page: isUpgrade ? false : !!values.home_page,
 				ultimate_fiat: !!values.ultimate_fiat,
 				apps: !!values.apps,
 			};
 			handleSaveInterface(formValues);
+
+			updateConstants({
+				kit: {
+					balance_history_config: {
+						currency: balanceHistoryCurrency.currency || 'usdt',
+						active: values.balance_history_config || false,
+						date_enabled: new Date(),
+					},
+				},
+			});
 		}
 	};
 
@@ -45,8 +65,12 @@ const InterfaceForm = ({
 	};
 
 	const handleSubmitData = (formProps) => {
-		setIsSubmit(true);
-		handleSubmit(formProps);
+		if (formProps.balance_history_config) {
+			setDisplayBalanceHistoryModal(true);
+		} else {
+			setIsSubmit(true);
+			handleSubmit(formProps);
+		}
 	};
 
 	let initialValue = initialValues;
@@ -57,6 +81,92 @@ const InterfaceForm = ({
 	}
 	return (
 		<div className="general-wrapper">
+			{displayBalanceHistoryModal && (
+				<Modal
+					maskClosable={false}
+					closeIcon={<CloseOutlined style={{ color: 'white' }} />}
+					bodyStyle={{
+						backgroundColor: '#27339D',
+						marginTop: 60,
+					}}
+					visible={displayBalanceHistoryModal}
+					width={400}
+					footer={null}
+					onCancel={() => {
+						setDisplayBalanceHistoryModal(false);
+					}}
+				>
+					<h2 style={{ fontWeight: '600', color: 'white' }}>
+						Balance History Config
+					</h2>
+
+					<div className="mb-5">
+						<div className="mb-2">Profit&Loss Currency</div>
+						<Select
+							showSearch
+							className="select-box"
+							placeholder="Select asset for p/l analysis"
+							value={balanceHistoryCurrency.currency}
+							style={{ width: 250 }}
+							onChange={(e) => {
+								setBalanceHistoryCurrency({
+									currency: e,
+								});
+							}}
+						>
+							{Object.keys(coins).map((key) => (
+								<Select.Option value={key}>{coins[key].fullname}</Select.Option>
+							))}
+						</Select>
+					</div>
+
+					<div
+						style={{
+							display: 'flex',
+							flexDirection: 'row',
+							gap: 15,
+							justifyContent: 'space-between',
+							marginTop: 30,
+						}}
+					>
+						<Button
+							onClick={() => {
+								setDisplayBalanceHistoryModal(false);
+							}}
+							style={{
+								backgroundColor: '#288500',
+								color: 'white',
+								flex: 1,
+								height: 35,
+							}}
+							type="default"
+						>
+							Back
+						</Button>
+						<Button
+							onClick={async () => {
+								if (!balanceHistoryCurrency.currency) {
+									message.error('Please Select currency');
+									return;
+								}
+								setIsSubmit(true);
+								handleSubmit(form.getFieldsValue());
+								setDisplayBalanceHistoryModal(false);
+							}}
+							style={{
+								backgroundColor: '#288500',
+								color: 'white',
+								flex: 1,
+								height: 35,
+							}}
+							type="default"
+						>
+							Proceed
+						</Button>
+					</div>
+				</Modal>
+			)}
+
 			<div className="sub-title">Features</div>
 			<div className="description">
 				Select the features that will be available on your exchange.
@@ -153,6 +263,25 @@ const InterfaceForm = ({
 							</div>
 						</Checkbox>
 					</Item>
+
+					{!isFiatUpgrade && (
+						<Item name="balance_history_config" valuePropName="checked">
+							<Checkbox className="mt-3">
+								<div className="d-flex align-items-center">
+									<ReactSVG
+										src={STATIC_ICONS.CANDLES_LOGO}
+										className="feature-icon mr-1"
+									/>
+									<div className="ml-2 checkbox-txt">
+										Profit&Loss Analytics
+										<div className="small-text">
+											(User Balance History, P/L analysis)
+										</div>
+									</div>
+								</div>
+							</Checkbox>
+						</Item>
+					)}
 
 					<div className="d-flex">
 						<div

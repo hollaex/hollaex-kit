@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useCallback, Fragment } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import withConfig from 'components/ConfigProvider/withConfig';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
+// eslint-disable-next-line
 import { Coin, EditWrapper } from 'components';
 import { Link } from 'react-router';
 import { Button, Spin } from 'antd';
@@ -10,7 +11,11 @@ import { fetchBalanceHistory, fetchPlHistory } from './actions';
 import BigNumber from 'bignumber.js';
 import moment from 'moment';
 
-const ProfitLossSection = ({ coins, balance_history_config }) => {
+const ProfitLossSection = ({
+	coins,
+	balance_history_config,
+	handleBalanceHistory,
+}) => {
 	const month = [
 		'Jan',
 		'Feb',
@@ -41,6 +46,7 @@ const ProfitLossSection = ({ coins, balance_history_config }) => {
 		currentTablePage: 1,
 		isRemaining: true,
 	});
+	// eslint-disable-next-line
 	const [selectedDate, setSelectedDate] = useState();
 	const [currentBalance, setCurrentBalance] = useState();
 	const [latestBalance, setLatestBalance] = useState();
@@ -72,7 +78,7 @@ const ProfitLossSection = ({ coins, balance_history_config }) => {
 				data: graphData,
 				color: '#FFFF00',
 				cursor: 'pointer',
-
+				showInLegend: false,
 				point: {
 					events: {
 						click: (e, x, y) => {
@@ -80,9 +86,10 @@ const ProfitLossSection = ({ coins, balance_history_config }) => {
 							const balance = balanceHistory.find(
 								(history) =>
 									`${moment(history.created_at).date()} ${
-										month[moment().month()]
-									}` == graphData[e.point.x || 0][0]
+										month[moment(history.created_at).month()]
+									}` === graphData[e.point.x || 0][0]
 							);
+
 							setCurrentBalance(balance);
 						},
 					},
@@ -119,7 +126,7 @@ const ProfitLossSection = ({ coins, balance_history_config }) => {
 						: response.data.length - 1;
 				const balanceData = response.data.find(
 					(history) =>
-						moment(history.created_at).format('YYYY-MM-DD') ==
+						moment(history.created_at).format('YYYY-MM-DD') ===
 						moment()
 							.subtract(length + 1, 'days')
 							.format('YYYY-MM-DD')
@@ -128,10 +135,10 @@ const ProfitLossSection = ({ coins, balance_history_config }) => {
 
 				let newGraphData = [];
 				for (let i = 0; i < length; i++) {
-					if (currentDay == 7) {
+					if (currentDay === 7) {
 						const balanceData = response.data.find(
 							(history) =>
-								moment(history.created_at).format('YYYY-MM-DD') ==
+								moment(history.created_at).format('YYYY-MM-DD') ===
 								moment()
 									.subtract(i + 1, 'days')
 									.format('YYYY-MM-DD')
@@ -148,11 +155,11 @@ const ProfitLossSection = ({ coins, balance_history_config }) => {
 							}`,
 							balanceData ? balanceData.total : 0,
 						]);
-					} else if (currentDay == 30) {
-						if (i % 2 == 0) {
+					} else if (currentDay === 30) {
+						if (i % 2 === 0) {
 							const balanceData = response.data.find(
 								(history) =>
-									moment(history.created_at).format('YYYY-MM-DD') ==
+									moment(history.created_at).format('YYYY-MM-DD') ===
 									moment()
 										.subtract(i + 1, 'days')
 										.format('YYYY-MM-DD')
@@ -170,11 +177,11 @@ const ProfitLossSection = ({ coins, balance_history_config }) => {
 								balanceData ? balanceData.total : 0,
 							]);
 						}
-					} else if (currentDay == 90) {
-						if (i % 30 == 0) {
+					} else if (currentDay === 90) {
+						if (i % 30 === 0) {
 							const balanceData = response.data.find(
 								(history) =>
-									moment(history.created_at).format('YYYY-MM-DD') ==
+									moment(history.created_at).format('YYYY-MM-DD') ===
 									moment()
 										.subtract(i + 1, 'days')
 										.format('YYYY-MM-DD')
@@ -276,12 +283,34 @@ const ProfitLossSection = ({ coins, balance_history_config }) => {
 		);
 	};
 
+	const getSourceDecimals = (symbol, value) => {
+		const incrementUnit = coins[symbol].increment_unit;
+		const decimalPoint = new BigNumber(incrementUnit).dp();
+		const sourceAmount = new BigNumber(value || 0)
+			.decimalPlaces(decimalPoint)
+			.toNumber();
+
+		return sourceAmount;
+	};
 	return (
 		<Spin spinning={isLoading}>
 			<div
 				className="wallet-assets_block"
 				style={{ marginTop: 20, paddingTop: 20 }}
 			>
+				<div style={{ position: 'absolute', top: -25, left: -5 }}>
+					<span
+						style={{
+							cursor: 'pointer',
+							textDecoration: 'underline',
+							color: '#5257CD',
+						}}
+						onClick={() => handleBalanceHistory(false)}
+					>
+						{'<'}Back
+					</span>{' '}
+					to wallet
+				</div>
 				<div
 					style={{
 						display: 'flex',
@@ -304,7 +333,10 @@ const ProfitLossSection = ({ coins, balance_history_config }) => {
 						</div>
 						<div style={{ fontSize: 19, marginBottom: 5 }}>
 							{balance_history_config?.currency?.toUpperCase() || 'USDT'}{' '}
-							{latestBalance?.total || '0'}
+							{getSourceDecimals(
+								balance_history_config?.currency || 'usdt',
+								latestBalance?.total
+							) || '0'}
 						</div>
 						<div
 							style={{
@@ -325,7 +357,7 @@ const ProfitLossSection = ({ coins, balance_history_config }) => {
 					style={{ display: 'flex', gap: 5, marginTop: 15, marginBottom: 15 }}
 				>
 					<Button
-						style={{ fontWeight: currentDay == 7 ? 'bold' : '400' }}
+						style={{ fontWeight: currentDay === 7 ? 'bold' : '400' }}
 						ghost
 						onClick={() => {
 							setCurrentDay(7);
@@ -338,7 +370,7 @@ const ProfitLossSection = ({ coins, balance_history_config }) => {
 						1 week
 					</Button>
 					<Button
-						style={{ fontWeight: currentDay == 30 ? 'bold' : '400' }}
+						style={{ fontWeight: currentDay === 30 ? 'bold' : '400' }}
 						ghost
 						onClick={() => {
 							setCurrentDay(30);
@@ -351,7 +383,7 @@ const ProfitLossSection = ({ coins, balance_history_config }) => {
 						1 month
 					</Button>
 					<Button
-						style={{ fontWeight: currentDay == 90 ? 'bold' : '400' }}
+						style={{ fontWeight: currentDay === 90 ? 'bold' : '400' }}
 						ghost
 						onClick={() => {
 							setCurrentDay(90);
@@ -363,13 +395,13 @@ const ProfitLossSection = ({ coins, balance_history_config }) => {
 					>
 						3 month
 					</Button>
-					<Button
-						style={{ fontWeight: currentDay == 'custom' ? 'bold' : '400' }}
+					{/* <Button
+						style={{ fontWeight: currentDay === 'custom' ? 'bold' : '400' }}
 						ghost
 						onClick={() => {}}
 					>
 						Custom
-					</Button>
+					</Button> */}
 				</div>
 
 				<HighchartsReact highcharts={Highcharts} options={options} />
