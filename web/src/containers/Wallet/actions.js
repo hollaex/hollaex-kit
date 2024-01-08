@@ -4,7 +4,7 @@ import { requestAuthenticated } from 'utils';
 export const fetchBalanceHistory = (values) => {
 	const queryValues =
 		values && Object.keys(values).length ? querystring.stringify(values) : '';
-	return requestAuthenticated(`/user/history?${queryValues}`);
+	return requestAuthenticated(`/user/balance-history?${queryValues}`);
 };
 
 export const fetchPlHistory = (values) => {
