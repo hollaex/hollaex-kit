@@ -9,12 +9,14 @@ Given ('Admin logged in and find "userlevel@testsae.com"',(userlevelATtestsaeDOT
     cy.get('[name="password"]').clear().type(Cypress.env('ADMIN_PASS'))
     cy.get('.holla-button').should('be.visible').should('be.enabled').click()
     cy.get('.warning_text').should('not.exist') 
-    cy.get('#trade-nav-container > :nth-child(3) > :nth-child(2)')
+    cy.get('#trade-nav-container > :nth-child(4) > :nth-child(2)')
     .should('contain',Cypress.env('ADMIN_USER'))
     cy.contains('Operator controls').click()
     cy.contains('Users').click({force: true})
-    cy.get('.ant-input').type(Cypress.env('LEVEL_NAME'))
-    cy.get('.ant-btn').click()
+    cy.get(':nth-child(2) > .ant-input').type(Cypress.env('LEVEL_NAME')) 
+    cy.get(':nth-child(2) > .ant-btn').click()
+    cy.wait(5000)
+    cy.get(':nth-child(8) > .ant-btn').click()
 })
 
 When ('Choose new level  in the range of "1" to "11"',(one,eleven)=>{
