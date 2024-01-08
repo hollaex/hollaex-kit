@@ -7,7 +7,6 @@ import { FLEX_CENTER_CLASSES } from 'config/constants';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { EditWrapper } from 'components';
-import { Button as AntButton } from 'antd';
 
 class ConfirmWithdrawal extends Component {
 	state = {
@@ -103,49 +102,27 @@ class ConfirmWithdrawal extends Component {
 				)}
 			>
 				<div
-					style={{
-						backgroundColor: '#303236',
-						width: 400,
-						height: 400,
-						display: 'flex',
-						flexDirection: 'column',
-						alignItems: 'center',
-						gap: 20,
-					}}
+					className={classnames(
+						...FLEX_CENTER_CLASSES,
+						'flex-column',
+						'w-100',
+						{ auth_wrapper: !loading }
+					)}
 				>
-					<div style={{ fontSize: 18, color: 'white', marginTop: 30 }}>
-						Withdrawal Details
-					</div>
-
-					<div>
-						<div>
-							Amount: <span style={{ fontWeight: 'bold' }}> 5 XHT</span>{' '}
-						</div>
-						<hr style={{ borderBottom: '1px solid white' }} />
-						<div>
-							Fee: <span style={{ fontWeight: 'bold' }}> 6 XHT</span>{' '}
-						</div>
-						<hr style={{ borderBottom: '1px solid white' }} />
-						<div>
-							Address:{' '}
-							<span style={{ fontWeight: 'bold' }}>
-								{' '}
-								0xb9b424250b1d5025f69d5c099b7a90f0a0a9c275
-							</span>
-						</div>
-						<hr style={{ borderBottom: '1px solid white' }} />
-						<div>
-							Network: <span style={{ fontWeight: 'bold' }}> eth</span>
-						</div>
-					</div>
-
-					<div>Please click the button below to confirm the withdrawal</div>
-					<AntButton
-						type="default"
-						style={{ color: 'white', backgroundColor: '#7C81FF' }}
-					>
-						Confirm Withdrawal
-					</AntButton>
+					<IconTitle
+						textType="title"
+						className="w-100"
+						{...childProps.titleSection}
+					/>
+					{childProps.child}
+					{!loading && (
+						<Button
+							className="w-50"
+							stringId="WITHDRAW_PAGE.GO_WITHDRAWAL_HISTORY"
+							label={STRINGS['WITHDRAW_PAGE.GO_WITHDRAWAL_HISTORY']}
+							onClick={this.handleTransaction}
+						/>
+					)}
 				</div>
 			</div>
 		);
