@@ -96,12 +96,12 @@ const AssetsBlock = ({
 			.catch((err) => err);
 
 		fetchBalanceHistory({
-			start_date: moment().subtract(30, 'days').toISOString(),
+			start_date: moment().subtract(7, 'days').toISOString(),
 			end_date: moment().subtract().toISOString(),
 		})
 			.then((response) => {
 				const length =
-					response.data.length > 30 ? 30 - 1 : response.data.length - 1;
+					response.data.length > 7 ? 7 - 1 : response.data.length - 1;
 
 				let newGraphData = [];
 				for (let i = 0; i < length; i++) {
