@@ -1078,7 +1078,7 @@ const CeFi = ({ coins, features, kit }) => {
 							marginTop: 30,
 						}}
 					>
-						Disclamier
+						disclaimer
 					</h3>
 
 					<h4
@@ -1089,11 +1089,11 @@ const CeFi = ({ coins, features, kit }) => {
 							marginTop: 30,
 						}}
 					>
-						Warning disclamier (optional)
+						Warning disclaimer (optional)
 					</h4>
 
 					<div style={{ fontWeight: 'bold', fontSize: 16, marginBottom: 4 }}>
-						Add a disclamier
+						Add a disclaimer
 					</div>
 					<div style={{ marginBottom: 30, textAlign: 'center' }}>
 						<Input.TextArea

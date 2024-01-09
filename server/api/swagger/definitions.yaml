@@ -1155,6 +1155,8 @@ definitions:
         format: double
       transaction_id:
         type: string
+      address:
+        type: string
       status:
         type: boolean
       email:

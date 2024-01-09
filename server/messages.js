@@ -158,7 +158,6 @@ exports.WRONG_PAGE = 'Value "page" must be an integer';
 exports.WRONG_ORDER_BY = 'Value "order_by" cannot include whitespaces';
 exports.WRONG_ORDER = 'Value "order" must be one of: ["asc", "desc"]';
 exports.SAME_PASSWORD = 'New password must be different from previous password';
-exports.VERIFICATION_CODE_USED = 'Verification code already used';
 exports.USERNAME_IS_TAKEN = 'Username is already taken. Select a different username';
 exports.TOKEN_OTP_MUST_BE_ENABLED = 'OTP must be enabled to create a token';
 exports.CODE_NOT_FOUND = 'Code not found';

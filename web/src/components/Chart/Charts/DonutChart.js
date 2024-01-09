@@ -23,7 +23,7 @@ function translate(x, y) {
 // function rotate (d) {
 //     return `rotate(${180 / Math.PI * (d.startAngle + d.endAngle) / 2 + 45})`;
 // };
-const filterDonutPercentage = 1;
+const filterDonutPercentage = 8;
 class DonutChart extends Component {
 	state = {
 		width: 0,
@@ -204,20 +204,30 @@ class DonutChart extends Component {
 			return arr;
 		};
 
+		const renderDonut = () => {
+			const data = sortedData.map((value, i) =>
+				this.renderSlice(value, i, width, height)
+			);
+
+			if (this.state && this.state.isData) {
+				if (!isDonutValue) {
+					return filterByPercentage().map((value, i) =>
+						this.renderSlice(value, i, width, height)
+					);
+				} else {
+					return data;
+				}
+			} else {
+				return data;
+			}
+		};
+
 		return (
 			<Fragment>
 				<EventListener target="window" onResize={this.handleResize} />
 				<div id={this.props.id} className="w-100 h-100">
 					<svg width="100%" height="100%">
-						<g transform={translate(x, y)}>
-							{!isDonutValue
-								? filterByPercentage().map((value, i) =>
-										this.renderSlice(value, i, width, height)
-								  )
-								: sortedData.map((value, i) =>
-										this.renderSlice(value, i, width, height)
-								  )}
-						</g>
+						<g transform={translate(x, y)}>{renderDonut()}</g>
 					</svg>
 				</div>
 			</Fragment>
