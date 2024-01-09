@@ -280,7 +280,7 @@
 		"INVALID_UUID": "Invalid code",
 		"TEXT_1": "You've successfully verified your email.",
 		"TEXT_2": "You can now proceed to login",
-		"CANCEL_BUTTON": "CANCEL",
+		"CANCEL_BUTTON": "CLOSE",
 		"CONFIRM_BUTTON": "CONFIRM SIGN UP",
 		"CONFIRM_TEXT": "Confirm Sign Up",
 		"CONFIRM_DESCRIPTION": "Please confirm your account sign up by clicking the button below"
@@ -1038,7 +1038,7 @@
 		"WITHDRAWAL_CONFIRM_FEE": "Fee",
 		"WITHDRAWAL_CONFIRM_ADDRESS": "Address",
 		"WITHDRAWAL_CONFIRM_NETWORK": "Network",
-		"WITHDRAWAL_CANCEL_BUTTON": "CANCEL",
+		"WITHDRAWAL_CANCEL_BUTTON": "CLOSE",
 		"WITHDRAWAL_CONFIRM_BUTTON": "CONFIRM WITHDRAWAL"
 	},
 	"WALLET_BUTTON_BASE_DEPOSIT": "deposit",
