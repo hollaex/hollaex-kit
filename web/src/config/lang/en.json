@@ -279,7 +279,11 @@
 	"VERIFICATION_EMAIL": {
 		"INVALID_UUID": "Invalid code",
 		"TEXT_1": "You've successfully verified your email.",
-		"TEXT_2": "You can now proceed to login"
+		"TEXT_2": "You can now proceed to login",
+		"CANCEL_BUTTON": "CANCEL",
+		"CONFIRM_BUTTON": "CONFIRM SIGN UP",
+		"CONFIRM_TEXT": "Confirm Sign Up",
+		"CONFIRM_DESCRIPTION": "Please confirm your account sign up by clicking the button below"
 	},
 	"USER_VERIFICATION": {
 		"INFO_TXT": "Here you can monitor your progress towards verification and an account upgrades.",
@@ -1027,7 +1031,15 @@
 		"WITHDRAW_CONFIRM_SUCCESS_2": "In order to view your withdrawal status please visit your withdrawal history page.",
 		"GO_WITHDRAWAL_HISTORY": "Go To Withdrawal History",
 		"WITHDRAWALS_FORM_ERROR_TITLE": "Incorrect transfer info",
-		"WITHDRAWALS_FORM_ERROR": "Your fund transfer has failed. Sending funds to an email requires that the user has an account within this exchange. Check that the email is correct and please try again."
+		"WITHDRAWALS_FORM_ERROR": "Your fund transfer has failed. Sending funds to an email requires that the user has an account within this exchange. Check that the email is correct and please try again.",
+		"WITHDRAWAL_CONFIRM_FINAL": "Final Withdrawal Confirmation",
+		"WITHDRAWAL_CONFIRM_WARNING": "Please check your withdrawal below before confirming.",
+		"WITHDRAWAL_CONFIRM_AMOUNT": "Amount",
+		"WITHDRAWAL_CONFIRM_FEE": "Fee",
+		"WITHDRAWAL_CONFIRM_ADDRESS": "Address",
+		"WITHDRAWAL_CONFIRM_NETWORK": "Network",
+		"WITHDRAWAL_CANCEL_BUTTON": "CANCEL",
+		"WITHDRAWAL_CONFIRM_BUTTON": "CONFIRM WITHDRAWAL"
 	},
 	"WALLET_BUTTON_BASE_DEPOSIT": "deposit",
 	"WALLET_BUTTON_BASE_WITHDRAW": "withdraw",
