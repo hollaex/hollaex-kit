@@ -1042,6 +1042,7 @@ const mintAssetByNetworkId = (
 		status: null,
 		email: null,
 		fee: null,
+		address: null,
 		additionalHeaders: null
 	}) => {
 	return getNodeLib().mintAsset(networkId, currency, amount, opts);
@@ -1097,6 +1098,7 @@ const burnAssetByNetworkId = (
 		status: null,
 		email: null,
 		fee: null,
+		address: null,
 		additionalHeaders: null
 	}) => {
 	return getNodeLib().burnAsset(networkId, currency, amount, opts);
