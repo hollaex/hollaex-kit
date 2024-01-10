@@ -2687,5 +2687,5 @@ module.exports = {
 	getUserBalanceHistory,
 	fetchUserProfitLossInfo,
 	revokeAllUserSessions,
-	changeKitUserEmail,
+	changeKitUserEmail
 };
