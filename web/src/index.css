@@ -3905,11 +3905,14 @@ table th {
   flex: 1; }
 
 .withdrawal-confirm-warpper .withdrawal-confirm-title {
-  font-size: 3.5rem;
   font-weight: normal; }
 
 .withdrawal-confirm-warpper .withdrawal-confirm--image {
   width: 22rem; }
+
+.withdrawal-confirm-warpper .withdrawal-confirm-option {
+  background-color: var(--base_wallet-sidebar-and-popup);
+  padding: 25px; }
 
 .direction_ltr .summary-container .trader-account-icon {
   margin-right: 1rem; }

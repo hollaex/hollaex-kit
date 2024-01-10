@@ -91,6 +91,7 @@ class ConfirmWithdrawal extends Component {
 									{this.props?.coins?.[currency]?.logo && (
 										<img
 											src={this.props?.coins?.[currency]?.logo}
+											alt={currency}
 											width={20}
 											height={20}
 										/>
