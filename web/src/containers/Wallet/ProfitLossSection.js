@@ -176,24 +176,20 @@ const ProfitLossSection = ({
 
 						// }
 					} else if (currentDay === 90) {
-						if (i % 30 === 0) {
-							const balanceData = response.data.find(
-								(history) =>
-									moment(history.created_at).format('YYYY-MM-DD') ===
-									moment(queryValues.end_date)
-										.subtract(i, 'days')
-										.format('YYYY-MM-DD')
-							);
-							if (!balanceData) continue;
-							newGraphData.push([
-								`${moment(queryValues.end_date).subtract(i, 'days').date()} ${
-									month[
-										moment(queryValues.end_date).subtract(i, 'days').month()
-									]
-								}`,
-								balanceData ? balanceData.total : 0,
-							]);
-						}
+						const balanceData = response.data.find(
+							(history) =>
+								moment(history.created_at).format('YYYY-MM-DD') ===
+								moment(queryValues.end_date)
+									.subtract(i, 'days')
+									.format('YYYY-MM-DD')
+						);
+						if (!balanceData) continue;
+						newGraphData.push([
+							`${moment(queryValues.end_date).subtract(i, 'days').date()} ${
+								month[moment(queryValues.end_date).subtract(i, 'days').month()]
+							}`,
+							balanceData ? balanceData.total : 0,
+						]);
 					}
 				}
 
