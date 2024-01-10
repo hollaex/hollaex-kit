@@ -1118,6 +1118,7 @@ class GeneralContent extends Component {
 				{activeTab === 'features' ? (
 					<InterfaceForm
 						initialValues={kit.features}
+						constants={constants}
 						handleSaveInterface={this.handleSaveInterface}
 						isUpgrade={isUpgrade}
 						buttonSubmitting={buttonSubmitting}

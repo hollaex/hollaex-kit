@@ -199,7 +199,6 @@ const ProfitLossSection = ({
 
 				newGraphData.reverse();
 
-				console.log({ GG: response?.data });
 				setGraphData(newGraphData);
 				setCurrentBalance(balance);
 				setLatestBalance(response?.data?.[0]);

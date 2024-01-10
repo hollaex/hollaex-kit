@@ -286,8 +286,16 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 		if (!BALANCE_HISTORY_SUPPORTED_PLANS.includes(exchangeInfo.plan))
 			throw new Error('Exchange plan does not support this feature');
 
-		if(!newKitConfig.balance_history_config.hasOwnProperty('currency')) {
+		if (!newKitConfig.balance_history_config.hasOwnProperty('currency')) {
 			throw new Error('currency does not exist');
+		}
+
+		if (existingKitConfig?.balance_history_config?.currency !== newKitConfig.balance_history_config.currency) {
+			throw new Error('currency cannot be changed');
+		}
+
+		if (existingKitConfig?.balance_history_config?.date_enabled !== newKitConfig.balance_history_config.date_enabled) {
+			throw new Error('date cannot be changed');
 		}
 
 		if(!newKitConfig.balance_history_config.hasOwnProperty('active')) {

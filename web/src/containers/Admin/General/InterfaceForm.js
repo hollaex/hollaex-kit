@@ -12,6 +12,7 @@ const { Item } = Form;
 
 const InterfaceForm = ({
 	initialValues = {},
+	constants,
 	handleSaveInterface,
 	isUpgrade,
 	buttonSubmitting,
@@ -21,7 +22,9 @@ const InterfaceForm = ({
 	const [isSubmit, setIsSubmit] = useState(!buttonSubmitting);
 	const [form] = Form.useForm();
 	const [balanceHistoryCurrency, setBalanceHistoryCurrency] = useState({
-		currency: null,
+		currency: constants?.kit?.balance_history_config?.currency || null,
+		date_enabled:
+			constants?.kit?.balance_history_config?.date_enabled || new Date(),
 	});
 
 	const [displayBalanceHistoryModal, setDisplayBalanceHistoryModal] = useState(
@@ -44,15 +47,17 @@ const InterfaceForm = ({
 			};
 			handleSaveInterface(formValues);
 
-			updateConstants({
-				kit: {
-					balance_history_config: {
-						currency: balanceHistoryCurrency.currency || 'usdt',
-						active: !!values.balance_history_config || false,
-						date_enabled: new Date(),
+			setTimeout(() => {
+				updateConstants({
+					kit: {
+						balance_history_config: {
+							currency: balanceHistoryCurrency.currency || 'usdt',
+							active: !!values.balance_history_config || false,
+							date_enabled: balanceHistoryCurrency.date_enabled,
+						},
 					},
-				},
-			});
+				});
+			}, 1000);
 		}
 	};
 
@@ -65,7 +70,7 @@ const InterfaceForm = ({
 	};
 
 	const handleSubmitData = (formProps) => {
-		if (formProps.balance_history_config) {
+		if (formProps.balance_history_config && !balanceHistoryCurrency.currency) {
 			setDisplayBalanceHistoryModal(true);
 		} else {
 			setIsSubmit(true);
@@ -101,7 +106,14 @@ const InterfaceForm = ({
 					</h2>
 
 					<div className="mb-5">
-						<div className="mb-2">Profit&Loss Currency</div>
+						<div style={{ fontSize: 16 }} className="mb-2">
+							Profit&Loss Currency
+						</div>
+						<div style={{ marginBottom: 10, color: '#ccc' }}>
+							This currency is used as the base currency to calculate and
+							display all the profits and loss. It is normally set to a fiat
+							currency or a stable coin.
+						</div>
 						<Select
 							showSearch
 							className="select-box"
