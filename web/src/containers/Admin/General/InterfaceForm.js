@@ -6,7 +6,6 @@ import _isEqual from 'lodash/isEqual';
 
 import { STATIC_ICONS } from 'config/icons';
 import FormButton from 'components/FormButton/Button';
-import { updateConstants } from './action';
 import { CloseOutlined } from '@ant-design/icons';
 const { Item } = Form;
 
@@ -45,19 +44,12 @@ const InterfaceForm = ({
 				ultimate_fiat: !!values.ultimate_fiat,
 				apps: !!values.apps,
 			};
-			handleSaveInterface(formValues);
-
-			setTimeout(() => {
-				updateConstants({
-					kit: {
-						balance_history_config: {
-							currency: balanceHistoryCurrency.currency || 'usdt',
-							active: !!values.balance_history_config || false,
-							date_enabled: balanceHistoryCurrency.date_enabled,
-						},
-					},
-				});
-			}, 1000);
+			const balance_history_config = {
+				currency: balanceHistoryCurrency.currency || 'usdt',
+				active: !!values.balance_history_config || false,
+				date_enabled: balanceHistoryCurrency.date_enabled,
+			};
+			handleSaveInterface(formValues, balance_history_config);
 		}
 	};
 

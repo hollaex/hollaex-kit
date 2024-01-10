@@ -532,10 +532,11 @@ class GeneralContent extends Component {
 		);
 	};
 
-	handleSaveInterface = (features) => {
+	handleSaveInterface = (features, balance_history_config = null) => {
 		this.handleSubmitGeneral({
 			kit: {
 				features,
+				balance_history_config,
 			},
 		});
 	};
