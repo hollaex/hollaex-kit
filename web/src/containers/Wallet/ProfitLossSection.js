@@ -15,6 +15,8 @@ const ProfitLossSection = ({
 	coins,
 	balance_history_config,
 	handleBalanceHistory,
+	balances,
+	pricesInNative,
 }) => {
 	const month = [
 		'Jan',
@@ -116,6 +118,7 @@ const ProfitLossSection = ({
 		setIsLoading(true);
 		fetchBalanceHistory({ ...queryValues })
 			.then((response) => {
+				console.log({ pricesInNative });
 				setBalanceHistory(
 					page === 1 ? response.data : [...balanceHistory, ...response.data]
 				);
@@ -127,9 +130,7 @@ const ProfitLossSection = ({
 				const balanceData = response.data.find(
 					(history) =>
 						moment(history.created_at).format('YYYY-MM-DD') ===
-						moment()
-							.subtract(length + 1, 'days')
-							.format('YYYY-MM-DD')
+						moment().subtract(length, 'days').format('YYYY-MM-DD')
 				);
 				let balance = balanceData || response.data[length];
 
@@ -139,62 +140,43 @@ const ProfitLossSection = ({
 						const balanceData = response.data.find(
 							(history) =>
 								moment(history.created_at).format('YYYY-MM-DD') ===
-								moment()
-									.subtract(i + 1, 'days')
-									.format('YYYY-MM-DD')
+								moment().subtract(i, 'days').format('YYYY-MM-DD')
 						);
+						if (!balanceData) continue;
 						newGraphData.push([
-							`${moment()
-								.subtract(i + 1, 'days')
-								.date()} ${
-								month[
-									moment()
-										.subtract(i + 1, 'days')
-										.month()
-								]
+							`${moment().subtract(i, 'days').date()} ${
+								month[moment().subtract(i, 'days').month()]
 							}`,
 							balanceData ? balanceData.total : 0,
 						]);
 					} else if (currentDay === 30) {
-						if (i % 2 === 0) {
-							const balanceData = response.data.find(
-								(history) =>
-									moment(history.created_at).format('YYYY-MM-DD') ===
-									moment()
-										.subtract(i + 1, 'days')
-										.format('YYYY-MM-DD')
-							);
-							newGraphData.push([
-								`${moment()
-									.subtract(i + 1, 'days')
-									.date()} ${
-									month[
-										moment()
-											.subtract(i + 1, 'days')
-											.month()
-									]
-								}`,
-								balanceData ? balanceData.total : 0,
-							]);
-						}
+						// if (currentDay === 30) {
+						const balanceData = response.data.find(
+							(history) =>
+								moment(history.created_at).format('YYYY-MM-DD') ===
+								moment().subtract(i, 'days').format('YYYY-MM-DD')
+						);
+						if (!balanceData) continue;
+						newGraphData.push([
+							`${moment().subtract(i, 'days').date()} ${
+								month[moment().subtract(i, 'days').month()]
+							}`,
+							balanceData ? balanceData.total : 0,
+						]);
+
+						console.log({ newGraphData });
+						// }
 					} else if (currentDay === 90) {
 						if (i % 30 === 0) {
 							const balanceData = response.data.find(
 								(history) =>
 									moment(history.created_at).format('YYYY-MM-DD') ===
-									moment()
-										.subtract(i + 1, 'days')
-										.format('YYYY-MM-DD')
+									moment().subtract(i, 'days').format('YYYY-MM-DD')
 							);
+							if (!balanceData) continue;
 							newGraphData.push([
-								`${moment()
-									.subtract(i + 1, 'days')
-									.date()} ${
-									month[
-										moment()
-											.subtract(i + 1, 'days')
-											.month()
-									]
+								`${moment().subtract(i, 'days').date()} ${
+									month[moment().subtract(i, 'days').month()]
 								}`,
 								balanceData ? balanceData.total : 0,
 							]);
@@ -341,7 +323,9 @@ const ProfitLossSection = ({
 						<div
 							style={{
 								color:
-									Number(userPL?.['7d']?.total || 0) > 0
+									Number(userPL?.['7d']?.total || 0) == 0
+										? '#ccc'
+										: (userPL?.['7d']?.total || 0) > 0
 										? '#329932'
 										: '#EB5344',
 							}}
@@ -393,7 +377,7 @@ const ProfitLossSection = ({
 							});
 						}}
 					>
-						3 month
+						3 months
 					</Button>
 					{/* <Button
 						style={{ fontWeight: currentDay === 'custom' ? 'bold' : '400' }}
@@ -417,6 +401,19 @@ const ProfitLossSection = ({
 									Below is a wallet breakdown on{' '}
 									{moment(currentBalance?.created_at).format('DD/MMM/YYYY')}.
 									Click chart above to update the table below.
+								</div>
+							</div>
+							<div>
+								<div>
+									Est. Total Balance{' '}
+									{moment(currentBalance?.created_at).format('DD/MMM/YYYY')}
+								</div>
+								<div style={{ fontSize: 19, marginBottom: 5 }}>
+									{balance_history_config?.currency?.toUpperCase() || 'USDT'}{' '}
+									{getSourceDecimals(
+										balance_history_config?.currency || 'usdt',
+										currentBalance?.total
+									) || '0'}
 								</div>
 							</div>
 						</div>

@@ -79,7 +79,7 @@ const {
 } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
-const { getKitConfig, isValidTierLevel, getKitTier, isDatetime } = require('./common');
+const { getKitConfig, isValidTierLevel, getKitTier, isDatetime, getKitCoins } = require('./common');
 const { isValidPassword, createSession } = require('./security');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { all, reject } = require('bluebird');
@@ -91,6 +91,7 @@ const uuid = require('uuid/v4');
 const { checkCaptcha, validatePassword, verifyOtpBeforeAction } = require('./security');
 const geoip = require('geoip-lite');
 const moment = require('moment');
+const BigNumber = require('bignumber.js');
 
 let networkIdToKitId = {};
 let kitIdToNetworkId = {};
@@ -2378,7 +2379,7 @@ const getUserBalanceHistory = (opts = {
 
 	if (opts.format) {
 		return dbQuery.fetchAllRecords('balanceHistory', options)
-			.then((balance) => {
+			.then(async (balance) => {
 				if (opts.format && opts.format === 'csv') {
 					if (balance.data.length === 0) {
 						throw new Error(NO_DATA_FOR_CSV);
@@ -2392,6 +2393,56 @@ const getUserBalanceHistory = (opts = {
 	}
 	else {
 		return dbQuery.findAndCountAllWithRows('balanceHistory', options)
+		.then(async (balances) => {
+			if(opts.user_id) {
+						
+				const nativeCurrency = getKitConfig()?.balance_history_config?.currency || 'usdt';
+							
+				const exchangeCoins = getKitCoins();
+				const conversions = await getNodeLib().getOraclePrices(exchangeCoins, {
+					quote: nativeCurrency,
+					amount: 1
+					});
+
+					let symbols = {};
+
+					const { getUserBalanceByKitId } = require('./wallet');
+
+					const balance = await getUserBalanceByKitId(opts.user_id);
+
+					for (const key of Object.keys(balance)) {
+						if (key.includes('available') && balance[key]) {
+							let symbol = key?.split('_')?.[0];
+							symbols[symbol] = balance[key];
+						}
+					}
+
+
+					const coins = Object.keys(symbols);
+
+					let total = 0;
+					let history = {};
+					for (const coin of coins) {
+						if (!conversions[coin]) continue;
+						if (conversions[coin] === -1) continue;
+					
+						const nativeCurrencyValue = new BigNumber(symbols[coin]).multipliedBy(conversions[coin]).toNumber();
+					
+						history[coin] = { original_value: new BigNumber(symbols[coin]).toNumber(), native_currency_value: nativeCurrencyValue };
+						total = new BigNumber(total).plus(nativeCurrencyValue).toNumber();
+					}
+
+					balances.count += 1;
+					balances.data.push({
+						user_id: Number(opts.user_id),
+						balance: history,
+						total,
+						created_at: new Date()
+					})
+				}
+
+				return balances;
+		})
 	}
 };
 

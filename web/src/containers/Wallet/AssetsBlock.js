@@ -108,19 +108,11 @@ const AssetsBlock = ({
 					const balanceData = response.data.find(
 						(history) =>
 							moment(history.created_at).format('YYYY-MM-DD') ===
-							moment()
-								.subtract(i + 1, 'days')
-								.format('YYYY-MM-DD')
+							moment().subtract(i, 'days').format('YYYY-MM-DD')
 					);
 					newGraphData.push([
-						`${moment()
-							.subtract(i + 1, 'days')
-							.date()} ${
-							month[
-								moment()
-									.subtract(i + 1, 'days')
-									.month()
-							]
+						`${moment().subtract(i, 'days').date()} ${
+							month[moment().subtract(i, 'days').month()]
 						}`,
 						balanceData ? balanceData.total : 0,
 					]);
@@ -442,7 +434,9 @@ const AssetsBlock = ({
 								<div
 									style={{
 										color:
-											Number(userPL?.['7d']?.total || 0) > 0
+											Number(userPL?.['7d']?.total || 0) == 0
+												? '#ccc'
+												: (userPL?.['7d']?.total || 0) > 0
 												? '#329932'
 												: '#EB5344',
 									}}
