@@ -942,7 +942,8 @@ const mintAsset = (req, res) => {
 		transaction_id,
 		status,
 		email,
-		fee
+		fee,
+		address
 	} = req.swagger.params.data.value;
 
 	loggerAdmin.info(
@@ -958,7 +959,9 @@ const mintAsset = (req, res) => {
 		'status',
 		status,
 		'fee',
-		fee
+		fee,
+		'address',
+		address
 	);
 
 	toolsLib.user.getUserByKitId(user_id)
@@ -976,6 +979,7 @@ const mintAsset = (req, res) => {
 					transactionId: transaction_id,
 					status,
 					email,
+					address,
 					additionalHeaders: {
 						'x-forwarded-for': req.headers['x-forwarded-for']
 					}
@@ -1089,7 +1093,8 @@ const burnAsset = (req, res) => {
 		transaction_id,
 		status,
 		email,
-		fee
+		fee,
+		address
 	} = req.swagger.params.data.value;
 
 	loggerAdmin.info(
@@ -1105,7 +1110,9 @@ const burnAsset = (req, res) => {
 		'status',
 		status,
 		'fee',
-		fee
+		fee,
+		'address',
+		address
 	);
 
 	toolsLib.user.getUserByKitId(user_id)
@@ -1123,6 +1130,7 @@ const burnAsset = (req, res) => {
 					status,
 					email,
 					fee,
+					address,
 					additionalHeaders: {
 						'x-forwarded-for': req.headers['x-forwarded-for']
 					}

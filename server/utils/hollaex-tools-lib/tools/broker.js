@@ -249,11 +249,7 @@ const calculatePrice = async (side, spread, formula, refresh_interval, brokerId,
 					}
 	
 
-					if (exchangePair[0] === 'bybit') {
-						marketPrice = side === 'buy' ? ticker.ask : ticker.bid;
-					} else {
-						marketPrice = ticker.last;
-					}
+					marketPrice = ticker.last
 					if (refresh_interval)
 						client.setexAsync(userCachekey, refresh_interval, JSON.stringify(tickers));
 				} else {
@@ -265,11 +261,7 @@ const calculatePrice = async (side, spread, formula, refresh_interval, brokerId,
 						if (refresh_interval)
 							client.setexAsync(userCachekey, refresh_interval, JSON.stringify(tickers));
 					}
-					if (exchangePair[0] === 'bybit') {
-						marketPrice = side === 'buy' ? ticker.ask : ticker.bid;
-					} else {
-						marketPrice = ticker.last;
-					}
+					marketPrice = ticker.last;
 				}
 			}
 			else {
@@ -476,8 +468,10 @@ const reverseTransaction = async (orderData) => {
 
 				const formattedRebalancingSymbol = broker.rebalancing_symbol && broker.rebalancing_symbol.split('-').join('/').toUpperCase();
 				if (exchangeKey === 'bybit') {
-					const marketPrice = side === 'buy' ? price * 1.01 : price * 0.99;
-					exchange.createOrder(formattedRebalancingSymbol, 'limit', side, size, marketPrice)
+					const orderbook = await exchange.fetchOrderBook(formattedRebalancingSymbol);
+					const price = side === 'buy' ? orderbook['asks'][0][0] * 1.01 : orderbook['bids'][0][0] * 0.99;
+
+					exchange.createOrder(formattedRebalancingSymbol, 'limit', side, size, price)
 						.catch((err) => { notifyUser(err.message, broker.user_id); });
 				}
 				else {
