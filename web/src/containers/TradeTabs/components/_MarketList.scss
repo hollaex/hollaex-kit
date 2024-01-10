@@ -92,6 +92,17 @@
 				min-width: 150px !important;
 				direction: ltr;
 			}
+			.td-trade {
+					width: 7rem;
+					.action_notification-wrapper {
+						right: auto;
+						top: 1.25rem;
+						.action_notification-text {
+							font-size: 1.2rem;
+							line-height: 1.2rem;
+						}
+					}
+			}
 		}
 		.market-list__caret {
 			span:not(.important-text) {
@@ -100,6 +111,9 @@
 			.important-text {
 				opacity: 0.8;
 			}
+		}
+		.view-more-btn {
+			margin-bottom: 2rem;
 		}
 	}
 }

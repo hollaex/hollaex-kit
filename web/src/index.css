@@ -4033,7 +4033,7 @@ table th {
 .digital-market-wrapper {
   display: flex;
   justify-content: center;
-  padding-top: 5rem; }
+  padding-top: 2rem; }
   .digital-market-wrapper .market-wrapper {
     width: 70%; }
     .digital-market-wrapper .market-wrapper .gray-text {
@@ -4047,7 +4047,8 @@ table th {
         cursor: pointer; }
       .digital-market-wrapper .market-wrapper .header-container .digital-assets-icon {
         display: flex !important;
-        flex-direction: inherit !important; }
+        flex-direction: inherit !important;
+        margin-top: 0; }
       .digital-market-wrapper .market-wrapper .header-container .icon_title-wrapper .icon_title-svg svg {
         width: 3.5rem !important;
         height: 3.5rem !important;
@@ -4622,12 +4623,23 @@ table th {
   .market-list__container .market-list__block .market-list__block-table .td-amount {
     min-width: 150px !important;
     direction: ltr; }
+  .market-list__container .market-list__block .market-list__block-table .td-trade {
+    width: 7rem; }
+    .market-list__container .market-list__block .market-list__block-table .td-trade .action_notification-wrapper {
+      right: auto;
+      top: 1.25rem; }
+      .market-list__container .market-list__block .market-list__block-table .td-trade .action_notification-wrapper .action_notification-text {
+        font-size: 1.2rem;
+        line-height: 1.2rem; }
 
 .market-list__container .market-list__block .market-list__caret span:not(.important-text) {
   opacity: 0.3; }
 
 .market-list__container .market-list__block .market-list__caret .important-text {
   opacity: 0.8; }
+
+.market-list__container .market-list__block .view-more-btn {
+  margin-bottom: 2rem; }
 
 .direction_ltr .market-list__container .market-list__block .market-list__block-table th {
   font-family: "Raleway";
