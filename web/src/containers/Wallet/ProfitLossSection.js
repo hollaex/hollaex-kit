@@ -6,10 +6,13 @@ import HighchartsReact from 'highcharts-react-official';
 // eslint-disable-next-line
 import { Coin, EditWrapper } from 'components';
 import { Link } from 'react-router';
-import { Button, Spin } from 'antd';
+import { Button, Spin, DatePicker, message, Modal } from 'antd';
 import { fetchBalanceHistory, fetchPlHistory } from './actions';
 import BigNumber from 'bignumber.js';
 import moment from 'moment';
+import STRINGS from 'config/localizedStrings';
+import { CloseOutlined } from '@ant-design/icons';
+import './_ProfitLoss.scss';
 
 const ProfitLossSection = ({
 	coins,
@@ -55,6 +58,8 @@ const ProfitLossSection = ({
 	const [userPL, setUserPL] = useState();
 	const [current, setCurrent] = useState(0);
 	const [graphData, setGraphData] = useState([]);
+	const [customDate, setCustomDate] = useState(false);
+	const [customDateValues, setCustomDateValues] = useState();
 
 	const options = {
 		title: {
@@ -118,7 +123,6 @@ const ProfitLossSection = ({
 		setIsLoading(true);
 		fetchBalanceHistory({ ...queryValues })
 			.then((response) => {
-				console.log({ pricesInNative });
 				setBalanceHistory(
 					page === 1 ? response.data : [...balanceHistory, ...response.data]
 				);
@@ -130,7 +134,9 @@ const ProfitLossSection = ({
 				const balanceData = response.data.find(
 					(history) =>
 						moment(history.created_at).format('YYYY-MM-DD') ===
-						moment().subtract(length, 'days').format('YYYY-MM-DD')
+						moment(queryValues.end_date)
+							.subtract(length, 'days')
+							.format('YYYY-MM-DD')
 				);
 				let balance = balanceData || response.data[length];
 
@@ -140,12 +146,14 @@ const ProfitLossSection = ({
 						const balanceData = response.data.find(
 							(history) =>
 								moment(history.created_at).format('YYYY-MM-DD') ===
-								moment().subtract(i, 'days').format('YYYY-MM-DD')
+								moment(queryValues.end_date)
+									.subtract(i, 'days')
+									.format('YYYY-MM-DD')
 						);
 						if (!balanceData) continue;
 						newGraphData.push([
-							`${moment().subtract(i, 'days').date()} ${
-								month[moment().subtract(i, 'days').month()]
+							`${moment(queryValues.end_date).subtract(i, 'days').date()} ${
+								month[moment(queryValues.end_date).subtract(i, 'days').month()]
 							}`,
 							balanceData ? balanceData.total : 0,
 						]);
@@ -154,29 +162,34 @@ const ProfitLossSection = ({
 						const balanceData = response.data.find(
 							(history) =>
 								moment(history.created_at).format('YYYY-MM-DD') ===
-								moment().subtract(i, 'days').format('YYYY-MM-DD')
+								moment(queryValues.end_date)
+									.subtract(i, 'days')
+									.format('YYYY-MM-DD')
 						);
 						if (!balanceData) continue;
 						newGraphData.push([
-							`${moment().subtract(i, 'days').date()} ${
-								month[moment().subtract(i, 'days').month()]
+							`${moment(queryValues.end_date).subtract(i, 'days').date()} ${
+								month[moment(queryValues.end_date).subtract(i, 'days').month()]
 							}`,
 							balanceData ? balanceData.total : 0,
 						]);
 
-						console.log({ newGraphData });
 						// }
 					} else if (currentDay === 90) {
 						if (i % 30 === 0) {
 							const balanceData = response.data.find(
 								(history) =>
 									moment(history.created_at).format('YYYY-MM-DD') ===
-									moment().subtract(i, 'days').format('YYYY-MM-DD')
+									moment(queryValues.end_date)
+										.subtract(i, 'days')
+										.format('YYYY-MM-DD')
 							);
 							if (!balanceData) continue;
 							newGraphData.push([
-								`${moment().subtract(i, 'days').date()} ${
-									month[moment().subtract(i, 'days').month()]
+								`${moment(queryValues.end_date).subtract(i, 'days').date()} ${
+									month[
+										moment(queryValues.end_date).subtract(i, 'days').month()
+									]
 								}`,
 								balanceData ? balanceData.total : 0,
 							]);
@@ -186,6 +199,7 @@ const ProfitLossSection = ({
 
 				newGraphData.reverse();
 
+				console.log({ GG: response?.data });
 				setGraphData(newGraphData);
 				setCurrentBalance(balance);
 				setLatestBalance(response?.data?.[0]);
@@ -265,6 +279,157 @@ const ProfitLossSection = ({
 		);
 	};
 
+	const customDateModal = () => {
+		return (
+			<>
+				<Modal
+					maskClosable={false}
+					closeIcon={<CloseOutlined className="stake_theme" />}
+					className="stake_table_theme stake_theme"
+					bodyStyle={{}}
+					visible={customDate}
+					width={400}
+					footer={null}
+					onCancel={() => {
+						setCustomDate(false);
+					}}
+				>
+					<div
+						style={{
+							display: 'flex',
+							justifyContent: 'center',
+							flexDirection: 'column',
+							alignItems: 'center',
+						}}
+					>
+						<div
+							className="stake_theme"
+							style={{
+								width: '100%',
+							}}
+						>
+							<div style={{ marginTop: 20, marginBottom: 20 }}>
+								Select specific dates to fetch your history data (date
+								difference cannot go further than 3 months)
+							</div>
+							<div style={{ marginTop: 5 }}>
+								<div>Start Date</div>
+								<DatePicker
+									suffixIcon={null}
+									className="pldatePicker"
+									placeholder={'Select start date'}
+									style={{
+										width: 200,
+									}}
+									onChange={(date, dateString) => {
+										setCustomDateValues({
+											...customDateValues,
+											start_date: dateString,
+										});
+									}}
+									format={'YYYY/MM/DD'}
+								/>
+							</div>
+							<div style={{ marginTop: 5 }}>
+								<div>End Date</div>
+								<DatePicker
+									suffixIcon={null}
+									className="pldatePicker"
+									placeholder={'Select end date'}
+									style={{
+										width: 200,
+									}}
+									onChange={(date, dateString) => {
+										setCustomDateValues({
+											...customDateValues,
+											end_date: dateString,
+										});
+									}}
+									format={'YYYY/MM/DD'}
+								/>
+							</div>
+						</div>
+					</div>
+					<div
+						style={{
+							display: 'flex',
+							flexDirection: 'row',
+							gap: 15,
+							justifyContent: 'space-between',
+							marginTop: 30,
+						}}
+					>
+						<Button
+							onClick={() => {
+								setCustomDate(false);
+								setCustomDateValues();
+							}}
+							style={{
+								backgroundColor: '#5D63FF',
+								color: 'white',
+								flex: 1,
+								height: 35,
+							}}
+							type="default"
+						>
+							BACK
+						</Button>
+						<Button
+							onClick={async () => {
+								try {
+									if (!customDateValues.end_date) {
+										message.error('Please choose an end date');
+										return;
+									}
+									if (!customDateValues.start_date) {
+										message.error('Please choose a start date');
+										return;
+									}
+									const duration = moment.duration(
+										moment(customDateValues.end_date).diff(
+											moment(customDateValues.start_date)
+										)
+									);
+									const months = duration.asMonths();
+
+									if (months > 3) {
+										message.error(
+											'Date difference cannot go further than 3 months'
+										);
+										return;
+									}
+
+									setCurrentDay(90);
+									setQueryValues({
+										start_date: moment(customDateValues.start_date)
+											.startOf('day')
+											.toISOString(),
+										end_date: moment(customDateValues.end_date)
+											.endOf('day')
+											.toISOString(),
+									});
+									setCustomDate(false);
+									setCustomDateValues();
+								} catch (error) {
+									message.error('Something went wrong');
+								}
+							}}
+							style={{
+								backgroundColor: '#5D63FF',
+								color: 'white',
+								flex: 1,
+								height: 35,
+							}}
+							type="default"
+						>
+							PROCEED
+						</Button>
+					</div>
+				</Modal>
+			</>
+		);
+	};
+
 	const getSourceDecimals = (symbol, value) => {
 		const incrementUnit = coins[symbol].increment_unit;
 		const decimalPoint = new BigNumber(incrementUnit).dp();
@@ -280,6 +445,7 @@ const ProfitLossSection = ({
 				className="wallet-assets_block"
 				style={{ marginTop: 20, paddingTop: 20 }}
 			>
+				{customDateModal()}
 				<div style={{ position: 'absolute', top: -25, left: -5 }}>
 					<span
 						style={{
@@ -289,9 +455,14 @@ const ProfitLossSection = ({
 						}}
 						onClick={() => handleBalanceHistory(false)}
 					>
-						{'<'}Back
+						{'<'}
+						<EditWrapper stringId="PROFIT_LOSS.BACK">
+							{STRINGS['PROFIT_LOSS.BACK']}
+						</EditWrapper>
 					</span>{' '}
-					to wallet
+					<EditWrapper stringId="PROFIT_LOSS.BACK_TO_WALLET">
+						{STRINGS['PROFIT_LOSS.BACK_TO_WALLET']}
+					</EditWrapper>
 				</div>
 				<div
 					style={{
@@ -301,16 +472,22 @@ const ProfitLossSection = ({
 					}}
 				>
 					<div>
-						<div>Balance performance</div>
 						<div>
-							Your wallet's balance performance over time and the asset
-							breakdown. Click the dates below to see your wallet's performance
-							on that day.
+							<EditWrapper stringId="PROFIT_LOSS.WALLET_PERFORMANCE_TITLE">
+								{STRINGS['PROFIT_LOSS.WALLET_PERFORMANCE_TITLE']}
+							</EditWrapper>
+						</div>
+						<div>
+							<EditWrapper stringId="PROFIT_LOSS.WALLET_PERFORMANCE_DESCRIPTION">
+								{STRINGS['PROFIT_LOSS.WALLET_PERFORMANCE_DESCRIPTION']}
+							</EditWrapper>
 						</div>
 					</div>
 					<div>
 						<div>
-							Est. Total Balance{' '}
+							<EditWrapper stringId="PROFIT_LOSS.EST_TOTAL_BALANCE">
+								{STRINGS['PROFIT_LOSS.EST_TOTAL_BALANCE']}
+							</EditWrapper>{' '}
 							{moment(latestBalance?.created_at).format('DD/MMM/YYYY')}
 						</div>
 						<div style={{ fontSize: 19, marginBottom: 5 }}>
@@ -323,14 +500,17 @@ const ProfitLossSection = ({
 						<div
 							style={{
 								color:
-									Number(userPL?.['7d']?.total || 0) == 0
+									Number(userPL?.['7d']?.total || 0) === 0
 										? '#ccc'
 										: (userPL?.['7d']?.total || 0) > 0
 										? '#329932'
 										: '#EB5344',
 							}}
 						>
-							7 Day P&L {Number(userPL?.['7d']?.total || 0) > 0 ? '+' : '-'}{' '}
+							<EditWrapper stringId="PROFIT_LOSS.PL_7_DAY">
+								{STRINGS['PROFIT_LOSS.PL_7_DAY']}
+							</EditWrapper>{' '}
+							{Number(userPL?.['7d']?.total || 0) > 0 ? '+' : '-'}{' '}
 							{userPL?.['7d']?.total || 0}{' '}
 							{balance_history_config?.currency?.toUpperCase() || 'USDT'}
 						</div>
@@ -342,6 +522,7 @@ const ProfitLossSection = ({
 				>
 					<Button
 						style={{ fontWeight: currentDay === 7 ? 'bold' : '400' }}
+						className="plButton"
 						ghost
 						onClick={() => {
 							setCurrentDay(7);
@@ -351,10 +532,14 @@ const ProfitLossSection = ({
 							});
 						}}
 					>
-						1 week
+						<span style={{ marginRight: 3 }}>1</span>
+						<EditWrapper stringId="PROFIT_LOSS.WEEK">
+							{STRINGS['PROFIT_LOSS.WEEK']}
+						</EditWrapper>
 					</Button>
 					<Button
 						style={{ fontWeight: currentDay === 30 ? 'bold' : '400' }}
+						className="plButton"
 						ghost
 						onClick={() => {
 							setCurrentDay(30);
@@ -364,10 +549,14 @@ const ProfitLossSection = ({
 							});
 						}}
 					>
-						1 month
+						<span style={{ marginRight: 3 }}>1 </span>{' '}
+						<EditWrapper stringId="PROFIT_LOSS.MONTH">
+							{STRINGS['PROFIT_LOSS.MONTH']}
+						</EditWrapper>
 					</Button>
 					<Button
 						style={{ fontWeight: currentDay === 90 ? 'bold' : '400' }}
+						className="plButton"
 						ghost
 						onClick={() => {
 							setCurrentDay(90);
@@ -377,15 +566,21 @@ const ProfitLossSection = ({
 							});
 						}}
 					>
-						3 months
+						<span style={{ marginRight: 3 }}>3 </span>{' '}
+						<EditWrapper stringId="PROFIT_LOSS.MONTHS">
+							{STRINGS['PROFIT_LOSS.MONTHS']}
+						</EditWrapper>
 					</Button>
-					{/* <Button
+					<Button
 						style={{ fontWeight: currentDay === 'custom' ? 'bold' : '400' }}
+						className="plButton"
 						ghost
-						onClick={() => {}}
+						onClick={() => {
+							setCustomDate(true);
+						}}
 					>
 						Custom
-					</Button> */}
+					</Button>
 				</div>
 
 				<HighchartsReact highcharts={Highcharts} options={options} />
@@ -395,17 +590,25 @@ const ProfitLossSection = ({
 						<div style={{ display: 'flex', justifyContent: 'space-between' }}>
 							<div>
 								<div style={{ fontWeight: 'bold' }}>
-									Wallet balance breakdown
+									<EditWrapper stringId="PROFIT_LOSS.WALLET_BALANCE">
+										{STRINGS['PROFIT_LOSS.WALLET_BALANCE']}
+									</EditWrapper>
 								</div>
 								<div style={{ width: 300, marginBottom: 10 }}>
-									Below is a wallet breakdown on{' '}
+									<EditWrapper stringId="PROFIT_LOSS.WALLET_BALANCE_DESCRIPTION_1">
+										{STRINGS['PROFIT_LOSS.WALLET_BALANCE_DESCRIPTION_1']}
+									</EditWrapper>{' '}
 									{moment(currentBalance?.created_at).format('DD/MMM/YYYY')}.
-									Click chart above to update the table below.
+									<EditWrapper stringId="PROFIT_LOSS.WALLET_BALANCE_DESCRIPTION_2">
+										{STRINGS['PROFIT_LOSS.WALLET_BALANCE_DESCRIPTION_2']}
+									</EditWrapper>
 								</div>
 							</div>
 							<div>
 								<div>
-									Est. Total Balance{' '}
+									<EditWrapper stringId="PROFIT_LOSS.EST_TOTAL_BALANCE">
+										{STRINGS['PROFIT_LOSS.EST_TOTAL_BALANCE']}
+									</EditWrapper>{' '}
 									{moment(currentBalance?.created_at).format('DD/MMM/YYYY')}
 								</div>
 								<div style={{ fontSize: 19, marginBottom: 5 }}>
@@ -415,6 +618,44 @@ const ProfitLossSection = ({
 										currentBalance?.total
 									) || '0'}
 								</div>
+								<div>
+									<div>
+										<EditWrapper stringId="PROFIT_LOSS.DATE_SELECT">
+											{STRINGS['PROFIT_LOSS.DATE_SELECT']}
+										</EditWrapper>
+										:
+									</div>
+									<DatePicker
+										suffixIcon={null}
+										className="pldatePicker"
+										placeholder={STRINGS['PROFIT_LOSS.DATE_SELECT']}
+										style={{
+											width: 200,
+										}}
+										onChange={(date, dateString) => {
+											if (!dateString) return;
+											fetchBalanceHistory({
+												start_date: moment(dateString)
+													.startOf('day')
+													.toISOString(),
+												end_date: moment(dateString).endOf('day').toISOString(),
+												limit: 1,
+											})
+												.then((response) => {
+													let balance = response?.data?.[0];
+
+													if (balance) setCurrentBalance(balance);
+													else {
+														message.error('Balance not found');
+													}
+												})
+												.catch((error) => {
+													message.error('Something went wrong');
+												});
+										}}
+										format={'YYYY/MM/DD'}
+									/>
+								</div>
 							</div>
 						</div>
 
@@ -423,9 +664,21 @@ const ProfitLossSection = ({
 								<thead>
 									<tr className="table-bottom-border">
 										<th />
-										<th>Assets name</th>
-										<th>Balance Amount</th>
-										<th>Value</th>
+										<th>
+											<EditWrapper stringId="PROFIT_LOSS.ASSET_NAME">
+												{STRINGS['PROFIT_LOSS.ASSET_NAME']}
+											</EditWrapper>
+										</th>
+										<th>
+											<EditWrapper stringId="PROFIT_LOSS.BALANCE_AMOUNT">
+												{STRINGS['PROFIT_LOSS.BALANCE_AMOUNT']}
+											</EditWrapper>
+										</th>
+										<th>
+											<EditWrapper stringId="PROFIT_LOSS.VALUE">
+												{STRINGS['PROFIT_LOSS.VALUE']}
+											</EditWrapper>
+										</th>
 									</tr>
 								</thead>
 								<tbody className="account-limits-content font-weight-bold">

@@ -110,6 +110,7 @@ const AssetsBlock = ({
 							moment(history.created_at).format('YYYY-MM-DD') ===
 							moment().subtract(i, 'days').format('YYYY-MM-DD')
 					);
+					if (!balanceData) continue;
 					newGraphData.push([
 						`${moment().subtract(i, 'days').date()} ${
 							month[moment().subtract(i, 'days').month()]
@@ -434,7 +435,7 @@ const AssetsBlock = ({
 								<div
 									style={{
 										color:
-											Number(userPL?.['7d']?.total || 0) == 0
+											Number(userPL?.['7d']?.total || 0) === 0
 												? '#ccc'
 												: (userPL?.['7d']?.total || 0) > 0
 												? '#329932'

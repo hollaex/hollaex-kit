@@ -2394,7 +2394,7 @@ const getUserBalanceHistory = (opts = {
 	else {
 		return dbQuery.findAndCountAllWithRows('balanceHistory', options)
 		.then(async (balances) => {
-			if(opts.user_id) {
+			if(opts.user_id && (moment(opts.startDate).format('LL') !== moment(opts.endDate).subtract(1, 'days').format('LL'))) {
 						
 				const nativeCurrency = getKitConfig()?.balance_history_config?.currency || 'usdt';
 							
@@ -2433,7 +2433,7 @@ const getUserBalanceHistory = (opts = {
 					}
 
 					balances.count += 1;
-					balances.data.push({
+					balances.data.unshift({
 						user_id: Number(opts.user_id),
 						balance: history,
 						total,

@@ -48,7 +48,7 @@ const InterfaceForm = ({
 				kit: {
 					balance_history_config: {
 						currency: balanceHistoryCurrency.currency || 'usdt',
-						active: values.balance_history_config || false,
+						active: !!values.balance_history_config || false,
 						date_enabled: new Date(),
 					},
 				},
