@@ -271,7 +271,11 @@
 	"VERIFICATION_EMAIL": {
 		"INVALID_UUID": "无效的码",
 		"TEXT_1": "你已成功验证了电子邮件",
-		"TEXT_2": "请继续登录"
+		"TEXT_2": "请继续登录",
+		"CANCEL_BUTTON": "关闭",
+		"CONFIRM_BUTTON": "确认注册",
+		"CONFIRM_TEXT": "确认注册",
+		"CONFIRM_DESCRIPTION": "请通过点击下面的按钮确认您的账户注册"
 	},
 	"USER_VERIFICATION": {
 		"INFO_TXT": "在此页面可查看验证及账户升级进度 ",
@@ -734,7 +738,15 @@
 		"CONFIRM_VIA_EMAIL_3": "the withdrawal via your email within 5 minutes.",
 		"WITHDRAW_CONFIRM_SUCCESS_1": "Your withdrawal is confirmed and sent.",
 		"WITHDRAW_CONFIRM_SUCCESS_2": "If you’d like to view your withdrawal please visit your withdrawal history page.",
-		"GO_WITHDRAWAL_HISTORY": "Go To Withdrawal History"
+		"GO_WITHDRAWAL_HISTORY": "Go To Withdrawal History",
+		"WITHDRAWAL_CONFIRM_FINAL": "最终提款确认",
+		"WITHDRAWAL_CONFIRM_WARNING": "请在确认前检查下面的提款。",
+		"WITHDRAWAL_CONFIRM_AMOUNT": "金额",
+		"WITHDRAWAL_CONFIRM_FEE": "费用",
+		"WITHDRAWAL_CONFIRM_ADDRESS": "地址",
+		"WITHDRAWAL_CONFIRM_NETWORK": "网络",
+		"WITHDRAWAL_CANCEL_BUTTON": "关闭",
+		"WITHDRAWAL_CONFIRM_BUTTON": "确认提款"
 	},
 	"WALLET_BUTTON_BASE_DEPOSIT": "充值",
 	"WALLET_BUTTON_BASE_WITHDRAW": "提款",

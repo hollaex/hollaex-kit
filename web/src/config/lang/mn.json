@@ -253,7 +253,11 @@
 	"VERIFICATION_EMAIL": {
 		"INVALID_UUID": "Код буруу байна",
 		"TEXT_1": "Та и-мэйл хаягаа амжилттай баталгаажууллаа.",
-		"TEXT_2": "Та одоо системд нэвтрэх боломжтой"
+		"TEXT_2": "Та одоо системд нэвтрэх боломжтой",
+		"CANCEL_BUTTON": "ХААХ",
+		"CONFIRM_BUTTON": "БАТАЛГАА СИГН АП",
+		"CONFIRM_TEXT": "Баталгаа сигн ап",
+		"CONFIRM_DESCRIPTION": "Та таны данс бүртгэлээ баталгаажуулахын тулд доорх товчлуур дээр дарна уу"
 	},
 	"USER_VERIFICATION": {
 		"INFO_TXT": "Энэ хэсэгт та баталгаажуулалт болон бүртгэл шинэчлэх хэсгийг харж болно.",
@@ -954,7 +958,15 @@
 		"WITHDRAW_CONFIRM_SUCCESS_2": "Зарлагын төлвөө Зарлагын түүх хэсгээс харна уу.",
 		"GO_WITHDRAWAL_HISTORY": "Зарлагын түүх",
 		"WITHDRAWALS_FORM_ERROR_TITLE": "Шилжүүлгийн мэдээлэл буруу байна",
-		"WITHDRAWALS_FORM_ERROR": "Таны сангийн шилжүүлэг амжилтгүй боллоо. Имэйл рүү мөнгө илгээхдээ хэрэглэгч энэ бирж дотор данстай байхыг шаарддаг. Имэйл зөв эсэхийг шалгаад дахин оролдоно уу."
+		"WITHDRAWALS_FORM_ERROR": "Таны сангийн шилжүүлэг амжилтгүй боллоо. Имэйл рүү мөнгө илгээхдээ хэрэглэгч энэ бирж дотор данстай байхыг шаарддаг. Имэйл зөв эсэхийг шалгаад дахин оролдоно уу.",
+		"WITHDRAWAL_CONFIRM_FINAL": "Төлбөрийн Баталгаа",
+		"WITHDRAWAL_CONFIRM_WARNING": "Баталгаажихаас өмнө доорхи таны зарлуулалтыг шалгана уу.",
+		"WITHDRAWAL_CONFIRM_AMOUNT": "Дүн",
+		"WITHDRAWAL_CONFIRM_FEE": "Төлбөрийн дүн",
+		"WITHDRAWAL_CONFIRM_ADDRESS": "Хаяг",
+		"WITHDRAWAL_CONFIRM_NETWORK": "Сүлжээ",
+		"WITHDRAWAL_CANCEL_BUTTON": "ХААХ",
+		"WITHDRAWAL_CONFIRM_BUTTON": "ЗАРЛУУЛАХ БАТАЛГАА"
 	},
 	"WALLET_BUTTON_BASE_DEPOSIT": "орлого",
 	"WALLET_BUTTON_BASE_WITHDRAW": "зарлага",

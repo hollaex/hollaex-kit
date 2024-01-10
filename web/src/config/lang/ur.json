@@ -257,7 +257,11 @@
 	"VERIFICATION_EMAIL": {
 		"INVALID_UUID": "غلط کوڈ",
 		"TEXT_1": "آپ نے کامیابی کے ساتھ اپنے ای میل کی تصدیق کر لی ہے۔",
-		"TEXT_2": "اب آپ لاگ ان کرنے کے لیے آگے بڑھ سکتے ہیں۔"
+		"TEXT_2": "اب آپ لاگ ان کرنے کے لیے آگے بڑھ سکتے ہیں۔",
+		"CANCEL_BUTTON": "بند کریں",
+		"CONFIRM_BUTTON": "رجسٹریشن کی تصدیق کریں",
+		"CONFIRM_TEXT": "رجسٹریشن کی تصدیق",
+		"CONFIRM_DESCRIPTION": "براہ کرم اسٹیشن زیر کرنے والے بٹن پر کلک کرکے اپنے اکاؤنٹ کی رجسٹریشن کی تصدیق کریں"
 	},
 	"USER_VERIFICATION": {
 		"INFO_TXT": "یہاں آپ تصدیق اور اکاؤنٹ اپ گریڈ کی طرف اپنی پیشرفت کی نگرانی کر سکتے ہیں۔",
@@ -958,7 +962,15 @@
 		"WITHDRAW_CONFIRM_SUCCESS_2": "اپنی واپسی کی حیثیت دیکھنے کے لیے، براہ کرم اپنی واپسی کی تاریخ کا صفحہ دیکھیں۔",
 		"GO_WITHDRAWAL_HISTORY": "واپسی کی تاریخ پر جائیں۔",
 		"WITHDRAWALS_FORM_ERROR_TITLE": "منتقلی کی غلط معلومات",
-		"WITHDRAWALS_FORM_ERROR": "آپ کا فنڈ ٹرانسفر ناکام ہو گیا ہے۔ ای میل پر رقوم بھیجنے کے لیے ضروری ہے کہ صارف کا اس تبادلے میں اکاؤنٹ ہو۔ چیک کریں کہ ای میل درست ہے اور براہ کرم دوبارہ کوشش کریں۔"
+		"WITHDRAWALS_FORM_ERROR": "آپ کا فنڈ ٹرانسفر ناکام ہو گیا ہے۔ ای میل پر رقوم بھیجنے کے لیے ضروری ہے کہ صارف کا اس تبادلے میں اکاؤنٹ ہو۔ چیک کریں کہ ای میل درست ہے اور براہ کرم دوبارہ کوشش کریں۔",
+		"WITHDRAWAL_CONFIRM_FINAL": "آخری چیکنگ کی تصدیق",
+		"WITHDRAWAL_CONFIRM_WARNING": "براہ کرم تصدیق سے پہلے اپنے وڈراول کو چیک کریں۔",
+		"WITHDRAWAL_CONFIRM_AMOUNT": "رقم",
+		"WITHDRAWAL_CONFIRM_FEE": "فیس",
+		"WITHDRAWAL_CONFIRM_ADDRESS": "پتہ",
+		"WITHDRAWAL_CONFIRM_NETWORK": "نیٹ ورک",
+		"WITHDRAWAL_CANCEL_BUTTON": "بند کریں",
+		"WITHDRAWAL_CONFIRM_BUTTON": "وڈراول کی تصدیق کریں"
 	},
 	"WALLET_BUTTON_BASE_DEPOSIT": "ڈپازٹ",
 	"WALLET_BUTTON_BASE_WITHDRAW": "واپسی",

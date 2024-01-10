@@ -272,7 +272,11 @@
 	"VERIFICATION_EMAIL": {
 		"INVALID_UUID": "유효하지 않은 코드",
 		"TEXT_1": "성공적으로 이메일 인증되었습니다.",
-		"TEXT_2": "로그인을 진행해주시기 바랍니다."
+		"TEXT_2": "로그인을 진행해주시기 바랍니다.",
+		"CANCEL_BUTTON": "닫기",
+		"CONFIRM_BUTTON": "가입 확인",
+		"CONFIRM_TEXT": "가입 확인",
+		"CONFIRM_DESCRIPTION": "아래 버튼을 클릭하여 계정 가입을 확인하십시오"
 	},
 	"USER_VERIFICATION": {
 		"INFO_TXT": "개인정보 및 계정 업그레이드 진행상황을 확인하실 수 있습니다.",
@@ -745,7 +749,15 @@
 		"CONFIRM_VIA_EMAIL_3": "the withdrawal via your email within 5 minutes.",
 		"WITHDRAW_CONFIRM_SUCCESS_1": "Your withdrawal is confirmed and sent.",
 		"WITHDRAW_CONFIRM_SUCCESS_2": "If you’d like to view your withdrawal please visit your withdrawal history page.",
-		"GO_WITHDRAWAL_HISTORY": "Go To Withdrawal History"
+		"GO_WITHDRAWAL_HISTORY": "Go To Withdrawal History",
+		"WITHDRAWAL_CONFIRM_FINAL": "최종 출금 확인",
+		"WITHDRAWAL_CONFIRM_WARNING": "확인하기 전에 아래의 출금을 확인하십시오.",
+		"WITHDRAWAL_CONFIRM_AMOUNT": "금액",
+		"WITHDRAWAL_CONFIRM_FEE": "수수료",
+		"WITHDRAWAL_CONFIRM_ADDRESS": "주소",
+		"WITHDRAWAL_CONFIRM_NETWORK": "네트워크",
+		"WITHDRAWAL_CANCEL_BUTTON": "닫기",
+		"WITHDRAWAL_CONFIRM_BUTTON": "출금 확인"
 	},
 	"WALLET_BUTTON_BASE_DEPOSIT": "입금",
 	"WALLET_BUTTON_BASE_WITHDRAW": "출금",

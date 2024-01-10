@@ -313,7 +313,11 @@
 	"VERIFICATION_EMAIL": {
 		"INVALID_UUID": "Ungültiger Code",
 		"TEXT_1": "Sie haben Ihre E-Mail erfolgreich verifiziert.",
-		"TEXT_2": "Sie können nun zur Anmeldung fortfahren."
+		"TEXT_2": "Sie können nun zur Anmeldung fortfahren.",
+		"CANCEL_BUTTON": "SCHLIEßEN",
+		"CONFIRM_BUTTON": "ANMELDUNG BESTÄTIGEN",
+		"CONFIRM_TEXT": "Anmeldung bestätigen",
+		"CONFIRM_DESCRIPTION": "Bestätigen Sie bitte Ihre Kontoanmeldung, indem Sie auf die Schaltfläche unten klicken"
 	},
 	"USER_VERIFICATION": {
 		"INFO_TXT": "Hier können Sie Ihren Fortschritt auf dem Weg zur Verifizierung und zu einem Konto-Upgrade überwachen.",
@@ -805,7 +809,15 @@
 		"GO_WITHDRAWAL_HISTORY": "Zur Abhebungsverlaufsseite gehen",
 		"MESSAGE_FEE_COIN": "Transaktionsgebühr von {0}",
 		"WITHDRAWALS_FORM_ERROR_TITLE": "Falsche Übertragungsinformationen",
-		"WITHDRAWALS_FORM_ERROR": "Ihre Überweisung ist fehlgeschlagen. Das Senden von Geldern an eine E-Mail erfordert, dass der Benutzer über ein Konto bei dieser Börse verfügt. Überprüfen Sie, ob die E-Mail-Adresse korrekt ist, und versuchen Sie es erneut."
+		"WITHDRAWALS_FORM_ERROR": "Ihre Überweisung ist fehlgeschlagen. Das Senden von Geldern an eine E-Mail erfordert, dass der Benutzer über ein Konto bei dieser Börse verfügt. Überprüfen Sie, ob die E-Mail-Adresse korrekt ist, und versuchen Sie es erneut.",
+		"WITHDRAWAL_CONFIRM_FINAL": "Endgültige Bestätigung der Abhebung",
+		"WITHDRAWAL_CONFIRM_WARNING": "Bitte überprüfen Sie Ihre Abhebung unten, bevor Sie bestätigen.",
+		"WITHDRAWAL_CONFIRM_AMOUNT": "Betrag",
+		"WITHDRAWAL_CONFIRM_FEE": "Gebühr",
+		"WITHDRAWAL_CONFIRM_ADDRESS": "Adresse",
+		"WITHDRAWAL_CONFIRM_NETWORK": "Netzwerk",
+		"WITHDRAWAL_CANCEL_BUTTON": "SCHLIEßEN",
+		"WITHDRAWAL_CONFIRM_BUTTON": "ABHEBUNG BESTÄTIGEN"
 	},
 	"WALLET_BUTTON_BASE_DEPOSIT": "einzahlen",
 	"WALLET_BUTTON_BASE_WITHDRAW": "abheben",
