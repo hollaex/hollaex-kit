@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import withConfig from 'components/ConfigProvider/withConfig';
 import Highcharts from 'highcharts';
@@ -104,18 +104,27 @@ const ProfitLossSection = ({
 			},
 		],
 	};
+	const firstRender = useRef(true);
 
 	useEffect(() => {
-		setIsLoading(true);
-		fetchPlHistory().then((res) => {
-			setUserPL(res);
-		});
-		requestHistory(queryFilters.page, queryFilters.limit);
+		if (firstRender.current) {
+			firstRender.current = false;
+		} else {
+			setIsLoading(true);
+			fetchPlHistory().then((res) => {
+				setUserPL(res);
+			});
+			requestHistory(queryFilters.page, queryFilters.limit);
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	useEffect(() => {
-		requestHistory(queryFilters.page, queryFilters.limit);
+		if (firstRender.current) {
+			firstRender.current = false;
+		} else {
+			requestHistory(queryFilters.page, queryFilters.limit);
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [queryValues]);
 

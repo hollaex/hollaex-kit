@@ -127,7 +127,7 @@ const AssetsBlock = ({
 			.catch((error) => {
 				// setIsLoading(false);
 			});
-	});
+	}, []);
 	const month = [
 		'Jan',
 		'Feb',
