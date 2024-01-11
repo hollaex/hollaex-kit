@@ -312,7 +312,11 @@
 	"VERIFICATION_EMAIL": {
 		"INVALID_UUID": "Código inválido",
 		"TEXT_1": "Você confirmou seu e-mail com sucesso.",
-		"TEXT_2": "Você pode agora fazer o seu login"
+		"TEXT_2": "Você pode agora fazer o seu login",
+		"CANCEL_BUTTON": "FECHAR",
+		"CONFIRM_BUTTON": "CONFIRMAR CADASTRO",
+		"CONFIRM_TEXT": "Confirmar Cadastro",
+		"CONFIRM_DESCRIPTION": "Por favor, confirme o cadastro da sua conta clicando no botão abaixo"
 	},
 	"USER_VERIFICATION": {
 		"INFO_TXT": "Aqui você pode monitorar seu progresso com relação à verificação e upgrade de conta.",
@@ -758,7 +762,15 @@
 		"GO_WITHDRAWAL_HISTORY": "Ir para o histórico de saques",
 		"MESSAGE_FEE_COIN": "Taxa de transações de {0}",
 		"WITHDRAWALS_FORM_ERROR_TITLE": "Informações de transferência incorretas",
-		"WITHDRAWALS_FORM_ERROR": "Sua transferência de fundos falhou. O envio de fundos para um e-mail requer que o usuário tenha uma conta nessa troca. Verifique se o e-mail está correto e tente novamente."
+		"WITHDRAWALS_FORM_ERROR": "Sua transferência de fundos falhou. O envio de fundos para um e-mail requer que o usuário tenha uma conta nessa troca. Verifique se o e-mail está correto e tente novamente.",
+		"WITHDRAWAL_CONFIRM_FINAL": "Confirmação Final de Saque",
+		"WITHDRAWAL_CONFIRM_WARNING": "Por favor, verifique seu saque abaixo antes de confirmar.",
+		"WITHDRAWAL_CONFIRM_AMOUNT": "Quantidade",
+		"WITHDRAWAL_CONFIRM_FEE": "Taxa",
+		"WITHDRAWAL_CONFIRM_ADDRESS": "Endereço",
+		"WITHDRAWAL_CONFIRM_NETWORK": "Rede",
+		"WITHDRAWAL_CANCEL_BUTTON": "FECHAR",
+		"WITHDRAWAL_CONFIRM_BUTTON": "CONFIRMAR SAQUE"
 	},
 	"WALLET_BUTTON_BASE_DEPOSIT": "depósito",
 	"WALLET_BUTTON_BASE_WITHDRAW": "saque",
