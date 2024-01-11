@@ -1322,7 +1322,7 @@
 	"CLEAR": "Clear",
 	"ORDER_TYPE": "Type",
 	"ORDER_MODE": "Order mode",
-	"TRIGGER_CONDITIONS": "Trigger conditions",
+	"TRIGGER_CONDITIONS": "Trigger",
 	"TRANSACTION_STATUS": {
 		"PENDING": "Pending",
 		"REJECTED": "Rejected",
