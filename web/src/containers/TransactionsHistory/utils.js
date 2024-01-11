@@ -868,7 +868,7 @@ export const generateWithdrawalsHeaders = (
 				} else {
 					// Completed Status
 					// return isBlockchainTx(transaction_id) &&
-					return network ? (
+					return network && EXPLORERS_ENDPOINT(network).length > 0 ? (
 						// currency !== BASE_CURRENCY ? (
 						<td key={index}>
 							<a

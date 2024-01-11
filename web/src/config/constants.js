@@ -140,17 +140,6 @@ export const EXPLORERS_ENDPOINT = (currency) => {
 					? 'https://explorer.bitcoin.com/tbch/tx/'
 					: 'https://explorer.bitcoin.com/bch/tx/';
 			break;
-		case 'xht':
-		case 'usdt':
-		case 'busd':
-		case 'tusd':
-		case 'dai':
-		case 'mkr':
-			endpoint =
-				NETWORK === 'testnet'
-					? 'https://ropsten.etherscan.io/tx/'
-					: 'https://etherscan.io/tx/';
-			break;
 		case 'xmr':
 			endpoint =
 				NETWORK === 'testnet'
@@ -183,6 +172,21 @@ export const EXPLORERS_ENDPOINT = (currency) => {
 			break;
 		case 'bnb':
 			endpoint = 'https://bscscan.com/tx/';
+			break;
+		case 'sol':
+			endpoint = 'https://solscan.io/tx/';
+			break;
+		case 'ton':
+			endpoint = 'https://tonscan.org/tx/';
+			break;
+		case 'arb':
+			endpoint = 'https://arbiscan.io/tx/';
+			break;
+		case 'matic':
+			endpoint = 'https://polygonscan.com/tx/';
+			break;
+		case 'etc':
+			endpoint = 'https://etc.blockscout.com/tx/';
 			break;
 		default:
 			endpoint = '';
