@@ -127,6 +127,7 @@ const AssetsBlock = ({
 			.catch((error) => {
 				// setIsLoading(false);
 			});
+		// eslint-disable-next-line
 	}, []);
 	const month = [
 		'Jan',
