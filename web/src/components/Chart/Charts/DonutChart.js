@@ -166,9 +166,9 @@ class DonutChart extends Component {
 		const isDonutValue = this.props && this.props.isCurrencyWallet;
 
 		const filterByPercentage = () => {
-			let arr = [];
+			let coins = [];
 			let othersTotalPercentage = 0;
-			let othersIndex = -1;
+			let isUpdated = false;
 			let startAngle = 0;
 
 			sortedData.forEach((value, i) => {
@@ -180,35 +180,40 @@ class DonutChart extends Component {
 						balancePercentage <= filterDonutPercentage
 					) {
 						othersTotalPercentage += balancePercentage;
-						if (othersIndex === -1) {
-							othersIndex = i;
-						}
 					} else if (balancePercentage >= filterDonutPercentage) {
 						startAngle = value.endAngle;
-						arr.push({ ...value });
+						coins.push({ ...value });
 					}
 				}
 			});
-			if (othersIndex !== -1) {
-				arr[othersIndex] = {
-					...sortedData[othersIndex],
-					data: {
-						...sortedData[othersIndex].data,
-						display_name: 'Others',
-						balancePercentage: `${othersTotalPercentage.toFixed(1)}%`,
-					},
-					startAngle,
-					endAngle: nextStartAngle,
-				};
+			if (!isUpdated && this.state.isData) {
+				if (coins.length) {
+					isUpdated = true;
+					const updatedObj = {
+						...coins[0],
+						data: {
+							...coins[0].data,
+							display_name: 'Others',
+							balancePercentage: `${othersTotalPercentage.toFixed(1)}%`,
+							symbol: 'Others',
+						},
+						value: othersTotalPercentage,
+						startAngle,
+						endAngle:
+							startAngle === nextStartAngle
+								? nextStartAngle * 1.01
+								: nextStartAngle,
+					};
+					coins.push(updatedObj);
+				}
 			}
-			return arr;
+			return coins;
 		};
 
 		const renderDonut = () => {
 			const data = sortedData.map((value, i) =>
 				this.renderSlice(value, i, width, height)
 			);
-
 			if (this.state && this.state.isData) {
 				if (!isDonutValue) {
 					return filterByPercentage().map((value, i) =>
