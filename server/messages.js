@@ -260,3 +260,5 @@ exports.EMAIL_IS_SAME = 'New email cannot be same as the existing one';
 exports.EMAIL_EXISTS = 'This email already exists';
 exports.CANNOT_CHANGE_DELETED_EMAIL = 'Cannot change deleted email';
 exports.FAILED_GET_QUOTE = 'Failed to get the quote';
+exports.DEVICE_TOKEN_EXITS = 'Active token already exits';
+exports.DEVICE_TOKEN_NOT_FOUND = 'Active token not found';

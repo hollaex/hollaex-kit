@@ -58,7 +58,9 @@ const {
 	EMAIL_IS_SAME,
 	EMAIL_EXISTS,
 	CANNOT_CHANGE_DELETED_EMAIL,
-	SERVICE_NOT_SUPPORTED
+	SERVICE_NOT_SUPPORTED,
+	DEVICE_TOKEN_EXITS,
+	DEVICE_TOKEN_NOT_FOUND
 } = require(`${SERVER_PATH}/messages`);
 const { publisher, client } = require('./database/redis');
 const {
@@ -2342,6 +2344,71 @@ const changeKitUserEmail = async (userId, newEmail, auditInfo) => {
 	return updatedUser;
 };
 
+const createUserDeviceToken = async (userId, token, device) => {
+	const user = await dbQuery.findOne('user', {
+		where: {
+			id: userId
+		},
+		attributes: [
+			'id',
+			'email'
+		]
+	});
+
+	if (!user) {
+		throw new Error(USER_NOT_FOUND);
+	}
+
+	const userToken = await dbQuery.findOne('deviceToken', {
+		where: {
+			token,
+			status: true
+		},
+	});
+
+	if (userToken) {
+		throw new Error(DEVICE_TOKEN_EXITS);
+	}
+
+	return getModel('deviceToken').create({
+		user_id: userId,
+		token,
+		device,
+	})
+
+}
+
+const getUserDeviceToken = async (userId, device) => {
+
+	const user = await dbQuery.findOne('user', {
+		where: {
+			id: userId
+		},
+		attributes: [
+			'id',
+			'email'
+		]
+	});
+
+	if (!user) {
+		throw new Error(USER_NOT_FOUND);
+	}
+
+	const token = await dbQuery.findOne('deviceToken', {
+		where: {
+			user_id: userId,
+			device,
+			status: true
+		},
+	});
+
+	
+	if (!token) {
+		throw new Error(DEVICE_TOKEN_NOT_FOUND);
+	}
+	return { token };
+}
+
 module.exports = {
 	loginUser,
 	getUserTier,
@@ -2402,5 +2469,7 @@ module.exports = {
 	changeKitUserEmail,
 	storeVerificationCode,
 	signUpUser,
-	verifyUser
+	verifyUser,
+	createUserDeviceToken,
+	getUserDeviceToken
 };

@@ -1154,6 +1154,69 @@ const userDelete = (req, res) => {
 };
 
 
+const createUserDeviceToken = (req, res) => {
+	loggerUser.verbose(
+		req.uuid,
+		'controllers/user/createUserDeviceToken auth',
+		req.auth.sub
+	);
+
+	const { id: userId } = req.auth.sub;
+	const { token, device } = req.swagger.params.data.value;
+
+	loggerUser.verbose(
+		req.uuid,
+		'controllers/user/createUserDeviceToken data',
+		token,
+		device
+	);
+
+	toolsLib.user.createUserDeviceToken(userId, token, device)
+		.then(() => {
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerUser.error(
+				req.uuid,
+				'controllers/user/createUserDeviceToken',
+				err.message,
+				err.stack
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+}
+
+const getUserDeviceToken = (req, res) => {
+	loggerUser.verbose(
+		req.uuid,
+		'controllers/user/getUserDeviceToken auth',
+		req.auth.sub
+	);
+
+	const { id: userId } = req.auth.sub;
+	const { device } = req.swagger.params;
+
+	loggerUser.verbose(
+		req.uuid,
+		'controllers/user/getUserDeviceToken data',
+		device
+	);
+
+	toolsLib.user.getUserDeviceToken(userId, device.value)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerUser.error(
+				req.uuid,
+				'controllers/user/getUserDeviceToken',
+				err.message,
+				err.stack
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+}
+
 module.exports = {
 	signUpUser,
 	getVerifyUser,
@@ -1183,5 +1246,7 @@ module.exports = {
 	revokeUserSession,
 	getUserSessions,
 	userLogout,
-	userDelete
+	userDelete,
+	createUserDeviceToken,
+	getUserDeviceToken
 };

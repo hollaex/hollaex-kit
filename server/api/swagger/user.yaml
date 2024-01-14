@@ -914,6 +914,79 @@ paths:
         - bearer
       x-security-scopes:
         - user
+  /user/device-token:
+    x-swagger-router-controller: user
+    post:
+      operationId: createUserDeviceToken
+      description: Create device token for user
+      tags:
+        - User
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - token
+              - device
+            properties:
+              token:
+                type: string
+                maxLength: 256
+              device:
+                type: string
+                maxLength: 256
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - user
+    get:
+      operationId: getUserDeviceToken
+      description: get device token of authenticated user
+      tags:
+        - User
+      parameters:
+        - in: query
+          name: device
+          description: device
+          required: true
+          type: string
+          maxLength: 256
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - user
+      x-token-permissions:
+        - can_read
   /user/trades:
     x-swagger-router-controller: trade
     get:
