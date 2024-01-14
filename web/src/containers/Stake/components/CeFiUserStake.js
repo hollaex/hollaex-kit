@@ -486,6 +486,24 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 						</AntBtn>
 						<AntBtn
 							onClick={async () => {
+								if (stakerAmount < selectedPool.min_amount) {
+									message.error(
+										`Staking pool's minimum amount allowed is ${
+											selectedPool.min_amount
+										} ${selectedPool.currency.toUpperCase()}`
+									);
+									return;
+								}
+
+								if (stakerAmount > selectedPool.max_amount) {
+									message.error(
+										`Staking pool's maximum amount allowed is ${
+											selectedPool.max_amount
+										} ${selectedPool.currency.toUpperCase()} `
+									);
+									return;
+								}
+
 								setStakeAmount(false);
 								setDuration(true);
 							}}
@@ -1406,6 +1424,7 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 														src={coins?.[pool?.currency]?.logo}
 														width={30}
 														height={30}
+														alt=""
 													/>
 												</div>
 												<h3 className="stake_theme" style={{}}>
