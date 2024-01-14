@@ -312,7 +312,11 @@
 	"VERIFICATION_EMAIL": {
 		"INVALID_UUID": "Kode tidak valid",
 		"TEXT_1": "Email Anda telah berhasil diverifikasi.",
-		"TEXT_2": "Anda bisa masuk sekarang"
+		"TEXT_2": "Anda bisa masuk sekarang",
+		"CANCEL_BUTTON": "TUTUP",
+		"CONFIRM_BUTTON": "KONFIRMASI PENDAFTARAN",
+		"CONFIRM_TEXT": "Konfirmasi Pendaftaran",
+		"CONFIRM_DESCRIPTION": "Harap konfirmasi pendaftaran akun Anda dengan mengklik tombol di bawah"
 	},
 	"USER_VERIFICATION": {
 		"INFO_TXT": "Anda dapat melihat prosedur verifikasi dan pembaruan akun Anda.",
@@ -763,7 +767,15 @@
 		"GO_WITHDRAWAL_HISTORY": "Go To Withdrawal History",
 		"MESSAGE_FEE_COIN": "Biaya transaksi sebesar {0}",
 		"WITHDRAWALS_FORM_ERROR_TITLE": "Info transfer salah",
-		"WITHDRAWALS_FORM_ERROR": "Transfer dana Anda gagal. Mengirim dana ke email mengharuskan pengguna memiliki akun dalam pertukaran ini. Periksa apakah email tersebut benar dan silakan coba lagi."
+		"WITHDRAWALS_FORM_ERROR": "Transfer dana Anda gagal. Mengirim dana ke email mengharuskan pengguna memiliki akun dalam pertukaran ini. Periksa apakah email tersebut benar dan silakan coba lagi.",
+		"WITHDRAWAL_CONFIRM_FINAL": "Konfirmasi Penarikan Akhir",
+		"WITHDRAWAL_CONFIRM_WARNING": "Harap periksa penarikan Anda di bawah sebelum mengkonfirmasi.",
+		"WITHDRAWAL_CONFIRM_AMOUNT": "Jumlah",
+		"WITHDRAWAL_CONFIRM_FEE": "Biaya",
+		"WITHDRAWAL_CONFIRM_ADDRESS": "Alamat",
+		"WITHDRAWAL_CONFIRM_NETWORK": "Jaringan",
+		"WITHDRAWAL_CANCEL_BUTTON": "TUTUP",
+		"WITHDRAWAL_CONFIRM_BUTTON": "KONFIRMASI PENARIKAN"
 	},
 	"WALLET_BUTTON_BASE_DEPOSIT": "deposit",
 	"WALLET_BUTTON_BASE_WITHDRAW": "Penarikan",

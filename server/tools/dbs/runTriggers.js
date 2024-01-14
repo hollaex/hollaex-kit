@@ -4,10 +4,7 @@ const { sequelize } = require('../../db/models');
 
 const functions = [
 	// functions
-	'../../db/functions/create-uuid.js',
-	// triggers
-	'../../db/triggers/create_verification-code_after_user.js',
-	'../../db/triggers/update_userlevel_after_verify.js'
+	'../../db/functions/create-uuid.js'
 ];
 
 let sql = '';

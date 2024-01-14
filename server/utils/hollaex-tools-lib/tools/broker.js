@@ -248,7 +248,8 @@ const calculatePrice = async (side, spread, formula, refresh_interval, brokerId,
 						throw new Error(`${exchangePair[0].toUpperCase()} does not have market symbol ${formattedSymbol}`)
 					}
 	
-					marketPrice = ticker.last;
+
+					marketPrice = ticker.last
 					if (refresh_interval)
 						client.setexAsync(userCachekey, refresh_interval, JSON.stringify(tickers));
 				} else {
@@ -434,14 +435,14 @@ const testRebalance = async (data) => {
 };
 
 const reverseTransaction = async (orderData) => {
-	const { symbol, side, size } = orderData;
+	const { symbol, side, size, price } = orderData;
 	const notifyUser = async (data, userId) => {
 		const user = await getUserByKitId(userId);
 		sendEmail(
 			MAILTYPE.ALERT,
 			user.email,
 			{
-				type: 'binance order info',
+				type: 'broker hedging order info',
 				data
 			},
 			user.settings

@@ -42,16 +42,18 @@ const Burn = ({
 				transaction_id,
 				status,
 				fee,
+				address,
 			} = values;
 
 			const formProps = {
 				currency: coinFormData.symbol,
 				amount,
-				description,
 				user_id: user_id ? parseInt(user_id, 10) : user_id,
-				fee,
+				...(fee && { fee }),
+				...(description && { description }),
 				status: Number(status) ? true : false,
-				transaction_id,
+				...(transaction_id && { transaction_id }),
+				...(address && { address }),
 			};
 			if (type === 'mint') {
 				handleMint(formProps);
@@ -182,6 +184,12 @@ const Burn = ({
 				</h3>
 				<Form.Item name="fee">
 					<InputNumber placeholder="Amount" />
+				</Form.Item>
+				<h3>
+					Address <span style={{ fontSize: 14 }}>(Optional)</span>
+				</h3>
+				<Form.Item name="address">
+					<Input placeholder="Address" />
 				</Form.Item>
 				<h3>Description</h3>
 				<Form.Item name="description">

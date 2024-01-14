@@ -360,8 +360,8 @@ $header-margin: 2rem;
 	}
 	.wallet-assets_block {
 		.donut-container {
-			width: 12rem !important;
-			min-width: 12rem !important;
+			width: auto !important;
+			min-width: auto !important;
 		}
 		.donut-container-empty {
 			width: 13rem !important;
@@ -619,6 +619,7 @@ $header-margin: 2rem;
 		}
 	}
 	.wallet-content-wrapper {
+		height: 65%;
 		border: 1px solid #808080;
 		border-radius: 5px;
 		justify-content: space-between;
