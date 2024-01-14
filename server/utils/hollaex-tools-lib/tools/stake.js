@@ -541,7 +541,7 @@ const createExchangeStaker = async (stake_id, amount, user_id) => {
         throw new Error(STAKE_POOL_MAX_AMOUNT_ERROR);
     }
 
-    if (new BigNumber(amount).comparedTo(new BigNumber(stakePool.min_amount)) !== 1) {
+    if (new BigNumber(amount).comparedTo(new BigNumber(stakePool.min_amount)) === -1) {
         throw new Error(STAKE_POOL_MIN_AMOUNT_ERROR);
     }
 
