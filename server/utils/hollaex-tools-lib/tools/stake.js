@@ -334,8 +334,6 @@ const updateExchangeStakePool = async (id, data, auditInfo) => {
         early_unstake,
         slashing_principle_percentage,
         slashing_earning_percentage,
-        min_amount,
-        max_amount,
         status,
         onboarding,
     } = data;
@@ -352,8 +350,6 @@ const updateExchangeStakePool = async (id, data, auditInfo) => {
         || (duration && duration !== stakePool.duration)
         || (slashing && slashing !== stakePool.slashing)
         || (early_unstake && early_unstake !== stakePool.early_unstake)
-        || (min_amount && min_amount !== stakePool.min_amount)
-        || (max_amount && max_amount !== stakePool.max_amount)
         || (slashing_principle_percentage && slashing_principle_percentage !== stakePool.slashing_principle_percentage)
         || (slashing_earning_percentage && slashing_earning_percentage !== stakePool.slashing_earning_percentage)
     )) {
