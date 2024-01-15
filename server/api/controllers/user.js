@@ -1325,7 +1325,6 @@ const getUserBalanceHistory = (req, res) => {
 		format: format.value
 	})
 		.then((data) => {
-			data.data = [...data.data, ...data.data, ...data.data, ...data.data, ...data.data, ...data.data, ...data.data, ...data.data, ...data.data, ...data.data, ...data.data, ...data.data, ...data.data, ...data.data, ...data.data, ...data.data, ...data.data, ...data.data, ...data.data, ...data.data, ...data.data, ...data.data, ...data.data, ...data.data, ...data.data, ...data.data, ...data.data, ...data.data, ...data.data, ...data.data, ...data.data, ...data.data, ...data.data, ...data.data, ...data.data, ...data.data]
 			if (format.value === 'csv') {
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-balance_history.csv`);
 				res.set('Content-Type', 'text/csv');
