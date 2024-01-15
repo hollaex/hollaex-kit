@@ -323,15 +323,16 @@ const ProfitLossSection = ({
 							}}
 						>
 							<div style={{ marginTop: 20, marginBottom: 20 }}>
-								Select specific dates to fetch your history data (date
-								difference cannot go further than 3 months)
+								<EditWrapper stringId="PROFIT_LOSS.CUSTOM_DATE_DESCRIPTION">
+									{STRINGS['PROFIT_LOSS.CUSTOM_DATE_DESCRIPTION']}
+								</EditWrapper>
 							</div>
 							<div style={{ marginTop: 5 }}>
 								<div>Start Date</div>
 								<DatePicker
 									suffixIcon={null}
 									className="pldatePicker"
-									placeholder={'Select start date'}
+									placeholder={STRINGS['PROFIT_LOSS.SELECT_START_DATE']}
 									style={{
 										width: 200,
 									}}
@@ -349,7 +350,7 @@ const ProfitLossSection = ({
 								<DatePicker
 									suffixIcon={null}
 									className="pldatePicker"
-									placeholder={'Select end date'}
+									placeholder={STRINGS['PROFIT_LOSS.SELECT_END_DATE']}
 									style={{
 										width: 200,
 									}}

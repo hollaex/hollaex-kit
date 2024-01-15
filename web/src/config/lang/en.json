@@ -1514,7 +1514,10 @@
 		"ASSET_NAME": "Asset name",
 		"BALANCE_AMOUNT": "Balance Amount",
 		"VALUE": "Value",
-		"PERFORMANCE_TREND": "7 Day Performance Trend"
+		"PERFORMANCE_TREND": "7 Day Performance Trend",
+		"CUSTOM_DATE_DESCRIPTION": "Select specific dates to fetch your history data (date difference cannot go further than 3 months)",
+		"SELECT_START_DATE": "Select start date",
+		"SELECT_END_DATE": "Select end date"
 	},
 	"ASSET_INFO": "Asset info",
 	"TAKER_FEES_APPLIED": "Taker fees are applied",
