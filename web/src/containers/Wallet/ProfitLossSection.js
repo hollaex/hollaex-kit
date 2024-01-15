@@ -80,6 +80,9 @@ const ProfitLossSection = ({
 				},
 			},
 		},
+		yAxis: {
+			title: false,
+		},
 		series: [
 			{
 				data: graphData,
@@ -252,8 +255,12 @@ const ProfitLossSection = ({
 						<tr className="table-row" key={index}>
 							<td className="table-icon td-fit" />
 							<td
-								style={{ padding: 20, borderBottom: '1px solid grey' }}
-								className="td-name td-fit"
+								style={{
+									padding: '1.25em',
+									borderBottom: '1px solid grey',
+									minWidth: '15.5em',
+								}}
+								className="td-fit"
 							>
 								<Link to={`/assets/coin/${coin.symbol}`} className="underline">
 									<div
@@ -266,15 +273,15 @@ const ProfitLossSection = ({
 								</Link>
 							</td>
 							<td
-								style={{ borderBottom: '1px solid grey' }}
-								className="td-name td-fit"
+								style={{ borderBottom: '1px solid grey', minWidth: '15.5em' }}
+								className="td-fit"
 							>
 								{sourceAmount} {coin.symbol.toUpperCase()}
 							</td>
 
 							<td
-								style={{ borderBottom: '1px solid grey' }}
-								className="td-name td-fit"
+								style={{ borderBottom: '1px solid grey', minWidth: '15.5em' }}
+								className="td-fit"
 							>
 								= {sourceAmountNative}{' '}
 								{balance_history_config?.currency?.toUpperCase() || 'USDT'}
@@ -612,7 +619,13 @@ const ProfitLossSection = ({
 
 				{currentBalance && (
 					<>
-						<div style={{ display: 'flex', justifyContent: 'space-between' }}>
+						<div
+							style={{
+								display: 'flex',
+								justifyContent: 'space-between',
+								gap: 15,
+							}}
+						>
 							<div>
 								<div style={{ fontWeight: 'bold' }}>
 									<EditWrapper stringId="PROFIT_LOSS.WALLET_BALANCE">
