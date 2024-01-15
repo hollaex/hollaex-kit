@@ -87,7 +87,7 @@ const { isValidPassword, createSession } = require('./security');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { all, reject } = require('bluebird');
 const { Op } = require('sequelize');
-const { paginationQuery, timeframeQuery, orderingQuery } = require('./database/helpers');
+const { paginationQuery, timeframeQuery, orderingQuery, convertSequelizeCountAndRows } = require('./database/helpers');
 const { parse } = require('json2csv');
 const flatten = require('flat');
 const uuid = require('uuid/v4');
@@ -3053,6 +3053,38 @@ const settleFees = (currentTime) => {
 		});
 };
 
+const fetchUserReferrals = (opts = {
+	user_id: null,
+    limit: null,
+    page: null,
+    order_by: null,
+    order: null,
+    start_date: null,
+    end_date: null,
+    format: null
+}) => {
+	const referralHistoryModel = getModel('Referralhistory');
+	const pagination = paginationQuery(opts.limit, opts.page);
+	const ordering = orderingQuery(opts.order_by, opts.order);
+	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
+
+	const query = {
+		where: {
+			referer: opts.user_id
+		},
+		order: [ordering],
+		attributes: {
+			exclude: ['created_by']
+		},
+		...pagination
+	};
+
+	if (timeframe) query.where.created_at = timeframe;
+
+	return referralHistoryModel.findAndCountAll(query)
+		.then(convertSequelizeCountAndRows)
+}
+
 module.exports = {
 	loginUser,
 	getUserTier,
@@ -3121,5 +3153,6 @@ module.exports = {
 	adminTransferErrorAlertEmail,
 	settledFeesEmail,
 	activateReferralFeature,
-	settleFees
+	settleFees,
+	fetchUserReferrals
 };
