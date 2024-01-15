@@ -2459,7 +2459,8 @@ const fetchUserProfitLossInfo = async (user_id) => {
 	const { getUserWithdrawalsByKitId, getUserDepositsByKitId } = require('./wallet');
 
 	const balanceHistoryModel = getModel('balanceHistory');
-	const startDate = moment().subtract(1, 'years').toDate();
+	// Set it to weeks instead of years
+	const startDate = moment().subtract(1, 'weeks').toDate();
 	const endDate = moment().toDate();
 	const timeframe = timeframeQuery(startDate, endDate);
 	const userTrades = await getAllUserTradesByKitId(user_id, null, null, null, null, null, startDate, endDate, 'all');
@@ -2473,6 +2474,51 @@ const fetchUserProfitLossInfo = async (user_id) => {
 	 });
 
 	userTrades?.data?.reverse();
+
+
+	const nativeCurrency = getKitConfig()?.balance_history_config?.currency || 'usdt';
+							
+	const exchangeCoins = getKitCoins();
+	const conversions = await getNodeLib().getOraclePrices(exchangeCoins, {
+		quote: nativeCurrency,
+		amount: 1
+		});
+
+		let symbols = {};
+
+		const { getUserBalanceByKitId } = require('./wallet');
+
+		const balance = await getUserBalanceByKitId(user_id);
+
+		for (const key of Object.keys(balance)) {
+			if (key.includes('available') && balance[key]) {
+				let symbol = key?.split('_')?.[0];
+				symbols[symbol] = balance[key];
+			}
+		}
+
+
+		const coins = Object.keys(symbols);
+
+		let total = 0;
+		let history = {};
+		for (const coin of coins) {
+			if (!conversions[coin]) continue;
+			if (conversions[coin] === -1) continue;
+		
+			const nativeCurrencyValue = new BigNumber(symbols[coin]).multipliedBy(conversions[coin]).toNumber();
+		
+			history[coin] = { original_value: new BigNumber(symbols[coin]).toNumber(), native_currency_value: nativeCurrencyValue };
+			total = new BigNumber(total).plus(nativeCurrencyValue).toNumber();
+		}
+		userBalanceHistory.push({
+			user_id: Number(user_id),
+			balance: history,
+			total,
+			created_at: new Date()
+		})
+
+	
 
 	const findClosestBalanceRecord = (date) => {
 		return userBalanceHistory.reduce((closestRecord, entry) => {
@@ -2605,15 +2651,8 @@ const fetchUserProfitLossInfo = async (user_id) => {
 		let total = 0
 		const assets = Object.keys(results['7d']);
 
-		const nativeCurrency = getKitConfig()?.balance_history_config?.currency || 'usdt';
-
-		const convertedAmounts = await getNodeLib().getOraclePrices(assets, {
-			quote: nativeCurrency,
-			amount: 1
-			});
-		
 		assets?.forEach(asset => {
-			total += results['7d'][asset].cumulativePNL * convertedAmounts[asset];
+			total += results['7d'][asset].cumulativePNL;
 		})
 		results['7d'].total = total;
 	}

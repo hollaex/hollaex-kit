@@ -40,6 +40,7 @@ import { unique } from 'utils/data';
 import DustSection from './DustSection';
 import moment from 'moment';
 import _toLower from 'lodash/toLower';
+import BigNumber from 'bignumber.js';
 
 const AssetsBlock = ({
 	coins,
@@ -192,6 +193,16 @@ const AssetsBlock = ({
 				color: '#FFFF00',
 			},
 		],
+	};
+
+	const getSourceDecimals = (symbol, value) => {
+		const incrementUnit = coins[symbol].increment_unit;
+		const decimalPoint = new BigNumber(incrementUnit).dp();
+		const sourceAmount = new BigNumber(value || 0)
+			.decimalPlaces(decimalPoint)
+			.toNumber();
+
+		return sourceAmount;
 	};
 
 	const handleClickAmount = () => {
@@ -415,7 +426,7 @@ const AssetsBlock = ({
 								</div>
 							)}
 						</div>
-						{!isUpgrade && balance_history_config.active ? (
+						{!isUpgrade && balance_history_config?.active ? (
 							<div>
 								<div style={{ marginTop: 10 }}>7 Day Performance Trend</div>
 								<div style={{ width: 300, opacity: 0, fontSize: 1 }}>
@@ -443,8 +454,14 @@ const AssetsBlock = ({
 												: '#EB5344',
 									}}
 								>
-									7 Day P&L {Number(userPL?.['7d']?.total || 0) > 0 ? '+' : '-'}{' '}
-									{userPL?.['7d']?.total || 0}{' '}
+									<EditWrapper stringId="PROFIT_LOSS.PL_7_DAY">
+										{STRINGS['PROFIT_LOSS.PL_7_DAY']}
+									</EditWrapper>{' '}
+									{Number(userPL?.['7d']?.total || 0) > 0 ? '+' : ''}{' '}
+									{getSourceDecimals(
+										balance_history_config?.currency || 'usdt',
+										userPL?.['7d']?.total
+									) || '0'}{' '}
 									{balance_history_config?.currency?.toUpperCase() || 'USDT'}
 								</div>
 							</div>

@@ -290,11 +290,11 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 			throw new Error('currency does not exist');
 		}
 
-		if (existingKitConfig?.balance_history_config?.currency !== newKitConfig.balance_history_config.currency) {
+		if (existingKitConfig?.balance_history_config?.currency && existingKitConfig?.balance_history_config?.currency !== newKitConfig.balance_history_config.currency) {
 			throw new Error('currency cannot be changed');
 		}
 
-		if (existingKitConfig?.balance_history_config?.date_enabled !== newKitConfig.balance_history_config.date_enabled) {
+		if (existingKitConfig?.balance_history_config?.date_enabled && existingKitConfig?.balance_history_config?.date_enabled !== newKitConfig.balance_history_config.date_enabled) {
 			throw new Error('date cannot be changed');
 		}
 

@@ -123,6 +123,9 @@ const ProfitLossSection = ({
 		if (firstRender.current) {
 			firstRender.current = false;
 		} else {
+			fetchPlHistory().then((res) => {
+				setUserPL(res);
+			});
 			requestHistory(queryFilters.page, queryFilters.limit);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -514,8 +517,11 @@ const ProfitLossSection = ({
 							<EditWrapper stringId="PROFIT_LOSS.PL_7_DAY">
 								{STRINGS['PROFIT_LOSS.PL_7_DAY']}
 							</EditWrapper>{' '}
-							{Number(userPL?.['7d']?.total || 0) > 0 ? '+' : '-'}{' '}
-							{userPL?.['7d']?.total || 0}{' '}
+							{Number(userPL?.['7d']?.total || 0) > 0 ? '+' : ''}{' '}
+							{getSourceDecimals(
+								balance_history_config?.currency || 'usdt',
+								userPL?.['7d']?.total
+							) || '0'}{' '}
 							{balance_history_config?.currency?.toUpperCase() || 'USDT'}
 						</div>
 					</div>
