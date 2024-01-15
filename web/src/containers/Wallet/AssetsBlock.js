@@ -436,6 +436,7 @@ const AssetsBlock = ({
 								<div
 									onClick={() => handleBalanceHistory(true)}
 									style={{ zoom: 0.5, cursor: 'pointer' }}
+									className="highChartColor"
 								>
 									{' '}
 									<HighchartsReact

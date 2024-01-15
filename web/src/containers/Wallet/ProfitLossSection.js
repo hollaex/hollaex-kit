@@ -476,6 +476,7 @@ const ProfitLossSection = ({
 						display: 'flex',
 						justifyContent: 'space-between',
 						marginBottom: 40,
+						gap: 10,
 					}}
 				>
 					<div>
@@ -497,7 +498,7 @@ const ProfitLossSection = ({
 							</EditWrapper>{' '}
 							{moment(latestBalance?.created_at).format('DD/MMM/YYYY')}
 						</div>
-						<div style={{ fontSize: 19, marginBottom: 5 }}>
+						<div style={{ fontSize: '1.5em', marginBottom: 5 }}>
 							{balance_history_config?.currency?.toUpperCase() || 'USDT'}{' '}
 							{getSourceDecimals(
 								balance_history_config?.currency || 'usdt',
@@ -531,7 +532,10 @@ const ProfitLossSection = ({
 					style={{ display: 'flex', gap: 5, marginTop: 15, marginBottom: 15 }}
 				>
 					<Button
-						style={{ fontWeight: currentDay === 7 ? 'bold' : '400' }}
+						style={{
+							fontWeight: currentDay === 7 ? 'bold' : '400',
+							fontSize: '1em',
+						}}
 						className="plButton"
 						ghost
 						onClick={() => {
@@ -548,7 +552,10 @@ const ProfitLossSection = ({
 						</EditWrapper>
 					</Button>
 					<Button
-						style={{ fontWeight: currentDay === 30 ? 'bold' : '400' }}
+						style={{
+							fontWeight: currentDay === 30 ? 'bold' : '400',
+							fontSize: '1em',
+						}}
 						className="plButton"
 						ghost
 						onClick={() => {
@@ -565,7 +572,10 @@ const ProfitLossSection = ({
 						</EditWrapper>
 					</Button>
 					<Button
-						style={{ fontWeight: currentDay === 90 ? 'bold' : '400' }}
+						style={{
+							fontWeight: currentDay === 90 ? 'bold' : '400',
+							fontSize: '1em',
+						}}
 						className="plButton"
 						ghost
 						onClick={() => {
@@ -582,7 +592,10 @@ const ProfitLossSection = ({
 						</EditWrapper>
 					</Button>
 					<Button
-						style={{ fontWeight: currentDay === 'custom' ? 'bold' : '400' }}
+						style={{
+							fontWeight: currentDay === 'custom' ? 'bold' : '400',
+							fontSize: '1em',
+						}}
 						className="plButton"
 						ghost
 						onClick={() => {
@@ -593,7 +606,9 @@ const ProfitLossSection = ({
 					</Button>
 				</div>
 
-				<HighchartsReact highcharts={Highcharts} options={options} />
+				<div className="highChartColor">
+					<HighchartsReact highcharts={Highcharts} options={options} />
+				</div>
 
 				{currentBalance && (
 					<>
@@ -604,7 +619,7 @@ const ProfitLossSection = ({
 										{STRINGS['PROFIT_LOSS.WALLET_BALANCE']}
 									</EditWrapper>
 								</div>
-								<div style={{ width: 300, marginBottom: 10 }}>
+								<div style={{ maxWidth: 300, marginBottom: 10 }}>
 									<EditWrapper stringId="PROFIT_LOSS.WALLET_BALANCE_DESCRIPTION_1">
 										{STRINGS['PROFIT_LOSS.WALLET_BALANCE_DESCRIPTION_1']}
 									</EditWrapper>{' '}
@@ -621,7 +636,7 @@ const ProfitLossSection = ({
 									</EditWrapper>{' '}
 									{moment(currentBalance?.created_at).format('DD/MMM/YYYY')}
 								</div>
-								<div style={{ fontSize: 19, marginBottom: 5 }}>
+								<div style={{ fontSize: '1.5em', marginBottom: 5 }}>
 									{balance_history_config?.currency?.toUpperCase() || 'USDT'}{' '}
 									{getSourceDecimals(
 										balance_history_config?.currency || 'usdt',
@@ -640,7 +655,8 @@ const ProfitLossSection = ({
 										className="pldatePicker"
 										placeholder={STRINGS['PROFIT_LOSS.DATE_SELECT']}
 										style={{
-											width: 200,
+											width: '12.5em',
+											fontSize: '1em',
 										}}
 										onChange={(date, dateString) => {
 											if (!dateString) return;
