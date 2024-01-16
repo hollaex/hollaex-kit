@@ -24,28 +24,28 @@ Scenario: Alice received Mininal XHTT from Bob Successful
     
  Scenario: UnSuccessful Mininal XHTT transfer from Bob to Alice
 
-    When Bob logged in successfully
-    And Bob transferred a minimal amount of XHTT to wrong Alice address
- 
-Scenario: Successful Mininal XHTT receiving from Bob     
+    When Bob logged in successfully 
+    And Bob transferred a minimal amount of XHTT to wrong Alice address 
+    
+Scenario: Unsuccessful Mininal XHTT receiving from Bob     
 
-    When Bob confirm the transfer by Email
+    When Bob confirm the transfer by Email and gets error
 
 Scenario: Bob has not sent the Mininal XHTT   
     
     When Bob confirms that has not sent the minimal amount of XHTT
-    Then Bob cancels the transfer   
+      
 
-Scenario: UnSuccessful Mininal XHTT transfer from Bob to outside Alice adress
+Scenario: UnSuccessful Mininal XHTT transfer from Bob to deleted Alice address
 
     When Bob logged in successfully 
-    And Bob transferred a minimal amount of XHTT to real Alice address 
+    And Bob transferred a minimal amount of XHTT to deleted Alice address 
     
-Scenario: Successful Mininal XHTT receiving from Bob     
+Scenario: Unsuccessful Mininal XHTT receiving from Bob     
 
-    When Bob confirm the transfer by Email
+    When Bob confirm the transfer by Email and gets error
 
 Scenario: Bob has not sent the Mininal XHTT  
     
     When Bob confirms that has not sent the minimal amount of XHTT
-    Then Bob cancels the transfer 
+    
