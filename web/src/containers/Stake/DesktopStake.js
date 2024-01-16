@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import mathjs from 'mathjs';
 import classnames from 'classnames';
 import { ClockCircleOutlined } from '@ant-design/icons';
-import { Button as AntBtn, Switch } from 'antd';
+import { Button as AntBtn } from 'antd';
 import {
 	connectWallet,
 	loadBlockchainData,
