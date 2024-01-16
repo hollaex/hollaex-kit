@@ -23,6 +23,7 @@ import moment from 'moment';
 import BigNumber from 'bignumber.js';
 import { Link } from 'react-router';
 import STRINGS from 'config/localizedStrings';
+import { formatToCurrency } from 'utils/currency';
 import '../CeFiStake.scss';
 import { NotLoggedIn } from 'components';
 
@@ -151,18 +152,23 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 			dataIndex: 'earnt',
 			key: 'earnt',
 			render: (_user_id, data) => {
-				const incrementUnit =
-					coins[data.reward_currency || data.currency].increment_unit;
-				const decimalPoint = new BigNumber(incrementUnit).dp();
-				const sourceAmount =
-					data?.reward &&
-					new BigNumber(data?.reward - data?.slashed)
-						.decimalPlaces(decimalPoint)
-						.toNumber();
+				// const incrementUnit =
+				// 	coins[data.reward_currency || data.currency].increment_unit;
+
+				const min = coins[data.reward_currency || data.currency].min;
+				// const decimalPoint = new BigNumber(incrementUnit).dp();
+				// const sourceAmount =
+				// 	data?.reward &&
+				// 	new BigNumber(data?.reward - data?.slashed)
+				// 		.decimalPlaces(decimalPoint)
+				// 		.toNumber();
+
+				const formattedAmount =
+					data?.reward && formatToCurrency(data?.reward - data?.slashed, min);
 
 				return (
 					<div className="d-flex">
-						{sourceAmount}{' '}
+						{formattedAmount}{' '}
 						{(data?.reward_currency || data?.currency).toUpperCase()}
 					</div>
 				);
@@ -543,18 +549,18 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 						<h1 className="stake_theme">
 							{STRINGS['CEFI_STAKE.DURATION_LABEL']}
 						</h1>
-						<div>
+						<div className="stake_theme">
 							{STRINGS['CEFI_STAKE.LOCKUP_DURATION_LABEL']}:{' '}
 							{selectedPool.duration
 								? `${selectedPool.duration} days`
 								: 'Perpetual'}
 						</div>
-						<div>-</div>
+						<div className="stake_theme">-</div>
 
 						{selectedPool.slashing && (
 							<>
 								<h4 className="stake_theme">Slashing</h4>
-								<div>
+								<div className="stake_theme">
 									{
 										STRINGS[
 											'CEFI_STAKE.PENALTY_UPON_INITIAL_STAKE_PRINCIPLE_LABEL'
@@ -562,7 +568,7 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 									}
 									: -{selectedPool.slashing_principle_percentage}%{' '}
 								</div>
-								<div>
+								<div className="stake_theme">
 									{STRINGS['CEFI_STAKE.FORFEITURE_OF_EARNINGS_LABEL']}: -
 									{selectedPool.slashing_earning_percentage}%
 								</div>
@@ -675,36 +681,41 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 						<h1 className="stake_theme">
 							{STRINGS['CEFI_STAKE.CHECK_STAKE_DETAILS_BUTTON']}
 						</h1>
-						<div>
+						<div className="stake_theme">
 							{STRINGS['CEFI_STAKE.STAKING_POOL_LABEL']}: {selectedPool.name}
 						</div>
-						<div>
+						<div className="stake_theme">
 							{STRINGS['CEFI_STAKE.ANNUAL_PERCENTAGE_YIELD_LABEL']}:{' '}
 							{selectedPool.apy}% APY
 						</div>
-						<div>
+						<div className="stake_theme">
 							{STRINGS['CEFI_STAKE.DURATION_LABEL']}: {selectedPool.duration}{' '}
 							days{' '}
 						</div>
-						<div>
+						<div className="stake_theme">
 							{STRINGS['CEFI_STAKE.PENALTY_UPON_INITIAL_STAKE_PRINCIPLE_LABEL']}
 							: -{selectedPool.slashing_principle_percentage}%
 						</div>
-						<div>
+						<div className="stake_theme">
 							{STRINGS['CEFI_STAKE.FORFEITURE_OF_EARNINGS_DETAILS_LABEL']}: -
 							{selectedPool.slashing_earning_percentage}%
 						</div>
 
-						<div style={{ marginTop: 20 }}>
+						<div className="stake_theme" style={{ marginTop: 20 }}>
 							{STRINGS['CEFI_STAKE.STAKE_AMOUNT_LABEL']}: {stakerAmount}{' '}
 							{selectedPool.currency.toUpperCase()}
 						</div>
 						<hr />
 
-						<div style={{ marginTop: 20, marginBottom: 10 }}>
+						<div
+							className="stake_theme"
+							style={{ marginTop: 20, marginBottom: 10 }}
+						>
 							{selectedPool.disclaimer}
 						</div>
-						<div>{STRINGS['CEFI_STAKE.SETTLEMENT_NOTICE']}</div>
+						<div className="stake_theme">
+							{STRINGS['CEFI_STAKE.SETTLEMENT_NOTICE']}
+						</div>
 					</div>
 					<div
 						style={{
@@ -767,6 +778,7 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 					}}
 				>
 					<div
+						className="stake_theme"
 						style={{
 							display: 'flex',
 							justifyContent: 'center',
@@ -775,6 +787,7 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 						}}
 					>
 						<div
+							className="stake_theme"
 							style={{
 								display: 'flex',
 								justifyContent: 'center',
@@ -794,13 +807,21 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 						</div>
 						<div style={{ width: '100%' }}>
 							<div>
-								<span style={{ fontWeight: 'bold', marginTop: 20 }}>
+								<span
+									className="stake_theme"
+									style={{ fontWeight: 'bold', marginTop: 20 }}
+								>
 									Here we go!{' '}
 								</span>
 							</div>
-							<div>{STRINGS['CEFI_STAKE.STAKE_RULES_NOTICE']}</div>
-							<div style={{ marginTop: 30 }}> Do you understand?</div>
-							<div style={{ marginTop: 5 }}>
+							<div className="stake_theme">
+								{STRINGS['CEFI_STAKE.STAKE_RULES_NOTICE']}
+							</div>
+							<div className="stake_theme" style={{ marginTop: 30 }}>
+								{' '}
+								Do you understand?
+							</div>
+							<div className="stake_theme" style={{ marginTop: 5 }}>
 								<Input
 									className="stake_theme"
 									style={{
@@ -1567,23 +1588,29 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 											)}
 											<div style={{ fontSize: 18 }}>
 												{accumulateReward(userStakeData).map((stake) => {
-													const incrementUnit =
-														coins[stake.currency].increment_unit;
-													const decimalPoint = new BigNumber(
-														incrementUnit
-													).dp();
-													const sourceAmount =
+													const min = coins[stake.currency].min;
+
+													// const incrementUnit =
+													// 	coins[stake.currency].increment_unit;
+													// const decimalPoint = new BigNumber(
+													// 	incrementUnit
+													// ).dp();
+													// const sourceAmount =
+													// 	stake?.reward &&
+													// 	new BigNumber(stake?.reward)
+													// 		.decimalPlaces(decimalPoint)
+													// 		.toNumber();
+
+													const formattedAmount =
 														stake?.reward &&
-														new BigNumber(stake?.reward)
-															.decimalPlaces(decimalPoint)
-															.toNumber();
+														formatToCurrency(stake?.reward, min);
 
 													return (
 														<div>
 															{(
 																stake.reward_currency || stake.currency
 															).toUpperCase()}
-															: {sourceAmount}
+															: {formattedAmount}
 														</div>
 													);
 												})}
