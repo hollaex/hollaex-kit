@@ -23,6 +23,7 @@ import moment from 'moment';
 import BigNumber from 'bignumber.js';
 import { Link } from 'react-router';
 import STRINGS from 'config/localizedStrings';
+import { formatToCurrency } from 'utils/currency';
 import '../CeFiStake.scss';
 import { NotLoggedIn } from 'components';
 
@@ -151,18 +152,23 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 			dataIndex: 'earnt',
 			key: 'earnt',
 			render: (_user_id, data) => {
-				const incrementUnit =
-					coins[data.reward_currency || data.currency].increment_unit;
-				const decimalPoint = new BigNumber(incrementUnit).dp();
-				const sourceAmount =
-					data?.reward &&
-					new BigNumber(data?.reward - data?.slashed)
-						.decimalPlaces(decimalPoint)
-						.toNumber();
+				// const incrementUnit =
+				// 	coins[data.reward_currency || data.currency].increment_unit;
+
+				const min = coins[data.reward_currency || data.currency].min;
+				// const decimalPoint = new BigNumber(incrementUnit).dp();
+				// const sourceAmount =
+				// 	data?.reward &&
+				// 	new BigNumber(data?.reward - data?.slashed)
+				// 		.decimalPlaces(decimalPoint)
+				// 		.toNumber();
+
+				const formattedAmount =
+					data?.reward && formatToCurrency(data?.reward - data?.slashed, min);
 
 				return (
 					<div className="d-flex">
-						{sourceAmount}{' '}
+						{formattedAmount}{' '}
 						{(data?.reward_currency || data?.currency).toUpperCase()}
 					</div>
 				);
@@ -1567,23 +1573,29 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 											)}
 											<div style={{ fontSize: 18 }}>
 												{accumulateReward(userStakeData).map((stake) => {
-													const incrementUnit =
-														coins[stake.currency].increment_unit;
-													const decimalPoint = new BigNumber(
-														incrementUnit
-													).dp();
-													const sourceAmount =
+													const min = coins[stake.currency].min;
+
+													// const incrementUnit =
+													// 	coins[stake.currency].increment_unit;
+													// const decimalPoint = new BigNumber(
+													// 	incrementUnit
+													// ).dp();
+													// const sourceAmount =
+													// 	stake?.reward &&
+													// 	new BigNumber(stake?.reward)
+													// 		.decimalPlaces(decimalPoint)
+													// 		.toNumber();
+
+													const formattedAmount =
 														stake?.reward &&
-														new BigNumber(stake?.reward)
-															.decimalPlaces(decimalPoint)
-															.toNumber();
+														formatToCurrency(stake?.reward, min);
 
 													return (
 														<div>
 															{(
 																stake.reward_currency || stake.currency
 															).toUpperCase()}
-															: {sourceAmount}
+															: {formattedAmount}
 														</div>
 													);
 												})}
