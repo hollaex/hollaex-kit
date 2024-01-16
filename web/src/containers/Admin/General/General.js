@@ -532,10 +532,11 @@ class GeneralContent extends Component {
 		);
 	};
 
-	handleSaveInterface = (features) => {
+	handleSaveInterface = (features, referral_history_config = null) => {
 		this.handleSubmitGeneral({
 			kit: {
 				features,
+				referral_history_config,
 			},
 		});
 	};
@@ -1118,10 +1119,12 @@ class GeneralContent extends Component {
 				{activeTab === 'features' ? (
 					<InterfaceForm
 						initialValues={kit.features}
+						constants={constants}
 						handleSaveInterface={this.handleSaveInterface}
 						isUpgrade={isUpgrade}
 						buttonSubmitting={buttonSubmitting}
 						isFiatUpgrade={isFiatUpgrade}
+						coins={coins}
 					/>
 				) : null}
 				{activeTab === 'security' ? (

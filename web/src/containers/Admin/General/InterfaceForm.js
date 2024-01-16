@@ -1,23 +1,44 @@
 import React, { useState } from 'react';
 import { ReactSVG } from 'react-svg';
-import { Button, Checkbox, Form } from 'antd';
+import { Button, Checkbox, Form, Input, Modal, Select, message } from 'antd';
 import classnames from 'classnames';
 import _isEqual from 'lodash/isEqual';
 
 import { STATIC_ICONS } from 'config/icons';
 import FormButton from 'components/FormButton/Button';
-
+import { CloseOutlined } from '@ant-design/icons';
 const { Item } = Form;
 
 const InterfaceForm = ({
 	initialValues = {},
+	constants,
 	handleSaveInterface,
 	isUpgrade,
 	buttonSubmitting,
 	isFiatUpgrade,
+	coins,
 }) => {
 	const [isSubmit, setIsSubmit] = useState(!buttonSubmitting);
 	const [form] = Form.useForm();
+	const [referralHistoryData, setReferralHistoryData] = useState({
+		earning_rate: constants?.kit?.referral_history_config?.earning_rate || null,
+		earning_period:
+			constants?.kit?.referral_history_config?.earning_period || null,
+		settlement_interval:
+			constants?.kit?.referral_history_config?.settlement_interval || null,
+		distributor_id:
+			constants?.kit?.referral_history_config?.distributor_id || null,
+		last_settled_trade:
+			constants?.kit?.referral_history_config?.last_settled_trade || null,
+		date_enabled:
+			constants?.kit?.referral_history_config?.date_enabled || new Date(),
+		active: constants?.kit?.referral_history_config?.active,
+	});
+
+	const [
+		displayReferralHistoryModal,
+		setDisplayReferralHistoryModal,
+	] = useState(false);
 
 	const handleSubmit = (values) => {
 		let formValues = {};
@@ -28,11 +49,22 @@ const InterfaceForm = ({
 				pro_trade: !!values.pro_trade,
 				stake_page: !!values.stake_page,
 				cefi_stake: !!values.cefi_stake,
+				referral_history_config: !!values.referral_history_config,
 				home_page: isUpgrade ? false : !!values.home_page,
 				ultimate_fiat: !!values.ultimate_fiat,
 				apps: !!values.apps,
 			};
-			handleSaveInterface(formValues);
+			const referral_history_config = {
+				active: !!values.referral_history_config,
+				earning_rate: !!values.referral_history_config.earning_rate,
+				earning_period: !!values.referral_history_config.earning_period,
+				settlement_interval: !!values.referral_history_config
+					.settlement_interval,
+				distributor_id: !!values.referral_history_config.distributor_id,
+				last_settled_trade: !!values.referral_history_config.last_settled_trade,
+				date_enabled: referralHistoryData.date_enabled,
+			};
+			handleSaveInterface(formValues, referral_history_config);
 		}
 	};
 
@@ -45,8 +77,12 @@ const InterfaceForm = ({
 	};
 
 	const handleSubmitData = (formProps) => {
-		setIsSubmit(true);
-		handleSubmit(formProps);
+		if (formProps.referral_history_config && !referralHistoryData.active) {
+			setDisplayReferralHistoryModal(true);
+		} else {
+			setIsSubmit(true);
+			handleSubmit(formProps);
+		}
 	};
 
 	let initialValue = initialValues;
@@ -57,6 +93,120 @@ const InterfaceForm = ({
 	}
 	return (
 		<div className="general-wrapper">
+			{displayReferralHistoryModal && (
+				<Modal
+					maskClosable={false}
+					closeIcon={<CloseOutlined style={{ color: 'white' }} />}
+					bodyStyle={{
+						backgroundColor: '#27339D',
+						marginTop: 60,
+					}}
+					visible={displayReferralHistoryModal}
+					width={400}
+					footer={null}
+					onCancel={() => {
+						setDisplayReferralHistoryModal(false);
+					}}
+				>
+					<h2 style={{ fontWeight: '600', color: 'white' }}>
+						Referral History Config
+					</h2>
+
+					<div className="mb-5">
+						<div style={{ fontSize: 16 }} className="mb-2">
+							Earning Rate
+						</div>
+
+						<Input />
+					</div>
+
+					<div className="mb-5">
+						<div style={{ fontSize: 16 }} className="mb-2">
+							Earning Rate
+						</div>
+
+						<Input />
+					</div>
+
+					<div className="mb-5">
+						<div style={{ fontSize: 16 }} className="mb-2">
+							Earning Period
+						</div>
+
+						<Input />
+					</div>
+
+					<div className="mb-5">
+						<div style={{ fontSize: 16 }} className="mb-2">
+							Settlement Interval
+						</div>
+
+						<Input />
+					</div>
+
+					<div className="mb-5">
+						<div style={{ fontSize: 16 }} className="mb-2">
+							Distributor ID
+						</div>
+
+						<Input />
+					</div>
+
+					<div className="mb-5">
+						<div style={{ fontSize: 16 }} className="mb-2">
+							Last Settle Date
+						</div>
+
+						<Input />
+					</div>
+
+					<div
+						style={{
+							display: 'flex',
+							flexDirection: 'row',
+							gap: 15,
+							justifyContent: 'space-between',
+							marginTop: 30,
+						}}
+					>
+						<Button
+							onClick={() => {
+								setDisplayReferralHistoryModal(false);
+							}}
+							style={{
+								backgroundColor: '#288500',
+								color: 'white',
+								flex: 1,
+								height: 35,
+							}}
+							type="default"
+						>
+							Back
+						</Button>
+						<Button
+							onClick={async () => {
+								if (!referralHistoryData.currency) {
+									message.error('Please Select currency');
+									return;
+								}
+								setIsSubmit(true);
+								handleSubmit(form.getFieldsValue());
+								setDisplayReferralHistoryModal(false);
+							}}
+							style={{
+								backgroundColor: '#288500',
+								color: 'white',
+								flex: 1,
+								height: 35,
+							}}
+							type="default"
+						>
+							Proceed
+						</Button>
+					</div>
+				</Modal>
+			)}
+
 			<div className="sub-title">Features</div>
 			<div className="description">
 				Select the features that will be available on your exchange.
@@ -153,6 +303,25 @@ const InterfaceForm = ({
 							</div>
 						</Checkbox>
 					</Item>
+
+					{!isFiatUpgrade && (
+						<Item name="referral_history_config" valuePropName="checked">
+							<Checkbox className="mt-3">
+								<div className="d-flex align-items-center">
+									<ReactSVG
+										src={STATIC_ICONS.CANDLES_LOGO}
+										className="feature-icon mr-1"
+									/>
+									<div className="ml-2 checkbox-txt">
+										Referral History
+										<div className="small-text">
+											(User referral history and earning analytics)
+										</div>
+									</div>
+								</div>
+							</Checkbox>
+						</Item>
+					)}
 
 					<div className="d-flex">
 						<div
