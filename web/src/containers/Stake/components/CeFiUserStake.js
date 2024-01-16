@@ -26,6 +26,7 @@ import STRINGS from 'config/localizedStrings';
 import { formatToCurrency } from 'utils/currency';
 import '../CeFiStake.scss';
 import { NotLoggedIn } from 'components';
+import { EditWrapper } from 'components';
 
 const TabPane = Tabs.TabPane;
 
@@ -58,6 +59,8 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 		currentTablePage: 1,
 		isRemaining: true,
 	});
+
+	const [tabOption, setTabOption] = useState('active');
 
 	const columns = [
 		{
@@ -1392,7 +1395,7 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 										justifyContent: 'flex-end',
 									}}
 								>
-									<div>
+									{/* <div>
 										{userStakeData?.length > 0 && (
 											<div>{STRINGS['CEFI_STAKE.CURRENT_STAKING_VALUE']}:</div>
 										)}
@@ -1403,7 +1406,7 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 												</div>
 											))}
 										</div>
-									</div>
+									</div> */}
 								</div>
 							</div>
 
@@ -1573,7 +1576,11 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 												</div>
 											)}
 											<div style={{ fontSize: 18 }}>
-												{accumulateAmount(userStakeData).map((stake) => (
+												{accumulateAmount(
+													userStakeData.filter((staker) =>
+														['staking', 'unstaking'].includes(staker.status)
+													)
+												).map((stake) => (
 													<div>
 														{stake.currency.toUpperCase()}: {stake.amount}
 													</div>
@@ -1620,12 +1627,56 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 								</div>
 							</div>
 
+							<div className="d-flex">
+								<span
+									className="tabOption"
+									style={{
+										marginRight: 5,
+										padding: 10,
+										borderRadius: 10,
+										cursor: 'pointer',
+										fontWeight: tabOption === 'active' ? 'bold' : 'normal',
+										opacity: tabOption === 'active' ? 1 : 0.7,
+									}}
+									onClick={() => {
+										setTabOption('active');
+									}}
+								>
+									<EditWrapper stringId="CEFI_STAKE.ACTIVE_STAKES">
+										{STRINGS['CEFI_STAKE.ACTIVE_STAKES']}
+									</EditWrapper>
+								</span>
+								<span
+									className="tabOption"
+									style={{
+										marginLeft: 5,
+										padding: 10,
+										borderRadius: 10,
+										cursor: 'pointer',
+										fontWeight: tabOption === 'history' ? 'bold' : 'normal',
+										opacity: tabOption === 'history' ? 1 : 0.7,
+									}}
+									onClick={() => {
+										setTabOption('history');
+									}}
+								>
+									<EditWrapper stringId="CEFI_STAKE.STAKES_HISTORY">
+										{STRINGS['CEFI_STAKE.STAKES_HISTORY']}
+									</EditWrapper>
+								</span>
+							</div>
 							<div className="mt-4">
 								<Spin spinning={isLoading}>
 									<Table
 										className="cefi_stake"
 										columns={columns}
-										dataSource={userStakeData}
+										dataSource={userStakeData?.filter((staker) => {
+											if (tabOption === 'active') {
+												return ['staking', 'unstaking'].includes(staker.status);
+											} else {
+												return staker.status === 'closed';
+											}
+										})}
 										expandRowByClick={true}
 										rowKey={(data) => {
 											return data.id;

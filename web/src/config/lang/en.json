@@ -859,6 +859,8 @@
 		"MONITOR_ACTIVE_STAKES": "Monitor active stakes and their earnings coming from the staking pools.",
 		"USE_FILTERS_FOR_HISTORICAL_EVENTS": "Use the filters to find all staking historical events. All earnings from completed stakes will be deposit to your wallet.",
 		"ESTIMATED_TOTAL_STAKED": "Estimated value of total staked",
+		"ACTIVE_STAKES": "Active Stakes",
+		"STAKES_HISTORY": "History",
 		"ESTIMATED_EARNINGS_VALUE": "Estimated value of earnings",
 		"READ_BEFORE_AGREE_AND_EARN": "Read Before You Agree and Earn",
 		"AGREEMENT_INTRODUCTION_1": "Locking up funds and participating in staking can indeed be a profitable way to earn rewards. However, it is essential to be aware that there might be penalties for early unstaking and potentially long lock up periods. Therefore, it is crucial to thoroughly understand the pool's rules before staking. By clicking 'I agree and understand' below, you acknowledge that you will",
