@@ -269,7 +269,11 @@
 	"VERIFICATION_EMAIL": {
 		"INVALID_UUID": "Codice non VALIDO",
 		"TEXT_1": "Hai verificato con successo la tua email.",
-		"TEXT_2": "Ora puoi procedere al login"
+		"TEXT_2": "Ora puoi procedere al login",
+		"CANCEL_BUTTON": "CHIUDI",
+		"CONFIRM_BUTTON": "CONFERMA REGISTRAZIONE",
+		"CONFIRM_TEXT": "Conferma Registrazione",
+		"CONFIRM_DESCRIPTION": "Conferma la registrazione del tuo account cliccando sul pulsante sottostante"
 	},
 	"USER_VERIFICATION": {
 		"INFO_TXT": "Qui puoi monitorare i tuoi progressi verso la verifica e gli aggiornamenti dell'account.",
@@ -965,7 +969,15 @@
 		"WITHDRAW_CONFIRM_SUCCESS_2": "Per visualizzare lo stato del tuo prelievo, visita la pagina della cronologia dei prelievi.",
 		"GO_WITHDRAWAL_HISTORY": "Vai alla cronologia dei prelievi",
 		"WITHDRAWALS_FORM_ERROR_TITLE": "Informazioni di trasferimento errate",
-		"WITHDRAWALS_FORM_ERROR": "Il tuo trasferimento di fondi non è andato a buon fine. L'invio di fondi a un'e-mail richiede che l'utente disponga di un account all'interno di questo scambio. Controlla che l'email sia corretta e riprova."
+		"WITHDRAWALS_FORM_ERROR": "Il tuo trasferimento di fondi non è andato a buon fine. L'invio di fondi a un'e-mail richiede che l'utente disponga di un account all'interno di questo scambio. Controlla che l'email sia corretta e riprova.",
+		"WITHDRAWAL_CONFIRM_FINAL": "Conferma Finale Prelievo",
+		"WITHDRAWAL_CONFIRM_WARNING": "Controlla il tuo prelievo qui sotto prima di confermare.",
+		"WITHDRAWAL_CONFIRM_AMOUNT": "Importo",
+		"WITHDRAWAL_CONFIRM_FEE": "Commissione",
+		"WITHDRAWAL_CONFIRM_ADDRESS": "Indirizzo",
+		"WITHDRAWAL_CONFIRM_NETWORK": "Rete",
+		"WITHDRAWAL_CANCEL_BUTTON": "CHIUDI",
+		"WITHDRAWAL_CONFIRM_BUTTON": "CONFERMA PRELIEVO"
 	},
 	"WALLET_BUTTON_BASE_DEPOSIT": "depositare",
 	"WALLET_BUTTON_BASE_WITHDRAW": "ritirare",

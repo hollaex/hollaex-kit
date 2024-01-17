@@ -319,7 +319,11 @@
 	"VERIFICATION_EMAIL": {
 		"INVALID_UUID": "無効なコード",
 		"TEXT_1": "メールアカウントが正常に認証されました。",
-		"TEXT_2": "ログインしてください。"
+		"TEXT_2": "ログインしてください。",
+		"CANCEL_BUTTON": "閉じる",
+		"CONFIRM_BUTTON": "登録確認",
+		"CONFIRM_TEXT": "登録確認",
+		"CONFIRM_DESCRIPTION": "以下のボタンをクリックして、アカウント登録を確認してください"
 	},
 	"USER_VERIFICATION": {
 		"INFO_TXT": "ここから個人情報およびアップグレード状況を確認できます。",
@@ -770,7 +774,15 @@
 		"GO_WITHDRAWAL_HISTORY": "Go To Withdrawal History",
 		"MESSAGE_FEE_COIN": "{0}の取引手数料",
 		"WITHDRAWALS_FORM_ERROR_TITLE": "不正な転送情報",
-		"WITHDRAWALS_FORM_ERROR": "資金移動が失敗しました。電子メールに資金を送信するには、ユーザーがこの取引所内のアカウントを持っている必要があります。メールアドレスが正しいことを確認して、もう一度お試しください。"
+		"WITHDRAWALS_FORM_ERROR": "資金移動が失敗しました。電子メールに資金を送信するには、ユーザーがこの取引所内のアカウントを持っている必要があります。メールアドレスが正しいことを確認して、もう一度お試しください。",
+		"WITHDRAWAL_CONFIRM_FINAL": "最終引き出し確認",
+		"WITHDRAWAL_CONFIRM_WARNING": "確認前に引き出しを以下で確認してください。",
+		"WITHDRAWAL_CONFIRM_AMOUNT": "金額",
+		"WITHDRAWAL_CONFIRM_FEE": "手数料",
+		"WITHDRAWAL_CONFIRM_ADDRESS": "アドレス",
+		"WITHDRAWAL_CONFIRM_NETWORK": "ネットワーク",
+		"WITHDRAWAL_CANCEL_BUTTON": "閉じる",
+		"WITHDRAWAL_CONFIRM_BUTTON": "引き出しを確認"
 	},
 	"WALLET_BUTTON_BASE_DEPOSIT": "入金",
 	"WALLET_BUTTON_BASE_WITHDRAW": "出金",

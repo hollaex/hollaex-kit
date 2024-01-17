@@ -285,7 +285,11 @@
 	"VERIFICATION_EMAIL": {
 		"INVALID_UUID": "Código Inválido",
 		"TEXT_1": "Usted ha verificado su correo exitosamente.",
-		"TEXT_2": "Usted puede continar con el inicio de sesión"
+		"TEXT_2": "Usted puede continar con el inicio de sesión",
+		"CANCEL_BUTTON": "CERRAR",
+		"CONFIRM_BUTTON": "CONFIRMAR REGISTRO",
+		"CONFIRM_TEXT": "Confirmar registro",
+		"CONFIRM_DESCRIPTION": "Por favor, confirma tu registro de cuenta haciendo clic en el botón a continuación"
 	},
 	"USER_VERIFICATION": {
 		"INFO_TXT": "Aquí puede monitorear su progreso hacia la verificación y una mejora de cuenta.",
@@ -766,7 +770,15 @@
 		"CONFIRM_VIA_EMAIL_3": "el retiro a través de su correo electrónico dentro de 5 minutos.",
 		"WITHDRAW_CONFIRM_SUCCESS_1": "Su solicitud de retiro está confirmada. Será procesada en breve.",
 		"WITHDRAW_CONFIRM_SUCCESS_2": "Para ver el estado de su retiro, por favor visite su página de historial de retiro.",
-		"GO_WITHDRAWAL_HISTORY": "Ir al historial de retiros"
+		"GO_WITHDRAWAL_HISTORY": "Ir al historial de retiros",
+		"WITHDRAWAL_CONFIRM_FINAL": "Confirmación final de retiro",
+		"WITHDRAWAL_CONFIRM_WARNING": "Por favor, verifica tu retiro a continuación antes de confirmar.",
+		"WITHDRAWAL_CONFIRM_AMOUNT": "Monto",
+		"WITHDRAWAL_CONFIRM_FEE": "Tarifa",
+		"WITHDRAWAL_CONFIRM_ADDRESS": "Dirección",
+		"WITHDRAWAL_CONFIRM_NETWORK": "Red",
+		"WITHDRAWAL_CANCEL_BUTTON": "CERRAR",
+		"WITHDRAWAL_CONFIRM_BUTTON": "CONFIRMAR RETIRO"
 	},
 	"WALLET_BUTTON_BASE_DEPOSIT": "depósito",
 	"WALLET_BUTTON_BASE_WITHDRAW": "retirar",

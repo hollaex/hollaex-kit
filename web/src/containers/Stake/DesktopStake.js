@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import mathjs from 'mathjs';
 import classnames from 'classnames';
 import { ClockCircleOutlined } from '@ant-design/icons';
-import { Button as AntBtn, Switch } from 'antd';
+import { Button as AntBtn } from 'antd';
 import {
 	connectWallet,
 	loadBlockchainData,
@@ -47,6 +47,7 @@ import ConnectWrapper from './components/ConnectWrapper';
 import StakesAndEarnings from './components/StakesAndEarnings';
 import Variable from './components/Variable';
 import CeFiUserStake from './components/CeFiUserStake';
+import './CeFiStake.scss';
 
 class Stake extends Component {
 	constructor(prop) {
@@ -308,16 +309,44 @@ class Stake extends Component {
 					{this.props?.constants?.features?.cefi_stake &&
 						this.props?.constants?.features?.stake_page && (
 							<div className="d-flex">
-								<span style={{ marginRight: 5 }}>DeFi Staking</span>
-								<Switch
-									checked={this.state.selectedStaking === 'cefi'}
-									onClick={(checked) => {
+								<span
+									className="stakingOption"
+									style={{
+										marginRight: 5,
+										padding: 10,
+										borderRadius: 10,
+										cursor: 'pointer',
+										fontWeight:
+											this.state.selectedStaking === 'defi' ? 'bold' : 'normal',
+										opacity: this.state.selectedStaking === 'defi' ? 1 : 0.7,
+									}}
+									onClick={() => {
 										this.setState({
-											selectedStaking: checked ? 'cefi' : 'defi',
+											selectedStaking: 'defi',
 										});
 									}}
-								/>
-								<span style={{ marginLeft: 5 }}>CeFi Staking</span>
+								>
+									DeFi Staking
+								</span>
+								<span
+									className="stakingOption"
+									style={{
+										marginLeft: 5,
+										padding: 10,
+										borderRadius: 10,
+										cursor: 'pointer',
+										fontWeight:
+											this.state.selectedStaking === 'cefi' ? 'bold' : 'normal',
+										opacity: this.state.selectedStaking === 'cefi' ? 1 : 0.7,
+									}}
+									onClick={() => {
+										this.setState({
+											selectedStaking: 'cefi',
+										});
+									}}
+								>
+									CeFi Staking
+								</span>
 							</div>
 						)}
 				</div>

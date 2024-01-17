@@ -23,6 +23,7 @@ import moment from 'moment';
 import BigNumber from 'bignumber.js';
 import { Link } from 'react-router';
 import STRINGS from 'config/localizedStrings';
+import { formatToCurrency } from 'utils/currency';
 import '../CeFiStake.scss';
 import { NotLoggedIn } from 'components';
 
@@ -151,18 +152,23 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 			dataIndex: 'earnt',
 			key: 'earnt',
 			render: (_user_id, data) => {
-				const incrementUnit =
-					coins[data.reward_currency || data.currency].increment_unit;
-				const decimalPoint = new BigNumber(incrementUnit).dp();
-				const sourceAmount =
-					data?.reward &&
-					new BigNumber(data?.reward - data?.slashed)
-						.decimalPlaces(decimalPoint)
-						.toNumber();
+				// const incrementUnit =
+				// 	coins[data.reward_currency || data.currency].increment_unit;
+
+				const min = coins[data.reward_currency || data.currency].min;
+				// const decimalPoint = new BigNumber(incrementUnit).dp();
+				// const sourceAmount =
+				// 	data?.reward &&
+				// 	new BigNumber(data?.reward - data?.slashed)
+				// 		.decimalPlaces(decimalPoint)
+				// 		.toNumber();
+
+				const formattedAmount =
+					data?.reward && formatToCurrency(data?.reward - data?.slashed, min);
 
 				return (
 					<div className="d-flex">
-						{sourceAmount}{' '}
+						{formattedAmount}{' '}
 						{(data?.reward_currency || data?.currency).toUpperCase()}
 					</div>
 				);
@@ -543,18 +549,18 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 						<h1 className="stake_theme">
 							{STRINGS['CEFI_STAKE.DURATION_LABEL']}
 						</h1>
-						<div>
+						<div className="stake_theme">
 							{STRINGS['CEFI_STAKE.LOCKUP_DURATION_LABEL']}:{' '}
 							{selectedPool.duration
 								? `${selectedPool.duration} days`
 								: 'Perpetual'}
 						</div>
-						<div>-</div>
+						<div className="stake_theme">-</div>
 
 						{selectedPool.slashing && (
 							<>
 								<h4 className="stake_theme">Slashing</h4>
-								<div>
+								<div className="stake_theme">
 									{
 										STRINGS[
 											'CEFI_STAKE.PENALTY_UPON_INITIAL_STAKE_PRINCIPLE_LABEL'
@@ -562,7 +568,7 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 									}
 									: -{selectedPool.slashing_principle_percentage}%{' '}
 								</div>
-								<div>
+								<div className="stake_theme">
 									{STRINGS['CEFI_STAKE.FORFEITURE_OF_EARNINGS_LABEL']}: -
 									{selectedPool.slashing_earning_percentage}%
 								</div>
@@ -675,36 +681,41 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 						<h1 className="stake_theme">
 							{STRINGS['CEFI_STAKE.CHECK_STAKE_DETAILS_BUTTON']}
 						</h1>
-						<div>
+						<div className="stake_theme">
 							{STRINGS['CEFI_STAKE.STAKING_POOL_LABEL']}: {selectedPool.name}
 						</div>
-						<div>
+						<div className="stake_theme">
 							{STRINGS['CEFI_STAKE.ANNUAL_PERCENTAGE_YIELD_LABEL']}:{' '}
 							{selectedPool.apy}% APY
 						</div>
-						<div>
+						<div className="stake_theme">
 							{STRINGS['CEFI_STAKE.DURATION_LABEL']}: {selectedPool.duration}{' '}
 							days{' '}
 						</div>
-						<div>
+						<div className="stake_theme">
 							{STRINGS['CEFI_STAKE.PENALTY_UPON_INITIAL_STAKE_PRINCIPLE_LABEL']}
 							: -{selectedPool.slashing_principle_percentage}%
 						</div>
-						<div>
+						<div className="stake_theme">
 							{STRINGS['CEFI_STAKE.FORFEITURE_OF_EARNINGS_DETAILS_LABEL']}: -
 							{selectedPool.slashing_earning_percentage}%
 						</div>
 
-						<div style={{ marginTop: 20 }}>
+						<div className="stake_theme" style={{ marginTop: 20 }}>
 							{STRINGS['CEFI_STAKE.STAKE_AMOUNT_LABEL']}: {stakerAmount}{' '}
 							{selectedPool.currency.toUpperCase()}
 						</div>
 						<hr />
 
-						<div style={{ marginTop: 20, marginBottom: 10 }}>
+						<div
+							className="stake_theme"
+							style={{ marginTop: 20, marginBottom: 10 }}
+						>
 							{selectedPool.disclaimer}
 						</div>
-						<div>{STRINGS['CEFI_STAKE.SETTLEMENT_NOTICE']}</div>
+						<div className="stake_theme">
+							{STRINGS['CEFI_STAKE.SETTLEMENT_NOTICE']}
+						</div>
 					</div>
 					<div
 						style={{
@@ -767,6 +778,7 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 					}}
 				>
 					<div
+						className="stake_theme"
 						style={{
 							display: 'flex',
 							justifyContent: 'center',
@@ -775,6 +787,7 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 						}}
 					>
 						<div
+							className="stake_theme"
 							style={{
 								display: 'flex',
 								justifyContent: 'center',
@@ -794,13 +807,21 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 						</div>
 						<div style={{ width: '100%' }}>
 							<div>
-								<span style={{ fontWeight: 'bold', marginTop: 20 }}>
+								<span
+									className="stake_theme"
+									style={{ fontWeight: 'bold', marginTop: 20 }}
+								>
 									Here we go!{' '}
 								</span>
 							</div>
-							<div>{STRINGS['CEFI_STAKE.STAKE_RULES_NOTICE']}</div>
-							<div style={{ marginTop: 30 }}> Do you understand?</div>
-							<div style={{ marginTop: 5 }}>
+							<div className="stake_theme">
+								{STRINGS['CEFI_STAKE.STAKE_RULES_NOTICE']}
+							</div>
+							<div className="stake_theme" style={{ marginTop: 30 }}>
+								{' '}
+								Do you understand?
+							</div>
+							<div className="stake_theme" style={{ marginTop: 5 }}>
 								<Input
 									className="stake_theme"
 									style={{
@@ -1420,89 +1441,12 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 												}}
 											>
 												<div style={{ position: 'relative', bottom: 40 }}>
-													<svg
-														xmlns="http://www.w3.org/2000/svg"
-														xmlnsXlink="http://www.w3.org/1999/xlink"
-														width={32}
-														height={32}
-														viewBox="0 0 32 32"
-													>
-														<defs>
-															<linearGradient
-																id="c"
-																x1="50%"
-																x2="50%"
-																y1="0%"
-																y2="100%"
-															>
-																<stop
-																	offset="0%"
-																	stopColor="#FFF"
-																	stopOpacity={0.5}
-																/>
-																<stop offset="100%" stopOpacity={0.5} />
-															</linearGradient>
-															<filter
-																id="a"
-																width="111.7%"
-																height="111.7%"
-																x="-5.8%"
-																y="-4.2%"
-																filterUnits="objectBoundingBox"
-															>
-																<feOffset
-																	dy={0.5}
-																	in="SourceAlpha"
-																	result="shadowOffsetOuter1"
-																/>
-																<feGaussianBlur
-																	in="shadowOffsetOuter1"
-																	result="shadowBlurOuter1"
-																	stdDeviation={0.5}
-																/>
-																<feComposite
-																	in="shadowBlurOuter1"
-																	in2="SourceAlpha"
-																	operator="out"
-																	result="shadowBlurOuter1"
-																/>
-																<feColorMatrix
-																	in="shadowBlurOuter1"
-																	values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.199473505 0"
-																/>
-															</filter>
-															<circle id="b" cx={15} cy={15} r={15} />
-														</defs>
-														<g fill="none">
-															<g transform="translate(1)">
-																<use
-																	xlinkHref="#b"
-																	fill="#000"
-																	filter="url(#a)"
-																/>
-																<use xlinkHref="#b" fill="#F19F13" />
-																<use
-																	xlinkHref="#b"
-																	fill="url(#c)"
-																	style={{
-																		mixBlendMode: 'soft-light',
-																	}}
-																/>
-																<circle
-																	cx={15}
-																	cy={15}
-																	r={14.5}
-																	stroke="#000"
-																	strokeLinejoin="square"
-																	strokeOpacity={0.097}
-																/>
-															</g>
-															<path
-																fill="#FFF"
-																d="M22.77 12.95h4.87l.36-2h-4.71a4.78 4.78 0 0 0-2.59.86c-.28-1-3-.86-3-.86l.36-2H17l-.36 2h-1.11l.31-2h-1.15l-.42 2h-1.19l-.61 3.12-.81-3.06H9l-5 7.35h4.12l.42-1.95H7.7l2.4-3.51.9 3.53h-.9l-.39 1.93h3.06l-.25 1.34h1.2l.28-1.34h1l-.25 1.34H16l.25-1.34h1.56a3 3 0 0 0 1.87-.95 3.2 3.2 0 0 0 2.2.95h4.71l.31-1.95h-4.23c-2.91-.05-1.67-3.48.1-3.46zm-5.29 3.41h-3.12l.25-.95h3c.76.05.51.95-.13.95zm.47-2.56h-3.12l.25-.95h3c.76.05.48.99-.13.99v-.04z"
-															/>
-														</g>
-													</svg>
+													<img
+														src={coins?.[pool?.currency]?.logo}
+														width={30}
+														height={30}
+														alt=""
+													/>
 												</div>
 												<h3 className="stake_theme" style={{}}>
 													{pool.name}
@@ -1644,23 +1588,29 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 											)}
 											<div style={{ fontSize: 18 }}>
 												{accumulateReward(userStakeData).map((stake) => {
-													const incrementUnit =
-														coins[stake.currency].increment_unit;
-													const decimalPoint = new BigNumber(
-														incrementUnit
-													).dp();
-													const sourceAmount =
+													const min = coins[stake.currency].min;
+
+													// const incrementUnit =
+													// 	coins[stake.currency].increment_unit;
+													// const decimalPoint = new BigNumber(
+													// 	incrementUnit
+													// ).dp();
+													// const sourceAmount =
+													// 	stake?.reward &&
+													// 	new BigNumber(stake?.reward)
+													// 		.decimalPlaces(decimalPoint)
+													// 		.toNumber();
+
+													const formattedAmount =
 														stake?.reward &&
-														new BigNumber(stake?.reward)
-															.decimalPlaces(decimalPoint)
-															.toNumber();
+														formatToCurrency(stake?.reward, min);
 
 													return (
 														<div>
 															{(
 																stake.reward_currency || stake.currency
 															).toUpperCase()}
-															: {sourceAmount}
+															: {formattedAmount}
 														</div>
 													);
 												})}
