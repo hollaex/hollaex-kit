@@ -22,6 +22,8 @@ import {
 import moment from 'moment';
 import BigNumber from 'bignumber.js';
 import { Link } from 'react-router';
+import classnames from 'classnames';
+import { isMobile } from 'react-device-detect';
 import STRINGS from 'config/localizedStrings';
 import { formatToCurrency } from 'utils/currency';
 import '../CeFiStake.scss';
@@ -1540,6 +1542,7 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 									display: 'flex',
 									justifyContent: 'space-between',
 									marginBottom: 50,
+									gap: 10,
 								}}
 							>
 								<div style={{ flex: 1 }}>
@@ -1623,7 +1626,9 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 							<div className="mt-4">
 								<Spin spinning={isLoading}>
 									<Table
-										className="cefi_stake"
+										className={classnames(
+											...['cefi_stake', isMobile ? 'mobileZoom' : '']
+										)}
 										columns={columns}
 										dataSource={userStakeData}
 										expandRowByClick={true}
