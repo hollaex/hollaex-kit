@@ -1154,7 +1154,7 @@ const userDelete = (req, res) => {
 };
 
 const fetchUserReferrals = (req, res) => {
-	const {  limit, page, order_by, order, start_date, end_date } = req.swagger.params;
+	const {  limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
 	loggerUser.info(
 		req.uuid,
@@ -1164,7 +1164,8 @@ const fetchUserReferrals = (req, res) => {
 		order_by,
 		order,
 		start_date,
-		end_date
+		end_date,
+		format
 	);
 
 	toolsLib.user.fetchUserReferrals(
@@ -1175,7 +1176,8 @@ const fetchUserReferrals = (req, res) => {
 			order_by: order_by.value,
 			order: order.value,
 			start_date: start_date.value,
-			end_date: end_date.value
+			end_date: end_date.value,
+			format: format.value
 		}
 	)
 		.then((referrals) => {

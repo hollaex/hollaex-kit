@@ -82,15 +82,16 @@ const {
 } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
-const { getKitConfig, isValidTierLevel, getKitTier, isDatetime, getKitSecrets, sendCustomEmail, emailHtmlBoilerplate, getDomain, updateKitConfigSecrets, sleep } = require('./common');
+const { getKitConfig, isValidTierLevel, getKitTier, isDatetime, getKitSecrets, sendCustomEmail, emailHtmlBoilerplate, getDomain, updateKitConfigSecrets, sleep, getKitCoins } = require('./common');
 const { isValidPassword, createSession } = require('./security');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { all, reject } = require('bluebird');
-const { Op } = require('sequelize');
+const { Op, fn, col, literal } = require('sequelize');
 const { paginationQuery, timeframeQuery, orderingQuery, convertSequelizeCountAndRows } = require('./database/helpers');
 const { parse } = require('json2csv');
 const flatten = require('flat');
 const uuid = require('uuid/v4');
+const BigNumber = require('bignumber.js');
 const { checkCaptcha, validatePassword, verifyOtpBeforeAction } = require('./security');
 const geoip = require('geoip-lite');
 const moment = require('moment');
@@ -495,7 +496,8 @@ const checkAffiliation = (affiliationCode, user_id) => {
 			if (referrer) {
 				return getModel('affiliation').create({
 					user_id,
-					referer_id: referrer.id
+					referer_id: referrer.id,
+					code: affiliationCode
 				});
 			} else {
 				return;
@@ -2930,6 +2932,14 @@ const settleFees = (currentTime) => {
 					receiverNetworkId
 				);
 
+				const nativeCurrency = getKitConfig()?.referral_history_config?.currency || 'usdt';
+
+				const exchangeCoins = getKitCoins();
+				const conversions = await getNodeLib().getOraclePrices(exchangeCoins, {
+					quote: nativeCurrency,
+					amount: 1
+					});
+
 				let successfulTransfers = null;
 				let failedTransfers = null;
 
@@ -2973,6 +2983,8 @@ const settleFees = (currentTime) => {
 							const tradeRecords = referralHistory.filter(data => data.coin === coin);
 
 							for (let record of tradeRecords) {
+								if (conversions[record.coin] === -1) continue;
+								record.accumulated_fees = new BigNumber(record.accumulated_fees).multipliedBy(conversions[record.coin]).toNumber()
 								await referralHistoryModel.create(record);
 							}
 						} catch (err) {
@@ -3053,7 +3065,7 @@ const settleFees = (currentTime) => {
 		});
 };
 
-const fetchUserReferrals = (opts = {
+const fetchUserReferrals = async (opts = {
 	user_id: null,
     limit: null,
     page: null,
@@ -3065,24 +3077,51 @@ const fetchUserReferrals = (opts = {
 }) => {
 	const referralHistoryModel = getModel('Referralhistory');
 	const pagination = paginationQuery(opts.limit, opts.page);
-	const ordering = orderingQuery(opts.order_by, opts.order);
 	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
 
-	const query = {
+	const dateTruc = fn('date_trunc', 'day', col('timestamp'));
+	let query = {
 		where: {
 			referer: opts.user_id
 		},
-		order: [ordering],
-		attributes: {
-			exclude: ['created_by']
-		},
-		...pagination
+		attributes: [
+			[fn('sum', col('accumulated_fees')), 'accumulated_fees']
+		  ],
+		group: []
 	};
 
-	if (timeframe) query.where.created_at = timeframe;
+	if (!opts.format) { query.where.created_at = timeframe; query = {...query, ...pagination}};
 
-	return referralHistoryModel.findAndCountAll(query)
-		.then(convertSequelizeCountAndRows)
+	if (opts.order_by === 'referee') {
+		query.attributes.push('referee')
+		query.group.push('referee')
+
+		return referralHistoryModel.findAll(query)
+		.then(async (referrals) => {
+			return { count: referrals.length , data: referrals };
+		})
+	} else {
+		query.attributes.push([dateTruc, 'date'])
+		query.group.push('date')
+
+		let result = {}
+		let referrals = await referralHistoryModel.findAll(query);
+		result = { count: referrals.length , data: referrals };
+
+		query = {
+			where: {
+				referer: opts.user_id
+			},
+			attributes: [
+				[fn('sum', col('accumulated_fees')), 'accumulated_fees']
+			  ],
+			group: []
+		};
+
+		referrals = await referralHistoryModel.findAll(query);
+		result.total = referrals?.[0]?.accumulated_fees;
+		return result;
+	}
 }
 
 module.exports = {

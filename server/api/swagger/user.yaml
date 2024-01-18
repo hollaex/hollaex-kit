@@ -1431,6 +1431,12 @@ paths:
           required: false
           type: string
           format: date-time
+        - in: query
+          name: format
+          description: format
+          required: false
+          type: string
+          enum: ['all']
       responses:
         200:
           description: Success
