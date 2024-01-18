@@ -290,6 +290,14 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 			throw new Error('active key does not exist');
 		}
 
+		if (!newKitConfig.referral_history_config.hasOwnProperty('currency')) {
+			throw new Error('currency key does not exist');
+		}
+
+		if (existingKitConfig?.referral_history_config?.currency && existingKitConfig?.referral_history_config?.currency !== newKitConfig?.referral_history_config?.currency) {
+			throw new Error('currency cannot be changed');
+		}
+
 		if (!newKitConfig.referral_history_config.hasOwnProperty('earning_rate')) {
 			throw new Error('earning_rate key does not exist');
 		}
@@ -317,7 +325,7 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 				earning_period: newKitConfig?.earning_period, 
 				settlement_interval: newKitConfig?.settlement_interval, 
 				distributor_id: newKitConfig?.distributor_id, 
-				last_settled_trade: newKitConfig?.last_settled_trade,
+				last_settled_trade: new Date(),
 			});
 		}
 

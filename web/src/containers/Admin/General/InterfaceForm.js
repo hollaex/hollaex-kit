@@ -21,11 +21,12 @@ const InterfaceForm = ({
 	const [isSubmit, setIsSubmit] = useState(!buttonSubmitting);
 	const [form] = Form.useForm();
 	const [referralHistoryData, setReferralHistoryData] = useState({
+		currency: constants?.kit?.referral_history_config?.currency || 'usdt',
 		earning_rate: constants?.kit?.referral_history_config?.earning_rate || null,
 		earning_period:
 			constants?.kit?.referral_history_config?.earning_period || null,
 		settlement_interval:
-			constants?.kit?.referral_history_config?.settlement_interval || null,
+			constants?.kit?.referral_history_config?.settlement_interval || 'month',
 		distributor_id:
 			constants?.kit?.referral_history_config?.distributor_id || null,
 		last_settled_trade:
@@ -56,12 +57,12 @@ const InterfaceForm = ({
 			};
 			const referral_history_config = {
 				active: !!values.referral_history_config,
-				earning_rate: !!values.referral_history_config.earning_rate,
-				earning_period: !!values.referral_history_config.earning_period,
-				settlement_interval: !!values.referral_history_config
-					.settlement_interval,
-				distributor_id: !!values.referral_history_config.distributor_id,
-				last_settled_trade: !!values.referral_history_config.last_settled_trade,
+				currency: referralHistoryData.currency,
+				earning_rate: referralHistoryData.earning_rate,
+				earning_period: referralHistoryData.earning_period,
+				settlement_interval: referralHistoryData.settlement_interval,
+				distributor_id: referralHistoryData.distributor_id,
+				last_settled_trade: referralHistoryData.last_settled_trade,
 				date_enabled: referralHistoryData.date_enabled,
 			};
 			handleSaveInterface(formValues, referral_history_config);
@@ -102,7 +103,7 @@ const InterfaceForm = ({
 						marginTop: 60,
 					}}
 					visible={displayReferralHistoryModal}
-					width={400}
+					width={500}
 					footer={null}
 					onCancel={() => {
 						setDisplayReferralHistoryModal(false);
@@ -112,52 +113,102 @@ const InterfaceForm = ({
 						Referral History Config
 					</h2>
 
-					<div className="mb-5">
+					<div className="mb-4">
 						<div style={{ fontSize: 16 }} className="mb-2">
-							Earning Rate
+							Currency
+							<div style={{ fontSize: 13 }}>
+								Currency to track earnings for analysis purposes
+							</div>
 						</div>
 
-						<Input />
+						<Input
+							value={referralHistoryData.currency}
+							onChange={(e) => {
+								setReferralHistoryData({
+									...referralHistoryData,
+									currency: e.target.value,
+								});
+							}}
+						/>
 					</div>
 
-					<div className="mb-5">
+					<div className="mb-4">
 						<div style={{ fontSize: 16 }} className="mb-2">
 							Earning Rate
+							<div style={{ fontSize: 13 }}>
+								Earning rate referee users receive from affiliated users fees
+							</div>
 						</div>
 
-						<Input />
+						<Input
+							value={referralHistoryData.earning_rate}
+							onChange={(e) => {
+								setReferralHistoryData({
+									...referralHistoryData,
+									earning_rate: e.target.value,
+								});
+							}}
+						/>
 					</div>
 
-					<div className="mb-5">
+					<div className="mb-4">
 						<div style={{ fontSize: 16 }} className="mb-2">
 							Earning Period
+							<div style={{ fontSize: 13 }}>
+								Number of months referee users earn affiliated users fees. Set
+								to 0 for no earning expiry
+							</div>
 						</div>
 
-						<Input />
+						<Input
+							value={referralHistoryData.earning_period}
+							onChange={(e) => {
+								setReferralHistoryData({
+									...referralHistoryData,
+									earning_period: e.target.value,
+								});
+							}}
+						/>
 					</div>
 
-					<div className="mb-5">
+					<div className="mb-4">
 						<div style={{ fontSize: 16 }} className="mb-2">
 							Settlement Interval
+							<div style={{ fontSize: 13 }}>
+								Interval at which to settle refered user fees. Enum: [month,
+								week, day]. Month: Will run every first day of a month at
+								midnight. Week: Will run every Sunday at midnight. Day: Will run
+								every day at midnight.
+							</div>
 						</div>
 
-						<Input />
+						<Input
+							value={referralHistoryData.settlement_interval}
+							onChange={(e) => {
+								setReferralHistoryData({
+									settlement_interval: e.target.value,
+								});
+							}}
+						/>
 					</div>
 
-					<div className="mb-5">
+					<div className="mb-4">
 						<div style={{ fontSize: 16 }} className="mb-2">
 							Distributor ID
+							<div style={{ fontSize: 13 }}>
+								Account ID to send settled fees from
+							</div>
 						</div>
 
-						<Input />
-					</div>
-
-					<div className="mb-5">
-						<div style={{ fontSize: 16 }} className="mb-2">
-							Last Settle Date
-						</div>
-
-						<Input />
+						<Input
+							value={referralHistoryData.distributor_id}
+							onChange={(e) => {
+								setReferralHistoryData({
+									...referralHistoryData,
+									distributor_id: e.target.value,
+								});
+							}}
+						/>
 					</div>
 
 					<div
@@ -185,8 +236,14 @@ const InterfaceForm = ({
 						</Button>
 						<Button
 							onClick={async () => {
-								if (!referralHistoryData.currency) {
-									message.error('Please Select currency');
+								if (
+									!referralHistoryData.currency ||
+									!referralHistoryData.earning_rate ||
+									!referralHistoryData.earning_period ||
+									!referralHistoryData.settlement_interval ||
+									!referralHistoryData.distributor_id
+								) {
+									message.error('Please input all the fields');
 									return;
 								}
 								setIsSubmit(true);
@@ -313,7 +370,27 @@ const InterfaceForm = ({
 										className="feature-icon mr-1"
 									/>
 									<div className="ml-2 checkbox-txt">
-										Referral History
+										Referral History{' '}
+										{referralHistoryData.active && (
+											<span
+												style={{
+													padding: 5,
+													position: 'relative',
+													left: 5,
+													bottom: 5,
+													color: 'white',
+													backgroundColor: '#288500',
+													cursor: 'pointer',
+												}}
+												onClick={(e) => {
+													e.stopPropagation();
+													e.preventDefault();
+													setDisplayReferralHistoryModal(true);
+												}}
+											>
+												Edit
+											</span>
+										)}
 										<div className="small-text">
 											(User referral history and earning analytics)
 										</div>
