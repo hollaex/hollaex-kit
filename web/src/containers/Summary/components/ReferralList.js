@@ -12,7 +12,6 @@ import BigNumber from 'bignumber.js';
 import moment from 'moment';
 import STRINGS from 'config/localizedStrings';
 import { CloseOutlined } from '@ant-design/icons';
-import ReferralInvite from './ReferralInvite';
 
 import { bindActionCreators } from 'redux';
 import { LoadingOutlined } from '@ant-design/icons';

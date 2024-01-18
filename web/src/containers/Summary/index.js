@@ -207,7 +207,11 @@ class Summary extends Component {
 						/>
 					) : (
 						<>
-							{this.state.displayReferralList && <ReferralList />}
+							{this.state.displayReferralList && (
+								<ReferralList
+									affiliation_code={this.props.user.affiliation_code}
+								/>
+							)}
 
 							{this.state.displaySummary && (
 								<div>
@@ -224,8 +228,12 @@ class Summary extends Component {
 													coins={coins}
 													config={config_level}
 													onUpgradeAccount={this.onUpgradeAccount}
+													onInviteFriends={this.onInviteFriends}
 													onDisplayReferralList={this.onDisplayReferralList}
 													verification_level={verification_level}
+													referral_history_config={
+														this.props.referral_history_config
+													}
 												/>
 											</SummaryBlock>
 										</div>
@@ -344,6 +352,7 @@ const mapStateToProps = (state) => ({
 	constants: state.app.constants,
 	chartData: state.asset.chartData,
 	totalAsset: state.asset.totalAsset,
+	referral_history_config: state.app.constants.referral_history_config,
 });
 
 const mapDispatchToProps = (dispatch) => ({

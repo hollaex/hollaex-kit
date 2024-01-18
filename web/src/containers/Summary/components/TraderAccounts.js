@@ -15,9 +15,11 @@ const TraderAccounts = ({
 	isAccountDetails = false,
 	onUpgradeAccount,
 	logout,
+	onInviteFriends,
 	onDisplayReferralList,
 	verification_level,
 	selectedAccount,
+	referral_history_config,
 	icons: ICONS,
 }) => {
 	const level = selectedAccount
@@ -121,7 +123,11 @@ const TraderAccounts = ({
 										<div className="trade-account-link mb-4">
 											<span
 												className="pointer caps"
-												onClick={onDisplayReferralList}
+												onClick={
+													referral_history_config?.active
+														? onDisplayReferralList
+														: onInviteFriends
+												}
 											>
 												{children}
 											</span>
