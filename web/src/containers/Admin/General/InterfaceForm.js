@@ -58,10 +58,10 @@ const InterfaceForm = ({
 			const referral_history_config = {
 				active: !!values.referral_history_config,
 				currency: referralHistoryData.currency,
-				earning_rate: referralHistoryData.earning_rate,
-				earning_period: referralHistoryData.earning_period,
+				earning_rate: Number(referralHistoryData.earning_rate),
+				earning_period: Number(referralHistoryData.earning_period),
 				settlement_interval: referralHistoryData.settlement_interval,
-				distributor_id: referralHistoryData.distributor_id,
+				distributor_id: Number(referralHistoryData.distributor_id),
 				last_settled_trade: referralHistoryData.last_settled_trade,
 				date_enabled: referralHistoryData.date_enabled,
 			};
@@ -153,7 +153,7 @@ const InterfaceForm = ({
 							onChange={(e) => {
 								setReferralHistoryData({
 									...referralHistoryData,
-									earning_rate: e.target.value,
+									earning_rate: Number(e.target.value),
 								});
 							}}
 						/>
@@ -173,7 +173,7 @@ const InterfaceForm = ({
 							onChange={(e) => {
 								setReferralHistoryData({
 									...referralHistoryData,
-									earning_period: e.target.value,
+									earning_period: Number(e.target.value),
 								});
 							}}
 						/>
@@ -213,7 +213,7 @@ const InterfaceForm = ({
 							onChange={(e) => {
 								setReferralHistoryData({
 									...referralHistoryData,
-									distributor_id: e.target.value,
+									distributor_id: Number(e.target.value),
 								});
 							}}
 						/>
