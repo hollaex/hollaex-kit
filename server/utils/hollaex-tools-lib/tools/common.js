@@ -322,6 +322,14 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 			newKitConfig.referral_history_config.last_settled_trade = new Date();
 		}
 
+		if (existingKitConfig?.referral_history_config?.last_settled_trade && 
+			newKitConfig.referral_history_config.last_settled_trade &&
+			moment(existingKitConfig?.referral_history_config?.last_settled_trade) > 
+			moment(newKitConfig.referral_history_config.last_settled_trade)
+		) {
+			throw new Error('the next last settle date cannot be less than the previous last settle date');
+		}
+
 		if (newKitConfig?.referral_history_config?.active && !newKitConfig?.referral_history_config?.disableStart) {
 			const { activateReferralFeature } = require('./user');
 			activateReferralFeature({
