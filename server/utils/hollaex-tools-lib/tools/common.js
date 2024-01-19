@@ -318,9 +318,6 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 			newKitConfig.referral_history_config.date_enabled = new Date();
 		}
 
-		if (!existingKitConfig?.referral_history_config?.last_settled_trade) {
-			newKitConfig.referral_history_config.last_settled_trade = new Date();
-		}
 
 		if (newKitConfig?.referral_history_config?.active && !newKitConfig?.referral_history_config?.disableStart) {
 			const { activateReferralFeature } = require('./user');
@@ -329,7 +326,7 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 				earning_period: newKitConfig?.referral_history_config?.earning_period, 
 				settlement_interval: newKitConfig?.referral_history_config?.settlement_interval, 
 				distributor_id: newKitConfig?.referral_history_config?.distributor_id, 
-				last_settled_trade: newKitConfig.referral_history_config.last_settled_trade || existingKitConfig?.referral_history_config?.last_settled_trade,
+				last_settled_trade: null,
 			});
 		}
 
