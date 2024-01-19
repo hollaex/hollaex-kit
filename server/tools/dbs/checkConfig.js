@@ -60,7 +60,8 @@ Status.findOne()
 				maker_id: 1,
 				quote: 'xht',
 				spread: 0
-			}
+			},
+			referral_history_config: existingKitConfigurations.referral_history_config || {}
 		};
 
 		const secrets = {
