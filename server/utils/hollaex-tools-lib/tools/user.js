@@ -2918,6 +2918,15 @@ const settleFees = (currentTime) => {
 			]);
 		})
 		.then(async ([accumulatedFees, distributor, referralHistory]) => {
+			const nativeCurrency = getKitConfig()?.referral_history_config?.currency || 'usdt';
+
+			const exchangeCoins = getKitCoins();
+			const conversions = await getNodeLib().getOraclePrices(exchangeCoins, {
+				quote: nativeCurrency,
+				amount: 1
+				});
+
+
 			for (let receiverKey in accumulatedFees) {
 				const [receiverKitId, receiverNetworkId, receiverEmail] = receiverKey.split(':');
 
@@ -2931,15 +2940,7 @@ const settleFees = (currentTime) => {
 					'referer user network ID:',
 					receiverNetworkId
 				);
-
-				const nativeCurrency = getKitConfig()?.referral_history_config?.currency || 'usdt';
-
-				const exchangeCoins = getKitCoins();
-				const conversions = await getNodeLib().getOraclePrices(exchangeCoins, {
-					quote: nativeCurrency,
-					amount: 1
-					});
-
+			
 				let successfulTransfers = null;
 				let failedTransfers = null;
 
