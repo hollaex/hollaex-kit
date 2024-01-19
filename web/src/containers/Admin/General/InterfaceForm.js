@@ -245,11 +245,11 @@ const InterfaceForm = ({
 						<Button
 							onClick={async () => {
 								if (
-									!referralHistoryData.currency ||
-									!referralHistoryData.earning_rate ||
-									!referralHistoryData.earning_period ||
-									!referralHistoryData.settlement_interval ||
-									!referralHistoryData.distributor_id
+									referralHistoryData.currency == null ||
+									referralHistoryData.earning_rate == null ||
+									referralHistoryData.earning_period == null ||
+									referralHistoryData.settlement_interval == null ||
+									referralHistoryData.distributor_id == null
 								) {
 									message.error('Please input all the fields');
 									return;
