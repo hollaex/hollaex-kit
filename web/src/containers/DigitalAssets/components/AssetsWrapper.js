@@ -99,24 +99,26 @@ class AssetsWrapper extends Component {
 
 	getCoinsData = (coinsList, chartValues) => {
 		const { coins, quicktradePairs } = this.props;
-		const coinsData = coinsList.map((name) => {
-			const { code, icon_id, symbol, fullname, type } = coins[name];
+		const coinsData = coinsList
+			.map((name) => {
+				const { code, icon_id, symbol, fullname, type } = coins[name];
 
-			const key = `${code}-usdt`;
-			const pricingData = this.getPricingData(chartValues[key]);
+				const key = `${code}-usdt`;
+				const pricingData = this.getPricingData(chartValues[key]);
 
-			return {
-				...pricingData,
-				chartData: chartValues[key],
-				code,
-				icon_id,
-				symbol,
-				fullname,
-				type,
-				key,
-				networkType: quicktradePairs[key]?.type,
-			};
-		});
+				return {
+					...pricingData,
+					chartData: chartValues[key],
+					code,
+					icon_id,
+					symbol,
+					fullname,
+					type,
+					key,
+					networkType: quicktradePairs[key]?.type,
+				};
+			})
+			.filter(({ type }) => type === 'blockchain');
 
 		this.setState({ coinsData });
 		this.constructData(this.state.page);
@@ -166,9 +168,8 @@ class AssetsWrapper extends Component {
 
 	constructData = (page, searchValue) => {
 		const { pageSize, coinsData } = this.state;
-		const pairs = this.getSearchPairs(searchValue);
-		const searchResults = coinsData.filter(({ key }) => pairs.includes(key));
-		const count = searchResults.length;
+		const searchResults = this.getSearchPairs(searchValue);
+		const count = coinsData.length;
 
 		const initItem = page * pageSize;
 
@@ -181,26 +182,22 @@ class AssetsWrapper extends Component {
 	};
 
 	getSearchPairs = (value = '') => {
-		const { pairs } = this.props;
 		const { coinsData } = this.state;
 
 		const result = [];
 		const searchValue = value ? value.toLowerCase().trim() : '';
 
 		if (!value) {
-			return Object.keys(pairs);
+			return coinsData;
 		} else {
-			Object.entries(pairs).forEach(([key, pair]) => {
-				const { pair_base, pair_2 } = pair;
-				const { fullname = '' } = coinsData[pair_base] || DEFAULT_COIN_DATA;
+			coinsData.forEach((data) => {
+				const { key, fullname } = data;
 
 				if (
 					key.indexOf(searchValue) !== -1 ||
-					pair_base.indexOf(searchValue) !== -1 ||
-					pair_2.indexOf(searchValue) !== -1 ||
 					fullname.toLowerCase().indexOf(searchValue) !== -1
 				) {
-					result.push(key);
+					result.push(data);
 				}
 			});
 
