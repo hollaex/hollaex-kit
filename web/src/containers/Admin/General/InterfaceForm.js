@@ -22,7 +22,7 @@ const InterfaceForm = ({
 	const [form] = Form.useForm();
 	const [referralHistoryData, setReferralHistoryData] = useState({
 		currency: constants?.kit?.referral_history_config?.currency || 'usdt',
-		earning_rate: constants?.kit?.referral_history_config?.earning_rate || null,
+		earning_rate: constants?.kit?.referral_history_config?.earning_rate || 0,
 		earning_period:
 			constants?.kit?.referral_history_config?.earning_period || null,
 		settlement_interval:
@@ -194,6 +194,7 @@ const InterfaceForm = ({
 							value={referralHistoryData.settlement_interval}
 							onChange={(e) => {
 								setReferralHistoryData({
+									...referralHistoryData,
 									settlement_interval: e.target.value,
 								});
 							}}
