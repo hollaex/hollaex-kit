@@ -22,9 +22,9 @@ const InterfaceForm = ({
 	const [form] = Form.useForm();
 	const [referralHistoryData, setReferralHistoryData] = useState({
 		currency: constants?.kit?.referral_history_config?.currency || 'usdt',
-		earning_rate: constants?.kit?.referral_history_config?.earning_rate || 0,
+		earning_rate: constants?.kit?.referral_history_config?.earning_rate || null,
 		earning_period:
-			constants?.kit?.referral_history_config?.earning_period || null,
+			constants?.kit?.referral_history_config?.earning_period || 0,
 		settlement_interval:
 			constants?.kit?.referral_history_config?.settlement_interval || 'month',
 		distributor_id:
