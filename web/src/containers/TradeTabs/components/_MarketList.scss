@@ -93,15 +93,11 @@
 				direction: ltr;
 			}
 			.td-trade {
-					width: 7rem;
-					.action_notification-wrapper {
-						right: auto;
-						top: 1.25rem;
-						.action_notification-text {
-							font-size: 1.2rem;
-							line-height: 1.2rem;
-						}
-					}
+				width: 7rem;
+				.action_notification-wrapper {
+					right: auto;
+					top: 1.25rem;
+				}
 			}
 		}
 		.market-list__caret {
