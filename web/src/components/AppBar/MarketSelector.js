@@ -163,6 +163,13 @@ class MarketSelector extends Component {
 		this.closeAddTabMenu();
 	};
 
+	getCoinsData = (quicktrade, markets) =>
+		quicktrade.map((data) =>
+			data.type === 'pro'
+				? markets.find(({ key }) => key === data.symbol) || { ...data }
+				: { ...data }
+		);
+
 	render() {
 		const {
 			wrapperClassName,
@@ -181,8 +188,7 @@ class MarketSelector extends Component {
 
 		const tabMenuLength = markets.length;
 		const hasTabMenu = tabMenuLength !== 0;
-
-		const filterQuickTrade = quicktrade.filter(({ type }) => type !== 'pro');
+		const coinsData = this.getCoinsData(quicktrade, markets);
 
 		return (
 			<div className={classnames(wrapperClassName)}>
@@ -201,7 +207,7 @@ class MarketSelector extends Component {
 					</div>
 					<div className="scroll-view">
 						{hasTabMenu ? (
-							[...markets, ...filterQuickTrade].map((market, index) => {
+							coinsData.map((market, index) => {
 								const {
 									key,
 									pair,
