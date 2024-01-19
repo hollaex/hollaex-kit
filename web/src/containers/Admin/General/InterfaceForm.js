@@ -121,15 +121,23 @@ const InterfaceForm = ({
 							</div>
 						</div>
 
-						<Input
+						<Select
+							showSearch
+							className="select-box"
+							placeholder="Select asset for p/l analysis"
 							value={referralHistoryData.currency}
+							style={{ width: 250 }}
 							onChange={(e) => {
 								setReferralHistoryData({
 									...referralHistoryData,
-									currency: e.target.value,
+									currency: e,
 								});
 							}}
-						/>
+						>
+							{Object.keys(coins).map((key) => (
+								<Select.Option value={key}>{coins[key].fullname}</Select.Option>
+							))}
+						</Select>
 					</div>
 
 					<div className="mb-4">

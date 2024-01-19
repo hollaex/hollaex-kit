@@ -124,6 +124,10 @@ class Summary extends Component {
 		this.setState({ displayReferralList: true, displaySummary: false });
 	};
 
+	goBackReferral = () => {
+		this.setState({ displayReferralList: false, displaySummary: true });
+	};
+
 	onStakeToken = () => {
 		this.props.setNotification(NOTIFICATIONS.STAKE_TOKEN);
 	};
@@ -209,7 +213,9 @@ class Summary extends Component {
 						<>
 							{this.state.displayReferralList && (
 								<ReferralList
+									coins={coins}
 									affiliation_code={this.props.user.affiliation_code}
+									goBackReferral={this.goBackReferral}
 								/>
 							)}
 

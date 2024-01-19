@@ -4,8 +4,11 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 // eslint-disable-next-line
-import { Coin, EditWrapper } from 'components';
-import { Link } from 'react-router';
+import {
+	// Coin,
+	EditWrapper,
+} from 'components';
+// import { Link } from 'react-router';
 import { Button as AntButton, Spin, DatePicker, message, Modal } from 'antd';
 import { fetchReferralHistory } from './actions';
 import BigNumber from 'bignumber.js';
@@ -16,7 +19,10 @@ import { CloseOutlined } from '@ant-design/icons';
 import { bindActionCreators } from 'redux';
 import { LoadingOutlined } from '@ant-design/icons';
 import DumbField from 'components/Form/FormFields/DumbField';
-import { Table, Button, IconTitle } from 'components';
+import {
+	Table,
+	// Button, IconTitle
+} from 'components';
 import { getUserReferrals } from 'actions/userAction';
 import { setSnackNotification } from 'actions/appActions';
 import ICONS from 'config/icons';
@@ -31,10 +37,8 @@ const ReferralList = ({
 	affiliation,
 	setSnackNotification,
 	coins,
-	balance_history_config,
-	handleBalanceHistory,
-	balances,
-	pricesInNative,
+	referral_history_config,
+	goBackReferral,
 }) => {
 	const month = [
 		'Jan',
@@ -67,17 +71,14 @@ const ReferralList = ({
 		isRemaining: true,
 	});
 	// eslint-disable-next-line
-	const [selectedDate, setSelectedDate] = useState();
 	const [currentBalance, setCurrentBalance] = useState();
 	const [latestBalance, setLatestBalance] = useState();
-	const [userPL, setUserPL] = useState();
 	const [current, setCurrent] = useState(0);
 	const [graphData, setGraphData] = useState([]);
 	const [customDate, setCustomDate] = useState(false);
 	const [customDateValues, setCustomDateValues] = useState();
 
-	const [copied, setCopied] = useState(false);
-	const [showReferrals, setShowReferrals] = useState(false);
+	// const [showReferrals, setShowReferrals] = useState(false);
 	const [referees, setReferees] = useState([]);
 	const [mappedAffiliations, setMappedAffilications] = useState([]);
 
@@ -96,9 +97,13 @@ const ReferralList = ({
 			const foundEarning = referees?.find(
 				(referee) => referee.referee === affliate.user.id
 			);
-			affliate.earning = foundEarning?.accumulated_fees;
+			affliate.earning = getSourceDecimals(
+				referral_history_config?.currency || 'usdt',
+				foundEarning?.accumulated_fees
+			);
 		}
 		setMappedAffilications(newData);
+		// eslint-disable-next-line
 	}, [affiliation, referees]);
 
 	const HEADERS = [
@@ -128,7 +133,6 @@ const ReferralList = ({
 			stringId: 'REFERRAL_LINK.TIME',
 			label: STRINGS['REFERRAL_LINK.TIME'],
 			key: 'time',
-			className: 'd-flex justify-content-start',
 			renderCell: ({ created_at }, key, index) => (
 				<td key={key}>
 					<div className="d-flex justify-content-start">{created_at}</div>
@@ -143,7 +147,7 @@ const ReferralList = ({
 			renderCell: (data, key, index) => {
 				return (
 					<td key={key}>
-						<div className="d-flex justify-content-start">
+						<div className="d-flex justify-content-end">
 							{data?.earning || '-'}
 						</div>
 					</td>
@@ -159,9 +163,9 @@ const ReferralList = ({
 		});
 	};
 
-	const viewReferrals = (showReferrals) => {
-		setShowReferrals(showReferrals);
-	};
+	// const viewReferrals = (showReferrals) => {
+	// 	setShowReferrals(showReferrals);
+	// };
 
 	const handleNext = (pageCount, pageNumber) => {
 		const pageTemp = pageNumber % 2 === 0 ? 2 : 1;
@@ -358,56 +362,6 @@ const ReferralList = ({
 			});
 	};
 
-	const getRows = (coins) => {
-		return (
-			<>
-				{Object.values(coins || {}).map((coin, index) => {
-					const incrementUnit = coins[coin.symbol].increment_unit;
-					const decimalPoint = new BigNumber(incrementUnit).dp();
-					const sourceAmount = new BigNumber(
-						currentBalance?.balance[coin.symbol]?.original_value || 0
-					)
-						.decimalPlaces(decimalPoint)
-						.toNumber();
-
-					const incrementUnitNative =
-						coins[balance_history_config?.currency || 'usdt'].increment_unit;
-					const decimalPointNative = new BigNumber(incrementUnitNative).dp();
-					const sourceAmountNative = new BigNumber(
-						currentBalance?.balance[coin.symbol]?.native_currency_value || 0
-					)
-						.decimalPlaces(decimalPointNative)
-						.toNumber();
-
-					return (
-						<tr className="table-row" key={index}>
-							<td
-								style={{ borderBottom: '1px solid grey', minWidth: '15.5em' }}
-								className="td-fit"
-							>
-								{sourceAmount} {coin.symbol.toUpperCase()}
-							</td>
-							<td
-								style={{ borderBottom: '1px solid grey', minWidth: '15.5em' }}
-								className="td-fit"
-							>
-								{sourceAmount} {coin.symbol.toUpperCase()}
-							</td>
-
-							<td
-								style={{ borderBottom: '1px solid grey', minWidth: '15.5em' }}
-								className="td-fit"
-							>
-								= {sourceAmountNative}{' '}
-								{balance_history_config?.currency?.toUpperCase() || 'USDT'}
-							</td>
-						</tr>
-					);
-				})}
-			</>
-		);
-	};
-
 	const customDateModal = () => {
 		return (
 			<>
@@ -582,7 +536,10 @@ const ReferralList = ({
 				/> */}
 					<div>
 						<div className="my-2">
-							<div style={{ fontSize: 18, marginBottom: 10 }}>
+							<div
+								className="field-label"
+								style={{ fontSize: 18, marginBottom: 10 }}
+							>
 								Referral invite link
 							</div>
 							<div>
@@ -635,7 +592,7 @@ const ReferralList = ({
 							textDecoration: 'underline',
 							color: '#5257CD',
 						}}
-						onClick={() => handleBalanceHistory(false)}
+						onClick={() => goBackReferral(false)}
 					>
 						{'<'}
 						Back
@@ -658,8 +615,16 @@ const ReferralList = ({
 						Earnings generated overtime from all your referred users.
 					</div>
 					<div>
-						<div>Total Earnt:</div>
-						<div>{latestBalance} </div>
+						<div style={{ fontSize: 15 }} className="field-label">
+							Total Earnt:
+						</div>
+						<div style={{ fontSize: 15 }} className="field-label">
+							{getSourceDecimals(
+								referral_history_config?.currency || 'usdt',
+								latestBalance
+							)}{' '}
+							{(referral_history_config?.currency || 'usdt').toUpperCase()}{' '}
+						</div>
 					</div>
 				</div>
 				<div
@@ -782,7 +747,9 @@ const ReferralList = ({
 						</div>
 
 						<div style={{ marginTop: 20 }}>
-							Below table data collected starting: Feb 23, 2023.
+							Below table data collected starting:{' '}
+							{moment(referral_history_config?.start_date).format('YYYY-MM-DD')}
+							.
 						</div>
 
 						<div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -844,7 +811,7 @@ const mapStateToProps = (state) => ({
 	balances: state.user.balance,
 	pricesInNative: state.asset.oraclePrices,
 	dust: state.app.constants.dust,
-	balance_history_config: state.app.constants.balance_history_config,
+	referral_history_config: state.app.constants.referral_history_config,
 	affiliation: state.user.affiliation || {},
 	is_hap: state.user.is_hap,
 });
