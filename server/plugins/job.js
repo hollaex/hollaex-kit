@@ -207,7 +207,7 @@ const updateRewardsCheckRunner = () => {
 const referralCheckRunner = async () => {
 	try {
 		const statusModel = toolsLib.database.getModel('status');
-		let status = await statusModel.findOne({});
+		const status = await statusModel.findOne({});
 
 		if (!status?.kit?.referral_history_config?.active) return;
 
@@ -215,9 +215,9 @@ const referralCheckRunner = async () => {
 		const { settlement_interval: SETTLEMENT_INTERVAL } = status?.kit?.referral_history_config || {};
 
 		cron.schedule(INTERVAL_CRON[SETTLEMENT_INTERVAL], async () => {
-			status = await statusModel.findOne({});
-			if (!status?.kit?.referral_history_config?.active) { referralJobRunning = false; return; }
-			if (status?.kit?.referral_history_config?.settlement_interval !== SETTLEMENT_INTERVAL) { referralJobRunning = false; return; }
+			const latestStatus = await statusModel.findOne({});
+			if (!latestStatus?.kit?.referral_history_config?.active) { referralJobRunning = false; return; }
+			if (latestStatus?.kit?.referral_history_config?.settlement_interval !== SETTLEMENT_INTERVAL) { referralJobRunning = false; return; }
 			
 			const currentTime = moment().seconds(0).milliseconds(0).toISOString();
 			loggerPlugin.verbose(
