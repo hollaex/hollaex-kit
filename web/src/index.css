@@ -3574,10 +3574,10 @@ table th {
       .trade-details-wrapper .day-change-block .ant-radio-group .ant-radio-button-wrapper:last-child {
         border-radius: 0 0.5rem 0.5rem 0; }
       .trade-details-wrapper .day-change-block .ant-radio-group .ant-radio-button-wrapper::before {
-        background: #fff; }
+        background: white; }
     .trade-details-wrapper .day-change-block .ant-radio-group .ant-radio-button-wrapper-checked {
-      border-color: #fff;
-      color: #fff; }
+      border-color: white;
+      color: white; }
 
 .layout-mobile .trade-details-wrapper {
   width: 100%; }
@@ -4632,9 +4632,6 @@ table th {
     .market-list__container .market-list__block .market-list__block-table .td-trade .action_notification-wrapper {
       right: auto;
       top: 1.25rem; }
-      .market-list__container .market-list__block .market-list__block-table .td-trade .action_notification-wrapper .action_notification-text {
-        font-size: 1.2rem;
-        line-height: 1.2rem; }
 
 .market-list__container .market-list__block .market-list__caret span:not(.important-text) {
   opacity: 0.3; }
@@ -5925,10 +5922,10 @@ table th {
       .trade-details-wrapper .day-change-block .ant-radio-group .ant-radio-button-wrapper:last-child {
         border-radius: 0 0.5rem 0.5rem 0; }
       .trade-details-wrapper .day-change-block .ant-radio-group .ant-radio-button-wrapper::before {
-        background: #fff; }
+        background: white; }
     .trade-details-wrapper .day-change-block .ant-radio-group .ant-radio-button-wrapper-checked {
-      border-color: #fff;
-      color: #fff; }
+      border-color: white;
+      color: white; }
 
 .layout-mobile .trade-details-wrapper {
   width: 100%; }

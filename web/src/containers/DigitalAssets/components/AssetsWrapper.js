@@ -9,7 +9,6 @@ import {
 import { isMobile } from 'react-device-detect';
 import { SearchBox } from 'components';
 import STRINGS from 'config/localizedStrings';
-import { DEFAULT_COIN_DATA } from 'config/constants';
 import { quicktradePairSelector } from 'containers/QuickTrade/components/utils';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { getMiniCharts } from 'actions/chartAction';
@@ -225,7 +224,7 @@ class AssetsWrapper extends Component {
 			router.push(`/assets/coin/${pair.split('-')[0]}`);
 		}
 	};
-
+	
 	render() {
 		const { data, page, pageSize, count } = this.state;
 
