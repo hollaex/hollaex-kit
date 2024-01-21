@@ -1883,7 +1883,11 @@ const Otcdeskpopup = ({
 													type="primary"
 													className="green-btn connect-btn"
 													onClick={handleConnect}
-													disabled={!apiData?.apikey || !apiData?.seckey}
+													disabled={
+														!apiData?.apikey ||
+														!apiData?.seckey ||
+														(hedgeApi === 'okx' && !apiData?.password)
+													}
 												>
 													Connect
 												</Button>
