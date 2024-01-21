@@ -119,7 +119,7 @@ const ReferralList = ({
 		},
 		{
 			stringId: 'REFERRAL_LINK.CODE',
-			label: 'Code used',
+			label: STRINGS['REFERRAL_LINK.CODE'],
 			key: 'code',
 			renderCell: (data, key, index) => (
 				<td key={key}>
@@ -141,7 +141,9 @@ const ReferralList = ({
 		},
 		{
 			stringId: 'REFERRAL_LINK.EARNING',
-			label: 'Earnings value (USDT)',
+			label: `${STRINGS['REFERRAL_LINK.EARNING']} (${(
+				referral_history_config?.currency || 'usdt'
+			).toUpperCase()})`,
 			key: 'earning',
 			className: 'd-flex justify-content-end',
 			renderCell: (data, key, index) => {
@@ -392,15 +394,20 @@ const ReferralList = ({
 							}}
 						>
 							<div style={{ marginTop: 20, marginBottom: 20 }}>
-								Select specific dates to fetch your history data (date
-								difference cannot go further than 3 months)
+								<EditWrapper stringId="REFERRAL_LINK.HISTORY_DESCRIPTION">
+									{STRINGS['REFERRAL_LINK.HISTORY_DESCRIPTION']}
+								</EditWrapper>
 							</div>
 							<div style={{ marginTop: 5 }}>
-								<div>Start Date</div>
+								<div>
+									<EditWrapper stringId="REFERRAL_LINK.START_DATE">
+										{STRINGS['REFERRAL_LINK.START_DATE']}
+									</EditWrapper>
+								</div>
 								<DatePicker
 									suffixIcon={null}
 									className="pldatePicker"
-									placeholder={'Select start date'}
+									placeholder={STRINGS['REFERRAL_LINK.SELECT_START_DATE']}
 									style={{
 										width: 200,
 									}}
@@ -414,11 +421,15 @@ const ReferralList = ({
 								/>
 							</div>
 							<div style={{ marginTop: 5 }}>
-								<div>End Date</div>
+								<div>
+									<EditWrapper stringId="REFERRAL_LINK.END_DATE">
+										{STRINGS['REFERRAL_LINK.END_DATE']}
+									</EditWrapper>
+								</div>
 								<DatePicker
 									suffixIcon={null}
 									className="pldatePicker"
-									placeholder={'Select end date'}
+									placeholder={STRINGS['REFERRAL_LINK.SELECT_END_DATE']}
 									style={{
 										width: 200,
 									}}
@@ -455,7 +466,9 @@ const ReferralList = ({
 							}}
 							type="default"
 						>
-							BACK
+							<EditWrapper stringId="REFERRAL_LINK.BACK">
+								{STRINGS['REFERRAL_LINK.BACK']}
+							</EditWrapper>
 						</AntButton>
 						<AntButton
 							onClick={async () => {
@@ -505,7 +518,9 @@ const ReferralList = ({
 							}}
 							type="default"
 						>
-							PROCEED
+							<EditWrapper stringId="REFERRAL_LINK.PROCEED">
+								{STRINGS['REFERRAL_LINK.PROCEED']}
+							</EditWrapper>
 						</AntButton>
 					</div>
 				</Modal>
@@ -540,7 +555,9 @@ const ReferralList = ({
 								className="field-label"
 								style={{ fontSize: 18, marginBottom: 10 }}
 							>
-								Referral invite link
+								<EditWrapper stringId="REFERRAL_LINK.INVITE_LINK">
+									{STRINGS['REFERRAL_LINK.INVITE_LINK']}
+								</EditWrapper>
 							</div>
 							<div>
 								<EditWrapper stringId="REFERRAL_LINK.INFO_TEXT">
@@ -595,13 +612,16 @@ const ReferralList = ({
 						onClick={() => goBackReferral(false)}
 					>
 						{'<'}
-						Back
-					</span>{' '}
-					Summary page
+						<EditWrapper stringId="REFERRAL_LINK.BACK_LOWER">
+							{STRINGS['REFERRAL_LINK.BACK_LOWER']}
+						</EditWrapper>
+					</span>
 				</div>
 
 				<div style={{ fontSize: 18 }} className="field-label">
-					Earnings
+					<EditWrapper stringId="REFERRAL_LINK.EARNINGS">
+						{STRINGS['REFERRAL_LINK.EARNINGS']}
+					</EditWrapper>
 				</div>
 				<div
 					style={{
@@ -612,11 +632,16 @@ const ReferralList = ({
 					}}
 				>
 					<div style={{}}>
-						Earnings generated overtime from all your referred users.
+						<EditWrapper stringId="REFERRAL_LINK.EARNINGS_DESCRIPTION">
+							{STRINGS['REFERRAL_LINK.EARNINGS_DESCRIPTION']}
+						</EditWrapper>
 					</div>
 					<div>
 						<div style={{ fontSize: 15 }} className="field-label">
-							Total Earnt:
+							<EditWrapper stringId="REFERRAL_LINK.TOTAL_EARNT">
+								{STRINGS['REFERRAL_LINK.TOTAL_EARNT']}
+							</EditWrapper>
+							:
 						</div>
 						<div style={{ fontSize: 15 }} className="field-label">
 							{getSourceDecimals(
@@ -644,9 +669,8 @@ const ReferralList = ({
 							});
 						}}
 					>
-						<EditWrapper stringId="REFERRAL_LIST.WEEK">
-							{/* {STRINGS['REFERRAL_LIST.WEEK']} */}
-							All
+						<EditWrapper stringId="REFERRAL_LINK.ALL">
+							{STRINGS['REFERRAL_LINK.ALL']}
 						</EditWrapper>
 					</AntButton>
 					<AntButton
@@ -665,9 +689,8 @@ const ReferralList = ({
 						}}
 					>
 						<span style={{ marginRight: 3 }}>1</span>
-						<EditWrapper stringId="REFERRAL_LIST.WEEK">
-							{/* {STRINGS['REFERRAL_LIST.WEEK']} */}
-							week
+						<EditWrapper stringId="REFERRAL_LINK.WEEK">
+							{STRINGS['REFERRAL_LINK.WEEK']}
 						</EditWrapper>
 					</AntButton>
 					<AntButton
@@ -686,9 +709,8 @@ const ReferralList = ({
 						}}
 					>
 						<span style={{ marginRight: 3 }}>1 </span>{' '}
-						<EditWrapper stringId="REFERRAL_LIST.MONTH">
-							{/* {STRINGS['REFERRAL_LIST.MONTH']} */}
-							month
+						<EditWrapper stringId="REFERRAL_LINK.MONTH">
+							{STRINGS['REFERRAL_LINK.MONTH']}
 						</EditWrapper>
 					</AntButton>
 					<AntButton
@@ -707,9 +729,8 @@ const ReferralList = ({
 						}}
 					>
 						<span style={{ marginRight: 3 }}>3 </span>{' '}
-						<EditWrapper stringId="REFERRAL_LIST.MONTHS">
-							{/* {STRINGS['REFERRAL_LIST.MONTHS']} */}
-							months
+						<EditWrapper stringId="REFERRAL_LINK.MONTHS">
+							{STRINGS['REFERRAL_LINK.MONTHS']}
 						</EditWrapper>
 					</AntButton>
 					<AntButton
@@ -723,7 +744,9 @@ const ReferralList = ({
 							setCustomDate(true);
 						}}
 					>
-						Custom
+						<EditWrapper stringId="REFERRAL_LINK.CUSTOM">
+							{STRINGS['REFERRAL_LINK.CUSTOM']}
+						</EditWrapper>
 					</AntButton>
 				</div>
 				<div className="highChartColor">
@@ -740,14 +763,22 @@ const ReferralList = ({
 					underline={true}
 				/> */}
 					<div>
-						<div className="field-label">Users sign up list</div>
+						<div className="field-label">
+							<EditWrapper stringId="REFERRAL_LINK.USERS_LIST">
+								{STRINGS['REFERRAL_LINK.USERS_LIST']}
+							</EditWrapper>
+						</div>
 						<div>
-							Top users you've referred and their earnings they have generated
-							for you.
+							<EditWrapper stringId="REFERRAL_LINK.USERS_LIST_DESC">
+								{STRINGS['REFERRAL_LINK.USERS_LIST_DESC']}
+							</EditWrapper>
 						</div>
 
 						<div style={{ marginTop: 20 }}>
-							Below table data collected starting:{' '}
+							<EditWrapper stringId="REFERRAL_LINK.DATA_COLLECTION">
+								{STRINGS['REFERRAL_LINK.DATA_COLLECTION']}
+							</EditWrapper>
+							:{' '}
 							{moment(referral_history_config?.start_date).format('YYYY-MM-DD')}
 							.
 						</div>
