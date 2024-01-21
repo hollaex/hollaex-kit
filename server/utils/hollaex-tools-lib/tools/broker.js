@@ -417,10 +417,10 @@ const testBrokerUniswap = async (data) => {
 };
 
 const testRebalance = async (data) => {
-	const { exchange_id, api_key, api_secret } = data;
+	const { exchange_id, api_key, api_secret, password } = data;
 
 	try {
-		const exchange = setExchange({ exchange: exchange_id, api_key, api_secret });
+		const exchange = setExchange({ exchange: exchange_id, api_key, api_secret, password });
 		const userBalance = await exchange.fetchBalance();
 		return userBalance;
 	} catch (err) {
