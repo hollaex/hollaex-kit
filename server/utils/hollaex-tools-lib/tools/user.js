@@ -2362,7 +2362,6 @@ const getUserBalanceHistory = (opts = {
 }) => {
 	if(!getKitConfig()?.balance_history_config?.active) { throw new Error(BALANCE_HISTORY_NOT_ACTIVE); }
 
-	const pagination = paginationQuery(opts.limit, opts.page);
 	const timeframe = timeframeQuery(opts.startDate, opts.endDate);
 	const ordering = orderingQuery(opts.orderBy, opts.order);
 	let options = {
@@ -2373,9 +2372,6 @@ const getUserBalanceHistory = (opts = {
 		order: [ordering]
 	};
 
-	if (!opts.format) {
-		options = { ...options, ...pagination };
-	}
 
 	if (opts.format) {
 		return dbQuery.fetchAllRecords('balanceHistory', options)
