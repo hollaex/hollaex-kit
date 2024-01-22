@@ -3077,7 +3077,6 @@ const fetchUserReferrals = async (opts = {
     format: null
 }) => {
 	const referralHistoryModel = getModel('Referralhistory');
-	const pagination = paginationQuery(opts.limit, opts.page);
 	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
 
 	const dateTruc = fn('date_trunc', 'day', col('timestamp'));
@@ -3091,7 +3090,7 @@ const fetchUserReferrals = async (opts = {
 		group: []
 	};
 
-	if (!opts.format) { query.where.created_at = timeframe; query = {...query, ...pagination}};
+	if (!opts.format) { query.where.created_at = timeframe; query = {...query }};
 
 	if (opts.order_by === 'referee') {
 		query.attributes.push('referee')
