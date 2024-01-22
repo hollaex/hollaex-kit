@@ -30,6 +30,7 @@ const AssetsList = ({
 	setSortModeChange,
 	quicktrade,
 	pairs,
+	pinned_assets
 }) => {
 	const [isOndDaySort, setIsOneDaySort] = useState(false);
 	const handleClickChange = () => {
@@ -68,8 +69,24 @@ const AssetsList = ({
 		</div>
 	);
 
+	const movePinnedItems = (array) => {
+		const pinnedItems = pinned_assets;
+		const sortedArray = array.sort((a, b) => {
+		// Find the first ID that differs between the two objects
+		const id = pinnedItems.find(i => a.symbol !== b.symbol);
+	
+		if (id) {
+			// If a has the ID, move it to the top
+			return a.symbol === id ? -1 : 1;
+		}
+	
+		return 0;
+		});
+		return sortedArray;
+  	};
+
 	const getSortedList = () => {
-		return coinsListData.sort((a, b) => {
+		return movePinnedItems(coinsListData.sort((a, b) => {
 			const aVal = parseFloat(
 				isOndDaySort
 					? a.oneDayPriceDifferencePercenVal
@@ -81,7 +98,7 @@ const AssetsList = ({
 					: b.priceDifferencePercentVal
 			);
 			return is_descending ? bVal - aVal : aVal - bVal;
-		});
+		}));
 	};
 
 	const totalPages = Math.ceil(count / pageSize);
@@ -185,6 +202,7 @@ const mapStateToProps = ({
 		coins: coinsData,
 		quicktrade,
 		pairs,
+		pinned_assets
 	},
 }) => ({
 	mode,
@@ -192,6 +210,7 @@ const mapStateToProps = ({
 	coinsData,
 	quicktrade,
 	pairs,
+	pinned_assets
 });
 
 const mapDispatchToProps = (dispatch) => ({
