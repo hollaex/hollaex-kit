@@ -610,7 +610,9 @@ const ProfitLossSection = ({
 							setCustomDate(true);
 						}}
 					>
-						Custom
+						<EditWrapper stringId="PROFIT_LOSS.CUSTOM">
+							{STRINGS['PROFIT_LOSS.CUSTOM']}
+						</EditWrapper>
 					</Button>
 				</div>
 
