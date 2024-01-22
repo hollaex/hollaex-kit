@@ -299,7 +299,8 @@ const Otcdeskpopup = ({
 			const balance = await getBrokerConnect(
 				selectedApiType,
 				apiData.apikey,
-				apiData.seckey
+				apiData.seckey,
+				apiData.password
 			);
 			const baseCoinBalance = balance[previewData?.pair_base?.toUpperCase()];
 			const quoteCoinBalance = balance[previewData?.pair_2?.toUpperCase()];
@@ -1862,13 +1863,31 @@ const Otcdeskpopup = ({
 												id="seckey"
 												onChange={(e) => handleApi(e.target.value, 'seckey')}
 											/>
+
+											{hedgeApi === 'okx' && (
+												<>
+													<div className="sub-title mt-3">Password</div>
+													<Input
+														placeholder="Enter password"
+														id="password"
+														onChange={(e) =>
+															handleApi(e.target.value, 'password')
+														}
+													/>
+												</>
+											)}
+
 											<div className="connect-btn-wrapper">
 												{connectLoading ? <Spin indicator={antIcon} /> : null}
 												<Button
 													type="primary"
 													className="green-btn connect-btn"
 													onClick={handleConnect}
-													disabled={!apiData?.apikey || !apiData?.seckey}
+													disabled={
+														!apiData?.apikey ||
+														!apiData?.seckey ||
+														(hedgeApi === 'okx' && !apiData?.password)
+													}
 												>
 													Connect
 												</Button>
@@ -1944,6 +1963,17 @@ const Otcdeskpopup = ({
 																  editData.account[hedgeApi].apiSecret
 																: apiData?.seckey}
 														</div>
+														{hedgeApi === 'okx' && (
+															<div>
+																Password:{' '}
+																{isEdit
+																	? editData &&
+																	  editData.account &&
+																	  editData.account[hedgeApi] &&
+																	  editData.account[hedgeApi].password
+																	: apiData?.password}
+															</div>
+														)}
 													</div>
 												)}
 												<div className="binRborder"></div>
