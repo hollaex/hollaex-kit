@@ -8,7 +8,7 @@ services:
     ports:
       - 6379:6379
     env_file:
-      - hollaex.env.local
+      - hollaex-kit.env
     command : ["sh", "-c", "redis-server --requirepass $${REDIS_PASSWORD}"]
     deploy:
       resources:
@@ -19,7 +19,7 @@ services:
           cpus: "0.1"
           memory: 100M
     networks:
-      - hollaex-network
+      - hollaex-kit
 
   hollaex-db:
     image: postgres:14.9-alpine
@@ -29,7 +29,7 @@ services:
     ports:
       - 5432:5432
     env_file:
-      - hollaex.env.local
+      - hollaex-kit.env
     deploy:
       resources:
         limits:
@@ -40,13 +40,16 @@ services:
           memory: 100M
     command : ["sh", "-c", "export POSTGRES_DB=$${DB_NAME} && export POSTGRES_USER=$${DB_USERNAME} && export POSTGRES_PASSWORD=$${DB_PASSWORD} && ln -sf /usr/local/bin/docker-entrypoint.sh ./docker-entrypoint.sh && ./docker-entrypoint.sh postgres"]
     networks:
-      - hollaex-network
+      - hollaex-kit
 
   hollaex-server-api:
-    image: hollaex/hollaex-kit:2.9.3
+    image: hollaex-kit
+    build:
+      context: .
+      dockerfile: tools/Dockerfile
     restart: unless-stopped
     env_file:
-      - hollaex.env.local
+      - hollaex-kit.env
     entrypoint:
       - node
     deploy:
@@ -65,38 +68,19 @@ services:
       - 10010:10010   
       
     networks:
-      - hollaex-network
+      - hollaex-kit
     depends_on:
       - hollaex-redis
       - hollaex-db
 
-  hollaex-nginx:
-    image: bitholla/nginx-with-certbot:1.24.0
-    restart: unless-stopped
-    volumes:
-      - ./nginx:/etc/nginx
-      - ./logs/nginx:/var/log/nginx
-      - ./nginx/static/:/usr/share/nginx/html
-      - ./letsencrypt:/etc/letsencrypt
-    ports:
-      - 80:80
-      - 443:443
-    environment:
-      - NGINX_PORT=80
-    entrypoint: 
-      - /bin/sh
-      - -c 
-      - ip -4 route list match 0/0 | awk '{print $$3 " host.access"}' >> /etc/hosts && nginx -g "daemon off;"
-    depends_on:
-      - hollaex-server-api
-    networks:
-      - hollaex-network
-
   hollaex-server-stream:
-    image: hollaex/hollaex-kit:2.9.3
+    image: hollaex-kit
+    build:
+      context: .
+      dockerfile: tools/Dockerfile
     restart: unless-stopped
     env_file:
-      - hollaex.env.local
+      - hollaex-kit.env
     entrypoint:
       - node
     deploy:
@@ -112,16 +96,20 @@ services:
     ports:
       - 10080:10080
     networks:
-      - hollaex-network
+      - hollaex-kit
     depends_on:
+      - hollaex-server-api
       - hollaex-redis
       - hollaex-db
 
   hollaex-server-plugins:
-    image: hollaex/hollaex-kit:2.9.3
+    image: hollaex-kit
+    build:
+      context: .
+      dockerfile: tools/Dockerfile
     restart: unless-stopped
     env_file:
-      - hollaex.env.local
+      - hollaex-kit.env
     entrypoint:
       - node
     deploy:
@@ -136,13 +124,14 @@ services:
       - plugins/index.js 
       - 10011:10011
     networks:
-      - hollaex-network
+      - hollaex-kit
     depends_on:
+      - hollaex-server-api
       - hollaex-redis
       - hollaex-db
       
 networks:
-  hollaex-network:
+  hollaex-kit:
 volumes:
   hollaex_db_vol:
 
