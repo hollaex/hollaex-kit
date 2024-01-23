@@ -70,7 +70,7 @@ const filterFields = [
 		value: true,
 		placeholder: 'Valid',
 		type: 'boolean',
-		name: 'valid',
+		name: 'is_valid',
 	},
 	{
 		label: 'Time',
@@ -104,8 +104,8 @@ const filterOptions = [
 	},
 	{
 		label: 'Valid',
-		value: 'valid',
-		name: 'valid',
+		value: 'is_valid',
+		name: 'is_valid',
 	},
 	{
 		label: 'Time',

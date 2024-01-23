@@ -96,7 +96,7 @@ const FieldComponent = ({
 				return (
 					<Checkbox
 						onChange={onHandleCheck}
-						defaultChecked={true}
+						checked={object.value}
 						style={{ color: 'white', marginTop: 5 }}
 					>
 						Valid Address
@@ -167,7 +167,8 @@ const MultiFilter = ({
 			data.value = data.name;
 		});
 		tempfield.forEach((data) => {
-			data.value = '';
+			if (data.name === 'is_valid') data.value = true;
+			else data.value = '';
 		});
 		setOptions([...tempOptions]);
 		setFieldsData([...fieldsData, ...tempfield]);
@@ -216,7 +217,7 @@ const MultiFilter = ({
 				item?.value === '' ||
 				(item?.value?.start_date === '' && item?.value?.end_date === '')
 		);
-		if (updatedFieldsData.length === emptyFields.length && key !== 'is_valid') {
+		if (updatedFieldsData.length === emptyFields.length) {
 			onHandle();
 		}
 		setFieldsData([...updatedFieldsData]);
