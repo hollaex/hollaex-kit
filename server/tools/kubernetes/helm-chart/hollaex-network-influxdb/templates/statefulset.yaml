@@ -1,0 +1,180 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "influxdb.fullname" . }}
+  labels:
+    {{- include "influxdb.labels" . | nindent 4 }}
+spec:
+  {{- if .Values.enterprise.enabled }}
+  replicas: {{ .Values.enterprise.clusterSize }}
+  {{ else }}
+  replicas: 1
+  {{- end}}
+  selector:
+    matchLabels:
+      {{- include "influxdb.selectorLabels" . | nindent 6 }}
+  serviceName: "{{ include "influxdb.fullname" . }}"
+  template:
+    metadata:
+      labels:
+        {{- include "influxdb.selectorLabels" . | nindent 8 }}
+      {{- if .Values.podAnnotations }}
+      annotations:
+{{ toYaml .Values.podAnnotations | indent 8 }}
+      {{- end }}
+    spec:
+      {{- if .Values.schedulerName }}
+      schedulerName: "{{ .Values.schedulerName }}"
+      {{- end }}
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+      {{- end -}}
+      {{- if .Values.affinity }}
+      affinity:
+{{ toYaml .Values.affinity | indent 8 }}
+      {{- end }}
+      {{- if .Values.tolerations }}
+      tolerations:
+{{ toYaml .Values.tolerations | indent 8 }}
+      {{- end }}
+      {{- if .Values.securityContext }}
+      securityContext:
+{{ toYaml .Values.securityContext | indent 8 }}
+      {{- end }}
+      {{- if .Values.image.pullSecrets }}
+      imagePullSecrets:
+      {{- range .Values.image.pullSecrets }}
+        - name: {{ . }}
+      {{- end}}
+      {{- end }}
+      serviceAccountName: {{ include "influxdb.serviceAccountName" . }}
+      containers:
+      - name: {{ include "influxdb.fullname" . }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy | quote }}
+        resources:
+{{ toYaml .Values.resources | indent 10 }}
+        ports:
+        - name: api
+          containerPort: {{ .Values.config.http.bind_address | default 8086 }}
+        {{- if .Values.config.graphite.enabled }}
+        - name: graphite
+          containerPort: {{ .Values.config.graphite.bind_address | default 2003 }}
+        {{- end }}
+        {{- if .Values.config.collectd.enabled }}
+        - name: collectd
+          containerPort: {{ .Values.config.collectd.bind_address |  default 25826 }}
+          protocol: UDP
+        {{- end }}
+        {{- if .Values.config.udp.enabled }}
+        - name: udp
+          containerPort: {{ .Values.config.udp.bind_address | default 8089 }}
+          protocol: UDP
+        {{- end }}
+        {{- if .Values.config.opentsdb.enabled }}
+        - name: opentsdb
+          containerPort: {{ .Values.config.opentsdb.bind_address |  default 4242 }}
+        {{- end }}
+        - name: rpc
+          containerPort: {{ .Values.config.rpc.bind_address | default 8088 }}
+        {{- if .Values.enterprise.enabled }}
+        - name: meta
+          containerPort: {{ .Values.config.meta.bind_address | default 8091 }}
+        {{- end }}
+        {{- if .Values.env }}
+        env:
+{{ toYaml .Values.env | indent 10 }}
+        {{- if .Values.enterprise.enabled }}
+          - name: INFLUXDB_HOSTNAME # Values.env's HOSTNAME isn't fundamentally different from $HOSTNAME, but this way weg get a distinguished name at runtime.
+            value: "$(_HOSTNAME).{{ include "influxdb.fullname" . }}"
+        {{- end }}
+        {{- end }}
+        {{- if .Values.envFromSecret }}
+        envFrom:
+        - secretRef:
+            name: {{ .Values.envFromSecret }}
+        {{- end }}
+        livenessProbe:
+          httpGet:
+            path: {{ .Values.livenessProbe.path | default "/ping" }}
+            port: api
+            scheme: {{ .Values.livenessProbe.scheme | default "HTTP" }}
+          initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds | default 30 }}
+          timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds | default 5 }}
+        readinessProbe:
+          httpGet:
+            path: {{ .Values.readinessProbe.path | default "/ping" }}
+            port: api
+            scheme: {{ .Values.readinessProbe.scheme | default "HTTP" }}
+          initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds | default 5 }}
+          timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds | default 1 }}
+        {{- if .Values.startupProbe.enabled }}
+        startupProbe:
+          httpGet:
+            path: {{ .Values.startupProbe.path | default "/ping" }}
+            port: api
+            scheme: {{ .Values.startupProbe.scheme | default "HTTP" }}
+          failureThreshold: {{ .Values.startupProbe.failureThreshold | default 6 }}
+          periodSeconds: {{ .Values.startupProbe.periodSeconds | default 5 }}
+        {{- end }}
+        volumeMounts:
+        - name: {{ include "influxdb.fullname" . }}-data
+          mountPath: /var/lib/influxdb
+        - name: config
+          mountPath: /etc/influxdb
+        {{- if .Values.initScripts.enabled }}
+        - name: init
+          mountPath: /docker-entrypoint-initdb.d
+        {{- end }}
+        {{- if .Values.mountPoints }}
+{{ toYaml .Values.mountPoints | indent 8 }}
+        {{- end }}
+      {{- if .Values.extraContainers }}
+{{ toYaml .Values.extraContainers | indent 6}}
+      {{- end }}
+      volumes:
+      - name: config
+        configMap:
+          name: {{ include "influxdb.fullname" . }}
+      {{- if .Values.initScripts.enabled }}
+      - name: init
+        configMap:
+          name: {{ include "influxdb.fullname" . }}-init
+      {{- end }}
+      {{- if (not .Values.persistence.enabled ) }}
+      - name: {{ include "influxdb.fullname" . }}-data
+        emptyDir: {}
+      {{- end }}
+      # Cannot use existing claim in enterprise mode
+      {{- if and .Values.persistence.enabled .Values.persistence.existingClaim (not .Values.enterprise.enabled) }}
+      - name: {{ include "influxdb.fullname" . }}-data
+        persistentVolumeClaim:
+          claimName: {{ .Values.persistence.existingClaim }}
+      {{- end }}
+      {{- if .Values.volumes }}
+{{ toYaml .Values.volumes | indent 6 }}
+      {{- end }}
+  # Must use volume claim template in enterprise mode
+  {{- if and .Values.persistence.enabled (or (not .Values.persistence.existingClaim) .Values.enterprise.enabled) }}
+  volumeClaimTemplates:
+    - metadata:
+        name: {{ include "influxdb.fullname" . }}-data
+        annotations:
+        {{- range $key, $value := .Values.persistence.annotations }}
+          {{ $key }}: "{{ $value }}"
+        {{- end }}
+      spec:
+        accessModes:
+          - {{ .Values.persistence.accessMode | quote}}
+        resources:
+          requests:
+            storage: {{ .Values.persistence.size | quote }}
+      {{- if .Values.persistence.storageClass }}
+      {{- if (eq "-" .Values.persistence.storageClass) }}
+        storageClassName: ""
+      {{- else }}
+        storageClassName: "{{ .Values.persistence.storageClass }}"
+      {{- end }}
+      {{- end }}
+  {{- end }}

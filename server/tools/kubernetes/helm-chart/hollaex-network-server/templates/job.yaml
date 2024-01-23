@@ -1,0 +1,190 @@
+{{- if .Values.job.enable }}
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  labels:
+    app: {{.Release.Name}}
+    role: {{.Release.Namespace}}
+  name: {{.Release.Name}}
+  namespace: {{.Release.Namespace}}
+spec:
+  template:
+    spec:
+
+{{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+{{- end }}
+
+      containers:
+      - name: {{.Release.Name}}
+        image: {{.Values.imageRegistry}}:{{.Values.dockerTag}}
+        command: ["/bin/bash", "-c"]
+
+{{- if eq .Values.job.mode "add_coin" }}
+
+        args:
+          - node tools/dbs/addCoin.js;
+
+{{- else if eq .Values.job.mode "remove_coin" }}
+
+        args:
+          - node tools/dbs/removeCoin.js;
+
+{{- else if eq .Values.job.mode "add_pair" }}
+
+        args:
+          - node tools/dbs/addPair.js;
+
+{{- else if eq .Values.job.mode "remove_pair" }}
+
+        args:
+          - node tools/dbs/removePair.js;
+
+{{- else if eq .Values.job.mode "activate_coin" }}
+
+        args:
+          - node tools/dbs/activateCoin.js;
+
+
+{{- else if eq .Values.job.mode "activate_pair" }}
+
+        args:
+          - node tools/dbs/activatePair.js;
+
+{{- else if eq .Values.job.mode "change_coin_owner" }}
+
+        args:
+          - node tools/dbs/changeCoinOwner.js;
+  
+{{- else if eq .Values.job.mode "change_pair_owner" }}
+
+        args:
+          - node tools/dbs/changePairOwner.js;
+
+{{- else if eq .Values.job.mode "run_triggers" }}
+
+        args:
+          - sequelize db:migrate;
+            node tools/dbs/runTriggers.js;
+            node tools/dbs/initializeInflux.js;
+
+{{- end }}
+
+        envFrom:
+          - configMapRef:
+              name: {{.Values.envName}}
+          - secretRef:
+              name: {{.Values.secretName}}
+        
+        env:
+
+{{- if eq .Values.job.mode "add_coin" }}
+
+          - name: COIN_CODE
+            value: "{{.Values.job.env.coin_code}}"
+          - name: COIN_FULLNAME
+            value: "{{.Values.job.env.coin_fullname}}"
+          - name: COIN_ALLOW_DEPOSIT
+            value: "{{.Values.job.env.coin_allow_deposit}}"
+          - name: COIN_ALLOW_WITHDRAWAL
+            value: "{{.Values.job.env.coin_allow_withdrawal}}"
+          - name: COIN_WITHDRAWAL_FEE
+            value: "{{.Values.job.env.coin_withdrawal_fee}}"
+          - name: COIN_MIN
+            value: "{{.Values.job.env.coin_min}}"
+          - name: COIN_MAX
+            value: "{{.Values.job.env.coin_max}}"
+          - name: COIN_INCREMENT_UNIT
+            value: "{{.Values.job.env.coin_increment_unit}}"
+          - name: COIN_ACTIVE
+            value: "{{.Values.job.env.coin_active}}"
+
+{{- else if eq .Values.job.mode "change_coin_owner" }}
+
+          - name: COIN_CODE
+            value: {{.Values.job.env.coin_code}}
+          - name: COIN_OWNER_ID
+            value: "{{.Values.job.env.coin_owner_id}}"
+
+{{- else if eq .Values.job.mode "remove_coin" }}
+
+          - name: COIN_CODE
+            value: {{.Values.job.env.coin_code}}
+
+{{- else if eq .Values.job.mode "activate_coin" }}
+
+          - name: COIN_CODE
+            value: {{.Values.job.env.coin_code}}
+
+{{- else if eq .Values.job.mode "activate_pair" }}
+
+          - name: PAIR_CODE
+            value: {{.Values.job.env.pair_code}}
+
+{{- else if eq .Values.job.mode "change_pair_owner" }}
+
+          - name: PAIR_CODE
+            value: {{.Values.job.env.pair_code}}
+          - name: PAIR_OWNER_ID
+            value: "{{.Values.job.env.pair_owner_id}}"
+
+{{- else if eq .Values.job.mode "add_pair" }}
+
+          - name: PAIR_CODE
+            value: "{{.Values.job.env.pair_code}}"
+          - name: PAIR_BASE
+            value: "{{.Values.job.env.pair_base}}"
+          - name: PAIR_2
+            value: "{{.Values.job.env.pair_2}}"
+          - name: MIN_SIZE
+            value: "{{.Values.job.env.min_size}}"
+          - name: MAX_SIZE
+            value: "{{.Values.job.env.max_size}}"
+          - name: MIN_PRICE
+            value: "{{.Values.job.env.min_price}}"
+          - name: MAX_PRICE
+            value: "{{.Values.job.env.max_price}}"
+          - name: INCREMENT_SIZE
+            value: "{{.Values.job.env.increment_size}}"
+          - name: INCREMENT_PRICE
+            value: "{{.Values.job.env.increment_price}}"
+          - name: PAIR_ACTIVE
+            value: "{{.Values.job.env.pair_active}}"
+
+{{- else if eq .Values.job.mode "remove_pair" }}
+
+          - name: PAIR_CODE
+            value: {{.Values.job.env.pair_code}}
+
+{{- end }}
+
+          - name: CURRENCIES
+            valueFrom:
+              configMapKeyRef:
+                name: {{.Values.envCoinsName}}
+                key: CURRENCIES
+
+          - name: PAIRS
+            valueFrom:
+              configMapKeyRef:
+                name: {{.Values.envPairsName}}
+                key: PAIRS
+
+        resources:
+          limits:
+            memory: "300Mi"
+            cpu: "100m"
+          requests:
+            memory: "50Mi"
+            cpu: "15m"
+
+{{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+{{ toYaml .Values.imagePullSecrets | indent 8 }}
+{{- end }}
+      restartPolicy: Never
+  backoffLimit: 0
+
+{{- end }}

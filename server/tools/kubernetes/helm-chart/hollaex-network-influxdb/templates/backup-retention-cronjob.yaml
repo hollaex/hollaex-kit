@@ -1,0 +1,75 @@
+{{- if .Values.backupRetention.enabled }}
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ include "influxdb.fullname" . }}-backup-retention
+  labels:
+    {{- include "influxdb.labels" . | nindent 4 }}
+    app.kubernetes.io/component: backup-retention
+  annotations:
+    {{- toYaml .Values.backupRetention.annotations | nindent 4 }}
+spec:
+  schedule: {{ .Values.backupRetention.schedule | quote }}
+  startingDeadlineSeconds: {{ .Values.backupRetention.startingDeadlineSeconds }}
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          {{- if .Values.backupRetention.podAnnotations }}
+          annotations:
+            {{ toYaml .Values.backupRetention.podAnnotations | nindent 12 }}
+          {{- end }}
+          labels:
+            {{- include "influxdb.selectorLabels" . | nindent 12 }}
+        spec:
+          restartPolicy: OnFailure
+          volumes:
+          - name: scripts
+            configMap:
+              name: {{ include "influxdb.fullname" . }}-backup-retention
+          {{- if .Values.backupRetention.gcs }}
+          {{- if .Values.backupRetention.gcs.serviceAccountSecret }}
+          - name: google-cloud-key
+            secret:
+              secretName: {{ .Values.backupRetention.gcs.serviceAccountSecret | quote }}
+          {{- end }}
+          {{- end }}
+          {{- if .Values.backupRetention.s3 }}
+          {{- if .Values.backupRetention.s3.credentialsSecret }}
+          - name: aws-credentials-secret
+            secret:
+              secretName: {{ .Values.backupRetention.s3.credentialsSecret | quote }}
+          {{- end }}
+          {{- end }}
+          serviceAccountName: {{ include "influxdb.serviceAccountName" . }}
+          containers:
+          {{- if .Values.backupRetention.gcs }}
+          {{- end }}
+          {{- if .Values.backupRetention.azure }}
+          {{- end }}
+          {{- if .Values.backupRetention.s3 }}
+          - name: aws-cli
+            image: amazon/aws-cli
+            command: ['/bin/bash']
+            args: ['/scripts/backup-retention.sh']
+            volumeMounts:
+            - name: scripts
+              mountPath: /scripts
+            {{- if .Values.backupRetention.s3.credentialsSecret}}
+            - name: aws-credentials-secret
+              mountPath: /var/secrets/aws/
+            {{- end }}
+            env:
+              - name: AWS_CONFIG_FILE
+                value: /var/secrets/aws/credentials
+              - name: DAYS_TO_RETAIN
+                value: {{ .Values.backupRetention.daysToRetain | quote }}
+              - name: S3_BUCKET
+                value: {{ .Values.backupRetention.s3.bucketName }}
+              - name: S3_ENDPOINT
+                value: {{ .Values.backupRetention.s3.endpointUrl }}
+            resources:
+              {{- toYaml .Values.backupRetention.resources | nindent 14 }}
+          {{- end }}
+{{- end }}

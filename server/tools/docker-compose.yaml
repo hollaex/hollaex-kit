@@ -1,0 +1,148 @@
+version: '3'
+services:
+  hollaex-redis:
+    image: redis:7.2.0-alpine
+    restart: unless-stopped
+    depends_on:
+      - hollaex-db
+    ports:
+      - 6379:6379
+    env_file:
+      - hollaex.env.local
+    command : ["sh", "-c", "redis-server --requirepass $${REDIS_PASSWORD}"]
+    deploy:
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: 100M
+        reservations:
+          cpus: "0.1"
+          memory: 100M
+    networks:
+      - hollaex-network
+
+  hollaex-db:
+    image: postgres:14.9-alpine
+    restart: unless-stopped
+    volumes:
+      - hollaex_db_vol:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    env_file:
+      - hollaex.env.local
+    deploy:
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: 100M
+        reservations:
+          cpus: "0.1"
+          memory: 100M
+    command : ["sh", "-c", "export POSTGRES_DB=$${DB_NAME} && export POSTGRES_USER=$${DB_USERNAME} && export POSTGRES_PASSWORD=$${DB_PASSWORD} && ln -sf /usr/local/bin/docker-entrypoint.sh ./docker-entrypoint.sh && ./docker-entrypoint.sh postgres"]
+    networks:
+      - hollaex-network
+
+  hollaex-server-api:
+    image: hollaex/hollaex-kit:2.9.3
+    restart: unless-stopped
+    env_file:
+      - hollaex.env.local
+    entrypoint:
+      - node
+    deploy:
+      resources:
+        limits:
+          cpus: "0.2" 
+          memory: 1024M 
+        reservations:
+          cpus: "0.05" 
+          memory: 512M 
+
+    command:
+      - app.js 
+       
+    ports:
+      - 10010:10010   
+      
+    networks:
+      - hollaex-network
+    depends_on:
+      - hollaex-redis
+      - hollaex-db
+
+  hollaex-nginx:
+    image: bitholla/nginx-with-certbot:1.24.0
+    restart: unless-stopped
+    volumes:
+      - ./nginx:/etc/nginx
+      - ./logs/nginx:/var/log/nginx
+      - ./nginx/static/:/usr/share/nginx/html
+      - ./letsencrypt:/etc/letsencrypt
+    ports:
+      - 80:80
+      - 443:443
+    environment:
+      - NGINX_PORT=80
+    entrypoint: 
+      - /bin/sh
+      - -c 
+      - ip -4 route list match 0/0 | awk '{print $$3 " host.access"}' >> /etc/hosts && nginx -g "daemon off;"
+    depends_on:
+      - hollaex-server-api
+    networks:
+      - hollaex-network
+
+  hollaex-server-stream:
+    image: hollaex/hollaex-kit:2.9.3
+    restart: unless-stopped
+    env_file:
+      - hollaex.env.local
+    entrypoint:
+      - node
+    deploy:
+      resources:
+        limits:
+          cpus: "0.2" 
+          memory: 512M 
+        reservations:
+          cpus: "0.05" 
+          memory: 256M 
+    command:
+      - ws/index.js 
+    ports:
+      - 10080:10080
+    networks:
+      - hollaex-network
+    depends_on:
+      - hollaex-redis
+      - hollaex-db
+
+  hollaex-server-plugins:
+    image: hollaex/hollaex-kit:2.9.3
+    restart: unless-stopped
+    env_file:
+      - hollaex.env.local
+    entrypoint:
+      - node
+    deploy:
+      resources:
+        limits:
+          cpus: "0.2" 
+          memory: 1200M 
+        reservations:
+          cpus: "0.05" 
+          memory: 700M 
+    command:
+      - plugins/index.js 
+      - 10011:10011
+    networks:
+      - hollaex-network
+    depends_on:
+      - hollaex-redis
+      - hollaex-db
+      
+networks:
+  hollaex-network:
+volumes:
+  hollaex_db_vol:
+

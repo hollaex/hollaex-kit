@@ -1,0 +1,25 @@
+version: '3'
+services:
+  hollaex-web:
+    image: hollaex-web
+    build:
+      context: /Users/kycfeel/Desktop/kit231101/web/
+      dockerfile: /Users/kycfeel/Desktop/kit231101/web/docker/Dockerfile
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: "0.05"
+          memory: 128M
+        reservations:
+          cpus: "0.05"
+          memory: 128M
+    ports: 
+      - 8080:80 
+    networks:
+      - local_hollaex-network
+
+networks:
+  local_hollaex-network:
+    external: true
+

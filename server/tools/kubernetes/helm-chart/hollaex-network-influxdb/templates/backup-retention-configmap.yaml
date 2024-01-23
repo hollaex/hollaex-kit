@@ -1,0 +1,11 @@
+{{- if .Values.backupRetention.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "influxdb.fullname" . }}-backup-retention
+  labels:
+    {{- include "influxdb.labels" . | nindent 4 }}
+data:
+  backup-retention.sh: |-
+    {{- .Files.Get "files/backup-retention-script.sh" | nindent 4 }}
+{{- end }}

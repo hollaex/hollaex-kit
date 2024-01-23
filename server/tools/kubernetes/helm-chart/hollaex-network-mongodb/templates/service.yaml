@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{.Release.Name}}
+  namespace: {{.Release.Namespace}}
+  labels:
+    app: {{.Release.Name}}
+spec:
+  {{if .Values.NodePort.enable }}
+
+  type: NodePort
+  ports:
+    - port: 27017
+      targetPort: 27017
+      nodePort: {{.Values.NodePort.port}}
+
+  {{ else }}
+
+  type: ClusterIP
+  ports:
+    - port: 27017
+      targetPort: 27017
+
+  {{ end }}
+  selector:
+    app: {{.Release.Name}}

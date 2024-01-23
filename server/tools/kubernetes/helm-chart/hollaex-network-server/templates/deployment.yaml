@@ -1,0 +1,168 @@
+{{- if and (eq .Values.job.enable false) (eq .Values.cronjob.enable false) }}
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: {{.Release.Name}}
+    role: {{.Release.Namespace}}
+  name: {{.Release.Name}}
+  namespace: {{.Release.Namespace}}
+spec:
+  revisionHistoryLimit: 3
+  replicas: {{.Values.stable.replicaCount}}
+
+{{- if or (eq .Values.DEPLOYMENT_MODE "api") (eq .Values.DEPLOYMENT_MODE "stream") }}
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+
+{{- else }}
+
+  strategy:
+    type: Recreate
+
+{{- end }}
+
+{{- if eq .Values.DEPLOYMENT_MODE "api" }}
+  minReadySeconds: 15
+{{- end }}
+
+  selector:
+    matchLabels:
+      app: {{.Release.Name}}
+      role: {{.Release.Namespace}}
+      tier: backend
+  template:
+    metadata:
+      annotations:
+        seccomp.security.alpha.kubernetes.io/pod: "runtime/default"
+      labels:
+        app: {{.Release.Name}}
+        role: {{.Release.Namespace}}
+        tier: backend
+    spec:
+
+{{- if and (ne .Values.DEPLOYMENT_MODE "api") (ne .Values.DEPLOYMENT_MODE "stream") }}
+{{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+{{- end }}
+{{- end }}
+
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm: 
+              labelSelector:
+                matchExpressions:
+                - key: role
+                  operator: In
+                  values:
+                    - {{.Release.Namespace}}
+              topologyKey: "kubernetes.io/hostname"
+
+      containers:
+      - name: {{.Release.Name}}
+        image: {{.Values.imageRegistry}}:{{.Values.dockerTag}}
+        imagePullPolicy: Always
+        securityContext:
+          allowPrivilegeEscalation: false
+        ports:
+        - name: websocket-port
+          containerPort: 10080
+        - name: port
+          containerPort: 10010
+        
+{{- if eq .Values.DEPLOYMENT_MODE "api" }}
+
+        command: ["/bin/bash"]
+        args: ["-c", "/app/api-binary"]
+        # args: ["-c", "node app.js"]
+
+        
+{{- else if eq .Values.DEPLOYMENT_MODE "stream" }}
+
+        command: ["/bin/bash"]
+        args: ["-c", "/app/stream-binary"]
+        # args: ["-c", "node ws/index.js"]
+
+{{- else if eq .Values.DEPLOYMENT_MODE "job" }}
+
+        command: ["/bin/bash"]
+        args: ["-c", "node tools/jobs/job.js"]
+
+{{- else if eq .Values.DEPLOYMENT_MODE "engine" }}
+
+        command: ["/bin/bash"]
+        args: ["-c", "/app/engine-binary"]
+        # args: ["-c", "node queue/queue.js"]
+        
+{{- end }}
+
+        envFrom:
+          - configMapRef:
+              name: {{.Values.envName}}
+          - secretRef:
+              name: {{.Values.secretName}}
+        env:
+          - name: PAIR
+            value: {{.Values.PAIR}}
+          - name: DB_SSL
+            value: "{{.Values.db_ssl}}"
+          - name: ELASTIC_APM_SERVICE_NAME
+            value: {{.Release.Name}}
+          - name: CURRENCIES
+            valueFrom:
+              configMapKeyRef:
+                name: {{.Values.envCoinsName}}
+                key: CURRENCIES
+          - name: PAIRS
+            valueFrom:
+              configMapKeyRef:
+                name: {{.Values.envPairsName}}
+                key: PAIRS
+        
+        resources:
+          limits:
+{{- if or (eq .Values.DEPLOYMENT_MODE "api") (eq .Values.DEPLOYMENT_MODE "ws") (eq .Values.DEPLOYMENT_MODE "job") }}
+            memory: "1536Mi"
+{{- else }}
+            memory: "2048Mi"
+{{- end }}
+            cpu: "1000m"
+          requests:
+{{- if or (eq .Values.DEPLOYMENT_MODE "api") (eq .Values.DEPLOYMENT_MODE "ws") }}
+            memory: "1536Mi"
+{{- else }}
+            memory: "512Mi"
+{{- end }}
+            cpu: "10m"
+        
+{{- if .Values.podRestart_webhook_url }}
+        lifecycle:
+          preStop:
+            exec:
+              command: ["/bin/sh", "-c", "export hostname=`hostname` && curl -X POST -H 'Content-type: application/json' --data '{\"attachments\": [ { \"color\": \"#A569BD\", \"title\": \"😵  Pod has been terminated!\", \"text\": \"Pod '\"${hostname}\"' just has been terminated.\" } ] }' {{.Values.podRestart_webhook_url}}"]
+{{- end }}
+
+{{- if eq .Values.DEPLOYMENT_MODE "api" }}
+        readinessProbe:
+          exec:
+            command:
+            - curl
+            - http://localhost:10010/v2/health
+          initialDelaySeconds: 1
+          periodSeconds: 15
+{{- end }}
+
+{{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+{{ toYaml .Values.imagePullSecrets | indent 8 }}
+{{- end }}
+
+{{- end }}

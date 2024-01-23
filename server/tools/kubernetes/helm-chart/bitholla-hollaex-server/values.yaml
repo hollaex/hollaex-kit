@@ -1,0 +1,57 @@
+# Default values for bitholla-hollaex-nginx.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+imageRegistry: bitholla/hollaex-core
+dockerTag:
+  
+imagePullSecrets:
+  - name: docker-registry-secret
+
+envName: hollaex-env
+secretName: hollaex-secret
+
+DEPLOYMENT_MODE: api
+PAIR:
+
+stable:
+  replicaCount: 1
+  
+staging:
+  enable: false
+  replicaCount: 1
+  dockerTag:
+
+nodeSelector: {}
+
+autoScaling:
+  hpa:
+    enable: false 
+    memory:
+      threshold: 80
+
+APM_URL:
+
+podRestart_webhook_url:
+
+resources:
+  limits:
+    cpu: "1000m"
+    memory: "1536Mi"
+  requests:
+    cpu: "10m"
+    memory: "256Mi"
+
+job:
+  enable: false
+  mode: #add_coin
+        #remove_coin
+        #add_pair
+        #remove_pair
+        #hollaex_upgrade
+  env:
+    coin_symbol:
+    pair_name:
+  
+    
+  
+

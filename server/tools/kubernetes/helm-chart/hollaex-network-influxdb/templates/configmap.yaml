@@ -1,0 +1,184 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "influxdb.fullname" . }}
+  labels:
+    {{- include "influxdb.labels" . | nindent 4 }}
+data:
+  influxdb.conf: |+
+    reporting-disabled = {{ .Values.config.reporting_disabled | default false }}
+    bind-address = ":{{ .Values.config.rpc.bind_address | default 8088 }}"
+
+    [meta]
+      dir = "/var/lib/influxdb/meta"
+      {{- range $key, $value := index .Values.config.meta }}
+      {{- $tp := typeOf $value }}
+      {{- if eq $tp "string" }}
+      {{ $key }} = {{ $value | quote }}
+      {{- else }}
+      {{ $key }} = {{ $value }}
+      {{- end  }}
+      {{- end }}
+
+      {{- if .Values.enterprise.enabled }}
+      internal-shared-secret = "{{ sha256sum .Values.enterprise.meta.seed }}"
+      meta-auth-enabled = {{ .Values.config.meta.authEnabled }}
+      {{- end }}
+
+    [data]
+      dir = "/var/lib/influxdb/data"
+      wal-dir = "/var/lib/influxdb/wal"
+      {{- range $key, $value := index .Values.config.data }}
+      {{- $tp := typeOf $value }}
+      {{- if eq $tp "string" }}
+      {{ $key }} = {{ $value | quote }}
+      {{- else }}
+      {{ $key }} = {{ $value }}
+      {{- end  }}
+      {{- end }}
+
+    [coordinator]
+      {{- range $key, $value := index .Values.config.coordinator }}
+      {{- $tp := typeOf $value }}
+      {{- if eq $tp "string" }}
+      {{ $key }} = {{ $value | quote }}
+      {{- else }}
+      {{ $key }} = {{ $value }}
+      {{- end  }}
+      {{- end }}
+
+    [retention]
+      {{- range $key, $value := index .Values.config.retention }}
+      {{- $tp := typeOf $value }}
+      {{- if eq $tp "string" }}
+      {{ $key }} = {{ $value | quote }}
+      {{- else }}
+      {{ $key }} = {{ $value }}
+      {{- end  }}
+      {{- end }}
+
+    [shard-precreation]
+      {{- range $key, $value := index .Values.config.shard_precreation }}
+      {{- $tp := typeOf $value }}
+      {{- if eq $tp "string" }}
+      {{ $key }} = {{ $value | quote }}
+      {{- else }}
+      {{ $key }} = {{ $value }}
+      {{- end  }}
+      {{- end }}
+
+    [monitor]
+      {{- range $key, $value := index .Values.config.monitor }}
+      {{- $tp := typeOf $value }}
+      {{- if eq $tp "string" }}
+      {{ $key }} = {{ $value | quote }}
+      {{- else }}
+      {{ $key }} = {{ $value }}
+      {{- end  }}
+      {{- end }}
+
+    [subscriber]
+      {{- range $key, $value := index .Values.config.subscriber }}
+      {{- $tp := typeOf $value }}
+      {{- if eq $tp "string" }}
+      {{ $key }} = {{ $value | quote }}
+      {{- else }}
+      {{ $key }} = {{ $value }}
+      {{- end  }}
+      {{- end }}
+
+    [http]
+      {{- range $key, $value := index .Values.config.http }}
+      {{- $tp := typeOf $value }}
+      {{- if eq $tp "string" }}
+      {{ $key }} = {{ $value | quote }}
+      {{- else }}
+      {{ $key }} = {{ $value }}
+      {{- end  }}
+      {{- end }}
+
+    # TODO: allow multiple graphite listeners
+
+    [[graphite]]
+      {{- range $key, $value := index .Values.config.graphite }}
+      {{- if ne $key "templates"}}
+      {{- $tp := typeOf $value }}
+      {{- if eq $tp "string" }}
+      {{ $key }} = {{ $value | quote }}
+      {{- else }}
+      {{ $key }} = {{ $value }}
+      {{- end  }}
+      {{- end }}
+      {{- end }}
+      {{- if .Values.config.graphite.templates }}
+      templates = [
+        {{- range .Values.config.graphite.templates }}
+          {{ quote . }},
+        {{- end }}
+      ]
+      {{- end }}
+
+    # TODO: allow multiple collectd listeners with templates
+
+    [[collectd]]
+      {{- range $key, $value := index .Values.config.collectd }}
+      {{- $tp := typeOf $value }}
+      {{- if eq $tp "string" }}
+      {{ $key }} = {{ $value | quote }}
+      {{- else }}
+      {{ $key }} = {{ $value }}
+      {{- end  }}
+      {{- end }}
+
+    # TODO: allow multiple opentsdb listeners with templates
+
+    [[opentsdb]]
+      {{- range $key, $value := index .Values.config.opentsdb }}
+      {{- $tp := typeOf $value }}
+      {{- if eq $tp "string" }}
+      {{ $key }} = {{ $value | quote }}
+      {{- else }}
+      {{ $key }} = {{ $value }}
+      {{- end  }}
+      {{- end }}
+
+    # TODO: allow multiple udp listeners with templates
+
+    [[udp]]
+      {{- range $key, $value := index .Values.config.udp }}
+      {{- $tp := typeOf $value }}
+      {{- if eq $tp "string" }}
+      {{ $key }} = {{ $value | quote }}
+      {{- else }}
+      {{ $key }} = {{ $value }}
+      {{- end  }}
+      {{- end }}
+
+    [continuous_queries]
+      {{- range $key, $value := index .Values.config.continuous_queries }}
+      {{- $tp := typeOf $value }}
+      {{- if eq $tp "string" }}
+      {{ $key }} = {{ $value | quote }}
+      {{- else }}
+      {{ $key }} = {{ $value }}
+      {{- end  }}
+      {{- end }}
+
+    [logging]
+      {{- range $key, $value := index .Values.config.logging }}
+      {{- $tp := typeOf $value }}
+      {{- if eq $tp "string" }}
+      {{ $key }} = {{ $value | quote }}
+      {{- else }}
+      {{ $key }} = {{ $value }}
+      {{- end  }}
+      {{- end }}
+
+    {{ if .Values.enterprise.enabled -}}
+    [enterprise]
+      license-key = {{ .Values.enterprise.licensekey | quote }}
+
+    [hinted-handoff]
+      enabled = true
+      dir = "/var/lib/influxdb/hh"
+    {{- end }}

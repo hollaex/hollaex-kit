@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: {{.Release.Name}}
+  name: {{.Release.Name}}
+  namespace: {{.Release.Namespace}}
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: {{.Release.Name}}
+      role: master
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app: {{.Release.Name}}
+        role: master
+        tier: backend
+    spec:
+
+{{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+{{- end }}
+
+      containers:
+      - name: {{.Release.Name}}
+        image: {{.Values.imageRegistry}}:{{.Values.dockerTag}}
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: port
+          containerPort: 6379
+        command: ["redis-server", "--requirepass", "$(REDIS_AUTH_PASSWORD)"]
+        env:
+        - name: REDIS_AUTH_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{.Values.setAuth.secretName}}
+              key: REDIS_PASSWORD
+
+        resources:
+          limits:
+            memory: {{.Values.resources.limits.memory}}
+            cpu: {{.Values.resources.limits.cpu}}
+          requests:
+            memory: {{.Values.resources.requests.memory}}
+            cpu: {{.Values.resources.requests.cpu}}
