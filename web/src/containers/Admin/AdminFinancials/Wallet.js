@@ -66,6 +66,13 @@ const filterFields = [
 		name: 'network',
 	},
 	{
+		label: 'Valid',
+		value: true,
+		placeholder: 'Valid',
+		type: 'boolean',
+		name: 'valid',
+	},
+	{
 		label: 'Time',
 		name: 'time',
 		value: '',
@@ -94,6 +101,11 @@ const filterOptions = [
 		label: 'Network',
 		value: 'network',
 		name: 'network',
+	},
+	{
+		label: 'Valid',
+		value: 'valid',
+		name: 'valid',
 	},
 	{
 		label: 'Time',
