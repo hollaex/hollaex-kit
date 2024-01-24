@@ -1,39 +1,39 @@
-kind: pipeline
-type: docker
-name: block_duplicated_pr_merged
+# kind: pipeline
+# type: docker
+# name: block_duplicated_pr_merged
 
-steps:
-- name: current_hollaex_kit_version
-  image: alpine
-  commands:
-  -  export PACKAGE_VERSION="$(cat version)" && echo "$PACKAGE_VERSION" > .tags_current
-  -  echo "Current Release tag is :" && cat .tags_current
+# steps:
+# - name: current_hollaex_kit_version
+#   image: alpine
+#   commands:
+#   -  export PACKAGE_VERSION="$(cat version)" && echo "$PACKAGE_VERSION" > .tags_current
+#   -  echo "Current Release tag is :" && cat .tags_current
 
-- name: previous_hollaex_kit_version
-  image: byrnedo/alpine-curl
-  commands:
-  -  curl https://raw.githubusercontent.com/hollaex/hollaex-kit/master/version > .tags_previous
-  -  echo "The previous master release tag is :" && cat .tags_previous
+# - name: previous_hollaex_kit_version
+#   image: byrnedo/alpine-curl
+#   commands:
+#   -  curl https://raw.githubusercontent.com/hollaex/hollaex-kit/master/version > .tags_previous
+#   -  echo "The previous master release tag is :" && cat .tags_previous
 
-- name: version_comparison
-  image: frolvlad/alpine-bash
-  commands:
-  -  export TAGS_CURRENT=$(cat .tags_current) && export TAGS_PREVIOUS=$(cat .tags_previous) && if [ "$TAGS_PREVIOUS" ==  "$TAGS_CURRENT" ]; then echo "Blocking the merge since the versions are same..." && exit 1; else echo "hi"; fi
+# - name: version_comparison
+#   image: frolvlad/alpine-bash
+#   commands:
+#   -  export TAGS_CURRENT=$(cat .tags_current) && export TAGS_PREVIOUS=$(cat .tags_previous) && if [ "$TAGS_PREVIOUS" ==  "$TAGS_CURRENT" ]; then echo "Blocking the merge since the versions are same..." && exit 1; else echo "hi"; fi
 
-- name: slack_noti_job_end
-  image: plugins/slack
-  settings:
-    channel: deployment
-    webhook:
-      from_secret: slack_webhook
-  when:
-    status: [failure]
+# - name: slack_noti_job_end
+#   image: plugins/slack
+#   settings:
+#     channel: deployment
+#     webhook:
+#       from_secret: slack_webhook
+#   when:
+#     status: [failure]
   
-trigger:
-  branch: 
-    - master
-  event:
-    - pull_request
+# trigger:
+#   branch: 
+#     - master
+#   event:
+#     - pull_request
 
 # ---
 
@@ -144,9 +144,6 @@ trigger:
 #   - deployment
 #   event:
 #   - push
-
----
-
 kind: pipeline
 type: docker
 name: hollaex_kit_amd64_build
@@ -278,11 +275,11 @@ steps:
   commands:
     - docker login -u $${DOCKER_USERNAME} -p $${DOCKER_PASSWORD}
     - export DOCKER_CLI_EXPERIMENTAL=enabled
-    - export TZ=UTC-9 && export GIT_COMMIT_SHORT="$(echo $DRONE_COMMIT | cut -c 1-7)" && export PACKAGE_VERSION="$(grep version package.json | cut -c 15- | rev | cut -c 3- | rev)" && echo "$PACKAGE_VERSION" > .tags
+    - export PACKAGE_VERSION="$(cat version)" && echo "$PACKAGE_VERSION" > .tags
     - cat .tags 
     - docker manifest create hollaex/hollaex-kit:$(cat .tags) hollaex/hollaex-kit:$(cat .tags)-amd64 hollaex/hollaex-kit:$(cat .tags)-arm64v8 --amend
     - docker manifest annotate hollaex/hollaex-kit:$(cat .tags) hollaex/hollaex-kit:$(cat .tags)-amd64 --arch amd64
-    - docker manifest annotate hollaex/hollaex-kit:$(cat .tags) hollaex/hollaex-kit:$(cat .tags)-arm64v8 --arch amd64
+    - docker manifest annotate hollaex/hollaex-kit:$(cat .tags) hollaex/hollaex-kit:$(cat .tags)-arm64v8 --arch arm64
     - docker manifest push hollaex/hollaex-kit:$(cat .tags)
   when:
     branch: master
@@ -347,17 +344,27 @@ steps:
     - hub release create -m "HollaEx Kit v$(cat .tags) Release" -t ${DRONE_BRANCH} $(cat .tags)
   when:
     branch: master
-  
+
+- name: slack_noti_to_tech
+  image: bitholla/devops-tools:drone_partymaker-220208
+  environment:
+    WEBHOOK_URL:
+      from_secret: webhook_url_tech
+  when:
+    status: [success, failure]
+    branch: testnet
+
 - name: slack_noti_to_releases
-  image: bitholla/devops-tools:drone_partymaker-0.1.5
+  image: bitholla/devops-tools:drone_partymaker-220208
   environment:
     WEBHOOK_URL:
       from_secret: webhook_url
   when:
     status: [success, failure]
+    branch: master
 
 - name: notify_to_discord_releases
-  image: bitholla/devops-tools:drone_partymaker-0.1.5
+  image: bitholla/devops-tools:drone_partymaker-220208
   channel: deployment
   settings:
     target: discord
@@ -491,6 +498,13 @@ name: webhook_url
 get:
   path: devops/data/drone-ci/secret
   name: webhook_url
+
+---
+kind: secret
+name: webhook_url_tech
+get:
+  path: devops/data/drone-ci/secret
+  name: webhook_url_tech
 
 ---
 kind: secret

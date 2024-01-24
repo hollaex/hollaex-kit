@@ -22,14 +22,7 @@ export const getFeesDownload = (params = {}) => {
 		url: url,
 	})
 		.then((res) => {
-			const result = Object.keys(res.data).map((key) => {
-				return {
-					date: key,
-					info: res.data[key],
-				};
-			});
-
-			const url = window.URL.createObjectURL(new Blob([result]));
+			const url = window.URL.createObjectURL(new Blob([res.data]));
 			const link = document.createElement('a');
 			link.href = url;
 			link.setAttribute('download', 'fees.csv');

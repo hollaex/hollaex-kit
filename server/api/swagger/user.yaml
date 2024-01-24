@@ -24,6 +24,41 @@ paths:
         - user
       x-token-permissions:
         - can_read
+    delete:
+      operationId: userDelete
+      description: delete a user account
+      tags:
+        - User
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - email_code
+            properties:
+              email_code:
+                type: string
+                maxLength: 256
+              otp_code:
+                type: string
+                maxLength: 256
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+      x-security-scopes:
+        - user
   /user/stats:
     x-swagger-router-controller: user
     get:
@@ -1263,6 +1298,42 @@ paths:
         - hmac
       x-token-permissions:
         - can_withdraw
+  /user/withdrawal/max:
+    x-swagger-router-controller: withdrawal
+    get:
+      description: get max withdrawal amount of selected currency for user
+      operationId: getWithdrawalMax
+      tags:
+        - User
+      parameters:
+        - in: query
+          name: currency
+          description: Currency of the transaction
+          required: true
+          type: string
+          maxLength: 256
+        - in: query
+          name: network
+          description: network
+          required: true
+          type: string
+          maxLength: 256
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - user
   /user/check-transaction:
     x-swagger-router-controller: user
     get:

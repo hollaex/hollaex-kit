@@ -11,6 +11,7 @@ export { default as UploadIds } from './UploadIds';
 export { default as Otp } from './Otp';
 export { default as Activate } from './Activate';
 export { ListUsers, FullListUsers } from './ListUsers';
+export { default as Stakes } from './Stakes';
 export { default as Sessions } from './Sessions';
 export { default as Deposits } from './Deposits';
 export { default as Limits } from './Limits';

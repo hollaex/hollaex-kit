@@ -1,3 +1,5 @@
+@import '../QuickTrade/components/Details';
+
 .hollaex-token-wrapper {
 	height: 100%;
 	display: flex;
@@ -112,6 +114,7 @@
 				width: 65%;
 				background-color: $quick-trade-block-background;
 				padding: 4rem;
+				text-align: justify;
 
 				.header-text {
 					font-size: 16px;
@@ -133,7 +136,7 @@
 				}
 
 				.button-container {
-					margin-top: 7rem;
+					margin-top: 3rem;
 
 					.edit-wrapper__container {
 						width: 100%;
@@ -158,8 +161,25 @@
 				font-family: $en--font-family;
 				background-color: $app-background-color;
 
+				.coin-bg {
+					opacity: 0.2;
+				}
+
 				.trade-details-content {
 					min-height: 450px;
+
+					.header-text {
+						font-size: 16px;
+						font-weight: bold;
+						letter-spacing: 1px;
+					}
+
+					.sub-text {
+						font-size: 14px;
+						width: 100%;
+						margin-top: 1rem;
+						color: $colors-black;
+					}
 
 					.pb-30 {
 						padding-bottom: 30px;

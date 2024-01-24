@@ -28,6 +28,23 @@ import { Filters } from './Filters';
 // 	{ label: 'Time', key: 'created_at' }
 // ];
 
+const conditionHandler = (queryParams) => {
+	let data = {};
+	if (Object.keys(queryParams).includes('status')) {
+		if (queryParams.status === 'dismiss') {
+			data = { dismissed: true };
+		} else if (queryParams.status === 'reject') {
+			data = { rejected: true };
+		} else if (queryParams.status === 'status') {
+			data = { status: true };
+		} else {
+			data = { status: false, dismissed: false, rejected: false };
+		}
+	}
+	const { status, ...rest } = queryParams;
+	return { ...rest, ...data };
+};
+
 class Transactions extends Component {
 	state = {
 		deposits: [],
@@ -131,6 +148,7 @@ class Transactions extends Component {
 		return requestDepositsDownload({
 			...values,
 			...queryParams,
+			...conditionHandler(this.state.queryParams),
 			format: 'csv',
 		});
 	};
@@ -231,8 +249,9 @@ class Transactions extends Component {
 	};
 
 	onClickFilters = () => {
+		const { queryParams } = this.state;
 		this.requestDeposits(
-			{ ...this.props.initialData, ...this.state.queryParams },
+			{ ...this.props.initialData, ...conditionHandler(queryParams) },
 			this.props.queryParams
 		);
 	};

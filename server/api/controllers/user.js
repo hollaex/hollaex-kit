@@ -12,28 +12,29 @@ const {
 	PROVIDE_VALID_EMAIL_CODE,
 	USER_REGISTERED,
 	USER_NOT_FOUND,
-	SERVICE_NOT_SUPPORTED,
 	USER_EMAIL_NOT_VERIFIED,
 	VERIFICATION_EMAIL_MESSAGE,
 	TOKEN_REMOVED,
 	INVALID_CREDENTIALS,
 	USER_NOT_VERIFIED,
 	USER_NOT_ACTIVATED,
-	INVALID_OTP_CODE,
 	SIGNUP_NOT_AVAILABLE,
 	PROVIDE_VALID_EMAIL,
 	INVALID_PASSWORD,
 	USER_EXISTS,
-	USER_EMAIL_IS_VERIFIED,
+	VERIFICATION_CODE_EXPIRED,
 	INVALID_VERIFICATION_CODE,
 	LOGIN_NOT_ALLOW,
-	NO_IP_FOUND
+	NO_IP_FOUND,
+	INVALID_OTP_CODE,
 } = require('../../messages');
 const { DEFAULT_ORDER_RISK_PERCENTAGE, EVENTS_CHANNEL, API_HOST, DOMAIN, TOKEN_TIME_NORMAL, TOKEN_TIME_LONG, HOLLAEX_NETWORK_BASE_URL, NUMBER_OF_ALLOWED_ATTEMPTS } = require('../../constants');
 const { all } = require('bluebird');
 const { each } = require('lodash');
 const { publisher } = require('../../db/pubsub');
 const { isDate } = require('moment');
+const DeviceDetector = require('node-device-detector');
+const uuid = require('uuid/v4');
 
 const VERIFY_STATUS = {
 	EMPTY: 0,
@@ -41,6 +42,13 @@ const VERIFY_STATUS = {
 	REJECTED: 2,
 	COMPLETED: 3
 };
+
+const detector = new DeviceDetector({
+	clientIndexes: true,
+	deviceIndexes: true,
+	deviceAliasCode: false,
+});
+
 
 const INITIAL_SETTINGS = () => {
 	return {
@@ -68,6 +76,7 @@ const INITIAL_SETTINGS = () => {
 	};
 };
 
+
 const signUpUser = (req, res) => {
 	const {
 		password,
@@ -90,80 +99,8 @@ const signUpUser = (req, res) => {
 		.then(() => {
 			return toolsLib.security.checkCaptcha(captcha, ip);
 		})
-		.then(() => {
-			if (!toolsLib.getKitConfig().new_user_is_activated) {
-				throw new Error(SIGNUP_NOT_AVAILABLE);
-			}
-
-			if (!email || typeof email !== 'string' || !isEmail(email)) {
-				throw new Error(PROVIDE_VALID_EMAIL);
-			}
-
-			if (!toolsLib.security.isValidPassword(password)) {
-				throw new Error(INVALID_PASSWORD);
-			}
-
-			return toolsLib.database.findOne('user', {
-				where: { email },
-				attributes: ['email']
-			});
-		})
-		.then((user) => {
-			if (user) {
-				throw new Error(USER_EXISTS);
-			}
-			return toolsLib.database.getModel('sequelize').transaction((transaction) => {
-				return toolsLib.database.getModel('user').create({
-					email,
-					password,
-					verification_level: 1,
-					settings: INITIAL_SETTINGS()
-				}, { transaction })
-					.then((user) => {
-						return all([
-							toolsLib.user.createUserOnNetwork(email, {
-								additionalHeaders: {
-									'x-forwarded-for': req.headers['x-forwarded-for']
-								}
-							}),
-							user
-						]);
-					})
-					.then(([networkUser, user]) => {
-						return user.update(
-							{ network_id: networkUser.id },
-							{ fields: ['network_id'], returning: true, transaction }
-						);
-					});
-			});
-		})
-		.then((user) => {
-			return all([
-				toolsLib.user.getVerificationCodeByUserId(user.id),
-				user
-			]);
-		})
-		.then(([verificationCode, user]) => {
-			publisher.publish(EVENTS_CHANNEL, JSON.stringify({
-				type: 'user',
-				data: {
-					action: 'signup',
-					user_id: user.id
-				}
-			}));
-			sendEmail(
-				MAILTYPE.SIGNUP,
-				email,
-				verificationCode.code,
-				{}
-			);
-
-			if (referral) {
-				toolsLib.user.checkAffiliation(referral, user.id);
-			}
-
-			return res.status(201).json({ message: USER_REGISTERED });
-		})
+		.then(() => toolsLib.user.signUpUser(email, password, { referral }))
+		.then(() => res.status(201).json({ message: USER_REGISTERED }))
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/signUpUser', err.message);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
@@ -172,42 +109,36 @@ const signUpUser = (req, res) => {
 
 const getVerifyUser = (req, res) => {
 	let email = req.swagger.params.email.value;
-	const verification_code = req.swagger.params.verification_code.value;
 	const resendEmail = req.swagger.params.resend.value;
 	const domain = req.headers['x-real-origin'];
 	let promiseQuery;
 
 	if (email && typeof email === 'string' && isEmail(email)) {
 		email = email.toLowerCase();
-		promiseQuery = toolsLib.user.getVerificationCodeByUserEmail(email)
-			.then((verificationCode) => {
-				if (verificationCode.verified) {
-					throw new Error(USER_EMAIL_IS_VERIFIED);
-				}
-				if (resendEmail) {
-					sendEmail(
-						MAILTYPE.SIGNUP,
-						email,
-						verificationCode.code,
-						{},
-						domain
-					);
-				}
-				return res.json({
+		promiseQuery = toolsLib.database.findOne('user', {
+			where: { email },
+			attributes: ['id', 'email', 'email_verified']
+		}).then(async (user) => {
+			if (user.email_verified) {
+				throw new Error(USER_VERIFIED);
+			}
+			if (resendEmail) {
+				const verificationCode = uuid();
+				toolsLib.user.storeVerificationCode(user, verificationCode);
+
+				sendEmail(
+					MAILTYPE.SIGNUP,
 					email,
-					verification_code: verificationCode.code,
-					message: VERIFICATION_EMAIL_MESSAGE
-				});
+					verificationCode,
+					{},
+					domain
+				);
+			}
+			return res.json({
+				email,
+				message: VERIFICATION_EMAIL_MESSAGE
 			});
-	} else if (verification_code && typeof verification_code === 'string' && isUUID(verification_code)) {
-		promiseQuery = toolsLib.user.getUserEmailByVerificationCode(verification_code)
-			.then((userEmail) => {
-				return res.json({
-					email: userEmail,
-					verification_code,
-					message: VERIFICATION_EMAIL_MESSAGE
-				});
-			});
+		});
 	} else {
 		return res.status(400).json({
 			message: PROVIDE_VALID_EMAIL_CODE
@@ -217,74 +148,18 @@ const getVerifyUser = (req, res) => {
 	promiseQuery
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/getVerifyUser', err.message);
-			let errorMessage = errorMessageConverter(err);
-
-			if (errorMessage === USER_NOT_FOUND) {
-				errorMessage = VERIFICATION_EMAIL_MESSAGE;
-			}
-
+			// obfuscate the error message
+			let errorMessage = VERIFICATION_EMAIL_MESSAGE;
 			return res.status(err.statusCode || 400).json({ message: errorMessage });
 		});
 };
 
 const verifyUser = (req, res) => {
 	const { verification_code } = req.swagger.params.data.value;
-	let { email } = req.swagger.params.data.value;
 	const domain = req.headers['x-real-origin'];
 
-	if (!email || typeof email !== 'string' || !isEmail(email)) {
-		loggerUser.error(
-			req.uuid,
-			'controllers/user/verifyUser invalid email',
-			email
-		);
-		return res.status(400).json({ message: 'Invalid Email' });
-	}
-
-	email = email.toLowerCase();
-
-	toolsLib.database.findOne('user', {
-		where: { email },
-		attributes: ['id', 'email', 'settings', 'network_id']
-	})
-		.then((user) => {
-			return all([
-				toolsLib.user.getVerificationCodeByUserId(user.id),
-				user
-			]);
-		})
-		.then(([verificationCode, user]) => {
-			if (verificationCode.verified) {
-				throw new Error(USER_EMAIL_IS_VERIFIED);
-			}
-
-			if (verification_code !== verificationCode.code) {
-				throw new Error(INVALID_VERIFICATION_CODE);
-			}
-
-			return all([
-				user,
-				verificationCode.update(
-					{ verified: true },
-					{ fields: ['verified'] }
-				)
-			]);
-		})
-		.then(([user]) => {
-			publisher.publish(EVENTS_CHANNEL, JSON.stringify({
-				type: 'user',
-				data: {
-					action: 'verify',
-					user_id: user.id
-				}
-			}));
-			sendEmail(
-				MAILTYPE.WELCOME,
-				user.email,
-				{},
-				user.settings,
-				domain
-			);
+	toolsLib.user.verifyUser(null, verification_code, domain)
+		.then(() => {
 			return res.json({ message: USER_VERIFIED });
 		})
 		.catch((err) => {
@@ -295,13 +170,22 @@ const verifyUser = (req, res) => {
 
 
 
-const createAttemptMessage = (loginData) => {
+const createAttemptMessage = (loginData, user, domain) => {
 	const currentNumberOfAttemps = NUMBER_OF_ALLOWED_ATTEMPTS - loginData.attempt;
 	if (currentNumberOfAttemps === NUMBER_OF_ALLOWED_ATTEMPTS - 1)
-	{ return '' }
-	else if(currentNumberOfAttemps === 0) return ' ' + LOGIN_NOT_ALLOW;
+	{ return ''; }
+	else if(currentNumberOfAttemps === 0) { 
+		sendEmail(
+			MAILTYPE.LOCKED_ACCOUNT,
+			user.email,
+			{},
+			user.settings,
+			domain);
+
+		return ' ' + LOGIN_NOT_ALLOW; 
+	}
 	return ` You have ${currentNumberOfAttemps} more ${currentNumberOfAttemps === 1 ? 'attempt' : 'attempts'} left`;
-}
+};
 
 const loginPost = (req, res) => {
 	const {
@@ -316,7 +200,19 @@ const loginPost = (req, res) => {
 	} = req.swagger.params.authentication.value;
 
 	const ip = req.headers['x-real-ip'];
-	const device = req.headers['user-agent'];
+	const userAgent = req.headers['user-agent'];
+	const result = detector.detect(userAgent);
+
+	let device = [
+		result.device.brand,
+		result.device.model,
+		result.device.type,
+		result.client.name,
+		result.client.type,
+		result.os.name];
+
+	device = device.filter(Boolean).join(' ').trim();
+
 	const domain = req.headers['x-real-origin'];
 	const origin = req.headers.origin;
 	const referer = req.headers.referer;
@@ -392,7 +288,7 @@ const loginPost = (req, res) => {
 				loggerUser.verbose(req.uuid, 'controllers/user/loginPost password is not valid', email);
 				await toolsLib.user.createUserLogin(user, ip, device, domain, origin, referer, null, long_term, false);
 				const loginData = await toolsLib.user.findUserLatestLogin(user, false);
-				const message = createAttemptMessage(loginData);
+				const message = createAttemptMessage(loginData, user, domain);
 				throw new Error(INVALID_CREDENTIALS + message);
 			}
 
@@ -402,17 +298,15 @@ const loginPost = (req, res) => {
 				return all([
 					user,
 					toolsLib.security.verifyOtpBeforeAction(user.id, otp_code)
-					.then(async () => {
-						loggerUser.verbose(req.uuid, 'controllers/user/loginPost otp verified', email);
-						return toolsLib.security.checkCaptcha(captcha, ip);
-					})
-					.catch(async (err) => {
-						loggerUser.verbose(req.uuid, 'controllers/user/loginPost otp not verified', email);
-						await toolsLib.user.createUserLogin(user, ip, device, domain, origin, referer, null, long_term, false);
-						const loginData = await toolsLib.user.findUserLatestLogin(user, false);
-						const message = createAttemptMessage(loginData);
-						throw new Error(err.message + message);
-					})
+						.then(async () => {
+							return toolsLib.security.checkCaptcha(captcha, ip);
+						})
+						.catch(async (err) => {
+							await toolsLib.user.createUserLogin(user, ip, device, domain, origin, referer, null, long_term, false);
+							const loginData = await toolsLib.user.findUserLatestLogin(user, false);
+							const message = createAttemptMessage(loginData, user, domain);
+							throw new Error(err.message + message);
+						})
 				]);
 			}
 		})
@@ -452,12 +346,11 @@ const loginPost = (req, res) => {
 					user.is_communicator,
 					long_term ? TOKEN_TIME_LONG : TOKEN_TIME_NORMAL
 				)
-			])
+			]);
 		})
 		.then(async ([user, token]) => {
 			if (!ip) {
-				loggerUser.verbose(req.uuid, 'controllers/user/loginPost ip not found', email);
-				throw new Error(NO_IP_FOUND)
+				throw new Error(NO_IP_FOUND);
 			}
 			loggerUser.verbose(req.uuid, 'controllers/user/loginPost token created', email);
 			await toolsLib.user.createUserLogin(user, ip, device, domain, origin, referer, token, long_term, true);
@@ -1175,7 +1068,7 @@ const getUserSessions = (req, res) => {
 		start_date: start_date.value,
 		end_date: end_date.value,
 		format: format.value
-		}
+	}
 	)
 		.then((data) => {
 			if (format.value === 'csv') {
@@ -1207,7 +1100,7 @@ const revokeUserSession = (req, res) => {
 			loggerUser.error(req.uuid, 'controllers/user/revokeUserSession', err.message);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
-}
+};
 
 const userLogout = (req, res) => {
 	loggerUser.verbose(req.uuid, 'controllers/user/userLogout/auth', req.auth);
@@ -1229,6 +1122,45 @@ const userLogout = (req, res) => {
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
+
+const userDelete = (req, res) => {
+	loggerUser.verbose(req.uuid, 'controllers/user/userDelete/auth', req.auth);
+
+	const { email_code, otp_code } = req.swagger.params.data.value;
+	const user_id = req.auth.sub.id;
+
+	loggerUser.verbose(
+		req.uuid,
+		'controllers/user/userDelete',
+		'user_id',
+		user_id,
+		'email_code',
+		email_code
+	);
+	toolsLib.security.verifyOtpBeforeAction(user_id, otp_code)
+		.then((validOtp) => {
+			if (!validOtp) {
+				throw new Error(INVALID_OTP_CODE);
+			}
+
+			return toolsLib.security.confirmByEmail(user_id, email_code);
+		})
+		.then((confirmed) => {
+			if (confirmed) {
+				return toolsLib.user.deleteKitUser(user_id);
+			} else {
+				throw new Error(INVALID_VERIFICATION_CODE);
+			}
+		})
+		.then(() => {
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/userDelete', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
 
 module.exports = {
 	signUpUser,
@@ -1258,5 +1190,6 @@ module.exports = {
 	addUserBank,
 	revokeUserSession,
 	getUserSessions,
-	userLogout
+	userLogout,
+	userDelete
 };

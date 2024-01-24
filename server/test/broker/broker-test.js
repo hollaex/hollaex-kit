@@ -20,7 +20,7 @@ describe('Dynamic Pricing', async () => {
             .post(`/v2/broker/`)
             .set('Authorization', `Bearer ${bearerToken}`)
             .send({
-                symbol: 'xht-usdt',
+                symbol: 'usdt-try',
                 buy_price: 0.25,
                 sell_price: 0.25,
                 paused: false,
@@ -31,6 +31,7 @@ describe('Dynamic Pricing', async () => {
                 type: 'dynamic',
                 quote_expiry_time: 30,
                 formula: 'binance_btc-usdt',
+                rebalancing_symbol: 'xht-usdt',
                 spread: 1,
                 account: {
                     binance: {
@@ -43,7 +44,7 @@ describe('Dynamic Pricing', async () => {
         response.should.have.status(200);
         response.should.be.json;
 
-        assert.equal(createdBroker.symbol, 'xht-usdt', 'wrong symbol');
+        assert.equal(createdBroker.symbol, 'usdt-try', 'wrong symbol');
         assert.equal(createdBroker.type, 'dynamic', 'wrong type');
 
     });
@@ -209,6 +210,7 @@ describe('Dynamic Pricing', async () => {
             .set('Authorization', `Bearer ${bearerToken}`)
             .send({
                 id: createdBroker.id,
+                rebalancing_symbol: 'xht-usdt',
                 account: {
                     binance: {
                         apiKey: '1a3321381e9f2e8342449936bb0e5e0590435',
@@ -234,7 +236,6 @@ describe('Dynamic Pricing', async () => {
         response.body.should.have.property('symbol');
         response.body.symbol.should.be.a('string');
         response.body.symbol.should.equal(createdBroker.symbol);
-        response.body.should.have.property('increment_size');
     });
 
     // it('should execute broker order', async () => {

@@ -46,7 +46,7 @@ export const createBroker = (values) => {
 	return requestAuthenticated('/broker', options);
 };
 export const createTestBroker = (values) => {
-	return axios.post('/broker/test', { ...values })
+	return axios.post('/broker/test', { ...values });
 };
 
 export const createTestUniswap = (values) => {
@@ -58,9 +58,11 @@ export const createTestUniswap = (values) => {
 	return requestAuthenticated('/broker/uniswap/test', options);
 };
 
-export const getBrokerUniswapTokens = () => requestAuthenticated(`/broker/uniswap`);
+export const getBrokerUniswapTokens = () =>
+	requestAuthenticated(`/broker/uniswap`);
 
-export const getTrackedExchangeMarkets = (exchange_name) => requestAuthenticated(`/broker/markets?exchange_name=${exchange_name}`);
+export const getTrackedExchangeMarkets = (exchange_name) =>
+	requestAuthenticated(`/broker/markets?exchange_name=${exchange_name}`);
 
 export const updateBroker = (values) => {
 	const options = {

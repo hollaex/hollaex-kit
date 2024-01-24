@@ -81,7 +81,7 @@ const generateHeaders = (
 		},
 	},
 	{
-		label: STRINGS['AMOUNT'],
+		label: STRINGS['SIZE'],
 		key: 'size',
 		exportToCsv: ({ size = 0 }) => size,
 		renderCell: ({ size = 0, symbol }, key, index) => {

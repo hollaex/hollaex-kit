@@ -267,11 +267,21 @@ paths:
           required: false
           type: string
           format: date-time
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv']
+          type: string
       responses:
         200:
           description: Success
           schema:
             $ref: "#/definitions/FeesResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
         default:
           description: Error
           schema:
@@ -933,34 +943,6 @@ paths:
         - bearer
       x-security-scopes:
         - admin
-  /admin/tiers/limits:
-    x-swagger-router-controller: tier
-    put:
-      operationId: updateTiersLimits
-      description: Update tier limits
-      tags:
-        - Admin
-      parameters:
-        - name: data
-          in: body
-          required: true
-          schema:
-            $ref: "#/definitions/TiersLimitsPut"
-      responses:
-        200:
-          description: Success
-          schema:
-            $ref: "#/definitions/MessageResponse"
-        default:
-          description: Error
-          schema:
-            $ref: "#/definitions/MessageResponse"
-      security:
-        - Token: []
-      x-security-types:
-        - bearer
-      x-security-scopes:
-        - admin
   /admin/coin:
     x-swagger-router-controller: admin
     post:
@@ -1164,6 +1146,11 @@ paths:
           required: false
           type: string
           format: date-time
+        - in: query
+          name: id_number
+          required: false
+          type: string
+          maxLength: 50
         - in: query
           name: gender
           required: false
@@ -1576,6 +1563,86 @@ paths:
         - kyc
       x-token-permissions:
         - can_withdraw
+  /admin/user/restore:
+    x-swagger-router-controller: admin
+    post:
+      operationId: restoreUserAccount
+      description: restore a user account
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - user_id
+            properties:
+              user_id:
+                type: number
+                format: int32
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+      x-security-scopes:
+        - admin
+  /admin/user/email:
+    x-swagger-router-controller: admin
+    put:
+      operationId: changeUserEmail
+      description: change User Email
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - email_code
+              - otp_code
+              - user_id
+              - email
+            properties:
+              email_code:
+                type: string
+                maxLength: 256
+              otp_code:
+                type: string
+                maxLength: 256
+              user_id:
+                type: number
+                format: int32
+              email:
+                type: string
+                maxLength: 256
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+      x-security-scopes:
+        - admin
   /admin/bank/verify:
     x-swagger-router-controller: admin
     post:
@@ -1768,6 +1835,12 @@ paths:
           type: number
           format: int32
         - in: query
+          name: subject
+          description: Action Owner
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
           name: limit
           description: "Number of elements to return. Default: 50. Maximun: 100"
           required: false
@@ -1815,7 +1888,7 @@ paths:
         200:
           description: Success
           schema:
-            $ref: "#/definitions/AuditsResponse"
+            $ref: "#/definitions/ObjectResponse"
         202:
           description: CSV
           schema:
@@ -1901,6 +1974,12 @@ paths:
           required: false
           type: string
           format: date-time
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv', 'all']
+          type: string
       tags:
         - Admin
       responses:
@@ -1921,10 +2000,41 @@ paths:
         - admin
         - supervisor
         - support
+        - kyc
       x-token-permissions:
         - can_read
   /admin/order:
     x-swagger-router-controller: order
+    post:
+      description: Create a new order by admin
+      operationId: createOrderByAdmin
+      tags:
+        - Admin
+      parameters:
+        - in: body
+          name: order
+          required: true
+          description: order data
+          schema:
+            $ref: "#/definitions/OrderRequestByAdmin"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/OrderResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
+      x-token-permissions:
+        - can_trade
     delete:
       operationId: adminCancelOrder
       description: Admin Cancel order
@@ -3061,7 +3171,7 @@ paths:
           description: last seen
           required: false
           type: string
-          enum: ['1', '24']
+          enum: ['1h', '24h']
         - in: query
           name: status
           description: fetch active or revoke sessions
@@ -3130,6 +3240,7 @@ paths:
         - hmac
       x-security-scopes:
         - admin
+        - supervisor
   /admin/user/revoke-session:
     x-swagger-router-controller: admin
     post:
@@ -3165,6 +3276,7 @@ paths:
         - hmac
       x-security-scopes:
         - admin
+        - supervisor
   /admin/quicktrade/config:
     x-swagger-router-controller: admin
     put:
@@ -3193,6 +3305,83 @@ paths:
           description: Success
           schema:
             $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
+  /admin/transaction/limit:
+    x-swagger-router-controller: admin
+    put:
+      description: Update transaction limits for admin
+      operationId: updateTransactionLimit
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/TransactionLimit"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
+    get:
+      description: get transaction limits for admin
+      operationId: getTransactionLimits
+      tags:
+        - Admin
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
+    delete:
+      description: delete transaction limits for admin
+      operationId: deleteTransactionLimit
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/IdObject"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
         default:
           description: Error
           schema:
@@ -3235,6 +3424,329 @@ paths:
           description: CSV
           schema:
             type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
+      x-token-permissions:
+        - can_read
+  /admin/stakes:
+    x-swagger-router-controller: stake
+    get:
+      description: Get exchange stakes for admin
+      operationId: getExchangeStakes
+      tags:
+        - Admin
+      parameters:
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv', 'all']
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
+      x-token-permissions:
+        - can_read
+  /admin/stake:
+    x-swagger-router-controller: stake
+    post:
+      description: Create exchange stakes for admin
+      operationId: createExchangeStakes
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/StakePool"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
+    put:
+      description: Update exchange stakes for admin
+      operationId: updateExchangeStakes
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/StakePool"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
+    delete:
+      description: delete exchange stakes for admin
+      operationId: deleteExchangeStakes
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/IdObject"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
+  /admin/stake/slash-estimate:
+    x-swagger-router-controller: stake
+    get:
+      description: Get slash amount for stake pool
+      operationId: unstakeEstimateSlashAdmin
+      tags:
+        - Admin
+      parameters:
+        - in: query
+          name: id
+          description: Unique identifier for the stake pool.
+          required: false
+          type: number
+          format: int32
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
+      x-token-permissions:
+        - can_read
+  /admin/stakers:
+    x-swagger-router-controller: stake
+    get:
+      description: Get exchange stakers of users for admin
+      operationId: getExchangeStakersForAdmin
+      tags:
+        - Admin
+      parameters:
+        - in: query
+          name: id
+          description: Unique identifier for the staker entry.
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: user_id
+          description: The ID of the user who has locked funds and staked.
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: stake_id
+          description: The ID of the stake pool.
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: amount
+          description: The amount staked by the user.
+          required: false
+          type: number
+          format: double
+        - in: query
+          name: currency
+          description: The currency in which the user staked.
+          required: false
+          type: string
+        - in: query
+          name: reward
+          description: The amount the user has received as rewards.
+          required: false
+          type: number
+          format: double
+        - in: query
+          name: slashed
+          description: The amount slashed.
+          required: false
+          type: number
+          format: double
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv', 'all']
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
+      x-token-permissions:
+        - can_read
+  /admin/stake/analytics:
+    x-swagger-router-controller: stake
+    get:
+      description: Get staking and unstaking amounts
+      operationId: fetchStakeAnalytics
+      tags:
+        - Admin
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
         default:
           description: Error
           schema:

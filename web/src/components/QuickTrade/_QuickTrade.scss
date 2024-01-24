@@ -14,6 +14,7 @@ $input-bottom_line--animation--width: 100px;
 $title-icon--height: 10rem;
 
 @import './_InputGroup.scss';
+@import './QuoteExpired';
 
 .language_rtl {
 	.quick_trade-wrapper {
@@ -96,10 +97,14 @@ $title-icon--height: 10rem;
 		}
 	}
 
+	.balance-wallet {
+		padding-bottom: 0.5rem;
+	}
+
 	.input-group__error-wrapper {
 		color: red;
-		margin-top: 0.5rem;
 		float: right;
+		min-height: auto;
 	}
 
 	.input_block-title {
@@ -107,81 +112,6 @@ $title-icon--height: 10rem;
 		font-family: $raleway-medium--font-family;
 	}
 
-	.trade-details-wrapper {
-		width: 100%;
-		padding: 40px 65px 30px 55px;
-		font-family: $en--font-family;
-		background-color: $app-background-color;
-		.trade-details-content {
-			height: 450px;
-			.pb-30 {
-				padding-bottom: 30px;
-			}
-			.pb-35 {
-				padding-bottom: 35px;
-			}
-			.pl-6 {
-				padding-left: 6rem;
-			}
-			.chart {
-				height: 100px;
-				margin: 10px 0;
-				// opacity: 0.4;
-				div:last-child {
-					padding-top: 1rem;
-				}
-				.fade-area {
-					position: relative;
-				}
-				.fade-area::before {
-					content: '';
-					position: absolute;
-					height: 100px;
-					width: 100%;
-					background-image: linear-gradient(
-						to right,
-						$app-background-color,
-						rgba(0, 0, 0, 0)
-					);
-					z-index: -1;
-				}
-			}
-			.trade_tabs-container {
-				margin: 0 !important;
-				width: 100% !important;
-			}
-		}
-
-		.f-size-16 {
-			font-size: 16px;
-			color: $colors-deactivate;
-			font-weight: bold;
-		}
-		.f-size-22 {
-			font-size: 22px;
-			font-weight: bold;
-		}
-		.pairs {
-			color: $link;
-			font-size: 16px;
-			text-decoration: underline;
-		}
-		.fullname {
-			color: $colors-deactivate;
-			font-size: 11px;
-			white-space: nowrap;
-		}
-		.sub-title {
-			color: $colors-deactivate;
-			font: normal normal 300 11px/15px $en--font-family;
-			letter-spacing: 2.2px;
-			opacity: 1;
-			white-space: nowrap;
-		}
-		.white-txt {
-			color: $colors-main-black;
-		}
-	}
 	.trade-section {
 		width: 100%;
 		padding-top: 2rem;
@@ -323,6 +253,7 @@ $title-icon--height: 10rem;
 	.quick_trade-wrapper {
 		min-width: 100% !important;
 		max-width: 100% !important;
+
 		.trade-details-wrapper {
 			width: 100%;
 			padding: 15px;

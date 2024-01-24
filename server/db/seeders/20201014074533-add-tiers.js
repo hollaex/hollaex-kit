@@ -9,6 +9,8 @@ const {
 	DEFAULT_FEES
 } = require('../../constants');
 
+const Sequelize = require('sequelize');
+
 const checkActivation = (activation_code) => {
 	const body = {
 		activation_code
@@ -30,7 +32,7 @@ module.exports = {
 		return checkActivation(process.env.ACTIVATION_CODE)
 			.then((exchange) => {
 
-				const minFees = DEFAULT_FEES[exchange.plan];
+				const minFees = DEFAULT_FEES[exchange.plan || 'basic'];
 				const fees = {
 					maker: {},
 					taker: {}
@@ -47,21 +49,23 @@ module.exports = {
 						name: 'basic',
 						description: 'basic tier',
 						icon: '',
-						deposit_limit: 0,
-						withdrawal_limit: 0,
-						fees: JSON.stringify(fees)
+						fees: fees
 					},
 					{
 						id: 2,
 						name: 'vip',
 						description: 'vip tier',
-						deposit_limit: 0,
 						icon: '',
-						withdrawal_limit: 0,
-						fees: JSON.stringify(fees)
+						fees: fees
 					}
 				];
-				queryInterface.bulkInsert(TABLE, tiers, {});
+				queryInterface.bulkInsert(TABLE, tiers, {}, {
+					id: { type: new Sequelize.INTEGER() },
+					name: { type: new Sequelize.STRING() },
+					description: { type: new Sequelize.STRING() },
+					icon: { type: new Sequelize.STRING() },
+					fees: { type: new Sequelize.JSON() },
+				});
 			});
 	},
 	down: (queryInterface) => queryInterface.bulkDelete(TABLE)

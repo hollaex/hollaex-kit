@@ -32,6 +32,8 @@ import {
 	AppDetails,
 	// ADMIN
 	User,
+	AdminStake,
+	Audits,
 	Session,
 	AppWrapper as AdminContainer,
 	// Main,
@@ -196,9 +198,12 @@ function loggedIn(nextState, replace) {
 
 const checkStaking = (nextState, replace) => {
 	const {
-		app: { contracts },
+		app: { contracts, features },
 	} = store.getState();
-	if (!isStakingAvailable(STAKING_INDEX_COIN, contracts)) {
+	if (
+		!features.cefi_stake &&
+		!isStakingAvailable(STAKING_INDEX_COIN, contracts)
+	) {
 		replace({
 			pathname: '/account',
 		});
@@ -419,7 +424,9 @@ export const generateRoutes = (routes = []) => {
 					component={TransactionsHistory}
 				/>
 				<Route path="trade/:pair" name="Trade" component={Trade} />
+				<Route path="trade" name="Trade Tabs" component={AddTradeTabs} />
 				<Route path="markets" name="Trade Tabs" component={AddTradeTabs} />
+				<Route path="quick-trade" name="Quick Trade" component={QuickTrade} />
 				<Route
 					path="quick-trade/:pair"
 					name="Quick Trade"
@@ -477,6 +484,16 @@ export const generateRoutes = (routes = []) => {
 					path="/admin/user"
 					name="Admin User"
 					component={withAdminProps(User, 'user')}
+				/>
+				<Route
+					path="/admin/audits"
+					name="Admin Audits"
+					component={withAdminProps(Audits, 'audit')}
+				/>
+				<Route
+					path="/admin/stakes"
+					name="Admin Stakes"
+					component={withAdminProps(AdminStake, 'stake')}
 				/>
 				<Route
 					path="/admin/sessions"

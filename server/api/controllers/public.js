@@ -28,6 +28,7 @@ const getConstants = (req, res) => {
 			pairs: toolsLib.getKitPairsConfig(),
 			broker: toolsLib.getBrokerDeals(),
 			quicktrade: toolsLib.getQuickTrades(),
+			transactionLimits: toolsLib.getTransactionLimits(),
 			networkQuickTrades: toolsLib.getNetworkQuickTrades(),
 			network: HOLLAEX_NETWORK_ENDPOINT
 		});
@@ -274,6 +275,25 @@ const getCharts = (req, res) => {
 		});
 };
 
+const getMiniCharts = (req, res) => {
+	const { assets, from, to, quote } = req.swagger.params;
+
+	toolsLib.getMiniCharts(assets.value, { from: from.value, to: to.value, quote: quote.value, additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}})
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerPublic.error(
+				req.uuid,
+				'controller/public/getMiniCharts',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
 const getConfig = (req, res) => {
 	toolsLib.getUdfConfig({
 		additionalHeaders: {
@@ -397,6 +417,7 @@ module.exports = {
 	getAllTicker,
 	getChart,
 	getCharts,
+	getMiniCharts,
 	getConfig,
 	getHistory,
 	getSymbols,

@@ -12,30 +12,25 @@ module.exports = function (sequelize, DataTypes) {
 				primaryKey: true,
 				type: DataTypes.INTEGER
 			},
-			admin_id: {
+			subject: {
+				type: DataTypes.STRING,
+				allowNull: false
+			},
+			session_id: {
 				type: DataTypes.INTEGER,
-				allowNull: false,
+				allowNull: true
+			},
+			user_id: {
+				type: DataTypes.INTEGER,
+				allowNull: true,
 				references: {
 					model: 'Users',
 					key: 'id'
 				}
 			},
-			event: {
-				type: DataTypes.STRING,
-				allowNull: false
-			},
 			description: {
 				type: DataTypes.JSONB,
 				defaultValue: DESCRIPTION
-			},
-			ip: {
-				type: DataTypes.STRING,
-				allowNull: false
-			},
-			domain: {
-				type: DataTypes.STRING,
-				allowNull: true,
-				defaultValue: ''
 			},
 			timestamp: {
 				defaultValue: DataTypes.NOW,

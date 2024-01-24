@@ -1,8 +1,8 @@
 import React from 'react';
 import classnames from 'classnames';
 import { isMobile } from 'react-device-detect';
-import Image from 'components/Image';
-import STRINGS from '../../../config/localizedStrings';
+import { Image } from 'components';
+import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { FLEX_CENTER_CLASSES } from 'config/constants';
 
@@ -26,7 +26,7 @@ const AccountTypesList = ({
 						key={index}
 						className={classnames('d-flex', 'account-type-menu', {
 							'account-type-menu-active': `${selectedAccount}` === key,
-							'accounnt-type-menu-last-active':
+							'account-type-menu-last-active':
 								index === Object.keys(config).length - 1,
 						})}
 						onClick={() => onAccountTypeChange(key)}

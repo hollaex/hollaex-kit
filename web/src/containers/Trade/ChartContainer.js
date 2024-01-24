@@ -1,13 +1,28 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { connect } from 'react-redux';
-import withConfig from 'components/ConfigProvider/withConfig';
 import { bindActionCreators } from 'redux';
+import { LoadingOutlined } from '@ant-design/icons';
 
-import TVChartContainer from './Chart';
+import withConfig from 'components/ConfigProvider/withConfig';
+import { ErrorBoundary } from 'components';
 import { tradeHistorySelector } from './utils';
 import { setChartHigh } from 'actions/orderbookAction';
 
-const ChartContainer = (props) => <TVChartContainer {...props} />;
+const TVChartContainer = lazy(() => import('./Chart'));
+
+const ChartContainer = (props) => (
+	<ErrorBoundary>
+		<Suspense
+			fallback={
+				<div className="d-flex h-100 w-100 content-center align-center blue-link my-3">
+					<LoadingOutlined />
+				</div>
+			}
+		>
+			<TVChartContainer {...props} />
+		</Suspense>
+	</ErrorBoundary>
+);
 
 const mapStateToProps = (state) => {
 	const { data: tradeHistory } = tradeHistorySelector(state);

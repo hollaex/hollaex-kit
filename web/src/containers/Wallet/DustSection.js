@@ -82,7 +82,7 @@ const DustSection = ({
 		const dust = {};
 		let dustValue = 0;
 		Object.entries(coins).forEach(([key, coin = {}]) => {
-			const { [`${key}_available`]: balance } = balances;
+			const { [`${key}_balance`]: balance } = balances;
 			const { [key]: price = 0 } = pricesInDustDefinitionQuote;
 			const { [key]: conversionPrice = 0 } = pricesInDustQuote;
 			const calculatedValue = calculateOraclePrice(balance, price);

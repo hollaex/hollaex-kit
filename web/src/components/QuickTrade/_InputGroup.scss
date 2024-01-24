@@ -30,6 +30,11 @@
 		display: flex;
 	}
 
+	.input-group__coin-icons-wrap_mobile-view {
+		width: 3.5rem;
+		display: flex;
+	}
+
 	&:focus-within {
 		border-color: $link !important;
 		.ant-input {
@@ -50,5 +55,27 @@
 
 	&:hover {
 		border-color: $colors-main-black;
+	}
+}
+
+$breakpoints: (
+	1024px: 66%,
+	768px: 64%,
+	550px: 50%,
+	500px: 40%,
+	450px: 36%,
+	400px: 24%,
+	350px: 12%,
+	300px: 5%,
+);
+
+@each $breakpoint, $rightValue in $breakpoints {
+	@media (max-width: #{$breakpoint}) {
+		.quick-trade-dropdown {
+			.ant-select-arrow {
+				top: 50% !important;
+				right: $rightValue !important;
+			}
+		}
 	}
 }

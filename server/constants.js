@@ -80,6 +80,7 @@ subscriber.on('message', (channel, message) => {
 
 const updateAllConfig = (newConfigurations, newSecrets, newFrozenUsers) => {
 	configuration = newConfigurations;
+	if (!configuration?.kit?.info?.plan) configuration.kit.info.plan = 'basic';
 	secrets = newSecrets;
 	frozenUsers = newFrozenUsers;
 };
@@ -153,6 +154,7 @@ exports.GET_COINS = () => cloneDeep(configuration.coins);
 exports.GET_PAIRS = () => cloneDeep(configuration.pairs);
 exports.GET_TIERS = () => cloneDeep(configuration.tiers);
 exports.GET_KIT_CONFIG = () => cloneDeep(configuration.kit);
+exports.GET_TRANSACTION_LIMITS = () => cloneDeep(configuration.transaction_limits);
 exports.GET_KIT_SECRETS = () => cloneDeep(secrets);
 exports.GET_FROZEN_USERS = () => cloneDeep(frozenUsers);
 exports.GET_EMAIL = () => cloneDeep(configuration.email);
@@ -199,7 +201,9 @@ exports.KIT_CONFIG_KEYS = [
 	'onramp',
 	'offramp',
 	'user_payments',
-	'dust'
+	'dust',
+	'coin_customizations',
+	'transaction_limits',
 ];
 
 exports.KIT_SECRETS_KEYS = [
@@ -567,6 +571,13 @@ exports.EXPLORERS = {
 			baseUrl: 'https://etcblockexplorer.com',
 			txPath: '/tx'
 		}
+	],
+	arb: [
+		{
+			name: 'Arbiscan Explorer',
+			baseUrl: 'https://arbiscan.io',
+			txPath: '/tx'
+		}
 	]
 };
 
@@ -624,14 +635,20 @@ exports.EXCHANGE_PLAN_INTERVAL_TIME = {
 	boost: 60
 };
 exports.EXCHANGE_PLAN_PRICE_SOURCE = {
-	fiat: ['hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'uniswap'],
-	boost: ['hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'uniswap'],
+	fiat: ['hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'bybit', 'gateio', 'uniswap'],
+	boost: ['hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'bybit', 'gateio', 'uniswap'],
 	crypto: ['hollaex', 'oracle', 'binance'],
-	ALL: [ 'hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'uniswap']
+	ALL: [ 'hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'bybit', 'gateio', 'uniswap']
 };
 
 
 // BROKER CONSTANTS END
+
+//STAKE CONSTANTS START
+
+exports.STAKE_SUPPORTED_PLANS = ['fiat', 'boost', 'enterprise'];
+
+//STAKE CONSTANTS END
 
 exports.CUSTOM_CSS = `
 	.topbar-wrapper img {

@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
+import { LoadingOutlined } from '@ant-design/icons';
 import classnames from 'classnames';
 
-import { ChatMessageBox, ButtonLink } from 'components';
-import ChatEmoji from './ChatEmoji';
+import { ChatMessageBox, ButtonLink, ErrorBoundary } from 'components';
 import STRINGS from 'config/localizedStrings';
 import { isLoggedIn } from 'utils/token';
+
+const ChatEmoji = lazy(() => import('./ChatEmoji'));
 
 const ChatFooter = ({
 	sendMessage,
@@ -64,10 +66,20 @@ const ChatFooter = ({
 				)
 			)}
 			{showEmojiBox && (
-				<ChatEmoji
-					handleEmojiBox={handleEmojiBox}
-					onEmojiSelect={onEmojiSelect}
-				/>
+				<ErrorBoundary>
+					<Suspense
+						fallback={
+							<div className="d-flex h-100 w-100 content-center align-center blue-link my-3">
+								<LoadingOutlined />
+							</div>
+						}
+					>
+						<ChatEmoji
+							handleEmojiBox={handleEmojiBox}
+							onEmojiSelect={onEmojiSelect}
+						/>
+					</Suspense>
+				</ErrorBoundary>
 			)}
 		</div>
 	);

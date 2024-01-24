@@ -191,7 +191,8 @@ class Earnings extends Component {
 	};
 
 	handleDownload = () => {
-		return getFeesDownload({ format: 'csv' });
+		const { start_date, end_date } = this.state;
+		return getFeesDownload({ format: 'csv', start_date, end_date });
 	};
 
 	setFilterDates = (value) => {
@@ -282,15 +283,20 @@ class Earnings extends Component {
 								buttonSubmitting={buttonSubmitting}
 							/>
 						</div>
-						<div>
+						{/* <div>
 							<span
 								size="small"
 								className="download-btn"
-								onClick={this.handleDownload}
+								onClick={() => {
+									if (earningsData.length > 0) this.handleDownload();
+								}}
+								style={{
+									cursor: earningsData.length === 0 ? 'not-allowed' : 'pointer',
+								}}
 							>
 								Download
 							</span>
-						</div>
+						</div> */}
 					</div>
 					<div>
 						<Table

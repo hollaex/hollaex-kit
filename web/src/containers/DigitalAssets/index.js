@@ -3,21 +3,18 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { Select } from 'antd';
 
-import { unique } from 'utils/data';
 import withConfig from 'components/ConfigProvider/withConfig';
-import Markets from './components/AssetsWrapper';
-import { MarketsSelector } from './components/utils';
+import AssetsWrapper from './components/AssetsWrapper';
 import { EditWrapper, IconTitle } from 'components';
 import STRINGS from 'config/localizedStrings';
 
-const DigitalAssets = ({
-	router,
-	pair,
-	markets,
-	icons: ICONS,
-	showQuickTrade,
-}) => {
-	const DEFAULT_OPTIONS = [{ value: 'all', label: STRINGS['ALL'] }];
+const DigitalAssets = ({ router, pair, icons: ICONS, showQuickTrade }) => {
+	const DEFAULT_OPTIONS = [
+		{ value: 'all', label: STRINGS['ALL'] },
+		{ value: 'pro', label: STRINGS['DIGITAL_ASSETS.ORDERBOOK'] },
+		{ value: 'network', label: STRINGS['DIGITAL_ASSETS.NETWORK'] },
+		{ value: 'broker', label: STRINGS['DIGITAL_ASSETS.BROKER'] },
+	];
 	const [options, setOptions] = useState(DEFAULT_OPTIONS);
 	const [selectedSource, setSelectedSource] = useState('');
 
@@ -27,10 +24,7 @@ const DigitalAssets = ({
 	}, []);
 
 	const handleOptions = () => {
-		const options = unique(
-			markets.map(({ pairTwo: { symbol } }) => symbol)
-		).map((symbol) => ({ value: symbol, label: symbol }));
-		setOptions([...DEFAULT_OPTIONS, ...options]);
+		setOptions([...DEFAULT_OPTIONS]);
 	};
 
 	return (
@@ -102,7 +96,7 @@ const DigitalAssets = ({
 						options={options}
 					/>
 				</div>
-				<Markets selectedSource={selectedSource} />
+				<AssetsWrapper selectedSource={selectedSource} />
 			</div>
 		</div>
 	);
@@ -111,8 +105,7 @@ const DigitalAssets = ({
 const mapStateToProps = (state) => {
 	return {
 		pair: state.app.pair,
-		markets: MarketsSelector(state),
-    showQuickTrade: state.app.constants.features.quick_trade,
+		showQuickTrade: state.app.constants.features.quick_trade,
 	};
 };
 

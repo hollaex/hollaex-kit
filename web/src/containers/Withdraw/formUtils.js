@@ -17,6 +17,7 @@ import { toFixed } from 'utils/currency';
 import { getDecimals } from 'utils/utils';
 import { getNetworkNameByKey } from 'utils/wallet';
 import { email } from 'components/AdminForm/validations';
+import math from 'mathjs';
 
 export const generateInitialValues = (
 	symbol,
@@ -24,7 +25,9 @@ export const generateInitialValues = (
 	networks,
 	network,
 	query,
-	verification_level
+	verification_level,
+	selectedMethod,
+	coin_customizations
 ) => {
 	const { min, withdrawal_fee, withdrawal_fees } =
 		coins[symbol] || DEFAULT_COIN_DATA;
@@ -92,6 +95,9 @@ export const generateInitialValues = (
 	} else {
 		initialValues.amount = '';
 	}
+
+	const feeMarkup = coin_customizations?.[symbol]?.fee_markup;
+	if (feeMarkup) initialValues.fee += feeMarkup;
 
 	initialValues.destination_tag = '';
 	initialValues.address = '';
@@ -309,7 +315,12 @@ export const generateFormValues = (
 				fullWidth: true,
 				ishorizontalfield: true,
 			};
-		} else if (!isEmail && (symbol === 'xlm' || selectedNetwork === 'xlm')) {
+		} else if (
+			!isEmail &&
+			(symbol === 'xlm' ||
+				selectedNetwork === 'xlm' ||
+				selectedNetwork === 'ton')
+		) {
 			fields.destination_tag = {
 				type: 'text',
 				stringId:
@@ -378,12 +389,15 @@ export const generateFormValues = (
 
 				let result = value;
 				if (decimal < valueDecimal) {
-					result = decValue
+					const newValue = decValue
 						.toString()
 						.substring(
 							0,
 							decValue.toString().length - (valueDecimal - decimal)
 						);
+					if (math.larger(newValue, min)) {
+						result = newValue;
+					}
 				}
 				return result;
 			},

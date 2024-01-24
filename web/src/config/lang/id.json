@@ -55,7 +55,11 @@
 		"SECTION_3_CARD_5_TEXT": "Kami sangat memperhatikan kebutuhan Anda dan memiliki profesional online untuk membantu menangani isu dan pertanyaan Anda.",
 		"SECTION_3_CARD_6_TITLE": "INTEGRASI KYC",
 		"SECTION_3_CARD_6_TEXT": "Dengan modul yang fleksibel dan dapat diintegrasikan untuk menerapkan KYC dan cara verifikasi pengguna dalam yurisdiksi yang berbeda.",
-		"SECTION_3_BUTTON_1": "Lihat Demo"
+		"SECTION_3_BUTTON_1": "Lihat Demo",
+		"MAIN_TITLE": "Pertukaran perdagangan Cryptocurrency",
+		"MAIN_TEXT": "Beli dan jual aset kripto dengan mudah. Cukup daftar dengan email Anda dan perdagangkan aset crypto utama 24/7.",
+		"TRADE_CRYPTO": "Mulai berdagang",
+		"VIEW_EXCHANGE": "Lihat pertukaran"
 	},
 	"FOOTER": {
 		"FOOTER_LANGUAGE_TEXT": "LANGUAGE",
@@ -100,7 +104,9 @@
 			"SECTION_6_LINK_9": "YouTube"
 		},
 		"CLICK_HERE": "klik di sini",
-		"VISIT_HERE": "kunjungi sini"
+		"VISIT_HERE": "kunjungi sini",
+		"TERMS_OF_SERVICE": "Ketentuan Layanan",
+		"PRIVACY_POLICY": "Kebijakan pribadi"
 	},
 	"ACCOUNTS": {
 		"TITLE": "Akun",
@@ -113,7 +119,10 @@
 		"TAB_SUMMARY": "Ringkasan",
 		"TAB_HISTORY": "Riwayat",
 		"TAB_API": "API",
-		"TAB_SIGNOUT": "Keluar"
+		"TAB_SIGNOUT": "Keluar",
+		"TAB_APPS": "Aplikasi",
+		"TAB_STAKE": "Mempertaruhkan",
+		"TAB_FIAT": "Kontrol fiat"
 	},
 	"CONTACT_FORM": {
 		"CATEGORY_LABEL": "Kategori",
@@ -150,14 +159,17 @@
 		"INCREASE_LIMIT": "Apakah Anda ingin meningkatkan batas harian Anda?",
 		"QR_CODE": "Kode QR ini dapat dipindai oleh siapa yang ingin mengirimkan dana kepada Anda",
 		"NO_DATA": "Tidak tersedia informasi",
-		"FULL_MESSAGE_LIMIT": "{0}: {1} {2} {3}"
+		"FULL_MESSAGE_LIMIT": "{0}: {1} {2} {3}",
+		"QR_CODE_TITLE": "{0} Informasi Setoran"
 	},
 	"LOGIN": {
 		"LOGIN_TO": "Masuk {0}",
 		"CANT_LOGIN": "Tidak bisa masuk?",
 		"NO_ACCOUNT": "Tidak punya akun?",
 		"CREATE_ACCOUNT": "Buatlah di sini",
-		"HELP": "Bantuan"
+		"HELP": "Bantuan",
+		"LOOKING_PRICES": "Mencari harga?",
+		"VIEW_MARKETS": "Lihat pasar"
 	},
 	"FORM_FIELDS": {
 		"EMAIL_LABEL": "Email",
@@ -186,7 +198,9 @@
 		"USER_EXIST": "Email ini telah terdaftar",
 		"ACCEPT_TERMS": "Anda tidak menyetujui Syarat dan Ketentuan dan Kebijakan Pribadi",
 		"STEP": "Nilai yang tidak valid, step is {0}",
-		"ONLY_NUMBERS": "Anda hanya dapat masukkan angka"
+		"ONLY_NUMBERS": "Anda hanya dapat masukkan angka",
+		"MIN_VALUE_NE": "Nilai harus lebih tinggi dari {0}.",
+		"MAX_VALUE_NE": "Nilai harus lebih rendah dari {0}."
 	},
 	"NOTIFICATIONS": {
 		"BUTTONS": {
@@ -211,14 +225,30 @@
 		"OTP_TITLE": "Kode Autentikasi",
 		"OTP_HELP": "bantuan",
 		"OTP_BUTTON": "serahkan",
-		"ERROR_INVALID": "Kode OTP yang tidak valid"
+		"ERROR_INVALID": "Kode OTP yang tidak valid",
+		"OTP_FORM_INFO": "Masukkan kode 6 digit Anda untuk melanjutkan",
+		"OTP_FORM_SUBNOTE_LINE_1": "Kode Anda juga dikenal sebagai autentikator dua faktor (2FA) atau kode OTP.",
+		"OTP_FORM_SUBNOTE_LINE_2": "Jika Anda kehilangan kode, hubungi dukungan."
 	},
 	"QUICK_TRADE_COMPONENT": {
 		"TITLE": "Cepat",
 		"TOTAL_COST": "Jumlah biaya",
-		"BUTTON": "Lihat pesan {0}",
+		"BUTTON": "Tinjau Pesanan",
 		"INPUT": "Pembelian {0} {1}",
-		"TRADE_TITLE": "{0} {1}"
+		"TRADE_TITLE": "{0} {1}",
+		"INFO": "Cara tercepat dan termudah untuk memperdagangkan crypto Anda",
+		"CHANGE_TEXT": "mengubah",
+		"HIGH_24H": "24H TINGGI",
+		"LOW_24H": "RENDAH 24 JAM",
+		"BEST_BID": "TAWARAN TERBAIK",
+		"BEST_ASK": "PERTANYAAN TERBAIK",
+		"FOOTER_TEXT": "Biaya perdagangan cepat menggunakan kurs pengambil pasar",
+		"FOOTER_TEXT_1": "Bersumber dari",
+		"GO_TO_TEXT": "Pergi ke",
+		"SOURCE_TEXT": "Kesepakatan OTC broker",
+		"SOURCE_TEXT_NETWORK": "Kesepakatan OTC broker jaringan",
+		"VISIT": "Kunjungi{0}",
+		"ASSET_INFO_PAGE": "halaman info aset"
 	},
 	"PREVIOUS_PAGE": "halaman sebelumnya",
 	"NEXT_PAGE": "halaman berikutnya",
@@ -271,7 +301,9 @@
 	},
 	"VERIFICATION_EMAIL_REQUEST": {
 		"TITLE": "Permintaan Kirim Ulang Email",
-		"BUTTON": "Kirim Email"
+		"BUTTON": "Kirim Email",
+		"SUBTITLE": "Buat permintaan verifikasi email lain di bawah ini",
+		"SUPPORT": "Hubungi Dukungan"
 	},
 	"VERIFICATION_EMAIL_REQUEST_SUCCESS": {
 		"TITLE": "Kirim Ulang Email",
@@ -280,7 +312,11 @@
 	"VERIFICATION_EMAIL": {
 		"INVALID_UUID": "Kode tidak valid",
 		"TEXT_1": "Email Anda telah berhasil diverifikasi.",
-		"TEXT_2": "Anda bisa masuk sekarang"
+		"TEXT_2": "Anda bisa masuk sekarang",
+		"CANCEL_BUTTON": "TUTUP",
+		"CONFIRM_BUTTON": "KONFIRMASI PENDAFTARAN",
+		"CONFIRM_TEXT": "Konfirmasi Pendaftaran",
+		"CONFIRM_DESCRIPTION": "Harap konfirmasi pendaftaran akun Anda dengan mengklik tombol di bawah"
 	},
 	"USER_VERIFICATION": {
 		"INFO_TXT": "Anda dapat melihat prosedur verifikasi dan pembaruan akun Anda.",
@@ -431,7 +467,9 @@
 					"LIST_ITEM_3": "VALID, dengan terlihatnya tanggal ekspirasi secara jelas.",
 					"WARNING_1": "Hanya paspor valid dapat diterima; foto atau gambar pemindaian dokumen yang berkualitas tinggi dapat diterima:",
 					"WARNING_2": "Pastikan Anda mengupload dokumen Anda sendiri. Penggunaan dokumen yang salah atau palsu akan menimbulkan konsekuensi hukum dan pemblokiran akun Anda dengan segera.",
-					"WARNING_3": "Mohon jangan serahkan paspor sebagai bukti tempat tinggal Anda."
+					"WARNING_3": "Mohon jangan serahkan paspor sebagai bukti tempat tinggal Anda.",
+					"LIST_ITEM_0": "Ukuran total semua dokumen tidak boleh melebihi {0}mb",
+					"VIOLATION_ERROR": "Ukuran total semua dokumen yang Anda unggah melebihi batas unggahan sebesar {0}mb. Unggah file yang lebih kecil untuk melanjutkan."
 				},
 				"POR": {
 					"SECTION_1_TEXT_1": "Untuk menghindari penundaan dalam proses verifikasi akun Anda, harap pastikan bahwa:",
@@ -480,7 +518,18 @@
 			"LIST_ITEM_1": "Batas penarikan yang ditingkatkan",
 			"LIST_ITEM_2": "Batas deposit yang ditingkatkan",
 			"LIST_ITEM_3": "Biaya lebih rendah"
-		}
+		},
+		"EMAIL_VERIFICATION": "Kirim email verifikasi",
+		"VERIFICATION_SENT": "Verifikasi Terkirim",
+		"VERIFICATION_SENT_INFO": "Periksa email Anda dan klik tautan untuk memverifikasi email.",
+		"OKAY": "Oke",
+		"TITLE_PAYMENT": "Tambahkan metode pembayaran",
+		"PAYMENT_VERIFICATION": "Verifikasi Pembayaran",
+		"START_PAYMENT_VERIFICATION": "Mulai Verifikasi",
+		"PAYMENT_VERIFICATION_TEXT_1": "Tambahkan detail akun pembayaran Anda di bawah ini.",
+		"PAYMENT_VERIFICATION_TEXT_2": "Setelah diverifikasi, akun Anda akan mendapatkan lebih banyak metode penarikan dan penyetoran untuk berbagai mata uang.",
+		"ADD_ANOTHER_PAYMENT_METHOD": "TAMBAHKAN METODE PEMBAYARAN LAIN",
+		"PAYMENT_VERIFICATION_HELP_TEXT": "Agar bagian ini diverifikasi, Anda harus menyelesaikan bagian {0}."
 	},
 	"USER_SETTINGS": {
 		"TITLE_TEXT_1": "Ubah pengaturan akun Anda. Dari interface, notifikasi, nama pengguna dan kustomisasi lainnya.",
@@ -537,7 +586,10 @@
 		"TEXT_DOWNLOAD": "UNDUH RIWAYAT",
 		"TRADES": "Perdagangan",
 		"DEPOSITS": "Deposit",
-		"WITHDRAWALS": "Penarikan"
+		"WITHDRAWALS": "Penarikan",
+		"ORDERID": "Id pemesanan",
+		"TRIGGER_STOP_PRICE": "Pemicu/berhenti harga",
+		"TIME_OF_LAST_TRADE": "Waktu perdagangan terakhir"
 	},
 	"ACCOUNT_SECURITY": {
 		"TITLE_TEXT": "Atur pengaturan keamanan akun Anda. Mulai dari Autentikasi dua-faktor, kata sandi, Kunci API, dan fungsi lain yang berkaitan dengan keamanan.",
@@ -605,7 +657,9 @@
 			"CONTENT": {
 				"TITLE": "Riwayat Masuk",
 				"MESSAGE": "Below is login history list with details IP, country and time details. If you see any suspicious activity you should change your password and contact support"
-			}
+			},
+			"IP_ADDRESS": "Alamat IP",
+			"TIME": "Tanggal Waktu"
 		},
 		"FREEZE": {
 			"TITLE": "Freeze Account",
@@ -710,7 +764,18 @@
 		"CONFIRM_VIA_EMAIL_3": "the withdrawal via your email within 5 minutes.",
 		"WITHDRAW_CONFIRM_SUCCESS_1": "Your withdrawal request is confirmed. It will be processed shortly.",
 		"WITHDRAW_CONFIRM_SUCCESS_2": "In order to view your withdrawal status please visit your withdrawal history page.",
-		"GO_WITHDRAWAL_HISTORY": "Go To Withdrawal History"
+		"GO_WITHDRAWAL_HISTORY": "Go To Withdrawal History",
+		"MESSAGE_FEE_COIN": "Biaya transaksi sebesar {0}",
+		"WITHDRAWALS_FORM_ERROR_TITLE": "Info transfer salah",
+		"WITHDRAWALS_FORM_ERROR": "Transfer dana Anda gagal. Mengirim dana ke email mengharuskan pengguna memiliki akun dalam pertukaran ini. Periksa apakah email tersebut benar dan silakan coba lagi.",
+		"WITHDRAWAL_CONFIRM_FINAL": "Konfirmasi Penarikan Akhir",
+		"WITHDRAWAL_CONFIRM_WARNING": "Harap periksa penarikan Anda di bawah sebelum mengkonfirmasi.",
+		"WITHDRAWAL_CONFIRM_AMOUNT": "Jumlah",
+		"WITHDRAWAL_CONFIRM_FEE": "Biaya",
+		"WITHDRAWAL_CONFIRM_ADDRESS": "Alamat",
+		"WITHDRAWAL_CONFIRM_NETWORK": "Jaringan",
+		"WITHDRAWAL_CANCEL_BUTTON": "TUTUP",
+		"WITHDRAWAL_CONFIRM_BUTTON": "KONFIRMASI PENARIKAN"
 	},
 	"WALLET_BUTTON_BASE_DEPOSIT": "deposit",
 	"WALLET_BUTTON_BASE_WITHDRAW": "Penarikan",
@@ -823,7 +888,8 @@
 		"CHAT_MESSAGE_BOX_PLACEHOLDER": "Pesan",
 		"SIGN_UP_CHAT": "Daftar Untuk Chat",
 		"JOIN_CHAT": "Atur Nama Pengguna Untuk Chat",
-		"TROLLBOX": "Trollbox ({0})"
+		"TROLLBOX": "Trollbox ({0})",
+		"SET_USERNAME": "SET USERNAME UNTUK CHAT"
 	},
 	"INVALID_USERNAME": "Nama pengguna harus lebih dari 3 karakter hingga 15 karakter. Dapat berisi hanya huruf kecil, angka dan garis bawah",
 	"USERNAME_TAKEN": "Nama pengguna ini sudah ada. Coba masukkan yang lain.",
@@ -933,19 +999,35 @@
 		"COMPLETE_ACC_VERIFICATION": "Selesaikan verifikasi akun dan dapatkan bonus sebesar 20 XHT",
 		"INVITE_USER": "Undang pengguna lain dan nikmati komisi dari perdagangannya",
 		"DISCOUNT": "( diskon {0}% )",
-		"MY_FEES_LIMITS": "Biaya dan Batas Saya"
+		"MY_FEES_LIMITS": "Biaya dan Batas Saya",
+		"DEPOSIT_AND_WITHDRAWAL_FEES": "Biaya deposit dan penarikan",
+		"DEPOSITS": "Deposito",
+		"WITHDRAWALS": "Penarikan",
+		"TITLE_OF_ACCOUNT": "{0} Akun",
+		"MARKETS": "Pasar",
+		"CHANGE_24H": "Perubahan 24 jam",
+		"VOLUME_24H": "Volume 24 jam",
+		"VIEW_MORE_MARKETS": "Lihat lebih banyak pasar",
+		"VIEW_VERIFICATION": "melihat verifikasi",
+		"EARN_COMMISSION": "Dapatkan komisi",
+		"ID_VERIFICATION": "verifikasi ID:"
 	},
 	"REFERRAL_LINK": {
 		"TITLE": "Undang teman Anda",
 		"INFO_TEXT": "Referensikan teman Anda dengan memberikan tautan ini dan dapatkan keuntungan dari onboardingnya.",
 		"COPY_FIELD_LABEL": "Bagikan tautan di bawah dengan teman Anda dan dapatkan komisi:",
 		"REFERRED_USER_COUT": "Anda telah mereferensikan {0} pengguna",
-		"COPY_LINK_BUTTON": "MENGKOPI TAUTAN REFERRAL"
+		"COPY_LINK_BUTTON": "MENGKOPI TAUTAN REFERRAL",
+		"VIEW": "melihat",
+		"TABLE_TITLE": "Semua referensi sukses",
+		"USER": "Pengguna / email",
+		"TIME": "Waktu pendaftaran"
 	},
 	"NOT_LOGGEDIN": {
 		"TXT_1": "Untuk mulai perdagangan, harap masuk terlebih dahulu",
 		"TXT_2": "{0} atau {1}",
-		"LOGIN_HERE": "Masuk di sini"
+		"LOGIN_HERE": "Masuk di sini",
+		"TEXT_GENERAL": "Untuk melihat Anda harus login"
 	},
 	"USER_LEVEL": "Level pengguna",
 	"LIMIT_AMOUNT": "Jumlah batas",
@@ -967,5 +1049,708 @@
 		"LEARN_MORE": "Pelajari lebih lanjut",
 		"APPLY_TODAY": "Ajukan hari ini"
 	},
-	"OPEN_WALLET": "dompet terbuka"
+	"OPEN_WALLET": "dompet terbuka",
+	"NO_ACTIVE_ORDERS": "Tidak ada pesanan yang terdeteksi. Tempatkan pesanan Anda di halaman perdagangan Pro atau Cepat",
+	"NO_ACTIVE_TRADES": "Sepertinya belum ada perdagangan",
+	"NO_ACTIVE_DEPOSITS": "Sepertinya belum ada deposit.",
+	"NO_ACTIVE_WITHDRAWALS": "Sepertinya belum ada penarikan",
+	"HELP_RESOURCE_GUIDE": {
+		"CONTACT_US": "Hubungi kami",
+		"TEXT": "Jangan ragu untuk {0} untuk informasi lebih lanjut dan masalah apa pun dengan mengirimkan email kepada kami"
+	},
+	"CONVERT": "Mengubah",
+	"SWAP": "Mengalihkan",
+	"TO": "Ke",
+	"NA": "T/A",
+	"QR_CODE": {
+		"SCAN": "Pindai",
+		"SHOW": "Tampilkan QR",
+		"NO_RESULT": "Tidak ada hasil",
+		"NOT_FOUND": "Tidak ditemukan",
+		"PERMISSION_DENIED": "Izin ditolak"
+	},
+	"EMAIL_CODE_FORM": {
+		"TITLE": "Masukkan kode keamanan Anda",
+		"LABEL": "Masukkan kode (silakan periksa email Anda)",
+		"PLACEHOLDER": "Masukkan kode yang dikirim ke email Anda",
+		"FORM_TITLE": "Kode unik dikirim ke email Anda yang diperlukan untuk menyelesaikan proses. Silakan masukan kode yang dikirim ke email Anda di bawah ini beserta kode OTP Anda.",
+		"BUTTON": "kirim",
+		"ERROR_INVALID": "Kode yang Anda masukkan salah. Silakan coba lagi",
+		"OTP_LABEL": "Kode 2FA (OTP)",
+		"OTP_PLACEHOLDER": "Masukkan kode autentikasi dua faktor 6 digit Anda"
+	},
+	"USER_APPS": {
+		"TITLE": "Aplikasi pertukaran Anda",
+		"SUBTITLE": "Informasi aplikasi akun pertukaran Anda dan fungsi tambahan di bawah ini.",
+		"ALL_APPS": {
+			"TAB_TITLE": "Semua aplikasi",
+			"TITLE": "Bertukar aplikasi",
+			"SUBTITLE": "Dapatkan lebih banyak fungsi dari akun pertukaran Anda hanya dengan memilih aplikasi di bawah ini dan mengeklik tombol Tambah.",
+			"SEARCH_PLACEHOLDER": "Telusuri aplikasi...",
+			"ADD": {
+				"SUCCESSFUL": "Anda telah berhasil menambahkan aplikasi baru!",
+				"FAILED": "Ada yang salah"
+			}
+		},
+		"MY_APPS": {
+			"TAB_TITLE": "Aplikasi saya",
+			"TITLE": "Aplikasi pertukaran saya",
+			"SUBTITLE": "Di bawah ini adalah aplikasi pertukaran aktif Anda. Anda dapat mengklik untuk melihat perluasan pada setiap informasi aplikasi, fungsi, dan menambahkan/menghapusnya. Aplikasi dirancang untuk menyediakan lebih banyak fungsionalitas untuk pengalaman pertukaran Anda."
+		},
+		"TABLE": {
+			"APP_NAME": "Nama aplikasi",
+			"DESCRIPTION": "Keterangan",
+			"ACTION": "Tindakan",
+			"CONFIGURE": "Konfigurasi",
+			"VIEW_APP": "Lihat aplikasi",
+			"ADD": "Menambahkan",
+			"NOT_FOUND": "Tidak dapat menemukan aplikasi ini...",
+			"RETRY": "Coba istilah penelusuran lain"
+		},
+		"APP_DETAILS": {
+			"BACK_PLACEHOLDER": "{0} {1}",
+			"BACK_TO_APPS": "ke aplikasi saya",
+			"BACK": "Kembali"
+		},
+		"CONFIGURE": {
+			"TITLE": "Konfigurasi aplikasi",
+			"SUBTITLE": "Konfigurasikan aplikasi Anda di bawah ini:",
+			"REMOVE": "Hapus aplikasi",
+			"TEXT": "Jika Anda mengalami masalah dengan aplikasi Anda, silakan hubungi kami dengan mengeklik bantuan di bawah ini.",
+			"BACK": "KEMBALI",
+			"HELP": "MEMBANTU"
+		},
+		"REMOVE": {
+			"TITLE": "Hapus aplikasi",
+			"SUBTITLE": "Tindakan ini akan menghapus aplikasi dari daftar 'Aplikasi saya'.",
+			"TEXT": "Yakin ingin menghapus aplikasi ini?",
+			"BACK": "KEMBALI",
+			"CONFIRM": "MENGONFIRMASI"
+		}
+	},
+	"STAKE": {
+		"NETWORK_WARNING": "Jaringan tidak kompatibel. Harap ubah jaringan Anda menjadi {0}",
+		"EARN": "Menghasilkan",
+		"TITLE": "Mempertaruhkan",
+		"MODAL_TITLE": "Pertaruhkan dan dapatkan {0}",
+		"REVIEW_MODAL_TITLE": "Periksa dan konfirmasi taruhan",
+		"AVAILABLE_TOKEN": "{0} ({1}) tersedia untuk dipertaruhkan: {2}",
+		"DEFI_TITLE": "Pertaruhan aset DeFi",
+		"DEFI_TEXT": "Gaya staking DeFi akan menggunakan dompet Anda sendiri di luar bursa. Untuk memulai, Anda harus membuat koneksi, setelah terhubung, Anda dapat mempertaruhkan dan mulai mendapatkan penghasilan langsung dari dompet Anda.",
+		"GET_STAKES": "Dapatkan taruhan",
+		"CURRENT_ETH_BLOCK": "Blok ETH saat ini: {0}",
+		"ON_EXCHANGE_XHT": "Di bursa {0} saldo: {1} {2}",
+		"LOGIN_HERE": "Masuk disini",
+		"MOVE_XHT": "Pindahkan {0}",
+		"ESTIMATED_STAKED": "Perkiraan nilai total yang dipertaruhkan",
+		"ESTIMATED_EARNINGS": "Estimasi nilai penghasilan",
+		"CONNECT_WALLET": "Hubungkan dompet",
+		"BACK": "Kembali",
+		"NEXT": "Berikutnya",
+		"REVIEW": "Tinjauan",
+		"ESTIMATED": "TIMUR.",
+		"BLOCK": "Memblokir",
+		"CANCEL": "Membatalkan",
+		"PROCEED": "Melanjutkan",
+		"GO_TO_WALLET": "pergi ke dompet",
+		"AMOUNT_LABEL": "Jumlah yang dipertaruhkan",
+		"PERIOD_SUBTITLE": "Semakin lama Anda mempertaruhkan, semakin banyak Anda dihargai. Pilih durasi taruhan di bawah ini.",
+		"STAKE_AND_EARN_DETAILS": "Taruhan untuk ~{0} dan dapatkan {1}",
+		"PREDICTED_EARNINGS": "Penghasilan yang diprediksi",
+		"VARIABLE_TITLE": "Variabel*",
+		"VARIABLE_TEXT": "*{0} tentang cara kerja tarif variabel.",
+		"READ_MORE": "Baca selengkapnya",
+		"CURRENT_BLOCK": "Blok saat ini: {0}",
+		"END_BLOCK": "Akhiri blok: {0}",
+		"DURATION": "Durasi",
+		"END_ON_BLOCK": "Berakhir di blokir: {0}",
+		"SLASHING_TITLE": "Slashing (membatalkan taruhan lebih awal)",
+		"SLASHING_TEXT_1": "{0}% dari prinsip taruhan Anda",
+		"SLASHING_TEXT_2": "Semua penghasilan hangus",
+		"REVIEW_NOTE": "Durasi diukur dengan waktu blok Ethereum. Harap periksa dan konfirmasikan detail di atas sebelum Anda mempertaruhkan karena unstaking lebih awal akan mengakibatkan persentase dari prinsip taruhan Anda dikurangi dan penghasilan hangus.",
+		"WAITING_TITLE": "Menunggu kepastian",
+		"WAITING_TEXT": "Konfirmasikan transaksi ini di dompet Anda",
+		"PENDING_TEXT": "Transaksi tertunda...",
+		"CHECKING_ALLOWANCE": "Memeriksa {0} jatah...",
+		"WAITING_PROMPT": "{0} {1} {2}",
+		"WAITING_STAKE": "Konfirmasikan jumlah taruhan",
+		"WAITING_WITHDRAW": "Mengizinkan pembelanjaan",
+		"WAITING_UNSTAKE": "Lepas pasak",
+		"WAITING_STAKE_ING": "Mengintai tertunda",
+		"WAITING_WITHDRAW_ING": "Pemrosesan memungkinkan pengeluaran",
+		"WAITING_UNSTAKE_ING": "Tidak mempertaruhkan",
+		"SUCCESSFUL_STAKE_TITLE": "Anda telah berhasil mempertaruhkan {0}",
+		"SUCCESSFUL_STAKE_AMOUNT": "Jumlah yang dipertaruhkan",
+		"SUCCESSFUL_STAKE_DURATION_KEY": "Durasi",
+		"SUCCESSFUL_STAKE_DURATION_DEF": "Berakhir di blok {0} ({1})",
+		"SUCCESSFUL_STAKE_DESTINATION": "Tujuan",
+		"SUCCESSFUL_UNSTAKE_ADDRESS": "Alamat saya",
+		"OKAY": "Oke",
+		"ERROR_TITLE": "Kesalahan: {0} ditolak",
+		"ERROR_SUBTITLE": "Jika ini adalah kesalahan, Anda dapat kembali dan mencoba lagi",
+		"SUCCESSFUL_UNSTAKE_TITLE": "Anda telah berhasil melepaskan {0}",
+		"SUCCESSFUL_UNSTAKE_AMOUNT": "Total untuk menerima",
+		"EARNINGS": "Pendapatan",
+		"ORIGINAL_AMOUNT": "Jumlah asli yang dipertaruhkan",
+		"CONNECT_A_WALLET": "Hubungkan ke dompet",
+		"CONNECT_WALLET_TABLE": "{0} untuk melihat peristiwa pasak bersejarah",
+		"ZERO_STAKES": "Taruhan nol",
+		"PENDING_TRANSACTIONS": "Tertunda {0} {1}",
+		"VIEW_ON": "Lihat di {0}",
+		"BLOCKCHAIN": "blockchain",
+		"VIEW_POT": "Lihat POT distribusi",
+		"COMPLETED": "Dewasa",
+		"COMPLETED_TOOLTIP": "Taruhan sudah matang. Lanjutkan mempertaruhkan untuk mendapatkan lebih banyak hadiah atau batalkan taruhan untuk mengklaim hadiah.",
+		"CONNECT_ERROR": "Silakan periksa dompet Anda",
+		"INSTALL_METAMASK": "Anda harus menginstal Metamask ke browser Anda: https://metamask.io/download.html",
+		"INSTALL_METAMASK_TITLE": "MetaMask tidak terdeteksi"
+	},
+	"UNSTAKE": {
+		"TITLE": "Lepas pasak",
+		"EARLY_TITLE": "Batalkan taruhan lebih awal",
+		"EARLY_WARNING_TITLE": "Sepertinya Anda mencoba unstake lebih awal",
+		"EARLY_WARNING_TEXT_1": "Hal ini dapat menyebabkan persentase dari saham prinsip awal Anda dikurangi dan semua pendapatan hangus.",
+		"EARLY_WARNING_TEXT_2": "Apakah Anda yakin ingin melanjutkan?",
+		"BACK": "KEMBALI",
+		"REVIEW": "HAPUS STAKE",
+		"DURATION": "TIMUR. durasi pematangan",
+		"CANCEL": "Membatalkan",
+		"PROCEED": "Melanjutkan",
+		"EARNINGS_FORFEITED": "Penghasilan hangus",
+		"PRICE_FORMAT": "{0} {1}",
+		"EST_PENDING": "TIMUR. tertunda: {0}",
+		"AMOUNT_SLASHED": "Jumlah dipotong*",
+		"AMOUNT_TO_RECEIVE": "Jumlah yang akan diterima",
+		"SLASH_FOOTNOTE": "*Semua jumlah yang dipotong didistribusikan ke pembuat taruhan yang tersisa. Harap pertimbangkan jumlah yang dipotong dari prinsip awal, penghasilan yang hangus, dan durasi yang tersisa, dan tentukan apakah nilai yang hilang dalam unstaking lebih awal sepadan dengan biayanya.",
+		"AMOUNT_NOTE": "Jumlah akan didistribusikan ke alamat dompet Anda",
+		"TOTAL_EARNT": "Penghasilan total",
+		"PENDING_EARNINGS": "Penghasilan tertunda*",
+		"PENDING_EARNINGS_FOOTNOTE": "*Penghasilan tertunda adalah jumlah yang belum dibersihkan dan memerlukan transaksi blockchain untuk ditambahkan ke total jumlah penerimaan Anda."
+	},
+	"STAKE_TABLE": {
+		"CURRENCY": "Mata uang",
+		"AVAILABLE": "Tersedia untuk dipertaruhkan",
+		"TOTAL": "Total dipertaruhkan",
+		"REWARD_RATE": "Tingkat hadiah",
+		"EARNINGS": "Pendapatan",
+		"STAKE": "Mempertaruhkan",
+		"VARIABLE": "Variabel"
+	},
+	"STAKE_LIST": {
+		"AMOUNT": "JUMLAH YANG DIPERTAHANKAN",
+		"DURATION": "TIMUR. DURASI PENYEMBUHAN",
+		"START": "MEMULAI STAKING",
+		"END": "PASANGAN AKHIR",
+		"EARNINGS": "PENDAPATAN",
+		"STAKE": "MEMPERTARUHKAN"
+	},
+	"STAKE_DETAILS": {
+		"BACK_SUBTITLE": "{0} ke laman taruhan",
+		"GO_BACK": "Kembali",
+		"CONTRACT_SUBTITLE": "Kontrak token: {0}",
+		"VIEW_MORE": "LIHAT LEBIH BANYAK",
+		"VIEW": "Melihat",
+		"TOKEN": "{0} Token",
+		"TABS": {
+			"PUBLIC_INFO": "informasi publik",
+			"DISTRIBUTIONS": "Distribusi",
+			"MY_STAKING": "Taruhan saya"
+		},
+		"PUBLIC_INFO": {
+			"TITLE": "Mempertaruhkan informasi",
+			"SUBTITLE": "Di bawah ini adalah tokenomik staking untuk {0} ({1}).",
+			"TOTAL_DISTRIBUTED_REWARDS": "Total hadiah yang didistribusikan ({0})",
+			"POT_BALANCE": "saldo PO",
+			"UNCLAIMED_REWARDS": "Hadiah yang tidak diklaim",
+			"TOTAL_STAKED": "Total dipertaruhkan",
+			"REWARD_RATE": "Tingkat hadiah",
+			"MY_STAKE": "Taruhan saya ({0}%)",
+			"MY_STAKE_PERCENTLESS": "saham saya",
+			"OTHER_STAKE": "Lainnya mempertaruhkan ({0}%)",
+			"EVENTS_TITLE": "Hadiah yang didistribusikan baru-baru ini"
+		},
+		"DISTRIBUTIONS": {
+			"TITLE": "Mendistribusikan hadiah {0}",
+			"SUBTITLE": "Di bawah ini adalah daftar riwayat distribusi yang dibuat untuk pemegang saham {0}.",
+			"TIME": "Waktu didistribusikan",
+			"TRANSACTION_ID": "ID transaksi",
+			"AMOUNT": "Jumlah didistribusikan"
+		},
+		"MY_STAKING": {
+			"TITLE": "Taruhan saya",
+			"SUBTITLE": "Di bawah menampilkan informasi dan beberapa peristiwa bersejarah yang terkait dengan {0} pertaruhan Anda.",
+			"EVENTS_TITLE": "Peristiwa pasak bersejarah",
+			"TIME": "Waktu",
+			"EVENT": "Peristiwa",
+			"TRANSACTION_ID": "ID transaksi",
+			"AMOUNT": "Jumlah"
+		}
+	},
+	"CEFI_STAKE": {
+		"STAKE_POOL_TITLE": "Pool Staking CeFi Lokal",
+		"INTRODUCTION_1": "Dapatkan imbalan atas aset yang Anda simpan di dompet pertukaran lokal Anda. Cukup klik 'STAKE', masukkan jumlah yang ingin Anda staking, dan mulailah mendapatkan imbalan.",
+		"CURRENT_STAKING_VALUE": "Nilai staking saat ini",
+		"DURATION_LABEL": "Durasi",
+		"APY_LABEL": "APY",
+		"REWARDS_IN_LABEL": "Imbalan akan dibayarkan dalam",
+		"ALL_STAKING_EVENTS": "Semua peristiwa staking",
+		"MONITOR_ACTIVE_STAKES": "Pantau staking aktif dan pendapatan mereka yang berasal dari pool staking.",
+		"USE_FILTERS_FOR_HISTORICAL_EVENTS": "Gunakan filter untuk menemukan semua peristiwa staking historis. Semua pendapatan dari staking yang telah selesai akan disimpan ke dompet Anda.",
+		"ESTIMATED_TOTAL_STAKED": "Nilai estimasi total yang distaking",
+		"ESTIMATED_EARNINGS_VALUE": "Nilai estimasi pendapatan",
+		"READ_BEFORE_AGREE_AND_EARN": "Baca Sebelum Setuju dan Dapatkan Imbalan",
+		"AGREEMENT_INTRODUCTION_1": "Mengunci dana dan berpartisipasi dalam staking memang dapat menjadi cara yang menguntungkan untuk mendapatkan imbalan. Namun, penting untuk menyadari bahwa ada kemungkinan hukuman untuk penarikan awal dan periode penguncian yang mungkin berlangsung lama. Oleh karena itu, sangat penting untuk memahami sepenuhnya aturan pool sebelum melakukan staking. Dengan mengklik 'Saya setuju dan memahami' di bawah ini, Anda mengakui bahwa Anda akan",
+		"AGREEMENT_INTRODUCTION_2": "membaca dengan cermat ketentuan dalam langkah-langkah yang akan datang,",
+		"AGREEMENT_INTRODUCTION_3": "dan Anda menerima risiko dan hukuman potensial yang terkait dengan penarikan awal. Melanjutkan dengan pemahaman ini akan memastikan pengalaman staking yang lebih informasi dan aman.",
+		"BACK_BUTTON": "Kembali",
+		"PROCEED_BUTTON": "Lanjutkan",
+		"I_UNDERSTAND_BUTTON": "Saya Mengerti",
+		"AMOUNT_TO_STAKE_LABEL": "Jumlah yang akan distaking",
+		"NEXT_BUTTON": "Selanjutnya",
+		"LOCKUP_DURATION_LABEL": "Durasi penguncian",
+		"PENALTY_UPON_INITIAL_STAKE_PRINCIPLE": "Hukuman atas prinsip staking awal",
+		"FORFEITURE_OF_EARNINGS_LABEL": "Penggelembungan pendapatan",
+		"SLASHING_RULES_ENFORCED_LABEL": "! Aturan pengurangan imbalan diterapkan dalam pool ini",
+		"SLASHING_RULES_NOTICE": "Ingatlah bahwa memilih untuk menarik dana Anda sebelum durasi yang ditentukan akan mengakibatkan hukuman, seperti yang dijelaskan dalam aturan pengurangan imbalan yang disebutkan di atas. Sebelum berkomitmen untuk periode staking, sangat penting untuk menilai stabilitas keuangan Anda, karena memulai proses penarikan awal dapat menyebabkan penurunan nilai keseluruhan staking awal Anda.",
+		"UNSTAKE_ANYTIME_LABEL": "Pool ini memungkinkan Anda menarik kapan saja tanpa konsekuensi.",
+		"FULL_DURATION_LOCK_LABEL": "Pool ini mengunci Anda untuk seluruh durasi. Harap pertimbangkan keberlanjutan keuangan Anda sebelum berkomitmen ke dalam pool staking, karena penarikan sebelum periode tidak akan mungkin dilakukan.",
+		"CHECK_STAKE_DETAILS_BUTTON": "Periksa rincian staking",
+		"STAKING_POOL_LABEL": "Pool Staking",
+		"ANNUAL_PERCENTAGE_YIELD_LABEL": "Pendapatan Persentase Tahunan",
+		"PENALTY_UPON_INITIAL_STAKE_PRINCIPLE_LABEL": "Hukuman atas prinsip staking awal",
+		"FORFEITURE_OF_EARNINGS_DETAILS_LABEL": "Penggelembungan pendapatan",
+		"STAKE_AMOUNT_LABEL": "Jumlah yang akan distaking",
+		"DISCLAIMER_NOTICE": "Catatan: Harap dicatat bahwa untuk jumlah dalam USD yang melebihi $1,000, diperlukan verifikasi identitas lengkap. Nilai ini termasuk pendapatan, dan platform berhak untuk meminta informasi tambahan dari pengguna.",
+		"SETTLEMENT_NOTICE": "Penyelesaian: Periode penyelesaian 24 jam akan diterapkan saat menarik.",
+		"CONFIRM_BUTTON": "Konfirmasi",
+		"STAKE_RULES_NOTICE": "Segera setelah Anda melakukan staking, Anda akan terikat pada aturan pool.",
+		"I_UNDERSTAND_AGAIN_BUTTON": "Saya Mengerti Lagi",
+		"CONGRATULATIONS_NOTICE": "Selamat!",
+		"EARNINGS_START_NOTICE": "Staking Anda akan mulai menghasilkan imbalan.",
+		"REVIEW_PROGRESS_LABEL": "Anda dapat meninjau perkembangan staking Anda di halaman Staking Aktif.",
+		"TIME_REMAINING_LABEL": "Sisa Waktu",
+		"PENALTY_UPON_INITIAL_STAKE_PRINCIPLE_LABEL_2": "Hukuman atas prinsip staking awal",
+		"FORFEITURE_OF_EARNINGS_LABEL_2": "Penggelembungan pendapatan",
+		"AMOUNT_TO_RECEIVE_LABEL": "Jumlah yang akan diterima",
+		"REQUIRES_24H_TO_SETTLE_NOTICE": "Memerlukan 24 jam untuk penyelesaian",
+		"SUCCESSFUL_UNSTAKE_NOTICE": "Anda telah berhasil menarik",
+		"VISIT_WALLET_BUTTON": "KUNJUNGI DOMPET",
+		"CLOSE_BUTTON": "TUTUP"
+	},
+	"MOVE_XHT": {
+		"TITLE": "Pindahkan XHT",
+		"TEXT_1": "Untuk mempertaruhkan XHT, Anda harus terlebih dahulu memindahkan XHT ke dompet Anda sendiri.",
+		"TEXT_2": "Alamat dompet Anda yang saat ini terhubung adalah:",
+		"LABEL": "Alamat dompet",
+		"TEXT_3": "Penting untuk memeriksa apakah alamat dompet di atas aman. XHT akan dipindahkan ke alamat dompet di atas."
+	},
+	"MOVE_AMOUNT": {
+		"TITLE": "Jumlah masukan",
+		"PROMPT": "Masukkan jumlah yang ingin Anda pindahkan.",
+		"BALANCE": "{0} saldo: {1}",
+		"LABEL": "Jumlah untuk dipindahkan",
+		"FEE": "Biaya transaksi: {0} {1}"
+	},
+	"SIDES_VERBS": { "buy": "dibeli", "sell": "terjual" },
+	"AVERAGE": "Rata-rata",
+	"ORDER_HISTORY": "Riwayat pesanan",
+	"ESTIMATED_PRICE": "Perkiraan harga",
+	"CURRENCY_WALLET": {
+		"BACK": "Kembali",
+		"WALLET_PAGE": "{0} ke laman dompet",
+		"LEARN_MORE": "Belajarlah lagi",
+		"ABOUT": "{0} tentang"
+	},
+	"WITHDRAWALS_FORM_NETWORK_LABEL": "Jaringan",
+	"DEPOSIT_FORM_NETWORK_WARNING": "Pastikan jaringan yang dipilih kompatibel dengan jaringan dompet pengirim",
+	"DEPOSIT_FORM_MIN_WARNING": "Hanya setoran sebesar {0} {1} atau lebih yang akan diterima. Setiap simpanan di bawah batas minimum ini akan mengakibatkan hilangnya dana secara permanen.",
+	"DEPOSIT_FORM_TITLE_WARNING_DESTINATION_TAG": "Masukkan Alamat dan Tag, yang diperlukan untuk menyetor ke akun Anda dengan sukses.",
+	"WITHDRAW_PAGE_DESTINATION_TAG_NONE": "Tidak ada",
+	"WITHDRAW_PAGE_DESTINATION_TAG_MESSAGE": "Tag tujuan: {0}",
+	"WITHDRAW_PAGE_NETWORK_TYPE_MESSAGE": "{0} jenis jaringan alamat: {1}",
+	"WITHDRAWALS_FORM_NETWORK_WARNING": "Pastikan jaringan yang dipilih kompatibel dengan dompet tujuan",
+	"WITHDRAWALS_FORM_FEE_WARNING": "{0} ({1}) adalah persyaratan penarikan aset ini",
+	"WITHDRAWALS_FORM_DESTINATION_TAG_WARNING": "Periksa apakah alamat penerima memerlukan Tag. Juga dikenal sebagai Memo, ID digital, label, dan catatan.",
+	"WITHDRAWALS_FORM_NETWORK_PLACEHOLDER": "Pilih jaringan",
+	"WITHDRAWALS_FORM_FEE_COMMON_LABEL_COIN": "Biaya transaksi ({0})",
+	"24H_MAX": "Tinggi 24 jam:",
+	"24H_MIN": "24H Rendah",
+	"24H_VAL": "24J Jil",
+	"WALLET_HIDE_ZERO_BALANCE": "Sembunyikan saldo nol",
+	"WALLET_ESTIMATED_TOTAL_BALANCE": "Taksiran Total Saldo",
+	"WALLET_ASSETS_SEARCH_TXT": "Mencari",
+	"ORDER_ENTRY_ADVANCED": "Canggih",
+	"QUICK_TRADE_SUCCESS": "Kesuksesan!",
+	"QUICK_TRADE_INSUFFICIENT_FUND": "Dana tidak mencukupi",
+	"QUICK_TRADE_INSUFFICIENT_FUND_MESSAGE": "Anda tidak memiliki cukup dana di dompet Anda untuk menyelesaikan transaksi ini.",
+	"QUICK_TRADE_BROKER_NOT_AVAILABLE_MESSAGE": "Kesepakatan OTC broker saat ini tidak tersedia.",
+	"ABOUT_LINK": "Tentang {0}",
+	"DEVELOPERS_TOKEN": {
+		"API_KEY": "kunci API",
+		"SECRET_KEY": "Kunci rahasia",
+		"ACCESS": "Mengakses",
+		"BASIC_ACCESS": "Akses dasar",
+		"BASIC_ACCESS_PROMPT": "Pilih apa yang dapat diakses oleh kunci API ini.",
+		"READING_ACCESS": "Membaca (saldo dompet, dll)",
+		"TRADING_ACCESS": "Jual beli",
+		"IP_ACCESS": "akses IP",
+		"IP_ACCESS_PROMPT": "Konfigurasikan alamat IP apa yang akan berfungsi dengan kunci API ini.",
+		"ANY_IP_ADDRESS": "Alamat IP apa pun",
+		"ONLY_TRUSTED_IPS": "Hanya IP tepercaya",
+		"ADD_IP_PH": "Masukkan alamat IP. Anda dapat menambahkan beberapa IP",
+		"ADD_IP": "Menambahkan",
+		"ADVANCED_ACCESS": "Akses lanjutan",
+		"ADVANCED_ACCESS_PROMPT": "Membutuhkan IP tepercaya untuk diaktifkan.",
+		"WITHDRAWAL_ACCESS": "Penarikan",
+		"SAVE": "Menyimpan",
+		"BEWARE": "Hati-hati, memungkinkan penarikan datang dengan risiko tertentu!"
+	},
+	"CUMULATIVE_AMOUNT_SYMBOL": "Total",
+	"POST_ONLY": "Posting saja",
+	"CLEAR": "Jernih",
+	"ORDER_TYPE": "Jenis",
+	"ORDER_MODE": "Modus pesanan",
+	"TRIGGER_CONDITIONS": "Kondisi pemicu",
+	"TRANSACTION_STATUS": {
+		"PENDING": "Tertunda",
+		"REJECTED": "Ditolak",
+		"COMPLETED": "Lengkap"
+	},
+	"DEPOSIT_STATUS": {
+		"NEW": "Baru",
+		"SEARCH_FIELD_LABEL": "Tempel ID transaksi Anda",
+		"CHECK_DEPOSIT_STATUS": "Periksa status setoran",
+		"SEARCH_BLOCKCHAIN_FOR_DEPOSIT": "Cari blockchain untuk deposit Anda",
+		"STATUS_DESCRIPTION": "Anda dapat memeriksa status deposit Anda dengan mengirimkan ID transaksi (hash) di bawah ini.",
+		"TRANSACTION_ID": "ID Transaksi (hash)",
+		"SEARCH_SUCCESS": "Pencarian selesai",
+		"ADDRESS_FIELD_LABEL": "Tempel alamat Anda",
+		"CURRENCY_FIELD_LABEL": "Pilih mata uang",
+		"DESTINATION_TAG_LABEL": "Tag (opsional)",
+		"MEMO_LABEL": "Memo (opsional)",
+		"DESTINATION_TAG_PLACEHOLDER": "Tempel tag Anda",
+		"MEMO_PLACEHOLDER": "Tempelkan memo Anda"
+	},
+	"CANCEL_ORDERS": {
+		"HEADING": "Batalkan pesanan",
+		"SUB_HEADING": "Batalkan semua pesanan",
+		"INFO_1": "Ini akan membatalkan pesanan terbuka Anda untuk {0} pasar.",
+		"INFO_2": "Anda yakin ingin membatalkan semua pesanan terbuka Anda?"
+	},
+	"AMOUNT_IN": "Jumlah masuk",
+	"LIMITS_BLOCK": {
+		"HEADER_ROW_DESCRIPTION": "Tunjangan setoran dan penarikan 24 jam untuk semua aset ({0})",
+		"HEADER_ROW_TYPE": "Jenis (Semua aset)",
+		"HEADER_ROW_AMOUNT": "Jumlah 24 jam ({0})"
+	},
+	"MARKETS_TABLE": {
+		"TITLE": "Pasar langsung",
+		"MARKETS": "Pasar",
+		"LAST_PRICE": "Harga terakhir",
+		"CHANGE_24H": "Perubahan (24 jam)",
+		"VOLUME_24h": "Volume (24 jam)",
+		"CHART_24H": "Bagan (24 jam)",
+		"VIEW_MARKETS": "Lihat Pasar",
+		"TRADING_SYMBOL": "Simbol Perdagangan",
+		"TYPE": "Jenis",
+		"SOURCE": "SUMBER"
+	},
+	"SUMMARY_MARKETS": {
+		"HOLLAEX": "Ingin mendaftarkan aset digital Anda? Mulai pasar Anda sendiri dengan HollaEx Anda {0} {1}",
+		"WHITE_LABEL": "label putih",
+		"SOLUTION": "larutan",
+		"VISIT_COIN_INFO_PAGE": "Kunjungi laman info koin {0}",
+		"HERE": "Di Sini"
+	},
+	"PAGE_UNDER_CONSTRUCTION": "Halaman ini sedang dibangun. Silakan kunjungi kembali halaman ini segera.",
+	"UNDEFINED_ERROR_TITLE": "Anda Mengalami Kesalahan Tak Dikenal",
+	"UNDEFINED_ERROR": "Wow! Terjadi kesalahan yang tidak diketahui. Ini bisa menjadi masalah koneksi atau sejumlah hal lainnya. Anda dapat mencoba lagi nanti atau mencoba menyegarkan.",
+	"POST_ONLY_TOOLTIP": "Post only order hanya dieksekusi sebagai limit order.",
+	"REFRESH": "Menyegarkan",
+	"FEE_REDUCTION": "Pengurangan biaya",
+	"FEE_REDUCTION_DESCRIPTION": "* akun Anda memiliki diskon biaya yang diterapkan padanya. Pengurangan diterapkan pada biaya perdagangan berdasarkan akun Anda.",
+	"CHANGE_PASSWORD_FAILED": "mengubah kata sandi gagal",
+	"MARKET_OPTIONS": { "LIST": "Daftar", "CARD": "Kartu" },
+	"ALL": "Semua",
+	"ASSET_TXT": "Aset",
+	"ONE_DAY": "1 hari",
+	"ONE_WEEK": "1 minggu",
+	"MONTH": "{0} bulan",
+	"START_DATE": "Mulai tanggal",
+	"END_DATE": "Tanggal akhir",
+	"REGULAR": "Reguler",
+	"STOPS": "Berhenti",
+	"VIEW_ALL": "Lihat semua",
+	"TRIGGER_PRICE": "Harga pemicu",
+	"SPEND_AMOUNT": "Jumlah Pembelanjaan",
+	"ESTIMATE_RECEIVE_AMOUNT": "Estimasi Jumlah Penerimaan",
+	"TOOLS": {
+		"ORDERBOOK": "Memesan buku",
+		"CHART": "Bagan",
+		"PUBLIC_SALES": "Penjualan publik",
+		"ORDER_ENTRY": "Pesanan masuk",
+		"RECENT_TRADES": "Perdagangan terbaru",
+		"OPEN_ORDERS": "Buka pesanan",
+		"WALLET": "Dompet",
+		"DEPTH_CHART": "Bagan kedalaman",
+		"COMING_SOON": "segera hadir"
+	},
+	"RESET_LAYOUT": "Atur Ulang Tata Letak",
+	"WALLET_BALANCE_LOADING": "Memuat saldo...",
+	"CONNECT_VIA_DESKTOP": {
+		"TITLE": "Terhubung melalui desktop",
+		"SUBTITLE": "Staking DeFi melalui perangkat seluler Anda saat ini tidak didukung.",
+		"TEXT": "Untuk menghubungkan dompet Anda, harap gunakan komputer desktop/laptop."
+	},
+	"ORDER_HISTORY_CLOSED": "Tertutup",
+	"FIAT": {
+		"UNVERIFIED": {
+			"TITLE": "Verifikasi lengkap",
+			"TEXT": "Untuk membuat {0}, Anda harus menyelesaikan verifikasi yang mencakup verifikasi detail bank Anda. Silahkan klik tombol lanjutkan di bawah ini.",
+			"DEPOSIT": "menyetorkan",
+			"WITHDRAWAL": "penarikan"
+		},
+		"REVIEW_DEPOSIT": {
+			"TITLE": "Periksa dan konfirmasi detail setoran",
+			"SUBTITLE": "Silakan periksa rincian deposit di bawah ini untuk memastikan semuanya sudah benar.",
+			"FORMAT": "{0} {1}",
+			"AMOUNT": "Jumlah deposit",
+			"FEE": "Biaya setoran",
+			"TRANSACTION_ID": "ID transaksi",
+			"NOTE": "Untuk menghindari keterlambatan, pastikan jumlah deposit, nota, dan ID transaksi Anda sesuai dengan detail di atas. Jika masalah muncul, silakan hubungi dukungan.",
+			"BACK": "Kembali",
+			"PROCEED": "Melanjutkan"
+		}
+	},
+	"DEPOSIT_FEE_NOTE": "Perhatikan, jumlah total yang disetorkan ke akun Anda adalah jumlah dikurangi biaya setoran",
+	"AMOUNT_LABEL": "Masukkan jumlah yang disetor (harus sama dengan jumlah sebenarnya)",
+	"TRANSACTION_ID_LABEL": "Masukkan ID transaksi setoran",
+	"FEE_LABEL": "Biaya Setoran",
+	"AMOUNT_FORMAT": "{0} {1}",
+	"PENDING_DEPOSIT_TITLE": "Setoran tertunda",
+	"PENDING_DEPOSIT_TEXT_1": "Setoran Anda sekarang dalam antrean untuk verifikasi dan akan tetap dalam status pending sampai dibersihkan.",
+	"PENDING_DEPOSIT_TEXT_2": "Biasanya setoran dihapus dalam 24 jam tetapi bisa memakan waktu hingga 48 jam, setelah menghapus jumlah setoran Anda dikurangi biaya akan dikreditkan ke saldo Anda.",
+	"DEPOSIT_HOME_NOTE": "Untuk melakukan deposit, harap masukkan jumlah yang akan Anda setorkan dari rekening bank Anda sendiri. Untuk menghindari penundaan, pastikan jumlah yang Anda masukkan di bawah ini sesuai dengan jumlah sebenarnya yang akan atau telah Anda kirimkan dari rekening bank Anda.",
+	"DEPOSIT_TXID_NOTE": "Untuk menghindari keterlambatan setoran Anda, pastikan untuk memasukkan catatan unik Anda yang ditampilkan di atas saat melakukan setoran bank Anda dalam catatan atau pesan transaksi Anda. Pastikan jumlah di bawah ini sesuai dengan jumlah yang sebenarnya Anda setorkan dari bank Anda dan sertakan ID transaksi yang diberikan oleh bank Anda setelah transaksi dilakukan.",
+	"DEPOSIT_BANK_TEXT": "Gunakan detail bank di bawah ini untuk melakukan deposit.",
+	"MIN_DEPOSIT": "Setoran minimal",
+	"MAX_DEPOSIT": "Setoran maksimum",
+	"BACK": "Kembali",
+	"DONE": "Selesai",
+	"PENDING_WITHDRAWAL_TITLE": "Penarikan tertunda",
+	"PENDING_WITHDRAWAL_TEXT_1": "Penarikan Anda sekarang dalam antrean untuk verifikasi dan akan tetap dalam status tertunda hingga diselesaikan.",
+	"DEPOSIT_AMOUNT_MIN_VALIDATION": "Transaksi terlalu kecil untuk dikirim. Cobalah jumlah yang lebih besar.",
+	"DEPOSIT_AMOUNT_MAX_VALIDATION": "Transaksi terlalu besar untuk dikirim. Cobalah jumlah yang lebih kecil.",
+	"ACCOUNT_NAME": "nama akun",
+	"ACCOUNT_NUMBER": "nomor akun",
+	"BANK_NAME": "nama Bank",
+	"VERIFY_BANK_WITHDRAW": "Untuk melakukan penarikan, Anda harus menyelesaikan verifikasi yang mencakup verifikasi detail bank Anda. Silakan klik tombol lanjutkan di bawah ini.",
+	"VERIFICATION_TITLE": "Verifikasi lengkap",
+	"WITHDRAW_NOTE": "Harap dicatat: Anda hanya dapat menarik ke akun atas nama Anda.",
+	"USER_PAYMENT": { "TITLE": "Pembayaran" },
+	"QUOTE_CONFIRMATION_MSG_TEXT_1": "Silakan periksa pesanan Anda dan konfirmasi di bawah ini.",
+	"QUOTE_CONFIRMATION_MSG_TEXT_2": "Jumlah yang akan diterima adalah perkiraan dan tidak termasuk biaya perdagangan",
+	"ORDER_EXPIRED_MSG": "Pesanan kedaluwarsa. Segarkan!",
+	"WITHDRAWALS_FORM_METHOD": "metode",
+	"WITHDRAWALS_FORM_ADDRESS_EXCHANGE": "Bertukar email pengguna",
+	"WITHDRAWALS_FORM_EXCHANGE_PLACEHOLDER": "Masukkan email pengguna di bursa ini",
+	"WITHDRAWALS_FORM_MAIL_INFO": "Masukkan email akun HollaEx pengguna yang ada di bursa ini dan transfer gratis.",
+	"DUST": {
+		"TITLE": "Kemoceng dompet",
+		"LINK": "Kemoceng dompet",
+		"TOOLTIP": "Ubah saldo dompet kecil (debu) menjadi crypto",
+		"BACK_PLACEHOLDER": "{0} {1}",
+		"BACK_TO_WALLET": "ke dompet saya",
+		"BACK": "Kembali",
+		"ESTIMATED_TOTAL": "Perkiraan nilai debu total",
+		"CONVERT_ALL": "mengubah",
+		"NO_DUST": "Tidak ada aset debu!",
+		"SECTION": {
+			"TITLE": "Mengkonversi debu dompet",
+			"TEXT_1": "Konversikan semua saldo dompet rendah yang bernilai {0} {1} atau kurang.",
+			"TEXT_2": "Semua percakapan akan diselesaikan dalam {0} ({1})."
+		},
+		"CONFIRMATION": {
+			"TITLE": "Mengkonversi Debu",
+			"SUBTITLE": "Aset sedang dikonversi",
+			"BACK": "kembali",
+			"CONFIRM": "mengonfirmasi",
+			"GET": "Kamu akan mendapatkan",
+			"FEE": "Biaya konversi",
+			"PLEASE": "Tolong dicatat",
+			"NOTE": "Anda dapat mengubah debu menjadi {0} setiap 24 jam sekali. Hanya saldo senilai di bawah {1} {2} yang akan dikonversi."
+		},
+		"SUCCESSFUL": {
+			"TITLE": "Konversi debu berhasil!",
+			"TEXT": "Anda telah menerima",
+			"VIEW_HISTORY": "melihat riwayat",
+			"CLOSE": "menutup"
+		}
+	},
+	"ASSET_INFO_PAGE": "halaman info aset",
+	"MARKET_ROW": {
+		"NATIVE": "Warga asli",
+		"NO_NATIVE": "Tidak ada sumber asli"
+	},
+	"DIGITAL_ASSETS": {
+		"DIGITAL_ASSETS_TITLE": "Aset digital",
+		"GO_BACK": "Kembali",
+		"ASSETS_INFO": "Di bawah ini adalah aset yang tersedia di platform.",
+		"ASSETS_INFO_DETAIL": "Anda dapat mengklik aset pada daftar di bawah ini untuk mempelajari lebih lanjut.",
+		"QUICK_TRADE": "PERDAGANGAN CEPAT",
+		"MARKETS": "PASAR",
+		"WALLET": "DOMPET",
+		"PRICE_SOURCE": "Sumber harga"
+	},
+	"HOLLAEX_TOKEN": {
+		"REMOVE_FAVOURITES": "Hapus dari favorit",
+		"ADD_FAVOURITES": "Tambahkan ke favorit",
+		"GO_BACK": " Kembali",
+		"BALANCE": "Keseimbangan:",
+		"OPEN_WALLET": "(Buka dompet)",
+		"ABOUT": "Tentang",
+		"VIEW": "Lihat lebih banyak",
+		"COMING_SOON": "Segera hadir...",
+		"NO_DESCRIPTION": "Aset digital ini saat ini tidak memiliki deskripsi.",
+		"STAKE": "Mempertaruhkan",
+		"MORE": "Lagi",
+		"INFO": "info",
+		"TRADE": "BERDAGANG",
+		"LIST": "Ingin mendaftarkan aset digital Anda?",
+		"WEBSITE": "Situs web",
+		"EXPLORER": "Penjelajah"
+	},
+	"ACCORDIAN": {
+		"ACCORDIAN_ASSETS": "Semua aset dompet",
+		"ACCORDIAN_INFO": "HALAMAN INFO ASET",
+		"ACCORDIAN_HISTORY": "SEJARAH"
+	},
+	"ASYNC_LINK": {
+		"TITLE": "Halaman tidak terbuka secara otomatis?",
+		"TEXT": "Browser Anda mungkin memblokir halaman. Coba salin dan tempel tautan di bawah sebagai gantinya:"
+	},
+	"TERMS_OF_SERVICES": { "TO_GET_ACCESS": "Untuk mendapatkan akses, hubungi" },
+	"FEES_AND_LIMITS": {
+		"LINK": "lihat biaya dan batasan saya",
+		"COIN_PAGE_LINK": "Biaya & batas perdagangan",
+		"BACK": {
+			"PLACEHOLDER": "{0} {1}",
+			"BACK": "Kembali",
+			"TO": "untuk meringkas"
+		},
+		"TITLE": "Biaya & batasan",
+		"SEARCH_PLACEHOLDER": "Mencari...",
+		"TABS": {
+			"TRADING_FEES": {
+				"TITLE": "Biaya perdagangan",
+				"TABLE": {
+					"TITLE": "Biaya perdagangan pasar",
+					"SUBTITLE": "Di bawah ini adalah aturan biaya perdagangan individu pasar.",
+					"HEADER": {
+						"MARKET": "Pasar",
+						"MAKER": "Biaya perdagangan pembuat (pembatasan pesanan)",
+						"TAKER": "Biaya perdagangan pengambil (pesanan pasar)"
+					}
+				}
+			},
+			"WITHDRAWAL_FEES": {
+				"TITLE": "Biaya penarikan",
+				"TABLE": {
+					"TITLE": "Biaya dipotong pada saat penarikan",
+					"SUBTITLE": "Di bawah ini adalah semua biaya saat menarik aset.",
+					"NOT_ALLOWED": "Tidak diizinkan",
+					"HEADER": {
+						"CURRENCY": "Mata uang/aset",
+						"DEPOSIT": "Biaya Setoran",
+						"WITHDRAWAL": "Biaya penarikan"
+					}
+				}
+			},
+			"WITHDRAWAL_LIMITS": {
+				"TITLE": "Batas penarikan",
+				"TABLE_1": {
+					"TITLE": "Batas penarikan independen",
+					"SUBTITLE": "Aset yang dipisahkan dari aturan batas kolektif yang mengikuti aturan penarikan 24 jam independennya sendiri:",
+					"HEADER": { "CURRENCY": "Mata uang/aset", "LIMIT": "batas 24 jam" },
+					"LIMIT_TEXT": "(Aset yang semuanya berbagi jumlah batas penarikan kolektif)"
+				},
+				"TABLE_2": {
+					"TITLE": "Batas penarikan standar bersama kolektif",
+					"SUBTITLE": "Di bawah ini adalah aset yang semuanya memiliki aturan jumlah batas penarikan standar 24 jam yang sama:"
+				}
+			}
+		}
+	},
+	"STATUS_TEXT": {
+		"INCOMPLETE": "tidak lengkap",
+		"PENDING": "tertunda",
+		"REJECTED": "ditolak",
+		"VERIFIED": "diverifikasi"
+	},
+	"LOGINS_HISTORY": {
+		"TAB": "Riwayat Masuk",
+		"CONTENT": {
+			"TITLE": "Rekam Upaya Masuk",
+			"SUBTITLE": "Catatan riwayat semua upaya login yang gagal di akun Anda dan potensi asalnya.",
+			"DOWNLOAD_HISTORY": "DOWNLOAD_HISTORY",
+			"FILTER": {
+				"STATUS": "Status",
+				"ALL": "Semua",
+				"FAILED": "Gagal",
+				"SUCCESS": "Kesuksesan"
+			},
+			"TABLE": {
+				"HEADER": {
+					"LAST_SEEN": {
+						"TITLE": "Terakhir terlihat",
+						"DESCRIPTION": "(Yang terbaru dulu)"
+					},
+					"FAILED_ATTEMPTS": "Usaha yang Gagal",
+					"COUNTRY": "Negara",
+					"IP_ADDRESS": "Alamat IP"
+				},
+				"CELL": {
+					"FAILED_LOGIN": "Gagal masuk: {0}x",
+					"SUCCESS": "Kesuksesan",
+					"DEVICE": "Perangkat"
+				}
+			}
+		}
+	},
+	"SESSIONS": {
+		"TAB": "Sesi",
+		"CONTENT": {
+			"TITLE": "Sesi Aktif",
+			"SUBTITLE": {
+				"TEXT": "Di bawah ini adalah sesi aktif akun Anda. Untuk mengakhiri sesi aktif, klik {0} dan sesi tersebut akan keluar.",
+				"LINK": "Menarik kembali"
+			},
+			"DOWNLOAD": "Unduh",
+			"TABLE": {
+				"HEADER": {
+					"LAST_SEEN": {
+						"TITLE": "Terakhir terlihat",
+						"DESCRIPTION": "(Yang terbaru dulu)"
+					},
+					"SESSION_STARTED": "Sesi dimulai",
+					"SESSION_EXPIRY": "Sesi berakhir",
+					"STATUS": "Status"
+				},
+				"CELL": {
+					"ACTIVE": "Aktif",
+					"COUNTRY": "Negara",
+					"IP_ADDRESS": "Alamat IP",
+					"DEVICE": "Perangkat",
+					"LOGIN_TIME": "Waktu masuk yang berhasil"
+				}
+			},
+			"NOTIFICATION": "Sesi dicabut/logout",
+			"MODAL": {
+				"TITLE": "Cabut sesi",
+				"PROMPT": "Anda yakin ingin mencabut dan keluar dari sesi ini?",
+				"BACK": "KEMBALI",
+				"CONFIRM": "MENGONFIRMASI"
+			}
+		}
+	}
 }

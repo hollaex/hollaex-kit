@@ -1,41 +1,96 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-
+import {
+	formatPercentage,
+	formatToCurrency,
+	countDecimals,
+} from 'utils/currency';
+import { quicktradePairSelector } from 'containers/QuickTrade/components/utils';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { getSparklines } from 'actions/chartAction';
-import { MarketsSelector } from './utils';
+import { getMiniCharts } from 'actions/chartAction';
 import AssetsList from 'containers/DigitalAssets/components/AssetsList';
 
-class Markets extends Component {
+class AssetsWrapper extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			data: [],
 			chartData: {},
+			coinsData: [],
 			pageSize: 10,
 			page: 0,
 			count: 0,
 		};
 	}
 
+	getPricingData = (chartData) => {
+		const { price = [] } = chartData || {};
+		const firstPrice = price[0];
+		const lastPrice = price[price.length - 1];
+		const priceDifference = lastPrice - firstPrice;
+		const priceDifferencePercent = formatPercentage(
+			priceDifference / firstPrice
+		);
+		const formattedNumber = (val) =>
+			formatToCurrency(val, 0, val < 1 && countDecimals(val) > 8);
+		const priceDifferencePercentVal = Number(
+			priceDifferencePercent.replace('%', '')
+		);
+
+		return {
+			priceDifference,
+			priceDifferencePercent,
+			priceDifferencePercentVal,
+			lastPrice: formattedNumber(lastPrice),
+		};
+	};
+
+	getCoinsData = (coinsList, chartValues) => {
+		const { coins, quicktradePairs } = this.props;
+		const coinsData = coinsList.map((name) => {
+			const { code, icon_id, symbol, fullname, type } = coins[name];
+
+			const key = `${code}-usdt`;
+			const pricingData = this.getPricingData(chartValues[key]);
+
+			return {
+				...pricingData,
+				chartData: chartValues[key],
+				code,
+				icon_id,
+				symbol,
+				fullname,
+				type,
+				key,
+				networkType: quicktradePairs[key]?.type,
+			};
+		});
+
+		this.setState({ coinsData });
+		this.constructData(this.state.page);
+	};
+
 	componentDidMount() {
-		const { pairs } = this.props;
+		const { coins } = this.props;
 		const { page } = this.state;
 		this.constructData(page);
 
-		getSparklines(Object.keys(pairs)).then((chartData) =>
-			this.setState({ chartData })
-		);
+		const coinsList = Object.keys(coins).map((val) => coins[val].code);
+
+		getMiniCharts(coinsList.toLocaleString()).then((chartValues) => {
+			this.setState({ chartData: chartValues });
+			this.getCoinsData(coinsList, chartValues);
+		});
 	}
 
 	componentDidUpdate(prevProps) {
-		const { markets, selectedSource = '' } = this.props;
+		const { data, selectedSource } = this.props;
 		const { page } = this.state;
 
 		if (
-			JSON.stringify(markets) !== JSON.stringify(prevProps.markets) ||
-			(selectedSource && selectedSource !== prevProps.selectedSource)
+			JSON.stringify(data) !== JSON.stringify(prevProps.data) ||
+			selectedSource !== prevProps.selectedSource
 		) {
 			this.constructData(page);
 		}
@@ -51,34 +106,30 @@ class Markets extends Component {
 		this.constructData(page + 1);
 	};
 
-	constructData = (page) => {
-		const { pageSize } = this.state;
-		const { markets, selectedSource, pairs } = this.props;
-		let filteredData = [];
-		let nonDublicateCoins = [];
+	getCoinsList = (coinsData) => {
+		const { selectedSource } = this.props;
 
-		if (!selectedSource || selectedSource === 'all') {
-			filteredData = markets.filter(({ key }) => {
-				if (!nonDublicateCoins.includes(key.split('-')[0])) {
-					nonDublicateCoins.push(key.split('-')[0]);
-					return Object.keys(pairs).includes(key);
-				}
-				return null;
-			});
-		} else {
-			filteredData = markets.filter(
-				({ key }) => key.split('-')[1] === selectedSource
+		if (!!selectedSource.length && selectedSource !== 'all') {
+			return coinsData.filter(
+				({ networkType }) => networkType === selectedSource
 			);
 		}
 
-		const count = filteredData.length;
+		return coinsData;
+	};
 
+	constructData = (page) => {
+		const { pageSize, coinsData } = this.state;
+
+		const allData = this.getCoinsList(coinsData);
+		const count = allData.length;
 		const initItem = page * pageSize;
+
 		if (initItem < count) {
-			const data = filteredData.slice(0, initItem + pageSize);
+			const data = allData.slice(0, initItem + pageSize);
 			this.setState({ data, page, count });
 		} else {
-			this.setState({ data: filteredData, page, count });
+			this.setState({ data: allData, page, count });
 		}
 	};
 
@@ -104,14 +155,13 @@ class Markets extends Component {
 	};
 
 	render() {
-		const { data, chartData, page, pageSize, count } = this.state;
+		const { data, page, pageSize, count } = this.state;
 
 		return (
 			<div>
 				<AssetsList
 					loading={!data.length}
-					markets={data}
-					chartData={chartData}
+					coinsListData={data}
 					handleClick={this.handleAssetsClick}
 					page={page}
 					pageSize={pageSize}
@@ -125,13 +175,11 @@ class Markets extends Component {
 	}
 }
 
-const mapStateToProps = (state) => ({
-	user: state.user || {},
+const mapStateToProps = (state, props) => ({
 	pairs: state.app.pairs,
-	coins: state.app.coins,
-	tickers: state.app.tickers,
 	constants: state.app.constants,
-	markets: MarketsSelector(state),
+	coins: state.app.coins,
+	quicktradePairs: quicktradePairSelector(state),
 });
 
-export default connect(mapStateToProps)(withRouter(withConfig(Markets)));
+export default connect(mapStateToProps)(withRouter(withConfig(AssetsWrapper)));

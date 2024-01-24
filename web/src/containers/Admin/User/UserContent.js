@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Tabs, Button, Breadcrumb, message, Modal } from 'antd';
 import { Link } from 'react-router';
 import { ReactSVG } from 'react-svg';
+import { Tabs, Button, Breadcrumb, message, Modal } from 'antd';
 
 import {
 	// Balance,
@@ -21,6 +21,7 @@ import BankData from './BankData';
 import AboutData from './AboutData';
 import Referrals from './Referrals';
 import VerifyEmailConfirmation from './VerifyEmailConfirmation';
+import ActivationConfirmation from './ActivationConfirmation';
 import { isSupport, isKYC } from '../../../utils/token';
 import { STATIC_ICONS } from 'config/icons';
 import {
@@ -28,6 +29,7 @@ import {
 	flagUser,
 	activateUser,
 	verifyUser,
+	recoverUser,
 	requestTiers,
 } from './actions';
 import UserMetaForm from './UserMetaForm';
@@ -41,6 +43,7 @@ const { Item } = Breadcrumb;
 class UserContent extends Component {
 	state = {
 		showVerifyEmailModal: false,
+		showRecoverModal: false,
 		userTiers: {},
 	};
 
@@ -196,9 +199,33 @@ class UserContent extends Component {
 			});
 	};
 
+	handleRecoverUser = () => {
+		const { userInformation = {}, refreshData } = this.props;
+		const postValues = {
+			user_id: parseInt(userInformation.id, 10),
+		};
+
+		recoverUser(postValues)
+			.then((res) => {
+				refreshData({ ...postValues, activated: true });
+				this.setState({ showRecoverModal: false });
+			})
+			.catch((err) => {
+				const _error =
+					err.data && err.data.message ? err.data.message : err.message;
+				message.error(_error);
+			});
+	};
+
 	openVerifyEmailModal = () => {
 		this.setState({
 			showVerifyEmailModal: true,
+		});
+	};
+
+	openRecoverUserModel = () => {
+		this.setState({
+			showRecoverModal: true,
 		});
 	};
 
@@ -223,7 +250,7 @@ class UserContent extends Component {
 			requestUserData,
 		} = this.props;
 
-		const { showVerifyEmailModal, userTiers } = this.state;
+		const { showVerifyEmailModal, showRecoverModal, userTiers } = this.state;
 
 		const {
 			id,
@@ -324,8 +351,10 @@ class UserContent extends Component {
 								flagUser={this.flagUser}
 								freezeAccount={this.freezeAccount}
 								verifyEmail={this.openVerifyEmailModal}
+								recoverUser={this.openRecoverUserModel}
 								kycPluginName={kycPluginName}
 								requestUserData={requestUserData}
+								refreshAllData={refreshAllData}
 							/>
 						</div>
 					</TabPane>
@@ -423,6 +452,12 @@ class UserContent extends Component {
 					visible={showVerifyEmailModal}
 					onCancel={() => this.setState({ showVerifyEmailModal: false })}
 					onConfirm={this.verifyUserEmail}
+					userData={userInformation}
+				/>
+				<ActivationConfirmation
+					visible={showRecoverModal}
+					onCancel={() => this.setState({ showRecoverModal: false })}
+					onConfirm={this.handleRecoverUser}
 					userData={userInformation}
 				/>
 			</div>

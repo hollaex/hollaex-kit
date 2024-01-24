@@ -161,7 +161,7 @@ class Signup extends Component {
 			return (
 				<div>
 					{isMobile && <MobileBarBack onBackClick={this.onBackActiveEmail} />}
-					<SignupSuccess />
+					<SignupSuccess onCreateAccount={this.onBackActiveEmail} />
 				</div>
 			);
 		}
