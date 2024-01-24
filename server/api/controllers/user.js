@@ -27,6 +27,7 @@ const {
 	LOGIN_NOT_ALLOW,
 	NO_IP_FOUND,
 	INVALID_OTP_CODE,
+	OTP_CODE_NOT_FOUND
 } = require('../../messages');
 const { DEFAULT_ORDER_RISK_PERCENTAGE, EVENTS_CHANNEL, API_HOST, DOMAIN, TOKEN_TIME_NORMAL, TOKEN_TIME_LONG, HOLLAEX_NETWORK_BASE_URL, NUMBER_OF_ALLOWED_ATTEMPTS } = require('../../constants');
 const { all } = require('bluebird');
@@ -302,6 +303,9 @@ const loginPost = (req, res) => {
 							return toolsLib.security.checkCaptcha(captcha, ip);
 						})
 						.catch(async (err) => {
+							if (!otp_code) {
+								throw new Error(OTP_CODE_NOT_FOUND);
+							}
 							await toolsLib.user.createUserLogin(user, ip, device, domain, origin, referer, null, long_term, false);
 							const loginData = await toolsLib.user.findUserLatestLogin(user, false);
 							const message = createAttemptMessage(loginData, user, domain);
