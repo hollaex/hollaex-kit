@@ -53,6 +53,7 @@ const getFields = (
 		type: 'select',
 		label: 'Currency',
 		placeholder: 'Currency',
+		showSearch: true,
 		options: coins,
 		validate: [validateRequired, validateRange(coins)],
 	},

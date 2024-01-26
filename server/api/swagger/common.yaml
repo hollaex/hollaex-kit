@@ -187,6 +187,9 @@ paths:
               verification_code:
                 type: string
                 maxLength: 256
+              email:
+                type: string
+                maxLength: 256
       responses:
         200:
           description: Success

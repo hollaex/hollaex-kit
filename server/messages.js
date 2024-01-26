@@ -44,6 +44,7 @@ exports.TOKEN_REVOKED = 'Token is already revoked';
 exports.TOKEN_REMOVED = 'Token is successfully revoked';
 exports.TOKEN_OTP_ENABLED = 'OTP must be enabled to create a token';
 exports.INVALID_OTP_CODE = 'Invalid OTP Code';
+exports.OTP_CODE_NOT_FOUND = 'OTP not found';
 
 exports.WALLET_ERROR_500 =
 	'Internal error. Withdrawal failed. Please try again in few minutes.';

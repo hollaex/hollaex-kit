@@ -117,7 +117,8 @@ class VerifyEmailCode extends Component {
 						onClick={async () => {
 							this.setState({ confirm: true });
 							const { code } = this.props.params;
-							this.props.verifyCode({ verification_code: code });
+							const { email } = this.props.location.query;
+							this.props.verifyCode({ verification_code: code, email });
 						}}
 						style={{
 							backgroundColor: '#5D63FF',
