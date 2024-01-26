@@ -116,11 +116,8 @@ class InputGroup extends React.PureComponent {
 				<label className="bold caps-first">
 					<EditWrapper stringId={stringId}>{name}</EditWrapper>
 				</label>
-				<div className={isMobile ? 'w-100' : ''}>
-					<Group
-						compact
-						className="quick-trade-dropdown input-group__container"
-					>
+				<div className="d-flex justify-content-between">
+					<div className='currency-dropdown'>
 						<Select
 							open={isOpen}
 							size="default"
@@ -167,25 +164,27 @@ class InputGroup extends React.PureComponent {
 											<span className="pl-1">{display_name}</span>
 										</div>
 									</Option>
-								);
-							})}
-						</Select>
-						<Input
-							type="number"
-							placeholder={STRINGS['AMOUNT']}
-							style={isOpen ? { display: 'none' } : { width: '67%' }}
-							className="input-group__input"
-							value={inputValue || ''}
-							onChange={this.onChangeEvent}
-							bordered={false}
-							step={limits.MIN}
-							min={limits.MIN}
-							max={limits.MAX}
-							autoFocus={autoFocus}
-							suffix={suffix}
-							disabled={disabled}
-						/>
-					</Group>
+									);
+								})}
+							</Select>
+						</div>
+						<div>
+							<Input
+								type="number"
+								placeholder={STRINGS['AMOUNT']}
+								style={isOpen ? { display: 'none' } : { width: '67%' }}
+								className="input-group__input"
+								value={inputValue || ''}
+								onChange={this.onChangeEvent}
+								bordered={false}
+								step={limits.MIN}
+								min={limits.MIN}
+								max={limits.MAX}
+								autoFocus={autoFocus}
+								suffix={suffix}
+								disabled={disabled}
+							/>
+						</div>
 					{error && (
 						<FieldError
 							error={error}

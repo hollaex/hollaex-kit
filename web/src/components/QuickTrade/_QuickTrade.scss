@@ -53,15 +53,32 @@ $title-icon--height: 10rem;
 		height: 8rem;
 	}
 	.title {
-		font-size: 30px;
+		font-size: 28px;
 		font-family: $raleway--font-family;
+		letter-spacing: 2px;
 	}
 	.info-text {
+		font-size: 14px;
 		font-family: $en--font-family;
 		color: $colors-deactivate;
 	}
 	.visit-asset-info {
 		text-decoration: underline;
+	}
+
+	.quick-trade-input {
+		background: $app-light-background;
+		padding: 25px 20px;
+		border-radius: 10px;
+		min-width: 400px;
+	}
+	
+	.currency-dropdown {
+		border: 1px solid #B2B3B3;
+	}
+
+	.input-group__select {
+		color: #fff;
 	}
 }
 .quick_trade-wrapper.width-none {
@@ -76,6 +93,7 @@ $title-icon--height: 10rem;
 	height: fit-content;
 	height: 550px;
 	border: 1px solid $colors-super-pale-black;
+	font-size: 17px;
 
 	.review-block-wrapper {
 		margin: 1rem 0;
@@ -114,7 +132,7 @@ $title-icon--height: 10rem;
 
 	.trade-section {
 		width: 100%;
-		padding-top: 2rem;
+		padding: 36px 56px;
 		background: transparent
 			linear-gradient(
 				180deg,
@@ -128,7 +146,6 @@ $title-icon--height: 10rem;
 			display: flex;
 			flex-direction: column;
 			align-items: flex-end;
-			margin: 55px 105px 0 95px;
 			.btn-wrapper {
 				padding: 40px 0 120px 0;
 			}
@@ -150,14 +167,12 @@ $title-icon--height: 10rem;
 					width: 310px;
 				}
 			}
-			.small-text {
-				font-family: $en--font-family;
-				font-size: 11px;
+			.balance-text {
 				text-transform: capitalize;
-				color: $colors-black;
+				color: #b6b6b6;
 				display: flex;
 				span {
-					color: $link;
+					color: $link_2;
 				}
 			}
 			.footer-text {
@@ -226,8 +241,7 @@ $title-icon--height: 10rem;
 			.btn-wrapper {
 				align-items: center !important;
 			}
-			.footer-text,
-			.small-text {
+			.footer-text {
 				font-size: $font-size-mobile-txt !important;
 			}
 		}
@@ -253,7 +267,7 @@ $title-icon--height: 10rem;
 	.quick_trade-wrapper {
 		min-width: 100% !important;
 		max-width: 100% !important;
-		
+
 		.trade-details-wrapper {
 			width: 100%;
 			padding: 15px;
@@ -291,11 +305,11 @@ $title-icon--height: 10rem;
 }
 
 .swap-container {
-	border-left: $colors-black dotted 2px;
+	border-left: $colors-black dotted 4px;
+	font-size: 17px;
 }
 
 .swap-wrapper {
 	width: 310px;
 	padding: 0 1rem;
 }
-

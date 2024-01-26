@@ -415,7 +415,7 @@ const QuickTrade = ({
 					)}
 					<div className="d-flex flex-column trade-section">
 						<div className="inner-content">
-							<div className="small-text">
+							<div className="balance-text mb-3">
 								<EditWrapper
 									stringId="QUICK_TRADE_COMPONENT.GO_TO_TEXT"
 									renderWrapper={(children) => (
@@ -433,35 +433,41 @@ const QuickTrade = ({
 								</Link>
 							</div>
 
-							<Balance
-								text={coins[selectedSource]?.display_name}
-								balance={selectedSourceBalance}
-								onClick={sourceTotalBalance}
-							/>
-
-							<InputGroup
-								name={STRINGS['CONVERT']}
-								stringId={'CONVERT'}
-								options={sourceOptions}
-								inputValue={sourceAmount}
-								selectValue={selectedSource}
-								onSelect={onSelectSource}
-								onInputChange={onChangeSourceAmount}
-								forwardError={() => {}}
-								autoFocus={autoFocus}
-								decimal={
-									coins[selectedSource]?.increment_unit || PAIR2_STATIC_SIZE
-								}
-								availableBalance={selectedSourceBalance}
-								pair={isUseBroker ? symbol : key ? key : ''}
-								coins={coins}
-								selectedBalance={selectedBalance}
-								loading={loadingSource}
-								disabled={loadingSource}
-							/>
+							<div className="quick-trade-input">
+								<div className="d-flex justify-content-between mb-4">
+									<div className="bold caps-first">
+										<EditWrapper stringId={'CONVERT'}>
+											{STRINGS['CONVERT']}
+										</EditWrapper>
+									</div>
+									<Balance
+										text={coins[selectedSource]?.display_name}
+										balance={selectedSourceBalance}
+										onClick={sourceTotalBalance}
+									/>
+								</div>
+								<InputGroup
+									options={sourceOptions}
+									inputValue={sourceAmount}
+									selectValue={selectedSource}
+									onSelect={onSelectSource}
+									onInputChange={onChangeSourceAmount}
+									forwardError={() => {}}
+									autoFocus={autoFocus}
+									decimal={
+										coins[selectedSource]?.increment_unit || PAIR2_STATIC_SIZE
+									}
+									availableBalance={selectedSourceBalance}
+									pair={isUseBroker ? symbol : key ? key : ''}
+									coins={coins}
+									selectedBalance={selectedBalance}
+									loading={loadingSource}
+									disabled={loadingSource}
+								/>
+							</div>
 							<div className="d-flex swap-wrapper-wrapper">
 								<div className="swap-wrapper">
-									<div className="swap-container">
+									<div className="swap-container my-2">
 										<div
 											className="pointer blue-link"
 											onClick={() => onSwap(selectedSource, selectedTarget)}
@@ -474,30 +480,34 @@ const QuickTrade = ({
 									</div>
 								</div>
 							</div>
-							<InputGroup
-								name={STRINGS['TO']}
-								stringId={'TO'}
-								options={targetOptions}
-								inputValue={targetAmount}
-								selectValue={selectedTarget}
-								onSelect={onSelectTarget}
-								onInputChange={onChangeTargetAmount}
-								forwardError={() => {}}
-								decimal={
-									coins[selectedTarget]?.increment_unit || PAIR2_STATIC_SIZE
-								}
-								pair={isUseBroker ? symbol : key ? key : ''}
-								coins={coins}
-								loading={loadingTarget}
-								disabled={loadingTarget}
-							/>
-
-							<Balance
-								text={coins[selectedTarget]?.display_name}
-								balance={selectedTargetBalance}
-								onClick={targetTotalBalance}
-								className="balance-wallet"
-							/>
+							<div className="quick-trade-input">
+								<div className="d-flex justify-content-between mb-4">
+									<div className="bold caps-first">
+										<EditWrapper stringId={'TO'}>{STRINGS['TO']}</EditWrapper>
+									</div>
+									<Balance
+										text={coins[selectedTarget]?.display_name}
+										balance={selectedTargetBalance}
+										onClick={targetTotalBalance}
+										className="balance-wallet"
+									/>
+								</div>
+								<InputGroup
+									options={targetOptions}
+									inputValue={targetAmount}
+									selectValue={selectedTarget}
+									onSelect={onSelectTarget}
+									onInputChange={onChangeTargetAmount}
+									forwardError={() => {}}
+									decimal={
+										coins[selectedTarget]?.increment_unit || PAIR2_STATIC_SIZE
+									}
+									pair={isUseBroker ? symbol : key ? key : ''}
+									coins={coins}
+									loading={loadingTarget}
+									disabled={loadingTarget}
+								/>
+							</div>
 
 							{error?.length ? (
 								<FieldError
