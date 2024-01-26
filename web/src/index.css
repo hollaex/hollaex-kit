@@ -9597,7 +9597,8 @@ table th {
     border-radius: 10px;
     min-width: 400px; }
   .quick_trade-container .currency-dropdown {
-    border: 1px solid #B2B3B3; }
+    border: 1px solid #B2B3B3;
+    border-radius: 5px; }
   .quick_trade-container .input-group__select {
     color: #fff; }
 

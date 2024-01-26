@@ -125,7 +125,6 @@ class InputGroup extends React.PureComponent {
 							filterOption={true}
 							className="input-group__select"
 							value={selectValue}
-							style={isOpen ? { width: '100%' } : { width: '33%' }}
 							onChange={onSelect}
 							onDropdownVisibleChange={this.onDropdownVisibleChange}
 							bordered={false}
