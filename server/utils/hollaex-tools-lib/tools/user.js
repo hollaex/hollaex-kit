@@ -426,8 +426,8 @@ const findUserLatestLogin = (user, status) => {
 	}).then(loginData => {
 		if (loginData && new Date().getTime() - new Date(loginData.updated_at).getTime() < LOGIN_TIME_OUT) return loginData;
 		return null;
-	})
-}
+	});
+};
 
 /* Public Endpoints*/
 
@@ -779,7 +779,7 @@ const getAllUsersAdmin = (opts = {
 					}
 				}
 				return { count, data };
-			})
+			});
 	}
 };
 
@@ -1439,29 +1439,29 @@ const getUpdatedKeys = (oldData, newData) => {
 	let keys = [];
 	for(const key of data){
 	  if(!isEqual(oldData[key], newData[key])){
-		keys.push(key);
+			keys.push(key);
 	  }
 	}
   
 	return keys;
-  }
+};
 
 const getValues = (data, prevData) => {
 	const updatedKeys = getUpdatedKeys(prevData, data);
-    const updatedValues = updatedKeys.map(key => data[key]);
+	const updatedValues = updatedKeys.map(key => data[key]);
 	const oldValues = updatedKeys.map(key => prevData[key]);
 	
-    updatedValues.forEach((value, index) => {
-        if(typeof value === 'object' && value.constructor === Object) {
-            const values = getValues(value, oldValues[index]);
-            updatedKeys[index] = values.updatedKeys
-            updatedValues[index] = values.updatedValues
-            oldValues[index] = values.oldValues;
-        }
-    })
+	updatedValues.forEach((value, index) => {
+		if(typeof value === 'object' && value.constructor === Object) {
+			const values = getValues(value, oldValues[index]);
+			updatedKeys[index] = values.updatedKeys;
+			updatedValues[index] = values.updatedValues;
+			oldValues[index] = values.oldValues;
+		}
+	});
 
 	return { updatedKeys, oldValues, updatedValues };
-}
+};
 
 const createAuditLog = (subject, adminEndpoint, method, data = {}, prevData = null) => {
 	try {
@@ -1472,7 +1472,7 @@ const createAuditLog = (subject, adminEndpoint, method, data = {}, prevData = nu
 			post: 'inserted',
 			put: 'updated',
 			delete: 'deleted'
-		}
+		};
 		const excludedKeys = ['password', 'apiKey', 'secret', 'api-key', 'api-secret', 'hmac'];
 
 		const action = adminEndpoint.split('/').slice(1).join(' ');
@@ -1482,7 +1482,7 @@ const createAuditLog = (subject, adminEndpoint, method, data = {}, prevData = nu
 		if (method === 'get') {
 			user_id = data?.user_id?.value;
 			data = Object.fromEntries(Object.entries(data).filter(([k, v]) => (v.value != null && excludedKeys.indexOf(k) === -1)));
-			const str = Object.keys(data).map((key) =>  "" + key + ":" + data[key].value).join(", ");
+			const str = Object.keys(data).map((key) =>  '' + key + ':' + data[key].value).join(', ');
 			description = `${action} service ${methodDescriptions[method]}${str ? ` with ${str}` : ''}`;
 		}
 		else if(method === 'put' && prevData) {
@@ -1509,7 +1509,7 @@ const createAuditLog = (subject, adminEndpoint, method, data = {}, prevData = nu
 		return error;
 	}
 	
-}
+};
 
 const getUserAudits = (opts = {
 	user_id: null,
@@ -1525,8 +1525,8 @@ const getUserAudits = (opts = {
 	const exchangeInfo = getKitConfig().info;
 
 	if(!['fiat', 'boost', 'enterprise'].includes(exchangeInfo.plan)) {
-        throw new Error(SERVICE_NOT_SUPPORTED);
-    }
+		throw new Error(SERVICE_NOT_SUPPORTED);
+	}
 
 	const pagination = paginationQuery(opts.limit, opts.page);
 	const timeframe = timeframeQuery(opts.startDate, opts.endDate);
@@ -1562,7 +1562,7 @@ const getUserAudits = (opts = {
 			});
 	}
 	else {
-		return dbQuery.findAndCountAllWithRows('audit', options)
+		return dbQuery.findAndCountAllWithRows('audit', options);
 	}
 };
 
@@ -2014,7 +2014,7 @@ const updateUserInfo = async (userId, data = {}, auditInfo) => {
 		throw new Error('No fields to update');
 	}
 	const oldValues = { user_id: userId };
-	Object.keys(updateData).forEach(key => { oldValues[key] = user.dataValues[key] });
+	Object.keys(updateData).forEach(key => { oldValues[key] = user.dataValues[key]; });
 
 	await user.update(
 		updateData,
@@ -2091,7 +2091,7 @@ const getExchangeUserSessions = (opts = {
 		],
 		order: [ordering],
 		...(!opts.format && pagination),
-	}
+	};
 
 	if (opts.format) {
 		query.attributes = ['id', 'login_id', 'status', 'last_seen', 'expiry_date', 'role', 'created_at', 'updated_at'];
@@ -2247,10 +2247,10 @@ const deleteKitUser = async (userId) => {
 	);
 
 	sendEmail(
-			MAILTYPE.USER_DELETED,
-			userEmail,
-			{},
-			user.settings
+		MAILTYPE.USER_DELETED,
+		userEmail,
+		{},
+		user.settings
 	);
 	
 	return updatedUser;
@@ -2389,15 +2389,15 @@ const getUserBalanceHistory = (opts = {
 	}
 	else {
 		return dbQuery.findAndCountAllWithRows('balanceHistory', options)
-		.then(async (balances) => {
-			if(opts.user_id && (moment(opts.startDate).format('LL') !== moment(opts.endDate).subtract(1, 'days').format('LL'))) {
+			.then(async (balances) => {
+				if(opts.user_id && (moment(opts.startDate).format('LL') !== moment(opts.endDate).subtract(1, 'days').format('LL'))) {
 						
-				const nativeCurrency = getKitConfig()?.balance_history_config?.currency || 'usdt';
+					const nativeCurrency = getKitConfig()?.balance_history_config?.currency || 'usdt';
 							
-				const exchangeCoins = getKitCoins();
-				const conversions = await getNodeLib().getOraclePrices(exchangeCoins, {
-					quote: nativeCurrency,
-					amount: 1
+					const exchangeCoins = getKitCoins();
+					const conversions = await getNodeLib().getOraclePrices(exchangeCoins, {
+						quote: nativeCurrency,
+						amount: 1
 					});
 
 					let symbols = {};
@@ -2434,11 +2434,11 @@ const getUserBalanceHistory = (opts = {
 						balance: history,
 						total,
 						created_at: new Date()
-					})
+					});
 				}
 
 				return balances;
-		})
+			});
 	}
 };
 
@@ -2478,41 +2478,41 @@ const fetchUserProfitLossInfo = async (user_id) => {
 	const conversions = await getNodeLib().getOraclePrices(exchangeCoins, {
 		quote: nativeCurrency,
 		amount: 1
-		});
+	});
 
-		let symbols = {};
+	let symbols = {};
 
-		const { getUserBalanceByKitId } = require('./wallet');
+	const { getUserBalanceByKitId } = require('./wallet');
 
-		const balance = await getUserBalanceByKitId(user_id);
+	const balance = await getUserBalanceByKitId(user_id);
 
-		for (const key of Object.keys(balance)) {
-			if (key.includes('available') && balance[key]) {
-				let symbol = key?.split('_')?.[0];
-				symbols[symbol] = balance[key];
-			}
+	for (const key of Object.keys(balance)) {
+		if (key.includes('available') && balance[key]) {
+			let symbol = key?.split('_')?.[0];
+			symbols[symbol] = balance[key];
 		}
+	}
 
 
-		const coins = Object.keys(symbols);
+	const coins = Object.keys(symbols);
 
-		let total = 0;
-		let history = {};
-		for (const coin of coins) {
-			if (!conversions[coin]) continue;
-			if (conversions[coin] === -1) continue;
+	let total = 0;
+	let history = {};
+	for (const coin of coins) {
+		if (!conversions[coin]) continue;
+		if (conversions[coin] === -1) continue;
 		
-			const nativeCurrencyValue = new BigNumber(symbols[coin]).multipliedBy(conversions[coin]).toNumber();
+		const nativeCurrencyValue = new BigNumber(symbols[coin]).multipliedBy(conversions[coin]).toNumber();
 		
-			history[coin] = { original_value: new BigNumber(symbols[coin]).toNumber(), native_currency_value: nativeCurrencyValue };
-			total = new BigNumber(total).plus(nativeCurrencyValue).toNumber();
-		}
-		userBalanceHistory.push({
-			user_id: Number(user_id),
-			balance: history,
-			total,
-			created_at: new Date()
-		})
+		history[coin] = { original_value: new BigNumber(symbols[coin]).toNumber(), native_currency_value: nativeCurrencyValue };
+		total = new BigNumber(total).plus(nativeCurrencyValue).toNumber();
+	}
+	userBalanceHistory.push({
+		user_id: Number(user_id),
+		balance: history,
+		total,
+		created_at: new Date()
+	});
 
 	
 
@@ -2523,7 +2523,7 @@ const fetchUserProfitLossInfo = async (user_id) => {
 		  const currentDate = new Date(date).getTime();
 	  
 		  if (Math.abs(currentDate - entryDate) < Math.abs(currentDate - closestDate)) {
-			return entry;
+				return entry;
 		  }
 	  
 		  return closestRecord;
@@ -2535,22 +2535,22 @@ const fetchUserProfitLossInfo = async (user_id) => {
 	  
 		switch (interval) {
 		  case '1d':
-			dateThreshold.subtract(1, 'day');
-			break;
+				dateThreshold.subtract(1, 'day');
+				break;
 		  case '7d':
 				dateThreshold.subtract(7, 'day');
 				break;
 		  case '1m':
-			dateThreshold.subtract(1, 'month');
-			break;
+				dateThreshold.subtract(1, 'month');
+				break;
 		  case '6m':
-			dateThreshold.subtract(6, 'months');
-			break;
+				dateThreshold.subtract(6, 'months');
+				break;
 		  case '1y':
-			dateThreshold.subtract(1, 'year');
-			break;
+				dateThreshold.subtract(1, 'year');
+				break;
 		  default:
-			return data;
+				return data;
 		}
 	  
 		return data.filter((entry) => (moment(entry.created_at || entry.timestamp).isSameOrAfter(dateThreshold)) && (conditionalDate ? moment(entry.created_at || entry.timestamp).isAfter(moment(conditionalDate)) : true));
@@ -2576,13 +2576,13 @@ const fetchUserProfitLossInfo = async (user_id) => {
 		filteredDeposits.forEach((deposit) => {
 		  const asset = deposit.currency.toLowerCase();
 		  if (!netInflowFromDepositsPerAsset[asset]) {
-			netInflowFromDepositsPerAsset[asset] = 0;
+				netInflowFromDepositsPerAsset[asset] = 0;
 		  }
 		  const closestRecord = findClosestBalanceRecord(deposit.created_at);
 		 
 		  if(closestRecord.balance[asset]) {
-			const marketPrice = closestRecord.balance[asset].native_currency_value / closestRecord.balance[asset].original_value;
-			netInflowFromDepositsPerAsset[asset] += deposit.amount * marketPrice;
+				const marketPrice = closestRecord.balance[asset].native_currency_value / closestRecord.balance[asset].original_value;
+				netInflowFromDepositsPerAsset[asset] += deposit.amount * marketPrice;
 		  }
 	 
 		});
@@ -2592,13 +2592,13 @@ const fetchUserProfitLossInfo = async (user_id) => {
 		  const tradeValue = trade.size * trade.price;
 	  
 		  if (!netInflow[asset]) {
-			netInflow[asset] = 0;
+				netInflow[asset] = 0;
 		  }
 	  
 		  if (trade.side === 'buy') {
-			netInflow[asset] += tradeValue;
+				netInflow[asset] += tradeValue;
 		  } else if (trade.side === 'sell') {
-			netInflow[asset] -= tradeValue;
+				netInflow[asset] -= tradeValue;
 		  }
 	  
 		  return netInflow;
@@ -2608,12 +2608,12 @@ const fetchUserProfitLossInfo = async (user_id) => {
 		filteredWithdrawals.forEach((withdrawal) => {
 		  const asset = withdrawal.currency.toLowerCase();
 		  if (!netOutflowFromWithdrawalsPerAsset[asset]) {
-			netOutflowFromWithdrawalsPerAsset[asset] = 0;
+				netOutflowFromWithdrawalsPerAsset[asset] = 0;
 		  }
 		  const closestRecord = findClosestBalanceRecord(withdrawal.created_at);
 		  if(closestRecord.balance[asset]) { 
-			const marketPrice = closestRecord.balance[asset].native_currency_value / closestRecord.balance[asset].original_value;
-			netOutflowFromWithdrawalsPerAsset[asset] -= withdrawal.amount * marketPrice;
+				const marketPrice = closestRecord.balance[asset].native_currency_value / closestRecord.balance[asset].original_value;
+				netOutflowFromWithdrawalsPerAsset[asset] -= withdrawal.amount * marketPrice;
 		  }
 	  
 		});
@@ -2637,26 +2637,26 @@ const fetchUserProfitLossInfo = async (user_id) => {
 	  
 		  
 		  results[interval][asset] = {
-			cumulativePNL,
-			cumulativePNLPercentage,
+				cumulativePNL,
+				cumulativePNLPercentage,
 		  };
 		});
 	}
 	  
 	if (results['7d']) {
-		let total = 0
+		let total = 0;
 		const assets = Object.keys(results['7d']);
 
 		assets?.forEach(asset => {
 			total += results['7d'][asset].cumulativePNL;
-		})
+		});
 		results['7d'].total = total;
 	}
 
 	client.setexAsync(`${user_id}user-pl-info`, 86400, JSON.stringify(results));
 
 	return results;
-}
+};
 
 module.exports = {
 	loginUser,

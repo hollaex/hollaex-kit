@@ -20,14 +20,14 @@ module.exports = function (sequelize, DataTypes) {
 					key: 'id'
 				}
 			},
-            balance: {
+			balance: {
 				type: DataTypes.JSONB,
 				allowNull: false,
 			},
-            total: {
-                type: DataTypes.DOUBLE,
+			total: {
+				type: DataTypes.DOUBLE,
 				allowNull: false,
-            }
+			}
 		},
 		{
 			timestamps: true,
