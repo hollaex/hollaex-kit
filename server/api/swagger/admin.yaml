@@ -1932,7 +1932,7 @@ paths:
           description: Field to order data
           required: false
           type: string
-          maxLength: 256
+          enum: ['id', 'user_id', 'total']
         - in: query
           name: order
           description: direction to order

@@ -30,7 +30,7 @@ const {
 } = require('../../messages');
 const { DEFAULT_ORDER_RISK_PERCENTAGE, EVENTS_CHANNEL, API_HOST, DOMAIN, TOKEN_TIME_NORMAL, TOKEN_TIME_LONG, HOLLAEX_NETWORK_BASE_URL, NUMBER_OF_ALLOWED_ATTEMPTS } = require('../../constants');
 const { all } = require('bluebird');
-const { each } = require('lodash');
+const { each, isInteger } = require('lodash');
 const { publisher } = require('../../db/pubsub');
 const { isDate } = require('moment');
 const DeviceDetector = require('node-device-detector');
@@ -1285,6 +1285,7 @@ const getUserBalanceHistory = (req, res) => {
 		'controllers/user/getUserBalanceHistory/auth',
 		req.auth
 	);
+	const user_id = req.auth.sub.id;
 	const { limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
 	if (start_date.value && !isDate(start_date.value)) {
@@ -1314,8 +1315,17 @@ const getUserBalanceHistory = (req, res) => {
 		return res.status(400).json({ message: 'Invalid order by' });
 	}
 
+	if (!user_id || !isInteger(user_id)) {
+		loggerUser.error(
+			req.uuid,
+			'controllers/user/getUserBalanceHistory invalid user_id',
+			user_id
+		);
+		return res.status(400).json({ message: 'Invalid user id' });
+	}
+
 	toolsLib.user.getUserBalanceHistory({
-		user_id: req.auth.sub.id,
+		user_id,
 		limit: limit.value,
 		page: page.value,
 		orderBy: order_by.value,
@@ -1360,7 +1370,7 @@ const fetchUserProfitLossInfo = (req, res) => {
 			loggerUser.error(req.uuid, 'controllers/user/fetchUserProfitLossInfo', err.message);
 			return res.status(err.statusCode || 400).json({ message: 'Something went wrong' });
 		});
-}
+};
 
 
 module.exports = {
