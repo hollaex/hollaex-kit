@@ -6,20 +6,14 @@ services:
       context: .
       dockerfile: docker/Dockerfile
     restart: always
-    deploy:
-      resources:
-        limits:
-          cpus: "0.05"
-          memory: 128M
-        reservations:
-          cpus: "0.05"
-          memory: 128M
+    env_file:
+      - .env
     ports: 
       - 8080:80 
     networks:
-      - local_hollaex-kit
-
+      - server_hollaex-kit
+      
 networks:
-  local_hollaex-kit:
+  server_hollaex-kit:
     external: true
 
