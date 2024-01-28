@@ -5,7 +5,8 @@ import { Image } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { FLEX_CENTER_CLASSES } from 'config/constants';
-
+import { useNode } from '@craftjs/core';
+import { Connector, EditWrapper } from 'components';
 const AccountTypesList = ({
 	selectedAccount,
 	onAccountTypeChange,
@@ -13,8 +14,12 @@ const AccountTypesList = ({
 	config = {},
 	icons: ICONS,
 }) => {
+	const {
+		connectors: { connect, drag },
+	} = useNode();
 	return (
 		<div
+			ref={(ref) => connect(drag(ref))}
 			className={classnames('account-type-container', {
 				'mobile-account-type': isMobile,
 			})}
@@ -30,9 +35,10 @@ const AccountTypesList = ({
 								index === Object.keys(config).length - 1,
 						})}
 						onClick={() => onAccountTypeChange(key)}
+						style={{ padding: 10 }}
 					>
 						<div className="mr-4">
-							<Image
+							{/* <Image
 								iconId={
 									ICONS[`LEVEL_ACCOUNT_ICON_${key}`]
 										? `LEVEL_ACCOUNT_ICON_${key}`
@@ -44,7 +50,7 @@ const AccountTypesList = ({
 										: ICONS['LEVEL_ACCOUNT_ICON_4']
 								}
 								wrapperClassName="trader-account-icon"
-							/>
+							/> */}
 						</div>
 						<div className={classnames(FLEX_CENTER_CLASSES)}>
 							<div className={classnames(FLEX_CENTER_CLASSES)}>

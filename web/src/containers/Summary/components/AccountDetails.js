@@ -1,11 +1,13 @@
 import React from 'react';
 import { isMobile } from 'react-device-detect';
 
-import { EditWrapper } from 'components';
+import { EditWrapper, Connector } from 'components';
 import AccountTypesList from './AccountTypesList';
 import AccountTypeDetails from './AccountTypeDetails';
 import MobileAccountTypeList from '../MobileAccountTypeList';
-
+import { useNode } from '@craftjs/core';
+import { uniqueId } from 'lodash';
+import { Editor, Frame, Element } from '@craftjs/core';
 import STRINGS from 'config/localizedStrings';
 
 const AccountDetails = ({
@@ -22,32 +24,35 @@ const AccountDetails = ({
 }) => {
 	return (
 		<div className="account-details-wrapper summary-content-txt">
-			<div className="account-details-text">
-				<EditWrapper
-					stringId="SUMMARY.ACCOUNT_DETAILS_TXT_1"
-					render={(string) => <div>{string}</div>}
-				>
-					{STRINGS['SUMMARY.ACCOUNT_DETAILS_TXT_1']}
-				</EditWrapper>
-				<EditWrapper
-					stringId="SUMMARY.ACCOUNT_DETAILS_TXT_2"
-					render={(string) => <div>{string}</div>}
-				>
-					{STRINGS['SUMMARY.ACCOUNT_DETAILS_TXT_2']}
-				</EditWrapper>
-				<EditWrapper
-					stringId="SUMMARY.ACCOUNT_DETAILS_TXT_3"
-					render={(string) => <div className="mt-2">{string}</div>}
-				>
-					{STRINGS['SUMMARY.ACCOUNT_DETAILS_TXT_3']}
-				</EditWrapper>
-				<EditWrapper
-					stringId="SUMMARY.ACCOUNT_DETAILS_TXT_4"
-					render={(string) => <div className="mt-2">{string}</div>}
-				>
-					{STRINGS['SUMMARY.ACCOUNT_DETAILS_TXT_4']}
-				</EditWrapper>
-			</div>
+			<Element id={uniqueId()} is={Connector} canvas>
+				<div className="account-details-text">
+					<EditWrapper
+						stringId="SUMMARY.ACCOUNT_DETAILS_TXT_1"
+						render={(string) => <div>{string}</div>}
+					>
+						{STRINGS['SUMMARY.ACCOUNT_DETAILS_TXT_1']}
+					</EditWrapper>
+					<EditWrapper
+						stringId="SUMMARY.ACCOUNT_DETAILS_TXT_2"
+						render={(string) => <div>{string}</div>}
+					>
+						{STRINGS['SUMMARY.ACCOUNT_DETAILS_TXT_2']}
+					</EditWrapper>
+					<EditWrapper
+						stringId="SUMMARY.ACCOUNT_DETAILS_TXT_3"
+						render={(string) => <div className="mt-2">{string}</div>}
+					>
+						{STRINGS['SUMMARY.ACCOUNT_DETAILS_TXT_3']}
+					</EditWrapper>
+					<EditWrapper
+						stringId="SUMMARY.ACCOUNT_DETAILS_TXT_4"
+						render={(string) => <div className="mt-2">{string}</div>}
+					>
+						{STRINGS['SUMMARY.ACCOUNT_DETAILS_TXT_4']}
+					</EditWrapper>
+				</div>
+			</Element>
+
 			{isMobile ? (
 				<MobileAccountTypeList
 					user={user}
@@ -62,12 +67,15 @@ const AccountDetails = ({
 				/>
 			) : (
 				<div className="d-flex align-items-center mt-3">
-					<AccountTypesList
-						selectedAccount={selectedAccount}
-						onAccountTypeChange={onAccountTypeChange}
-						config={config}
-						verification_level={verification_level}
-					/>
+					<Element id={uniqueId()} is={Connector} canvas>
+						<AccountTypesList
+							selectedAccount={selectedAccount}
+							onAccountTypeChange={onAccountTypeChange}
+							config={config}
+							verification_level={verification_level}
+						/>
+					</Element>
+
 					<AccountTypeDetails
 						className="w-50"
 						user={user}

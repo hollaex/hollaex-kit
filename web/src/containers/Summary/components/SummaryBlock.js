@@ -1,7 +1,10 @@
 import React from 'react';
 import classnames from 'classnames';
 import Image from 'components/Image';
-import { EditWrapper } from 'components';
+import { EditWrapper, Connector } from 'components';
+import { Editor, Frame, Element } from '@craftjs/core';
+import { useNode } from '@craftjs/core';
+import { uniqueId } from 'lodash';
 
 const SummaryBlock = (props) => {
 	const {
@@ -12,29 +15,52 @@ const SummaryBlock = (props) => {
 		wrapperClassname = '',
 		secondaryTitle,
 		children,
+		background,
+		padding,
+		width,
+		height,
+		display,
+		flexDirection,
+		gap,
 	} = props;
 
 	return (
-		<div className={classnames(wrapperClassname, 'summary-block_wrapper')}>
-			<div className="d-flex align-items-center mb-2">
-				<Image
-					iconId={iconId}
-					icon={icon}
-					alt={title}
-					wrapperClassName="summary-title-icon"
-				/>
-				<EditWrapper
-					stringId={stringId}
-					renderWrapper={(children) => (
-						<div className="summary-block-title">{children}</div>
+		<div
+			className={classnames(wrapperClassname, 'summary-block_wrapper')}
+			style={{
+				background,
+				padding: `${padding}px`,
+				width,
+				height,
+				display,
+				flexDirection,
+				gap,
+			}}
+		>
+			<Element id={uniqueId()} is={Connector} canvas>
+				<div className="d-flex align-items-center mb-2">
+					<Image
+						iconId={iconId}
+						icon={icon}
+						alt={title}
+						wrapperClassName="summary-title-icon"
+					/>
+					<EditWrapper
+						stringId={stringId}
+						renderWrapper={(children) => (
+							<div className="summary-block-title">{children}</div>
+						)}
+					>
+						{title}
+					</EditWrapper>
+					{secondaryTitle && (
+						<div className="summary-block-secondaryTitle">
+							: {secondaryTitle}
+						</div>
 					)}
-				>
-					{title}
-				</EditWrapper>
-				{secondaryTitle && (
-					<div className="summary-block-secondaryTitle">: {secondaryTitle}</div>
-				)}
-			</div>
+				</div>
+			</Element>
+
 			{children}
 		</div>
 	);

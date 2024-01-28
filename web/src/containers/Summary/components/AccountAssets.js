@@ -13,6 +13,10 @@ import {
 import { formatToCurrency } from 'utils/currency';
 import { isLoggedIn } from 'utils/token';
 import AssetCard from './AssetCard';
+import { Editor, Frame, Element } from '@craftjs/core';
+import { useNode } from '@craftjs/core';
+import { uniqueId } from 'lodash';
+import { Connector } from 'components';
 
 const AccountAssets = ({ chartData = [], totalAssets, balance, coins }) => {
 	const baseValue = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
@@ -54,19 +58,22 @@ const AccountAssets = ({ chartData = [], totalAssets, balance, coins }) => {
 	return (
 		<div>
 			<div className="summary-content-txt assets-description">
-				<div>
-					<EditWrapper stringId="SUMMARY.ACCOUNT_ASSETS_TXT_1">
-						{STRINGS['SUMMARY.ACCOUNT_ASSETS_TXT_1']}
-					</EditWrapper>
-				</div>
-				{SHOW_SUMMARY_ACCOUNT_DETAILS ? (
+				<Element id={uniqueId()} is={Connector} canvas>
 					<div>
-						<EditWrapper stringId="SUMMARY.ACCOUNT_ASSETS_TXT_2">
-							{STRINGS['SUMMARY.ACCOUNT_ASSETS_TXT_2']}
+						<EditWrapper stringId="SUMMARY.ACCOUNT_ASSETS_TXT_1">
+							{STRINGS['SUMMARY.ACCOUNT_ASSETS_TXT_1']}
 						</EditWrapper>
 					</div>
-				) : null}
+					{SHOW_SUMMARY_ACCOUNT_DETAILS ? (
+						<div>
+							<EditWrapper stringId="SUMMARY.ACCOUNT_ASSETS_TXT_2">
+								{STRINGS['SUMMARY.ACCOUNT_ASSETS_TXT_2']}
+							</EditWrapper>
+						</div>
+					) : null}
+				</Element>
 			</div>
+
 			<div className="d-flex align-items-center justify-content-center h-100">
 				<div
 					className={classnames({

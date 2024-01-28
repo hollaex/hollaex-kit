@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
@@ -33,6 +33,813 @@ import { getUserReferrals } from 'actions/userAction';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { openContactForm } from 'actions/appActions';
 import { isLoggedIn } from 'utils/token';
+import { Editor, Frame, Element } from '@craftjs/core';
+import { useNode } from '@craftjs/core';
+import { Connector, EditWrapper } from 'components';
+import Image from 'components/Image';
+import { uniqueId } from 'lodash';
+import TraderSideInfo from './components/TraderSideInfo';
+import AccountTypesList from './components/AccountTypesList';
+import { Paper } from '@material-ui/core';
+import {
+	Box,
+	Typography,
+	Grid,
+	Button as MaterialButton,
+} from '@material-ui/core';
+import { Chip, FormControl, FormLabel, Slider } from '@material-ui/core';
+import { FormControlLabel, Switch } from '@material-ui/core';
+import { useEditor } from '@craftjs/core';
+import ContentEditable from 'react-contenteditable';
+import { RadioGroup, Radio } from '@material-ui/core';
+import ColorPicker from 'material-ui-color-picker';
+import { ReactSVG } from 'react-svg';
+
+const CraftContainer = ({ children }) => {
+	const {
+		connectors: { connect, drag },
+	} = useNode();
+	return (
+		<div
+			ref={(ref) => connect(drag(ref))}
+			style={{ display: 'flex', flexDirection: 'row' }}
+		>
+			{children}
+		</div>
+	);
+};
+
+const ContainerFlex = ({ children }) => {
+	const {
+		connectors: { connect, drag },
+	} = useNode();
+	return (
+		<div
+			ref={(ref) => connect(drag(ref))}
+			className="d-flex"
+			style={{ gap: 10 }}
+		>
+			{children}
+		</div>
+	);
+};
+
+const ProfileSummary = ({
+	user,
+	pairs,
+	coins,
+	verification_level,
+	config_level,
+	userAccountTitle,
+	onUpgradeAccount,
+	onInviteFriends,
+	background,
+	padding = 0,
+	width,
+	height,
+	display = 'flex',
+	flexDirection = 'column',
+	gap = 10,
+}) => {
+	const {
+		connectors: { connect, drag },
+	} = useNode();
+	return (
+		<div
+			ref={(ref) => connect(drag(ref))}
+			className="summary-section_1 trader-account-wrapper d-flex"
+			style={{ width, height, display, flexDirection, gap }}
+		>
+			<SummaryBlock
+				title={userAccountTitle}
+				wrapperClassname="w-100"
+				background={background}
+				padding={padding}
+				width={width}
+				height={height}
+				display={display}
+				flexDirection={flexDirection}
+				gap={gap}
+			>
+				<TraderAccounts
+					user={user}
+					pairs={pairs}
+					coins={coins}
+					config={config_level}
+					onUpgradeAccount={onUpgradeAccount}
+					onInviteFriends={onInviteFriends}
+					verification_level={verification_level}
+				/>
+			</SummaryBlock>
+		</div>
+	);
+};
+
+const MyAssets = ({
+	user,
+	balance,
+	coins,
+	chartData,
+	totalAssets,
+	fullname,
+}) => {
+	const {
+		connectors: { connect, drag },
+	} = useNode();
+	return (
+		<div
+			ref={(ref) => connect(drag(ref))}
+			className="summary-section_1 requirement-wrapper d-flex"
+		>
+			<SummaryBlock
+				stringId="SUMMARY.ACCOUNT_ASSETS"
+				title={STRINGS['SUMMARY.ACCOUNT_ASSETS']}
+				secondaryTitle={
+					SHOW_TOTAL_ASSETS && BASE_CURRENCY ? (
+						<span>
+							<span className="title-font">{totalAssets}</span>
+							{` ${fullname}`}
+						</span>
+					) : null
+				}
+				wrapperClassname={classnames('assets-wrapper', 'w-100')}
+			>
+				<AccountAssets
+					user={user}
+					chartData={chartData}
+					totalAssets={totalAssets}
+					balance={balance}
+					coins={coins}
+				/>
+			</SummaryBlock>
+			{/* </div> */}
+		</div>
+	);
+};
+
+const CraftMarkets = ({ user, pairs, coins, router }) => {
+	const {
+		connectors: { connect, drag },
+	} = useNode();
+	return (
+		<div ref={(ref) => connect(drag(ref))}>
+			<SummaryBlock
+				stringId="SUMMARY.MARKETS"
+				title={STRINGS['SUMMARY.MARKETS']}
+			>
+				<Markets
+					user={user}
+					coins={coins}
+					pairs={pairs}
+					router={router}
+					showContent={true}
+				/>
+			</SummaryBlock>
+		</div>
+	);
+};
+
+const CraftAccountDetails = ({
+	user,
+	pairs,
+	coins,
+	config_level,
+	currentTradingAccount,
+	selectedAccount,
+	lastMonthVolume,
+	onAccountTypeChange,
+	onUpgradeAccount,
+}) => {
+	const {
+		connectors: { connect, drag },
+	} = useNode();
+	return (
+		<div ref={(ref) => connect(drag(ref))}>
+			<SummaryBlock
+				stringId="SUMMARY.ACCOUNT_DETAILS"
+				title={STRINGS['SUMMARY.ACCOUNT_DETAILS']}
+				secondaryTitle={currentTradingAccount.name}
+			>
+				<AccountDetails
+					user={user}
+					coins={coins}
+					pairs={pairs}
+					config={config_level}
+					currentTradingAccount={currentTradingAccount.symbol}
+					selectedAccount={selectedAccount}
+					lastMonthVolume={lastMonthVolume}
+					onAccountTypeChange={onAccountTypeChange}
+					onUpgradeAccount={onUpgradeAccount}
+				/>
+			</SummaryBlock>
+		</div>
+	);
+};
+
+const Text = ({ text, fontSize, textAlign, color }) => {
+	const {
+		connectors: { connect, drag },
+		hasSelectedNode,
+		hasDraggedNode,
+		isActive,
+		actions: { setProp },
+	} = useNode((state) => ({
+		hasSelectedNode: state.events.selected.size > 0,
+		hasDraggedNode: state.events.dragged.size > 0,
+		isActive: state.events.selected,
+	}));
+
+	const [editable, setEditable] = useState(false);
+
+	useEffect(() => {
+		!hasSelectedNode && setEditable(false);
+	}, [hasSelectedNode]);
+
+	return (
+		<div ref={(ref) => connect(drag(ref))} onClick={(e) => setEditable(true)}>
+			<ContentEditable
+				disabled={!editable}
+				html={text}
+				onChange={(e) =>
+					setProp(
+						(props) =>
+							(props.text = e.target.value.replace(/<\/?[^>]+(>|$)/g, ''))
+					)
+				}
+				tagName="p"
+				style={{
+					fontSize: `${fontSize}px`,
+					textAlign,
+					padding: 1,
+					margin: 5,
+					color,
+				}}
+			/>
+			{/* {
+        hasSelectedNode && (
+          <FormControl className="text-additional-settings" size="small">
+            <FormLabel component="legend">Font size</FormLabel>
+            <Slider
+              defaultValue={fontSize}
+              step={1}
+              min={7}
+              max={50}
+              valueLabelDisplay="auto"
+              onChange={(_, value) => {
+                setProp(props => props.fontSize = value);
+              }}
+            />
+          </FormControl>
+        )
+      } */}
+		</div>
+	);
+};
+
+const TextSettings = () => {
+	const {
+		actions: { setProp },
+		fontSize,
+		color,
+	} = useNode((node) => ({
+		fontSize: node.data.props.fontSize,
+		color: node.data.props.color,
+	}));
+
+	return (
+		<>
+			<FormControl size="small" component="fieldset">
+				<FormLabel component="legend" style={{ color: 'white' }}>
+					Font size
+				</FormLabel>
+				<Slider
+					value={fontSize || 7}
+					step={7}
+					min={1}
+					max={50}
+					onChange={(_, value) => {
+						setProp((props) => (props.fontSize = value));
+					}}
+				/>
+			</FormControl>
+
+			<FormControl fullWidth={true} margin="normal" component="fieldset">
+				<FormLabel component="legend" style={{ color: 'white' }}>
+					Color
+				</FormLabel>
+				<ColorPicker
+					defaultValue={color}
+					onChange={(color) => {
+						setProp((props) => (props.color = color));
+					}}
+				/>
+			</FormControl>
+		</>
+	);
+};
+
+Text.craft = {
+	props: {
+		text: 'Hi',
+		fontSize: 15,
+		color: 'white',
+	},
+	related: {
+		settings: TextSettings,
+	},
+};
+
+const Button = ({ size, variant, text, color, children }) => {
+	const {
+		connectors: { connect, drag },
+	} = useNode();
+	return (
+		<MaterialButton
+			ref={(ref) => connect(drag(ref))}
+			size={size}
+			variant={variant}
+			color={color}
+		>
+			{text}
+			{children}
+		</MaterialButton>
+	);
+};
+
+const ButtonSettings = () => {
+	const {
+		actions: { setProp },
+		props,
+	} = useNode((node) => ({
+		props: node.data.props,
+	}));
+
+	return (
+		<div>
+			<FormControl size="small" component="fieldset">
+				<FormLabel component="legend" style={{ color: 'white' }}>
+					Size
+				</FormLabel>
+				<RadioGroup
+					defaultValue={props.size}
+					onChange={(e) => setProp((props) => (props.size = e.target.value))}
+				>
+					<FormControlLabel
+						label="Small"
+						value="small"
+						control={<Radio size="small" color="primary" />}
+					/>
+					<FormControlLabel
+						label="Medium"
+						value="medium"
+						control={<Radio size="small" color="primary" />}
+					/>
+					<FormControlLabel
+						label="Large"
+						value="large"
+						control={<Radio size="small" color="primary" />}
+					/>
+				</RadioGroup>
+			</FormControl>
+			<FormControl component="fieldset">
+				<FormLabel component="legend" style={{ color: 'white' }}>
+					Variant
+				</FormLabel>
+				<RadioGroup
+					defaultValue={props.variant}
+					onChange={(e) => setProp((props) => (props.variant = e.target.value))}
+				>
+					<FormControlLabel
+						label="Text"
+						value="text"
+						control={<Radio size="small" color="primary" />}
+					/>
+					<FormControlLabel
+						label="Outlined"
+						value="outlined"
+						control={<Radio size="small" color="primary" />}
+					/>
+					<FormControlLabel
+						label="Contained"
+						value="contained"
+						control={<Radio size="small" color="primary" />}
+					/>
+				</RadioGroup>
+			</FormControl>
+			<FormControl component="fieldset">
+				<FormLabel component="legend" style={{ color: 'white' }}>
+					Color
+				</FormLabel>
+				<RadioGroup
+					defaultValue={props.color}
+					onChange={(e) => setProp((props) => (props.color = e.target.value))}
+				>
+					<FormControlLabel
+						label="Default"
+						value="default"
+						control={<Radio size="small" color="default" />}
+					/>
+					<FormControlLabel
+						label="Primary"
+						value="primary"
+						control={<Radio size="small" color="primary" />}
+					/>
+					<FormControlLabel
+						label="Seconday"
+						value="secondary"
+						control={<Radio size="small" color="primary" />}
+					/>
+				</RadioGroup>
+			</FormControl>
+		</div>
+	);
+};
+
+Button.craft = {
+	props: {
+		size: 'small',
+		variant: 'contained',
+		color: 'primary',
+		text: 'Test',
+	},
+	related: {
+		settings: ButtonSettings,
+	},
+};
+
+const Container = ({
+	background,
+	padding = 0,
+	width,
+	height,
+	display = 'flex',
+	flexDirection = 'column',
+	gap = 10,
+	border = true,
+	children,
+}) => {
+	const {
+		connectors: { connect, drag },
+	} = useNode();
+	return (
+		<div
+			ref={(ref) => connect(drag(ref))}
+			style={{
+				margin: '5px 0',
+				background,
+				padding: `${padding}px`,
+				width,
+				height,
+				display,
+				flexDirection,
+				flex: 1,
+				gap,
+				color: 'white',
+				border: `${border ? '1px' : '0px'} solid #ccc`,
+			}}
+		>
+			{children}
+		</div>
+	);
+};
+
+export const ContainerSettings = () => {
+	const {
+		background,
+		padding,
+		width,
+		height,
+		gap,
+		actions: { setProp },
+	} = useNode((node) => ({
+		background: node.data.props.background,
+		padding: node.data.props.padding,
+		width: node.data.props.width,
+		height: node.data.props.height,
+		gap: node.data.props.gap,
+		flexDirection: node.data.props.flexDirection,
+		border: node.data.props.border,
+	}));
+	return (
+		<div>
+			<FormControl fullWidth={true} margin="normal" component="fieldset">
+				<FormLabel component="legend" style={{ color: 'white' }}>
+					Background
+				</FormLabel>
+				<ColorPicker
+					defaultValue={background || '#000'}
+					onChange={(color) => {
+						setProp((props) => (props.background = color));
+					}}
+				/>
+			</FormControl>
+			<FormControl fullWidth={true} margin="normal" component="fieldset">
+				<FormLabel component="legend" style={{ color: 'white' }}>
+					Padding
+				</FormLabel>
+				<Slider
+					defaultValue={padding}
+					onChange={(_, value) => setProp((props) => (props.padding = value))}
+				/>
+			</FormControl>
+
+			<FormControl fullWidth={true} margin="normal" component="fieldset">
+				<FormLabel component="legend" style={{ color: 'white' }}>
+					Witdh
+				</FormLabel>
+				<Slider
+					defaultValue={width}
+					max={800}
+					onChange={(_, value) => setProp((props) => (props.width = value))}
+				/>
+			</FormControl>
+
+			<FormControl fullWidth={true} margin="normal" component="fieldset">
+				<FormLabel component="legend" style={{ color: 'white' }}>
+					Height
+				</FormLabel>
+				<Slider
+					defaultValue={height}
+					max={800}
+					onChange={(_, value) => setProp((props) => (props.height = value))}
+				/>
+			</FormControl>
+
+			<FormControl fullWidth={true} margin="normal" component="fieldset">
+				<FormLabel component="legend" style={{ color: 'white' }}>
+					Flex Direction
+				</FormLabel>
+
+				<MaterialButton
+					style={{ color: 'white' }}
+					onClick={() => {
+						setProp((props) => (props.flexDirection = 'column'));
+					}}
+				>
+					Column
+				</MaterialButton>
+
+				<MaterialButton
+					style={{ color: 'white' }}
+					onClick={() => {
+						setProp((props) => (props.flexDirection = 'row'));
+					}}
+				>
+					Row
+				</MaterialButton>
+			</FormControl>
+
+			<FormControl fullWidth={true} margin="normal" component="fieldset">
+				<FormLabel component="legend" style={{ color: 'white' }}>
+					Border
+				</FormLabel>
+
+				<MaterialButton
+					style={{ color: 'white' }}
+					onClick={() => {
+						setProp((props) => (props.border = !props.border));
+					}}
+				>
+					Border
+				</MaterialButton>
+			</FormControl>
+			<FormControl fullWidth={true} margin="normal" component="fieldset">
+				<FormLabel component="legend" style={{ color: 'white' }}>
+					Gap
+				</FormLabel>
+				<Slider
+					defaultValue={gap}
+					max={100}
+					onChange={(_, value) => setProp((props) => (props.gap = value))}
+				/>
+			</FormControl>
+		</div>
+	);
+};
+
+export const ContainerDefaultProps = {
+	background: '#303236',
+	padding: 10,
+};
+Container.craft = {
+	props: { ...ContainerDefaultProps, border: true },
+	related: {
+		settings: ContainerSettings,
+	},
+};
+
+// Notice how CardTop and CardBottom do not specify the drag connector. This is because we won't be using these components as draggables; adding the drag handler would be pointless.
+
+export const CardTop = ({ children }) => {
+	const {
+		connectors: { connect },
+	} = useNode();
+	return (
+		<div ref={connect} className="text-only">
+			{children}
+		</div>
+	);
+};
+
+CardTop.craft = {
+	rules: {
+		// Only accept Text
+		canMoveIn: (incomingNodes) =>
+			incomingNodes.every((incomingNode) => incomingNode.data.type === Text),
+	},
+};
+
+export const CardBottom = ({ children }) => {
+	const {
+		connectors: { connect },
+	} = useNode();
+	return <div ref={connect}>{children}</div>;
+};
+
+CardBottom.craft = {
+	rules: {
+		// Only accept Buttons
+		canMoveIn: (incomingNodes) =>
+			incomingNodes.every((incomingNode) => incomingNode.data.type === Button),
+	},
+};
+
+export const Card = ({ background, padding = 20 }) => {
+	return (
+		<Container background={background} padding={padding}>
+			<Element id="text" is={CardTop} canvas>
+				<Text text="Title" fontSize={20} />
+				<Text text="Subtitle" fontSize={15} />
+			</Element>
+
+			<Element id="buttons" is={CardBottom} canvas>
+				<Button
+					size="small"
+					text="Learn more"
+					variant="contained"
+					color="primary"
+				/>
+			</Element>
+		</Container>
+	);
+};
+Card.craft = {
+	props: ContainerDefaultProps,
+	related: {
+		// Since Card has the same settings as Container, we'll just reuse ContainerSettings
+		settings: ContainerSettings,
+	},
+};
+
+const Toolbox = () => {
+	const { connectors, query } = useEditor();
+	return (
+		<Box px={2} py={2}>
+			<Grid
+				container
+				direction="column"
+				alignItems="center"
+				justify="center"
+				spacing={1}
+			>
+				<Box pb={2}>
+					<Typography>Drag to add</Typography>
+				</Box>
+				<Grid container direction="column" item>
+					<MaterialButton
+						ref={(ref) =>
+							connectors.create(ref, <Button text="Test" size="small" />)
+						}
+						variant="contained"
+					>
+						Button
+					</MaterialButton>
+				</Grid>
+				<Grid container direction="column" item>
+					<MaterialButton
+						ref={(ref) => connectors.create(ref, <Text text="Text" />)}
+						variant="contained"
+					>
+						Text
+					</MaterialButton>
+				</Grid>
+				<Grid container direction="column" item>
+					<MaterialButton
+						ref={(ref) =>
+							connectors.create(
+								ref,
+								<Element is={Container} padding={20} canvas />
+							)
+						}
+						variant="contained"
+					>
+						Container
+					</MaterialButton>
+				</Grid>
+				{/* <Grid container direction="column" item>
+          <MaterialButton ref={ref=> connectors.create(ref, <Card />)} variant="contained">Card</MaterialButton>
+        </Grid> */}
+			</Grid>
+		</Box>
+	);
+};
+
+export const SettingsPanel = () => {
+	const { actions, query, selected } = useEditor((state) => {
+		const [currentNodeId] = state.events.selected;
+		let selected;
+
+		if (currentNodeId) {
+			selected = {
+				id: currentNodeId,
+				name: state.nodes[currentNodeId].data.name,
+				settings:
+					state.nodes[currentNodeId].related &&
+					state.nodes[currentNodeId].related.settings,
+				isDeletable: query.node(currentNodeId).isDeletable(),
+			};
+		}
+
+		return {
+			selected,
+		};
+	});
+	return selected ? (
+		<Box bgcolor="rgba(0, 0, 0, 0.06)" mt={2} px={2} py={2}>
+			<Grid container direction="column" spacing={0}>
+				<Grid item>
+					<Box pb={2}>
+						<Grid container alignItems="center">
+							<Grid item xs>
+								<Typography variant="subtitle1" style={{ color: 'white' }}>
+									Selected
+								</Typography>
+							</Grid>
+							<Grid item>
+								<Chip size="small" color="primary" label={selected.name} />
+							</Grid>
+						</Grid>
+					</Box>
+				</Grid>
+				{selected.settings && React.createElement(selected.settings)}
+				{selected.isDeletable ? (
+					<MaterialButton
+						variant="contained"
+						color="default"
+						onClick={() => {
+							actions.delete(selected.id);
+						}}
+					>
+						Delete
+					</MaterialButton>
+				) : null}
+			</Grid>
+		</Box>
+	) : null;
+};
+
+ProfileSummary.craft = {
+	props: ContainerDefaultProps,
+	related: {
+		settings: ContainerSettings,
+	},
+};
+const Topbar = () => {
+	const { actions, query, enabled } = useEditor((state) => ({
+		enabled: state.options.enabled,
+	}));
+	return (
+		<Box px={1} py={1} mt={3} mb={1} bgcolor="#303236">
+			<Grid container alignItems="center">
+				<Grid item xs>
+					<FormControlLabel
+						control={
+							<Switch
+								checked={enabled}
+								onChange={(_, value) =>
+									actions.setOptions((options) => (options.enabled = value))
+								}
+							/>
+						}
+						label="Enable"
+					/>
+				</Grid>
+				<Grid item>
+					<MaterialButton
+						size="small"
+						variant="outlined"
+						color="secondary"
+						onClick={() => {
+							console.log(query.serialize());
+						}}
+					>
+						Serialize JSON
+					</MaterialButton>
+				</Grid>
+			</Grid>
+		</Box>
+	);
+};
 
 class Summary extends Component {
 	state = {
@@ -199,112 +1006,134 @@ class Summary extends Component {
 						/>
 					) : (
 						<div>
-							<div id="summary-header-section"></div>
-							<div className="d-flex">
-								<div className="summary-section_1 trader-account-wrapper d-flex">
-									<SummaryBlock
-										title={userAccountTitle}
-										wrapperClassname="w-100"
-									>
-										<TraderAccounts
-											user={user}
-											pairs={pairs}
-											coins={coins}
-											config={config_level}
-											onUpgradeAccount={this.onUpgradeAccount}
-											onInviteFriends={this.onInviteFriends}
-											verification_level={verification_level}
-										/>
-									</SummaryBlock>
+							<Editor
+								resolver={{
+									CraftContainer,
+									ContainerFlex,
+									ProfileSummary,
+									MyAssets,
+									SummaryBlock,
+									Connector,
+									Image,
+									EditWrapper,
+									AccountDetails,
+									CraftMarkets,
+									CraftAccountDetails,
+									TraderSideInfo,
+									AccountDetails,
+									AccountTypesList,
+									Card,
+									CardBottom,
+									CardTop,
+									Button,
+									Text,
+									Container,
+									ReactSVG,
+								}}
+							>
+								<div style={{ position: 'absolute', top: -80, left: -370 }}>
+									<Topbar />
 								</div>
-								<div className="summary-section_1 requirement-wrapper d-flex">
-									{/* <SummaryBlock
-										title={STRINGS["SUMMARY.TASKS"]}
-										wrapperClassname="w-100"
-									>
-										<SummaryRequirements
-											coins={coins}
-											user={user}
-											lastMonthVolume={lastMonthVolume}
-											contentClassName="requirements-content"
-										/>
-									</SummaryBlock> */}
-									{/* <div
-										className={classnames(
-											'assets-wrapper',
-											'asset_wrapper_width'
-										)}
-									> */}
-									<SummaryBlock
-										stringId="SUMMARY.ACCOUNT_ASSETS"
-										title={STRINGS['SUMMARY.ACCOUNT_ASSETS']}
-										secondaryTitle={
-											SHOW_TOTAL_ASSETS && BASE_CURRENCY ? (
-												<span>
-													<span className="title-font">{totalAssets}</span>
-													{` ${fullname}`}
-												</span>
-											) : null
-										}
-										wrapperClassname={classnames('assets-wrapper', 'w-100')}
-									>
-										<AccountAssets
-											user={user}
-											chartData={chartData}
-											totalAssets={totalAssets}
-											balance={balance}
-											coins={coins}
-										/>
-									</SummaryBlock>
-									{/* </div> */}
+								<div
+									style={{
+										width: 300,
+										height: 800,
+										backgroundColor: '#303236',
+										color: 'white',
+										position: 'absolute',
+										right: -350,
+										top: -50,
+									}}
+								>
+									<Toolbox />
+									<SettingsPanel />
 								</div>
-							</div>
-							<div className="w-100">
-								<SummaryBlock
-									stringId="SUMMARY.MARKETS"
-									title={STRINGS['SUMMARY.MARKETS']}
-								>
-									<Markets
-										user={user}
-										coins={coins}
-										pairs={pairs}
-										router={router}
-										showContent={true}
-									/>
-								</SummaryBlock>
-								{/*<div className="trading-volume-wrapper">
-									<SummaryBlock
-										title={STRINGS["SUMMARY.TRADING_VOLUME"]}
-										// secondaryTitle={<span>
-										//     <span className="title-font">
-										//         {` ${formatAverage(formatBaseAmount(lastMonthVolume))}`}
-										//     </span>
-										//     {` ${fullname} ${STRINGS.formatString(STRINGS["SUMMARY.NOMINAL_TRADING_WITH_MONTH"], moment().subtract(1, "month").startOf("month").format('MMMM')).join('')}`}
-										// </span>
-										// }
-									>
-									</SummaryBlock>
-								</div>*/}
-							</div>
-							<div className="w-100">
-								<SummaryBlock
-									stringId="SUMMARY.ACCOUNT_DETAILS"
-									title={STRINGS['SUMMARY.ACCOUNT_DETAILS']}
-									secondaryTitle={currentTradingAccount.name}
-								>
-									<AccountDetails
-										user={user}
-										coins={coins}
-										pairs={pairs}
-										config={config_level}
-										currentTradingAccount={currentTradingAccount.symbol}
-										selectedAccount={selectedAccount}
-										lastMonthVolume={lastMonthVolume}
-										onAccountTypeChange={this.onAccountTypeChange}
-										onUpgradeAccount={this.onUpgradeAccount}
-									/>
-								</SummaryBlock>
-							</div>
+								<Frame>
+									<Element id={uniqueId()} is={Connector} canvas>
+										<div id="summary-header-section"></div>
+										<Element id={uniqueId()} is={ContainerFlex} canvas>
+											<ProfileSummary
+												user={user}
+												balance={balance}
+												pairs={pairs}
+												coins={coins}
+												verification_level={verification_level}
+												config_level={config_level}
+												affiliation={affiliation}
+												chartData={chartData}
+												totalAsset={totalAsset}
+												router={router}
+												ICONS={ICONS}
+												userAccountTitle={userAccountTitle}
+												totalAssets={totalAssets}
+												fullname={fullname}
+												onUpgradeAccount={this.onUpgradeAccount}
+												onInviteFriends={this.onInviteFriends}
+											/>
+											<MyAssets
+												user={user}
+												balance={balance}
+												pairs={pairs}
+												coins={coins}
+												verification_level={verification_level}
+												config_level={config_level}
+												affiliation={affiliation}
+												chartData={chartData}
+												totalAsset={totalAsset}
+												router={router}
+												ICONS={ICONS}
+												userAccountTitle={userAccountTitle}
+												totalAssets={totalAssets}
+												fullname={fullname}
+											/>
+										</Element>
+										<div className="w-100">
+											<CraftMarkets
+												user={user}
+												balance={balance}
+												pairs={pairs}
+												coins={coins}
+												verification_level={verification_level}
+												config_level={config_level}
+												affiliation={affiliation}
+												chartData={chartData}
+												totalAsset={totalAsset}
+												router={router}
+												ICONS={ICONS}
+												userAccountTitle={userAccountTitle}
+												totalAssets={totalAssets}
+												fullname={fullname}
+												onUpgradeAccount={this.onUpgradeAccount}
+												onInviteFriends={this.onInviteFriends}
+											/>
+										</div>
+										<div className="w-100">
+											<CraftAccountDetails
+												user={user}
+												balance={balance}
+												pairs={pairs}
+												coins={coins}
+												verification_level={verification_level}
+												config_level={config_level}
+												affiliation={affiliation}
+												chartData={chartData}
+												totalAsset={totalAsset}
+												router={router}
+												ICONS={ICONS}
+												userAccountTitle={userAccountTitle}
+												totalAssets={totalAssets}
+												fullname={fullname}
+												onUpgradeAccount={this.onUpgradeAccount}
+												onInviteFriends={this.onInviteFriends}
+												currentTradingAccount={currentTradingAccount}
+												selectedAccount={selectedAccount}
+												lastMonthVolume={lastMonthVolume}
+												onAccountTypeChange={this.onAccountTypeChange}
+											/>
+										</div>
+									</Element>
+								</Frame>
+							</Editor>
 						</div>
 					)}
 				</div>

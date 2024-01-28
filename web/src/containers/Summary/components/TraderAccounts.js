@@ -2,12 +2,16 @@ import React, { Fragment } from 'react';
 import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
 import { ReactSVG } from 'react-svg';
-import { Image, EditWrapper } from 'components';
+import { Image, EditWrapper, Connector } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { renderStatusIcon } from 'components/CheckTitle';
 import { DollarOutlined, UserOutlined } from '@ant-design/icons';
 import { isLoggedIn } from 'utils/token';
+import { Editor, Frame, Element } from '@craftjs/core';
+import { useNode } from '@craftjs/core';
+import { uniqueId } from 'lodash';
+import TraderSideInfo from './TraderSideInfo';
 
 const TraderAccounts = ({
 	user = {},
@@ -47,153 +51,47 @@ const TraderAccounts = ({
 		identity_status,
 		'verification-stauts user-status'
 	);
-
+	const {
+		connectors: { connect, drag },
+	} = useNode();
 	return (
 		<div className="d-flex">
-			<div>
-				<Image
-					iconId={
-						ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
-							? `LEVEL_ACCOUNT_ICON_${verification_level}`
-							: 'LEVEL_ACCOUNT_ICON_4'
-					}
-					icon={icon}
-					wrapperClassName={
-						isAccountDetails
-							? 'trader-wrapper-icon trader-acc-detail-icon'
-							: 'trader-wrapper-icon'
-					}
-				/>
-			</div>
-			<div className="trade-account-secondary-txt summary-content-txt">
-				{isAccountDetails && (
-					<EditWrapper
-						stringId="SUMMARY.LEVEL_OF_ACCOUNT"
-						renderWrapper={(children) => (
-							<div className="summary-block-title mb-3">{children}</div>
-						)}
-					>
-						{title}
-					</EditWrapper>
-				)}
-				<div className="account-details-content">
-					<EditWrapper
-						stringId="SUMMARY.LEVEL_TXT_DEFAULT"
-						renderWrapper={(children) => <div className="mb-2">{children}</div>}
-					>
-						{description}
-					</EditWrapper>
+			<Element id={uniqueId()} is={Connector} canvas>
+				<div ref={(ref) => connect(drag(ref))}>
+					<Image
+						iconId={
+							ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
+								? `LEVEL_ACCOUNT_ICON_${verification_level}`
+								: 'LEVEL_ACCOUNT_ICON_4'
+						}
+						icon={icon}
+						wrapperClassName={
+							isAccountDetails
+								? 'trader-wrapper-icon trader-acc-detail-icon'
+								: 'trader-wrapper-icon'
+						}
+					/>
 				</div>
-				{!isAccountDetails && user.discount ? (
-					<div className="d-flex">
-						<div>
-							<ReactSVG
-								src={ICONS['GREEN_CHECK']}
-								className="currency_ball-wrapper s mr-2"
-							/>
-						</div>
-						<div>
-							{STRINGS['FEE_REDUCTION']}: {user.discount}%
-						</div>
-					</div>
-				) : null}
-				{!isAccountDetails && (
-					<Fragment>
-						<Link to="/fees-and-limits">
-							<div className="trade-account-link my-2 caps">
-								<EditWrapper stringId="FEES_AND_LIMITS.LINK">
-									{STRINGS['FEES_AND_LIMITS.LINK']}
-								</EditWrapper>
-							</div>
-						</Link>
+			</Element>
 
-						{isLoggedIn() && (
-							<Fragment>
-								<div className="d-flex align-items-center">
-									<DollarOutlined className="mr-2" />
-									<EditWrapper stringId="SUMMARY.EARN_COMMISSION">
-										{STRINGS['SUMMARY.EARN_COMMISSION']}
-									</EditWrapper>
-								</div>
-								<EditWrapper
-									stringId="REFERRAL_LINK.TITLE"
-									renderWrapper={(children) => (
-										<div className="trade-account-link mb-4">
-											<span className="pointer caps" onClick={onInviteFriends}>
-												{children}
-											</span>
-										</div>
-									)}
-								>
-									{STRINGS['REFERRAL_LINK.TITLE']}
-								</EditWrapper>
-							</Fragment>
-						)}
-
-						{isLoggedIn() && (
-							<Fragment>
-								<div className="d-flex align-items-center">
-									<UserOutlined className="mr-2" />
-									<EditWrapper stringId="SUMMARY.ID_VERIFICATION">
-										{STRINGS.formatString(STRINGS['SUMMARY.ID_VERIFICATION'])}
-									</EditWrapper>
-									<div className="mx-2">{notificationStatus}</div>
-								</div>
-								<Link to="/verification">
-									<div className="trade-account-link mb-2 caps">
-										<EditWrapper stringId="SUMMARY.VIEW_VERIFICATION">
-											{STRINGS['SUMMARY.VIEW_VERIFICATION']}
-										</EditWrapper>
-									</div>
-								</Link>
-							</Fragment>
-						)}
-					</Fragment>
-				)}
-				{isAccountDetails && (
-					<EditWrapper
-						stringId="SUMMARY.VIEW_FEE_STRUCTURE"
-						renderWrapper={(children) => (
-							<div className="trade-account-link mb-2">
-								<span className="pointer caps">
-									<Link to="/fees-and-limits">{children}</Link>
-								</span>
-							</div>
-						)}
-					>
-						{STRINGS['SUMMARY.VIEW_FEE_STRUCTURE']}
-					</EditWrapper>
-				)}
-				{!isAccountDetails &&
-					verification_level.level >= 1 &&
-					verification_level.level < 4 && (
-						<EditWrapper
-							stringId="SUMMARY.UPGRADE_ACCOUNT"
-							renderWrapper={(children) => (
-								<div className="trade-account-link mb-2">
-									<span className="pointer caps" onClick={onUpgradeAccount}>
-										{children}
-									</span>
-								</div>
-							)}
-						>
-							{STRINGS['SUMMARY.UPGRADE_ACCOUNT']}
-						</EditWrapper>
-					)}
-				{!isAccountDetails && isMobile && isLoggedIn() && (
-					<div>
-						<EditWrapper
-							stringId="LOGOUT"
-							renderWrapper={(children) => (
-								<div className="trade-account-link my-2 caps" onClick={logout}>
-									{children}
-								</div>
-							)}
-						>
-							{STRINGS['LOGOUT']}
-						</EditWrapper>
-					</div>
-				)}
+			<div
+				className="trade-account-secondary-txt summary-content-txt"
+				style={{ padding: 10 }}
+			>
+				<Element id={uniqueId()} is={Connector} canvas>
+					<TraderSideInfo
+						title={title}
+						description={description}
+						ICONS={ICONS}
+						user={user}
+						onInviteFriends={onInviteFriends}
+						notificationStatus={notificationStatus}
+						verification_level={verification_level}
+						onUpgradeAccount={onUpgradeAccount}
+						isAccountDetails={isAccountDetails}
+						logout={logout}
+					/>
+				</Element>
 			</div>
 		</div>
 	);
