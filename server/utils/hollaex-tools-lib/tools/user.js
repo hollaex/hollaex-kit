@@ -2459,7 +2459,7 @@ const fetchUserProfitLossInfo = async (user_id) => {
 	const startDate = moment().subtract(1, 'weeks').toDate();
 	const endDate = moment().toDate();
 	const timeframe = timeframeQuery(startDate, endDate);
-	const userTrades = await getAllUserTradesByKitId(user_id, null, null, null, null, null, startDate, endDate, 'all');
+	const userTrades = await getAllUserTradesByKitId(user_id, null, null, null, 'timestamp', 'asc', startDate, endDate, 'all');
 	const userWithdrawals = await getUserWithdrawalsByKitId(user_id, null, null, null, null, null, null, null, null, null, null, startDate, endDate, null, null, 'all');
 	const userDeposits = await getUserDepositsByKitId(user_id, null, null, null, null, null, null, null, null, null, null, startDate, endDate, null, null, 'all'); 
 	const userBalanceHistory = await balanceHistoryModel.findAll({ 
@@ -2468,8 +2468,6 @@ const fetchUserProfitLossInfo = async (user_id) => {
 			created_at: timeframe
 		}
 	 });
-
-	userTrades?.data?.reverse();
 
 
 	const nativeCurrency = getKitConfig()?.balance_history_config?.currency || 'usdt';
