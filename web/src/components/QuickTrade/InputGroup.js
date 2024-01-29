@@ -8,7 +8,6 @@ import {
 	LoadingOutlined,
 	SyncOutlined,
 } from '@ant-design/icons';
-import { isMobile } from 'react-device-detect';
 import { DEFAULT_COIN_DATA } from 'config/constants';
 
 import { minValue, maxValue } from 'components/Form/validations';
@@ -19,8 +18,6 @@ import { EditWrapper, Coin } from 'components';
 import { getDecimals } from 'utils/utils';
 
 const { Option } = Select;
-const { Group } = Input;
-// const DECIMALS = 4;
 
 class InputGroup extends React.PureComponent {
 	state = {

@@ -1,8 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import { Link } from 'react-router';
-import { isMobile } from 'react-device-detect';
-import { EditWrapper, Image } from 'components';
+import { EditWrapper } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
 import STRINGS from 'config/localizedStrings';
 import { FLEX_CENTER_CLASSES } from 'config/constants';
