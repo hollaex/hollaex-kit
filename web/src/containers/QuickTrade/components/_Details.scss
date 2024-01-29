@@ -1,3 +1,4 @@
+$colors-white: white;
 
 .trade-details-wrapper {
     width: 100%;
@@ -101,12 +102,12 @@
 					border-radius: 0 0.5rem 0.5rem 0;
 				}
 				&::before {
-					background: #fff;
+					background: $colors-white;
 				}
 			}
 			.ant-radio-button-wrapper-checked {
-				border-color: #fff;
-				color: #fff;
+				border-color: $colors-white;
+				color: $colors-white;
 			}
 		}
 	}

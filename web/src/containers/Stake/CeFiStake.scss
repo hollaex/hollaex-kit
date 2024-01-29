@@ -34,6 +34,25 @@
 	background-color: var(--base_secondary-navigation-bar);
 }
 
+.mobileZoom {
+	zoom: 0.55;
+	position: relative;
+	left: -50px;
+}
+
+.mobileZoom .ant-table-thead > tr > th {
+	padding: 16px 4px;
+}
+
+.mobileZoom .ant-table-tbody > tr > td {
+	padding: 16px 4px;
+}
+
 .stakingOption {
 	background-color: var(--base_wallet-sidebar-and-popup);
+}
+
+.tabOption {
+	background-color: var(--base_wallet-sidebar-and-popup);
+	color: var(--labels_important-active-labels-text-graphics);
 }

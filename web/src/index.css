@@ -3574,10 +3574,10 @@ table th {
       .trade-details-wrapper .day-change-block .ant-radio-group .ant-radio-button-wrapper:last-child {
         border-radius: 0 0.5rem 0.5rem 0; }
       .trade-details-wrapper .day-change-block .ant-radio-group .ant-radio-button-wrapper::before {
-        background: #fff; }
+        background: white; }
     .trade-details-wrapper .day-change-block .ant-radio-group .ant-radio-button-wrapper-checked {
-      border-color: #fff;
-      color: #fff; }
+      border-color: white;
+      color: white; }
 
 .layout-mobile .trade-details-wrapper {
   width: 100%; }
@@ -4037,7 +4037,7 @@ table th {
 .digital-market-wrapper {
   display: flex;
   justify-content: center;
-  padding-top: 5rem; }
+  padding-top: 2rem; }
   .digital-market-wrapper .market-wrapper {
     width: 70%; }
     .digital-market-wrapper .market-wrapper .gray-text {
@@ -4051,7 +4051,8 @@ table th {
         cursor: pointer; }
       .digital-market-wrapper .market-wrapper .header-container .digital-assets-icon {
         display: flex !important;
-        flex-direction: inherit !important; }
+        flex-direction: inherit !important;
+        margin-top: 0; }
       .digital-market-wrapper .market-wrapper .header-container .icon_title-wrapper .icon_title-svg svg {
         width: 3.5rem !important;
         height: 3.5rem !important;
@@ -4626,12 +4627,20 @@ table th {
   .market-list__container .market-list__block .market-list__block-table .td-amount {
     min-width: 150px !important;
     direction: ltr; }
+  .market-list__container .market-list__block .market-list__block-table .td-trade {
+    width: 7rem; }
+    .market-list__container .market-list__block .market-list__block-table .td-trade .action_notification-wrapper {
+      right: auto;
+      top: 1.25rem; }
 
 .market-list__container .market-list__block .market-list__caret span:not(.important-text) {
   opacity: 0.3; }
 
 .market-list__container .market-list__block .market-list__caret .important-text {
   opacity: 0.8; }
+
+.market-list__container .market-list__block .view-more-btn {
+  margin-bottom: 2rem; }
 
 .direction_ltr .market-list__container .market-list__block .market-list__block-table th {
   font-family: "Raleway";
@@ -5913,10 +5922,10 @@ table th {
       .trade-details-wrapper .day-change-block .ant-radio-group .ant-radio-button-wrapper:last-child {
         border-radius: 0 0.5rem 0.5rem 0; }
       .trade-details-wrapper .day-change-block .ant-radio-group .ant-radio-button-wrapper::before {
-        background: #fff; }
+        background: white; }
     .trade-details-wrapper .day-change-block .ant-radio-group .ant-radio-button-wrapper-checked {
-      border-color: #fff;
-      color: #fff; }
+      border-color: white;
+      color: white; }
 
 .layout-mobile .trade-details-wrapper {
   width: 100%; }
@@ -7082,12 +7091,26 @@ table th {
   .app-bar-add-tab-menu .app-bar-add-tab-content-list {
     color: var(--labels_secondary-inactive-label-text-graphics);
     height: 2.2rem; }
+    .app-bar-add-tab-menu .app-bar-add-tab-content-list .summary-quick-icon {
+      padding: 4px; }
     .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover {
       background-color: var(--base_secondary-navigation-bar);
       color: var(--labels_secondary-inactive-label-text-graphics); }
       .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .st0 {
         fill: var(--labels_secondary-inactive-label-text-graphics) !important;
         stroke-width: 0rem; }
+      .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover .summary-quick-icon {
+        background-color: var(--calculated_tag-background);
+        border-radius: 50%; }
+  .app-bar-add-tab-menu .app-bar-add-tab-content-no-market {
+    display: block;
+    text-align: center;
+    width: 100%;
+    margin: auto;
+    margin-top: 50%;
+    transform: translateY(-50%); }
+  .app-bar-add-tab-menu .text-underline {
+    text-decoration: underline; }
   .app-bar-add-tab-menu .app-bar-tab-setting {
     margin: 0.3rem 0.4rem 0 0.4rem;
     width: 1rem; }
@@ -9420,7 +9443,10 @@ table th {
   font-weight: bold; }
 
 .chart_slice {
-  fill-opacity: 0.7; }
+  fill-opacity: 0.5; }
+
+.others-color {
+  fill: var(--labels_inactive-button); }
 
 .slice_active {
   fill-opacity: 1; }

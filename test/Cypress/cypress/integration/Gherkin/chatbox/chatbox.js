@@ -1,4 +1,4 @@
-import {Given, When, Then, And} from "cypress-cucumber-preprocessor/steps"
+import {Given, Then, And} from "cypress-cucumber-preprocessor/steps"
 const randomTest= Math.random().toString(36).substring(2,6);
     
 Given ('I log in the Hollaex',()=>{

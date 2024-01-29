@@ -1715,6 +1715,7 @@ const inviteExchangeOperator = (invitingEmail, email, role, opts = {
 		return getModel('user').findOrCreate({
 			defaults: {
 				email,
+				email_verified: true,
 				password: tempPassword,
 				...roles,
 				settings: INITIAL_SETTINGS()
