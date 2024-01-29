@@ -69,11 +69,11 @@ const unstakingCheckRunner = () => {
 
 				try {
 					if(totalAmount > 0) {
-                    	await toolsLib.wallet.transferAssetByKitIds(stakePool.account_id, user.id, stakePool.currency, totalAmount, 'Admin transfer stake', user.email, { category: 'stake' });
+                    	await toolsLib.wallet.transferAssetByKitIds(stakePool.account_id, user.id, stakePool.currency, totalAmount, 'Admin transfer stake', false, { category: 'stake' });
 					}
 					
 					if (stakePool.reward_currency !== stakePool.currency && amountAfterSlash > 0) {
-						 await toolsLib.wallet.transferAssetByKitIds(stakePool.account_id, user.id, stakePool.reward_currency, amountAfterSlash, 'Admin transfer stake', user.email, { category: 'stake' });
+						 await toolsLib.wallet.transferAssetByKitIds(stakePool.account_id, user.id, stakePool.reward_currency, amountAfterSlash, 'Admin transfer stake', false, { category: 'stake' });
 					}
 
 				} catch (error) {

@@ -8,23 +8,18 @@ Given ('I am in the Hollaex login page',()=>{
 })
 
 When ('I enter credentials Username,Password',()=>{
-     const t0 = performance.now();
-         
+       
      cy.get('.holla-button').should('be.visible').should('be.disabled')
      cy.get('[name="email"]').clear().type(Cypress.env("USER0"))
      cy.get('[name="password"]').clear().type(Cypress.env('PASSWORD'))
-     const t1 = performance.now();
-     cy.log('time')
-     cy.log(t1-t0)
+
 })
 
 Then ('I should be able to login successfully',()=>{
-     const t0 = performance.now();
+     
      cy.get('.holla-button').should('be.visible').should('be.enabled').click()
      cy.get('.warning_text').should('not.exist') 
-     const t1 = performance.now();
-     cy.log('time')
-     cy.log(t1-t0)
+
 })
 
 When ('I enter credentials Wrong Username,Password',()=>{
@@ -74,8 +69,17 @@ When ('I enter credentials 2FA enabled Username,Password',()=>{
 })
 
 And ('I enter Expired,long,short,String and then true 2FA code',()=>{
+     function shuffleString(str) {
+          const arr = str.split('');
+          for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+          }
+          return arr.join('');
+        }
      cy.wait(3000)
-     cy.get('.otp_form-wrapper > .icon_title-wrapper > :nth-child(2) > .icon_title-text')
+     cy.get('.otp_form-wrapper > .icon_title-wrapper > :nth-child(2) > :nth-child(1) > .icon_title-text')
+     
      .contains('Authenticator Code')
      const totp = require("totp-generator");     
      let text = Cypress.env('2FACODE')
@@ -85,21 +89,17 @@ And ('I enter Expired,long,short,String and then true 2FA code',()=>{
      cy.wrap(token).as('token')
      cy.log(token);
      cy.log('second', text)  
-    // cy.get('.otp_form-wrapper > form.w-100 > .w-100 > :nth-child(1) > .field-wrapper > :nth-child(1) > :nth-child(1) > .field-content > .field-children > div > .input_field-input')
      cy.get('.masterInput')
-     .clear().type('108249')        
-    // cy.get('.otp_form-wrapper > form.w-100 > .holla-button').should('not.be.disabled').click()
+     .clear().type(shuffleString(token))
+     //.type('108249')        
      cy.get('.warning_text').should('contain','Invalid OTP Code')
-     //cy.get('.otp_form-wrapper > form.w-100 > .w-100 > :nth-child(1) > .field-wrapper > :nth-child(1) > :nth-child(1) > .field-content > .field-children > div > .input_field-input')
      cy.get('.masterInput')
-     .clear().type('108294') 
+     .clear().type(shuffleString(token))
+     //.type('108294') 
      cy.get('.warning_text').should('contain','Invalid OTP Code')  
      cy.get('.masterInput')
      .clear().type('ABCDEF') 
-     cy.get('.warning_text').should('contain','Invalid OTP Code')       
-    // cy.get('.otp_form-wrapper > form.w-100 > .holla-button').should('not.be.disabled')
-     //cy.get('.otp_form-wrapper > form.w-100 > .w-100 > :nth-child(1) > .field-wrapper > :nth-child(1) > :nth-child(1) > .field-content > .field-children > div > .input_field-input')
-     cy.get('.masterInput')
+     cy.get('.warning_text').should('contain','Invalid OTP Code')
+     cy.get('.masterInput')      
      .clear().type(token)        
-   //  cy.get('.otp_form-wrapper > form.w-100 > .holla-button').click()
-})
+ })

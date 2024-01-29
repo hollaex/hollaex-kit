@@ -28,7 +28,11 @@
 }
 
 .chart_slice {
-	fill-opacity: 0.7;
+	fill-opacity: 0.5;
+}
+
+.others-color {
+	fill: var(--labels_inactive-button);
 }
 
 .slice_active {

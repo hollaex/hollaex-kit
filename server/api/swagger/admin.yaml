@@ -3033,7 +3033,6 @@ paths:
           description: specify whether or not wallet is wallet
           required: false
           type: boolean
-          default: true
         - in: query
           name: network
           description: Blockchain network of wallet

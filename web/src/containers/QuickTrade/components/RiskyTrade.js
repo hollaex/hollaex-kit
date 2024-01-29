@@ -40,6 +40,7 @@ export const RiskyTrade = ({ setShowRisky, coinData, onCloseDialog }) => {
 						fullname,
 						display_name
 					)}
+					&nbsp;
 					<span className="extreme-volatility-msg">
 						{STRINGS['RISKY_TRADE_DISCLAIMER.MSG_2']}
 					</span>

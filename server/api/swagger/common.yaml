@@ -182,13 +182,12 @@ paths:
           schema:
             type: object
             required:
-              - email
               - verification_code
             properties:
-              email:
+              verification_code:
                 type: string
                 maxLength: 256
-              verification_code:
+              email:
                 type: string
                 maxLength: 256
       responses:

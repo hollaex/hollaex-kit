@@ -24,9 +24,9 @@ Scenario: Alice received Mininal XHTT from Bob Successful
     
  Scenario: UnSuccessful Mininal XHTT transfer from Bob to Alice
 
-    When Bob logged in successfully 
-    And Bob transferred a minimal amount of XHTT to wrong Alice address 
-    
+    When Bob logged in successfully
+    And Bob transferred a minimal amount of XHTT to wrong Alice address
+ 
 Scenario: Successful Mininal XHTT receiving from Bob     
 
     When Bob confirm the transfer by Email

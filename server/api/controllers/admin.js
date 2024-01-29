@@ -74,6 +74,7 @@ const createInitialAdmin = (req, res) => {
 			return toolsLib.user.createUser(email, password, {
 				role: 'admin',
 				id: 1,
+				email_verified: true,
 				additionalHeaders: {
 					'x-forwarded-for': req.headers['x-forwarded-for']
 				}
@@ -193,6 +194,7 @@ const getUsersAdmin = (req, res) => {
 	})
 		.then((data) => {
 			if (format.value === 'csv') {
+				toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users.csv`);
 				res.set('Content-Type', 'text/csv');
 				return res.status(202).send(data);
@@ -541,6 +543,7 @@ const getAdminUserLogins = (req, res) => {
 	})
 		.then((data) => {
 			if (format.value === 'csv') {
+				toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users-logins.csv`);
 				res.set('Content-Type', 'text/csv');
 				return res.status(202).send(data);
@@ -607,6 +610,7 @@ const getUserAudits = (req, res) => {
 	})
 		.then((data) => {
 			if (format.value === 'csv') {
+				toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-audits.csv`);
 				res.set('Content-Type', 'text/csv');
 				return res.status(202).send(data);
@@ -870,6 +874,7 @@ const getExchangeGeneratedFees = (req, res) => {
 	})
 		.then((data) => {
 			if (format.value === 'csv') {
+				toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
 				const parsedData = data && Object.values(data)[0];
 				if (!parsedData || parsedData?.length === 0) {
 					throw new Error(NO_DATA_FOR_CSV);
@@ -937,7 +942,8 @@ const mintAsset = (req, res) => {
 		transaction_id,
 		status,
 		email,
-		fee
+		fee,
+		address
 	} = req.swagger.params.data.value;
 
 	loggerAdmin.info(
@@ -953,7 +959,9 @@ const mintAsset = (req, res) => {
 		'status',
 		status,
 		'fee',
-		fee
+		fee,
+		'address',
+		address
 	);
 
 	toolsLib.user.getUserByKitId(user_id)
@@ -971,6 +979,7 @@ const mintAsset = (req, res) => {
 					transactionId: transaction_id,
 					status,
 					email,
+					address,
 					additionalHeaders: {
 						'x-forwarded-for': req.headers['x-forwarded-for']
 					}
@@ -1084,7 +1093,8 @@ const burnAsset = (req, res) => {
 		transaction_id,
 		status,
 		email,
-		fee
+		fee,
+		address
 	} = req.swagger.params.data.value;
 
 	loggerAdmin.info(
@@ -1100,7 +1110,9 @@ const burnAsset = (req, res) => {
 		'status',
 		status,
 		'fee',
-		fee
+		fee,
+		'address',
+		address
 	);
 
 	toolsLib.user.getUserByKitId(user_id)
@@ -1118,6 +1130,7 @@ const burnAsset = (req, res) => {
 					status,
 					email,
 					fee,
+					address,
 					additionalHeaders: {
 						'x-forwarded-for': req.headers['x-forwarded-for']
 					}
@@ -2246,6 +2259,7 @@ const createUserByAdmin = (req, res) => {
 			return toolsLib.user.createUser(email, password, {
 				role: 'user',
 				id: null,
+				email_verified: true,
 				additionalHeaders: {
 					'x-forwarded-for': req.headers['x-forwarded-for']
 				}
@@ -2483,6 +2497,7 @@ const getUserSessionsByAdmin = (req, res) => {
 	)
 		.then((data) => {
 			if (format.value === 'csv') {
+				toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-logins.csv`);
 				res.set('Content-Type', 'text/csv');
 				return res.status(202).send(data);

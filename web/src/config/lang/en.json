@@ -44,6 +44,9 @@
 	"SECONDS": "seconds",
 	"SECOND": "second",
 	"VIEW_MARKET": "view markets",
+	"CANT_FIND_MARKETS":"Can't find any markets from that asset.",
+	"TRY_VISITING_ASSETS": "Try visiting the {0}.",
+	"ASSETS_PAGE": "Assets page",
 	"GO_TRADE": "Go Trade",
 	"VIEW_INFO": "View info page",
 	"APPLY_HERE": "Apply Here",
@@ -279,7 +282,11 @@
 	"VERIFICATION_EMAIL": {
 		"INVALID_UUID": "Invalid code",
 		"TEXT_1": "You've successfully verified your email.",
-		"TEXT_2": "You can now proceed to login"
+		"TEXT_2": "You can now proceed to login",
+		"CANCEL_BUTTON": "CLOSE",
+		"CONFIRM_BUTTON": "CONFIRM SIGN UP",
+		"CONFIRM_TEXT": "Confirm Sign Up",
+		"CONFIRM_DESCRIPTION": "Please confirm your account sign up by clicking the button below"
 	},
 	"USER_VERIFICATION": {
 		"INFO_TXT": "Here you can monitor your progress towards verification and an account upgrades.",
@@ -855,6 +862,8 @@
 		"MONITOR_ACTIVE_STAKES": "Monitor active stakes and their earnings coming from the staking pools.",
 		"USE_FILTERS_FOR_HISTORICAL_EVENTS": "Use the filters to find all staking historical events. All earnings from completed stakes will be deposit to your wallet.",
 		"ESTIMATED_TOTAL_STAKED": "Estimated value of total staked",
+		"ACTIVE_STAKES": "Active Stakes",
+		"STAKES_HISTORY": "History",
 		"ESTIMATED_EARNINGS_VALUE": "Estimated value of earnings",
 		"READ_BEFORE_AGREE_AND_EARN": "Read Before You Agree and Earn",
 		"AGREEMENT_INTRODUCTION_1": "Locking up funds and participating in staking can indeed be a profitable way to earn rewards. However, it is essential to be aware that there might be penalties for early unstaking and potentially long lock up periods. Therefore, it is crucial to thoroughly understand the pool's rules before staking. By clicking 'I agree and understand' below, you acknowledge that you will",
@@ -964,6 +973,7 @@
 	},
 	"QUICK_TRADE": "Quick trade",
 	"PRO_TRADE": "Pro trade",
+	"ASSETS": "Assets",
 	"WALLET_TITLE": "Wallet",
 	"CURRENCY_WALLET": {
 		"BACK": "Back",
@@ -975,7 +985,9 @@
 		"PERCENTAGE_SHARE": "Percentage Share {0}",
 		"EARN_BY": "Earn by {0} {1}",
 		"STAKING": "staking",
-		"TOOLTIP": "Balance not in a pending state or locked up in trades (open orders)"
+		"TOOLTIP": "Balance not in a pending state or locked up in trades (open orders)",
+		"WALLET_HAS_BALANCE_PERCENTAGE": "Your wallet currently does not hold any {0}.",
+		"WALLET_DEPOSIT": "You can try depositing {0} or buying {1}"
 	},
 	"LOGOUT": "Logout",
 	"WITHDRAWALS_MIN_VALUE_ERROR": "The transaction is too small to send. Try a larger amount.",
@@ -1025,7 +1037,15 @@
 		"WITHDRAW_CONFIRM_SUCCESS_2": "In order to view your withdrawal status please visit your withdrawal history page.",
 		"GO_WITHDRAWAL_HISTORY": "Go To Withdrawal History",
 		"WITHDRAWALS_FORM_ERROR_TITLE": "Incorrect transfer info",
-		"WITHDRAWALS_FORM_ERROR": "Your fund transfer has failed. Sending funds to an email requires that the user has an account within this exchange. Check that the email is correct and please try again."
+		"WITHDRAWALS_FORM_ERROR": "Your fund transfer has failed. Sending funds to an email requires that the user has an account within this exchange. Check that the email is correct and please try again.",
+		"WITHDRAWAL_CONFIRM_FINAL": "Final Withdrawal Confirmation",
+		"WITHDRAWAL_CONFIRM_WARNING": "Please check your withdrawal below before confirming.",
+		"WITHDRAWAL_CONFIRM_AMOUNT": "Amount",
+		"WITHDRAWAL_CONFIRM_FEE": "Fee",
+		"WITHDRAWAL_CONFIRM_ADDRESS": "Address",
+		"WITHDRAWAL_CONFIRM_NETWORK": "Network",
+		"WITHDRAWAL_CANCEL_BUTTON": "CLOSE",
+		"WITHDRAWAL_CONFIRM_BUTTON": "CONFIRM WITHDRAWAL"
 	},
 	"WALLET_BUTTON_BASE_DEPOSIT": "deposit",
 	"WALLET_BUTTON_BASE_WITHDRAW": "withdraw",
@@ -1308,7 +1328,7 @@
 	"CLEAR": "Clear",
 	"ORDER_TYPE": "Type",
 	"ORDER_MODE": "Order mode",
-	"TRIGGER_CONDITIONS": "Trigger conditions",
+	"TRIGGER_CONDITIONS": "Trigger",
 	"TRANSACTION_STATUS": {
 		"PENDING": "Pending",
 		"REJECTED": "Rejected",
@@ -1347,11 +1367,13 @@
 		"LAST_PRICE": "Last price",
 		"CHANGE_24H": "Change (24 hours)",
 		"CHANGE_7D": "Change (7 days)",
+		"CHANGE_1D": "Change (1 day)",
 		"VOLUME_24h": "Volume (24 hours)",
 		"CHART_24H": "Chart (24 hours)",
 		"CHART_7D": "Chart (7 days)",
 		"VIEW_MARKETS": "View Markets",
 		"TRADING_SYMBOL": "Trading Symbol",
+		"ASSET": "Asset",
 		"TYPE": "Type",
 		"SOURCE": "SOURCE"
 	},
@@ -1529,6 +1551,7 @@
 		"ASSETS_INFO": "Below are available assets on the platform.",
 		"ASSETS_INFO_DETAIL": "You can click an asset on the list below to learn more.",
 		"QUICK_TRADE": "QUICK TRADE",
+		"PRO_TRADE": "PRO TRADE",
 		"MARKETS": "MARKETS",
 		"WALLET": "WALLET",
 		"PRICE_SOURCE": "Price source",

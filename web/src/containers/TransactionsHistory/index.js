@@ -50,6 +50,7 @@ import { STATIC_ICONS } from 'config/icons';
 import { Image } from 'hollaex-web-lib';
 
 const GROUP_CLASSES = [...FLEX_CENTER_CLASSES, 'flex-column'];
+const transactionTabs = ['trades', 'orders', 'deposits', 'withdrawals'];
 
 class TransactionsHistory extends Component {
 	state = {
@@ -73,6 +74,23 @@ class TransactionsHistory extends Component {
 		}
 	}
 
+	updateParams(currTab) {
+		const urlSearchParams = new URLSearchParams(window.location.search);
+		urlSearchParams.set('tab', currTab);
+		const newUrl = `${window.location.pathname}?${urlSearchParams.toString()}`;
+		window.history.pushState({}, '', newUrl);
+	}
+
+	getActiveTabName() {
+		const { activeTab } = this.state;
+
+		if (!activeTab) {
+			return transactionTabs[0];
+		} else {
+			return transactionTabs[activeTab];
+		}
+	}
+
 	componentDidMount() {
 		const {
 			router: {
@@ -86,13 +104,17 @@ class TransactionsHistory extends Component {
 			this.props.prices
 		);
 		this.generateFilters();
-
-		if (query && query.tab) {
+		if (query && query.tab && !transactionTabs.includes(query.tab)) {
 			this.setActiveTab(parseInt(query.tab, 10));
 		} else {
 			const activeTab = this.getTabBySearch(search);
 			this.setActiveTab(activeTab);
 		}
+	}
+
+	componentDidUpdate() {
+		const activeTabName = this.getActiveTabName();
+		this.updateParams(activeTabName);
 	}
 
 	getTabBySearch = (search) => {

@@ -113,10 +113,10 @@ const distributeStakingRewards = async (stakers, account_id, currency, reward_cu
 
         try {
             if(totalAmount > 0) {
-                await transferAssetByKitIds(account_id, user.id, currency, totalAmount, 'Admin transfer stake', user.email, { category: 'stake' });
+                await transferAssetByKitIds(account_id, user.id, currency, totalAmount, 'Admin transfer stake', false, { category: 'stake' });
             }
             if (reward_currency !== currency && amountAfterSlash > 0) { 
-                await transferAssetByKitIds(account_id, user.id, reward_currency, amountAfterSlash, 'Admin transfer stake', user.email, { category: 'stake' });
+                await transferAssetByKitIds(account_id, user.id, reward_currency, amountAfterSlash, 'Admin transfer stake', false, { category: 'stake' });
             }
 
         } catch (error) {
@@ -334,8 +334,6 @@ const updateExchangeStakePool = async (id, data, auditInfo) => {
         early_unstake,
         slashing_principle_percentage,
         slashing_earning_percentage,
-        min_amount,
-        max_amount,
         status,
         onboarding,
     } = data;
@@ -352,8 +350,6 @@ const updateExchangeStakePool = async (id, data, auditInfo) => {
         || (duration && duration !== stakePool.duration)
         || (slashing && slashing !== stakePool.slashing)
         || (early_unstake && early_unstake !== stakePool.early_unstake)
-        || (min_amount && min_amount !== stakePool.min_amount)
-        || (max_amount && max_amount !== stakePool.max_amount)
         || (slashing_principle_percentage && slashing_principle_percentage !== stakePool.slashing_principle_percentage)
         || (slashing_earning_percentage && slashing_earning_percentage !== stakePool.slashing_earning_percentage)
     )) {
@@ -541,7 +537,7 @@ const createExchangeStaker = async (stake_id, amount, user_id) => {
         throw new Error(STAKE_POOL_MAX_AMOUNT_ERROR);
     }
 
-    if (new BigNumber(amount).comparedTo(new BigNumber(stakePool.min_amount)) !== 1) {
+    if (new BigNumber(amount).comparedTo(new BigNumber(stakePool.min_amount)) === -1) {
         throw new Error(STAKE_POOL_MIN_AMOUNT_ERROR);
     }
 
@@ -562,7 +558,7 @@ const createExchangeStaker = async (stake_id, amount, user_id) => {
     }
 
 
-    await transferAssetByKitIds(user_id, stakePool.account_id, stakePool.currency, amount, 'User transfer stake', user.email, { category: 'stake' });
+    await transferAssetByKitIds(user_id, stakePool.account_id, stakePool.currency, amount, 'User transfer stake', false, { category: 'stake' });
 
 
     const stakerData = await getModel('staker').create(staker, {

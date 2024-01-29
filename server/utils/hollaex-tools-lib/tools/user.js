@@ -39,7 +39,7 @@ const {
 	ACCOUNT_NOT_VERIFIED,
 	INVALID_VERIFICATION_LEVEL,
 	USER_EMAIL_NOT_VERIFIED,
-	USER_EMAIL_IS_VERIFIED,
+	VERIFICATION_CODE_EXPIRED,
 	NO_DATA_FOR_CSV,
 	PROVIDE_USER_CREDENTIALS,
 	PROVIDE_KIT_ID,
@@ -48,7 +48,7 @@ const {
 	USER_ALREADY_DEACTIVATED,
 	USER_NOT_DEACTIVATED,
 	CANNOT_CHANGE_ADMIN_ROLE,
-	VERIFICATION_CODE_USED,
+	USER_VERIFIED,
 	USER_NOT_REGISTERED_ON_NETWORK,
 	SESSION_NOT_FOUND,
 	SESSION_ALREADY_REVOKED,
@@ -75,7 +75,8 @@ const {
 	LOGIN_TIME_OUT,
 	TOKEN_TIME_LONG,
 	TOKEN_TIME_NORMAL,
-	VERIFY_STATUS
+	VERIFY_STATUS,
+	EVENTS_CHANNEL
 } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
@@ -96,6 +97,11 @@ const BigNumber = require('bignumber.js');
 let networkIdToKitId = {};
 let kitIdToNetworkId = {};
 /* Onboarding*/
+
+const storeVerificationCode = (user, verification_code) => {
+	const data = { code: verification_code, id: user.id, email: user.email };
+	client.setexAsync(`verification_code:user${verification_code}`, 5 * 60, JSON.stringify(data));
+};
 
 const signUpUser = (email, password, opts = { referral: null }) => {
 	if (!getKitConfig().new_user_is_activated) {
@@ -125,6 +131,7 @@ const signUpUser = (email, password, opts = { referral: null }) => {
 					email,
 					password,
 					verification_level: 1,
+					email_verified: false,
 					settings: INITIAL_SETTINGS()
 				}, { transaction })
 					.then((user) => {
@@ -142,16 +149,26 @@ const signUpUser = (email, password, opts = { referral: null }) => {
 			});
 		})
 		.then((user) => {
+			const verification_code = uuid();
+			storeVerificationCode(user, verification_code);
 			return all([
-				getVerificationCodeByUserId(user.id),
+				verification_code,
 				user
 			]);
 		})
 		.then(([verificationCode, user]) => {
+			publisher.publish(EVENTS_CHANNEL, JSON.stringify({
+				type: 'user',
+				data: {
+					action: 'signup',
+					user_id: user.id
+				}
+			}));
+			
 			sendEmail(
 				MAILTYPE.SIGNUP,
 				email,
-				verificationCode.code,
+				verificationCode,
 				{}
 			);
 			if (opts.referral && isString(opts.referral)) {
@@ -161,35 +178,57 @@ const signUpUser = (email, password, opts = { referral: null }) => {
 		});
 };
 
-const verifyUser = (email, code) => {
-	email = email.toLowerCase();
-	return dbQuery.findOne('user',
-		{ where: { email }, attributes: ['id', 'email', 'settings', 'network_id'] }
-	)
-		.then((user) => {
+const verifyUser = (email, code, domain) => {
+	email = email?.toLowerCase();
+	return client.getAsync(`verification_code:user${code}`)
+		.then((verificationCode) => {
+			if (!verificationCode) {
+				throw new Error(VERIFICATION_CODE_EXPIRED);
+			}
+			verificationCode = JSON.parse(verificationCode);
 			return all([
-				dbQuery.findOne('verification code',
-					{
-						where: { user_id: user.id },
-						attributes: ['id', 'code', 'verified', 'user_id']
-					}
-				),
-				user
+				verificationCode,
+				dbQuery.findOne('user',
+					{ where: { id: verificationCode.id }, attributes: ['id', 'email', 'settings', 'network_id', 'email_verified'] }),
 			]);
 		})
 		.then(([verificationCode, user]) => {
-			if (verificationCode.verified) {
-				throw new Error(USER_EMAIL_IS_VERIFIED);
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
 			}
+
+			if (user.email_verified) {
+				throw new Error(USER_VERIFIED);
+			}
+
 			if (code !== verificationCode.code) {
 				throw new Error(INVALID_VERIFICATION_CODE);
 			}
+
+			client.delAsync(`verification_code:user${verificationCode.code}`);
 			return all([
 				user,
-				verificationCode.update({ verified: true }, { fields: ['verified'], returning: true })
+				user.update(
+					{ email_verified: true },
+					{ fields: ['email_verified'] }
+				)
 			]);
 		})
 		.then(([user]) => {
+			publisher.publish(EVENTS_CHANNEL, JSON.stringify({
+				type: 'user',
+				data: {
+					action: 'verify',
+					user_id: user.id
+				}
+			}));
+			sendEmail(
+				MAILTYPE.WELCOME,
+				user.email,
+				{},
+				user.settings,
+				domain
+			);
 			return user;
 		});
 };
@@ -200,6 +239,7 @@ const createUser = (
 	opts = {
 		role: 'user',
 		id: null,
+		email_verified: false,
 		additionalHeaders: null
 	}
 ) => {
@@ -236,6 +276,7 @@ const createUser = (
 					email,
 					password,
 					settings: INITIAL_SETTINGS(),
+					email_verified: opts.email_verified,
 					...roles
 				};
 
@@ -259,11 +300,7 @@ const createUser = (
 	})
 		.then((user) => {
 			return all([
-				user,
-				getModel('verification code').update(
-					{ verified: true },
-					{ where: { user_id: user.id }, fields: ['verified'] }
-				)
+				user
 			]);
 		})
 		.then(([user]) => {
@@ -432,15 +469,6 @@ const findUserLatestLogin = (user, status) => {
 /* Public Endpoints*/
 
 
-const getVerificationCodeByUserEmail = (email) => {
-	return getUserByEmail(email)
-		.then((user) => {
-			if (!user) {
-				throw new Error(USER_NOT_FOUND);
-			}
-			return getVerificationCodeByUserId(user.id);
-		});
-};
 
 const generateAffiliationCode = () => {
 	return randomString({
@@ -448,13 +476,6 @@ const generateAffiliationCode = () => {
 		numeric: true,
 		letters: true
 	}).toUpperCase();
-};
-
-const getVerificationCodeByUserId = (user_id) => {
-	return dbQuery.findOne('verification code', {
-		where: { user_id },
-		attributes: ['id', 'code', 'verified', 'user_id']
-	});
 };
 
 const getUserByAffiliationCode = (affiliationCode) => {
@@ -1150,27 +1171,6 @@ const INITIAL_SETTINGS = () => {
 	};
 };
 
-const getUserEmailByVerificationCode = (code) => {
-	return dbQuery.findOne('verification code', {
-		where: { code },
-		attributes: ['id', 'code', 'verified', 'user_id']
-	})
-		.then((verificationCode) => {
-			if (!verificationCode) {
-				throw new Error(INVALID_VERIFICATION_CODE);
-			} else if (verificationCode.verified) {
-				throw new Error(VERIFICATION_CODE_USED);
-			}
-			return dbQuery.findOne('user', {
-				where: { id: verificationCode.user_id },
-				attributes: ['email']
-			});
-		})
-		.then((user) => {
-			return user.email;
-		});
-};
-
 const verifyUserEmailByKitId = (kitId) => {
 	return getUserByKitId(kitId, false)
 		.then((user) => {
@@ -1438,9 +1438,9 @@ const getUpdatedKeys = (oldData, newData) => {
   
 	let keys = [];
 	for(const key of data){
-	  if(!isEqual(oldData[key], newData[key])){
+		if(!isEqual(oldData[key], newData[key])){
 			keys.push(key);
-	  }
+		}
 	}
   
 	return keys;
@@ -1717,6 +1717,7 @@ const inviteExchangeOperator = (invitingEmail, email, role, opts = {
 		return getModel('user').findOrCreate({
 			defaults: {
 				email,
+				email_verified: true,
 				password: tempPassword,
 				...roles,
 				settings: INITIAL_SETTINGS()
@@ -1746,12 +1747,6 @@ const inviteExchangeOperator = (invitingEmail, email, role, opts = {
 			});
 	})
 		.then(async ([user, created]) => {
-			if (created) {
-				await getModel('verification code').update(
-					{ verified: true },
-					{ where: { user_id: user.id }, fields: ['verified'] }
-				);
-			}
 			sendEmail(
 				MAILTYPE.INVITED_OPERATOR,
 				user.email,
@@ -2467,7 +2462,7 @@ const fetchUserProfitLossInfo = async (user_id) => {
 			user_id,
 			created_at: timeframe
 		}
-	 });
+	});
 
 
 	const nativeCurrency = getKitConfig()?.balance_history_config?.currency || 'usdt';
@@ -2516,41 +2511,41 @@ const fetchUserProfitLossInfo = async (user_id) => {
 
 	const findClosestBalanceRecord = (date) => {
 		return userBalanceHistory.reduce((closestRecord, entry) => {
-		  const entryDate = new Date(entry.created_at).getTime();
-		  const closestDate = new Date(closestRecord.created_at).getTime();
-		  const currentDate = new Date(date).getTime();
-	  
-		  if (Math.abs(currentDate - entryDate) < Math.abs(currentDate - closestDate)) {
+			const entryDate = new Date(entry.created_at).getTime();
+			const closestDate = new Date(closestRecord.created_at).getTime();
+			const currentDate = new Date(date).getTime();
+
+			if (Math.abs(currentDate - entryDate) < Math.abs(currentDate - closestDate)) {
 				return entry;
-		  }
-	  
-		  return closestRecord;
+			}
+
+			return closestRecord;
 		}, userBalanceHistory[0]);
 	};
-	  
+
 	const filterByInterval = (data, interval, conditionalDate) => {
 		const dateThreshold = moment();
-	  
+
 		switch (interval) {
-		  case '1d':
+			case '1d':
 				dateThreshold.subtract(1, 'day');
 				break;
-		  case '7d':
+			case '7d':
 				dateThreshold.subtract(7, 'day');
 				break;
-		  case '1m':
+			case '1m':
 				dateThreshold.subtract(1, 'month');
 				break;
-		  case '6m':
+			case '6m':
 				dateThreshold.subtract(6, 'months');
 				break;
-		  case '1y':
+			case '1y':
 				dateThreshold.subtract(1, 'year');
 				break;
-		  default:
+			default:
 				return data;
 		}
-	  
+
 		return data.filter((entry) => (moment(entry.created_at || entry.timestamp).isSameOrAfter(dateThreshold)) && (conditionalDate ? moment(entry.created_at || entry.timestamp).isAfter(moment(conditionalDate)) : true));
 	};
 	
@@ -2561,66 +2556,66 @@ const fetchUserProfitLossInfo = async (user_id) => {
 	for (const interval of timeIntervals) {
 		const filteredBalanceHistory = filterByInterval(userBalanceHistory, interval, null);
 		if (!filteredBalanceHistory[0]) continue;
-    	const initialBalances = filteredBalanceHistory[0]?.balance;
-    	const initialBalanceDate = filteredBalanceHistory[0]?.created_at;
-    	const filteredTrades = filterByInterval(userTrades.data, interval, initialBalanceDate);
+		const initialBalances = filteredBalanceHistory[0]?.balance;
+		const initialBalanceDate = filteredBalanceHistory[0]?.created_at;
+		const filteredTrades = filterByInterval(userTrades.data, interval, initialBalanceDate);
 		
-    	const filteredDeposits = filterByInterval(userDeposits.data, interval, initialBalanceDate);
-    	const filteredWithdrawals = filterByInterval(userWithdrawals.data, interval, initialBalanceDate);
-	  
+		const filteredDeposits = filterByInterval(userDeposits.data, interval, initialBalanceDate);
+		const filteredWithdrawals = filterByInterval(userWithdrawals.data, interval, initialBalanceDate);
+
 		if(!initialBalances) continue;
 	
 		const netInflowFromDepositsPerAsset = {};
 		filteredDeposits.forEach((deposit) => {
-		  const asset = deposit.currency.toLowerCase();
-		  if (!netInflowFromDepositsPerAsset[asset]) {
+			const asset = deposit.currency.toLowerCase();
+			if (!netInflowFromDepositsPerAsset[asset]) {
 				netInflowFromDepositsPerAsset[asset] = 0;
-		  }
-		  const closestRecord = findClosestBalanceRecord(deposit.created_at);
-		 
-		  if(closestRecord.balance[asset]) {
+			}
+			const closestRecord = findClosestBalanceRecord(deposit.created_at);
+	
+			if(closestRecord.balance[asset]) {
 				const marketPrice = closestRecord.balance[asset].native_currency_value / closestRecord.balance[asset].original_value;
 				netInflowFromDepositsPerAsset[asset] += deposit.amount * marketPrice;
-		  }
-	 
+			}
+
 		});
-	  
+
 		const netInflowFromTradesPerAsset = filteredTrades.reduce((netInflow, trade) => {
-		  const asset = trade.symbol.split('-')[0].toLowerCase();
-		  const tradeValue = trade.size * trade.price;
-	  
-		  if (!netInflow[asset]) {
+			const asset = trade.symbol.split('-')[0].toLowerCase();
+			const tradeValue = trade.size * trade.price;
+
+			if (!netInflow[asset]) {
 				netInflow[asset] = 0;
-		  }
-	  
-		  if (trade.side === 'buy') {
+			}
+
+			if (trade.side === 'buy') {
 				netInflow[asset] += tradeValue;
-		  } else if (trade.side === 'sell') {
+			} else if (trade.side === 'sell') {
 				netInflow[asset] -= tradeValue;
-		  }
-	  
-		  return netInflow;
+			}
+
+			return netInflow;
 		}, {});
-	  
+
 		const netOutflowFromWithdrawalsPerAsset = {};
 		filteredWithdrawals.forEach((withdrawal) => {
-		  const asset = withdrawal.currency.toLowerCase();
-		  if (!netOutflowFromWithdrawalsPerAsset[asset]) {
+			const asset = withdrawal.currency.toLowerCase();
+			if (!netOutflowFromWithdrawalsPerAsset[asset]) {
 				netOutflowFromWithdrawalsPerAsset[asset] = 0;
-		  }
-		  const closestRecord = findClosestBalanceRecord(withdrawal.created_at);
-		  if(closestRecord.balance[asset]) { 
+			}
+			const closestRecord = findClosestBalanceRecord(withdrawal.created_at);
+			if(closestRecord.balance[asset]) { 
 				const marketPrice = closestRecord.balance[asset].native_currency_value / closestRecord.balance[asset].original_value;
 				netOutflowFromWithdrawalsPerAsset[asset] -= withdrawal.amount * marketPrice;
-		  }
-	  
+			}
+  
 		});
-	  
+ 
 		const finalBalances = filteredBalanceHistory[filteredBalanceHistory.length - 1].balance;
-	  
+ 
 		results[interval] = {};
 		Object.keys(finalBalances).forEach(async (asset) => {
-		  const cumulativePNL =
+			const cumulativePNL =
 			finalBalances[asset].native_currency_value -
 			initialBalances[asset].native_currency_value -
 			(netInflowFromDepositsPerAsset[asset] || 0) -
@@ -2628,19 +2623,18 @@ const fetchUserProfitLossInfo = async (user_id) => {
 			(netOutflowFromWithdrawalsPerAsset[asset] || 0);
 		
 			
-		  const day1Assets = initialBalances[asset].native_currency_value;
-		  const inflow = netInflowFromDepositsPerAsset[asset] || 0;
-		  const cumulativePNLPercentage =
-			cumulativePNL / (day1Assets + inflow) * 100;
-	  
-		  
-		  results[interval][asset] = {
+			const day1Assets = initialBalances[asset].native_currency_value;
+			const inflow = netInflowFromDepositsPerAsset[asset] || 0;
+			const cumulativePNLPercentage =
+			cumulativePNL / (day1Assets + inflow) * 100; 
+		
+			results[interval][asset] = {
 				cumulativePNL,
 				cumulativePNLPercentage,
-		  };
+			};
 		});
 	}
-	  
+
 	if (results['7d']) {
 		let total = 0;
 		const assets = Object.keys(results['7d']);
@@ -2671,11 +2665,7 @@ module.exports = {
 	getUserRole,
 	updateUserSettings,
 	omitUserFields,
-	signUpUser,
 	registerUserLogin,
-	verifyUser,
-	getVerificationCodeByUserEmail,
-	getUserEmailByVerificationCode,
 	getAllUsersAdmin,
 	updateUserRole,
 	updateUserNote,
@@ -2700,7 +2690,6 @@ module.exports = {
 	getUsersNetwork,
 	createUserCryptoAddressByNetworkId,
 	getUserStatsByNetworkId,
-	getVerificationCodeByUserId,
 	checkAffiliation,
 	verifyUserEmailByKitId,
 	generateAffiliationCode,
@@ -2720,5 +2709,8 @@ module.exports = {
 	getUserBalanceHistory,
 	fetchUserProfitLossInfo,
 	revokeAllUserSessions,
-	changeKitUserEmail
+	changeKitUserEmail,
+	storeVerificationCode,
+	signUpUser,
+	verifyUser
 };

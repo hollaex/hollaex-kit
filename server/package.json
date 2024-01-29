@@ -1,5 +1,5 @@
 {
-	"version": "2.9.2",
+	"version": "2.10.0",
 	"private": false,
 	"description": "HollaEx Kit",
 	"keywords": [
@@ -17,7 +17,7 @@
 		"bignumber.js": "9.1.1",
 		"bluebird": "3.5.3",
 		"body-parser": "1.19.0",
-		"ccxt": "1.92.89",
+		"ccxt": "4.1.96",
 		"chai": "4.2.0",
 		"chai-http": "4.3.0",
 		"cors": "2.8.5",
