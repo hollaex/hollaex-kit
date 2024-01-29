@@ -2455,8 +2455,9 @@ const fetchUserProfitLossInfo = async (user_id) => {
 	const endDate = moment().toDate();
 	const timeframe = timeframeQuery(startDate, endDate);
 	const userTrades = await getAllUserTradesByKitId(user_id, null, null, null, 'timestamp', 'asc', startDate, endDate, 'all');
-	const userWithdrawals = await getUserWithdrawalsByKitId(user_id, null, null, null, null, null, null, null, null, null, null, startDate, endDate, null, null, 'all');
-	const userDeposits = await getUserDepositsByKitId(user_id, null, null, null, null, null, null, null, null, null, null, startDate, endDate, null, null, 'all'); 
+	
+	const userWithdrawals = await getUserWithdrawalsByKitId(user_id, null, null, null, null, null, null, null, null, 'created_at', 'asc', startDate, endDate, null, null, 'all');
+	const userDeposits = await getUserDepositsByKitId(user_id, null, null, null, null, null, null, null, null, 'created_at', 'asc', startDate, endDate, null, null, 'all'); 
 	const userBalanceHistory = await balanceHistoryModel.findAll({ 
 		where: {
 			user_id,
