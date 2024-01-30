@@ -87,7 +87,7 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 	else if (type === MAILTYPE.SIGNUP) { // ok
 		html = html.replace(/\$\{name\}/g, email);
 		html = html.replace(/\$\{api_name\}/g, API_NAME());
-		html = html.replace(/\$\{link\}/g, `${domain}/verify/${data}`);
+		html = html.replace(/\$\{link\}/g, `${domain}/verify/${data}?email=${email}`);
 	}
 	else if (type === MAILTYPE.WELCOME) { //ok
 		html = html.replace(/\$\{name\}/g, email || '');

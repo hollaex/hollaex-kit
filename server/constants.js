@@ -203,6 +203,7 @@ exports.KIT_CONFIG_KEYS = [
 	'user_payments',
 	'dust',
 	'coin_customizations',
+	'balance_history_config',
 	'transaction_limits',
 ];
 
@@ -649,6 +650,10 @@ exports.EXCHANGE_PLAN_PRICE_SOURCE = {
 exports.STAKE_SUPPORTED_PLANS = ['fiat', 'boost', 'enterprise'];
 
 //STAKE CONSTANTS END
+
+//BALANCE HISTORY CONSTANTS START
+exports.BALANCE_HISTORY_SUPPORTED_PLANS = ['fiat', 'boost', 'enterprise'];
+//BALANCE HISTORY CONSTANTS END 
 
 exports.CUSTOM_CSS = `
 	.topbar-wrapper img {

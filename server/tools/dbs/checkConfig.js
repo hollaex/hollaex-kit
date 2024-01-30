@@ -61,7 +61,8 @@ Status.findOne()
 				quote: 'xht',
 				spread: 0
 			},
-			coin_customizations: existingKitConfigurations.coin_customizations || {}
+			coin_customizations: existingKitConfigurations.coin_customizations || {},
+			balance_history_config: existingKitConfigurations.balance_history_config || {}
 		};
 
 		const secrets = {

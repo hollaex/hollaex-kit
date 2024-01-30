@@ -95,9 +95,10 @@ export const searchAssets = (assets, searchValue = '', isZeroBalanceHidden) => {
 		const hasCoinBalance = !!balance;
 		const isCoinHidden = isZeroBalanceHidden && !hasCoinBalance;
 
-		return (
-			!isCoinHidden &&
-			(key.indexOf(searchTerm) !== -1 || coinName.indexOf(searchTerm) !== -1)
-		);
+		return searchTerm === '0'
+			? balance <= 0
+			: !isCoinHidden &&
+					(key.indexOf(searchTerm) !== -1 ||
+						coinName.indexOf(searchTerm) !== -1);
 	});
 };
