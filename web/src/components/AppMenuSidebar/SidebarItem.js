@@ -2,10 +2,15 @@ import React from 'react';
 import classnames from 'classnames';
 import STRINGS from 'config/localizedStrings';
 import Image from 'components/Image';
-import { EditWrapper } from 'components';
+import { EditWrapper, Connector } from 'components';
+import { Editor, Frame, Element } from '@craftjs/core';
+import { useNode } from '@craftjs/core';
+import { uniqueId } from 'lodash';
+
 
 const SidebarItem = ({ icon, iconId, path, isActive, stringId, onClick }) => {
 	return (
+		<Element id={uniqueId()} is={Connector} canvas>
 		<div
 			className={classnames(
 				'd-flex align-items-center app-menu-bar-side_list',
@@ -20,6 +25,8 @@ const SidebarItem = ({ icon, iconId, path, isActive, stringId, onClick }) => {
 				</EditWrapper>
 			</div>
 		</div>
+		</Element>
+		
 	);
 };
 

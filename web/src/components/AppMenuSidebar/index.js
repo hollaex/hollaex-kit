@@ -2,12 +2,15 @@ import React, { Component } from 'react';
 
 import withConfig from 'components/ConfigProvider/withConfig';
 import SidebarItem from './SidebarItem';
-
+import { EditWrapper, Connector } from 'components';
+import { Editor, Frame, Element } from '@craftjs/core';
+import { useNode } from '@craftjs/core';
+import { uniqueId } from 'lodash';
+import { ConnectorSideMenu } from 'containers/App/App';
 class AppMenuSidebar extends Component {
 	render() {
 		const { icons: ICONS, menuItems, activePath, onMenuChange } = this.props;
 		return (
-			<div className="d-flex justify-content-between app-side-bar">
 				<div className="app-menu-bar-side">
 					{menuItems.map(
 						(
@@ -16,25 +19,27 @@ class AppMenuSidebar extends Component {
 						) => {
 							return (
 								!hide_from_sidebar && (
-									<SidebarItem
-										key={`sidebar_item_${index}`}
-										path={path}
-										stringId={string_id}
-										iconId={icon_id}
-										icon={ICONS[icon_id]}
-										isActive={
-											activePaths
-												? activePaths.includes(activePath)
-												: path === activePath
-										}
-										onClick={() => onMenuChange(path)}
-									/>
+									<Element id={uniqueId()} is={Connector} canvas>
+										<SidebarItem
+											key={`sidebar_item_${index}`}
+											path={path}
+											stringId={string_id}
+											iconId={icon_id}
+											icon={ICONS[icon_id]}
+											isActive={
+												activePaths
+													? activePaths.includes(activePath)
+													: path === activePath
+											}
+											onClick={() => onMenuChange(path)}
+										/>
+									</Element>
+									
 								)
 							);
 						}
 					)}
 				</div>
-			</div>
 		);
 	}
 }

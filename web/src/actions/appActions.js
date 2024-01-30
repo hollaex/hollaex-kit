@@ -655,3 +655,11 @@ export const getWithdrawalMax = (currency, network) => {
 		`/user/withdrawal/max?currency=${currency}&network=${network}`
 	);
 };
+
+
+export const setDashboarEdit = (value) => {
+	return {
+		type: 'EDIT_DASH',
+		payload: value,
+	};
+}

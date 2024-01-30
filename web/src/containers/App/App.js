@@ -28,7 +28,7 @@ import {
 } from 'actions/appActions';
 import { storeTools } from 'actions/toolsAction';
 import STRINGS from 'config/localizedStrings';
-
+import { connect } from 'react-redux';
 import { getChatMinimized, setChatMinimized } from 'utils/theme';
 import { checkUserSessionExpired } from 'utils/utils';
 import { getTokenTimestamp, isLoggedIn, isAdmin } from 'utils/token';
@@ -71,6 +71,145 @@ import GetSocketState from './GetSocketState';
 import withEdit from 'components/EditProvider/withEdit';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { ETHEREUM_EVENTS } from 'actions/stakingActions';
+import {Editor, Frame, Element, useEditor, useNode} from "@craftjs/core";
+import { CraftContainer, ContainerFlex, ProfileSummary, MyAssets, CraftMarkets, CraftAccountDetails } from 'containers/Summary';
+import SummaryBlock from 'containers/Summary/components/SummaryBlock';
+import { Connector, EditWrapper } from 'components';
+import Image from 'components/Image';
+import AccountAssets from 'containers/Summary/components/AccountAssets';
+import AccountDetails from 'containers/Summary/components/AccountDetails';
+import TraderSideInfo from 'containers/Summary/components/TraderSideInfo';
+import AccountTypesList from 'containers/Summary/components/AccountTypesList';
+import { CardBottom, Card, CardTop, Button, Text } from 'containers/Summary';
+import { ReactSVG } from 'react-svg';
+import { connect as Connect } from 'react-redux';
+import { uniqueId } from 'lodash';
+import AppMenuBarItem from 'components/AppBar/AppMenuBarItem';
+import { ConnectorSide } from 'components/AppBar/AppMenuBarItem';
+import SettingsEditor from './SettingsEditor';
+import Toolbox from './Toolbox';
+import SidebarItem from 'components/AppMenuSidebar/SidebarItem';
+import { setDashboarEdit } from 'actions/appActions';
+import { bindActionCreators } from 'redux';
+import store from '../../store';
+
+export const CraftAppBar = ({
+	router,
+	menuItems,
+	activeMenu,
+	handleMenuChange,
+	isHome,
+	isBrowser,
+	isMenubar,
+	background,
+	padding = 0,
+	width,
+	height,
+	display = 'flex',
+	flexDirection = 'column',
+	gap = 10,
+}) => {
+	const {
+		connectors: { connect, drag },
+	} = useNode();
+	return (
+		<div
+			ref={(ref) => connect(drag(ref))}
+			style={{ width, height, display, flexDirection, gap }}
+		>
+				<AppBar
+					router={router}
+					menuItems={menuItems}
+					activePath={activeMenu}
+					onMenuChange={handleMenuChange}
+					isHome={isHome}
+				>
+					{isBrowser && isMenubar && (
+						<AppMenuBar
+							menuItems={menuItems}
+							activePath={activeMenu}
+							onMenuChange={handleMenuChange}
+						/>
+					)}
+				</AppBar>
+		</div>
+	);
+};
+
+export const CraftPairTabs = ({
+	activePath,
+	location,
+	router,
+	background,
+	padding = 0,
+	width,
+	height,
+	display = 'flex',
+	flexDirection = 'column',
+	gap = 10,
+}) => {
+	const {
+		connectors: { connect, drag },
+	} = useNode();
+	return (
+		<div
+			ref={(ref) => connect(drag(ref))}
+			style={{ width, height, display, flexDirection, gap }}
+		>
+					<PairTabs
+						activePath={activePath}
+						location={location}
+						router={router}
+					/>
+		</div>
+	);
+};
+
+export const CraftMenu = ({
+	router,
+	menuItems,
+	activeMenu,
+	onMenuChange,
+	isHome,
+	isBrowser,
+	isMenubar,
+	background,
+	padding = 0,
+	width,
+	height,
+	display = 'flex',
+	flexDirection = 'column',
+	gap = 10,
+}) => {
+	const {
+		connectors: { connect, drag },
+	} = useNode();
+	return (
+		<div
+			ref={(ref) => connect(drag(ref))}
+			 className="d-flex justify-content-between app-side-bar" 
+			style={{ }}
+		>
+				<AppMenuSidebar
+					menuItems={menuItems}
+					activePath={activeMenu}
+					onMenuChange={onMenuChange}
+				/>
+		</div>
+	);
+};
+
+
+export const ConnectorSideMenu = ({ children }) => {
+	const {
+		connectors: { connect },
+	} = useNode();
+	return (
+		<div ref={connect} className="d-flex justify-content-between app-side-bar" style={{ minHeight: 20, minWidth: 20 }}>
+			{children}
+		</div>
+	);
+};
 
 class App extends Component {
 	state = {
@@ -87,6 +226,8 @@ class App extends Component {
 		activeMenu: '',
 		paramsData: {},
 		isCustomNotification: false,
+		editSideMenu: false,
+		editTopMenu: false
 	};
 	ordersQueued = [];
 	limitTimeOut = null;
@@ -700,8 +841,11 @@ class App extends Component {
 			  }
 			: {};
 
+			// console.log({A: appLoaded})
+			// console.log({D: pairsTradesFetched})
 		return (
 			<ThemeProvider>
+			
 				<div>
 					<Helmet>
 						<title>{constants.title}</title>
@@ -754,31 +898,120 @@ class App extends Component {
 								onClick={this.resetTimer}
 								onKeyPress={this.resetTimer}
 							/>
+
+						 {/* <Editor resolver={{
+							AccountAssets,
+							CraftContainer,
+							ContainerFlex,
+							ProfileSummary,
+							MyAssets,
+							SummaryBlock,
+							Connector,
+							Image,
+							EditWrapper,
+							AccountDetails,
+							CraftMarkets,
+							CraftAccountDetails,
+							TraderSideInfo,
+							AccountDetails,
+							AccountTypesList,
+							Card,
+							CardBottom,
+							CardTop,
+							Button,
+							Text,
+							Container,
+							ReactSVG,
+							CraftAppBar,
+							Connect,
+							Dialog,
+							AppMenuSidebar
+				 		}}>  */}
+							{/* <Frame> */}
+
 							<div className="d-flex flex-column f-1">
-								{!isChartEmbed && (
-									<AppBar
+
+
+						<Editor resolver={{
+							AccountAssets,
+							CraftContainer,
+							ContainerFlex,
+							ProfileSummary,
+							MyAssets,
+							SummaryBlock,
+							Connector,
+							Image,
+							EditWrapper,
+							AccountDetails,
+							CraftMarkets,
+							CraftAccountDetails,
+							TraderSideInfo,
+							AccountDetails,
+							AccountTypesList,
+							Card,
+							CardBottom,
+							CardTop,
+							Button,
+							Text,
+							Container,
+							ReactSVG,
+							CraftAppBar,
+							Connect,
+							Dialog,
+							AppMenuSidebar,
+							AppMenuBarItem,
+							ConnectorSide,
+							CraftPairTabs
+				 		}}>
+								<div
+									style={{
+										width: 300,
+										height: 800,
+										backgroundColor: '#303236',
+										color: 'white',
+										position: 'absolute',
+										right: 0,
+										top: 100,
+										zIndex: 1,
+										display: this.state.editTopMenu ? 'block' : 'none'
+									}}
+								>
+									<Toolbox />
+									<SettingsEditor />
+								</div>
+							<Frame >
+								
+
+							<Element id={uniqueId()} is={Connector} canvas>
+
+							{!isChartEmbed && (
+									<CraftAppBar 
 										router={router}
 										menuItems={menuItems}
-										activePath={this.state.activeMenu}
-										onMenuChange={this.handleMenuChange}
+										activeMenu={this.state.activeMenu}
+										handleMenuChange={this.handleMenuChange}
 										isHome={isHome}
-									>
-										{isBrowser && isMenubar && (
-											<AppMenuBar
-												menuItems={menuItems}
-												activePath={this.state.activeMenu}
-												onMenuChange={this.handleMenuChange}
-											/>
-										)}
-									</AppBar>
+										isBrowser={isBrowser}
+										isMenubar={isMenubar}
+									/>
 								)}
+
+					
+							
+
 								{isBrowser && !isHome && !isChartEmbed && (
-									<PairTabs
+									<CraftPairTabs
 										activePath={activePath}
 										location={location}
 										router={router}
 									/>
 								)}
+
+								</Element>
+
+
+								</Frame>
+							</Editor>
 								<div
 									className={classnames(
 										'app_container-content',
@@ -791,13 +1024,75 @@ class App extends Component {
 										}
 									)}
 								>
-									{isMenuSider && (
-										<AppMenuSidebar
+
+								<Editor resolver={{
+							AccountAssets,
+							CraftContainer,
+							ContainerFlex,
+							ProfileSummary,
+							MyAssets,
+							SummaryBlock,
+							Connector,
+							Image,
+							EditWrapper,
+							AccountDetails,
+							CraftMarkets,
+							CraftAccountDetails,
+							TraderSideInfo,
+							AccountDetails,
+							AccountTypesList,
+							Card,
+							CardBottom,
+							CardTop,
+							Button,
+							Text,
+							Container,
+							ReactSVG,
+							CraftAppBar,
+							Connect,
+							Dialog,
+							AppMenuSidebar,
+							AppMenuBarItem,
+							ConnectorSide,
+							CraftPairTabs,
+							CraftMenu,
+							ConnectorSideMenu,
+							SidebarItem 
+				 		}}>
+								<div
+									style={{
+										width: 300,
+										height: 800,
+										backgroundColor: '#303236',
+										color: 'white',
+										position: 'absolute',
+										right: 0,
+										top: 100,
+										zIndex: 1,
+										display: this.state.editSideMenu ? 'block' : 'none'
+									}}
+								>
+									<Toolbox />
+									<SettingsEditor />
+								</div>
+							<Frame >
+								
+
+							<Element id={uniqueId()} is={ConnectorSideMenu} canvas>
+								{isMenuSider && (
+										<CraftMenu
 											menuItems={menuItems}
 											activePath={this.state.activeMenu}
 											onMenuChange={this.handleMenuChange}
 										/>
 									)}
+								</Element>
+
+
+								</Frame>
+							</Editor>
+							
+								
 									<div
 										className={classnames(
 											'app_container-main',
@@ -819,29 +1114,6 @@ class App extends Component {
 											isReady={pairsTradesFetched}
 										/>
 									</div>
-									{/* {isBrowser && !isHome && (
-										<div
-											className={classnames('app_container-sidebar', {
-												'close-sidebar': !isSidebarOpen,
-											})}
-										>
-											<div className="sidebar-toggle-wrapper">
-												<Button
-													type="primary"
-													size="small"
-													icon={
-														isSidebarOpen ? (
-															<CaretRightOutlined />
-														) : (
-															<CaretLeftOutlined />
-														)
-													}
-													onClick={this.toggleSidebar}
-													className="sidebar-toggle"
-												/>
-											</div>
-										</div>
-									)} */}
 									<Dialog
 										isOpen={dialogIsOpen && !isHome}
 										label="hollaex-modal"
@@ -921,7 +1193,26 @@ class App extends Component {
 										/>
 									</div>
 								)}
+
 							</div>
+							{/* </Frame> */}
+						{/* </Editor> */}
+
+						<div style={{
+							 position:'fixed',
+							 top:'100vh',
+							 transform:'translateY(-180%)',
+							 width:'100%',
+							 display: 'flex',
+							 flexDirection: 'column',
+							 gap: 5
+							
+						}}>
+							<div onClick={() => {store.dispatch(setDashboarEdit(false)); this.setState({ editSideMenu: false }); setTimeout(() => { this.setState({ editTopMenu: true, editSideMenu: false })}, 150 * 1) }} style={{ backgroundColor: '#0000FF', color: 'white', fontWeight: 'bold', width: 200, textAlign: 'center', cursor: 'pointer' }}>Edit Top Bar Design</div>
+							<div onClick={() => {store.dispatch(setDashboarEdit(false));  this.setState({ editTopMenu: false, }); setTimeout(() => { this.setState({ editTopMenu: false, editSideMenu: true })  }, 150 * 1)}} style={{ backgroundColor: '#0000FF', color: 'white', fontWeight: 'bold', width: 200, textAlign: 'center', cursor: 'pointer' }}>Edit Side Menu Bar Design</div>
+							<div onClick={() => { store.dispatch(setDashboarEdit(true));  setTimeout(() => { this.setState({ editTopMenu: false, editSideMenu: false })}, 150 * 1) }} style={{ backgroundColor: '#0000FF', color: 'white', fontWeight: 'bold', width: 200, textAlign: 'center', cursor: 'pointer' }}>Edit Dashboard Design</div>
+
+						</div>
 						</div>
 						{ReactDOM.createPortal(
 							<SnackNotification />,
@@ -938,6 +1229,7 @@ class App extends Component {
 						{showFooter && !isChartEmbed && <AppFooter constants={constants} />}
 					</div>
 				</div>
+
 				{isAdmin() && isBrowser && !isChartEmbed && (
 					<OperatorControls initialData={this.props.location} />
 				)}
@@ -953,9 +1245,26 @@ class App extends Component {
 						iconPath={null}
 					/>
 				</Dialog>
+
 			</ThemeProvider>
 		);
 	}
 }
 
+
 export default withEdit(withConfig(App));
+
+// const mapStateToProps = (state) =>{ 
+// 	return ({
+
+// })};
+
+// const mapDispatchToProps = (dispatch) => ({
+// 	setDashboarEdit: bindActionCreators(setDashboarEdit, dispatch),
+// });
+
+// export default connect(
+// 	mapStateToProps,
+// 	mapDispatchToProps
+// )(withEdit(withConfig(App)));
+

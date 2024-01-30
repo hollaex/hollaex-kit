@@ -20,6 +20,8 @@ class Container extends Component {
 	render() {
 		localStorage.setItem('prevPath', window.location.pathname);
 		const { children, appLoaded, isReady } = this.props;
+
+		console.log("GGG")
 		if (appLoaded && isReady) {
 			return <Fragment>{children}</Fragment>;
 		}

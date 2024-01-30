@@ -2,19 +2,41 @@ import React from 'react';
 import classnames from 'classnames';
 import STRINGS from 'config/localizedStrings';
 import { EditWrapper } from 'components';
+import {  Connector } from 'components';
+import { Editor, Frame, Element } from '@craftjs/core';
+import { uniqueId } from 'lodash';
+import { useNode } from '@craftjs/core';
+
+export const ConnectorSide = ({ children }) => {
+	const {
+		connectors: { connect },
+	} = useNode();
+	return (
+		<div ref={connect}
+			className={classnames('app-menu-bar-content d-flex text_overflow')}
+
+		>
+			{children}
+		</div>
+	);
+};
+
 
 const AppMenuBarItem = ({ path, isActive, onClick, stringId }) => {
+	
 	return (
-		<div
-			className={classnames('app-menu-bar-content d-flex text_overflow', {
-				'active-menu': isActive,
-			})}
-			onClick={() => onClick(path)}
-		>
-			<div className="app-menu-bar-content-item d-flex text_overflow">
-				<EditWrapper stringId={stringId}>{STRINGS[stringId]}</EditWrapper>
-			</div>
-		</div>
+		<Element id={uniqueId()} is={ConnectorSide} canvas>
+			<span
+				className={classnames('', {
+					'active-menu': isActive,
+				})}
+			>
+				<div onClick={() => onClick(path)} className="app-menu-bar-content-item d-flex text_overflow">
+					<EditWrapper stringId={stringId}>{STRINGS[stringId]}</EditWrapper>
+				</div>
+			</span>
+		</Element>
+		
 	);
 };
 

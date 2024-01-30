@@ -4,10 +4,10 @@ import { useNode } from '@craftjs/core';
 
 const Connector = ({ children }) => {
 	const {
-		connectors: { connect },
+			connectors: { connect, drag },
 	} = useNode();
 	return (
-		<div ref={connect} style={{ minHeight: 20, minWidth: 20 }}>
+		<div 	ref={(ref) => connect(drag(ref))} style={{ minHeight: 20, minWidth: 20 }}>
 			{children}
 		</div>
 	);
