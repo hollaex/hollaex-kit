@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { DatePicker, Input, Select, Button } from 'antd';
+import { DatePicker, Input, Select, Button, Checkbox } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import moment from 'moment';
 
@@ -68,6 +68,10 @@ const FieldComponent = ({
 		onHandleFieldChange({ currency: value.toLowerCase() });
 	};
 
+	const onHandleCheck = (value) => {
+		onHandleFieldChange({ is_valid: value.target.checked });
+	};
+
 	const handleField = (handleRemove, value) => {
 		switch (type) {
 			case 'select':
@@ -87,6 +91,16 @@ const FieldComponent = ({
 						placeholder={'Input User ID'}
 						onChange={onHandle}
 					/>
+				);
+			case 'boolean':
+				return (
+					<Checkbox
+						onChange={onHandleCheck}
+						checked={object.value}
+						style={{ color: 'white', marginTop: 5 }}
+					>
+						Valid Address
+					</Checkbox>
 				);
 			case 'time-picker':
 				return (
@@ -153,7 +167,8 @@ const MultiFilter = ({
 			data.value = data.name;
 		});
 		tempfield.forEach((data) => {
-			data.value = '';
+			if (data.name === 'is_valid') data.value = true;
+			else data.value = '';
 		});
 		setOptions([...tempOptions]);
 		setFieldsData([...fieldsData, ...tempfield]);
