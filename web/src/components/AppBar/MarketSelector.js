@@ -79,57 +79,40 @@ class MarketSelector extends Component {
 		return unique(Object.entries(pairs).map(([_, { pair_2 }]) => pair_2));
 	};
 
+	filterData = (data, filterValue, key1, key2) => {
+		return data.filter((item) => {
+			const value1 = item[key1] || item[key2];
+			return value1.toLowerCase().indexOf(filterValue) !== -1;
+		});
+	};
+
 	onAddTabClick = (tabSymbol) => {
 		const { quicktrade, markets } = this.props;
-
 		const coinsData = this.getCoinsData(quicktrade, markets);
-		const tabResult = [];
 
-		if (tabSymbol === 'all') {
-			this.setState({ searchResult: coinsData, selectedTabMenu: tabSymbol });
-		} else {
-			coinsData.forEach((data) => {
-				const { key, symbol, fullname, display_name } = data;
-				const pair_symbol = key || symbol;
-				const pair_name = fullname || display_name;
+		const tabResult =
+			tabSymbol === 'all'
+				? coinsData
+				: this.filterData(coinsData, tabSymbol, 'key', 'symbol');
 
-				if (
-					pair_symbol.indexOf(tabSymbol) !== -1 ||
-					pair_name.toLowerCase().indexOf(tabSymbol) !== -1
-				) {
-					tabResult.push(data);
-				}
-			});
-
-			this.setState({ searchResult: tabResult, selectedTabMenu: tabSymbol });
-		}
+		this.setState({ searchResult: tabResult, selectedTabMenu: tabSymbol });
 	};
 
 	handleSearch = (value = '') => {
 		const { quicktrade, markets } = this.props;
-
+		const { selectedTabMenu } = this.state;
 		const coinsData = this.getCoinsData(quicktrade, markets);
-		const result = [];
+
 		const searchValue = value ? value.toLowerCase().trim() : '';
+		const tabResult =
+			selectedTabMenu === 'all'
+				? coinsData
+				: this.filterData(coinsData, selectedTabMenu, 'key', 'symbol');
+		const result = !value
+			? tabResult
+			: this.filterData(tabResult, searchValue, 'key', 'symbol');
 
-		if (!value) {
-			this.setState({ searchResult: coinsData, searchValue: '' });
-		} else {
-			coinsData.forEach((data) => {
-				const { key, symbol, fullname, display_name } = data;
-				const pair_symbol = key || symbol;
-				const pair_name = fullname || display_name;
-
-				if (
-					pair_symbol.indexOf(searchValue) !== -1 ||
-					pair_name.toLowerCase().indexOf(searchValue) !== -1
-				) {
-					result.push(data);
-				}
-			});
-
-			this.setState({ searchResult: result, searchValue: value });
-		}
+		this.setState({ searchResult: result, searchValue: value });
 	};
 
 	onViewMarketsClick = () => {
@@ -218,7 +201,7 @@ class MarketSelector extends Component {
 			quicktrade,
 		} = this.props;
 
-		const { searchResult, selectedTabMenu } = this.state;
+		const { searchResult } = this.state;
 
 		const tabMenuLength = markets.length;
 		const hasTabMenu = tabMenuLength !== 0;
@@ -242,7 +225,7 @@ class MarketSelector extends Component {
 						/>
 					</div>
 					<div className="scroll-view">
-						{hasTabMenu ? (
+						{hasTabMenu && coinsData.length > 0 ? (
 							coinsData.map((market, index) => {
 								const {
 									key,
