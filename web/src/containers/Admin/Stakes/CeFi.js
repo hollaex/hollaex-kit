@@ -121,7 +121,7 @@ const CeFi = ({ coins, features, kit }) => {
 					<div className="d-flex" style={{ fontSize: '1rem' }}>
 						<Coins type={data.currency} />
 						<span style={{ position: 'relative', left: 5, top: 8 }}>
-							{data.currency && coins[data.currency].fullname}
+							{data.currency && coins?.[data?.currency]?.fullname}
 						</span>
 					</div>
 				);
@@ -246,7 +246,7 @@ const CeFi = ({ coins, features, kit }) => {
 			key: 'earning',
 			render: (user_id, data) => {
 				const incrementUnit =
-					coins[data.reward_currency || data.currency].increment_unit;
+					coins?.[data.reward_currency || data.currency]?.increment_unit;
 				const decimalPoint = new BigNumber(incrementUnit).dp();
 				const sourceAmount =
 					data?.reward &&
