@@ -38,7 +38,7 @@ class MarketSelector extends Component {
 		const { selectedTabMenu, searchValue } = this.state;
 
 		this.onAddTabClick(selectedTabMenu);
-		this.handleSearch(undefined, searchValue);
+		this.handleSearch(searchValue);
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -79,42 +79,52 @@ class MarketSelector extends Component {
 		return unique(Object.entries(pairs).map(([_, { pair_2 }]) => pair_2));
 	};
 
-	onAddTabClick = (symbol) => {
-		const { pairs } = this.props;
+	onAddTabClick = (tabSymbol) => {
+		const { quicktrade, markets } = this.props;
 
+		const coinsData = this.getCoinsData(quicktrade, markets);
 		const tabResult = [];
-		if (symbol === 'all') {
-			this.setState({ tabResult: Object.keys(pairs), selectedTabMenu: symbol });
+
+		if (tabSymbol === 'all') {
+			this.setState({ searchResult: coinsData, selectedTabMenu: tabSymbol });
 		} else {
-			Object.entries(pairs).forEach(([key, { pair_2 }]) => {
-				if (pair_2 === symbol) {
-					tabResult.push(key);
+			coinsData.forEach((data) => {
+				const { key, symbol, fullname, display_name } = data;
+				const pair_symbol = key || symbol;
+				const pair_name = fullname || display_name;
+
+				if (
+					pair_symbol.indexOf(tabSymbol) !== -1 ||
+					pair_name.toLowerCase().indexOf(tabSymbol) !== -1
+				) {
+					tabResult.push(data);
 				}
 			});
 
-			this.setState({ tabResult, selectedTabMenu: symbol });
+			this.setState({ searchResult: tabResult, selectedTabMenu: tabSymbol });
 		}
 	};
 
-	handleSearch = (_, value = '') => {
-		const { pairs, coins } = this.props;
+	handleSearch = (value = '') => {
+		const { quicktrade, markets } = this.props;
+
+		const coinsData = this.getCoinsData(quicktrade, markets);
 		const result = [];
 		const searchValue = value ? value.toLowerCase().trim() : '';
 
 		if (!value) {
-			this.setState({ searchResult: Object.keys(pairs), searchValue: '' });
+			this.setState({ searchResult: coinsData, searchValue: '' });
 		} else {
-			Object.entries(pairs).forEach(([key, pair]) => {
-				const { pair_base, pair_2 } = pair;
-				const { fullname = '' } = coins[pair_base] || DEFAULT_COIN_DATA;
+			coinsData.forEach((data) => {
+				const { key, symbol, fullname, display_name } = data;
+				const pair_symbol = key || symbol;
+				const pair_name = fullname || display_name;
 
 				if (
-					key.indexOf(searchValue) !== -1 ||
-					pair_base.indexOf(searchValue) !== -1 ||
-					pair_2.indexOf(searchValue) !== -1 ||
-					fullname.toLowerCase().indexOf(searchValue) !== -1
+					pair_symbol.indexOf(searchValue) !== -1 ||
+					pair_name.toLowerCase().indexOf(searchValue) !== -1
 				) {
-					result.push(key);
+					result.push(data);
 				}
 			});
 
@@ -163,8 +173,37 @@ class MarketSelector extends Component {
 		this.closeAddTabMenu();
 	};
 
+	getTypeSortedData = (array) => {
+		return array.sort((a, b) => {
+			// Custom sorting logic: "pro" comes first
+			if (a.type === 'pro' && b.type !== 'pro') {
+				return -1;
+			} else if (a.type !== 'pro' && b.type === 'pro') {
+				return 1;
+			} else {
+				return 0;
+			}
+		});
+	};
+
+	movePinnedItems = (array) => {
+		const pinnedMarkets = this.props.pinned_markets;
+		const sortedArray = array.sort((a, b) => {
+			// Find the first ID that differs between the two objects
+			const id = pinnedMarkets.find((i) => a?.key !== b?.key);
+
+			if (id) {
+				// If a has the ID, move it to the top
+				return a?.key === id ? -1 : 1;
+			}
+
+			return 0;
+		});
+		return sortedArray;
+	};
+
 	getCoinsData = (quicktrade, markets) =>
-		quicktrade.map((data) =>
+		this.getTypeSortedData(quicktrade).map((data) =>
 			data.type === 'pro'
 				? markets.find(({ key }) => key === data.symbol) || { ...data }
 				: { ...data }
@@ -174,21 +213,18 @@ class MarketSelector extends Component {
 		const {
 			wrapperClassName,
 			constants,
-			markets: allMarkets,
+			markets,
 			pair: activeMarket,
 			quicktrade,
 		} = this.props;
 
-		const { searchResult, tabResult } = this.state;
-		const { handleSearch } = this;
-
-		const markets = allMarkets.filter(
-			({ key }) => searchResult.includes(key) && tabResult.includes(key)
-		);
+		const { searchResult, selectedTabMenu } = this.state;
 
 		const tabMenuLength = markets.length;
 		const hasTabMenu = tabMenuLength !== 0;
-		const coinsData = this.getCoinsData(quicktrade, markets);
+		const coinsData = this.movePinnedItems(
+			searchResult || this.getCoinsData(quicktrade, markets)
+		);
 
 		return (
 			<div className={classnames(wrapperClassName)}>
@@ -201,7 +237,7 @@ class MarketSelector extends Component {
 							name={STRINGS['SEARCH_TXT']}
 							placeHolder={`${STRINGS['SEARCH_TXT']}...`}
 							className="app-bar-search-field"
-							handleSearch={handleSearch}
+							handleSearch={(e) => this.handleSearch(e.target.value)}
 							showCross
 						/>
 					</div>
@@ -327,7 +363,15 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (store) => {
 	const {
-		app: { pairs, coins, favourites, constants, pair, quicktrade },
+		app: {
+			pairs,
+			coins,
+			favourites,
+			constants,
+			pair,
+			quicktrade,
+			pinned_markets,
+		},
 	} = store;
 
 	return {
@@ -338,6 +382,7 @@ const mapStateToProps = (store) => {
 		constants,
 		markets: MarketsSelector(store),
 		quicktrade,
+		pinned_markets,
 	};
 };
 
