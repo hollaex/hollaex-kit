@@ -23,6 +23,15 @@ export const MENU_ITEMS = {
 			hide_from_menulist: true,
 			hide_from_bottom_nav: false,
 		},
+		{
+			id: 'assets',
+			path: '/assets',
+			string_id: 'ASSETS',
+			hide_from_sidebar: true,
+			hide_from_appbar: false,
+			hide_from_menulist: true,
+			hide_from_bottom_nav: true,
+		},
 	],
 	features: [
 		{

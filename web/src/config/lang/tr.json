@@ -271,7 +271,11 @@
 	"VERIFICATION_EMAIL": {
 		"INVALID_UUID": "Hatalı kod",
 		"TEXT_1": "E-Posta'nızı başarıyla onayladınız.",
-		"TEXT_2": "Şimdi giriş yapabilirsiniz."
+		"TEXT_2": "Şimdi giriş yapabilirsiniz.",
+		"CANCEL_BUTTON": "KAPAT",
+		"CONFIRM_BUTTON": "KAYIT ONAYLA",
+		"CONFIRM_TEXT": "Kaydı Onayla",
+		"CONFIRM_DESCRIPTION": "Lütfen hesap kaydınızı aşağıdaki düğmeye tıklayarak onaylayın"
 	},
 	"USER_VERIFICATION": {
 		"INFO_TXT": "Buradan hesap onay ve hesap yükseltimi durumunuzu görüntüleyebilirsiniz.",
@@ -944,7 +948,15 @@
 		"CONFIRM_VIA_EMAIL_3": "E-Posta'nız ile 5 dakika içinde çekim.",
 		"WITHDRAW_CONFIRM_SUCCESS_1": "Çekim talebiniz onaylandı. Kısa sürede tamamlanacaktır.",
 		"WITHDRAW_CONFIRM_SUCCESS_2": "Çekim durumununuzu görüntülemek için, lütfen ÇEKİM GEÇMİŞİ sayfanıza bakınız.",
-		"GO_WITHDRAWAL_HISTORY": "Çekim Geçmişine git"
+		"GO_WITHDRAWAL_HISTORY": "Çekim Geçmişine git",
+		"WITHDRAWAL_CONFIRM_FINAL": "Son Çekme Onayı",
+		"WITHDRAWAL_CONFIRM_WARNING": "Lütfen onaylamadan önce aşağıdaki çekmeyi kontrol edin.",
+		"WITHDRAWAL_CONFIRM_AMOUNT": "Miktar",
+		"WITHDRAWAL_CONFIRM_FEE": "Ücret",
+		"WITHDRAWAL_CONFIRM_ADDRESS": "Adres",
+		"WITHDRAWAL_CONFIRM_NETWORK": "Ağ",
+		"WITHDRAWAL_CANCEL_BUTTON": "KAPAT",
+		"WITHDRAWAL_CONFIRM_BUTTON": "ÇEKMEYİ ONAYLA"
 	},
 	"WALLET_BUTTON_BASE_DEPOSIT": "yatırım",
 	"WALLET_BUTTON_BASE_WITHDRAW": "çekim",

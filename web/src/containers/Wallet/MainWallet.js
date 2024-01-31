@@ -22,6 +22,7 @@ import HeaderSection from './HeaderSection';
 import { STATIC_ICONS } from 'config/icons';
 import { isStakingAvailable, STAKING_INDEX_COIN } from 'config/contracts';
 import { assetsSelector, searchAssets } from './utils';
+import ProfitLossSection from './ProfitLossSection';
 
 const ZERO_BALANCE_KEY = 'isZeroBalanceHidden';
 
@@ -39,6 +40,7 @@ class Wallet extends Component {
 			isOpen: true,
 			isZeroBalanceHidden,
 			showDustSection: false,
+			activeBalanceHistory: false,
 		};
 	}
 
@@ -121,6 +123,10 @@ class Wallet extends Component {
 		this.setState({ isZeroBalanceHidden });
 	};
 
+	handleBalanceHistory = (value) => {
+		this.setState({ activeBalanceHistory: value });
+	};
+
 	generateSections = (
 		changeSymbol,
 		balance,
@@ -171,6 +177,7 @@ class Wallet extends Component {
 						showDustSection={showDustSection}
 						goToWallet={this.goToWallet}
 						isZeroBalanceHidden={isZeroBalanceHidden}
+						handleBalanceHistory={this.handleBalanceHistory}
 					/>
 				),
 				isOpen: true,
@@ -284,7 +291,13 @@ class Wallet extends Component {
 								<>
 									<HeaderSection icons={ICONS} />
 									<NotLoggedIn>
-										<Accordion sections={sections} showHeader={false} />
+										{!this.state.activeBalanceHistory ? (
+											<Accordion sections={sections} showHeader={false} />
+										) : (
+											<ProfitLossSection
+												handleBalanceHistory={this.handleBalanceHistory}
+											/>
+										)}
 									</NotLoggedIn>
 								</>
 							)}

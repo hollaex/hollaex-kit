@@ -316,7 +316,11 @@
 	"VERIFICATION_EMAIL": {
 		"INVALID_UUID": "Mã không hợp lệ",
 		"TEXT_1": "Quý khách đã xác nhận địa chi email thành công.",
-		"TEXT_2": "Giờ đây, quý khách có thể thể đăng nhập vào tài khoản."
+		"TEXT_2": "Giờ đây, quý khách có thể thể đăng nhập vào tài khoản.",
+		"CANCEL_BUTTON": "ĐÓNG",
+		"CONFIRM_BUTTON": "XÁC NHẬN ĐĂNG KÝ",
+		"CONFIRM_TEXT": "Xác Nhận Đăng Ký",
+		"CONFIRM_DESCRIPTION": "Vui lòng xác nhận đăng ký tài khoản của bạn bằng cách nhấn nút bên dưới"
 	},
 	"USER_VERIFICATION": {
 		"INFO_TXT": "Quý khách có thể xác nhận trình tự xác thực và nâng cấp tài khoản tại đây.",
@@ -821,7 +825,15 @@
 		"GO_WITHDRAWAL_HISTORY": "Chuyển đến Lịch sử rút tiền",
 		"MESSAGE_FEE_COIN": "Phí giao dịch của {0}",
 		"WITHDRAWALS_FORM_ERROR_TITLE": "Thông tin chuyển tiền không chính xác",
-		"WITHDRAWALS_FORM_ERROR": "Chuyển tiền của bạn đã thất bại. Gửi tiền đến email yêu cầu người dùng phải có tài khoản trong trao đổi này. Kiểm tra xem email có chính xác không và vui lòng thử lại."
+		"WITHDRAWALS_FORM_ERROR": "Chuyển tiền của bạn đã thất bại. Gửi tiền đến email yêu cầu người dùng phải có tài khoản trong trao đổi này. Kiểm tra xem email có chính xác không và vui lòng thử lại.",
+		"WITHDRAWAL_CONFIRM_FINAL": "Xác Nhận Rút Cuối Cùng",
+		"WITHDRAWAL_CONFIRM_WARNING": "Vui lòng kiểm tra giao dịch rút của bạn dưới đây trước khi xác nhận.",
+		"WITHDRAWAL_CONFIRM_AMOUNT": "Số tiền",
+		"WITHDRAWAL_CONFIRM_FEE": "Phí",
+		"WITHDRAWAL_CONFIRM_ADDRESS": "Địa chỉ",
+		"WITHDRAWAL_CONFIRM_NETWORK": "Mạng",
+		"WITHDRAWAL_CANCEL_BUTTON": "ĐÓNG",
+		"WITHDRAWAL_CONFIRM_BUTTON": "XÁC NHẬN RÚT"
 	},
 	"WALLET_BUTTON_BASE_DEPOSIT": "Nạp tiền",
 	"WALLET_BUTTON_BASE_WITHDRAW": "Rút tiền",

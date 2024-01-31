@@ -166,9 +166,9 @@ class DonutChart extends Component {
 		const isDonutValue = this.props && this.props.isCurrencyWallet;
 
 		const filterByPercentage = () => {
-			let arr = [];
+			let coins = [];
 			let othersTotalPercentage = 0;
-			let othersIndex = -1;
+			let isUpdated = false;
 			let startAngle = 0;
 
 			sortedData.forEach((value, i) => {
@@ -180,35 +180,40 @@ class DonutChart extends Component {
 						balancePercentage <= filterDonutPercentage
 					) {
 						othersTotalPercentage += balancePercentage;
-						if (othersIndex === -1) {
-							othersIndex = i;
-						}
 					} else if (balancePercentage >= filterDonutPercentage) {
 						startAngle = value.endAngle;
-						arr.push({ ...value });
+						coins.push({ ...value });
 					}
 				}
 			});
-			if (othersIndex !== -1) {
-				arr[othersIndex] = {
-					...sortedData[othersIndex],
-					data: {
-						...sortedData[othersIndex].data,
-						display_name: 'Others',
-						balancePercentage: `${othersTotalPercentage.toFixed(1)}%`,
-					},
-					startAngle,
-					endAngle: nextStartAngle,
-				};
+			if (!isUpdated && this.state.isData) {
+				if (coins.length) {
+					isUpdated = true;
+					const updatedObj = {
+						...coins[0],
+						data: {
+							...coins[0].data,
+							display_name: 'Others',
+							balancePercentage: `${othersTotalPercentage.toFixed(1)}%`,
+							symbol: 'Others',
+						},
+						value: othersTotalPercentage,
+						startAngle,
+						endAngle:
+							startAngle === nextStartAngle
+								? nextStartAngle * 1.01
+								: nextStartAngle,
+					};
+					coins.push(updatedObj);
+				}
 			}
-			return arr;
+			return coins;
 		};
 
 		const renderDonut = () => {
 			const data = sortedData.map((value, i) =>
 				this.renderSlice(value, i, width, height)
 			);
-
 			if (this.state && this.state.isData) {
 				if (!isDonutValue) {
 					return filterByPercentage().map((value, i) =>
@@ -309,9 +314,13 @@ class DonutChart extends Component {
 				<g key={i}>
 					<path
 						d={arcj(value)}
-						className={classnames(`chart_${data.symbol}`, 'chart_slice', {
-							slice_active: activeSlice,
-						})}
+						className={
+							data.symbol === 'Others'
+								? 'others-color'
+								: classnames(`chart_${data.symbol}`, 'chart_slice', {
+										slice_active: activeSlice,
+								  })
+						}
 						onMouseOver={() => this.handleHover(data.symbol)}
 						onMouseOut={this.handleOut}
 					/>
@@ -320,7 +329,7 @@ class DonutChart extends Component {
 							<text
 								transform={translate(valX, valY)}
 								x="5px"
-								dy="25px"
+								dy={this.state.higherId === this.state.hoverId ? '5px' : '25px'}
 								textAnchor="middle"
 								className="donut-label-percentage"
 							>
@@ -329,7 +338,7 @@ class DonutChart extends Component {
 							<text
 								transform={translate(valX, valY - 12)}
 								x="5px"
-								dy="25px"
+								dy={this.state.higherId === this.state.hoverId ? '5px' : '25px'}
 								textAnchor="middle"
 								className="donut-label-pair"
 							>
