@@ -114,6 +114,7 @@ const InterfaceForm = ({
 							style={{ width: 250 }}
 							onChange={(e) => {
 								setBalanceHistoryCurrency({
+									...balanceHistoryCurrency,
 									currency: e,
 								});
 							}}
