@@ -329,7 +329,7 @@ class DonutChart extends Component {
 							<text
 								transform={translate(valX, valY)}
 								x="5px"
-								dy="25px"
+								dy={this.state.higherId === this.state.hoverId ? '5px' : '25px'}
 								textAnchor="middle"
 								className="donut-label-percentage"
 							>
@@ -338,7 +338,7 @@ class DonutChart extends Component {
 							<text
 								transform={translate(valX, valY - 12)}
 								x="5px"
-								dy="25px"
+								dy={this.state.higherId === this.state.hoverId ? '5px' : '25px'}
 								textAnchor="middle"
 								className="donut-label-pair"
 							>
