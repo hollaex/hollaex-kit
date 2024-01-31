@@ -105,7 +105,7 @@ const AssetsBlock = ({
 					response.data.length > 7 ? 7 - 1 : response.data.length - 1;
 
 				let newGraphData = [];
-				for (let i = 0; i < length; i++) {
+				for (let i = 0; i < length + 1; i++) {
 					const balanceData = response.data.find(
 						(history) =>
 							moment(history.created_at).format('YYYY-MM-DD') ===
@@ -426,11 +426,17 @@ const AssetsBlock = ({
 								</div>
 							)}
 						</div>
-						{!isUpgrade && balance_history_config?.active ? (
+						{!isUpgrade &&
+						balance_history_config?.active &&
+						graphData.length > 1 ? (
 							<div>
-								<div style={{ marginTop: 10 }}>7 Day Performance Trend</div>
+								<div style={{ marginTop: 10 }}>
+									<EditWrapper stringId="PROFIT_LOSS.PERFORMANCE_TREND">
+										{STRINGS['PROFIT_LOSS.PERFORMANCE_TREND']}
+									</EditWrapper>
+								</div>
 								<div style={{ width: 300, opacity: 0, fontSize: 1 }}>
-									7 Day Performance Trend
+									{STRINGS['PROFIT_LOSS.WALLET_PERFORMANCE_TITLE']}
 								</div>
 
 								<div

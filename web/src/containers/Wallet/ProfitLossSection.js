@@ -156,7 +156,7 @@ const ProfitLossSection = ({
 				let balance = balanceData || response.data[length];
 
 				let newGraphData = [];
-				for (let i = 0; i < length; i++) {
+				for (let i = 0; i < length + 1; i++) {
 					if (currentDay === 7) {
 						const balanceData = response.data.find(
 							(history) =>
