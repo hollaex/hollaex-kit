@@ -33,8 +33,6 @@ import { getQuickTrade, executeQuickTrade } from 'actions/quickTradeActions';
 import { FieldError } from 'components/Form/FormFields/FieldWrapper';
 import { translateError } from 'components/QuickTrade/utils';
 import QuoteExpiredBlock from './QuoteExpiredBlock';
-import { STATIC_ICONS } from 'config/icons';
-
 
 const PAIR2_STATIC_SIZE = 0.000001;
 const SPENDING = {
