@@ -107,7 +107,7 @@ class InputGroup extends React.PureComponent {
 		const error = translateError(this.renderErrorMessage(inputValue));
 
 		return (
-			<div className="py-2">
+			<div className="pt-2">
 				<div className="input-holder">
 					<div className="d-flex">
 						<div className="currency-dropdown">

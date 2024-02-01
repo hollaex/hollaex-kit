@@ -33,6 +33,8 @@ import { getQuickTrade, executeQuickTrade } from 'actions/quickTradeActions';
 import { FieldError } from 'components/Form/FormFields/FieldWrapper';
 import { translateError } from 'components/QuickTrade/utils';
 import QuoteExpiredBlock from './QuoteExpiredBlock';
+import { STATIC_ICONS } from 'config/icons';
+
 
 const PAIR2_STATIC_SIZE = 0.000001;
 const SPENDING = {
@@ -546,12 +548,16 @@ const QuickTrade = ({
 									disabled={disabled}
 									type="button"
 									className={!isMobile ? 'w-50' : 'w-100'}
+									// iconId={'SETUP_QUICK_TRADE'}
+									// iconList={STATIC_ICONS}
+
 								/>
 							</div>
 							<Footer
 								brokerUsed={isUseBroker}
 								name={display_name}
 								isNetwork={isNetwork}
+								pair={pair}
 							/>
 						</div>
 					</div>
