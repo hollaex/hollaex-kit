@@ -2,8 +2,8 @@ import React from 'react';
 import classnames from 'classnames';
 import Image from 'components/Image';
 import { EditWrapper, Connector } from 'components';
-import { Editor, Frame, Element } from '@craftjs/core';
-import { useNode } from '@craftjs/core';
+import { Editor, Frame, Element } from 'craftjs';
+import { useNode } from 'craftjs';
 import { uniqueId } from 'lodash';
 
 const SummaryBlock = (props) => {

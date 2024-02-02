@@ -221,7 +221,7 @@ const INITIAL_STATE = {
 		is_descending: true,
 	},
 	default_digital_assets_sort: DIGITAL_ASSETS_SORT.CHANGE,
-	editMode: false
+	editMode: false,
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -768,10 +768,9 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 				default_digital_assets_sort: payload.default_digital_assets_sort,
 			};
 		case 'EDIT_DASH':
-			console.log({payload})
 			return {
 				...state,
-				editMode: payload
+				editMode: payload,
 			};
 		default:
 			return state;

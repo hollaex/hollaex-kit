@@ -8,8 +8,8 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import { renderStatusIcon } from 'components/CheckTitle';
 import { DollarOutlined, UserOutlined } from '@ant-design/icons';
 import { isLoggedIn } from 'utils/token';
-import { Editor, Frame, Element } from '@craftjs/core';
-import { useNode } from '@craftjs/core';
+import { Editor, Frame, Element } from 'craftjs';
+import { useNode } from 'craftjs';
 import { uniqueId } from 'lodash';
 import TraderSideInfo from './TraderSideInfo';
 

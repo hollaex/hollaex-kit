@@ -8,8 +8,8 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import { renderStatusIcon } from 'components/CheckTitle';
 import { DollarOutlined, UserOutlined } from '@ant-design/icons';
 import { isLoggedIn } from 'utils/token';
-import { Editor, Frame, Element } from '@craftjs/core';
-import { useNode } from '@craftjs/core';
+import { Editor, Frame, Element } from 'craftjs';
+import { useNode } from 'craftjs';
 import { uniqueId } from 'lodash';
 
 const TraderSideInfo = ({
@@ -28,16 +28,8 @@ const TraderSideInfo = ({
 		connectors: { connect, drag },
 	} = useNode();
 
-	const [test, setTest] = useState('test');
-	useEffect(() => {
-		setTimeout(() => {
-			setTest('TELSKADOIASJKDKASJDKASJD');
-		}, 1000 * 15);
-	}, []);
-
 	return (
 		<div ref={(ref) => connect(drag(ref))}>
-			<div>{test}</div>
 			{isAccountDetails && (
 				<EditWrapper
 					stringId="SUMMARY.LEVEL_OF_ACCOUNT"

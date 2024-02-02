@@ -5,9 +5,9 @@ import { EditWrapper, Connector } from 'components';
 import AccountTypesList from './AccountTypesList';
 import AccountTypeDetails from './AccountTypeDetails';
 import MobileAccountTypeList from '../MobileAccountTypeList';
-import { useNode } from '@craftjs/core';
+import { useNode } from 'craftjs';
 import { uniqueId } from 'lodash';
-import { Editor, Frame, Element } from '@craftjs/core';
+import { Editor, Frame, Element } from 'craftjs';
 import STRINGS from 'config/localizedStrings';
 
 const AccountDetails = ({

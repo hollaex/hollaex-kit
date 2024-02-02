@@ -8,7 +8,7 @@ import {
 } from '@material-ui/core';
 import { Chip, FormControl, FormLabel, Slider } from '@material-ui/core';
 import { FormControlLabel, Switch } from '@material-ui/core';
-import { useEditor } from '@craftjs/core';
+import { useEditor } from 'craftjs';
 import ContentEditable from 'react-contenteditable';
 import { RadioGroup, Radio } from '@material-ui/core';
 import ColorPicker from 'material-ui-color-picker';
