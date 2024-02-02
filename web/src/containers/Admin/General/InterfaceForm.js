@@ -105,6 +105,7 @@ const InterfaceForm = ({
 							This currency is used as the base currency to calculate and
 							display all the profits and loss. It is normally set to a fiat
 							currency or a stable coin.
+							Note that this currency can not be modified in future after it starts getting the information.
 						</div>
 						<Select
 							showSearch

@@ -121,7 +121,7 @@ const sendRequestWithdrawalEmail = (user_id, address, amount, currency, opts = {
 }) => {
 	let fee = opts.fee;
 	let fee_coin = opts.fee_coin;
-	let fee_markup
+	let fee_markup;
 
 	return verifyOtpBeforeAction(user_id, opts.otpCode)
 		.then((validOtp) => {
@@ -174,8 +174,8 @@ const withdrawalRequestEmail = (user, data, domain, ip) => {
 					amount,
 					fee,
 					fee_markup,
-					fee_coin: (getKitCoin(fee_coin).display_name) ? getKitCoin(fee_coin).display_name : fee_coin,
-					currency: (getKitCoin(currency).display_name) ? getKitCoin(currency).display_name : currency,
+					fee_coin: fee_coin,
+					currency: currency,
 					transaction_id: token,
 					address,
 					ip,

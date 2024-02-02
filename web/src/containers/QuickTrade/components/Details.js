@@ -163,9 +163,9 @@ const Details = ({
 	return (
 		<div className="trade-details-wrapper">
 			<div className="trade-details-content">
-				<div className="d-flex pb-24">
-					<Coin iconId={icon_id} type="CS11" />
-					<div className="pl-2">
+				<div className="d-flex">
+					<Coin iconId={icon_id} type="CS12" />
+					<div className="pl-18">
 						<div
 							className={classNames('pairs', {
 								'pointer underline': !isNetwork && !brokerUsed,
@@ -199,7 +199,7 @@ const Details = ({
 							</div>
 						</div>
 					</div>
-					<div className="pl-6 trade_tabs-container">
+					<div className="trade_tabs-container">
 						<div className="sub-title caps">
 							{
 								STRINGS[
@@ -223,7 +223,7 @@ const Details = ({
 					<div className="fade-area" />
 					<MiniSparkLine chartData={chartData} />
 				</div>
-				<div className="d-flex pb-35">
+				<div className="d-flex pb-40">
 					<div>
 						<div className="sub-title">
 							{
@@ -241,7 +241,7 @@ const Details = ({
 							</div>
 						</div>
 					</div>
-					<div className="pl-6">
+					<div className="trade_tabs-container">
 						<div className="sub-title">
 							{
 								STRINGS[
@@ -259,7 +259,7 @@ const Details = ({
 						</div>
 					</div>
 				</div>
-				<div className="d-flex pb-35">
+				<div className="d-flex pb-40">
 					{showTradeFees ? (
 						<div>
 							{getLink(

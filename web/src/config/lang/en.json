@@ -199,7 +199,7 @@
 	},
 	"QUICK_TRADE_COMPONENT": {
 		"TITLE": "Quick Trade",
-		"BUTTON": "Review Order",
+		"BUTTON": "Review Quick Trade",
 		"INFO": "Fastest and simplest way to trade your crypto",
 		"CHANGE_TEXT": "change",
 		"CHANGE_TEXT_7D": "7D Change",
