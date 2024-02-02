@@ -1,19 +1,12 @@
-import { Paper } from '@material-ui/core';
-import React, { Component, useState, useEffect } from 'react';
+import React from 'react';
 import {
 	Box,
 	Typography,
 	Grid,
 	Button as MaterialButton,
 } from '@material-ui/core';
-import { Chip, FormControl, FormLabel, Slider } from '@material-ui/core';
-import { FormControlLabel, Switch } from '@material-ui/core';
+import { Chip } from '@material-ui/core';
 import { useEditor } from 'craftjs';
-import ContentEditable from 'react-contenteditable';
-import { RadioGroup, Radio } from '@material-ui/core';
-import ColorPicker from 'material-ui-color-picker';
-import { ReactSVG } from 'react-svg';
-import { Spin } from 'antd';
 
 const SettingsEditor = () => {
 	const { actions, query, selected } = useEditor((state) => {

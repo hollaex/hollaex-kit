@@ -39,7 +39,6 @@ import Image from 'components/Image';
 import { uniqueId } from 'lodash';
 import TraderSideInfo from './components/TraderSideInfo';
 import AccountTypesList from './components/AccountTypesList';
-import { Paper } from '@material-ui/core';
 import {
 	Box,
 	Typography,
@@ -47,7 +46,7 @@ import {
 	Button as MaterialButton,
 } from '@material-ui/core';
 import { Chip, FormControl, FormLabel, Slider } from '@material-ui/core';
-import { FormControlLabel, Switch } from '@material-ui/core';
+import { FormControlLabel } from '@material-ui/core';
 import ContentEditable from 'react-contenteditable';
 import { RadioGroup, Radio } from '@material-ui/core';
 import ColorPicker from 'material-ui-color-picker';
@@ -246,8 +245,6 @@ export const Text = ({ text, fontSize, textAlign, color }) => {
 	const {
 		connectors: { connect, drag },
 		hasSelectedNode,
-		hasDraggedNode,
-		isActive,
 		actions: { setProp },
 	} = useNode((state) => ({
 		hasSelectedNode: state.events.selected.size > 0,
@@ -804,8 +801,8 @@ Card.craft = {
 	},
 };
 
-export const Toolbox = ({}) => {
-	const { connectors, actions, query } = useEditor();
+export const Toolbox = () => {
+	const { connectors } = useEditor();
 	return (
 		<Box px={2} py={2}>
 			<Grid
@@ -942,8 +939,8 @@ ProfileSummary.craft = {
 		settings: ContainerSettings,
 	},
 };
-const Topbar = ({}) => {
-	const { actions, query, enabled, canUndo, canRedo } = useEditor((state) => ({
+const Topbar = () => {
+	const { actions, query, canUndo, canRedo } = useEditor((state) => ({
 		enabled: state.options.enabled,
 		canUndo: state.options.enabled && query.history.canUndo(),
 		canRedo: state.options.enabled && query.history.canRedo(),
@@ -1010,14 +1007,22 @@ const Topbar = ({}) => {
 };
 
 const UploadAndDisplayImage = () => {
-	const { connectors, actions, query } = useEditor();
+	const { connectors } = useEditor();
 
 	const [selectedImage, setSelectedImage] = useState(null);
 	return (
-		<div>
+		<div style={{ width: '100%' }}>
 			{selectedImage && (
 				<div>
 					<img
+						ref={(ref) => {
+							if (selectedImage)
+								return connectors.create(
+									ref,
+									// <Element is={ContainerImage} padding={20} selectedImage={selectedImage} canvas />
+									<ContainerImage padding={0} selectedImage={selectedImage} />
+								);
+						}}
 						alt="not found"
 						width={'250px'}
 						src={URL.createObjectURL(selectedImage)}
@@ -1034,16 +1039,7 @@ const UploadAndDisplayImage = () => {
 				</div>
 			)}
 
-			<div
-				ref={(ref) => {
-					if (selectedImage)
-						return connectors.create(
-							ref,
-							// <Element is={ContainerImage} padding={20} selectedImage={selectedImage} canvas />
-							<ContainerImage padding={0} selectedImage={selectedImage} />
-						);
-				}}
-			>
+			<div>
 				<label
 					for="files"
 					style={{
@@ -1263,7 +1259,6 @@ class Summary extends Component {
 										CraftMarkets,
 										CraftAccountDetails,
 										TraderSideInfo,
-										AccountDetails,
 										AccountTypesList,
 										Card,
 										CardBottom,
@@ -1295,7 +1290,7 @@ class Summary extends Component {
 
 									<div
 										style={{
-											width: 300,
+											width: '20rem',
 											height: 1200,
 											backgroundColor: '#303236',
 											color: 'white',

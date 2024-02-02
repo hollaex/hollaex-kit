@@ -1,12 +1,10 @@
 import React from 'react';
 import classnames from 'classnames';
 import { isMobile } from 'react-device-detect';
-import { Image } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { FLEX_CENTER_CLASSES } from 'config/constants';
 import { useNode } from 'craftjs';
-import { Connector, EditWrapper } from 'components';
 const AccountTypesList = ({
 	selectedAccount,
 	onAccountTypeChange,

@@ -31,7 +31,10 @@ export const Frame = ({ children, json, data, props = null }) => {
 		// if(!props) return;
 		actions.history.ignore().reset();
 
-		const { initialChildren, initialData } = initialState.current;
+		const {
+			// initialChildren,
+			initialData,
+		} = initialState.current;
 		if (initialData) {
 			actions.history.ignore().deserialize(initialData);
 			return;
@@ -51,6 +54,7 @@ export const Frame = ({ children, json, data, props = null }) => {
 		});
 		actions.history.ignore().addNodeTree(node);
 		isInitialChildrenLoadedRef.current = true;
+		// eslint-disable-next-line
 	}, [actions, query, props]);
 	return React.createElement(RenderRootNode, null);
 };

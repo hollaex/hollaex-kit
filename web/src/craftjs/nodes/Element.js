@@ -1,4 +1,6 @@
+// eslint-disable-next-line
 import { ERROR_TOP_LEVEL_ELEMENT_NO_ID, useEffectOnce } from '@craftjs/utils';
+// eslint-disable-next-line
 import React, { useState } from 'react';
 import invariant from 'tiny-invariant';
 import { NodeElement } from './NodeElement';

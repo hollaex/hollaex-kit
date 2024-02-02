@@ -13,8 +13,7 @@ import {
 import { formatToCurrency } from 'utils/currency';
 import { isLoggedIn } from 'utils/token';
 import AssetCard from './AssetCard';
-import { Editor, Frame, Element } from 'craftjs';
-import { useNode } from 'craftjs';
+import { Element } from 'craftjs';
 import { uniqueId } from 'lodash';
 import { Connector } from 'components';
 

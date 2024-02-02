@@ -3,8 +3,7 @@ import classnames from 'classnames';
 import STRINGS from 'config/localizedStrings';
 import Image from 'components/Image';
 import { EditWrapper, Connector } from 'components';
-import { Editor, Frame, Element } from 'craftjs';
-import { useNode } from 'craftjs';
+import { Element } from 'craftjs';
 import { uniqueId } from 'lodash';
 
 const SidebarItem = ({ icon, iconId, path, isActive, stringId, onClick }) => {

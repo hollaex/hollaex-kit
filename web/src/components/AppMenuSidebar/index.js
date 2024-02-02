@@ -2,11 +2,9 @@ import React, { Component } from 'react';
 
 import withConfig from 'components/ConfigProvider/withConfig';
 import SidebarItem from './SidebarItem';
-import { EditWrapper, Connector } from 'components';
-import { Editor, Frame, Element } from 'craftjs';
-import { useNode } from 'craftjs';
+import { Connector } from 'components';
+import { Element } from 'craftjs';
 import { uniqueId } from 'lodash';
-import { ConnectorSideMenu } from 'containers/App/App';
 class AppMenuSidebar extends Component {
 	render() {
 		const { icons: ICONS, menuItems, activePath, onMenuChange } = this.props;

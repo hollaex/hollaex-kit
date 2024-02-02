@@ -2,8 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import STRINGS from 'config/localizedStrings';
 import { EditWrapper } from 'components';
-import { Connector } from 'components';
-import { Editor, Frame, Element } from 'craftjs';
+import { Element } from 'craftjs';
 import { uniqueId } from 'lodash';
 import { useNode } from 'craftjs';
 

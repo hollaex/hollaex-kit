@@ -1,5 +1,4 @@
 import React from 'react';
-import { Editor, Frame, Element } from 'craftjs';
 import { useNode } from 'craftjs';
 
 const Connector = ({ children }) => {

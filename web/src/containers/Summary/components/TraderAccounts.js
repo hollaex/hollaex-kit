@@ -1,14 +1,10 @@
-import React, { Fragment } from 'react';
-import { Link } from 'react-router';
-import { isMobile } from 'react-device-detect';
-import { ReactSVG } from 'react-svg';
-import { Image, EditWrapper, Connector } from 'components';
+import React from 'react';
+import { Image, Connector } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { renderStatusIcon } from 'components/CheckTitle';
-import { DollarOutlined, UserOutlined } from '@ant-design/icons';
 import { isLoggedIn } from 'utils/token';
-import { Editor, Frame, Element } from 'craftjs';
+import { Element } from 'craftjs';
 import { useNode } from 'craftjs';
 import { uniqueId } from 'lodash';
 import TraderSideInfo from './TraderSideInfo';

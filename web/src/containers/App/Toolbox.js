@@ -1,34 +1,34 @@
-import { Paper } from '@material-ui/core';
-import React, { Component, useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
 	Box,
 	Typography,
 	Grid,
 	Button as MaterialButton,
 } from '@material-ui/core';
-import { Chip, FormControl, FormLabel, Slider } from '@material-ui/core';
-import { FormControlLabel, Switch } from '@material-ui/core';
 import { useEditor } from 'craftjs';
-import ContentEditable from 'react-contenteditable';
-import { RadioGroup, Radio } from '@material-ui/core';
-import ColorPicker from 'material-ui-color-picker';
-import { ReactSVG } from 'react-svg';
-import { Spin } from 'antd';
 import { Button, Text, Container, ContainerImage } from 'containers/Summary';
 import { uniqueId } from 'lodash';
-import { Editor, Frame, Element } from 'craftjs';
+import { Element } from 'craftjs';
 
 const UploadAndDisplayImage = () => {
-	const { connectors, actions, query } = useEditor();
+	const { connectors } = useEditor();
 
 	const [selectedImage, setSelectedImage] = useState(null);
 
 	const [id] = useState(uniqueId());
 	return (
-		<div>
+		<div style={{ width: '100%' }}>
 			{selectedImage && (
 				<div>
 					<img
+						ref={(ref) => {
+							if (selectedImage)
+								return connectors.create(
+									ref,
+									// <Element is={ContainerImage} padding={20} selectedImage={selectedImage} canvas />
+									<ContainerImage padding={20} selectedImage={selectedImage} />
+								);
+						}}
 						alt="not found"
 						width={'250px'}
 						src={URL.createObjectURL(selectedImage)}
@@ -45,16 +45,7 @@ const UploadAndDisplayImage = () => {
 				</div>
 			)}
 
-			<div
-				ref={(ref) => {
-					if (selectedImage)
-						return connectors.create(
-							ref,
-							// <Element is={ContainerImage} padding={20} selectedImage={selectedImage} canvas />
-							<ContainerImage padding={20} selectedImage={selectedImage} />
-						);
-				}}
-			>
+			<div>
 				<label
 					for={id}
 					style={{
@@ -84,7 +75,7 @@ const UploadAndDisplayImage = () => {
 };
 
 const Toolbox = () => {
-	const { connectors, query } = useEditor();
+	const { connectors } = useEditor();
 	return (
 		<Box px={2} py={2}>
 			<Grid

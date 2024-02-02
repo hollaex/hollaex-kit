@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 
 import withConfig from 'components/ConfigProvider/withConfig';
 import AppMenuBarItem from './AppMenuBarItem';
-import { EditWrapper, Connector } from 'components';
-import { Editor, Frame, Element } from 'craftjs';
+import { Connector } from 'components';
+import { Element } from 'craftjs';
 import { uniqueId } from 'lodash';
 class AppMenuBar extends Component {
 	render() {

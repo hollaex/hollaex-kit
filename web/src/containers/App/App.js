@@ -102,8 +102,8 @@ import { ContainerImage } from 'containers/Summary';
 import { Box, Grid, Button as MaterialButton } from '@material-ui/core';
 import store from '../../store';
 
-const Topbar = ({}) => {
-	const { actions, query, enabled, canUndo, canRedo } = useEditor((state) => ({
+const Topbar = () => {
+	const { actions, query, canUndo, canRedo } = useEditor((state) => ({
 		enabled: state.options.enabled,
 		canUndo: state.options.enabled && query.history.canUndo(),
 		canRedo: state.options.enabled && query.history.canRedo(),
@@ -1027,7 +1027,6 @@ class App extends Component {
 											CraftMarkets,
 											CraftAccountDetails,
 											TraderSideInfo,
-											AccountDetails,
 											AccountTypesList,
 											Card,
 											CardBottom,
@@ -1048,7 +1047,7 @@ class App extends Component {
 									>
 										<div
 											style={{
-												width: 300,
+												width: '20rem',
 												height: 1200,
 												backgroundColor: '#303236',
 												color: 'white',
@@ -1116,7 +1115,6 @@ class App extends Component {
 											CraftMarkets,
 											CraftAccountDetails,
 											TraderSideInfo,
-											AccountDetails,
 											AccountTypesList,
 											Card,
 											CardBottom,
@@ -1140,7 +1138,7 @@ class App extends Component {
 									>
 										<div
 											style={{
-												width: 300,
+												width: '20rem',
 												height: 1200,
 												backgroundColor: '#303236',
 												color: 'white',
