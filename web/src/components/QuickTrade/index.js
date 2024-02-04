@@ -404,18 +404,17 @@ const QuickTrade = ({
 				<Header />
 
 				<div className={classnames('quick_trade-wrapper', 'd-flex')}>
-					{!isMobile && (
-						<Details
-							coinChartData={lineChartData}
-							pair={pair}
-							brokerUsed={isUseBroker}
-							networkName={display_name}
-							isNetwork={isNetwork}
-						/>
-					)}
+					<Details
+						coinChartData={lineChartData}
+						pair={pair}
+						brokerUsed={isUseBroker}
+						networkName={display_name}
+						isNetwork={isNetwork}
+						showOnlyTitle={isMobile}
+					/>
 					<div className="d-flex flex-column trade-section">
 						<div className="inner-content">
-							<div className="balance-text mb-3">
+							<div className="balance-text mb-3 goto-wallet-container">
 								<EditWrapper
 									stringId="QUICK_TRADE_COMPONENT.GO_TO_TEXT"
 									renderWrapper={(children) => (
@@ -548,7 +547,6 @@ const QuickTrade = ({
 									className={!isMobile ? 'w-50' : 'w-100'}
 									// iconId={'SETUP_QUICK_TRADE'}
 									// iconList={STATIC_ICONS}
-
 								/>
 							</div>
 							<Footer

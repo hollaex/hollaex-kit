@@ -4,6 +4,7 @@ import { EditWrapper } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
 import STRINGS from 'config/localizedStrings';
 import { FLEX_CENTER_CLASSES } from 'config/constants';
+import { isMobile } from 'react-device-detect';
 
 const Header = ({ icons: ICONS }) => {
 	return (
@@ -14,15 +15,22 @@ const Header = ({ icons: ICONS }) => {
 			)}
 		>
 			<div
-				className={classnames('title text-capitalize', ...FLEX_CENTER_CLASSES)}
+				className={classnames(
+					'quick-trade-header-wrapper title text-capitalize',
+					{
+						[FLEX_CENTER_CLASSES]: !isMobile,
+					}
+				)}
 			>
 				<EditWrapper stringId="QUICK_TRADE_COMPONENT.TITLE">
 					{STRINGS['QUICK_TRADE_COMPONENT.TITLE']}
 				</EditWrapper>
 			</div>
-			<div className={classnames('info-text', ...FLEX_CENTER_CLASSES)}>
+			{!isMobile && (
+				<div className={classnames('info-text', ...FLEX_CENTER_CLASSES)}>
 					{STRINGS['QUICK_TRADE_COMPONENT.INFO']}
-			</div>
+				</div>
+			)}
 		</div>
 	);
 };
