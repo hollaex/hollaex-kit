@@ -9618,7 +9618,7 @@ table th {
     display: block; }
   .quick_trade-container .input-group__select {
     color: #b6b6b6;
-    padding: 14px 11px;
+    padding: 1.125rem 1rem;
     font-size: 1.7rem; }
     .quick_trade-container .input-group__select .ant-select-selector {
       padding: 0; }
@@ -9720,6 +9720,8 @@ table th {
   height: 100%;
   padding: 2rem 3.5rem;
   margin: 0; }
+  .layout-mobile .quick_trade-container .input-group__input {
+    height: 50px; }
 
 .layout-mobile .quick_trade-wrapper {
   background-color: transparent;
