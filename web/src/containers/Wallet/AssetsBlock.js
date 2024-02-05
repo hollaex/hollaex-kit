@@ -101,8 +101,7 @@ const AssetsBlock = ({
 			end_date: moment().subtract().toISOString(),
 		})
 			.then((response) => {
-				const length =
-					response.data.length > 7 ? 7 - 1 : response.data.length - 1;
+				const length = 6;
 
 				let newGraphData = [];
 				for (let i = 0; i < length + 1; i++) {
@@ -111,7 +110,7 @@ const AssetsBlock = ({
 							moment(history.created_at).format('YYYY-MM-DD') ===
 							moment().subtract(i, 'days').format('YYYY-MM-DD')
 					);
-					if (!balanceData) continue;
+					// if (!balanceData) continue;
 					newGraphData.push([
 						`${moment().subtract(i, 'days').date()} ${
 							month[moment().subtract(i, 'days').month()]
@@ -428,7 +427,7 @@ const AssetsBlock = ({
 						</div>
 						{!isUpgrade &&
 						balance_history_config?.active &&
-						graphData.length > 1 ? (
+						graphData.length > 0 ? (
 							<div>
 								<div style={{ marginTop: 10 }}>
 									<EditWrapper stringId="PROFIT_LOSS.PERFORMANCE_TREND">
@@ -452,14 +451,13 @@ const AssetsBlock = ({
 								</div>
 
 								<div
-									style={{
-										color:
-											Number(userPL?.['7d']?.total || 0) === 0
-												? '#ccc'
-												: (userPL?.['7d']?.total || 0) > 0
-												? '#329932'
-												: '#EB5344',
-									}}
+									className={
+										Number(userPL?.['7d']?.total || 0) === 0
+											? 'profitNeutral'
+											: (userPL?.['7d']?.total || 0) > 0
+											? 'profitPositive'
+											: 'profitNegative'
+									}
 								>
 									<EditWrapper stringId="PROFIT_LOSS.PL_7_DAY">
 										{STRINGS['PROFIT_LOSS.PL_7_DAY']}

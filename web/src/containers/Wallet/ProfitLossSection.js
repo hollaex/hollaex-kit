@@ -100,7 +100,7 @@ const ProfitLossSection = ({
 									}` === graphData[e.point.x || 0][0]
 							);
 
-							setCurrentBalance(balance);
+							if (balance) setCurrentBalance(balance);
 						},
 					},
 				},
@@ -142,18 +142,18 @@ const ProfitLossSection = ({
 					page === 1 ? response.data : [...balanceHistory, ...response.data]
 				);
 
-				const length =
-					response.data.length > currentDay
-						? currentDay - 1
-						: response.data.length - 1;
+				const length = response.data.length > currentDay ? currentDay - 1 : 6;
 				const balanceData = response.data.find(
 					(history) =>
 						moment(history.created_at).format('YYYY-MM-DD') ===
 						moment(queryValues.end_date)
-							.subtract(length, 'days')
+							.subtract(length === 6 ? 0 : length, 'days')
 							.format('YYYY-MM-DD')
 				);
-				let balance = balanceData || response.data[length];
+				let balance =
+					balanceData ||
+					response.data[length] ||
+					response.data[response.data.length - 1];
 
 				let newGraphData = [];
 				for (let i = 0; i < length + 1; i++) {
@@ -165,7 +165,7 @@ const ProfitLossSection = ({
 									.subtract(i, 'days')
 									.format('YYYY-MM-DD')
 						);
-						if (!balanceData) continue;
+						// if (!balanceData) continue;
 						newGraphData.push([
 							`${moment(queryValues.end_date).subtract(i, 'days').date()} ${
 								month[moment(queryValues.end_date).subtract(i, 'days').month()]
@@ -231,9 +231,27 @@ const ProfitLossSection = ({
 	};
 
 	const getRows = (coins) => {
+		let keysSorted = Object.keys(currentBalance?.balance).sort((a, b) => {
+			return (
+				currentBalance?.balance[b].native_currency_value -
+				currentBalance?.balance[a].native_currency_value
+			);
+		});
+		let sortedCoins = [];
+
+		keysSorted.forEach((coin) => {
+			sortedCoins.push(coins[coin]);
+		});
+
+		Object.keys(coins || {}).forEach((coin) => {
+			if (!sortedCoins.find((x) => x.symbol === coins[coin].symbol)) {
+				sortedCoins.push(coins[coin]);
+			}
+		});
+
 		return (
 			<>
-				{Object.values(coins || {}).map((coin, index) => {
+				{sortedCoins.map((coin, index) => {
 					const incrementUnit = coins[coin.symbol].increment_unit;
 					const decimalPoint = new BigNumber(incrementUnit).dp();
 					const sourceAmount = new BigNumber(
@@ -332,6 +350,16 @@ const ProfitLossSection = ({
 								<DatePicker
 									suffixIcon={null}
 									className="pldatePicker"
+									disabledDate={(current) => {
+										return (
+											current &&
+											current <
+												moment(
+													balance_history_config?.date_enabled,
+													'YYYY-MM-DD'
+												)
+										);
+									}}
 									placeholder={STRINGS['PROFIT_LOSS.SELECT_START_DATE']}
 									style={{
 										width: 200,
@@ -350,6 +378,16 @@ const ProfitLossSection = ({
 								<DatePicker
 									suffixIcon={null}
 									className="pldatePicker"
+									disabledDate={(current) => {
+										return (
+											current &&
+											current <
+												moment(
+													balance_history_config?.date_enabled,
+													'YYYY-MM-DD'
+												)
+										);
+									}}
 									placeholder={STRINGS['PROFIT_LOSS.SELECT_END_DATE']}
 									style={{
 										width: 200,
@@ -514,14 +552,13 @@ const ProfitLossSection = ({
 							) || '0'}
 						</div>
 						<div
-							style={{
-								color:
-									Number(userPL?.['7d']?.total || 0) === 0
-										? '#ccc'
-										: (userPL?.['7d']?.total || 0) > 0
-										? '#329932'
-										: '#EB5344',
-							}}
+							className={
+								Number(userPL?.['7d']?.total || 0) === 0
+									? 'profitNeutral'
+									: (userPL?.['7d']?.total || 0) > 0
+									? 'profitPositive'
+									: 'profitNegative'
+							}
 						>
 							<EditWrapper stringId="PROFIT_LOSS.PL_7_DAY">
 								{STRINGS['PROFIT_LOSS.PL_7_DAY']}
@@ -670,6 +707,16 @@ const ProfitLossSection = ({
 										suffixIcon={null}
 										className="pldatePicker"
 										placeholder={STRINGS['PROFIT_LOSS.DATE_SELECT']}
+										disabledDate={(current) => {
+											return (
+												current &&
+												current <
+													moment(
+														balance_history_config?.date_enabled,
+														'YYYY-MM-DD'
+													)
+											);
+										}}
 										style={{
 											width: '12.5em',
 											fontSize: '1em',
