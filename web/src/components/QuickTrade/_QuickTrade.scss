@@ -53,7 +53,7 @@ $title-icon--height: 10rem;
 		height: 8rem;
 	}
 	.title {
-		font-size: 28px;
+		font-size: 2.35rem;
 		font-family: $raleway--font-family;
 		letter-spacing: 2px;
 	}
@@ -81,7 +81,7 @@ $title-icon--height: 10rem;
 	.input-group__input {
 		text-align: right;
 		color: #b6b6b6;
-		font-size: 20px;
+		font-size: 1.7rem;
 		margin-left: 15px;
 		height: 60px;
 		&:focus,
@@ -100,7 +100,7 @@ $title-icon--height: 10rem;
 	.input-group__select {
 		color: #b6b6b6;
 		padding: 14px 11px;
-		font-size: 20px;
+		font-size: 1.7rem;
 		.ant-select-selector {
 			padding: 0;
 		}
@@ -161,7 +161,7 @@ $title-icon--height: 10rem;
 
 	.trade-section {
 		width: 100%;
-		padding: 36px 56px;
+		padding: 3rem 4.5rem;
 		background: transparent
 			linear-gradient(
 				180deg,
@@ -176,13 +176,13 @@ $title-icon--height: 10rem;
 			flex-direction: column;
 			align-items: flex-end;
 			.btn-wrapper {
-				padding: 12px 0;
+				padding: 1rem 0;
 			}
 			.py-2 {
 				display: flex;
 				align-items: center;
 				.bold {
-					padding-right: 10px;
+					padding-right: 0.85rem;
 				}
 				.ant-input-group {
 					background-color: $app-light-background !important;
@@ -201,7 +201,7 @@ $title-icon--height: 10rem;
 				}
 			}
 			.footer-text {
-				font-size: 11px;
+				font-size: 1rem;
 				font-family: $en--font-family;
 				color: #b6b6b650;
 				letter-spacing: 0.58px;
@@ -250,16 +250,16 @@ $title-icon--height: 10rem;
 		background-color: transparent;
 		height: 664px;
 		border: none;
-		font-size: 17px;
+		font-size: 1.45rem;
 		margin: 0;
 
 		.trade-details-wrapper {
 			width: 100%;
 			.pairs {
-				font-size: 20px;
+				font-size: 1.7rem;
 			}
 			.fullname {
-				font-size: 12px;
+				font-size: 1rem;
 			}
 			.trade-details-content {
 				width: 100%;
@@ -289,6 +289,8 @@ $title-icon--height: 10rem;
 				}
 				.footer-text {
 					font-size: $font-size-mobile-txt !important;
+					margin: auto;
+					text-align: center;
 				}
 			}
 		}
@@ -348,7 +350,7 @@ $title-icon--height: 10rem;
 				.input-group__container {
 					.quick-trade-select-wrapper {
 						.pl-1 {
-							font-size: 10px;
+							font-size: 0.85rem;
 						}
 					}
 				}
@@ -362,7 +364,7 @@ $title-icon--height: 10rem;
 
 .swap-container {
 	border-left: $colors-black dotted 4px;
-	font-size: 17px;
+	font-size: 1.42rem;
 }
 
 .swap-wrapper {
