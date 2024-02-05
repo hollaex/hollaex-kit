@@ -113,9 +113,7 @@ const AssetsBlock = ({
 					);
 					// if (!balanceData) continue;
 					newGraphData.push([
-						`${moment().subtract(i, 'days').date()} ${
-							month[moment().subtract(i, 'days').month()]
-						}`,
+						`   `,
 						balanceData
 							? balanceData.total
 							: response?.data?.[response.data.length - 1]?.total,
@@ -133,20 +131,7 @@ const AssetsBlock = ({
 			});
 		// eslint-disable-next-line
 	}, []);
-	const month = [
-		'Jan',
-		'Feb',
-		'Mar',
-		'Apr',
-		'May',
-		'Jun',
-		'Jul',
-		'Aug',
-		'Sep',
-		'Oct',
-		'Nov',
-		'Dec',
-	];
+
 	const options = {
 		title: {
 			text: '',

@@ -21,21 +21,9 @@ const ProfitLossSection = ({
 	balances,
 	pricesInNative,
 }) => {
-	const month = [
-		'Jan',
-		'Feb',
-		'Mar',
-		'Apr',
-		'May',
-		'Jun',
-		'Jul',
-		'Aug',
-		'Sep',
-		'Oct',
-		'Nov',
-		'Dec',
-	];
-
+	const month = Array.apply(0, Array(12)).map(function (_, i) {
+		return moment().month(i).format('MMM');
+	});
 	const [balanceHistory, setBalanceHistory] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [currentDay, setCurrentDay] = useState(7);
