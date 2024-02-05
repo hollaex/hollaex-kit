@@ -1,6 +1,6 @@
 version: '3'
 services:
-  hollaex-redis:
+  hollaex-kit-redis:
     image: redis:7.2.0-alpine
     restart: unless-stopped
     depends_on:
@@ -21,7 +21,7 @@ services:
     networks:
       - hollaex-kit
 
-  hollaex-db:
+  hollaex-kit-db:
     image: postgres:14.9-alpine
     restart: unless-stopped
     volumes:
@@ -42,7 +42,7 @@ services:
     networks:
       - hollaex-kit
 
-  hollaex-server-api:
+  hollaex-kit-server-api:
     image: hollaex-kit
     build:
       context: .
@@ -73,7 +73,7 @@ services:
       - hollaex-redis
       - hollaex-db
 
-  hollaex-server-stream:
+  hollaex-kit-server-stream:
     image: hollaex-kit
     build:
       context: .
@@ -98,11 +98,11 @@ services:
     networks:
       - hollaex-kit
     depends_on:
-      - hollaex-server-api
+      - hollaex-kit-server-api
       - hollaex-redis
       - hollaex-db
 
-  hollaex-server-plugins:
+  hollaex-kit-server-plugins:
     image: hollaex-kit
     build:
       context: .
@@ -126,7 +126,7 @@ services:
     networks:
       - hollaex-kit
     depends_on:
-      - hollaex-server-api
+      - hollaex-kit-server-api
       - hollaex-redis
       - hollaex-db
       

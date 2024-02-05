@@ -1,7 +1,7 @@
 version: '3'
 services:
-  hollaex-web:
-    image: hollaex-web
+  hollaex-kit-web:
+    image: hollaex-kit-web
     build:
       context: .
       dockerfile: docker/Dockerfile

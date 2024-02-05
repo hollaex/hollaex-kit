@@ -1,0 +1,42 @@
+imageRegistry: bitholla/hollaex-kit
+dockerTag:
+  
+imagePullSecrets:
+  - name: docker-registry-secret
+
+envName: hollaex-kit-configmap
+secretName: hollaex-kit-secret
+
+DEPLOYMENT_MODE: api
+PAIR:
+
+stable:
+  replicaCount: 1
+  
+staging:
+  enable: false
+  replicaCount: 1
+  dockerTag:
+
+nodeSelector: {}
+
+autoScaling:
+  hpa:
+    enable: false 
+    memory:
+      threshold: 80
+
+APM_URL:
+
+podRestart_webhook_url:
+
+resources:
+  limits:
+    memory: "1536Mi"
+  requests:
+    cpu: "100m"
+    memory: "512Mi"
+  
+    
+  
+

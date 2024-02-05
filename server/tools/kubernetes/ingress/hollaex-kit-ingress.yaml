@@ -1,0 +1,187 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hollaex-kit-ingress-web
+  namespace: hollaex-kit
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    kubernetes.io/tls-acme: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/proxy-body-size: "6m"
+
+
+spec:
+  rules:
+  - host: yourdomain.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: hollaex-kit-web
+            port:
+              number: 80
+  
+  tls:
+  - secretName: hollaex-kit-tls-cert
+    hosts:
+    - yourdomain.com
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hollaex-kit-ingress-api
+  namespace: hollaex-kit
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    kubernetes.io/tls-acme: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/proxy-body-size: "6m"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    
+
+spec:
+  rules:
+  - host: yourdomain.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: /api(/|$)(.*)
+        backend:
+          service:
+            name: hollaex-kit-server-api
+            port:
+              number: 10010
+  
+  tls:
+  - secretName: hollaex-kit-tls-cert
+    hosts:
+    - yourdomain.com
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hollaex-kit-ingress-api-admin
+  namespace: hollaex-kit
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    kubernetes.io/tls-acme: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/proxy-body-size: "6m"
+    nginx.ingress.kubernetes.io/rewrite-target: /v2/admin/$2
+    
+
+spec:
+  rules:
+  - host: yourdomain.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: /api/v2/admin(/|$)(.*)
+        backend:
+          service:
+            name: hollaex-kit-server-api
+            port:
+              number: 10010
+  
+  tls:
+  - secretName: hollaex-kit-tls-cert
+    hosts:
+    - yourdomain.com
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hollaex-kit-ingress-plugins
+  namespace: hollaex-kit
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    kubernetes.io/tls-acme: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/proxy-body-size: "6m"
+    nginx.ingress.kubernetes.io/rewrite-target: /plugins/$2
+
+
+spec:
+  rules:
+  - host: yourdomain.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: /api/plugins(/|$)(.*)
+        backend:
+          service:
+            name: hollaex-kit-server-plugins
+            port:
+              number: 10011
+    
+  
+  tls:
+  - secretName: hollaex-kit-tls-cert
+    hosts:
+    - yourdomain.com
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hollaex-kit-ingress-plugins-sms-verify
+  namespace: hollaex-kit
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    kubernetes.io/tls-acme: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/proxy-body-size: "6m"
+    nginx.ingress.kubernetes.io/rewrite-target: /plugins/sms/verify/$2
+ 
+      
+
+spec:
+  rules:
+  - host: yourdomain.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: /api/plugins/sms/verify(/|$)(.*)
+        backend:
+          service:
+            name: hollaex-kit-server-plugins
+            port:
+              number: 10011
+    
+  
+  tls:
+  - secretName: hollaex-kit-tls-cert
+    hosts:
+    - yourdomain.com
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hollaex-kit-ingress-stream
+  namespace: hollaex-kit
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    kubernetes.io/tls-acme: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/proxy-body-size: "6m"
+    nginx.ingress.kubernetes.io/upstream-hash-by: "$binary_remote_addr"
+    
+spec:
+  rules:
+  - host: yourdomain.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: /stream
+        backend:
+          service:
+            name: hollaex-kit-server-stream
+            port:
+              number: 10080
+  
+  
+  tls:
+  - secretName: hollaex-kit-tls-cert
+    hosts:
+    - yourdomain.com

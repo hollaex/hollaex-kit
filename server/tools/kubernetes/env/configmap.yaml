@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hollaex-kit-configmap
+  namespace: hollaex-kit
+data:
+  DB_DIALECT: postgres
+  ADMIN_EMAIL: ''
+  ADMIN_NETWORK_ID: ''
+  ADMIN_PASSWORD: ''
+  API_HOST: 'https://hollaex-kit.hollaex.cloud/api'
+  API_NAME: 'hollaex-kit'
+  CURRENCIES: 'xht,usdt'
+  DB_SSL: 'false'
+  DEFAULT_THEME: 'dark'
+  DOMAIN: 'https://hollaex-kit.hollaex.cloud'
+  EMAILS_TIMEZONE: 'UTC'
+  KIT_VERSION: ''
+  KYC_EMAIL: ''
+  LOGO_IMAGE: 'https://bitholla.s3.ap-northeast-2.amazonaws.com/kit/LOGO_IMAGE_LIGHT'
+  LOG_LEVEL: 'verbose'
+  NETWORK: 'mainnet'
+  NETWORK_URL: 'https://api.hollaex.network'
+  NEW_USER_DEFAULT_LANGUAGE: 'en'
+  NEW_USER_IS_ACTIVATED: 'true'
+  NODE_ENV: 'production'
+  PAIRS: 'xht-usdt'
+  PORT: '10010'
+  SENDER_EMAIL: ''
+  SEND_EMAIL_TO_SUPPORT: 'true'
+  SMTP_PORT: '587'
+  SMTP_SERVER: ''
+  SMTP_USER: ''
+  SUPERVISOR_EMAIL: ''
+  SUPPORT_EMAIL: 'support@bitholla.com'
+  USER_LEVEL_NUMBER: '4'
+  VALID_LANGUAGES: 'en'
+  VAULT_NAME: ''
+  WEBSOCKET_PORT: '10080'
