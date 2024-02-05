@@ -427,7 +427,7 @@ const AssetsBlock = ({
 						</div>
 						{!isUpgrade &&
 						balance_history_config?.active &&
-						graphData.length > 0 ? (
+						graphData.length > 1 ? (
 							<div>
 								<div style={{ marginTop: 10 }}>
 									<EditWrapper stringId="PROFIT_LOSS.PERFORMANCE_TREND">
