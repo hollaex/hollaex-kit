@@ -116,7 +116,9 @@ const AssetsBlock = ({
 						`${moment().subtract(i, 'days').date()} ${
 							month[moment().subtract(i, 'days').month()]
 						}`,
-						balanceData ? balanceData.total : 0,
+						balanceData
+							? balanceData.total
+							: response?.data?.[response.data.length - 1]?.total,
 					]);
 				}
 

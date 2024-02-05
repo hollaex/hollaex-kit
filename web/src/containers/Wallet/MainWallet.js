@@ -128,6 +128,7 @@ class Wallet extends Component {
 	};
 
 	handleBalanceHistory = (value) => {
+		this.props.router.push('/wallet/history');
 		this.setState({ activeBalanceHistory: value });
 	};
 
