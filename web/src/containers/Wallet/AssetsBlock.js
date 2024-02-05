@@ -112,7 +112,12 @@ const AssetsBlock = ({
 							moment().subtract(i, 'days').format('YYYY-MM-DD')
 					);
 					// if (!balanceData) continue;
-					newGraphData.push([`   `, balanceData ? balanceData.total : 0]);
+					newGraphData.push([
+						`   `,
+						balanceData
+							? balanceData.total
+							: response?.data?.[response.data.length - 1]?.total,
+					]);
 				}
 
 				newGraphData.reverse();

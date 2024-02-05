@@ -158,7 +158,9 @@ const ProfitLossSection = ({
 							`${moment(queryValues.end_date).subtract(i, 'days').date()} ${
 								month[moment(queryValues.end_date).subtract(i, 'days').month()]
 							}`,
-							balanceData ? balanceData.total : 0,
+							balanceData
+								? balanceData.total
+								: response?.data?.[response.data.length - 1]?.total,
 						]);
 					} else if (currentDay === 30) {
 						// if (currentDay === 30) {
@@ -341,11 +343,12 @@ const ProfitLossSection = ({
 									disabledDate={(current) => {
 										return (
 											current &&
-											current <
+											(current <
 												moment(
 													balance_history_config?.date_enabled,
 													'YYYY-MM-DD'
-												)
+												) ||
+												current.isAfter(moment()))
 										);
 									}}
 									placeholder={STRINGS['PROFIT_LOSS.SELECT_START_DATE']}
@@ -369,11 +372,12 @@ const ProfitLossSection = ({
 									disabledDate={(current) => {
 										return (
 											current &&
-											current <
+											(current <
 												moment(
 													balance_history_config?.date_enabled,
 													'YYYY-MM-DD'
-												)
+												) ||
+												current.isAfter(moment()))
 										);
 									}}
 									placeholder={STRINGS['PROFIT_LOSS.SELECT_END_DATE']}
@@ -698,11 +702,12 @@ const ProfitLossSection = ({
 										disabledDate={(current) => {
 											return (
 												current &&
-												current <
+												(current <
 													moment(
 														balance_history_config?.date_enabled,
 														'YYYY-MM-DD'
-													)
+													) ||
+													current.isAfter(moment()))
 											);
 										}}
 										style={{
