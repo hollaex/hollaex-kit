@@ -56,13 +56,19 @@ export const getFiatDepositFee = (currency, amount = 0, network) =>
 	getFiatFee(currency, amount, network, DEPOSIT_FEES_KEY);
 
 export const getFiatLimit = (type) => {
+	const transactionType =
+		type === WITHDRAWAL_LIMIT_KEY ? 'withdrawal' : 'deposit';
 	const {
-		app: { config_level },
+		app: { transaction_limits },
 		user: { verification_level },
 	} = store.getState();
 
-	const { [type]: limit = 0 } = config_level[verification_level] || {};
-	return limit;
+	return (
+		transaction_limits?.find(
+			(limit) =>
+				limit.tier === verification_level && limit.type === transactionType
+		)?.amount || 0
+	);
 };
 
 export const getFiatWithdrawalLimit = () => getFiatLimit(WITHDRAWAL_LIMIT_KEY);

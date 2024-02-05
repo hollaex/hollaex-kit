@@ -12,6 +12,7 @@ const WithdrawalLimits = ({
 	config_level,
 	pairs,
 	coins,
+	transaction_limits,
 	selectedLevel,
 	setSelectedLevel,
 	options,
@@ -76,34 +77,71 @@ const WithdrawalLimits = ({
 							</div>
 						</div>
 						<div>
-							<IconTitle
-								stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_2.TITLE"
-								text={
-									STRINGS[
-										'FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_2.TITLE'
-									]
-								}
-								textType="title bold text-align-left"
-								iconPath={ICONS['FEES_AND_LIMITS_WITHDRAWAL_LIMITS']}
-							/>
-							<div className="py-4">
-								<div>
-									<EditWrapper stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_2.SUBTITLE">
-										{
-											STRINGS[
-												'FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_2.SUBTITLE'
-											]
-										}
-									</EditWrapper>
+							<div>
+								<IconTitle
+									stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_2.TITLE"
+									text={
+										STRINGS[
+											'FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_2.TITLE'
+										]
+									}
+									textType="title bold text-align-left"
+									iconPath={ICONS['FEES_AND_LIMITS_WITHDRAWAL_LIMITS']}
+								/>
+								<div className="py-4">
+									<div>
+										<EditWrapper stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_2.SUBTITLE">
+											{
+												STRINGS[
+													'FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_2.SUBTITLE'
+												]
+											}
+										</EditWrapper>
+									</div>
+								</div>
+								<div className="wallet-assets_block">
+									<LimitsBlock
+										coins={coins}
+										level={selectedLevel}
+										title={''}
+										tiers={config_level}
+										transaction_limits={transaction_limits}
+										type={'individual'}
+									/>
 								</div>
 							</div>
-							<div className="wallet-assets_block">
-								<LimitsBlock
-									coins={coins}
-									level={selectedLevel}
-									title={''}
-									tiers={config_level}
+							<div>
+								<IconTitle
+									stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_3.TITLE"
+									text={
+										STRINGS[
+											'FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_3.TITLE'
+										]
+									}
+									textType="title bold text-align-left"
+									iconPath={ICONS['FEES_AND_LIMITS_WITHDRAWAL_LIMITS']}
 								/>
+								<div className="py-4">
+									<div>
+										<EditWrapper stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_3.SUBTITLE">
+											{
+												STRINGS[
+													'FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_3.SUBTITLE'
+												]
+											}
+										</EditWrapper>
+									</div>
+								</div>
+								<div className="wallet-assets_block">
+									<LimitsBlock
+										coins={coins}
+										level={selectedLevel}
+										title={''}
+										tiers={config_level}
+										transaction_limits={transaction_limits}
+										type={'default'}
+									/>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -116,6 +154,7 @@ const WithdrawalLimits = ({
 const mapStateToProps = (state) => {
 	return {
 		coins: state.app.coins,
+		transaction_limits: state.app.transaction_limits,
 		pairs: state.app.pairs,
 		config_level: state.app.config_level,
 		options: Object.entries(state.app.config_level).map(([key, { name }]) => ({

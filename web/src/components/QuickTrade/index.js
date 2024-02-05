@@ -15,7 +15,7 @@ import { isLoggedIn } from 'utils/token';
 import { Button, EditWrapper, Dialog } from 'components';
 import STRINGS from 'config/localizedStrings';
 import InputGroup from './InputGroup';
-import { getSparklines } from 'actions/chartAction';
+import { getMiniCharts } from 'actions/chartAction';
 import { getDecimals } from 'utils/utils';
 import { MarketsSelector } from 'containers/Trade/utils';
 import Details from 'containers/QuickTrade/components/Details';
@@ -32,6 +32,7 @@ import {
 import { getQuickTrade, executeQuickTrade } from 'actions/quickTradeActions';
 import { FieldError } from 'components/Form/FormFields/FieldWrapper';
 import { translateError } from 'components/QuickTrade/utils';
+import QuoteExpiredBlock from './QuoteExpiredBlock';
 
 const PAIR2_STATIC_SIZE = 0.000001;
 const SPENDING = {
@@ -92,7 +93,10 @@ const QuickTrade = ({
 	const [data, setData] = useState({});
 	const [mounted, setMounted] = useState(false);
 	const [expiry, setExpiry] = useState();
+	const [hasExpiredOnce, setHasExpiredOnce] = useState(false);
 	const [time, setTime] = useState(moment());
+	const [lineChartData, setLineChartData] = useState({});
+	const [allChartsData, setAllChartsData] = useState({});
 
 	const resetForm = () => {
 		setTargetAmount();
@@ -128,9 +132,6 @@ const QuickTrade = ({
 	};
 
 	const flippedPair = flipPair(symbol);
-	const isShowChartDetails =
-		(quicktradePairs[symbol] || quicktradePairs[flippedPair])?.type ===
-		TYPES.PRO;
 
 	const market = markets.find(
 		({ pair: { pair_base, pair_2 } }) =>
@@ -246,8 +247,6 @@ const QuickTrade = ({
 
 			if (amount && spending_currency && receiving_currency) {
 				setLoading(true);
-				setTargetAmount();
-				setSourceAmount();
 				setToken();
 				setExpiry();
 				setError();
@@ -281,10 +280,28 @@ const QuickTrade = ({
 	const debouncedQuote = useRef(debounce(getQuote, 1000));
 
 	useEffect(() => {
-		getSparklines(Object.keys(pairs)).then((chartData) =>
-			setChartData(chartData)
-		);
-	}, [pairs]);
+		setTimeout(() => {
+			const pairBase = pair.split('-')[1];
+			const assetValues = Object.keys(coins)
+				.map((val) => coins[val].code)
+				.toLocaleString();
+
+			if (allChartsData[pairBase]) {
+				setChartData(allChartsData[pairBase]);
+			} else {
+				getMiniCharts(assetValues, pairBase).then((chartValues) => {
+					setChartData(chartValues);
+					setAllChartsData((prev) => ({
+						...prev,
+						...{
+							[pairBase]: chartValues,
+						},
+					}));
+				});
+			}
+		}, 0);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [coins, pair]);
 
 	useEffect(() => {
 		if (mounted) {
@@ -330,15 +347,27 @@ const QuickTrade = ({
 		}, 1000);
 	}, []);
 
+	useEffect(() => {
+		if (!hasExpiredOnce && time.isAfter(moment(expiry))) {
+			setHasExpiredOnce(true);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [hasExpiredOnce, time]);
+
+	useEffect(() => {
+		setTimeout(() => {
+			const lineData = { ...chartData[`${pair}`] };
+			setLineChartData({
+				...lineData,
+				name: 'Line',
+				type: 'line',
+			});
+		}, 0);
+	}, [pair, chartData]);
+
 	const isExpired = time.isAfter(moment(expiry));
 
 	const { balance: userBalance } = user;
-
-	const lineChartData = {
-		...chartData[key],
-		name: 'Line',
-		type: 'line',
-	};
 
 	const selectedSourceBalance =
 		selectedSource && userBalance[`${selectedSource.toLowerCase()}_available`];
@@ -349,7 +378,9 @@ const QuickTrade = ({
 		!isLoggedIn() || !token || loading || submitting || isExpired;
 	const pairData = pairs[symbol] || {};
 	const [loadingSource, loadingTarget] =
-		spending === SPENDING.SOURCE ? [false, loading] : [loading, false];
+		spending && spending === SPENDING.SOURCE
+			? [false, loading]
+			: [loading, false];
 
 	const onSwap = (selectedSource, selectedTarget) => {
 		onSelectSource(selectedTarget);
@@ -357,22 +388,34 @@ const QuickTrade = ({
 		setTimeout(() => onSelectTarget(selectedSource), 0.1);
 	};
 
+	const onRequoteClick = () => {
+		getQuote({
+			sourceAmount,
+			targetAmount,
+			selectedSource,
+			selectedTarget,
+			spending: true,
+		});
+	};
+
 	return (
 		<Fragment>
 			<div className="quick_trade-container">
 				<Header />
 
-				<div
-					className={classnames('quick_trade-wrapper', 'd-flex', {
-						'width-none': !isShowChartDetails,
-					})}
-				>
-					{!isMobile && isShowChartDetails && market && (
-						<Details market={market} lineChartData={lineChartData} />
+				<div className={classnames('quick_trade-wrapper', 'd-flex')}>
+					{!isMobile && (
+						<Details
+							coinChartData={lineChartData}
+							pair={pair}
+							brokerUsed={isUseBroker}
+							networkName={display_name}
+							isNetwork={isNetwork}
+						/>
 					)}
 					<div className="d-flex flex-column trade-section">
 						<div className="inner-content">
-							<div className="small-text">
+							<div className="balance-text mb-3">
 								<EditWrapper
 									stringId="QUICK_TRADE_COMPONENT.GO_TO_TEXT"
 									renderWrapper={(children) => (
@@ -390,35 +433,41 @@ const QuickTrade = ({
 								</Link>
 							</div>
 
-							<Balance
-								text={coins[selectedSource]?.display_name}
-								balance={selectedSourceBalance}
-								onClick={sourceTotalBalance}
-							/>
-
-							<InputGroup
-								name={STRINGS['CONVERT']}
-								stringId={'CONVERT'}
-								options={sourceOptions}
-								inputValue={sourceAmount}
-								selectValue={selectedSource}
-								onSelect={onSelectSource}
-								onInputChange={onChangeSourceAmount}
-								forwardError={() => {}}
-								autoFocus={autoFocus}
-								decimal={
-									coins[selectedSource]?.increment_unit || PAIR2_STATIC_SIZE
-								}
-								availableBalance={selectedSourceBalance}
-								pair={isUseBroker ? symbol : key ? key : ''}
-								coins={coins}
-								selectedBalance={selectedBalance}
-								loading={loadingSource}
-								disabled={loadingSource}
-							/>
+							<div className="quick-trade-input">
+								<div className="d-flex justify-content-between mb-4">
+									<div className="bold caps-first">
+										<EditWrapper stringId={'CONVERT'}>
+											{STRINGS['CONVERT']}
+										</EditWrapper>
+									</div>
+									<Balance
+										text={coins[selectedSource]?.display_name}
+										balance={selectedSourceBalance}
+										onClick={sourceTotalBalance}
+									/>
+								</div>
+								<InputGroup
+									options={sourceOptions}
+									inputValue={sourceAmount}
+									selectValue={selectedSource}
+									onSelect={onSelectSource}
+									onInputChange={onChangeSourceAmount}
+									forwardError={() => {}}
+									autoFocus={autoFocus}
+									decimal={
+										coins[selectedSource]?.increment_unit || PAIR2_STATIC_SIZE
+									}
+									availableBalance={selectedSourceBalance}
+									pair={isUseBroker ? symbol : key ? key : ''}
+									coins={coins}
+									selectedBalance={selectedBalance}
+									loading={loadingSource}
+									disabled={loadingSource}
+								/>
+							</div>
 							<div className="d-flex swap-wrapper-wrapper">
 								<div className="swap-wrapper">
-									<div className="swap-container">
+									<div className="swap-container my-2">
 										<div
 											className="pointer blue-link"
 											onClick={() => onSwap(selectedSource, selectedTarget)}
@@ -431,44 +480,56 @@ const QuickTrade = ({
 									</div>
 								</div>
 							</div>
-							<InputGroup
-								name={STRINGS['TO']}
-								stringId={'TO'}
-								options={targetOptions}
-								inputValue={targetAmount}
-								selectValue={selectedTarget}
-								onSelect={onSelectTarget}
-								onInputChange={onChangeTargetAmount}
-								forwardError={() => {}}
-								decimal={
-									coins[selectedTarget]?.increment_unit || PAIR2_STATIC_SIZE
-								}
-								pair={isUseBroker ? symbol : key ? key : ''}
-								coins={coins}
-								loading={loadingTarget}
-								disabled={loadingTarget}
-							/>
+							<div className="quick-trade-input">
+								<div className="d-flex justify-content-between mb-4">
+									<div className="bold caps-first">
+										<EditWrapper stringId={'TO'}>{STRINGS['TO']}</EditWrapper>
+									</div>
+									<Balance
+										text={coins[selectedTarget]?.display_name}
+										balance={selectedTargetBalance}
+										onClick={targetTotalBalance}
+										className="balance-wallet"
+									/>
+								</div>
+								<InputGroup
+									options={targetOptions}
+									inputValue={targetAmount}
+									selectValue={selectedTarget}
+									onSelect={onSelectTarget}
+									onInputChange={onChangeTargetAmount}
+									forwardError={() => {}}
+									decimal={
+										coins[selectedTarget]?.increment_unit || PAIR2_STATIC_SIZE
+									}
+									pair={isUseBroker ? symbol : key ? key : ''}
+									coins={coins}
+									loading={loadingTarget}
+									disabled={loadingTarget}
+								/>
+							</div>
 
-							<Balance
-								text={coins[selectedTarget]?.display_name}
-								balance={selectedTargetBalance}
-								onClick={targetTotalBalance}
-							/>
-
-							{error ? (
+							{error?.length ? (
 								<FieldError
 									error={translateError(error)}
 									displayError={true}
 									className="input-group__error-wrapper"
 								/>
 							) : isExpired ? (
-								<FieldError
-									error={STRINGS['QUICK_TRADE_QUOTE_EXPIRED']}
-									displayError={true}
-									className="input-group__error-wrapper"
-								/>
+								<>
+									<FieldError
+										error={STRINGS['QUICK_TRADE_QUOTE_EXPIRED']}
+										displayError={true}
+										className="input-group__error-wrapper"
+									/>
+								</>
 							) : null}
-
+							{hasExpiredOnce && (
+								<QuoteExpiredBlock
+									onRequoteClick={onRequoteClick}
+									isExpired={isExpired}
+								/>
+							)}
 							<div
 								className={classnames(
 									'quick_trade-section_wrapper',
@@ -485,12 +546,16 @@ const QuickTrade = ({
 									disabled={disabled}
 									type="button"
 									className={!isMobile ? 'w-50' : 'w-100'}
+									// iconId={'SETUP_QUICK_TRADE'}
+									// iconList={STATIC_ICONS}
+
 								/>
 							</div>
 							<Footer
 								brokerUsed={isUseBroker}
 								name={display_name}
 								isNetwork={isNetwork}
+								pair={pair}
 							/>
 						</div>
 					</div>
@@ -520,6 +585,9 @@ const QuickTrade = ({
 							targetAmount={targetAmount}
 							selectedTarget={selectedTarget}
 							disabled={submitting}
+							time={time}
+							expiry={expiry}
+							coins={coins}
 						/>
 					) : (
 						<QuoteResult

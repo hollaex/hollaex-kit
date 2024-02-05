@@ -1,0 +1,30 @@
+.pldatePicker {
+	background-color: var(--base_background);
+}
+.plButton {
+	color: var(--labels_important-active-labels-text-graphics);
+}
+.pldatePicker input {
+	color: white;
+}
+
+.highChartColor .highcharts-graph {
+	stroke: white;
+}
+
+.highChartColor .highcharts-point {
+	stroke: white;
+	fill: white;
+}
+
+.profitNegative {
+	color: var(--trading_selling-related-elements);
+}
+
+.profitPositive {
+	color: var(--trading_buying-related-elements);
+}
+
+.profitNeutral {
+	color: '#ccc';
+}

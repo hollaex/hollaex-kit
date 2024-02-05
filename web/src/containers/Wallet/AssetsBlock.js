@@ -1,12 +1,14 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React, { useEffect, useMemo, useState } from 'react';
 import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
 import { Switch } from 'antd';
 import { CaretUpOutlined, CaretDownOutlined } from '@ant-design/icons';
+import { fetchBalanceHistory, fetchPlHistory } from './actions';
 import classnames from 'classnames';
-import { isStakingAvailable } from 'config/contracts';
+import Highcharts from 'highcharts';
+import HighchartsReact from 'highcharts-react-official';
 import {
 	WALLET_SORT,
 	toggleWalletSort,
@@ -20,6 +22,7 @@ import {
 	EditWrapper,
 	Help,
 	DonutChart,
+	Image,
 } from 'components';
 import {
 	formatCurrencyByIncrementalUnit,
@@ -35,6 +38,9 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import TradeInputGroup from './components/TradeInputGroup';
 import { unique } from 'utils/data';
 import DustSection from './DustSection';
+import moment from 'moment';
+import _toLower from 'lodash/toLower';
+import BigNumber from 'bignumber.js';
 
 const AssetsBlock = ({
 	coins,
@@ -58,7 +64,148 @@ const AssetsBlock = ({
 	toggleSort,
 	setSortModeAmount,
 	chartData,
+	handleBalanceHistory,
+	balance_history_config,
+	info,
 }) => {
+	const emptyDonut = useMemo(() => {
+		return chartData && !!chartData.length;
+	}, [chartData]);
+
+	const [graphData, setGraphData] = useState([]);
+	const [historyData, setHistoryData] = useState([]);
+	const [userPL, setUserPL] = useState();
+
+	const handleUpgrade = (info = {}) => {
+		if (
+			_toLower(info.plan) !== 'fiat' &&
+			_toLower(info.plan) !== 'boost' &&
+			_toLower(info.type) !== 'enterprise'
+		) {
+			return true;
+		} else {
+			return false;
+		}
+	};
+
+	const isUpgrade = handleUpgrade(info);
+
+	useEffect(() => {
+		fetchPlHistory()
+			.then((res) => {
+				setUserPL(res);
+			})
+			.catch((err) => err);
+
+		fetchBalanceHistory({
+			start_date: moment().subtract(7, 'days').toISOString(),
+			end_date: moment().subtract().toISOString(),
+		})
+			.then((response) => {
+				const length = 6;
+
+				let newGraphData = [];
+				for (let i = 0; i < length + 1; i++) {
+					const balanceData = response.data.find(
+						(history) =>
+							moment(history.created_at).format('YYYY-MM-DD') ===
+							moment().subtract(i, 'days').format('YYYY-MM-DD')
+					);
+					// if (!balanceData) continue;
+					newGraphData.push([
+						`${moment().subtract(i, 'days').date()} ${
+							month[moment().subtract(i, 'days').month()]
+						}`,
+						balanceData ? balanceData.total : 0,
+					]);
+				}
+
+				newGraphData.reverse();
+
+				setGraphData(newGraphData);
+				setHistoryData(response.data || []);
+				// setIsLoading(false);
+			})
+			.catch((error) => {
+				// setIsLoading(false);
+			});
+		// eslint-disable-next-line
+	}, []);
+	const month = [
+		'Jan',
+		'Feb',
+		'Mar',
+		'Apr',
+		'May',
+		'Jun',
+		'Jul',
+		'Aug',
+		'Sep',
+		'Oct',
+		'Nov',
+		'Dec',
+	];
+	const options = {
+		title: {
+			text: '',
+		},
+		tooltip: {
+			enabled: false,
+		},
+		xAxis: {
+			lineWidth: 0,
+			minorGridLineWidth: 0,
+			lineColor: 'transparent',
+			minorTickLength: 0,
+			tickLength: 0,
+			visible: false,
+			labels: {
+				enabled: false,
+			},
+			title: {
+				text: null,
+			},
+		},
+		yAxis: {
+			gridLineColor: 'transparent',
+			labels: {
+				enabled: false,
+			},
+			title: {
+				text: null,
+			},
+		},
+		plotOptions: {
+			series: {
+				marker: {
+					enabled: false,
+					states: {
+						hover: {
+							enabled: false,
+						},
+					},
+				},
+			},
+		},
+		series: [
+			{
+				showInLegend: false,
+				data: graphData,
+				color: '#FFFF00',
+			},
+		],
+	};
+
+	const getSourceDecimals = (symbol, value) => {
+		const incrementUnit = coins[symbol].increment_unit;
+		const decimalPoint = new BigNumber(incrementUnit).dp();
+		const sourceAmount = new BigNumber(value || 0)
+			.decimalPlaces(decimalPoint)
+			.toNumber();
+
+		return sourceAmount;
+	};
+
 	const handleClickAmount = () => {
 		if (mode === WALLET_SORT.AMOUNT) {
 			toggleSort();
@@ -141,7 +288,13 @@ const AssetsBlock = ({
 	return showDustSection ? (
 		<DustSection goToWallet={goToWallet} />
 	) : (
-		<div className="wallet-assets_block">
+		<div
+			className={
+				emptyDonut
+					? 'wallet-assets_block'
+					: 'wallet-assets_block empty-wallet-assets_block'
+			}
+		>
 			{isMobile ? (
 				<section className="ml-4 pt-4">
 					{totalAssets.length && !loading ? (
@@ -208,9 +361,16 @@ const AssetsBlock = ({
 					<div className="d-flex align-items-center justify-content-between">
 						<div className="d-flex align-items-center">
 							<div
-								className={classnames('donut-container mb-4', {
-									'd-flex align-items-center justify-content-center loading-wrapper': !chartData.length,
-								})}
+								className={classnames(
+									`${
+										emptyDonut
+											? 'donut-container'
+											: 'donut-container donut-container-empty'
+									}`,
+									{
+										'd-flex align-items-center justify-content-center loading-wrapper': !chartData.length,
+									}
+								)}
 							>
 								{chartData.length ? (
 									<DonutChart
@@ -227,7 +387,7 @@ const AssetsBlock = ({
 								)}
 							</div>
 							{totalAssets.length && !loading ? (
-								<div>
+								<div className="mb-3">
 									<EditWrapper
 										stringId="WALLET_ESTIMATED_TOTAL_BALANCE"
 										render={(children) => (
@@ -245,7 +405,7 @@ const AssetsBlock = ({
 									>
 										{STRINGS['WALLET_ESTIMATED_TOTAL_BALANCE']}
 									</EditWrapper>
-									<div className="d-flex align-items-center">
+									<div className="d-flex align-items-center mt-2">
 										<EditWrapper stringId="DUST.TOOLTIP,DUST.LINK">
 											<Help tip={STRINGS['DUST.TOOLTIP']}>
 												<div
@@ -267,9 +427,72 @@ const AssetsBlock = ({
 								</div>
 							)}
 						</div>
+						{!isUpgrade &&
+						balance_history_config?.active &&
+						historyData.length > 1 ? (
+							<div>
+								<div style={{ marginTop: 10 }}>
+									<EditWrapper stringId="PROFIT_LOSS.PERFORMANCE_TREND">
+										{STRINGS['PROFIT_LOSS.PERFORMANCE_TREND']}
+									</EditWrapper>
+								</div>
+								<div style={{ width: 300, opacity: 0, fontSize: 1 }}>
+									{STRINGS['PROFIT_LOSS.WALLET_PERFORMANCE_TITLE']}
+								</div>
+
+								<div
+									onClick={() => handleBalanceHistory(true)}
+									style={{ zoom: 0.5, cursor: 'pointer' }}
+									className="highChartColor"
+								>
+									{' '}
+									<HighchartsReact
+										highcharts={Highcharts}
+										options={options}
+									/>{' '}
+								</div>
+
+								<div
+									className={
+										Number(userPL?.['7d']?.total || 0) === 0
+											? 'profitNeutral'
+											: (userPL?.['7d']?.total || 0) > 0
+											? 'profitPositive'
+											: 'profitNegative'
+									}
+								>
+									<EditWrapper stringId="PROFIT_LOSS.PL_7_DAY">
+										{STRINGS['PROFIT_LOSS.PL_7_DAY']}
+									</EditWrapper>{' '}
+									{Number(userPL?.['7d']?.total || 0) > 0 ? '+' : ''}{' '}
+									{getSourceDecimals(
+										balance_history_config?.currency || 'usdt',
+										userPL?.['7d']?.total
+									) || '0'}{' '}
+									{balance_history_config?.currency?.toUpperCase() || 'USDT'}
+								</div>
+							</div>
+						) : (
+							<Image
+								icon={ICONS['WALLET_GRAPHIC']}
+								wrapperClassName="wallet-graphic-icon"
+							/>
+						)}
+					</div>
+					<div className="d-flex justify-content-between pl-3 pr-3">
+						<div>
+							<EditWrapper stringId="WALLET_ASSETS_SEARCH_TXT">
+								<SearchBox
+									name="search-assets"
+									placeHolder={`${STRINGS['WALLET_ASSETS_SEARCH_TXT']}...`}
+									handleSearch={handleSearch}
+									showCross
+								/>
+							</EditWrapper>
+						</div>
 						<div className="d-flex justify-content-between zero-balance-wrapper row-reverse">
 							<div className="d-flex">
-								<div className="d-flex align-items-center">
+								<div className="d-flex align-items-center mt-4">
 									<span>
 										<EditWrapper stringId="WALLET_HIDE_ZERO_BALANCE">
 											{STRINGS['WALLET_HIDE_ZERO_BALANCE']}
@@ -283,16 +506,6 @@ const AssetsBlock = ({
 								</div>
 							</div>
 						</div>
-					</div>
-					<div className="d-flex row-reverse">
-						<EditWrapper stringId="WALLET_ASSETS_SEARCH_TXT">
-							<SearchBox
-								name="search-assets"
-								placeHolder={`${STRINGS['WALLET_ASSETS_SEARCH_TXT']}...`}
-								handleSearch={handleSearch}
-								showCross
-							/>
-						</EditWrapper>
 					</div>
 				</section>
 			)}
@@ -327,13 +540,13 @@ const AssetsBlock = ({
 								</EditWrapper>
 							</th>
 						)}
-						{hasEarn && (
+						{/* {hasEarn && (
 							<th>
 								<EditWrapper stringId="STAKE.EARN">
 									{STRINGS['STAKE.EARN']}
 								</EditWrapper>
 							</th>
-						)}
+						)} */}
 					</tr>
 				</thead>
 				<tbody>
@@ -374,7 +587,13 @@ const AssetsBlock = ({
 													<Coin iconId={icon_id} />
 												</Link>
 												<Link to={`/wallet/${key.toLowerCase()}`}>
-													<div className="px-2">{fullname}</div>
+													<div className="px-2">
+														<EditWrapper
+															stringId={`${symbol?.toUpperCase()}_FULLNAME`}
+														>
+															{fullname}
+														</EditWrapper>
+													</div>
 												</Link>
 											</div>
 										) : (
@@ -464,7 +683,7 @@ const AssetsBlock = ({
 											)}
 										</td>
 									)}
-									{hasEarn && (
+									{/* {hasEarn && (
 										<td>
 											<ActionNotification
 												stringId="STAKE.EARN"
@@ -477,7 +696,7 @@ const AssetsBlock = ({
 												disable={!isStakingAvailable(symbol, contracts)}
 											/>
 										</td>
-									)}
+									)} */}
 								</tr>
 							);
 						}
@@ -492,6 +711,7 @@ const mapStateToProps = ({
 	app: {
 		wallet_sort: { mode, is_descending },
 		quicktrade,
+		constants: { balance_history_config, info },
 	},
 	asset: { chartData },
 }) => ({
@@ -499,6 +719,8 @@ const mapStateToProps = ({
 	is_descending,
 	quicktrade,
 	chartData,
+	balance_history_config,
+	info,
 });
 
 const mapDispatchToProps = (dispatch) => ({

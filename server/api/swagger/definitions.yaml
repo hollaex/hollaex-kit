@@ -361,6 +361,40 @@ definitions:
         properties:
           post_only:
             type: boolean
+  OrderRequestByAdmin:
+    type: object
+    required:
+      - user_id
+      - side
+      - size
+      - type
+      - symbol
+    properties:
+      user_id:
+        type: number
+        description: User id for the order
+      symbol:
+        type: string
+        maxLength: 256
+        description: Currency symbol of the order e.g. btc-eur
+      side:
+        type: string
+        enum:
+          - buy
+          - sell
+      size:
+        description: "Amount of the orders."
+        type: number
+        format: double
+      type:
+        type: string
+        enum:
+          - market
+          - limit
+      price:
+        type: number
+        format: double
+        description: Price of the order
   OrderResponse:
     type: object
     properties:
@@ -1009,8 +1043,6 @@ definitions:
       - name
       - icon
       - description
-      - deposit_limit
-      - withdrawal_limit
       - fees
     properties:
       level:
@@ -1028,12 +1060,6 @@ definitions:
       note:
         type: string
         maxLength: 256
-      deposit_limit:
-        type: number
-        format: double
-      withdrawal_limit:
-        type: number
-        format: double
       fees:
         type: object
         required:
@@ -1064,8 +1090,6 @@ definitions:
       - icon
       - note
       - description
-      - deposit_limit
-      - withdrawal_limit
       - fees
     properties:
       id:
@@ -1083,12 +1107,6 @@ definitions:
       description:
         type: string
         maxLength: 256
-      deposit_limit:
-        type: number
-        format: double
-      withdrawal_limit:
-        type: number
-        format: double
       fees:
         type: object
   PairFeesPut:
@@ -1111,24 +1129,6 @@ definitions:
               type: number
               format: double
             taker:
-              type: number
-              format: double
-  TiersLimitsPut:
-    type: object
-    required:
-      - limits
-    properties:
-      limits:
-        type: object
-        minProperties: 1
-        additionalProperties:
-          type: object
-          minProperties: 1
-          properties:
-            deposit_limit:
-              type: number
-              format: double
-            withdrawal_limit:
               type: number
               format: double
   OraclePriceResponse:
@@ -1154,6 +1154,8 @@ definitions:
         type: number
         format: double
       transaction_id:
+        type: string
+      address:
         type: string
       status:
         type: boolean
@@ -1435,6 +1437,30 @@ definitions:
       increment_price:
         type: number
         format: double
+  TransactionLimit:
+    type: object
+    properties:
+      id:
+        type: ['number', 'null']
+      tier:
+        type: number
+      currency:
+        type: string
+        maxLength: 256
+      limit_currency:
+        type: string
+        maxLength: 256
+      amount:
+        type: number
+        format: double
+      monthly_amount:
+        type: ['number', 'null']
+      withdrawal_fee:
+        type: number
+        format: double
+      type:
+        type: string
+        enum: ['withdrawal', 'deposit']
   BrokerPair:
     type: object
     properties:
@@ -1527,3 +1553,49 @@ definitions:
     properties:
       id:
         type: integer
+  StakePool:
+    type: object
+    properties:
+      id:
+         type: ['number', 'null']
+      name:
+        type: string
+        maxLength: 256
+      user_id:
+        type: number
+        format: int32
+      currency:
+        type: string
+      reward_currency:
+        type: ['string', 'null']
+      account_id:
+        type: number
+        format: int32
+      apy:
+        type: number
+        format: double
+      duration:
+        type: ['number', 'null']
+      slashing:
+       type: ['boolean', 'null']
+      slashing_earning_percentage:
+        type: number
+        format: int32
+      slashing_principle_percentage:
+        type: number
+        format: int32
+      early_unstake:
+        type: boolean
+      min_amount:
+        type: number
+        format: double
+      max_amount:
+        type: number
+        format: double
+      status:
+        type: string
+        enum: [uninitialized, active, paused, terminated]
+      onboarding:
+        type: ['boolean', 'null']
+      disclaimer:
+        type: ['string', 'null']

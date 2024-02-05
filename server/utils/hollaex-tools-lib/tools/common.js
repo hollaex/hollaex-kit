@@ -14,6 +14,7 @@ const {
 	GET_EMAIL,
 	GET_COINS,
 	GET_PAIRS,
+	GET_TRANSACTION_LIMITS,
 	GET_TIERS,
 	GET_KIT_CONFIG,
 	GET_KIT_SECRETS,
@@ -23,7 +24,8 @@ const {
 	USER_META_KEYS,
 	VALID_USER_META_TYPES,
 	DOMAIN,
-	DEFAULT_FEES
+	DEFAULT_FEES,
+	BALANCE_HISTORY_SUPPORTED_PLANS
 } = require(`${SERVER_PATH}/constants`);
 const {
 	COMMUNICATOR_CANNOT_UPDATE,
@@ -31,7 +33,7 @@ const {
 	SUPPORT_DISABLED,
 	NO_NEW_DATA
 } = require(`${SERVER_PATH}/messages`);
-const { each, difference, isPlainObject, isString, pick, isNil, omit } = require('lodash');
+const { each, difference, isPlainObject, isString, pick, isNil, omit, isNumber } = require('lodash');
 const { publisher } = require('./database/redis');
 const { sendEmail: sendSmtpEmail } = require(`${SERVER_PATH}/mail`);
 const { sendSMTPEmail: nodemailerEmail } = require(`${SERVER_PATH}/mail/utils`);
@@ -168,7 +170,7 @@ const maskSecrets = (secrets) => {
 	return secrets;
 };
 
-const updateKitConfigSecrets = (data = {}, scopes) => {
+const updateKitConfigSecrets = (data = {}, scopes, auditInfo) => {
 	let role = 'admin';
 
 	if (!data.kit && !data.secrets) {
@@ -201,6 +203,13 @@ const updateKitConfigSecrets = (data = {}, scopes) => {
 			}
 			if (data.secrets && Object.keys(data.secrets).length > 0) {
 				updatedKitConfig.secrets = joinKitSecrets(status.dataValues.secrets, data.secrets, role);
+			}
+			const { createAuditLog } = require('./user');
+			if (updatedKitConfig?.kit && Object.keys(updatedKitConfig?.kit).length > 0) {
+				createAuditLog({ email: auditInfo.userEmail, session_id: auditInfo.sessionId }, auditInfo.apiPath, auditInfo.method, updatedKitConfig.kit, status.dataValues.kit);
+			}
+			if (updatedKitConfig?.secrets && Object.keys(updatedKitConfig?.secrets).length > 0) {
+				createAuditLog({ email: auditInfo.userEmail, session_id: auditInfo.sessionId }, auditInfo.apiPath, auditInfo.method, updatedKitConfig.secrets, status.dataValues.secrets);
 			}
 			return status.update(updatedKitConfig, {
 				fields: [
@@ -251,6 +260,50 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 				newKitConfig.user_meta[metaKey],
 				...USER_META_KEYS
 			);
+		}
+	}
+
+	if (newKitConfig.coin_customizations) {
+		for(let coin of Object.values(newKitConfig.coin_customizations)) {
+			if(!coin.hasOwnProperty('fee_markup')) {
+				throw new Error('Fee markup key does not exist');
+			}
+
+			if (coin.fee_markup < 0) {
+				throw new Error('Fee markup cannot be negative');
+			}
+
+			if (coin.fee_markup && !isNumber(coin.fee_markup)) {
+				throw new Error('Fee markup is not a number');
+			}
+		}
+	}
+
+	if (newKitConfig.balance_history_config) {
+
+		const exchangeInfo = getKitConfig().info;
+
+		if (!BALANCE_HISTORY_SUPPORTED_PLANS.includes(exchangeInfo.plan))
+			throw new Error('Exchange plan does not support this feature');
+
+		if (!newKitConfig.balance_history_config.hasOwnProperty('currency')) {
+			throw new Error('currency does not exist');
+		}
+
+		if (existingKitConfig?.balance_history_config?.currency && existingKitConfig?.balance_history_config?.currency !== newKitConfig.balance_history_config.currency) {
+			throw new Error('currency cannot be changed');
+		}
+
+		if (existingKitConfig?.balance_history_config?.date_enabled && existingKitConfig?.balance_history_config?.date_enabled !== newKitConfig.balance_history_config.date_enabled) {
+			throw new Error('date cannot be changed');
+		}
+
+		if(!newKitConfig.balance_history_config.hasOwnProperty('active')) {
+			throw new Error('active does not exist');
+		}
+
+		if(!newKitConfig.balance_history_config.hasOwnProperty('date_enabled')) {
+			throw new Error('date enabled does not exist');
 		}
 	}
 
@@ -456,6 +509,15 @@ const getCharts = (from, to, resolution, opts = {
 	return getNodeLib().getCharts(from, to, resolution, opts);
 };
 
+const getMiniCharts = (assets, opts = {
+	from: null, 
+	to: null, 
+	quote: null,
+	additionalHeaders: null
+}) => {
+	return getNodeLib().getMiniCharts(assets, opts);
+};
+
 const getUdfConfig = (opts = {
 	additionalHeaders: null
 }) => {
@@ -641,7 +703,7 @@ const updateKitUserMeta = async (name, data = {
 	type: null,
 	description: null,
 	required: null
-}) => {
+}, auditInfo) => {
 	const existingUserMeta = getKitConfig().user_meta;
 
 	if (!existingUserMeta[name]) {
@@ -679,7 +741,8 @@ const updateKitUserMeta = async (name, data = {
 			user_meta: updatedUserMeta
 		}
 	});
-
+	const { createAuditLog } = require('./user');
+	createAuditLog({ email: auditInfo.userEmail, session_id: auditInfo.sessionId }, auditInfo.apiPath, auditInfo.method, updatedUserMeta, existingUserMeta);
 	publisher.publish(
 		CONFIGURATION_CHANNEL,
 		JSON.stringify({
@@ -801,6 +864,11 @@ const getQuickTrades = () => {
 	return GET_QUICKTRADE();
 };
 
+const getTransactionLimits = () => {
+	return GET_TRANSACTION_LIMITS();
+};
+
+
 const getNetworkQuickTrades = () => {
 	return GET_NETWORK_QUICKTRADE();
 }
@@ -843,6 +911,7 @@ module.exports = {
 	getOrderbooks,
 	getChart,
 	getCharts,
+	getMiniCharts,
 	getUdfConfig,
 	getUdfHistory,
 	getUdfSymbols,
@@ -875,5 +944,6 @@ module.exports = {
 	getQuickTrades,
 	getNetworkQuickTrades,
 	parseNumber,
-	getQuickTradePairs
+	getQuickTradePairs,
+	getTransactionLimits
 };

@@ -56,6 +56,8 @@ import {
 	SET_ADMIN_DIGITAL_ASSETS_SORT,
 	SELECTED_PLUGIN,
 	SET_EXPLORE_PLUGINS,
+	OVERWRITE_CURRENCY_NAMES,
+	SET_TRANSACTION_LIMITS,
 } from 'actions/appActions';
 import { THEME_DEFAULT } from 'config/constants';
 import { getLanguage } from 'utils/string';
@@ -73,6 +75,7 @@ import {
 	modifyPairsData,
 	modifyBrokerData,
 	modifyQuickTradeData,
+	overWriteCoinNames,
 } from 'utils/reducer';
 
 const EMPTY_NOTIFICATION = {
@@ -254,6 +257,11 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 				...state,
 				coins: modifyCoinsData(payload.coins),
 			};
+		case OVERWRITE_CURRENCY_NAMES:
+			return {
+				...state,
+				coins: overWriteCoinNames(state.coins),
+			};
 		case SET_USER_PAYMENTS:
 			return {
 				...state,
@@ -273,6 +281,11 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				broker: modifyBrokerData(payload.broker, { ...state.coins }),
+			};
+		case SET_TRANSACTION_LIMITS:
+			return {
+				...state,
+				transaction_limits: payload.transaction_limits,
 			};
 		case SET_QUICKTRADE:
 			return {

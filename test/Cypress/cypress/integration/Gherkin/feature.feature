@@ -10,7 +10,10 @@ Scenario: Successful features changes
     When I check all features 
     And I should be able to enable or disable Pro trade
     And I should be able to enable or disable Quick trade
-    And I should be able to enable or disable Staking
+    And I should be able to enable or disable Defi Staking
+    And I should be able to enable or disable Cefi Staking
+    And I should be able to enable or disable Fiat Contorols
     And I should be able to enable or disable Chat system
-    And I should be able to enable or disabl Homepage
+    And I should be able to enable or disable Apps
+    And I should be able to enable or disable Homepage
     Then I should be able to disable Chat system

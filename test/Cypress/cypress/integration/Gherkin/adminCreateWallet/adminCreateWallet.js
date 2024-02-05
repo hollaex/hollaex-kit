@@ -1,9 +1,12 @@
+import jsQR from 'jsqr';
+const chai = require('chai');
+const expect = chai.expect;
 import {Given, And, When, Then} from "cypress-cucumber-preprocessor/steps"
 const randomUsername = Math.random().toString(36).substring(2,6);
 const username = "tester+"+randomUsername+Cypress.env('NEW_USER')
 var selector
 var selector1
-var XHTAdress 
+var XHTAddress 
 
 
 Given ('an admin is logged in',()=>{
@@ -17,7 +20,7 @@ Given ('an admin is logged in',()=>{
 When ('Admin create a new user',()=>{
   cy.contains('Operator controls').click()
   cy.contains('Users').click()
-  cy.contains('All Users').click()
+  cy.wait(3000)
   cy.get('table tbody tr:first')  // get the topmost row in the table
   .then($row => {
     const rowKey = parseInt($row.attr('data-row-key')) + 1; // get the current data-row
@@ -32,7 +35,7 @@ When ('Admin create a new user',()=>{
    cy.get(selector1).click()
 });
    cy.get(':nth-child(2) > .align-items-center > :nth-child(4)').contains(username)
-   cy.get(':nth-child(2) > .about-info-content > :nth-child(2)').contains('Verified')
+   cy.get(':nth-child(3) > .about-info-content > :nth-child(2)').contains('Verified')
 
 })
 And ('Admin create a new XHT wallet address for the user',()=>{
@@ -51,7 +54,7 @@ And ('Admin create a new XHT wallet address for the user',()=>{
    .invoke('text')
    .then((text) => {
     const trimmedText = text.trim().replace('eth: ', '');
-    XHTAdress = trimmedText
+    XHTAddress = trimmedText
   cy.log(trimmedText);
   });
 })
@@ -68,11 +71,24 @@ When ('the user logs in to Hollaex',()=>{
 })
 Then ('the user wallet address should be the same as the one created by the admin',()=>{
   cy.wait(3000)
-  cy.visit("https://sandbox.hollaex.com/wallet/xht")
+  cy.visit(Cypress.env('XHT_LINK'))
   cy.get('[href="/wallet/xht/deposit"] > .holla-button').click()
-  cy.get('.d-flex > .pointer')
-.should('have.text', XHTAdress);
-})
+  cy.get('.multiple-actions-wrapper > :nth-child(1)').click()
+  cy.get('.blue-link')
+  .should('have.text', XHTAddress);
+  cy.get('canvas').then($canvas => {
+    // Get the image data from the canvas
+    const imageData = $canvas[0].getContext('2d').getImageData(0, 0, $canvas[0].width, $canvas[0].height);
+    // Decode the barcode using jsQR
+    const decodedData = jsQR(imageData.data, imageData.width, imageData.height);
+    // Extract the XHT address from the decoded data
+    const Address = XHTAddress;
+    // Assert that the decoded data matches the XHT address
+    cy.log(decodedData.data)
+    expect(decodedData.data).to.equal(Address);
+  });
+});
+
 
 
    

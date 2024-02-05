@@ -404,6 +404,8 @@ class AppWrapper extends React.Component {
 			tabParams?.isFiat === 'offRamp'
 		) {
 			return 'Fiat controls';
+		} else if (location.pathname.includes('/admin/stakes')) {
+			return 'Stakes';
 		} else if (location.pathname.includes('/admin/sessions')) {
 			return 'Sessions';
 		} else if (location.pathname.includes('/admin/financial')) {
@@ -424,6 +426,8 @@ class AppWrapper extends React.Component {
 			return 'API keys';
 		} else if (location.pathname.includes('/admin/billing')) {
 			return 'Billing';
+		} else if (location.pathname.includes('/admin/audits')) {
+			return 'Operator Logs';
 		} else if (location.pathname.includes('/admin/collateral')) {
 			return 'Collateral';
 		} else if (location.pathname.includes('/admin/resources')) {

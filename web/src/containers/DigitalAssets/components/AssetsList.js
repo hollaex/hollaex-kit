@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import classnames from 'classnames';
@@ -9,16 +9,14 @@ import {
 	toggleDigitalAssetsSort as toggleSort,
 	setDigitalAssetsSortModeChange as setSortModeChange,
 } from 'actions/appActions';
-import { Paginator, EditWrapper } from 'components';
+import { EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
-import MarketRow from 'containers/TradeTabs/components/MarketRow';
+import AssetsRow from './AssetsRow';
 
 const AssetsList = ({
-	markets,
+	coinsListData,
 	handleClick,
-	chartData,
-	icons: ICONS,
 	page,
 	pageSize,
 	count,
@@ -30,8 +28,13 @@ const AssetsList = ({
 	is_descending,
 	toggleSort,
 	setSortModeChange,
+	quicktrade,
+	pairs,
+	pinned_assets
 }) => {
+	const [isOndDaySort, setIsOneDaySort] = useState(false);
 	const handleClickChange = () => {
+		setIsOneDaySort(false);
 		if (mode === SORT.CHANGE) {
 			toggleSort();
 		} else {
@@ -39,8 +42,20 @@ const AssetsList = ({
 		}
 	};
 
-	const renderCaret = (cell) => (
-		<div className="market-list__caret d-flex flex-direction-column mx-1 secondary-text">
+	const handleOneDaySort = () => {
+		setIsOneDaySort(true);
+		if (mode === SORT.CHANGE) {
+			toggleSort();
+		} else {
+			setSortModeChange();
+		}
+	};
+
+	const renderCaret = (cell, isOneDay) => (
+		<div
+			id={isOneDay ? 'one-day-sort' : 'seven-day-sort'}
+			className="market-list__caret d-flex flex-direction-column mx-1 secondary-text"
+		>
 			<CaretUpOutlined
 				className={classnames({
 					'important-text': mode === cell && is_descending,
@@ -53,6 +68,41 @@ const AssetsList = ({
 			/>
 		</div>
 	);
+
+	const movePinnedItems = (array) => {
+		const pinnedItems = pinned_assets;
+		const sortedArray = array.sort((a, b) => {
+		// Find the first ID that differs between the two objects
+		const id = pinnedItems.find(i => a.symbol !== b.symbol);
+	
+		if (id) {
+			// If a has the ID, move it to the top
+			return a.symbol === id ? -1 : 1;
+		}
+	
+		return 0;
+		});
+		return sortedArray;
+  	};
+
+	const getSortedList = () => {
+		return movePinnedItems(coinsListData.sort((a, b) => {
+			const aVal = parseFloat(
+				isOndDaySort
+					? a.oneDayPriceDifferencePercenVal
+					: a.priceDifferencePercentVal
+			);
+			const bVal = parseFloat(
+				isOndDaySort
+					? b.oneDayPriceDifferencePercenVal
+					: b.priceDifferencePercentVal
+			);
+			return is_descending ? bVal - aVal : aVal - bVal;
+		}));
+	};
+
+	const totalPages = Math.ceil(count / pageSize);
+	const hideViewMore = page + 1 >= totalPages;
 
 	return (
 		<div className="market-list__container">
@@ -68,8 +118,15 @@ const AssetsList = ({
 						<tr className="table-bottom-border">
 							<th className="sticky-col">
 								<div>
-									<EditWrapper stringId="MARKETS_TABLE.MARKETS">
-										{STRINGS['MARKETS_TABLE.MARKETS']}
+									<EditWrapper stringId="MARKETS_TABLE.ASSET">
+										{STRINGS['MARKETS_TABLE.ASSET']}
+									</EditWrapper>
+								</div>
+							</th>
+							<th>
+								<div className="d-flex">
+									<EditWrapper stringId="MARKETS_TABLE.TRADING_SYMBOL">
+										{STRINGS['MARKETS_TABLE.TRADING_SYMBOL']}
 									</EditWrapper>
 								</div>
 							</th>
@@ -81,68 +138,60 @@ const AssetsList = ({
 								</div>
 							</th>
 							<th>
-								<div>
-									<EditWrapper stringId="MARKETS_TABLE.SOURCE">
-										{STRINGS['MARKETS_TABLE.SOURCE']}
+								<div onClick={handleOneDaySort} className="d-flex pointer">
+									<EditWrapper stringId="MARKETS_TABLE.CHANGE_1D">
+										{STRINGS['MARKETS_TABLE.CHANGE_1D']}
 									</EditWrapper>
+									{renderCaret(SORT.CHANGE, true)}
 								</div>
 							</th>
 							<th>
 								<div onClick={handleClickChange} className="d-flex pointer">
-									<EditWrapper stringId="MARKETS_TABLE.CHANGE_24H">
-										{STRINGS['MARKETS_TABLE.CHANGE_24H']}
+									<EditWrapper stringId="MARKETS_TABLE.CHANGE_7D">
+										{STRINGS['MARKETS_TABLE.CHANGE_7D']}
 									</EditWrapper>
 									{renderCaret(SORT.CHANGE)}
 								</div>
 							</th>
 							<th>
-								<div className="d-flex">
-									<EditWrapper stringId="MARKETS_TABLE.TRADING_SYMBOL">
-										{STRINGS['MARKETS_TABLE.TRADING_SYMBOL']}
-									</EditWrapper>
-								</div>
-							</th>
-							<th>
-								<div className="d-flex">
-									<EditWrapper stringId="MARKETS_TABLE.TYPE">
-										{STRINGS['MARKETS_TABLE.TYPE']}
-									</EditWrapper>
-								</div>
-							</th>
-							<th>
 								<div>
-									<EditWrapper stringId="MARKETS_TABLE.CHART_24H">
-										{STRINGS['MARKETS_TABLE.CHART_24H']}
+									<EditWrapper stringId="MARKETS_TABLE.CHART_7D">
+										{STRINGS['MARKETS_TABLE.CHART_7D']}
 									</EditWrapper>
 								</div>
+							</th>
+							<th>
+								<EditWrapper stringId="TRADE_TAB_TRADE">
+									{STRINGS['TRADE_TAB_TRADE']}
+								</EditWrapper>
 							</th>
 						</tr>
 					</thead>
 					<tbody id="market-list_tableBody">
-						{markets.map((market, index) => (
-							<MarketRow
+						{getSortedList().map((coinData, index) => (
+							<AssetsRow
 								index={index}
-								key={index}
-								icons={ICONS}
+								key={coinData.code}
 								handleClick={handleClick}
-								chartData={chartData}
-								market={market}
+								coinData={coinData}
 								loading={loading}
-								isAsset={true}
+								quicktrade={quicktrade}
+								pairs={pairs}
 							/>
 						))}
 					</tbody>
 				</table>
+				{!hideViewMore && (
+					<div className="d-flex content-center view-more-btn">
+						<div
+							className="blue-link underline-text pointer"
+							onClick={goToNextPage}
+						>
+							{STRINGS['STAKE_DETAILS.VIEW_MORE']}
+						</div>
+					</div>
+				)}
 			</div>
-			{showPaginator && (
-				<Paginator
-					currentPage={page + 1}
-					pageSize={pageSize}
-					count={count}
-					goToPreviousPage={goToPreviousPage}
-					goToNextPage={goToNextPage}
-				/>
-			)}
 		</div>
 	);
 };
@@ -150,10 +199,18 @@ const AssetsList = ({
 const mapStateToProps = ({
 	app: {
 		digital_assets_sort: { mode, is_descending },
+		coins: coinsData,
+		quicktrade,
+		pairs,
+		pinned_assets
 	},
 }) => ({
 	mode,
 	is_descending,
+	coinsData,
+	quicktrade,
+	pairs,
+	pinned_assets
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -21,7 +21,7 @@ Then ('I should be able to login successfully',()=>{
 And ('I should be in {string} page with {string}',(account,username)=>{
 
     cy.url().should('contain','account')
-    cy.get('#trade-nav-container > :nth-child(3) > :nth-child(2)')
+    cy.get('#trade-nav-container > :nth-child(4) > :nth-child(2)')
     .should('contain',Cypress.env('ADMIN_USER'))
 })
 

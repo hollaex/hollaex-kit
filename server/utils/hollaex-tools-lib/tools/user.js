@@ -39,7 +39,7 @@ const {
 	ACCOUNT_NOT_VERIFIED,
 	INVALID_VERIFICATION_LEVEL,
 	USER_EMAIL_NOT_VERIFIED,
-	USER_EMAIL_IS_VERIFIED,
+	VERIFICATION_CODE_EXPIRED,
 	NO_DATA_FOR_CSV,
 	PROVIDE_USER_CREDENTIALS,
 	PROVIDE_KIT_ID,
@@ -48,12 +48,18 @@ const {
 	USER_ALREADY_DEACTIVATED,
 	USER_NOT_DEACTIVATED,
 	CANNOT_CHANGE_ADMIN_ROLE,
-	VERIFICATION_CODE_USED,
+	USER_VERIFIED,
 	USER_NOT_REGISTERED_ON_NETWORK,
 	SESSION_NOT_FOUND,
 	SESSION_ALREADY_REVOKED,
 	WRONG_USER_SESSION,
 	USER_ALREADY_RECOVERED,
+	CANNOT_CHANGE_ADMIN_EMAIL,
+	EMAIL_IS_SAME,
+	EMAIL_EXISTS,
+	CANNOT_CHANGE_DELETED_EMAIL,
+	SERVICE_NOT_SUPPORTED,
+	BALANCE_HISTORY_NOT_ACTIVE
 } = require(`${SERVER_PATH}/messages`);
 const { publisher, client } = require('./database/redis');
 const {
@@ -69,11 +75,12 @@ const {
 	LOGIN_TIME_OUT,
 	TOKEN_TIME_LONG,
 	TOKEN_TIME_NORMAL,
-	VERIFY_STATUS
+	VERIFY_STATUS,
+	EVENTS_CHANNEL
 } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
-const { getKitConfig, isValidTierLevel, getKitTier, isDatetime } = require('./common');
+const { getKitConfig, isValidTierLevel, getKitTier, isDatetime, getKitCoins } = require('./common');
 const { isValidPassword, createSession } = require('./security');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { all, reject } = require('bluebird');
@@ -85,10 +92,16 @@ const uuid = require('uuid/v4');
 const { checkCaptcha, validatePassword, verifyOtpBeforeAction } = require('./security');
 const geoip = require('geoip-lite');
 const moment = require('moment');
+const BigNumber = require('bignumber.js');
 
 let networkIdToKitId = {};
 let kitIdToNetworkId = {};
 /* Onboarding*/
+
+const storeVerificationCode = (user, verification_code) => {
+	const data = { code: verification_code, id: user.id, email: user.email };
+	client.setexAsync(`verification_code:user${verification_code}`, 5 * 60, JSON.stringify(data));
+};
 
 const signUpUser = (email, password, opts = { referral: null }) => {
 	if (!getKitConfig().new_user_is_activated) {
@@ -118,6 +131,7 @@ const signUpUser = (email, password, opts = { referral: null }) => {
 					email,
 					password,
 					verification_level: 1,
+					email_verified: false,
 					settings: INITIAL_SETTINGS()
 				}, { transaction })
 					.then((user) => {
@@ -135,16 +149,26 @@ const signUpUser = (email, password, opts = { referral: null }) => {
 			});
 		})
 		.then((user) => {
+			const verification_code = uuid();
+			storeVerificationCode(user, verification_code);
 			return all([
-				getVerificationCodeByUserId(user.id),
+				verification_code,
 				user
 			]);
 		})
 		.then(([verificationCode, user]) => {
+			publisher.publish(EVENTS_CHANNEL, JSON.stringify({
+				type: 'user',
+				data: {
+					action: 'signup',
+					user_id: user.id
+				}
+			}));
+			
 			sendEmail(
 				MAILTYPE.SIGNUP,
 				email,
-				verificationCode.code,
+				verificationCode,
 				{}
 			);
 			if (opts.referral && isString(opts.referral)) {
@@ -154,35 +178,57 @@ const signUpUser = (email, password, opts = { referral: null }) => {
 		});
 };
 
-const verifyUser = (email, code) => {
-	email = email.toLowerCase();
-	return dbQuery.findOne('user',
-		{ where: { email }, attributes: ['id', 'email', 'settings', 'network_id'] }
-	)
-		.then((user) => {
+const verifyUser = (email, code, domain) => {
+	email = email?.toLowerCase();
+	return client.getAsync(`verification_code:user${code}`)
+		.then((verificationCode) => {
+			if (!verificationCode) {
+				throw new Error(VERIFICATION_CODE_EXPIRED);
+			}
+			verificationCode = JSON.parse(verificationCode);
 			return all([
-				dbQuery.findOne('verification code',
-					{
-						where: { user_id: user.id },
-						attributes: ['id', 'code', 'verified', 'user_id']
-					}
-				),
-				user
+				verificationCode,
+				dbQuery.findOne('user',
+					{ where: { id: verificationCode.id }, attributes: ['id', 'email', 'settings', 'network_id', 'email_verified'] }),
 			]);
 		})
 		.then(([verificationCode, user]) => {
-			if (verificationCode.verified) {
-				throw new Error(USER_EMAIL_IS_VERIFIED);
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
 			}
+
+			if (user.email_verified) {
+				throw new Error(USER_VERIFIED);
+			}
+
 			if (code !== verificationCode.code) {
 				throw new Error(INVALID_VERIFICATION_CODE);
 			}
+
+			client.delAsync(`verification_code:user${verificationCode.code}`);
 			return all([
 				user,
-				verificationCode.update({ verified: true }, { fields: ['verified'], returning: true })
+				user.update(
+					{ email_verified: true },
+					{ fields: ['email_verified'] }
+				)
 			]);
 		})
 		.then(([user]) => {
+			publisher.publish(EVENTS_CHANNEL, JSON.stringify({
+				type: 'user',
+				data: {
+					action: 'verify',
+					user_id: user.id
+				}
+			}));
+			sendEmail(
+				MAILTYPE.WELCOME,
+				user.email,
+				{},
+				user.settings,
+				domain
+			);
 			return user;
 		});
 };
@@ -193,6 +239,7 @@ const createUser = (
 	opts = {
 		role: 'user',
 		id: null,
+		email_verified: false,
 		additionalHeaders: null
 	}
 ) => {
@@ -229,6 +276,7 @@ const createUser = (
 					email,
 					password,
 					settings: INITIAL_SETTINGS(),
+					email_verified: opts.email_verified,
 					...roles
 				};
 
@@ -252,11 +300,7 @@ const createUser = (
 	})
 		.then((user) => {
 			return all([
-				user,
-				getModel('verification code').update(
-					{ verified: true },
-					{ where: { user_id: user.id }, fields: ['verified'] }
-				)
+				user
 			]);
 		})
 		.then(([user]) => {
@@ -388,9 +432,9 @@ const updateLoginStatus = (loginId) => {
 };
 
 const createUserLogin = async (user, ip, device, domain, origin, referer, token, long_term, status) => {
-	const loginData = await findUserLatestLogin(user, status);
+	const loginData = status == false && await findUserLatestLogin(user, status);
 
-	if (!loginData || loginData?.status == true) {
+	if (!loginData) {
 		return registerUserLogin(user.id, ip, {
 			device,
 			domain,
@@ -419,21 +463,12 @@ const findUserLatestLogin = (user, status) => {
 	}).then(loginData => {
 		if (loginData && new Date().getTime() - new Date(loginData.updated_at).getTime() < LOGIN_TIME_OUT) return loginData;
 		return null;
-	})
-}
+	});
+};
 
 /* Public Endpoints*/
 
 
-const getVerificationCodeByUserEmail = (email) => {
-	return getUserByEmail(email)
-		.then((user) => {
-			if (!user) {
-				throw new Error(USER_NOT_FOUND);
-			}
-			return getVerificationCodeByUserId(user.id);
-		});
-};
 
 const generateAffiliationCode = () => {
 	return randomString({
@@ -441,13 +476,6 @@ const generateAffiliationCode = () => {
 		numeric: true,
 		letters: true
 	}).toUpperCase();
-};
-
-const getVerificationCodeByUserId = (user_id) => {
-	return dbQuery.findOne('verification code', {
-		where: { user_id },
-		attributes: ['id', 'code', 'verified', 'user_id']
-	});
 };
 
 const getUserByAffiliationCode = (affiliationCode) => {
@@ -772,7 +800,7 @@ const getAllUsersAdmin = (opts = {
 					}
 				}
 				return { count, data };
-			})
+			});
 	}
 };
 
@@ -1143,27 +1171,6 @@ const INITIAL_SETTINGS = () => {
 	};
 };
 
-const getUserEmailByVerificationCode = (code) => {
-	return dbQuery.findOne('verification code', {
-		where: { code },
-		attributes: ['id', 'code', 'verified', 'user_id']
-	})
-		.then((verificationCode) => {
-			if (!verificationCode) {
-				throw new Error(INVALID_VERIFICATION_CODE);
-			} else if (verificationCode.verified) {
-				throw new Error(VERIFICATION_CODE_USED);
-			}
-			return dbQuery.findOne('user', {
-				where: { id: verificationCode.user_id },
-				attributes: ['email']
-			});
-		})
-		.then((user) => {
-			return user.email;
-		});
-};
-
 const verifyUserEmailByKitId = (kitId) => {
 	return getUserByKitId(kitId, false)
 		.then((user) => {
@@ -1180,17 +1187,18 @@ const verifyUserEmailByKitId = (kitId) => {
 		});
 };
 
-const updateUserNote = (userId, note) => {
+const updateUserNote = (userId, note, auditInfo) => {
 	return getUserByKitId(userId, false)
 		.then((user) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
 			}
+			createAuditLog({ email: auditInfo.userEmail, session_id: auditInfo.sessionId }, auditInfo.apiPath, auditInfo.method, note, user.note);
 			return user.update({ note }, { fields: ['note'] });
 		});
 };
 
-const updateUserDiscount = (userId, discount) => {
+const updateUserDiscount = (userId, discount, auditInfo) => {
 	if (discount < 0 || discount > 100) {
 		return reject(new Error(`Invalid discount rate ${discount}. Min: 0. Max: 1`));
 	}
@@ -1209,6 +1217,7 @@ const updateUserDiscount = (userId, discount) => {
 		})
 		.then(([previousDiscountRate, user]) => {
 			if (user.discount > previousDiscountRate) {
+				createAuditLog({ email: auditInfo.userEmail, session_id: auditInfo.sessionId }, auditInfo.apiPath, auditInfo.method, user.discount, previousDiscountRate);
 				sendEmail(
 					MAILTYPE.DISCOUNT_UPDATE,
 					user.email,
@@ -1317,7 +1326,7 @@ const getUserLogins = (opts = {
 	if (opts.userId) options.where.user_id = opts.userId;
 
 	if (opts.format) {
-		options.attributes = ['id', 'user_id', 'ip', 'device', 'domain', 'timestamp', 'createdAt', 'attempt', 'status', 'country', 'updated_at', 'created_at'];
+		options.attributes = ['id', 'user_id', 'ip', 'device', 'domain', 'timestamp', 'attempt', 'status', 'country', 'updated_at', 'created_at'];
 		return dbQuery.fetchAllRecords('login', options)
 			.then((logins) => {
 				if (opts.format && opts.format === 'csv') {
@@ -1424,8 +1433,87 @@ const createAudit = (adminId, event, ip, opts = {
 	});
 };
 
+const getUpdatedKeys = (oldData, newData) => {
+	const data = uniq([...Object.keys(oldData), ...Object.keys(newData)]);
+  
+	let keys = [];
+	for(const key of data){
+		if(!isEqual(oldData[key], newData[key])){
+			keys.push(key);
+		}
+	}
+  
+	return keys;
+};
+
+const getValues = (data, prevData) => {
+	const updatedKeys = getUpdatedKeys(prevData, data);
+	const updatedValues = updatedKeys.map(key => data[key]);
+	const oldValues = updatedKeys.map(key => prevData[key]);
+	
+	updatedValues.forEach((value, index) => {
+		if(typeof value === 'object' && value.constructor === Object) {
+			const values = getValues(value, oldValues[index]);
+			updatedKeys[index] = values.updatedKeys;
+			updatedValues[index] = values.updatedValues;
+			oldValues[index] = values.oldValues;
+		}
+	});
+
+	return { updatedKeys, oldValues, updatedValues };
+};
+
+const createAuditLog = (subject, adminEndpoint, method, data = {}, prevData = null) => {
+	try {
+		if (!subject?.email) return;
+
+		const methodDescriptions = {
+			get: 'viewed',
+			post: 'inserted',
+			put: 'updated',
+			delete: 'deleted'
+		};
+		const excludedKeys = ['password', 'apiKey', 'secret', 'api-key', 'api-secret', 'hmac'];
+
+		const action = adminEndpoint.split('/').slice(1).join(' ');
+		let description;
+
+		let user_id;
+		if (method === 'get') {
+			user_id = data?.user_id?.value;
+			data = Object.fromEntries(Object.entries(data).filter(([k, v]) => (v.value != null && excludedKeys.indexOf(k) === -1)));
+			const str = Object.keys(data).map((key) =>  '' + key + ':' + data[key].value).join(', ');
+			description = `${action} service ${methodDescriptions[method]}${str ? ` with ${str}` : ''}`;
+		}
+		else if(method === 'put' && prevData) {
+			user_id = data?.user_id;
+			prevData = Object.fromEntries(Object.entries(prevData).filter(([k, v]) => (v != null && excludedKeys.indexOf(k) === -1)));
+			data = Object.fromEntries(Object.entries(data).filter(([k, v]) => (v != null && excludedKeys.indexOf(k) === -1)));
+			const { updatedKeys, oldValues, updatedValues } = getValues(data, prevData);
+			description = `${updatedKeys.join(', ')} field(s) updated to the value(s) ${updatedValues?.join(', ')?.length > 0 ? updatedValues.join(', ') : 'Null'} from ${oldValues?.join(', ')?.length > 0 ? oldValues.join(', ') : 'Null'} in ${action} service`;
+		} 
+		else {
+			user_id = data?.user_id;
+			data = Object.fromEntries(Object.entries(data).filter(([k, v]) => (v != null && excludedKeys.indexOf(k) === -1)));
+			description = `${Object.keys(data).join(', ')} field(s) ${methodDescriptions[method]} by the value(s) ${Object.values(data).join(', ')} in ${action} service`;
+		}
+
+		return getModel('audit').create({
+			subject: subject.email,
+			session_id: subject?.session_id,
+			description,
+			user_id,
+			timestamp: new Date(),
+		}).then(res => res).catch(err => err);
+	} catch (error) {
+		return error;
+	}
+	
+};
+
 const getUserAudits = (opts = {
-	userId: null,
+	user_id: null,
+	subject: null,
 	limit: null,
 	page: null,
 	orderBy: null,
@@ -1434,12 +1522,22 @@ const getUserAudits = (opts = {
 	endDate: null,
 	format: null
 }) => {
+	const exchangeInfo = getKitConfig().info;
+
+	if(!['fiat', 'boost', 'enterprise'].includes(exchangeInfo.plan)) {
+		throw new Error(SERVICE_NOT_SUPPORTED);
+	}
+
 	const pagination = paginationQuery(opts.limit, opts.page);
 	const timeframe = timeframeQuery(opts.startDate, opts.endDate);
 	const ordering = orderingQuery(opts.orderBy, opts.order);
 	let options = {
 		where: {
-			timestamp: timeframe
+			timestamp: timeframe,
+			...(opts.user_id && { user_id: opts.user_id }),
+			...(opts.subject && { subject: {
+				[Op.like]: `%${opts.subject}%`
+			}}),
 		},
 		order: [ordering]
 	};
@@ -1447,8 +1545,6 @@ const getUserAudits = (opts = {
 	if (!opts.format) {
 		options = { ...options, ...pagination };
 	}
-
-	if (isNumber(opts.userId)) options.where.description = getModel('sequelize').literal(`description ->> 'user_id' = '${opts.userId}'`);
 
 	if (opts.format) {
 		return dbQuery.fetchAllRecords('audit', options)
@@ -1466,7 +1562,7 @@ const getUserAudits = (opts = {
 			});
 	}
 	else {
-		return dbQuery.findAndCountAllWithRows('audit', options)
+		return dbQuery.findAndCountAllWithRows('audit', options);
 	}
 };
 
@@ -1621,6 +1717,7 @@ const inviteExchangeOperator = (invitingEmail, email, role, opts = {
 		return getModel('user').findOrCreate({
 			defaults: {
 				email,
+				email_verified: true,
 				password: tempPassword,
 				...roles,
 				settings: INITIAL_SETTINGS()
@@ -1650,12 +1747,6 @@ const inviteExchangeOperator = (invitingEmail, email, role, opts = {
 			});
 	})
 		.then(async ([user, created]) => {
-			if (created) {
-				await getModel('verification code').update(
-					{ verified: true },
-					{ where: { user_id: user.id }, fields: ['verified'] }
-				);
-			}
 			sendEmail(
 				MAILTYPE.INVITED_OPERATOR,
 				user.email,
@@ -1671,7 +1762,7 @@ const inviteExchangeOperator = (invitingEmail, email, role, opts = {
 		});
 };
 
-const updateUserMeta = async (id, givenMeta = {}, opts = { overwrite: null }) => {
+const updateUserMeta = async (id, givenMeta = {}, opts = { overwrite: null }, auditInfo) => {
 	const { user_meta: referenceMeta } = getKitConfig();
 
 	const user = await getUserByKitId(id, false);
@@ -1722,7 +1813,7 @@ const updateUserMeta = async (id, givenMeta = {}, opts = { overwrite: null }) =>
 	const updatedUser = await user.update({
 		meta: updatedUserMeta
 	});
-
+	createAuditLog({ email: auditInfo.userEmail, session_id: auditInfo.sessionId }, auditInfo.apiPath, auditInfo.method, updatedUserMeta, user.meta);
 	return pick(updatedUser, 'id', 'email', 'meta');
 };
 
@@ -1852,7 +1943,7 @@ const [mapNetworkIdToKitId, mapKitIdToNetworkId] = (() => {
 		}];
 })();
 
-const updateUserInfo = async (userId, data = {}) => {
+const updateUserInfo = async (userId, data = {}, auditInfo) => {
 	if (!isInteger(userId) || userId <= 0) {
 		throw new Error('UserId must be a positive integer');
 	}
@@ -1870,7 +1961,7 @@ const updateUserInfo = async (userId, data = {}) => {
 		throw new Error('User not found');
 	}
 
-	const updateData = {};
+	const updateData = { user_id: userId  };
 
 	for (const field in data) {
 		const value = data[field];
@@ -1917,12 +2008,15 @@ const updateUserInfo = async (userId, data = {}) => {
 	if (isEmpty(updateData)) {
 		throw new Error('No fields to update');
 	}
+	const oldValues = { user_id: userId };
+	Object.keys(updateData).forEach(key => { oldValues[key] = user.dataValues[key]; });
 
 	await user.update(
 		updateData,
 		{ fields: Object.keys(updateData) }
 	);
 
+	createAuditLog({ email: auditInfo.userEmail, session_id: auditInfo.sessionId }, auditInfo.apiPath, auditInfo.method, updateData, oldValues);
 	return omitUserFields(user.dataValues);
 };
 
@@ -1992,10 +2086,10 @@ const getExchangeUserSessions = (opts = {
 		],
 		order: [ordering],
 		...(!opts.format && pagination),
-	}
+	};
 
 	if (opts.format) {
-		query.attributes = ['id', 'login_id', 'status', 'last_seen', 'expiry_date', 'role', 'timestamp', 'created_at', 'updated_at'];
+		query.attributes = ['id', 'login_id', 'status', 'last_seen', 'expiry_date', 'role', 'created_at', 'updated_at'];
 		return dbQuery.fetchAllRecords('session', query)
 			.then((sessions) => {
 				if (opts.format && opts.format === 'csv') {
@@ -2047,6 +2141,7 @@ const revokeExchangeUserSession = async (sessionId, userId = null) => {
 	});
 
 	delete updatedSession.dataValues.token;
+	updatedSession.dataValues.user_id = session.login.user_id;
 	return updatedSession.dataValues;
 };
 
@@ -2147,10 +2242,10 @@ const deleteKitUser = async (userId) => {
 	);
 
 	sendEmail(
-			MAILTYPE.USER_DELETED,
-			userEmail,
-			{},
-			user.settings
+		MAILTYPE.USER_DELETED,
+		userEmail,
+		{},
+		user.settings
 	);
 	
 	return updatedUser;
@@ -2184,6 +2279,378 @@ const restoreKitUser = async (userId) => {
 	);
 };
 
+const changeKitUserEmail = async (userId, newEmail, auditInfo) => {
+	const user = await dbQuery.findOne('user', {
+		where: {
+			id: userId
+		},
+		attributes: [
+			'id',
+			'email',
+			'is_admin',
+		]
+	});
+
+	if (!user) {
+		throw new Error(USER_NOT_FOUND);
+	}
+	if (user.is_admin) {
+		throw new Error(CANNOT_CHANGE_ADMIN_EMAIL);
+	}
+
+	if (!isEmail(newEmail)) {
+		return reject(new Error(PROVIDE_VALID_EMAIL));
+	}
+	
+	const userEmail = user.email;
+	if (userEmail === newEmail) {
+		throw new Error(EMAIL_IS_SAME);
+	}
+
+	if (userEmail.includes('_deleted')) {
+		throw new Error(CANNOT_CHANGE_DELETED_EMAIL);
+	}
+
+	const isExists = await dbQuery.findOne('user', {
+		where: {
+			email: newEmail
+		},
+		attributes: [
+			'id',
+			'email',
+		]
+	});
+
+	if (isExists) {
+		throw new Error(EMAIL_EXISTS);
+	}
+
+	await revokeAllUserSessions(userId);
+
+	const updatedUser = await user.update(
+		{ email: newEmail },
+		{ fields: ['email'], returning: true }
+	);
+	createAuditLog({ email: auditInfo.userEmail, session_id: auditInfo.sessionId }, auditInfo.apiPath, auditInfo.method, { user_id: userId, email: userEmail  }, { user_id: userId, email: newEmail });
+	sendEmail(
+		MAILTYPE.ALERT,
+		null,
+		{
+			type: 'Email changed',
+			data: `User email ${userEmail} changed to ${newEmail} by admin`
+		},
+		{}
+	);
+
+	return updatedUser;
+};
+
+const getUserBalanceHistory = (opts = {
+	user_id: null,
+	limit: null,
+	page: null,
+	orderBy: null,
+	order: null,
+	startDate: null,
+	endDate: null,
+	format: null
+}) => {
+	if(!getKitConfig()?.balance_history_config?.active) { throw new Error(BALANCE_HISTORY_NOT_ACTIVE); }
+
+	const timeframe = timeframeQuery(opts.startDate, opts.endDate);
+	const ordering = orderingQuery(opts.orderBy, opts.order);
+	let options = {
+		where: {
+			created_at: timeframe,
+			...(opts.user_id && { user_id: opts.user_id }),
+		},
+		order: [ordering]
+	};
+
+
+	if (opts.format) {
+		return dbQuery.fetchAllRecords('balanceHistory', options)
+			.then(async (balance) => {
+				if (opts.format && opts.format === 'csv') {
+					if (balance.data.length === 0) {
+						throw new Error(NO_DATA_FOR_CSV);
+					}
+					const csv = parse(balance.data, Object.keys(balance.data[0]));
+					return csv;
+				} else {
+					return balance;
+				}
+			});
+	}
+	else {
+		return dbQuery.findAndCountAllWithRows('balanceHistory', options)
+			.then(async (balances) => {
+				if(opts.user_id && (moment(opts.startDate).format('LL') !== moment(opts.endDate).subtract(1, 'days').format('LL'))) {
+						
+					const nativeCurrency = getKitConfig()?.balance_history_config?.currency || 'usdt';
+							
+					const exchangeCoins = getKitCoins();
+					const conversions = await getNodeLib().getOraclePrices(exchangeCoins, {
+						quote: nativeCurrency,
+						amount: 1
+					});
+
+					let symbols = {};
+
+					const { getUserBalanceByKitId } = require('./wallet');
+
+					const balance = await getUserBalanceByKitId(opts.user_id);
+
+					for (const key of Object.keys(balance)) {
+						if (key.includes('available') && balance[key]) {
+							let symbol = key?.split('_')?.[0];
+							symbols[symbol] = balance[key];
+						}
+					}
+
+
+					const coins = Object.keys(symbols);
+
+					let total = 0;
+					let history = {};
+					for (const coin of coins) {
+						if (!conversions[coin]) continue;
+						if (conversions[coin] === -1) continue;
+					
+						const nativeCurrencyValue = new BigNumber(symbols[coin]).multipliedBy(conversions[coin]).toNumber();
+					
+						history[coin] = { original_value: new BigNumber(symbols[coin]).toNumber(), native_currency_value: nativeCurrencyValue };
+						total = new BigNumber(total).plus(nativeCurrencyValue).toNumber();
+					}
+
+					balances.count += 1;
+					balances.data.unshift({
+						user_id: Number(opts.user_id),
+						balance: history,
+						total,
+						created_at: new Date()
+					});
+				}
+
+				return balances;
+			});
+	}
+};
+
+
+
+const fetchUserProfitLossInfo = async (user_id) => {
+
+	if(!getKitConfig()?.balance_history_config?.active) { throw new Error(BALANCE_HISTORY_NOT_ACTIVE); }
+
+	const data = await  client.getAsync(`${user_id}user-pl-info`);
+	if (data) return JSON.parse(data);
+
+	const { getAllUserTradesByKitId } = require('./order');
+	const { getUserWithdrawalsByKitId, getUserDepositsByKitId } = require('./wallet');
+
+	const balanceHistoryModel = getModel('balanceHistory');
+	// Set it to weeks instead of years
+	const startDate = moment().subtract(1, 'weeks').toDate();
+	const endDate = moment().toDate();
+	const timeframe = timeframeQuery(startDate, endDate);
+	const userTrades = await getAllUserTradesByKitId(user_id, null, null, null, 'timestamp', 'asc', startDate, endDate, 'all');
+	
+	const userWithdrawals = await getUserWithdrawalsByKitId(user_id, null, null, null, null, null, null, null, null, 'created_at', 'asc', startDate, endDate, null, null, 'all');
+	const userDeposits = await getUserDepositsByKitId(user_id, null, null, null, null, null, null, null, null, 'created_at', 'asc', startDate, endDate, null, null, 'all'); 
+	const userBalanceHistory = await balanceHistoryModel.findAll({ 
+		where: {
+			user_id,
+			created_at: timeframe
+		}
+	});
+
+
+	const nativeCurrency = getKitConfig()?.balance_history_config?.currency || 'usdt';
+							
+	const exchangeCoins = getKitCoins();
+	const conversions = await getNodeLib().getOraclePrices(exchangeCoins, {
+		quote: nativeCurrency,
+		amount: 1
+	});
+
+	let symbols = {};
+
+	const { getUserBalanceByKitId } = require('./wallet');
+
+	const balance = await getUserBalanceByKitId(user_id);
+
+	for (const key of Object.keys(balance)) {
+		if (key.includes('available') && balance[key]) {
+			let symbol = key?.split('_')?.[0];
+			symbols[symbol] = balance[key];
+		}
+	}
+
+
+	const coins = Object.keys(symbols);
+
+	let total = 0;
+	let history = {};
+	for (const coin of coins) {
+		if (!conversions[coin]) continue;
+		if (conversions[coin] === -1) continue;
+		
+		const nativeCurrencyValue = new BigNumber(symbols[coin]).multipliedBy(conversions[coin]).toNumber();
+		
+		history[coin] = { original_value: new BigNumber(symbols[coin]).toNumber(), native_currency_value: nativeCurrencyValue };
+		total = new BigNumber(total).plus(nativeCurrencyValue).toNumber();
+	}
+	userBalanceHistory.push({
+		user_id: Number(user_id),
+		balance: history,
+		total,
+		created_at: new Date()
+	});
+
+	
+
+	const findClosestBalanceRecord = (date) => {
+		return userBalanceHistory.reduce((closestRecord, entry) => {
+			const entryDate = new Date(entry.created_at).getTime();
+			const closestDate = new Date(closestRecord.created_at).getTime();
+			const currentDate = new Date(date).getTime();
+
+			if (Math.abs(currentDate - entryDate) < Math.abs(currentDate - closestDate)) {
+				return entry;
+			}
+
+			return closestRecord;
+		}, userBalanceHistory[0]);
+	};
+
+	const filterByInterval = (data, interval, conditionalDate) => {
+		const dateThreshold = moment();
+
+		switch (interval) {
+			case '1d':
+				dateThreshold.subtract(1, 'day');
+				break;
+			case '7d':
+				dateThreshold.subtract(7, 'day');
+				break;
+			case '1m':
+				dateThreshold.subtract(1, 'month');
+				break;
+			case '6m':
+				dateThreshold.subtract(6, 'months');
+				break;
+			case '1y':
+				dateThreshold.subtract(1, 'year');
+				break;
+			default:
+				return data;
+		}
+
+		return data.filter((entry) => (moment(entry.created_at || entry.timestamp).isSameOrAfter(dateThreshold)) && (conditionalDate ? moment(entry.created_at || entry.timestamp).isAfter(moment(conditionalDate)) : true));
+	};
+	
+	const timeIntervals = ['1d', '7d', '1m', '6m', '1y'];
+	
+	const results = {};
+	
+	for (const interval of timeIntervals) {
+		const filteredBalanceHistory = filterByInterval(userBalanceHistory, interval, null);
+		if (!filteredBalanceHistory[0]) continue;
+		const initialBalances = filteredBalanceHistory[0]?.balance;
+		const initialBalanceDate = filteredBalanceHistory[0]?.created_at;
+		const filteredTrades = filterByInterval(userTrades.data, interval, initialBalanceDate);
+		
+		const filteredDeposits = filterByInterval(userDeposits.data, interval, initialBalanceDate);
+		const filteredWithdrawals = filterByInterval(userWithdrawals.data, interval, initialBalanceDate);
+
+		if(!initialBalances) continue;
+	
+		const netInflowFromDepositsPerAsset = {};
+		filteredDeposits.forEach((deposit) => {
+			const asset = deposit.currency.toLowerCase();
+			if (!netInflowFromDepositsPerAsset[asset]) {
+				netInflowFromDepositsPerAsset[asset] = 0;
+			}
+			const closestRecord = findClosestBalanceRecord(deposit.created_at);
+	
+			if(closestRecord.balance[asset]) {
+				const marketPrice = closestRecord.balance[asset].native_currency_value / closestRecord.balance[asset].original_value;
+				netInflowFromDepositsPerAsset[asset] += deposit.amount * marketPrice;
+			}
+
+		});
+
+		const netInflowFromTradesPerAsset = filteredTrades.reduce((netInflow, trade) => {
+			const asset = trade.symbol.split('-')[0].toLowerCase();
+			const tradeValue = trade.size * trade.price;
+
+			if (!netInflow[asset]) {
+				netInflow[asset] = 0;
+			}
+
+			if (trade.side === 'buy') {
+				netInflow[asset] += tradeValue;
+			} else if (trade.side === 'sell') {
+				netInflow[asset] -= tradeValue;
+			}
+
+			return netInflow;
+		}, {});
+
+		const netOutflowFromWithdrawalsPerAsset = {};
+		filteredWithdrawals.forEach((withdrawal) => {
+			const asset = withdrawal.currency.toLowerCase();
+			if (!netOutflowFromWithdrawalsPerAsset[asset]) {
+				netOutflowFromWithdrawalsPerAsset[asset] = 0;
+			}
+			const closestRecord = findClosestBalanceRecord(withdrawal.created_at);
+			if(closestRecord.balance[asset]) { 
+				const marketPrice = closestRecord.balance[asset].native_currency_value / closestRecord.balance[asset].original_value;
+				netOutflowFromWithdrawalsPerAsset[asset] -= withdrawal.amount * marketPrice;
+			}
+  
+		});
+ 
+		const finalBalances = filteredBalanceHistory[filteredBalanceHistory.length - 1].balance;
+ 
+		results[interval] = {};
+		Object.keys(finalBalances).forEach(async (asset) => {
+			const cumulativePNL =
+			finalBalances[asset].native_currency_value -
+			initialBalances[asset].native_currency_value -
+			(netInflowFromDepositsPerAsset[asset] || 0) -
+			(netInflowFromTradesPerAsset[asset] || 0) -
+			(netOutflowFromWithdrawalsPerAsset[asset] || 0);
+		
+			
+			const day1Assets = initialBalances[asset].native_currency_value;
+			const inflow = netInflowFromDepositsPerAsset[asset] || 0;
+			const cumulativePNLPercentage =
+			cumulativePNL / (day1Assets + inflow) * 100; 
+		
+			results[interval][asset] = {
+				cumulativePNL,
+				cumulativePNLPercentage,
+			};
+		});
+	}
+
+	if (results['7d']) {
+		let total = 0;
+		const assets = Object.keys(results['7d']);
+
+		assets?.forEach(asset => {
+			total += results['7d'][asset].cumulativePNL;
+		});
+		results['7d'].total = total;
+	}
+
+	client.setexAsync(`${user_id}user-pl-info`, 86400, JSON.stringify(results));
+
+	return results;
+};
+
 module.exports = {
 	loginUser,
 	getUserTier,
@@ -2199,11 +2666,7 @@ module.exports = {
 	getUserRole,
 	updateUserSettings,
 	omitUserFields,
-	signUpUser,
 	registerUserLogin,
-	verifyUser,
-	getVerificationCodeByUserEmail,
-	getUserEmailByVerificationCode,
 	getAllUsersAdmin,
 	updateUserRole,
 	updateUserNote,
@@ -2219,6 +2682,7 @@ module.exports = {
 	isValidUsername,
 	createUserCryptoAddressByKitId,
 	createAudit,
+	createAuditLog,
 	getUserStatsByKitId,
 	getExchangeOperators,
 	inviteExchangeOperator,
@@ -2227,7 +2691,6 @@ module.exports = {
 	getUsersNetwork,
 	createUserCryptoAddressByNetworkId,
 	getUserStatsByNetworkId,
-	getVerificationCodeByUserId,
 	checkAffiliation,
 	verifyUserEmailByKitId,
 	generateAffiliationCode,
@@ -2244,5 +2707,11 @@ module.exports = {
 	getAllBalancesAdmin,
 	deleteKitUser,
 	restoreKitUser,
-	revokeAllUserSessions
+	getUserBalanceHistory,
+	fetchUserProfitLossInfo,
+	revokeAllUserSessions,
+	changeKitUserEmail,
+	storeVerificationCode,
+	signUpUser,
+	verifyUser
 };

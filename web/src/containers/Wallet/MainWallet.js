@@ -22,6 +22,7 @@ import HeaderSection from './HeaderSection';
 import { STATIC_ICONS } from 'config/icons';
 import { isStakingAvailable, STAKING_INDEX_COIN } from 'config/contracts';
 import { assetsSelector, searchAssets } from './utils';
+import ProfitLossSection from './ProfitLossSection';
 
 const ZERO_BALANCE_KEY = 'isZeroBalanceHidden';
 
@@ -39,6 +40,7 @@ class Wallet extends Component {
 			isOpen: true,
 			isZeroBalanceHidden,
 			showDustSection: false,
+			activeBalanceHistory: false,
 		};
 	}
 
@@ -58,6 +60,10 @@ class Wallet extends Component {
 			this.props.isFetching,
 			this.props.assets
 		);
+
+		if (this.props.location.pathname === '/wallet/history') {
+			this.setState({ activeBalanceHistory: true });
+		}
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -103,11 +109,6 @@ class Wallet extends Component {
 		}
 	}
 
-	componentWillUnmount() {
-		const { isZeroBalanceHidden } = this.state;
-		localStorage.setItem(ZERO_BALANCE_KEY, isZeroBalanceHidden);
-	}
-
 	getMobileSlider = (coins, oraclePrices) => {
 		const result = {};
 		Object.keys(coins).map((key) => {
@@ -122,7 +123,12 @@ class Wallet extends Component {
 	};
 
 	onToggleZeroBalance = (isZeroBalanceHidden) => {
+		localStorage.setItem(ZERO_BALANCE_KEY, isZeroBalanceHidden);
 		this.setState({ isZeroBalanceHidden });
+	};
+
+	handleBalanceHistory = (value) => {
+		this.setState({ activeBalanceHistory: value });
 	};
 
 	generateSections = (
@@ -175,6 +181,7 @@ class Wallet extends Component {
 						showDustSection={showDustSection}
 						goToWallet={this.goToWallet}
 						isZeroBalanceHidden={isZeroBalanceHidden}
+						handleBalanceHistory={this.handleBalanceHistory}
 					/>
 				),
 				isOpen: true,
@@ -288,7 +295,13 @@ class Wallet extends Component {
 								<>
 									<HeaderSection icons={ICONS} />
 									<NotLoggedIn>
-										<Accordion sections={sections} showHeader={false} />
+										{!this.state.activeBalanceHistory ? (
+											<Accordion sections={sections} showHeader={false} />
+										) : (
+											<ProfitLossSection
+												handleBalanceHistory={this.handleBalanceHistory}
+											/>
+										)}
 									</NotLoggedIn>
 								</>
 							)}

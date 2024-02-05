@@ -87,7 +87,7 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 	else if (type === MAILTYPE.SIGNUP) { // ok
 		html = html.replace(/\$\{name\}/g, email);
 		html = html.replace(/\$\{api_name\}/g, API_NAME());
-		html = html.replace(/\$\{link\}/g, `${domain}/verify/${data}`);
+		html = html.replace(/\$\{link\}/g, `${domain}/verify/${data}?email=${email}`);
 	}
 	else if (type === MAILTYPE.WELCOME) { //ok
 		html = html.replace(/\$\{name\}/g, email || '');
@@ -320,7 +320,7 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		html = html.replace(/\$\{fee\}/g, data.fee || '0');
 		html = html.replace(/\$\{address\}/g, data.address || '');
 		html = html.replace(/\$\{ip\}/g, data.ip || '');
-		html = html.replace(/\$\{link\}/g, data.confirmation_link || `${domain}/confirm-withdraw/${data.transaction_id}`);
+		html = html.replace(/\$\{link\}/g, data.confirmation_link || `${domain}/confirm-withdraw/${data.transaction_id}?currency=${data.currency}&amount=${data.amount}&address=${data.address}&fee=${data.fee}&network=${data.network}`);
 		if(data.network) {
 			html = html.replace(/\$\{network\}/g, data.network || '');
 		} else {
@@ -417,6 +417,7 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		html = html.replace(/\$\{login_timeout\}/g, LOGIN_TIME_OUT / (1000 * 60)  || '');
 	}
 	else if (type === MAILTYPE.USER_DELETED) {
+		html = html.replace(/\$\{name\}/g, email || '');
 		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
 	}
 

@@ -49,7 +49,7 @@ const CheckDeposit = ({
 	};
 
 	formFields.currency = {
-		type: 'select',
+		type: 'autocomplete',
 		stringId: 'COINS,DEPOSIT_STATUS.CURRENCY_FIELD_LABEL',
 		label: STRINGS['COINS'],
 		placeholder: STRINGS['DEPOSIT_STATUS.CURRENCY_FIELD_LABEL'],
@@ -107,7 +107,11 @@ const CheckDeposit = ({
 				placeholder: STRINGS['DEPOSIT_STATUS.DESTINATION_TAG_PLACEHOLDER'],
 				fullWidth: true,
 			};
-		} else if (formValues.currency === 'xlm' || formValues.network === 'xlm') {
+		} else if (
+			formValues.currency === 'xlm' ||
+			formValues.network === 'xlm' ||
+			formValues.network === 'ton'
+		) {
 			formFields.destination_tag = {
 				type: 'text',
 				stringId: 'DEPOSIT_STATUS.MEMO_LABEL,DEPOSIT_STATUS.MEMO_PLACEHOLDER',

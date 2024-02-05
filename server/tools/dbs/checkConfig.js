@@ -60,7 +60,9 @@ Status.findOne()
 				maker_id: 1,
 				quote: 'xht',
 				spread: 0
-			}
+			},
+			coin_customizations: existingKitConfigurations.coin_customizations || {},
+			balance_history_config: existingKitConfigurations.balance_history_config || {}
 		};
 
 		const secrets = {

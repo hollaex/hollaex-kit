@@ -21,14 +21,6 @@ module.exports = function (sequelize, DataTypes) {
 				type: DataTypes.STRING,
 				allowNull: false
 			},
-			deposit_limit: {
-				type: DataTypes.DOUBLE,
-				defaultValue: 0
-			},
-			withdrawal_limit: {
-				type: DataTypes.DOUBLE,
-				defaultValue: 0
-			},
 			fees: {
 				type: DataTypes.JSONB,
 				defaultValue: {}
@@ -36,6 +28,14 @@ module.exports = function (sequelize, DataTypes) {
 			note: {
 				type: DataTypes.STRING,
 				defaultValue: ''
+			},
+			deposit_limit: {
+				type: DataTypes.DOUBLE,
+				defaultValue: 0
+			},
+			withdrawal_limit: {
+				type: DataTypes.DOUBLE,
+				defaultValue: 0
 			},
 			native_currency_limit: {
 				type: DataTypes.BOOLEAN,

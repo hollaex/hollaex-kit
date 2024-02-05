@@ -42,7 +42,11 @@
 	"BACK_TEXT": "Back",
 	"NO_OPTIONS": "No options availables",
 	"SECONDS": "seconds",
+	"SECOND": "second",
 	"VIEW_MARKET": "view markets",
+	"CANT_FIND_MARKETS":"Can't find any markets from that asset.",
+	"TRY_VISITING_ASSETS": "Try visiting the {0}.",
+	"ASSETS_PAGE": "Assets page",
 	"GO_TRADE": "Go Trade",
 	"VIEW_INFO": "View info page",
 	"APPLY_HERE": "Apply Here",
@@ -195,9 +199,14 @@
 	},
 	"QUICK_TRADE_COMPONENT": {
 		"TITLE": "Quick Trade",
-		"BUTTON": "Review Order",
+		"BUTTON": "Review Quick Trade",
 		"INFO": "Fastest and simplest way to trade your crypto",
 		"CHANGE_TEXT": "change",
+		"CHANGE_TEXT_7D": "7D Change",
+		"HIGH_7D": "7D HIGH",
+		"LOW_7D": "7D LOW",
+		"7D": "7D",
+		"1D": "1D",
 		"HIGH_24H": "24H HIGH",
 		"LOW_24H": "24H LOW",
 		"BEST_BID": "BEST BID",
@@ -208,7 +217,9 @@
 		"SOURCE_TEXT": "Broker OTC deal",
 		"SOURCE_TEXT_NETWORK": "Network broker OTC deal",
 		"VISIT": "Visit{0}",
-		"ASSET_INFO_PAGE": "Assets info page"
+		"ASSET_INFO_PAGE": "Assets info page",
+		"COIN_NAME": "{0} ({1})",
+		"COIN_INFORMATION": "{0} information"
 	},
 	"PREVIOUS_PAGE": "previous page",
 	"NEXT_PAGE": "next page",
@@ -271,7 +282,11 @@
 	"VERIFICATION_EMAIL": {
 		"INVALID_UUID": "Invalid code",
 		"TEXT_1": "You've successfully verified your email.",
-		"TEXT_2": "You can now proceed to login"
+		"TEXT_2": "You can now proceed to login",
+		"CANCEL_BUTTON": "CLOSE",
+		"CONFIRM_BUTTON": "CONFIRM SIGN UP",
+		"CONFIRM_TEXT": "Confirm Sign Up",
+		"CONFIRM_DESCRIPTION": "Please confirm your account sign up by clicking the button below"
 	},
 	"USER_VERIFICATION": {
 		"INFO_TXT": "Here you can monitor your progress towards verification and an account upgrades.",
@@ -581,9 +596,12 @@
 		"WITHDRAWALS": "Withdrawals",
 		"ORDERID": "Order ID",
 		"TRIGGER_STOP_PRICE": "Trigger/stop price",
-		"TIME_OF_LAST_TRADE": "Time of last trade"
+		"TIME_OF_LAST_TRADE": "Time of last trade",
+		"INTERNAL": "internal",
+		"BLOCKCHAIN": "blockchain",
+		"STAKE": "stake",
+		"REFERRAL": "referral"
 	},
-
 	"ACCOUNT_SECURITY": {
 		"TITLE_TEXT": "Adjust the security settings for your account. From Two-factor authentication, password, API keys and other security related functions.",
 		"OTP": {
@@ -833,6 +851,59 @@
 			"AMOUNT": "Amount"
 		}
 	},
+	"CEFI_STAKE": {
+		"STAKE_POOL_TITLE": "Local CeFi Staking Pools",
+		"INTRODUCTION_1": "Earn rewards on assets you have stored in your local exchange wallet. Simply, click 'STAKE', input the amount you'd like to stake and start earning.",
+		"CURRENT_STAKING_VALUE": "Current staking value",
+		"DURATION_LABEL": "Duration",
+		"APY_LABEL": "APY",
+		"REWARDS_IN_LABEL": "Rewards will be paid in",
+		"ALL_STAKING_EVENTS": "All staking events",
+		"MONITOR_ACTIVE_STAKES": "Monitor active stakes and their earnings coming from the staking pools.",
+		"USE_FILTERS_FOR_HISTORICAL_EVENTS": "Use the filters to find all staking historical events. All earnings from completed stakes will be deposit to your wallet.",
+		"ESTIMATED_TOTAL_STAKED": "Estimated value of total staked",
+		"ACTIVE_STAKES": "Active Stakes",
+		"STAKES_HISTORY": "History",
+		"ESTIMATED_EARNINGS_VALUE": "Estimated value of earnings",
+		"READ_BEFORE_AGREE_AND_EARN": "Read Before You Agree and Earn",
+		"AGREEMENT_INTRODUCTION_1": "Locking up funds and participating in staking can indeed be a profitable way to earn rewards. However, it is essential to be aware that there might be penalties for early unstaking and potentially long lock up periods. Therefore, it is crucial to thoroughly understand the pool's rules before staking. By clicking 'I agree and understand' below, you acknowledge that you will",
+		"AGREEMENT_INTRODUCTION_2": "carefully read the terms in the steps to follow,",
+		"AGREEMENT_INTRODUCTION_3": "and you accept the potential risks and penalties associated with early unstaking. Proceeding with this understanding will ensure a more informed and secure staking experience.",
+		"BACK_BUTTON": "Back",
+		"PROCEED_BUTTON": "Proceed",
+		"I_UNDERSTAND_BUTTON": "I UNDERSTAND",
+		"AMOUNT_TO_STAKE_LABEL": "Amount to stake",
+		"NEXT_BUTTON": "Next",
+		"LOCKUP_DURATION_LABEL": "Lock up duration",
+		"PENALTY_UPON_INITIAL_STAKE_PRINCIPLE": "Penalty upon initial stake principle",
+		"FORFEITURE_OF_EARNINGS_LABEL": "Forfeiture of earnings",
+		"SLASHING_RULES_ENFORCED_LABEL": "! Slashing rules are enforced in this pool",
+		"SLASHING_RULES_NOTICE": "Keep in mind that opting to withdraw your funds prior to the designated duration will incur a penalty, as outlined in the slashing rules mentioned above. Prior to committing to a staking period, it's crucial to assess your financial stability, as initiating an early unstaking process could lead to a decrease in the overall value of your initial stake.",
+		"UNSTAKE_ANYTIME_LABEL": "This pool allows you to unstake at anytime without consequence.",
+		"FULL_DURATION_LOCK_LABEL": "This pool locks you in for the full duration. Please consider your financial sustainability before committing to the staking pool as unstaking before the term will not be possible.",
+		"CHECK_STAKE_DETAILS_BUTTON": "Check stake details",
+		"STAKING_POOL_LABEL": "Staking pool",
+		"ANNUAL_PERCENTAGE_YIELD_LABEL": "Annual percentage yield",
+		"PENALTY_UPON_INITIAL_STAKE_PRINCIPLE_LABEL": "Penalty upon initial stake principle",
+		"FORFEITURE_OF_EARNINGS_DETAILS_LABEL": "Forfeiture of earnings",
+		"STAKE_AMOUNT_LABEL": "Stake amount",
+		"DISCLAIMER_NOTICE": "Disclaimer: Please note that for amounts valued in USD exceeding $1,000 will require completing ID verification. This value is inclusive of earnings, and the platform reserves the right to request additional user information.",
+		"SETTLEMENT_NOTICE": "Settlement: A 24h settlement period will be applied upon unstaking.",
+		"CONFIRM_BUTTON": "Confirm",
+		"STAKE_RULES_NOTICE": "As soon as you've staked you will be committed to the rules of the pool.",
+		"I_UNDERSTAND_AGAIN_BUTTON": "I UNDERSTAND",
+		"CONGRATULATIONS_NOTICE": "Congratulations!",
+		"EARNINGS_START_NOTICE": "Your stake will start earning rewards.",
+		"REVIEW_PROGRESS_LABEL": "You can review the progress of your stake on the Active Stakes page.",
+		"TIME_REMAINING_LABEL": "Time remaining",
+		"PENALTY_UPON_INITIAL_STAKE_PRINCIPLE_LABEL_2": "Penalty upon initial stake principle",
+		"FORFEITURE_OF_EARNINGS_LABEL_2": "Forfeiture of earnings",
+		"AMOUNT_TO_RECEIVE_LABEL": "Amount to receive",
+		"REQUIRES_24H_TO_SETTLE_NOTICE": "Requires 24 hours to settle",
+		"SUCCESSFUL_UNSTAKE_NOTICE": "You've successfully unstaked",
+		"VISIT_WALLET_BUTTON": "VISIT WALLET",
+		"CLOSE_BUTTON": "CLOSE"
+	},
 	"MOVE_XHT": {
 		"TITLE": "Move XHT",
 		"TEXT_1": "To stake XHT you must first move your XHT into your own wallet.",
@@ -862,6 +933,8 @@
 	"FEE": "Fee",
 	"FEES": "Fees",
 	"TIME": "Time",
+	"NETWORK": "Network",
+	"CATEGORY": "Category",
 	"MORE": "More",
 	"VIEW": "View",
 	"STATUS": "Status",
@@ -900,12 +973,21 @@
 	},
 	"QUICK_TRADE": "Quick trade",
 	"PRO_TRADE": "Pro trade",
+	"ASSETS": "Assets",
 	"WALLET_TITLE": "Wallet",
 	"CURRENCY_WALLET": {
 		"BACK": "Back",
 		"WALLET_PAGE": "{0} to wallet page",
-		"LEARN_MORE": "Learn more",
-		"ABOUT": "{0} about"
+		"LEARN_MORE": "Learn more {0}",
+		"ABOUT": "about",
+		"TOTAL_BALANCE": "Total Balance : {0} {1}",
+		"AVAILABLE_BALANCE": "Available Balance : {0} {1} {2}",
+		"PERCENTAGE_SHARE": "Percentage Share {0}",
+		"EARN_BY": "Earn by {0} {1}",
+		"STAKING": "staking",
+		"TOOLTIP": "Balance not in a pending state or locked up in trades (open orders)",
+		"WALLET_HAS_BALANCE_PERCENTAGE": "Your wallet currently does not hold any {0}.",
+		"WALLET_DEPOSIT": "You can try depositing {0} or buying {1}"
 	},
 	"LOGOUT": "Logout",
 	"WITHDRAWALS_MIN_VALUE_ERROR": "The transaction is too small to send. Try a larger amount.",
@@ -955,7 +1037,15 @@
 		"WITHDRAW_CONFIRM_SUCCESS_2": "In order to view your withdrawal status please visit your withdrawal history page.",
 		"GO_WITHDRAWAL_HISTORY": "Go To Withdrawal History",
 		"WITHDRAWALS_FORM_ERROR_TITLE": "Incorrect transfer info",
-		"WITHDRAWALS_FORM_ERROR": "Your fund transfer has failed. Sending funds to an email requires that the user has an account within this exchange. Check that the email is correct and please try again."
+		"WITHDRAWALS_FORM_ERROR": "Your fund transfer has failed. Sending funds to an email requires that the user has an account within this exchange. Check that the email is correct and please try again.",
+		"WITHDRAWAL_CONFIRM_FINAL": "Final Withdrawal Confirmation",
+		"WITHDRAWAL_CONFIRM_WARNING": "Please check your withdrawal below before confirming.",
+		"WITHDRAWAL_CONFIRM_AMOUNT": "Amount",
+		"WITHDRAWAL_CONFIRM_FEE": "Fee",
+		"WITHDRAWAL_CONFIRM_ADDRESS": "Address",
+		"WITHDRAWAL_CONFIRM_NETWORK": "Network",
+		"WITHDRAWAL_CANCEL_BUTTON": "CLOSE",
+		"WITHDRAWAL_CONFIRM_BUTTON": "CONFIRM WITHDRAWAL"
 	},
 	"WALLET_BUTTON_BASE_DEPOSIT": "deposit",
 	"WALLET_BUTTON_BASE_WITHDRAW": "withdraw",
@@ -964,7 +1054,7 @@
 	"24H_MAX": "24H High:",
 	"24H_MIN": "24H Low",
 	"24H_VAL": "24H Vol",
-	"AVAILABLE_BALANCE_TEXT": "Available {0} Balance: {1} {2}",
+	"AVAILABLE_BALANCE_TEXT": "Available {0} Balance: {1} {2} {3}",
 	"BALANCE_TEXT": "Balance",
 	"CURRENCY_BALANCE_TEXT": "{0} Balance",
 	"WALLET_ALL_ASSETS": "All Assets",
@@ -996,7 +1086,9 @@
 	"ORDER_ENTRY_ADVANCED": "Advanced",
 	"QUICK_TRADE_OUT_OF_LIMITS": "Order size is out of the limits",
 	"QUICK_TRADE_TOKEN_USED": "Token has been used",
-	"QUICK_TRADE_QUOTE_EXPIRED": "Quote has expired",
+	"QUICK_TRADE_QUOTE_EXPIRED_FIRST_LINE": "Price quote has expired.",
+	"QUICK_TRADE_QUOTE_EXPIRED_SECOND_LINE": "Click requote to get a new price.",
+	"QUICK_TRADE_QUOTE_EXPIRED_BUTTON": "REQUOTE",
 	"QUICK_TRADE_QUOTE_INVALID": "Invalid quote",
 	"QUICK_TRADE_QUOTE_CALCULATING_ERROR": "Error calculating the quote",
 	"QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED": "The slippage for the amount selected is too high in the market",
@@ -1141,7 +1233,9 @@
 	"QUICK_TRADE_MODE": "Quick Trade Mode",
 	"JUST_NOW": "just now",
 	"PAIR": "Pair",
-	"ZERO_ASSET": "You have zero assets",
+	"ZERO_ASSET": "Zero assets",
+	"ZERO_ASSET_2": "detected. Make a",
+	"ZERO_ASSET_3": "deposit below.",
 	"DEPOSIT_ASSETS": "Deposit Assets",
 	"SEARCH_TXT": "Search",
 	"SEARCH_ASSETS": "Search Assets",
@@ -1194,6 +1288,7 @@
 		"MARKETS": "Markets",
 		"CHANGE_24H": "24H Change",
 		"VOLUME_24H": "24H Volume",
+		"VOLUME_7D": "7D Volume",
 		"VIEW_MORE_MARKETS": "View more markets",
 		"VIEW_VERIFICATION": "view verification",
 		"EARN_COMMISSION": "Earn commissions",
@@ -1233,7 +1328,7 @@
 	"CLEAR": "Clear",
 	"ORDER_TYPE": "Type",
 	"ORDER_MODE": "Order mode",
-	"TRIGGER_CONDITIONS": "Trigger conditions",
+	"TRIGGER_CONDITIONS": "Trigger",
 	"TRANSACTION_STATUS": {
 		"PENDING": "Pending",
 		"REJECTED": "Rejected",
@@ -1271,10 +1366,14 @@
 		"MARKETS": "Markets",
 		"LAST_PRICE": "Last price",
 		"CHANGE_24H": "Change (24 hours)",
+		"CHANGE_7D": "Change (7 days)",
+		"CHANGE_1D": "Change (1 day)",
 		"VOLUME_24h": "Volume (24 hours)",
 		"CHART_24H": "Chart (24 hours)",
+		"CHART_7D": "Chart (7 days)",
 		"VIEW_MARKETS": "View Markets",
 		"TRADING_SYMBOL": "Trading Symbol",
+		"ASSET": "Asset",
 		"TYPE": "Type",
 		"SOURCE": "SOURCE"
 	},
@@ -1374,11 +1473,20 @@
 	"USER_PAYMENT": { "TITLE": "Payments" },
 	"QUOTE_CONFIRMATION_MSG_TEXT_1": "Please check your order and confirm it below.",
 	"QUOTE_CONFIRMATION_MSG_TEXT_2": "Amount to receive are estimates and aren't inclusive of the trading fee",
+	"QUOTE_CONFIRMATION_EXPIRY_MSG": "Price quote will expire in {0} {1}",
+	"QUOTE_CONFIRMATION_EXPIRED_MSG_TEXT_1": "Price has expired.",
+	"QUOTE_CONFIRMATION_EXPIRED_MSG_TEXT_2": "Go back to get a new price quote.",
 	"ORDER_EXPIRED_MSG": "Order expired. Please refresh!",
 	"WITHDRAWALS_FORM_METHOD": "Method",
 	"WITHDRAWALS_FORM_ADDRESS_EXCHANGE": "Exchange user email",
 	"WITHDRAWALS_FORM_EXCHANGE_PLACEHOLDER": "Input user's email on this exchange",
 	"WITHDRAWALS_FORM_MAIL_INFO": "Input a user's HollaEx account email that is on this exchange and transfer for free.",
+	"RISKY_TRADE_DISCLAIMER": {
+		"MSG_1": "Please check that you indeed want to trade {0} ({1}) as this asset may carry a high risk of",
+		"MSG_2": "extreme volatility",
+		"MSG_3": "Check the box below to confirm that you understand that this asset's value is uncertain and not guaranteed.",
+		"UNDERSTAND_RISK_MSG": "Yes, I understand the risks"
+	},
 	"DUST": {
 		"TITLE": "Wallet duster",
 		"LINK": "Wallet duster",
@@ -1411,6 +1519,31 @@
 			"CLOSE": "close"
 		}
 	},
+	"PROFIT_LOSS": {
+		"BACK": "Back",
+		"BACK_TO_WALLET": "to wallet",
+		"WALLET_PERFORMANCE_TITLE": "Balance performance",
+		"WALLET_PERFORMANCE_DESCRIPTION": "Your wallet's balance performance over time and the asset breakdown. Click the dates below to see your wallet's performance on that day.",
+		"PL_7_DAY": "7 Day P&L",
+		"EST_TOTAL_BALANCE": "Est. Total Balance",
+		"WEEK": "week",
+		"MONTH": "month",
+		"MONTHS": "months",
+		"WALLET_BALANCE": "Wallet balance breakdown",
+		"WALLET_BALANCE_DESCRIPTION_1": "Below is a wallet breakdown on",
+		"WALLET_BALANCE_DESCRIPTION_2": "Click chart above to update the table below.",
+		"DATE_SELECT": "Select Date",
+		"ASSET_NAME": "Asset name",
+		"BALANCE_AMOUNT": "Balance Amount",
+		"VALUE": "Value",
+		"PERFORMANCE_TREND": "7 Day Performance Trend",
+		"CUSTOM_DATE_DESCRIPTION": "Select specific dates to fetch your history data (date difference cannot go further than 3 months)",
+		"SELECT_START_DATE": "Select start date",
+		"SELECT_END_DATE": "Select end date",
+		"CUSTOM": "Custom"
+	},
+	"ASSET_INFO": "Asset info",
+	"TAKER_FEES_APPLIED": "Taker fees are applied",
 	"ASSET_INFO_PAGE": "Asset info page",
 	"DIGITAL_ASSETS": {
 		"DIGITAL_ASSETS_TITLE": "Digital assets",
@@ -1418,6 +1551,7 @@
 		"ASSETS_INFO": "Below are available assets on the platform.",
 		"ASSETS_INFO_DETAIL": "You can click an asset on the list below to learn more.",
 		"QUICK_TRADE": "QUICK TRADE",
+		"PRO_TRADE": "PRO TRADE",
 		"MARKETS": "MARKETS",
 		"WALLET": "WALLET",
 		"PRICE_SOURCE": "Price source",
@@ -1460,11 +1594,9 @@
 		"TITLE": "Page not opening automatically?",
 		"TEXT": "Your browser could be blocking the page. Try copy and pasting the link below instead:"
 	},
-
 	"TERMS_OF_SERVICES": {
 		"TO_GET_ACCESS": "To get access reach out to"
 	},
-
 	"FEES_AND_LIMITS": {
 		"LINK": "view my fees and limits",
 		"COIN_PAGE_LINK": "Trading fees & limits",
@@ -1508,13 +1640,23 @@
 					"SUBTITLE": "Assets that are separated from the collective limit rule that follow their own independent 24h withdrawal rule:",
 					"HEADER": {
 						"CURRENCY": "Currency/asset",
-						"LIMIT": "24h limit"
+						"LIMIT": "Daily limit",
+						"LIMIT_2": "Monthly limit"
 					},
-					"LIMIT_TEXT": "(Assets that all share a collective withdrawal limit amount)"
+					"LIMIT_TEXT": "(Assets that all share a collective withdrawal limit amount)",
+					"LIMIT_TEXT_2": "(Limit based only on its own currency)",
+					"VALUED": "(Valued)",
+					"NO_INDEPENDENT": "There is no independent limit for this tier",
+					"LIMIT_TEXT_3": "(Assets that all share a collective daily withdrawal limit amount denominated in {0})",
+					"LIMIT_TEXT_4": "(Assets that all share a collective monthly withdrawal limit amount denominated in {0})"
 				},
 				"TABLE_2": {
-					"TITLE": "Collective shared standard withdrawal limit",
-					"SUBTITLE": "Below are the assets that all share the same standard 24h withdrawal limit amount rule:"
+					"TITLE": "Independent Limits",
+					"SUBTITLE": "Assets with their own daily and monthly withdarawal limits in their own currency:"
+				},
+				"TABLE_3": {
+					"TITLE": "Collective Limits",
+					"SUBTITLE": "Combined daily and monthly withdrawal limit for a group of coins"
 				}
 			}
 		}

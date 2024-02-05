@@ -71,7 +71,7 @@ const PluginDetails = ({
 				}
 			})
 			.catch((err) => {
-				throw err;
+				message.error('Error');
 			});
 	};
 	const handleAddPlugin = async () => {

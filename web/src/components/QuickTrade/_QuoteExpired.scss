@@ -1,0 +1,22 @@
+.quick_trade-wrapper {
+	.quote-expired-block-wrapper {
+		margin-top: 10px;
+		background: #333333;
+		padding: 10px;
+		.quote-expired-text {
+			p.small-text {
+				margin: 0;
+				padding: 0;
+				color: #fff;
+			}
+		}
+
+		// .checkbutton-wrapper .checkbutton-input-wrapper {
+		.requote-button {
+			width: 100px;
+			margin-left: 13px;
+			margin-top: 0;
+			flex-direction: row-reverse;
+		}
+	}
+}

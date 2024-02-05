@@ -145,9 +145,11 @@ const Otcdeskpopup = ({
 		'binance',
 		'oracle',
 		kitPlan !== 'crypto' && 'coinbase',
-		kitPlan !== 'crypto' && 'bitfinex2',
+		kitPlan !== 'crypto' && 'bitfinex',
 		kitPlan !== 'crypto' && 'kraken',
 		kitPlan !== 'crypto' && 'bybit',
+		kitPlan !== 'crypto' && 'gateio',
+		kitPlan !== 'crypto' && 'okx',
 	];
 	useEffect(() => {
 		if (
@@ -297,7 +299,8 @@ const Otcdeskpopup = ({
 			const balance = await getBrokerConnect(
 				selectedApiType,
 				apiData.apikey,
-				apiData.seckey
+				apiData.seckey,
+				apiData.password
 			);
 			const baseCoinBalance = balance[previewData?.pair_base?.toUpperCase()];
 			const quoteCoinBalance = balance[previewData?.pair_2?.toUpperCase()];
@@ -467,13 +470,19 @@ const Otcdeskpopup = ({
 				<Option value="coinbase">Coinbase</Option>
 			)}
 			{_toLower(kit?.info?.plan) !== 'crypto' && (
-				<Option value="bitfinex2">Bitfinex</Option>
+				<Option value="bitfinex">Bitfinex</Option>
 			)}
 			{_toLower(kit?.info?.plan) !== 'crypto' && (
 				<Option value="kraken">Kraken</Option>
 			)}
 			{_toLower(kit?.info?.plan) !== 'crypto' && (
 				<Option value="bybit">Bybit</Option>
+			)}
+			{_toLower(kit?.info?.plan) !== 'crypto' && (
+				<Option value="gateio">Gate.io</Option>
+			)}
+			{_toLower(kit?.info?.plan) !== 'crypto' && (
+				<Option value="okx">OKX</Option>
 			)}
 			{hasOracle && <Option value="oracle">Hollaex Oracle</Option>}
 			{/* {_toLower(kit?.info?.plan) !== 'crypto' && <Option value="uniswap">Uniswap</Option>} */}
@@ -1854,13 +1863,31 @@ const Otcdeskpopup = ({
 												id="seckey"
 												onChange={(e) => handleApi(e.target.value, 'seckey')}
 											/>
+
+											{hedgeApi === 'okx' && (
+												<>
+													<div className="sub-title mt-3">Password</div>
+													<Input
+														placeholder="Enter password"
+														id="password"
+														onChange={(e) =>
+															handleApi(e.target.value, 'password')
+														}
+													/>
+												</>
+											)}
+
 											<div className="connect-btn-wrapper">
 												{connectLoading ? <Spin indicator={antIcon} /> : null}
 												<Button
 													type="primary"
 													className="green-btn connect-btn"
 													onClick={handleConnect}
-													disabled={!apiData?.apikey || !apiData?.seckey}
+													disabled={
+														!apiData?.apikey ||
+														!apiData?.seckey ||
+														(hedgeApi === 'okx' && !apiData?.password)
+													}
 												>
 													Connect
 												</Button>
@@ -1936,6 +1963,17 @@ const Otcdeskpopup = ({
 																  editData.account[hedgeApi].apiSecret
 																: apiData?.seckey}
 														</div>
+														{hedgeApi === 'okx' && (
+															<div>
+																Password:{' '}
+																{isEdit
+																	? editData &&
+																	  editData.account &&
+																	  editData.account[hedgeApi] &&
+																	  editData.account[hedgeApi].password
+																	: apiData?.password}
+															</div>
+														)}
 													</div>
 												)}
 												<div className="binRborder"></div>
