@@ -5,7 +5,6 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import STRINGS from 'config/localizedStrings';
 import { FLEX_CENTER_CLASSES } from 'config/constants';
 import { isMobile } from 'react-device-detect';
-import { LinkButton } from 'components/AppBar/LinkButton';
 
 const Header = ({ icons: ICONS, viewTrendsClick }) => {
 	return (
