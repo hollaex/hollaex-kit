@@ -16,3 +16,15 @@
 	stroke: white;
 	fill: white;
 }
+
+.profitNegative {
+	color: var(--trading_selling-related-elements);
+}
+
+.profitPositive {
+	color: var(--trading_buying-related-elements);
+}
+
+.profitNeutral {
+	color: '#ccc';
+}

@@ -60,6 +60,10 @@ class Wallet extends Component {
 			this.props.isFetching,
 			this.props.assets
 		);
+
+		if (this.props.location.pathname === '/wallet/history') {
+			this.setState({ activeBalanceHistory: true });
+		}
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
