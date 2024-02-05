@@ -9569,9 +9569,9 @@ table th {
   font-family: "Raleway"; }
 
 .quick_trade-tab-icon {
-  width: 10rem;
-  height: 10rem;
-  margin: 0 auto; }
+  width: 3.5rem;
+  height: 3.5rem;
+  margin: 0 1rem 0 0; }
 
 .quick_trade-container {
   margin: 3rem 0 4rem 0; }
@@ -9597,7 +9597,7 @@ table th {
     text-decoration: underline; }
   .quick_trade-container .quick-trade-input {
     background: #333333;
-    padding: 25px 20px;
+    padding: 2rem 1.7rem;
     border-radius: 10px;
     width: 425px; }
   .quick_trade-container .currency-dropdown {
@@ -9713,6 +9713,9 @@ table th {
 .layout-mobile .quick_trade-section_wrapper .review-block-wrapper .input_block-title {
   font-size: 13px; }
 
+.layout-mobile .title {
+  font-weight: 600; }
+
 .layout-mobile .quick_trade-container {
   height: 100%;
   padding: 2rem 3.5rem;
@@ -9749,14 +9752,14 @@ table th {
           width: 100% !important; }
       .layout-mobile .quick_trade-wrapper .trade-section .inner-content .btn-wrapper {
         align-items: center !important;
-        margin-top: 75px; }
+        margin-top: 15rem; }
       .layout-mobile .quick_trade-wrapper .trade-section .inner-content .footer-text {
         font-size: 13px !important;
         margin: auto;
         text-align: center; }
   .layout-mobile .quick_trade-wrapper .quick-trade-input {
     background: #333333;
-    padding: 25px 20px;
+    padding: 2rem 1.7rem;
     border-radius: 10px;
     width: 100%; }
 

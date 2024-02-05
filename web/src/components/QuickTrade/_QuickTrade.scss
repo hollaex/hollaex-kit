@@ -11,7 +11,7 @@ $currency-text-size: 4rem;
 $input-bottom_line--height: 2px;
 $input-bottom_line--animation--width: 100px;
 
-$title-icon--height: 10rem;
+$title-icon--height: 3.5rem;
 
 @import './_InputGroup.scss';
 @import './QuoteExpired';
@@ -33,8 +33,9 @@ $title-icon--height: 10rem;
 
 .quick_trade-tab-icon {
 	@include size($title-icon--height);
-	margin: 0 auto;
+	margin: 0 1rem 0 0;
 }
+
 .quick_trade-container {
 	margin: 3rem 0 4rem 0;
 	.quick_trade-section_wrapper {
@@ -68,7 +69,7 @@ $title-icon--height: 10rem;
 
 	.quick-trade-input {
 		background: #333333;
-		padding: 25px 20px;
+		padding: 2rem 1.7rem;
 		border-radius: 10px;
 		width: 425px;
 	}
@@ -241,6 +242,9 @@ $title-icon--height: 10rem;
 			}
 		}
 	}
+	.title {
+		font-weight: 600;
+	}
 	.quick_trade-container {
 		height: 100%;
 		padding: 2rem 3.5rem;
@@ -285,7 +289,7 @@ $title-icon--height: 10rem;
 				}
 				.btn-wrapper {
 					align-items: center !important;
-					margin-top: 75px;
+					margin-top: 15rem;
 				}
 				.footer-text {
 					font-size: $font-size-mobile-txt !important;
@@ -297,7 +301,7 @@ $title-icon--height: 10rem;
 
 		.quick-trade-input {
 			background: #333333;
-			padding: 25px 20px;
+			padding: 2rem 1.7rem;
 			border-radius: 10px;
 			width: 100%;
 		}
