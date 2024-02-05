@@ -73,6 +73,7 @@ const AssetsBlock = ({
 	}, [chartData]);
 
 	const [graphData, setGraphData] = useState([]);
+	const [historyData, setHistoryData] = useState([]);
 	const [userPL, setUserPL] = useState();
 
 	const handleUpgrade = (info = {}) => {
@@ -122,6 +123,7 @@ const AssetsBlock = ({
 				newGraphData.reverse();
 
 				setGraphData(newGraphData);
+				setHistoryData(response.data || []);
 				// setIsLoading(false);
 			})
 			.catch((error) => {
@@ -427,7 +429,7 @@ const AssetsBlock = ({
 						</div>
 						{!isUpgrade &&
 						balance_history_config?.active &&
-						graphData.length > 1 ? (
+						historyData.length > 1 ? (
 							<div>
 								<div style={{ marginTop: 10 }}>
 									<EditWrapper stringId="PROFIT_LOSS.PERFORMANCE_TREND">
