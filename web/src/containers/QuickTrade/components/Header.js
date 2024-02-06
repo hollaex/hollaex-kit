@@ -12,30 +12,41 @@ const Header = ({ icons: ICONS, viewTrendsClick }) => {
 			className={classnames(
 				'quick_trade-section_wrapper',
 				'quick_trade-bottom-padded',
-				'd-flex'
+				'd-flex',
+				{
+					'justify-content-between': isMobile,
+				}
 			)}
 		>
+			<div className="d-flex">
+				{isMobile && (
+					<div className="quick-trade-title-icon">
+						<Image
+							iconId="QUICK_TRADE_TAB_ACTIVE,QUICK_TRADE"
+							icon={ICONS['QUICK_TRADE_TAB_ACTIVE']}
+							wrapperClassName="quick_trade-tab-icon"
+						/>
+					</div>
+				)}
+				<div
+					className={classnames(
+						'quick-trade-header-wrapper title text-capitalize',
+						{
+							[FLEX_CENTER_CLASSES]: !isMobile,
+						}
+					)}
+				>
+					<EditWrapper stringId="QUICK_TRADE_COMPONENT.TITLE">
+						{STRINGS['QUICK_TRADE_COMPONENT.TITLE']}
+					</EditWrapper>
+				</div>
+			</div>
+
 			{isMobile && (
-				<div className="quick-trade-title-icon">
-					<Image
-						iconId="QUICK_TRADE_TAB_ACTIVE,QUICK_TRADE"
-						icon={ICONS['QUICK_TRADE_TAB_ACTIVE']}
-						wrapperClassName="quick_trade-tab-icon"
-					/>
+				<div className='view-trend-text' onClick={viewTrendsClick}>
+					{STRINGS['QUICK_TRADE_COMPONENT.VIEW_TREND']}
 				</div>
 			)}
-			<div
-				className={classnames(
-					'quick-trade-header-wrapper title text-capitalize',
-					{
-						[FLEX_CENTER_CLASSES]: !isMobile,
-					}
-				)}
-			>
-				<EditWrapper stringId="QUICK_TRADE_COMPONENT.TITLE">
-					{STRINGS['QUICK_TRADE_COMPONENT.TITLE']}
-				</EditWrapper>
-			</div>
 			{!isMobile && (
 				<div className={classnames('info-text', ...FLEX_CENTER_CLASSES)}>
 					{STRINGS['QUICK_TRADE_COMPONENT.INFO']}
