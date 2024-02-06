@@ -12,6 +12,7 @@ $input-bottom_line--height: 2px;
 $input-bottom_line--animation--width: 100px;
 
 $title-icon--height: 3.5rem;
+$close-icon--height: 2rem;
 
 @import './_InputGroup.scss';
 @import './QuoteExpired';
@@ -34,6 +35,10 @@ $title-icon--height: 3.5rem;
 .quick_trade-tab-icon {
 	@include size($title-icon--height);
 	margin: 0 1rem 0 0;
+}
+
+.close-modal-icon {
+	@include size($close-icon--height);
 }
 
 .quick_trade-container {
@@ -313,6 +318,18 @@ $title-icon--height: 3.5rem;
 	.swap-wrapper,
 	.swap-wrapper-wrapper {
 		width: 100% !important;
+	}
+
+	.price-title-wrapper {
+		justify-content: space-between;
+		padding: 0 0 0 3rem;
+		font-size: 2.5rem;
+	}
+
+	.view-trend-text{
+		font-size: 1.5rem;
+		align-self: center;
+		color: $link_2;
 	}
 }
 .mobile_dropdown-section {

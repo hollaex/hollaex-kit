@@ -12,7 +12,7 @@ import { SwapOutlined } from '@ant-design/icons';
 
 import { changePair } from 'actions/appActions';
 import { isLoggedIn } from 'utils/token';
-import { Button, EditWrapper, Dialog } from 'components';
+import { Button, EditWrapper, Dialog, Image } from 'components';
 import STRINGS from 'config/localizedStrings';
 import InputGroup from './InputGroup';
 import { getMiniCharts } from 'actions/chartAction';
@@ -59,7 +59,7 @@ const QuickTrade = ({
 	router,
 	router: { params },
 	changePair,
-	icons: ICONS
+	icons: ICONS,
 }) => {
 	const getTargetOptions = (source) =>
 		sourceOptions.filter((key) => {
@@ -99,6 +99,7 @@ const QuickTrade = ({
 	const [time, setTime] = useState(moment());
 	const [lineChartData, setLineChartData] = useState({});
 	const [allChartsData, setAllChartsData] = useState({});
+	const [showPriceTrendModal, setShowPriceTrendModal] = useState(false);
 
 	const resetForm = () => {
 		setTargetAmount();
@@ -400,10 +401,18 @@ const QuickTrade = ({
 		});
 	};
 
+	const handlePriceTrendsModal = () => {
+		setShowPriceTrendModal(true);
+	};
+
+	const handlePriceTrendClose = () => {
+		setShowPriceTrendModal(false);
+	};
+
 	return (
 		<Fragment>
 			<div className="quick_trade-container">
-				<Header />
+				<Header viewTrendsClick={handlePriceTrendsModal} />
 
 				<div className={classnames('quick_trade-wrapper', 'd-flex')}>
 					<Details
@@ -414,6 +423,35 @@ const QuickTrade = ({
 						isNetwork={isNetwork}
 						showOnlyTitle={isMobile}
 					/>
+					<Dialog
+						isOpen={showPriceTrendModal}
+						label="price-trend-modal"
+						onCloseDialog={handlePriceTrendClose}
+						shouldCloseOnOverlayClick={false}
+						showCloseText
+						style={{ 'z-index': 100 }}
+					>
+						<div>
+							<div className="d-flex price-title-wrapper">
+								<div> {STRINGS['QUICK_TRADE_COMPONENT.PRICE_TREND']}</div>
+								<div onClick={handlePriceTrendClose}>
+									<Image
+										iconId="CLOSE_CROSS"
+										icon={ICONS['CLOSE_CROSS']}
+										wrapperClassName="close-modal-icon"
+									/>
+								</div>
+							</div>
+							<Details
+								coinChartData={lineChartData}
+								pair={pair}
+								brokerUsed={isUseBroker}
+								networkName={display_name}
+								isNetwork={isNetwork}
+							/>
+						</div>
+					</Dialog>
+
 					<div className="d-flex flex-column trade-section">
 						<div className="inner-content">
 							<div className="balance-text mb-3 goto-wallet-container">

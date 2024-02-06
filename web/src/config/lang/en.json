@@ -219,7 +219,9 @@
 		"VISIT": "Visit{0}",
 		"ASSET_INFO_PAGE": "Assets info page",
 		"COIN_NAME": "{0} ({1})",
-		"COIN_INFORMATION": "{0} information"
+		"COIN_INFORMATION": "{0} information",
+		"PRICE_TREND": "Price Trend",
+		"VIEW_TREND": "View Trend"
 	},
 	"PREVIOUS_PAGE": "previous page",
 	"NEXT_PAGE": "next page",
