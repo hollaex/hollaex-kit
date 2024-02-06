@@ -11,7 +11,7 @@ $currency-text-size: 4rem;
 $input-bottom_line--height: 2px;
 $input-bottom_line--animation--width: 100px;
 
-$title-icon--height: 10rem;
+$title-icon--height: 3.5rem;
 
 @import './_InputGroup.scss';
 @import './QuoteExpired';
@@ -33,8 +33,9 @@ $title-icon--height: 10rem;
 
 .quick_trade-tab-icon {
 	@include size($title-icon--height);
-	margin: 0 auto;
+	margin: 0 1rem 0 0;
 }
+
 .quick_trade-container {
 	margin: 3rem 0 4rem 0;
 	.quick_trade-section_wrapper {
@@ -53,7 +54,7 @@ $title-icon--height: 10rem;
 		height: 8rem;
 	}
 	.title {
-		font-size: 28px;
+		font-size: 2.35rem;
 		font-family: $raleway--font-family;
 		letter-spacing: 2px;
 	}
@@ -68,9 +69,9 @@ $title-icon--height: 10rem;
 
 	.quick-trade-input {
 		background: #333333;
-		padding: 25px 20px;
+		padding: 2rem 1.7rem;
 		border-radius: 10px;
-		min-width: 425px;
+		width: 425px;
 	}
 
 	.currency-dropdown {
@@ -81,16 +82,15 @@ $title-icon--height: 10rem;
 	.input-group__input {
 		text-align: right;
 		color: #b6b6b6;
-		font-size: 20px;
+		font-size: 1.7rem;
 		margin-left: 15px;
 		height: 60px;
-		width: auto !important;
 		&:focus,
 		&:active {
 			background-color: #2b2b2b;
 			box-shadow: inset 1px 1px 3px #00000029;
 			border-radius: 5px;
-			border-bottom: 1px solid #FFFFFF;
+			border-bottom: 1px solid #ffffff;
 		}
 	}
 
@@ -100,8 +100,8 @@ $title-icon--height: 10rem;
 
 	.input-group__select {
 		color: #b6b6b6;
-		padding: 14px 11px;
-		font-size: 20px;
+		padding: 1.125rem 1rem;
+		font-size: 1.7rem;
 		.ant-select-selector {
 			padding: 0;
 		}
@@ -162,7 +162,7 @@ $title-icon--height: 10rem;
 
 	.trade-section {
 		width: 100%;
-		padding: 36px 56px;
+		padding: 3rem 4.5rem;
 		background: transparent
 			linear-gradient(
 				180deg,
@@ -177,13 +177,13 @@ $title-icon--height: 10rem;
 			flex-direction: column;
 			align-items: flex-end;
 			.btn-wrapper {
-				padding: 12px 0;
+				padding: 1rem 0;
 			}
 			.py-2 {
 				display: flex;
 				align-items: center;
 				.bold {
-					padding-right: 10px;
+					padding-right: 0.85rem;
 				}
 				.ant-input-group {
 					background-color: $app-light-background !important;
@@ -202,9 +202,9 @@ $title-icon--height: 10rem;
 				}
 			}
 			.footer-text {
-				font-size: 11px;
+				font-size: 1rem;
 				font-family: $en--font-family;
-				color: #B6B6B650;
+				color: #b6b6b650;
 				letter-spacing: 0.58px;
 				text-align: end;
 			}
@@ -233,43 +233,81 @@ $title-icon--height: 10rem;
 
 .layout-mobile {
 	.quick_trade-section_wrapper {
+		.quick-trade-header-wrapper {
+			justify-content: center !important;
+		}
 		.review-block-wrapper {
 			.input_block-title {
 				font-size: $font-size-mobile-txt;
 			}
 		}
 	}
+	.title {
+		font-weight: 600;
+	}
 	.quick_trade-container {
 		height: 100%;
+		padding: 2rem 3.5rem;
+		margin: 0;
+
+		.input-group__input {
+			height: 50px;
+		}
 	}
 	.quick_trade-wrapper {
+		background-color: transparent;
+		height: 664px;
+		border: none;
+		font-size: 1.45rem;
+		margin: 0;
+
 		.trade-details-wrapper {
 			width: 100%;
+			.pairs {
+				font-size: 1.7rem;
+			}
+			.fullname {
+				font-size: 1rem;
+			}
 			.trade-details-content {
 				width: 100%;
 				height: 100%;
 			}
 		}
-		.trade-section .inner-content {
-			align-items: center !important;
-			.py-2 {
-				flex-direction: column;
+		.trade-section {
+			background: transparent;
+			padding: 0;
+			.inner-content {
 				align-items: flex-start;
-				width: 100%;
-				font-size: $font-size-mobile-txt !important;
-				.ant-input-group {
-					width: 100% !important;
+				.py-2 {
+					flex-direction: column;
+					align-items: flex-start;
+					width: 100%;
+					font-size: $font-size-mobile-txt !important;
+					.ant-input-group {
+						width: 100% !important;
+					}
+					.input-group__error-wrapper {
+						width: 100% !important;
+					}
 				}
-				.input-group__error-wrapper {
-					width: 100% !important;
+				.btn-wrapper {
+					align-items: center !important;
+					margin-top: 15rem;
+				}
+				.footer-text {
+					font-size: $font-size-mobile-txt !important;
+					margin: auto;
+					text-align: center;
 				}
 			}
-			.btn-wrapper {
-				align-items: center !important;
-			}
-			.footer-text {
-				font-size: $font-size-mobile-txt !important;
-			}
+		}
+
+		.quick-trade-input {
+			background: #333333;
+			padding: 2rem 1.7rem;
+			border-radius: 10px;
+			width: 100%;
 		}
 	}
 	.swap-wrapper,
@@ -296,15 +334,17 @@ $title-icon--height: 10rem;
 
 		.trade-details-wrapper {
 			width: 100%;
-			padding: 15px;
+			padding: 0 0 15px;
 			.trade-details-content {
 				width: 100%;
 				height: 100%;
 			}
 		}
-		.trade-section {
+		.goto-wallet-container {
 			width: 100%;
-			padding: 40px 10px 10px 10px;
+			justify-content: end;
+		}
+		.trade-section {
 			.inner-content {
 				width: 100%;
 				height: 100%;
@@ -318,7 +358,7 @@ $title-icon--height: 10rem;
 				.input-group__container {
 					.quick-trade-select-wrapper {
 						.pl-1 {
-							font-size: 10px;
+							font-size: 0.85rem;
 						}
 					}
 				}
@@ -332,7 +372,7 @@ $title-icon--height: 10rem;
 
 .swap-container {
 	border-left: $colors-black dotted 4px;
-	font-size: 17px;
+	font-size: 1.42rem;
 }
 
 .swap-wrapper {

@@ -22,11 +22,7 @@ $colors-white: white;
         }
         .chart {
             height: 164px;
-            margin: 10px 0 30px;
-            // opacity: 0.4;
-            div:last-child {
-                padding-top: 1rem;
-            }
+            margin: 10px 0 0;
             .fade-area {
                 position: relative;
             }
@@ -64,24 +60,24 @@ $colors-white: white;
         font-weight: bold;
     }
     .f-size-22 {
-        font-size: 22px;
+        font-size: 1.825rem;
         font-weight: bold;
     }
     .pairs {
         color: $link;
-        font-size: 22px;
+        font-size: 1.825rem;
     }
     .underline {
         text-decoration: underline;
     }
     .fullname {
         color: $colors-deactivate;
-        font-size: 14px;
+        font-size: 1.2rem;
         white-space: nowrap;
     }
     .sub-title {
         color: $colors-deactivate;
-        font: 18px;
+        font-size: 1.1rem;
         letter-spacing: 2.2px;
         opacity: 1;
         white-space: nowrap;
@@ -122,6 +118,7 @@ $colors-white: white;
 .layout-mobile {
     .trade-details-wrapper {
         width: 100%;
+        background-color: transparent;
         .trade-details-content {
             width: 100%;
             height: 100%;
@@ -133,7 +130,6 @@ $colors-white: white;
 @media (max-width: 1020px) {
     .trade-details-wrapper {
         width: 100%;
-        padding: 15px;
         .trade-details-content {
             width: 100%;
             height: 100%;
