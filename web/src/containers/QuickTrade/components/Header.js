@@ -12,8 +12,8 @@ const Header = ({ icons: ICONS, viewTrendsClick }) => {
 			className={classnames(
 				'quick_trade-section_wrapper',
 				'quick_trade-bottom-padded',
-				'd-flex',
 				{
+					'd-flex': isMobile,
 					'justify-content-between': isMobile,
 				}
 			)}

@@ -9592,7 +9592,8 @@ table th {
   .quick_trade-container .title {
     font-size: 2.35rem;
     font-family: "Raleway";
-    letter-spacing: 2px; }
+    letter-spacing: 2px;
+    margin: auto; }
   .quick_trade-container .info-text {
     font-size: 14px;
     font-family: "Open Sans";
