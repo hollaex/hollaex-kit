@@ -301,7 +301,7 @@ const loginPost = (req, res) => {
 						})
 						.catch(async (err) => {
 							if (!otp_code) {
-								throw new Error(OTP_CODE_NOT_FOUND);
+								throw new Error(INVALID_OTP_CODE);
 							}
 							await toolsLib.user.createUserLogin(user, ip, device, domain, origin, referer, null, long_term, false);
 							const loginData = await toolsLib.user.findUserLatestLogin(user, false);

@@ -73,6 +73,7 @@ const AssetsBlock = ({
 	}, [chartData]);
 
 	const [graphData, setGraphData] = useState([]);
+	const [historyData, setHistoryData] = useState([]);
 	const [userPL, setUserPL] = useState();
 
 	const handleUpgrade = (info = {}) => {
@@ -101,28 +102,28 @@ const AssetsBlock = ({
 			end_date: moment().subtract().toISOString(),
 		})
 			.then((response) => {
-				const length =
-					response.data.length > 7 ? 7 - 1 : response.data.length - 1;
+				const length = 6;
 
 				let newGraphData = [];
-				for (let i = 0; i < length; i++) {
+				for (let i = 0; i < length + 1; i++) {
 					const balanceData = response.data.find(
 						(history) =>
 							moment(history.created_at).format('YYYY-MM-DD') ===
 							moment().subtract(i, 'days').format('YYYY-MM-DD')
 					);
-					if (!balanceData) continue;
+					// if (!balanceData) continue;
 					newGraphData.push([
-						`${moment().subtract(i, 'days').date()} ${
-							month[moment().subtract(i, 'days').month()]
-						}`,
-						balanceData ? balanceData.total : 0,
+						`   `,
+						balanceData
+							? balanceData.total
+							: response?.data?.[response.data.length - 1]?.total,
 					]);
 				}
 
 				newGraphData.reverse();
 
 				setGraphData(newGraphData);
+				setHistoryData(response.data || []);
 				// setIsLoading(false);
 			})
 			.catch((error) => {
@@ -130,20 +131,7 @@ const AssetsBlock = ({
 			});
 		// eslint-disable-next-line
 	}, []);
-	const month = [
-		'Jan',
-		'Feb',
-		'Mar',
-		'Apr',
-		'May',
-		'Jun',
-		'Jul',
-		'Aug',
-		'Sep',
-		'Oct',
-		'Nov',
-		'Dec',
-	];
+
 	const options = {
 		title: {
 			text: '',
@@ -426,11 +414,17 @@ const AssetsBlock = ({
 								</div>
 							)}
 						</div>
-						{!isUpgrade && balance_history_config?.active ? (
+						{!isUpgrade &&
+						balance_history_config?.active &&
+						historyData.length > 1 ? (
 							<div>
-								<div style={{ marginTop: 10 }}>7 Day Performance Trend</div>
+								<div style={{ marginTop: 10 }}>
+									<EditWrapper stringId="PROFIT_LOSS.PERFORMANCE_TREND">
+										{STRINGS['PROFIT_LOSS.PERFORMANCE_TREND']}
+									</EditWrapper>
+								</div>
 								<div style={{ width: 300, opacity: 0, fontSize: 1 }}>
-									7 Day Performance Trend
+									{STRINGS['PROFIT_LOSS.WALLET_PERFORMANCE_TITLE']}
 								</div>
 
 								<div
@@ -446,14 +440,13 @@ const AssetsBlock = ({
 								</div>
 
 								<div
-									style={{
-										color:
-											Number(userPL?.['7d']?.total || 0) === 0
-												? '#ccc'
-												: (userPL?.['7d']?.total || 0) > 0
-												? '#329932'
-												: '#EB5344',
-									}}
+									className={
+										Number(userPL?.['7d']?.total || 0) === 0
+											? 'profitNeutral'
+											: (userPL?.['7d']?.total || 0) > 0
+											? 'profitPositive'
+											: 'profitNegative'
+									}
 								>
 									<EditWrapper stringId="PROFIT_LOSS.PL_7_DAY">
 										{STRINGS['PROFIT_LOSS.PL_7_DAY']}
