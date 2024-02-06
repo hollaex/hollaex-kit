@@ -7,7 +7,8 @@ COPY package.json /app/package.json
 RUN npm install -g node-gyp && \
     npm install --loglevel=error
 COPY . /app
-RUN npm run build
+RUN export REACT_APP_LAST_BUILD=$(date +"%Y-%m-%dT%H-%M-%S") && \
+    npm run build
 
 FROM nginx:1.24.0-alpine
 RUN apk add --update \
