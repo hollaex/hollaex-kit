@@ -300,9 +300,6 @@ const loginPost = (req, res) => {
 							return toolsLib.security.checkCaptcha(captcha, ip);
 						})
 						.catch(async (err) => {
-							if (!otp_code) {
-								throw new Error(OTP_CODE_NOT_FOUND);
-							}
 							await toolsLib.user.createUserLogin(user, ip, device, domain, origin, referer, null, long_term, false);
 							const loginData = await toolsLib.user.findUserLatestLogin(user, false);
 							const message = createAttemptMessage(loginData, user, domain);
