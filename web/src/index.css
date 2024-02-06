@@ -3503,7 +3503,7 @@ table th {
 
 .trade-details-wrapper {
   width: 100%;
-  padding: 40px 36px 30px;
+  padding: 3.3rem 3rem 2.5rem;
   font-family: "Open Sans";
   background-color: #0D0C0C; }
   .trade-details-wrapper .trade-details-content {
@@ -5849,7 +5849,7 @@ table th {
 
 .trade-details-wrapper {
   width: 100%;
-  padding: 40px 36px 30px;
+  padding: 3.3rem 3rem 2.5rem;
   font-family: "Open Sans";
   background-color: #0D0C0C; }
   .trade-details-wrapper .trade-details-content {
@@ -9573,6 +9573,10 @@ table th {
   height: 3.5rem;
   margin: 0 1rem 0 0; }
 
+.close-modal-icon {
+  width: 2rem;
+  height: 2rem; }
+
 .quick_trade-container {
   margin: 3rem 0 4rem 0; }
   .quick_trade-container .quick_trade-section_wrapper {
@@ -9768,6 +9772,16 @@ table th {
 .layout-mobile .swap-wrapper,
 .layout-mobile .swap-wrapper-wrapper {
   width: 100% !important; }
+
+.layout-mobile .price-title-wrapper {
+  justify-content: space-between;
+  padding: 0 0 0 3rem;
+  font-size: 2.5rem; }
+
+.layout-mobile .view-trend-text {
+  font-size: 1.5rem;
+  align-self: center;
+  color: var(--specials_buttons-links-and-highlights-2); }
 
 .mobile_dropdown-section {
   border-top: solid; }
