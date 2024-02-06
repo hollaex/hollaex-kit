@@ -33,6 +33,7 @@ import { getQuickTrade, executeQuickTrade } from 'actions/quickTradeActions';
 import { FieldError } from 'components/Form/FormFields/FieldWrapper';
 import { translateError } from 'components/QuickTrade/utils';
 import QuoteExpiredBlock from './QuoteExpiredBlock';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 const PAIR2_STATIC_SIZE = 0.000001;
 const SPENDING = {
@@ -58,6 +59,7 @@ const QuickTrade = ({
 	router,
 	router: { params },
 	changePair,
+	icons: ICONS
 }) => {
 	const getTargetOptions = (source) =>
 		sourceOptions.filter((key) => {
@@ -404,18 +406,17 @@ const QuickTrade = ({
 				<Header />
 
 				<div className={classnames('quick_trade-wrapper', 'd-flex')}>
-					{!isMobile && (
-						<Details
-							coinChartData={lineChartData}
-							pair={pair}
-							brokerUsed={isUseBroker}
-							networkName={display_name}
-							isNetwork={isNetwork}
-						/>
-					)}
+					<Details
+						coinChartData={lineChartData}
+						pair={pair}
+						brokerUsed={isUseBroker}
+						networkName={display_name}
+						isNetwork={isNetwork}
+						showOnlyTitle={isMobile}
+					/>
 					<div className="d-flex flex-column trade-section">
 						<div className="inner-content">
-							<div className="balance-text mb-3">
+							<div className="balance-text mb-3 goto-wallet-container">
 								<EditWrapper
 									stringId="QUICK_TRADE_COMPONENT.GO_TO_TEXT"
 									renderWrapper={(children) => (
@@ -546,9 +547,8 @@ const QuickTrade = ({
 									disabled={disabled}
 									type="button"
 									className={!isMobile ? 'w-50' : 'w-100'}
-									// iconId={'SETUP_QUICK_TRADE'}
-									// iconList={STATIC_ICONS}
-
+									iconId={'QUICK_TRADE_TAB_ACTIVE'}
+									iconList={ICONS}
 								/>
 							</div>
 							<Footer
@@ -630,4 +630,4 @@ const mapStateToProps = (store) => {
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(withRouter(QuickTrade));
+)(withRouter(withConfig(QuickTrade)));
