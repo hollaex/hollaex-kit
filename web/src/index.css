@@ -9611,7 +9611,7 @@ table th {
   .quick_trade-container .input-group__input {
     text-align: right;
     color: #b6b6b6;
-    font-size: 1.7rem;
+    font-size: 1.6rem;
     margin-left: 15px;
     height: 60px; }
     .quick_trade-container .input-group__input:focus, .quick_trade-container .input-group__input:active {
@@ -9624,7 +9624,7 @@ table th {
   .quick_trade-container .input-group__select {
     color: #b6b6b6;
     padding: 1.125rem 1rem;
-    font-size: 1.7rem; }
+    font-size: 1.6rem; }
     .quick_trade-container .input-group__select .ant-select-selector {
       padding: 0;
       min-width: 7.5rem; }
@@ -9642,7 +9642,7 @@ table th {
   height: fit-content;
   height: 664px;
   border: 1px solid var(--calculated_super-pale_label-text-graphics);
-  font-size: 17px; }
+  font-size: 1.4rem; }
   .quick_trade-wrapper .review-block-wrapper {
     margin: 1rem 0;
     width: auto; }
@@ -9738,7 +9738,7 @@ table th {
   .layout-mobile .quick_trade-wrapper .trade-details-wrapper {
     width: 100%; }
     .layout-mobile .quick_trade-wrapper .trade-details-wrapper .pairs {
-      font-size: 1.7rem; }
+      font-size: 1.6rem; }
     .layout-mobile .quick_trade-wrapper .trade-details-wrapper .fullname {
       font-size: 1rem; }
     .layout-mobile .quick_trade-wrapper .trade-details-wrapper .trade-details-content {

@@ -88,7 +88,7 @@ $close-icon--height: 2rem;
 	.input-group__input {
 		text-align: right;
 		color: #b6b6b6;
-		font-size: 1.7rem;
+		font-size: 1.6rem;
 		margin-left: 15px;
 		height: 60px;
 		&:focus,
@@ -107,7 +107,7 @@ $close-icon--height: 2rem;
 	.input-group__select {
 		color: #b6b6b6;
 		padding: 1.125rem 1rem;
-		font-size: 1.7rem;
+		font-size: 1.6rem;
 		.ant-select-selector {
 			padding: 0;
 			min-width: 7.5rem;
@@ -130,7 +130,7 @@ $close-icon--height: 2rem;
 	height: fit-content;
 	height: 664px;
 	border: 1px solid $colors-super-pale-black;
-	font-size: 17px;
+	font-size: 1.4rem;
 
 	.review-block-wrapper {
 		margin: 1rem 0;
@@ -271,7 +271,7 @@ $close-icon--height: 2rem;
 		.trade-details-wrapper {
 			width: 100%;
 			.pairs {
-				font-size: 1.7rem;
+				font-size: 1.6rem;
 			}
 			.fullname {
 				font-size: 1rem;
