@@ -9626,7 +9626,8 @@ table th {
     padding: 1.125rem 1rem;
     font-size: 1.6rem; }
     .quick_trade-container .input-group__select .ant-select-selector {
-      padding: 0; }
+      padding: 0;
+      min-width: 7.5rem; }
     .quick_trade-container .input-group__select .anticon {
       color: #fff; }
 
