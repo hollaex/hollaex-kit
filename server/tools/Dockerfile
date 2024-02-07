@@ -1,31 +1,37 @@
-FROM node:18.15.0-buster-slim
+### Multi-Stage Build Dockerfile
 
-RUN apt-get update && \
-    apt-get install -y curl openssl ca-certificates git python build-essential && \
-    rm -rf /var/lib/apt/lists/* && \
-    npm install --unsafe-perm=true pm2@5.2.0 sequelize-cli@6.5.1 mocha -g --loglevel=error
+### Build section
+FROM node:18.15.0-buster-slim as build
 
+RUN apt-get update && apt-get install -y --no-install-recommends git python3 build-essential && rm -rf /var/lib/apt/lists/*
+
+## DISTRIBUTION MODE
 ENV NODE_ENV=production
+
+RUN mkdir -p /app/logs
+
+COPY package.json /app/package.json
 
 COPY . /app
 
 WORKDIR /app
 
-# Changing the default image user to 'appuser'
-RUN groupadd -g 999 appuser && \
-    useradd -r -u 999 -g appuser appuser && \
-    mkdir /home/appuser && \
-    chown -R appuser /home/appuser && \
-    chown -R appuser /app
+RUN npm install
 
-USER appuser
+FROM node:18.15.0-buster-slim
 
-RUN npm install --loglevel=error && \
-    pm2 update && \
-    cd /app/mail && npm install --loglevel=error
+COPY --from=build /app /app
 
-EXPOSE 10010
+RUN apt-get update && apt-get install -y --no-install-recommends git iproute2 python3 build-essential && rm -rf /var/lib/apt/lists/*
 
-EXPOSE 10080
+RUN npm install pm2@5.2.0 sequelize-cli@6.5.1 mocha@10.0.0 -g
 
-ENTRYPOINT ["/entrypoint.sh"]
+## DISTRIBUTION MODE
+ENV NODE_ENV=production
+
+# SERVER PORT
+EXPOSE 10010 10080 10011
+
+WORKDIR /app
+
+ENTRYPOINT ["/app/entrypoint.sh"]
