@@ -2,8 +2,8 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 pvc:
-  create: false
-  size: 2Gi
+  create: true
+  size: 3Gi
   name: hollaex-postgres-volume
 
 secretName: hollaex-kit-secret
