@@ -1,4 +1,3 @@
-{{- if eq .Values.job.enable false }}
 
 kind: Service
 apiVersion: v1
@@ -22,6 +21,6 @@ spec:
   selector:
     app: {{.Release.Name}}
 
-{{- end }}
+
 
 

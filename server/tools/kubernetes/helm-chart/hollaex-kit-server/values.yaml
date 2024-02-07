@@ -30,6 +30,10 @@ APM_URL:
 
 podRestart_webhook_url:
 
+
+job:
+  enable: false
+  
 resources:
   limits:
     memory: "1536Mi"
