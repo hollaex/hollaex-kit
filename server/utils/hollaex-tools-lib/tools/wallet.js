@@ -82,14 +82,7 @@ const getWithdrawalFee = (currency, network, amount, level) => {
 		if (coinConfiguration.withdrawal_fees && coinConfiguration.withdrawal_fees[currency]) {
 			let value = coinConfiguration.withdrawal_fees[currency].value;
 			fee_coin =  coinConfiguration.withdrawal_fees[currency].symbol;
-			if (coinConfiguration.withdrawal_fees[currency].levels && coinConfiguration.withdrawal_fees[currency].levels[level]) {
-				value = coinConfiguration.withdrawal_fees[currency].levels[level];
-			}
-			if (coinConfiguration.withdrawal_fees[currency].type === 'static') {
-				fee = value;
-			} else {
-				fee = amount * value / 100;
-			}
+			fee = value;
 		}
 	}
 
@@ -1140,14 +1133,7 @@ const getDepositFee = (currency, network, amount, level) => {
 	if (deposit_fees && deposit_fees[currency]) {
 		let value = deposit_fees[currency].value;
 		fee_coin =  deposit_fees[currency].symbol;
-		if (deposit_fees[currency].levels && deposit_fees[currency].levels[level]) {
-			value = deposit_fees[currency].levels[level];
-		}
-		if (deposit_fees[currency].type === 'static') {
-			fee = value;
-		} else {
-			fee = amount * value / 100;
-		}
+		fee = value;
 	}
 
 	return {
