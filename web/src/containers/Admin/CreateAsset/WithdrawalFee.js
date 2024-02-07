@@ -206,36 +206,7 @@ const WithdrawalFee = ({
 										<div className="network-border w-50"></div>
 									</div>
 
-									<div className="field-wrap last">
-										{/* <div className="sub-title">Type: </div>
-										<Form.Item
-											name={`${data}_type`}
-											rules={[
-												{
-													required: true,
-													message: 'This field is required!',
-												},
-											]}
-										>
-											<Select
-												size="small"
-												className="w-100"
-												onChange={(val) => handleType(data, val, key)}
-											>
-												{WITHDRAWAL_FEE_TYPES.map((option, index) => (
-													<Select.Option key={index} value={option}>
-														{option === 'percentage'
-															? 'percentage (%)'
-															: option}
-													</Select.Option>
-												))}
-											</Select>
-										</Form.Item>
-										<div className="infotxt">
-											'Static' uses a consistent value, while 'percentage' will
-											deduct a % from the amount moved.
-										</div> */}
-									</div>
+									<div className="field-wrap last"></div>
 									<div className="field-wrap last">
 										<div className="sub-title">
 											Symbol of fee asset (asset used for fees)
