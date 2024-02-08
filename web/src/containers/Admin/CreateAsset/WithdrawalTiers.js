@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button, InputNumber } from 'antd';
 import { Image } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
@@ -18,11 +18,6 @@ const WithDrawTiers = ({
 }) => {
 	const [confirmPopup, setConfirmPopup] = useState(false);
 	const [withDrawTiers, setWithdrawTiers] = useState({});
-	useEffect(() => {
-		handleTierValues(false, withdrawalFees[selectedTier]?.levels, selectedTier);
-		setWithdrawTiers(withdrawalFees[selectedTier]?.levels, selectedTier);
-		// eslint-disable-next-line
-	}, []);
 
 	const handleTier = (level, e) => {
 		if (level && e) {
