@@ -1,4 +1,4 @@
-FROM nginx:alpine
+FROM nginx:1.25.3-alpine3.18
 RUN apk add --no-cache certbot py-pip && \
     apk add --no-cache --virtual .build-deps build-base libffi-dev openssl-dev python3-dev && \
     pip install certbot-nginx && \
