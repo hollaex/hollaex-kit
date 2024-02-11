@@ -136,7 +136,7 @@
   background: var(--labels_important-active-labels-text-graphics); }
 
 .font-small {
-  font-size: 1.1rem; }
+  font-size: 1rem; }
 
 .font-title {
   font-size: 2rem; }
@@ -490,9 +490,9 @@ table th {
       position: relative;
       margin-bottom: 1rem; }
       .presentation_container .inner_container .information_block .information_block-text_wrapper .title {
-        font-size: 1.2rem; }
+        font-size: 1.1rem; }
       .presentation_container .inner_container .information_block .information_block-text_wrapper .text {
-        font-size: 1.1rem;
+        font-size: 1rem;
         color: var(--labels_secondary-inactive-label-text-graphics); }
         .presentation_container .inner_container .information_block .information_block-text_wrapper .text > p {
           margin: 0.5rem 0; }
@@ -757,7 +757,7 @@ table th {
     -webkit-transform-origin: 0 0; } }
 
 .information_section {
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: var(--labels_secondary-inactive-label-text-graphics);
   padding: 0 0 0.5rem; }
   .information_section .information_svg {
@@ -779,13 +779,13 @@ table th {
 
 .user-limits .user-limits-table {
   width: 100%;
-  font-size: 1.1rem; }
+  font-size: 1rem; }
   .user-limits .user-limits-table thead tr,
   .user-limits .user-limits-table tfoot tr {
     height: 3.5rem;
     vertical-align: bottom; }
   .user-limits .user-limits-table tfoot {
-    font-size: 1.2rem; }
+    font-size: 1.1rem; }
     .user-limits .user-limits-table tfoot td {
       white-space: nowrap; }
   .user-limits .user-limits-table .table-row {
@@ -882,12 +882,12 @@ table th {
           width: 9rem !important;
           height: 9rem !important; }
     .otp_form-wrapper .otp_form-section-wrapper .otp_form-section-title {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       font-weight: bold; }
     .otp_form-wrapper .otp_form-section-wrapper .otp_form-section-text {
-      font-size: 1.1rem; }
+      font-size: 1rem; }
     .otp_form-wrapper .otp_form-section-wrapper .otp_secret {
-      font-size: 1.1rem;
+      font-size: 1rem;
       background-color: var(--calculated_specials_highlight-box);
       padding: 0.25rem 0.5rem; }
   .otp_form-wrapper .otp_form-fields-wrapper {
@@ -952,7 +952,7 @@ table th {
   border-bottom: 1px solid var(--calculated_secondary-border); }
 
 .popup_info-wrapper .popup_info-text {
-  font-size: 1.1rem; }
+  font-size: 1rem; }
 
 .popup_info-wrapper .secret_key .action_notification-wrapper .action_notification-text {
   margin-left: 1rem !important; }
@@ -1008,12 +1008,12 @@ table th {
   margin-top: 0px !important; }
 
 .layout-mobile .user_security-wrapper .warning_text {
-  font-size: 15px !important; }
+  font-size: 13px !important; }
 
 .layout-mobile .user_security-wrapper .checkbutton-wrapper .checkbutton-input-wrapper {
   width: 240px !important; }
   .layout-mobile .user_security-wrapper .checkbutton-wrapper .checkbutton-input-wrapper .checkbutton-input-wrapper--label {
-    font-size: 15px;
+    font-size: 13px;
     color: var(--specials_buttons-links-and-highlights); }
 
 .layout-mobile .dev-section-wrapper {
@@ -1042,7 +1042,7 @@ table th {
   .layout-mobile .otp_form-wrapper .otp_form-section-wrapper .otp_form-section-title {
     font-size: 17px; }
   .layout-mobile .otp_form-wrapper .otp_form-section-wrapper .otp_form-section-text {
-    font-size: 15px !important; }
+    font-size: 13px !important; }
   .layout-mobile .otp_form-wrapper .otp_form-section-content .qr-code-wrapper {
     width: 15rem;
     height: 15rem; }
@@ -1051,13 +1051,13 @@ table th {
       height: 14rem !important; }
 
 .layout-mobile .accordion_section_content .warning_text {
-  font-size: 15px !important; }
+  font-size: 13px !important; }
 
 .layout-mobile .presentation_container .edit_token {
   flex-direction: column; }
   .layout-mobile .presentation_container .edit_token .token-keys-wrapper .field-content,
   .layout-mobile .presentation_container .edit_token .token-keys-wrapper .field-children {
-    font-size: 1.1rem !important; }
+    font-size: 1rem !important; }
 
 .layout-mobile .presentation_container .token-keys-wrapper {
   max-width: 35rem; }
@@ -1106,7 +1106,7 @@ table th {
 .small-expandable .ant-input,
 .small-expandable .ant-btn,
 .small-expandable .ant-tag {
-  font-size: 1rem !important; }
+  font-size: 0.9rem !important; }
 
 .small-expandable .field-label {
   font-size: 0.9rem; }
@@ -1192,11 +1192,11 @@ table th {
 
 .home-page_content .trade_tab-pair-title {
   color: var(--labels_important-active-labels-text-graphics);
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: bold; }
 
 .home-page_content .trade_tab-pair-sub-title {
-  font-size: 1.1rem; }
+  font-size: 1rem; }
 
 .home-page_content .trade_tab-pair-price {
   color: var(--labels_important-active-labels-text-graphics);
@@ -1205,7 +1205,7 @@ table th {
   font-family: Raleway; }
 
 .home-page_content .trade_tab-pair-volume {
-  font-size: 1.1rem; }
+  font-size: 1rem; }
 
 .home-page_content .market-card__sparkline-wrapper {
   height: 5rem !important;
@@ -1377,7 +1377,7 @@ table th {
       width: 4rem;
       height: 4rem; }
     .home_container .home-card-container .home-card-text-container {
-      font-size: 1.1rem;
+      font-size: 1rem;
       color: var(--labels_secondary-inactive-label-text-graphics); }
       .home_container .home-card-container .home-card-text-container .home-card-title {
         margin: 0.5rem 0 0.25rem;
@@ -1398,7 +1398,7 @@ table th {
   .home_container .buttons-section--button {
     width: 15rem;
     height: 4rem;
-    font-size: 1.1rem;
+    font-size: 1rem;
     border: 1px solid var(--calculated_important-border);
     margin: 0 1rem;
     text-align: center;
@@ -1576,7 +1576,7 @@ table th {
   font-size: 1.5rem; }
 
 .layout-mobile .currency-list-container .button-container .holla-button {
-  font-size: 15px !important; }
+  font-size: 13px !important; }
 
 .layout-mobile .currency-list-container .donut-container {
   height: 30rem !important;
@@ -1653,7 +1653,7 @@ table th {
     height: 2.5rem;
     font-size: 0.8rem; }
   .layout-mobile .wallet-container .wallet-assets_block .wallet-assets_block-table .table-bottom-border {
-    font-size: 15px !important; }
+    font-size: 13px !important; }
   .layout-mobile .wallet-container .wallet-assets_block .wallet-assets_block-table tfoot {
     font-size: 13px !important; }
   .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper {
@@ -1812,14 +1812,14 @@ table th {
         width: 14rem; }
     .wallet-container .wallet-assets_block .wallet-assets_block-table {
       width: 100%;
-      font-size: 1.1rem;
+      font-size: 1rem;
       margin-bottom: 3rem; }
       .wallet-container .wallet-assets_block .wallet-assets_block-table thead tr,
       .wallet-container .wallet-assets_block .wallet-assets_block-table tfoot tr {
         height: 3.5rem;
         vertical-align: bottom; }
       .wallet-container .wallet-assets_block .wallet-assets_block-table tfoot {
-        font-size: 1.2rem; }
+        font-size: 1.1rem; }
         .wallet-container .wallet-assets_block .wallet-assets_block-table tfoot td {
           white-space: nowrap; }
       .wallet-container .wallet-assets_block .wallet-assets_block-table .table-row {
@@ -1875,8 +1875,8 @@ table th {
   position: absolute; }
 
 .wallet-notification .action_notification-text {
-  font-size: 1.2rem !important;
-  line-height: 1.2rem !important; }
+  font-size: 1.1rem !important;
+  line-height: 1.1rem !important; }
 
 .direction_ltr .wallet-container .wallet-header_block {
   font-family: "Raleway"; }
@@ -2035,7 +2035,7 @@ table th {
   border-bottom: 1px solid var(--labels_important-active-labels-text-graphics);
   text-align: center; }
   .review-wrapper .review-crypto-amount .review-fee_message {
-    font-size: 1.2rem; }
+    font-size: 1.1rem; }
 
 .review-wrapper .review-warning_arrow {
   position: relative;
@@ -2064,11 +2064,11 @@ table th {
   padding: 1.5rem 12rem;
   word-break: break-all; }
   .review-wrapper .review-crypto-mail .review-fee_message {
-    font-size: 1.2rem; }
+    font-size: 1.1rem; }
 
 .review-wrapper .review-info_message {
   padding: 0.5rem;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: bold; }
 
 .review-wrapper .button-separator {
@@ -2128,12 +2128,12 @@ table th {
   font-size: 17px; }
 
 .layout-mobile .presentation_container .inner_container .information_block .information_block-text_wrapper .text {
-  font-size: 15px !important; }
+  font-size: 13px !important; }
 
 .layout-mobile .presentation_container .inner_container .field-label,
 .layout-mobile .presentation_container .inner_container .field-children,
 .layout-mobile .presentation_container .inner_container .input_field-input {
-  font-size: 15px !important; }
+  font-size: 13px !important; }
 
 .layout-mobile .presentation_container .inner_container .field-error-content {
   font-size: 1.2rem; }
@@ -2143,7 +2143,7 @@ table th {
   line-height: 1.2rem; }
 
 .layout-mobile .presentation_container .inner_container .holla-button {
-  font-size: 15px !important; }
+  font-size: 13px !important; }
 
 .layout-mobile .review_email-wrapper {
   margin: 0px auto !important; }
@@ -2186,7 +2186,7 @@ table th {
 .extra_information-wrapper {
   margin-top: 1rem;
   padding: 0.5rem;
-  font-size: 1.1rem; }
+  font-size: 1rem; }
   .extra_information-wrapper .link {
     color: var(--specials_buttons-links-and-highlights);
     padding: 0 0.25rem; }
@@ -2215,7 +2215,7 @@ table th {
 .deposit_info-qr-wrapper .qr-text {
   text-align: center;
   display: flex;
-  font-size: 1.1rem;
+  font-size: 1rem;
   padding: 1.5rem 0;
   margin-left: 1rem;
   max-width: 20rem; }
@@ -2226,7 +2226,7 @@ table th {
 .review-wrapper {
   min-width: 575px; }
   .review-wrapper .review-section {
-    font-size: 1.1rem; }
+    font-size: 1rem; }
   .review-wrapper .review-title {
     font-size: 2rem;
     margin-bottom: 0.5rem; }
@@ -2726,22 +2726,22 @@ table th {
 
 .layout-mobile .trade_block-wrapper .trade_block-content {
   padding: 0;
-  font-size: 1rem; }
+  font-size: 0.9rem; }
   .layout-mobile .trade_block-wrapper .trade_block-content .table_body-wrapper {
-    font-size: 1rem; }
+    font-size: 0.9rem; }
 
 .layout-mobile .trade_block-wrapper .trade_block-title {
   cursor: default;
   background-color: inherit;
   padding: 0; }
   .layout-mobile .trade_block-wrapper .trade_block-title .action_notification-wrapper .action_notification-text {
-    font-size: 15px !important;
+    font-size: 13px !important;
     line-height: 1.2rem !important; }
 
 .layout-mobile .trade_history-wrapper {
   height: 38vh; }
   .layout-mobile .trade_history-wrapper .display_table-wrapper .display_table-body {
-    font-size: 15px; }
+    font-size: 13px; }
 
 .trade_block-wrapper {
   height: 100%;
@@ -2773,7 +2773,7 @@ table th {
   .trade_block-wrapper .trade_block-content {
     flex: auto;
     padding: 0 1.2rem 1.2rem 1.2rem;
-    font-size: 1rem;
+    font-size: 0.9rem;
     overflow-y: scroll;
     height: 100%; }
     .trade_block-wrapper .trade_block-content .sidebar_hub-content {
@@ -2925,7 +2925,7 @@ table th {
       text-align: right;
       color: var(--labels_secondary-inactive-label-text-graphics);
       padding: 0;
-      font-size: 15px; }
+      font-size: 13px; }
     .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-form_fields-wrapper .ant-collapse-content-box {
       padding: 0; }
     .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-form_fields-wrapper .underline-text {
@@ -3000,7 +3000,7 @@ table th {
       text-align: right;
       color: var(--labels_secondary-inactive-label-text-graphics);
       padding: 0;
-      font-size: 15px; }
+      font-size: 13px; }
     .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-form_fields-wrapper .ant-collapse-content-box {
       padding: 0; }
     .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-form_fields-wrapper .underline-text {
@@ -3029,22 +3029,22 @@ table th {
     color: var(--specials_notifications-alerts-warnings); }
 
 .layout-mobile .trade_order_entry-selector {
-  font-size: 15px !important; }
+  font-size: 13px !important; }
 
 .layout-mobile .trade_orderbook-bids .trade_orderbook-cell {
-  font-size: 15px !important; }
+  font-size: 13px !important; }
 
 .layout-mobile .trade_input-wrapper .trade_input-label {
   font-size: 13px !important; }
 
 .layout-mobile .trade_input-wrapper .trade_input-input-wrapper > input {
-  font-size: 15px !important; }
+  font-size: 13px !important; }
 
 .layout-mobile .trade_order_entry-review > div {
   font-size: 13px !important; }
 
 .layout-mobile .holla-button {
-  font-size: 15px !important; }
+  font-size: 13px !important; }
 
 .layout-mobile .trade_orderbook-wrapper .trade_asks-limit_bar .orderbook-limit_bar-wrapper .orderbook-limit_bar-text {
   font-size: 13px !important; }
@@ -3055,7 +3055,7 @@ table th {
 .trade_orderbook-wrapper {
   height: 100%; }
   .trade_orderbook-wrapper .trade_orderbook-headers .trade_orderbook-cell {
-    font-size: 1.1rem !important;
+    font-size: 1rem !important;
     flex-direction: column; }
     .trade_orderbook-wrapper .trade_orderbook-headers .trade_orderbook-cell .custom-select-input-style {
       font-size: 1rem !important;
@@ -3064,7 +3064,7 @@ table th {
         height: 1.5rem !important;
         line-height: 1.5rem !important;
         padding: 0;
-        font-size: 1.1rem !important; }
+        font-size: 1rem !important; }
       .trade_orderbook-wrapper .trade_orderbook-headers .trade_orderbook-cell .custom-select-input-style .ant-select-selection-item {
         height: 1.5rem !important;
         line-height: 1.5rem !important;
@@ -3191,7 +3191,7 @@ table th {
   .trade_orderbook-wrapper .orderbook-limit_bar-wrapper .orderbook-limit_bar-line {
     height: 2px; }
   .trade_orderbook-wrapper .orderbook-limit_bar-wrapper .orderbook-limit_bar-text {
-    font-size: 1.2rem; }
+    font-size: 1.1rem; }
 
 .trade-select-option-wrapper .ant-select-item,
 .trade-select-option-wrapper .ant-select-item-option-content {
@@ -3465,7 +3465,7 @@ table th {
   max-height: 3rem; }
 
 .public-history__header {
-  font-size: 1.1rem !important; }
+  font-size: 1rem !important; }
   .public-history__header .custom-select-input-style {
     font-size: 1rem !important;
     max-width: 8rem; }
@@ -3473,7 +3473,7 @@ table th {
       height: 1.5rem !important;
       line-height: 1.5rem !important;
       padding: 0;
-      font-size: 1.1rem !important; }
+      font-size: 1rem !important; }
     .public-history__header .custom-select-input-style .ant-select-selection-item {
       height: 1.5rem !important;
       line-height: 1.5rem !important;
@@ -3653,7 +3653,7 @@ table th {
 
 .quote-success-review-text {
   margin: 1rem 0 2rem;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   text-align: center; }
 
 .quote-success__title {
@@ -3742,9 +3742,9 @@ table th {
     padding: 0; }
   .verification_container .header-content {
     color: var(--labels_secondary-inactive-label-text-graphics);
-    font-size: 1.2rem; }
+    font-size: 1.1rem; }
   .verification_container .content-text {
-    font-size: 1.2rem; }
+    font-size: 1.1rem; }
   .verification_container .document-note-icon {
     width: 3.5rem; }
   .verification_container .inner-content {
@@ -3806,10 +3806,10 @@ table th {
 
 .layout-mobile .verification_container .verification-info-txt {
   width: 100%;
-  font-size: 15px !important; }
+  font-size: 13px !important; }
 
 .layout-mobile .verification_container .holla-verification-button {
-  font-size: 15px !important;
+  font-size: 13px !important;
   position: unset !important;
   top: 0 !important;
   width: 100% !important; }
@@ -3849,23 +3849,23 @@ table th {
   padding-top: 0 !important;
   max-height: calc( 100vh - 10rem); }
   .layout-mobile .presentation_container.verification_container .header-content {
-    font-size: 15px !important; }
+    font-size: 13px !important; }
 
 .layout-mobile .header_title-wrapper .header_title-text {
   font-size: 17px; }
 
 .layout-mobile .header_title-wrapper .header_title-children {
-  font-size: 15px !important; }
+  font-size: 13px !important; }
 
 .layout-mobile .field-wrapper .field-content .field-label,
 .layout-mobile .field-wrapper .field-content .field-children,
 .layout-mobile .field-wrapper .field-content .inner_container,
 .layout-mobile .field-wrapper .field-content .input_field-input,
 .layout-mobile .field-wrapper .field-content .placeholder {
-  font-size: 15px !important; }
+  font-size: 13px !important; }
 
 .layout-mobile .content-text {
-  font-size: 15px; }
+  font-size: 13px; }
 
 .direction_ltr .divider {
   margin-right: 0.5rem; }
@@ -3950,18 +3950,18 @@ table th {
 .layout-mobile .summary-container .trader-account-wrapper .summary-block_wrapper .trade-account-secondary-txt {
   width: 100%; }
   .layout-mobile .summary-container .trader-account-wrapper .summary-block_wrapper .trade-account-secondary-txt .account-details-content {
-    font-size: 15px; }
+    font-size: 13px; }
   .layout-mobile .summary-container .trader-account-wrapper .summary-block_wrapper .trade-account-secondary-txt .trade-account-link {
-    font-size: 15px; }
+    font-size: 13px; }
 
 .layout-mobile .summary-container .summary-section_1 {
   height: auto !important; }
 
 .layout-mobile .summary-container .summary-content-txt {
-  font-size: 15px !important; }
+  font-size: 13px !important; }
 
 .layout-mobile .summary-container .assets-wrapper .price-text {
-  font-size: 15px !important; }
+  font-size: 13px !important; }
 
 .layout-mobile .summary-container .assets-wrapper .donut-container {
   height: 30rem !important;
@@ -4104,7 +4104,7 @@ table th {
     .summary-container .summary-block_wrapper .summary-title-icon {
       width: 2rem; }
   .summary-container .summary-content-txt {
-    font-size: 1.2rem; }
+    font-size: 1.1rem; }
   .summary-container .trader-account-wrapper {
     margin-right: 1.5rem;
     width: 25rem; }
@@ -4224,7 +4224,7 @@ table th {
     justify-content: center;
     -ms-flex-align: center;
     align-items: center;
-    font-size: 1.1rem;
+    font-size: 1rem;
     line-height: 1;
     font-weight: bold; }
   .summary-container .assets-wrapper {
@@ -4380,13 +4380,13 @@ table th {
     cursor: pointer;
     font-weight: bold; }
   .fee-limits-wrapper .content-txt {
-    font-size: 1.1rem;
+    font-size: 1rem;
     max-height: 70vh;
     overflow-y: auto; }
     .fee-limits-wrapper .content-txt .fee-reduction-container {
       border: 1px solid var(--calculated_secondary-border); }
   .fee-limits-wrapper .content-title {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: bold;
     margin: 1.5rem 0; }
   .fee-limits-wrapper .icon_title-wrapper {
@@ -4571,7 +4571,7 @@ table th {
 
 .market-list__container .market-list__block .market-list__block-table {
   width: 100%;
-  font-size: 1.1rem;
+  font-size: 1rem;
   margin-bottom: 3rem; }
   .market-list__container .market-list__block .market-list__block-table .loading-anime {
     height: 20px;
@@ -4760,12 +4760,12 @@ table th {
     width: 32rem; }
   .trade_tabs-container .trade_tab-pair-title {
     color: var(--labels_important-active-labels-text-graphics);
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: bold; }
   .trade_tabs-container .trade_tab-pair-sub-title {
-    font-size: 1.1rem; }
+    font-size: 1rem; }
   .trade_tabs-container .trade_tab-pair-volume {
-    font-size: 1.1rem;
+    font-size: 1rem;
     text-align: right;
     padding-right: 0.3rem; }
   .trade_tabs-container .trade_tab-pair-price {
@@ -4963,7 +4963,7 @@ table th {
   .settings_container .settings-form-wrapper .settings-form .field-wrapper .field-label {
     font-size: 12px; }
   .settings_container .tab_controller-wrapper .tab_item {
-    font-size: 15px; } }
+    font-size: 13px; } }
 
 .expired_exchange_wrapper {
   padding: 2rem; }
@@ -6379,7 +6379,7 @@ table th {
   width: 100%;
   min-height: 4rem;
   height: 4rem;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: bold;
   background-color: var(--base_top-bar-navigation);
   border-bottom: 1px solid var(--calculated_super-pale_label-text-graphics); }
@@ -6460,7 +6460,7 @@ table th {
     color: var(--calculated_base_top-bar-navigation_text-inactive);
     cursor: pointer;
     display: flex;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 400;
     height: 100%;
     padding: 0 0.5rem;
@@ -6779,7 +6779,7 @@ table th {
 
 .app-menu-bar {
   display: flex;
-  font-size: 1.1rem;
+  font-size: 1rem;
   height: 100%;
   position: relative;
   max-width: calc(100vw - 40rem); }
@@ -6883,7 +6883,7 @@ table th {
 .market-bar {
   background: var(--base_secondary-navigation-bar);
   display: flex;
-  font-size: 1.1rem;
+  font-size: 1rem;
   height: 3rem;
   min-height: 3rem;
   position: relative;
@@ -7410,7 +7410,7 @@ table th {
   padding-top: 0.5rem;
   position: relative; }
   .header_title-wrapper .header_title-children {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     color: var(--labels_secondary-inactive-label-text-graphics);
     padding: 0.5rem 0; }
   .header_title-wrapper .header_title-icon {
@@ -7509,10 +7509,10 @@ table th {
   font-family: "Raleway"; }
 
 .layout-mobile .mobile_tab-wrapper .status_txt {
-  font-size: 15px; }
+  font-size: 13px; }
 
 .wallet_section-wrapper {
-  font-size: 1.1rem;
+  font-size: 1rem;
   padding: 0.25rem 0; }
   .wallet_section-wrapper .wallet_section-content > * {
     margin-bottom: 0.5rem; }
@@ -7590,13 +7590,13 @@ table th {
 .wallet_section-title {
   text-transform: uppercase;
   color: var(--labels_secondary-inactive-label-text-graphics);
-  font-size: 1.1rem; }
+  font-size: 1rem; }
   .wallet_section-title > * {
     margin: 0.5rem; }
 
 .wallet_section-title-amount {
   color: var(--labels_secondary-inactive-label-text-graphics);
-  font-size: 1.1rem; }
+  font-size: 1rem; }
 
 .wallet_section-total_asset {
   font-size: 1rem;
@@ -7798,7 +7798,7 @@ table th {
       color: var(--labels_important-active-labels-text-graphics); }
   .notification-wrapper .notification-content-wrapper {
     position: relative;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     display: flex;
     flex-direction: column;
     flex: 1;
@@ -7838,7 +7838,7 @@ table th {
       color: var(--labels_important-active-labels-text-graphics); }
   .notification-wrapper .notification-information {
     padding: 1rem 0;
-    font-size: 1.1rem; }
+    font-size: 1rem; }
   .notification-wrapper .trade-notification,
   .notification-wrapper .new-order-notification,
   .notification-wrapper .order-notification {
@@ -7853,7 +7853,7 @@ table th {
     .notification-wrapper .order-notification .notification-content-title {
       margin: 1rem 0; }
   .notification-wrapper .notification-buttons-wrapper .holla-button {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: bold; }
   .notification-wrapper .with_price-block_amount {
     margin: 3rem 0 4rem;
@@ -7925,7 +7925,7 @@ table th {
   width: 80% !important; }
 
 .notification-wrapper .notification-content-wrapper.notification-withdrawal .notification-link-wrapper {
-  font-size: 1.1rem; }
+  font-size: 1rem; }
 
 .direction_ltr .notification-title-text,
 .direction_ltr .notification-withdrawal .notification-content-title {
@@ -8048,7 +8048,7 @@ table th {
 .field-wrapper {
   position: relative;
   width: 100%;
-  font-size: 1.1rem;
+  font-size: 1rem;
   margin: 1rem 0; }
   .field-wrapper.error {
     color: var(--specials_notifications-alerts-warnings);
@@ -8410,7 +8410,7 @@ table th {
   padding: 0 1rem;
   text-transform: uppercase;
   padding: 0 0.5rem;
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: var(--labels_secondary-inactive-label-text-graphics);
   height: 22px;
   font-family: "Raleway Medium"; }
@@ -8589,7 +8589,7 @@ table th {
 
 .holla-button {
   width: 100%;
-  font-size: 1.1rem;
+  font-size: 1rem;
   padding: 0 4px;
   background-color: var(--specials_buttons-links-and-highlights) !important; }
   .holla-button.button-success {
@@ -8616,7 +8616,7 @@ table th {
       margin-left: 0.5rem; }
 
 .checkbutton-wrapper {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   display: flex;
   justify-content: center;
   align-items: center; }
@@ -8807,7 +8807,7 @@ table th {
   font-size: 1.75rem; }
 
 .layout-mobile .accordion_wrapper .accordion_section .accordion_section_content {
-  font-size: 15px !important; }
+  font-size: 13px !important; }
 
 .layout-mobile .accordion_wrapper .action_notification-svg svg {
   width: 1.75rem !important;
@@ -8887,7 +8887,7 @@ table th {
   .accordion_wrapper .accordion_section:last-child {
     border-bottom: 1px solid var(--calculated_important-border); }
   .accordion_wrapper .accordion_section .accordion_section_content {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     padding: 0; }
   .accordion_wrapper .accordion_section .action_notification-wrapper {
     top: calc(50% - 0.7rem);
@@ -8984,8 +8984,8 @@ table th {
     position: relative; }
   .action_notification-wrapper .action_notification-text,
   .trade-notify-wrapper .action_notification-text {
-    font-size: 1.1rem;
-    line-height: 1.1rem;
+    font-size: 1rem;
+    line-height: 1rem;
     text-transform: uppercase; }
   .action_notification-wrapper .action_notification-image,
   .trade-notify-wrapper .action_notification-image {
@@ -9205,13 +9205,13 @@ table th {
 
 .otp_form-info-text {
   font-weight: bold;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   width: 100%;
   text-align: center !important; }
 
 .otp_form-subnote-text {
   font-weight: 400;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   opacity: 0.7;
   width: 100%;
   margin-top: 5rem;
@@ -9336,7 +9336,7 @@ table th {
     .table-wrapper .table_header-wrapper .action_notification-text {
       white-space: nowrap; }
   .table-wrapper .table_body-wrapper {
-    font-size: 1rem; }
+    font-size: 0.9rem; }
     .table-wrapper .table_body-wrapper.with_icon tr td:first-child {
       border: none !important; }
     .table-wrapper .table_body-wrapper tr.table_body-row {
@@ -9724,7 +9724,7 @@ table th {
   justify-content: center !important; }
 
 .layout-mobile .quick_trade-section_wrapper .review-block-wrapper .input_block-title {
-  font-size: 15px; }
+  font-size: 13px; }
 
 .layout-mobile .title {
   font-weight: 600; }
@@ -9760,7 +9760,7 @@ table th {
         flex-direction: column;
         align-items: flex-start;
         width: 100%;
-        font-size: 15px !important; }
+        font-size: 13px !important; }
         .layout-mobile .quick_trade-wrapper .trade-section .inner-content .py-2 .ant-input-group {
           width: 100% !important; }
         .layout-mobile .quick_trade-wrapper .trade-section .inner-content .py-2 .input-group__error-wrapper {
@@ -9769,7 +9769,7 @@ table th {
         align-items: center !important;
         margin-top: 15rem; }
       .layout-mobile .quick_trade-wrapper .trade-section .inner-content .footer-text {
-        font-size: 15px !important;
+        font-size: 13px !important;
         margin: auto;
         text-align: center; }
   .layout-mobile .quick_trade-wrapper .quick-trade-input {
@@ -9867,7 +9867,7 @@ table th {
     width: 100%; }
   .legal-content-wrapper .legal-subtitle,
   .legal-content-wrapper .legal-content {
-    font-size: 1.1rem; }
+    font-size: 1rem; }
 
 @media screen and (max-width: 767px) {
   .legal-container .legal-content-wrapper {
@@ -9979,7 +9979,7 @@ table th {
       font-size: 1.5rem;
       width: 100%; }
     .layout-mobile .chat-wrapper .chat-message-list .chat-message .message-content .message {
-      font-size: 15px;
+      font-size: 13px;
       line-height: unset !important; }
     .layout-mobile .chat-wrapper .chat-message-list .chat-message .item-options .item-options-wrapper {
       min-width: 5rem;
@@ -10432,7 +10432,7 @@ table th {
 
 .app_footer-container {
   border-top: 1px solid var(--calculated_footer_border);
-  font-size: 1.1rem;
+  font-size: 1rem;
   background-color: var(--base_footer);
   color: var(--calculated_base_footer_text); }
   .app_footer-container.deep-footer {
@@ -10443,7 +10443,7 @@ table th {
     width: 100%; }
     .app_footer-container .footer-row-content .footer-links-section .footer-links-group {
       margin: 1rem;
-      font-size: 1.2rem; }
+      font-size: 1.1rem; }
       .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--title {
         font-weight: bold;
         margin-bottom: 0.25rem;
@@ -10478,7 +10478,7 @@ table th {
       .app_footer-container .footer-row-content .footer_separter .footer-content .footer-img-wrapper {
         height: 4rem; }
     .app_footer-container .footer-row-content .footer-public-texts .footer-public-texts-text {
-      line-height: 2.2rem;
+      line-height: 2rem;
       font-weight: bold; }
     .app_footer-container .footer-row-content .footer-public-links {
       justify-content: flex-end;
@@ -11017,7 +11017,7 @@ body {
   height: 100%;
   background-color: var(--base_background) !important;
   color: var(--labels_important-active-labels-text-graphics);
-  font-size: 1.2rem !important;
+  font-size: 1.1rem !important;
   font-family: "Open Sans" !important;
   transition: all 0.3s; }
 
