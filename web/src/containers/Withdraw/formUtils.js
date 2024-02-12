@@ -17,6 +17,7 @@ import { toFixed } from 'utils/currency';
 import { getDecimals } from 'utils/utils';
 import { getNetworkNameByKey } from 'utils/wallet';
 import { email } from 'components/AdminForm/validations';
+import BigNumber from 'bignumber.js';
 import math from 'mathjs';
 
 export const generateInitialValues = (
@@ -57,7 +58,14 @@ export const generateInitialValues = (
 	}
 
 	const feeMarkup = coin_customizations?.[symbol]?.fee_markup;
-	if (feeMarkup) initialValues.fee += feeMarkup;
+	if (feeMarkup) {
+		const incrementUnit = coins?.[symbol]?.increment_unit;
+		const decimalPoint = new BigNumber(incrementUnit).dp();
+		const roundedMarkup = new BigNumber(feeMarkup)
+			.decimalPlaces(decimalPoint)
+			.toNumber();
+		initialValues.fee += roundedMarkup;
+	}
 
 	initialValues.destination_tag = '';
 	initialValues.address = '';
