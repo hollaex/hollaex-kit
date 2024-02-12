@@ -1,12 +1,14 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
 import { Switch } from 'antd';
 import { CaretUpOutlined, CaretDownOutlined } from '@ant-design/icons';
+import { fetchBalanceHistory, fetchPlHistory } from './actions';
 import classnames from 'classnames';
-
+import Highcharts from 'highcharts';
+import HighchartsReact from 'highcharts-react-official';
 import {
 	WALLET_SORT,
 	toggleWalletSort,
@@ -36,6 +38,9 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import TradeInputGroup from './components/TradeInputGroup';
 import { unique } from 'utils/data';
 import DustSection from './DustSection';
+import moment from 'moment';
+import _toLower from 'lodash/toLower';
+import BigNumber from 'bignumber.js';
 
 const AssetsBlock = ({
 	coins,
@@ -59,10 +64,134 @@ const AssetsBlock = ({
 	toggleSort,
 	setSortModeAmount,
 	chartData,
+	handleBalanceHistory,
+	balance_history_config,
+	info,
 }) => {
 	const emptyDonut = useMemo(() => {
 		return chartData && !!chartData.length;
 	}, [chartData]);
+
+	const [graphData, setGraphData] = useState([]);
+	const [historyData, setHistoryData] = useState([]);
+	const [userPL, setUserPL] = useState();
+
+	const handleUpgrade = (info = {}) => {
+		if (
+			_toLower(info.plan) !== 'fiat' &&
+			_toLower(info.plan) !== 'boost' &&
+			_toLower(info.type) !== 'enterprise'
+		) {
+			return true;
+		} else {
+			return false;
+		}
+	};
+
+	const isUpgrade = handleUpgrade(info);
+
+	useEffect(() => {
+		fetchPlHistory()
+			.then((res) => {
+				setUserPL(res);
+			})
+			.catch((err) => err);
+
+		fetchBalanceHistory({
+			start_date: moment().subtract(7, 'days').toISOString(),
+			end_date: moment().subtract().toISOString(),
+		})
+			.then((response) => {
+				const length = 6;
+
+				let newGraphData = [];
+				for (let i = 0; i < length + 1; i++) {
+					const balanceData = response.data.find(
+						(history) =>
+							moment(history.created_at).format('YYYY-MM-DD') ===
+							moment().subtract(i, 'days').format('YYYY-MM-DD')
+					);
+					// if (!balanceData) continue;
+					newGraphData.push([
+						`   `,
+						balanceData
+							? balanceData.total
+							: response?.data?.[response.data.length - 1]?.total,
+					]);
+				}
+
+				newGraphData.reverse();
+
+				setGraphData(newGraphData);
+				setHistoryData(response.data || []);
+				// setIsLoading(false);
+			})
+			.catch((error) => {
+				// setIsLoading(false);
+			});
+		// eslint-disable-next-line
+	}, []);
+
+	const options = {
+		title: {
+			text: '',
+		},
+		tooltip: {
+			enabled: false,
+		},
+		xAxis: {
+			lineWidth: 0,
+			minorGridLineWidth: 0,
+			lineColor: 'transparent',
+			minorTickLength: 0,
+			tickLength: 0,
+			visible: false,
+			labels: {
+				enabled: false,
+			},
+			title: {
+				text: null,
+			},
+		},
+		yAxis: {
+			gridLineColor: 'transparent',
+			labels: {
+				enabled: false,
+			},
+			title: {
+				text: null,
+			},
+		},
+		plotOptions: {
+			series: {
+				marker: {
+					enabled: false,
+					states: {
+						hover: {
+							enabled: false,
+						},
+					},
+				},
+			},
+		},
+		series: [
+			{
+				showInLegend: false,
+				data: graphData,
+				color: '#FFFF00',
+			},
+		],
+	};
+
+	const getSourceDecimals = (symbol, value) => {
+		const incrementUnit = coins[symbol].increment_unit;
+		const decimalPoint = new BigNumber(incrementUnit).dp();
+		const sourceAmount = new BigNumber(value || 0)
+			.decimalPlaces(decimalPoint)
+			.toNumber();
+
+		return sourceAmount;
+	};
 
 	const handleClickAmount = () => {
 		if (mode === WALLET_SORT.AMOUNT) {
@@ -209,6 +338,8 @@ const AssetsBlock = ({
 									checked={isZeroBalanceHidden}
 									onClick={onToggle}
 									className="mx-2"
+									checkedChildren={STRINGS['DEFAULT_TOGGLE_OPTIONS.ON']}
+									unCheckedChildren={STRINGS['DEFAULT_TOGGLE_OPTIONS.OFF']}
 								/>
 							</div>
 						</div>
@@ -285,10 +416,57 @@ const AssetsBlock = ({
 								</div>
 							)}
 						</div>
-						<Image
-							icon={ICONS['WALLET_GRAPHIC']}
-							wrapperClassName="wallet-graphic-icon"
-						/>
+						{!isUpgrade &&
+						balance_history_config?.active &&
+						historyData.length > 1 ? (
+							<div>
+								<div style={{ marginTop: 10 }}>
+									<EditWrapper stringId="PROFIT_LOSS.PERFORMANCE_TREND">
+										{STRINGS['PROFIT_LOSS.PERFORMANCE_TREND']}
+									</EditWrapper>
+								</div>
+								<div style={{ width: 300, opacity: 0, fontSize: 1 }}>
+									{STRINGS['PROFIT_LOSS.WALLET_PERFORMANCE_TITLE']}
+								</div>
+
+								<div
+									onClick={() => handleBalanceHistory(true)}
+									style={{ zoom: 0.5, cursor: 'pointer' }}
+									className="highChartColor"
+								>
+									{' '}
+									<HighchartsReact
+										highcharts={Highcharts}
+										options={options}
+									/>{' '}
+								</div>
+
+								<div
+									className={
+										Number(userPL?.['7d']?.total || 0) === 0
+											? 'profitNeutral'
+											: (userPL?.['7d']?.total || 0) > 0
+											? 'profitPositive'
+											: 'profitNegative'
+									}
+								>
+									<EditWrapper stringId="PROFIT_LOSS.PL_7_DAY">
+										{STRINGS['PROFIT_LOSS.PL_7_DAY']}
+									</EditWrapper>{' '}
+									{Number(userPL?.['7d']?.total || 0) > 0 ? '+' : ''}{' '}
+									{getSourceDecimals(
+										balance_history_config?.currency || 'usdt',
+										userPL?.['7d']?.total
+									) || '0'}{' '}
+									{balance_history_config?.currency?.toUpperCase() || 'USDT'}
+								</div>
+							</div>
+						) : (
+							<Image
+								icon={ICONS['WALLET_GRAPHIC']}
+								wrapperClassName="wallet-graphic-icon"
+							/>
+						)}
 					</div>
 					<div className="d-flex justify-content-between pl-3 pr-3">
 						<div>
@@ -313,6 +491,8 @@ const AssetsBlock = ({
 										checked={isZeroBalanceHidden}
 										onClick={onToggle}
 										className="mx-2"
+										checkedChildren={STRINGS['DEFAULT_TOGGLE_OPTIONS.ON']}
+										unCheckedChildren={STRINGS['DEFAULT_TOGGLE_OPTIONS.OFF']}
 									/>
 								</div>
 							</div>
@@ -522,6 +702,7 @@ const mapStateToProps = ({
 	app: {
 		wallet_sort: { mode, is_descending },
 		quicktrade,
+		constants: { balance_history_config, info },
 	},
 	asset: { chartData },
 }) => ({
@@ -529,6 +710,8 @@ const mapStateToProps = ({
 	is_descending,
 	quicktrade,
 	chartData,
+	balance_history_config,
+	info,
 });
 
 const mapDispatchToProps = (dispatch) => ({

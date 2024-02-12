@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts';
 
@@ -16,12 +16,22 @@ const DEFAULT_CHART_OPTIONS = {
 		styledMode: true,
 	},
 	xAxis: {
-		type: 'linear',
-		allowDecimals: false,
-		visible: false,
+		visible: true,
+		minorTickInterval: 'auto',
+		labels: {
+			enabled: false,
+		},
+		minPadding: 0.05,
+		maxPadding: 0.05,
 	},
 	yAxis: {
-		visible: false,
+		visible: true,
+		minorTickInterval: 'auto',
+		tickAmount: 10,
+		labels: {
+			enabled: false,
+		},
+		title: false,
 	},
 	plotOptions: {
 		series: {
@@ -40,25 +50,40 @@ const DEFAULT_CHART_OPTIONS = {
 	pane: {
 		size: '100%',
 	},
-	
 };
 
 export const MiniSparkLine = ({ chartData, isArea }) => {
-    return (
-        <HighchartsReact
-            highcharts={Highcharts}
-            options={{
-                ...DEFAULT_CHART_OPTIONS,
-                series: [{
-                    name: 'price',
-                    data: chartData?.length ? chartData : [],
-                    pointStart: 0,
-                    type: isArea ? 'area' : 'line',
-                }
-            ]}}
-            containerProps={{
-                style: { height: '100%', width: '100%' },
-            }}
-        />
-    )
+	const [finalChartData, setFinalChartData] = useState([]);
+
+	useEffect(() => {
+		const updatedChartData = [...chartData];
+		const chartLen = updatedChartData.length - 1;
+		updatedChartData[chartLen] = {
+			y: updatedChartData[chartLen],
+			marker: {
+				enabled: true,
+			},
+		};
+		setFinalChartData(updatedChartData);
+	}, [chartData]);
+
+	return (
+		<HighchartsReact
+			highcharts={Highcharts}
+			options={{
+				...DEFAULT_CHART_OPTIONS,
+				series: [
+					{
+						name: 'price',
+						data: finalChartData?.length ? finalChartData : [],
+						threshold: finalChartData[0],
+						type: isArea ? 'area' : 'line',
+					},
+				],
+			}}
+			containerProps={{
+				style: { height: '100%', width: '100%' },
+			}}
+		/>
+	);
 };

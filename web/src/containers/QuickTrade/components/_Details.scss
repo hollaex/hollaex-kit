@@ -1,91 +1,93 @@
+$colors-white: white;
 
 .trade-details-wrapper {
-    width: 100%;
-    padding: 40px 65px 30px 55px;
-    font-family: $en--font-family;
-    background-color: $app-background-color;
-    .trade-details-content {
-        height: 450px;
-        .pb-24 {
-            padding-bottom: 24px;
-        }
-        .pb-30 {
-            padding-bottom: 30px;
-        }
-        .pb-35 {
-            padding-bottom: 35px;
-        }
-        .pl-6 {
-            padding-left: 6rem;
-        }
-        .chart {
-            height: 100px;
-            margin: 10px 0;
-            // opacity: 0.4;
-            div:last-child {
-                padding-top: 1rem;
-            }
-            .fade-area {
-                position: relative;
-            }
-            .fade-area::before {
-                content: '';
-                position: absolute;
-                height: 100px;
-                width: 100%;
-                background-image: linear-gradient(
-                    to right,
-                    $app-background-color,
-                    rgba(0, 0, 0, 0)
-                );
-                z-index: -1;
-            }
-        }
-        .trade_tabs-container {
-            margin: 0 !important;
-            width: 100% !important;
-        }
+	width: 100%;
+	padding: 3.3rem 3rem 2.5rem;
+	font-family: $en--font-family;
+	background-color: #0d0c0c;
 
-        .main-coin-wrapper {
-            opacity: 0.3;
-        }
-    }
+	.trade-details-content {
+		height: 450px;
+		.pb-24 {
+			padding-bottom: 24px;
+		}
+		.pb-30 {
+			padding-bottom: 30px;
+		}
+		.pb-40 {
+			padding-bottom: 40px;
+		}
+		.pl-18 {
+			padding-left: 18px;
+		}
+		.chart {
+			height: 164px;
+			margin: 10px 0 0;
+			.fade-area {
+				position: relative;
+			}
+			.fade-area::before {
+				content: '';
+				position: absolute;
+				height: 100px;
+				width: 100%;
+				background-image: linear-gradient(
+					to right,
+					$app-background-color,
+					rgba(0, 0, 0, 0)
+				);
+				z-index: -1;
+			}
+			.highcharts-axis.highcharts-xaxis {
+				display: none;
+			}
+		}
+		.trade_tabs-container {
+			margin: 0;
+			padding-left: 120px;
+			width: 100% !important;
+		}
 
-    .f-size-16 {
-        font-size: 16px;
-        color: $colors-deactivate;
-        font-weight: bold;
-    }
-    .f-size-22 {
-        font-size: 22px;
-        font-weight: bold;
-    }
-    .pairs {
-        color: $link;
-        font-size: 16px;
-    }
-    .underline {
-        text-decoration: underline;
-    }
-    .fullname {
-        color: $colors-deactivate;
-        font-size: 11px;
-        white-space: nowrap;
-    }
-    .sub-title {
-        color: $colors-deactivate;
-        font: normal normal 300 11px/15px $en--font-family;
-        letter-spacing: 2.2px;
-        opacity: 1;
-        white-space: nowrap;
-    }
-    .white-txt {
-        color: $colors-main-black;
-    }
+		.main-coin-wrapper {
+			opacity: 0.3;
+		}
+	}
 
-    .day-change-block {
+	.f-size-16 {
+		font-size: 16px;
+		color: $colors-deactivate;
+		font-weight: bold;
+	}
+	.f-size-22 {
+		font-size: 1.825rem;
+		font-weight: bold;
+	}
+	.pairs {
+		color: $link;
+		font-size: 1.825rem;
+	}
+	.underline {
+		text-decoration: underline;
+	}
+	.fullname {
+		color: $colors-deactivate;
+		font-size: 1.2rem;
+		white-space: nowrap;
+	}
+	.sub-title {
+		color: $colors-deactivate;
+		font-size: 1.1rem;
+		letter-spacing: 2.2px;
+		opacity: 1;
+		white-space: nowrap;
+	}
+	.white-txt {
+		color: $colors-main-black;
+	}
+
+	.day-change-block {
 		text-align: end;
-		margin-bottom: 1.5rem;
+		margin: 45px 36px 20px 0;
 		.ant-radio-group {
 			.ant-radio-button-wrapper {
 				background: transparent;
@@ -101,35 +103,34 @@
 					border-radius: 0 0.5rem 0.5rem 0;
 				}
 				&::before {
-					background: #fff;
+					background: $colors-white;
 				}
 			}
 			.ant-radio-button-wrapper-checked {
-				border-color: #fff;
-				color: #fff;
+				border-color: $colors-white;
+				color: $colors-white;
 			}
 		}
 	}
 }
 
 .layout-mobile {
-    .trade-details-wrapper {
-        width: 100%;
-        .trade-details-content {
-            width: 100%;
-            height: 100%;
-        }
-    }
+	.trade-details-wrapper {
+		width: 100%;
+		background-color: transparent;
+		.trade-details-content {
+			width: 100%;
+			height: 100%;
+		}
+	}
 }
 
-
 @media (max-width: 1020px) {
-    .trade-details-wrapper {
-        width: 100%;
-        padding: 15px;
-        .trade-details-content {
-            width: 100%;
-            height: 100%;
-        }
-    }
+	.trade-details-wrapper {
+		width: 100%;
+		.trade-details-content {
+			width: 100%;
+			height: 100%;
+		}
+	}
 }

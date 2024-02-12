@@ -20,6 +20,16 @@ const InterfaceForm = ({
 }) => {
 	const [isSubmit, setIsSubmit] = useState(!buttonSubmitting);
 	const [form] = Form.useForm();
+	const [balanceHistoryCurrency, setBalanceHistoryCurrency] = useState({
+		currency: constants?.kit?.balance_history_config?.currency || null,
+		date_enabled:
+			constants?.kit?.balance_history_config?.date_enabled || new Date(),
+	});
+
+	const [displayBalanceHistoryModal, setDisplayBalanceHistoryModal] = useState(
+		false
+	);
+
 	const [referralHistoryData, setReferralHistoryData] = useState({
 		currency: constants?.kit?.referral_history_config?.currency || 'usdt',
 		earning_rate: constants?.kit?.referral_history_config?.earning_rate || null,
@@ -50,10 +60,16 @@ const InterfaceForm = ({
 				pro_trade: !!values.pro_trade,
 				stake_page: !!values.stake_page,
 				cefi_stake: !!values.cefi_stake,
+				balance_history_config: !!values.balance_history_config,
 				referral_history_config: !!values.referral_history_config,
 				home_page: isUpgrade ? false : !!values.home_page,
 				ultimate_fiat: !!values.ultimate_fiat,
 				apps: !!values.apps,
+			};
+			const balance_history_config = {
+				currency: balanceHistoryCurrency.currency || 'usdt',
+				active: !!values.balance_history_config || false,
+				date_enabled: balanceHistoryCurrency.date_enabled,
 			};
 			const referral_history_config = {
 				active: !!values.referral_history_config,
@@ -65,7 +81,11 @@ const InterfaceForm = ({
 				last_settled_trade: referralHistoryData.last_settled_trade,
 				date_enabled: referralHistoryData.date_enabled,
 			};
-			handleSaveInterface(formValues, referral_history_config);
+			handleSaveInterface(
+				formValues,
+				balance_history_config,
+				referral_history_config
+			);
 		}
 	};
 
@@ -80,6 +100,11 @@ const InterfaceForm = ({
 	const handleSubmitData = (formProps) => {
 		if (formProps.referral_history_config && !referralHistoryData.active) {
 			setDisplayReferralHistoryModal(true);
+		} else if (
+			formProps.balance_history_config &&
+			!balanceHistoryCurrency.currency
+		) {
+			setDisplayBalanceHistoryModal(true);
 		} else {
 			setIsSubmit(true);
 			handleSubmit(formProps);
@@ -94,6 +119,101 @@ const InterfaceForm = ({
 	}
 	return (
 		<div className="general-wrapper">
+			{displayBalanceHistoryModal && (
+				<Modal
+					maskClosable={false}
+					closeIcon={<CloseOutlined style={{ color: 'white' }} />}
+					bodyStyle={{
+						backgroundColor: '#27339D',
+						marginTop: 60,
+					}}
+					visible={displayBalanceHistoryModal}
+					width={400}
+					footer={null}
+					onCancel={() => {
+						setDisplayBalanceHistoryModal(false);
+					}}
+				>
+					<h2 style={{ fontWeight: '600', color: 'white' }}>
+						Balance History Config
+					</h2>
+
+					<div className="mb-5">
+						<div style={{ fontSize: 16 }} className="mb-2">
+							Profit&Loss Currency
+						</div>
+						<div style={{ marginBottom: 10, color: '#ccc' }}>
+							This currency is used as the base currency to calculate and
+							display all the profits and loss. It is normally set to a fiat
+							currency or a stable coin. Note that this currency can not be
+							modified in future after it starts getting the information.
+						</div>
+						<Select
+							showSearch
+							className="select-box"
+							placeholder="Select asset for p/l analysis"
+							value={balanceHistoryCurrency.currency}
+							style={{ width: 250 }}
+							onChange={(e) => {
+								setBalanceHistoryCurrency({
+									...balanceHistoryCurrency,
+									currency: e,
+								});
+							}}
+						>
+							{Object.keys(coins).map((key) => (
+								<Select.Option value={key}>{coins[key].fullname}</Select.Option>
+							))}
+						</Select>
+					</div>
+
+					<div
+						style={{
+							display: 'flex',
+							flexDirection: 'row',
+							gap: 15,
+							justifyContent: 'space-between',
+							marginTop: 30,
+						}}
+					>
+						<Button
+							onClick={() => {
+								setDisplayBalanceHistoryModal(false);
+							}}
+							style={{
+								backgroundColor: '#288500',
+								color: 'white',
+								flex: 1,
+								height: 35,
+							}}
+							type="default"
+						>
+							Back
+						</Button>
+						<Button
+							onClick={async () => {
+								if (!balanceHistoryCurrency.currency) {
+									message.error('Please Select currency');
+									return;
+								}
+								setIsSubmit(true);
+								handleSubmit(form.getFieldsValue());
+								setDisplayBalanceHistoryModal(false);
+							}}
+							style={{
+								backgroundColor: '#288500',
+								color: 'white',
+								flex: 1,
+								height: 35,
+							}}
+							type="default"
+						>
+							Proceed
+						</Button>
+					</div>
+				</Modal>
+			)}
+
 			{displayReferralHistoryModal && (
 				<Modal
 					maskClosable={false}
@@ -369,6 +489,25 @@ const InterfaceForm = ({
 							</div>
 						</Checkbox>
 					</Item>
+
+					{!isFiatUpgrade && (
+						<Item name="balance_history_config" valuePropName="checked">
+							<Checkbox className="mt-3">
+								<div className="d-flex align-items-center">
+									<ReactSVG
+										src={STATIC_ICONS.CANDLES_LOGO}
+										className="feature-icon mr-1"
+									/>
+									<div className="ml-2 checkbox-txt">
+										Profit&Loss Analytics
+										<div className="small-text">
+											(User Balance History, P/L analysis)
+										</div>
+									</div>
+								</div>
+							</Checkbox>
+						</Item>
+					)}
 
 					{!isFiatUpgrade && (
 						<Item name="referral_history_config" valuePropName="checked">

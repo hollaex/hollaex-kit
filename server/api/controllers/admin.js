@@ -942,7 +942,8 @@ const mintAsset = (req, res) => {
 		transaction_id,
 		status,
 		email,
-		fee
+		fee,
+		address
 	} = req.swagger.params.data.value;
 
 	loggerAdmin.info(
@@ -958,7 +959,9 @@ const mintAsset = (req, res) => {
 		'status',
 		status,
 		'fee',
-		fee
+		fee,
+		'address',
+		address
 	);
 
 	toolsLib.user.getUserByKitId(user_id)
@@ -976,6 +979,7 @@ const mintAsset = (req, res) => {
 					transactionId: transaction_id,
 					status,
 					email,
+					address,
 					additionalHeaders: {
 						'x-forwarded-for': req.headers['x-forwarded-for']
 					}
@@ -1089,7 +1093,8 @@ const burnAsset = (req, res) => {
 		transaction_id,
 		status,
 		email,
-		fee
+		fee,
+		address
 	} = req.swagger.params.data.value;
 
 	loggerAdmin.info(
@@ -1105,7 +1110,9 @@ const burnAsset = (req, res) => {
 		'status',
 		status,
 		'fee',
-		fee
+		fee,
+		'address',
+		address
 	);
 
 	toolsLib.user.getUserByKitId(user_id)
@@ -1123,6 +1130,7 @@ const burnAsset = (req, res) => {
 					status,
 					email,
 					fee,
+					address,
 					additionalHeaders: {
 						'x-forwarded-for': req.headers['x-forwarded-for']
 					}
@@ -2701,6 +2709,72 @@ const changeUserEmail = (req, res) => {
 		});
 };
 
+const getUserBalanceHistoryByAdmin = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/getUserBalanceHistoryByAdmin/auth',
+		req.auth
+	);
+	const { limit, page, order_by, order, start_date, end_date, format, user_id } = req.swagger.params;
+
+	if (start_date.value && !isDate(start_date.value)) {
+		loggerAdmin.error(
+			req.uuid,
+			'controllers/admin/getUserBalanceHistoryByAdmin invalid start_date',
+			start_date.value
+		);
+		return res.status(400).json({ message: 'Invalid start date' });
+	}
+
+	if (end_date.value && !isDate(end_date.value)) {
+		loggerAdmin.error(
+			req.uuid,
+			'controllers/admin/getUserBalanceHistoryByAdmin invalid end_date',
+			end_date.value
+		);
+		return res.status(400).json({ message: 'Invalid end date' });
+	}
+
+	if (order_by.value && typeof order_by.value !== 'string') {
+		loggerAdmin.error(
+			req.uuid,
+			'controllers/admin/getUserBalanceHistoryByAdmin invalid order_by',
+			order_by.value
+		);
+		return res.status(400).json({ message: 'Invalid order by' });
+	}
+
+	toolsLib.user.getUserBalanceHistory({
+		user_id: user_id.value,
+		limit: limit.value,
+		page: page.value,
+		orderBy: order_by.value,
+		order: order.value,
+		startDate: start_date.value,
+		endDate: end_date.value,
+		format: format.value
+	})
+		.then((data) => {
+			if (format.value === 'csv') {
+				toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
+				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-balance_history.csv`);
+				res.set('Content-Type', 'text/csv');
+				return res.status(202).send(data);
+			} else {
+				return res.json(data);
+			}
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/getUserBalanceHistoryByAdmin',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+
 module.exports = {
 	createInitialAdmin,
 	getAdminKit,
@@ -2768,5 +2842,6 @@ module.exports = {
 	changeUserEmail,
 	getTransactionLimits,
 	updateTransactionLimit,
-	deleteTransactionLimit
+	deleteTransactionLimit,
+	getUserBalanceHistoryByAdmin
 };

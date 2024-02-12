@@ -197,11 +197,8 @@ class Deposit extends Component {
 		let fee;
 		const feeKey = networks ? network : currency;
 		if (deposit_fees && deposit_fees[feeKey]) {
-			const { levels, value } = deposit_fees[feeKey];
-			fee =
-				levels && levels[verification_level]
-					? levels[verification_level]
-					: value;
+			const { value } = deposit_fees[feeKey];
+			fee = value;
 		}
 
 		const formFields = generateFormFields({

@@ -71,7 +71,7 @@ const PluginDetails = ({
 				}
 			})
 			.catch((err) => {
-				throw err;
+				message.error('Error');
 			});
 	};
 	const handleAddPlugin = async () => {
@@ -567,7 +567,7 @@ const PluginDetails = ({
 		free_for,
 		only_for,
 		url,
-		bio
+		bio,
 	} = pluginData;
 
 	let isPriceTagHide = true;
@@ -638,7 +638,9 @@ const PluginDetails = ({
 										{author}
 									</p>
 									<p className="tooltip-container">
-										<a href={url} className="underline-text pointer">Website</a>
+										<a href={url} className="underline-text pointer">
+											Website
+										</a>
 									</p>
 									{free_for?.length ? (
 										<div>

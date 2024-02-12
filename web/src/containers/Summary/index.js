@@ -227,6 +227,8 @@ class Summary extends Component {
 											<SummaryBlock
 												title={userAccountTitle}
 												wrapperClassname="w-100"
+												verification_level={verification_level}
+												icons={ICONS}
 											>
 												<TraderAccounts
 													user={user}
@@ -235,32 +237,28 @@ class Summary extends Component {
 													config={config_level}
 													onUpgradeAccount={this.onUpgradeAccount}
 													onInviteFriends={this.onInviteFriends}
-													onDisplayReferralList={this.onDisplayReferralList}
 													verification_level={verification_level}
-													referral_history_config={
-														this.props.referral_history_config
-													}
 												/>
 											</SummaryBlock>
 										</div>
 										<div className="summary-section_1 requirement-wrapper d-flex">
 											{/* <SummaryBlock
-										title={STRINGS["SUMMARY.TASKS"]}
-										wrapperClassname="w-100"
-									>
-										<SummaryRequirements
-											coins={coins}
-											user={user}
-											lastMonthVolume={lastMonthVolume}
-											contentClassName="requirements-content"
-										/>
-									</SummaryBlock> */}
+												title={STRINGS["SUMMARY.TASKS"]}
+												wrapperClassname="w-100"
+											>
+												<SummaryRequirements
+													coins={coins}
+													user={user}
+													lastMonthVolume={lastMonthVolume}
+													contentClassName="requirements-content"
+												/>
+											</SummaryBlock> */}
 											{/* <div
-										className={classnames(
-											'assets-wrapper',
-											'asset_wrapper_width'
-										)}
-									> */}
+												className={classnames(
+													'assets-wrapper',
+													'asset_wrapper_width'
+												)}
+											> */}
 											<SummaryBlock
 												stringId="SUMMARY.ACCOUNT_ASSETS"
 												title={STRINGS['SUMMARY.ACCOUNT_ASSETS']}
@@ -299,18 +297,18 @@ class Summary extends Component {
 											/>
 										</SummaryBlock>
 										{/*<div className="trading-volume-wrapper">
-									<SummaryBlock
-										title={STRINGS["SUMMARY.TRADING_VOLUME"]}
-										// secondaryTitle={<span>
-										//     <span className="title-font">
-										//         {` ${formatAverage(formatBaseAmount(lastMonthVolume))}`}
-										//     </span>
-										//     {` ${fullname} ${STRINGS.formatString(STRINGS["SUMMARY.NOMINAL_TRADING_WITH_MONTH"], moment().subtract(1, "month").startOf("month").format('MMMM')).join('')}`}
-										// </span>
-										// }
-									>
-									</SummaryBlock>
-								</div>*/}
+											<SummaryBlock
+												title={STRINGS["SUMMARY.TRADING_VOLUME"]}
+												// secondaryTitle={<span>
+												//     <span className="title-font">
+												//         {` ${formatAverage(formatBaseAmount(lastMonthVolume))}`}
+												//     </span>
+												//     {` ${fullname} ${STRINGS.formatString(STRINGS["SUMMARY.NOMINAL_TRADING_WITH_MONTH"], moment().subtract(1, "month").startOf("month").format('MMMM')).join('')}`}
+												// </span>
+												// }
+											>
+											</SummaryBlock>
+										</div>*/}
 									</div>
 									<div className="w-100">
 										<SummaryBlock

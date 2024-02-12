@@ -50,6 +50,7 @@ class Form extends Component {
 		dialogIsOpen: false,
 		dialogOtpOpen: false,
 		otp_code: '',
+		prevFee: null,
 	};
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -75,14 +76,14 @@ class Form extends Component {
 			}
 		}
 		if (nextProps.selectedMethodData !== this.props.selectedMethodData) {
-			const fee = calculateBaseFee(nextProps.data.amount);
 			if (
 				nextProps.selectedMethodData &&
 				nextProps.selectedMethodData === 'email'
 			) {
+				this.setState({ prevFee: nextProps.data.fee });
 				nextProps.change('fee', 0);
 			} else {
-				nextProps.change('fee', fee);
+				if (this.state.prevFee) nextProps.change('fee', this.state.prevFee);
 			}
 		}
 	}

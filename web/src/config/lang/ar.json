@@ -275,7 +275,11 @@
 	"VERIFICATION_EMAIL": {
 		"INVALID_UUID": "الرمز غير صحيح",
 		"TEXT_1": "لقد نجحت في التحقق من بريدك الإلكتروني.",
-		"TEXT_2": "يمكنك الآن متابعة تسجيل الدخول"
+		"TEXT_2": "يمكنك الآن متابعة تسجيل الدخول",
+		"CANCEL_BUTTON": "إغلاق",
+		"CONFIRM_BUTTON": "تأكيد التسجيل",
+		"CONFIRM_TEXT": "تأكيد التسجيل",
+		"CONFIRM_DESCRIPTION": "الرجاء تأكيد تسجيل حسابك عن طريق النقر على الزر أدناه"
 	},
 	"USER_VERIFICATION": {
 		"INFO_TXT": "هنا يمكنك مراقبة سيرك نحو التحقق وترقيات الحساب.",
@@ -752,7 +756,15 @@
 		"CONFIRM_VIA_EMAIL_3": "السحب عبر بريدك الإلكتروني في غضون 5 دقائق.",
 		"WITHDRAW_CONFIRM_SUCCESS_1": "تم تأكيد طلب السحب الخاص بك. سيتم معالجتها قريبا.",
 		"WITHDRAW_CONFIRM_SUCCESS_2": "لعرض حالة السحب الخاصة بك ، يرجى زيارة صفحة سجل السحب الخاصة بك.",
-		"GO_WITHDRAWAL_HISTORY": "اذهب إلى تاريخ الانسحاب"
+		"GO_WITHDRAWAL_HISTORY": "اذهب إلى تاريخ الانسحاب",
+		"WITHDRAWAL_CONFIRM_FINAL": "تأكيد السحب النهائي",
+		"WITHDRAWAL_CONFIRM_WARNING": "يرجى التحقق من السحب الخاص بك أدناه قبل التأكيد.",
+		"WITHDRAWAL_CONFIRM_AMOUNT": "المبلغ",
+		"WITHDRAWAL_CONFIRM_FEE": "رسوم",
+		"WITHDRAWAL_CONFIRM_ADDRESS": "العنوان",
+		"WITHDRAWAL_CONFIRM_NETWORK": "الشبكة",
+		"WITHDRAWAL_CANCEL_BUTTON": "إغلاق",
+		"WITHDRAWAL_CONFIRM_BUTTON": "تأكيد السحب"
 	},
 	"WALLET_BUTTON_BASE_DEPOSIT": "الوديعة",
 	"WALLET_BUTTON_BASE_WITHDRAW": "سحب",

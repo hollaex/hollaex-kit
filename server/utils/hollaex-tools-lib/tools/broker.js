@@ -5,11 +5,10 @@ const math = require('mathjs');
 const ccxt = require('ccxt');
 const randomString = require('random-string');
 const { SERVER_PATH } = require('../constants');
-const { EXCHANGE_PLAN_INTERVAL_TIME, EXCHANGE_PLAN_PRICE_SOURCE } = require(`${SERVER_PATH}/constants`)
-const { getNodeLib } = require(`${SERVER_PATH}/init`);
+const { EXCHANGE_PLAN_INTERVAL_TIME, EXCHANGE_PLAN_PRICE_SOURCE } = require(`${SERVER_PATH}/constants`);
 const { client } = require('./database/redis');
 const { getUserByKitId } = require('./user');
-const { validatePair, getKitTier, getKitConfig, getAssetsPrices, getQuickTrades, getKitCoin } = require('./common');
+const { validatePair, getKitConfig, getAssetsPrices, getQuickTrades, getKitCoin } = require('./common');
 const { sendEmail } = require('../../../mail');
 const { MAILTYPE } = require('../../../mail/strings');
 const { verifyBearerTokenPromise } = require('./security');
@@ -21,20 +20,15 @@ const connectedExchanges = {};
 
 
 const {
-	TOKEN_EXPIRED,
-	AUTH_NOT_MATCHED,
 	BROKER_NOT_FOUND,
-	BROKER_SIZE_EXCEED,
 	BROKER_PAUSED,
 	BROKER_ERROR_DELETE_UNPAUSED,
 	BROKER_EXISTS,
 	BROKER_FORMULA_NOT_FOUND,
 	SPREAD_MISSING,
-	MANUAL_BROKER_CREATE_ERROR,
 	DYNAMIC_BROKER_CREATE_ERROR,
 	DYNAMIC_BROKER_EXCHANGE_PLAN_ERROR,
 	DYNAMIC_BROKER_UNSUPPORTED,
-	EXCHANGE_NOT_FOUND,
 	SYMBOL_NOT_FOUND,
 	UNISWAP_PRICE_NOT_FOUND,
 	FORMULA_MARKET_PAIR_ERROR,
@@ -61,26 +55,27 @@ const validateBrokerPair = (brokerPair) => {
 };
 
 const setExchange = (data) => {
-    if (connectedExchanges[data.id]) {
-        return connectedExchanges[data.id].exchange
-    }
+	if (connectedExchanges[data.id]) {
+		return connectedExchanges[data.id].exchange;
+	}
 	if (data.exchange === 'bitfinex') data.exchange = 'bitfinex2';
 
-    const exchangeClass = ccxt[data.exchange];
+	const exchangeClass = ccxt[data.exchange];
 
-    const exchange = new exchangeClass({
-        timeout: 5000,
-        ...(data.api_key && { 'apiKey': data.api_key }),
-        ...(data.api_secret && { 'secret': data.api_secret }),
-		options: { "defaultType": "spot" }
-    })
+	const exchange = new exchangeClass({
+		timeout: 5000,
+		...(data.api_key && { 'apiKey': data.api_key }),
+		...(data.api_secret && { 'secret': data.api_secret }),
+		...(data.password && { 'password': data.password }),
+		options: { 'defaultType': 'spot' }
+	});
 
-    if (data.id) {
-        connectedExchanges[data.id] = { exchange, api_key: data.api_key, api_secret: data.api_secret };
-    }
+	if (data.id) {
+		connectedExchanges[data.id] = { exchange, api_key: data.api_key, api_secret: data.api_secret, password: data.password };
+	}
 
-    return exchange;
-}
+	return exchange;
+};
 
 const getQuoteDynamicBroker = async (side, broker, user_id = null, orderData) => {
 
@@ -135,7 +130,7 @@ const getQuoteManualBroker = async (broker, side, user_id = null, orderData) => 
 		responseObject.expiry = expiryDate;
 	}
 	return responseObject;
-}
+};
 
 const calculateSize = (orderData, side, responseObject, symbol) => {
 	if (orderData == null) {
@@ -167,7 +162,7 @@ const calculateSize = (orderData, side, responseObject, symbol) => {
 
 
 	} else if (receiving_amount != null) {
-		const incrementUnit = side === 'buy' ? quoteCointInfo.increment_unit : baseCoinInfo.increment_unit
+		const incrementUnit = side === 'buy' ? quoteCointInfo.increment_unit : baseCoinInfo.increment_unit;
 		const targetedAmount = side === 'buy' ? receiving_amount * responseObject.price : receiving_amount / responseObject.price;
 
 		if (incrementUnit < 1) { 
@@ -182,15 +177,15 @@ const calculateSize = (orderData, side, responseObject, symbol) => {
 	if (`${spending_currency}-${receiving_currency}` === symbol) {
 		size = spending_amount;
 	} else {
-		size = receiving_amount
+		size = receiving_amount;
 	}
 	return { size, spending_amount, receiving_amount };
-}
+};
 
 
 const calculateFormula = (fn) => {
-    return new Function(`return ${fn}`)();
-}
+	return new Function(`return ${fn}`)();
+};
 
 const isFairPriceForBroker = async (broker) => {
 	if (broker.type !== 'dynamic') return true;
@@ -207,7 +202,7 @@ const isFairPriceForBroker = async (broker) => {
 	const priceDifferenceTreshold = 10;
 	if (priceFromOracle !== -1 && percDiff > priceDifferenceTreshold) return false;
 	else return true;
-}
+};
 
 const calculatePrice = async (side, spread, formula, refresh_interval, brokerId, isOracle = false) => {
 	const regex = /([a-zA-Z]+(?:_[a-zA-Z]+)+(?:-[a-zA-Z]+))/g;
@@ -245,9 +240,10 @@ const calculatePrice = async (side, spread, formula, refresh_interval, brokerId,
 					}
 	
 					if (!ticker) {
-						throw new Error(`${exchangePair[0].toUpperCase()} does not have market symbol ${formattedSymbol}`)
+						throw new Error(`${exchangePair[0].toUpperCase()} does not have market symbol ${formattedSymbol}`);
 					}
 	
+
 					marketPrice = ticker.last;
 					if (refresh_interval)
 						client.setexAsync(userCachekey, refresh_interval, JSON.stringify(tickers));
@@ -374,7 +370,7 @@ const testBroker = async (data) => {
 		return {
 			buy_price: new BigNumber(price * (1 - (spread / 100))).decimalPlaces(decimalPoint).toNumber(),
 			sell_price: new BigNumber(price * (1 + (spread / 100))).decimalPlaces(decimalPoint).toNumber()
-		}
+		};
 	} catch (err) {
 		throw new Error(err);
 	}
@@ -382,7 +378,7 @@ const testBroker = async (data) => {
 };
 const testBrokerUniswap = async (data) => {
 	const { base_coin, spread, quote_coin  } = data;
-	const UNISWAP_COINS = {}
+	const UNISWAP_COINS = {};
 	try {
 		if (!base_coin || !quote_coin || !UNISWAP_COINS[base_coin] || !UNISWAP_COINS[quote_coin]) {
 			throw new Error(SYMBOL_NOT_FOUND);
@@ -402,18 +398,18 @@ const testBrokerUniswap = async (data) => {
 			amount: Math.pow(10, UNISWAP_COINS[base_coin].decimals),
 			side: SwapSide.SELL,
 			includeDEXS
-		  })
+		});
 
 		if (!priceRoute.destAmount) {
-			throw new Error(UNISWAP_PRICE_NOT_FOUND)
+			throw new Error(UNISWAP_PRICE_NOT_FOUND);
 		}
 
-		const price = math.divide(priceRoute.destAmount,Math.pow(10, UNISWAP_COINS[quote_coin].decimals))
+		const price = math.divide(priceRoute.destAmount,Math.pow(10, UNISWAP_COINS[quote_coin].decimals));
 
 		return {
 			buy_price: price * (1 - (spread / 100)),
 			sell_price: price * (1 + (spread / 100))
-		}
+		};
 	} catch (err) {
 		throw new Error(err);
 	}
@@ -421,10 +417,10 @@ const testBrokerUniswap = async (data) => {
 };
 
 const testRebalance = async (data) => {
-	const { exchange_id, api_key, api_secret } = data;
+	const { exchange_id, api_key, api_secret, password } = data;
 
 	try {
-		const exchange = setExchange({ exchange: exchange_id, api_key, api_secret })
+		const exchange = setExchange({ exchange: exchange_id, api_key, api_secret, password });
 		const userBalance = await exchange.fetchBalance();
 		return userBalance;
 	} catch (err) {
@@ -434,7 +430,7 @@ const testRebalance = async (data) => {
 };
 
 const reverseTransaction = async (orderData) => {
-	const { symbol, side, size, price } = orderData;
+	const { symbol, side, size } = orderData;
 	const notifyUser = async (data, userId) => {
 		const user = await getUserByKitId(userId);
 		sendEmail(
@@ -462,13 +458,16 @@ const reverseTransaction = async (orderData) => {
 				const exchange = setExchange({ 
 					exchange: exchangeKey, 
 					api_key: broker.account[exchangeKey].apiKey,
-					api_secret: broker.account[exchangeKey].apiSecret
-				})
+					api_secret: broker.account[exchangeKey].apiSecret,
+					password: broker.account[exchangeKey].password
+				});
 
 				const formattedRebalancingSymbol = broker.rebalancing_symbol && broker.rebalancing_symbol.split('-').join('/').toUpperCase();
 				if (exchangeKey === 'bybit') {
-					const marketPrice = side === 'buy' ? price * 1.01 : price * 0.99;
-					exchange.createOrder(formattedRebalancingSymbol, 'limit', side, size, marketPrice)
+					const orderbook = await exchange.fetchOrderBook(formattedRebalancingSymbol);
+					const price = side === 'buy' ? orderbook['asks'][0][0] * 1.01 : orderbook['bids'][0][0] * 0.99;
+
+					exchange.createOrder(formattedRebalancingSymbol, 'limit', side, size, price)
 						.catch((err) => { notifyUser(err.message, broker.user_id); });
 				}
 				else {
@@ -567,12 +566,12 @@ const fetchBrokerPairs = async (attributes) => {
 	brokers.forEach(broker => {
 		for (const [key, value] of Object.entries(broker.account || [])) {
 			value.apiKey =  '*****',
-			value.apiSecret = '*********'
+			value.apiSecret = '*********';
 		}
-	})
+	});
 
 	return brokers;
-}
+};
 
 const updateBrokerPair = async (id, data) => {
 	const brokerPair = await getModel('broker').findOne({ where: { id } });
@@ -654,7 +653,7 @@ const updateBrokerPair = async (id, data) => {
 const fetchTrackedExchangeMarkets = async (exchange) => {
 	const selectedExchage = setExchange({ id: `${exchange}-broker:fetch-markets`, exchange });
 	return selectedExchage.fetchMarkets();
-}
+};
 
 const deleteBrokerPair = async (id) => {
 	const brokerPair = await getModel('broker').findOne({ where: { id } });

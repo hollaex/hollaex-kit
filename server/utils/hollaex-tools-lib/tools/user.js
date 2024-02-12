@@ -49,7 +49,6 @@ const {
 	USER_NOT_DEACTIVATED,
 	CANNOT_CHANGE_ADMIN_ROLE,
 	USER_VERIFIED,
-	VERIFICATION_CODE_USED,
 	USER_NOT_REGISTERED_ON_NETWORK,
 	SESSION_NOT_FOUND,
 	SESSION_ALREADY_REVOKED,
@@ -59,7 +58,8 @@ const {
 	EMAIL_IS_SAME,
 	EMAIL_EXISTS,
 	CANNOT_CHANGE_DELETED_EMAIL,
-	SERVICE_NOT_SUPPORTED
+	SERVICE_NOT_SUPPORTED,
+	BALANCE_HISTORY_NOT_ACTIVE
 } = require(`${SERVER_PATH}/messages`);
 const { publisher, client } = require('./database/redis');
 const {
@@ -97,6 +97,7 @@ const geoip = require('geoip-lite');
 const moment = require('moment');
 const mathjs = require('mathjs');
 const { loggerUser } = require('../../../config/logger');
+const BigNumber = require('bignumber.js');
 
 let networkIdToKitId = {};
 let kitIdToNetworkId = {};
@@ -135,6 +136,7 @@ const signUpUser = (email, password, opts = { referral: null }) => {
 					email,
 					password,
 					verification_level: 1,
+					email_verified: false,
 					settings: INITIAL_SETTINGS()
 				}, { transaction })
 					.then((user) => {
@@ -1442,9 +1444,9 @@ const getUpdatedKeys = (oldData, newData) => {
   
 	let keys = [];
 	for(const key of data){
-	  if(!isEqual(oldData[key], newData[key])){
+		if(!isEqual(oldData[key], newData[key])){
 			keys.push(key);
-	  }
+		}
 	}
   
 	return keys;
@@ -1721,6 +1723,7 @@ const inviteExchangeOperator = (invitingEmail, email, role, opts = {
 		return getModel('user').findOrCreate({
 			defaults: {
 				email,
+				email_verified: true,
 				password: tempPassword,
 				...roles,
 				settings: INITIAL_SETTINGS()
@@ -3124,6 +3127,313 @@ const fetchUserReferrals = async (opts = {
 	}
 }
 
+const getUserBalanceHistory = (opts = {
+	user_id: null,
+	limit: null,
+	page: null,
+	orderBy: null,
+	order: null,
+	startDate: null,
+	endDate: null,
+	format: null
+}) => {
+	if(!getKitConfig()?.balance_history_config?.active) { throw new Error(BALANCE_HISTORY_NOT_ACTIVE); }
+
+	const timeframe = timeframeQuery(opts.startDate, opts.endDate);
+	const ordering = orderingQuery(opts.orderBy, opts.order);
+	let options = {
+		where: {
+			created_at: timeframe,
+			...(opts.user_id && { user_id: opts.user_id }),
+		},
+		order: [ordering]
+	};
+
+
+	if (opts.format) {
+		return dbQuery.fetchAllRecords('balanceHistory', options)
+			.then(async (balance) => {
+				if (opts.format && opts.format === 'csv') {
+					if (balance.data.length === 0) {
+						throw new Error(NO_DATA_FOR_CSV);
+					}
+					const csv = parse(balance.data, Object.keys(balance.data[0]));
+					return csv;
+				} else {
+					return balance;
+				}
+			});
+	}
+	else {
+		return dbQuery.findAndCountAllWithRows('balanceHistory', options)
+			.then(async (balances) => {
+				if(opts.user_id && (moment(opts.startDate).format('LL') !== moment(opts.endDate).subtract(1, 'days').format('LL'))) {
+						
+					const nativeCurrency = getKitConfig()?.balance_history_config?.currency || 'usdt';
+							
+					const exchangeCoins = getKitCoins();
+					const conversions = await getNodeLib().getOraclePrices(exchangeCoins, {
+						quote: nativeCurrency,
+						amount: 1
+					});
+
+					let symbols = {};
+
+					const { getUserBalanceByKitId } = require('./wallet');
+
+					const balance = await getUserBalanceByKitId(opts.user_id);
+
+					for (const key of Object.keys(balance)) {
+						if (key.includes('available') && balance[key]) {
+							let symbol = key?.split('_')?.[0];
+							symbols[symbol] = balance[key];
+						}
+					}
+
+
+					const coins = Object.keys(symbols);
+
+					let total = 0;
+					let history = {};
+					for (const coin of coins) {
+						if (!conversions[coin]) continue;
+						if (conversions[coin] === -1) continue;
+					
+						const nativeCurrencyValue = new BigNumber(symbols[coin]).multipliedBy(conversions[coin]).toNumber();
+					
+						history[coin] = { original_value: new BigNumber(symbols[coin]).toNumber(), native_currency_value: nativeCurrencyValue };
+						total = new BigNumber(total).plus(nativeCurrencyValue).toNumber();
+					}
+
+					balances.count += 1;
+					balances.data.unshift({
+						user_id: Number(opts.user_id),
+						balance: history,
+						total,
+						created_at: new Date()
+					});
+				}
+
+				return balances;
+			});
+	}
+};
+
+
+
+const fetchUserProfitLossInfo = async (user_id) => {
+
+	if(!getKitConfig()?.balance_history_config?.active) { throw new Error(BALANCE_HISTORY_NOT_ACTIVE); }
+
+	const data = await  client.getAsync(`${user_id}user-pl-info`);
+	if (data) return JSON.parse(data);
+
+	const { getAllUserTradesByKitId } = require('./order');
+	const { getUserWithdrawalsByKitId, getUserDepositsByKitId } = require('./wallet');
+
+	const balanceHistoryModel = getModel('balanceHistory');
+	// Set it to weeks instead of years
+	const startDate = moment().subtract(1, 'weeks').toDate();
+	const endDate = moment().toDate();
+	const timeframe = timeframeQuery(startDate, endDate);
+	const userTrades = await getAllUserTradesByKitId(user_id, null, null, null, 'timestamp', 'asc', startDate, endDate, 'all');
+	
+	const userWithdrawals = await getUserWithdrawalsByKitId(user_id, null, null, null, null, null, null, null, null, 'created_at', 'asc', startDate, endDate, null, null, 'all');
+	const userDeposits = await getUserDepositsByKitId(user_id, null, null, null, null, null, null, null, null, 'created_at', 'asc', startDate, endDate, null, null, 'all'); 
+	const userBalanceHistory = await balanceHistoryModel.findAll({ 
+		where: {
+			user_id,
+			created_at: timeframe
+		}
+	});
+
+
+	const nativeCurrency = getKitConfig()?.balance_history_config?.currency || 'usdt';
+							
+	const exchangeCoins = getKitCoins();
+	const conversions = await getNodeLib().getOraclePrices(exchangeCoins, {
+		quote: nativeCurrency,
+		amount: 1
+	});
+
+	let symbols = {};
+
+	const { getUserBalanceByKitId } = require('./wallet');
+
+	const balance = await getUserBalanceByKitId(user_id);
+
+	for (const key of Object.keys(balance)) {
+		if (key.includes('available') && balance[key]) {
+			let symbol = key?.split('_')?.[0];
+			symbols[symbol] = balance[key];
+		}
+	}
+
+
+	const coins = Object.keys(symbols);
+
+	let total = 0;
+	let history = {};
+	for (const coin of coins) {
+		if (!conversions[coin]) continue;
+		if (conversions[coin] === -1) continue;
+		
+		const nativeCurrencyValue = new BigNumber(symbols[coin]).multipliedBy(conversions[coin]).toNumber();
+		
+		history[coin] = { original_value: new BigNumber(symbols[coin]).toNumber(), native_currency_value: nativeCurrencyValue };
+		total = new BigNumber(total).plus(nativeCurrencyValue).toNumber();
+	}
+	userBalanceHistory.push({
+		user_id: Number(user_id),
+		balance: history,
+		total,
+		created_at: new Date()
+	});
+
+	
+
+	const findClosestBalanceRecord = (date) => {
+		return userBalanceHistory.reduce((closestRecord, entry) => {
+			const entryDate = new Date(entry.created_at).getTime();
+			const closestDate = new Date(closestRecord.created_at).getTime();
+			const currentDate = new Date(date).getTime();
+
+			if (Math.abs(currentDate - entryDate) < Math.abs(currentDate - closestDate)) {
+				return entry;
+			}
+
+			return closestRecord;
+		}, userBalanceHistory[0]);
+	};
+
+	const filterByInterval = (data, interval, conditionalDate) => {
+		const dateThreshold = moment();
+
+		switch (interval) {
+			case '1d':
+				dateThreshold.subtract(1, 'day');
+				break;
+			case '7d':
+				dateThreshold.subtract(7, 'day');
+				break;
+			case '1m':
+				dateThreshold.subtract(1, 'month');
+				break;
+			case '6m':
+				dateThreshold.subtract(6, 'months');
+				break;
+			case '1y':
+				dateThreshold.subtract(1, 'year');
+				break;
+			default:
+				return data;
+		}
+
+		return data.filter((entry) => (moment(entry.created_at || entry.timestamp).isSameOrAfter(dateThreshold)) && (conditionalDate ? moment(entry.created_at || entry.timestamp).isAfter(moment(conditionalDate)) : true));
+	};
+	
+	const timeIntervals = ['1d', '7d', '1m', '6m', '1y'];
+	
+	const results = {};
+	
+	for (const interval of timeIntervals) {
+		const filteredBalanceHistory = filterByInterval(userBalanceHistory, interval, null);
+		if (!filteredBalanceHistory[0]) continue;
+		const initialBalances = filteredBalanceHistory[0]?.balance;
+		const initialBalanceDate = filteredBalanceHistory[0]?.created_at;
+		const filteredTrades = filterByInterval(userTrades.data, interval, initialBalanceDate);
+		
+		const filteredDeposits = filterByInterval(userDeposits.data, interval, initialBalanceDate);
+		const filteredWithdrawals = filterByInterval(userWithdrawals.data, interval, initialBalanceDate);
+
+		if(!initialBalances) continue;
+	
+		const netInflowFromDepositsPerAsset = {};
+		filteredDeposits.forEach((deposit) => {
+			const asset = deposit.currency.toLowerCase();
+			if (!netInflowFromDepositsPerAsset[asset]) {
+				netInflowFromDepositsPerAsset[asset] = 0;
+			}
+			const closestRecord = findClosestBalanceRecord(deposit.created_at);
+	
+			if(closestRecord.balance[asset]) {
+				const marketPrice = closestRecord.balance[asset].native_currency_value / closestRecord.balance[asset].original_value;
+				netInflowFromDepositsPerAsset[asset] += deposit.amount * marketPrice;
+			}
+
+		});
+
+		const netInflowFromTradesPerAsset = filteredTrades.reduce((netInflow, trade) => {
+			const asset = trade.symbol.split('-')[0].toLowerCase();
+			const tradeValue = trade.size * trade.price;
+
+			if (!netInflow[asset]) {
+				netInflow[asset] = 0;
+			}
+
+			if (trade.side === 'buy') {
+				netInflow[asset] += tradeValue;
+			} else if (trade.side === 'sell') {
+				netInflow[asset] -= tradeValue;
+			}
+
+			return netInflow;
+		}, {});
+
+		const netOutflowFromWithdrawalsPerAsset = {};
+		filteredWithdrawals.forEach((withdrawal) => {
+			const asset = withdrawal.currency.toLowerCase();
+			if (!netOutflowFromWithdrawalsPerAsset[asset]) {
+				netOutflowFromWithdrawalsPerAsset[asset] = 0;
+			}
+			const closestRecord = findClosestBalanceRecord(withdrawal.created_at);
+			if(closestRecord.balance[asset]) { 
+				const marketPrice = closestRecord.balance[asset].native_currency_value / closestRecord.balance[asset].original_value;
+				netOutflowFromWithdrawalsPerAsset[asset] -= withdrawal.amount * marketPrice;
+			}
+  
+		});
+ 
+		const finalBalances = filteredBalanceHistory[filteredBalanceHistory.length - 1].balance;
+ 
+		results[interval] = {};
+		Object.keys(finalBalances).forEach(async (asset) => {
+			const cumulativePNL =
+			finalBalances[asset].native_currency_value -
+			initialBalances[asset].native_currency_value -
+			(netInflowFromDepositsPerAsset[asset] || 0) -
+			(netInflowFromTradesPerAsset[asset] || 0) -
+			(netOutflowFromWithdrawalsPerAsset[asset] || 0);
+		
+			
+			const day1Assets = initialBalances[asset].native_currency_value;
+			const inflow = netInflowFromDepositsPerAsset[asset] || 0;
+			const cumulativePNLPercentage =
+			cumulativePNL / (day1Assets + inflow) * 100; 
+		
+			results[interval][asset] = {
+				cumulativePNL,
+				cumulativePNLPercentage,
+			};
+		});
+	}
+
+	if (results['7d']) {
+		let total = 0;
+		const assets = Object.keys(results['7d']);
+
+		assets?.forEach(asset => {
+			total += results['7d'][asset].cumulativePNL;
+		});
+		results['7d'].total = total;
+	}
+
+	client.setexAsync(`${user_id}user-pl-info`, 86400, JSON.stringify(results));
+
+	return results;
+};
+
+
 module.exports = {
 	loginUser,
 	getUserTier,
@@ -3180,6 +3490,8 @@ module.exports = {
 	getAllBalancesAdmin,
 	deleteKitUser,
 	restoreKitUser,
+	getUserBalanceHistory,
+	fetchUserProfitLossInfo,
 	revokeAllUserSessions,
 	changeKitUserEmail,
 	storeVerificationCode,

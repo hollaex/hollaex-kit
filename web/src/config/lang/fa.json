@@ -307,7 +307,11 @@
 	"VERIFICATION_EMAIL": {
 		"INVALID_UUID": "کد نامعتبر است",
 		"TEXT_1": "شما با موفقیت ایمیل خود را تایید نمودید",
-		"TEXT_2": "اکنون می توانید وارد شوید"
+		"TEXT_2": "اکنون می توانید وارد شوید",
+		"CANCEL_BUTTON": "بستن",
+		"CONFIRM_BUTTON": "تأیید ثبت نام",
+		"CONFIRM_TEXT": "تأیید ثبت نام",
+		"CONFIRM_DESCRIPTION": "لطفاً ثبت نام حساب خود را با کلیک بر روی دکمه زیر تأیید کنید"
 	},
 	"USER_VERIFICATION": {
 		"INFO_TXT": "اینجا شما می توانید وضعیت فعلی و روند ارتقای حساب کاربری خود را مشاهده نمایید",
@@ -754,7 +758,15 @@
 		"GO_WITHDRAWAL_HISTORY": "برو به تاریخچه ی مبادلات",
 		"MESSAGE_FEE_COIN": "{0} نرخ تراکنش مربوط به",
 		"WITHDRAWALS_FORM_ERROR_TITLE": "اطلاعات انتقال درست نمیباشد",
-		"WITHDRAWALS_FORM_ERROR": "انتقال وجه شما ناموفق بود. ارسال وجوه به ایمیل مستلزم داشتن حساب کاربری در این صرافی است. بررسی کنید که ایمیل صحیح است و لطفا دوباره امتحان کنید."
+		"WITHDRAWALS_FORM_ERROR": "انتقال وجه شما ناموفق بود. ارسال وجوه به ایمیل مستلزم داشتن حساب کاربری در این صرافی است. بررسی کنید که ایمیل صحیح است و لطفا دوباره امتحان کنید.",
+		"WITHDRAWAL_CONFIRM_FINAL": "تأیید نهایی برداشت",
+		"WITHDRAWAL_CONFIRM_WARNING": "لطفاً مبلغ برداشت خود را قبل از تأیید بررسی کنید.",
+		"WITHDRAWAL_CONFIRM_AMOUNT": "مقدار",
+		"WITHDRAWAL_CONFIRM_FEE": "هزینه",
+		"WITHDRAWAL_CONFIRM_ADDRESS": "آدرس",
+		"WITHDRAWAL_CONFIRM_NETWORK": "شبکه",
+		"WITHDRAWAL_CANCEL_BUTTON": "بستن",
+		"WITHDRAWAL_CONFIRM_BUTTON": "تأیید برداشت"
 	},
 	"WALLET_BUTTON_BASE_DEPOSIT": "واریز",
 	"WALLET_BUTTON_BASE_WITHDRAW": "برداشت",

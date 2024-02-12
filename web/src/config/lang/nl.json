@@ -266,7 +266,11 @@
 	"VERIFICATION_EMAIL": {
 		"INVALID_UUID": "Ongeldige code",
 		"TEXT_1": "Je hebt je e-mailadres geverifieerd.",
-		"TEXT_2": "U kunt nu doorgaan met inloggen"
+		"TEXT_2": "U kunt nu doorgaan met inloggen",
+		"CANCEL_BUTTON": "SLUITEN",
+		"CONFIRM_BUTTON": "BEVESTIG AANMELDEN",
+		"CONFIRM_TEXT": "Aanmelding bevestigen",
+		"CONFIRM_DESCRIPTION": "Bevestig uw accountregistratie door op de onderstaande knop te klikken"
 	},
 	"USER_VERIFICATION": {
 		"INFO_TXT": "Hier kunt u uw voortgang naar verificatie en accountupgrades volgen.",
@@ -962,7 +966,15 @@
 		"WITHDRAW_CONFIRM_SUCCESS_2": "Om uw opnamestatus te bekijken, gaat u naar de pagina met uw opnamegeschiedenis.",
 		"GO_WITHDRAWAL_HISTORY": "Ga naar de opnamegeschiedenis",
 		"WITHDRAWALS_FORM_ERROR_TITLE": "Onjuiste overdrachtsinformatie",
-		"WITHDRAWALS_FORM_ERROR": "Uw overboeking is mislukt. Om geld naar een e-mail te sturen, moet de gebruiker een account hebben binnen deze uitwisseling. Controleer of de e-mail correct is en probeer het opnieuw."
+		"WITHDRAWALS_FORM_ERROR": "Uw overboeking is mislukt. Om geld naar een e-mail te sturen, moet de gebruiker een account hebben binnen deze uitwisseling. Controleer of de e-mail correct is en probeer het opnieuw.",
+		"WITHDRAWAL_CONFIRM_FINAL": "Definitieve bevestiging van opname",
+		"WITHDRAWAL_CONFIRM_WARNING": "Controleer hieronder uw opname voordat u bevestigt.",
+		"WITHDRAWAL_CONFIRM_AMOUNT": "Bedrag",
+		"WITHDRAWAL_CONFIRM_FEE": "Kosten",
+		"WITHDRAWAL_CONFIRM_ADDRESS": "Adres",
+		"WITHDRAWAL_CONFIRM_NETWORK": "Netwerk",
+		"WITHDRAWAL_CANCEL_BUTTON": "SLUITEN",
+		"WITHDRAWAL_CONFIRM_BUTTON": "OPNAME BEVESTIGEN"
 	},
 	"WALLET_BUTTON_BASE_DEPOSIT": "borg",
 	"WALLET_BUTTON_BASE_WITHDRAW": "terugtrekken",

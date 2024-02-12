@@ -73,11 +73,11 @@ const unstakingCheckRunner = () => {
 
 				try {
 					if(totalAmount > 0) {
-                    	await toolsLib.wallet.transferAssetByKitIds(stakePool.account_id, user.id, stakePool.currency, totalAmount, 'Admin transfer stake', user.email, { category: 'stake' });
+                    	await toolsLib.wallet.transferAssetByKitIds(stakePool.account_id, user.id, stakePool.currency, totalAmount, 'Admin transfer stake', false, { category: 'stake' });
 					}
 					
 					if (stakePool.reward_currency !== stakePool.currency && amountAfterSlash > 0) {
-						 await toolsLib.wallet.transferAssetByKitIds(stakePool.account_id, user.id, stakePool.reward_currency, amountAfterSlash, 'Admin transfer stake', user.email, { category: 'stake' });
+						 await toolsLib.wallet.transferAssetByKitIds(stakePool.account_id, user.id, stakePool.reward_currency, amountAfterSlash, 'Admin transfer stake', false, { category: 'stake' });
 					}
 
 				} catch (error) {
@@ -109,6 +109,65 @@ const unstakingCheckRunner = () => {
 			);
 			loggerPlugin.error(
 				'/plugins unstaking status check error:',
+				err.message
+			);
+		}
+
+
+		loggerPlugin.verbose(
+			'/plugins balance history job start'
+		);
+
+		try {
+			const balanceHistoryModel = toolsLib.database.getModel('balanceHistory');
+			const statusModel = toolsLib.database.getModel('status');
+			const status = await statusModel.findOne({});
+
+			const exchangeCoins = toolsLib.getKitCoins();
+			if (exchangeCoins.length === 0) return;
+			if (!status?.kit?.balance_history_config?.active) return;
+			const native_currency = status?.kit?.balance_history_config?.currency;
+			const conversions = await toolsLib.getAssetsPrices(exchangeCoins, native_currency || 'usdt', 1);
+			const balances = await toolsLib.user.getAllBalancesAdmin({ format: 'all' });
+
+			const userBalances = balances?.data?.reduce((groups, item) => {
+				const group = (groups[item.user_id] || []);
+				group.push(item);
+				groups[item.user_id] = group;
+				return groups;
+			  }, {});
+
+			for (const userId of Object.keys(userBalances)) {
+				if (userId === 'undefined') continue;
+
+				let symbols = {};
+
+				(userBalances[userId] || []).forEach(balance => { symbols[balance.symbol] = balance.available });
+
+				const coins = Object.keys(symbols);
+
+				let total = 0;
+				let history = {};
+				for (const coin of coins) {
+					if (!conversions[coin]) continue;
+					if (conversions[coin] === -1) continue;
+		
+					const nativeCurrencyValue = new BigNumber(symbols[coin]).multipliedBy(conversions[coin]).toNumber();
+				
+					history[coin] = { original_value: new BigNumber(symbols[coin]).toNumber(), native_currency_value: nativeCurrencyValue };
+					total = new BigNumber(total).plus(nativeCurrencyValue).toNumber();
+				}
+				if (Object.keys(history).length === 0) continue;
+				await balanceHistoryModel.create({
+					user_id: Number(userId),
+					balance: history,
+					total,
+				})
+
+			}
+		} catch (err) {
+			loggerPlugin.error(
+				'/plugin balance history job error:',
 				err.message
 			);
 		}
