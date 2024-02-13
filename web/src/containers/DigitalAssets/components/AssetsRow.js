@@ -2,7 +2,7 @@ import React from 'react';
 import { PriceChange, Coin, ActionNotification } from 'components';
 import TradeInputGroup from 'containers/Wallet/components/TradeInputGroup';
 import { MiniSparkLine } from 'containers/TradeTabs/components/MiniSparkLine';
-import { getRandomValuesFromParts } from 'utils/array';
+import { getLastValuesFromParts } from 'utils/array';
 import STRINGS from 'config/localizedStrings';
 import { isMobile } from 'react-device-detect';
 import { browserHistory } from 'react-router';
@@ -149,7 +149,7 @@ const AssetsRow = ({
 			</td>
 			<td className="td-chart">
 				<MiniSparkLine
-					chartData={getRandomValuesFromParts(chartData?.price || [])}
+					chartData={getLastValuesFromParts(chartData?.price || [])}
 					isArea
 				/>
 			</td>

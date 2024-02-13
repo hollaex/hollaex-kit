@@ -2726,9 +2726,9 @@ table th {
 
 .layout-mobile .trade_block-wrapper .trade_block-content {
   padding: 0;
-  font-size: 0.9rem; }
+  font-size: 1rem; }
   .layout-mobile .trade_block-wrapper .trade_block-content .table_body-wrapper {
-    font-size: 0.9rem; }
+    font-size: 1rem; }
 
 .layout-mobile .trade_block-wrapper .trade_block-title {
   cursor: default;
@@ -2773,7 +2773,7 @@ table th {
   .trade_block-wrapper .trade_block-content {
     flex: auto;
     padding: 0 1.2rem 1.2rem 1.2rem;
-    font-size: 0.9rem;
+    font-size: 1rem;
     overflow-y: scroll;
     height: 100%; }
     .trade_block-wrapper .trade_block-content .sidebar_hub-content {

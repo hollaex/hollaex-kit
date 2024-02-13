@@ -11,7 +11,7 @@ import {
 } from 'utils/currency';
 import { MiniSparkLine } from 'containers/TradeTabs/components/MiniSparkLine';
 import classNames from 'classnames';
-import { getRandomValuesFromParts } from 'utils/array';
+import { getLastValuesFromParts } from 'utils/array';
 
 const Details = ({
 	pair,
@@ -77,9 +77,9 @@ const Details = ({
 			if (price && time) {
 				const indexOneDay = getIndexofOneDay(time);
 				const oneDayChartPrices = price.slice(indexOneDay, price.length);
-				setOneDayChartData(oneDayChartPrices);
+				setOneDayChartData(getLastValuesFromParts(oneDayChartPrices));
 				setOneDayData(getPricingData(oneDayChartPrices));
-				setSevenDayChartData(getRandomValuesFromParts(price));
+				setSevenDayChartData(getLastValuesFromParts(price));
 				setSevenDayData(getPricingData(price));
 			}
 		};
