@@ -91,7 +91,6 @@ const { paginationQuery, timeframeQuery, orderingQuery, convertSequelizeCountAnd
 const { parse } = require('json2csv');
 const flatten = require('flat');
 const uuid = require('uuid/v4');
-const BigNumber = require('bignumber.js');
 const { checkCaptcha, validatePassword, verifyOtpBeforeAction } = require('./security');
 const geoip = require('geoip-lite');
 const moment = require('moment');

@@ -238,6 +238,10 @@ class Summary extends Component {
 													onUpgradeAccount={this.onUpgradeAccount}
 													onInviteFriends={this.onInviteFriends}
 													verification_level={verification_level}
+													referral_history_config={
+														this.props.referral_history_config
+													}
+													onDisplayReferralList={this.onDisplayReferralList}
 												/>
 											</SummaryBlock>
 										</div>

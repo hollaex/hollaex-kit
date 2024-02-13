@@ -57,7 +57,7 @@ const ReferralList = ({
 
 	const [balanceHistory, setBalanceHistory] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
-	const [currentDay, setCurrentDay] = useState(7);
+	const [currentDay, setCurrentDay] = useState(90);
 	const [queryValues, setQueryValues] = useState({
 		start_date: moment().subtract(currentDay, 'days').toISOString(),
 		end_date: moment().subtract().toISOString(),
@@ -273,10 +273,7 @@ const ReferralList = ({
 					page === 1 ? response.data : [...balanceHistory, ...response.data]
 				);
 
-				const length =
-					response.data.length > currentDay
-						? currentDay - 1
-						: response.data.length - 1;
+				const length = currentDay - 1;
 				const balanceData = response.data.find(
 					(history) =>
 						moment(history.date).format('YYYY-MM-DD') ===
@@ -539,7 +536,7 @@ const ReferralList = ({
 	};
 	return (
 		<Spin spinning={isLoading}>
-			<div className="summary-block_wrapper">
+			<div className="summary-block_wrapper" style={{ marginTop: 20 }}>
 				<div className="invite_friends_wrapper mx-auto">
 					{/* <IconTitle
 					stringId="REFERRAL_LINK.TITLE"
