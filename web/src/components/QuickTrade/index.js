@@ -492,7 +492,7 @@ const QuickTrade = ({
 									onSelect={onSelectSource}
 									onInputChange={onChangeSourceAmount}
 									forwardError={() => {}}
-									autoFocus={autoFocus}
+									autoFocus={isMobile ? false : autoFocus}
 									decimal={
 										coins[selectedSource]?.increment_unit || PAIR2_STATIC_SIZE
 									}
