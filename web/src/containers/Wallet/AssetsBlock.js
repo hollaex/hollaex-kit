@@ -338,8 +338,12 @@ const AssetsBlock = ({
 									checked={isZeroBalanceHidden}
 									onClick={onToggle}
 									className="mx-2"
-									checkedChildren={STRINGS['DEFAULT_TOGGLE_OPTIONS.ON']}
-									unCheckedChildren={STRINGS['DEFAULT_TOGGLE_OPTIONS.OFF']}
+									checkedChildren={STRINGS[
+										'DEFAULT_TOGGLE_OPTIONS.ON'
+									].toUpperCase()}
+									unCheckedChildren={STRINGS[
+										'DEFAULT_TOGGLE_OPTIONS.OFF'
+									].toUpperCase()}
 								/>
 							</div>
 						</div>
@@ -491,8 +495,12 @@ const AssetsBlock = ({
 										checked={isZeroBalanceHidden}
 										onClick={onToggle}
 										className="mx-2"
-										checkedChildren={STRINGS['DEFAULT_TOGGLE_OPTIONS.ON']}
-										unCheckedChildren={STRINGS['DEFAULT_TOGGLE_OPTIONS.OFF']}
+										checkedChildren={STRINGS[
+											'DEFAULT_TOGGLE_OPTIONS.ON'
+										].toUpperCase()}
+										unCheckedChildren={STRINGS[
+											'DEFAULT_TOGGLE_OPTIONS.OFF'
+										].toUpperCase()}
 									/>
 								</div>
 							</div>

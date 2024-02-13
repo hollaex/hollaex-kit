@@ -8,10 +8,12 @@ import { EditWrapper, IconTitle } from 'components';
 import STRINGS from 'config/localizedStrings';
 
 const DigitalAssets = ({ pair, icons: ICONS, showQuickTrade }) => {
-
 	return (
 		<div className="digital-market-wrapper">
-			<div className="market-wrapper">
+			<div
+				style={{ width: window.innerWidth <= 1024 && '95%' }}
+				className="market-wrapper"
+			>
 				<div className="header-container">
 					<div className="d-flex">
 						<IconTitle
