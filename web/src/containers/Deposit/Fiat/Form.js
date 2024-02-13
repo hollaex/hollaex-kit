@@ -43,6 +43,7 @@ const Form = ({
 	router,
 	coins,
 	onramp = {},
+	fiat_fees,
 }) => {
 	const [activeTab, setActiveTab] = useState();
 	const [tabs, setTabs] = useState({});
@@ -151,6 +152,8 @@ const Form = ({
 		const MIN = math.max(fee, min);
 		const MAX = limit && math.larger(limit, 0) ? math.min(limit, max) : max;
 
+		const customFee = fiat_fees?.[currency]?.deposit_fee;
+
 		return (
 			<Fragment>
 				{renderTabs()}
@@ -201,7 +204,7 @@ const Form = ({
 								<div className="pl-4">
 									{STRINGS.formatString(
 										STRINGS['AMOUNT_FORMAT'],
-										fee,
+										customFee || fee,
 										display_name
 									)}
 								</div>
@@ -318,6 +321,7 @@ const mapStateToProps = (store, ownProps) => ({
 	user: store.user,
 	coins: store.app.coins,
 	onramp: store.app.onramp[ownProps.currency],
+	fiat_fees: store.app.constants.fiat_fees,
 });
 
 export default connect(mapStateToProps)(withRouter(withConfig(Form)));

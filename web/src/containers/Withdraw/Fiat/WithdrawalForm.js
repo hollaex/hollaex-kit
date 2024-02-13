@@ -269,6 +269,7 @@ class Index extends Component {
 			activeTab,
 			router,
 			banks,
+			fiat_fees,
 		} = this.props;
 		const { dialogIsOpen, dialogOtpOpen, successfulRequest } = this.state;
 
@@ -278,6 +279,7 @@ class Index extends Component {
 		const { icon_id } = coins[currency];
 
 		const { rate: fee } = getFiatWithdrawalFee(currency);
+		const customFee = fiat_fees?.[currency]?.withdrawal_fee;
 
 		return (
 			<div className="withdraw-form-wrapper">
@@ -307,6 +309,16 @@ class Index extends Component {
 									{STRINGS['WITHDRAW_NOTE']}
 								</EditWrapper>
 							</div>
+							{customFee && (
+								<div>
+									<div>
+										Fee:{' '}
+										<span style={{ fontWeight: 'bold' }}>
+											{customFee} {currency?.toUpperCase()}
+										</span>
+									</div>
+								</div>
+							)}
 							{this.renderContent()}
 						</Fragment>
 					)}
@@ -358,6 +370,7 @@ const FiatWithdrawalForm = reduxForm({
 
 const mapStateToProps = (state) => ({
 	data: selector(state, 'bank', 'amount', 'fee', 'captcha'),
+	fiat_fees: state.app.constants.fiat_fees,
 });
 
 export default connect(mapStateToProps)(withRouter(FiatWithdrawalForm));

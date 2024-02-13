@@ -279,6 +279,27 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 		}
 	}
 
+	if (newKitConfig.fiat_fees) {
+		for(let coin of Object.values(newKitConfig.fiat_fees)) {
+		
+			if (coin.withdrawal_fee && coin.withdrawal_fee < 0) {
+				throw new Error('withdrawal fee cannot be negative');
+			}
+
+			if (coin.withdrawal_fee && !isNumber(coin.withdrawal_fee)) {
+				throw new Error('withdrawal fee is not a number');
+			}
+
+			if (coin.deposit_fee && coin.deposit_fee < 0) {
+				throw new Error('deposit fee cannot be negative');
+			}
+
+			if (coin.deposit_fee && !isNumber(coin.deposit_fee)) {
+				throw new Error('deposit fee is not a number');
+			}
+		}
+	}
+
 	if (newKitConfig.balance_history_config) {
 
 		const exchangeInfo = getKitConfig().info;

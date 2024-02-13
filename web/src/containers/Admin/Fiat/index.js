@@ -11,6 +11,7 @@ import { getTabParams } from '../AdminFinancials/Assets';
 // import Kyc from './Kyc';
 import { setConfig } from 'actions/appActions';
 import { constractPaymentOption } from 'utils/utils';
+import FiatFees from './FiatFees';
 
 const TabPane = Tabs.TabPane;
 
@@ -127,6 +128,9 @@ const Fiatmarkets = ({
 						isLoading={isLoading}
 						setIsLoading={setIsLoading}
 					/>
+				</TabPane>
+				<TabPane tab="Fiat Fees" key="4">
+					<FiatFees />
 				</TabPane>
 				{/* <TabPane tab="KYC" key="4">
 					<Kyc />
