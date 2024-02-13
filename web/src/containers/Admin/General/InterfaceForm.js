@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ReactSVG } from 'react-svg';
-import { Button, Checkbox, Form, Modal, Select, message } from 'antd';
+import { Button, Checkbox, Form, Input, Modal, Select, message } from 'antd';
 import classnames from 'classnames';
 import _isEqual from 'lodash/isEqual';
 
@@ -30,6 +30,27 @@ const InterfaceForm = ({
 		false
 	);
 
+	const [referralHistoryData, setReferralHistoryData] = useState({
+		currency: constants?.kit?.referral_history_config?.currency || 'usdt',
+		earning_rate: constants?.kit?.referral_history_config?.earning_rate || null,
+		earning_period:
+			constants?.kit?.referral_history_config?.earning_period || 0,
+		settlement_interval:
+			constants?.kit?.referral_history_config?.settlement_interval || 'month',
+		distributor_id:
+			constants?.kit?.referral_history_config?.distributor_id || null,
+		last_settled_trade:
+			constants?.kit?.referral_history_config?.last_settled_trade || null,
+		date_enabled:
+			constants?.kit?.referral_history_config?.date_enabled || new Date(),
+		active: constants?.kit?.referral_history_config?.active,
+	});
+
+	const [
+		displayReferralHistoryModal,
+		setDisplayReferralHistoryModal,
+	] = useState(false);
+
 	const handleSubmit = (values) => {
 		let formValues = {};
 		if (values) {
@@ -40,6 +61,7 @@ const InterfaceForm = ({
 				stake_page: !!values.stake_page,
 				cefi_stake: !!values.cefi_stake,
 				balance_history_config: !!values.balance_history_config,
+				referral_history_config: !!values.referral_history_config,
 				home_page: isUpgrade ? false : !!values.home_page,
 				ultimate_fiat: !!values.ultimate_fiat,
 				apps: !!values.apps,
@@ -49,7 +71,21 @@ const InterfaceForm = ({
 				active: !!values.balance_history_config || false,
 				date_enabled: balanceHistoryCurrency.date_enabled,
 			};
-			handleSaveInterface(formValues, balance_history_config);
+			const referral_history_config = {
+				active: !!values.referral_history_config,
+				currency: referralHistoryData.currency,
+				earning_rate: Number(referralHistoryData.earning_rate),
+				earning_period: Number(referralHistoryData.earning_period),
+				settlement_interval: referralHistoryData.settlement_interval,
+				distributor_id: Number(referralHistoryData.distributor_id),
+				last_settled_trade: referralHistoryData.last_settled_trade,
+				date_enabled: referralHistoryData.date_enabled,
+			};
+			handleSaveInterface(
+				formValues,
+				balance_history_config,
+				referral_history_config
+			);
 		}
 	};
 
@@ -62,7 +98,12 @@ const InterfaceForm = ({
 	};
 
 	const handleSubmitData = (formProps) => {
-		if (formProps.balance_history_config && !balanceHistoryCurrency.currency) {
+		if (formProps.referral_history_config && !referralHistoryData.active) {
+			setDisplayReferralHistoryModal(true);
+		} else if (
+			formProps.balance_history_config &&
+			!balanceHistoryCurrency.currency
+		) {
 			setDisplayBalanceHistoryModal(true);
 		} else {
 			setIsSubmit(true);
@@ -104,8 +145,8 @@ const InterfaceForm = ({
 						<div style={{ marginBottom: 10, color: '#ccc' }}>
 							This currency is used as the base currency to calculate and
 							display all the profits and loss. It is normally set to a fiat
-							currency or a stable coin.
-							Note that this currency can not be modified in future after it starts getting the information.
+							currency or a stable coin. Note that this currency can not be
+							modified in future after it starts getting the information.
 						</div>
 						<Select
 							showSearch
@@ -158,6 +199,185 @@ const InterfaceForm = ({
 								setIsSubmit(true);
 								handleSubmit(form.getFieldsValue());
 								setDisplayBalanceHistoryModal(false);
+							}}
+							style={{
+								backgroundColor: '#288500',
+								color: 'white',
+								flex: 1,
+								height: 35,
+							}}
+							type="default"
+						>
+							Proceed
+						</Button>
+					</div>
+				</Modal>
+			)}
+
+			{displayReferralHistoryModal && (
+				<Modal
+					maskClosable={false}
+					closeIcon={<CloseOutlined style={{ color: 'white' }} />}
+					bodyStyle={{
+						backgroundColor: '#27339D',
+						marginTop: 60,
+					}}
+					visible={displayReferralHistoryModal}
+					width={500}
+					footer={null}
+					onCancel={() => {
+						setDisplayReferralHistoryModal(false);
+					}}
+				>
+					<h2 style={{ fontWeight: '600', color: 'white' }}>
+						Referral History Config
+					</h2>
+
+					<div className="mb-4">
+						<div style={{ fontSize: 16 }} className="mb-2">
+							Currency
+							<div style={{ fontSize: 13 }}>
+								Currency to track earnings for analysis purposes
+							</div>
+						</div>
+
+						<Select
+							showSearch
+							className="select-box"
+							placeholder="Select asset for p/l analysis"
+							value={referralHistoryData.currency}
+							style={{ width: 250 }}
+							onChange={(e) => {
+								setReferralHistoryData({
+									...referralHistoryData,
+									currency: e,
+								});
+							}}
+						>
+							{Object.keys(coins).map((key) => (
+								<Select.Option value={key}>{coins[key].fullname}</Select.Option>
+							))}
+						</Select>
+					</div>
+
+					<div className="mb-4">
+						<div style={{ fontSize: 16 }} className="mb-2">
+							Earning Rate
+							<div style={{ fontSize: 13 }}>
+								Earning rate referee users receive from affiliated users fees
+							</div>
+						</div>
+
+						<Input
+							value={referralHistoryData.earning_rate}
+							onChange={(e) => {
+								setReferralHistoryData({
+									...referralHistoryData,
+									earning_rate: Number(e.target.value),
+								});
+							}}
+						/>
+					</div>
+
+					<div className="mb-4">
+						<div style={{ fontSize: 16 }} className="mb-2">
+							Earning Period
+							<div style={{ fontSize: 13 }}>
+								Number of months referee users earn affiliated users fees. Set
+								to 0 for no earning expiry
+							</div>
+						</div>
+
+						<Input
+							value={referralHistoryData.earning_period}
+							onChange={(e) => {
+								setReferralHistoryData({
+									...referralHistoryData,
+									earning_period: Number(e.target.value),
+								});
+							}}
+						/>
+					</div>
+
+					<div className="mb-4">
+						<div style={{ fontSize: 16 }} className="mb-2">
+							Settlement Interval
+							<div style={{ fontSize: 13 }}>
+								Interval at which to settle refered user fees. Enum: [month,
+								week, day]. Month: Will run every first day of a month at
+								midnight. Week: Will run every Sunday at midnight. Day: Will run
+								every day at midnight.
+							</div>
+						</div>
+
+						<Input
+							value={referralHistoryData.settlement_interval}
+							onChange={(e) => {
+								setReferralHistoryData({
+									...referralHistoryData,
+									settlement_interval: e.target.value,
+								});
+							}}
+						/>
+					</div>
+
+					<div className="mb-4">
+						<div style={{ fontSize: 16 }} className="mb-2">
+							Distributor ID
+							<div style={{ fontSize: 13 }}>
+								Account ID to send settled fees from
+							</div>
+						</div>
+
+						<Input
+							value={referralHistoryData.distributor_id}
+							onChange={(e) => {
+								setReferralHistoryData({
+									...referralHistoryData,
+									distributor_id: Number(e.target.value),
+								});
+							}}
+						/>
+					</div>
+
+					<div
+						style={{
+							display: 'flex',
+							flexDirection: 'row',
+							gap: 15,
+							justifyContent: 'space-between',
+							marginTop: 30,
+						}}
+					>
+						<Button
+							onClick={() => {
+								setDisplayReferralHistoryModal(false);
+							}}
+							style={{
+								backgroundColor: '#288500',
+								color: 'white',
+								flex: 1,
+								height: 35,
+							}}
+							type="default"
+						>
+							Back
+						</Button>
+						<Button
+							onClick={async () => {
+								if (
+									referralHistoryData.currency == null ||
+									referralHistoryData.earning_rate == null ||
+									referralHistoryData.earning_period == null ||
+									referralHistoryData.settlement_interval == null ||
+									referralHistoryData.distributor_id == null
+								) {
+									message.error('Please input all the fields');
+									return;
+								}
+								setIsSubmit(true);
+								handleSubmit(form.getFieldsValue());
+								setDisplayReferralHistoryModal(false);
 							}}
 							style={{
 								backgroundColor: '#288500',
@@ -282,6 +502,45 @@ const InterfaceForm = ({
 										Profit&Loss Analytics
 										<div className="small-text">
 											(User Balance History, P/L analysis)
+										</div>
+									</div>
+								</div>
+							</Checkbox>
+						</Item>
+					)}
+
+					{!isFiatUpgrade && (
+						<Item name="referral_history_config" valuePropName="checked">
+							<Checkbox className="mt-3">
+								<div className="d-flex align-items-center">
+									<ReactSVG
+										src={STATIC_ICONS.CANDLES_LOGO}
+										className="feature-icon mr-1"
+									/>
+									<div className="ml-2 checkbox-txt">
+										Referral History{' '}
+										{referralHistoryData.active && (
+											<span
+												style={{
+													padding: 5,
+													position: 'relative',
+													left: 5,
+													bottom: 5,
+													color: 'white',
+													backgroundColor: '#288500',
+													cursor: 'pointer',
+												}}
+												onClick={(e) => {
+													e.stopPropagation();
+													e.preventDefault();
+													setDisplayReferralHistoryModal(true);
+												}}
+											>
+												Edit
+											</span>
+										)}
+										<div className="small-text">
+											(User referral history and earning analytics)
 										</div>
 									</div>
 								</div>

@@ -1250,6 +1250,46 @@ const fetchUserProfitLossInfo = (req, res) => {
 		});
 };
 
+const fetchUserReferrals = (req, res) => {
+	const {  limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
+
+	loggerUser.info(
+		req.uuid,
+		'GET /plugins/referrals query',
+		limit,
+		page,
+		order_by,
+		order,
+		start_date,
+		end_date,
+		format
+	);
+
+	toolsLib.user.fetchUserReferrals(
+		{
+			user_id: req.auth.sub.id,
+			limit: limit.value,
+			page: page.value,
+			order_by: order_by.value,
+			order: order.value,
+			start_date: start_date.value,
+			end_date: end_date.value,
+			format: format.value
+		}
+	)
+		.then((referrals) => {
+			return res.json(referrals);
+		})
+		.catch((err) => {
+			loggerUser.error(
+				req.uuid,
+				'GET /plugins/referrals err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+}
+
 
 module.exports = {
 	signUpUser,
@@ -1282,5 +1322,6 @@ module.exports = {
 	userLogout,
 	userDelete,
 	getUserBalanceHistory,
-	fetchUserProfitLossInfo
+	fetchUserProfitLossInfo,
+	fetchUserReferrals
 };
