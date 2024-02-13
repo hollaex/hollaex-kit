@@ -34,9 +34,9 @@ $tabs-title--margin: 2rem;
 	.trade_block-wrapper {
 		.trade_block-content {
 			padding: 0;
-			font-size: $font-size-small;
+			font-size: $font-size-subtext;
 			.table_body-wrapper {
-				font-size: $font-size-small;
+				font-size: $font-size-subtext;
 			}
 		}
 		.trade_block-title {
@@ -103,7 +103,7 @@ $tabs-title--margin: 2rem;
 	.trade_block-content {
 		flex: auto;
 		padding: 0 1.2rem 1.2rem 1.2rem;
-		font-size: $font-size-small;
+		font-size: $font-size-subtext;
 		overflow-y: scroll;
 		height: 100%;
 		.sidebar_hub-content {
