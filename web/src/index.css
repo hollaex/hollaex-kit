@@ -4043,6 +4043,8 @@ table th {
   display: flex;
   justify-content: center;
   padding-top: 2rem; }
+  .digital-market-wrapper .market-wrapper-mobile-view {
+    width: 90% !important; }
   .digital-market-wrapper .market-wrapper {
     width: 70%; }
     .digital-market-wrapper .market-wrapper .gray-text {
@@ -4694,7 +4696,7 @@ table th {
   .layout-mobile .market-list__container .market-list__block .market-list__block-table .sticky-col {
     position: -webkit-sticky;
     position: sticky;
-    background-color: #222427;
+    background-color: var(--base_wallet-sidebar-and-popup);
     left: 0;
     width: 12rem !important;
     min-width: 12rem !important;
