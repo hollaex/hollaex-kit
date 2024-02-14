@@ -2646,7 +2646,7 @@ const fetchUserProfitLossInfo = async (user_id) => {
 		results['7d'].total = total;
 	}
 
-	client.setexAsync(`${user_id}user-pl-info`, 86400, JSON.stringify(results));
+	client.setexAsync(`${user_id}user-pl-info`, 3600, JSON.stringify(results));
 
 	return results;
 };
