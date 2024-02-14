@@ -53,7 +53,7 @@ const Form = ({
 	useEffect(() => {
 		setTabs(getTabs());
 		setInitialValues(
-			generateInitialValues(verification_level, coins, currency)
+			generateInitialValues(verification_level, coins, currency, fiat_fees)
 		);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);

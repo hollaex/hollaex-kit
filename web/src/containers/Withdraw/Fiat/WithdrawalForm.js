@@ -346,7 +346,7 @@ class Index extends Component {
 							banks={banks}
 							coins={coins}
 							currency={currency}
-							data={{ ...data, fee }}
+							data={{ ...data, fee: customFee || fee }}
 							price={currentPrice}
 							onClickAccept={this.onAcceptDialog}
 							onClickCancel={this.onCloseDialog}
