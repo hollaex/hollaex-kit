@@ -309,7 +309,7 @@ class Index extends Component {
 									{STRINGS['WITHDRAW_NOTE']}
 								</EditWrapper>
 							</div>
-							{customFee && (
+							{customFee ? (
 								<div>
 									<div>
 										Fee:{' '}
@@ -318,6 +318,8 @@ class Index extends Component {
 										</span>
 									</div>
 								</div>
+							) : (
+								<></>
 							)}
 							{this.renderContent()}
 						</Fragment>
