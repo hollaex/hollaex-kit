@@ -4711,6 +4711,10 @@ table th {
 .layout-mobile .trade_tabs-container .sticky-col {
   background-color: var(--base_background) !important; }
 
+.layout-mobile .digital-market-wrapper .sticky-col {
+  color: var(--labels_important-active-labels-text-graphics);
+  background-color: var(--base_secondary-navigation-bar); }
+
 .trade_tabs-container {
   color: var(--labels_secondary-inactive-label-text-graphics);
   height: inherit;
