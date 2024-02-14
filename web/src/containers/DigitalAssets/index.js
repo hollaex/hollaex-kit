@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
+import { isMobile } from 'react-device-detect';
 
 import withConfig from 'components/ConfigProvider/withConfig';
 import AssetsWrapper from './components/AssetsWrapper';
@@ -8,10 +9,15 @@ import { EditWrapper, IconTitle } from 'components';
 import STRINGS from 'config/localizedStrings';
 
 const DigitalAssets = ({ pair, icons: ICONS, showQuickTrade }) => {
-
 	return (
 		<div className="digital-market-wrapper">
-			<div className="market-wrapper">
+			<div
+				className={
+					isMobile
+						? 'market-wrapper market-wrapper-mobile-view'
+						: 'market-wrapper'
+				}
+			>
 				<div className="header-container">
 					<div className="d-flex">
 						<IconTitle
