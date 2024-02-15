@@ -133,6 +133,9 @@ const AssetsBlock = ({
 	}, []);
 
 	const options = {
+		chart: {
+			type: 'area',
+		},
 		title: {
 			text: '',
 		},
@@ -161,6 +164,10 @@ const AssetsBlock = ({
 			title: {
 				text: null,
 			},
+			min: (() => {
+				const min = graphData?.[0]?.[1];
+				return min;
+			})(),
 		},
 		plotOptions: {
 			series: {

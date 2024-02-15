@@ -41,6 +41,7 @@ const ProfitLossSection = ({
 	});
 	// eslint-disable-next-line
 	const [selectedDate, setSelectedDate] = useState();
+	const [selectedCustomDate, setSelectedCustomDate] = useState();
 	const [currentBalance, setCurrentBalance] = useState();
 	const [latestBalance, setLatestBalance] = useState();
 	const [userPL, setUserPL] = useState();
@@ -50,6 +51,9 @@ const ProfitLossSection = ({
 	const [customDateValues, setCustomDateValues] = useState();
 
 	const options = {
+		chart: {
+			type: 'area',
+		},
 		title: {
 			text: '',
 		},
@@ -70,6 +74,10 @@ const ProfitLossSection = ({
 		},
 		yAxis: {
 			title: false,
+			min: (() => {
+				const min = graphData?.[0]?.[1];
+				return min;
+			})(),
 		},
 		series: [
 			{
@@ -88,7 +96,10 @@ const ProfitLossSection = ({
 									}` === graphData[e.point.x || 0][0]
 							);
 
-							if (balance) setCurrentBalance(balance);
+							if (balance) {
+								setCurrentBalance(balance);
+								setSelectedCustomDate();
+							}
 						},
 					},
 				},
@@ -130,7 +141,12 @@ const ProfitLossSection = ({
 					page === 1 ? response.data : [...balanceHistory, ...response.data]
 				);
 
-				const length = response.data.length > currentDay ? currentDay - 1 : 6;
+				const length =
+					response.data.length > currentDay
+						? currentDay - 1
+						: response.data.length > 6
+						? response.data.length
+						: 6;
 				const balanceData = response.data.find(
 					(history) =>
 						moment(history.created_at).format('YYYY-MM-DD') ===
@@ -699,6 +715,7 @@ const ProfitLossSection = ({
 										suffixIcon={null}
 										className="pldatePicker"
 										placeholder={STRINGS['PROFIT_LOSS.DATE_SELECT']}
+										value={selectedCustomDate}
 										disabledDate={(current) => {
 											return (
 												current &&
@@ -716,6 +733,7 @@ const ProfitLossSection = ({
 										}}
 										onChange={(date, dateString) => {
 											if (!dateString) return;
+											setSelectedCustomDate(date);
 											fetchBalanceHistory({
 												start_date: moment(dateString)
 													.startOf('day')
