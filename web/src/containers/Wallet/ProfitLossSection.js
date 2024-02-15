@@ -433,7 +433,9 @@ const ProfitLossSection = ({
 							}}
 							type="default"
 						>
-							BACK
+							<EditWrapper stringId="PROFIT_LOSS.BACK_CUSTOM">
+								{STRINGS['PROFIT_LOSS.BACK_CUSTOM']}
+							</EditWrapper>
 						</Button>
 						<Button
 							onClick={async () => {
@@ -483,7 +485,9 @@ const ProfitLossSection = ({
 							}}
 							type="default"
 						>
-							PROCEED
+							<EditWrapper stringId="PROFIT_LOSS.PROOCED_CUSTOM">
+								{STRINGS['PROFIT_LOSS.PROOCED_CUSTOM']}
+							</EditWrapper>
 						</Button>
 					</div>
 				</Modal>
