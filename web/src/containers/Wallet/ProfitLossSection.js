@@ -98,7 +98,7 @@ const ProfitLossSection = ({
 
 							if (balance) {
 								setCurrentBalance(balance);
-								setSelectedCustomDate();
+								setSelectedCustomDate(moment(balance.created_at));
 							}
 						},
 					},
