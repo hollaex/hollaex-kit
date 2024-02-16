@@ -41,3 +41,56 @@
 .profitNeutral {
 	color: '#ccc';
 }
+
+.profit_block-table {
+	width: 100%;
+	// font-size: $font-size-subtext;
+	margin-bottom: 3rem;
+
+	thead,
+	tfoot {
+		& tr {
+			height: 3.5rem;
+			vertical-align: bottom;
+		}
+	}
+
+	tfoot {
+		// font-size: $font-size-main;
+		td {
+			white-space: nowrap;
+		}
+	}
+
+	.table-row {
+		height: 2.5rem;
+	}
+
+	.table-bottom-border td,
+	th {
+		position: relative;
+		& {
+			border-bottom: 1px solid grey;
+			padding: 1rem 0.25rem;
+		}
+	}
+
+	.td-fit {
+		width: 1%;
+		white-space: nowrap;
+	}
+
+	.td-name {
+		min-width: 200px !important;
+	}
+	.table-icon {
+		& > div {
+			vertical-align: middle;
+			margin: auto;
+		}
+	}
+	.td-amount {
+		min-width: 150px !important;
+		direction: ltr;
+	}
+}
