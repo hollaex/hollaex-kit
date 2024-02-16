@@ -17,6 +17,10 @@
 	fill: white;
 }
 
+.highChartColor .highcharts-area {
+	fill: rgba(255, 255, 255, 0.1);
+}
+
 .profitNegative {
 	color: var(--trading_selling-related-elements);
 }
