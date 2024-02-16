@@ -51,11 +51,7 @@ export const generateInitialValues = (
 		initialValues.fee_coin = '';
 	}
 
-	if (min) {
-		initialValues.amount = min;
-	} else {
-		initialValues.amount = '';
-	}
+	initialValues.amount = '';
 
 	const feeMarkup = coin_customizations?.[symbol]?.fee_markup;
 	if (feeMarkup) {
