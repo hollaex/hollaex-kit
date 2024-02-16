@@ -30,7 +30,7 @@ export const generateInitialValues = (
 	selectedMethod,
 	coin_customizations
 ) => {
-	const { min, withdrawal_fee, withdrawal_fees } =
+	const { withdrawal_fee, withdrawal_fees } =
 		coins[symbol] || DEFAULT_COIN_DATA;
 	const initialValues = {};
 

@@ -189,7 +189,6 @@ export const generateInitialValues = (
 	selectedBank,
 	withdrawal_fee
 ) => {
-	const { min } = coins[symbol] || DEFAULT_COIN_DATA;
 	const initialValues = {};
 
 	initialValues.amount = '';
