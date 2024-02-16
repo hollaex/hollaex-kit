@@ -133,6 +133,9 @@ const AssetsBlock = ({
 	}, []);
 
 	const options = {
+		chart: {
+			type: 'area',
+		},
 		title: {
 			text: '',
 		},
@@ -161,6 +164,10 @@ const AssetsBlock = ({
 			title: {
 				text: null,
 			},
+			min: (() => {
+				const min = graphData?.[0]?.[1];
+				return min;
+			})(),
 		},
 		plotOptions: {
 			series: {
@@ -338,8 +345,12 @@ const AssetsBlock = ({
 									checked={isZeroBalanceHidden}
 									onClick={onToggle}
 									className="mx-2"
-									checkedChildren={STRINGS['DEFAULT_TOGGLE_OPTIONS.ON']}
-									unCheckedChildren={STRINGS['DEFAULT_TOGGLE_OPTIONS.OFF']}
+									checkedChildren={STRINGS[
+										'DEFAULT_TOGGLE_OPTIONS.ON'
+									].toUpperCase()}
+									unCheckedChildren={STRINGS[
+										'DEFAULT_TOGGLE_OPTIONS.OFF'
+									].toUpperCase()}
 								/>
 							</div>
 						</div>
@@ -491,8 +502,12 @@ const AssetsBlock = ({
 										checked={isZeroBalanceHidden}
 										onClick={onToggle}
 										className="mx-2"
-										checkedChildren={STRINGS['DEFAULT_TOGGLE_OPTIONS.ON']}
-										unCheckedChildren={STRINGS['DEFAULT_TOGGLE_OPTIONS.OFF']}
+										checkedChildren={STRINGS[
+											'DEFAULT_TOGGLE_OPTIONS.ON'
+										].toUpperCase()}
+										unCheckedChildren={STRINGS[
+											'DEFAULT_TOGGLE_OPTIONS.OFF'
+										].toUpperCase()}
 									/>
 								</div>
 							</div>

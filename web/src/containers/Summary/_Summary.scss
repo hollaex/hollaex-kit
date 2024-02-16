@@ -169,6 +169,9 @@ $trade-tab--arrow-size: 0.4rem;
 	display: flex;
 	justify-content: center;
 	padding-top: 2rem;
+	.market-wrapper-mobile-view {
+		width: 90% !important;
+	}
 	.market-wrapper {
 		width: 70%;
 		.gray-text {
