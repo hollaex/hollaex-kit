@@ -490,10 +490,12 @@ const AssetsBlock = ({
 									</div>
 								</div>
 							) : (
-								<Image
-									icon={ICONS['WALLET_GRAPHIC']}
-									wrapperClassName="wallet-graphic-icon"
-								/>
+								(isUpgrade || !balance_history_config?.active) && (
+									<Image
+										icon={ICONS['WALLET_GRAPHIC']}
+										wrapperClassName="wallet-graphic-icon"
+									/>
+								)
 							)}
 						</div>
 					</div>
