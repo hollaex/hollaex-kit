@@ -91,6 +91,7 @@ const AssetsBlock = ({
 	const isUpgrade = handleUpgrade(info);
 
 	useEffect(() => {
+		if (isMobile) return;
 		fetchPlHistory()
 			.then((res) => {
 				setUserPL(res);
@@ -165,7 +166,14 @@ const AssetsBlock = ({
 				text: null,
 			},
 			min: (() => {
-				const min = graphData?.[0]?.[1];
+				let min = graphData?.[0]?.[1];
+
+				graphData.forEach((graph) => {
+					if (min > graph[1]) {
+						min = graph[1];
+					}
+				});
+
 				return min;
 			})(),
 		},

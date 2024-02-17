@@ -75,7 +75,14 @@ const ProfitLossSection = ({
 		yAxis: {
 			title: false,
 			min: (() => {
-				const min = graphData?.[0]?.[1];
+				let min = graphData?.[0]?.[1];
+
+				graphData.forEach((graph) => {
+					if (min > graph[1]) {
+						min = graph[1];
+					}
+				});
+
 				return min;
 			})(),
 		},
