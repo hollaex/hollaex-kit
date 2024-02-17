@@ -7571,7 +7571,7 @@ table th {
   justify-content: flex-start; }
 
 .wallet-wrapper .donut-container {
-  height: 15rem; }
+  height: 18rem; }
   .wallet-wrapper .donut-container .donut-label-pair {
     font-size: 0.8rem; }
   .wallet-wrapper .donut-container .rounded-loading {
@@ -7678,7 +7678,7 @@ table th {
   .wallet-wrapper .donut-container-empty {
     height: 14rem !important; }
   .wallet-wrapper .donut-container {
-    height: 15rem; }
+    height: 20rem; }
     .wallet-wrapper .donut-container .donut-label-pair {
       font-size: 1rem; } }
 
