@@ -75,7 +75,14 @@ const ProfitLossSection = ({
 		yAxis: {
 			title: false,
 			min: (() => {
-				const min = graphData?.[0]?.[1];
+				let min = graphData?.[0]?.[1];
+
+				graphData.forEach((graph) => {
+					if (min > graph[1]) {
+						min = graph[1];
+					}
+				});
+
 				return min;
 			})(),
 		},
@@ -98,7 +105,7 @@ const ProfitLossSection = ({
 
 							if (balance) {
 								setCurrentBalance(balance);
-								setSelectedCustomDate();
+								setSelectedCustomDate(moment(balance.created_at));
 							}
 						},
 					},
@@ -277,14 +284,13 @@ const ProfitLossSection = ({
 
 					return (
 						<tr className="table-row" key={index}>
-							<td className="table-icon td-fit" />
 							<td
 								style={{
 									padding: '1.25em',
 									borderBottom: '1px solid grey',
 									minWidth: '15.5em',
 								}}
-								className="td-fit"
+								className="table-icon td-fit"
 							>
 								<Link to={`/assets/coin/${coin.symbol}`} className="underline">
 									<div
@@ -764,10 +770,9 @@ const ProfitLossSection = ({
 						</div>
 
 						<div className="wallet-assets_block" style={{ display: 'flex' }}>
-							<table className="wallet-assets_block-table">
+							<table className="profit_block-table">
 								<thead>
 									<tr className="table-bottom-border">
-										<th />
 										<th>
 											<EditWrapper stringId="PROFIT_LOSS.ASSET_NAME">
 												{STRINGS['PROFIT_LOSS.ASSET_NAME']}

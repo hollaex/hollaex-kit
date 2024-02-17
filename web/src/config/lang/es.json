@@ -733,6 +733,7 @@
 	},
 	"QUICK_TRADE": "Cambio ràpido",
 	"PRO_TRADE": "Intercambio Pro",
+	"ASSETS": "Activos",
 	"WALLET_TITLE": "Monedero",
 	"LOGOUT": "Cerrar sesión",
 	"WITHDRAWALS_MIN_VALUE_ERROR": "La transacciòn es un pequeña para enviar. Intentar una cantidad mayor.",
