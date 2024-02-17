@@ -1800,8 +1800,8 @@ table th {
     padding: 0px 20px;
     overflow-y: auto; }
     .wallet-container .wallet-assets_block .donut-container {
-      width: auto !important;
-      min-width: auto !important; }
+      width: 10rem !important;
+      min-width: 10rem !important; }
     .wallet-container .wallet-assets_block .donut-container-empty {
       width: 13rem !important;
       min-width: 13rem !important; }
@@ -7571,7 +7571,7 @@ table th {
   justify-content: flex-start; }
 
 .wallet-wrapper .donut-container {
-  height: 18rem; }
+  height: 15rem; }
   .wallet-wrapper .donut-container .donut-label-pair {
     font-size: 0.8rem; }
   .wallet-wrapper .donut-container .rounded-loading {
@@ -7678,7 +7678,7 @@ table th {
   .wallet-wrapper .donut-container-empty {
     height: 14rem !important; }
   .wallet-wrapper .donut-container {
-    height: 20rem; }
+    height: 15rem; }
     .wallet-wrapper .donut-container .donut-label-pair {
       font-size: 1rem; } }
 
