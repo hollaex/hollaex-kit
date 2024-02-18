@@ -30,7 +30,7 @@ services:
       - 10013:10013
     build:
       context: .
-      dockerfile: ./tools/Dockerfile.pm2
+      dockerfile: ./tools/Dockerfile
     env_file:
       - ./tools/hollaex-kit.env.local
     entrypoint:
