@@ -9,7 +9,7 @@ services:
       - 6379:6379
     env_file:
       - hollaex-kit.env
-    command : ["sh", "-c", "redis-server --requirepass $${REDIS_PASSWORD}"]
+    command: ["sh", "-c", "redis-server --requirepass $${REDIS_PASSWORD}"]
     deploy:
       resources:
         limits:
@@ -20,7 +20,6 @@ services:
           memory: 100M
     networks:
       - hollaex-kit
-
   hollaex-kit-db:
     image: postgres:14.9-alpine
     restart: unless-stopped
@@ -38,12 +37,11 @@ services:
         reservations:
           cpus: "0.1"
           memory: 100M
-    command : ["sh", "-c", "export POSTGRES_DB=$${DB_NAME} && export POSTGRES_USER=$${DB_USERNAME} && export POSTGRES_PASSWORD=$${DB_PASSWORD} && ln -sf /usr/local/bin/docker-entrypoint.sh ./docker-entrypoint.sh && ./docker-entrypoint.sh postgres"]
+    command: ["sh", "-c", "export POSTGRES_DB=$${DB_NAME} && export POSTGRES_USER=$${DB_USERNAME} && export POSTGRES_PASSWORD=$${DB_PASSWORD} && ln -sf /usr/local/bin/docker-entrypoint.sh ./docker-entrypoint.sh && ./docker-entrypoint.sh postgres"]
     networks:
       - hollaex-kit
-
   hollaex-kit-server-api:
-    image: hollaex-kit
+    image: hollaex/hollaex-kit:2.9.5-cli-deprecation-d56aae0
     build:
       context: .
       dockerfile: tools/Dockerfile
@@ -55,26 +53,22 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.2" 
-          memory: 1024M 
+          cpus: "0.2"
+          memory: 1024M
         reservations:
-          cpus: "0.05" 
-          memory: 512M 
-
+          cpus: "0.05"
+          memory: 512M
     command:
-      - app.js 
-       
+      - app.js
     ports:
-      - 10010:10010   
-      
+      - 10010:10010
     networks:
       - hollaex-kit
     depends_on:
       - hollaex-kit-redis
       - hollaex-kit-db
-
   hollaex-kit-server-stream:
-    image: hollaex-kit
+    image: hollaex/hollaex-kit:2.9.5-cli-deprecation-d56aae0
     build:
       context: .
       dockerfile: tools/Dockerfile
@@ -86,13 +80,13 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.2" 
-          memory: 512M 
+          cpus: "0.2"
+          memory: 512M
         reservations:
-          cpus: "0.05" 
-          memory: 256M 
+          cpus: "0.05"
+          memory: 256M
     command:
-      - ws/index.js 
+      - ws/index.js
     ports:
       - 10080:10080
     networks:
@@ -101,9 +95,8 @@ services:
       - hollaex-kit-server-api
       - hollaex-kit-redis
       - hollaex-kit-db
-
   hollaex-kit-server-plugins:
-    image: hollaex-kit
+    image: hollaex/hollaex-kit:2.9.5-cli-deprecation-d56aae0
     build:
       context: .
       dockerfile: tools/Dockerfile
@@ -115,13 +108,13 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.2" 
-          memory: 1200M 
+          cpus: "0.2"
+          memory: 1200M
         reservations:
-          cpus: "0.05" 
-          memory: 700M 
+          cpus: "0.05"
+          memory: 700M
     command:
-      - plugins/index.js 
+      - plugins/index.js
       - 10011:10011
     networks:
       - hollaex-kit
@@ -129,9 +122,7 @@ services:
       - hollaex-kit-server-api
       - hollaex-kit-redis
       - hollaex-kit-db
-      
 networks:
   hollaex-kit:
 volumes:
   hollaex_db_vol:
-
