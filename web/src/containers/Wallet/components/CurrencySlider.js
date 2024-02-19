@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import classnames from 'classnames';
+// import classnames from 'classnames';
 import { isMobile } from 'react-device-detect';
-import { Button, DonutChart, EditWrapper } from 'components';
+import {
+	Button,
+	//  DonutChart,
+	EditWrapper,
+} from 'components';
 import { calculatePrice } from 'utils/currency';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 import Currency from './Currency';
@@ -123,7 +127,7 @@ class CurrencySlider extends Component {
 			navigate,
 			coins,
 			searchResult,
-			chartData,
+			// chartData,
 		} = this.props;
 		const { currentCurrency } = this.state;
 		const balanceValue = balance[`${currentCurrency}_balance`];
@@ -225,7 +229,7 @@ class CurrencySlider extends Component {
 			<div className="d-flex flex-column justify-content-end currency-list-container f-1">
 				{isMobile && (
 					<div>
-						<div
+						{/* <div
 							className={classnames('donut-container mb-4', {
 								'd-flex align-items-center justify-content-center loading-wrapper': !chartData.length,
 							})}
@@ -244,7 +248,7 @@ class CurrencySlider extends Component {
 									</div>
 								</div>
 							)}
-						</div>
+						</div> */}
 						<div>
 							{!isUpgrade &&
 								this.props.balance_history_config?.active &&
