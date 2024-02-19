@@ -304,7 +304,8 @@ class CurrencySlider extends Component {
 											</EditWrapper>{' '}
 											{Number(this.state.userPL?.['7d']?.total || 0) > 0
 												? '+'
-												: ''}{' '}
+												: ' '}
+											{''}
 											{getSourceDecimals(
 												this.props.balance_history_config?.currency || 'usdt',
 												this.state.userPL?.['7d']?.total

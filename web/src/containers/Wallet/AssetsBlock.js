@@ -435,7 +435,8 @@ const AssetsBlock = ({
 															</EditWrapper>{' '}
 															{Number(userPL?.['7d']?.total || 0) > 0
 																? '+'
-																: ''}{' '}
+																: ' '}
+															{''}
 															{getSourceDecimals(
 																balance_history_config?.currency || 'usdt',
 																userPL?.['7d']?.total

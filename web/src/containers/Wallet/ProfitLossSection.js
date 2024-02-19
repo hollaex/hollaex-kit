@@ -583,7 +583,8 @@ const ProfitLossSection = ({
 							<EditWrapper stringId="PROFIT_LOSS.PL_7_DAY">
 								{STRINGS['PROFIT_LOSS.PL_7_DAY']}
 							</EditWrapper>{' '}
-							{Number(userPL?.['7d']?.total || 0) > 0 ? '+' : ''}{' '}
+							{Number(userPL?.['7d']?.total || 0) > 0 ? '+' : ' '}
+							{''}
 							{getSourceDecimals(
 								balance_history_config?.currency || 'usdt',
 								userPL?.['7d']?.total
