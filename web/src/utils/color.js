@@ -148,6 +148,8 @@ const pushCalculatedColors = (themeData) => {
 		'calculated_base_modal-overlay': Color(themeData['base_background'])
 			.alpha(0.75)
 			.string(),
+		'calculated_quick_trade_input_background': Color(themeData['base_background']).isLight() ? "#e9e9e9" : "#2b2b2b",
+		'calculated_trade_wrapper_background': Color(themeData['base_background']).isLight() ? "#fff" : "#0d0c0c" ,
 		calculated_landing_background: Color(themeData['base_background'])
 			.alpha(0)
 			.string(),

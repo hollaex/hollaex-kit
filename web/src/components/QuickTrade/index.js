@@ -433,7 +433,15 @@ const QuickTrade = ({
 					>
 						<div>
 							<div className="d-flex price-title-wrapper">
-								<div> {STRINGS['QUICK_TRADE_COMPONENT.PRICE_TREND']}</div>
+								<div>
+									<Image
+										iconId="CHART_VIEW"
+										icon={ICONS['CHART_VIEW']}
+										wrapperClassName="quick_trade_price_trend_icon price_trend_title_icon"
+									/>
+
+									{STRINGS['QUICK_TRADE_COMPONENT.PRICE_TREND']}
+								</div>
 								<div onClick={handlePriceTrendClose}>
 									<Image
 										iconId="CLOSE_CROSS"
