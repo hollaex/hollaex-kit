@@ -506,7 +506,7 @@ const QuickTrade = ({
 							</div>
 							<div className="d-flex swap-wrapper-wrapper">
 								<div className="swap-wrapper">
-									<div className="swap-container my-2">
+									<div className="swap-container">
 										<div
 											className="pointer blue-link"
 											onClick={() => onSwap(selectedSource, selectedTarget)}

@@ -250,6 +250,7 @@ const nestedIcons = {
 	STAKING_3: '/assets/images/staking_3.svg',
 	DEFAULT_ICON: '/assets/icons/coin-graphic-not-detected.svg',
 	EXPIRED_ICON: '/assets/images/expired.svg',
+	CHART_VIEW: '/assets/images/chart-view-mobile.svg',
 
 	HAP_ACCOUNT_ICON: '/assets/icons/hap-account-icon.svg',
 	ACCOUNT_SUMMARY: '/assets/icons/account-icon-summary.svg',
