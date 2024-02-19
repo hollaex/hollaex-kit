@@ -394,6 +394,7 @@ const AssetsBlock = ({
 											coins={coins}
 											chartData={chartData}
 											showOpenWallet={false}
+											centerText={true}
 										/>
 									) : (
 										<div>
