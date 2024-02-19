@@ -567,7 +567,9 @@ const ProfitLossSection = ({
 							{getSourceDecimals(
 								balance_history_config?.currency || 'usdt',
 								latestBalance?.total
-							) || '0'}
+							)
+								?.toString()
+								.replace(/\B(?=(\d{3})+(?!\d))/g, ',') || '0'}
 						</div>
 						<div
 							className={
@@ -585,7 +587,9 @@ const ProfitLossSection = ({
 							{getSourceDecimals(
 								balance_history_config?.currency || 'usdt',
 								userPL?.['7d']?.total
-							) || '0'}{' '}
+							)
+								?.toString()
+								.replace(/\B(?=(\d{3})+(?!\d))/g, ',') || '0'}{' '}
 							{balance_history_config?.currency?.toUpperCase() || 'USDT'}
 						</div>
 					</div>
@@ -712,7 +716,9 @@ const ProfitLossSection = ({
 									{getSourceDecimals(
 										balance_history_config?.currency || 'usdt',
 										currentBalance?.total
-									) || '0'}
+									)
+										?.toString()
+										.replace(/\B(?=(\d{3})+(?!\d))/g, ',') || '0'}
 								</div>
 								<div>
 									<div>

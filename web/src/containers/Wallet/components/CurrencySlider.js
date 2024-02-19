@@ -308,6 +308,8 @@ class CurrencySlider extends Component {
 											{getSourceDecimals(
 												this.props.balance_history_config?.currency || 'usdt',
 												this.state.userPL?.['7d']?.total
+													?.toString()
+													.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 											) || '0'}{' '}
 											{this.props.balance_history_config?.currency?.toUpperCase() ||
 												'USDT'}
