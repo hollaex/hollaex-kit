@@ -272,8 +272,7 @@ class CurrencySlider extends Component {
 
 										<div
 											onClick={() => {
-												// handleBalanceHistory(true)
-												// this.props.router.push('wallet/history')
+												this.props.handleBalanceHistory(true);
 											}}
 											style={{ zoom: 0.3, cursor: 'pointer' }}
 											className="highChartColor highChartColorOverview"
