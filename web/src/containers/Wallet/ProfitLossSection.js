@@ -362,6 +362,10 @@ const ProfitLossSection = ({
 								<DatePicker
 									suffixIcon={null}
 									className="pldatePicker"
+									value={
+										customDateValues?.start_date &&
+										moment(customDateValues.start_date)
+									}
 									disabledDate={(current) => {
 										return (
 											current &&
@@ -391,6 +395,10 @@ const ProfitLossSection = ({
 								<DatePicker
 									suffixIcon={null}
 									className="pldatePicker"
+									value={
+										customDateValues?.end_date &&
+										moment(customDateValues.end_date)
+									}
 									disabledDate={(current) => {
 										return (
 											current &&
@@ -429,7 +437,6 @@ const ProfitLossSection = ({
 						<Button
 							onClick={() => {
 								setCustomDate(false);
-								setCustomDateValues();
 							}}
 							style={{
 								backgroundColor: '#5D63FF',
@@ -478,7 +485,6 @@ const ProfitLossSection = ({
 											.toISOString(),
 									});
 									setCustomDate(false);
-									setCustomDateValues();
 								} catch (error) {
 									message.error('Something went wrong');
 								}
