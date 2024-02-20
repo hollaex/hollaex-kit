@@ -2637,13 +2637,33 @@ const fetchUserProfitLossInfo = async (user_id) => {
 	}
 
 	if (results['7d']) {
+		const weightedAverage = (prices, weights) => {
+		  const [sum, weightSum] = weights.reduce(
+		    (acc, w, i) => {
+		      acc[0] = acc[0] + prices[i] * w;
+		      acc[1] = acc[1] + w;
+		      return acc;
+		    },
+		    [0, 0]
+		  );
+		  return sum / weightSum;
+		};
+
 		let total = 0;
+		let percentageValues = [];
+		let prices = [];
 		const assets = Object.keys(results['7d']);
 
 		assets?.forEach(asset => {
 			total += results['7d'][asset].cumulativePNL;
+			if (conversions[asset]) {
+				prices.push(conversions[asset]);
+				percentageValues.push(results['7d'][asset].cumulativePNLPercentage)
+			}
 		});
 		results['7d'].total = total;
+		const weightedPercentage = weightedAverage(prices, percentageValues);
+		results['7d'].totalPercentage = weightedPercentage ? weightedPercentage.toFixed(2) : null;
 	}
 
 	client.setexAsync(`${user_id}user-pl-info`, 3600, JSON.stringify(results));

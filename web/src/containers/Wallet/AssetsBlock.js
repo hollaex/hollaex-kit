@@ -442,8 +442,10 @@ const AssetsBlock = ({
 																userPL?.['7d']?.total
 															)
 																?.toString()
-																.replace(/\B(?=(\d{3})+(?!\d))/g, ',') ||
-																'0'}{' '}
+																.replace(/\B(?=(\d{3})+(?!\d))/g, ',') || '0'}
+															{userPL?.['7d']?.totalPercentage
+																? ` (${userPL?.['7d']?.totalPercentage}) `
+																: ' '}
 															{balance_history_config?.currency?.toUpperCase() ||
 																'USDT'}
 														</div>
