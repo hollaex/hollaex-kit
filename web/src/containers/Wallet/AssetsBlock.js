@@ -394,6 +394,7 @@ const AssetsBlock = ({
 											coins={coins}
 											chartData={chartData}
 											showOpenWallet={false}
+											centerText={true}
 										/>
 									) : (
 										<div>
@@ -434,11 +435,15 @@ const AssetsBlock = ({
 															</EditWrapper>{' '}
 															{Number(userPL?.['7d']?.total || 0) > 0
 																? '+'
-																: ''}{' '}
+																: ' '}
+															{''}
 															{getSourceDecimals(
 																balance_history_config?.currency || 'usdt',
 																userPL?.['7d']?.total
-															) || '0'}{' '}
+															)
+																?.toString()
+																.replace(/\B(?=(\d{3})+(?!\d))/g, ',') ||
+																'0'}{' '}
 															{balance_history_config?.currency?.toUpperCase() ||
 																'USDT'}
 														</div>
