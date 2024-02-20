@@ -3582,10 +3582,10 @@ table th {
       .trade-details-wrapper .day-change-block .ant-radio-group .ant-radio-button-wrapper:last-child {
         border-radius: 0 0.5rem 0.5rem 0; }
       .trade-details-wrapper .day-change-block .ant-radio-group .ant-radio-button-wrapper::before {
-        background: white; }
+        background: var(--labels_secondary-inactive-label-text-graphics); }
     .trade-details-wrapper .day-change-block .ant-radio-group .ant-radio-button-wrapper-checked {
-      border-color: white;
-      color: white; }
+      border-color: var(--labels_secondary-inactive-label-text-graphics);
+      color: var(--labels_secondary-inactive-label-text-graphics); }
 
 .layout-mobile .trade-details-wrapper {
   width: 100%;
@@ -5941,10 +5941,10 @@ table th {
       .trade-details-wrapper .day-change-block .ant-radio-group .ant-radio-button-wrapper:last-child {
         border-radius: 0 0.5rem 0.5rem 0; }
       .trade-details-wrapper .day-change-block .ant-radio-group .ant-radio-button-wrapper::before {
-        background: white; }
+        background: var(--labels_secondary-inactive-label-text-graphics); }
     .trade-details-wrapper .day-change-block .ant-radio-group .ant-radio-button-wrapper-checked {
-      border-color: white;
-      color: white; }
+      border-color: var(--labels_secondary-inactive-label-text-graphics);
+      color: var(--labels_secondary-inactive-label-text-graphics); }
 
 .layout-mobile .trade-details-wrapper {
   width: 100%;
@@ -9619,6 +9619,8 @@ table th {
     position: relative; }
     .quick_trade-container .quick_trade-section_wrapper.fetching {
       color: var(--labels_secondary-inactive-label-text-graphics); }
+  .quick_trade-container .trade-details-wrapper {
+    border-right: 1px solid var(--calculated_super-pale_label-text-graphics); }
   .quick_trade-container .quick_trade-bottom-padded {
     margin-bottom: 2rem; }
   .quick_trade-container .quick_trade-icon {
@@ -9650,7 +9652,7 @@ table th {
     margin-left: 1rem;
     height: 60px; }
     .quick_trade-container .input-group__input:focus, .quick_trade-container .input-group__input:active {
-      background-color: #2b2b2b;
+      background-color: var(--calculated_trade_input_wrapper_background) !important;
       box-shadow: inset 1px 1px 3px #00000029;
       border-radius: 5px;
       border-bottom: 1px solid #ffffff; }
@@ -9733,6 +9735,8 @@ table th {
         color: #b6b6b650;
         letter-spacing: 0.58px;
         text-align: end; }
+      .quick_trade-wrapper .trade-section .inner-content .swap-wrapper-wrapper {
+        align-self: self-start; }
 
 @keyframes linear_loading {
   0% {
@@ -9749,8 +9753,11 @@ table th {
     left: 100%; } }
 
 .layout-mobile .ReactModal__Overlay .ReactModal__Content .dialog-mobile-content {
-  background: #202020;
+  background: var(--calculated_trade_wrapper_background);
   padding: 2.5rem 0 !important; }
+
+.layout-mobile .trade-details-wrapper {
+  border-right: none; }
 
 .layout-mobile .price_trend_title_icon {
   margin-left: 0;

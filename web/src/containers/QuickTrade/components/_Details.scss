@@ -93,8 +93,8 @@ $colors-white: white;
 		.ant-radio-group {
 			.ant-radio-button-wrapper {
 				background: transparent;
-				color: $colors-black;
-				border-color: $colors-black;
+				color: $colors-deactivate;
+				border-color: $colors-deactivate;
 				height: 28px;
 				padding: 0 12px;
 				line-height: 24px;
@@ -105,12 +105,12 @@ $colors-white: white;
 					border-radius: 0 0.5rem 0.5rem 0;
 				}
 				&::before {
-					background: $colors-white;
+					background: $colors-deactivate;
 				}
 			}
 			.ant-radio-button-wrapper-checked {
-				border-color: $colors-white;
-				color: $colors-white;
+				border-color: $colors-deactivate;
+				color: $colors-deactivate;
 			}
 		}
 	}

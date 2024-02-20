@@ -60,6 +60,12 @@ $close-icon--height: 2rem;
 		width: 100%;
 		position: relative;
 	}
+
+
+	.trade-details-wrapper {
+		border-right: 1px solid $colors-super-pale-black;
+	}
+	
 	.quick_trade-bottom-padded {
 		margin-bottom: $section--margin-bottom;
 	}
@@ -102,7 +108,7 @@ $close-icon--height: 2rem;
 		height: 60px;
 		&:focus,
 		&:active {
-			background-color: #2b2b2b;
+			background-color: $quick_trade_input_wrapper_background !important;
 			box-shadow: inset 1px 1px 3px #00000029;
 			border-radius: 5px;
 			border-bottom: 1px solid #ffffff;
@@ -180,7 +186,7 @@ $close-icon--height: 2rem;
 		width: 100%;
 		padding: 3rem 4.5rem;
 		background: $quick_trade_wrapper_background;
-		
+
 		.inner-content {
 			width: 400px;
 			height: 390px;
@@ -219,6 +225,9 @@ $close-icon--height: 2rem;
 				letter-spacing: 0.58px;
 				text-align: end;
 			}
+			.swap-wrapper-wrapper {
+				align-self: self-start;
+			}
 		}
 	}
 }
@@ -246,10 +255,14 @@ $close-icon--height: 2rem;
 	.ReactModal__Overlay {
 		.ReactModal__Content {
 			.dialog-mobile-content {
-				background: #202020;
+				background: $quick_trade_wrapper_background;
 				padding: 2.5rem 0 !important;
 			}
 		}
+	}
+
+	.trade-details-wrapper {
+		border-right: none;
 	}
 
 	.price_trend_title_icon {
