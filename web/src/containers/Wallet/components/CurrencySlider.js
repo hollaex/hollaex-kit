@@ -313,7 +313,7 @@ class CurrencySlider extends Component {
 													.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 											) || '0'}
 											{this.state.userPL?.['7d']?.totalPercentage
-												? ` (${this.state.userPL?.['7d']?.totalPercentage}) `
+												? ` (${this.state.userPL?.['7d']?.totalPercentage}%) `
 												: ' '}
 											{this.props.balance_history_config?.currency?.toUpperCase() ||
 												'USDT'}
