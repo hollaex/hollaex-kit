@@ -362,6 +362,10 @@ const ProfitLossSection = ({
 								<DatePicker
 									suffixIcon={null}
 									className="pldatePicker"
+									value={
+										customDateValues?.start_date &&
+										moment(customDateValues.start_date)
+									}
 									disabledDate={(current) => {
 										return (
 											current &&
@@ -391,6 +395,10 @@ const ProfitLossSection = ({
 								<DatePicker
 									suffixIcon={null}
 									className="pldatePicker"
+									value={
+										customDateValues?.end_date &&
+										moment(customDateValues.end_date)
+									}
 									disabledDate={(current) => {
 										return (
 											current &&
@@ -429,7 +437,6 @@ const ProfitLossSection = ({
 						<Button
 							onClick={() => {
 								setCustomDate(false);
-								setCustomDateValues();
 							}}
 							style={{
 								backgroundColor: '#5D63FF',
@@ -478,7 +485,6 @@ const ProfitLossSection = ({
 											.toISOString(),
 									});
 									setCustomDate(false);
-									setCustomDateValues();
 								} catch (error) {
 									message.error('Something went wrong');
 								}
@@ -567,7 +573,9 @@ const ProfitLossSection = ({
 							{getSourceDecimals(
 								balance_history_config?.currency || 'usdt',
 								latestBalance?.total
-							) || '0'}
+							)
+								?.toString()
+								.replace(/\B(?=(\d{3})+(?!\d))/g, ',') || '0'}
 						</div>
 						<div
 							className={
@@ -581,11 +589,17 @@ const ProfitLossSection = ({
 							<EditWrapper stringId="PROFIT_LOSS.PL_7_DAY">
 								{STRINGS['PROFIT_LOSS.PL_7_DAY']}
 							</EditWrapper>{' '}
-							{Number(userPL?.['7d']?.total || 0) > 0 ? '+' : ''}{' '}
+							{Number(userPL?.['7d']?.total || 0) > 0 ? '+' : ' '}
+							{''}
 							{getSourceDecimals(
 								balance_history_config?.currency || 'usdt',
 								userPL?.['7d']?.total
-							) || '0'}{' '}
+							)
+								?.toString()
+								.replace(/\B(?=(\d{3})+(?!\d))/g, ',') || '0'}
+							{userPL?.['7d']?.totalPercentage
+								? ` (${userPL?.['7d']?.totalPercentage}%) `
+								: ' '}
 							{balance_history_config?.currency?.toUpperCase() || 'USDT'}
 						</div>
 					</div>
@@ -712,7 +726,9 @@ const ProfitLossSection = ({
 									{getSourceDecimals(
 										balance_history_config?.currency || 'usdt',
 										currentBalance?.total
-									) || '0'}
+									)
+										?.toString()
+										.replace(/\B(?=(\d{3})+(?!\d))/g, ',') || '0'}
 								</div>
 								<div>
 									<div>

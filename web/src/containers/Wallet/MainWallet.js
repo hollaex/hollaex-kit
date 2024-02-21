@@ -221,6 +221,7 @@ class Wallet extends Component {
 						navigate={this.goToPage}
 						coins={coins}
 						searchResult={this.getMobileSlider(coins, oraclePrices)}
+						router={this.props.router}
 					/>
 				),
 			},

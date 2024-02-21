@@ -82,6 +82,9 @@ And ('Bob transferred a minimal amount of XHTT to Alice',()=>{
     cy.get('#method-email-1').click()
     cy.get(':nth-child(2) > :nth-child(1) > :nth-child(1) > .field-content > .field-children')
     .type('tester+alice@hollaex.email')
+    cy.get('.with-notification > :nth-child(1) > :nth-child(1) > .field-content > .field-children > [style="display: flex;"] > .input_field-input')
+    .clear()
+    .type('0.0001')
     cy.get('.holla-button').click()
     cy.get('.review-crypto-amount > :nth-child(1)')
     .should('contain','0.0001 XHT')//changed
@@ -400,6 +403,9 @@ And ('Bob transferred a minimal amount of XHTT to wrong Alice address',()=>{
     cy.get('#method-email-1').click()
     cy.get(':nth-child(2) > :nth-child(1) > :nth-child(1) > .field-content > .field-children')
     .type('Iamnotalice@hollaex.email')
+    cy.get('.with-notification > :nth-child(1) > :nth-child(1) > .field-content > .field-children > [style="display: flex;"] > .input_field-input')
+    .clear()
+    .type('0.0001')
     cy.get('.holla-button').click()
     cy.get('.review-crypto-amount > :nth-child(1)')
     .should('contain','0.0001 XHT')//changed
@@ -436,6 +442,9 @@ And ('Bob transferred a minimal amount of XHTT to deleted Alice address',()=>{
     cy.get('#method-email-1').click()
     cy.get(':nth-child(2) > :nth-child(1) > :nth-child(1) > .field-content > .field-children')
     .type('tester+aliceDeleted@hollaex.email')
+    cy.get('.with-notification > :nth-child(1) > :nth-child(1) > .field-content > .field-children > [style="display: flex;"] > .input_field-input')
+    .clear()
+    .type('0.0001')
     cy.get('.holla-button').click()
     cy.get('.review-crypto-amount > :nth-child(1)')
     .should('contain','0.0001 XHT')//changed
