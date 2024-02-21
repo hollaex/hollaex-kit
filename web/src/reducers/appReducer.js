@@ -78,8 +78,6 @@ import {
 	overWriteCoinNames,
 } from 'utils/reducer';
 
-import { formatToSimple } from 'utils/currency';
-
 const EMPTY_NOTIFICATION = {
 	type: '',
 	message: '',
@@ -384,7 +382,6 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 						? temp.close
 						: 0;
 					temp.volume += parseFloat(pairTrade?.size ?? 0);
-					temp.volume = Number(formatToSimple(temp.volume))
 					if (pairTrade?.side === 'buy' && pairTrade?.price > temp.high) {
 						temp.high = pairTrade?.price;
 					}
