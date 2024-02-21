@@ -40,7 +40,6 @@ import { unique } from 'utils/data';
 import DustSection from './DustSection';
 import moment from 'moment';
 import _toLower from 'lodash/toLower';
-import BigNumber from 'bignumber.js';
 
 const AssetsBlock = ({
 	coins,
