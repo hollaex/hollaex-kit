@@ -374,6 +374,7 @@ const AssetsBlock = ({
 								? 'wallet-assets_block'
 								: 'wallet-assets_block empty-wallet-assets_block'
 						}
+						style={{ overflowY: 'unset' }}
 					>
 						<div className="d-flex align-items-center justify-content-between">
 							<div className="d-flex align-items-center">
