@@ -14,6 +14,10 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import { getMiniCharts } from 'actions/chartAction';
 import AssetsList from 'containers/DigitalAssets/components/AssetsList';
 
+function onHandleInitialLoading(ms) {
+	return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 class AssetsWrapper extends Component {
 	constructor(props) {
 		super(props);
@@ -25,6 +29,7 @@ class AssetsWrapper extends Component {
 			page: 0,
 			count: 0,
 			searchValue: '',
+			isLoading: true,
 		};
 	}
 
@@ -123,7 +128,7 @@ class AssetsWrapper extends Component {
 		this.constructData(this.state.page);
 	};
 
-	componentDidMount() {
+	async componentDidMount() {
 		const { coins } = this.props;
 		const { page, searchValue } = this.state;
 		this.constructData(page, searchValue);
@@ -134,6 +139,8 @@ class AssetsWrapper extends Component {
 			this.setState({ chartData: chartValues });
 			this.getCoinsData(coinsList, chartValues);
 		});
+		await onHandleInitialLoading(15 * 100);
+		this.setState({ isLoading: false });
 	}
 
 	componentDidUpdate(prevProps) {
@@ -218,15 +225,8 @@ class AssetsWrapper extends Component {
 		}
 	};
 
-	handleAssetsClick = (pair) => {
-		const { router } = this.props;
-		if (pair && router) {
-			router.push(`/assets/coin/${pair.split('-')[0]}`);
-		}
-	};
-	
 	render() {
-		const { data, page, pageSize, count } = this.state;
+		const { data, page, pageSize, count, isLoading } = this.state;
 
 		return (
 			<div>
@@ -243,9 +243,8 @@ class AssetsWrapper extends Component {
 					</div>
 				</div>
 				<AssetsList
-					loading={!data.length}
+					loading={isLoading ? true : !data.length}
 					coinsListData={data}
-					handleClick={this.handleAssetsClick}
 					page={page}
 					pageSize={pageSize}
 					count={count}
