@@ -198,16 +198,6 @@ const AssetsBlock = ({
 		],
 	};
 
-	const getSourceDecimals = (symbol, value) => {
-		const incrementUnit = coins[symbol].increment_unit;
-		const decimalPoint = new BigNumber(incrementUnit).dp();
-		const sourceAmount = new BigNumber(value || 0)
-			.decimalPlaces(decimalPoint)
-			.toNumber();
-
-		return sourceAmount;
-	};
-
 	const handleClickAmount = () => {
 		if (mode === WALLET_SORT.AMOUNT) {
 			toggleSort();
@@ -374,6 +364,7 @@ const AssetsBlock = ({
 								? 'wallet-assets_block'
 								: 'wallet-assets_block empty-wallet-assets_block'
 						}
+						style={{ overflowY: 'unset' }}
 					>
 						<div className="d-flex align-items-center justify-content-between">
 							<div className="d-flex align-items-center">
@@ -437,17 +428,9 @@ const AssetsBlock = ({
 																? '+'
 																: ' '}
 															{''}
-															{getSourceDecimals(
-																balance_history_config?.currency || 'usdt',
-																userPL?.['7d']?.total
-															)
-																?.toString()
-																.replace(/\B(?=(\d{3})+(?!\d))/g, ',') || '0'}
 															{userPL?.['7d']?.totalPercentage
-																? ` (${userPL?.['7d']?.totalPercentage}%) `
+																? `${userPL?.['7d']?.totalPercentage}% `
 																: ' '}
-															{balance_history_config?.currency?.toUpperCase() ||
-																'USDT'}
 														</div>
 													)}
 												</div>
