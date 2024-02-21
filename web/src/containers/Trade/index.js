@@ -536,7 +536,7 @@ class Trade extends PureComponent {
 						{strings['24H_VAL']}
 					</div>
 					<span className="trade_header_values">
-						{tickers?.[pair]?.volume}
+						{formatCurrency(tickers?.[pair]?.volume)}
 						&nbsp;
 						{pairs[0]}
 					</span>

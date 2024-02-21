@@ -2402,7 +2402,7 @@ const getUserBalanceHistory = (opts = {
 					const balance = await getUserBalanceByKitId(opts.user_id);
 
 					for (const key of Object.keys(balance)) {
-						if (key.includes('available') && balance[key]) {
+						if (key.includes('balance') && balance[key]) {
 							let symbol = key?.split('_')?.[0];
 							symbols[symbol] = balance[key];
 						}
@@ -2481,7 +2481,7 @@ const fetchUserProfitLossInfo = async (user_id) => {
 	const balance = await getUserBalanceByKitId(user_id);
 
 	for (const key of Object.keys(balance)) {
-		if (key.includes('available') && balance[key]) {
+		if (key.includes('balance') && balance[key]) {
 			let symbol = key?.split('_')?.[0];
 			symbols[symbol] = balance[key];
 		}
@@ -2662,7 +2662,7 @@ const fetchUserProfitLossInfo = async (user_id) => {
 			}
 		});
 		results['7d'].total = total;
-		const weightedPercentage = weightedAverage(prices, percentageValues);
+		const weightedPercentage = weightedAverage(percentageValues, prices);
 		results['7d'].totalPercentage = weightedPercentage ? weightedPercentage.toFixed(2) : null;
 	}
 
