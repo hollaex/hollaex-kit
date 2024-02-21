@@ -2662,7 +2662,7 @@ const fetchUserProfitLossInfo = async (user_id) => {
 			}
 		});
 		results['7d'].total = total;
-		const weightedPercentage = weightedAverage(prices, percentageValues);
+		const weightedPercentage = weightedAverage(percentageValues, prices);
 		results['7d'].totalPercentage = weightedPercentage ? weightedPercentage.toFixed(2) : null;
 	}
 
