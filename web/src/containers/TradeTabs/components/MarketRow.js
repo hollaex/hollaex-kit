@@ -108,7 +108,7 @@ class MarketRow extends Component {
 									</div>
 								)}
 								<div>
-									<span className="title-font ml-1">{ticker.volume}</span>
+									<span className="title-font ml-1">{formatToCurrency(ticker.volume)}</span>
 									<span className="title-font ml-2">{pair_base_display}</span>
 								</div>
 							</div>
