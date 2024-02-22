@@ -150,7 +150,7 @@ class InputGroup extends React.PureComponent {
 												>
 													<Coin
 														iconId={icon_id}
-														type={window.innerWidth > 768 ? 'CS9' : 'CS10'}
+														type={window.innerWidth > 768 ? 'CS9' : 'CS11'}
 													/>
 												</div>
 												<span className="ml-3 mr-6">{display_name}</span>

@@ -43,8 +43,13 @@ const Header = ({ icons: ICONS, viewTrendsClick }) => {
 			</div>
 
 			{isMobile && (
-				<div className='view-trend-text' onClick={viewTrendsClick}>
+				<div className="view-trend-text" onClick={viewTrendsClick}>
 					{STRINGS['QUICK_TRADE_COMPONENT.VIEW_TREND']}
+					<Image
+						iconId="CHART_VIEW"
+						icon={ICONS['CHART_VIEW']}
+						wrapperClassName="quick_trade_price_trend_icon"
+					/>
 				</div>
 			)}
 			{!isMobile && (

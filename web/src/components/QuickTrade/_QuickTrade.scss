@@ -37,8 +37,17 @@ $close-icon--height: 2rem;
 	margin: 0 1rem 0 0;
 }
 
+.quick_trade_price_trend_icon {
+	@include size(1.75rem);
+	margin: 0 0 0 1rem;
+	svg {
+		fill: $link_2;
+	}
+}
+
 .close-modal-icon {
 	@include size($close-icon--height);
+	margin-right: 2rem;
 }
 
 .quick_trade-container {
@@ -51,6 +60,11 @@ $close-icon--height: 2rem;
 		width: 100%;
 		position: relative;
 	}
+
+	.trade-details-wrapper {
+		border-right: 1px solid $colors-super-pale-black;
+	}
+
 	.quick_trade-bottom-padded {
 		margin-bottom: $section--margin-bottom;
 	}
@@ -74,7 +88,7 @@ $close-icon--height: 2rem;
 	}
 
 	.quick-trade-input {
-		background: #333333;
+		background: $quick-trade-container;
 		padding: 2rem 1.7rem;
 		border-radius: 10px;
 		width: 425px;
@@ -87,13 +101,13 @@ $close-icon--height: 2rem;
 
 	.input-group__input {
 		text-align: right;
-		color: #b6b6b6;
+		color: $colors-main-black;
 		font-size: 1.6rem;
-		margin-left: 15px;
+		margin-left: 1rem;
 		height: 60px;
 		&:focus,
 		&:active {
-			background-color: #2b2b2b;
+			background-color: $app-light-background !important;
 			box-shadow: inset 1px 1px 3px #00000029;
 			border-radius: 5px;
 			border-bottom: 1px solid #ffffff;
@@ -125,7 +139,7 @@ $close-icon--height: 2rem;
 .quick_trade-wrapper {
 	min-width: $wrapper--min-width;
 	max-width: $wrapper--max-width;
-	background-color: $quick-trade-block-background;
+	// background-color: $quick-trade-block-background;
 	// margin: 3rem auto;
 	height: fit-content;
 	height: 664px;
@@ -170,13 +184,8 @@ $close-icon--height: 2rem;
 	.trade-section {
 		width: 100%;
 		padding: 3rem 4.5rem;
-		background: transparent
-			linear-gradient(
-				180deg,
-				$quick-trade-block-gradient-top 0%,
-				$quick-trade-block-gradient-bottom 100%
-			)
-			0% 0% no-repeat padding-box;
+		// background: $quick_trade_wrapper_background;
+
 		.inner-content {
 			width: 400px;
 			height: 390px;
@@ -215,6 +224,9 @@ $close-icon--height: 2rem;
 				letter-spacing: 0.58px;
 				text-align: end;
 			}
+			.swap-wrapper-wrapper {
+				align-self: self-start;
+			}
 		}
 	}
 }
@@ -239,9 +251,31 @@ $close-icon--height: 2rem;
 }
 
 .layout-mobile {
+	.ReactModal__Overlay {
+		.ReactModal__Content {
+			.dialog-mobile-content {
+				padding: 2.5rem 0 !important;
+				display: block;
+			}
+		}
+	}
+
+	.trade-details-wrapper {
+		border-right: none;
+	}
+
+	.price_trend_title_icon {
+		margin-left: 0;
+		margin-right: 1rem;
+		svg {
+			fill: $colors-main-black;
+		}
+	}
+
 	.quick_trade-section_wrapper {
 		.quick-trade-header-wrapper {
 			justify-content: center !important;
+			font-size: 2.875rem;
 		}
 		.review-block-wrapper {
 			.input_block-title {
@@ -258,7 +292,8 @@ $close-icon--height: 2rem;
 		margin: 0;
 
 		.input-group__input {
-			height: 50px;
+			height: 60px;
+			font-size: 3.5rem;
 		}
 	}
 	.quick_trade-wrapper {
@@ -271,10 +306,10 @@ $close-icon--height: 2rem;
 		.trade-details-wrapper {
 			width: 100%;
 			.pairs {
-				font-size: 1.6rem;
+				font-size: 2.25rem;
 			}
 			.fullname {
-				font-size: 1rem;
+				font-size: 1.875rem;
 			}
 			.trade-details-content {
 				width: 100%;
@@ -300,7 +335,7 @@ $close-icon--height: 2rem;
 				}
 				.btn-wrapper {
 					align-items: center !important;
-					margin-top: 15rem;
+					margin-top: 5rem;
 				}
 				.footer-text {
 					font-size: $font-size-mobile-txt !important;
@@ -311,10 +346,43 @@ $close-icon--height: 2rem;
 		}
 
 		.quick-trade-input {
-			background: #333333;
 			padding: 2rem 1.7rem;
 			border-radius: 10px;
 			width: 100%;
+			min-height: 19.25rem;
+			font-size: 2.25rem;
+		}
+
+		.input-group__select {
+			font-size: 2.5rem;
+			min-height: 60px;
+			padding: 1rem 0.5rem;
+			width: 15rem;
+			.ant-select-selector {
+				margin-top: 0.375rem;
+				height: 5rem;
+			}
+		}
+
+		.input-group__coin-icons-wrap_mobile-view {
+			margin-top: 0.375rem;
+		}
+
+		.balance-text {
+			font-size: 2.125rem;
+		}
+
+		.field-error-content {
+			font-size: 1.375rem;
+			text-align: right;
+		}
+
+		.swap-container {
+			font-size: 2.125rem;
+			margin: 1rem auto;
+			.pointer {
+				margin-left: 1.25rem !important;
+			}
 		}
 	}
 	.swap-wrapper,
@@ -328,8 +396,8 @@ $close-icon--height: 2rem;
 		font-size: 2.5rem;
 	}
 
-	.view-trend-text{
-		font-size: 1.5rem;
+	.view-trend-text {
+		font-size: 2.125rem;
 		align-self: center;
 		color: $link_2;
 	}
@@ -353,7 +421,7 @@ $close-icon--height: 2rem;
 
 		.trade-details-wrapper {
 			width: 100%;
-			padding: 0 0 15px;
+			padding: 0 0 3rem;
 			.trade-details-content {
 				width: 100%;
 				height: 100%;
@@ -397,4 +465,5 @@ $close-icon--height: 2rem;
 .swap-wrapper {
 	width: 310px;
 	padding: 0 1rem;
+	margin: 0.5rem auto;
 }
