@@ -670,12 +670,12 @@ const getAllUsersAdmin = (opts = {
 		order: [ordering]
 	};
 	query.attributes = {
-		exclude: ['balance', 'password', 'updated_at']
+		exclude: ['balance', 'password']
 	};
 
 	if (opts.search) {
 		query.attributes = {
-			exclude: ['balance', 'password', 'updated_at']
+			exclude: ['balance', 'password']
 		};
 		if (opts.id) {
 			query.where.id = opts.id;
