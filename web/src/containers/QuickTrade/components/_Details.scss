@@ -4,9 +4,10 @@ $colors-white: white;
 	width: 100%;
 	padding: 3.3rem 3rem 2.5rem;
 	font-family: $en--font-family;
-	background-color: $quick_trade_wrapper_background;
+	background-color: $quick-trade-background;
 
 	.trade-details-content {
+        position: relative;
 		height: 450px;
 		.pb-24 {
 			padding-bottom: 24px;
@@ -64,6 +65,11 @@ $colors-white: white;
 			opacity: 1;
 			white-space: nowrap;
 		}
+
+        // .graph-row {
+        //     position: absolute;
+        //     margin-top: 2rem;
+        // }
 	}
 
 	.f-size-16 {
@@ -98,6 +104,7 @@ $colors-white: white;
 				height: 28px;
 				padding: 0 12px;
 				line-height: 24px;
+				opacity: 0.3;
 				&:first-child {
 					border-radius: 0.5rem 0 0 0.5rem;
 				}
@@ -109,6 +116,7 @@ $colors-white: white;
 				}
 			}
 			.ant-radio-button-wrapper-checked {
+				opacity: 1;
 				border-color: $colors-deactivate;
 				color: $colors-deactivate;
 			}

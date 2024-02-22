@@ -61,11 +61,10 @@ $close-icon--height: 2rem;
 		position: relative;
 	}
 
-
 	.trade-details-wrapper {
 		border-right: 1px solid $colors-super-pale-black;
 	}
-	
+
 	.quick_trade-bottom-padded {
 		margin-bottom: $section--margin-bottom;
 	}
@@ -89,7 +88,7 @@ $close-icon--height: 2rem;
 	}
 
 	.quick-trade-input {
-		background: $quick-trade-input-background;
+		background: $quick-trade-container;
 		padding: 2rem 1.7rem;
 		border-radius: 10px;
 		width: 425px;
@@ -102,13 +101,13 @@ $close-icon--height: 2rem;
 
 	.input-group__input {
 		text-align: right;
-		color: #b6b6b6;
+		color: $colors-main-black;
 		font-size: 1.6rem;
 		margin-left: 1rem;
 		height: 60px;
 		&:focus,
 		&:active {
-			background-color: $quick_trade_input_wrapper_background !important;
+			background-color: $app-light-background !important;
 			box-shadow: inset 1px 1px 3px #00000029;
 			border-radius: 5px;
 			border-bottom: 1px solid #ffffff;
@@ -140,7 +139,7 @@ $close-icon--height: 2rem;
 .quick_trade-wrapper {
 	min-width: $wrapper--min-width;
 	max-width: $wrapper--max-width;
-	background-color: $quick-trade-block-background;
+	// background-color: $quick-trade-block-background;
 	// margin: 3rem auto;
 	height: fit-content;
 	height: 664px;
@@ -185,7 +184,7 @@ $close-icon--height: 2rem;
 	.trade-section {
 		width: 100%;
 		padding: 3rem 4.5rem;
-		background: $quick_trade_wrapper_background;
+		// background: $quick_trade_wrapper_background;
 
 		.inner-content {
 			width: 400px;
@@ -255,8 +254,8 @@ $close-icon--height: 2rem;
 	.ReactModal__Overlay {
 		.ReactModal__Content {
 			.dialog-mobile-content {
-				background: $quick_trade_wrapper_background;
 				padding: 2.5rem 0 !important;
+				display: block;
 			}
 		}
 	}
@@ -269,7 +268,7 @@ $close-icon--height: 2rem;
 		margin-left: 0;
 		margin-right: 1rem;
 		svg {
-			fill: #fff;
+			fill: $colors-main-black;
 		}
 	}
 
@@ -397,7 +396,7 @@ $close-icon--height: 2rem;
 		font-size: 2.5rem;
 	}
 
-	.view-trend-text{
+	.view-trend-text {
 		font-size: 2.125rem;
 		align-self: center;
 		color: $link_2;

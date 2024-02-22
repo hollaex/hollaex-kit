@@ -190,7 +190,7 @@ const Details = ({
 								</Radio.Button>
 							</Radio.Group>
 						</div>
-						<div className="d-flex">
+						<div className="d-flex graph-row">
 							<div>
 								<div className="sub-title caps">
 									{STRINGS['MARKETS_TABLE.LAST_PRICE']}

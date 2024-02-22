@@ -3512,8 +3512,9 @@ table th {
   width: 100%;
   padding: 3.3rem 3rem 2.5rem;
   font-family: "Open Sans";
-  background-color: var(--calculated_trade_wrapper_background); }
+  background-color: var(--base_background); }
   .trade-details-wrapper .trade-details-content {
+    position: relative;
     height: 450px; }
     .trade-details-wrapper .trade-details-content .pb-24 {
       padding-bottom: 24px; }
@@ -3576,7 +3577,8 @@ table th {
       border-color: var(--labels_secondary-inactive-label-text-graphics);
       height: 28px;
       padding: 0 12px;
-      line-height: 24px; }
+      line-height: 24px;
+      opacity: 0.3; }
       .trade-details-wrapper .day-change-block .ant-radio-group .ant-radio-button-wrapper:first-child {
         border-radius: 0.5rem 0 0 0.5rem; }
       .trade-details-wrapper .day-change-block .ant-radio-group .ant-radio-button-wrapper:last-child {
@@ -3584,6 +3586,7 @@ table th {
       .trade-details-wrapper .day-change-block .ant-radio-group .ant-radio-button-wrapper::before {
         background: var(--labels_secondary-inactive-label-text-graphics); }
     .trade-details-wrapper .day-change-block .ant-radio-group .ant-radio-button-wrapper-checked {
+      opacity: 1;
       border-color: var(--labels_secondary-inactive-label-text-graphics);
       color: var(--labels_secondary-inactive-label-text-graphics); }
 
@@ -5871,8 +5874,9 @@ table th {
   width: 100%;
   padding: 3.3rem 3rem 2.5rem;
   font-family: "Open Sans";
-  background-color: var(--calculated_trade_wrapper_background); }
+  background-color: var(--base_background); }
   .trade-details-wrapper .trade-details-content {
+    position: relative;
     height: 450px; }
     .trade-details-wrapper .trade-details-content .pb-24 {
       padding-bottom: 24px; }
@@ -5935,7 +5939,8 @@ table th {
       border-color: var(--labels_secondary-inactive-label-text-graphics);
       height: 28px;
       padding: 0 12px;
-      line-height: 24px; }
+      line-height: 24px;
+      opacity: 0.3; }
       .trade-details-wrapper .day-change-block .ant-radio-group .ant-radio-button-wrapper:first-child {
         border-radius: 0.5rem 0 0 0.5rem; }
       .trade-details-wrapper .day-change-block .ant-radio-group .ant-radio-button-wrapper:last-child {
@@ -5943,6 +5948,7 @@ table th {
       .trade-details-wrapper .day-change-block .ant-radio-group .ant-radio-button-wrapper::before {
         background: var(--labels_secondary-inactive-label-text-graphics); }
     .trade-details-wrapper .day-change-block .ant-radio-group .ant-radio-button-wrapper-checked {
+      opacity: 1;
       border-color: var(--labels_secondary-inactive-label-text-graphics);
       color: var(--labels_secondary-inactive-label-text-graphics); }
 
@@ -9638,7 +9644,7 @@ table th {
   .quick_trade-container .visit-asset-info {
     text-decoration: underline; }
   .quick_trade-container .quick-trade-input {
-    background: var(--calculated_quick_trade_input_background);
+    background: var(--base_wallet-sidebar-and-popup);
     padding: 2rem 1.7rem;
     border-radius: 10px;
     width: 425px; }
@@ -9647,12 +9653,12 @@ table th {
     border-radius: 5px; }
   .quick_trade-container .input-group__input {
     text-align: right;
-    color: #b6b6b6;
+    color: var(--labels_important-active-labels-text-graphics);
     font-size: 1.6rem;
     margin-left: 1rem;
     height: 60px; }
     .quick_trade-container .input-group__input:focus, .quick_trade-container .input-group__input:active {
-      background-color: var(--calculated_trade_input_wrapper_background) !important;
+      background-color: var(--base_secondary-navigation-bar) !important;
       box-shadow: inset 1px 1px 3px #00000029;
       border-radius: 5px;
       border-bottom: 1px solid #ffffff; }
@@ -9675,7 +9681,6 @@ table th {
 .quick_trade-wrapper {
   min-width: 1000px;
   max-width: 1200px;
-  background-color: var(--calculated_quick_trade-bg);
   height: fit-content;
   height: 664px;
   border: 1px solid var(--calculated_super-pale_label-text-graphics);
@@ -9703,8 +9708,7 @@ table th {
     font-family: "Raleway Medium"; }
   .quick_trade-wrapper .trade-section {
     width: 100%;
-    padding: 3rem 4.5rem;
-    background: var(--calculated_trade_wrapper_background); }
+    padding: 3rem 4.5rem; }
     .quick_trade-wrapper .trade-section .inner-content {
       width: 400px;
       height: 390px;
@@ -9753,8 +9757,8 @@ table th {
     left: 100%; } }
 
 .layout-mobile .ReactModal__Overlay .ReactModal__Content .dialog-mobile-content {
-  background: var(--calculated_trade_wrapper_background);
-  padding: 2.5rem 0 !important; }
+  padding: 2.5rem 0 !important;
+  display: block; }
 
 .layout-mobile .trade-details-wrapper {
   border-right: none; }
@@ -9763,7 +9767,7 @@ table th {
   margin-left: 0;
   margin-right: 1rem; }
   .layout-mobile .price_trend_title_icon svg {
-    fill: #fff; }
+    fill: var(--labels_important-active-labels-text-graphics); }
 
 .layout-mobile .quick_trade-section_wrapper .quick-trade-header-wrapper {
   justify-content: center !important;
