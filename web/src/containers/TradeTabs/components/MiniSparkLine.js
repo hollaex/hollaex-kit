@@ -16,7 +16,7 @@ const DEFAULT_CHART_OPTIONS = {
 		styledMode: true,
 	},
 	xAxis: {
-		visible: true,
+		visible: false,
 		minorTickInterval: 'auto',
 		labels: {
 			enabled: false,
@@ -25,7 +25,7 @@ const DEFAULT_CHART_OPTIONS = {
 		maxPadding: 0.05,
 	},
 	yAxis: {
-		visible: true,
+		visible: false,
 		minorTickInterval: 'auto',
 		tickAmount: 10,
 		labels: {

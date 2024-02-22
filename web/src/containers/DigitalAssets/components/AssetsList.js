@@ -8,6 +8,7 @@ import {
 	DIGITAL_ASSETS_SORT as SORT,
 	toggleDigitalAssetsSort as toggleSort,
 	setDigitalAssetsSortModeChange as setSortModeChange,
+	toggleSortSevenDay,
 } from 'actions/appActions';
 import { EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
@@ -16,7 +17,6 @@ import AssetsRow from './AssetsRow';
 
 const AssetsList = ({
 	coinsListData,
-	handleClick,
 	page,
 	pageSize,
 	count,
@@ -27,18 +27,20 @@ const AssetsList = ({
 	mode,
 	is_descending,
 	toggleSort,
+	toggleSortSevenDay,
 	setSortModeChange,
 	quicktrade,
 	pairs,
-	pinned_assets
+	pinned_assets,
+	icons,
 }) => {
 	const [isOndDaySort, setIsOneDaySort] = useState(false);
 	const handleClickChange = () => {
 		setIsOneDaySort(false);
-		if (mode === SORT.CHANGE) {
+		if (mode === SORT.CHANGESEVENDAY) {
 			toggleSort();
 		} else {
-			setSortModeChange();
+			toggleSortSevenDay();
 		}
 	};
 
@@ -72,33 +74,35 @@ const AssetsList = ({
 	const movePinnedItems = (array) => {
 		const pinnedItems = pinned_assets;
 		const sortedArray = array.sort((a, b) => {
-		// Find the first ID that differs between the two objects
-		const id = pinnedItems.find(i => a.symbol !== b.symbol);
-	
-		if (id) {
-			// If a has the ID, move it to the top
-			return a.symbol === id ? -1 : 1;
-		}
-	
-		return 0;
+			// Find the first ID that differs between the two objects
+			const id = pinnedItems.find((i) => a.symbol !== b.symbol);
+
+			if (id) {
+				// If a has the ID, move it to the top
+				return a.symbol === id ? -1 : 1;
+			}
+
+			return 0;
 		});
 		return sortedArray;
-  	};
+	};
 
 	const getSortedList = () => {
-		return movePinnedItems(coinsListData.sort((a, b) => {
-			const aVal = parseFloat(
-				isOndDaySort
-					? a.oneDayPriceDifferencePercenVal
-					: a.priceDifferencePercentVal
-			);
-			const bVal = parseFloat(
-				isOndDaySort
-					? b.oneDayPriceDifferencePercenVal
-					: b.priceDifferencePercentVal
-			);
-			return is_descending ? bVal - aVal : aVal - bVal;
-		}));
+		return movePinnedItems(
+			coinsListData.sort((a, b) => {
+				const aVal = parseFloat(
+					isOndDaySort
+						? a.oneDayPriceDifferencePercenVal
+						: a.priceDifferencePercentVal
+				);
+				const bVal = parseFloat(
+					isOndDaySort
+						? b.oneDayPriceDifferencePercenVal
+						: b.priceDifferencePercentVal
+				);
+				return is_descending ? bVal - aVal : aVal - bVal;
+			})
+		);
 	};
 
 	const totalPages = Math.ceil(count / pageSize);
@@ -150,7 +154,7 @@ const AssetsList = ({
 									<EditWrapper stringId="MARKETS_TABLE.CHANGE_7D">
 										{STRINGS['MARKETS_TABLE.CHANGE_7D']}
 									</EditWrapper>
-									{renderCaret(SORT.CHANGE)}
+									{renderCaret(SORT.CHANGESEVENDAY)}
 								</div>
 							</th>
 							<th>
@@ -172,11 +176,11 @@ const AssetsList = ({
 							<AssetsRow
 								index={index}
 								key={coinData.code}
-								handleClick={handleClick}
 								coinData={coinData}
 								loading={loading}
 								quicktrade={quicktrade}
 								pairs={pairs}
+								icons={icons}
 							/>
 						))}
 					</tbody>
@@ -202,7 +206,7 @@ const mapStateToProps = ({
 		coins: coinsData,
 		quicktrade,
 		pairs,
-		pinned_assets
+		pinned_assets,
 	},
 }) => ({
 	mode,
@@ -210,11 +214,12 @@ const mapStateToProps = ({
 	coinsData,
 	quicktrade,
 	pairs,
-	pinned_assets
+	pinned_assets,
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	toggleSort: bindActionCreators(toggleSort, dispatch),
+	toggleSortSevenDay: bindActionCreators(toggleSortSevenDay, dispatch),
 	setSortModeChange: bindActionCreators(setSortModeChange, dispatch),
 });
 

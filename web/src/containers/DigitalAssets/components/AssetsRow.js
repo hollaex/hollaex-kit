@@ -7,15 +7,19 @@ import STRINGS from 'config/localizedStrings';
 import { isMobile } from 'react-device-detect';
 import { browserHistory } from 'react-router';
 import { unique } from 'utils/data';
-import icons from 'config/icons';
-const AssetsRow = ({
-	coinData,
-	handleClick,
-	loading,
-	index,
-	quicktrade,
-	pairs,
-}) => {
+
+const Loading = ({ index }) => {
+	return (
+		<div
+			className="loading-anime"
+			style={{
+				animationDelay: `.${index + 1}s`,
+			}}
+		/>
+	);
+};
+
+const AssetsRow = ({ coinData, loading, index, quicktrade, pairs, icons }) => {
 	const {
 		icon_id,
 		symbol,
@@ -91,11 +95,7 @@ const AssetsRow = ({
 	const markets = getAllAvailableMarkets(symbol);
 
 	return (
-		<tr
-			id={`market-list-row-${key}`}
-			className="table-row table-bottom-border"
-			onClick={() => handleClick(key)}
-		>
+		<tr id={`market-list-row-${key}`} className="table-row table-bottom-border">
 			<td className="sticky-col">
 				{!loading ? (
 					<div className="d-flex align-items-center">
@@ -103,16 +103,15 @@ const AssetsRow = ({
 						<div className="px-2">{fullname}</div>
 					</div>
 				) : (
-					<div
-						className="loading-anime"
-						style={{
-							animationDelay: `.${index + 1}s`,
-						}}
-					/>
+					<Loading index={index} />
 				)}
 			</td>
 			<td>
-				<div className="ml-1">{symbol.toUpperCase()}</div>
+				{!loading ? (
+					<div className="ml-1">{symbol.toUpperCase()}</div>
+				) : (
+					<Loading index={index} />
+				)}
 			</td>
 			<td>
 				{!loading ? (
@@ -121,57 +120,68 @@ const AssetsRow = ({
 						<span className="title-font ml-2">{'USDT'}</span>
 					</div>
 				) : (
-					<div
-						className="loading-anime"
-						style={{
-							animationDelay: `.${index + 1}s`,
-						}}
-					/>
+					<Loading index={index} />
 				)}
 			</td>
 			<td>
-				<PriceChange
-					market={{
-						priceDifference: oneDayPriceDifference,
-						priceDifferencePercent: oneDayPriceDifferencePercent,
-					}}
-					key={key}
-				/>
-			</td>
-			<td>
-				<PriceChange
-					market={{
-						priceDifference: priceDifference,
-						priceDifferencePercent: priceDifferencePercent,
-					}}
-					key={key}
-				/>
-			</td>
-			<td className="td-chart">
-				<MiniSparkLine
-					chartData={getLastValuesFromParts(chartData?.price || [])}
-					isArea
-				/>
-			</td>
-			<td className='td-trade align-items-center justify-content-between'>
-				{markets.length > 1 ? (
-					<TradeInputGroup
-						quicktrade={quicktrade}
-						markets={markets}
-						goToTrade={goToTrade}
-						pairs={pairs}
+				{!loading ? (
+					<PriceChange
+						market={{
+							priceDifference: oneDayPriceDifference,
+							priceDifferencePercent: oneDayPriceDifferencePercent,
+						}}
+						key={key}
 					/>
 				) : (
-					<ActionNotification
-						stringId="TRADE_TAB_TRADE"
-						text={STRINGS['TRADE_TAB_TRADE']}
-						iconId="BLUE_TRADE_ICON"
-						iconPath={icons['BLUE_TRADE_ICON']}
-						onClick={() => goToTrade(markets[0])}
-						className="csv-action"
-						showActionText={isMobile}
-						disable={markets.length === 0}
+					<Loading index={index} />
+				)}
+			</td>
+			<td>
+				{!loading ? (
+					<PriceChange
+						market={{
+							priceDifference: priceDifference,
+							priceDifferencePercent: priceDifferencePercent,
+						}}
+						key={key}
 					/>
+				) : (
+					<Loading index={index} />
+				)}
+			</td>
+			<td className="td-chart pr-4">
+				{!loading ? (
+					<MiniSparkLine
+						chartData={getLastValuesFromParts(chartData?.price || [])}
+						isArea
+					/>
+				) : (
+					<Loading index={index} />
+				)}
+			</td>
+			<td className="td-trade align-items-center justify-content-between">
+				{!loading ? (
+					markets.length > 1 ? (
+						<TradeInputGroup
+							quicktrade={quicktrade}
+							markets={markets}
+							goToTrade={goToTrade}
+							pairs={pairs}
+						/>
+					) : (
+						<ActionNotification
+							stringId="TRADE_TAB_TRADE"
+							text={STRINGS['TRADE_TAB_TRADE']}
+							iconId="BLUE_TRADE_ICON"
+							iconPath={icons['BLUE_TRADE_ICON']}
+							onClick={() => goToTrade(markets[0])}
+							className="csv-action"
+							showActionText={isMobile}
+							disable={markets.length === 0}
+						/>
+					)
+				) : (
+					<Loading index={index} />
 				)}
 			</td>
 		</tr>
