@@ -647,7 +647,16 @@ const getAllUsersAdmin = (opts = {
 	const pagination = paginationQuery(opts.limit, opts.page);
 	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
 	const dob_timeframe = timeframeQuery(dob_start_date, dob_end_date);
-	const ordering = orderingQuery(opts.order_by, opts.order);
+
+	let orderBy = 'updated_at';
+	let order = 'desc';
+	if (opts.order_by) {
+		orderBy = opts.order_by;
+	}
+	if (opts.order) {
+		order = opts.order;
+	}
+	const ordering = orderingQuery(orderBy, order);
 	let query = {
 		where: {
 			created_at: timeframe,
@@ -2658,7 +2667,7 @@ const fetchUserProfitLossInfo = async (user_id) => {
 			total += results['7d'][asset].cumulativePNL;
 			if (conversions[asset]) {
 				prices.push(conversions[asset]);
-				percentageValues.push(results['7d'][asset].cumulativePNLPercentage)
+				percentageValues.push(results['7d'][asset].cumulativePNLPercentage);
 			}
 		});
 		results['7d'].total = total;
