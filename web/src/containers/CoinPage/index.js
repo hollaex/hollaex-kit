@@ -118,10 +118,6 @@ const CoinPage = ({
 		setData(market);
 	};
 
-	const handleBack = () => {
-		router.goBack();
-	};
-
 	const pairBase_fullName = coins[currentCoin]?.fullname;
 
 
@@ -197,10 +193,7 @@ const CoinPage = ({
 							</div>
 						</div>
 						<div className="d-flex justify-content-between mt-3 mb-4 balance-wrapper">
-							<div className="link" onClick={handleBack}>
-								<EditWrapper stringId="HOLLAEX_TOKEN.GO_BACK">
-									&lt; {STRINGS['HOLLAEX_TOKEN.GO_BACK']}
-								</EditWrapper>
+							<div>
 							</div>
 							<div className="d-flex image-Wrapper">
 								<Image
