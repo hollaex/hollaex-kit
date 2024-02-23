@@ -6039,10 +6039,9 @@ table th {
       display: flex;
       justify-content: space-between; }
       .hollaex-token-wrapper .token-wrapper .hollaex-container .info-container {
-        width: 65%;
+        width: 100%;
         background-color: var(--calculated_quick_trade-bg);
-        padding: 4rem;
-        text-align: justify; }
+        padding: 3rem; }
         .hollaex-token-wrapper .token-wrapper .hollaex-container .info-container .header-text {
           font-size: 16px;
           font-weight: bold;
@@ -6067,7 +6066,7 @@ table th {
           .hollaex-token-wrapper .token-wrapper .hollaex-container .info-container .button-container .button-2 {
             margin: 0 10px 0 10px; }
       .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper {
-        padding: 40px 65px 30px 55px;
+        padding: 1rem 1rem 1rem 2rem;
         font-family: "Open Sans";
         background-color: var(--base_background); }
         .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .coin-bg {
