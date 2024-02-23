@@ -14,6 +14,7 @@ import { getMiniCharts } from 'actions/chartAction';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { addToFavourites, removeFromFavourites } from 'actions/appActions';
 import Details from 'containers/QuickTrade/components/Details';
+import { formatCurrency } from 'utils';
 
 const TYPES = {
 	PRO: 'pro',
@@ -144,7 +145,7 @@ const CoinPage = ({
 						<div className="title">
 							<div className="d-flex justify-content-between title-child-container">
 								<div>
-									<span>{pairBase_fullName}</span> {currentCoinUpper}
+									<span>{pairBase_fullName}</span> ({currentCoinUpper})
 								</div>
 							</div>
 						</div>
@@ -164,7 +165,7 @@ const CoinPage = ({
 									<EditWrapper stringId="HOLLAEX_TOKEN.BALANCE">
 										{STRINGS['HOLLAEX_TOKEN.BALANCE']}
 									</EditWrapper>{' '}
-									{available_balance[`${currentCoin}_available`]}{' '}
+									{formatCurrency(available_balance[`${currentCoin}_available`])}{' '}
 									{currentCoinUpper}{' '}
 									<Link className="link" to={'/wallet'}>
 										<EditWrapper stringId="HOLLAEX_TOKEN.OPEN_WALLET">
