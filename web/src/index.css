@@ -3563,14 +3563,14 @@ table th {
     font-weight: bold; }
   .trade-details-wrapper .pairs {
     color: var(--specials_buttons-links-and-highlights);
-    font-size: 2.25rem; }
+    font-size: 2rem; }
   .trade-details-wrapper .underline {
     text-decoration: underline; }
   .trade-details-wrapper .white-txt {
     color: var(--labels_important-active-labels-text-graphics); }
   .trade-details-wrapper .day-change-block {
     text-align: end;
-    margin: 45px 36px 20px 0; }
+    margin: 2rem 2rem 2rem 0; }
     .trade-details-wrapper .day-change-block .ant-radio-group .ant-radio-button-wrapper {
       background: transparent;
       color: var(--labels_secondary-inactive-label-text-graphics);
@@ -5924,14 +5924,14 @@ table th {
     font-weight: bold; }
   .trade-details-wrapper .pairs {
     color: var(--specials_buttons-links-and-highlights);
-    font-size: 2.25rem; }
+    font-size: 2rem; }
   .trade-details-wrapper .underline {
     text-decoration: underline; }
   .trade-details-wrapper .white-txt {
     color: var(--labels_important-active-labels-text-graphics); }
   .trade-details-wrapper .day-change-block {
     text-align: end;
-    margin: 45px 36px 20px 0; }
+    margin: 2rem 2rem 2rem 0; }
     .trade-details-wrapper .day-change-block .ant-radio-group .ant-radio-button-wrapper {
       background: transparent;
       color: var(--labels_secondary-inactive-label-text-graphics);
@@ -9653,7 +9653,7 @@ table th {
   .quick_trade-container .input-group__input {
     text-align: right;
     color: var(--labels_important-active-labels-text-graphics);
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     margin-left: 1rem;
     height: 60px; }
     .quick_trade-container .input-group__input:focus, .quick_trade-container .input-group__input:active {
@@ -9780,11 +9780,11 @@ table th {
 
 .layout-mobile .quick_trade-container {
   height: 100%;
-  padding: 2rem 3.5rem;
+  padding: 2rem 2.5rem;
   margin: 0; }
   .layout-mobile .quick_trade-container .input-group__input {
     height: 60px;
-    font-size: 3.5rem; }
+    font-size: 2.5rem; }
 
 .layout-mobile .quick_trade-wrapper {
   background-color: transparent;
@@ -9829,7 +9829,7 @@ table th {
     min-height: 19.25rem;
     font-size: 2.25rem; }
   .layout-mobile .quick_trade-wrapper .input-group__select {
-    font-size: 2.5rem;
+    font-size: 2.3rem;
     min-height: 60px;
     padding: 1rem 0.5rem;
     width: 15rem; }
@@ -9839,7 +9839,7 @@ table th {
   .layout-mobile .quick_trade-wrapper .input-group__coin-icons-wrap_mobile-view {
     margin-top: 0.375rem; }
   .layout-mobile .quick_trade-wrapper .balance-text {
-    font-size: 2.125rem; }
+    font-size: 1.8rem; }
   .layout-mobile .quick_trade-wrapper .field-error-content {
     font-size: 1.375rem;
     text-align: right; }

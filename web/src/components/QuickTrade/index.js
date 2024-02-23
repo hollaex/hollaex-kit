@@ -481,7 +481,7 @@ const QuickTrade = ({
 							</div>
 
 							<div className="quick-trade-input">
-								<div className="d-flex justify-content-between mb-4">
+								<div className="d-flex justify-content-between mb-3">
 									<div className="bold caps-first">
 										<EditWrapper stringId={'CONVERT'}>
 											{STRINGS['CONVERT']}
@@ -528,7 +528,7 @@ const QuickTrade = ({
 								</div>
 							</div>
 							<div className="quick-trade-input">
-								<div className="d-flex justify-content-between mb-4">
+								<div className="d-flex justify-content-between mb-3">
 									<div className="bold caps-first">
 										<EditWrapper stringId={'TO'}>{STRINGS['TO']}</EditWrapper>
 									</div>
