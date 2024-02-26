@@ -43,18 +43,25 @@ export const menuItemsSelector = createSelector(
 						item.hide_from_menulist = false;
 						item.hide_from_sidebar = false;
 					}
-
 					return item;
 				}
 			);
 
-		const menuItems = [
-			...MENU_ITEMS.top,
-			...featureItems,
-			...MENU_ITEMS.middle,
-			...remoteRoutes,
-			...(token ? MENU_ITEMS.bottom : []),
-		];
+		const menuItems =
+			remoteRoutes && remoteRoutes.length
+				? [
+						...MENU_ITEMS.top,
+						...featureItems,
+						MENU_ITEMS.middle[0],
+						remoteRoutes[0],
+						...(token ? MENU_ITEMS.bottom : []),
+				  ]
+				: [
+						...MENU_ITEMS.top,
+						...featureItems,
+						...MENU_ITEMS.middle,
+						...(token ? MENU_ITEMS.bottom : []),
+				  ];
 
 		return menuItems;
 	}
