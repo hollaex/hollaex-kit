@@ -1,3 +1,4 @@
+import { isMobile } from 'react-device-detect';
 import { createSelector } from 'reselect';
 import { MENU_ITEMS } from 'config/menu';
 import { STAKING_INDEX_COIN, isStakingAvailable } from 'config/contracts';
@@ -47,8 +48,8 @@ export const menuItemsSelector = createSelector(
 				}
 			);
 
-		const menuItems =
-			remoteRoutes && remoteRoutes.length
+		const menuItems = isMobile
+			? remoteRoutes && remoteRoutes.length
 				? [
 						...MENU_ITEMS.top,
 						...featureItems,
@@ -61,7 +62,14 @@ export const menuItemsSelector = createSelector(
 						...featureItems,
 						...MENU_ITEMS.middle,
 						...(token ? MENU_ITEMS.bottom : []),
-				  ];
+				  ]
+			: [
+					...MENU_ITEMS.top,
+					...featureItems,
+					...MENU_ITEMS.middle,
+					...remoteRoutes,
+					...(token ? MENU_ITEMS.bottom : []),
+			  ];
 
 		return menuItems;
 	}
