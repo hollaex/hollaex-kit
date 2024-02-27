@@ -252,6 +252,7 @@ class CurrencySlider extends Component {
 						<div>
 							{!isUpgrade &&
 								this.props.balance_history_config?.active &&
+								Number(this.state.userPL?.['7d']?.total || 0) !== 0 &&
 								this.state.historyData.length > 1 && (
 									<div>
 										<div
