@@ -76,7 +76,8 @@ const {
 	TOKEN_TIME_LONG,
 	TOKEN_TIME_NORMAL,
 	VERIFY_STATUS,
-	EVENTS_CHANNEL
+	EVENTS_CHANNEL,
+	BALANCE_HISTORY_SUPPORTED_PLANS
 } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
@@ -1533,7 +1534,7 @@ const getUserAudits = (opts = {
 }) => {
 	const exchangeInfo = getKitConfig().info;
 
-	if(!['fiat', 'boost', 'enterprise'].includes(exchangeInfo.plan)) {
+	if(!BALANCE_HISTORY_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
 		throw new Error(SERVICE_NOT_SUPPORTED);
 	}
 
@@ -2460,7 +2461,7 @@ const fetchUserProfitLossInfo = async (user_id) => {
 
 	const exchangeInfo = getKitConfig().info;
 
-	if(!['fiat', 'boost', 'enterprise'].includes(exchangeInfo.plan)) {
+	if(!BALANCE_HISTORY_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
 		throw new Error(SERVICE_NOT_SUPPORTED);
 	}
 
