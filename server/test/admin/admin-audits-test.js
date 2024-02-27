@@ -23,6 +23,8 @@ describe('tests for /admin/audits', function () {
 			.get('/v2/admin/audits')
 			.set('Authorization', `Bearer ${bearerToken}`)
 
+		console.log({message: response.body.message})
+		
 		response.should.have.status(200);
 		response.should.be.json;
 	});

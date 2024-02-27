@@ -1120,6 +1120,7 @@ const burnAsset = (req, res) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
 			}
+			console.log({GG: user.network_id})
 			return toolsLib.wallet.burnAssetByNetworkId(
 				user.network_id,
 				currency,

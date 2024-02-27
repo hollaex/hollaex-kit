@@ -2671,6 +2671,293 @@ const fetchUserProfitLossInfo = async (user_id) => {
 	return results;
 };
 
+const getP2PAccountBalance = async (account_id, coin) => {
+        
+    const balance = await getUserBalanceByKitId(account_id);
+    let symbols = {};
+
+    for (const key of Object.keys(balance)) {
+        if (key.includes('available') && balance[key]) {
+            let symbol = key?.split('_')?.[0];
+            symbols[symbol] = balance[key];
+        }
+    }
+
+    return symbols[coin];
+}
+
+const editAdminP2pConfig = async (data) => {
+    const {
+		digital_currencies,
+		fiat_currencies,
+		side,
+		fee,
+    } = data;
+    
+	digital_currencies.forEach(currency => {
+		if (!subscribedToCoin(currency)) {
+           throw new Error('Invalid coin ' + currency);
+    	}
+	})
+	fiat_currencies.forEach(currency => {
+		if (!subscribedToCoin(currency)) {
+           throw new Error('Invalid coin ' + currency);
+    	}
+	})
+	if (fee < 0) {
+		throw new Error('Fee cannot be less than 0');
+	}
+
+	if (side !== 'sell') {
+		throw new Error('side can only be sell');
+	}
+    
+    const exchangeInfo = getKitConfig().info;
+
+    if(!STAKE_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
+        throw new Error(STAKE_UNSUPPORTED_EXCHANGE_PLAN);
+    }
+
+	return getModel('P2PAdminConfig').create(data, {
+		fields: [
+			'enable',
+			'bank_payment_methods',
+			'starting_merchant_tier',
+			'starting_user_tier',
+			'digital_currencies',
+			'fiat_currencies',
+			'side',
+			'fee',
+		]
+	});
+};
+
+const createP2PDeal = async (data) => {
+	let {
+		merchant_id,
+		side,
+		price_type,
+		buying_asset,
+		spending_asset,
+		exchange_rate,
+		margin,
+		total_buy_amount,
+		min_order_value,
+		max_order_value,
+		status,
+    } = data;
+        
+    const exchangeInfo = getKitConfig().info;
+
+    if(!STAKE_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
+        throw new Error(STAKE_UNSUPPORTED_EXCHANGE_PLAN);
+    }
+
+	//Check Merhcant Tier
+
+	if (!subscribedToCoin(spending_asset)) {
+        throw new Error('Invalid coin ' + spending_asset);
+    }
+
+	if (!subscribedToCoin(buying_asset)) {
+        throw new Error('Invalid coin ' + buying_asset);
+    }
+
+	const balance = await getP2PAccountBalance(merchant_id, buying_asset);
+
+	if(new BigNumber(balance).comparedTo(total_buy_amount) !== 1) {
+        throw new Error(FUNDING_ACCOUNT_INSUFFICIENT_BALANCE);
+    }
+	if(min_order_value < 0) {
+			throw new Error('cannot be less than 0');
+	}
+
+	if(max_order_value < 0) {
+		throw new Error('cannot be less than 0');
+	}
+
+	if(min_order_value > max_order_value) {
+		throw new Error('cannot be bigger');
+	}
+
+	if (margin < 0) {
+		throw new Error('Margin cannot be less than 0');
+	}
+
+	if (side !== 'sell') {
+		throw new Error('side can only be sell');
+	}
+
+
+
+	status = true;
+
+	return getModel('P2PDeal').create(data, {
+		fields: [
+			'merchant_id',
+			'side',
+			'price_type',
+			'buying_asset',
+			'spending_asset',
+			'exchange_rate',
+			'margin',
+			'total_buy_amount',
+			'min_order_value',
+			'max_order_value',
+			'terms',
+			'auto_response',
+			'payment_methods',
+			'status',
+		]
+	});
+}
+
+const createP2pTransaction = async (data) => {
+	let {
+		deal_id,
+		merchant_id,
+		buyer_id,
+		amount_digital_currency,
+		cancellation_reason,
+		merchant_release,
+		transaction_duration,
+    } = data;
+    
+	const exchangeInfo = getKitConfig().info;
+
+    if(!STAKE_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
+        throw new Error(STAKE_UNSUPPORTED_EXCHANGE_PLAN);
+    }
+
+	// Check User tier
+
+ 	const p2pDeal = await getModel('P2PDeal').findOne({ where: { id: deal_id } });
+
+    if (!p2pDeal) {
+        throw new Error('deal does not exist');
+    }
+	const buyer = await getUserByKitId(buyer_id);
+   
+    if (!buyer) {
+        throw new Error(USER_NOT_FOUND);
+    }
+
+
+	//Cant have more than 3 active transactions per user
+
+	const merchant = await getUserById(p2pDeal.merchant_id);
+
+
+	const balance = await getP2PAccountBalance(merchant_id, p2pDeal.buying_asset);
+
+	if(new BigNumber(balance).comparedTo(amount_digital_currency) !== 1) {
+        throw new Error(FUNDING_ACCOUNT_INSUFFICIENT_BALANCE);
+    }
+	
+	
+	if(min_order_value < 0) {
+			throw new Error('cannot be less than 0');
+	}
+
+	if(max_order_value < 0) {
+		throw new Error('cannot be less than 0');
+	}
+
+	if(min_order_value > max_order_value) {
+		throw new Error('cannot be bigger');
+	}
+
+	if (margin < 0) {
+		throw new Error('Margin cannot be less than 0');
+	}
+
+	if (side !== 'sell') {
+		throw new Error('side can only be sell');
+	}
+
+
+	data.buyer_status = 'pending';
+	data.merchant_status = 'pending';
+	data.transaction_status = 'active';
+
+	data.transaction_id = uuid();
+
+	await getNodeLib().lockBalance(merchant.network_id, amount_digital_currency, p2pDeal.buying_asset);
+
+	return getModel('P2PTransaction').create(data, {
+		fields: [
+			'deal_id',
+			'merchant_id',
+			'buyer_id',
+			'amount_digital_currency',
+			'amount_fiat',
+			'payment_method_used',
+			'buyer_status',
+			'merchant_status',
+			'cancellation_reason',
+			'transaction_expired',
+			'transaction_timestamp',
+			'merchant_release',
+			'transaction_duration',
+			'transaction_status',
+		]
+	});
+}
+
+const updateP2pTransaction = async (data) => {
+	let {
+		transaction_id,
+		deal_id,
+		merchant_id,
+		buyer_id,
+		amount_digital_currency,
+		amount_fiat,
+		payment_method_used,
+		buyer_status,
+		merchant_status,
+		cancellation_reason,
+		transaction_expired,
+		transaction_timestamp,
+		merchant_release,
+		transaction_duration,
+		transaction_status,
+	} = data;
+
+		
+	const transaction = await getModel('P2PTransaction').findOne({ where: { transaction_id } });
+
+    if (!transaction) {
+        throw new Error('transaction does not exist');
+    }
+
+	if (buyer_status === 'confirmed' && transaction.merchant_status === 'confirm') {
+		await getNodeLib().unlockBalance(merchant.network_id, amount_digital_currency, p2pDeal.buying_asset);
+		await transferAssetByKitIds(account_id, user.id, currency, totalAmount, 'P2P Transaction', false, { category: 'p2p' });
+	} 
+
+	
+
+}
+
+
+
+const createP2pDispute = async (data) => {
+
+}
+
+const updateP2pDispute = async (data) => {
+
+}
+
+const updateMerchantProfile = async (data) => {
+
+}
+
+const createMerchantFeedback = async (data) => {
+
+}
+
+
 module.exports = {
 	loginUser,
 	getUserTier,
@@ -2733,5 +3020,13 @@ module.exports = {
 	changeKitUserEmail,
 	storeVerificationCode,
 	signUpUser,
-	verifyUser
+	verifyUser,
+	editAdminP2pConfig,
+	createP2PDeal,
+	createP2pTransaction,
+	createP2pDispute,
+	updateP2pTransaction,
+	updateP2pDispute,
+	updateMerchantProfile,
+	createMerchantFeedback
 };

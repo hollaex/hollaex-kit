@@ -1,0 +1,54 @@
+'use strict';
+
+module.exports = function (sequelize, DataTypes) {
+    const P2PAdminConfig = sequelize.define(
+        'P2PAdminConfig',
+        {
+            id: {
+				allowNull: false,
+				autoIncrement: true,
+				primaryKey: true,
+				type: DataTypes.INTEGER
+			},
+            enable: {
+                type: DataTypes.BOOLEAN,
+                allowNull: false,
+            },
+            bank_payment_methods: {
+                type: DataTypes.JSONB,
+                allowNull: false,
+            },
+            starting_merchant_tier: {
+                type: DataTypes.STRING,
+                allowNull: false,
+            },
+            starting_user_tier: {
+                type: DataTypes.STRING,
+                allowNull: false,
+            },
+            digital_currencies: {
+                type: DataTypes.ARRAY(DataTypes.STRING),
+                allowNull: false,
+            },
+            fiat_currencies: {
+                type: DataTypes.ARRAY(DataTypes.STRING),
+                allowNull: false,
+            },
+            side: {
+                type: DataTypes.STRING,
+                allowNull: false,
+            },
+            fee: {
+                type: DataTypes.STRING,
+                allowNull: false,
+            },
+        },
+        {
+            timestamps: false,
+            underscored: true,
+            tableName: 'P2PAdminConfigs',
+        }
+    );
+
+    return P2PAdminConfig;
+};
