@@ -80,9 +80,12 @@ And ('Bob transferred a minimal amount of XHTT to Alice',()=>{
     cy.get(':nth-child(3) > :nth-child(1) > :nth-child(1) > .field-content > .field-children > div > .input_field-input')
     .clear()
     .type('0xc99fc19ebdcc683d15d116360525c09417c109df')
+    cy.get(':nth-child(4) > :nth-child(1) > :nth-child(1) > .field-content > .field-children > [style="display: flex;"] > .input_field-input')
+    .clear()
+    .type('0.0001')
     cy.get('.holla-button').click()
     cy.get('.review-crypto-amount > :nth-child(1)')
-    .should('contain','1.0001 XHT')//changed
+    .should('contain','10.0001 XHT')//changed
     cy.get('.review-wrapper > .flex-column > :nth-child(4)')
     .should('contain','0xc99fc19ebdcc683d15d116360525c09417c109df')
     cy.get('.button-success').click()
@@ -404,9 +407,12 @@ And ('Bob transferred a minimal amount of XHTT to wrong Alice address',()=>{
      cy.get(':nth-child(3) > :nth-child(1) > :nth-child(1) > .field-content > .field-children > div > .input_field-input')
      .clear()
      .type('0x97b7b520e553794a610dc25d06414719ffb44a77')
+     cy.get(':nth-child(4) > :nth-child(1) > :nth-child(1) > .field-content > .field-children > [style="display: flex;"] > .input_field-input')
+     .clear()
+     .type('0.0001')
      cy.get('.holla-button').click()
      cy.get('.review-crypto-amount > :nth-child(1)')
-     .should('contain','1.0001 XHT')//changed
+     .should('contain','10.0001 XHT')//changed
      cy.get('.review-wrapper > .flex-column > :nth-child(4)')
      .should('contain','0x97b7b520e553794a610dc25d06414719ffb44a77')
      cy.get('.button-success').click()
@@ -437,9 +443,12 @@ And ('Bob transferred a minimal amount of XHTT to real Alice address',()=>{
      cy.get(':nth-child(3) > :nth-child(1) > :nth-child(1) > .field-content > .field-children > div > .input_field-input')
      .clear()
      .type('0x97b7b520e553794a610dc25d06414719ffb44a77')
+     cy.get(':nth-child(4) > :nth-child(1) > :nth-child(1) > .field-content > .field-children > [style="display: flex;"] > .input_field-input')
+     .clear()
+     .type('0.0001')
      cy.get('.holla-button').click()
      cy.get('.review-crypto-amount > :nth-child(1)')
-     .should('contain','1.0001 XHT')//changed
+     .should('contain','10.0001 XHT')//changed
      cy.get('.review-wrapper > .flex-column > :nth-child(4)')
      .should('contain','0x97b7b520e553794a610dc25d06414719ffb44a77')
      cy.get('.button-success').click()

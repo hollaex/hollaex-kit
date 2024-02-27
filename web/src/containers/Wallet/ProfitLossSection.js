@@ -21,21 +21,9 @@ const ProfitLossSection = ({
 	balances,
 	pricesInNative,
 }) => {
-	const month = [
-		'Jan',
-		'Feb',
-		'Mar',
-		'Apr',
-		'May',
-		'Jun',
-		'Jul',
-		'Aug',
-		'Sep',
-		'Oct',
-		'Nov',
-		'Dec',
-	];
-
+	const month = Array.apply(0, Array(12)).map(function (_, i) {
+		return moment().month(i).format('MMM');
+	});
 	const [balanceHistory, setBalanceHistory] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [currentDay, setCurrentDay] = useState(7);
@@ -53,6 +41,7 @@ const ProfitLossSection = ({
 	});
 	// eslint-disable-next-line
 	const [selectedDate, setSelectedDate] = useState();
+	const [selectedCustomDate, setSelectedCustomDate] = useState();
 	const [currentBalance, setCurrentBalance] = useState();
 	const [latestBalance, setLatestBalance] = useState();
 	const [userPL, setUserPL] = useState();
@@ -62,6 +51,9 @@ const ProfitLossSection = ({
 	const [customDateValues, setCustomDateValues] = useState();
 
 	const options = {
+		chart: {
+			type: 'area',
+		},
 		title: {
 			text: '',
 		},
@@ -82,6 +74,17 @@ const ProfitLossSection = ({
 		},
 		yAxis: {
 			title: false,
+			min: (() => {
+				let min = graphData?.[0]?.[1];
+
+				graphData.forEach((graph) => {
+					if (min > graph[1]) {
+						min = graph[1];
+					}
+				});
+
+				return min;
+			})(),
 		},
 		series: [
 			{
@@ -100,7 +103,10 @@ const ProfitLossSection = ({
 									}` === graphData[e.point.x || 0][0]
 							);
 
-							setCurrentBalance(balance);
+							if (balance) {
+								setCurrentBalance(balance);
+								setSelectedCustomDate(moment(balance.created_at));
+							}
 						},
 					},
 				},
@@ -145,15 +151,20 @@ const ProfitLossSection = ({
 				const length =
 					response.data.length > currentDay
 						? currentDay - 1
-						: response.data.length - 1;
+						: response.data.length > 6
+						? response.data.length
+						: 6;
 				const balanceData = response.data.find(
 					(history) =>
 						moment(history.created_at).format('YYYY-MM-DD') ===
 						moment(queryValues.end_date)
-							.subtract(length, 'days')
+							.subtract(length === 6 ? 0 : length, 'days')
 							.format('YYYY-MM-DD')
 				);
-				let balance = balanceData || response.data[length];
+				let balance =
+					balanceData ||
+					response.data[length] ||
+					response.data[response.data.length - 1];
 
 				let newGraphData = [];
 				for (let i = 0; i < length + 1; i++) {
@@ -165,12 +176,14 @@ const ProfitLossSection = ({
 									.subtract(i, 'days')
 									.format('YYYY-MM-DD')
 						);
-						if (!balanceData) continue;
+						// if (!balanceData) continue;
 						newGraphData.push([
 							`${moment(queryValues.end_date).subtract(i, 'days').date()} ${
 								month[moment(queryValues.end_date).subtract(i, 'days').month()]
 							}`,
-							balanceData ? balanceData.total : 0,
+							balanceData
+								? balanceData.total
+								: response?.data?.[response.data.length - 1]?.total,
 						]);
 					} else if (currentDay === 30) {
 						// if (currentDay === 30) {
@@ -231,9 +244,27 @@ const ProfitLossSection = ({
 	};
 
 	const getRows = (coins) => {
+		let keysSorted = Object.keys(currentBalance?.balance).sort((a, b) => {
+			return (
+				currentBalance?.balance[b].native_currency_value -
+				currentBalance?.balance[a].native_currency_value
+			);
+		});
+		let sortedCoins = [];
+
+		keysSorted.forEach((coin) => {
+			sortedCoins.push(coins[coin]);
+		});
+
+		Object.keys(coins || {}).forEach((coin) => {
+			if (!sortedCoins.find((x) => x.symbol === coins[coin].symbol)) {
+				sortedCoins.push(coins[coin]);
+			}
+		});
+
 		return (
 			<>
-				{Object.values(coins || {}).map((coin, index) => {
+				{sortedCoins.map((coin, index) => {
 					const incrementUnit = coins[coin.symbol].increment_unit;
 					const decimalPoint = new BigNumber(incrementUnit).dp();
 					const sourceAmount = new BigNumber(
@@ -253,14 +284,13 @@ const ProfitLossSection = ({
 
 					return (
 						<tr className="table-row" key={index}>
-							<td className="table-icon td-fit" />
 							<td
 								style={{
 									padding: '1.25em',
 									borderBottom: '1px solid grey',
 									minWidth: '15.5em',
 								}}
-								className="td-fit"
+								className="table-icon td-fit"
 							>
 								<Link to={`/assets/coin/${coin.symbol}`} className="underline">
 									<div
@@ -332,6 +362,21 @@ const ProfitLossSection = ({
 								<DatePicker
 									suffixIcon={null}
 									className="pldatePicker"
+									value={
+										customDateValues?.start_date &&
+										moment(customDateValues.start_date)
+									}
+									disabledDate={(current) => {
+										return (
+											current &&
+											(current <
+												moment(
+													balance_history_config?.date_enabled,
+													'YYYY-MM-DD'
+												) ||
+												current.isAfter(moment()))
+										);
+									}}
 									placeholder={STRINGS['PROFIT_LOSS.SELECT_START_DATE']}
 									style={{
 										width: 200,
@@ -350,6 +395,21 @@ const ProfitLossSection = ({
 								<DatePicker
 									suffixIcon={null}
 									className="pldatePicker"
+									value={
+										customDateValues?.end_date &&
+										moment(customDateValues.end_date)
+									}
+									disabledDate={(current) => {
+										return (
+											current &&
+											(current <
+												moment(
+													balance_history_config?.date_enabled,
+													'YYYY-MM-DD'
+												) ||
+												current.isAfter(moment()))
+										);
+									}}
 									placeholder={STRINGS['PROFIT_LOSS.SELECT_END_DATE']}
 									style={{
 										width: 200,
@@ -377,7 +437,6 @@ const ProfitLossSection = ({
 						<Button
 							onClick={() => {
 								setCustomDate(false);
-								setCustomDateValues();
 							}}
 							style={{
 								backgroundColor: '#5D63FF',
@@ -387,7 +446,9 @@ const ProfitLossSection = ({
 							}}
 							type="default"
 						>
-							BACK
+							<EditWrapper stringId="PROFIT_LOSS.BACK_CUSTOM">
+								{STRINGS['PROFIT_LOSS.BACK_CUSTOM']}
+							</EditWrapper>
 						</Button>
 						<Button
 							onClick={async () => {
@@ -424,7 +485,6 @@ const ProfitLossSection = ({
 											.toISOString(),
 									});
 									setCustomDate(false);
-									setCustomDateValues();
 								} catch (error) {
 									message.error('Something went wrong');
 								}
@@ -437,7 +497,9 @@ const ProfitLossSection = ({
 							}}
 							type="default"
 						>
-							PROCEED
+							<EditWrapper stringId="PROFIT_LOSS.PROOCED_CUSTOM">
+								{STRINGS['PROFIT_LOSS.PROOCED_CUSTOM']}
+							</EditWrapper>
 						</Button>
 					</div>
 				</Modal>
@@ -511,26 +573,33 @@ const ProfitLossSection = ({
 							{getSourceDecimals(
 								balance_history_config?.currency || 'usdt',
 								latestBalance?.total
-							) || '0'}
+							)
+								?.toString()
+								.replace(/\B(?=(\d{3})+(?!\d))/g, ',') || '0'}
 						</div>
 						<div
-							style={{
-								color:
-									Number(userPL?.['7d']?.total || 0) === 0
-										? '#ccc'
-										: (userPL?.['7d']?.total || 0) > 0
-										? '#329932'
-										: '#EB5344',
-							}}
+							className={
+								Number(userPL?.['7d']?.total || 0) === 0
+									? 'profitNeutral'
+									: (userPL?.['7d']?.total || 0) > 0
+									? 'profitPositive'
+									: 'profitNegative'
+							}
 						>
 							<EditWrapper stringId="PROFIT_LOSS.PL_7_DAY">
 								{STRINGS['PROFIT_LOSS.PL_7_DAY']}
 							</EditWrapper>{' '}
-							{Number(userPL?.['7d']?.total || 0) > 0 ? '+' : ''}{' '}
+							{Number(userPL?.['7d']?.total || 0) > 0 ? '+' : ' '}
+							{''}
 							{getSourceDecimals(
 								balance_history_config?.currency || 'usdt',
 								userPL?.['7d']?.total
-							) || '0'}{' '}
+							)
+								?.toString()
+								.replace(/\B(?=(\d{3})+(?!\d))/g, ',') || '0'}
+							{userPL?.['7d']?.totalPercentage
+								? ` (${userPL?.['7d']?.totalPercentage}%) `
+								: ' '}
 							{balance_history_config?.currency?.toUpperCase() || 'USDT'}
 						</div>
 					</div>
@@ -657,7 +726,9 @@ const ProfitLossSection = ({
 									{getSourceDecimals(
 										balance_history_config?.currency || 'usdt',
 										currentBalance?.total
-									) || '0'}
+									)
+										?.toString()
+										.replace(/\B(?=(\d{3})+(?!\d))/g, ',') || '0'}
 								</div>
 								<div>
 									<div>
@@ -670,12 +741,25 @@ const ProfitLossSection = ({
 										suffixIcon={null}
 										className="pldatePicker"
 										placeholder={STRINGS['PROFIT_LOSS.DATE_SELECT']}
+										value={selectedCustomDate}
+										disabledDate={(current) => {
+											return (
+												current &&
+												(current <
+													moment(
+														balance_history_config?.date_enabled,
+														'YYYY-MM-DD'
+													) ||
+													current.isAfter(moment()))
+											);
+										}}
 										style={{
 											width: '12.5em',
 											fontSize: '1em',
 										}}
 										onChange={(date, dateString) => {
 											if (!dateString) return;
+											setSelectedCustomDate(date);
 											fetchBalanceHistory({
 												start_date: moment(dateString)
 													.startOf('day')
@@ -702,10 +786,9 @@ const ProfitLossSection = ({
 						</div>
 
 						<div className="wallet-assets_block" style={{ display: 'flex' }}>
-							<table className="wallet-assets_block-table">
+							<table className="profit_block-table">
 								<thead>
 									<tr className="table-bottom-border">
-										<th />
 										<th>
 											<EditWrapper stringId="PROFIT_LOSS.ASSET_NAME">
 												{STRINGS['PROFIT_LOSS.ASSET_NAME']}

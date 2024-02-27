@@ -108,6 +108,7 @@ export const WALLET_SORT = {
 
 export const DIGITAL_ASSETS_SORT = {
 	CHANGE: 'change',
+	CHANGESEVENDAY: 'changeSevenDay',
 };
 
 export const SORT_EXP = {
@@ -172,6 +173,12 @@ export const setDigitalAssetsSortModeChange = () => ({
 
 export const toggleDigitalAssetsSort = () => ({
 	type: TOGGLE_DIGITAL_ASSETS_SORT,
+	payload: DIGITAL_ASSETS_SORT.CHANGE,
+});
+
+export const toggleSortSevenDay = () => ({
+	type: SET_DIGITAL_ASSETS_SORT_MODE,
+	payload: DIGITAL_ASSETS_SORT.CHANGESEVENDAY,
 });
 
 export const setAdminDigitalAssetsSortData = ({

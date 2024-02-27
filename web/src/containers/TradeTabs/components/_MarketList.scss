@@ -180,7 +180,6 @@
 					font-size: 1.3rem !important;
 					.td-chart {
 						min-width: 15rem;
-						padding: 0 !important;
 					}
 				}
 				.sticky-col {
@@ -205,6 +204,12 @@
 	.trade_tabs-container {
 		.sticky-col {
 			background-color: $app-background-color !important;
+		}
+	}
+	.digital-market-wrapper {
+		.sticky-col {
+			color: $colors-main-black;
+			background-color: $app-light-background;
 		}
 	}
 }

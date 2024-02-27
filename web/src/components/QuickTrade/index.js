@@ -12,7 +12,7 @@ import { SwapOutlined } from '@ant-design/icons';
 
 import { changePair } from 'actions/appActions';
 import { isLoggedIn } from 'utils/token';
-import { Button, EditWrapper, Dialog } from 'components';
+import { Button, EditWrapper, Dialog, Image } from 'components';
 import STRINGS from 'config/localizedStrings';
 import InputGroup from './InputGroup';
 import { getMiniCharts } from 'actions/chartAction';
@@ -33,6 +33,7 @@ import { getQuickTrade, executeQuickTrade } from 'actions/quickTradeActions';
 import { FieldError } from 'components/Form/FormFields/FieldWrapper';
 import { translateError } from 'components/QuickTrade/utils';
 import QuoteExpiredBlock from './QuoteExpiredBlock';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 const PAIR2_STATIC_SIZE = 0.000001;
 const SPENDING = {
@@ -58,6 +59,7 @@ const QuickTrade = ({
 	router,
 	router: { params },
 	changePair,
+	icons: ICONS,
 }) => {
 	const getTargetOptions = (source) =>
 		sourceOptions.filter((key) => {
@@ -97,6 +99,7 @@ const QuickTrade = ({
 	const [time, setTime] = useState(moment());
 	const [lineChartData, setLineChartData] = useState({});
 	const [allChartsData, setAllChartsData] = useState({});
+	const [showPriceTrendModal, setShowPriceTrendModal] = useState(false);
 
 	const resetForm = () => {
 		setTargetAmount();
@@ -398,24 +401,68 @@ const QuickTrade = ({
 		});
 	};
 
+	const handlePriceTrendsModal = () => {
+		setShowPriceTrendModal(true);
+	};
+
+	const handlePriceTrendClose = () => {
+		setShowPriceTrendModal(false);
+	};
+
 	return (
 		<Fragment>
 			<div className="quick_trade-container">
-				<Header />
+				<Header viewTrendsClick={handlePriceTrendsModal} />
 
 				<div className={classnames('quick_trade-wrapper', 'd-flex')}>
-					{!isMobile && (
-						<Details
-							coinChartData={lineChartData}
-							pair={pair}
-							brokerUsed={isUseBroker}
-							networkName={display_name}
-							isNetwork={isNetwork}
-						/>
-					)}
+					<Details
+						coinChartData={lineChartData}
+						pair={pair}
+						brokerUsed={isUseBroker}
+						networkName={display_name}
+						isNetwork={isNetwork}
+						showOnlyTitle={isMobile}
+					/>
+					<Dialog
+						isOpen={showPriceTrendModal}
+						label="price-trend-modal"
+						onCloseDialog={handlePriceTrendClose}
+						shouldCloseOnOverlayClick={false}
+						showCloseText
+						style={{ 'z-index': 100 }}
+					>
+						<div>
+							<div className="d-flex price-title-wrapper">
+								<div>
+									<Image
+										iconId="CHART_VIEW"
+										icon={ICONS['CHART_VIEW']}
+										wrapperClassName="quick_trade_price_trend_icon price_trend_title_icon"
+									/>
+
+									{STRINGS['QUICK_TRADE_COMPONENT.PRICE_TREND']}
+								</div>
+								<div onClick={handlePriceTrendClose}>
+									<Image
+										iconId="CLOSE_CROSS"
+										icon={ICONS['CLOSE_CROSS']}
+										wrapperClassName="close-modal-icon"
+									/>
+								</div>
+							</div>
+							<Details
+								coinChartData={lineChartData}
+								pair={pair}
+								brokerUsed={isUseBroker}
+								networkName={display_name}
+								isNetwork={isNetwork}
+							/>
+						</div>
+					</Dialog>
+
 					<div className="d-flex flex-column trade-section">
 						<div className="inner-content">
-							<div className="small-text">
+							<div className="balance-text mb-3 goto-wallet-container">
 								<EditWrapper
 									stringId="QUICK_TRADE_COMPONENT.GO_TO_TEXT"
 									renderWrapper={(children) => (
@@ -433,32 +480,38 @@ const QuickTrade = ({
 								</Link>
 							</div>
 
-							<Balance
-								text={coins[selectedSource]?.display_name}
-								balance={selectedSourceBalance}
-								onClick={sourceTotalBalance}
-							/>
-
-							<InputGroup
-								name={STRINGS['CONVERT']}
-								stringId={'CONVERT'}
-								options={sourceOptions}
-								inputValue={sourceAmount}
-								selectValue={selectedSource}
-								onSelect={onSelectSource}
-								onInputChange={onChangeSourceAmount}
-								forwardError={() => {}}
-								autoFocus={autoFocus}
-								decimal={
-									coins[selectedSource]?.increment_unit || PAIR2_STATIC_SIZE
-								}
-								availableBalance={selectedSourceBalance}
-								pair={isUseBroker ? symbol : key ? key : ''}
-								coins={coins}
-								selectedBalance={selectedBalance}
-								loading={loadingSource}
-								disabled={loadingSource}
-							/>
+							<div className="quick-trade-input">
+								<div className="d-flex justify-content-between mb-3">
+									<div className="bold caps-first">
+										<EditWrapper stringId={'CONVERT'}>
+											{STRINGS['CONVERT']}
+										</EditWrapper>
+									</div>
+									<Balance
+										text={coins[selectedSource]?.display_name}
+										balance={selectedSourceBalance}
+										onClick={sourceTotalBalance}
+									/>
+								</div>
+								<InputGroup
+									options={sourceOptions}
+									inputValue={sourceAmount}
+									selectValue={selectedSource}
+									onSelect={onSelectSource}
+									onInputChange={onChangeSourceAmount}
+									forwardError={() => {}}
+									autoFocus={isMobile ? false : autoFocus}
+									decimal={
+										coins[selectedSource]?.increment_unit || PAIR2_STATIC_SIZE
+									}
+									availableBalance={selectedSourceBalance}
+									pair={isUseBroker ? symbol : key ? key : ''}
+									coins={coins}
+									selectedBalance={selectedBalance}
+									loading={loadingSource}
+									disabled={loadingSource}
+								/>
+							</div>
 							<div className="d-flex swap-wrapper-wrapper">
 								<div className="swap-wrapper">
 									<div className="swap-container">
@@ -474,30 +527,34 @@ const QuickTrade = ({
 									</div>
 								</div>
 							</div>
-							<InputGroup
-								name={STRINGS['TO']}
-								stringId={'TO'}
-								options={targetOptions}
-								inputValue={targetAmount}
-								selectValue={selectedTarget}
-								onSelect={onSelectTarget}
-								onInputChange={onChangeTargetAmount}
-								forwardError={() => {}}
-								decimal={
-									coins[selectedTarget]?.increment_unit || PAIR2_STATIC_SIZE
-								}
-								pair={isUseBroker ? symbol : key ? key : ''}
-								coins={coins}
-								loading={loadingTarget}
-								disabled={loadingTarget}
-							/>
-
-							<Balance
-								text={coins[selectedTarget]?.display_name}
-								balance={selectedTargetBalance}
-								onClick={targetTotalBalance}
-								className="balance-wallet"
-							/>
+							<div className="quick-trade-input">
+								<div className="d-flex justify-content-between mb-3">
+									<div className="bold caps-first">
+										<EditWrapper stringId={'TO'}>{STRINGS['TO']}</EditWrapper>
+									</div>
+									<Balance
+										text={coins[selectedTarget]?.display_name}
+										balance={selectedTargetBalance}
+										onClick={targetTotalBalance}
+										className="balance-wallet"
+									/>
+								</div>
+								<InputGroup
+									options={targetOptions}
+									inputValue={targetAmount}
+									selectValue={selectedTarget}
+									onSelect={onSelectTarget}
+									onInputChange={onChangeTargetAmount}
+									forwardError={() => {}}
+									decimal={
+										coins[selectedTarget]?.increment_unit || PAIR2_STATIC_SIZE
+									}
+									pair={isUseBroker ? symbol : key ? key : ''}
+									coins={coins}
+									loading={loadingTarget}
+									disabled={loadingTarget}
+								/>
+							</div>
 
 							{error?.length ? (
 								<FieldError
@@ -536,12 +593,15 @@ const QuickTrade = ({
 									disabled={disabled}
 									type="button"
 									className={!isMobile ? 'w-50' : 'w-100'}
+									iconId={'QUICK_TRADE_TAB_ACTIVE'}
+									iconList={ICONS}
 								/>
 							</div>
 							<Footer
 								brokerUsed={isUseBroker}
 								name={display_name}
 								isNetwork={isNetwork}
+								pair={pair}
 							/>
 						</div>
 					</div>
@@ -616,4 +676,4 @@ const mapStateToProps = (store) => {
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(withRouter(QuickTrade));
+)(withRouter(withConfig(QuickTrade)));

@@ -44,7 +44,7 @@
 	"SECONDS": "seconds",
 	"SECOND": "second",
 	"VIEW_MARKET": "view markets",
-	"CANT_FIND_MARKETS":"Can't find any markets from that asset.",
+	"CANT_FIND_MARKETS": "Can't find any markets from that asset.",
 	"TRY_VISITING_ASSETS": "Try visiting the {0}.",
 	"ASSETS_PAGE": "Assets page",
 	"GO_TRADE": "Go Trade",
@@ -199,7 +199,7 @@
 	},
 	"QUICK_TRADE_COMPONENT": {
 		"TITLE": "Quick Trade",
-		"BUTTON": "Review Order",
+		"BUTTON": "Review Quick Trade",
 		"INFO": "Fastest and simplest way to trade your crypto",
 		"CHANGE_TEXT": "change",
 		"CHANGE_TEXT_7D": "7D Change",
@@ -219,7 +219,9 @@
 		"VISIT": "Visit{0}",
 		"ASSET_INFO_PAGE": "Assets info page",
 		"COIN_NAME": "{0} ({1})",
-		"COIN_INFORMATION": "{0} information"
+		"COIN_INFORMATION": "{0} information",
+		"PRICE_TREND": "Price Trend",
+		"VIEW_TREND": "View Trend"
 	},
 	"PREVIOUS_PAGE": "previous page",
 	"NEXT_PAGE": "next page",
@@ -1540,7 +1542,9 @@
 		"CUSTOM_DATE_DESCRIPTION": "Select specific dates to fetch your history data (date difference cannot go further than 3 months)",
 		"SELECT_START_DATE": "Select start date",
 		"SELECT_END_DATE": "Select end date",
-		"CUSTOM": "Custom"
+		"CUSTOM": "Custom",
+		"BACK_CUSTOM": "BACK",
+		"PROOCED_CUSTOM": "PROOCED"
 	},
 	"ASSET_INFO": "Asset info",
 	"TAKER_FEES_APPLIED": "Taker fees are applied",

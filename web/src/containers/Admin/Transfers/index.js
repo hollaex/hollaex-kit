@@ -54,7 +54,7 @@ const getFields = (
 		label: 'Currency',
 		placeholder: 'Currency',
 		showSearch: true,
-		options: coins,
+		options: coins.sort(),
 		validate: [validateRequired, validateRange(coins)],
 	},
 	amount: {

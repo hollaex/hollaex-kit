@@ -82,7 +82,6 @@ class ConfirmWithdrawal extends Component {
 
 						<div style={{ marginTop: 20 }}>
 							<div>
-								{this.props?.coins?.[currency]?.fullname}{' '}
 								<EditWrapper stringId="WITHDRAW_PAGE.WITHDRAW_CONFIRM_SUCCESS_2">
 									{STRINGS['WITHDRAW_PAGE.WITHDRAWAL_CONFIRM_AMOUNT']}
 								</EditWrapper>

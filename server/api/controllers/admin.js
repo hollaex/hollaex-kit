@@ -1172,7 +1172,7 @@ const putBurn = (req, res) => {
 		processing,
 		waiting,
 		email,
-		updated_description
+		description
 	} = req.swagger.params.data.value;
 
 	loggerAdmin.info(
@@ -1193,8 +1193,8 @@ const putBurn = (req, res) => {
 		updated_transaction_id,
 		'updated_address',
 		updated_address,
-		'updated_description',
-		updated_description
+		'description',
+		description
 	);
 
 	toolsLib.wallet.updatePendingBurn(transaction_id, {
@@ -1206,7 +1206,7 @@ const putBurn = (req, res) => {
 		updatedTransactionId: updated_transaction_id,
 		updatedAddress: updated_address,
 		email,
-		updatedDescription: updated_description,
+		updatedDescription: description,
 		additionalHeaders: {
 			'x-forwarded-for': req.headers['x-forwarded-for']
 		}

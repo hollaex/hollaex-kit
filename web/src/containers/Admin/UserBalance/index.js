@@ -42,7 +42,8 @@ class UserBalance extends Component {
 		) {
 			this.handleChartData();
 			const wallet = this.state.userInformation.wallet || [];
-			const tableData = Object.entries(this.props.coins).map(([key, value]) => {
+
+			const tableData = Object.entries(this.props.coins).sort().map(([key, value]) => {
 				let addressData = {};
 				let networks = value.network ? value.network.split(',') : [];
 				if (networks.length) {
@@ -357,6 +358,7 @@ class UserBalance extends Component {
 					expandedRowRender={this.renderAddress}
 					dataSource={tableData}
 					className="blue-admin-table"
+					pagination={false}
 				/>
 				<div className="user-donut-chart-wrapper">
 					<div>Percentage balance breakdown</div>

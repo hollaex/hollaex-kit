@@ -138,7 +138,7 @@ const unstakingCheckRunner = () => {
 
 				let symbols = {};
 
-				(userBalances[userId] || []).forEach(balance => { symbols[balance.symbol] = balance.available });
+				(userBalances[userId] || []).forEach(balance => { symbols[balance.symbol] = balance.balance });
 
 				const coins = Object.keys(symbols);
 

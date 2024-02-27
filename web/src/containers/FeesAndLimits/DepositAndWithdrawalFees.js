@@ -1,7 +1,6 @@
 import React from 'react';
 import { Coin, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
-import { formatPercentage } from 'utils/currency';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { getNetworkNameByKey } from 'utils/wallet';
 
@@ -30,13 +29,10 @@ const renderRow = (
 };
 
 const getFeeText = (data, level) => {
-	const { symbol, type = 'static', value, levels } = data;
+	const { symbol, value } = data;
 
-	const fee = levels && levels[level] ? levels[level] : value;
-	const text =
-		type === 'percentage'
-			? formatPercentage(fee)
-			: `${fee} ${symbol?.toUpperCase()}`;
+	const fee = value;
+	const text = `${fee} ${symbol?.toUpperCase()}`;
 
 	return text;
 };

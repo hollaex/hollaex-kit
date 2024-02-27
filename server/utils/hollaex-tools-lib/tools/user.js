@@ -647,7 +647,16 @@ const getAllUsersAdmin = (opts = {
 	const pagination = paginationQuery(opts.limit, opts.page);
 	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
 	const dob_timeframe = timeframeQuery(dob_start_date, dob_end_date);
-	const ordering = orderingQuery(opts.order_by, opts.order);
+
+	let orderBy = 'updated_at';
+	let order = 'desc';
+	if (opts.order_by) {
+		orderBy = opts.order_by;
+	}
+	if (opts.order) {
+		order = opts.order;
+	}
+	const ordering = orderingQuery(orderBy, order);
 	let query = {
 		where: {
 			created_at: timeframe,
@@ -661,12 +670,12 @@ const getAllUsersAdmin = (opts = {
 		order: [ordering]
 	};
 	query.attributes = {
-		exclude: ['balance', 'password', 'updated_at']
+		exclude: ['balance', 'password']
 	};
 
 	if (opts.search) {
 		query.attributes = {
-			exclude: ['balance', 'password', 'updated_at']
+			exclude: ['balance', 'password']
 		};
 		if (opts.id) {
 			query.where.id = opts.id;
@@ -2402,7 +2411,7 @@ const getUserBalanceHistory = (opts = {
 					const balance = await getUserBalanceByKitId(opts.user_id);
 
 					for (const key of Object.keys(balance)) {
-						if (key.includes('available') && balance[key]) {
+						if (key.includes('balance') && balance[key]) {
 							let symbol = key?.split('_')?.[0];
 							symbols[symbol] = balance[key];
 						}
@@ -2481,7 +2490,7 @@ const fetchUserProfitLossInfo = async (user_id) => {
 	const balance = await getUserBalanceByKitId(user_id);
 
 	for (const key of Object.keys(balance)) {
-		if (key.includes('available') && balance[key]) {
+		if (key.includes('balance') && balance[key]) {
 			let symbol = key?.split('_')?.[0];
 			symbols[symbol] = balance[key];
 		}
@@ -2637,16 +2646,36 @@ const fetchUserProfitLossInfo = async (user_id) => {
 	}
 
 	if (results['7d']) {
+		const weightedAverage = (prices, weights) => {
+		  const [sum, weightSum] = weights.reduce(
+		    (acc, w, i) => {
+		      acc[0] = acc[0] + prices[i] * w;
+		      acc[1] = acc[1] + w;
+		      return acc;
+		    },
+		    [0, 0]
+		  );
+		  return sum / weightSum;
+		};
+
 		let total = 0;
+		let percentageValues = [];
+		let prices = [];
 		const assets = Object.keys(results['7d']);
 
 		assets?.forEach(asset => {
 			total += results['7d'][asset].cumulativePNL;
+			if (conversions[asset]) {
+				prices.push(conversions[asset]);
+				percentageValues.push(results['7d'][asset].cumulativePNLPercentage);
+			}
 		});
 		results['7d'].total = total;
+		const weightedPercentage = weightedAverage(percentageValues, prices);
+		results['7d'].totalPercentage = weightedPercentage ? weightedPercentage.toFixed(2) : null;
 	}
 
-	client.setexAsync(`${user_id}user-pl-info`, 86400, JSON.stringify(results));
+	client.setexAsync(`${user_id}user-pl-info`, 3600, JSON.stringify(results));
 
 	return results;
 };
