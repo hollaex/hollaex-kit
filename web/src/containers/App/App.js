@@ -332,9 +332,14 @@ class App extends Component {
 		}
 	};
 
-	goToPair = (pair) => {
+	goToPair = (pair, isQuickTrade) => {
 		const { router } = this.props;
-		router.push(`/trade/${pair}`);
+
+		if (isQuickTrade) {
+			router.push(`/quick-trade/${pair}`);
+		} else {
+			router.push(`/trade/${pair}`);
+		}
 	};
 
 	onViewMarketsClick = () => {
