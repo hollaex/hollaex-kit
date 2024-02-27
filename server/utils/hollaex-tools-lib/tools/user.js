@@ -2364,6 +2364,14 @@ const getUserBalanceHistory = (opts = {
 	endDate: null,
 	format: null
 }) => {
+
+	const exchangeInfo = getKitConfig().info;
+	
+	if(!['fiat', 'boost', 'enterprise'].includes(exchangeInfo.plan)) {
+		throw new Error(SERVICE_NOT_SUPPORTED);
+	}
+
+
 	if(!getKitConfig()?.balance_history_config?.active) { throw new Error(BALANCE_HISTORY_NOT_ACTIVE); }
 
 	const timeframe = timeframeQuery(opts.startDate, opts.endDate);
@@ -2449,6 +2457,13 @@ const getUserBalanceHistory = (opts = {
 
 
 const fetchUserProfitLossInfo = async (user_id) => {
+
+	const exchangeInfo = getKitConfig().info;
+
+	if(!['fiat', 'boost', 'enterprise'].includes(exchangeInfo.plan)) {
+		throw new Error(SERVICE_NOT_SUPPORTED);
+	}
+
 
 	if(!getKitConfig()?.balance_history_config?.active) { throw new Error(BALANCE_HISTORY_NOT_ACTIVE); }
 
