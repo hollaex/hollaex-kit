@@ -10,12 +10,7 @@ const Imap = require('imap');
 module.exports = (on, config) => {
   // Prepare for audits
   on("before:browser:launch", (browser = {}, launchOptions) => {prepareAudit(launchOptions); });
-
-  // Register lighthouse and pa11y tasks
-  // on("task", {
-  //   lighthouse: lighthouse(), // calling the function is important
-  //   pa11y: pa11y(), // calling the function is important
-  // });
+// the file got updated
 
   // Setup for cucumber preprocessor
     on('file:preprocessor', cucumber());
