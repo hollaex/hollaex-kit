@@ -26,26 +26,20 @@ export const MENU_ITEMS = {
 		{
 			id: 'assets',
 			path: '/assets',
+			icon_id: 'FOOTERBAR_ASSETS_TRADE',
 			string_id: 'ASSETS',
 			hide_from_sidebar: true,
 			hide_from_appbar: false,
 			hide_from_menulist: true,
-			hide_from_bottom_nav: true,
+			hide_from_bottom_nav: false,
 		},
 	],
 	features: [
 		{
 			id: 'pro_trade',
-			path: '/markets',
+			path: '/trade',
 			icon_id: 'SIDEBAR_TRADING_ACTIVE',
-			string_id: 'PRO_TRADE',
-			hide_from_sidebar: true,
-		},
-		{
-			id: 'quick_trade',
-			path: 'quick-trade',
-			icon_id: 'QUICK_TRADE_TAB_ACTIVE',
-			string_id: 'QUICK_TRADE',
+			string_id: 'ACCOUNTS.TAB_TRADE',
 			hide_from_sidebar: true,
 		},
 		{
@@ -71,7 +65,7 @@ export const MENU_ITEMS = {
 			hide_from_appbar: true,
 			hide_from_sidebar: true,
 			hide_from_menulist: true,
-			hide_from_bottom_nav: false,
+			hide_from_bottom_nav: true,
 		},
 	],
 	middle: [
@@ -85,7 +79,7 @@ export const MENU_ITEMS = {
 			icon_id: 'TAB_HISTORY',
 			string_id: 'ACCOUNTS.TAB_HISTORY',
 			hide_from_appbar: true,
-			hide_from_bottom_nav: true,
+			hide_from_bottom_nav: false,
 		},
 		{
 			path: '/security',

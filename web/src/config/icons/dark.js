@@ -293,6 +293,10 @@ const nestedIcons = {
 	WALLET_GRAPHIC: '/assets/images/wallet-background-graphic-dark-theme.svg',
 	WALLET_ARROW_DOWN: '/assets/images/deposit-arrow-down.svg',
 	WALLET_ARROW_UP: '/assets/images/withdraw-arrow-up.svg',
+
+	FOOTERBAR_ASSETS_TRADE: '/assets/images/assets-list-bottom-nav-mobile.svg',
+	FOOTERBAR_HISTORY_TRADE:
+		'/assets/images/transaction-history-bottom-nav-mobile.svg',
 };
 
 const icons = flatten(nestedIcons, options);
