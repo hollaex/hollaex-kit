@@ -47,11 +47,11 @@ module.exports = {
                 allowNull: false,
             },
             amount_digital_currency: {
-                type: Sequelize.STRING,
+                type: Sequelize.DOUBLE,
                 allowNull: false,
             },
             amount_fiat: {
-                type: Sequelize.STRING,
+                type: Sequelize.DOUBLE,
                 allowNull: false,
             },
             payment_method_used: {

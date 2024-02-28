@@ -46,11 +46,11 @@ module.exports = function (sequelize, DataTypes) {
                 allowNull: false,
             },
             amount_digital_currency: {
-                type: DataTypes.STRING,
+                type: DataTypes.DOUBLE,
                 allowNull: false,
             },
             amount_fiat: {
-                type: DataTypes.STRING,
+                type: DataTypes.DOUBLE,
                 allowNull: false,
             },
             payment_method_used: {

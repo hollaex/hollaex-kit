@@ -39,8 +39,20 @@ module.exports = {
                 type: Sequelize.STRING,
                 allowNull: false,
             },
-            fee: {
-                type: Sequelize.STRING,
+            operator_id: {
+				type: Sequelize.INTEGER,
+				allowNull: false,
+				references: {
+					model: 'Users',
+					key: 'id'
+				}
+			},
+            merchant_fee: {
+                type: Sequelize.DOUBLE,
+                allowNull: false,
+            },
+            buyer_fee: {
+                type: Sequelize.DOUBLE,
                 allowNull: false,
             },
 			created_at: {

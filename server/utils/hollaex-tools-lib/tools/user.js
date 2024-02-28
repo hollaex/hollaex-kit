@@ -2906,10 +2906,8 @@ const createP2pTransaction = async (data) => {
 
 const updateP2pTransaction = async (data) => {
 	let {
+		user_id,
 		transaction_id,
-		deal_id,
-		merchant_id,
-		buyer_id,
 		amount_digital_currency,
 		amount_fiat,
 		payment_method_used,
@@ -2917,32 +2915,72 @@ const updateP2pTransaction = async (data) => {
 		merchant_status,
 		cancellation_reason,
 		transaction_expired,
-		transaction_timestamp,
 		merchant_release,
 		transaction_duration,
-		transaction_status,
 	} = data;
 
 		
 	const transaction = await getModel('P2PTransaction').findOne({ where: { transaction_id } });
 
+	if (user_id === transaction.merchant_id && data.hasOwnProperty(buyer_status)) {
+		 throw new Error('merchant cannot update buyer status');
+	}
+
+	if (user_id === transaction.buyer_id && data.hasOwnProperty(merchant_status)) {
+		 throw new Error('buyer cannot update merchant status');
+	}
+
     if (!transaction) {
         throw new Error('transaction does not exist');
     }
 
-	if (buyer_status === 'confirmed' && transaction.merchant_status === 'confirm') {
+	if (transaction.transaction_status !== 'active') {
+			throw new Error('Cannot update complete transaction');
+	}
+	if (transaction.merchant_status === 'confirmed' && transaction.buyer_status === 'confirmed') {
+		throw new Error('Cannot update complete transaction');
+	}
+
+	if (buyer_status === 'confirmed' && transaction.merchant_status === 'confirmed') {
 		await getNodeLib().unlockBalance(merchant.network_id, amount_digital_currency, p2pDeal.buying_asset);
 		await transferAssetByKitIds(account_id, user.id, currency, totalAmount, 'P2P Transaction', false, { category: 'p2p' });
+		data.transaction_status = 'complete';
+		data.merchant_release = new Date();
 	} 
 
-	
+	if(buyer_status === 'appeal' || merchant_status === 'appeal') {
 
+	}
+
+	if (buyer_status === 'cancelled' || merchant_status === 'cancelled') {
+		data.transaction_status = 'cancelled';
+	}
+	
+  return transaction.update(data, {
+		fields: [
+			'buyer_status',
+			'merchant_status',
+			'cancellation_reason',
+			'transaction_expired',
+			'transaction_timestamp',
+			'merchant_release',
+			'transaction_duration',
+			'transaction_status'
+		]
+	});
 }
 
 
-
 const createP2pDispute = async (data) => {
-
+	let { 
+		 transaction_id,
+		 initiator_id,
+		 reason,
+		 resolution,
+		 status,
+		 participant_ids,
+		} = data;
+		
 }
 
 const updateP2pDispute = async (data) => {
@@ -2956,7 +2994,6 @@ const updateMerchantProfile = async (data) => {
 const createMerchantFeedback = async (data) => {
 
 }
-
 
 module.exports = {
 	loginUser,
