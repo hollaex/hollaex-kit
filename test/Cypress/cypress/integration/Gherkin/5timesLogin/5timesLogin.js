@@ -57,7 +57,7 @@ And('the user keys in the wrong password for the third time', () => {
     cy.get('[name="password"]').clear().type("WrongPassword5?");
     cy.get('.holla-button').should('be.visible').should('be.enabled').click();
     cy.get('.warning_text').should('exist');
-    cy.get('.warning_text').contains('Incorrect credentials. You have 3 more attempts left');
+    cy.get('.warning_text').contains('Incorrect credentials. You have 2 more attempts left');
 });
 
 And('the user keys in the right password for the third time', () => {
