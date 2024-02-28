@@ -41,7 +41,7 @@ services:
     networks:
       - hollaex-kit
   hollaex-kit-server-api:
-    image: hollaex/hollaex-kit:2.9.5-cli-deprecation-d56aae0
+    image: hollaex/hollaex-kit:2.9.5-cli-deprecation-ff17990
     build:
       context: .
       dockerfile: tools/Dockerfile
@@ -68,7 +68,7 @@ services:
       - hollaex-kit-redis
       - hollaex-kit-db
   hollaex-kit-server-stream:
-    image: hollaex/hollaex-kit:2.9.5-cli-deprecation-d56aae0
+    image: hollaex/hollaex-kit:2.9.5-cli-deprecation-ff17990
     build:
       context: .
       dockerfile: tools/Dockerfile
@@ -96,7 +96,7 @@ services:
       - hollaex-kit-redis
       - hollaex-kit-db
   hollaex-kit-server-plugins:
-    image: hollaex/hollaex-kit:2.9.5-cli-deprecation-d56aae0
+    image: hollaex/hollaex-kit:2.9.5-cli-deprecation-ff17990
     build:
       context: .
       dockerfile: tools/Dockerfile
