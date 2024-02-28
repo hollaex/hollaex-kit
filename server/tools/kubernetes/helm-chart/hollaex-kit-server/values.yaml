@@ -1,5 +1,5 @@
 imageRegistry: bitholla/hollaex-kit
-dockerTag: 2.9.5-cli-deprecation-6535184
+dockerTag: 2.9.5-cli-deprecation-e557364
 imagePullSecrets:
   - name: docker-registry-secret
 envName: hollaex-kit-configmap
