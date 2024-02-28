@@ -1,5 +1,5 @@
-imageRegistry: bitholla/hollaex-web
-dockerTag: 2.9.5-cli-deprecation-e557364-web
+imageRegistry: bitholla/hollaex-core-kit-testnet
+dockerTag: 2.9.5-cli-deprecation-ff17990-web
 imagePullSecrets:
   - name: docker-registry-secret
 stable:
