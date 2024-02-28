@@ -276,19 +276,13 @@ class DonutChart extends Component {
 						fill-opacity="0.2"
 					/>
 					<text
-						transform={translate(0, -10)}
+						transform={translate(0, 5)}
 						dy=".35em"
 						className="donut-label-no-price"
 						textAnchor="middle"
 					>
 						<tspan x="0" dy="0">
 							{STRINGS['ZERO_ASSET']}
-						</tspan>
-						<tspan x="0" dy="1.2em">
-							{STRINGS['ZERO_ASSET_2']}
-						</tspan>
-						<tspan x="0" dy="1.2em">
-							{STRINGS['ZERO_ASSET_3']}
 						</tspan>
 					</text>
 					{showOpenWallet && (
