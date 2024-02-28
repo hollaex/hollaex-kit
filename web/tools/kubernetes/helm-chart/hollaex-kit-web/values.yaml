@@ -1,4 +1,4 @@
-imageRegistry: bitholla/hollaex-web
+imageRegistry: hollaex/hollaex-web
 dockerTag:
   
 imagePullSecrets:
