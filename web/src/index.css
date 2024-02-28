@@ -6293,19 +6293,16 @@ table th {
   .sidebar-bottom-button-trade .edit-wrapper__container {
     height: 100%; }
 
-.footer-assets {
-  margin-right: 10%; }
-
-.footer-wallet {
-  margin-left: 10%; }
-
 @media screen and (max-width: 375px) {
   .mobile-trade-wrapper .pro-trade-footer-icon {
     margin-top: 5% !important; }
   .mobile-trade-wrapper .quick-trade-field,
   .mobile-trade-wrapper .pro-trade-field {
     width: 65px !important;
-    height: 65px !important; } }
+    height: 65px !important; }
+  .sidebar-bottom-button-trade {
+    height: 130%;
+    width: 20% !important; } }
 
 @media screen and (max-width: 450px) and (min-width: 375px) {
   .mobile-trade-wrapper {
@@ -6314,8 +6311,17 @@ table th {
       margin-top: 10% !important; }
     .mobile-trade-wrapper .quick-trade-field,
     .mobile-trade-wrapper .pro-trade-field {
-      width: 82px !important;
-      height: 82px !important; } }
+      width: 75px !important;
+      height: 75px !important; }
+  .sidebar-bottom-button-trade {
+    height: 135%;
+    width: 18% !important; } }
+
+@media screen and (max-width: 550px) and (min-width: 450px) {
+  .mobile-trade-wrapper .quick-trade-field,
+  .mobile-trade-wrapper .pro-trade-field {
+    width: 85px !important;
+    height: 85px !important; } }
 
 @media screen and (max-height: 600px) {
   .sidebar-bottom-icon svg {

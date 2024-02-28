@@ -44,16 +44,24 @@ export const menuItemsSelector = createSelector(
 						item.hide_from_menulist = false;
 						item.hide_from_sidebar = false;
 					}
+
+					if (
+						id === 'trade_tab' &&
+						features.quick_trade &&
+						features.pro_trade
+					) {
+						item.hide_from_bottom_nav = false;
+					}
 					return item;
 				}
 			);
 
 		if (features.quick_trade && features.pro_trade) {
 			featureItems.push({
-				id: 'trade_tab',
-				path: '/trade',
-				icon_id: 'SIDEBAR_TRADING_ACTIVE',
-				string_id: 'ACCOUNTS.TAB_TRADE',
+				id: 'pro_quick_trades',
+				path: 'trades',
+				icon_id: 'PRO_QUICK_TRADES_ICON',
+				string_id: 'PRO_QUICK_TRADES',
 				hide_from_sidebar: true,
 				hide_from_bottom_nav: false,
 			});
