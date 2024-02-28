@@ -6293,10 +6293,10 @@ table th {
   .sidebar-bottom-button-trade .edit-wrapper__container {
     height: 100%; }
 
-.sidebar-bottom-button-assets {
+.footer-assets {
   margin-right: 10%; }
 
-.sidebar-bottom-button-wallet {
+.footer-wallet {
   margin-left: 10%; }
 
 @media screen and (max-width: 375px) {
@@ -9278,6 +9278,9 @@ table th {
 
 .direction_ltr .icon_title-wrapper {
   font-family: "Raleway"; }
+
+.fees_limits .icon_title-text.title {
+  font-size: 1.5rem !important; }
 
 .layout-mobile .icon_title-wrapper .auth_logo-wrapper svg {
   height: 8rem !important;

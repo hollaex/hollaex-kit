@@ -12,7 +12,7 @@ export const menuItemsSelector = createSelector(
 	[getConstants, getRemoteRoutes, getContracts, getToken],
 	(constants = {}, remoteRoutes = [], contracts = {}, token) => {
 		const { features = {} } = constants;
-		const featureItems = MENU_ITEMS.features
+		let featureItems = MENU_ITEMS.features
 			.filter(
 				({ id }) =>
 					id !== 'stake_page' ||
@@ -47,6 +47,30 @@ export const menuItemsSelector = createSelector(
 					return item;
 				}
 			);
+
+		if (features.quick_trade && features.pro_trade) {
+			featureItems.push({
+				id: 'trade_tab',
+				path: '/trade',
+				icon_id: 'SIDEBAR_TRADING_ACTIVE',
+				string_id: 'ACCOUNTS.TAB_TRADE',
+				hide_from_sidebar: true,
+				hide_from_bottom_nav: false,
+			});
+			const updatedItems = featureItems.filter(
+				({ string_id }) =>
+					string_id !== 'QUICK_TRADE' && string_id !== 'PRO_TRADE'
+			);
+			featureItems = updatedItems;
+		}
+
+		if (!features.quick_trade && !features.pro_trade) {
+			const updatedItems = featureItems.filter(
+				({ string_id }) =>
+					string_id !== 'QUICK_TRADE' && string_id !== 'PRO_TRADE'
+			);
+			featureItems = updatedItems;
+		}
 
 		const menuItems = isMobile
 			? remoteRoutes && remoteRoutes.length
