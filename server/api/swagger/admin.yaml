@@ -3837,7 +3837,7 @@ paths:
         - admin
       x-token-permissions:
         - can_read
-  /admin/create-trade:
+  /admin/trade:
     x-swagger-router-controller: admin
     post:
       description: Create trade by admin

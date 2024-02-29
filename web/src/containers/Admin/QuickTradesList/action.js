@@ -36,5 +36,4 @@ export const requestCancelOrders = (orderId, userId) => {
 		});
 };
 
-export const submitOrderByAdmin = (order) =>
-	axios.post('/admin/create-trade', order);
+export const submitOrderByAdmin = (order) => axios.post('/admin/trade', order);
