@@ -130,10 +130,10 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 		margin-top: 25%;
 	}
 	.quick-trade-footer-icon {
-		height: 35%;
+		height: 45%;
 	}
 	.quick-trade-text-field {
-		margin-top: 10%;
+		margin-top: 5%;
 	}
 	.quick-trade-field,
 	.pro-trade-field {
@@ -184,6 +184,7 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 @media screen and (max-width: 375px) {
 	.mobile-trade-wrapper {
 		.pro-trade-footer-icon {
+			height: 70%;
 			margin-top: 5% !important;
 		}
 		.quick-trade-field,
@@ -204,6 +205,10 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 		.pro-trade-footer-icon {
 			margin-top: 10% !important;
 		}
+		.quick-trade-footer-icon {
+			height: 50%;
+			margin-top: 20% !important;
+		}
 		.quick-trade-field,
 		.pro-trade-field {
 			width: 75px !important;
@@ -222,6 +227,9 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 		.pro-trade-field {
 			width: 85px !important;
 			height: 85px !important;
+		}
+		.pro-trade-footer-icon {
+			margin-top: 15% !important;
 		}
 	}
 }
