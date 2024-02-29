@@ -215,7 +215,7 @@ const QuickTradesList = ({ pairs, userId, getThisExchangeOrder }) => {
 						</div>
 
 						<div style={{ marginBottom: 10 }}>
-							<div className="mb-1">Maker Fee</div>
+							<div className="mb-1">Maker Fee (%)</div>
 							<Input
 								type="number"
 								placeholder="Enter maker fee"
@@ -230,7 +230,7 @@ const QuickTradesList = ({ pairs, userId, getThisExchangeOrder }) => {
 							/>
 						</div>
 						<div style={{ marginBottom: 10 }}>
-							<div className="mb-1">Taker Fee</div>
+							<div className="mb-1">Taker Fee (%)</div>
 							<Input
 								type="number"
 								placeholder="Enter taker fee"
