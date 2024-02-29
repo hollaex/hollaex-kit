@@ -78,7 +78,10 @@
 		"TAB_HISTORY": "History",
 		"TAB_SIGNOUT": "Signout",
 		"TAB_STAKE": "Stake",
-		"TAB_FIAT": "Fiat controls"
+		"TAB_FIAT": "Fiat controls",
+		"TAB_TRADE": "Trade",
+		"PRO_TRADE": "Pro",
+		"QUICK_TRADE": "Quick"
 	},
 	"CONTACT_FORM": {
 		"CATEGORY_LABEL": "Category",

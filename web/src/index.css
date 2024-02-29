@@ -6191,7 +6191,7 @@ table th {
   color: var(--calculated_base_top-bar-navigation_text);
   width: 100%;
   padding: 0.5rem 0.5rem 0.8rem 0.5rem;
-  justify-content: space-evenly; }
+  justify-content: space-around; }
   .sidebar-bottom-wrapper .sidebar-bottom-button {
     justify-content: space-between;
     flex-direction: column;
@@ -6201,24 +6201,30 @@ table th {
     .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .post-icon,
     .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .chat-0,
     .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .account-svg-1,
-    .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .quick-trade-tab-active {
+    .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .quick-trade-tab-active,
+    .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .assets-icon-tab,
+    .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .onramp-icon {
       fill: var(--calculated_base_top-bar-navigation_text-inactive); }
     .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .tab-wallet0,
     .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .trade-active-2,
     .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .chat-0,
-    .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .quick-trade-tab-active {
+    .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .quick-trade-tab-active,
+    .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .assets-icon-tab {
       stroke: var(--calculated_base_top-bar-navigation_text-inactive); }
     .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .tab-wallet0,
     .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .quick-trade-tab-active {
       fill: transparent; }
     .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .post-icon,
     .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .chat-0,
-    .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .account-svg-1 {
+    .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .account-svg-1,
+    .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .assets-icon-tab,
+    .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .onramp-icon {
       fill: var(--calculated_base_top-bar-navigation_text); }
     .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .tab-wallet0,
     .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .trade-active-2,
     .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .chat-0,
-    .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .quick-trade-tab-active {
+    .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .quick-trade-tab-active,
+    .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .assets-icon-tab {
       stroke: var(--calculated_base_top-bar-navigation_text); }
     .sidebar-bottom-wrapper .sidebar-bottom-button .bottom-bar-text {
       font-size: 10px;
@@ -6248,15 +6254,99 @@ table th {
       width: 3rem;
       height: 3rem; }
 
+.mobile-trade-wrapper {
+  position: absolute;
+  bottom: 170%;
+  width: 60%;
+  justify-content: space-evenly; }
+  .mobile-trade-wrapper .quick-trade-footer-icon,
+  .mobile-trade-wrapper .pro-trade-footer-icon {
+    margin-top: 25%; }
+  .mobile-trade-wrapper .quick-trade-footer-icon {
+    height: 45%; }
+  .mobile-trade-wrapper .quick-trade-text-field {
+    margin-top: 5%; }
+  .mobile-trade-wrapper .quick-trade-field,
+  .mobile-trade-wrapper .pro-trade-field {
+    background-color: var(--base_top-bar-navigation);
+    width: 100%;
+    height: 100%;
+    border-radius: 50px;
+    text-align: center; }
+  .mobile-trade-wrapper .bottom-text-active-trade-tab {
+    color: var(--calculated_base_top-bar-navigation_text) !important;
+    font-weight: bolder; }
+
 .direction_ltr .sidebar-row .cell-wrapper:not(:last-child) {
   border-right: 1px solid var(--calculated_secondary-border); }
 
 .direction_rtl .sidebar-row .cell-wrapper:not(:last-child) {
   border-left: 1px solid var(--calculated_secondary-border); }
 
+.sidebar-bottom-button-trade {
+  background: var(--base_top-bar-navigation) !important;
+  height: 150%;
+  width: 15% !important;
+  position: absolute;
+  bottom: 10%;
+  border-radius: 100%; }
+  .sidebar-bottom-button-trade .edit-wrapper__container {
+    height: 100%; }
+
+@media screen and (max-width: 375px) {
+  .mobile-trade-wrapper .pro-trade-footer-icon {
+    height: 50%;
+    margin-top: 20% !important; }
+  .mobile-trade-wrapper .quick-trade-footer-icon {
+    margin-top: 20% !important; }
+  .mobile-trade-wrapper .quick-trade-field,
+  .mobile-trade-wrapper .pro-trade-field {
+    width: 65px !important;
+    height: 65px !important; }
+  .sidebar-bottom-button-trade {
+    height: 130%;
+    width: 20% !important; } }
+
+@media screen and (max-width: 450px) and (min-width: 375px) {
+  .mobile-trade-wrapper {
+    width: 50%; }
+    .mobile-trade-wrapper .pro-trade-footer-icon {
+      height: 50%;
+      margin-top: 18% !important; }
+    .mobile-trade-wrapper .quick-trade-footer-icon {
+      height: 40%;
+      margin-top: 20% !important; }
+    .mobile-trade-wrapper .quick-trade-field,
+    .mobile-trade-wrapper .pro-trade-field {
+      width: 75px !important;
+      height: 75px !important; }
+  .sidebar-bottom-button-trade {
+    height: 135%;
+    width: 18% !important; } }
+
+@media screen and (max-width: 550px) and (min-width: 450px) {
+  .mobile-trade-wrapper {
+    width: 50%; }
+    .mobile-trade-wrapper .quick-trade-field,
+    .mobile-trade-wrapper .pro-trade-field {
+      width: 85px !important;
+      height: 85px !important; }
+    .mobile-trade-wrapper .pro-trade-footer-icon {
+      height: 40%;
+      margin-top: 25% !important; }
+    .mobile-trade-wrapper .quick-trade-footer-icon {
+      height: 35%;
+      margin-top: 25% !important; } }
+
 @media screen and (max-height: 600px) {
   .sidebar-bottom-icon svg {
     stroke: none !important; } }
+
+@media screen and (max-width: 768px) {
+  .mobile-trade-wrapper .quick-trade-field,
+  .mobile-trade-wrapper .pro-trade-field {
+    width: 100px;
+    height: 100px; } }
 
 .tab_controller-title {
   display: flex;
@@ -9209,6 +9299,9 @@ table th {
 
 .direction_ltr .icon_title-wrapper {
   font-family: "Raleway"; }
+
+.fees_limits .icon_title-text.title {
+  font-size: 1.5rem !important; }
 
 .layout-mobile .icon_title-wrapper .auth_logo-wrapper svg {
   height: 8rem !important;

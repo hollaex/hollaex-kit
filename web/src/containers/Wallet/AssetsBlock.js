@@ -74,6 +74,7 @@ const AssetsBlock = ({
 	const [graphData, setGraphData] = useState([]);
 	const [historyData, setHistoryData] = useState([]);
 	const [userPL, setUserPL] = useState();
+	const [plLoading, setPlLoading] = useState(false);
 
 	const handleUpgrade = (info = {}) => {
 		if (
@@ -97,6 +98,7 @@ const AssetsBlock = ({
 			})
 			.catch((err) => err);
 
+		setPlLoading(true);
 		fetchBalanceHistory({
 			start_date: moment().subtract(7, 'days').toISOString(),
 			end_date: moment().subtract().toISOString(),
@@ -124,10 +126,10 @@ const AssetsBlock = ({
 
 				setGraphData(newGraphData);
 				setHistoryData(response.data || []);
-				// setIsLoading(false);
+				setPlLoading(false);
 			})
 			.catch((error) => {
-				// setIsLoading(false);
+				setPlLoading(false);
 			});
 		// eslint-disable-next-line
 	}, []);
@@ -410,28 +412,30 @@ const AssetsBlock = ({
 															</div>
 														</div>
 													)}
-													{!isUpgrade && balance_history_config?.active && (
-														<div
-															className={
-																Number(userPL?.['7d']?.total || 0) === 0
-																	? 'profitNeutral'
-																	: (userPL?.['7d']?.total || 0) > 0
-																	? 'profitPositive'
-																	: 'profitNegative'
-															}
-														>
-															<EditWrapper stringId="PROFIT_LOSS.PL_7_DAY">
-																{STRINGS['PROFIT_LOSS.PL_7_DAY']}
-															</EditWrapper>{' '}
-															{Number(userPL?.['7d']?.total || 0) > 0
-																? '+'
-																: ' '}
-															{''}
-															{userPL?.['7d']?.totalPercentage
-																? `${userPL?.['7d']?.totalPercentage}% `
-																: ' '}
-														</div>
-													)}
+													{!isUpgrade &&
+														balance_history_config?.active &&
+														Number(userPL?.['7d']?.total || 0) !== 0 && (
+															<div
+																className={
+																	Number(userPL?.['7d']?.total || 0) === 0
+																		? 'profitNeutral'
+																		: (userPL?.['7d']?.total || 0) > 0
+																		? 'profitPositive'
+																		: 'profitNegative'
+																}
+															>
+																<EditWrapper stringId="PROFIT_LOSS.PL_7_DAY">
+																	{STRINGS['PROFIT_LOSS.PL_7_DAY']}
+																</EditWrapper>{' '}
+																{Number(userPL?.['7d']?.total || 0) > 0
+																	? '+'
+																	: ' '}
+																{''}
+																{userPL?.['7d']?.totalPercentage
+																	? `${userPL?.['7d']?.totalPercentage}% `
+																	: ' '}
+															</div>
+														)}
 												</div>
 											)}
 										>
@@ -491,7 +495,8 @@ const AssetsBlock = ({
 									</div>
 								</div>
 							) : (
-								(isUpgrade || !balance_history_config?.active) && (
+								!plLoading &&
+								Number(userPL?.['7d']?.total || 0) === 0 && (
 									<Image
 										icon={ICONS['WALLET_GRAPHIC']}
 										wrapperClassName="wallet-graphic-icon"

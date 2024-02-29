@@ -2147,7 +2147,7 @@ paths:
         - admin
         - supervisor
       x-token-permissions:
-        - can_withdraw
+        - can_trade
   /admin/trades:
     x-swagger-router-controller: trade
     get:
