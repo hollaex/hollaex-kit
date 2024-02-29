@@ -11,7 +11,7 @@ const EditToken = ({ record, displayQR, handleEditData, inx }) => {
 	const [ipAddress, setIpAddress] = useState('');
 	const [isEdit, setIsEdit] = useState(false);
 	const { apiKey, secret } = record;
-	const { can_read, can_withdraw } = editData;
+	const { can_read, can_withdraw, can_trade } = editData;
 
 	const onHandleCopy = () => {
 		const range = document.createRange();
@@ -180,6 +180,21 @@ const EditToken = ({ record, displayQR, handleEditData, inx }) => {
 									</div>
 								)}
 							</div>
+						</div>
+						<div className="ml-5">
+							<span className="font-size-small bold">Trade access</span>
+							<div className="content-size">
+								Order placement, deletion and trading
+							</div>
+							<Checkbox
+								name="can_trade"
+								checked={can_trade}
+								onChange={() =>
+									setEditData({ ...editData, can_trade: !can_trade })
+								}
+							>
+								Trade
+							</Checkbox>
 						</div>
 						<div className="ml-5">
 							<span className="font-size-small bold">Write access</span>

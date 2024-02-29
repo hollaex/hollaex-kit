@@ -71,6 +71,7 @@ export const modifyQuickTradeData = (quicktrade, coins) => {
 
 		data.display_name = `${pair_base_display}/${pair_2_display}`;
 		data.icon_id = icon_id;
+		data.fullname = coins?.[pair_base_display?.toLowerCase()]?.fullname;
 	});
 
 	return quicktrade;

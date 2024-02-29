@@ -79,10 +79,15 @@ class MarketSelector extends Component {
 		return unique(Object.entries(pairs).map(([_, { pair_2 }]) => pair_2));
 	};
 
-	filterData = (data, filterValue, key1, key2) => {
+	filterData = (data, filterValue, key1, key2, key3) => {
 		return data.filter((item) => {
 			const value1 = item[key1] || item[key2];
-			return value1.toLowerCase().indexOf(filterValue) !== -1;
+			const value2 = item[key3];
+
+			return (
+				value1.toLowerCase().indexOf(filterValue) !== -1 ||
+				value2?.toLowerCase()?.indexOf(filterValue) !== -1
+			);
 		});
 	};
 
@@ -93,7 +98,7 @@ class MarketSelector extends Component {
 		const tabResult =
 			tabSymbol === 'all'
 				? coinsData
-				: this.filterData(coinsData, tabSymbol, 'key', 'symbol');
+				: this.filterData(coinsData, tabSymbol, 'key', 'symbol', 'fullname');
 
 		this.setState({ searchResult: tabResult, selectedTabMenu: tabSymbol });
 	};
@@ -107,10 +112,16 @@ class MarketSelector extends Component {
 		const tabResult =
 			selectedTabMenu === 'all'
 				? coinsData
-				: this.filterData(coinsData, selectedTabMenu, 'key', 'symbol');
+				: this.filterData(
+						coinsData,
+						selectedTabMenu,
+						'key',
+						'symbol',
+						'fullname'
+				  );
 		const result = !value
 			? tabResult
-			: this.filterData(tabResult, searchValue, 'key', 'symbol');
+			: this.filterData(tabResult, searchValue, 'key', 'symbol', 'fullname');
 
 		this.setState({ searchResult: result, searchValue: value });
 	};
