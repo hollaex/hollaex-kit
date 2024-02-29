@@ -62,7 +62,9 @@ export const menuItemsSelector = createSelector(
 				path: 'trades',
 				icon_id: 'PRO_QUICK_TRADES_ICON',
 				string_id: 'PRO_QUICK_TRADES',
+				hide_from_appbar: true,
 				hide_from_sidebar: true,
+				hide_from_menulist: true,
 				hide_from_bottom_nav: false,
 			});
 			const updatedItems = featureItems.filter(
