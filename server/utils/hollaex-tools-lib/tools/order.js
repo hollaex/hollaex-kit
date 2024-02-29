@@ -1232,6 +1232,24 @@ const generateOrderFeeData = (userTier, symbol, opts = { discount: 0 }) => {
 	return feeData;
 };
 
+const createTrade = async (order, opts = { additionalHeaders: null }) => {
+	const { symbol, side, price, size, maker_id, taker_id, maker_fee, taker_fee } = order;
+
+	const maker = await getUserByKitId(maker_id);
+	const taker = await getUserByKitId(taker_id);
+
+	return getNodeLib().createBrokerTrade(
+		symbol,
+		side,
+		price,
+		size,
+		maker.network_id,
+		taker.network_id,
+		{ maker: maker_fee, taker: taker_fee },
+		opts
+	);
+};
+
 module.exports = {
 	getAllExchangeOrders,
 	createUserOrderByKitId,
@@ -1260,7 +1278,8 @@ module.exports = {
 	dustUserBalance,
 	executeUserOrder,
 	dustPriceEstimate,
-	updateQuickTradeConfig
+	updateQuickTradeConfig,
+	createTrade
 	// getUserTradesByKitIdStream,
 	// getUserTradesByNetworkIdStream,
 	// getAllTradesNetworkStream,
