@@ -12,13 +12,10 @@ const SidebarButton = ({
 	onClick,
 	tradeTab = false,
 	activeTrades = {},
-	isVisibleTrade = {},
 }) => {
 	const { isProTrade, isQuickTrade } = activeTrades;
-	const { renderProTrade, renderQuickTrade } = isVisibleTrade;
 	const isTradeTabActive = tradeTab && title === 'Trade';
 	const isActiveTrades = isProTrade && isQuickTrade && title === 'Trade';
-	const isAssetsOrWallet = renderProTrade && renderQuickTrade;
 
 	return (
 		<div
@@ -31,10 +28,7 @@ const SidebarButton = ({
 					  )
 					: classnames(
 							`sidebar-bottom-button sidebar-bottom-button-${title.toLowerCase()}`,
-							!tradeTab && { active },
-							isAssetsOrWallet && title === 'Assets'
-								? 'footer-assets'
-								: isAssetsOrWallet && title === 'Wallet' && 'footer-wallet'
+							!tradeTab && { active }
 					  )
 			}
 		>
@@ -81,7 +75,6 @@ const SidebarBottom = ({
 	pairs,
 	isProTrade,
 	isQuickTrade,
-	isVisibleTrade,
 }) => {
 	const activeTrades = { isProTrade, isQuickTrade };
 
@@ -108,7 +101,6 @@ const SidebarBottom = ({
 									onClick={() => onMenuChange(path, null, true)}
 									tradeTab={tradeTab}
 									activeTrades={activeTrades}
-									isVisibleTrade={isVisibleTrade}
 								/>
 								{tradeTab && (
 									<div className="mobile-trade-wrapper d-flex">

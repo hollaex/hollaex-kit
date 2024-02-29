@@ -27,7 +27,6 @@ import {
 	RISKY_ORDER,
 	LOGOUT_CONFORMATION,
 } from 'actions/appActions';
-import { getConstants } from 'containers/Admin/Settings/action';
 import { storeTools } from 'actions/toolsAction';
 import STRINGS from 'config/localizedStrings';
 
@@ -92,7 +91,6 @@ class App extends Component {
 		isTradeTab: false,
 		isProTrade: false,
 		isQuickTrade: false,
-		isVisibleTrade: { renderProTrade: false, renderQuickTrade: false },
 	};
 	ordersQueued = [];
 	limitTimeOut = null;
@@ -169,19 +167,6 @@ class App extends Component {
 				window.location.reload();
 			});
 		}
-
-		getConstants()
-			.then((res) => {
-				this.setState({
-					isVisibleTrade: {
-						renderProTrade: res.kit.features.pro_trade,
-						renderQuickTrade: res.kit.features.quick_trade,
-					},
-				});
-			})
-			.catch((error) => {
-				console.error('Error', error);
-			});
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -328,6 +313,8 @@ class App extends Component {
 					break;
 				case 'quick-trade':
 					router.push(`/quick-trade/${pair}`);
+					break;
+				case 'trades':
 					break;
 				default:
 					router.push(path);
@@ -710,7 +697,6 @@ class App extends Component {
 			// isSidebarOpen,
 			isProTrade,
 			isQuickTrade,
-			isVisibleTrade,
 		} = this.state;
 
 		const languageClasses = getClasesForLanguage(activeLanguage, 'array');
@@ -969,7 +955,6 @@ class App extends Component {
 											pairs={pairs}
 											isProTrade={isProTrade}
 											isQuickTrade={isQuickTrade}
-											isVisibleTrade={isVisibleTrade}
 										/>
 									</div>
 								)}
