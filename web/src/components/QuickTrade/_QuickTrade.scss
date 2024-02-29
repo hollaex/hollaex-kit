@@ -2,8 +2,10 @@ $toogle-size: 14px;
 $toogle-border: 2px;
 $toogle-margin: 2px;
 
-$wrapper--min-width: 1000px;
-$wrapper--max-width: 1200px;
+$wrapper-width: 80vw;
+$wrapper-large-screen-width: 70vw;
+$wrapper-xlarge-screen-width: 60vw;
+
 $wrapper--padding: 3.5rem;
 $section--margin-bottom: 2rem;
 
@@ -88,10 +90,21 @@ $close-icon--height: 2rem;
 	}
 
 	.quick-trade-input {
-		background: $quick-trade-container;
+		background: var(--base_secondary-navigation-bar);
 		padding: 2rem 1.7rem;
 		border-radius: 10px;
 		width: 425px;
+		border: 2px solid transparent;
+		&:focus-within {
+			background: var(--base_wallet-sidebar-and-popup);
+			border: 2px solid #5d63ff;
+		}
+		&:hover {
+			.input-group__input,
+			.input-group__select {
+				color: $colors-main-black;
+			}
+		}
 	}
 
 	.currency-dropdown {
@@ -101,7 +114,7 @@ $close-icon--height: 2rem;
 
 	.input-group__input {
 		text-align: right;
-		color: $colors-main-black;
+		color: var(--labels_secondary-inactive-label-text-graphics);
 		font-size: 1.5rem;
 		margin-left: 1rem;
 		height: 60px;
@@ -137,8 +150,7 @@ $close-icon--height: 2rem;
 	max-width: unset !important;
 }
 .quick_trade-wrapper {
-	min-width: $wrapper--min-width;
-	max-width: $wrapper--max-width;
+	width: $wrapper-width;
 	// background-color: $quick-trade-block-background;
 	// margin: 3rem auto;
 	height: fit-content;
@@ -183,17 +195,26 @@ $close-icon--height: 2rem;
 
 	.trade-section {
 		width: 100%;
-		padding: 3rem 4.5rem;
-		// background: $quick_trade_wrapper_background;
+		padding: 5rem;
+		background: transparent
+			linear-gradient(
+				316deg,
+				var(--base_secondary-navigation-bar, 0.5) 0%,
+				var(--base_wallet-sidebar-and-popup, 0.5) 100%
+			)
+			0% 0% no-repeat padding-box;
 
 		.inner-content {
-			width: 400px;
-			height: 390px;
+			width: 450px;
 			display: flex;
 			flex-direction: column;
 			align-items: flex-end;
+			margin-left: auto;
 			.btn-wrapper {
 				padding: 1rem 0;
+			}
+			.btn-margin-wrapper {
+				margin-top: 5rem;
 			}
 			.py-2 {
 				display: flex;
@@ -226,6 +247,7 @@ $close-icon--height: 2rem;
 			}
 			.swap-wrapper-wrapper {
 				align-self: self-start;
+				margin-left: 4rem;
 			}
 		}
 	}
@@ -414,6 +436,18 @@ $close-icon--height: 2rem;
 	border: 1px solid $link;
 }
 
+@media (min-width: 1500px) {
+	.quick_trade-wrapper {
+		width: $wrapper-large-screen-width;
+	}
+}
+
+@media (min-width: 1800px) {
+	.quick_trade-wrapper {
+		width: $wrapper-xlarge-screen-width;
+	}
+}
+
 @media (max-width: 1020px) {
 	.quick_trade-wrapper {
 		min-width: 100% !important;
@@ -453,6 +487,7 @@ $close-icon--height: 2rem;
 		}
 		.swap-wrapper {
 			width: 250px;
+			margin-left: auto;
 		}
 	}
 }
