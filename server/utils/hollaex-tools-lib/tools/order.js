@@ -1238,6 +1238,10 @@ const createTrade = async (order, opts = { additionalHeaders: null }) => {
 	const maker = await getUserByKitId(maker_id);
 	const taker = await getUserByKitId(taker_id);
 
+	if (!taker || !maker) {
+		throw new Error(USER_NOT_FOUND);
+	}
+
 	return getNodeLib().createBrokerTrade(
 		symbol,
 		side,
