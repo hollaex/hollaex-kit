@@ -2775,6 +2775,59 @@ const getUserBalanceHistoryByAdmin = (req, res) => {
 };
 
 
+const createTradeByAdmin = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/createTradeByAdmin auth',
+		req.auth
+	);
+
+	const {
+		symbol,
+		side,
+		price,
+		size,
+		maker_id,
+		taker_id,
+		maker_fee,
+		taker_fee 
+	} = req.swagger.params.data.value;
+
+	loggerAdmin.info(
+		req.uuid,
+		'controllers/admin/createTradeByAdmin',
+		symbol,
+		side,
+		price,
+		size,
+		maker_id,
+		taker_id,
+		maker_fee,
+		taker_fee 
+	);
+
+		toolsLib.order.createTrade({symbol, side, price, size, maker_id, taker_id, maker_fee, taker_fee },
+			{
+				'x-forwarded-for': req.headers['x-forwarded-for']
+			})
+		.then((data) => {
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
+			loggerAdmin.info(
+				req.uuid,
+				'controllers/admin/createTradeByAdmin successful'
+			);
+			return res.status(200).json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/mintAsset err',
+				err
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
 module.exports = {
 	createInitialAdmin,
 	getAdminKit,
@@ -2843,5 +2896,6 @@ module.exports = {
 	getTransactionLimits,
 	updateTransactionLimit,
 	deleteTransactionLimit,
-	getUserBalanceHistoryByAdmin
+	getUserBalanceHistoryByAdmin,
+	createTradeByAdmin
 };

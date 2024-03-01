@@ -3837,3 +3837,64 @@ paths:
         - admin
       x-token-permissions:
         - can_read
+  /admin/trade:
+    x-swagger-router-controller: admin
+    post:
+      description: Create trade by admin
+      operationId: createTradeByAdmin
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - symbol
+              - side
+              - price
+              - size
+              - maker_id
+              - taker_id
+              - maker_fee
+              - taker_fee
+            properties:
+              symbol:
+                type: string
+                maxLength: 256
+              side:
+                type: string
+                enum: ['buy', 'sell']
+              price:
+                 type: number
+              size:
+                type: number
+              maker_id:
+                type: number
+              taker_id:
+                type: number
+              maker_fee:
+                type: number
+                format: double
+              taker_fee:
+                type: number
+                format: double
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
+      x-token-permissions:
+        - can_trade
