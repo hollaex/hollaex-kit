@@ -149,47 +149,69 @@ const QuickTradesList = ({ pairs, coins, userId, getThisExchangeOrder }) => {
 							</div>
 						</div>
 
-						<div style={{ marginBottom: 10 }}>
-							<div className="mb-1">Base Asset</div>
-							<Select
-								style={{ width: '100%' }}
-								value={orderPayload?.base_coin}
-								placeholder="Select Base Asset"
-								onChange={(value) =>
-									setOrderPayload({
-										...orderPayload,
-										base_coin: value,
-									})
-								}
+						<div style={{ display: 'flex', flexDirection: 'row', gap: 10 }}>
+							<div style={{ marginBottom: 10, flex: 8 }}>
+								<div className="mb-1">Base Asset</div>
+								<Select
+									style={{ width: '100%' }}
+									value={orderPayload?.base_coin}
+									placeholder="Select Base Asset"
+									onChange={(value) =>
+										setOrderPayload({
+											...orderPayload,
+											base_coin: value,
+										})
+									}
+								>
+									{Object.values(coins).map((coin) => (
+										<Select.Option value={coin.symbol}>
+											{coin.fullname}
+										</Select.Option>
+									))}
+								</Select>
+							</div>
+							<div
+								style={{
+									fontSize: 16,
+									flex: 1,
+									display: 'flex',
+									justifyContent: 'center',
+									alignItems: 'center',
+									position: 'relative',
+									top: 5,
+								}}
 							>
-								{Object.values(coins).map((coin) => (
-									<Select.Option value={coin.symbol}>
-										{coin.fullname}
-									</Select.Option>
-								))}
-							</Select>
+								-
+							</div>
+							<div style={{ marginBottom: 10, flex: 8 }}>
+								<div className="mb-1">Quote Asset</div>
+								<Select
+									style={{ width: '100%' }}
+									value={orderPayload?.quote_coin}
+									placeholder="Select Quote Asset"
+									onChange={(value) =>
+										setOrderPayload({
+											...orderPayload,
+											quote_coin: value,
+										})
+									}
+								>
+									{Object.values(coins).map((coin) => (
+										<Select.Option value={coin.symbol}>
+											{coin.fullname}
+										</Select.Option>
+									))}
+								</Select>
+							</div>
 						</div>
-
-						<div style={{ marginBottom: 10 }}>
-							<div className="mb-1">Quote Asset</div>
-							<Select
-								style={{ width: '100%' }}
-								value={orderPayload?.quote_coin}
-								placeholder="Select Quote Asset"
-								onChange={(value) =>
-									setOrderPayload({
-										...orderPayload,
-										quote_coin: value,
-									})
-								}
-							>
-								{Object.values(coins).map((coin) => (
-									<Select.Option value={coin.symbol}>
-										{coin.fullname}
-									</Select.Option>
-								))}
-							</Select>
-						</div>
+						{orderPayload?.base_coin && orderPayload?.quote_coin && (
+							<div style={{ marginBottom: 10 }}>
+								Pair:{' '}
+								<span style={{ fontWeight: 'bold' }}>
+									{orderPayload?.base_coin}-{orderPayload?.quote_coin}
+								</span>
+							</div>
+						)}
 
 						<div style={{ marginBottom: 10 }}>
 							<div className="mb-1">Side</div>
