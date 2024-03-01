@@ -1,9 +1,8 @@
 $colors-white: white;
 
 .trade-details-wrapper {
-	width: 60%;
+	width: 65%;
 	padding: 5rem;
-	padding-right: 24px;
 	font-family: $en--font-family;
 	background-color: $quick-trade-background;
 
@@ -101,7 +100,7 @@ $colors-white: white;
 
 	.day-change-block {
 		text-align: end;
-		margin: 2rem 2rem 2rem 0;
+		margin: 2rem 0;
 		.ant-radio-group {
 			.ant-radio-button-wrapper {
 				background: transparent;

@@ -54,6 +54,12 @@ $close-icon--height: 2rem;
 
 .quick_trade-container {
 	margin: 3rem 0 4rem 0;
+
+	.quick-trade-title-icon {
+		svg {
+			fill: #fff;
+		}
+	}
 	.quick_trade-section_wrapper {
 		&.fetching {
 			color: $colors-deactivate-color2;
@@ -212,6 +218,11 @@ $close-icon--height: 2rem;
 			margin-left: auto;
 			.btn-wrapper {
 				padding: 1rem 0;
+				.holla-button.disabled{
+					svg {
+						opacity: 0.5;
+					}
+				}
 			}
 			.btn-margin-wrapper {
 				margin-top: 5rem;
