@@ -3872,8 +3872,10 @@ paths:
                 type: number
               maker_id:
                 type: number
+                format: int32
               taker_id:
                 type: number
+                format: int32
               maker_fee:
                 type: number
                 format: double
