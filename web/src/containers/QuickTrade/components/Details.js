@@ -224,7 +224,7 @@ const Details = ({
 						</div>
 						<div className="chart w-100">
 							<div className="fade-area" />
-							<MiniSparkLine chartData={chartData} />
+							<MiniSparkLine chartData={chartData} isArea />
 						</div>
 						<div className="d-flex pb-40">
 							<div>
