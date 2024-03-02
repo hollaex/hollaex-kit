@@ -56,8 +56,12 @@ $close-icon--height: 2rem;
 	margin: 3rem 0 4rem 0;
 
 	.quick-trade-title-icon {
-		svg {
-			fill: #fff;
+		.quick_trade-tab-icon{
+			svg {
+				path {
+					fill: var(--labels_important-active-labels-text-graphics) !important;
+				}
+			}
 		}
 	}
 	.quick_trade-section_wrapper {
@@ -105,11 +109,17 @@ $close-icon--height: 2rem;
 			background: var(--base_wallet-sidebar-and-popup);
 			border: 2px solid #5d63ff;
 		}
-		&:hover {
-			.input-group__input,
-			.input-group__select {
+
+		.currency-dropdown:hover,
+		.input-group__select:hover {
+			.input-group__select,
+			.input-group__input {
 				color: $colors-main-black;
 			}
+		}
+		.input-group__select:hover,
+		.input-group__input:hover {
+			color: $colors-main-black;
 		}
 	}
 
@@ -205,8 +215,8 @@ $close-icon--height: 2rem;
 		background: transparent
 			linear-gradient(
 				316deg,
-				var(--base_secondary-navigation-bar, 0.5) 0%,
-				var(--base_wallet-sidebar-and-popup, 0.5) 100%
+				var(--base_secondary-navigation-bar,0.25) 0%,
+				var(--base_wallet-sidebar-and-popup,0.25) 100%
 			)
 			0% 0% no-repeat padding-box;
 
@@ -218,9 +228,13 @@ $close-icon--height: 2rem;
 			margin-left: auto;
 			.btn-wrapper {
 				padding: 1rem 0;
-				.holla-button.disabled{
+				.holla-button.disabled {
 					svg {
-						opacity: 0.5;
+						fill: rgba(0, 0, 0, 0.38) !important;
+						opacity: 0.4;
+						path {
+							fill:  rgba(0, 0, 0, 0.38) !important;
+						}
 					}
 				}
 			}
