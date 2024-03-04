@@ -52,6 +52,18 @@ model = require(path.join(__dirname, './transactionLimit'))(sequelize, Sequelize
 db[model.name] = model;
 model = require(path.join(__dirname, './balanceHistory'))(sequelize, Sequelize.DataTypes);
 db[model.name] = model;
+model = require(path.join(__dirname, './p2pChat'))(sequelize, Sequelize.DataTypes);
+db[model.name] = model;
+model = require(path.join(__dirname, './p2pConfig'))(sequelize, Sequelize.DataTypes);
+db[model.name] = model;
+model = require(path.join(__dirname, './p2pDeal'))(sequelize, Sequelize.DataTypes);
+db[model.name] = model;
+model = require(path.join(__dirname, './p2pDispute'))(sequelize, Sequelize.DataTypes);
+db[model.name] = model;
+model = require(path.join(__dirname, './p2pMerchant'))(sequelize, Sequelize.DataTypes);
+db[model.name] = model;
+model = require(path.join(__dirname, './p2pMerchantFeedback'))(sequelize, Sequelize.DataTypes);
+db[model.name] = model;
 
 Object.keys(db).forEach(function (modelName) {
 	if ('associate' in db[modelName]) {

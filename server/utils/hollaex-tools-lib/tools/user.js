@@ -3059,11 +3059,18 @@ const updateMerchantProfile = async (data) => {
 }
 
 const createMerchantFeedback = async (data) => {
-	return getModel('p2pChat').create(data, {
+	const transaction = await getModel('p2pTransaction').findOne({ where: { id: data.transaction_id } });
+	if (!transaction) {
+		throw new Error ('no transaction found');
+	}
+	
+	return getModel('p2pMerchantFeedback').create(data, {
 		fields: [
-			'sender_id',
+			'merchant_id',
+			'user_id',
 			'transaction_id',
-			'message'		
+			'rating',
+			'comment',
 		]
 	});
 }
