@@ -19,7 +19,7 @@ module.exports = function (sequelize, DataTypes) {
 				onDelete: 'CASCADE',
 				allowNull: false,
 				references: {
-					model: 'Deals',
+					model: 'p2pDeals',
 					key: 'id'
 				}
 			},
