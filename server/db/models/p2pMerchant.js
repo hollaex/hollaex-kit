@@ -2,7 +2,7 @@
 
 module.exports = function (sequelize, DataTypes) {
     const Merchant = sequelize.define(
-        'P2PMerchant',
+        'p2pMerchant',
         {
             user_id: {
                 type: DataTypes.INTEGER,
@@ -17,7 +17,7 @@ module.exports = function (sequelize, DataTypes) {
         {
             timestamps: false,
             underscored: true,
-            tableName: 'P2PMerchants',
+            tableName: 'p2pMerchants',
         }
     );
 

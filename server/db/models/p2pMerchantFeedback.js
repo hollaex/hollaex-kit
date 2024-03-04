@@ -2,7 +2,7 @@
 
 module.exports = function (sequelize, DataTypes) {
     const MerchantsFeedback = sequelize.define(
-        'P2PMerchantsFeedback',
+        'p2pMerchantsFeedback',
         {
             merchant_id: {
                 type: DataTypes.INTEGER,
@@ -33,7 +33,7 @@ module.exports = function (sequelize, DataTypes) {
         {
             timestamps: false,
             underscored: true,
-            tableName: 'P2PMerchantsFeedback',
+            tableName: 'p2pMerchantsFeedback',
         }
     );
 

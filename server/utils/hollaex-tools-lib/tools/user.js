@@ -2718,7 +2718,7 @@ const editAdminP2pConfig = async (data) => {
         throw new Error(STAKE_UNSUPPORTED_EXCHANGE_PLAN);
     }
 
-	return getModel('P2PAdminConfig').create(data, {
+	return getModel('p2pAdminConfig').create(data, {
 		fields: [
 			'enable',
 			'bank_payment_methods',
@@ -2792,7 +2792,7 @@ const createP2PDeal = async (data) => {
 
 	status = true;
 
-	return getModel('P2PDeal').create(data, {
+	return getModel('p2pDeal').create(data, {
 		fields: [
 			'merchant_id',
 			'side',
@@ -2831,7 +2831,7 @@ const createP2pTransaction = async (data) => {
 
 	// Check User tier
 
- 	const p2pDeal = await getModel('P2PDeal').findOne({ where: { id: deal_id } });
+ 	const p2pDeal = await getModel('p2pDeal').findOne({ where: { id: deal_id } });
 
     if (!p2pDeal) {
         throw new Error('deal does not exist');
@@ -2884,7 +2884,7 @@ const createP2pTransaction = async (data) => {
 
 	await getNodeLib().lockBalance(merchant.network_id, amount_digital_currency, p2pDeal.buying_asset);
 
-	return getModel('P2PTransaction').create(data, {
+	return getModel('p2pTransaction').create(data, {
 		fields: [
 			'deal_id',
 			'merchant_id',
@@ -2920,9 +2920,9 @@ const updateP2pTransaction = async (data) => {
 	} = data;
 
 		
-	const transaction = await getModel('P2PTransaction').findOne({ where: { transaction_id } });
-	const p2pConfig = await getModel('P2PConfig').findOne({});
-	const p2pDeal = await getModel('P2PDeal').findOne({ where: { id: deal_id } });
+	const transaction = await getModel('p2pTransaction').findOne({ where: { transaction_id } });
+	const p2pConfig = await getModel('p2pConfig').findOne({});
+	const p2pDeal = await getModel('p2pDeal').findOne({ where: { id: deal_id } });
 	const merchant = await getUserByKitId(p2pDeal.merchant_id);
 
 	if (user_id === transaction.merchant_id && data.hasOwnProperty(buyer_status)) {
@@ -2997,7 +2997,7 @@ const createP2pDispute = async (data) => {
 		});
 
 		data.status = 'active';
-		return getModel('P2PDispute').create(data, {
+		return getModel('p2pDispute').create(data, {
 			fields: [
 				'transaction_id',
 				'initiator_id',
@@ -3010,7 +3010,7 @@ const createP2pDispute = async (data) => {
 }
 
 const updateP2pDispute = async (data) => {
-	   const p2pDispute = await getModel('P2PDispute').findOne({ id: data.id });
+	   const p2pDispute = await getModel('p2pDispute').findOne({ id: data.id });
 
 	   if(!p2pDispute) {
 		throw new error('no record found');
@@ -3025,11 +3025,11 @@ const updateP2pDispute = async (data) => {
 }
 
 const createP2pChatMessage = async (data) => {
-	const transaction = await getModel('P2PTransaction').findOne({ where: { id: data.transaction_id } });
+	const transaction = await getModel('p2pTransaction').findOne({ where: { id: data.transaction_id } });
 	if (!transaction) {
 		throw new Error ('no transaction found');
 	}
-	return getModel('P2PChat').create(data, {
+	return getModel('p2pChat').create(data, {
 		fields: [
 			'sender_id',
 			'transaction_id',
@@ -3039,10 +3039,10 @@ const createP2pChatMessage = async (data) => {
 }
  
 const updateMerchantProfile = async (data) => {
-	const p2pMerchant = await getModel('P2PMerchant').findOne({ id: data.id });
+	const p2pMerchant = await getModel('p2pMerchant').findOne({ id: data.id });
 
 	if(!p2pMerchant) {
-		return getModel('P2PMerchant').create(data, {
+		return getModel('p2pMerchant').create(data, {
 			fields: [
 				'user_id',
 				'blocked_users'
@@ -3059,7 +3059,7 @@ const updateMerchantProfile = async (data) => {
 }
 
 const createMerchantFeedback = async (data) => {
-	return getModel('P2PChat').create(data, {
+	return getModel('p2pChat').create(data, {
 		fields: [
 			'sender_id',
 			'transaction_id',

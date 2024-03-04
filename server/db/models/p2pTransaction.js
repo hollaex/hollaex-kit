@@ -2,7 +2,7 @@
 
 module.exports = function (sequelize, DataTypes) {
     const Transaction = sequelize.define(
-        'P2pTransaction',
+        'p2pTransaction',
         {
             id: {
 				allowNull: false,
@@ -90,7 +90,7 @@ module.exports = function (sequelize, DataTypes) {
         {
             timestamps: true,
             underscored: true,
-            tableName: 'P2pTransactions',
+            tableName: 'p2pTransactions',
         }
     );
 

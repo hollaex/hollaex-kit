@@ -2,7 +2,7 @@
 
 module.exports = function (sequelize, DataTypes) {
     const P2PAdminConfig = sequelize.define(
-        'P2PAdminConfig',
+        'p2pAdminConfig',
         {
             id: {
 				allowNull: false,
@@ -58,7 +58,7 @@ module.exports = function (sequelize, DataTypes) {
         {
             timestamps: false,
             underscored: true,
-            tableName: 'P2PAdminConfigs',
+            tableName: 'p2pAdminConfigs',
         }
     );
 

@@ -2,14 +2,14 @@
 
 module.exports = function (sequelize, DataTypes) {
     const Dispute = sequelize.define(
-        'P2PDispute',
+        'p2pDispute',
         {
             transaction_id: {
 				type: DataTypes.INTEGER,
 				onDelete: 'CASCADE',
 				allowNull: false,
 				references: {
-					model: 'P2pTransactions',
+					model: 'p2pTransactions',
 					key: 'id'
 				}
 			},
@@ -46,7 +46,7 @@ module.exports = function (sequelize, DataTypes) {
         {
             timestamps: false,
             underscored: true,
-            tableName: 'P2PDisputes',
+            tableName: 'p2pDisputes',
         }
     );
 

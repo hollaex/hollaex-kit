@@ -1,6 +1,6 @@
 'use strict';
 
-const TABLE = 'P2PChats';
+const TABLE = 'p2pChats';
 
 module.exports = {
     up: (queryInterface, Sequelize) => {
@@ -16,7 +16,7 @@ module.exports = {
 				onDelete: 'CASCADE',
 				allowNull: false,
 				references: {
-					model: 'P2PTransactions',
+					model: 'p2pTransactions',
 					key: 'id'
 				}
             },

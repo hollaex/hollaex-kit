@@ -2,7 +2,7 @@
 
 module.exports = function (sequelize, DataTypes) {
     const Chat = sequelize.define(
-        'P2PChat',
+        'p2pChat',
         {
             id: {
 				allowNull: false,
@@ -36,7 +36,7 @@ module.exports = function (sequelize, DataTypes) {
         {
             timestamps: false,
             underscored: true,
-            tableName: 'P2PChats',
+            tableName: 'p2pChats',
         }
     );
 
