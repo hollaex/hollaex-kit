@@ -20,28 +20,10 @@ module.exports = {
 					key: 'id'
 				}
             },
-            merchant_id: {
+            sender_id: {
 				type: Sequelize.INTEGER,
 				onDelete: 'CASCADE',
 				allowNull: false,
-				references: {
-					model: 'Users',
-					key: 'id'
-				}
-			},
-            buyer_id: {
-				type: Sequelize.INTEGER,
-				onDelete: 'CASCADE',
-				allowNull: false,
-				references: {
-					model: 'Users',
-					key: 'id'
-				}
-			},
-            operator_id: {
-				type: Sequelize.INTEGER,
-				onDelete: 'CASCADE',
-				allowNull: true,
 				references: {
 					model: 'Users',
 					key: 'id'

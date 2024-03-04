@@ -31,7 +31,7 @@ module.exports = function (sequelize, DataTypes) {
                 allowNull: true,
             },
             status: {
-                type: DataTypes.STRING,
+                type: DataTypes.ENUM('active', 'inactive'),
                 allowNull: false,
             },
             participant_ids: {

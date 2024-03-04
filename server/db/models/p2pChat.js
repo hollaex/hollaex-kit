@@ -19,28 +19,10 @@ module.exports = function (sequelize, DataTypes) {
 					key: 'id'
 				}
 			},
-            merchant_id: {
+			sender_id: {
 				type: DataTypes.INTEGER,
 				onDelete: 'CASCADE',
 				allowNull: false,
-				references: {
-					model: 'Users',
-					key: 'id'
-				}
-			},
-            buyer_id: {
-				type: DataTypes.INTEGER,
-				onDelete: 'CASCADE',
-				allowNull: false,
-				references: {
-					model: 'Users',
-					key: 'id'
-				}
-			},
-            operator_id: {
-				type: DataTypes.INTEGER,
-				onDelete: 'CASCADE',
-				allowNull: true,
 				references: {
 					model: 'Users',
 					key: 'id'

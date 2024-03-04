@@ -29,7 +29,7 @@ module.exports = {
                 allowNull: true,
             },
             status: {
-                type: Sequelize.STRING,
+                type: Sequelize.ENUM('active', 'inactive'),
                 allowNull: false,
             },
             participant_ids: {

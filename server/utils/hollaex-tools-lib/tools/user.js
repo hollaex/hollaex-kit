@@ -2845,7 +2845,7 @@ const createP2pTransaction = async (data) => {
 
 	//Cant have more than 3 active transactions per user
 
-	const merchant = await getUserById(p2pDeal.merchant_id);
+	const merchant = await getUserByKitId(p2pDeal.merchant_id);
 
 
 	const balance = await getP2PAccountBalance(merchant_id, p2pDeal.buying_asset);
@@ -2921,6 +2921,9 @@ const updateP2pTransaction = async (data) => {
 
 		
 	const transaction = await getModel('P2PTransaction').findOne({ where: { transaction_id } });
+	const p2pConfig = await getModel('P2PConfig').findOne({});
+	const p2pDeal = await getModel('P2PDeal').findOne({ where: { id: deal_id } });
+	const merchant = await getUserByKitId(p2pDeal.merchant_id);
 
 	if (user_id === transaction.merchant_id && data.hasOwnProperty(buyer_status)) {
 		 throw new Error('merchant cannot update buyer status');
@@ -2929,6 +2932,7 @@ const updateP2pTransaction = async (data) => {
 	if (user_id === transaction.buyer_id && data.hasOwnProperty(merchant_status)) {
 		 throw new Error('buyer cannot update merchant status');
 	}
+
 
     if (!transaction) {
         throw new Error('transaction does not exist');
@@ -2942,14 +2946,27 @@ const updateP2pTransaction = async (data) => {
 	}
 
 	if (buyer_status === 'confirmed' && transaction.merchant_status === 'confirmed') {
-		await getNodeLib().unlockBalance(merchant.network_id, amount_digital_currency, p2pDeal.buying_asset);
+		await getNodeLib().unlockBalance(merchant.network_id, transaction.amount_digital_currency, p2pDeal.buying_asset);
 		await transferAssetByKitIds(account_id, user.id, currency, totalAmount, 'P2P Transaction', false, { category: 'p2p' });
 		data.transaction_status = 'complete';
 		data.merchant_release = new Date();
 	} 
 
 	if(buyer_status === 'appeal' || merchant_status === 'appeal') {
-
+		let initiator_id;
+		if (buyer_status === 'appeal') {
+			initiator_id = transaction.merchant_id;
+		} else {
+			initiator_id = transaction.buyer_id;
+		}
+		
+		await createP2pDispute({ 
+			transaction_id: transaction.id,
+			initiator_id,
+			reason: cancellation_reason,
+			participant_ids: [transaction.merchant_id, transaction.buyer_id, p2pConfig.operator_id],
+			operator_id:  p2pConfig.operator_id
+		 })
 	}
 
 	if (buyer_status === 'cancelled' || merchant_status === 'cancelled') {
@@ -2972,27 +2989,83 @@ const updateP2pTransaction = async (data) => {
 
 
 const createP2pDispute = async (data) => {
-	let { 
-		 transaction_id,
-		 initiator_id,
-		 reason,
-		 resolution,
-		 status,
-		 participant_ids,
-		} = data;
-		
+		await createP2pChatMessage({
+			sender_id: data.operator_id,
+			message: 'Chat initiated for dispute',
+			transaction_id: data.transaction_id,
+
+		});
+
+		data.status = 'active';
+		return getModel('P2PDispute').create(data, {
+			fields: [
+				'transaction_id',
+				'initiator_id',
+				'reason',
+				'resolution',
+				'status',
+				'participant_ids',
+			]
+		});
 }
 
 const updateP2pDispute = async (data) => {
+	   const p2pDispute = await getModel('P2PDispute').findOne({ id: data.id });
 
+	   if(!p2pDispute) {
+		throw new error('no record found');
+	   }
+	   return p2pDispute.update(data, {
+		fields: [
+			'reason',
+			'resolution',
+			'status'
+		]
+	});
 }
 
+const createP2pChatMessage = async (data) => {
+	const transaction = await getModel('P2PTransaction').findOne({ where: { id: data.transaction_id } });
+	if (!transaction) {
+		throw new Error ('no transaction found');
+	}
+	return getModel('P2PChat').create(data, {
+		fields: [
+			'sender_id',
+			'transaction_id',
+			'message'		
+		]
+	});
+}
+ 
 const updateMerchantProfile = async (data) => {
+	const p2pMerchant = await getModel('P2PMerchant').findOne({ id: data.id });
 
+	if(!p2pMerchant) {
+		return getModel('P2PMerchant').create(data, {
+			fields: [
+				'user_id',
+				'blocked_users'
+			]
+		});
+	} else {
+		p2pMerchant.update(data, {
+			fields: [
+				'user_id',
+				'blocked_users'
+			]
+		});
+	}
 }
 
 const createMerchantFeedback = async (data) => {
-
+	return getModel('P2PChat').create(data, {
+		fields: [
+			'sender_id',
+			'transaction_id',
+			'message'		
+		]
+	});
 }
 
 module.exports = {
@@ -3065,5 +3138,6 @@ module.exports = {
 	updateP2pTransaction,
 	updateP2pDispute,
 	updateMerchantProfile,
-	createMerchantFeedback
+	createMerchantFeedback,
+	createP2pChatMessage
 };
