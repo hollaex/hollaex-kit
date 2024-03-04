@@ -583,7 +583,9 @@ const QuickTrade = ({
 									'd-flex',
 									'flex-column',
 									'align-items-end',
-									'btn-wrapper'
+									'btn-wrapper', {
+										'btn-margin-wrapper': !hasExpiredOnce
+									}
 								)}
 							>
 								<EditWrapper stringId={'QUICK_TRADE_COMPONENT.BUTTON'} />

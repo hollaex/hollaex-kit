@@ -1,8 +1,8 @@
 $colors-white: white;
 
 .trade-details-wrapper {
-	width: 100%;
-	padding: 3.3rem 3rem 2.5rem;
+	width: 65%;
+	padding: 5rem;
 	font-family: $en--font-family;
 	background-color: $quick-trade-background;
 
@@ -22,7 +22,7 @@ $colors-white: white;
 			padding-left: 18px;
 		}
 		.chart {
-			height: 164px;
+			height: 144px;
 			margin: 10px 0 0;
 			.fade-area {
 				position: relative;
@@ -41,6 +41,11 @@ $colors-white: white;
 			}
 			.highcharts-axis.highcharts-xaxis {
 				display: none;
+			}
+		}
+		.price-change {
+			&.large {
+				font-size: 1.8rem;
 			}
 		}
 		.trade_tabs-container {
@@ -95,7 +100,7 @@ $colors-white: white;
 
 	.day-change-block {
 		text-align: end;
-		margin: 2rem 2rem 2rem 0;
+		margin: 3rem 0;
 		.ant-radio-group {
 			.ant-radio-button-wrapper {
 				background: transparent;

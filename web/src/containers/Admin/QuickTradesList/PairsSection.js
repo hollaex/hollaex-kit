@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Row, Col, Table, Tooltip, Button, Spin } from 'antd';
-import { CSVLink } from 'react-csv';
 import Moment from 'react-moment';
 import { Link } from 'react-router';
 
@@ -118,14 +117,6 @@ const getThisExchangeOrders = (onCancel) => {
 
 	return columns;
 };
-
-const SCV_COLUMNS = [
-	{ label: 'Side', dataIndex: 'side', key: 'side' },
-	{ label: 'Symbol', dataIndex: 'symbol', key: 'symbol' },
-	{ label: 'Size', dataIndex: 'size', key: 'size' },
-	{ label: 'Price', dataIndex: 'price', key: 'price' },
-	{ label: 'Time', dataIndex: 'timestamp', key: 'timestamp' },
-];
 
 class PairsSection extends Component {
 	constructor(props) {
@@ -270,13 +261,6 @@ class PairsSection extends Component {
 							<Spin size="large" />
 						) : (
 							<Col>
-								<CSVLink
-									filename={'active-orders-bids.csv'}
-									data={buyOrders.data}
-									headers={SCV_COLUMNS}
-								>
-									Download table
-								</CSVLink>
 								<Table
 									className="blue-admin-table"
 									columns={COLUMNS}

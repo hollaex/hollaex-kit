@@ -10,7 +10,7 @@ import './index.scss';
 
 // const TYPE_OPTIONS = [{ value: true, label: 'Active' }];
 
-const QuickTradesList = ({ pairs, userId, getThisExchangeOrder }) => {
+const QuickTradesList = ({ pairs, coins, userId, getThisExchangeOrder }) => {
 	const [options, setOptions] = useState([]);
 	const [pair, setPair] = useState(null);
 	const [type] = useState(true);
@@ -149,21 +149,69 @@ const QuickTradesList = ({ pairs, userId, getThisExchangeOrder }) => {
 							</div>
 						</div>
 
-						<div style={{ marginBottom: 10 }}>
-							<div className="mb-1">Symbol</div>
-							<Select
-								style={{ width: '100%' }}
-								options={options.filter((option) => option.label !== 'All')}
-								value={orderPayload?.symbol}
-								placeholder="Select Order Symbol"
-								onChange={(value) =>
-									setOrderPayload({
-										...orderPayload,
-										symbol: value,
-									})
-								}
-							/>
+						<div style={{ display: 'flex', flexDirection: 'row', gap: 10 }}>
+							<div style={{ marginBottom: 10, flex: 8 }}>
+								<div className="mb-1">Base Asset</div>
+								<Select
+									style={{ width: '100%' }}
+									value={orderPayload?.base_coin}
+									placeholder="Select Base Asset"
+									onChange={(value) =>
+										setOrderPayload({
+											...orderPayload,
+											base_coin: value,
+										})
+									}
+								>
+									{Object.values(coins).map((coin) => (
+										<Select.Option value={coin.symbol}>
+											{coin.fullname}
+										</Select.Option>
+									))}
+								</Select>
+							</div>
+							<div
+								style={{
+									fontSize: 16,
+									flex: 1,
+									display: 'flex',
+									justifyContent: 'center',
+									alignItems: 'center',
+									position: 'relative',
+									top: 5,
+								}}
+							>
+								-
+							</div>
+							<div style={{ marginBottom: 10, flex: 8 }}>
+								<div className="mb-1">Quote Asset</div>
+								<Select
+									style={{ width: '100%' }}
+									value={orderPayload?.quote_coin}
+									placeholder="Select Quote Asset"
+									onChange={(value) =>
+										setOrderPayload({
+											...orderPayload,
+											quote_coin: value,
+										})
+									}
+								>
+									{Object.values(coins).map((coin) => (
+										<Select.Option value={coin.symbol}>
+											{coin.fullname}
+										</Select.Option>
+									))}
+								</Select>
+							</div>
 						</div>
+						{orderPayload?.base_coin && orderPayload?.quote_coin && (
+							<div style={{ marginBottom: 10 }}>
+								Pair:{' '}
+								<span style={{ fontWeight: 'bold' }}>
+									{orderPayload?.base_coin}-{orderPayload?.quote_coin}
+								</span>
+							</div>
+						)}
 
 						<div style={{ marginBottom: 10 }}>
 							<div className="mb-1">Side</div>
@@ -293,8 +341,13 @@ const QuickTradesList = ({ pairs, userId, getThisExchangeOrder }) => {
 										message.error('Please input pirce');
 										return;
 									}
-									if (!orderPayload.symbol) {
-										message.error('Please select symbol');
+									if (!orderPayload.base_coin) {
+										message.error('Please select base asset');
+										return;
+									}
+
+									if (!orderPayload.quote_coin) {
+										message.error('Please select quote asset');
 										return;
 									}
 
@@ -312,6 +365,7 @@ const QuickTradesList = ({ pairs, userId, getThisExchangeOrder }) => {
 									orderPayload.price = Number(orderPayload.price);
 									orderPayload.maker_fee = Number(orderPayload.maker_fee);
 									orderPayload.taker_fee = Number(orderPayload.taker_fee);
+									orderPayload.symbol = `${orderPayload.base_coin}-${orderPayload.quote_coin}`;
 
 									if (orderPayload.type === 'market') {
 										delete orderPayload.price;
@@ -393,6 +447,7 @@ const QuickTradesList = ({ pairs, userId, getThisExchangeOrder }) => {
 
 const mapStateToProps = (state) => ({
 	pairs: state.app.pairs,
+	coins: state.app.coins,
 });
 
 export default connect(mapStateToProps)(QuickTradesList);
