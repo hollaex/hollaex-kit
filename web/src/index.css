@@ -1331,7 +1331,6 @@ table th {
     color: var(--labels_important-active-labels-text-graphics) !important;
     background-color: var(--specials_buttons-links-and-highlights) !important; }
   .home_container .quick_trade-wrapper {
-    max-width: 40rem;
     background-color: var(--calculated_quick_trade-bg); }
   .home_container .exchange-expired {
     background-color: #ed1c24 !important;
