@@ -56,7 +56,7 @@ export const menuItemsSelector = createSelector(
 				}
 			);
 
-		if (features.quick_trade && features.pro_trade) {
+		if (features.quick_trade && features.pro_trade && isMobile) {
 			featureItems.push({
 				id: 'pro_quick_trades',
 				path: 'trades',
@@ -74,7 +74,7 @@ export const menuItemsSelector = createSelector(
 			featureItems = updatedItems;
 		}
 
-		if (!features.quick_trade && !features.pro_trade) {
+		if (!features.quick_trade && !features.pro_trade && isMobile) {
 			const updatedItems = featureItems.filter(
 				({ string_id }) =>
 					string_id !== 'QUICK_TRADE' && string_id !== 'PRO_TRADE'
