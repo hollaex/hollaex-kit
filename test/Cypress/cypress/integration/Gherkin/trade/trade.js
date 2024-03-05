@@ -111,8 +111,7 @@ When ('I make sell orders {string} times',(orderTime)=>{
          cy.get('[name="size"]').clear().type(i)
          cy.get('.holla-button').click().get('.form-error').should('not.be.always.exist')
          cy.get('.notification-content-wrapper > :nth-child(4) > :nth-child(3)').click()
-         //cy.get('.table_body-wrapper > :nth-child(1) > :nth-child(3) > .sell')
-         cy.get(':nth-child(1) > :nth-child(3) > .sell')
+         cy.get('.open-order-wrapper > .trade_active_orders-wrapper > .table_container > .table-content > .table-wrapper > .table_body-wrapper > .general-record-enter-done > :nth-child(3) > .sell')
          .contains('sell')
          cy.get('@currentPrice')
          .then(val=> {
