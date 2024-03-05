@@ -59,7 +59,7 @@ const Button = ({
 			) : (
 				<EditWrapper>
 					<div
-						className={classnames('d-flex', {
+						className={classnames('d-flex align-items-center', {
 							'reverse-direction': position === 'right',
 						})}
 					>

@@ -1,7 +1,5 @@
 import { createSelector } from 'reselect';
-import mathjs from 'mathjs';
 import store from 'store';
-import { limitNumberWithinRange } from 'utils/math';
 
 const WITHDRAWAL_FEES_KEY = 'withdrawal_fees';
 const DEPOSIT_FEES_KEY = 'deposit_fees';
@@ -11,33 +9,18 @@ const DEPOSIT_LIMIT_KEY = 'deposit_limit';
 export const getFiatFee = (currency, amount, network, type) => {
 	const {
 		app: { coins },
-		user: { verification_level },
 	} = store.getState();
 
 	const feeNetwork = network || currency;
 	const { [type]: fees, [type.slice(0, -1)]: fee } = coins[currency];
 	if (fees && fees[feeNetwork]) {
-		const { symbol, value, type, min, max, levels } = fees[feeNetwork];
-		const { [verification_level]: level_based_fee = value } = levels || {};
+		const { symbol, value } = fees[feeNetwork];
 
-		if (type === 'percentage') {
-			const calcualtedFee = mathjs.multiply(
-				mathjs.fraction(amount),
-				mathjs.fraction(mathjs.divide(mathjs.fraction(level_based_fee), 100))
-			);
-
-			return {
-				symbol,
-				rate: level_based_fee,
-				value: mathjs.number(limitNumberWithinRange(calcualtedFee, min, max)),
-			};
-		} else {
-			return {
-				symbol,
-				rate: level_based_fee,
-				value: level_based_fee,
-			};
-		}
+		return {
+			symbol,
+			rate: value,
+			value: value,
+		};
 	} else if (fee) {
 		return {
 			symbol: currency,

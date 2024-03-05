@@ -1903,6 +1903,84 @@ paths:
         - bearer
       x-security-scopes:
         - admin
+  /admin/user/balance-history:
+    x-swagger-router-controller: admin
+    get:
+      description: Get the user balance history for admin
+      operationId: getUserBalanceHistoryByAdmin
+      parameters:
+        - in: query
+          name: user_id
+          description: User id
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+          enum: ['id', 'user_id', 'total']
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv', 'all']
+          type: string
+      tags:
+        - Admin
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
+      x-token-permissions:
+        - can_read
   /admin/orders:
     x-swagger-router-controller: order
     get:
@@ -2069,7 +2147,7 @@ paths:
         - admin
         - supervisor
       x-token-permissions:
-        - can_withdraw
+        - can_trade
   /admin/trades:
     x-swagger-router-controller: trade
     get:
@@ -3759,3 +3837,66 @@ paths:
         - admin
       x-token-permissions:
         - can_read
+  /admin/trade:
+    x-swagger-router-controller: admin
+    post:
+      description: Create trade by admin
+      operationId: createTradeByAdmin
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - symbol
+              - side
+              - price
+              - size
+              - maker_id
+              - taker_id
+              - maker_fee
+              - taker_fee
+            properties:
+              symbol:
+                type: string
+                maxLength: 256
+              side:
+                type: string
+                enum: ['buy', 'sell']
+              price:
+                 type: number
+              size:
+                type: number
+              maker_id:
+                type: number
+                format: int32
+              taker_id:
+                type: number
+                format: int32
+              maker_fee:
+                type: number
+                format: double
+              taker_fee:
+                type: number
+                format: double
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
+      x-token-permissions:
+        - can_trade

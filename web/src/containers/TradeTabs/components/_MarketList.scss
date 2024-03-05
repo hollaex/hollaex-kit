@@ -92,6 +92,13 @@
 				min-width: 150px !important;
 				direction: ltr;
 			}
+			.td-trade {
+				width: 7rem;
+				.action_notification-wrapper {
+					right: auto;
+					top: 1.25rem;
+				}
+			}
 		}
 		.market-list__caret {
 			span:not(.important-text) {
@@ -100,6 +107,9 @@
 			.important-text {
 				opacity: 0.8;
 			}
+		}
+		.view-more-btn {
+			margin-bottom: 2rem;
 		}
 	}
 }
@@ -170,7 +180,6 @@
 					font-size: 1.3rem !important;
 					.td-chart {
 						min-width: 15rem;
-						padding: 0 !important;
 					}
 				}
 				.sticky-col {
@@ -195,6 +204,12 @@
 	.trade_tabs-container {
 		.sticky-col {
 			background-color: $app-background-color !important;
+		}
+	}
+	.digital-market-wrapper {
+		.sticky-col {
+			color: $colors-main-black;
+			background-color: $app-light-background;
 		}
 	}
 }

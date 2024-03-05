@@ -264,15 +264,20 @@ const Burn = ({
 					</div>
 				</Modal>
 
-				<Button
-					type="primary"
-					style={{ marginBottom: 30, backgroundColor: '#CB7300' }}
+				<div
+					style={{
+						textDecoration: 'underline',
+						cursor: 'pointer',
+						marginBottom: 30,
+						marginTop: -10,
+						color: 'white',
+					}}
 					onClick={() => {
 						setDisplayAdvanced(true);
 					}}
 				>
 					Advanced
-				</Button>
+				</div>
 
 				<Button type="primary" className="green-btn" htmlType="submit">
 					Proceed

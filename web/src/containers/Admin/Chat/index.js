@@ -50,7 +50,7 @@ class Chat extends Component {
 		this.setState({ chatWs });
 
 		chatWs.onopen = (evt) => {
-			console.info('Connected Chat Socket', evt);
+			console.info('Connected Chat Socket');
 			chatWs.send(
 				JSON.stringify({
 					op: 'subscribe',
@@ -68,7 +68,6 @@ class Chat extends Component {
 
 		chatWs.onmessage = (evt) => {
 			const data = JSON.parse(evt.data);
-			console.info('chatWs', data);
 			switch (data.action) {
 				case 'init': {
 					const { data: messages = [] } = data;

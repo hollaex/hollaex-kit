@@ -1,18 +1,16 @@
 import React from 'react';
-import { EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
+import { formatCurrency } from 'utils/currency';
 
 const Balance = ({ balance = 0, text, onClick }) => {
+	// console.log(formatCurrency(balance));
 	return (
-		<div className="small-text">
+		<div className="balance-text font-weight-normal">
 			{text}
 			&nbsp;
-			<EditWrapper stringId="BALANCE_TEXT">
-				{STRINGS['BALANCE_TEXT']}
-			</EditWrapper>
-			:{' '}
+			{STRINGS['BALANCE_TEXT']}:{' '}
 			<span className="ml-2 pointer" onClick={() => onClick(balance)}>
-				{balance}
+				{formatCurrency(balance)}
 			</span>
 		</div>
 	);

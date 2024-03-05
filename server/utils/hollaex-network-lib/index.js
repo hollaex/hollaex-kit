@@ -3500,6 +3500,91 @@ class HollaExNetwork {
 	}
 
 	/**
+	 * Locks users available balance
+	 * @param {number} user_id - User ID to lock the balance
+	 * @param {string} currency - Currency that should be locked
+	 * @param {number} amount - The amount to lock in the balance
+	 * @param {object} opts - Optional parameters.
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
+	 * @return {object} Object of the success message.
+	 */
+	lockBalance(user_id, currency, amount, opts = {
+		additionalHeaders: null
+	}) {
+		checkKit(this.exchange_id);
+
+		if (!user_id) {
+			return reject(parameterError('user_id', 'cannot be null'));
+		}
+		if (!currency) {
+			return reject(parameterError('currency', 'cannot be null'));
+		}
+		if (!amount) {
+			return reject(parameterError('amount', 'cannot be null'));
+		}
+
+		const verb = 'POST';
+		const path = `${this.baseUrl}/network/${this.exchange_id}/balance/lock`;
+
+		const data = {
+			user_id,
+			currency,
+			amount
+		};
+
+		const headers = generateHeaders(
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter,
+			data
+		);
+
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data });
+	}
+
+	/**
+	 * Unlocks users available balance
+	 * @param {number} user_id - User ID to unlock the balance
+	 * @param {number} lock_id - The lock ID to unlock
+	 * @param {object} opts - Optional parameters.
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
+	 * @return {object} Object of the success message.
+	 */
+	unlockBalance(user_id, lock_id, opts = {
+		additionalHeaders: null
+	}) {
+		checkKit(this.exchange_id);
+
+		if (!user_id) {
+			return reject(parameterError('user_id', 'cannot be null'));
+		}
+		if (!lock_id) {
+			return reject(parameterError('lock_id', 'cannot be null'));
+		}
+
+		const verb = 'POST';
+		const path = `${this.baseUrl}/network/${this.exchange_id}/balance/unlock`;
+
+		const data = {
+			user_id,
+			lock_id
+		};
+
+		const headers = generateHeaders(
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter,
+			data
+		);
+
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data });
+	}
+
+	/**
 	 * Connect to websocket
 	 * @param {array} events - Array of events to connect to
 	 */

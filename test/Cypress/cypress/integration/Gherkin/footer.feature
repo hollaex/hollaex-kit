@@ -1,9 +1,9 @@
 Feature: Hollaex Footer
 
 As an Admin
-In order to what???
+In order to customize landing page
 I want to manipulate the footer 
- @waitings 
+ 
 Scenario: Successful features changes
 
     Given I log in the Hollaex 
@@ -17,5 +17,5 @@ Scenario: Successful features changes
     Then The column should be on the Footer page
     When I delete a column in Footer Links 
     Then The column should not be on the Footer page
-    When I Add the link
-    Then The footer link should work
+    When I hided referral badge
+    Then Referral badge should be hidden

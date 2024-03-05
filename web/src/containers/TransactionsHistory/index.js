@@ -48,8 +48,12 @@ import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { STATIC_ICONS } from 'config/icons';
 import { Image } from 'hollaex-web-lib';
+import {
+	quicktradePairSelector,
+} from 'containers/QuickTrade/components/utils';
 
 const GROUP_CLASSES = [...FLEX_CENTER_CLASSES, 'flex-column'];
+const transactionTabs = ['trades', 'orders', 'deposits', 'withdrawals'];
 
 class TransactionsHistory extends Component {
 	state = {
@@ -73,6 +77,23 @@ class TransactionsHistory extends Component {
 		}
 	}
 
+	updateParams(currTab) {
+		const urlSearchParams = new URLSearchParams(window.location.search);
+		urlSearchParams.set('tab', currTab);
+		const newUrl = `${window.location.pathname}?${urlSearchParams.toString()}`;
+		window.history.pushState({}, '', newUrl);
+	}
+
+	getActiveTabName() {
+		const { activeTab } = this.state;
+
+		if (!activeTab) {
+			return transactionTabs[0];
+		} else {
+			return transactionTabs[activeTab];
+		}
+	}
+
 	componentDidMount() {
 		const {
 			router: {
@@ -86,13 +107,17 @@ class TransactionsHistory extends Component {
 			this.props.prices
 		);
 		this.generateFilters();
-
-		if (query && query.tab) {
+		if (query && query.tab && !transactionTabs.includes(query.tab)) {
 			this.setActiveTab(parseInt(query.tab, 10));
 		} else {
 			const activeTab = this.getTabBySearch(search);
 			this.setActiveTab(activeTab);
 		}
+	}
+
+	componentDidUpdate() {
+		const activeTabName = this.getActiveTabName();
+		this.updateParams(activeTabName);
 	}
 
 	getTabBySearch = (search) => {
@@ -110,7 +135,7 @@ class TransactionsHistory extends Component {
 	};
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
-		const { pairs, coins, prices } = this.props;
+		const { coins, pairs, prices, quicktradePairs } = this.props;
 		if (
 			nextProps.activeLanguage !== this.props.activeLanguage ||
 			JSON.stringify(nextProps.prices) !== JSON.stringify(prices)
@@ -131,6 +156,7 @@ class TransactionsHistory extends Component {
 		}
 		if (
 			JSON.stringify(nextProps.pairs) !== JSON.stringify(pairs) ||
+			JSON.stringify(nextProps.quicktradePairs) !== JSON.stringify(quicktradePairs) ||
 			JSON.stringify(nextProps.coins) !== JSON.stringify(coins)
 		) {
 			this.generateFilters();
@@ -335,12 +361,12 @@ class TransactionsHistory extends Component {
 	};
 
 	generateFilters = () => {
-		const { pairs, coins, icons } = this.props;
+		const { quicktradePairs, coins, icons } = this.props;
 		this.setState({
 			filters: {
 				orders: (
 					<TradeAndOrderFilters
-						pairs={pairs}
+						pairs={quicktradePairs}
 						onSearch={this.onSearch}
 						formName="orders"
 						activeTab={1}
@@ -348,7 +374,7 @@ class TransactionsHistory extends Component {
 				),
 				trades: (
 					<TradeAndOrderFilters
-						pairs={pairs}
+						pairs={quicktradePairs}
 						onSearch={this.onSearch}
 						formName="trades"
 						activeTab={0}
@@ -730,6 +756,7 @@ const mapStateToProps = (store) => ({
 	prices: store.asset.oraclePrices,
 	pairs: store.app.pairs,
 	coins: store.app.coins,
+	quicktradePairs: quicktradePairSelector(store),
 	orders: orderHistorySelector(store),
 	trades: tradeHistorySelector(store),
 	deposits: depositHistorySelector(store),

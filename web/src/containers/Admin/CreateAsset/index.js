@@ -81,14 +81,6 @@ class CreateAsset extends Component {
 				this.props.assetType === 'deposit' ? 'deposit_fees' : 'withdrawal_fees',
 				this.state.withdrawalFees
 			);
-			Object.keys(this.state.withdrawalFees).forEach((data) => {
-				constructedData = {
-					...constructedData,
-					[data]: this.state.withdrawalFees[data]
-						? this.state.withdrawalFees[data].levels
-						: {},
-				};
-			});
 		} else {
 			const initialFees = this.generateInitialFees();
 			this.setState({ withdrawalFees: initialFees });
@@ -135,8 +127,6 @@ class CreateAsset extends Component {
 			initialFees[key] = {
 				value: 0,
 				symbol: editAsset?.symbol,
-				type: 'static',
-				levels: {},
 			};
 		});
 		return initialFees;
@@ -311,16 +301,9 @@ class CreateAsset extends Component {
 				...this.state?.withdrawalFees,
 				[sel]: {
 					...this.state?.withdrawalFees[sel],
-					levels: selectedTierValues,
 				},
 			};
 			this.setState({ withdrawalFees: temp });
-			this.handleWithdrawalFeeChange(
-				sel,
-				temp && temp[sel]?.levels,
-				'levels',
-				this.props.assetType === 'deposit' ? 'deposit_fees' : 'withdrawal_fees'
-			);
 		}
 	};
 

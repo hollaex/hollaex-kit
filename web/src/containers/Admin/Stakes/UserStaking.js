@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Button, Spin, Input } from 'antd';
+import { Table, Button, Spin, Input, Select } from 'antd';
 import { requestStakersByAdmin, getStakingAnalytics } from './actions';
 import moment from 'moment';
 import BigNumber from 'bignumber.js';
@@ -18,7 +18,7 @@ const UserStaking = ({ coins }) => {
 		isRemaining: true,
 	});
 
-	const [userQuery, setUserQuery] = useState({ user_id: null });
+	const [userQuery, setUserQuery] = useState({});
 
 	const [stakingAnayltics, setStakingAnalytics] = useState({});
 
@@ -271,33 +271,77 @@ const UserStaking = ({ coins }) => {
 						>
 							Search user
 						</span> */}
-						<span>
-							<div>Search user</div>
-							<div style={{ display: 'flex', gap: 10 }}>
-								<Input
-									style={{}}
-									placeholder="Search User ID"
-									onChange={(e) => setUserQuery({ user_id: e.target.value })}
-									value={userQuery.user_id}
-								/>
-
-								<Button
-									onClick={() => {
-										setQueryValues(userQuery);
-									}}
-									style={{
-										backgroundColor: '#288500',
-										color: 'white',
-										flex: 1,
-										height: 35,
-										marginRight: 10,
-									}}
-									type="default"
-								>
-									Refresh
-								</Button>
+						<span style={{ display: 'flex', flexDirection: 'row', gap: 10 }}>
+							<div>
+								<div>Search user</div>
+								<div style={{ display: 'flex', gap: 10 }}>
+									<Input
+										style={{}}
+										placeholder="Search User ID"
+										onChange={(e) => {
+											setUserQuery({
+												...(userQuery?.status && { status: userQuery.status }),
+												...(e.target.value && { user_id: e.target.value }),
+											});
+										}}
+										value={userQuery.user_id}
+									/>
+									<Button
+										onClick={() => {
+											setQueryValues(userQuery);
+										}}
+										style={{
+											backgroundColor: '#288500',
+											color: 'white',
+											flex: 1,
+											height: 35,
+											marginRight: 5,
+										}}
+										type="default"
+									>
+										Apply
+									</Button>
+								</div>
+							</div>
+							<div>
+								<span>
+									<div>Status</div>
+									<div>
+										<Select
+											showSearch
+											className="select-box"
+											style={{ width: 150 }}
+											value={userQuery.status || 'all'}
+											placeholder="Select status"
+											onChange={(e) => {
+												let newState;
+												if (e === 'closed') {
+													newState = {
+														...(userQuery?.user_id && {
+															user_id: userQuery.user_id,
+														}),
+														status: e,
+													};
+													setUserQuery(newState);
+												} else {
+													newState = {
+														...(userQuery?.user_id && {
+															user_id: userQuery.user_id,
+														}),
+													};
+													setUserQuery(newState);
+												}
+												setQueryValues(newState);
+											}}
+										>
+											<Select.Option value={'all'}>Staking</Select.Option>
+											<Select.Option value={'closed'}>Closed</Select.Option>
+										</Select>
+									</div>
+								</span>
 							</div>
 						</span>
+
 						<div>
 							{/* <span>
 								<Button
@@ -395,9 +439,15 @@ const UserStaking = ({ coins }) => {
 							<Table
 								className="blue-admin-table"
 								columns={columns}
-								dataSource={userData.sort((a, b) => {
-									return statuses[a.status] - statuses[b.status];
-								})}
+								dataSource={userData
+									.sort((a, b) => {
+										return statuses[a.status] - statuses[b.status];
+									})
+									.filter((x) =>
+										userQuery?.status === 'closed'
+											? x.status === 'closed'
+											: x.status !== 'closed'
+									)}
 								// expandedRowRender={renderRowContent}
 								expandRowByClick={true}
 								rowKey={(data) => {

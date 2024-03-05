@@ -11,7 +11,7 @@ import {
 } from 'utils/currency';
 import { MiniSparkLine } from 'containers/TradeTabs/components/MiniSparkLine';
 import classNames from 'classnames';
-import { getRandomValuesFromParts } from 'utils/array';
+import { getLastValuesFromParts } from 'utils/array';
 
 const Details = ({
 	pair,
@@ -22,6 +22,7 @@ const Details = ({
 	router,
 	coinChartData,
 	showTradeFees,
+	showOnlyTitle,
 }) => {
 	const [sevenDayData, setSevenDayData] = useState({});
 	const [oneDayData, setOneDayData] = useState({});
@@ -76,9 +77,9 @@ const Details = ({
 			if (price && time) {
 				const indexOneDay = getIndexofOneDay(time);
 				const oneDayChartPrices = price.slice(indexOneDay, price.length);
-				setOneDayChartData(oneDayChartPrices);
+				setOneDayChartData(getLastValuesFromParts(oneDayChartPrices));
 				setOneDayData(getPricingData(oneDayChartPrices));
-				setSevenDayChartData(getRandomValuesFromParts(price));
+				setSevenDayChartData(getLastValuesFromParts(price));
 				setSevenDayData(getPricingData(price));
 			}
 		};
@@ -163,9 +164,9 @@ const Details = ({
 	return (
 		<div className="trade-details-wrapper">
 			<div className="trade-details-content">
-				<div className="d-flex pb-24">
-					<Coin iconId={icon_id} type="CS11" />
-					<div className="pl-2">
+				<div className="d-flex">
+					<Coin iconId={icon_id} type="CS12" />
+					<div className="pl-18">
 						<div
 							className={classNames('pairs', {
 								'pointer underline': !isNetwork && !brokerUsed,
@@ -177,110 +178,114 @@ const Details = ({
 						{getMarketName()}
 					</div>
 				</div>
-				<div className="day-change-block">
-					<Radio.Group onChange={handleDayChange} defaultValue="seven">
-						<Radio.Button value="seven">
-							{STRINGS['QUICK_TRADE_COMPONENT.7D']}
-						</Radio.Button>
-						<Radio.Button value="one">
-							{STRINGS['QUICK_TRADE_COMPONENT.1D']}
-						</Radio.Button>
-					</Radio.Group>
-				</div>
-				<div className="d-flex">
-					<div>
-						<div className="sub-title caps">
-							{STRINGS['MARKETS_TABLE.LAST_PRICE']}
+				{!showOnlyTitle && (
+					<>
+						<div className="day-change-block">
+							<Radio.Group onChange={handleDayChange} defaultValue="seven">
+								<Radio.Button value="seven">
+									{STRINGS['QUICK_TRADE_COMPONENT.7D']}
+								</Radio.Button>
+								<Radio.Button value="one">
+									{STRINGS['QUICK_TRADE_COMPONENT.1D']}
+								</Radio.Button>
+							</Radio.Group>
 						</div>
-						<div className="d-flex">
-							<div className="f-size-22 pr-2">{coinStats.lastPrice}</div>
-							<div className="fullname white-txt">
-								{coins[pair_2] && coins[pair_2].display_name}
+						<div className="d-flex graph-row">
+							<div>
+								<div className="sub-title caps">
+									{STRINGS['MARKETS_TABLE.LAST_PRICE']}
+								</div>
+								<div className="d-flex">
+									<div className="f-size-22 pr-2">{coinStats.lastPrice}</div>
+									<div className="fullname white-txt">
+										{coins[pair_2] && coins[pair_2].display_name}
+									</div>
+								</div>
+							</div>
+							<div className="trade_tabs-container">
+								<div className="sub-title caps">
+									{
+										STRINGS[
+											showSevenDay
+												? 'QUICK_TRADE_COMPONENT.CHANGE_TEXT_7D'
+												: 'SUMMARY.CHANGE_24H'
+										]
+									}
+								</div>
+								<PriceChange
+									market={{
+										priceDifference: coinStats.priceDifference,
+										priceDifferencePercent: coinStats.priceDifferencePercent,
+									}}
+									key={pair}
+									large
+								/>
 							</div>
 						</div>
-					</div>
-					<div className="pl-6 trade_tabs-container">
-						<div className="sub-title caps">
-							{
-								STRINGS[
-									showSevenDay
-										? 'QUICK_TRADE_COMPONENT.CHANGE_TEXT_7D'
-										: 'SUMMARY.CHANGE_24H'
-								]
-							}
+						<div className="chart w-100">
+							<div className="fade-area" />
+							<MiniSparkLine chartData={chartData} isArea />
 						</div>
-						<PriceChange
-							market={{
-								priceDifference: coinStats.priceDifference,
-								priceDifferencePercent: coinStats.priceDifferencePercent,
-							}}
-							key={pair}
-							large
-						/>
-					</div>
-				</div>
-				<div className="chart w-100">
-					<div className="fade-area" />
-					<MiniSparkLine chartData={chartData} />
-				</div>
-				<div className="d-flex pb-35">
-					<div>
-						<div className="sub-title">
-							{
-								STRINGS[
-									showSevenDay
-										? 'QUICK_TRADE_COMPONENT.HIGH_7D'
-										: 'QUICK_TRADE_COMPONENT.HIGH_24H'
-								]
-							}
-						</div>
-						<div className="d-flex">
-							<div className="f-size-16 pr-2">{coinStats.high}</div>
-							<div className="fullname">
-								{coins[pair_2] && coins[pair_2].display_name}
+						<div className="d-flex pb-40">
+							<div>
+								<div className="sub-title">
+									{
+										STRINGS[
+											showSevenDay
+												? 'QUICK_TRADE_COMPONENT.HIGH_7D'
+												: 'QUICK_TRADE_COMPONENT.HIGH_24H'
+										]
+									}
+								</div>
+								<div className="d-flex">
+									<div className="f-size-16 pr-2">{coinStats.high}</div>
+									<div className="fullname">
+										{coins[pair_2] && coins[pair_2].display_name}
+									</div>
+								</div>
+							</div>
+							<div className="trade_tabs-container">
+								<div className="sub-title">
+									{
+										STRINGS[
+											showSevenDay
+												? 'QUICK_TRADE_COMPONENT.LOW_7D'
+												: 'QUICK_TRADE_COMPONENT.LOW_24H'
+										]
+									}
+								</div>
+								<div className="d-flex">
+									<div className="f-size-16 pr-2">{coinStats.low}</div>
+									<div className="fullname">
+										{coins[pair_2] && coins[pair_2].display_name}
+									</div>
+								</div>
 							</div>
 						</div>
-					</div>
-					<div className="pl-6">
-						<div className="sub-title">
-							{
-								STRINGS[
-									showSevenDay
-										? 'QUICK_TRADE_COMPONENT.LOW_7D'
-										: 'QUICK_TRADE_COMPONENT.LOW_24H'
-								]
-							}
-						</div>
-						<div className="d-flex">
-							<div className="f-size-16 pr-2">{coinStats.low}</div>
-							<div className="fullname">
-								{coins[pair_2] && coins[pair_2].display_name}
-							</div>
-						</div>
-					</div>
-				</div>
-				<div className="d-flex pb-35">
-					{showTradeFees ? (
-						<div>
-							{getLink(
-								`fees-and-limits`,
-								STRINGS['FEES_AND_LIMITS.COIN_PAGE_LINK'],
-								true
+						<div className="d-flex pb-40">
+							{showTradeFees ? (
+								<div>
+									{getLink(
+										`fees-and-limits`,
+										STRINGS['FEES_AND_LIMITS.COIN_PAGE_LINK'],
+										true
+									)}
+								</div>
+							) : (
+								<div>
+									<div className="sub-title caps">{STRINGS['ASSET_INFO']}</div>
+									{getLink(
+										`/assets/coin/${pairBase}`,
+										STRINGS.formatString(
+											STRINGS['QUICK_TRADE_COMPONENT.COIN_INFORMATION'],
+											coins[pairBase].display_name
+										)
+									)}
+								</div>
 							)}
 						</div>
-					) : (
-						<div>
-							<div className="sub-title caps">{STRINGS['ASSET_INFO']}</div>
-							{getLink(
-								`/assets/coin/${pairBase}`,
-								STRINGS.formatString(
-									STRINGS['QUICK_TRADE_COMPONENT.COIN_INFORMATION'],
-									coins[pairBase].display_name
-								)
-							)}
-						</div>
-					)}
-				</div>
+					</>
+				)}
 			</div>
 		</div>
 	);
