@@ -8390,7 +8390,7 @@ table th {
 .layout-mobile .field_warning_wrapper {
   padding-bottom: 1rem; }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 550px) {
   .field-children .clear-field {
     bottom: 1.5rem; } }
 
