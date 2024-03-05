@@ -4725,6 +4725,21 @@ table th {
   color: var(--labels_important-active-labels-text-graphics);
   background-color: var(--base_secondary-navigation-bar); }
 
+.digital-market-wrapper .market-list__block-table {
+  margin-bottom: 1rem; }
+  .digital-market-wrapper .market-list__block-table .table-row {
+    cursor: text !important; }
+    .digital-market-wrapper .market-list__block-table .table-row:hover {
+      background-color: unset !important; }
+    .digital-market-wrapper .market-list__block-table .table-row .sticky-col {
+      cursor: pointer; }
+      .digital-market-wrapper .market-list__block-table .table-row .sticky-col:hover {
+        opacity: 0.5; }
+
+@media screen and (max-width: 786px) {
+  .layout-mobile .digital-market-wrapper .view-more-btn {
+    padding: 10%; } }
+
 .trade_tabs-container {
   color: var(--labels_secondary-inactive-label-text-graphics);
   height: inherit;
@@ -8374,6 +8389,10 @@ table th {
 
 .layout-mobile .field_warning_wrapper {
   padding-bottom: 1rem; }
+
+@media screen and (max-width: 768px) {
+  .field-children .clear-field {
+    bottom: 1.5rem; } }
 
 .mainContainer {
   display: flex;
