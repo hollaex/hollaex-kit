@@ -9755,6 +9755,8 @@ table th {
     color: var(--labels_secondary-inactive-label-text-graphics); }
   .quick_trade-container .visit-asset-info {
     text-decoration: underline; }
+  .quick_trade-container input.input-group__input:placeholder-shown:hover::placeholder {
+    color: var(--labels_important-active-labels-text-graphics); }
   .quick_trade-container .quick-trade-input {
     background: var(--base_secondary-navigation-bar);
     padding: 1.5rem;

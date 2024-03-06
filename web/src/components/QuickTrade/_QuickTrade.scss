@@ -99,6 +99,12 @@ $close-icon--height: 2rem;
 		text-decoration: underline;
 	}
 
+	input.input-group__input:placeholder-shown:hover {
+		&::placeholder {
+			color: $colors-main-black;
+		}
+	}
+	
 	.quick-trade-input {
 		background: var(--base_secondary-navigation-bar);
 		padding: 1.5rem;
