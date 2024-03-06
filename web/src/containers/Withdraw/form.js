@@ -98,7 +98,11 @@ class Form extends Component {
 		if (ev && ev.preventDefault) {
 			ev.preventDefault();
 		}
-		getWithdrawalMax(this.props.currency, this.props?.data?.network)
+		const emailMethod = this.props?.data?.method === 'email';
+		getWithdrawalMax(
+			this.props.currency,
+			!emailMethod ? this.props?.data?.network : 'email'
+		)
 			.then((res) => {
 				if (math.larger(this.props?.data?.amount, res?.data?.amount)) {
 					message.error(
@@ -340,7 +344,8 @@ const mapStateToForm = (state) => ({
 		'fee',
 		'fee_coin',
 		'email',
-		'fee_type'
+		'fee_type',
+		'method'
 	),
 	coins: state.app.coins,
 	targets: state.app.targets,

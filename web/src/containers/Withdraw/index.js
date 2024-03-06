@@ -218,10 +218,11 @@ class Withdraw extends Component {
 	};
 
 	onCalculateMax = () => {
-		const { selectedNetwork, dispatch } = this.props;
+		const { selectedNetwork, selectedMethod, dispatch } = this.props;
 		const { currency } = this.state;
 
-		getWithdrawalMax(currency, selectedNetwork)
+		const emailMethod = selectedMethod === 'email';
+		getWithdrawalMax(currency, !emailMethod ? selectedNetwork : 'email')
 			.then((res) => {
 				dispatch(change(FORM_NAME, 'amount', res.data.amount));
 			})
