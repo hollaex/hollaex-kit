@@ -30,7 +30,7 @@ $close-icon--height: 2rem;
 
 .direction_ltr {
 	.quick_trade-wrapper {
-		font-family: $raleway--font-family;
+		font-family: 'Open Sans';
 	}
 }
 
@@ -56,7 +56,7 @@ $close-icon--height: 2rem;
 	margin: 3rem 0 4rem 0;
 
 	.quick-trade-title-icon {
-		.quick_trade-tab-icon{
+		.quick_trade-tab-icon {
 			svg {
 				path {
 					fill: var(--labels_important-active-labels-text-graphics) !important;
@@ -101,15 +101,16 @@ $close-icon--height: 2rem;
 
 	.quick-trade-input {
 		background: var(--base_secondary-navigation-bar);
-		padding: 2rem 1.7rem;
+		padding: 1.5rem;
 		border-radius: 10px;
-		width: 425px;
+		width: 465px;
 		border: 2px solid transparent;
 		&:focus-within {
 			background: var(--base_wallet-sidebar-and-popup);
 			border: 2px solid #5d63ff;
 		}
 
+		  
 		.currency-dropdown:hover,
 		.input-group__select:hover {
 			.input-group__select,
@@ -131,7 +132,7 @@ $close-icon--height: 2rem;
 	.input-group__input {
 		text-align: right;
 		color: var(--labels_secondary-inactive-label-text-graphics);
-		font-size: 1.5rem;
+		font-size: 2.1rem;
 		margin-left: 1rem;
 		height: 60px;
 		&:focus,
@@ -141,6 +142,10 @@ $close-icon--height: 2rem;
 			border-radius: 5px;
 			border-bottom: 1px solid #ffffff;
 		}
+
+		&:hover {
+			color: $colors-main-black;
+		}
 	}
 
 	.field-error-content {
@@ -148,7 +153,7 @@ $close-icon--height: 2rem;
 	}
 
 	.input-group__select {
-		color: #b6b6b6;
+		color: var(--labels_secondary-inactive-label-text-graphics);
 		padding: 1.125rem 1rem;
 		font-size: 1.4rem;
 		.ant-select-selector {
@@ -157,7 +162,7 @@ $close-icon--height: 2rem;
 		}
 
 		.anticon {
-			color: #fff;
+			color: var(--labels_important-active-labels-text-graphics);
 		}
 	}
 }
@@ -166,7 +171,7 @@ $close-icon--height: 2rem;
 	max-width: unset !important;
 }
 .quick_trade-wrapper {
-	width: $wrapper-width;
+	// width: $wrapper-width;
 	// background-color: $quick-trade-block-background;
 	// margin: 3rem auto;
 	height: fit-content;
@@ -215,8 +220,8 @@ $close-icon--height: 2rem;
 		background: transparent
 			linear-gradient(
 				316deg,
-				var(--base_secondary-navigation-bar,0.25) 0%,
-				var(--base_wallet-sidebar-and-popup,0.25) 100%
+				var(--base_secondary-navigation-bar, 0.25) 0%,
+				var(--base_wallet-sidebar-and-popup, 0.25) 100%
 			)
 			0% 0% no-repeat padding-box;
 
@@ -233,7 +238,7 @@ $close-icon--height: 2rem;
 						fill: rgba(0, 0, 0, 0.38) !important;
 						opacity: 0.4;
 						path {
-							fill:  rgba(0, 0, 0, 0.38) !important;
+							fill: rgba(0, 0, 0, 0.38) !important;
 						}
 					}
 				}
@@ -257,7 +262,7 @@ $close-icon--height: 2rem;
 			}
 			.balance-text {
 				text-transform: capitalize;
-				color: #b6b6b6;
+				color: var(--labels_secondary-inactive-label-text-graphics);
 				display: flex;
 				span {
 					color: $link_2;
@@ -266,7 +271,7 @@ $close-icon--height: 2rem;
 			.footer-text {
 				font-size: 1rem;
 				font-family: $en--font-family;
-				color: #b6b6b650;
+				color: #b6b6b6;
 				letter-spacing: 0.58px;
 				text-align: end;
 			}
@@ -300,6 +305,7 @@ $close-icon--height: 2rem;
 .layout-mobile {
 	.ReactModal__Overlay {
 		.ReactModal__Content {
+			background-color: $quick-trade-background !important;
 			.dialog-mobile-content {
 				padding: 2.5rem 0 !important;
 				display: block;
@@ -420,7 +426,7 @@ $close-icon--height: 2rem;
 		}
 
 		.field-error-content {
-			font-size: 1.375rem;
+			font-size: 1.2rem;
 			text-align: right;
 		}
 
