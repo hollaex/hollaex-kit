@@ -9870,7 +9870,7 @@ table th {
       .quick_trade-wrapper .trade-section .inner-content .footer-text {
         font-size: 1rem;
         font-family: "Open Sans";
-        color: #b6b6b6;
+        color: var(--labels_secondary-inactive-label-text-graphics);
         letter-spacing: 0.58px;
         text-align: end; }
       .quick_trade-wrapper .trade-section .inner-content .swap-wrapper-wrapper {
