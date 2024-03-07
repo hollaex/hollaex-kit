@@ -367,6 +367,14 @@ const QuickTradesList = ({ pairs, coins, userId, getThisExchangeOrder }) => {
 									orderPayload.taker_fee = Number(orderPayload.taker_fee);
 									orderPayload.symbol = `${orderPayload.base_coin}-${orderPayload.quote_coin}`;
 
+									if (
+										orderPayload.maker_fee > 20 ||
+										orderPayload.taker_fee > 20
+									) {
+										message.error('fees cannot be more than 20 percent');
+										return;
+									}
+
 									if (orderPayload.type === 'market') {
 										delete orderPayload.price;
 									}
