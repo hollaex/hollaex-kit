@@ -25,7 +25,7 @@ const convertCountry = (value = {}) => {
 };
 
 const filterCountries = (country) =>
-	country.status === 'assigned' && country.alpha2;
+	(country.status === 'assigned' && country.alpha2) || country.alpha2 === 'XK';
 
 export const initialCountry = convertCountry(countries[DEFAULT_COUNTRY]);
 export const NATIONAL_COUNTRY_VALUE = initialCountry.value;

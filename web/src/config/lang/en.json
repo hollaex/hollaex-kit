@@ -108,7 +108,7 @@
 	"DEPOSIT": {
 		"CRYPTO_LABELS": {
 			"ADDRESS": "Your {0} receiving address",
-			"DESTINATION_TAG": "Your {0} destination tag",
+			"DESTINATION_TAG": "Your {0} tag",
 			"MEMO": "Your {0} memo"
 		},
 		"QR_CODE": "This QR code contains the deposit information and can be scanned with a QR code reader.",

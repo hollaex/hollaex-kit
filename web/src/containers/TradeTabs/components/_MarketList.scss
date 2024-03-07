@@ -213,3 +213,31 @@
 		}
 	}
 }
+
+.digital-market-wrapper {
+	.market-list__block-table {
+		margin-bottom: 1rem;
+		.table-row {
+			cursor: text !important;
+			&:hover {
+				background-color: unset !important;
+			}
+			.sticky-col {
+				cursor: pointer;
+				&:hover {
+					opacity: 0.5;
+				}
+			}
+		}
+	}
+}
+
+@media screen and (max-width: 786px) {
+	.layout-mobile {
+		.digital-market-wrapper {
+			.view-more-btn {
+				padding: 10%;
+			}
+		}
+	}
+}
