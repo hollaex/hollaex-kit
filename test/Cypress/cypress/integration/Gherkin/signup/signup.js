@@ -1,6 +1,6 @@
 import {Given, When, Then} from "cypress-cucumber-preprocessor/steps"
 const randomUsername = Math.random().toString(36).substring(2,6);
-const username = randomUsername+Cypress.env('NEW_USER')
+const username = "tester+"+randomUsername+Cypress.env('NEW_USER')
 
 //Background: 
 Given ('user on the homepage',()=>{
@@ -49,13 +49,14 @@ When ('{string} confirms  {string}',(admin, randomaUsername)=>{
      cy.get('[name="password"]').clear().type(Cypress.env('ADMIN_PASS'))
      cy.get('.holla-button').should('be.visible').should('be.enabled').click()
      cy.get('.warning_text').should('not.exist') 
-     cy.get('#trade-nav-container > :nth-child(3) > :nth-child(2)')
+     cy.get('#trade-nav-container > :nth-child(4) > :nth-child(2)')
      .should('contain',Cypress.env('ADMIN_USER'))
      cy.contains('Operator controls').click()
      cy.contains('Users').click({force: true})
-     cy.get('.ant-input').type(username)
-     cy.get('.ant-btn').click().wait(4000)
-     cy.get(':nth-child(2) > :nth-child(1) > .info-link').click()
+     cy.get(':nth-child(2) > .ant-input').type(username)
+     cy.get(':nth-child(2) > .ant-btn').click().wait(3000)
+     cy.get(':nth-child(8) > .ant-btn').click()
+     cy.get('.my-5 > :nth-child(3) > :nth-child(1) > .info-link').click()
      cy.get('.mb-4 > :nth-child(2)').should('contain','Are you sure you want to mark this email as verified?')
      cy.get(':nth-child(1) > :nth-child(3) > .ant-btn').click()
      cy.contains('Logout').click()
@@ -86,7 +87,6 @@ When ("user fills registration email textbox with {string} and {string}",
 And ('user enters the {string}',(weakPassword)=>{
 
     cy.get('.holla-button').should('be.visible').should('be.disabled')
-   // cy.get('.checkfield-input').should('not.be.checked')
     cy.get('[name="email"]').clear().type(username)
     cy.get('[name="password"]').clear().type('weakpassword')
     cy.get('.field-error-text')
@@ -94,13 +94,11 @@ And ('user enters the {string}',(weakPassword)=>{
     cy.get('[name="password_repeat"]').clear().type('weakpassword')
     cy.get('.checkfield-input').should('be.enabled').check();
     cy.get('.holla-button').should('not.be.enabled')
-   // cy.get('.warning_text').should('contain','User already exists')
 })  
 
 And ('user enters the {string} as well',(diffrentPassword)=>{
 
     cy.get('.holla-button').should('be.visible').should('be.disabled')
-    //cy.get('.checkfield-input').should('not.be.checked')
     cy.get('[name="email"]').clear().type(username)
     cy.get('[name="password"]').clear().type('diffrentPassword!1')
     cy.get('[name="password_repeat"]').clear().type('diffrentPassword!2')
@@ -108,7 +106,7 @@ And ('user enters the {string} as well',(diffrentPassword)=>{
     .contains("Password don't match")
     cy.get('.checkfield-input').should('be.enabled').check();
     cy.get('.holla-button').should('not.be.enabled')
-    //cy.get('.warning_text').should('contain','User already exists')
+    
     
 })  
 

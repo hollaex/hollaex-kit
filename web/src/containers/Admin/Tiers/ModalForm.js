@@ -9,7 +9,6 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import _get from 'lodash/get';
 import merge from 'lodash.merge';
 
-import { publish } from 'actions/operatorActions';
 import withConfig from '../../../components/ConfigProvider/withConfig';
 import Image from '../../../components/Image';
 import { upload } from './action';
@@ -322,15 +321,12 @@ class NewTierForm extends Component {
 		const iconsOverwrites = JSON.parse(localStorage.getItem('icons') || '{}');
 
 		const icons = merge({}, iconsOverwrites, published);
-		const configs = { icons };
 		this.setState({ buttonSubmitting: true });
-		publish(configs).then(() => {
-			localStorage.setItem('icons', JSON.stringify(icons));
-			this.setState({ pendingPublishIcons: {} });
-			this.props.handleNext(this.state.tierData);
-			this.props.onTypeChange('preview');
-			this.setState({ buttonSubmitting: false });
-		});
+		localStorage.setItem('icons', JSON.stringify(icons));
+		this.setState({ pendingPublishIcons: {} });
+		this.props.handleNext(this.state.tierData);
+		this.props.onTypeChange('preview');
+		this.setState({ buttonSubmitting: false });
 	};
 
 	onEditorStateChange = (edState) => {

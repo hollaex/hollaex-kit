@@ -1,0 +1,96 @@
+.pldatePicker {
+	background-color: var(--base_background);
+}
+.plButton {
+	color: var(--labels_important-active-labels-text-graphics);
+}
+.pldatePicker input {
+	color: var(--labels_important-active-labels-text-graphics);
+}
+
+.highChartColor .highcharts-graph {
+	stroke: var(--labels_important-active-labels-text-graphics);
+}
+
+.highChartColor .highcharts-graph {
+	stroke: var(--labels_important-active-labels-text-graphics);
+}
+
+.highChartColorOverview .highcharts-grid-line {
+	fill: none;
+	stroke-opacity: 0;
+}
+
+.highChartColor .highcharts-point {
+	stroke: var(--labels_important-active-labels-text-graphics);
+	fill: var(--labels_important-active-labels-text-graphics);
+}
+
+.highChartColor .highcharts-area {
+	fill: rgba(255, 255, 255, 0.07);
+}
+
+.profitNegative {
+	color: var(--trading_selling-related-elements);
+}
+
+.profitPositive {
+	color: var(--trading_buying-related-elements);
+}
+
+.profitNeutral {
+	color: '#ccc';
+}
+
+.profit_block-table {
+	width: 100%;
+	// font-size: $font-size-subtext;
+	margin-bottom: 3rem;
+
+	thead,
+	tfoot {
+		& tr {
+			height: 3.5rem;
+			vertical-align: bottom;
+		}
+	}
+
+	tfoot {
+		// font-size: $font-size-main;
+		td {
+			white-space: nowrap;
+		}
+	}
+
+	.table-row {
+		height: 2.5rem;
+	}
+
+	.table-bottom-border td,
+	th {
+		position: relative;
+		& {
+			border-bottom: 1px solid grey;
+			padding: 1rem 0.25rem;
+		}
+	}
+
+	.td-fit {
+		width: 1%;
+		white-space: nowrap;
+	}
+
+	.td-name {
+		min-width: 200px !important;
+	}
+	.table-icon {
+		& > div {
+			vertical-align: middle;
+			margin: auto;
+		}
+	}
+	.td-amount {
+		min-width: 150px !important;
+		direction: ltr;
+	}
+}

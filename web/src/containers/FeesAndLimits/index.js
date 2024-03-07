@@ -90,7 +90,7 @@ const Index = ({ config_level, verification_level, router }) => {
 		);
 
 	return config_level && Object.keys(config_level).length && selectedLevel ? (
-		<div className="presentation_container apply_rtl settings_container">
+		<div className="presentation_container apply_rtl settings_container fees_limits">
 			{!isMobile && (
 				<IconTitle
 					stringId="FEES_AND_LIMITS.TITLE"

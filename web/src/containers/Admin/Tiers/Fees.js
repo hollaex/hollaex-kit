@@ -161,6 +161,7 @@ const Fees = ({
 					rowKey={(data) => data.id}
 					bordered
 					scroll={{ x: 'auto' }}
+					pagination={false}
 				/>
 			</div>
 		</div>

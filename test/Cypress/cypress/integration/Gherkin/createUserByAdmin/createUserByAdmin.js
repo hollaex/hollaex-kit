@@ -16,7 +16,7 @@ Given ('I am logged in as an admin',()=>{
 When ('I navigate to the Create User page',()=>{
   cy.contains('Operator controls').click()
   cy.contains('Users').click()
-  cy.contains('All Users').click()
+  //cy.contains('All Users').click()
   })
 
 Then ('I should see a form for creating a new user',()=>{
@@ -31,12 +31,13 @@ When ('I try to create a user with an existing username',()=>{
    })
 
 Then ('I should see an error message of bad',()=>{
-  cy.get('.ant-message-notice-content').contains('Bad')
-  cy.wait(4000)
+  cy.get('.ant-message-notice-content').contains('User already exists')
+  cy.get('.ant-modal-close-x').click()
   })
     
 When ('I try to create a user with an diffrent passwords',()=>{
-  cy.get('.user-list-header-wrapper > .ant-btn').click()
+  // cy.get('.user-list-header-wrapper > .ant-btn').click()
+  cy.contains('Add new user').click()
   cy.get('#addUser_userEmail').clear().type(username)
   cy.get('#addUser_password').clear().type(Cypress.env('PASSWORD'))
   cy.get('#addUser_confirmPassword').clear().type(Cypress.env('PASSWORD')+"123")
@@ -44,8 +45,8 @@ When ('I try to create a user with an diffrent passwords',()=>{
    })
 
 Then ('I should see an error message',()=>{
-  cy.get('.ant-message-notice-content').contains('Password and confirm password should be same')
-  cy.wait(4000)
+  cy.get('.ant-message-notice-content').contains('Password do not match')
+  cy.get('.ant-modal-close-x').click()
   })
 
 When ('I fill out the form with valid user information',()=>{
@@ -56,6 +57,7 @@ When ('I fill out the form with valid user information',()=>{
      selector = `[data-row-key="${rowKey}"] > :nth-child(5)`; // create a selector for the row with the updated data-row-key attribute
      selector1 = `[data-row-key="${rowKey}"] > :nth-child(8) > .ant-btn > a`;
   //cy.get('.user-list-header-wrapper > .ant-btn').click()
+  cy.contains('Add new user').click()
   cy.get('#addUser_userEmail').clear().type(username)
   cy.get('#addUser_password').clear().type(Cypress.env('PASSWORD'))
   cy.get('#addUser_confirmPassword').clear().type(Cypress.env('PASSWORD'))
@@ -70,7 +72,7 @@ Then ('the user should be created successfully',()=>{
  })
 And ('I should see a success message',()=>{  cy.get(selector1).click()
    cy.get(':nth-child(2) > .align-items-center > :nth-child(4)').contains(username)
-   cy.get(':nth-child(2) > .about-info-content > :nth-child(2)').contains('Verified')})
+   cy.get(':nth-child(3) > .about-info-content > :nth-child(2)').contains('Verified')})
 
 Given ('I am in the Hollaex login page',()=>{
   cy.visit(Cypress.env('LOGIN_PAGE'))
@@ -106,7 +108,7 @@ When ('a non-admin user tries to create a new user',()=>{
          
   cy.contains('Operator controls').click()
   cy.contains('Users').click()
-  cy.contains('All Users').click()
+ // cy.contains('All Users').click()
   cy.contains('Add new user').click()
   cy.get('#addUser_userEmail').clear().type(username)
   cy.get('#addUser_password').clear().type(Cypress.env('PASSWORD'))
@@ -115,7 +117,7 @@ When ('a non-admin user tries to create a new user',()=>{
  })
 
 Then ('they should be denied access',()=>{
-  cy.get('.ant-message-notice-content').contains('Forbidden')
+  cy.get('.ant-message-notice-content').contains('Access denied: User is not authorized to access this endpoint')
  })
 
              

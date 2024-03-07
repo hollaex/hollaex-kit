@@ -23,14 +23,33 @@ export const MENU_ITEMS = {
 			hide_from_menulist: true,
 			hide_from_bottom_nav: false,
 		},
+		{
+			id: 'assets',
+			path: '/assets',
+			icon_id: 'FOOTERBAR_ASSETS_TRADE',
+			string_id: 'ASSETS',
+			hide_from_sidebar: true,
+			hide_from_appbar: false,
+			hide_from_menulist: true,
+			hide_from_bottom_nav: false,
+		},
 	],
 	features: [
+		{
+			id: 'trade_tab',
+			path: '/trade',
+			icon_id: 'SIDEBAR_TRADING_ACTIVE',
+			string_id: 'ACCOUNTS.TAB_TRADE',
+			hide_from_sidebar: true,
+			hide_from_bottom_nav: false,
+		},
 		{
 			id: 'pro_trade',
 			path: '/markets',
 			icon_id: 'SIDEBAR_TRADING_ACTIVE',
 			string_id: 'PRO_TRADE',
 			hide_from_sidebar: true,
+			hide_from_bottom_nav: false,
 		},
 		{
 			id: 'quick_trade',
@@ -38,6 +57,7 @@ export const MENU_ITEMS = {
 			icon_id: 'QUICK_TRADE_TAB_ACTIVE',
 			string_id: 'QUICK_TRADE',
 			hide_from_sidebar: true,
+			hide_from_bottom_nav: false,
 		},
 		{
 			id: 'stake_page',
@@ -62,7 +82,7 @@ export const MENU_ITEMS = {
 			hide_from_appbar: true,
 			hide_from_sidebar: true,
 			hide_from_menulist: true,
-			hide_from_bottom_nav: false,
+			hide_from_bottom_nav: true,
 		},
 	],
 	middle: [
@@ -76,7 +96,7 @@ export const MENU_ITEMS = {
 			icon_id: 'TAB_HISTORY',
 			string_id: 'ACCOUNTS.TAB_HISTORY',
 			hide_from_appbar: true,
-			hide_from_bottom_nav: true,
+			hide_from_bottom_nav: false,
 		},
 		{
 			path: '/security',

@@ -287,8 +287,11 @@ $header-margin: 2rem;
 
 	.ant-switch {
 		background-color: $app-background-color;
+		border: 2px solid $colors-black;
 
 		.ant-switch-handle {
+			width: 15px !important;
+			height: 15px !important;
 			&:before {
 				background-color: $colors-black;
 			}
@@ -297,8 +300,10 @@ $header-margin: 2rem;
 
 	.ant-switch-checked {
 		background-color: $app-background-color;
+		border: 2px solid $colors-main-black;
 
 		.ant-switch-handle {
+			left: calc(100% - 15px - 2px);
 			&:before {
 				background-color: $colors-main-black;
 			}
@@ -360,8 +365,8 @@ $header-margin: 2rem;
 	}
 	.wallet-assets_block {
 		.donut-container {
-			width: auto !important;
-			min-width: auto !important;
+			width: 10rem !important;
+			min-width: 10rem !important;
 		}
 		.donut-container-empty {
 			width: 13rem !important;

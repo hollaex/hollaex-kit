@@ -44,6 +44,9 @@
 	"SECONDS": "seconds",
 	"SECOND": "second",
 	"VIEW_MARKET": "view markets",
+	"CANT_FIND_MARKETS": "Can't find any markets from that asset.",
+	"TRY_VISITING_ASSETS": "Try visiting the {0}.",
+	"ASSETS_PAGE": "Assets page",
 	"GO_TRADE": "Go Trade",
 	"VIEW_INFO": "View info page",
 	"APPLY_HERE": "Apply Here",
@@ -75,7 +78,10 @@
 		"TAB_HISTORY": "History",
 		"TAB_SIGNOUT": "Signout",
 		"TAB_STAKE": "Stake",
-		"TAB_FIAT": "Fiat controls"
+		"TAB_FIAT": "Fiat controls",
+		"TAB_TRADE": "Trade",
+		"PRO_TRADE": "Pro",
+		"QUICK_TRADE": "Quick"
 	},
 	"CONTACT_FORM": {
 		"CATEGORY_LABEL": "Category",
@@ -102,7 +108,7 @@
 	"DEPOSIT": {
 		"CRYPTO_LABELS": {
 			"ADDRESS": "Your {0} receiving address",
-			"DESTINATION_TAG": "Your {0} destination tag",
+			"DESTINATION_TAG": "Your {0} tag",
 			"MEMO": "Your {0} memo"
 		},
 		"QR_CODE": "This QR code contains the deposit information and can be scanned with a QR code reader.",
@@ -196,7 +202,7 @@
 	},
 	"QUICK_TRADE_COMPONENT": {
 		"TITLE": "Quick Trade",
-		"BUTTON": "Review Order",
+		"BUTTON": "Review Quick Trade",
 		"INFO": "Fastest and simplest way to trade your crypto",
 		"CHANGE_TEXT": "change",
 		"CHANGE_TEXT_7D": "7D Change",
@@ -216,7 +222,9 @@
 		"VISIT": "Visit{0}",
 		"ASSET_INFO_PAGE": "Assets info page",
 		"COIN_NAME": "{0} ({1})",
-		"COIN_INFORMATION": "{0} information"
+		"COIN_INFORMATION": "{0} information",
+		"PRICE_TREND": "Price Trend",
+		"VIEW_TREND": "View Trend"
 	},
 	"PREVIOUS_PAGE": "previous page",
 	"NEXT_PAGE": "next page",
@@ -859,6 +867,8 @@
 		"MONITOR_ACTIVE_STAKES": "Monitor active stakes and their earnings coming from the staking pools.",
 		"USE_FILTERS_FOR_HISTORICAL_EVENTS": "Use the filters to find all staking historical events. All earnings from completed stakes will be deposit to your wallet.",
 		"ESTIMATED_TOTAL_STAKED": "Estimated value of total staked",
+		"ACTIVE_STAKES": "Active Stakes",
+		"STAKES_HISTORY": "History",
 		"ESTIMATED_EARNINGS_VALUE": "Estimated value of earnings",
 		"READ_BEFORE_AGREE_AND_EARN": "Read Before You Agree and Earn",
 		"AGREEMENT_INTRODUCTION_1": "Locking up funds and participating in staking can indeed be a profitable way to earn rewards. However, it is essential to be aware that there might be penalties for early unstaking and potentially long lock up periods. Therefore, it is crucial to thoroughly understand the pool's rules before staking. By clicking 'I agree and understand' below, you acknowledge that you will",
@@ -968,6 +978,7 @@
 	},
 	"QUICK_TRADE": "Quick trade",
 	"PRO_TRADE": "Pro trade",
+	"ASSETS": "Assets",
 	"WALLET_TITLE": "Wallet",
 	"CURRENCY_WALLET": {
 		"BACK": "Back",
@@ -1361,11 +1372,13 @@
 		"LAST_PRICE": "Last price",
 		"CHANGE_24H": "Change (24 hours)",
 		"CHANGE_7D": "Change (7 days)",
+		"CHANGE_1D": "Change (1 day)",
 		"VOLUME_24h": "Volume (24 hours)",
 		"CHART_24H": "Chart (24 hours)",
 		"CHART_7D": "Chart (7 days)",
 		"VIEW_MARKETS": "View Markets",
 		"TRADING_SYMBOL": "Trading Symbol",
+		"ASSET": "Asset",
 		"TYPE": "Type",
 		"SOURCE": "SOURCE"
 	},
@@ -1511,6 +1524,31 @@
 			"CLOSE": "close"
 		}
 	},
+	"PROFIT_LOSS": {
+		"BACK": "Back",
+		"BACK_TO_WALLET": "to wallet",
+		"WALLET_PERFORMANCE_TITLE": "Balance performance",
+		"WALLET_PERFORMANCE_DESCRIPTION": "Your wallet's balance performance over time and the asset breakdown. Click the dates below to see your wallet's performance on that day.",
+		"PL_7_DAY": "7 Day P&L",
+		"EST_TOTAL_BALANCE": "Est. Total Balance",
+		"WEEK": "week",
+		"MONTH": "month",
+		"MONTHS": "months",
+		"WALLET_BALANCE": "Wallet balance breakdown",
+		"WALLET_BALANCE_DESCRIPTION_1": "Below is a wallet breakdown on",
+		"WALLET_BALANCE_DESCRIPTION_2": "Click chart above to update the table below.",
+		"DATE_SELECT": "Select Date",
+		"ASSET_NAME": "Asset name",
+		"BALANCE_AMOUNT": "Balance Amount",
+		"VALUE": "Value",
+		"PERFORMANCE_TREND": "7 Day Performance Trend",
+		"CUSTOM_DATE_DESCRIPTION": "Select specific dates to fetch your history data (date difference cannot go further than 3 months)",
+		"SELECT_START_DATE": "Select start date",
+		"SELECT_END_DATE": "Select end date",
+		"CUSTOM": "Custom",
+		"BACK_CUSTOM": "BACK",
+		"PROOCED_CUSTOM": "PROOCED"
+	},
 	"ASSET_INFO": "Asset info",
 	"TAKER_FEES_APPLIED": "Taker fees are applied",
 	"ASSET_INFO_PAGE": "Asset info page",
@@ -1520,6 +1558,7 @@
 		"ASSETS_INFO": "Below are available assets on the platform.",
 		"ASSETS_INFO_DETAIL": "You can click an asset on the list below to learn more.",
 		"QUICK_TRADE": "QUICK TRADE",
+		"PRO_TRADE": "PRO TRADE",
 		"MARKETS": "MARKETS",
 		"WALLET": "WALLET",
 		"PRICE_SOURCE": "Price source",

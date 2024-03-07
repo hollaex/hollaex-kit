@@ -205,6 +205,8 @@ class Summary extends Component {
 									<SummaryBlock
 										title={userAccountTitle}
 										wrapperClassname="w-100"
+										verification_level={verification_level}
+										icons={ICONS}
 									>
 										<TraderAccounts
 											user={user}

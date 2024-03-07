@@ -50,6 +50,7 @@ class Form extends Component {
 		dialogIsOpen: false,
 		dialogOtpOpen: false,
 		otp_code: '',
+		prevFee: null,
 	};
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -75,14 +76,14 @@ class Form extends Component {
 			}
 		}
 		if (nextProps.selectedMethodData !== this.props.selectedMethodData) {
-			const fee = calculateBaseFee(nextProps.data.amount);
 			if (
 				nextProps.selectedMethodData &&
 				nextProps.selectedMethodData === 'email'
 			) {
+				this.setState({ prevFee: nextProps.data.fee });
 				nextProps.change('fee', 0);
 			} else {
-				nextProps.change('fee', fee);
+				if (this.state.prevFee) nextProps.change('fee', this.state.prevFee);
 			}
 		}
 	}
@@ -97,7 +98,11 @@ class Form extends Component {
 		if (ev && ev.preventDefault) {
 			ev.preventDefault();
 		}
-		getWithdrawalMax(this.props.currency, this.props?.data?.network)
+		const emailMethod = this.props?.data?.method === 'email';
+		getWithdrawalMax(
+			this.props.currency,
+			!emailMethod ? this.props?.data?.network : 'email'
+		)
 			.then((res) => {
 				if (math.larger(this.props?.data?.amount, res?.data?.amount)) {
 					message.error(
@@ -339,7 +344,8 @@ const mapStateToForm = (state) => ({
 		'fee',
 		'fee_coin',
 		'email',
-		'fee_type'
+		'fee_type',
+		'method'
 	),
 	coins: state.app.coins,
 	targets: state.app.targets,

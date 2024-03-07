@@ -8,7 +8,7 @@ Scenario: COMMUNICATOR
    
      Given I am in the Hollaex login page
      When I enter credentials "communicator","Password"
-     Then I should be able to login successfully as "communicator@testsae.com"
+     Then I should be able to login successfully as "tester+communicator@hollaex.email"
      And I have title of 'Communicator'
      Then I must be able to do Communicators tasks
 
@@ -16,23 +16,23 @@ Scenario: KYC
 
      Given I am in the Hollaex login page
      When I enter credentials "kyc","Password"
-     Then I should be able to login successfully as "kyc@testsae.com" 
+     Then I should be able to login successfully as "tester+kyc@hollaex.email" 
      And I have title of 'KYC'
      Then I must be able to do KYCs tasks
 
-Scenario: SUPERVISOR
-
-     Given I am in the Hollaex login page
-     When I enter credentials "supervisor","Password"
-     Then I should be able to login successfully as "supervisor@testsae.com"
-     And I have title of "Supervisor"
-     Then I must be able to do Supervisors tasks
 
 Scenario: SUPPORT
 
      Given I am in the Hollaex login page
      When I enter credentials "support","Password"
-     Then I should be able to login successfully as "support@testsae.com"
+     Then I should be able to login successfully as "tester+support@hollaex.email"
      And I have title of "Support"
      Then I must be able to do Supports tasks
- 
+
+Scenario: SUPERVISOR
+
+     Given I am in the Hollaex login page
+     When I enter credentials "supervisor","Password"
+     Then I should be able to login successfully as "tester+supervisor@hollaex.email"
+     And I have title of "Supervisor"
+     Then I must be able to do Supervisors tasks

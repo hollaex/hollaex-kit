@@ -691,6 +691,7 @@ class PairsSummary extends Component {
 								rowKey={(data, index) => index}
 								dataSource={this.state.pairs}
 								bordered
+								pagination={false}
 							/>
 						</div>
 					</Fragment>

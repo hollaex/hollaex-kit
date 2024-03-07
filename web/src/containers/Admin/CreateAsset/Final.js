@@ -7,7 +7,6 @@ import { STATIC_ICONS } from 'config/icons';
 import Coins from '../Coins';
 import IconToolTip from '../IconToolTip';
 import { getNetworkLabelByKey } from 'utils/wallet';
-import { formatPercentage } from 'utils/currency';
 import { Link } from 'react-router';
 import { getTabParams } from '../AdminFinancials/Assets';
 import RemoveConfirmation from '../Confirmation';
@@ -69,22 +68,8 @@ const Final = ({
 		}
 	}, [exchange]);
 
-	const getSymbolBasedFields = (type) => {
-		switch (type) {
-			case 'percentage':
-				return ['min', 'max'];
-			case 'static':
-			default:
-				return ['value', 'levels'];
-		}
-	};
-
 	const renderNetworkFee = ([key, data], index) => {
-		const { symbol: assetSymbol } = coinFormData;
-		const { symbol, type } = data;
 		const network = getNetworkLabelByKey(key);
-		const symbolBasedFields = getSymbolBasedFields(type);
-		const unit = type === 'percentage' ? assetSymbol : symbol;
 		const keyArr = withdrawal_fees && Object.keys(withdrawal_fees).length;
 
 		return (
@@ -97,42 +82,15 @@ const Final = ({
 				<Fragment>
 					{data &&
 						Object.entries(data).map(([key, value]) => {
-							const hasUnit = symbolBasedFields.includes(key);
-
-							if (key && key === 'levels') {
-								return (
-									<div key={key} className="d-flex align-start">
-										<div>
-											<b className="caps-first">{key}</b>:
-										</div>
-										<div className="pl-1">
-											{value &&
-												Object.entries(value).map(([level, fee]) => {
-													if (level && fee) {
-														const feeText = hasUnit
-															? `${fee} ${unit}`
-															: formatPercentage(fee);
-														return (
-															<div
-																key={fee}
-															>{`Tier ${level} @ ${feeText}`}</div>
-														);
-													} else {
-														return null;
-													}
-												})}
-										</div>
-									</div>
-								);
-							} else {
-								const valueText = hasUnit ? `${value} ${unit}` : value;
-
+							if (!['levels', 'min', 'max', 'type'].includes(key)) {
+								const valueText = value;
 								return (
 									<div key={key}>
 										<b className="caps-first">{key}</b>: {valueText}
 									</div>
 								);
 							}
+							return <></>;
 						})}
 					{keyArr > 1 && index === 0 ? (
 						<div className="border-separator"></div>

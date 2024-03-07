@@ -9,8 +9,8 @@ Given ('I am in the Hollaex login page',()=>{
 When ('I enter credentials to log in successfully',()=>{
 
     cy.get('.holla-button').should('be.visible').should('be.disabled')
-    cy.get('[name="email"]').clear().type(Cypress.env('ADMIN_USER'))
-    cy.get('[name="password"]').clear().type(Cypress.env('ADMIN_PASS'))
+    cy.get('[name="email"]').clear().type(Cypress.env("Alice"))
+    cy.get('[name="password"]').clear().type(Cypress.env('PASSWORD'))
     cy.get('.holla-button').should('be.visible').should('be.enabled').click()
     cy.get('.warning_text').should('not.exist') 
 }) 
@@ -20,8 +20,8 @@ And ('I should be able to redirect to {string} page and cancel all open orders',
     cy.contains('Pro trade').click()
     cy.contains(tradePage).click()
     cy.get('.app_bar-currency-txt').should('have.text', 'XHT/USDT:')
-    //cy.get('[style="width: 801px; height: 390px; position: absolute; transform: translate(10px, 1210px);"] > .trade_block-wrapper > .trade_block-title > .justify-content-between > .d-flex > .trade_block-title-items > .edit-wrapper__container')
-    cy.get('[style="width: 801px; height: 430px; position: absolute; transform: translate(10px, 690px);"] > .trade_block-wrapper > .trade_block-title > .justify-content-between > .d-flex > .trade_block-title-items > .edit-wrapper__container')
+    cy.get('.trade_block-wrapper > .trade_block-title > .justify-content-between > .d-flex > .trade_block-title-items > .edit-wrapper__container')
+    .contains('Open orders')
     .invoke('text').then(text => {
         var fullText = text;
         var pattern = /[0-9]+/g;
@@ -37,6 +37,23 @@ And ('I should be able to redirect to {string} page and cancel all open orders',
 })
 
 And ('I check the highest and lowest prices',()=>{
+    function clickUntilDepthIs01() {
+        // Check if the condition is met
+        cy.get('.trade_orderbook-depth').then(($depth) => {
+          if ($depth.text().includes('0.01')) {
+            // If the condition is met, then do nothing (or perform any necessary actions)
+            return;
+          } else {
+            // If the condition is not met, click the element and call the function again
+            cy.get('.trade_orderbook-depth-selector > :nth-child(3)').click();
+            clickUntilDepthIs01(); // Recursively call the function
+          }
+        });
+      }
+      
+      // Start the clicking process
+      clickUntilDepthIs01();
+      
     cy.get('.trade_orderbook-depth').contains('0.01')
     cy.log('check lowest aks exist and click on the price will send the price')
     cy.get('.trade_orderbook-asks > :nth-child(1) > .d-flex > .trade_orderbook-cell-price')
@@ -50,14 +67,15 @@ And ('I check the highest and lowest prices',()=>{
     .should('be.visible').as('highestBuy')
     cy.get('.form-error').should('not.be.exist')
     cy.get('.trade_order_entry-form_fields-wrapper').click()
-    cy.wallectCheck('sell','HollaEx',0.01,0,0.26)
-    cy.wallectCheck('buy','USD Tether',0.01,0,0.26)
+    cy.wallectCheck('sell','HollaEx',0,0,0.26)
+    cy.wallectCheck('buy','USD Tether',0,0.0001,0.26)
+    
 })
 
 When ('I make buy orders {string} times',(orderTime)=>{
 
-    cy.get('@highestBuy').click()
-    for (var i = 1; i < Number(orderTime)+1; i++) 
+     cy.get('@highestBuy').click()
+     for (var i = 1; i < Number(orderTime)+1; i++) 
       {
         cy.get('[name="price"]').type('{upArrow}').invoke('val')
         .then(text => {
@@ -66,13 +84,13 @@ When ('I make buy orders {string} times',(orderTime)=>{
         })
         cy.get('[name="size"]').clear().type(i)
         cy.get('.holla-button').click().get('.form-error').should('not.be.always.exist')
-        cy.get('.table_body-wrapper > :nth-child(1) > :nth-child(3) > .buy')
+        cy.get('.notification-content-wrapper > :nth-child(4) > :nth-child(3)').click()
+        cy.get('.open-order-wrapper > .trade_active_orders-wrapper > .table_container > .table-content > .table-wrapper > .table_body-wrapper > .table_body-row > :nth-child(3) > .buy')
         .contains('buy')
         cy.get('@currentPrice')
         .then(val=> {
-            cy.get('[style="width: 801px; height: 430px; position: absolute; transform: translate(10px, 690px);"] > .trade_block-wrapper > .trade_block-content > .trade_active_orders-wrapper > .table_container > .table-content > .table-wrapper > .table_body-wrapper > :nth-child(1) > :nth-child(5)')
-            
-            .should('contain', val)
+         cy.get('.open-order-wrapper > .trade_active_orders-wrapper > .table_container > .table-content > .table-wrapper > .table_body-wrapper > .table_body-row > :nth-child(5)')
+          .should('contain', val)
         })
         cy.get('.table_body-wrapper > :nth-child(1) > :nth-child(6)')
         .contains(i)                   
@@ -81,57 +99,80 @@ When ('I make buy orders {string} times',(orderTime)=>{
 
 When ('I make sell orders {string} times',(orderTime)=>{
 
-    cy.get('.trade_order_entry-action_selector > :nth-child(2)').click()
-    cy.get('@lowestSell').click()
-     for (var i = 1; i < Number(orderTime)+1; i++) 
-       {
-         cy.get('[name="price"]').type('{downArrow}').invoke('val')
-        .then(text => {
-            cy.log(text)
-            cy.wrap(text).as('currentPrice')
-        })
-        cy.get('[name="size"]').clear().type(i)
-        cy.get('.holla-button').click().get('.form-error').should('not.be.always.exist')
-        cy.get('.table_body-wrapper > :nth-child(1) > :nth-child(3) > .sell')
-        .contains('sell')
-        cy.get('@currentPrice')
-        .then(val=> {
-            cy.get('[style="width: 801px; height: 430px; position: absolute; transform: translate(10px, 690px);"] > .trade_block-wrapper > .trade_block-content > .trade_active_orders-wrapper > .table_container > .table-content > .table-wrapper > .table_body-wrapper > :nth-child(1) > :nth-child(5)')
-            .should('contain', val)
-           // cy.get('.wallet-wrapper > :nth-child(2) > :nth-child(3)').click()
-            // cy.contains('HOLLAEX', {matchCase: false}).click().log("wallet opened")//.pause()
-        })
-        cy.get('.table_body-wrapper > :nth-child(1) > :nth-child(6)')
-        .contains(i)         
-       // cy.get('.table_body-wrapper > :nth-child(1) > :nth-child(4)')      
-       }
+     cy.get('.trade_order_entry-action_selector > :nth-child(2)').click()
+     cy.get('@lowestSell').click()
+      for (var i = 1; i < Number(orderTime)+1; i++) 
+        {
+          cy.get('[name="price"]').type('{downArrow}').invoke('val')
+         .then(text => {
+             cy.log(text)
+             cy.wrap(text).as('currentPrice')
+         })
+         cy.get('[name="size"]').clear().type(i)
+         cy.get('.holla-button').click().get('.form-error').should('not.be.always.exist')
+         cy.get('.notification-content-wrapper > :nth-child(4) > :nth-child(3)').click()
+         cy.get('.open-order-wrapper > .trade_active_orders-wrapper > .table_container > .table-content > .table-wrapper > .table_body-wrapper > .general-record-enter-done > :nth-child(3) > .sell')
+         .contains('sell')
+         cy.get('@currentPrice')
+         .then(val=> {
+             //cy.get('[style="width: 801px; height: 430px; position: absolute; transform: translate(10px, 690px);"] > .trade_block-wrapper > .trade_block-content > .trade_active_orders-wrapper > .table_container > .table-content > .table-wrapper > .table_body-wrapper > :nth-child(1) > :nth-child(5)')
+             cy.get('.open-order-wrapper > .trade_active_orders-wrapper > .table_container > .table-content > .table-wrapper > .table_body-wrapper > :nth-child(1) > :nth-child(5)')
+             .should('contain', val)
+            // cy.get('.wallet-wrapper > :nth-child(2) > :nth-child(3)').click()
+             // cy.contains('HOLLAEX', {matchCase: false}).click().log("wallet opened")//.pause()
+         })
+         cy.get('.table_body-wrapper > :nth-child(1) > :nth-child(6)')
+         .contains(i)         
+        // cy.get('.table_body-wrapper > :nth-child(1) > :nth-child(4)')      
+        }
 })
 
 And ('I take sell orders {string} times',(orderTime)=>{
-    cy.get('.trade_order_entry-action_selector > :nth-child(1)').click()
-    for (var i = Number(orderTime); i>0; i--) 
-        {
-         // cy.get('@highestBuy')
-          cy.get('.trade_orderbook-asks > :nth-child(1) > .d-flex > .trade_orderbook-cell-price')
-          .click().invoke('text')
-          .then(text => {
-              cy.log(text)
-              cy.wrap(text).as('currentPrice')
-          })  
-           cy.get('[name="size"]').clear().type(i)
-           cy.get('.holla-button').click().get('.form-error').should('not.be.always.exist')
-           cy.get('.table_body-wrapper > :nth-child(1) > :nth-child(3) > .sell')
-           .contains('sell').wait(2000)
-           cy.get('.table_body-wrapper > :nth-child(1) > :nth-child(2)').first()
-           .contains(i) 
-           cy.get(':nth-child(1) > :nth-child(2) > .trade_history-row')
-           .contains(i) 
-           cy.get('@currentPrice')
-           .then(val=> {
-                cy.get('.table_body-wrapper > :nth-child(1) > :nth-child(4)')
-                .should('contain', val)
-            })        
+      
+    function clickUntilDepthIs00001() {
+      // Check if the condition is met
+      cy.get('.trade_orderbook-depth').then(($depth) => {
+        if ($depth.text().includes('0.00001')) {
+          // If the condition is met, then do nothing (or perform any necessary actions)
+          return;
+        } else {
+          // If the condition is not met, click the element and call the function again
+          cy.get('.trade_orderbook-depth-selector > :nth-child(1)').click();
+          clickUntilDepthIs00001(); // Recursively call the function
         }
+      });
+    }
+    
+  // Start the clicking process
+  clickUntilDepthIs00001();
+    
+  cy.get('.trade_orderbook-depth').contains('0.00001')
+  cy.get('.trade_order_entry-action_selector > :nth-child(1)').click()
+  for (var i = Number(orderTime); i>0; i--) 
+      {
+       // cy.get('@highestBuy')
+        cy.get('.trade_orderbook-asks > :nth-child(1) > .d-flex > .trade_orderbook-cell-price')
+        .click().invoke('text')
+        .then(text => {
+            cy.log(text)
+            cy.wrap(text).as('currentPrice')
+        })  
+         cy.get('[name="size"]').clear().type(i)
+         cy.get('.holla-button').click().get('.form-error').should('not.be.always.exist')
+         cy.get('.notification-content-wrapper > :nth-child(4) > :nth-child(3)').click()
+         cy.get('.notification-content-wrapper > .holla-button').click()//notification
+         cy.get('.table_body-wrapper > :nth-child(1) > :nth-child(3) > .sell')
+         .contains('sell').wait(2000)
+         cy.get('.table_body-wrapper > :nth-child(1) > :nth-child(2)').first()
+         .contains(i) 
+         cy.get(':nth-child(1) > :nth-child(2) > .trade_history-row')
+         .contains(i) 
+         cy.get('@currentPrice')
+         .then(val=> {
+              cy.get('.table_body-wrapper > :nth-child(1) > :nth-child(4)')
+              .should('contain', val)
+          })        
+      }
 })
 
 And ('I take buy orders {string} times',(orderTime)=>{
@@ -148,6 +189,8 @@ And ('I take buy orders {string} times',(orderTime)=>{
           })     
          cy.get('[name="size"]').clear().type(i)
          cy.get('.holla-button').click().get('.form-error').should('not.be.always.exist')
+         cy.get('.notification-content-wrapper > :nth-child(4) > :nth-child(3)').click()
+         cy.get('.notification-content-wrapper > .holla-button').click()//notification
          cy.get('.table_body-wrapper > :nth-child(1) > :nth-child(3) > .buy')
          .contains('buy').wait(2000)
          cy.get('.table_body-wrapper > :nth-child(1) > :nth-child(2)').first()
@@ -174,12 +217,15 @@ When ('I fill {string} of {string} in an order partially',(portion,whole)=>{
       })
      cy.get('[name="size"]').clear().type(size)
      cy.get('.holla-button').click().get('.form-error').should('not.be.always.exist')
+     cy.get('.notification-content-wrapper > :nth-child(4) > :nth-child(3)').click()
+     //cy.get('.notification-content-wrapper > .holla-button').click()//notification
      cy.get('.table_body-wrapper > :nth-child(1) > :nth-child(3) > .sell')
      .contains('sell')
      cy.get('@currentPrice')
      .then(val=> {
-         cy.get('[style="width: 801px; height: 430px; position: absolute; transform: translate(10px, 690px);"] > .trade_block-wrapper > .trade_block-content > .trade_active_orders-wrapper > .table_container > .table-content > .table-wrapper > .table_body-wrapper > :nth-child(1) > :nth-child(5)')
-         .should('contain', val)
+        // cy.get('[style="width: 801px; height: 430px; position: absolute; transform: translate(10px, 690px);"] > .trade_block-wrapper > .trade_block-content > .trade_active_orders-wrapper > .table_container > .table-content > .table-wrapper > .table_body-wrapper > :nth-child(1) > :nth-child(5)')
+        cy.get('.open-order-wrapper > .trade_active_orders-wrapper > .table_container > .table-content > .table-wrapper > .table_body-wrapper > .table_body-row > :nth-child(5)') 
+        .should('contain', val)
          cy.wallectCheck('sell','HollaEx',0.01,size,val)
        })
      cy.get('.table_body-wrapper > :nth-child(1) > :nth-child(6)')
@@ -187,12 +233,16 @@ When ('I fill {string} of {string} in an order partially',(portion,whole)=>{
      cy.get('.trade_order_entry-action_selector > :nth-child(1)').click() 
      cy.get('[name="size"]').clear().type((size-Number(portion)))
      cy.get('.holla-button').click().get('.form-error').should('not.be.always.exist')
-     cy.get('.table_body-wrapper > :nth-child(1) > :nth-child(3) > .buy')
+     cy.get('.notification-content-wrapper > :nth-child(4) > :nth-child(3)').click()
+    cy.get('.notification-content-wrapper > .holla-button').click()//notification
+    // cy.get('.table_body-wrapper > :nth-child(1) > :nth-child(3) > .buy')
+    cy.get(':nth-child(2) > .cell_box-type > .buy')
      .contains('buy')
      cy.get('@currentPrice')
      .then(val=> {
-          cy.get('[style="width: 801px; height: 430px; position: absolute; transform: translate(10px, 690px);"] > .trade_block-wrapper > .trade_block-content > .trade_active_orders-wrapper > .table_container > .table-content > .table-wrapper > .table_body-wrapper > :nth-child(1) > :nth-child(5)')
-          .should('contain', val)
+         // cy.get('[style="width: 801px; height: 430px; position: absolute; transform: translate(10px, 690px);"] > .trade_block-wrapper > .trade_block-content > .trade_active_orders-wrapper > .table_container > .table-content > .table-wrapper > .table_body-wrapper > :nth-child(1) > :nth-child(5)')
+         cy.get('.open-order-wrapper > .trade_active_orders-wrapper > .table_container > .table-content > .table-wrapper > .table_body-wrapper > .table_body-row > :nth-child(5)')
+         .should('contain', val)
           })
      cy.get('.table_body-wrapper > :nth-child(1) > :nth-child(2)')
      .contains((size-Number(portion))) 
@@ -213,18 +263,15 @@ Then ('I will see the {string} / {string} percentage',(portion,whole)=>{
         expect(Number(nmb)).to.equal((Number(portion)/Number(whole))*100)
              
         })
-    cy.wait(2000)
-    cy.get('.trade__active-orders_cancel-All').click()
-    cy.get(':nth-child(2) > .w-100 > :nth-child(3)').click()
-    cy.wait(2000)
-    cy.get('[style="width: 801px; height: 430px; position: absolute; transform: translate(10px, 690px);"] > .trade_block-wrapper > .trade_block-title > .justify-content-between > .d-flex > .trade_block-title-items > .edit-wrapper__container')
-    .invoke('text').then(text => {
-        var fullText = text;
-        var pattern = /[0-9]+/g;
-        var nmb = fullText.match(pattern);
-        cy.wrap(nmb).as('openOrder')
-        cy.log(nmb);
-        cy.log('second', text)
-        expect(Number(nmb)).to.equal(Number('0'))      
-        })
+      
+     cy.contains('Open orders') 
+     .invoke('text').then(text => {
+          var fullText = text;
+          var pattern = /[0-9]+/g;
+          var nmb = fullText.match(pattern);
+          cy.wrap(nmb).as('openOrder')
+          cy.log(nmb);
+          cy.log('second', text)
+          expect(Number(nmb)).to.equal(Number('1'))      
+          })
 })

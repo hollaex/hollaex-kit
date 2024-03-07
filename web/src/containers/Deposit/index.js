@@ -179,10 +179,7 @@ class Deposit extends Component {
 			destinationAddress = temp[1] ? temp[1] : '';
 		}
 
-		const additionalText =
-			currency === 'xlm' || network === 'xlm' || network === 'ton'
-				? STRINGS['DEPOSIT.CRYPTO_LABELS.MEMO']
-				: STRINGS['DEPOSIT.CRYPTO_LABELS.DESTINATION_TAG'];
+		const additionalText = STRINGS['DEPOSIT.CRYPTO_LABELS.DESTINATION_TAG'];
 
 		const { fullname, deposit_fees } = coins[currency] || DEFAULT_COIN_DATA;
 		const destinationLabel = STRINGS.formatString(additionalText, fullname);
@@ -197,11 +194,8 @@ class Deposit extends Component {
 		let fee;
 		const feeKey = networks ? network : currency;
 		if (deposit_fees && deposit_fees[feeKey]) {
-			const { levels, value } = deposit_fees[feeKey];
-			fee =
-				levels && levels[verification_level]
-					? levels[verification_level]
-					: value;
+			const { value } = deposit_fees[feeKey];
+			fee = value;
 		}
 
 		const formFields = generateFormFields({

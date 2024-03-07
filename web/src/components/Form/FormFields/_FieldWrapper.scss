@@ -330,3 +330,11 @@ $outline-height: 1.5px;
 		padding-bottom: 1rem;
 	}
 }
+
+@media screen and (max-width: 550px) {
+	.field-children {
+		.clear-field {
+			bottom: 1.5rem;
+		}
+	}
+}
