@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { object, string, func } from 'prop-types';
 import classnames from 'classnames';
 import { StarFilled, StarOutlined, ThunderboltFilled } from '@ant-design/icons';
-import { Link } from 'react-router';
+import { browserHistory } from 'react-router';
 import { Slider, PriceChange, Coin } from 'components';
 import { DEFAULT_COIN_DATA } from 'config/constants';
 import STRINGS from 'config/localizedStrings';
@@ -129,6 +129,13 @@ class MarketSelector extends Component {
 	onViewMarketsClick = () => {
 		this.props.onViewMarketsClick();
 		this.closeAddTabMenu();
+	};
+
+	onViewAssetsClick = () => {
+		browserHistory.push('/assets');
+		if (isMobile) {
+			window.location.reload();
+		}
 	};
 
 	closeAddTabMenu = () => {
@@ -311,24 +318,24 @@ class MarketSelector extends Component {
 								<br />
 								{STRINGS.formatString(
 									STRINGS['TRY_VISITING_ASSETS'],
-									<Link
-										to="assets"
+									<span
+										onClick={() => this.onViewAssetsClick()}
 										className="text-underline blue-link pointer"
 									>
 										{STRINGS['ASSETS_PAGE']}
-									</Link>
+									</span>
 								)}
 							</div>
 						)}
-					</div>
-					<div className="d-flex justify-content-center app_bar-link blue-link pointer">
-						{constants && constants.features && constants.features.pro_trade && (
-							<div onClick={this.onViewMarketsClick}>
-								<EditWrapper stringId="VIEW_MARKET">
-									{STRINGS['VIEW_MARKET']}
-								</EditWrapper>
-							</div>
-						)}
+						<div className="d-flex justify-content-center app_bar-link blue-link pointer">
+							{constants && constants.features && constants.features.pro_trade && (
+								<div onClick={this.onViewMarketsClick}>
+									<EditWrapper stringId="VIEW_MARKET">
+										{STRINGS['VIEW_MARKET']}
+									</EditWrapper>
+								</div>
+							)}
+						</div>
 					</div>
 				</div>
 			</div>
