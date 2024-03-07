@@ -6153,6 +6153,9 @@ table th {
   align-items: center;
   font-size: 18px; }
 
+.layout-mobile .hollaex-token-wrapper {
+  overflow-y: scroll; }
+
 .layout-mobile .hollaex-token-wrapper .token-wrapper .hollaex-container {
   display: block; }
   .layout-mobile .hollaex-token-wrapper .token-wrapper .hollaex-container .info-container {
