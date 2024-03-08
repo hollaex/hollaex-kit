@@ -185,17 +185,17 @@ const AssetsList = ({
 						))}
 					</tbody>
 				</table>
-				{!hideViewMore && (
-					<div className="d-flex content-center view-more-btn">
-						<div
-							className="blue-link underline-text pointer"
-							onClick={goToNextPage}
-						>
-							{STRINGS['STAKE_DETAILS.VIEW_MORE']}
-						</div>
-					</div>
-				)}
 			</div>
+			{!hideViewMore && (
+				<div className="d-flex content-center view-more-btn">
+					<div
+						className="blue-link underline-text pointer"
+						onClick={goToNextPage}
+					>
+						{STRINGS['STAKE_DETAILS.VIEW_MORE']}
+					</div>
+				</div>
+			)}
 		</div>
 	);
 };

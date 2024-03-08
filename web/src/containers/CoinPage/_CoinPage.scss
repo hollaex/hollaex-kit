@@ -274,6 +274,9 @@
 }
 
 .layout-mobile {
+	.hollaex-token-wrapper {
+		overflow-y: scroll;
+	}
 	.hollaex-token-wrapper .token-wrapper .hollaex-container {
 		display: block;
 

@@ -3508,7 +3508,6 @@ table th {
   padding-left: 0.25rem; }
 
 .trade-details-wrapper {
-  width: 65%;
   padding: 5rem;
   font-family: "Open Sans";
   background-color: var(--base_background); }
@@ -4725,6 +4724,21 @@ table th {
   color: var(--labels_important-active-labels-text-graphics);
   background-color: var(--base_secondary-navigation-bar); }
 
+.digital-market-wrapper .market-list__block-table {
+  margin-bottom: 1rem; }
+  .digital-market-wrapper .market-list__block-table .table-row {
+    cursor: text !important; }
+    .digital-market-wrapper .market-list__block-table .table-row:hover {
+      background-color: unset !important; }
+    .digital-market-wrapper .market-list__block-table .table-row .sticky-col {
+      cursor: pointer; }
+      .digital-market-wrapper .market-list__block-table .table-row .sticky-col:hover {
+        opacity: 0.5; }
+
+@media screen and (max-width: 786px) {
+  .layout-mobile .digital-market-wrapper .view-more-btn {
+    padding: 10%; } }
+
 .trade_tabs-container {
   color: var(--labels_secondary-inactive-label-text-graphics);
   height: inherit;
@@ -5871,7 +5885,6 @@ table th {
   width: 2rem !important; }
 
 .trade-details-wrapper {
-  width: 65%;
   padding: 5rem;
   font-family: "Open Sans";
   background-color: var(--base_background); }
@@ -6139,6 +6152,9 @@ table th {
   justify-content: center;
   align-items: center;
   font-size: 18px; }
+
+.layout-mobile .hollaex-token-wrapper {
+  overflow-y: scroll; }
 
 .layout-mobile .hollaex-token-wrapper .token-wrapper .hollaex-container {
   display: block; }
@@ -8375,6 +8391,10 @@ table th {
 .layout-mobile .field_warning_wrapper {
   padding-bottom: 1rem; }
 
+@media screen and (max-width: 550px) {
+  .field-children .clear-field {
+    bottom: 1.5rem; } }
+
 .mainContainer {
   display: flex;
   width: fit-content;
@@ -9679,7 +9699,7 @@ table th {
   .quick_trade-wrapper .quote-expired-block-wrapper .quote-expired-text p.small-text {
     margin: 0;
     padding: 0;
-    color: #fff; }
+    color: var(--labels_important-active-labels-text-graphics); }
   .quick_trade-wrapper .quote-expired-block-wrapper .requote-button {
     width: 100px;
     margin-left: 13px;
@@ -9692,7 +9712,7 @@ table th {
     font-family: inherit; }
 
 .direction_ltr .quick_trade-wrapper {
-  font-family: "Raleway"; }
+  font-family: 'Open Sans'; }
 
 .quick_trade-tab-icon {
   width: 3.5rem;
@@ -9738,11 +9758,13 @@ table th {
     color: var(--labels_secondary-inactive-label-text-graphics); }
   .quick_trade-container .visit-asset-info {
     text-decoration: underline; }
+  .quick_trade-container input.input-group__input:placeholder-shown:hover::placeholder {
+    color: var(--labels_important-active-labels-text-graphics); }
   .quick_trade-container .quick-trade-input {
     background: var(--base_secondary-navigation-bar);
-    padding: 2rem 1.7rem;
+    padding: 1.5rem;
     border-radius: 10px;
-    width: 425px;
+    width: 465px;
     border: 2px solid transparent; }
     .quick_trade-container .quick-trade-input:focus-within {
       background: var(--base_wallet-sidebar-and-popup);
@@ -9761,7 +9783,7 @@ table th {
   .quick_trade-container .input-group__input {
     text-align: right;
     color: var(--labels_secondary-inactive-label-text-graphics);
-    font-size: 1.5rem;
+    font-size: 2.1rem;
     margin-left: 1rem;
     height: 60px; }
     .quick_trade-container .input-group__input:focus, .quick_trade-container .input-group__input:active {
@@ -9769,24 +9791,25 @@ table th {
       box-shadow: inset 1px 1px 3px #00000029;
       border-radius: 5px;
       border-bottom: 1px solid #ffffff; }
+    .quick_trade-container .input-group__input:hover {
+      color: var(--labels_important-active-labels-text-graphics); }
   .quick_trade-container .field-error-content {
     display: block; }
   .quick_trade-container .input-group__select {
-    color: #b6b6b6;
+    color: var(--labels_secondary-inactive-label-text-graphics);
     padding: 1.125rem 1rem;
     font-size: 1.4rem; }
     .quick_trade-container .input-group__select .ant-select-selector {
       padding: 0;
       min-width: 7.5rem; }
     .quick_trade-container .input-group__select .anticon {
-      color: #fff; }
+      color: var(--labels_important-active-labels-text-graphics); }
 
 .quick_trade-wrapper.width-none {
   min-width: unset !important;
   max-width: unset !important; }
 
 .quick_trade-wrapper {
-  width: 80vw;
   height: fit-content;
   height: 664px;
   border: 1px solid var(--calculated_super-pale_label-text-graphics);
@@ -9843,14 +9866,14 @@ table th {
             background-color: var(--base_secondary-navigation-bar) !important; }
       .quick_trade-wrapper .trade-section .inner-content .balance-text {
         text-transform: capitalize;
-        color: #b6b6b6;
+        color: var(--labels_secondary-inactive-label-text-graphics);
         display: flex; }
         .quick_trade-wrapper .trade-section .inner-content .balance-text span {
           color: var(--specials_buttons-links-and-highlights-2); }
       .quick_trade-wrapper .trade-section .inner-content .footer-text {
         font-size: 1rem;
         font-family: "Open Sans";
-        color: #b6b6b650;
+        color: var(--labels_secondary-inactive-label-text-graphics);
         letter-spacing: 0.58px;
         text-align: end; }
       .quick_trade-wrapper .trade-section .inner-content .swap-wrapper-wrapper {
@@ -9871,9 +9894,11 @@ table th {
     width: 0;
     left: 100%; } }
 
-.layout-mobile .ReactModal__Overlay .ReactModal__Content .dialog-mobile-content {
-  padding: 2.5rem 0 !important;
-  display: block; }
+.layout-mobile .ReactModal__Overlay .ReactModal__Content {
+  background-color: var(--base_background) !important; }
+  .layout-mobile .ReactModal__Overlay .ReactModal__Content .dialog-mobile-content {
+    padding: 2.5rem 0 !important;
+    display: block; }
 
 .layout-mobile .trade-details-wrapper {
   border-right: none; }
@@ -9957,7 +9982,7 @@ table th {
   .layout-mobile .quick_trade-wrapper .balance-text {
     font-size: 1.8rem; }
   .layout-mobile .quick_trade-wrapper .field-error-content {
-    font-size: 1.375rem;
+    font-size: 1.2rem;
     text-align: right; }
   .layout-mobile .quick_trade-wrapper .swap-container {
     font-size: 2.125rem;
