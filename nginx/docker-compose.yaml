@@ -1,7 +1,7 @@
 version: '3'
 services:
 
-  hollaex-nginx:
+  hollaex-kit-prod-nginx:
     image: nginx-with-certbot
     build:
       context: .
