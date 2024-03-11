@@ -5,7 +5,7 @@ services:
     image: redis:7.2.0-alpine
     restart: unless-stopped
     depends_on:
-      - hollaex-kit-db
+      - hollaex-kit-prod-db
     ports:
       - 6379:6379
     env_file:
@@ -66,8 +66,8 @@ services:
     networks:
       - hollaex-kit
     depends_on:
-      - hollaex-kit-redis
-      - hollaex-kit-db
+      - hollaex-kit-prod-redis
+      - hollaex-kit-prod-db
   hollaex-kit-server-stream:
     image: hollaex/hollaex-kit:2.9.5-cli-deprecation-d1db408
     build:
@@ -94,8 +94,8 @@ services:
       - hollaex-kit
     depends_on:
       - hollaex-kit-server-api
-      - hollaex-kit-redis
-      - hollaex-kit-db
+      - hollaex-kit-prod-redis
+      - hollaex-kit-prod-db
   hollaex-kit-server-plugins:
     image: hollaex/hollaex-kit:2.9.5-cli-deprecation-d1db408
     build:
@@ -121,8 +121,8 @@ services:
       - hollaex-kit
     depends_on:
       - hollaex-kit-server-api
-      - hollaex-kit-redis
-      - hollaex-kit-db
+      - hollaex-kit-prod-redis
+      - hollaex-kit-prod-db
 networks:
   hollaex-kit:
 volumes:

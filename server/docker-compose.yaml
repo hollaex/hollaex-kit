@@ -51,7 +51,8 @@ services:
       - ./messages.js:/app/messages.js
       - ./logs:/app/logs
       - ./test:/app/test
-      - ./tools:/app/tools
+      - ./tools/dbs:/app/tools/dbs
+      - ./tools/general:/app/tools/general
       - ./utils:/app/utils
       - /app/utils/hollaex-network-lib/node_modules
       - /app/utils/hollaex-tools-lib/node_modules
@@ -66,7 +67,7 @@ services:
     image: nginx:1.15.8-alpine
     volumes:
       - ./tools/nginx-dev:/etc/nginx
-      - ./tools/ngin-dev/conf.d:/etc/nginx/conf.d
+      - ./tools/nginx-dev/conf.d:/etc/nginx/conf.d
       - ./tools/nginx-dev/logs:/var/log
       - ./tools/nginx-dev/static:/usr/share/nginx/html
     ports:
