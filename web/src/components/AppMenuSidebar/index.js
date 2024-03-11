@@ -6,10 +6,22 @@ import SidebarItem from './SidebarItem';
 class AppMenuSidebar extends Component {
 	render() {
 		const { icons: ICONS, menuItems, activePath, onMenuChange } = this.props;
+
 		return (
 			<div className="d-flex justify-content-between app-side-bar">
 				<div className="app-menu-bar-side">
-					{menuItems.map(
+					{[
+						...menuItems,
+						{
+							path: '/p2p',
+							icon_id: 'P2P',
+							string_id: 'ACCOUNTS.P2P',
+							hide_from_appbar: true,
+							hide_from_sidebar: false,
+							hide_from_menulist: false,
+							hide_from_bottom_nav: true,
+						},
+					].map(
 						(
 							{ path, icon_id, string_id, hide_from_sidebar, activePaths },
 							index
