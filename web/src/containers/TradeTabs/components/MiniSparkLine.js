@@ -14,6 +14,8 @@ const DEFAULT_CHART_OPTIONS = {
 	},
 	chart: {
 		styledMode: true,
+		width: 200,
+		height: (9 / 16) * 60 + '%',
 	},
 	xAxis: {
 		visible: false,
