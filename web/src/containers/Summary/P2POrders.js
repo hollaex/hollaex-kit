@@ -5,6 +5,7 @@ import { ReactSVG } from 'react-svg';
 import { IconTitle, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
+import { Button, Select, Input } from 'antd';
 const P2POrders = ({
 	data,
 	onClose,
@@ -17,14 +18,150 @@ const P2POrders = ({
 }) => {
 	return (
 		<div
-			className="fee-limits-wrapper"
 			style={{
 				height: 600,
 				backgroundColor: '#303236',
 				width: '100%',
 				padding: 20,
 			}}
-		></div>
+		>
+			<div
+				style={{
+					textAlign: 'center',
+					display: 'flex',
+					gap: 10,
+					marginTop: 25,
+					marginBottom: 25,
+					alignItems: 'center',
+					justifyContent: 'center',
+				}}
+			>
+				<Button ghost>Processing</Button>
+				<Button ghost>All Orders</Button>
+				<Button ghost>Profit & Loss Statement</Button>
+			</div>
+
+			<div
+				className="wallet-assets_block"
+				style={{ display: 'flex', marginTop: 20 }}
+			>
+				<table style={{ border: 'none', borderCollapse: 'collapse' }}>
+					<thead>
+						<tr
+							className="table-bottom-border"
+							style={{ borderBottom: 'grey 1px solid', padding: 10 }}
+						>
+							<th>Type/Coin</th>
+							<th>Fiat amount</th>
+							<th>Price</th>
+							<th>Crypto amount</th>
+							<th>Counterparty</th>
+							<th>Status</th>
+							<th>Operation</th>
+						</tr>
+					</thead>
+					<tbody className="font-weight-bold">
+						<tr
+							className="table-row"
+							style={{
+								borderBottom: 'grey 1px solid',
+								padding: 10,
+								position: 'relative',
+							}}
+							//  key={index}
+						>
+							<td style={{ minWidth: '14.5em' }} className="td-fit">
+								<Button
+									style={{
+										backgroundColor: '#288500',
+										color: 'white',
+									}}
+								>
+									Buy USDT {'>'}
+								</Button>
+							</td>
+
+							<td style={{ minWidth: '14.5em' }} className="td-fit">
+								$100 USD
+							</td>
+							<td style={{ minWidth: '14.5em' }} className="td-fit">
+								$0.95 USD
+							</td>
+							<td style={{ minWidth: '14.5em' }} className="td-fit">
+								105.2354 USDT
+							</td>
+							<td style={{ minWidth: '14.5em' }} className="td-fit">
+								name_crypto_vendor
+							</td>
+							<td style={{ maxWidth: '14.5em' }} className="td-fit">
+								Unpaid
+							</td>
+
+							<td style={{ maxWidth: '13.5em' }} className="td-fit">
+								<div
+									style={{
+										display: 'flex',
+										justifyContent: 'flex-end',
+										color: '#5E63F6',
+									}}
+								>
+									View order
+								</div>
+							</td>
+						</tr>
+
+						<tr
+							className="table-row"
+							style={{
+								borderBottom: 'grey 1px solid',
+								padding: 10,
+								position: 'relative',
+							}}
+							//  key={index}
+						>
+							<td style={{ minWidth: '14.5em' }} className="td-fit">
+								<Button
+									style={{
+										backgroundColor: '#92433D',
+										color: 'white',
+									}}
+								>
+									Sell USDT {'>'}
+								</Button>
+							</td>
+
+							<td style={{ minWidth: '14.5em' }} className="td-fit">
+								$100 USD
+							</td>
+							<td style={{ minWidth: '14.5em' }} className="td-fit">
+								$0.95 USD
+							</td>
+							<td style={{ minWidth: '14.5em' }} className="td-fit">
+								105.2354 USDT
+							</td>
+							<td style={{ minWidth: '14.5em' }} className="td-fit">
+								name_crypto_vendor
+							</td>
+							<td style={{ maxWidth: '14.5em' }} className="td-fit">
+								Unpaid
+							</td>
+
+							<td style={{ maxWidth: '13.5em' }} className="td-fit">
+								<div
+									style={{
+										display: 'flex',
+										justifyContent: 'flex-end',
+										color: '#5E63F6',
+									}}
+								>
+									View order
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
 	);
 };
 

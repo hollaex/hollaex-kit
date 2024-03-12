@@ -23,10 +23,7 @@ const P2P = ({
 	tiers = {},
 }) => {
 	return (
-		<div
-			className="fee-limits-wrapper"
-			style={{ height: 600, width: '100%', padding: 20, marginBottom: 400 }}
-		>
+		<div style={{ height: 600, width: '100%', padding: 20, marginBottom: 400 }}>
 			<div style={{ textAlign: 'center', fontSize: 19 }}>P2P Deals</div>
 			<div style={{ textAlign: 'center', marginBottom: 15 }}>
 				P2P deals for buying and selling Bitcoin, USDT, and other
