@@ -9,6 +9,7 @@ Scenario: Successfull Login
     Given I am in the Hollaex login page
     When I enter credentials Username,Password
     Then I should be able to login successfully
+    And I receive the notification Email
 
 Scenario: Wrong Username Login
 
@@ -33,5 +34,5 @@ Scenario: 2FA enabled Account login
     Given I am in the Hollaex login page
     When I enter credentials 2FA enabled Username,Password
     Then I should be able to login successfully
-    And I enter Expired,long,short and then true 2FA code
+    And I enter Expired,long,short,String and then true 2FA code
     
