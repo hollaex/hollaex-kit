@@ -1,5 +1,5 @@
 imageRegistry: hollaex/hollaex-kit
-dockerTag: 2.10.0-cli-deprecation-51f37e8
+dockerTag: 2.10.0-cli-deprecation-399ad2f
 imagePullSecrets:
   - name: docker-registry-secret
 envName: hollaex-kit-configmap
