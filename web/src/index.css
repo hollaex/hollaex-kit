@@ -1977,7 +1977,7 @@ table th {
       padding: 4rem 3rem; }
     .currency-wallet-wrapper .wallet-content-wrapper .balance-wrapper {
       font-size: 2rem; }
-    .currency-wallet-wrapper .wallet-content-wrapper .available-balance-wrapper {
+    .currency-wallet-wrapper .wallet-content-wrapper .available-balance-wrapper, .currency-wallet-wrapper .wallet-content-wrapper .estimated-balance {
       font-size: 14px; }
     .currency-wallet-wrapper .wallet-content-wrapper .donut-wrapper {
       width: 35%;
@@ -4628,6 +4628,8 @@ table th {
           padding-top: 3px; }
           .market-list__container .market-list__block .market-list__block-table .table-row .td-chart .highcharts-container svg .highcharts-graph {
             stroke-width: 0.6px !important; }
+    .market-list__container .market-list__block .market-list__block-table .table-row .last-price-label {
+      color: var(--labels_important-active-labels-text-graphics); }
   .market-list__container .market-list__block .market-list__block-table .table-bottom-border td,
   .market-list__container .market-list__block .market-list__block-table th {
     position: relative;
@@ -4731,9 +4733,13 @@ table th {
     .digital-market-wrapper .market-list__block-table .table-row:hover {
       background-color: unset !important; }
     .digital-market-wrapper .market-list__block-table .table-row .sticky-col {
+      color: var(--labels_important-active-labels-text-graphics);
       cursor: pointer; }
       .digital-market-wrapper .market-list__block-table .table-row .sticky-col:hover {
         opacity: 0.5; }
+
+.trade_tabs-container .market-pairs {
+  color: var(--labels_important-active-labels-text-graphics); }
 
 @media screen and (max-width: 786px) {
   .layout-mobile .digital-market-wrapper .view-more-btn {
@@ -6433,8 +6439,8 @@ table th {
     font-size: 0.9rem;
     height: 2.5rem;
     padding: 0.5rem 0.8rem;
-    width: 3.2rem;
-    max-width: 3.2rem;
+    width: 4.2rem;
+    max-width: 4.2rem;
     /* (22 -6) / 5 */ }
   .modal-market-menu .active-tab {
     background-color: var(--base_background);
@@ -6442,7 +6448,8 @@ table th {
     font-weight: bold; }
   .modal-market-menu .app-bar-add-tab-content {
     font-size: 0.9rem;
-    overflow-y: scroll;
+    scrollbar-width: thin;
+    scrollbar-color: var(--labels_secondary-inactive-label-text-graphics) var(--base_background);
     padding: 0.3rem 0; }
     .modal-market-menu .app-bar-add-tab-content .scroll-view {
       overflow-y: auto;
@@ -7207,8 +7214,8 @@ table th {
     font-size: 1rem;
     height: 2.5rem;
     padding: 0.5rem 0.8rem;
-    width: 3.2rem;
-    max-width: 3.2rem;
+    width: 4.2rem;
+    max-width: 4.2rem;
     /* (22 -6) / 5 */ }
   .app-bar-add-tab-menu .active-tab {
     background-color: var(--base_background);
@@ -7216,7 +7223,8 @@ table th {
     font-weight: bold; }
   .app-bar-add-tab-menu .app-bar-add-tab-content {
     font-size: 1rem;
-    overflow-y: scroll;
+    scrollbar-width: thin;
+    scrollbar-color: var(--labels_secondary-inactive-label-text-graphics) var(--base_background);
     padding: 0.3rem 0; }
     .app-bar-add-tab-menu .app-bar-add-tab-content .scroll-view {
       overflow-y: auto;
