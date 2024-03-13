@@ -34,6 +34,7 @@ build
 web/CNAME
 server/tools/hollaex-kit.env.local
 server/tools/nginx-dev/logs/*
+nginx/logs/*
 
 # misc
 web/.DS_Store
