@@ -5,7 +5,6 @@ import { bindActionCreators } from 'redux';
 import classnames from 'classnames';
 
 import { quicktradePairSelector } from 'containers/QuickTrade/components/utils';
-import { StarFilled, StarOutlined } from '@ant-design/icons';
 import { MarketsSelector } from 'containers/Trade/utils';
 import math from 'mathjs';
 import STRINGS from 'config/localizedStrings';
@@ -13,9 +12,9 @@ import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 import { Button, EditWrapper, Image, Coin } from 'components';
 import { getMiniCharts } from 'actions/chartAction';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { isLoggedIn } from 'utils/token';
 import { addToFavourites, removeFromFavourites } from 'actions/appActions';
 import Details from 'containers/QuickTrade/components/Details';
+import { formatCurrency } from 'utils';
 
 const TYPES = {
 	PRO: 'pro',
@@ -59,9 +58,7 @@ const CoinPage = ({
 
 	const [data, setData] = useState([]);
 	const [chartData, setChartData] = useState({});
-	const [selectedPair, setselectedPair] = useState([]);
 	const [lineChartData, setLineChartData] = useState({});
-	const selectedPairCoins = selectedPair && selectedPair?.[0];
 
 	useEffect(() => {
 		handleMarket();
@@ -90,7 +87,6 @@ const CoinPage = ({
 			type: 'line',
 		};
 		setLineChartData(ChartData);
-		setselectedPair(selectedPair);
 	};
 
 	const handleMarket = () => {
@@ -118,24 +114,7 @@ const CoinPage = ({
 		setData(market);
 	};
 
-	const handleBack = () => {
-		router.goBack();
-	};
-
 	const pairBase_fullName = coins[currentCoin]?.fullname;
-
-
-	const isFavourite = (pair) => {
-		return isLoggedIn() && favourites.includes(pair);
-	};
-
-	const toggleFavourite = (pair) => {
-		if (isLoggedIn()) {
-			return isFavourite(pair)
-				? removeFromFavourites(pair)
-				: addToFavourites(pair);
-		}
-	};
 
 	const handleTrade = (pair) => {
 		if (isBroker) {
@@ -166,41 +145,13 @@ const CoinPage = ({
 						<div className="title">
 							<div className="d-flex justify-content-between title-child-container">
 								<div>
-									<span>{pairBase_fullName}</span> {currentCoinUpper}
-								</div>
-								<div
-									className="pl-3 pr-2 favourite-content"
-									onClick={() => toggleFavourite(selectedPairCoins?.key)}
-								>
-									{isFavourite(selectedPairCoins?.key) ? (
-										<div className="d-flex align-items-center star-icon">
-											<div className="favourite-text">
-												<EditWrapper stringId="HOLLAEX_TOKEN.REMOVE_FAVOURITES">
-													{STRINGS['HOLLAEX_TOKEN.REMOVE_FAVOURITES']}
-												</EditWrapper>
-											</div>
-											<StarFilled className="stared-market" />
-										</div>
-									) : (
-										!isBroker && (
-											<div className="d-flex align-items-center">
-												<span className="favourite-text-2">
-													<EditWrapper stringId="HOLLAEX_TOKEN.ADD_FAVOURITES">
-														{STRINGS['HOLLAEX_TOKEN.ADD_FAVOURITES']}
-													</EditWrapper>
-												</span>
-												<StarOutlined />
-											</div>
-										)
-									)}
+									<span>{pairBase_fullName}</span> ({currentCoinUpper})
 								</div>
 							</div>
 						</div>
 						<div className="d-flex justify-content-between mt-3 mb-4 balance-wrapper">
-							<div className="link" onClick={handleBack}>
-								<EditWrapper stringId="HOLLAEX_TOKEN.GO_BACK">
-									&lt; {STRINGS['HOLLAEX_TOKEN.GO_BACK']}
-								</EditWrapper>
+							<div>
+								
 							</div>
 							<div className="d-flex image-Wrapper">
 								<Image
@@ -214,7 +165,7 @@ const CoinPage = ({
 									<EditWrapper stringId="HOLLAEX_TOKEN.BALANCE">
 										{STRINGS['HOLLAEX_TOKEN.BALANCE']}
 									</EditWrapper>{' '}
-									{available_balance[`${currentCoin}_available`]}{' '}
+									{formatCurrency(available_balance[`${currentCoin}_available`])}{' '}
 									{currentCoinUpper}{' '}
 									<Link className="link" to={'/wallet'}>
 										<EditWrapper stringId="HOLLAEX_TOKEN.OPEN_WALLET">

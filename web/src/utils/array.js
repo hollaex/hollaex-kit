@@ -12,14 +12,13 @@ export const chunkArray = (arr, size) => {
 };
 
 // Function to get a random element from each subarray and combine them into a single array
-export const getRandomValuesFromParts = (arr) => {
-	// Split the array into parts of 7
-	const partsOf7 = chunkArray(arr, 7);
+export const getLastValuesFromParts = (arr) => {
+	const partSize = arr.length/24;
+	const partsOf7 = chunkArray(arr, partSize);
 
 	// Get random values from each part
 	const randomValues = partsOf7.map((part) => {
-		const randomIndex = Math.floor(Math.random() * part.length);
-		return part[randomIndex];
+		return part[part.length-1];
 	});
 
 	return randomValues;

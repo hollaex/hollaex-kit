@@ -49,7 +49,7 @@ const CheckDeposit = ({
 	};
 
 	formFields.currency = {
-		type: 'select',
+		type: 'autocomplete',
 		stringId: 'COINS,DEPOSIT_STATUS.CURRENCY_FIELD_LABEL',
 		label: STRINGS['COINS'],
 		placeholder: STRINGS['DEPOSIT_STATUS.CURRENCY_FIELD_LABEL'],

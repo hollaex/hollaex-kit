@@ -240,7 +240,7 @@ class DonutChart extends Component {
 	}
 
 	renderSlice = (value, i, width, height) => {
-		const { showOpenWallet } = this.props;
+		const { showOpenWallet, centerText } = this.props;
 		let data = value.data;
 		let minViewportSize = Math.min(width, height);
 		let activeSlice = this.state.hoverId === data.symbol;
@@ -276,19 +276,13 @@ class DonutChart extends Component {
 						fill-opacity="0.2"
 					/>
 					<text
-						transform={translate(0, -10)}
+						transform={translate(0, 5)}
 						dy=".35em"
 						className="donut-label-no-price"
 						textAnchor="middle"
 					>
 						<tspan x="0" dy="0">
 							{STRINGS['ZERO_ASSET']}
-						</tspan>
-						<tspan x="0" dy="1.2em">
-							{STRINGS['ZERO_ASSET_2']}
-						</tspan>
-						<tspan x="0" dy="1.2em">
-							{STRINGS['ZERO_ASSET_3']}
 						</tspan>
 					</text>
 					{showOpenWallet && (
@@ -314,29 +308,53 @@ class DonutChart extends Component {
 				<g key={i}>
 					<path
 						d={arcj(value)}
-						className={classnames(`chart_${data.symbol}`, 'chart_slice', {
-							slice_active: activeSlice,
-						})}
+						className={
+							data.symbol === 'Others'
+								? 'others-color'
+								: classnames(`chart_${data.symbol}`, 'chart_slice', {
+										slice_active: activeSlice,
+								  })
+						}
 						onMouseOver={() => this.handleHover(data.symbol)}
 						onMouseOut={this.handleOut}
 					/>
 					{activeSlice ? (
 						<Fragment>
 							<text
-								transform={translate(valX, valY)}
-								x="5px"
-								dy="25px"
+								transform={translate(
+									centerText ? 0 : valX,
+									centerText ? 5 : valY
+								)}
+								x={centerText ? '0px' : '5px'}
+								dy={
+									this.state.higherId === this.state.hoverId
+										? '5px'
+										: centerText
+										? '5px'
+										: '25px'
+								}
 								textAnchor="middle"
 								className="donut-label-percentage"
+								style={{ fontSize: centerText ? '0.8rem' : '1rem' }}
 							>
 								{data.balancePercentage}
 							</text>
 							<text
-								transform={translate(valX, valY - 12)}
-								x="5px"
-								dy="25px"
+								transform={translate(
+									centerText ? 0 : valX,
+									centerText ? -7 : valY - 12
+								)}
+								x={centerText ? '0px' : '5px'}
+								dy={
+									this.state.higherId === this.state.hoverId
+										? '5px'
+										: centerText
+										? '5px'
+										: '25px'
+								}
 								textAnchor="middle"
 								className="donut-label-pair"
+								style={{ fontSize: centerText ? '0.8rem' : '1rem' }}
 							>
 								{data.display_name === 'Others' ? 'Others' : display_name}
 							</text>

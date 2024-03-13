@@ -100,6 +100,14 @@ $title--margin: 1rem;
 	}
 }
 
+.fees_limits {
+	.icon_title-text {
+		&.title {
+			font-size: 1.5rem !important;
+		}
+	}
+}
+
 .layout-mobile {
 	.icon_title-wrapper {
 		// .auth_logo-wrapper {

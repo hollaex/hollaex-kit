@@ -82,14 +82,7 @@ const getWithdrawalFee = (currency, network, amount, level) => {
 		if (coinConfiguration.withdrawal_fees && coinConfiguration.withdrawal_fees[currency]) {
 			let value = coinConfiguration.withdrawal_fees[currency].value;
 			fee_coin =  coinConfiguration.withdrawal_fees[currency].symbol;
-			if (coinConfiguration.withdrawal_fees[currency].levels && coinConfiguration.withdrawal_fees[currency].levels[level]) {
-				value = coinConfiguration.withdrawal_fees[currency].levels[level];
-			}
-			if (coinConfiguration.withdrawal_fees[currency].type === 'static') {
-				fee = value;
-			} else {
-				fee = amount * value / 100;
-			}
+			fee = value;
 		}
 	}
 
@@ -121,7 +114,7 @@ const sendRequestWithdrawalEmail = (user_id, address, amount, currency, opts = {
 }) => {
 	let fee = opts.fee;
 	let fee_coin = opts.fee_coin;
-	let fee_markup
+	let fee_markup;
 
 	return verifyOtpBeforeAction(user_id, opts.otpCode)
 		.then((validOtp) => {
@@ -174,8 +167,8 @@ const withdrawalRequestEmail = (user, data, domain, ip) => {
 					amount,
 					fee,
 					fee_markup,
-					fee_coin: (getKitCoin(fee_coin).display_name) ? getKitCoin(fee_coin).display_name : fee_coin,
-					currency: (getKitCoin(currency).display_name) ? getKitCoin(currency).display_name : currency,
+					fee_coin: fee_coin,
+					currency: currency,
 					transaction_id: token,
 					address,
 					ip,
@@ -1140,14 +1133,7 @@ const getDepositFee = (currency, network, amount, level) => {
 	if (deposit_fees && deposit_fees[currency]) {
 		let value = deposit_fees[currency].value;
 		fee_coin =  deposit_fees[currency].symbol;
-		if (deposit_fees[currency].levels && deposit_fees[currency].levels[level]) {
-			value = deposit_fees[currency].levels[level];
-		}
-		if (deposit_fees[currency].type === 'static') {
-			fee = value;
-		} else {
-			fee = amount * value / 100;
-		}
+		fee = value;
 	}
 
 	return {

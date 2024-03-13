@@ -20,6 +20,8 @@ class SparkLine extends Component {
 				},
 				chart: {
 					styledMode: true,
+					width: 200,
+					height: (9 / 16) * 60 + '%',
 				},
 				xAxis: {
 					type: 'linear',

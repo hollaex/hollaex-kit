@@ -90,14 +90,21 @@ export const assetsSelector = createSelector(
 export const searchAssets = (assets, searchValue = '', isZeroBalanceHidden) => {
 	const searchTerm = searchValue.toLowerCase().trim();
 
-	return assets.filter(([key, { fullname, balance }]) => {
+	return assets.filter(([key, { fullname, balance, symbol }]) => {
 		const coinName = fullname ? fullname.toLowerCase() : '';
+		const symbolName = symbol ? symbol.toLowerCase() : '';
 		const hasCoinBalance = !!balance;
 		const isCoinHidden = isZeroBalanceHidden && !hasCoinBalance;
 
-		return (
-			!isCoinHidden &&
-			(key.indexOf(searchTerm) !== -1 || coinName.indexOf(searchTerm) !== -1)
-		);
+		if (searchTerm) {
+			return searchTerm === '0'
+				? balance <= 0
+				: coinName?.includes(searchTerm) || symbolName?.includes(searchTerm);
+		} else {
+			return (
+				!isCoinHidden &&
+				(key.indexOf(searchTerm) !== -1 || coinName.indexOf(searchTerm) !== -1)
+			);
+		}
 	});
 };

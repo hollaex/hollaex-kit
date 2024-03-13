@@ -152,6 +152,7 @@ const Filters = ({ pairs, onSearch, formName, activeTab }) => {
 							width: 100,
 						}}
 						size="small"
+						showSearch={true}
 						className="custom-select-input-style elevated filter-dropdown"
 						dropdownClassName="custom-select-style"
 						bordered={false}
@@ -159,11 +160,11 @@ const Filters = ({ pairs, onSearch, formName, activeTab }) => {
 					>
 						<Option value={null}>{STRINGS['ALL']}</Option>
 						{Object.entries(pairs).map(
-							([_, { name, pair_base_display, pair_2_display, icon_id }]) => (
-								<Option key={name} value={name}>
+							([_, { symbol, icon_id }]) => (
+								<Option key={symbol} value={symbol}>
 									<div className="d-flex gap-1">
 										<Coin iconId={icon_id} type="CS1" />
-										<div>{`${pair_base_display}-${pair_2_display}`}</div>
+										<div>{`${symbol.toUpperCase()}`}</div>
 									</div>
 								</Option>
 							)
