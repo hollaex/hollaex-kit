@@ -23,7 +23,7 @@ const applyKitChanges = (req, res) => {
 		})
 		.catch((err) => {
 			loggerNotification.verbose('controller/notification/applyKitChanges', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
 		});
 };
 
@@ -120,7 +120,7 @@ const handleCurrencyDeposit = (req, res) => {
 				'controller/notification/handleCurrencyDeposit',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: `Fail - ${errorMessageConverter(err)}` });
+			return res.status(err.statusCode || 400).json({ message: `Fail - ${errorMessageConverter(err, req.auth.sub.lang)}` });
 		});
 };
 
@@ -217,7 +217,7 @@ const handleCurrencyWithdrawal = (req, res) => {
 				'controller/notification/handleCurrencyWithdrawal',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: `Fail - ${errorMessageConverter(err)}` });
+			return res.status(err.statusCode || 400).json({ message: `Fail - ${errorMessageConverter(err, req.auth.sub.lang)}` });
 		});
 };
 

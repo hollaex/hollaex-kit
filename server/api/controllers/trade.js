@@ -81,7 +81,7 @@ const getUserTrades = (req, res) => {
 		})
 		.catch((err) => {
 			loggerTrades.error(req.uuid, 'controllers/trade/getUserTrades', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
 		});
 };
 
@@ -172,7 +172,7 @@ const getAdminTrades = (req, res) => {
 		})
 		.catch((err) => {
 			loggerTrades.error(req.uuid, 'controllers/trade/getAdminTrades', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
 		});
 };
 

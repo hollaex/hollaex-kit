@@ -28,7 +28,7 @@ const getWithdrawalFee = (req, res) => {
 			'controller/withdrawal/getWithdrawalFee err',
 			err.message
 		);
-		return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
 	}
 };
 
@@ -78,7 +78,7 @@ const requestWithdrawal = (req, res) => {
 				'controller/withdrawal/requestWithdrawal',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
 		});
 };
 
@@ -178,7 +178,7 @@ const performWithdrawal = (req, res) => {
 				'controller/withdrawals/performWithdrawal',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
 		});
 };
 
@@ -245,7 +245,7 @@ const performDirectWithdrawal = (req, res) => {
 				'controller/withdrawals/performWithdrawal',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
 		});
 };
 
@@ -277,7 +277,7 @@ const getWithdrawalMax = (req, res) => {
 				'controllers/withdrawal/getWithdrawalMax',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
 		});
 }
 
@@ -350,7 +350,7 @@ const getAdminWithdrawals = (req, res) => {
 				'controllers/withdrawal/getWithdrawals',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
 		});
 };
 
@@ -413,7 +413,7 @@ const getUserWithdrawals = (req, res) => {
 		})
 		.catch((err) => {
 			loggerWithdrawals.error('controllers/withdrawal/getUserWithdrawals', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
 		});
 };
 
@@ -441,7 +441,7 @@ const cancelWithdrawal = (req, res) => {
 				'controllers/withdrawal/cancelWithdrawal',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
 		});
 };
 

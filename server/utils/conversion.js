@@ -5,11 +5,15 @@ const {
 	INVALID_CREDENTIALS
 } = require('../messages');
 
+const {
+	getMessage
+} = require('./lang-messages');
+
 const toBool = (value) => {
 	return value === 'true' ? true : value === 'false' ? false : value;
 };
 
-const errorMessageConverter = (error) => {
+const errorMessageConverter = (error, lang) => {
 	let message = error.message;
 
 	if (error.name === 'SequelizeValidationError') {
@@ -29,7 +33,7 @@ const errorMessageConverter = (error) => {
 		}
 	}
 
-	return message;
+	return getMessage(message, lang) || message;
 };
 
 module.exports = {
