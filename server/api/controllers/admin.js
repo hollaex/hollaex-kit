@@ -35,7 +35,7 @@ const getAdminKit = (req, res) => {
 		return res.json(data);
 	} catch (err) {
 		loggerAdmin.error(req.uuid, 'controllers/admin/getAdminKit', err.message);
-		return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+		return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 	}
 };
 
@@ -51,7 +51,7 @@ const putNetworkCredentials = (req, res) => {
 		})
 		.catch((err) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/putNetworkCredentials', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -89,7 +89,7 @@ const createInitialAdmin = (req, res) => {
 		})
 		.catch((err) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/createInitialAdmin', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -111,7 +111,7 @@ const putAdminKit = (req, res) => {
 		})
 		.catch((err) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/putAdminKit', err);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -204,7 +204,7 @@ const getUsersAdmin = (req, res) => {
 		})
 		.catch((err) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/getUsers', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -229,7 +229,7 @@ const putUserRole = (req, res) => {
 				'controllers/admin/putUserRole',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -269,7 +269,7 @@ const putUserMeta = (req, res) => {
 				'controllers/admin/putUserMeta',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -293,7 +293,7 @@ const putUserNote = (req, res) => {
 				'controllers/admin/userNote',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -330,7 +330,7 @@ const putUserDiscount = (req, res) => {
 				'controllers/admin/putUserDiscount err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -356,7 +356,7 @@ const getAdminUserBalance = (req, res) => {
 				'controllers/admin/getAdminUserBalance',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -389,7 +389,7 @@ const activateUser = (req, res) => {
 				'controllers/admin/activateUser',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -414,7 +414,7 @@ const getAdminBalance = (req, res) => {
 				'controllers/admin/getAdminBalance',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -440,7 +440,7 @@ const upgradeUser = (req, res) => {
 				'controllers/admin/upgradeUser',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -470,7 +470,7 @@ const verifyEmailUser = (req, res) => {
 				'controllers/admin/verifyEmailUser',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -485,7 +485,7 @@ const flagUser = (req, res) => {
 		})
 		.catch((err) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/flagUser', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -557,7 +557,7 @@ const getAdminUserLogins = (req, res) => {
 				'controllers/admin/getAdminUserLogins/catch',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -624,7 +624,7 @@ const getUserAudits = (req, res) => {
 				'controllers/admin/getUserAudits',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -658,7 +658,7 @@ const getCoins = (req, res) => {
 			'controllers/coin/getCoins',
 			err.message
 		);
-		return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+		return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 	}
 };
 
@@ -692,7 +692,7 @@ const getPairs = (req, res) => {
 			'controllers/coin/getPairs',
 			err.message
 		);
-		return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+		return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 	}
 };
 
@@ -720,7 +720,7 @@ const transferFund = (req, res) => {
 				'controllers/admin/transferFund',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -742,7 +742,7 @@ const completeExchangeSetup = (req, res) => {
 				'controllers/admin/completeExchangeSetup catch',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -770,7 +770,7 @@ const uploadImage = (req, res) => {
 				'controllers/admin/uploadImage catch',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -807,7 +807,7 @@ const getOperators = (req, res) => {
 				'controllers/admin/getOperators catch',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -854,7 +854,7 @@ const inviteNewOperator = (req, res) => {
 				'controllers/admin/inviteNewOperator err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -894,7 +894,7 @@ const getExchangeGeneratedFees = (req, res) => {
 				'controllers/admin/getExchangeGeneratedFees catch',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -923,7 +923,7 @@ const settleFees = (req, res) => {
 				'controllers/admin/settleFees catch',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -1000,7 +1000,7 @@ const mintAsset = (req, res) => {
 				'controllers/admin/mintAsset err',
 				err
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -1074,7 +1074,7 @@ const putMint = (req, res) => {
 				'controllers/admin/putMint err',
 				err
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -1151,7 +1151,7 @@ const burnAsset = (req, res) => {
 				'controllers/admin/burnAsset err',
 				err
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -1225,7 +1225,7 @@ const putBurn = (req, res) => {
 				'controllers/admin/putBurn err',
 				err
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -1254,7 +1254,7 @@ const postKitUserMeta = (req, res) => {
 		})
 		.catch((err) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/postKitUserMeta', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -1269,7 +1269,7 @@ const getEmail = (req, res) => {
 		return res.json(data['email'][language.value][type.value.toUpperCase()]);
 	} catch (err) {
 		loggerAdmin.error(req.uuid, 'controllers/admin/getEmail', err.message);
-		return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+		return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 	}
 };
 
@@ -1289,7 +1289,7 @@ const putEmail = (req, res) => {
 		})
 		.catch((err) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/putEmail', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 
 };
@@ -1313,7 +1313,7 @@ const getEmailTypes = (req, res) => {
 
 	} catch (err) {
 		loggerAdmin.error(req.uuid, 'controllers/admin/getEmailTypes', err.message);
-		return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+		return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 	}
 };
 
@@ -1341,7 +1341,7 @@ const putKitUserMeta = (req, res) => {
 		})
 		.catch((err) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/putKitUserMeta', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -1364,7 +1364,7 @@ const deleteKitUserMeta = (req, res) => {
 		})
 		.catch((err) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/deleteKitUserMeta', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -1398,7 +1398,7 @@ const adminCheckTransaction = (req, res) => {
 				'controllers/admin/adminCheckTransaction catch',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -1486,7 +1486,7 @@ const createPair = (req, res) => {
 				'controllers/admin/createPair catch',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -1565,7 +1565,7 @@ const updatePair = (req, res) => {
 				'controllers/admin/updatePair catch',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -1659,7 +1659,7 @@ const createCoin = (req, res) => {
 				'controllers/admin/createCoin catch',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -1769,7 +1769,7 @@ const updateCoin = (req, res) => {
 				'controllers/admin/updateCoin catch',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -1794,7 +1794,7 @@ const getExchange = (req, res) => {
 				'controllers/admin/getExchange err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -1867,7 +1867,7 @@ const updateExchange = (req, res) => {
 				'controllers/admin/updateExchange err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -1895,7 +1895,7 @@ const getNetworkCoins = (req, res) => {
 				'controllers/admin/getNetworkCoins err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -1923,7 +1923,7 @@ const getNetworkPairs = (req, res) => {
 				'controllers/admin/getNetworkPairs err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -1967,7 +1967,7 @@ const putUserInfo = (req, res) => {
 				'controllers/admin/putUserInfo err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -1997,7 +1997,7 @@ const emailConfigTest = (req, res) => {
 				'controllers/admin/emailConfigTest err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -2071,7 +2071,7 @@ const setUserBank = (req, res) => {
 				'controllers/admin/setUserBank err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -2214,7 +2214,7 @@ const getUserAffiliation = (req, res) => {
 		})
 		.catch((err) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/getUserAffiliation', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -2230,7 +2230,7 @@ const getUserReferer = (req, res) => {
 		})
 		.catch((err) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/getUserReferer', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -2271,7 +2271,7 @@ const createUserByAdmin = (req, res) => {
 		})
 		.catch((err) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/createUserByAdmin', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -2327,7 +2327,7 @@ const createUserWalletByAdmin = (req, res) => {
 				'controllers/admin/createUserWalletByAdmin',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -2376,7 +2376,7 @@ const getWalletsByAdmin = (req, res) => {
 		})
 		.catch((err) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/getWalletsByAdmin', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -2422,7 +2422,7 @@ const sendEmailByAdmin = (req, res) => {
 				'controllers/admin/sendEmailByAdmin',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -2460,7 +2460,7 @@ const sendRawEmailByAdmin = (req, res) => {
 				'controllers/admin/sendRawEmailByAdmin',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -2507,7 +2507,7 @@ const getUserSessionsByAdmin = (req, res) => {
 		})
 		.catch((err) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/getUserSessionsByAdmin', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -2523,7 +2523,7 @@ const revokeUserSessionByAdmin = (req, res) => {
 		})
 		.catch((err) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/revokeUserSessionByAdmin', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -2540,7 +2540,7 @@ const updateQuickTradeConfig = (req, res) => {
 		})
 		.catch((err) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/updateQuickTradeConfig', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -2553,7 +2553,7 @@ const getTransactionLimits = (req, res) => {
 		})
 		.catch((err) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/getTransactionLimits', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -2584,7 +2584,7 @@ const updateTransactionLimit = (req, res) => {
 		})
 		.catch((err) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/updateTransactionLimit', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -2607,7 +2607,7 @@ const deleteTransactionLimit = (req, res) => {
 		})
 		.catch((err) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/deleteTransactionLimit', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -2645,7 +2645,7 @@ const getBalancesAdmin = (req, res) => {
 		})
 		.catch((err) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/getBalancesAdmin', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -2667,7 +2667,7 @@ const restoreUserAccount = (req, res) => {
 		})
 		.catch((err) => {
 			loggerAdmin.error(req.uuid, 'controllers/user/restoreUserAccount', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -2705,7 +2705,7 @@ const changeUserEmail = (req, res) => {
 		})
 		.catch((err) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/changeUserEmail', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -2770,7 +2770,7 @@ const getUserBalanceHistoryByAdmin = (req, res) => {
 				'controllers/admin/getUserBalanceHistoryByAdmin',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req.auth.sub.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
