@@ -69,7 +69,7 @@ module.exports = {
                 allowNull: false,
             },
             status: {
-                type: Sequelize.STRING,
+                type: Sequelize.BOOLEAN,
                 allowNull: false,
             },
             createdAt: {

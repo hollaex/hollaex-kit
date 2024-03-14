@@ -39,8 +39,8 @@ module.exports = function (sequelize, DataTypes) {
                 type: DataTypes.STRING,
                 allowNull: true,
             },
-            margin: {
-                type: DataTypes.STRING,
+            spread: {
+                type: DataTypes.DOUBLE,
                 allowNull: true,
             },
             total_buy_amount: {
@@ -56,7 +56,7 @@ module.exports = function (sequelize, DataTypes) {
                 allowNull: false,
             },
             terms: {
-                type: DataTypes.STRING,
+                type: DataTypes.TEXT,
                 allowNull: true,
             },
             auto_response: {
@@ -68,7 +68,7 @@ module.exports = function (sequelize, DataTypes) {
                 allowNull: false,
             },
             status: {
-                type: DataTypes.STRING,
+                type: DataTypes.BOOLEAN,
                 allowNull: false,
             },
         },

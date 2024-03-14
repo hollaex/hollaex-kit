@@ -38,14 +38,10 @@ module.exports = function (sequelize, DataTypes) {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
-            operator_id: {
-				type: DataTypes.INTEGER,
-				allowNull: false,
-				references: {
-					model: 'Users',
-					key: 'id'
-				}
-			},
+            region: {
+                type: DataTypes.ARRAY(DataTypes.STRING),
+                allowNull: false,
+            },
             merchant_fee: {
                 type: DataTypes.DOUBLE,
                 allowNull: false,

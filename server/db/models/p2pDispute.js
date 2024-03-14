@@ -22,25 +22,26 @@ module.exports = function (sequelize, DataTypes) {
 					key: 'id'
 				}
 			},
+            defendant_id: {
+                type: DataTypes.INTEGER,
+				onDelete: 'CASCADE',
+				allowNull: false,
+				references: {
+					model: 'Users',
+					key: 'id'
+				}
+            },
             reason: {
-                type: DataTypes.STRING,
+                type: DataTypes.TEXT,
                 allowNull: false,
             },
             resolution: {
-                type: DataTypes.STRING,
+                type: DataTypes.TEXT,
                 allowNull: true,
             },
             status: {
-                type: DataTypes.ENUM('active', 'inactive'),
+                type: DataTypes.BOOLEAN,
                 allowNull: false,
-            },
-            participant_ids: {
-                type: DataTypes.ARRAY(DataTypes.INTEGER),
-                allowNull: true,
-            },
-            chat_id: {
-                type: DataTypes.UUID,
-                allowNull: true,
             },
         },
         {

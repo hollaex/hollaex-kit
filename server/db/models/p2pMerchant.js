@@ -13,6 +13,7 @@ module.exports = function (sequelize, DataTypes) {
                 type: DataTypes.ARRAY(DataTypes.INTEGER),
                 allowNull: true,
             },
+            // ADD OTHER STUFF
         },
         {
             timestamps: false,
