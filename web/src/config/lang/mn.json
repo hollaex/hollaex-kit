@@ -115,8 +115,8 @@
 		"EMAIL_PLACEHOLDER": "И-мэйл хаягаа энд оруулна",
 		"PASSWORD_LABEL": "Нууц үг",
 		"PASSWORD_PLACEHOLDER": "Нууц үгээ оруулна уу",
-		"PASSWORD_REPEAT_LABEL": "Retype your password",
-		"PASSWORD_REPEAT_PLACEHOLDER": "Retype your password"
+		"PASSWORD_REPEAT_LABEL": "Нууц үг давтах",
+		"PASSWORD_REPEAT_PLACEHOLDER": "Нууц үг давтах"
 	},
 	"VALIDATIONS": {
 		"OTP_LOGIN": "OTP код оруулна уу",
