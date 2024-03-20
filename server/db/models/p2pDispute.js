@@ -2,7 +2,7 @@
 
 module.exports = function (sequelize, DataTypes) {
     const Dispute = sequelize.define(
-        'p2pDispute',
+        'P2pDispute',
         {
             transaction_id: {
 				type: DataTypes.INTEGER,
@@ -47,7 +47,7 @@ module.exports = function (sequelize, DataTypes) {
         {
             timestamps: false,
             underscored: true,
-            tableName: 'p2pDisputes',
+            tableName: 'P2pDisputes',
         }
     );
 

@@ -105,7 +105,7 @@ const P2PPostDeal = ({
 											}}
 										>
 											{Object.values(coins || {})
-												.filter((coin) => coin.type === 'fiat')
+												.filter((coin) => coin.type !== 'fiat')
 												.map((coin) => (
 													<Select.Option value={coin.symbol}>
 														{coin.fullname}
@@ -129,7 +129,7 @@ const P2PPostDeal = ({
 											}}
 										>
 											{Object.values(coins || {})
-												.filter((coin) => coin.type !== 'fiat')
+												.filter((coin) => coin.type === 'fiat')
 												.map((coin) => (
 													<Select.Option value={coin.symbol}>
 														{coin.fullname}
@@ -211,7 +211,7 @@ const P2PPostDeal = ({
 							<div style={{ flex: 7, display: 'flex' }}>
 								<div style={{ flex: 1 }}>
 									<div>Total</div>
-									<div>{spendingAsset?.toUpperCase()} you can sell</div>
+									<div>{buyingAsset?.toUpperCase()} you can sell</div>
 									<div>
 										<Input
 											value={totalOrderAmount}

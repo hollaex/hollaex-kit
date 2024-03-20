@@ -1,6 +1,6 @@
 'use strict';
 
-const TABLE = 'p2pDisputes';
+const TABLE = 'P2pDisputes';
 
 module.exports = {
     up: (queryInterface, Sequelize) => {

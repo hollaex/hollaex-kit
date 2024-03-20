@@ -1,6 +1,6 @@
 'use strict';
 
-const TABLE = 'p2pMerchantsFeedback';
+const TABLE = 'P2pMerchantsFeedback';
 
 module.exports = {
     up: (queryInterface, Sequelize) => {
