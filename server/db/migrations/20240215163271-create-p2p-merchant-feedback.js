@@ -46,16 +46,16 @@ module.exports = {
                 type: Sequelize.STRING,
                 allowNull: false,
             },
-            createdAt: {
-                allowNull: false,
-                type: Sequelize.DATE,
-                defaultValue: Sequelize.literal('NOW()'),
-            },
-            updatedAt: {
-                allowNull: false,
-                type: Sequelize.DATE,
-                defaultValue: Sequelize.literal('NOW()'),
-            },
+            created_at: {
+				allowNull: false,
+				type: Sequelize.DATE,
+				defaultValue: Sequelize.literal('NOW()'),
+			},
+			updated_at: {
+				allowNull: false,
+				type: Sequelize.DATE,
+				defaultValue: Sequelize.literal('NOW()'),
+			},
         },
         {
 			timestamps: true,
