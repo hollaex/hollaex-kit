@@ -33,7 +33,7 @@ module.exports = {
 					key: 'id'
 				}
 			},
-            buyer_id: {
+            user_id: {
 				type: Sequelize.INTEGER,
 				onDelete: 'CASCADE',
 				allowNull: false,
@@ -58,7 +58,7 @@ module.exports = {
                 type: Sequelize.JSONB,
                 allowNull: true,
             },
-            buyer_status: {
+            user_status: {
                 type: Sequelize.ENUM('pending', 'confirmed', 'cancelled', 'appeal'),
                 allowNull: false,
             },
@@ -70,21 +70,20 @@ module.exports = {
                 type: Sequelize.STRING,
                 allowNull: true,
             },
-            transaction_expired: {
-                type: Sequelize.BOOLEAN,
-                allowNull: false,
-                defaultValue: false,
-            },
-            merchant_release_date: {
+            settled_date: {
                 type: Sequelize.DATE,
                 allowNull: true,
             },
             transaction_duration: {
-                type: Sequelize.STRING,
+                type: Sequelize.INTEGER,
                 allowNull: true,
             },
             transaction_status: {
-                type: Sequelize.ENUM('active', 'cancelled', 'complete'),
+                type: Sequelize.ENUM('active', 'cancelled', 'complete', 'expired'),
+                allowNull: false,
+            },
+            messages: {
+                type: Sequelize.JSONB,
                 allowNull: false,
             },
             createdAt: {

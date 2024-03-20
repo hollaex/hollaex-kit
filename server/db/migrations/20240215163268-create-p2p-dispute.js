@@ -5,12 +5,21 @@ const TABLE = 'p2pDisputes';
 module.exports = {
     up: (queryInterface, Sequelize) => {
         return queryInterface.createTable(TABLE, {
-            transaction_id: {
+            id: {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
                 type: Sequelize.INTEGER
             },
+            transaction_id: {
+				type: Sequelize.INTEGER,
+				onDelete: 'CASCADE',
+				allowNull: false,
+				references: {
+					model: 'p2pTransactions',
+					key: 'id'
+				}
+			},
             initiator_id: {
 				type: Sequelize.INTEGER,
 				onDelete: 'CASCADE',
@@ -20,25 +29,26 @@ module.exports = {
 					key: 'id'
 				}
 			},
+            defendant_id: {
+                type: Sequelize.INTEGER,
+				onDelete: 'CASCADE',
+				allowNull: false,
+				references: {
+					model: 'Users',
+					key: 'id'
+				}
+            },
             reason: {
-                type: Sequelize.STRING,
+                type: Sequelize.TEXT,
                 allowNull: false,
             },
             resolution: {
-                type: Sequelize.STRING,
+                type: Sequelize.TEXT,
                 allowNull: true,
             },
             status: {
-                type: Sequelize.ENUM('active', 'inactive'),
+                type: Sequelize.BOOLEAN,
                 allowNull: false,
-            },
-            participant_ids: {
-                type: Sequelize.ARRAY(Sequelize.INTEGER),
-                allowNull: true,
-            },
-            chat_id: {
-                type: Sequelize.UUID,
-                allowNull: true,
             },
             createdAt: {
                 allowNull: false,

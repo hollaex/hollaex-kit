@@ -43,7 +43,7 @@ module.exports = function (sequelize, DataTypes) {
                 type: DataTypes.DOUBLE,
                 allowNull: true,
             },
-            total_buy_amount: {
+            total_order_amount: {
                 type: DataTypes.STRING,
                 allowNull: false,
             },

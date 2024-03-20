@@ -44,7 +44,7 @@ module.exports = {
                 type: Sequelize.STRING,
                 allowNull: true,
             },
-            total_buy_amount: {
+            total_order_amount: {
                 type: Sequelize.STRING,
                 allowNull: false,
             },

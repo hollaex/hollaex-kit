@@ -115,7 +115,7 @@ const createP2PDeal = async (data) => {
 		spending_asset,
 		exchange_rate,
 		margin,
-		total_buy_amount,
+		total_order_amount,
 		min_order_value,
 		max_order_value,
 		status,
@@ -139,7 +139,7 @@ const createP2PDeal = async (data) => {
 
 	const balance = await getP2PAccountBalance(merchant_id, buying_asset);
 
-	if(new BigNumber(balance).comparedTo(total_buy_amount) !== 1) {
+	if(new BigNumber(balance).comparedTo(total_order_amount) !== 1) {
         throw new Error(FUNDING_ACCOUNT_INSUFFICIENT_BALANCE);
     }
 	if(min_order_value < 0) {
@@ -173,7 +173,7 @@ const createP2PDeal = async (data) => {
 			'spending_asset',
 			'exchange_rate',
 			'margin',
-			'total_buy_amount',
+			'total_order_amount',
 			'min_order_value',
 			'max_order_value',
 			'terms',

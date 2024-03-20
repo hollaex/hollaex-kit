@@ -39,7 +39,7 @@ const P2PDash = ({
 			>
 				<span>I want to buy</span>
 				<span>
-					<Switch />
+					<Switch disabled />
 				</span>
 				<span>I want to sell</span>
 			</div>

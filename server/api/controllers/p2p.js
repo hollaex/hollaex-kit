@@ -15,7 +15,7 @@ const createP2PDeal = (req, res) => {
         spending_asset,
         exchange_rate,
         spread,
-        total_buy_amount,
+        total_order_amount,
         min_order_value,
         max_order_value,
         terms,
@@ -31,7 +31,7 @@ const createP2PDeal = (req, res) => {
         spending_asset,
         exchange_rate,
         spread,
-        total_buy_amount,
+        total_order_amount,
         min_order_value,
         max_order_value,
         terms,
@@ -46,7 +46,7 @@ const createP2PDeal = (req, res) => {
         spending_asset,
         exchange_rate,
         spread,
-        total_buy_amount,
+        total_order_amount,
         min_order_value,
         max_order_value,
         terms,
@@ -66,6 +66,17 @@ const createP2PDeal = (req, res) => {
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 }
+
+const fetchMerchantP2PDeals = (req, res) => {
+
+}
+
+const fetchP2PDeals = (req, res) => {
+
+}
+
 module.exports = {
 	createP2PDeal,
+    fetchMerchantP2PDeals,
+    fetchP2PDeals
 };
