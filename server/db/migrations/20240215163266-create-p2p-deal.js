@@ -40,8 +40,8 @@ module.exports = {
                 type: Sequelize.STRING,
                 allowNull: true,
             },
-            margin: {
-                type: Sequelize.STRING,
+            spread: {
+                type: Sequelize.DOUBLE,
                 allowNull: true,
             },
             total_order_amount: {
@@ -57,7 +57,7 @@ module.exports = {
                 allowNull: false,
             },
             terms: {
-                type: Sequelize.STRING,
+                type: Sequelize.TEXT,
                 allowNull: true,
             },
             auto_response: {
