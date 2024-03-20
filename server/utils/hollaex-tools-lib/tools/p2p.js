@@ -119,6 +119,7 @@ const createP2PDeal = async (data) => {
 		min_order_value,
 		max_order_value,
 		status,
+		auto_response
     } = data;
         
     const exchangeInfo = getKitConfig().info;
@@ -139,7 +140,7 @@ const createP2PDeal = async (data) => {
 
 	const balance = await getP2PAccountBalance(merchant_id, buying_asset);
 
-	if(new BigNumber(balance).comparedTo(total_order_amount) !== 1) {
+	if(new BigNumber(balance).comparedTo(new BigNumber(total_order_amount)) !== 1) {
         throw new Error(FUNDING_ACCOUNT_INSUFFICIENT_BALANCE);
     }
 	if(min_order_value < 0) {
@@ -162,7 +163,7 @@ const createP2PDeal = async (data) => {
 		throw new Error('side can only be sell');
 	}
 
-	status = true;
+	data.status = true;
 
 	return getModel('p2pDeal').create(data, {
 		fields: [

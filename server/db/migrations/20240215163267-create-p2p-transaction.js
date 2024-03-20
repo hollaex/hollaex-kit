@@ -96,7 +96,11 @@ module.exports = {
                 type: Sequelize.DATE,
                 defaultValue: Sequelize.literal('NOW()'),
             },
-        });
+        },
+        {
+			timestamps: true,
+			underscored: true
+		});
     },
     down: (queryInterface) => queryInterface.dropTable(TABLE),
 };
