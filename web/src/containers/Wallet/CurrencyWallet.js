@@ -138,12 +138,12 @@ class Wallet extends Component {
 		const filteredAssets = this.props.assets.filter(
 			(val) => val[1].symbol === currency
 		);
-		const [
-			assetsValue,
-		] = filteredAssets.map(([_, { increment_unit, oraclePrice }]) => ({
-			increment_unit,
-			oraclePrice,
-		}));
+		const [assetsValue] = filteredAssets.map(
+			([_, { increment_unit, oraclePrice }]) => ({
+				increment_unit,
+				oraclePrice,
+			})
+		);
 		const balanceText =
 			assetsValue &&
 			assetsValue.increment_unit &&
@@ -158,7 +158,7 @@ class Wallet extends Component {
 							calculateOraclePrice(balanceValue, assetsValue.oraclePrice),
 							baseCoin.increment_unit
 					  )
-				: '';
+				: null;
 		return (
 			<div className="currency-wallet-wrapper">
 				<div className="d-flex mt-5 mb-5">
@@ -225,12 +225,21 @@ class Wallet extends Component {
 								</EditWrapper>
 							</span>
 							{!isMobile &&
-								currency !== BASE_CURRENCY &&
-								parseFloat(balanceText || 0) > 0 && (
+								(currency !== BASE_CURRENCY &&
+								parseFloat(balanceText || 0) > 0 ? (
 									<p className="estimated-balance">
 										{`(≈ ${baseCoin.display_name} ${balanceText})`}
 									</p>
-								)}
+								) : (
+									balanceText !== '0' && (
+										<div
+											className="loading-row-anime w-half"
+											style={{
+												animationDelay: `.${0 + 1}s`,
+											}}
+										/>
+									)
+								))}
 							<p className="available-balance-wrapper">
 								<EditWrapper stringId="CURRENCY_WALLET.AVAILABLE_BALANCE">
 									{STRINGS.formatString(
