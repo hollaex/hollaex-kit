@@ -428,10 +428,22 @@ const P2PPostDeal = ({
 									payment_methods: paymentMethods,
 								});
 
+								setPriceType();
+								setBuyingAsset();
+								setSpendingAsset();
+								setExchangeRate();
+								setSpread();
+								setTotalOrderAmount();
+								setMinOrderValue();
+								setMaxOrderValue();
+								setTerms();
+								setAutoResponse();
+								setPaymentMethods([]);
+
 								message.success('Deal has been created');
-								setTab(4);
+								setTab('4');
 							} catch (error) {
-								message.error(error.message);
+								message.error(error.data.message);
 							}
 						}
 					}}

@@ -173,7 +173,7 @@ const createP2PDeal = async (data) => {
 			'buying_asset',
 			'spending_asset',
 			'exchange_rate',
-			'margin',
+			'spread',
 			'total_order_amount',
 			'min_order_value',
 			'max_order_value',

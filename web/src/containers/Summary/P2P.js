@@ -24,7 +24,7 @@ const P2P = ({
 	tiers = {},
 }) => {
 	const [displayOrder, setDisplayOrder] = useState(false);
-	const [tab, setTab] = useState(1);
+	const [tab, setTab] = useState('0');
 	return (
 		<div style={{ height: 600, width: '100%', padding: 20, marginBottom: 400 }}>
 			<div style={{ textAlign: 'center', fontSize: 19 }}>P2P Deals</div>
@@ -34,7 +34,13 @@ const P2P = ({
 			</div>
 			{displayOrder && <P2POrder setDisplayOrder={setDisplayOrder} />}
 			{!displayOrder && (
-				<Tabs tab={0}>
+				<Tabs
+					defaultActiveKey="0"
+					activeKey={tab}
+					onChange={(e) => {
+						setTab(e);
+					}}
+				>
 					<TabPane tab="P2P" key="0">
 						<P2PDash />
 					</TabPane>
