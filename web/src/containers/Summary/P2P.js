@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { ReactSVG } from 'react-svg';
 
@@ -11,6 +11,7 @@ import P2PMyDeals from './P2PMyDeals';
 import P2POrders from './P2POrders';
 import P2PPostDeal from './P2PPostDeal';
 import P2PProfile from './P2PProfile';
+import P2POrder from './P2POrder';
 const TabPane = Tabs.TabPane;
 const P2P = ({
 	data,
@@ -22,6 +23,8 @@ const P2P = ({
 	transaction_limits,
 	tiers = {},
 }) => {
+	const [displayOrder, setDisplayOrder] = useState(false);
+
 	return (
 		<div style={{ height: 600, width: '100%', padding: 20, marginBottom: 400 }}>
 			<div style={{ textAlign: 'center', fontSize: 19 }}>P2P Deals</div>
@@ -29,23 +32,26 @@ const P2P = ({
 				P2P deals for buying and selling Bitcoin, USDT, and other
 				cryptocurrencies.
 			</div>
-			<Tabs defaultActiveKey="0">
-				<TabPane tab="P2P" key="0">
-					<P2PDash />
-				</TabPane>
-				<TabPane tab="ORDERS" key="1">
-					<P2POrders />
-				</TabPane>
-				<TabPane tab="PROFILE" key="2">
-					<P2PProfile />
-				</TabPane>
-				<TabPane tab="POST DEAL" key="3">
-					<P2PPostDeal />
-				</TabPane>
-				<TabPane tab="MY DEALS" key="4">
-					<P2PMyDeals />
-				</TabPane>
-			</Tabs>
+			{displayOrder && <P2POrder setDisplayOrder={setDisplayOrder} />}
+			{!displayOrder && (
+				<Tabs defaultActiveKey="0">
+					<TabPane tab="P2P" key="0">
+						<P2PDash />
+					</TabPane>
+					<TabPane tab="ORDERS" key="1">
+						<P2POrders setDisplayOrder={setDisplayOrder} />
+					</TabPane>
+					<TabPane tab="PROFILE" key="2">
+						<P2PProfile />
+					</TabPane>
+					<TabPane tab="POST DEAL" key="3">
+						<P2PPostDeal />
+					</TabPane>
+					<TabPane tab="MY DEALS" key="4">
+						<P2PMyDeals />
+					</TabPane>
+				</Tabs>
+			)}
 		</div>
 	);
 };

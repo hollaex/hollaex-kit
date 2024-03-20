@@ -315,7 +315,9 @@ const P2PPostDeal = ({
 						height: 30,
 					}}
 					onClick={() => {
-						setStep(step - 1);
+						if (step > 1) {
+							setStep(step - 1);
+						}
 					}}
 				>
 					BACK
@@ -328,7 +330,9 @@ const P2PPostDeal = ({
 						height: 30,
 					}}
 					onClick={() => {
-						setStep(step + 1);
+						if (step <= 2) {
+							setStep(step + 1);
+						}
 					}}
 				>
 					NEXT

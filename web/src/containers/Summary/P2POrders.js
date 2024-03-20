@@ -6,6 +6,7 @@ import { IconTitle, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { Button, Select, Input } from 'antd';
+import P2POrder from './P2POrder';
 const P2POrders = ({
 	data,
 	onClose,
@@ -15,6 +16,7 @@ const P2POrders = ({
 	icons: ICONS,
 	transaction_limits,
 	tiers = {},
+	setDisplayOrder,
 }) => {
 	return (
 		<div
@@ -99,6 +101,9 @@ const P2POrders = ({
 
 							<td style={{ maxWidth: '13.5em' }} className="td-fit">
 								<div
+									onClick={() => {
+										setDisplayOrder(true);
+									}}
 									style={{
 										display: 'flex',
 										justifyContent: 'flex-end',

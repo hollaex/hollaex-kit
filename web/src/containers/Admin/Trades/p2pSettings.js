@@ -5,17 +5,62 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { CloseOutlined } from '@ant-design/icons';
 import { setExchange } from 'actions/assetActions';
+import { requestTiers } from '../Tiers/action';
+import { updateConstants } from './actions';
 import './index.css';
 
 const TabPane = Tabs.TabPane;
 
-const P2PSettings = () => {
+const P2PSettings = ({ coins, pairs, p2p_config }) => {
+	console.log({ coins });
 	const [displayP2pModel, setDisplayP2pModel] = useState(false);
 	const [displayFiatAdd, setDisplayFiatAdd] = useState(false);
 	const [displayPaymentAdd, setDisplayPaymentAdd] = useState(false);
 	const [displayNewPayment, setDisplayNewPayment] = useState(false);
 	const [paymentFieldAdd, setPaymentFieldAdd] = useState(false);
 	const [step, setStep] = useState(0);
+
+	const [side, setSide] = useState();
+	const [digitalCurrencies, setDigitalCurrencies] = useState([]);
+	const [fiatCurrencies, setFiatCurrencies] = useState([]);
+	const [tiers, setTiers] = useState();
+	const [merchantTier, setMerchantTier] = useState();
+	const [userTier, setUserTier] = useState();
+	const [paymentMethod, setPaymentMethod] = useState({
+		system_name: null,
+		fields: {},
+	});
+	const [customFields, setCustomFields] = useState([
+		{
+			id: 1,
+			name: null,
+			required: true,
+		},
+	]);
+	const [customField, setCustomField] = useState({
+		id: null,
+		name: null,
+		required: null,
+	});
+	const [paymentMethods, setPaymentMethods] = useState([]);
+
+	const [selectedPaymentMethods, setSelectedPaymentMethods] = useState([]);
+
+	const [merchantFee, setMerchantFee] = useState();
+	const [userFee, setUserFee] = useState();
+
+	useEffect(() => {
+		getTiers();
+	}, []);
+	const getTiers = () => {
+		requestTiers()
+			.then((res) => {
+				setTiers(res);
+			})
+			.catch((err) => {
+				console.error(err);
+			});
+	};
 
 	return (
 		<div className="admin-earnings-container w-100">
@@ -24,32 +69,36 @@ const P2PSettings = () => {
 				Select what assets, KYC requirements and more are allowed on your
 				platform.
 			</div>
-			<div
-				style={{
-					padding: 20,
-					backgroundColor: 'rgba(255, 255, 255, 0.1)',
-					width: 600,
-				}}
-			>
-				<div>
-					Currently the P2P markets have not been setup on your exchange.
-				</div>
+			{!p2p_config.enable && (
 				<div
-					style={{ cursor: 'pointer' }}
-					onClick={() => {
-						setDisplayP2pModel(true);
+					style={{
+						padding: 20,
+						backgroundColor: 'rgba(255, 255, 255, 0.1)',
+						width: 600,
 					}}
 				>
-					→ Click here to set up P2P trading
+					<div>
+						Currently the P2P markets have not been setup on your exchange.
+					</div>
+					<div
+						style={{ cursor: 'pointer' }}
+						onClick={() => {
+							setDisplayP2pModel(true);
+						}}
+					>
+						→ Click here to set up P2P trading
+					</div>
 				</div>
-			</div>
+			)}
 
-			<div style={{ opacity: 0.5 }}>
+			<div style={{ opacity: p2p_config.enable ? 1 : 0.5 }}>
 				<div style={{ marginBottom: 10, marginTop: 10 }}>
 					<div style={{ fontSize: 20, marginBottom: 10, marginTop: 10 }}>
 						Sides
 					</div>
-					<div style={{ marginBottom: 10 }}>Trade sides allowed:</div>
+					<div style={{ marginBottom: 10 }}>
+						Trade sides allowed: {p2p_config.side}{' '}
+					</div>
 					<div style={{ borderBottom: '1px solid grey', width: 600 }}></div>
 				</div>
 
@@ -58,7 +107,8 @@ const P2PSettings = () => {
 						Crypto:
 					</div>
 					<div style={{ marginBottom: 10 }}>
-						Cryptocurrencies allowed for trading:
+						Cryptocurrencies allowed for trading:{' '}
+						{p2p_config.digital_currencies.join(', ')}
 					</div>
 					<div style={{ borderBottom: '1px solid grey', width: 600 }}></div>
 				</div>
@@ -68,7 +118,8 @@ const P2PSettings = () => {
 						Fiat:
 					</div>
 					<div style={{ marginBottom: 10 }}>
-						Fiat currencies allowed for trading:
+						Fiat currencies allowed for trading:{' '}
+						{p2p_config.fiat_currencies.join(', ')}
 					</div>
 					<div style={{ borderBottom: '1px solid grey', width: 600 }}></div>
 				</div>
@@ -78,7 +129,8 @@ const P2PSettings = () => {
 						Payment methods:
 					</div>
 					<div style={{ marginBottom: 10 }}>
-						Outside payment methods allowed:
+						Outside payment methods allowed:{' '}
+						{p2p_config.bank_payment_methods.map((x) => x.system_name)}
 					</div>
 					<div style={{ borderBottom: '1px solid grey', width: 600 }}></div>
 				</div>
@@ -87,7 +139,9 @@ const P2PSettings = () => {
 					<div style={{ fontSize: 20, marginBottom: 10, marginTop: 10 }}>
 						Manage:
 					</div>
-					<div style={{ marginBottom: 10 }}>Management fee:</div>
+					<div style={{ marginBottom: 10 }}>
+						Management fee: {p2p_config.merchant_fee}%
+					</div>
 					<div style={{ borderBottom: '1px solid grey', width: 600 }}></div>
 				</div>
 			</div>
@@ -120,36 +174,54 @@ const P2PSettings = () => {
 							<Select
 								showSearch
 								className="select-box"
-								placeholder="Vendor buys crypto only"
-								// value={}
-								onChange={(e) => {}}
+								placeholder="Vendor sells crypto only"
+								value={side}
+								onChange={(e) => {
+									setSide(e);
+								}}
 							>
-								<Select.Option value={1}></Select.Option>
+								<Select.Option value={'sell'}>Sell</Select.Option>
 							</Select>
 
 							<div style={{ fontSize: 13, marginTop: 10, marginBottom: 10 }}>
-								Vendors (makers) can only offer to buy crypto from users
-								(takers), who in turn can only sell to vendors.
+								Vendors (makers) can only offer to sell crypto to users (takers)
 							</div>
 							<div
 								style={{ borderBottom: '1px solid grey', marginBottom: 30 }}
 							></div>
 							<div>Crypto assets</div>
 							<div>Select the crypto assets that vendors can transact with</div>
-							<div>
-								<Checkbox style={{ color: 'white' }}>
-									HollaEx Token (XHT)
-								</Checkbox>
-							</div>
-							<div>
-								<Checkbox style={{ color: 'white' }}>Bitcoin (BTC)</Checkbox>
-							</div>
-							<div>
-								<Checkbox style={{ color: 'white' }}>Ethereum (ETH)</Checkbox>
-							</div>
-							<div>
-								<Checkbox style={{ color: 'white' }}>Tether (USDT)</Checkbox>
-							</div>
+							{Object.values(coins || {})
+								.filter((coin) => coin.type !== 'fiat')
+								.map((coin) => {
+									return (
+										<div>
+											<Checkbox
+												style={{ color: 'white' }}
+												onChange={(e) => {
+													if (e.target.checked) {
+														if (!digitalCurrencies.includes(coin.symbol)) {
+															setDigitalCurrencies([
+																...digitalCurrencies,
+																coin.symbol,
+															]);
+														}
+													} else {
+														if (digitalCurrencies.includes(coin.symbol)) {
+															setDigitalCurrencies(
+																[...digitalCurrencies].filter(
+																	(symbol) => symbol !== coin.symbol
+																)
+															);
+														}
+													}
+												}}
+											>
+												{coin.fullname} ({coin?.symbol?.toUpperCase()})
+											</Checkbox>
+										</div>
+									);
+								})}
 						</div>
 					)}
 
@@ -176,14 +248,24 @@ const P2PSettings = () => {
 									textAlign: 'center',
 								}}
 							>
-								<div>No fiat asset added yet.</div>
-								<div
-									onClick={() => {
-										setDisplayFiatAdd(true);
-									}}
-								>
-									Add here
-								</div>
+								{fiatCurrencies.length === 0 ? (
+									<>
+										<div>No fiat asset added yet.</div>
+										<div
+											onClick={() => {
+												setDisplayFiatAdd(true);
+											}}
+										>
+											Add here
+										</div>
+									</>
+								) : (
+									<div>
+										{fiatCurrencies.map((symbol) => {
+											return <div>{symbol?.toUpperCase()}</div>;
+										})}
+									</div>
+								)}
 							</div>
 						</div>
 					)}
@@ -215,12 +297,18 @@ const P2PSettings = () => {
 									showSearch
 									className="select-box"
 									placeholder="Select a tier level:"
-									// value={}
-									onChange={(e) => {}}
+									value={merchantTier}
+									onChange={(e) => {
+										setMerchantTier(e);
+									}}
 								>
-									<Select.Option value={1}></Select.Option>
+									{Object.values(tiers || {}).map((tier) => {
+										return (
+											<Select.Option value={tier.id}>{tier.name}</Select.Option>
+										);
+									})}
 								</Select>
-								<div style={{ display: 'flex' }}>
+								<div style={{ display: 'flex', marginTop: 10, gap: 5 }}>
 									<div>ICON</div>
 									<div>
 										<div style={{ fontWeight: 'bold' }}>Requirements:</div>
@@ -244,10 +332,16 @@ const P2PSettings = () => {
 								className="select-box"
 								placeholder="Select a tier level:"
 								style={{ marginBottom: 40 }}
-								// value={}
-								onChange={(e) => {}}
+								value={userTier}
+								onChange={(e) => {
+									setUserTier(e);
+								}}
 							>
-								<Select.Option value={1}></Select.Option>
+								{Object.values(tiers || {}).map((tier) => {
+									return (
+										<Select.Option value={tier.id}>{tier.name}</Select.Option>
+									);
+								})}
 							</Select>
 						</div>
 					)}
@@ -281,14 +375,24 @@ const P2PSettings = () => {
 									textAlign: 'center',
 								}}
 							>
-								<div>No payment accounts added yet.</div>
-								<div
-									onClick={() => {
-										setDisplayPaymentAdd(true);
-									}}
-								>
-									Add here
-								</div>
+								{selectedPaymentMethods.length === 0 ? (
+									<>
+										<div>No payment accounts added yet.</div>
+										<div
+											onClick={() => {
+												setDisplayPaymentAdd(true);
+											}}
+										>
+											Add here
+										</div>
+									</>
+								) : (
+									<div>
+										{selectedPaymentMethods.map((x) => {
+											return <div>{x.system_name}</div>;
+										})}
+									</div>
+								)}
 							</div>
 							{/* <div style={{display: 'flex', display:'column',  justifyContent:'center', alignItems: 'center', backgroundColor: '#192491', padding: 10, width: '90%'}}>
                                 <div style={{display: 'flex', justifyContent: 'space-between'}}>
@@ -310,30 +414,35 @@ const P2PSettings = () => {
 								(maker) and user (taker) evenly.
 							</div>
 
-							<div
-								style={{ marginTop: 10, marginBottom: 10 }}
-								onClick={() => setDisplayPaymentAdd(true)}
-							>
-								Add/create a method
-							</div>
-
 							<div style={{ marginBottom: 20 }}>
 								<div style={{ fontWeight: 'bold' }}>
 									P2P Vendor percent trade fee
 								</div>
-								<Input placeholder="Input percentage fee" />
+								<Input
+									placeholder="Input percentage fee"
+									value={merchantFee}
+									onChange={(e) => {
+										setMerchantFee(e.target.value);
+									}}
+								/>
 							</div>
 
 							<div style={{ marginBottom: 20 }}>
 								<div style={{ fontWeight: 'bold' }}>
 									P2P Merchant percent trade fee
 								</div>
-								<Input placeholder="Input percentage fee" />
+								<Input
+									placeholder="Input percentage fee"
+									value={userFee}
+									onChange={(e) => {
+										setUserFee(e.target.value);
+									}}
+								/>
 							</div>
 
 							<div style={{ marginBottom: 20 }}>
-								<div>Vendor fee: 0.0%</div>
-								<div>User fee: 0.0%</div>
+								<div>Vendor fee: {merchantFee || 0}%</div>
+								<div>User fee:{userFee || 0}%</div>
 							</div>
 
 							<div>
@@ -370,7 +479,7 @@ const P2PSettings = () => {
 								>
 									<div>
 										<div>Type of P2P deals:</div>
-										<div>SELL</div>
+										<div>{side?.toUpperCase()}</div>
 									</div>
 									<div>EDIT</div>
 								</div>
@@ -389,7 +498,7 @@ const P2PSettings = () => {
 								>
 									<div>
 										<div>Type of P2P deals:</div>
-										<div>SELL</div>
+										<div>{side?.toUpperCase()}</div>
 									</div>
 									<div>EDIT</div>
 								</div>
@@ -408,7 +517,11 @@ const P2PSettings = () => {
 					>
 						<Button
 							onClick={() => {
-								setDisplayP2pModel(false);
+								if (step <= 0) {
+									setDisplayP2pModel(false);
+								} else {
+									setStep(step - 1);
+								}
 							}}
 							style={{
 								backgroundColor: '#288500',
@@ -422,7 +535,31 @@ const P2PSettings = () => {
 						</Button>
 						<Button
 							onClick={async () => {
-								setStep(step + 1);
+								if (step === 5) {
+									try {
+										await updateConstants({
+											kit: {
+												p2p_config: {
+													enable: true,
+													bank_payment_methods: selectedPaymentMethods,
+													starting_merchant_tier: merchantTier,
+													starting_user_tier: userTier,
+													digital_currencies: digitalCurrencies,
+													fiat_currencies: fiatCurrencies,
+													side: side,
+													merchant_fee: merchantFee,
+													user_fee: userFee,
+												},
+											},
+										});
+										setDisplayP2pModel(false);
+										message.error('Changes saved.');
+									} catch (error) {
+										message.error(error.message);
+									}
+								} else {
+									setStep(step + 1);
+								}
 							}}
 							style={{
 								backgroundColor: '#288500',
@@ -467,7 +604,13 @@ const P2PSettings = () => {
 							// value={}
 							onChange={(e) => {}}
 						>
-							<Select.Option value={1}></Select.Option>
+							{Object.values(coins || {})
+								.filter((coin) => coin.type === 'fiat')
+								.map((coin) => (
+									<Select.Option value={coin.symbol}>
+										{coin.fullname}
+									</Select.Option>
+								))}
 						</Select>
 
 						<div style={{ fontSize: 13, marginTop: 10, marginBottom: 10 }}>
@@ -481,9 +624,36 @@ const P2PSettings = () => {
 								border: '1px solid white',
 							}}
 						>
-							<div>
-								<span>ICON</span> <span>EURO(eur)</span>
-							</div>
+							{Object.values(coins || {})
+								.filter((coin) => coin.type === 'fiat')
+								.map((coin) => {
+									return (
+										<div
+											style={{
+												cursor: 'pointer',
+												fontWeight: fiatCurrencies.includes(coin.symbol)
+													? 'bold'
+													: '200',
+											}}
+											onClick={() => {
+												if (!fiatCurrencies.includes(coin.symbol)) {
+													setFiatCurrencies([...fiatCurrencies, coin.symbol]);
+												} else {
+													setFiatCurrencies(
+														[...fiatCurrencies].filter(
+															(symbol) => symbol !== coin.symbol
+														)
+													);
+												}
+											}}
+										>
+											<span>ICON</span>{' '}
+											<span>
+												{coin.fullname}({coin.symbol})
+											</span>
+										</div>
+									);
+								})}
 						</div>
 					</div>
 
@@ -542,11 +712,11 @@ const P2PSettings = () => {
 							// value={}
 							onChange={(e) => {}}
 						>
-							<Select.Option value={1}></Select.Option>
+							{/* <Select.Option value={1}></Select.Option> */}
 						</Select>
 
 						<div style={{ fontSize: 13, marginTop: 10, marginBottom: 10 }}>
-							Fiat:
+							Payment Methods:
 						</div>
 						<div
 							style={{
@@ -556,9 +726,47 @@ const P2PSettings = () => {
 								border: '1px solid white',
 							}}
 						>
-							<div>
-								<span>ICON</span> <span>SWIFT (Bank transfer)</span>
-							</div>
+							{paymentMethods.length === 0 ? (
+								<div>No payment methods selected</div>
+							) : (
+								<div>
+									{/* <span>ICON</span> */}
+									{paymentMethods.map((method) => {
+										return (
+											<span
+												style={{
+													cursor: 'pointer',
+													fontWeight: selectedPaymentMethods.find(
+														(x) => x.system_name === method.system_name
+													)
+														? 'bold'
+														: '200',
+												}}
+												onClick={() => {
+													if (
+														!selectedPaymentMethods.find(
+															(x) => x.system_name === method.system_name
+														)
+													) {
+														setSelectedPaymentMethods([
+															...selectedPaymentMethods,
+															method,
+														]);
+													} else {
+														setSelectedPaymentMethods(
+															[...selectedPaymentMethods].filter(
+																(x) => x.system_name !== method.system_name
+															)
+														);
+													}
+												}}
+											>
+												{method?.system_name}
+											</span>
+										);
+									})}
+								</div>
+							)}
 						</div>
 					</div>
 
@@ -635,18 +843,52 @@ const P2PSettings = () => {
 
 					<div style={{ marginBottom: 20 }}>
 						<div style={{ fontWeight: 'bold' }}>Create new payment methods</div>
-						<Input placeholder="Enter your system name" />
+						<Input
+							placeholder="Enter your system name"
+							value={paymentMethod.system_name}
+							onChange={(e) => {
+								setPaymentMethod({
+									...paymentMethod,
+									system_name: e.target.value,
+								});
+							}}
+						/>
 					</div>
 
-					<div style={{ marginBottom: 30 }}>
-						<div style={{ fontWeight: 'bold', fontSize: 17 }}>FIELD 1#</div>
-						<div style={{ fontWeight: 'bold' }}>Payment detail name</div>
-						<Input placeholder="Input the payment detail name" />
-					</div>
+					{customFields.map((field) => {
+						return (
+							<div style={{ marginBottom: 30 }}>
+								<div style={{ fontWeight: 'bold', fontSize: 17 }}>
+									FIELD {field.id}#
+								</div>
+								<div style={{ fontWeight: 'bold' }}>Payment detail name</div>
+								<Input
+									placeholder="Input the payment detail name"
+									value={field.name}
+									onChange={(e) => {
+										const newCustomFields = [...customFields];
+										const found = newCustomFields.find(
+											(x) => x.id === field.id
+										);
+										if (found) {
+											found.name = e?.target?.value;
+										}
+
+										setCustomFields(newCustomFields);
+									}}
+								/>
+							</div>
+						);
+					})}
 
 					<div
 						style={{ fontWeight: 'bold', textDecoration: 'underline' }}
 						onClick={() => {
+							paymentMethods.push({
+								system_name: paymentMethod.system_name,
+								fields: customFields,
+							});
+							setPaymentMethods(paymentMethods);
 							setPaymentFieldAdd(true);
 						}}
 					>
@@ -723,19 +965,32 @@ const P2PSettings = () => {
 
 					<div style={{ marginBottom: 20 }}>
 						<div style={{ fontWeight: 'bold' }}>Payment detail name</div>
-						<Input placeholder="Input the payment detail name" />
+						<Input
+							placeholder="Input the payment detail name"
+							value={customField?.name}
+							onChange={(e) => {
+								setCustomField({
+									...customField,
+									name: e.target.value,
+								});
+							}}
+						/>
 					</div>
 
 					<div>
 						<div style={{ fontWeight: '600' }}>Required or optional</div>
 						<div style={{ marginLeft: 20 }}>
 							<Radio.Group>
-								<Space direction="vertical">
-									<Radio value={1}>Required</Radio>
+								<Space direction="vertical" style={{ color: 'white' }}>
+									<Radio value={1} style={{ color: 'white' }}>
+										Required
+									</Radio>
 									<div style={{ marginLeft: 20 }}>
 										(Important payment detail)
 									</div>
-									<Radio value={2}>Optional</Radio>
+									<Radio value={2} style={{ color: 'white' }}>
+										Optional
+									</Radio>
 									<div style={{ marginLeft: 20 }}>
 										(Optional payment detail)
 									</div>
@@ -770,6 +1025,10 @@ const P2PSettings = () => {
 
 						<Button
 							onClick={() => {
+								console.log({ GG: customFields[customFields.length - 1] });
+								customField.id = customFields[customFields.length - 1].id + 1;
+
+								setCustomFields([...customFields, customField]);
 								setPaymentFieldAdd(false);
 							}}
 							style={{
@@ -791,14 +1050,15 @@ const P2PSettings = () => {
 
 const mapStateToProps = (state) => ({
 	exchange: state.asset && state.asset.exchange,
-	coins: state.asset.allCoins,
-	pairs: state.asset.allPairs,
+	pairs: state.app.pairs,
+	coins: state.app.coins,
 	user: state.user,
 	quicktrade: state.app.allContracts.quicktrade,
 	networkQuickTrades: state.app.allContracts.networkQuickTrades,
 	coinObjects: state.app.allContracts.coins,
 	broker: state.app.broker,
 	features: state.app.constants.features,
+	p2p_config: state.app.constants.p2p_config,
 });
 
 const mapDispatchToProps = (dispatch) => ({

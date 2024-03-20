@@ -205,6 +205,7 @@ exports.KIT_CONFIG_KEYS = [
 	'coin_customizations',
 	'balance_history_config',
 	'transaction_limits',
+	'p2p_config'
 ];
 
 exports.KIT_SECRETS_KEYS = [
