@@ -181,7 +181,7 @@ const P2PPostDeal = ({
 											}}
 										/>
 									</div>
-									<div>Price and profit margin to set</div>
+									<div>Price and profit spread to set</div>
 								</div>
 								<div style={{ flex: 1 }}>{'>'}</div>
 
