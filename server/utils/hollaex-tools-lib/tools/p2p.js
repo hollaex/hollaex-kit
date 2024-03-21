@@ -50,6 +50,7 @@ const {
 
 const fetchP2PDeals = async (opts = {
 	user_id: null,
+	status: null,
     limit: null,
     page: null,
     order_by: null,
@@ -66,6 +67,7 @@ const fetchP2PDeals = async (opts = {
 		where: {
 			created_at: timeframe,
 			...(opts.user_id && { merchant_id: opts.user_id }),
+			...(opts.status && { status: opts.status }),
 			
 		},
 		order: [ordering],
@@ -98,6 +100,7 @@ const fetchP2PDeals = async (opts = {
 };
 
 const fetchP2PTransactions = async (user_id, opts = {
+	id: null,
     limit: null,
     page: null,
     order_by: null,
@@ -114,6 +117,7 @@ const fetchP2PTransactions = async (user_id, opts = {
 	const query = {
 		where: {
 			created_at: timeframe,
+			...(opts.id && { id: opts.id }),
 			[Op.or]: [
 				{ merchant_id: user_id },
 				{ user_id },
@@ -366,7 +370,9 @@ const createP2PTransaction = async (data) => {
 	const firstChatMessage = {
 		sender_id: merchant_id,
 		receiver_id: user_id,
-		message: p2pDeal.auto_response
+		message: p2pDeal.auto_response,
+		type: 'message',
+		created_at: new Date()
 	}
 
 	data.messages = [firstChatMessage];
@@ -514,11 +520,20 @@ const createP2pChatMessage = async (data) => {
 	if (!transaction) {
 		throw new Error ('no transaction found');
 	}
-	return getModel('p2pChat').create(data, {
+
+	const chatMessage = {
+		sender_id: data.sender_id,
+		receiver_id: data.receiver_id,
+		message: data.message,
+		type: 'message',
+		created_at: new Date()
+	}
+
+	const newMessages = [...transaction.messages];
+	newMessages.push(chatMessage);
+	return transaction.update({ messages: newMessages }, {
 		fields: [
-			'sender_id',
-			'transaction_id',
-			'message'		
+			'messages'		
 		]
 	});
 }

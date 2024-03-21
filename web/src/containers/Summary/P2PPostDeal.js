@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { ReactSVG } from 'react-svg';
-import { Button, Steps, message } from 'antd';
+import { Button, Steps, message, Modal } from 'antd';
 import { IconTitle, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { Switch, Select, Input } from 'antd';
 import { postDeal } from './actions/p2pActions';
-
+import { CloseOutlined } from '@ant-design/icons';
 const P2PPostDeal = ({
 	data,
 	onClose,
@@ -19,6 +19,8 @@ const P2PPostDeal = ({
 	tiers = {},
 	p2p_config,
 	setTab,
+	setRefresh,
+	refresh,
 }) => {
 	const [step, setStep] = useState(1);
 
@@ -33,6 +35,8 @@ const P2PPostDeal = ({
 	const [terms, setTerms] = useState();
 	const [autoResponse, setAutoResponse] = useState();
 	const [paymentMethods, setPaymentMethods] = useState([]);
+	const [selectedMethod, setSelectedMethod] = useState({});
+	const [addMethodDetails, setAddMethodDetails] = useState();
 
 	const dataSte = [
 		{
@@ -290,6 +294,8 @@ const P2PPostDeal = ({
 													} else {
 														newSelected.push(method);
 														setPaymentMethods(newSelected);
+														setSelectedMethod(method);
+														setAddMethodDetails(true);
 													}
 												}}
 											>
@@ -327,7 +333,6 @@ const P2PPostDeal = ({
 											setTerms(e.target.value);
 										}}
 										placeholder="Please post within 15 minutes of the deal going"
-										maxLength={6}
 									/>
 									{/* 									
 									<div
@@ -359,7 +364,6 @@ const P2PPostDeal = ({
 											setAutoResponse(e.target.value);
 										}}
 										placeholder="Visit our website"
-										maxLength={6}
 									/>
 									{/* <div
 										style={{
@@ -445,6 +449,7 @@ const P2PPostDeal = ({
 
 								message.success('Deal has been created');
 								setTab('4');
+								setRefresh(!refresh);
 							} catch (error) {
 								message.error(error.data.message);
 							}
@@ -454,6 +459,91 @@ const P2PPostDeal = ({
 					NEXT
 				</Button>
 			</div>
+
+			<Modal
+				maskClosable={false}
+				closeIcon={<CloseOutlined style={{ color: 'white' }} />}
+				bodyStyle={{
+					backgroundColor: '#1A1B1E',
+					marginTop: 60,
+				}}
+				visible={addMethodDetails}
+				footer={null}
+				onCancel={() => {
+					setAddMethodDetails(false);
+				}}
+			>
+				<div style={{ marginBottom: 20, fontSize: 17 }}>
+					Add Payment Method Details
+				</div>
+
+				{selectedMethod?.fields?.map((x, index) => {
+					return (
+						<div style={{ display: 'flex', justifyContent: 'space-between' }}>
+							<div>{x?.name}:</div>
+							<Input
+								style={{ width: 300 }}
+								value={x.value}
+								onChange={(e) => {
+									if (!selectedMethod.fields[index].value)
+										selectedMethod.fields[index].value = '';
+
+									selectedMethod.fields[index].value = e.target.value;
+
+									const newSelected = [...paymentMethods];
+
+									const Index = newSelected.findIndex(
+										(x) => x.system_name === selectedMethod.system_name
+									);
+
+									newSelected[Index].fields = selectedMethod.fields;
+
+									setPaymentMethods(newSelected);
+								}}
+							/>
+						</div>
+					);
+				})}
+
+				<div
+					style={{
+						display: 'flex',
+						flexDirection: 'row',
+						gap: 15,
+						justifyContent: 'space-between',
+						marginTop: 30,
+					}}
+				>
+					<Button
+						onClick={() => {
+							setAddMethodDetails(false);
+						}}
+						style={{
+							backgroundColor: '#5E63F6',
+							color: 'white',
+							flex: 1,
+							height: 35,
+						}}
+						type="default"
+					>
+						Back
+					</Button>
+					<Button
+						onClick={async () => {
+							setAddMethodDetails(false);
+						}}
+						style={{
+							backgroundColor: '#5E63F6',
+							color: 'white',
+							flex: 1,
+							height: 35,
+						}}
+						type="default"
+					>
+						Complete
+					</Button>
+				</div>
+			</Modal>
 		</div>
 	);
 };

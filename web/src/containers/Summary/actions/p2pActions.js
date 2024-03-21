@@ -30,3 +30,12 @@ export const createTransaction = (values) => {
 
 	return requestAuthenticated('/p2p/order', options);
 };
+
+export const createChatMessage = (values) => {
+	const options = {
+		method: 'POST',
+		body: JSON.stringify(values),
+	};
+
+	return requestAuthenticated('/p2p/order/chat', options);
+};

@@ -14,6 +14,11 @@ paths:
           type: number
           format: int32
         - in: query
+          name: status
+          description: "status"
+          required: false
+          type: boolean
+        - in: query
           name: limit
           description: "Number of elements to return. Default: 50. Maximun: 100"
           required: false
@@ -118,6 +123,12 @@ paths:
           type: number
           format: int32
         - in: query
+          name: id
+          description: transaction id
+          required: false
+          type: number
+          format: int32
+        - in: query
           name: limit
           description: "Number of elements to return. Default: 50. Maximun: 100"
           required: false
@@ -183,6 +194,35 @@ paths:
     post:
       description: Create transaction for p2p
       operationId: createP2PTransaction
+      tags:
+        - P2P
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - user
+  /p2p/order/chat:
+    x-swagger-router-controller: p2p
+    post:
+      description: Create message for transaction chat
+      operationId: createP2pChatMessage
       tags:
         - P2P
       parameters:

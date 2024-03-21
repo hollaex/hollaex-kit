@@ -70,7 +70,7 @@ const createP2PDeal = (req, res) => {
 const fetchP2PDeals = (req, res) => {
 	loggerStake.verbose(req.uuid, 'controllers/p2p/fetchP2PDeals/auth', req.auth);
 
-	const {user_id, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
+	const {user_id, limit, page, order_by, order, start_date, end_date, format, status } = req.swagger.params;
 
 	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1) {
 		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
@@ -93,7 +93,8 @@ const fetchP2PDeals = (req, res) => {
 		order: order.value,
 		start_date: start_date.value,
 		end_date: end_date.value,
-		format: format.value
+		format: format.value,
+        status: status.value
 	}
 	)
 		.then((data) => {
@@ -116,7 +117,7 @@ const fetchP2PDeals = (req, res) => {
 const fetchP2PTransactions = (req, res) => {
 	loggerStake.verbose(req.uuid, 'controllers/p2p/fetchP2PTransactions/auth', req.auth);
 
-	const { limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
+	const { id, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
 	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1) {
 		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
@@ -132,6 +133,7 @@ const fetchP2PTransactions = (req, res) => {
 	}
 
 	toolsLib.p2p.fetchP2PTransactions(req?.auth?.sub?.id, {
+        id: id.value,
 		limit: limit.value,
 		page: page.value,
 		order_by: order_by.value,
@@ -194,9 +196,48 @@ const createP2PTransaction = (req, res) => {
 		});
 }
 
+const createP2pChatMessage = (req, res) => {
+	loggerStake.verbose(req.uuid, 'controllers/p2p/createP2pChatMessage/auth', req.auth);
+
+	const {  
+        receiver_id,
+        message,
+        transaction_id
+	 } = req.swagger.params.data.value;
+
+	loggerStake.verbose(
+		req.uuid,
+		'controllers/p2p/createP2pChatMessage data',
+        receiver_id,
+        message,
+        transaction_id
+      
+	);
+
+	toolsLib.p2p.createP2pChatMessage({
+        sender_id: req.auth.sub.id,
+        receiver_id,
+        transaction_id,
+        message,
+    }
+		)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerStake.error(
+				req.uuid,
+				'controllers/p2p/createP2pChatMessage err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+}
+
 module.exports = {
 	createP2PDeal,
     fetchP2PDeals,
     fetchP2PTransactions,
-    createP2PTransaction
+    createP2PTransaction,
+    createP2pChatMessage
 };

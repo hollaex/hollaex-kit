@@ -18,15 +18,17 @@ const P2PMyDeals = ({
 	transaction_limits,
 	tiers = {},
 	user,
+	refresh,
 }) => {
 	const [myDeals, setMyDeals] = useState([]);
+
 	useEffect(() => {
 		fetchDeals({ user_id: user.id })
 			.then((res) => {
 				setMyDeals(res.data);
 			})
 			.catch((err) => err);
-	}, []);
+	}, [refresh]);
 
 	return (
 		<div

@@ -18,6 +18,8 @@ const P2POrders = ({
 	transaction_limits,
 	tiers = {},
 	setDisplayOrder,
+	setSelectedTransaction,
+	refresh,
 }) => {
 	const [transactions, setTransactions] = useState([]);
 
@@ -28,7 +30,7 @@ const P2POrders = ({
 				setTransactions(res.data);
 			})
 			.catch((err) => err);
-	}, []);
+	}, [refresh]);
 
 	return (
 		<div
@@ -56,7 +58,9 @@ const P2POrders = ({
 			</div>
 
 			<div style={{ display: 'flex', marginTop: 20 }}>
-				<table style={{ border: 'none', borderCollapse: 'collapse' }}>
+				<table
+					style={{ border: 'none', borderCollapse: 'collapse', width: '100%' }}
+				>
 					<thead>
 						<tr
 							className="table-bottom-border"
@@ -83,7 +87,7 @@ const P2POrders = ({
 									}}
 									//  key={index}
 								>
-									<td style={{ minWidth: '15.5em' }}>
+									<td style={{ width: '17%' }}>
 										<Button
 											style={{
 												backgroundColor: '#288500',
@@ -94,29 +98,30 @@ const P2POrders = ({
 										</Button>
 									</td>
 
-									<td style={{ minWidth: '10.5em' }}>
+									<td style={{ width: '17%' }}>
 										{transaction?.amount_fiat}{' '}
 										{transaction?.deal?.spending_asset?.toUpperCase()}
 									</td>
-									<td style={{ minWidth: '10.5em' }}>
+									<td style={{ width: '17%' }}>
 										{transaction?.price}{' '}
 										{transaction?.deal?.buying_asset?.toUpperCase()}
 									</td>
-									<td style={{ minWidth: '10.5em' }}>
+									<td style={{ width: '17%' }}>
 										{transaction?.amount_digital_currency}{' '}
 										{transaction?.deal?.buying_asset?.toUpperCase()}
 									</td>
-									<td style={{ minWidth: '15.5em' }}>
+									<td style={{ width: '17%' }}>
 										{transaction?.merchant?.full_name}
 									</td>
-									<td style={{ minWidth: '10.5em' }}>
+									<td style={{ width: '17%' }}>
 										{transaction?.transaction_status?.toUpperCase()}
 									</td>
 
-									<td style={{ minWidth: '5.5em' }}>
+									<td style={{ width: '17%' }}>
 										<div
 											onClick={() => {
 												setDisplayOrder(true);
+												setSelectedTransaction(transaction);
 											}}
 											style={{
 												display: 'flex',

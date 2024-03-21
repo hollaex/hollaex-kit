@@ -1,11 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { ReactSVG } from 'react-svg';
 
 import { IconTitle, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { Button, Select, Input } from 'antd';
+import { Button, Select, Input, message } from 'antd';
+import moment from 'moment';
+import { createChatMessage, fetchTransactions } from './actions/p2pActions';
+
+const buyerConfirmMessage = () => (
+	<div
+		style={{
+			marginTop: 10,
+			marginBottom: 10,
+			textAlign: 'center',
+			color: 'grey',
+		}}
+	>
+		Buyer has marked this order as paid. Waiting for vendor to check, confirm
+		and realease funds (23/08,25 23:53)
+	</div>
+);
+
+const venderConfirmMessage = () => (
+	<div
+		style={{
+			marginTop: 10,
+			marginBottom: 10,
+			textAlign: 'center',
+			color: 'grey',
+		}}
+	>
+		Vendor confirmed the transaction and released the funds.
+	</div>
+);
+
 const P2POrder = ({
 	data,
 	onClose,
@@ -16,14 +46,101 @@ const P2POrder = ({
 	transaction_limits,
 	tiers = {},
 	setDisplayOrder,
+	selectedTransaction,
+	setSelectedTransaction,
+	user,
 }) => {
+	selectedTransaction = {
+		id: 34,
+		transaction_id: 'e23c7893-5f68-4164-9214-2fe6608d5cda',
+		deal_id: 2,
+		merchant_id: 1,
+		user_id: 228,
+		locked_asset_id: 7,
+		amount_digital_currency: 0.126262626262626,
+		amount_fiat: 5,
+		price: 39.6,
+		payment_method_used: {
+			fields: [
+				{
+					id: 1,
+					name: 'IBAN',
+					value: '5465454564645645',
+					required: true,
+				},
+			],
+			system_name: 'Bank Transfer',
+		},
+		user_status: 'pending',
+		merchant_status: 'pending',
+		cancellation_reason: null,
+		settled_date: null,
+		transaction_duration: 30,
+		transaction_status: 'active',
+		messages: [
+			{
+				message: 'Welcome to my chat !',
+				sender_id: 1,
+				receiver_id: 228,
+			},
+		],
+		created_at: '2024-03-21T18:08:41.937Z',
+		updated_at: '2024-03-21T18:08:41.937Z',
+		deal: {
+			id: 2,
+			merchant_id: 1,
+			side: 'sell',
+			price_type: 'static',
+			buying_asset: 'usdt',
+			spending_asset: 'try',
+			exchange_rate: 33,
+			spread: 0.2,
+			total_order_amount: 30,
+			min_order_value: 1,
+			max_order_value: 20,
+			terms: 'Hello, Please accept my terms',
+			auto_response: 'Welcome to my chat !',
+			payment_methods: [
+				{
+					fields: [
+						{
+							id: 1,
+							name: 'IBAN',
+							value: '5465454564645645',
+							required: true,
+						},
+					],
+					system_name: 'Bank Transfer',
+				},
+			],
+			status: true,
+			created_at: '2024-03-21T18:07:34.311Z',
+			updated_at: '2024-03-21T18:07:34.311Z',
+		},
+		merchant: {
+			id: 1,
+			full_name: '4X14J',
+		},
+	};
+
+	console.log({ selectedTransaction });
+	const coin = coins[selectedTransaction.deal.buying_asset];
+
+	const [selectedOrder, setSelectedOrder] = useState(selectedTransaction);
+	const [chatMessage, setChatMessage] = useState();
+
+	console.log({ coin });
 	return (
 		<>
 			<div
 				onClick={() => {
 					setDisplayOrder(false);
 				}}
-				style={{ marginBottom: 10 }}
+				style={{
+					marginBottom: 10,
+					cursor: 'pointer',
+					textDecoration: 'underline',
+				}}
 			>
 				Back
 			</div>
@@ -41,10 +158,13 @@ const P2POrder = ({
 				>
 					<div style={{ flex: 1 }}>
 						<div style={{ display: 'flex', gap: 10 }}>
-							<div>ICON</div>
+							{/* <div>ICON</div> */}
 							<div>
 								<div>ORDER</div>
-								<div>Buy Bitcoin (BTC)</div>
+								<div>
+									Buy {coin?.fullname?.toUpperCase()} (
+									{coin?.symbol?.toUpperCase()})
+								</div>
 							</div>
 						</div>
 						<div
@@ -61,9 +181,23 @@ const P2POrder = ({
 								justifyContent: 'space-between',
 							}}
 						>
-							<div>Amount to send:</div>
 							<div>
-								<div>$100 USD</div>
+								Amount to{' '}
+								{user.id === selectedOrder?.merchant_id ? 'sell' : 'send'}:
+							</div>
+							<div>
+								{user.id === selectedOrder?.merchant_id && (
+									<div>
+										{selectedOrder?.amount_digital_currency}{' '}
+										{selectedOrder?.deal?.buying_asset?.toUpperCase()}
+									</div>
+								)}
+								{user.id === selectedOrder?.user_id && (
+									<div>
+										{selectedOrder?.amount_fiat}{' '}
+										{selectedOrder?.deal?.spending_asset?.toUpperCase()}
+									</div>
+								)}
 								<div>(required flat transfer amount)</div>
 							</div>
 						</div>
@@ -83,8 +217,13 @@ const P2POrder = ({
 						>
 							<div>Price:</div>
 							<div>
-								<div>$50,000 USD</div>
-								<div>(per BTC)</div>
+								<div>
+									{selectedOrder?.price}{' '}
+									{selectedOrder?.deal?.spending_asset?.toUpperCase()}
+								</div>
+								<div>
+									(per {selectedOrder?.deal?.buying_asset?.toUpperCase()})
+								</div>
 							</div>
 						</div>
 						<div
@@ -102,10 +241,31 @@ const P2POrder = ({
 							}}
 						>
 							<div>Receiving amount:</div>
-							<div>
-								<div>0.0020 BTC</div>
-								<div>(BTC amount you'll receive)</div>
-							</div>
+							{user.id === selectedOrder?.merchant_id && (
+								<div>
+									<div>
+										{selectedOrder?.amount_fiat}{' '}
+										{selectedOrder?.deal?.spending_asset?.toUpperCase()}
+									</div>
+									<div>
+										({selectedOrder?.deal?.spending_asset?.toUpperCase()} amount
+										you'll receive)
+									</div>
+								</div>
+							)}
+
+							{user.id === selectedOrder?.user_id && (
+								<div>
+									<div>
+										{selectedOrder?.amount_digital_currency}{' '}
+										{selectedOrder?.deal?.buying_asset?.toUpperCase()}
+									</div>
+									<div>
+										({selectedOrder?.deal?.buying_asset?.toUpperCase()} amount
+										you'll receive)
+									</div>
+								</div>
+							)}
 						</div>
 						<div
 							style={{
@@ -117,63 +277,73 @@ const P2POrder = ({
 
 						<div style={{ marginBottom: 20 }}>
 							<div>TRANSFER DETAILS</div>
-							<div style={{ marginBottom: 20 }}>
-								Select payment method, transfer money to seller. After you've
-								successfully transferred the money please click confirm below to
-								notify the seller
-							</div>
+							{user.id === selectedOrder?.user_id && (
+								<div style={{ marginBottom: 20 }}>
+									Here's the selected payment method, transfer money to seller.
+									After you've successfully transferred the money please click
+									confirm below to notify the seller
+								</div>
+							)}
+
+							{user.id === selectedOrder?.merchant_id && (
+								<div style={{ marginBottom: 20 }}>
+									Below is the payment account and method that is shared with
+									the buyer.
+								</div>
+							)}
+
 							<div style={{ border: '1px solid grey', padding: 15 }}>
-								<div style={{ display: 'flex', gap: 10, marginBottom: 10 }}>
+								<div
+									style={{
+										display: 'flex',
+										gap: 10,
+										marginBottom: 10,
+										justifyContent: 'space-between',
+									}}
+								>
 									<div>Payment Method:</div>
-									<div>
-										<Select
-											showSearch
-											style={{ backgroundColor: '#303236' }}
-											placeholder="Bank Transfer"
-											// value={}
-											onChange={(e) => {}}
+									<div>{selectedOrder?.payment_method_used?.system_name}</div>
+								</div>
+
+								{selectedOrder?.payment_method_used?.fields?.map((x) => {
+									return (
+										<div
+											style={{
+												display: 'flex',
+												justifyContent: 'space-between',
+											}}
 										>
-											<Select.Option value={1}></Select.Option>
-										</Select>
-									</div>
-								</div>
-								<div
-									style={{ display: 'flex', justifyContent: 'space-between' }}
-								>
-									<div>Name:</div>
-									<div>Billy Jeans</div>
-								</div>
-
-								<div
-									style={{ display: 'flex', justifyContent: 'space-between' }}
-								>
-									<div>Bank account number:</div>
-									<div>32123232323</div>
-								</div>
-
-								<div
-									style={{ display: 'flex', justifyContent: 'space-between' }}
-								>
-									<div>Bank name:</div>
-									<div>Vendors Bank Name</div>
-								</div>
+											<div>{x?.name}:</div>
+											<div>{x?.value}</div>
+										</div>
+									);
+								})}
 							</div>
 						</div>
 
 						<div>
 							<div>Expected tiem until funds are release: 15m 41s</div>
-							<div style={{ marginBottom: 20 }}>
-								Once funds are released you will find the funds credited to your
-								funding wallet
-							</div>
-							<div>
-								The buyer has not sent the payment yet. Once you receive payment
-								you will be notified here.
-							</div>
-							<div>
-								Please kindly confirm and relase crpyto ufnds to buyer below
-								once complete
-							</div>
+
+							{user.id === selectedOrder?.user_id && (
+								<div style={{ marginBottom: 20 }}>
+									Once funds are released you will find the funds credited to
+									your funding wallet
+								</div>
+							)}
+
+							{user.id === selectedOrder?.merchant_id && (
+								<>
+									<div style={{ marginTop: 15, marginBottom: 15 }}>
+										The buyer has not sent the payment yet. Once you receive
+										payment you will be notified here.
+									</div>
+									<div style={{ marginBottom: 15 }}>
+										Please kindly confirm and relase crpyto ufnds to buyer below
+										once complete
+									</div>
+								</>
+							)}
+
 							<div style={{ display: 'flex', gap: 10 }}>
 								<div>Appeal</div>
 								<div>Cancel order</div>
@@ -193,7 +363,7 @@ const P2POrder = ({
 								padding: 15,
 							}}
 						>
-							<div>Vendor name: name_crpytot_vendor</div>
+							<div>Vendor name: {selectedOrder?.merchant?.full_name}</div>
 							<div
 								style={{
 									borderBottom: '1px solid grey',
@@ -209,72 +379,107 @@ const P2POrder = ({
 									color: 'grey',
 								}}
 							>
-								<div>
-									You've initiated and created an ordewr with
-									'name_croyto_vendor'(4234/2342/2004 15:32).
-								</div>
-								<div>
-									Please communicate with the vendor to confirm your incoming
-									payment.
-								</div>
+								{user.id === selectedOrder?.user_id && (
+									<div>
+										You've initiated and created an order with
+										{selectedOrder?.merchant?.full_name} (
+										{moment(selectedOrder?.created_at).format(
+											'DD/MMM/YYYY, hh:mmA '
+										)}
+										).
+									</div>
+								)}
+
+								{user.id === selectedOrder?.user_id && (
+									<div>
+										Please communicate with the vendor to confirm your incoming
+										payment.
+									</div>
+								)}
 							</div>
 
-							<div>
-								<div
-									style={{
-										display: 'flex',
-										flexDirection: 'column',
-										marginBottom: 20,
-									}}
-								>
-									<div>name_crptyo_vendor:</div>
-									<div>
-										Welcome! this is an automated emssage. Please leave a
-										message and I will get back to you ASAP to confirm our P2P
-										Deal here.
-									</div>
-									<div>23/07/25 15:32</div>
-								</div>
-
-								<div
-									style={{
-										marginTop: 10,
-										marginBottom: 10,
-										textAlign: 'center',
-										color: 'grey',
-									}}
-								>
-									Buyer has marked this order as paid. Waiting for vendor to
-									check, confirm and realease funds (23/08,25 23:53)
-								</div>
-
-								{/* chat */}
-								<div style={{ minHeight: 300, overflowY: 'scroll' }}>
-									<div
-										style={{
-											display: 'flex',
-											flexDirection: 'column',
-											textAlign: 'right',
-										}}
-									>
-										<div>Buyer:</div>
-										<div>I made the payment, where are my coins ?</div>
-										<div>23/07/25 15:32</div>
-									</div>
-									<div
-										style={{
-											display: 'flex',
-											flexDirection: 'column',
-											marginBottom: 20,
-										}}
-									>
-										<div>name_crptyo_vendor:</div>
-										<div>
-											Hold on, I don't see anything YET!, Ill confirm it when it
-											drops
-										</div>
-										<div>23/07/25 15:32</div>
-									</div>
+							{/* chat */}
+							<div style={{ minHeight: 400, overflowY: 'scroll' }}>
+								<div>
+									{selectedOrder?.messages.map((message, index) => {
+										if (index === 0) {
+											return (
+												<div
+													style={{
+														display: 'flex',
+														flexDirection: 'column',
+														marginBottom: 20,
+													}}
+												>
+													<div>{selectedOrder?.merchant?.full_name}:</div>
+													<div>{message.message}</div>
+													<div>
+														{moment(message?.created_at || new Date()).format(
+															'DD/MMM/YYYY, hh:mmA '
+														)}
+													</div>
+												</div>
+											);
+										} else {
+											if (message.type === 'notification') {
+												return (
+													<div
+														style={{
+															marginTop: 10,
+															marginBottom: 10,
+															textAlign: 'center',
+															color: 'grey',
+														}}
+													>
+														Buyer has marked this order as paid. Waiting for
+														vendor to check, confirm and realease funds (
+														{moment(message?.created_at || new Date()).format(
+															'DD/MMM/YYYY, hh:mmA '
+														)}
+														)
+													</div>
+												);
+											} else {
+												if (message.sender_id === user.id) {
+													return (
+														<div
+															style={{
+																display: 'flex',
+																flexDirection: 'column',
+																textAlign: 'right',
+															}}
+														>
+															<div>Buyer:</div>
+															<div>{message.message}</div>
+															<div>
+																{moment(
+																	message?.created_at || new Date()
+																).format('DD/MMM/YYYY, hh:mmA ')}
+															</div>
+														</div>
+													);
+												} else {
+													return (
+														<div
+															style={{
+																display: 'flex',
+																flexDirection: 'column',
+																marginBottom: 20,
+															}}
+														>
+															<div>{selectedOrder?.merchant?.full_name}:</div>
+															<div>{message.message}</div>
+															<div>
+																{moment(
+																	message?.created_at || new Date()
+																).format('DD/MMM/YYYY, hh:mmA ')}
+															</div>
+														</div>
+													);
+												}
+											}
+										}
+									})}
 								</div>
 							</div>
 
@@ -289,10 +494,45 @@ const P2POrder = ({
 								}}
 							>
 								<div
-									style={{ display: 'flex', justifyContent: 'space-between' }}
+									style={{
+										display: 'flex',
+										justifyContent: 'space-between',
+										gap: 10,
+									}}
 								>
-									<div style={{ flex: 6 }}>TEST</div>
-									<div style={{ color: '#5A60E5' }}>SEND</div>
+									<div style={{ flex: 6 }}>
+										<Input
+											value={chatMessage}
+											onChange={(e) => {
+												setChatMessage(e.target.value);
+												console.log(e.target.value);
+											}}
+										/>
+									</div>
+									<div
+										style={{ color: '#5A60E5', cursor: 'pointer' }}
+										onClick={async () => {
+											try {
+												await createChatMessage({
+													receiver_id:
+														user.id === selectedOrder?.merchant_id
+															? selectedOrder?.user_id
+															: selectedOrder?.merchant_id,
+													message: chatMessage,
+													transaction_id: selectedOrder.id,
+												});
+												const transaction = await fetchTransactions({
+													id: selectedOrder.id,
+												});
+												setSelectedOrder(transaction.data[0]);
+												setChatMessage();
+											} catch (error) {
+												message.error(error.data.message);
+											}
+										}}
+									>
+										SEND
+									</div>
 								</div>
 							</div>
 						</div>
@@ -320,6 +560,7 @@ const mapStateToProps = (state) => ({
 	coins: state.app.coins,
 	constants: state.app.constants,
 	transaction_limits: state.app.transaction_limits,
+	user: state.user,
 });
 
 export default connect(mapStateToProps)(withConfig(P2POrder));

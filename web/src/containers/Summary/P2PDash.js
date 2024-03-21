@@ -20,6 +20,7 @@ const P2PDash = ({
 	tiers = {},
 	user,
 	setDisplayOrder,
+	refresh,
 }) => {
 	const [expandRow, setExpandRow] = useState(false);
 	const [selectedDeal, setSelectedDeal] = useState();
@@ -29,12 +30,12 @@ const P2PDash = ({
 	const [amountFiat, setAmountFiat] = useState();
 
 	useEffect(() => {
-		fetchDeals()
+		fetchDeals({ status: true })
 			.then((res) => {
 				setDeals(res.data);
 			})
 			.catch((err) => err);
-	}, []);
+	}, [refresh]);
 
 	return (
 		<div

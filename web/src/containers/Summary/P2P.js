@@ -13,6 +13,7 @@ import P2PPostDeal from './P2PPostDeal';
 import P2PProfile from './P2PProfile';
 import P2POrder from './P2POrder';
 const TabPane = Tabs.TabPane;
+
 const P2P = ({
 	data,
 	onClose,
@@ -22,9 +23,13 @@ const P2P = ({
 	icons: ICONS,
 	transaction_limits,
 	tiers = {},
+	user,
+	p2p_config,
 }) => {
 	const [displayOrder, setDisplayOrder] = useState(false);
 	const [tab, setTab] = useState('0');
+	const [selectedTransaction, setSelectedTransaction] = useState();
+	const [refresh, setRefresh] = useState(false);
 	return (
 		<div style={{ height: 600, width: '100%', padding: 20, marginBottom: 400 }}>
 			<div style={{ textAlign: 'center', fontSize: 19 }}>P2P Deals</div>
@@ -32,8 +37,14 @@ const P2P = ({
 				P2P deals for buying and selling Bitcoin, USDT, and other
 				cryptocurrencies.
 			</div>
-			{displayOrder && <P2POrder setDisplayOrder={setDisplayOrder} />}
 			{!displayOrder && (
+				<P2POrder
+					setDisplayOrder={setDisplayOrder}
+					setSelectedTransaction={setSelectedTransaction}
+					selectedTransaction={selectedTransaction}
+				/>
+			)}
+			{displayOrder && (
 				<Tabs
 					defaultActiveKey="0"
 					activeKey={tab}
@@ -42,19 +53,27 @@ const P2P = ({
 					}}
 				>
 					<TabPane tab="P2P" key="0">
-						<P2PDash setDisplayOrder={setDisplayOrder} />
+						<P2PDash setDisplayOrder={setDisplayOrder} refresh={refresh} />
 					</TabPane>
 					<TabPane tab="ORDERS" key="1">
-						<P2POrders setDisplayOrder={setDisplayOrder} />
+						<P2POrders
+							setDisplayOrder={setDisplayOrder}
+							setSelectedTransaction={setSelectedTransaction}
+							refresh={refresh}
+						/>
 					</TabPane>
 					{/* <TabPane tab="PROFILE" key="2">
 						<P2PProfile />
 					</TabPane> */}
 					<TabPane tab="POST DEAL" key="3">
-						<P2PPostDeal setTab={setTab} />
+						<P2PPostDeal
+							setTab={setTab}
+							setRefresh={setRefresh}
+							refresh={refresh}
+						/>
 					</TabPane>
 					<TabPane tab="MY DEALS" key="4">
-						<P2PMyDeals />
+						<P2PMyDeals setRefresh={setRefresh} refresh={refresh} />
 					</TabPane>
 				</Tabs>
 			)}
@@ -67,6 +86,8 @@ const mapStateToProps = (state) => ({
 	coins: state.app.coins,
 	constants: state.app.constants,
 	transaction_limits: state.app.transaction_limits,
+	user: state.user,
+	p2p_config: state.app.constants.p2p_config,
 });
 
 export default connect(mapStateToProps)(withConfig(P2P));
