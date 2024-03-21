@@ -206,7 +206,7 @@ const PaymentAccountPopup = ({
 						onChange={(e) => handleCoinChange(e, type)}
 						size="small"
 						value={
-							selectedAsset ? selectedAsset : fiatCoins && fiatCoins[0].symbol
+							selectedAsset ? selectedAsset : fiatCoins && fiatCoins[0]?.symbol
 						}
 						className="mb-2"
 					>

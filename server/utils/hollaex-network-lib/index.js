@@ -3547,13 +3547,12 @@ class HollaExNetwork {
 	/**
 	 * Unlocks users available balance
 	 * @param {number} user_id - User ID to unlock the balance
-	 * @param {string} currency - Currency that should be unlocked
-	 * @param {number} amount - The amount to unlock in the balance
+	 * @param {number} lock_id - The lock ID to unlock
 	 * @param {object} opts - Optional parameters.
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Object of the success message.
 	 */
-	unlockBalance(user_id, currency, amount, opts = {
+	unlockBalance(user_id, lock_id, opts = {
 		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
@@ -3561,11 +3560,8 @@ class HollaExNetwork {
 		if (!user_id) {
 			return reject(parameterError('user_id', 'cannot be null'));
 		}
-		if (!currency) {
-			return reject(parameterError('currency', 'cannot be null'));
-		}
-		if (!amount) {
-			return reject(parameterError('amount', 'cannot be null'));
+		if (!lock_id) {
+			return reject(parameterError('lock_id', 'cannot be null'));
 		}
 
 		const verb = 'POST';
@@ -3573,8 +3569,7 @@ class HollaExNetwork {
 
 		const data = {
 			user_id,
-			currency,
-			amount
+			lock_id
 		};
 
 		const headers = generateHeaders(

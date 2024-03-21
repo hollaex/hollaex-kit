@@ -76,7 +76,8 @@ const {
 	TOKEN_TIME_LONG,
 	TOKEN_TIME_NORMAL,
 	VERIFY_STATUS,
-	EVENTS_CHANNEL
+	EVENTS_CHANNEL,
+	BALANCE_HISTORY_SUPPORTED_PLANS
 } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
@@ -647,7 +648,16 @@ const getAllUsersAdmin = (opts = {
 	const pagination = paginationQuery(opts.limit, opts.page);
 	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
 	const dob_timeframe = timeframeQuery(dob_start_date, dob_end_date);
-	const ordering = orderingQuery(opts.order_by, opts.order);
+
+	let orderBy = 'updated_at';
+	let order = 'desc';
+	if (opts.order_by) {
+		orderBy = opts.order_by;
+	}
+	if (opts.order) {
+		order = opts.order;
+	}
+	const ordering = orderingQuery(orderBy, order);
 	let query = {
 		where: {
 			created_at: timeframe,
@@ -661,12 +671,12 @@ const getAllUsersAdmin = (opts = {
 		order: [ordering]
 	};
 	query.attributes = {
-		exclude: ['balance', 'password', 'updated_at']
+		exclude: ['balance', 'password']
 	};
 
 	if (opts.search) {
 		query.attributes = {
-			exclude: ['balance', 'password', 'updated_at']
+			exclude: ['balance', 'password']
 		};
 		if (opts.id) {
 			query.where.id = opts.id;
@@ -1524,7 +1534,7 @@ const getUserAudits = (opts = {
 }) => {
 	const exchangeInfo = getKitConfig().info;
 
-	if(!['fiat', 'boost', 'enterprise'].includes(exchangeInfo.plan)) {
+	if(!BALANCE_HISTORY_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
 		throw new Error(SERVICE_NOT_SUPPORTED);
 	}
 
@@ -2355,6 +2365,14 @@ const getUserBalanceHistory = (opts = {
 	endDate: null,
 	format: null
 }) => {
+
+	const exchangeInfo = getKitConfig().info;
+	
+	if(!['fiat', 'boost', 'enterprise'].includes(exchangeInfo.plan)) {
+		throw new Error(SERVICE_NOT_SUPPORTED);
+	}
+
+
 	if(!getKitConfig()?.balance_history_config?.active) { throw new Error(BALANCE_HISTORY_NOT_ACTIVE); }
 
 	const timeframe = timeframeQuery(opts.startDate, opts.endDate);
@@ -2440,6 +2458,13 @@ const getUserBalanceHistory = (opts = {
 
 
 const fetchUserProfitLossInfo = async (user_id) => {
+
+	const exchangeInfo = getKitConfig().info;
+
+	if(!BALANCE_HISTORY_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
+		throw new Error(SERVICE_NOT_SUPPORTED);
+	}
+
 
 	if(!getKitConfig()?.balance_history_config?.active) { throw new Error(BALANCE_HISTORY_NOT_ACTIVE); }
 
@@ -2658,7 +2683,7 @@ const fetchUserProfitLossInfo = async (user_id) => {
 			total += results['7d'][asset].cumulativePNL;
 			if (conversions[asset]) {
 				prices.push(conversions[asset]);
-				percentageValues.push(results['7d'][asset].cumulativePNLPercentage)
+				percentageValues.push(results['7d'][asset].cumulativePNLPercentage);
 			}
 		});
 		results['7d'].total = total;

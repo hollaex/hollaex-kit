@@ -7,6 +7,7 @@ import Wallets from '../Wallets';
 import DepositPage from '../DepositsPage';
 import Transfer from '../Transfers';
 import ExchangeOrdersContainer from '../Orders';
+import ExchangeTradesContainer from '../QuickTrades';
 
 import Assets, { getTabParams } from './Assets';
 import './index.css';
@@ -69,19 +70,26 @@ const AdminFinancials = ({ router, location, user }) => {
 						showFilters={true}
 					/>
 				</TabPane>
-				<TabPane tab="Deposits" key="7">
+				<TabPane tab="Trades" key="7">
+					<ExchangeTradesContainer
+						type="trades"
+						user={user}
+						showFilters={true}
+					/>
+				</TabPane>
+				<TabPane tab="Deposits" key="8">
 					<DepositPage type="deposit" showFilters={true} />
 				</TabPane>
-				<TabPane tab="Withdrawals" key="8">
+				<TabPane tab="Withdrawals" key="9">
 					<DepositPage type="withdrawal" showFilters={true} />
 				</TabPane>
-				<TabPane tab="Earnings" key="9">
+				<TabPane tab="Earnings" key="10">
 					<Earnings />
 				</TabPane>
-				<TabPane tab="Transfers" key="10">
+				<TabPane tab="Transfers" key="11">
 					<Transfer />
 				</TabPane>
-				<TabPane tab="Duster" key="11">
+				<TabPane tab="Duster" key="12">
 					<Duster />
 				</TabPane>
 				<TabPane tab="Limits" key="2">

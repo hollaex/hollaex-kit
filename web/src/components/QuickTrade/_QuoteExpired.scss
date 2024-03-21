@@ -1,13 +1,12 @@
 .quick_trade-wrapper {
 	.quote-expired-block-wrapper {
 		margin-top: 10px;
-		background: #333333;
 		padding: 10px;
 		.quote-expired-text {
 			p.small-text {
 				margin: 0;
 				padding: 0;
-				color: #fff;
+				color: var(--labels_important-active-labels-text-graphics);
 			}
 		}
 

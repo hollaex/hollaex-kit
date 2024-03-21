@@ -433,7 +433,15 @@ const QuickTrade = ({
 					>
 						<div>
 							<div className="d-flex price-title-wrapper">
-								<div> {STRINGS['QUICK_TRADE_COMPONENT.PRICE_TREND']}</div>
+								<div>
+									<Image
+										iconId="CHART_VIEW"
+										icon={ICONS['CHART_VIEW']}
+										wrapperClassName="quick_trade_price_trend_icon price_trend_title_icon"
+									/>
+
+									{STRINGS['QUICK_TRADE_COMPONENT.PRICE_TREND']}
+								</div>
 								<div onClick={handlePriceTrendClose}>
 									<Image
 										iconId="CLOSE_CROSS"
@@ -473,7 +481,7 @@ const QuickTrade = ({
 							</div>
 
 							<div className="quick-trade-input">
-								<div className="d-flex justify-content-between mb-4">
+								<div className="d-flex justify-content-between mb-3">
 									<div className="bold caps-first">
 										<EditWrapper stringId={'CONVERT'}>
 											{STRINGS['CONVERT']}
@@ -506,7 +514,7 @@ const QuickTrade = ({
 							</div>
 							<div className="d-flex swap-wrapper-wrapper">
 								<div className="swap-wrapper">
-									<div className="swap-container my-2">
+									<div className="swap-container">
 										<div
 											className="pointer blue-link"
 											onClick={() => onSwap(selectedSource, selectedTarget)}
@@ -520,7 +528,7 @@ const QuickTrade = ({
 								</div>
 							</div>
 							<div className="quick-trade-input">
-								<div className="d-flex justify-content-between mb-4">
+								<div className="d-flex justify-content-between mb-3">
 									<div className="bold caps-first">
 										<EditWrapper stringId={'TO'}>{STRINGS['TO']}</EditWrapper>
 									</div>
@@ -575,7 +583,9 @@ const QuickTrade = ({
 									'd-flex',
 									'flex-column',
 									'align-items-end',
-									'btn-wrapper'
+									'btn-wrapper', {
+										'btn-margin-wrapper': !hasExpiredOnce
+									}
 								)}
 							>
 								<EditWrapper stringId={'QUICK_TRADE_COMPONENT.BUTTON'} />

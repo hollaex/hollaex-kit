@@ -28,7 +28,7 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 	color: $base_top-bar-navigation_text;
 	width: 100%;
 	padding: 0.5rem 0.5rem 0.8rem 0.5rem;
-	justify-content: space-evenly;
+	justify-content: space-around;
 
 	.sidebar-bottom-button {
 		justify-content: space-between;
@@ -42,7 +42,9 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 				.post-icon,
 				.chat-0,
 				.account-svg-1,
-				.quick-trade-tab-active {
+				.quick-trade-tab-active,
+				.assets-icon-tab,
+				.onramp-icon {
 					fill: $base_top-bar-navigation_text_inactive;
 				}
 
@@ -51,7 +53,9 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 				.tab-wallet0,
 				.trade-active-2,
 				.chat-0,
-				.quick-trade-tab-active {
+				.quick-trade-tab-active,
+				.assets-icon-tab //
+				{
 					stroke: $base-top-bar-navigation_text_inactive;
 				}
 
@@ -67,14 +71,17 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 				svg {
 					.post-icon,
 					.chat-0,
-					.account-svg-1 {
+					.account-svg-1,
+					.assets-icon-tab,
+					.onramp-icon {
 						fill: $base_top-bar-navigation_text;
 					}
 
 					.tab-wallet0,
 					.trade-active-2,
 					.chat-0,
-					.quick-trade-tab-active {
+					.quick-trade-tab-active,
+					.assets-icon-tab {
 						stroke: $base-top-bar-navigation_text;
 					}
 				}
@@ -113,6 +120,35 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 	}
 }
 
+.mobile-trade-wrapper {
+	position: absolute;
+	bottom: 170%;
+	width: 60%;
+	justify-content: space-evenly;
+	.quick-trade-footer-icon,
+	.pro-trade-footer-icon {
+		margin-top: 25%;
+	}
+	.quick-trade-footer-icon {
+		height: 45%;
+	}
+	.quick-trade-text-field {
+		margin-top: 5%;
+	}
+	.quick-trade-field,
+	.pro-trade-field {
+		background-color: $bottom-bar--background;
+		width: 100%;
+		height: 100%;
+		border-radius: 50px;
+		text-align: center;
+	}
+	.bottom-text-active-trade-tab {
+		color: $base_top-bar-navigation_text !important;
+		font-weight: bolder;
+	}
+}
+
 .direction_ltr {
 	.sidebar-row {
 		.cell-wrapper {
@@ -133,10 +169,95 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 	}
 }
 
+.sidebar-bottom-button-trade {
+	background: $bottom-bar--background !important;
+	height: 150%;
+	width: 15% !important;
+	position: absolute;
+	bottom: 10%;
+	border-radius: 100%;
+	.edit-wrapper__container {
+		height: 100%;
+	}
+}
+
+@media screen and (max-width: 375px) {
+	.mobile-trade-wrapper {
+		.pro-trade-footer-icon {
+			height: 50%;
+			margin-top: 20% !important;
+		}
+		.quick-trade-footer-icon {
+			margin-top: 20% !important;
+		}
+		.quick-trade-field,
+		.pro-trade-field {
+			width: 65px !important;
+			height: 65px !important;
+		}
+	}
+	.sidebar-bottom-button-trade {
+		height: 130%;
+		width: 20% !important;
+	}
+}
+
+@media screen and (max-width: 450px) and (min-width: 375px) {
+	.mobile-trade-wrapper {
+		width: 50%;
+		.pro-trade-footer-icon {
+			height: 50%;
+			margin-top: 18% !important;
+		}
+		.quick-trade-footer-icon {
+			height: 40%;
+			margin-top: 20% !important;
+		}
+		.quick-trade-field,
+		.pro-trade-field {
+			width: 75px !important;
+			height: 75px !important;
+		}
+	}
+	.sidebar-bottom-button-trade {
+		height: 135%;
+		width: 18% !important;
+	}
+}
+
+@media screen and (max-width: 550px) and (min-width: 450px) {
+	.mobile-trade-wrapper {
+		width: 50%;
+		.quick-trade-field,
+		.pro-trade-field {
+			width: 85px !important;
+			height: 85px !important;
+		}
+		.pro-trade-footer-icon {
+			height: 40%;
+			margin-top: 25% !important;
+		}
+		.quick-trade-footer-icon {
+			height: 35%;
+			margin-top: 25% !important;
+		}
+	}
+}
+
 @media screen and (max-height: 600px) {
 	.sidebar-bottom-icon {
 		svg {
 			stroke: none !important;
+		}
+	}
+}
+
+@media screen and (max-width: 768px) {
+	.mobile-trade-wrapper {
+		.quick-trade-field,
+		.pro-trade-field {
+			width: 100px;
+			height: 100px;
 		}
 	}
 }

@@ -78,7 +78,10 @@
 		"TAB_HISTORY": "History",
 		"TAB_SIGNOUT": "Signout",
 		"TAB_STAKE": "Stake",
-		"TAB_FIAT": "Fiat controls"
+		"TAB_FIAT": "Fiat controls",
+		"TAB_TRADE": "Trade",
+		"PRO_TRADE": "Pro",
+		"QUICK_TRADE": "Quick"
 	},
 	"CONTACT_FORM": {
 		"CATEGORY_LABEL": "Category",
@@ -105,7 +108,7 @@
 	"DEPOSIT": {
 		"CRYPTO_LABELS": {
 			"ADDRESS": "Your {0} receiving address",
-			"DESTINATION_TAG": "Your {0} destination tag",
+			"DESTINATION_TAG": "Your {0} tag",
 			"MEMO": "Your {0} memo"
 		},
 		"QR_CODE": "This QR code contains the deposit information and can be scanned with a QR code reader.",
