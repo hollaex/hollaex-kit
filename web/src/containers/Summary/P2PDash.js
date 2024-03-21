@@ -316,7 +316,11 @@ const P2PDash = ({
 																placeholder="Payment Method"
 																value={selectedMethod?.system_name}
 																onChange={(e) => {
-																	setSelectedMethod(e);
+																	setSelectedMethod(
+																		deal.payment_methods.find(
+																			(x) => x.system_name === e
+																		)
+																	);
 																}}
 															>
 																{deal.payment_methods.map((method) => {

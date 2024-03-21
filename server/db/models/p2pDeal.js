@@ -87,6 +87,10 @@ module.exports = function (sequelize, DataTypes) {
             targetKey: 'id',
             onDelete: 'CASCADE'
         });
+
+        Deal.hasMany(models.P2pTransaction, {
+			foreignKey: 'deal_id'
+		});
 	};
    
     return Deal;

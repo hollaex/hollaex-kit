@@ -338,23 +338,38 @@ const createP2PTransaction = async (data) => {
 
 	//Check the payment method
 
-	data.buyer_status = 'pending';
+	data.user_status = 'pending';
 	data.merchant_status = 'pending';
 	data.transaction_status = 'active';
 	data.transaction_duration = 30;
 	data.transaction_id = uuid();
+	data.merchant_id = merchant_id;
+	data.user_id = user_id;
+	data.amount_digital_currency = amount_digital_currency
+	data.deal_id = deal_id;
+	const lock = await getNodeLib().lockBalance(merchant.network_id, p2pDeal.buying_asset, amount_digital_currency);
+	data.locked_asset_id = lock.id;
 
-	await getNodeLib().lockBalance(merchant.network_id, p2pDeal.buying_asset, amount_digital_currency);
+	const firstChatMessage = {
+		sender_id: merchant_id,
+		receiver_id: user_id,
+		message: p2pDeal.auto_response
+	}
+
+	data.messages = [firstChatMessage];
+
 
 	return getModel('p2pTransaction').create(data, {
 		fields: [
 			'deal_id',
+			'transaction_id',
+			'locked_asset_id',
 			'merchant_id',
 			'user_id',
 			'amount_digital_currency',
 			'amount_fiat',
 			'payment_method_used',
-			'buyer_status',
+			'user_status',
 			'merchant_status',
 			'cancellation_reason',
 			'transaction_expired',
@@ -362,6 +377,7 @@ const createP2PTransaction = async (data) => {
 			'merchant_release',
 			'transaction_duration',
 			'transaction_status',
+			'messages'
 		]
 	});
 }
@@ -373,7 +389,7 @@ const updateP2pTransaction = async (data) => {
 		amount_digital_currency,
 		amount_fiat,
 		payment_method_used,
-		buyer_status,
+		user_status,
 		merchant_status,
 		cancellation_reason,
 		transaction_expired,
@@ -387,7 +403,7 @@ const updateP2pTransaction = async (data) => {
 	const p2pDeal = await getModel('p2pDeal').findOne({ where: { id: deal_id } });
 	const merchant = await getUserByKitId(p2pDeal.merchant_id);
 
-	if (user_id === transaction.merchant_id && data.hasOwnProperty(buyer_status)) {
+	if (user_id === transaction.merchant_id && data.hasOwnProperty(user_status)) {
 		 throw new Error('merchant cannot update buyer status');
 	}
 
@@ -403,20 +419,20 @@ const updateP2pTransaction = async (data) => {
 	if (transaction.transaction_status !== 'active') {
 			throw new Error('Cannot update complete transaction');
 	}
-	if (transaction.merchant_status === 'confirmed' && transaction.buyer_status === 'confirmed') {
+	if (transaction.merchant_status === 'confirmed' && transaction.user_status === 'confirmed') {
 		throw new Error('Cannot update complete transaction');
 	}
 
-	if (buyer_status === 'confirmed' && transaction.merchant_status === 'confirmed') {
+	if (user_status === 'confirmed' && transaction.merchant_status === 'confirmed') {
 		await getNodeLib().unlockBalance(merchant.network_id, transaction.amount_digital_currency, p2pDeal.buying_asset);
 		await transferAssetByKitIds(account_id, user.id, currency, totalAmount, 'P2P Transaction', false, { category: 'p2p' });
 		data.transaction_status = 'complete';
 		data.merchant_release = new Date();
 	} 
 
-	if(buyer_status === 'appeal' || merchant_status === 'appeal') {
+	if(user_status === 'appeal' || merchant_status === 'appeal') {
 		let initiator_id;
-		if (buyer_status === 'appeal') {
+		if (user_status === 'appeal') {
 			initiator_id = transaction.merchant_id;
 		} else {
 			initiator_id = transaction.user_id;
@@ -431,13 +447,13 @@ const updateP2pTransaction = async (data) => {
 		 })
 	}
 
-	if (buyer_status === 'cancelled' || merchant_status === 'cancelled') {
+	if (user_status === 'cancelled' || merchant_status === 'cancelled') {
 		data.transaction_status = 'cancelled';
 	}
 	
   return transaction.update(data, {
 		fields: [
-			'buyer_status',
+			'user_status',
 			'merchant_status',
 			'cancellation_reason',
 			'transaction_expired',
