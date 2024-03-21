@@ -72,88 +72,62 @@ const P2POrders = ({
 						</tr>
 					</thead>
 					<tbody className="font-weight-bold">
-						<tr
-							className="table-row"
-							style={{
-								borderBottom: 'grey 1px solid',
-								padding: 10,
-								position: 'relative',
-							}}
-							//  key={index}
-						>
-							<td style={{ minWidth: '15.5em' }}>
-								<Button
+						{transactions.map((transaction) => {
+							return (
+								<tr
+									className="table-row"
 									style={{
-										backgroundColor: '#288500',
-										color: 'white',
+										borderBottom: 'grey 1px solid',
+										padding: 10,
+										position: 'relative',
 									}}
+									//  key={index}
 								>
-									Buy USDT {'>'}
-								</Button>
-							</td>
+									<td style={{ minWidth: '15.5em' }}>
+										<Button
+											style={{
+												backgroundColor: '#288500',
+												color: 'white',
+											}}
+										>
+											Buy {transaction?.deal?.buying_asset?.toUpperCase()}
+										</Button>
+									</td>
 
-							<td style={{ minWidth: '10.5em' }}>$100 USD</td>
-							<td style={{ minWidth: '10.5em' }}>$0.95 USD</td>
-							<td style={{ minWidth: '10.5em' }}>105.2354 USDT</td>
-							<td style={{ minWidth: '15.5em' }}>name_crypto_vendor</td>
-							<td style={{ minWidth: '10.5em' }}>Unpaid</td>
+									<td style={{ minWidth: '10.5em' }}>
+										{transaction?.amount_fiat}{' '}
+										{transaction?.deal?.spending_asset?.toUpperCase()}
+									</td>
+									<td style={{ minWidth: '10.5em' }}>$0.95 USD</td>
+									<td style={{ minWidth: '10.5em' }}>
+										{transaction?.amount_digital_currency}{' '}
+										{transaction?.deal?.buying_asset?.toUpperCase()}
+									</td>
+									<td style={{ minWidth: '15.5em' }}>
+										{transaction?.merchant?.full_name}
+									</td>
+									<td style={{ minWidth: '10.5em' }}>
+										{transaction?.transaction_status?.toUpperCase()}
+									</td>
 
-							<td style={{ minWidth: '5.5em' }}>
-								<div
-									onClick={() => {
-										setDisplayOrder(true);
-									}}
-									style={{
-										display: 'flex',
-										justifyContent: 'flex-end',
-										color: '#5E63F6',
-										cursor: 'pointer',
-									}}
-								>
-									View order
-								</div>
-							</td>
-						</tr>
-
-						<tr
-							className="table-row"
-							style={{
-								borderBottom: 'grey 1px solid',
-								padding: 10,
-								position: 'relative',
-							}}
-							//  key={index}
-						>
-							<td style={{ minWidth: '10.5em' }}>
-								<Button
-									style={{
-										backgroundColor: '#92433D',
-										color: 'white',
-									}}
-								>
-									Sell USDT {'>'}
-								</Button>
-							</td>
-
-							<td style={{ minWidth: '10.5em' }}>$100 USD</td>
-							<td style={{ minWidth: '10.5em' }}>$0.95 USD</td>
-							<td style={{ minWidth: '10.5em' }}>105.2354 USDT</td>
-							<td style={{ minWidth: '10.5em' }}>name_crypto_vendor</td>
-							<td style={{ minWidth: '10.5em' }}>Unpaid</td>
-
-							<td style={{ minWidth: '5.5em', cursor: 'pointer' }}>
-								<div
-									style={{
-										display: 'flex',
-										justifyContent: 'flex-end',
-										color: '#5E63F6',
-										cursor: 'pointer',
-									}}
-								>
-									View order
-								</div>
-							</td>
-						</tr>
+									<td style={{ minWidth: '5.5em' }}>
+										<div
+											onClick={() => {
+												setDisplayOrder(true);
+											}}
+											style={{
+												display: 'flex',
+												justifyContent: 'flex-end',
+												color: '#5E63F6',
+												cursor: 'pointer',
+											}}
+										>
+											View order
+										</div>
+									</td>
+								</tr>
+							);
+						})}
 					</tbody>
 				</table>
 			</div>

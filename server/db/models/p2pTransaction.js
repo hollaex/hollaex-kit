@@ -94,6 +94,13 @@ module.exports = function (sequelize, DataTypes) {
     );
 
     Transaction.associate = (models) => {
+        Transaction.belongsTo(models.User, {
+            as: 'merchant',
+            foreignKey: 'merchant_id',
+            targetKey: 'id',
+            onDelete: 'CASCADE'
+        });
+
         Transaction.belongsTo(models.P2pDeal, {
             as: 'deal',
             foreignKey: 'deal_id',
