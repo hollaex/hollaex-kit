@@ -20,7 +20,7 @@ module.exports = {
 				onDelete: 'CASCADE',
 				allowNull: false,
 				references: {
-					model: 'p2pDeals',
+					model: 'P2pDeals',
 					key: 'id'
 				}
 			},

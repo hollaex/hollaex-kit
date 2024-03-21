@@ -347,8 +347,9 @@ const createP2PTransaction = async (data) => {
 	data.user_id = user_id;
 	data.amount_digital_currency = amount_digital_currency
 	data.deal_id = deal_id;
-	const lock = await getNodeLib().lockBalance(merchant.network_id, p2pDeal.buying_asset, amount_digital_currency);
-	data.locked_asset_id = lock.id;
+	// const lock = await getNodeLib().lockBalance(merchant.network_id, p2pDeal.buying_asset, amount_digital_currency);
+	// data.locked_asset_id = lock.id;
+	data.locked_asset_id = 3;
 
 	const firstChatMessage = {
 		sender_id: merchant_id,
@@ -358,6 +359,7 @@ const createP2PTransaction = async (data) => {
 
 	data.messages = [firstChatMessage];
 
+	console.log({data})
 
 	return getModel('p2pTransaction').create(data, {
 		fields: [

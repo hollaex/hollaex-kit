@@ -34,7 +34,7 @@ module.exports = {
 				onDelete: 'CASCADE',
 				allowNull: false,
 				references: {
-					model: 'p2pTransactions',
+					model: 'P2pTransactions',
 					key: 'id'
 				}
             },
