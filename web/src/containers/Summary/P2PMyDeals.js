@@ -110,7 +110,7 @@ const P2PMyDeals = ({
 									</td>
 									<td style={{ minWidth: '14.5em' }} className="td-fit">
 										{deal.exchange_rate * (1 + Number(deal.spread || 0))}{' '}
-										{deal.buying_asset.toUpperCase()}
+										{deal.spending_asset.toUpperCase()}
 									</td>
 									<td style={{ minWidth: '14.5em' }} className="td-fit">
 										<div>
@@ -119,7 +119,7 @@ const P2PMyDeals = ({
 										</div>
 										<div>
 											Limit: {deal.min_order_value} - {deal.max_order_value}{' '}
-											{deal.buying_asset.toUpperCase()}
+											{deal.spending_asset.toUpperCase()}
 										</div>
 									</td>
 									<td

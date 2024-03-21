@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { ReactSVG } from 'react-svg';
 
@@ -7,6 +7,7 @@ import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { Button, Select, Input } from 'antd';
 import P2POrder from './P2POrder';
+import { fetchTransactions } from './actions/p2pActions';
 const P2POrders = ({
 	data,
 	onClose,
@@ -18,6 +19,17 @@ const P2POrders = ({
 	tiers = {},
 	setDisplayOrder,
 }) => {
+	const [transactions, setTransactions] = useState([]);
+
+	useEffect(() => {
+		fetchTransactions()
+			.then((res) => {
+				console.log({ res });
+				setTransactions(res.data);
+			})
+			.catch((err) => err);
+	}, []);
+
 	return (
 		<div
 			style={{

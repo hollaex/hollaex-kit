@@ -210,8 +210,7 @@ const P2PPostDeal = ({
 						>
 							<div style={{ flex: 7, display: 'flex' }}>
 								<div style={{ flex: 1 }}>
-									<div>Total</div>
-									<div>{buyingAsset?.toUpperCase()} you can sell</div>
+									<div>Total {buyingAsset?.toUpperCase()} you can sell</div>
 									<div>
 										<Input
 											value={totalOrderAmount}
@@ -223,8 +222,11 @@ const P2PPostDeal = ({
 
 									<div style={{ marginTop: 50, marginBottom: 50 }}></div>
 
-									<div>Sell ORDER LIMITS</div>
-									<div>Minimum and max USD sell order value</div>
+									<div>BUY ORDER LIMITS</div>
+									<div>
+										Minimum and max {spendingAsset?.toUpperCase()} buy order
+										value in {spendingAsset?.toUpperCase()}
+									</div>
 									<div style={{ display: 'flex', gap: 10 }}>
 										<div>
 											<Input
@@ -253,7 +255,7 @@ const P2PPostDeal = ({
 									<div>PAYMENT METHODS TO SEND FIAT</div>
 									<div>
 										Select up to {p2p_config?.bank_payment_methods?.length || 0}{' '}
-										methods for {buyingAsset?.toUpperCase()}
+										methods for {spendingAsset?.toUpperCase()}
 									</div>
 
 									{p2p_config?.bank_payment_methods?.map((method) => {
@@ -439,6 +441,7 @@ const P2PPostDeal = ({
 								setTerms();
 								setAutoResponse();
 								setPaymentMethods([]);
+								setStep(1);
 
 								message.success('Deal has been created');
 								setTab('4');

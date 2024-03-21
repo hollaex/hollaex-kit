@@ -2,6 +2,7 @@
 
 const { getModel } = require('./database/model');
 const { SERVER_PATH } = require('../constants');
+const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { STAKE_SUPPORTED_PLANS } = require(`${SERVER_PATH}/constants`)
 const { getUserByKitId, createAuditLog } = require('./user');
 const { subscribedToCoin, getKitConfig, getAssetsPrices } = require('./common');
@@ -13,6 +14,7 @@ const dbQuery = require('./database/query');
 const moment = require('moment');
 const { sendEmail } = require('../../../mail');
 const { MAILTYPE } = require('../../../mail/strings');
+const uuid = require('uuid/v4');
 
 const {
 	NO_DATA_FOR_CSV,
@@ -68,6 +70,13 @@ const fetchP2PDeals = async (opts = {
 		},
 		order: [ordering],
 		...(!opts.format && pagination),
+		include: [
+			{
+				model: getModel('user'),
+				as: 'merchant',
+				attributes: ['id', 'full_name']
+			}
+		]
 	}
 
 	if (opts.format) {
@@ -87,6 +96,51 @@ const fetchP2PDeals = async (opts = {
         return dbQuery.findAndCountAllWithRows('p2pDeal', query)
 	}
 };
+
+const fetchP2PTransactions = async (user_id, opts = {
+    limit: null,
+    page: null,
+    order_by: null,
+    order: null,
+    start_date: null,
+    end_date: null,
+    format: null
+}) => {
+
+	const pagination = paginationQuery(opts.limit, opts.page);
+	const ordering = orderingQuery(opts.order_by, opts.order);
+	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
+
+	const query = {
+		where: {
+			created_at: timeframe,
+			[Op.or]: [
+				{ merchant_id: user_id },
+				{ user_id },
+			]
+			
+		},
+		order: [ordering],
+		...(!opts.format && pagination)
+	}
+
+	if (opts.format) {
+		return dbQuery.fetchAllRecords('p2pTransaction', query)
+			.then((data) => {
+				if (opts.format && opts.format === 'csv') {
+					if (data.data.length === 0) {
+						throw new Error(NO_DATA_FOR_CSV);
+					}
+					const csv = parse(data.data, Object.keys(data.data[0]));
+					return csv;
+				} else {
+					return data;
+				}
+			});
+	} else {
+        return dbQuery.findAndCountAllWithRows('p2pTransaction', query)
+	}
+}
 
 const getP2PAccountBalance = async (account_id, coin) => {
         
@@ -228,15 +282,12 @@ const createP2PDeal = async (data) => {
 	});
 }
 
-const createP2pTransaction = async (data) => {
+const createP2PTransaction = async (data) => {
 	let {
 		deal_id,
-		merchant_id,
-		buyer_id,
-		amount_digital_currency,
-		cancellation_reason,
-		merchant_release,
-		transaction_duration,
+		user_id,
+		amount_fiat,
+		payment_method_used
     } = data;
     
 	const exchangeInfo = getKitConfig().info;
@@ -249,62 +300,57 @@ const createP2pTransaction = async (data) => {
 
  	const p2pDeal = await getModel('p2pDeal').findOne({ where: { id: deal_id } });
 
+	const { max_order_value, min_order_value, exchange_rate, spread } = p2pDeal;
+	const { merchant_id } = p2pDeal;
+
     if (!p2pDeal) {
         throw new Error('deal does not exist');
     }
-	const buyer = await getUserByKitId(buyer_id);
+	const buyer = await getUserByKitId(user_id);
    
     if (!buyer) {
         throw new Error(USER_NOT_FOUND);
     }
 
+	if (merchant_id === user_id) {
+		throw new Error('Merchant and Buyer cannot be same');
+	}
 
 	//Cant have more than 3 active transactions per user
 
 	const merchant = await getUserByKitId(p2pDeal.merchant_id);
 
+	const merchantBalance = await getP2PAccountBalance(merchant_id, p2pDeal.buying_asset);
 
-	const balance = await getP2PAccountBalance(merchant_id, p2pDeal.buying_asset);
+	const amount_digital_currency = new BigNumber(amount_fiat).dividedBy(new BigNumber(exchange_rate).multipliedBy(1 + spread)).toNumber();
 
-	if(new BigNumber(balance).comparedTo(amount_digital_currency) !== 1) {
-        throw new Error(FUNDING_ACCOUNT_INSUFFICIENT_BALANCE);
+	if (new BigNumber(merchantBalance).comparedTo(new BigNumber(amount_digital_currency)) !== 1) {
+        throw new Error('Transaction is not possible at the moment');
     }
 	
-	
-	if(min_order_value < 0) {
-			throw new Error('cannot be less than 0');
+	if (new BigNumber(amount_fiat).comparedTo(new BigNumber(max_order_value)) === 1) {
+		throw new Error('input amount cannot be bigger than max allowable order amount')
 	}
 
-	if(max_order_value < 0) {
-		throw new Error('cannot be less than 0');
+	if (new BigNumber(amount_fiat).comparedTo(new BigNumber(min_order_value)) === -1) {
+		throw new Error('input amount cannot be lower than min allowable order amount')
 	}
 
-	if(min_order_value > max_order_value) {
-		throw new Error('cannot be bigger');
-	}
-
-	if (margin < 0) {
-		throw new Error('Margin cannot be less than 0');
-	}
-
-	if (side !== 'sell') {
-		throw new Error('side can only be sell');
-	}
-
+	//Check the payment method
 
 	data.buyer_status = 'pending';
 	data.merchant_status = 'pending';
 	data.transaction_status = 'active';
-
+	data.transaction_duration = 30;
 	data.transaction_id = uuid();
 
-	await getNodeLib().lockBalance(merchant.network_id, amount_digital_currency, p2pDeal.buying_asset);
+	await getNodeLib().lockBalance(merchant.network_id, p2pDeal.buying_asset, amount_digital_currency);
 
 	return getModel('p2pTransaction').create(data, {
 		fields: [
 			'deal_id',
 			'merchant_id',
-			'buyer_id',
+			'user_id',
 			'amount_digital_currency',
 			'amount_fiat',
 			'payment_method_used',
@@ -345,7 +391,7 @@ const updateP2pTransaction = async (data) => {
 		 throw new Error('merchant cannot update buyer status');
 	}
 
-	if (user_id === transaction.buyer_id && data.hasOwnProperty(merchant_status)) {
+	if (user_id === transaction.user_id && data.hasOwnProperty(merchant_status)) {
 		 throw new Error('buyer cannot update merchant status');
 	}
 
@@ -373,14 +419,14 @@ const updateP2pTransaction = async (data) => {
 		if (buyer_status === 'appeal') {
 			initiator_id = transaction.merchant_id;
 		} else {
-			initiator_id = transaction.buyer_id;
+			initiator_id = transaction.user_id;
 		}
 		
 		await createP2pDispute({ 
 			transaction_id: transaction.id,
 			initiator_id,
 			reason: cancellation_reason,
-			participant_ids: [transaction.merchant_id, transaction.buyer_id, p2pConfig.operator_id],
+			participant_ids: [transaction.merchant_id, transaction.user_id, p2pConfig.operator_id],
 			operator_id:  p2pConfig.operator_id
 		 })
 	}
@@ -405,12 +451,6 @@ const updateP2pTransaction = async (data) => {
 
 
 const createP2pDispute = async (data) => {
-		await createP2pChatMessage({
-			sender_id: data.operator_id,
-			message: 'Chat initiated for dispute',
-			transaction_id: data.transaction_id,
-
-		});
 
 		data.status = 'active';
 		return getModel('p2pDispute').create(data, {
@@ -494,12 +534,13 @@ const createMerchantFeedback = async (data) => {
 module.exports = {
     editAdminP2pConfig,
 	createP2PDeal,
-	createP2pTransaction,
+	createP2PTransaction,
 	createP2pDispute,
 	updateP2pTransaction,
 	updateP2pDispute,
 	updateMerchantProfile,
 	createMerchantFeedback,
 	createP2pChatMessage,
-	fetchP2PDeals
+	fetchP2PDeals,
+	fetchP2PTransactions
 };

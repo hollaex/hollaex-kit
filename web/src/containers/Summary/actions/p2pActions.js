@@ -7,6 +7,12 @@ export const fetchDeals = (values) => {
 	return requestAuthenticated(`/p2p/deal?${queryValues}`);
 };
 
+export const fetchTransactions = (values) => {
+	const queryValues =
+		values && Object.keys(values).length ? querystring.stringify(values) : '';
+	return requestAuthenticated(`/p2p/order?${queryValues}`);
+};
+
 export const postDeal = (values) => {
 	const options = {
 		method: 'POST',
@@ -22,5 +28,5 @@ export const createTransaction = (values) => {
 		body: JSON.stringify(values),
 	};
 
-	return requestAuthenticated('/broker/uniswap/test', options);
+	return requestAuthenticated('/p2p/order', options);
 };

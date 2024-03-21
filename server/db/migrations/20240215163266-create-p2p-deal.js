@@ -37,7 +37,7 @@ module.exports = {
                 allowNull: false,
             },
             exchange_rate: {
-                type: Sequelize.STRING,
+                type: Sequelize.DOUBLE,
                 allowNull: true,
             },
             spread: {
@@ -45,15 +45,15 @@ module.exports = {
                 allowNull: true,
             },
             total_order_amount: {
-                type: Sequelize.STRING,
+                type: Sequelize.DOUBLE,
                 allowNull: false,
             },
             min_order_value: {
-                type: Sequelize.STRING,
+                type: Sequelize.DOUBLE,
                 allowNull: false,
             },
             max_order_value: {
-                type: Sequelize.STRING,
+                type: Sequelize.DOUBLE,
                 allowNull: false,
             },
             terms: {

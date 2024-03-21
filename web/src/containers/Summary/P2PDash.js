@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { ReactSVG } from 'react-svg';
-import { Switch } from 'antd';
+import { Switch, message } from 'antd';
 import { IconTitle, EditWrapper, Coin } from 'components';
 import STRINGS from 'config/localizedStrings';
-import { Button, Select, Input } from 'antd';
+import { Button, Select, Input, InputNumber } from 'antd';
 import { Link } from 'react-router';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { fetchDeals } from './actions/p2pActions';
+import { fetchDeals, createTransaction } from './actions/p2pActions';
 
 const P2PDash = ({
 	data,
@@ -19,10 +19,14 @@ const P2PDash = ({
 	transaction_limits,
 	tiers = {},
 	user,
+	setDisplayOrder,
 }) => {
 	const [expandRow, setExpandRow] = useState(false);
-
+	const [selectedDeal, setSelectedDeal] = useState();
+	const [selectedMethod, setSelectedMethod] = useState();
 	const [deals, setDeals] = useState([]);
+	const [amountCurrency, setAmountCurrency] = useState();
+	const [amountFiat, setAmountFiat] = useState();
 
 	useEffect(() => {
 		fetchDeals()
@@ -140,7 +144,9 @@ const P2PDash = ({
 				className="wallet-assets_block"
 				style={{ display: 'flex', marginTop: 20 }}
 			>
-				<table style={{ border: 'none', borderCollapse: 'collapse' }}>
+				<table
+					style={{ border: 'none', borderCollapse: 'collapse', width: '100%' }}
+				>
 					<thead>
 						<tr
 							className="table-bottom-border"
@@ -169,43 +175,49 @@ const P2PDash = ({
 										//  key={index}
 									>
 										<td
-											style={{ minWidth: '15.5em', padding: 10 }}
+											style={{ width: '20%', padding: 10, cursor: 'pointer' }}
+											onClick={() => {
+												setExpandRow(!expandRow);
+												setSelectedDeal(deal);
+											}}
 											className="td-fit"
 										>
-											<span
-												onClick={() => {
-													setExpandRow(!expandRow);
-												}}
-											>
-												+
-											</span>{' '}
-											name_crpyto_vendor
+											<span>+</span> {deal.merchant.full_name}
 										</td>
 										<td
-											style={{ minWidth: '15.5em', padding: 10 }}
+											style={{ width: '20%', padding: 10 }}
 											className="td-fit"
 										>
-											$50,000 USD
+											{deal.exchange_rate * (1 + Number(deal.spread || 0))}{' '}
+											{deal.spending_asset.toUpperCase()}
 										</td>
 										<td
-											style={{ minWidth: '15.5em', padding: 10 }}
+											style={{ width: '20%', padding: 10 }}
 											className="td-fit"
 										>
-											<div>Available: 1.1 BTC</div>
-											<div>Limit: $80.00 - $2,243.00 USD</div>
+											<div>
+												Available: {deal.total_order_amount}{' '}
+												{deal.buying_asset.toUpperCase()}
+											</div>
+											<div>
+												Limit: {deal.min_order_value} - {deal.max_order_value}{' '}
+												{deal.spending_asset.toUpperCase()}
+											</div>
 										</td>
 										<td
 											style={{
-												maxWidth: '15em',
+												width: '100%',
 												flexWrap: 'wrap',
 												display: 'flex',
 												padding: 10,
 											}}
 										>
-											SWIFT, Bank transfer, PayPal, NETELLER, BBVA, Other Name,
+											{deal.payment_methods
+												.map((method) => method.system_name)
+												.join(', ')}
 										</td>
 										<td
-											style={{ minWidth: '15.5em', padding: 10 }}
+											style={{ width: '30%', padding: 10 }}
 											className="td-fit"
 										>
 											<div
@@ -216,13 +228,33 @@ const P2PDash = ({
 														backgroundColor: '#288500',
 														color: 'white',
 													}}
+													onClick={async () => {
+														try {
+															if (amountFiat && selectedMethod) {
+																await createTransaction({
+																	deal_id: selectedDeal.id,
+																	amount_fiat: amountFiat,
+																	payment_method_used: selectedMethod,
+																});
+																message.success('Order Created.');
+																setDisplayOrder(true);
+															} else {
+																message.error(
+																	'please select payment method and input amount'
+																);
+															}
+														} catch (error) {
+															message.error(error.data.message);
+														}
+													}}
 												>
-													Buy BTC {'>'}
+													{deal.side === 'sell' ? 'BUY' : 'SELL'}{' '}
+													{deal.buying_asset.toUpperCase()} {'>'}
 												</Button>
 											</div>
 										</td>
 									</tr>
-									{expandRow && expandRow && (
+									{expandRow && expandRow && deal.id === selectedDeal.id && (
 										<tr
 											className="table-row"
 											style={{
@@ -243,23 +275,23 @@ const P2PDash = ({
 												</div>
 											</td>
 											<td
-												style={{ minWidth: '15.5em', padding: 10 }}
+												style={{ width: '5.5em', padding: 10 }}
 												className="td-fit"
 											></td>
 											<td
-												style={{ minWidth: '15.5em', padding: 10 }}
+												style={{ width: '5.5em', padding: 10 }}
 												className="td-fit"
 											></td>
 											<td
 												style={{
-													maxWidth: '15em',
+													width: '5.5em',
 													flexWrap: 'wrap',
 													display: 'flex',
 													padding: 10,
 												}}
 											></td>
 											<td
-												style={{ idth: '20.5em', padding: 10 }}
+												style={{ width: '30em', padding: 10 }}
 												className="td-fit"
 											>
 												<div
@@ -269,30 +301,77 @@ const P2PDash = ({
 														flexDirection: 'column',
 													}}
 												>
-													<div style={{ display: 'flex' }}>
+													<div
+														style={{
+															display: 'flex',
+															gap: 15,
+															marginBottom: 5,
+															justifyContent: 'space-between',
+														}}
+													>
 														<span>Select payment Method</span>
 														<span>
 															<Select
 																showSearch
-																placeholder="Bank transfer"
-																// value={}
-																onChange={(e) => {}}
+																placeholder="Payment Method"
+																value={selectedMethod?.system_name}
+																onChange={(e) => {
+																	setSelectedMethod(e);
+																}}
 															>
-																<Select.Option value={1}></Select.Option>
+																{deal.payment_methods.map((method) => {
+																	return (
+																		<Select.Option value={method.system_name}>
+																			{method.system_name}
+																		</Select.Option>
+																	);
+																})}
 															</Select>
 														</span>
 													</div>
 
-													<div style={{ display: 'flex' }}>
+													<div
+														style={{
+															display: 'flex',
+															gap: 15,
+															marginBottom: 5,
+															justifyContent: 'space-between',
+														}}
+													>
 														<span>Spend Amount</span>
 														<span>
-															<Input placeholder="USD" />
+															<InputNumber
+																style={{ width: 100 }}
+																value={amountFiat}
+																onChange={(e) => {
+																	setAmountFiat(e);
+																	const currencyAmount =
+																		Number(e) /
+																		Number(
+																			deal.exchange_rate *
+																				(1 + Number(deal.spread || 0))
+																		);
+																	setAmountCurrency(currencyAmount);
+																}}
+																placeholder={deal.spending_asset.toUpperCase()}
+															/>
 														</span>
 													</div>
-													<div style={{ display: 'flex' }}>
+													<div
+														style={{
+															display: 'flex',
+															gap: 15,
+															marginBottom: 5,
+															justifyContent: 'space-between',
+														}}
+													>
 														<span>Amount to receive</span>
 														<span>
-															<Input placeholder="USD" />
+															<Input
+																style={{ width: 100 }}
+																readOnly
+																value={amountCurrency}
+															/>
 														</span>
 													</div>
 												</div>

@@ -36,7 +36,7 @@ module.exports = function (sequelize, DataTypes) {
                 allowNull: false,
             },
             exchange_rate: {
-                type: DataTypes.STRING,
+                type: DataTypes.DOUBLE,
                 allowNull: true,
             },
             spread: {
@@ -44,15 +44,15 @@ module.exports = function (sequelize, DataTypes) {
                 allowNull: true,
             },
             total_order_amount: {
-                type: DataTypes.STRING,
+                type: DataTypes.DOUBLE,
                 allowNull: false,
             },
             min_order_value: {
-                type: DataTypes.STRING,
+                type: DataTypes.DOUBLE,
                 allowNull: false,
             },
             max_order_value: {
-                type: DataTypes.STRING,
+                type: DataTypes.DOUBLE,
                 allowNull: false,
             },
             terms: {
@@ -79,5 +79,15 @@ module.exports = function (sequelize, DataTypes) {
         }
     );
 
+
+    Deal.associate = (models) => {
+        Deal.belongsTo(models.User, {
+            as: 'merchant',
+            foreignKey: 'merchant_id',
+            targetKey: 'id',
+            onDelete: 'CASCADE'
+        });
+	};
+   
     return Deal;
 };
