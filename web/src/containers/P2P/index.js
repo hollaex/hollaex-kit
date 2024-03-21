@@ -1,17 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { ReactSVG } from 'react-svg';
 
 import { IconTitle, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { Tabs } from 'antd';
+import { Tabs, message } from 'antd';
 import P2PDash from './P2PDash';
 import P2PMyDeals from './P2PMyDeals';
 import P2POrders from './P2POrders';
 import P2PPostDeal from './P2PPostDeal';
 import P2PProfile from './P2PProfile';
 import P2POrder from './P2POrder';
+import { fetchTransactions } from './actions/p2pActions';
 const TabPane = Tabs.TabPane;
 
 const P2P = ({
@@ -30,21 +31,46 @@ const P2P = ({
 	const [tab, setTab] = useState('0');
 	const [selectedTransaction, setSelectedTransaction] = useState();
 	const [refresh, setRefresh] = useState(false);
+
+	useEffect(() => {
+		const arr = window.location.pathname.split('/');
+
+		if (arr.length === 4) {
+			const transId = arr[arr.length - 1];
+
+			fetchTransactions({
+				id: transId,
+			})
+				.then((res) => {
+					if (res.data.length > 0) {
+						setSelectedTransaction(res.data[0]);
+						setDisplayOrder(true);
+					} else {
+						message.error('Transaction not found');
+					}
+				})
+				.catch((err) => err);
+		}
+	}, []);
+
 	return (
-		<div style={{ height: 600, width: '100%', padding: 20, marginBottom: 400 }}>
+		<div
+			style={{ height: 600, width: '100%', padding: 20, marginBottom: 400 }}
+			className="summary-container"
+		>
 			<div style={{ textAlign: 'center', fontSize: 19 }}>P2P Deals</div>
 			<div style={{ textAlign: 'center', marginBottom: 15 }}>
 				P2P deals for buying and selling Bitcoin, USDT, and other
 				cryptocurrencies.
 			</div>
-			{!displayOrder && (
+			{displayOrder && (
 				<P2POrder
 					setDisplayOrder={setDisplayOrder}
 					setSelectedTransaction={setSelectedTransaction}
 					selectedTransaction={selectedTransaction}
 				/>
 			)}
-			{displayOrder && (
+			{!displayOrder && (
 				<Tabs
 					defaultActiveKey="0"
 					activeKey={tab}

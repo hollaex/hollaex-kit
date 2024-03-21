@@ -33,7 +33,7 @@ import { getUserReferrals } from 'actions/userAction';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { openContactForm } from 'actions/appActions';
 import { isLoggedIn } from 'utils/token';
-import P2P from './P2P';
+
 class Summary extends Component {
 	state = {
 		selectedAccount: '',
@@ -167,9 +167,6 @@ class Summary extends Component {
 			);
 		return (
 			<div>
-				<div style={{ marginBottom: 50 }}>
-					<P2P />
-				</div>
 				<div className="summary-container">
 					{!isMobile && (
 						<IconTitle

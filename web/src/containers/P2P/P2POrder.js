@@ -50,86 +50,10 @@ const P2POrder = ({
 	setSelectedTransaction,
 	user,
 }) => {
-	selectedTransaction = {
-		id: 34,
-		transaction_id: 'e23c7893-5f68-4164-9214-2fe6608d5cda',
-		deal_id: 2,
-		merchant_id: 1,
-		user_id: 228,
-		locked_asset_id: 7,
-		amount_digital_currency: 0.126262626262626,
-		amount_fiat: 5,
-		price: 39.6,
-		payment_method_used: {
-			fields: [
-				{
-					id: 1,
-					name: 'IBAN',
-					value: '5465454564645645',
-					required: true,
-				},
-			],
-			system_name: 'Bank Transfer',
-		},
-		user_status: 'pending',
-		merchant_status: 'pending',
-		cancellation_reason: null,
-		settled_date: null,
-		transaction_duration: 30,
-		transaction_status: 'active',
-		messages: [
-			{
-				message: 'Welcome to my chat !',
-				sender_id: 1,
-				receiver_id: 228,
-			},
-		],
-		created_at: '2024-03-21T18:08:41.937Z',
-		updated_at: '2024-03-21T18:08:41.937Z',
-		deal: {
-			id: 2,
-			merchant_id: 1,
-			side: 'sell',
-			price_type: 'static',
-			buying_asset: 'usdt',
-			spending_asset: 'try',
-			exchange_rate: 33,
-			spread: 0.2,
-			total_order_amount: 30,
-			min_order_value: 1,
-			max_order_value: 20,
-			terms: 'Hello, Please accept my terms',
-			auto_response: 'Welcome to my chat !',
-			payment_methods: [
-				{
-					fields: [
-						{
-							id: 1,
-							name: 'IBAN',
-							value: '5465454564645645',
-							required: true,
-						},
-					],
-					system_name: 'Bank Transfer',
-				},
-			],
-			status: true,
-			created_at: '2024-03-21T18:07:34.311Z',
-			updated_at: '2024-03-21T18:07:34.311Z',
-		},
-		merchant: {
-			id: 1,
-			full_name: '4X14J',
-		},
-	};
-
-	console.log({ selectedTransaction });
 	const coin = coins[selectedTransaction.deal.buying_asset];
-
 	const [selectedOrder, setSelectedOrder] = useState(selectedTransaction);
 	const [chatMessage, setChatMessage] = useState();
 
-	console.log({ coin });
 	return (
 		<>
 			<div
