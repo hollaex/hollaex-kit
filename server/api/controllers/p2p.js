@@ -7,7 +7,7 @@ const toolsLib = require('hollaex-tools-lib');
 const { errorMessageConverter } = require('../../utils/conversion');
 
 const createP2PDeal = (req, res) => {
-	loggerStake.verbose(req.uuid, 'controllers/stake/createP2PDeal/auth', req.auth);
+	loggerStake.verbose(req.uuid, 'controllers/p2p/createP2PDeal/auth', req.auth);
 
 	const {  
         price_type,
@@ -25,7 +25,7 @@ const createP2PDeal = (req, res) => {
 
 	loggerStake.verbose(
 		req.uuid,
-		'controllers/stake/createP2PDeal data',
+		'controllers/p2p/createP2PDeal data',
         price_type,
         buying_asset,
         spending_asset,
@@ -60,23 +60,59 @@ const createP2PDeal = (req, res) => {
 		.catch((err) => {
 			loggerStake.error(
 				req.uuid,
-				'controllers/stake/createP2PDeal err',
+				'controllers/p2p/createP2PDeal err',
 				err.message
 			);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 }
 
-const fetchMerchantP2PDeals = (req, res) => {
-
-}
-
 const fetchP2PDeals = (req, res) => {
+	loggerStake.verbose(req.uuid, 'controllers/p2p/fetchP2PDeals/auth', req.auth);
 
-}
+	const {user_id, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
+
+	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1) {
+		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
+	}
+	
+	if (order_by.value && typeof order_by.value !== 'string') {
+		loggerStake.error(
+			req.uuid,
+			'controllers/p2p/fetchP2PDeals invalid order_by',
+			order_by.value
+		);
+		return res.status(400).json({ message: 'Invalid order by' });
+	}
+
+	toolsLib.p2p.fetchP2PDeals({
+        user_id: user_id.value,
+		limit: limit.value,
+		page: page.value,
+		order_by: order_by.value,
+		order: order.value,
+		start_date: start_date.value,
+		end_date: end_date.value,
+		format: format.value
+	}
+	)
+		.then((data) => {
+			if (format.value === 'csv') {
+				toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
+				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-logins.csv`);
+				res.set('Content-Type', 'text/csv');
+				return res.status(202).send(data);
+			} else {
+				return res.json(data);
+			}
+		})
+		.catch((err) => {
+			loggerStake.error(req.uuid, 'controllers/p2p/fetchP2PDeals', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
 
 module.exports = {
 	createP2PDeal,
-    fetchMerchantP2PDeals,
     fetchP2PDeals
 };

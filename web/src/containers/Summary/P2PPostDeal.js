@@ -115,7 +115,7 @@ const P2PPostDeal = ({
 									</div>
 									<div>Crypto you want to sell</div>
 								</div>
-								<div style={{ flex: 1 }}>{'>'}</div>
+								<div style={{ flex: 1, fontSize: 20 }}>{'>'}</div>
 								<div style={{ flex: 1 }}>
 									<div>RECEIVE</div>
 									<div>
@@ -183,7 +183,7 @@ const P2PPostDeal = ({
 									</div>
 									<div>Price and profit spread to set</div>
 								</div>
-								<div style={{ flex: 1 }}>{'>'}</div>
+								<div style={{ flex: 1, fontSize: 20 }}>{'>'}</div>
 
 								{exchangeRate && (
 									<div style={{ flex: 1 }}>

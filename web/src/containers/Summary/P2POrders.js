@@ -43,10 +43,7 @@ const P2POrders = ({
 				{/* <Button ghost>Profit & Loss Statement</Button> */}
 			</div>
 
-			<div
-				className="wallet-assets_block"
-				style={{ display: 'flex', marginTop: 20 }}
-			>
+			<div style={{ display: 'flex', marginTop: 20 }}>
 				<table style={{ border: 'none', borderCollapse: 'collapse' }}>
 					<thead>
 						<tr
@@ -72,7 +69,7 @@ const P2POrders = ({
 							}}
 							//  key={index}
 						>
-							<td style={{ minWidth: '14.5em' }} className="td-fit">
+							<td style={{ minWidth: '15.5em' }}>
 								<Button
 									style={{
 										backgroundColor: '#288500',
@@ -83,23 +80,13 @@ const P2POrders = ({
 								</Button>
 							</td>
 
-							<td style={{ minWidth: '14.5em' }} className="td-fit">
-								$100 USD
-							</td>
-							<td style={{ minWidth: '14.5em' }} className="td-fit">
-								$0.95 USD
-							</td>
-							<td style={{ minWidth: '14.5em' }} className="td-fit">
-								105.2354 USDT
-							</td>
-							<td style={{ minWidth: '14.5em' }} className="td-fit">
-								name_crypto_vendor
-							</td>
-							<td style={{ maxWidth: '14.5em' }} className="td-fit">
-								Unpaid
-							</td>
+							<td style={{ minWidth: '10.5em' }}>$100 USD</td>
+							<td style={{ minWidth: '10.5em' }}>$0.95 USD</td>
+							<td style={{ minWidth: '10.5em' }}>105.2354 USDT</td>
+							<td style={{ minWidth: '15.5em' }}>name_crypto_vendor</td>
+							<td style={{ minWidth: '10.5em' }}>Unpaid</td>
 
-							<td style={{ maxWidth: '13.5em' }} className="td-fit">
+							<td style={{ minWidth: '5.5em' }}>
 								<div
 									onClick={() => {
 										setDisplayOrder(true);
@@ -108,6 +95,7 @@ const P2POrders = ({
 										display: 'flex',
 										justifyContent: 'flex-end',
 										color: '#5E63F6',
+										cursor: 'pointer',
 									}}
 								>
 									View order
@@ -124,7 +112,7 @@ const P2POrders = ({
 							}}
 							//  key={index}
 						>
-							<td style={{ minWidth: '14.5em' }} className="td-fit">
+							<td style={{ minWidth: '10.5em' }}>
 								<Button
 									style={{
 										backgroundColor: '#92433D',
@@ -135,28 +123,19 @@ const P2POrders = ({
 								</Button>
 							</td>
 
-							<td style={{ minWidth: '14.5em' }} className="td-fit">
-								$100 USD
-							</td>
-							<td style={{ minWidth: '14.5em' }} className="td-fit">
-								$0.95 USD
-							</td>
-							<td style={{ minWidth: '14.5em' }} className="td-fit">
-								105.2354 USDT
-							</td>
-							<td style={{ minWidth: '14.5em' }} className="td-fit">
-								name_crypto_vendor
-							</td>
-							<td style={{ maxWidth: '14.5em' }} className="td-fit">
-								Unpaid
-							</td>
+							<td style={{ minWidth: '10.5em' }}>$100 USD</td>
+							<td style={{ minWidth: '10.5em' }}>$0.95 USD</td>
+							<td style={{ minWidth: '10.5em' }}>105.2354 USDT</td>
+							<td style={{ minWidth: '10.5em' }}>name_crypto_vendor</td>
+							<td style={{ minWidth: '10.5em' }}>Unpaid</td>
 
-							<td style={{ maxWidth: '13.5em' }} className="td-fit">
+							<td style={{ minWidth: '5.5em', cursor: 'pointer' }}>
 								<div
 									style={{
 										display: 'flex',
 										justifyContent: 'flex-end',
 										color: '#5E63F6',
+										cursor: 'pointer',
 									}}
 								>
 									View order

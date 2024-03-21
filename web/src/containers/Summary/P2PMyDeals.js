@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { ReactSVG } from 'react-svg';
 
@@ -6,6 +6,8 @@ import { IconTitle, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { Button, Select, Checkbox, Input } from 'antd';
+import { fetchDeals } from './actions/p2pActions';
+
 const P2PMyDeals = ({
 	data,
 	onClose,
@@ -15,7 +17,17 @@ const P2PMyDeals = ({
 	icons: ICONS,
 	transaction_limits,
 	tiers = {},
+	user,
 }) => {
+	const [myDeals, setMyDeals] = useState([]);
+	useEffect(() => {
+		fetchDeals({ user_id: user.id })
+			.then((res) => {
+				setMyDeals(res.data);
+			})
+			.catch((err) => err);
+	}, []);
+
 	return (
 		<div
 			style={{
@@ -27,7 +39,7 @@ const P2PMyDeals = ({
 		>
 			<div style={{ display: 'flex', gap: 10 }}>
 				<span>
-					<Checkbox style={{ color: 'white' }}>2 Deals</Checkbox>;
+					<Checkbox style={{ color: 'white' }}>2 Deals</Checkbox>:
 				</span>
 				<span>
 					<Button
@@ -36,7 +48,7 @@ const P2PMyDeals = ({
 							color: 'white',
 						}}
 					>
-						ACTIVE ALL
+						ACTIVATE ALL
 					</Button>
 				</span>
 				<span>
@@ -70,95 +82,64 @@ const P2PMyDeals = ({
 						</tr>
 					</thead>
 					<tbody className="font-weight-bold">
-						<tr
-							className="table-row"
-							style={{
-								borderBottom: 'grey 1px solid',
-								padding: 10,
-								position: 'relative',
-							}}
-							//  key={index}
-						>
-							<td style={{ minWidth: '14.5em' }} className="td-fit">
-								<Button
+						{myDeals.map((deal) => {
+							return (
+								<tr
+									className="table-row"
 									style={{
-										backgroundColor: '#288500',
-										color: 'white',
+										borderBottom: 'grey 1px solid',
+										padding: 10,
+										position: 'relative',
 									}}
+									//  key={index}
 								>
-									Buy{' '}
-								</Button>
-							</td>
+									<td style={{ minWidth: '14.5em' }} className="td-fit">
+										<Button
+											style={{
+												backgroundColor:
+													deal.side === 'buy' ? '#288500' : 'red',
+												color: 'white',
+											}}
+										>
+											{deal.side.toUpperCase()}{' '}
+										</Button>
+									</td>
 
-							<td style={{ minWidth: '14.5em' }} className="td-fit">
-								ACTIVE
-							</td>
-							<td style={{ minWidth: '14.5em' }} className="td-fit">
-								$0.95 USD
-							</td>
-							<td style={{ minWidth: '14.5em' }} className="td-fit">
-								<div>Available: 1.1 BTC</div>
-								<div>Limit: $80.00 - $2,243.00 USD</div>
-							</td>
-							<td
-								style={{
-									maxWidth: '15em',
-									flexWrap: 'wrap',
-									display: 'flex',
-									padding: 5,
-								}}
-							>
-								SWIFT, Bank transfer, PayPal, NETELLER, BBVA, Other Name,
-							</td>
-							<td style={{ maxWidth: '14.5em' }} className="td-fit">
-								<Button ghost>Edit buy deal</Button>
-							</td>
-						</tr>
-
-						<tr
-							className="table-row"
-							style={{
-								borderBottom: 'grey 1px solid',
-								padding: 10,
-								position: 'relative',
-							}}
-							//  key={index}
-						>
-							<td style={{ minWidth: '14.5em' }} className="td-fit">
-								<Button
-									style={{
-										backgroundColor: '#288500',
-										color: 'white',
-									}}
-								>
-									Buy{' '}
-								</Button>
-							</td>
-
-							<td style={{ minWidth: '14.5em' }} className="td-fit">
-								ACTIVE
-							</td>
-							<td style={{ minWidth: '14.5em' }} className="td-fit">
-								$0.95 USD
-							</td>
-							<td style={{ minWidth: '14.5em' }} className="td-fit">
-								<div>Available: 1.1 BTC</div>
-								<div>Limit: $80.00 - $2,243.00 USD</div>
-							</td>
-							<td
-								style={{
-									maxWidth: '15em',
-									flexWrap: 'wrap',
-									display: 'flex',
-									padding: 5,
-								}}
-							>
-								SWIFT, Bank transfer, PayPal, NETELLER, BBVA, Other Name,
-							</td>
-							<td style={{ maxWidth: '14.5em' }} className="td-fit">
-								<Button ghost>Edit buy deal</Button>
-							</td>
-						</tr>
+									<td style={{ minWidth: '14.5em' }} className="td-fit">
+										{deal.status ? 'ACTIVE' : 'INACTIVE'}
+									</td>
+									<td style={{ minWidth: '14.5em' }} className="td-fit">
+										{deal.exchange_rate * (1 + Number(deal.spread || 0))}{' '}
+										{deal.buying_asset.toUpperCase()}
+									</td>
+									<td style={{ minWidth: '14.5em' }} className="td-fit">
+										<div>
+											Available: {deal.total_order_amount}{' '}
+											{deal.buying_asset.toUpperCase()}
+										</div>
+										<div>
+											Limit: {deal.min_order_value} - {deal.max_order_value}{' '}
+											{deal.buying_asset.toUpperCase()}
+										</div>
+									</td>
+									<td
+										style={{
+											minWidth: '10em',
+											flexWrap: 'wrap',
+											display: 'flex',
+											padding: 5,
+										}}
+									>
+										{deal.payment_methods
+											.map((method) => method.system_name)
+											.join(', ')}
+									</td>
+									<td style={{ minWidth: '14.5em' }} className="td-fit">
+										<Button ghost>Edit {deal.side} deal</Button>
+									</td>
+								</tr>
+							);
+						})}
 					</tbody>
 				</table>
 			</div>
@@ -171,6 +152,7 @@ const mapStateToProps = (state) => ({
 	coins: state.app.coins,
 	constants: state.app.constants,
 	transaction_limits: state.app.transaction_limits,
+	user: state.user,
 });
 
 export default connect(mapStateToProps)(withConfig(P2PMyDeals));

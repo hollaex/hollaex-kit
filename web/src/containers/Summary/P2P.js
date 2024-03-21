@@ -47,9 +47,9 @@ const P2P = ({
 					<TabPane tab="ORDERS" key="1">
 						<P2POrders setDisplayOrder={setDisplayOrder} />
 					</TabPane>
-					<TabPane tab="PROFILE" key="2">
+					{/* <TabPane tab="PROFILE" key="2">
 						<P2PProfile />
-					</TabPane>
+					</TabPane> */}
 					<TabPane tab="POST DEAL" key="3">
 						<P2PPostDeal setTab={setTab} />
 					</TabPane>

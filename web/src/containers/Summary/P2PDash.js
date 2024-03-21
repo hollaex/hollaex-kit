@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { ReactSVG } from 'react-svg';
 import { Switch } from 'antd';
@@ -7,6 +7,8 @@ import STRINGS from 'config/localizedStrings';
 import { Button, Select, Input } from 'antd';
 import { Link } from 'react-router';
 import withConfig from 'components/ConfigProvider/withConfig';
+import { fetchDeals } from './actions/p2pActions';
+
 const P2PDash = ({
 	data,
 	onClose,
@@ -16,8 +18,19 @@ const P2PDash = ({
 	icons: ICONS,
 	transaction_limits,
 	tiers = {},
+	user,
 }) => {
 	const [expandRow, setExpandRow] = useState(false);
+
+	const [deals, setDeals] = useState([]);
+
+	useEffect(() => {
+		fetchDeals()
+			.then((res) => {
+				setDeals(res.data);
+			})
+			.catch((err) => err);
+	}, []);
 
 	return (
 		<div
@@ -55,10 +68,12 @@ const P2PDash = ({
 				}}
 			>
 				<span style={{ fontWeight: 'bold' }}>Crypto</span>
-				<Button ghost>BTC</Button>
-				<Button ghost>XHT</Button>
-				<Button ghost>USDT</Button>
-				<Button ghost>ETH</Button>
+
+				{Object.values(coins || {})
+					.filter((coin) => coin.type !== 'fiat')
+					.map((coin) => (
+						<Button ghost>{coin.symbol.toUpperCase()}</Button>
+					))}
 			</div>
 
 			<div
@@ -135,418 +150,158 @@ const P2PDash = ({
 							<th>Price (Lowest first)</th>
 							<th>Limit/Available</th>
 							<th>Payment</th>
-							<th>Trade</th>
+							<th style={{ display: 'flex', justifyContent: 'flex-end' }}>
+								Trade
+							</th>
 						</tr>
 					</thead>
 					<tbody className="font-weight-bold">
-						<tr
-							className="table-row"
-							style={{
-								borderBottom: 'grey 1px solid',
-								padding: 10,
-								position: 'relative',
-							}}
-							//  key={index}
-						>
-							<td
-								style={{ minWidth: '15.5em', padding: 10 }}
-								className="td-fit"
-							>
-								<span
-									onClick={() => {
-										setExpandRow(!expandRow);
-									}}
-								>
-									+
-								</span>{' '}
-								name_crpyto_vendor
-							</td>
-							<td
-								style={{ minWidth: '15.5em', padding: 10 }}
-								className="td-fit"
-							>
-								$50,000 USD
-							</td>
-							<td
-								style={{ minWidth: '15.5em', padding: 10 }}
-								className="td-fit"
-							>
-								<div>Available: 1.1 BTC</div>
-								<div>Limit: $80.00 - $2,243.00 USD</div>
-							</td>
-							<td
-								style={{
-									maxWidth: '15em',
-									flexWrap: 'wrap',
-									display: 'flex',
-									padding: 10,
-								}}
-							>
-								SWIFT, Bank transfer, PayPal, NETELLER, BBVA, Other Name,
-							</td>
-							<td
-								style={{ minWidth: '15.5em', padding: 10 }}
-								className="td-fit"
-							>
-								<div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-									<Button
+						{deals.map((deal) => {
+							return (
+								<>
+									<tr
+										className="table-row"
 										style={{
-											backgroundColor: '#288500',
-											color: 'white',
+											borderBottom: 'grey 1px solid',
+											padding: 10,
+											position: 'relative',
 										}}
+										//  key={index}
 									>
-										Buy BTC {'>'}
-									</Button>
-								</div>
-							</td>
-						</tr>
-						{expandRow && expandRow && (
-							<tr
-								className="table-row"
-								style={{
-									borderBottom: 'grey 1px solid',
-									padding: 10,
-									position: 'relative',
-								}}
-								//  key={index}
-							>
-								<td
-									style={{ minWidth: '15.5em', padding: 10 }}
-									className="td-fit"
-								>
-									<div>Payment time limti 30 minutes</div>
-									<div>
-										Terms and conditions: There are the terms and conditions
-										that is set by the vendor here
-									</div>
-								</td>
-								<td
-									style={{ minWidth: '15.5em', padding: 10 }}
-									className="td-fit"
-								></td>
-								<td
-									style={{ minWidth: '15.5em', padding: 10 }}
-									className="td-fit"
-								></td>
-								<td
-									style={{
-										maxWidth: '15em',
-										flexWrap: 'wrap',
-										display: 'flex',
-										padding: 10,
-									}}
-								></td>
-								<td style={{ idth: '20.5em', padding: 10 }} className="td-fit">
-									<div
-										style={{
-											display: 'flex',
-											justifyContent: 'flex-end',
-											flexDirection: 'column',
-										}}
-									>
-										<div style={{ display: 'flex' }}>
-											<span>Select payment Method</span>
-											<span>
-												<Select
-													showSearch
-													placeholder="Bank transfer"
-													// value={}
-													onChange={(e) => {}}
+										<td
+											style={{ minWidth: '15.5em', padding: 10 }}
+											className="td-fit"
+										>
+											<span
+												onClick={() => {
+													setExpandRow(!expandRow);
+												}}
+											>
+												+
+											</span>{' '}
+											name_crpyto_vendor
+										</td>
+										<td
+											style={{ minWidth: '15.5em', padding: 10 }}
+											className="td-fit"
+										>
+											$50,000 USD
+										</td>
+										<td
+											style={{ minWidth: '15.5em', padding: 10 }}
+											className="td-fit"
+										>
+											<div>Available: 1.1 BTC</div>
+											<div>Limit: $80.00 - $2,243.00 USD</div>
+										</td>
+										<td
+											style={{
+												maxWidth: '15em',
+												flexWrap: 'wrap',
+												display: 'flex',
+												padding: 10,
+											}}
+										>
+											SWIFT, Bank transfer, PayPal, NETELLER, BBVA, Other Name,
+										</td>
+										<td
+											style={{ minWidth: '15.5em', padding: 10 }}
+											className="td-fit"
+										>
+											<div
+												style={{ display: 'flex', justifyContent: 'flex-end' }}
+											>
+												<Button
+													style={{
+														backgroundColor: '#288500',
+														color: 'white',
+													}}
 												>
-													<Select.Option value={1}></Select.Option>
-												</Select>
-											</span>
-										</div>
+													Buy BTC {'>'}
+												</Button>
+											</div>
+										</td>
+									</tr>
+									{expandRow && expandRow && (
+										<tr
+											className="table-row"
+											style={{
+												borderBottom: 'grey 1px solid',
+												padding: 10,
+												position: 'relative',
+											}}
+											//  key={index}
+										>
+											<td
+												style={{ minWidth: '15.5em', padding: 10 }}
+												className="td-fit"
+											>
+												<div>Payment time limti 30 minutes</div>
+												<div>
+													Terms and conditions: There are the terms and
+													conditions that is set by the vendor here
+												</div>
+											</td>
+											<td
+												style={{ minWidth: '15.5em', padding: 10 }}
+												className="td-fit"
+											></td>
+											<td
+												style={{ minWidth: '15.5em', padding: 10 }}
+												className="td-fit"
+											></td>
+											<td
+												style={{
+													maxWidth: '15em',
+													flexWrap: 'wrap',
+													display: 'flex',
+													padding: 10,
+												}}
+											></td>
+											<td
+												style={{ idth: '20.5em', padding: 10 }}
+												className="td-fit"
+											>
+												<div
+													style={{
+														display: 'flex',
+														justifyContent: 'flex-end',
+														flexDirection: 'column',
+													}}
+												>
+													<div style={{ display: 'flex' }}>
+														<span>Select payment Method</span>
+														<span>
+															<Select
+																showSearch
+																placeholder="Bank transfer"
+																// value={}
+																onChange={(e) => {}}
+															>
+																<Select.Option value={1}></Select.Option>
+															</Select>
+														</span>
+													</div>
 
-										<div style={{ display: 'flex' }}>
-											<span>Spend Amount</span>
-											<span>
-												<Input placeholder="USD" />
-											</span>
-										</div>
-										<div style={{ display: 'flex' }}>
-											<span>Amount to receive</span>
-											<span>
-												<Input placeholder="USD" />
-											</span>
-										</div>
-									</div>
-								</td>
-							</tr>
-						)}
-
-						{/* {expandRow &&
-                    <tr className="table-row"
-                    style={{borderBottom: "grey 1px solid", padding: 10,   }}
-                    //  key={index}
-                    >
-                        <td>
-                             <div
-                                 className="td-fit"
-                                 style={{ minWidth: '15.5em', padding: 10, display: 'flex' }}
-                             >
-                             <div style={{ flex: 1 }}>
-                                 <div >Payment time limti 30 minutes</div>
-                                 <div >Terms and conditions: There are the terms and conditions that is set by the vendor here</div>
-                             </div>
-                             <div style={{ flex: 1 }}>
-                                 <div >Payment time limti 30 minutes</div>
-                                 <div >Terms and conditions: There are the terms and conditions that is set by the vendor here</div>
-                             </div>
-                             </div>
-                        </td>
-                </tr>
-                        } */}
-						<tr
-							className="table-row"
-							style={{ borderBottom: 'grey 1px solid', padding: 10 }}
-							//  key={index}
-						>
-							<td
-								style={{ minWidth: '15.5em', padding: 10 }}
-								className="td-fit"
-							>
-								<span onClick={() => {}}>+ </span>name_crpyto_vendor
-							</td>
-							<td
-								style={{ minWidth: '15.5em', padding: 10 }}
-								className="td-fit"
-							>
-								$50,000 USD
-							</td>
-							<td
-								style={{ minWidth: '15.5em', padding: 10 }}
-								className="td-fit"
-							>
-								<div>Available: 1.1 BTC</div>
-								<div>Limit: $80.00 - $2,243.00 USD</div>
-							</td>
-							<td
-								style={{
-									maxWidth: '15em',
-									flexWrap: 'wrap',
-									display: 'flex',
-									padding: 10,
-								}}
-							>
-								SWIFT, Bank transfer, PayPal, NETELLER, BBVA, Other Name,
-							</td>
-							<td
-								style={{ minWidth: '15.5em', padding: 10 }}
-								className="td-fit"
-							>
-								<div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-									<Button
-										style={{
-											backgroundColor: '#288500',
-											color: 'white',
-										}}
-									>
-										Buy BTC {'>'}
-									</Button>
-								</div>
-							</td>
-						</tr>
-						<tr
-							className="table-row"
-							style={{ borderBottom: 'grey 1px solid', padding: 10 }}
-							//  key={index}
-						>
-							<td
-								style={{ minWidth: '15.5em', padding: 10 }}
-								className="td-fit"
-							>
-								<span onClick={() => {}}>+ </span>name_crpyto_vendor
-							</td>
-							<td
-								style={{ minWidth: '15.5em', padding: 10 }}
-								className="td-fit"
-							>
-								$50,000 USD
-							</td>
-							<td
-								style={{ minWidth: '15.5em', padding: 10 }}
-								className="td-fit"
-							>
-								<div>Available: 1.1 BTC</div>
-								<div>Limit: $80.00 - $2,243.00 USD</div>
-							</td>
-							<td
-								style={{
-									maxWidth: '15em',
-									flexWrap: 'wrap',
-									display: 'flex',
-									padding: 10,
-								}}
-							>
-								SWIFT, Bank transfer, PayPal, NETELLER, BBVA, Other Name,
-							</td>
-							<td
-								style={{ minWidth: '15.5em', padding: 10 }}
-								className="td-fit"
-							>
-								<div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-									<Button
-										style={{
-											backgroundColor: '#288500',
-											color: 'white',
-										}}
-									>
-										Buy BTC {'>'}
-									</Button>
-								</div>
-							</td>
-						</tr>
-						<tr
-							className="table-row"
-							style={{ borderBottom: 'grey 1px solid', padding: 10 }}
-							//  key={index}
-						>
-							<td
-								style={{ minWidth: '15.5em', padding: 10 }}
-								className="td-fit"
-							>
-								<span onClick={() => {}}>+ </span>name_crpyto_vendor
-							</td>
-							<td
-								style={{ minWidth: '15.5em', padding: 10 }}
-								className="td-fit"
-							>
-								$50,000 USD
-							</td>
-							<td
-								style={{ minWidth: '15.5em', padding: 10 }}
-								className="td-fit"
-							>
-								<div>Available: 1.1 BTC</div>
-								<div>Limit: $80.00 - $2,243.00 USD</div>
-							</td>
-							<td
-								style={{
-									maxWidth: '15em',
-									flexWrap: 'wrap',
-									display: 'flex',
-									padding: 10,
-								}}
-							>
-								SWIFT, Bank transfer, PayPal, NETELLER, BBVA, Other Name,
-							</td>
-							<td
-								style={{ minWidth: '15.5em', padding: 10 }}
-								className="td-fit"
-							>
-								<div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-									<Button
-										style={{
-											backgroundColor: '#288500',
-											color: 'white',
-										}}
-									>
-										Buy BTC {'>'}
-									</Button>
-								</div>
-							</td>
-						</tr>
-						<tr
-							className="table-row"
-							style={{ borderBottom: 'grey 1px solid', padding: 10 }}
-							//  key={index}
-						>
-							<td
-								style={{ minWidth: '15.5em', padding: 10 }}
-								className="td-fit"
-							>
-								<span onClick={() => {}}>+ </span>name_crpyto_vendor
-							</td>
-							<td
-								style={{ minWidth: '15.5em', padding: 10 }}
-								className="td-fit"
-							>
-								$50,000 USD
-							</td>
-							<td
-								style={{ minWidth: '15.5em', padding: 10 }}
-								className="td-fit"
-							>
-								<div>Available: 1.1 BTC</div>
-								<div>Limit: $80.00 - $2,243.00 USD</div>
-							</td>
-							<td
-								style={{
-									maxWidth: '15em',
-									flexWrap: 'wrap',
-									display: 'flex',
-									padding: 10,
-								}}
-							>
-								SWIFT, Bank transfer, PayPal, NETELLER, BBVA, Other Name,
-							</td>
-							<td
-								style={{ minWidth: '15.5em', padding: 10 }}
-								className="td-fit"
-							>
-								<div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-									<Button
-										style={{
-											backgroundColor: '#288500',
-											color: 'white',
-										}}
-									>
-										Buy BTC {'>'}
-									</Button>
-								</div>
-							</td>
-						</tr>
-						<tr
-							className="table-row"
-							style={{ borderBottom: 'grey 1px solid', padding: 10 }}
-							//  key={index}
-						>
-							<td
-								style={{ minWidth: '15.5em', padding: 10 }}
-								className="td-fit"
-							>
-								<span onClick={() => {}}>+ </span>name_crpyto_vendor
-							</td>
-							<td
-								style={{ minWidth: '15.5em', padding: 10 }}
-								className="td-fit"
-							>
-								$50,000 USD
-							</td>
-							<td
-								style={{ minWidth: '15.5em', padding: 10 }}
-								className="td-fit"
-							>
-								<div>Available: 1.1 BTC</div>
-								<div>Limit: $80.00 - $2,243.00 USD</div>
-							</td>
-							<td
-								style={{
-									maxWidth: '15em',
-									flexWrap: 'wrap',
-									display: 'flex',
-									padding: 10,
-								}}
-							>
-								SWIFT, Bank transfer, PayPal, NETELLER, BBVA, Other Name,
-							</td>
-							<td
-								style={{ minWidth: '15.5em', padding: 10 }}
-								className="td-fit"
-							>
-								<div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-									<Button
-										style={{
-											backgroundColor: '#288500',
-											color: 'white',
-										}}
-									>
-										Buy BTC {'>'}
-									</Button>
-								</div>
-							</td>
-						</tr>
+													<div style={{ display: 'flex' }}>
+														<span>Spend Amount</span>
+														<span>
+															<Input placeholder="USD" />
+														</span>
+													</div>
+													<div style={{ display: 'flex' }}>
+														<span>Amount to receive</span>
+														<span>
+															<Input placeholder="USD" />
+														</span>
+													</div>
+												</div>
+											</td>
+										</tr>
+									)}
+								</>
+							);
+						})}
 					</tbody>
 				</table>
 			</div>
@@ -559,6 +314,7 @@ const mapStateToProps = (state) => ({
 	coins: state.app.coins,
 	constants: state.app.constants,
 	transaction_limits: state.app.transaction_limits,
+	user: state.user,
 });
 
 export default connect(mapStateToProps)(withConfig(P2PDash));
