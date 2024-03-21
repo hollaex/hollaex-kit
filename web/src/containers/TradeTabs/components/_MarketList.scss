@@ -65,6 +65,9 @@
 						}
 					}
 				}
+				.last-price-label {
+					color: $colors-main-black;
+				}
 			}
 
 			.table-bottom-border td,
@@ -223,12 +226,19 @@
 				background-color: unset !important;
 			}
 			.sticky-col {
+				color: $colors-main-black;
 				cursor: pointer;
 				&:hover {
 					opacity: 0.5;
 				}
 			}
 		}
+	}
+}
+
+.trade_tabs-container {
+	.market-pairs {
+		color: $colors-main-black;
 	}
 }
 

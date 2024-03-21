@@ -119,7 +119,9 @@ const AssetsRow = ({ coinData, loading, index, quicktrade, pairs, icons }) => {
 			<td>
 				{!loading ? (
 					<div>
-						<span className="title-font ml-1">{lastPrice}</span>
+						<span className="title-font ml-1 last-price-label">
+							{lastPrice}
+						</span>
 						<span className="title-font ml-2">{'USDT'}</span>
 					</div>
 				) : (
