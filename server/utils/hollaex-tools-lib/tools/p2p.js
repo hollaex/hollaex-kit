@@ -333,7 +333,8 @@ const createP2PTransaction = async (data) => {
 
 	const merchantBalance = await getP2PAccountBalance(merchant_id, p2pDeal.buying_asset);
 
-	const amount_digital_currency = new BigNumber(amount_fiat).dividedBy(new BigNumber(exchange_rate).multipliedBy(1 + spread)).toNumber();
+	const price = new BigNumber(exchange_rate).multipliedBy(1 + spread);
+	const amount_digital_currency = new BigNumber(amount_fiat).dividedBy(price).toNumber();
 
 	if (new BigNumber(merchantBalance).comparedTo(new BigNumber(amount_digital_currency)) !== 1) {
         throw new Error('Transaction is not possible at the moment');
@@ -360,6 +361,7 @@ const createP2PTransaction = async (data) => {
 	data.deal_id = deal_id;
 	const lock = await getNodeLib().lockBalance(merchant.network_id, p2pDeal.buying_asset, amount_digital_currency);
 	data.locked_asset_id = lock.id;
+	data.price = price.toNumber();
 
 	const firstChatMessage = {
 		sender_id: merchant_id,
@@ -387,6 +389,7 @@ const createP2PTransaction = async (data) => {
 			'merchant_release',
 			'transaction_duration',
 			'transaction_status',
+			'price',
 			'messages'
 		]
 	});

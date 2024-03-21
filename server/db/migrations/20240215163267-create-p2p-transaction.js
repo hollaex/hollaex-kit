@@ -54,6 +54,10 @@ module.exports = {
                 type: Sequelize.DOUBLE,
                 allowNull: false,
             },
+            price: {
+                type: Sequelize.DOUBLE,
+                allowNull: false,
+            },
             payment_method_used: {
                 type: Sequelize.JSONB,
                 allowNull: true,

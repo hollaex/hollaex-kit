@@ -53,6 +53,10 @@ module.exports = function (sequelize, DataTypes) {
                 type: DataTypes.DOUBLE,
                 allowNull: false,
             },
+            price: {
+                type: DataTypes.DOUBLE,
+                allowNull: false,
+            },
             payment_method_used: {
                 type: DataTypes.JSONB,
                 allowNull: true,

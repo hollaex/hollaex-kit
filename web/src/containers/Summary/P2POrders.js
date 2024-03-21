@@ -98,7 +98,10 @@ const P2POrders = ({
 										{transaction?.amount_fiat}{' '}
 										{transaction?.deal?.spending_asset?.toUpperCase()}
 									</td>
-									<td style={{ minWidth: '10.5em' }}>$0.95 USD</td>
+									<td style={{ minWidth: '10.5em' }}>
+										{transaction?.price}{' '}
+										{transaction?.deal?.buying_asset?.toUpperCase()}
+									</td>
 									<td style={{ minWidth: '10.5em' }}>
 										{transaction?.amount_digital_currency}{' '}
 										{transaction?.deal?.buying_asset?.toUpperCase()}
