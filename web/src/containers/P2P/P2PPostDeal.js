@@ -388,8 +388,8 @@ const P2PPostDeal = ({
 					gap: 15,
 					justifyContent: 'center',
 					position: 'absolute',
-					top: 760,
-					left: 350,
+					top: '65%',
+					left: '40%',
 				}}
 			>
 				<Button
