@@ -63,7 +63,7 @@ const fetchP2PDisputes = async (opts = {
 
 	const query = {
 		where: {
-			// created_at: timeframe,
+			created_at: timeframe,
 			...(opts.user_id && { merchant_id: opts.user_id }),
 			
 		},

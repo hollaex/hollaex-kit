@@ -12,6 +12,7 @@ import {
 	fetchTransactions,
 	updateTransaction,
 } from './actions/p2pActions';
+import { withRouter } from 'react-router';
 
 const buyerConfirmMessage = () => (
 	<div
@@ -53,6 +54,7 @@ const P2POrder = ({
 	selectedTransaction,
 	setSelectedTransaction,
 	user,
+	router,
 }) => {
 	const coin = coins[selectedTransaction.deal.buying_asset];
 	const [selectedOrder, setSelectedOrder] = useState(selectedTransaction);
@@ -63,6 +65,7 @@ const P2POrder = ({
 			<div
 				onClick={() => {
 					setDisplayOrder(false);
+					router.push('/p2p');
 				}}
 				style={{
 					marginBottom: 10,
@@ -783,4 +786,4 @@ const mapStateToProps = (state) => ({
 	user: state.user,
 });
 
-export default connect(mapStateToProps)(withConfig(P2POrder));
+export default connect(mapStateToProps)(withRouter(withConfig(P2POrder)));

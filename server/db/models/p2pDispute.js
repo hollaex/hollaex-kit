@@ -45,7 +45,7 @@ module.exports = function (sequelize, DataTypes) {
             },
         },
         {
-            timestamps: false,
+            timestamps: true,
             underscored: true,
             tableName: 'P2pDisputes',
         }

@@ -100,6 +100,26 @@ const P2PDisputes = ({ coins }) => {
 				return <div className="d-flex">{formatDate(data?.created_at)}</div>;
 			},
 		},
+
+		{
+			title: 'Action',
+			dataIndex: '',
+			key: '',
+			render: (user_id, data) => {
+				return (
+					<div className="d-flex">
+						<Button
+							style={{
+								backgroundColor: '#288500',
+								color: 'white',
+							}}
+						>
+							Adjudicate
+						</Button>
+					</div>
+				);
+			},
+		},
 	];
 
 	useEffect(() => {
