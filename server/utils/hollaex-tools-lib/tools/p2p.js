@@ -461,6 +461,7 @@ const updateP2pTransaction = async (data) => {
 			defendant_id,
 			reason: cancellation_reason || '',
 		 })
+		 data.transaction_status = 'cancelled';
 	}
 
 	if (user_status === 'cancelled' || merchant_status === 'cancelled') {
@@ -494,12 +495,11 @@ const updateP2pTransaction = async (data) => {
 		newMessages.push(chatMessage);
 	}
 
-	console.log({user_status})
 	if (user_status === 'appeal') {
 		const chatMessage = {
 			sender_id: user_id,
 			receiver_id: merchant.id,
-			message: "Buyer has appealed this order, Transaction will stay active until it's resolved",
+			message: "Buyer has appealed this order, Please contact support to resolve the issue",
 			type: 'notification',
 			created_at: new Date()
 		}
@@ -536,7 +536,7 @@ const updateP2pTransaction = async (data) => {
 		const chatMessage = {
 			sender_id: merchant.id,
 			receiver_id: transaction.user_id,
-			message: "Vendor has appealed this order, Transaction will stay active until it's resolved",
+			message: "Vendor has appealed this order, Please contact support to resolve the issue",
 			type: 'notification',
 			created_at: new Date()
 		}
