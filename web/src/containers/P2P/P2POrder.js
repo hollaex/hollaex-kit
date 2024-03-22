@@ -7,7 +7,11 @@ import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { Button, Select, Input, message } from 'antd';
 import moment from 'moment';
-import { createChatMessage, fetchTransactions } from './actions/p2pActions';
+import {
+	createChatMessage,
+	fetchTransactions,
+	updateTransaction,
+} from './actions/p2pActions';
 
 const buyerConfirmMessage = () => (
 	<div
@@ -70,7 +74,7 @@ const P2POrder = ({
 			</div>
 			<div
 				style={{
-					height: 750,
+					minHeight: 650,
 					backgroundColor: '#303236',
 					width: '100%',
 					padding: 20,
@@ -246,32 +250,234 @@ const P2POrder = ({
 						</div>
 
 						<div>
-							<div>Expected tiem until funds are release: 15m 41s</div>
+							<div style={{ marginBottom: 10 }}>
+								Expected time until funds are release: 30 minutes
+							</div>
 
 							{user.id === selectedOrder?.user_id && (
-								<div style={{ marginBottom: 20 }}>
-									Once funds are released you will find the funds credited to
-									your funding wallet
-								</div>
+								<>
+									{selectedOrder.user_status === 'pending' && (
+										<>
+											<div style={{ marginBottom: 20 }}>
+												Please make the payment in the time provided above.
+											</div>
+											<div style={{ marginBottom: 20 }}>
+												The order will otherwise be cancelled
+											</div>
+										</>
+									)}
+
+									{selectedOrder.user_status === 'confirmed' && (
+										<div style={{ marginBottom: 20 }}>
+											Once funds are released you will find the funds credited
+											to your funding wallet
+										</div>
+									)}
+
+									{selectedOrder.merchant_status === 'cancelled' && (
+										<div style={{ marginBottom: 20 }}>
+											Vendor cancelled the order, there will not be transfer of
+											funds, If you think this is an error, Please contact
+											support
+										</div>
+									)}
+
+									{selectedOrder.merchant_status === 'confirmed' && (
+										<div style={{ marginBottom: 20 }}>
+											<div style={{ fontSize: 16 }}>ORDER COMPLETE</div>
+											<div>
+												Vendor confirmed the transaction and funds transferred
+												to your balance.
+											</div>
+										</div>
+									)}
+									{selectedOrder.merchant_status === 'appeal' && (
+										<>
+											<div style={{ marginTop: 15, marginBottom: 15 }}>
+												Transaction appealed by the vendor
+											</div>
+										</>
+									)}
+								</>
 							)}
 
 							{user.id === selectedOrder?.merchant_id && (
 								<>
-									<div style={{ marginTop: 15, marginBottom: 15 }}>
-										The buyer has not sent the payment yet. Once you receive
-										payment you will be notified here.
-									</div>
-									<div style={{ marginBottom: 15 }}>
-										Please kindly confirm and relase crpyto ufnds to buyer below
-										once complete
-									</div>
+									{selectedOrder.merchant_status === 'confirmed' && (
+										<div style={{ marginBottom: 20 }}>
+											<div style={{ fontSize: 16 }}>ORDER COMPLETE</div>
+											<div>
+												You've marked this order as complete and released the
+												funds
+											</div>
+										</div>
+									)}
+
+									{selectedOrder.user_status === 'pending' && (
+										<>
+											<div style={{ marginTop: 15, marginBottom: 15 }}>
+												The buyer has not sent the payment yet. Once you receive
+												payment you will be notified here.
+											</div>
+											<div style={{ marginBottom: 15 }}>
+												Please kindly confirm and relase crpyto funds to buyer
+												below once complete
+											</div>
+										</>
+									)}
+									{selectedOrder.user_status === 'cancelled' && (
+										<>
+											<div style={{ marginTop: 15, marginBottom: 15 }}>
+												Transaction canceled by the buyer
+											</div>
+										</>
+									)}
+									{selectedOrder.user_status === 'confirmed' && (
+										<>
+											<div style={{ marginTop: 15, marginBottom: 15 }}>
+												Please check that the payment from the buyer was sent
+												and confirm and release funds below.
+											</div>
+										</>
+									)}
+									{selectedOrder.user_status === 'appeal' && (
+										<>
+											<div style={{ marginTop: 15, marginBottom: 15 }}>
+												Transaction appealed by the buyer
+											</div>
+										</>
+									)}
 								</>
 							)}
 
 							<div style={{ display: 'flex', gap: 10 }}>
-								<div>Appeal</div>
-								<div>Cancel order</div>
-								<div style={{ padding: 10 }}>CONFIRM AND RELEASE CRYPTO</div>
+								{user.id === selectedOrder?.user_id && (
+									<>
+										{selectedOrder.user_status === 'confirmed' && (
+											<>
+												<div
+													onClick={async () => {
+														try {
+															await updateTransaction({
+																id: selectedOrder.id,
+																user_status: 'appeal',
+															});
+															const transaction = await fetchTransactions({
+																id: selectedOrder.id,
+															});
+															setSelectedOrder(transaction.data[0]);
+															message.success(
+																'You have appealed the transaction, contact support to resolve your issue'
+															);
+														} catch (error) {
+															message.error(error.data.message);
+														}
+													}}
+													style={{
+														textDecoration: 'underline',
+														cursor: 'pointer',
+														position: 'relative',
+														top: 5,
+													}}
+												>
+													Appeal
+												</div>
+												<div
+													onClick={async () => {
+														try {
+															await updateTransaction({
+																id: selectedOrder.id,
+																user_status: 'cancelled',
+															});
+															const transaction = await fetchTransactions({
+																id: selectedOrder.id,
+															});
+															setSelectedOrder(transaction.data[0]);
+															message.success(
+																'You have cancelled the transaction'
+															);
+														} catch (error) {
+															message.error(error.data.message);
+														}
+													}}
+													style={{
+														textDecoration: 'underline',
+														cursor: 'pointer',
+														position: 'relative',
+														top: 5,
+													}}
+												>
+													Cancel order
+												</div>
+											</>
+										)}
+									</>
+								)}
+
+								{user.id === selectedOrder?.merchant_id && (
+									<span
+										style={{
+											display: 'flex',
+											gap: 10,
+											pointerEvents:
+												selectedOrder.user_status !== 'confirmed'
+													? 'none'
+													: 'all',
+											opacity:
+												selectedOrder.user_status !== 'confirmed' ? 0.5 : 1,
+										}}
+									>
+										<div
+											onClick={async () => {
+												try {
+													await updateTransaction({
+														id: selectedOrder.id,
+														merchant_status: 'appeal',
+													});
+													const transaction = await fetchTransactions({
+														id: selectedOrder.id,
+													});
+													setSelectedOrder(transaction.data[0]);
+													message.success(
+														'You have appealed the transaction, contact support to resolve your issue'
+													);
+												} catch (error) {
+													message.error(error.data.message);
+												}
+											}}
+											style={{
+												textDecoration: 'underline',
+												cursor: 'pointer',
+												position: 'relative',
+												top: 5,
+											}}
+										>
+											Appeal
+										</div>
+
+										<Button
+											disabled={selectedOrder.user_status !== 'confirmed'}
+											style={{ backgroundColor: '#5E63F6', color: 'white' }}
+											onClick={async () => {
+												try {
+													await updateTransaction({
+														id: selectedOrder.id,
+														merchant_status: 'confirmed',
+													});
+													const transaction = await fetchTransactions({
+														id: selectedOrder.id,
+													});
+													setSelectedOrder(transaction.data[0]);
+													message.success('You have confirmed the transaction');
+												} catch (error) {
+													message.error(error.data.message);
+												}
+											}}
+										>
+											CONFIRM AND RELEASE CRYPTO
+										</Button>
+									</span>
+								)}
 							</div>
 						</div>
 					</div>
@@ -305,7 +511,7 @@ const P2POrder = ({
 							>
 								{user.id === selectedOrder?.user_id && (
 									<div>
-										You've initiated and created an order with
+										You've initiated and created an order with{' '}
 										{selectedOrder?.merchant?.full_name} (
 										{moment(selectedOrder?.created_at).format(
 											'DD/MMM/YYYY, hh:mmA '
@@ -333,6 +539,7 @@ const P2POrder = ({
 														display: 'flex',
 														flexDirection: 'column',
 														marginBottom: 20,
+														textAlign: 'center',
 													}}
 												>
 													<div>{selectedOrder?.merchant?.full_name}:</div>
@@ -373,7 +580,7 @@ const P2POrder = ({
 																textAlign: 'right',
 															}}
 														>
-															<div>Buyer:</div>
+															<div>You:</div>
 															<div>{message.message}</div>
 															<div>
 																{moment(
@@ -391,7 +598,13 @@ const P2POrder = ({
 																marginBottom: 20,
 															}}
 														>
-															<div>{selectedOrder?.merchant?.full_name}:</div>
+															<div>
+																{message.receiver_id ===
+																selectedOrder.merchant_id
+																	? 'Buyer'
+																	: selectedOrder?.merchant?.full_name}
+																:
+															</div>
 															<div>{message.message}</div>
 															<div>
 																{moment(
@@ -463,18 +676,59 @@ const P2POrder = ({
 					</div>
 				</div>
 			</div>
-			<div
-				style={{
-					display: 'flex',
-					gap: 10,
-					textAlign: 'center',
-					justifyContent: 'center',
-					marginTop: 10,
-				}}
-			>
-				<div>CANCEL</div>
-				<div>CONFIRM TRANSFER AND NOTIFY VENDOR</div>
-			</div>
+
+			{user.id === selectedOrder?.user_id && (
+				<div
+					style={{
+						display: 'flex',
+						gap: 10,
+						textAlign: 'center',
+						justifyContent: 'center',
+						marginTop: 10,
+					}}
+				>
+					<Button
+						style={{ backgroundColor: '#5E63F6', color: 'white' }}
+						onClick={async () => {
+							try {
+								await updateTransaction({
+									id: selectedOrder.id,
+									user_status: 'cancelled',
+								});
+								const transaction = await fetchTransactions({
+									id: selectedOrder.id,
+								});
+								setSelectedOrder(transaction.data[0]);
+								message.success('You have cancelled the transaction');
+							} catch (error) {
+								message.error(error.data.message);
+							}
+						}}
+					>
+						CANCEL
+					</Button>
+					<Button
+						style={{ backgroundColor: '#5E63F6', color: 'white' }}
+						onClick={async () => {
+							try {
+								await updateTransaction({
+									id: selectedOrder.id,
+									user_status: 'confirmed',
+								});
+								const transaction = await fetchTransactions({
+									id: selectedOrder.id,
+								});
+								setSelectedOrder(transaction.data[0]);
+								message.success("You've successfuly confirmed the transaction");
+							} catch (error) {
+								message.error(error.data.message);
+							}
+						}}
+					>
+						CONFIRM TRANSFER AND NOTIFY VENDOR
+					</Button>
+				</div>
+			)}
 		</>
 	);
 };

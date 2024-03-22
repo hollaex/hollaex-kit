@@ -404,22 +404,14 @@ const createP2PTransaction = async (data) => {
 const updateP2pTransaction = async (data) => {
 	let {
 		user_id,
-		transaction_id,
-		amount_digital_currency,
-		amount_fiat,
-		payment_method_used,
+		id,
 		user_status,
 		merchant_status,
 		cancellation_reason,
-		transaction_expired,
-		merchant_release,
-		transaction_duration,
 	} = data;
-
 		
-	const transaction = await getModel('p2pTransaction').findOne({ where: { transaction_id } });
-	const p2pConfig = await getModel('p2pConfig').findOne({});
-	const p2pDeal = await getModel('p2pDeal').findOne({ where: { id: deal_id } });
+	const transaction = await getModel('p2pTransaction').findOne({ where: { id } });
+	const p2pDeal = await getModel('p2pDeal').findOne({ where: { id: transaction.deal_id } });
 	const merchant = await getUserByKitId(p2pDeal.merchant_id);
 
 	if (user_id === transaction.merchant_id && data.hasOwnProperty(user_status)) {
@@ -429,7 +421,6 @@ const updateP2pTransaction = async (data) => {
 	if (user_id === transaction.user_id && data.hasOwnProperty(merchant_status)) {
 		 throw new Error('buyer cannot update merchant status');
 	}
-
 
     if (!transaction) {
         throw new Error('transaction does not exist');
@@ -442,35 +433,117 @@ const updateP2pTransaction = async (data) => {
 		throw new Error('Cannot update complete transaction');
 	}
 
-	if (user_status === 'confirmed' && transaction.merchant_status === 'confirmed') {
-		await getNodeLib().unlockBalance(merchant.network_id, transaction.amount_digital_currency, p2pDeal.buying_asset);
-		await transferAssetByKitIds(account_id, user.id, currency, totalAmount, 'P2P Transaction', false, { category: 'p2p' });
+	if (merchant_status === 'confirmed' && transaction.user_status !== 'confirmed') {
+		throw new Error('merchant cannot confirm the transaction while buyer not confirmed');
+	} 
+
+	if (merchant_status === 'confirmed' && transaction.user_status === 'confirmed') {
+		await getNodeLib().unlockBalance(merchant.network_id, transaction.locked_asset_id);
+		await transferAssetByKitIds(merchant.id, transaction.user_id, p2pDeal.buying_asset, transaction.amount_digital_currency, 'P2P Transaction', false, { category: 'p2p' });
 		data.transaction_status = 'complete';
 		data.merchant_release = new Date();
 	} 
 
-	if(user_status === 'appeal' || merchant_status === 'appeal') {
+	if (user_status === 'appeal' || merchant_status === 'appeal') {
 		let initiator_id;
+		let defendant_id;
 		if (user_status === 'appeal') {
 			initiator_id = transaction.merchant_id;
+			defendant_id = transaction.user_id;
 		} else {
 			initiator_id = transaction.user_id;
+			defendant_id = transaction.merchant_id;
 		}
-		
+		await getNodeLib().unlockBalance(merchant.network_id, transaction.locked_asset_id);
 		await createP2pDispute({ 
 			transaction_id: transaction.id,
 			initiator_id,
-			reason: cancellation_reason,
-			participant_ids: [transaction.merchant_id, transaction.user_id, p2pConfig.operator_id],
-			operator_id:  p2pConfig.operator_id
+			defendant_id,
+			reason: cancellation_reason || '',
 		 })
 	}
 
 	if (user_status === 'cancelled' || merchant_status === 'cancelled') {
+		await getNodeLib().unlockBalance(merchant.network_id, transaction.locked_asset_id);
 		data.transaction_status = 'cancelled';
 	}
+
+	const newMessages = [...transaction.messages];
 	
-  return transaction.update(data, {
+	if (user_status === 'confirmed') {
+		const chatMessage = {
+			sender_id: user_id,
+			receiver_id: merchant.id,
+			message: "Buyer has marked this order as paid. Waiting for vendor to check, confirm and release funds",
+			type: 'notification',
+			created_at: new Date()
+		}
+	
+		newMessages.push(chatMessage);
+	}
+
+	if (user_status === 'cancelled') {
+		const chatMessage = {
+			sender_id: user_id,
+			receiver_id: merchant.id,
+			message: "Buyer has cancelled this order, Transaction is closed",
+			type: 'notification',
+			created_at: new Date()
+		}
+	
+		newMessages.push(chatMessage);
+	}
+
+	if (user_status === 'cancelled') {
+		const chatMessage = {
+			sender_id: user_id,
+			receiver_id: merchant.id,
+			message: "Buyer has appealed this order, Transaction will stay active until it's resolved",
+			type: 'notification',
+			created_at: new Date()
+		}
+	
+		newMessages.push(chatMessage);
+	}
+
+
+	if (merchant_status === 'confirmed') {
+		const chatMessage = {
+			sender_id: merchant.id,
+			receiver_id: transaction.user_id,
+			message: "Vendor confirmed the transaction and released the funds.",
+			type: 'notification',
+			created_at: new Date()
+		}
+	
+		newMessages.push(chatMessage);
+	}
+	
+	if (merchant_status === 'cancelled') {
+		const chatMessage = {
+			sender_id: merchant.id,
+			receiver_id: transaction.user_id,
+			message: "Vendor has cancelled this order, Transaction is closed",
+			type: 'notification',
+			created_at: new Date()
+		}
+	
+		newMessages.push(chatMessage);
+	}
+
+	if (merchant_status === 'appeal') {
+		const chatMessage = {
+			sender_id: merchant.id,
+			receiver_id: transaction.user_id,
+			message: "Vendor has appealed this order, Transaction will stay active until it's resolved",
+			type: 'notification',
+			created_at: new Date()
+		}
+	
+		newMessages.push(chatMessage);
+	}
+
+  	return transaction.update({...data, messages: newMessages}, {
 		fields: [
 			'user_status',
 			'merchant_status',
@@ -479,23 +552,23 @@ const updateP2pTransaction = async (data) => {
 			'transaction_timestamp',
 			'merchant_release',
 			'transaction_duration',
-			'transaction_status'
+			'transaction_status',
+			'messages'
 		]
 	});
 }
 
 
 const createP2pDispute = async (data) => {
-
-		data.status = 'active';
+		data.status = true;
 		return getModel('p2pDispute').create(data, {
 			fields: [
 				'transaction_id',
 				'initiator_id',
+				'defendant_id',
 				'reason',
 				'resolution',
 				'status',
-				'participant_ids',
 			]
 		});
 }

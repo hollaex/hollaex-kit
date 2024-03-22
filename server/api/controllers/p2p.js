@@ -196,6 +196,47 @@ const createP2PTransaction = (req, res) => {
 		});
 }
 
+const updateP2PTransaction = (req, res) => {
+	loggerStake.verbose(req.uuid, 'controllers/p2p/updateP2PTransaction/auth', req.auth);
+
+	const {  
+        id,
+        user_status,
+        merchant_status,
+        cancellation_reason,
+
+	 } = req.swagger.params.data.value;
+
+	loggerStake.verbose(
+		req.uuid,
+		'controllers/p2p/updateP2PTransaction data',
+        id,
+        user_status,
+        merchant_status,
+        cancellation_reason,
+	);
+
+	toolsLib.p2p.updateP2pTransaction({
+        user_id:  req.auth.sub.id,
+        id,
+        user_status,
+        merchant_status,
+        cancellation_reason,
+    }
+		)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerStake.error(
+				req.uuid,
+				'controllers/p2p/updateP2PTransaction err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+}
+
 const createP2pChatMessage = (req, res) => {
 	loggerStake.verbose(req.uuid, 'controllers/p2p/createP2pChatMessage/auth', req.auth);
 
@@ -239,5 +280,6 @@ module.exports = {
     fetchP2PDeals,
     fetchP2PTransactions,
     createP2PTransaction,
-    createP2pChatMessage
+    createP2pChatMessage,
+    updateP2PTransaction
 };

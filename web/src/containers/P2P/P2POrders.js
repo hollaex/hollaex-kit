@@ -8,6 +8,8 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import { Button, Select, Input } from 'antd';
 import P2POrder from './P2POrder';
 import { fetchTransactions } from './actions/p2pActions';
+import { withRouter } from 'react-router';
+
 const P2POrders = ({
 	data,
 	onClose,
@@ -20,6 +22,7 @@ const P2POrders = ({
 	setDisplayOrder,
 	setSelectedTransaction,
 	refresh,
+	router,
 }) => {
 	const [transactions, setTransactions] = useState([]);
 
@@ -122,6 +125,7 @@ const P2POrders = ({
 											onClick={() => {
 												setDisplayOrder(true);
 												setSelectedTransaction(transaction);
+												router.push(`p2p/order/${transaction.id}`);
 											}}
 											style={{
 												display: 'flex',
@@ -148,6 +152,7 @@ const mapStateToProps = (state) => ({
 	coins: state.app.coins,
 	constants: state.app.constants,
 	transaction_limits: state.app.transaction_limits,
+	router: state.router,
 });
 
-export default connect(mapStateToProps)(withConfig(P2POrders));
+export default connect(mapStateToProps)(withRouter(withConfig(P2POrders)));
