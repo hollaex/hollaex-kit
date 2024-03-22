@@ -595,6 +595,10 @@ const createP2pChatMessage = async (data) => {
 		throw new Error ('no transaction found');
 	}
 
+	if (transaction.transaction_status !== 'active') {
+		throw new Error('Cannot message in inactive transaction');
+	}
+
 	const chatMessage = {
 		sender_id: data.sender_id,
 		receiver_id: data.receiver_id,
