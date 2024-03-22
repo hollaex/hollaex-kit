@@ -168,7 +168,10 @@ const P2PSettings = ({ coins, pairs, p2p_config }) => {
 						Manage:
 					</div>
 					<div style={{ marginBottom: 10 }}>
-						Management fee: {p2p_config.merchant_fee}%
+						Merchant fee: {p2p_config.merchant_fee}%
+					</div>
+					<div style={{ marginBottom: 10 }}>
+						Buyer fee: {p2p_config.user_fee}%
 					</div>
 					<div style={{ borderBottom: '1px solid grey', width: 600 }}></div>
 				</div>

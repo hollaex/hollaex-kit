@@ -3,6 +3,12 @@ import querystring from 'query-string';
 
 import { requestAuthenticated } from '../../../utils';
 
+export const requestDisputes = (values) => {
+	const queryValues =
+		values && Object.keys(values).length ? querystring.stringify(values) : '';
+	return requestAuthenticated(`/p2p/dispute?${queryValues}`);
+};
+
 export const requestTrades = (id) => {
 	const query = querystring.stringify({
 		user_id: id,

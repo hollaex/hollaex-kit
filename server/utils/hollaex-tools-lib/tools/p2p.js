@@ -47,6 +47,47 @@ const {
 } = require(`${SERVER_PATH}/messages`);
 
 
+const fetchP2PDisputes = async (opts = {
+	user_id: null,
+    limit: null,
+    page: null,
+    order_by: null,
+    order: null,
+    start_date: null,
+    end_date: null,
+    format: null
+}) => {
+    const pagination = paginationQuery(opts.limit, opts.page);
+	const ordering = orderingQuery(opts.order_by, opts.order);
+	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
+
+	const query = {
+		where: {
+			// created_at: timeframe,
+			...(opts.user_id && { merchant_id: opts.user_id }),
+			
+		},
+		order: [ordering],
+		...(!opts.format && pagination),
+	}
+
+	if (opts.format) {
+		return dbQuery.fetchAllRecords('p2pDispute', query)
+			.then((data) => {
+				if (opts.format && opts.format === 'csv') {
+					if (data.data.length === 0) {
+						throw new Error(NO_DATA_FOR_CSV);
+					}
+					const csv = parse(data.data, Object.keys(data.data[0]));
+					return csv;
+				} else {
+					return data;
+				}
+			});
+	} else {
+        return dbQuery.findAndCountAllWithRows('p2pDispute', query)
+	}
+};
 
 const fetchP2PDeals = async (opts = {
 	user_id: null,
@@ -664,5 +705,6 @@ module.exports = {
 	createMerchantFeedback,
 	createP2pChatMessage,
 	fetchP2PDeals,
-	fetchP2PTransactions
+	fetchP2PTransactions,
+	fetchP2PDisputes
 };
