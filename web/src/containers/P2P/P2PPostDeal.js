@@ -254,7 +254,14 @@ const P2PPostDeal = ({
 								</div>
 							</div>
 							<div style={{ flex: 1, borderLeft: 'grey 1px solid' }}></div>
-							<div style={{ flex: 7, display: 'flex' }}>
+							<div
+								style={{
+									flex: 7,
+									display: 'flex',
+									flexDirection: 'column',
+									gap: 25,
+								}}
+							>
 								<div style={{ flex: 1 }}>
 									<div>PAYMENT METHODS TO SEND FIAT</div>
 									<div>
@@ -304,6 +311,22 @@ const P2PPostDeal = ({
 											</div>
 										);
 									})}
+								</div>
+
+								<div style={{ flex: 1 }}>
+									<div>Region</div>
+									<div>
+										Select your region under which your deal will be listed
+									</div>
+									<Select
+										showSearch
+										style={{ backgroundColor: '#303236', width: 200 }}
+										placeholder="Select Region"
+										// value={}
+										onChange={(e) => {}}
+									>
+										<Select.Option value={'us'}>USA</Select.Option>
+									</Select>
 								</div>
 							</div>
 						</div>

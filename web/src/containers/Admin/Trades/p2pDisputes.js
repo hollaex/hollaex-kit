@@ -249,7 +249,7 @@ const P2PDisputes = ({ coins }) => {
 							{/* <span>Total: {queryFilters.total || '-'}</span> */}
 							<div>
 								<span style={{ fontWeight: 'bold' }}>Total disputes:</span>{' '}
-								{queryFilters.total} users
+								{queryFilters.total}
 							</div>
 
 							<div>-</div>
