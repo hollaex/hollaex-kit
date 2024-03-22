@@ -102,6 +102,18 @@ const P2POrder = ({
 								marginBottom: 10,
 							}}
 						></div>
+						<div>
+							Transaction ID{': '}
+							{selectedOrder.transaction_id}
+						</div>
+
+						<div
+							style={{
+								borderBottom: '1px solid grey',
+								marginTop: 10,
+								marginBottom: 10,
+							}}
+						></div>
 						<div
 							style={{
 								flex: 1,
@@ -294,7 +306,16 @@ const P2POrder = ({
 									{selectedOrder.merchant_status === 'appeal' && (
 										<>
 											<div style={{ marginTop: 15, marginBottom: 15 }}>
-												Transaction appealed by the vendor
+												Transaction appealed by the vendor, Please contact
+												support with transaction id to resolve the issue
+											</div>
+										</>
+									)}
+									{selectedOrder.user_status === 'appeal' && (
+										<>
+											<div style={{ marginTop: 15, marginBottom: 15 }}>
+												You appealed the transaction, Please contact support
+												with transaction id to resolve the issue
 											</div>
 										</>
 									)}
@@ -332,14 +353,18 @@ const P2POrder = ({
 											</div>
 										</>
 									)}
-									{selectedOrder.user_status === 'confirmed' && (
-										<>
-											<div style={{ marginTop: 15, marginBottom: 15 }}>
-												Please check that the payment from the buyer was sent
-												and confirm and release funds below.
-											</div>
-										</>
-									)}
+									{selectedOrder.user_status === 'confirmed' &&
+										selectedOrder?.merchant_status !== 'confirmed' && (
+											<>
+												<div style={{ marginTop: 15 }}>
+													Buyer confirmed the payment
+												</div>
+												<div style={{ marginTop: 5, marginBottom: 15 }}>
+													Please check that the payment from the buyer was sent
+													and confirm and release funds below.
+												</div>
+											</>
+										)}
 									{selectedOrder.user_status === 'appeal' && (
 										<>
 											<div style={{ marginTop: 15, marginBottom: 15 }}>
@@ -353,131 +378,142 @@ const P2POrder = ({
 							<div style={{ display: 'flex', gap: 10 }}>
 								{user.id === selectedOrder?.user_id && (
 									<>
-										{selectedOrder.user_status === 'confirmed' && (
-											<>
-												<div
-													onClick={async () => {
-														try {
-															await updateTransaction({
-																id: selectedOrder.id,
-																user_status: 'appeal',
-															});
-															const transaction = await fetchTransactions({
-																id: selectedOrder.id,
-															});
-															setSelectedOrder(transaction.data[0]);
-															message.success(
-																'You have appealed the transaction, contact support to resolve your issue'
-															);
-														} catch (error) {
-															message.error(error.data.message);
-														}
-													}}
-													style={{
-														textDecoration: 'underline',
-														cursor: 'pointer',
-														position: 'relative',
-														top: 5,
-													}}
-												>
-													Appeal
-												</div>
-												<div
-													onClick={async () => {
-														try {
-															await updateTransaction({
-																id: selectedOrder.id,
-																user_status: 'cancelled',
-															});
-															const transaction = await fetchTransactions({
-																id: selectedOrder.id,
-															});
-															setSelectedOrder(transaction.data[0]);
-															message.success(
-																'You have cancelled the transaction'
-															);
-														} catch (error) {
-															message.error(error.data.message);
-														}
-													}}
-													style={{
-														textDecoration: 'underline',
-														cursor: 'pointer',
-														position: 'relative',
-														top: 5,
-													}}
-												>
-													Cancel order
-												</div>
-											</>
-										)}
+										{selectedOrder.user_status === 'confirmed' &&
+											selectedOrder.merchant_status === 'pending' && (
+												<>
+													<div
+														onClick={async () => {
+															try {
+																await updateTransaction({
+																	id: selectedOrder.id,
+																	user_status: 'appeal',
+																});
+																const transaction = await fetchTransactions({
+																	id: selectedOrder.id,
+																});
+																setSelectedOrder(transaction.data[0]);
+																message.success(
+																	'You have appealed the transaction, contact support to resolve your issue'
+																);
+															} catch (error) {
+																message.error(error.data.message);
+															}
+														}}
+														style={{
+															textDecoration: 'underline',
+															cursor: 'pointer',
+															position: 'relative',
+															top: 5,
+														}}
+													>
+														Appeal
+													</div>
+													<div
+														onClick={async () => {
+															try {
+																await updateTransaction({
+																	id: selectedOrder.id,
+																	user_status: 'cancelled',
+																});
+																const transaction = await fetchTransactions({
+																	id: selectedOrder.id,
+																});
+																setSelectedOrder(transaction.data[0]);
+																message.success(
+																	'You have cancelled the transaction'
+																);
+															} catch (error) {
+																message.error(error.data.message);
+															}
+														}}
+														style={{
+															textDecoration: 'underline',
+															cursor: 'pointer',
+															position: 'relative',
+															top: 5,
+														}}
+													>
+														Cancel order
+													</div>
+												</>
+											)}
 									</>
 								)}
 
-								{user.id === selectedOrder?.merchant_id && (
-									<span
-										style={{
-											display: 'flex',
-											gap: 10,
-											pointerEvents:
-												selectedOrder.user_status !== 'confirmed'
-													? 'none'
-													: 'all',
-											opacity:
-												selectedOrder.user_status !== 'confirmed' ? 0.5 : 1,
-										}}
-									>
-										<div
-											onClick={async () => {
-												try {
-													await updateTransaction({
-														id: selectedOrder.id,
-														merchant_status: 'appeal',
-													});
-													const transaction = await fetchTransactions({
-														id: selectedOrder.id,
-													});
-													setSelectedOrder(transaction.data[0]);
-													message.success(
-														'You have appealed the transaction, contact support to resolve your issue'
-													);
-												} catch (error) {
-													message.error(error.data.message);
-												}
-											}}
+								{user.id === selectedOrder?.merchant_id &&
+									selectedOrder?.merchant_status === 'pending' && (
+										<span
 											style={{
-												textDecoration: 'underline',
-												cursor: 'pointer',
-												position: 'relative',
-												top: 5,
+												display: 'flex',
+												gap: 10,
+												pointerEvents:
+													selectedOrder.user_status !== 'confirmed'
+														? 'none'
+														: 'all',
+												opacity:
+													selectedOrder.user_status !== 'confirmed' ? 0.5 : 1,
 											}}
 										>
-											Appeal
-										</div>
+											<div
+												onClick={async () => {
+													try {
+														await updateTransaction({
+															id: selectedOrder.id,
+															merchant_status: 'appeal',
+														});
+														const transaction = await fetchTransactions({
+															id: selectedOrder.id,
+														});
+														setSelectedOrder(transaction.data[0]);
+														message.success(
+															'You have appealed the transaction, contact support to resolve your issue'
+														);
+													} catch (error) {
+														message.error(error.data.message);
+													}
+												}}
+												style={{
+													textDecoration: 'underline',
+													cursor: 'pointer',
+													position: 'relative',
+													top: 5,
+												}}
+											>
+												Appeal
+											</div>
 
-										<Button
-											disabled={selectedOrder.user_status !== 'confirmed'}
-											style={{ backgroundColor: '#5E63F6', color: 'white' }}
-											onClick={async () => {
-												try {
-													await updateTransaction({
-														id: selectedOrder.id,
-														merchant_status: 'confirmed',
-													});
-													const transaction = await fetchTransactions({
-														id: selectedOrder.id,
-													});
-													setSelectedOrder(transaction.data[0]);
-													message.success('You have confirmed the transaction');
-												} catch (error) {
-													message.error(error.data.message);
-												}
-											}}
-										>
-											CONFIRM AND RELEASE CRYPTO
-										</Button>
-									</span>
-								)}
+											<Button
+												disabled={selectedOrder.user_status !== 'confirmed'}
+												style={{ backgroundColor: '#5E63F6', color: 'white' }}
+												onClick={async () => {
+													try {
+														await updateTransaction({
+															id: selectedOrder.id,
+															merchant_status: 'confirmed',
+														});
+														const transaction = await fetchTransactions({
+															id: selectedOrder.id,
+														});
+														setSelectedOrder(transaction.data[0]);
+														message.success(
+															'You have confirmed the transaction'
+														);
+													} catch (error) {
+														message.error(error.data.message);
+													}
+												}}
+											>
+												CONFIRM AND RELEASE CRYPTO
+											</Button>
+										</span>
+									)}
+								{user.id === selectedOrder?.merchant_id &&
+									selectedOrder?.merchant_status === 'appeal' && (
+										<div style={{ fontWeight: 'bold' }}>
+											You have appealed the transaction, Please contact support
+											with transaction id to resolve your issue
+										</div>
+									)}
 							</div>
 						</div>
 					</div>
@@ -529,7 +565,7 @@ const P2POrder = ({
 							</div>
 
 							{/* chat */}
-							<div style={{ minHeight: 400, overflowY: 'scroll' }}>
+							<div style={{ height: 500, overflowY: 'scroll' }}>
 								<div>
 									{selectedOrder?.messages.map((message, index) => {
 										if (index === 0) {
@@ -562,8 +598,7 @@ const P2POrder = ({
 															color: 'grey',
 														}}
 													>
-														Buyer has marked this order as paid. Waiting for
-														vendor to check, confirm and realease funds (
+														{message.message} (
 														{moment(message?.created_at || new Date()).format(
 															'DD/MMM/YYYY, hh:mmA '
 														)}
@@ -635,6 +670,10 @@ const P2POrder = ({
 										display: 'flex',
 										justifyContent: 'space-between',
 										gap: 10,
+										pointerEvents:
+											selectedOrder.transaction_status === 'complete'
+												? 'none'
+												: 'all',
 									}}
 								>
 									<div style={{ flex: 6 }}>
@@ -678,7 +717,7 @@ const P2POrder = ({
 			</div>
 
 			{user.id === selectedOrder?.user_id &&
-				selectedOrder.user_status !== 'confirmed' && (
+				selectedOrder.user_status === 'pending' && (
 					<div
 						style={{
 							display: 'flex',

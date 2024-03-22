@@ -494,7 +494,8 @@ const updateP2pTransaction = async (data) => {
 		newMessages.push(chatMessage);
 	}
 
-	if (user_status === 'cancelled') {
+	console.log({user_status})
+	if (user_status === 'appeal') {
 		const chatMessage = {
 			sender_id: user_id,
 			receiver_id: merchant.id,

@@ -79,7 +79,11 @@ const P2P = ({
 					}}
 				>
 					<TabPane tab="P2P" key="0">
-						<P2PDash setDisplayOrder={setDisplayOrder} refresh={refresh} />
+						<P2PDash
+							setDisplayOrder={setDisplayOrder}
+							refresh={refresh}
+							setSelectedTransaction={setSelectedTransaction}
+						/>
 					</TabPane>
 					<TabPane tab="ORDERS" key="1">
 						<P2POrders

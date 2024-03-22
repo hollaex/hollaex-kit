@@ -7,7 +7,11 @@ import STRINGS from 'config/localizedStrings';
 import { Button, Select, Input, InputNumber } from 'antd';
 import { Link } from 'react-router';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { fetchDeals, createTransaction } from './actions/p2pActions';
+import {
+	fetchDeals,
+	createTransaction,
+	fetchTransactions,
+} from './actions/p2pActions';
 
 const P2PDash = ({
 	data,
@@ -21,6 +25,7 @@ const P2PDash = ({
 	user,
 	setDisplayOrder,
 	refresh,
+	setSelectedTransaction,
 }) => {
 	const [expandRow, setExpandRow] = useState(false);
 	const [selectedDeal, setSelectedDeal] = useState();
@@ -232,12 +237,18 @@ const P2PDash = ({
 													onClick={async () => {
 														try {
 															if (amountFiat && selectedMethod) {
-																await createTransaction({
+																const transaction = await createTransaction({
 																	deal_id: selectedDeal.id,
 																	amount_fiat: amountFiat,
 																	payment_method_used: selectedMethod,
 																});
 																message.success('Order Created.');
+
+																const transData = await fetchTransactions({
+																	id: transaction.id,
+																});
+
+																setSelectedTransaction(transData.data[0]);
 																setDisplayOrder(true);
 															} else {
 																message.error(
