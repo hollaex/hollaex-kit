@@ -677,58 +677,61 @@ const P2POrder = ({
 				</div>
 			</div>
 
-			{user.id === selectedOrder?.user_id && (
-				<div
-					style={{
-						display: 'flex',
-						gap: 10,
-						textAlign: 'center',
-						justifyContent: 'center',
-						marginTop: 10,
-					}}
-				>
-					<Button
-						style={{ backgroundColor: '#5E63F6', color: 'white' }}
-						onClick={async () => {
-							try {
-								await updateTransaction({
-									id: selectedOrder.id,
-									user_status: 'cancelled',
-								});
-								const transaction = await fetchTransactions({
-									id: selectedOrder.id,
-								});
-								setSelectedOrder(transaction.data[0]);
-								message.success('You have cancelled the transaction');
-							} catch (error) {
-								message.error(error.data.message);
-							}
+			{user.id === selectedOrder?.user_id &&
+				selectedOrder.user_status !== 'confirmed' && (
+					<div
+						style={{
+							display: 'flex',
+							gap: 10,
+							textAlign: 'center',
+							justifyContent: 'center',
+							marginTop: 10,
 						}}
 					>
-						CANCEL
-					</Button>
-					<Button
-						style={{ backgroundColor: '#5E63F6', color: 'white' }}
-						onClick={async () => {
-							try {
-								await updateTransaction({
-									id: selectedOrder.id,
-									user_status: 'confirmed',
-								});
-								const transaction = await fetchTransactions({
-									id: selectedOrder.id,
-								});
-								setSelectedOrder(transaction.data[0]);
-								message.success("You've successfuly confirmed the transaction");
-							} catch (error) {
-								message.error(error.data.message);
-							}
-						}}
-					>
-						CONFIRM TRANSFER AND NOTIFY VENDOR
-					</Button>
-				</div>
-			)}
+						<Button
+							style={{ backgroundColor: '#5E63F6', color: 'white' }}
+							onClick={async () => {
+								try {
+									await updateTransaction({
+										id: selectedOrder.id,
+										user_status: 'cancelled',
+									});
+									const transaction = await fetchTransactions({
+										id: selectedOrder.id,
+									});
+									setSelectedOrder(transaction.data[0]);
+									message.success('You have cancelled the transaction');
+								} catch (error) {
+									message.error(error.data.message);
+								}
+							}}
+						>
+							CANCEL
+						</Button>
+						<Button
+							style={{ backgroundColor: '#5E63F6', color: 'white' }}
+							onClick={async () => {
+								try {
+									await updateTransaction({
+										id: selectedOrder.id,
+										user_status: 'confirmed',
+									});
+									const transaction = await fetchTransactions({
+										id: selectedOrder.id,
+									});
+									setSelectedOrder(transaction.data[0]);
+									message.success(
+										"You've successfuly confirmed the transaction"
+									);
+								} catch (error) {
+									message.error(error.data.message);
+								}
+							}}
+						>
+							CONFIRM TRANSFER AND NOTIFY VENDOR
+						</Button>
+					</div>
+				)}
 		</>
 	);
 };
