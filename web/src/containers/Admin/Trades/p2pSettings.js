@@ -48,6 +48,7 @@ const P2PSettings = ({ coins, pairs, p2p_config }) => {
 
 	const [merchantFee, setMerchantFee] = useState();
 	const [userFee, setUserFee] = useState();
+	const [editMode, setEditMode] = useState(false);
 
 	useEffect(() => {
 		getTiers();
@@ -64,10 +65,37 @@ const P2PSettings = ({ coins, pairs, p2p_config }) => {
 
 	return (
 		<div className="admin-earnings-container w-100">
-			<div>
-				Below is the status of the P2P system on your platform and the settings.
-				Select what assets, KYC requirements and more are allowed on your
-				platform.
+			<div style={{ display: 'flex', justifyContent: 'space-between' }}>
+				<div>
+					Below is the status of the P2P system on your platform and the
+					settings. Select what assets, KYC requirements and more are allowed on
+					your platform.
+				</div>
+				<div>
+					<Button
+						onClick={() => {
+							setSide(p2p_config.side);
+							setDigitalCurrencies(p2p_config.digital_currencies);
+							setFiatCurrencies(p2p_config.fiat_currencies);
+							setMerchantTier(p2p_config.starting_merchant_tier);
+							setUserTier(p2p_config.starting_user_tier);
+							setSelectedPaymentMethods(p2p_config.bank_payment_methods);
+							setMerchantFee(p2p_config.merchant_fee);
+							setUserFee(p2p_config.user_fee);
+							setEditMode(true);
+							setDisplayP2pModel(true);
+						}}
+						style={{
+							backgroundColor: '#288500',
+							color: 'white',
+							flex: 1,
+							height: 35,
+						}}
+						type="default"
+					>
+						Edit Settings
+					</Button>
+				</div>
 			</div>
 			{!p2p_config.enable && (
 				<div
@@ -198,6 +226,7 @@ const P2PSettings = ({ coins, pairs, p2p_config }) => {
 										<div>
 											<Checkbox
 												style={{ color: 'white' }}
+												checked={digitalCurrencies.includes(coin.symbol)}
 												onChange={(e) => {
 													if (e.target.checked) {
 														if (!digitalCurrencies.includes(coin.symbol)) {
@@ -233,7 +262,12 @@ const P2PSettings = ({ coins, pairs, p2p_config }) => {
 								platform.
 							</div>
 
-							<div style={{ marginTop: 10, marginBottom: 10 }}>
+							<div
+								style={{ marginTop: 10, marginBottom: 10 }}
+								onClick={() => {
+									setDisplayFiatAdd(true);
+								}}
+							>
 								Add a fiat currency
 							</div>
 
@@ -485,7 +519,7 @@ const P2PSettings = ({ coins, pairs, p2p_config }) => {
 								</div>
 							</div>
 
-							<div
+							{/* <div
 								style={{
 									width: '90%',
 									border: '1px solid white',
@@ -502,7 +536,7 @@ const P2PSettings = ({ coins, pairs, p2p_config }) => {
 									</div>
 									<div>EDIT</div>
 								</div>
-							</div>
+							</div> */}
 						</div>
 					)}
 
