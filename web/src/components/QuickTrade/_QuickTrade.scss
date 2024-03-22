@@ -110,13 +110,12 @@ $close-icon--height: 2rem;
 		padding: 1.5rem;
 		border-radius: 10px;
 		width: 465px;
-		border: 2px solid transparent;
+		border: 1px solid $colors-super-pale-black;
 		&:focus-within {
 			background: var(--base_wallet-sidebar-and-popup);
-			border: 2px solid #5d63ff;
+			border: 2px solid #5d63ff !important;
 		}
 
-		  
 		.currency-dropdown:hover,
 		.input-group__select:hover {
 			.input-group__select,
@@ -130,15 +129,33 @@ $close-icon--height: 2rem;
 		}
 	}
 
+	.active-border {
+		border: 1px solid $colors-main-black !important;
+		&:focus-within {
+			background: var(--base_wallet-sidebar-and-popup);
+			border: 1px solid $colors-main-black !important;
+		}
+	}
+
+	.quick-trade-input:hover,
+	.currency-dropdown:hover {
+		border: 1px solid $colors-main-black;
+	}
+
 	.currency-dropdown {
-		border: 1px solid #b2b3b3;
-		border-radius: 5px;
+		border: 1px solid $colors-super-pale-black;
+		border-radius: 30px;
+		height: 100%;
+		cursor: pointer;
+		.ant-select-arrow {
+			top: 50% !important;
+		}
 	}
 
 	.input-group__input {
 		text-align: right;
 		color: var(--labels_secondary-inactive-label-text-graphics);
-		font-size: 2.1rem;
+		font-size: 3.1rem;
 		margin-left: 1rem;
 		height: 60px;
 		&:focus,
@@ -158,9 +175,10 @@ $close-icon--height: 2rem;
 		display: block;
 	}
 
-	.input-group__select {
+	.input-group__select,
+	.input-group__select_disabled {
 		color: var(--labels_secondary-inactive-label-text-graphics);
-		padding: 1.125rem 1rem;
+		margin-left: 5%;
 		font-size: 1.4rem;
 		.ant-select-selector {
 			padding: 0;
@@ -170,6 +188,10 @@ $close-icon--height: 2rem;
 		.anticon {
 			color: var(--labels_important-active-labels-text-graphics);
 		}
+	}
+
+	.input-group__select_disabled {
+		font-size: 1.2rem;
 	}
 }
 .quick_trade-wrapper.width-none {
@@ -239,6 +261,9 @@ $close-icon--height: 2rem;
 			margin-left: auto;
 			.btn-wrapper {
 				padding: 1rem 0;
+				.holla-button {
+					border-radius: 10px;
+				}
 				.holla-button.disabled {
 					svg {
 						fill: rgba(0, 0, 0, 0.38) !important;
@@ -250,7 +275,7 @@ $close-icon--height: 2rem;
 				}
 			}
 			.btn-margin-wrapper {
-				margin-top: 5rem;
+				margin-bottom: 5rem;
 			}
 			.py-2 {
 				display: flex;
@@ -408,17 +433,13 @@ $close-icon--height: 2rem;
 			padding: 2rem 1.7rem;
 			border-radius: 10px;
 			width: 100%;
-			min-height: 19.25rem;
 			font-size: 2.25rem;
 		}
 
 		.input-group__select {
 			font-size: 2.3rem;
-			min-height: 60px;
-			padding: 1rem 0.5rem;
 			width: 15rem;
 			.ant-select-selector {
-				margin-top: 0.375rem;
 				height: 5rem;
 			}
 		}
@@ -471,6 +492,21 @@ $close-icon--height: 2rem;
 .loading-border {
 	position: absolute;
 	border: 1px solid $link;
+}
+
+@media (min-width: 450px) and (max-width: 768px) {
+	.quick_trade-container {
+		.currency-dropdown {
+			margin-right: 15%;
+		}
+	}
+}
+
+@media (min-width: 768px) and (max-width: 800px) {
+	.ant-select-arrow {
+		right: 20px !important;
+		font-size: 14px !important;
+	}
 }
 
 @media (min-width: 1500px) {

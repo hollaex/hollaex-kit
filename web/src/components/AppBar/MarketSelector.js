@@ -238,7 +238,9 @@ class MarketSelector extends Component {
 							name={STRINGS['SEARCH_TXT']}
 							placeHolder={`${STRINGS['SEARCH_TXT']}...`}
 							className="app-bar-search-field"
-							handleSearch={(e) => this.handleSearch(e.target.value)}
+							handleSearch={(e) =>
+								this.handleSearch(e.target && e.target.value)
+							}
 							showCross
 						/>
 					</div>

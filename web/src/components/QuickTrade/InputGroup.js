@@ -5,6 +5,7 @@ import math from 'mathjs';
 import { isNumeric, isFloat } from 'validator';
 import {
 	CaretDownOutlined,
+	CaretUpOutlined,
 	LoadingOutlined,
 	SyncOutlined,
 } from '@ant-design/icons';
@@ -13,7 +14,6 @@ import { DEFAULT_COIN_DATA } from 'config/constants';
 import { minValue, maxValue } from 'components/Form/validations';
 import { FieldError } from 'components/Form/FormFields/FieldWrapper';
 import { translateError } from './utils';
-import STRINGS from 'config/localizedStrings';
 import { Coin } from 'components';
 import { getDecimals } from 'utils/utils';
 
@@ -23,6 +23,14 @@ class InputGroup extends React.PureComponent {
 	state = {
 		isOpen: false,
 	};
+
+	componentDidUpdate() {
+		const { isOpen } = this.state;
+		const { setIsOpenTopField, setIsOpenBottomField } = this.props;
+
+		setIsOpenTopField && setIsOpenTopField(isOpen);
+		setIsOpenBottomField && setIsOpenBottomField(isOpen);
+	}
 
 	onDropdownVisibleChange = (isOpen) => {
 		this.setState({ isOpen });
@@ -116,7 +124,11 @@ class InputGroup extends React.PureComponent {
 								size="default"
 								showSearch
 								filterOption={true}
-								className="input-group__select"
+								className={
+									isOpen
+										? 'input-group__select_disabled'
+										: 'input-group__select'
+								}
 								value={selectValue}
 								onChange={onSelect}
 								onDropdownVisibleChange={this.onDropdownVisibleChange}
@@ -125,9 +137,15 @@ class InputGroup extends React.PureComponent {
 								listHeight={35 * 6}
 								dropdownClassName="custom-select-style"
 								suffixIcon={
-									<CaretDownOutlined
-										onClick={() => this.onDropdownVisibleChange(!isOpen)}
-									/>
+									!isOpen ? (
+										<CaretDownOutlined
+											onClick={() => this.onDropdownVisibleChange(!isOpen)}
+										/>
+									) : (
+										<CaretUpOutlined
+											onClick={() => this.onDropdownVisibleChange(!isOpen)}
+										/>
+									)
 								}
 							>
 								{options.map((symbol, index) => {
@@ -140,7 +158,13 @@ class InputGroup extends React.PureComponent {
 											key={index}
 											className="d-flex"
 										>
-											<div className="d-flex align-items-center quick-trade-select-wrapper">
+											<div
+												className={
+													isOpen
+														? 'd-flex align-items-center quick-trade-select-wrapper ml-3'
+														: 'd-flex align-items-center quick-trade-select-wrapper'
+												}
+											>
 												<div
 													className={
 														window.innerWidth > 768
@@ -150,10 +174,16 @@ class InputGroup extends React.PureComponent {
 												>
 													<Coin
 														iconId={icon_id}
-														type={window.innerWidth > 768 ? 'CS9' : 'CS11'}
+														type={
+															window.innerWidth > 768 && !isOpen
+																? 'CS8'
+																: isOpen
+																? 'CS6'
+																: 'CS11'
+														}
 													/>
 												</div>
-												<span className="ml-3 mr-6">{display_name}</span>
+												<span className="ml-2 mr-4">{display_name}</span>
 											</div>
 										</Option>
 									);
@@ -163,7 +193,7 @@ class InputGroup extends React.PureComponent {
 						<div>
 							<Input
 								type="number"
-								placeholder={STRINGS['AMOUNT']}
+								placeholder="0"
 								style={{}}
 								className="input-group__input"
 								value={inputValue || ''}
