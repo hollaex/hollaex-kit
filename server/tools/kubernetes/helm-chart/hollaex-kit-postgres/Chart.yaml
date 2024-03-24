@@ -1,0 +1,4 @@
+apiVersion: v1
+description: A Helm chart for bitholla-hollaex-postgres
+name: bitholla-hollaex-postgres
+version: 0.1.0

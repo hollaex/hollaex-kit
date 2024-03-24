@@ -7,7 +7,7 @@ tools
 !tools/general/*.js
 !tools/nexe
 Dockerfile
-docker-compose.yml
+docker-compose*
 index.html
 package-lock.json
 logs
@@ -15,3 +15,5 @@ coverage
 .nyc_output
 .*docker-compose.yaml
 .drone*.yml
+hollaex-kit.env
+hollaex-kit.env*

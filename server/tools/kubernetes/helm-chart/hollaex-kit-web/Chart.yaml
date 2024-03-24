@@ -1,0 +1,4 @@
+apiVersion: v1
+description: A Helm chart for bitholla-hollaex-web
+name: bitholla-hollaex-web
+version: 0.1.0

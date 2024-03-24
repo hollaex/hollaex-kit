@@ -7,7 +7,7 @@ RUN apt-get update && \
 
 ENV NODE_ENV=production
 
-COPY ./server /app
+COPY . /app
 
 WORKDIR /app
 

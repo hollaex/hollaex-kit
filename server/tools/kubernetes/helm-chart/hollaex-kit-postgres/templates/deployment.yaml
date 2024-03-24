@@ -1,0 +1,197 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: {{.Release.Name}}
+  name: {{.Release.Name}}
+  namespace: {{.Release.namespace}}
+spec:
+  replicas: 1
+  
+  strategy:
+    type: Recreate
+ 
+  selector:
+    matchLabels:
+      app: {{.Release.Name}}
+      role: master
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app: {{.Release.Name}}
+        role: master
+        tier: backend
+    spec:
+      volumes:
+      - name: {{.Release.Name}}-initdb-remove-local-nopasswd-access
+        configMap:
+          defaultMode: 0755
+          name: {{.Release.Name}}-initdb-remove-local-nopasswd-access
+      - name: postgres-mount
+        persistentVolumeClaim:
+          claimName: {{.Values.pvc.name}}
+      - name: postgres-conf
+        configMap:
+          name: {{.Release.Name}}-conf
+      - name: shared-data
+        emptyDir: {}
+      {{- if .Values.filebeat }}
+      {{- if .Values.filebeat.create }}
+      
+      - name: filebeat-config
+        configMap:
+          defaultMode: 0600
+          name: postgres-filebeat-exporter-config
+      - name: filebeat-modules
+        configMap:
+          defaultMode: 0600
+          name: postgres-filebeat-exporter-modules
+      - name: filebeat-data
+        hostPath:
+          path: /var/lib/filebeat-data
+          type: DirectoryOrCreate
+      - name: cron-rules
+        configMap:
+          #defaultMode: 0600
+          name: postgres-log-rotater-cronjob
+
+      {{- end }}
+      {{- end }}
+
+      imagePullSecrets:
+      - name: bitholla-registry-secret
+
+{{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+{{- end }}
+
+      containers:
+      - name: {{.Release.Name}}
+        image: {{.Values.imageRegistry}}:{{.Values.dockerTag}}
+        resources:
+          limits:
+            memory: {{.Values.resources.limits.memory}}
+            cpu: {{.Values.resources.limits.cpu}}
+          requests:
+            memory: {{.Values.resources.requests.memory}}
+            cpu: {{.Values.resources.requests.cpu}}
+        env:
+          - name: POSTGRES_DB
+            valueFrom:
+              secretKeyRef:
+                name: {{.Values.secretName}}
+                key: DB_NAME
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+                secretKeyRef:
+                  name: {{.Values.secretName}}
+                  key: DB_PASSWORD
+          - name: POSTGRES_USER
+            valueFrom:
+                secretKeyRef:
+                  name: {{.Values.secretName}}
+                  key: DB_USERNAME
+        imagePullPolicy: IfNotPresent
+
+        {{- if .Values.filebeat }}
+        {{- if .Values.filebeat.create }}
+
+        args: ["-c", "config_file=/etc/postgresql.conf"]
+
+        securityContext:
+          runAsUser: 999
+
+        {{- end }}
+        {{- end }}
+
+        ports:
+        - name: port
+          containerPort: 5432
+        volumeMounts:
+          - name: postgres-mount
+            mountPath: /var/lib/postgresql/data
+            subPath: data
+          - name: postgres-conf
+            mountPath: /etc/postgresql.conf
+            subPath: postgresql.conf
+          - name: {{.Release.Name}}-initdb-remove-local-nopasswd-access
+            mountPath: /docker-entrypoint-initdb.d/remove-local-nopasswd-access.sh
+            subPath: remove-local-nopasswd-access.sh
+          - name: shared-data
+            mountPath: /etc/postgres-logs
+
+      {{- if .Values.filebeat }}
+      {{- if .Values.filebeat.create }}
+
+      - image: "{{ .Values.filebeat.image.repository }}:{{ .Values.filebeat.image.tag }}"
+        imagePullPolicy: "{{ .Values.filebeat.image.pullPolicy }}"
+        name: postgres-filebeat-exporter
+        dnsPolicy: ClusterFirstWithHostNet
+        args: [
+          "-c", "/etc/filebeat.yml",
+          "-e",
+        ]
+        resources:
+          limits:
+            memory: {{.Values.resources.limits.memory}}
+            cpu: {{.Values.resources.limits.cpu}}
+          requests:
+            memory: {{.Values.resources.requests.memory}}
+            cpu: {{.Values.resources.requests.cpu}}
+        env:
+        - name: ELASTICSEARCH_HOST
+          value: "{{ .Values.filebeat.elasticsearch_host }}"
+        - name: ELASTICSEARCH_PORT
+          value: "{{ .Values.filebeat.elasticsearch_port }}"
+        - name: KIBANA_HOST
+          value: "{{ .Values.filebeat.kibana_host }}"
+        resources:
+          limits:
+            cpu: 1
+            memory: 1Gi
+          requests:
+            cpu: 50m
+            memory: 100Mi
+        securityContext:
+          runAsUser: 0
+        volumeMounts:
+        - name: filebeat-config
+          mountPath: /etc/filebeat.yml
+          readOnly: true
+          subPath: filebeat.yml
+        # - name: filebeat-inputs
+        #   mountPath: /usr/share/filebeat/inputs.d
+          # readOnly: true
+        - name: filebeat-modules
+          mountPath: /usr/share/filebeat/modules.d
+          readOnly: true
+        - name: filebeat-data
+          mountPath: /usr/share/filebeat/data
+        - name: shared-data
+          mountPath: /usr/share/filebeat/logs
+          readOnly: true
+
+      ## Log rotater
+      - image: "bitholla/devops-tools:alpine_coretuils-3.6"
+        #imagePullPolicy: "Always"
+        name: postgres-log-rotater
+        #dnsPolicy: ClusterFirstWithHostNet
+        command: ["/bin/sh", "-c"] #0 0 * * 0
+        #args: ["-c", "touch /etc/cron.d/cron-rmlogs && echo '* * * * * root  rm /tmp/logs/*' > /etc/cron.d/cron-rmlogs && chmod 0644 /etc/cron.d/cron-rmlogs && service cron start"]
+        args:
+          - echo "Container will daily remove logs from Postgres automatically.";
+            crond;
+            touch /tmp/cron.log;
+            tail -f /tmp/cron.log;
+            
+        securityContext:
+          runAsUser: 0
+        volumeMounts:
+        - name: shared-data
+          mountPath: /tmp/logs
+        - name: cron-rules
+          mountPath: /etc/crontabs
+      {{- end }}
+      {{- end }}
