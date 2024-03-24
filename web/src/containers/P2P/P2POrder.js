@@ -62,7 +62,7 @@ const P2POrder = ({
 	const [selectedOrder, setSelectedOrder] = useState(selectedTransaction);
 	const [chatMessage, setChatMessage] = useState();
 	const [ws, setWs] = useState();
-	const [ready, setReady] = useState();
+	const [ready, setReady] = useState(false);
 
 	useEffect(() => {
 		const url = `${WS_URL}/stream?authorization=Bearer ${getToken()}`;
@@ -109,7 +109,15 @@ const P2POrder = ({
 		};
 
 		return () => {
-			disconnectFromP2P();
+			console.log({ GGG: `p2pChat:${selectedTransaction.id}` });
+			p2pWs.send(
+				JSON.stringify({
+					op: 'unsubscribe',
+					args: [`p2pChat:${selectedTransaction.id}`],
+				})
+			);
+			p2pWs.close();
+			// disconnectFromP2P();
 		};
 	}, []);
 
@@ -163,8 +171,12 @@ const P2POrder = ({
 	};
 
 	const disconnectFromP2P = () => {
+		console.log({ GG: 'DDD' });
+		console.log({ ws });
 		if (ws) {
+			console.log({ GG: 'GASDASD' });
 			if (ready) {
+				console.log({ GG: 'ASDLOPASJKDl' });
 				ws.send(
 					JSON.stringify({
 						op: 'unsubscribe',
