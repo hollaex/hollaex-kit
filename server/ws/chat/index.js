@@ -59,23 +59,23 @@ const addMessage = (username, verification_level, userId, message) => {
 };
 
 const addP2PMessage = (user_id, p2pData) => {
-	const timestamp = moment().unix();
+	const created_at = moment();
 	const data = {
 		id: p2pData.id,
 		user_id,
-		message: p2pData.message,
-		timestamp
+		...p2pData,
+		created_at
 	};
 	publishP2PChatMessage('addMessage', data);
 };
 
 const getP2PStatus = (user_id, p2pData) => {
-	const timestamp = moment().unix();
+	const created_at = moment();
 	const data = {
 		id: p2pData.id,
 		user_id,
 		status: p2pData.status,
-		timestamp
+		created_at
 	};
 	publishP2PChatMessage('getStatus', data);
 };

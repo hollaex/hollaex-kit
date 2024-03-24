@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { connect } from 'react-redux';
 import { ReactSVG } from 'react-svg';
 
@@ -63,13 +63,29 @@ const P2POrder = ({
 	const [chatMessage, setChatMessage] = useState();
 	const [ws, setWs] = useState();
 	const [ready, setReady] = useState(false);
+	const ref = useRef(null);
+
+	useEffect(() => {
+		ref.current.scroll({
+			top: 9999,
+			behavior: 'smooth',
+		});
+	}, [selectedOrder.messages]);
+
+	// useEffect(() => {
+	// 	fetchTransactions({ id: selectedOrder.id })
+	// 	.then(transaction =>{
+	// 		setSelectedOrder(transaction.data[0]);
+	// 	})
+	// 	.catch(err => err)
+
+	// }, [selectedOrder.user_status, selectedOrder.merchant_status])
 
 	useEffect(() => {
 		const url = `${WS_URL}/stream?authorization=Bearer ${getToken()}`;
 		const p2pWs = new WebSocket(url);
 
 		p2pWs.onopen = (evt) => {
-			console.info('Connected P2P Socket');
 			setWs(p2pWs);
 			setReady(true);
 			p2pWs.send(
@@ -91,11 +107,30 @@ const P2POrder = ({
 			const data = JSON.parse(evt.data);
 			switch (data.action) {
 				case 'addMessage': {
-					console.log({ data });
+					if (data.data) {
+						const { id } = data.data;
+						if (selectedOrder.id === id) {
+							setSelectedOrder((prevState) => {
+								const messages = [...prevState.messages];
+
+								messages.push(data.data);
+
+								return {
+									...prevState,
+									messages,
+								};
+							});
+						}
+					}
 					break;
 				}
 
 				case 'getStatus': {
+					fetchTransactions({ id: selectedOrder.id })
+						.then((transaction) => {
+							setSelectedOrder(transaction.data[0]);
+						})
+						.catch((err) => err);
 					break;
 				}
 
@@ -104,12 +139,11 @@ const P2POrder = ({
 			}
 		};
 
-		p2pWs.onerror = (evt) => {
-			console.error('p2p socket error', evt);
-		};
+		// p2pWs.onerror = (evt) => {
+		// 	console.error('p2p socket error', evt);
+		// };
 
 		return () => {
-			console.log({ GGG: `p2pChat:${selectedTransaction.id}` });
 			p2pWs.send(
 				JSON.stringify({
 					op: 'unsubscribe',
@@ -117,7 +151,6 @@ const P2POrder = ({
 				})
 			);
 			p2pWs.close();
-			// disconnectFromP2P();
 		};
 	}, []);
 
@@ -143,10 +176,7 @@ const P2POrder = ({
 				args: [
 					{
 						action: 'addMessage',
-						data: {
-							id: selectedOrder.id,
-							message,
-						},
+						data: message,
 					},
 				],
 			})
@@ -168,24 +198,6 @@ const P2POrder = ({
 				],
 			})
 		);
-	};
-
-	const disconnectFromP2P = () => {
-		console.log({ GG: 'DDD' });
-		console.log({ ws });
-		if (ws) {
-			console.log({ GG: 'GASDASD' });
-			if (ready) {
-				console.log({ GG: 'ASDLOPASJKDl' });
-				ws.send(
-					JSON.stringify({
-						op: 'unsubscribe',
-						args: [`p2pChat:${selectedTransaction.id}`],
-					})
-				);
-			}
-			ws.close();
-		}
 	};
 
 	return (
@@ -519,10 +531,12 @@ const P2POrder = ({
 																	id: selectedOrder.id,
 																	user_status: 'appeal',
 																});
-																const transaction = await fetchTransactions({
-																	id: selectedOrder.id,
-																});
-																setSelectedOrder(transaction.data[0]);
+
+																updateStatus('appeal');
+																// const transaction = await fetchTransactions({
+																// 	id: selectedOrder.id,
+																// });
+																// setSelectedOrder(transaction.data[0]);
 																message.success(
 																	'You have appealed the transaction, contact support to resolve your issue'
 																);
@@ -546,10 +560,12 @@ const P2POrder = ({
 																	id: selectedOrder.id,
 																	user_status: 'cancelled',
 																});
-																const transaction = await fetchTransactions({
-																	id: selectedOrder.id,
-																});
-																setSelectedOrder(transaction.data[0]);
+																updateStatus('cancelled');
+
+																// const transaction = await fetchTransactions({
+																// 	id: selectedOrder.id,
+																// });
+																// setSelectedOrder(transaction.data[0]);
 																message.success(
 																	'You have cancelled the transaction'
 																);
@@ -592,10 +608,12 @@ const P2POrder = ({
 															id: selectedOrder.id,
 															merchant_status: 'appeal',
 														});
-														const transaction = await fetchTransactions({
-															id: selectedOrder.id,
-														});
-														setSelectedOrder(transaction.data[0]);
+
+														updateStatus('appeal');
+														// const transaction = await fetchTransactions({
+														// 	id: selectedOrder.id,
+														// });
+														// setSelectedOrder(transaction.data[0]);
 														message.success(
 															'You have appealed the transaction, contact support to resolve your issue'
 														);
@@ -622,10 +640,13 @@ const P2POrder = ({
 															id: selectedOrder.id,
 															merchant_status: 'confirmed',
 														});
-														const transaction = await fetchTransactions({
-															id: selectedOrder.id,
-														});
-														setSelectedOrder(transaction.data[0]);
+
+														updateStatus('confirmed');
+
+														// const transaction = await fetchTransactions({
+														// 	id: selectedOrder.id,
+														// });
+														// setSelectedOrder(transaction.data[0]);
 														message.success(
 															'You have confirmed the transaction'
 														);
@@ -655,7 +676,6 @@ const P2POrder = ({
 							style={{
 								border: '1px solid grey',
 								position: 'relative',
-								height: '90%',
 								backgroundColor: '#383A3E',
 								padding: 15,
 							}}
@@ -696,7 +716,15 @@ const P2POrder = ({
 							</div>
 
 							{/* chat */}
-							<div style={{ height: 500, overflowY: 'scroll' }}>
+							<div
+								ref={ref}
+								style={{
+									height: 520,
+									overflowY: 'scroll',
+									display: 'flex',
+									flexDirection: 'column-reverse',
+								}}
+							>
 								<div>
 									{selectedOrder?.messages.map((message, index) => {
 										if (index === 0) {
@@ -788,12 +816,13 @@ const P2POrder = ({
 
 							<div
 								style={{
-									position: 'absolute',
-									bottom: 0,
+									// position: 'absolute',
+									// bottom: 0,
 									padding: 10,
-									marginBottom: 20,
+									marginBottom: 5,
+									marginTop: 10,
 									border: '1px solid grey',
-									width: '90%',
+									width: '100%',
 								}}
 							>
 								<div
@@ -812,12 +841,16 @@ const P2POrder = ({
 											value={chatMessage}
 											onChange={(e) => {
 												setChatMessage(e.target.value);
-												console.log(e.target.value);
 											}}
 										/>
 									</div>
 									<div
-										style={{ color: '#5A60E5', cursor: 'pointer' }}
+										style={{
+											color: '#5A60E5',
+											cursor: 'pointer',
+											position: 'relative',
+											top: 3,
+										}}
 										onClick={async () => {
 											try {
 												await createChatMessage({
@@ -828,11 +861,22 @@ const P2POrder = ({
 													message: chatMessage,
 													transaction_id: selectedOrder.id,
 												});
-												const transaction = await fetchTransactions({
+
+												addMessage({
+													sender_id: user.id,
+													type: 'message',
+													receiver_id:
+														user.id === selectedOrder?.merchant_id
+															? selectedOrder?.user_id
+															: selectedOrder?.merchant_id,
+													message: chatMessage,
 													id: selectedOrder.id,
 												});
-												addMessage(chatMessage);
-												setSelectedOrder(transaction.data[0]);
+
+												// const transaction = await fetchTransactions({
+												// 	id: selectedOrder.id,
+												// });
+												// setSelectedOrder(transaction.data[0]);
 												setChatMessage();
 											} catch (error) {
 												message.error(error.data.message);
@@ -867,10 +911,12 @@ const P2POrder = ({
 										id: selectedOrder.id,
 										user_status: 'cancelled',
 									});
-									const transaction = await fetchTransactions({
-										id: selectedOrder.id,
-									});
-									setSelectedOrder(transaction.data[0]);
+
+									updateStatus('cancelled');
+									// const transaction = await fetchTransactions({
+									// 	id: selectedOrder.id,
+									// });
+									// setSelectedOrder(transaction.data[0]);
 									message.success('You have cancelled the transaction');
 								} catch (error) {
 									message.error(error.data.message);
@@ -887,10 +933,12 @@ const P2POrder = ({
 										id: selectedOrder.id,
 										user_status: 'confirmed',
 									});
-									const transaction = await fetchTransactions({
-										id: selectedOrder.id,
-									});
-									setSelectedOrder(transaction.data[0]);
+									updateStatus('confirmed');
+
+									// const transaction = await fetchTransactions({
+									// 	id: selectedOrder.id,
+									// });
+									// setSelectedOrder(transaction.data[0]);
 									message.success(
 										"You've successfuly confirmed the transaction"
 									);
