@@ -276,6 +276,8 @@ exports.WEBSOCKET_CHANNEL = (topic, symbolOrUserId) => {
 			return 'admin';
 		case 'chat':
 			return 'chat';
+		case 'p2pChat':
+			return `p2pChat:${symbolOrUserId}`;
 		default:
 			return;
 	}

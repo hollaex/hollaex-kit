@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { ReactSVG } from 'react-svg';
 
@@ -14,6 +14,8 @@ import {
 } from './actions/p2pActions';
 import { withRouter } from 'react-router';
 
+import { getToken } from 'utils/token';
+import { WS_URL } from 'config/constants';
 const buyerConfirmMessage = () => (
 	<div
 		style={{
@@ -59,6 +61,120 @@ const P2POrder = ({
 	const coin = coins[selectedTransaction.deal.buying_asset];
 	const [selectedOrder, setSelectedOrder] = useState(selectedTransaction);
 	const [chatMessage, setChatMessage] = useState();
+	const [ws, setWs] = useState();
+	const [ready, setReady] = useState();
+
+	useEffect(() => {
+		const url = `${WS_URL}/stream?authorization=Bearer ${getToken()}`;
+		const p2pWs = new WebSocket(url);
+
+		p2pWs.onopen = (evt) => {
+			console.info('Connected P2P Socket');
+			setWs(p2pWs);
+			setReady(true);
+			p2pWs.send(
+				JSON.stringify({
+					op: 'subscribe',
+					args: [`p2pChat:${selectedTransaction.id}`],
+				})
+			);
+			setInterval(() => {
+				p2pWs.send(
+					JSON.stringify({
+						op: 'ping',
+					})
+				);
+			}, 55000);
+		};
+
+		p2pWs.onmessage = (evt) => {
+			const data = JSON.parse(evt.data);
+			switch (data.action) {
+				case 'addMessage': {
+					console.log({ data });
+					break;
+				}
+
+				case 'getStatus': {
+					break;
+				}
+
+				default:
+					break;
+			}
+		};
+
+		p2pWs.onerror = (evt) => {
+			console.error('p2p socket error', evt);
+		};
+
+		return () => {
+			disconnectFromP2P();
+		};
+	}, []);
+
+	useEffect(() => {
+		getTransaction();
+	}, []);
+
+	const getTransaction = async () => {
+		try {
+			const transaction = await fetchTransactions({
+				id: selectedOrder.id,
+			});
+			setSelectedOrder(transaction.data[0]);
+		} catch (error) {
+			return error;
+		}
+	};
+
+	const addMessage = (message) => {
+		ws.send(
+			JSON.stringify({
+				op: 'p2pChat',
+				args: [
+					{
+						action: 'addMessage',
+						data: {
+							id: selectedOrder.id,
+							message,
+						},
+					},
+				],
+			})
+		);
+	};
+
+	const updateStatus = (status) => {
+		ws.send(
+			JSON.stringify({
+				op: 'p2pChat',
+				args: [
+					{
+						action: 'getStatus',
+						data: {
+							id: selectedOrder.id,
+							status,
+						},
+					},
+				],
+			})
+		);
+	};
+
+	const disconnectFromP2P = () => {
+		if (ws) {
+			if (ready) {
+				ws.send(
+					JSON.stringify({
+						op: 'unsubscribe',
+						args: [`p2pChat:${selectedTransaction.id}`],
+					})
+				);
+			}
+			ws.close();
+		}
+	};
 
 	return (
 		<>
@@ -703,6 +819,7 @@ const P2POrder = ({
 												const transaction = await fetchTransactions({
 													id: selectedOrder.id,
 												});
+												addMessage(chatMessage);
 												setSelectedOrder(transaction.data[0]);
 												setChatMessage();
 											} catch (error) {
