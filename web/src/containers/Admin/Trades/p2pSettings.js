@@ -281,7 +281,6 @@ const P2PSettings = ({ coins, pairs, p2p_config }) => {
 							<div
 								style={{
 									display: 'flex',
-									display: 'column',
 									justifyContent: 'center',
 									alignItems: 'center',
 									backgroundColor: '#192491',
@@ -413,7 +412,6 @@ const P2PSettings = ({ coins, pairs, p2p_config }) => {
 							<div
 								style={{
 									display: 'flex',
-									display: 'column',
 									justifyContent: 'center',
 									alignItems: 'center',
 									backgroundColor: '#192491',

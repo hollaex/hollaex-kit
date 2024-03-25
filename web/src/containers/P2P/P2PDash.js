@@ -5,7 +5,7 @@ import { Switch, message } from 'antd';
 import { IconTitle, EditWrapper, Coin } from 'components';
 import STRINGS from 'config/localizedStrings';
 import { Button, Select, Input, InputNumber } from 'antd';
-import { Link } from 'react-router';
+// import { Link } from 'react-router';
 import withConfig from 'components/ConfigProvider/withConfig';
 import {
 	fetchDeals,

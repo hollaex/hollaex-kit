@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { ReactSVG } from 'react-svg';
+// import { ReactSVG } from 'react-svg';
 
 import { IconTitle, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { Button, Select, Checkbox, Input, message } from 'antd';
+import { Button, Checkbox, message } from 'antd';
 import { fetchDeals, editDeal } from './actions/p2pActions';
 const P2PMyDeals = ({
 	data,
@@ -29,6 +29,7 @@ const P2PMyDeals = ({
 				setMyDeals(res.data);
 			})
 			.catch((err) => err);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [refresh]);
 
 	return (

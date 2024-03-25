@@ -5,7 +5,7 @@ import { ReactSVG } from 'react-svg';
 import { IconTitle, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { Button, Select, Input, message } from 'antd';
+import { Button, Input, message, Modal } from 'antd';
 import moment from 'moment';
 import {
 	createChatMessage,
@@ -16,32 +16,33 @@ import { withRouter } from 'react-router';
 
 import { getToken } from 'utils/token';
 import { WS_URL } from 'config/constants';
-const buyerConfirmMessage = () => (
-	<div
-		style={{
-			marginTop: 10,
-			marginBottom: 10,
-			textAlign: 'center',
-			color: 'grey',
-		}}
-	>
-		Buyer has marked this order as paid. Waiting for vendor to check, confirm
-		and realease funds (23/08,25 23:53)
-	</div>
-);
+import { CloseOutlined } from '@ant-design/icons';
+// const buyerConfirmMessage = () => (
+// 	<div
+// 		style={{
+// 			marginTop: 10,
+// 			marginBottom: 10,
+// 			textAlign: 'center',
+// 			color: 'grey',
+// 		}}
+// 	>
+// 		Buyer has marked this order as paid. Waiting for vendor to check, confirm
+// 		and realease funds (23/08,25 23:53)
+// 	</div>
+// );
 
-const venderConfirmMessage = () => (
-	<div
-		style={{
-			marginTop: 10,
-			marginBottom: 10,
-			textAlign: 'center',
-			color: 'grey',
-		}}
-	>
-		Vendor confirmed the transaction and released the funds.
-	</div>
-);
+// const venderConfirmMessage = () => (
+// 	<div
+// 		style={{
+// 			marginTop: 10,
+// 			marginBottom: 10,
+// 			textAlign: 'center',
+// 			color: 'grey',
+// 		}}
+// 	>
+// 		Vendor confirmed the transaction and released the funds.
+// 	</div>
+// );
 
 const P2POrder = ({
 	data,
@@ -61,6 +62,9 @@ const P2POrder = ({
 	const coin = coins[selectedTransaction.deal.buying_asset];
 	const [selectedOrder, setSelectedOrder] = useState(selectedTransaction);
 	const [chatMessage, setChatMessage] = useState();
+	const [appealReason, setAppealReason] = useState();
+	const [appealSide, setAppealSide] = useState();
+	const [displayAppealModal, setDisplayAppealModel] = useState(false);
 	const [ws, setWs] = useState();
 	const [ready, setReady] = useState(false);
 	const ref = useRef(null);
@@ -152,10 +156,12 @@ const P2POrder = ({
 			);
 			p2pWs.close();
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	useEffect(() => {
 		getTransaction();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const getTransaction = async () => {
@@ -202,6 +208,124 @@ const P2POrder = ({
 
 	return (
 		<>
+			<Modal
+				maskClosable={false}
+				closeIcon={<CloseOutlined className="stake_theme" />}
+				className="stake_table_theme stake_theme"
+				bodyStyle={{}}
+				visible={displayAppealModal}
+				width={450}
+				footer={null}
+				onCancel={() => {
+					setDisplayAppealModel(false);
+				}}
+			>
+				<div
+					style={{
+						display: 'flex',
+						flexDirection: 'column',
+						gap: 15,
+						marginTop: 10,
+					}}
+				>
+					<div
+						style={{
+							flex: 1,
+							display: 'flex',
+							flexDirection: 'column',
+							justifyContent: 'center',
+							alignItems: 'center',
+						}}
+					>
+						<h1 className="stake_theme">Appeal this transaction</h1>
+					</div>
+					<div style={{ flex: 1 }}>
+						<div>Enter the reason why you are appealing this transaction</div>
+						<Input
+							width={300}
+							value={appealReason}
+							onChange={(e) => {
+								setAppealReason(e.target.value);
+							}}
+						/>
+					</div>
+				</div>
+
+				<div
+					style={{
+						display: 'flex',
+						flexDirection: 'row',
+						gap: 15,
+						justifyContent: 'space-between',
+						marginTop: 30,
+					}}
+				>
+					<Button
+						onClick={() => {
+							setDisplayAppealModel(false);
+						}}
+						style={{
+							backgroundColor: '#5D63FF',
+							color: 'white',
+							flex: 1,
+							height: 35,
+						}}
+						type="default"
+					>
+						CANCEL
+					</Button>
+					<Button
+						onClick={async () => {
+							try {
+								if (appealSide === 'merchant') {
+									await updateTransaction({
+										id: selectedOrder.id,
+										merchant_status: 'appeal',
+										cancellation_reason: appealReason,
+									});
+
+									updateStatus('appeal');
+									// const transaction = await fetchTransactions({
+									// 	id: selectedOrder.id,
+									// });
+									// setSelectedOrder(transaction.data[0]);
+									message.success(
+										'You have appealed the transaction, contact support to resolve your issue'
+									);
+								} else {
+									await updateTransaction({
+										id: selectedOrder.id,
+										user_status: 'appeal',
+										cancellation_reason: appealReason,
+									});
+
+									updateStatus('appeal');
+									// const transaction = await fetchTransactions({
+									// 	id: selectedOrder.id,
+									// });
+									// setSelectedOrder(transaction.data[0]);
+									message.success(
+										'You have appealed the transaction, contact support to resolve your issue'
+									);
+								}
+								setAppealSide();
+								setDisplayAppealModel(false);
+							} catch (error) {
+								message.error(error.data.message);
+							}
+						}}
+						style={{
+							backgroundColor: '#5D63FF',
+							color: 'white',
+							flex: 1,
+							height: 35,
+						}}
+						type="default"
+					>
+						OKAY
+					</Button>
+				</div>
+			</Modal>
 			<div
 				onClick={() => {
 					setDisplayOrder(false);
@@ -531,19 +655,8 @@ const P2POrder = ({
 													<div
 														onClick={async () => {
 															try {
-																await updateTransaction({
-																	id: selectedOrder.id,
-																	user_status: 'appeal',
-																});
-
-																updateStatus('appeal');
-																// const transaction = await fetchTransactions({
-																// 	id: selectedOrder.id,
-																// });
-																// setSelectedOrder(transaction.data[0]);
-																message.success(
-																	'You have appealed the transaction, contact support to resolve your issue'
-																);
+																setDisplayAppealModel(true);
+																setAppealSide('user');
 															} catch (error) {
 																message.error(error.data.message);
 															}
@@ -608,19 +721,8 @@ const P2POrder = ({
 											<div
 												onClick={async () => {
 													try {
-														await updateTransaction({
-															id: selectedOrder.id,
-															merchant_status: 'appeal',
-														});
-
-														updateStatus('appeal');
-														// const transaction = await fetchTransactions({
-														// 	id: selectedOrder.id,
-														// });
-														// setSelectedOrder(transaction.data[0]);
-														message.success(
-															'You have appealed the transaction, contact support to resolve your issue'
-														);
+														setDisplayAppealModel(true);
+														setAppealSide('merchant');
 													} catch (error) {
 														message.error(error.data.message);
 													}

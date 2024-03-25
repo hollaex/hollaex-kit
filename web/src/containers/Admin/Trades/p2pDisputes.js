@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Button, Spin, Input, Select } from 'antd';
+import { Table, Button, Spin, Input } from 'antd';
 import { requestDisputes } from './actions';
 import moment from 'moment';
-import BigNumber from 'bignumber.js';
-import { ExclamationCircleFilled } from '@ant-design/icons';
+// import BigNumber from 'bignumber.js';
+// import { ExclamationCircleFilled } from '@ant-design/icons';
 import { connect } from 'react-redux';
 
 const P2PDisputes = ({ coins }) => {
@@ -20,8 +20,6 @@ const P2PDisputes = ({ coins }) => {
 	});
 
 	const [userQuery, setUserQuery] = useState({});
-
-	const [stakingAnayltics, setStakingAnalytics] = useState({});
 
 	const statuses = {
 		staking: 2,

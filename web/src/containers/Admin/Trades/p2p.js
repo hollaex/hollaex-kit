@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Tabs, message } from 'antd';
+import React, { useState } from 'react';
+import { Tabs } from 'antd';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import P2PDeals from './p2pDeals';
@@ -14,9 +14,6 @@ const TabPane = Tabs.TabPane;
 const P2P = () => {
 	const [hideTabs, setHideTabs] = useState(false);
 	const [activeTab, setActiveTab] = useState('1');
-	const [coinData, setCoinData] = useState([]);
-	const [pairData, setPairData] = useState([]);
-	const [quickTradeData, setQuickTradeData] = useState([]);
 
 	const handleTabChange = (key) => {
 		setActiveTab(key);

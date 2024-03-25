@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { ReactSVG } from 'react-svg';
+// import { ReactSVG } from 'react-svg';
 
 import { IconTitle, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { Button, Select, Input } from 'antd';
-import P2POrder from './P2POrder';
+import { Button } from 'antd';
 import { fetchTransactions } from './actions/p2pActions';
 import { withRouter } from 'react-router';
 import { formatToCurrency } from 'utils/currency';

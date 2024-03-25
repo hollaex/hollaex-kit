@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Button, Spin, Input, Select } from 'antd';
+import { Table, Button, Spin, Input } from 'antd';
 import { requestDeals } from './actions';
 import moment from 'moment';
 import BigNumber from 'bignumber.js';
@@ -20,8 +20,6 @@ const P2PDeals = ({ coins }) => {
 	});
 
 	const [userQuery, setUserQuery] = useState({});
-
-	const [stakingAnayltics, setStakingAnalytics] = useState({});
 
 	const statuses = {
 		staking: 2,
