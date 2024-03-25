@@ -9,7 +9,7 @@ import { Button, Select, Input } from 'antd';
 import P2POrder from './P2POrder';
 import { fetchTransactions } from './actions/p2pActions';
 import { withRouter } from 'react-router';
-
+import { formatToCurrency } from 'utils/currency';
 const P2POrders = ({
 	data,
 	onClose,
@@ -25,7 +25,7 @@ const P2POrders = ({
 	router,
 }) => {
 	const [transactions, setTransactions] = useState([]);
-
+	const [filter, setFilter] = useState();
 	useEffect(() => {
 		fetchTransactions()
 			.then((res) => {
@@ -33,6 +33,12 @@ const P2POrders = ({
 			})
 			.catch((err) => err);
 	}, [refresh]);
+
+	const formatAmount = (currency, amount) => {
+		const min = coins[currency].min;
+		const formattedAmount = formatToCurrency(amount, min);
+		return formattedAmount;
+	};
 
 	return (
 		<div
@@ -54,8 +60,22 @@ const P2POrders = ({
 					justifyContent: 'center',
 				}}
 			>
-				<Button ghost>Processing</Button>
-				<Button ghost>All Orders</Button>
+				<Button
+					ghost
+					onClick={() => {
+						setFilter('active');
+					}}
+				>
+					Processing
+				</Button>
+				<Button
+					ghost
+					onClick={() => {
+						setFilter();
+					}}
+				>
+					All Orders
+				</Button>
 				{/* <Button ghost>Profit & Loss Statement</Button> */}
 			</div>
 
@@ -74,71 +94,83 @@ const P2POrders = ({
 							<th>Crypto amount</th>
 							<th>Counterparty</th>
 							<th>Status</th>
-							<th>Operation</th>
+							<th
+								style={{
+									display: 'flex',
+									justifyContent: 'flex-end',
+								}}
+							>
+								Operation
+							</th>
 						</tr>
 					</thead>
 					<tbody className="font-weight-bold">
-						{transactions.map((transaction) => {
-							return (
-								<tr
-									className="table-row"
-									style={{
-										borderBottom: 'grey 1px solid',
-										padding: 10,
-										position: 'relative',
-									}}
-									//  key={index}
-								>
-									<td style={{ width: '17%' }}>
-										<Button
-											style={{
-												backgroundColor: '#288500',
-												color: 'white',
-											}}
-										>
-											Buy {transaction?.deal?.buying_asset?.toUpperCase()}
-										</Button>
-									</td>
+						{transactions
+							.filter((x) => (filter ? x.transaction_status === filter : true))
+							.map((transaction) => {
+								return (
+									<tr
+										className="table-row"
+										style={{
+											borderBottom: 'grey 1px solid',
+											padding: 10,
+											position: 'relative',
+										}}
+										//  key={index}
+									>
+										<td style={{ width: '17%' }}>
+											<Button
+												style={{
+													backgroundColor: '#288500',
+													color: 'white',
+												}}
+											>
+												Buy {transaction?.deal?.buying_asset?.toUpperCase()}
+											</Button>
+										</td>
 
-									<td style={{ width: '17%' }}>
-										{transaction?.amount_fiat}{' '}
-										{transaction?.deal?.spending_asset?.toUpperCase()}
-									</td>
-									<td style={{ width: '17%' }}>
-										{transaction?.price}{' '}
-										{transaction?.deal?.buying_asset?.toUpperCase()}
-									</td>
-									<td style={{ width: '17%' }}>
-										{transaction?.amount_digital_currency}{' '}
-										{transaction?.deal?.buying_asset?.toUpperCase()}
-									</td>
-									<td style={{ width: '17%' }}>
-										{transaction?.merchant?.full_name}
-									</td>
-									<td style={{ width: '17%' }}>
-										{transaction?.transaction_status?.toUpperCase()}
-									</td>
+										<td style={{ width: '17%', padding: 10 }}>
+											{transaction?.amount_fiat}{' '}
+											{transaction?.deal?.spending_asset?.toUpperCase()}
+										</td>
+										<td style={{ width: '17%' }}>
+											{transaction?.price}{' '}
+											{transaction?.deal?.buying_asset?.toUpperCase()}
+										</td>
+										<td style={{ width: '17%' }}>
+											{formatAmount(
+												transaction?.deal?.buying_asset,
+												transaction?.amount_digital_currency
+											)}{' '}
+											{transaction?.deal?.buying_asset?.toUpperCase()}
+										</td>
+										<td style={{ width: '10%' }}>
+											{transaction?.merchant?.full_name}
+										</td>
+										<td style={{ width: '10%' }}>
+											{transaction?.transaction_status?.toUpperCase()}
+										</td>
 
-									<td style={{ width: '17%' }}>
-										<div
-											onClick={() => {
-												setDisplayOrder(true);
-												setSelectedTransaction(transaction);
-												router.push(`p2p/order/${transaction.id}`);
-											}}
-											style={{
-												display: 'flex',
-												justifyContent: 'flex-end',
-												color: '#5E63F6',
-												cursor: 'pointer',
-											}}
-										>
-											View order
-										</div>
-									</td>
-								</tr>
-							);
-						})}
+										<td style={{ width: '17%' }}>
+											<div
+												onClick={() => {
+													setDisplayOrder(true);
+													setSelectedTransaction(transaction);
+													router.push(`p2p/order/${transaction.id}`);
+												}}
+												style={{
+													display: 'flex',
+													justifyContent: 'flex-end',
+													color: '#5E63F6',
+													cursor: 'pointer',
+												}}
+											>
+												View order
+											</div>
+										</td>
+									</tr>
+								);
+							})}
 					</tbody>
 				</table>
 			</div>

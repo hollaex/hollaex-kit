@@ -439,7 +439,9 @@ const P2POrder = ({
 
 									{selectedOrder.merchant_status === 'confirmed' && (
 										<div style={{ marginBottom: 20 }}>
-											<div style={{ fontSize: 16 }}>ORDER COMPLETE</div>
+											<div style={{ fontSize: 16, fontWeight: 'bold' }}>
+												ORDER COMPLETE
+											</div>
 											<div>
 												Vendor confirmed the transaction and funds transferred
 												to your balance.
@@ -469,7 +471,9 @@ const P2POrder = ({
 								<>
 									{selectedOrder.merchant_status === 'confirmed' && (
 										<div style={{ marginBottom: 20 }}>
-											<div style={{ fontSize: 16 }}>ORDER COMPLETE</div>
+											<div style={{ fontSize: 16, fontWeight: 'bold' }}>
+												ORDER COMPLETE
+											</div>
 											<div>
 												You've marked this order as complete and released the
 												funds

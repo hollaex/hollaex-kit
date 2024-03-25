@@ -9,6 +9,7 @@ const { subscribedToCoin, getKitConfig, getAssetsPrices } = require('./common');
 const { transferAssetByKitIds, getUserBalanceByKitId } = require('./wallet');
 const { Op, fn, col } = require('sequelize');
 const BigNumber = require('bignumber.js');
+const { getKitCoin } = require('./common');
 const { paginationQuery, timeframeQuery, orderingQuery } = require('./database/helpers');
 const dbQuery = require('./database/query');
 const moment = require('moment');
@@ -18,31 +19,10 @@ const uuid = require('uuid/v4');
 
 const {
 	NO_DATA_FOR_CSV,
-    STAKE_INVALID_STATUS,
-    STAKE_ONBOARDING_STATUS_ERROR,
-    STAKE_PERPETUAL_CONDITION_ERROR,
-    ACCOUNT_ID_NOT_EXIST,
-    SOURCE_ACCOUNT_INSUFFICIENT_BALANCE,
-    STAKE_POOL_NOT_FOUND,
-    TERMINATED_STAKE_POOL_INVALID_ACTION,
-    INVALID_STAKE_POOL_ACTION,
-    INVALID_ONBOARDING_ACTION,
-    INVALID_TERMINATION_ACTION,
     FUNDING_ACCOUNT_INSUFFICIENT_BALANCE,
-    STAKE_POOL_NOT_EXIST,
     USER_NOT_FOUND,
-    STAKE_POOL_ACCEPT_USER_ERROR,
-    STAKE_POOL_NOT_ACTIVE,
-    AMOUNT_INSUFFICIENT_ERROR,
-    STAKE_POOL_MAX_AMOUNT_ERROR,
-    STAKE_POOL_MIN_AMOUNT_ERROR,
-    STAKER_NOT_EXIST,
-    STAKE_POOL_NOT_ACTIVE_FOR_UNSTAKING_ONBOARDING,
-    STAKE_POOL_NOT_ACTIVE_FOR_UNSTAKING_STATUS,
-    UNSTAKE_PERIOD_ERROR,
     STAKE_UNSUPPORTED_EXCHANGE_PLAN,
-    REWARD_CURRENCY_CANNOT_BE_SAME,
-    STAKE_MAX_ACTIVE
+ 
     
 } = require(`${SERVER_PATH}/messages`);
 
@@ -213,52 +193,6 @@ const getP2PAccountBalance = async (account_id, coin) => {
     return symbols[coin];
 }
 
-const editAdminP2pConfig = async (data) => {
-    const {
-		digital_currencies,
-		fiat_currencies,
-		side,
-		fee,
-    } = data;
-    
-	digital_currencies.forEach(currency => {
-		if (!subscribedToCoin(currency)) {
-           throw new Error('Invalid coin ' + currency);
-    	}
-	})
-	fiat_currencies.forEach(currency => {
-		if (!subscribedToCoin(currency)) {
-           throw new Error('Invalid coin ' + currency);
-    	}
-	})
-	if (fee < 0) {
-		throw new Error('Fee cannot be less than 0');
-	}
-
-	if (side !== 'sell') {
-		throw new Error('side can only be sell');
-	}
-    
-    const exchangeInfo = getKitConfig().info;
-
-    if(!STAKE_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
-        throw new Error(STAKE_UNSUPPORTED_EXCHANGE_PLAN);
-    }
-
-	return getModel('p2pAdminConfig').create(data, {
-		fields: [
-			'enable',
-			'bank_payment_methods',
-			'starting_merchant_tier',
-			'starting_user_tier',
-			'digital_currencies',
-			'fiat_currencies',
-			'side',
-			'fee',
-		]
-	});
-};
-
 const createP2PDeal = async (data) => {
 	let {
 		merchant_id,
@@ -283,6 +217,8 @@ const createP2PDeal = async (data) => {
     }
 
 	//Check Merhcant Tier
+
+
 
 	if (!subscribedToCoin(spending_asset)) {
         throw new Error('Invalid coin ' + spending_asset);
@@ -340,6 +276,116 @@ const createP2PDeal = async (data) => {
 	});
 }
 
+const updateP2PDeal = async (data) => {
+	let {
+		id,
+		edited_ids,
+		merchant_id,
+		side,
+		price_type,
+		buying_asset,
+		spending_asset,
+		exchange_rate,
+		margin,
+		total_order_amount,
+		min_order_value,
+		max_order_value,
+		status,
+		auto_response,
+		region
+    } = data;
+        
+    const exchangeInfo = getKitConfig().info;
+
+    if (!STAKE_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
+        throw new Error(STAKE_UNSUPPORTED_EXCHANGE_PLAN);
+    }
+
+	if (edited_ids != null) {
+		const deals = await getModel('p2pDeal').findAll({
+			where: {
+				id: edited_ids
+			}
+		})
+
+		deals.forEach(deal => {
+			if (deal.merchant_id !== merchant_id) {
+				throw new Error('Merchant id is not the same');
+			}
+		})
+		await getModel('p2pDeal').update({ status }, { where : { id : edited_ids }}); 
+		return { message : 'success' };
+	}
+
+	const p2pDeal = await getModel('p2pDeal').findOne({ where: { id } });
+    if (!p2pDeal) {
+        throw new Error('deal does not exist');
+    }
+
+	if(p2pDeal.merchant_id !== merchant_id) {
+		throw new Error('Merchant Id is not the same');
+	}
+
+	//Check Merhcant Tier
+
+	if (!subscribedToCoin(spending_asset)) {
+        throw new Error('Invalid coin ' + spending_asset);
+    }
+
+	if (!subscribedToCoin(buying_asset)) {
+        throw new Error('Invalid coin ' + buying_asset);
+    }
+
+	const balance = await getP2PAccountBalance(merchant_id, buying_asset);
+
+	if(new BigNumber(balance).comparedTo(new BigNumber(total_order_amount)) !== 1) {
+        throw new Error(FUNDING_ACCOUNT_INSUFFICIENT_BALANCE);
+    }
+	if(min_order_value < 0) {
+			throw new Error('cannot be less than 0');
+	}
+
+	if(max_order_value < 0) {
+		throw new Error('cannot be less than 0');
+	}
+
+	if(min_order_value > max_order_value) {
+		throw new Error('cannot be bigger');
+	}
+
+	if (margin < 0) {
+		throw new Error('Margin cannot be less than 0');
+	}
+
+	if (side !== 'sell') {
+		throw new Error('side can only be sell');
+	}
+
+	if (data.status == null) {
+		data.status = true;
+	}
+
+	return p2pDeal.update(data, {
+		fields: [
+			'merchant_id',
+			'side',
+			'price_type',
+			'buying_asset',
+			'spending_asset',
+			'exchange_rate',
+			'spread',
+			'total_order_amount',
+			'min_order_value',
+			'max_order_value',
+			'terms',
+			'auto_response',
+			'payment_methods',
+			'status',
+			'region'
+		]
+	});
+}
+
 const createP2PTransaction = async (data) => {
 	let {
 		deal_id,
@@ -356,6 +402,7 @@ const createP2PTransaction = async (data) => {
 
 	// Check User tier
 
+
  	const p2pDeal = await getModel('p2pDeal').findOne({ where: { id: deal_id } });
 
 	const { max_order_value, min_order_value, exchange_rate, spread } = p2pDeal;
@@ -364,6 +411,11 @@ const createP2PTransaction = async (data) => {
     if (!p2pDeal) {
         throw new Error('deal does not exist');
     }
+
+	if (!p2pDeal.status) {
+		throw new Error('deal is not active');
+	}
+
 	const buyer = await getUserByKitId(user_id);
    
     if (!buyer) {
@@ -397,6 +449,12 @@ const createP2PTransaction = async (data) => {
 
 	//Check the payment method
 
+	const coinConfiguration = getKitCoin(p2pDeal.buying_asset);
+	const { increment_unit } = coinConfiguration;
+
+	const decimalPoint = new BigNumber(increment_unit).dp();
+	const amount = new BigNumber(amount_digital_currency).decimalPlaces(decimalPoint, BigNumber.ROUND_DOWN).toNumber();
+
 	data.user_status = 'pending';
 	data.merchant_status = 'pending';
 	data.transaction_status = 'active';
@@ -404,7 +462,7 @@ const createP2PTransaction = async (data) => {
 	data.transaction_id = uuid();
 	data.merchant_id = merchant_id;
 	data.user_id = user_id;
-	data.amount_digital_currency = amount_digital_currency
+	data.amount_digital_currency = amount;
 	data.deal_id = deal_id;
 	const lock = await getNodeLib().lockBalance(merchant.network_id, p2pDeal.buying_asset, amount_digital_currency);
 	data.locked_asset_id = lock.id;
@@ -465,6 +523,10 @@ const updateP2pTransaction = async (data) => {
 		 throw new Error('buyer cannot update merchant status');
 	}
 
+	if (user_id !== transaction.merchant_id && user_id !== transaction.user_id) {
+		throw new Error('you cannot update this transaction');
+	}
+
     if (!transaction) {
         throw new Error('transaction does not exist');
     }
@@ -504,7 +566,7 @@ const updateP2pTransaction = async (data) => {
 			defendant_id,
 			reason: cancellation_reason || '',
 		 })
-		 data.transaction_status = 'cancelled';
+		 data.transaction_status = 'appealed';
 	}
 
 	if (user_status === 'cancelled' || merchant_status === 'cancelled') {
@@ -621,7 +683,7 @@ const updateP2pDispute = async (data) => {
 	   const p2pDispute = await getModel('p2pDispute').findOne({ id: data.id });
 
 	   if(!p2pDispute) {
-		throw new error('no record found');
+		throw new Error('no record found');
 	   }
 	   return p2pDispute.update(data, {
 		fields: [
@@ -638,6 +700,10 @@ const createP2pChatMessage = async (data) => {
 		throw new Error ('no transaction found');
 	}
 
+	if (data.sender_id !== transaction.merchant_id && data.sender_id !== transaction.user_id) {
+		throw new Error('unauthorized');
+	}
+
 	if (transaction.transaction_status !== 'active') {
 		throw new Error('Cannot message in inactive transaction');
 	}
@@ -652,6 +718,13 @@ const createP2pChatMessage = async (data) => {
 
 	const newMessages = [...transaction.messages];
 	newMessages.push(chatMessage);
+	
+	// return transaction.update({ messages: fn('array_append', col('messages'), chatMessage) }, {
+	// 	fields: [
+	// 		'messages'		
+	// 	]
+	// });
+
 	return transaction.update({ messages: newMessages }, {
 		fields: [
 			'messages'		
@@ -697,7 +770,6 @@ const createMerchantFeedback = async (data) => {
 }
 
 module.exports = {
-    editAdminP2pConfig,
 	createP2PDeal,
 	createP2PTransaction,
 	createP2pDispute,
@@ -708,5 +780,6 @@ module.exports = {
 	createP2pChatMessage,
 	fetchP2PDeals,
 	fetchP2PTransactions,
-	fetchP2PDisputes
+	fetchP2PDisputes,
+	updateP2PDeal
 };

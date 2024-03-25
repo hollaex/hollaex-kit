@@ -5,9 +5,8 @@ import { ReactSVG } from 'react-svg';
 import { IconTitle, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { Button, Select, Checkbox, Input } from 'antd';
-import { fetchDeals } from './actions/p2pActions';
-
+import { Button, Select, Checkbox, Input, message } from 'antd';
+import { fetchDeals, editDeal } from './actions/p2pActions';
 const P2PMyDeals = ({
 	data,
 	onClose,
@@ -19,9 +18,11 @@ const P2PMyDeals = ({
 	tiers = {},
 	user,
 	refresh,
+	setSelectedDealEdit,
+	setTab,
 }) => {
 	const [myDeals, setMyDeals] = useState([]);
-
+	const [checks, setCheks] = useState([]);
 	useEffect(() => {
 		fetchDeals({ user_id: user.id })
 			.then((res) => {
@@ -41,7 +42,20 @@ const P2PMyDeals = ({
 		>
 			<div style={{ display: 'flex', gap: 10 }}>
 				<span>
-					<Checkbox style={{ color: 'white' }}>2 Deals</Checkbox>:
+					<Checkbox
+						onChange={(e) => {
+							if (e.target.checked) {
+								setCheks(myDeals.map((deal) => deal.id));
+							} else {
+								setCheks([]);
+							}
+						}}
+						style={{ color: 'white', position: 'relative', top: 5 }}
+					>
+						{myDeals.length === 0
+							? 'There are no deals'
+							: `${myDeals.length} Deals:`}
+					</Checkbox>
 				</span>
 				<span>
 					<Button
@@ -49,8 +63,21 @@ const P2PMyDeals = ({
 							backgroundColor: '#5E63F6',
 							color: 'white',
 						}}
+						onClick={async () => {
+							try {
+								await editDeal({
+									edited_ids: checks,
+									status: true,
+								});
+								const res = await fetchDeals({ user_id: user.id });
+								setMyDeals(res.data);
+								message.success('changes saved');
+							} catch (error) {
+								message.error(error.message);
+							}
+						}}
 					>
-						ACTIVATE ALL
+						ACTIVATE
 					</Button>
 				</span>
 				<span>
@@ -59,8 +86,21 @@ const P2PMyDeals = ({
 							backgroundColor: '#5E63F6',
 							color: 'white',
 						}}
+						onClick={async () => {
+							try {
+								await editDeal({
+									edited_ids: checks,
+									status: false,
+								});
+								const res = await fetchDeals({ user_id: user.id });
+								setMyDeals(res.data);
+								message.success('changes saved');
+							} catch (error) {
+								message.error(error.message);
+							}
+						}}
 					>
-						TAKE ALL OFFLINE
+						TAKE OFFLINE
 					</Button>
 				</span>
 			</div>
@@ -69,12 +109,15 @@ const P2PMyDeals = ({
 				className="wallet-assets_block"
 				style={{ display: 'flex', marginTop: 20 }}
 			>
-				<table style={{ border: 'none', borderCollapse: 'collapse' }}>
+				<table
+					style={{ border: 'none', borderCollapse: 'collapse', width: '100%' }}
+				>
 					<thead>
 						<tr
 							className="table-bottom-border"
 							style={{ borderBottom: 'grey 1px solid', padding: 10 }}
 						>
+							<th>Edit</th>
 							<th>Side</th>
 							<th>Status</th>
 							<th>Price displayed</th>
@@ -95,7 +138,21 @@ const P2PMyDeals = ({
 									}}
 									//  key={index}
 								>
-									<td style={{ minWidth: '14.5em' }} className="td-fit">
+									<td style={{ width: '5%' }} className="td-fit">
+										<Checkbox
+											checked={checks.find((id) => id === deal.id)}
+											onChange={(e) => {
+												if (e.target.checked) {
+													if (!checks.find((id) => id === deal.id))
+														setCheks([...checks, deal.id]);
+												} else {
+													setCheks(checks.filter((id) => id !== deal.id));
+												}
+											}}
+										/>
+									</td>
+
+									<td style={{ width: '15%' }} className="td-fit">
 										<Button
 											style={{
 												backgroundColor:
@@ -107,14 +164,14 @@ const P2PMyDeals = ({
 										</Button>
 									</td>
 
-									<td style={{ minWidth: '14.5em' }} className="td-fit">
+									<td style={{ width: '15%' }} className="td-fit">
 										{deal.status ? 'ACTIVE' : 'INACTIVE'}
 									</td>
-									<td style={{ minWidth: '14.5em' }} className="td-fit">
+									<td style={{ width: '15%' }} className="td-fit">
 										{deal.exchange_rate * (1 + Number(deal.spread || 0))}{' '}
 										{deal.spending_asset.toUpperCase()}
 									</td>
-									<td style={{ minWidth: '14.5em' }} className="td-fit">
+									<td style={{ width: '15%' }} className="td-fit">
 										<div>
 											Available: {deal.total_order_amount}{' '}
 											{deal.buying_asset.toUpperCase()}
@@ -126,7 +183,7 @@ const P2PMyDeals = ({
 									</td>
 									<td
 										style={{
-											minWidth: '10em',
+											width: '15%',
 											flexWrap: 'wrap',
 											display: 'flex',
 											padding: 5,
@@ -136,8 +193,16 @@ const P2PMyDeals = ({
 											.map((method) => method.system_name)
 											.join(', ')}
 									</td>
-									<td style={{ minWidth: '14.5em' }} className="td-fit">
-										<Button ghost>Edit {deal.side} deal</Button>
+									<td style={{ width: '15%' }} className="td-fit">
+										<Button
+											onClick={() => {
+												setSelectedDealEdit(deal);
+												setTab('3');
+											}}
+											ghost
+										>
+											Edit {deal.side} deal
+										</Button>
 									</td>
 								</tr>
 							);

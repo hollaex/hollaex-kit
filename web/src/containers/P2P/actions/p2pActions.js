@@ -22,6 +22,15 @@ export const postDeal = (values) => {
 	return requestAuthenticated('/p2p/deal', options);
 };
 
+export const editDeal = (values) => {
+	const options = {
+		method: 'PUT',
+		body: JSON.stringify(values),
+	};
+
+	return requestAuthenticated('/p2p/deal', options);
+};
+
 export const createTransaction = (values) => {
 	const options = {
 		method: 'POST',

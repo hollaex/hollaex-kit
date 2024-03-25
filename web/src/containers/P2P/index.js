@@ -31,6 +31,7 @@ const P2P = ({
 	const [tab, setTab] = useState('0');
 	const [selectedTransaction, setSelectedTransaction] = useState();
 	const [refresh, setRefresh] = useState(false);
+	const [selectedDealEdit, setSelectedDealEdit] = useState();
 
 	useEffect(() => {
 		const arr = window.location.pathname.split('/');
@@ -75,6 +76,9 @@ const P2P = ({
 					defaultActiveKey="0"
 					activeKey={tab}
 					onChange={(e) => {
+						if (e !== '3') {
+							setSelectedDealEdit();
+						}
 						setTab(e);
 					}}
 				>
@@ -100,10 +104,17 @@ const P2P = ({
 							setTab={setTab}
 							setRefresh={setRefresh}
 							refresh={refresh}
+							selectedDealEdit={selectedDealEdit}
+							setSelectedDealEdit={setSelectedDealEdit}
 						/>
 					</TabPane>
 					<TabPane tab="MY DEALS" key="4">
-						<P2PMyDeals setRefresh={setRefresh} refresh={refresh} />
+						<P2PMyDeals
+							setTab={setTab}
+							setRefresh={setRefresh}
+							refresh={refresh}
+							setSelectedDealEdit={setSelectedDealEdit}
+						/>
 					</TabPane>
 				</Tabs>
 			)}

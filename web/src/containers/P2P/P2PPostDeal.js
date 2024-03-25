@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { ReactSVG } from 'react-svg';
 import { Button, Steps, message, Modal } from 'antd';
@@ -6,7 +6,7 @@ import { IconTitle, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { Switch, Select, Input } from 'antd';
-import { postDeal } from './actions/p2pActions';
+import { postDeal, editDeal } from './actions/p2pActions';
 import { CloseOutlined } from '@ant-design/icons';
 
 import { COUNTRIES_OPTIONS } from 'utils/countries';
@@ -26,6 +26,8 @@ const P2PPostDeal = ({
 	setTab,
 	setRefresh,
 	refresh,
+	selectedDealEdit,
+	setSelectedDealEdit,
 }) => {
 	const [step, setStep] = useState(1);
 
@@ -56,6 +58,39 @@ const P2PPostDeal = ({
 		},
 	];
 	const { Step } = Steps;
+
+	useEffect(() => {
+		if (selectedDealEdit) {
+			setPriceType(selectedDealEdit?.price_type);
+			setBuyingAsset(selectedDealEdit?.buying_asset);
+			setSpendingAsset(selectedDealEdit?.spending_asset);
+			setExchangeRate(selectedDealEdit?.exchange_rate);
+			setSpread(selectedDealEdit?.spread);
+			setTotalOrderAmount(selectedDealEdit?.total_order_amount);
+			setMinOrderValue(selectedDealEdit?.min_order_value);
+			setMaxOrderValue(selectedDealEdit?.max_order_value);
+			setTerms(selectedDealEdit?.terms);
+			setAutoResponse(selectedDealEdit?.auto_response);
+			setPaymentMethods(selectedDealEdit?.payment_methods);
+			setRegion(selectedDealEdit?.region);
+			setStep(1);
+		} else {
+			setPriceType();
+			setBuyingAsset();
+			setSpendingAsset();
+			setExchangeRate();
+			setSpread();
+			setTotalOrderAmount();
+			setMinOrderValue();
+			setMaxOrderValue();
+			setTerms();
+			setAutoResponse();
+			setPaymentMethods([]);
+			setRegion();
+			setStep(1);
+		}
+	}, [selectedDealEdit]);
+
 	return (
 		<div
 			className="P2pOrder"
@@ -91,6 +126,19 @@ const P2PPostDeal = ({
 						</span>
 						<span style={{ fontSize: 18 }}>I want to sell</span>
 					</div>
+
+					{selectedDealEdit && (
+						<div
+							style={{
+								fontSize: 17,
+								textAlign: 'center',
+								marginTop: 20,
+								color: 'white',
+							}}
+						>
+							Update Deal
+						</div>
+					)}
 
 					{step === 1 && (
 						<div
@@ -338,7 +386,6 @@ const P2PPostDeal = ({
 												}}
 											>
 												<div>{method.system_name}</div>
-												<div>X</div>
 											</div>
 										);
 									})}
@@ -497,21 +544,41 @@ const P2PPostDeal = ({
 							setStep(step + 1);
 						} else {
 							try {
-								await postDeal({
-									side: 'sell',
-									price_type: priceType,
-									buying_asset: buyingAsset,
-									spending_asset: spendingAsset,
-									exchange_rate: exchangeRate,
-									spread: spread,
-									region,
-									total_order_amount: totalOrderAmount,
-									min_order_value: minOrderValue,
-									max_order_value: maxOrderValue,
-									terms: terms,
-									auto_response: autoResponse,
-									payment_methods: paymentMethods,
-								});
+								if (selectedDealEdit) {
+									await editDeal({
+										id: selectedDealEdit.id,
+										side: 'sell',
+										price_type: priceType,
+										buying_asset: buyingAsset,
+										spending_asset: spendingAsset,
+										exchange_rate: exchangeRate,
+										spread: spread,
+										region,
+										total_order_amount: totalOrderAmount,
+										min_order_value: minOrderValue,
+										max_order_value: maxOrderValue,
+										terms: terms,
+										auto_response: autoResponse,
+										payment_methods: paymentMethods,
+									});
+									setSelectedDealEdit();
+								} else {
+									await postDeal({
+										side: 'sell',
+										price_type: priceType,
+										buying_asset: buyingAsset,
+										spending_asset: spendingAsset,
+										exchange_rate: exchangeRate,
+										spread: spread,
+										region,
+										total_order_amount: totalOrderAmount,
+										min_order_value: minOrderValue,
+										max_order_value: maxOrderValue,
+										terms: terms,
+										auto_response: autoResponse,
+										payment_methods: paymentMethods,
+									});
+								}
 
 								setPriceType();
 								setBuyingAsset();
@@ -524,9 +591,12 @@ const P2PPostDeal = ({
 								setTerms();
 								setAutoResponse();
 								setPaymentMethods([]);
+								setRegion();
 								setStep(1);
 
-								message.success('Deal has been created');
+								message.success(
+									`Deal has been ${selectedDealEdit ? 'edited' : 'created'}`
+								);
 								setTab('4');
 								setRefresh(!refresh);
 							} catch (error) {

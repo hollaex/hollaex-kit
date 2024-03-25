@@ -70,6 +70,77 @@ const createP2PDeal = (req, res) => {
 		});
 }
 
+const updateP2PDeal = (req, res) => {
+	loggerStake.verbose(req.uuid, 'controllers/p2p/updateP2PDeal/auth', req.auth);
+
+	const {  
+        price_type,
+        buying_asset,
+        spending_asset,
+        exchange_rate,
+        spread,
+        total_order_amount,
+        min_order_value,
+        max_order_value,
+        terms,
+        auto_response,
+        payment_methods,
+        region,
+        edited_ids,
+        status,
+        id
+	 } = req.swagger.params.data.value;
+
+	loggerStake.verbose(
+		req.uuid,
+		'controllers/p2p/updateP2PDeal data',
+        price_type,
+        buying_asset,
+        spending_asset,
+        exchange_rate,
+        spread,
+        total_order_amount,
+        min_order_value,
+        max_order_value,
+        terms,
+        auto_response,
+        region,
+        id
+	);
+
+	toolsLib.p2p.updateP2PDeal({
+        id,
+        merchant_id: req.auth.sub.id,
+        edited_ids,
+        side: 'sell',
+        price_type,
+        buying_asset,
+        spending_asset,
+        exchange_rate,
+        spread,
+        total_order_amount,
+        min_order_value,
+        max_order_value,
+        terms,
+        auto_response,
+        payment_methods,
+        region,
+        status
+    }
+		)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerStake.error(
+				req.uuid,
+				'controllers/p2p/updateP2PDeal err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+}
+
 const fetchP2PDeals = (req, res) => {
 	loggerStake.verbose(req.uuid, 'controllers/p2p/fetchP2PDeals/auth', req.auth);
 
@@ -330,5 +401,6 @@ module.exports = {
     createP2PTransaction,
     createP2pChatMessage,
     updateP2PTransaction,
-    fetchP2PDisputes
+    fetchP2PDisputes,
+    updateP2PDeal
 };
