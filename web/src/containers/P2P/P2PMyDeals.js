@@ -33,7 +33,7 @@ const P2PMyDeals = ({
 	return (
 		<div
 			style={{
-				height: 600,
+				minHeight: 600,
 				backgroundColor: '#303236',
 				width: '100%',
 				padding: 20,

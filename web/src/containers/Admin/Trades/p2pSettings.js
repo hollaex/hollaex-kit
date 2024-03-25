@@ -12,7 +12,6 @@ import './index.css';
 const TabPane = Tabs.TabPane;
 
 const P2PSettings = ({ coins, pairs, p2p_config }) => {
-	console.log({ coins });
 	const [displayP2pModel, setDisplayP2pModel] = useState(false);
 	const [displayFiatAdd, setDisplayFiatAdd] = useState(false);
 	const [displayPaymentAdd, setDisplayPaymentAdd] = useState(false);
@@ -266,7 +265,12 @@ const P2PSettings = ({ coins, pairs, p2p_config }) => {
 							</div>
 
 							<div
-								style={{ marginTop: 10, marginBottom: 10 }}
+								style={{
+									marginTop: 10,
+									marginBottom: 10,
+									textDecoration: 'underline',
+									cursor: 'pointer',
+								}}
 								onClick={() => {
 									setDisplayFiatAdd(true);
 								}}
@@ -395,7 +399,12 @@ const P2PSettings = ({ coins, pairs, p2p_config }) => {
 							</div>
 
 							<div
-								style={{ marginTop: 10, marginBottom: 10 }}
+								style={{
+									marginTop: 10,
+									marginBottom: 10,
+									cursor: 'pointer',
+									textDecoration: 'underline',
+								}}
 								onClick={() => setDisplayPaymentAdd(true)}
 							>
 								Add/create a method
@@ -590,7 +599,7 @@ const P2PSettings = ({ coins, pairs, p2p_config }) => {
 											},
 										});
 										setDisplayP2pModel(false);
-										message.error('Changes saved.');
+										message.success('Changes saved.');
 									} catch (error) {
 										message.error(error.message);
 									}
@@ -833,6 +842,7 @@ const P2PSettings = ({ coins, pairs, p2p_config }) => {
 					</div>
 					<div>Can't find your local payment method?</div>
 					<div
+						style={{ textDecoration: 'underline', cursor: 'pointer' }}
 						onClick={() => {
 							setDisplayNewPayment(true);
 						}}
@@ -921,11 +931,6 @@ const P2PSettings = ({ coins, pairs, p2p_config }) => {
 					<div
 						style={{ fontWeight: 'bold', textDecoration: 'underline' }}
 						onClick={() => {
-							paymentMethods.push({
-								system_name: paymentMethod.system_name,
-								fields: customFields,
-							});
-							setPaymentMethods(paymentMethods);
 							setPaymentFieldAdd(true);
 						}}
 					>
@@ -957,6 +962,12 @@ const P2PSettings = ({ coins, pairs, p2p_config }) => {
 
 						<Button
 							onClick={() => {
+								paymentMethods.push({
+									system_name: paymentMethod.system_name,
+									fields: customFields,
+								});
+
+								setPaymentMethods(paymentMethods);
 								setDisplayNewPayment(false);
 							}}
 							style={{
@@ -1062,7 +1073,6 @@ const P2PSettings = ({ coins, pairs, p2p_config }) => {
 
 						<Button
 							onClick={() => {
-								console.log({ GG: customFields[customFields.length - 1] });
 								customField.id = customFields[customFields.length - 1].id + 1;
 
 								setCustomFields([...customFields, customField]);

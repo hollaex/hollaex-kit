@@ -45,7 +45,7 @@ const P2PDash = ({
 	return (
 		<div
 			style={{
-				height: 800,
+				minHeight: 800,
 				backgroundColor: '#303236',
 				width: '100%',
 				padding: 20,

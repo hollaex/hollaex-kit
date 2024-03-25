@@ -121,3 +121,9 @@ export const getBrokerConnect = (
 
 	return requestAuthenticated(urlString);
 };
+
+export const requestDeals = (values) => {
+	const queryValues =
+		values && Object.keys(values).length ? querystring.stringify(values) : '';
+	return requestAuthenticated(`/p2p/deal?${queryValues}`);
+};
