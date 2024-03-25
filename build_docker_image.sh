@@ -23,5 +23,3 @@ else
     exit 0;
 
 fi
-
-#docker push bitholla/robolla-v3:$PACKAGE_JSON_VERSION-$GIT_COMMIT_ID
