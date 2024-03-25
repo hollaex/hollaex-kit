@@ -280,11 +280,8 @@ const P2PDash = ({
 												style={{ minWidth: '15.5em', padding: 10 }}
 												className="td-fit"
 											>
-												<div>Payment time limti 30 minutes</div>
-												<div>
-													Terms and conditions: There are the terms and
-													conditions that is set by the vendor here
-												</div>
+												<div>Payment time limit 30 minutes</div>
+												<div>Terms and conditions: {deal.terms}</div>
 											</td>
 											<td
 												style={{ width: '5.5em', padding: 10 }}
