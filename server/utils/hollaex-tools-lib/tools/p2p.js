@@ -3,7 +3,7 @@
 const { getModel } = require('./database/model');
 const { SERVER_PATH } = require('../constants');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
-const { STAKE_SUPPORTED_PLANS } = require(`${SERVER_PATH}/constants`)
+const { P2P_SUPPORTED_PLANS } = require(`${SERVER_PATH}/constants`)
 const { getUserByKitId, createAuditLog } = require('./user');
 const { subscribedToCoin, getKitConfig, getAssetsPrices } = require('./common');
 const { transferAssetByKitIds, getUserBalanceByKitId } = require('./wallet');
@@ -212,13 +212,18 @@ const createP2PDeal = async (data) => {
         
     const exchangeInfo = getKitConfig().info;
 
-    if(!STAKE_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
-        throw new Error(STAKE_UNSUPPORTED_EXCHANGE_PLAN);
+    if(!P2P_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
+        throw new Error('Service not supported by your exchange plan');
     }
 
+	const p2pConfig = getKitConfig()?.p2p_config;
+
+	const merchant = await getUserByKitId(merchant_id);
+
 	//Check Merhcant Tier
-
-
+	if (p2pConfig.starting_merchant_tier > merchant.verification_level) {
+		throw new Error('Your tier does not support creating P2P deals');
+	}
 
 	if (!subscribedToCoin(spending_asset)) {
         throw new Error('Invalid coin ' + spending_asset);
@@ -297,7 +302,7 @@ const updateP2PDeal = async (data) => {
         
     const exchangeInfo = getKitConfig().info;
 
-    if (!STAKE_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
+    if (!P2P_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
         throw new Error(STAKE_UNSUPPORTED_EXCHANGE_PLAN);
     }
 
@@ -396,12 +401,12 @@ const createP2PTransaction = async (data) => {
     
 	const exchangeInfo = getKitConfig().info;
 
-    if(!STAKE_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
+    if(!P2P_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
         throw new Error(STAKE_UNSUPPORTED_EXCHANGE_PLAN);
     }
 
 	// Check User tier
-
+	const p2pConfig = getKitConfig()?.p2p_config;
 
  	const p2pDeal = await getModel('p2pDeal').findOne({ where: { id: deal_id } });
 
@@ -421,6 +426,12 @@ const createP2PTransaction = async (data) => {
     if (!buyer) {
         throw new Error(USER_NOT_FOUND);
     }
+
+	//Check Buyer Tier
+	if (p2pConfig.starting_user_tier > buyer.verification_level) {
+		throw new Error('Your tier does not support creating P2P transactions');
+	}
+
 
 	if (merchant_id === user_id) {
 		throw new Error('Merchant and Buyer cannot be same');

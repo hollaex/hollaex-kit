@@ -654,6 +654,12 @@ exports.STAKE_SUPPORTED_PLANS = ['fiat', 'boost', 'enterprise'];
 
 //STAKE CONSTANTS END
 
+//P2P CONSTANTS START
+
+exports.P2P_SUPPORTED_PLANS = ['fiat', 'boost', 'enterprise'];
+
+//P2P CONSTANTS END
+
 //BALANCE HISTORY CONSTANTS START
 exports.BALANCE_HISTORY_SUPPORTED_PLANS = ['fiat', 'boost', 'enterprise'];
 //BALANCE HISTORY CONSTANTS END 
