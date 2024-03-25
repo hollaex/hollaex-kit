@@ -64,6 +64,10 @@ module.exports = {
                 type: Sequelize.STRING,
                 allowNull: true,
             },
+            region: {
+                type: Sequelize.STRING,
+                allowNull: true,
+            },
             payment_methods: {
                 type: Sequelize.JSONB,
                 allowNull: false,

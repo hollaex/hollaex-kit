@@ -21,6 +21,7 @@ const createP2PDeal = (req, res) => {
         terms,
         auto_response,
         payment_methods,
+        region,
 	 } = req.swagger.params.data.value;
 
 	loggerStake.verbose(
@@ -36,6 +37,7 @@ const createP2PDeal = (req, res) => {
         max_order_value,
         terms,
         auto_response,
+        region
 	);
 
 	toolsLib.p2p.createP2PDeal({
@@ -52,6 +54,7 @@ const createP2PDeal = (req, res) => {
         terms,
         auto_response,
         payment_methods,
+        region
     }
 		)
 		.then((data) => {

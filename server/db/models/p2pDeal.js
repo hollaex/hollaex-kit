@@ -63,6 +63,10 @@ module.exports = function (sequelize, DataTypes) {
                 type: DataTypes.STRING,
                 allowNull: true,
             },
+            region: {
+                type: DataTypes.STRING,
+                allowNull: true,
+            },
             payment_methods: {
                 type: DataTypes.JSONB,
                 allowNull: false,

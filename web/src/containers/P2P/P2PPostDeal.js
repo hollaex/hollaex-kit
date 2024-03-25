@@ -8,6 +8,11 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import { Switch, Select, Input } from 'antd';
 import { postDeal } from './actions/p2pActions';
 import { CloseOutlined } from '@ant-design/icons';
+
+import { COUNTRIES_OPTIONS } from 'utils/countries';
+
+import './_P2P.scss';
+
 const P2PPostDeal = ({
 	data,
 	onClose,
@@ -37,6 +42,7 @@ const P2PPostDeal = ({
 	const [paymentMethods, setPaymentMethods] = useState([]);
 	const [selectedMethod, setSelectedMethod] = useState({});
 	const [addMethodDetails, setAddMethodDetails] = useState();
+	const [region, setRegion] = useState();
 
 	const dataSte = [
 		{
@@ -52,6 +58,7 @@ const P2PPostDeal = ({
 	const { Step } = Steps;
 	return (
 		<div
+			className="P2pOrder"
 			style={{
 				height: 600,
 				backgroundColor: '#303236',
@@ -101,7 +108,7 @@ const P2PPostDeal = ({
 									<div>
 										<Select
 											showSearch
-											style={{ backgroundColor: '#303236' }}
+											style={{ backgroundColor: '#303236', width: 150 }}
 											placeholder="USDT"
 											value={buyingAsset}
 											onChange={(e) => {
@@ -117,15 +124,24 @@ const P2PPostDeal = ({
 												))}
 										</Select>
 									</div>
-									<div>Crypto you want to sell</div>
+									<div style={{ marginTop: 4 }}>Crypto you want to sell</div>
 								</div>
-								<div style={{ flex: 1, fontSize: 20 }}>{'>'}</div>
+								<div
+									style={{
+										flex: 1,
+										fontSize: 25,
+										position: 'relative',
+										left: 25,
+									}}
+								>
+									{'>'}
+								</div>
 								<div style={{ flex: 1 }}>
 									<div>RECEIVE</div>
 									<div>
 										<Select
 											showSearch
-											style={{ backgroundColor: '#303236' }}
+											style={{ backgroundColor: '#303236', width: 150 }}
 											placeholder="USD"
 											value={spendingAsset}
 											onChange={(e) => {
@@ -141,7 +157,9 @@ const P2PPostDeal = ({
 												))}
 										</Select>
 									</div>
-									<div>Fiat currency you want to receive</div>
+									<div style={{ marginTop: 4 }}>
+										Fiat currency you want to receive
+									</div>
 								</div>
 							</div>
 							<div style={{ flex: 1, borderLeft: 'grey 1px solid' }}></div>
@@ -159,7 +177,7 @@ const P2PPostDeal = ({
 											}}
 										>
 											<Select.Option value={'static'}>Static</Select.Option>
-											<Select.Option value={'dynamic'}>Dynamic</Select.Option>
+											{/* <Select.Option value={'dynamic'}>Dynamic</Select.Option> */}
 										</Select>
 									</div>
 
@@ -168,6 +186,7 @@ const P2PPostDeal = ({
 											<div style={{ marginTop: 10 }}>Fixed Price</div>
 											<div>
 												<Input
+													style={{ width: 200 }}
 													value={exchangeRate}
 													onChange={(e) => {
 														setExchangeRate(e.target.value);
@@ -179,19 +198,31 @@ const P2PPostDeal = ({
 									<div style={{ marginTop: 10 }}>SPREAD (%)</div>
 									<div>
 										<Input
+											style={{ width: 200 }}
 											value={spread}
 											onChange={(e) => {
 												setSpread(e.target.value);
 											}}
 										/>
 									</div>
-									<div>Price and profit spread to set</div>
+									<div style={{ marginTop: 4 }}>
+										Price and profit spread to set
+									</div>
 								</div>
-								<div style={{ flex: 1, fontSize: 20 }}>{'>'}</div>
+								<div
+									style={{
+										flex: 1,
+										fontSize: 25,
+										position: 'relative',
+										left: 5,
+									}}
+								>
+									{'>'}
+								</div>
 
 								{exchangeRate && (
 									<div style={{ flex: 1 }}>
-										<div>{spendingAsset.toUpperCase()} UNIT PRICE</div>
+										<div>{spendingAsset?.toUpperCase() || '-'} UNIT PRICE</div>
 										<div style={{ fontSize: 25 }}>
 											{exchangeRate * (1 + Number(spread || 0))}
 										</div>
@@ -322,10 +353,14 @@ const P2PPostDeal = ({
 										showSearch
 										style={{ backgroundColor: '#303236', width: 200 }}
 										placeholder="Select Region"
-										// value={}
-										onChange={(e) => {}}
+										value={region}
+										onChange={(e) => {
+											setRegion(e);
+										}}
 									>
-										<Select.Option value={'us'}>USA</Select.Option>
+										{COUNTRIES_OPTIONS.map((cn) => (
+											<Select.Option value={cn.value}>{cn.label}</Select.Option>
+										))}
 									</Select>
 								</div>
 							</div>
@@ -438,6 +473,26 @@ const P2PPostDeal = ({
 						height: 30,
 					}}
 					onClick={async () => {
+						if (
+							step === 1 &&
+							(!priceType || !buyingAsset || !spendingAsset || !exchangeRate)
+						) {
+							message.error('Please fill all the inputs');
+							return;
+						}
+
+						if (
+							step === 2 &&
+							(!totalOrderAmount ||
+								!minOrderValue ||
+								!maxOrderValue ||
+								paymentMethods.length === 0 ||
+								!region)
+						) {
+							message.error('Please fill all the inputs');
+							return;
+						}
+
 						if (step < 3) {
 							setStep(step + 1);
 						} else {
@@ -449,6 +504,7 @@ const P2PPostDeal = ({
 									spending_asset: spendingAsset,
 									exchange_rate: exchangeRate,
 									spread: spread,
+									region,
 									total_order_amount: totalOrderAmount,
 									min_order_value: minOrderValue,
 									max_order_value: maxOrderValue,

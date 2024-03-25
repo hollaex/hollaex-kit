@@ -272,7 +272,8 @@ const createP2PDeal = async (data) => {
 		min_order_value,
 		max_order_value,
 		status,
-		auto_response
+		auto_response,
+		region
     } = data;
         
     const exchangeInfo = getKitConfig().info;
@@ -334,6 +335,7 @@ const createP2PDeal = async (data) => {
 			'auto_response',
 			'payment_methods',
 			'status',
+			'region'
 		]
 	});
 }
