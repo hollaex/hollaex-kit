@@ -291,7 +291,7 @@ const loginPost = (req, res) => {
 				throw new Error(INVALID_CREDENTIALS + message);
 			}
 
-			if (user.otp_enabled) {
+			if (!user.otp_enabled) {
 				return all([user, toolsLib.security.checkCaptcha(captcha, ip)]);
 			} else {
 				return all([

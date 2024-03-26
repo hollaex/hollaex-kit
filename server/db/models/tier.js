@@ -21,14 +21,14 @@ module.exports = function (sequelize, DataTypes) {
 				type: DataTypes.STRING,
 				allowNull: false
 			},
-			// deposit_limit: {
-			// 	type: DataTypes.DOUBLE,
-			// 	defaultValue: 0
-			// },
-			// withdrawal_limit: {
-			// 	type: DataTypes.DOUBLE,
-			// 	defaultValue: 0
-			// },
+			deposit_limit: {
+				type: DataTypes.DOUBLE,
+				defaultValue: 0
+			},
+			withdrawal_limit: {
+				type: DataTypes.DOUBLE,
+				defaultValue: 0
+			},
 			fees: {
 				type: DataTypes.JSONB,
 				defaultValue: {}

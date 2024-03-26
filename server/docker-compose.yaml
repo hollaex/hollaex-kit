@@ -12,7 +12,7 @@ services:
       - REDIS_PASSWORD=bitholla
     command : ["sh", "-c", "redis-server --requirepass $${REDIS_PASSWORD}"]
   hollaex-kit-db:
-    image: postgres:10.9
+    image: postgres:14.9
     ports:
       - 5432:5432
     environment:
