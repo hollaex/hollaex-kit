@@ -91,7 +91,39 @@ paths:
           in: body
           required: true
           schema:
-            $ref: "#/definitions/ObjectResponse"
+            type: object
+            properties:
+              price_type:
+                type: string
+              buying_asset:
+                type: string
+              spending_asset:
+                type: string
+              exchange_rate:
+                type: number
+                format: double
+              spread:
+                type: number
+                format: double
+              total_order_amount:
+                type: number
+                format: double
+              min_order_value:
+                type: number
+                format: double
+              max_order_value:
+                type: number
+                format: double
+              terms:
+                type: string
+              auto_response:
+                type: string
+              payment_methods:
+                type: array
+                items:
+                  type: object
+              region:
+                type: string
       responses:
         200:
           description: Success
@@ -118,7 +150,49 @@ paths:
           in: body
           required: true
           schema:
-            $ref: "#/definitions/ObjectResponse"
+            type: object
+            properties:
+              price_type:
+                type: string
+              buying_asset:
+                type: string
+              spending_asset:
+                type: string
+              exchange_rate:
+                type: number
+                format: double
+              spread:
+                type: number
+                format: double
+              total_order_amount:
+                type: number
+                format: double
+              min_order_value:
+                type: number
+                format: double
+              max_order_value:
+                type: number
+                format: double
+              terms:
+                type: string
+              auto_response:
+                type: string
+              payment_methods:
+                type: array
+                items:
+                  type: object
+              region:
+                type: string
+              edited_ids:
+                type: array
+                items:
+                  type: integer
+                  format: int32
+              status:
+                type: boolean
+              id:
+                type: integer
+                format: int32
       responses:
         200:
           description: Success
@@ -228,7 +302,16 @@ paths:
           in: body
           required: true
           schema:
-            $ref: "#/definitions/ObjectResponse"
+            type: object
+            properties:
+              deal_id:
+                type: integer
+                format: int32
+              amount_fiat:
+                type: number
+                format: double
+              payment_method_used:
+                type: object
       responses:
         200:
           description: Success
@@ -255,7 +338,17 @@ paths:
           in: body
           required: true
           schema:
-            $ref: "#/definitions/ObjectResponse"
+            type: object
+            properties:
+              id:
+                type: integer
+                format: int32
+              user_status:
+                type: string
+              merchant_status:
+                type: string
+              cancellation_reason:
+                type: string
       responses:
         200:
           description: Success
@@ -284,7 +377,16 @@ paths:
           in: body
           required: true
           schema:
-            $ref: "#/definitions/ObjectResponse"
+            type: object
+            properties:
+              receiver_id:
+                type: integer
+                format: int32
+              message:
+                type: string
+              transaction_id:
+                type: integer
+                format: int32
       responses:
         200:
           description: Success
@@ -388,7 +490,15 @@ paths:
           in: body
           required: true
           schema:
-            $ref: "#/definitions/ObjectResponse"
+            type: object
+            properties:
+              id:
+                type: integer
+                format: int32
+              resolution:
+                type: string
+              status:
+                type: boolean
       responses:
         200:
           description: Success
