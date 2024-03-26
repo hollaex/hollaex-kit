@@ -21,6 +21,14 @@ module.exports = function (sequelize, DataTypes) {
 				type: DataTypes.STRING,
 				allowNull: false
 			},
+			fees: {
+				type: DataTypes.JSONB,
+				defaultValue: {}
+			},
+			note: {
+				type: DataTypes.STRING,
+				defaultValue: ''
+			},
 			deposit_limit: {
 				type: DataTypes.DOUBLE,
 				defaultValue: 0
