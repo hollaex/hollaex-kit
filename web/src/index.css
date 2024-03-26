@@ -9797,7 +9797,8 @@ table th {
     .quick_trade-container .active-border:focus-within {
       background: var(--base_wallet-sidebar-and-popup);
       border: 1px solid var(--labels_important-active-labels-text-graphics) !important; }
-  .quick_trade-container .quick-trade-input:hover, .quick_trade-container .currency-dropdown:hover {
+  .quick_trade-container .quick-trade-input:hover,
+  .quick_trade-container .currency-dropdown:hover {
     border: 1px solid var(--labels_important-active-labels-text-graphics); }
   .quick_trade-container .currency-dropdown {
     border: 1px solid var(--calculated_super-pale_label-text-graphics);
@@ -9821,14 +9822,17 @@ table th {
       color: var(--labels_important-active-labels-text-graphics); }
   .quick_trade-container .field-error-content {
     display: block; }
-  .quick_trade-container .input-group__select, .quick_trade-container .input-group__select_disabled {
+  .quick_trade-container .input-group__select,
+  .quick_trade-container .input-group__select_disabled {
     color: var(--labels_secondary-inactive-label-text-graphics);
     margin-left: 5%;
     font-size: 1.4rem; }
-    .quick_trade-container .input-group__select .ant-select-selector, .quick_trade-container .input-group__select_disabled .ant-select-selector {
+    .quick_trade-container .input-group__select .ant-select-selector,
+    .quick_trade-container .input-group__select_disabled .ant-select-selector {
       padding: 0;
       min-width: 7.5rem; }
-    .quick_trade-container .input-group__select .anticon, .quick_trade-container .input-group__select_disabled .anticon {
+    .quick_trade-container .input-group__select .anticon,
+    .quick_trade-container .input-group__select_disabled .anticon {
       color: var(--labels_important-active-labels-text-graphics); }
   .quick_trade-container .input-group__select_disabled {
     font-size: 1.2rem; }
