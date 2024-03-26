@@ -67,7 +67,7 @@ const createP2PDeal = (req, res) => {
 			);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
-}
+};
 
 const updateP2PDeal = (req, res) => {
 	loggerStake.verbose(req.uuid, 'controllers/p2p/updateP2PDeal/auth', req.auth);
@@ -138,7 +138,7 @@ const updateP2PDeal = (req, res) => {
 			);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
-}
+};
 
 const fetchP2PDeals = (req, res) => {
 	loggerStake.verbose(req.uuid, 'controllers/p2p/fetchP2PDeals/auth', req.auth);
@@ -312,7 +312,7 @@ const createP2PTransaction = (req, res) => {
 			);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
-}
+};
 
 const updateP2PTransaction = (req, res) => {
 	loggerStake.verbose(req.uuid, 'controllers/p2p/updateP2PTransaction/auth', req.auth);
@@ -388,7 +388,7 @@ const updateP2PDispute = (req, res) => {
 			);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
-}
+};
 
 const createP2pChatMessage = (req, res) => {
 	loggerStake.verbose(req.uuid, 'controllers/p2p/createP2pChatMessage/auth', req.auth);
@@ -426,7 +426,7 @@ const createP2pChatMessage = (req, res) => {
 			);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
-}
+};
 
 module.exports = {
 	createP2PDeal,
