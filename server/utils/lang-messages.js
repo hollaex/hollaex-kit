@@ -3957,27 +3957,6 @@ const messages = {
 
 
 const functionMessages = {
-    'User' : (email) => {
-        return {
-            'en': `User ${email} authenticated`,
-            'de': `Benutzer ${email} authentifiziert`,
-            'es': `Usuario ${email} autenticado`,
-            'fa': `کاربر ${email} احراز هویت شد`,
-            'fr': `Utilisateur ${email} authentifié`,
-            'id': `Pengguna ${email} terautentikasi`,
-            'it': `Utente ${email} autenticato`,
-            'ja': `ユーザー ${email} が認証されました`,
-            'ko': `사용자 ${email}이(가) 인증되었습니다`,
-            'mn': `Хэрэглэгч ${email} нэвтрэгдсэн байна`,
-            'nl': `Gebruiker ${email} geauthenticeerd`,
-            'pt': `Usuário ${email} autenticado`,
-            'ru': `Пользователь ${email} аутентифицирован`,
-            'tr': `Kullanıcı ${email} kimlik doğrulandı`,
-            'ur': `صارف ${email} کی تصدیق ہوگئی ہے`,
-            'vi': `Người dùng ${email} đã được xác thực`,
-            'zh': `用户 ${email} 已验证`,
-        }
-    },
     'Topic' : (topic) => {
         return {
             'en': `Topic ${topic} is not supported`,
