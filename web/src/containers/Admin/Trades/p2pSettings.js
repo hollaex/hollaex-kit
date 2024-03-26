@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Tabs, message, Modal, Button, Select, Checkbox, Input } from 'antd';
+import {
+	Tabs,
+	message,
+	Modal,
+	Button,
+	Select,
+	Checkbox,
+	Input,
+	Switch,
+} from 'antd';
 import { Radio, Space } from 'antd';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -7,6 +16,7 @@ import { CloseOutlined } from '@ant-design/icons';
 import { setExchange } from 'actions/assetActions';
 import { requestTiers } from '../Tiers/action';
 import { updateConstants } from './actions';
+import { requestAdminData } from 'actions/appActions';
 import './index.css';
 
 const TabPane = Tabs.TabPane;
@@ -48,7 +58,7 @@ const P2PSettings = ({ coins, pairs, p2p_config }) => {
 	const [merchantFee, setMerchantFee] = useState();
 	const [userFee, setUserFee] = useState();
 	const [editMode, setEditMode] = useState(false);
-
+	const [enable, setEnable] = useState();
 	useEffect(() => {
 		getTiers();
 	}, []);
@@ -62,6 +72,18 @@ const P2PSettings = ({ coins, pairs, p2p_config }) => {
 			});
 	};
 
+	useEffect(() => {
+		setEnable(p2p_config.enable);
+		setSide(p2p_config.side);
+		setDigitalCurrencies(p2p_config.digital_currencies);
+		setFiatCurrencies(p2p_config.fiat_currencies);
+		setMerchantTier(p2p_config.starting_merchant_tier);
+		setUserTier(p2p_config.starting_user_tier);
+		setSelectedPaymentMethods(p2p_config.bank_payment_methods);
+		setMerchantFee(p2p_config.merchant_fee);
+		setUserFee(p2p_config.user_fee);
+	}, []);
+
 	return (
 		<div className="admin-earnings-container w-100">
 			<div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -73,14 +95,6 @@ const P2PSettings = ({ coins, pairs, p2p_config }) => {
 				<div>
 					<Button
 						onClick={() => {
-							setSide(p2p_config.side);
-							setDigitalCurrencies(p2p_config.digital_currencies);
-							setFiatCurrencies(p2p_config.fiat_currencies);
-							setMerchantTier(p2p_config.starting_merchant_tier);
-							setUserTier(p2p_config.starting_user_tier);
-							setSelectedPaymentMethods(p2p_config.bank_payment_methods);
-							setMerchantFee(p2p_config.merchant_fee);
-							setUserFee(p2p_config.user_fee);
 							setEditMode(true);
 							setDisplayP2pModel(true);
 						}}
@@ -94,6 +108,41 @@ const P2PSettings = ({ coins, pairs, p2p_config }) => {
 					>
 						Edit Settings
 					</Button>
+					<div style={{ marginTop: 15 }}>
+						Enable{' '}
+						<Switch
+							checked={enable}
+							onChange={async (e) => {
+								await updateConstants({
+									kit: {
+										p2p_config: {
+											enable: e,
+											bank_payment_methods: selectedPaymentMethods,
+											starting_merchant_tier: merchantTier,
+											starting_user_tier: userTier,
+											digital_currencies: digitalCurrencies,
+											fiat_currencies: fiatCurrencies,
+											side: side,
+											merchant_fee: merchantFee,
+											user_fee: userFee,
+										},
+									},
+								});
+								requestAdminData().then((res) => {
+									const result = res?.data?.kit?.p2p_config;
+									setEnable(result.enable);
+									setSide(result.side);
+									setDigitalCurrencies(result.digital_currencies);
+									setFiatCurrencies(result.fiat_currencies);
+									setMerchantTier(result.starting_merchant_tier);
+									setUserTier(result.starting_user_tier);
+									setSelectedPaymentMethods(result.bank_payment_methods);
+									setMerchantFee(result.merchant_fee);
+									setUserFee(result.user_fee);
+								});
+							}}
+						/>
+					</div>
 				</div>
 			</div>
 			{!p2p_config.enable && (
@@ -118,14 +167,12 @@ const P2PSettings = ({ coins, pairs, p2p_config }) => {
 				</div>
 			)}
 
-			<div style={{ opacity: p2p_config.enable ? 1 : 0.5 }}>
+			<div style={{ opacity: enable ? 1 : 0.5 }}>
 				<div style={{ marginBottom: 10, marginTop: 10 }}>
 					<div style={{ fontSize: 20, marginBottom: 10, marginTop: 10 }}>
 						Sides
 					</div>
-					<div style={{ marginBottom: 10 }}>
-						Trade sides allowed: {p2p_config.side}{' '}
-					</div>
+					<div style={{ marginBottom: 10 }}>Trade sides allowed: {side} </div>
 					<div style={{ borderBottom: '1px solid grey', width: 600 }}></div>
 				</div>
 
@@ -134,8 +181,7 @@ const P2PSettings = ({ coins, pairs, p2p_config }) => {
 						Crypto:
 					</div>
 					<div style={{ marginBottom: 10 }}>
-						Cryptocurrencies allowed for trading:{' '}
-						{p2p_config.digital_currencies.join(', ')}
+						Cryptocurrencies allowed for trading: {digitalCurrencies.join(', ')}
 					</div>
 					<div style={{ borderBottom: '1px solid grey', width: 600 }}></div>
 				</div>
@@ -145,8 +191,7 @@ const P2PSettings = ({ coins, pairs, p2p_config }) => {
 						Fiat:
 					</div>
 					<div style={{ marginBottom: 10 }}>
-						Fiat currencies allowed for trading:{' '}
-						{p2p_config.fiat_currencies.join(', ')}
+						Fiat currencies allowed for trading: {fiatCurrencies.join(', ')}
 					</div>
 					<div style={{ borderBottom: '1px solid grey', width: 600 }}></div>
 				</div>
@@ -157,7 +202,7 @@ const P2PSettings = ({ coins, pairs, p2p_config }) => {
 					</div>
 					<div style={{ marginBottom: 10 }}>
 						Outside payment methods allowed:{' '}
-						{p2p_config.bank_payment_methods.map((x) => x.system_name)}
+						{selectedPaymentMethods.map((x) => x.system_name).join(', ')}
 					</div>
 					<div style={{ borderBottom: '1px solid grey', width: 600 }}></div>
 				</div>
@@ -166,12 +211,8 @@ const P2PSettings = ({ coins, pairs, p2p_config }) => {
 					<div style={{ fontSize: 20, marginBottom: 10, marginTop: 10 }}>
 						Manage:
 					</div>
-					<div style={{ marginBottom: 10 }}>
-						Merchant fee: {p2p_config.merchant_fee}%
-					</div>
-					<div style={{ marginBottom: 10 }}>
-						Buyer fee: {p2p_config.user_fee}%
-					</div>
+					<div style={{ marginBottom: 10 }}>Merchant fee: {merchantFee}%</div>
+					<div style={{ marginBottom: 10 }}>Buyer fee: {userFee}%</div>
 					<div style={{ borderBottom: '1px solid grey', width: 600 }}></div>
 				</div>
 			</div>
@@ -529,6 +570,100 @@ const P2PSettings = ({ coins, pairs, p2p_config }) => {
 								</div>
 							</div>
 
+							<div
+								style={{
+									width: '90%',
+									border: '1px solid white',
+									marginBottom: 20,
+									padding: 20,
+								}}
+							>
+								<div
+									style={{ display: 'flex', justifyContent: 'space-between' }}
+								>
+									<div>
+										<div>Cryptocurrencies allowed for trading: </div>
+										<div>{digitalCurrencies.join(', ')}</div>
+									</div>
+									<div>EDIT</div>
+								</div>
+							</div>
+
+							<div
+								style={{
+									width: '90%',
+									border: '1px solid white',
+									marginBottom: 20,
+									padding: 20,
+								}}
+							>
+								<div
+									style={{ display: 'flex', justifyContent: 'space-between' }}
+								>
+									<div>
+										<div>Fiat currencies allowed for trading: </div>
+										<div>{fiatCurrencies.join(', ')}</div>
+									</div>
+									<div>EDIT</div>
+								</div>
+							</div>
+
+							<div
+								style={{
+									width: '90%',
+									border: '1px solid white',
+									marginBottom: 20,
+									padding: 20,
+								}}
+							>
+								<div
+									style={{ display: 'flex', justifyContent: 'space-between' }}
+								>
+									<div>
+										<div>Outside payment methods allowed: </div>
+										<div>{paymentMethods.map((x) => x.system_name)}</div>
+									</div>
+									<div>EDIT</div>
+								</div>
+							</div>
+
+							<div
+								style={{
+									width: '90%',
+									border: '1px solid white',
+									marginBottom: 20,
+									padding: 20,
+								}}
+							>
+								<div
+									style={{ display: 'flex', justifyContent: 'space-between' }}
+								>
+									<div>
+										<div>Merchant fee: </div>
+										<div>{merchantFee}</div>
+									</div>
+									<div>EDIT</div>
+								</div>
+							</div>
+
+							<div
+								style={{
+									width: '90%',
+									border: '1px solid white',
+									marginBottom: 20,
+									padding: 20,
+								}}
+							>
+								<div
+									style={{ display: 'flex', justifyContent: 'space-between' }}
+								>
+									<div>
+										<div>Buyer fee: </div>
+										<div>{userFee}</div>
+									</div>
+									<div>EDIT</div>
+								</div>
+							</div>
 							{/* <div
 								style={{
 									width: '90%',
@@ -595,6 +730,18 @@ const P2PSettings = ({ coins, pairs, p2p_config }) => {
 													user_fee: userFee,
 												},
 											},
+										});
+										requestAdminData().then((res) => {
+											const result = res?.data?.kit?.p2p_config;
+											setEnable(result.enable);
+											setSide(result.side);
+											setDigitalCurrencies(result.digital_currencies);
+											setFiatCurrencies(result.fiat_currencies);
+											setMerchantTier(result.starting_merchant_tier);
+											setUserTier(result.starting_user_tier);
+											setSelectedPaymentMethods(result.bank_payment_methods);
+											setMerchantFee(result.merchant_fee);
+											setUserFee(result.user_fee);
 										});
 										setDisplayP2pModel(false);
 										message.success('Changes saved.');
