@@ -1019,7 +1019,8 @@ const issueToken = (
 	isSupervisor = false,
 	isKYC = false,
 	isCommunicator = false,
-	expiresIn = getKitSecrets().security.token_time // 24 hours by default
+	expiresIn = getKitSecrets().security.token_time, // 24 hours by default
+	lang = 'en'
 ) => {
 	// Default scope is ['user']
 	let scopes = [].concat(BASE_SCOPES);
@@ -1047,7 +1048,8 @@ const issueToken = (
 			sub: {
 				id,
 				email,
-				networkId
+				networkId,
+				lang
 			},
 			scopes,
 			ip,
