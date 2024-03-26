@@ -29,14 +29,6 @@ module.exports = function (sequelize, DataTypes) {
 				type: DataTypes.DOUBLE,
 				defaultValue: 0
 			},
-			fees: {
-				type: DataTypes.JSONB,
-				defaultValue: {}
-			},
-			note: {
-				type: DataTypes.STRING,
-				defaultValue: ''
-			},
 			native_currency_limit: {
 				type: DataTypes.BOOLEAN,
 				defaultValue: true
