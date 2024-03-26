@@ -289,6 +289,7 @@ exports.WS_HUB_CHANNEL = 'channel:websocket:hub';
 // Chat
 exports.CHAT_MAX_MESSAGES = 50;
 exports.CHAT_MESSAGE_CHANNEL = 'channel:chat:message';
+exports.P2P_CHAT_MESSAGE_CHANNEL = 'channel:p2p';
 
 // CHANNEL CONSTANTS END --------------------------------------------------
 

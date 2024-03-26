@@ -4,6 +4,7 @@ const {
 	CHAT_MESSAGE_CHANNEL,
 	CHAT_MAX_MESSAGES,
 	WEBSOCKET_CHANNEL,
+	P2P_CHAT_MESSAGE_CHANNEL
 } = require('../../constants');
 const { storeData, restoreData } = require('./utils');
 const { isUserBanned } = require('./ban');
@@ -17,6 +18,8 @@ let MESSAGES = [];
 
 // redis subscriber, get message and updates MESSAGES array
 subscriber.subscribe(CHAT_MESSAGE_CHANNEL);
+subscriber.subscribe(P2P_CHAT_MESSAGE_CHANNEL);
+
 subscriber.on('message', (channel, data) => {
 	if (channel === CHAT_MESSAGE_CHANNEL) {
 		data = JSON.parse(data);
@@ -24,6 +27,13 @@ subscriber.on('message', (channel, data) => {
 			MESSAGES.push(data.data);
 		} else if (data.type === 'deleteMessage') {
 			MESSAGES.splice(data.data, 1);
+		}
+	} else if(P2P_CHAT_MESSAGE_CHANNEL) {
+		data = JSON.parse(data);
+		if (data.type === 'message') { 
+			publishP2PChatMessage('addMessage', data.data);
+		} else if(data.type === 'status') {
+			publishP2PChatMessage('getStatus', data.data);
 		}
 	}
 });
@@ -66,7 +76,7 @@ const addP2PMessage = (user_id, p2pData) => {
 		...p2pData,
 		created_at
 	};
-	publishP2PChatMessage('addMessage', data);
+	publisher.publish(P2P_CHAT_MESSAGE_CHANNEL, JSON.stringify({ type: 'message', data }));
 };
 
 const getP2PStatus = (user_id, p2pData) => {
@@ -77,7 +87,8 @@ const getP2PStatus = (user_id, p2pData) => {
 		status: p2pData.status,
 		created_at
 	};
-	publishP2PChatMessage('getStatus', data);
+	publisher.publish(P2P_CHAT_MESSAGE_CHANNEL, JSON.stringify({ type: 'status', data }));
+
 };
 
 const deleteMessage = (idToDelete) => {

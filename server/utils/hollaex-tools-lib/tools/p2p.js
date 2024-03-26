@@ -14,14 +14,12 @@ const { paginationQuery, timeframeQuery, orderingQuery } = require('./database/h
 const dbQuery = require('./database/query');
 const uuid = require('uuid/v4');
 const { parse } = require('json2csv');
+const moment = require('moment');
 
 const {
 	NO_DATA_FOR_CSV,
     FUNDING_ACCOUNT_INSUFFICIENT_BALANCE,
     USER_NOT_FOUND,
-    STAKE_UNSUPPORTED_EXCHANGE_PLAN,
- 
-    
 } = require(`${SERVER_PATH}/messages`);
 
 
@@ -292,7 +290,7 @@ const updateP2PDeal = async (data) => {
     const exchangeInfo = getKitConfig().info;
 
     if (!P2P_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
-        throw new Error(STAKE_UNSUPPORTED_EXCHANGE_PLAN);
+        throw new Error('Service not supported by your exchange plan');
     }
 
 	if (edited_ids != null) {
@@ -390,7 +388,7 @@ const createP2PTransaction = async (data) => {
 	const exchangeInfo = getKitConfig().info;
 
     if(!P2P_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
-        throw new Error(STAKE_UNSUPPORTED_EXCHANGE_PLAN);
+        throw new Error('Service not supported by your exchange plan');
     }
 
 	// Check User tier
@@ -530,6 +528,15 @@ const updateP2pTransaction = async (data) => {
     if (!transaction) {
         throw new Error('transaction does not exist');
     }
+
+	if (moment() > moment(transaction.created_at).add(transaction.transaction_duration || 30 ,'minutes')) {
+		await transaction.update({ transaction_status: 'expired' }, {
+			fields: [
+				'transaction_status'
+			]
+		});
+		throw new Error('Transaction expired');
+	}
 
 	if (transaction.transaction_status !== 'active') {
 			throw new Error('Cannot update complete transaction');
