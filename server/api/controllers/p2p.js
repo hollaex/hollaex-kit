@@ -1,11 +1,10 @@
 'use strict';
 
 const { loggerStake } = require('../../config/logger');
-const { INIT_CHANNEL } = require('../../constants');
-const { publisher } = require('../../db/pubsub');
 const toolsLib = require('hollaex-tools-lib');
 const { errorMessageConverter } = require('../../utils/conversion');
-
+const {  ROLES } = require('../../constants');
+const { API_KEY_NOT_PERMITTED } = require('../../messages');
 const createP2PDeal = (req, res) => {
 	loggerStake.verbose(req.uuid, 'controllers/p2p/createP2PDeal/auth', req.auth);
 
@@ -21,8 +20,8 @@ const createP2PDeal = (req, res) => {
         terms,
         auto_response,
         payment_methods,
-        region,
-	 } = req.swagger.params.data.value;
+        region
+	} = req.swagger.params.data.value;
 
 	loggerStake.verbose(
 		req.uuid,
@@ -89,7 +88,7 @@ const updateP2PDeal = (req, res) => {
         edited_ids,
         status,
         id
-	 } = req.swagger.params.data.value;
+	} = req.swagger.params.data.value;
 
 	loggerStake.verbose(
 		req.uuid,
@@ -285,7 +284,7 @@ const createP2PTransaction = (req, res) => {
         deal_id,
 		amount_fiat,
 		payment_method_used
-	 } = req.swagger.params.data.value;
+	} = req.swagger.params.data.value;
 
 	loggerStake.verbose(
 		req.uuid,
@@ -324,7 +323,7 @@ const updateP2PTransaction = (req, res) => {
         merchant_status,
         cancellation_reason,
 
-	 } = req.swagger.params.data.value;
+	} = req.swagger.params.data.value;
 
 	loggerStake.verbose(
 		req.uuid,
@@ -362,7 +361,7 @@ const updateP2PDispute = (req, res) => {
         id,
         resolution,
         status,
-	 } = req.swagger.params.data.value;
+	} = req.swagger.params.data.value;
 
 	loggerStake.verbose(
 		req.uuid,
@@ -398,7 +397,7 @@ const createP2pChatMessage = (req, res) => {
         receiver_id,
         message,
         transaction_id
-	 } = req.swagger.params.data.value;
+	} = req.swagger.params.data.value;
 
 	loggerStake.verbose(
 		req.uuid,

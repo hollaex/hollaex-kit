@@ -12,17 +12,8 @@
         "sourceType": "module"
     },
     "rules": {
-        "indent": [
-            "warn",
-            "tab",
-            {
-                "SwitchCase": 1   
-            }
-        ],
-        "linebreak-style": [
-            "warn",
-            "unix"
-        ],
+        "indent": "off",
+     
         "quotes": [
             "warn",
             "single"

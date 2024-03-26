@@ -3,19 +3,17 @@
 const { getModel } = require('./database/model');
 const { SERVER_PATH } = require('../constants');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
-const { P2P_SUPPORTED_PLANS } = require(`${SERVER_PATH}/constants`)
-const { getUserByKitId, createAuditLog } = require('./user');
-const { subscribedToCoin, getKitConfig, getAssetsPrices } = require('./common');
+const { P2P_SUPPORTED_PLANS } = require(`${SERVER_PATH}/constants`);
+const { getUserByKitId } = require('./user');
+const { subscribedToCoin, getKitConfig } = require('./common');
 const { transferAssetByKitIds, getUserBalanceByKitId } = require('./wallet');
-const { Op, fn, col } = require('sequelize');
+const { Op } = require('sequelize');
 const BigNumber = require('bignumber.js');
 const { getKitCoin } = require('./common');
 const { paginationQuery, timeframeQuery, orderingQuery } = require('./database/helpers');
 const dbQuery = require('./database/query');
-const moment = require('moment');
-const { sendEmail } = require('../../../mail');
-const { MAILTYPE } = require('../../../mail/strings');
 const uuid = require('uuid/v4');
+const { parse } = require('json2csv');
 
 const {
 	NO_DATA_FOR_CSV,
@@ -49,7 +47,7 @@ const fetchP2PDisputes = async (opts = {
 		},
 		order: [ordering],
 		...(!opts.format && pagination),
-	}
+	};
 
 	if (opts.format) {
 		return dbQuery.fetchAllRecords('p2pDispute', query)
@@ -65,7 +63,7 @@ const fetchP2PDisputes = async (opts = {
 				}
 			});
 	} else {
-        return dbQuery.findAndCountAllWithRows('p2pDispute', query)
+        return dbQuery.findAndCountAllWithRows('p2pDispute', query);
 	}
 };
 
@@ -100,7 +98,7 @@ const fetchP2PDeals = async (opts = {
 				attributes: ['id', 'full_name']
 			}
 		]
-	}
+	};
 
 	if (opts.format) {
 		return dbQuery.fetchAllRecords('p2pDeal', query)
@@ -116,7 +114,7 @@ const fetchP2PDeals = async (opts = {
 				}
 			});
 	} else {
-        return dbQuery.findAndCountAllWithRows('p2pDeal', query)
+        return dbQuery.findAndCountAllWithRows('p2pDeal', query);
 	}
 };
 
@@ -158,7 +156,7 @@ const fetchP2PTransactions = async (user_id, opts = {
 				attributes: ['id', 'full_name']
 			}
 		]
-	}
+	};
 
 	if (opts.format) {
 		return dbQuery.fetchAllRecords('p2pTransaction', query)
@@ -174,9 +172,9 @@ const fetchP2PTransactions = async (user_id, opts = {
 				}
 			});
 	} else {
-        return dbQuery.findAndCountAllWithRows('p2pTransaction', query)
+        return dbQuery.findAndCountAllWithRows('p2pTransaction', query);
 	}
-}
+};
 
 const getP2PAccountBalance = async (account_id, coin) => {
         
@@ -191,23 +189,18 @@ const getP2PAccountBalance = async (account_id, coin) => {
     }
 
     return symbols[coin];
-}
+};
 
 const createP2PDeal = async (data) => {
 	let {
 		merchant_id,
 		side,
-		price_type,
 		buying_asset,
 		spending_asset,
-		exchange_rate,
 		margin,
 		total_order_amount,
 		min_order_value,
 		max_order_value,
-		status,
-		auto_response,
-		region
     } = data;
         
     const exchangeInfo = getKitConfig().info;
@@ -279,7 +272,7 @@ const createP2PDeal = async (data) => {
 			'region'
 		]
 	});
-}
+};
 
 const updateP2PDeal = async (data) => {
 	let {
@@ -287,17 +280,13 @@ const updateP2PDeal = async (data) => {
 		edited_ids,
 		merchant_id,
 		side,
-		price_type,
 		buying_asset,
 		spending_asset,
-		exchange_rate,
 		margin,
 		total_order_amount,
 		min_order_value,
 		max_order_value,
 		status,
-		auto_response,
-		region
     } = data;
         
     const exchangeInfo = getKitConfig().info;
@@ -311,13 +300,13 @@ const updateP2PDeal = async (data) => {
 			where: {
 				id: edited_ids
 			}
-		})
+		});
 
 		deals.forEach(deal => {
 			if (deal.merchant_id !== merchant_id) {
 				throw new Error('Merchant id is not the same');
 			}
-		})
+		});
 		await getModel('p2pDeal').update({ status }, { where : { id : edited_ids }}); 
 		return { message : 'success' };
 	}
@@ -389,14 +378,13 @@ const updateP2PDeal = async (data) => {
 			'region'
 		]
 	});
-}
+};
 
 const createP2PTransaction = async (data) => {
 	let {
 		deal_id,
 		user_id,
 		amount_fiat,
-		payment_method_used
     } = data;
     
 	const exchangeInfo = getKitConfig().info;
@@ -408,7 +396,7 @@ const createP2PTransaction = async (data) => {
 	// Check User tier
 	const p2pConfig = getKitConfig()?.p2p_config;
 
- 	const p2pDeal = await getModel('p2pDeal').findOne({ where: { id: deal_id } });
+	const p2pDeal = await getModel('p2pDeal').findOne({ where: { id: deal_id } });
 
 	const { max_order_value, min_order_value, exchange_rate, spread } = p2pDeal;
 	const { merchant_id } = p2pDeal;
@@ -451,11 +439,11 @@ const createP2PTransaction = async (data) => {
     }
 	
 	if (new BigNumber(amount_fiat).comparedTo(new BigNumber(max_order_value)) === 1) {
-		throw new Error('input amount cannot be bigger than max allowable order amount')
+		throw new Error('input amount cannot be bigger than max allowable order amount');
 	}
 
 	if (new BigNumber(amount_fiat).comparedTo(new BigNumber(min_order_value)) === -1) {
-		throw new Error('input amount cannot be lower than min allowable order amount')
+		throw new Error('input amount cannot be lower than min allowable order amount');
 	}
 
 	//Check the payment method
@@ -485,7 +473,7 @@ const createP2PTransaction = async (data) => {
 		message: p2pDeal.auto_response,
 		type: 'message',
 		created_at: new Date()
-	}
+	};
 
 	data.messages = [firstChatMessage];
 
@@ -511,7 +499,7 @@ const createP2PTransaction = async (data) => {
 			'messages'
 		]
 	});
-}
+};
 
 const updateP2pTransaction = async (data) => {
 	let {
@@ -526,12 +514,13 @@ const updateP2pTransaction = async (data) => {
 	const p2pDeal = await getModel('p2pDeal').findOne({ where: { id: transaction.deal_id } });
 	const merchant = await getUserByKitId(p2pDeal.merchant_id);
 
+	// eslint-disable-next-line no-prototype-builtins
 	if (user_id === transaction.merchant_id && data.hasOwnProperty(user_status)) {
-		 throw new Error('merchant cannot update buyer status');
+		throw new Error('merchant cannot update buyer status');
 	}
-
+	// eslint-disable-next-line no-prototype-builtins
 	if (user_id === transaction.user_id && data.hasOwnProperty(merchant_status)) {
-		 throw new Error('buyer cannot update merchant status');
+		throw new Error('buyer cannot update merchant status');
 	}
 
 	if (user_id !== transaction.merchant_id && user_id !== transaction.user_id) {
@@ -576,8 +565,8 @@ const updateP2pTransaction = async (data) => {
 			initiator_id,
 			defendant_id,
 			reason: cancellation_reason || '',
-		 })
-		 data.transaction_status = 'appealed';
+		});
+		data.transaction_status = 'appealed';
 	}
 
 	if (user_status === 'cancelled' || merchant_status === 'cancelled') {
@@ -591,10 +580,10 @@ const updateP2pTransaction = async (data) => {
 		const chatMessage = {
 			sender_id: user_id,
 			receiver_id: merchant.id,
-			message: "Buyer has marked this order as paid. Waiting for vendor to check, confirm and release funds",
+			message: 'Buyer has marked this order as paid. Waiting for vendor to check, confirm and release funds',
 			type: 'notification',
 			created_at: new Date()
-		}
+		};
 	
 		newMessages.push(chatMessage);
 	}
@@ -603,10 +592,10 @@ const updateP2pTransaction = async (data) => {
 		const chatMessage = {
 			sender_id: user_id,
 			receiver_id: merchant.id,
-			message: "Buyer has cancelled this order, Transaction is closed",
+			message: 'Buyer has cancelled this order, Transaction is closed',
 			type: 'notification',
 			created_at: new Date()
-		}
+		};
 	
 		newMessages.push(chatMessage);
 	}
@@ -615,10 +604,10 @@ const updateP2pTransaction = async (data) => {
 		const chatMessage = {
 			sender_id: user_id,
 			receiver_id: merchant.id,
-			message: "Buyer has appealed this order, Please contact support to resolve the issue",
+			message: 'Buyer has appealed this order, Please contact support to resolve the issue',
 			type: 'notification',
 			created_at: new Date()
-		}
+		};
 	
 		newMessages.push(chatMessage);
 	}
@@ -628,10 +617,10 @@ const updateP2pTransaction = async (data) => {
 		const chatMessage = {
 			sender_id: merchant.id,
 			receiver_id: transaction.user_id,
-			message: "Vendor confirmed the transaction and released the funds.",
+			message: 'Vendor confirmed the transaction and released the funds.',
 			type: 'notification',
 			created_at: new Date()
-		}
+		};
 	
 		newMessages.push(chatMessage);
 	}
@@ -640,10 +629,10 @@ const updateP2pTransaction = async (data) => {
 		const chatMessage = {
 			sender_id: merchant.id,
 			receiver_id: transaction.user_id,
-			message: "Vendor has cancelled this order, Transaction is closed",
+			message: 'Vendor has cancelled this order, Transaction is closed',
 			type: 'notification',
 			created_at: new Date()
-		}
+		};
 	
 		newMessages.push(chatMessage);
 	}
@@ -652,15 +641,15 @@ const updateP2pTransaction = async (data) => {
 		const chatMessage = {
 			sender_id: merchant.id,
 			receiver_id: transaction.user_id,
-			message: "Vendor has appealed this order, Please contact support to resolve the issue",
+			message: 'Vendor has appealed this order, Please contact support to resolve the issue',
 			type: 'notification',
 			created_at: new Date()
-		}
+		};
 	
 		newMessages.push(chatMessage);
 	}
 
-  	return transaction.update({...data, messages: newMessages}, {
+	return transaction.update({...data, messages: newMessages}, {
 		fields: [
 			'user_status',
 			'merchant_status',
@@ -673,7 +662,7 @@ const updateP2pTransaction = async (data) => {
 			'messages'
 		]
 	});
-}
+};
 
 
 const createP2pDispute = async (data) => {
@@ -688,22 +677,22 @@ const createP2pDispute = async (data) => {
 				'status',
 			]
 		});
-}
+};
 
 const updateP2pDispute = async (data) => {
-	   const p2pDispute = await getModel('p2pDispute').findOne({ where: { id: data.id } });
+	const p2pDispute = await getModel('p2pDispute').findOne({ where: { id: data.id } });
 
-	   if(!p2pDispute) {
-		throw new Error('no record found');
-	   }
+	if(!p2pDispute) {
+	throw new Error('no record found');
+	}
 
-	   return p2pDispute.update(data, {
+	return p2pDispute.update(data, {
 		fields: [
 			'resolution',
 			'status'
 		]
 	});
-}
+};
 
 const createP2pChatMessage = async (data) => {
 	const transaction = await getModel('p2pTransaction').findOne({ where: { id: data.transaction_id } });
@@ -725,7 +714,7 @@ const createP2pChatMessage = async (data) => {
 		message: data.message,
 		type: 'message',
 		created_at: new Date()
-	}
+	};
 
 	const newMessages = [...transaction.messages];
 	newMessages.push(chatMessage);
@@ -741,7 +730,7 @@ const createP2pChatMessage = async (data) => {
 			'messages'		
 		]
 	});
-}
+};
  
 const updateMerchantProfile = async (data) => {
 	const p2pMerchant = await getModel('p2pMerchant').findOne({ id: data.id });
@@ -761,7 +750,7 @@ const updateMerchantProfile = async (data) => {
 			]
 		});
 	}
-}
+};
 
 const createMerchantFeedback = async (data) => {
 	const transaction = await getModel('p2pTransaction').findOne({ where: { id: data.transaction_id } });
@@ -778,7 +767,7 @@ const createMerchantFeedback = async (data) => {
 			'comment',
 		]
 	});
-}
+};
 
 module.exports = {
 	createP2PDeal,
