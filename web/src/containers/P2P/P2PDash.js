@@ -35,6 +35,7 @@ const P2PDash = ({
 	const [amountCurrency, setAmountCurrency] = useState();
 	const [amountFiat, setAmountFiat] = useState();
 	const [filterCoin, setFilterCoin] = useState();
+	const [filterDigital, setFilterDigital] = useState();
 	const [filterRegion, setFilterRegion] = useState();
 	const [filterAmount, setFilterAmount] = useState();
 	const [filterMethod, setFilterMethod] = useState();
@@ -107,8 +108,8 @@ const P2PDash = ({
 					.map((coin) => (
 						<Button
 							ghost
-							onChange={() => {
-								setFilterCoin(coin.symbol);
+							onClick={() => {
+								setFilterDigital(coin.symbol);
 							}}
 						>
 							{coin.symbol.toUpperCase()}
@@ -116,8 +117,8 @@ const P2PDash = ({
 					))}
 				<Button
 					ghost
-					onChange={() => {
-						setFilterCoin('all');
+					onClick={() => {
+						setFilterDigital();
 					}}
 				>
 					All
@@ -237,6 +238,9 @@ const P2PDash = ({
 							.filter(
 								(deal) =>
 									(filterCoin ? filterCoin === deal.spending_asset : true) &&
+									(filterDigital
+										? filterDigital === deal.buying_asset
+										: true) &&
 									(filterAmount ? filterAmount < deal.max_order_value : true) &&
 									(filterMethod
 										? deal.payment_methods.find(

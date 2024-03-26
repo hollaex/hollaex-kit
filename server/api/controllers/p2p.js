@@ -144,7 +144,7 @@ const updateP2PDeal = (req, res) => {
 const fetchP2PDeals = (req, res) => {
 	loggerStake.verbose(req.uuid, 'controllers/p2p/fetchP2PDeals/auth', req.auth);
 
-	const {user_id, limit, page, order_by, order, start_date, end_date, format, status } = req.swagger.params;
+	const { user_id, limit, page, order_by, order, start_date, end_date, format, status } = req.swagger.params;
 
 	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1) {
 		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
@@ -355,6 +355,41 @@ const updateP2PTransaction = (req, res) => {
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 }
+const updateP2PDispute = (req, res) => {
+	loggerStake.verbose(req.uuid, 'controllers/p2p/updateP2PDispute/auth', req.auth);
+
+	const {  
+        id,
+        resolution,
+        status,
+	 } = req.swagger.params.data.value;
+
+	loggerStake.verbose(
+		req.uuid,
+		'controllers/p2p/updateP2PDispute data',
+        id,
+        resolution,
+        status,
+	);
+
+	toolsLib.p2p.updateP2pDispute({
+        id,
+        resolution,
+        status,
+    }
+		)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerStake.error(
+				req.uuid,
+				'controllers/p2p/updateP2PDispute err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+}
 
 const createP2pChatMessage = (req, res) => {
 	loggerStake.verbose(req.uuid, 'controllers/p2p/createP2pChatMessage/auth', req.auth);
@@ -402,5 +437,6 @@ module.exports = {
     createP2pChatMessage,
     updateP2PTransaction,
     fetchP2PDisputes,
-    updateP2PDeal
+    updateP2PDeal,
+    updateP2PDispute
 };

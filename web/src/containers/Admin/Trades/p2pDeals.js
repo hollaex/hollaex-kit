@@ -5,7 +5,7 @@ import moment from 'moment';
 import BigNumber from 'bignumber.js';
 import { ExclamationCircleFilled } from '@ant-design/icons';
 import { connect } from 'react-redux';
-
+import { CloseOutlined } from '@ant-design/icons';
 const P2PDeals = ({ coins }) => {
 	const [userData, setUserData] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
@@ -65,8 +65,9 @@ const P2PDeals = ({ coins }) => {
 						<div>
 							Available: {data.total_order_amount}{' '}
 							{data.buying_asset.toUpperCase()}
+							{','}
 						</div>
-						<div>
+						<div style={{ marginLeft: 5 }}>
 							Limit: {data.min_order_value} - {data.max_order_value}{' '}
 							{data.spending_asset.toUpperCase()}
 						</div>

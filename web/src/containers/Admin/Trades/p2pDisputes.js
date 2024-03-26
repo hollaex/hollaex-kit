@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Button, Spin, Input } from 'antd';
-import { requestDisputes } from './actions';
+import { Table, Button, Spin, Input, Modal, message } from 'antd';
+import { requestDisputes, editDispute } from './actions';
 import moment from 'moment';
 // import BigNumber from 'bignumber.js';
 // import { ExclamationCircleFilled } from '@ant-design/icons';
 import { connect } from 'react-redux';
+import { CloseOutlined } from '@ant-design/icons';
 
 const P2PDisputes = ({ coins }) => {
 	const [userData, setUserData] = useState([]);
@@ -20,7 +21,9 @@ const P2PDisputes = ({ coins }) => {
 	});
 
 	const [userQuery, setUserQuery] = useState({});
-
+	const [resolution, setResolution] = useState();
+	const [displayAdjudicate, setDisplayAdjudicate] = useState(false);
+	const [selectedDispute, setSelectedDispute] = useState();
 	const statuses = {
 		staking: 2,
 		unstaking: 1,
@@ -107,9 +110,14 @@ const P2PDisputes = ({ coins }) => {
 				return (
 					<div className="d-flex">
 						<Button
+							disabled={!data.status}
 							style={{
 								backgroundColor: '#288500',
 								color: 'white',
+							}}
+							onClick={() => {
+								setSelectedDispute(data);
+								setDisplayAdjudicate(true);
 							}}
 						>
 							Adjudicate
@@ -166,6 +174,82 @@ const P2PDisputes = ({ coins }) => {
 
 	return (
 		<div>
+			<Modal
+				maskClosable={false}
+				closeIcon={<CloseOutlined style={{ color: 'white' }} />}
+				bodyStyle={{
+					backgroundColor: '#27339D',
+					marginTop: 60,
+				}}
+				visible={displayAdjudicate}
+				width={450}
+				footer={null}
+				onCancel={() => {
+					setDisplayAdjudicate(false);
+				}}
+			>
+				<h1 style={{ fontWeight: '600', color: 'white' }}>
+					Resolve the dispute
+				</h1>
+				<div>Input resolution</div>
+				<Input
+					value={resolution}
+					onChange={(e) => {
+						setResolution(e.target.value);
+					}}
+					width={400}
+				/>
+
+				<div
+					style={{
+						display: 'flex',
+						flexDirection: 'row',
+						gap: 15,
+						justifyContent: 'space-between',
+						marginTop: 30,
+					}}
+				>
+					<Button
+						onClick={() => {
+							setDisplayAdjudicate(false);
+						}}
+						style={{
+							backgroundColor: '#288500',
+							color: 'white',
+							flex: 1,
+							height: 35,
+						}}
+						type="default"
+					>
+						Back
+					</Button>
+					<Button
+						onClick={async () => {
+							try {
+								await editDispute({
+									id: selectedDispute.id,
+									status: false,
+									resolution,
+								});
+								requestExchangeStakers(queryFilters.page, queryFilters.limit);
+								setDisplayAdjudicate(false);
+							} catch (error) {
+								message.error(error.data.message);
+							}
+						}}
+						style={{
+							backgroundColor: '#288500',
+							color: 'white',
+							flex: 1,
+							height: 35,
+						}}
+						type="default"
+						disabled={false}
+					>
+						OKAY
+					</Button>
+				</div>
+			</Modal>
 			<div style={{ color: 'white', fontWeight: 'bold' }}>P2p Disputes</div>
 			<div style={{ color: '#ccc' }}>
 				Track the users that have active disputes

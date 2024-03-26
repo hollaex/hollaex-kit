@@ -44,7 +44,7 @@ const fetchP2PDisputes = async (opts = {
 	const query = {
 		where: {
 			created_at: timeframe,
-			...(opts.user_id && { merchant_id: opts.user_id }),
+			...(opts.user_id && { initiator_id: opts.user_id }),
 			
 		},
 		order: [ordering],
@@ -691,14 +691,14 @@ const createP2pDispute = async (data) => {
 }
 
 const updateP2pDispute = async (data) => {
-	   const p2pDispute = await getModel('p2pDispute').findOne({ id: data.id });
+	   const p2pDispute = await getModel('p2pDispute').findOne({ where: { id: data.id } });
 
 	   if(!p2pDispute) {
 		throw new Error('no record found');
 	   }
+
 	   return p2pDispute.update(data, {
 		fields: [
-			'reason',
 			'resolution',
 			'status'
 		]

@@ -8,6 +8,14 @@ export const requestDisputes = (values) => {
 		values && Object.keys(values).length ? querystring.stringify(values) : '';
 	return requestAuthenticated(`/p2p/dispute?${queryValues}`);
 };
+export const editDispute = (values) => {
+	const options = {
+		method: 'PUT',
+		body: JSON.stringify(values),
+	};
+
+	return requestAuthenticated('/p2p/dispute', options);
+};
 
 export const requestTrades = (id) => {
 	const query = querystring.stringify({
