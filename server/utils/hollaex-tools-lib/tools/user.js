@@ -2641,23 +2641,25 @@ const fetchUserProfitLossInfo = async (user_id) => {
  
 		results[interval] = {};
 		Object.keys(finalBalances).forEach(async (asset) => {
-			const cumulativePNL =
-			finalBalances[asset].native_currency_value -
-			initialBalances[asset].native_currency_value -
-			(netInflowFromDepositsPerAsset[asset] || 0) -
-			(netInflowFromTradesPerAsset[asset] || 0) -
-			(netOutflowFromWithdrawalsPerAsset[asset] || 0);
-		
+			if (initialBalances?.[asset] && initialBalances?.[asset]?.native_currency_value) {
+				const cumulativePNL =
+				finalBalances[asset].native_currency_value -
+				initialBalances[asset].native_currency_value -
+				(netInflowFromDepositsPerAsset[asset] || 0) -
+				(netInflowFromTradesPerAsset[asset] || 0) -
+				(netOutflowFromWithdrawalsPerAsset[asset] || 0);
 			
-			const day1Assets = initialBalances[asset].native_currency_value;
-			const inflow = netInflowFromDepositsPerAsset[asset] || 0;
-			const cumulativePNLPercentage =
-			cumulativePNL / (day1Assets + inflow) * 100; 
-		
-			results[interval][asset] = {
-				cumulativePNL,
-				cumulativePNLPercentage,
-			};
+				
+				const day1Assets = initialBalances[asset].native_currency_value;
+				const inflow = netInflowFromDepositsPerAsset[asset] || 0;
+				const cumulativePNLPercentage =
+				cumulativePNL / (day1Assets + inflow) * 100; 
+			
+				results[interval][asset] = {
+					cumulativePNL,
+					cumulativePNLPercentage,
+				};
+			}
 		});
 	}
 
