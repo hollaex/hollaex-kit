@@ -2698,6 +2698,7 @@ const fetchUserProfitLossInfo = async (user_id) => {
 	return results;
 };
 
+
 module.exports = {
 	loginUser,
 	getUserTier,
@@ -2760,5 +2761,6 @@ module.exports = {
 	changeKitUserEmail,
 	storeVerificationCode,
 	signUpUser,
-	verifyUser
+	verifyUser,
+
 };

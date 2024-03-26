@@ -13,6 +13,7 @@ const pair = require('./pair');
 const exchange = require('./exchange');
 const broker = require('./broker');
 const stake = require('./stake');
+const p2p = require('./p2p');
 
 module.exports = {
 	...common,
@@ -27,5 +28,6 @@ module.exports = {
 	pair,
 	exchange,
 	broker,
-	stake
+	stake,
+	p2p
 };

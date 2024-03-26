@@ -10,7 +10,7 @@ const {
 	WS_UNSUPPORTED_OPERATION,
 	WS_USER_AUTHENTICATED
 } = require('../messages');
-const { initializeTopic, terminateTopic, authorizeUser, terminateClosedChannels, handleChatData } = require('./sub');
+const { initializeTopic, terminateTopic, authorizeUser, terminateClosedChannels, handleChatData, handleP2pData } = require('./sub');
 const { connect, hubConnected } = require('./hub');
 const { setWsHeartbeat } = require('ws-heartbeat/server');
 const WebSocket = require('ws');
@@ -68,6 +68,13 @@ wss.on('connection', (ws, req) => {
 				args.forEach((arg) => {
 					const { action, data } = arg;
 					handleChatData(action, ws, data);
+				});
+			} 
+			else if (op === 'p2pChat') {
+				loggerWebsocket.info(ws.id, 'ws/index/message', message);
+				args.forEach((arg) => {
+					const { action, data } = arg;
+					handleP2pData(action, ws, data);
 				});
 			} else {
 				throw new Error(WS_UNSUPPORTED_OPERATION);

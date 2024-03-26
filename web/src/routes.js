@@ -7,6 +7,7 @@ import {
 	App as Container,
 	Account,
 	MainWallet,
+	P2P,
 	CurrencyWallet,
 	Login,
 	Signup,
@@ -406,6 +407,15 @@ export const generateRoutes = (routes = []) => {
 					component={MainWallet}
 					onEnter={requireAuth}
 				/>
+				<Route path="p2p" name="P2P" component={P2P} onEnter={requireAuth} />
+
+				<Route
+					path="p2p/order/:order_id"
+					name="P2P Order"
+					component={P2P}
+					onEnter={requireAuth}
+				/>
+
 				<Route
 					path="wallet/:currency"
 					name="Wallet"
