@@ -226,7 +226,7 @@ const Details = ({
 							<div className="fade-area" />
 							<MiniSparkLine chartData={chartData} isArea />
 						</div>
-						<div className="d-flex pb-40">
+						<div className="d-flex pb-24">
 							<div>
 								<div className="sub-title">
 									{

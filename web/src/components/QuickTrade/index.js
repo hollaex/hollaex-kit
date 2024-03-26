@@ -474,7 +474,7 @@ const QuickTrade = ({
 									{STRINGS['QUICK_TRADE_COMPONENT.GO_TO_TEXT']}
 								</EditWrapper>{' '}
 								<Link to="/wallet">
-									<span>
+									<span className="go-to-text">
 										<EditWrapper stringId="WALLET_TITLE">
 											{STRINGS['WALLET_TITLE']}
 										</EditWrapper>
