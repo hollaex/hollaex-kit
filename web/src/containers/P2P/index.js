@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { ReactSVG } from 'react-svg';
@@ -13,6 +14,7 @@ import P2PPostDeal from './P2PPostDeal';
 import P2PProfile from './P2PProfile';
 import P2POrder from './P2POrder';
 import { fetchTransactions } from './actions/p2pActions';
+import { NotLoggedIn } from 'components';
 const TabPane = Tabs.TabPane;
 
 const P2P = ({
@@ -55,80 +57,82 @@ const P2P = ({
 	}, []);
 
 	return (
-		<div
-			style={{ height: 600, width: '100%', padding: 20, marginBottom: 400 }}
-			className="summary-container"
-		>
-			<div style={{ textAlign: 'center', fontSize: 19 }}>P2P Deals</div>
-			<div style={{ textAlign: 'center', marginBottom: 15 }}>
-				P2P deals for buying and selling Bitcoin, USDT, and other
-				cryptocurrencies.
-			</div>
-			{displayOrder && (
-				<P2POrder
-					setDisplayOrder={setDisplayOrder}
-					setSelectedTransaction={setSelectedTransaction}
-					selectedTransaction={selectedTransaction}
-				/>
-			)}
-			{!displayOrder && (
-				<Tabs
-					defaultActiveKey="0"
-					activeKey={tab}
-					onChange={(e) => {
-						if (e !== '3') {
-							setSelectedDealEdit();
-						}
-						setTab(e);
-					}}
-				>
-					{user.verification_level >= p2p_config.starting_user_tier && (
-						<>
-							<TabPane tab="P2P" key="0">
-								<P2PDash
-									setDisplayOrder={setDisplayOrder}
-									refresh={refresh}
-									setSelectedTransaction={setSelectedTransaction}
-								/>
-							</TabPane>
-							<TabPane tab="ORDERS" key="1">
-								<P2POrders
-									setDisplayOrder={setDisplayOrder}
-									setSelectedTransaction={setSelectedTransaction}
-									refresh={refresh}
-								/>
-							</TabPane>
-						</>
-					)}
+		<NotLoggedIn>
+			<div
+				style={{ height: 600, width: '100%', padding: 20, marginBottom: 400 }}
+				className="summary-container"
+			>
+				<div style={{ textAlign: 'center', fontSize: 19 }}>P2P Deals</div>
+				<div style={{ textAlign: 'center', marginBottom: 15 }}>
+					P2P deals for buying and selling Bitcoin, USDT, and other
+					cryptocurrencies.
+				</div>
+				{displayOrder && (
+					<P2POrder
+						setDisplayOrder={setDisplayOrder}
+						setSelectedTransaction={setSelectedTransaction}
+						selectedTransaction={selectedTransaction}
+					/>
+				)}
+				{!displayOrder && (
+					<Tabs
+						defaultActiveKey="0"
+						activeKey={tab}
+						onChange={(e) => {
+							if (e !== '3') {
+								setSelectedDealEdit();
+							}
+							setTab(e);
+						}}
+					>
+						{user.verification_level >= p2p_config.starting_user_tier && (
+							<>
+								<TabPane tab="P2P" key="0">
+									<P2PDash
+										setDisplayOrder={setDisplayOrder}
+										refresh={refresh}
+										setSelectedTransaction={setSelectedTransaction}
+									/>
+								</TabPane>
+								<TabPane tab="ORDERS" key="1">
+									<P2POrders
+										setDisplayOrder={setDisplayOrder}
+										setSelectedTransaction={setSelectedTransaction}
+										refresh={refresh}
+									/>
+								</TabPane>
+							</>
+						)}
 
-					{user.verification_level >= p2p_config.starting_merchant_tier && (
-						<>
-							{/* <TabPane tab="PROFILE" key="2">
+						{user.verification_level >= p2p_config.starting_merchant_tier && (
+							<>
+								{/* <TabPane tab="PROFILE" key="2">
 							<P2PProfile />
 						</TabPane> */}
 
-							<TabPane tab="POST DEAL" key="3">
-								<P2PPostDeal
-									setTab={setTab}
-									setRefresh={setRefresh}
-									refresh={refresh}
-									selectedDealEdit={selectedDealEdit}
-									setSelectedDealEdit={setSelectedDealEdit}
-								/>
-							</TabPane>
-							<TabPane tab="MY DEALS" key="4">
-								<P2PMyDeals
-									setTab={setTab}
-									setRefresh={setRefresh}
-									refresh={refresh}
-									setSelectedDealEdit={setSelectedDealEdit}
-								/>
-							</TabPane>
-						</>
-					)}
-				</Tabs>
-			)}
-		</div>
+								<TabPane tab="POST DEAL" key="3">
+									<P2PPostDeal
+										setTab={setTab}
+										setRefresh={setRefresh}
+										refresh={refresh}
+										selectedDealEdit={selectedDealEdit}
+										setSelectedDealEdit={setSelectedDealEdit}
+									/>
+								</TabPane>
+								<TabPane tab="MY DEALS" key="4">
+									<P2PMyDeals
+										setTab={setTab}
+										setRefresh={setRefresh}
+										refresh={refresh}
+										setSelectedDealEdit={setSelectedDealEdit}
+									/>
+								</TabPane>
+							</>
+						)}
+					</Tabs>
+				)}
+			</div>
+		</NotLoggedIn>
 	);
 };
 

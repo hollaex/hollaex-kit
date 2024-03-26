@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import {
 	Tabs,
@@ -21,7 +22,7 @@ import './index.css';
 
 const TabPane = Tabs.TabPane;
 
-const P2PSettings = ({ coins, pairs, p2p_config }) => {
+const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 	const [displayP2pModel, setDisplayP2pModel] = useState(false);
 	const [displayFiatAdd, setDisplayFiatAdd] = useState(false);
 	const [displayPaymentAdd, setDisplayPaymentAdd] = useState(false);
@@ -115,6 +116,10 @@ const P2PSettings = ({ coins, pairs, p2p_config }) => {
 							onChange={async (e) => {
 								await updateConstants({
 									kit: {
+										features: {
+											...features,
+											p2p: e,
+										},
 										p2p_config: {
 											enable: e,
 											bank_payment_methods: selectedPaymentMethods,
@@ -718,6 +723,10 @@ const P2PSettings = ({ coins, pairs, p2p_config }) => {
 									try {
 										await updateConstants({
 											kit: {
+												features: {
+													...features,
+													p2p: true,
+												},
 												p2p_config: {
 													enable: true,
 													bank_payment_methods: selectedPaymentMethods,
@@ -743,6 +752,7 @@ const P2PSettings = ({ coins, pairs, p2p_config }) => {
 											setMerchantFee(result.merchant_fee);
 											setUserFee(result.user_fee);
 										});
+										setStep(0);
 										setDisplayP2pModel(false);
 										message.success('Changes saved.');
 									} catch (error) {

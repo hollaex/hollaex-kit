@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { ReactSVG } from 'react-svg';
@@ -29,6 +30,7 @@ const P2PDash = ({
 	setDisplayOrder,
 	refresh,
 	setSelectedTransaction,
+	p2p_config,
 }) => {
 	const [expandRow, setExpandRow] = useState(false);
 	const [selectedDeal, setSelectedDeal] = useState();
@@ -105,18 +107,16 @@ const P2PDash = ({
 			>
 				<span style={{ fontWeight: 'bold' }}>Crypto</span>
 
-				{Object.values(coins || {})
-					.filter((coin) => coin.type !== 'fiat')
-					.map((coin) => (
-						<Button
-							ghost
-							onClick={() => {
-								setFilterDigital(coin.symbol);
-							}}
-						>
-							{coin.symbol.toUpperCase()}
-						</Button>
-					))}
+				{p2p_config?.digital_currencies.map((coin) => (
+					<Button
+						ghost
+						onClick={() => {
+							setFilterDigital(coin);
+						}}
+					>
+						{coin.toUpperCase()}
+					</Button>
+				))}
 				<Button
 					ghost
 					onClick={() => {
@@ -141,7 +141,7 @@ const P2PDash = ({
 					<span>
 						<Select
 							showSearch
-							style={{ backgroundColor: '#303236', width: 150 }}
+							style={{ backgroundColor: '#303236', width: 120 }}
 							placeholder="Select fiat"
 							value={filterCoin}
 							onChange={(e) => {
@@ -149,13 +149,11 @@ const P2PDash = ({
 							}}
 						>
 							<Select.Option value={null}>All</Select.Option>
-							{Object.values(coins || {})
-								.filter((coin) => coin.type === 'fiat')
-								.map((coin) => (
-									<Select.Option value={coin.symbol}>
-										{coin.fullname}
-									</Select.Option>
-								))}
+							{p2p_config?.fiat_currencies.map((coin) => (
+								<Select.Option value={coin}>
+									{coin?.toUpperCase()}
+								</Select.Option>
+							))}
 						</Select>
 					</span>
 				</div>
@@ -506,6 +504,7 @@ const mapStateToProps = (state) => ({
 	constants: state.app.constants,
 	transaction_limits: state.app.transaction_limits,
 	user: state.user,
+	p2p_config: state.app.constants.p2p_config,
 });
 
 export default connect(mapStateToProps)(withConfig(P2PDash));

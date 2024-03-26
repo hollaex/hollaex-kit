@@ -68,6 +68,14 @@ export const MENU_ITEMS = {
 			hide_from_bottom_nav: true,
 		},
 		{
+			id: 'p2p',
+			path: '/p2p',
+			icon_id: 'TAB_STAKE',
+			string_id: 'ACCOUNTS.P2P',
+			hide_from_appbar: true,
+			hide_from_bottom_nav: true,
+		},
+		{
 			id: 'apps',
 			path: '/apps',
 			icon_id: 'TAB_APPS',

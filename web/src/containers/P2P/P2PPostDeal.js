@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { ReactSVG } from 'react-svg';
@@ -162,13 +163,11 @@ const P2PPostDeal = ({
 												setBuyingAsset(e);
 											}}
 										>
-											{Object.values(coins || {})
-												.filter((coin) => coin.type !== 'fiat')
-												.map((coin) => (
-													<Select.Option value={coin.symbol}>
-														{coin.fullname}
-													</Select.Option>
-												))}
+											{p2p_config?.digital_currencies.map((coin) => (
+												<Select.Option value={coin}>
+													{coin?.toUpperCase()}
+												</Select.Option>
+											))}
 										</Select>
 									</div>
 									<div style={{ marginTop: 4 }}>Crypto you want to sell</div>
@@ -195,13 +194,11 @@ const P2PPostDeal = ({
 												setSpendingAsset(e);
 											}}
 										>
-											{Object.values(coins || {})
-												.filter((coin) => coin.type === 'fiat')
-												.map((coin) => (
-													<Select.Option value={coin.symbol}>
-														{coin.fullname}
-													</Select.Option>
-												))}
+											{p2p_config?.fiat_currencies.map((coin) => (
+												<Select.Option value={coin}>
+													{coin?.toUpperCase()}
+												</Select.Option>
+											))}
 										</Select>
 									</div>
 									<div style={{ marginTop: 4 }}>

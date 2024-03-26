@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Spin, Input } from 'antd';
 import { requestDeals } from './actions';

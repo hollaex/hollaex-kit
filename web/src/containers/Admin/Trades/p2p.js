@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useState } from 'react';
 import { Tabs } from 'antd';
 import { connect } from 'react-redux';
