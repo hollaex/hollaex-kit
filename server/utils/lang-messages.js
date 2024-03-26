@@ -3957,27 +3957,6 @@ const messages = {
 
 
 const functionMessages = {
-    'Topic' : (topic) => {
-        return {
-            'en': `Topic ${topic} is not supported`,
-            'de': `Thema ${topic} wird nicht unterstützt`,
-            'es': `El tema ${topic} no es compatible`,
-            'fa': `موضوع ${topic} پشتیبانی نمی‌شود`,
-            'fr': `Le sujet ${topic} n'est pas pris en charge`,
-            'id': `Topik ${topic} tidak didukung`,
-            'it': `L'argomento ${topic} non è supportato`,
-            'ja': `トピック ${topic} はサポートされていません`,
-            'ko': `주제 ${topic}은(는) 지원되지 않습니다`,
-            'mn': `Сэдэв ${topic} дэмжигдэхгүй байна`,
-            'nl': `Onderwerp ${topic} wordt niet ondersteund`,
-            'pt': `O tópico ${topic} não é suportado`,
-            'ru': `Тема ${topic} не поддерживается`,
-            'tr': `Konu ${topic} desteklenmiyor`,
-            'ur': `موضوع ${topic} کو سپورٹ نہیں کیا گیا ہے`,
-            'vi': `Chủ đề ${topic} không được hỗ trợ`,
-            'zh': `主题 ${topic} 不受支持`,
-        }
-    },
     'Access denied' : (msg) => {
         return {
             'en': `Access denied: ${msg}`,
