@@ -14,6 +14,8 @@ import {
 } from './actions/p2pActions';
 import { COUNTRIES_OPTIONS } from 'utils/countries';
 import { formatToCurrency } from 'utils/currency';
+import './_P2P.scss';
+
 const P2PDash = ({
 	data,
 	onClose,
@@ -68,9 +70,9 @@ const P2PDash = ({
 
 	return (
 		<div
+			className="P2pOrder"
 			style={{
 				minHeight: 800,
-				backgroundColor: '#303236',
 				width: '100%',
 				padding: 20,
 			}}

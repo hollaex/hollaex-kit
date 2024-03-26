@@ -7,6 +7,7 @@ import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { Button, Checkbox, message } from 'antd';
 import { fetchDeals, editDeal } from './actions/p2pActions';
+import './_P2P.scss';
 const P2PMyDeals = ({
 	data,
 	onClose,
@@ -34,9 +35,9 @@ const P2PMyDeals = ({
 
 	return (
 		<div
+			className="P2pOrder"
 			style={{
 				minHeight: 600,
-				backgroundColor: '#303236',
 				width: '100%',
 				padding: 20,
 			}}

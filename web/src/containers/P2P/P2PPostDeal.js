@@ -96,7 +96,6 @@ const P2PPostDeal = ({
 			className="P2pOrder"
 			style={{
 				height: 600,
-				backgroundColor: '#303236',
 				width: '100%',
 				padding: 20,
 			}}

@@ -9,6 +9,7 @@ import { Button } from 'antd';
 import { fetchTransactions } from './actions/p2pActions';
 import { withRouter } from 'react-router';
 import { formatToCurrency } from 'utils/currency';
+import './_P2P.scss';
 const P2POrders = ({
 	data,
 	onClose,
@@ -41,9 +42,9 @@ const P2POrders = ({
 
 	return (
 		<div
+			className="P2pOrder"
 			style={{
 				minHeight: 600,
-				backgroundColor: '#303236',
 				width: '100%',
 				padding: 20,
 			}}

@@ -17,6 +17,7 @@ import { withRouter } from 'react-router';
 import { getToken } from 'utils/token';
 import { WS_URL } from 'config/constants';
 import { CloseOutlined } from '@ant-design/icons';
+import './_P2P.scss';
 // const buyerConfirmMessage = () => (
 // 	<div
 // 		style={{
@@ -340,9 +341,9 @@ const P2POrder = ({
 				Back
 			</div>
 			<div
+				className="P2pOrder"
 				style={{
 					minHeight: 650,
-					backgroundColor: '#303236',
 					width: '100%',
 					padding: 20,
 				}}
@@ -779,10 +780,10 @@ const P2POrder = ({
 						<div>CHAT WITH VENDOR</div>
 						{/* chat box */}
 						<div
+							className="P2pOrder"
 							style={{
 								border: '1px solid grey',
 								position: 'relative',
-								backgroundColor: '#383A3E',
 								padding: 15,
 							}}
 						>

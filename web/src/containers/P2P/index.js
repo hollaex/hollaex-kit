@@ -82,40 +82,50 @@ const P2P = ({
 						setTab(e);
 					}}
 				>
-					<TabPane tab="P2P" key="0">
-						<P2PDash
-							setDisplayOrder={setDisplayOrder}
-							refresh={refresh}
-							setSelectedTransaction={setSelectedTransaction}
-						/>
-					</TabPane>
-					<TabPane tab="ORDERS" key="1">
-						<P2POrders
-							setDisplayOrder={setDisplayOrder}
-							setSelectedTransaction={setSelectedTransaction}
-							refresh={refresh}
-						/>
-					</TabPane>
-					{/* <TabPane tab="PROFILE" key="2">
-						<P2PProfile />
-					</TabPane> */}
-					<TabPane tab="POST DEAL" key="3">
-						<P2PPostDeal
-							setTab={setTab}
-							setRefresh={setRefresh}
-							refresh={refresh}
-							selectedDealEdit={selectedDealEdit}
-							setSelectedDealEdit={setSelectedDealEdit}
-						/>
-					</TabPane>
-					<TabPane tab="MY DEALS" key="4">
-						<P2PMyDeals
-							setTab={setTab}
-							setRefresh={setRefresh}
-							refresh={refresh}
-							setSelectedDealEdit={setSelectedDealEdit}
-						/>
-					</TabPane>
+					{user.verification_level >= p2p_config.starting_user_tier && (
+						<>
+							<TabPane tab="P2P" key="0">
+								<P2PDash
+									setDisplayOrder={setDisplayOrder}
+									refresh={refresh}
+									setSelectedTransaction={setSelectedTransaction}
+								/>
+							</TabPane>
+							<TabPane tab="ORDERS" key="1">
+								<P2POrders
+									setDisplayOrder={setDisplayOrder}
+									setSelectedTransaction={setSelectedTransaction}
+									refresh={refresh}
+								/>
+							</TabPane>
+						</>
+					)}
+
+					{user.verification_level >= p2p_config.starting_merchant_tier && (
+						<>
+							{/* <TabPane tab="PROFILE" key="2">
+							<P2PProfile />
+						</TabPane> */}
+
+							<TabPane tab="POST DEAL" key="3">
+								<P2PPostDeal
+									setTab={setTab}
+									setRefresh={setRefresh}
+									refresh={refresh}
+									selectedDealEdit={selectedDealEdit}
+									setSelectedDealEdit={setSelectedDealEdit}
+								/>
+							</TabPane>
+							<TabPane tab="MY DEALS" key="4">
+								<P2PMyDeals
+									setTab={setTab}
+									setRefresh={setRefresh}
+									refresh={refresh}
+									setSelectedDealEdit={setSelectedDealEdit}
+								/>
+							</TabPane>
+						</>
+					)}
 				</Tabs>
 			)}
 		</div>
