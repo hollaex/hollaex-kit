@@ -410,12 +410,13 @@ const Final = ({
 							<b>{coinFormData.symbol}:</b> {coinFormData.withdrawal_fee}
 						</Fragment>
 					)}
-					{true && (
+					{isConfigure && (
 						<div className="btn-wrapper">
 							<Button
 								className="green-btn mb-3"
 								type="primary"
 								onClick={() => handleWithdrawalEdit('withdraw')}
+								disabled={!isOwner}
 							>
 								Edit
 							</Button>
