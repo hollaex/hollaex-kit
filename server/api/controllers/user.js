@@ -1288,5 +1288,5 @@ module.exports = {
 	userLogout,
 	userDelete,
 	getUserBalanceHistory,
-	fetchUserProfitLossInfo,
+	fetchUserProfitLossInfo
 };
