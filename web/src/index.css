@@ -3530,8 +3530,7 @@ table th {
     .trade-details-wrapper .trade-details-content .pl-18 {
       padding-left: 18px; }
     .trade-details-wrapper .trade-details-content .chart {
-      height: 144px;
-      margin: 10px 0 0; }
+      height: 144px; }
       .trade-details-wrapper .trade-details-content .chart .fade-area {
         position: relative; }
       .trade-details-wrapper .trade-details-content .chart .fade-area::before {
@@ -3543,6 +3542,8 @@ table th {
         z-index: -1; }
       .trade-details-wrapper .trade-details-content .chart .highcharts-axis.highcharts-xaxis {
         display: none; }
+      .trade-details-wrapper .trade-details-content .chart .highcharts-root {
+        height: 100%; }
     .trade-details-wrapper .trade-details-content .price-change.large {
       font-size: 1.8rem; }
     .trade-details-wrapper .trade-details-content .trade_tabs-container {
@@ -5913,8 +5914,7 @@ table th {
     .trade-details-wrapper .trade-details-content .pl-18 {
       padding-left: 18px; }
     .trade-details-wrapper .trade-details-content .chart {
-      height: 144px;
-      margin: 10px 0 0; }
+      height: 144px; }
       .trade-details-wrapper .trade-details-content .chart .fade-area {
         position: relative; }
       .trade-details-wrapper .trade-details-content .chart .fade-area::before {
@@ -5926,6 +5926,8 @@ table th {
         z-index: -1; }
       .trade-details-wrapper .trade-details-content .chart .highcharts-axis.highcharts-xaxis {
         display: none; }
+      .trade-details-wrapper .trade-details-content .chart .highcharts-root {
+        height: 100%; }
     .trade-details-wrapper .trade-details-content .price-change.large {
       font-size: 1.8rem; }
     .trade-details-wrapper .trade-details-content .trade_tabs-container {
@@ -6117,20 +6119,15 @@ table th {
             padding-bottom: 35px; }
           .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .trade-details-content .pl-6 {
             padding-left: 6rem; }
-          .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .trade-details-content .chart {
+          .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .trade-details-content .chart .fade-area {
+            position: relative; }
+          .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .trade-details-content .chart .fade-area::before {
+            content: '';
+            position: absolute;
             height: 100px;
-            margin: 10px 0; }
-            .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .trade-details-content .chart div:last-child {
-              padding-top: 1rem; }
-            .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .trade-details-content .chart .fade-area {
-              position: relative; }
-            .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .trade-details-content .chart .fade-area::before {
-              content: '';
-              position: absolute;
-              height: 100px;
-              width: 100%;
-              background-image: linear-gradient(to right, var(--base_background), rgba(0, 0, 0, 0));
-              z-index: -1; }
+            width: 100%;
+            background-image: linear-gradient(to right, var(--base_background), rgba(0, 0, 0, 0));
+            z-index: -1; }
           .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .trade-details-content .trade_tabs-container {
             margin: 0 !important;
             width: 100% !important; }
@@ -9779,7 +9776,7 @@ table th {
     background: var(--base_secondary-navigation-bar);
     padding: 1.5rem;
     border-radius: 10px;
-    width: 465px;
+    width: 415px;
     border: 1px solid var(--calculated_super-pale_label-text-graphics); }
     .quick_trade-container .quick-trade-input:focus-within {
       background: var(--base_wallet-sidebar-and-popup);
@@ -9804,15 +9801,16 @@ table th {
     border: 1px solid var(--calculated_super-pale_label-text-graphics);
     border-radius: 30px;
     height: 100%;
-    cursor: pointer; }
+    cursor: pointer;
+    margin-top: 1%; }
     .quick_trade-container .currency-dropdown .ant-select-arrow {
       top: 50% !important; }
   .quick_trade-container .input-group__input {
     text-align: right;
     color: var(--labels_secondary-inactive-label-text-graphics);
-    font-size: 3.1rem;
+    font-size: 2.1rem;
     margin-left: 1rem;
-    height: 60px; }
+    height: 40px; }
     .quick_trade-container .input-group__input:focus, .quick_trade-container .input-group__input:active {
       background-color: var(--base_secondary-navigation-bar) !important;
       box-shadow: inset 1px 1px 3px #00000029;
@@ -9845,7 +9843,13 @@ table th {
   height: fit-content;
   height: 664px;
   border: 1px solid var(--calculated_super-pale_label-text-graphics);
-  font-size: 1.3rem; }
+  font-size: 1.3rem;
+  border-radius: 10px; }
+  .quick_trade-wrapper .trade-details-wrapper {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px; }
+  .quick_trade-wrapper .goto-wallet-container .go-to-text :hover {
+    opacity: 0.7; }
   .quick_trade-wrapper .review-block-wrapper {
     margin: 1rem 0;
     width: auto; }
@@ -9870,7 +9874,9 @@ table th {
   .quick_trade-wrapper .trade-section {
     width: 100%;
     padding: 5rem;
-    background: transparent linear-gradient(316deg, var(--base_secondary-navigation-bar, 0.25) 0%, var(--base_wallet-sidebar-and-popup, 0.25) 100%) 0% 0% no-repeat padding-box; }
+    background: transparent linear-gradient(316deg, var(--base_secondary-navigation-bar, 0.25) 0%, var(--base_wallet-sidebar-and-popup, 0.25) 100%) 0% 0% no-repeat padding-box;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px; }
     .quick_trade-wrapper .trade-section .inner-content {
       width: 450px;
       display: flex;
@@ -9880,7 +9886,8 @@ table th {
       .quick_trade-wrapper .trade-section .inner-content .btn-wrapper {
         padding: 1rem 0; }
         .quick_trade-wrapper .trade-section .inner-content .btn-wrapper .holla-button {
-          border-radius: 10px; }
+          border-radius: 10px;
+          width: fit-content !important; }
         .quick_trade-wrapper .trade-section .inner-content .btn-wrapper .holla-button.disabled svg {
           fill: rgba(0, 0, 0, 0.38) !important;
           opacity: 0.4; }
@@ -9904,6 +9911,8 @@ table th {
         display: flex; }
         .quick_trade-wrapper .trade-section .inner-content .balance-text span {
           color: var(--specials_buttons-links-and-highlights-2); }
+        .quick_trade-wrapper .trade-section .inner-content .balance-text .balance-value-text:hover {
+          opacity: 0.7; }
       .quick_trade-wrapper .trade-section .inner-content .footer-text {
         font-size: 1rem;
         font-family: "Open Sans";
@@ -9912,7 +9921,7 @@ table th {
         text-align: end; }
       .quick_trade-wrapper .trade-section .inner-content .swap-wrapper-wrapper {
         align-self: self-start;
-        margin-left: 4rem; }
+        margin-left: 10%; }
 
 @keyframes linear_loading {
   0% {
@@ -9958,8 +9967,10 @@ table th {
   padding: 2rem 2.5rem;
   margin: 0; }
   .layout-mobile .quick_trade-container .input-group__input {
-    height: 60px;
+    height: 40px;
     font-size: 2.5rem; }
+  .layout-mobile .quick_trade-container .currency-dropdown {
+    margin-top: 0; }
 
 .layout-mobile .quick_trade-wrapper {
   background-color: transparent;
@@ -10051,7 +10062,9 @@ table th {
 @media (min-width: 768px) and (max-width: 800px) {
   .ant-select-arrow {
     right: 20px !important;
-    font-size: 14px !important; } }
+    font-size: 14px !important; }
+  .quick_trade-container .input-group__input {
+    height: 60px !important; } }
 
 @media (min-width: 1500px) {
   .quick_trade-wrapper {
