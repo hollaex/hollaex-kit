@@ -142,7 +142,6 @@ const P2PDeals = ({ coins }) => {
 
 	const requestExchangeStakers = (page = 1, limit = 50) => {
 		setIsLoading(true);
-		console.log({ queryValues });
 		requestDeals({ page, limit, ...queryValues })
 			.then((response) => {
 				setUserData(
