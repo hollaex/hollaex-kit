@@ -266,6 +266,8 @@ const P2PDash = ({
 												onClick={() => {
 													setExpandRow(!expandRow);
 													setSelectedDeal(deal);
+													setAmountCurrency();
+													setAmountFiat();
 												}}
 												className="td-fit"
 											>
