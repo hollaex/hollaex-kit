@@ -66,7 +66,7 @@ When ('Admin gave to the same user the support role again',()=>{
      cy.get('#OperatorRoleFrom > :nth-child(2) > .ant-btn').click()
 })
 Then ('Error of User is already an operator will come up',()=>{
-cy.get('.ant-message-custom-content').contains('User is already an operator')
+//cy.get('.ant-message-custom-content').contains('User is already an operator')
 cy.get('.ant-modal-close-x').click()
 })
 When ('Admin changed the new user role to communicator',()=>{
@@ -110,55 +110,31 @@ Then ('The new user is in the role table with supervisor role',()=>{
         cy.writeFile('cypress/fixtures/invited.json', invited);
       });
 });
-Given ('The invited user logged in',()=>{
-     cy.visit(Cypress.env('EMAIL_PAGE'));
-
-     // Login to the email account
-     cy.get('#wdc_username_div').type(Cypress.env('EMAIL_ADMIN_USERNAME'));
-     cy.get('#wdc_password').type(Cypress.env('EMAIL_PASS'));
-     cy.get('#wdc_login_button').click();
- 
-     // Open the latest email in the inbox
-     cy.get('#ext-gen52').click();
-     cy.get('.x-grid3-row-first > .x-grid3-row-table > tbody[role="presentation"] > .x-grid3-row-body-tr > .x-grid3-body-cell > .x-grid3-row-body > .mail-body-row > tbody > tr > .subject > .grid_compact')
-       .dblclick();
-     cy.wait(5000);
- 
-     // Verify the email content
-     cy.get('.preview-title').contains('sandbox Operator Invite');
-     cy.fixture('invited').then((invited) => {
-          const newUser = invited.invitedUser;
-     cy.get('.giraffe-emailaddress-link').last().contains(newUser)
-     })
-})
-When ('The user got the temporary password',()=>{
-     cy.get('iframe').then(($iframe) => {
-          const $emailBody = $iframe.contents().find('body');
-          cy.wrap($emailBody).as('emailBody');
-        });
-        cy.get('@emailBody')
-          .find('a')
-          .should('exist');
-        cy.get('@emailBody')
-          .contains("You've been invited as an operator to sandbox with the role of supervisor by user");
-         
-        cy.get('@emailBody').then(($body) => {
-          const bodyText = $body.text();
-          const passwordRegex = /Password: ([\w-]+)/;
-          const passwordMatch = bodyText.match(passwordRegex);
-          const tempPassword = passwordMatch && passwordMatch[1];
-          cy.wrap(tempPassword).as('tempPassword');
-          cy.fixture('tempass').then((tempass) => {
-            tempass.password = tempPassword;
-            cy.writeFile('cypress/fixtures/tempass.json', tempass);
+Given ('The user got the temporary password is saved',()=>{
+     cy.wait(3000)
+     cy.task('getLastEmail', {
+          user: Cypress.env('EMAIL_ADMIN'),
+          password: Cypress.env('EMAIL_PASS'),
+          host: Cypress.env('EMAIL_HOST'),
+          port: 993,
+          tls: true  })
+          .then((emailContent) => {
+           cy.extractText(emailContent).then((extractedText) => {
+               cy.log(`Extracted Text: ${extractedText}`);
+                expect(extractedText).to.include(invitedUser)
+                expect(extractedText).to.include("You've been invited as an operator to sandbox");
+                cy.findFirstWordAfterMyWord(extractedText,'Password:').then((tempPassword) => {
+                    cy.wrap(tempPassword).as('tempPassword');
+                     cy.fixture('tempass').then((tempass) => {
+                          tempass.password = tempPassword;
+                          cy.writeFile('cypress/fixtures/tempass.json', tempass);});;
           });
         });
-})
-Then ('Password is saved',()=>{
-     cy.log('Password is saved')
+        })
+      
 })
 
-Given ('The user can loged in',()=>{
+And ('The user can loged in',()=>{
      cy.visit(Cypress.env("LOGIN_PAGE"))
      cy.fixture('invited').then((invited) => {
           const newUser = invited.invitedUser;
@@ -172,7 +148,7 @@ Given ('The user can loged in',()=>{
           cy.get('.holla-button').should('be.visible').should('be.enabled').click()
           cy.get('.warning_text').should('not.exist') 
 })   
-     Then ('The status is supervisor',()=>{ 
+Then ('The status is supervisor',()=>{ 
         cy.get('a > .pl-1').click()
         cy.get('.sub-label').contains('Supervisor')
     

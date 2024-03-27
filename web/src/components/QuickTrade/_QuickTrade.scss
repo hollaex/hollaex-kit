@@ -262,8 +262,8 @@ $close-icon--height: 2rem;
 		background: transparent
 			linear-gradient(
 				316deg,
-				var(--base_secondary-navigation-bar, 0.25) 0%,
-				var(--base_wallet-sidebar-and-popup, 0.25) 100%
+				var(--base_wallet-sidebar-and-popup, 0.5) 50%,
+				var(--base_secondary-navigation-bar, 0.25) 100%
 			)
 			0% 0% no-repeat padding-box;
 		border-top-right-radius: 10px;
@@ -491,6 +491,7 @@ $close-icon--height: 2rem;
 	.swap-wrapper,
 	.swap-wrapper-wrapper {
 		width: 100% !important;
+		margin-left: unset !important;
 	}
 
 	.price-title-wrapper {

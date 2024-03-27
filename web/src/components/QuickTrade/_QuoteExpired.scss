@@ -12,10 +12,11 @@
 
 		// .checkbutton-wrapper .checkbutton-input-wrapper {
 		.requote-button {
-			width: 100px;
+			width: fit-content;
 			margin-left: 13px;
 			margin-top: 0;
 			flex-direction: row-reverse;
+			border-radius: 10px;
 		}
 	}
 }

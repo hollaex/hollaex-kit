@@ -24,6 +24,8 @@ class InputGroup extends React.PureComponent {
 		isOpen: false,
 	};
 
+	onHandleSearch = React.createRef();
+
 	componentDidUpdate() {
 		const { isOpen } = this.state;
 		const { setIsOpenTopField, setIsOpenBottomField } = this.props;
@@ -147,6 +149,9 @@ class InputGroup extends React.PureComponent {
 										/>
 									)
 								}
+								onSelect={() => {
+									this.onHandleSearch.current.focus();
+								}}
 							>
 								{options.map((symbol, index) => {
 									const { display_name, icon_id } =
@@ -192,6 +197,7 @@ class InputGroup extends React.PureComponent {
 						</div>
 						<div>
 							<Input
+								ref={this.onHandleSearch}
 								type="number"
 								placeholder={loading ? '' : '0'}
 								style={{}}
