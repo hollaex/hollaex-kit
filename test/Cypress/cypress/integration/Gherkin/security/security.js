@@ -21,8 +21,8 @@ Given ('Admin creats a user with a random username and the current password',()=
       cy.get('#addUser_password').clear().type(Cypress.env('PASSWORD'))
       cy.get('#addUser_confirmPassword').clear().type(Cypress.env('PASSWORD'))
       cy.get('[type="submit"]').click()
-   cy.wait(3000)
-    cy.contains(username)
+      cy.wait(3000)
+      cy.contains(username)
 
 }) 
 
@@ -66,19 +66,91 @@ When ('I active 2FA',()=>{
      cy.get('.holla-button').click()
      
  }) 
-
 And ('I generate API key',()=>{
 
-//       cy.contains('API Keys')
-//       cy.get('.mb-4 > .edit-wrapper__container')
-//       cy.get('.input_field-input').type
-//       cy.get(':nth-child(3) > .holla-button')
-//       cy.get(':nth-child(2) > :nth-child(1) > :nth-child(1) > .field-content > .field-children > div > .input_field-input')
-//       .as('OTP')
-//       cy.get(':nth-child(1) > :nth-child(1) > :nth-child(1) > .field-content > .field-children > div > .input_field-input')
-//       as('EmailCode')
+      cy.contains('API Keys').click()
+      cy.contains('Looks like there is no data here')
+      cy.get('.blue-link > .edit-wrapper__container > :nth-child(1)').click()
+      cy.contains('Generate API Key!!!')
+      cy.get(':nth-child(4) > :nth-child(3)').should('not.be.enabled')
+      cy.get('.input_field-input').type('API test')
+      cy.get(':nth-child(4) > :nth-child(3)').click()
+      cy.get('.otp_form-wrapper > .icon_title-wrapper > :nth-child(2) > :nth-child(1) > .icon_title-text').contains('Input you security codes')
+      cy.get('.holla-button').should('not.be.enabled')
+      cy.wait(3000)
+      cy.fixture('2fa')
+          .then((user)=>{
+            const token = totp(user.code);
+                 cy.log(token)
+                 cy.wrap(token).as('token')
+                 cy.log(token);
+                   cy.get(':nth-child(2) > :nth-child(1) > :nth-child(1) > .field-content > .field-children > div > .input_field-input')
+                 .as('OTP').clear().type(token)
+                 
+          })
+      cy.get('.holla-button').should('not.be.enabled')
+      cy.task('getLastEmail', {
+            user: Cypress.env('EMAIL_ADMIN'),
+            password: Cypress.env('EMAIL_PASS'),
+            host: Cypress.env('EMAIL_HOST'),
+            port: 993,
+            tls: true  })
+            .then((emailContent) => {
+             cy.extractText(emailContent).then((extractedText) => {
+             cy.log(`Extracted Text: ${extractedText}`);
+             cy.fixture('example')
+              .then((user)=>{
+                  expect(extractedText).to.include(user.email)
+                  expect(extractedText).to.include('You have made sensitive request related to your accounts security.'); })
+             cy.findFirstWordAfterMyWord(extractedText,'operation.')
+               .then((link) => {
+                   cy.get(':nth-child(1) > :nth-child(1) > :nth-child(1) > .field-content > .field-children > div > .input_field-input')
+                  .as('EmailCode').clear().type(link) });
+          });
+          })
+      cy.get('.holla-button').click()
+      cy.get('.table_body-row > .tokens-name').contains('API test')
+      
 }) 
+And ('I delete API key',()=>{
+      cy.get('.table_body-row > .pointer').click()
+      cy.contains('Delete API Key')
+      cy.get(':nth-child(3) > .holla-button').click()
+      cy.wait(5000)
+      cy.fixture('2fa')
+          .then((user)=>{
+            const token = totp(user.code);
+                 cy.log(token)
+                 cy.wrap(token).as('token')
+                 cy.log(token);
+                   cy.get(':nth-child(2) > :nth-child(1) > :nth-child(1) > .field-content > .field-children > div > .input_field-input')
+                 .as('OTP').clear().type(token)
+                 
+          })
+      cy.get('.holla-button').should('not.be.enabled')
+      cy.task('getLastEmail', {
+            user: Cypress.env('EMAIL_ADMIN'),
+            password: Cypress.env('EMAIL_PASS'),
+            host: Cypress.env('EMAIL_HOST'),
+            port: 993,
+            tls: true  })
+            .then((emailContent) => {
+             cy.extractText(emailContent).then((extractedText) => {
+             cy.log(`Extracted Text: ${extractedText}`);
+             cy.fixture('example')
+              .then((user)=>{
+                  expect(extractedText).to.include(user.email)
+                  expect(extractedText).to.include('You have made sensitive request related to your accounts security.'); })
+             cy.findFirstWordAfterMyWord(extractedText,'operation.')
+               .then((link) => {
+                   cy.get(':nth-child(1) > :nth-child(1) > :nth-child(1) > .field-content > .field-children > div > .input_field-input')
+                  .as('EmailCode').clear().type(link) });
+          });
+          })
+      cy.get('.holla-button').click()
+      cy.contains('Looks like there is no data here')
 
+})
 And ('I request to change the password',()=>{
     cy.get('.tab_controller-tabs > :nth-child(2) > div').as('password section').click()
     cy.get(':nth-child(1) > :nth-child(1) > :nth-child(1) > .field-content > .field-children > div > .input_field-input')
@@ -101,64 +173,32 @@ And ('I request to change the password',()=>{
     
   
 }) 
-
-
 Then ('I logout successfully',()=>{
       cy.contains('Signout').click()
       cy.wait(5000)
 }) 
-
 When ('I confirm the transfer by Email',()=>{
-      cy.visit(Cypress.env('EMAIL_PAGE'));
-
-      // Login to the email account
-      cy.get('#wdc_username_div').type(Cypress.env('EMAIL_ADMIN_USERNAME'));
-      cy.get('#wdc_password').type(Cypress.env('EMAIL_PASS'));
-      cy.get('#wdc_login_button').click();
-  
-      // Open the latest email in the inbox
-      cy.get('#ext-gen52').click();
-      cy.get('.x-grid3-row-first > .x-grid3-row-table > tbody[role="presentation"] > .x-grid3-row-body-tr > .x-grid3-body-cell > .x-grid3-row-body > .mail-body-row > tbody > tr > .subject > .grid_compact')
-        .dblclick();
-      cy.wait(5000);
-  
-      // Verify the email content
-      cy.get('.preview-title').contains('sandbox Change Password Confirmation');
-      cy.fixture('example')
-      .then((user)=>{
-           cy.get('.giraffe-emailaddress-link').last().contains(user.email);
-       })
-      cy.get('iframe').then(($iframe) => {
-        const $emailBody = $iframe.contents().find('body');
-        cy.wrap($emailBody).as('emailBody');
-      });
-      cy.get('@emailBody')
-        .find('a')
-        .should('exist');
-      cy.get('@emailBody')
-        .contains('You have made a request to change the password for your account.');
-  
-      // Get all the links with "https" protocol from the email body
-      cy.get('@emailBody')
-        .find('a')
-        .then(($links) => {
-          const httpsLinks = [];
-          $links.each((index, link) => {
-            const href = link.href;
-            if (href && href.startsWith('https')) {
-              httpsLinks.push(href);
-            }
+      cy.task('getLastEmail', {
+            user: Cypress.env('EMAIL_ADMIN'),
+            password: Cypress.env('EMAIL_PASS'),
+            host: Cypress.env('EMAIL_HOST'),
+            port: 993,
+            tls: true  })
+            .then((emailContent) => {
+             cy.extractText(emailContent).then((extractedText) => {
+             cy.log(`Extracted Text: ${extractedText}`);
+             cy.fixture('example')
+              .then((user)=>{
+               expect(extractedText).to.include(user.email)
+               expect(extractedText).to.include('You have made a request to change the password for your account.');
+            })
+              
+              cy.findFirstHyperlinkAfterMyWord(extractedText,'[').then((link) => {
+              cy.forceVisit(link.slice(0, -1));
+            });
           });
-          cy.wrap(httpsLinks[1]).as('httpsLink');
-        });
-  
-      // Log the list of https links
-      cy.get('@httpsLink')
-        .then((httpsLink) => {
-          console.log(httpsLink);
-          cy.forceVisit(httpsLink);
-        });
-    
+          })
+        
 
 })
 Then ('I receive a successful message',()=>{
@@ -214,10 +254,9 @@ Then ('I should be able to login successfully',()=>{
          
       
       }) 
-
 And ('I enter incorrect credentials',()=>{
         
-        cy.get('.app-menu-bar-side > :nth-child(5)').click()
+        cy.get('.app-menu-bar-side > :nth-child(6)').click()
         cy.get('.tab_controller-tabs > :nth-child(2) > div').as('password section').click()
         cy.get(':nth-child(1) > :nth-child(1) > :nth-child(1) > .field-content > .field-children > div > .input_field-input')
         .as('current password').clear().type(Cypress.env('NEWPASS')+"wrong")
@@ -291,9 +330,9 @@ Then ('I request to change the password to the previous password',()=>{
         cy.get('.holla-button').click()
         cy.contains('An email is sent to you to authorize the password change.').should('exist')
         cy.get('.success_display-wrapper > .holla-button').click()
+        cy.wait(3000)
                
 })
-
 When ('Admin deactives the 2fa of new user',()=>{
       cy.fixture('example')
       .then((user)=>{
@@ -320,10 +359,9 @@ When ('Admin deactives the 2fa of new user',()=>{
       cy.contains('Logout').click()
 })
 
-
 Then ('The activation code is different',()=>{
 
-      cy.get('.app-menu-bar-side > :nth-child(5)').as('Car Keys').click({force:true})
+      cy.get('.app-menu-bar-side > :nth-child(6)').as('Car Keys').click({force:true})
       cy.get('.checkbutton-input-wrapper').as('enable').click({force:true})
       cy.get(':nth-child(3) > .otp_form-section-content').invoke('text')
       .then(text => {

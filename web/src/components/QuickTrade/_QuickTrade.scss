@@ -109,7 +109,7 @@ $close-icon--height: 2rem;
 		background: var(--base_secondary-navigation-bar);
 		padding: 1.5rem;
 		border-radius: 10px;
-		width: 465px;
+		width: 415px;
 		border: 1px solid $colors-super-pale-black;
 		&:focus-within {
 			background: var(--base_wallet-sidebar-and-popup);
@@ -147,6 +147,7 @@ $close-icon--height: 2rem;
 		border-radius: 30px;
 		height: 100%;
 		cursor: pointer;
+		margin-top: 1%;
 		.ant-select-arrow {
 			top: 50% !important;
 		}
@@ -155,9 +156,9 @@ $close-icon--height: 2rem;
 	.input-group__input {
 		text-align: right;
 		color: var(--labels_secondary-inactive-label-text-graphics);
-		font-size: 3.1rem;
+		font-size: 2.1rem;
 		margin-left: 1rem;
-		height: 60px;
+		height: 40px;
 		&:focus,
 		&:active {
 			background-color: $app-light-background !important;
@@ -207,6 +208,19 @@ $close-icon--height: 2rem;
 	border: 1px solid $colors-super-pale-black;
 	font-size: 1.3rem;
 
+	border-radius: 10px;
+
+	.trade-details-wrapper {
+		border-top-left-radius: 10px;
+		border-bottom-left-radius: 10px;
+	}
+
+	.goto-wallet-container {
+		.go-to-text :hover {
+			opacity: 0.7;
+		}
+	}
+
 	.review-block-wrapper {
 		margin: 1rem 0;
 		width: auto;
@@ -252,7 +266,8 @@ $close-icon--height: 2rem;
 				var(--base_wallet-sidebar-and-popup, 0.25) 100%
 			)
 			0% 0% no-repeat padding-box;
-
+		border-top-right-radius: 10px;
+		border-bottom-right-radius: 10px;
 		.inner-content {
 			width: 450px;
 			display: flex;
@@ -263,6 +278,7 @@ $close-icon--height: 2rem;
 				padding: 1rem 0;
 				.holla-button {
 					border-radius: 10px;
+					width: fit-content !important;
 				}
 				.holla-button.disabled {
 					svg {
@@ -298,6 +314,9 @@ $close-icon--height: 2rem;
 				span {
 					color: $link_2;
 				}
+				.balance-value-text:hover {
+					opacity: 0.7;
+				}
 			}
 			.footer-text {
 				font-size: 1rem;
@@ -308,7 +327,7 @@ $close-icon--height: 2rem;
 			}
 			.swap-wrapper-wrapper {
 				align-self: self-start;
-				margin-left: 4rem;
+				margin-left: 10%;
 			}
 		}
 	}
@@ -376,8 +395,12 @@ $close-icon--height: 2rem;
 		margin: 0;
 
 		.input-group__input {
-			height: 60px;
+			height: 40px;
 			font-size: 2.5rem;
+		}
+
+		.currency-dropdown {
+			margin-top: 0;
 		}
 	}
 	.quick_trade-wrapper {
@@ -506,6 +529,11 @@ $close-icon--height: 2rem;
 	.ant-select-arrow {
 		right: 20px !important;
 		font-size: 14px !important;
+	}
+	.quick_trade-container {
+		.input-group__input {
+			height: 60px !important;
+		}
 	}
 }
 

@@ -168,8 +168,8 @@ class InputGroup extends React.PureComponent {
 												<div
 													className={
 														window.innerWidth > 768
-															? 'input-group__coin-icons-wrap'
-															: 'input-group__coin-icons-wrap_mobile-view'
+															? 'input-group__coin-icons-wrap mb-1'
+															: 'input-group__coin-icons-wrap_mobile-view mt-2'
 													}
 												>
 													<Coin
@@ -193,7 +193,7 @@ class InputGroup extends React.PureComponent {
 						<div>
 							<Input
 								type="number"
-								placeholder="0"
+								placeholder={loading ? '' : '0'}
 								style={{}}
 								className="input-group__input"
 								value={inputValue || ''}

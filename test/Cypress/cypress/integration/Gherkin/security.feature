@@ -15,6 +15,7 @@ Scenario: Changing password, active/deactivating 2FA, and generating API Keys
     Given I log in as the new user name 
     When I active 2FA
     And I generate API key
+    And I delete API key
     And I request to change the password
     Then I logout successfully
 
@@ -27,7 +28,6 @@ Scenario: Successful Login with New Password
 
     Given  I am on the Hollaex login page and enter credentials
     Then I should be able to login successfully
-    And I generate API key
     And I enter incorrect credentials
     And I enter new password as same as the previous password
     And I enter dismatched password

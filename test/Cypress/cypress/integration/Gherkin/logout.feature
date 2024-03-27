@@ -11,4 +11,5 @@ Scenario: Successfull Logout
     Then I should be able to login successfully
     And I should be in "Account" page with "Username"
     Then I should be able to logout successfully
+    And I receive the notification Email
 

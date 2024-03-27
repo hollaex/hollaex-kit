@@ -6,7 +6,7 @@ $colors-white: white;
 	background-color: $quick-trade-background;
 
 	.trade-details-content {
-        position: relative;
+		position: relative;
 		height: 450px;
 		.pb-24 {
 			padding-bottom: 24px;
@@ -22,7 +22,6 @@ $colors-white: white;
 		}
 		.chart {
 			height: 144px;
-			margin: 10px 0 0;
 			.fade-area {
 				position: relative;
 			}
@@ -40,6 +39,9 @@ $colors-white: white;
 			}
 			.highcharts-axis.highcharts-xaxis {
 				display: none;
+			}
+			.highcharts-root {
+				height: 100%;
 			}
 		}
 		.price-change {
@@ -70,10 +72,10 @@ $colors-white: white;
 			white-space: nowrap;
 		}
 
-        // .graph-row {
-        //     position: absolute;
-        //     margin-top: 2rem;
-        // }
+		// .graph-row {
+		//     position: absolute;
+		//     margin-top: 2rem;
+		// }
 	}
 
 	.f-size-16 {
