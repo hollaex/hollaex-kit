@@ -8747,8 +8747,10 @@ table th {
     background-color: var(--specials_notifications-alerts-warnings) !important; }
   .holla-button.disabled {
     background-color: var(--labels_inactive-button) !important; }
-    .holla-button.disabled .button-icon svg {
-      fill: rgba(0, 0, 0, 0.38) !important; }
+    .holla-button.disabled .button-icon {
+      display: none; }
+      .holla-button.disabled .button-icon svg {
+        fill: rgba(0, 0, 0, 0.38) !important; }
   .holla-button:active, .holla-button:focus {
     outline: none;
     border: none; }
@@ -9713,10 +9715,11 @@ table th {
     padding: 0;
     color: var(--labels_important-active-labels-text-graphics); }
   .quick_trade-wrapper .quote-expired-block-wrapper .requote-button {
-    width: 100px;
+    width: fit-content;
     margin-left: 13px;
     margin-top: 0;
-    flex-direction: row-reverse; }
+    flex-direction: row-reverse;
+    border-radius: 10px; }
 
 .language_rtl .quick_trade-wrapper {
   font-family: inherit; }
@@ -9874,7 +9877,7 @@ table th {
   .quick_trade-wrapper .trade-section {
     width: 100%;
     padding: 5rem;
-    background: transparent linear-gradient(316deg, var(--base_secondary-navigation-bar, 0.25) 0%, var(--base_wallet-sidebar-and-popup, 0.25) 100%) 0% 0% no-repeat padding-box;
+    background: transparent linear-gradient(316deg, var(--base_wallet-sidebar-and-popup, 0.5) 50%, var(--base_secondary-navigation-bar, 0.25) 100%) 0% 0% no-repeat padding-box;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px; }
     .quick_trade-wrapper .trade-section .inner-content {
@@ -10033,7 +10036,8 @@ table th {
 
 .layout-mobile .swap-wrapper,
 .layout-mobile .swap-wrapper-wrapper {
-  width: 100% !important; }
+  width: 100% !important;
+  margin-left: unset !important; }
 
 .layout-mobile .price-title-wrapper {
   justify-content: space-between;
@@ -11171,7 +11175,8 @@ table th {
       border-top: 0.4rem solid var(--trading_selling-related-elements);
       margin-top: 0rem; }
   .price-change .price-diff.up {
-    color: var(--trading_buying-related-elements); }
+    color: var(--trading_buying-related-elements);
+    display: flex; }
     .price-change .price-diff.up:before {
       visibility: visible;
       content: "";
@@ -11184,7 +11189,8 @@ table th {
       border-right: 0.4rem solid transparent !important;
       border-bottom: 0.4rem solid var(--trading_buying-related-elements);
       margin-bottom: 0rem;
-      margin-bottom: 0.2rem; }
+      margin-bottom: 0.2rem;
+      margin-top: 15%; }
 
 .price-change .glance-down.entering, .price-change .glance-down.exiting {
   color: var(--calculated_trading_selling-related-text);
