@@ -432,7 +432,10 @@ const createP2PTransaction = async (data) => {
 	const price = new BigNumber(exchange_rate).multipliedBy(1 + spread);
 	const amount_digital_currency = new BigNumber(amount_fiat).dividedBy(price).toNumber();
 
-	if (new BigNumber(merchantBalance).comparedTo(new BigNumber(amount_digital_currency)) !== 1) {
+	const feeAmount = (new BigNumber(amount_digital_currency).multipliedBy(p2pConfig.merchant_fee))
+	.dividedBy(100).toNumber();
+
+	if (new BigNumber(merchantBalance).comparedTo(new BigNumber(amount_digital_currency + feeAmount)) !== 1) {
         throw new Error('Transaction is not possible at the moment');
     }
 	
@@ -461,7 +464,7 @@ const createP2PTransaction = async (data) => {
 	data.user_id = user_id;
 	data.amount_digital_currency = amount;
 	data.deal_id = deal_id;
-	const lock = await getNodeLib().lockBalance(merchant.network_id, p2pDeal.buying_asset, amount_digital_currency);
+	const lock = await getNodeLib().lockBalance(merchant.network_id, p2pDeal.buying_asset, amount_digital_currency + feeAmount);
 	data.locked_asset_id = lock.id;
 	data.price = price.toNumber();
 
@@ -511,6 +514,7 @@ const updateP2pTransaction = async (data) => {
 	const transaction = await getModel('p2pTransaction').findOne({ where: { id } });
 	const p2pDeal = await getModel('p2pDeal').findOne({ where: { id: transaction.deal_id } });
 	const merchant = await getUserByKitId(p2pDeal.merchant_id);
+	const p2pConfig = getKitConfig()?.p2p_config;
 
 	// eslint-disable-next-line no-prototype-builtins
 	if (user_id === transaction.merchant_id && data.hasOwnProperty(user_status)) {
@@ -551,7 +555,16 @@ const updateP2pTransaction = async (data) => {
 
 	if (merchant_status === 'confirmed' && transaction.user_status === 'confirmed') {
 		await getNodeLib().unlockBalance(merchant.network_id, transaction.locked_asset_id);
-		await transferAssetByKitIds(merchant.id, transaction.user_id, p2pDeal.buying_asset, transaction.amount_digital_currency, 'P2P Transaction', false, { category: 'p2p' });
+
+		const merchantFeeAmount = (new BigNumber(transaction.amount_digital_currency).multipliedBy(p2pConfig.merchant_fee))
+		.dividedBy(100).toNumber();
+
+		const buyerFeeAmount = (new BigNumber(transaction.amount_digital_currency).multipliedBy(p2pConfig.user_fee))
+		.dividedBy(100).toNumber();
+		const buyerTotalAmount = new BigNumber(transaction.amount_digital_currency).minus(new BigNumber(buyerFeeAmount)).toNumber();
+		await transferAssetByKitIds(merchant.id, transaction.user_id, p2pDeal.buying_asset, buyerTotalAmount, 'P2P Transaction', false, { category: 'p2p' });
+		
+		await transferAssetByKitIds(merchant.id, 1, p2pDeal.buying_asset, merchantFeeAmount, 'P2P Transaction', false, { category: 'p2p' });
 		data.transaction_status = 'complete';
 		data.merchant_release = new Date();
 	} 

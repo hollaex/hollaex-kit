@@ -60,6 +60,7 @@ const P2POrder = ({
 	setSelectedTransaction,
 	user,
 	router,
+	p2p_config,
 }) => {
 	const coin = coins[selectedTransaction.deal.buying_asset];
 	const [selectedOrder, setSelectedOrder] = useState(selectedTransaction);
@@ -396,13 +397,13 @@ const P2POrder = ({
 							</div>
 							<div>
 								{user.id === selectedOrder?.merchant_id && (
-									<div>
+									<div style={{ textAlign: 'end' }}>
 										{selectedOrder?.amount_digital_currency}{' '}
 										{selectedOrder?.deal?.buying_asset?.toUpperCase()}
 									</div>
 								)}
 								{user.id === selectedOrder?.user_id && (
-									<div>
+									<div style={{ textAlign: 'end' }}>
 										{selectedOrder?.amount_fiat}{' '}
 										{selectedOrder?.deal?.spending_asset?.toUpperCase()}
 									</div>
@@ -426,7 +427,7 @@ const P2POrder = ({
 						>
 							<div>Price:</div>
 							<div>
-								<div>
+								<div style={{ textAlign: 'end' }}>
 									{selectedOrder?.price}{' '}
 									{selectedOrder?.deal?.spending_asset?.toUpperCase()}
 								</div>
@@ -452,7 +453,7 @@ const P2POrder = ({
 							<div>Receiving amount:</div>
 							{user.id === selectedOrder?.merchant_id && (
 								<div>
-									<div>
+									<div style={{ textAlign: 'end' }}>
 										{selectedOrder?.amount_fiat}{' '}
 										{selectedOrder?.deal?.spending_asset?.toUpperCase()}
 									</div>
@@ -465,7 +466,7 @@ const P2POrder = ({
 
 							{user.id === selectedOrder?.user_id && (
 								<div>
-									<div>
+									<div style={{ textAlign: 'end' }}>
 										{selectedOrder?.amount_digital_currency}{' '}
 										{selectedOrder?.deal?.buying_asset?.toUpperCase()}
 									</div>
@@ -473,6 +474,33 @@ const P2POrder = ({
 										({selectedOrder?.deal?.buying_asset?.toUpperCase()} amount
 										you'll receive)
 									</div>
+								</div>
+							)}
+						</div>
+						<div
+							style={{
+								borderBottom: '1px solid grey',
+								marginTop: 10,
+								marginBottom: 10,
+							}}
+						></div>
+						<div
+							style={{
+								flex: 1,
+								display: 'flex',
+								justifyContent: 'space-between',
+							}}
+						>
+							<div>Fee:</div>
+							{user.id === selectedOrder?.merchant_id && (
+								<div>
+									<div>{p2p_config?.merchant_fee}%</div>
+								</div>
+							)}
+
+							{user.id === selectedOrder?.user_id && (
+								<div>
+									<div>{p2p_config?.user_fee}%</div>
 								</div>
 							)}
 						</div>
@@ -1069,6 +1097,7 @@ const mapStateToProps = (state) => ({
 	constants: state.app.constants,
 	transaction_limits: state.app.transaction_limits,
 	user: state.user,
+	p2p_config: state.app.constants.p2p_config,
 });
 
 export default connect(mapStateToProps)(withRouter(withConfig(P2POrder)));
