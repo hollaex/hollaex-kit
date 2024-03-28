@@ -841,7 +841,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 										setDisplayP2pModel(false);
 										message.success('Changes saved.');
 									} catch (error) {
-										message.error(error.message);
+										message.error(error.data.message);
 									}
 								} else {
 									setStep(step + 1);
