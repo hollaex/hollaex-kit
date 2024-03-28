@@ -74,6 +74,7 @@ const P2PMyDeals = ({
 								});
 								const res = await fetchDeals({ user_id: user.id });
 								setMyDeals(res.data);
+								setCheks([]);
 								message.success('changes saved');
 							} catch (error) {
 								message.error(error.message);
