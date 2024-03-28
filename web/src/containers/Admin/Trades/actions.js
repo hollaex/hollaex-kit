@@ -2,6 +2,9 @@ import axios from 'axios';
 import querystring from 'query-string';
 
 import { requestAuthenticated } from '../../../utils';
+const toQueryString = (values) => {
+	return querystring.stringify(values);
+};
 
 export const requestDisputes = (values) => {
 	const queryValues =
@@ -114,6 +117,14 @@ export const updateConstants = (values) => {
 
 export const getBrokerQuote = (symbol, side) =>
 	requestAuthenticated(`/broker/quote?symbol=${symbol}&side=${side}`);
+
+export const requestUsers = (values) => {
+	let url = '/admin/users';
+	if (values) {
+		url = `/admin/users?${toQueryString(values)}`;
+	}
+	return requestAuthenticated(url);
+};
 
 export const getBrokerConnect = (
 	exchange_id,

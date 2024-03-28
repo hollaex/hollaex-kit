@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
 	Tabs,
 	message,
@@ -16,8 +16,9 @@ import { bindActionCreators } from 'redux';
 import { CloseOutlined } from '@ant-design/icons';
 import { setExchange } from 'actions/assetActions';
 import { requestTiers } from '../Tiers/action';
-import { updateConstants } from './actions';
+import { updateConstants, requestUsers } from './actions';
 import { requestAdminData } from 'actions/appActions';
+import _debounce from 'lodash/debounce';
 import './index.css';
 
 const TabPane = Tabs.TabPane;
@@ -58,8 +59,12 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 
 	const [merchantFee, setMerchantFee] = useState();
 	const [userFee, setUserFee] = useState();
+	const [sourceAccount, setSourceAccount] = useState();
 	const [editMode, setEditMode] = useState(false);
 	const [enable, setEnable] = useState();
+	const [emailOptions, setEmailOptions] = useState([]);
+	const [selectedEmailData, setSelectedEmailData] = useState({});
+	const searchRef = useRef(null);
 	useEffect(() => {
 		getTiers();
 	}, []);
@@ -83,7 +88,51 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 		setSelectedPaymentMethods(p2p_config.bank_payment_methods);
 		setMerchantFee(p2p_config.merchant_fee);
 		setUserFee(p2p_config.user_fee);
+		setSourceAccount(p2p_config.source_account);
 	}, []);
+
+	const handleEmailChange = (value) => {
+		let emailId = parseInt(value);
+		let emailData = {};
+		emailOptions &&
+			emailOptions.forEach((item) => {
+				if (item.value === emailId) {
+					emailData = item;
+				}
+			});
+
+		setSelectedEmailData(emailData);
+		setSourceAccount(Number(emailId));
+
+		handleSearch(emailData.label);
+	};
+
+	const searchUser = (searchText, type) => {
+		getAllUserData({ search: searchText }, type);
+	};
+
+	const handleSearch = _debounce(searchUser, 1000);
+
+	const getAllUserData = async (params = {}) => {
+		try {
+			const res = await requestUsers(params);
+			if (res && res.data) {
+				const userData = res.data.map((user) => ({
+					label: user.email,
+					value: user.id,
+				}));
+				setEmailOptions(userData);
+			}
+		} catch (error) {
+			console.log('error', error);
+		}
+	};
+
+	const handleEditInput = () => {
+		if (searchRef && searchRef.current && searchRef.current.focus) {
+			searchRef.current.focus();
+		}
+	};
 
 	return (
 		<div className="admin-earnings-container w-100">
@@ -130,6 +179,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 											side: side,
 											merchant_fee: merchantFee,
 											user_fee: userFee,
+											source_account: sourceAccount,
 										},
 									},
 								});
@@ -144,6 +194,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 									setSelectedPaymentMethods(result.bank_payment_methods);
 									setMerchantFee(result.merchant_fee);
 									setUserFee(result.user_fee);
+									setSourceAccount(p2p_config.source_account);
 								});
 							}}
 						/>
@@ -519,7 +570,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 
 							<div style={{ marginBottom: 20 }}>
 								<div style={{ fontWeight: 'bold' }}>
-									P2P Merchant percent trade fee
+									P2P Buyer percent trade fee
 								</div>
 								<Input
 									placeholder="Input percentage fee"
@@ -528,6 +579,38 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 										setUserFee(e.target.value);
 									}}
 								/>
+							</div>
+
+							<div className="mb-5">
+								<div className="mb-2">Account to send the fees to</div>
+								<div className="d-flex align-items-center">
+									<Select
+										ref={(inp) => {
+											searchRef.current = inp;
+										}}
+										showSearch
+										placeholder="admin@exchange.com"
+										className="user-search-field"
+										onSearch={(text) => handleSearch(text)}
+										filterOption={() => true}
+										value={selectedEmailData && selectedEmailData.label}
+										onChange={(text) => handleEmailChange(text)}
+										showAction={['focus', 'click']}
+										style={{ width: 200 }}
+									>
+										{emailOptions &&
+											emailOptions.map((email) => (
+												<Option key={email.value}>{email.label}</Option>
+											))}
+									</Select>
+									<div
+										className="edit-link"
+										style={{ marginLeft: 10 }}
+										onClick={handleEditInput}
+									>
+										Edit
+									</div>
+								</div>
 							</div>
 
 							<div style={{ marginBottom: 20 }}>
@@ -737,6 +820,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 													side: side,
 													merchant_fee: merchantFee,
 													user_fee: userFee,
+													source_account: sourceAccount,
 												},
 											},
 										});
@@ -751,6 +835,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 											setSelectedPaymentMethods(result.bank_payment_methods);
 											setMerchantFee(result.merchant_fee);
 											setUserFee(result.user_fee);
+											setSourceAccount(p2p_config.source_account);
 										});
 										setStep(0);
 										setDisplayP2pModel(false);

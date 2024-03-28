@@ -564,7 +564,12 @@ const updateP2pTransaction = async (data) => {
 		const buyerTotalAmount = new BigNumber(transaction.amount_digital_currency).minus(new BigNumber(buyerFeeAmount)).toNumber();
 		await transferAssetByKitIds(merchant.id, transaction.user_id, p2pDeal.buying_asset, buyerTotalAmount, 'P2P Transaction', false, { category: 'p2p' });
 		
-		await transferAssetByKitIds(merchant.id, 1, p2pDeal.buying_asset, merchantFeeAmount, 'P2P Transaction', false, { category: 'p2p' });
+		//send the fees to the source account
+		if (p2pConfig.source_account !== merchant.id) {
+			await transferAssetByKitIds(merchant.id, p2pConfig.source_account, p2pDeal.buying_asset, merchantFeeAmount, 'P2P Transaction', false, { category: 'p2p' });
+			await transferAssetByKitIds(merchant.id, p2pConfig.source_account, p2pDeal.buying_asset, buyerFeeAmount, 'P2P Transaction', false, { category: 'p2p' });
+		}
+		
 		data.transaction_status = 'complete';
 		data.merchant_release = new Date();
 	} 
