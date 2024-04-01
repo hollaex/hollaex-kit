@@ -34,9 +34,9 @@ $tabs-title--margin: 2rem;
 	.trade_block-wrapper {
 		.trade_block-content {
 			padding: 0;
-			font-size: $regular--font-size;
+			font-size: $font-size-subtext;
 			.table_body-wrapper {
-				font-size: $regular--font-size;
+				font-size: $font-size-subtext;
 			}
 		}
 		.trade_block-title {
@@ -91,11 +91,7 @@ $tabs-title--margin: 2rem;
 		margin-bottom: 1rem;
 		flex: none;
 		position: relative;
-		.trade_block-icon {
-			width: 1.4rem;
-			height: 1.4rem;
-			margin-top: 0.08rem;
-		}
+
 		.trade_block-title-currency {
 			color: $colors-main-black;
 			font-size: 0.9rem;
@@ -107,7 +103,7 @@ $tabs-title--margin: 2rem;
 	.trade_block-content {
 		flex: auto;
 		padding: 0 1.2rem 1.2rem 1.2rem;
-		font-size: $trade-font-size;
+		font-size: $font-size-subtext;
 		overflow-y: scroll;
 		height: 100%;
 		.sidebar_hub-content {

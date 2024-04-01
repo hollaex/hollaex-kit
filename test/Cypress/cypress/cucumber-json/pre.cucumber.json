@@ -1,0 +1,118 @@
+[
+  {
+    "description": "As a tester\nIn order to check pre conditions\nI want to check to HollaeX",
+    "keyword": "Feature",
+    "name": "Per cond Feature",
+    "line": 1,
+    "id": "per-cond-feature",
+    "tags": [],
+    "uri": "pre.feature",
+    "elements": [
+      {
+        "id": "per-cond-feature;successfull-check",
+        "keyword": "Scenario",
+        "line": 7,
+        "name": "Successfull check",
+        "tags": [
+          {
+            "name": "@pre",
+            "line": 6
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 9,
+            "name": "I log in as an admin",
+            "result": {
+              "status": "passed",
+              "duration": 15424000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 10,
+            "name": "language is English",
+            "result": {
+              "status": "passed",
+              "duration": 1351000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 11,
+            "name": "Ask for confirmation before submitting orders is off",
+            "result": {
+              "status": "passed",
+              "duration": 630000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 12,
+            "name": "Show pop up when order has been completed if off",
+            "result": {
+              "status": "passed",
+              "duration": 104000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 13,
+            "name": "Show pop up when order has partially filled is off",
+            "result": {
+              "status": "passed",
+              "duration": 345000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 14,
+            "name": "All Audio cues is off",
+            "result": {
+              "status": "passed",
+              "duration": 11312000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 15,
+            "name": "Bob 2fa is desabled",
+            "result": {
+              "status": "passed",
+              "duration": 563000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 16,
+            "name": "chatbox is off",
+            "result": {
+              "status": "passed",
+              "duration": 6371000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 17,
+            "name": "XHTT spread in market is less than 0.001",
+            "result": {
+              "status": "passed",
+              "duration": 10335000000
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

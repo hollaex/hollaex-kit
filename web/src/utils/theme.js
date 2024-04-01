@@ -1,4 +1,4 @@
-import { THEME_DEFAULT, CHAT_STATUS_KEY } from '../config/constants';
+import { THEME_DEFAULT, CHAT_STATUS_KEY } from 'config/constants';
 
 export const getTheme = (theme = '') => {
 	// const indexOfTheme = THEMES.indexOf(theme);
@@ -6,10 +6,6 @@ export const getTheme = (theme = '') => {
 	// 	return THEMES[indexOfTheme];
 	// }
 	return theme || THEME_DEFAULT;
-};
-
-export const getThemeClass = (theme = '') => {
-	return `${getTheme(theme)}-theme`;
 };
 
 export const getChatMinimized = () => {

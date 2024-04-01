@@ -6,8 +6,9 @@ import { CaretLeftOutlined } from '@ant-design/icons';
 import { Layout, Menu, Row, Col, Spin, message, Tooltip } from 'antd';
 import { debounce, capitalize } from 'lodash';
 import { ReactSVG } from 'react-svg';
+import MobileDetect from 'mobile-detect';
 
-import { PATHS } from '../paths';
+import { PATHS, ADMIN_PATHS, SUPERVISOR_PATH } from '../paths';
 import SetupWizard from '../SetupWizard';
 import {
 	removeToken,
@@ -16,15 +17,13 @@ import {
 	isSupervisor,
 	isAdmin,
 	getTokenTimestamp,
-} from '../../../utils/token';
-import { checkUserSessionExpired } from '../../../utils/utils';
-import {
-	getExchangeInitialized,
-	getSetupCompleted,
-} from '../../../utils/initialize';
-import { logout } from '../../../actions/authAction';
-import { getMe, setMe } from '../../../actions/userAction';
-import { setPairsData } from '../../../actions/orderbookAction';
+	checkRole,
+} from 'utils/token';
+import { checkUserSessionExpired } from 'utils/utils';
+import { getExchangeInitialized, getSetupCompleted } from 'utils/initialize';
+import { logout } from 'actions/authAction';
+import { getMe, setMe } from 'actions/userAction';
+import { setPairsData } from 'actions/orderbookAction';
 import {
 	setPairs,
 	changePair,
@@ -36,17 +35,14 @@ import {
 	// requestAvailPlugins,
 	requestInitial,
 	requestConstant,
-} from '../../../actions/appActions';
-import { SESSION_TIME } from '../../../config/constants';
+} from 'actions/appActions';
+import { SESSION_TIME } from 'config/constants';
 import { STATIC_ICONS } from 'config/icons';
-import { checkRole } from '../../../utils/token';
-
-import MobileDetect from 'mobile-detect';
 import MobileSider from './mobileSider';
 import './index.css';
 import '../../../.././src/admin_theme_variables.css';
 import 'antd/dist/antd.css';
-import { requestMyPlugins } from '../Plugins/action';
+import { requestMyPlugins } from 'containers/Admin/Plugins/action';
 import { setAllPairs, setCoins, setExchange } from 'actions/assetActions';
 // import { allCoins } from '../AdminFinancials/Assets';
 // import { allPairs } from '../Trades/Pairs';
@@ -110,7 +106,7 @@ class AppWrapper extends React.Component {
 		};
 	}
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		if (isLoggedIn() && checkUserSessionExpired(getTokenTimestamp())) {
 			this.logout('Token is expired');
 		}
@@ -179,18 +175,6 @@ class AppWrapper extends React.Component {
 			clearTimeout(this.state.idleTimer);
 		}
 	}
-
-	// getAssets = async () => {
-	// 	try {
-	// 		const res = await getConstants();
-	// 		const { coins, pairs } = res.data;
-	// 		this.props.setCoins(Object.values(coins));
-
-	// 		this.props.setAllPairs(Object.values(pairs));
-	// 	} catch (error) {
-	// 		throw error;
-	// 	}
-	// };
 
 	getData = async () => {
 		await this.getExchange();
@@ -420,12 +404,16 @@ class AppWrapper extends React.Component {
 			tabParams?.isFiat === 'offRamp'
 		) {
 			return 'Fiat controls';
+		} else if (location.pathname.includes('/admin/stakes')) {
+			return 'Stakes';
+		} else if (location.pathname.includes('/admin/sessions')) {
+			return 'Sessions';
 		} else if (location.pathname.includes('/admin/financial')) {
 			return 'Assets';
 		} else if (location.pathname.includes('/admin/trade')) {
 			return 'Markets';
 		} else if (location.pathname.includes('/admin/plugins')) {
-			return 'Plugins';
+			return 'Plugin apps';
 		} else if (location.pathname.includes('/admin/apps')) {
 			return 'Apps';
 		} else if (location.pathname.includes('/admin/tiers')) {
@@ -438,6 +426,8 @@ class AppWrapper extends React.Component {
 			return 'API keys';
 		} else if (location.pathname.includes('/admin/billing')) {
 			return 'Billing';
+		} else if (location.pathname.includes('/admin/audits')) {
+			return 'Operator Logs';
 		} else if (location.pathname.includes('/admin/collateral')) {
 			return 'Collateral';
 		} else if (location.pathname.includes('/admin/resources')) {
@@ -569,7 +559,14 @@ class AppWrapper extends React.Component {
 			myPlugins,
 			isConfigure,
 		} = this.state;
-		let pathNames = PATHS;
+		let pathNames = [];
+		if (checkRole() === 'admin') {
+			pathNames = ADMIN_PATHS;
+		} else if (checkRole() === 'supervisor') {
+			pathNames = [...PATHS, ...SUPERVISOR_PATH];
+		} else {
+			pathNames = PATHS;
+		}
 
 		if (features.apps) {
 			pathNames = [

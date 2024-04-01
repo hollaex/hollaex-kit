@@ -4,19 +4,21 @@ import { bindActionCreators } from 'redux';
 import Scrollbars from 'react-custom-scrollbars';
 
 import { EditWrapper, NotificationsList, Image } from 'components';
-import STRINGS from 'config/localizedStrings';
+import STRINGS from '../../config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { getAnnouncement } from 'actions/appActions';
-import { LAST_UPDATED_NOTIFICATION_KEY } from 'config/constants';
+import { LAST_UPDATED_NOTIFICATION_KEY } from '../../config/constants';
 
 const AnnouncementList = ({
 	icons: ICONS,
 	user,
 	announcements,
 	getAnnouncement,
+	plugins,
 }) => {
 	const [isOpen, setOpen] = useState(false);
 	const [unreadCount, setUnreadCount] = useState(0);
+	const [isAnnouncementInstalled, setisAnnouncementInstalled] = useState(false);
 	const elementRef = useRef(null);
 
 	const getAnnouncementList = useCallback(() => {
@@ -24,10 +26,17 @@ const AnnouncementList = ({
 	}, [getAnnouncement]);
 
 	useEffect(() => {
+		const announceMentPlugin = plugins.filter((plugin) => {
+			return plugin.name === 'announcements';
+		}).length
+			? true
+			: false;
+		setisAnnouncementInstalled(announceMentPlugin);
 		document.addEventListener('click', onOutsideClick);
 		return () => {
 			document.removeEventListener('click', onOutsideClick);
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	useEffect(() => {
@@ -80,24 +89,29 @@ const AnnouncementList = ({
 
 	return (
 		<div className="d-flex app-bar-account-content mx-3" ref={elementRef}>
-			<div className="d-flex">
-				<div>
-					<Image
-						icon={ICONS['TOP_BAR_ANNOUNCEMENT']}
-						wrapperClassName="app-bar-account-icon mr-3"
-					/>
-					{unreadCount ? (
-						<div className="app-bar-account-notification">{unreadCount}</div>
-					) : null}
+			{isAnnouncementInstalled && (
+				<div className="d-flex">
+					<div>
+						<Image
+							icon={ICONS['TOP_BAR_ANNOUNCEMENT']}
+							wrapperClassName="app-bar-account-icon mr-3"
+						/>
+						{unreadCount ? (
+							<div className="app-bar-account-notification">{unreadCount}</div>
+						) : null}
+					</div>
+					<div className="d-flex align-items-center">
+						<EditWrapper
+							stringId="TRADE_TAB_POSTS"
+							iconId="TOP_BAR_ANNOUNCEMENT"
+						>
+							{STRINGS['TRADE_TAB_POSTS']}
+						</EditWrapper>
+					</div>
 				</div>
-				<div className="d-flex align-items-center">
-					<EditWrapper stringId="TRADE_TAB_POSTS" iconId="TOP_BAR_ANNOUNCEMENT">
-						{STRINGS['TRADE_TAB_POSTS']}
-					</EditWrapper>
-				</div>
-			</div>
+			)}
 			{isOpen && (
-				<div className="app-bar-account-menu apply_rtl">
+				<div className="app-bar-account-menu apply_rtl opacity-1">
 					<div className="app-announcement-list">
 						<Scrollbars>
 							<NotificationsList ICONS={ICONS} />
@@ -111,6 +125,7 @@ const AnnouncementList = ({
 const mapStateToProps = (state) => ({
 	announcements: state.app.announcements,
 	activeLanguage: state.app.language,
+	plugins: state.app.plugins,
 });
 const mapDispatchToProps = (dispatch) => ({
 	getAnnouncement: bindActionCreators(getAnnouncement, dispatch),

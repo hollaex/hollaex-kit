@@ -34,7 +34,12 @@ const {
 	INVALID_PASSWORD,
 	INVALID_CREDENTIALS,
 	SAME_PASSWORD,
-	CODE_NOT_FOUND
+	CODE_NOT_FOUND,
+	INVALID_TOKEN_TYPE,
+	NO_AUTH_TOKEN,
+	WHITELIST_DISABLE_ADMIN,
+	WHITELIST_NOT_PROVIDED,
+	SESSION_NOT_FOUND
 } = require(`${SERVER_PATH}/messages`);
 const {
 	NODE_ENV,
@@ -45,8 +50,9 @@ const {
 	SECRET,
 	TOKEN_TYPES,
 	HMAC_TOKEN_EXPIRY,
-	HMAC_TOKEN_KEY
+	HMAC_TOKEN_KEY,
 } = require(`${SERVER_PATH}/constants`);
+const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { resolve, reject, promisify } = require('bluebird');
 const { getKitSecrets, getKitConfig, getFrozenUsers, getNetworkKeySecret } = require('./common');
 const bcrypt = require('bcryptjs');
@@ -182,7 +188,10 @@ const confirmChangeUserPassword = (code, domain) => {
 		.then(([user, dataValues]) => {
 			return user.update({ password: dataValues.password }, { fields: ['password'], hooks: false });
 		})
-		.then((user) => {
+		.then(async (user) => {
+			const { revokeAllUserSessions } = require('./user');
+
+			await revokeAllUserSessions(user.id);
 			sendEmail(
 				MAILTYPE.PASSWORD_CHANGED,
 				user.email,
@@ -206,12 +215,12 @@ const changeUserPassword = (email, oldPassword, newPassword, ip, domain, otpCode
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
 			}
-			return all([ user, verifyOtpBeforeAction(user.id, otpCode), validatePassword(user.password, oldPassword) ]);
+			return all([user, verifyOtpBeforeAction(user.id, otpCode), validatePassword(user.password, oldPassword)]);
 		})
-		.then(([ user, otp, passwordIsValid ]) => {
+		.then(([user, otp, passwordIsValid]) => {
 			if (!otp) {
 				throw new Error(INVALID_OTP_CODE);
-			} 
+			}
 			if (!passwordIsValid) {
 				throw new Error(INVALID_CREDENTIALS);
 			}
@@ -480,6 +489,33 @@ const checkUserOtpActive = (userId, otpCode) => {
 	});
 };
 
+const verifyAuthTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = false) => {
+
+	if (req.swagger && req.swagger.operation['security'].length > 0 && req.swagger.operation['security'][0].Token) {
+		const endpointTypes = req.swagger.operation['x-security-types'];
+		if (has(req.headers, 'authorization') && !endpointTypes.includes('bearer')) {
+			return req.res.status(401).json({ message: ACCESS_DENIED(INVALID_TOKEN_TYPE) });
+		}
+
+		if (has(req.headers, 'api-key') && !endpointTypes.includes('hmac')) {
+			return req.res.status(401).json({ message: ACCESS_DENIED(INVALID_TOKEN_TYPE) });
+		}
+
+		if (!has(req.headers, 'authorization') && !has(req.headers, 'api-key')) {
+			return req.res.status(401).json({ message: ACCESS_DENIED(NO_AUTH_TOKEN) });
+		}
+
+		if (has(req.headers, 'authorization') && endpointTypes.includes('bearer')) {
+			verifyBearerTokenMiddleware(req, authOrSecDef, req.headers['authorization'], cb, isSocket);
+		}
+		else if (has(req.headers, 'api-key') && endpointTypes.includes('hmac')) {
+			verifyHmacTokenMiddleware(req, authOrSecDef, req.headers['api-key'], cb, isSocket);
+		}
+
+	}
+};
+
+
 //Here we setup the security checks for the endpoints
 //that need it (in our case, only /protected). This
 //function will be called every time a request to a protected
@@ -489,7 +525,11 @@ const verifyBearerTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = fa
 		if (isSocket) {
 			return cb(new Error(ACCESS_DENIED(msg)));
 		} else {
-			return req.res.status(403).json({ message: ACCESS_DENIED(msg) });
+			let statusCode = 401;
+			if (msg.indexOf(NOT_AUTHORIZED) > -1) {
+				statusCode = 403;
+			}
+			return req.res.status(statusCode).json({ message: ACCESS_DENIED(msg) });
 		}
 	};
 
@@ -506,24 +546,21 @@ const verifyBearerTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = fa
 			? req.swagger.operation['x-security-scopes']
 			: BASE_SCOPES;
 
-		let ip;
-		if (isSocket) {
-			ip = req.socket ? req.socket.remoteAddress : undefined;
-		} else {
-			ip = req.headers ? req.headers['x-real-ip'] : undefined;
-		}
+		let ip = req.headers ? req.headers['x-real-ip'] : undefined;
 
 		//validate the 'Authorization' header. it should have the following format:
 		//'Bearer tokenString'
 		if (token && token.indexOf('Bearer ') === 0) {
 			const tokenString = token.split(' ')[1];
 
-			jwt.verify(tokenString, SECRET, (verificationError, decodedToken) => {
+			jwt.verify(tokenString, SECRET, async (verificationError, decodedToken) => {
 				//check if the JWT was verified correctly
 				if (!verificationError && decodedToken) {
 					loggerAuth.verbose(
 						'helpers/auth/verifyToken verified_token',
+						'ip',
 						ip,
+						'token ip',
 						decodedToken.ip,
 						decodedToken.sub
 					);
@@ -559,6 +596,12 @@ const verifyBearerTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = fa
 						return sendError(DEACTIVATED_USER);
 					}
 
+					try {
+						const session = await verifySession(tokenString);
+						if (session) req.session_id = session.id;
+					} catch (err) {
+						return sendError(err.message);
+					}
 					req.auth = decodedToken;
 					return cb(null);
 				} else {
@@ -578,7 +621,11 @@ const verifyHmacTokenMiddleware = (req, definition, apiKey, cb, isSocket = false
 		if (isSocket) {
 			return cb(new Error(ACCESS_DENIED(msg)));
 		} else {
-			return req.res.status(403).json({ message: ACCESS_DENIED(msg) });
+			let statusCode = 401;
+			if (msg.indexOf(NOT_AUTHORIZED) > -1) {
+				statusCode = 403;
+			}
+			return req.res.status(statusCode).json({ message: ACCESS_DENIED(msg) });
 		}
 	};
 	// Swagger endpoint scopes
@@ -588,12 +635,7 @@ const verifyHmacTokenMiddleware = (req, definition, apiKey, cb, isSocket = false
 	const apiSignature = req.headers ? req.headers['api-signature'] : undefined;
 	const apiExpires = req.headers ? req.headers['api-expires'] : undefined;
 
-	let ip;
-	if (isSocket) {
-		ip = req.socket ? req.socket.remoteAddress : undefined;
-	} else {
-		ip = req.headers ? req.headers['x-real-ip'] : undefined;
-	}
+	let ip = req.headers ? req.headers['x-real-ip'] : undefined;
 
 	loggerAuth.verbose('helpers/auth/checkHmacKey ip', ip);
 
@@ -654,7 +696,11 @@ const verifyNetworkHmacToken = (req) => {
 
 const verifyBearerTokenExpressMiddleware = (scopes = BASE_SCOPES) => (req, res, next) => {
 	const sendError = (msg) => {
-		return req.res.status(403).json({ message: ACCESS_DENIED(msg) });
+		let statusCode = 401;
+		if (msg.indexOf(NOT_AUTHORIZED) > -1) {
+			statusCode = 403;
+		}
+		return req.res.status(statusCode).json({ message: ACCESS_DENIED(msg) });
 	};
 
 	const token = req.headers['authorization'];
@@ -662,7 +708,7 @@ const verifyBearerTokenExpressMiddleware = (scopes = BASE_SCOPES) => (req, res, 
 	if (token && token.indexOf('Bearer ') === 0) {
 		let tokenString = token.split(' ')[1];
 
-		jwt.verify(tokenString, SECRET, (verificationError, decodedToken) => {
+		jwt.verify(tokenString, SECRET, async (verificationError, decodedToken) => {
 			if (!verificationError && decodedToken) {
 
 				const issuerMatch = decodedToken.iss == ISSUER;
@@ -692,6 +738,12 @@ const verifyBearerTokenExpressMiddleware = (scopes = BASE_SCOPES) => (req, res, 
 					return sendError(DEACTIVATED_USER);
 				}
 
+				try {
+					const session = await verifySession(tokenString);
+					if (session) req.session_id = session.id;
+				} catch (err) {
+					return sendError(err.message);
+				}
 				req.auth = decodedToken;
 				return next();
 			} else {
@@ -709,7 +761,7 @@ const verifyBearerTokenPromise = (token, ip, scopes = BASE_SCOPES) => {
 		const jwtVerifyAsync = promisify(jwt.verify, jwt);
 
 		return jwtVerifyAsync(tokenString, SECRET)
-			.then((decodedToken) => {
+			.then(async (decodedToken) => {
 				loggerAuth.verbose(
 					'helpers/auth/verifyToken verified_token',
 					ip,
@@ -746,6 +798,7 @@ const verifyBearerTokenPromise = (token, ip, scopes = BASE_SCOPES) => {
 					);
 					throw new Error(DEACTIVATED_USER);
 				}
+				await verifySession(tokenString);
 				return decodedToken;
 			});
 	} else {
@@ -764,6 +817,9 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 	} else {
 		return findTokenByApiKey(apiKey)
 			.then((token) => {
+				if(token.role !== ROLES.ADMIN && scopes.includes(ROLES.ADMIN)) {
+					throw new Error(NOT_AUTHORIZED);
+				}
 				if (token.whitelisting_enabled && token.whitelisted_ips.length > 0) {
 					const found = token.whitelisted_ips.find((wlip) => {
 						return ipRangeCheck(ip, wlip);
@@ -805,13 +861,117 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 						throw new Error(API_SIGNATURE_INVALID);
 					} else {
 						return {
-							sub: { id: token.user.id, email: token.user.email, networkId: token.user.network_id }
+							sub: { id: token.user.id, email: token.user.email, networkId: token.user.network_id },
+							scopes: [token.role]
 						};
 					}
 				}
 			});
 	}
 };
+
+
+const createSession = async (token, loginId, userId) => {
+
+	const { getUserRole } = require('./user');
+
+	const userRole = await getUserRole({ kit_id: userId });
+
+	const base64Payload = token.split(".")[1];
+	const payloadBuffer = Buffer.from(base64Payload, "base64");
+	const decoded = JSON.parse(payloadBuffer.toString());
+
+	const hashedToken = crypto.createHash('md5').update(token).digest('hex');
+
+	return getModel('session').create({
+		token: hashedToken,
+		role: userRole,
+		login_id: loginId,
+		status: true,
+		last_seen: new Date(),
+		expiry_date: new Date(decoded.exp * 1000)
+	})
+}
+
+const getExpirationDateInSeconds = (expiryDate) => {
+	const end = moment(expiryDate);
+	const now = moment(new Date());
+	const duration = moment.duration(moment(end).diff(now));
+	return Number(duration.asSeconds().toFixed(0));
+}
+
+const verifySession = async (token) => {
+
+	const session = await findSession(token);
+
+	if (!session) {
+		loggerAuth.error(
+			'security/verifySession session not found');
+		throw new Error(SESSION_NOT_FOUND);
+	}
+
+	if (!session.status) {
+		loggerAuth.error(
+			'security/verifySession invalid session',
+			session.status
+		);
+		throw new Error(TOKEN_REVOKED);
+	}
+
+	if(new Date(session.expiry_date).getTime() < new Date().getTime()) {
+		throw new Error(TOKEN_EXPIRED);
+	}
+
+	if(new Date(session.last_seen).getTime() + 1000 * 60 * 5 < new Date().getTime()) {
+		const hashedToken = crypto.createHash('md5').update(token).digest('hex');
+		const sessionData = await dbQuery.findOne('session', { where: { token: hashedToken } });
+		const updatedSession =  await sessionData.update(
+			{ last_seen: new Date() }
+		);
+		const expirationInSeconds = getExpirationDateInSeconds(updatedSession.dataValues.expiry_date);
+		client.setexAsync(updatedSession.dataValues.token, expirationInSeconds, JSON.stringify(updatedSession.dataValues));
+	}
+
+	return session;
+}
+
+const findSession = async (token) => {
+
+	const hashedToken = crypto.createHash('md5').update(token).digest('hex');
+
+	let session = await client.getAsync(hashedToken)
+	
+	if (!session) {
+		loggerAuth.verbose(
+			'security/findSession jwt token not found in redis',
+			hashedToken
+		);
+
+		session = await dbQuery.findOne('session', {
+			where: {
+				token: hashedToken
+			}
+		});
+
+		if(session && session.status && new Date(session.expiry_date).getTime() > new Date().getTime()) {
+			const expirationInSeconds = getExpirationDateInSeconds(session.expiry_date);
+			client.setexAsync(hashedToken, expirationInSeconds, JSON.stringify(session));
+
+			loggerAuth.verbose(
+				'security/findSession token stored in redis',
+				hashedToken
+			);
+		}
+			
+		return session;
+	} else {
+		loggerAuth.debug(
+			'security/findSession token found in redis',
+			hashedToken
+		);
+		return JSON.parse(session);
+	}
+}
 
 /**
  * Function that checks to see if user's scope is valid for the endpoint.
@@ -935,7 +1095,8 @@ const formatTokenObject = (tokenData) => ({
 	whitelisting_enabled: tokenData.whitelisting_enabled,
 	can_read: tokenData.can_read,
 	can_trade: tokenData.can_trade,
-	can_withdraw: tokenData.can_withdraw
+	can_withdraw: tokenData.can_withdraw,
+	role: tokenData.role
 });
 
 const getUserKitHmacTokens = (userId) => {
@@ -959,10 +1120,22 @@ const getUserKitHmacTokens = (userId) => {
 		});
 };
 
-const createUserKitHmacToken = (userId, otpCode, ip, name) => {
+const createUserKitHmacToken = async (userId, otpCode, ip, name, role = ROLES.USER, whitelisted_ips) => {
 	const key = crypto.randomBytes(20).toString('hex');
 	const secret = crypto.randomBytes(25).toString('hex');
 	const expiry = Date.now() + HMAC_TOKEN_EXPIRY;
+	const user = await getModel('user').findOne({ where: { id: userId } });
+	if(role !== ROLES.USER && !user.is_admin) {
+		throw new Error(NOT_AUTHORIZED);
+	}
+	if(role !== ROLES.USER && role !== ROLES.ADMIN) {
+		// role can only be admin or user
+		throw new Error(NOT_AUTHORIZED);
+	}
+
+	if(!whitelisted_ips && role === ROLES.ADMIN) {
+		throw new Error(WHITELIST_NOT_PROVIDED);
+	}
 
 	return checkUserOtpActive(userId, otpCode)
 		.then(() => {
@@ -972,11 +1145,13 @@ const createUserKitHmacToken = (userId, otpCode, ip, name) => {
 				key,
 				secret,
 				expiry,
-				role: ROLES.USER,
+				role: role || ROLES.USER,
 				type: TOKEN_TYPES.HMAC,
 				name,
 				active: true,
-				can_read: true
+				can_read: true,
+				...(role === ROLES.ADMIN && { whitelisted_ips }),
+				...(role === ROLES.ADMIN && { whitelisting_enabled: true })
 			});
 		})
 		.then((token) => {
@@ -986,7 +1161,7 @@ const createUserKitHmacToken = (userId, otpCode, ip, name) => {
 
 async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permissions, whitelisted_ips, whitelisting_enabled) {
 	await checkUserOtpActive(userId, otpCode);
-	const token = await findToken({ where: { id: token_id } });
+	const token = await findToken({ where: { id: token_id , user_id: userId } });
 
 	if (!token) {
 		throw new Error(TOKEN_NOT_FOUND);
@@ -994,11 +1169,19 @@ async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permi
 		throw new Error(TOKEN_REVOKED);
 	}
 
+	if(whitelisted_ips && whitelisted_ips.length == 0 && token.role === ROLES.ADMIN) {
+		throw new Error(WHITELIST_DISABLE_ADMIN);
+	}
+
+	if(whitelisting_enabled == false && token.role === ROLES.ADMIN) {
+		throw new Error(WHITELIST_DISABLE_ADMIN);
+	}
+
 	const values = {
 		...permissions,
 		name,
-		whitelisted_ips,
-		whitelisting_enabled
+		...(whitelisted_ips != null && { whitelisted_ips }),
+		...(whitelisting_enabled != null && { whitelisting_enabled }),
 	};
 
 	Object.entries(values).forEach((key, value) => {
@@ -1015,7 +1198,7 @@ async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permi
 			'can_trade',
 			'can_withdraw',
 			'whitelisting_enabled',
-			'whitelisted_ips'
+			'whitelisted_ips',
 		]
 	});
 	client.hdelAsync(HMAC_TOKEN_KEY, token.key);
@@ -1143,6 +1326,12 @@ const isValidScope = (endpointScopes, userScopes) => {
 	}
 };
 
+const generateDashToken = (opts = {
+	additionalHeaders: null
+}) => {
+	return getNodeLib().generateDashToken({ additionalHeaders: opts.additionalHeaders });
+};
+
 module.exports = {
 	checkCaptcha,
 	resetUserPassword,
@@ -1165,6 +1354,7 @@ module.exports = {
 	checkUserOtpActive,
 	verifyBearerTokenPromise,
 	verifyHmacTokenPromise,
+	verifyAuthTokenMiddleware,
 	verifyBearerTokenMiddleware,
 	verifyHmacTokenMiddleware,
 	verifyNetworkHmacToken,
@@ -1184,5 +1374,9 @@ module.exports = {
 	checkIp,
 	sendConfirmationEmail,
 	confirmByEmail,
-	calculateSignature
+	calculateSignature,
+	generateDashToken,
+	createSession,
+	verifySession,
+	findSession
 };

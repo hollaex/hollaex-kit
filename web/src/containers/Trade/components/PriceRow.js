@@ -54,7 +54,16 @@ class PriceRow extends Component {
 		const fillStyle = {
 			backgroundSize: `${calcPercentage(amount, maxCumulative)}% 100%`,
 		};
-		const totalAmount = isBase ? cumulative : cumulativePrice;
+
+		const totalProps = {
+			className: classnames(
+				'f-1',
+				'trade_orderbook-cell',
+				'trade_orderbook-cell_total',
+				{ pointer: isBase }
+			),
+			...(isBase ? { onClick: onAmountClick(cumulative) } : {}),
+		};
 
 		return (
 			<Transition in={inProp} timeout={1000}>
@@ -87,10 +96,7 @@ class PriceRow extends Component {
 							>
 								{opacifyNumber(formatToCurrency(amount, increment_size))}
 							</div>
-							<div
-								className="f-1 trade_orderbook-cell trade_orderbook-cell_total pointer"
-								onClick={onAmountClick(totalAmount)}
-							>
+							<div {...totalProps}>
 								{isBase
 									? formatToCurrency(cumulative, increment_size)
 									: formatToCurrency(cumulativePrice, increment_price)}

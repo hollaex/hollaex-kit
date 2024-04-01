@@ -5,6 +5,9 @@ const toolsLib = require('hollaex-tools-lib');
 const { isPlainObject, isNumber } = require('lodash');
 const { errorMessageConverter } = require('../../utils/conversion');
 const { isUUID } = require('validator');
+const { ROLES } = require('../../constants');
+const { API_KEY_NOT_PERMITTED } = require('../../messages');
+const { getKitConfig } = require('../../utils/hollaex-tools-lib/tools/common');
 
 const createOrder = (req, res) => {
 	loggerOrders.verbose(
@@ -47,6 +50,202 @@ const createOrder = (req, res) => {
 			loggerOrders.error(
 				req.uuid,
 				'controllers/order/createOrder error',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const createOrderByAdmin = (req, res) => {
+	loggerOrders.verbose(
+		req.uuid,
+		'controllers/order/createOrderByAdmin auth',
+		req.auth
+	);
+	loggerOrders.verbose(
+		req.uuid,
+		'controllers/order/createOrderByAdmin order',
+		req.swagger.params.order.value
+	);
+
+	let order = req.swagger.params.order.value;
+
+	const opts = {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	};
+
+	if (order.type === 'market') {
+		delete order.price;
+	}
+
+	toolsLib.order.createUserOrderByKitId(order.user_id, order.symbol, order.side, order.size, order.type, order.price, opts)
+		.then((data) => {
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], order);
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerOrders.error(
+				req.uuid,
+				'controllers/order/createOrderByAdmin error',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const getQuickTrade = (req, res) => {
+	loggerOrders.verbose(
+		req.uuid,
+		'controllers/order/createQuickTrade auth',
+		req.auth
+	);
+
+	const bearerToken = req.headers['authorization'];
+	const ip = req.headers['x-real-ip'];
+
+	const opts = {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	};
+
+	const {
+		spending_currency,
+		spending_amount,
+		receiving_amount,
+		receiving_currency,
+	} = req.swagger.params;
+
+	toolsLib.order.getUserQuickTrade(spending_currency?.value, spending_amount?.value, receiving_amount?.value, receiving_currency?.value, bearerToken, ip, opts, req)
+		.then((order) => {
+			return res.json(order);
+		})
+		.catch((err) => {
+			loggerOrders.error(
+				req.uuid,
+				'controllers/order/createQuickTrade error',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const executeHedging = async ( symbol, side, size, price ) => {
+	await toolsLib.sleep(1000);
+	toolsLib.broker.reverseTransaction({ symbol, side, size, price });
+}
+
+const orderExecute = (req, res) => {
+	loggerOrders.verbose(
+		req.uuid,
+		'controllers/order/orderExecute auth',
+		req.auth
+	);
+	loggerOrders.verbose(
+		req.uuid,
+		'controllers/order/orderExecute',
+		req.swagger.params.data.value
+	);
+
+
+	const { token } = req.swagger.params.data.value;
+	const user_id = req.auth.sub.id;
+
+	const opts = {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	};
+
+	toolsLib.order.executeUserOrder(user_id, opts, token)
+		.then((result) => {
+			const { symbol, side, size, price } = result;
+			executeHedging(symbol, side, size, price);
+			return res.json(result);
+		})
+		.catch((err) => {
+			loggerOrders.error(
+				req.uuid,
+				'controllers/order/orderExecute error',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+
+const dustBalance = (req, res) => {
+	loggerOrders.verbose(
+		req.uuid,
+		'controllers/order/dustBalance auth',
+		req.auth
+	);
+	loggerOrders.verbose(
+		req.uuid,
+		'controllers/order/dustBalance',
+		req.swagger.params.data.value
+	);
+
+
+	const { assets } = req.swagger.params.data.value;
+	const dustConfig = getKitConfig().dust;
+
+	const user_id = req.auth.sub.id;
+
+	const opts = {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	};
+
+	toolsLib.order.dustUserBalance(user_id, opts, { assets, spread: dustConfig?.spread, maker_id: dustConfig?.maker_id, quote: dustConfig?.quote })
+		.then((result) => {
+			return res.json(result);
+		})
+		.catch((err) => {
+			loggerOrders.error(
+				req.uuid,
+				'controllers/order/dustBalance error',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const dustEstimatePrice = (req, res) => {
+	loggerOrders.verbose(
+		req.uuid,
+		'controllers/order/dustEstimatePrice auth',
+		req.auth
+	);
+	loggerOrders.verbose(
+		req.uuid,
+		'controllers/order/dustEstimatePrice',
+		req.swagger.params.data.value
+	);
+
+
+	const { assets } = req.swagger.params.data.value;
+	const dustConfig = getKitConfig().dust;
+
+	const user_id = req.auth.sub.id;
+
+	const opts = {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	};
+
+	toolsLib.order.dustPriceEstimate(user_id, opts, { assets, spread: dustConfig?.spread, maker_id: dustConfig?.maker_id, quote: dustConfig?.quote })
+		.then((result) => {
+			return res.json(result);
+		})
+		.catch((err) => {
+			loggerOrders.error(
+				req.uuid,
+				'controllers/order/dustEstimatePrice error',
 				err.message
 			);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
@@ -122,7 +321,7 @@ const cancelUserOrder = (req, res) => {
 const getAllUserOrders = (req, res) => {
 	loggerOrders.verbose(req.uuid, 'controllers/order/getAllUserOrders auth', req.auth);
 	const user_id = req.auth.sub.id;
-	const { symbol, side, status, open, limit, page, order_by, order, start_date, end_date } = req.swagger.params;
+	const { symbol, side, status, open, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
 	toolsLib.order.getAllUserOrdersByKitId(
 		user_id,
@@ -136,6 +335,7 @@ const getAllUserOrders = (req, res) => {
 		order.value,
 		start_date.value,
 		end_date.value,
+		format.value,
 		{
 			additionalHeaders: {
 				'x-forwarded-for': req.headers['x-forwarded-for']
@@ -143,7 +343,13 @@ const getAllUserOrders = (req, res) => {
 		}
 	)
 		.then((order) => {
-			return res.json(order);
+			if (format.value === 'csv') {
+				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-orders.csv`);
+				res.set('Content-Type', 'text/csv');
+				return res.status(202).send(order);
+			} else {
+				return res.json(order);
+			}
 		})
 		.catch((err) => {
 			loggerOrders.error(req.uuid, 'controllers/order/getAllUserOrders error', err.message);
@@ -183,9 +389,14 @@ const getAdminOrders = (req, res) => {
 		order_by,
 		order,
 		start_date,
-		end_date
+		end_date,
+		format
 	} = req.swagger.params;
 
+	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1 && !user_id.value) {
+		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
+	}
+	toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
 	let promiseQuery;
 
 	if (user_id.value) {
@@ -201,6 +412,7 @@ const getAdminOrders = (req, res) => {
 			order.value,
 			start_date.value,
 			end_date.value,
+			format.value,
 			{
 				additionalHeaders: {
 					'x-forwarded-for': req.headers['x-forwarded-for']
@@ -219,6 +431,7 @@ const getAdminOrders = (req, res) => {
 			order.value,
 			start_date.value,
 			end_date.value,
+			format.value,
 			{
 				additionalHeaders: {
 					'x-forwarded-for': req.headers['x-forwarded-for']
@@ -258,6 +471,7 @@ const adminCancelOrder = (req, res) => {
 		}
 	})
 		.then((data) => {
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], { userId, order_id });
 			return res.json(data);
 		})
 		.catch((err) => {
@@ -272,10 +486,15 @@ const adminCancelOrder = (req, res) => {
 
 module.exports = {
 	createOrder,
+	createOrderByAdmin,
 	getUserOrder,
 	cancelUserOrder,
 	getAllUserOrders,
 	cancelAllUserOrders,
 	getAdminOrders,
-	adminCancelOrder
+	adminCancelOrder,
+	getQuickTrade,
+	dustBalance,
+	orderExecute,
+	dustEstimatePrice
 };

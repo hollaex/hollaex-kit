@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { PriceChange, Image } from 'components';
+import { isMobile } from 'react-device-detect';
+import { PriceChange, Coin } from 'components';
 import SparkLine from './SparkLine';
 import { formatToCurrency } from 'utils/currency';
 
 class MarketCard extends Component {
 	render() {
-		const { icons: ICONS, market, chartData, handleClick, index } = this.props;
+		const { market, chartData, handleClick, index } = this.props;
 
 		const {
 			key,
@@ -29,12 +30,7 @@ class MarketCard extends Component {
 					<div className="d-flex justify-content-between">
 						<div className="d-flex">
 							<div className="px-2">
-								<Image
-									iconId={icon_id}
-									icon={ICONS[icon_id]}
-									wrapperClassName="trade_tab-icons"
-									imageWrapperClassName="currency-ball-image-wrapper"
-								/>
+								<Coin iconId={icon_id} type={isMobile ? 'CS8' : 'CS9'} />
 							</div>
 
 							<div>
@@ -56,7 +52,7 @@ class MarketCard extends Component {
 							</div>
 							<div className="d-flex justify-content-end align-center">
 								<div className="d-flex justify-content-end">
-									<PriceChange market={market} />
+									<PriceChange market={market} key={key} />
 								</div>
 								<div className=" ml-2 trade_tab-pair-volume">
 									<span className="pr-2">Vol:</span>

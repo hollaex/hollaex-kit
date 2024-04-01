@@ -83,13 +83,6 @@ $deactive-tab-border: $boder--width solid $border--color;
 						border-right: none;
 					}
 				}
-
-				&.tab-btc {
-					@include tab-active($coin-btc, $coin-btc-1, $tab_lines-height);
-				}
-				&.tab-eur {
-					@include tab-active($coin-eur, $coin-eur-1, $tab_lines-height);
-				}
 			}
 		}
 	}

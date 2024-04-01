@@ -43,7 +43,7 @@ class UserListTrades extends Component {
 		tradeData: [],
 	};
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		this.requestFullUsers();
 	}
 

@@ -1,23 +1,21 @@
 import React, { Component } from 'react';
-import classnames from 'classnames';
-import math from 'mathjs';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { formValueSelector, change } from 'redux-form';
 import { isMobile } from 'react-device-detect';
+import math from 'mathjs';
+import { message } from 'antd';
 
 import { Loader, MobileBarBack } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { DEFAULT_COIN_DATA } from 'config/constants';
-import { getCurrencyFromName, roundNumber } from 'utils/currency';
-import { getDecimals } from 'utils/utils';
+import { getCurrencyFromName } from 'utils/currency';
 import {
 	performWithdraw,
 	// requestWithdrawFee
 } from 'actions/walletActions';
 import { errorHandler } from 'components/OtpForm/utils';
 
-import { openContactForm } from 'actions/appActions';
+import { openContactForm, getWithdrawalMax } from 'actions/appActions';
 
 import WithdrawCryptocurrency from './form';
 import { generateFormValues, generateInitialValues } from './formUtils';
@@ -30,7 +28,8 @@ import {
 } from '../Wallet/components';
 
 import { FORM_NAME } from './form';
-import { limitNumberWithinRange } from 'utils/math';
+import { STATIC_ICONS } from 'config/icons';
+import { renderBackToWallet } from 'containers/Deposit/utils';
 
 class Withdraw extends Component {
 	state = {
@@ -39,9 +38,10 @@ class Withdraw extends Component {
 		checked: false,
 		currency: '',
 		selectedMethodData: 'address',
+		qrScannerOpen: false,
 	};
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		if (this.props.verification_level) {
 			this.validateRoute(this.props.routeParams.currency, this.props.coins);
 		}
@@ -151,6 +151,7 @@ class Withdraw extends Component {
 			router: {
 				location: { query },
 			},
+			coin_customizations,
 		} = this.props;
 		const formValues = generateFormValues(
 			currency,
@@ -159,13 +160,14 @@ class Withdraw extends Component {
 			coins,
 			verification_level,
 			this.props.activeTheme,
-			ICONS['BLUE_PLUS'],
-			'BLUE_PLUS',
+			STATIC_ICONS['MAX_ICON'],
+			'MAX_ICON',
 			networks,
 			network,
 			ICONS,
 			selectedMethod,
-			handleMethodChange
+			handleMethodChange,
+			this.openQRScanner
 		);
 
 		let initialValues = generateInitialValues(
@@ -175,7 +177,8 @@ class Withdraw extends Component {
 			network,
 			query,
 			verification_level,
-			selectedMethod
+			selectedMethod,
+			coin_customizations
 		);
 
 		this.setState({ formValues, initialValues });
@@ -215,114 +218,43 @@ class Withdraw extends Component {
 	};
 
 	onCalculateMax = () => {
-		const {
-			balance,
-			selectedFee = 0,
-			dispatch,
-			verification_level,
-			coins,
-			config_level = {},
-			fee_coin,
-			fee_type,
-			selectedNetwork,
-			prices,
-		} = this.props;
-		const { withdrawal_limit } = config_level[verification_level] || {};
+		const { selectedNetwork, selectedMethod, dispatch } = this.props;
 		const { currency } = this.state;
-		const balanceAvailable = balance[`${currency}_available`];
-		const { increment_unit, withdrawal_fees = {}, network, max: coin_max } =
-			coins[currency] || DEFAULT_COIN_DATA;
 
-		const oraclePrice = prices[currency];
-		const has_price = oraclePrice && oraclePrice !== 0 && oraclePrice !== -1;
-		const calculated_withdrawal_limit = has_price
-			? math.divide(withdrawal_limit, oraclePrice)
-			: coin_max;
+		const emailMethod = selectedMethod === 'email';
+		getWithdrawalMax(currency, !emailMethod ? selectedNetwork : 'email')
+			.then((res) => {
+				dispatch(change(FORM_NAME, 'amount', res.data.amount));
+			})
+			.catch((err) => {
+				message.error(err.response.data.message);
+			});
+	};
 
-		const isPercentage = fee_type === 'percentage';
-		// if (currency === BASE_CURRENCY) {
-		// 	const fee = calculateBaseFee(balanceAvailable);
-		// 	const amount = math.number(
-		// 		math.subtract(math.fraction(balanceAvailable), math.fraction(fee))
-		// 	);
-		// 	dispatch(change(FORM_NAME, 'amount', math.floor(amount)));
-		// } else {
-		let amount = 0;
-		let min;
-		let max;
+	openQRScanner = () => {
+		this.setState({ qrScannerOpen: true });
+	};
 
-		if (withdrawal_fees && withdrawal_fees[selectedNetwork]) {
-			min = withdrawal_fees[selectedNetwork].min;
-			max = withdrawal_fees[selectedNetwork].max;
-		} else if (!network && withdrawal_fees && withdrawal_fees[currency]) {
-			min = withdrawal_fees[currency].min;
-			max = withdrawal_fees[currency].max;
-		}
+	closeQRScanner = () => {
+		this.setState({ qrScannerOpen: false });
+	};
 
-		if (fee_coin && fee_coin !== currency && !isPercentage) {
-			amount = math.number(math.fraction(balanceAvailable));
-			if (amount < 0) {
-				amount = 0;
-			} else if (
-				math.larger(amount, math.number(calculated_withdrawal_limit)) &&
-				withdrawal_limit !== 0 &&
-				withdrawal_limit !== -1
-			) {
-				amount = math.number(math.fraction(calculated_withdrawal_limit));
-			}
+	getQRData = (data) => {
+		const { currency } = this.state;
+		const { dispatch, selectedNetwork } = this.props;
+
+		if (
+			currency === 'xrp' ||
+			currency === 'xlm' ||
+			selectedNetwork === 'xlm' ||
+			selectedNetwork === 'ton'
+		) {
+			const [address = '', destinationTag = ''] = data?.split(':') || [];
+			dispatch(change(FORM_NAME, 'address', address));
+			dispatch(change(FORM_NAME, 'destination_tag', destinationTag));
 		} else {
-			let max_allowed = balanceAvailable;
-			if (withdrawal_limit !== 0 && withdrawal_limit !== -1) {
-				max_allowed = math.min(
-					math.number(calculated_withdrawal_limit),
-					balanceAvailable
-				);
-			}
-
-			if (isPercentage) {
-				amount = math.number(
-					math.divide(
-						math.fraction(max_allowed),
-						math.add(
-							math.fraction(math.divide(math.fraction(selectedFee), 100)),
-							1
-						)
-					)
-				);
-
-				const calculatedFee = limitNumberWithinRange(
-					math.multiply(
-						math.fraction(amount),
-						math.fraction(math.divide(math.fraction(selectedFee), 100))
-					),
-					min,
-					max
-				);
-				amount = math.number(
-					math.subtract(
-						math.fraction(max_allowed),
-						math.fraction(calculatedFee)
-					)
-				);
-			} else {
-				amount = math.number(
-					math.subtract(math.fraction(max_allowed), math.fraction(selectedFee))
-				);
-			}
-
-			if (amount < 0) {
-				amount = 0;
-			}
+			dispatch(change(FORM_NAME, 'address', data));
 		}
-
-		dispatch(
-			change(
-				FORM_NAME,
-				'amount',
-				roundNumber(amount, getDecimals(increment_unit))
-			)
-		);
-		// }
 	};
 
 	onGoBack = () => {
@@ -341,6 +273,7 @@ class Withdraw extends Component {
 			icons: ICONS,
 			selectedNetwork,
 			email,
+			orders,
 		} = this.props;
 		const { links = {} } = this.props.constants;
 		const {
@@ -349,6 +282,7 @@ class Withdraw extends Component {
 			currency,
 			checked,
 			selectedMethodData,
+			qrScannerOpen,
 		} = this.state;
 		if (!currency || !checked) {
 			return <div />;
@@ -376,6 +310,9 @@ class Withdraw extends Component {
 			selectedNetwork,
 			email,
 			selectedMethodData,
+			closeQRScanner: this.closeQRScanner,
+			qrScannerOpen,
+			getQRData: this.getQRData,
 		};
 
 		return (
@@ -395,12 +332,13 @@ class Withdraw extends Component {
 					{/* // This commented code can be used if you want to enforce user to have a verified bank account before doing the withdrawal
 					{verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW &&
 					verification_level <= MAX_VERIFICATION_LEVEL_TO_WITHDRAW ? ( */}
-					<div className={classnames('inner_container')}>
+					<div className="inner_container">
 						<div className="information_block">
 							<div
 								className="information_block-text_wrapper"
-								style={{ height: '1.5rem' }}
+								// style={{ height: '1.5rem' }}
 							/>
+							{renderBackToWallet()}
 							{openContactForm &&
 								renderNeedHelpAction(
 									openContactForm,
@@ -419,7 +357,8 @@ class Withdraw extends Component {
 								'withdraw',
 								links,
 								ICONS['BLUE_QUESTION'],
-								'BLUE_QUESTION'
+								'BLUE_QUESTION',
+								orders
 							)}
 							{...formProps}
 						/>
@@ -456,6 +395,8 @@ const mapStateToProps = (store) => ({
 	activeTheme: store.app.theme,
 	constants: store.app.constants,
 	config_level: store.app.config_level,
+	orders: store.order.activeOrders,
+	coin_customizations: store.app.constants.coin_customizations,
 });
 
 const mapDispatchToProps = (dispatch) => ({

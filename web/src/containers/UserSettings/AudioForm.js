@@ -5,10 +5,10 @@ import renderFields from 'components/Form/factoryFields';
 import { Button, IconTitle } from 'components';
 import { getErrorLocalized } from 'utils/errors';
 import STRINGS from 'config/localizedStrings';
-import { DEFAULT_TOGGLE_OPTIONS } from 'config/options';
+// import { DEFAULT_TOGGLE_OPTIONS } from 'config/options';
 import { EditWrapper } from 'components';
 
-export const generateAudioCueFormValues = () => ({
+export const generateAudioCueFormValues = (DEFAULT_TOGGLE_OPTIONS) => ({
 	all: {
 		type: 'toggle',
 		stringId: 'USER_SETTINGS.AUDIO_CUE_FORM.ALL_AUDIO',
@@ -149,15 +149,25 @@ class AudioCueForm extends Component {
 		) {
 			this.props.initialize(this.props.initialValues);
 		}
+		if (prevProps.formFields !== this.props.formFields) {
+			this.setState({ formFields: this.props.formFields });
+		}
 	}
 
 	callback = (selected) => {
-		let formFields = { ...this.state.formFields };
-		Object.keys(formFields).map((key) => {
-			formFields[key].disabled = !selected;
-			return null;
-		});
-		this.setState({ formFields });
+		setTimeout(
+			() =>
+				this.setState(({ formFields: prevFormFields }) => {
+					const formFields = { ...prevFormFields };
+
+					Object.keys(formFields).forEach((key) => {
+						formFields[key].disabled = !selected;
+					});
+
+					return { formFields };
+				}),
+			1
+		);
 	};
 
 	render() {

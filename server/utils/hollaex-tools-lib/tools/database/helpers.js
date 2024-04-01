@@ -1,6 +1,7 @@
 'use strict';
 
 const moment = require('moment');
+const { Op } = require('sequelize');
 
 /**
  * Returns object for sequelize pagination query. Default is { limit: 50, offset: 1 }
@@ -38,8 +39,8 @@ const paginationQuery = (limit = 50, page = 1) => {
  */
 const timeframeQuery = (startDate = 0, endDate = moment().valueOf()) => {
 	let timestamp = {
-		$gte: startDate,
-		$lte: endDate
+		[Op.gte]: startDate,
+		[Op.lte]: endDate
 	};
 	return timestamp;
 };

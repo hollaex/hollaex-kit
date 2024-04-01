@@ -1,15 +1,24 @@
 'use strict';
 
-const { getUserByKitId, getUserByEmail, getUserByNetworkId, mapNetworkIdToKitId, mapKitIdToNetworkId } = require('./user');
+const { getUserByKitId, getUserByEmail, getUserByNetworkId, mapNetworkIdToKitId, mapKitIdToNetworkId, createAuditLog } = require('./user');
 const { SERVER_PATH } = require('../constants');
+const { getModel } = require('./database/model');
+const { fetchBrokerQuote, generateRandomToken, isFairPriceForBroker } = require('./broker');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
-const { INVALID_SYMBOL, NO_DATA_FOR_CSV, USER_NOT_FOUND, USER_NOT_REGISTERED_ON_NETWORK } = require(`${SERVER_PATH}/messages`);
+const { INVALID_SYMBOL, NO_DATA_FOR_CSV, USER_NOT_FOUND, USER_NOT_REGISTERED_ON_NETWORK, TOKEN_EXPIRED, BROKER_NOT_FOUND, BROKER_PAUSED, BROKER_SIZE_EXCEED, QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED, QUICK_TRADE_ORDER_CURRENT_PRICE_ERROR, QUICK_TRADE_VALUE_IS_TOO_SMALL, FAIR_PRICE_BROKER_ERROR, AMOUNT_NEGATIVE_ERROR, QUICK_TRADE_CONFIG_NOT_FOUND, QUICK_TRADE_TYPE_NOT_SUPPORTED, PRICE_NOT_FOUND, INVALID_PRICE, INVALID_SIZE, BALANCE_NOT_AVAILABLE } = require(`${SERVER_PATH}/messages`);
 const { parse } = require('json2csv');
-const { subscribedToPair, getKitTier, getDefaultFees } = require('./common');
+const { BASE_SCOPES } = require(`${SERVER_PATH}/constants`);
+const { subscribedToPair, getKitTier, getDefaultFees, getAssetsPrices, getPublicTrades, getQuickTrades } = require('./common');
 const { reject } = require('bluebird');
 const { loggerOrders } = require(`${SERVER_PATH}/config/logger`);
 const math = require('mathjs');
 const { has } = require('lodash');
+const { setPriceEssentials } = require('../../orderbook');
+const { getUserBalanceByKitId } = require('./wallet');
+const { verifyBearerTokenPromise, verifyHmacTokenPromise} = require('./security');
+const { client } = require('./database/redis');
+const { parseNumber } = require('./common');
+const BigNumber = require('bignumber.js');
 
 const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, opts = { stop: null, meta: null, additionalHeaders: null }) => {
 	if (symbol && !subscribedToPair(symbol)) {
@@ -33,6 +42,470 @@ const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, 
 
 			return getNodeLib().createOrder(user.network_id, symbol, side, size, type, price, feeData, opts);
 		});
+};
+
+const executeUserOrder = async (user_id, opts, token) => {
+	const storedToken = await client.getAsync(token);
+	if (!storedToken) {
+		throw new Error(TOKEN_EXPIRED);
+	}
+	const { symbol, price, side, size, type } = JSON.parse(storedToken);
+
+	if (size < 0) {
+		throw new Error(INVALID_SIZE);
+	} 
+
+	if (price < 0) {
+		throw new Error(INVALID_PRICE);
+	} 
+
+	let res;
+	if (type === 'market') {
+		res = await createUserOrderByKitId(user_id, symbol, side, size, type, 0, opts);
+	}
+	else if (type === 'broker') {
+		const brokerPair = await getModel('broker').findOne({ where: { symbol } });
+
+		if (!brokerPair) {
+			throw new Error(BROKER_NOT_FOUND);
+		} else if (brokerPair.paused) {
+			throw new Error(BROKER_PAUSED);
+		}
+
+		if(size < brokerPair.min_size || size > brokerPair.max_size) {
+			throw new Error(BROKER_SIZE_EXCEED);
+		}
+
+		const broker = await getUserByKitId(brokerPair.user_id);
+		const user = await getUserByKitId(user_id);
+
+		const isFairPrice = await isFairPriceForBroker(brokerPair);
+
+		if (!isFairPrice) {
+			throw new Error(FAIR_PRICE_BROKER_ERROR);
+		}
+
+		const tierBroker = getKitTier(broker.verification_level);
+		const tierUser = getKitTier(user.verification_level);
+
+		const makerFee = tierBroker.fees.maker[symbol];
+		const takerFee = tierUser.fees.taker[symbol];
+
+		res = await getNodeLib().createBrokerTrade(
+			symbol,
+			side,
+			price,
+			size,
+			broker.network_id,
+			user.network_id,
+			{ maker: makerFee, taker: takerFee }
+		);
+	}
+	else if (type === 'network') {
+		const user = await getUserByKitId(user_id);
+		const tierUser = getKitTier(user.verification_level);
+		const fee = tierUser.fees.taker[symbol];
+
+		res = await getNodeLib().executeQuote(token, user.network_id, fee, opts);
+	}
+	else {
+		throw new Error(QUICK_TRADE_TYPE_NOT_SUPPORTED);
+	}
+	await client.delAsync(token);
+	res.type = type;
+	return res;
+};
+
+const getUserQuickTrade = async (spending_currency, spending_amount, receiving_amount, receiving_currency, bearerToken, ip, opts, req = null) => {
+
+	if (spending_amount) spending_amount = new BigNumber(spending_amount).toNumber();
+	if (receiving_amount) receiving_amount = new BigNumber(receiving_amount).toNumber();
+
+	if (receiving_amount < 0 || spending_amount < 0) {
+		throw new Error(AMOUNT_NEGATIVE_ERROR);
+	}
+	const originalPair = `${spending_currency}-${receiving_currency}`;
+	const flippedPair = `${receiving_currency}-${spending_currency}`;
+
+	let symbol = originalPair;
+	let side = 'sell';
+
+	const quickTrades = getQuickTrades();
+	let quickTradeConfig = quickTrades.find(quickTrade => quickTrade.symbol === originalPair);
+
+	if (!quickTradeConfig) {
+		quickTradeConfig = quickTrades.find(quickTrade => quickTrade.symbol === flippedPair);
+		symbol = flippedPair;
+		side = 'buy';
+	}
+	if (!quickTradeConfig) throw new Error(QUICK_TRADE_CONFIG_NOT_FOUND);
+
+	let userInfo = null;
+
+	const apiKey = req.headers['api-key'];
+	if (apiKey && req) {
+		const endpointScopes = req.swagger ? req.swagger.operation['x-security-scopes'] : BASE_SCOPES;
+		const endpointPermissions = req.swagger ? req.swagger.operation['x-token-permissions'] : ['can_read'];
+		const apiSignature = req.headers ? req.headers['api-signature'] : undefined;
+		const apiExpires = req.headers ? req.headers['api-expires'] : undefined;
+		const auth = await verifyHmacTokenPromise(
+			apiKey,
+			apiSignature,
+			apiExpires,
+			req.method,
+			req.originalUrl,
+			req.body,
+			endpointScopes,
+			endpointPermissions,
+			ip);
+
+		if (auth) {
+			userInfo = {};
+			userInfo.user_id = auth.sub.id;
+			userInfo.network_id = auth.sub.networkId;
+		}
+	}
+
+	if (quickTradeConfig && quickTradeConfig.active && quickTradeConfig.type === 'broker') {
+		const broker = await getModel('broker').findOne({ where: { symbol } });
+
+		if (!broker) {
+			throw new Error(BROKER_NOT_FOUND);
+		}
+		if (broker.paused) {
+			throw new Error(BROKER_PAUSED);
+		}
+
+		return fetchBrokerQuote({
+			symbol: symbol,
+			side: side,
+			bearerToken,
+			ip,
+			orderData: {
+				spending_currency,
+				receiving_currency,
+				spending_amount,
+				receiving_amount
+			},
+			userInfo
+		})
+			.then((brokerQuote) => {
+				const responseObj = {
+					spending_currency,
+					receiving_currency,
+					...(spending_amount != null ? { spending_amount } : { receiving_amount }),
+					token: brokerQuote?.token,
+					expiry: brokerQuote?.expiry,
+					type: 'broker'
+				};
+				if (spending_amount != null) {
+					responseObj.receiving_amount = brokerQuote.receiving_amount;
+				} else if (receiving_amount != null) {
+					responseObj.spending_amount = brokerQuote.spending_amount;
+				}
+				
+				const baseCoinSize = side === 'buy' ? responseObj.receiving_amount : responseObj.spending_amount;
+				if (baseCoinSize < broker.min_size || baseCoinSize > broker.max_size) {
+					throw new Error(BROKER_SIZE_EXCEED);
+				}
+
+				if (responseObj.receiving_amount < 0 || responseObj.spending_amount < 0) {
+					throw new Error(PRICE_NOT_FOUND);
+				}
+
+				return responseObj;
+			});
+	}
+	else if (quickTradeConfig && quickTradeConfig.active && quickTradeConfig.type === 'pro') {
+		try {
+		
+			if (!subscribedToPair(symbol)) {
+				return reject(new Error(INVALID_SYMBOL(symbol)));
+			}
+
+			const responseObj = {
+				spending_currency,
+				receiving_currency,
+				...(spending_amount != null ? { spending_amount } : { receiving_amount }),
+				type: 'market'
+			};
+
+			const priceValues = await setPriceEssentials({
+				pair: symbol,
+				size: spending_amount != null ? spending_amount : receiving_amount,
+				side,
+				...(spending_amount != null ? { sourceAmount: spending_amount } : { targetAmount: receiving_amount }),
+				isSourceChanged: spending_amount != null ? true : false,
+			}, opts);
+
+			if (priceValues.estimatedPrice === 0) {
+				throw new Error(QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED);
+			}
+
+			if (priceValues.targetAmount === 0 || priceValues.sourceAmount === 0) {
+				throw new Error(QUICK_TRADE_VALUE_IS_TOO_SMALL);
+			}
+
+			if (spending_amount != null) responseObj.receiving_amount = priceValues.targetAmount;
+			else if (receiving_amount != null) responseObj.spending_amount = priceValues.sourceAmount;
+
+			//Check if the estimated price is 50% greater than the last trade
+			const lastTrades = await getPublicTrades(symbol);
+			if (Array.isArray(lastTrades[symbol]) && lastTrades[symbol].length > 0) {
+				const lastPrice = new BigNumber(lastTrades[symbol][0].price).multipliedBy(1.50).toNumber();
+
+				if (priceValues.estimatedPrice > lastPrice) {
+					throw new Error(QUICK_TRADE_ORDER_CURRENT_PRICE_ERROR);
+				}
+			}
+
+			let user_id = null;
+			if (bearerToken) {
+				const auth = await verifyBearerTokenPromise(bearerToken, ip);
+				if (auth) {
+					user_id = auth.sub.id;
+				}
+			} else if (userInfo) {
+				user_id = userInfo.user_id;
+			}
+
+			if (user_id) {
+				let size;
+				if (`${spending_currency}-${receiving_currency}` === symbol) {
+					size = responseObj.spending_amount;
+				} else {
+					size = responseObj.receiving_amount;
+				}
+
+				// Generate randomToken to be used during deal execution
+				const randomToken = generateRandomToken(user_id, symbol, side, 30, priceValues?.estimatedPrice, size, 'market');
+				responseObj.token = randomToken;
+				// set expiry
+				const expiryDate = new Date();
+				expiryDate.setSeconds(expiryDate.getSeconds() + 30);
+				responseObj.expiry = expiryDate;
+			}
+
+			return responseObj;
+		} catch (err) {
+			return reject(new Error(err.message));
+		}
+	}
+	else if (quickTradeConfig && quickTradeConfig.active && quickTradeConfig.type === 'network') {
+
+		let user_id = null;
+		let network_id = null;
+		if (bearerToken) {
+			const auth = await verifyBearerTokenPromise(bearerToken, ip);
+			if (auth) {
+				user_id = auth.sub.id;
+				network_id = auth.sub.networkId;
+			}
+		} else if (userInfo) {
+			user_id = userInfo.user_id;
+			network_id = userInfo.network_id;
+		}
+
+		const responseObj = {
+			spending_currency,
+			receiving_currency,
+			spending_amount,
+			receiving_amount,
+			type: 'network'
+		};
+
+		const priceValues = await getNodeLib().getQuote(
+			network_id,
+			spending_currency,
+			spending_amount,
+			receiving_currency,
+			receiving_amount,
+			opts
+		);
+
+		responseObj.spending_amount = priceValues.spending_amount;
+		responseObj.receiving_amount = priceValues.receiving_amount;
+		if (responseObj.spending_amount === 0 || responseObj.receiving_amount === 0) { 
+			throw new Error(QUICK_TRADE_VALUE_IS_TOO_SMALL);
+		}
+
+		if (user_id) {
+			responseObj.expiry = priceValues.expiry;
+			responseObj.token = priceValues.token;
+
+			const tradeData = {
+				user_id,
+				symbol,
+				type: 'network'
+			};
+
+			client.setexAsync(priceValues.token, 30, JSON.stringify(tradeData));
+		}
+
+		return responseObj;
+	} 
+	else {
+		throw new Error(QUICK_TRADE_TYPE_NOT_SUPPORTED);
+	}
+};
+
+const updateQuickTradeConfig = async ({ symbol, type, active }, auditInfo) => {
+	const QuickTrade = getModel('quickTrade');
+
+	const quickTradeData = await QuickTrade.findOne({ where: { symbol } });
+
+	if (!quickTradeData) {
+		throw new Error(QUICK_TRADE_CONFIG_NOT_FOUND);
+	}
+
+	const updatedConfig = {
+		...quickTradeData.dataValues,
+		type,
+		active
+	};
+	createAuditLog({ email: auditInfo.userEmail, session_id: auditInfo.sessionId }, auditInfo.apiPath, auditInfo.method, quickTradeData.dataValues, updatedConfig);
+	return quickTradeData.update(updatedConfig, { fields: ['type', 'active'], returning: true });
+};
+
+const convertBalance = async (order, user_id, maker_id) => {
+	const { symbol, side, price, size } = order;
+
+	const admin = await getUserByKitId(maker_id);
+	const user = await getUserByKitId(user_id);
+
+	const makerFee = 0;
+	const takerFee = 0;
+
+	return getNodeLib().createBrokerTrade(
+		symbol,
+		side,
+		price,
+		size,
+		admin.network_id,
+		user.network_id,
+		{ maker: makerFee, taker: takerFee }
+	);
+};
+
+
+
+const dustPriceEstimate = async (user_id, opts, { assets, spread, maker_id, quote }) => {
+	if (quote == null) throw new Error('quote undefined');
+	if (spread == null) throw new Error('spread undefined');
+	if (maker_id == null) throw new Error('maker_id undefined');
+
+	const usdtPrices = await getAssetsPrices(assets, 'usdt', 1, opts);
+	const quotePrices = await getAssetsPrices(assets, quote, 1, opts);
+
+	const balance = await getUserBalanceByKitId(user_id, opts);
+
+	let symbols = {};
+
+	for (const key of Object.keys(balance)) {
+		if (key.includes('balance') && balance[key]) {
+			let symbol = key?.split('_')?.[0];
+			if (symbol && assets.includes(symbol) && new BigNumber(balance[`${symbol}_balance`]).comparedTo(new BigNumber(balance[`${symbol}_available`])) !== 0) {
+				throw new Error(symbol + ' ' + BALANCE_NOT_AVAILABLE);
+			}
+			if (symbol && assets.includes(symbol)) {
+				symbols[symbol] = balance[key];
+			}
+		}
+	}
+
+	let estimatedConversions = [];
+	for (const coin of Object.keys(symbols)) {
+
+		if (usdtPrices[coin] < 0 || quotePrices[coin] < 0) continue;
+
+		let symbol = `${coin}-${quote}`;
+		let side = 'sell';
+
+		const usdtSize = parseNumber((new BigNumber(usdtPrices[coin]).multipliedBy(symbols[coin])), 10);
+		const size = parseNumber(symbols[coin], 10);
+		const price = parseNumber(new BigNumber(quotePrices[coin]).multipliedBy((1 - (spread / 100))), 10);
+		const quoteSize = parseNumber(new BigNumber(price).multipliedBy(size), 10);
+
+		if (usdtSize < 1) {
+			const orderData = {
+				symbol,
+				side,
+				size,
+				price,
+				quoteSize
+			};
+			estimatedConversions.push(orderData);
+
+		}
+	}
+
+	return estimatedConversions;
+};
+
+const dustUserBalance = async (user_id, opts, { assets, spread, maker_id, quote }) => {
+	try {
+		if (quote == null) throw new Error('quote undefined');
+		if (spread == null) throw new Error('spread undefined');
+		if (maker_id == null) throw new Error('maker_id undefined');
+
+		const usdtPrices = await getAssetsPrices(assets, 'usdt', 1, opts);
+		const quotePrices = await getAssetsPrices(assets, quote, 1, opts);
+
+		const balance = await getUserBalanceByKitId(user_id, opts);
+
+		let symbols = {};
+
+		for (const key of Object.keys(balance)) {
+			if (key.includes('balance') && balance[key]) {
+				let symbol = key?.split('_')?.[0];
+				if (symbol && assets.includes(symbol) && new BigNumber(balance[`${symbol}_balance`]).comparedTo(new BigNumber(balance[`${symbol}_available`])) !== 0) {
+					throw new Error(symbol + ' ' + BALANCE_NOT_AVAILABLE);
+				}
+				if (symbol && assets.includes(symbol)) {
+					symbols[symbol] = balance[key];
+				}
+			}
+		}
+
+		let convertedAssets = [];
+		for (const coin of Object.keys(symbols)) {
+
+			if (usdtPrices[coin] < 0 || quotePrices[coin] < 0) continue;
+
+			let symbol = `${coin}-${quote}`;
+			let side = 'sell';
+
+			const usdtSize = parseNumber(new BigNumber(usdtPrices[coin]).multipliedBy(symbols[coin]), 10);
+			const size = parseNumber(symbols[coin], 10);
+			const price = parseNumber(new BigNumber(quotePrices[coin]).multipliedBy((1 - (spread / 100))), 10);
+
+			if (usdtSize < 1) {
+				try {
+					const orderData = {
+						symbol,
+						side,
+						size,
+						price
+					};
+					const res = await convertBalance(orderData, user_id, maker_id);
+					convertedAssets.push(res);
+				} catch (err) {
+					convertedAssets.push({ error: err.message, symbol, side, size, price });
+					loggerOrders.error(
+						'dustUserBalance error',
+						err.message,
+					);
+				}
+			} else {
+				convertedAssets.push({ error: 'value is not less than 1 usdt', symbol });
+			}
+		}
+
+		return convertedAssets;
+
+	} catch (err) {
+		return reject(err);
+	}
 };
 
 const createUserOrderByEmail = (email, symbol, side, size, type, price = 0, opts = { stop: null, meta: null, additionalHeaders: null }) => {
@@ -166,7 +639,7 @@ const cancelUserOrderByNetworkId = (networkId, orderId, opts = {
 	return getNodeLib().cancelOrder(networkId, orderId, opts);
 };
 
-const getAllExchangeOrders = (symbol, side, status, open, limit, page, orderBy, order, startDate, endDate, opts = {
+const getAllExchangeOrders = (symbol, side, status, open, limit, page, orderBy, order, startDate, endDate, format, opts = {
 	additionalHeaders: null
 }) => {
 	if (symbol && !subscribedToPair(symbol)) {
@@ -183,11 +656,25 @@ const getAllExchangeOrders = (symbol, side, status, open, limit, page, orderBy, 
 		order,
 		startDate,
 		endDate,
+		format,
 		...opts
-	});
+	})
+		.then(async (orders) => {
+			if (orders.data.length > 0) {
+				const networkIds = orders.data.map((order) => order.created_by);
+				const idDictionary = await mapNetworkIdToKitId(networkIds);
+				for (let order of orders.data) {
+					const user_kit_id = idDictionary[order.created_by];
+					order.network_id = order.created_by;
+					order.created_by = user_kit_id;
+					if (order.User) order.User.id = user_kit_id;
+				}
+			}
+			return orders;
+		});
 };
 
-const getAllUserOrdersByKitId = async (userKitId, symbol, side, status, open, limit, page, orderBy, order, startDate, endDate, opts = {
+const getAllUserOrdersByKitId = async (userKitId, symbol, side, status, open, limit, page, orderBy, order, startDate, endDate, format, opts = {
 	additionalHeaders: null
 }) => {
 	if (symbol && !subscribedToPair(symbol)) {
@@ -212,8 +699,31 @@ const getAllUserOrdersByKitId = async (userKitId, symbol, side, status, open, li
 		order,
 		startDate,
 		endDate,
+		format,
 		...opts
-	});
+	})
+		.then(async (orders) => {
+			if (orders.data.length > 0) {
+				const networkIds = orders.data.map((order) => order.created_by);
+				const idDictionary = await mapNetworkIdToKitId(networkIds);
+				for (let order of orders.data) {
+					const user_kit_id = idDictionary[order.created_by];
+					order.network_id = order.created_by;
+					order.created_by = user_kit_id;
+					if (order.User) order.User.id = user_kit_id;
+				}
+			}
+
+			if (format && format === 'csv') {
+				if (orders.data.length === 0) {
+					throw new Error(NO_DATA_FOR_CSV);
+				}
+				const csv = parse(orders.data, Object.keys(orders.data[0]));
+				return csv;
+			} else {
+				return orders;
+			}
+		});
 };
 
 const getAllUserOrdersByEmail = (email, symbol, side, status, open, limit, page, orderBy, order, startDate, endDate, opts = {
@@ -722,9 +1232,32 @@ const generateOrderFeeData = (userTier, symbol, opts = { discount: 0 }) => {
 	return feeData;
 };
 
+const createTrade = async (order, opts = { additionalHeaders: null }) => {
+	const { symbol, side, price, size, maker_id, taker_id, maker_fee, taker_fee } = order;
+
+	const maker = await getUserByKitId(maker_id);
+	const taker = await getUserByKitId(taker_id);
+
+	if (!taker || !maker) {
+		throw new Error(USER_NOT_FOUND);
+	}
+
+	return getNodeLib().createBrokerTrade(
+		symbol,
+		side,
+		price,
+		size,
+		maker.network_id,
+		taker.network_id,
+		{ maker: maker_fee, taker: taker_fee },
+		opts
+	);
+};
+
 module.exports = {
 	getAllExchangeOrders,
 	createUserOrderByKitId,
+	getUserQuickTrade,
 	createUserOrderByEmail,
 	getUserOrderByKitId,
 	getUserOrderByEmail,
@@ -745,7 +1278,12 @@ module.exports = {
 	cancelAllUserOrdersByNetworkId,
 	getGeneratedFees,
 	settleFees,
-	generateOrderFeeData
+	generateOrderFeeData,
+	dustUserBalance,
+	executeUserOrder,
+	dustPriceEstimate,
+	updateQuickTradeConfig,
+	createTrade
 	// getUserTradesByKitIdStream,
 	// getUserTradesByNetworkIdStream,
 	// getAllTradesNetworkStream,

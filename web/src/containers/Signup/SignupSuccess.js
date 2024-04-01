@@ -6,7 +6,7 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import classnames from 'classnames';
 import { FLEX_CENTER_CLASSES } from 'config/constants';
 
-const BottomLink = () => (
+const BottomLink = ({ onCreateAccount }) => (
 	<>
 		<div className={classnames('f-1', 'link_wrapper')}>
 			{STRINGS['SIGN_UP.HAVE_ACCOUNT']}
@@ -16,14 +16,17 @@ const BottomLink = () => (
 		</div>
 		<div className={classnames('f-1', 'link_wrapper')}>
 			{STRINGS['LOGIN.NO_ACCOUNT']}
-			<Link to="/signup" className={classnames('blue-link')}>
+			<span
+				onClick={onCreateAccount}
+				className={classnames('blue-link pointer')}
+			>
 				{STRINGS['LOGIN.CREATE_ACCOUNT']}
-			</Link>
+			</span>
 		</div>
 	</>
 );
 
-const SignupSuccess = ({ icons: ICONS, ...rest }) => {
+const SignupSuccess = ({ icons: ICONS, onCreateAccount }) => {
 	return (
 		<div
 			className={classnames(
@@ -53,7 +56,7 @@ const SignupSuccess = ({ icons: ICONS, ...rest }) => {
 					</Link>
 				</div>
 			</div>
-			<BottomLink />
+			<BottomLink onCreateAccount={onCreateAccount} />
 		</div>
 	);
 };

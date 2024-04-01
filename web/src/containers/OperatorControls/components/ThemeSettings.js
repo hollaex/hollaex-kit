@@ -119,7 +119,6 @@ class ThemeSettingsModal extends Component {
 				isOpen={isOpen}
 				label="operator-controls-modal"
 				className="operator-controls__modal"
-				disableTheme={true}
 				onCloseDialog={() => onCloseDialog(true)}
 				shouldCloseOnOverlayClick={true}
 				showCloseText={true}

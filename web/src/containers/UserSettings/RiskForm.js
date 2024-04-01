@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
-import { reduxForm } from 'redux-form';
+import { connect } from 'react-redux';
+import { reduxForm, formValueSelector } from 'redux-form';
+import classnames from 'classnames';
 import { Table, Button, IconTitle } from 'components';
 import renderFields from 'components/Form/factoryFields';
 import STRINGS from 'config/localizedStrings';
 import { formatBaseAmount } from 'utils/currency';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
-import { DEFAULT_TOGGLE_OPTIONS } from 'config/options';
 import { EditWrapper } from 'components';
+
+const FORM_NAME = 'WarningForm';
+const selector = formValueSelector(FORM_NAME);
 
 export const generateHeaders = (onAdjustPortfolio) => {
 	return [
@@ -14,8 +18,11 @@ export const generateHeaders = (onAdjustPortfolio) => {
 			stringId: 'USER_SETTINGS.RISK_MANAGEMENT.PORTFOLIO',
 			label: STRINGS['USER_SETTINGS.RISK_MANAGEMENT.PORTFOLIO'],
 			key: 'percentage',
-			renderCell: ({ id, percentage }, key, index) => (
-				<td key={`${key}-${id}-percentage`}>
+			renderCell: ({ id, percentage, status }, key, index) => (
+				<td
+					key={`${key}-${id}-percentage`}
+					className={classnames({ 'half-opacity': !status })}
+				>
 					<span className={percentage.popupWarning ? '' : 'deactive_risk_data'}>
 						{percentage.portfolioPercentage}
 						<span
@@ -26,9 +33,10 @@ export const generateHeaders = (onAdjustPortfolio) => {
 							}
 							onClick={percentage.popupWarning ? onAdjustPortfolio : () => {}}
 						>
-							{STRINGS['USER_SETTINGS.RISK_MANAGEMENT.ADJUST']}
+							<EditWrapper stringId="USER_SETTINGS.RISK_MANAGEMENT.ADJUST">
+								{STRINGS['USER_SETTINGS.RISK_MANAGEMENT.ADJUST']}
+							</EditWrapper>
 						</span>
-						<EditWrapper stringId="USER_SETTINGS.RISK_MANAGEMENT.ADJUST" />
 					</span>
 				</td>
 			),
@@ -37,8 +45,11 @@ export const generateHeaders = (onAdjustPortfolio) => {
 			stringId: 'USER_SETTINGS.RISK_MANAGEMENT.VALUE_ASSET',
 			label: STRINGS['USER_SETTINGS.RISK_MANAGEMENT.VALUE_ASSET'],
 			key: 'assetValue',
-			renderCell: ({ id, assetValue }, key, index) => (
-				<td key={`${key}-${id}-assetValue.percentPrice`}>
+			renderCell: ({ id, assetValue, status }, key, index) => (
+				<td
+					key={`${key}-${id}-assetValue.percentPrice`}
+					className={classnames({ 'half-opacity': !status })}
+				>
 					<span className={assetValue.popupWarning ? '' : 'deactive_risk_data'}>
 						{' '}
 						{assetValue.percentPrice}
@@ -62,7 +73,7 @@ export const generateHeaders = (onAdjustPortfolio) => {
 	];
 };
 
-export const generateWarningFormValues = () => ({
+export const generateWarningFormValues = (DEFAULT_TOGGLE_OPTIONS) => ({
 	popup_warning: {
 		type: 'toggle',
 		stringId: 'USER_SETTINGS.RISK_MANAGEMENT.WARNING_POP_UP',
@@ -73,7 +84,7 @@ export const generateWarningFormValues = () => ({
 	},
 });
 
-class RiskForm extends Component {
+class Form extends Component {
 	componentDidUpdate(prevProps) {
 		if (
 			JSON.stringify(this.props.initialValues) !==
@@ -95,7 +106,9 @@ class RiskForm extends Component {
 			formFields,
 			coins,
 			ICONS,
+			popup_warning,
 		} = this.props;
+
 		const percentPrice =
 			(totalAssets / 100) * initialValues.order_portfolio_percentage;
 		const { fullname, display_name } =
@@ -117,6 +130,7 @@ class RiskForm extends Component {
 				},
 				adjust: formFields,
 				warning: initialValues.popup_warning,
+				status: popup_warning,
 			},
 		];
 		const sections = [
@@ -126,20 +140,22 @@ class RiskForm extends Component {
 				title: STRINGS['USER_SETTINGS.CREATE_ORDER_WARING'],
 				content: (
 					<div>
-						<p>
-							<EditWrapper stringId="USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT">
-								{STRINGS['USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT']}
-							</EditWrapper>
-						</p>
-						<p>
-							<EditWrapper stringId="USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT_1">
-								{STRINGS.formatString(
-									STRINGS['USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT_1'],
-									fullname,
-									totalAssets
-								).join('')}
-							</EditWrapper>
-						</p>
+						<EditWrapper
+							stringId="USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT"
+							renderWrapper={(children) => <p>{children}</p>}
+						>
+							{STRINGS['USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT']}
+						</EditWrapper>
+						<EditWrapper
+							stringId="USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT_1"
+							renderWrapper={(children) => <p>{children}</p>}
+						>
+							{STRINGS.formatString(
+								STRINGS['USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT_1'],
+								fullname,
+								totalAssets
+							)}
+						</EditWrapper>
 						<Table
 							rowClassName="pt-2 pb-2"
 							headers={generateHeaders(onAdjustPortfolio)}
@@ -180,7 +196,15 @@ class RiskForm extends Component {
 	}
 }
 
-export default reduxForm({
-	form: 'WarningForm',
+const RiskForm = reduxForm({
+	form: FORM_NAME,
 	enableReinitialize: true,
-})(RiskForm);
+})(Form);
+
+const mapStateToForm = (state) => ({
+	popup_warning: selector(state, 'popup_warning'),
+});
+
+const RiskFormValues = connect(mapStateToForm)(RiskForm);
+
+export default RiskFormValues;

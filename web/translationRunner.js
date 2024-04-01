@@ -1,8 +1,18 @@
 const fs = require('fs');
+const path = require('path');
 const beautify = require('json-beautify');
 const merge = require('lodash.merge');
 const isEmpty = require('lodash.isempty');
+const flatten = require('flat');
+const glob = require('glob');
+const sliceIntoChunks = require('lodash.chunk');
+const flattenArray = require('lodash.flatten');
+const { Translate } = require('@google-cloud/translate').v2;
 
+const projectId = 'bitholla-develop';
+const translate = new Translate({ projectId });
+
+const TRANSLATION_CHUNK_SIZE = 10;
 const PLACEHOLDER_REGEX = /[^{}]+(?=})/g;
 const LETTER_REGEX = /[a-zA-Z]/g;
 const ERRORS = {
@@ -15,6 +25,34 @@ const ERRORS = {
 	},
 };
 
+const LANG_PATTERN = 'src/config/lang/**.json';
+
+const callTranslationService = async (key, string, lang) => {
+	try {
+		const [translation] = await translate.translate(string, lang);
+		return [key, translation];
+	} catch (error) {
+		console.error(error);
+		return [key, pushError(string, ERRORS.NOT_TRANSLATED)];
+	}
+};
+
+const getTranslations = async (diff, lang) => {
+	const chunks = sliceIntoChunks(Object.entries(diff), TRANSLATION_CHUNK_SIZE);
+	const responses = [];
+
+	for (const chunk of chunks) {
+		const responseChunk = await Promise.all(
+			chunk.map(([key, string]) => {
+				return callTranslationService(key, string, lang);
+			})
+		);
+		responses.push(responseChunk);
+	}
+
+	return Object.fromEntries(flattenArray(responses));
+};
+
 const removeError = (string = '') => string.split(ERRORS.SIGN)[0];
 
 const dropPlaceholders = (string = '') =>
@@ -22,10 +60,12 @@ const dropPlaceholders = (string = '') =>
 
 const hasLetters = (string = '') => LETTER_REGEX.test(string);
 
+const trim = (string) => (string && string.trim ? string.trim() : string);
+
 const equalityCheck = (base, target) =>
 	has('--ignore-equals')
 		? false
-		: base === target && hasLetters(dropPlaceholders(base));
+		: trim(base) === trim(target) && hasLetters(dropPlaceholders(base));
 
 const validatePlaceholder = (string) => !isNaN(Number(string));
 
@@ -43,7 +83,7 @@ const validatePlaceholders = (matches = []) => {
 	}
 };
 
-const pushError = (string, error) => `${string} ${error}`;
+const pushError = (string, error) => `${string}${error}`;
 
 const saveFile = (output, content) => {
 	fs.writeFileSync(output, beautify(content, null, 4, 100));
@@ -142,26 +182,72 @@ const reverseCheck = (base = {}, target = {}) => {
 	return cleanedTarget;
 };
 
-if (!lang) {
-	console.error('No language given');
-	process.exit(1);
-}
-
-if (has('--save-diff')) {
+const autoTranslate = async (targetLangDir, targetLang) => {
+	const exceptions = [
+		'HOUR_FORMAT',
+		'DEFAULT_TIMESTAMP_FORMAT',
+		'TIMESTAMP_FORMAT',
+		'STAKE.REWARDS',
+	];
 	const diff = compare(readFile(baseLangDir), readFile(targetLangDir));
-	saveFile(`diff.json`, diff);
-}
+	const diff_no_error = manipulateObject(diff, removeError);
 
-if (has('--merge-diff')) {
-	const diff = manipulateObject(readFile(diffDir), removeError);
-	const content = merge({}, readFile(targetLangDir), diff);
-	saveFile(targetLangDir, content);
-}
-
-if (has('--reverse-check')) {
-	const cleanedLanguageFile = reverseCheck(
-		readFile(baseLangDir),
-		readFile(targetLangDir)
+	Object.keys(diff_no_error).forEach((key) => {
+		if (exceptions.includes(key)) {
+			delete diff_no_error[key];
+		}
+	});
+	const options = { safe: true };
+	const translations = await getTranslations(
+		flatten(diff_no_error, options),
+		targetLang
 	);
-	saveFile(targetLangDir, cleanedLanguageFile);
+	const content = merge(
+		{},
+		readFile(targetLangDir),
+		manipulateObject(flatten.unflatten(translations, options), removeError)
+	);
+	saveFile(targetLangDir, content);
+};
+
+if (has('--translate-all')) {
+	const langs = glob.sync(LANG_PATTERN);
+
+	langs
+		.filter((langDir) => !baseLangDir.includes(langDir))
+		.forEach(async (targetLangDir) => {
+			const fileName = targetLangDir
+				.split(path.sep)
+				.find((text) => text.includes('json'));
+			const [lang] = fileName.split('.');
+			await autoTranslate(targetLangDir, lang);
+		});
+} else {
+	if (!lang) {
+		console.error('No language given');
+		process.exit(1);
+	}
+
+	if (has('--save-diff')) {
+		const diff = compare(readFile(baseLangDir), readFile(targetLangDir));
+		saveFile(`diff.json`, diff);
+	}
+
+	if (has('--merge-diff')) {
+		const diff = manipulateObject(readFile(diffDir), removeError);
+		const content = merge({}, readFile(targetLangDir), diff);
+		saveFile(targetLangDir, content);
+	}
+
+	if (has('--reverse-check')) {
+		const cleanedLanguageFile = reverseCheck(
+			readFile(baseLangDir),
+			readFile(targetLangDir)
+		);
+		saveFile(targetLangDir, cleanedLanguageFile);
+	}
+
+	if (has('--auto-translate')) {
+		autoTranslate(targetLangDir, lang);
+	}
 }

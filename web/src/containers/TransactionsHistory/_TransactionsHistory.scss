@@ -43,7 +43,7 @@
 					font-size: 1.2rem !important;
 				}
 				td {
-					padding: 0.5rem;
+					padding: 0.75rem;
 					min-width: 9rem;
 				}
 
@@ -158,29 +158,6 @@
 			margin-right: 10px;
 		}
 	}
-	.check-deposit-txt {
-		right: 230px !important;
-		& svg {
-			padding-right: 0.3rem;
-			box-sizing: border-box;
-			border-right: 1px solid $trade-fill-indicator-text;
-			height: 100%;
-		}
-	}
-
-	.download-history {
-		right: 85px !important;
-		& svg {
-			padding-right: 0.1rem;
-			box-sizing: content-box;
-			border-right: 1px solid $trade-fill-indicator-text;
-			height: 100%;
-		}
-	}
-
-	.refresh-history {
-		right: 10px !important;
-	}
 
 	.loader_wrapper {
 		top: 0;
@@ -192,20 +169,12 @@
 				border-top: 1px solid $colors-border !important;
 				border-bottom: 1px solid $colors-border !important;
 			}
-			.currency-ball-image-wrapper {
-				padding-right: 8px;
-				padding-bottom: 12px;
-			}
-			.coin-icons {
-				width: 30px;
-				padding-top: 4px;
-			}
 		}
-		.table_body-wrapper {
-			.currency-ball {
-				width: 25px;
-				line-height: 10px;
-				margin-top: 6px;
+	}
+	.table-wrapper {
+		.table_body-wrapper.with_icon {
+			tr td:first-child.category-label {
+				border: none !important;
 			}
 		}
 	}
@@ -215,11 +184,7 @@
 	.action_notification-wrapper {
 		top: 21px;
 	}
-	.download-icon {
-		.action_notification-svg svg path {
-			fill: $link;
-		}
-	}
+
 	.loader_background {
 		filter: opacity(0.25) !important;
 	}
@@ -238,7 +203,6 @@
 
 .transaction-history-wrapper {
 	svg {
-		.trade-history-1,
 		.deposit-history-3,
 		.withdrawals-history-3,
 		.transaction-history-1,
@@ -277,5 +241,43 @@
 
 	.rejected {
 		color: $colors-notifications-red;
+	}
+}
+
+.flex-row {
+	flex-direction: row;
+}
+
+.expandable-container {
+	display: flex;
+	flex-direction: column;
+
+	div {
+		display: flex;
+		flex-direction: row;
+	}
+
+	p {
+		margin-right: 1rem;
+		font-weight: thin;
+		margin-bottom: 0px;
+	}
+
+	.font-bold {
+		font-weight: bolder;
+	}
+}
+
+.action_notification-container {
+	display: flex;
+
+	.action_notification-wrapper {
+		position: unset;
+	}
+
+	> div:not(:last-child)::after {
+		padding: 0 0.8rem;
+		content: '|';
+		color: $trade-fill-indicator-text;
 	}
 }

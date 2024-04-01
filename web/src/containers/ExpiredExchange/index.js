@@ -4,7 +4,6 @@ import { ReactSVG } from 'react-svg';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import moment from 'moment';
-import { getThemeClass } from 'utils/theme';
 import { FLEX_CENTER_CLASSES, EXCHANGE_URL } from 'config/constants';
 import { getExchangeInfo } from 'actions/appActions';
 import { logout } from 'actions/authAction';
@@ -41,16 +40,9 @@ class Expired extends Component {
 	goToAccount = () => this.props.router.replace('/account');
 
 	render() {
-		const { activeTheme, icons: ICONS } = this.props;
+		const { icons: ICONS } = this.props;
 		return (
-			<div
-				className={classnames(
-					getThemeClass(activeTheme),
-					'app_container',
-					'w-100',
-					'h-100'
-				)}
-			>
+			<div className={classnames('app_container', 'w-100', 'h-100')}>
 				<div
 					className={classnames(
 						'expired_exchange_wrapper',
@@ -90,7 +82,6 @@ class Expired extends Component {
 
 const mapStateToProps = (store) => ({
 	info: store.app.info,
-	activeTheme: store.app.theme,
 });
 
 const mapDispatchToProps = (dispatch) => ({

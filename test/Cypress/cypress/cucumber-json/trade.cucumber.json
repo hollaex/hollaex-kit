@@ -1,0 +1,118 @@
+[
+  {
+    "description": "As a valid customer\nIn order to Trade\nI want to login successfully make and take orders",
+    "keyword": "Feature",
+    "name": "Trade Feature",
+    "line": 1,
+    "id": "trade-feature",
+    "tags": [],
+    "uri": "trade.feature",
+    "elements": [
+      {
+        "id": "trade-feature;successful-log-in-and-cancell-orders",
+        "keyword": "Scenario",
+        "line": 7,
+        "name": "Successful Log in and cancell orders",
+        "tags": [
+          {
+            "name": "@waiting",
+            "line": 6
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 9,
+            "name": "I am in the Hollaex login page",
+            "result": {
+              "status": "skipped"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 10,
+            "name": "I enter credentials to log in successfully",
+            "result": {
+              "status": "skipped"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 11,
+            "name": "I should be able to redirect to \"XHT/USDT\" page and cancel all open orders",
+            "result": {
+              "status": "skipped"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 12,
+            "name": "I check the highest and lowest prices",
+            "result": {
+              "status": "skipped"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 13,
+            "name": "I make buy orders \"4\" times",
+            "result": {
+              "status": "skipped"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 14,
+            "name": "I make sell orders \"4\" times",
+            "result": {
+              "status": "skipped"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 15,
+            "name": "I take sell orders \"4\" times",
+            "result": {
+              "status": "skipped"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 16,
+            "name": "I take buy orders \"4\" times",
+            "result": {
+              "status": "skipped"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 17,
+            "name": "I fill \"1\" of \"2\" in an order partially",
+            "result": {
+              "status": "skipped"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 18,
+            "name": "I will see the \"1\" / \"2\" percentage",
+            "result": {
+              "status": "skipped"
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -64,18 +64,18 @@ const generateLoggerConfiguration = (name) => {
 			align(),
 			printf(
 				(info) =>
-					`${info.timestamp} ${info.level}: ${formatObject(info.message)}`
+					`${info.level}: ${formatObject(info.message)}`
 			)
 		),
 		transports: transportsConfig
 	};
-	if (isMainnet) {
-		config.format = combine(
-			all(),
-			timestamp(),
-			json()
-		);
-	}
+	// if (isMainnet) {
+	// 	config.format = combine(
+	// 		all(),
+	// 		timestamp(),
+	// 		json()
+	// 	);
+	// }
 
 	return config;
 };
@@ -100,6 +100,7 @@ const LOGGER_NAMES = {
 	tier: 'tier',
 	init: 'init',
 	broker: 'broker',
+	stake: 'stake',
 	fiat: 'fiat'
 };
 
@@ -157,5 +158,6 @@ module.exports = {
 	loggerPublic: winston.loggers.get(LOGGER_NAMES.public),
 	loggerTier: winston.loggers.get(LOGGER_NAMES.tier),
 	loggerBroker: winston.loggers.get(LOGGER_NAMES.broker),
+	loggerStake: winston.loggers.get(LOGGER_NAMES.stake),
 	loggerFiat: winston.loggers.get(LOGGER_NAMES.loggerFiat)
 };

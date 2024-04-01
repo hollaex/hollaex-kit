@@ -1,0 +1,63 @@
+[
+  {
+    "description": "As an Admin, \nIn order to give a user an incentive.\nI want to change a user level within the limited range of 1 to 11",
+    "keyword": "Feature",
+    "name": "Promotion Feature",
+    "line": 1,
+    "id": "promotion-feature",
+    "tags": [],
+    "uri": "accountLevel.feature",
+    "elements": [
+      {
+        "id": "promotion-feature;account-level-manipulation-by-admin-for-userlevel@testsae.com",
+        "keyword": "Scenario",
+        "line": 7,
+        "name": "Account level manipulation by admin for userlevel@testsae.com",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 9,
+            "name": "Admin logged in and find \"userlevel@testsae.com\"",
+            "result": {
+              "status": "passed",
+              "duration": 26727000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 10,
+            "name": "Choose new level  in the range of \"1\" to \"11\"",
+            "result": {
+              "status": "passed",
+              "duration": 7273000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 11,
+            "name": "Admin confirms the level for a user \"userlevel@testsae.com\"",
+            "result": {
+              "status": "passed",
+              "duration": 2134000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 12,
+            "name": "The user profile page of \"userlevel@testsae.com\" should present the level",
+            "result": {
+              "status": "passed",
+              "duration": 7685000000
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

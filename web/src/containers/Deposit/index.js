@@ -1,18 +1,16 @@
 import React, { Component } from 'react';
-import classnames from 'classnames';
 import { bindActionCreators } from 'redux';
 import { formValueSelector } from 'redux-form';
 import { connect } from 'react-redux';
 import { isMobile } from 'react-device-detect';
+
 import { BALANCE_ERROR } from 'config/constants';
 import STRINGS from 'config/localizedStrings';
 import { getCurrencyFromName } from 'utils/currency';
 import { createAddress, cleanCreateAddress } from 'actions/userAction';
 import { NOTIFICATIONS } from 'actions/appActions';
 import { DEFAULT_COIN_DATA } from 'config/constants';
-
 import { openContactForm, setSnackNotification } from 'actions/appActions';
-
 import { MobileBarBack, Dialog, Notification } from 'components';
 import {
 	renderInformation,
@@ -22,9 +20,10 @@ import {
 import RenderContent, {
 	generateBaseInformation,
 	generateFormFields,
+	renderBackToWallet,
 } from './utils';
 import { getWallet } from 'utils/wallet';
-
+import QRCode from './QRCode';
 import withConfig from 'components/ConfigProvider/withConfig';
 
 class Deposit extends Component {
@@ -36,9 +35,10 @@ class Deposit extends Component {
 		dialogIsOpen: false,
 		formFields: {},
 		initialValues: {},
+		qrCodeOpen: false,
 	};
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		if (this.props.quoteData.error === BALANCE_ERROR) {
 			this.setState({ depositPrice: this.props.quoteData.data.price });
 		}
@@ -168,16 +168,18 @@ class Deposit extends Component {
 		let address = getWallet(currency, network, wallet, networks);
 		let destinationAddress = '';
 
-		if (currency === 'xrp' || currency === 'xlm' || network === 'xlm') {
+		if (
+			currency === 'xrp' ||
+			currency === 'xlm' ||
+			network === 'xlm' ||
+			network === 'ton'
+		) {
 			const temp = address.split(':');
 			address = temp[0] ? temp[0] : address;
 			destinationAddress = temp[1] ? temp[1] : '';
 		}
 
-		const additionalText =
-			currency === 'xlm' || network === 'xlm'
-				? STRINGS['DEPOSIT.CRYPTO_LABELS.MEMO']
-				: STRINGS['DEPOSIT.CRYPTO_LABELS.DESTINATION_TAG'];
+		const additionalText = STRINGS['DEPOSIT.CRYPTO_LABELS.DESTINATION_TAG'];
 
 		const { fullname, deposit_fees } = coins[currency] || DEFAULT_COIN_DATA;
 		const destinationLabel = STRINGS.formatString(additionalText, fullname);
@@ -192,11 +194,8 @@ class Deposit extends Component {
 		let fee;
 		const feeKey = networks ? network : currency;
 		if (deposit_fees && deposit_fees[feeKey]) {
-			const { levels, value } = deposit_fees[feeKey];
-			fee =
-				levels && levels[verification_level]
-					? levels[verification_level]
-					: value;
+			const { value } = deposit_fees[feeKey];
+			fee = value;
 		}
 
 		const formFields = generateFormFields({
@@ -211,6 +210,7 @@ class Deposit extends Component {
 			coins,
 			network,
 			fee,
+			openQRCode: this.openQRCode,
 		});
 
 		const initialValues = {
@@ -221,6 +221,14 @@ class Deposit extends Component {
 		};
 
 		this.setState({ address, formFields, initialValues, showGenerateButton });
+	};
+
+	openQRCode = () => {
+		this.setState({ qrCodeOpen: true });
+	};
+
+	closeQRCode = () => {
+		this.setState({ qrCodeOpen: false });
 	};
 
 	render() {
@@ -234,6 +242,8 @@ class Deposit extends Component {
 			addressRequest,
 			selectedNetwork,
 			router,
+			wallet,
+			orders,
 		} = this.props;
 
 		const {
@@ -245,6 +255,8 @@ class Deposit extends Component {
 			address,
 			initialValues,
 			showGenerateButton,
+			qrCodeOpen,
+			networks,
 		} = this.state;
 
 		if (!id || !currency || !checked) {
@@ -263,12 +275,13 @@ class Deposit extends Component {
 							coins,
 							'DEPOSIT_BITCOIN'
 						)}
-					<div className={classnames('inner_container')}>
+					<div className="inner_container">
 						<div className="information_block">
 							<div
 								className="information_block-text_wrapper"
-								style={{ height: '1.5rem' }}
+								// style={{ height: '1.5rem' }}
 							/>
+							{renderBackToWallet()}
 							{openContactForm &&
 								renderNeedHelpAction(
 									openContactForm,
@@ -287,7 +300,8 @@ class Deposit extends Component {
 								'deposit',
 								constants.links,
 								ICONS['BLUE_QUESTION'],
-								'BLUE_QUESTION'
+								'BLUE_QUESTION',
+								orders
 							)}
 							icons={ICONS}
 							initialValues={initialValues}
@@ -325,6 +339,24 @@ class Deposit extends Component {
 						/>
 					)}
 				</Dialog>
+				<Dialog
+					isOpen={qrCodeOpen}
+					label="hollaex-modal"
+					className="app-dialog"
+					onCloseDialog={this.closeQRCode}
+					shouldCloseOnOverlayClick={false}
+					showCloseText={true}
+					style={{ 'z-index': 100 }}
+				>
+					{qrCodeOpen && (
+						<QRCode
+							closeQRCode={this.closeQRCode}
+							data={getWallet(currency, selectedNetwork, wallet, networks)}
+							currency={currency}
+							onCopy={this.onCopy}
+						/>
+					)}
+				</Dialog>
 			</div>
 		);
 	}
@@ -341,6 +373,7 @@ const mapStateToProps = (store) => ({
 	addressRequest: store.user.addressRequest,
 	selectedNetwork: formValueSelector('GenerateWalletForm')(store, 'network'),
 	verification_level: store.user.verification_level,
+	orders: store.order.activeOrders,
 });
 
 const mapDispatchToProps = (dispatch) => ({

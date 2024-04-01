@@ -15,14 +15,15 @@ import {
 	setWithdrawEmailConfirmation,
 	setWithdrawNotificationError,
 } from './notifications';
-import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
+import { BASE_CURRENCY } from 'config/constants';
 import { calculateBaseFee } from './utils';
 import Fiat from './Fiat';
 import Image from 'components/Image';
 import STRINGS from 'config/localizedStrings';
-import { limitNumberWithinRange } from 'utils/math';
-
+import { message } from 'antd';
+import { getWithdrawalMax } from 'actions/appActions';
 import ReviewModalContent from './ReviewModalContent';
+import QRScanner from './QRScanner';
 
 export const FORM_NAME = 'WithdrawCryptocurrencyForm';
 
@@ -30,105 +31,15 @@ const selector = formValueSelector(FORM_NAME);
 let errorTimeOut = null;
 
 const validate = (values, props) => {
-	const { currency, coins, balance } = props;
-	const { withdrawal_fees, network: networks } =
-		coins[currency] || DEFAULT_COIN_DATA;
-	const { network } = values;
-
 	const errors = {};
-	const amount = math.fraction(values.amount || 0);
-	const fee = math.fraction(values.fee || 0);
+	const amount = math.fraction(values?.amount || 0);
 	const balanceAvailable = math.fraction(props.balanceAvailable || 0);
-	let fee_coin;
 
-	if (withdrawal_fees && network && withdrawal_fees[network]) {
-		const { type = 'static', min, max } = withdrawal_fees[network];
-		const isPercentage = type === 'percentage';
-
-		fee_coin = withdrawal_fees[network].symbol;
-		const hasDifferentFeeCoin =
-			!isPercentage && fee_coin && fee_coin !== currency;
-
-		const fullFeeCoinName = coins[fee_coin]?.fullname;
-		const availableFeeBalance = math.fraction(
-			balance[`${fee_coin}_available`] || 0
+	if (math.larger(amount, balanceAvailable)) {
+		errors.fee = STRINGS.formatString(
+			STRINGS['WITHDRAWALS_LOWER_BALANCE'],
+			math.number(amount)
 		);
-
-		const totalFee = isPercentage
-			? limitNumberWithinRange(
-					math.multiply(
-						amount,
-						math.fraction(math.divide(math.fraction(fee), 100))
-					),
-					min,
-					max
-			  )
-			: fee;
-		const totalTransaction = hasDifferentFeeCoin
-			? amount
-			: math.add(amount, totalFee);
-
-		if (math.larger(totalTransaction, balanceAvailable)) {
-			errors.amount = STRINGS.formatString(
-				STRINGS['WITHDRAWALS_LOWER_BALANCE'],
-				math.number(totalTransaction)
-			);
-		}
-
-		if (hasDifferentFeeCoin && math.larger(totalFee, availableFeeBalance)) {
-			errors.amount = STRINGS.formatString(
-				STRINGS['WITHDRAWALS_LOWER_BALANCE'],
-				`${math.number(totalFee)} ${fullFeeCoinName}`
-			);
-		}
-	} else if (!networks && withdrawal_fees && withdrawal_fees[currency]) {
-		const { type = 'static', min, max } = withdrawal_fees[currency];
-		const isPercentage = type === 'percentage';
-
-		fee_coin = withdrawal_fees[currency].symbol;
-		const hasDifferentFeeCoin =
-			!isPercentage && fee_coin && fee_coin !== currency;
-
-		const fullFeeCoinName = coins[fee_coin]?.fullname;
-		const availableFeeBalance = math.fraction(
-			balance[`${fee_coin}_available`] || 0
-		);
-
-		const totalFee = isPercentage
-			? limitNumberWithinRange(
-					math.multiply(
-						amount,
-						math.fraction(math.divide(math.fraction(fee), 100))
-					),
-					min,
-					max
-			  )
-			: fee;
-		const totalTransaction = hasDifferentFeeCoin
-			? amount
-			: math.add(amount, totalFee);
-
-		if (math.larger(totalTransaction, balanceAvailable)) {
-			errors.amount = STRINGS.formatString(
-				STRINGS['WITHDRAWALS_LOWER_BALANCE'],
-				math.number(totalTransaction)
-			);
-		}
-
-		if (hasDifferentFeeCoin && math.larger(totalFee, availableFeeBalance)) {
-			errors.amount = STRINGS.formatString(
-				STRINGS['WITHDRAWALS_LOWER_BALANCE'],
-				`${math.number(totalFee)} ${fullFeeCoinName}`
-			);
-		}
-	} else {
-		const totalTransaction = math.add(fee, amount);
-		if (math.larger(totalTransaction, balanceAvailable)) {
-			errors.fee = STRINGS.formatString(
-				STRINGS['WITHDRAWALS_LOWER_BALANCE'],
-				math.number(totalTransaction)
-			);
-		}
 	}
 
 	return errors;
@@ -139,6 +50,7 @@ class Form extends Component {
 		dialogIsOpen: false,
 		dialogOtpOpen: false,
 		otp_code: '',
+		prevFee: null,
 	};
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -164,14 +76,14 @@ class Form extends Component {
 			}
 		}
 		if (nextProps.selectedMethodData !== this.props.selectedMethodData) {
-			const fee = calculateBaseFee(nextProps.data.amount);
 			if (
 				nextProps.selectedMethodData &&
 				nextProps.selectedMethodData === 'email'
 			) {
+				this.setState({ prevFee: nextProps.data.fee });
 				nextProps.change('fee', 0);
 			} else {
-				nextProps.change('fee', fee);
+				if (this.state.prevFee) nextProps.change('fee', this.state.prevFee);
 			}
 		}
 	}
@@ -186,7 +98,25 @@ class Form extends Component {
 		if (ev && ev.preventDefault) {
 			ev.preventDefault();
 		}
-		this.setState({ dialogIsOpen: true });
+		const emailMethod = this.props?.data?.method === 'email';
+		getWithdrawalMax(
+			this.props.currency,
+			!emailMethod ? this.props?.data?.network : 'email'
+		)
+			.then((res) => {
+				if (math.larger(this.props?.data?.amount, res?.data?.amount)) {
+					message.error(
+						`requested amount exceeds maximum withrawal limit of ${
+							res?.data?.amount
+						} ${this?.props?.currency?.toUpperCase()}`
+					);
+				} else {
+					this.setState({ dialogIsOpen: true });
+				}
+			})
+			.catch((err) => {
+				message.error(err.response.data.message);
+			});
 	};
 
 	onCloseDialog = (ev) => {
@@ -285,23 +215,27 @@ class Form extends Component {
 			openContactForm,
 			formValues,
 			currentPrice,
-			activeTheme,
 			coins,
 			titleSection,
 			icons: ICONS,
 			selectedNetwork,
 			targets,
 			email,
+			qrScannerOpen,
+			closeQRScanner,
+			getQRData,
 		} = this.props;
 
 		const formData = { ...data, email };
 
 		const { dialogIsOpen, dialogOtpOpen } = this.state;
 		const hasDestinationTag =
-			currency === 'xrp' || currency === 'xlm' || selectedNetwork === 'xlm';
+			currency === 'xrp' ||
+			currency === 'xlm' ||
+			selectedNetwork === 'xlm' ||
+			selectedNetwork === 'ton';
 
 		const coinObject = coins[currency];
-		const { icon_id } = coinObject || DEFAULT_COIN_DATA;
 
 		const GENERAL_ID = 'REMOTE_COMPONENT__FIAT_WALLET_WITHDRAW';
 		const currencySpecificId = `${GENERAL_ID}__${currency.toUpperCase()}`;
@@ -318,12 +252,14 @@ class Form extends Component {
 				>
 					<form autoComplete="off" className="withdraw-form-wrapper">
 						<div className="withdraw-form">
-							<Image
-								iconId={icon_id}
-								icon={ICONS[icon_id]}
-								wrapperClassName="form_currency-ball"
-							/>
-							{titleSection}
+							<div className="d-flex">
+								<Image
+									iconId="WITHDRAW"
+									icon={ICONS['WITHDRAW']}
+									wrapperClassName="form_currency-ball margin-aligner"
+								/>
+								{titleSection}
+							</div>
 							{renderFields(formValues)}
 							{error && <div className="warning_text">{error}</div>}
 						</div>
@@ -340,7 +276,6 @@ class Form extends Component {
 							label="withdraw-modal"
 							onCloseDialog={this.onCloseDialog}
 							shouldCloseOnOverlayClick={dialogOtpOpen}
-							theme={activeTheme}
 							showCloseText={false}
 						>
 							{dialogOtpOpen ? (
@@ -360,6 +295,20 @@ class Form extends Component {
 								/>
 							) : (
 								<Loader relative={true} background={false} />
+							)}
+						</Dialog>
+						<Dialog
+							isOpen={qrScannerOpen}
+							label="withdraw-modal"
+							onCloseDialog={closeQRScanner}
+							shouldCloseOnOverlayClick={false}
+							showCloseText={true}
+						>
+							{qrScannerOpen && (
+								<QRScanner
+									closeQRScanner={closeQRScanner}
+									getQRData={getQRData}
+								/>
 							)}
 						</Dialog>
 					</form>
@@ -393,10 +342,11 @@ const mapStateToForm = (state) => ({
 		'amount',
 		'captcha',
 		'fee',
+		'fee_coin',
 		'email',
-		'fee_type'
+		'fee_type',
+		'method'
 	),
-	activeTheme: state.app.theme,
 	coins: state.app.coins,
 	targets: state.app.targets,
 	balance: state.user.balance,

@@ -155,7 +155,6 @@ class ApiKeyModal extends Component {
 const selector = formValueSelector(FORM_NAME);
 const mapStateToForm = (state) => ({
 	tokenName: selector(state, 'name'),
-	activeTheme: state.app.theme,
 });
 
 export default connect(mapStateToForm)(withConfig(ApiKeyModal));

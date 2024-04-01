@@ -1,15 +1,17 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { Button } from 'antd';
+import { Button, Modal } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 
 import { STATIC_ICONS } from 'config/icons';
 import Coins from '../Coins';
 import IconToolTip from '../IconToolTip';
 import { getNetworkLabelByKey } from 'utils/wallet';
-import { formatPercentage } from 'utils/currency';
 import { Link } from 'react-router';
 import { getTabParams } from '../AdminFinancials/Assets';
+import RemoveConfirmation from '../Confirmation';
+
+const basicCoins = ['btc', 'xht', 'eth', 'usdt'];
 
 const Final = ({
 	isPreview = false,
@@ -31,7 +33,19 @@ const Final = ({
 	exchange = {},
 	constants = {},
 	allCoins = {},
+	isLoading,
 }) => {
+	let isUpdateRequired = false;
+	if (
+		(exchange &&
+			exchange.plan === 'basic' &&
+			!basicCoins.includes(coinFormData.symbol)) ||
+		(exchange &&
+			exchange.plan === 'crypto' &&
+			coinFormData.type !== 'blockchain')
+	) {
+		isUpdateRequired = true;
+	}
 	const { meta = {}, type } = coinFormData;
 	let coinData = {};
 	allCoins.forEach((item) => {
@@ -45,6 +59,7 @@ const Final = ({
 	const { withdrawal_fees = {}, deposit_fees = {} } = coinData;
 	const { onramp = {} } = constants;
 	const [isUpgrade, setIsUpgrade] = useState(false);
+	const [isVisible, setIsVisible] = useState(false);
 	const tabParams = getTabParams();
 
 	useEffect(() => {
@@ -53,22 +68,8 @@ const Final = ({
 		}
 	}, [exchange]);
 
-	const getSymbolBasedFields = (type) => {
-		switch (type) {
-			case 'percentage':
-				return ['min', 'max'];
-			case 'static':
-			default:
-				return ['value', 'levels'];
-		}
-	};
-
 	const renderNetworkFee = ([key, data], index) => {
-		const { symbol: assetSymbol } = coinFormData;
-		const { symbol, type } = data;
 		const network = getNetworkLabelByKey(key);
-		const symbolBasedFields = getSymbolBasedFields(type);
-		const unit = type === 'percentage' ? assetSymbol : symbol;
 		const keyArr = withdrawal_fees && Object.keys(withdrawal_fees).length;
 
 		return (
@@ -81,42 +82,15 @@ const Final = ({
 				<Fragment>
 					{data &&
 						Object.entries(data).map(([key, value]) => {
-							const hasUnit = symbolBasedFields.includes(key);
-
-							if (key && key === 'levels') {
-								return (
-									<div key={key} className="d-flex align-start">
-										<div>
-											<b className="caps-first">{key}</b>:
-										</div>
-										<div className="pl-1">
-											{value &&
-												Object.entries(value).map(([level, fee]) => {
-													if (level && fee) {
-														const feeText = hasUnit
-															? `${fee} ${unit}`
-															: formatPercentage(fee);
-														return (
-															<div
-																key={fee}
-															>{`Tier ${level} @ ${feeText}`}</div>
-														);
-													} else {
-														return null;
-													}
-												})}
-										</div>
-									</div>
-								);
-							} else {
-								const valueText = hasUnit ? `${value} ${unit}` : value;
-
+							if (!['levels', 'min', 'max', 'type'].includes(key)) {
+								const valueText = value;
 								return (
 									<div key={key}>
 										<b className="caps-first">{key}</b>: {valueText}
 									</div>
 								);
 							}
+							return <></>;
 						})}
 					{keyArr > 1 && index === 0 ? (
 						<div className="border-separator"></div>
@@ -150,9 +124,37 @@ const Final = ({
 			<div className="title">
 				{isPreview || isConfigure
 					? `Manage ${coinFormData.symbol}`
-					: 'Create or add a new coin'}
+					: 'Add Asset'}
 			</div>
-			{!isPreview && !isConfigure ? (
+			{isUpdateRequired ? (
+				<div className="red-warning">
+					<div className="icon-wrapper">
+						<div className="image-crypto">
+							<img
+								className="fiat-icon"
+								src={STATIC_ICONS['CLOUD_PLAN_CRYPTO_PRO_FIAT_RAMP']}
+								alt="new_coin"
+							/>
+						</div>
+					</div>
+					<div>
+						Only upgraded plans can freely add other digital assets. Visit the
+						billing page and upgrade your exchange plan to either{' '}
+						<Link className="link-content" to="/billing">
+							Crypto Pro
+						</Link>
+						,{' '}
+						<Link className="link-content" to="/billing">
+							Fiat Ramp
+						</Link>{' '}
+						or{' '}
+						<Link className="link-content" to="/billing">
+							Boost
+						</Link>
+						.
+					</div>
+				</div>
+			) : !isPreview && !isConfigure ? (
 				type === 'fiat' ? (
 					<div className="grey-warning">
 						<div className="icon-wrapper">
@@ -463,7 +465,7 @@ const Final = ({
 											</div>
 											<div className="ml-5 button-wrapper">
 												<a
-													href="https://dash.bitholla.com/billing"
+													href="https://dash.hollaex.com/billing"
 													target="_blank"
 													rel="noopener noreferrer"
 												>
@@ -516,7 +518,7 @@ const Final = ({
 					<div className="btn-wrapper">
 						<Button
 							type="danger"
-							onClick={() => handleDelete(coinFormData.symbol)}
+							onClick={() => setIsVisible(true)}
 							disabled={submitting}
 						>
 							Remove
@@ -536,6 +538,11 @@ const Final = ({
 					</Button>
 					<div className="separator"></div>
 					<Button
+						type="primary"
+						onClick={handleConfirmation}
+						disabled={isUpdateRequired}
+					/>
+					<Button
 						className="green-btn"
 						type="primary"
 						onClick={handleConfirmation}
@@ -543,6 +550,21 @@ const Final = ({
 						Confirm
 					</Button>
 				</div>
+			) : null}
+			{isVisible ? (
+				<Modal
+					visible={isVisible}
+					footer={null}
+					onCancel={() => setIsVisible(false)}
+				>
+					<RemoveConfirmation
+						onCancel={setIsVisible}
+						onHandleRemoveAsset={handleDelete}
+						removeCoin={coinFormData}
+						removeContent={'Assets'}
+						isLoading={isLoading}
+					/>
+				</Modal>
 			) : null}
 		</Fragment>
 	);

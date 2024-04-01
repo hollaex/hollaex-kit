@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 
 import { Dialog } from 'components';
 import ResetPasswordSuccess from 'containers/ResetPassword/ResetPasswordSuccess';
@@ -37,7 +36,6 @@ class ConfirmChangePassword extends Component {
 					isOpen={this.state.showContactForm}
 					label="confirm-change-pwd-modal"
 					onCloseDialog={this.onCloseDialog}
-					theme={this.props.activeTheme}
 				>
 					{this.state.showContactForm && (
 						<div className="confirm-change-pwd-wrapper">
@@ -54,8 +52,4 @@ class ConfirmChangePassword extends Component {
 	}
 }
 
-const mapStateToProps = (store) => ({
-	activeTheme: store.app.theme,
-});
-
-export default connect(mapStateToProps)(ConfirmChangePassword);
+export default ConfirmChangePassword;

@@ -16,7 +16,7 @@ export class SettleModal extends Component {
 		};
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (nextProps.isOpen !== this.props.isOpen) {
 			this.setState({ selectedUser: {} });
 		}

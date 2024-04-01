@@ -30,7 +30,8 @@ let configuration = {
 		black_list_countries: [],
 		onramp: {},
 		offramp: {},
-		user_payments: {}
+		user_payments: {},
+		dust: {}
 	},
 	email: {}
 };
@@ -51,7 +52,7 @@ subscriber.on('message', (channel, message) => {
 	if (channel === CONFIGURATION_CHANNEL) {
 		const { type, data } = JSON.parse(message);
 
-		switch(type) {
+		switch (type) {
 			case 'initial':
 				updateAllConfig(data.configuration, data.secrets, data.frozenUsers);
 				break;
@@ -79,6 +80,7 @@ subscriber.on('message', (channel, message) => {
 
 const updateAllConfig = (newConfigurations, newSecrets, newFrozenUsers) => {
 	configuration = newConfigurations;
+	if (!configuration?.kit?.info?.plan) configuration.kit.info.plan = 'basic';
 	secrets = newSecrets;
 	frozenUsers = newFrozenUsers;
 };
@@ -113,7 +115,8 @@ const resetAllConfig = () => {
 			black_list_countries: [],
 			onramp: {},
 			offramp: {},
-			user_payments: {}
+			user_payments: {},
+			dust: {}
 		},
 		email: {}
 	};
@@ -151,10 +154,13 @@ exports.GET_COINS = () => cloneDeep(configuration.coins);
 exports.GET_PAIRS = () => cloneDeep(configuration.pairs);
 exports.GET_TIERS = () => cloneDeep(configuration.tiers);
 exports.GET_KIT_CONFIG = () => cloneDeep(configuration.kit);
+exports.GET_TRANSACTION_LIMITS = () => cloneDeep(configuration.transaction_limits);
 exports.GET_KIT_SECRETS = () => cloneDeep(secrets);
 exports.GET_FROZEN_USERS = () => cloneDeep(frozenUsers);
 exports.GET_EMAIL = () => cloneDeep(configuration.email);
 exports.GET_BROKER = () => cloneDeep(configuration.broker);
+exports.GET_QUICKTRADE = () => cloneDeep(configuration.quicktrade);
+exports.GET_NETWORK_QUICKTRADE = () => cloneDeep(configuration.networkQuickTrades);
 
 exports.USER_META_KEYS = [
 	'description',
@@ -194,7 +200,11 @@ exports.KIT_CONFIG_KEYS = [
 	'black_list_countries',
 	'onramp',
 	'offramp',
-	'user_payments'
+	'user_payments',
+	'dust',
+	'coin_customizations',
+	'balance_history_config',
+	'transaction_limits',
 ];
 
 exports.KIT_SECRETS_KEYS = [
@@ -246,7 +256,7 @@ exports.CONFIGURATION_CHANNEL = CONFIGURATION_CHANNEL;
 
 // Websocket
 exports.WEBSOCKET_CHANNEL = (topic, symbolOrUserId) => {
-	switch(topic) {
+	switch (topic) {
 		case 'orderbook':
 			return `orderbook:${symbolOrUserId}`;
 		case 'trade':
@@ -259,6 +269,10 @@ exports.WEBSOCKET_CHANNEL = (topic, symbolOrUserId) => {
 			return `wallet:${symbolOrUserId}`;
 		case 'deposit':
 			return `deposit:${symbolOrUserId}`;
+		case 'withdrawal':
+			return `withdrawal:${symbolOrUserId}`;
+		case 'admin':
+			return 'admin';
 		case 'chat':
 			return 'chat';
 		default:
@@ -266,6 +280,7 @@ exports.WEBSOCKET_CHANNEL = (topic, symbolOrUserId) => {
 	}
 };
 exports.WS_PUBSUB_DEPOSIT_CHANNEL = 'channel:ws:deposit';
+exports.WS_PUBSUB_WITHDRAWAL_CHANNEL = 'channel:ws:withdrawal';
 exports.WS_HUB_CHANNEL = 'channel:websocket:hub';
 
 // Chat
@@ -328,17 +343,21 @@ const ROLES = {
 };
 
 exports.DEFAULT_FEES = {
-	zero: {
-		maker: 0.2,
-		taker: 0.2
+	fiat: {
+		maker: 0,
+		taker: 0
 	},
-	lite: {
+	boost: {
+		maker: 0,
+		taker: 0
+	},
+	crypto: {
 		maker: 0.05,
 		taker: 0.1
 	},
-	member: {
-		maker: 0,
-		taker: 0
+	basic: {
+		maker: 0.2,
+		taker: 0.2
 	}
 };
 
@@ -392,9 +411,9 @@ exports.EXPLORERS = {
 			txPath: '/tx'
 		},
 		{
-			name: 'Bitcoin.com',
-			baseUrl: 'https://explorer.bitcoin.com',
-			txPath: '/btc/tx'
+			name: 'BlockChair',
+			baseUrl: 'https://blockchair.com',
+			txPath: '/bitcoin/transaction'
 		}
 	],
 	xrp: [
@@ -546,24 +565,26 @@ exports.EXPLORERS = {
 			baseUrl: 'https://polygonscan.com',
 			txPath: '/tx'
 		}
+	],
+	etc: [
+		{
+			name: 'Ethereum Classic Explorer',
+			baseUrl: 'https://etcblockexplorer.com',
+			txPath: '/tx'
+		}
+	],
+	arb: [
+		{
+			name: 'Arbiscan Explorer',
+			baseUrl: 'https://arbiscan.io',
+			txPath: '/tx'
+		}
 	]
 };
 
 // EMAIL CONSTANTS END --------------------------------------------------
 
 // PLUGIN CONSTANTS START------------------------------ to be moved
-exports.AVAILABLE_PLUGINS = [
-	'xht_fee',
-	'kyc',
-	'sms',
-	'freshdesk',
-	'chat',
-	'bank',
-	'announcement',
-	'zendesk'
-];
-
-exports.REQUIRED_XHT = 100;
 
 exports.SMS_CODE_KEY = 'user:sms';
 exports.SMS_CODE_EXPIRATION_TIME = 6 * 60; // seconds -> 6 min
@@ -601,6 +622,38 @@ exports.VERIFY_STATUS = {
 	COMPLETED: 3
 };
 // PLUGIN CONSTANTS END ------------------------------ to be moved
+
+// Login timeout  START------------------------------
+exports.LOGIN_TIME_OUT = 1000 * 5 * 60;
+exports.NUMBER_OF_ALLOWED_ATTEMPTS = 5;
+// Login timeout  END------------------------------
+
+// BROKER CONSTANTS START
+
+exports.EXCHANGE_PLAN_INTERVAL_TIME = {
+	crypto: 5,
+	fiat: 5,
+	boost: 60
+};
+exports.EXCHANGE_PLAN_PRICE_SOURCE = {
+	fiat: ['hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'bybit', 'gateio', 'okx', 'uniswap'],
+	boost: ['hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'bybit', 'gateio', 'okx', 'uniswap'],
+	crypto: ['hollaex', 'oracle', 'binance'],
+	ALL: [ 'hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'bybit', 'gateio', 'okx', 'uniswap']
+};
+
+
+// BROKER CONSTANTS END
+
+//STAKE CONSTANTS START
+
+exports.STAKE_SUPPORTED_PLANS = ['fiat', 'boost', 'enterprise'];
+
+//STAKE CONSTANTS END
+
+//BALANCE HISTORY CONSTANTS START
+exports.BALANCE_HISTORY_SUPPORTED_PLANS = ['fiat', 'boost', 'enterprise'];
+//BALANCE HISTORY CONSTANTS END 
 
 exports.CUSTOM_CSS = `
 	.topbar-wrapper img {

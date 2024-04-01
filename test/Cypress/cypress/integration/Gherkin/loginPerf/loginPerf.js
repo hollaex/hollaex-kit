@@ -1,0 +1,105 @@
+import { commandTimings } from 'cypress-timings'
+commandTimings()
+import {Given, When, Then} from "cypress-cucumber-preprocessor/steps"
+
+Given ('I am in the Hollaex login page within {float} ms',(timeRange)=>{
+     const t0 = performance.now();
+       
+      cy.visit(Cypress.env('LOGIN_PAGE')).then(($t0) => {
+          const t1 = performance.now();
+          const time = t1-t0;
+          cy.log(time,timeRange)
+          expect(time).to.be.lessThan(timeRange)
+      })
+   
+})
+
+When ('I enter credentials Username,Password',()=>{
+     const t0 = performance.now();
+         
+     cy.get('.holla-button').should('be.visible').should('be.disabled')
+     cy.get('[name="email"]').clear().type(Cypress.env("USER0"))
+     cy.get('[name="password"]').clear().type(Cypress.env('PASSWORD'))
+     const t1 = performance.now();
+     cy.log('time')
+     cy.log(t1-t0)
+})
+
+Then ('I should be able to login successfully',()=>{
+     const t0 = performance.now();
+     cy.get('.holla-button').should('be.visible').should('be.enabled').click()
+     cy.get('.warning_text').should('not.exist') 
+     const t1 = performance.now();
+     cy.log('time')
+     cy.log(t1-t0)
+})
+
+When ('I enter credentials Wrong Username,Password',()=>{
+
+     cy.get('.holla-button').should('be.visible').should('be.disabled')
+     cy.get('[name="email"]').clear().type('Iamnot@Iamnot.com')
+     cy.get('[name="password"]').clear().type(Cypress.env('PASSWORD'))
+})
+
+Then ('I should not be able to login successfully and get error',()=>{
+
+     cy.get('.holla-button').should('be.visible').should('be.enabled').click()
+     cy.get('.warning_text').should('exist') 
+})
+
+When ('I enter credentials Username,wrong Password',()=>{
+
+     cy.get('.holla-button').should('be.visible').should('be.disabled')
+     cy.get('[name="email"]').clear().type(Cypress.env('USER0'))
+     cy.get('[name="password"]').clear().type('WrongPass123')
+})
+
+Then ('I should not be able to login successfully and get error',()=>{
+
+     cy.get('.holla-button').should('be.visible').should('be.enabled').click()
+     cy.get('.warning_text').should('exist') 
+})
+
+When ('I enter credentials Frozen Username,Password',()=>{
+
+     cy.get('.holla-button').should('be.visible').should('be.disabled')
+     cy.get('[name="email"]').clear().type(Cypress.env('FROZEN'))
+     cy.get('[name="password"]').clear().type(Cypress.env('PASSWORD'))
+})
+
+Then ('I should not be able to login successfully and get This account is frozen',()=>{
+
+     cy.get('.holla-button').should('be.visible').should('be.enabled').click()
+     cy.get('.warning_text').should('contain','This account is frozen')
+})
+
+When ('I enter credentials 2FA enabled Username,Password',()=>{
+     
+     cy.get('.holla-button').should('be.visible').should('be.disabled')
+     cy.get('[name="email"]').clear().type(Cypress.env('2FA'))
+     cy.get('[name="password"]').clear().type(Cypress.env('PASSWORD'))
+})
+
+And ('I enter Expired,long,short and then true 2FA code',()=>{
+     cy.wait(3000)
+     cy.get('.otp_form-wrapper > .icon_title-wrapper > :nth-child(2) > .icon_title-text')
+     .contains('Authenticator Code')
+     const totp = require("totp-generator");     
+     let text = Cypress.env('2FACODE')
+     var fullText = text;
+     const token = totp(fullText);
+     console.log(token)
+     cy.wrap(token).as('token')
+     cy.log(token);
+     cy.log('second', text)  
+     cy.get('.masterInput')
+     .clear().type('108249')        
+    // cy.get('.otp_form-wrapper > form.w-100 > .holla-button').should('not.be.disabled').click()
+     cy.get('.warning_text').should('contain','Invalid OTP Code')
+     cy.get('.masterInput')
+     .clear().type('108294')        
+    // cy.get('.otp_form-wrapper > form.w-100 > .holla-button').should('not.be.disabled')
+     cy.get('.masterInput')
+     .clear().type(token)        
+     //cy.get('.otp_form-wrapper > form.w-100 > .holla-button').click()
+})

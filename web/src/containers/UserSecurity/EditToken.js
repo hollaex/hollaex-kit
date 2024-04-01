@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import classnames from 'classnames';
 import QRCode from 'qrcode.react';
-import { Button } from 'components';
+import { Button, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 import { Checkbox, Radio, Space, Input, Tag, Button as AntButton } from 'antd';
 import DumbField from 'components/Form/FormFields/DumbField';
@@ -175,7 +175,9 @@ class EditToken extends Component {
 						<div className="pl-4">
 							{isHiddenSecret ? (
 								<Fragment>
-									<div>{STRINGS['DEVELOPERS_TOKEN.SECRET_KEY']}</div>
+									<EditWrapper stringId="DEVELOPERS_TOKEN.SECRET_KEY">
+										{STRINGS['DEVELOPERS_TOKEN.SECRET_KEY']}
+									</EditWrapper>
 									<div className="secondary-text">{secret}</div>
 								</Fragment>
 							) : (
@@ -185,17 +187,33 @@ class EditToken extends Component {
 					</div>
 					<div className="kit-divider" />
 					<div>
-						<div className="important-text bold">
+						<EditWrapper
+							stringId="DEVELOPERS_TOKEN.ACCESS"
+							renderWrapper={(children) => (
+								<div className="important-text bold">{children}</div>
+							)}
+						>
 							{STRINGS['DEVELOPERS_TOKEN.ACCESS']}
-						</div>
+						</EditWrapper>
 						<div className="d-flex py-4">
 							<div className="flex-col">
-								<div className="important-text">
+								<EditWrapper
+									stringId="DEVELOPERS_TOKEN.BASIC_ACCESS"
+									renderWrapper={(children) => (
+										<div className="important-text">{children}</div>
+									)}
+								>
 									{STRINGS['DEVELOPERS_TOKEN.BASIC_ACCESS']}
-								</div>
-								<div className="secondary-text">
+								</EditWrapper>
+
+								<EditWrapper
+									stringId="DEVELOPERS_TOKEN.BASIC_ACCESS_PROMPT"
+									renderWrapper={(children) => (
+										<div className="secondary-text">{children}</div>
+									)}
+								>
 									{STRINGS['DEVELOPERS_TOKEN.BASIC_ACCESS_PROMPT']}
-								</div>
+								</EditWrapper>
 								<div className="py-3">
 									<Checkbox.Group
 										onChange={this.onChangeBasicAccess}
@@ -214,12 +232,22 @@ class EditToken extends Component {
 								</div>
 							</div>
 							<div className="flex-col">
-								<div className="important-text">
+								<EditWrapper
+									stringId="DEVELOPERS_TOKEN.IP_ACCESS"
+									renderWrapper={(children) => (
+										<div className="important-text">{children}</div>
+									)}
+								>
 									{STRINGS['DEVELOPERS_TOKEN.IP_ACCESS']}
-								</div>
-								<div className="secondary-text">
+								</EditWrapper>
+								<EditWrapper
+									stringId=""
+									renderWrapper={(children) => (
+										<div className="secondary-text">{children}</div>
+									)}
+								>
 									{STRINGS['DEVELOPERS_TOKEN.IP_ACCESS_PROMPT']}
-								</div>
+								</EditWrapper>
 								<div className="py-3">
 									<Radio.Group
 										value={IPPermission}
@@ -271,12 +299,24 @@ class EditToken extends Component {
 								</div>
 							</div>
 							<div className="flex-col">
-								<div className="important-text">
+								<EditWrapper
+									stringId="DEVELOPERS_TOKEN.ADVANCED_ACCESS"
+									renderWrapper={(children) => (
+										<div className="important-text">{children}</div>
+									)}
+								>
 									{STRINGS['DEVELOPERS_TOKEN.ADVANCED_ACCESS']}
-								</div>
-								<div className="secondary-text">
+								</EditWrapper>
+
+								<EditWrapper
+									stringId="DEVELOPERS_TOKEN.ADVANCED_ACCESS_PROMPT"
+									renderWrapper={(children) => (
+										<div className="secondary-text">{children}</div>
+									)}
+								>
 									{STRINGS['DEVELOPERS_TOKEN.ADVANCED_ACCESS_PROMPT']}
-								</div>
+								</EditWrapper>
+
 								<div className="py-3">
 									<Checkbox.Group
 										onChange={this.onChangeAdvancedAccess}

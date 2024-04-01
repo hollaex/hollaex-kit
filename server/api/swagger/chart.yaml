@@ -1,0 +1,125 @@
+paths:
+  /chart:
+    x-swagger-router-controller: public
+    get:
+      description: Get trade history HOLCV
+      operationId: getChart
+      tags:
+        - Public
+        - Chart
+      parameters:
+        - in: query
+          name: from
+          description: Start Date
+          required: true
+          type: string
+          maxLength: 256
+        - in: query
+          name: to
+          description: End data
+          required: true
+          type: string
+          maxLength: 256
+        - in: query
+          name: symbol
+          description: trading pair symbol
+          required: true
+          type: string
+          maxLength: 256
+        - in: query
+          name: resolution
+          description: time interval resolution (1d 1W etc)
+          required: true
+          type: string
+          maxLength: 256
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/TradeDataResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /charts:
+    x-swagger-router-controller: public
+    get:
+      description: Get trade history HOLCV for all pairs
+      operationId: getCharts
+      tags:
+        - Public
+        - Chart
+      parameters:
+        - in: query
+          name: from
+          description: Start Date
+          required: true
+          type: string
+          maxLength: 256
+        - in: query
+          name: to
+          description: End data
+          required: true
+          type: string
+          maxLength: 256
+        - in: query
+          name: resolution
+          description: time interval resolution (1d 1W etc)
+          required: true
+          type: string
+          maxLength: 256
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /minicharts:
+    x-swagger-router-controller: public
+    get:
+      description: Get trade history HOLCV for all pairs
+      operationId: getMiniCharts
+      tags:
+        - Public
+        - Chart
+      parameters:
+        - in: query
+          name: assets
+          description: The list of assets to get the mini charts for
+          required: true
+          type: array
+          items:
+            type: string
+            maxLength: 256
+            minItems: 1
+        - in: query
+          name: from
+          description: Start Date
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: to
+          description: End data
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: quote
+          description: tQuote asset to receive prices based on
+          required: false
+          type: string
+          maxLength: 256
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  

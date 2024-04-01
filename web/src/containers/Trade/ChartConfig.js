@@ -34,7 +34,6 @@ export const getTheme = ({
 	'paneProperties.legendProperties.showSeriesOHLC': true,
 	'paneProperties.legendProperties.showLegend': true,
 	'paneProperties.legendProperties.showBarChange': true,
-	'paneProperties.legendProperties.showOnlyPriceSource': true,
 
 	// 'paneProperties.crossHairProperties.color': 'red',
 	'symbolWatermarkProperties.color':
@@ -137,18 +136,12 @@ export const addFullscreenButton = (tvWidget, symbol) => {
 	// tvWidget.changeTheme(widgetTheme);
 
 	newWindowButton.innerHTML = `
-		<div class='screen-container'>
-			<div>
-				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" width="17" height="17">
-				<path fill="currentColor" d="M27.5,0.5v4.9H7.9c-1.4,0-2.4,1.1-2.4,2.4v34.3c0,1.4,1.1,2.4,2.4,2.4h34.3c1.4,0,2.5-1.1,2.5-2.4V22.5h4.9
-					v19.6c0,4.1-3.3,7.3-7.3,7.3H7.9c-4.1,0-7.3-3.3-7.3-7.3V7.8c0-4.1,3.3-7.3,7.3-7.3H27.5z M47.1,0.5L47.1,0.5c0.1,0,0.2,0,0.2,0
-					L47.1,0.5c0.1,0,0.2,0,0.4,0c0,0,0.1,0,0.1,0c0.1,0,0.1,0,0.2,0c0,0,0.1,0,0.1,0c0.1,0,0.1,0,0.1,0.1c0,0,0.1,0,0.1,0.1
-					c0.1,0,0.1,0.1,0.1,0.1c0,0,0.1,0,0.1,0.1c0.1,0,0.1,0.1,0.2,0.1c0.1,0.1,0.2,0.1,0.3,0.2L48.6,1c0.2,0.1,0.3,0.3,0.4,0.4
-					c0,0,0,0,0,0.1c0,0.1,0.1,0.1,0.1,0.2c0,0,0,0.1,0.1,0.1c0,0.1,0.1,0.1,0.1,0.1c0,0,0,0.1,0.1,0.1c0,0.1,0,0.1,0.1,0.1
-					c0,0,0,0.1,0,0.1c0,0.1,0,0.1,0,0.2c0,0,0,0.1,0,0.1c0,0.1,0,0.1,0,0.1c0,0,0,0.1,0,0.1c0,0,0,0.1,0,0.1v12.2h-4.9V8.9L26.8,26.7
-					c-0.9,0.9-2.3,1-3.2,0.2l-0.2-0.2c-1-1-1-2.5,0-3.5L41.2,5.4h-6.3V0.5H47.1z"/>
-				</svg>
-					</div>
-				</div>
-		`;
-}
+	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17.8 17.8" width="17" height="17">
+				
+					<g>
+						<path fill="currentColor" d="M15.1,16.8H0.9V2.6h8.4V1.7H0.5c0,0,0,0,0,0C0.2,1.7,0,1.9,0,2.1v15.2c0,0.1,0,0.2,0.1,0.3
+							c0.1,0.1,0.1,0.1,0.2,0.1l0,0h15.2c0,0,0,0,0,0c0.3,0,0.4-0.2,0.4-0.5V8.4h-0.9V16.8z"/>
+						<polygon fill="currentColor" points="12.2,0 12.2,0.9 16.2,0.9 8,9.1 8.7,9.8 16.9,1.6 16.9,5.6 17.8,5.6 17.8,0 	"/>
+					</g>
+					</svg>`;
+};

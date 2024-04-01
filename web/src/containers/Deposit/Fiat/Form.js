@@ -2,7 +2,7 @@ import React, { useState, useEffect, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import {
-	Image,
+	Coin,
 	NoVerifiedAccount,
 	Button,
 	EditWrapper,
@@ -233,8 +233,9 @@ const Form = ({
 							return (
 								<div className="d-flex justify-content-start">
 									<div className="bold pl-3 cap-first">
-										{STRINGS[fieldKey] ? STRINGS[fieldKey] : filedName}
-										<EditWrapper stringId={fieldKey} />
+										<EditWrapper stringId={fieldKey}>
+											{STRINGS[fieldKey] ? STRINGS[fieldKey] : filedName}
+										</EditWrapper>
 									</div>
 									<div className="pl-4">{FieldData.value || '-'}</div>
 								</div>
@@ -290,22 +291,17 @@ const Form = ({
 		);
 	};
 
+	const { icon_id } = coins[currency] || DEFAULT_COIN_DATA;
+
 	return (
 		<div className="withdraw-form-wrapper">
 			<div className="withdraw-form">
-				<Image
-					icon={ICONS[`${currency.toUpperCase()}_ICON`]}
-					wrapperClassName="form_currency-ball"
-				/>
+				<Coin iconId={icon_id} type="CS9" />
 				{titleSection}
-				{(!is_verified) && (
-					<NoVerifiedAccount type="deposit" />
-				)}
-				{is_verified && (
-					<Fragment>{renderContent()}</Fragment>
-				)}
+				{!is_verified && <NoVerifiedAccount type="deposit" />}
+				{is_verified && <Fragment>{renderContent()}</Fragment>}
 			</div>
-			{(!is_verified) && (
+			{!is_verified && (
 				<div className="btn-wrapper">
 					<Button
 						label="Proceed"

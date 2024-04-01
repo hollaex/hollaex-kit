@@ -34,7 +34,6 @@ $title--margin: 1rem;
 			.st0,
 			.st9,
 			.st10,
-			.trade-history-3,
 			.contact-us-icon,
 			.xht-coin-stack,
 			.account-recovery-1,
@@ -47,12 +46,12 @@ $title--margin: 1rem;
 			.transaction-history-2,
 			.transaction-history-3,
 			.resend-email-st,
-			.email-confirmation {
+			.email-confirmation,
+			.assets-icon {
 				fill: $colors-main-black;
 			}
 
 			.st1,
-			.trade-history-1,
 			.account-recovery-success-2,
 			.password-reset-2,
 			.transaction-history-1,
@@ -60,13 +59,6 @@ $title--margin: 1rem;
 			.st11,
 			.wallet-coins-2 {
 				fill: $colors-black;
-			}
-
-			.trade-history-2,
-			.trade-history-4,
-			.trade-history-5,
-			.transaction-history-4 {
-				stroke: none;
 			}
 
 			.wallet-coins-1 {
@@ -87,8 +79,9 @@ $title--margin: 1rem;
 		font-size: $font-size-subhead3;
 		margin: $title--margin;
 		&.title {
-			font-size: $font-size-headline2;
+			font-size: 2.5rem !important;
 			text-transform: capitalize;
+			padding-top: 0.25rem !important;
 		}
 	}
 
@@ -104,6 +97,14 @@ $title--margin: 1rem;
 .direction_ltr {
 	.icon_title-wrapper {
 		font-family: $raleway--font-family;
+	}
+}
+
+.fees_limits {
+	.icon_title-text {
+		&.title {
+			font-size: 1.5rem !important;
+		}
 	}
 }
 

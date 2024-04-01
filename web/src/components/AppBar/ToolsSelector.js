@@ -7,6 +7,7 @@ import { Checkbox, Button } from 'antd';
 import { toggleTool } from 'actions/toolsAction';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
+import { EditWrapper } from 'components';
 
 class ToolsSelector extends Component {
 	resetLayout = () => {
@@ -29,14 +30,18 @@ class ToolsSelector extends Component {
 									disabled={!is_enabled}
 									onChange={() => toggleTool(key)}
 								>
-									{STRINGS[stringId]}
+									<EditWrapper stringId={stringId}>
+										{STRINGS[stringId]}
+									</EditWrapper>
 								</Checkbox>
 							</div>
 						);
 					})}
 					<div className="d-flex justify-content-center p-3">
 						<Button className="important-text" onClick={this.resetLayout} ghost>
-							Reset Layout
+							<EditWrapper stringId="RESET_LAYOUT">
+								{STRINGS['RESET_LAYOUT']}
+							</EditWrapper>
 						</Button>
 					</div>
 				</div>

@@ -5,7 +5,7 @@ import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { FLEX_CENTER_CLASSES } from 'config/constants';
 
-const EmailRequestSuccess = ({ onClick, icons: ICONS, ...rest }) => {
+const EmailRequestSuccess = ({ onClick, icons: ICONS }) => {
 	return (
 		<div
 			className={classnames(

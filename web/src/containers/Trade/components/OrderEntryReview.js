@@ -1,9 +1,11 @@
 import React, { Fragment } from 'react';
+import { Link } from 'react-router';
 import classnames from 'classnames';
 import math from 'mathjs';
 import { connect } from 'react-redux';
 import { estimatedMarketPriceSelector } from 'containers/Trade/utils';
-import STRINGS from '../../../config/localizedStrings';
+import STRINGS from 'config/localizedStrings';
+import { EditWrapper } from 'components';
 
 const ROW_CLASSNAMES = ['d-flex', 'justify-content-between'];
 
@@ -21,6 +23,7 @@ const Review = ({
 	type,
 	onFeeStructureAndLimits,
 	estimatedPrice,
+	symbol,
 }) => {
 	// const orderAmountReceived = math.add(
 	// 	math.fraction(orderPrice),
@@ -31,9 +34,11 @@ const Review = ({
 		<div className="trade_order_entry-review d-flex flex-column">
 			<div className={classnames(...ROW_CLASSNAMES)}>
 				<div>
-					{type === 'market'
-						? STRINGS['ESTIMATED_PRICE']
-						: STRINGS['ORDER_PRICE']}
+					<EditWrapper stringId="ESTIMATED_PRICE,ORDER_PRICE">
+						{type === 'market'
+							? STRINGS['ESTIMATED_PRICE']
+							: STRINGS['ORDER_PRICE']}
+					</EditWrapper>
 					:
 				</div>
 				<div className="text-price">
@@ -64,12 +69,26 @@ const Review = ({
 				</div>
 			</div>
 			<div className={classnames(...ROW_CLASSNAMES)}>
-				<div>{STRINGS['FEES']}:</div>
+				<div>
+					<EditWrapper stringId="FEES">{STRINGS['FEES']}</EditWrapper>:
+				</div>
 				<div
 					className="text-price blue-link pointer caps"
 					onClick={onFeeStructureAndLimits}
 				>
-					{STRINGS['VIEW_MY_FEES']}
+					<EditWrapper stringId="VIEW_MY_FEES">
+						{STRINGS['VIEW_MY_FEES']}
+					</EditWrapper>
+				</div>
+			</div>
+			<div className={classnames(...ROW_CLASSNAMES)}>
+				<div />
+				<div className="text-price blue-link pointer caps">
+					<Link to={`/assets/coin/${symbol?.toLowerCase()}`}>
+						<EditWrapper stringId="ABOUT_LINK">
+							{STRINGS.formatString(STRINGS['ABOUT_LINK'], symbol)}
+						</EditWrapper>
+					</Link>
 				</div>
 			</div>
 		</div>

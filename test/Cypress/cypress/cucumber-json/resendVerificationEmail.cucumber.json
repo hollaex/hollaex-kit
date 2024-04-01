@@ -1,0 +1,63 @@
+[
+  {
+    "description": "As a valid customer\nIn order to get a verification email\nI want to request to HollaeX",
+    "keyword": "Feature",
+    "name": "Resend Verification Email Feature",
+    "line": 1,
+    "id": "resend-verification-email-feature",
+    "tags": [],
+    "uri": "resendVerificationEmail.feature",
+    "elements": [
+      {
+        "id": "resend-verification-email-feature;successful--verification-email-request",
+        "keyword": "Scenario",
+        "line": 7,
+        "name": "Successful  Verification Email Request",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 9,
+            "name": "I am on the Hollaex signup page",
+            "result": {
+              "status": "passed",
+              "duration": 18765000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 10,
+            "name": "I ask for a resending verification email, I should be redirected to the related page",
+            "result": {
+              "status": "passed",
+              "duration": 428000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 11,
+            "name": "I should be able to enter my email successfully",
+            "result": {
+              "status": "passed",
+              "duration": 2209000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 12,
+            "name": "I should be redirected contact us page",
+            "result": {
+              "status": "passed",
+              "duration": 369000000
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

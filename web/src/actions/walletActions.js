@@ -1,6 +1,6 @@
 import axios from 'axios';
+import moment from 'moment';
 import querystring from 'query-string';
-// import { all } from 'bluebird';
 
 export const ACTION_KEYS = {
 	ADD_USER_TRADES: 'ADD_USER_TRADES',
@@ -44,6 +44,8 @@ const ENDPOINTS = {
 	CHECK_TRANSACTION: '/user/check-transaction',
 	FIAT_DEPOSIT: '/fiat/deposit',
 	FIAT_WITHDRAW: '/fiat/withdrawal',
+	DUST: '/order/dust',
+	DUST_ESTIMATION: '/order/dust/estimate',
 };
 
 export const depositFiat = (values) => {
@@ -298,7 +300,10 @@ export const downloadUserTrades = (key, params = {}) => {
 				const url = window.URL.createObjectURL(new Blob([res.data]));
 				const link = document.createElement('a');
 				link.href = url;
-				link.setAttribute('download', `user_${key}.csv`);
+				link.setAttribute(
+					'download',
+					`user_${key}_${moment().format('YYYY-MM-DD')}.csv`
+				);
 				document.body.appendChild(link);
 				link.click();
 			})
@@ -445,4 +450,14 @@ export const performConfirmWithdrawal = (token) => {
 export const searchTransaction = (params) => {
 	const query = querystring.stringify(params);
 	return axios.get(`${ENDPOINTS.CHECK_TRANSACTION}?${query}`);
+};
+
+export const convertDust = (assets = []) => {
+	const data = { assets };
+	return axios.post(ENDPOINTS.DUST, data);
+};
+
+export const getEstimatedDust = (assets = []) => {
+	const data = { assets };
+	return axios.post(ENDPOINTS.DUST_ESTIMATION, data);
 };

@@ -14,7 +14,7 @@ class DropdownField extends Component {
 		filter: '',
 	};
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		if (this.props.input.value || this.props.input.value === false) {
 			this.setValue(this.props.input.value);
 		} else if (this.props.defaultValue || this.props.defaultValue === false) {

@@ -24,6 +24,17 @@ const renderUser = (id) => (
 	</Tooltip>
 );
 
+const renderExchangeUser = (user) => (
+	<div className="exchange-user-wrapper">
+		<Tooltip placement="bottom" title={`SEE USER ${user?.id} DETAILS`}>
+			<Button type="primary">
+				<Link to={`/admin/user?id=${user?.id}`}>{user?.id}</Link>
+			</Button>
+		</Tooltip>
+		<p className="pl-3 mb-0">{user?.email}</p>
+	</div>
+);
+
 const getColumns = (userId, onCancel) => {
 	let columns = [];
 	if (!userId) {
@@ -61,7 +72,7 @@ const getColumns = (userId, onCancel) => {
 					<Tooltip placement="bottom" title={`Cancel order`}>
 						<Button
 							type="primary"
-							onClick={() => onCancel(e)}
+							onClick={() => onCancel(e, userId)}
 							className="green-btn"
 						>
 							Cancel
@@ -71,6 +82,48 @@ const getColumns = (userId, onCancel) => {
 			},
 		];
 	}
+	return columns;
+};
+
+const getThisExchangeOrders = (onCancel) => {
+	let columns = [];
+
+	columns = [
+		{ title: 'Side', dataIndex: 'side', key: 'side' },
+		{ title: 'Symbol', dataIndex: 'symbol', key: 'symbol' },
+		{ title: 'Size', dataIndex: 'size', key: 'size', render: formatNum },
+		{ title: 'Price', dataIndex: 'price', key: 'price', render: formatNum },
+		{ title: 'Filled', dataIndex: 'filled', key: 'filled', render: formatNum },
+		{
+			title: 'Time',
+			dataIndex: 'updated_at',
+			key: 'updated_at',
+			render: formatDate,
+		},
+		{
+			title: 'User',
+			dataIndex: 'created_by',
+			key: 'id',
+			render: (v, data) => renderExchangeUser(data.User),
+		},
+		{
+			title: 'Cancel order',
+			dataIndex: '',
+			key: '',
+			render: (e) => (
+				<Tooltip placement="bottom" title={`Cancel order`}>
+					<Button
+						type="primary"
+						onClick={() => onCancel(e, e?.User?.id)}
+						className="green-btn"
+					>
+						Cancel
+					</Button>
+				</Tooltip>
+			),
+		},
+	];
+
 	return columns;
 };
 
@@ -110,26 +163,27 @@ class PairsSection extends Component {
 	}
 
 	componentDidMount() {
-		if (this.props.activePair) {
-			this.handleTrades('buy');
-			this.handleTrades('sell');
-		}
+		this.handleTrades('buy');
+		this.handleTrades('sell');
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		if (this.props.activePair !== prevProps.activePair) {
+		const { open, pair } = this.props;
+		if (pair !== prevProps.pair || open !== prevProps.open) {
 			this.handleTrades('buy');
 			this.handleTrades('sell');
 		}
 	}
 
 	handleTrades = (side, page = 1, limit = this.state.limit) => {
+		const { pair, userId, open } = this.props;
 		requestActiveOrders({
-			user_id: this.props.userId,
-			symbol: this.props.activePair,
+			user_id: userId,
+			symbol: pair,
 			side,
 			page,
 			limit,
+			open,
 		})
 			.then((res) => {
 				if (res) {
@@ -222,9 +276,9 @@ class PairsSection extends Component {
 		this.setState({ activeTab });
 	};
 
-	onCancelOrder = (order) => {
+	onCancelOrder = (order, userId) => {
 		if (order && order.id) {
-			requestCancelOrders(order.id, this.props.userId).then((res) => {
+			requestCancelOrders(order.id, userId).then((res) => {
 				if (res && res.side === 'buy') {
 					const temp = this.state.buyOrders.data.filter(
 						(val) => val.id !== res.id
@@ -257,7 +311,10 @@ class PairsSection extends Component {
 			buyCurrentTablePage,
 			sellCurrentTablePage,
 		} = this.state;
-		const COLUMNS = getColumns(this.props.userId, this.onCancelOrder);
+
+		const COLUMNS = this.props.getThisExchangeOrder
+			? getThisExchangeOrders(this.onCancelOrder)
+			: getColumns(this.props.userId, this.onCancelOrder);
 		return (
 			<div className="f-1 admin-user-container">
 				<Tabs onChange={this.tabChange}>

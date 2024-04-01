@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="15.222" height="15.221" viewBox="0 0 15.222 15.221">
+  <g class="cam-scan" id="Group_115" data-name="Group 115" transform="translate(-1028.389 -524.779)">
+    <g id="Group_114" data-name="Group 114" transform="translate(-10628.924 -6073.22)">
+      <path id="Path_222" data-name="Path 222" d="M120.28,46.113h-3.454a.712.712,0,0,0-.712.712v3.454a.712.712,0,1,0,1.424,0V47.537h2.742a.712.712,0,1,0,0-1.424Z" transform="translate(11541.199 6551.887)" fill="#5d63ff"/>
+      <path id="Path_223" data-name="Path 223" d="M438.877,46.825a.712.712,0,0,0-.712-.712h-3.454a.712.712,0,1,0,0,1.424h2.742v2.742a.712.712,0,1,0,1.424,0Z" transform="translate(11233.657 6551.887)" fill="#5d63ff"/>
+      <path id="Path_224" data-name="Path 224" d="M116.1,368.163a.712.712,0,0,0,.712.712h3.454a.712.712,0,0,0,0-1.424h-2.742v-2.742a.712.712,0,0,0-1.424,0Z" transform="translate(11541.209 6244.345)" fill="#5d63ff"/>
+      <path id="Path_225" data-name="Path 225" d="M438.872,364.717a.712.712,0,1,0-1.424,0v2.742h-2.742a.712.712,0,0,0,0,1.424h3.454a.712.712,0,0,0,.712-.712Z" transform="translate(11233.663 6244.338)" fill="#5d63ff"/>
+      <path id="Path_226" data-name="Path 226" d="M165.82,258.836a.712.712,0,0,0,.712.712h10.562a.712.712,0,1,0,0-1.424H166.532a.712.712,0,0,0-.712.712Z" transform="translate(11493.111 6346.774)" fill="#5d63ff"/>
+    </g>
+  </g>
+</svg>

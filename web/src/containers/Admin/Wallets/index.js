@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Spin, Card, Alert } from 'antd';
+import { Spin, Alert, Table } from 'antd';
 import { connect } from 'react-redux';
 import { ReactSVG } from 'react-svg';
 
 import { STATIC_ICONS } from 'config/icons';
 import { requestTotalBalance, requestConstants } from './actions';
-import { formatCurrency } from '../../../utils';
+import { formatCurrencyByIncrementalUnit } from 'utils/currency';
 
 class Wallets extends Component {
 	state = {
@@ -18,7 +18,7 @@ class Wallets extends Component {
 		constants: {},
 	};
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		this.requestTotalBalance();
 		this.requestConstants();
 		this.setState({ showSweep: false });
@@ -71,6 +71,40 @@ class Wallets extends Component {
 
 	render() {
 		const { balance, loading, error } = this.state;
+		const { coins } = this.props;
+		const sortedCoins = Object.keys(coins).sort();
+
+		const data = [];
+		const columns = [
+			{
+				key: 'name',
+				title: 'Name',
+				dataIndex: 'name',
+			},
+			{
+				key: 'total',
+				title: 'Total',
+				dataIndex: 'total',
+			},
+			{
+				key: 'available',
+				title: 'Available',
+				dataIndex: 'available',
+			}
+		]
+
+		sortedCoins.forEach((coin) => {
+			if ( balance && balance[`${coin}_balance`]) {
+				const inc_unit = coins[coin]?.increment_unit;
+				let asset = {
+					name: coin.toUpperCase(),
+					total: formatCurrencyByIncrementalUnit(balance[`${coin}_balance`], inc_unit),
+					available: formatCurrencyByIncrementalUnit(balance[`${coin}_available`], inc_unit)
+				}
+				data.push(asset);
+			}
+		})
+
 		return (
 			<div className="app_container-content">
 				{error && (
@@ -96,25 +130,14 @@ class Wallets extends Component {
 								<h1>USER WALLETS</h1>
 							</div>
 						</div>
-						<Card className="card-title" title="TOTAL BALANCE OF USERS WALLETS">
-							{!balance ? (
-								<Alert
-									message="Error"
-									className="m-top"
-									description={error}
-									type="error"
-									showIcon
-								/>
-							) : (
-								Object.entries(balance).map(([name, value]) => {
-									return (
-										<p key={name}>
-											{name.toUpperCase()} : {formatCurrency(value)}
-										</p>
-									);
-								})
-							)}
-						</Card>
+						<p>Total balance of users wallet</p>
+						<Table
+							columns={columns}
+							rowKey={(data, index) => index}
+							dataSource={data}
+							loading={data.length === 0}
+							pagination={false}
+						/>
 					</div>
 				)}
 			</div>
@@ -124,6 +147,7 @@ class Wallets extends Component {
 
 const mapStateToProps = (state) => ({
 	constants: state.app.constants,
+	coins: state.app.coins,
 });
 
 export default connect(mapStateToProps)(Wallets);

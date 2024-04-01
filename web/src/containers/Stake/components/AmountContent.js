@@ -4,10 +4,10 @@ import {
 	EditWrapper,
 	Button,
 	IconTitle,
-	Image,
+	Coin,
 	ActionNotification,
 } from 'components';
-import Ionicon from 'react-ionicons';
+import { CloseOutlined } from '@ant-design/icons';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 
@@ -44,10 +44,9 @@ const AmountContent = ({
 		<Fragment>
 			<ActionNotification
 				text={
-					<Ionicon
-						icon="md-close"
-						fontSize="24px"
-						className="action_notification-image"
+					<CloseOutlined
+						style={{ fontSize: '24px' }}
+						className="action_notification-image secondary-text"
 					/>
 				}
 				onClick={onClose}
@@ -94,13 +93,7 @@ const AmountContent = ({
 						type="number"
 						value={amount}
 						onChange={setAmount}
-						prefix={
-							<Image
-								iconId={icon_id}
-								icon={ICONS[icon_id]}
-								wrapperClassName="currency-ball"
-							/>
-						}
+						prefix={<Coin iconId={icon_id} type="CS9" />}
 					/>
 					<div>
 						{error && <span className="field_warning_wrapper">{error}</span>}

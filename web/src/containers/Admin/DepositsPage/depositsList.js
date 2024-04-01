@@ -33,7 +33,7 @@ class DepositsList extends Component {
 		error: '',
 	};
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		this.requestDeposits();
 	}
 

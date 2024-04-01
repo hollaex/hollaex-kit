@@ -43,22 +43,21 @@ const Index = ({ openContactForm, icons: ICONS, router, userApps }) => {
 
 			<HeaderSection title={app} openContactForm={openContactForm}>
 				<div className="header-content">
-					<div>
-						<EditWrapper stringId="USER_APPS.APP_DETAILS.BACK_TO_APPS,USER_APPS.APP_DETAILS.BACK">
-							{STRINGS.formatString(
-								STRINGS['USER_APPS.APP_DETAILS.BACK_PLACEHOLDER'],
-								<span
-									className="blue-link underline-text pointer"
-									onClick={goBack}
-								>
-									{STRINGS['USER_APPS.APP_DETAILS.BACK']}
-								</span>,
-								<span className="px-1">
-									{STRINGS['USER_APPS.APP_DETAILS.BACK_TO_APPS']}
-								</span>
-							)}
-						</EditWrapper>
-					</div>
+					<EditWrapper
+						stringId="USER_APPS.APP_DETAILS.BACK_TO_APPS,USER_APPS.APP_DETAILS.BACK"
+						renderWrapper={(children) => <div>{children}</div>}
+					>
+						{STRINGS.formatString(
+							STRINGS['USER_APPS.APP_DETAILS.BACK_PLACEHOLDER'],
+							<span
+								className="blue-link underline-text pointer px-1"
+								onClick={goBack}
+							>
+								{STRINGS['USER_APPS.APP_DETAILS.BACK']}
+							</span>,
+							STRINGS['USER_APPS.APP_DETAILS.BACK_TO_APPS']
+						)}
+					</EditWrapper>
 				</div>
 			</HeaderSection>
 			<SmartTarget id={id} />

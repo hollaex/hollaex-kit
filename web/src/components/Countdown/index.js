@@ -16,7 +16,7 @@ const INIT_STATE = {
 class Countdown extends Component {
 	state = INIT_STATE;
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		this.onInit(this.props.end);
 	}
 

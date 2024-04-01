@@ -23,7 +23,7 @@ class Chat extends Component {
 		unreadMessages: 0,
 	};
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		// if (!this.props.fetchingAuth && isLoggedIn()) {
 		if (!this.props.fetchingAuth) {
 			this.initializeChatWs(getToken());

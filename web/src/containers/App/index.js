@@ -59,7 +59,6 @@ const mapStateToProps = (store) => ({
 	activeNotification: store.app.activeNotification,
 	// verification_level: store.user.verification_level,
 	activeLanguage: store.app.language,
-	activeTheme: store.app.theme,
 	// user: store.user,
 	pair: store.app.pair,
 	pairs: store.app.pairs,

@@ -1,5 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
+import { EditWrapper } from 'components';
 
 const InputField = (props) => {
 	const {
@@ -13,7 +14,9 @@ const InputField = (props) => {
 	} = props;
 	return (
 		<div className="trade_input-wrapper">
-			<div className="trade_input-label">{label}</div>
+			<div className="trade_input-label">
+				{typeof label === 'string' ? <EditWrapper>{label}</EditWrapper> : label}
+			</div>
 			<div
 				className={classnames('trade_input-input-wrapper', {
 					'initialize-animation': initializeEffect,

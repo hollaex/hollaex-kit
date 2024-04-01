@@ -51,7 +51,6 @@ const kit = {
 		information: ''
 	},
 	email_verification_required: false,
-	setup_completed: false,
 	native_currency: NATIVE_CURRENCY || 'usdt',
 	logo_image: LOGO_IMAGE || 'https://dash.testnet.bitholla.com/assets/img/hex-pattern-icon-black-01.svg',
 	injected_values: [],
@@ -72,7 +71,8 @@ const kit = {
 	black_list_countries: [],
 	onramp: {},
 	offramp: {},
-	user_payments: {}
+	user_payments: {},
+	dust: {}
 };
 
 const secrets = {

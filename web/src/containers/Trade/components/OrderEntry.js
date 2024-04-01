@@ -13,11 +13,9 @@ import {
 	// formatBaseAmount,
 	roundNumber,
 	formatToCurrency,
-} from '../../../utils/currency';
-import {
-	getDecimals,
-	playBackgroundAudioNotification,
-} from '../../../utils/utils';
+	calculateOraclePrice,
+} from 'utils/currency';
+import { getDecimals, playBackgroundAudioNotification } from 'utils/utils';
 import {
 	evaluateOrder,
 	required,
@@ -28,15 +26,15 @@ import {
 	checkMarketPrice,
 	step,
 	normalizeFloat,
-} from '../../../components/Form/validations';
-import { Loader, Tooltip } from '../../../components';
-import { takerFee, DEFAULT_COIN_DATA } from '../../../config/constants';
+} from 'components/Form/validations';
+import { Loader, Tooltip, EditWrapper } from 'components';
+import { takerFee, DEFAULT_COIN_DATA } from 'config/constants';
 
-import STRINGS from '../../../config/localizedStrings';
+import STRINGS from 'config/localizedStrings';
 import { SIDES, TYPES } from 'config/options';
-import { isLoggedIn } from '../../../utils/token';
-import { openFeesStructureandLimits } from '../../../actions/appActions';
+import { isLoggedIn } from 'utils/token';
 import { orderbookSelector, marketPriceSelector } from '../utils';
+import { estimatedMarketPriceSelector } from 'containers/Trade/utils';
 import { setOrderEntryData } from 'actions/orderbookAction';
 
 const ORDER_OPTIONS = () => [
@@ -344,12 +342,10 @@ class OrderEntry extends Component {
 
 	onReview = () => {
 		const {
-			// showPopup,
 			type,
 			side,
 			price,
 			size,
-			// pair,
 			pair_base,
 			pair_2,
 			increment_size,
@@ -358,12 +354,16 @@ class OrderEntry extends Component {
 			onRiskyTrade,
 			submit,
 			settings: { risk = {}, notification = {} },
-			balance,
+			totalAsset,
+			oraclePrices,
+			estimatedPrice,
 		} = this.props;
+
 		const orderTotal = mathjs.add(
 			mathjs.fraction(this.state.orderPrice),
 			mathjs.fraction(this.state.orderFees)
 		);
+
 		const order = {
 			type,
 			side,
@@ -373,25 +373,32 @@ class OrderEntry extends Component {
 			orderPrice: orderTotal,
 			orderFees: this.state.orderFees,
 		};
-		// const orderPriceInBaseCoin = calculatePrice(orderTotal, this.props.prices[pair_2]);
-		let coin_balance = 0;
-		if (side === 'buy') {
-			coin_balance = balance[`${pair_2.toLowerCase()}_balance`];
-		} else {
-			coin_balance = balance[`${pair_base.toLowerCase()}_balance`];
-		}
-		// const riskySize = ((this.props.totalAsset / 100) * risk.order_portfolio_percentage);
-		let riskySize = (coin_balance / 100) * risk.order_portfolio_percentage;
-		riskySize = formatNumber(riskySize, getDecimals(increment_size));
 
-		if (type === 'market') {
+		const isMarket = type === 'market';
+
+		const riskySize = formatNumber(
+			mathjs.multiply(
+				mathjs.divide(totalAsset, 100),
+				risk.order_portfolio_percentage
+			),
+			getDecimals(increment_size)
+		);
+
+		const calculatedOrderValue = calculateOraclePrice(
+			isMarket ? estimatedPrice : mathjs.multiply(size, price),
+			oraclePrices[pair_2]
+		);
+
+		const isRiskyOrder = mathjs.largerEq(calculatedOrderValue, riskySize);
+
+		if (isMarket) {
 			delete order.price;
 		} else if (price) {
 			order.price = formatNumber(price, getDecimals(increment_price));
 		}
 		if (notification.popup_order_confirmation) {
 			openCheckOrder(order, () => {
-				if (risk.popup_warning && riskySize <= size) {
+				if (risk.popup_warning && isRiskyOrder) {
 					order['order_portfolio_percentage'] = risk.order_portfolio_percentage;
 					onRiskyTrade(order, () => {
 						submit(FORM_NAME);
@@ -400,7 +407,7 @@ class OrderEntry extends Component {
 					submit(FORM_NAME);
 				}
 			});
-		} else if (risk.popup_warning && riskySize <= size) {
+		} else if (risk.popup_warning && isRiskyOrder) {
 			order['order_portfolio_percentage'] = risk.order_portfolio_percentage;
 			onRiskyTrade(order, () => {
 				submit(FORM_NAME);
@@ -530,9 +537,13 @@ class OrderEntry extends Component {
 				name: 'size',
 				label: (
 					<div className="d-flex justify-content-between">
-						<div className="d-flex">{STRINGS['SIZE']}</div>
+						<div className="d-flex">
+							<EditWrapper stringId="SIZE">{STRINGS['SIZE']}</EditWrapper>
+						</div>
 						<div>
-							{STRINGS['BALANCE_TEXT']}{' '}
+							<EditWrapper stringId="BALANCE_TEXT">
+								{STRINGS['BALANCE_TEXT']}
+							</EditWrapper>{' '}
 							<span
 								className="pointer text-uppercase blue-link"
 								onClick={() => this.setMax()}
@@ -572,7 +583,11 @@ class OrderEntry extends Component {
 				name: 'post_only',
 				label: (
 					<Tooltip text={STRINGS['POST_ONLY_TOOLTIP']} className="light-theme">
-						<span className="px-1 post-only-txt">{STRINGS['POST_ONLY']}</span>
+						<span className="px-1 post-only-txt">
+							<EditWrapper stringId="POST_ONLY">
+								{STRINGS['POST_ONLY']}
+							</EditWrapper>
+						</span>
 					</Tooltip>
 				),
 				type: 'checkbox',
@@ -591,16 +606,9 @@ class OrderEntry extends Component {
 	};
 
 	onFeeStructureAndLimits = () => {
-		if (isLoggedIn()) {
-			const {
-				openFeesStructureandLimits,
-				user: { verification_level, discount = 0 },
-			} = this.props;
-			openFeesStructureandLimits({ verification_level, discount });
-		} else {
-			const { router } = this.props;
-			router.push('/login');
-		}
+		const { router } = this.props;
+
+		router.push('/fees-and-limits');
 	};
 
 	render() {
@@ -611,6 +619,7 @@ class OrderEntry extends Component {
 			pair_base,
 			pair_2,
 			pair_2_display,
+			pair_base_display,
 			price,
 			coins,
 			size,
@@ -662,6 +671,7 @@ class OrderEntry extends Component {
 						increment_price={increment_price}
 						formatToCurrency={formatToCurrency}
 						onFeeStructureAndLimits={this.onFeeStructureAndLimits}
+						symbol={side === 'buy' ? pair_base_display : pair_2_display}
 					/>
 				</Form>
 			</div>
@@ -688,6 +698,9 @@ const mapStateToProps = (state) => {
 		increment_price,
 	} = state.app.pairs[pair] || { pair_base: '', pair_2: '' };
 	const marketPrice = marketPriceSelector(state);
+	const [estimatedPrice] = estimatedMarketPriceSelector(state, {
+		...formValues,
+	});
 
 	return {
 		...formValues,
@@ -714,17 +727,15 @@ const mapStateToProps = (state) => {
 		bids,
 		marketPrice,
 		order_entry_data: state.orderbook.order_entry_data,
-		// totalAsset: state.asset.totalAsset
+		totalAsset: state.asset.totalAsset,
+		oraclePrices: state.asset.oraclePrices,
+		estimatedPrice,
 	};
 };
 
 const mapDispatchToProps = (dispatch) => ({
 	submit: bindActionCreators(submit, dispatch),
 	change: bindActionCreators(change, dispatch),
-	openFeesStructureandLimits: bindActionCreators(
-		openFeesStructureandLimits,
-		dispatch
-	),
 	setOrderEntryData: bindActionCreators(setOrderEntryData, dispatch),
 });
 

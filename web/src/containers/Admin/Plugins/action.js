@@ -1,19 +1,14 @@
 import axios from 'axios';
 import querystring from 'query-string';
 import { REQUEST_VAULT_SUPPORTED_COINS } from '../../../config/constants';
-import { requestAuthenticated } from '../../../utils';
-import { PLUGIN_URL, NETWORK_API_URL } from '../../../config/constants';
+import { requestAuthenticated, requestDashAuthenticated } from '../../../utils';
+import { PLUGIN_URL } from '../../../config/constants';
 
 export const getConstants = (query) =>
 	requestAuthenticated(`/plugins?${querystring.stringify(query)}`);
 
 export const requestPlugins = (query) =>
-	requestAuthenticated(
-		`/plugins?${querystring.stringify(query)}`,
-		{},
-		null,
-		NETWORK_API_URL
-	);
+	requestDashAuthenticated(`/plugins?${querystring.stringify(query)}`, {});
 
 export const requestMyPlugins = (query) =>
 	requestAuthenticated(
@@ -32,12 +27,7 @@ export const getInstalledPlugin = (query) =>
 	);
 
 export const getPlugin = (query) =>
-	requestAuthenticated(
-		`/plugin?${querystring.stringify(query)}`,
-		{},
-		null,
-		NETWORK_API_URL
-	);
+	requestDashAuthenticated(`/plugin?${querystring.stringify(query)}`, {});
 
 export const getPluginScript = (query) =>
 	requestAuthenticated(
@@ -190,5 +180,23 @@ export const requestDeleteAnnouncement = (query) => {
 		options,
 		null,
 		PLUGIN_URL
+	);
+};
+
+export const requestActivationsPlugin = (query) => {
+	return requestDashAuthenticated(`/dash/activations`, {});
+};
+
+export const getPluginStoreDetails = (query) => {
+	return requestDashAuthenticated(
+		`/plugin/store?${querystring.stringify(query)}`,
+		{}
+	);
+};
+
+export const getPluginActivateDetails = (query) => {
+	return requestDashAuthenticated(
+		`/plugin/activate?${querystring.stringify(query)}`,
+		{}
 	);
 };

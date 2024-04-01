@@ -1,4 +1,4 @@
-Feature: Login Feature
+Feature: Chat Feature
 
 As an Admin
 In order to check the chatbox
@@ -13,3 +13,4 @@ Scenario: Successful Chatbxot feature
     And I should be able to ban a user
     And I should be able to unban a user
     Then I should be able to make the chatbox invisible 
+    And I should be able to make the chatbox visible 

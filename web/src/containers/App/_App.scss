@@ -6,26 +6,6 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 	background-color: $app-background-color;
 	color: $colors-main-black;
 
-	&.btc {
-		@include currency-color($coin-btc);
-	}
-
-	&.eur {
-		@include currency-color($coin-eur);
-	}
-
-	&.bch {
-		@include currency-color($coin-bch);
-	}
-
-	&.eth {
-		@include currency-color($coin-eth);
-	}
-
-	&.ltc {
-		@include currency-color($coin-ltc);
-	}
-
 	&.layout-desktop {
 		.app_container-content {
 			height: auto;
@@ -258,7 +238,6 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 	.wallet_section-title-amount,
 	.wallet_section-title,
 	.trade_tabs-container .trade_tabs-content,
-	.toogle_button-wrapper .toogle-content,
 	.trade_block-wrapper .trade_block-content,
 	.information_block-text_wrapper .text,
 	.qr-text,
@@ -313,7 +292,6 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 	.wallet_section-title-amount,
 	.wallet_section-title,
 	.trade_tabs-container .trade_tabs-content,
-	.toogle_button-wrapper .toogle-content,
 	.trade_block-wrapper .trade_block-content,
 	.information_block-text_wrapper .text,
 	.qr-text,

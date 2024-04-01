@@ -26,6 +26,12 @@ const LOGIN_COLUMNS = [
 		key: 'timestamp',
 		render: formatDate,
 	},
+	{
+		title: 'Success',
+		dataIndex: 'status',
+		key: 'status',
+		render: (data) => (data ? 'Yes' : 'No'),
+	},
 ];
 // const SCV_LOGIN_COLUMNS = [
 // 	{ label: 'IP', dataIndex: 'ip', key: 'ip' },
@@ -37,7 +43,7 @@ const LOGIN_COLUMNS = [
 class Logins extends Component {
 	state = INITIAL_STATE;
 
-	componentWillMount = () => {
+	UNSAFE_componentWillMount = () => {
 		if (this.props.userId) {
 			this.handleUserLogins(this.props.userId);
 		}

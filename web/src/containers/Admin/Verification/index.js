@@ -230,7 +230,9 @@ class Verification extends Component {
 					<div
 						className="selected_image"
 						style={{ backgroundImage: `url(${this.state.selectedImage})` }}
-					/>
+					>
+						<img src={this.state.selectedImage} alt="selected_image" />
+					</div>
 				</div>
 			);
 		} else if (isUpload) {

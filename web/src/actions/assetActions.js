@@ -14,6 +14,13 @@ export const SET_PRICES_AND_ASSET_FAILURE = 'SET_PRICES_AND_ASSET_FAILURE';
 export const SET_ALL_COINS = 'SET_ALL_COINS';
 export const SET_ALL_PAIRS = 'SET_ALL_PAIRS';
 export const SET_EXCHANGE = 'SET_EXCHANGE';
+export const SET_DASH_TOKEN = 'SET_DASH_TOKEN';
+
+export const setPricesAndAssetPending = () => {
+	return (dispatch) => {
+		dispatch({ type: SET_PRICES_AND_ASSET_PENDING });
+	};
+};
 
 export const setPricesAndAsset = (balance, coins) => {
 	return (dispatch) => {
@@ -65,6 +72,17 @@ export const setExchange = (exchange) => {
 			type: SET_EXCHANGE,
 			payload: {
 				exchange,
+			},
+		});
+	};
+};
+
+export const setDashToken = (dashToken) => {
+	return (dispatch) => {
+		dispatch({
+			type: SET_DASH_TOKEN,
+			payload: {
+				dashToken,
 			},
 		});
 	};

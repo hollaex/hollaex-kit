@@ -8,14 +8,14 @@ export const generateDynamicTarget = (
 	subType = ''
 ) => {
 	const name = pluginName.toUpperCase();
-	const sub = subType.toUpperCase();
+	const sub = subType.toUpperCase().replace('/', '_');
 	switch (type) {
 		case 'app':
 			return `APPLICATION__${name}__${sub}`;
 		case 'verification':
 			return `REMOTE_VERIFICATION_TAB__${name}__${sub}`;
 		case 'page':
-			return `REMOTE_ROUTE__${name}`;
+			return `REMOTE_ROUTE__${name}__${sub}`;
 		case 'ultimate_fiat':
 			return `REMOTE_ULTIMATE_FIAT__${name}__${sub}`;
 		default:

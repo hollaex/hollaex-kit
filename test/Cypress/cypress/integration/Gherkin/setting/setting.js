@@ -2,13 +2,29 @@ import {Given, When, Then} from "cypress-cucumber-preprocessor/steps"
 
 Given ('I logged in Hollaex',()=>{
 
-      cy.visit(Cypress.env('LOGIN_PAGE'))
-      cy.get('.holla-button').should('be.visible').should('be.disabled')
-      cy.get('[name="email"]').clear().type(Cypress.env('ADMIN_USER'))
-      cy.get('[name="password"]').clear().type(Cypress.env('ADMIN_PASS'))
-      cy.get('.holla-button').should('be.visible').should('be.enabled').click()
-      cy.get('.warning_text').should('not.exist') 
-      cy.get('.app-menu-bar-side > :nth-child(7)').click()
+    cy.visit(Cypress.env('LOGIN_PAGE'))
+    cy.get('.holla-button').should('be.visible').should('be.disabled')
+    cy.get('[name="email"]').clear().type(Cypress.env('ADMIN_USER'))
+    cy.get('[name="password"]').clear().type(Cypress.env('ADMIN_PASS'))
+    cy.get('.holla-button').should('be.visible').should('be.enabled').click()
+    cy.get('.warning_text').should('not.exist') 
+    cy.wait(5000)
+    cy.get('.ant-select-selection-item > .language_option').invoke('text').then((languageText) => {
+      if (languageText === 'en') {
+        // Perform desired actions if language is 'en'
+        cy.log('Language is already set to English');
+      } else {
+        // Perform desired actions if language is not 'en'
+        cy.log('You should select English language first');
+        cy.log('Exiting the test...',languageText);
+        cy.get('.language_option').click()
+        cy.get('.ant-select-item-option-content > .language_option')
+         .contains('en').click()
+      
+      }
+    });
+    
+      cy.contains('Settings').click()
 }) 
 
 When ('I change language, it should change',()=>{
@@ -22,55 +38,74 @@ When ('I change language, it should change',()=>{
       cy.get('.d-flex > .field-label')
       .should('contain','Preferencia de Idioma (Incluye correos electrònicos)')
       cy.get('@LangInput').click()
+      cy.get('.language_option').contains('es')
       
-      cy.get('#language-pt-2').click()
+      cy.get('#language-de-2').click()
+      cy.get('.holla-button').click()
+      cy.contains('Spracheinstellungen (schließt E-Mails ein)')
+      cy.get('@LangInput').click()
+      cy.get('.language_option').contains('de')
+      
+      cy.get('#language-it-3').click()
+      cy.get('.holla-button').click()
+      cy.contains('Preferenze lingua (include email)')
+      cy.get('@LangInput').click()
+      cy.get('.language_option').contains('it')
+
+
+      cy.get('#language-pt-4').click()
       cy.get('.holla-button').click()
       cy.get('.d-flex > .field-label')
       .should('contain','Preferências de idioma (inclui e-mails)')
       cy.get('@LangInput').click()
-      cy.get('#language-ru-3').click()
+      cy.get('.language_option').contains('pt')
+
+      cy.get('#language-tr-5').click()
       cy.get('.holla-button').click()
-      cy.get('.d-flex > .field-label').should('contain','Language preferences (Includes Emails)')
+      cy.get('.d-flex > .field-label')
+      .should('contain','Dil seçenekleri (E-Postaları da kapsar)')
       cy.get('@LangInput').click()
-      
-      cy.get('#language-ko-4').click()
+      cy.get('.language_option').contains('tr')
+
+      cy.get('#language-ko-6').click()
       cy.get('.holla-button').click()
       cy.get('.d-flex > .field-label')
       .should('contain','언어설정 (이메일수신포함)')
       cy.get('@LangInput').click()
-      
-      cy.get('#language-ja-5').click()
-      cy.get('.holla-button').click()
-      cy.get('.d-flex > .field-label')
-      .should('contain','言語設定 (メールを含む)')
-      cy.get('@LangInput').click()
-      
-      cy.get('#language-zh-6').click()
-      cy.get('.holla-button').click()
-      cy.get('.d-flex > .field-label')
-      .should('contain','语言设置（包括邮件）')
-      cy.get('@LangInput').click()
-      
-      cy.get('#language-vi-7').click()
-      cy.get('.holla-button').click()
-      cy.get('.d-flex > .field-label')
-      .should('contain','Cài đặt ngôn ngữ (Bao gồm email)')
-      cy.get('@LangInput').click()
-      
-      cy.get('#language-fa-8').click()
+      cy.get('.language_option').contains('ko')
+         
+      cy.get('#language-fa-7').click()
       cy.get('.holla-button').click()
       cy.get('.d-flex > .field-label').should('contain','انتخاب زبان (این گزینه شامل ایمیل های ارسالی از طرف HollaEx نیز می شود)')
       cy.get('@LangInput').click()
+      cy.get('.language_option').contains('fa')
       
-      cy.get(' #language-ar-9').click()
+      cy.get(' #language-ar-8').click()
       cy.get('.holla-button').click()
       cy.get('.d-flex > .field-label')
       .should('contain','تفضيلات اللغة (تشمل رسائل البريد الإلكتروني)')
       cy.get('@LangInput').click()
+      cy.get('.language_option').contains('ar')
       
+      cy.get('#language-mn-9').click()
+      cy.get('.holla-button').click()
+      cy.get('.d-flex > .field-label')
+      .should('contain','Хэлний сонголт')
+      cy.get('@LangInput').click()
+      cy.get('.language_option').contains('mn')
+
+      cy.get('#language-ur-10').click()
+      cy.get('.holla-button').click()
+      cy.get('.d-flex > .field-label')
+      .should('contain','زبان کی ترجیحات (بشمول ای میلز)')
+      cy.get('@LangInput').click()
+      cy.get('.language_option').contains('ur')
+      
+     
       cy.get('#language-en-0').click()
       cy.get('.holla-button').click()
       cy.get('.d-flex > .field-label').should('contain','Language preferences (Includes Emails)')
+      cy.get('.language_option').contains('en')
              
   }) 
 

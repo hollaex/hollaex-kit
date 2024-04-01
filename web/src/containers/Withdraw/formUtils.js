@@ -1,3 +1,4 @@
+import { isMobile } from 'react-device-detect';
 import {
 	required,
 	minValue,
@@ -8,6 +9,7 @@ import {
 	normalizeBTCFee,
 } from 'components/Form/validations';
 import STRINGS from 'config/localizedStrings';
+import { STATIC_ICONS } from 'config/icons';
 import { DEFAULT_COIN_DATA } from 'config/constants';
 import { getLanguage } from 'utils/string';
 import { getTheme } from 'utils/theme';
@@ -15,6 +17,8 @@ import { toFixed } from 'utils/currency';
 import { getDecimals } from 'utils/utils';
 import { getNetworkNameByKey } from 'utils/wallet';
 import { email } from 'components/AdminForm/validations';
+import BigNumber from 'bignumber.js';
+import math from 'mathjs';
 
 export const generateInitialValues = (
 	symbol,
@@ -22,73 +26,41 @@ export const generateInitialValues = (
 	networks,
 	network,
 	query,
-	verification_level
+	verification_level,
+	selectedMethod,
+	coin_customizations
 ) => {
-	const { min, withdrawal_fee, withdrawal_fees } =
+	const { withdrawal_fee, withdrawal_fees } =
 		coins[symbol] || DEFAULT_COIN_DATA;
 	const initialValues = {};
 
 	if (withdrawal_fees && network && withdrawal_fees[network]) {
-		const { value, symbol, type = 'static', levels } = withdrawal_fees[network];
-		if (type === 'static') {
-			initialValues.fee_coin = symbol;
-			initialValues.fee_type = 'static';
-
-			if (levels && levels[verification_level]) {
-				initialValues.fee = levels[verification_level];
-			} else {
-				initialValues.fee = value;
-			}
-		} else {
-			initialValues.fee_coin = '';
-			initialValues.fee_type = 'percentage';
-
-			if (levels && levels[verification_level]) {
-				initialValues.fee = levels[verification_level];
-			} else {
-				initialValues.fee = value;
-			}
-		}
+		const { value, symbol } = withdrawal_fees[network];
+		initialValues.fee_coin = symbol;
+		initialValues.fee = value;
 	} else if (withdrawal_fees && withdrawal_fees[symbol]) {
-		const {
-			value,
-			symbol: feeSymbol,
-			type = 'static',
-			levels,
-		} = withdrawal_fees[symbol];
-		if (type === 'static') {
-			initialValues.fee_coin = feeSymbol;
-			initialValues.fee_type = 'static';
+		const { value, symbol: feeSymbol } = withdrawal_fees[symbol];
 
-			if (levels && levels[verification_level]) {
-				initialValues.fee = levels[verification_level];
-			} else {
-				initialValues.fee = value;
-			}
-		} else {
-			initialValues.fee_coin = '';
-			initialValues.fee_type = 'percentage';
-
-			if (levels && levels[verification_level]) {
-				initialValues.fee = levels[verification_level];
-			} else {
-				initialValues.fee = value;
-			}
-		}
+		initialValues.fee_coin = feeSymbol;
+		initialValues.fee = value;
 	} else if (coins[symbol]) {
 		initialValues.fee = withdrawal_fee;
 		initialValues.fee_coin = '';
-		initialValues.fee_type = 'static';
 	} else {
 		initialValues.fee = 0;
 		initialValues.fee_coin = '';
-		initialValues.fee_type = 'static';
 	}
 
-	if (min) {
-		initialValues.amount = min;
-	} else {
-		initialValues.amount = '';
+	initialValues.amount = '';
+
+	const feeMarkup = coin_customizations?.[symbol]?.fee_markup;
+	if (feeMarkup) {
+		const incrementUnit = coins?.[symbol]?.increment_unit;
+		const decimalPoint = new BigNumber(incrementUnit).dp();
+		const roundedMarkup = new BigNumber(feeMarkup)
+			.decimalPlaces(decimalPoint)
+			.toNumber();
+		initialValues.fee += roundedMarkup;
 	}
 
 	initialValues.destination_tag = '';
@@ -120,7 +92,8 @@ export const generateFormValues = (
 	selectedNetwork,
 	ICONS = '',
 	selectedMethod,
-	handleMethodChange = () => {}
+	handleMethodChange = () => {},
+	openQRScanner = () => {}
 ) => {
 	const isEmail = selectedMethod && selectedMethod === 'email' ? true : false;
 	const {
@@ -136,75 +109,28 @@ export const generateFormValues = (
 
 	let fee;
 	let fee_coin;
-	let fee_type;
-	let min_fee;
-	let max_fee;
 	if (
 		withdrawal_fees &&
 		selectedNetwork &&
 		withdrawal_fees[selectedNetwork] &&
 		!isEmail
 	) {
-		const {
-			value,
-			symbol,
-			type = 'static',
-			levels,
-			min,
-			max,
-		} = withdrawal_fees[selectedNetwork];
-		fee_type = type;
-
-		if (type === 'static') {
-			fee_coin = symbol;
-		}
-
-		if (type === 'percentage') {
-			min_fee = min;
-			max_fee = max;
-		}
-
-		if (levels && levels[verification_level]) {
-			fee = levels[verification_level];
-		} else {
-			fee = value;
-		}
+		const { value, symbol } = withdrawal_fees[selectedNetwork];
+		fee_coin = symbol;
+		fee = value;
 	} else if (
 		!networks &&
 		withdrawal_fees &&
 		withdrawal_fees[symbol] &&
 		!isEmail
 	) {
-		const {
-			value,
-			symbol: feeSymbol,
-			type = 'static',
-			levels,
-			min,
-			max,
-		} = withdrawal_fees[symbol];
-		fee_type = type;
-
-		if (type === 'static') {
-			fee_coin = feeSymbol;
-		}
-
-		if (type === 'percentage') {
-			min_fee = min;
-			max_fee = max;
-		}
-
-		if (levels && levels[verification_level]) {
-			fee = levels[verification_level];
-		} else {
-			fee = value;
-		}
+		const { value, symbol: feeSymbol } = withdrawal_fees[symbol];
+		fee_coin = feeSymbol;
+		fee = value;
 	} else if (coins[symbol] && !isEmail) {
 		fee = withdrawal_fee;
-		fee_type = 'static';
 	} else {
 		fee = 0;
-		fee_type = 'static';
 	}
 
 	const fields = {};
@@ -269,6 +195,18 @@ export const generateFormValues = (
 				],
 				fullWidth: true,
 				ishorizontalfield: true,
+				notification: [
+					{
+						stringId: 'QR_CODE.SCAN',
+						text: STRINGS['QR_CODE.SCAN'],
+						status: 'information',
+						iconPath: STATIC_ICONS['QR_CODE_SCAN'],
+						className: 'file_upload_icon',
+						useSvg: true,
+						onClick: openQRScanner,
+						showActionText: !isMobile,
+					},
+				],
 			};
 		}
 		if (isEmail) {
@@ -294,7 +232,12 @@ export const generateFormValues = (
 				fullWidth: true,
 				ishorizontalfield: true,
 			};
-		} else if (symbol === 'xlm' || selectedNetwork === 'xlm') {
+		} else if (
+			!isEmail &&
+			(symbol === 'xlm' ||
+				selectedNetwork === 'xlm' ||
+				selectedNetwork === 'ton')
+		) {
 			fields.destination_tag = {
 				type: 'text',
 				stringId:
@@ -323,9 +266,7 @@ export const generateFormValues = (
 			amountValidate.push(checkBalance(available, fullname, 0));
 			amountValidate.push(checkFee(availableFeeBalance, feeFullname, fee));
 		} else {
-			amountValidate.push(
-				checkBalance(available, fullname, fee, fee_type, min_fee, max_fee)
-			);
+			amountValidate.push(checkBalance(available, fullname));
 		}
 
 		fields.amount = {
@@ -363,12 +304,15 @@ export const generateFormValues = (
 
 				let result = value;
 				if (decimal < valueDecimal) {
-					result = decValue
+					const newValue = decValue
 						.toString()
 						.substring(
 							0,
 							decValue.toString().length - (valueDecimal - decimal)
 						);
+					if (math.larger(newValue, min)) {
+						result = newValue;
+					}
 				}
 				return result;
 			},
@@ -428,14 +372,6 @@ export const generateFormValues = (
 		fields.fee_coin = {
 			type: 'hidden',
 			label: 'fee coin',
-			disabled: true,
-			fullWidth: true,
-			ishorizontalfield: true,
-		};
-
-		fields.fee_type = {
-			type: 'hidden',
-			label: 'fee type',
 			disabled: true,
 			fullWidth: true,
 			ishorizontalfield: true,

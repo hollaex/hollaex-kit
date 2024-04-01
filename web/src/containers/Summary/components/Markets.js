@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
 import { withRouter } from 'react-router';
-import _get from 'lodash/get';
 
 import { SearchBox } from 'components';
-import MarketList from '../../TradeTabs/components/MarketList';
 import withConfig from 'components/ConfigProvider/withConfig';
 import STRINGS from 'config/localizedStrings';
 import { DEFAULT_COIN_DATA } from 'config/constants';
 import { getSparklines } from 'actions/chartAction';
 import { EditWrapper } from 'components';
 import { MarketsSelector } from 'containers/Trade/utils';
+import MarketList from 'containers/TradeTabs/components/MarketList';
 
 class Markets extends Component {
 	constructor(props) {
@@ -21,6 +21,7 @@ class Markets extends Component {
 			chartData: {},
 			pageSize: 10,
 			page: 0,
+			count: 0,
 			searchValue: '',
 		};
 	}
@@ -49,15 +50,17 @@ class Markets extends Component {
 		const { markets } = this.props;
 
 		const pairs = this.getSearchPairs(searchValue);
-		const filteredData = markets.filter(({ key }) => pairs.includes(key));
-		const count = filteredData.length;
+
+		const searchResults = markets.filter(({ key }) => pairs.includes(key));
+
+		const count = searchResults.length;
 
 		const initItem = page * pageSize;
 		if (initItem < count) {
-			const data = filteredData.slice(0, initItem + pageSize);
+			const data = searchResults.slice(0, initItem + pageSize);
 			this.setState({ data, page, count });
 		} else {
-			this.setState({ data: filteredData, page, count });
+			this.setState({ data: searchResults, page, count });
 		}
 	};
 
@@ -103,30 +106,48 @@ class Markets extends Component {
 	};
 
 	handleClick = (pair) => {
-		const { router, constants } = this.props;
+		const {
+			router,
+			constants: { features: { pro_trade, quick_trade } = {} },
+		} = this.props;
 		if (pair && router) {
-			if (_get(constants, 'features.pro_trade')) {
+			if (pro_trade) {
 				router.push(`/trade/${pair}`);
-			} else if (_get(constants, 'features.quick_trade')) {
+			} else if (quick_trade) {
 				router.push(`/quick-trade/${pair}`);
 			}
 		}
 	};
 
 	render() {
+		const { data, chartData, page, pageSize, count } = this.state;
 		const {
 			showSearch = true,
 			showMarkets = false,
 			router,
 			isHome = false,
+			showContent = false,
+			renderContent,
 		} = this.props;
-		const { data, chartData, page, pageSize, count } = this.state;
+
 		if (isHome) {
-			this.props.renderContent(data);
+			renderContent(data);
 		}
 
 		return (
 			<div>
+				{showContent && (
+					<div>
+						<EditWrapper stringId="SUMMARY_MARKETS.VISIT_COIN_INFO_PAGE">
+							{STRINGS.formatString(
+								STRINGS['SUMMARY_MARKETS.VISIT_COIN_INFO_PAGE'],
+								<Link to="assets" className="link-text">
+									{STRINGS['SUMMARY_MARKETS.HERE']}
+								</Link>
+							)}
+						</EditWrapper>
+					</div>
+				)}
 				{showSearch && (
 					<div className="d-flex justify-content-end">
 						<div className={isMobile ? '' : 'w-25 pb-4'}>
@@ -141,32 +162,48 @@ class Markets extends Component {
 						</div>
 					</div>
 				)}
+
 				<MarketList
+					loading={!data.length}
 					markets={data}
 					chartData={chartData}
 					handleClick={this.handleClick}
 				/>
+
 				{!showMarkets && page * pageSize + pageSize < count && (
 					<div className="text-right">
-						<span
-							className="trade-account-link pointer d-flex justify-content-center"
-							onClick={this.handleLoadMore}
+						<EditWrapper
+							stringId="STAKE_DETAILS.VIEW_MORE"
+							renderWrapper={(children) => (
+								<span
+									className="trade-account-link pointer d-flex justify-content-center"
+									onClick={this.handleLoadMore}
+								>
+									{children}
+								</span>
+							)}
 						>
 							{STRINGS['STAKE_DETAILS.VIEW_MORE']}
-						</span>
+						</EditWrapper>
 					</div>
 				)}
 				{showMarkets && (
 					<div className="d-flex justify-content-center app_bar-link blue-link pointer py-2 underline-text market-list__footer">
-						<EditWrapper stringId="MARKETS_TABLE.VIEW_MARKETS" />
-						<div
-							onClick={() => {
-								router.push('/markets');
-							}}
-							className="pt-1"
+						<EditWrapper
+							stringId="MARKETS_TABLE.VIEW_MARKETS"
+							renderWrapper={(children) => (
+								<div
+									onClick={() => {
+										router.push('/markets');
+									}}
+									className="pt-1"
+								>
+									{children}
+								</div>
+							)}
 						>
 							{STRINGS['MARKETS_TABLE.VIEW_MARKETS']}
-						</div>
+						</EditWrapper>
 					</div>
 				)}
 			</div>

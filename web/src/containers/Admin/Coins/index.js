@@ -44,6 +44,7 @@ const Coins = ({
 	nohover = false,
 	fullname = '',
 	onClick,
+	isLight = false,
 }) => {
 	const coinStyle = {};
 	let wrapClass = 'coin-wrap';
@@ -66,7 +67,12 @@ const Coins = ({
 	}
 	return (
 		<div className={classnames('coins-wrapper', wrapClass)} onClick={onClick}>
-			<div className={`coin-ico ${type}`} style={coinStyle}>
+			<div
+				className={classnames('text_overflow', 'coin-ico', type, {
+					light: isLight,
+				})}
+				style={coinStyle}
+			>
 				{!type ? <div className="type-space"></div> : type.toUpperCase()}
 				{large ? <p>{fullname || COIN_FULL_NAME[type]}</p> : null}
 			</div>

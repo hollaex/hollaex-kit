@@ -1,0 +1,123 @@
+[
+  {
+    "description": "As a valid customer\nIn order to Trade/ Deposit and withdraw\nI want to create wallets",
+    "keyword": "Feature",
+    "name": "Wallet Feature",
+    "line": 1,
+    "id": "wallet-feature",
+    "tags": [],
+    "uri": "wallet.feature",
+    "elements": [
+      {
+        "id": "wallet-feature;creating-a-new-user-with-the-current-password",
+        "keyword": "Scenario",
+        "line": 7,
+        "name": "Creating a new user with the current password",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 9,
+            "name": "I sign up with a random username and the current password",
+            "result": {
+              "status": "passed",
+              "duration": 18097000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 10,
+            "name": "Admin confirms the new user",
+            "result": {
+              "status": "passed",
+              "duration": 29287000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 11,
+            "name": "I registered with the new username",
+            "result": {
+              "status": "passed",
+              "duration": 151000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "wallet-feature;successful-wallet-creation",
+        "keyword": "Scenario",
+        "line": 13,
+        "name": "Successful Wallet Creation",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 15,
+            "name": "I  logged in succesfully",
+            "result": {
+              "status": "passed",
+              "duration": 33482000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 16,
+            "name": "I dont have wallets",
+            "result": {
+              "status": "passed",
+              "duration": 310000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 17,
+            "name": "I genrate TRC20 wallet",
+            "result": {
+              "status": "passed",
+              "duration": 1169000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 18,
+            "name": "I should have TRC20 wallet",
+            "result": {
+              "status": "passed",
+              "duration": 857000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 19,
+            "name": "I genrate ERC20 wallet",
+            "result": {
+              "status": "passed",
+              "duration": 2319000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 20,
+            "name": "I should have ERC20 wallet",
+            "result": {
+              "status": "passed",
+              "duration": 917000000
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

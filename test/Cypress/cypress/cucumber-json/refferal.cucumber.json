@@ -1,0 +1,93 @@
+[
+  {
+    "description": "As a Hollaex user,\nIn order to take advantage of my referral\nI want to record the referred user",
+    "keyword": "Feature",
+    "name": "Referral Feature",
+    "line": 1,
+    "id": "referral-feature",
+    "tags": [],
+    "uri": "refferal.feature",
+    "elements": [
+      {
+        "id": "referral-feature;run-a-simple-test",
+        "keyword": "Scenario",
+        "line": 7,
+        "name": "run a simple test",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 9,
+            "name": "I Log in to get the referral code as the referee",
+            "result": {
+              "status": "passed",
+              "duration": 15792000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 10,
+            "name": "Get Referral link \"referral code\"",
+            "result": {
+              "status": "passed",
+              "duration": 385000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 11,
+            "name": "I have referred X users as the current user",
+            "result": {
+              "status": "passed",
+              "duration": 1061000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 12,
+            "name": "a new \"random\" user sign up with \"referral code\"",
+            "result": {
+              "status": "passed",
+              "duration": 10299000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 13,
+            "name": "I log in as the referee",
+            "result": {
+              "status": "passed",
+              "duration": 14748000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 14,
+            "name": "I have referred Y users as New user",
+            "result": {
+              "status": "passed",
+              "duration": 5411000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 15,
+            "name": "Y - X = 1",
+            "result": {
+              "status": "passed",
+              "duration": 402000000
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

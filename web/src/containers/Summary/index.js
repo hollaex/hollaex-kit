@@ -15,7 +15,6 @@ import MobileSummary from './MobileSummary';
 import { IconTitle } from 'components';
 // import { logout } from '../../actions/authAction';
 import {
-	openFeesStructureandLimits,
 	// openContactForm,
 	logoutconfirm,
 	setNotification,
@@ -30,9 +29,10 @@ import {
 import STRINGS from 'config/localizedStrings';
 import { formatAverage, formatBaseAmount } from 'utils/currency';
 import { getLastMonthVolume } from './components/utils';
-import { getUserReferralCount } from 'actions/userAction';
+import { getUserReferrals } from 'actions/userAction';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { openContactForm } from 'actions/appActions';
+import { isLoggedIn } from 'utils/token';
 
 class Summary extends Component {
 	state = {
@@ -42,11 +42,13 @@ class Summary extends Component {
 	};
 
 	componentDidMount() {
-		const { user, tradeVolumes, pairs, prices } = this.props;
+		const { user, tradeVolumes, pairs, prices, getUserReferrals } = this.props;
 
 		if (user.id) {
 			this.setCurrentTradeAccount(user);
-			this.props.getUserReferralCount();
+			getUserReferrals();
+		} else {
+			this.setCurrentTradeAccount(user);
 		}
 		if (tradeVolumes.fetched) {
 			let lastMonthVolume = getLastMonthVolume(
@@ -76,19 +78,12 @@ class Summary extends Component {
 			this.setState({ lastMonthVolume });
 		}
 		if (nextProps.user.id !== this.props.user.id && nextProps.user.id) {
-			this.props.getUserReferralCount();
+			this.props.getUserReferrals();
 		}
 	}
 
 	logoutConfirm = () => {
 		this.props.logoutconfirm();
-	};
-
-	onFeesAndLimits = (tradingAccount, discount) => {
-		this.props.openFeesStructureandLimits({
-			verification_level: tradingAccount,
-			discount: discount,
-		});
 	};
 
 	onAccountTypeChange = (type) => {
@@ -107,6 +102,11 @@ class Summary extends Component {
 				currentTradingAccount,
 				selectedAccount: user.verification_level,
 			});
+		} else if (!isLoggedIn()) {
+			const { config_level } = this.props;
+			this.setState({
+				selectedAccount: Object.keys(config_level)[0] || 0,
+			});
 		}
 	};
 
@@ -124,7 +124,6 @@ class Summary extends Component {
 		const {
 			user,
 			balance,
-			activeTheme,
 			pairs,
 			coins,
 			verification_level,
@@ -143,10 +142,25 @@ class Summary extends Component {
 
 		const { fullname } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 		const totalAssets = formatAverage(formatBaseAmount(totalAsset));
-		const level = selectedAccount ? selectedAccount : verification_level;
+		const level = selectedAccount
+			? selectedAccount
+			: isLoggedIn()
+			? verification_level
+			: Object.keys(config_level)[0];
 		const accountData = config_level[level] || {};
 		const traderAccTitle =
 			accountData.name ||
+			STRINGS.formatString(
+				STRINGS['SUMMARY.LEVEL_OF_ACCOUNT'],
+				verification_level
+			);
+
+		const userData =
+			config_level[
+				isLoggedIn() ? verification_level : Object.keys(config_level)[0]
+			] || {};
+		const userAccountTitle =
+			userData.name ||
 			STRINGS.formatString(
 				STRINGS['SUMMARY.LEVEL_OF_ACCOUNT'],
 				verification_level
@@ -169,7 +183,6 @@ class Summary extends Component {
 							pairs={pairs}
 							coins={coins}
 							config={config_level}
-							activeTheme={activeTheme}
 							selectedAccount={selectedAccount}
 							logout={this.logoutConfirm}
 							balance={balance}
@@ -177,9 +190,9 @@ class Summary extends Component {
 							totalAssets={totalAssets}
 							lastMonthVolume={lastMonthVolume}
 							traderAccTitle={traderAccTitle}
+							userAccountTitle={userAccountTitle}
 							affiliation={affiliation}
 							onInviteFriends={this.onInviteFriends}
-							onFeesAndLimits={this.onFeesAndLimits}
 							onUpgradeAccount={this.onUpgradeAccount}
 							onAccountTypeChange={this.onAccountTypeChange}
 							verification_level={verification_level}
@@ -189,14 +202,17 @@ class Summary extends Component {
 							<div id="summary-header-section"></div>
 							<div className="d-flex">
 								<div className="summary-section_1 trader-account-wrapper d-flex">
-									<SummaryBlock title={traderAccTitle} wrapperClassname="w-100">
+									<SummaryBlock
+										title={userAccountTitle}
+										wrapperClassname="w-100"
+										verification_level={verification_level}
+										icons={ICONS}
+									>
 										<TraderAccounts
 											user={user}
 											pairs={pairs}
 											coins={coins}
 											config={config_level}
-											activeTheme={activeTheme}
-											onFeesAndLimits={this.onFeesAndLimits}
 											onUpgradeAccount={this.onUpgradeAccount}
 											onInviteFriends={this.onInviteFriends}
 											verification_level={verification_level}
@@ -240,7 +256,6 @@ class Summary extends Component {
 											totalAssets={totalAssets}
 											balance={balance}
 											coins={coins}
-											activeTheme={activeTheme}
 										/>
 									</SummaryBlock>
 									{/* </div> */}
@@ -255,8 +270,8 @@ class Summary extends Component {
 										user={user}
 										coins={coins}
 										pairs={pairs}
-										activeTheme={activeTheme}
 										router={router}
+										showContent={true}
 									/>
 								</SummaryBlock>
 								{/*<div className="trading-volume-wrapper">
@@ -283,13 +298,11 @@ class Summary extends Component {
 										user={user}
 										coins={coins}
 										pairs={pairs}
-										activeTheme={activeTheme}
 										config={config_level}
 										currentTradingAccount={currentTradingAccount.symbol}
 										selectedAccount={selectedAccount}
 										lastMonthVolume={lastMonthVolume}
 										onAccountTypeChange={this.onAccountTypeChange}
-										onFeesAndLimits={this.onFeesAndLimits}
 										onUpgradeAccount={this.onUpgradeAccount}
 									/>
 								</SummaryBlock>
@@ -309,7 +322,6 @@ const mapStateToProps = (state) => ({
 	user: state.user || {},
 	verification_level: state.user.verification_level,
 	balance: state.user.balance,
-	activeTheme: state.app.theme,
 	prices: state.orderbook.prices,
 	price: state.orderbook.price,
 	orders: state.order.activeOrders,
@@ -324,12 +336,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 	logoutconfirm: bindActionCreators(logoutconfirm, dispatch),
-	openFeesStructureandLimits: bindActionCreators(
-		openFeesStructureandLimits,
-		dispatch
-	),
 	setNotification: bindActionCreators(setNotification, dispatch),
-	getUserReferralCount: bindActionCreators(getUserReferralCount, dispatch),
+	getUserReferrals: bindActionCreators(getUserReferrals, dispatch),
 	openContactForm: bindActionCreators(openContactForm, dispatch),
 });
 

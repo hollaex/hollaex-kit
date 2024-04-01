@@ -1,0 +1,63 @@
+[
+  {
+    "description": "As an Admin, \nIn order to give a user an incentive.\nI want to change a user promotion rate within the range of 0 to 100",
+    "keyword": "Feature",
+    "name": "Promotion Feature",
+    "line": 1,
+    "id": "promotion-feature",
+    "tags": [],
+    "uri": "promotion.feature",
+    "elements": [
+      {
+        "id": "promotion-feature;discount-fee-manipulation-by-admin-for-userlevel@testsae.com",
+        "keyword": "Scenario",
+        "line": 7,
+        "name": "Discount fee manipulation by admin for userlevel@testsae.com",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 9,
+            "name": "Admin logged in",
+            "result": {
+              "status": "passed",
+              "duration": 14011000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 10,
+            "name": "Discount rate is in the range of \"zero\" to \"hunderd\" for \"leveltest@testsae.com\"",
+            "result": {
+              "status": "passed",
+              "duration": 15341000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 11,
+            "name": "Admin adjust the discount rate for a user \"userlevel@testsae.com\"",
+            "result": {
+              "status": "passed",
+              "duration": 3718000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 12,
+            "name": "The user profile page of \"userlevel@testsae.com\" should present the discount rate",
+            "result": {
+              "status": "passed",
+              "duration": 13105000000
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

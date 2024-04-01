@@ -7,11 +7,12 @@ import { FIT_SCREEN_HEIGHT } from 'config/constants';
 import { isBrowser, isMobile } from 'react-device-detect';
 import isEqual from 'lodash.isequal';
 import debounce from 'lodash.debounce';
+import { browserHistory } from 'react-router';
 import querystring from 'query-string';
 // import { CaretLeftOutlined, CaretRightOutlined } from '@ant-design/icons';
 // import { Button } from 'antd';
 import { setSideBarState, getSideBarState } from 'utils/sideBar';
-import AppMenuSidebar from '../../components/AppMenuSidebar';
+import AppMenuSidebar from 'components/AppMenuSidebar';
 import { addElements, injectHTML } from 'utils/script';
 import { SuccessDisplay } from 'components';
 
@@ -29,13 +30,9 @@ import {
 import { storeTools } from 'actions/toolsAction';
 import STRINGS from 'config/localizedStrings';
 
-import {
-	getThemeClass,
-	getChatMinimized,
-	setChatMinimized,
-} from '../../utils/theme';
-import { checkUserSessionExpired } from '../../utils/utils';
-import { getTokenTimestamp, isLoggedIn, isAdmin } from '../../utils/token';
+import { getChatMinimized, setChatMinimized } from 'utils/theme';
+import { checkUserSessionExpired } from 'utils/utils';
+import { getTokenTimestamp, isLoggedIn, isAdmin } from 'utils/token';
 import {
 	AppBar,
 	AppMenuBar,
@@ -47,7 +44,7 @@ import {
 	SnackNotification,
 	SnackDialog,
 	PairTabs,
-} from '../../components';
+} from 'components';
 import {
 	ContactForm,
 	HelpfulResourcesForm,
@@ -66,11 +63,8 @@ import MarketSelector from 'components/AppBar/MarketSelector';
 import ConnectViaDesktop from 'containers/Stake/components/ConnectViaDesktop';
 import ConfigureApps from 'containers/Apps/ConfigureApps';
 
-import {
-	getClasesForLanguage,
-	getFontClassForLanguage,
-} from '../../utils/string';
-import { getExchangeInitialized } from '../../utils/initialize';
+import { getClasesForLanguage, getFontClassForLanguage } from 'utils/string';
+import { getExchangeInitialized } from 'utils/initialize';
 
 import Socket from './Socket';
 import Container from './Container';
@@ -94,11 +88,14 @@ class App extends Component {
 		activeMenu: '',
 		paramsData: {},
 		isCustomNotification: false,
+		isTradeTab: false,
+		isProTrade: false,
+		isQuickTrade: false,
 	};
 	ordersQueued = [];
 	limitTimeOut = null;
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		const chatIsClosed = getChatMinimized();
 		this.setState({
 			chatIsClosed,
@@ -289,35 +286,46 @@ class App extends Component {
 		this.setState({ activeMenu });
 	};
 
-	handleMenuChange = (path = '', cb) => {
-		const { router, pairs } = this.props;
-
-		let pair = '';
-		if (Object.keys(pairs).length) {
-			pair = Object.keys(pairs)[0];
+	handleMenuChange = (path = '', cb, enableTrade = false) => {
+		if (enableTrade && path === '/trade') {
+			this.setState({ isTradeTab: !this.state.isTradeTab });
 		} else {
-			pair = this.props.pair;
-		}
+			this.setState({
+				isTradeTab: false,
+				isQuickTrade: false,
+				isProTrade: false,
+			});
+			const { router, pairs } = this.props;
 
-		switch (path) {
-			case 'logout':
-				this.logout();
-				break;
-			case 'help':
-				this.props.openHelpfulResourcesForm();
-				break;
-			case 'quick-trade':
-				router.push(`/quick-trade/${pair}`);
-				break;
-			default:
-				router.push(path);
-		}
-
-		this.setState({ activePath: path }, () => {
-			if (cb) {
-				cb();
+			let pair = '';
+			if (Object.keys(pairs).length) {
+				pair = Object.keys(pairs)[0];
+			} else {
+				pair = this.props.pair;
 			}
-		});
+
+			switch (path) {
+				case 'logout':
+					this.logout();
+					break;
+				case 'help':
+					this.props.openHelpfulResourcesForm();
+					break;
+				case 'quick-trade':
+					router.push(`/quick-trade/${pair}`);
+					break;
+				case 'trades':
+					break;
+				default:
+					router.push(path);
+			}
+
+			this.setState({ activePath: path }, () => {
+				if (cb) {
+					cb();
+				}
+			});
+		}
 	};
 
 	goToPage = (path) => {
@@ -326,9 +334,14 @@ class App extends Component {
 		}
 	};
 
-	goToPair = (pair) => {
+	goToPair = (pair, isQuickTrade) => {
 		const { router } = this.props;
-		router.push(`/trade/${pair}`);
+
+		if (isQuickTrade) {
+			router.push(`/quick-trade/${pair}`);
+		} else {
+			router.push(`/trade/${pair}`);
+		}
 	};
 
 	onViewMarketsClick = () => {
@@ -472,6 +485,7 @@ class App extends Component {
 					<Notification
 						type={type}
 						data={rest}
+						coins={this.props.coins}
 						onConfirm={data.onConfirm}
 						onBack={this.onCloseDialog}
 					/>
@@ -491,7 +505,6 @@ class App extends Component {
 						type={type}
 						data={data}
 						onClose={this.onCloseDialog}
-						activeTheme={this.props.activeTheme}
 					/>
 				);
 			case MARKET_SELECTOR:
@@ -642,6 +655,15 @@ class App extends Component {
 		this.props.location.search = '';
 	};
 
+	onHandleTradeTabs = (path = '') => {
+		this.setState({
+			isTradeTab: !this.state.isTradeTab,
+			isProTrade: true,
+			isQuickTrade: true,
+		});
+		browserHistory.push(path);
+	};
+
 	render() {
 		const {
 			symbol,
@@ -651,7 +673,6 @@ class App extends Component {
 			// verification_level,
 			activeLanguage,
 			// openContactForm,
-			activeTheme,
 			// unreadMessages,
 			router,
 			location,
@@ -663,6 +684,7 @@ class App extends Component {
 			pairsTradesFetched,
 			icons: ICONS,
 			menuItems,
+			pairs,
 		} = this.props;
 
 		const {
@@ -673,6 +695,8 @@ class App extends Component {
 			paramsData,
 			// sidebarFitHeight,
 			// isSidebarOpen,
+			isProTrade,
+			isQuickTrade,
 		} = this.state;
 
 		const languageClasses = getClasesForLanguage(activeLanguage, 'array');
@@ -728,7 +752,6 @@ class App extends Component {
 					/>
 					<div
 						className={classnames(
-							getThemeClass(activeTheme),
 							activePath,
 							symbol,
 							fontClass,
@@ -744,7 +767,6 @@ class App extends Component {
 							className={classnames(
 								'app_container',
 								'd-flex',
-								getThemeClass(activeTheme),
 								activePath,
 								symbol,
 								fontClass,
@@ -773,7 +795,7 @@ class App extends Component {
 										onMenuChange={this.handleMenuChange}
 										isHome={isHome}
 									>
-										{isBrowser && isMenubar && isLoggedIn() && (
+										{isBrowser && isMenubar && (
 											<AppMenuBar
 												menuItems={menuItems}
 												activePath={this.state.activeMenu}
@@ -881,7 +903,6 @@ class App extends Component {
 										)}
 										onCloseDialog={this.onCloseDialog}
 										shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
-										theme={activeTheme}
 										showCloseText={
 											!(
 												activeNotification.type === NOTIFICATIONS.STAKE ||
@@ -911,7 +932,6 @@ class App extends Component {
 											this.renderDialogContent(
 												activeNotification
 												// prices,
-												// activeTheme
 											)}
 									</Dialog>
 									{!isMobile && !isHome && features && features.chat && (
@@ -930,6 +950,11 @@ class App extends Component {
 											isLogged={isLoggedIn()}
 											activePath={this.state.activeMenu}
 											onMenuChange={this.handleMenuChange}
+											tradeTab={this.state.isTradeTab}
+											onHandleTradeTabs={this.onHandleTradeTabs}
+											pairs={pairs}
+											isProTrade={isProTrade}
+											isQuickTrade={isQuickTrade}
 										/>
 									</div>
 								)}
@@ -942,27 +967,21 @@ class App extends Component {
 						<SnackDialog />
 					</div>
 					<div
-						className={classnames(
-							getThemeClass(activeTheme),
-							languageClasses[0],
-							{
-								'layout-mobile': isMobile,
-								'layout-desktop': isBrowser,
-							}
-						)}
+						className={classnames(languageClasses[0], {
+							'layout-mobile': isMobile,
+							'layout-desktop': isBrowser,
+						})}
 					>
-						{showFooter && !isChartEmbed && (
-							<AppFooter theme={activeTheme} constants={constants} />
-						)}
+						{showFooter && !isChartEmbed && <AppFooter constants={constants} />}
 					</div>
 				</div>
 				{isAdmin() && isBrowser && !isChartEmbed && (
 					<OperatorControls initialData={this.props.location} />
 				)}
 				<Dialog
+					label="successful_dialog"
 					isOpen={isCustomNotification}
 					onCloseDialog={this.onCloseNotification}
-					theme={activeTheme}
 				>
 					<SuccessDisplay
 						onClick={this.onCloseNotification}

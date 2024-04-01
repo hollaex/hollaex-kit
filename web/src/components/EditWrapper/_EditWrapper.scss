@@ -27,6 +27,11 @@ $operator-controls__panel-text-color: #ffffff;
 	text-decoration: none !important;
 	font-weight: normal !important;
 
+	&.medium {
+		width: 35px !important;
+		height: 35px !important;
+	}
+
 	&.large {
 		width: 50px !important;
 		height: 50px !important;

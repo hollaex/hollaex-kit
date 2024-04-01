@@ -74,6 +74,9 @@ const ThemeSwitcher = ({ selected, options = [], toggle, icons: ICONS }) => {
 						onSelect={toggle}
 						bordered={false}
 						onClick={() => setIsOpen((prev) => !prev)}
+						onBlur={() => {
+							if (isOpen) setIsOpen(false);
+						}}
 						suffixIcon={isOpen ? <CaretUpOutlined /> : <CaretDownOutlined />}
 						className="custom-select-input-style appbar elevated"
 						dropdownClassName="custom-select-style select-option-wrapper"

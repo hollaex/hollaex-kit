@@ -36,7 +36,7 @@ $padding: 0.25rem;
 	}
 
 	.trade_input-input-currency {
-		@include size($input--height);
+		height: $input--height;
 		position: absolute;
 		top: 0;
 		font-weight: bold;

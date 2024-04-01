@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { userStakesValueSelector } from 'containers/Stake/selector';
+import { EditWrapper } from 'components';
 import ConnectWrapper from './ConnectWrapper';
 import STRINGS from 'config/localizedStrings';
 import { formatToCurrency } from 'utils/currency';
@@ -36,14 +37,18 @@ const StakesAndEarnings = ({ totalEarningsValue, totalStakesValue, coins }) => {
 			}}
 		>
 			<div>
-				<div>{STRINGS['STAKE.ESTIMATED_STAKED']}</div>
+				<EditWrapper stringId="STAKE.ESTIMATED_STAKED">
+					{STRINGS['STAKE.ESTIMATED_STAKED']}
+				</EditWrapper>
 				<div>
 					<ConnectWrapper>{totalStakesString}</ConnectWrapper>
 				</div>
 				<div className="kit-divider" />
 			</div>
 			<div>
-				<div>{STRINGS['STAKE.ESTIMATED_EARNINGS']}</div>
+				<EditWrapper stringId="STAKE.ESTIMATED_EARNINGS">
+					{STRINGS['STAKE.ESTIMATED_EARNINGS']}
+				</EditWrapper>
 				<div>
 					<ConnectWrapper>{totalEarningsString}</ConnectWrapper>
 				</div>

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 import { Select, Form, Row, DatePicker, Radio } from 'antd';
 import { CaretDownOutlined } from '@ant-design/icons';
 import moment from 'moment';
 
+import { Coin } from 'components';
 import STRINGS from 'config/localizedStrings';
 import { dateFilters } from '../filterUtils';
 
@@ -31,7 +33,7 @@ const Filters = ({ coins = {}, onSearch, formName, activeTab }) => {
 
 	useEffect(() => {
 		form.setFieldsValue({
-			status: null,
+			status: 'all',
 			currency: null,
 			size: 'all',
 		});
@@ -59,7 +61,7 @@ const Filters = ({ coins = {}, onSearch, formName, activeTab }) => {
 				setCustomSel(false);
 				const {
 					[values.size]: { range },
-				} = dateFilters;
+				} = dateFilters();
 				form.setFieldsValue({ range });
 				values.range = range;
 				if (_.range === undefined) {
@@ -137,6 +139,7 @@ const Filters = ({ coins = {}, onSearch, formName, activeTab }) => {
 							width: 100,
 						}}
 						size="small"
+						showSearch={true}
 						className="custom-select-input-style elevated"
 						dropdownClassName="custom-select-style"
 						bordered={false}
@@ -161,25 +164,29 @@ const Filters = ({ coins = {}, onSearch, formName, activeTab }) => {
 				>
 					<Select
 						style={{
-							width: 100,
+							width: 140,
 						}}
 						size="small"
+						showSearch={true}
 						className="custom-select-input-style elevated"
 						dropdownClassName="custom-select-style"
 						bordered={false}
 						suffixIcon={<CaretDownOutlined />}
 					>
 						<Option value={null}>{STRINGS['ALL']}</Option>
-						{Object.entries(coins).map(([_, { symbol, fullname }]) => (
+						{Object.entries(coins).map(([_, { symbol, fullname, icon_id }]) => (
 							<Option key={symbol} value={symbol}>
-								{fullname}
+								<div className="d-flex gap-1">
+									<Coin iconId={icon_id} type="CS1" />
+									<div>{fullname}</div>
+								</div>
 							</Option>
 						))}
 					</Select>
 				</Form.Item>
 				<Form.Item name="size">
-					<Radio.Group buttonStyle="outline" size="small">
-						{Object.entries(dateFilters).map(([key, { name }]) => (
+					<Radio.Group size="small">
+						{Object.entries(dateFilters()).map(([key, { name }]) => (
 							<Radio.Button key={key} value={key}>
 								{name}
 							</Radio.Button>
@@ -188,7 +195,6 @@ const Filters = ({ coins = {}, onSearch, formName, activeTab }) => {
 				</Form.Item>
 				<Form.Item
 					name="custom"
-					buttonStyle="outline"
 					size="small"
 					onClick={() => Customselection('custom')}
 					className={customSel ? 'cusStyle1' : 'cusStyle2'}
@@ -211,4 +217,8 @@ const Filters = ({ coins = {}, onSearch, formName, activeTab }) => {
 	);
 };
 
-export default Filters;
+const mapStateToProps = (state) => ({
+	activeLanguage: state.app.language,
+});
+
+export default connect(mapStateToProps)(Filters);

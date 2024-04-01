@@ -26,6 +26,7 @@ const ActionNotification = ({
 	status,
 	onClick,
 	iconId,
+	tradeClassName,
 	iconPath,
 	className,
 	reverseImage,
@@ -36,6 +37,7 @@ const ActionNotification = ({
 	rotateIfLtr,
 	rotateIfRtl,
 	showActionText,
+	hideActionText = false,
 	disable = false,
 }) => {
 	// This is to prevent action when edit string or upload icons are clicked
@@ -50,7 +52,11 @@ const ActionNotification = ({
 	return (
 		<div
 			className={classnames(
-				'action_notification-wrapper',
+				tradeClassName ? tradeClassName : 'action_notification-wrapper',
+				!tradeClassName && {
+					position: 'absolute',
+					top: '0.25rem',
+				},
 				{
 					pointer: !disable && showPointer,
 					left: textPosition === 'left',
@@ -63,7 +69,7 @@ const ActionNotification = ({
 			)}
 			onClick={onActionClick}
 		>
-			{(showActionText || !isMobile) && (
+			{!hideActionText && (showActionText || !isMobile) && (
 				<div
 					className={classnames(
 						'action_notification-text',

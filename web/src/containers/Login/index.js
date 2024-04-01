@@ -5,7 +5,7 @@ import { SubmissionError, change } from 'redux-form';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
-
+import { setPricesAndAssetPending } from 'actions/assetActions';
 import {
 	performLogin,
 	storeLoginResult,
@@ -23,11 +23,20 @@ import withConfig from 'components/ConfigProvider/withConfig';
 let errorTimeOut = null;
 
 const BottomLink = () => (
-	<div className={classnames('f-1', 'link_wrapper')}>
-		{STRINGS['LOGIN.NO_ACCOUNT']}
-		<Link to="/signup" className={classnames('blue-link')}>
-			{STRINGS['LOGIN.CREATE_ACCOUNT']}
-		</Link>
+	<div className="text-align-center">
+		<div className={classnames('f-1', 'link_wrapper')}>
+			{STRINGS['LOGIN.NO_ACCOUNT']}
+			<Link to="/signup" className={classnames('blue-link')}>
+				{STRINGS['LOGIN.CREATE_ACCOUNT']}
+			</Link>
+		</div>
+
+		<div className={classnames('f-1', 'link_wrapper')}>
+			{STRINGS['LOGIN.LOOKING_PRICES']}
+			<Link to="/markets" className={classnames('blue-link')}>
+				{STRINGS['LOGIN.VIEW_MARKETS']}
+			</Link>
+		</div>
 	</div>
 );
 
@@ -109,6 +118,7 @@ class Login extends Component {
 		return performLogin(values)
 			.then((res) => {
 				if (res.data.token) this.setState({ token: res.data.token });
+				this.props.setPricesAndAssetPending();
 				// if ((!Object.keys(this.props.info).length) || (!this.props.info.active)
 				// 	|| (this.props.info.is_trial && this.props.info.active
 				// 		&& moment().diff(this.props.info.created_at, 'seconds') > EXCHANGE_EXPIRY_SECONDS))
@@ -152,6 +162,7 @@ class Login extends Component {
 			.then((res) => {
 				this.setState({ otpDialogIsOpen: false });
 				if (res.data.token) this.setState({ token: res.data.token });
+				this.props.setPricesAndAssetPending();
 				// if ((!Object.keys(this.props.info).length) || (!this.props.info.active)
 				// 	|| (this.props.info.is_trial && this.props.info.active
 				// 		&& moment().diff(this.props.info.created_at, 'seconds') > EXCHANGE_EXPIRY_SECONDS))
@@ -250,7 +261,6 @@ class Login extends Component {
 					className="login-dialog"
 					useFullScreen={isMobile}
 					showBar={otpDialogIsOpen}
-					theme={activeTheme}
 				>
 					{otpDialogIsOpen && <OtpForm onSubmit={this.onSubmitLoginOtp} />}
 					{logoutDialogIsOpen && (
@@ -278,6 +288,10 @@ const mapStateToProps = (store) => ({
 const mapDispatchToProps = (dispatch) => ({
 	setLogoutMessage: bindActionCreators(setLogoutMessage, dispatch),
 	change: bindActionCreators(change, dispatch),
+	setPricesAndAssetPending: bindActionCreators(
+		setPricesAndAssetPending,
+		dispatch
+	),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withConfig(Login));

@@ -2,69 +2,17 @@
 
 .market-list__container {
 	.market-list__block {
-		.currency-ball-image-wrapper {
-			height: 22px;
-			padding-right: 7px;
-		}
-		.market-list__coin-icons {
-			width: 2.8rem;
-			margin: 0.3rem 0.3rem 0 0.3rem;
-
-			svg {
-				width: 2.5rem !important;
-				height: 2.5rem !important;
-				.btc0,
-				.btc1 {
-					fill: $coin-btc;
-				}
-				.eth0,
-				.eth1 {
-					fill: $coin-eth;
-				}
-				.bch-icon {
-					fill: $coin-bch;
-				}
-				.xrp-icon {
-					fill: $coin-xrp;
-				}
-				.xmr-icon {
-					fill: $coin-xmr;
-				}
-				.ada-icon {
-					fill: $coin-ada;
-				}
-				.bnb-icon {
-					fill: $coin-bnb;
-				}
-				.dai-icon {
-					fill: $coin-dai;
-				}
-				.eos-icon {
-					fill: $coin-eos;
-				}
-				.ltc-icon {
-					fill: $coin-ltc;
-				}
-				.trx-icon {
-					fill: $coin-trx;
-				}
-				.tusd-icon {
-					fill: $coin-tusd;
-				}
-				.xlm-icon {
-					fill: $coin-xlm;
-				}
-				.default-icon {
-					fill: $colors-black !important;
-				}
-			}
-		}
-
 		.market-list__block-table {
 			width: 100%;
 			font-size: $font-size-subtext;
 			margin-bottom: 3rem;
 
+			.loading-anime {
+				height: 20px;
+				width: 100px;
+				border-radius: 7px;
+				animation: mymove 3s infinite;
+			}
 			thead {
 				color: $colors-black;
 				& tr {
@@ -81,6 +29,28 @@
 				&:hover {
 					background-color: $app-light-background;
 					color: $colors-black;
+				}
+				.icon-container {
+					.squar-box {
+						width: 15px;
+						height: 15px;
+						border: 1px solid;
+						color: $colors-deactivate-color2;
+					}
+					.circle-icon {
+						width: 18px;
+						height: 18px;
+						border: 1px solid;
+						color: $colors-deactivate-color2;
+						border-radius: 10px;
+					}
+					.triangle-icon {
+						width: 0;
+						height: 0;
+						border-left: 15px solid transparent;
+						border-right: 15px solid transparent;
+						border-bottom: 15px solid;
+					}
 				}
 				.td-chart {
 					width: 150px;
@@ -122,6 +92,24 @@
 				min-width: 150px !important;
 				direction: ltr;
 			}
+			.td-trade {
+				width: 7rem;
+				.action_notification-wrapper {
+					right: auto;
+					top: 1.25rem;
+				}
+			}
+		}
+		.market-list__caret {
+			span:not(.important-text) {
+				opacity: 0.3;
+			}
+			.important-text {
+				opacity: 0.8;
+			}
+		}
+		.view-more-btn {
+			margin-bottom: 2rem;
 		}
 	}
 }
@@ -144,6 +132,12 @@
 				}
 				.table-icon {
 					padding-right: 0.5rem;
+				}
+				.loading-anime {
+					height: 20px;
+					width: 100px;
+					border-radius: 7px;
+					animation: mymove 3s infinite;
 				}
 			}
 		}
@@ -186,7 +180,6 @@
 					font-size: 1.3rem !important;
 					.td-chart {
 						min-width: 15rem;
-						padding: 0 !important;
 					}
 				}
 				.sticky-col {
@@ -199,12 +192,52 @@
 					max-width: 12rem !important;
 					z-index: 1;
 				}
+				.loading-anime {
+					height: 20px;
+					width: 100px;
+					border-radius: 7px;
+					animation: mymove 3s infinite;
+				}
 			}
 		}
 	}
 	.trade_tabs-container {
 		.sticky-col {
 			background-color: $app-background-color !important;
+		}
+	}
+	.digital-market-wrapper {
+		.sticky-col {
+			color: $colors-main-black;
+			background-color: $app-light-background;
+		}
+	}
+}
+
+.digital-market-wrapper {
+	.market-list__block-table {
+		margin-bottom: 1rem;
+		.table-row {
+			cursor: text !important;
+			&:hover {
+				background-color: unset !important;
+			}
+			.sticky-col {
+				cursor: pointer;
+				&:hover {
+					opacity: 0.5;
+				}
+			}
+		}
+	}
+}
+
+@media screen and (max-width: 786px) {
+	.layout-mobile {
+		.digital-market-wrapper {
+			.view-more-btn {
+				padding: 10%;
+			}
 		}
 	}
 }

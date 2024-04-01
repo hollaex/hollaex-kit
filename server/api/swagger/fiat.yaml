@@ -1,0 +1,89 @@
+paths:
+  /fiat/deposit:
+    x-swagger-router-controller: fiat
+    post:
+      operationId: createDepositRequest
+      description: Create a new deposit request
+      tags:
+        - fiat
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              amount:
+                type: number
+              transaction_id:
+                type: string
+                maxLength: 256
+              address:
+                type: string
+                maxLength: 256
+              currency:
+                type: string
+                maxLength: 256
+            required:
+              - amount
+              - transaction_id
+              - currency
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+      x-security-scopes:
+        - user
+  /fiat/withdrawal:
+    x-swagger-router-controller: fiat
+    post:
+      operationId: createWithdrawalRequest
+      description: Create a new withdrawal request
+      tags:
+        - fiat
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              amount:
+                type: number
+              bank_id:
+                type: string
+                maxLength: 256
+              currency:
+                type: string
+                maxLength: 256
+              captcha:
+                type: string
+                maxLength: 1024
+            required:
+              - amount
+              - bank_id
+              - currency
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+      x-security-scopes:
+        - user

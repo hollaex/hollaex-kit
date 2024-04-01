@@ -17,7 +17,7 @@ class PriceChange extends Component {
 			market,
 			market: { ticker },
 		} = this.props;
-		if (market && ticker && nextProp.market.ticker.close !== ticker.close) {
+		if (market && ticker && nextProp.market?.ticker && nextProp.market?.ticker.close !== ticker.close) {
 			const tickerDiff = nextProp.market.ticker.close - ticker.close;
 			this.setState((prevState) => ({
 				...prevState,
@@ -36,6 +36,8 @@ class PriceChange extends Component {
 		const {
 			market: { priceDifference, priceDifferencePercent },
 			disableGlance = false,
+			className,
+			large,
 		} = this.props;
 		const { inProp, tickerDiff } = this.state;
 		const glanceClass = !disableGlance
@@ -46,11 +48,20 @@ class PriceChange extends Component {
 			<Fragment>
 				<Transition in={inProp} timeout={1000}>
 					{(state) => (
-						<div className="price-change d-flex align-items-center justify-content-between">
+						<div
+							className={classnames(
+								'price-change',
+								'd-flex',
+								'align-items-center',
+								'justify-content-between',
+								{ large }
+							)}
+						>
 							<div
 								className={classnames(
 									'title-font',
 									'price-diff',
+									className,
 									state,
 									this.getDirBasedClass(priceDifference),
 									glanceClass

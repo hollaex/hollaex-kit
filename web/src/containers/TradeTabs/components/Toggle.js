@@ -1,5 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
+import { EditWrapper } from 'components';
 import { FLEX_CENTER_CLASSES } from 'config/constants';
 
 const Toggle = ({ selected, options = [], toggle }) => {
@@ -18,7 +19,7 @@ const Toggle = ({ selected, options = [], toggle }) => {
 						<div
 							className={'app-bar-account-content app-bar-account-moon-content'}
 						>
-							{options[0].label}
+							<EditWrapper>{options[0].label}</EditWrapper>
 						</div>
 					</div>
 					<div
@@ -32,7 +33,7 @@ const Toggle = ({ selected, options = [], toggle }) => {
 					</div>
 					<div className={classnames('selected', selected)}>
 						<div className="app-bar-account-content app-bar-account-moon-content">
-							{options[1].label}
+							<EditWrapper>{options[1].label}</EditWrapper>
 						</div>
 					</div>
 				</div>

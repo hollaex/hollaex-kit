@@ -16,12 +16,13 @@ const getTiers = (req, res) => {
 const postTier = (req, res) => {
 	loggerTier.verbose(req.uuid, 'controllers/tier/postTier auth', req.auth);
 
-	const { level, name, icon, description, deposit_limit, withdrawal_limit, fees, note } = req.swagger.params.data.value;
+	const { level, name, icon, description, fees, note } = req.swagger.params.data.value;
 
 	loggerTier.info(req.uuid, 'controllers/tier/postTier new tier', level, name, description);
 
-	toolsLib.tier.createTier(level, name, icon, description, deposit_limit, withdrawal_limit, fees, note)
+	toolsLib.tier.createTier(level, name, icon, description, fees, note)
 		.then((tier) => {
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
 			loggerTier.info(req.uuid, 'controllers/tier/postTier new tier created', level);
 			return res.json(tier);
 		})
@@ -34,19 +35,18 @@ const postTier = (req, res) => {
 const putTier = (req, res) => {
 	loggerTier.verbose(req.uuid, 'controllers/tier/putTier auth', req.auth);
 
-	const { level, name, icon, description, deposit_limit, withdrawal_limit, note, native_currency_limit } = req.swagger.params.data.value;
+	const { level, name, icon, description, note, native_currency_limit } = req.swagger.params.data.value;
 
 	const updateData = {
 		name,
 		icon,
 		description,
-		deposit_limit,
-		withdrawal_limit,
 		note,
 		native_currency_limit
 	};
 
-	toolsLib.tier.updateTier(level, updateData)
+	const auditInfo = { userEmail: req?.auth?.sub?.email, sessionId: req?.session_id, apiPath: req?.swagger?.apiPath, method: req?.swagger?.operationPath?.[2] };
+	toolsLib.tier.updateTier(level, updateData, auditInfo)
 		.then((tier) => {
 			loggerTier.info(req.uuid, 'controllers/tier/putTier tier updated', level);
 			return res.json(tier);
@@ -71,8 +71,8 @@ const updatePairFees = (req, res) => {
 		'controllers/tier/updatePairFees pair',
 		pair
 	);
-
-	toolsLib.tier.updatePairFees(pair, fees)
+	const auditInfo = { userEmail: req?.auth?.sub?.email, sessionId: req?.session_id, apiPath: req?.swagger?.apiPath, method: req?.swagger?.operationPath?.[2] };
+	toolsLib.tier.updatePairFees(pair, fees, auditInfo)
 		.then(() => {
 			loggerTier.info(
 				req.uuid,
@@ -91,43 +91,9 @@ const updatePairFees = (req, res) => {
 		});
 };
 
-const updateTiersLimits = (req, res) => {
-	loggerTier.verbose(
-		req.uuid,
-		'controllers/tier/updateTierLimits auth',
-		req.auth
-	);
-
-	const { limits } = req.swagger.params.data.value;
-
-	loggerTier.info(
-		req.uuid,
-		'controllers/tier/updateTierLimits tiers',
-		Object.keys(limits)
-	);
-
-	toolsLib.tier.updateTiersLimits(limits)
-		.then(() => {
-			loggerTier.info(
-				req.uuid,
-				'controllers/tier/updateTierLimits updated limits'
-			);
-			return res.json({ message: 'Success' });
-		})
-		.catch((err) => {
-			loggerTier.error(
-				req.uuid,
-				'controllers/tier/updatePairLimits err',
-				err.message
-			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
-		});
-};
-
 module.exports = {
 	getTiers,
 	postTier,
 	putTier,
-	updatePairFees,
-	updateTiersLimits
+	updatePairFees
 };

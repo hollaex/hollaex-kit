@@ -1,11 +1,19 @@
 import React, { Component } from 'react';
-import { PriceChange, Image } from 'components';
+import { PriceChange, EditWrapper, Coin } from 'components';
 import SparkLine from './SparkLine';
 import { formatToCurrency } from 'utils/currency';
+import STRINGS from 'config/localizedStrings';
 
 class MarketRow extends Component {
 	render() {
-		const { icons: ICONS, market, chartData, handleClick } = this.props;
+		const {
+			market,
+			chartData,
+			handleClick,
+			loading,
+			index,
+			isAsset = false,
+		} = this.props;
 
 		const {
 			key,
@@ -15,7 +23,14 @@ class MarketRow extends Component {
 			pair_base_display,
 			pair_2_display,
 			icon_id,
+			volume_native_text,
+			symbol,
+			pairBase,
+			fullname,
+			sourceType: type,
 		} = market;
+
+		const isBrokerage = type === 'network' || type === 'broker';
 
 		return (
 			<tr
@@ -24,43 +39,132 @@ class MarketRow extends Component {
 				onClick={() => handleClick(key)}
 			>
 				<td className="sticky-col">
-					<div className="d-flex align-items-center">
-						<Image
-							width='32px'
-							height='32px'
-							iconId={icon_id}
-							icon={ICONS[icon_id]}
-							wrapperClassName="market-list__coin-icons"
-							imageWrapperClassName="currency-ball-image-wrapper"
+					{!loading ? (
+						<div className="d-flex align-items-center">
+							<Coin iconId={icon_id} />
+							<div className="px-2">{isAsset ? fullname : display_name}</div>
+						</div>
+					) : (
+						<div
+							className="loading-anime"
+							style={{
+								animationDelay: `.${index + 1}s`,
+							}}
 						/>
-						<div>{display_name}</div>
-					</div>
+					)}
 				</td>
 				<td>
-					<span className="title-font ml-1">
-						{formatToCurrency(ticker.close, increment_price)}
-					</span>
-					<span className="title-font ml-2">{pair_2_display}</span>
+					{!loading ? (
+						<div>
+							<span className="title-font ml-1">
+								{formatToCurrency(ticker.close, increment_price)}
+							</span>
+							<span className="title-font ml-2">{pair_2_display}</span>
+						</div>
+					) : (
+						<div
+							className="loading-anime"
+							style={{
+								animationDelay: `.${index + 1}s`,
+							}}
+						/>
+					)}
 				</td>
+				{isAsset && (
+					<td>
+						{type === 'network' ? (
+							<EditWrapper stringId="DIGITAL_ASSETS.NETWORK">
+								{STRINGS['DIGITAL_ASSETS.NETWORK']}
+							</EditWrapper>
+						) : type === 'broker' ? (
+							<EditWrapper stringId="DIGITAL_ASSETS.BROKER">
+								{STRINGS['DIGITAL_ASSETS.BROKER']}
+							</EditWrapper>
+						) : (
+							<EditWrapper stringId="DIGITAL_ASSETS.ORDERBOOK">
+								{STRINGS['DIGITAL_ASSETS.ORDERBOOK']}
+							</EditWrapper>
+						)}
+					</td>
+				)}
 				<td>
-					<PriceChange market={market} />
+					{isBrokerage ? (
+						<EditWrapper stringId="DIGITAL_ASSETS.BROKERAGE">
+							{STRINGS['DIGITAL_ASSETS.BROKERAGE']}
+						</EditWrapper>
+					) : (
+						<PriceChange market={market} key={key} />
+					)}
 				</td>
+				{!isAsset && (
+					<td>
+						{!loading ? (
+							<div>
+								{ticker.volume > 0 && (
+									<div>
+										<span className="title-font ml-1 important-text">
+											{volume_native_text}
+										</span>
+									</div>
+								)}
+								<div>
+									<span className="title-font ml-1">
+										{formatToCurrency(ticker.volume)}
+									</span>
+									<span className="title-font ml-2">{pair_base_display}</span>
+								</div>
+							</div>
+						) : (
+							<div
+								className="loading-anime"
+								style={{
+									animationDelay: `.${index + 1}s`,
+								}}
+							/>
+						)}
+					</td>
+				)}
+				{isAsset && (
+					<td>
+						<div className="ml-1">{symbol.toUpperCase()}</div>
+					</td>
+				)}
+				{isAsset && (
+					<td>
+						<div className="d-flex">
+							<div className="icon-container">
+								<div
+									className={
+										pairBase.type === 'blockchain'
+											? 'squar-box'
+											: pairBase.type === 'fiat'
+											? 'circle-icon'
+											: 'triangle-icon'
+									}
+								/>
+							</div>
+							<div className="ml-1 caps-first">{pairBase.type}</div>
+						</div>
+					</td>
+				)}
 				<td>
-					<span className="title-font ml-1">{ticker.volume}</span>
-					<span className="title-font ml-2">{pair_base_display}</span>
-				</td>
-				<td className="td-chart">
-					<SparkLine
-						data={
-							!chartData[key] ||
-							(chartData[key] &&
-								chartData[key].close &&
-								chartData[key].close.length < 2)
-								? { close: [0.1, 0.1, 0.1], open: [] }
-								: chartData[key]
-						}
-						containerProps={{ style: { height: '100%', width: '100%' } }}
-					/>
+					{isBrokerage ? (
+						<EditWrapper stringId="DIGITAL_ASSETS.BROKERAGE">
+							{STRINGS['DIGITAL_ASSETS.BROKERAGE']}
+						</EditWrapper>
+					) : (
+						<SparkLine
+							data={
+								!chartData[key] ||
+								(chartData[key] &&
+									chartData[key].close &&
+									chartData[key].close.length < 2)
+									? { close: [0.1, 0.1, 0.1], open: [] }
+									: chartData[key]
+							}
+							containerProps={{ style: { height: '100%', width: '100%' } }}
+						/>
+					)}
 				</td>
 			</tr>
 		);

@@ -1,18 +1,14 @@
 import React, { Component } from 'react';
 import { RightOutlined } from '@ant-design/icons';
 import { Icon as LegacyIcon } from '@ant-design/compatible';
-import { Table, Spin, Button } from 'antd';
+import { Table, Button, Modal } from 'antd';
 import { Link } from 'react-router';
-import { formatCurrency } from '../../../utils/index';
-import moment from 'moment';
+import { formatDate } from 'utils';
+import { requestUsers } from './actions';
+import AddUser from './AddUser';
+import UseFilters from './UserFilters';
 
 import './index.css';
-
-import { requestUsers } from './actions';
-
-// import { generateHeaders } from './constants';
-
-// const renderBoolean = (value) => <Icon type={value ? 'check-circle-o' : 'close-circle'}/>;
 
 class FullListUsers extends Component {
 	constructor(props) {
@@ -28,10 +24,13 @@ class FullListUsers extends Component {
 			limit: 50,
 			currentTablePage: 1,
 			isRemaining: true,
+			isVisible: false,
+			displayFilterModel: false,
+			filters: null,
 		};
 	}
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		this.requestFullUsers(this.state.page, this.state.limit);
 	}
 
@@ -40,13 +39,12 @@ class FullListUsers extends Component {
 			loading: true,
 			error: '',
 		});
-
-		requestUsers({ page, limit })
+		const { filters } = this.state;
+		requestUsers({ page, limit, ...(filters != null && filters) })
 			.then((res) => {
 				let temp = page === 1 ? res.data : [...this.state.users, ...res.data];
-				let users = temp.sort((a, b) => {
-					return new Date(b.created_at) - new Date(a.created_at);
-				});
+				let users = temp;
+
 				this.setState({
 					users,
 					loading: false,
@@ -58,7 +56,7 @@ class FullListUsers extends Component {
 				});
 			})
 			.catch((error) => {
-				const message = error.message;
+				const message = error.data.message;
 				this.setState({
 					loading: false,
 					error: message,
@@ -78,6 +76,17 @@ class FullListUsers extends Component {
 			this.requestFullUsers(page + 1, limit);
 		}
 		this.setState({ currentTablePage: count });
+	};
+
+	onCancel = () => {
+		this.setState({ isVisible: false });
+	};
+
+	applyFilters = (filters) => {
+		this.setState({ filters }, () => {
+			const { page, limit } = this.state;
+			this.requestFullUsers(page, limit);
+		});
 	};
 
 	render() {
@@ -127,66 +136,109 @@ class FullListUsers extends Component {
 			{ title: 'See Data', dataIndex: 'id', key: 'data', render: renderLink },
 		];
 
-		const renderRowContent = ({
-			created_at,
-			crypto_wallet,
-			btc_balance,
-			bch_balance,
-			eth_balance,
-			xrp_balance,
-			fiat_balance,
-		}) => {
-			btc_balance = formatCurrency(btc_balance);
-			bch_balance = formatCurrency(bch_balance);
-			eth_balance = formatCurrency(eth_balance);
-			xrp_balance = formatCurrency(xrp_balance);
-			fiat_balance = formatCurrency(fiat_balance);
-
+		const renderRowContent = ({ created_at }) => {
 			return (
 				<div>
-					<div>
-						Created at:{' '}
-						{moment(created_at).format('DD/MMM/YYYY, hh:mmA ').toUpperCase() +
-							new Date(created_at).toTimeString().slice(9)}
-					</div>
+					<div>Created at: {formatDate(created_at)}</div>
 				</div>
 			);
 		};
 
-		const { users, loading, error, currentTablePage } = this.state;
-		// const { coins } = this.props;
-		// const HEADERS = generateHeaders(coins);
+		const {
+			users,
+			loading,
+			error,
+			currentTablePage,
+			total,
+			isVisible,
+		} = this.state;
+
 		return (
 			<div className="app_container-content admin-user-container">
-				{loading ? (
-					<Spin size="large" />
-				) : (
+				<div
+					style={{
+						display: 'flex',
+						flexDirection: 'row',
+						justifyContent: 'space-between',
+					}}
+				>
+					<div
+						style={{
+							marginTop: 20,
+							marginBottom: 10,
+							fontSize: 15,
+							color: '#ccc',
+						}}
+					>
+						Find users by their email and verification status below, or narrow
+						down your search by adding more filters.
+					</div>
+					<Button
+						style={{
+							backgroundColor: '#288500',
+							color: 'white',
+							marginTop: 20,
+						}}
+						onClick={() => this.setState({ isVisible: true })}
+					>
+						{' '}
+						Add new user
+					</Button>
+				</div>
+				<hr style={{ border: '1px solid #ccc', marginBottom: 20 }} />
+
+				<div>
+					{error && <p>-{error}-</p>}
+
 					<div>
-						{error && <p>-{error}-</p>}
-						<div>
-							<span
-								className="pointer"
-								onClick={() => this.props.handleDownload({})}
-							>
-								Download table
-							</span>
-						</div>
-						<Table
-							className="blue-admin-table"
-							columns={COLUMNS}
-							dataSource={users}
-							expandedRowRender={renderRowContent}
-							expandRowByClick={true}
-							rowKey={(data) => {
-								return data.id;
+						<UseFilters
+							displayFilterModel={this.state.displayFilterModel}
+							setDisplayFilterModel={(value) => {
+								this.setState({ displayFilterModel: value });
 							}}
-							pagination={{
-								current: currentTablePage,
-								onChange: this.pageChange,
-							}}
+							applyFilters={this.applyFilters}
+							loading={loading}
 						/>
 					</div>
-				)}
+
+					<div className="user-list-header-wrapper">
+						<span
+							className="pointer"
+							onClick={() => this.props.handleDownload(this.state.filters)}
+						>
+							Download table
+						</span>
+						<span>Total: {total || '-'}</span>
+					</div>
+					<Table
+						loading={loading}
+						className="blue-admin-table"
+						columns={COLUMNS}
+						dataSource={users}
+						expandedRowRender={renderRowContent}
+						expandRowByClick={true}
+						rowKey={(data) => {
+							return data.id;
+						}}
+						pagination={{
+							current: currentTablePage,
+							onChange: this.pageChange,
+						}}
+					/>
+				</div>
+
+				<Modal
+					visible={isVisible}
+					footer={null}
+					className="add-user-modal"
+					width={'500px'}
+					onCancel={this.onCancel}
+				>
+					<AddUser
+						onCancel={this.onCancel}
+						requestFullUsers={this.requestFullUsers}
+					/>
+				</Modal>
 			</div>
 		);
 	}

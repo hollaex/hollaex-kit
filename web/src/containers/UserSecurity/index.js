@@ -11,7 +11,7 @@ import {
 	otpActivate,
 	otpSetActivated,
 	otpRevoke,
-} from '../../actions/userAction';
+} from 'actions/userAction';
 import {
 	// CustomTabs,
 	CustomMobileTabs,
@@ -25,12 +25,20 @@ import {
 	HeaderSection,
 	Button,
 	TabController,
-} from '../../components';
-import { errorHandler } from '../../components/OtpForm/utils';
-import ChangePasswordForm, { generateFormValues } from './ChangePasswordForm';
+	EditWrapper,
+	NotLoggedIn,
+} from 'components';
+import { errorHandler } from 'components/OtpForm/utils';
+import ChangePasswordForm, {
+	generateFormValues,
+	selector as passwordSelector,
+} from './ChangePasswordForm';
 import { OTP, renderOTPForm } from './OTP';
 import { DeveloperSection } from './DeveloperSection';
+import Sessions from './Sessions';
+import Logins from './Logins';
 // import { FreezeSection } from './FreezeSection';
+import { isLoggedIn } from 'utils/token';
 
 import { generateLogins } from './utils_logins';
 import { RECORD_LIMIT } from './constants';
@@ -41,7 +49,7 @@ import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 // import { ICONS } from 'config/constants';
 
-class UserVerification extends Component {
+class UserSecurity extends Component {
 	state = {
 		tabs: [],
 		headers: [],
@@ -108,7 +116,11 @@ class UserVerification extends Component {
 		) {
 			this.calculateTabs(this.props.user, this.state.activeTab);
 		}
-		if (this.state.activeTab !== prevState.activeTab) {
+		if (
+			this.state.activeTab !== prevState.activeTab ||
+			JSON.stringify(prevProps.passwordFormValues) !==
+				JSON.stringify(this.props.passwordFormValues)
+		) {
 			this.setState({
 				error: undefined,
 			});
@@ -190,7 +202,9 @@ class UserVerification extends Component {
 					// 	title={STRINGS['ACCOUNT_SECURITY.OTP.TITLE']}
 					// 	icon={ICONS.SECURITY_OTP_ICON}
 					// />
-					<div>{STRINGS['ACCOUNT_SECURITY.OTP.TITLE']}</div>
+					<EditWrapper stringId="ACCOUNT_SECURITY.OTP.TITLE">
+						{STRINGS['ACCOUNT_SECURITY.OTP.TITLE']}
+					</EditWrapper>
 				),
 				content: activeTab === 0 && (
 					<OTP
@@ -239,7 +253,9 @@ class UserVerification extends Component {
 					// 	title={STRINGS['ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE']}
 					// 	icon={ICONS.SECURITY_CHANGE_PASSWORD_ICON}
 					// />
-					<div>{STRINGS['ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE']}</div>
+					<EditWrapper stringId="ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE">
+						{STRINGS['ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE']}
+					</EditWrapper>
 				),
 				content: activeTab === 1 && (
 					<ChangePasswordForm
@@ -272,7 +288,9 @@ class UserVerification extends Component {
 					// 	title={STRINGS['DEVELOPER_SECTION.TITLE']}
 					// 	icon={ICONS.SECURITY_API_ICON}
 					// />
-					<div>{STRINGS['DEVELOPER_SECTION.TITLE']}</div>
+					<EditWrapper stringId="DEVELOPER_SECTION.TITLE">
+						{STRINGS['DEVELOPER_SECTION.TITLE']}
+					</EditWrapper>
 				),
 				content: activeTab === 2 && (
 					<DeveloperSection
@@ -332,6 +350,32 @@ class UserVerification extends Component {
 					/>
 				)
 			}*/
+			{
+				title: isMobile ? (
+					<CustomMobileTabs
+						stringId={'SESSIONS.TAB'}
+						title={STRINGS['SESSIONS.TAB']}
+					/>
+				) : (
+					<EditWrapper stringId="SESSIONS.TAB">
+						{STRINGS['SESSIONS.TAB']}
+					</EditWrapper>
+				),
+				content: activeTab === 3 && <Sessions />,
+			},
+			{
+				title: isMobile ? (
+					<CustomMobileTabs
+						stringId={'LOGINS_HISTORY.TAB'}
+						title={STRINGS['LOGINS_HISTORY.TAB']}
+					/>
+				) : (
+					<EditWrapper stringId="LOGINS_HISTORY.TAB">
+						{STRINGS['LOGINS_HISTORY.TAB']}
+					</EditWrapper>
+				),
+				content: activeTab === 4 && <Logins />,
+			},
 		];
 
 		this.setState({ tabs });
@@ -552,12 +596,16 @@ class UserVerification extends Component {
 	};
 
 	render() {
-		if (this.props.user.verification_level === 0) {
+		const {
+			icons: ICONS,
+			openContactForm,
+			user: { otp, email, otp_enabled, verification_level },
+		} = this.props;
+
+		if (isLoggedIn() && verification_level === 0) {
 			return <Loader />;
 		}
 		const { dialogIsOpen, modalText, activeTab, tabs, freeze } = this.state;
-		const { otp, email, otp_enabled } = this.props.user;
-		const { icons: ICONS, openContactForm } = this.props;
 		//const { onCloseDialog } = this;
 
 		if (freeze === true) {
@@ -617,7 +665,9 @@ class UserVerification extends Component {
 					openContactForm={openContactForm}
 				>
 					<div className="header-content">
-						<div>{STRINGS['ACCOUNT_SECURITY.TITLE_TEXT']}</div>
+						<EditWrapper stringId="ACCOUNT_SECURITY.TITLE_TEXT">
+							{STRINGS['ACCOUNT_SECURITY.TITLE_TEXT']}
+						</EditWrapper>
 					</div>
 				</HeaderSection>
 
@@ -626,7 +676,6 @@ class UserVerification extends Component {
 					label="security-modal"
 					onCloseDialog={this.onCloseDialog}
 					showCloseText={!(otp.error || modalText)}
-					theme={this.props.activeTheme}
 				>
 					{dialogIsOpen && !otp.requesting ? (
 						this.renderModalContent(
@@ -642,21 +691,23 @@ class UserVerification extends Component {
 					)}
 				</Dialog>
 
-				{!isMobile ? (
-					<TabController
-						activeTab={activeTab}
-						setActiveTab={this.setActiveTab}
-						tabs={tabs}
-					/>
-				) : (
-					<MobileTabBar
-						activeTab={activeTab}
-						renderContent={this.renderContent}
-						setActiveTab={this.setActiveTab}
-						tabs={tabs}
-					/>
-				)}
-				{!isMobile ? this.renderContent(tabs, activeTab) : null}
+				<NotLoggedIn>
+					{!isMobile ? (
+						<TabController
+							activeTab={activeTab}
+							setActiveTab={this.setActiveTab}
+							tabs={tabs}
+						/>
+					) : (
+						<MobileTabBar
+							activeTab={activeTab}
+							renderContent={this.renderContent}
+							setActiveTab={this.setActiveTab}
+							tabs={tabs}
+						/>
+					)}
+					{!isMobile && this.renderContent(tabs, activeTab)}
+				</NotLoggedIn>
 			</div>
 		);
 	}
@@ -666,8 +717,11 @@ const mapStateToProps = (state) => ({
 	logins: state.wallet.logins,
 	user: state.user,
 	activeLanguage: state.app.language,
-	activeTheme: state.app.theme,
 	constants: state.app.constants,
+	passwordFormValues: passwordSelector(
+		state,
+		...Object.keys(generateFormValues())
+	),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -680,4 +734,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(withConfig(UserVerification));
+)(withConfig(UserSecurity));

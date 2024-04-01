@@ -1,0 +1,18 @@
+paths:
+  /tiers:
+    x-swagger-router-controller: tier
+    get:
+      description: Get user tiers
+      operationId: getTiers
+      tags:
+        - Public
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  

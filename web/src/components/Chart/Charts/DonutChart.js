@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
+import { Link } from 'react-router';
 import EventListener from 'react-event-listener';
 import { pie, arc } from 'd3-shape';
-import { Link } from 'react-router';
 import classnames from 'classnames';
 
 import STRINGS from '../../../config/localizedStrings';
@@ -23,7 +23,7 @@ function translate(x, y) {
 // function rotate (d) {
 //     return `rotate(${180 / Math.PI * (d.startAngle + d.endAngle) / 2 + 45})`;
 // };
-
+const filterDonutPercentage = 8;
 class DonutChart extends Component {
 	state = {
 		width: 0,
@@ -48,15 +48,18 @@ class DonutChart extends Component {
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
+		const { chartData, currentCurrency } = this.props;
 		if (
-			JSON.stringify(this.props.chartData) !==
-			JSON.stringify(nextProps.chartData)
+			JSON.stringify(chartData) !== JSON.stringify(nextProps.chartData) ||
+			currentCurrency !== nextProps.currentCurrency
 		) {
-			this.setState({ isData: this.checkData(nextProps.chartData) });
+			this.setState({
+				isData: this.checkData(nextProps.chartData, nextProps.currentCurrency),
+			});
 		}
 	}
 
-	checkData = (data = []) => {
+	checkData = (data = [], currency) => {
 		let largerValue = 0;
 		let largerId = '';
 		data.forEach((value) => {
@@ -65,7 +68,10 @@ class DonutChart extends Component {
 				largerValue = parseFloat(value.balancePercentage);
 			}
 		});
-		this.setState({ higherId: largerId, hoverId: largerId });
+		this.setState({
+			higherId: largerId,
+			hoverId: this.props.currency ? this.props.currency : currency || largerId,
+		});
 
 		const checkFilter = data.filter((value) => value.balance > 0);
 		return !!checkFilter.length;
@@ -76,7 +82,12 @@ class DonutChart extends Component {
 	};
 
 	handleOut = () => {
-		this.setState({ hoverId: this.state.higherId });
+		const { currentCurrency } = this.props;
+		this.setState({
+			hoverId: this.props.currency
+				? this.props.currency
+				: currentCurrency || this.state.higherId,
+		});
 	};
 
 	handleResize = () => {
@@ -152,17 +163,76 @@ class DonutChart extends Component {
 		});
 		let x = width / 2;
 		let y = height / 2 - 11;
+		const isDonutValue = this.props && this.props.isCurrencyWallet;
+
+		const filterByPercentage = () => {
+			let coins = [];
+			let othersTotalPercentage = 0;
+			let isUpdated = false;
+			let startAngle = 0;
+
+			sortedData.forEach((value, i) => {
+				const balancePercentageStr = value.data.balancePercentage;
+				if (balancePercentageStr && balancePercentageStr.includes('%')) {
+					const balancePercentage = Number(balancePercentageStr.split('%')[0]);
+					if (
+						balancePercentage > 0 &&
+						balancePercentage <= filterDonutPercentage
+					) {
+						othersTotalPercentage += balancePercentage;
+					} else if (balancePercentage >= filterDonutPercentage) {
+						startAngle = value.endAngle;
+						coins.push({ ...value });
+					}
+				}
+			});
+			if (!isUpdated && this.state.isData) {
+				if (coins.length) {
+					isUpdated = true;
+					const updatedObj = {
+						...coins[0],
+						data: {
+							...coins[0].data,
+							display_name: 'Others',
+							balancePercentage: `${othersTotalPercentage.toFixed(1)}%`,
+							symbol: 'Others',
+						},
+						value: othersTotalPercentage,
+						startAngle,
+						endAngle:
+							startAngle === nextStartAngle
+								? nextStartAngle * 1.01
+								: nextStartAngle,
+					};
+					coins.push(updatedObj);
+				}
+			}
+			return coins;
+		};
+
+		const renderDonut = () => {
+			const data = sortedData.map((value, i) =>
+				this.renderSlice(value, i, width, height)
+			);
+			if (this.state && this.state.isData) {
+				if (!isDonutValue) {
+					return filterByPercentage().map((value, i) =>
+						this.renderSlice(value, i, width, height)
+					);
+				} else {
+					return data;
+				}
+			} else {
+				return data;
+			}
+		};
 
 		return (
 			<Fragment>
 				<EventListener target="window" onResize={this.handleResize} />
 				<div id={this.props.id} className="w-100 h-100">
 					<svg width="100%" height="100%">
-						<g transform={translate(x, y)}>
-							{sortedData.map((value, i) => {
-								return this.renderSlice(value, i, width, height);
-							})}
-						</g>
+						<g transform={translate(x, y)}>{renderDonut()}</g>
 					</svg>
 				</div>
 			</Fragment>
@@ -170,7 +240,7 @@ class DonutChart extends Component {
 	}
 
 	renderSlice = (value, i, width, height) => {
-		const { showOpenWallet } = this.props;
+		const { showOpenWallet, centerText } = this.props;
 		let data = value.data;
 		let minViewportSize = Math.min(width, height);
 		let activeSlice = this.state.hoverId === data.symbol;
@@ -200,14 +270,20 @@ class DonutChart extends Component {
 		if (!this.state.isData) {
 			return (
 				<g key={i}>
-					<path d={arcj(value)} fill={colors_currencies.noData} />
+					<path
+						d={arcj(value)}
+						fill={colors_currencies.noData}
+						fill-opacity="0.2"
+					/>
 					<text
-						transform={translate(0, -10)}
+						transform={translate(0, 5)}
 						dy=".35em"
 						className="donut-label-no-price"
 						textAnchor="middle"
 					>
-						<tspan>{STRINGS['ZERO_ASSET']}</tspan>
+						<tspan x="0" dy="0">
+							{STRINGS['ZERO_ASSET']}
+						</tspan>
 					</text>
 					{showOpenWallet && (
 						<text
@@ -217,7 +293,9 @@ class DonutChart extends Component {
 							textAnchor="middle"
 						>
 							<Link to="/wallet" className="deposit-asset">
-								{STRINGS['DEPOSIT_ASSETS'].toUpperCase()}
+								<tspan dy="1.4em">
+									{STRINGS['DEPOSIT_ASSETS'].toUpperCase()}
+								</tspan>
 							</Link>
 						</text>
 					)}
@@ -230,29 +308,55 @@ class DonutChart extends Component {
 				<g key={i}>
 					<path
 						d={arcj(value)}
-						className={classnames(`chart_${data.symbol}`, {
-							slice_active: activeSlice,
-						})}
+						className={
+							data.symbol === 'Others'
+								? 'others-color'
+								: classnames(`chart_${data.symbol}`, 'chart_slice', {
+										slice_active: activeSlice,
+								  })
+						}
 						onMouseOver={() => this.handleHover(data.symbol)}
 						onMouseOut={this.handleOut}
 					/>
 					{activeSlice ? (
 						<Fragment>
 							<text
-								transform={translate(valX, valY)}
-								dy="20px"
+								transform={translate(
+									centerText ? 0 : valX,
+									centerText ? 5 : valY
+								)}
+								x={centerText ? '0px' : '5px'}
+								dy={
+									this.state.higherId === this.state.hoverId
+										? '5px'
+										: centerText
+										? '5px'
+										: '25px'
+								}
 								textAnchor="middle"
 								className="donut-label-percentage"
+								style={{ fontSize: centerText ? '0.8rem' : '1rem' }}
 							>
 								{data.balancePercentage}
 							</text>
 							<text
-								transform={translate(valX, valY - 12)}
-								dy="20px"
+								transform={translate(
+									centerText ? 0 : valX,
+									centerText ? -7 : valY - 12
+								)}
+								x={centerText ? '0px' : '5px'}
+								dy={
+									this.state.higherId === this.state.hoverId
+										? '5px'
+										: centerText
+										? '5px'
+										: '25px'
+								}
 								textAnchor="middle"
 								className="donut-label-pair"
+								style={{ fontSize: centerText ? '0.8rem' : '1rem' }}
 							>
-								{display_name}
+								{data.display_name === 'Others' ? 'Others' : display_name}
 							</text>
 							{showOpenWallet && (
 								<text dy="5px" textAnchor="middle" className="donut-label-link">

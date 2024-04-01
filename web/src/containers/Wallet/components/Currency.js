@@ -35,7 +35,7 @@ const Currency = ({ currency, balance, coins, searchResult }) => {
 						  );
 				if (key === currency) {
 					return (
-						<div className="d-flex align-items-center">
+						<div key={currency} className="d-flex align-items-center">
 							<Link to={`/wallet/${currency.toLowerCase()}`}>
 								<CurrencyBall name={display_name} symbol={currency} size="m" />
 							</Link>

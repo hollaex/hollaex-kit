@@ -1,8 +1,9 @@
 import 'whatwg-fetch';
-import { API_URL } from '../config/constants';
+import { API_URL, NETWORK_API_URL } from '../config/constants';
 
-import { getToken } from './token';
+import { getToken, getDashToken } from './token';
 
+import { getNetWorkURL } from 'actions/appActions';
 /**
  * Parses the JSON returned by a network request
  *
@@ -69,6 +70,42 @@ export const requestAuthenticated = (
 		...paramOptions,
 	};
 	return request(url, options, apiUrl);
+};
+
+/**
+ * Requests a URL, returning a promise
+ *
+ * @param  {string} url       The URL we want to request
+ * @param  {object} [options] The options we want to pass to "fetch"
+ * @param  {string} apiUrl    The API URL we want to request, default to API_URL
+ *
+ * @return {object}           The response data
+ */
+
+export const requestDashAuthenticated = (
+	url,
+	paramOptions,
+	headers,
+	apiUrl = NETWORK_API_URL,
+	method = 'GET'
+) => {
+	const API_PATH = '/v2';
+	const NETWORK_BASE_API_URL = `${getNetWorkURL()}${API_PATH}` || apiUrl;
+	const TOKEN = getDashToken();
+	const options = {
+		method,
+		headers: headers
+			? {
+					...headers,
+					authorization: `Bearer ${TOKEN}`,
+			  }
+			: {
+					'Content-Type': 'application/json',
+					authorization: `Bearer ${TOKEN}`,
+			  },
+		...paramOptions,
+	};
+	return request(url, options, NETWORK_BASE_API_URL);
 };
 
 /**

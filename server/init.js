@@ -6,7 +6,7 @@ const moment = require('moment');
 const rp = require('request-promise');
 const { loggerInit } = require('./config/logger');
 const { Op } = require('sequelize');
-const { User, Status, Tier, Broker } = require('./db/models');
+const { User, Status, Tier, Broker, QuickTrade, TransactionLimit } = require('./db/models');
 const packageJson = require('./package.json');
 
 const { subscriber, publisher } = require('./db/pubsub');
@@ -28,7 +28,7 @@ const getNodeLib = () => nodeLib;
 subscriber.on('message', (channel, message) => {
 	if (channel === INIT_CHANNEL) {
 		const { type } = JSON.parse(message);
-		switch(type) {
+		switch (type) {
 			case 'refreshInit':
 				checkStatus();
 				publisher.publish(
@@ -52,6 +52,8 @@ const checkStatus = () => {
 		coins: {},
 		pairs: {},
 		tiers: {},
+		quicktrade: [],
+		networkQuickTrades: [],
 		kit: {
 			info: {},
 			color: {},
@@ -69,7 +71,8 @@ const checkStatus = () => {
 			black_list_countries: [],
 			onramp: {},
 			offramp: {},
-			user_payments: {}
+			user_payments: {},
+			dust: {}
 		},
 		email: {}
 	};
@@ -122,12 +125,14 @@ const checkStatus = () => {
 						status.constants
 					),
 					Tier.findAll(),
-					Broker.findAll(),
+					Broker.findAll({ attributes: ['id', 'symbol', 'buy_price', 'sell_price', 'paused', 'min_size', 'max_size']}),
+					QuickTrade.findAll(),
+					TransactionLimit.findAll(),
 					status.dataValues
 				]);
 			}
 		})
-		.then(async ([exchange, tiers, deals, status]) => {
+		.then(async ([exchange, tiers, deals, quickTrades, transactionLimits, status]) => {
 			loggerInit.info('init/checkStatus/activation', exchange.name, exchange.active);
 
 			const exchangePairs = [];
@@ -141,24 +146,97 @@ const checkStatus = () => {
 				configuration.pairs[pair.name] = pair;
 			}
 
+			configuration.transaction_limits = transactionLimits;
 			configuration.broker = deals;
+			configuration.networkQuickTrades = [];
 
+			const brokerPairs = deals.map((d) => d.symbol);
+			const networkBrokerPairs = Object.keys(exchange.brokers).filter((e) => {
+				// only add the network pair if both coins in the market are already subscribed in the exchange
+				const [ base, quote ] = e.split('-');
+				if (configuration.coins[base] && configuration.coins[quote]) {
+					configuration.networkQuickTrades.push(exchange.brokers[e])
+					return e;
+				}
+			});
+
+			let quickTradePairs = quickTrades.map((q) => q.symbol)
+
+			// check the status of quickTrades
+			for (let qt of quickTrades) {
+				if (qt.type === 'pro') {
+					if (!configuration.pairs[qt.symbol]) {
+						await qt.destroy();
+					}
+				}
+				else if (qt.type === 'broker') {
+					if (!brokerPairs.includes(qt.symbol)) {
+						await qt.destroy();
+					}
+				}
+				else if (qt.type === 'network') {
+					if (!networkBrokerPairs.includes(qt.symbol)) {
+						await qt.destroy();
+					}
+				}
+			}
+
+			// construct the missing quicktrades
+			let newQuickTrades = {};
+			difference(exchangePairs, quickTradePairs).forEach((symbol) => {
+				newQuickTrades[symbol] = { symbol, type: 'pro' };
+			});
+			difference(brokerPairs, quickTradePairs).forEach((symbol) => {
+				// it would override the symbol in the previous condition
+				newQuickTrades[symbol] = { symbol, type: 'broker' };
+			});
+			difference(networkBrokerPairs, quickTradePairs).forEach((symbol) => {
+				// it would override the symbol in the previous conditions
+				newQuickTrades[symbol] = { symbol, type: 'network' };
+			});
+
+			if (Object.keys(newQuickTrades).length > 0) {
+				for (let quicktrade in newQuickTrades) {
+					loggerInit.info('init/checkStatus/activation adding new pair', quicktrade);
+					await QuickTrade.upsert(newQuickTrades[quicktrade]);
+					loggerInit.info('init/checkStatus/activation new pair successfully added', quicktrade);
+				}
+			}
+
+			quickTrades = await QuickTrade.findAll();
+			quickTradePairs = quickTrades.map((q) => q.symbol);
+
+			// build the data for client
+			quickTrades.forEach((qt) => {
+				let item = {
+					type: qt.type,
+					symbol: qt.symbol,
+					active: qt.active
+				};
+				configuration.quicktrade.push(item)
+			})
+
+			
 			for (let tier of tiers) {
-				const makerDiff = difference(exchangePairs, Object.keys(tier.fees.maker));
-				const takerDiff = difference(exchangePairs, Object.keys(tier.fees.taker));
-				const brokerDiff = difference(deals.map((d) => d.symbol), Object.keys(tier.fees.maker));
+				if (!('maker' in tier.fees)) {
+					tier.fees.maker = {};
+				}
+				if (!('taker' in tier.fees)) {
+					tier.fees.taker = {};
+				}
+				const makerDiff = difference(quickTradePairs, Object.keys(tier.fees.maker));
+				const takerDiff = difference(quickTradePairs, Object.keys(tier.fees.taker));
 
-				if (makerDiff.length > 0 || takerDiff.length > 0 || brokerDiff.length > 0 || isNumber(tier.fees.maker.default) || isNumber(tier.fees.taker.default)) {
+				if (makerDiff.length > 0 || takerDiff.length > 0) {
 					const fees = {
 						maker: {},
 						taker: {}
 					};
+					const defaultFees = DEFAULT_FEES[exchange.plan]
+						? DEFAULT_FEES[exchange.plan]
+						: { maker: 0.2, taker: 0.2 }
 
-					const defaultFees = exchange.type === 'Enterprise'
-						? { maker: 0, taker: 0 }
-						: DEFAULT_FEES[exchange.collateral_level];
-
-					for (let pair of exchangePairs) {
+					for (let pair of quickTradePairs) {
 						if (!isNumber(tier.fees.maker[pair])) {
 							fees.maker[pair] = defaultFees.maker;
 						} else {
@@ -169,23 +247,6 @@ const checkStatus = () => {
 							fees.taker[pair] = defaultFees.taker;
 						} else {
 							fees.taker[pair] = tier.fees.taker[pair];
-						}
-					}
-					for (let deal of deals) {
-						const pair = deal.symbol;
-						// checking if the deal is already among the pairs
-						if (!exchangePairs.find((e) => e.name === pair)) {
-							if (!isNumber(tier.fees.maker[pair])) {
-								fees.maker[pair] = defaultFees.maker;
-							} else {
-								fees.maker[pair] = tier.fees.maker[pair];
-							}
-	
-							if (!isNumber(tier.fees.taker[pair])) {
-								fees.taker[pair] = defaultFees.taker;
-							} else {
-								fees.taker[pair] = tier.fees.taker[pair];
-							}
 						}
 					}
 
@@ -244,7 +305,7 @@ const checkStatus = () => {
 				networkNodeLib
 			]);
 		})
-		.then(([ users, networkNodeLib ]) => {
+		.then(([users, networkNodeLib]) => {
 			loggerInit.info('init/checkStatus/activation', users.length, 'users deactivated');
 
 			for (let user of users) {

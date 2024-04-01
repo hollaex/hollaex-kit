@@ -118,7 +118,9 @@ const ReviewModalContent = ({
 					</EditWrapper>
 				</div>
 				<div className="review-crypto-amount review-crypto-address">
-					<div>{cryptoAmountText}</div>
+					<div>
+						<EditWrapper>{cryptoAmountText}</EditWrapper>
+					</div>
 					<div className="review-fee_message">
 						<EditWrapper stringId="WITHDRAW_PAGE.MESSAGE_FEE,WITHDRAW_PAGE.MESSAGE_FEE_COIN">
 							{withdrawFeeMessage}
@@ -138,21 +140,25 @@ const ReviewModalContent = ({
 				)}
 				{data.network && !data.email && (
 					<div className="review-fee_message">
-						{STRINGS.formatString(
-							STRINGS['WITHDRAW_PAGE_NETWORK_TYPE_MESSAGE'],
-							fullname,
-							getNetworkNameByKey(data.network)
-						)}
+						<EditWrapper stringId="WITHDRAW_PAGE_NETWORK_TYPE_MESSAGE">
+							{STRINGS.formatString(
+								STRINGS['WITHDRAW_PAGE_NETWORK_TYPE_MESSAGE'],
+								fullname,
+								getNetworkNameByKey(data.network)
+							)}
+						</EditWrapper>
 					</div>
 				)}
 				{hasDestinationTag && !data.email && (
 					<div className="review-fee_message">
-						{STRINGS.formatString(
-							STRINGS['WITHDRAW_PAGE_DESTINATION_TAG_MESSAGE'],
-							data.destination_tag
-								? data.destination_tag
-								: STRINGS['WITHDRAW_PAGE_DESTINATION_TAG_NONE']
-						)}
+						<EditWrapper stringId="WITHDRAW_PAGE_DESTINATION_TAG_MESSAGE,WITHDRAW_PAGE_DESTINATION_TAG_NONE">
+							{STRINGS.formatString(
+								STRINGS['WITHDRAW_PAGE_DESTINATION_TAG_MESSAGE'],
+								data.destination_tag
+									? data.destination_tag
+									: STRINGS['WITHDRAW_PAGE_DESTINATION_TAG_NONE']
+							)}
+						</EditWrapper>
 					</div>
 				)}
 				{!data.email && (

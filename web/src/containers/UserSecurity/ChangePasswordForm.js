@@ -1,13 +1,20 @@
 import React from 'react';
-import { reduxForm } from 'redux-form';
+import { reduxForm, formValueSelector } from 'redux-form';
 import { isMobile } from 'react-device-detect';
 
 import renderFields from 'components/Form/factoryFields';
 import { Button, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
+import { password, required } from 'components/Form/validations';
 
-const validate = () => {
+const FORM_NAME = 'ChangePasswordForm';
+export const selector = formValueSelector(FORM_NAME);
+
+const validate = (values) => {
 	const errors = {};
+	if (values.new_password !== values.new_password_confirm) {
+		errors.new_password_confirm = STRINGS['VALIDATIONS.PASSWORDS_DONT_MATCH'];
+	}
 	return errors;
 };
 
@@ -22,6 +29,8 @@ export const generateFormValues = () => ({
 			STRINGS[
 				'ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.CURRENT_PASSWORD.placeholder'
 			],
+		validate: [required, password],
+
 		fullWidth: isMobile,
 		ishorizontalfield: true,
 	},
@@ -33,6 +42,7 @@ export const generateFormValues = () => ({
 		placeholder:
 			STRINGS['ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.NEW_PASSWORD.placeholder'],
 		fullWidth: isMobile,
+		validate: [required, password],
 		ishorizontalfield: true,
 	},
 	new_password_confirm: {
@@ -47,6 +57,7 @@ export const generateFormValues = () => ({
 			STRINGS[
 				'ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.NEW_PASSWORD_REPEAT.placeholder'
 			],
+		validate: [password],
 		fullWidth: isMobile,
 		ishorizontalfield: true,
 	},
@@ -80,6 +91,6 @@ const Form = ({
 );
 
 export default reduxForm({
-	form: 'ChangePasswordForm',
+	form: FORM_NAME,
 	validate,
 })(Form);

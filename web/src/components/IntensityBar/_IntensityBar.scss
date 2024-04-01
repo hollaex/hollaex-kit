@@ -1,0 +1,20 @@
+.intensity-bar-container {
+	height: 0.8rem !important;
+}
+.single-intensity-bar {
+	height: 100% !important;
+	margin: 0 1px !important;
+	border-right: transparent 3px solid;
+}
+.low-intensity {
+	border-color: $low-intensity;
+}
+.medium-intensity {
+	border-color: $medium-intensity;
+}
+.high-intensity {
+	border-color: $high-intensity;
+}
+.extreme-intensity {
+	border-color: $extreme-intensity;
+}

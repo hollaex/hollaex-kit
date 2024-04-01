@@ -33,8 +33,9 @@ const ConfigureApps = ({
 			<div>
 				<div className="my-5 mx-3">
 					<div>
-						{STRINGS['USER_APPS.REMOVE.TEXT']}
-						<EditWrapper stringId="USER_APPS.REMOVE.TEXT" />
+						<EditWrapper stringId="USER_APPS.REMOVE.TEXT">
+							{STRINGS['USER_APPS.REMOVE.TEXT']}
+						</EditWrapper>
 					</div>
 				</div>
 
@@ -85,8 +86,9 @@ const ConfigureApps = ({
 
 				<div className="my-5 mx-3">
 					<div>
-						{STRINGS['USER_APPS.CONFIGURE.TEXT']}
-						<EditWrapper stringId="USER_APPS.CONFIGURE.TEXT" />
+						<EditWrapper stringId="USER_APPS.CONFIGURE.TEXT">
+							{STRINGS['USER_APPS.CONFIGURE.TEXT']}
+						</EditWrapper>
 					</div>
 				</div>
 

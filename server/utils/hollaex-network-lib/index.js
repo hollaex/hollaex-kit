@@ -406,7 +406,8 @@ class HollaExNetwork {
 		page: null,
 		orderBy: null,
 		order: null,
-		createdAt: null,
+		startDate: null,
+		endDate: null,
 		format: null,
 		additionalHeaders: null
 	}) {
@@ -439,10 +440,14 @@ class HollaExNetwork {
 			path += `&address=${opts.address}`;
 		}
 
-		if (isDatetime(opts.createdAt)) {
-			path += `&created_at=${sanitizeDate(opts.createdAt)}`;
+		if (isDatetime(opts.startDate)) {
+			path += `&start_date=${sanitizeDate(opts.startDate)}`;
 		}
 
+		if (isDatetime(opts.endDate)) {
+			path += `&end_date=${sanitizeDate(opts.endDate)}`;
+		}
+		
 		if (opts.currency) {
 			path += `&currency=${opts.currency}`;
 		}
@@ -483,6 +488,7 @@ class HollaExNetwork {
 	 */
 	performWithdrawal(userId, address, currency, amount, opts = {
 		network: null,
+		fee_markup: null,
 		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
@@ -504,6 +510,9 @@ class HollaExNetwork {
 		const data = { address, currency, amount };
 		if (opts.network) {
 			data.network = opts.network;
+		}
+		if (opts.fee_markup) {
+			data.fee_markup = opts.fee_markup
 		}
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
@@ -1383,6 +1392,7 @@ class HollaExNetwork {
 	 * @param {string} opts.order - Ascending (asc) or descending (desc).
 	 * @param {string} opts.startDate - Start date of query in ISO8601 format.
 	 * @param {string} opts.endDate - End date of query in ISO8601 format.
+	 * @param {string} opts.format - Custom format of data set. Enum: ['all']
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {array} Array of queried orders
 	 */
@@ -1398,6 +1408,7 @@ class HollaExNetwork {
 			order: null,
 			startDate: null,
 			endDate: null,
+			format: null,
 			additionalHeaders: null
 		}
 	) {
@@ -1446,6 +1457,10 @@ class HollaExNetwork {
 			path += `&open=${opts.open}`;
 		}
 
+		if (isString(opts.format)) {
+			path += `&format=${opts.format}`;
+		}
+
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
@@ -1470,6 +1485,7 @@ class HollaExNetwork {
 	 * @param {string} opts.order - Ascending (asc) or descending (desc).
 	 * @param {string} opts.startDate - Start date of query in ISO8601 format.
 	 * @param {string} opts.endDate - End date of query in ISO8601 format.
+	 * @param {string} opts.format - Custom format of data set. Enum: ['all']
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {array} Array of queried orders
 	 */
@@ -1486,6 +1502,7 @@ class HollaExNetwork {
 			order: null,
 			startDate: null,
 			endDate: null,
+			format: null,
 			additionalHeaders: null
 		}
 	) {
@@ -1537,6 +1554,10 @@ class HollaExNetwork {
 
 		if (isBoolean(opts.open)) {
 			path += `&open=${opts.open}`;
+		}
+
+		if (isString(opts.format)) {
+			path += `&format=${opts.format}`;
 		}
 
 		const headers = generateHeaders(
@@ -1692,6 +1713,7 @@ class HollaExNetwork {
 			transactionId: null,
 			description: null,
 			email: null,
+			category: null,
 			additionalHeaders: null
 		}
 	) {
@@ -1731,6 +1753,11 @@ class HollaExNetwork {
 		} else {
 			data.email = true;
 		}
+
+		if (opts.category && ['stake', 'referral', 'internal'].includes(opts.category)) {
+			data.category = opts.category;
+		}
+
 
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
@@ -1952,7 +1979,7 @@ class HollaExNetwork {
 			this.apiExpiresAfter
 		);
 
-		return createRequest(verb, `${this.apiUrl}${path}`, headers);
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data: null, formData: null }, 'chart');
 	}
 
 	/**
@@ -1989,7 +2016,57 @@ class HollaExNetwork {
 			this.apiExpiresAfter
 		);
 
-		return createRequest(verb, `${this.apiUrl}${path}`, headers);
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data: null, formData: null }, 'charts');
+	}
+
+	/**
+	 * Get mini chart data for different assets
+	 * @param {string} assets - The list of assets to get the mini charts for
+	 * @param {object} opts - Optional parameters.
+	 * @param {string} opts.quote - Quote asset to receive prices based on
+	 * @param {string} opts.from - Starting date of trade history in UNIX timestamp format
+	 * @param {string} opts.to - Ending date of trade history in UNIX timestamp format
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
+	 * @return {array} Array of objects with trade history info
+	 */
+	getMiniCharts(assets, opts = {
+		from: null,
+		to: null,
+		quote: null,
+		additionalHeaders: null
+	}) {
+		checkKit(this.exchange_id);
+
+		if (!assets) {
+			return reject(parameterError('assets', 'cannot be null'));
+		}
+
+		const verb = 'GET';
+		let path = `${this.baseUrl}/network/${
+			this.exchange_id
+		}/minichart?assets=${assets}`;
+
+		if (opts.from) {
+			path += `&from=${opts.from}`;
+		}
+
+		if (opts.to) {
+			path += `&to=${opts.to}`;
+		}
+
+		if (opts.quote) {
+			path += `&quote=${opts.quote}`;
+		}
+
+		const headers = generateHeaders(
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter
+		);
+
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data: null, formData: null }, 'minicharts');
 	}
 
 	/**
@@ -2167,6 +2244,9 @@ class HollaExNetwork {
 		transactionId: null,
 		address: null,
 		status: true,
+		dismissed: false,
+		rejected: false,
+		waiting: false,
 		email: true,
 		fee: null,
 		additionalHeaders: null
@@ -2205,6 +2285,24 @@ class HollaExNetwork {
 			data.status = opts.status;
 		} else {
 			data.status = true;
+		}
+
+		if (isBoolean(opts.rejected)) {
+			data.rejected = opts.rejected;
+		} else {
+			data.rejected = false;
+		}
+
+		if (isBoolean(opts.dismissed)) {
+			data.dismissed = opts.dismissed;
+		} else {
+			data.dismissed = false;
+		}
+
+		if (isBoolean(opts.waiting)) {
+			data.waiting = opts.waiting;
+		} else {
+			data.waiting = false;
 		}
 
 		if (isBoolean(opts.email)) {
@@ -2272,9 +2370,7 @@ class HollaExNetwork {
 		const processing = isBoolean(opts.processing) ? opts.processing : false;
 		const waiting = isBoolean(opts.waiting) ? opts.waiting : false;
 
-		if (!status && !rejected && !dismissed && !processing && !waiting) {
-			return reject(new Error('Must give one parameter to update'));
-		} else if (
+		if (
 			status && (rejected || dismissed || processing || waiting)
 			|| rejected && (status || dismissed || processing || waiting)
 			|| dismissed && (status || rejected || processing || waiting)
@@ -2345,6 +2441,9 @@ class HollaExNetwork {
 		transactionId: null,
 		address: null,
 		status: true,
+		dismissed: false,
+		rejected: false,
+		waiting: false,
 		email: true,
 		fee: null,
 		additionalHeaders: null
@@ -2383,6 +2482,24 @@ class HollaExNetwork {
 			data.status = opts.status;
 		} else {
 			data.status = true;
+		}
+
+		if (isBoolean(opts.rejected)) {
+			data.rejected = opts.rejected;
+		} else {
+			data.rejected = false;
+		}
+
+		if (isBoolean(opts.dismissed)) {
+			data.dismissed = opts.dismissed;
+		} else {
+			data.dismissed = false;
+		}
+
+		if (isBoolean(opts.waiting)) {
+			data.waiting = opts.waiting;
+		} else {
+			data.waiting = false;
 		}
 
 		if (isBoolean(opts.email)) {
@@ -2450,9 +2567,7 @@ class HollaExNetwork {
 		const processing = isBoolean(opts.processing) ? opts.processing : false;
 		const waiting = isBoolean(opts.waiting) ? opts.waiting : false;
 
-		if (!status && !rejected && !dismissed && !processing && !waiting) {
-			return reject(new Error('Must give one parameter to update'));
-		} else if (
+		if (
 			status && (rejected || dismissed || processing || waiting)
 			|| rejected && (status || dismissed || processing || waiting)
 			|| dismissed && (status || rejected || processing || waiting)
@@ -2620,7 +2735,7 @@ class HollaExNetwork {
 			this.apiExpiresAfter
 		);
 
-		return createRequest(verb, `${this.apiUrl}${path}`, headers);
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data: null, formData: null }, 'oracle');
 	}
 
 	getConstants(opts = {
@@ -3266,6 +3381,207 @@ class HollaExNetwork {
 		);
 
 		return createRequest(verb, `${this.apiUrl}${path}`, headers, { formData });
+	}
+
+	async generateDashToken(opts = {
+		additionalHeaders: null
+	}) {
+		checkKit(this.exchange_id);
+
+		const verb = 'GET';
+		const path = `${this.baseUrl}/network/${
+			this.exchange_id
+		}/jwt`;
+		
+
+
+		const headers = generateHeaders(
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter
+		);
+
+		return createRequest(verb, `${this.apiUrl}${path}`, headers);
+	}
+
+
+
+	/**
+	 * Get a broker quote from network
+	 * @param {number} userId; - Optional Network id of user.
+	 * @param {string} spendingCurrency - Currency user wants to convert from.
+	 * @param {number} spendingAmount - Optional Amount user wants to spend.
+	 * @param {string} receivingCurrency - Currency user wants to convert to.
+	 * @param {number} receivingAmount - Optional Amount user wants to receive.
+	 * @param {object} opts - Optional parameters.
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
+	 * @return {object} Object with quote data.
+	 */
+	getQuote(userId, spendingCurrency, spendingAmount, receivingCurrency, receivingAmount, opts = {
+		additionalHeaders: null
+	}) {
+		checkKit(this.exchange_id);
+
+		if (!spendingCurrency) {
+			return reject(parameterError('spendingCurrency', 'cannot be null'));
+		} else if (!receivingCurrency) {
+			return reject(parameterError('receivingCurrency', 'cannot be null'));
+		}
+
+		const verb = 'GET';
+		let path = `${this.baseUrl}/network/${this.exchange_id}/broker/quote?`;
+
+		if (isNumber(userId)) {
+			path += `&user_id=${userId}`;
+		}
+		if (isString(spendingCurrency)) {
+			path += `&spending_currency=${spendingCurrency}`;
+		}
+		if (isNumber(spendingAmount)) {
+			path += `&spending_amount=${spendingAmount}`;
+		}
+		if (isString(receivingCurrency)) {
+			path += `&receiving_currency=${receivingCurrency}`;
+		}
+		if (isNumber(receivingAmount)) {
+			path += `&receiving_amount=${receivingAmount}`;
+		}
+
+		const headers = generateHeaders(
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter
+		);
+
+		return createRequest(verb, `${this.apiUrl}${path}`, headers);
+	}
+
+	/**
+	 * Execute the broker quote to network for a user
+	 * @param {string} token; - Broker quote token.
+	 * @param {number} user_id - User ID to execute the trade
+	 * @param {number} fee - Fee in percentage to apply to the trade
+	 * @param {object} opts - Optional parameters.
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
+	 * @return {object} Object of the trade data.
+	 */
+	executeQuote(token, user_id, fee, opts = {
+		additionalHeaders: null
+	}) {
+		checkKit(this.exchange_id);
+
+		if (!token) {
+			return reject(parameterError('token', 'cannot be null'));
+		}
+
+		const verb = 'POST';
+		const path = `${this.baseUrl}/network/${this.exchange_id}/broker/execute`;
+
+		const data = {
+			token,
+			user_id,
+			fee
+		};
+
+		const headers = generateHeaders(
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter,
+			data
+		);
+
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data });
+	}
+
+	/**
+	 * Locks users available balance
+	 * @param {number} user_id - User ID to lock the balance
+	 * @param {string} currency - Currency that should be locked
+	 * @param {number} amount - The amount to lock in the balance
+	 * @param {object} opts - Optional parameters.
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
+	 * @return {object} Object of the success message.
+	 */
+	lockBalance(user_id, currency, amount, opts = {
+		additionalHeaders: null
+	}) {
+		checkKit(this.exchange_id);
+
+		if (!user_id) {
+			return reject(parameterError('user_id', 'cannot be null'));
+		}
+		if (!currency) {
+			return reject(parameterError('currency', 'cannot be null'));
+		}
+		if (!amount) {
+			return reject(parameterError('amount', 'cannot be null'));
+		}
+
+		const verb = 'POST';
+		const path = `${this.baseUrl}/network/${this.exchange_id}/balance/lock`;
+
+		const data = {
+			user_id,
+			currency,
+			amount
+		};
+
+		const headers = generateHeaders(
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter,
+			data
+		);
+
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data });
+	}
+
+	/**
+	 * Unlocks users available balance
+	 * @param {number} user_id - User ID to unlock the balance
+	 * @param {number} lock_id - The lock ID to unlock
+	 * @param {object} opts - Optional parameters.
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
+	 * @return {object} Object of the success message.
+	 */
+	unlockBalance(user_id, lock_id, opts = {
+		additionalHeaders: null
+	}) {
+		checkKit(this.exchange_id);
+
+		if (!user_id) {
+			return reject(parameterError('user_id', 'cannot be null'));
+		}
+		if (!lock_id) {
+			return reject(parameterError('lock_id', 'cannot be null'));
+		}
+
+		const verb = 'POST';
+		const path = `${this.baseUrl}/network/${this.exchange_id}/balance/unlock`;
+
+		const data = {
+			user_id,
+			lock_id
+		};
+
+		const headers = generateHeaders(
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter,
+			data
+		);
+
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data });
 	}
 
 	/**

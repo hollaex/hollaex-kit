@@ -33,7 +33,7 @@ const activateOtp = (req, res) => {
 	loggerOtp.verbose(
 		req.uuid,
 		'controllers/otp/activateOtp/code',
-		req.swagger.params.data
+		code
 	);
 
 	toolsLib.security.checkOtp(id)
@@ -68,7 +68,7 @@ const deactivateOtp = (req, res) => {
 	loggerOtp.verbose(
 		req.uuid,
 		'controllers/otp/deactivateOtp/code',
-		req.swagger.params.data
+		code
 	);
 
 	toolsLib.security.hasUserOtpEnabled(id)
@@ -104,6 +104,7 @@ const deactivateOtpAdmin = (req, res) => {
 
 	toolsLib.user.deactivateUserOtpById(user_id)
 		.then(() => {
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
 			return res.json({ message: 'Success' });
 		})
 		.catch((err) => {

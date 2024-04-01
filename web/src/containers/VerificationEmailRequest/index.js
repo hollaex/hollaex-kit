@@ -72,12 +72,7 @@ class VerifyEmailRequest extends Component {
 	};
 
 	render() {
-		const {
-			languageClasses,
-			activeTheme,
-			icons: ICONS,
-			openContactForm,
-		} = this.props;
+		const { languageClasses, icons: ICONS, openContactForm } = this.props;
 		const { success, showContactForm, formFields } = this.state;
 
 		if (success) {
@@ -90,7 +85,6 @@ class VerifyEmailRequest extends Component {
 					)}
 					<EmailRequestSuccess
 						showContactForm={showContactForm}
-						activeTheme={activeTheme}
 						onClick={openContactForm}
 					/>
 					<Dialog
@@ -101,7 +95,6 @@ class VerifyEmailRequest extends Component {
 						style={{ 'z-index': 100 }}
 						className={classnames(languageClasses)}
 						showCloseText={false}
-						theme={activeTheme}
 					>
 						<ContactForm
 							onSubmitSuccess={this.onCloseDialog}
@@ -173,7 +166,6 @@ class VerifyEmailRequest extends Component {
 }
 
 const mapStateToProps = (store) => ({
-	activeTheme: store.app.theme,
 	constants: store.app.constants,
 });
 

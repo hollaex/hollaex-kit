@@ -252,7 +252,6 @@ class AddTheme extends Component {
 				isOpen={isOpen}
 				label="operator-controls-modal"
 				className="operator-controls__modal add-theme"
-				disableTheme={true}
 				onCloseDialog={() => onCloseDialog(true)}
 				shouldCloseOnOverlayClick={true}
 				showCloseText={true}

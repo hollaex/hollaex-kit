@@ -92,12 +92,7 @@ class RequestResetPassword extends Component {
 	};
 
 	render() {
-		const {
-			languageClasses,
-			activeTheme,
-			icons: ICONS,
-			openContactForm,
-		} = this.props;
+		const { languageClasses, icons: ICONS, openContactForm } = this.props;
 		const { success, showContactForm, formFields } = this.state;
 
 		return (
@@ -161,7 +156,6 @@ class RequestResetPassword extends Component {
 					style={{ 'z-index': 100 }}
 					className={classnames(languageClasses)}
 					showCloseText={false}
-					theme={activeTheme}
 				>
 					<ContactForm
 						onSubmitSuccess={this.onCloseDialog}

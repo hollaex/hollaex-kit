@@ -22,37 +22,10 @@ import {
 } from './action';
 import { setCoins, setExchange } from 'actions/assetActions';
 import { requestTotalBalance } from '../Wallets/actions';
+import { CheckOutlined } from '@ant-design/icons';
+import { STATIC_ICONS } from 'config/icons';
 
 const { Item } = Breadcrumb;
-
-const ASSET_TYPE_LIST = [
-	{ key: 'Bitcoin', value: 'btc' },
-	{ key: 'Bitcoin Cash', value: 'bch' },
-	{ key: 'Ripple', value: 'xrp' },
-	{ key: 'Ethereum', value: 'eth' },
-	{ key: 'HollaEx', value: 'hex' },
-	{ key: 'HollaEx', value: 'xht' },
-	{ key: 'Bitcoin Satoshi Vision', value: 'bsv' },
-	{ key: 'USD Tether', value: 'usdt' },
-	{ key: 'BNB', value: 'bnb' },
-	{ key: 'UNUS SED LEO', value: 'leo' },
-	{ key: 'Maker', value: 'mkr' },
-	{ key: 'USD Coin', value: 'usdc' },
-	{ key: 'BAT', value: 'bat' },
-	{ key: 'Monero', value: 'xmr' },
-	{ key: 'EOS', value: 'eos' },
-	{ key: 'Litecoin', value: 'ltc' },
-	{ key: 'Stellar', value: 'xlm' },
-	{ key: 'Cardano', value: 'ada' },
-	{ key: 'Tron', value: 'trx' },
-	{ key: 'NEO', value: 'neo' },
-	{ key: 'NEM', value: 'nem' },
-	{ key: 'Ethereum Classic', value: 'etc' },
-	{ key: 'Dash', value: 'dash' },
-	{ key: 'IOTA', value: 'miota' },
-	{ key: 'ZRX', value: 'zrx' },
-	{ key: 'Gold Tether', value: 'xaut' },
-];
 
 const filterOptions = [
 	{
@@ -81,7 +54,8 @@ const getColumns = (
 	constants = {},
 	balance = {},
 	handleEdit,
-	handlePreview
+	handlePreview,
+	exchange
 ) => [
 	{
 		title: 'Assets',
@@ -151,26 +125,67 @@ const getColumns = (
 		dataIndex: 'verified',
 		key: 'verified',
 		className: 'balance-column',
-		render: (verified) => {
-			return verified ? <div>verified</div> : <div>pending</div>;
-		},
-	},
-	{
-		title: 'Balance',
-		dataIndex: 'symbol',
-		key: 'balance',
-		className: 'balance-column',
-		render: (symbol = '', data) => {
-			const selectedAsset =
-				allCoins.filter((list) => list.symbol === data.symbol)[0] || {};
-			return (
-				<div
-					className="coin-symbol-wrapper"
-					onClick={() => handlePreview(selectedAsset)}
-				>
-					{balance[`${symbol}_available`] || 0}
-				</div>
-			);
+		render: (verified, data) => {
+			const basicCoins = ['btc', 'xht', 'eth', 'usdt'];
+			if (
+				verified &&
+				(exchange.plan === 'basic' ||
+					exchange.plan === 'crypto' ||
+					exchange.plan === 'fiat' ||
+					exchange.plan === 'boost')
+			) {
+				if (
+					(exchange.plan === 'basic' && basicCoins.includes(data.symbol)) ||
+					((exchange.plan === 'crypto' ||
+						exchange.plan === 'fiat' ||
+						exchange.plan === 'boost') &&
+						data &&
+						(data.type === 'blockchain' || data.type === 'fiat'))
+				) {
+					return (
+						<div>
+							<CheckOutlined className="status-verified" />
+							verified
+						</div>
+					);
+				} else if (
+					exchange.plan === 'basic' &&
+					data &&
+					data.type === 'blockchain'
+				) {
+					return (
+						<div>
+							{' '}
+							<img
+								alt="crypto-pro"
+								className="plan-img"
+								src={STATIC_ICONS['CLOUD_PLAN_CRYPTO_PRO']}
+							></img>
+							Crypto Pro required{' '}
+							<Link to="/admin/billing" className="text-link">
+								(Upgrade)
+							</Link>
+						</div>
+					);
+				} else {
+					return (
+						<div>
+							{' '}
+							<img
+								alt="fiat-ramp"
+								className="plan-img"
+								src={STATIC_ICONS['CLOUD_PLAN_FIAT_RAMP']}
+							></img>
+							Fiat Ramp or Boost required{' '}
+							<Link to="/admin/billing" className="text-link">
+								(Upgrade)
+							</Link>
+						</div>
+					);
+				}
+			} else {
+				return <div>pending</div>;
+			}
 		},
 	},
 ];
@@ -204,6 +219,8 @@ class Assets extends Component {
 			isTableLoading: true,
 			isFiat: '',
 			assetType: '',
+			currentScreen: 'step1',
+			isLoading: false,
 		};
 	}
 
@@ -291,6 +308,12 @@ class Assets extends Component {
 		}
 	}
 
+	updateCurrentScreen = (screen) => {
+		this.setState({
+			currentScreen: screen,
+		});
+	};
+
 	getBalance = async () => {
 		try {
 			const res = await requestTotalBalance();
@@ -320,12 +343,13 @@ class Assets extends Component {
 
 	handleClose = () => {
 		this.setState({
-			isOpenAdd: false,
+			isOpenAdd: this.state.currentScreen === 'step2' ? true : false,
 			isEdit: false,
 			isConfigureEdit: false,
 			isConfirm: false,
 			width: 520,
 			isWithdrawalEdit: false,
+			currentScreen: 'step1',
 			// selectedAsset: {}
 		});
 	};
@@ -358,28 +382,12 @@ class Assets extends Component {
 				(await res.data) &&
 				res.data.data &&
 				res.data.data.map((item) => {
-					// NOTE: Monero set disabled
-					if (item.symbol === 'xmr') {
-						return {
-							key: 'Monero',
-							value: 'xmr',
-							disabled: true,
-							...item,
-						};
-					}
-					const filter = ASSET_TYPE_LIST.filter(
-						(obj) => obj.value === item.symbol
-					);
-					if (filter.length === 0) {
-						return {
-							key: item.fullname,
-							value: item.symbol,
-							...item,
-						};
-					} else {
-						return { ...filter[0], ...item };
-					}
-				});
+				return {
+					key: item.fullname,
+					value: item.symbol,
+					...item,
+				};
+			});
 
 			return this.props.setCoins(coins);
 		} catch (error) {
@@ -514,21 +522,29 @@ class Assets extends Component {
 
 	handleDelete = async (symbol) => {
 		const { coins, exchange } = this.state;
+		this.setState({ isLoading: true });
 		this.setState({ submitting: true });
+		const pairedCoins = exchange.pairs.filter((data) => {
+			let pairData = data.split('-');
+			return pairData[0] === symbol || pairData[1] === symbol;
+		});
 		try {
 			let formProps = {
 				id: exchange.id,
 				coins: coins
 					.filter((data) => data.symbol !== symbol)
 					.map((data) => data.symbol),
-				pairs: exchange.pairs.filter((data) => {
+			};
+			if (pairedCoins.length) {
+				formProps.pairs = exchange.pairs.filter((data) => {
 					let pairData = data.split('-');
 					return pairData[0] !== symbol && pairData[1] !== symbol;
-				}),
-			};
+				});
+			}
 			await updateExchange(formProps);
 			await this.getMyExchange();
 			await this.getCoins();
+			this.setState({ isLoading: false });
 			message.success('Asset removed successfully');
 			this.setState({
 				isConfigure: false,
@@ -664,6 +680,7 @@ class Assets extends Component {
 			submitting,
 			saveLoading,
 			isFiat,
+			isLoading,
 		} = this.state;
 
 		const { owner_id, created_by, verified } = selectedAsset;
@@ -684,6 +701,7 @@ class Assets extends Component {
 							handleDelete={this.handleDelete}
 							submitting={submitting}
 							handleWithdrawalEdit={this.handleWithdrawalEdit}
+							isLoading={isLoading}
 						/>
 					</div>
 					<div>
@@ -715,6 +733,7 @@ class Assets extends Component {
 							submitting={submitting}
 							handleWithdrawalEdit={this.handleWithdrawalEdit}
 							isFiat={isFiat}
+							isLoading={isLoading}
 						/>
 					</div>
 					{showConfigureButton && (
@@ -857,6 +876,8 @@ class Assets extends Component {
 					handleRefreshCoin={this.handleRefreshCoin}
 					isWithdrawalEdit={this.state.isWithdrawalEdit}
 					assetType={this.state.assetType}
+					currentScreen={this.state.currentScreen}
+					updateCurrentScreen={this.updateCurrentScreen}
 				/>
 			);
 		}
@@ -875,10 +896,9 @@ class Assets extends Component {
 			isConfirm,
 			isPresetConfirm,
 			exchangeBalance,
-			// exchange
+			exchange,
 		} = this.state;
 		const { allCoins, constants } = this.props;
-
 		return (
 			<div className="admin-asset-wrapper">
 				{isPreview || isConfigure ? (
@@ -906,11 +926,13 @@ class Assets extends Component {
 									constants,
 									exchangeBalance,
 									this.handleEdit,
-									this.handlePreview
+									this.handlePreview,
+									exchange
 								)}
 								rowKey={(data, index) => index}
 								dataSource={coins}
 								loading={!coins.length}
+								pagination={false}
 							/>
 						</div>
 					</Fragment>

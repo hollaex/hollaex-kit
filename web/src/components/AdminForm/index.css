@@ -219,3 +219,9 @@ body {
 	color: #c4c4c4 !important;
 	opacity: 1;
 }
+
+.user-data .ant-input-affix-wrapper {
+	cursor: pointer;
+	background-color: var(--admin_panel_input);
+	color: var(--admin_panel_main_font) !important;
+}

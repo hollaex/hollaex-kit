@@ -445,7 +445,7 @@ const Summarycontent = ({
 						</div>
 						<div className="ml-5 button-wrapper">
 							<a
-								href="https://dash.bitholla.com/billing"
+								href="https://dash.hollaex.com/billing"
 								target="_blank"
 								rel="noopener noreferrer"
 							>
@@ -664,7 +664,9 @@ const Summarycontent = ({
 									current: currentTablePage,
 									onChange: pageChange,
 								}}
-								expandedRowRender={renderRowContent}
+								expandedRowRender={(vals) =>
+									renderRowContent({ ...vals, coins })
+								}
 								expandRowByClick={true}
 							/>
 						</div>
@@ -719,7 +721,9 @@ const Summarycontent = ({
 									current: currentTablePage,
 									onChange: pageChange,
 								}}
-								expandedRowRender={renderRowContent}
+								expandedRowRender={(vals) =>
+									renderRowContent({ ...vals, coins })
+								}
 								expandRowByClick={true}
 							/>
 						</div>

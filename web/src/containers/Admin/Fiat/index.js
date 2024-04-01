@@ -47,8 +47,10 @@ const Fiatmarkets = ({
 	}, [tabParams]);
 
 	useEffect(() => {
-		const userPayments = constractPaymentOption(user_payments);
-		setOnuserPaymentsData(userPayments);
+		if (user_payments && Object.keys(user_payments).length) {
+			const userPayments = constractPaymentOption(user_payments);
+			setOnuserPaymentsData(userPayments);
+		}
 	}, [user_payments]);
 
 	const handleTabChange = (key) => {

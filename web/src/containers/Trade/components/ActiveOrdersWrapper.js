@@ -5,10 +5,15 @@ import { bindActionCreators } from 'redux';
 import Filters from './Filters';
 import TradeBlock from './TradeBlock';
 import ActiveOrders from './ActiveOrders';
-import LogoutInfoOrder from './LogoutInfoOrder';
 import { cancelOrder, cancelAllOrders } from 'actions/orderAction';
 import { isLoggedIn } from 'utils/token';
-import { ActionNotification, Dialog, IconTitle, Button } from 'components';
+import {
+	ActionNotification,
+	Dialog,
+	IconTitle,
+	Button,
+	NotLoggedIn,
+} from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { activeOrdersSelector } from '../utils';
@@ -95,8 +100,11 @@ class OrdersWrapper extends Component {
 					tool={tool}
 					titleClassName="mb-4"
 				>
-					{isLoggedIn() ? (
-						<Fragment>
+					<NotLoggedIn
+						placeholderKey="NOT_LOGGEDIN.TXT_1"
+						hasBackground={false}
+					>
+						<div className="open-order-wrapper">
 							<Filters
 								pair={activeOrdersMarket}
 								onChange={setActiveOrdersMarket}
@@ -110,10 +118,8 @@ class OrdersWrapper extends Component {
 								onCancel={this.handleCancelOrders}
 								onCancelAll={this.openConfirm}
 							/>
-						</Fragment>
-					) : (
-						<LogoutInfoOrder />
-					)}
+						</div>
+					</NotLoggedIn>
 				</TradeBlock>
 				<Dialog
 					isOpen={showCancelAllModal}
@@ -134,8 +140,11 @@ class OrdersWrapper extends Component {
 						/>
 						<div>
 							<div>
-								<EditWrapper stringId="CANCEL_ORDERS.SUB_HEADING">
-									<div>{STRINGS['CANCEL_ORDERS.SUB_HEADING']}</div>
+								<EditWrapper
+									stringId="CANCEL_ORDERS.SUB_HEADING"
+									render={(string) => <div>{string}</div>}
+								>
+									{STRINGS['CANCEL_ORDERS.SUB_HEADING']}
 								</EditWrapper>
 							</div>
 							<div className="mt-3">
@@ -149,8 +158,11 @@ class OrdersWrapper extends Component {
 								</EditWrapper>
 							</div>
 							<div className="mt-1 mb-5">
-								<EditWrapper stringId="CANCEL_ORDERS.INFO_2">
-									<div>{STRINGS['CANCEL_ORDERS.INFO_2']}</div>
+								<EditWrapper
+									stringId="CANCEL_ORDERS.INFO_2"
+									render={(string) => <div>{string}</div>}
+								>
+									{STRINGS['CANCEL_ORDERS.INFO_2']}
 								</EditWrapper>
 							</div>
 							<div className="w-100 buttons-wrapper d-flex">

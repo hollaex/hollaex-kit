@@ -1,27 +1,48 @@
 import React from 'react';
 import classnames from 'classnames';
 import STRINGS from 'config/localizedStrings';
-import { ButtonLink, Image } from 'components';
+import { ButtonLink, Image, EditWrapper } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
+import { QuickTradeFooter, ProTradeFooter } from './utlis';
 
 const SidebarButton = ({
 	title = '',
 	iconPath = '',
 	active = false,
 	onClick,
+	tradeTab = false,
+	activeTrades = {},
 }) => {
+	const { isProTrade, isQuickTrade } = activeTrades;
+	const isTradeTabActive = tradeTab && title === 'Trade';
+	const isActiveTrades = isProTrade && isQuickTrade && title === 'Trade';
+
 	return (
 		<div
 			onClick={onClick}
-			className={classnames('sidebar-bottom-button', { active })}
+			className={
+				isTradeTabActive || isActiveTrades
+					? classnames(
+							`sidebar-bottom-button sidebar-bottom-button-${title.toLowerCase()}`,
+							'active'
+					  )
+					: classnames(
+							`sidebar-bottom-button sidebar-bottom-button-${title.toLowerCase()}`,
+							!tradeTab && { active }
+					  )
+			}
 		>
 			<Image icon={iconPath} wrapperClassName="sidebar-bottom-icon" />
 			<div
 				className={
-					active ? 'bottom-text-acttive bottom-bar-text' : 'bottom-bar-text'
+					isTradeTabActive || isActiveTrades
+						? 'bottom-text-acttive bottom-bar-text'
+						: active && !tradeTab
+						? 'bottom-text-acttive bottom-bar-text'
+						: 'bottom-bar-text'
 				}
 			>
-				{title}
+				<EditWrapper>{title}</EditWrapper>
 			</div>
 		</div>
 	);
@@ -49,7 +70,14 @@ const SidebarBottom = ({
 	isLogged,
 	icons: ICONS = {},
 	onMenuChange,
+	tradeTab,
+	onHandleTradeTabs,
+	pairs,
+	isProTrade,
+	isQuickTrade,
 }) => {
+	const activeTrades = { isProTrade, isQuickTrade };
+
 	return isLogged ? (
 		<div className="sidebar-bottom-wrapper d-flex">
 			{menuItems.map(
@@ -59,18 +87,34 @@ const SidebarBottom = ({
 				) => {
 					return (
 						!hide_from_bottom_nav && (
-							<SidebarButton
-								key={`bottom_nav_item_${index}`}
-								path={path}
-								title={STRINGS[string_id]}
-								iconPath={ICONS[icon_id]}
-								active={
-									activePaths
-										? activePaths.includes(activePath)
-										: path === activePath
-								}
-								onClick={() => onMenuChange(path)}
-							/>
+							<>
+								<SidebarButton
+									key={`bottom_nav_item_${index}`}
+									path={path}
+									title={STRINGS[string_id]}
+									iconPath={ICONS[icon_id]}
+									active={
+										activePaths
+											? activePaths.includes(activePath)
+											: path === activePath
+									}
+									onClick={() => onMenuChange(path, null, true)}
+									tradeTab={tradeTab}
+									activeTrades={activeTrades}
+								/>
+								{tradeTab && (
+									<div className="mobile-trade-wrapper d-flex">
+										<ProTradeFooter
+											pairs={pairs}
+											onHandleTradeTabs={onHandleTradeTabs}
+										/>
+										<QuickTradeFooter
+											pairs={pairs}
+											onHandleTradeTabs={onHandleTradeTabs}
+										/>
+									</div>
+								)}
+							</>
 						)
 					);
 				}

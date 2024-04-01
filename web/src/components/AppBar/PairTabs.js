@@ -3,16 +3,14 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { browserHistory } from 'react-router';
 import { Dropdown } from 'antd';
-import { Slider } from 'components';
-import _get from 'lodash/get';
+import { CaretDownOutlined, CaretUpOutlined } from '@ant-design/icons';
 
 import TabList from './TabList';
 import MarketSelector from './MarketSelector';
 import ToolsSelector from './ToolsSelector';
 import STRINGS from 'config/localizedStrings';
-import { EditWrapper, PriceChange } from 'components';
+import { Slider, EditWrapper, PriceChange } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { CaretDownOutlined, CaretUpOutlined } from '@ant-design/icons';
 import { formatToCurrency } from 'utils/currency';
 import { MarketsSelector } from 'containers/Trade/utils';
 
@@ -69,13 +67,13 @@ class PairTabs extends Component {
 
 	initTabs = (pairs, activePair) => {};
 
-	onTabClick = (pair) => {
-		const { router, constants } = this.props;
+	onTabClick = (pair, isQuickTrade) => {
+		const { router } = this.props;
 		if (pair) {
-			if (_get(constants, 'features.pro_trade')) {
-				router.push(`/trade/${pair}`);
-			} else if (_get(constants, 'features.quick_trade')) {
+			if (isQuickTrade) {
 				router.push(`/quick-trade/${pair}`);
+			} else {
+				router.push(`/trade/${pair}`);
 			}
 			this.setState({ activePairTab: pair });
 		}
@@ -88,14 +86,16 @@ class PairTabs extends Component {
 			isToolsSelectorVisible,
 		} = this.state;
 
-		const { location, favourites, markets } = this.props;
+		const { location, favourites, markets, quicktrade } = this.props;
 		const market = markets.find(({ key }) => key === activePairTab) || {};
 		const {
+			key,
 			pair: { increment_price } = {},
 			ticker: { close } = {},
 			display_name,
 		} = market;
 
+		const filterQuickTrade = quicktrade.filter(({ type }) => type !== 'pro');
 		return (
 			<div className="d-flex justify-content-between">
 				<div className="market-bar d-flex align-items-center title-font apply_rtl">
@@ -149,7 +149,7 @@ class PairTabs extends Component {
 											<div className="title-font ml-1">
 												{formatToCurrency(close, increment_price)}
 											</div>
-											<PriceChange market={market} />
+											<PriceChange market={market} key={key} />
 										</div>
 									) : (
 										<div className="d-flex align-items-center">
@@ -175,7 +175,7 @@ class PairTabs extends Component {
 							{favourites && favourites.length > 0 && (
 								<TabList
 									items={favourites}
-									markets={markets}
+									markets={[...filterQuickTrade , ...markets]}
 									activePairTab={activePairTab}
 									onTabClick={this.onTabClick}
 								/>
@@ -204,8 +204,10 @@ class PairTabs extends Component {
 										this.setState({ isToolsSelectorVisible: visible });
 									}}
 								>
-									<div className="selector-trigger narrow app_bar-pair-tab d-flex align-items-center justify-content-between w-100 h-100">
-										<div>Tools</div>
+									<div className="selector-trigger narrow app_bar-pair-tab tools d-flex align-items-center justify-content-between w-100 h-100">
+										<div className="text_overflow">
+											{STRINGS['TRADE_TOOLS']}
+										</div>
 										{isToolsSelectorVisible ? (
 											<CaretUpOutlined style={{ fontSize: '14px' }} />
 										) : (
@@ -224,7 +226,7 @@ class PairTabs extends Component {
 
 const mapStateToProps = (state) => {
 	const {
-		app: { language: activeLanguage, pairs, favourites, constants },
+		app: { language: activeLanguage, pairs, favourites, constants, quicktrade },
 		orderbook: { prices },
 	} = state;
 
@@ -235,6 +237,7 @@ const mapStateToProps = (state) => {
 		favourites,
 		constants,
 		markets: MarketsSelector(state),
+		quicktrade
 	};
 };
 

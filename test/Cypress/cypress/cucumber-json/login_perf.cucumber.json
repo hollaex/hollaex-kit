@@ -1,0 +1,208 @@
+[
+  {
+    "description": "As a valid customer\nIn order to Trade/ Deposit and withdraw\nI want to login successfully to HollaeX",
+    "keyword": "Feature",
+    "name": "Login Feature",
+    "line": 1,
+    "id": "login-feature",
+    "tags": [],
+    "uri": "login_perf.feature",
+    "elements": [
+      {
+        "id": "login-feature;successfull-login",
+        "keyword": "Scenario",
+        "line": 7,
+        "name": "Successfull Login",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 9,
+            "name": "I am in the Hollaex login page",
+            "result": {
+              "status": "undefined",
+              "duration": 66000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 10,
+            "name": "I enter credentials Username,Password",
+            "result": {
+              "status": "skipped"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 11,
+            "name": "I should be able to login successfully",
+            "result": {
+              "status": "skipped"
+            }
+          }
+        ]
+      },
+      {
+        "id": "login-feature;wrong-username-login",
+        "keyword": "Scenario",
+        "line": 13,
+        "name": "Wrong Username Login",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 15,
+            "name": "I am in the Hollaex login page",
+            "result": {
+              "status": "undefined"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 16,
+            "name": "I enter credentials Wrong Username,Password",
+            "result": {
+              "status": "skipped"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 17,
+            "name": "I should not be able to login successfully and get error",
+            "result": {
+              "status": "skipped"
+            }
+          }
+        ]
+      },
+      {
+        "id": "login-feature;wrong-password-login",
+        "keyword": "Scenario",
+        "line": 19,
+        "name": "Wrong Password login",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 21,
+            "name": "I am in the Hollaex login page",
+            "result": {
+              "status": "undefined"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 22,
+            "name": "I enter credentials Username,wrong Password",
+            "result": {
+              "status": "skipped"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 23,
+            "name": "I should not be able to login successfully and get error",
+            "result": {
+              "status": "skipped"
+            }
+          }
+        ]
+      },
+      {
+        "id": "login-feature;frozen-account-login",
+        "keyword": "Scenario",
+        "line": 25,
+        "name": "Frozen Account login",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 27,
+            "name": "I am in the Hollaex login page",
+            "result": {
+              "status": "undefined"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 28,
+            "name": "I enter credentials Frozen Username,Password",
+            "result": {
+              "status": "skipped"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 29,
+            "name": "I should not be able to login successfully and get This account is frozen",
+            "result": {
+              "status": "skipped"
+            }
+          }
+        ]
+      },
+      {
+        "id": "login-feature;2fa-enabled-account-login",
+        "keyword": "Scenario",
+        "line": 31,
+        "name": "2FA enabled Account login",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 33,
+            "name": "I am in the Hollaex login page",
+            "result": {
+              "status": "undefined"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 34,
+            "name": "I enter credentials 2FA enabled Username,Password",
+            "result": {
+              "status": "skipped"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 35,
+            "name": "I should be able to login successfully",
+            "result": {
+              "status": "skipped"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 36,
+            "name": "I enter Expired,long,short and then true 2FA code",
+            "result": {
+              "status": "skipped"
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

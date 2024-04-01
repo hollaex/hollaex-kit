@@ -35,15 +35,33 @@ import {
 	SET_INJECTED_VALUES,
 	SET_INJECTED_HTML,
 	SET_CONTRACTS,
+	SET_ALL_CONTRACTS,
 	CHANGE_PAIR,
 	SET_ACTIVE_ORDERS_MARKET,
 	SET_RECENT_TRADES_MARKETS,
 	SET_TRADE_TAB,
 	SET_BROKER,
-} from '../actions/appActions';
-import { THEME_DEFAULT } from '../config/constants';
-import { getLanguage } from '../utils/string';
-import { getTheme } from '../utils/theme';
+	SET_QUICKTRADE,
+	SORT,
+	SET_SORT_MODE,
+	TOGGLE_SORT,
+	SET_ADMIN_SORT,
+	WALLET_SORT,
+	SET_WALLET_SORT_MODE,
+	TOGGLE_WALLET_SORT,
+	SET_ADMIN_WALLET_SORT,
+	DIGITAL_ASSETS_SORT,
+	SET_DIGITAL_ASSETS_SORT_MODE,
+	TOGGLE_DIGITAL_ASSETS_SORT,
+	SET_ADMIN_DIGITAL_ASSETS_SORT,
+	SELECTED_PLUGIN,
+	SET_EXPLORE_PLUGINS,
+	OVERWRITE_CURRENCY_NAMES,
+	SET_TRANSACTION_LIMITS,
+} from 'actions/appActions';
+import { THEME_DEFAULT } from 'config/constants';
+import { getLanguage } from 'utils/string';
+import { getTheme } from 'utils/theme';
 import { unique } from 'utils/data';
 import { getFavourites, setFavourites } from 'utils/favourites';
 import {
@@ -52,7 +70,13 @@ import {
 	generateFiatWalletTarget,
 } from 'utils/id';
 import { mapPluginsTypeToName } from 'utils/plugin';
-import { modifyCoinsData, modifyPairsData } from 'utils/reducer';
+import {
+	modifyCoinsData,
+	modifyPairsData,
+	modifyBrokerData,
+	modifyQuickTradeData,
+	overWriteCoinNames,
+} from 'utils/reducer';
 
 const EMPTY_NOTIFICATION = {
 	type: '',
@@ -89,74 +113,15 @@ const INITIAL_STATE = {
 	recentTradesMarket: '',
 	tickers: {},
 	orderLimits: {},
-	coins: {
-		bch: {
-			id: 4,
-			fullname: 'Bitcoin Cash',
-			symbol: 'bch',
-			active: true,
-			allow_deposit: true,
-			allow_withdrawal: true,
-			withdrawal_fee: 0.0001,
-			min: 0.0001,
-			max: 100000,
-			increment_unit: 0.001,
-		},
-		xrp: {
-			id: 5,
-			fullname: 'Ripple',
-			symbol: 'xrp',
-			active: true,
-			allow_deposit: true,
-			allow_withdrawal: true,
-			withdrawal_fee: 0.0001,
-			min: 0.0001,
-			max: 100000,
-			increment_unit: 0.001,
-		},
-		eur: {
-			id: 1,
-			fullname: 'Euro',
-			symbol: 'eur',
-			active: true,
-			allow_deposit: true,
-			allow_withdrawal: true,
-			withdrawal_fee: 0.0001,
-			min: 0.0001,
-			max: 100000,
-			increment_unit: 0.0001,
-		},
-		btc: {
-			id: 2,
-			fullname: 'Bitcoin',
-			symbol: 'btc',
-			active: true,
-			allow_deposit: true,
-			allow_withdrawal: true,
-			withdrawal_fee: 0.0001,
-			min: 0.0001,
-			max: 100000,
-			increment_unit: 0.0001,
-		},
-		eth: {
-			id: 3,
-			fullname: 'Ethereum',
-			symbol: 'eth',
-			active: true,
-			allow_deposit: true,
-			allow_withdrawal: true,
-			withdrawal_fee: 0.0001,
-			min: 0.0001,
-			max: 100000,
-			increment_unit: 0.001,
-		},
-	},
+	coins: {},
 	constants: {},
 	config_level: {},
 	info: { is_trial: false, active: true, status: true },
 	enabledPlugins: [],
 	plugins: [],
 	pluginNames: {},
+	selectedPlugin: {},
+	explorePlugins: [],
 	helpdeskInfo: {
 		has_helpdesk: false,
 		helpdesk_endpoint: '',
@@ -171,11 +136,30 @@ const INITIAL_STATE = {
 	injected_html: {},
 	plugins_injected_html: {},
 	contracts: {},
+	allContracts: {},
 	tradeTab: 0,
 	broker: {},
+	quicktrade: [],
 	user_payments: {},
-	onramp: {},
+	onramp: [],
 	offramp: {},
+	sort: {
+		mode: SORT.CHANGE,
+		is_descending: true,
+	},
+	pinned_markets: [],
+	default_sort: SORT.CHANGE,
+	wallet_sort: {
+		mode: WALLET_SORT.AMOUNT,
+		is_descending: true,
+	},
+	pinned_assets: [],
+	default_wallet_sort: WALLET_SORT.AMOUNT,
+	digital_assets_sort: {
+		mode: DIGITAL_ASSETS_SORT.CHANGE,
+		is_descending: true,
+	},
+	default_digital_assets_sort: DIGITAL_ASSETS_SORT.CHANGE,
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -212,6 +196,11 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 				...state,
 				coins: modifyCoinsData(payload.coins),
 			};
+		case OVERWRITE_CURRENCY_NAMES:
+			return {
+				...state,
+				coins: overWriteCoinNames(state.coins),
+			};
 		case SET_USER_PAYMENTS:
 			return {
 				...state,
@@ -230,7 +219,19 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 		case SET_BROKER:
 			return {
 				...state,
-				broker: payload.broker,
+				broker: modifyBrokerData(payload.broker, { ...state.coins }),
+			};
+		case SET_TRANSACTION_LIMITS:
+			return {
+				...state,
+				transaction_limits: payload.transaction_limits,
+			};
+		case SET_QUICKTRADE:
+			return {
+				...state,
+				quicktrade: modifyQuickTradeData(payload.quicktrade, {
+					...state.coins,
+				}),
 			};
 		case SET_NOTIFICATION: {
 			const newNotification =
@@ -375,12 +376,18 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 				if (pairs.includes(key)) {
 					let temp = state.tickers[key] || {};
 					let pairTrade = payload[key][0];
-					let close =
-						pairTrade && pairTrade.price
-							? pairTrade.price
-							: temp.close
-							? temp.close
-							: 0;
+					let close = (
+						pairTrade && pairTrade.price ? pairTrade.price : temp.close
+					)
+						? temp.close
+						: 0;
+					temp.volume += parseFloat(pairTrade?.size ?? 0);
+					if (pairTrade?.side === 'buy' && pairTrade?.price > temp.high) {
+						temp.high = pairTrade?.price;
+					}
+					if (pairTrade?.side === 'sell' && pairTrade?.price < temp.low) {
+						temp.low = pairTrade?.price;
+					}
 					tempTickers[key] = {
 						...temp,
 						close,
@@ -404,6 +411,18 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 				...state,
 				constants: payload.constants,
 				features: payload.features,
+			};
+
+		case SELECTED_PLUGIN:
+			return {
+				...state,
+				selectedPlugin: payload.selectedPlugin,
+			};
+
+		case SET_EXPLORE_PLUGINS:
+			return {
+				...state,
+				explorePlugins: payload.explorePlugins,
 			};
 
 		case SET_PLUGINS: {
@@ -461,11 +480,12 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			const remoteRoutes = [];
 			allWebViews.forEach(({ meta, name }) => {
 				if (meta && meta.is_page) {
-					const { icon, string, ...rest } = meta;
+					const { icon, string, path, ...rest } = meta;
 					remoteRoutes.push({
-						target: generateDynamicTarget(name, 'page'),
+						target: generateDynamicTarget(name, 'page', path),
 						icon_id: globalize(name)(icon),
 						string_id: globalize(name)(string),
+						path,
 						...rest,
 					});
 				}
@@ -497,12 +517,13 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 						is_app,
 						type,
 						currency,
+						path,
 					} = meta;
 
 					if (is_app) {
 						target = generateDynamicTarget(name, 'app', type);
 					} else if (is_page) {
-						target = generateDynamicTarget(name, 'page');
+						target = generateDynamicTarget(name, 'page', path);
 					} else if (is_verification_tab && type) {
 						target = generateDynamicTarget(name, 'verification', type);
 					} else if (is_wallet && type && currency) {
@@ -606,12 +627,84 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 				contracts: payload,
 			};
 		}
+		case SET_ALL_CONTRACTS: {
+			return {
+				...state,
+				allContracts: payload,
+			};
+		}
 		case SET_TRADE_TAB: {
 			return {
 				...state,
 				tradeTab: payload,
 			};
 		}
+		case SET_SORT_MODE:
+			return {
+				...state,
+				sort: {
+					mode: payload,
+					is_descending: true,
+				},
+			};
+		case TOGGLE_SORT:
+			return {
+				...state,
+				sort: {
+					...state.sort,
+					is_descending: !state.sort.is_descending,
+				},
+			};
+		case SET_ADMIN_SORT:
+			return {
+				...state,
+				pinned_markets: payload.pinned_markets,
+				default_sort: payload.default_sort,
+			};
+		case SET_WALLET_SORT_MODE:
+			return {
+				...state,
+				wallet_sort: {
+					mode: payload,
+					is_descending: true,
+				},
+			};
+		case SET_DIGITAL_ASSETS_SORT_MODE:
+			return {
+				...state,
+				digital_assets_sort: {
+					mode: payload,
+					is_descending: true,
+				},
+			};
+		case TOGGLE_WALLET_SORT:
+			return {
+				...state,
+				wallet_sort: {
+					...state.wallet_sort,
+					is_descending: !state.wallet_sort.is_descending,
+				},
+			};
+		case TOGGLE_DIGITAL_ASSETS_SORT:
+			return {
+				...state,
+				digital_assets_sort: {
+					...state.digital_assets_sort,
+					is_descending: !state.digital_assets_sort.is_descending,
+				},
+			};
+		case SET_ADMIN_WALLET_SORT:
+			return {
+				...state,
+				pinned_assets: payload.pinned_assets,
+				default_wallet_sort: payload.default_wallet_sort,
+			};
+		case SET_ADMIN_DIGITAL_ASSETS_SORT:
+			return {
+				...state,
+				pinned_assets: payload.pinned_assets,
+				default_digital_assets_sort: payload.default_digital_assets_sort,
+			};
 		default:
 			return state;
 	}

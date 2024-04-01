@@ -53,6 +53,8 @@ $content--margin: 2rem;
 		font-size: $font-size-subhead2;
 		border: 1px solid $colors-deactivate-color2;
 		padding: 1.5rem 12rem;
+		word-break: break-all;
+
 		.review-fee_message {
 			font-size: $font-size-main;
 		}
@@ -84,6 +86,11 @@ $content--margin: 2rem;
 			margin: 0 0 40px;
 			background-color: $app-sidebar-background;
 			padding: 30px;
+
+			& .field-children .field-valid {
+				top: 8px;
+				right: -20px;
+			}
 		}
 		.btn-wrapper {
 			display: flex;
@@ -181,6 +188,42 @@ $content--margin: 2rem;
 			}
 		}
 	}
+	@media screen and (max-width: 550px) {
+		.presentation_container {
+			.inner_container {
+				.information_block {
+					.information_block-text_wrapper {
+						.title {
+							font-size: 14px !important;
+						}
+						.text {
+							font-size: 12px !important;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	@media screen and (max-width: 390px) {
+		.presentation_container {
+			.inner_container {
+				.information_block {
+					.information_block-text_wrapper {
+						.title {
+							font-size: 13px !important;
+						}
+						.text {
+							font-size: 10px !important;
+						}
+					}
+				}
+				.holla-button {
+					font-size: 12px !important;
+				}
+			}
+		}
+	}
 }
 
 .review_email-wrapper {
@@ -216,4 +259,9 @@ $content--margin: 2rem;
 			}
 		}
 	}
+}
+
+.qr_reader_wrapper {
+	width: 25rem;
+	margin: 2rem;
 }

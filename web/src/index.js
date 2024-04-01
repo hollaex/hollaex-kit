@@ -62,12 +62,23 @@ import {
 	setOrderLimits,
 	setHelpdeskInfo,
 	setContracts,
+	setAllContracts,
 	setBroker,
+	setTransactionLimits,
+	setQuickTrade,
+	setAdminSortData,
+	setAdminWalletSortData,
+	setAdminDigitalAssetsSortData,
+	setSortModeChange,
+	setSortModeVolume,
+	SORT,
+	WALLET_SORT,
+	DIGITAL_ASSETS_SORT,
 } from 'actions/appActions';
-import { setPricesAndAsset } from 'actions/assetActions';
+// import { setPricesAndAsset } from 'actions/assetActions';
 import { hasTheme } from 'utils/theme';
 import { generateRCStrings } from 'utils/string';
-import { LANGUAGE_KEY } from './config/constants';
+import { LANGUAGE_KEY, DEFAULT_PINNED_COINS } from 'config/constants';
 import {
 	consolePluginDevModeInfo,
 	mergePlugins,
@@ -81,6 +92,7 @@ import {
 	setLoadingImage,
 	setLoadingStyle,
 } from 'helpers/boot';
+import { filterPinnedAssets, handleUpgrade } from 'utils/utils';
 
 consoleKitInfo();
 consolePluginDevModeInfo();
@@ -91,7 +103,15 @@ const getConfigs = async () => {
 	localStorage.removeItem('initialized');
 	const kitData = await getKitData();
 	const {
-		meta: { versions: remoteVersions = {}, sections = {} } = {},
+		meta: {
+			versions: remoteVersions = {},
+			sections = {},
+			default_sort = SORT.CHANGE,
+			pinned_markets = [],
+			default_wallet_sort = WALLET_SORT.AMOUNT,
+			pinned_assets = [],
+			default_digital_assets_sort = DIGITAL_ASSETS_SORT.CHANGE,
+		} = {},
 		valid_languages = '',
 		info: { initialized },
 		setup_completed,
@@ -167,8 +187,11 @@ const getConfigs = async () => {
 	store.dispatch(setPairs(constants.pairs));
 	store.dispatch(setPairsData(constants.pairs));
 	store.dispatch(setContracts(getContracts(constants.coins)));
+	store.dispatch(setAllContracts(constants));
 	store.dispatch(setBroker(constants.broker));
-	store.dispatch(setPricesAndAsset({}, constants.coins));
+	store.dispatch(setQuickTrade(constants.quicktrade));
+	store.dispatch(setTransactionLimits(constants.transactionLimits));
+	// store.dispatch(setPricesAndAsset({}, constants.coins));
 
 	const orderLimits = {};
 	Object.keys(constants.pairs).forEach((pair) => {
@@ -193,9 +216,32 @@ const getConfigs = async () => {
 	setValidLanguages(valid_languages);
 	setExchangeInitialized(initialized);
 	setSetupCompleted(setup_completed);
+
+	const isBasic = handleUpgrade(kitData.info);
+	const pinnedCoins = filterPinnedAssets(
+		isBasic ? DEFAULT_PINNED_COINS : pinned_assets,
+		constants.coins
+	);
+
 	store.dispatch(setHomePageSetting(home_page));
 	store.dispatch(setInjectedValues(injected_values));
 	store.dispatch(setInjectedHTML(injected_html));
+	store.dispatch(setAdminSortData({ pinned_markets, default_sort }));
+	store.dispatch(
+		setAdminWalletSortData({ pinned_assets: pinnedCoins, default_wallet_sort })
+	);
+	store.dispatch(
+		setAdminDigitalAssetsSortData({
+			pinned_assets: pinnedCoins,
+			default_digital_assets_sort,
+		})
+	);
+
+	if (default_sort === SORT.VOL) {
+		store.dispatch(setSortModeVolume());
+	} else {
+		store.dispatch(setSortModeChange());
+	}
 
 	const appConfigs = merge({}, defaultConfig, remoteConfigs, {
 		coin_icons,

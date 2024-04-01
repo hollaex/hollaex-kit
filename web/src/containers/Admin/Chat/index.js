@@ -50,7 +50,7 @@ class Chat extends Component {
 		this.setState({ chatWs });
 
 		chatWs.onopen = (evt) => {
-			console.info('Connected Chat Socket', evt);
+			console.info('Connected Chat Socket');
 			chatWs.send(
 				JSON.stringify({
 					op: 'subscribe',
@@ -68,7 +68,6 @@ class Chat extends Component {
 
 		chatWs.onmessage = (evt) => {
 			const data = JSON.parse(evt.data);
-			console.info('chatWs', data);
 			switch (data.action) {
 				case 'init': {
 					const { data: messages = [] } = data;
@@ -267,7 +266,7 @@ class Chat extends Component {
 			isActive,
 		} = this.state;
 		const { constants } = this.props;
-		const isUpgrade = handleUpgrade(constants.info)
+		const isUpgrade = handleUpgrade(constants.info);
 		return (
 			<div className="app_container-content admin-chat-feature-wrapper">
 				{!ready ? (
@@ -280,33 +279,30 @@ class Chat extends Component {
 								(Usernames, text and emoji communication)
 							</div>
 						</div>
-						{isUpgrade
-							?
-								<div className="d-flex">
-									<div className="d-flex align-items-center justify-content-between upgrade-section my-4">
-										<div>
-											<div className="font-weight-bold">Start your crypto culture</div>
-											<div>Allow your users to socialize through chat</div>
+						{isUpgrade ? (
+							<div className="d-flex">
+								<div className="d-flex align-items-center justify-content-between upgrade-section my-4">
+									<div>
+										<div className="font-weight-bold">
+											Start your crypto culture
 										</div>
-											<div className="ml-5 button-wrapper">
-												<a
-													href="https://dash.bitholla.com/billing"
-													target="_blank"
-													rel="noopener noreferrer"
-												>
-													<Button
-														type="primary"
-														className="w-100"
-													>
-														Upgrade Now
-													</Button>
-												</a>
-										</div>
+										<div>Allow your users to socialize through chat</div>
+									</div>
+									<div className="ml-5 button-wrapper">
+										<a
+											href="https://dash.hollaex.com/billing"
+											target="_blank"
+											rel="noopener noreferrer"
+										>
+											<Button type="primary" className="w-100">
+												Upgrade Now
+											</Button>
+										</a>
 									</div>
 								</div>
-							: null
-						}
-							<div className={isUpgrade ? "disabled-area" : "switch-wrapper"}>
+							</div>
+						) : null}
+						<div className={isUpgrade ? 'disabled-area' : 'switch-wrapper'}>
 							<div className="d-flex">
 								<span
 									className={

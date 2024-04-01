@@ -60,7 +60,7 @@ const rateLimitMiddleware = (app) => {
 			return next();
 		},
 		onRateLimited: function (req, res, next) {
-			logger.verbose('config/middleware/rateLimitMiddleware', 'ALERT', 'request-withdrawal');
+			logger.verbose('config/middleware/rateLimitMiddleware', 'abuse', 'request-withdrawal');
 			return res.status(429).json({ message: 'Too many requests. Your account is blocked for 2 minutes' });
 		}
 	});
@@ -71,7 +71,7 @@ const rateLimitMiddleware = (app) => {
 		expire: 1000 * 60 * 2,
 		lookup: 'headers.x-forwarded-for',
 		onRateLimited: function (req, res, next) {
-			logger.verbose('config/middleware/rateLimitMiddleware', 'ALERT', 'signup');
+			logger.verbose('config/middleware/rateLimitMiddleware', 'abuse', 'signup');
 			return res.status(429).json({ message: 'Too many requests. Your account is blocked for 2 minutes' });
 		}
 	});
@@ -82,7 +82,7 @@ const rateLimitMiddleware = (app) => {
 		expire: 1000 * 60 * 2,
 		lookup: 'headers.x-forwarded-for',
 		onRateLimited: function (req, res, next) {
-			logger.verbose('config/middleware/rateLimitMiddleware', 'ALERT', 'login');
+			logger.verbose('config/middleware/rateLimitMiddleware', 'abuse', 'login');
 			return res.status(429).json({ message: 'Too many requests. Your account is blocked for 2 minutes' });
 		}
 	});
@@ -93,7 +93,7 @@ const rateLimitMiddleware = (app) => {
 		expire: 1000 * 60 * 2,
 		lookup: 'headers.x-forwarded-for',
 		onRateLimited: function (req, res, next) {
-			logger.verbose('config/middleware/rateLimitMiddleware', 'ALERT', 'get verify');
+			logger.verbose('config/middleware/rateLimitMiddleware', 'abuse', 'get verify');
 			return res.status(429).json({ message: 'Too many requests. Your account is blocked for 2 minutes' });
 		}
 	});
@@ -104,7 +104,7 @@ const rateLimitMiddleware = (app) => {
 		expire: 1000 * 60 * 2,
 		lookup: 'headers.x-forwarded-for',
 		onRateLimited: function (req, res, next) {
-			logger.verbose('config/middleware/rateLimitMiddleware', 'ALERT', 'post verify');
+			logger.verbose('config/middleware/rateLimitMiddleware', 'abuse', 'post verify');
 			return res.status(429).json({ message: 'Too many requests. Your account is blocked for 2 minutes' });
 		}
 	});
@@ -116,7 +116,7 @@ const rateLimitMiddleware = (app) => {
 		expire: 1000 * 60 * 2,
 		lookup: 'headers.x-forwarded-for',
 		onRateLimited: function (req, res, next) {
-			logger.verbose('config/middleware/rateLimitMiddleware', 'ALERT', 'get eset-password');
+			logger.verbose('config/middleware/rateLimitMiddleware', 'abuse', 'get eset-password');
 			return res.status(429).json({ message: 'Too many requests. Your account is blocked for 2 minutes' });
 		}
 	});
@@ -128,7 +128,7 @@ const rateLimitMiddleware = (app) => {
 		expire: 1000 * 60 * 2,
 		lookup: 'headers.x-forwarded-for',
 		onRateLimited: function (req, res, next) {
-			logger.verbose('config/middleware/rateLimitMiddleware', 'ALERT', 'post reset-password');
+			logger.verbose('config/middleware/rateLimitMiddleware', 'abuse', 'post reset-password');
 			return res.status(429).json({ message: 'Too many requests. Your account is blocked for 2 minutes' });
 		}
 	});
@@ -147,7 +147,7 @@ const rateLimitMiddleware = (app) => {
 			return next();
 		},
 		onRateLimited: function (req, res, next) {
-			logger.verbose('config/middleware/rateLimitMiddleware', 'ALERT', 'change-password');
+			logger.verbose('config/middleware/rateLimitMiddleware', 'abuse', 'change-password');
 			return res.status(429).json({ message: 'Too many requests. Your account is blocked for 2 minutes' });
 		}
 	});

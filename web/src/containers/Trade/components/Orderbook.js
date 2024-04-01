@@ -17,6 +17,7 @@ import {
 import { Button, Select } from 'antd';
 import math from 'mathjs';
 
+import { EditWrapper } from 'components';
 import { subtract, orderbookSelector, marketPriceSelector } from '../utils';
 import { formatToFixed } from 'utils/currency';
 import STRINGS from 'config/localizedStrings';
@@ -282,16 +283,22 @@ class Orderbook extends Component {
 				</div>
 				<div className="trade_orderbook-headers d-flex align-end">
 					<div className="f-1 trade_orderbook-cell">
-						<div>{STRINGS['PRICE_CURRENCY']}</div>
+						<EditWrapper stringId="PRICE_CURRENCY">
+							{STRINGS['PRICE_CURRENCY']}
+						</EditWrapper>
 						<div>({pair_2_display})</div>
 					</div>
 					<div className="f-1 trade_orderbook-cell text-align-right">
-						<div>{STRINGS['AMOUNT_SYMBOL']}</div>
+						<EditWrapper stringId="AMOUNT_SYMBOL">
+							{STRINGS['AMOUNT_SYMBOL']}
+						</EditWrapper>
 						<div>({pair_base_display})</div>
 					</div>
 					<div className="f-1 trade_orderbook-cell text-align-right">
 						<div className="text-align-right">
-							{STRINGS['CUMULATIVE_AMOUNT_SYMBOL']}
+							<EditWrapper stringId="CUMULATIVE_AMOUNT_SYMBOL">
+								{STRINGS['CUMULATIVE_AMOUNT_SYMBOL']}
+							</EditWrapper>
 						</div>
 						<Select
 							bordered={false}

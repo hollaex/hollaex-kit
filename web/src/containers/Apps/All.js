@@ -134,11 +134,12 @@ const All = ({
 						textType="title"
 						iconPath={ICONS['APPS_ALL']}
 					/>
-					<div className="py-4">
-						<EditWrapper stringId="USER_APPS.ALL_APPS.SUBTITLE">
-							{STRINGS['USER_APPS.ALL_APPS.SUBTITLE']}
-						</EditWrapper>
-					</div>
+					<EditWrapper
+						stringId="USER_APPS.ALL_APPS.SUBTITLE"
+						renderWrapper={(children) => <div className="py-4">{children}</div>}
+					>
+						{STRINGS['USER_APPS.ALL_APPS.SUBTITLE']}
+					</EditWrapper>
 					<div>
 						<Input
 							allowClear

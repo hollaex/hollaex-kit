@@ -5,7 +5,8 @@ import { Button, Tooltip } from 'antd';
 import { Link } from 'react-router';
 
 // import { isSupport } from '../../../utils';
-import { formatCurrency, formatDate } from '../../../utils';
+import { formatDate } from 'utils';
+import { formatCurrencyByIncrementalUnit } from 'utils/currency';
 
 export const renderBoolean = (value) => (
 	<LegacyIcon type={value ? 'check-circle' : 'close-circle-o'} />
@@ -102,17 +103,28 @@ export const renderRowContent = ({
 	fee,
 	created_at,
 	currency,
+	fee_coin,
 	type,
+	coins,
+	network,
 }) => {
 	return (
 		<div>
 			{address && <div>Address: {address}</div>}
 			<div>Type: {type}</div>
 			<div>Currency: {currency}</div>
-			<div>Amount: {formatCurrency(amount)}</div>
 			<div>
-				Fee: {formatCurrency(fee)} {currency}{' '}
+				Amount:{' '}
+				{formatCurrencyByIncrementalUnit(
+					amount,
+					coins?.[currency?.toLocaleLowerCase()]?.increment_unit,
+					true
+				)}
 			</div>
+			<div>
+				Fee: {fee} {fee_coin}
+			</div>
+			<div>Network: {network}</div>
 			<div>Timestamp: {formatDate(created_at)}</div>
 			{description && <div>Description: {description}</div>}
 		</div>

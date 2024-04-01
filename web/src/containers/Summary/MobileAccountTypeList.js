@@ -10,11 +10,9 @@ const MobileAccountTypeList = ({
 	user,
 	coins,
 	config = {},
-	activeTheme,
 	selectedAccount,
 	lastMonthVolume,
 	onAccountTypeChange,
-	onFeesAndLimits,
 	onUpgradeAccount,
 	verification_level,
 	balance,
@@ -73,10 +71,8 @@ const MobileAccountTypeList = ({
 									coins={coins}
 									config={config}
 									balance={balance}
-									activeTheme={activeTheme}
 									selectedAccount={selectedAccount}
 									lastMonthVolume={lastMonthVolume}
-									onFeesAndLimits={onFeesAndLimits}
 									onUpgradeAccount={onUpgradeAccount}
 								/>
 							</div>

@@ -32,6 +32,9 @@ const HistoryDisplay = (props) => {
 		refetchData,
 		icons: ICONS,
 		activeTab,
+		rowKey,
+		expandableRow,
+		expandableContent,
 	} = props;
 
 	const [dialogIsOpen, setDialogOpen] = useState(false);
@@ -43,8 +46,13 @@ const HistoryDisplay = (props) => {
 		setLoading(true);
 		setInitialValues(params);
 		setMessage('');
+		const address = params.address.trim();
+
 		return searchTransaction({
 			...params,
+			address: params.destination_tag
+				? `${address}:${params.destination_tag}`
+				: address,
 			network: params.network ? params.network : params.currency,
 		})
 			.then((res) => {
@@ -72,38 +80,38 @@ const HistoryDisplay = (props) => {
 
 	return (
 		<div className="history_block-wrapper">
-			{!isMobile && (
-				<div className="title text-capitalize">
-					<EditWrapper stringId={stringId}>{title}</EditWrapper>
-					{count > 0 && (
-						<div className="download-icon">
+			{!isMobile && !loading && (
+				<div className="d-flex justify-content-between title text-capitalize">
+					<div>
+						<EditWrapper stringId={stringId}>{title}</EditWrapper>
+					</div>
+					<div className="action_notification-container">
+						{count > 0 && (
 							<ActionNotification
 								stringId="TRANSACTION_HISTORY.TEXT_DOWNLOAD"
 								text={STRINGS['TRANSACTION_HISTORY.TEXT_DOWNLOAD']}
 								iconId="DATA"
 								iconPath={ICONS['DATA']}
-								className="download-history"
+								className="blue-icon"
 								onClick={handleDownload}
 							/>
-						</div>
-					)}
-					{activeTab === 2 ? (
+						)}
+						{activeTab === 2 && (
+							<ActionNotification
+								stringId="DEPOSIT_STATUS.CHECK_DEPOSIT_STATUS"
+								text={STRINGS['DEPOSIT_STATUS.CHECK_DEPOSIT_STATUS']}
+								iconId="SEARCH"
+								iconPath={STATIC_ICONS.SEARCH}
+								className="blue-icon"
+								onClick={openDialog}
+							/>
+						)}
 						<ActionNotification
-							stringId="DEPOSIT_STATUS.CHECK_DEPOSIT_STATUS"
-							text={STRINGS['DEPOSIT_STATUS.CHECK_DEPOSIT_STATUS']}
-							iconId="SEARCH"
-							iconPath={STATIC_ICONS.SEARCH}
-							className={count > 0 ? 'check-deposit-txt' : ''}
-							onClick={openDialog}
-						/>
-					) : null}
-					<div className="download-icon">
-						<ActionNotification
-							stringId="RESFRESH"
+							stringId="REFRESH"
 							text={STRINGS['REFRESH']}
 							iconId="REFRESH"
 							iconPath={STATIC_ICONS['REFRESH']}
-							className="refresh-history"
+							className="blue-icon"
 							onClick={refetchData}
 						/>
 					</div>
@@ -120,13 +128,12 @@ const HistoryDisplay = (props) => {
 					headers={headers}
 					withIcon={withIcon}
 					pageSize={TABLE_PAGE_SIZE}
-					rowKey={(data) => {
-						return data.id;
-					}}
+					rowKey={rowKey}
 					title={title}
 					handleNext={handleNext}
 					jumpToPage={jumpToPage}
 					noData={props.noData}
+					expandable={expandableRow && expandableContent()}
 				/>
 			)}
 			<Dialog
@@ -137,7 +144,7 @@ const HistoryDisplay = (props) => {
 				shouldCloseOnOverlayClick={false}
 				style={{ 'z-index': 100 }}
 			>
-				{dialogIsOpen ? (
+				{dialogIsOpen && (
 					<CheckDeposit
 						onCloseDialog={onCloseDialog}
 						onSubmit={requestDeposit}
@@ -146,7 +153,7 @@ const HistoryDisplay = (props) => {
 						initialValues={initialValue}
 						props={props}
 					/>
-				) : null}
+				)}
 			</Dialog>
 		</div>
 	);

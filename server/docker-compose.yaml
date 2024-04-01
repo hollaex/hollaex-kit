@@ -1,7 +1,7 @@
 version: '3'
 services:
   hollaex-kit-redis:
-    image: redis:5.0.5-alpine
+    image: redis:7.2.0-alpine
     depends_on:
       - hollaex-kit-db
     networks:
@@ -12,7 +12,7 @@ services:
       - REDIS_PASSWORD=bitholla
     command : ["sh", "-c", "redis-server --requirepass $${REDIS_PASSWORD}"]
   hollaex-kit-db:
-    image: postgres:10.9
+    image: postgres:14.9
     ports:
       - 5432:5432
     environment:
@@ -27,17 +27,16 @@ services:
       - 10010:10010
       - 10011:10011
       - 10012:10012
+      - 10013:10013
     build:
       context: .
       dockerfile: ./tools/Dockerfile.pm2
     env_file:
       - ./tools/hollaex-kit.env.local
     entrypoint:
-      - pm2-runtime
-      - start
-      - ecosystem.config.js
-      - --env
-      - development
+      - /bin/sh
+      - -c 
+      - ip -4 route list match 0/0 | awk '{print $$3 " host.docker.internal"}' >> /etc/hosts && cat /etc/hosts && pm2-runtime start ecosystem.config.js --env development;
     volumes:
       - ./api:/app/api
       - ./config:/app/config
@@ -53,7 +52,10 @@ services:
       - ./test:/app/test
       - ./tools:/app/tools
       - ./utils:/app/utils
+      - /app/utils/hollaex-network-lib/node_modules
+      - /app/utils/hollaex-tools-lib/node_modules
       - ./init.js:/app/init.js
+      - ../plugins/src/plugins:/app/dev-plugins
     depends_on:
       - hollaex-kit-db
       - hollaex-kit-redis

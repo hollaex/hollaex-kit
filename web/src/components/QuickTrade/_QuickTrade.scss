@@ -2,8 +2,10 @@ $toogle-size: 14px;
 $toogle-border: 2px;
 $toogle-margin: 2px;
 
-$wrapper--min-width: 1000px;
-$wrapper--max-width: 1200px;
+$wrapper-width: 80vw;
+$wrapper-large-screen-width: 70vw;
+$wrapper-xlarge-screen-width: 60vw;
+
 $wrapper--padding: 3.5rem;
 $section--margin-bottom: 2rem;
 
@@ -11,9 +13,11 @@ $currency-text-size: 4rem;
 $input-bottom_line--height: 2px;
 $input-bottom_line--animation--width: 100px;
 
-$title-icon--height: 10rem;
+$title-icon--height: 3.5rem;
+$close-icon--height: 2rem;
 
 @import './_InputGroup.scss';
+@import './QuoteExpired';
 
 .language_rtl {
 	.quick_trade-wrapper {
@@ -21,29 +25,45 @@ $title-icon--height: 10rem;
 		.input_block-title {
 			font-family: inherit;
 		}
-		.toogle_button-wrapper {
-			.toogle-content {
-				font-family: inherit;
-				.selected {
-					font-family: inherit;
-				}
-			}
-		}
 	}
 }
 
 .direction_ltr {
 	.quick_trade-wrapper {
-		font-family: $raleway--font-family;
+		font-family: 'Open Sans';
 	}
 }
 
 .quick_trade-tab-icon {
 	@include size($title-icon--height);
-	margin: 0 auto;
+	margin: 0 1rem 0 0;
 }
+
+.quick_trade_price_trend_icon {
+	@include size(1.75rem);
+	margin: 0 0 0 1rem;
+	svg {
+		fill: $link_2;
+	}
+}
+
+.close-modal-icon {
+	@include size($close-icon--height);
+	margin-right: 2rem;
+}
+
 .quick_trade-container {
 	margin: 3rem 0 4rem 0;
+
+	.quick-trade-title-icon {
+		.quick_trade-tab-icon {
+			svg {
+				path {
+					fill: var(--labels_important-active-labels-text-graphics) !important;
+				}
+			}
+		}
+	}
 	.quick_trade-section_wrapper {
 		&.fetching {
 			color: $colors-deactivate-color2;
@@ -52,6 +72,11 @@ $title-icon--height: 10rem;
 		width: 100%;
 		position: relative;
 	}
+
+	.trade-details-wrapper {
+		border-right: 1px solid $colors-super-pale-black;
+	}
+
 	.quick_trade-bottom-padded {
 		margin-bottom: $section--margin-bottom;
 	}
@@ -60,12 +85,91 @@ $title-icon--height: 10rem;
 		height: 8rem;
 	}
 	.title {
-		font-size: 30px;
+		font-size: 2.35rem;
 		font-family: $raleway--font-family;
+		letter-spacing: 2px;
+		margin: auto;
 	}
 	.info-text {
+		font-size: 14px;
 		font-family: $en--font-family;
 		color: $colors-deactivate;
+	}
+	.visit-asset-info {
+		text-decoration: underline;
+	}
+
+	input.input-group__input:placeholder-shown:hover {
+		&::placeholder {
+			color: $colors-main-black;
+		}
+	}
+
+	.quick-trade-input {
+		background: var(--base_secondary-navigation-bar);
+		padding: 1.5rem;
+		border-radius: 10px;
+		width: 465px;
+		border: 2px solid transparent;
+		&:focus-within {
+			background: var(--base_wallet-sidebar-and-popup);
+			border: 2px solid #5d63ff;
+		}
+
+		  
+		.currency-dropdown:hover,
+		.input-group__select:hover {
+			.input-group__select,
+			.input-group__input {
+				color: $colors-main-black;
+			}
+		}
+		.input-group__select:hover,
+		.input-group__input:hover {
+			color: $colors-main-black;
+		}
+	}
+
+	.currency-dropdown {
+		border: 1px solid #b2b3b3;
+		border-radius: 5px;
+	}
+
+	.input-group__input {
+		text-align: right;
+		color: var(--labels_secondary-inactive-label-text-graphics);
+		font-size: 2.1rem;
+		margin-left: 1rem;
+		height: 60px;
+		&:focus,
+		&:active {
+			background-color: $app-light-background !important;
+			box-shadow: inset 1px 1px 3px #00000029;
+			border-radius: 5px;
+			border-bottom: 1px solid #ffffff;
+		}
+
+		&:hover {
+			color: $colors-main-black;
+		}
+	}
+
+	.field-error-content {
+		display: block;
+	}
+
+	.input-group__select {
+		color: var(--labels_secondary-inactive-label-text-graphics);
+		padding: 1.125rem 1rem;
+		font-size: 1.4rem;
+		.ant-select-selector {
+			padding: 0;
+			min-width: 7.5rem;
+		}
+
+		.anticon {
+			color: var(--labels_important-active-labels-text-graphics);
+		}
 	}
 }
 .quick_trade-wrapper.width-none {
@@ -73,81 +177,17 @@ $title-icon--height: 10rem;
 	max-width: unset !important;
 }
 .quick_trade-wrapper {
-	min-width: $wrapper--min-width;
-	max-width: $wrapper--max-width;
-	background-color: $quick-trade-block-background;
+	// width: $wrapper-width;
+	// background-color: $quick-trade-block-background;
 	// margin: 3rem auto;
 	height: fit-content;
-	height: 550px;
+	height: 664px;
 	border: 1px solid $colors-super-pale-black;
+	font-size: 1.3rem;
 
-	.review-block-wrapper,
-	.input_block-wrapper,
-	.toogle_button-wrapper {
+	.review-block-wrapper {
 		margin: 1rem 0;
 		width: auto;
-	}
-
-	.toogle_button-wrapper {
-		.toogle-content {
-			padding: 0 1rem;
-			text-transform: uppercase;
-			padding: 0 0.5rem;
-			font-size: $font-size-subtext;
-			color: $colors-deactivate-color2;
-			height: $toogle-size + $toogle-border * 2 + $toogle-margin * 2;
-			font-family: $raleway-medium--font-family;
-
-			.selected {
-				font-family: $raleway-extrabold--font-family;
-				font-weight: bold;
-				color: $colors-main-black;
-			}
-
-			.toogle-action_button {
-				border: $toogle-border solid $colors-main-black;
-				height: 100%;
-				width: $toogle-size * 3;
-				border-radius: $toogle-size;
-				margin: 0 0.5rem;
-				display: flex;
-				align-items: center;
-				position: relative;
-
-				&.left .toogle-action_button-display {
-					$right-pos: $toogle-size + $toogle-margin * 2;
-					right: calc(100% - #{$right-pos});
-				}
-				&.right .toogle-action_button-display {
-					right: 0;
-				}
-
-				.toogle-action_button-display {
-					position: absolute;
-					transition: 0.5s;
-					background: $colors-main-black;
-					height: $toogle-size;
-					width: $toogle-size;
-					border-radius: 50%;
-					margin: $toogle-margin;
-					top: 0;
-				}
-			}
-		}
-
-		.toogle-side_line {
-			position: relative;
-			&::after {
-				content: '';
-				height: 1px;
-				width: 100%;
-				position: absolute;
-				background-color: $colors-main-border;
-				left: 0;
-				right: 0;
-				top: 50%;
-			}
-		}
 	}
 
 	.review-block-wrapper {
@@ -165,220 +205,85 @@ $title-icon--height: 10rem;
 		}
 	}
 
-	.input-group__error-wrapper {
-		color: red;
-		margin-top: 0.5rem;
-		float: right;
+	.balance-wallet {
+		padding-bottom: 0.5rem;
 	}
 
-	.input_block-wrapper {
-		margin-bottom: 0;
+	.input-group__error-wrapper {
+		color: red;
+		min-height: auto;
+		margin-top: 12px;
 	}
+
 	.input_block-title {
 		font-size: $font-size-subhead3;
 		font-family: $raleway-medium--font-family;
 	}
 
-	.input_block-content {
-		border-bottom: $input-bottom_line--height solid $colors-main-border;
-		width: 100%;
-		&.has_error {
-			border-bottom-color: $colors-notifications-red;
-		}
-
-		.input_block-input-wrapper {
-			// width: 100%;
-			width: auto;
-			position: relative;
-			.input_block-inputbox {
-				// width: 100%;
-				font-size: $font-size-subhead2;
-				// text-align: center;
-				margin: 0.5rem 1.5rem;
-
-				border: none !important;
-				border-radius: 0 !important;
-				padding: 0 !important;
-				text-align: left;
-				margin-left: 2rem;
-			}
-			.input_block-currency_ball {
-				position: absolute;
-				left: -0.5rem;
-			}
-			.react-numeric-input > b {
-				visibility: hidden;
-			}
-		}
-
-		&.loading {
-			position: relative;
-			border-bottom-color: $colors-deactivate-color2;
-			&:after {
-				content: '';
-				display: block;
-				animation: linear_loading 2s linear infinite;
-				height: $input-bottom_line--height;
-				width: $input-bottom_line--animation--width;
-				position: absolute;
-				background-color: $coin-eur;
-				bottom: -$input-bottom_line--height;
-				left: 0;
-				right: 0;
-			}
-		}
-
-		&.loading.btc::after {
-			background-color: $coin-btc;
-		}
-
-		&.loading.bch::after {
-			background-color: $coin-bch;
-		}
-
-		&.loading.eth::after {
-			background-color: $coin-eth;
-		}
-
-		&.loading.ltc::after {
-			background-color: $coin-ltc;
-		}
-	}
-	.trade-details-wrapper {
-		width: 100%;
-		padding: 40px 65px 30px 55px;
-		font-family: $en--font-family;
-		background-color: $app-background-color;
-		.trade-details-content {
-			height: 450px;
-			.pb-30 {
-				padding-bottom: 30px;
-			}
-			.pb-35 {
-				padding-bottom: 35px;
-			}
-			.pl-6 {
-				padding-left: 6rem;
-			}
-			.chart {
-				height: 100px;
-				margin: 10px 0;
-				// opacity: 0.4;
-				div:last-child {
-					padding-top: 1rem;
-				}
-				.fade-area {
-					position: relative;
-				}
-				.fade-area::before {
-					content: '';
-					position: absolute;
-					height: 100px;
-					width: 100%;
-					background-image: linear-gradient(
-						to right,
-						$app-background-color,
-						rgba(0, 0, 0, 0)
-					);
-					z-index: 9999;
-				}
-			}
-			.trade_tabs-container {
-				margin: 0 !important;
-				width: 100% !important;
-			}
-		}
-		.currency-ball-image-wrapper {
-			height: 5rem;
-		}
-		.coins-icon {
-			width: 5rem;
-			height: 5rem;
-		}
-		.f-size-16 {
-			font-size: 16px;
-			color: $colors-deactivate;
-			font-weight: bold;
-		}
-		.f-size-22 {
-			font-size: 22px;
-			font-weight: bold;
-		}
-		.pairs {
-			color: $link;
-			font-size: 16px;
-			text-decoration: underline;
-		}
-		.fullname {
-			color: $colors-deactivate;
-			font-size: 11px;
-			white-space: nowrap;
-		}
-		.sub-title {
-			color: $colors-deactivate;
-			font: normal normal 300 11px/15px $en--font-family;
-			letter-spacing: 2.2px;
-			opacity: 1;
-			white-space: nowrap;
-		}
-		.white-txt {
-			color: $colors-main-black;
-		}
-	}
 	.trade-section {
 		width: 100%;
-		padding-top: 2rem;
+		padding: 5rem;
 		background: transparent
 			linear-gradient(
-				180deg,
-				$quick-trade-block-gradient-top 0%,
-				$quick-trade-block-gradient-bottom 100%
+				316deg,
+				var(--base_secondary-navigation-bar, 0.25) 0%,
+				var(--base_wallet-sidebar-and-popup, 0.25) 100%
 			)
 			0% 0% no-repeat padding-box;
+
 		.inner-content {
-			width: 400px;
-			height: 390px;
+			width: 450px;
 			display: flex;
 			flex-direction: column;
 			align-items: flex-end;
-			margin: 55px 105px 0 95px;
+			margin-left: auto;
 			.btn-wrapper {
-				padding: 40px 0 120px 0;
+				padding: 1rem 0;
+				.holla-button.disabled {
+					svg {
+						fill: rgba(0, 0, 0, 0.38) !important;
+						opacity: 0.4;
+						path {
+							fill: rgba(0, 0, 0, 0.38) !important;
+						}
+					}
+				}
+			}
+			.btn-margin-wrapper {
+				margin-top: 5rem;
 			}
 			.py-2 {
 				display: flex;
 				align-items: center;
 				.bold {
-					padding-right: 10px;
+					padding-right: 0.85rem;
 				}
 				.ant-input-group {
-					width: 310px;
 					background-color: $app-light-background !important;
 					.ant-select-selector,
 					.input-group__input {
 						background-color: $app-light-background !important;
 					}
 				}
-				.input-group__error-wrapper {
-					width: 310px;
-				}
 			}
-			.small-text {
-				font-family: $en--font-family;
-				font-size: 11px;
+			.balance-text {
 				text-transform: capitalize;
-				color: $colors-black;
+				color: var(--labels_secondary-inactive-label-text-graphics);
 				display: flex;
 				span {
-					color: $link;
+					color: $link_2;
 				}
 			}
 			.footer-text {
-				font-size: 11px;
+				font-size: 1rem;
 				font-family: $en--font-family;
-				color: $colors-deactivate;
-				opacity: 0.5;
+				color: var(--labels_secondary-inactive-label-text-graphics);
+				letter-spacing: 0.58px;
 				text-align: end;
+			}
+			.swap-wrapper-wrapper {
+				align-self: self-start;
+				margin-left: 4rem;
 			}
 		}
 	}
@@ -404,26 +309,32 @@ $title-icon--height: 10rem;
 }
 
 .layout-mobile {
-	// .quick_trade-wrapper {
-	// 	margin-top: 0;
-	// 	margin-bottom: 0;
-	// }
-	.quick_trade-section_wrapper {
-		.toogle_button-wrapper {
-			.toogle-content {
-				font-size: $font-size-mobile-txt !important;
+	.ReactModal__Overlay {
+		.ReactModal__Content {
+			background-color: $quick-trade-background !important;
+			.dialog-mobile-content {
+				padding: 2.5rem 0 !important;
+				display: block;
 			}
 		}
-		.input_block-wrapper {
-			.input_block-content {
-				.input_block-title {
-					font-size: $font-size-mobile-txt !important;
-				}
-			}
-			.field-error-content {
-				width: auto;
-				font-size: $font-size-mobile-innertxt;
-			}
+	}
+
+	.trade-details-wrapper {
+		border-right: none;
+	}
+
+	.price_trend_title_icon {
+		margin-left: 0;
+		margin-right: 1rem;
+		svg {
+			fill: $colors-main-black;
+		}
+	}
+
+	.quick_trade-section_wrapper {
+		.quick-trade-header-wrapper {
+			justify-content: center !important;
+			font-size: 2.875rem;
 		}
 		.review-block-wrapper {
 			.input_block-title {
@@ -431,39 +342,123 @@ $title-icon--height: 10rem;
 			}
 		}
 	}
+	.title {
+		font-weight: 600;
+	}
 	.quick_trade-container {
 		height: 100%;
+		padding: 2rem 2.5rem;
+		margin: 0;
+
+		.input-group__input {
+			height: 60px;
+			font-size: 2.5rem;
+		}
 	}
 	.quick_trade-wrapper {
+		background-color: transparent;
+		height: 664px;
+		border: none;
+		font-size: 1.45rem;
+		margin: 0;
+
 		.trade-details-wrapper {
 			width: 100%;
+			.pairs {
+				font-size: 2.25rem;
+			}
+			.fullname {
+				font-size: 1.875rem;
+			}
 			.trade-details-content {
 				width: 100%;
 				height: 100%;
 			}
 		}
-		.trade-section .inner-content {
-			align-items: center !important;
-			.py-2 {
-				flex-direction: column;
+		.trade-section {
+			background: transparent;
+			padding: 0;
+			.inner-content {
 				align-items: flex-start;
-				width: 100%;
-				font-size: $font-size-mobile-txt !important;
-				.ant-input-group {
-					width: 100% !important;
+				.py-2 {
+					flex-direction: column;
+					align-items: flex-start;
+					width: 100%;
+					font-size: $font-size-mobile-txt !important;
+					.ant-input-group {
+						width: 100% !important;
+					}
+					.input-group__error-wrapper {
+						width: 100% !important;
+					}
 				}
-				.input-group__error-wrapper {
-					width: 100% !important;
+				.btn-wrapper {
+					align-items: center !important;
+					margin-top: 5rem;
 				}
-			}
-			.btn-wrapper {
-				align-items: center !important;
-			}
-			.footer-text,
-			.small-text {
-				font-size: $font-size-mobile-txt !important;
+				.footer-text {
+					font-size: $font-size-mobile-txt !important;
+					margin: auto;
+					text-align: center;
+				}
 			}
 		}
+
+		.quick-trade-input {
+			padding: 2rem 1.7rem;
+			border-radius: 10px;
+			width: 100%;
+			min-height: 19.25rem;
+			font-size: 2.25rem;
+		}
+
+		.input-group__select {
+			font-size: 2.3rem;
+			min-height: 60px;
+			padding: 1rem 0.5rem;
+			width: 15rem;
+			.ant-select-selector {
+				margin-top: 0.375rem;
+				height: 5rem;
+			}
+		}
+
+		.input-group__coin-icons-wrap_mobile-view {
+			margin-top: 0.375rem;
+		}
+
+		.balance-text {
+			font-size: 1.8rem;
+		}
+
+		.field-error-content {
+			font-size: 1.2rem;
+			text-align: right;
+		}
+
+		.swap-container {
+			font-size: 2.125rem;
+			margin: 1rem auto;
+			.pointer {
+				margin-left: 1.25rem !important;
+			}
+		}
+	}
+	.swap-wrapper,
+	.swap-wrapper-wrapper {
+		width: 100% !important;
+	}
+
+	.price-title-wrapper {
+		justify-content: space-between;
+		padding: 0 0 0 3rem;
+		font-size: 2.5rem;
+	}
+
+	.view-trend-text {
+		font-size: 2.125rem;
+		align-self: center;
+		color: $link_2;
 	}
 }
 .mobile_dropdown-section {
@@ -478,21 +473,36 @@ $title-icon--height: 10rem;
 	border: 1px solid $link;
 }
 
+@media (min-width: 1500px) {
+	.quick_trade-wrapper {
+		width: $wrapper-large-screen-width;
+	}
+}
+
+@media (min-width: 1800px) {
+	.quick_trade-wrapper {
+		width: $wrapper-xlarge-screen-width;
+	}
+}
+
 @media (max-width: 1020px) {
 	.quick_trade-wrapper {
 		min-width: 100% !important;
 		max-width: 100% !important;
+
 		.trade-details-wrapper {
 			width: 100%;
-			padding: 15px;
+			padding: 0 0 3rem;
 			.trade-details-content {
 				width: 100%;
 				height: 100%;
 			}
 		}
-		.trade-section {
+		.goto-wallet-container {
 			width: 100%;
-			padding: 40px 10px 10px 10px;
+			justify-content: end;
+		}
+		.trade-section {
 			.inner-content {
 				width: 100%;
 				height: 100%;
@@ -506,11 +516,26 @@ $title-icon--height: 10rem;
 				.input-group__container {
 					.quick-trade-select-wrapper {
 						.pl-1 {
-							font-size: 10px;
+							font-size: 0.85rem;
 						}
 					}
 				}
 			}
 		}
+		.swap-wrapper {
+			width: 250px;
+			margin-left: auto;
+		}
 	}
+}
+
+.swap-container {
+	border-left: $colors-black dotted 4px;
+	font-size: 1.42rem;
+}
+
+.swap-wrapper {
+	width: 310px;
+	padding: 0 1rem;
+	margin: 0.5rem auto;
 }

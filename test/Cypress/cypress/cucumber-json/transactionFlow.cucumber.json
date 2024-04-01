@@ -1,0 +1,43 @@
+[
+  {
+    "description": "As a valid customer\nIn order to  Deposit and withdraw\nI want to send some amount of crypto",
+    "keyword": "Feature",
+    "name": "Crpto transfer Feature",
+    "line": 1,
+    "id": "crpto-transfer-feature",
+    "tags": [],
+    "uri": "transactionFlow.feature",
+    "elements": [
+      {
+        "id": "crpto-transfer-feature;bob-has-not-sent-the-mininal-xhtt",
+        "keyword": "Scenario",
+        "line": 48,
+        "name": "Bob has not sent the Mininal XHTT",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 50,
+            "name": "Bob confirms that has not sent the minimal amount of XHTT",
+            "result": {
+              "status": "passed",
+              "duration": 28816000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 51,
+            "name": "Bob cancels the transfer",
+            "result": {
+              "status": "passed",
+              "duration": 15864000000
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

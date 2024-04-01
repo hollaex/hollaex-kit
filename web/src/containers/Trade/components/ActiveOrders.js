@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import math from 'mathjs';
 
-import { Table, ActionNotification, Image } from 'components';
+import { Table, ActionNotification, Coin } from 'components';
 import { getFormatTimestamp } from 'utils/utils';
 import { formatBaseAmount, formatToCurrency } from 'utils/currency';
 import { isMobile } from 'react-device-detect';
@@ -26,12 +26,7 @@ const generateHeaders = (
 			return (
 				<td key={index} className="text-uppercase">
 					<div className="d-flex align-items-center">
-						<Image
-							iconId={icon_id}
-							icon={ICONS[icon_id]}
-							wrapperClassName="currency-ball"
-							imageWrapperClassName="currency-ball-image-wrapper"
-						/>
+						<Coin iconId={icon_id} type="CS7" />
 						<div>{display_name}</div>
 					</div>
 				</td>
@@ -86,7 +81,7 @@ const generateHeaders = (
 		},
 	},
 	{
-		label: STRINGS['AMOUNT'],
+		label: STRINGS['SIZE'],
 		key: 'size',
 		exportToCsv: ({ size = 0 }) => size,
 		renderCell: ({ size = 0, symbol }, key, index) => {

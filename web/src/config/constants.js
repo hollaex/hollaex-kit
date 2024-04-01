@@ -4,6 +4,7 @@ export { default as ICONS } from './icons';
 
 export const ENV = process.env.NODE_ENV || 'production';
 export const NETWORK = process.env.REACT_APP_NETWORK || 'mainnet';
+export const LAST_BUILD = process.env.REACT_APP_LAST_BUILD;
 
 export const APP_TITLE =
 	process.env.REACT_APP_EXCHANGE_NAME || STRINGS['APP_TITLE'];
@@ -83,6 +84,7 @@ export const FLEX_CENTER_CLASSES = [
 ];
 
 export const TIMESTAMP_FORMAT = STRINGS['TIMESTAMP_FORMAT'];
+export const DEFAULT_TIMESTAMP_FORMAT = STRINGS['DEFAULT_TIMESTAMP_FORMAT'];
 export const HOUR_FORMAT = STRINGS['HOUR_FORMAT'];
 export const TIMESTAMP_FORMAT_FA = STRINGS['TIMESTAMP_FORMAT']
 	.split('/')
@@ -93,6 +95,7 @@ export const TIMESTAMP_FORMAT_FA = STRINGS['TIMESTAMP_FORMAT']
 export const DEFAULT_TRADING_PAIRS = ['xht-usdt'];
 
 export const TOKEN_KEY = `${ENV}_${NETWORK}_TOKEN`;
+export const DASH_TOKEN_KEY = `${ENV}_${NETWORK}_DASH_TOKEN`;
 export const LANGUAGE_KEY = `${ENV}_${NETWORK}_LANGUAGE`;
 export const DEFAULT_LANGUAGE = process.env.REACT_APP_DEFAULT_LANGUAGE || 'en';
 
@@ -137,17 +140,6 @@ export const EXPLORERS_ENDPOINT = (currency) => {
 					? 'https://explorer.bitcoin.com/tbch/tx/'
 					: 'https://explorer.bitcoin.com/bch/tx/';
 			break;
-		case 'xht':
-		case 'usdt':
-		case 'busd':
-		case 'tusd':
-		case 'dai':
-		case 'mkr':
-			endpoint =
-				NETWORK === 'testnet'
-					? 'https://ropsten.etherscan.io/tx/'
-					: 'https://etherscan.io/tx/';
-			break;
 		case 'xmr':
 			endpoint =
 				NETWORK === 'testnet'
@@ -177,6 +169,24 @@ export const EXPLORERS_ENDPOINT = (currency) => {
 			break;
 		case 'ada':
 			endpoint = 'https://blockchair.com/cardano/transaction/';
+			break;
+		case 'bnb':
+			endpoint = 'https://bscscan.com/tx/';
+			break;
+		case 'sol':
+			endpoint = 'https://solscan.io/tx/';
+			break;
+		case 'ton':
+			endpoint = 'https://tonscan.org/tx/';
+			break;
+		case 'arb':
+			endpoint = 'https://arbiscan.io/tx/';
+			break;
+		case 'matic':
+			endpoint = 'https://polygonscan.com/tx/';
+			break;
+		case 'etc':
+			endpoint = 'https://etc.blockscout.com/tx/';
 			break;
 		default:
 			endpoint = '';
@@ -218,12 +228,12 @@ export const BASE_CURRENCY = local_base_currnecy
 	? local_base_currnecy.toLowerCase()
 	: 'usdt';
 
-export const API_DOCS_URL = 'https://docs.bitholla.com/';
-export const EXCHANGE_URL = 'https://dash.bitholla.com/';
+export const API_DOCS_URL = 'https://docs.hollaex.com/';
+export const EXCHANGE_URL = 'https://dash.hollaex.com/';
 export const EXCHANGE_EXPIRY_DAYS = 15;
 export const EXCHANGE_EXPIRY_SECONDS = EXCHANGE_EXPIRY_DAYS * 86400;
 export const REQUEST_VAULT_SUPPORTED_COINS =
-	'https://api.vault.bitholla.com/v1/coins';
+	'https://www.hollaex.com/coin-and-market-listing';
 
 export const MAX_NUMBER_BANKS = 3;
 
@@ -245,3 +255,16 @@ export const DEFAULT_PAYPAL_PAYMENT_PAYPAL = [
 export const DEFAULT_CUSTOM_PAYMENT_CUSTOM = [
 	{ key: 'payment_info', label: 'Payment Info', required: true },
 ];
+
+export const DEFAULT_PINNED_COINS = [
+	'xht',
+	'btc',
+	'eth',
+	'usdt',
+	'bnb',
+	'xrp',
+	'ada',
+	'trx',
+	'matic',
+];
+export const METAMASK_LINK = 'https://metamask.io/download';

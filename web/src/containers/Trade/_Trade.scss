@@ -100,15 +100,6 @@ $order_entry-column--width-lg: 20rem;
 }
 
 .trade_active_orders-wrapper {
-	.currency-ball {
-		width: 25px;
-		line-height: 10px;
-		margin-top: 6px;
-	}
-	.currency-ball-image-wrapper {
-		padding-right: 8px;
-		padding-bottom: 12px;
-	}
 	overflow-y: auto;
 	flex: 1;
 
@@ -252,25 +243,6 @@ $order_entry-column--width-lg: 20rem;
 	margin: 0.3rem 0.3rem 0 0.3rem;
 
 	svg {
-		.btc0,
-		.btc1,
-		.eth0,
-		.eth1,
-		.bch-icon,
-		.xrp-icon,
-		.xht-icon,
-		.xmr-icon,
-		.xlm-icon,
-		.eos-icon,
-		.trx-icon,
-		.ada-icon,
-		.bnb-icon,
-		.tusd-icon,
-		.dai-icon,
-		.ltc-icon,
-		.default-icon {
-			fill: $app-bar-menu-list-color !important;
-		}
 		.plus,
 		.minus {
 			stroke: $app-bar-menu-list-color !important;
@@ -283,9 +255,6 @@ $order_entry-column--width-lg: 20rem;
 		.icon-check-1 {
 			stroke: $base_top-bar-navigation_text;
 		}
-		.xht-icon-1 {
-			fill: $dark-app-background-color !important;
-		}
 	}
 }
 
@@ -295,4 +264,20 @@ $order_entry-column--width-lg: 20rem;
 .general-record-enter-active {
 	opacity: 1;
 	transition: opacity 1s ease-in;
+}
+
+.open-order-wrapper {
+	.trade__active-orders_cancel-All {
+		.action_notification-wrapper {
+			position: relative;
+		}
+	}
+	.table_body-row {
+		td:nth-child(even) {
+			.action_notification-wrapper {
+				margin-top: 0.75rem;
+				padding-left: 0.25rem;
+			}
+		}
+	}
 }

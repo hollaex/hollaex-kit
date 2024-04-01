@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Modal from 'react-modal';
-import Ionicon from 'react-ionicons';
+import { CloseOutlined } from '@ant-design/icons';
 import { ActionNotification, Button } from 'hollaex-web-lib';
 
 class Dialog extends PureComponent {
@@ -12,7 +12,6 @@ class Dialog extends PureComponent {
 		closeButton: PropTypes.func,
 		onCloseDialog: PropTypes.func,
 		children: PropTypes.node.isRequired,
-		disableTheme: PropTypes.bool,
 	};
 
 	onRequestClose = (e) => {
@@ -30,9 +29,7 @@ class Dialog extends PureComponent {
 			shouldCloseOnOverlayClick,
 			showCloseText,
 			dialogId,
-			theme,
 			className,
-			disableTheme,
 			bodyOpenClassName,
 			strings: STRINGS,
 		} = this.props;
@@ -52,10 +49,9 @@ class Dialog extends PureComponent {
 				{showCloseText && !closeButton && (
 					<ActionNotification
 						text={
-							<Ionicon
-								icon="md-close"
-								fontSize="24px"
-								className="action_notification-image"
+							<CloseOutlined
+								style={{ fontSize: "24px" }}
+								className="action_notification-image secondary-text"
 							/>
 						}
 						onClick={this.onRequestClose}
@@ -76,10 +72,8 @@ class Dialog extends PureComponent {
 Modal.setAppElement('#root');
 
 Dialog.defaultProps = {
-	disableTheme: false,
 	shouldCloseOnOverlayClick: true,
 	showCloseText: true,
-	theme: '',
 	className: '',
 	strings: {},
 };

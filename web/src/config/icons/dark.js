@@ -1,17 +1,16 @@
 import flatten from 'flat';
+import FIATS from './fiats';
 
 const options = { safe: true, delimiter: '_' };
 const nestedIcons = {
+	FIATS,
+
 	EXCHANGE: {
 		LOGO: '',
 		FAV_ICON: '/favicon.ico',
 		LOADER: '/assets/dark-spinner.gif',
 		BOARDING_IMAGE: '/assets/dark-background.jpg',
 		LANDING_PAGE: '/assets/images/hollaex-background.png',
-	},
-
-	TRADE: {
-		HISTORY: '/assets/images/trade-history.svg',
 	},
 
 	QUICK_TRADE: {
@@ -126,6 +125,18 @@ const nestedIcons = {
 		ARROW: '/assets/images/arrow-down.svg',
 	},
 
+	DUST: {
+		TITLE: '/assets/images/duster-wallet-sweeper.svg',
+		CONFIRMATION: 'assets/images/sparkle-dust.svg',
+		SUCCESSFUL: '/assets/images/dust-settlement-complete-sparkle.svg',
+	},
+
+	FEES_AND_LIMITS: {
+		TRADING_FEES: '/assets/images/withdraw-tier-section.svg',
+		WITHDRAWAL_FEES: '/assets/images/withdraw-tier-section.svg',
+		WITHDRAWAL_LIMITS: '/assets/images/withdraw-tier-section.svg',
+	},
+
 	DEMO_LOGIN_ICON: '/assets/icons/demo-login-icon-dark.svg',
 	CANCEL_WITHDRAW: '/assets/icons/cancel-withdraw-dark-02-03.svg',
 	CONTACT_US_ICON: '/assets/acounts/help-contact-us-01.svg',
@@ -234,8 +245,12 @@ const nestedIcons = {
 
 	REFER_ICON: '/assets/images/refer-icon.svg',
 	STAKETOKEN_ICON: '/assets/images/stake.svg',
+	STAKING_1: '/assets/images/staking_1.png',
+	STAKING_2: '/assets/images/staking_2.svg',
+	STAKING_3: '/assets/images/staking_3.svg',
 	DEFAULT_ICON: '/assets/icons/coin-graphic-not-detected.svg',
 	EXPIRED_ICON: '/assets/images/expired.svg',
+	CHART_VIEW: '/assets/images/chart-view-mobile.svg',
 
 	HAP_ACCOUNT_ICON: '/assets/icons/hap-account-icon.svg',
 	ACCOUNT_SUMMARY: '/assets/icons/account-icon-summary.svg',
@@ -265,10 +280,23 @@ const nestedIcons = {
 	METAMASK: '',
 	MOVE_XHT: '/assets/stake/xht-move.svg',
 	CONNECT_DESKTOP: '/assets/stake/connect-via-desktop.svg',
+	SEARCH_BLOCKCHAIN: '/assets/images/search-blockchain.svg',
+	ASSET_INFO_COIN: '/assets/images/digital-assets-coins.svg',
+	CLOCK: '/assets/images/clock.svg',
+	REVOKE_SESSION: '/assets/images/signout.svg',
 
 	//should move this to the plugin itself once the functionality is added
 	GENERATE_REFERENCE_NUMBER: '/assets/icons/generate-reference-number-01.svg',
 	OSKO_LOGO: '/assets/icons/osko-logo.svg',
+
+	REFRESH_ICON: '/assets/icons/refresh-icon.svg',
+	WALLET_GRAPHIC: '/assets/images/wallet-background-graphic-dark-theme.svg',
+	WALLET_ARROW_DOWN: '/assets/images/deposit-arrow-down.svg',
+	WALLET_ARROW_UP: '/assets/images/withdraw-arrow-up.svg',
+
+	FOOTERBAR_ASSETS_TRADE: '/assets/images/assets-list-bottom-nav-mobile.svg',
+	FOOTERBAR_HISTORY_TRADE:
+		'/assets/images/transaction-history-bottom-nav-mobile.svg',
 };
 
 const icons = flatten(nestedIcons, options);

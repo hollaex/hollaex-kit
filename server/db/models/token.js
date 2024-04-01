@@ -2,7 +2,7 @@
 
 const { ROLES, TOKEN_TYPES } = require('../../constants');
 
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
 	const Token = sequelize.define('Token', {
 		key: {
 			type: DataTypes.STRING,
@@ -60,7 +60,8 @@ module.exports = function(sequelize, DataTypes) {
 		}
 	}, {
 		timestamps: true,
-		underscored: true
+		underscored: true,
+		tableName: 'Tokens'
 	});
 
 	Token.associate = (models) => {

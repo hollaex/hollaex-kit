@@ -35,11 +35,12 @@ const UserPaymentVerificationHome = ({
 						<div className="w-100">
 							{Object.keys(account)
 								.filter((data) => !HIDDEN_KEYS.includes(data))
-								.map((data) => {
+								.map((data, index) => {
 									const stringId = generateId(data);
 									const defaultText = data.replace(/_/g, ' ');
 									return (
 										<PanelInformationRow
+											key={index}
 											stringId={stringId}
 											label={STRINGS[stringId] || defaultText}
 											information={account[data]}
@@ -74,7 +75,12 @@ const UserPaymentVerificationHome = ({
 	} else {
 		return (
 			<div>
-				<div className="font-weight-bold text-lowercase">
+				<EditWrapper
+					stringId="USER_VERIFICATION.PAYMENT_VERIFICATION_HELP_TEXT,USER_VERIFICATION.DOCUMENT_SUBMISSION"
+					renderWrapper={(children) => (
+						<div className="font-weight-bold text-lowercase">{children}</div>
+					)}
+				>
 					{STRINGS.formatString(
 						STRINGS['USER_VERIFICATION.PAYMENT_VERIFICATION_HELP_TEXT'],
 						<span
@@ -84,8 +90,7 @@ const UserPaymentVerificationHome = ({
 							{STRINGS['USER_VERIFICATION.DOCUMENT_SUBMISSION']}
 						</span>
 					)}
-					<EditWrapper stringId="USER_VERIFICATION.PAYMENT_VERIFICATION_HELP_TEXT,USER_VERIFICATION.DOCUMENT_SUBMISSION" />
-				</div>
+				</EditWrapper>
 				{renderList()}
 				<div>
 					<EditWrapper stringId="USER_VERIFICATION.ADD_ANOTHER_PAYMENT_METHOD" />

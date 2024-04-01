@@ -79,7 +79,7 @@ const Step1 = ({
 									/>
 								</div>
 								<div className="content-description">
-									<div>{selectedCoinData.description}</div>
+									{/* <div>{selectedCoinData.description}</div> */}
 									<div className="provider-content">
 										<b>Provider:</b>{' '}
 										<span className="provider-text">
@@ -125,6 +125,12 @@ const Step1 = ({
 			key: 'hollaexAssets',
 			name: 'HollaEx Assets',
 			description: 'Assets offered by HollaEx',
+			content: renderContent(),
+		},
+		{
+			key: 'fiatAssets',
+			name: 'Fiat Assets',
+			description: 'For fiat enabled plans only',
 			content: renderContent(),
 		},
 		{

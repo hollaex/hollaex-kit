@@ -3,22 +3,21 @@ import { oneOfType, array, string, func, number, object } from 'prop-types';
 import { Select, Input } from 'antd';
 import math from 'mathjs';
 import { isNumeric, isFloat } from 'validator';
-import { CaretDownOutlined } from '@ant-design/icons';
-import { isMobile } from 'react-device-detect';
+import {
+	CaretDownOutlined,
+	LoadingOutlined,
+	SyncOutlined,
+} from '@ant-design/icons';
 import { DEFAULT_COIN_DATA } from 'config/constants';
 
 import { minValue, maxValue } from 'components/Form/validations';
 import { FieldError } from 'components/Form/FormFields/FieldWrapper';
 import { translateError } from './utils';
-import withConfig from 'components/ConfigProvider/withConfig';
-import EditWrapper from 'components/EditWrapper';
 import STRINGS from 'config/localizedStrings';
-import { Image } from 'components';
-import { getDecimals } from '../../utils/utils';
+import { Coin } from 'components';
+import { getDecimals } from 'utils/utils';
 
 const { Option } = Select;
-const { Group } = Input;
-// const DECIMALS = 4;
 
 class InputGroup extends React.PureComponent {
 	state = {
@@ -36,9 +35,11 @@ class InputGroup extends React.PureComponent {
 	onInputChange = (newValue) => {
 		const { onInputChange, decimal } = this.props;
 		const decimalPoint = getDecimals(decimal);
+		const decimalPointValue = Math.pow(10, decimalPoint);
 
 		if (isNumeric(newValue) || isFloat(newValue)) {
-			const value = math.round(newValue, decimalPoint);
+			const value =
+				math.floor(newValue * decimalPointValue) / decimalPointValue;
 			if (isFloat(newValue) && `${newValue}`.endsWith('0')) {
 				onInputChange(newValue);
 			} else if (value) {
@@ -56,11 +57,8 @@ class InputGroup extends React.PureComponent {
 			limits,
 			forwardError,
 			availableBalance,
-			estimatedPrice,
 			selectValue,
 			pair,
-			isExistBroker,
-			isShowChartDetails,
 		} = this.props;
 		const keydata = pair.split('-');
 		let error = '';
@@ -78,8 +76,6 @@ class InputGroup extends React.PureComponent {
 			maxValue(limits.MAX)(value)
 		) {
 			error = maxValue(limits.MAX)(value);
-		} else if (!estimatedPrice && !isExistBroker && isShowChartDetails) {
-			error = STRINGS['QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED'];
 		} else if (availableBalance) {
 			error = maxValue(availableBalance)(value);
 		}
@@ -90,87 +86,101 @@ class InputGroup extends React.PureComponent {
 	render() {
 		const { isOpen } = this.state;
 		const {
-			name,
 			options,
 			inputValue,
 			selectValue,
 			onSelect,
 			limits = {},
-			icons: ICONS,
 			autoFocus,
-			stringId,
 			coins,
+			loading,
+			expired,
+			disabled,
 		} = this.props;
 
+		const suffix = loading ? (
+			<LoadingOutlined className="secondary-text ml-1" />
+		) : expired ? (
+			<SyncOutlined className="secondary-text ml-1" />
+		) : null;
+
+		const error = translateError(this.renderErrorMessage(inputValue));
+
 		return (
-			<div className="py-2">
-				<label className="bold caps-first">
-					<EditWrapper stringId={stringId}>{name}</EditWrapper>
-				</label>
-				<div className={isMobile ? 'w-100' : ''}>
-					<Group compact className="input-group__container">
-						<Select
-							open={isOpen}
-							size="default"
-							showSearch
-							filterOption={true}
-							className="input-group__select"
-							value={selectValue}
-							style={isOpen ? { width: '100%' } : { width: '33%' }}
-							onChange={onSelect}
-							onDropdownVisibleChange={this.onDropdownVisibleChange}
-							bordered={false}
-							listItemHeight={35}
-							listHeight={35 * 6}
-							dropdownClassName="custom-select-style"
-							suffixIcon={
-								<CaretDownOutlined
-									onClick={() => this.onDropdownVisibleChange(!isOpen)}
-								/>
-							}
-						>
-							{options.map((symbol, index) => {
-								const { display_name, icon_id } =
-									coins[symbol] || DEFAULT_COIN_DATA;
-								return (
-									<Option
-										name="selectedPairBase"
-										value={symbol}
-										key={index}
-										className="d-flex"
-									>
-										<div className="d-flex align-items-center quick-trade-select-wrapper">
-											<div className="input-group__coin-icons-wrap">
-												<Image
-													iconId={icon_id}
-													icon={ICONS[icon_id]}
-													wrapperClassName="input-group__coin-icons"
-													imageWrapperClassName="currency-ball-image-wrapper"
-												/>
+			<div className="pt-2">
+				<div className="input-holder">
+					<div className="d-flex">
+						<div className="currency-dropdown">
+							<Select
+								open={isOpen}
+								size="default"
+								showSearch
+								filterOption={true}
+								className="input-group__select"
+								value={selectValue}
+								onChange={onSelect}
+								onDropdownVisibleChange={this.onDropdownVisibleChange}
+								bordered={false}
+								listItemHeight={35}
+								listHeight={35 * 6}
+								dropdownClassName="custom-select-style"
+								suffixIcon={
+									<CaretDownOutlined
+										onClick={() => this.onDropdownVisibleChange(!isOpen)}
+									/>
+								}
+							>
+								{options.map((symbol, index) => {
+									const { display_name, icon_id } =
+										coins[symbol] || DEFAULT_COIN_DATA;
+									return (
+										<Option
+											name="selectedPairBase"
+											value={symbol}
+											key={index}
+											className="d-flex"
+										>
+											<div className="d-flex align-items-center quick-trade-select-wrapper">
+												<div
+													className={
+														window.innerWidth > 768
+															? 'input-group__coin-icons-wrap'
+															: 'input-group__coin-icons-wrap_mobile-view'
+													}
+												>
+													<Coin
+														iconId={icon_id}
+														type={window.innerWidth > 768 ? 'CS9' : 'CS11'}
+													/>
+												</div>
+												<span className="ml-3 mr-6">{display_name}</span>
 											</div>
-											<span className="pl-1">{display_name}</span>
-										</div>
-									</Option>
-								);
-							})}
-						</Select>
-						<Input
-							type="number"
-							placeholder={STRINGS['AMOUNT']}
-							style={isOpen ? { display: 'none' } : { width: '67%' }}
-							className="input-group__input"
-							value={inputValue || ''}
-							onChange={this.onChangeEvent}
-							bordered={false}
-							step={limits.MIN}
-							min={limits.MIN}
-							max={limits.MAX}
-							autoFocus={autoFocus}
-						/>
-					</Group>
-					{translateError(this.renderErrorMessage(inputValue)) && (
+										</Option>
+									);
+								})}
+							</Select>
+						</div>
+						<div>
+							<Input
+								type="number"
+								placeholder={STRINGS['AMOUNT']}
+								style={{}}
+								className="input-group__input"
+								value={inputValue || ''}
+								onChange={this.onChangeEvent}
+								bordered={false}
+								step={limits.MIN}
+								min={limits.MIN}
+								max={limits.MAX}
+								autoFocus={autoFocus}
+								suffix={suffix}
+								disabled={disabled}
+							/>
+						</div>
+					</div>
+					{error && (
 						<FieldError
-							error={translateError(this.renderErrorMessage(inputValue))}
+							error={error}
 							displayError={true}
 							className="input-group__error-wrapper"
 						/>
@@ -191,4 +201,4 @@ InputGroup.propTypes = {
 	limits: object,
 };
 
-export default withConfig(InputGroup);
+export default InputGroup;

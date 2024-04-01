@@ -15,7 +15,7 @@ export const ETH_FULL_FORMAT = '0,0.[00000000]';
 export const XRP_FULL_FORMAT = '0,0.[0]';
 export const BCH_FULL_FORMAT = '0,0.[00000000]';
 export const BASE_FORMAT = '0,0.[0000]';
-export const PERCENTAGE_FORMAT = '0.[000]%';
+export const PERCENTAGE_FORMAT = '0.[00]%';
 export const DONUT_PERCENTAGE_FORMAT = '0.[0]%';
 export const AVERAGE_FORMAT = '3a';
 
@@ -49,7 +49,7 @@ export const roundNumber = (number = 0, decimals = 4) => {
 	}
 };
 
-export const getFormat = (min = 0, fullFormat) => {
+export const getFormat = (min = 0, fullFormat, amount) => {
 	let value = math.format(min, { notation: 'fixed' });
 	if (fullFormat) {
 		return { digit: 8, format: '0,0.[00000000]' };
@@ -63,11 +63,31 @@ export const getFormat = (min = 0, fullFormat) => {
 			.join('');
 		return { digit: point.length, format: `0,0.[${res}]` };
 	} else {
-		return { digit: 4, format: `0,0.[0000]` };
+		if(amount) {
+			const [digitsBeforeDecimal] = amount?.toString().split('.');
+			return digitsBeforeDecimal.length > 4 ?{ digit:  0, format: `0,0` } : { digit:  4, format: `0,0.[0000]` };
+		} 
+
+		return  { digit:  4, format: `0,0.[0000]` };
 	}
 };
 
+export const countDecimals =  (val) => {
+	if(Math.floor(val) === val) return 0;
+	return val.toString().split(".")[1].length || 0; 
+  }
+  
+
 export const formatToCurrency = (amount = 0, min = 0, fullFormat = false) => {
+	let formatObj = getFormat(min, fullFormat, amount);
+	return numbro(roundNumber(amount, formatObj.digit)).format(formatObj.format);
+};
+
+export const formatCurrencyByIncrementalUnit = (
+	amount = 0,
+	min = 0,
+	fullFormat = false
+) => {
 	let formatObj = getFormat(min, fullFormat);
 	let _amount = amount;
 	if (min >= 1) {
@@ -153,9 +173,10 @@ export const calculatePrice = (value = 0, key = BASE_CURRENCY) => {
 };
 
 export const calculateOraclePrice = (value = 0, price = 0) => {
-	const effectivePrice = price >= 0 ? price : 0;
+	const effectiveValue = !isNaN(value) ? value : 0;
+	const effectivePrice = !isNaN(price) && math.largerEq(price, 0) ? price : 0;
 	return math.number(
-		math.multiply(math.fraction(value), math.fraction(effectivePrice))
+		math.multiply(math.fraction(effectiveValue), math.fraction(effectivePrice))
 	);
 };
 

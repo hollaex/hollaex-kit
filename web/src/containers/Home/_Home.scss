@@ -173,8 +173,6 @@ $trade-tab--arrow-size: 0.4rem;
 	}
 
 	.quick_trade-wrapper {
-		// min-width: 30rem;
-		max-width: 40rem;
 		background-color: $quick-trade-block-background;
 	}
 
@@ -305,16 +303,6 @@ $trade-tab--arrow-size: 0.4rem;
 
 	.alice-carousel__stage-item {
 		border-right: 1px $colors-border solid;
-	}
-
-	.currency-ball-image-wrapper {
-		height: 2.2rem;
-		padding-right: 10px;
-	}
-
-	.trade_tab-icons {
-		width: 4rem;
-		margin-top: 2px;
 	}
 }
 

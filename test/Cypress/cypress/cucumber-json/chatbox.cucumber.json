@@ -1,0 +1,93 @@
+[
+  {
+    "description": "As an Admin\nIn order to check the chatbox\nI want to send/delete a message,and ban/unban a user.",
+    "keyword": "Feature",
+    "name": "Login Feature",
+    "line": 1,
+    "id": "login-feature",
+    "tags": [],
+    "uri": "chatbox.feature",
+    "elements": [
+      {
+        "id": "login-feature;successful-chatbxot-feature",
+        "keyword": "Scenario",
+        "line": 7,
+        "name": "Successful Chatbxot feature",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 9,
+            "name": "I log in the Hollaex",
+            "result": {
+              "status": "passed",
+              "duration": 14781000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 10,
+            "name": "I should be able to make the chatbox visible",
+            "result": {
+              "status": "passed",
+              "duration": 8922000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 11,
+            "name": "I should be able to enter a message",
+            "result": {
+              "status": "passed",
+              "duration": 7722000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 12,
+            "name": "I should be able to delete a message",
+            "result": {
+              "status": "passed",
+              "duration": 10939000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 13,
+            "name": "I should be able to ban a user",
+            "result": {
+              "status": "passed",
+              "duration": 21467000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 14,
+            "name": "I should be able to unban a user",
+            "result": {
+              "status": "passed",
+              "duration": 3230000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 15,
+            "name": "I should be able to make the chatbox invisible",
+            "result": {
+              "status": "passed",
+              "duration": 18159000000
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

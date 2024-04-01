@@ -46,7 +46,18 @@ const ValidateDismiss = ({
 			className="Validate-Dismiss-popup"
 		>
 			<div className="title">
-				{statusType === 'validate' ? 'Validate' : 'Dismiss'}
+				{statusType === 'validate'
+					? 'Validate'
+					: statusType === 'dismiss'
+					? 'Dismiss'
+					: 'Retry'}
+			</div>
+			<div className="my-1">
+				{statusType === 'dismiss'
+					? 'Dismissing this transaction will stop it from being processed.'
+					: statusType === 'validate'
+					? 'Validating this transaction will allow it to get processed.'
+					: null}
 			</div>
 			<div className="my-3">Please check and confirm the details below.</div>
 			<span className="legend">Check & Confirm</span>
@@ -61,29 +72,36 @@ const ValidateDismiss = ({
 					<span className="bold">Amount:</span> {validateData.amount}
 				</div>
 			</div>
-			<div className="my-5">
-				<div>Transaction ID</div>
-				<Item name="transaction_id">
-					<Input ref={transaction_id} />
-				</Item>
-				<div className="edit-link-wrapper">
-					<div
-						className="edit-link"
-						onClick={() => handleEdit('transaction_id')}
-					>
-						Edit
+			{statusType === 'validate' || statusType === 'dismiss' ? (
+				<div className="my-5">
+					<div>Transaction ID</div>
+					<Item name="transaction_id">
+						<Input ref={transaction_id} />
+					</Item>
+					<div className="edit-link-wrapper">
+						<div
+							className="edit-link"
+							onClick={() => handleEdit('transaction_id')}
+						>
+							Edit
+						</div>
+					</div>
+					<div>Description</div>
+					<Item name="description">
+						<Input ref={description} />
+					</Item>
+					<div className="edit-link-wrapper">
+						<div
+							className="edit-link"
+							onClick={() => handleEdit('description')}
+						>
+							Edit
+						</div>
 					</div>
 				</div>
-				<div>Description</div>
-				<Item name="description">
-					<Input ref={description} />
-				</Item>
-				<div className="edit-link-wrapper">
-					<div className="edit-link" onClick={() => handleEdit('description')}>
-						Edit
-					</div>
-				</div>
-			</div>
+			) : (
+				''
+			)}
 			<div className="d-flex align-items-center mt-4">
 				<Button type="ghost" className="f-1" onClick={onCancel}>
 					Back
