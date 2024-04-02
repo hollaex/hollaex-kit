@@ -41,6 +41,13 @@
 	width: 100% !important;
 }
 
+.market-cards {
+	.highcharts-root {
+		width: 100% !important;
+		height: unset !important;
+	}
+}
+
 .layout-mobile {
 	.highcharts-graph {
 		stroke-width: 1px;

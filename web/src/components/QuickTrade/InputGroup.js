@@ -201,7 +201,11 @@ class InputGroup extends React.PureComponent {
 								type="number"
 								placeholder={loading ? '' : '0'}
 								style={{}}
-								className="input-group__input"
+								className={
+									inputValue > 0
+										? 'input-group__input active-input'
+										: 'input-group__input'
+								}
 								value={inputValue || ''}
 								onChange={this.onChangeEvent}
 								bordered={false}
