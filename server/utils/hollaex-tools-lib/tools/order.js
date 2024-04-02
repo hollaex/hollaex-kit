@@ -370,7 +370,9 @@ const getUserChainTradeQuote = async (user_id, symbol, size = 1) => {
 		rates[quickTrade.symbol] = { type: quickTrade.type, price: quotePrice.receiving_amount }
 	}
 
-	const findConversionRate = (base, quote, size, visited = {}, path = []) => {
+	const findConversionRate = (base, quote, size, visited = {}, path = [], index = 0) => {
+		if(index > 10) return null;
+
 		if (visited[base]) return { rate: null, path, size, amount: null };
 		visited[base] = true;
 	
@@ -403,7 +405,7 @@ const getUserChainTradeQuote = async (user_id, symbol, size = 1) => {
 				const intermediateAsset = to;
 				const rateInfo = rates[key];
 				const newSize = rateInfo.price * size;
-				const result = findConversionRate(intermediateAsset, quote, newSize, { ...visited }, [...path, { symbol: key, type: rateInfo.type, side: 'sell', size, amount: newSize, price: rateInfo.price }]);
+				const result = findConversionRate(intermediateAsset, quote, newSize, { ...visited }, [...path, { symbol: key, type: rateInfo.type, side: 'sell', size, amount: newSize, price: rateInfo.price }], index + 1);
 	
 				if (result.rate) {
 					const totalAmount = result.rate * newSize;
@@ -413,8 +415,8 @@ const getUserChainTradeQuote = async (user_id, symbol, size = 1) => {
 		}
 	
 		if (path.length === 0) {
-			const resultForInverse = findConversionRate(quote, base, size, {}, []);
-			if (resultForInverse.rate) {
+			const resultForInverse = findConversionRate(quote, base, size, {}, [], index + 1);
+			if (resultForInverse?.rate) {
 				const inverseAmount = size / resultForInverse.rate;
 				return { 
 					rate: 1 / resultForInverse.rate, 
@@ -431,7 +433,7 @@ const getUserChainTradeQuote = async (user_id, symbol, size = 1) => {
 	const result = findConversionRate(base_asset, quote_asset, size);
 	let token;
 
-	if (result.amount && user_id) {
+	if (result?.amount && user_id) {
 		result.user_id = user_id;
 		token = uuid();
 		client.setexAsync(token, 30, JSON.stringify(result));
@@ -496,7 +498,7 @@ const executeUserChainTrade = async (user, opts, token) => {
 		} catch (error) {
 			await getModel('audit').create({
 				subject: user.email,
-				session_id: user?.session_id,
+				session_id: user.email,
 				description: {
 					all_trades: trades?.path,
 					successful_trades: successfulTrades,
