@@ -65,9 +65,6 @@ paths:
               currency:
                 type: string
                 maxLength: 256
-              captcha:
-                type: string
-                maxLength: 1024
             required:
               - amount
               - bank_id
