@@ -10,7 +10,6 @@ const { loggerPlugin } = require('../config/logger');
 const { INTERVAL_CRON } = require('../constants');
 const { settleFees } = require('../utils/hollaex-tools-lib/tools/user');
 
-let referralJobRunning = false;
 
 const getTimezone = () => {
 	const kitTimezone = toolsLib.getKitSecrets().emails.timezone;
@@ -172,16 +171,6 @@ const unstakingCheckRunner = () => {
 			);
 		}
 
-		try {
-			const statusModel = toolsLib.database.getModel('status');
-			const status = await statusModel.findOne({});
-			if (status?.kit?.referral_history_config?.active && !referralJobRunning) referralCheckRunner();
-		} catch (err) {
-			loggerPlugin.error(
-				'Referral check start error',
-				err.message
-			);
-		}
 	}, {
 		scheduled: true,
 		timezone: getTimezone()
@@ -263,49 +252,11 @@ const updateRewardsCheckRunner = () => {
 	});
 }
 
-const referralCheckRunner = async () => {
-	try {
-		const statusModel = toolsLib.database.getModel('status');
-		const status = await statusModel.findOne({});
-
-		if (!status?.kit?.referral_history_config?.active) return;
-
-		referralJobRunning = true;
-		const { settlement_interval: SETTLEMENT_INTERVAL } = status?.kit?.referral_history_config || {};
-
-		cron.schedule(INTERVAL_CRON[SETTLEMENT_INTERVAL], async () => {
-			const latestStatus = await statusModel.findOne({});
-			if (!latestStatus?.kit?.referral_history_config?.active) { referralJobRunning = false; return; }
-			if (latestStatus?.kit?.referral_history_config?.settlement_interval !== SETTLEMENT_INTERVAL) { referralJobRunning = false; return; }
-			
-			const currentTime = moment().seconds(0).milliseconds(0).toISOString();
-			loggerPlugin.verbose(
-				'REFERRAL settleFees',
-				'Fee settlement started'
-			);
-			await settleFees(currentTime);
-			loggerPlugin.verbose(
-				'REFERRAL settleFees',
-				'Fee settlement finished'
-			);
-		}, {
-			scheduled: true,
-			timezone: getTimezone()
-	});
-	} catch (err) {
-		loggerPlugin.error(
-			'Referral check error during initialization:',
-			err.message
-		);
-	}
-}
 
 unstakingCheckRunner();
 updateRewardsCheckRunner();
-referralCheckRunner()
 
 module.exports = {
     unstakingCheckRunner,
-    updateRewardsCheckRunner,
-	referralCheckRunner
+    updateRewardsCheckRunner
 }

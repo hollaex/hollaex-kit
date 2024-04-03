@@ -2660,34 +2660,50 @@ const updateLastSettledTrade = async (timestamp, configData = null) => {
 	)
 };
 
-const settleFees = (currentTime) => {
+const getUnrealizedFees = async (user_id, currentTime) => {
+	const data = await  client.getAsync(`${user_id}user-unrealized-fees`);
+	if (data) return JSON.parse(data);
+
 	const { 
 		earning_period: EARNING_PERIOD, 
 		distributor_id: DISTRIBUTOR_ID,
-		last_settled_trade: LAST_SETTLED_TRADE
+		date_enabled: DATE_ENABLED
 	} = getKitConfig()?.referral_history_config || {};
 
-	const { getAllTradesNetwork } = require('./order');
-	const { transferAssetByNetworkIds } = require('./wallet');
+	const { getAllUserTradesByKitId } = require('./order');
 	const referralHistoryModel = getModel('Referralhistory');
+
+	let userLastSettleDate = moment(DATE_ENABLED).toISOString();
+
+	const userLastTrade = await referralHistoryModel.findOne({
+		where: { referer: user_id },
+		order: [ [ 'timestamp', 'DESC' ]],
+	});	
+
+	if (userLastTrade) {
+		userLastSettleDate = moment(userLastTrade.timestamp).toISOString();
+	}
 
 	loggerUser.verbose(
 		'REFERRAL settleFees',
-		'Last settled trade timestamp:',
-		LAST_SETTLED_TRADE,
+		'User ID:',
+		user_id,
+		'Last settled trade timestamp for user:',
+		userLastSettleDate,
 		'Current Time:',
-		currentTime
+		currentTime,
 	);
 
 	return all([
 		getUserByKitId(DISTRIBUTOR_ID, true, true),
-		getAllTradesNetwork(
+		getAllUserTradesByKitId(
+			user_id,
 			null,
 			null,
 			null,
 			'timestamp',
 			'desc',
-			LAST_SETTLED_TRADE ? moment(LAST_SETTLED_TRADE).add(1, 'ms').toISOString() : null,
+			userLastSettleDate ? moment(userLastSettleDate).add(1, 'ms').toISOString() : null,
 			null,
 			'all'
 		)
@@ -2810,8 +2826,6 @@ const settleFees = (currentTime) => {
 			const filteredFees = {};
 			const referralHistory = [];
 			if (count === 0) {
-				await updateLastSettledTrade(lastSettledTrade);
-
 				throw new Error('No trades made by affiliated users');
 			}
 
@@ -2916,7 +2930,385 @@ const settleFees = (currentTime) => {
 				filteredFees,
 				distributor,
 				referralHistory,
-				updateLastSettledTrade(lastSettledTrade)
+			]);
+		})
+		.then(async ([accumulatedFees, distributor, referralHistory]) => {
+			const nativeCurrency = getKitConfig()?.referral_history_config?.currency || 'usdt';
+
+			const exchangeCoins = getKitCoins();
+			const conversions = await getNodeLib().getOraclePrices(exchangeCoins, {
+				quote: nativeCurrency,
+				amount: 1
+				});
+
+			let result = [];
+
+			for (let receiverKey in accumulatedFees) {
+				const [receiverKitId, receiverNetworkId, receiverEmail] = receiverKey.split(':');
+
+				loggerUser.verbose(
+					'REFERRAL settleFees',
+					'Settling fees to refer',
+					'referer user email:',
+					receiverEmail,
+					'referer user kit ID:',
+					receiverKitId,
+					'referer user network ID:',
+					receiverNetworkId
+				);
+			
+				let successfulTransfers = null;
+				let failedTransfers = null;
+
+				for (let coin in accumulatedFees[receiverKey]) {
+					try {
+						loggerUser.verbose(
+							'REFERRAL settleFees',
+							'Attempting transfer',
+							'coin:',
+							coin,
+							'amount:',
+							accumulatedFees[receiverKey][coin]
+						);
+
+						loggerUser.verbose(
+							'REFERRAL settleFees',
+							'Transfer successful',
+							'coin:',
+							coin,
+							'amount:',
+							accumulatedFees[receiverKey][coin]
+						);
+
+						if (!successfulTransfers) {
+							successfulTransfers = {};
+						}
+
+						successfulTransfers[coin] = accumulatedFees[receiverKey][coin];
+
+						try {
+							const tradeRecords = referralHistory.filter(data => data.coin === coin);
+
+							for (let record of tradeRecords) {
+								if (conversions[record.coin] === -1) continue;
+								record.accumulated_fees = new BigNumber(record.accumulated_fees).multipliedBy(conversions[record.coin]).toNumber();
+								result.push(record);
+							}
+						} catch (err) {
+							loggerUser.error(
+								'REFERRAL createHistoryRecord',
+								'Create record failed',
+								'coin:',
+								coin,
+								'amount:',
+								accumulatedFees[receiverKey][coin],
+								'error:',
+								err.message
+							);
+						}
+					} catch (err) {
+						loggerUser.error(
+							'REFERRAL settleFees',
+							'Transfer failed',
+							'coin:',
+							coin,
+							'amount:',
+							accumulatedFees[receiverKey][coin],
+							'error:',
+							err.message
+						);
+
+						if (!failedTransfers) {
+							failedTransfers = {};
+						}
+
+						failedTransfers[coin] = {
+							amount: accumulatedFees[receiverKey][coin],
+							error: err.message
+						};
+					}
+				}
+			}
+			client.setexAsync(`${user_id}user-unrealized-fees`, 1000 * 60 * 15, JSON.stringify(result));
+			
+			return result;
+		})
+		.catch((err) => {
+			loggerUser.error(
+				'REFERRAL settleFees error',
+				err.message
+			);
+		});
+};
+
+const settleFees = async (user_id, currentTime) => {
+	const { 
+		earning_period: EARNING_PERIOD, 
+		distributor_id: DISTRIBUTOR_ID,
+		date_enabled: DATE_ENABLED
+	} = getKitConfig()?.referral_history_config || {};
+
+	const { getAllUserTradesByKitId } = require('./order');
+	const { transferAssetByNetworkIds } = require('./wallet');
+	const referralHistoryModel = getModel('Referralhistory');
+
+	let userLastSettleDate = moment(DATE_ENABLED).toISOString();
+
+	const userLastTrade = await referralHistoryModel.findOne({
+		where: { referer: user_id },
+		order: [ [ 'timestamp', 'DESC' ]],
+	});	
+
+	if (userLastTrade) {
+		userLastSettleDate = moment(userLastTrade.timestamp).toISOString();
+	}
+
+	loggerUser.verbose(
+		'REFERRAL settleFees',
+		'User ID:',
+		user_id,
+		'Last settled trade timestamp for user:',
+		userLastSettleDate,
+		'Current Time:',
+		currentTime,
+	);
+
+	return all([
+		getUserByKitId(DISTRIBUTOR_ID, true, true),
+		getAllUserTradesByKitId(
+			user_id,
+			null,
+			null,
+			null,
+			'timestamp',
+			'desc',
+			userLastSettleDate ? moment(userLastSettleDate).add(1, 'ms').toISOString() : null,
+			null,
+			'all'
+		)
+	])
+		.then(([distributor, { count, data: trades }]) => {
+			if (!distributor) {
+				throw new Error('No distributor found');
+			}
+
+			if (count === 0) {
+				throw new Error('No trades to settle');
+			}
+
+			const lastSettledTrade = trades[0].timestamp;
+
+			loggerUser.verbose(
+				'REFERRAL settleFees',
+				'Exchange trades since last settlement',
+				count,
+				'Timestamp of last trade found:',
+				lastSettledTrade,
+				'Distributor account email:',
+				distributor.email,
+				'Distibutor account kit id:',
+				distributor.id
+			);
+
+			const accumulatedFees = {};
+
+			for (let trade of trades) {
+				const {
+					maker_network_id,
+					taker_network_id,
+					maker_fee,
+					taker_fee,
+					maker_fee_coin,
+					taker_fee_coin
+				} = trade;
+
+				if (maker_fee > 0 && maker_fee_coin) {
+					if (!accumulatedFees[maker_network_id]) {
+						accumulatedFees[maker_network_id] = {};
+					}
+
+					if (!isNumber(accumulatedFees[maker_network_id][maker_fee_coin])) {
+						accumulatedFees[maker_network_id][maker_fee_coin] = 0;
+					}
+
+					accumulatedFees[maker_network_id][maker_fee_coin] = addAmounts(
+						accumulatedFees[maker_network_id][maker_fee_coin],
+						maker_fee
+					);
+				}
+
+				if (taker_fee > 0 && taker_fee_coin) {
+					if (!accumulatedFees[taker_network_id]) {
+						accumulatedFees[taker_network_id] = {};
+					}
+
+					if (!isNumber(accumulatedFees[taker_network_id][taker_fee_coin])) {
+						accumulatedFees[taker_network_id][taker_fee_coin] = 0;
+					}
+
+					accumulatedFees[taker_network_id][taker_fee_coin] = addAmounts(
+						accumulatedFees[taker_network_id][taker_fee_coin],
+						taker_fee
+					);
+				}
+			}
+
+			const tradeUsers = Object.keys(accumulatedFees);
+			const tradeUsersAmount = tradeUsers.length;
+
+			if (tradeUsersAmount === 0) {
+				throw new Error('No trades made with fees');
+			}
+
+			loggerUser.debug(
+				'REFERRAL settleFees',
+				'Users that traded and paid fees:',
+				tradeUsersAmount
+			);
+
+			return all([
+				distributor,
+				accumulatedFees,
+				lastSettledTrade,
+				getAllAffiliations({
+					where: {
+						'$user.network_id$': tradeUsers,
+						created_at: {
+							[Op.gt]: moment(currentTime).subtract(EARNING_PERIOD, 'months').toISOString(),
+							[Op.lte]: currentTime
+						}
+					},
+					include: [
+						{
+							model: getModel('user'),
+							as: 'user',
+							attributes: [
+								'id',
+								'email',
+								'network_id'
+							]
+						},
+						{
+							model: getModel('user'),
+							as: 'referer',
+							attributes: [
+								'id',
+								'email',
+								'network_id'
+							]
+						}
+					]
+				})
+			]);
+		})
+		.then(async ([distributor, accumulatedFees, lastSettledTrade, { count, rows: affiliations }]) => {
+			const filteredFees = {};
+			const referralHistory = [];
+			if (count === 0) {
+				throw new Error('No trades made by affiliated users');
+			}
+
+			loggerUser.verbose(
+				'REFERRAL settleFees',
+				'Affiliated users that traded:',
+				count
+			);
+
+			for (let affiliation of affiliations) {
+				const refereeUser = affiliation.user;
+				const referer = affiliation.referer;
+
+				if (accumulatedFees[refereeUser.network_id]) {
+					// refererKey includes user kit id, user network id, and user email separated by colons
+					const refererKey = `${referer.id}:${referer.network_id}:${referer.email}`;
+					if (!filteredFees[refererKey]) {
+						filteredFees[refererKey] = {};
+					}
+
+					for (let coin in accumulatedFees[refereeUser.network_id]) {
+						if (!isNumber(filteredFees[refererKey][coin])) {
+							filteredFees[refererKey][coin] = 0;
+						}
+
+						filteredFees[refererKey][coin] = addAmounts(
+							filteredFees[refererKey][coin],
+							accumulatedFees[refereeUser.network_id][coin]
+						);
+
+
+						const refIndex = referralHistory.findIndex(data => data.referee === refereeUser.id && data.referer === referer.id && data.coin === coin);
+						if (refIndex >= 0) {
+							referralHistory[refIndex].accumulated_fees = filteredFees[refererKey][coin];
+						} else {
+							referralHistory.push({
+								referer: referer.id,
+								referee: refereeUser.id,
+								timestamp: lastSettledTrade,
+								coin,
+								accumulated_fees: filteredFees[refererKey][coin]
+							});
+						}
+					}
+				}
+			}
+
+			const requiredBalance = {};
+
+			for (let refererKey in filteredFees) {
+				for (let coin in filteredFees[refererKey]) {
+					filteredFees[refererKey][coin] = applyEarningRate(filteredFees[refererKey][coin]);
+
+					if (!isNumber(requiredBalance[coin])) {
+						requiredBalance[coin] = 0;
+					}
+
+					requiredBalance[coin] = addAmounts(
+						requiredBalance[coin],
+						filteredFees[refererKey][coin]
+					);
+				}
+			}
+
+			referralHistory.forEach(refHistory => {
+				refHistory.accumulated_fees = applyEarningRate(refHistory.accumulated_fees);
+			})
+
+			loggerUser.verbose(
+				'REFERRAL settleFees',
+				'Required balances:',
+				requiredBalance
+			);
+
+			let insufficientBalance = false;
+
+			for (let coin in requiredBalance) {
+				if (distributor.balance[`${coin}_available`] < requiredBalance[coin]) {
+					insufficientBalance = true;
+				}
+			}
+
+			if (insufficientBalance) {
+				try {
+					adminInsufficientBalanceAlertEmail({
+						distributorEmail: distributor.email,
+						distributorNetworkId: distributor.network_id,
+						fees: requiredBalance
+					});
+				} catch (err) {
+					loggerUser.error(
+						'REFERRAL settleFees',
+						'Error while sending insufficent balance alert:',
+						err.message
+					);
+				}
+
+				throw new Error('Distributor account does not have enough balance to complete settlement');
+			}
+
+			return all([
+				filteredFees,
+				distributor,
+				referralHistory,
 			]);
 		})
 		.then(async ([accumulatedFees, distributor, referralHistory]) => {
@@ -2945,6 +3337,19 @@ const settleFees = (currentTime) => {
 			
 				let successfulTransfers = null;
 				let failedTransfers = null;
+
+				//Check usdt value of the total accumulated fees is less than 1 
+				let feeUsdtValue = 0;
+
+				for (let coin in accumulatedFees[receiverKey]) {
+					if (conversions[coin] > -1) {
+						feeUsdtValue +=  new BigNumber(accumulatedFees[receiverKey][coin]).multipliedBy(conversions[coin]).toNumber();
+					}
+				}
+
+				if (feeUsdtValue < 1) {
+					throw new Error('Total unrealized earned fees are too small to be converted to realized earnings')
+				}
 
 				for (let coin in accumulatedFees[receiverKey]) {
 					try {
@@ -2987,7 +3392,7 @@ const settleFees = (currentTime) => {
 
 							for (let record of tradeRecords) {
 								if (conversions[record.coin] === -1) continue;
-								record.accumulated_fees = new BigNumber(record.accumulated_fees).multipliedBy(conversions[record.coin]).toNumber()
+								record.accumulated_fees = new BigNumber(record.accumulated_fees).multipliedBy(conversions[record.coin]).toNumber();
 								await referralHistoryModel.create(record);
 							}
 						} catch (err) {
@@ -3504,5 +3909,6 @@ module.exports = {
 	settledFeesEmail,
 	activateReferralFeature,
 	settleFees,
+	getUnrealizedFees,
 	fetchUserReferrals
 };

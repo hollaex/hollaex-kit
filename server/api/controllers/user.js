@@ -34,6 +34,7 @@ const { all } = require('bluebird');
 const { each, isInteger } = require('lodash');
 const { publisher } = require('../../db/pubsub');
 const { isDate } = require('moment');
+const moment = require('moment');
 const DeviceDetector = require('node-device-detector');
 const uuid = require('uuid/v4');
 
@@ -1250,12 +1251,57 @@ const fetchUserProfitLossInfo = (req, res) => {
 		});
 };
 
+const getUnrealizedUserFees = (req, res) => {
+	loggerUser.info(
+		req.uuid,
+		'GET /user/getUnrealizedUserFees',
+	);
+
+	const currentTime = moment().seconds(0).milliseconds(0).toISOString();
+
+	toolsLib.user.getUnrealizedFees(req.auth.sub.id, currentTime)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerUser.error(
+				req.uuid,
+				'GET /user/getUnrealizedUserFees err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+}
+
+
+const settleUserFees = (req, res) => {
+	loggerUser.info(
+		req.uuid,
+		'GET /user/settleUserFees',
+	);
+
+	const currentTime = moment().seconds(0).milliseconds(0).toISOString();
+
+	toolsLib.user.settleFees(req.auth.sub.id, currentTime)
+		.then(() => {
+			return res.json({ message: 'success' });
+		})
+		.catch((err) => {
+			loggerUser.error(
+				req.uuid,
+				'GET /user/settleUserFees err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+}
+
 const fetchUserReferrals = (req, res) => {
-	const {  limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
+	const { limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
 	loggerUser.info(
 		req.uuid,
-		'GET /plugins/referrals query',
+		'GET /user/referrals query',
 		limit,
 		page,
 		order_by,
@@ -1283,7 +1329,7 @@ const fetchUserReferrals = (req, res) => {
 		.catch((err) => {
 			loggerUser.error(
 				req.uuid,
-				'GET /plugins/referrals err',
+				'GET /user/referrals err',
 				err.message
 			);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
@@ -1321,6 +1367,8 @@ module.exports = {
 	getUserSessions,
 	userLogout,
 	userDelete,
+	getUnrealizedUserFees,
+	settleUserFees,
 	getUserBalanceHistory,
 	fetchUserProfitLossInfo,
 	fetchUserReferrals
