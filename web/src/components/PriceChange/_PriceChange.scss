@@ -29,11 +29,13 @@
 
 		&.up {
 			color: $buy;
+			display: flex;
 
 			&:before {
 				visibility: visible;
 				@include css-triangle($buy, 'up', $trade-tab--arrow-size);
 				margin-bottom: 0.2rem;
+				margin-top: 15%;
 			}
 		}
 	}

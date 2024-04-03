@@ -64,7 +64,7 @@ class MarketCard extends Component {
 						</div>
 					</div>
 				</div>
-				<div className="market-card__sparkline-wrapper w-100">
+				<div className="market-card__sparkline-wrapper market-cards w-100">
 					<SparkLine
 						data={chartData[key] || []}
 						containerProps={{ style: { height: '100%', width: '100%' } }}

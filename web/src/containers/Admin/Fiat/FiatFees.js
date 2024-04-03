@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { updateConstants } from '../General/action';
 import { requestAdminData } from 'actions/appActions';
 
-const CoinConfiguration = ({ coins }) => {
+const FiatFees = ({ coins }) => {
 	const [coinData, setCoinData] = useState([]);
 	const [coinCustomizations, setCoinCustomizations] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
@@ -46,11 +46,19 @@ const CoinConfiguration = ({ coins }) => {
 			},
 		},
 		{
-			title: 'Fee Markup',
-			dataIndex: 'fee_markup',
-			key: 'fee_markup',
+			title: 'Withdrawal Fee',
+			dataIndex: 'withdrawal_fee',
+			key: 'withdrawal_fee',
 			render: (user_id, data) => {
-				return <div className="d-flex">{data?.fee_markup || '-'}</div>;
+				return <div className="d-flex">{data?.withdrawal_fee || '-'}</div>;
+			},
+		},
+		{
+			title: 'Deposit Fee',
+			dataIndex: 'deposit_fee',
+			key: 'deposit_fee',
+			render: (user_id, data) => {
+				return <div className="d-flex">{data?.deposit_fee || '-'}</div>;
 			},
 		},
 		{
@@ -92,34 +100,15 @@ const CoinConfiguration = ({ coins }) => {
 		// return getExchangeSessionsCsv({ ...queryValues, format: 'csv' });
 	};
 
-	// const renderRowContent = (coin) => {
-	// 	return (
-	// 		<div>
-	// 			<div>
-	// 				<span style={{ fontWeight: 'bold' }}>Estimated Price:</span>{' '}
-	// 				{coins[coin.symbol].estimated_price}
-	// 			</div>
-	// 			<div>
-	// 				<span style={{ fontWeight: 'bold' }}>Network:</span>{' '}
-	// 				{coins?.[coin.symbol]?.network?.toUpperCase()}
-	// 			</div>
-	// 			<div>
-	// 				<span style={{ fontWeight: 'bold' }}>Verified:</span>{' '}
-	// 				{coins[coin.symbol].verified ? 'Yes' : 'No'}
-	// 			</div>
-	// 		</div>
-	// 	);
-	// };
-
 	const requesCoinConfiguration = (page = 1, limit = 50) => {
 		setIsLoading(true);
 		// getCoinConfiguration({ page, limit, ...queryValues })
 		requestAdminData()
 			.then((response) => {
-				const data = response?.data?.kit?.coin_customizations || {};
+				const data = response?.data?.kit?.fiat_fees || {};
 
 				for (const coin of Object.values(coins)) {
-					if (coin.type !== 'fiat') {
+					if (coin.type === 'fiat') {
 						data[coin.symbol] = {
 							...(data[coin.symbol] || {
 								symbol: coin.symbol,
@@ -127,7 +116,7 @@ const CoinConfiguration = ({ coins }) => {
 							}),
 							fullname: coin.fullname,
 						};
-					} else delete data[coin.symbol];
+					}
 				}
 				setCoinCustomizations(Object.values(data));
 				setCoinData(data);
@@ -148,16 +137,6 @@ const CoinConfiguration = ({ coins }) => {
 			});
 	};
 
-	// const pageChange = (count, pageSize) => {
-	// 	const { page, limit, isRemaining } = queryFilters;
-	// 	const pageCount = count % 5 === 0 ? 5 : count % 5;
-	// 	const apiPageTemp = Math.floor(count / 5);
-	// 	if (limit === pageSize * pageCount && apiPageTemp >= page && isRemaining) {
-	// 		requesCoinConfiguration(page + 1, limit);
-	// 	}
-	// 	setQueryFilters({ ...queryFilters, currentTablePage: count });
-	// };
-
 	const handleCostumizationModal = () => {
 		setDisplayCostumizationModal(false);
 		setSelectedCoin();
@@ -167,8 +146,8 @@ const CoinConfiguration = ({ coins }) => {
 	return (
 		<div>
 			<div style={{ color: '#ccc' }}>
-				Below, You can add/edit extra fees for each coin available in your
-				exchange
+				Below, You can add/edit fees for fiats available in your exchange, this
+				will override the default fees set to fiats by default
 			</div>
 			<div>
 				<div style={{ marginTop: 20 }}></div>
@@ -248,20 +227,34 @@ const CoinConfiguration = ({ coins }) => {
 								marginBottom: 10,
 							}}
 						>
-							Edit Coin Fee Markup
+							Edit Fiat Fees
 						</div>
-						<div style={{ marginBottom: 30 }}>Congifure fee markups</div>
 						<div style={{ marginBottom: 20 }}>
 							<div style={{ marginBottom: 10 }}>
-								<div className="mb-1">Fee Markup</div>
+								<div className="mb-1">Withdrawal Fee</div>
 								<Input
 									type="number"
-									placeholder="Enter Fee Markup"
-									value={selectedCoin.fee_markup}
+									placeholder="Enter Withdrawal Fee"
+									value={selectedCoin.withdrawal_fee}
 									onChange={(e) => {
 										setSelectedCoin({
 											...selectedCoin,
-											fee_markup: e.target.value,
+											withdrawal_fee: e.target.value,
+										});
+									}}
+								/>
+							</div>
+
+							<div style={{ marginBottom: 10 }}>
+								<div className="mb-1">Deposit Fee</div>
+								<Input
+									type="number"
+									placeholder="Enter Deposit Fee"
+									value={selectedCoin.deposit_fee}
+									onChange={(e) => {
+										setSelectedCoin({
+											...selectedCoin,
+											deposit_fee: e.target.value,
 										});
 									}}
 								/>
@@ -293,17 +286,26 @@ const CoinConfiguration = ({ coins }) => {
 							<Button
 								onClick={async () => {
 									try {
-										if (selectedCoin.fee_markup) {
-											selectedCoin.fee_markup = Number(selectedCoin.fee_markup);
+										if (selectedCoin.withdrawal_fee) {
+											selectedCoin.withdrawal_fee = Number(
+												selectedCoin.withdrawal_fee
+											);
+										}
+
+										if (selectedCoin.deposit_fee) {
+											selectedCoin.deposit_fee = Number(
+												selectedCoin.deposit_fee
+											);
 										}
 
 										await updateConstants({
 											kit: {
-												coin_customizations: {
+												fiat_fees: {
 													...coinData,
 													[selectedCoin.symbol]: {
 														symbol: selectedCoin.symbol,
-														fee_markup: selectedCoin.fee_markup,
+														withdrawal_fee: selectedCoin.withdrawal_fee,
+														deposit_fee: selectedCoin.deposit_fee,
 													},
 												},
 											},
@@ -338,4 +340,4 @@ const mapStateToProps = (state) => ({
 	coins: state.app.coins,
 });
 
-export default connect(mapStateToProps)(withConfig(CoinConfiguration));
+export default connect(mapStateToProps)(withConfig(FiatFees));
