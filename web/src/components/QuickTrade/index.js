@@ -100,6 +100,8 @@ const QuickTrade = ({
 	const [lineChartData, setLineChartData] = useState({});
 	const [allChartsData, setAllChartsData] = useState({});
 	const [showPriceTrendModal, setShowPriceTrendModal] = useState(false);
+	const [isOpenTopField, setIsOpenTopField] = useState(false);
+	const [isOpenBottomField, setIsOpenBottomField] = useState(false);
 
 	const resetForm = () => {
 		setTargetAmount();
@@ -472,7 +474,7 @@ const QuickTrade = ({
 									{STRINGS['QUICK_TRADE_COMPONENT.GO_TO_TEXT']}
 								</EditWrapper>{' '}
 								<Link to="/wallet">
-									<span>
+									<span className="go-to-text">
 										<EditWrapper stringId="WALLET_TITLE">
 											{STRINGS['WALLET_TITLE']}
 										</EditWrapper>
@@ -480,7 +482,13 @@ const QuickTrade = ({
 								</Link>
 							</div>
 
-							<div className="quick-trade-input">
+							<div
+								className={
+									isOpenTopField
+										? 'active-border quick-trade-input'
+										: 'quick-trade-input'
+								}
+							>
 								<div className="d-flex justify-content-between mb-3">
 									<div className="bold caps-first">
 										<EditWrapper stringId={'CONVERT'}>
@@ -510,6 +518,7 @@ const QuickTrade = ({
 									selectedBalance={selectedBalance}
 									loading={loadingSource}
 									disabled={loadingSource}
+									setIsOpenTopField={setIsOpenTopField}
 								/>
 							</div>
 							<div className="d-flex swap-wrapper-wrapper">
@@ -527,7 +536,13 @@ const QuickTrade = ({
 									</div>
 								</div>
 							</div>
-							<div className="quick-trade-input">
+							<div
+								className={
+									isOpenBottomField
+										? 'active-border quick-trade-input'
+										: 'quick-trade-input'
+								}
+							>
 								<div className="d-flex justify-content-between mb-3">
 									<div className="bold caps-first">
 										<EditWrapper stringId={'TO'}>{STRINGS['TO']}</EditWrapper>
@@ -553,6 +568,7 @@ const QuickTrade = ({
 									coins={coins}
 									loading={loadingTarget}
 									disabled={loadingTarget}
+									setIsOpenBottomField={setIsOpenBottomField}
 								/>
 							</div>
 
@@ -583,8 +599,9 @@ const QuickTrade = ({
 									'd-flex',
 									'flex-column',
 									'align-items-end',
-									'btn-wrapper', {
-										'btn-margin-wrapper': !hasExpiredOnce
+									'btn-wrapper',
+									{
+										'btn-margin-wrapper': !hasExpiredOnce,
 									}
 								)}
 							>

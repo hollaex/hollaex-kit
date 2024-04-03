@@ -223,13 +223,39 @@ Cypress.Commands.add('extractText', (emailBody,firstWord,lastWord) => {
 
 // Add a custom command for finding the first word after "operation."
 Cypress.Commands.add('findFirstWordAfterMyWord', (extractedText,myWord) => {
+
+  if(myWord === 'Password:'){
+    const bodyText = extractedText;
+    const passwordRegex = /Password: ([\w-]+)/;
+    const passwordMatch = bodyText.match(passwordRegex);
+    const tempPassword = passwordMatch && passwordMatch[1];
+    return tempPassword
+  }else{
   const parts = extractedText.split(myWord);
   if (parts.length > 1) {
     const firstWordWithPunctuation = parts[1].trim().split(/\s+|\b/)[0];
+    
     const firstWord = firstWordWithPunctuation.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");
+
+    
     return firstWord;
   } else {
-    return "The word 'operation.' was not found.";
+    return "The word was not found.";
+  }}
+});
+//Add a custom command for finding hyperlink
+Cypress.Commands.add('findFirstHyperlinkAfterMyWord', (extractedText, myWord) => {
+  const parts = extractedText.split(myWord);
+  if (parts.length > 1) {
+    // Look for a URL starting with http:// or https:// after the specified word
+    const possibleLinkPart = parts[1].trim();
+    const urlMatch = possibleLinkPart.match(/https?:\/\/[^ \s]+/);
+    if (urlMatch) {
+      return urlMatch[0]; // Return the first match
+    } else {
+      return "No hyperlink found after the word.";
+    }
+  } else {
+    return "The word was not found.";
   }
 });
-
