@@ -87,34 +87,8 @@ const checkIp = async (remoteip = '') => {
 };
 
 const checkCaptcha = (captcha = '', remoteip = '') => {
-	if (!captcha) {
-		if (NODE_ENV === 'development') {
-			return resolve();
-		} else {
-			return reject(new Error(INVALID_CAPTCHA));
-		}
-	} else if (!getKitSecrets().captcha || !getKitSecrets().captcha.secret_key) {
-		return resolve();
-	}
-
-	const options = {
-		method: 'POST',
-		form: {
-			secret: getKitSecrets().captcha.secret_key,
-			response: captcha,
-			remoteip
-		},
-		uri: CAPTCHA_ENDPOINT
-	};
-
-	return rp(options)
-		.then((response) => JSON.parse(response))
-		.then((response) => {
-			if (!response.success) {
-				throw new Error(INVALID_CAPTCHA);
-			}
-			return;
-		});
+	// Google Recaptcha is deprecated feature from v2.10.3.
+	return;
 };
 
 const validatePassword = (userPassword, inputPassword) => {
@@ -877,8 +851,8 @@ const createSession = async (token, loginId, userId) => {
 
 	const userRole = await getUserRole({ kit_id: userId });
 
-	const base64Payload = token.split(".")[1];
-	const payloadBuffer = Buffer.from(base64Payload, "base64");
+	const base64Payload = token.split('.')[1];
+	const payloadBuffer = Buffer.from(base64Payload, 'base64');
 	const decoded = JSON.parse(payloadBuffer.toString());
 
 	const hashedToken = crypto.createHash('md5').update(token).digest('hex');
@@ -890,15 +864,15 @@ const createSession = async (token, loginId, userId) => {
 		status: true,
 		last_seen: new Date(),
 		expiry_date: new Date(decoded.exp * 1000)
-	})
-}
+	});
+};
 
 const getExpirationDateInSeconds = (expiryDate) => {
 	const end = moment(expiryDate);
 	const now = moment(new Date());
 	const duration = moment.duration(moment(end).diff(now));
 	return Number(duration.asSeconds().toFixed(0));
-}
+};
 
 const verifySession = async (token) => {
 
@@ -933,13 +907,13 @@ const verifySession = async (token) => {
 	}
 
 	return session;
-}
+};
 
 const findSession = async (token) => {
 
 	const hashedToken = crypto.createHash('md5').update(token).digest('hex');
 
-	let session = await client.getAsync(hashedToken)
+	let session = await client.getAsync(hashedToken);
 	
 	if (!session) {
 		loggerAuth.verbose(
@@ -971,7 +945,7 @@ const findSession = async (token) => {
 		);
 		return JSON.parse(session);
 	}
-}
+};
 
 /**
  * Function that checks to see if user's scope is valid for the endpoint.

@@ -23,9 +23,6 @@ definitions:
       otp_code:
         type: string
         maxLength: 256
-      captcha:
-        type: string
-        maxLength: 5000
       referral:
         type: string
         maxLength: 256
