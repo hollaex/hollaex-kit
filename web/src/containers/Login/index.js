@@ -11,7 +11,7 @@ import {
 	storeLoginResult,
 	setLogoutMessage,
 } from 'actions/authAction';
-import LoginForm, { FORM_NAME } from './LoginForm';
+import LoginForm from './LoginForm';
 import { Dialog, OtpForm, IconTitle, Notification } from 'components';
 import { NOTIFICATIONS } from 'actions/appActions';
 import { errorHandler } from 'components/OtpForm/utils';
@@ -135,9 +135,6 @@ class Login extends Component {
 						: err.message;
 
 				let error = {};
-				errorTimeOut = setTimeout(() => {
-					this.props.change(FORM_NAME, 'captcha', '');
-				}, 5000);
 
 				if (_error.toLowerCase().indexOf('otp') > -1) {
 					this.setState({ values, otpDialogIsOpen: true });
@@ -145,8 +142,6 @@ class Login extends Component {
 				} else {
 					if (_error === 'User is not activated') {
 						error._error = STRINGS['VALIDATIONS.FROZEN_ACCOUNT'];
-					} else if (_error.indexOf('captcha') > -1) {
-						error._error = STRINGS['VALIDATIONS.CAPTCHA'];
 					} else {
 						error._error = _error;
 					}

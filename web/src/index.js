@@ -120,7 +120,6 @@ const getConfigs = async () => {
 		features: { home_page = false } = {},
 		injected_values = [],
 		injected_html = {},
-		captcha = {},
 		defaults = {},
 	} = kitData;
 
@@ -245,7 +244,6 @@ const getConfigs = async () => {
 
 	const appConfigs = merge({}, defaultConfig, remoteConfigs, {
 		coin_icons,
-		captcha,
 		valid_languages,
 		defaults,
 	});

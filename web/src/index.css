@@ -9817,18 +9817,22 @@ table th {
       top: 50% !important; }
   .quick_trade-container .active-input {
     color: var(--labels_important-active-labels-text-graphics) !important; }
-  .quick_trade-container .input-group__input, .quick_trade-container .active-input {
+  .quick_trade-container .input-group__input,
+  .quick_trade-container .active-input {
     text-align: right;
     color: var(--labels_secondary-inactive-label-text-graphics);
     font-size: 2.1rem;
     margin-left: 1rem;
     height: 40px; }
-    .quick_trade-container .input-group__input:focus, .quick_trade-container .input-group__input:active, .quick_trade-container .active-input:focus, .quick_trade-container .active-input:active {
+    .quick_trade-container .input-group__input:focus, .quick_trade-container .input-group__input:active,
+    .quick_trade-container .active-input:focus,
+    .quick_trade-container .active-input:active {
       background-color: var(--base_secondary-navigation-bar) !important;
       box-shadow: inset 1px 1px 3px #00000029;
       border-radius: 5px;
       border-bottom: 1px solid #ffffff; }
-    .quick_trade-container .input-group__input:hover, .quick_trade-container .active-input:hover {
+    .quick_trade-container .input-group__input:hover,
+    .quick_trade-container .active-input:hover {
       color: var(--labels_important-active-labels-text-graphics); }
   .quick_trade-container .field-error-content {
     display: block; }

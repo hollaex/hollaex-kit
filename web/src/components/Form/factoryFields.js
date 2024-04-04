@@ -8,7 +8,6 @@ import DateField from './FormFields/DateField';
 import DropdownDateField from './FormFields/DropdownDateField';
 import CheckField from './FormFields/CheckField';
 import EditableInputField from './FormFields/EditableInputField';
-import CaptchaField from './FormFields/Captcha';
 import ToggleField from './FormFields/ToggleField';
 import DumbField from './FormFields/DumbFieldForm';
 import PinInput from './FormFields/PinInput';
@@ -29,8 +28,6 @@ const renderFields = (fields = {}, callback) => {
 				};
 
 				switch (type) {
-					case 'captcha':
-						return <Field component={CaptchaField} {...commonProps} />;
 					case 'hidden':
 						return (
 							<Field
