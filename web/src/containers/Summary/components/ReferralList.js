@@ -10,7 +10,7 @@ import {
 } from 'components';
 // import { Link } from 'react-router';
 import { Button as AntButton, Spin, DatePicker, message, Modal } from 'antd';
-import { fetchReferralHistory } from './actions';
+import { fetchReferralHistory, fetchUnrealizedFeeEarnings } from './actions';
 import BigNumber from 'bignumber.js';
 import moment from 'moment';
 import STRINGS from 'config/localizedStrings';
@@ -81,8 +81,25 @@ const ReferralList = ({
 	// const [showReferrals, setShowReferrals] = useState(false);
 	const [referees, setReferees] = useState([]);
 	const [mappedAffiliations, setMappedAffilications] = useState([]);
+	const [unrealizedEarnings, setUnrealizedEarnings] = useState(0);
 
 	useEffect(() => {
+		fetchUnrealizedFeeEarnings().then((res) => {
+			if (res.data.length > 0) {
+				let earnings = 0;
+
+				res.data.forEach((earning) => {
+					earnings += earning.accumulated_fees;
+				});
+
+				setUnrealizedEarnings(
+					getSourceDecimals(
+						referral_history_config?.currency || 'usdt',
+						earnings
+					)
+				);
+			}
+		});
 		getUserReferrals();
 		fetchReferralHistory({ order_by: 'referee', format: 'all' }).then(
 			(earnings) => {
@@ -647,6 +664,23 @@ const ReferralList = ({
 							)}{' '}
 							{(referral_history_config?.currency || 'usdt').toUpperCase()}{' '}
 						</div>
+
+						{Number(unrealizedEarnings) > 0 && (
+							<>
+								<div
+									style={{ fontSize: 15, marginTop: 5 }}
+									className="field-label"
+								>
+									<EditWrapper stringId="REFERRAL_LINK.UNREALIZED_EARNINGS">
+										{STRINGS['REFERRAL_LINK.UNREALIZED_EARNINGS']}
+									</EditWrapper>
+									:
+								</div>
+								<div style={{ fontSize: 15 }} className="field-label">
+									{unrealizedEarnings}
+								</div>
+							</>
+						)}
 					</div>
 				</div>
 				<div
