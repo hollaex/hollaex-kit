@@ -2670,7 +2670,7 @@ const getUnrealizedFees = async (user_id, currentTime) => {
 		date_enabled: DATE_ENABLED
 	} = getKitConfig()?.referral_history_config || {};
 
-	const { getAllUserTradesByKitId } = require('./order');
+	const { getAllTradesNetwork  } = require('./order');
 	const referralHistoryModel = getModel('Referralhistory');
 
 	let userLastSettleDate = moment(DATE_ENABLED).toISOString();
@@ -2696,8 +2696,7 @@ const getUnrealizedFees = async (user_id, currentTime) => {
 
 	return all([
 		getUserByKitId(DISTRIBUTOR_ID, true, true),
-		getAllUserTradesByKitId(
-			user_id,
+		getAllTradesNetwork(
 			null,
 			null,
 			null,
@@ -2838,6 +2837,7 @@ const getUnrealizedFees = async (user_id, currentTime) => {
 			for (let affiliation of affiliations) {
 				const refereeUser = affiliation.user;
 				const referer = affiliation.referer;
+				if (referer.id !== user_id) continue;
 
 				if (accumulatedFees[refereeUser.network_id]) {
 					// refererKey includes user kit id, user network id, and user email separated by colons
@@ -3048,7 +3048,7 @@ const settleFees = async (user_id, currentTime) => {
 		date_enabled: DATE_ENABLED
 	} = getKitConfig()?.referral_history_config || {};
 
-	const { getAllUserTradesByKitId } = require('./order');
+	const { getAllTradesNetwork } = require('./order');
 	const { transferAssetByNetworkIds } = require('./wallet');
 	const referralHistoryModel = getModel('Referralhistory');
 
@@ -3075,8 +3075,7 @@ const settleFees = async (user_id, currentTime) => {
 
 	return all([
 		getUserByKitId(DISTRIBUTOR_ID, true, true),
-		getAllUserTradesByKitId(
-			user_id,
+		getAllTradesNetwork(
 			null,
 			null,
 			null,
@@ -3217,6 +3216,7 @@ const settleFees = async (user_id, currentTime) => {
 			for (let affiliation of affiliations) {
 				const refereeUser = affiliation.user;
 				const referer = affiliation.referer;
+				if (referer.id !== user_id) continue;
 
 				if (accumulatedFees[refereeUser.network_id]) {
 					// refererKey includes user kit id, user network id, and user email separated by colons
