@@ -11,7 +11,6 @@ import {
 import STRINGS from 'config/localizedStrings';
 import { STATIC_ICONS } from 'config/icons';
 import { DEFAULT_COIN_DATA } from 'config/constants';
-import { getLanguage } from 'utils/string';
 import { getTheme } from 'utils/theme';
 import { toFixed } from 'utils/currency';
 import { getDecimals } from 'utils/utils';
@@ -377,13 +376,6 @@ export const generateFormValues = (
 			ishorizontalfield: true,
 		};
 	}
-
-	fields.captcha = {
-		type: 'captcha',
-		language: getLanguage(),
-		theme: theme,
-		validate: [required],
-	};
 
 	return fields;
 };
