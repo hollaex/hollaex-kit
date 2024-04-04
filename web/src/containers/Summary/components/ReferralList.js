@@ -10,7 +10,11 @@ import {
 } from 'components';
 // import { Link } from 'react-router';
 import { Button as AntButton, Spin, DatePicker, message, Modal } from 'antd';
-import { fetchReferralHistory, fetchUnrealizedFeeEarnings } from './actions';
+import {
+	fetchReferralHistory,
+	fetchUnrealizedFeeEarnings,
+	postSettleFees,
+} from './actions';
 import BigNumber from 'bignumber.js';
 import moment from 'moment';
 import STRINGS from 'config/localizedStrings';
@@ -85,7 +89,7 @@ const ReferralList = ({
 
 	useEffect(() => {
 		fetchUnrealizedFeeEarnings().then((res) => {
-			if (res.data.length > 0) {
+			if (res?.data?.length > 0) {
 				let earnings = 0;
 
 				res.data.forEach((earning) => {
@@ -679,6 +683,38 @@ const ReferralList = ({
 								<div style={{ fontSize: 15 }} className="field-label">
 									{unrealizedEarnings}
 								</div>
+								<AntButton
+									className="plButton"
+									ghost
+									onClick={async () => {
+										try {
+											await postSettleFees();
+											fetchUnrealizedFeeEarnings().then((res) => {
+												if (res?.data?.length > 0) {
+													let earnings = 0;
+
+													res.data.forEach((earning) => {
+														earnings += earning.accumulated_fees;
+													});
+
+													setUnrealizedEarnings(
+														getSourceDecimals(
+															referral_history_config?.currency || 'usdt',
+															earnings
+														)
+													);
+												}
+											});
+											message.success('fees are settled.');
+										} catch (error) {
+											message.error(error.message);
+										}
+									}}
+								>
+									<EditWrapper stringId="REFERRAL_LINK.SETTLE_FEES">
+										{STRINGS['REFERRAL_LINK.SETTLE_FEES']}
+									</EditWrapper>
+								</AntButton>
 							</>
 						)}
 					</div>
