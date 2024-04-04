@@ -3462,7 +3462,7 @@ const settleFees = async (user_id, currentTime) => {
 					}
 				}
 			}
-
+			await client.delAsync(`${user_id}user-unrealized-fees`);
 			return;
 		})
 		.catch((err) => {
