@@ -45,6 +45,12 @@ $close-button--margin: 1.5rem;
 		padding-bottom: $dialog--padding;
 	}
 }
+.cancel-withdraw-pop-up {
+	.ReactModal__Content {
+		width: 25% !important;
+		padding: 0rem 2.5rem 2.5rem 2.5rem !important;
+	}
+}
 
 .ReactModal__Content {
 	padding: $dialog--padding !important;

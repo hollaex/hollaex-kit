@@ -101,11 +101,23 @@ $title--margin: 1rem;
 }
 
 .fees_limits {
-	.icon_title-text {
-		&.title {
-			font-size: 1.5rem !important;
-		}
+	.fees-limits-title {
+		font-size: 1.5rem !important;
+		text-transform: capitalize;
+		padding-top: 0.25rem !important;
 	}
+}
+
+.cancel-widrawal-pop-up {
+	.icon_title-text.title {
+		font-size: 2rem !important;
+		text-transform: capitalize;
+		padding-top: 0.25rem !important;
+	}
+}
+
+.cancel-widrawal-pop-up:last-child {
+	margin-top: 2rem !important;
 }
 
 .layout-mobile {
