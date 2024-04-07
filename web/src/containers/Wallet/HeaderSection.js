@@ -20,7 +20,7 @@ const HeaderSection = ({ icons: ICONS }) => {
 			</div>
 			<div className="d-flex">
 				<div className="sub-header">
-					<Link to="transactions">
+					<Link to="/transactions">
 						<EditWrapper stringId="ACCORDIAN.ACCORDIAN_HISTORY">
 							{STRINGS['ACCORDIAN.ACCORDIAN_HISTORY']}
 						</EditWrapper>

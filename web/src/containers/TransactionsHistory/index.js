@@ -48,9 +48,7 @@ import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { STATIC_ICONS } from 'config/icons';
 import { Image } from 'hollaex-web-lib';
-import {
-	quicktradePairSelector,
-} from 'containers/QuickTrade/components/utils';
+import { quicktradePairSelector } from 'containers/QuickTrade/components/utils';
 
 const GROUP_CLASSES = [...FLEX_CENTER_CLASSES, 'flex-column'];
 const transactionTabs = ['trades', 'orders', 'deposits', 'withdrawals'];
@@ -156,7 +154,8 @@ class TransactionsHistory extends Component {
 		}
 		if (
 			JSON.stringify(nextProps.pairs) !== JSON.stringify(pairs) ||
-			JSON.stringify(nextProps.quicktradePairs) !== JSON.stringify(quicktradePairs) ||
+			JSON.stringify(nextProps.quicktradePairs) !==
+				JSON.stringify(quicktradePairs) ||
 			JSON.stringify(nextProps.coins) !== JSON.stringify(coins)
 		) {
 			this.generateFilters();
@@ -702,6 +701,7 @@ class TransactionsHistory extends Component {
 					onCloseDialog={onCloseDialog}
 					shouldCloseOnOverlayClick={true}
 					showCloseText={false}
+					className="cancel-withdraw-pop-up"
 				>
 					<div>
 						<IconTitle
@@ -711,15 +711,15 @@ class TransactionsHistory extends Component {
 							text={STRINGS.formatString(
 								STRINGS['CANCEL_BASE_WITHDRAWAL'],
 								coins && coins[currency] && coins[currency].fullname
-									? coins[currency].fullname
+									? `${coins[currency].fullname} ${STRINGS['SUMMARY.WITHDRAWAL']}`
 									: ''
 							)}
 							textType="title"
 							underline={true}
-							className="w-100"
+							className="w-100 cancel-widrawal-pop-up"
 						/>
 						<div>
-							<div className="text-center mt-5 mb-5">
+							<div className="text-center mt-3 mb-3">
 								<div>{STRINGS['CANCEL_WITHDRAWAL_POPUP_CONFIRM']}</div>
 								<div className={classnames(...GROUP_CLASSES)}>
 									<CurrencyBallWithPrice
@@ -737,7 +737,7 @@ class TransactionsHistory extends Component {
 								<Button label={STRINGS['BACK_TEXT']} onClick={this.onClose} />
 								<div className="separator" />
 								<Button
-									label={STRINGS['CANCEL_WITHDRAWAL']}
+									label={STRINGS['USER_APPS.REMOVE.CONFIRM']}
 									onClick={this.withdrawalCancel}
 								/>
 							</div>

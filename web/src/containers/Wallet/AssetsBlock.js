@@ -466,7 +466,7 @@ const AssetsBlock = ({
 							{!isUpgrade &&
 							balance_history_config?.active &&
 							historyData.length > 1 ? (
-								<div>
+								<div className="profit-loss-wrapper">
 									<div
 										style={{
 											marginTop: 10,
@@ -493,6 +493,17 @@ const AssetsBlock = ({
 											options={options}
 										/>{' '}
 									</div>
+									<div
+										className="view-more-content"
+										onClick={() => handleBalanceHistory(true)}
+									>
+										<EditWrapper stringId="STAKE_DETAILS.VIEW_MORE">
+											{STRINGS.formatString(
+												STRINGS['PROFIT_LOSS.VIEW_MORE'],
+												'>'
+											)}
+										</EditWrapper>
+									</div>
 								</div>
 							) : (
 								!plLoading &&
@@ -517,6 +528,7 @@ const AssetsBlock = ({
 									placeHolder={`${STRINGS['WALLET_ASSETS_SEARCH_TXT']}...`}
 									handleSearch={handleSearch}
 									showCross
+									isFocus={true}
 								/>
 							</EditWrapper>
 						</div>
