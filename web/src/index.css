@@ -6144,7 +6144,7 @@ table th {
           font-weight: bold; }
         .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .fullname {
           color: var(--labels_secondary-inactive-label-text-graphics);
-          font-size: 0.65rem;
+          font-size: 1rem;
           white-space: nowrap; }
         .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .sub-title {
           color: var(--labels_secondary-inactive-label-text-graphics);
@@ -7049,6 +7049,8 @@ table th {
   .market-bar .selector-trigger.narrow {
     min-width: 14rem;
     max-width: 14rem; }
+  .market-bar .fav-price-label {
+    color: var(--labels_important-active-labels-text-graphics) !important; }
   .market-bar .app_bar-currency-txt {
     font-weight: 600; }
   .market-bar .app-price-diff-down {
@@ -8436,13 +8438,15 @@ table th {
     border: 1px solid var(--labels_secondary-inactive-label-text-graphics);
     background: var(--labels_secondary-inactive-label-text-graphics); }
   .mainContainer .active {
-    border: 1px solid var(--labels_secondary-inactive-label-text-graphics) !important; }
+    border: 2px solid var(--labels_secondary-inactive-label-text-graphics) !important; }
   .mainContainer .error {
     border: 1px solid var(--specials_notifications-alerts-warnings) !important; }
-  .mainContainer .group {
+  .mainContainer .leftGroup, .mainContainer .rightGroup {
     padding: 1rem; }
-    .mainContainer .group input {
+    .mainContainer .leftGroup input, .mainContainer .rightGroup input {
       margin: 0 0.25rem; }
+  .mainContainer .leftGroup .error:first-child {
+    border: 2px solid var(--specials_notifications-alerts-warnings) !important; }
 
 .input_icon {
   margin-right: 0.25rem;
@@ -8838,6 +8842,10 @@ table th {
     background-repeat: no-repeat; }
   .dialog-content.bottom {
     padding-bottom: 2.5rem; }
+
+.cancel-withdraw-pop-up .ReactModal__Content {
+  width: 25% !important;
+  padding: 0rem 2.5rem 2.5rem 2.5rem !important; }
 
 .ReactModal__Content {
   padding: 2.5rem !important;
@@ -9341,8 +9349,18 @@ table th {
 .direction_ltr .icon_title-wrapper {
   font-family: "Raleway"; }
 
-.fees_limits .icon_title-text.title {
-  font-size: 1.5rem !important; }
+.fees_limits .fees-limits-title {
+  font-size: 1.5rem !important;
+  text-transform: capitalize;
+  padding-top: 0.25rem !important; }
+
+.cancel-widrawal-pop-up .icon_title-text.title {
+  font-size: 2rem !important;
+  text-transform: capitalize;
+  padding-top: 0.25rem !important; }
+
+.cancel-widrawal-pop-up:last-child {
+  margin-top: 2rem !important; }
 
 .layout-mobile .icon_title-wrapper .auth_logo-wrapper svg {
   height: 8rem !important;

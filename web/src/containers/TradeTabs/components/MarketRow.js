@@ -105,7 +105,10 @@ class MarketRow extends Component {
 								{ticker.volume > 0 && (
 									<div>
 										<span className="title-font ml-1 important-text">
-											{volume_native_text}
+											{volume_native_text.split(' ')[0]}
+										</span>
+										<span className="ml-1">
+											{volume_native_text.split(' ')[1]}
 										</span>
 									</div>
 								)}

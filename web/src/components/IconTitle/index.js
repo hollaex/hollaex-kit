@@ -33,7 +33,13 @@ const BasicIconTitle = ({
 				render={(string) => (
 					<div
 						className={classnames(
-							'icon_title-text pt-2',
+							`${
+								className === 'fees-limits-title'
+									? className
+									: className === 'cancel-withdraw-pop-up'
+									? 'cancel-withdraw-pop-up'
+									: 'icon_title-text'
+							} pt-2`,
 							'text-center',
 							textType
 						)}

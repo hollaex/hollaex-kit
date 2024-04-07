@@ -80,6 +80,17 @@ const QuickTradesList = ({ pairs, coins, userId, getThisExchangeOrder }) => {
 	};
 
 	const handleSearch = _debounce(searchUser, 1000);
+
+	const onHandleDisable = () => {
+		if (
+			(orderPayload && orderPayload.maker_fee) ||
+			(orderPayload && orderPayload.taker_fee)
+		) {
+			return false;
+		}
+		return true;
+	};
+
 	return (
 		<div className="app_container-content">
 			{displayCreateOrder && (
@@ -392,6 +403,7 @@ const QuickTradesList = ({ pairs, coins, userId, getThisExchangeOrder }) => {
 								height: 35,
 							}}
 							type="default"
+							disabled={onHandleDisable()}
 						>
 							Create Trade
 						</Button>

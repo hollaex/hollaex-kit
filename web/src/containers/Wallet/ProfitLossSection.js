@@ -65,7 +65,9 @@ const ProfitLossSection = ({
 			labels: {
 				formatter: (item) => {
 					const color =
-						graphData?.[current || 0]?.[0] === item.value ? '#5D63FF' : 'white';
+						graphData?.[current || 0]?.[0] === item.value
+							? '#5D63FF'
+							: 'date-text';
 					const fontWeight =
 						graphData?.[current || 0]?.[0] === item.value ? 'bold' : 'normal';
 					return `<span style="color: ${color}; font-weight: ${fontWeight}">${item.value}</span>`;
