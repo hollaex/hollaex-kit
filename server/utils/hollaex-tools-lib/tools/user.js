@@ -621,7 +621,6 @@ const getAllUsersAdmin = (opts = {
 	email: null,
 	username: null,
 	full_name: null,
-	pending_verification: null,
 	dob_start_date: null,
 	dob_end_date: null,
 	gender: null,
@@ -649,7 +648,7 @@ const getAllUsersAdmin = (opts = {
 	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
 	const dob_timeframe = timeframeQuery(dob_start_date, dob_end_date);
 
-	let orderBy = 'updated_at';
+	let orderBy = 'id';
 	let order = 'desc';
 	if (opts.order_by) {
 		orderBy = opts.order_by;
