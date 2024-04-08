@@ -428,6 +428,87 @@ const createP2pChatMessage = (req, res) => {
 		});
 };
 
+const createP2PFeedback = (req, res) => {
+	loggerStake.verbose(req.uuid, 'controllers/p2p/createP2PFeedback/auth', req.auth);
+
+	const {  
+        transaction_id,
+		comment,
+		rating
+	} = req.swagger.params.data.value;
+
+	loggerStake.verbose(
+		req.uuid,
+		'controllers/p2p/createP2PFeedback data',
+		transaction_id,
+		comment,
+		rating
+	);
+
+	toolsLib.p2p.createMerchantFeedback({
+		user_id:  req.auth.sub.id,
+		transaction_id,
+		comment,
+		rating
+    }
+		)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerStake.error(
+				req.uuid,
+				'controllers/p2p/createP2PFeedback err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const fetchP2PFeedbacks = (req, res) => {
+	loggerStake.verbose(req.uuid, 'controllers/p2p/fetchP2PFeedbacks/auth', req.auth);
+
+	const { transaction_id, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
+
+	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1) {
+		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
+	}
+	
+	if (order_by.value && typeof order_by.value !== 'string') {
+		loggerStake.error(
+			req.uuid,
+			'controllers/p2p/fetchP2PFeedbacks invalid order_by',
+			order_by.value
+		);
+		return res.status(400).json({ message: 'Invalid order by' });
+	}
+
+	toolsLib.p2p.fetchP2PFeedbacks(req.auth.sub.id, {
+		transaction_id: transaction_id.value,
+		limit: limit.value,
+		page: page.value,
+		order_by: order_by.value,
+		order: order.value,
+		start_date: start_date.value,
+		end_date: end_date.value,
+		format: format.value,
+	}
+	)
+		.then((data) => {
+			if (format.value === 'csv') {
+				toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
+				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-logins.csv`);
+				res.set('Content-Type', 'text/csv');
+				return res.status(202).send(data);
+			} else {
+				return res.json(data);
+			}
+		})
+		.catch((err) => {
+			loggerStake.error(req.uuid, 'controllers/p2p/fetchP2PFeedbacks', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
 module.exports = {
 	createP2PDeal,
     fetchP2PDeals,
@@ -437,5 +518,7 @@ module.exports = {
     updateP2PTransaction,
     fetchP2PDisputes,
     updateP2PDeal,
-    updateP2PDispute
+    updateP2PDispute,
+	createP2PFeedback,
+	fetchP2PFeedbacks
 };

@@ -6,12 +6,14 @@ import { ReactSVG } from 'react-svg';
 import { IconTitle, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { Button, Input, message, Modal } from 'antd';
+import { Button, Input, message, Modal, Rate } from 'antd';
 import moment from 'moment';
 import {
 	createChatMessage,
 	fetchTransactions,
 	updateTransaction,
+	createFeedback,
+	fetchFeedback,
 } from './actions/p2pActions';
 import { withRouter } from 'react-router';
 
@@ -66,8 +68,12 @@ const P2POrder = ({
 	const [selectedOrder, setSelectedOrder] = useState(selectedTransaction);
 	const [chatMessage, setChatMessage] = useState();
 	const [appealReason, setAppealReason] = useState();
+	const [feedback, setFeedback] = useState();
+	const [rating, setRating] = useState();
 	const [appealSide, setAppealSide] = useState();
 	const [displayAppealModal, setDisplayAppealModel] = useState(false);
+	const [displayFeedbackModal, setDisplayFeedbackModel] = useState(false);
+	const [hasFeedback, setHasFeedback] = useState(false);
 	const [ws, setWs] = useState();
 	const [ready, setReady] = useState(false);
 	const ref = useRef(null);
@@ -164,6 +170,11 @@ const P2POrder = ({
 
 	useEffect(() => {
 		getTransaction();
+		fetchFeedback({ transaction_id: selectedOrder.id }).then((res) => {
+			if (res?.data?.length > 0) {
+				setHasFeedback(true);
+			}
+		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -329,6 +340,118 @@ const P2POrder = ({
 					</Button>
 				</div>
 			</Modal>
+
+			{displayFeedbackModal && (
+				<Modal
+					maskClosable={false}
+					closeIcon={<CloseOutlined className="stake_theme" />}
+					className="stake_table_theme stake_theme"
+					bodyStyle={{}}
+					visible={displayFeedbackModal}
+					width={450}
+					footer={null}
+					onCancel={() => {
+						setDisplayFeedbackModel(false);
+					}}
+				>
+					<div
+						style={{
+							display: 'flex',
+							flexDirection: 'column',
+							gap: 15,
+							marginTop: 10,
+						}}
+					>
+						<div
+							style={{
+								flex: 1,
+								display: 'flex',
+								flexDirection: 'column',
+								justifyContent: 'center',
+								alignItems: 'center',
+							}}
+						>
+							<h1 className="stake_theme">
+								Submit feedback for this transaction
+							</h1>
+						</div>
+						<div style={{ flex: 1 }}>
+							<div>Input your feedback</div>
+							<Input
+								width={300}
+								value={feedback}
+								onChange={(e) => {
+									setFeedback(e.target.value);
+								}}
+							/>
+						</div>
+						<div style={{ flex: 1 }}>
+							<div>Select Rating</div>
+							<Rate onChange={setRating} value={rating} />
+						</div>
+					</div>
+
+					<div
+						style={{
+							display: 'flex',
+							flexDirection: 'row',
+							gap: 15,
+							justifyContent: 'space-between',
+							marginTop: 30,
+						}}
+					>
+						<Button
+							onClick={() => {
+								setDisplayFeedbackModel(false);
+								setFeedback();
+								setRating();
+							}}
+							style={{
+								backgroundColor: '#5D63FF',
+								color: 'white',
+								flex: 1,
+								height: 35,
+							}}
+							type="default"
+						>
+							CANCEL
+						</Button>
+						<Button
+							onClick={async () => {
+								try {
+									if (!rating) {
+										message.error('Please select rating');
+									}
+									if (!feedback) {
+										message.error('Please input feedback');
+									}
+									await createFeedback({
+										transaction_id: selectedOrder.id,
+										comment: feedback,
+										rating: rating,
+									});
+									message.success('Feedback submitted');
+									setDisplayFeedbackModel(false);
+									setFeedback();
+									setRating();
+									setHasFeedback(true);
+								} catch (error) {
+									message.error(error.data.message);
+								}
+							}}
+							style={{
+								backgroundColor: '#5D63FF',
+								color: 'white',
+								flex: 1,
+								height: 35,
+							}}
+							type="default"
+						>
+							PROOCED
+						</Button>
+					</div>
+				</Modal>
+			)}
 			<div
 				onClick={() => {
 					setDisplayOrder(false);
@@ -600,6 +723,17 @@ const P2POrder = ({
 												Vendor confirmed the transaction and funds transferred
 												to your balance.
 											</div>
+											{!hasFeedback && (
+												<Button
+													style={{ marginTop: 5 }}
+													onClick={() => {
+														setDisplayFeedbackModel(true);
+													}}
+													ghost
+												>
+													Submit Feedback
+												</Button>
+											)}
 										</div>
 									)}
 									{selectedOrder.merchant_status === 'appeal' && (

@@ -1,11 +1,14 @@
 /* eslint-disable */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { ReactSVG } from 'react-svg';
+// import { ReactSVG } from 'react-svg';
 
 import { IconTitle, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
+import { Button, Checkbox, message, Rate } from 'antd';
+import { fetchFeedback } from './actions/p2pActions';
+import './_P2P.scss';
 const P2PProfile = ({
 	data,
 	onClose,
@@ -15,17 +18,80 @@ const P2PProfile = ({
 	icons: ICONS,
 	transaction_limits,
 	tiers = {},
+	user,
+	refresh,
+	setSelectedDealEdit,
+	setTab,
 }) => {
+	const [myDeals, setMyDeals] = useState([]);
+	const [checks, setCheks] = useState([]);
+	useEffect(() => {
+		fetchFeedback()
+			.then((res) => {
+				setMyDeals(res.data);
+			})
+			.catch((err) => err);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [refresh]);
+
 	return (
 		<div
-			className="fee-limits-wrapper"
+			className="P2pOrder"
 			style={{
-				height: 600,
-				backgroundColor: '#303236',
+				minHeight: 600,
 				width: '100%',
 				padding: 20,
 			}}
-		></div>
+		>
+			<div
+				className="wallet-assets_block"
+				style={{ display: 'flex', marginTop: 20 }}
+			>
+				<table
+					style={{ border: 'none', borderCollapse: 'collapse', width: '100%' }}
+				>
+					<thead>
+						<tr
+							className="table-bottom-border"
+							style={{ borderBottom: 'grey 1px solid', padding: 10 }}
+						>
+							<th>Transaction ID</th>
+							<th>User</th>
+							<th>Comment</th>
+							<th>Rating</th>
+						</tr>
+					</thead>
+					<tbody className="font-weight-bold">
+						{myDeals.map((deal) => {
+							return (
+								<tr
+									className="table-row"
+									style={{
+										borderBottom: 'grey 1px solid',
+										padding: 10,
+										position: 'relative',
+									}}
+									//  key={index}
+								>
+									<td style={{ width: '25%' }} className="td-fit">
+										{deal.transaction.transaction_id}
+									</td>
+									<td style={{ width: '25%' }} className="td-fit">
+										{deal.user.full_name || '-'}
+									</td>
+									<td style={{ width: '25%' }} className="td-fit">
+										{deal.comment}
+									</td>
+									<td style={{ width: '25%' }} className="td-fit">
+										<Rate value={deal.rating} />
+									</td>
+								</tr>
+							);
+						})}
+					</tbody>
+				</table>
+			</div>
+		</div>
 	);
 };
 
@@ -34,6 +100,7 @@ const mapStateToProps = (state) => ({
 	coins: state.app.coins,
 	constants: state.app.constants,
 	transaction_limits: state.app.transaction_limits,
+	user: state.user,
 });
 
 export default connect(mapStateToProps)(withConfig(P2PProfile));

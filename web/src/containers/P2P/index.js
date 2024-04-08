@@ -106,9 +106,9 @@ const P2P = ({
 
 						{user.verification_level >= p2p_config?.starting_merchant_tier && (
 							<>
-								{/* <TabPane tab="PROFILE" key="2">
-							<P2PProfile />
-						</TabPane> */}
+								<TabPane tab="PROFILE" key="2">
+									<P2PProfile />
+								</TabPane>
 
 								<TabPane tab="POST DEAL" key="3">
 									<P2PPostDeal

@@ -449,7 +449,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 									})}
 								</Select>
 								<div style={{ display: 'flex', marginTop: 10, gap: 5 }}>
-									<div>ICON</div>
+									{/* <div>ICON</div> */}
 									<div>
 										<div style={{ fontWeight: 'bold' }}>Requirements:</div>
 										<div>• KYC Verification </div>
@@ -938,7 +938,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 												}
 											}}
 										>
-											<span>ICON</span>{' '}
+											{/* <span>ICON</span>{' '} */}
 											<span>
 												{coin.fullname}({coin.symbol})
 											</span>

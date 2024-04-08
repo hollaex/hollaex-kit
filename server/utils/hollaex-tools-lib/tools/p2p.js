@@ -779,11 +779,27 @@ const updateMerchantProfile = async (data) => {
 
 const createMerchantFeedback = async (data) => {
 	const transaction = await getModel('p2pTransaction').findOne({ where: { id: data.transaction_id } });
+	
 	if (!transaction) {
 		throw new Error ('no transaction found');
 	}
+
+	if (transaction.user_id !== data.user_id) {
+		throw new Error ('unauthorized');
+	}	
+
+	const foundFeedback = await getModel('P2pMerchantsFeedback').findOne({ where: { transaction_id: data.transaction_id } });
+
+	if (foundFeedback) {
+		throw new Error ('you already made a feedback');
+	}
+
+	if (data.rating > 5) {
+		throw new Error ('undefined rating');
+	}
 	
-	return getModel('p2pMerchantFeedback').create(data, {
+	data.merchant_id = transaction.merchant_id;
+	return getModel('P2pMerchantsFeedback').create(data, {
 		fields: [
 			'merchant_id',
 			'user_id',
@@ -792,6 +808,60 @@ const createMerchantFeedback = async (data) => {
 			'comment',
 		]
 	});
+};
+
+const fetchP2PFeedbacks = async (user_id, opts = {
+	transaction_id: null,
+    limit: null,
+    page: null,
+    order_by: null,
+    order: null,
+    start_date: null,
+    end_date: null,
+    format: null
+}) => {
+    const pagination = paginationQuery(opts.limit, opts.page);
+	const ordering = orderingQuery(opts.order_by, opts.order);
+	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
+
+	const query = {
+		where: {
+			created_at: timeframe,
+			user_id: user_id,
+			
+		},
+		order: [ordering],
+		...(!opts.format && pagination),
+		...(opts.transaction_id && { transaction_id: opts.transaction_id }),
+		include: [
+			{
+				model: getModel('user'),
+				as: 'user',
+				attributes: ['id', 'full_name']
+			},
+			{
+				model: getModel('P2pTransaction'),
+				as: 'transaction',
+			}
+		]
+	};
+
+	if (opts.format) {
+		return dbQuery.fetchAllRecords('P2pMerchantsFeedback', query)
+			.then((data) => {
+				if (opts.format && opts.format === 'csv') {
+					if (data.data.length === 0) {
+						throw new Error(NO_DATA_FOR_CSV);
+					}
+					const csv = parse(data.data, Object.keys(data.data[0]));
+					return csv;
+				} else {
+					return data;
+				}
+			});
+	} else {
+        return dbQuery.findAndCountAllWithRows('P2pMerchantsFeedback', query);
+	}
 };
 
 module.exports = {
@@ -806,5 +876,6 @@ module.exports = {
 	fetchP2PDeals,
 	fetchP2PTransactions,
 	fetchP2PDisputes,
-	updateP2PDeal
+	updateP2PDeal,
+	fetchP2PFeedbacks
 };

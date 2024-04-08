@@ -57,3 +57,18 @@ export const createChatMessage = (values) => {
 
 	return requestAuthenticated('/p2p/order/chat', options);
 };
+
+export const createFeedback = (values) => {
+	const options = {
+		method: 'POST',
+		body: JSON.stringify(values),
+	};
+
+	return requestAuthenticated('/p2p/feedback', options);
+};
+
+export const fetchFeedback = (values) => {
+	const queryValues =
+		values && Object.keys(values).length ? querystring.stringify(values) : '';
+	return requestAuthenticated(`/p2p/feedback?${queryValues}`);
+};
