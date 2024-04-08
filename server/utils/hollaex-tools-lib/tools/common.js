@@ -333,7 +333,7 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 			throw new Error('fiat_currencies cannot be null');
 		} 
 		if (newKitConfig.p2p_config.side == null) {
-			throw new Errors('side cannot be null');
+			throw new Error('side cannot be null');
 		} 
 		if (newKitConfig.p2p_config.source_account == null) {
 			throw new Error('source_account cannot be null');

@@ -62,7 +62,8 @@ Status.findOne()
 				spread: 0
 			},
 			coin_customizations: existingKitConfigurations.coin_customizations || {},
-			balance_history_config: existingKitConfigurations.balance_history_config || {}
+			balance_history_config: existingKitConfigurations.balance_history_config || {},
+			p2p_config: existingKitConfigurations.p2p_config || {},
 		};
 
 		const secrets = {

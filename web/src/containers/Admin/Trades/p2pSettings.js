@@ -61,7 +61,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 	const [userFee, setUserFee] = useState();
 	const [sourceAccount, setSourceAccount] = useState();
 	const [editMode, setEditMode] = useState(false);
-	const [enable, setEnable] = useState();
+	const [enable, setEnable] = useState(false);
 	const [emailOptions, setEmailOptions] = useState([]);
 	const [selectedEmailData, setSelectedEmailData] = useState({});
 	const searchRef = useRef(null);
@@ -79,16 +79,16 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 	};
 
 	useEffect(() => {
-		setEnable(p2p_config.enable);
-		setSide(p2p_config.side);
-		setDigitalCurrencies(p2p_config.digital_currencies);
-		setFiatCurrencies(p2p_config.fiat_currencies);
-		setMerchantTier(p2p_config.starting_merchant_tier);
-		setUserTier(p2p_config.starting_user_tier);
-		setSelectedPaymentMethods(p2p_config.bank_payment_methods);
-		setMerchantFee(p2p_config.merchant_fee);
-		setUserFee(p2p_config.user_fee);
-		setSourceAccount(p2p_config.source_account);
+		setEnable(p2p_config?.enable);
+		setSide(p2p_config?.side);
+		setDigitalCurrencies(p2p_config?.digital_currencies || []);
+		setFiatCurrencies(p2p_config?.fiat_currencies || []);
+		setMerchantTier(p2p_config?.starting_merchant_tier);
+		setUserTier(p2p_config?.starting_user_tier);
+		setSelectedPaymentMethods(p2p_config?.bank_payment_methods || []);
+		setMerchantFee(p2p_config?.merchant_fee);
+		setUserFee(p2p_config?.user_fee);
+		setSourceAccount(p2p_config?.source_account);
 	}, []);
 
 	const handleEmailChange = (value) => {
@@ -194,14 +194,14 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 									setSelectedPaymentMethods(result.bank_payment_methods);
 									setMerchantFee(result.merchant_fee);
 									setUserFee(result.user_fee);
-									setSourceAccount(p2p_config.source_account);
+									setSourceAccount(result.source_account);
 								});
 							}}
 						/>
 					</div>
 				</div>
 			</div>
-			{!p2p_config.enable && (
+			{!p2p_config?.enable && (
 				<div
 					style={{
 						padding: 20,
@@ -237,7 +237,8 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 						Crypto:
 					</div>
 					<div style={{ marginBottom: 10 }}>
-						Cryptocurrencies allowed for trading: {digitalCurrencies.join(', ')}
+						Cryptocurrencies allowed for trading:{' '}
+						{digitalCurrencies?.join(', ')}
 					</div>
 					<div style={{ borderBottom: '1px solid grey', width: 600 }}></div>
 				</div>
@@ -247,7 +248,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 						Fiat:
 					</div>
 					<div style={{ marginBottom: 10 }}>
-						Fiat currencies allowed for trading: {fiatCurrencies.join(', ')}
+						Fiat currencies allowed for trading: {fiatCurrencies?.join(', ')}
 					</div>
 					<div style={{ borderBottom: '1px solid grey', width: 600 }}></div>
 				</div>
@@ -258,7 +259,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 					</div>
 					<div style={{ marginBottom: 10 }}>
 						Outside payment methods allowed:{' '}
-						{selectedPaymentMethods.map((x) => x.system_name).join(', ')}
+						{selectedPaymentMethods?.map((x) => x.system_name)?.join(', ')}
 					</div>
 					<div style={{ borderBottom: '1px solid grey', width: 600 }}></div>
 				</div>

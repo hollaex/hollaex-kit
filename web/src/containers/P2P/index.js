@@ -85,7 +85,7 @@ const P2P = ({
 							setTab(e);
 						}}
 					>
-						{user.verification_level >= p2p_config.starting_user_tier && (
+						{user.verification_level >= p2p_config?.starting_user_tier && (
 							<>
 								<TabPane tab="P2P" key="0">
 									<P2PDash
@@ -104,7 +104,7 @@ const P2P = ({
 							</>
 						)}
 
-						{user.verification_level >= p2p_config.starting_merchant_tier && (
+						{user.verification_level >= p2p_config?.starting_merchant_tier && (
 							<>
 								{/* <TabPane tab="PROFILE" key="2">
 							<P2PProfile />
