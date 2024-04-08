@@ -222,57 +222,58 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 					</div>
 				</div>
 			)}
+			{!editMode && (
+				<div style={{ opacity: enable ? 1 : 0.5 }}>
+					<div style={{ marginBottom: 10, marginTop: 10 }}>
+						<div style={{ fontSize: 20, marginBottom: 10, marginTop: 10 }}>
+							Sides
+						</div>
+						<div style={{ marginBottom: 10 }}>Trade sides allowed: {side} </div>
+						<div style={{ borderBottom: '1px solid grey', width: 600 }}></div>
+					</div>
 
-			<div style={{ opacity: enable ? 1 : 0.5 }}>
-				<div style={{ marginBottom: 10, marginTop: 10 }}>
-					<div style={{ fontSize: 20, marginBottom: 10, marginTop: 10 }}>
-						Sides
+					<div style={{ marginBottom: 10, marginTop: 10 }}>
+						<div style={{ fontSize: 20, marginBottom: 10, marginTop: 10 }}>
+							Crypto:
+						</div>
+						<div style={{ marginBottom: 10 }}>
+							Cryptocurrencies allowed for trading:{' '}
+							{digitalCurrencies?.join(', ')}
+						</div>
+						<div style={{ borderBottom: '1px solid grey', width: 600 }}></div>
 					</div>
-					<div style={{ marginBottom: 10 }}>Trade sides allowed: {side} </div>
-					<div style={{ borderBottom: '1px solid grey', width: 600 }}></div>
-				</div>
 
-				<div style={{ marginBottom: 10, marginTop: 10 }}>
-					<div style={{ fontSize: 20, marginBottom: 10, marginTop: 10 }}>
-						Crypto:
+					<div style={{ marginBottom: 10, marginTop: 10 }}>
+						<div style={{ fontSize: 20, marginBottom: 10, marginTop: 10 }}>
+							Fiat:
+						</div>
+						<div style={{ marginBottom: 10 }}>
+							Fiat currencies allowed for trading: {fiatCurrencies?.join(', ')}
+						</div>
+						<div style={{ borderBottom: '1px solid grey', width: 600 }}></div>
 					</div>
-					<div style={{ marginBottom: 10 }}>
-						Cryptocurrencies allowed for trading:{' '}
-						{digitalCurrencies?.join(', ')}
-					</div>
-					<div style={{ borderBottom: '1px solid grey', width: 600 }}></div>
-				</div>
 
-				<div style={{ marginBottom: 10, marginTop: 10 }}>
-					<div style={{ fontSize: 20, marginBottom: 10, marginTop: 10 }}>
-						Fiat:
+					<div style={{ marginBottom: 10, marginTop: 10 }}>
+						<div style={{ fontSize: 20, marginBottom: 10, marginTop: 10 }}>
+							Payment methods:
+						</div>
+						<div style={{ marginBottom: 10 }}>
+							Outside payment methods allowed:{' '}
+							{selectedPaymentMethods?.map((x) => x.system_name)?.join(', ')}
+						</div>
+						<div style={{ borderBottom: '1px solid grey', width: 600 }}></div>
 					</div>
-					<div style={{ marginBottom: 10 }}>
-						Fiat currencies allowed for trading: {fiatCurrencies?.join(', ')}
-					</div>
-					<div style={{ borderBottom: '1px solid grey', width: 600 }}></div>
-				</div>
 
-				<div style={{ marginBottom: 10, marginTop: 10 }}>
-					<div style={{ fontSize: 20, marginBottom: 10, marginTop: 10 }}>
-						Payment methods:
+					<div style={{ marginBottom: 10, marginTop: 10 }}>
+						<div style={{ fontSize: 20, marginBottom: 10, marginTop: 10 }}>
+							Manage:
+						</div>
+						<div style={{ marginBottom: 10 }}>Merchant fee: {merchantFee}%</div>
+						<div style={{ marginBottom: 10 }}>Buyer fee: {userFee}%</div>
+						<div style={{ borderBottom: '1px solid grey', width: 600 }}></div>
 					</div>
-					<div style={{ marginBottom: 10 }}>
-						Outside payment methods allowed:{' '}
-						{selectedPaymentMethods?.map((x) => x.system_name)?.join(', ')}
-					</div>
-					<div style={{ borderBottom: '1px solid grey', width: 600 }}></div>
 				</div>
-
-				<div style={{ marginBottom: 10, marginTop: 10 }}>
-					<div style={{ fontSize: 20, marginBottom: 10, marginTop: 10 }}>
-						Manage:
-					</div>
-					<div style={{ marginBottom: 10 }}>Merchant fee: {merchantFee}%</div>
-					<div style={{ marginBottom: 10 }}>Buyer fee: {userFee}%</div>
-					<div style={{ borderBottom: '1px solid grey', width: 600 }}></div>
-				</div>
-			</div>
+			)}
 
 			{displayP2pModel && (
 				<Modal
@@ -286,6 +287,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 					width={600}
 					footer={null}
 					onCancel={() => {
+						setEditMode(false);
 						setDisplayP2pModel(false);
 					}}
 				>
@@ -787,6 +789,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 							onClick={() => {
 								if (step <= 0) {
 									setDisplayP2pModel(false);
+									setEditMode(false);
 								} else {
 									setStep(step - 1);
 								}
@@ -838,6 +841,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 											setUserFee(result.user_fee);
 											setSourceAccount(p2p_config.source_account);
 										});
+										setEditMode(false);
 										setStep(0);
 										setDisplayP2pModel(false);
 										message.success('Changes saved.');
