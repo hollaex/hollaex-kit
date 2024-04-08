@@ -79,7 +79,6 @@ const {
 	TOKEN_TIME_NORMAL,
 	VERIFY_STATUS,
 	EVENTS_CHANNEL,
-
 } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
