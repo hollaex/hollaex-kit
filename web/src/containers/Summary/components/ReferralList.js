@@ -110,6 +110,7 @@ const ReferralList = ({
 				setReferees(earnings.data);
 			}
 		);
+		// eslint-disable-next-line
 	}, []);
 
 	useEffect(() => {
@@ -703,6 +704,13 @@ const ReferralList = ({
 															earnings
 														)
 													);
+
+													fetchReferralHistory({
+														order_by: 'referee',
+														format: 'all',
+													}).then((earning) => {
+														setReferees(earning.data);
+													});
 												}
 											});
 											message.success('fees are settled.');

@@ -1261,7 +1261,7 @@ const getUnrealizedUserFees = (req, res) => {
 
 	toolsLib.user.getUnrealizedFees(req.auth.sub.id, currentTime)
 		.then((data) => {
-			return res.json(data);
+			return res.json({ data });
 		})
 		.catch((err) => {
 			loggerUser.error(
@@ -1277,7 +1277,7 @@ const getUnrealizedUserFees = (req, res) => {
 const settleUserFees = (req, res) => {
 	loggerUser.info(
 		req.uuid,
-		'GET /user/settleUserFees',
+		'POST /user/settleUserFees',
 	);
 
 	const currentTime = moment().seconds(0).milliseconds(0).toISOString();
@@ -1289,7 +1289,7 @@ const settleUserFees = (req, res) => {
 		.catch((err) => {
 			loggerUser.error(
 				req.uuid,
-				'GET /user/settleUserFees err',
+				'POST /user/settleUserFees err',
 				err.message
 			);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
