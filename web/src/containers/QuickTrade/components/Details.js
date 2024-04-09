@@ -112,6 +112,10 @@ const Details = ({
 	const handleClick = () => {
 		if (!isNetwork && !brokerUsed) {
 			router.push(`/trade/${pair}`);
+		} else if (isNetwork && brokerUsed) {
+			router.push(`/quick-trade/${pair}`);
+		} else {
+			router.push(`/assets/coin/${pair.split('-')[0]}`);
 		}
 	};
 
@@ -168,8 +172,8 @@ const Details = ({
 					<Coin iconId={icon_id} type="CS12" />
 					<div className="pl-18">
 						<div
-							className={classNames('pairs', {
-								'pointer underline': !isNetwork && !brokerUsed,
+							className={classNames('pairs pointer', {
+								underline: !isNetwork && !brokerUsed,
 							})}
 							onClick={handleClick}
 						>

@@ -753,6 +753,10 @@ $app-menu-width: calc(100vw - 40rem);
 		}
 	}
 
+	.fav-price-label {
+		color: $colors-main-black !important;
+	}
+
 	.app_bar-currency-txt {
 		font-weight: 600;
 	}
