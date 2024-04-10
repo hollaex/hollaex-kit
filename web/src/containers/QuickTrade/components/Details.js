@@ -194,7 +194,7 @@ const Details = ({
 								</Radio.Button>
 							</Radio.Group>
 						</div>
-						<div className="d-flex graph-row">
+						<div className="d-flex graph-row justify-content-between">
 							<div>
 								<div className="sub-title caps">
 									{STRINGS['MARKETS_TABLE.LAST_PRICE']}
@@ -230,7 +230,7 @@ const Details = ({
 							<div className="fade-area" />
 							<MiniSparkLine chartData={chartData} isArea />
 						</div>
-						<div className="d-flex pb-24">
+						<div className="d-flex justify-content-between pb-24">
 							<div>
 								<div className="sub-title">
 									{
