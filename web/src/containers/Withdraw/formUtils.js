@@ -59,7 +59,10 @@ export const generateInitialValues = (
 		const roundedMarkup = new BigNumber(feeMarkup)
 			.decimalPlaces(decimalPoint)
 			.toNumber();
-		initialValues.fee += roundedMarkup;
+
+		initialValues.fee = new BigNumber(initialValues.fee || 0)
+			.plus(roundedMarkup || 0)
+			.toNumber();
 	}
 
 	initialValues.destination_tag = '';
