@@ -3713,7 +3713,7 @@ table th {
   margin: 2dvh auto; }
 
 .risky-trade-disclaimer .extreme-volatility-msg {
-  color: #FFAA00; }
+  color: #ffaa00; }
 
 .risky-trade-disclaimer .disclaimer-checkbox span {
   color: var(--labels_important-active-labels-text-graphics);
@@ -8390,9 +8390,11 @@ table th {
     border: 2px solid var(--labels_secondary-inactive-label-text-graphics) !important; }
   .mainContainer .error {
     border: 1px solid var(--specials_notifications-alerts-warnings) !important; }
-  .mainContainer .leftGroup, .mainContainer .rightGroup {
+  .mainContainer .leftGroup,
+  .mainContainer .rightGroup {
     padding: 1rem; }
-    .mainContainer .leftGroup input, .mainContainer .rightGroup input {
+    .mainContainer .leftGroup input,
+    .mainContainer .rightGroup input {
       margin: 0 0.25rem; }
   .mainContainer .leftGroup .error:first-child {
     border: 2px solid var(--specials_notifications-alerts-warnings) !important; }
