@@ -5,6 +5,7 @@
 	"ADD_TRADING_PAIR": "Select a market",
 	"TRADE_TOOLS": "Tools",
 	"CANCEL_BASE_WITHDRAWAL": "Cancel {0}",
+	"CANCEL_WITHDRAWAL_ADDRESS": "Withdrawal Address",
 	"CANCEL_WITHDRAWAL": "Cancel",
 	"CANCEL_WITHDRAWAL_POPUP_CONFIRM": "Do you want to cancel your pending withdrawal of:",
 	"TIMESTAMP_FORMAT": "YYYY/MM/DD HH:mm:ss",
