@@ -1,3 +1,5 @@
+import { isMobile } from 'react-device-detect';
+
 export const MENU_ITEMS = {
 	top: [
 		{
@@ -16,7 +18,7 @@ export const MENU_ITEMS = {
 				'/verification',
 				'/settings',
 			],
-			icon_id: 'ACCOUNT_LINE',
+			icon_id: `${isMobile ? 'FOOTER_ACCOUNT_LINE' : 'ACCOUNT_LINE'}`,
 			string_id: 'ACCOUNT_TEXT',
 			hide_from_appbar: true,
 			hide_from_sidebar: true,
@@ -31,31 +33,27 @@ export const MENU_ITEMS = {
 			hide_from_sidebar: true,
 			hide_from_appbar: false,
 			hide_from_menulist: true,
-			hide_from_bottom_nav: false,
+			hide_from_bottom_nav: true,
 		},
 	],
 	features: [
 		{
-			id: 'trade_tab',
-			path: '/trade',
-			icon_id: 'SIDEBAR_TRADING_ACTIVE',
-			string_id: 'ACCOUNTS.TAB_TRADE',
-			hide_from_sidebar: true,
-			hide_from_bottom_nav: false,
-		},
-		{
 			id: 'pro_trade',
 			path: '/markets',
-			icon_id: 'SIDEBAR_TRADING_ACTIVE',
-			string_id: 'PRO_TRADE',
+			icon_id: `${
+				isMobile ? 'FOOTER_TRADING_ACTIVE' : 'SIDEBAR_TRADING_ACTIVE'
+			}`,
+			string_id: `${isMobile ? 'SUMMARY.MARKETS' : 'PRO_TRADE'}`,
 			hide_from_sidebar: true,
 			hide_from_bottom_nav: false,
 		},
 		{
 			id: 'quick_trade',
 			path: 'quick-trade',
-			icon_id: 'QUICK_TRADE_TAB_ACTIVE',
-			string_id: 'QUICK_TRADE',
+			icon_id: `${
+				isMobile ? 'FOOTER_QUICK_ACTIVE' : 'SIDEBAR_QUICK_TRADING_ACTIVE'
+			}`,
+			string_id: `${isMobile ? 'CONVERT' : 'QUICK_TRADE'}`,
 			hide_from_sidebar: true,
 			hide_from_bottom_nav: false,
 		},
@@ -88,7 +86,7 @@ export const MENU_ITEMS = {
 	middle: [
 		{
 			path: '/wallet',
-			icon_id: 'TAB_WALLET',
+			icon_id: `${isMobile ? 'WALLET_FOOTER' : 'TAB_WALLET'}`,
 			string_id: 'ACCOUNTS.TAB_WALLET',
 		},
 		{
@@ -96,7 +94,7 @@ export const MENU_ITEMS = {
 			icon_id: 'TAB_HISTORY',
 			string_id: 'ACCOUNTS.TAB_HISTORY',
 			hide_from_appbar: true,
-			hide_from_bottom_nav: false,
+			hide_from_bottom_nav: true,
 		},
 		{
 			path: '/security',
@@ -118,6 +116,16 @@ export const MENU_ITEMS = {
 			string_id: 'ACCOUNTS.TAB_SETTINGS',
 			hide_from_appbar: true,
 			hide_from_bottom_nav: true,
+		},
+		{
+			id: 'assets',
+			path: '/assets',
+			icon_id: 'FOOTERBAR_ASSETS_TRADE',
+			string_id: `${isMobile ? 'HOLLAEX_TOKEN.PRICES.TITLE' : 'ASSETS'}`,
+			hide_from_sidebar: true,
+			hide_from_appbar: true,
+			hide_from_menulist: true,
+			hide_from_bottom_nav: false,
 		},
 	],
 	bottom: [

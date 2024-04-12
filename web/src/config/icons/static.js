@@ -191,8 +191,6 @@ const icons = {
 	REVOKE_KEY: '/assets/images/revoke-key-red-slash.svg',
 	SMALL_WHITE_KEY: '/assets/images/small-white-key.svg',
 	TRANSPARENT_KEY: '/assets/images/transperent-key.svg',
-	FOOTERBAR_PRO_TRADE: '/assets/images/pro-trade-bottom-nav-mobile.svg',
-	FOOTERBAR_QUICK_TRADE: '/assets/images/quick-trade-tab-white.svg',
 };
 
 export default icons;
