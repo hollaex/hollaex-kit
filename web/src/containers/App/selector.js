@@ -86,21 +86,21 @@ export const menuItemsSelector = createSelector(
 			? remoteRoutes && remoteRoutes.length
 				? [
 						...MENU_ITEMS.top,
-						...featureItems,
 						MENU_ITEMS.middle[0],
+						...featureItems,
 						remoteRoutes[0],
 						...(token ? MENU_ITEMS.bottom : []),
 				  ]
 				: [
 						...MENU_ITEMS.top,
-						...featureItems,
 						...MENU_ITEMS.middle,
+						...featureItems,
 						...(token ? MENU_ITEMS.bottom : []),
 				  ]
 			: [
 					...MENU_ITEMS.top,
-					...featureItems,
 					...MENU_ITEMS.middle,
+					...featureItems,
 					...remoteRoutes,
 					...(token ? MENU_ITEMS.bottom : []),
 			  ];

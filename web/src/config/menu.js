@@ -111,7 +111,9 @@ export const MENU_ITEMS = {
 			string_id: 'ACCOUNTS.TAB_VERIFICATION',
 			hide_from_appbar: true,
 			hide_from_bottom_nav: true,
-		},
+		}
+	],
+	bottom: [
 		{
 			path: '/settings',
 			icon_id: 'TAB_SETTING',
@@ -119,8 +121,6 @@ export const MENU_ITEMS = {
 			hide_from_appbar: true,
 			hide_from_bottom_nav: true,
 		},
-	],
-	bottom: [
 		{
 			path: 'help',
 			icon_id: 'SIDEBAR_HELP',
