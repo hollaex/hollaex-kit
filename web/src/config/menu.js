@@ -111,13 +111,6 @@ export const MENU_ITEMS = {
 			hide_from_bottom_nav: true,
 		},
 		{
-			path: '/settings',
-			icon_id: 'TAB_SETTING',
-			string_id: 'ACCOUNTS.TAB_SETTINGS',
-			hide_from_appbar: true,
-			hide_from_bottom_nav: true,
-		},
-		{
 			id: 'assets',
 			path: '/assets',
 			icon_id: 'FOOTERBAR_ASSETS_TRADE',
@@ -129,6 +122,13 @@ export const MENU_ITEMS = {
 		},
 	],
 	bottom: [
+		{
+			path: '/settings',
+			icon_id: 'TAB_SETTING',
+			string_id: 'ACCOUNTS.TAB_SETTINGS',
+			hide_from_appbar: true,
+			hide_from_bottom_nav: true,
+		},
 		{
 			path: 'help',
 			icon_id: 'SIDEBAR_HELP',
