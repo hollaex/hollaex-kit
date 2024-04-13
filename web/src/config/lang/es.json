@@ -632,7 +632,8 @@
         "INTERNAL": "interno",
         "BLOCKCHAIN": "cadena de bloques",
         "STAKE": "apostar",
-        "REFERRAL": "remisión"
+        "REFERRAL": "remisión",
+        "QUICK_TRADE_TOOLTIP": "Orden ejecutada a través del sistema de conversión."
     },
     "CEFI_STAKE": {
         "STAKE_POOL_TITLE": "Piscinas de Staking de CeFi Locales",
