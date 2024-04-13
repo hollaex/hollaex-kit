@@ -606,7 +606,8 @@
 		"INTERNAL": "internal",
 		"BLOCKCHAIN": "blockchain",
 		"STAKE": "stake",
-		"REFERRAL": "referral"
+		"REFERRAL": "referral",
+		"QUICK_TRADE_TOOLTIP": "Order executed through convert system"
 	},
 	"ACCOUNT_SECURITY": {
 		"TITLE_TEXT": "Adjust the security settings for your account. From Two-factor authentication, password, API keys and other security related functions.",
