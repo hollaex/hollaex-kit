@@ -539,6 +539,10 @@ const verifyBearerTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = fa
 						decodedToken.sub
 					);
 
+					if (req?.path?.includes('/admin') && !endpointScopes.includes(ROLES.ADMIN)) {
+						endpointScopes.push(ROLES.ADMIN);
+					}
+
 					// Check set of permissions that are available with the token and set of acceptable permissions set on swagger endpoint
 					if (intersection(decodedToken.scopes, endpointScopes).length === 0) {
 						loggerAuth.error(
@@ -549,10 +553,6 @@ const verifyBearerTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = fa
 							endpointScopes
 						);
 
-						return sendError(NOT_AUTHORIZED);
-					}
-
-					if (req?.path?.includes('/admin') && !decodedToken.scopes.includes(ROLES.ADMIN)) {
 						return sendError(NOT_AUTHORIZED);
 					}
 
@@ -795,11 +795,11 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 	} else {
 		return findTokenByApiKey(apiKey)
 			.then((token) => {
-				if(token.role !== ROLES.ADMIN && scopes.includes(ROLES.ADMIN)) {
-					throw new Error(NOT_AUTHORIZED);
+				if (originalUrl?.includes('/admin') && !scopes.includes(ROLES.ADMIN)) {
+					scopes.push(ROLES.ADMIN);
 				}
-			
-				if (originalUrl?.includes('/admin') && token.role !== ROLES.ADMIN) {
+
+				if(token.role !== ROLES.ADMIN && scopes.includes(ROLES.ADMIN)) {
 					throw new Error(NOT_AUTHORIZED);
 				}
 				
