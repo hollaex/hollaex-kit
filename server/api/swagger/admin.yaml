@@ -3921,6 +3921,7 @@ paths:
             properties:
               user_id:
                 type: number
+                format: int32
                 description: user_id
               address:
                 type: string
