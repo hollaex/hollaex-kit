@@ -552,6 +552,10 @@ const verifyBearerTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = fa
 						return sendError(NOT_AUTHORIZED);
 					}
 
+					if (req?.path?.includes('/admin') && !decodedToken.scopes.includes(ROLES.ADMIN)) {
+						return sendError(NOT_AUTHORIZED);
+					}
+
 					if (decodedToken.iss !== ISSUER) {
 						loggerAuth.error(
 							'helpers/auth/verifyToken unverified_token',
@@ -794,6 +798,11 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 				if(token.role !== ROLES.ADMIN && scopes.includes(ROLES.ADMIN)) {
 					throw new Error(NOT_AUTHORIZED);
 				}
+			
+				if (originalUrl?.includes('/admin') && token.role !== ROLES.ADMIN) {
+					throw new Error(NOT_AUTHORIZED);
+				}
+				
 				if (token.whitelisting_enabled && token.whitelisted_ips.length > 0) {
 					const found = token.whitelisted_ips.find((wlip) => {
 						return ipRangeCheck(ip, wlip);
