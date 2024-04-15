@@ -539,7 +539,7 @@ const verifyBearerTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = fa
 						decodedToken.sub
 					);
 
-					if (req?.path?.includes('/admin') && !endpointScopes.includes(ROLES.ADMIN)) {
+					if (req?.path?.includes('/admin') && !endpointScopes?.includes(ROLES.ADMIN)) {
 						endpointScopes.push(ROLES.ADMIN);
 					}
 
@@ -795,7 +795,7 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 	} else {
 		return findTokenByApiKey(apiKey)
 			.then((token) => {
-				if (originalUrl?.includes('/admin') && !scopes.includes(ROLES.ADMIN)) {
+				if (originalUrl?.includes('/admin') && !scopes?.includes(ROLES.ADMIN)) {
 					scopes.push(ROLES.ADMIN);
 				}
 
