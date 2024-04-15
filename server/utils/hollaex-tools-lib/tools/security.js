@@ -518,7 +518,7 @@ const verifyBearerTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = fa
 		// Swagger endpoint scopes
 		const endpointScopes = (req.swagger
 			? req.swagger.operation['x-security-scopes']
-			: BASE_SCOPES) || []
+			: BASE_SCOPES) || [];
 
 		let ip = req.headers ? req.headers['x-real-ip'] : undefined;
 
