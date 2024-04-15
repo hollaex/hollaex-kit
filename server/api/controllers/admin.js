@@ -1229,6 +1229,71 @@ const putBurn = (req, res) => {
 		});
 };
 
+const performDirectWithdrawalByAdmin = (req, res) => {
+	const {
+		user_id,
+		address,
+		currency,
+		amount,
+		network
+	} = req.swagger.params.data.value;
+
+	const userId = user_id;
+	loggerAdmin.verbose(
+		req.uuid,
+		'controller/admin/performDirectWithdrawal auth',
+		'address',
+		address,
+		'amount',
+		amount,
+		'currency',
+		currency,
+		'network',
+		network
+	);
+
+	toolsLib.wallet.performDirectWithdrawal(
+		userId,
+		address,
+		currency,
+		amount,
+		{
+			network,
+			additionalHeaders: {
+				'x-forwarded-for': req.headers['x-forwarded-for']
+			}
+		})
+		.then((data) => {
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
+			loggerAdmin.verbose(
+				req.uuid,
+				'controller/admin/performDirectWithdrawal done',
+				'transaction_id',
+				data.transaction_id,
+				'fee',
+				data.fee,
+				data
+			);
+			return res.json({
+				message: 'Withdrawal request is in the queue and will be processed.',
+				id: data.id,
+				transaction_id: data.transaction_id,
+				amount: data.amount,
+				currency: data.currency,
+				fee: data.fee,
+				fee_coin: data.fee_coin
+			});
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controller/admin/performDirectWithdrawal',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+		});
+};
+
 const postKitUserMeta = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/postKitUserMeta', req.auth.sub);
 
@@ -2897,5 +2962,6 @@ module.exports = {
 	updateTransactionLimit,
 	deleteTransactionLimit,
 	getUserBalanceHistoryByAdmin,
-	createTradeByAdmin
+	createTradeByAdmin,
+	performDirectWithdrawalByAdmin
 };

@@ -3901,7 +3901,7 @@ paths:
       x-token-permissions:
         - can_trade
   /admin/withdrawal:
-    x-swagger-router-controller: withdrawal
+    x-swagger-router-controller: admin
     post:
       operationId: performDirectWithdrawalByAdmin
       description: Make a withdrawal without email confirmation for admin

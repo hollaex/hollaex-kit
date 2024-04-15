@@ -249,71 +249,6 @@ const performDirectWithdrawal = (req, res) => {
 		});
 };
 
-const performDirectWithdrawalByAdmin = (req, res) => {
-	const {
-		user_id,
-		address,
-		currency,
-		amount,
-		network
-	} = req.swagger.params.data.value;
-
-	const userId = user_id;
-	loggerWithdrawals.verbose(
-		req.uuid,
-		'controller/withdrawal/performDirectWithdrawal auth',
-		'address',
-		address,
-		'amount',
-		amount,
-		'currency',
-		currency,
-		'network',
-		network
-	);
-
-	toolsLib.wallet.performDirectWithdrawal(
-		userId,
-		address,
-		currency,
-		amount,
-		{
-			network,
-			additionalHeaders: {
-				'x-forwarded-for': req.headers['x-forwarded-for']
-			}
-		})
-		.then((data) => {
-
-			loggerWithdrawals.verbose(
-				req.uuid,
-				'controller/withdrawal/performDirectWithdrawal done',
-				'transaction_id',
-				data.transaction_id,
-				'fee',
-				data.fee,
-				data
-			);
-			return res.json({
-				message: 'Withdrawal request is in the queue and will be processed.',
-				id: data.id,
-				transaction_id: data.transaction_id,
-				amount: data.amount,
-				currency: data.currency,
-				fee: data.fee,
-				fee_coin: data.fee_coin
-			});
-		})
-		.catch((err) => {
-			loggerWithdrawals.error(
-				req.uuid,
-				'controller/withdrawals/performWithdrawal',
-				err.message
-			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
-		});
-};
-
 const getWithdrawalMax = (req, res) => {
 	loggerWithdrawals.verbose(
 		req.uuid,
@@ -518,6 +453,5 @@ module.exports = {
 	getUserWithdrawals,
 	cancelWithdrawal,
 	performDirectWithdrawal,
-	getWithdrawalMax,
-	performDirectWithdrawalByAdmin
+	getWithdrawalMax
 };
