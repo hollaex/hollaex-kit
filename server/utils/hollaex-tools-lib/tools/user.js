@@ -1202,7 +1202,7 @@ const updateUserNote = (userId, note, auditInfo) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
 			}
-			createAuditLog({ email: auditInfo.userEmail, session_id: auditInfo.sessionId }, auditInfo.apiPath, auditInfo.method, note, user.note);
+			createAuditLog({ email: auditInfo.userEmail, session_id: auditInfo.sessionId }, auditInfo.apiPath, auditInfo.method, { note, user_id: user.id }, { note: user.note, user_id: user.id });
 			return user.update({ note }, { fields: ['note'] });
 		});
 };
