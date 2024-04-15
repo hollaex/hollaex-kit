@@ -3900,3 +3900,57 @@ paths:
         - admin
       x-token-permissions:
         - can_trade
+  /admin/withdrawal:
+    x-swagger-router-controller: withdrawal
+    post:
+      operationId: performDirectWithdrawalByAdmin
+      description: Make a withdrawal without email confirmation for admin
+      tags:
+        - User
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - user_id
+              - address
+              - amount
+              - currency
+            properties:
+              user_id:
+                type: number
+                description: user_id
+              address:
+                type: string
+                maxLength: 256
+                description: Destination address
+              currency:
+                type: string
+                maxLength: 256
+                description: Currency to be withdrawn (btc, eth, etc)
+              amount:
+                type: number
+                format: double
+                description: Amount to transfer (in btc, eth, bch)
+              network:
+                type: string
+                description: Blockchain network
+                minLength: 2
+                maxLength: 10
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/TransactionsResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - hmac
+      x-token-permissions:
+        - can_withdraw
