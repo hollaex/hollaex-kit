@@ -516,9 +516,9 @@ const verifyBearerTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = fa
 	} else if (!has(req.headers, 'api-key') && has(req.headers, 'authorization')) {
 
 		// Swagger endpoint scopes
-		const endpointScopes = req.swagger
+		const endpointScopes = (req.swagger
 			? req.swagger.operation['x-security-scopes']
-			: BASE_SCOPES;
+			: BASE_SCOPES) || []
 
 		let ip = req.headers ? req.headers['x-real-ip'] : undefined;
 
@@ -802,7 +802,6 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 				if(token.role !== ROLES.ADMIN && scopes.includes(ROLES.ADMIN)) {
 					throw new Error(NOT_AUTHORIZED);
 				}
-				
 				if (token.whitelisting_enabled && token.whitelisted_ips.length > 0) {
 					const found = token.whitelisted_ips.find((wlip) => {
 						return ipRangeCheck(ip, wlip);
