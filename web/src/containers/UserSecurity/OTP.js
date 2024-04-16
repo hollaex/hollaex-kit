@@ -268,13 +268,9 @@ const OtpFormSteps = ({
 								{STRINGS['ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_5']}
 							</EditWrapper>
 						</div>
-						<div className="otp_form-section-text">
-							<EditWrapper stringId="ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_3">
-								{STRINGS['ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_3']}
-							</EditWrapper>
-							<br />
-							<EditWrapper stringId="ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_4">
-								{STRINGS['ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_4']}
+						<div className="otp_form-section-text" style={{ color: '#E59B07' }}>
+							<EditWrapper stringId="ACCOUNT_SECURITY.OTP.MANUEL_DESCRIPTION_2">
+								{STRINGS['ACCOUNT_SECURITY.OTP.MANUEL_DESCRIPTION_2']}
 							</EditWrapper>
 						</div>
 						<div className="otp_form-section-content otp_secret">{secret}</div>
@@ -436,6 +432,23 @@ const OtpFormSteps = ({
 							</EditWrapper>
 						</div>
 						<OTPForm onSubmit={activateOTP} />
+						<Button
+							onClick={() => {
+								setStep(2);
+							}}
+							style={{
+								backgroundColor: '#5D63FF',
+								border: 'none',
+								width: '100%',
+								height: 40,
+								textAlign: 'center',
+								color: 'white',
+							}}
+						>
+							<EditWrapper stringId="ACCOUNT_SECURITY.OTP.BACK">
+								{STRINGS['ACCOUNT_SECURITY.OTP.BACK']}
+							</EditWrapper>
+						</Button>
 					</div>
 				</div>
 			)}
