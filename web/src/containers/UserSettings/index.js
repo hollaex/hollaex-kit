@@ -38,7 +38,6 @@ import NotificationForm, {
 	generateNotificationFormValues,
 } from './NotificationForm';
 import AudioCueForm, { generateAudioCueFormValues } from './AudioForm';
-import RiskForm, { generateWarningFormValues } from './RiskForm';
 import { isLoggedIn } from 'utils/token';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
@@ -80,14 +79,9 @@ class UserSettings extends Component {
 			this.setState({ activeTab: 3 });
 		} else if (
 			window.location.search &&
-			window.location.search.includes('manageRisk')
-		) {
-			this.setState({ activeTab: 4 });
-		} else if (
-			window.location.search &&
 			window.location.search.includes('account')
 		) {
-			this.setState({ activeTab: 5 });
+			this.setState({ activeTab: 4 });
 		}
 		this.openCurrentTab();
 	}
@@ -146,8 +140,6 @@ class UserSettings extends Component {
 		} else if (this.state.activeTab === 3) {
 			currentTab = 'audioCue';
 		} else if (this.state.activeTab === 4) {
-			currentTab = 'manageRisk';
-		} else if (this.state.activeTab === 5) {
 			currentTab = 'account';
 		}
 		this.props.router.push(`/settings?${currentTab}`);
@@ -167,7 +159,6 @@ class UserSettings extends Component {
 		const {
 			constants = {},
 			icons: ICONS,
-			totalAsset,
 			themeOptions,
 		} = this.props;
 		const formValues = generateFormValues({
@@ -187,7 +178,6 @@ class UserSettings extends Component {
 			DEFAULT_TOGGLE_OPTIONS
 		);
 		const audioFormValues = generateAudioCueFormValues(DEFAULT_TOGGLE_OPTIONS);
-		const warningFormValues = generateWarningFormValues(DEFAULT_TOGGLE_OPTIONS);
 
 		let audioFormInitialValues = {
 			all: true,
@@ -317,35 +307,6 @@ class UserSettings extends Component {
 			{
 				title: isMobile ? (
 					<CustomMobileTabs
-						title={STRINGS['USER_SETTINGS.TITLE_MANAGE_RISK']}
-						icon={ICONS['SETTING_RISK_ICON']}
-					/>
-				) : (
-					// <CustomTabs
-					// 	stringId="USER_SETTINGS.TITLE_MANAGE_RISK"
-					// 	title={STRINGS['USER_SETTINGS.TITLE_MANAGE_RISK']}
-					// 	iconId="SETTING_RISK_ICON"
-					// 	icon={ICONS['SETTING_RISK_ICON']}
-					// />
-					<EditWrapper stringId="USER_SETTINGS.TITLE_MANAGE_RISK">
-						{STRINGS['USER_SETTINGS.TITLE_MANAGE_RISK']}
-					</EditWrapper>
-				),
-				content: (
-					<RiskForm
-						coins={coins}
-						onAdjustPortfolio={this.onAdjustPortfolio}
-						totalAssets={totalAsset}
-						onSubmit={(formProps) => this.onSubmitSettings(formProps, 'risk')}
-						formFields={warningFormValues}
-						initialValues={settings.risk}
-						ICONS={ICONS}
-					/>
-				),
-			},
-			{
-				title: isMobile ? (
-					<CustomMobileTabs
 						title={STRINGS['USER_SETTINGS.TITLE_ACCOUNT']}
 						icon={ICONS['ACCOUNT_LINE']}
 					/>
@@ -404,15 +365,6 @@ class UserSettings extends Component {
 				break;
 			case 'audio':
 				settings.audio = formProps;
-				break;
-			case 'risk':
-				if (formProps.order_portfolio_percentage) {
-					formValues.order_portfolio_percentage = parseInt(
-						formProps.order_portfolio_percentage,
-						10
-					);
-				}
-				settings.risk = formValues;
 				break;
 			default:
 		}
@@ -550,7 +502,6 @@ const mapStateToProps = (state) => ({
 	price: state.orderbook.price,
 	//orders: state.order.activeOrders,
 	constants: state.app.constants,
-	totalAsset: state.asset.totalAsset,
 	features: state.app.features,
 });
 
