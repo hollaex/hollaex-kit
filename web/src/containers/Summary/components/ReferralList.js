@@ -61,10 +61,11 @@ const ReferralList = ({
 
 	const [balanceHistory, setBalanceHistory] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
-	const [currentDay, setCurrentDay] = useState(90);
+	const [currentDay, setCurrentDay] = useState(100);
 	const [queryValues, setQueryValues] = useState({
-		start_date: moment().subtract(currentDay, 'days').toISOString(),
-		end_date: moment().subtract().toISOString(),
+		// start_date: moment().subtract(currentDay, 'days').toISOString(),
+		// end_date: moment().subtract().toISOString(),
+		format: 'all',
 	});
 	const [queryFilters, setQueryFilters] = useState({
 		total: 0,
@@ -75,7 +76,7 @@ const ReferralList = ({
 		isRemaining: true,
 	});
 	// eslint-disable-next-line
-	const [currentBalance, setCurrentBalance] = useState();
+	// const [currentBalance, setCurrentBalance] = useState();
 	const [latestBalance, setLatestBalance] = useState();
 	const [current, setCurrent] = useState(0);
 	const [graphData, setGraphData] = useState([]);
@@ -88,28 +89,30 @@ const ReferralList = ({
 	const [unrealizedEarnings, setUnrealizedEarnings] = useState(0);
 
 	useEffect(() => {
-		fetchUnrealizedFeeEarnings().then((res) => {
-			if (res?.data?.length > 0) {
-				let earnings = 0;
+		fetchUnrealizedFeeEarnings()
+			.then((res) => {
+				if (res?.data?.length > 0) {
+					let earnings = 0;
 
-				res.data.forEach((earning) => {
-					earnings += earning.accumulated_fees;
-				});
+					res.data.forEach((earning) => {
+						earnings += earning.accumulated_fees;
+					});
 
-				setUnrealizedEarnings(
-					getSourceDecimals(
-						referral_history_config?.currency || 'usdt',
-						earnings
-					)
-				);
-			}
-		});
+					setUnrealizedEarnings(
+						getSourceDecimals(
+							referral_history_config?.currency || 'usdt',
+							earnings
+						)
+					);
+				}
+			})
+			.catch((err) => err);
 		getUserReferrals();
-		fetchReferralHistory({ order_by: 'referee', format: 'all' }).then(
-			(earnings) => {
+		fetchReferralHistory({ order_by: 'referee', format: 'all' })
+			.then((earnings) => {
 				setReferees(earnings.data);
-			}
-		);
+			})
+			.catch((err) => err);
 		// eslint-disable-next-line
 	}, []);
 
@@ -251,14 +254,14 @@ const ReferralList = ({
 					events: {
 						click: (e, x, y) => {
 							setCurrent(e.point.x);
-							const balance = balanceHistory.find(
-								(history) =>
-									`${moment(history.created_at).date()} ${
-										month[moment(history.created_at).month()]
-									}` === graphData[e.point.x || 0][0]
-							);
+							// const balance = balanceHistory.find(
+							// 	(history) =>
+							// 		`${moment(history.created_at).date()} ${
+							// 			month[moment(history.created_at).month()]
+							// 		}` === graphData[e.point.x || 0][0]
+							// );
 
-							setCurrentBalance(balance);
+							// setCurrentBalance(balance);
 						},
 					},
 				},
@@ -295,15 +298,16 @@ const ReferralList = ({
 					page === 1 ? response.data : [...balanceHistory, ...response.data]
 				);
 
-				const length = currentDay - 1;
-				const balanceData = response.data.find(
-					(history) =>
-						moment(history.date).format('YYYY-MM-DD') ===
-						moment(queryValues.end_date)
-							.subtract(length, 'days')
-							.format('YYYY-MM-DD')
-				);
-				let balance = balanceData || response.data[length];
+				let length = currentDay - 1;
+				if (response.data.length > length) length = response.data.length;
+				// const balanceData = response.data.find(
+				// 	(history) =>
+				// 		moment(history.date).format('YYYY-MM-DD') ===
+				// 		moment(queryValues.end_date)
+				// 			.subtract(length, 'days')
+				// 			.format('YYYY-MM-DD')
+				// );
+				// let balance = balanceData || response.data[length];
 
 				let newGraphData = [];
 				for (let i = 0; i < length; i++) {
@@ -353,13 +357,22 @@ const ReferralList = ({
 							}`,
 							balanceData ? balanceData.accumulated_fees : 0,
 						]);
+					} else if (currentDay > 90) {
+						const balanceData = response?.data?.[i];
+						if (!balanceData) continue;
+						newGraphData.push([
+							`${moment(balanceData.date).date()} ${
+								month[moment(balanceData.date).month()]
+							}`,
+							balanceData ? balanceData.accumulated_fees : 0,
+						]);
 					}
 				}
 
-				newGraphData.reverse();
+				if (currentDay < 90) newGraphData.reverse();
 
 				setGraphData(newGraphData);
-				setCurrentBalance(balance);
+				// setCurrentBalance(balance);
 				if (response.total) setLatestBalance(response.total);
 				// setLatestBalance(response?.data?.sort(
 				// 	function(a,b){
@@ -475,7 +488,6 @@ const ReferralList = ({
 						<AntButton
 							onClick={() => {
 								setCustomDate(false);
-								setCustomDateValues();
 							}}
 							style={{
 								backgroundColor: '#5D63FF',
@@ -524,8 +536,8 @@ const ReferralList = ({
 											.toISOString(),
 									});
 									setCustomDate(false);
-									setCustomDateValues();
 								} catch (error) {
+									console.log({ error });
 									message.error('Something went wrong');
 								}
 							}}
@@ -690,29 +702,31 @@ const ReferralList = ({
 									onClick={async () => {
 										try {
 											await postSettleFees();
-											fetchUnrealizedFeeEarnings().then((res) => {
-												if (res?.data?.length > 0) {
-													let earnings = 0;
+											fetchUnrealizedFeeEarnings()
+												.then((res) => {
+													if (res?.data?.length > 0) {
+														let earnings = 0;
 
-													res.data.forEach((earning) => {
-														earnings += earning.accumulated_fees;
-													});
+														res.data.forEach((earning) => {
+															earnings += earning.accumulated_fees;
+														});
 
-													setUnrealizedEarnings(
-														getSourceDecimals(
-															referral_history_config?.currency || 'usdt',
-															earnings
-														)
-													);
+														setUnrealizedEarnings(
+															getSourceDecimals(
+																referral_history_config?.currency || 'usdt',
+																earnings
+															)
+														);
 
-													fetchReferralHistory({
-														order_by: 'referee',
-														format: 'all',
-													}).then((earning) => {
-														setReferees(earning.data);
-													});
-												}
-											});
+														fetchReferralHistory({
+															order_by: 'referee',
+															format: 'all',
+														}).then((earning) => {
+															setReferees(earning.data);
+														});
+													}
+												})
+												.catch((err) => err);
 											message.success('fees are settled.');
 										} catch (error) {
 											message.error(error.message);
@@ -738,7 +752,7 @@ const ReferralList = ({
 						className="plButton"
 						ghost
 						onClick={() => {
-							setCurrentDay(90);
+							setCurrentDay(100);
 							setQueryValues({
 								format: 'all',
 							});
@@ -824,9 +838,17 @@ const ReferralList = ({
 						</EditWrapper>
 					</AntButton>
 				</div>
-				<div className="highChartColor">
-					<HighchartsReact highcharts={Highcharts} options={options} />
-				</div>
+				{graphData?.length > 0 ? (
+					<div className="highChartColor">
+						<HighchartsReact highcharts={Highcharts} options={options} />
+					</div>
+				) : (
+					<div style={{ textAlign: 'center', padding: 150 }}>
+						<EditWrapper stringId="REFERRAL_LINK.NO_DATA_TO_DISPLAY">
+							{STRINGS['REFERRAL_LINK.NO_DATA_TO_DISPLAY']}
+						</EditWrapper>
+					</div>
+				)}
 
 				<div className="invite_friends_wrapper mx-auto">
 					{/* <IconTitle
@@ -838,7 +860,7 @@ const ReferralList = ({
 					underline={true}
 				/> */}
 					<div>
-						<div className="field-label">
+						<div style={{ marginTop: 15 }} className="field-label">
 							<EditWrapper stringId="REFERRAL_LINK.USERS_LIST">
 								{STRINGS['REFERRAL_LINK.USERS_LIST']}
 							</EditWrapper>

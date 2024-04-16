@@ -1319,6 +1319,7 @@
 		"BACK_LOWER": "Back",
 		"EARNINGS": "Earnings",
 		"EARNINGS_DESCRIPTION": "Earnings generated overtime from all your referred users.",
+		"NO_DATA_TO_DISPLAY": "There is no data to display for this interval",
 		"TOTAL_EARNT": "Total Earnt",
 		"UNREALIZED_EARNINGS": "Unrealized Fee Earnings",
 		"SETTLE_FEES": "Settle fees",
