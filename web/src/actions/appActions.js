@@ -96,6 +96,7 @@ export const TOGGLE_DIGITAL_ASSETS_SORT = 'TOGGLE_DIGITAL_ASSETS_SORT';
 export const SET_ADMIN_SORT = 'SET_ADMIN_SORT';
 export const SET_ADMIN_WALLET_SORT = 'SET_ADMIN_WALLET_SORT';
 export const SET_ADMIN_DIGITAL_ASSETS_SORT = 'SET_ADMIN_DIGITAL_ASSETS_SORT';
+export const SET_SELECTED_ACCOUNT = 'SET_SELECTED_ACCOUNT';
 
 export const SORT = {
 	VOL: 'volume',
@@ -528,6 +529,13 @@ export const openRiskPortfolioOrderWarning = (data = {}) =>
 
 export const logoutconfirm = (data = {}) =>
 	setNotification(LOGOUT_CONFORMATION, data, true);
+
+export const setSelectedAccount = (selectedAccount) => ({
+	type: SET_SELECTED_ACCOUNT,
+	payload: {
+		selectedAccount,
+	},
+});
 
 export const requestPlugins = () => axios.get(`${PLUGIN_URL}/plugins`);
 export const requestInitial = () => axios.get('/kit');

@@ -156,7 +156,11 @@ class PairTabs extends Component {
 											<div className="title-font ml-1">
 												{formatToCurrency(close, increment_price)}
 											</div>
-											<PriceChange market={market} key={key} />
+											<PriceChange
+												className="markets-drop-down"
+												market={market}
+												key={key}
+											/>
 											<SparkLine
 												data={
 													!sparkLine[key] ||

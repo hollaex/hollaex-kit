@@ -243,7 +243,7 @@ const nestedIcons = {
 	SELF_KYC_ID_EN: '/assets/self-kyc-id-note-english.png',
 
 	NOTE_KYC: '/assets/images/note-KYC.svg',
-	SIDEBAR_HELP: '/assets/images/card-active-plugin-mobile-tab-01.svg',
+	SIDEBAR_HELP: '/assets/images/help-question-mark-icon.svg',
 	FOOTER_PLUGIN: '/assets/images/card-active-plugin-mobile-tab-01.svg',
 	CONNECT_LOADING: '/assets/images/connect-loading.svg',
 	FIAT_KYC: '/assets/images/fiat-kyc.svg',
