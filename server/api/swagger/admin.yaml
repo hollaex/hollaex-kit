@@ -3953,5 +3953,7 @@ paths:
         - Token: []
       x-security-types:
         - hmac
+      x-security-scopes:
+        - admin
       x-token-permissions:
         - can_withdraw

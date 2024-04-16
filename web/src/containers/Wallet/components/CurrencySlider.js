@@ -286,6 +286,9 @@ class CurrencySlider extends Component {
 										</div>
 
 										<div
+											onClick={() => {
+												this.props.handleBalanceHistory(true);
+											}}
 											className={
 												Number(this.state.userPL?.['7d']?.total || 0) === 0
 													? 'profitNeutral'
@@ -298,6 +301,7 @@ class CurrencySlider extends Component {
 												display: 'flex',
 												justifyContent: 'center',
 												fontSize: '1.5rem',
+												cursor: 'pointer',
 											}}
 										>
 											<EditWrapper stringId="PROFIT_LOSS.PL_7_DAY">
