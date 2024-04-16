@@ -612,9 +612,24 @@
 	"ACCOUNT_SECURITY": {
 		"TITLE_TEXT": "Adjust the security settings for your account. From Two-factor authentication, password, API keys and other security related functions.",
 		"OTP": {
+			"DOWNLOAD_APP": "Download and install Google Authenticator:",
+			"DOWNLOAD_FROM": "Download from",
+			"GOOGLE_PLAY": "GooglePlay",
+			"APPLE": "App Store",
+			"APP_INFO": "Google Authenticator will generate random codes that are necessary for sensitive actions, such as logging in and withdrawing funds.",
+			"DONT_UNINSTALL": "Please do not uninstall the app.",
+			"INFO_UNINSTALL": "In the event of accidental phone loss or unintentional uninstallation, you may experience delays in regaining access to your account. In such cases, you will need to contact our support team for assistance.",
 			"TITLE": "2FA",
 			"OTP_ENABLED": "otp enabled",
 			"OTP_DISABLED": "PLEASE TURN ON 2FA",
+			"BACK": "BACK",
+			"PROCEED": "PROCEED",
+			"MANUEL_DESCRIPTION": "Please enter the manual verification key from the previous step.",
+			"MANUEL_KEY": "Manual verification key",
+			"MANUEL_PLACEHOLDER": "Enter your manual verification key",
+			"MANUEL_WARNING": "(Make sure you have written it down and stored it safely for future use.)",
+			"MANUEL_ERROR_1": "Please enter your OTP Secret",
+			"MANUEL_ERROR_2": "Wrong OTP Secret",
 			"ENABLED_TEXTS": {
 				"TEXT_1": "Require OTP when logging in",
 				"TEXT_2": "Require OTP when withdrawing funds"

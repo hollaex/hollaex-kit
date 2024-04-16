@@ -4,6 +4,24 @@ const { INVALID_OTP_CODE } = require('../../messages');
 const { loggerOtp } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
 const { errorMessageConverter } = require('../../utils/conversion');
+const { EVENTS_CHANNEL } = require('../../constants');
+const { publisher } = require('../../db/pubsub');
+const { sendEmail } = require('../../mail');
+const { MAILTYPE } = require('../../mail/strings');
+const { getUserByKitId } = require('../../utils/hollaex-tools-lib/tools/user');
+
+const sendOtpEmailNotification = async (userId, message) => {
+	const user = await getUserByKitId(userId);
+		sendEmail(
+			MAILTYPE.ALERT,
+			user.email,
+			{
+				type: message,
+				data
+			},
+			user.settings
+		);
+}
 
 const requestOtp = (req, res) => {
 	loggerOtp.verbose(req.uuid, 'controllers/otp/requestOtp', req.auth);
@@ -53,6 +71,15 @@ const activateOtp = (req, res) => {
 				'controllers/otp/activateOtp',
 				user.dataValues
 			);
+			sendOtpEmailNotification(id, `Otp of user id: ${id} activated`);
+			publisher.publish(EVENTS_CHANNEL, JSON.stringify({
+				type: 'user',
+				data: {
+					action: 'otp_enabled',
+					user_id: id
+				}
+			}));
+
 			return res.json({ message: 'OTP enabled' });
 		})
 		.catch((err) => {
@@ -82,6 +109,15 @@ const deactivateOtp = (req, res) => {
 			return toolsLib.security.updateUserOtpEnabled(id, false);
 		})
 		.then(() => {
+			sendOtpEmailNotification(id, `Otp of user id: ${id} deactivated`);
+			publisher.publish(EVENTS_CHANNEL, JSON.stringify({
+				type: 'user',
+				data: {
+					action: 'otp_disabled',
+					user_id: id
+				}
+			}));
+
 			return res.json({ message: 'OTP disabled' });
 		})
 		.catch((err) => {

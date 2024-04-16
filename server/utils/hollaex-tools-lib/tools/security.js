@@ -356,7 +356,8 @@ const checkOtp = (userId) => {
  */
 const generateOtpSecret = () => {
 	const seed = otp({
-		name: getKitConfig().api_name
+		name: getKitConfig().api_name,
+		keySize: 16
 	});
 	return seed.secret;
 };
