@@ -516,9 +516,9 @@ const verifyBearerTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = fa
 	} else if (!has(req.headers, 'api-key') && has(req.headers, 'authorization')) {
 
 		// Swagger endpoint scopes
-		const endpointScopes = req.swagger
+		const endpointScopes = (req.swagger
 			? req.swagger.operation['x-security-scopes']
-			: BASE_SCOPES;
+			: BASE_SCOPES) || [];
 
 		let ip = req.headers ? req.headers['x-real-ip'] : undefined;
 
@@ -538,6 +538,10 @@ const verifyBearerTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = fa
 						decodedToken.ip,
 						decodedToken.sub
 					);
+
+					if (req?.path?.includes('/admin') && !endpointScopes?.includes(ROLES.ADMIN)) {
+						endpointScopes.push(ROLES.ADMIN);
+					}
 
 					// Check set of permissions that are available with the token and set of acceptable permissions set on swagger endpoint
 					if (intersection(decodedToken.scopes, endpointScopes).length === 0) {
@@ -791,6 +795,10 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 	} else {
 		return findTokenByApiKey(apiKey)
 			.then((token) => {
+				if (originalUrl?.includes('/admin') && !scopes?.includes(ROLES.ADMIN)) {
+					scopes.push(ROLES.ADMIN);
+				}
+
 				if(token.role !== ROLES.ADMIN && scopes.includes(ROLES.ADMIN)) {
 					throw new Error(NOT_AUTHORIZED);
 				}
