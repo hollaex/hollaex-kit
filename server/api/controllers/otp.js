@@ -16,8 +16,8 @@ const sendOtpEmailNotification = async (userId, message) => {
 			MAILTYPE.ALERT,
 			user.email,
 			{
-				type: message,
-				data
+				type: 'OTP Change Alert',
+				data: message
 			},
 			user.settings
 		);
