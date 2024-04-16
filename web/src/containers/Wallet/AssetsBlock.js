@@ -416,6 +416,10 @@ const AssetsBlock = ({
 														balance_history_config?.active &&
 														Number(userPL?.['7d']?.total || 0) !== 0 && (
 															<div
+																onClick={() => {
+																	handleBalanceHistory(true);
+																}}
+																style={{ cursor: 'pointer' }}
 																className={
 																	Number(userPL?.['7d']?.total || 0) === 0
 																		? 'profitNeutral'
