@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import classnames from 'classnames';
 import math from 'mathjs';
 import { CaretUpOutlined, CaretDownFilled } from '@ant-design/icons';
@@ -210,6 +210,10 @@ const ActiveOrders = ({
 	pageSize,
 }) => {
 	const [filteredOrders, setFilteredOrders] = useState([...orders]);
+
+	useEffect(() => {
+		setFilteredOrders(orders);
+	}, [orders]);
 
 	const onHandleClick = (type, label) => {
 		const filteredData = filteredOrders.sort((a, b) => {

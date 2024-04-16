@@ -11189,6 +11189,12 @@ table th {
   .price-change .glance-up.entering:before, .price-change .glance-up.exiting:before {
     border-color: var(--calculated_trading_buying-related-text); }
 
+.price-change .markets-drop-down {
+  display: flex; }
+
+.price-change .markets-drop-down.down:before {
+  margin-top: 10%; }
+
 .hollaex-token-wrapper {
   font-family: 'Open Sans' !important; }
 
