@@ -369,7 +369,7 @@ const ReferralList = ({
 					}
 				}
 
-				if (currentDay < 90) newGraphData.reverse();
+				if (currentDay <= 90) newGraphData.reverse();
 
 				setGraphData(newGraphData);
 				// setCurrentBalance(balance);
