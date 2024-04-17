@@ -8,12 +8,9 @@ const { EVENTS_CHANNEL } = require('../../constants');
 const { publisher } = require('../../db/pubsub');
 const { sendEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
-const { getUserByKitId } = require('../../utils/hollaex-tools-lib/tools/user');
 
-const sendOtpEmailNotification = async (userId, status, req) => {
-	const user = await getUserByKitId(userId);
-	const ip = req.headers['x-real-ip'];
-	const domain = req.headers['x-real-origin'];
+const sendOtpEmailNotification = async (userId, status, ip, domain) => {
+	const user = await toolsLib.user.getUserByKitId(userId);
 	const time = new Date();
 	const data = {
 		ip,
@@ -48,6 +45,9 @@ const activateOtp = (req, res) => {
 	loggerOtp.verbose(req.uuid, 'controllers/otp/activateOtp', req.auth);
 	const { id } = req.auth.sub;
 	const { code } = req.swagger.params.data.value;
+	const ip = req.headers['x-real-ip'];
+	const domain = req.headers['x-real-origin'];
+
 	loggerOtp.verbose(
 		req.uuid,
 		'controllers/otp/activateOtp/code',
@@ -71,7 +71,7 @@ const activateOtp = (req, res) => {
 				'controllers/otp/activateOtp',
 				user.dataValues
 			);
-			sendOtpEmailNotification(id, true, req);
+			sendOtpEmailNotification(id, true, ip, domain);
 			publisher.publish(EVENTS_CHANNEL, JSON.stringify({
 				type: 'user',
 				data: {
@@ -92,6 +92,9 @@ const deactivateOtp = (req, res) => {
 	loggerOtp.verbose(req.uuid, 'controllers/otp/deactivateOtp', req.auth);
 	const { id } = req.auth.sub;
 	const { code } = req.swagger.params.data.value;
+	const ip = req.headers['x-real-ip'];
+	const domain = req.headers['x-real-origin'];
+
 	loggerOtp.verbose(
 		req.uuid,
 		'controllers/otp/deactivateOtp/code',
@@ -109,7 +112,7 @@ const deactivateOtp = (req, res) => {
 			return toolsLib.security.updateUserOtpEnabled(id, false);
 		})
 		.then(() => {
-			sendOtpEmailNotification(id, false, req);
+			sendOtpEmailNotification(id, false, ip, domain);
 			publisher.publish(EVENTS_CHANNEL, JSON.stringify({
 				type: 'user',
 				data: {
