@@ -10,18 +10,18 @@ const { sendEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
 const { getUserByKitId } = require('../../utils/hollaex-tools-lib/tools/user');
 
-const sendOtpEmailNotification = async (userId, message) => {
+const sendOtpEmailNotification = async (userId, status, req) => {
 	const user = await getUserByKitId(userId);
-		sendEmail(
-			MAILTYPE.ALERT,
-			user.email,
-			{
-				type: 'OTP Change Alert',
-				data: message
-			},
-			user.settings
-		);
-}
+	const ip = req.headers['x-real-ip'];
+	const domain = req.headers['x-real-origin'];
+	const time = new Date();
+	const data = {
+		ip,
+		time
+	}
+
+	sendEmail(status ? MAILTYPE.OTP_ENABLED : MAILTYPE.OTP_DISABLED, user.email, data, user.settings, domain);
+};
 
 const requestOtp = (req, res) => {
 	loggerOtp.verbose(req.uuid, 'controllers/otp/requestOtp', req.auth);
@@ -71,7 +71,7 @@ const activateOtp = (req, res) => {
 				'controllers/otp/activateOtp',
 				user.dataValues
 			);
-			sendOtpEmailNotification(id, `Otp of user id: ${id} activated`);
+			sendOtpEmailNotification(id, true, req);
 			publisher.publish(EVENTS_CHANNEL, JSON.stringify({
 				type: 'user',
 				data: {
@@ -109,7 +109,7 @@ const deactivateOtp = (req, res) => {
 			return toolsLib.security.updateUserOtpEnabled(id, false);
 		})
 		.then(() => {
-			sendOtpEmailNotification(id, `Otp of user id: ${id} deactivated`);
+			sendOtpEmailNotification(id, false, req);
 			publisher.publish(EVENTS_CHANNEL, JSON.stringify({
 				type: 'user',
 				data: {

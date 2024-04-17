@@ -111,6 +111,14 @@
 		"USER_DELETED": {
 			"html": "<div><p><p>亲爱的${name} </p></p><p>删除帐户的请求正在进行中。 根据服务条款，您帐户上的信息将被删除。。</p><p>此致<br>${api_name}团队</p></div>",
 			"title": "帐户删除请求"
-		}
+		},
+        "OTP_DISABLED": {
+            "html": "<div> <p> 尊敬的 ${name} 先生/女士 </p> <p> 我们记录到您的账户上的 <b>双因素认证 (2FA) 已经被停用</b>。强烈建议您重新启用 2FA 以保护您的账户。</p> <div> <div>时间：${time}</div> <div>国家：${country}</div> <div>IP 地址：${ip}</div> </div> <p> 如果这不是您本人操作，请立即联系我们。 </p> <p> 敬启<br> ${api_name} 团队 </p> </div>",
+            "title": "OTP 已停用"
+          },
+        "OTP_ENABLED": {
+            "html": "<div> <p> 尊敬的 ${name} 先生/女士 </p> <p> 我们记录到您的账户上的 <b>双因素认证 (2FA) 已经被启用</b>。</p> <div> <div>时间：${time}</div> <div>国家：${country}</div> <div>IP 地址：${ip}</div> </div> <p> 敬启<br> ${api_name} 团队 </p> </div>",
+            "title": "OTP 已启用"
+        }
     }
 }

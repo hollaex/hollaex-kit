@@ -115,6 +115,14 @@
         "USER_DELETED": {
 			"html": "<div><p><p>Yang terhormat ${name} </p></p><p>Permintaan penghapusan akun sedang berlangsung. Informasi di akun Anda akan dihapus sesuai dengan persyaratan layanan.</p><p> Salam<br> ${api_name} tim </p></div>",
 			"title": "Permintaan Penghapusan Akun"
-		}
+		},
+        "OTP_DISABLED": {
+            "html": "<div> <p> प्रिय ${name} </p> <p> हमने देखा है कि आपके खाते पर <b>दो-कारक प्रमाणीकरण (2FA) निष्क्रिय कर दिया गया है</b>। अपने खाते को सुरक्षित बनाने के लिए 2FA को पुनः सक्रिय करना अत्यंत अनिवार्य है।</p> <div> <div>समय: ${time}</div> <div>देश: ${country}</div> <div>IP पता: ${ip}</div> </div> <p> यदि यह आप नहीं थे, तो कृपया हमसे तुरंत संपर्क करें। </p> <p> शुभकामनाएं<br> ${api_name} टीम </p> </div>",
+            "title": "2FA निष्क्रिय किया गया"
+          },
+        "OTP_ENABLED": {
+            "html": "<div> <p> प्रिय ${name} </p> <p> हमने देखा है कि आपके खाते पर <b>दो-कारक प्रमाणीकरण (2FA) सक्रिय हो गया है</b>।</p> <div> <div>समय: ${time}</div> <div>देश: ${country}</div> <div>IP पता: ${ip}</div> </div> <p> शुभकामनाएं<br> ${api_name} टीम </p> </div>",
+            "title": "2FA सक्रिय किया गया"
+        }
     }
 }

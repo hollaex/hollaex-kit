@@ -49,7 +49,11 @@ const MAILTYPE = {
 
 	// KYC
 	DOC_REJECTED: 'doc_rejected',
-	DOC_VERIFIED: 'doc_verified'
+	DOC_VERIFIED: 'doc_verified',
+
+	// OTP
+	OTP_DISABLED: 'otp_disabled',
+	OTP_ENABLED: 'otp_enabled',
 };
 
 const languageFile = (lang) => {

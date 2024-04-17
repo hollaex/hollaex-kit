@@ -77,6 +77,13 @@ const sendEmail = (
 			to.ToAddresses = [AUDIT_EMAIL()];
 			break;
 		}
+		case MAILTYPE.OTP_DISABLED:
+		case MAILTYPE.OTP_ENABLED:{
+			if (data.time) data.time = formatDate(data.time, language);
+			if (data.ip) data.country = getCountryFromIp(data.ip);
+			to.BccAddresses = BCC_ADDRESSES();
+			break;
+		}
 		default:
 			return;
 	}
