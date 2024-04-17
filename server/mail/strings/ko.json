@@ -115,6 +115,14 @@
         "USER_DELETED": {
 			"html":  "<div><p><p>${name}님, 친애하는 </p></p><p>계정 삭제 요청이 진행 중입니다. 귀하의 계정 정보는 서비스 약관에 따라 삭제됩니다.</p><p> 감사합니다.<br> ${api_name} 팀 </p></div>",
 			"title": "계정 삭제 요청"
-		}
+		},
+        "OTP_DISABLED": {
+            "html": "<div> <p> ${name} 님 </p> <p> 귀하의 계정에서 <b>이중 인증 (2FA)이 해제되었다는 것을 기록했습니다</b>. 귀하의 계정을 보호하기 위해 2FA를 다시 활성화하는 것이 강력히 권장됩니다.</p> <div> <div>시간: ${time}</div> <div>국가: ${country}</div> <div>IP 주소: ${ip}</div> </div> <p> 만약 귀하가 아니라면 즉시 저희에게 연락해주십시오. </p> <p> 성의를 다하여<br> ${api_name} 팀 </p> </div>",
+            "title": "OTP 비활성화됨"
+          },
+        "OTP_ENABLED": {
+            "html": "<div> <p> ${name} 님 </p> <p> 귀하의 계정에서 <b>이중 인증 (2FA)이 활성화되었다는 것을 기록했습니다</b>.</p> <div> <div>시간: ${time}</div> <div>국가: ${country}</div> <div>IP 주소: ${ip}</div> </div> <p> 성의를 다하여<br> ${api_name} 팀 </p> </div>",
+            "title": "OTP 활성화됨"
+        }
     }
 }

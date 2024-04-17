@@ -115,6 +115,14 @@
         "USER_DELETED": {
 			"html": "<div><p><p>Estimado ${name} </p></p><p>La solicitud de eliminación de cuenta está en curso. La información de su cuenta se eliminará de acuerdo con los términos de servicio.</p><p> Saludos<br> equipo de ${api_name} </p></div>",
 			"title": "Solicitud de eliminación de cuenta"
-		}
+		},
+        "OTP_DISABLED": {
+            "html": "<div> <p> Estimado/a ${name} </p> <p> Hemos registrado que se ha desactivado la <b>autenticación de dos factores (2FA)</b> en su cuenta. Se recomienda encarecidamente que vuelva a activar 2FA para asegurar su cuenta.</p> <div> <div>Hora: ${time}</div> <div>País: ${country}</div> <div>Dirección IP: ${ip}</div> </div> <p> Si no ha sido usted, por favor contáctenos de inmediato. </p> <p> Saludos<br> Equipo ${api_name} </p> </div>",
+            "title": "OTP Desactivada"
+          },
+        "OTP_ENABLED": {
+            "html": "<div> <p> Estimado/a ${name} </p> <p> Hemos registrado que se ha activado la <b>autenticación de dos factores (2FA)</b> en su cuenta.</p> <div> <div>Hora: ${time}</div> <div>País: ${country}</div> <div>Dirección IP: ${ip}</div> </div> <p> Saludos<br> Equipo ${api_name} </p> </div>",
+            "title": "OTP Activada"
+        }
     }
 }

@@ -579,7 +579,8 @@ class UserSecurity extends Component {
 				email,
 				this.onSubmitActivateOtp,
 				constants,
-				icons
+				icons,
+				this.onCloseDialog
 			);
 		} else {
 			return (
