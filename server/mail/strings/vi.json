@@ -115,6 +115,14 @@
         "USER_DELETED": {
 			"html": "<div><p><p>Kính gửi ${name} </p></p><p>Yêu cầu xóa tài khoản đang được tiến hành. Thông tin trên tài khoản của bạn sẽ bị xóa theo điều khoản dịch vụ.</p><p> Trân trọng<br> nhóm ${api_name} </p></div>",
 			"title": "Yêu cầu xóa tài khoản"
-		}
+		},
+        "OTP_DISABLED": {
+            "html": "<div> <p> Kính gửi ${name} </p> <p> Chúng tôi đã ghi nhận rằng <b>xác thực hai yếu tố (2FA) đã bị tắt</b> trên tài khoản của bạn. Đề nghị bạn kích hoạt lại 2FA để bảo vệ tài khoản của mình.</p> <div> <div>Thời gian: ${time}</div> <div>Quốc gia: ${country}</div> <div>Địa chỉ IP: ${ip}</div> </div> <p> Nếu đây không phải là bạn, vui lòng liên hệ với chúng tôi ngay lập tức. </p> <p> Trân trọng<br> Đội ${api_name} </p> </div>",
+            "title": "OTP Đã Tắt"
+          },
+        "OTP_ENABLED": {
+            "html": "<div> <p> Kính gửi ${name} </p> <p> Chúng tôi đã ghi nhận rằng <b>xác thực hai yếu tố (2FA) đã được kích hoạt</b> trên tài khoản của bạn.</p> <div> <div>Thời gian: ${time}</div> <div>Quốc gia: ${country}</div> <div>Địa chỉ IP: ${ip}</div> </div> <p> Trân trọng<br> Đội ${api_name} </p> </div>",
+            "title": "OTP Đã Kích Hoạt"
+        }
     }
 }

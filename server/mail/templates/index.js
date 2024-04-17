@@ -420,6 +420,20 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		html = html.replace(/\$\{name\}/g, email || '');
 		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
 	}
+	else if (type === MAILTYPE.OTP_DISABLED) {
+		html = html.replace(/\$\{time\}/g, data.time || '');
+		html = html.replace(/\$\{country\}/g, data.country || '');
+		html = html.replace(/\$\{ip\}/g, data.ip || '');
+		html = html.replace(/\$\{name\}/g, email || '');
+		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
+	}
+	else if (type === MAILTYPE.OTP_ENABLED) {
+		html = html.replace(/\$\{time\}/g, data.time || '');
+		html = html.replace(/\$\{country\}/g, data.country || '');
+		html = html.replace(/\$\{ip\}/g, data.ip || '');
+		html = html.replace(/\$\{name\}/g, email || '');
+		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
+	}
 
 	return html;
 };
