@@ -205,7 +205,7 @@ const isFairPriceForBroker = async (broker) => {
 };
 
 const calculatePrice = async (side, spread, formula, refresh_interval, brokerId, isOracle = false) => {
-	const regex = /([a-zA-Z]+(?:_[a-zA-Z]+)+(?:-[a-zA-Z]+))/g;
+	const regex = /([a-zA-Z0-9]+(?:_[a-zA-Z0-9]+)+(?:-[a-zA-Z0-9]+))/g;
 	const variables = formula.match(regex);
 
 	if (!isArray(variables)) 
