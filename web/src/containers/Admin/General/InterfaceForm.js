@@ -35,8 +35,6 @@ const InterfaceForm = ({
 		earning_rate: constants?.kit?.referral_history_config?.earning_rate || null,
 		earning_period:
 			constants?.kit?.referral_history_config?.earning_period || 0,
-		settlement_interval:
-			constants?.kit?.referral_history_config?.settlement_interval || 'month',
 		distributor_id:
 			constants?.kit?.referral_history_config?.distributor_id || null,
 		last_settled_trade:
@@ -76,7 +74,6 @@ const InterfaceForm = ({
 				currency: referralHistoryData.currency,
 				earning_rate: Number(referralHistoryData.earning_rate),
 				earning_period: Number(referralHistoryData.earning_period),
-				settlement_interval: referralHistoryData.settlement_interval,
 				distributor_id: Number(referralHistoryData.distributor_id),
 				last_settled_trade: referralHistoryData.last_settled_trade,
 				date_enabled: referralHistoryData.date_enabled,
@@ -301,28 +298,6 @@ const InterfaceForm = ({
 
 					<div className="mb-4">
 						<div style={{ fontSize: 16 }} className="mb-2">
-							Settlement Interval
-							<div style={{ fontSize: 13 }}>
-								Interval at which to settle refered user fees. Enum: [month,
-								week, day]. Month: Will run every first day of a month at
-								midnight. Week: Will run every Sunday at midnight. Day: Will run
-								every day at midnight.
-							</div>
-						</div>
-
-						<Input
-							value={referralHistoryData.settlement_interval}
-							onChange={(e) => {
-								setReferralHistoryData({
-									...referralHistoryData,
-									settlement_interval: e.target.value,
-								});
-							}}
-						/>
-					</div>
-
-					<div className="mb-4">
-						<div style={{ fontSize: 16 }} className="mb-2">
 							Distributor ID
 							<div style={{ fontSize: 13 }}>
 								Account ID to send settled fees from
@@ -369,7 +344,6 @@ const InterfaceForm = ({
 									referralHistoryData.currency == null ||
 									referralHistoryData.earning_rate == null ||
 									referralHistoryData.earning_period == null ||
-									referralHistoryData.settlement_interval == null ||
 									referralHistoryData.distributor_id == null
 								) {
 									message.error('Please input all the fields');

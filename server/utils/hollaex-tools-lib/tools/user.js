@@ -72,7 +72,6 @@ const {
 	OMITTED_USER_FIELDS,
 	DEFAULT_ORDER_RISK_PERCENTAGE,
 	AFFILIATION_CODE_LENGTH,
-	SETTLEMENT_INTERVAL_ENUM,
 	REFERRAL_HISTORY_SUPPORTED_PLANS,
 	LOGIN_TIME_OUT,
 	TOKEN_TIME_LONG,
@@ -2589,7 +2588,6 @@ const activateReferralFeature = async (data) => {
 	const { 
 		earning_rate: EARNING_RATE, 
 		earning_period: EARNING_PERIOD, 
-		settlement_interval: SETTLEMENT_INTERVAL, 
 		distributor_id: DISTRIBUTOR_ID,
 		last_settled_trade: LAST_SETTLED_TRADE,
 	} = data;
@@ -2607,8 +2605,6 @@ const activateReferralFeature = async (data) => {
 		throw new Error('Earning period with data type number required for plugin');
 	} else if ((!isInteger(EARNING_PERIOD) || EARNING_PERIOD < 0)) {
 		throw new Error('Earning period must be an integer greater than 0');
-	} else if (!SETTLEMENT_INTERVAL_ENUM.includes(SETTLEMENT_INTERVAL)) {
-		throw new Error('Settlement interval with valid value required for plugin');
 	} else if (!isNumber(DISTRIBUTOR_ID)) {
 		throw new Error('Distributor ID required for plugin');
 	} else {

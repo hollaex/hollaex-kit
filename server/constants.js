@@ -659,12 +659,6 @@ exports.BALANCE_HISTORY_SUPPORTED_PLANS = ['fiat', 'boost', 'enterprise'];
 //REFERRAL HISTORY CONSTANTS START
 
 exports.REFERRAL_HISTORY_SUPPORTED_PLANS = ['fiat', 'boost', 'enterprise'];
-exports.SETTLEMENT_INTERVAL_ENUM = ['month', 'week', 'day'];
-exports.INTERVAL_CRON = {
-	month: '0 0 1 * *',
-	week: '0 0 * * 0',
-	day: '0 0 * * *'
-};
 //REFERRAL HISTORY CONSTANTS END
 
 exports.CUSTOM_CSS = `

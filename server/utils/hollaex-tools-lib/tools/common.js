@@ -335,10 +335,6 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 			throw new Error('earning_period key does not exist');
 		}
 
-		if (!newKitConfig.referral_history_config.hasOwnProperty('settlement_interval')) {
-			throw new Error('settlement_interval key does not exist');
-		}
-
 		if (!newKitConfig.referral_history_config.hasOwnProperty('distributor_id')) {
 			throw new Error('distributor_id key does not exist');
 		}
@@ -364,7 +360,6 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 			activateReferralFeature({
 				earning_rate: newKitConfig?.referral_history_config?.earning_rate, 
 				earning_period: newKitConfig?.referral_history_config?.earning_period, 
-				settlement_interval: newKitConfig?.referral_history_config?.settlement_interval, 
 				distributor_id: newKitConfig?.referral_history_config?.distributor_id, 
 				last_settled_trade: newKitConfig?.referral_history_config?.last_settled_trade,
 			});

@@ -7,8 +7,6 @@ const { isNumber } = require('lodash');
 const BigNumber = require('bignumber.js');
 const moment = require('moment');
 const { loggerPlugin } = require('../config/logger');
-const { INTERVAL_CRON } = require('../constants');
-const { settleFees } = require('../utils/hollaex-tools-lib/tools/user');
 
 
 const getTimezone = () => {
