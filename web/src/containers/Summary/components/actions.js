@@ -8,12 +8,12 @@ export const fetchReferralHistory = (values) => {
 };
 
 export const fetchUnrealizedFeeEarnings = () => {
-	return requestAuthenticated(`/user/fees/`);
+	return requestAuthenticated(`/user/referral/unrealized`);
 };
 
 export const postSettleFees = () => {
 	const options = {
 		method: 'POST',
 	};
-	return requestAuthenticated(`/user/fees/`, options);
+	return requestAuthenticated(`/user/referral/unrealized`, options);
 };

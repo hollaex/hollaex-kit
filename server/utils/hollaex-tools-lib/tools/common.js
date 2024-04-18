@@ -343,29 +343,12 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 			newKitConfig.referral_history_config.date_enabled = new Date();
 		}
 
-		if (!existingKitConfig?.referral_history_config?.last_settled_trade) {
-			newKitConfig.referral_history_config.last_settled_trade = new Date();
-		}
-
-		if (existingKitConfig?.referral_history_config?.last_settled_trade && 
-			newKitConfig.referral_history_config.last_settled_trade &&
-			moment(existingKitConfig?.referral_history_config?.last_settled_trade) > 
-			moment(newKitConfig.referral_history_config.last_settled_trade)
-		) {
-			throw new Error('the next last settle date cannot be less than the previous last settle date');
-		}
-
-		if (newKitConfig?.referral_history_config?.active && !newKitConfig?.referral_history_config?.disableStart) {
-			const { activateReferralFeature } = require('./user');
-			activateReferralFeature({
-				earning_rate: newKitConfig?.referral_history_config?.earning_rate, 
-				earning_period: newKitConfig?.referral_history_config?.earning_period, 
-				distributor_id: newKitConfig?.referral_history_config?.distributor_id, 
-				last_settled_trade: newKitConfig?.referral_history_config?.last_settled_trade,
-			});
-		}
-
-		if (newKitConfig?.referral_history_config?.disableStart) delete newKitConfig.referral_history_config.disableStart;
+		const { activateReferralFeature } = require('./user');
+		activateReferralFeature({
+			earning_rate: newKitConfig?.referral_history_config?.earning_rate, 
+			earning_period: newKitConfig?.referral_history_config?.earning_period, 
+			distributor_id: newKitConfig?.referral_history_config?.distributor_id, 
+		});
 	}
 
 	const joinedKitConfig = {};

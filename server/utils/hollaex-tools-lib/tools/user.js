@@ -2589,7 +2589,6 @@ const activateReferralFeature = async (data) => {
 		earning_rate: EARNING_RATE, 
 		earning_period: EARNING_PERIOD, 
 		distributor_id: DISTRIBUTOR_ID,
-		last_settled_trade: LAST_SETTLED_TRADE,
 	} = data;
 
 	const exchangeInfo = getKitConfig().info;
@@ -2614,50 +2613,9 @@ const activateReferralFeature = async (data) => {
 			throw new Error('Distrubutor user does not exist');
 		}
 	}
-	const { getAllTradesNetwork } = require('./order');
-	if (!LAST_SETTLED_TRADE) {
-		loggerUser.verbose(
-			'REFERRAL initialization updating empty last_settled_trade to most recent trade timestamp'
-		);
-
-		const trades = await getAllTradesNetwork(
-			null,
-			1,
-			null,
-			'timestamp',
-			'desc'
-		);
-
-		let lastTradeTimestamp = moment().toISOString();
-
-		if (trades.data[0]) {
-			lastTradeTimestamp = trades.data[0].timestamp;
-		}
-
-		await updateLastSettledTrade(lastTradeTimestamp, data);
-	}
-}
-
-const updateLastSettledTrade = async (timestamp, configData = null) => {
-
-	const referral_history_config = getKitConfig()?.referral_history_config || {};
-
-	return updateKitConfigSecrets(
-		{
-			kit: {
-				referral_history_config: {
-					...(configData ? configData : referral_history_config),
-					last_settled_trade: timestamp,
-					disableStart: true
-				},
-			},
-		},
-		['admin'],
-		{}
-	)
 };
 
-const getUnrealizedFees = async (user_id, currentTime) => {
+const getUnrealizedReferral = async (user_id, currentTime) => {
 	const data = await  client.getAsync(`${user_id}user-unrealized-fees`);
 	if (data) return JSON.parse(data);
 
@@ -3526,7 +3484,7 @@ const fetchUserReferrals = async (opts = {
 		result.total = referrals?.[0]?.accumulated_fees;
 		return result;
 	}
-}
+};
 
 const getUserBalanceHistory = (opts = {
 	user_id: null,
@@ -3619,8 +3577,6 @@ const getUserBalanceHistory = (opts = {
 			});
 	}
 };
-
-
 
 const fetchUserProfitLossInfo = async (user_id) => {
 
@@ -3906,6 +3862,6 @@ module.exports = {
 	settledFeesEmail,
 	activateReferralFeature,
 	settleFees,
-	getUnrealizedFees,
+	getUnrealizedReferral,
 	fetchUserReferrals
 };

@@ -1489,11 +1489,11 @@ paths:
         - bearer
       x-security-scopes:
         - user
-  /user/fees:
+  /user/referral/unrealized:
     x-swagger-router-controller: user
     get:
       description: Get user unrealized fee earnings
-      operationId: getUnrealizedUserFees
+      operationId: getUnrealizedUserReferral
       tags:
         - User
       responses:

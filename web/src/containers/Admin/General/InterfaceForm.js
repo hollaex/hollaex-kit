@@ -37,8 +37,6 @@ const InterfaceForm = ({
 			constants?.kit?.referral_history_config?.earning_period || 0,
 		distributor_id:
 			constants?.kit?.referral_history_config?.distributor_id || null,
-		last_settled_trade:
-			constants?.kit?.referral_history_config?.last_settled_trade || null,
 		date_enabled:
 			constants?.kit?.referral_history_config?.date_enabled || new Date(),
 		active: constants?.kit?.referral_history_config?.active,
@@ -75,7 +73,6 @@ const InterfaceForm = ({
 				earning_rate: Number(referralHistoryData.earning_rate),
 				earning_period: Number(referralHistoryData.earning_period),
 				distributor_id: Number(referralHistoryData.distributor_id),
-				last_settled_trade: referralHistoryData.last_settled_trade,
 				date_enabled: referralHistoryData.date_enabled,
 			};
 			handleSaveInterface(
@@ -510,7 +507,7 @@ const InterfaceForm = ({
 													setDisplayReferralHistoryModal(true);
 												}}
 											>
-												Edit
+												Configure
 											</span>
 										)}
 										<div className="small-text">

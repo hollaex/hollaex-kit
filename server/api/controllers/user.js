@@ -1251,27 +1251,27 @@ const fetchUserProfitLossInfo = (req, res) => {
 		});
 };
 
-const getUnrealizedUserFees = (req, res) => {
+const getUnrealizedUserReferral = (req, res) => {
 	loggerUser.info(
 		req.uuid,
-		'GET /user/getUnrealizedUserFees',
+		'GET /user/getUnrealizedUserReferral',
 	);
 
 	const currentTime = moment().seconds(0).milliseconds(0).toISOString();
 
-	toolsLib.user.getUnrealizedFees(req.auth.sub.id, currentTime)
+	toolsLib.user.getUnrealizedReferral(req.auth.sub.id, currentTime)
 		.then((data) => {
 			return res.json({ data });
 		})
 		.catch((err) => {
 			loggerUser.error(
 				req.uuid,
-				'GET /user/getUnrealizedUserFees err',
+				'GET /user/getUnrealizedUserReferral err',
 				err.message
 			);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
-}
+};
 
 
 const settleUserFees = (req, res) => {
@@ -1294,7 +1294,7 @@ const settleUserFees = (req, res) => {
 			);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
-}
+};
 
 const fetchUserReferrals = (req, res) => {
 	const { limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
@@ -1334,7 +1334,7 @@ const fetchUserReferrals = (req, res) => {
 			);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
-}
+};
 
 
 module.exports = {
@@ -1367,7 +1367,7 @@ module.exports = {
 	getUserSessions,
 	userLogout,
 	userDelete,
-	getUnrealizedUserFees,
+	getUnrealizedUserReferral,
 	settleUserFees,
 	getUserBalanceHistory,
 	fetchUserProfitLossInfo,
