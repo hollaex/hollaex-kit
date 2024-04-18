@@ -284,42 +284,47 @@ const ProfitLossSection = ({
 						.decimalPlaces(decimalPointNative)
 						.toNumber();
 
-					return (
-						<tr className="table-row" key={index}>
-							<td
-								style={{
-									padding: '1.25em',
-									borderBottom: '1px solid grey',
-									minWidth: '15.5em',
-								}}
-								className="table-icon td-fit"
-							>
-								<Link to={`/assets/coin/${coin.symbol}`} className="underline">
-									<div
-										className="d-flex align-items-center wallet-hover cursor-pointer"
-										style={{ cursor: 'pointer' }}
+					if (sourceAmount > 0) {
+						return (
+							<tr className="table-row" key={index}>
+								<td
+									style={{
+										padding: '1.25em',
+										borderBottom: '1px solid grey',
+										minWidth: '15.5em',
+									}}
+									className="table-icon td-fit"
+								>
+									<Link
+										to={`/assets/coin/${coin.symbol}`}
+										className="underline"
 									>
-										<Coin iconId={coin.icon_id} />
-										<div className="px-2">{coin.display_name}</div>
-									</div>
-								</Link>
-							</td>
-							<td
-								style={{ borderBottom: '1px solid grey', minWidth: '15.5em' }}
-								className="td-fit"
-							>
-								{sourceAmount} {coin.symbol.toUpperCase()}
-							</td>
+										<div
+											className="d-flex align-items-center wallet-hover cursor-pointer"
+											style={{ cursor: 'pointer' }}
+										>
+											<Coin iconId={coin.icon_id} />
+											<div className="px-2">{coin.display_name}</div>
+										</div>
+									</Link>
+								</td>
+								<td
+									style={{ borderBottom: '1px solid grey', minWidth: '15.5em' }}
+									className="td-fit"
+								>
+									{sourceAmount} {coin.symbol.toUpperCase()}
+								</td>
 
-							<td
-								style={{ borderBottom: '1px solid grey', minWidth: '15.5em' }}
-								className="td-fit"
-							>
-								= {sourceAmountNative}{' '}
-								{balance_history_config?.currency?.toUpperCase() || 'USDT'}
-							</td>
-						</tr>
-					);
+								<td
+									style={{ borderBottom: '1px solid grey', minWidth: '15.5em' }}
+									className="td-fit"
+								>
+									= {sourceAmountNative}{' '}
+									{balance_history_config?.currency?.toUpperCase() || 'USDT'}
+								</td>
+							</tr>
+						);
+					}
 				})}
 			</>
 		);
