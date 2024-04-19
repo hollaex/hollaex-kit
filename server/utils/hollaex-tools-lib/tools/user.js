@@ -2620,9 +2620,9 @@ const activateReferralFeature = async (data) => {
 const getUnrealizedReferral = async (user_id) => {
 	const exchangeInfo = getKitConfig().info;
 
-    if (!REFERRAL_HISTORY_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
-        throw new Error(REFERRAL_UNSUPPORTED_EXCHANGE_PLAN);
-    }
+	if (!REFERRAL_HISTORY_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
+		throw new Error(REFERRAL_UNSUPPORTED_EXCHANGE_PLAN);
+	}
 
 	const { active } = getKitConfig()?.referral_history_config || {};
 	if  (!active) {
@@ -2649,9 +2649,9 @@ const createUnrealizedReferralFees = async (currentTime, startingTradeDate) => {
 
 	const exchangeInfo = getKitConfig().info;
 
-    if (!REFERRAL_HISTORY_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
-        throw new Error(REFERRAL_UNSUPPORTED_EXCHANGE_PLAN);
-    }
+	if (!REFERRAL_HISTORY_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
+		throw new Error(REFERRAL_UNSUPPORTED_EXCHANGE_PLAN);
+	}
 
 	const { getAllTradesNetwork } = require('./order');
 	const referralHistoryModel = getModel('Referralhistory');
@@ -2868,7 +2868,7 @@ const createUnrealizedReferralFees = async (currentTime, startingTradeDate) => {
 
 			referralHistory.forEach(refHistory => {
 				refHistory.accumulated_fees = applyEarningRate(refHistory.accumulated_fees);
-			})
+			});
 
 
 			return all([
@@ -2883,7 +2883,7 @@ const createUnrealizedReferralFees = async (currentTime, startingTradeDate) => {
 			const conversions = await getNodeLib().getOraclePrices(exchangeCoins, {
 				quote: nativeCurrency,
 				amount: 1
-				});
+			});
 
 
 			for (let receiverKey in accumulatedFees) {
@@ -2917,9 +2917,9 @@ const settleFees = async (user_id) => {
 
 	const exchangeInfo = getKitConfig().info;
 
-    if (!REFERRAL_HISTORY_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
-        throw new Error(REFERRAL_UNSUPPORTED_EXCHANGE_PLAN);
-    }
+	if (!REFERRAL_HISTORY_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
+		throw new Error(REFERRAL_UNSUPPORTED_EXCHANGE_PLAN);
+	}
 
 	const distributor = await getUserByKitId(distributor_id, true, true);
 
@@ -2936,7 +2936,7 @@ const settleFees = async (user_id) => {
 	const conversions = await getNodeLib().getOraclePrices(exchangeCoins, {
 		quote: 'usdt',
 		amount: 1
-		});
+	});
 
 
 	let totalValue = 0;
@@ -2984,13 +2984,13 @@ const settleFees = async (user_id) => {
 
 const fetchUserReferrals = async (opts = {
 	user_id: null,
-    limit: null,
-    page: null,
-    order_by: null,
-    order: null,
-    start_date: null,
-    end_date: null,
-    format: null
+	limit: null,
+	page: null,
+	order_by: null,
+	order: null,
+	start_date: null,
+	end_date: null,
+	format: null
 }) => {
 	const referralHistoryModel = getModel('Referralhistory');
 	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
@@ -3002,25 +3002,25 @@ const fetchUserReferrals = async (opts = {
 		},
 		attributes: [
 			[fn('sum', col('accumulated_fees')), 'accumulated_fees']
-		  ],
+		],
 		group: []
 	};
 
-	if (!opts.format) { query.where.created_at = timeframe; query = {...query }};
+	if (!opts.format) { query.where.created_at = timeframe; query = {...query };}
 
 	if (opts.order_by === 'referee') {
-		query.attributes.push('referee')
-		query.group.push('referee')
+		query.attributes.push('referee');
+		query.group.push('referee');
 
 		return referralHistoryModel.findAll(query)
-		.then(async (referrals) => {
-			return { count: referrals.length , data: referrals };
-		})
+			.then(async (referrals) => {
+				return { count: referrals.length , data: referrals };
+			});
 	} else {
-		query.attributes.push([dateTruc, 'date'])
-		query.group.push('date')
+		query.attributes.push([dateTruc, 'date']);
+		query.group.push('date');
 
-		let result = {}
+		let result = {};
 		let referrals = await referralHistoryModel.findAll(query);
 		result = { count: referrals.length , data: referrals };
 
