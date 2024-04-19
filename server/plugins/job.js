@@ -6,6 +6,7 @@ const { sendEmail } = require('../mail');
 const { isNumber } = require('lodash');
 const BigNumber = require('bignumber.js');
 const moment = require('moment');
+
 const { loggerPlugin } = require('../config/logger');
 
 
@@ -250,11 +251,48 @@ const updateRewardsCheckRunner = () => {
 	});
 }
 
+const referralTradesRunner = () =>{
+	cron.schedule('0 0 0 * * *', async () => {
+		loggerPlugin.verbose(
+			'/plugins referralTradesRunner start'
+		);
+		try {
+			const statusModel = toolsLib.database.getModel('status');
+			const status = await statusModel.findOne({});
+			if (!status?.kit?.referral_history_config?.active) return;
+
+			const currentTime = moment().seconds(0).milliseconds(0).toISOString();
+			const startingTradeDate = moment().subtract(24, 'hours'); 
+			await toolsLib.user.createUnrealizedReferralFees(currentTime, startingTradeDate);
+
+		} catch (err) {
+			const adminAccount = await toolsLib.user.getUserByKitId(1);
+			sendEmail(
+				MAILTYPE.ALERT,
+				adminAccount.email,
+				{
+					type: 'Error during referralTradesRunner process!',
+					data: err.message
+				},
+				adminAccount.settings
+			);
+			loggerPlugin.error(
+				'/plugins referralTradesRunner error:',
+				err.message
+			);
+		}
+	}, {
+		scheduled: true,
+		timezone: getTimezone()
+	});
+}
+
 
 unstakingCheckRunner();
 updateRewardsCheckRunner();
 
 module.exports = {
     unstakingCheckRunner,
-    updateRewardsCheckRunner
+    updateRewardsCheckRunner,
+	referralTradesRunner
 }

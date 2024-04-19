@@ -35,6 +35,10 @@ module.exports = {
 				type: Sequelize.DOUBLE,
 				allowNull: false
 			},
+			status: {
+				type: Sequelize.BOOLEAN,
+				allowNull: false
+			},
 			timestamp: {
 				type: Sequelize.DATE,
 				allowNull: false

@@ -39,6 +39,10 @@ module.exports = function (sequelize, DataTypes) {
 			type: DataTypes.DATE,
 			allowNull: false
 		},
+		status: {
+			type: DataTypes.BOOLEAN,
+			allowNull: false
+		}
 	}, {
 		timestamps: true,
 		underscored: true,

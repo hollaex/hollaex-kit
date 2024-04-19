@@ -1254,19 +1254,17 @@ const fetchUserProfitLossInfo = (req, res) => {
 const getUnrealizedUserReferral = (req, res) => {
 	loggerUser.info(
 		req.uuid,
-		'GET /user/getUnrealizedUserReferral',
+		'GET controllers/user/getUnrealizedUserReferral',
 	);
 
-	const currentTime = moment().seconds(0).milliseconds(0).toISOString();
-
-	toolsLib.user.getUnrealizedReferral(req.auth.sub.id, currentTime)
+	toolsLib.user.getUnrealizedReferral(req.auth.sub.id)
 		.then((data) => {
 			return res.json({ data });
 		})
 		.catch((err) => {
 			loggerUser.error(
 				req.uuid,
-				'GET /user/getUnrealizedUserReferral err',
+				'GET controllers/user/getUnrealizedUserReferral err',
 				err.message
 			);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
@@ -1277,7 +1275,7 @@ const getUnrealizedUserReferral = (req, res) => {
 const settleUserFees = (req, res) => {
 	loggerUser.info(
 		req.uuid,
-		'POST /user/settleUserFees',
+		'POST controllers/user/settleUserFees',
 	);
 
 	const currentTime = moment().seconds(0).milliseconds(0).toISOString();
@@ -1289,7 +1287,7 @@ const settleUserFees = (req, res) => {
 		.catch((err) => {
 			loggerUser.error(
 				req.uuid,
-				'POST /user/settleUserFees err',
+				'POST controllers/user/settleUserFees err',
 				err.message
 			);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
@@ -1301,7 +1299,7 @@ const fetchUserReferrals = (req, res) => {
 
 	loggerUser.info(
 		req.uuid,
-		'GET /user/referrals query',
+		'GET controllers/user/referrals query',
 		limit,
 		page,
 		order_by,
@@ -1329,7 +1327,7 @@ const fetchUserReferrals = (req, res) => {
 		.catch((err) => {
 			loggerUser.error(
 				req.uuid,
-				'GET /user/referrals err',
+				'GET controllers/user/referrals err',
 				err.message
 			);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
