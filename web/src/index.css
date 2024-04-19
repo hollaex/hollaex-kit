@@ -377,8 +377,8 @@ table th {
     height: auto;
     flex: 1; }
   .app_container.layout-mobile .app_container-content {
-    min-height: calc( 100vh - 10rem);
-    max-height: calc( 100vh - 10rem);
+    min-height: calc( 100vh - 10rem);
+    max-height: calc( 100vh - 10rem);
     max-width: 100vw;
     overflow-y: scroll; }
     .app_container.layout-mobile .app_container-content.chart-embed {
@@ -396,8 +396,8 @@ table th {
       .app_container.layout-mobile .app_container-content .app_container-main.no_bottom_navigation {
         height: 100%; }
   .app_container.layout-mobile .content-with-bar {
-    min-height: calc( 100vh - 17rem);
-    max-height: calc( 100vh - 17rem);
+    min-height: calc( 100vh - 17rem);
+    max-height: calc( 100vh - 17rem);
     max-width: 100vw;
     padding: 1rem;
     margin: 0;
@@ -850,11 +850,8 @@ table th {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 30px;
   padding: 30px;
   background-color: var(--base_wallet-sidebar-and-popup); }
-  .user_security-wrapper > *:not(:last-child) {
-    margin-bottom: 2rem; }
 
 .OTP_Success {
   width: 30px;
@@ -868,6 +865,48 @@ table th {
   flex-direction: column;
   min-width: 30rem;
   width: 30rem; }
+  .otp_form-wrapper .step-one-pop-up .otp-border {
+    margin-bottom: 5%;
+    border-bottom: 1px solid var(--calculated_important-border);
+    width: 100%; }
+  .otp_form-wrapper .step-one-pop-up .download-content-title {
+    font-weight: bold;
+    margin-bottom: 2%; }
+  .otp_form-wrapper .step-one-pop-up .store-icons-wrapper {
+    display: flex;
+    justify-content: space-evenly;
+    margin-bottom: 5%; }
+    .otp_form-wrapper .step-one-pop-up .store-icons-wrapper .play-store-field {
+      cursor: pointer;
+      padding: 2%;
+      width: 100%;
+      height: 50%;
+      color: var(--labels_important-active-labels-text-graphics);
+      font-size: 12px;
+      border-radius: 10px;
+      background-color: var(--labels_important-active-labels-text-graphics); }
+  .otp_form-wrapper .step-one-pop-up .app-info {
+    margin-bottom: 5%; }
+  .otp_form-wrapper .step-one-pop-up .uninstall-info {
+    margin-bottom: 5%;
+    color: #FFBB00;
+    font-weight: bold; }
+  .otp_form-wrapper .step-one-pop-up .btn-wrapper, .otp_form-wrapper .step-two-pop-up .btn-wrapper {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10%; }
+    .otp_form-wrapper .step-one-pop-up .btn-wrapper .back-btn, .otp_form-wrapper .step-one-pop-up .btn-wrapper .proceed-btn, .otp_form-wrapper .step-two-pop-up .btn-wrapper .back-btn, .otp_form-wrapper .step-two-pop-up .btn-wrapper .proceed-btn {
+      background-color: var(--specials_buttons-links-and-highlights);
+      border: none;
+      width: 45%;
+      text-align: center;
+      color: var(--labels_important-active-labels-text-graphics); }
+  .otp_form-wrapper .step-three-pop-up .back-btn {
+    background-color: var(--specials_buttons-links-and-highlights);
+    border: none;
+    width: 100%;
+    text-align: center;
+    color: var(--labels_important-active-labels-text-graphics); }
   .otp_form-wrapper .otp_form-section-wrapper {
     border-top: 1px solid var(--calculated_important-border);
     padding: 0.75rem 0; }
@@ -1006,6 +1045,17 @@ table th {
 
 .user-security-container .checkbutton-input-wrapper {
   margin-top: 0px !important; }
+
+.otp-field-wrapper {
+  margin-top: 3%; }
+  .otp-field-wrapper .warning_text {
+    padding: 10px;
+    text-align: center;
+    background-color: var(--specials_notifications-alerts-warnings);
+    color: var(--labels_important-active-labels-text-graphics); }
+    .otp-field-wrapper .warning_text .improtant-text {
+      font-weight: bold;
+      text-decoration: underline; }
 
 .layout-mobile .user_security-wrapper .warning_text {
   font-size: 13px !important; }
@@ -1565,60 +1615,59 @@ table th {
 .layout-mobile .button-container {
   min-height: 4.5rem; }
 
-.layout-mobile .currency-list-container .wallet-currency {
-  max-width: calc(100vw - 6rem); }
+.layout-mobile .show-asset-wrapper {
+  font-size: 14px; }
+  .layout-mobile .show-asset-wrapper .caret-right-icon {
+    margin-top: 0.5%; }
 
-.layout-mobile .currency-list-container .balance-big {
-  font-size: 4rem; }
-
-.layout-mobile .currency-list-container .balance-small {
-  font-size: 1.5rem; }
-
-.layout-mobile .currency-list-container .button-container .holla-button {
-  font-size: 13px !important; }
-
-.layout-mobile .currency-list-container .donut-container {
-  height: 30rem !important;
-  width: 100%; }
-
-.layout-mobile .currency-list-container .rounded-loading {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  text-align: center;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  border: 1px solid #808080;
-  background-color: var(--calculated_secondary-border) !important;
-  animation: outer-round-anim 3s ease infinite; }
-
-.layout-mobile .currency-list-container .inner-round {
-  background-color: var(--base_wallet-sidebar-and-popup);
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  margin: 0 auto;
-  border: 1px solid #808080; }
-
-.layout-mobile .currency-list-container .loading-wrapper {
-  height: 16rem;
-  flex-direction: column; }
-  .layout-mobile .currency-list-container .loading-wrapper .d-none {
-    display: none; }
-  .layout-mobile .currency-list-container .loading-wrapper .loading-txt {
+.layout-mobile .currency-list-container {
+  background-color: var(--base_wallet-sidebar-and-popup); }
+  .layout-mobile .currency-list-container .wallet-currency {
+    max-width: calc(100vw - 6rem); }
+  .layout-mobile .currency-list-container .balance-big {
+    font-size: 4rem; }
+  .layout-mobile .currency-list-container .balance-small {
+    font-size: 1.5rem; }
+  .layout-mobile .currency-list-container .button-container .holla-button {
+    font-size: 13px !important; }
+  .layout-mobile .currency-list-container .donut-container {
+    height: 30rem !important;
+    width: 100%; }
+  .layout-mobile .currency-list-container .rounded-loading {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
     text-align: center;
-    margin-bottom: 1rem;
-    margin-top: 5rem; }
-
-.layout-mobile .currency-list-container .dot-flashing {
-  position: relative;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background-color: #34363a;
-  color: #34363a;
-  animation: dotFlashing 3s infinite; }
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    border: 1px solid #808080;
+    background-color: var(--calculated_secondary-border) !important;
+    animation: outer-round-anim 3s ease infinite; }
+  .layout-mobile .currency-list-container .inner-round {
+    background-color: var(--base_wallet-sidebar-and-popup);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin: 0 auto;
+    border: 1px solid #808080; }
+  .layout-mobile .currency-list-container .loading-wrapper {
+    height: 16rem;
+    flex-direction: column; }
+    .layout-mobile .currency-list-container .loading-wrapper .d-none {
+      display: none; }
+    .layout-mobile .currency-list-container .loading-wrapper .loading-txt {
+      text-align: center;
+      margin-bottom: 1rem;
+      margin-top: 5rem; }
+  .layout-mobile .currency-list-container .dot-flashing {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #34363a;
+    color: #34363a;
+    animation: dotFlashing 3s infinite; }
 
 .layout-mobile .wallet-container .action_notification-wrapper .action_notification-text {
   font-size: 1.2rem !important;
@@ -1657,6 +1706,8 @@ table th {
     font-size: 13px !important; }
   .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper {
     flex-direction: column; }
+    .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .hide-switch-wrapper {
+      margin-top: 5% !important; }
 
 .layout-mobile .wallet-container .action-button-wrapper {
   padding: 5px 2px; }
@@ -3690,8 +3741,8 @@ table th {
 .layout-mobile .quote-container {
   background-color: transparent;
   overflow-y: scroll;
-  min-height: calc( 100vh - 17rem);
-  max-height: calc( 100vh - 17rem); }
+  min-height: calc( 100vh - 17rem);
+  max-height: calc( 100vh - 17rem); }
   .layout-mobile .quote-container .quick_trade-wrapper {
     flex: 1 1;
     flex-direction: column;
@@ -3864,7 +3915,7 @@ table th {
 
 .layout-mobile .presentation_container.verification_container {
   padding-top: 0 !important;
-  max-height: calc( 100vh - 10rem); }
+  max-height: calc( 100vh - 10rem); }
   .layout-mobile .presentation_container.verification_container .header-content {
     font-size: 13px !important; }
 
@@ -6410,7 +6461,7 @@ table th {
     padding: 0.3rem 0; }
     .modal-market-menu .app-bar-add-tab-content .scroll-view {
       overflow-y: auto;
-      height: calc( 100vh - 19rem - 8rem); }
+      height: calc( 100vh - 19rem - 8rem); }
   .modal-market-menu .app-bar-tab-overflow-content {
     background-color: var(--base_background);
     color: var(--labels_secondary-inactive-label-text-graphics);
@@ -8864,14 +8915,14 @@ table th {
   right: 0 !important;
   min-width: 100vw;
   max-width: 100vw;
-  min-height: calc( 100vh - 4rem);
-  max-height: calc( 100vh - 4rem);
+  min-height: calc( 100vh - 4rem);
+  max-height: calc( 100vh - 4rem);
   border-radius: 0 !important;
   padding: 0 !important; }
   .layout-mobile .ReactModal__Content .dialog-mobile-content {
     padding: 2.5rem !important;
-    min-height: calc( 100vh - 8rem);
-    max-height: calc( 100vh - 8rem);
+    min-height: calc( 100vh - 8rem);
+    max-height: calc( 100vh - 8rem);
     display: flex; }
 
 .layout-mobile.LogoutModal .ReactModal__Content {
@@ -11193,7 +11244,7 @@ table th {
   display: flex; }
 
 .price-change .markets-drop-down.down:before {
-  margin-top: 10%; }
+  margin: 10% 0 0 0; }
 
 .hollaex-token-wrapper {
   font-family: 'Open Sans' !important; }

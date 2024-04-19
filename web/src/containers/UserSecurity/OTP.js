@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { CheckboxButton, IconTitle, EditWrapper } from 'components';
 import QRCode from 'qrcode.react';
+// import { Button, message } from 'antd';
+import { CloseCircleOutlined } from '@ant-design/icons';
+import { CheckboxButton, IconTitle, EditWrapper } from 'components';
 import OTPForm from './OTPForm';
 import STRINGS from 'config/localizedStrings';
 import { Image } from 'hollaex-web-lib';
-import { Button, message } from 'antd';
+import { RenderBtn, RenderBackBtn } from './utils_logins';
 
 const OtpFormSteps = ({
 	secret,
@@ -29,31 +31,15 @@ const OtpFormSteps = ({
 				textType="title"
 			/>
 			{step === 0 && (
-				<div style={{ textAlign: 'center' }}>
-					<div
-						style={{ marginBottom: 20, borderBottom: '1px solid #ccc' }}
-					></div>
-					<div style={{ fontWeight: 'bold', marginBottom: 10 }}>
+				<div className="step-one-pop-up text-center">
+					<div className="otp-border"></div>
+					<div className="download-content-title">
 						<EditWrapper stringId="ACCOUNT_SECURITY.OTP.DOWNLOAD_APP">
 							{STRINGS['ACCOUNT_SECURITY.OTP.DOWNLOAD_APP']}
 						</EditWrapper>
 					</div>
-					<div
-						style={{
-							display: 'flex',
-							gap: 10,
-							justifyContent: 'center',
-							alignItems: 'center',
-							marginBottom: 20,
-						}}
-					>
+					<div className="store-icons-wrapper">
 						<div
-							onClick={() =>
-								window.open(
-									'https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en&gl=US',
-									'_blank'
-								)
-							}
 							style={{
 								cursor: 'pointer',
 								padding: 10,
@@ -64,6 +50,12 @@ const OtpFormSteps = ({
 								borderRadius: 10,
 								backgroundColor: '#F5F5F7',
 							}}
+							onClick={() =>
+								window.open(
+									'https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en&gl=US',
+									'_blank'
+								)
+							}
 						>
 							<div style={{ display: 'flex', gap: 5 }}>
 								<div>
@@ -163,17 +155,13 @@ const OtpFormSteps = ({
 							</div>
 						</div>
 					</div>
-					<div style={{ marginBottom: 20 }}>
+					<div className="app-info">
 						<EditWrapper stringId="ACCOUNT_SECURITY.OTP.APP_INFO">
 							{STRINGS['ACCOUNT_SECURITY.OTP.APP_INFO']}
 						</EditWrapper>
 					</div>
-					<div
-						style={{ marginBottom: 20, borderBottom: '1px solid #ccc' }}
-					></div>
-					<div
-						style={{ marginBottom: 20, color: '#FFBB00', fontWeight: 'bold' }}
-					>
+					<div className="otp-border"></div>
+					<div className="uninstall-info">
 						<EditWrapper stringId="ACCOUNT_SECURITY.OTP.DONT_UNINSTALL">
 							{STRINGS['ACCOUNT_SECURITY.OTP.DONT_UNINSTALL']}
 						</EditWrapper>
@@ -183,59 +171,12 @@ const OtpFormSteps = ({
 							{STRINGS['ACCOUNT_SECURITY.OTP.INFO_UNINSTALL']}
 						</EditWrapper>
 					</div>
-
-					<div
-						style={{
-							display: 'flex',
-							justifyContent: 'center',
-							gap: 15,
-							marginTop: 20,
-						}}
-					>
-						<div>
-							<Button
-								onClick={() => {
-									closeDialog();
-								}}
-								style={{
-									backgroundColor: '#5D63FF',
-									border: 'none',
-									width: 150,
-									height: 50,
-									textAlign: 'center',
-									color: 'white',
-								}}
-							>
-								<EditWrapper stringId="ACCOUNT_SECURITY.OTP.BACK">
-									{STRINGS['ACCOUNT_SECURITY.OTP.BACK']}
-								</EditWrapper>
-							</Button>
-						</div>
-						<div>
-							<Button
-								onClick={() => {
-									setStep(1);
-								}}
-								style={{
-									backgroundColor: '#5D63FF',
-									border: 'none',
-									width: 150,
-									height: 50,
-									textAlign: 'center',
-									color: 'white',
-								}}
-							>
-								<EditWrapper stringId="ACCOUNT_SECURITY.OTP.PROCEED">
-									{STRINGS['ACCOUNT_SECURITY.OTP.PROCEED']}
-								</EditWrapper>
-							</Button>
-						</div>
-					</div>
+					<RenderBtn closeDialog={closeDialog} setStep={setStep} step={1} />
 				</div>
 			)}
 
 			{step === 1 && (
-				<div>
+				<div className="step-two-pop-up">
 					<div className="otp_form-section-wrapper">
 						<div className="otp_form-section-title">
 							<EditWrapper
@@ -276,59 +217,13 @@ const OtpFormSteps = ({
 						<div className="otp_form-section-content otp_secret">{secret}</div>
 					</div>
 					<div className="otp_form-section-wrapper">
-						<div
-							style={{
-								display: 'flex',
-								justifyContent: 'center',
-								gap: 15,
-								marginTop: 20,
-							}}
-						>
-							<div>
-								<Button
-									onClick={() => {
-										setStep(0);
-									}}
-									style={{
-										backgroundColor: '#5D63FF',
-										border: 'none',
-										width: 150,
-										height: 50,
-										textAlign: 'center',
-										color: 'white',
-									}}
-								>
-									<EditWrapper stringId="ACCOUNT_SECURITY.OTP.BACK">
-										{STRINGS['ACCOUNT_SECURITY.OTP.BACK']}
-									</EditWrapper>
-								</Button>
-							</div>
-							<div>
-								<Button
-									onClick={() => {
-										setStep(2);
-									}}
-									style={{
-										backgroundColor: '#5D63FF',
-										border: 'none',
-										width: 150,
-										height: 50,
-										textAlign: 'center',
-										color: 'white',
-									}}
-								>
-									<EditWrapper stringId="ACCOUNT_SECURITY.OTP.PROCEED">
-										{STRINGS['ACCOUNT_SECURITY.OTP.PROCEED']}
-									</EditWrapper>
-								</Button>
-							</div>
-						</div>
+						<RenderBtn closeDialog={closeDialog} setStep={setStep} step={2} />
 					</div>
 				</div>
 			)}
 
 			{step === 2 && (
-				<div>
+				<div className="step-three-pop-up">
 					<div className="otp_form-section-title">
 						<EditWrapper stringId="ACCOUNT_SECURITY.OTP.MANUEL_DESCRIPTION">
 							{STRINGS['ACCOUNT_SECURITY.OTP.MANUEL_DESCRIPTION']}
@@ -368,54 +263,7 @@ const OtpFormSteps = ({
 						}}
 					>
 						<div>
-							<Button
-								onClick={() => {
-									setStep(1);
-								}}
-								style={{
-									backgroundColor: '#5D63FF',
-									border: 'none',
-									width: 150,
-									height: 50,
-									textAlign: 'center',
-									color: 'white',
-								}}
-							>
-								<EditWrapper stringId="ACCOUNT_SECURITY.OTP.BACK">
-									{STRINGS['ACCOUNT_SECURITY.OTP.BACK']}
-								</EditWrapper>
-							</Button>
-						</div>
-						<div>
-							<Button
-								onClick={() => {
-									if (!otpValue) {
-										message.error(
-											STRINGS['ACCOUNT_SECURITY.OTP.MANUEL_ERROR_1']
-										);
-										return;
-									}
-									if (otpValue !== secret) {
-										message.error(
-											STRINGS['ACCOUNT_SECURITY.OTP.MANUEL_ERROR_2']
-										);
-										return;
-									}
-									setStep(3);
-								}}
-								style={{
-									backgroundColor: '#5D63FF',
-									border: 'none',
-									width: 150,
-									height: 50,
-									textAlign: 'center',
-									color: 'white',
-								}}
-							>
-								<EditWrapper stringId="ACCOUNT_SECURITY.OTP.PROCEED">
-									{STRINGS['ACCOUNT_SECURITY.OTP.PROCEED']}
-								</EditWrapper>
-							</Button>
+							<RenderBackBtn setStep={setStep} step={1} />
 						</div>
 					</div>
 				</div>
@@ -432,23 +280,7 @@ const OtpFormSteps = ({
 							</EditWrapper>
 						</div>
 						<OTPForm onSubmit={activateOTP} />
-						<Button
-							onClick={() => {
-								setStep(2);
-							}}
-							style={{
-								backgroundColor: '#5D63FF',
-								border: 'none',
-								width: '100%',
-								height: 40,
-								textAlign: 'center',
-								color: 'white',
-							}}
-						>
-							<EditWrapper stringId="ACCOUNT_SECURITY.OTP.BACK">
-								{STRINGS['ACCOUNT_SECURITY.OTP.BACK']}
-							</EditWrapper>
-						</Button>
+						<RenderBackBtn setStep={setStep} step={2} />
 					</div>
 				</div>
 			)}
@@ -484,12 +316,39 @@ export const OTP = ({
 	icons = {},
 }) => (
 	<div>
-		<div className={!otp_enabled ? 'user_security-wrapper' : ''}>
+		<div>
 			{!otp_enabled && (
-				<div className="warning_text">
-					<EditWrapper stringId="ACCOUNT_SECURITY.OTP.CONTENT.WARNING">
-						{STRINGS['ACCOUNT_SECURITY.OTP.CONTENT.WARNING']}
-					</EditWrapper>
+				<div className="otp-field-wrapper">
+					<div className="warning_text">
+						<EditWrapper stringId="ACCOUNT_SECURITY.OTP.CONTENT.WARNING">
+							{STRINGS.formatString(
+								STRINGS['ACCOUNT_SECURITY.OTP.CONTENT.WARNING'],
+								<span className="improtant-text">
+									{STRINGS['ACCOUNT_SECURITY.OTP.CONTENT.STRONGLY_RECOMMEND']}
+								</span>,
+								STRINGS['ACCOUNT_SECURITY.OTP.CONTENT.WARNING_CONTENT']
+							)}
+						</EditWrapper>
+					</div>
+					<div className={!otp_enabled ? 'user_security-wrapper' : ''}>
+						<CloseCircleOutlined />
+						<span className="font-weight-bold mb-3">
+							<EditWrapper stringId="ACCOUNT_SECURITY.OTP.2FA_DISABLED">
+								{STRINGS['ACCOUNT_SECURITY.OTP.2FA_DISABLED']}
+							</EditWrapper>
+						</span>
+						<span className="text-center">
+							<EditWrapper stringId="ACCOUNT_SECURITY.OTP.2FA_CONTENT_ONE">
+								{STRINGS.formatString(
+									STRINGS['ACCOUNT_SECURITY.OTP.2FA_CONTENT_ONE'],
+									<span className="font-weight-bold">
+										{STRINGS['ACCOUNT_SECURITY.OTP.TITLE']}
+									</span>,
+									STRINGS['ACCOUNT_SECURITY.OTP.2FA_CONTENT_TWO']
+								)}
+							</EditWrapper>
+						</span>
+					</div>
 				</div>
 			)}
 		</div>

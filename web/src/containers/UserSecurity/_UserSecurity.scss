@@ -3,12 +3,12 @@
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	margin-top: 30px;
+	// margin-top: 30px;
 	padding: 30px;
 	background-color: $app-sidebar-background;
-	> *:not(:last-child) {
-		margin-bottom: 2rem;
-	}
+	// > *:not(:last-child) {
+	// 	margin-bottom: 2rem;
+	// }
 }
 
 .OTP_Success {
@@ -25,6 +25,68 @@
 	flex-direction: column;
 	min-width: 30rem;
 	width: 30rem;
+
+	.step-one-pop-up {
+		.otp-border {
+			margin-bottom: 5%;
+			border-bottom: 1px solid $colors-main-border;
+			width: 100%;
+		}
+		.download-content-title {
+			font-weight: bold;
+			margin-bottom: 2%;
+		}
+		.store-icons-wrapper {
+			display: flex;
+			justify-content: space-evenly;
+			margin-bottom: 5%;
+			.play-store-field {
+				cursor: pointer;
+				padding: 2%;
+				width: 100%;
+				height: 50%;
+				color: $colors-main-black;
+				font-size: 12px;
+				border-radius: 10px;
+				background-color: $colors-main-black;
+			}
+		}
+		.app-info {
+			margin-bottom: 5%;
+		}
+		.uninstall-info {
+			margin-bottom: 5%;
+			color: #ffbb00;
+			font-weight: bold;
+		}
+	}
+
+	.step-one-pop-up,
+	.step-two-pop-up {
+		.btn-wrapper {
+			display: flex;
+			justify-content: space-between;
+			margin-top: 10%;
+			.back-btn,
+			.proceed-btn {
+				background-color: $link;
+				border: none;
+				width: 45%;
+				text-align: center;
+				color: $colors-main-black;
+			}
+		}
+	}
+
+	.step-three-pop-up {
+		.back-btn {
+			background-color: $link;
+			border: none;
+			width: 100%;
+			text-align: center;
+			color: $colors-main-black;
+		}
+	}
 
 	.otp_form-section-wrapper {
 		border-top: 1px solid $colors-main-border;
@@ -237,6 +299,20 @@ $padding-input: 4rem;
 
 	.checkbutton-input-wrapper {
 		margin-top: 0px !important;
+	}
+}
+
+.otp-field-wrapper {
+	margin-top: 3%;
+	.warning_text {
+		padding: 10px;
+		text-align: center;
+		background-color: $colors-notifications-red;
+		color: $colors-main-black;
+		.improtant-text {
+			font-weight: bold;
+			text-decoration: underline;
+		}
 	}
 }
 
