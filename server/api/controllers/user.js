@@ -1257,6 +1257,14 @@ const getUnrealizedUserReferral = (req, res) => {
 		'GET controllers/user/getUnrealizedUserReferral',
 	);
 
+	if (
+		!toolsLib.getKitConfig().referral_history_config ||
+		!toolsLib.getKitConfig().referral_history_config.active
+	) {
+		// TODO it should be added to the messages
+		throw new Error('Feature is not active');
+	}
+
 	toolsLib.user.getUnrealizedReferral(req.auth.sub.id)
 		.then((data) => {
 			return res.json({ data });
@@ -1277,6 +1285,14 @@ const settleUserFees = (req, res) => {
 		req.uuid,
 		'POST controllers/user/settleUserFees',
 	);
+
+	if (
+		!toolsLib.getKitConfig().referral_history_config ||
+		!toolsLib.getKitConfig().referral_history_config.active
+	) {
+		// TODO it should be added to the messages
+		throw new Error('Feature is not active');
+	}
 
 	const currentTime = moment().seconds(0).milliseconds(0).toISOString();
 
@@ -1308,6 +1324,14 @@ const fetchUserReferrals = (req, res) => {
 		end_date,
 		format
 	);
+
+	if (
+		!toolsLib.getKitConfig().referral_history_config ||
+		!toolsLib.getKitConfig().referral_history_config.active
+	) {
+		// TODO it should be added to the messages
+		throw new Error('Feature is not active');
+	}
 
 	toolsLib.user.fetchUserReferrals(
 		{
