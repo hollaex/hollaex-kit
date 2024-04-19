@@ -489,7 +489,7 @@ const InterfaceForm = ({
 										className="feature-icon mr-1"
 									/>
 									<div className="ml-2 checkbox-txt">
-										Referral History{' '}
+										Referral System{' '}
 										{referralHistoryData.active && (
 											<span
 												style={{
@@ -511,7 +511,7 @@ const InterfaceForm = ({
 											</span>
 										)}
 										<div className="small-text">
-											(User referral history and earning analytics)
+											(User referral system with analytics)
 										</div>
 									</div>
 								</div>
