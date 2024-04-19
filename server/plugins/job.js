@@ -290,6 +290,7 @@ const referralTradesRunner = () =>{
 
 unstakingCheckRunner();
 updateRewardsCheckRunner();
+referralTradesRunner();
 
 module.exports = {
     unstakingCheckRunner,
