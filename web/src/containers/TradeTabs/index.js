@@ -182,7 +182,7 @@ class AddTradeTab extends Component {
 								constants.features.quick_trade ? (
 									<span className="trade_tabs-link link-separator">
 										<Link to={`/quick-trade/${quickPair}`}>
-											{STRINGS['QUICK_TRADE']}
+											{STRINGS['DIGITAL_ASSETS.QUICK_TRADE']}
 										</Link>
 									</span>
 								) : null}

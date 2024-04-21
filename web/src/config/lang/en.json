@@ -202,7 +202,7 @@
 		"OTP_PLACEHOLDER": "Enter your 6-digit two-factor authentication code"
 	},
 	"QUICK_TRADE_COMPONENT": {
-		"TITLE": "Quick Trade",
+		"TITLE": "Convert",
 		"BUTTON": "Review Quick Trade",
 		"INFO": "Fastest and simplest way to trade your crypto",
 		"CHANGE_TEXT": "change",
@@ -646,7 +646,9 @@
 				"MESSAGE_3": "If you have problems scanning this, you can manually enter the code below",
 				"MESSAGE_4": "You must store this code securely to recover your 2FA in case you change or lose your mobile phone in future.",
 				"MESSAGE_5": "Manual verification key:",
-				"WARNING": "We highly recommend you set up two-factor authentication (2FA). Doing so will greatly increase the security of your funds.",
+				"WARNING": "We {0} {1}",
+				"STRONGLY_RECOMMEND": "strongly recommend",
+				"WARNING_CONTENT": "that you enable two-factor authentication to enhance the security of your account and protect your funds",
 				"ENABLE": "Enable Two-Factor Authentication",
 				"DISABLE": "Disable Two-Factor Authentication",
 				"INPUT": "Please enter your OTP"
@@ -654,7 +656,10 @@
 			"FORM": {
 				"PLACEHOLDER": "Enter your OTP provided by Google Authenticator.",
 				"BUTTON": "Enable 2FA"
-			}
+			},
+			"2FA_DISABLED": "2FA DISABLED",
+			"2FA_CONTENT_ONE": "Activating {0} {1} .",
+			"2FA_CONTENT_TWO": "(Two-Factor Authentication) adds an extra layer of protection to safeguard your funds. Once enabled, you will be required to enter a verification code from your phone each time you log in or withdraw assets. This feature significantly enhances the security of your account"
 		},
 		"CHANGE_PASSWORD": {
 			"TITLE": "Password",
@@ -1566,7 +1571,8 @@
 		"CUSTOM": "Custom",
 		"BACK_CUSTOM": "BACK",
 		"PROOCED_CUSTOM": "PROOCED",
-		"VIEW_MORE": "View More {0}"
+		"VIEW_MORE": "View More {0}",
+		"SHOW_ASSET_BREAKDOWN": "Show Asset Breakdown"
 	},
 	"ASSET_INFO": "Asset info",
 	"TAKER_FEES_APPLIED": "Taker fees are applied",
@@ -1576,8 +1582,8 @@
 		"GO_BACK": "Go back",
 		"ASSETS_INFO": "Below are available assets on the platform.",
 		"ASSETS_INFO_DETAIL": "You can click an asset on the list below to learn more.",
-		"QUICK_TRADE": "QUICK TRADE",
-		"PRO_TRADE": "PRO TRADE",
+		"QUICK_TRADE": "CONVERT",
+		"PRO_TRADE": "MARKETS",
 		"MARKETS": "MARKETS",
 		"WALLET": "WALLET",
 		"PRICE_SOURCE": "Price source",
@@ -1600,8 +1606,8 @@
 		"MORE": "More",
 		"INFO": "info",
 		"TRADE": "TRADE",
-		"QUICK_TRADE": "QUICK TRADE {0}",
-		"PRO_TRADE": "PRO TRADE {0}",
+		"QUICK_TRADE": "CONVERT {0}",
+		"PRO_TRADE": "VIEW {0} MARKET",
 		"PRICES": {
 			"TITLE": "Prices",
 			"QUICK_TRADE": "Quick Trade",
