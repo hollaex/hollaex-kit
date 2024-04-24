@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { SubmissionError } from 'redux-form';
 import { isMobile } from 'react-device-detect';
 import { message } from 'antd';
-import { openContactForm } from 'actions/appActions';
+import { openContactForm, setSelectedStep } from 'actions/appActions';
 import {
 	resetPassword,
 	otpRequest,
@@ -62,6 +62,8 @@ class UserSecurity extends Component {
 		freeze: false,
 		error: '',
 		updatedPassword: {},
+		isEnableOtpForm: false,
+		otpFormStep: 0,
 	};
 
 	componentDidMount() {
@@ -480,7 +482,7 @@ class UserSecurity extends Component {
 	onSubmitCancelOTP = (values) => {
 		const { icons: ICONS } = this.props;
 		const { otp_enabled } = this.props.user;
-		const { updatedPassword } = this.state;
+		const { updatedPassword, isEnableOtpForm } = this.state;
 		const body = {
 			...updatedPassword,
 			...values,
@@ -515,18 +517,34 @@ class UserSecurity extends Component {
 					throw new SubmissionError({ _error });
 				});
 		} else {
-			return otpRevoke({ code: values.otp_code })
-				.then(() => {
-					this.props.otpSetActivated(false);
-					this.setState({
-						dialogIsOpen: true,
-						iconId: 'OTP_DEACTIVATED',
-						icon: ICONS['OTP_DEACTIVATED'],
-						modalText: STRINGS['ACCOUNT_SECURITY.OTP.DIALOG.REVOKE'],
-						stringId: 'ACCOUNT_SECURITY.OTP.DIALOG.REVOKE',
-					});
-				})
-				.catch(errorHandler);
+			if (isEnableOtpForm) {
+				return otpActivate({ code: values.otp_code })
+					.then(() => {
+						this.props.otpSetActivated(true);
+						this.setState({
+							dialogIsOpen: true,
+							iconId: 'OTP_ACTIVE',
+							icon: ICONS['OTP_ACTIVE'],
+							modalText: STRINGS['ACCOUNT_SECURITY.OTP.DIALOG.SUCCESS'],
+							stringId: 'ACCOUNT_SECURITY.OTP.DIALOG.SUCCESS',
+							isEnableOtpForm: false,
+						});
+					})
+					.catch(errorHandler);
+			} else {
+				return otpRevoke({ code: values.otp_code })
+					.then(() => {
+						this.props.otpSetActivated(false);
+						this.setState({
+							dialogIsOpen: true,
+							iconId: 'OTP_DEACTIVATED',
+							icon: ICONS['OTP_DEACTIVATED'],
+							modalText: STRINGS['ACCOUNT_SECURITY.OTP.DIALOG.REVOKE'],
+							stringId: 'ACCOUNT_SECURITY.OTP.DIALOG.REVOKE',
+						});
+					})
+					.catch(errorHandler);
+			}
 		}
 	};
 
@@ -544,7 +562,9 @@ class UserSecurity extends Component {
 			iconId: '',
 			icon: '',
 			updatedPassword: {},
+			isEnableOtpForm: false,
 		});
+		this.props.setSelectedStep(0);
 	};
 
 	// onSubmitotp = (values) => {
@@ -552,6 +572,10 @@ class UserSecurity extends Component {
 	// 	return renderOTPForm(this.onSubmitActivateOtp);
 
 	// };
+
+	handleUpdateOtp = (val) => {
+		this.setState({ isEnableOtpForm: val });
+	};
 
 	renderModalContent = (
 		{ requested, activated, secret, error },
@@ -561,7 +585,7 @@ class UserSecurity extends Component {
 		constants,
 		icons
 	) => {
-		const { stringId, icon, iconId } = this.state;
+		const { stringId, icon, iconId, isEnableOtpForm } = this.state;
 
 		if (error) {
 			return (
@@ -571,16 +595,20 @@ class UserSecurity extends Component {
 					success={false}
 				/>
 			);
-		} else if (otp_enabled && !modalText) {
+		} else if ((otp_enabled && !modalText) || isEnableOtpForm) {
 			return <OtpForm onSubmit={this.onSubmitCancelOTP} />;
 		} else if (requested && !activated) {
+			const { selectedStep } = this.props;
 			return renderOTPForm(
 				secret,
 				email,
 				this.onSubmitActivateOtp,
 				constants,
 				icons,
-				this.onCloseDialog
+				this.onCloseDialog,
+				this.handleOTPCheckbox,
+				this.handleUpdateOtp,
+				selectedStep
 			);
 		} else {
 			return (
@@ -596,6 +624,11 @@ class UserSecurity extends Component {
 		}
 	};
 
+	onHandleEnableBack = (val) => {
+		this.props.setSelectedStep(val);
+		this.setState({ isEnableOtpForm: false });
+	};
+
 	render() {
 		const {
 			icons: ICONS,
@@ -606,7 +639,14 @@ class UserSecurity extends Component {
 		if (isLoggedIn() && verification_level === 0) {
 			return <Loader />;
 		}
-		const { dialogIsOpen, modalText, activeTab, tabs, freeze } = this.state;
+		const {
+			dialogIsOpen,
+			modalText,
+			activeTab,
+			tabs,
+			freeze,
+			isEnableOtpForm,
+		} = this.state;
 		//const { onCloseDialog } = this;
 
 		if (freeze === true) {
@@ -677,6 +717,8 @@ class UserSecurity extends Component {
 					label="security-modal"
 					onCloseDialog={this.onCloseDialog}
 					showCloseText={!(otp.error || modalText)}
+					isEnableOtpForm={isEnableOtpForm}
+					onHandleEnableBack={this.onHandleEnableBack}
 				>
 					{dialogIsOpen && !otp.requesting ? (
 						this.renderModalContent(
@@ -723,6 +765,7 @@ const mapStateToProps = (state) => ({
 		state,
 		...Object.keys(generateFormValues())
 	),
+	selectedStep: state.app.selectedStep,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -730,6 +773,7 @@ const mapDispatchToProps = (dispatch) => ({
 	requestOTP: () => dispatch(otpRequest()),
 	otpSetActivated: (active) => dispatch(otpSetActivated(active)),
 	openContactForm: bindActionCreators(openContactForm, dispatch),
+	setSelectedStep: bindActionCreators(setSelectedStep, dispatch),
 });
 
 export default connect(

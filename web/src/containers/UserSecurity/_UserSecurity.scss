@@ -1,14 +1,15 @@
-.user_security-wrapper {
+.user_security-wrapper,
+.user_security-wrapper-disabled {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	// margin-top: 30px;
 	padding: 30px;
 	background-color: $app-sidebar-background;
-	// > *:not(:last-child) {
-	// 	margin-bottom: 2rem;
-	// }
+}
+
+.user_security-wrapper-disabled {
+	margin-top: 3%;
 }
 
 .OTP_Success {
@@ -26,15 +27,27 @@
 	min-width: 30rem;
 	width: 30rem;
 
+	.step-one-title-wrapper {
+		font-family: 'Open Sans';
+	}
+
 	.step-one-pop-up {
-		.otp-border {
-			margin-bottom: 5%;
-			border-bottom: 1px solid $colors-main-border;
-			width: 100%;
+		.store-wrapper {
+			cursor: pointer;
+			padding: 2%;
+			width: 30%;
+			color: #000000;
+			font-size: 10px;
+			border-radius: 10px;
+			border: 1px solid $colors-main-border;
+			background-color: #f5f5f7;
+			.store-icons {
+				width: 25%;
+			}
 		}
 		.download-content-title {
 			font-weight: bold;
-			margin-bottom: 2%;
+			margin: 2% 0;
 		}
 		.store-icons-wrapper {
 			display: flex;
@@ -55,7 +68,6 @@
 			margin-bottom: 5%;
 		}
 		.uninstall-info {
-			margin-bottom: 5%;
 			color: #ffbb00;
 			font-weight: bold;
 		}
@@ -63,33 +75,80 @@
 
 	.step-one-pop-up,
 	.step-two-pop-up {
+		.note-txt {
+			color: #e59b07;
+		}
+		.otp-border,
+		.otp-border-footer {
+			margin-bottom: 5%;
+			border-bottom: 1px solid $colors-main-border;
+			width: 100%;
+		}
+		.otp-border-footer {
+			width: 25%;
+		}
 		.btn-wrapper {
 			display: flex;
 			justify-content: space-between;
-			margin-top: 10%;
+			margin-top: 8%;
 			.back-btn,
 			.proceed-btn {
 				background-color: $link;
 				border: none;
 				width: 45%;
+				height: 40px;
 				text-align: center;
 				color: $colors-main-black;
 			}
 		}
 	}
 
+	.step-two-pop-up {
+		.btn-wrapper {
+			margin-top: 5% !important;
+		}
+	}
+
 	.step-three-pop-up {
-		.back-btn {
+		.verfication-field {
+			background-color: $app-sidebar-background;
+			border: none;
+			border-bottom: 1px solid $colors-black;
+			border-image: initial;
+			width: 100%;
+			margin-top: 5px;
+		}
+		.warning-text {
+			color: $colors-black;
+			margin-top: 15%;
+		}
+		.btn-wrapper {
+			display: flex;
+			justify-content: space-between;
+			margin-top: 8%;
+		}
+	}
+
+	.step-three-pop-up,
+	.step-four-pop-up {
+		.back-btn,
+		.proceed-btn {
 			background-color: $link;
 			border: none;
-			width: 100%;
+			width: 45%;
+			height: 40px;
 			text-align: center;
 			color: $colors-main-black;
 		}
 	}
 
+	.step-four-pop-up {
+		.back-btn {
+			width: 100%;
+		}
+	}
+
 	.otp_form-section-wrapper {
-		border-top: 1px solid $colors-main-border;
 		padding: 0.75rem 0;
 
 		.otp_form-section-content {
@@ -129,7 +188,7 @@
 			font-size: $font-size-subhead2;
 		}
 		.icon_title-svg {
-			@include size(6.5rem);
+			@include size(5.5rem);
 			svg {
 				@include size(6.5rem);
 			}
