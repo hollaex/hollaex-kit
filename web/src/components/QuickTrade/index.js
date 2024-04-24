@@ -237,6 +237,20 @@ const QuickTrade = ({
 		}
 	};
 
+	const addSecondsToExpiry = (expiry) => {
+		if (!expiry) {
+			return expiry;
+		}
+		const SECONDS_TO_ADD = 20;
+		const expiryDate = new Date(expiry);
+
+		expiryDate.setTime(expiryDate.getTime() + SECONDS_TO_ADD * 1000);
+
+		const updatedExpiry = expiryDate.toISOString();
+
+		return updatedExpiry;
+	};
+
 	const getQuote = ({
 		sourceAmount: spending_amount,
 		targetAmount: receiving_amount,
@@ -267,7 +281,7 @@ const QuickTrade = ({
 						}) => {
 							setSpending();
 							setToken(token);
-							setExpiry(expiry);
+							setExpiry(addSecondsToExpiry(expiry));
 							setTargetAmount(receiving_amount);
 							setSourceAmount(spending_amount);
 						}
