@@ -596,7 +596,12 @@ class UserSecurity extends Component {
 				/>
 			);
 		} else if ((otp_enabled && !modalText) || isEnableOtpForm) {
-			return <OtpForm onSubmit={this.onSubmitCancelOTP} />;
+			return (
+				<OtpForm
+					isEnableOtpForm={isEnableOtpForm}
+					onSubmit={this.onSubmitCancelOTP}
+				/>
+			);
 		} else if (requested && !activated) {
 			const { selectedStep } = this.props;
 			return renderOTPForm(
