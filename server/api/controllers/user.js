@@ -1244,10 +1244,10 @@ const fetchUserProfitLossInfo = (req, res) => {
 		'controllers/user/fetchUserProfitLossInfo/auth',
 		req.auth
 	);
-
+	const { period } = req.swagger.params;
 	const user_id = req.auth.sub.id;
 
-	toolsLib.user.fetchUserProfitLossInfo(user_id)
+	toolsLib.user.fetchUserProfitLossInfo(user_id, { period: period.value || 7 })
 		.then((data) => {
 			return res.json(data);
 		})

@@ -49,6 +49,7 @@ const ProfitLossSection = ({
 	const [graphData, setGraphData] = useState([]);
 	const [customDate, setCustomDate] = useState(false);
 	const [customDateValues, setCustomDateValues] = useState();
+	const [loadingPnl, setLoadingPnl] = useState(false);
 
 	const options = {
 		chart: {
@@ -122,8 +123,10 @@ const ProfitLossSection = ({
 			firstRender.current = false;
 		} else {
 			setIsLoading(true);
+			setLoadingPnl(true);
 			fetchPlHistory().then((res) => {
 				setUserPL(res);
+				setLoadingPnl(false);
 			});
 			requestHistory(queryFilters.page, queryFilters.limit);
 		}
@@ -134,8 +137,10 @@ const ProfitLossSection = ({
 		if (firstRender.current) {
 			firstRender.current = false;
 		} else {
-			fetchPlHistory().then((res) => {
+			setLoadingPnl(true);
+			fetchPlHistory({ period: currentDay }).then((res) => {
 				setUserPL(res);
+				setLoadingPnl(false);
 			});
 			requestHistory(queryFilters.page, queryFilters.limit);
 		}
@@ -524,6 +529,14 @@ const ProfitLossSection = ({
 
 		return sourceAmount;
 	};
+
+	const getPeriod = (day) => {
+		if (day === 7) {
+			return '7d';
+		} else if (day === 30) {
+			return '1m';
+		} else return '3m';
+	};
 	return (
 		<Spin spinning={isLoading}>
 			<div style={{ marginTop: 20 }}>
@@ -589,31 +602,41 @@ const ProfitLossSection = ({
 											?.toString()
 											.replace(/\B(?=(\d{3})+(?!\d))/g, ',') || '0'}
 									</div>
-									<div
-										className={
-											Number(userPL?.['7d']?.total || 0) === 0
-												? 'profitNeutral'
-												: (userPL?.['7d']?.total || 0) > 0
-												? 'profitPositive'
-												: 'profitNegative'
-										}
-									>
-										<EditWrapper stringId="PROFIT_LOSS.PL_7_DAY">
-											{STRINGS['PROFIT_LOSS.PL_7_DAY']}
-										</EditWrapper>{' '}
-										{Number(userPL?.['7d']?.total || 0) > 0 ? '+' : ' '}
-										{''}
-										{getSourceDecimals(
-											balance_history_config?.currency || 'usdt',
-											userPL?.['7d']?.total
-										)
-											?.toString()
-											.replace(/\B(?=(\d{3})+(?!\d))/g, ',') || '0'}
-										{userPL?.['7d']?.totalPercentage
-											? ` (${userPL?.['7d']?.totalPercentage}%) `
-											: ' '}
-										{balance_history_config?.currency?.toUpperCase() || 'USDT'}
-									</div>
+									<Spin spinning={loadingPnl}>
+										<div
+											className={
+												Number(userPL?.[getPeriod(currentDay)]?.total || 0) ===
+												0
+													? 'profitNeutral'
+													: (userPL?.[getPeriod(currentDay)]?.total || 0) > 0
+													? 'profitPositive'
+													: 'profitNegative'
+											}
+										>
+											{' '}
+											{currentDay + ' '}
+											<EditWrapper stringId="PROFIT_LOSS.PL_DAYS">
+												{STRINGS['PROFIT_LOSS.PL_DAYS']}
+											</EditWrapper>{' '}
+											{Number(userPL?.[getPeriod(currentDay)]?.total || 0) > 0
+												? '+'
+												: ' '}
+											{''}
+											{getSourceDecimals(
+												balance_history_config?.currency || 'usdt',
+												userPL?.[getPeriod(currentDay)]?.total
+											)
+												?.toString()
+												.replace(/\B(?=(\d{3})+(?!\d))/g, ',') || '0'}
+											{userPL?.[getPeriod(currentDay)]?.totalPercentage
+												? ` (${
+														userPL?.[getPeriod(currentDay)]?.totalPercentage
+												  }%) `
+												: ' '}
+											{balance_history_config?.currency?.toUpperCase() ||
+												'USDT'}
+										</div>
+									</Spin>
 								</div>
 							</div>
 
@@ -685,7 +708,7 @@ const ProfitLossSection = ({
 										{STRINGS['PROFIT_LOSS.MONTHS']}
 									</EditWrapper>
 								</Button>
-								<Button
+								{/* <Button
 									style={{
 										fontWeight: currentDay === 'custom' ? 'bold' : '400',
 										fontSize: '1em',
@@ -699,7 +722,7 @@ const ProfitLossSection = ({
 									<EditWrapper stringId="PROFIT_LOSS.CUSTOM">
 										{STRINGS['PROFIT_LOSS.CUSTOM']}
 									</EditWrapper>
-								</Button>
+								</Button> */}
 							</div>
 
 							<div className="highChartColor">

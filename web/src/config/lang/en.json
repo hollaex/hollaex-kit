@@ -1562,6 +1562,7 @@
 		"WALLET_PERFORMANCE_TITLE": "Balance performance",
 		"WALLET_PERFORMANCE_DESCRIPTION": "Your wallet's balance performance over time and the asset breakdown. Click the dates below to see your wallet's performance on that day.",
 		"PL_7_DAY": "7 Day P&L",
+		"PL_DAYS": "Day P&L",
 		"EST_TOTAL_BALANCE": "Est. Total Balance",
 		"WEEK": "week",
 		"MONTH": "month",
