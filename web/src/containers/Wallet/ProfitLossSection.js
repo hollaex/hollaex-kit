@@ -325,6 +325,7 @@ const ProfitLossSection = ({
 							</tr>
 						);
 					}
+					return null;
 				})}
 			</>
 		);
