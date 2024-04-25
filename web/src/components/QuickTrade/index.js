@@ -238,12 +238,12 @@ const QuickTrade = ({
 	};
 
 	const addSecondsToExpiry = (expiry) => {
-		if (!expiry) {
+		const expiryDate = new Date(expiry);
+
+		if (!expiry || !moment(expiryDate).isBefore(moment())) {
 			return expiry;
 		}
 		const SECONDS_TO_ADD = 20;
-		const expiryDate = new Date(expiry);
-
 		expiryDate.setTime(expiryDate.getTime() + SECONDS_TO_ADD * 1000);
 
 		const updatedExpiry = expiryDate.toISOString();
