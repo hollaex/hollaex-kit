@@ -243,8 +243,10 @@ const QuickTrade = ({
 		if (!expiry || !moment(expiryDate).isBefore(moment())) {
 			return expiry;
 		}
+
+		const dateObj = new Date();
 		const SECONDS_TO_ADD = 20;
-		expiryDate.setTime(expiryDate.getTime() + SECONDS_TO_ADD * 1000);
+		expiryDate.setTime(dateObj.getTime() + SECONDS_TO_ADD * 1000);
 
 		const updatedExpiry = expiryDate.toISOString();
 
