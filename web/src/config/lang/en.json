@@ -1581,7 +1581,9 @@
 		"BACK_CUSTOM": "BACK",
 		"PROOCED_CUSTOM": "PROOCED",
 		"VIEW_MORE": "View More {0}",
-		"SHOW_ASSET_BREAKDOWN": "Show Asset Breakdown"
+		"SHOW_ASSET_BREAKDOWN": "Show Asset Breakdown",
+		"PL_SUMMARY": "P&L Summary",
+		"BALANCE_HISTORY": "Balance History"
 	},
 	"ASSET_INFO": "Asset info",
 	"TAKER_FEES_APPLIED": "Taker fees are applied",
