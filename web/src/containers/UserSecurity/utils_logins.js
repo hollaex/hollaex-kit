@@ -1,6 +1,8 @@
 import React from 'react';
+import { Button } from 'antd';
 import { getFormatTimestamp } from 'utils/utils';
 import STRINGS from 'config/localizedStrings';
+import { EditWrapper } from 'components';
 
 export const generateLogins = () => {
 	return [
@@ -19,4 +21,44 @@ export const generateLogins = () => {
 			},
 		},
 	];
+};
+
+export const RenderBtn = ({ closeDialog, setStep, step, goBack, label }) => {
+	return (
+		<div className="btn-wrapper">
+			<Button
+				onClick={() => {
+					closeDialog ? closeDialog() : setStep(goBack);
+				}}
+				className="back-btn"
+			>
+				<EditWrapper stringId="ACCOUNT_SECURITY.OTP.BACK">
+					{STRINGS['ACCOUNT_SECURITY.OTP.BACK']}
+				</EditWrapper>
+			</Button>
+			<Button
+				onClick={() => {
+					setStep(step);
+				}}
+				className="proceed-btn"
+			>
+				<EditWrapper stringId={label}>{STRINGS[label]}</EditWrapper>
+			</Button>
+		</div>
+	);
+};
+
+export const RenderBackBtn = ({ setStep, step }) => {
+	return (
+		<Button
+			onClick={() => {
+				setStep(step);
+			}}
+			className="back-btn"
+		>
+			<EditWrapper stringId="ACCOUNT_SECURITY.OTP.BACK">
+				{STRINGS['ACCOUNT_SECURITY.OTP.BACK']}
+			</EditWrapper>
+		</Button>
+	);
 };

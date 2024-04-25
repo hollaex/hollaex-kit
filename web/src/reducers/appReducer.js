@@ -59,6 +59,7 @@ import {
 	OVERWRITE_CURRENCY_NAMES,
 	SET_TRANSACTION_LIMITS,
 	SET_SELECTED_ACCOUNT,
+	SET_SELECTED_STEP,
 } from 'actions/appActions';
 import { THEME_DEFAULT } from 'config/constants';
 import { getLanguage } from 'utils/string';
@@ -162,6 +163,7 @@ const INITIAL_STATE = {
 	},
 	default_digital_assets_sort: DIGITAL_ASSETS_SORT.CHANGE,
 	selectedAccount: 1,
+	selectedStep: 0,
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -711,6 +713,11 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				selectedAccount: payload.selectedAccount,
+			};
+		case SET_SELECTED_STEP:
+			return {
+				...state,
+				selectedStep: payload.selectedStep,
 			};
 		default:
 			return state;
