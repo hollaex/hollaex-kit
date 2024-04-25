@@ -97,6 +97,7 @@ export const SET_ADMIN_SORT = 'SET_ADMIN_SORT';
 export const SET_ADMIN_WALLET_SORT = 'SET_ADMIN_WALLET_SORT';
 export const SET_ADMIN_DIGITAL_ASSETS_SORT = 'SET_ADMIN_DIGITAL_ASSETS_SORT';
 export const SET_SELECTED_ACCOUNT = 'SET_SELECTED_ACCOUNT';
+export const SET_SELECTED_STEP = 'SET_SELECTED_STEP';
 
 export const SORT = {
 	VOL: 'volume',
@@ -282,6 +283,10 @@ export const openHelpdesk = () => {
 
 export const openContactForm = () => {
 	return openHelpfulResourcesForm();
+};
+
+export const setSelectedStep = (selectedStep) => {
+	return { type: SET_SELECTED_STEP, payload: { selectedStep } };
 };
 
 export const openHelpfulResourcesForm = (data = {}) =>

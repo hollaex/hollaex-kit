@@ -23,12 +23,12 @@ export const generateLogins = () => {
 	];
 };
 
-export const RenderBtn = ({ closeDialog, setStep, step }) => {
+export const RenderBtn = ({ closeDialog, setStep, step, goBack, label }) => {
 	return (
 		<div className="btn-wrapper">
 			<Button
 				onClick={() => {
-					closeDialog();
+					closeDialog ? closeDialog() : setStep(goBack);
 				}}
 				className="back-btn"
 			>
@@ -42,9 +42,7 @@ export const RenderBtn = ({ closeDialog, setStep, step }) => {
 				}}
 				className="proceed-btn"
 			>
-				<EditWrapper stringId="ACCOUNT_SECURITY.OTP.PROCEED">
-					{STRINGS['ACCOUNT_SECURITY.OTP.PROCEED']}
-				</EditWrapper>
+				<EditWrapper stringId={label}>{STRINGS[label]}</EditWrapper>
 			</Button>
 		</div>
 	);

@@ -86,6 +86,12 @@ $close-button--margin: 1.5rem;
 	}
 }
 
+.success_disable-display-wrapper,
+.success_active-display-wrapper {
+	min-width: $otp-dialog-min-width;
+	min-height: $otp-dialog-min-height;
+}
+
 .success_display-content {
 	height: auto;
 	flex: 1;
