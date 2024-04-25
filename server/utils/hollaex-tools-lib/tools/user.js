@@ -2456,7 +2456,7 @@ const getUserBalanceHistory = (opts = {
 
 
 
-const fetchUserProfitLossInfo = async (user_id) => {
+const fetchUserProfitLossInfo = async (user_id, opts = { period: 7 }) => {
 
 	const exchangeInfo = getKitConfig().info;
 
@@ -2467,15 +2467,14 @@ const fetchUserProfitLossInfo = async (user_id) => {
 
 	if(!getKitConfig()?.balance_history_config?.active) { throw new Error(BALANCE_HISTORY_NOT_ACTIVE); }
 
-	const data = await  client.getAsync(`${user_id}user-pl-info`);
+	const data = await  client.getAsync(`${user_id}-${opts.period}user-pl-info`);
 	if (data) return JSON.parse(data);
 
 	const { getAllUserTradesByKitId } = require('./order');
 	const { getUserWithdrawalsByKitId, getUserDepositsByKitId } = require('./wallet');
 
 	const balanceHistoryModel = getModel('balanceHistory');
-	// Set it to weeks instead of years
-	const startDate = moment().subtract(1, 'weeks').toDate();
+	const startDate = moment().subtract(opts.period, 'days').toDate();
 	const endDate = moment().toDate();
 	const timeframe = timeframeQuery(startDate, endDate);
 	const userTrades = await getAllUserTradesByKitId(user_id, null, null, null, 'timestamp', 'asc', startDate, endDate, 'all');
@@ -2561,6 +2560,8 @@ const fetchUserProfitLossInfo = async (user_id) => {
 			case '1m':
 				dateThreshold.subtract(1, 'month');
 				break;
+			case '3m':
+				dateThreshold.subtract(3, 'months');
 			case '6m':
 				dateThreshold.subtract(6, 'months');
 				break;
@@ -2574,7 +2575,7 @@ const fetchUserProfitLossInfo = async (user_id) => {
 		return data.filter((entry) => (moment(entry.created_at || entry.timestamp).isSameOrAfter(dateThreshold)) && (conditionalDate ? moment(entry.created_at || entry.timestamp).isAfter(moment(conditionalDate)) : true));
 	};
 	
-	const timeIntervals = ['1d', '7d', '1m', '6m', '1y'];
+	const timeIntervals = ['1d', '7d', '1m', '3m', '6m', '1y'];
 	
 	const results = {};
 	
@@ -2662,37 +2663,39 @@ const fetchUserProfitLossInfo = async (user_id) => {
 		});
 	}
 
-	if (results['7d']) {
-		const weightedAverage = (prices, weights) => {
-		  const [sum, weightSum] = weights.reduce(
-		    (acc, w, i) => {
-		      acc[0] = acc[0] + prices[i] * w;
-		      acc[1] = acc[1] + w;
-		      return acc;
-		    },
-		    [0, 0]
-		  );
-		  return sum / weightSum;
-		};
+	const weightedAverage = (prices, weights) => {
+		const [sum, weightSum] = weights.reduce(
+		  (acc, w, i) => {
+			acc[0] = acc[0] + prices[i] * w;
+			acc[1] = acc[1] + w;
+			return acc;
+		  },
+		  [0, 0]
+		);
+		return sum / weightSum;
+	  };
 
-		let total = 0;
-		let percentageValues = [];
-		let prices = [];
-		const assets = Object.keys(results['7d']);
-
-		assets?.forEach(asset => {
-			total += results['7d'][asset].cumulativePNL;
-			if (conversions[asset]) {
-				prices.push(conversions[asset]);
-				percentageValues.push(results['7d'][asset].cumulativePNLPercentage);
-			}
-		});
-		results['7d'].total = total;
-		const weightedPercentage = weightedAverage(percentageValues, prices);
-		results['7d'].totalPercentage = weightedPercentage ? weightedPercentage.toFixed(2) : null;
+	for (const interval of ['7d', '1m', '3m']) {
+		if (results[interval]) {
+			let total = 0;
+			let percentageValues = [];
+			let prices = [];
+			const assets = Object.keys(results[interval]);
+	
+			assets?.forEach(asset => {
+				total += results[interval][asset].cumulativePNL;
+				if (conversions[asset]) {
+					prices.push(conversions[asset]);
+					percentageValues.push(results[interval][asset].cumulativePNLPercentage);
+				}
+			});
+			results[interval].total = total;
+			const weightedPercentage = weightedAverage(percentageValues, prices);
+			results[interval].totalPercentage = weightedPercentage ? weightedPercentage.toFixed(2) : null;
+		}
 	}
 
-	client.setexAsync(`${user_id}user-pl-info`, 3600, JSON.stringify(results));
+	client.setexAsync(`${user_id}-${opts.period}user-pl-info`, 3600, JSON.stringify(results));
 
 	return results;
 };
