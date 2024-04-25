@@ -6,14 +6,14 @@ import HighchartsReact from 'highcharts-react-official';
 // eslint-disable-next-line
 import { Coin, EditWrapper } from 'components';
 import { Link } from 'react-router';
-import { Button, Spin, DatePicker, message, Modal } from 'antd';
+import { Button, Spin, DatePicker, message, Modal, Tabs } from 'antd';
 import { fetchBalanceHistory, fetchPlHistory } from './actions';
 import BigNumber from 'bignumber.js';
 import moment from 'moment';
 import STRINGS from 'config/localizedStrings';
 import { CloseOutlined } from '@ant-design/icons';
 import './_ProfitLoss.scss';
-
+const TabPane = Tabs.TabPane;
 const ProfitLossSection = ({
 	coins,
 	balance_history_config,
@@ -49,6 +49,7 @@ const ProfitLossSection = ({
 	const [graphData, setGraphData] = useState([]);
 	const [customDate, setCustomDate] = useState(false);
 	const [customDateValues, setCustomDateValues] = useState();
+	const [loadingPnl, setLoadingPnl] = useState(false);
 
 	const options = {
 		chart: {
@@ -122,8 +123,10 @@ const ProfitLossSection = ({
 			firstRender.current = false;
 		} else {
 			setIsLoading(true);
+			setLoadingPnl(true);
 			fetchPlHistory().then((res) => {
 				setUserPL(res);
+				setLoadingPnl(false);
 			});
 			requestHistory(queryFilters.page, queryFilters.limit);
 		}
@@ -134,8 +137,10 @@ const ProfitLossSection = ({
 		if (firstRender.current) {
 			firstRender.current = false;
 		} else {
-			fetchPlHistory().then((res) => {
+			setLoadingPnl(true);
+			fetchPlHistory({ period: currentDay }).then((res) => {
 				setUserPL(res);
+				setLoadingPnl(false);
 			});
 			requestHistory(queryFilters.page, queryFilters.limit);
 		}
@@ -325,6 +330,7 @@ const ProfitLossSection = ({
 							</tr>
 						);
 					}
+					return null;
 				})}
 			</>
 		);
@@ -523,13 +529,19 @@ const ProfitLossSection = ({
 
 		return sourceAmount;
 	};
+
+	const getPeriod = (day) => {
+		if (day === 7) {
+			return '7d';
+		} else if (day === 30) {
+			return '1m';
+		} else return '3m';
+	};
 	return (
 		<Spin spinning={isLoading}>
-			<div
-				className="wallet-assets_block"
-				style={{ marginTop: 20, paddingTop: 20 }}
-			>
+			<div style={{ marginTop: 20 }}>
 				{customDateModal()}
+
 				<div style={{ position: 'absolute', top: -25, left: -5 }}>
 					<span
 						style={{
@@ -548,278 +560,313 @@ const ProfitLossSection = ({
 						{STRINGS['PROFIT_LOSS.BACK_TO_WALLET']}
 					</EditWrapper>
 				</div>
-				<div
-					style={{
-						display: 'flex',
-						justifyContent: 'space-between',
-						marginBottom: 40,
-						gap: 10,
-					}}
-				>
-					<div>
-						<div>
-							<EditWrapper stringId="PROFIT_LOSS.WALLET_PERFORMANCE_TITLE">
-								{STRINGS['PROFIT_LOSS.WALLET_PERFORMANCE_TITLE']}
-							</EditWrapper>
-						</div>
-						<div>
-							<EditWrapper stringId="PROFIT_LOSS.WALLET_PERFORMANCE_DESCRIPTION">
-								{STRINGS['PROFIT_LOSS.WALLET_PERFORMANCE_DESCRIPTION']}
-							</EditWrapper>
-						</div>
-					</div>
-					<div>
-						<div>
-							<EditWrapper stringId="PROFIT_LOSS.EST_TOTAL_BALANCE">
-								{STRINGS['PROFIT_LOSS.EST_TOTAL_BALANCE']}
-							</EditWrapper>{' '}
-							{moment(latestBalance?.created_at).format('DD/MMM/YYYY')}
-						</div>
-						<div style={{ fontSize: '1.5em', marginBottom: 5 }}>
-							{balance_history_config?.currency?.toUpperCase() || 'USDT'}{' '}
-							{getSourceDecimals(
-								balance_history_config?.currency || 'usdt',
-								latestBalance?.total
-							)
-								?.toString()
-								.replace(/\B(?=(\d{3})+(?!\d))/g, ',') || '0'}
-						</div>
+				<Tabs defaultActiveKey="0">
+					<TabPane tab={STRINGS['PROFIT_LOSS.PL_SUMMARY']} key="0">
 						<div
-							className={
-								Number(userPL?.['7d']?.total || 0) === 0
-									? 'profitNeutral'
-									: (userPL?.['7d']?.total || 0) > 0
-									? 'profitPositive'
-									: 'profitNegative'
-							}
+							className="wallet-assets_block"
+							style={{ marginTop: -10, paddingTop: 20 }}
 						>
-							<EditWrapper stringId="PROFIT_LOSS.PL_7_DAY">
-								{STRINGS['PROFIT_LOSS.PL_7_DAY']}
-							</EditWrapper>{' '}
-							{Number(userPL?.['7d']?.total || 0) > 0 ? '+' : ' '}
-							{''}
-							{getSourceDecimals(
-								balance_history_config?.currency || 'usdt',
-								userPL?.['7d']?.total
-							)
-								?.toString()
-								.replace(/\B(?=(\d{3})+(?!\d))/g, ',') || '0'}
-							{userPL?.['7d']?.totalPercentage
-								? ` (${userPL?.['7d']?.totalPercentage}%) `
-								: ' '}
-							{balance_history_config?.currency?.toUpperCase() || 'USDT'}
-						</div>
-					</div>
-				</div>
-
-				<div
-					style={{ display: 'flex', gap: 5, marginTop: 15, marginBottom: 15 }}
-				>
-					<Button
-						style={{
-							fontWeight: currentDay === 7 ? 'bold' : '400',
-							fontSize: '1em',
-						}}
-						className="plButton"
-						ghost
-						onClick={() => {
-							setCurrentDay(7);
-							setQueryValues({
-								start_date: moment().subtract(7, 'days').toISOString(),
-								end_date: moment().subtract().toISOString(),
-							});
-						}}
-					>
-						<span style={{ marginRight: 3 }}>1</span>
-						<EditWrapper stringId="PROFIT_LOSS.WEEK">
-							{STRINGS['PROFIT_LOSS.WEEK']}
-						</EditWrapper>
-					</Button>
-					<Button
-						style={{
-							fontWeight: currentDay === 30 ? 'bold' : '400',
-							fontSize: '1em',
-						}}
-						className="plButton"
-						ghost
-						onClick={() => {
-							setCurrentDay(30);
-							setQueryValues({
-								start_date: moment().subtract(30, 'days').toISOString(),
-								end_date: moment().subtract().toISOString(),
-							});
-						}}
-					>
-						<span style={{ marginRight: 3 }}>1 </span>{' '}
-						<EditWrapper stringId="PROFIT_LOSS.MONTH">
-							{STRINGS['PROFIT_LOSS.MONTH']}
-						</EditWrapper>
-					</Button>
-					<Button
-						style={{
-							fontWeight: currentDay === 90 ? 'bold' : '400',
-							fontSize: '1em',
-						}}
-						className="plButton"
-						ghost
-						onClick={() => {
-							setCurrentDay(90);
-							setQueryValues({
-								start_date: moment().subtract(90, 'days').toISOString(),
-								end_date: moment().subtract().toISOString(),
-							});
-						}}
-					>
-						<span style={{ marginRight: 3 }}>3 </span>{' '}
-						<EditWrapper stringId="PROFIT_LOSS.MONTHS">
-							{STRINGS['PROFIT_LOSS.MONTHS']}
-						</EditWrapper>
-					</Button>
-					<Button
-						style={{
-							fontWeight: currentDay === 'custom' ? 'bold' : '400',
-							fontSize: '1em',
-						}}
-						className="plButton"
-						ghost
-						onClick={() => {
-							setCustomDate(true);
-						}}
-					>
-						<EditWrapper stringId="PROFIT_LOSS.CUSTOM">
-							{STRINGS['PROFIT_LOSS.CUSTOM']}
-						</EditWrapper>
-					</Button>
-				</div>
-
-				<div className="highChartColor">
-					<HighchartsReact highcharts={Highcharts} options={options} />
-				</div>
-
-				{currentBalance && (
-					<>
-						<div
-							style={{
-								display: 'flex',
-								justifyContent: 'space-between',
-								gap: 15,
-							}}
-						>
-							<div>
-								<div style={{ fontWeight: 'bold' }}>
-									<EditWrapper stringId="PROFIT_LOSS.WALLET_BALANCE">
-										{STRINGS['PROFIT_LOSS.WALLET_BALANCE']}
-									</EditWrapper>
-								</div>
-								<div style={{ maxWidth: 300, marginBottom: 10 }}>
-									<EditWrapper stringId="PROFIT_LOSS.WALLET_BALANCE_DESCRIPTION_1">
-										{STRINGS['PROFIT_LOSS.WALLET_BALANCE_DESCRIPTION_1']}
-									</EditWrapper>{' '}
-									{moment(currentBalance?.created_at).format('DD/MMM/YYYY')}.
-									<EditWrapper stringId="PROFIT_LOSS.WALLET_BALANCE_DESCRIPTION_2">
-										{STRINGS['PROFIT_LOSS.WALLET_BALANCE_DESCRIPTION_2']}
-									</EditWrapper>
-								</div>
-							</div>
-							<div>
+							<div
+								style={{
+									display: 'flex',
+									justifyContent: 'space-between',
+									marginBottom: 40,
+									gap: 10,
+								}}
+							>
 								<div>
-									<EditWrapper stringId="PROFIT_LOSS.EST_TOTAL_BALANCE">
-										{STRINGS['PROFIT_LOSS.EST_TOTAL_BALANCE']}
-									</EditWrapper>{' '}
-									{moment(currentBalance?.created_at).format('DD/MMM/YYYY')}
-								</div>
-								<div style={{ fontSize: '1.5em', marginBottom: 5 }}>
-									{balance_history_config?.currency?.toUpperCase() || 'USDT'}{' '}
-									{getSourceDecimals(
-										balance_history_config?.currency || 'usdt',
-										currentBalance?.total
-									)
-										?.toString()
-										.replace(/\B(?=(\d{3})+(?!\d))/g, ',') || '0'}
+									<div>
+										<EditWrapper stringId="PROFIT_LOSS.WALLET_PERFORMANCE_TITLE">
+											{STRINGS['PROFIT_LOSS.WALLET_PERFORMANCE_TITLE']}
+										</EditWrapper>
+									</div>
+									<div>
+										<EditWrapper stringId="PROFIT_LOSS.WALLET_PERFORMANCE_DESCRIPTION">
+											{STRINGS['PROFIT_LOSS.WALLET_PERFORMANCE_DESCRIPTION']}
+										</EditWrapper>
+									</div>
 								</div>
 								<div>
 									<div>
-										<EditWrapper stringId="PROFIT_LOSS.DATE_SELECT">
-											{STRINGS['PROFIT_LOSS.DATE_SELECT']}
-										</EditWrapper>
-										:
+										<EditWrapper stringId="PROFIT_LOSS.EST_TOTAL_BALANCE">
+											{STRINGS['PROFIT_LOSS.EST_TOTAL_BALANCE']}
+										</EditWrapper>{' '}
+										{moment(latestBalance?.created_at).format('DD/MMM/YYYY')}
 									</div>
-									<DatePicker
-										suffixIcon={null}
-										className="pldatePicker"
-										placeholder={STRINGS['PROFIT_LOSS.DATE_SELECT']}
-										value={selectedCustomDate}
-										disabledDate={(current) => {
-											return (
-												current &&
-												(current <
-													moment(
-														balance_history_config?.date_enabled,
-														'YYYY-MM-DD'
-													) ||
-													current.isAfter(moment()))
-											);
-										}}
-										style={{
-											width: '12.5em',
-											fontSize: '1em',
-										}}
-										onChange={(date, dateString) => {
-											if (!dateString) return;
-											setSelectedCustomDate(date);
-											fetchBalanceHistory({
-												start_date: moment(dateString)
-													.startOf('day')
-													.toISOString(),
-												end_date: moment(dateString).endOf('day').toISOString(),
-												limit: 1,
-											})
-												.then((response) => {
-													let balance = response?.data?.[0];
-
-													if (balance) setCurrentBalance(balance);
-													else {
-														message.error('Balance not found');
-													}
-												})
-												.catch((error) => {
-													message.error('Something went wrong');
-												});
-										}}
-										format={'YYYY/MM/DD'}
-									/>
+									<div style={{ fontSize: '1.5em', marginBottom: 5 }}>
+										{balance_history_config?.currency?.toUpperCase() || 'USDT'}{' '}
+										{getSourceDecimals(
+											balance_history_config?.currency || 'usdt',
+											latestBalance?.total
+										)
+											?.toString()
+											.replace(/\B(?=(\d{3})+(?!\d))/g, ',') || '0'}
+									</div>
+									<Spin spinning={loadingPnl}>
+										<div
+											className={
+												Number(userPL?.[getPeriod(currentDay)]?.total || 0) ===
+												0
+													? 'profitNeutral'
+													: (userPL?.[getPeriod(currentDay)]?.total || 0) > 0
+													? 'profitPositive'
+													: 'profitNegative'
+											}
+										>
+											{' '}
+											{currentDay + ' '}
+											<EditWrapper stringId="PROFIT_LOSS.PL_DAYS">
+												{STRINGS['PROFIT_LOSS.PL_DAYS']}
+											</EditWrapper>{' '}
+											{Number(userPL?.[getPeriod(currentDay)]?.total || 0) > 0
+												? '+'
+												: ' '}
+											{''}
+											{getSourceDecimals(
+												balance_history_config?.currency || 'usdt',
+												userPL?.[getPeriod(currentDay)]?.total
+											)
+												?.toString()
+												.replace(/\B(?=(\d{3})+(?!\d))/g, ',') || '0'}
+											{userPL?.[getPeriod(currentDay)]?.totalPercentage
+												? ` (${
+														userPL?.[getPeriod(currentDay)]?.totalPercentage
+												  }%) `
+												: ' '}
+											{balance_history_config?.currency?.toUpperCase() ||
+												'USDT'}
+										</div>
+									</Spin>
 								</div>
 							</div>
-						</div>
 
-						<div className="wallet-assets_block" style={{ display: 'flex' }}>
-							<table className="profit_block-table">
-								<thead>
-									<tr className="table-bottom-border">
-										<th>
-											<EditWrapper stringId="PROFIT_LOSS.ASSET_NAME">
-												{STRINGS['PROFIT_LOSS.ASSET_NAME']}
-											</EditWrapper>
-										</th>
-										<th>
-											<EditWrapper stringId="PROFIT_LOSS.BALANCE_AMOUNT">
-												{STRINGS['PROFIT_LOSS.BALANCE_AMOUNT']}
-											</EditWrapper>
-										</th>
-										<th>
-											<EditWrapper stringId="PROFIT_LOSS.VALUE">
-												{STRINGS['PROFIT_LOSS.VALUE']}
-											</EditWrapper>
-										</th>
-									</tr>
-								</thead>
-								<tbody className="account-limits-content font-weight-bold">
-									{getRows(coins)}
-								</tbody>
-							</table>
+							<div
+								style={{
+									display: 'flex',
+									gap: 5,
+									marginTop: 15,
+									marginBottom: 15,
+								}}
+							>
+								<Button
+									style={{
+										fontWeight: currentDay === 7 ? 'bold' : '400',
+										fontSize: '1em',
+									}}
+									className="plButton"
+									ghost
+									onClick={() => {
+										setCurrentDay(7);
+										setQueryValues({
+											start_date: moment().subtract(7, 'days').toISOString(),
+											end_date: moment().subtract().toISOString(),
+										});
+									}}
+								>
+									<span style={{ marginRight: 3 }}>1</span>
+									<EditWrapper stringId="PROFIT_LOSS.WEEK">
+										{STRINGS['PROFIT_LOSS.WEEK']}
+									</EditWrapper>
+								</Button>
+								<Button
+									style={{
+										fontWeight: currentDay === 30 ? 'bold' : '400',
+										fontSize: '1em',
+									}}
+									className="plButton"
+									ghost
+									onClick={() => {
+										setCurrentDay(30);
+										setQueryValues({
+											start_date: moment().subtract(30, 'days').toISOString(),
+											end_date: moment().subtract().toISOString(),
+										});
+									}}
+								>
+									<span style={{ marginRight: 3 }}>1 </span>{' '}
+									<EditWrapper stringId="PROFIT_LOSS.MONTH">
+										{STRINGS['PROFIT_LOSS.MONTH']}
+									</EditWrapper>
+								</Button>
+								<Button
+									style={{
+										fontWeight: currentDay === 90 ? 'bold' : '400',
+										fontSize: '1em',
+									}}
+									className="plButton"
+									ghost
+									onClick={() => {
+										setCurrentDay(90);
+										setQueryValues({
+											start_date: moment().subtract(90, 'days').toISOString(),
+											end_date: moment().subtract().toISOString(),
+										});
+									}}
+								>
+									<span style={{ marginRight: 3 }}>3 </span>{' '}
+									<EditWrapper stringId="PROFIT_LOSS.MONTHS">
+										{STRINGS['PROFIT_LOSS.MONTHS']}
+									</EditWrapper>
+								</Button>
+								{/* <Button
+									style={{
+										fontWeight: currentDay === 'custom' ? 'bold' : '400',
+										fontSize: '1em',
+									}}
+									className="plButton"
+									ghost
+									onClick={() => {
+										setCustomDate(true);
+									}}
+								>
+									<EditWrapper stringId="PROFIT_LOSS.CUSTOM">
+										{STRINGS['PROFIT_LOSS.CUSTOM']}
+									</EditWrapper>
+								</Button> */}
+							</div>
+
+							<div className="highChartColor">
+								<HighchartsReact highcharts={Highcharts} options={options} />
+							</div>
 						</div>
-					</>
-				)}
+					</TabPane>
+					{currentBalance && (
+						<TabPane tab={STRINGS['PROFIT_LOSS.BALANCE_HISTORY']} key="1">
+							<div
+								className="wallet-assets_block"
+								style={{ marginTop: -10, paddingTop: 20 }}
+							>
+								<div
+									style={{
+										display: 'flex',
+										justifyContent: 'space-between',
+										gap: 15,
+									}}
+								>
+									<div>
+										<div style={{ fontWeight: 'bold' }}>
+											<EditWrapper stringId="PROFIT_LOSS.WALLET_BALANCE">
+												{STRINGS['PROFIT_LOSS.WALLET_BALANCE']}
+											</EditWrapper>
+										</div>
+										<div style={{ maxWidth: 300, marginBottom: 10 }}>
+											<EditWrapper stringId="PROFIT_LOSS.WALLET_BALANCE_DESCRIPTION_1">
+												{STRINGS['PROFIT_LOSS.WALLET_BALANCE_DESCRIPTION_1']}
+											</EditWrapper>{' '}
+											{moment(currentBalance?.created_at).format('DD/MMM/YYYY')}
+											.
+											<EditWrapper stringId="PROFIT_LOSS.WALLET_BALANCE_DESCRIPTION_2">
+												{STRINGS['PROFIT_LOSS.WALLET_BALANCE_DESCRIPTION_2']}
+											</EditWrapper>
+										</div>
+									</div>
+									<div>
+										<div>
+											<EditWrapper stringId="PROFIT_LOSS.EST_TOTAL_BALANCE">
+												{STRINGS['PROFIT_LOSS.EST_TOTAL_BALANCE']}
+											</EditWrapper>{' '}
+											{moment(currentBalance?.created_at).format('DD/MMM/YYYY')}
+										</div>
+										<div style={{ fontSize: '1.5em', marginBottom: 5 }}>
+											{balance_history_config?.currency?.toUpperCase() ||
+												'USDT'}{' '}
+											{getSourceDecimals(
+												balance_history_config?.currency || 'usdt',
+												currentBalance?.total
+											)
+												?.toString()
+												.replace(/\B(?=(\d{3})+(?!\d))/g, ',') || '0'}
+										</div>
+										<div>
+											<div>
+												<EditWrapper stringId="PROFIT_LOSS.DATE_SELECT">
+													{STRINGS['PROFIT_LOSS.DATE_SELECT']}
+												</EditWrapper>
+												:
+											</div>
+											<DatePicker
+												suffixIcon={null}
+												className="pldatePicker"
+												placeholder={STRINGS['PROFIT_LOSS.DATE_SELECT']}
+												value={selectedCustomDate}
+												disabledDate={(current) => {
+													return (
+														current &&
+														(current <
+															moment(
+																balance_history_config?.date_enabled,
+																'YYYY-MM-DD'
+															) ||
+															current.isAfter(moment()))
+													);
+												}}
+												style={{
+													width: '12.5em',
+													fontSize: '1em',
+												}}
+												onChange={(date, dateString) => {
+													if (!dateString) return;
+													setSelectedCustomDate(date);
+													fetchBalanceHistory({
+														start_date: moment(dateString)
+															.startOf('day')
+															.toISOString(),
+														end_date: moment(dateString)
+															.endOf('day')
+															.toISOString(),
+														limit: 1,
+													})
+														.then((response) => {
+															let balance = response?.data?.[0];
+
+															if (balance) setCurrentBalance(balance);
+															else {
+																message.error('Balance not found');
+															}
+														})
+														.catch((error) => {
+															message.error('Something went wrong');
+														});
+												}}
+												format={'YYYY/MM/DD'}
+											/>
+										</div>
+									</div>
+								</div>
+
+								<div
+									className="wallet-assets_block"
+									style={{ display: 'flex' }}
+								>
+									<table className="profit_block-table">
+										<thead>
+											<tr className="table-bottom-border">
+												<th>
+													<EditWrapper stringId="PROFIT_LOSS.ASSET_NAME">
+														{STRINGS['PROFIT_LOSS.ASSET_NAME']}
+													</EditWrapper>
+												</th>
+												<th>
+													<EditWrapper stringId="PROFIT_LOSS.BALANCE_AMOUNT">
+														{STRINGS['PROFIT_LOSS.BALANCE_AMOUNT']}
+													</EditWrapper>
+												</th>
+												<th>
+													<EditWrapper stringId="PROFIT_LOSS.VALUE">
+														{STRINGS['PROFIT_LOSS.VALUE']}
+													</EditWrapper>
+												</th>
+											</tr>
+										</thead>
+										<tbody className="account-limits-content font-weight-bold">
+											{getRows(coins)}
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</TabPane>
+					)}
+				</Tabs>
 			</div>
 		</Spin>
 	);

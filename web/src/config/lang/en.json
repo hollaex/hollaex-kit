@@ -1562,6 +1562,7 @@
 		"WALLET_PERFORMANCE_TITLE": "Balance performance",
 		"WALLET_PERFORMANCE_DESCRIPTION": "Your wallet's balance performance over time and the asset breakdown. Click the dates below to see your wallet's performance on that day.",
 		"PL_7_DAY": "7 Day P&L",
+		"PL_DAYS": "Day P&L",
 		"EST_TOTAL_BALANCE": "Est. Total Balance",
 		"WEEK": "week",
 		"MONTH": "month",
@@ -1581,7 +1582,9 @@
 		"BACK_CUSTOM": "BACK",
 		"PROOCED_CUSTOM": "PROOCED",
 		"VIEW_MORE": "View More {0}",
-		"SHOW_ASSET_BREAKDOWN": "Show Asset Breakdown"
+		"SHOW_ASSET_BREAKDOWN": "Show Asset Breakdown",
+		"PL_SUMMARY": "P&L Summary",
+		"BALANCE_HISTORY": "Balance History"
 	},
 	"ASSET_INFO": "Asset info",
 	"TAKER_FEES_APPLIED": "Taker fees are applied",
