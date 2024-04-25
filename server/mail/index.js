@@ -13,6 +13,9 @@ const SEND_EMAIL_COPY = () => GET_KIT_SECRETS().emails.send_email_to_support;
 const API_NAME = () => GET_KIT_CONFIG().api_name;
 const SUPPORT_SOURCE = () => `'${API_NAME()} Support <${SENDER_EMAIL()}>'`;
 const BCC_ADDRESSES = () => SEND_EMAIL_COPY() ? [AUDIT_EMAIL()] : [];
+const SMTP_SERVER = () => GET_KIT_SECRETS().smtp.server;
+const SMTP_USER = () => GET_KIT_SECRETS().smtp.user;
+
 const DEFAULT_LANGUAGE = () => {
 	try {
 		return GET_KIT_CONFIG().defaults.language;
@@ -118,13 +121,15 @@ const sendRawEmail = (
 };
 
 const send = (params) => {
-	return sendSMTPEmail(params)
-		.then((info) => {
-			return info;
-		})
-		.catch((error) => {
-			loggerEmail.error('mail/index/sendSTMPEmail', error);
-		});
+	if (SMTP_SERVER && SMTP_USER) {
+		return sendSMTPEmail(params)
+			.then((info) => {
+				return info;
+			})
+			.catch((error) => {
+				loggerEmail.error('mail/index/sendSTMPEmail', error);
+			});
+	}
 };
 
 const testSendSMTPEmail = (receiver = '', smtp = {}) => {
