@@ -23,6 +23,11 @@ class Dialog extends PureComponent {
 		}
 	};
 
+	onHandleBack = () => {
+		const { onHandleEnableBack } = this.props;
+		onHandleEnableBack(2);
+	};
+
 	render() {
 		const languageClasses = getClasesForLanguage(getLanguage());
 		const {
@@ -36,6 +41,7 @@ class Dialog extends PureComponent {
 			className,
 			bodyOpenClassName,
 			isEditMode,
+			isEnableOtpForm,
 		} = this.props;
 
 		return (
@@ -66,6 +72,15 @@ class Dialog extends PureComponent {
 				{closeButton && (
 					<div>
 						<Button onClick={closeButton} label={STRINGS['CLOSE_TEXT']} />
+					</div>
+				)}
+				{isEnableOtpForm && (
+					<div className="mt-5">
+						<Button
+							className="2fa-back-btn"
+							label={STRINGS['ACCOUNT_SECURITY.OTP.BACK']}
+							onClick={this.onHandleBack}
+						></Button>
 					</div>
 				)}
 			</Modal>

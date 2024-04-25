@@ -41,6 +41,7 @@ const BasicIconTitle = ({
 									: 'icon_title-text'
 							} pt-2`,
 							'text-center',
+							text === '2FA Setup' && 'step-one-title-wrapper',
 							textType
 						)}
 					>
