@@ -413,7 +413,6 @@ const requestResetPassword = (req, res) => {
 	let email = req.swagger.params.email.value;
 	const ip = req.headers['x-real-ip'];
 	const domain = req.headers['x-real-origin'];
-	const captcha = req.swagger.params.captcha.value;
 
 	loggerUser.info(
 		req.uuid,
@@ -437,7 +436,7 @@ const requestResetPassword = (req, res) => {
 
 	email = email.toLowerCase();
 
-	toolsLib.security.sendResetPasswordCode(email, captcha, ip, domain)
+	toolsLib.security.sendResetPasswordCode(email, null, ip, domain)
 		.then(() => {
 			return res.json({ message: `Password request sent to: ${email}` });
 		})
