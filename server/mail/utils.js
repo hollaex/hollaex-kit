@@ -56,6 +56,7 @@ const transport = () => {
 	return nodemailer.createTransport({
 		host: SMTP_SERVER(),
 		port: SMTP_PORT(),
+		secure: false,
 		auth: {
 			user: SMTP_USER(),
 			pass: SMTP_PASSWORD()
@@ -82,6 +83,7 @@ const sendSMTPTestEmail = async (params, smtp) => {
 			transport = nodemailer.createTransport({
 				host: smtp.server || SMTP_SERVER(),
 				port: smtp.port || SMTP_PORT(),
+				secure: false,
 				auth: {
 					user: smtp.user || SMTP_USER(),
 					pass: smtp.password || SMTP_PASSWORD()
@@ -92,6 +94,7 @@ const sendSMTPTestEmail = async (params, smtp) => {
 			transport = nodemailer.createTransport({
 				host: SMTP_SERVER(),
 				port: SMTP_PORT(),
+				secure: false,
 				auth: {
 					user: SMTP_USER(),
 					pass: SMTP_PASSWORD()

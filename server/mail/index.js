@@ -121,7 +121,7 @@ const sendRawEmail = (
 };
 
 const send = (params) => {
-	if (SMTP_SERVER && SMTP_USER && SMTP_SERVER.length > 1) {
+	if (SMTP_SERVER() && SMTP_USER() && SMTP_SERVER().length > 1) {
 		return sendSMTPEmail(params)
 			.then((info) => {
 				return info;
