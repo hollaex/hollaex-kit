@@ -732,6 +732,13 @@ paths:
     get:
       description: Get the user p/l info
       operationId: fetchUserProfitLossInfo
+      parameters:
+        - in: query
+          name: period
+          description: "Period for fetching pnl data"
+          required: false
+          type: string
+          enum: ['7', '30', '90']
       tags:
         - User
       responses:
