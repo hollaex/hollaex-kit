@@ -184,11 +184,13 @@
 		"OTP_FORM_INFO": "Enter your 6-digit code to continue",
 		"OTP_FORM_SUBNOTE_LINE_1": "Your code is also known as a two-factor authenticator (2FA) or OTP code.",
 		"OTP_FORM_SUBNOTE_LINE_2": "If you've lost your code, please reach out to support.",
+		"OTP_FORM_SUBNOTE_LINE_3": "(To add a new account to Google Authenticator, click the '+' button. You can either scan the provided QR code in the previous step or manually enter the key to add your account to the app.)",
 		"OTP_LABEL": "OTP Code",
 		"OTP_PLACEHOLDER": "Enter the authentication code",
 		"OTP_TITLE": "Authenticator Code",
 		"OTP_BUTTON": "submit",
-		"ERROR_INVALID": "Invalid OTP Code"
+		"ERROR_INVALID": "Invalid OTP Code",
+		"INPUT_TEXT": "Input the 6-digit code from your phone's Google Authenticator app:"
 	},
 	"EMAIL_CODE_FORM": {
 		"TITLE": "Input you security codes",
@@ -1562,6 +1564,7 @@
 		"WALLET_PERFORMANCE_TITLE": "Balance performance",
 		"WALLET_PERFORMANCE_DESCRIPTION": "Your wallet's balance performance over time and the asset breakdown. Click the dates below to see your wallet's performance on that day.",
 		"PL_7_DAY": "7 Day P&L",
+		"PL_DAYS": "Day P&L",
 		"EST_TOTAL_BALANCE": "Est. Total Balance",
 		"WEEK": "week",
 		"MONTH": "month",
@@ -1581,7 +1584,9 @@
 		"BACK_CUSTOM": "BACK",
 		"PROOCED_CUSTOM": "PROOCED",
 		"VIEW_MORE": "View More {0}",
-		"SHOW_ASSET_BREAKDOWN": "Show Asset Breakdown"
+		"SHOW_ASSET_BREAKDOWN": "Show Asset Breakdown",
+		"PL_SUMMARY": "P&L Summary",
+		"BALANCE_HISTORY": "Balance History"
 	},
 	"ASSET_INFO": "Asset info",
 	"TAKER_FEES_APPLIED": "Taker fees are applied",

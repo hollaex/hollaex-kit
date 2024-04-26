@@ -413,7 +413,6 @@ const requestResetPassword = (req, res) => {
 	let email = req.swagger.params.email.value;
 	const ip = req.headers['x-real-ip'];
 	const domain = req.headers['x-real-origin'];
-	const captcha = req.swagger.params.captcha.value;
 
 	loggerUser.info(
 		req.uuid,
@@ -437,7 +436,7 @@ const requestResetPassword = (req, res) => {
 
 	email = email.toLowerCase();
 
-	toolsLib.security.sendResetPasswordCode(email, captcha, ip, domain)
+	toolsLib.security.sendResetPasswordCode(email, null, ip, domain)
 		.then(() => {
 			return res.json({ message: `Password request sent to: ${email}` });
 		})
@@ -1244,10 +1243,10 @@ const fetchUserProfitLossInfo = (req, res) => {
 		'controllers/user/fetchUserProfitLossInfo/auth',
 		req.auth
 	);
-
+	const { period } = req.swagger.params;
 	const user_id = req.auth.sub.id;
 
-	toolsLib.user.fetchUserProfitLossInfo(user_id)
+	toolsLib.user.fetchUserProfitLossInfo(user_id, { period: period.value || 7 })
 		.then((data) => {
 			return res.json(data);
 		})
