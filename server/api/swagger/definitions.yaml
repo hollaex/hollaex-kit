@@ -1030,7 +1030,7 @@ definitions:
         maxLength: 256
       description:
         type: string
-        maxLength: 256
+        maxLength: 5000
       native_currency_limit:
         type: boolean
   PostTierBody:
@@ -1053,7 +1053,7 @@ definitions:
         maxLength: 256
       description:
         type: string
-        maxLength: 256
+        maxLength: 5000
       note:
         type: string
         maxLength: 256
