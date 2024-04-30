@@ -486,39 +486,41 @@ const generateAffiliationCode = () => {
 
 const getUserByAffiliationCode = (affiliationCode) => {
 	const code = affiliationCode.toUpperCase().trim();
-	return dbQuery.findOne('user', {
-		where: { affiliation_code: code },
-		attributes: ['id', 'email', 'affiliation_code']
+	return dbQuery.findOne('referralCode', {
+		where: { code },
+		attributes: ['user_id', 'discount']
 	});
 };
 
 const checkAffiliation = (affiliationCode, user_id) => {
-	// let discount = 0; // default discount rate in percentage
 	return getUserByAffiliationCode(affiliationCode)
 		.then((referrer) => {
 			if (referrer) {
-				return getModel('affiliation').create({
+				return all[getModel('affiliation').create({
 					user_id,
-					referer_id: referrer.id,
+					referer_id: referrer.user_id,
 					code: affiliationCode
-				});
+				}), referrer];
 			} else {
-				return;
+				return [];
 			}
-		});
-	// .then((affiliation) => {
-	// 	return getModel('user').update(
-	// 		{
-	// 			discount
-	// 		},
-	// 		{
-	// 			where: {
-	// 				id: affiliation.user_id
-	// 			},
-	// 			fields: ['discount']
-	// 		}
-	// 	);
-	// });
+		})
+	.then(([affiliation, referrer]) => {
+		if (affiliation?.user_id) {
+			return getModel('user').update(
+				{
+					discount: referrer.discount
+				},
+				{
+					where: {
+						id: affiliation.user_id
+					},
+					fields: ['discount']
+				}
+			);
+		}
+		return;
+	});
 };
 
 const getAffiliationCount = (userId, opts = {

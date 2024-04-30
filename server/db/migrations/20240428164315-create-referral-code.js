@@ -20,7 +20,8 @@ module.exports = {
 			},
 			code: {
 				type: Sequelize.STRING,
-				allowNull: false
+				allowNull: false,
+				unique: true
 			},
 			earning_rate: {
 				type: Sequelize.DOUBLE,
