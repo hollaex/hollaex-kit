@@ -54,6 +54,8 @@ model = require(path.join(__dirname, './balanceHistory'))(sequelize, Sequelize.D
 db[model.name] = model;
 model = require(path.join(__dirname, './referralHistory'))(sequelize, Sequelize.DataTypes);
 db[model.name] = model;
+model = require(path.join(__dirname, './referralCode'))(sequelize, Sequelize.DataTypes);
+db[model.name] = model;
 
 Object.keys(db).forEach(function (modelName) {
 	if ('associate' in db[modelName]) {
