@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import QRCode from 'qrcode.react';
-import { Button, message } from 'antd';
+import { Button } from 'antd';
 import { CloseCircleOutlined } from '@ant-design/icons';
 import { CheckboxButton, IconTitle, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
@@ -21,6 +21,7 @@ const OtpFormSteps = ({
 }) => {
 	const [step, setStep] = useState(0);
 	const [otpValue, setOtpValue] = useState();
+	const [errorMsg, setErrorMsg] = useState('');
 	const app_name = constants.api_name.replace(' ', '').trim() || '';
 
 	useEffect(() => {
@@ -29,6 +30,18 @@ const OtpFormSteps = ({
 			handleUpdateOtp(false);
 		}
 	}, [selectedStep, handleUpdateOtp]);
+
+	useEffect(() => {
+		if (otpValue) {
+			setErrorMsg('');
+		}
+	}, [otpValue]);
+
+	const handleOnBlur = () => {
+		if (!otpValue) {
+			setErrorMsg(STRINGS['ACCOUNT_SECURITY.OTP.MANUEL_ERROR_1']);
+		}
+	};
 
 	return (
 		<div className="otp_form-wrapper">
@@ -213,12 +226,15 @@ const OtpFormSteps = ({
 					</div>
 					<input
 						value={otpValue}
-						className="verfication-field"
+						className={`verfication-field ${errorMsg ? 'errorField' : ''}`}
 						placeholder={STRINGS['ACCOUNT_SECURITY.OTP.MANUEL_PLACEHOLDER']}
 						onChange={(e) => {
 							setOtpValue(e.target.value);
 						}}
+						required
+						onBlur={handleOnBlur}
 					/>
+					{errorMsg && <div className="errorText">{errorMsg}</div>}
 					<div className="warning-text">
 						<EditWrapper stringId="ACCOUNT_SECURITY.OTP.MANUEL_WARNING">
 							{STRINGS['ACCOUNT_SECURITY.OTP.MANUEL_WARNING']}
@@ -228,17 +244,19 @@ const OtpFormSteps = ({
 					<div className="btn-wrapper">
 						<RenderBackBtn
 							setStep={setStep}
+							setErrorMsg={setErrorMsg}
+							setOtpValue={setOtpValue}
 							step={1}
 							label={'ACCOUNT_SECURITY.OTP.NEXT'}
 						/>
 						<Button
 							onClick={() => {
 								if (!otpValue) {
-									message.error(STRINGS['ACCOUNT_SECURITY.OTP.MANUEL_ERROR_1']);
+									setErrorMsg(STRINGS['ACCOUNT_SECURITY.OTP.MANUEL_ERROR_1']);
 									return;
 								}
 								if (otpValue !== secret) {
-									message.error(STRINGS['ACCOUNT_SECURITY.OTP.MANUEL_ERROR_2']);
+									setErrorMsg(STRINGS['ACCOUNT_SECURITY.OTP.MANUEL_ERROR_2']);
 									return;
 								}
 								handleUpdateOtp(true);
