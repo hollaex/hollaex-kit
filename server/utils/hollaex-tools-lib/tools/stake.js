@@ -529,7 +529,7 @@ const createExchangeStaker = async (stake_id, amount, user_id) => {
 
 	const userBalance = await getSourceAccountBalance(user_id, stakePool.currency);
 
-	if (new BigNumber(userBalance).comparedTo(new BigNumber(amount)) > -1) {
+	if (new BigNumber(userBalance).comparedTo(new BigNumber(amount)) === -1) {
 		throw new Error(AMOUNT_INSUFFICIENT_ERROR);
 	}
 
