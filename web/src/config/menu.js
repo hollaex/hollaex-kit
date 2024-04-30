@@ -24,17 +24,7 @@ export const MENU_ITEMS = {
 			hide_from_sidebar: true,
 			hide_from_menulist: true,
 			hide_from_bottom_nav: false,
-		},
-		{
-			id: 'assets',
-			path: '/assets',
-			icon_id: 'FOOTERBAR_ASSETS_TRADE',
-			string_id: 'ASSETS',
-			hide_from_sidebar: true,
-			hide_from_appbar: false,
-			hide_from_menulist: true,
-			hide_from_bottom_nav: true,
-		},
+		}
 	],
 	features: [
 		{
@@ -43,19 +33,19 @@ export const MENU_ITEMS = {
 			icon_id: `${
 				isMobile ? 'FOOTER_TRADING_ACTIVE' : 'SIDEBAR_TRADING_ACTIVE'
 			}`,
-			string_id: `${isMobile ? 'SUMMARY.MARKETS' : 'PRO_TRADE'}`,
+			string_id: 'SUMMARY.MARKETS',
 			hide_from_sidebar: true,
 			hide_from_bottom_nav: false,
+			hide_from_menulist: true
 		},
 		{
 			id: 'quick_trade',
 			path: 'quick-trade',
-			icon_id: `${
-				isMobile ? 'FOOTER_QUICK_ACTIVE' : 'SIDEBAR_QUICK_TRADING_ACTIVE'
-			}`,
-			string_id: `${isMobile ? 'CONVERT' : 'QUICK_TRADE'}`,
+			icon_id: 'FOOTER_QUICK_ACTIVE',
+			string_id: 'CONVERT',
 			hide_from_sidebar: true,
 			hide_from_bottom_nav: false,
+			hide_from_menulist: true
 		},
 		{
 			id: 'stake_page',
@@ -88,6 +78,7 @@ export const MENU_ITEMS = {
 			path: '/wallet',
 			icon_id: `${isMobile ? 'WALLET_FOOTER' : 'TAB_WALLET'}`,
 			string_id: 'ACCOUNTS.TAB_WALLET',
+			hide_from_appbar: true
 		},
 		{
 			path: '/transactions',
@@ -111,12 +102,12 @@ export const MENU_ITEMS = {
 			hide_from_bottom_nav: true,
 		},
 		{
-			id: 'assets',
-			path: '/assets',
+			id: 'prices',
+			path: '/prices',
 			icon_id: 'FOOTERBAR_ASSETS_TRADE',
-			string_id: `${isMobile ? 'HOLLAEX_TOKEN.PRICES.TITLE' : 'ASSETS'}`,
+			string_id: 'HOLLAEX_TOKEN.PRICES.TITLE',
 			hide_from_sidebar: true,
-			hide_from_appbar: true,
+			hide_from_appbar: false,
 			hide_from_menulist: true,
 			hide_from_bottom_nav: false,
 		},

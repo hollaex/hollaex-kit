@@ -115,7 +115,7 @@ const Details = ({
 		} else if (isNetwork && brokerUsed) {
 			router.push(`/quick-trade/${pair}`);
 		} else {
-			router.push(`/assets/coin/${pair.split('-')[0]}`);
+			router.push(`/prices/coin/${pair.split('-')[0]}`);
 		}
 	};
 
@@ -279,7 +279,7 @@ const Details = ({
 								<div>
 									<div className="sub-title caps">{STRINGS['ASSET_INFO']}</div>
 									{getLink(
-										`/assets/coin/${pairBase}`,
+										`/prices/coin/${pairBase}`,
 										STRINGS.formatString(
 											STRINGS['QUICK_TRADE_COMPONENT.COIN_INFORMATION'],
 											coins[pairBase].display_name

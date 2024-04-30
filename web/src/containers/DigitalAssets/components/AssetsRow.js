@@ -100,7 +100,7 @@ const AssetsRow = ({ coinData, loading, index, quicktrade, pairs, icons }) => {
 				{!loading ? (
 					<div
 						className="d-flex align-items-center"
-						onClick={() => browserHistory.push(`/assets/coin/${symbol}`)}
+						onClick={() => browserHistory.push(`/prices/coin/${symbol}`)}
 					>
 						<Coin iconId={icon_id} />
 						<div className="px-2">{fullname}</div>
