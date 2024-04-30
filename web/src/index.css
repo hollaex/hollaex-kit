@@ -1257,6 +1257,12 @@ table th {
         height: 3rem;
         width: 3rem; }
 
+.errorField {
+  border-color: var(--specials_notifications-alerts-warnings) !important; }
+
+.errorText {
+  color: var(--specials_notifications-alerts-warnings) !important; }
+
 .signup_success-wrapper {
   text-align: center; }
   .signup_success-wrapper .signup_success-content {

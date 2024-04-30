@@ -48,11 +48,13 @@ export const RenderBtn = ({ closeDialog, setStep, step, goBack, label }) => {
 	);
 };
 
-export const RenderBackBtn = ({ setStep, step }) => {
+export const RenderBackBtn = ({ setStep, setErrorMsg, setOtpValue, step }) => {
 	return (
 		<Button
 			onClick={() => {
 				setStep(step);
+				setErrorMsg('');
+				setOtpValue('');
 			}}
 			className="back-btn"
 		>
