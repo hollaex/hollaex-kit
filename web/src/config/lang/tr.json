@@ -193,7 +193,9 @@
         "ERROR_INVALID": "Hatalı OTP Kodu",
         "OTP_FORM_INFO": "Devam etmek için 6 haneli kodunuzu girin",
         "OTP_FORM_SUBNOTE_LINE_1": "Kodunuz aynı zamanda iki faktörlü kimlik doğrulayıcı (2FA) veya OTP kodu olarak da bilinir.",
-        "OTP_FORM_SUBNOTE_LINE_2": "Kodunuzu kaybettiyseniz lütfen destek ekibiyle iletişime geçin."
+        "OTP_FORM_SUBNOTE_LINE_2": "Kodunuzu kaybettiyseniz lütfen destek ekibiyle iletişime geçin.",
+        "OTP_FORM_SUBNOTE_LINE_3": "(To add a new account to Google Authenticator, click the '+' button. You can either scan the provided QR code in the previous step or manually enter the key to add your account to the app.)",
+        "INPUT_TEXT": "Input the 6-digit code from your phone's Google Authenticator app:"
     },
     "EMAIL_CODE_FORM": {
         "TITLE": "Güvenlik kodlarınızı giriniz",
@@ -565,7 +567,8 @@
         "INTERNAL": "dahili",
         "BLOCKCHAIN": "blok zinciri",
         "STAKE": "hisse",
-        "REFERRAL": "Referans"
+        "REFERRAL": "Referans",
+        "QUICK_TRADE_TOOLTIP": "Dönüştürme sistemi aracılığıyla yürütülen sipariş"
     },
     "ACCOUNT_SECURITY": {
         "TITLE_TEXT": "Hesabınızın güvenlik seviyesini arttırın. İki Faktörlü Doğrulama, Şifre, API anahtarları ve diğer güvenlik fonksiyonları.",
@@ -582,15 +585,46 @@
                 "MESSAGE_3": "Eğer kodu taramakta sorun yaşarsanız, aşağıdaki kodu cihazınıza kendiniz girebilirsiniz.",
                 "MESSAGE_4": "Telefonunuzu kaybetmeniz ya da değiştirmeniz durumunda, 2FA doğrulamanızı tekrar yaratabilmeniz için, bu kodu lütfen saklayınız.",
                 "MESSAGE_5": "Manual",
-                "WARNING": "İki-Faktörlü doğrulamayı (2FA) aktiflemenizi şiddetle öneriyoruz. Bu şekilde fonlarınızın güvenliğini önemli ölçüde arttırabilirsiniz.",
+                "WARNING": "Biz {0} {1}",
                 "ENABLE": "İki-Faktörlü Doğrulamayı Aktifle",
                 "DISABLE": "İki-Faktörlü Doğrulamayı Kapat",
-                "INPUT": "Lütfen OTP kodunuzu giriniz"
+                "INPUT": "Lütfen OTP kodunuzu giriniz",
+                "STRONGLY_RECOMMEND": "şiddetle tavsiye ederim",
+                "WARNING_CONTENT": "hesabınızın güvenliğini artırmak ve paranızı korumak için iki faktörlü kimlik doğrulamayı etkinleştirmeniz"
             },
             "FORM": {
                 "PLACEHOLDER": "Google Authenticator tarafından sağlanan OTP kodunuzu giriniz.",
                 "BUTTON": "2FA AKTİFLE"
-            }
+            },
+            "DOWNLOAD_APP": "Download and install",
+            "GOOGLE_AUTHENTICATOR": "Google Authenticator:",
+            "DOWNLOAD_FROM": "Download from",
+            "GOOGLE_PLAY": "GooglePlay",
+            "APPLE": "App Store",
+            "APP_INFO": "Google Authenticator will generate random codes that are necessary for sensitive actions, such as logging in and withdrawing funds.",
+            "DONT_UNINSTALL": "Lütfen uygulamayı kaldırmayın.",
+            "INFO_UNINSTALL": "Telefonunuzun kazara kaybolması veya istemeden kaldırılması durumunda, hesabınıza yeniden erişim sağlamada gecikmeler yaşayabilirsiniz. Bu gibi durumlarda yardım için destek ekibimizle iletişime geçmeniz gerekecektir.",
+            "BACK": "GERİ",
+            "PROCEED": "İLERLEMEK",
+            "NEXT": "Sonraki",
+            "NOTE": "Not: {0} {1}",
+            "MANUEL_DESCRIPTION": "Lütfen önceki adımdaki manuel 2FA tohumunu girin.",
+            "MANUEL_DESCRIPTION_2": "Lütfen yukarıdaki manuel doğrulamayı dikkatlice yazıp saklayın.",
+            "MANUEL_DESCRIPTION_3": "Hesap kurtarma için kullanılabilecek anahtar.",
+            "MANUEL_KEY": "Manuel 2FA tohumu",
+            "MANUEL_PLACEHOLDER": "2FA tohumunuzu girin",
+            "MANUEL_WARNING": "(Bunu bir yere yazdığınızdan ve ileride kullanmak üzere güvenli bir şekilde sakladığınızdan emin olun.)",
+            "MANUEL_ERROR_1": "Lütfen 2FA tohum kılavuzunu girin",
+            "MANUEL_ERROR_2": "Lütfen önceki adımdaki manuel 2FA tohumunu girin",
+            "ACCOUNT_SECURED": "Hesap Güvence Altında",
+            "2FA_ENABLED": "2FA ETKİN",
+            "2FA_DISABLED": "2FA DEVRE DIŞI",
+            "2FA_CONTENT_ONE": "{0} {1} etkinleştiriliyor.",
+            "2FA_CONTENT_TWO": "(İki Faktörlü Kimlik Doğrulama), paranızı korumak için ekstra bir koruma katmanı ekler. Etkinleştirildiğinde, her giriş yaptığınızda veya varlıkları çektiğinizde telefonunuzdan bir doğrulama kodu girmeniz istenecektir. Bu özellik hesabınızın güvenliğini önemli ölçüde artırır",
+            "2FA_CONTENT_THREE": "(İki Faktörlü Kimlik Doğrulama), paranızı korumak için ekstra bir koruma katmanı ekler",
+            "2FA_CONTENT_FOUR": "2FA'yı devre dışı bırakmak için 2FA (OTP) kodunuzu girmeniz gerekecektir.",
+            "INPUT_SIX_DIGIT_CODE": "Telefonunuzun Google Authenticator uygulamasından 6 haneli kodu girin:",
+            "INPUT_CONTENT": "(Google Authenticator'a yeni bir hesap eklemek için '+' düğmesini tıklayın. Önceki adımda verilen QR kodunu tarayabilir veya hesabınızı uygulamaya eklemek için anahtarı manuel olarak girebilirsiniz.)"
         },
         "CHANGE_PASSWORD": {
             "TITLE": "Şifre",
@@ -1560,7 +1594,12 @@
         "SELECT_END_DATE": "Bitiş tarihini seçin",
         "CUSTOM": "Gelenek",
         "BACK_CUSTOM": "GERİ",
-        "PROOCED_CUSTOM": "PROOCELENMİŞ"
+        "PROOCED_CUSTOM": "PROOCELENMİŞ",
+        "PL_DAYS": "Gün Kâr-Zararı",
+        "VIEW_MORE": "Daha Fazlasını Görüntüle {0}",
+        "SHOW_ASSET_BREAKDOWN": "Varlık Dökümünü Göster",
+        "PL_SUMMARY": "Kâr ve Zarar Özeti",
+        "BALANCE_HISTORY": "Bakiye Geçmişi"
     },
     "ASSET_INFO": "Varlık bilgisi",
     "TAKER_FEES_APPLIED": "Alıcı ücretleri uygulanır",
@@ -1603,7 +1642,8 @@
         },
         "LIST": "Dijital varlıklarınızı listelemek mi istiyorsunuz?",
         "WEBSITE": "İnternet sitesi",
-        "EXPLORER": "Kaşif"
+        "EXPLORER": "Kaşif",
+        "PRO_TRADE": "{0} PAZARINI GÖRÜNTÜLE"
     },
     "ACCORDIAN": {
         "ACCORDIAN_ASSETS": "Tüm cüzdan varlıkları",
@@ -1735,5 +1775,6 @@
                 "CONFIRM": "ONAYLAMAK"
             }
         }
-    }
+    },
+    "CANCEL_WITHDRAWAL_ADDRESS": "Withdrawal Address"
 }

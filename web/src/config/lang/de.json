@@ -228,7 +228,9 @@
         "ERROR_INVALID": "Ungültiger OTP-Code",
         "OTP_FORM_INFO": "Geben Sie Ihren 6-stelligen Code ein, um fortzufahren",
         "OTP_FORM_SUBNOTE_LINE_1": "Ihr Code wird auch als Zwei-Faktor-Authentifikator (2FA) oder OTP-Code bezeichnet.",
-        "OTP_FORM_SUBNOTE_LINE_2": "Wenn Sie Ihren Code verloren haben, wenden Sie sich bitte an den Support."
+        "OTP_FORM_SUBNOTE_LINE_2": "Wenn Sie Ihren Code verloren haben, wenden Sie sich bitte an den Support.",
+        "OTP_FORM_SUBNOTE_LINE_3": "(To add a new account to Google Authenticator, click the '+' button. You can either scan the provided QR code in the previous step or manually enter the key to add your account to the app.)",
+        "INPUT_TEXT": "Input the 6-digit code from your phone's Google Authenticator app:"
     },
     "QUICK_TRADE_COMPONENT": {
         "TITLE": "Quick",
@@ -624,7 +626,8 @@
         "INTERNAL": "intern",
         "BLOCKCHAIN": "Blockchain",
         "STAKE": "Einsatz",
-        "REFERRAL": "Verweisung"
+        "REFERRAL": "Verweisung",
+        "QUICK_TRADE_TOOLTIP": "Order executed through convert system"
     },
     "ACCOUNT_SECURITY": {
         "OTP": {
@@ -647,14 +650,45 @@
                 "MESSAGE_4": "Sie können diesen Code sicher speichern, um Ihren 2FA wiederherzustellen, falls Sie Ihr Mobiltelefon in Zukunft wechseln oder verlieren.",
                 "MESSAGE_5": "Anleitung",
                 "INPUT": "Einmaliges Passwort (OTP) eingeben",
-                "WARNING": "Wir empfehlen Ihnen dringend, die 2-Faktor-Authentifizierung (2FA) einzurichten. Dadurch wird die Sicherheit Ihrer Gelder erheblich erhöht.",
+                "WARNING": "Wir {0} {1}",
                 "ENABLE": "Aktivieren der Zwei-Faktoren-Authentifizierung",
-                "DISABLE": "Zwei-Faktor-Authentifizierung deaktivieren"
+                "DISABLE": "Zwei-Faktor-Authentifizierung deaktivieren",
+                "STRONGLY_RECOMMEND": "sehr zu empfehlen",
+                "WARNING_CONTENT": "dass Sie die Zwei-Faktor-Authentifizierung aktivieren, um die Sicherheit Ihres Kontos zu erhöhen und Ihr Geld zu schützen"
             },
             "FORM": {
                 "PLACEHOLDER": "Geben Sie Ihr von Google Authenticator bereitgestelltes OTP ein.",
                 "BUTTON": "2FA aktivieren"
-            }
+            },
+            "DOWNLOAD_APP": "Download and install",
+            "GOOGLE_AUTHENTICATOR": "Google Authenticator:",
+            "DOWNLOAD_FROM": "Download from",
+            "GOOGLE_PLAY": "GooglePlay",
+            "APPLE": "App Store",
+            "APP_INFO": "Google Authenticator will generate random codes that are necessary for sensitive actions, such as logging in and withdrawing funds.",
+            "DONT_UNINSTALL": "Bitte deinstallieren Sie die App nicht.",
+            "INFO_UNINSTALL": "Bei versehentlichem Verlust des Telefons oder unbeabsichtigter Deinstallation kann es zu Verzögerungen bei der Wiederherstellung des Zugriffs auf Ihr Konto kommen. In solchen Fällen müssen Sie sich an unser Supportteam wenden, um Hilfe zu erhalten.",
+            "BACK": "ZURÜCK",
+            "PROCEED": "FORTFAHREN",
+            "NEXT": "Nächste",
+            "NOTE": "Hinweis: {0} {1}",
+            "MANUEL_DESCRIPTION": "Bitte geben Sie den manuellen 2FA-Seed aus dem vorherigen Schritt ein.",
+            "MANUEL_DESCRIPTION_2": "Bitte notieren und bewahren Sie die oben stehende manuelle Bestätigung sorgfältig auf.",
+            "MANUEL_DESCRIPTION_3": "Schlüssel, da dieser zur Kontowiederherstellung verwendet werden kann.",
+            "MANUEL_KEY": "Manueller 2FA-Seed",
+            "MANUEL_PLACEHOLDER": "Geben Sie Ihren 2FA-Seed ein",
+            "MANUEL_WARNING": "(Stellen Sie sicher, dass Sie es aufgeschrieben und für die zukünftige Verwendung sicher aufbewahrt haben.)",
+            "MANUEL_ERROR_1": "Bitte geben Sie den manuellen 2FA-Seed ein",
+            "MANUEL_ERROR_2": "Bitte geben Sie den manuellen 2FA-Seed aus dem vorherigen Schritt ein",
+            "ACCOUNT_SECURED": "Konto gesichert",
+            "2FA_ENABLED": "2FA AKTIVIERT",
+            "2FA_DISABLED": "2FA DEAKTIVIERT",
+            "2FA_CONTENT_ONE": "{0} {1} wird aktiviert.",
+            "2FA_CONTENT_TWO": "(Zwei-Faktor-Authentifizierung) bietet eine zusätzliche Schutzebene zum Schutz Ihrer Gelder. Sobald diese Funktion aktiviert ist, müssen Sie bei jedem Einloggen oder Abheben von Guthaben einen Bestätigungscode von Ihrem Telefon aus eingeben. Diese Funktion erhöht die Sicherheit Ihres Kontos erheblich",
+            "2FA_CONTENT_THREE": "(Zwei-Faktor-Authentifizierung) bietet eine zusätzliche Schutzebene zum Schutz Ihrer Gelder",
+            "2FA_CONTENT_FOUR": "Um 2FA zu deaktivieren, müssen Sie Ihren 2FA-Code (OTP) eingeben",
+            "INPUT_SIX_DIGIT_CODE": "Geben Sie den 6-stelligen Code aus der Google Authenticator-App Ihres Telefons ein:",
+            "INPUT_CONTENT": "(Um ein neues Konto zu Google Authenticator hinzuzufügen, klicken Sie auf die Schaltfläche „+“. Sie können entweder den im vorherigen Schritt bereitgestellten QR-Code scannen oder den Schlüssel manuell eingeben, um Ihr Konto zur App hinzuzufügen.)"
         },
         "CHANGE_PASSWORD": {
             "TITLE": "Passwort ändern",
@@ -1689,7 +1723,8 @@
             "QUICK_TRADE": "Schneller Handel",
             "SUBTITLE": "Um die Kauf- und Verkaufspreise für {0} anzuzeigen, besuchen Sie {1}",
             "FOOTER": "Für alle über Quick Trade ausgeführten Geschäfte fallen Market-Taker-Handelsgebühren an."
-        }
+        },
+        "PRO_TRADE": "{0} MARKT ANZEIGEN"
     },
     "ACCORDIAN": {
         "ACCORDIAN_ASSETS": "Alle Wallet-Assets",
@@ -1872,8 +1907,14 @@
         "SELECT_END_DATE": "Wählen Sie das Enddatum aus",
         "CUSTOM": "Brauch",
         "BACK_CUSTOM": "ZURÜCK",
-        "PROOCED_CUSTOM": "PROOCED"
+        "PROOCED_CUSTOM": "PROOCED",
+        "PL_DAYS": "Tages-Gewinn- und Verlustrechnung",
+        "VIEW_MORE": "Mehr anzeigen {0}",
+        "SHOW_ASSET_BREAKDOWN": "Vermögensaufschlüsselung anzeigen",
+        "PL_SUMMARY": "Gewinn- und Verlustübersicht",
+        "BALANCE_HISTORY": "Kontostandverlauf"
     },
     "ASSET_INFO": "Asset-Informationen",
-    "TAKER_FEES_APPLIED": "Es fallen Taker-Gebühren an"
+    "TAKER_FEES_APPLIED": "Es fallen Taker-Gebühren an",
+    "CANCEL_WITHDRAWAL_ADDRESS": "Auszahlungsadresse"
 }

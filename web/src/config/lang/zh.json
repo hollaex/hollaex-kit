@@ -218,7 +218,9 @@
         "ERROR_INVALID": "无效的OTP码",
         "OTP_FORM_INFO": "输入您的 6 位数代码以继续",
         "OTP_FORM_SUBNOTE_LINE_1": "您的代码也称为双因素身份验证器 (2FA) 或 OTP 代码。",
-        "OTP_FORM_SUBNOTE_LINE_2": "如果您丢失了代码，请联系支持人员。"
+        "OTP_FORM_SUBNOTE_LINE_2": "如果您丢失了代码，请联系支持人员。",
+        "OTP_FORM_SUBNOTE_LINE_3": "（要向 Google Authenticator 添加新帐户，请点击“+”按钮。您可以扫描上一步中提供的二维码，也可以手动输入密钥将您的帐户添加到应用程序中。）",
+        "INPUT_TEXT": "输入手机 Google Authenticator 应用中收到的 6 位数代码："
     },
     "QUICK_TRADE_COMPONENT": {
         "TITLE": "快速交易",
@@ -594,7 +596,8 @@
         "INTERNAL": "内部的",
         "BLOCKCHAIN": "区块链",
         "STAKE": "赌注",
-        "REFERRAL": "转介"
+        "REFERRAL": "转介",
+        "QUICK_TRADE_TOOLTIP": "订单通过转换系统执行"
     },
     "ACCOUNT_SECURITY": {
         "TITLE_TEXT": "调整账户的安全设置，谷歌验证、密码、API密钥等安全相关功能。",
@@ -612,7 +615,7 @@
                 "MESSAGE_4": "你可以安全地保存该QR码，以便以后更换或丢失手机时恢复2FA。",
                 "MESSAGE_5": "指南",
                 "INPUT": "请在下方输入谷歌验证码",
-                "WARNING": "强烈建议你设置谷歌验证（2FA），这将大幅提高资金的安全性。 ",
+                "WARNING": "我们{0} {1}",
                 "ENABLE": "启用谷歌验证（2FA）",
                 "DISABLE": "禁用谷歌验证（2FA）",
                 "SECRET_1": "Enter yor secret key",
@@ -621,9 +624,40 @@
                 "INPUT_1": "Secret Key",
                 "TITLE_2": "Enter One-Time Password (OTP)",
                 "MESSAGE_6": "Please enter your 6-digit one-time password below.",
-                "INPUT_2": "One-Time Password (OTP)"
+                "INPUT_2": "One-Time Password (OTP)",
+                "STRONGLY_RECOMMEND": "强烈推荐",
+                "WARNING_CONTENT": "启用双重身份验证以增强帐户安全性并保护您的资金"
             },
-            "FORM": { "PLACEHOLDER": "请输入6位谷歌验证码", "BUTTON": "启用2FA" }
+            "FORM": { "PLACEHOLDER": "请输入6位谷歌验证码", "BUTTON": "启用2FA" },
+            "DOWNLOAD_APP": "下载并安装",
+            "GOOGLE_AUTHENTICATOR": "Google 身份验证器：",
+            "DOWNLOAD_FROM": "下载自",
+            "GOOGLE_PLAY": "谷歌播放",
+            "APPLE": "应用商店",
+            "APP_INFO": "Google Authenticator 将生成敏感操作（例如登录和提取资金）所必需的随机代码。",
+            "DONT_UNINSTALL": "请不要卸载该应用程序。",
+            "INFO_UNINSTALL": "如果手机意外丢失或无意卸载，您可能会在重新访问帐户时遇到延迟。在这种情况下，您需要联系我们的支持团队寻求帮助。",
+            "BACK": "后退",
+            "PROCEED": "继续",
+            "NEXT": "下一个",
+            "NOTE": "注意：{0} {1}",
+            "MANUEL_DESCRIPTION": "请输入上一步中的手动 2FA 种子。",
+            "MANUEL_DESCRIPTION_2": "请认真记录并保存上述手动验证",
+            "MANUEL_DESCRIPTION_3": "密钥，因为它可以用于帐户恢复。",
+            "MANUEL_KEY": "手动 2FA 种子",
+            "MANUEL_PLACEHOLDER": "输入您的 2FA 种子",
+            "MANUEL_WARNING": "（请确保您已将其写下来并安全存储以供将来使用。）",
+            "MANUEL_ERROR_1": "请输入手动 2FA 种子",
+            "MANUEL_ERROR_2": "请输入上一步中的手动 2FA 种子",
+            "ACCOUNT_SECURED": "账户安全",
+            "2FA_ENABLED": "已启用 2FA",
+            "2FA_DISABLED": "2FA 已禁用",
+            "2FA_CONTENT_ONE": "正在激活 {0} {1} 。",
+            "2FA_CONTENT_TWO": "（双重身份验证）增加了一层额外的保护来保护您的资金。启用后，每次登录或提取资产时，您都需要输入手机验证码。此功能大大增强了您帐户的安全性",
+            "2FA_CONTENT_THREE": "（双重身份验证）增加了一层额外的保护来保护你的资金",
+            "2FA_CONTENT_FOUR": "要禁用 2FA，您需要输入 2FA (OTP) 代码",
+            "INPUT_SIX_DIGIT_CODE": "输入手机 Google Authenticator 应用中收到的 6 位数代码：",
+            "INPUT_CONTENT": "（要向 Google Authenticator 添加新帐户，请点击“+”按钮。您可以扫描上一步中提供的二维码，也可以手动输入密钥将您的帐户添加到应用程序中。）"
         },
         "CHANGE_PASSWORD": {
             "TITLE": "更改密码",
@@ -1644,7 +1678,12 @@
         "SELECT_END_DATE": "选择结束日期",
         "CUSTOM": "风俗",
         "BACK_CUSTOM": "后退",
-        "PROOCED_CUSTOM": "已处理"
+        "PROOCED_CUSTOM": "已处理",
+        "PL_DAYS": "当日盈亏",
+        "VIEW_MORE": "查看更多 {0}",
+        "SHOW_ASSET_BREAKDOWN": "显示资产明细",
+        "PL_SUMMARY": "损益摘要",
+        "BALANCE_HISTORY": "余额历史记录"
     },
     "ASSET_INFO": "资产信息",
     "TAKER_FEES_APPLIED": "收取接受者费用",
@@ -1687,7 +1726,8 @@
         },
         "LIST": "想列出您的数字资产吗？",
         "WEBSITE": "网站",
-        "EXPLORER": "探险家"
+        "EXPLORER": "探险家",
+        "PRO_TRADE": "查看{0}市场"
     },
     "ACCORDIAN": { "ACCORDIAN_ASSETS": "所有钱包资产", "ACCORDIAN_INFO": "资产信息页面", "ACCORDIAN_HISTORY": "历史" },
     "ASYNC_LINK": { "TITLE": "页面没有自动打开？", "TEXT": "您的浏览器可能阻止该页面。尝试复制并粘贴下面的链接：" },
@@ -1777,5 +1817,6 @@
             "NOTIFICATION": "会话已撤销/注销",
             "MODAL": { "TITLE": "撤销会话", "PROMPT": "您确定要撤销并注销此会话吗？", "BACK": "后退", "CONFIRM": "确认" }
         }
-    }
+    },
+    "CANCEL_WITHDRAWAL_ADDRESS": "提现地址"
 }

@@ -231,7 +231,9 @@
         "ERROR_INVALID": "Mã OTP không hợp lệ",
         "OTP_FORM_INFO": "Nhập mã gồm 6 chữ số của bạn để tiếp tục",
         "OTP_FORM_SUBNOTE_LINE_1": "Mã của bạn còn được gọi là mã xác thực hai yếu tố (2FA) hoặc mã OTP.",
-        "OTP_FORM_SUBNOTE_LINE_2": "Nếu bạn bị mất mã, vui lòng liên hệ với bộ phận hỗ trợ."
+        "OTP_FORM_SUBNOTE_LINE_2": "Nếu bạn bị mất mã, vui lòng liên hệ với bộ phận hỗ trợ.",
+        "OTP_FORM_SUBNOTE_LINE_3": "(Để thêm tài khoản mới vào Google Authenticator, hãy nhấp vào nút '+'. Bạn có thể quét mã QR được cung cấp ở bước trước hoặc nhập khóa theo cách thủ công để thêm tài khoản của bạn vào ứng dụng.)",
+        "INPUT_TEXT": "Nhập mã gồm 6 chữ số từ ứng dụng Google Authenticator trên điện thoại của bạn:"
     },
     "QUICK_TRADE_COMPONENT": {
         "TITLE": "Giao dịch nhanh",
@@ -627,7 +629,8 @@
         "INTERNAL": "nội bộ",
         "BLOCKCHAIN": "chuỗi khối",
         "STAKE": "cổ phần",
-        "REFERRAL": "giới thiệu"
+        "REFERRAL": "giới thiệu",
+        "QUICK_TRADE_TOOLTIP": "Lệnh được thực hiện thông qua hệ thống chuyển đổi"
     },
     "ACCOUNT_SECURITY": {
         "TITLE_TEXT": "Điều chỉnh các cài đặt bảo mật cho tài khoản của quý khách. Có thể cài đặt Xác thực 2 yếu tố, mật khẩu, khóa API và các chức năng bảo mật khác.",
@@ -648,7 +651,7 @@
                 "MESSAGE_4": "Quý khách có thể bảo quản mã này một cách an toàn để thiết lập lại 2FA trong trường hợp thay đổi hoặc bị mất điện thoại.",
                 "MESSAGE_5": "Thủ công",
                 "INPUT": "Vui lòng nhập mã (OTP) một lần",
-                "WARNING": "Chúng tôi khuyến khích quý khách cài đặt Xác thực 2 yếu tố (2FA). Điều này sẽ giúp nâng cao độ bảo mật cho tài khoản của quý khách.",
+                "WARNING": "Chúng tôi {0} {1}",
                 "ENABLE": "Bật Xác thực 2 yếu tố",
                 "DISABLE": "Tắt Xác thực 2 yếu Tối",
                 "SECRET_1": "Enter yor secret key",
@@ -657,12 +660,43 @@
                 "INPUT_1": "Secret Key",
                 "TITLE_2": "Nhập mật khẩu một lần (OTP)",
                 "MESSAGE_6": "Vui lòng nhập mật khẩu một lần bao gồm 6 ký tự xuống phía dưới.",
-                "INPUT_2": "Mật khẩu một lần (OTP)"
+                "INPUT_2": "Mật khẩu một lần (OTP)",
+                "STRONGLY_RECOMMEND": "khuyến khích mạnh mẽ",
+                "WARNING_CONTENT": "rằng bạn kích hoạt xác thực hai yếu tố để tăng cường tính bảo mật cho tài khoản và bảo vệ tiền của bạn"
             },
             "FORM": {
                 "PLACEHOLDER": "Vui lòng nhập OTP được cung cấp bởi Google Authenticator.",
                 "BUTTON": "Bật 2FA"
-            }
+            },
+            "DOWNLOAD_APP": "Tải xuống và cài đặt",
+            "GOOGLE_AUTHENTICATOR": "Trình xác thực của Google:",
+            "DOWNLOAD_FROM": "Tải xuống từ",
+            "GOOGLE_PLAY": "GooglePlay",
+            "APPLE": "Cửa hàng ứng dụng",
+            "APP_INFO": "Google Authenticator sẽ tạo mã ngẫu nhiên cần thiết cho các hành động nhạy cảm, chẳng hạn như đăng nhập và rút tiền.",
+            "DONT_UNINSTALL": "Vui lòng không gỡ cài đặt ứng dụng.",
+            "INFO_UNINSTALL": "Trong trường hợp vô tình làm mất điện thoại hoặc vô tình gỡ cài đặt, bạn có thể gặp phải sự chậm trễ trong việc lấy lại quyền truy cập vào tài khoản của mình. Trong những trường hợp như vậy, bạn sẽ cần liên hệ với nhóm hỗ trợ của chúng tôi để được hỗ trợ.",
+            "BACK": "MẶT SAU",
+            "PROCEED": "TIẾP TỤC",
+            "NEXT": "Kế tiếp",
+            "NOTE": "Lưu ý: {0} {1}",
+            "MANUEL_DESCRIPTION": "Vui lòng nhập hạt giống 2FA thủ công từ bước trước.",
+            "MANUEL_DESCRIPTION_2": "Vui lòng viết cẩn thận và lưu trữ xác minh thủ công ở trên",
+            "MANUEL_DESCRIPTION_3": "key vì nó có thể được sử dụng để khôi phục tài khoản.",
+            "MANUEL_KEY": "Hướng dẫn sử dụng hạt giống 2FA",
+            "MANUEL_PLACEHOLDER": "Nhập hạt giống 2FA của bạn",
+            "MANUEL_WARNING": "(Hãy chắc chắn rằng bạn đã viết nó ra và lưu trữ an toàn để sử dụng sau này.)",
+            "MANUEL_ERROR_1": "Vui lòng nhập hạt giống 2FA thủ công",
+            "MANUEL_ERROR_2": "Vui lòng nhập hạt giống 2FA thủ công từ bước trước",
+            "ACCOUNT_SECURED": "Tài khoản được bảo mật",
+            "2FA_ENABLED": "BẬT 2FA",
+            "2FA_DISABLED": "2FA bị TẮT",
+            "2FA_CONTENT_ONE": "Đang kích hoạt {0} {1} .",
+            "2FA_CONTENT_TWO": "(Xác thực hai yếu tố) bổ sung thêm một lớp bảo vệ để bảo vệ tiền của bạn. Sau khi được bật, bạn sẽ được yêu cầu nhập mã xác minh từ điện thoại của mình mỗi lần đăng nhập hoặc rút tài sản. Tính năng này tăng cường đáng kể tính bảo mật cho tài khoản của bạn",
+            "2FA_CONTENT_THREE": "(Xác thực hai yếu tố) bổ sung thêm một lớp bảo vệ để bảo vệ tiền của bạn",
+            "2FA_CONTENT_FOUR": "Để tắt 2FA, bạn cần nhập mã 2FA (OTP) của mình",
+            "INPUT_SIX_DIGIT_CODE": "Nhập mã gồm 6 chữ số từ ứng dụng Google Authenticator trên điện thoại của bạn:",
+            "INPUT_CONTENT": "(Để thêm tài khoản mới vào Google Authenticator, hãy nhấp vào nút '+'. Bạn có thể quét mã QR được cung cấp ở bước trước hoặc nhập khóa theo cách thủ công để thêm tài khoản của bạn vào ứng dụng.)"
         },
         "CHANGE_PASSWORD": {
             "TITLE": "Thay đổi mật khẩu",
@@ -1709,7 +1743,8 @@
             "QUICK_TRADE": "Giao dịch nhanh",
             "SUBTITLE": "Để xem giá mua và bán của {0}, hãy truy cập {1}",
             "FOOTER": "Phí giao dịch của người thực hiện thị trường được áp dụng cho tất cả các giao dịch được thực hiện thông qua Giao dịch nhanh."
-        }
+        },
+        "PRO_TRADE": "XEM THỊ TRƯỜNG {0}"
     },
     "ACCORDIAN": {
         "ACCORDIAN_ASSETS": "Tất cả tài sản ví",
@@ -1892,8 +1927,14 @@
         "SELECT_END_DATE": "Chọn ngày kết thúc",
         "CUSTOM": "Phong tục",
         "BACK_CUSTOM": "MẶT SAU",
-        "PROOCED_CUSTOM": "ĐƯỢC TIẾN HÀNH"
+        "PROOCED_CUSTOM": "ĐƯỢC TIẾN HÀNH",
+        "PL_DAYS": "Lãi & Lỗ trong ngày",
+        "VIEW_MORE": "Xem thêm {0}",
+        "SHOW_ASSET_BREAKDOWN": "Hiển thị phân tích tài sản",
+        "PL_SUMMARY": "Tóm tắt P&L",
+        "BALANCE_HISTORY": "Lịch sử số dư"
     },
     "ASSET_INFO": "Thông tin tài sản",
-    "TAKER_FEES_APPLIED": "Phí Taker được áp dụng"
+    "TAKER_FEES_APPLIED": "Phí Taker được áp dụng",
+    "CANCEL_WITHDRAWAL_ADDRESS": "Địa chỉ rút tiền"
 }
