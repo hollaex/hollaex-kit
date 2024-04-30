@@ -117,7 +117,7 @@
 			"title": "Hesap Silme Talebi"
 		},
 		"OTP_DISABLED": {
-			"html": "<div> <p> Sayın ${name} </p> <p> Hesabınızda <b>iki faktörlü kimlik doğrulama (2FA) devre dışı bırakıldı</b> olarak kaydedilmiştir. Hesabınızı güvence altına almak için lütfen 2FA'yı yeniden etkinleştirin.</p> <div> <div>Zaman: ${time}</div> <div>Ülke: ${country}</div> <div>IP Adresi: ${ip}</div> </div> <p> Bu siz değilseniz lütfen derhal bizimle iletişime geçin. </p> <p> Saygılarımla<br> ${api_name} Ekibi </p> </div>",
+			"html": "<div> <p> Sayın ${name} </p> <p> Hesabınızda <b>iki faktörlü kimlik doğrulama (2FA) devre dışı bırakıldı</b> olarak kaydedilmiştir. Hesabınızı güvence altına almak için lütfen yeniden 2FA etkinleştirin.</p> <div> <div>Zaman: ${time}</div> <div>Ülke: ${country}</div> <div>IP Adresi: ${ip}</div> </div> <p> Bu siz değilseniz lütfen derhal bizimle iletişime geçin. </p> <p> Saygılarımla<br> ${api_name} Ekibi </p> </div>",
 			"title": "OTP Devre Dışı"
 		  },
 		"OTP_ENABLED": {
