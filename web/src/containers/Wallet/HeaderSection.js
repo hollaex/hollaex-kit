@@ -12,7 +12,7 @@ const HeaderSection = ({ icons: ICONS }) => {
 				</EditWrapper>
 			</div>
 			<div className="sub-header link-separator">
-				<Link to="assets">
+				<Link to="prices">
 					<EditWrapper stringId="ACCORDIAN.ACCORDIAN_INFO">
 						{STRINGS['ACCORDIAN.ACCORDIAN_INFO']}
 					</EditWrapper>

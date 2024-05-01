@@ -99,7 +99,7 @@ const getRows = (
 							<td className="table-icon td-fit" />
 							<td className="td-name td-fit">
 								<Link
-									to={`/assets/coin/${limit.currency}`}
+									to={`/prices/coin/${limit.currency}`}
 									className="underline"
 								>
 									<div
@@ -166,7 +166,7 @@ const getRowsCollectiveIcon = (
 						<tr className="table-row" key={index}>
 							<td className="table-icon td-fit" />
 							<td className="td-name td-fit">
-								<Link to={`/assets/coin/${coin_name}`} className="underline">
+								<Link to={`/prices/coin/${coin_name}`} className="underline">
 									<div
 										className="d-flex align-items-center wallet-hover cursor-pointer"
 										style={{ cursor: 'pointer' }}

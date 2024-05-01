@@ -228,7 +228,9 @@
         "ERROR_INVALID": "無効なOTPコードです。",
         "OTP_FORM_INFO": "続行するには6桁のコードを入力してください",
         "OTP_FORM_SUBNOTE_LINE_1": "コードは、2 要素認証 (2FA) または OTP コードとも呼ばれます。",
-        "OTP_FORM_SUBNOTE_LINE_2": "コードを紛失した場合は、サポートまでご連絡ください。"
+        "OTP_FORM_SUBNOTE_LINE_2": "コードを紛失した場合は、サポートまでご連絡ください。",
+        "OTP_FORM_SUBNOTE_LINE_3": "(Google Authenticator に新しいアカウントを追加するには、「+」ボタンをクリックします。前の手順で提供された QR コードをスキャンするか、キーを手動で入力してアプリにアカウントを追加できます。)",
+        "INPUT_TEXT": "携帯電話の Google Authenticator アプリから 6 桁のコードを入力します。"
     },
     "QUICK_TRADE_COMPONENT": {
         "TITLE": "クイック取引",
@@ -610,7 +612,8 @@
         "INTERNAL": "内部",
         "BLOCKCHAIN": "ブロックチェーン",
         "STAKE": "賭け金",
-        "REFERRAL": "照会"
+        "REFERRAL": "照会",
+        "QUICK_TRADE_TOOLTIP": "変換システムを通じて実行される注文"
     },
     "ACCOUNT_SECURITY": {
         "TITLE_TEXT": "2段階認証、パスワード、APIキー、その他のセキュリティ関連機能でアカウントのセキュリティ設定を調整できます。",
@@ -628,7 +631,7 @@
                 "MESSAGE_4": "この2段階認証コードを安全に保存して、携帯電話を変更または、紛失した場合に復元することができます。",
                 "MESSAGE_5": "手動で入力",
                 "INPUT": "OTPコードを入力してください。",
-                "WARNING": "アカウントのセキュリティをより強化するため、認証アプリによる2段階認証(2FA)の設定を強く推奨いたします。",
+                "WARNING": "私たち{0} {1}",
                 "ENABLE": "2段階認証を設定する",
                 "DISABLE": "2段階認証を解除する",
                 "SECRET_1": "Enter yor secret key",
@@ -637,12 +640,43 @@
                 "INPUT_1": "Secret Key",
                 "TITLE_2": "OTP(One-Time Password)コード入力",
                 "MESSAGE_6": "下に6桁のOTPコードを入力してください。",
-                "INPUT_2": "OTPコード"
+                "INPUT_2": "OTPコード",
+                "STRONGLY_RECOMMEND": "強くお勧めします",
+                "WARNING_CONTENT": "アカウントのセキュリティを強化し、資金を保護するために2要素認証を有効にしてください"
             },
             "FORM": {
                 "PLACEHOLDER": "Google Authenticatorから発行されたOTPコードを入力してください。",
                 "BUTTON": "2段階認証を設定する"
-            }
+            },
+            "DOWNLOAD_APP": "Download and install",
+            "GOOGLE_AUTHENTICATOR": "Google Authenticator:",
+            "DOWNLOAD_FROM": "ダウンロードはこちら",
+            "GOOGLE_PLAY": "グーグルプレイ",
+            "APPLE": "アプリストア",
+            "APP_INFO": "Google Authenticator は、ログインや資金の引き出しなどの機密性の高い操作に必要なランダムなコードを生成します。",
+            "DONT_UNINSTALL": "アプリをアンインストールしないでください。",
+            "INFO_UNINSTALL": "誤って携帯電話を紛失したり、意図せずにアンインストールしたりした場合、アカウントへのアクセスが回復するまでに時間がかかることがあります。そのような場合は、サポート チームに連絡して支援を受ける必要があります。",
+            "BACK": "戻る",
+            "PROCEED": "進む",
+            "NEXT": "次",
+            "NOTE": "注記: {0} {1}",
+            "MANUEL_DESCRIPTION": "前の手順で手動の 2FA シードを入力してください。",
+            "MANUEL_DESCRIPTION_2": "上記の手動検証を注意深く書き留めて保管してください",
+            "MANUEL_DESCRIPTION_3": "アカウントの回復に使用できるキーです。",
+            "MANUEL_KEY": "手動 2FA シード",
+            "MANUEL_PLACEHOLDER": "2FAシードを入力してください",
+            "MANUEL_WARNING": "(将来使用するために必ず書き留めて安全に保管してください。)",
+            "MANUEL_ERROR_1": "手動2FAシードを入力してください",
+            "MANUEL_ERROR_2": "前の手順で手動2FAシードを入力してください",
+            "ACCOUNT_SECURED": "アカウントは保護されています",
+            "2FA_ENABLED": "2FAが有効",
+            "2FA_DISABLED": "2FAが無効です",
+            "2FA_CONTENT_ONE": "{0} {1} をアクティブ化しています。",
+            "2FA_CONTENT_TWO": "（2要素認証）は、資金を保護するための追加の保護層を追加します。有効にすると、ログインまたは資産を引き出すたびに、携帯電話から確認コードを入力する必要があります。この機能により、アカウントのセキュリティが大幅に強化されます。",
+            "2FA_CONTENT_THREE": "（2要素認証）は、資金を保護するための追加の保護層を追加します",
+            "2FA_CONTENT_FOUR": "2FAを無効にするには、2FA（OTP）コードを入力する必要があります",
+            "INPUT_SIX_DIGIT_CODE": "携帯電話の Google Authenticator アプリから 6 桁のコードを入力します。",
+            "INPUT_CONTENT": "(Google Authenticator に新しいアカウントを追加するには、「+」ボタンをクリックします。前の手順で提供された QR コードをスキャンするか、キーを手動で入力してアプリにアカウントを追加できます。)"
         },
         "CHANGE_PASSWORD": {
             "TITLE": "パスワードの変更",
@@ -1655,7 +1689,8 @@
             "QUICK_TRADE": "クイックトレード",
             "SUBTITLE": "{0} の売買価格を確認するには、{1} にアクセスしてください",
             "FOOTER": "マーケットテイカー取引手数料は、クイックトレードを通じて実行されるすべての取引に適用されます。"
-        }
+        },
+        "PRO_TRADE": "{0} マーケットを見る"
     },
     "ACCORDIAN": {
         "ACCORDIAN_ASSETS": "すべてのウォレット資産",
@@ -1806,8 +1841,14 @@
         "SELECT_END_DATE": "終了日を選択してください",
         "CUSTOM": "カスタム",
         "BACK_CUSTOM": "戻る",
-        "PROOCED_CUSTOM": "進行済み"
+        "PROOCED_CUSTOM": "進行済み",
+        "PL_DAYS": "日次損益",
+        "VIEW_MORE": "もっと見る{0}",
+        "SHOW_ASSET_BREAKDOWN": "資産の内訳を表示",
+        "PL_SUMMARY": "損益サマリー",
+        "BALANCE_HISTORY": "残高履歴"
     },
     "ASSET_INFO": "資産情報",
-    "TAKER_FEES_APPLIED": "テイカー手数料が適用されます"
+    "TAKER_FEES_APPLIED": "テイカー手数料が適用されます",
+    "CANCEL_WITHDRAWAL_ADDRESS": "出金先住所"
 }

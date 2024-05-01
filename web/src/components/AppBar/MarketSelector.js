@@ -132,7 +132,7 @@ class MarketSelector extends Component {
 	};
 
 	onViewAssetsClick = () => {
-		browserHistory.push('/assets');
+		browserHistory.push('/prices');
 		if (isMobile) {
 			window.location.reload();
 		}

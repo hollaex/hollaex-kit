@@ -301,7 +301,7 @@ const ProfitLossSection = ({
 									className="table-icon td-fit"
 								>
 									<Link
-										to={`/assets/coin/${coin.symbol}`}
+										to={`/prices/coin/${coin.symbol}`}
 										className="underline"
 									>
 										<div

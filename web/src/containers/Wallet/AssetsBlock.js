@@ -722,7 +722,7 @@ const AssetsBlock = ({
 												/>
 											</div>
 										</td>
-										{!isMobile && (
+										{
 											<td>
 												{markets.length > 1 ? (
 													<TradeInputGroup
@@ -744,7 +744,7 @@ const AssetsBlock = ({
 													/>
 												)}
 											</td>
-										)}
+										}
 										{/* {hasEarn && (
 										<td>
 											<ActionNotification
