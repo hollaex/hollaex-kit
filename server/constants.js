@@ -158,11 +158,9 @@ const overrideNetworkFields = () => {
 				...coin,
 				...configuration?.kit?.fiat_fees?.[coin.symbol]
 			}
-		} else {
-			configuration.coins[coin.symbol] = coin;
 		}
 	}
-}
+};
 
 exports.GET_COINS = () => cloneDeep(configuration.coins);
 exports.GET_PAIRS = () => cloneDeep(configuration.pairs);
