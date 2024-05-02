@@ -132,6 +132,7 @@ const updateKitInfo = (newInfo) => {
 
 const updateKit = (newKitConfig) => {
 	Object.assign(configuration.kit, newKitConfig);
+	overrideNetworkFields();
 };
 
 const updateSecrets = (newSecretsConfig) => {
@@ -149,6 +150,19 @@ const updateFrozenUser = (action, userId) => {
 		delete frozenUsers[userId];
 	}
 };
+
+const overrideNetworkFields = () => {
+	for (let coin of Object.values(configuration.coins)) {
+		if (coin.type === 'fiat') {
+			configuration.coins[coin.symbol] = {
+				...coin,
+				...configuration?.kit?.fiat_fees?.[coin.symbol]
+			}
+		} else {
+			configuration.coins[coin.symbol] = coin;
+		}
+	}
+}
 
 exports.GET_COINS = () => cloneDeep(configuration.coins);
 exports.GET_PAIRS = () => cloneDeep(configuration.pairs);
