@@ -218,7 +218,9 @@
         "ERROR_INVALID": "OTP 번호가 유효하지 않습니다.",
         "OTP_FORM_INFO": "계속하려면 6자리 코드를 입력하세요.",
         "OTP_FORM_SUBNOTE_LINE_1": "귀하의 코드는 2FA(2단계 인증기) 또는 OTP 코드라고도 합니다.",
-        "OTP_FORM_SUBNOTE_LINE_2": "코드를 분실한 경우 지원팀에 문의하세요."
+        "OTP_FORM_SUBNOTE_LINE_2": "코드를 분실한 경우 지원팀에 문의하세요.",
+        "OTP_FORM_SUBNOTE_LINE_3": "(Google OTP에 새 계정을 추가하려면 '+' 버튼을 클릭하세요. 이전 단계에서 제공된 QR 코드를 스캔하거나 수동으로 키를 입력하여 앱에 계정을 추가할 수 있습니다.)",
+        "INPUT_TEXT": "휴대전화의 Google OTP 앱에서 6자리 코드를 입력하세요."
     },
     "QUICK_TRADE_COMPONENT": {
         "TITLE": "퀵트레이딩",
@@ -602,7 +604,8 @@
         "INTERNAL": "내부",
         "BLOCKCHAIN": "블록체인",
         "STAKE": "말뚝",
-        "REFERRAL": "추천"
+        "REFERRAL": "추천",
+        "QUICK_TRADE_TOOLTIP": "전환 시스템을 통해 실행된 주문"
     },
     "ACCOUNT_SECURITY": {
         "TITLE_TEXT": "계정의 보안 설정을 변경하세요. 이중인증, 비밀번호, API 키 및 관련 보안기능",
@@ -620,7 +623,7 @@
                 "MESSAGE_4": "이 2단계 인증 키를 안전하게 저장하시어 향후 휴대전화의 변경 또는 분실의 경우 복구를 위한 대비를 하실 수 있습니다.",
                 "MESSAGE_5": "수동",
                 "INPUT": "OTP 코드를 입력해주시기바랍니다.",
-                "WARNING": "2단계 인증(2FA) 설정을 적극권장합니다. 이를 통해 회원님의 자산의 보안이 크게 향상됩니다.",
+                "WARNING": "우리는 {0} {1}",
                 "ENABLE": "2단계 인증(2FA)  사용함",
                 "DISABLE": "2단계 인증(2FA) 사용안함",
                 "SECRET_1": "Enter yor secret key",
@@ -629,12 +632,43 @@
                 "INPUT_1": "Secret Key",
                 "TITLE_2": "OTP 입력",
                 "MESSAGE_6": "6자리 OTP 숫자를 입력하세요.",
-                "INPUT_2": "OTP 입력"
+                "INPUT_2": "OTP 입력",
+                "STRONGLY_RECOMMEND": "강력 추천",
+                "WARNING_CONTENT": "계정 보안을 강화하고 자금을 보호하기 위해 이중 인증을 활성화한다는 점"
             },
             "FORM": {
                 "PLACEHOLDER": "Google Authenticator에서 제공된 OTP를 입력해주시기바랍니다.",
                 "BUTTON": "2단계 인증(2FA)활성화"
-            }
+            },
+            "DOWNLOAD_APP": "다운로드 및 설치",
+            "GOOGLE_AUTHENTICATOR": "Google OTP:",
+            "DOWNLOAD_FROM": "에서 다운로드",
+            "GOOGLE_PLAY": "구글 플레이",
+            "APPLE": "앱 스토어",
+            "APP_INFO": "Google OTP는 로그인 및 자금 인출과 같은 민감한 작업에 필요한 임의의 코드를 생성합니다.",
+            "DONT_UNINSTALL": "앱을 제거하지 마세요.",
+            "INFO_UNINSTALL": "실수로 휴대폰을 분실하거나 의도치 않게 제거하는 경우 계정에 다시 액세스하는 데 지연이 발생할 수 있습니다. 이러한 경우에는 지원팀에 문의하여 도움을 받아야 합니다.",
+            "BACK": "뒤쪽에",
+            "PROCEED": "진행하다",
+            "NEXT": "다음",
+            "NOTE": "참고: {0} {1}",
+            "MANUEL_DESCRIPTION": "이전 단계의 수동 2FA 시드를 입력하세요.",
+            "MANUEL_DESCRIPTION_2": "위의 수동 인증 내용을 꼼꼼히 적어서 보관해주세요.",
+            "MANUEL_DESCRIPTION_3": "계정 복구에 사용될 수 있는 키입니다.",
+            "MANUEL_KEY": "수동 2FA 시드",
+            "MANUEL_PLACEHOLDER": "2FA 시드를 입력하세요",
+            "MANUEL_WARNING": "(나중에 사용할 수 있도록 적어서 안전하게 보관하십시오.)",
+            "MANUEL_ERROR_1": "수동 2FA 시드를 입력하세요.",
+            "MANUEL_ERROR_2": "이전 단계의 수동 2FA 시드를 입력하세요.",
+            "ACCOUNT_SECURED": "계정이 보호됨",
+            "2FA_ENABLED": "2FA 활성화됨",
+            "2FA_DISABLED": "2FA 비활성화됨",
+            "2FA_CONTENT_ONE": "{0} {1} 활성화 중입니다.",
+            "2FA_CONTENT_TWO": "(2단계 인증)은 귀하의 자금을 보호하기 위해 추가 보호 계층을 추가합니다. 활성화되면 로그인하거나 자산을 출금할 때마다 휴대폰에서 인증 코드를 입력해야 합니다. 이 기능은 계정 보안을 크게 강화합니다.",
+            "2FA_CONTENT_THREE": "(2단계 인증)은 귀하의 자금을 보호하기 위해 추가 보호 계층을 추가합니다.",
+            "2FA_CONTENT_FOUR": "2FA를 비활성화하려면 2FA(OTP) 코드를 입력해야 합니다.",
+            "INPUT_SIX_DIGIT_CODE": "휴대전화의 Google OTP 앱에서 6자리 코드를 입력하세요.",
+            "INPUT_CONTENT": "(Google OTP에 새 계정을 추가하려면 '+' 버튼을 클릭하세요. 이전 단계에서 제공된 QR 코드를 스캔하거나 수동으로 키를 입력하여 앱에 계정을 추가할 수 있습니다.)"
         },
         "CHANGE_PASSWORD": {
             "TITLE": "비밀번호 변경",
@@ -1653,7 +1687,12 @@
         "SELECT_END_DATE": "종료일 선택",
         "CUSTOM": "관습",
         "BACK_CUSTOM": "뒤쪽에",
-        "PROOCED_CUSTOM": "처리됨"
+        "PROOCED_CUSTOM": "처리됨",
+        "PL_DAYS": "일손익",
+        "VIEW_MORE": "더보기 {0}",
+        "SHOW_ASSET_BREAKDOWN": "자산 분석 표시",
+        "PL_SUMMARY": "손익 요약",
+        "BALANCE_HISTORY": "잔액 내역"
     },
     "ASSET_INFO": "자산 정보",
     "TAKER_FEES_APPLIED": "테이커 수수료가 적용됩니다.",
@@ -1696,7 +1735,8 @@
         },
         "LIST": "디지털 자산을 나열하고 싶으십니까?",
         "WEBSITE": "웹사이트",
-        "EXPLORER": "탐침"
+        "EXPLORER": "탐침",
+        "PRO_TRADE": "{0} 시장 보기"
     },
     "ACCORDIAN": { "ACCORDIAN_ASSETS": "모든 지갑 자산", "ACCORDIAN_INFO": "자산 정보 페이지", "ACCORDIAN_HISTORY": "역사" },
     "ASYNC_LINK": {
@@ -1801,5 +1841,6 @@
                 "CONFIRM": "확인하다"
             }
         }
-    }
+    },
+    "CANCEL_WITHDRAWAL_ADDRESS": "출금주소"
 }

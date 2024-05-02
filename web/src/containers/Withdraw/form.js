@@ -5,8 +5,7 @@ import {
 	formValueSelector,
 	reset,
 	SubmissionError,
-	stopSubmit,
-	change,
+	stopSubmit
 } from 'redux-form';
 import math from 'mathjs';
 import { Button, Dialog, OtpForm, Loader, SmartTarget } from 'components';
@@ -147,9 +146,6 @@ class Form extends Component {
 				})
 				.catch((err) => {
 					const error = { _error: err.message, ...err.errors };
-					errorTimeOut = setTimeout(() => {
-						this.props.dispatch(change(FORM_NAME, 'captcha', ''));
-					}, 5000);
 					this.props.onSubmitFail(err.errors || err, this.props.dispatch);
 					this.onCloseDialog();
 					this.props.dispatch(stopSubmit(FORM_NAME, error));
@@ -183,9 +179,6 @@ class Form extends Component {
 				if (err instanceof SubmissionError) {
 					if (err.errors && !err.errors.otp_code) {
 						const error = { _error: err.message, ...err.errors };
-						errorTimeOut = setTimeout(() => {
-							this.props.dispatch(change(FORM_NAME, 'captcha', ''));
-						}, 5000);
 						this.props.onSubmitFail(err.errors, this.props.dispatch);
 						this.onCloseDialog();
 						this.props.dispatch(stopSubmit(FORM_NAME, error));
@@ -193,9 +186,6 @@ class Form extends Component {
 					throw err;
 				} else {
 					const error = { _error: err.message };
-					errorTimeOut = setTimeout(() => {
-						this.props.dispatch(change(FORM_NAME, 'captcha', ''));
-					}, 5000);
 					this.props.onSubmitFail(error, this.props.dispatch);
 					this.onCloseDialog();
 					this.props.dispatch(stopSubmit(FORM_NAME, error));
@@ -340,7 +330,6 @@ const mapStateToForm = (state) => ({
 		'address',
 		'destination_tag',
 		'amount',
-		'captcha',
 		'fee',
 		'fee_coin',
 		'email',

@@ -269,7 +269,7 @@ class Wallet extends Component {
 								{STRINGS.formatString(
 									STRINGS['CURRENCY_WALLET.LEARN_MORE'],
 									<Link
-										to={`/assets/coin/${currency}`}
+										to={`/prices/coin/${currency}`}
 										className="link-content"
 									>
 										{STRINGS['CURRENCY_WALLET.ABOUT']} {currency.toUpperCase()}
@@ -336,7 +336,7 @@ class Wallet extends Component {
 										>
 											{currency.toUpperCase()}
 										</Link>,
-										<Link className="buy-link" to={`/assets/coin/${currency}`}>
+										<Link className="buy-link" to={`/prices/coin/${currency}`}>
 											here
 										</Link>
 									)}

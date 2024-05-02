@@ -170,15 +170,6 @@ export const generateFormValues = (
 		};
 	}
 
-	fields.captcha = {
-		type: 'captcha',
-		language,
-		theme,
-		validate: [required],
-		strings: STRINGS,
-		constants,
-	};
-
 	return fields;
 };
 

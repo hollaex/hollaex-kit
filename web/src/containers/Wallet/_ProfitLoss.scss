@@ -42,6 +42,32 @@
 	color: '#ccc';
 }
 
+.profit-loss-wrapper {
+	.view-more-content {
+		display: none;
+		cursor: pointer;
+	}
+	.highChartColor {
+		opacity: 0.5;
+	}
+}
+
+.profit-loss-wrapper:hover {
+	transform: translateY(-5%);
+	transition-timing-function: ease-in;
+	transition: 0.2s;
+	.highChartColor {
+		opacity: unset;
+	}
+	.view-more-content {
+		display: block;
+		text-align: end;
+	}
+	.view-more-content :first-child:first-child {
+		text-decoration: underline;
+	}
+}
+
 .profit_block-table {
 	width: 100%;
 	// font-size: $font-size-subtext;
@@ -92,5 +118,8 @@
 	.td-amount {
 		min-width: 150px !important;
 		direction: ltr;
+	}
+	.date-text {
+		color: var(--labels_important-active-labels-text-graphics);
 	}
 }

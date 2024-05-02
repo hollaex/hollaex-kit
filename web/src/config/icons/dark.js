@@ -163,6 +163,7 @@ const nestedIcons = {
 	COPY_NEW: '/assets/images/copy.svg',
 	COPY_NOTIFICATION: '/assets/images/copy-icon-snack-notification.svg',
 	ACCOUNT_LINE: '/assets/images/account.svg',
+	FOOTER_ACCOUNT_LINE: '/assets/images/account-summary-tab-01.svg',
 	ACCOUNT_RECOVERY: '/assets/images/account-recovery.svg',
 	BITCOIN_WALLET: '/assets/images/bitcoin-wallet.svg',
 	CHECK_SENDING_BITCOIN: '/assets/images/check-sending-bitcoin.svg',
@@ -217,8 +218,11 @@ const nestedIcons = {
 	SIDEBAR_ACCOUNT_INACTIVE: '/assets/images/account_2-inactive.svg',
 	SIDEBAR_POST_ACTIVE: '/assets/images/post-active.svg',
 	SIDEBAR_TRADING_ACTIVE: '/assets/images/trade-active.svg',
+	FOOTER_TRADING_ACTIVE:
+		'/assets/images/pro-trade-markets-mobile-tab-01 copy-01.svg',
 	SIDEBAR_QUICK_TRADING_ACTIVE:
 		'/assets/images/quick-trade-tab-selected-01.svg',
+	FOOTER_QUICK_ACTIVE: '/assets/images/quick-trade-convert-mobile-tab-01.svg',
 	SIDEBAR_QUICK_TRADING_INACTIVE: '/assets/images/quick-trade-tab-01-01.svg',
 	SIDEBAR_ADMIN_DASH_ACTIVE: '/assets/images/admin-dash-icon.svg',
 	ARROW_TRANSFER_HISTORY_ACTIVE: '/assets/images/arrow-trans-history.svg',
@@ -240,6 +244,7 @@ const nestedIcons = {
 
 	NOTE_KYC: '/assets/images/note-KYC.svg',
 	SIDEBAR_HELP: '/assets/images/help-question-mark-icon.svg',
+	FOOTER_PLUGIN: '/assets/images/card-active-plugin-mobile-tab-01.svg',
 	CONNECT_LOADING: '/assets/images/connect-loading.svg',
 	FIAT_KYC: '/assets/images/fiat-kyc.svg',
 
@@ -294,9 +299,8 @@ const nestedIcons = {
 	WALLET_ARROW_DOWN: '/assets/images/deposit-arrow-down.svg',
 	WALLET_ARROW_UP: '/assets/images/withdraw-arrow-up.svg',
 
-	FOOTERBAR_ASSETS_TRADE: '/assets/images/assets-list-bottom-nav-mobile.svg',
-	FOOTERBAR_HISTORY_TRADE:
-		'/assets/images/transaction-history-bottom-nav-mobile.svg',
+	FOOTERBAR_ASSETS_TRADE: '/assets/images/asset-prices-mobile-tab-01.svg',
+	WALLET_FOOTER: '/assets/images/wallet-mobile-tab-02-01 (1).svg',
 };
 
 const icons = flatten(nestedIcons, options);

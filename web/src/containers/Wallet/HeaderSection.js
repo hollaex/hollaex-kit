@@ -12,7 +12,7 @@ const HeaderSection = ({ icons: ICONS }) => {
 				</EditWrapper>
 			</div>
 			<div className="sub-header link-separator">
-				<Link to="assets">
+				<Link to="prices">
 					<EditWrapper stringId="ACCORDIAN.ACCORDIAN_INFO">
 						{STRINGS['ACCORDIAN.ACCORDIAN_INFO']}
 					</EditWrapper>
@@ -20,7 +20,7 @@ const HeaderSection = ({ icons: ICONS }) => {
 			</div>
 			<div className="d-flex">
 				<div className="sub-header">
-					<Link to="transactions">
+					<Link to="/transactions">
 						<EditWrapper stringId="ACCORDIAN.ACCORDIAN_HISTORY">
 							{STRINGS['ACCORDIAN.ACCORDIAN_HISTORY']}
 						</EditWrapper>

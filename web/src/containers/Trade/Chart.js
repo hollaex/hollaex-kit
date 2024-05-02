@@ -327,6 +327,7 @@ class TVChartContainer extends React.PureComponent {
 					tvWidget.chart().createStudy('Moving Average', false, false, [7]);
 					tvWidget.chart().createStudy('Moving Average', false, false, [25]);
 					tvWidget.chart().createStudy('Volume', false, false);
+					// tvWidget.chart().createStudy('Keltner Channels', false, false, [{}, 20, 2]);
 					// tvWidget.chart().createStudy('MACD', false, false, [14, 30, 'close', 9])
 				}
 

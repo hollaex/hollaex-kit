@@ -236,7 +236,9 @@
         "ERROR_INVALID": "Código OTP Inválido",
         "OTP_FORM_INFO": "Ingresa tu código de 6 dígitos para continuar",
         "OTP_FORM_SUBNOTE_LINE_1": "Su código también se conoce como autenticador de dos factores (2FA) o código OTP.",
-        "OTP_FORM_SUBNOTE_LINE_2": "Si ha perdido su código, comuníquese con el soporte."
+        "OTP_FORM_SUBNOTE_LINE_2": "Si ha perdido su código, comuníquese con el soporte.",
+        "OTP_FORM_SUBNOTE_LINE_3": "(Para agregar una nueva cuenta a Google Authenticator, haga clic en el botón '+'. Puede escanear el código QR proporcionado en el paso anterior o ingresar manualmente la clave para agregar su cuenta a la aplicación).",
+        "INPUT_TEXT": "Ingresa el código de 6 dígitos de la aplicación Google Authenticator de tu teléfono:"
     },
     "QUICK_TRADE_COMPONENT": {
         "TITLE": "Rápido",
@@ -632,7 +634,8 @@
         "INTERNAL": "interno",
         "BLOCKCHAIN": "cadena de bloques",
         "STAKE": "apostar",
-        "REFERRAL": "remisión"
+        "REFERRAL": "remisión",
+        "QUICK_TRADE_TOOLTIP": "Orden ejecutada a través del sistema de conversión."
     },
     "CEFI_STAKE": {
         "STAKE_POOL_TITLE": "Piscinas de Staking de CeFi Locales",
@@ -709,7 +712,7 @@
                 "MESSAGE_4": "Puede almacenar este código de forma segura para recuperar su 2FA en caso de que cambie o pierda su teléfono móvil en el futuro.",
                 "MESSAGE_5": "Manual",
                 "INPUT": "Introducir contraseña de una-vez (OTP)",
-                "WARNING": "Le recomendamos encarecidamente que establezca una autenticación de dos factores (2FA). Haciendo esto aumentará enormemente la seguridad de sus fondos.",
+                "WARNING": "Nosotros {0} {1}",
                 "ENABLE": "Habilitar la autenticación de dos factores",
                 "DISABLE": "Desactivar la autenticación de dos factores",
                 "SECRET_1": "Enter yor secret key",
@@ -718,12 +721,43 @@
                 "INPUT_1": "Secret Key",
                 "TITLE_2": "Enter One-Time Password (OTP)",
                 "MESSAGE_6": "Please enter your 6-digit one-time password below.",
-                "INPUT_2": "One-Time Password (OTP)"
+                "INPUT_2": "One-Time Password (OTP)",
+                "STRONGLY_RECOMMEND": "fuertemente recomendado",
+                "WARNING_CONTENT": "que habilite la autenticación de dos factores para mejorar la seguridad de su cuenta y proteger sus fondos"
             },
             "FORM": {
                 "PLACEHOLDER": "Introducir su OTP proporcionado por Google Authenticator.",
                 "BUTTON": "Activar 2FA"
-            }
+            },
+            "DOWNLOAD_APP": "Descargar e instalar",
+            "GOOGLE_AUTHENTICATOR": "Autenticador de Google:",
+            "DOWNLOAD_FROM": "Descargar desde",
+            "GOOGLE_PLAY": "Google Play",
+            "APPLE": "Tienda de aplicaciones",
+            "APP_INFO": "Google Authenticator generará códigos aleatorios que son necesarios para acciones sensibles, como iniciar sesión y retirar fondos.",
+            "DONT_UNINSTALL": "No desinstale la aplicación.",
+            "INFO_UNINSTALL": "En caso de pérdida accidental del teléfono o desinstalación involuntaria, es posible que experimente demoras para recuperar el acceso a su cuenta. En tales casos, deberá comunicarse con nuestro equipo de soporte para obtener ayuda.",
+            "BACK": "ATRÁS",
+            "PROCEED": "PROCEDER",
+            "NEXT": "Próximo",
+            "NOTE": "Nota: {0} {1}",
+            "MANUEL_DESCRIPTION": "Ingrese la semilla 2FA manual del paso anterior.",
+            "MANUEL_DESCRIPTION_2": "Anote y guarde cuidadosamente la verificación manual anterior.",
+            "MANUEL_DESCRIPTION_3": "clave ya que se puede utilizar para la recuperación de la cuenta.",
+            "MANUEL_KEY": "Semilla manual 2FA",
+            "MANUEL_PLACEHOLDER": "Ingrese su semilla 2FA",
+            "MANUEL_WARNING": "(Asegúrese de haberlo escrito y guardado de forma segura para usarlo en el futuro).",
+            "MANUEL_ERROR_1": "Por favor ingrese la semilla 2FA manual",
+            "MANUEL_ERROR_2": "Ingrese la semilla 2FA manual del paso anterior.",
+            "ACCOUNT_SECURED": "Cuenta asegurada",
+            "2FA_ENABLED": "2FA HABILITADO",
+            "2FA_DISABLED": "2FA DESHABILITADO",
+            "2FA_CONTENT_ONE": "Activando {0} {1} .",
+            "2FA_CONTENT_TWO": "(Autenticación de dos factores) agrega una capa adicional de protección para salvaguardar sus fondos. Una vez habilitado, se le pedirá que ingrese un código de verificación desde su teléfono cada vez que inicie sesión o retire activos. Esta característica mejora significativamente la seguridad de su cuenta.",
+            "2FA_CONTENT_THREE": "(Autenticación de dos factores) agrega una capa adicional de protección para salvaguardar sus fondos",
+            "2FA_CONTENT_FOUR": "Para desactivar 2FA, deberá ingresar su código 2FA (OTP)",
+            "INPUT_SIX_DIGIT_CODE": "Ingresa el código de 6 dígitos de la aplicación Google Authenticator de tu teléfono:",
+            "INPUT_CONTENT": "(Para agregar una nueva cuenta a Google Authenticator, haga clic en el botón '+'. Puede escanear el código QR proporcionado en el paso anterior o ingresar manualmente la clave para agregar su cuenta a la aplicación)."
         },
         "CHANGE_PASSWORD": {
             "TITLE": "Cambiar Contraseña",
@@ -1703,7 +1737,12 @@
         "SELECT_END_DATE": "Seleccionar fecha de finalización",
         "CUSTOM": "Costumbre",
         "BACK_CUSTOM": "ATRÁS",
-        "PROOCED_CUSTOM": "PROCEDIDO"
+        "PROOCED_CUSTOM": "PROCEDIDO",
+        "PL_DAYS": "PyG del día",
+        "VIEW_MORE": "Ver más {0}",
+        "SHOW_ASSET_BREAKDOWN": "Mostrar desglose de activos",
+        "PL_SUMMARY": "Resumen de pérdidas y ganancias",
+        "BALANCE_HISTORY": "Historial de saldo"
     },
     "ASSET_INFO": "Información del activo",
     "TAKER_FEES_APPLIED": "Se aplican tarifas al tomador",
@@ -1746,7 +1785,8 @@
         },
         "LIST": "¿Quiere enumerar sus activos digitales?",
         "WEBSITE": "Sitio web",
-        "EXPLORER": "Explorador"
+        "EXPLORER": "Explorador",
+        "PRO_TRADE": "VER {0} MERCADO"
     },
     "ACCORDIAN": {
         "ACCORDIAN_ASSETS": "Todos los activos de la billetera",
@@ -1878,5 +1918,6 @@
                 "CONFIRM": "CONFIRMAR"
             }
         }
-    }
+    },
+    "CANCEL_WITHDRAWAL_ADDRESS": "Dirección de retiro"
 }

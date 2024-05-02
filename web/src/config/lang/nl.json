@@ -179,7 +179,9 @@
         "OTP_PLACEHOLDER": "Voer de authenticatiecode in",
         "OTP_TITLE": "Verificatiecode",
         "OTP_BUTTON": "indienen",
-        "ERROR_INVALID": "Ongeldige OTP-code"
+        "ERROR_INVALID": "Ongeldige OTP-code",
+        "OTP_FORM_SUBNOTE_LINE_3": "(To add a new account to Google Authenticator, click the '+' button. You can either scan the provided QR code in the previous step or manually enter the key to add your account to the app.)",
+        "INPUT_TEXT": "Input the 6-digit code from your phone's Google Authenticator app:"
     },
     "EMAIL_CODE_FORM": {
         "TITLE": "Voer uw beveiligingscodes in",
@@ -594,7 +596,8 @@
         "INTERNAL": "intern",
         "BLOCKCHAIN": "blockchain",
         "STAKE": "inzet",
-        "REFERRAL": "verwijzing"
+        "REFERRAL": "verwijzing",
+        "QUICK_TRADE_TOOLTIP": "Order executed through convert system"
     },
     "ACCOUNT_SECURITY": {
         "TITLE_TEXT": "Pas de beveiligingsinstellingen voor uw account aan. Van tweefactorauthenticatie, wachtwoord, API-sleutels en andere beveiligingsgerelateerde functies.",
@@ -617,15 +620,46 @@
                 "MESSAGE_3": "Als u problemen heeft met het scannen hiervan, kunt u de onderstaande code handmatig invoeren",
                 "MESSAGE_4": "U moet deze code veilig opslaan om uw 2FA te herstellen voor het geval u uw mobiele telefoon in de toekomst wijzigt of kwijtraakt.",
                 "MESSAGE_5": "Handmatig",
-                "WARNING": "We raden u ten zeerste aan om tweefactorauthenticatie (2FA) in te stellen. Als u dit doet, wordt de veiligheid van uw geld aanzienlijk vergroot.",
+                "WARNING": "Wij {0} {1}",
                 "ENABLE": "Schakel tweefactorauthenticatie in",
                 "DISABLE": "Schakel tweefactorauthenticatie uit",
-                "INPUT": "Voer uw OTP in"
+                "INPUT": "Voer uw OTP in",
+                "STRONGLY_RECOMMEND": "sterk aangeraden",
+                "WARNING_CONTENT": "dat u tweefactorauthenticatie inschakelt om de veiligheid van uw account te verbeteren en uw geld te beschermen"
             },
             "FORM": {
                 "PLACEHOLDER": "Voer uw OTP in die wordt verstrekt door Google Authenticator.",
                 "BUTTON": "Schakel 2FA in"
-            }
+            },
+            "DOWNLOAD_APP": "Download and install",
+            "GOOGLE_AUTHENTICATOR": "Google Authenticator:",
+            "DOWNLOAD_FROM": "Download from",
+            "GOOGLE_PLAY": "GooglePlay",
+            "APPLE": "App Store",
+            "APP_INFO": "Google Authenticator will generate random codes that are necessary for sensitive actions, such as logging in and withdrawing funds.",
+            "DONT_UNINSTALL": "Verwijder de app alstublieft niet.",
+            "INFO_UNINSTALL": "In het geval van onbedoeld verlies van uw telefoon of onbedoelde verwijdering, kunt u vertraging ondervinden bij het opnieuw verkrijgen van toegang tot uw account. In dergelijke gevallen moet u contact opnemen met ons ondersteuningsteam voor hulp.",
+            "BACK": "RUG",
+            "PROCEED": "DOORGAAN",
+            "NEXT": "Volgende",
+            "NOTE": "Opmerking: {0} {1}",
+            "MANUEL_DESCRIPTION": "Voer het handmatige 2FA-zaad uit de vorige stap in.",
+            "MANUEL_DESCRIPTION_2": "Noteer de bovenstaande handmatige verificatie zorgvuldig en bewaar deze",
+            "MANUEL_DESCRIPTION_3": "sleutel omdat deze kan worden gebruikt voor accountherstel.",
+            "MANUEL_KEY": "Handmatig 2FA zaad",
+            "MANUEL_PLACEHOLDER": "Voer uw 2FA-zaad in",
+            "MANUEL_WARNING": "(Zorg ervoor dat u het opschrijft en veilig bewaart voor toekomstig gebruik.)",
+            "MANUEL_ERROR_1": "Voer de handleiding 2FA Seed in",
+            "MANUEL_ERROR_2": "Voer het handmatige 2FA-zaad uit de vorige stap in",
+            "ACCOUNT_SECURED": "Account beveiligd",
+            "2FA_ENABLED": "2FA INGESCHAKELD",
+            "2FA_DISABLED": "2FA UITGESCHAKELD",
+            "2FA_CONTENT_ONE": "Activeren van {0} {1} .",
+            "2FA_CONTENT_TWO": "(Two-Factor Authentication) voegt een extra beschermingslaag toe om uw geld te beschermen. Eenmaal ingeschakeld, moet u elke keer dat u inlogt of activa opneemt, vanaf uw telefoon een verificatiecode invoeren. Deze functie verbetert de veiligheid van uw account aanzienlijk",
+            "2FA_CONTENT_THREE": "(Two-Factor Authentication) voegt een extra beschermingslaag toe om uw geld te beschermen",
+            "2FA_CONTENT_FOUR": "Om 2FA uit te schakelen, moet u uw 2FA (OTP)-code invoeren",
+            "INPUT_SIX_DIGIT_CODE": "Voer de 6-cijferige code in via de Google Authenticator-app van uw telefoon:",
+            "INPUT_CONTENT": "(Om een nieuw account aan Google Authenticator toe te voegen, klikt u op de knop '+'. U kunt de meegeleverde QR-code in de vorige stap scannen of handmatig de sleutel invoeren om uw account aan de app toe te voegen.)"
         },
         "CHANGE_PASSWORD": {
             "TITLE": "Wachtwoord",
@@ -1508,7 +1542,8 @@
             "QUICK_TRADE": "Snelle handel",
             "SUBTITLE": "Ga naar {1} om de koop- en verkoopprijzen voor {0} te bekijken",
             "FOOTER": "Er worden handelskosten voor marktnemers in rekening gebracht op alle transacties die via de Quick Trade worden uitgevoerd."
-        }
+        },
+        "PRO_TRADE": "BEKIJK {0} MARKT"
     },
     "ACCORDIAN": {
         "ACCORDIAN_ASSETS": "Alle portefeuilleactiva",
@@ -1686,8 +1721,14 @@
         "SELECT_END_DATE": "Selecteer einddatum",
         "CUSTOM": "Aangepast",
         "BACK_CUSTOM": "RUG",
-        "PROOCED_CUSTOM": "VERWERKT"
+        "PROOCED_CUSTOM": "VERWERKT",
+        "PL_DAYS": "Dag P&L",
+        "VIEW_MORE": "Bekijk meer {0}",
+        "SHOW_ASSET_BREAKDOWN": "Activaverdeling weergeven",
+        "PL_SUMMARY": "P&L-samenvatting",
+        "BALANCE_HISTORY": "Saldogeschiedenis"
     },
     "ASSET_INFO": "Informatie over activa",
-    "TAKER_FEES_APPLIED": "Er worden takerkosten in rekening gebracht"
+    "TAKER_FEES_APPLIED": "Er worden takerkosten in rekening gebracht",
+    "CANCEL_WITHDRAWAL_ADDRESS": "Herroepingsadres"
 }

@@ -19,6 +19,7 @@ import {
 	logoutconfirm,
 	setNotification,
 	NOTIFICATIONS,
+	setSelectedAccount,
 } from 'actions/appActions';
 import {
 	BASE_CURRENCY,
@@ -88,6 +89,7 @@ class Summary extends Component {
 
 	onAccountTypeChange = (type) => {
 		this.setState({ selectedAccount: type });
+		this.props.setSelectedAccount(type);
 	};
 
 	onUpgradeAccount = () => {
@@ -102,11 +104,13 @@ class Summary extends Component {
 				currentTradingAccount,
 				selectedAccount: user.verification_level,
 			});
+			this.props.setSelectedAccount(user.verification_level);
 		} else if (!isLoggedIn()) {
 			const { config_level } = this.props;
 			this.setState({
 				selectedAccount: Object.keys(config_level)[0] || 0,
 			});
+			this.props.setSelectedAccount(Object.keys(config_level)[0] || 0);
 		}
 	};
 
@@ -339,6 +343,7 @@ const mapDispatchToProps = (dispatch) => ({
 	setNotification: bindActionCreators(setNotification, dispatch),
 	getUserReferrals: bindActionCreators(getUserReferrals, dispatch),
 	openContactForm: bindActionCreators(openContactForm, dispatch),
+	setSelectedAccount: bindActionCreators(setSelectedAccount, dispatch),
 });
 
 export default connect(

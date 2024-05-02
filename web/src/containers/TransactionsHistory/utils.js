@@ -3,8 +3,9 @@ import {
 	InfoCircleTwoTone,
 	PlusSquareOutlined,
 	MinusSquareOutlined,
+	ThunderboltFilled,
 } from '@ant-design/icons';
-import { notification } from 'antd';
+import { notification, Tooltip } from 'antd';
 import classnames from 'classnames';
 import mathjs from 'mathjs';
 import { isMobile } from 'react-device-detect';
@@ -424,12 +425,22 @@ export const generateTradeHeaders = (
 			key: 'pair',
 			exportToCsv: ({ display_name }) => display_name,
 			className: 'sticky-col',
-			renderCell: ({ display_name, icon_id }, key, index) => {
+			renderCell: ({ display_name, icon_id, quick }, key, index) => {
 				return (
 					<td key={index} className="text-uppercase sticky-col">
 						<div className="d-flex align-items-center">
 							<Coin iconId={icon_id} />
 							<div className="px-2">{display_name}</div>
+							<div className="quick-icon-wrapper">
+								{quick && (
+									<Tooltip
+										overlayClassName="quick-trade-tooltip"
+										title={STRINGS['TRANSACTION_HISTORY.QUICK_TRADE_TOOLTIP']}
+									>
+										<ThunderboltFilled style={{ color: '#FFF100' }} />
+									</Tooltip>
+								)}
+							</div>
 						</div>
 					</td>
 				);

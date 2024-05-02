@@ -45,7 +45,6 @@ const ThemeForm = AdminHocForm('ThemeForm');
 const NativeCurrencyForm = AdminHocForm('NativeCurrencyForm');
 const HelpDeskForm = AdminHocForm('HelpDeskForm');
 const APIDocLinkForm = AdminHocForm('APIDocLinkForm');
-const CaptchaForm = AdminHocForm('CaptchaForm');
 const CountryForm = AdminHocForm('CountryForm');
 
 class GeneralContent extends Component {
@@ -62,7 +61,6 @@ class GeneralContent extends Component {
 			initialEmailValues: {},
 			initialLinkValues: {},
 			initialEmailVerificationValues: {},
-			initialCaptchaValues: {},
 			pendingPublishIcons: {},
 			showDisableSignUpsConfirmation: false,
 			isSignUpActive: true,
@@ -179,8 +177,7 @@ class GeneralContent extends Component {
 		let initialEmailVerificationValues = {
 			...this.state.initialEmailVerificationValues,
 		};
-		let initialCaptchaValues = { ...this.state.initialCaptchaValues };
-		const { kit = {}, secrets = { smtp: {}, captcha: {}, emails: {} } } =
+		const { kit = {}, secrets = { smtp: {}, emails: {} } } =
 			this.state.constants || {};
 		const {
 			api_name,
@@ -188,7 +185,6 @@ class GeneralContent extends Component {
 			links = {},
 			new_user_is_activated: isSignUpActive,
 			email_verification_required,
-			captcha = {},
 		} = kit;
 		initialNameValues = { ...initialNameValues, api_name };
 		initialLanguageValues = {
@@ -207,12 +203,6 @@ class GeneralContent extends Component {
 			email_verification_required,
 		};
 
-		initialCaptchaValues = {
-			...initialCaptchaValues,
-			...captcha,
-			...secrets.captcha,
-		};
-
 		const { configuration = {} } = this.state.initialEmailValues || {};
 		const initialEmailValues = {
 			configuration: { ...configuration, ...secrets.emails, ...secrets.smtp },
@@ -229,7 +219,6 @@ class GeneralContent extends Component {
 			initialLinkValues,
 			isSignUpActive,
 			initialEmailVerificationValues,
-			initialCaptchaValues,
 			showDisableSignUpsConfirmation: false,
 		});
 	};
@@ -474,27 +463,6 @@ class GeneralContent extends Component {
 				...formProps,
 			},
 		});
-	};
-
-	handleSubmitCaptcha = ({ site_key, secret_key }) => {
-		const formValues = {
-			kit: {
-				captcha: {
-					site_key,
-				},
-			},
-			...(!secret_key.includes('*')
-				? {
-						secrets: {
-							captcha: {
-								secret_key,
-							},
-						},
-				  }
-				: {}),
-		};
-
-		this.handleSubmitGeneral(formValues);
 	};
 
 	handleSubmitSignUps = (new_user_is_activated) => {
@@ -771,7 +739,6 @@ class GeneralContent extends Component {
 			initialCountryValues,
 			initialLinkValues,
 			initialEmailVerificationValues,
-			initialCaptchaValues,
 			loading,
 			isSignUpActive,
 			showDisableSignUpsConfirmation,
@@ -1181,29 +1148,6 @@ class GeneralContent extends Component {
 							>
 								{this.renderModalContent()}
 							</Modal>
-						</div>
-						<div className="divider"></div>
-						<div className="general-wrapper mb-4 pb-4">
-							<div className="sub-title">reCAPTCHA</div>
-							<div className="description mb-4">
-								Make spammers go away with{' '}
-								<a
-									target="_blank"
-									href="https://docs.hollaex.com/advanced/dependencies#recaptcha"
-									rel="noopener noreferrer"
-								>
-									Google reCAPTCHA v3
-								</a>
-								. Leave the field blank to remove recaptcha.
-							</div>
-							<CaptchaForm
-								initialValues={initialCaptchaValues}
-								fields={generalFields.section_10}
-								buttonText="Save"
-								buttonClass="green-btn minimal-btn"
-								onSubmit={this.handleSubmitCaptcha}
-								buttonSubmitting={buttonSubmitting}
-							/>
 						</div>
 						<div className="divider"></div>
 						<div className="general-wrapper mb-5">

@@ -4,11 +4,9 @@ import {
 	requiredWithCustomMessage,
 	email,
 	normalizeEmail,
-	required,
 } from 'components/Form/validations';
 import { AuthForm } from 'components';
 import STRINGS from 'config/localizedStrings';
-import { getLanguage } from 'utils/string';
 
 export const generateFormFields = (theme) => ({
 	email: {
@@ -21,13 +19,7 @@ export const generateFormFields = (theme) => ({
 		fullWidth: true,
 		label: STRINGS['FORM_FIELDS.EMAIL_LABEL'],
 		placeholder: STRINGS['FORM_FIELDS.EMAIL_PLACEHOLDER'],
-	},
-	captcha: {
-		type: 'captcha',
-		language: getLanguage(),
-		theme: theme,
-		validate: [required],
-	},
+	}
 });
 
 const Form = (props) => (

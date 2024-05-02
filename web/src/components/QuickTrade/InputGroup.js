@@ -125,7 +125,15 @@ class InputGroup extends React.PureComponent {
 								open={isOpen}
 								size="default"
 								showSearch
-								filterOption={true}
+								filterOption={(input, option) => {
+									const coin = coins[option.value] || DEFAULT_COIN_DATA;
+									return (
+										option.value.toLowerCase().indexOf(input.toLowerCase()) >=
+											0 ||
+										coin.fullname.toLowerCase().indexOf(input.toLowerCase()) >=
+											0
+									);
+								}}
 								className={
 									isOpen
 										? 'input-group__select_disabled'

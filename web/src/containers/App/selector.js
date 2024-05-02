@@ -2,17 +2,34 @@ import { isMobile } from 'react-device-detect';
 import { createSelector } from 'reselect';
 import { MENU_ITEMS } from 'config/menu';
 import { STAKING_INDEX_COIN, isStakingAvailable } from 'config/contracts';
+import { MarketsSelector } from 'containers/Trade/utils';
 
 const getConstants = (state) => state.app.constants;
 const getRemoteRoutes = (state) => state.app.remoteRoutes;
 const getContracts = (state) => state.app.contracts;
 const getToken = (state) => state.auth.token;
+const getFavourites = (state) => state.app.favourites;
+const getMarkets = (state) => MarketsSelector(state);
 
 export const menuItemsSelector = createSelector(
-	[getConstants, getRemoteRoutes, getContracts, getToken],
-	(constants = {}, remoteRoutes = [], contracts = {}, token) => {
+	[
+		getConstants,
+		getRemoteRoutes,
+		getContracts,
+		getToken,
+		getFavourites,
+		getMarkets,
+	],
+	(
+		constants = {},
+		remoteRoutes = [],
+		contracts = {},
+		token,
+		getFavourites = {},
+		getMarkets = {}
+	) => {
 		const { features = {} } = constants;
-		let featureItems = MENU_ITEMS.features
+		const featureItems = MENU_ITEMS.features
 			.filter(
 				({ id }) =>
 					id !== 'stake_page' ||
@@ -44,43 +61,16 @@ export const menuItemsSelector = createSelector(
 						item.hide_from_menulist = false;
 						item.hide_from_sidebar = false;
 					}
-
-					if (
-						id === 'trade_tab' &&
-						features.quick_trade &&
-						features.pro_trade
-					) {
-						item.hide_from_bottom_nav = false;
+					if (id === 'pro_trade') {
+						if (getFavourites && getFavourites.length) {
+							item.path = `/trade/${getFavourites[0]}`;
+						} else {
+							item.path = `/trade/${getMarkets[0]?.key}`;
+						}
 					}
 					return item;
 				}
 			);
-
-		if (features.quick_trade && features.pro_trade && isMobile) {
-			featureItems.push({
-				id: 'pro_quick_trades',
-				path: 'trades',
-				icon_id: 'PRO_QUICK_TRADES_ICON',
-				string_id: 'PRO_QUICK_TRADES',
-				hide_from_appbar: true,
-				hide_from_sidebar: true,
-				hide_from_menulist: true,
-				hide_from_bottom_nav: false,
-			});
-			const updatedItems = featureItems.filter(
-				({ string_id }) =>
-					string_id !== 'QUICK_TRADE' && string_id !== 'PRO_TRADE'
-			);
-			featureItems = updatedItems;
-		}
-
-		if (!features.quick_trade && !features.pro_trade && isMobile) {
-			const updatedItems = featureItems.filter(
-				({ string_id }) =>
-					string_id !== 'QUICK_TRADE' && string_id !== 'PRO_TRADE'
-			);
-			featureItems = updatedItems;
-		}
 
 		const menuItems = isMobile
 			? remoteRoutes && remoteRoutes.length
@@ -99,8 +89,8 @@ export const menuItemsSelector = createSelector(
 				  ]
 			: [
 					...MENU_ITEMS.top,
-					...featureItems,
 					...MENU_ITEMS.middle,
+					...featureItems,
 					...remoteRoutes,
 					...(token ? MENU_ITEMS.bottom : []),
 			  ];
