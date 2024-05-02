@@ -221,16 +221,12 @@ const updateKitConfigSecrets = (data = {}, scopes, auditInfo) => {
 		})
 		.then((status) => {
 			const info = getKitConfig().info;
-			if (data?.kit?.fiat_fees) {
-				publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
-			} else {
-				publisher.publish(
-					CONFIGURATION_CHANNEL,
-					JSON.stringify({
-						type: 'update', data: { kit: status.dataValues.kit, secrets: status.dataValues.secrets }
-					})
-				);
-			}
+			publisher.publish(
+				CONFIGURATION_CHANNEL,
+				JSON.stringify({
+					type: 'update', data: { kit: status.dataValues.kit, secrets: status.dataValues.secrets }
+				})
+			);
 			return {
 				kit: { ...status.dataValues.kit, info },
 				secrets: maskSecrets(status.dataValues.secrets)
