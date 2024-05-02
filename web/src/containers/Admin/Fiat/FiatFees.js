@@ -62,6 +62,30 @@ const FiatFees = ({ coins }) => {
 			},
 		},
 		{
+			title: 'Minimum amount',
+			dataIndex: 'min',
+			key: 'min',
+			render: (user_id, data) => {
+				return <div className="d-flex">{data?.min || '-'}</div>;
+			},
+		},
+		{
+			title: 'Maximum amount',
+			dataIndex: 'max',
+			key: 'max',
+			render: (user_id, data) => {
+				return <div className="d-flex">{data?.max || '-'}</div>;
+			},
+		},
+		{
+			title: 'Increment Unit',
+			dataIndex: 'increment_unit',
+			key: 'increment_unit',
+			render: (user_id, data) => {
+				return <div className="d-flex">{data?.increment_unit || '-'}</div>;
+			},
+		},
+		{
 			title: 'Edit',
 			dataIndex: 'edit',
 			key: 'edit',
@@ -115,6 +139,10 @@ const FiatFees = ({ coins }) => {
 								fee_markup: null,
 							}),
 							fullname: coin.fullname,
+							min: data[coin.symbol].min || coin.min,
+							max: data[coin.symbol].max || coin.max,
+							increment_unit:
+								data[coin.symbol].increment_unit || coin.increment_unit,
 						};
 					}
 				}
@@ -146,8 +174,9 @@ const FiatFees = ({ coins }) => {
 	return (
 		<div>
 			<div style={{ color: '#ccc' }}>
-				Below, You can add/edit fees for fiats available in your exchange, this
-				will override the default fees set to fiats by default
+				Below, You can add/edit fees and other attributes for fiats available in
+				your exchange, this will override the default fees set to fiats by
+				default
 			</div>
 			<div>
 				<div style={{ marginTop: 20 }}></div>
@@ -259,6 +288,48 @@ const FiatFees = ({ coins }) => {
 									}}
 								/>
 							</div>
+							<div style={{ marginBottom: 10 }}>
+								<div className="mb-1">Minimum Allowable Amount</div>
+								<Input
+									type="number"
+									placeholder="Enter Minimum allowable amount"
+									value={selectedCoin.min}
+									onChange={(e) => {
+										setSelectedCoin({
+											...selectedCoin,
+											min: e.target.value,
+										});
+									}}
+								/>
+							</div>
+							<div style={{ marginBottom: 10 }}>
+								<div className="mb-1">Maximum Allowable Amount</div>
+								<Input
+									type="number"
+									placeholder="Enter Maximum allowable amount"
+									value={selectedCoin.max}
+									onChange={(e) => {
+										setSelectedCoin({
+											...selectedCoin,
+											max: e.target.value,
+										});
+									}}
+								/>
+							</div>
+							<div style={{ marginBottom: 10 }}>
+								<div className="mb-1">Increment Unit</div>
+								<Input
+									type="number"
+									placeholder="Enter Increment Unit"
+									value={selectedCoin.increment_unit}
+									onChange={(e) => {
+										setSelectedCoin({
+											...selectedCoin,
+											increment_unit: e.target.value,
+										});
+									}}
+								/>
+							</div>
 						</div>
 						<div
 							style={{
@@ -298,6 +369,20 @@ const FiatFees = ({ coins }) => {
 											);
 										}
 
+										if (selectedCoin.min) {
+											selectedCoin.min = Number(selectedCoin.min);
+										}
+
+										if (selectedCoin.max) {
+											selectedCoin.max = Number(selectedCoin.max);
+										}
+
+										if (selectedCoin.increment_unit) {
+											selectedCoin.increment_unit = Number(
+												selectedCoin.increment_unit
+											);
+										}
+
 										await updateConstants({
 											kit: {
 												fiat_fees: {
@@ -306,6 +391,9 @@ const FiatFees = ({ coins }) => {
 														symbol: selectedCoin.symbol,
 														withdrawal_fee: selectedCoin.withdrawal_fee,
 														deposit_fee: selectedCoin.deposit_fee,
+														min: selectedCoin.min,
+														max: selectedCoin.max,
+														increment_unit: selectedCoin.increment_unit,
 													},
 												},
 											},
