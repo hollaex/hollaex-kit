@@ -1254,7 +1254,7 @@ const fetchUserProfitLossInfo = (req, res) => {
 const getUnrealizedUserReferral = (req, res) => {
 	loggerUser.info(
 		req.uuid,
-		'GET controllers/user/getUnrealizedUserReferral',
+		'controllers/user/getUnrealizedUserReferral',
 	);
 
 	if (
@@ -1272,18 +1272,81 @@ const getUnrealizedUserReferral = (req, res) => {
 		.catch((err) => {
 			loggerUser.error(
 				req.uuid,
-				'GET controllers/user/getUnrealizedUserReferral err',
+				'controllers/user/getUnrealizedUserReferral err',
 				err.message
 			);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
+const getUserReferralCodes = (req, res) => {
+	loggerUser.info(
+		req.uuid,
+		'controllers/user/getUserReferralCodes',
+	);
+
+	if (
+		!toolsLib.getKitConfig().referral_history_config ||
+		!toolsLib.getKitConfig().referral_history_config.active
+	) {
+		// TODO it should be added to the messages
+		throw new Error('Feature is not active');
+	}
+
+	toolsLib.user.getUserReferralCodes(req.auth.sub.id)
+		.then((data) => {
+			return res.json({ data });
+		})
+		.catch((err) => {
+			loggerUser.error(
+				req.uuid,
+				'controllers/user/getUserReferralCodes err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const createUserReferralCode = (req, res) => {
+	loggerUser.info(
+		req.uuid,
+		'controllers/user/createUserReferralCode',
+	);
+	const { discount, earning_rate, code } = req.swagger.params.data.value;
+
+
+	if (
+		!toolsLib.getKitConfig().referral_history_config ||
+		!toolsLib.getKitConfig().referral_history_config.active
+	) {
+		// TODO it should be added to the messages
+		throw new Error('Feature is not active');
+	}
+
+
+	toolsLib.user.createUserReferralCode({
+		user_id: req.auth.sub.id,
+		discount, 
+		earning_rate, 
+		code
+	})
+		.then(() => {
+			return res.json({ message: 'success' });
+		})
+		.catch((err) => {
+			loggerUser.error(
+				req.uuid,
+				'controllers/user/createUserReferralCode err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
 
 const settleUserFees = (req, res) => {
 	loggerUser.info(
 		req.uuid,
-		'POST controllers/user/settleUserFees',
+		'controllers/user/settleUserFees',
 	);
 
 	if (
@@ -1303,7 +1366,7 @@ const settleUserFees = (req, res) => {
 		.catch((err) => {
 			loggerUser.error(
 				req.uuid,
-				'POST controllers/user/settleUserFees err',
+				'controllers/user/settleUserFees err',
 				err.message
 			);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
@@ -1315,7 +1378,7 @@ const fetchUserReferrals = (req, res) => {
 
 	loggerUser.info(
 		req.uuid,
-		'GET controllers/user/referrals query',
+		'controllers/user/referrals query',
 		limit,
 		page,
 		order_by,
@@ -1351,7 +1414,7 @@ const fetchUserReferrals = (req, res) => {
 		.catch((err) => {
 			loggerUser.error(
 				req.uuid,
-				'GET controllers/user/referrals err',
+				'controllers/user/referrals err',
 				err.message
 			);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
@@ -1393,5 +1456,7 @@ module.exports = {
 	settleUserFees,
 	getUserBalanceHistory,
 	fetchUserProfitLossInfo,
-	fetchUserReferrals
+	fetchUserReferrals,
+	createUserReferralCode,
+	getUserReferralCodes
 };
