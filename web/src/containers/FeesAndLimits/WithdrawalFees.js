@@ -19,6 +19,8 @@ const WithdrawalFees = ({
 	icons: ICONS,
 	search,
 	setSearch,
+	coin_customizations,
+	fiat_fees,
 }) => {
 	const accountData = config_level[selectedLevel] || {};
 	const description =
@@ -132,6 +134,8 @@ const WithdrawalFees = ({
 								coins={coins}
 								level={selectedLevel}
 								search={search}
+								coin_customizations={coin_customizations}
+								fiat_fees={fiat_fees}
 							/>
 						</div>
 					</div>
@@ -146,6 +150,8 @@ const mapStateToProps = (state) => {
 		coins: state.app.coins,
 		pairs: state.app.pairs,
 		config_level: state.app.config_level,
+		coin_customizations: state.app.constants.coin_customizations,
+		fiat_fees: state.app.constants.fiat_fees,
 		options: Object.entries(state.app.config_level).map(([key, { name }]) => ({
 			value: key,
 			label: name,

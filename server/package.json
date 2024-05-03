@@ -51,7 +51,7 @@
 		"multicoin-address-validator": "0.5.5",
 		"node-cron": "2.0.3",
 		"node-device-detector": "2.0.16",
-		"nodemailer": "6.9.13",
+		"nodemailer": "6.4.6",
 		"npm": "8.19.2",
 		"npm-programmatic": "0.0.12",
 		"otp": "0.1.3",
