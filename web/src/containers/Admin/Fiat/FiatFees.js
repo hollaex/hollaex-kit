@@ -139,10 +139,10 @@ const FiatFees = ({ coins }) => {
 								fee_markup: null,
 							}),
 							fullname: coin.fullname,
-							min: data[coin.symbol].min || coin.min,
-							max: data[coin.symbol].max || coin.max,
+							min: data?.[coin.symbol]?.min || coin.min,
+							max: data?.[coin.symbol]?.max || coin.max,
 							increment_unit:
-								data[coin.symbol].increment_unit || coin.increment_unit,
+								data?.[coin.symbol]?.increment_unit || coin.increment_unit,
 						};
 					}
 				}
