@@ -499,7 +499,7 @@ const checkAffiliation = (affiliationCode, user_id) => {
 				return all[getModel('affiliation').create({
 					user_id,
 					referer_id: referrer.user_id,
-					earning_rate: earning_rate,
+					earning_rate: referrer.earning_rate,
 					code: affiliationCode,
 				}), referrer];
 			} else {
