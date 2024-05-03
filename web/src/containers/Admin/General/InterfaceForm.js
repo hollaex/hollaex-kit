@@ -32,7 +32,6 @@ const InterfaceForm = ({
 
 	const [referralHistoryData, setReferralHistoryData] = useState({
 		currency: constants?.kit?.referral_history_config?.currency || 'usdt',
-		earning_rate: constants?.kit?.referral_history_config?.earning_rate || null,
 		earning_period:
 			constants?.kit?.referral_history_config?.earning_period || 0,
 		distributor_id:
@@ -70,7 +69,6 @@ const InterfaceForm = ({
 			const referral_history_config = {
 				active: !!values.referral_history_config,
 				currency: referralHistoryData.currency,
-				earning_rate: Number(referralHistoryData.earning_rate),
 				earning_period: Number(referralHistoryData.earning_period),
 				distributor_id: Number(referralHistoryData.distributor_id),
 				date_enabled: referralHistoryData.date_enabled,
@@ -256,25 +254,6 @@ const InterfaceForm = ({
 
 					<div className="mb-4">
 						<div style={{ fontSize: 16 }} className="mb-2">
-							Earning Rate
-							<div style={{ fontSize: 13 }}>
-								Earning rate referee users receive from affiliated users fees
-							</div>
-						</div>
-
-						<Input
-							value={referralHistoryData.earning_rate}
-							onChange={(e) => {
-								setReferralHistoryData({
-									...referralHistoryData,
-									earning_rate: Number(e.target.value),
-								});
-							}}
-						/>
-					</div>
-
-					<div className="mb-4">
-						<div style={{ fontSize: 16 }} className="mb-2">
 							Earning Period
 							<div style={{ fontSize: 13 }}>
 								Number of months referee users earn affiliated users fees. Set
@@ -339,7 +318,6 @@ const InterfaceForm = ({
 							onClick={async () => {
 								if (
 									referralHistoryData.currency == null ||
-									referralHistoryData.earning_rate == null ||
 									referralHistoryData.earning_period == null ||
 									referralHistoryData.distributor_id == null
 								) {

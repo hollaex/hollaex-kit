@@ -2380,13 +2380,12 @@ const addAmounts = (amount1, amount2) => {
 	);
 };
 
-const activateReferralFeature = async (data) => {
+const validateReferralFeature = async (data) => {
 	loggerUser.info(
 		'REFERRAL initializing...'
 	);
 
 	const { 
-		earning_rate: EARNING_RATE, 
 		earning_period: EARNING_PERIOD, 
 		distributor_id: DISTRIBUTOR_ID,
 	} = data;
@@ -2396,11 +2395,7 @@ const activateReferralFeature = async (data) => {
 	if (!REFERRAL_HISTORY_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
 		throw new Error('Exchange plan does not support this feature');
 	}
-	if (!isNumber(EARNING_RATE)) {
-		throw new Error('Earning rate with data type number required for plugin');
-	} else if (EARNING_RATE < 0 || EARNING_RATE > 100) {
-		throw new Error('Earning rate must be within the range of 0 ~ 100');
-	} else if (!isNumber(EARNING_PERIOD)) {
+	else if (!isNumber(EARNING_PERIOD)) {
 		throw new Error('Earning period with data type number required for plugin');
 	} else if ((!isInteger(EARNING_PERIOD) || EARNING_PERIOD < 0)) {
 		throw new Error('Earning period must be an integer greater than 0');
@@ -2466,6 +2461,10 @@ const createUserReferralCode = async (data) => {
 	}
 	if (earning_rate < 0) {
 		throw new Error('earning_rate cannot be negative');	
+	}
+
+	if (earning_rate > 100) {
+		throw new Error('earning_rate cannot be more than 100');	
 	}
 
 	if (code > 48) {
@@ -3261,7 +3260,7 @@ module.exports = {
 	getAllAffiliations,
 	applyEarningRate,
 	addAmounts,
-	activateReferralFeature,
+	validateReferralFeature,
 	settleFees,
 	getUnrealizedReferral,
 	fetchUserReferrals,

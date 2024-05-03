@@ -327,10 +327,6 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 			throw new Error('currency cannot be changed');
 		}
 
-		if (!newKitConfig.referral_history_config.hasOwnProperty('earning_rate')) {
-			throw new Error('earning_rate key does not exist');
-		}
-
 		if (!newKitConfig.referral_history_config.hasOwnProperty('earning_period')) {
 			throw new Error('earning_period key does not exist');
 		}
@@ -343,8 +339,8 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 			newKitConfig.referral_history_config.date_enabled = new Date();
 		}
 
-		const { activateReferralFeature } = require('./user');
-		activateReferralFeature({
+		const { validateReferralFeature } = require('./user');
+		validateReferralFeature({
 			earning_rate: newKitConfig?.referral_history_config?.earning_rate, 
 			earning_period: newKitConfig?.referral_history_config?.earning_period, 
 			distributor_id: newKitConfig?.referral_history_config?.distributor_id, 
