@@ -2728,7 +2728,7 @@ const createUnrealizedReferralFees = async (currentTime) => {
 			}
 
 			referralHistory.forEach(refHistory => {
-				refHistory.accumulated_fees = applyEarningRate(refHistory.accumulated_fees, refHistory.refHistory);
+				refHistory.accumulated_fees = applyEarningRate(refHistory.accumulated_fees, refHistory.earning_rate);
 			});
 
 
