@@ -2531,7 +2531,6 @@ const createUnrealizedReferralFees = async (currentTime) => {
 	let userLastSettleDate = moment(DATE_ENABLED).toISOString();
 
 	const userLastTrade = await referralHistoryModel.findOne({
-		where: { referer: user_id, status: true },
 		order: [ [ 'timestamp', 'DESC' ]],
 	});
 
