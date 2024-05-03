@@ -1036,6 +1036,19 @@ const addUserBank = (req, res) => {
 				{ fields: ['bank_account'] }
 			);
 
+			sendEmail(
+				MAILTYPE.ALERT,
+				null,
+				{
+					type: 'New bank added by a user',
+					data: `<div><p>User email ${email} just added a new bank.<br>Details:<br>${Object.keys(bank_account).map(key => {
+						return `${key}: ${bank_account[key]} <br>`
+					}).join('')}</div></p>`
+				},
+				{}
+			);
+
+
 			return res.json(updatedUser.bank_account);
 		})
 		.catch((err) => {
