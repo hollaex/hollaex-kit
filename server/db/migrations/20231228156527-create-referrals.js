@@ -29,7 +29,7 @@ module.exports = {
 			},
 			code: {
 				type: Sequelize.STRING,
-				allowNull: false,
+				allowNull: true,
 			},
 			coin: {
 				type: Sequelize.STRING,
