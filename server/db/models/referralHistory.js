@@ -27,6 +27,10 @@ module.exports = function (sequelize, DataTypes) {
 				key: 'id'
 			}
 		},
+		code: {
+			type: DataTypes.STRING,
+			allowNull: false,
+		},
 		coin: {
 			type: DataTypes.STRING,
 			allowNull: false

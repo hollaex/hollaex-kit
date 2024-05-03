@@ -27,6 +27,10 @@ module.exports = {
 					key: 'id'
 				}
 			},
+			code: {
+				type: Sequelize.STRING,
+				allowNull: false,
+			},
 			coin: {
 				type: Sequelize.STRING,
 				allowNull: false

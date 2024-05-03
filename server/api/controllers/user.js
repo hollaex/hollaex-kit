@@ -1293,7 +1293,7 @@ const getUserReferralCodes = (req, res) => {
 		throw new Error('Feature is not active');
 	}
 
-	toolsLib.user.getUserReferralCodes(req.auth.sub.id)
+	toolsLib.user.getUserReferralCodes({ user_id: req.auth.sub.id })
 		.then((data) => {
 			return res.json({ data });
 		})
@@ -1314,7 +1314,6 @@ const createUserReferralCode = (req, res) => {
 	);
 	const { discount, earning_rate, code } = req.swagger.params.data.value;
 
-
 	if (
 		!toolsLib.getKitConfig().referral_history_config ||
 		!toolsLib.getKitConfig().referral_history_config.active
@@ -1322,7 +1321,6 @@ const createUserReferralCode = (req, res) => {
 		// TODO it should be added to the messages
 		throw new Error('Feature is not active');
 	}
-
 
 	toolsLib.user.createUserReferralCode({
 		user_id: req.auth.sub.id,

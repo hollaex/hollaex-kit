@@ -252,7 +252,7 @@ const updateRewardsCheckRunner = () => {
 }
 
 const referralTradesRunner = () =>{
-	cron.schedule('0 0 0 * * *', async () => {
+	cron.schedule('0 */4 * * *', async () => {
 		loggerPlugin.verbose(
 			'/plugins referralTradesRunner start'
 		);
@@ -262,8 +262,7 @@ const referralTradesRunner = () =>{
 			if (!status?.kit?.referral_history_config?.active) return;
 
 			const currentTime = moment().seconds(0).milliseconds(0).toISOString();
-			const startingTradeDate = moment().subtract(24, 'hours'); 
-			await toolsLib.user.createUnrealizedReferralFees(currentTime, startingTradeDate);
+			await toolsLib.user.createUnrealizedReferralFees(currentTime);
 
 		} catch (err) {
 			const adminAccount = await toolsLib.user.getUserByKitId(1);
