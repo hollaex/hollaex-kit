@@ -2804,6 +2804,15 @@ const settleFees = async (user_id) => {
 
 	if (distributor.balance[`${nativeCurrency}_available`] < totalValue) {
 		// send email to admin for insufficient balance
+		sendEmail(
+			MAILTYPE.ALERT,
+			null,
+			{
+				type: 'Insufficient balance for fee settlement!',
+				data: `<div><p>Distributor with ID ${distributor_id} does not have enough balance to proceed with the settlement, Required amount: ${totalValue} ${nativeCurrency.toUpperCase()}, Available Amount: ${distributor.balance[`${nativeCurrency}_available`]} ${nativeCurrency.toUpperCase()}</div></p>`
+			},
+			{}
+		);
 
 		throw new Error('Settlement is not available at the moment, please retry later');
 	}
@@ -2821,10 +2830,17 @@ const settleFees = async (user_id) => {
 			false
 		);
 
-		// send mail to admin
-
 	} catch (error) {
 		// send mail to admin
+		sendEmail(
+			MAILTYPE.ALERT,
+			null,
+			{
+				type: 'Error during fee settlement!',
+				data: `<div><p>Error occured during a fee settlement operation for user id: ${user_id}, error message: ${error.message}</div></p>`
+			},
+			{}
+		);
 
 		// obfuscate the message for the end user
 		throw new Error('Something went wrong');
