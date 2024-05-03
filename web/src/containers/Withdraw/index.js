@@ -19,17 +19,14 @@ import { openContactForm, getWithdrawalMax } from 'actions/appActions';
 
 import WithdrawCryptocurrency from './form';
 import { generateFormValues, generateInitialValues } from './formUtils';
-import { generateBaseInformation } from './utils';
 
-import {
-	renderInformation,
-	renderTitleSection,
-	renderNeedHelpAction,
-} from '../Wallet/components';
+import { renderNeedHelpAction } from '../Wallet/components';
 
 import { FORM_NAME } from './form';
 import { STATIC_ICONS } from 'config/icons';
 import { renderBackToWallet } from 'containers/Deposit/utils';
+import { IconTitle } from 'hollaex-web-lib';
+import strings from 'config/localizedStrings';
 
 class Withdraw extends Component {
 	state = {
@@ -269,7 +266,6 @@ class Withdraw extends Component {
 			openContactForm,
 			activeLanguage,
 			router,
-			coins,
 			icons: ICONS,
 			selectedNetwork,
 			email,
@@ -313,6 +309,9 @@ class Withdraw extends Component {
 			closeQRScanner: this.closeQRScanner,
 			qrScannerOpen,
 			getQRData: this.getQRData,
+			balance,
+			links,
+			orders,
 		};
 
 		return (
@@ -321,23 +320,27 @@ class Withdraw extends Component {
 					<MobileBarBack onBackClick={this.onGoBack}></MobileBarBack>
 				)}
 				<div className="presentation_container apply_rtl withdrawal-container">
-					{!isMobile &&
+					{/* {!isMobile &&
 						renderTitleSection(
 							currency,
 							'withdraw',
 							ICONS['WITHDRAW'],
 							coins,
 							'WITHDRAW'
-						)}
+						)} */}
 					{/* // This commented code can be used if you want to enforce user to have a verified bank account before doing the withdrawal
 					{verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW &&
 					verification_level <= MAX_VERIFICATION_LEVEL_TO_WITHDRAW ? ( */}
 					<div className="inner_container">
+						<IconTitle
+							stringId="WITHDRAW_PAGE.WITHDRAW"
+							text={strings['WITHDRAW_PAGE.WITHDRAW']}
+							iconId="WITHDRAW_TITLE"
+							iconPath={ICONS['WITHDRAW_TITLE']}
+							className="withdraw-icon mb-3"
+						/>
 						<div className="information_block">
-							<div
-								className="information_block-text_wrapper"
-								// style={{ height: '1.5rem' }}
-							/>
+							<div className="information_block-text_wrapper" />
 							{renderBackToWallet()}
 							{openContactForm &&
 								renderNeedHelpAction(
@@ -348,18 +351,18 @@ class Withdraw extends Component {
 								)}
 						</div>
 						<WithdrawCryptocurrency
-							titleSection={renderInformation(
-								currency,
-								balance,
-								false,
-								generateBaseInformation,
-								coins,
-								'withdraw',
-								links,
-								ICONS['BLUE_QUESTION'],
-								'BLUE_QUESTION',
-								orders
-							)}
+							// titleSection={renderInformation(
+							// 	currency,
+							// 	balance,
+							// 	false,
+							// 	generateBaseInformation,
+							// 	coins,
+							// 	'withdraw',
+							// 	links,
+							// 	ICONS['BLUE_QUESTION'],
+							// 	'BLUE_QUESTION',
+							// 	orders
+							// )}
 							{...formProps}
 						/>
 						{/* {renderExtraInformation(currency, bank_account, ICONS["BLUE_QUESTION"])} */}

@@ -1060,6 +1060,7 @@
 	"QUOTE_SUCCESS_REVIEW_MESSAGE": "You have successfully {0} {1} {2}",
 	"COUNTDOWN_ERROR_MESSAGE": "Countdown is finished",
 	"WITHDRAW_PAGE": {
+		"WITHDRAW": "Withdraw",
 		"BANK_TO_WITHDRAW": "Bank to Withdraw to",
 		"MESSAGE_ABOUT_SEND": "You are about to send",
 		"MESSAGE_BTC_WARNING": "Please ensure the accuracy of this address since {0} transfers are irreversible",
@@ -1635,7 +1636,16 @@
 	"ACCORDIAN": {
 		"ACCORDIAN_ASSETS": "All wallet assets",
 		"ACCORDIAN_INFO": "ASSET INFO PAGE",
-		"ACCORDIAN_HISTORY": "HISTORY"
+		"ACCORDIAN_HISTORY": "HISTORY",
+		"DEPOSIT": "DEPOSIT",
+		"WITHDRAW": "WITHDRAW",
+		"SELECT_ASSET": "Select asset:",
+		"SELECT_NETWORK": "Select network:",
+		"DESTINATION": "Destination:",
+		"AMOUNT": "Amount:",
+		"ESTIMATED": "Estimated Withdrawal value",
+		"TRANSACTION_FEE": "Transaction fee to be added:",
+		"SCAN": "SCAN"
 	},
 	"ASYNC_LINK": {
 		"TITLE": "Page not opening automatically?",

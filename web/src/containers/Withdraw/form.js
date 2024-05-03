@@ -5,17 +5,16 @@ import {
 	formValueSelector,
 	reset,
 	SubmissionError,
-	stopSubmit
+	stopSubmit,
 } from 'redux-form';
 import math from 'mathjs';
-import { Button, Dialog, OtpForm, Loader, SmartTarget } from 'components';
-import renderFields from 'components/Form/factoryFields';
+import { Dialog, OtpForm, Loader, SmartTarget } from 'components';
 import {
 	setWithdrawEmailConfirmation,
 	setWithdrawNotificationError,
 } from './notifications';
 import { BASE_CURRENCY } from 'config/constants';
-import { calculateBaseFee } from './utils';
+import { calculateBaseFee, generateBaseInformation } from './utils';
 import Fiat from './Fiat';
 import Image from 'components/Image';
 import STRINGS from 'config/localizedStrings';
@@ -23,6 +22,10 @@ import { message } from 'antd';
 import { getWithdrawalMax } from 'actions/appActions';
 import ReviewModalContent from './ReviewModalContent';
 import QRScanner from './QRScanner';
+import { renderInformation } from 'containers/Wallet/components';
+import TransactionsHistory from 'containers/TransactionsHistory';
+import { assetsSelector } from 'containers/Wallet/utils';
+import { RenderContent } from './Withdraw';
 
 export const FORM_NAME = 'WithdrawCryptocurrencyForm';
 
@@ -50,6 +53,7 @@ class Form extends Component {
 		dialogOtpOpen: false,
 		otp_code: '',
 		prevFee: null,
+		currency: '',
 	};
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -194,16 +198,16 @@ class Form extends Component {
 			});
 	};
 
+	UpdateCurrency = (currency) => {
+		this.setState({ currency });
+	};
+
 	render() {
 		const {
 			submitting,
-			pristine,
 			error,
-			valid,
-			currency,
 			data,
 			openContactForm,
-			formValues,
 			currentPrice,
 			coins,
 			titleSection,
@@ -214,11 +218,16 @@ class Form extends Component {
 			qrScannerOpen,
 			closeQRScanner,
 			getQRData,
+			balance,
+			links,
+			orders,
+			pinnedAssets,
+			assets,
 		} = this.props;
 
 		const formData = { ...data, email };
 
-		const { dialogIsOpen, dialogOtpOpen } = this.state;
+		const { dialogIsOpen, dialogOtpOpen, currency } = this.state;
 		const hasDestinationTag =
 			currency === 'xrp' ||
 			currency === 'xlm' ||
@@ -233,7 +242,7 @@ class Form extends Component {
 			? currencySpecificId
 			: GENERAL_ID;
 
-		if (coinObject && coinObject.type !== 'fiat') {
+		if ((coinObject && coinObject.type !== 'fiat') || !coinObject) {
 			return (
 				<SmartTarget
 					id={currencySpecificId}
@@ -241,25 +250,41 @@ class Form extends Component {
 					currency={currency}
 				>
 					<form autoComplete="off" className="withdraw-form-wrapper">
-						<div className="withdraw-form">
-							<div className="d-flex">
-								<Image
-									iconId="WITHDRAW"
-									icon={ICONS['WITHDRAW']}
-									wrapperClassName="form_currency-ball margin-aligner"
+						<div className="withdraw-form d-flex">
+							<div className="w-100">
+								{currency && (
+									<div className="d-flex">
+										<Image
+											iconId="WITHDRAW"
+											icon={ICONS['WITHDRAW']}
+											wrapperClassName="form_currency-ball margin-aligner"
+										/>
+										{renderInformation(
+											currency,
+											balance,
+											false,
+											generateBaseInformation,
+											coins,
+											'withdraw',
+											links,
+											ICONS['BLUE_QUESTION'],
+											'BLUE_QUESTION',
+											orders
+										)}
+									</div>
+								)}
+								<RenderContent
+									pinnedAssets={pinnedAssets}
+									assets={assets}
+									UpdateCurrency={this.UpdateCurrency}
+									coins={coins}
+									onOpenDialog={this.onOpenDialog}
 								/>
-								{titleSection}
+								{!error && <div className="warning_text">{error}</div>}
 							</div>
-							{renderFields(formValues)}
-							{error && <div className="warning_text">{error}</div>}
-						</div>
-						<div className="btn-wrapper">
-							<Button
-								label={STRINGS['WITHDRAWALS_BUTTON_TEXT']}
-								disabled={pristine || submitting || !valid}
-								onClick={this.onOpenDialog}
-								className="mb-3"
-							/>
+							<div className="side-icon-wrapper">
+								<img alt="withdraw-title" src={ICONS['WITHDRAW_TITLE']}></img>
+							</div>
 						</div>
 						<Dialog
 							isOpen={dialogIsOpen}
@@ -302,6 +327,7 @@ class Form extends Component {
 							)}
 						</Dialog>
 					</form>
+					<TransactionsHistory isFromWallet={true} />
 				</SmartTarget>
 			);
 		} else if (coinObject && coinObject.type === 'fiat') {
@@ -339,6 +365,8 @@ const mapStateToForm = (state) => ({
 	coins: state.app.coins,
 	targets: state.app.targets,
 	balance: state.user.balance,
+	pinnedAssets: state.app.pinned_assets,
+	assets: assetsSelector(state),
 });
 
 const WithdrawFormWithValues = connect(mapStateToForm)(WithdrawForm);
