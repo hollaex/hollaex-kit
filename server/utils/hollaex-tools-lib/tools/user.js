@@ -2359,13 +2359,12 @@ const getAllAffiliations = (query = {}) => {
 	return dbQuery.findAndCountAll('affiliation', query);
 };
 
-const applyEarningRate = (amount) => {
-	const {  earning_rate: EARNING_RATE } = getKitConfig()?.referral_history_config || {};
+const applyEarningRate = (amount, earning_rate) => {
 	return mathjs.number(
 		mathjs.multiply(
 			mathjs.bignumber(amount),
 			mathjs.divide(
-				mathjs.bignumber(EARNING_RATE),
+				mathjs.bignumber(earning_rate),
 				mathjs.bignumber(100)
 			)
 		)
