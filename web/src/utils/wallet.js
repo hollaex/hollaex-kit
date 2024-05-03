@@ -38,6 +38,8 @@ export const getNetworkNameByKey = (network) => {
 				return 'Solana';
 			case 'xlm':
 				return 'Stellar';
+			case 'ftm':
+				return 'Fantom';
 			default:
 				return network.toUpperCase();
 		}
