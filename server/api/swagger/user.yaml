@@ -1598,10 +1598,6 @@ paths:
           description: Success
           schema:
             $ref: "#/definitions/ObjectResponse"
-        202:
-          description: CSV
-          schema:
-            type: string
         default:
           description: Error
           schema:
