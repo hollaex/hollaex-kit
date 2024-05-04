@@ -509,7 +509,7 @@ const checkAffiliation = (affiliationCode, user_id) => {
 				return [];
 			}
 		})
-	.then(([affiliation, referrer, referralCode]) => {
+	.then(([affiliation, referrer]) => {
 		if (affiliation?.user_id) {
 			return getModel('user').update(
 				{
