@@ -2792,7 +2792,7 @@ const settleFees = async (user_id) => {
 
 
 	let totalValue = 0;
-	for (let record in unrealizedRecords) {
+	for (let record of unrealizedRecords) {
 		totalValue = new BigNumber(record.accumulated_fees).plus(totalValue).toNumber();
 	}
 

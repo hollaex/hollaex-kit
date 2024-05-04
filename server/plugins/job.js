@@ -286,6 +286,32 @@ const referralTradesRunner = () =>{
 	});
 }
 
+// setTimeout(async () => {
+// 	try {
+// 		const statusModel = toolsLib.database.getModel('status');
+// 		const status = await statusModel.findOne({});
+// 		if (!status?.kit?.referral_history_config?.active) return;
+
+// 		const currentTime = moment().seconds(0).milliseconds(0).toISOString();
+// 		await toolsLib.user.createUnrealizedReferralFees(currentTime);
+
+// 	} catch (err) {
+// 		const adminAccount = await toolsLib.user.getUserByKitId(1);
+// 		sendEmail(
+// 			MAILTYPE.ALERT,
+// 			adminAccount.email,
+// 			{
+// 				type: 'Error during referralTradesRunner process!',
+// 				data: err.message
+// 			},
+// 			adminAccount.settings
+// 		);
+// 		loggerPlugin.error(
+// 			'/plugins referralTradesRunner error:',
+// 			err.message
+// 		);
+// 	}
+// }, 10 * 1000)
 
 unstakingCheckRunner();
 updateRewardsCheckRunner();
