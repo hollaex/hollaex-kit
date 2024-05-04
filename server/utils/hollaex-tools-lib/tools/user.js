@@ -2780,7 +2780,7 @@ const settleFees = async (user_id) => {
 	const { transferAssetByKitIds} = require('./wallet');
 	const referralHistoryModel = getModel('Referralhistory');
 
-	const unrealizedRecords = await referralHistoryModel.findOne({
+	const unrealizedRecords = await referralHistoryModel.findAll({
 		where: { referer: user_id, status: false },
 	});	
 

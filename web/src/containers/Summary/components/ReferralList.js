@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import withConfig from 'components/ConfigProvider/withConfig';
-import Highcharts from 'highcharts';
-import HighchartsReact from 'highcharts-react-official';
 // eslint-disable-next-line
 import {
 	// Coin,
@@ -12,10 +10,10 @@ import {
 import {
 	Button as AntButton,
 	Spin,
-	DatePicker,
+	// DatePicker,
 	message,
 	Modal,
-	Input,
+	// Input,
 	Tabs,
 } from 'antd';
 import {
@@ -37,7 +35,7 @@ import {
 	CaretUpOutlined,
 	CaretDownOutlined,
 } from '@ant-design/icons';
-import DumbField from 'components/Form/FormFields/DumbField';
+// import DumbField from 'components/Form/FormFields/DumbField';
 import {
 	Table,
 	// Button, IconTitle
@@ -50,7 +48,7 @@ import './_ReferralList.scss';
 
 const TabPane = Tabs.TabPane;
 
-const RenderDumbField = (props) => <DumbField {...props} />;
+// const RenderDumbField = (props) => <DumbField {...props} />;
 const RECORD_LIMIT = 20;
 
 const ReferralList = ({
@@ -61,24 +59,10 @@ const ReferralList = ({
 	referral_history_config,
 	goBackReferral,
 }) => {
-	const month = [
-		'Jan',
-		'Feb',
-		'Mar',
-		'Apr',
-		'May',
-		'Jun',
-		'Jul',
-		'Aug',
-		'Sep',
-		'Oct',
-		'Nov',
-		'Dec',
-	];
-
 	const [balanceHistory, setBalanceHistory] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
-	const [currentDay, setCurrentDay] = useState(100);
+	// const [currentDay, setCurrentDay] = useState(100);
+	// eslint-disable-next-line
 	const [queryValues, setQueryValues] = useState({
 		// start_date: moment().subtract(currentDay, 'days').toISOString(),
 		// end_date: moment().subtract().toISOString(),
@@ -94,26 +78,28 @@ const ReferralList = ({
 	});
 	// eslint-disable-next-line
 	// const [currentBalance, setCurrentBalance] = useState();
-	const [latestBalance, setLatestBalance] = useState();
-	const [current, setCurrent] = useState(0);
-	const [graphData, setGraphData] = useState([]);
-	const [customDate, setCustomDate] = useState(false);
-	const [customDateValues, setCustomDateValues] = useState();
+	// const [customDate, setCustomDate] = useState(false);
+	// const [customDateValues, setCustomDateValues] = useState();
 
 	// const [showReferrals, setShowReferrals] = useState(false);
 	const [referees, setReferees] = useState([]);
 	const [mappedAffiliations, setMappedAffilications] = useState([]);
 	const [unrealizedEarnings, setUnrealizedEarnings] = useState(0);
+	const [latestBalance, setLatestBalance] = useState();
 
 	const [displayCreateLink, setDisplayCreateLink] = useState(false);
 	const [displaySettle, setDisplaySettle] = useState(false);
 	const [linkStep, setLinkStep] = useState(0);
 	const [referralCode, setReferralCode] = useState();
 	const [selectedOption, setSelectedOption] = useState(0);
+	const [referralCodes, setReferralCodes] = useState([]);
 	const [earningRate, setEarningRate] = useState(0);
 	const [discount, setDiscount] = useState(0);
-	const [referralCodes, setReferralCodes] = useState([]);
+	const [activeTab, setActiveTab] = useState('0');
 
+	const handleTabChange = (key) => {
+		setActiveTab(key);
+	};
 	useEffect(() => {
 		fetchReferralCodes()
 			.then((res) => {
@@ -148,20 +134,20 @@ const ReferralList = ({
 		// eslint-disable-next-line
 	}, []);
 
-	// useEffect(() => {
-	// 	const newData = JSON.parse(JSON.stringify(affiliation));
-	// 	for (const affliate of newData.data) {
-	// 		const foundEarning = referees?.find(
-	// 			(referee) => referee.referee === affliate.user.id
-	// 		);
-	// 		affliate.earning = getSourceDecimals(
-	// 			referral_history_config?.currency || 'usdt',
-	// 			foundEarning?.accumulated_fees
-	// 		);
-	// 	}
-	// 	setMappedAffilications(newData);
-	// 	// eslint-disable-next-line
-	// }, [affiliation, referees]);
+	useEffect(() => {
+		const newData = JSON.parse(JSON.stringify(affiliation));
+		for (const affliate of newData.data) {
+			const foundEarning = referees?.find(
+				(referee) => referee.referee === affliate.user.id
+			);
+			affliate.earning = getSourceDecimals(
+				referral_history_config?.currency || 'usdt',
+				foundEarning?.accumulated_fees
+			);
+		}
+		setMappedAffilications(newData);
+		// eslint-disable-next-line
+	}, [affiliation, referees]);
 
 	const HEADERS = [
 		{
@@ -231,25 +217,80 @@ const ReferralList = ({
 						className="d-flex justify-content-start"
 						style={{ color: '#5D63FF' }}
 					>
-						{/* {data?.code || '-'} */}
-						.../signup?affiliation_code=G0SDfs
+						{data?.code || '-'}
 					</div>
 				</td>
 			),
 		},
-
 		{
 			stringId: 'REFERRAL_LINK.EARNING',
-			label: `${STRINGS['REFERRAL_LINK.EARNING']} (${(
-				referral_history_config?.currency || 'usdt'
-			).toUpperCase()})`,
-			key: 'earning',
+			label: 'Referral count',
+			key: 'referral_count',
+
+			renderCell: (data, key, index) => {
+				return (
+					<td key={key}>
+						<div className="d-flex justify-content-start">
+							{data?.referral_count}
+						</div>
+					</td>
+				);
+			},
+		},
+		{
+			stringId: 'REFERRAL_LINK.EARNING',
+			label: 'Your earning rate',
+			key: 'earning_rate',
+
+			renderCell: (data, key, index) => {
+				return (
+					<td key={key}>
+						<div className="d-flex justify-content-start">
+							{data?.earning_rate}%
+						</div>
+					</td>
+				);
+			},
+		},
+		{
+			stringId: 'REFERRAL_LINK.EARNING',
+			label: 'Discount given',
+			key: 'discount',
+
+			renderCell: (data, key, index) => {
+				return (
+					<td key={key}>
+						<div className="d-flex justify-content-start">
+							{data?.discount}%
+						</div>
+					</td>
+				);
+			},
+		},
+		{
+			stringId: 'REFERRAL_LINK.EARNING',
+			label: 'Link',
+			key: 'link',
 			className: 'd-flex justify-content-end',
 			renderCell: (data, key, index) => {
 				return (
 					<td key={key}>
-						<div className="d-flex justify-content-end">
-							{data?.earning || '-'}
+						<div
+							className="d-flex justify-content-end"
+							style={{ gap: 10, textAlign: 'center', alignItems: 'center' }}
+						>
+							<span>.../signup?affiliation_code={data?.code}</span>{' '}
+							<span
+								style={{
+									color: 'white',
+									padding: 5,
+									cursor: 'pointer',
+									backgroundColor: '#5E63F6',
+									borderRadius: 10,
+								}}
+							>
+								COPY
+							</span>
 						</div>
 					</td>
 				);
@@ -257,10 +298,17 @@ const ReferralList = ({
 		},
 	];
 
-	const handleCopy = () => {
+	// const handleCopy = () => {
+	// 	setSnackNotification({
+	// 		icon: ICONS.COPY_NOTIFICATION,
+	// 		content: STRINGS['COPY_SUCCESS_TEXT'],
+	// 	});
+	// };
+
+	const handleSettlementNotification = () => {
 		setSnackNotification({
 			icon: ICONS.COPY_NOTIFICATION,
-			content: STRINGS['COPY_SUCCESS_TEXT'],
+			content: 'Settlement successful!',
 		});
 	};
 
@@ -281,67 +329,8 @@ const ReferralList = ({
 		}
 	};
 
-	const referralLink = `${process.env.REACT_APP_PUBLIC_URL}/signup?affiliation_code=${affiliation_code}`;
+	// const referralLink = `${process.env.REACT_APP_PUBLIC_URL}/signup?affiliation_code=${affiliation_code}`;
 
-	const options = {
-		title: {
-			text: '',
-		},
-		tooltip: {
-			enabled: false,
-		},
-		xAxis: {
-			visible: queryValues?.format === 'all' ? false : true,
-			type: 'category',
-			labels: {
-				formatter: (item) => {
-					const color =
-						graphData?.[current || 0]?.[0] === item.value ? '#5D63FF' : 'white';
-					const fontWeight =
-						graphData?.[current || 0]?.[0] === item.value ? 'bold' : 'normal';
-					return `<span style="color: ${color}; font-weight: ${fontWeight}">${item.value}</span>`;
-				},
-			},
-		},
-		yAxis: {
-			title: false,
-		},
-		plotOptions: {
-			series: {
-				marker: {
-					enabled: false,
-					states: {
-						hover: {
-							enabled: false,
-						},
-					},
-				},
-			},
-		},
-		series: [
-			{
-				data: graphData,
-				color: '#FFFF00',
-				cursor: 'pointer',
-				showInLegend: false,
-				point: {
-					events: {
-						click: (e, x, y) => {
-							setCurrent(e.point.x);
-							// const balance = balanceHistory.find(
-							// 	(history) =>
-							// 		`${moment(history.created_at).date()} ${
-							// 			month[moment(history.created_at).month()]
-							// 		}` === graphData[e.point.x || 0][0]
-							// );
-
-							// setCurrentBalance(balance);
-						},
-					},
-				},
-			},
-		],
-	};
 	const firstRender = useRef(true);
 
 	useEffect(() => {
@@ -372,88 +361,7 @@ const ReferralList = ({
 					page === 1 ? response.data : [...balanceHistory, ...response.data]
 				);
 
-				let length = currentDay - 1;
-				if (response.data.length > length) length = response.data.length;
-				// const balanceData = response.data.find(
-				// 	(history) =>
-				// 		moment(history.date).format('YYYY-MM-DD') ===
-				// 		moment(queryValues.end_date)
-				// 			.subtract(length, 'days')
-				// 			.format('YYYY-MM-DD')
-				// );
-				// let balance = balanceData || response.data[length];
-
-				let newGraphData = [];
-				for (let i = 0; i < length; i++) {
-					if (currentDay === 7) {
-						const balanceData = response.data.find(
-							(history) =>
-								moment(history.date).format('YYYY-MM-DD') ===
-								moment(queryValues.end_date)
-									.subtract(i, 'days')
-									.format('YYYY-MM-DD')
-						);
-
-						if (!balanceData) continue;
-						newGraphData.push([
-							`${moment(queryValues.end_date).subtract(i, 'days').date()} ${
-								month[moment(queryValues.end_date).subtract(i, 'days').month()]
-							}`,
-							balanceData ? balanceData.accumulated_fees : 0,
-						]);
-					} else if (currentDay === 30) {
-						const balanceData = response.data.find(
-							(history) =>
-								moment(history.date).format('YYYY-MM-DD') ===
-								moment(queryValues.end_date)
-									.subtract(i, 'days')
-									.format('YYYY-MM-DD')
-						);
-						if (!balanceData) continue;
-						newGraphData.push([
-							`${moment(queryValues.end_date).subtract(i, 'days').date()} ${
-								month[moment(queryValues.end_date).subtract(i, 'days').month()]
-							}`,
-							balanceData ? balanceData.accumulated_fees : 0,
-						]);
-					} else if (currentDay === 90) {
-						const balanceData = response.data.find(
-							(history) =>
-								moment(history.date).format('YYYY-MM-DD') ===
-								moment(queryValues.end_date)
-									.subtract(i, 'days')
-									.format('YYYY-MM-DD')
-						);
-						if (!balanceData) continue;
-						newGraphData.push([
-							`${moment(queryValues.end_date).subtract(i, 'days').date()} ${
-								month[moment(queryValues.end_date).subtract(i, 'days').month()]
-							}`,
-							balanceData ? balanceData.accumulated_fees : 0,
-						]);
-					} else if (currentDay > 90) {
-						const balanceData = response?.data?.[i];
-						if (!balanceData) continue;
-						newGraphData.push([
-							`${moment(balanceData.date).date()} ${
-								month[moment(balanceData.date).month()]
-							}`,
-							balanceData ? balanceData.accumulated_fees : 0,
-						]);
-					}
-				}
-
-				if (currentDay <= 90) newGraphData.reverse();
-
-				setGraphData(newGraphData);
-				// setCurrentBalance(balance);
 				if (response.total) setLatestBalance(response.total);
-				// setLatestBalance(response?.data?.sort(
-				// 	function(a,b){
-				// 		return moment(b.date) - moment(a.date);
-				// 	  }
-				// )?.[0]);
-				// setSelectedDate(balance.created_at);
 				setQueryFilters({
 					total: response.count,
 					fetched: true,
@@ -470,168 +378,202 @@ const ReferralList = ({
 			});
 	};
 
-	const customDateModal = () => {
-		return (
-			<>
-				<Modal
-					maskClosable={false}
-					closeIcon={<CloseOutlined className="stake_theme" />}
-					className="stake_table_theme stake_theme"
-					bodyStyle={{}}
-					visible={customDate}
-					width={400}
-					footer={null}
-					onCancel={() => {
-						setCustomDate(false);
-					}}
-				>
-					<div
-						style={{
-							display: 'flex',
-							justifyContent: 'center',
-							flexDirection: 'column',
-							alignItems: 'center',
-						}}
-					>
-						<div
-							className="stake_theme"
-							style={{
-								width: '100%',
-							}}
-						>
-							<div style={{ marginTop: 20, marginBottom: 20 }}>
-								<EditWrapper stringId="REFERRAL_LINK.HISTORY_DESCRIPTION">
-									{STRINGS['REFERRAL_LINK.HISTORY_DESCRIPTION']}
-								</EditWrapper>
-							</div>
-							<div style={{ marginTop: 5 }}>
-								<div>
-									<EditWrapper stringId="REFERRAL_LINK.START_DATE">
-										{STRINGS['REFERRAL_LINK.START_DATE']}
-									</EditWrapper>
-								</div>
-								<DatePicker
-									suffixIcon={null}
-									className="pldatePicker"
-									placeholder={STRINGS['REFERRAL_LINK.SELECT_START_DATE']}
-									style={{
-										width: 200,
-									}}
-									onChange={(date, dateString) => {
-										setCustomDateValues({
-											...customDateValues,
-											start_date: dateString,
-										});
-									}}
-									format={'YYYY/MM/DD'}
-								/>
-							</div>
-							<div style={{ marginTop: 5 }}>
-								<div>
-									<EditWrapper stringId="REFERRAL_LINK.END_DATE">
-										{STRINGS['REFERRAL_LINK.END_DATE']}
-									</EditWrapper>
-								</div>
-								<DatePicker
-									suffixIcon={null}
-									className="pldatePicker"
-									placeholder={STRINGS['REFERRAL_LINK.SELECT_END_DATE']}
-									style={{
-										width: 200,
-									}}
-									onChange={(date, dateString) => {
-										setCustomDateValues({
-											...customDateValues,
-											end_date: dateString,
-										});
-									}}
-									format={'YYYY/MM/DD'}
-								/>
-							</div>
-						</div>
-					</div>
-					<div
-						style={{
-							display: 'flex',
-							flexDirection: 'row',
-							gap: 15,
-							justifyContent: 'space-between',
-							marginTop: 30,
-						}}
-					>
-						<AntButton
-							onClick={() => {
-								setCustomDate(false);
-							}}
-							style={{
-								backgroundColor: '#5D63FF',
-								color: 'white',
-								flex: 1,
-								height: 35,
-							}}
-							type="default"
-						>
-							<EditWrapper stringId="REFERRAL_LINK.BACK">
-								{STRINGS['REFERRAL_LINK.BACK']}
-							</EditWrapper>
-						</AntButton>
-						<AntButton
-							onClick={async () => {
-								try {
-									if (!customDateValues.end_date) {
-										message.error('Please choose an end date');
-										return;
-									}
-									if (!customDateValues.start_date) {
-										message.error('Please choose a start date');
-										return;
-									}
-									const duration = moment.duration(
-										moment(customDateValues.end_date).diff(
-											moment(customDateValues.start_date)
-										)
-									);
-									const months = duration.asMonths();
+	const handleSettlement = async () => {
+		try {
+			await postSettleFees();
+			fetchUnrealizedFeeEarnings()
+				.then((res) => {
+					if (res?.data?.length > 0) {
+						let earnings = 0;
 
-									if (months > 3) {
-										message.error(
-											'Date difference cannot go further than 3 months'
-										);
-										return;
-									}
+						res.data.forEach((earning) => {
+							earnings += earning.accumulated_fees;
+						});
 
-									setCurrentDay(90);
-									setQueryValues({
-										start_date: moment(customDateValues.start_date)
-											.startOf('day')
-											.toISOString(),
-										end_date: moment(customDateValues.end_date)
-											.endOf('day')
-											.toISOString(),
-									});
-									setCustomDate(false);
-								} catch (error) {
-									console.log({ error });
-									message.error('Something went wrong');
-								}
-							}}
-							style={{
-								backgroundColor: '#5D63FF',
-								color: 'white',
-								flex: 1,
-								height: 35,
-							}}
-							type="default"
-						>
-							<EditWrapper stringId="REFERRAL_LINK.PROCEED">
-								{STRINGS['REFERRAL_LINK.PROCEED']}
-							</EditWrapper>
-						</AntButton>
-					</div>
-				</Modal>
-			</>
-		);
+						setUnrealizedEarnings(
+							getSourceDecimals(
+								referral_history_config?.currency || 'usdt',
+								earnings
+							)
+						);
+
+						fetchReferralHistory({
+							order_by: 'referee',
+							format: 'all',
+						}).then((earning) => {
+							setReferees(earning.data);
+						});
+					}
+				})
+				.catch((err) => err);
+			setDisplaySettle(false);
+			handleSettlementNotification();
+		} catch (error) {
+			message.error(error.message);
+		}
 	};
+	// const customDateModal = () => {
+	// 	return (
+	// 		<>
+	// 			<Modal
+	// 				maskClosable={false}
+	// 				closeIcon={<CloseOutlined className="stake_theme" />}
+	// 				className="stake_table_theme stake_theme"
+	// 				bodyStyle={{}}
+	// 				visible={customDate}
+	// 				width={400}
+	// 				footer={null}
+	// 				onCancel={() => {
+	// 					setCustomDate(false);
+	// 				}}
+	// 			>
+	// 				<div
+	// 					style={{
+	// 						display: 'flex',
+	// 						justifyContent: 'center',
+	// 						flexDirection: 'column',
+	// 						alignItems: 'center',
+	// 					}}
+	// 				>
+	// 					<div
+	// 						className="stake_theme"
+	// 						style={{
+	// 							width: '100%',
+	// 						}}
+	// 					>
+	// 						<div style={{ marginTop: 20, marginBottom: 20 }}>
+	// 							<EditWrapper stringId="REFERRAL_LINK.HISTORY_DESCRIPTION">
+	// 								{STRINGS['REFERRAL_LINK.HISTORY_DESCRIPTION']}
+	// 							</EditWrapper>
+	// 						</div>
+	// 						<div style={{ marginTop: 5 }}>
+	// 							<div>
+	// 								<EditWrapper stringId="REFERRAL_LINK.START_DATE">
+	// 									{STRINGS['REFERRAL_LINK.START_DATE']}
+	// 								</EditWrapper>
+	// 							</div>
+	// 							<DatePicker
+	// 								suffixIcon={null}
+	// 								className="pldatePicker"
+	// 								placeholder={STRINGS['REFERRAL_LINK.SELECT_START_DATE']}
+	// 								style={{
+	// 									width: 200,
+	// 								}}
+	// 								onChange={(date, dateString) => {
+	// 									setCustomDateValues({
+	// 										...customDateValues,
+	// 										start_date: dateString,
+	// 									});
+	// 								}}
+	// 								format={'YYYY/MM/DD'}
+	// 							/>
+	// 						</div>
+	// 						<div style={{ marginTop: 5 }}>
+	// 							<div>
+	// 								<EditWrapper stringId="REFERRAL_LINK.END_DATE">
+	// 									{STRINGS['REFERRAL_LINK.END_DATE']}
+	// 								</EditWrapper>
+	// 							</div>
+	// 							<DatePicker
+	// 								suffixIcon={null}
+	// 								className="pldatePicker"
+	// 								placeholder={STRINGS['REFERRAL_LINK.SELECT_END_DATE']}
+	// 								style={{
+	// 									width: 200,
+	// 								}}
+	// 								onChange={(date, dateString) => {
+	// 									setCustomDateValues({
+	// 										...customDateValues,
+	// 										end_date: dateString,
+	// 									});
+	// 								}}
+	// 								format={'YYYY/MM/DD'}
+	// 							/>
+	// 						</div>
+	// 					</div>
+	// 				</div>
+	// 				<div
+	// 					style={{
+	// 						display: 'flex',
+	// 						flexDirection: 'row',
+	// 						gap: 15,
+	// 						justifyContent: 'space-between',
+	// 						marginTop: 30,
+	// 					}}
+	// 				>
+	// 					<AntButton
+	// 						onClick={() => {
+	// 							setCustomDate(false);
+	// 						}}
+	// 						style={{
+	// 							backgroundColor: '#5D63FF',
+	// 							color: 'white',
+	// 							flex: 1,
+	// 							height: 35,
+	// 						}}
+	// 						type="default"
+	// 					>
+	// 						<EditWrapper stringId="REFERRAL_LINK.BACK">
+	// 							{STRINGS['REFERRAL_LINK.BACK']}
+	// 						</EditWrapper>
+	// 					</AntButton>
+	// 					<AntButton
+	// 						onClick={async () => {
+	// 							try {
+	// 								if (!customDateValues.end_date) {
+	// 									message.error('Please choose an end date');
+	// 									return;
+	// 								}
+	// 								if (!customDateValues.start_date) {
+	// 									message.error('Please choose a start date');
+	// 									return;
+	// 								}
+	// 								const duration = moment.duration(
+	// 									moment(customDateValues.end_date).diff(
+	// 										moment(customDateValues.start_date)
+	// 									)
+	// 								);
+	// 								const months = duration.asMonths();
+
+	// 								if (months > 3) {
+	// 									message.error(
+	// 										'Date difference cannot go further than 3 months'
+	// 									);
+	// 									return;
+	// 								}
+
+	// 								setCurrentDay(90);
+	// 								setQueryValues({
+	// 									start_date: moment(customDateValues.start_date)
+	// 										.startOf('day')
+	// 										.toISOString(),
+	// 									end_date: moment(customDateValues.end_date)
+	// 										.endOf('day')
+	// 										.toISOString(),
+	// 								});
+	// 								setCustomDate(false);
+	// 							} catch (error) {
+	// 								console.log({ error });
+	// 								message.error('Something went wrong');
+	// 							}
+	// 						}}
+	// 						style={{
+	// 							backgroundColor: '#5D63FF',
+	// 							color: 'white',
+	// 							flex: 1,
+	// 							height: 35,
+	// 						}}
+	// 						type="default"
+	// 					>
+	// 						<EditWrapper stringId="REFERRAL_LINK.PROCEED">
+	// 							{STRINGS['REFERRAL_LINK.PROCEED']}
+	// 						</EditWrapper>
+	// 					</AntButton>
+	// 				</div>
+	// 			</Modal>
+	// 		</>
+	// 	);
+	// };
 
 	const createReferralCode = () => {
 		return (
@@ -1181,8 +1123,8 @@ const ReferralList = ({
 								</EditWrapper>
 							</AntButton>
 							<AntButton
-								onClick={async () => {
-									setDisplaySettle(false);
+								onClick={() => {
+									handleSettlement();
 								}}
 								style={{
 									backgroundColor: '#5D63FF',
@@ -1229,7 +1171,11 @@ const ReferralList = ({
 					</EditWrapper>
 				</span>
 			</div>
-			<Tabs>
+			<Tabs
+				defaultActiveKey="0"
+				activeKey={activeTab}
+				onChange={handleTabChange}
+			>
 				<TabPane tab="Summary" key="0">
 					<>
 						<div
@@ -1246,6 +1192,9 @@ const ReferralList = ({
 										trading activity.
 									</div>
 									<div
+										onClick={() => {
+											handleTabChange('1');
+										}}
 										style={{
 											color: '#4E54BE',
 											cursor: 'pointer',
@@ -1255,11 +1204,18 @@ const ReferralList = ({
 										View earning history.
 									</div>
 									<div style={{ marginTop: 10 }}>
-										Data collected starting: March 25, 2024.
+										Data collected starting:{' '}
+										{moment(referral_history_config?.date_enabled).format(
+											'YYYY/MM/DD'
+										)}
+										.
 									</div>
 									<div>
 										To get the most up-to-date earnings report please{' '}
 										<span
+											onClick={() => {
+												setDisplaySettle(true);
+											}}
 											style={{
 												textDecoration: 'underline',
 												color: '#4E54BE',
@@ -1279,7 +1235,15 @@ const ReferralList = ({
 										<span style={{ fontWeight: 'bold', fontSize: 17 }}>
 											Total earnt:
 										</span>{' '}
-										2.1 USDT
+										<div style={{ fontSize: 15 }} className="field-label">
+											{getSourceDecimals(
+												referral_history_config?.currency || 'usdt',
+												latestBalance
+											)}{' '}
+											{(
+												referral_history_config?.currency || 'usdt'
+											).toUpperCase()}{' '}
+										</div>
 									</div>
 									<div
 										style={{
@@ -1289,7 +1253,10 @@ const ReferralList = ({
 										}}
 									></div>
 									<div style={{ marginBottom: 10 }}>
-										Unsettled earnings: 0.0 USDT
+										Unsettled earnings: {unrealizedEarnings}{' '}
+										{(
+											referral_history_config?.currency || 'usdt'
+										).toUpperCase()}
 									</div>
 									<div
 										style={{
@@ -1358,7 +1325,7 @@ const ReferralList = ({
 								</div>
 							</div>
 
-							{referralCodes.length == 0 && (
+							{referralCodes?.data?.length === 0 && (
 								<div
 									style={{
 										display: 'flex',
@@ -1396,17 +1363,19 @@ const ReferralList = ({
 								</div>
 							)}
 
-							<div className="my-2">
-								<Table
-									rowClassName="pt-2 pb-2"
-									headers={HEADERS}
-									data={mappedAffiliations.data}
-									count={mappedAffiliations.count}
-									handleNext={handleNext}
-									pageSize={10}
-									displayPaginator={!mappedAffiliations.loading}
-								/>
-							</div>
+							{referralCodes?.data?.length > 0 && (
+								<div className="my-2">
+									<Table
+										rowClassName="pt-2 pb-2"
+										headers={HEADERSREFERRAL}
+										data={referralCodes.data}
+										count={referralCodes.count}
+										handleNext={handleNext}
+										pageSize={10}
+										displayPaginator={!referralCodes.loading}
+									/>
+								</div>
+							)}
 						</div>
 					</>
 				</TabPane>
@@ -1424,7 +1393,13 @@ const ReferralList = ({
 									Below are all the earning settlement events from your invited
 									referrals.
 								</div>
-								<div>Below table data collected Marc25 Feb 23, 2024.</div>
+								<div>
+									Below table data collected{' '}
+									{moment(referral_history_config?.date_enabled).format(
+										'YYYY/MM/DD'
+									)}
+									.
+								</div>
 								<div>
 									To get the most up-to-date earnings report please{' '}
 									<span
@@ -1439,14 +1414,22 @@ const ReferralList = ({
 									</span>
 								</div>
 								<div style={{ marginTop: 10 }}>
-									<span style={{ fontWeight: 'bold' }}>Total earnt:</span> 22
-									USDT
+									<span style={{ fontWeight: 'bold' }}>Total earnt:</span>{' '}
+									<span style={{ fontSize: 15 }} className="field-label">
+										{getSourceDecimals(
+											referral_history_config?.currency || 'usdt',
+											latestBalance
+										)}{' '}
+										{(
+											referral_history_config?.currency || 'usdt'
+										).toUpperCase()}{' '}
+									</span>
 								</div>
 							</div>
 							<div></div>
 						</div>
 
-						<div
+						{/* <div
 							style={{
 								display: 'flex',
 								gap: 5,
@@ -1547,7 +1530,7 @@ const ReferralList = ({
 									{STRINGS['REFERRAL_LINK.CUSTOM']}
 								</EditWrapper>
 							</AntButton>
-						</div>
+						</div> */}
 						<div className="my-2">
 							<Table
 								rowClassName="pt-2 pb-2"
