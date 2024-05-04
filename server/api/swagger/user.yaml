@@ -1636,7 +1636,7 @@ paths:
       x-security-scopes:
         - user
   /user/referral/realized:
-    x-swagger-router-controller: stake
+    x-swagger-router-controller: user
     get:
       description:  Get user realized fee earnings
       operationId: getRealizedUserReferral

@@ -111,8 +111,7 @@ const ReferralList = ({
 
 		fetchRealizedFeeEarnings()
 			.then((res) => {
-				console.log({ res });
-				setRealizedData(res.data);
+				setRealizedData(res);
 			})
 			.catch((err) => err);
 		fetchUnrealizedFeeEarnings()
@@ -179,7 +178,7 @@ const ReferralList = ({
 						style={{ color: '#5D63FF' }}
 					>
 						{/* {data?.code || '-'} */}
-						.../signup?affiliation_code=G0SDfs
+						.../signup?affiliation_code={data.code}
 					</div>
 				</td>
 			),
@@ -196,7 +195,7 @@ const ReferralList = ({
 				return (
 					<td key={key}>
 						<div className="d-flex justify-content-end">
-							{data?.earning || '-'}
+							{data?.accumulated_fees || '-'}
 						</div>
 					</td>
 				);
@@ -1543,13 +1542,13 @@ const ReferralList = ({
 							<Table
 								rowClassName="pt-2 pb-2"
 								headers={HEADERS}
-								data={mappedAffiliations.data}
-								count={mappedAffiliations.count}
+								data={realizedData.data}
+								count={realizedData.count}
 								handleNext={handleNext}
 								pageSize={10}
-								displayPaginator={!mappedAffiliations.loading}
+								displayPaginator={!realizedData.loading}
 							/>
-							{mappedAffiliations.loading && (
+							{realizedData.loading && (
 								<div className="d-flex my-5 py-5 align-items-center justify-content-center">
 									<LoadingOutlined style={{ fontSize: '3rem' }} />
 								</div>

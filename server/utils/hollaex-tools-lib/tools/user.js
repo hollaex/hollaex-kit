@@ -2529,7 +2529,7 @@ const getRealizedReferral = async (opts = {
 		where: {
 			created_at: timeframe,
 			status: true,
-			...(opts.user_id && { where: { referer: opts.user_id } })
+			...(opts.user_id && { referer: opts.user_id })
 		},
 		order: [ordering],
 		...(!opts.format && pagination),
