@@ -83,8 +83,6 @@ const ReferralList = ({
 	// const [customDateValues, setCustomDateValues] = useState();
 
 	// const [showReferrals, setShowReferrals] = useState(false);
-	const [referees, setReferees] = useState([]);
-	const [mappedAffiliations, setMappedAffilications] = useState([]);
 	const [unrealizedEarnings, setUnrealizedEarnings] = useState(0);
 	const [latestBalance, setLatestBalance] = useState();
 
@@ -133,28 +131,8 @@ const ReferralList = ({
 			})
 			.catch((err) => err);
 		getUserReferrals();
-		fetchReferralHistory({ order_by: 'referee', format: 'all' })
-			.then((earnings) => {
-				setReferees(earnings.data);
-			})
-			.catch((err) => err);
 		// eslint-disable-next-line
 	}, []);
-
-	useEffect(() => {
-		const newData = JSON.parse(JSON.stringify(affiliation));
-		for (const affliate of newData.data) {
-			const foundEarning = referees?.find(
-				(referee) => referee.referee === affliate.user.id
-			);
-			affliate.earning = getSourceDecimals(
-				referral_history_config?.currency || 'usdt',
-				foundEarning?.accumulated_fees
-			);
-		}
-		setMappedAffilications(newData);
-		// eslint-disable-next-line
-	}, [affiliation, referees]);
 
 	const HEADERS = [
 		{
@@ -403,13 +381,6 @@ const ReferralList = ({
 								earnings
 							)
 						);
-
-						fetchReferralHistory({
-							order_by: 'referee',
-							format: 'all',
-						}).then((earning) => {
-							setReferees(earning.data);
-						});
 					}
 				})
 				.catch((err) => err);
