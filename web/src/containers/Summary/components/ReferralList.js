@@ -21,6 +21,9 @@ import {
 import {
 	fetchReferralHistory,
 	fetchUnrealizedFeeEarnings,
+	generateReferralCode,
+	postReferralCode,
+	fetchReferralCodes,
 	postSettleFees,
 } from './actions';
 import BigNumber from 'bignumber.js';
@@ -105,8 +108,19 @@ const ReferralList = ({
 	const [displayCreateLink, setDisplayCreateLink] = useState(false);
 	const [displaySettle, setDisplaySettle] = useState(false);
 	const [linkStep, setLinkStep] = useState(0);
+	const [referralCode, setReferralCode] = useState();
+	const [selectedOption, setSelectedOption] = useState(0);
+	const [earningRate, setEarningRate] = useState(0);
+	const [discount, setDiscount] = useState(0);
+	const [referralCodes, setReferralCodes] = useState([]);
 
 	useEffect(() => {
+		fetchReferralCodes()
+			.then((res) => {
+				setReferralCodes(res.data);
+			})
+			.catch((err) => err);
+
 		fetchUnrealizedFeeEarnings()
 			.then((res) => {
 				if (res?.data?.length > 0) {
@@ -134,25 +148,72 @@ const ReferralList = ({
 		// eslint-disable-next-line
 	}, []);
 
-	useEffect(() => {
-		const newData = JSON.parse(JSON.stringify(affiliation));
-		for (const affliate of newData.data) {
-			const foundEarning = referees?.find(
-				(referee) => referee.referee === affliate.user.id
-			);
-			affliate.earning = getSourceDecimals(
-				referral_history_config?.currency || 'usdt',
-				foundEarning?.accumulated_fees
-			);
-		}
-		setMappedAffilications(newData);
-		// eslint-disable-next-line
-	}, [affiliation, referees]);
+	// useEffect(() => {
+	// 	const newData = JSON.parse(JSON.stringify(affiliation));
+	// 	for (const affliate of newData.data) {
+	// 		const foundEarning = referees?.find(
+	// 			(referee) => referee.referee === affliate.user.id
+	// 		);
+	// 		affliate.earning = getSourceDecimals(
+	// 			referral_history_config?.currency || 'usdt',
+	// 			foundEarning?.accumulated_fees
+	// 		);
+	// 	}
+	// 	setMappedAffilications(newData);
+	// 	// eslint-disable-next-line
+	// }, [affiliation, referees]);
 
 	const HEADERS = [
 		{
 			stringId: 'REFERRAL_LINK.TIME',
 			label: 'Time of settlement',
+			key: 'time',
+			renderCell: ({ created_at }, key, index) => (
+				<td key={key}>
+					<div className="d-flex justify-content-start">{created_at}</div>
+				</td>
+			),
+		},
+		{
+			stringId: 'REFERRAL_LINK.CODE',
+			label: STRINGS['REFERRAL_LINK.CODE'],
+			key: 'code',
+			renderCell: (data, key, index) => (
+				<td key={key}>
+					<div
+						className="d-flex justify-content-start"
+						style={{ color: '#5D63FF' }}
+					>
+						{/* {data?.code || '-'} */}
+						.../signup?affiliation_code=G0SDfs
+					</div>
+				</td>
+			),
+		},
+
+		{
+			stringId: 'REFERRAL_LINK.EARNING',
+			label: `${STRINGS['REFERRAL_LINK.EARNING']} (${(
+				referral_history_config?.currency || 'usdt'
+			).toUpperCase()})`,
+			key: 'earning',
+			className: 'd-flex justify-content-end',
+			renderCell: (data, key, index) => {
+				return (
+					<td key={key}>
+						<div className="d-flex justify-content-end">
+							{data?.earning || '-'}
+						</div>
+					</td>
+				);
+			},
+		},
+	];
+
+	const HEADERSREFERRAL = [
+		{
+			stringId: 'REFERRAL_LINK.TIME',
+			label: 'Creation Date',
 			key: 'time',
 			renderCell: ({ created_at }, key, index) => (
 				<td key={key}>
@@ -615,13 +676,13 @@ const ReferralList = ({
 											border: '1px solid #ccc',
 										}}
 									>
-										G0SDfs
+										{referralCode}
 									</div>
 									<div style={{ marginTop: 10, fontWeight: 'bold' }}>
 										Example:
 									</div>
 									<div>
-										https://sandbox.hollaex.com/signup?affiliation_code=G0SDfs
+										https://hollaex.com/signup?affiliation_code={referralCode}
 									</div>
 									<div style={{ marginTop: 5, color: '#ccc' }}>
 										(No special character and spaces)
@@ -710,7 +771,17 @@ const ReferralList = ({
 											justifyContent: 'space-between',
 										}}
 									>
-										<div>
+										<div
+											onClick={() => {
+												setSelectedOption(0);
+											}}
+											style={{
+												padding: 10,
+												cursor: 'pointer',
+												backgroundColor:
+													selectedOption === 0 ? '#303236' : '#202020',
+											}}
+										>
 											<div style={{ fontSize: 11 }}>YOUR EARNINGS RATE:</div>
 											<div
 												style={{
@@ -718,11 +789,21 @@ const ReferralList = ({
 													justifyContent: 'space-between',
 												}}
 											>
-												<div>14%</div>
+												<div>{earningRate}%</div>
 												<div>:</div>
 											</div>
 										</div>
-										<div>
+										<div
+											onClick={() => {
+												setSelectedOption(1);
+											}}
+											style={{
+												padding: 10,
+												cursor: 'pointer',
+												backgroundColor:
+													selectedOption === 1 ? '#303236' : '#202020',
+											}}
+										>
 											<div style={{ fontSize: 11 }}>
 												DISCOUNT GIVEN TO YOUR FRIEND:
 											</div>
@@ -732,15 +813,49 @@ const ReferralList = ({
 													justifyContent: 'space-between',
 												}}
 											>
-												<div>5%</div>
+												<div>{discount}%</div>
 												<div>:</div>
 											</div>
 										</div>
-										<div style={{ backgroundColor: '#303236' }}>
-											<div>
+										<div
+											style={{
+												backgroundColor: '#303236',
+												cursor: 'pointer',
+												display: 'flex',
+												flexDirection: 'column',
+												justifyContent: 'space-between',
+											}}
+										>
+											<div
+												onClick={(e) => {
+													e.stopPropagation();
+													if (selectedOption === 0) {
+														if (earningRate >= 0 && earningRate <= 100) {
+															setEarningRate(earningRate + 1);
+														}
+													} else {
+														if (discount >= 0) {
+															setDiscount(discount + 1);
+														}
+													}
+												}}
+											>
 												<CaretUpOutlined />
 											</div>
-											<div>
+											<div
+												onClick={(e) => {
+													e.stopPropagation();
+													if (selectedOption === 0) {
+														if (earningRate > 0 && earningRate < 100) {
+															setEarningRate(earningRate - 1);
+														}
+													} else {
+														if (discount > 0) {
+															setDiscount(discount - 1);
+														}
+													}
+												}}
+											>
 												<CaretDownOutlined />
 											</div>
 										</div>
@@ -758,7 +873,7 @@ const ReferralList = ({
 							>
 								<AntButton
 									onClick={() => {
-										setDisplayCreateLink(false);
+										setLinkStep(0);
 									}}
 									style={{
 										backgroundColor: '#5D63FF',
@@ -834,7 +949,7 @@ const ReferralList = ({
 												}}
 											>
 												<div>Referral code:</div>
-												<div>G0SDfs</div>
+												<div>{referralCode}</div>
 											</div>
 
 											<div
@@ -846,7 +961,7 @@ const ReferralList = ({
 												}}
 											>
 												<div>Your earnings rate:</div>
-												<div>30%</div>
+												<div>{earningRate}%</div>
 											</div>
 											<div
 												style={{
@@ -857,7 +972,7 @@ const ReferralList = ({
 												}}
 											>
 												<div>Discount given:</div>
-												<div>10%</div>
+												<div>{discount}%</div>
 											</div>
 										</div>
 									</div>
@@ -865,7 +980,7 @@ const ReferralList = ({
 									<div style={{ marginTop: 20 }}>
 										<div>Example:</div>
 										<div>
-											https://sandbox.hollaex.com/signup?affiliation_code=G0SDfs
+											https://hollaex.com/signup?affiliation_code={referralCode}
 										</div>
 									</div>
 								</div>
@@ -881,7 +996,7 @@ const ReferralList = ({
 							>
 								<AntButton
 									onClick={() => {
-										setDisplayCreateLink(false);
+										setLinkStep(1);
 									}}
 									style={{
 										backgroundColor: '#5D63FF',
@@ -897,7 +1012,16 @@ const ReferralList = ({
 								</AntButton>
 								<AntButton
 									onClick={async () => {
-										setLinkStep(3);
+										try {
+											await postReferralCode({
+												earning_rate: earningRate,
+												discount,
+												code: referralCode,
+											});
+											setLinkStep(3);
+										} catch (error) {
+											message.error(error.response.data.message);
+										}
 									}}
 									style={{
 										backgroundColor: '#5D63FF',
@@ -945,9 +1069,15 @@ const ReferralList = ({
 										}}
 									>
 										<div style={{ fontSize: 11 }}>
-											https://sandbox.hollaex.com/signup?affiliation_code=GGFS@#
+											https://hollaex.com/signup?affiliation_code={referralCode}
 										</div>
-										<div style={{ textDecoration: 'underline', fontSize: 11 }}>
+										<div
+											style={{
+												textDecoration: 'underline',
+												fontSize: 11,
+												cursor: 'pointer',
+											}}
+										>
 											COPY
 										</div>
 									</div>
@@ -965,6 +1095,10 @@ const ReferralList = ({
 								<AntButton
 									onClick={async () => {
 										setDisplayCreateLink(false);
+										setLinkStep(0);
+										setReferralCode();
+										setDiscount(0);
+										setEarningRate(0);
 									}}
 									style={{
 										backgroundColor: '#5D63FF',
@@ -1080,7 +1214,21 @@ const ReferralList = ({
 		<Spin spinning={isLoading}>
 			{displayCreateLink && createReferralCode()}
 			{displaySettle && settleReferral()}
-
+			<div style={{}}>
+				<span
+					style={{
+						cursor: 'pointer',
+						textDecoration: 'underline',
+						color: '#5257CD',
+					}}
+					onClick={() => goBackReferral(false)}
+				>
+					{'<'}
+					<EditWrapper stringId="REFERRAL_LINK.BACK_LOWER">
+						{STRINGS['REFERRAL_LINK.BACK_LOWER']}
+					</EditWrapper>
+				</span>
+			</div>
 			<Tabs>
 				<TabPane tab="Summary" key="0">
 					<>
@@ -1187,8 +1335,16 @@ const ReferralList = ({
 									on their trading:
 								</div>
 								<div
-									onClick={() => {
-										setDisplayCreateLink(true);
+									onClick={async () => {
+										if (!referralCode) {
+											try {
+												const data = await generateReferralCode();
+												setReferralCode(data.code);
+												setDisplayCreateLink(true);
+											} catch (error) {
+												message.error('Something went wrong');
+											}
+										} else setDisplayCreateLink(true);
 									}}
 									style={{
 										color: '#4E54BE',
@@ -1202,29 +1358,54 @@ const ReferralList = ({
 								</div>
 							</div>
 
-							<div
-								style={{
-									display: 'flex',
-									justifyContent: 'center',
-									alignItems: 'center',
-									flexDirection: 'column',
-									minHeight: 500,
-								}}
-							>
-								<div style={{ marginBottom: 10 }}>
-									You've not created any referral links yet.
-								</div>
+							{referralCodes.length == 0 && (
 								<div
 									style={{
-										color: '#4E54BE',
-										cursor: 'pointer',
-										fontWeight: 'bold',
-										textDecoration: 'underline',
-										marginTop: 5,
+										display: 'flex',
+										justifyContent: 'center',
+										alignItems: 'center',
+										flexDirection: 'column',
+										minHeight: 500,
 									}}
 								>
-									Create a new referral link
+									<div style={{ marginBottom: 10 }}>
+										You've not created any referral links yet.
+									</div>
+									<div
+										onClick={async () => {
+											if (!referralCode) {
+												try {
+													const data = await generateReferralCode();
+													setReferralCode(data.code);
+													setDisplayCreateLink(true);
+												} catch (error) {
+													message.error('Something went wrong');
+												}
+											} else setDisplayCreateLink(true);
+										}}
+										style={{
+											color: '#4E54BE',
+											cursor: 'pointer',
+											fontWeight: 'bold',
+											textDecoration: 'underline',
+											marginTop: 5,
+										}}
+									>
+										Create a new referral link
+									</div>
 								</div>
+							)}
+
+							<div className="my-2">
+								<Table
+									rowClassName="pt-2 pb-2"
+									headers={HEADERS}
+									data={mappedAffiliations.data}
+									count={mappedAffiliations.count}
+									handleNext={handleNext}
+									pageSize={10}
+									displayPaginator={!mappedAffiliations.loading}
+								/>
 							</div>
 						</div>
 					</>

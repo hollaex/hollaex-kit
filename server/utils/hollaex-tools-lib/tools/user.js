@@ -501,7 +501,10 @@ const checkAffiliation = (affiliationCode, user_id) => {
 					referer_id: referrer.user_id,
 					earning_rate: referrer.earning_rate,
 					code: affiliationCode,
-				}), referrer];
+				}), 
+				referrer,
+				getModel('referralCode').increment('referral_count', { by: 1, where: { id: referrer.id }})
+			];
 			} else {
 				return [];
 			}
@@ -2477,7 +2480,7 @@ const createUserReferralCode = async (data) => {
         throw new Error(USER_NOT_FOUND);
     }
 
-    const referralCode = await getModel('referralCode').create(stadataker, {
+    const referralCode = await getModel('referralCode').create(data, {
 		fields: [
 			'user_id',
 			'discount',

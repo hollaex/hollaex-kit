@@ -1376,7 +1376,7 @@ const fetchUserReferrals = (req, res) => {
 
 	loggerUser.info(
 		req.uuid,
-		'controllers/user/referrals query',
+		'controllers/user/referrals',
 		limit,
 		page,
 		order_by,
@@ -1419,6 +1419,24 @@ const fetchUserReferrals = (req, res) => {
 		});
 };
 
+const generateUserAffiliationCode = (req, res) => {
+	loggerUser.info(
+		req.uuid,
+		'controllers/user/generateUserAffiliationCode',
+	);
+	try {
+		const code =  toolsLib.user.generateAffiliationCode();
+		return res.json({ code });
+	} catch (err) {
+		loggerUser.error(
+			req.uuid,
+			'controllers/user/generateUserAffiliationCode err',
+			err.message
+		);
+		return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+	}
+}
+
 
 module.exports = {
 	signUpUser,
@@ -1456,5 +1474,6 @@ module.exports = {
 	fetchUserProfitLossInfo,
 	fetchUserReferrals,
 	createUserReferralCode,
-	getUserReferralCodes
+	getUserReferralCodes,
+	generateUserAffiliationCode
 };

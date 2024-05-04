@@ -32,6 +32,11 @@ module.exports = function (sequelize, DataTypes) {
 			allowNull: false,
             defaultValue: 0
 		},
+		referral_count: {
+			type: DataTypes.INTEGER,
+			allowNull: false,
+			defaultValue: 0
+		}
 	}, {
 		timestamps: true,
 		underscored: true,
