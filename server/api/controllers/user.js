@@ -34,7 +34,6 @@ const { all } = require('bluebird');
 const { each, isInteger } = require('lodash');
 const { publisher } = require('../../db/pubsub');
 const { isDate } = require('moment');
-const moment = require('moment');
 const DeviceDetector = require('node-device-detector');
 const uuid = require('uuid/v4');
 
@@ -1396,9 +1395,7 @@ const settleUserFees = (req, res) => {
 		throw new Error('Feature is not active');
 	}
 
-	const currentTime = moment().seconds(0).milliseconds(0).toISOString();
-
-	toolsLib.user.settleFees(req.auth.sub.id, currentTime)
+	toolsLib.user.settleFees(req.auth.sub.id)
 		.then(() => {
 			return res.json({ message: 'success' });
 		})
