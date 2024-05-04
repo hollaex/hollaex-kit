@@ -11,6 +11,12 @@ export const fetchUnrealizedFeeEarnings = () => {
 	return requestAuthenticated(`/user/referral/unrealized`);
 };
 
+export const fetchRealizedFeeEarnings = (values) => {
+	const queryValues =
+		values && Object.keys(values).length ? querystring.stringify(values) : '';
+	return requestAuthenticated(`/user/referral/realized?${queryValues}`);
+};
+
 export const fetchReferralCodes = () => {
 	return requestAuthenticated(`/user/referral/code`);
 };

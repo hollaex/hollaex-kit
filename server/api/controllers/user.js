@@ -1279,6 +1279,47 @@ const getUnrealizedUserReferral = (req, res) => {
 		});
 };
 
+const getRealizedUserReferral = (req, res) => {
+	loggerUser.verbose(req.uuid, 'controllers/user/getRealizedUserReferral/auth', req.auth);
+
+	const {  limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
+	
+	if (order_by.value && typeof order_by.value !== 'string') {
+		loggerUser.error(
+			req.uuid,
+			'controllers/user/getRealizedUserReferral invalid order_by',
+			order_by.value
+		);
+		return res.status(400).json({ message: 'Invalid order by' });
+	}
+
+	toolsLib.user.getRealizedReferral({
+		user_id: req.auth.sub.id,
+		limit: limit.value,
+		page: page.value,
+		order_by: order_by.value,
+		order: order.value,
+		start_date: start_date.value,
+		end_date: end_date.value,
+		format: format.value
+	}
+	)
+		.then((data) => {
+			if (format.value === 'csv') {
+				toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
+				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-logins.csv`);
+				res.set('Content-Type', 'text/csv');
+				return res.status(202).send(data);
+			} else {
+				return res.json(data);
+			}
+		})
+		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/getRealizedUserReferral', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
 const getUserReferralCodes = (req, res) => {
 	loggerUser.info(
 		req.uuid,
@@ -1469,6 +1510,7 @@ module.exports = {
 	userLogout,
 	userDelete,
 	getUnrealizedUserReferral,
+	getRealizedUserReferral,
 	settleUserFees,
 	getUserBalanceHistory,
 	fetchUserProfitLossInfo,

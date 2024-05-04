@@ -2503,15 +2503,54 @@ const getUnrealizedReferral = async (user_id) => {
 		throw new Error(REFERRAL_HISTORY_NOT_ACTIVE);
 	}
 
-	const data = await  client.getAsync(`${user_id}user-unrealized-fees`);
-	if (data) return JSON.parse(data);
-
 	const referralHistoryModel = getModel('Referralhistory');
 	const unrealizedRecords = await referralHistoryModel.findAll({
 		where: { referer: user_id, status: false },
 	});	
 
 	return unrealizedRecords;
+};
+
+const getRealizedReferral = async (opts = {
+	user_id: null,
+    limit: null,
+    page: null,
+    order_by: null,
+    order: null,
+    start_date: null,
+    end_date: null,
+    format: null
+}) => {
+    const pagination = paginationQuery(opts.limit, opts.page);
+	const ordering = orderingQuery(opts.order_by, opts.order);
+	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
+
+	const query = {
+		where: {
+			created_at: timeframe,
+			status: true,
+			...(opts.user_id && { where: { referer: opts.user_id } })
+		},
+		order: [ordering],
+		...(!opts.format && pagination),
+	}
+     	
+	if (opts.format) {
+		return dbQuery.fetchAllRecords('Referralhistory', query)
+			.then((file) => {
+				if (opts.format && opts.format === 'csv') {
+					if (file.data.length === 0) {
+						throw new Error(NO_DATA_FOR_CSV);
+					}
+					const csv = parse(file.data, Object.keys(file.data[0]));
+					return csv;
+				} else {
+					return file;
+				}
+			});
+	} else {
+        return dbQuery.findAndCountAllWithRows('Referralhistory', query)
+	}
 };
 
 const createUnrealizedReferralFees = async (currentTime) => {
@@ -3282,6 +3321,7 @@ module.exports = {
 	validateReferralFeature,
 	settleFees,
 	getUnrealizedReferral,
+	getRealizedReferral,
 	fetchUserReferrals,
 	createUnrealizedReferralFees,
 	getUserReferralCodes,

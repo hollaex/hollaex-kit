@@ -23,6 +23,7 @@ import {
 	postReferralCode,
 	fetchReferralCodes,
 	postSettleFees,
+	fetchRealizedFeeEarnings,
 } from './actions';
 import BigNumber from 'bignumber.js';
 import moment from 'moment';
@@ -96,6 +97,7 @@ const ReferralList = ({
 	const [earningRate, setEarningRate] = useState(0);
 	const [discount, setDiscount] = useState(0);
 	const [activeTab, setActiveTab] = useState('0');
+	const [realizedData, setRealizedData] = useState([]);
 
 	const handleTabChange = (key) => {
 		setActiveTab(key);
@@ -107,6 +109,12 @@ const ReferralList = ({
 			})
 			.catch((err) => err);
 
+		fetchRealizedFeeEarnings()
+			.then((res) => {
+				console.log({ res });
+				setRealizedData(res.data);
+			})
+			.catch((err) => err);
 		fetchUnrealizedFeeEarnings()
 			.then((res) => {
 				if (res?.data?.length > 0) {
