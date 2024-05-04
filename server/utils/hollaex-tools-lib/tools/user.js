@@ -488,7 +488,7 @@ const getUserByAffiliationCode = (affiliationCode) => {
 	const code = affiliationCode.toUpperCase().trim();
 	return dbQuery.findOne('referralCode', {
 		where: { code },
-		attributes: ['user_id', 'discount', 'earning_rate']
+		attributes: ['id', 'user_id', 'discount', 'earning_rate']
 	});
 };
 
@@ -496,7 +496,7 @@ const checkAffiliation = (affiliationCode, user_id) => {
 	return getUserByAffiliationCode(affiliationCode)
 		.then((referrer) => {
 			if (referrer) {
-				return all[getModel('affiliation').create({
+				return all([getModel('affiliation').create({
 					user_id,
 					referer_id: referrer.user_id,
 					earning_rate: referrer.earning_rate,
@@ -504,12 +504,12 @@ const checkAffiliation = (affiliationCode, user_id) => {
 				}), 
 				referrer,
 				getModel('referralCode').increment('referral_count', { by: 1, where: { id: referrer.id }})
-			];
+			]);
 			} else {
 				return [];
 			}
 		})
-	.then(([affiliation, referrer]) => {
+	.then(([affiliation, referrer, referralCode]) => {
 		if (affiliation?.user_id) {
 			return getModel('user').update(
 				{
