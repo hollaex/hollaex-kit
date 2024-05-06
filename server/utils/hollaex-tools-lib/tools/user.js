@@ -2462,12 +2462,17 @@ const createUserReferralCode = async (data) => {
 	if (discount < 0) {
 		throw new Error('discount cannot be negative');	
 	}
-	if (earning_rate < 0) {
-		throw new Error('earning_rate cannot be negative');	
+
+	if (discount > 100) {
+		throw new Error('discount cannot be more than 100');	
+	}
+
+	if (earning_rate < 1) {
+		throw new Error('earning rate cannot be less than 1');	
 	}
 
 	if (earning_rate > 100) {
-		throw new Error('earning_rate cannot be more than 100');	
+		throw new Error('earning rate cannot be more than 100');	
 	}
 
 	if (code > 48) {
@@ -2506,6 +2511,11 @@ const getUnrealizedReferral = async (user_id) => {
 	const referralHistoryModel = getModel('Referralhistory');
 	const unrealizedRecords = await referralHistoryModel.findAll({
 		where: { referer: user_id, status: false },
+		attributes: [
+			'referer',
+			[fn('sum', col('accumulated_fees')), 'accumulated_fees'],
+		  ],
+		  group: ['referer'],
 	});	
 
 	return unrealizedRecords;

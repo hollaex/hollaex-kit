@@ -11,7 +11,7 @@ import {
 	Button as AntButton,
 	Spin,
 	// DatePicker,
-	message,
+	// message,
 	Modal,
 	// Input,
 	Tabs,
@@ -136,7 +136,7 @@ const ReferralList = ({
 
 	const HEADERS = [
 		{
-			stringId: 'REFERRAL_LINK.TIME',
+			stringId: 'REFERRAL_LINK.TIME_OF_SETTLEMENT',
 			label: 'Time of settlement',
 			key: 'time',
 			renderCell: ({ created_at }, key, index) => (
@@ -183,8 +183,8 @@ const ReferralList = ({
 
 	const HEADERSREFERRAL = [
 		{
-			stringId: 'REFERRAL_LINK.TIME',
-			label: 'Creation Date',
+			stringId: 'REFERRAL_LINK.CREATION_DATE',
+			label: STRINGS['REFERRAL_LINK.CREATION_DATE'],
 			key: 'time',
 			renderCell: ({ created_at }, key, index) => (
 				<td key={key}>
@@ -208,8 +208,8 @@ const ReferralList = ({
 			),
 		},
 		{
-			stringId: 'REFERRAL_LINK.EARNING',
-			label: 'Referral count',
+			stringId: 'REFERRAL_LINK.REFERRAL_COUNT',
+			label: STRINGS['REFERRAL_LINK.REFERRAL_COUNT'],
 			key: 'referral_count',
 
 			renderCell: (data, key, index) => {
@@ -223,8 +223,8 @@ const ReferralList = ({
 			},
 		},
 		{
-			stringId: 'REFERRAL_LINK.EARNING',
-			label: 'Your earning rate',
+			stringId: 'REFERRAL_LINK.YOUR_EARNING_RATE',
+			label: STRINGS['REFERRAL_LINK.YOUR_EARNING_RATE'],
 			key: 'earning_rate',
 
 			renderCell: (data, key, index) => {
@@ -238,8 +238,8 @@ const ReferralList = ({
 			},
 		},
 		{
-			stringId: 'REFERRAL_LINK.EARNING',
-			label: 'Discount given',
+			stringId: 'REFERRAL_LINK.DISCOUNT_GIVEN',
+			label: STRINGS['REFERRAL_LINK.DISCOUNT_GIVEN'],
 			key: 'discount',
 
 			renderCell: (data, key, index) => {
@@ -253,8 +253,8 @@ const ReferralList = ({
 			},
 		},
 		{
-			stringId: 'REFERRAL_LINK.EARNING',
-			label: 'Link',
+			stringId: 'REFERRAL_LINK.LINK',
+			label: STRINGS['REFERRAL_LINK.LINK'],
 			key: 'link',
 			className: 'd-flex justify-content-end',
 			renderCell: (data, key, index) => {
@@ -294,6 +294,13 @@ const ReferralList = ({
 		setSnackNotification({
 			icon: ICONS.COPY_NOTIFICATION,
 			content: 'Settlement successful!',
+		});
+	};
+
+	const showErrorMessage = (message) => {
+		setSnackNotification({
+			icon: ICONS.COPY_NOTIFICATION,
+			content: message,
 		});
 	};
 
@@ -387,7 +394,7 @@ const ReferralList = ({
 			setDisplaySettle(false);
 			handleSettlementNotification();
 		} catch (error) {
-			message.error(error.message);
+			showErrorMessage(error.data.message);
 		}
 	};
 	// const customDateModal = () => {
@@ -580,14 +587,19 @@ const ReferralList = ({
 							>
 								<div className="stake_theme">
 									<div style={{ fontSize: 17, marginBottom: 10 }}>
-										Create new referral code/link
+										<EditWrapper stringId="REFERRAL_LINK.CREATE_REFERRAL_LINK">
+											{STRINGS['REFERRAL_LINK.CREATE_REFERRAL_LINK']}
+										</EditWrapper>
 									</div>
 									<div>
-										Create a unique referral link with a code that you can share
-										and earn passive income with.
+										<EditWrapper stringId="REFERRAL_LINK.CREATE_UNIQUE_REFERRAL">
+											{STRINGS['REFERRAL_LINK.CREATE_UNIQUE_REFERRAL']}
+										</EditWrapper>
 									</div>
 									<div style={{ marginTop: 10, marginBottom: 5 }}>
-										Referral code / link
+										<EditWrapper stringId="REFERRAL_LINK.REFERRAL_CODE">
+											{STRINGS['REFERRAL_LINK.REFERRAL_CODE']}
+										</EditWrapper>
 									</div>
 									<div
 										style={{
@@ -599,13 +611,17 @@ const ReferralList = ({
 										{referralCode}
 									</div>
 									<div style={{ marginTop: 10, fontWeight: 'bold' }}>
-										Example:
+										<EditWrapper stringId="REFERRAL_LINK.EXAMPLE">
+											{STRINGS['REFERRAL_LINK.EXAMPLE']}
+										</EditWrapper>
 									</div>
 									<div>
 										https://hollaex.com/signup?affiliation_code={referralCode}
 									</div>
 									<div style={{ marginTop: 5, color: '#ccc' }}>
-										(No special character and spaces)
+										<EditWrapper stringId="REFERRAL_LINK.NO_SPECIAL">
+											{STRINGS['REFERRAL_LINK.NO_SPECIAL']}
+										</EditWrapper>
 									</div>
 								</div>
 							</div>
@@ -646,7 +662,9 @@ const ReferralList = ({
 									}}
 									type="default"
 								>
-									NEXT
+									<EditWrapper stringId="REFERRAL_LINK.NEXT">
+										{STRINGS['REFERRAL_LINK.NEXT']}
+									</EditWrapper>
 								</AntButton>
 							</div>
 						</>
@@ -663,12 +681,14 @@ const ReferralList = ({
 							>
 								<div className="stake_theme">
 									<div style={{ fontSize: 17, marginBottom: 10 }}>
-										Earnings vs. discount rate
+										<EditWrapper stringId="REFERRAL_LINK.EARNING_DISCOUNT">
+											{STRINGS['REFERRAL_LINK.EARNING_DISCOUNT']}
+										</EditWrapper>
 									</div>
 									<div style={{ marginBottom: 10 }}>
-										Share your earnings by adding a discount to your referral
-										link. This discount will be applied to the trading fees of
-										your referred friends.
+										<EditWrapper stringId="REFERRAL_LINK.DESCRIPTION">
+											{STRINGS['REFERRAL_LINK.DESCRIPTION']}
+										</EditWrapper>
 									</div>
 									<div
 										style={{
@@ -677,7 +697,9 @@ const ReferralList = ({
 											fontWeight: 'bold',
 										}}
 									>
-										Discount Ratio:
+										<EditWrapper stringId="REFERRAL_LINK.DISCOUNT_RATION">
+											{STRINGS['REFERRAL_LINK.DISCOUNT_RATION']}
+										</EditWrapper>
 									</div>
 									<div
 										style={{
@@ -702,7 +724,11 @@ const ReferralList = ({
 													selectedOption === 0 ? '#303236' : '#202020',
 											}}
 										>
-											<div style={{ fontSize: 11 }}>YOUR EARNINGS RATE:</div>
+											<div style={{ fontSize: 11 }}>
+												<EditWrapper stringId="REFERRAL_LINK.YOUR_EARNING_RATE">
+													{STRINGS['REFERRAL_LINK.YOUR_EARNING_RATE']}
+												</EditWrapper>
+											</div>
 											<div
 												style={{
 													display: 'flex',
@@ -725,7 +751,9 @@ const ReferralList = ({
 											}}
 										>
 											<div style={{ fontSize: 11 }}>
-												DISCOUNT GIVEN TO YOUR FRIEND:
+												<EditWrapper stringId="REFERRAL_LINK.DISCOUNT_GIVEN_TO_FRIEND">
+													{STRINGS['REFERRAL_LINK.DISCOUNT_GIVEN_TO_FRIEND']}
+												</EditWrapper>
 											</div>
 											<div
 												style={{
@@ -750,11 +778,11 @@ const ReferralList = ({
 												onClick={(e) => {
 													e.stopPropagation();
 													if (selectedOption === 0) {
-														if (earningRate >= 0 && earningRate <= 100) {
+														if (earningRate >= 0 && earningRate < 100) {
 															setEarningRate(earningRate + 1);
 														}
 													} else {
-														if (discount >= 0) {
+														if (discount >= 0 && discount < 100) {
 															setDiscount(discount + 1);
 														}
 													}
@@ -770,7 +798,7 @@ const ReferralList = ({
 															setEarningRate(earningRate - 1);
 														}
 													} else {
-														if (discount > 0) {
+														if (discount > 0 && discount < 100) {
 															setDiscount(discount - 1);
 														}
 													}
@@ -819,7 +847,9 @@ const ReferralList = ({
 									}}
 									type="default"
 								>
-									NEXT
+									<EditWrapper stringId="REFERRAL_LINK.NEXT">
+										{STRINGS['REFERRAL_LINK.NEXT']}
+									</EditWrapper>
 								</AntButton>
 							</div>
 						</>
@@ -837,10 +867,14 @@ const ReferralList = ({
 							>
 								<div className="stake_theme">
 									<div style={{ fontSize: 17, marginBottom: 10 }}>
-										Review and confirm
+										<EditWrapper stringId="REFERRAL_LINK.REVIEW_AND_CONFIRM">
+											{STRINGS['REFERRAL_LINK.REVIEW_AND_CONFIRM']}
+										</EditWrapper>
 									</div>
 									<div style={{ marginBottom: 10 }}>
-										Please carefully check and confirm below:
+										<EditWrapper stringId="REFERRAL_LINK.PLEASE_CHECK_BELOW">
+											{STRINGS['REFERRAL_LINK.PLEASE_CHECK_BELOW']}
+										</EditWrapper>
 									</div>
 									<div
 										style={{
@@ -849,7 +883,9 @@ const ReferralList = ({
 											fontWeight: 'bold',
 										}}
 									>
-										Discount Ratio:
+										<EditWrapper stringId="REFERRAL_LINK.DISCOUNT_RATIO">
+											{STRINGS['REFERRAL_LINK.DISCOUNT_RATIO']}
+										</EditWrapper>
 									</div>
 									<div
 										style={{
@@ -868,7 +904,11 @@ const ReferralList = ({
 													justifyContent: 'space-between',
 												}}
 											>
-												<div>Referral code:</div>
+												<div>
+													<EditWrapper stringId="REFERRAL_LINK.REFERRAL_CODE">
+														{STRINGS['REFERRAL_LINK.REFERRAL_CODE']}
+													</EditWrapper>
+												</div>
 												<div>{referralCode}</div>
 											</div>
 
@@ -880,7 +920,11 @@ const ReferralList = ({
 													justifyContent: 'space-between',
 												}}
 											>
-												<div>Your earnings rate:</div>
+												<div>
+													<EditWrapper stringId="REFERRAL_LINK.YOUR_EARNING_RATE">
+														{STRINGS['REFERRAL_LINK.YOUR_EARNING_RATE']}
+													</EditWrapper>
+												</div>
 												<div>{earningRate}%</div>
 											</div>
 											<div
@@ -891,14 +935,22 @@ const ReferralList = ({
 													justifyContent: 'space-between',
 												}}
 											>
-												<div>Discount given:</div>
+												<div>
+													<EditWrapper stringId="REFERRAL_LINK.DISCOUNT_GIVEN">
+														{STRINGS['REFERRAL_LINK.DISCOUNT_GIVEN']}
+													</EditWrapper>
+												</div>
 												<div>{discount}%</div>
 											</div>
 										</div>
 									</div>
 
 									<div style={{ marginTop: 20 }}>
-										<div>Example:</div>
+										<div>
+											<EditWrapper stringId="REFERRAL_LINK.EXAMPLE">
+												{STRINGS['REFERRAL_LINK.EXAMPLE']}
+											</EditWrapper>
+										</div>
 										<div>
 											https://hollaex.com/signup?affiliation_code={referralCode}
 										</div>
@@ -940,7 +992,7 @@ const ReferralList = ({
 											});
 											setLinkStep(3);
 										} catch (error) {
-											message.error(error.response.data.message);
+											showErrorMessage(error.data.message);
 										}
 									}}
 									style={{
@@ -951,7 +1003,9 @@ const ReferralList = ({
 									}}
 									type="default"
 								>
-									CONFIRM
+									<EditWrapper stringId="REFERRAL_LINK.CONFIRM">
+										{STRINGS['REFERRAL_LINK.CONFIRM']}
+									</EditWrapper>
 								</AntButton>
 							</div>
 						</>
@@ -969,14 +1023,21 @@ const ReferralList = ({
 							>
 								<div className="stake_theme">
 									<div style={{ fontSize: 17, marginBottom: 10 }}>
-										Link created successfully!
+										<EditWrapper stringId="REFERRAL_LINK.LINK_CREATED">
+											{STRINGS['REFERRAL_LINK.LINK_CREATED']}
+										</EditWrapper>
 									</div>
 									<div style={{ marginBottom: 10 }}>
-										To start earning simply share the link below with your
-										friends:
+										<EditWrapper stringId="REFERRAL_LINK.DESCRIPTION_2">
+											{STRINGS['REFERRAL_LINK.DESCRIPTION_2']}
+										</EditWrapper>
 									</div>
 
-									<div style={{ marginTop: 15 }}>Referral Link:</div>
+									<div style={{ marginTop: 15 }}>
+										<EditWrapper stringId="REFERRAL_LINK.REFERRAL_LINK">
+											{STRINGS['REFERRAL_LINK.REFERRAL_LINK']}
+										</EditWrapper>
+									</div>
 									<div
 										style={{
 											padding: 10,
@@ -998,7 +1059,9 @@ const ReferralList = ({
 												cursor: 'pointer',
 											}}
 										>
-											COPY
+											<EditWrapper stringId="REFERRAL_LINK.COPY">
+												{STRINGS['REFERRAL_LINK.COPY']}
+											</EditWrapper>
 										</div>
 									</div>
 								</div>
@@ -1028,7 +1091,9 @@ const ReferralList = ({
 									}}
 									type="default"
 								>
-									OKAY
+									<EditWrapper stringId="REFERRAL_LINK.OKAY">
+										{STRINGS['REFERRAL_LINK.OKAY']}
+									</EditWrapper>
 								</AntButton>
 							</div>
 						</>
@@ -1063,15 +1128,20 @@ const ReferralList = ({
 						>
 							<div className="stake_theme">
 								<div style={{ fontSize: 17, marginBottom: 10 }}>
-									Referral Earnings Settlement
+									<EditWrapper stringId="REFERRAL_LINK.EARNING_SETTLEMENT">
+										{STRINGS['REFERRAL_LINK.EARNING_SETTLEMENT']}
+									</EditWrapper>
 								</div>
 								<div style={{ marginBottom: 10 }}>
 									<span style={{ fontWeight: 'bold' }}>Amount to settle:</span>{' '}
-									2 USDT
+									{unrealizedEarnings}{' '}
+									{(referral_history_config?.currency || 'usdt').toUpperCase()}
 								</div>
 
 								<div style={{ marginTop: 15 }}>
-									Do you want to settle all your earnings now?
+									<EditWrapper stringId="REFERRAL_LINK.DO_YOU_WANT_TO_SETTLE">
+										{STRINGS['REFERRAL_LINK.DO_YOU_WANT_TO_SETTLE']}
+									</EditWrapper>
 								</div>
 							</div>
 						</div>
@@ -1112,7 +1182,9 @@ const ReferralList = ({
 								}}
 								type="default"
 							>
-								SETTLE
+								<EditWrapper stringId="REFERRAL_LINK.SETTLE">
+									{STRINGS['REFERRAL_LINK.SETTLE']}
+								</EditWrapper>
 							</AntButton>
 						</div>
 					</>
@@ -1163,11 +1235,14 @@ const ReferralList = ({
 							<div style={{ display: 'flex', justifyContent: 'space-between' }}>
 								<div>
 									<div style={{ fontWeight: 'bold', fontSize: 18 }}>
-										Earnings
+										<EditWrapper stringId="REFERRAL_LINK.EARNINGS">
+											{STRINGS['REFERRAL_LINK.EARNINGS']}
+										</EditWrapper>
 									</div>
 									<div style={{ marginTop: 5 }}>
-										Earnings are generated overtime from all your referred users
-										trading activity.
+										<EditWrapper stringId="REFERRAL_LINK.EARNING_DESC">
+											{STRINGS['REFERRAL_LINK.EARNING_DESC']}
+										</EditWrapper>
 									</div>
 									<div
 										onClick={() => {
@@ -1179,17 +1254,23 @@ const ReferralList = ({
 											fontWeight: 'bold',
 										}}
 									>
-										View earning history.
+										<EditWrapper stringId="REFERRAL_LINK.VIEW_HISTORY">
+											{STRINGS['REFERRAL_LINK.VIEW_HISTORY']}
+										</EditWrapper>
 									</div>
 									<div style={{ marginTop: 10 }}>
-										Data collected starting:{' '}
+										<EditWrapper stringId="REFERRAL_LINK.DATA_COLLECTED">
+											{STRINGS['REFERRAL_LINK.DATA_COLLECTED']}
+										</EditWrapper>{' '}
 										{moment(referral_history_config?.date_enabled).format(
 											'YYYY/MM/DD'
 										)}
 										.
 									</div>
 									<div>
-										To get the most up-to-date earnings report please{' '}
+										<EditWrapper stringId="REFERRAL_LINK.DATA_DESC">
+											{STRINGS['REFERRAL_LINK.DATA_DESC']}
+										</EditWrapper>{' '}
 										<span
 											onClick={() => {
 												setDisplaySettle(true);
@@ -1201,7 +1282,9 @@ const ReferralList = ({
 												fontWeight: 'bold',
 											}}
 										>
-											settle your earnings here.
+											<EditWrapper stringId="REFERRAL_LINK.SETTLE_HERE">
+												{STRINGS['REFERRAL_LINK.SETTLE_HERE']}
+											</EditWrapper>
 										</span>
 									</div>
 								</div>
@@ -1211,7 +1294,9 @@ const ReferralList = ({
 									></div>
 									<div>
 										<span style={{ fontWeight: 'bold', fontSize: 17 }}>
-											Total earnt:
+											<EditWrapper stringId="REFERRAL_LINK.EARNT">
+												{STRINGS['REFERRAL_LINK.EARNT']}
+											</EditWrapper>
 										</span>{' '}
 										<div style={{ fontSize: 15 }} className="field-label">
 											{getSourceDecimals(
@@ -1231,7 +1316,10 @@ const ReferralList = ({
 										}}
 									></div>
 									<div style={{ marginBottom: 10 }}>
-										Unsettled earnings: {unrealizedEarnings}{' '}
+										<EditWrapper stringId="REFERRAL_LINK.UNSETTLED">
+											{STRINGS['REFERRAL_LINK.UNSETTLED']}
+										</EditWrapper>{' '}
+										{unrealizedEarnings}{' '}
 										{(
 											referral_history_config?.currency || 'usdt'
 										).toUpperCase()}
@@ -1250,6 +1338,7 @@ const ReferralList = ({
 													setDisplaySettle(true);
 												}}
 												size="small"
+												disabled={unrealizedEarnings === 0}
 												style={{
 													backgroundColor: '#5E63F6',
 													color: 'white',
@@ -1259,7 +1348,9 @@ const ReferralList = ({
 													border: 'none',
 												}}
 											>
-												SETTLE
+												<EditWrapper stringId="REFERRAL_LINK.SETTLE">
+													{STRINGS['REFERRAL_LINK.SETTLE']}
+												</EditWrapper>
 											</AntButton>
 										</div>
 									</div>
@@ -1273,11 +1364,14 @@ const ReferralList = ({
 						>
 							<div>
 								<div style={{ fontWeight: 'bold', fontSize: 18 }}>
-									Your referral invite links
+									<EditWrapper stringId="REFERRAL_LINK.INVITE_LINKS">
+										{STRINGS['REFERRAL_LINK.INVITE_LINKS']}
+									</EditWrapper>
 								</div>
 								<div style={{ marginTop: 5 }}>
-									Share a link below with friends to start earning commissions
-									on their trading:
+									<EditWrapper stringId="REFERRAL_LINK.INVITE_LINKS_DESC">
+										{STRINGS['REFERRAL_LINK.INVITE_LINKS_DESC']}
+									</EditWrapper>
 								</div>
 								<div
 									onClick={async () => {
@@ -1287,7 +1381,7 @@ const ReferralList = ({
 												setReferralCode(data.code);
 												setDisplayCreateLink(true);
 											} catch (error) {
-												message.error('Something went wrong');
+												showErrorMessage(error.data.message);
 											}
 										} else setDisplayCreateLink(true);
 									}}
@@ -1299,7 +1393,9 @@ const ReferralList = ({
 										marginTop: 5,
 									}}
 								>
-									Create a new referral link
+									<EditWrapper stringId="REFERRAL_LINK.CREATE_LINK">
+										{STRINGS['REFERRAL_LINK.CREATE_LINK']}
+									</EditWrapper>
 								</div>
 							</div>
 
@@ -1314,7 +1410,9 @@ const ReferralList = ({
 									}}
 								>
 									<div style={{ marginBottom: 10 }}>
-										You've not created any referral links yet.
+										<EditWrapper stringId="REFERRAL_LINK.NO_LINK">
+											{STRINGS['REFERRAL_LINK.NO_LINK']}
+										</EditWrapper>
 									</div>
 									<div
 										onClick={async () => {
@@ -1324,7 +1422,7 @@ const ReferralList = ({
 													setReferralCode(data.code);
 													setDisplayCreateLink(true);
 												} catch (error) {
-													message.error('Something went wrong');
+													showErrorMessage(error.data.message);
 												}
 											} else setDisplayCreateLink(true);
 										}}
@@ -1336,7 +1434,9 @@ const ReferralList = ({
 											marginTop: 5,
 										}}
 									>
-										Create a new referral link
+										<EditWrapper stringId="REFERRAL_LINK.CREATE_LINK">
+											{STRINGS['REFERRAL_LINK.CREATE_LINK']}
+										</EditWrapper>
 									</div>
 								</div>
 							)}
@@ -1365,22 +1465,32 @@ const ReferralList = ({
 						<div>
 							<div>
 								<div style={{ fontSize: 17, fontWeight: 'bold' }}>
-									All settlement events
+									<EditWrapper stringId="REFERRAL_LINK.ALL_EVENTS">
+										{STRINGS['REFERRAL_LINK.ALL_EVENTS']}
+									</EditWrapper>
 								</div>
 								<div style={{ marginBottom: 15 }}>
-									Below are all the earning settlement events from your invited
-									referrals.
+									<EditWrapper stringId="REFERRAL_LINK.EVENTS_DESC">
+										{STRINGS['REFERRAL_LINK.EVENTS_DESC']}
+									</EditWrapper>
 								</div>
 								<div>
-									Below table data collected{' '}
+									<EditWrapper stringId="REFERRAL_LINK.DATA_BELOW">
+										{STRINGS['REFERRAL_LINK.DATA_BELOW']}
+									</EditWrapper>{' '}
 									{moment(referral_history_config?.date_enabled).format(
 										'YYYY/MM/DD'
 									)}
 									.
 								</div>
 								<div>
-									To get the most up-to-date earnings report please{' '}
+									<EditWrapper stringId="REFERRAL_LINK.DATA_DESC">
+										{STRINGS['REFERRAL_LINK.DATA_DESC']}
+									</EditWrapper>{' '}
 									<span
+										onClick={() => {
+											setDisplaySettle(true);
+										}}
 										style={{
 											color: '#4E54BE',
 											cursor: 'pointer',
@@ -1388,11 +1498,17 @@ const ReferralList = ({
 											textDecoration: 'underline',
 										}}
 									>
-										settle your earnings.
+										<EditWrapper stringId="REFERRAL_LINK.SETTLE_HERE">
+											{STRINGS['REFERRAL_LINK.SETTLE_HERE']}
+										</EditWrapper>
 									</span>
 								</div>
 								<div style={{ marginTop: 10 }}>
-									<span style={{ fontWeight: 'bold' }}>Total earnt:</span>{' '}
+									<span style={{ fontWeight: 'bold' }}>
+										<EditWrapper stringId="REFERRAL_LINK.EARNT">
+											{STRINGS['REFERRAL_LINK.EARNT']}
+										</EditWrapper>
+									</span>{' '}
 									<span style={{ fontSize: 15 }} className="field-label">
 										{getSourceDecimals(
 											referral_history_config?.currency || 'usdt',
