@@ -43,6 +43,7 @@ import {
 } from 'components';
 import { getUserReferrals } from 'actions/userAction';
 import { setSnackNotification } from 'actions/appActions';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import ICONS from 'config/icons';
 
 import './_ReferralList.scss';
@@ -265,17 +266,26 @@ const ReferralList = ({
 							style={{ gap: 10, textAlign: 'center', alignItems: 'center' }}
 						>
 							<span>.../signup?affiliation_code={data?.code}</span>{' '}
-							<span
-								style={{
-									color: 'white',
-									padding: 5,
-									cursor: 'pointer',
-									backgroundColor: '#5E63F6',
-									borderRadius: 10,
+							<CopyToClipboard
+								text={data?.code}
+								onCopy={() => {
+									handleCopy();
 								}}
 							>
-								COPY
-							</span>
+								<span
+									style={{
+										color: 'white',
+										padding: 5,
+										cursor: 'pointer',
+										backgroundColor: '#5E63F6',
+										borderRadius: 10,
+									}}
+								>
+									<EditWrapper stringId="REFERRAL_LINK.COPY">
+										{STRINGS['REFERRAL_LINK.COPY']}
+									</EditWrapper>
+								</span>
+							</CopyToClipboard>
 						</div>
 					</td>
 				);
@@ -283,12 +293,12 @@ const ReferralList = ({
 		},
 	];
 
-	// const handleCopy = () => {
-	// 	setSnackNotification({
-	// 		icon: ICONS.COPY_NOTIFICATION,
-	// 		content: STRINGS['COPY_SUCCESS_TEXT'],
-	// 	});
-	// };
+	const handleCopy = () => {
+		setSnackNotification({
+			icon: ICONS.COPY_NOTIFICATION,
+			content: STRINGS['COPY_SUCCESS_TEXT'],
+		});
+	};
 
 	const handleSettlementNotification = () => {
 		setSnackNotification({
@@ -1052,17 +1062,24 @@ const ReferralList = ({
 										<div style={{ fontSize: 11 }}>
 											https://hollaex.com/signup?affiliation_code={referralCode}
 										</div>
-										<div
-											style={{
-												textDecoration: 'underline',
-												fontSize: 11,
-												cursor: 'pointer',
+										<CopyToClipboard
+											text={referralCode}
+											onCopy={() => {
+												handleCopy();
 											}}
 										>
-											<EditWrapper stringId="REFERRAL_LINK.COPY">
-												{STRINGS['REFERRAL_LINK.COPY']}
-											</EditWrapper>
-										</div>
+											<div
+												style={{
+													textDecoration: 'underline',
+													fontSize: 11,
+													cursor: 'pointer',
+												}}
+											>
+												<EditWrapper stringId="REFERRAL_LINK.COPY">
+													{STRINGS['REFERRAL_LINK.COPY']}
+												</EditWrapper>
+											</div>
+										</CopyToClipboard>
 									</div>
 								</div>
 							</div>
