@@ -129,7 +129,7 @@ const Fiatmarkets = ({
 						setIsLoading={setIsLoading}
 					/>
 				</TabPane>
-				<TabPane tab="Fiat Fees" key="4">
+				<TabPane tab="Fiat Fees & Customization" key="4">
 					<FiatFees />
 				</TabPane>
 				{/* <TabPane tab="KYC" key="4">

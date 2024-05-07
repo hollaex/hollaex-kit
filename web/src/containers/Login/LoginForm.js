@@ -7,7 +7,6 @@ import {
 	normalizeEmail,
 } from 'components/Form/validations';
 import { AuthForm } from 'components';
-import { getLanguage } from 'utils/string';
 import STRINGS from 'config/localizedStrings';
 
 export const FORM_NAME = 'LoginForm';
@@ -28,13 +27,7 @@ const Form = (props) => {
 			fullWidth: true,
 			label: STRINGS['FORM_FIELDS.PASSWORD_LABEL'],
 			placeholder: STRINGS['FORM_FIELDS.PASSWORD_PLACEHOLDER'],
-		},
-		captcha: {
-			type: 'captcha',
-			language: getLanguage(),
-			theme: props.theme,
-			validate: [required],
-		},
+		}
 	};
 
 	return (

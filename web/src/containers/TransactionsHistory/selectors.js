@@ -9,7 +9,7 @@ const getWithdrawals = (state) => state.wallet.withdrawals;
 
 const modifyTradesAndOrders = (history, coins) => {
 	const data = history.data.map((record, index) => {
-		const { symbol: pair, fee_coin } = record;
+		const { symbol: pair, fee_coin, quick } = record;
 		const [pair_base, pair_2] = pair.split('-');
 		const { display_name: pair_base_display, icon_id } =
 			coins[pair_base] || DEFAULT_COIN_DATA;
@@ -17,6 +17,7 @@ const modifyTradesAndOrders = (history, coins) => {
 		const { display_name: fee_coin_display } =
 			coins[fee_coin || pair_base] || DEFAULT_COIN_DATA;
 		const display_name = `${pair_base_display}-${pair_2_display}`;
+
 		return {
 			...record,
 			display_name,
@@ -25,6 +26,7 @@ const modifyTradesAndOrders = (history, coins) => {
 			fee_coin_display,
 			icon_id,
 			history_id: index,
+			quick,
 		};
 	});
 

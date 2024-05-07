@@ -227,7 +227,9 @@
         "ERROR_INVALID": "Kode OTP yang tidak valid",
         "OTP_FORM_INFO": "Masukkan kode 6 digit Anda untuk melanjutkan",
         "OTP_FORM_SUBNOTE_LINE_1": "Kode Anda juga dikenal sebagai autentikator dua faktor (2FA) atau kode OTP.",
-        "OTP_FORM_SUBNOTE_LINE_2": "Jika Anda kehilangan kode, hubungi dukungan."
+        "OTP_FORM_SUBNOTE_LINE_2": "Jika Anda kehilangan kode, hubungi dukungan.",
+        "OTP_FORM_SUBNOTE_LINE_3": "(Untuk menambahkan akun baru ke Google Authenticator, klik tombol '+'. Anda dapat memindai kode QR yang diberikan pada langkah sebelumnya atau memasukkan kunci secara manual untuk menambahkan akun Anda ke aplikasi.)",
+        "INPUT_TEXT": "Masukkan kode 6 digit dari aplikasi Google Authenticator ponsel Anda:"
     },
     "QUICK_TRADE_COMPONENT": {
         "TITLE": "Cepat",
@@ -623,7 +625,8 @@
         "INTERNAL": "intern",
         "BLOCKCHAIN": "blockchain",
         "STAKE": "mempertaruhkan",
-        "REFERRAL": "rujukan"
+        "REFERRAL": "rujukan",
+        "QUICK_TRADE_TOOLTIP": "Pesanan dieksekusi melalui sistem konversi"
     },
     "ACCOUNT_SECURITY": {
         "TITLE_TEXT": "Atur pengaturan keamanan akun Anda. Mulai dari Autentikasi dua-faktor, kata sandi, Kunci API, dan fungsi lain yang berkaitan dengan keamanan.",
@@ -647,7 +650,7 @@
                 "MESSAGE_4": "Anda dapat menyimpan kode ini dengan aman untuk memulihkan 2FA Anda apabila Anda mengubah atau kehilangan ponsel Anda di masa depan.",
                 "MESSAGE_5": "Manual",
                 "INPUT": "Masukkan Kata Sandi Sekali Pakai (OTP)",
-                "WARNING": "Kami sangat menyarankan Anda mengaktifkan autentikasi 2 faktor (2FA). Dengan mengaktifkannya, tingkat keamanan dana Anda akan sangat ditingkatkan.",
+                "WARNING": "Kami {0} {1}",
                 "ENABLE": "Aktifkan Autentikasi Dua-Faktor",
                 "DISABLE": "Nonaktifkan Autentikasi Dua-Faktor",
                 "SECRET_1": "Enter yor secret key",
@@ -656,12 +659,43 @@
                 "INPUT_1": "Secret Key",
                 "TITLE_2": "Masukkan One-Time Password (OTP)",
                 "MESSAGE_6": "Silakan masukkan 6 digit one-time password di bawah.",
-                "INPUT_2": "One-Time Password (OTP)"
+                "INPUT_2": "One-Time Password (OTP)",
+                "STRONGLY_RECOMMEND": "sangat merekomendasikan",
+                "WARNING_CONTENT": "bahwa Anda mengaktifkan otentikasi dua faktor untuk meningkatkan keamanan akun Anda dan melindungi dana Anda"
             },
             "FORM": {
                 "PLACEHOLDER": "Masukkan OTP yang ditunjukkan di aplikasi Autentikasi Google.",
                 "BUTTON": "Aktifkan 2FA"
-            }
+            },
+            "DOWNLOAD_APP": "Unduh dan pasang",
+            "GOOGLE_AUTHENTICATOR": "Google Otentikator:",
+            "DOWNLOAD_FROM": "Unduh dari",
+            "GOOGLE_PLAY": "Google Play",
+            "APPLE": "Toko aplikasi",
+            "APP_INFO": "Google Authenticator akan menghasilkan kode acak yang diperlukan untuk tindakan sensitif, seperti masuk dan menarik dana.",
+            "DONT_UNINSTALL": "Tolong jangan uninstall aplikasinya.",
+            "INFO_UNINSTALL": "Jika ponsel hilang secara tidak sengaja atau pencopotan pemasangan yang tidak disengaja, Anda mungkin mengalami keterlambatan dalam mendapatkan kembali akses ke akun Anda. Dalam kasus seperti itu, Anda perlu menghubungi tim dukungan kami untuk mendapatkan bantuan.",
+            "BACK": "KEMBALI",
+            "PROCEED": "MELANJUTKAN",
+            "NEXT": "Berikutnya",
+            "NOTE": "Catatan: {0} {1}",
+            "MANUEL_DESCRIPTION": "Silakan masukkan seed 2FA manual dari langkah sebelumnya.",
+            "MANUEL_DESCRIPTION_2": "Harap hati-hati menuliskan dan menyimpan verifikasi manual di atas",
+            "MANUEL_DESCRIPTION_3": "kunci karena dapat digunakan untuk pemulihan akun.",
+            "MANUEL_KEY": "Benih manual 2FA",
+            "MANUEL_PLACEHOLDER": "Masukkan benih 2FA Anda",
+            "MANUEL_WARNING": "(Pastikan Anda telah menuliskannya dan menyimpannya dengan aman untuk digunakan di masa mendatang.)",
+            "MANUEL_ERROR_1": "Silakan masukkan benih 2FA manual",
+            "MANUEL_ERROR_2": "Silakan masukan seed 2FA manual dari langkah sebelumnya",
+            "ACCOUNT_SECURED": "Akun Aman",
+            "2FA_ENABLED": "2FA DIAKTIFKAN",
+            "2FA_DISABLED": "2FA DONAKTIFKAN",
+            "2FA_CONTENT_ONE": "Mengaktifkan {0} {1} .",
+            "2FA_CONTENT_TWO": "(Otentikasi Dua Faktor) menambahkan lapisan perlindungan ekstra untuk melindungi dana Anda. Setelah diaktifkan, Anda akan diminta memasukkan kode verifikasi dari ponsel Anda setiap kali Anda masuk atau menarik aset. Fitur ini secara signifikan meningkatkan keamanan akun Anda",
+            "2FA_CONTENT_THREE": "(Otentikasi Dua Faktor) menambahkan lapisan perlindungan ekstra untuk melindungi dana Anda",
+            "2FA_CONTENT_FOUR": "Untuk menonaktifkan 2FA Anda harus memasukkan kode 2FA (OTP) Anda",
+            "INPUT_SIX_DIGIT_CODE": "Masukkan kode 6 digit dari aplikasi Google Authenticator ponsel Anda:",
+            "INPUT_CONTENT": "(Untuk menambahkan akun baru ke Google Authenticator, klik tombol '+'. Anda dapat memindai kode QR yang diberikan pada langkah sebelumnya atau memasukkan kunci secara manual untuk menambahkan akun Anda ke aplikasi.)"
         },
         "CHANGE_PASSWORD": {
             "TITLE": "Ubah Kata Sandi",
@@ -1664,7 +1698,8 @@
             "QUICK_TRADE": "Perdagangan Cepat",
             "SUBTITLE": "Untuk melihat harga beli dan jual untuk {0} kunjungi {1}",
             "FOOTER": "Biaya perdagangan pengambil pasar berlaku untuk semua perdagangan yang dilakukan melalui Quick Trade."
-        }
+        },
+        "PRO_TRADE": "LIHAT {0} PASAR"
     },
     "ACCORDIAN": {
         "ACCORDIAN_ASSETS": "Semua aset dompet",
@@ -1842,8 +1877,14 @@
         "SELECT_END_DATE": "Pilih tanggal akhir",
         "CUSTOM": "Kebiasaan",
         "BACK_CUSTOM": "KEMBALI",
-        "PROOCED_CUSTOM": "DIPROSES"
+        "PROOCED_CUSTOM": "DIPROSES",
+        "PL_DAYS": "Hari P&L",
+        "VIEW_MORE": "Lihat Selengkapnya {0}",
+        "SHOW_ASSET_BREAKDOWN": "Tampilkan Perincian Aset",
+        "PL_SUMMARY": "Ringkasan Keuntungan dan Kerugian",
+        "BALANCE_HISTORY": "Riwayat Saldo"
     },
     "ASSET_INFO": "Informasi aset",
-    "TAKER_FEES_APPLIED": "Biaya pengambil diterapkan"
+    "TAKER_FEES_APPLIED": "Biaya pengambil diterapkan",
+    "CANCEL_WITHDRAWAL_ADDRESS": "Alamat Penarikan"
 }

@@ -179,7 +179,9 @@
         "OTP_PLACEHOLDER": "Inserisci il codice di autenticazione",
         "OTP_TITLE": "Codice autenticatore",
         "OTP_BUTTON": "invia",
-        "ERROR_INVALID": "Codice OTP non valido"
+        "ERROR_INVALID": "Codice OTP non valido",
+        "OTP_FORM_SUBNOTE_LINE_3": "(Per aggiungere un nuovo account a Google Authenticator, fai clic sul pulsante \"+\". Puoi scansionare il codice QR fornito nel passaggio precedente o inserire manualmente la chiave per aggiungere il tuo account all'app.)",
+        "INPUT_TEXT": "Inserisci il codice a 6 cifre dall'app Google Authenticator del tuo telefono:"
     },
     "EMAIL_CODE_FORM": {
         "TITLE": "Inserisci i tuoi codici di sicurezza",
@@ -594,7 +596,8 @@
         "INTERNAL": "interno",
         "BLOCKCHAIN": "blockchain",
         "STAKE": "palo",
-        "REFERRAL": "rinvio"
+        "REFERRAL": "rinvio",
+        "QUICK_TRADE_TOOLTIP": "Ordine eseguito tramite sistema di conversione"
     },
     "ACCOUNT_SECURITY": {
         "TITLE_TEXT": "Regola le impostazioni di sicurezza per il tuo account. Da Autenticazione a due fattori, password, chiavi API e altre funzioni relative alla sicurezza.",
@@ -617,15 +620,46 @@
                 "MESSAGE_3": "Se hai problemi con la scansione di questo, puoi inserire manualmente il codice qui sotto",
                 "MESSAGE_4": "Devi archiviare questo codice in modo sicuro per recuperare il tuo 2FA nel caso in cui dovessi cambiare o perdere il tuo telefono cellulare in futuro.",
                 "MESSAGE_5": "Manuale",
-                "WARNING": "Ti consigliamo vivamente di impostare l'autenticazione a due fattori (2FA). In questo modo aumenterai notevolmente la sicurezza dei tuoi fondi.",
+                "WARNING": "Noi {0} {1}",
                 "ENABLE": "Abilita l'autenticazione a due fattori",
                 "DISABLE": "Disabilita l'autenticazione a due fattori",
-                "INPUT": "Inserisci la tua OTP"
+                "INPUT": "Inserisci la tua OTP",
+                "STRONGLY_RECOMMEND": "fortemente raccomandato",
+                "WARNING_CONTENT": "di abilitare l'autenticazione a due fattori per migliorare la sicurezza del tuo account e proteggere i tuoi fondi"
             },
             "FORM": {
                 "PLACEHOLDER": "Inserisci la tua OTP fornita da Google Authenticator.",
                 "BUTTON": "Abilita 2FA"
-            }
+            },
+            "DOWNLOAD_APP": "Scarica e installa",
+            "GOOGLE_AUTHENTICATOR": "Autenticatore di Google:",
+            "DOWNLOAD_FROM": "Scarica da",
+            "GOOGLE_PLAY": "Google Play",
+            "APPLE": "App Store",
+            "APP_INFO": "Google Authenticator genererà codici casuali necessari per azioni sensibili, come l'accesso e il prelievo di fondi.",
+            "DONT_UNINSTALL": "Si prega di non disinstallare l'app.",
+            "INFO_UNINSTALL": "In caso di perdita accidentale del telefono o disinstallazione involontaria, potresti riscontrare ritardi nel riottenere l'accesso al tuo account. In questi casi, dovrai contattare il nostro team di supporto per ricevere assistenza.",
+            "BACK": "INDIETRO",
+            "PROCEED": "PROCEDERE",
+            "NEXT": "Prossimo",
+            "NOTE": "Nota: {0} {1}",
+            "MANUEL_DESCRIPTION": "Inserisci il seed 2FA manuale del passaggio precedente.",
+            "MANUEL_DESCRIPTION_2": "Si prega di annotare attentamente e conservare la verifica manuale di cui sopra",
+            "MANUEL_DESCRIPTION_3": "chiave in quanto può essere utilizzata per il recupero dell'account.",
+            "MANUEL_KEY": "Seme manuale 2FA",
+            "MANUEL_PLACEHOLDER": "Inserisci il tuo seme 2FA",
+            "MANUEL_WARNING": "(Assicurati di averlo annotato e di conservarlo in modo sicuro per un uso futuro.)",
+            "MANUEL_ERROR_1": "Inserisci il seed 2FA manuale",
+            "MANUEL_ERROR_2": "Inserisci il seed 2FA manuale dal passaggio precedente",
+            "ACCOUNT_SECURED": "Conto protetto",
+            "2FA_ENABLED": "2FA ABILITATO",
+            "2FA_DISABLED": "2FA DISABILITATO",
+            "2FA_CONTENT_ONE": "Attivazione di {0} {1} .",
+            "2FA_CONTENT_TWO": "(Autenticazione a due fattori) aggiunge un ulteriore livello di protezione per salvaguardare i tuoi fondi. Una volta abilitato, ti verrà richiesto di inserire un codice di verifica dal tuo telefono ogni volta che accedi o prelevi risorse. Questa funzione migliora significativamente la sicurezza del tuo account",
+            "2FA_CONTENT_THREE": "(Autenticazione a due fattori) aggiunge un ulteriore livello di protezione per salvaguardare i tuoi fondi",
+            "2FA_CONTENT_FOUR": "Per disabilitare 2FA dovrai inserire il tuo codice 2FA (OTP).",
+            "INPUT_SIX_DIGIT_CODE": "Inserisci il codice a 6 cifre dall'app Google Authenticator del tuo telefono:",
+            "INPUT_CONTENT": "(Per aggiungere un nuovo account a Google Authenticator, fai clic sul pulsante \"+\". Puoi scansionare il codice QR fornito nel passaggio precedente o inserire manualmente la chiave per aggiungere il tuo account all'app.)"
         },
         "CHANGE_PASSWORD": {
             "TITLE": "Parola d'ordine",
@@ -1508,7 +1542,8 @@
             "QUICK_TRADE": "Commercio veloce",
             "SUBTITLE": "Per visualizzare i prezzi di acquisto e vendita di {0}, visita {1}",
             "FOOTER": "Le commissioni di negoziazione del market take vengono applicate a tutte le operazioni eseguite tramite Quick Trade."
-        }
+        },
+        "PRO_TRADE": "VISUALIZZA MERCATO {0}"
     },
     "ACCORDIAN": {
         "ACCORDIAN_ASSETS": "Tutte le risorse del portafoglio",
@@ -1692,8 +1727,14 @@
         "SELECT_END_DATE": "Seleziona la data di fine",
         "CUSTOM": "Costume",
         "BACK_CUSTOM": "INDIETRO",
-        "PROOCED_CUSTOM": "PROCEDUTO"
+        "PROOCED_CUSTOM": "PROCEDUTO",
+        "PL_DAYS": "Conti e perdite giornalieri",
+        "VIEW_MORE": "Visualizza altro {0}",
+        "SHOW_ASSET_BREAKDOWN": "Mostra la suddivisione delle risorse",
+        "PL_SUMMARY": "Riepilogo profitti e perdite",
+        "BALANCE_HISTORY": "Storia dell'equilibrio"
     },
     "ASSET_INFO": "Informazioni sulle risorse",
-    "TAKER_FEES_APPLIED": "Vengono applicate le commissioni dell'acquirente"
+    "TAKER_FEES_APPLIED": "Vengono applicate le commissioni dell'acquirente",
+    "CANCEL_WITHDRAWAL_ADDRESS": "Indirizzo di ritiro"
 }

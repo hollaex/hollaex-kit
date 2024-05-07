@@ -232,7 +232,9 @@
         "ERROR_INVALID": "Code OTP invalide",
         "OTP_FORM_INFO": "Entrez votre code à 6 chiffres pour continuer",
         "OTP_FORM_SUBNOTE_LINE_1": "Votre code est également appelé code d’authentification à deux facteurs (2FA) ou code OTP.",
-        "OTP_FORM_SUBNOTE_LINE_2": "Si vous avez perdu votre code, veuillez contacter l'assistance."
+        "OTP_FORM_SUBNOTE_LINE_2": "Si vous avez perdu votre code, veuillez contacter l'assistance.",
+        "OTP_FORM_SUBNOTE_LINE_3": "(Pour ajouter un nouveau compte à Google Authenticator, cliquez sur le bouton « + ». Vous pouvez soit scanner le code QR fourni à l'étape précédente, soit saisir manuellement la clé pour ajouter votre compte à l'application.)",
+        "INPUT_TEXT": "Saisissez le code à 6 chiffres de l'application Google Authenticator de votre téléphone :"
     },
     "QUICK_TRADE_COMPONENT": {
         "TITLE": "Quick Trade",
@@ -628,7 +630,8 @@
         "INTERNAL": "interne",
         "BLOCKCHAIN": "chaîne de blocs",
         "STAKE": "miser",
-        "REFERRAL": "référence"
+        "REFERRAL": "référence",
+        "QUICK_TRADE_TOOLTIP": "Ordre exécuté via le système de conversion"
     },
     "ACCOUNT_SECURITY": {
         "TITLE_TEXT": "Ajustez les paramètres de sécurité de votre compte. De l'authentification à deux facteurs au mot de passe, en passant par les clés API et d'autres fonctions liées à la sécurité.",
@@ -652,7 +655,7 @@
                 "MESSAGE_4": "Vous pouvez sauvegarder ce code en toute sécurité pour récupérer votre 2FA au cas où vous changeriez ou perdriez votre téléphone portable.",
                 "MESSAGE_5": "Manuellement",
                 "INPUT": "Entrez votre One-Time Password (OTP)",
-                "WARNING": "Nous vous recommandons vivement de configurer l'authentification à 2 facteurs (2FA). Cela augmentera considérablement la sécurité de vos fonds.",
+                "WARNING": "Nous {0} {1}",
                 "ENABLE": "Activer l'authentification à deux facteurs ",
                 "DISABLE": "Désactiver l'authentification à deux facteurs",
                 "SECRET_1": "Entrez votre clé secrète",
@@ -661,12 +664,43 @@
                 "INPUT_1": "Clé Secrète",
                 "TITLE_2": "Entrez votre One-Time Password (OTP)",
                 "MESSAGE_6": "Veuillez saisir votre mot de passe unique à 6 chiffres ci-dessous.",
-                "INPUT_2": "One-Time Password (OTP)"
+                "INPUT_2": "One-Time Password (OTP)",
+                "STRONGLY_RECOMMEND": "fortement recommandé",
+                "WARNING_CONTENT": "que vous activez l'authentification à deux facteurs pour améliorer la sécurité de votre compte et protéger vos fonds"
             },
             "FORM": {
                 "PLACEHOLDER": "Saisissez votre OTP fourni par Google Authenticator.",
                 "BUTTON": "Activer 2FA"
-            }
+            },
+            "DOWNLOAD_APP": "Télécharger et installer",
+            "GOOGLE_AUTHENTICATOR": "Authentificateur Google :",
+            "DOWNLOAD_FROM": "Télécharger à partir de",
+            "GOOGLE_PLAY": "Jeu de Google",
+            "APPLE": "Magasin d'applications",
+            "APP_INFO": "Google Authenticator générera des codes aléatoires nécessaires aux actions sensibles, telles que la connexion et le retrait de fonds.",
+            "DONT_UNINSTALL": "Veuillez ne pas désinstaller l'application.",
+            "INFO_UNINSTALL": "En cas de perte accidentelle de téléphone ou de désinstallation involontaire, vous pourriez rencontrer des retards pour retrouver l'accès à votre compte. Dans de tels cas, vous devrez contacter notre équipe d’assistance pour obtenir de l’aide.",
+            "BACK": "DOS",
+            "PROCEED": "PROCÉDER",
+            "NEXT": "Suivant",
+            "NOTE": "Remarque : {0} {1}",
+            "MANUEL_DESCRIPTION": "Veuillez saisir la graine 2FA manuelle de l'étape précédente.",
+            "MANUEL_DESCRIPTION_2": "Veuillez noter et conserver soigneusement la vérification manuelle ci-dessus",
+            "MANUEL_DESCRIPTION_3": "clé car elle peut être utilisée pour la récupération de compte.",
+            "MANUEL_KEY": "Graine 2FA manuelle",
+            "MANUEL_PLACEHOLDER": "Entrez votre graine 2FA",
+            "MANUEL_WARNING": "(Assurez-vous de l'avoir noté et stocké en toute sécurité pour une utilisation future.)",
+            "MANUEL_ERROR_1": "Veuillez saisir la graine 2FA manuelle",
+            "MANUEL_ERROR_2": "Veuillez saisir la graine 2FA manuelle de l'étape précédente",
+            "ACCOUNT_SECURED": "Compte sécurisé",
+            "2FA_ENABLED": "2FA ACTIVÉ",
+            "2FA_DISABLED": "2FA DÉSACTIVÉ",
+            "2FA_CONTENT_ONE": "Activation de {0} {1} .",
+            "2FA_CONTENT_TWO": "(Authentification à deux facteurs) ajoute une couche de protection supplémentaire pour protéger vos fonds. Une fois activé, vous devrez saisir un code de vérification depuis votre téléphone chaque fois que vous vous connecterez ou retirerez des actifs. Cette fonctionnalité améliore considérablement la sécurité de votre compte",
+            "2FA_CONTENT_THREE": "(Authentification à deux facteurs) ajoute une couche de protection supplémentaire pour protéger vos fonds",
+            "2FA_CONTENT_FOUR": "Pour désactiver 2FA, vous devrez entrer votre code 2FA (OTP)",
+            "INPUT_SIX_DIGIT_CODE": "Saisissez le code à 6 chiffres de l'application Google Authenticator de votre téléphone :",
+            "INPUT_CONTENT": "(Pour ajouter un nouveau compte à Google Authenticator, cliquez sur le bouton « + ». Vous pouvez soit scanner le code QR fourni à l'étape précédente, soit saisir manuellement la clé pour ajouter votre compte à l'application.)"
         },
         "CHANGE_PASSWORD": {
             "TITLE": "Changer le mot de passe",
@@ -1709,7 +1743,12 @@
         "SELECT_END_DATE": "Sélectionnez la date de fin",
         "CUSTOM": "Coutume",
         "BACK_CUSTOM": "DOS",
-        "PROOCED_CUSTOM": "PROCÉDÉ"
+        "PROOCED_CUSTOM": "PROCÉDÉ",
+        "PL_DAYS": "Jour P&L",
+        "VIEW_MORE": "Voir plus {0}",
+        "SHOW_ASSET_BREAKDOWN": "Afficher la répartition des actifs",
+        "PL_SUMMARY": "Résumé des résultats",
+        "BALANCE_HISTORY": "Historique du solde"
     },
     "ASSET_INFO": "Informations sur l'actif",
     "TAKER_FEES_APPLIED": "Des frais de preneur sont appliqués",
@@ -1752,7 +1791,8 @@
         },
         "LIST": "Vous souhaitez lister vos actifs numériques ?",
         "WEBSITE": "Site web",
-        "EXPLORER": "Explorateur"
+        "EXPLORER": "Explorateur",
+        "PRO_TRADE": "VOIR {0} MARCHÉ"
     },
     "ACCORDIAN": {
         "ACCORDIAN_ASSETS": "Tous les actifs du portefeuille",
@@ -1890,5 +1930,6 @@
                 "CONFIRM": "CONFIRMER"
             }
         }
-    }
+    },
+    "CANCEL_WITHDRAWAL_ADDRESS": "Adresse de retrait"
 }

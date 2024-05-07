@@ -19,7 +19,12 @@ import WithdrawalFees from './WithdrawalFees';
 import WithdrawalLimits from './WithdrawalLimits';
 import { isLoggedIn } from 'utils/token';
 
-const Index = ({ config_level, verification_level, router }) => {
+const Index = ({
+	config_level,
+	verification_level,
+	router,
+	selectedAccount,
+}) => {
 	const [selectedLevel, setSelectedLevel] = useState(
 		isLoggedIn() ? verification_level?.toString() : Object.keys(config_level)[0]
 	);
@@ -82,6 +87,10 @@ const Index = ({ config_level, verification_level, router }) => {
 		updateTabs();
 	}, [selectedLevel, config_level, search]);
 
+	useEffect(() => {
+		setSelectedLevel(selectedAccount);
+	}, [selectedAccount]);
+
 	const renderContent = (tabs, activeTab) =>
 		tabs[activeTab] && tabs[activeTab].content ? (
 			tabs[activeTab].content
@@ -89,7 +98,7 @@ const Index = ({ config_level, verification_level, router }) => {
 			<div />
 		);
 
-	return config_level && Object.keys(config_level).length && selectedLevel ? (
+	return config_level && Object.keys(config_level).length ? (
 		<div className="presentation_container apply_rtl settings_container fees_limits">
 			{!isMobile && (
 				<IconTitle
@@ -143,11 +152,12 @@ const Index = ({ config_level, verification_level, router }) => {
 
 const mapStateToProps = (state) => {
 	const {
-		app: { config_level },
+		app: { config_level, selectedAccount },
 	} = state;
 	return {
 		verification_level: state.user.verification_level,
 		config_level,
+		selectedAccount,
 	};
 };
 

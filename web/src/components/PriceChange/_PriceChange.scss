@@ -63,6 +63,13 @@
 			}
 		}
 	}
+
+	.markets-drop-down {
+		display: flex;
+	}
+	.markets-drop-down.down:before {
+		margin: 10% 0 0 0;
+	}
 }
 
 .hollaex-token-wrapper {

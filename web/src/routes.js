@@ -396,7 +396,7 @@ export const generateRoutes = (routes = []) => {
 					name="Fees and limits"
 					component={FeesAndLimits}
 				/>
-				<Route path="assets" name="Digital Asset" component={DigitalAssets} />
+				<Route path="prices" name="Digital Asset" component={DigitalAssets} />
 				<Route path="white-label" name="WhiteLabel" component={WhiteLabel} />
 				<Route path="verification" name="Verification" component={Account} />
 				<Route path="wallet" name="Wallet" component={MainWallet} />
@@ -439,7 +439,7 @@ export const generateRoutes = (routes = []) => {
 					component={QuickTrade}
 				/>
 				<Route
-					path="assets/coin/:token"
+					path="prices/coin/:token"
 					name="Coin Page"
 					component={CoinPage}
 				/>

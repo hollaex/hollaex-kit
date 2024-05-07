@@ -73,13 +73,13 @@ const PinInput = ({
 							onChange={handleMasterValueChange}
 							onBlur={handleOnMasterBlur}
 						/>
-						<div className="group">
+						<div className="leftGroup">
 							<input value={value[0] || ''} className={getClassname(0)} />
 							<input value={value[1] || ''} className={getClassname(1)} />
 							<input value={value[2] || ''} className={getClassname(2)} />
 						</div>
 						<div className="seperator"></div>
-						<div className="group">
+						<div className="rightGroup">
 							<input value={value[3] || ''} className={getClassname(3)} />
 							<input value={value[4] || ''} className={getClassname(4)} />
 							<input value={value[5] || ''} className={getClassname(5)} />

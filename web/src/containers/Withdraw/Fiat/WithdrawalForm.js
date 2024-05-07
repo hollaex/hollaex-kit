@@ -6,8 +6,7 @@ import {
 	formValueSelector,
 	reset,
 	SubmissionError,
-	stopSubmit,
-	change,
+	stopSubmit
 } from 'redux-form';
 import renderFields from 'components/Form/factoryFields';
 import ReviewModalContent from './ReviewModalContent';
@@ -120,9 +119,6 @@ class Index extends Component {
 							: err.message,
 						...err.errors,
 					};
-					errorTimeOut = setTimeout(() => {
-						this.props.dispatch(change(FORM_NAME, 'captcha', ''));
-					}, 5000);
 					this.props.onSubmitFail(err.errors || err, this.props.dispatch);
 					this.onCloseDialog();
 					this.props.dispatch(stopSubmit(FORM_NAME, error));
@@ -179,9 +175,6 @@ class Index extends Component {
 								: err.message,
 							...err.errors,
 						};
-						errorTimeOut = setTimeout(() => {
-							this.props.dispatch(change(FORM_NAME, 'captcha', ''));
-						}, 5000);
 						this.props.onSubmitFail(err.errors, this.props.dispatch);
 						this.onCloseDialog();
 						this.props.dispatch(stopSubmit(FORM_NAME, error));
@@ -193,9 +186,6 @@ class Index extends Component {
 							? err.response.data.message
 							: err.message,
 					};
-					errorTimeOut = setTimeout(() => {
-						this.props.dispatch(change(FORM_NAME, 'captcha', ''));
-					}, 5000);
 					this.props.onSubmitFail(error, this.props.dispatch);
 					this.onCloseDialog();
 					this.props.dispatch(stopSubmit(FORM_NAME, error));
@@ -371,7 +361,7 @@ const FiatWithdrawalForm = reduxForm({
 })(Index);
 
 const mapStateToProps = (state) => ({
-	data: selector(state, 'bank', 'amount', 'fee', 'captcha'),
+	data: selector(state, 'bank', 'amount', 'fee'),
 	fiat_fees: state.app.constants.fiat_fees,
 });
 

@@ -86,7 +86,7 @@ class AuthContainer extends Component {
 		const {
 			activeLanguage,
 			children,
-			constants = { captcha: {} },
+			constants = {},
 			icons: ICONS = {},
 			activeNotification,
 		} = this.props;

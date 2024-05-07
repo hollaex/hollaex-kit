@@ -191,8 +191,9 @@ const icons = {
 	REVOKE_KEY: '/assets/images/revoke-key-red-slash.svg',
 	SMALL_WHITE_KEY: '/assets/images/small-white-key.svg',
 	TRANSPARENT_KEY: '/assets/images/transperent-key.svg',
-	FOOTERBAR_PRO_TRADE: '/assets/images/pro-trade-bottom-nav-mobile.svg',
-	FOOTERBAR_QUICK_TRADE: '/assets/images/quick-trade-tab-white.svg',
+	GOOGLE_AUTHENTICATOR: '/assets/images/google-auth-icon.svg',
+	GOOGLE_PLAY: '/assets/images/google-play.svg',
+	APP_STORE: '/assets/images/appstore-apple_logo_black.svg',
 };
 
 export default icons;

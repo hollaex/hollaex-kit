@@ -11,7 +11,6 @@ import {
 	renderBooleanField,
 } from './fields';
 import { FileField } from './FileField';
-import CaptchaField from './captchaField';
 import Editor from './Editor';
 
 const renderFields = (fields, disableAllFields) => {
@@ -49,9 +48,6 @@ const renderFields = (fields, disableAllFields) => {
 						break;
 					case 'range':
 						component = renderRangeField;
-						break;
-					case 'captcha':
-						component = CaptchaField;
 						break;
 					case 'file':
 						component = FileField;

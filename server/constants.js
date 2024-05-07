@@ -132,6 +132,7 @@ const updateKitInfo = (newInfo) => {
 
 const updateKit = (newKitConfig) => {
 	Object.assign(configuration.kit, newKitConfig);
+	overrideNetworkFields();
 };
 
 const updateSecrets = (newSecretsConfig) => {
@@ -147,6 +148,17 @@ const updateFrozenUser = (action, userId) => {
 		frozenUsers[userId] = true;
 	} else if (action === 'remove') {
 		delete frozenUsers[userId];
+	}
+};
+
+const overrideNetworkFields = () => {
+	for (let coin of Object.values(configuration.coins)) {
+		if (coin.type === 'fiat') {
+			configuration.coins[coin.symbol] = {
+				...coin,
+				...configuration?.kit?.fiat_fees?.[coin.symbol]
+			}
+		}
 	}
 };
 
@@ -370,8 +382,8 @@ exports.DEFAULT_ORDER_RISK_PERCENTAGE = 90; // used in settings in percentage to
 
 // SECURITY CONSTANTS START --------------------------------------------------
 
-exports.TOKEN_TIME_NORMAL = '24h';
-exports.TOKEN_TIME_LONG = '30d';
+exports.TOKEN_TIME_NORMAL = '7d';
+exports.TOKEN_TIME_LONG = '90d';
 
 exports.TOKEN_TYPES = {
 	HMAC: 'hmac'

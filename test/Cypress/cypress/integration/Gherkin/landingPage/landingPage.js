@@ -1,110 +1,187 @@
 import {Given, When, Then, And} from "cypress-cucumber-preprocessor/steps"
+let arrangedElements = [];
+let textsArray = [];
+let elementPositions = [];
+const elementsToArrange = [
+  'Open-Source Crypto Exchange',
+  'HollaEx/USD Tether',
+  'Best prices' ,
+  'Quick Trade',
+  'Live Markets' ,];
+const elementDescriptions = {
+  'Best prices' : "Key icon features",
+  'Open-Source Crypto Exchange' :"Title/heading",
+  'HollaEx/USD Tether' : "Moving ticker cards",
+  'Quick Trade' : "Quick trade calculator",
+  'Live Markets' : "Market list", };
 
 Given ('I am on the Hollaex landing page',()=>{
-      cy.visit(Cypress.env('LANDING_PAGE'))
+  cy.visit(Cypress.env('LANDING_PAGE'))
 })
 
-When ('All elements exist',()=>{
-      cy.contains('Open-Source Crypto Exchange',{ matchCase: false })
-      cy.contains('VIEW EXCHANGE',{ matchCase: false })
-      cy.contains('START TRADING',{ matchCase: false })
-      
-      cy.contains('Markets',{ matchCase: false })
-      cy.contains('LOGIN',{ matchCase: false })
-      cy.contains('SIGN UP',{ matchCase: false })
-      cy.contains('Quick Trade',{ matchCase: false })
-      cy.get('.quick_trade-section_wrapper > .holla-button')
-
-      cy.contains('LAST PRICE',{ matchCase: false })
-      cy.contains('CHANGE',{ matchCase: false })
-      cy.contains('24H HIGH',{ matchCase: false })
-      cy.contains('24H LOW',{ matchCase: false })
-      cy.contains('BEST BID',{ matchCase: false })
-      cy.contains('BEST ASK',{ matchCase: false })
-      cy.contains('24H VOLUME',{ matchCase: false })
+And ('I record all elements locations',()=>{
+  // Get the position of each element
+  cy.wrap(elementsToArrange).each((element) => { 
+    cy.contains(element, { matchCase: false }).then(($el) => {
+      $el[0].scrollIntoView();
+      const position = $el.offset()
+      cy.log(element,position)
+      const { top } = position;
+      elementPositions.push({ element: elementDescriptions[element] || element, top });
+      });
+    }).then(() => {
+       // Sort elements by their top position
+       elementPositions.sort((a, b) => a.top - b.top);
+       cy.log(JSON.stringify(elementPositions))
+       // Store the arranged elements in an array
+        const arrangedElements = elementPositions.map((item) => item.element);
+        // Log the arranged elements
+        cy.log('Elements arranged from top to down:');
+        arrangedElements.forEach((item) => {
+         cy.log(item);
+      });
+    });
 })
 
 Then ('I should be able to click on the live market',()=>{
-    cy.get('.pt-1').click()
-    cy.contains('Markets',{ matchCase: false })
-    cy.contains('LOGIN',{ matchCase: false })
+  cy.get('.pt-1').click()
+  cy.contains('Markets',{ matchCase: false })
+  cy.contains('LOGIN',{ matchCase: false })
 })
 
-And ('I login check quick trade',()=>{
-    cy.visit(Cypress.env('LANDING_PAGE'))
-    cy.get('.quick_trade-section_wrapper > .holla-button').click()
-    cy.get('.holla-button').should('be.visible').should('be.disabled')
-    cy.get('[name="email"]').clear().type(Cypress.env('ADMIN_USER'))
-    cy.get('[name="password"]').clear().type(Cypress.env('ADMIN_PASS'))
-    cy.get('.holla-button').should('be.visible').should('be.enabled').click()
-    cy.get('.warning_text').should('not.exist') 
-    cy.wait(2000)
+And ('I login and check quick trade',()=>{
+  cy.visit(Cypress.env('LANDING_PAGE'))
+  cy.get('.quick_trade-section_wrapper > .holla-button').should('be.disabled')
+  cy.get('[href="/login"] > .holla-button').click()
+  cy.get('.holla-button').should('be.visible').should('be.disabled')
+  cy.get('[name="email"]').clear().type(Cypress.env('ADMIN_USER'))
+  cy.get('[name="password"]').clear().type(Cypress.env('ADMIN_PASS'))
+  cy.get('.holla-button').should('be.visible').should('be.enabled').click()
+  cy.get('.warning_text').should('not.exist') 
+  cy.wait(2000)
 })
 
 Then ('I visit the landing page in edit mode',()=>{
-    cy.visit(Cypress.env('LANDING_PAGE'))
-    cy.contains('Enter edit mode').click()
+  cy.visit(Cypress.env('LANDING_PAGE'))
+  cy.contains('Enter edit mode').click()
 })
 
 And ('I check the sequence of elements Title, Market list, and Quick trade calculator',()=>{
-    cy.get('[style="position: fixed; right: 5px; top: calc((100vh - 160px) / 2); z-index: 1;"] > .edit-wrapper__icons-container > .edit-wrapper__icon-wrapper')
-    .click()
-    cy.get('.operator-controls__modal-title').contains('Sections')
-    cy.get('table.mt-4 > tbody > :nth-child(1) > :nth-child(2)')
-    .contains('Title/heading',{ matchCase: false })
-    cy.get('table.mt-4 > tbody > :nth-child(2) > :nth-child(2)')
-    .contains('Card Section',{ matchCase: false })
-    cy.get('table.mt-4 > tbody > :nth-child(3) > :nth-child(2)')
-    .contains('Market list',{ matchCase: false })
-    cy.get('table.mt-4 > tbody > :nth-child(4) > :nth-child(2)')
-    .contains('Quick trade calculator',{ matchCase: false })
+  cy.log('Please wait while the test is running')
+  //cy.get('[style="position: fixed; right: 5px; top: calc((100vh - 160px) / 2); z-index: 1;"] > .edit-wrapper__icons-container > .edit-wrapper__icon-wrapper') .click()
+  cy.get('*').filter((index, element) => {
+    return Cypress.$(element).css('position') === 'fixed';
+    }).then((fixedElements) => {
+      // fixedElements now contains all elements with position: fixed
+      // You can interact with these elements as needed
+      // For example, clicking the first fixed element:
+      if (fixedElements.length > 0) {
+        cy.wrap(fixedElements[0]).click();
+      }
+    });
+   
+  cy.get('table.mt-4 > tbody > tr').then(($rows) => {
+      const numRows = $rows.length;
+      cy.log(numRows)
+      for (let n = 1; n <= numRows; n++) {
+        cy.get(`table.mt-4 > tbody > :nth-child(${n}) > :nth-child(2)`)
+        .invoke('text')
+        .then((text) => {
+          cy.log(text);
+          textsArray.push(n+'.'+text);
+          cy.log((JSON.stringify(textsArray)))
+    });
+    cy.log((JSON.stringify(textsArray)))
+      }
+      
+        // Select the last row of the 1st column
+        const lastRow = cy.get(`table.mt-4 > tbody > :nth-child(${numRows}) > :nth-child(1)`);
+          // Now you can perform actions with the last row element as needed
+      });
+   // Ensure both arrays have the same length
+   expect(arrangedElements.length).to.equal(textsArray.length);
+
+   // Loop through each element of arrangedElements and compare with textsArray
+   arrangedElements.forEach((element, index) => {
+     expect(element).to.equal(textsArray[index]);
+   });
 })
 
 When ('I change the sequence',()=>{
-    cy.get('table.mt-4 > tbody > :nth-child(1) > :nth-child(2)')
+  textsArray = []; 
+  cy.get('table.mt-4 > tbody > :nth-child(1) > :nth-child(2)')
     .drag('table.mt-4 > tbody > :nth-child(3) > :nth-child(2)',{force: true})
+
     cy.contains('Confirm',{ matchCase: false }).click()
     cy.contains('PUBLISH',{ matchCase: false }).click()
     cy.get('.d-flex > .ml-1').click()
-    cy.wait(2000)
-    cy.get('.mx-2 > :nth-child(3)')
-    cy.contains('Open-Source Crypto Exchange',{ matchCase: false })
-})
-Then ('Elements should move',()=>{
+    cy.wait(5000)
     cy.contains('Enter edit mode').click()
-    cy.get('[style="position: fixed; right: 5px; top: calc((100vh - 160px) / 2); z-index: 1;"] > .edit-wrapper__icons-container > .edit-wrapper__icon-wrapper')
-    .click()
-    cy.get('.operator-controls__modal-title').contains('Sections')
-    cy.get('table.mt-4 > tbody > :nth-child(4) > :nth-child(2)')
-    .contains('Title/heading',{ matchCase: false })
-    cy.get('table.mt-4 > tbody > :nth-child(1) > :nth-child(2)')
-    .contains('Card section',{ matchCase: false })
-    cy.get('table.mt-4 > tbody > :nth-child(2) > :nth-child(2)')
-    .contains('Market list',{ matchCase: false })
-   
-    cy.get('table.mt-4 > tbody > :nth-child(1) > :nth-child(2)')
-    .drag('table.mt-4 > tbody > :nth-child(4) > :nth-child(2)',{force: true})
-    cy.contains('Confirm',{ matchCase: false }).click()
+    cy.get('*').filter((index, element) => {
+      return Cypress.$(element).css('position') === 'fixed';
+  }).then((fixedElements) => {
+      // fixedElements now contains all elements with position: fixed
+      if (fixedElements.length > 0) {
+          // Create an alias for the first fixed element
+          cy.wrap(fixedElements[0]).as('firstFixedElement').click();
+      }
+  });
 
-    cy.wait(2000)
-    cy.get('[style="position: fixed; right: 5px; top: calc((100vh - 160px) / 2); z-index: 1;"] > .edit-wrapper__icons-container > .edit-wrapper__icon-wrapper')
-    .click()
-    cy.get('table.mt-4 > tbody > :nth-child(1) > :nth-child(2)')
-    .drag('table.mt-4 > tbody > :nth-child(4) > :nth-child(2)',{force: true})
-    cy.contains('Confirm',{ matchCase: false }).click()
+    cy.get('table.mt-4 > tbody > tr').then(($rows) => {
+      const numRows = $rows.length;
+      cy.log(numRows)
+      for (let n = 1; n <= numRows; n++) {
+        cy.get(`table.mt-4 > tbody > :nth-child(${n}) > :nth-child(2)`)
+        .invoke('text')
+        .then((text) => {
+          cy.log
+          cy.log(text);
+          textsArray.push(n+'.'+text);
+          cy.log((JSON.stringify(textsArray)))
+    });
+    cy.log((JSON.stringify(textsArray)))
+      }
+      
+        // Select the last row of the 1st column
+        const lastRow = cy.get(`table.mt-4 > tbody > :nth-child(${numRows}) > :nth-child(1)`);
+              // Now you can perform actions with the last row element as needed
+      });
 
-    cy.wait(2000)
-    cy.get('[style="position: fixed; right: 5px; top: calc((100vh - 160px) / 2); z-index: 1;"] > .edit-wrapper__icons-container > .edit-wrapper__icon-wrapper')
-    .click()
-    cy.get('table.mt-4 > tbody > :nth-child(1) > :nth-child(2)')
-    .drag('table.mt-4 > tbody > :nth-child(4) > :nth-child(2)',{force: true})
+      cy.get('.action_notification-text > .anticon > svg').click()
+})
+Then ('Elements should be arranged',()=>{
+  arrangedElements = []
+  elementPositions= []
+  // Get the position of each element
+  cy.wrap(elementsToArrange).each((element) => { cy.contains(element, { matchCase: false }).then(($el) => {
+    $el[0].scrollIntoView();
+    const position = $el.offset()
+    cy.log(element,position)
+    const { top } = position;
+    elementPositions.push({ element: elementDescriptions[element] || element, top });
+    });
+   }).then(() => {
+     // Sort elements by their top position
+     elementPositions.sort((a, b) => a.top - b.top);
+     cy.log(JSON.stringify(elementPositions))
+     // Store the arranged elements in an array
+     const arrangedElements = elementPositions.map((item) => item.element);
+      // Log the arranged elements
+     cy.log('Elements arranged from top to down:');
+     arrangedElements.forEach((item) => {
+       cy.log(item);
+    });
+       // Ensure both arrays have the same length
+   expect(arrangedElements.length).to.equal(textsArray.length);
+
+   // Loop through each element of arrangedElements and compare with textsArray
+   textsArray.forEach((element, index) => {
+    // Remove numbering and period (e.g., "1.Market list" becomes "Market list")
+    const cleanElement = element.substring(element.indexOf('.') + 1).trim();
+    expect(cleanElement).to.equal(arrangedElements[index]);
+  });
+ 
+  });
+    
 })
 
-And ('I arrange elements in Market list, and Quick trade calculator',()=>{
-    cy.contains('Confirm',{ matchCase: false }).click()
-    cy.contains('PUBLISH',{ matchCase: false }).click()
-    cy.get('.d-flex > .ml-1').click()
-    cy.wait(2000)
-    cy.get('.mx-2 > :nth-child(3)')
-    cy.contains('Open-Source Crypto Exchange',{ matchCase: false })
-})

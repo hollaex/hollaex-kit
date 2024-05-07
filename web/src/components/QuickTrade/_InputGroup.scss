@@ -1,6 +1,7 @@
 .quick-trade-select-wrapper {
 	.input-group__coin-icons-wrap {
 		display: flex;
+		pointer-events: none;
 	}
 }
 .input-group__container {

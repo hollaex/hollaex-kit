@@ -115,6 +115,14 @@
         "USER_DELETED": {
 			"html": "<div><p><p>${name} 様 </p></p><p>アカウント削除のリクエストが進行中です。 あなたのアカウントの情報は利用規約に従って削除されます。</p><p> よろしく<br> ${api_name} チーム </p></div>",
 			"title": "アカウント削除リクエスト"
-		}
+		},
+        "OTP_DISABLED": {
+            "html": "<div> <p> ${name} 様 </p> <p> お客様のアカウントで<b>二段階認証（2FA）が無効になったことを記録しました</b>。 アカウントを保護するために2FAを再度有効にすることを強くお勧めします。</p> <div> <div>時間: ${time}</div> <div>国: ${country}</div> <div>IPアドレス: ${ip}</div> </div> <p> もしこれがあなたでない場合、すぐにお問い合わせください。 </p> <p> 敬具<br> ${api_name} チーム </p> </div>",
+            "title": "OTP 無効化"
+          },
+        "OTP_ENABLED": {
+            "html": "<div> <p> ${name} 様 </p> <p> お客様のアカウントで<b>二段階認証（2FA）が有効になったことを記録しました</b>。</p> <div> <div>時間: ${time}</div> <div>国: ${country}</div> <div>IPアドレス: ${ip}</div> </div> <p> 敬具<br> ${api_name} チーム </p> </div>",
+            "title": "OTP 有効化"
+        }
     }
 }

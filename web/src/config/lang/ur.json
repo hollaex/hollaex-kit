@@ -169,7 +169,9 @@
         "OTP_PLACEHOLDER": "تصدیقی کوڈ درج کریں۔",
         "OTP_TITLE": "تصدیق کنندہ کوڈ",
         "OTP_BUTTON": "جمع کرائیں",
-        "ERROR_INVALID": "غلط او ٹی پی کوڈ"
+        "ERROR_INVALID": "غلط او ٹی پی کوڈ",
+        "OTP_FORM_SUBNOTE_LINE_3": "(To add a new account to Google Authenticator, click the '+' button. You can either scan the provided QR code in the previous step or manually enter the key to add your account to the app.)",
+        "INPUT_TEXT": "Input the 6-digit code from your phone's Google Authenticator app:"
     },
     "EMAIL_CODE_FORM": {
         "TITLE": "اپنے سیکیورٹی کوڈز داخل کریں۔",
@@ -582,7 +584,8 @@
         "INTERNAL": "اندرونی",
         "BLOCKCHAIN": "بلاکچین",
         "STAKE": "داؤ",
-        "REFERRAL": "حوالہ"
+        "REFERRAL": "حوالہ",
+        "QUICK_TRADE_TOOLTIP": "Order executed through convert system"
     },
     "ACCOUNT_SECURITY": {
         "TITLE_TEXT": "اپنے اکاؤنٹ کے لیے سیکیورٹی کی ترتیبات کو ایڈجسٹ کریں۔ دو عنصر کی توثیق، پاس ورڈ، اے پی ای کیز اور سیکیورٹی سے متعلق دیگر افعال سے۔",
@@ -605,15 +608,46 @@
                 "MESSAGE_3": "اگر آپ کو اسے اسکین کرنے میں دشواری پیش آتی ہے، تو آپ دستی طور پر نیچے کا کوڈ درج کر سکتے ہیں۔",
                 "MESSAGE_4": "اگر آپ مستقبل میں اپنا موبائل فون تبدیل کرتے ہیں یا کھو دیتے ہیں تو آپ کو اس کوڈ کو محفوظ طریقے سے اپنے دو فیکٹر توثیقی کوڈ کو بحال کرنے کے لیے محفوظ کرنا چاہیے۔",
                 "MESSAGE_5": "مینول",
-                "WARNING": "ہم آپ کو دو فیکٹر توثیقی کوڈ  کی انتہائی سفارش کرتے ہیں۔ ایسا کرنے سے آپ کے فنڈز کی سیکیورٹی میں بہت اضافہ ہوگا۔",
+                "WARNING": "ہم {0} {1}",
                 "ENABLE": "دو فیکٹر توثیقی کوڈ کو فعال کریں۔",
                 "DISABLE": "دو فیکٹر توثیقی کوڈ کو غیر فعال کریں۔",
-                "INPUT": "براہ کرم اپنا او ٹی پی درج کریں۔"
+                "INPUT": "براہ کرم اپنا او ٹی پی درج کریں۔",
+                "STRONGLY_RECOMMEND": "سختی سے سفارش کرتے ہیں",
+                "WARNING_CONTENT": "کہ آپ اپنے اکاؤنٹ کی سیکیورٹی کو بڑھانے اور اپنے فنڈز کی حفاظت کے لیے دو عنصری تصدیق کو فعال کرتے ہیں۔"
             },
             "FORM": {
                 "PLACEHOLDER": "گوگل تصدیق کنندہ کے ذریعے فراہم کردہ اپنا او ٹی پی درج کریں۔",
                 "BUTTON": "دو فیکٹر توثیقی کوڈ کو فعال کریں۔ "
-            }
+            },
+            "DOWNLOAD_APP": "Download and install",
+            "GOOGLE_AUTHENTICATOR": "Google Authenticator:",
+            "DOWNLOAD_FROM": "Download from",
+            "GOOGLE_PLAY": "GooglePlay",
+            "APPLE": "App Store",
+            "APP_INFO": "Google Authenticator will generate random codes that are necessary for sensitive actions, such as logging in and withdrawing funds.",
+            "DONT_UNINSTALL": "براہ کرم ایپ کو ان انسٹال نہ کریں۔",
+            "INFO_UNINSTALL": "فون کے حادثاتی نقصان یا غیر ارادی طور پر ان انسٹال ہونے کی صورت میں، آپ کو اپنے اکاؤنٹ تک دوبارہ رسائی حاصل کرنے میں تاخیر کا سامنا کرنا پڑ سکتا ہے۔ ایسے معاملات میں، آپ کو مدد کے لیے ہماری سپورٹ ٹیم سے رابطہ کرنے کی ضرورت ہوگی۔",
+            "BACK": "پیچھے",
+            "PROCEED": "آگے بڑھو",
+            "NEXT": "اگلے",
+            "NOTE": "نوٹ: {0} {1}",
+            "MANUEL_DESCRIPTION": "براہ کرم پچھلے مرحلے سے دستی 2FA بیج درج کریں۔",
+            "MANUEL_DESCRIPTION_2": "براہ کرم احتیاط سے مندرجہ بالا دستی توثیق کو لکھ کر محفوظ کریں۔",
+            "MANUEL_DESCRIPTION_3": "کلید کیونکہ اسے اکاؤنٹ کی بازیابی کے لیے استعمال کیا جا سکتا ہے۔",
+            "MANUEL_KEY": "دستی 2FA بیج",
+            "MANUEL_PLACEHOLDER": "اپنا 2FA بیج درج کریں۔",
+            "MANUEL_WARNING": "(یقینی بنائیں کہ آپ نے اسے لکھ لیا ہے اور اسے مستقبل کے استعمال کے لیے محفوظ طریقے سے محفوظ کر لیا ہے۔)",
+            "MANUEL_ERROR_1": "براہ کرم دستی 2FA بیج درج کریں۔",
+            "MANUEL_ERROR_2": "براہ کرم پچھلے مرحلے سے دستی 2FA بیج داخل کریں۔",
+            "ACCOUNT_SECURED": "اکاؤنٹ محفوظ",
+            "2FA_ENABLED": "2FA فعال",
+            "2FA_DISABLED": "2FA غیر فعال",
+            "2FA_CONTENT_ONE": "{0} {1} کو چالو کیا جا رہا ہے۔",
+            "2FA_CONTENT_TWO": "(Two-factor Authentication) آپ کے فنڈز کی حفاظت کے لیے تحفظ کی ایک اضافی پرت کا اضافہ کرتا ہے۔ ایک بار فعال ہونے کے بعد، آپ کو ہر بار لاگ ان کرنے یا اثاثے نکالنے پر اپنے فون سے ایک تصدیقی کوڈ درج کرنے کی ضرورت ہوگی۔ یہ فیچر نمایاں طور پر آپ کے اکاؤنٹ کی سیکیورٹی کو بڑھاتا ہے۔",
+            "2FA_CONTENT_THREE": "(Two-factor Authentication) آپ کے فنڈز کی حفاظت کے لیے تحفظ کی ایک اضافی پرت کا اضافہ کرتا ہے۔",
+            "2FA_CONTENT_FOUR": "2FA کو غیر فعال کرنے کے لیے آپ کو اپنا 2FA (OTP) کوڈ درج کرنا ہوگا۔",
+            "INPUT_SIX_DIGIT_CODE": "اپنے فون کی Google Authenticator ایپ سے 6 ہندسوں کا کوڈ داخل کریں:",
+            "INPUT_CONTENT": "(Google Authenticator میں نیا اکاؤنٹ شامل کرنے کے لیے، '+' بٹن پر کلک کریں۔ آپ پچھلے مرحلے میں فراہم کردہ QR کوڈ کو اسکین کر سکتے ہیں یا ایپ میں اپنا اکاؤنٹ شامل کرنے کے لیے دستی طور پر کلید درج کر سکتے ہیں۔)"
         },
         "CHANGE_PASSWORD": {
             "TITLE": "پاس ورڈ",
@@ -1520,7 +1554,12 @@
         "SELECT_END_DATE": "اختتامی تاریخ منتخب کریں۔",
         "CUSTOM": "اپنی مرضی کے مطابق",
         "BACK_CUSTOM": "پیچھے",
-        "PROOCED_CUSTOM": "آگے بڑھایا"
+        "PROOCED_CUSTOM": "آگے بڑھایا",
+        "PL_DAYS": "دن P&L",
+        "VIEW_MORE": "مزید دیکھیں {0}",
+        "SHOW_ASSET_BREAKDOWN": "اثاثوں کی خرابی دکھائیں۔",
+        "PL_SUMMARY": "P&L کا خلاصہ",
+        "BALANCE_HISTORY": "توازن کی تاریخ"
     },
     "ASSET_INFO": "اثاثہ کی معلومات",
     "TAKER_FEES_APPLIED": "لینے والے کی فیس لاگو ہوتی ہے۔",
@@ -1563,7 +1602,8 @@
         },
         "LIST": "اپنے ڈیجیٹل اثاثوں کی فہرست بنانا چاہتے ہیں؟",
         "WEBSITE": "ویب سائٹ",
-        "EXPLORER": "ایکسپلورر"
+        "EXPLORER": "ایکسپلورر",
+        "PRO_TRADE": "{0} مارکیٹ دیکھیں"
     },
     "ACCORDIAN": {
         "ACCORDIAN_ASSETS": "تمام بٹوے کے اثاثے۔",
@@ -1695,5 +1735,6 @@
                 "CONFIRM": "تصدیق کریں۔"
             }
         }
-    }
+    },
+    "CANCEL_WITHDRAWAL_ADDRESS": "واپسی کا پتہ"
 }

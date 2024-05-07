@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import classnames from 'classnames';
 import math from 'mathjs';
+import { CaretUpOutlined, CaretDownFilled } from '@ant-design/icons';
 
 import { Table, ActionNotification, Coin } from 'components';
 import { getFormatTimestamp } from 'utils/utils';
@@ -10,12 +11,26 @@ import { subtract } from '../utils';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 
+const rendercaret = (label, onHandleClick) => {
+	return (
+		<div className="d-flex mt-2">
+			{STRINGS[label]}
+			<div className="d-flex flex-column mx-2">
+				<CaretUpOutlined onClick={() => onHandleClick('caretUp', label)} />
+				<CaretDownFilled onClick={() => onHandleClick('caretDown', label)} />
+			</div>
+		</div>
+	);
+};
+
 const generateHeaders = (
 	pairs = {},
 	onCancel,
 	onCancelAll,
 	ICONS,
-	activeOrdersMarket
+	activeOrdersMarket,
+	orders,
+	onHandleClick
 ) => [
 	{
 		stringId: 'PAIR',
@@ -64,14 +79,14 @@ const generateHeaders = (
 	//   },
 	// },
 	!isMobile && {
-		label: STRINGS['TIME'],
+		label: rendercaret('TIME', onHandleClick),
 		key: 'created_At',
 		renderCell: ({ created_at = '' }, key, index) => {
 			return <td key={index}>{getFormatTimestamp(created_at)}</td>;
 		},
 	},
 	{
-		label: STRINGS['PRICE'],
+		label: rendercaret('PRICE', onHandleClick),
 		key: 'price',
 		renderCell: ({ price = 0, symbol }, key, index) => {
 			let pairData = pairs[symbol] || {};
@@ -194,6 +209,25 @@ const ActiveOrders = ({
 	activeOrdersMarket,
 	pageSize,
 }) => {
+	const [filteredOrders, setFilteredOrders] = useState([...orders]);
+
+	useEffect(() => {
+		setFilteredOrders(orders);
+	}, [orders]);
+
+	const onHandleClick = (type, label) => {
+		const filteredData = filteredOrders.sort((a, b) => {
+			if (label === 'TIME') {
+				return type === 'caretUp'
+					? new Date(a.created_at) - new Date(b.created_at)
+					: new Date(b.created_at) - new Date(a.created_at);
+			} else {
+				return type === 'caretUp' ? a.price - b.price : b.price - a.price;
+			}
+		});
+		setFilteredOrders((prev) => [...prev, ...filteredData]);
+	};
+
 	return (
 		<div
 			className={
@@ -208,10 +242,12 @@ const ActiveOrders = ({
 					onCancel,
 					onCancelAll,
 					ICONS,
-					activeOrdersMarket
+					activeOrdersMarket,
+					orders,
+					onHandleClick
 				)}
 				cancelDelayData={cancelDelayData}
-				data={orders}
+				data={filteredOrders}
 				count={orders.length}
 				showAll={true}
 				displayPaginator={false}

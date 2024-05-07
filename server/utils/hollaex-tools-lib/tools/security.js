@@ -87,34 +87,8 @@ const checkIp = async (remoteip = '') => {
 };
 
 const checkCaptcha = (captcha = '', remoteip = '') => {
-	if (!captcha) {
-		if (NODE_ENV === 'development') {
-			return resolve();
-		} else {
-			return reject(new Error(INVALID_CAPTCHA));
-		}
-	} else if (!getKitSecrets().captcha || !getKitSecrets().captcha.secret_key) {
-		return resolve();
-	}
-
-	const options = {
-		method: 'POST',
-		form: {
-			secret: getKitSecrets().captcha.secret_key,
-			response: captcha,
-			remoteip
-		},
-		uri: CAPTCHA_ENDPOINT
-	};
-
-	return rp(options)
-		.then((response) => JSON.parse(response))
-		.then((response) => {
-			if (!response.success) {
-				throw new Error(INVALID_CAPTCHA);
-			}
-			return;
-		});
+	// Google Recaptcha is deprecated feature from v2.10.3.
+	return;
 };
 
 const validatePassword = (userPassword, inputPassword) => {
@@ -382,7 +356,8 @@ const checkOtp = (userId) => {
  */
 const generateOtpSecret = () => {
 	const seed = otp({
-		name: getKitConfig().api_name
+		name: getKitConfig().api_name,
+		keySize: 16
 	});
 	return seed.secret;
 };
@@ -542,9 +517,9 @@ const verifyBearerTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = fa
 	} else if (!has(req.headers, 'api-key') && has(req.headers, 'authorization')) {
 
 		// Swagger endpoint scopes
-		const endpointScopes = req.swagger
+		const endpointScopes = (req.swagger
 			? req.swagger.operation['x-security-scopes']
-			: BASE_SCOPES;
+			: BASE_SCOPES) || [];
 
 		let ip = req.headers ? req.headers['x-real-ip'] : undefined;
 
@@ -564,6 +539,10 @@ const verifyBearerTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = fa
 						decodedToken.ip,
 						decodedToken.sub
 					);
+
+					if (req?.path?.includes('/admin') && !endpointScopes?.includes(ROLES.ADMIN)) {
+						endpointScopes.push(ROLES.ADMIN);
+					}
 
 					// Check set of permissions that are available with the token and set of acceptable permissions set on swagger endpoint
 					if (intersection(decodedToken.scopes, endpointScopes).length === 0) {
@@ -817,6 +796,10 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 	} else {
 		return findTokenByApiKey(apiKey)
 			.then((token) => {
+				if (originalUrl?.includes('/admin') && !scopes?.includes(ROLES.ADMIN)) {
+					scopes.push(ROLES.ADMIN);
+				}
+
 				if(token.role !== ROLES.ADMIN && scopes.includes(ROLES.ADMIN)) {
 					throw new Error(NOT_AUTHORIZED);
 				}
@@ -877,8 +860,8 @@ const createSession = async (token, loginId, userId) => {
 
 	const userRole = await getUserRole({ kit_id: userId });
 
-	const base64Payload = token.split(".")[1];
-	const payloadBuffer = Buffer.from(base64Payload, "base64");
+	const base64Payload = token.split('.')[1];
+	const payloadBuffer = Buffer.from(base64Payload, 'base64');
 	const decoded = JSON.parse(payloadBuffer.toString());
 
 	const hashedToken = crypto.createHash('md5').update(token).digest('hex');
@@ -890,15 +873,15 @@ const createSession = async (token, loginId, userId) => {
 		status: true,
 		last_seen: new Date(),
 		expiry_date: new Date(decoded.exp * 1000)
-	})
-}
+	});
+};
 
 const getExpirationDateInSeconds = (expiryDate) => {
 	const end = moment(expiryDate);
 	const now = moment(new Date());
 	const duration = moment.duration(moment(end).diff(now));
 	return Number(duration.asSeconds().toFixed(0));
-}
+};
 
 const verifySession = async (token) => {
 
@@ -933,13 +916,13 @@ const verifySession = async (token) => {
 	}
 
 	return session;
-}
+};
 
 const findSession = async (token) => {
 
 	const hashedToken = crypto.createHash('md5').update(token).digest('hex');
 
-	let session = await client.getAsync(hashedToken)
+	let session = await client.getAsync(hashedToken);
 	
 	if (!session) {
 		loggerAuth.verbose(
@@ -971,7 +954,7 @@ const findSession = async (token) => {
 		);
 		return JSON.parse(session);
 	}
-}
+};
 
 /**
  * Function that checks to see if user's scope is valid for the endpoint.

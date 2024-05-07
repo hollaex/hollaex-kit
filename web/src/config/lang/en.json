@@ -4,8 +4,9 @@
 	"LOGOUT_CONFIRM_TEXT": "Are you sure you want to logout?",
 	"ADD_TRADING_PAIR": "Select a market",
 	"TRADE_TOOLS": "Tools",
-	"CANCEL_BASE_WITHDRAWAL": "Cancel {0} Withdrawal",
-	"CANCEL_WITHDRAWAL": "Cancel Withdrawal",
+	"CANCEL_BASE_WITHDRAWAL": "Cancel {0}",
+	"CANCEL_WITHDRAWAL_ADDRESS": "Withdrawal Address",
+	"CANCEL_WITHDRAWAL": "Cancel",
 	"CANCEL_WITHDRAWAL_POPUP_CONFIRM": "Do you want to cancel your pending withdrawal of:",
 	"TIMESTAMP_FORMAT": "YYYY/MM/DD HH:mm:ss",
 	"DEFAULT_TIMESTAMP_FORMAT": "DD, MMMM, YYYY",
@@ -183,11 +184,13 @@
 		"OTP_FORM_INFO": "Enter your 6-digit code to continue",
 		"OTP_FORM_SUBNOTE_LINE_1": "Your code is also known as a two-factor authenticator (2FA) or OTP code.",
 		"OTP_FORM_SUBNOTE_LINE_2": "If you've lost your code, please reach out to support.",
+		"OTP_FORM_SUBNOTE_LINE_3": "(To add a new account to Google Authenticator, click the '+' button. You can either scan the provided QR code in the previous step or manually enter the key to add your account to the app.)",
 		"OTP_LABEL": "OTP Code",
 		"OTP_PLACEHOLDER": "Enter the authentication code",
 		"OTP_TITLE": "Authenticator Code",
 		"OTP_BUTTON": "submit",
-		"ERROR_INVALID": "Invalid OTP Code"
+		"ERROR_INVALID": "Invalid OTP Code",
+		"INPUT_TEXT": "Input the 6-digit code from your phone's Google Authenticator app:"
 	},
 	"EMAIL_CODE_FORM": {
 		"TITLE": "Input you security codes",
@@ -201,7 +204,7 @@
 		"OTP_PLACEHOLDER": "Enter your 6-digit two-factor authentication code"
 	},
 	"QUICK_TRADE_COMPONENT": {
-		"TITLE": "Quick Trade",
+		"TITLE": "Convert",
 		"BUTTON": "Review Quick Trade",
 		"INFO": "Fastest and simplest way to trade your crypto",
 		"CHANGE_TEXT": "change",
@@ -605,30 +608,52 @@
 		"INTERNAL": "internal",
 		"BLOCKCHAIN": "blockchain",
 		"STAKE": "stake",
-		"REFERRAL": "referral"
+		"REFERRAL": "referral",
+		"QUICK_TRADE_TOOLTIP": "Order executed through convert system"
 	},
 	"ACCOUNT_SECURITY": {
 		"TITLE_TEXT": "Adjust the security settings for your account. From Two-factor authentication, password, API keys and other security related functions.",
 		"OTP": {
+			"DOWNLOAD_APP": "Download and install",
+			"GOOGLE_AUTHENTICATOR": "Google Authenticator:",
+			"DOWNLOAD_FROM": "Download from",
+			"GOOGLE_PLAY": "GooglePlay",
+			"APPLE": "App Store",
+			"APP_INFO": "Google Authenticator will generate random codes that are necessary for sensitive actions, such as logging in and withdrawing funds.",
+			"DONT_UNINSTALL": "Please do not uninstall the app.",
+			"INFO_UNINSTALL": "In the event of accidental phone loss or unintentional uninstallation, you may experience delays in regaining access to your account. In such cases, you will need to contact our support team for assistance.",
 			"TITLE": "2FA",
 			"OTP_ENABLED": "otp enabled",
 			"OTP_DISABLED": "PLEASE TURN ON 2FA",
+			"BACK": "BACK",
+			"PROCEED": "PROCEED",
+			"NEXT": "Next",
+			"NOTE": "Note: {0} {1}",
+			"MANUEL_DESCRIPTION": "Please enter the manual 2FA seed from the previous step.",
+			"MANUEL_DESCRIPTION_2": "Please carefully write down and store the above manual verification",
+			"MANUEL_DESCRIPTION_3": "key as it can be used for account recovery.",
+			"MANUEL_KEY": "Manual 2FA seed",
+			"MANUEL_PLACEHOLDER": "Enter your 2FA seed",
+			"MANUEL_WARNING": "(Make sure you have written it down and stored it safely for future use.)",
+			"MANUEL_ERROR_1": "Please enter the manual 2FA seed",
+			"MANUEL_ERROR_2": "Please input the manual 2FA seed from the previous step",
 			"ENABLED_TEXTS": {
 				"TEXT_1": "Require OTP when logging in",
 				"TEXT_2": "Require OTP when withdrawing funds"
 			},
 			"DIALOG": {
-				"SUCCESS": "You have successfully activated 2FA",
-				"REVOKE": "You have successfully deactivated 2FA"
+				"SUCCESS": "You've successfully enabled 2FA",
+				"REVOKE": "You've disabled 2FA"
 			},
 			"CONTENT": {
-				"TITLE": "Activate Two-Factor Authentication",
-				"MESSAGE_1": "Scan",
-				"MESSAGE_2": "Scan the qrcode below with Google Authenticator or Authy to automatically setup two-factor authentication in your device.",
+				"TITLE": "2FA Setup",
+				"MESSAGE_1": "Scan the QR code with Google Authenticator app below :",
 				"MESSAGE_3": "If you have problems scanning this, you can manually enter the code below",
 				"MESSAGE_4": "You must store this code securely to recover your 2FA in case you change or lose your mobile phone in future.",
-				"MESSAGE_5": "Manual",
-				"WARNING": "We highly recommend you set up two-factor authentication (2FA). Doing so will greatly increase the security of your funds.",
+				"MESSAGE_5": "Manual 2FA seed:",
+				"WARNING": "We {0} {1}",
+				"STRONGLY_RECOMMEND": "strongly recommend",
+				"WARNING_CONTENT": "that you enable two-factor authentication to enhance the security of your account and protect your funds",
 				"ENABLE": "Enable Two-Factor Authentication",
 				"DISABLE": "Disable Two-Factor Authentication",
 				"INPUT": "Please enter your OTP"
@@ -636,7 +661,16 @@
 			"FORM": {
 				"PLACEHOLDER": "Enter your OTP provided by Google Authenticator.",
 				"BUTTON": "Enable 2FA"
-			}
+			},
+			"ACCOUNT_SECURED": "Account Secured",
+			"2FA_ENABLED": "2FA ENABLED",
+			"2FA_DISABLED": "2FA DISABLED",
+			"2FA_CONTENT_ONE": "Activating {0} {1} .",
+			"2FA_CONTENT_TWO": "(Two-Factor Authentication) adds an extra layer of protection to safeguard your funds. Once enabled, you will be required to enter a verification code from your phone each time you log in or withdraw assets. This feature significantly enhances the security of your account",
+			"2FA_CONTENT_THREE": "(Two-Factor Authentication) adds an extra layer of protection to safeguard your funds",
+			"2FA_CONTENT_FOUR": "To disable 2FA you will need to enter your 2FA (OTP) code",
+			"INPUT_SIX_DIGIT_CODE": "Input the 6-digit code from your phone's Google Authenticator app:",
+			"INPUT_CONTENT": "(To add a new account to Google Authenticator, click the '+' button. You can either scan the provided QR code in the previous step or manually enter the key to add your account to the app.)"
 		},
 		"CHANGE_PASSWORD": {
 			"TITLE": "Password",
@@ -1530,6 +1564,7 @@
 		"WALLET_PERFORMANCE_TITLE": "Balance performance",
 		"WALLET_PERFORMANCE_DESCRIPTION": "Your wallet's balance performance over time and the asset breakdown. Click the dates below to see your wallet's performance on that day.",
 		"PL_7_DAY": "7 Day P&L",
+		"PL_DAYS": "Day P&L",
 		"EST_TOTAL_BALANCE": "Est. Total Balance",
 		"WEEK": "week",
 		"MONTH": "month",
@@ -1541,13 +1576,17 @@
 		"ASSET_NAME": "Asset name",
 		"BALANCE_AMOUNT": "Balance Amount",
 		"VALUE": "Value",
-		"PERFORMANCE_TREND": "7 Day Performance Trend",
+		"PERFORMANCE_TREND": "7 Day Balance Trend",
 		"CUSTOM_DATE_DESCRIPTION": "Select specific dates to fetch your history data (date difference cannot go further than 3 months)",
 		"SELECT_START_DATE": "Select start date",
 		"SELECT_END_DATE": "Select end date",
 		"CUSTOM": "Custom",
 		"BACK_CUSTOM": "BACK",
-		"PROOCED_CUSTOM": "PROOCED"
+		"PROOCED_CUSTOM": "PROOCED",
+		"VIEW_MORE": "View More {0}",
+		"SHOW_ASSET_BREAKDOWN": "Show Asset Breakdown",
+		"PL_SUMMARY": "P&L Summary",
+		"BALANCE_HISTORY": "Balance History"
 	},
 	"ASSET_INFO": "Asset info",
 	"TAKER_FEES_APPLIED": "Taker fees are applied",
@@ -1557,8 +1596,8 @@
 		"GO_BACK": "Go back",
 		"ASSETS_INFO": "Below are available assets on the platform.",
 		"ASSETS_INFO_DETAIL": "You can click an asset on the list below to learn more.",
-		"QUICK_TRADE": "QUICK TRADE",
-		"PRO_TRADE": "PRO TRADE",
+		"QUICK_TRADE": "CONVERT",
+		"PRO_TRADE": "MARKETS",
 		"MARKETS": "MARKETS",
 		"WALLET": "WALLET",
 		"PRICE_SOURCE": "Price source",
@@ -1581,7 +1620,8 @@
 		"MORE": "More",
 		"INFO": "info",
 		"TRADE": "TRADE",
-		"QUICK_TRADE": "QUICK TRADE {0}",
+		"QUICK_TRADE": "CONVERT {0}",
+		"PRO_TRADE": "VIEW {0} MARKET",
 		"PRICES": {
 			"TITLE": "Prices",
 			"QUICK_TRADE": "Quick Trade",

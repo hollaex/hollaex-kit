@@ -29,6 +29,7 @@ const InputField = (props) => {
 		onCrossClick,
 		showCross,
 		ishorizontalfield,
+		isFocus,
 		...rest
 	} = props;
 	const displayError = touched && error && !active;
@@ -46,6 +47,7 @@ const InputField = (props) => {
 					{...input}
 					{...rest}
 					onBlur={() => {}}
+					autoFocus={isFocus}
 				/>
 			</div>
 		</FieldWrapper>
