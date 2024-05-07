@@ -297,6 +297,30 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 			if (coin.deposit_fee && !isNumber(coin.deposit_fee)) {
 				throw new Error('deposit fee is not a number');
 			}
+			
+			if (coin.min && coin.min < 0) {
+				throw new Error('min amount cannot be negative');
+			}
+
+			if (coin.min && !isNumber(coin.min)) {
+				throw new Error('min amount is not a number');
+			}
+
+			if (coin.max && coin.max < 0) {
+				throw new Error('max amount cannot be negative');
+			}
+
+			if (coin.max && !isNumber(coin.max)) {
+				throw new Error('max amount is not a number');
+			}
+
+			if (coin.increment_unit && coin.increment_unit < 0) {
+				throw new Error('increment unit cannot be negative');
+			}
+
+			if (coin.increment_unit && !isNumber(coin.increment_unit)) {
+				throw new Error('increment unit is not a number');
+			}
 		}
 	}
 
