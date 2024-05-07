@@ -1273,7 +1273,7 @@ const ReferralList = ({
 										</EditWrapper>{' '}
 										<span
 											onClick={() => {
-												setDisplaySettle(true);
+												if (unrealizedEarnings > 0) setDisplaySettle(true);
 											}}
 											style={{
 												textDecoration: 'underline',
@@ -1489,7 +1489,7 @@ const ReferralList = ({
 									</EditWrapper>{' '}
 									<span
 										onClick={() => {
-											setDisplaySettle(true);
+											if (unrealizedEarnings > 0) setDisplaySettle(true);
 										}}
 										style={{
 											color: '#4E54BE',
