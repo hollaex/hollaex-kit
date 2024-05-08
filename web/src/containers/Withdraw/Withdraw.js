@@ -54,7 +54,6 @@ const RenderWithdraw = ({
 		getWithdrawAddress,
 		getWithdrawAmount,
 		setFee,
-		onHandleFiat,
 	} = rest;
 	const iconId = coins[getWithdrawCurrency]?.icon_id;
 	const coinLength =
@@ -160,7 +159,7 @@ const RenderWithdraw = ({
 			setWithdrawCurrency(val);
 			network = val ? val : coins[getWithdrawCurrency]?.symbol;
 			getWithdrawlMAx(val);
-			onHandleFiat(true);
+			// onHandleFiat(true);
 		} else if (!val) {
 			setWithdrawCurrency('');
 			setCurrStep((prev) => ({
