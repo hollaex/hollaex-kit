@@ -134,6 +134,7 @@ $content--margin: 2rem;
 				input {
 					background-color: var(--base_wallet-sidebar-and-popup);
 					color: $colors-main-black;
+					text-overflow: ellipsis;
 				}
 			}
 
@@ -143,12 +144,12 @@ $content--margin: 2rem;
 
 			.withdraw-main-label {
 				color: $colors-black;
+				font-size: 14px;
 			}
 
 			.withdraw-main-label-selected {
 				color: $colors-main-black;
 				text-wrap: nowrap;
-				font-size: 14px;
 			}
 
 			.side-icon-wrapper {
@@ -156,7 +157,7 @@ $content--margin: 2rem;
 				width: 15% !important;
 				height: 25%;
 
-				img {
+				svg {
 					width: 100%;
 					opacity: 0.1;
 				}
@@ -165,26 +166,25 @@ $content--margin: 2rem;
 			.custom-field {
 				.custom-step,
 				.custom-step-selected {
-					border: 1px solid $colors-black;
+					border: 2px solid $colors-black;
 					border-radius: 100%;
 					width: fit-content;
-					padding: 40% 100%;
+					padding: 10% 70%;
 				}
 
 				.custom-step-selected {
-					border: 1px solid $colors-main-black;
+					border: 2px solid $colors-main-black;
 				}
 
 				.custom-line,
 				.custom-line-selected {
 					border: 1px solid $colors-black;
-					height: 50px;
-					width: 1px;
-					margin: 100%;
+					height: 55px;
+					margin: 0 100%;
 				}
 
 				.custom-line-selected {
-					height: 100px;
+					height: 70px;
 					border: 1px solid $colors-main-black;
 				}
 			}
@@ -235,6 +235,26 @@ $content--margin: 2rem;
 				}
 			}
 
+			.opacity-100 {
+				opacity: 1;
+			}
+
+			.opacity-30 {
+				opacity: 0.3;
+			}
+
+			.ant-select-clear {
+				user-select: none;
+				width: 1.5rem;
+				height: 1.5rem;
+				border-radius: 50%;
+				background-color: $colors-main-black;
+				svg {
+					color: $app-sidebar-background;
+					font-size: 18px;
+				}
+			}
+
 			.ant-input-suffix {
 				width: 5rem;
 			}
@@ -264,6 +284,7 @@ $content--margin: 2rem;
 				margin-right: 10px;
 				width: 4rem;
 				text-align: center;
+				cursor: pointer;
 			}
 
 			.render-scan-wrapper {
@@ -289,9 +310,20 @@ $content--margin: 2rem;
 		.bottom-content {
 			margin-top: 3%;
 			margin-left: 30%;
+			.fee-fields {
+				color: $colors-black;
+			}
 		}
 
 		.btn-wrapper {
+			display: flex;
+			justify-content: center;
+			.holla-button {
+				width: 300px;
+			}
+		}
+
+		.withdraw-btn-wrapper {
 			display: flex;
 			margin-left: 30%;
 			margin-top: 5%;

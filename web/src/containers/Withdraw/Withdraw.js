@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { Button, Input, Select } from 'antd';
-import { Coin, EditWrapper } from 'components';
+import { Coin } from 'components';
 import STRINGS from 'config/localizedStrings';
 import {
 	CaretDownOutlined,
@@ -9,14 +11,25 @@ import {
 } from '@ant-design/icons';
 import { getNetworkNameByKey } from 'utils/wallet';
 import { STATIC_ICONS } from 'config/icons';
-import { getWithdrawalMax } from 'actions/appActions';
+import {
+	getWithdrawalMax,
+	setFee,
+	withdrawAddress,
+	withdrawAmount,
+	withdrawCurrency,
+	withdrawNetwork,
+	withdrawNetworkOptions,
+} from 'actions/appActions';
+import { getPrices } from 'actions/assetActions';
+import { renderEstimatedValueAndFee, renderWithdrawlabel } from './utils';
 
-export const RenderContent = ({
+const RenderWithdraw = ({
 	coins,
 	UpdateCurrency,
 	onOpenDialog,
 	assets,
 	pinnedAssets,
+	...rest
 }) => {
 	const { Option } = Select;
 
@@ -26,23 +39,73 @@ export const RenderContent = ({
 		stepThree: false,
 		stepFour: false,
 	});
-	const [currency, setCurrency] = useState('');
-	const [networkOptions, setNetworkOptions] = useState('');
-	// const [address, setAddress] = useState('');
 	const [maxAmount, setMaxAmount] = useState(0);
 	const [topAssets, setTopAssets] = useState([]);
+	const [selectedAsset, setSelectedAsset] = useState('');
+	const [prices, setPrices] = useState({});
 
-	const iconId = coins[currency]?.icon_id;
+	const {
+		setWithdrawCurrency,
+		setWithdrawNetworkOptions,
+		setWithdrawAddress,
+		setWithdrawAmount,
+		getWithdrawCurrency,
+		getWithdrawNetworkOptions,
+		getWithdrawAddress,
+		getWithdrawAmount,
+		setFee,
+		onHandleFiat,
+	} = rest;
+	const iconId = coins[getWithdrawCurrency]?.icon_id;
 	const coinLength =
-		coins[currency]?.network && coins[currency]?.network.split(',');
+		coins[getWithdrawCurrency]?.network &&
+		coins[getWithdrawCurrency]?.network.split(',');
 	let network =
-		coins[currency]?.network && coins[currency]?.network !== 'other'
-			? coins[currency]?.network
-			: coins[currency]?.symbol;
-	let isAmount = false;
+		coins[getWithdrawCurrency]?.network &&
+		coins[getWithdrawCurrency]?.network !== 'other'
+			? coins[getWithdrawCurrency]?.network
+			: coins[getWithdrawCurrency]?.symbol;
+
+	const curretPrice = prices[getWithdrawCurrency];
+	const estimatedWithdrawValue = curretPrice * getWithdrawAmount;
+	const fee =
+		selectedAsset &&
+		coins[selectedAsset].withdrawal_fees &&
+		Object.keys(coins[selectedAsset]?.withdrawal_fees).length &&
+		coins[selectedAsset].withdrawal_fees[selectedAsset]?.value
+			? coins[selectedAsset].withdrawal_fees[selectedAsset]?.value
+			: selectedAsset &&
+			  coins[selectedAsset].withdrawal_fees &&
+			  Object.keys(coins[selectedAsset]?.withdrawal_fees).length &&
+			  coins[selectedAsset].withdrawal_fees[getWithdrawNetworkOptions]?.value
+			? coins[selectedAsset].withdrawal_fees[getWithdrawNetworkOptions]?.value
+			: selectedAsset && coins[selectedAsset].withdrawal_fee
+			? coins[selectedAsset]?.withdrawal_fee
+			: 0;
+
+	const isAmount = useMemo(() => {
+		return (
+			!getWithdrawAddress ||
+			!getWithdrawCurrency ||
+			getWithdrawAmount <= 0 ||
+			getWithdrawAmount > maxAmount ||
+			maxAmount <= 0 ||
+			!network
+		);
+	}, [
+		getWithdrawAddress,
+		getWithdrawCurrency,
+		getWithdrawAmount,
+		maxAmount,
+		network,
+	]);
+
+	// useEffect(()=>{
+	// 	setDepositAndWithdraw(false);
+	// },[])
 
 	useEffect(() => {
-		const res = assets
+		const topWallet = assets
 			.filter((item, index) => {
 				return index <= 3;
 			})
@@ -52,35 +115,70 @@ export const RenderContent = ({
 		if (pinnedAssets.length) {
 			setTopAssets(pinnedAssets);
 		} else {
-			setTopAssets(res);
+			setTopAssets(topWallet);
 		}
 	}, [assets, pinnedAssets]);
 
 	useEffect(() => {
-		UpdateCurrency(currency);
-	}, [currency, UpdateCurrency]);
+		UpdateCurrency(getWithdrawCurrency);
+		setFee(fee);
+	}, [getWithdrawCurrency, UpdateCurrency, fee, setFee]);
+
+	const getWithdrawlMAx = async (getWithdrawCurrency, isMaxAmount = false) => {
+		try {
+			const res = await getWithdrawalMax(
+				getWithdrawCurrency && getWithdrawCurrency,
+				network
+			);
+			isMaxAmount && setWithdrawAmount(res?.data?.amount);
+			setMaxAmount(res?.data?.amount);
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
+	const getOraclePrices = async () => {
+		try {
+			const prices = await getPrices({ coins });
+			setPrices(prices);
+		} catch (error) {
+			console.error(error);
+		}
+	};
 
 	const onHandleChangeSelect = (val) => {
 		if (val) {
+			if (currStep.stepTwo || currStep.stepThree || currStep.stepFour) {
+				setCurrStep((prev) => ({
+					...prev,
+					stepTwo: false,
+					stepThree: false,
+					stepFour: false,
+				}));
+			}
 			setCurrStep((prev) => ({ ...prev, stepTwo: true }));
-			setCurrency(val);
-			network = val ? val : coins[currency]?.symbol;
+			setWithdrawCurrency(val);
+			network = val ? val : coins[getWithdrawCurrency]?.symbol;
+			getWithdrawlMAx(val);
+			onHandleFiat(true);
 		} else if (!val) {
-			setCurrency('');
+			setWithdrawCurrency('');
 			setCurrStep((prev) => ({
 				...prev,
 				stepTwo: false,
 				stepThree: false,
 				stepFour: false,
 			}));
-			setMaxAmount(0);
+			setWithdrawAmount(0);
 		}
+		setSelectedAsset(val);
+		getOraclePrices();
 	};
 
 	const onHandleChangeNetwork = (val) => {
 		if (val) {
 			setCurrStep((prev) => ({ ...prev, stepThree: true }));
-			setNetworkOptions(val);
+			setWithdrawNetworkOptions(val);
 		} else if (!val) {
 			setCurrStep((prev) => ({ ...prev, stepThree: false, stepFour: false }));
 		}
@@ -89,44 +187,24 @@ export const RenderContent = ({
 	const onHandleAddress = (val) => {
 		if (val) {
 			setCurrStep((prev) => ({ ...prev, stepFour: true }));
-			// setAddress(val)
+			setWithdrawAddress(val);
 		} else if (!val) {
 			setCurrStep((prev) => ({ ...prev, stepFour: false }));
 		}
 	};
 
-	const onHandleDisable = () => {};
-
-	const fetchWithdrawlMAx = async () => {
-		try {
-			const res = await getWithdrawalMax(
-				currency,
-				network
-				// !emailMethod ? this.props?.data?.network : 'email'
-			);
-			setMaxAmount(res?.data?.amount);
-			if (res?.data?.amount === 0) {
-				isAmount = true;
-			}
-		} catch (error) {
-			console.error(error);
-		}
-	};
-
 	const onHandleAmount = (val) => {
-		setMaxAmount(val);
+		setWithdrawAmount(val);
 	};
 
 	const renderAmountIcon = () => {
 		return (
 			<div
-				onClick={() => fetchWithdrawlMAx()}
+				onClick={() => getWithdrawlMAx(getWithdrawCurrency, true)}
 				className="d-flex render-amount-icon-wrapper"
 			>
 				<span className="suffix-text">
-					<EditWrapper stringId="CALCULATE_MAX">
-						{STRINGS['CALCULATE_MAX']}
-					</EditWrapper>
+					{renderWithdrawlabel('CALCULATE_MAX')}
 				</span>
 				<div className="img-wrapper">
 					<img alt="max-icon" src={STATIC_ICONS['MAX_ICON']} />
@@ -139,9 +217,7 @@ export const RenderContent = ({
 		return (
 			<div className="render-scan-wrapper d-flex">
 				<span className="suffix-text">
-					<EditWrapper stringId="ACCORDIAN.SCAN">
-						{STRINGS['ACCORDIAN.SCAN']}
-					</EditWrapper>
+					{renderWithdrawlabel('ACCORDIAN.SCAN')}
 				</span>
 				<div className="img-wrapper">
 					<img alt="scan-icon" src={STATIC_ICONS['QR_CODE_SCAN']}></img>
@@ -149,6 +225,13 @@ export const RenderContent = ({
 			</div>
 		);
 	};
+
+	const isSteps =
+		(coinLength && coinLength.length === 1) ||
+		(currStep.stepTwo && !coinLength) ||
+		currStep.stepThree;
+	const withdrawFeeFormat = `(≈ ${fee} ${getWithdrawCurrency?.toUpperCase()})`;
+	const estimatedFormat = `≈ ${estimatedWithdrawValue} ${getWithdrawCurrency?.toUpperCase()}`;
 
 	return (
 		<div className="mt-5">
@@ -161,9 +244,7 @@ export const RenderContent = ({
 						></span>
 					</div>
 					<div className="mt-2 ml-5 withdraw-main-label-selected">
-						<EditWrapper stringId="ACCORDIAN.SELECT_ASSET">
-							{STRINGS['ACCORDIAN.SELECT_ASSET']}
-						</EditWrapper>
+						{renderWithdrawlabel('ACCORDIAN.SELECT_ASSET')}
 					</div>
 				</div>
 				<div className="select-wrapper">
@@ -176,8 +257,8 @@ export const RenderContent = ({
 							placeholder="Select"
 							onChange={onHandleChangeSelect}
 							allowClear={true}
+							value={selectedAsset}
 						>
-							<Option value={null}>{STRINGS['ALL']}</Option>
 							{Object.entries(coins).map(
 								([_, { symbol, fullname, icon_id }]) => (
 									<Option key={symbol} value={symbol}>
@@ -191,9 +272,19 @@ export const RenderContent = ({
 						</Select>
 						{currStep.stepTwo && <CheckOutlined className="mt-3 ml-3" />}
 					</div>
-					<div className="mt-3 d-flex">
-						{topAssets.map((data) => {
-							return <span className="currency-label">{data}</span>;
+					<div className="mt-2 d-flex">
+						{topAssets.map((data, inx) => {
+							return (
+								<span
+									key={inx}
+									className={`currency-label ${
+										selectedAsset === data ? 'opacity-100' : 'opacity-30'
+									}`}
+									onClick={() => onHandleChangeSelect(data)}
+								>
+									{data}
+								</span>
+							);
 						})}
 					</div>
 				</div>
@@ -207,7 +298,14 @@ export const RenderContent = ({
 							2
 						</span>
 						<span
-							className={`custom-line${currStep.stepThree ? '-selected' : ''}`}
+							className={`custom-line${
+								(coinLength && coinLength.length === 1) ||
+								(currStep.stepTwo && !coinLength) ||
+								currStep.stepThree ||
+								currStep.stepTwo
+									? '-selected'
+									: ''
+							}`}
 						></span>
 					</div>
 					<div
@@ -215,9 +313,7 @@ export const RenderContent = ({
 							currStep.stepTwo ? '-selected' : ''
 						}`}
 					>
-						<EditWrapper stringId="ACCORDIAN.SELECT_NETWORK">
-							{STRINGS['ACCORDIAN.SELECT_NETWORK']}
-						</EditWrapper>
+						{renderWithdrawlabel('ACCORDIAN.SELECT_NETWORK')}
 					</div>
 				</div>
 				{currStep.stepTwo && (
@@ -238,8 +334,8 @@ export const RenderContent = ({
 									coinLength && coinLength.length <= 1
 										? getNetworkNameByKey(network)
 										: coinLength && coinLength.length > 1
-										? getNetworkNameByKey(networkOptions)
-										: coins[currency]?.symbol.toUpperCase()
+										? getNetworkNameByKey(getWithdrawNetworkOptions)
+										: coins[getWithdrawCurrency]?.symbol.toUpperCase()
 								}
 								disabled={
 									(coinLength && coinLength.length === 1) ||
@@ -262,9 +358,7 @@ export const RenderContent = ({
 						<div className="d-flex mt-2 warning-text">
 							<ExclamationCircleFilled className="mt-1" />
 							<div className="ml-2 w-75">
-								<EditWrapper stringId="DEPOSIT_FORM_NETWORK_WARNING">
-									{STRINGS['DEPOSIT_FORM_NETWORK_WARNING']}
-								</EditWrapper>
+								{renderWithdrawlabel('DEPOSIT_FORM_NETWORK_WARNING')}
 							</div>
 						</div>
 					</div>
@@ -273,9 +367,7 @@ export const RenderContent = ({
 			<div className="d-flex justify-content-between">
 				<div className="d-flex h-25">
 					<div className="custom-field d-flex flex-column">
-						<span
-							className={`custom-step${currStep.stepThree ? '-selected' : ''}`}
-						>
+						<span className={`custom-step${isSteps ? '-selected' : ''}`}>
 							3
 						</span>
 						<span
@@ -284,23 +376,22 @@ export const RenderContent = ({
 					</div>
 					<div
 						className={`mt-2 ml-5 withdraw-main-label${
-							currStep.stepThree ? '-selected' : ''
+							isSteps ? '-selected' : ''
 						}`}
 					>
-						<EditWrapper stringId="ACCORDIAN.DESTINATION">
-							{STRINGS['ACCORDIAN.DESTINATION']}
-						</EditWrapper>
+						{renderWithdrawlabel('ACCORDIAN.DESTINATION')}
 					</div>
 				</div>
 				{((coinLength && coinLength.length === 1) ||
 					(currStep.stepTwo && !coinLength) ||
 					currStep.stepThree) && (
-					<div className="select-wrapper">
+					<div className="d-flex flex-row select-wrapper">
 						<Input
 							className="destination-input-field"
 							suffix={renderScanIcon()}
 							onChange={(e) => onHandleAddress(e.target.value)}
 						></Input>
+						{currStep.stepFour && <CheckOutlined className="mt-3 ml-3" />}
 					</div>
 				)}
 			</div>
@@ -308,7 +399,7 @@ export const RenderContent = ({
 				<div className="d-flex h-25">
 					<div className="custom-field d-flex flex-column">
 						<span
-							className={`custom-step${currStep.stepOne ? '-selected' : ''}`}
+							className={`custom-step${currStep.stepFour ? '-selected' : ''}`}
 						>
 							4
 						</span>
@@ -321,7 +412,7 @@ export const RenderContent = ({
 									currStep.stepFour ? '-selected' : ''
 								}`}
 							>
-								{currency.toUpperCase()}
+								{getWithdrawCurrency.toUpperCase()}
 							</span>
 						</div>
 						<div
@@ -329,42 +420,41 @@ export const RenderContent = ({
 								currStep.stepFour ? '-selected' : ''
 							}`}
 						>
-							<EditWrapper stringId="ACCORDIAN.AMOUNT">
-								{STRINGS['ACCORDIAN.AMOUNT']}
-							</EditWrapper>
+							{renderWithdrawlabel('ACCORDIAN.AMOUNT')}
 						</div>
 					</div>
 				</div>
 				{currStep.stepFour && (
-					<div className="select-wrapper">
+					<div className="d-flex flex-row select-wrapper">
 						<Input
-							disabled={isAmount}
+							disabled={maxAmount === 0}
 							onChange={(e) => onHandleAmount(e.target.value)}
-							value={maxAmount}
+							value={getWithdrawAmount}
 							className="destination-input-field"
 							suffix={renderAmountIcon()}
 						></Input>
+						{!isAmount && <CheckOutlined className="mt-3 ml-3" />}
 					</div>
 				)}
 			</div>
 			{currStep.stepFour && (
 				<div className="bottom-content">
-					<div className="mt-2 ml-1">
-						<EditWrapper stringId="ACCORDIAN.ESTIMATED">
-							{STRINGS['ACCORDIAN.ESTIMATED']}
-						</EditWrapper>
-					</div>
+					{renderEstimatedValueAndFee(
+						renderWithdrawlabel,
+						'ACCORDIAN.ESTIMATED',
+						estimatedFormat
+					)}
 					<span>--</span>
-					<div className="mt-2 ml-1">
-						<EditWrapper stringId="ACCORDIAN.TRANSACTION_FEE">
-							{STRINGS['ACCORDIAN.TRANSACTION_FEE']}
-						</EditWrapper>
-					</div>
+					{renderEstimatedValueAndFee(
+						renderWithdrawlabel,
+						'ACCORDIAN.TRANSACTION_FEE',
+						withdrawFeeFormat
+					)}
 				</div>
 			)}
 			{currStep.stepFour && (
-				<div className="btn-wrapper">
-					<Button disabled={onHandleDisable} onClick={''} className="mb-3">
+				<div className="withdraw-btn-wrapper">
+					<Button disabled={isAmount} onClick={onOpenDialog} className="mb-3">
 						{STRINGS['WITHDRAWALS_BUTTON_TEXT'].toUpperCase()}
 					</Button>
 				</div>
@@ -372,3 +462,25 @@ export const RenderContent = ({
 		</div>
 	);
 };
+
+const mapStateToForm = (state) => ({
+	getWithdrawCurrency: state.app.withdrawFields.withdrawCurrency,
+	getWithdrawNetwork: state.app.withdrawFields.withdrawNetwork,
+	getWithdrawNetworkOptions: state.app.withdrawFields.withdrawNetworkOptions,
+	getWithdrawAddress: state.app.withdrawFields.withdrawAddress,
+	getWithdrawAmount: state.app.withdrawFields.withdrawAmount,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	setWithdrawCurrency: bindActionCreators(withdrawCurrency, dispatch),
+	setWithdrawNetwork: bindActionCreators(withdrawNetwork, dispatch),
+	setWithdrawNetworkOptions: bindActionCreators(
+		withdrawNetworkOptions,
+		dispatch
+	),
+	setWithdrawAddress: bindActionCreators(withdrawAddress, dispatch),
+	setWithdrawAmount: bindActionCreators(withdrawAmount, dispatch),
+	setFee: bindActionCreators(setFee, dispatch),
+});
+
+export default connect(mapStateToForm, mapDispatchToProps)(RenderWithdraw);

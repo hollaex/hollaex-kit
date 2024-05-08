@@ -2,8 +2,11 @@ import React from 'react';
 import { Link } from 'react-router';
 import { EditWrapper, Image } from 'components';
 import STRINGS from 'config/localizedStrings';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { setDepositAndWithdraw } from 'actions/appActions';
 
-const HeaderSection = ({ icons: ICONS }) => {
+const HeaderSection = ({ icons: ICONS, setDepositAndWithdraw }) => {
 	return (
 		<div className="header-wrapper justify-content-between">
 			<div className="header-title">
@@ -12,15 +15,21 @@ const HeaderSection = ({ icons: ICONS }) => {
 				</EditWrapper>
 			</div>
 			<div className="d-flex">
-				<div className="link sub-header">
-					<Link to="/wallet/deposit">
+				<div
+					className="link sub-header"
+					onClick={() => setDepositAndWithdraw(true)}
+				>
+					<Link to="wallet/deposit">
 						<EditWrapper stringId="ACCORDIAN.DEPOSIT">
 							{STRINGS['ACCORDIAN.DEPOSIT']}
 						</EditWrapper>
 					</Link>
 				</div>
-				<div className="sub-header link">
-					<Link to="/wallet/withdraw">
+				<div
+					className="sub-header link"
+					onClick={() => setDepositAndWithdraw(true)}
+				>
+					<Link to="wallet/withdraw">
 						<EditWrapper stringId="ACCORDIAN.WITHDRAW">
 							{STRINGS['ACCORDIAN.WITHDRAW']}
 						</EditWrapper>
@@ -46,4 +55,9 @@ const HeaderSection = ({ icons: ICONS }) => {
 	);
 };
 
-export default HeaderSection;
+const mapDispatchToProps = (dispatch) => ({
+	setDepositAndWithdraw: bindActionCreators(setDepositAndWithdraw, dispatch),
+	dispatch,
+});
+
+export default connect('', mapDispatchToProps)(HeaderSection);

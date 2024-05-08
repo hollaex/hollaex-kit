@@ -401,6 +401,18 @@ export const generateRoutes = (routes = []) => {
 				<Route path="verification" name="Verification" component={Account} />
 				<Route path="wallet" name="Wallet" component={MainWallet} />
 				<Route
+					path="wallet/deposit"
+					name="Withdraw Deposit"
+					component={Deposit}
+					onEnter={requireAuth}
+				/>
+				<Route
+					path="wallet/withdraw"
+					name="Wallet"
+					component={Withdraw}
+					onEnter={requireAuth}
+				/>
+				<Route
 					path="wallet/history"
 					name="Wallet History"
 					component={MainWallet}

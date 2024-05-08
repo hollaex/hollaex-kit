@@ -60,6 +60,13 @@ import {
 	SET_TRANSACTION_LIMITS,
 	SET_SELECTED_ACCOUNT,
 	SET_SELECTED_STEP,
+	SET_WITHDRAW_CURRENCY,
+	SET_WITHDRAW_NETWORK,
+	SET_WITHDRAW_ADDRESS,
+	SET_WITHDRAW_AMOUNT,
+	SET_WITHDRAW_NETWORK_OPTIONS,
+	SET_WITHDRAW_FEE,
+	SET_DEPOSIT_AND_WITHDRAW,
 } from 'actions/appActions';
 import { THEME_DEFAULT } from 'config/constants';
 import { getLanguage } from 'utils/string';
@@ -95,6 +102,15 @@ const EMPTY_SNACK_NOTIFICATION = {
 	content: '',
 	isDialog: false,
 	dialogData: [],
+};
+
+const WITHDRAW_FIELDS = {
+	withdrawCurrency: '',
+	withdrawNetwork: '',
+	withdrawNetworkOptions: '',
+	withdrawAddress: '',
+	withdrawAmount: 0,
+	withdrawFee: 0,
 };
 
 const INITIAL_STATE = {
@@ -164,6 +180,8 @@ const INITIAL_STATE = {
 	default_digital_assets_sort: DIGITAL_ASSETS_SORT.CHANGE,
 	selectedAccount: 1,
 	selectedStep: 0,
+	withdrawFields: WITHDRAW_FIELDS,
+	depositAndWithdraw: false,
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -718,6 +736,44 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				selectedStep: payload.selectedStep,
+			};
+		case SET_WITHDRAW_CURRENCY:
+			return {
+				...state,
+				withdrawFields: { ...state.withdrawFields, withdrawCurrency: payload },
+			};
+		case SET_WITHDRAW_NETWORK:
+			return {
+				...state,
+				withdrawFields: { ...state.withdrawFields, withdrawNetwork: payload },
+			};
+		case SET_WITHDRAW_NETWORK_OPTIONS:
+			return {
+				...state,
+				withdrawFields: {
+					...state.withdrawFields,
+					withdrawNetworkOptions: payload,
+				},
+			};
+		case SET_WITHDRAW_ADDRESS:
+			return {
+				...state,
+				withdrawFields: { ...state.withdrawFields, withdrawAddress: payload },
+			};
+		case SET_WITHDRAW_AMOUNT:
+			return {
+				...state,
+				withdrawFields: { ...state.withdrawFields, withdrawAmount: payload },
+			};
+		case SET_WITHDRAW_FEE:
+			return {
+				...state,
+				withdrawFields: { ...state.withdrawFields, withdrawFee: payload },
+			};
+		case SET_DEPOSIT_AND_WITHDRAW:
+			return {
+				...state,
+				depositAndWithdraw: payload,
 			};
 		default:
 			return state;

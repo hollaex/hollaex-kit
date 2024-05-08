@@ -1,6 +1,6 @@
 import React from 'react';
 import mathjs from 'mathjs';
-import { Accordion } from 'components';
+import { Accordion, EditWrapper } from 'components';
 import {
 	BANK_WITHDRAWAL_BASE_FEE,
 	BANK_WITHDRAWAL_DYNAMIC_FEE_RATE,
@@ -74,4 +74,21 @@ export const calculateBaseFee = (amount = 0) => {
 	}
 	const fee = mathjs.ceil(withdrawalFee.done());
 	return fee;
+};
+
+export const renderWithdrawlabel = (label) => {
+	return <EditWrapper stringId={label}>{STRINGS[label]}</EditWrapper>;
+};
+
+export const renderEstimatedValueAndFee = (
+	renderWithdrawlabel,
+	label,
+	format
+) => {
+	return (
+		<div className="d-flex">
+			<div className="mt-2 ml-1">{renderWithdrawlabel(label)}</div>
+			<div className="mt-2 ml-1 fee-fields">{format}</div>
+		</div>
+	);
 };

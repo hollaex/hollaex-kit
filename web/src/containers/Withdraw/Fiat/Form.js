@@ -186,6 +186,7 @@ class Form extends Component {
 			currency,
 			user: { balance },
 			prices = {},
+			withdrawInformation,
 		} = this.props;
 		const { setActiveTab } = this;
 
@@ -199,6 +200,7 @@ class Form extends Component {
 			setActiveTab,
 			activeTab,
 			currentPrice: prices[currency],
+			withdrawInformation,
 		};
 
 		return (
@@ -219,6 +221,7 @@ const mapStateToProps = (state, ownProps) => ({
 	constants: state.app.constants,
 	banks: withdrawalOptionsSelector(state, ownProps),
 	prices: state.asset.oraclePrices,
+	getWithdrawCurrency: state.app.withdrawFields.withdrawCurrency,
 });
 
 const mapDispatchToProps = (dispatch) => ({

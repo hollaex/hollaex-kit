@@ -6,7 +6,7 @@ import {
 	formValueSelector,
 	reset,
 	SubmissionError,
-	stopSubmit
+	stopSubmit,
 } from 'redux-form';
 import renderFields from 'components/Form/factoryFields';
 import ReviewModalContent from './ReviewModalContent';
@@ -260,13 +260,15 @@ class Index extends Component {
 			router,
 			banks,
 			fiat_fees,
+			withdrawInformation,
+			getWithdrawCurrency,
 		} = this.props;
 		const { dialogIsOpen, dialogOtpOpen, successfulRequest } = this.state;
 
 		const is_verified = id_data.status === 3;
 		const has_verified_bank_account = !!banks.length;
 
-		const { icon_id } = coins[currency];
+		const { icon_id } = coins[getWithdrawCurrency] || coins[currency];
 
 		const { rate: fee } = getFiatWithdrawalFee(currency);
 		const customFee = fiat_fees?.[currency]?.withdrawal_fee;
@@ -275,6 +277,7 @@ class Index extends Component {
 			<div className="withdraw-form-wrapper">
 				<div className="withdraw-form">
 					<Coin iconId={icon_id} type="CS9" />
+					{withdrawInformation}
 					{titleSection}
 					{(!is_verified || !has_verified_bank_account) && (
 						<Fragment>
@@ -363,6 +366,7 @@ const FiatWithdrawalForm = reduxForm({
 const mapStateToProps = (state) => ({
 	data: selector(state, 'bank', 'amount', 'fee'),
 	fiat_fees: state.app.constants.fiat_fees,
+	getWithdrawCurrency: state.app.withdrawFields.withdrawCurrency,
 });
 
 export default connect(mapStateToProps)(withRouter(FiatWithdrawalForm));

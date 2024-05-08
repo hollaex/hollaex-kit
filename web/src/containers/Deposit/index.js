@@ -53,7 +53,10 @@ class Deposit extends Component {
 		const { currency, networks } = this.state;
 
 		if (!this.state.checked) {
-			if (nextProps.verification_level) {
+			if (
+				nextProps.verification_level &&
+				nextProps.verification_level !== this.props.verification_level
+			) {
 				this.validateRoute(nextProps.routeParams.currency, this.props.coins);
 			}
 		} else if (
@@ -115,13 +118,17 @@ class Deposit extends Component {
 					);
 				}
 			);
+		} else if (this.props.isDepositAndWithdraw) {
+			this.props.router.push('/wallet/deposit');
 		} else {
 			this.props.router.push('/wallet');
 		}
 	};
 
 	validateRoute = (currency, coins) => {
-		if (!coins[currency]) {
+		if (this.props.isDepositAndWithdraw) {
+			this.props.router.push('/wallet/deposit');
+		} else if (!coins[currency]) {
 			this.props.router.push('/wallet');
 		} else if (currency) {
 			this.setState({ checked: true });
@@ -259,7 +266,7 @@ class Deposit extends Component {
 			networks,
 		} = this.state;
 
-		if (!id || !currency || !checked) {
+		if ((!id || !currency || !checked) && this.props.isDepositAndWithdraw) {
 			return <div />;
 		}
 
@@ -374,6 +381,7 @@ const mapStateToProps = (store) => ({
 	selectedNetwork: formValueSelector('GenerateWalletForm')(store, 'network'),
 	verification_level: store.user.verification_level,
 	orders: store.order.activeOrders,
+	isDepositAndWithdraw: store.app.depositAndWithdraw,
 });
 
 const mapDispatchToProps = (dispatch) => ({

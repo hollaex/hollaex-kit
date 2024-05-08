@@ -2229,38 +2229,38 @@ table th {
       color: var(--labels_important-active-labels-text-graphics); }
       .withdrawal-container .withdraw-form-wrapper .withdraw-form .destination-input-field input {
         background-color: var(--base_wallet-sidebar-and-popup);
-        color: var(--labels_important-active-labels-text-graphics); }
+        color: var(--labels_important-active-labels-text-graphics);
+        text-overflow: ellipsis; }
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .destination-input-field:hover {
       border: 1px solid var(--labels_important-active-labels-text-graphics); }
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdraw-main-label {
-      color: var(--labels_secondary-inactive-label-text-graphics); }
+      color: var(--labels_secondary-inactive-label-text-graphics);
+      font-size: 14px; }
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdraw-main-label-selected {
       color: var(--labels_important-active-labels-text-graphics);
-      text-wrap: nowrap;
-      font-size: 14px; }
+      text-wrap: nowrap; }
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .side-icon-wrapper {
       display: flex;
       width: 15% !important;
       height: 25%; }
-      .withdrawal-container .withdraw-form-wrapper .withdraw-form .side-icon-wrapper img {
+      .withdrawal-container .withdraw-form-wrapper .withdraw-form .side-icon-wrapper svg {
         width: 100%;
         opacity: 0.1; }
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-step,
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-step-selected {
-      border: 1px solid var(--labels_secondary-inactive-label-text-graphics);
+      border: 2px solid var(--labels_secondary-inactive-label-text-graphics);
       border-radius: 100%;
       width: fit-content;
-      padding: 40% 100%; }
+      padding: 10% 70%; }
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-step-selected {
-      border: 1px solid var(--labels_important-active-labels-text-graphics); }
+      border: 2px solid var(--labels_important-active-labels-text-graphics); }
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line,
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line-selected {
       border: 1px solid var(--labels_secondary-inactive-label-text-graphics);
-      height: 50px;
-      width: 1px;
-      margin: 100%; }
+      height: 55px;
+      margin: 0 100%; }
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line-selected {
-      height: 100px;
+      height: 70px;
       border: 1px solid var(--labels_important-active-labels-text-graphics); }
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .select-label {
       text-wrap: nowrap; }
@@ -2284,6 +2284,19 @@ table th {
         line-height: 40px !important; }
       .withdrawal-container .withdraw-form-wrapper .withdraw-form .select-wrapper .custom-select-input-style .ant-select-selector {
         height: 40px !important; }
+    .withdrawal-container .withdraw-form-wrapper .withdraw-form .opacity-100 {
+      opacity: 1; }
+    .withdrawal-container .withdraw-form-wrapper .withdraw-form .opacity-30 {
+      opacity: 0.3; }
+    .withdrawal-container .withdraw-form-wrapper .withdraw-form .ant-select-clear {
+      user-select: none;
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 50%;
+      background-color: var(--labels_important-active-labels-text-graphics); }
+      .withdrawal-container .withdraw-form-wrapper .withdraw-form .ant-select-clear svg {
+        color: var(--base_wallet-sidebar-and-popup);
+        font-size: 18px; }
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .ant-input-suffix {
       width: 5rem; }
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .render-amount-icon-wrapper {
@@ -2303,7 +2316,8 @@ table th {
       border-radius: 5px;
       margin-right: 10px;
       width: 4rem;
-      text-align: center; }
+      text-align: center;
+      cursor: pointer; }
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .render-scan-wrapper {
       color: var(--specials_buttons-links-and-highlights);
       cursor: pointer; }
@@ -2320,22 +2334,33 @@ table th {
   .withdrawal-container .withdraw-form-wrapper .bottom-content {
     margin-top: 3%;
     margin-left: 30%; }
+    .withdrawal-container .withdraw-form-wrapper .bottom-content .fee-fields {
+      color: var(--labels_secondary-inactive-label-text-graphics); }
   .withdrawal-container .withdraw-form-wrapper .btn-wrapper {
+    display: flex;
+    justify-content: center; }
+    .withdrawal-container .withdraw-form-wrapper .btn-wrapper .holla-button {
+      width: 300px; }
+  .withdrawal-container .withdraw-form-wrapper .withdraw-btn-wrapper {
     display: flex;
     margin-left: 30%;
     margin-top: 5%; }
-    .withdrawal-container .withdraw-form-wrapper .btn-wrapper .ant-btn[disabled], .withdrawal-container .withdraw-form-wrapper .btn-wrapper .ant-btn[disabled]:hover, .withdrawal-container .withdraw-form-wrapper .btn-wrapper .ant-btn[disabled]:focus, .withdrawal-container .withdraw-form-wrapper .btn-wrapper .ant-btn[disabled]:active, .withdrawal-container .withdraw-form-wrapper .btn-wrapper .ant-btn {
+    .withdrawal-container .withdraw-form-wrapper .withdraw-btn-wrapper .ant-btn[disabled],
+    .withdrawal-container .withdraw-form-wrapper .withdraw-btn-wrapper .ant-btn[disabled]:hover,
+    .withdrawal-container .withdraw-form-wrapper .withdraw-btn-wrapper .ant-btn[disabled]:focus,
+    .withdrawal-container .withdraw-form-wrapper .withdraw-btn-wrapper .ant-btn[disabled]:active,
+    .withdrawal-container .withdraw-form-wrapper .withdraw-btn-wrapper .ant-btn {
       background: var(--labels_inactive-button);
       border: unset;
       width: 300px;
-      font-family: "Raleway";
+      font-family: 'Raleway';
       color: var(--base_wallet-sidebar-and-popup);
       font-size: 1.1rem; }
-    .withdrawal-container .withdraw-form-wrapper .btn-wrapper .ant-btn {
+    .withdrawal-container .withdraw-form-wrapper .withdraw-btn-wrapper .ant-btn {
       padding: 0 4px;
       background: var(--specials_buttons-links-and-highlights);
       color: var(--labels_important-active-labels-text-graphics); }
-    .withdrawal-container .withdraw-form-wrapper .btn-wrapper .holla-button {
+    .withdrawal-container .withdraw-form-wrapper .withdraw-btn-wrapper .holla-button {
       width: 300px; }
   .withdrawal-container .withdraw-form-wrapper .warning-text {
     color: var(--specials_notifications-alerts-warnings); }
