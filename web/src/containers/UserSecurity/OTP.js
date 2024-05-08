@@ -355,8 +355,8 @@ export const OTP = ({
 						/>
 					)}
 					<span className="font-weight-bold mb-3">
-						<EditWrapper stringId="ACCOUNT_SECURITY.OTP.2FA_DISABLED">
-							{STRINGS['ACCOUNT_SECURITY.OTP.2FA_DISABLED']}
+						<EditWrapper stringId="ACCOUNT_SECURITY.OTP.2FA_ENABLED">
+							{STRINGS['ACCOUNT_SECURITY.OTP.2FA_ENABLED']}
 						</EditWrapper>
 					</span>
 					<span className="text-center d-flex flex-column">
