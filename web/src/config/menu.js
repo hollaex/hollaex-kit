@@ -78,7 +78,7 @@ export const MENU_ITEMS = {
 			path: '/wallet',
 			icon_id: `${isMobile ? 'WALLET_FOOTER' : 'TAB_WALLET'}`,
 			string_id: 'ACCOUNTS.TAB_WALLET',
-			hide_from_appbar: true
+			hide_from_appbar: false
 		},
 		{
 			path: '/transactions',
