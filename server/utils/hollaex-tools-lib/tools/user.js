@@ -2513,7 +2513,7 @@ const getUnrealizedReferral = async (user_id) => {
 		throw new Error(REFERRAL_HISTORY_NOT_ACTIVE);
 	}
 
-	const referralHistoryModel = getModel('Referralhistory');
+	const referralHistoryModel = getModel('ReferralHistory');
 	const unrealizedRecords = await referralHistoryModel.findAll({
 		where: { referer: user_id, status: false },
 		attributes: [
@@ -2551,7 +2551,7 @@ const getRealizedReferral = async (opts = {
 	}
      	
 	if (opts.format) {
-		return dbQuery.fetchAllRecords('Referralhistory', query)
+		return dbQuery.fetchAllRecords('ReferralHistory', query)
 			.then((file) => {
 				if (opts.format && opts.format === 'csv') {
 					if (file.data.length === 0) {
@@ -2564,7 +2564,7 @@ const getRealizedReferral = async (opts = {
 				}
 			});
 	} else {
-        return dbQuery.findAndCountAllWithRows('Referralhistory', query)
+        return dbQuery.findAndCountAllWithRows('ReferralHistory', query)
 	}
 };
 
@@ -2582,7 +2582,7 @@ const createUnrealizedReferralFees = async (currentTime) => {
 	}
 
 	const { getAllTradesNetwork } = require('./order');
-	const referralHistoryModel = getModel('Referralhistory');
+	const referralHistoryModel = getModel('ReferralHistory');
 
 	let userLastSettleDate = moment(DATE_ENABLED).toISOString();
 
@@ -2796,7 +2796,7 @@ const settleFees = async (user_id) => {
 	}
 
 	const { transferAssetByKitIds} = require('./wallet');
-	const referralHistoryModel = getModel('Referralhistory');
+	const referralHistoryModel = getModel('ReferralHistory');
 
 	const unrealizedRecords = await referralHistoryModel.findAll({
 		where: { referer: user_id, status: false },
@@ -2878,7 +2878,7 @@ const fetchUserReferrals = async (opts = {
 	end_date: null,
 	format: null
 }) => {
-	const referralHistoryModel = getModel('Referralhistory');
+	const referralHistoryModel = getModel('ReferralHistory');
 	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
 
 	const dateTruc = fn('date_trunc', 'day', col('timestamp'));
