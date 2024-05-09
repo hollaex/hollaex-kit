@@ -19,7 +19,6 @@ import {
 import {
 	fetchReferralHistory,
 	fetchUnrealizedFeeEarnings,
-	generateReferralCode,
 	postReferralCode,
 	fetchReferralCodes,
 	postSettleFees,
@@ -569,6 +568,18 @@ const ReferralList = ({
 	// 		</>
 	// 	);
 	// };
+	const generateUniqueCode = () => {
+		const characters =
+			'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+		let code = '';
+
+		for (let i = 0; i < 6; i++) {
+			const randomIndex = Math.floor(Math.random() * characters.length);
+			code += characters[randomIndex];
+		}
+
+		return code;
+	};
 
 	const createReferralCode = () => {
 		return (
@@ -1000,6 +1011,11 @@ const ReferralList = ({
 												discount,
 												code: referralCode,
 											});
+											fetchReferralCodes()
+												.then((res) => {
+													setReferralCodes(res.data);
+												})
+												.catch((err) => err);
 											setLinkStep(3);
 										} catch (error) {
 											showErrorMessage(error.data.message);
@@ -1394,8 +1410,8 @@ const ReferralList = ({
 									onClick={async () => {
 										if (!referralCode) {
 											try {
-												const data = await generateReferralCode();
-												setReferralCode(data.code);
+												const code = generateUniqueCode();
+												setReferralCode(code);
 												setDisplayCreateLink(true);
 											} catch (error) {
 												showErrorMessage(error.data.message);
@@ -1435,8 +1451,8 @@ const ReferralList = ({
 										onClick={async () => {
 											if (!referralCode) {
 												try {
-													const data = await generateReferralCode();
-													setReferralCode(data.code);
+													const code = generateUniqueCode();
+													setReferralCode(code);
 													setDisplayCreateLink(true);
 												} catch (error) {
 													showErrorMessage(error.data.message);
