@@ -28,8 +28,12 @@ class Form extends Component {
 			coins,
 			banks,
 			prices,
+			getWithdrawCurrency,
 		} = this.props;
 		const { activeTab } = this.state;
+		const currentCurrency = getWithdrawCurrency
+			? getWithdrawCurrency
+			: currency;
 
 		let initialBank;
 		if (banks && banks.length === 1) {
@@ -38,7 +42,7 @@ class Form extends Component {
 
 		this.generateFormValues(
 			activeTab,
-			currency,
+			currentCurrency,
 			balance,
 			coins,
 			verification_level,
@@ -49,7 +53,7 @@ class Form extends Component {
 	}
 
 	UNSAFE_componentWillUpdate(nextProps, nextState) {
-		const { selectedBank, prices } = this.props;
+		const { selectedBank, prices, getWithdrawCurrency } = this.props;
 		const { activeTab } = this.state;
 		if (
 			nextProps.selectedBank !== selectedBank ||
@@ -61,6 +65,9 @@ class Form extends Component {
 				coins,
 				banks,
 			} = this.props;
+			const currentCurrency = getWithdrawCurrency
+				? getWithdrawCurrency
+				: currency;
 
 			let initialBank;
 			if (nextState.activeTab === activeTab) {
@@ -77,7 +84,7 @@ class Form extends Component {
 
 			this.generateFormValues(
 				nextState.activeTab,
-				currency,
+				currentCurrency,
 				balance,
 				coins,
 				verification_level,
@@ -97,6 +104,7 @@ class Form extends Component {
 				user: { balance, verification_level },
 				coins,
 				prices,
+				getWithdrawCurrency,
 			} = this.props;
 			const { activeTab } = this.state;
 
@@ -104,10 +112,13 @@ class Form extends Component {
 			if (banks && banks.length === 1) {
 				initialBank = banks[0]['id'];
 			}
+			const currentCurrency = getWithdrawCurrency
+				? getWithdrawCurrency
+				: currency;
 
 			this.generateFormValues(
 				activeTab,
-				currency,
+				currentCurrency,
 				balance,
 				coins,
 				verification_level,

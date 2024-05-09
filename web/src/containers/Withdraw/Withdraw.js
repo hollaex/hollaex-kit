@@ -14,6 +14,7 @@ import { STATIC_ICONS } from 'config/icons';
 import {
 	getWithdrawalMax,
 	setFee,
+	setIsValidAdress,
 	withdrawAddress,
 	withdrawAmount,
 	withdrawCurrency,
@@ -22,6 +23,7 @@ import {
 } from 'actions/appActions';
 import { getPrices } from 'actions/assetActions';
 import { renderEstimatedValueAndFee, renderWithdrawlabel } from './utils';
+import { validAddress } from 'components/Form/validations';
 
 const RenderWithdraw = ({
 	coins,
@@ -54,7 +56,10 @@ const RenderWithdraw = ({
 		getWithdrawAddress,
 		getWithdrawAmount,
 		setFee,
+		setWithdrawNetwork,
+		currency,
 	} = rest;
+	const defaultCurrency = currency !== '' && currency;
 	const iconId = coins[getWithdrawCurrency]?.icon_id;
 	const coinLength =
 		coins[getWithdrawCurrency]?.network &&
@@ -99,9 +104,8 @@ const RenderWithdraw = ({
 		network,
 	]);
 
-	// useEffect(()=>{
-	// 	setDepositAndWithdraw(false);
-	// },[])
+	const currentNetwork =
+		getWithdrawNetworkOptions !== '' ? getWithdrawNetworkOptions : network;
 
 	useEffect(() => {
 		const topWallet = assets
@@ -121,7 +125,14 @@ const RenderWithdraw = ({
 	useEffect(() => {
 		UpdateCurrency(getWithdrawCurrency);
 		setFee(fee);
+		setWithdrawNetwork(currentNetwork);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [getWithdrawCurrency, UpdateCurrency, fee, setFee]);
+
+	useEffect(() => {
+		setSelectedAsset(defaultCurrency);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	const getWithdrawlMAx = async (getWithdrawCurrency, isMaxAmount = false) => {
 		try {
@@ -159,7 +170,7 @@ const RenderWithdraw = ({
 			setWithdrawCurrency(val);
 			network = val ? val : coins[getWithdrawCurrency]?.symbol;
 			getWithdrawlMAx(val);
-			// onHandleFiat(true);
+			setWithdrawNetworkOptions('');
 		} else if (!val) {
 			setWithdrawCurrency('');
 			setCurrStep((prev) => ({
@@ -184,12 +195,18 @@ const RenderWithdraw = ({
 	};
 
 	const onHandleAddress = (val) => {
+		const isValid = validAddress(
+			getWithdrawCurrency,
+			STRINGS[`WITHDRAWALS_${selectedAsset.toUpperCase()}_INVALID_ADDRESS`],
+			currentNetwork
+		);
 		if (val) {
 			setCurrStep((prev) => ({ ...prev, stepFour: true }));
 			setWithdrawAddress(val);
 		} else if (!val) {
 			setCurrStep((prev) => ({ ...prev, stepFour: false }));
 		}
+		setIsValidAdress({ isValid: isValid() });
 	};
 
 	const onHandleAmount = (val) => {
@@ -230,7 +247,9 @@ const RenderWithdraw = ({
 		(currStep.stepTwo && !coinLength) ||
 		currStep.stepThree;
 	const withdrawFeeFormat = `(≈ ${fee} ${getWithdrawCurrency?.toUpperCase()})`;
-	const estimatedFormat = `≈ ${estimatedWithdrawValue} ${getWithdrawCurrency?.toUpperCase()}`;
+	const estimatedFormat = `≈ ${Math.round(
+		estimatedWithdrawValue
+	)} ${getWithdrawCurrency?.toUpperCase()}`;
 
 	return (
 		<div className="mt-5">
@@ -431,6 +450,7 @@ const RenderWithdraw = ({
 							value={getWithdrawAmount}
 							className="destination-input-field"
 							suffix={renderAmountIcon()}
+							type="number"
 						></Input>
 						{!isAmount && <CheckOutlined className="mt-3 ml-3" />}
 					</div>
@@ -480,6 +500,7 @@ const mapDispatchToProps = (dispatch) => ({
 	setWithdrawAddress: bindActionCreators(withdrawAddress, dispatch),
 	setWithdrawAmount: bindActionCreators(withdrawAmount, dispatch),
 	setFee: bindActionCreators(setFee, dispatch),
+	setIsValidAdress: bindActionCreators(setIsValidAdress, dispatch),
 });
 
 export default connect(mapStateToForm, mapDispatchToProps)(RenderWithdraw);

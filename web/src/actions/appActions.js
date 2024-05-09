@@ -105,6 +105,7 @@ export const SET_WITHDRAW_ADDRESS = 'SET_WITHDRAW_ADDRESS';
 export const SET_WITHDRAW_AMOUNT = 'SET_WITHDRAW_AMOUNT';
 export const SET_WITHDRAW_FEE = 'SET_WITHDRAW_FEE';
 export const SET_DEPOSIT_AND_WITHDRAW = 'SET_DEPOSIT_AND_WITHDRAW';
+export const SET_VALID_ADDRESS = 'SET_VALID_ADDRESS';
 
 export const SORT = {
 	VOL: 'volume',
@@ -715,5 +716,10 @@ export const setFee = (amount) => ({
 
 export const setDepositAndWithdraw = (val) => ({
 	type: SET_DEPOSIT_AND_WITHDRAW,
+	payload: val,
+});
+
+export const setIsValidAdress = (val) => ({
+	type: SET_VALID_ADDRESS,
 	payload: val,
 });

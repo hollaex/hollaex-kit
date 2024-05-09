@@ -67,6 +67,7 @@ import {
 	SET_WITHDRAW_NETWORK_OPTIONS,
 	SET_WITHDRAW_FEE,
 	SET_DEPOSIT_AND_WITHDRAW,
+	SET_VALID_ADDRESS,
 } from 'actions/appActions';
 import { THEME_DEFAULT } from 'config/constants';
 import { getLanguage } from 'utils/string';
@@ -182,6 +183,7 @@ const INITIAL_STATE = {
 	selectedStep: 0,
 	withdrawFields: WITHDRAW_FIELDS,
 	depositAndWithdraw: false,
+	isValidAddress: '',
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -774,6 +776,11 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				depositAndWithdraw: payload,
+			};
+		case SET_VALID_ADDRESS:
+			return {
+				...state,
+				isValidAddress: payload.isValid,
 			};
 		default:
 			return state;

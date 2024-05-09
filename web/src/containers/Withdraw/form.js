@@ -8,7 +8,6 @@ import {
 	stopSubmit,
 } from 'redux-form';
 import { bindActionCreators } from 'redux';
-import { message } from 'antd';
 import math from 'mathjs';
 import { Dialog, OtpForm, Loader, SmartTarget } from 'components';
 import {
@@ -17,7 +16,7 @@ import {
 } from './notifications';
 import { BASE_CURRENCY } from 'config/constants';
 import { calculateBaseFee, generateBaseInformation } from './utils';
-import { getWithdrawalMax, withdrawCurrency } from 'actions/appActions';
+import { withdrawCurrency } from 'actions/appActions';
 import { renderInformation } from 'containers/Wallet/components';
 import { assetsSelector } from 'containers/Wallet/utils';
 import Fiat from './Fiat';
@@ -102,28 +101,40 @@ class Form extends Component {
 	}
 
 	onOpenDialog = (ev) => {
-		if (ev && ev.preventDefault) {
-			ev.preventDefault();
-		}
-		const emailMethod = this.props?.data?.method === 'email';
-		getWithdrawalMax(
-			this.props.currency,
-			!emailMethod ? this.props?.data?.network : 'email'
-		)
-			.then((res) => {
-				if (math.larger(this.props?.data?.amount, res?.data?.amount)) {
-					message.error(
-						`requested amount exceeds maximum withrawal limit of ${
-							res?.data?.amount
-						} ${this?.props?.currency?.toUpperCase()}`
-					);
-				} else {
-					this.setState({ dialogIsOpen: true });
-				}
-			})
-			.catch((err) => {
-				message.error(err.response.data.message);
-			});
+		// const { coins, getWithdrawCurrency, getWithdrawNetwork, getWithdrawNetworkOptions, currency, getWithdrawAmount, isValidAddress } = this.props;
+
+		// if (isValidAddress) {
+		// 	this.setState({ dialogIsOpen: true });
+
+		// } else {
+		// 	message.error("please enter a Valid address")
+		// }
+		// if (ev && ev.preventDefault) {
+		// 	ev.preventDefault();
+		// }
+		// const emailMethod = this.props?.data?.method === 'email';
+		// const currentCurrency = coins[getWithdrawCurrency]?.symbol || currency;
+		// const network = getWithdrawNetworkOptions ? getWithdrawNetworkOptions : getWithdrawNetwork ? getWithdrawNetwork : !emailMethod ? this.props?.data?.network : 'email'
+		// const amount = getWithdrawAmount ? getWithdrawAmount : this.props?.data?.amount
+		// getWithdrawalMax(
+		// 	currentCurrency,
+		// 	network
+		// )
+		// .then((res) => {
+		// 		if (math.larger(amount, res?.data?.amount)) {
+		// 			message.error(
+		// 				`requested amount exceeds maximum withrawal limit of ${res?.data?.amount
+		// 				} ${currentCurrency.toUpperCase()}`
+		// 			);
+		// 		} else {
+		// 			this.setState({ dialogIsOpen: true });
+		// 		}
+		// 	})
+		// 	.catch((err) => {
+		// 		message.error(err?.response?.data?.message);
+		// 	});
+
+		this.setState({ dialogIsOpen: true });
 	};
 
 	onCloseDialog = (ev) => {
@@ -134,7 +145,22 @@ class Form extends Component {
 	};
 
 	onAcceptDialog = () => {
-		const { data, email, getWithdrawAmount, getWithdrawAddress } = this.props;
+		const {
+			data,
+			email,
+			getWithdrawNetworkOptions,
+			getWithdrawNetwork,
+			getWithdrawAmount,
+			getWithdrawAddress,
+			getWithdrawCurrency,
+			currency,
+		} = this.props;
+		const currentCurrency = getWithdrawCurrency
+			? getWithdrawCurrency
+			: currency;
+		const network = getWithdrawNetworkOptions
+			? getWithdrawNetworkOptions
+			: getWithdrawNetwork;
 		if (this.props.otp_enabled) {
 			this.setState({ dialogOtpOpen: true });
 		} else {
@@ -145,6 +171,8 @@ class Form extends Component {
 				email: email,
 				amount: getWithdrawAmount,
 				address: getWithdrawAddress,
+				fee_coin: currentCurrency,
+				network: network,
 			};
 			return this.props
 				.onSubmitWithdrawReq({
@@ -153,7 +181,7 @@ class Form extends Component {
 				})
 				.then((response) => {
 					this.props.onSubmitSuccess(
-						{ ...response.data, currency: this.props.currency },
+						{ ...response.data, currency: currentCurrency },
 						this.props.dispatch
 					);
 					return response;
@@ -241,19 +269,25 @@ class Form extends Component {
 			getWithdrawAmount,
 			getWithdrawAddress,
 			getWithdrawCurrency,
+			getWithdrawNetworkOptions,
+			getWithdrawNetwork,
 			getFee,
 			isFiat,
 		} = this.props;
 
+		const currentNetwork = getWithdrawNetwork
+			? getWithdrawNetwork
+			: getWithdrawNetworkOptions;
 		const formData = {
 			...data,
 			email,
 			fee: getFee,
 			amount: getWithdrawAmount,
 			address: getWithdrawAddress,
-			network: getWithdrawCurrency,
+			network: currentNetwork,
+			fee_coin: getWithdrawCurrency,
 		};
-		const coinObject = coins[getWithdrawCurrency];
+		const coinObject = coins[getWithdrawCurrency] || coins[currency];
 		const { dialogIsOpen, dialogOtpOpen } = this.state;
 		const hasDestinationTag =
 			currency === 'xrp' ||
@@ -265,9 +299,12 @@ class Form extends Component {
 		const id = targets.includes(currencySpecificId)
 			? currencySpecificId
 			: GENERAL_ID;
+		const currentCurrency = getWithdrawCurrency
+			? getWithdrawCurrency
+			: currency;
 
 		const withdrawInformation = renderInformation(
-			getWithdrawCurrency,
+			currentCurrency,
 			balance,
 			false,
 			generateBaseInformation,
@@ -278,6 +315,7 @@ class Form extends Component {
 			'BLUE_QUESTION',
 			orders
 		);
+
 		if ((coinObject && coinObject.type !== 'fiat') || !coinObject) {
 			return (
 				<SmartTarget
@@ -305,7 +343,7 @@ class Form extends Component {
 									coins={coins}
 									onOpenDialog={this.onOpenDialog}
 									isFiat={isFiat}
-									onHandleFiat={this.onHandleFiat}
+									currency={currency}
 								/>
 								{!error && <div className="warning_text">{error}</div>}
 							</div>
@@ -413,6 +451,7 @@ const mapStateToForm = (state) => ({
 	getWithdrawAddress: state.app.withdrawFields.withdrawAddress,
 	getWithdrawAmount: state.app.withdrawFields.withdrawAmount,
 	getFee: state.app.withdrawFields.withdrawFee,
+	isValidAddress: state.app.isValidAddress,
 });
 
 const mapDispatchToProps = (dispatch) => ({

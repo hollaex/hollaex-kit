@@ -186,6 +186,11 @@ class Withdraw extends Component {
 
 	onSubmitWithdraw = (currency) => (values) => {
 		const { destination_tag, network, ...rest } = values;
+		const { getWithdrawCurrency } = this.props;
+
+		const currentCurrency = getWithdrawCurrency
+			? getWithdrawCurrency
+			: this.state.currency;
 
 		let address = rest.address.trim();
 		if (destination_tag) address = `${rest.address.trim()}:${destination_tag}`;
@@ -195,7 +200,7 @@ class Withdraw extends Component {
 			...rest,
 			address,
 			amount: math.eval(values.amount),
-			currency,
+			currency: currentCurrency,
 		};
 
 		delete paramData.fee_type;
@@ -210,7 +215,7 @@ class Withdraw extends Component {
 			delete paramData.email;
 		}
 
-		return performWithdraw(currency, paramData)
+		return performWithdraw(currentCurrency, paramData)
 			.then((response) => {
 				return { ...response.data, currency: this.state.currency };
 			})
@@ -404,6 +409,7 @@ const mapStateToProps = (store) => ({
 	orders: store.order.activeOrders,
 	coin_customizations: store.app.constants.coin_customizations,
 	getWithdrawCurrency: store.app.withdrawFields.withdrawCurrency,
+	getWithdrawNetwork: store.app.withdrawFields.withdrawNetwork,
 	isDepositAndWithdraw: store.app.depositAndWithdraw,
 });
 

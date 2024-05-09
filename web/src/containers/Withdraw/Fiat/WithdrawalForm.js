@@ -270,8 +270,15 @@ class Index extends Component {
 
 		const { icon_id } = coins[getWithdrawCurrency] || coins[currency];
 
-		const { rate: fee } = getFiatWithdrawalFee(currency);
-		const customFee = fiat_fees?.[currency]?.withdrawal_fee;
+		const { rate: fee } = getFiatWithdrawalFee(
+			currency,
+			0,
+			'',
+			getWithdrawCurrency
+		);
+		const customFee = getWithdrawCurrency
+			? fiat_fees?.[getWithdrawCurrency]?.withdrawal_fee
+			: fiat_fees?.[currency]?.withdrawal_fee;
 
 		return (
 			<div className="withdraw-form-wrapper">
