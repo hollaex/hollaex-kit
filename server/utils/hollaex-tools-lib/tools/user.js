@@ -2587,11 +2587,11 @@ const createUnrealizedReferralFees = async (currentTime) => {
 	let userLastSettleDate = moment(DATE_ENABLED).toISOString();
 
 	const userLastTrade = await referralHistoryModel.findOne({
-		order: [ [ 'timestamp', 'DESC' ]],
+		order: [ [ 'last_settled', 'DESC' ]],
 	});
 
 	if (userLastTrade) {
-		userLastSettleDate = moment(userLastTrade.timestamp).toISOString();
+		userLastSettleDate = moment(userLastTrade.last_settled).toISOString();
 	}
 
 	return all([
@@ -2739,7 +2739,7 @@ const createUnrealizedReferralFees = async (currentTime) => {
 							referralHistory.push({
 								referer: referer.id,
 								referee: refereeUser.id,
-								timestamp: lastSettledTrade,
+								last_settled: lastSettledTrade,
 								code: affiliation.code,
 								earning_rate: affiliation.earning_rate,
 								coin,

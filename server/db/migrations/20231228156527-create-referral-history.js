@@ -43,7 +43,7 @@ module.exports = {
 				type: Sequelize.BOOLEAN,
 				allowNull: false
 			},
-			timestamp: {
+			last_settled: {
 				type: Sequelize.DATE,
 				allowNull: false
 			},

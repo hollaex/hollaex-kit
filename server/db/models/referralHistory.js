@@ -39,7 +39,7 @@ module.exports = function (sequelize, DataTypes) {
 			type: DataTypes.DOUBLE,
 			allowNull: false
 		},
-		timestamp: {
+		last_settled: {
 			type: DataTypes.DATE,
 			allowNull: false
 		},
