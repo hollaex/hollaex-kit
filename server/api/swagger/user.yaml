@@ -1513,7 +1513,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-        - hmac
       x-security-scopes:
         - user
       x-token-permissions:
@@ -1697,7 +1696,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-        - hmac
       x-security-scopes:
         - user
       x-token-permissions:
@@ -1768,7 +1766,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-        - hmac
       x-security-scopes:
         - user
       x-token-permissions:
