@@ -2392,9 +2392,6 @@ const addAmounts = (amount1, amount2) => {
 };
 
 const validateReferralFeature = async (data) => {
-	loggerUser.info(
-		'REFERRAL initializing...'
-	);
 
 	const { 
 		earning_period: EARNING_PERIOD, 
@@ -2597,14 +2594,6 @@ const createUnrealizedReferralFees = async (currentTime) => {
 		userLastSettleDate = moment(userLastTrade.timestamp).toISOString();
 	}
 
-	loggerUser.verbose(
-		'REFERRAL createUnrealizedReferralFees',
-		'Last settled trade timestamp for user:',
-		userLastSettleDate,
-		'Current Time:',
-		currentTime,
-	);
-
 	return all([
 		getUserByKitId(DISTRIBUTOR_ID, true, true),
 		getAllTradesNetwork(
@@ -2628,18 +2617,6 @@ const createUnrealizedReferralFees = async (currentTime) => {
 			}
 
 			const lastSettledTrade = trades[0].timestamp;
-
-			loggerUser.verbose(
-				'REFERRAL createUnrealizedReferralFees',
-				'Exchange trades since last settlement',
-				count,
-				'Timestamp of last trade found:',
-				lastSettledTrade,
-				'Distributor account email:',
-				distributor.email,
-				'Distibutor account kit id:',
-				distributor.id
-			);
 
 			const accumulatedFees = {};
 
@@ -2691,11 +2668,6 @@ const createUnrealizedReferralFees = async (currentTime) => {
 				throw new Error('No trades made with fees');
 			}
 
-			loggerUser.debug(
-				'REFERRAL createUnrealizedReferralFees',
-				'Users that traded and paid fees:',
-				tradeUsersAmount
-			);
 
 			return all([
 				accumulatedFees,
@@ -2738,12 +2710,6 @@ const createUnrealizedReferralFees = async (currentTime) => {
 				throw new Error('No trades made by affiliated users');
 			}
 
-			loggerUser.verbose(
-				'REFERRAL createUnrealizedReferralFees',
-				'Affiliated users that traded:',
-				count
-			);
-
 			for (let affiliation of affiliations) {
 				const refereeUser = affiliation.user;
 				const referer = affiliation.referer;
@@ -2784,38 +2750,29 @@ const createUnrealizedReferralFees = async (currentTime) => {
 				}
 			}
 
-			referralHistory.forEach(refHistory => {
-				refHistory.accumulated_fees = applyEarningRate(refHistory.accumulated_fees, refHistory.earning_rate);
-			});
+			const nativeCurrency = getKitConfig()?.referral_history_config?.currency;
 
+			if (!nativeCurrency) {
+				throw new Error('currency in referral config not defined');
+			}
 
-			return referralHistory;
-		})
-		.then(async (referralHistory) => {
-			const nativeCurrency = getKitConfig()?.referral_history_config?.currency || 'usdt';
-
-			const exchangeCoins = getKitCoins();
+			const exchangeCoins = referralHistory.map(record => record.coin) || [];
 			const conversions = await getNodeLib().getOraclePrices(exchangeCoins, {
 				quote: nativeCurrency,
 				amount: 1
 			});
 
-
 			for (let record of referralHistory) {
+				record.accumulated_fees = applyEarningRate(record.accumulated_fees, record.earning_rate);
+
 				if (conversions[record.coin] === -1) continue;
 				record.accumulated_fees = new BigNumber(record.accumulated_fees).multipliedBy(conversions[record.coin]).toNumber();
 				record.status = false;
-				await referralHistoryModel.create(record);
 			}
-
-			return;
+		
+			return referralHistoryModel.bulkCreate(referralHistory);
 		})
-		.catch((err) => {
-			loggerUser.error(
-				'REFERRAL createUnrealizedReferralFees error',
-				err.message
-			);
-		});
+		.catch(err => err);
 };
 
 const settleFees = async (user_id) => {
@@ -2832,7 +2789,11 @@ const settleFees = async (user_id) => {
 
 	const distributor = await getUserByKitId(distributor_id, true, true);
 
-	const nativeCurrency = getKitConfig()?.referral_history_config?.currency || 'usdt';
+	const nativeCurrency = getKitConfig()?.referral_history_config?.currency;
+
+	if (!nativeCurrency) {
+		throw new Error('currency in referral config not defined');
+	}
 
 	const { transferAssetByKitIds} = require('./wallet');
 	const referralHistoryModel = getModel('Referralhistory');
@@ -2841,7 +2802,7 @@ const settleFees = async (user_id) => {
 		where: { referer: user_id, status: false },
 	});	
 
-	const exchangeCoins = getKitCoins();
+	const exchangeCoins = unrealizedRecords.map(record => record.coin) || [];
 	const conversions = await getNodeLib().getOraclePrices(exchangeCoins, {
 		quote: 'usdt',
 		amount: 1

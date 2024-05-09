@@ -2,7 +2,7 @@
 
 
 module.exports = function (sequelize, DataTypes) {
-	const Referralhistory = sequelize.define('Referralhistory', {
+	const ReferralHistory = sequelize.define('ReferralHistory', {
 		id: {
 			allowNull: false,
 			autoIncrement: true,
@@ -50,12 +50,12 @@ module.exports = function (sequelize, DataTypes) {
 	}, {
 		timestamps: true,
 		underscored: true,
-		tableName: 'Referralhistories'
+		tableName: 'ReferralHistories'
 	});
 
-	Referralhistory.associate = (models) => {
+	ReferralHistory.associate = (models) => {
 		
 	};
 
-	return Referralhistory;
+	return ReferralHistory;
 };
