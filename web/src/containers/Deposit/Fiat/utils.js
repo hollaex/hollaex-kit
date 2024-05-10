@@ -38,7 +38,7 @@ export const getFiatWithdrawalFee = (currency, amount = 0, network) =>
 export const getFiatDepositFee = (currency, amount = 0, network) =>
 	getFiatFee(currency, amount, network, DEPOSIT_FEES_KEY);
 
-export const getFiatLimit = (type) => {
+export const getFiatLimit = (type, currency) => {
 	const transactionType =
 		type === WITHDRAWAL_LIMIT_KEY ? 'withdrawal' : 'deposit';
 	const {
@@ -46,16 +46,28 @@ export const getFiatLimit = (type) => {
 		user: { verification_level },
 	} = store.getState();
 
-	return (
-		transaction_limits?.find(
-			(limit) =>
-				limit.tier === verification_level && limit.type === transactionType
-		)?.amount || 0
+	const independentLimit = transaction_limits?.find(
+		(limit) =>
+			limit.limit_currency === currency &&
+			limit.tier === verification_level &&
+			limit.type === transactionType
 	);
+	const defaultLimit = transaction_limits?.find(
+		(limit) =>
+			limit.limit_currency === 'default' &&
+			limit.tier === verification_level &&
+			limit.type === transactionType
+	);
+
+	const limit = independentLimit || defaultLimit;
+
+	return limit?.amount || 0;
 };
 
-export const getFiatWithdrawalLimit = () => getFiatLimit(WITHDRAWAL_LIMIT_KEY);
-export const getFiatDepositLimit = () => getFiatLimit(DEPOSIT_LIMIT_KEY);
+export const getFiatWithdrawalLimit = (symbol) =>
+	getFiatLimit(WITHDRAWAL_LIMIT_KEY, symbol);
+export const getFiatDepositLimit = (symbol) =>
+	getFiatLimit(DEPOSIT_LIMIT_KEY, symbol);
 
 export const getOnramp = (state, ownProps) =>
 	state.app.onramp[ownProps.currency][ownProps.method];
