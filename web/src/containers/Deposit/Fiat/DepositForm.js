@@ -46,7 +46,7 @@ const generateFormValues = (
 
 	let { rate: fee } = getFiatDepositFee(symbol);
 	const customFee = fiat_fees?.[symbol]?.deposit_fee;
-	const limit = getFiatDepositLimit();
+	const limit = getFiatDepositLimit(symbol);
 
 	const MIN = math.max(fee, min);
 	const MAX = limit && math.larger(limit, 0) ? math.min(limit, max) : max;
