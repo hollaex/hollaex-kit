@@ -145,7 +145,7 @@ const Form = ({
 		const { type } = tabs[activeTab] || {};
 		const isManual = type === 'manual';
 		const { rate: fee } = getFiatDepositFee(currency);
-		const limit = getFiatDepositLimit();
+		const limit = getFiatDepositLimit(currency);
 
 		const { min, max, display_name } = coins[currency] || DEFAULT_COIN_DATA;
 

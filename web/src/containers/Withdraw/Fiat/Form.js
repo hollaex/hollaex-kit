@@ -158,7 +158,7 @@ class Form extends Component {
 		const { icons: ICONS, activeTheme, activeLanguage, constants } = this.props;
 		const balanceAvailable = balance[`${currency}_available`];
 
-		const withdrawal_limit = getFiatWithdrawalLimit(verification_level);
+		const withdrawal_limit = getFiatWithdrawalLimit(currency);
 		const { rate: withdrawal_fee } = getFiatWithdrawalFee(currency);
 
 		const formValues = generateFormValues(

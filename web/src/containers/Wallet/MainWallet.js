@@ -149,7 +149,7 @@ class Wallet extends Component {
 		pairs,
 		total,
 		oraclePrices,
-		{ features: { stake_page = false } = {} } = {},
+		{ features: { stake_page = false, cefi_stake = false } = {} } = {},
 		contracts = {},
 		isFetching,
 		assets
@@ -231,7 +231,7 @@ class Wallet extends Component {
 			},
 		];
 
-		if (stake_page) {
+		if (stake_page || cefi_stake) {
 			mobileTabs.push({
 				title: STRINGS['ACCOUNTS.TAB_STAKE'],
 				content: <Stake />,
