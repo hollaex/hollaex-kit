@@ -101,14 +101,6 @@ class Form extends Component {
 	}
 
 	onOpenDialog = (ev) => {
-		// const { coins, getWithdrawCurrency, getWithdrawNetwork, getWithdrawNetworkOptions, currency, getWithdrawAmount, isValidAddress } = this.props;
-
-		// if (isValidAddress) {
-		// 	this.setState({ dialogIsOpen: true });
-
-		// } else {
-		// 	message.error("please enter a Valid address")
-		// }
 		// if (ev && ev.preventDefault) {
 		// 	ev.preventDefault();
 		// }

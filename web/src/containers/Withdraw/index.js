@@ -16,7 +16,11 @@ import {
 	// requestWithdrawFee
 } from 'actions/walletActions';
 import { errorHandler } from 'components/OtpForm/utils';
-import { openContactForm, getWithdrawalMax } from 'actions/appActions';
+import {
+	openContactForm,
+	getWithdrawalMax,
+	withdrawAddress,
+} from 'actions/appActions';
 import { generateFormValues, generateInitialValues } from './formUtils';
 import { renderNeedHelpAction, renderTitleSection } from '../Wallet/components';
 import { FORM_NAME } from './form';
@@ -79,6 +83,10 @@ class Withdraw extends Component {
 		if (nextProps.routeParams.currency !== this.props.routeParams.currency) {
 			this.setCurrency(nextProps.routeParams.currency);
 		}
+	}
+
+	componentWillUnmount() {
+		this.props.setWithdrawAddress('');
 	}
 
 	validateRoute = (currency, coins) => {
@@ -415,6 +423,7 @@ const mapStateToProps = (store) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 	openContactForm: bindActionCreators(openContactForm, dispatch),
+	setWithdrawAddress: bindActionCreators(withdrawAddress, dispatch),
 	// requestWithdrawFee: bindActionCreators(requestWithdrawFee, dispatch),
 	dispatch,
 });

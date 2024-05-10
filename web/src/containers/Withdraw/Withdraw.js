@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Button, Input, Select } from 'antd';
+import BigNumber from 'bignumber.js';
 import { Coin } from 'components';
 import STRINGS from 'config/localizedStrings';
 import {
@@ -45,6 +46,7 @@ const RenderWithdraw = ({
 	const [topAssets, setTopAssets] = useState([]);
 	const [selectedAsset, setSelectedAsset] = useState('');
 	const [prices, setPrices] = useState({});
+	const [isPinnedAssets, setIsPinnedAssets] = useState(false);
 
 	const {
 		setWithdrawCurrency,
@@ -58,6 +60,9 @@ const RenderWithdraw = ({
 		setFee,
 		setWithdrawNetwork,
 		currency,
+		coin_customizations,
+		setIsValidAdress,
+		isValidAddress,
 	} = rest;
 	const defaultCurrency = currency !== '' && currency;
 	const iconId = coins[getWithdrawCurrency]?.icon_id;
@@ -70,14 +75,20 @@ const RenderWithdraw = ({
 			? coins[getWithdrawCurrency]?.network
 			: coins[getWithdrawCurrency]?.symbol;
 
-	const curretPrice = prices[getWithdrawCurrency];
-	const estimatedWithdrawValue = curretPrice * getWithdrawAmount;
-	const fee =
+	const curretPrice = getWithdrawCurrency
+		? prices[getWithdrawCurrency]
+		: prices[defaultCurrency];
+	const estimatedWithdrawValue = curretPrice * getWithdrawAmount || 0;
+	let fee =
 		selectedAsset &&
 		coins[selectedAsset].withdrawal_fees &&
 		Object.keys(coins[selectedAsset]?.withdrawal_fees).length &&
-		coins[selectedAsset].withdrawal_fees[selectedAsset]?.value
-			? coins[selectedAsset].withdrawal_fees[selectedAsset]?.value
+		coins[selectedAsset].withdrawal_fees[
+			Object.keys(coins[selectedAsset]?.withdrawal_fees)[0]
+		]?.value
+			? coins[selectedAsset].withdrawal_fees[
+					Object.keys(coins[selectedAsset]?.withdrawal_fees)[0]
+			  ]?.value
 			: selectedAsset &&
 			  coins[selectedAsset].withdrawal_fees &&
 			  Object.keys(coins[selectedAsset]?.withdrawal_fees).length &&
@@ -87,6 +98,18 @@ const RenderWithdraw = ({
 			? coins[selectedAsset]?.withdrawal_fee
 			: 0;
 
+	const feeMarkup =
+		selectedAsset && coin_customizations?.[selectedAsset]?.fee_markup;
+	if (feeMarkup) {
+		const incrementUnit = coins?.[selectedAsset]?.increment_unit;
+		const decimalPoint = new BigNumber(incrementUnit).dp();
+		const roundedMarkup = new BigNumber(feeMarkup)
+			.decimalPlaces(decimalPoint)
+			.toNumber();
+
+		fee = new BigNumber(fee || 0).plus(roundedMarkup || 0).toNumber();
+	}
+
 	const isAmount = useMemo(() => {
 		return (
 			!getWithdrawAddress ||
@@ -94,7 +117,8 @@ const RenderWithdraw = ({
 			getWithdrawAmount <= 0 ||
 			getWithdrawAmount > maxAmount ||
 			maxAmount <= 0 ||
-			!network
+			!network ||
+			!isValidAddress
 		);
 	}, [
 		getWithdrawAddress,
@@ -102,10 +126,26 @@ const RenderWithdraw = ({
 		getWithdrawAmount,
 		maxAmount,
 		network,
+		isValidAddress,
 	]);
 
 	const currentNetwork =
 		getWithdrawNetworkOptions !== '' ? getWithdrawNetworkOptions : network;
+	const defaultNetwork =
+		defaultCurrency &&
+		coins[defaultCurrency]?.network &&
+		coins[defaultCurrency]?.network !== 'other'
+			? coins[defaultCurrency]?.network
+			: coins[defaultCurrency]?.symbol;
+
+	const getOraclePrices = async () => {
+		try {
+			const prices = await getPrices({ coins });
+			setPrices(prices);
+		} catch (error) {
+			console.error(error);
+		}
+	};
 
 	useEffect(() => {
 		const topWallet = assets
@@ -131,6 +171,12 @@ const RenderWithdraw = ({
 
 	useEffect(() => {
 		setSelectedAsset(defaultCurrency);
+		if (defaultCurrency) {
+			setWithdrawCurrency(defaultCurrency);
+			setCurrStep({ ...currStep, stepTwo: true });
+			// if()
+		}
+		getOraclePrices();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -147,16 +193,10 @@ const RenderWithdraw = ({
 		}
 	};
 
-	const getOraclePrices = async () => {
-		try {
-			const prices = await getPrices({ coins });
-			setPrices(prices);
-		} catch (error) {
-			console.error(error);
+	const onHandleChangeSelect = (val, pinned_assets = false) => {
+		if (pinned_assets) {
+			setIsPinnedAssets(pinned_assets);
 		}
-	};
-
-	const onHandleChangeSelect = (val) => {
 		if (val) {
 			if (currStep.stepTwo || currStep.stepThree || currStep.stepFour) {
 				setCurrStep((prev) => ({
@@ -182,7 +222,7 @@ const RenderWithdraw = ({
 			setWithdrawAmount(0);
 		}
 		setSelectedAsset(val);
-		getOraclePrices();
+		setWithdrawAddress('');
 	};
 
 	const onHandleChangeNetwork = (val) => {
@@ -198,15 +238,17 @@ const RenderWithdraw = ({
 		const isValid = validAddress(
 			getWithdrawCurrency,
 			STRINGS[`WITHDRAWALS_${selectedAsset.toUpperCase()}_INVALID_ADDRESS`],
-			currentNetwork
-		);
+			currentNetwork,
+			val
+		)();
 		if (val) {
 			setCurrStep((prev) => ({ ...prev, stepFour: true }));
 			setWithdrawAddress(val);
 		} else if (!val) {
 			setCurrStep((prev) => ({ ...prev, stepFour: false }));
 		}
-		setIsValidAdress({ isValid: isValid() });
+		setIsValidAdress({ isValid: !isValid });
+		setWithdrawAmount(0);
 	};
 
 	const onHandleAmount = (val) => {
@@ -229,18 +271,18 @@ const RenderWithdraw = ({
 		);
 	};
 
-	const renderScanIcon = () => {
-		return (
-			<div className="render-scan-wrapper d-flex">
-				<span className="suffix-text">
-					{renderWithdrawlabel('ACCORDIAN.SCAN')}
-				</span>
-				<div className="img-wrapper">
-					<img alt="scan-icon" src={STATIC_ICONS['QR_CODE_SCAN']}></img>
-				</div>
-			</div>
-		);
-	};
+	// const renderScanIcon = () => {
+	// 	return (
+	// 		<div className="render-scan-wrapper d-flex">
+	// 			<span className="suffix-text">
+	// 				{renderWithdrawlabel('ACCORDIAN.SCAN')}
+	// 			</span>
+	// 			<div className="img-wrapper">
+	// 				<img alt="scan-icon" src={STATIC_ICONS['QR_CODE_SCAN']}></img>
+	// 			</div>
+	// 		</div>
+	// 	);
+	// };
 
 	const isSteps =
 		(coinLength && coinLength.length === 1) ||
@@ -298,7 +340,7 @@ const RenderWithdraw = ({
 									className={`currency-label ${
 										selectedAsset === data ? 'opacity-100' : 'opacity-30'
 									}`}
-									onClick={() => onHandleChangeSelect(data)}
+									onClick={() => onHandleChangeSelect(data, true)}
 								>
 									{data}
 								</span>
@@ -349,7 +391,9 @@ const RenderWithdraw = ({
 								allowClear={true}
 								onChange={onHandleChangeNetwork}
 								value={
-									coinLength && coinLength.length <= 1
+									defaultCurrency && !isPinnedAssets && coinLength?.length < 1
+										? defaultNetwork
+										: coinLength && coinLength.length <= 1
 										? getNetworkNameByKey(network)
 										: coinLength && coinLength.length > 1
 										? getNetworkNameByKey(getWithdrawNetworkOptions)
@@ -361,8 +405,8 @@ const RenderWithdraw = ({
 								}
 							>
 								{coinLength &&
-									coinLength.map((data) => (
-										<Option value={data}>
+									coinLength.map((data, inx) => (
+										<Option key={inx} value={data}>
 											<div className="d-flex gap-1">
 												<div>{getNetworkNameByKey(data).toUpperCase()}</div>
 											</div>
@@ -406,8 +450,9 @@ const RenderWithdraw = ({
 					<div className="d-flex flex-row select-wrapper">
 						<Input
 							className="destination-input-field"
-							suffix={renderScanIcon()}
+							// suffix={renderScanIcon()}
 							onChange={(e) => onHandleAddress(e.target.value)}
+							value={getWithdrawAddress}
 						></Input>
 						{currStep.stepFour && <CheckOutlined className="mt-3 ml-3" />}
 					</div>
@@ -488,6 +533,8 @@ const mapStateToForm = (state) => ({
 	getWithdrawNetworkOptions: state.app.withdrawFields.withdrawNetworkOptions,
 	getWithdrawAddress: state.app.withdrawFields.withdrawAddress,
 	getWithdrawAmount: state.app.withdrawFields.withdrawAmount,
+	coin_customizations: state.app.constants.coin_customizations,
+	isValidAddress: state.app.isValidAddress,
 });
 
 const mapDispatchToProps = (dispatch) => ({

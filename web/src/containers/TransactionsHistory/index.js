@@ -121,8 +121,11 @@ class TransactionsHistory extends Component {
 	}
 
 	componentDidUpdate() {
-		const activeTabName = this.getActiveTabName();
-		this.updateParams(activeTabName);
+		const { isFromWallet } = this.props;
+		if (!isFromWallet) {
+			const activeTabName = this.getActiveTabName();
+			this.updateParams(activeTabName);
+		}
 	}
 
 	componentWillUnmount() {
