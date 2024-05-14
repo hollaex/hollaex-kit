@@ -596,8 +596,7 @@
         "INTERNAL": "intern",
         "BLOCKCHAIN": "blockchain",
         "STAKE": "inzet",
-        "REFERRAL": "verwijzing",
-        "QUICK_TRADE_TOOLTIP": "Order executed through convert system"
+        "REFERRAL": "verwijzing"
     },
     "ACCOUNT_SECURITY": {
         "TITLE_TEXT": "Pas de beveiligingsinstellingen voor uw account aan. Van tweefactorauthenticatie, wachtwoord, API-sleutels en andere beveiligingsgerelateerde functies.",

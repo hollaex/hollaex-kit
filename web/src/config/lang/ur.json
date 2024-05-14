@@ -584,8 +584,7 @@
         "INTERNAL": "اندرونی",
         "BLOCKCHAIN": "بلاکچین",
         "STAKE": "داؤ",
-        "REFERRAL": "حوالہ",
-        "QUICK_TRADE_TOOLTIP": "Order executed through convert system"
+        "REFERRAL": "حوالہ"
     },
     "ACCOUNT_SECURITY": {
         "TITLE_TEXT": "اپنے اکاؤنٹ کے لیے سیکیورٹی کی ترتیبات کو ایڈجسٹ کریں۔ دو عنصر کی توثیق، پاس ورڈ، اے پی ای کیز اور سیکیورٹی سے متعلق دیگر افعال سے۔",

@@ -609,7 +609,7 @@
 		"BLOCKCHAIN": "blockchain",
 		"STAKE": "stake",
 		"REFERRAL": "referral",
-		"QUICK_TRADE_TOOLTIP": "Order executed through convert system"
+		"QUICK_TRADE_TOOLTIP": "Order executed through OTC"
 	},
 	"ACCOUNT_SECURITY": {
 		"TITLE_TEXT": "Adjust the security settings for your account. From Two-factor authentication, password, API keys and other security related functions.",

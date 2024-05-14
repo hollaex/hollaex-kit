@@ -625,8 +625,7 @@
         "INTERNAL": "interno",
         "BLOCKCHAIN": "blockchain",
         "STAKE": "estaca",
-        "REFERRAL": "referência",
-        "QUICK_TRADE_TOOLTIP": "Order executed through convert system"
+        "REFERRAL": "referência"
     },
     "ACCOUNT_SECURITY": {
         "TITLE_TEXT": "Ajuste as configurações de segurança para sua conta: autenticação de dois fatores (2FA), senha, chaves API e outras funções relacionadas à segurança.",
