@@ -2255,13 +2255,23 @@ table th {
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-step-selected {
       border: 2px solid var(--labels_important-active-labels-text-graphics); }
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line,
-    .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line-selected {
+    .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line-selected,
+    .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line-selected-large {
       border: 1px solid var(--labels_secondary-inactive-label-text-graphics);
       height: 55px;
       margin: 0 100%; }
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line-selected {
       height: 70px;
       border: 1px solid var(--labels_important-active-labels-text-graphics); }
+    .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line-selected-large {
+      height: 95px;
+      border: 1px solid var(--labels_important-active-labels-text-graphics); }
+    .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line-extra-large {
+      height: 2rem;
+      border: 1px solid var(--labels_secondary-inactive-label-text-graphics);
+      margin: 0 100%; }
+    .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line-extra-large-active {
+      border: 1px solid var(--labels_important-active-labels-text-graphics) !important; }
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .select-label {
       text-wrap: nowrap; }
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .select-wrapper {
@@ -2286,6 +2296,8 @@ table th {
         height: 40px !important; }
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .opacity-100 {
       opacity: 1; }
+    .withdrawal-container .withdraw-form-wrapper .withdraw-form .opacity-50 {
+      opacity: 0.5; }
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .opacity-30 {
       opacity: 0.3; }
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .ant-select-clear {
@@ -2364,6 +2376,32 @@ table th {
       width: 300px; }
   .withdrawal-container .withdraw-form-wrapper .warning-text {
     color: var(--specials_notifications-alerts-warnings); }
+  .withdrawal-container .withdraw-form-wrapper .width-80 {
+    width: 80%; }
+  .withdrawal-container .withdraw-form-wrapper .check-optional .ant-checkbox-inner {
+    background-color: var(--base_wallet-sidebar-and-popup) !important; }
+  .withdrawal-container .withdraw-form-wrapper .check-optional .ant-checkbox-checked .ant-checkbox-inner {
+    border-color: var(--labels_important-active-labels-text-graphics) !important; }
+
+.withdrawal-remove-tag-modal .ant-modal-header {
+  border: none; }
+
+.withdrawal-remove-tag-modal .ant-modal-header,
+.withdrawal-remove-tag-modal .ant-modal-body {
+  background-color: var(--base_wallet-sidebar-and-popup) !important; }
+
+.withdrawal-remove-tag-modal .remove-tag-wrapper .tag-body {
+  height: 18rem; }
+
+.withdrawal-remove-tag-modal .remove-tag-wrapper .button-wrapper {
+  display: flex;
+  justify-content: space-between; }
+  .withdrawal-remove-tag-modal .remove-tag-wrapper .button-wrapper Button {
+    width: 48%;
+    height: 3rem;
+    border: none !important;
+    color: var(--labels_important-active-labels-text-graphics) !important;
+    font-size: 14px; }
 
 .layout-mobile .review-wrapper {
   min-width: 0;
@@ -2515,6 +2553,54 @@ table th {
 
 .multiple-actions-wrapper .mini-qr {
   fill: var(--specials_buttons-links-and-highlights); }
+
+.deposit-wrapper-fields .currency-label {
+  border: 1px solid var(--labels_secondary-inactive-label-text-graphics);
+  padding: 0.5%;
+  border-radius: 5px;
+  margin-right: 10px;
+  width: 4rem;
+  text-align: center;
+  cursor: pointer; }
+
+.deposit-wrapper-fields .step3-icon-wrapper {
+  height: 0%;
+  width: fit-content; }
+
+.deposit-wrapper-fields .address-label {
+  margin-left: 20% !important; }
+
+.deposit-wrapper-fields .btn-wrapper-deposit {
+  display: flex;
+  justify-content: center;
+  margin-left: 2.5%; }
+  .deposit-wrapper-fields .btn-wrapper-deposit .holla-button {
+    width: 300px; }
+
+.deposit-address-wrapper {
+  margin-left: 9%; }
+  .deposit-address-wrapper .deposit-address-field .destination-input-field,
+  .deposit-address-wrapper .deposit-address-field .destination-input-field:focus-within {
+    border: none !important;
+    border-bottom: 1px solid var(--calculated_important-border) !important; }
+  .deposit-address-wrapper .deposit-address-field .ant-input-suffix {
+    width: 15% !important; }
+  .deposit-address-wrapper .deposit-address-field .divider {
+    border-right: 1px solid var(--calculated_secondary-border);
+    padding-left: 15%;
+    height: 16px;
+    margin-top: 4%; }
+  .deposit-address-wrapper .deposit-address-field .render-deposit-scan-wrapper {
+    text-decoration: underline;
+    text-transform: uppercase;
+    color: var(--specials_buttons-links-and-highlights);
+    cursor: pointer; }
+  .deposit-address-wrapper .address-warning-text {
+    width: 70%; }
+
+.generate-deposit-label {
+  color: var(--labels_secondary-inactive-label-text-graphics);
+  margin: 1% 9%; }
 
 .transaction-history-wrapper .ant-row,
 .login-history-section-wrapper .ant-row {

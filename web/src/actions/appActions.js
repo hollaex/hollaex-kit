@@ -106,6 +106,9 @@ export const SET_WITHDRAW_AMOUNT = 'SET_WITHDRAW_AMOUNT';
 export const SET_WITHDRAW_FEE = 'SET_WITHDRAW_FEE';
 export const SET_DEPOSIT_AND_WITHDRAW = 'SET_DEPOSIT_AND_WITHDRAW';
 export const SET_VALID_ADDRESS = 'SET_VALID_ADDRESS';
+export const SET_DEPOSIT_CURRENCY = 'SET_DEPOSIT_CURRENCY';
+export const SET_DEPOSIT_NETWORK = 'SET_DEPOSIT_NETWORK';
+export const SET_DEPOSIT_NETWORK_OPTIONS = 'SET_DEPOSIT_OPTIONS';
 
 export const SORT = {
 	VOL: 'volume',
@@ -722,4 +725,19 @@ export const setDepositAndWithdraw = (val) => ({
 export const setIsValidAdress = (val) => ({
 	type: SET_VALID_ADDRESS,
 	payload: val,
+});
+
+export const depositCurrency = (currency) => ({
+	type: SET_DEPOSIT_CURRENCY,
+	payload: currency,
+});
+
+export const depositNetwork = (network) => ({
+	type: SET_DEPOSIT_NETWORK,
+	payload: network,
+});
+
+export const depositNetworkOptions = (networkOptions) => ({
+	type: SET_DEPOSIT_NETWORK_OPTIONS,
+	payload: networkOptions,
 });

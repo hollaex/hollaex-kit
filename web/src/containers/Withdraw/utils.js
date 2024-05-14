@@ -76,7 +76,7 @@ export const calculateBaseFee = (amount = 0) => {
 	return fee;
 };
 
-export const renderWithdrawlabel = (label) => {
+export const renderLabel = (label) => {
 	return <EditWrapper stringId={label}>{STRINGS[label]}</EditWrapper>;
 };
 

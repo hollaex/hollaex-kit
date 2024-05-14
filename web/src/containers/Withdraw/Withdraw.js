@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Button, Input, Select } from 'antd';
+import { Button, Checkbox, Input, Modal, Select } from 'antd';
 import BigNumber from 'bignumber.js';
-import { Coin } from 'components';
+import { Coin, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 import {
 	CaretDownOutlined,
@@ -23,7 +23,7 @@ import {
 	withdrawNetworkOptions,
 } from 'actions/appActions';
 import { getPrices } from 'actions/assetActions';
-import { renderEstimatedValueAndFee, renderWithdrawlabel } from './utils';
+import { renderEstimatedValueAndFee, renderLabel } from './utils';
 import { validAddress } from 'components/Form/validations';
 
 const RenderWithdraw = ({
@@ -47,6 +47,9 @@ const RenderWithdraw = ({
 	const [selectedAsset, setSelectedAsset] = useState('');
 	const [prices, setPrices] = useState({});
 	const [isPinnedAssets, setIsPinnedAssets] = useState(false);
+	const [optionalTag, setOptionalTag] = useState('');
+	const [isCheck, setIsCheck] = useState(false);
+	const [isVisible, setIsVisible] = useState(false);
 
 	const {
 		setWithdrawCurrency,
@@ -174,7 +177,6 @@ const RenderWithdraw = ({
 		if (defaultCurrency) {
 			setWithdrawCurrency(defaultCurrency);
 			setCurrStep({ ...currStep, stepTwo: true });
-			// if()
 		}
 		getOraclePrices();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -243,10 +245,10 @@ const RenderWithdraw = ({
 		)();
 		if (val) {
 			setCurrStep((prev) => ({ ...prev, stepFour: true }));
-			setWithdrawAddress(val);
 		} else if (!val) {
 			setCurrStep((prev) => ({ ...prev, stepFour: false }));
 		}
+		setWithdrawAddress(val);
 		setIsValidAdress({ isValid: !isValid });
 		setWithdrawAmount(0);
 	};
@@ -255,15 +257,21 @@ const RenderWithdraw = ({
 		setWithdrawAmount(val);
 	};
 
+	const onHandleRemove = () => {
+		if (!isCheck) {
+			setOptionalTag('');
+		}
+		setIsCheck(true);
+		setIsVisible(false);
+	};
+
 	const renderAmountIcon = () => {
 		return (
 			<div
 				onClick={() => getWithdrawlMAx(getWithdrawCurrency, true)}
 				className="d-flex render-amount-icon-wrapper"
 			>
-				<span className="suffix-text">
-					{renderWithdrawlabel('CALCULATE_MAX')}
-				</span>
+				<span className="suffix-text">{renderLabel('CALCULATE_MAX')}</span>
 				<div className="img-wrapper">
 					<img alt="max-icon" src={STATIC_ICONS['MAX_ICON']} />
 				</div>
@@ -271,17 +279,50 @@ const RenderWithdraw = ({
 		);
 	};
 
+	const renderRemoveTag = () => {
+		return (
+			<div className="remove-tag-wrapper">
+				<div className="tag-body">
+					<div className="mb-4">
+						<EditWrapper>
+							{STRINGS['WITHDRAW_PAGE.REMOVE_TAG_NOTE_1']}
+						</EditWrapper>
+					</div>
+					<div className="mb-4">
+						<EditWrapper>
+							{STRINGS.formatString(
+								STRINGS['WITHDRAW_PAGE.REMOVE_TAG_NOTE_2'],
+								<span className="font-weight-bold">
+									{STRINGS['WITHDRAW_PAGE.REMOVE_TAG_NOTE_3']}
+								</span>,
+								STRINGS['WITHDRAW_PAGE.REMOVE_TAG_NOTE_4']
+							)}
+						</EditWrapper>
+					</div>
+				</div>
+				<div className="button-wrapper">
+					<Button className="holla-button" onClick={() => setIsVisible(false)}>
+						<EditWrapper>{STRINGS['WITHDRAW_PAGE.BACK_BTN']}</EditWrapper>
+					</Button>
+					<Button className="holla-button" onClick={onHandleRemove}>
+						<EditWrapper>{STRINGS['WITHDRAW_PAGE.REMOVE_TAG']}</EditWrapper>
+					</Button>
+				</div>
+			</div>
+		);
+	};
+
 	// const renderScanIcon = () => {
-	// 	return (
-	// 		<div className="render-scan-wrapper d-flex">
-	// 			<span className="suffix-text">
-	// 				{renderWithdrawlabel('ACCORDIAN.SCAN')}
-	// 			</span>
-	// 			<div className="img-wrapper">
-	// 				<img alt="scan-icon" src={STATIC_ICONS['QR_CODE_SCAN']}></img>
-	// 			</div>
-	// 		</div>
-	// 	);
+	//  return (
+	//      <div className="render-scan-wrapper d-flex">
+	//          <span className="suffix-text">
+	//              {renderLabel('ACCORDIAN.SCAN')}
+	//          </span>
+	//          <div className="img-wrapper">
+	//              <img alt="scan-icon" src={STATIC_ICONS['QR_CODE_SCAN']}></img>
+	//          </div>
+	//      </div>
+	//  );
 	// };
 
 	const isSteps =
@@ -304,7 +345,7 @@ const RenderWithdraw = ({
 						></span>
 					</div>
 					<div className="mt-2 ml-5 withdraw-main-label-selected">
-						{renderWithdrawlabel('ACCORDIAN.SELECT_ASSET')}
+						{renderLabel('ACCORDIAN.SELECT_ASSET')}
 					</div>
 				</div>
 				<div className="select-wrapper">
@@ -342,7 +383,7 @@ const RenderWithdraw = ({
 									}`}
 									onClick={() => onHandleChangeSelect(data, true)}
 								>
-									{data}
+									{data.toUpperCase()}
 								</span>
 							);
 						})}
@@ -373,7 +414,7 @@ const RenderWithdraw = ({
 							currStep.stepTwo ? '-selected' : ''
 						}`}
 					>
-						{renderWithdrawlabel('ACCORDIAN.SELECT_NETWORK')}
+						{renderLabel('ACCORDIAN.SELECT_NETWORK')}
 					</div>
 				</div>
 				{currStep.stepTwo && (
@@ -420,7 +461,7 @@ const RenderWithdraw = ({
 						<div className="d-flex mt-2 warning-text">
 							<ExclamationCircleFilled className="mt-1" />
 							<div className="ml-2 w-75">
-								{renderWithdrawlabel('DEPOSIT_FORM_NETWORK_WARNING')}
+								{renderLabel('DEPOSIT_FORM_NETWORK_WARNING')}
 							</div>
 						</div>
 					</div>
@@ -441,7 +482,7 @@ const RenderWithdraw = ({
 							isSteps ? '-selected' : ''
 						}`}
 					>
-						{renderWithdrawlabel('ACCORDIAN.DESTINATION')}
+						{renderLabel('ACCORDIAN.DESTINATION')}
 					</div>
 				</div>
 				{((coinLength && coinLength.length === 1) ||
@@ -458,13 +499,86 @@ const RenderWithdraw = ({
 					</div>
 				)}
 			</div>
+			{['xrp', 'xlm', 'ton'].includes(selectedAsset) && (
+				<div className="d-flex justify-content-between">
+					<div className="d-flex h-25">
+						<div className="custom-field d-flex flex-column">
+							<span
+								className={`custom-line-extra-large ${
+									currStep.stepFour ? 'custom-line-extra-large-active' : ''
+								}`}
+							></span>
+							<span
+								className={`custom-step${currStep.stepFour ? '-selected' : ''}`}
+							>
+								4
+							</span>
+							<span
+								className={`custom-line${
+									currStep.stepFour ? '-selected-large' : ''
+								}`}
+							></span>
+						</div>
+						<div
+							className={`mt-3 pt-4 ml-5 withdraw-main-label${
+								currStep.stepFour ? '-selected' : ''
+							} ${!isCheck ? 'opacity-100' : 'opacity-50'}`}
+						>
+							{renderLabel('ACCORDIAN.OPTIONAL_TAG')}
+						</div>
+					</div>
+					{currStep.stepFour && (
+						<div className="d-flex select-wrapper">
+							<div className="d-flex justify-content-end width-80 mb-2">
+								<div className={isCheck ? 'opacity-100' : 'opacity-30'}>
+									<Checkbox
+										className="pr-3 check-optional"
+										onClick={() => {
+											!isCheck ? setIsVisible(true) : setIsCheck(!isCheck);
+										}}
+										checked={isCheck}
+									/>
+									<span>No Tag</span>
+								</div>
+							</div>
+							<div>
+								<Input
+									onChange={(e) => setOptionalTag(e.target.value)}
+									value={optionalTag}
+									className={`destination-input-field ${
+										!isCheck ? 'opacity-100' : 'opacity-30'
+									}`}
+									type={selectedAsset === 'xrp' ? 'number' : 'text'}
+									disabled={isCheck}
+								></Input>
+								{optionalTag && <CheckOutlined className="mt-3 ml-3" />}
+							</div>
+							<div className="d-flex mt-2 warning-text">
+								<ExclamationCircleFilled className="mt-1" />
+								<div className="ml-2 w-75">
+									{renderLabel('WITHDRAWALS_FORM_DESTINATION_TAG_WARNING')}
+								</div>
+							</div>
+						</div>
+					)}
+				</div>
+			)}
+			<Modal
+				title="Remove Tag"
+				visible={isVisible}
+				onCancel={() => setIsVisible(false)}
+				footer={false}
+				className="withdrawal-remove-tag-modal"
+			>
+				{renderRemoveTag()}
+			</Modal>
 			<div className="d-flex justify-content-between">
 				<div className="d-flex h-25">
 					<div className="custom-field d-flex flex-column">
 						<span
 							className={`custom-step${currStep.stepFour ? '-selected' : ''}`}
 						>
-							4
+							{['xrp', 'xlm', 'ton'].includes(selectedAsset) ? 5 : 4}
 						</span>
 					</div>
 					<div className="d-flex">
@@ -483,7 +597,7 @@ const RenderWithdraw = ({
 								currStep.stepFour ? '-selected' : ''
 							}`}
 						>
-							{renderWithdrawlabel('ACCORDIAN.AMOUNT')}
+							{renderLabel('ACCORDIAN.AMOUNT')}
 						</div>
 					</div>
 				</div>
@@ -504,13 +618,13 @@ const RenderWithdraw = ({
 			{currStep.stepFour && (
 				<div className="bottom-content">
 					{renderEstimatedValueAndFee(
-						renderWithdrawlabel,
+						renderLabel,
 						'ACCORDIAN.ESTIMATED',
 						estimatedFormat
 					)}
 					<span>--</span>
 					{renderEstimatedValueAndFee(
-						renderWithdrawlabel,
+						renderLabel,
 						'ACCORDIAN.TRANSACTION_FEE',
 						withdrawFeeFormat
 					)}

@@ -68,6 +68,9 @@ import {
 	SET_WITHDRAW_FEE,
 	SET_DEPOSIT_AND_WITHDRAW,
 	SET_VALID_ADDRESS,
+	SET_DEPOSIT_NETWORK_OPTIONS,
+	SET_DEPOSIT_NETWORK,
+	SET_DEPOSIT_CURRENCY,
 } from 'actions/appActions';
 import { THEME_DEFAULT } from 'config/constants';
 import { getLanguage } from 'utils/string';
@@ -112,6 +115,12 @@ const WITHDRAW_FIELDS = {
 	withdrawAddress: '',
 	withdrawAmount: 0,
 	withdrawFee: 0,
+};
+
+const DEPOSIT_FIELDS = {
+	depositCurrency: '',
+	depositNetwork: '',
+	depositNetworkOptions: '',
 };
 
 const INITIAL_STATE = {
@@ -182,6 +191,7 @@ const INITIAL_STATE = {
 	selectedAccount: 1,
 	selectedStep: 0,
 	withdrawFields: WITHDRAW_FIELDS,
+	depositFields: DEPOSIT_FIELDS,
 	depositAndWithdraw: false,
 	isValidAddress: '',
 };
@@ -781,6 +791,24 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				isValidAddress: payload.isValid,
+			};
+		case SET_DEPOSIT_CURRENCY:
+			return {
+				...state,
+				depositFields: { ...state.depositFields, depositCurrency: payload },
+			};
+		case SET_DEPOSIT_NETWORK:
+			return {
+				...state,
+				depositFields: { ...state.depositFields, depositNetwork: payload },
+			};
+		case SET_DEPOSIT_NETWORK_OPTIONS:
+			return {
+				...state,
+				depositFields: {
+					...state.depositFields,
+					depositNetworkOptions: payload,
+				},
 			};
 		default:
 			return state;

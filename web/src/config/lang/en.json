@@ -1085,7 +1085,15 @@
 		"WITHDRAWAL_CONFIRM_ADDRESS": "Address",
 		"WITHDRAWAL_CONFIRM_NETWORK": "Network",
 		"WITHDRAWAL_CANCEL_BUTTON": "CLOSE",
-		"WITHDRAWAL_CONFIRM_BUTTON": "CONFIRM WITHDRAWAL"
+		"WITHDRAWAL_CONFIRM_BUTTON": "CONFIRM WITHDRAWAL",
+		"REMOVE_TAG_NOTE_1": "You've made a selection to remove the Tag (also known as memo, Digital ID, Label and Notes)",
+		"REMOVE_TAG_NOTE_2": "Most exchange, wallets and other platforms do require a Tag. {0} {1}",
+		"REMOVE_TAG_NOTE_3": "Please double-check",
+		"REMOVE_TAG_NOTE_4": "that the Tag is in fact required before removing it.",
+		"BACK_BTN": "BACK",
+		"REMOVE_TAG": "YES, REMOVE TAG",
+		"GENERATE_DEPOSIT_TEXT_1": "No deposit address detected",
+		"GENERATE_DEPOSIT_TEXT_2": "Generate one below:"
 	},
 	"WALLET_BUTTON_BASE_DEPOSIT": "deposit",
 	"WALLET_BUTTON_BASE_WITHDRAW": "withdraw",
@@ -1645,7 +1653,9 @@
 		"AMOUNT": "Amount:",
 		"ESTIMATED": "Estimated Withdrawal value",
 		"TRANSACTION_FEE": "Transaction fee to be added:",
-		"SCAN": "SCAN"
+		"SCAN": "SCAN",
+		"ADDRESS": "address:",
+		"OPTIONAL_TAG": "Tag (optional)"
 	},
 	"ASYNC_LINK": {
 		"TITLE": "Page not opening automatically?",

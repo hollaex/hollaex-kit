@@ -33,9 +33,11 @@ $qr-code--size: 12rem;
 	$qr-code-margin: 1rem;
 	width: $qr-code--size;
 	max-width: $qr-code--size;
+
 	.qr-code-bg {
 		background-color: white;
 		margin: $qr-code-margin;
+
 		> *:first-child {
 			@include size-important($qr-code--size - $qr-code-margin);
 		}
@@ -44,6 +46,7 @@ $qr-code--size: 12rem;
 
 .deposit_info-qr-wrapper {
 	$qr-code-margin: 1rem;
+
 	.qr-text {
 		text-align: center;
 		display: flex;
@@ -82,9 +85,11 @@ $qr-code--size: 12rem;
 	.verification-content-wrapper {
 		position: relative;
 	}
+
 	.error {
 		font-size: $font-size-subhead2;
 	}
+
 	.block-wrapper {
 		margin: 1rem;
 	}
@@ -94,4 +99,74 @@ $qr-code--size: 12rem;
 	.mini-qr {
 		fill: $link;
 	}
+}
+
+.deposit-wrapper-fields {
+	.currency-label {
+		border: 1px solid $colors-black;
+		padding: 0.5%;
+		border-radius: 5px;
+		margin-right: 10px;
+		width: 4rem;
+		text-align: center;
+		cursor: pointer;
+	}
+
+	.step3-icon-wrapper {
+		height: 0%;
+		width: fit-content;
+	}
+
+	.address-label {
+		margin-left: 20% !important;
+	}
+
+	.btn-wrapper-deposit {
+		display: flex;
+		justify-content: center;
+		margin-left: 2.5%;
+
+		.holla-button {
+			width: 300px;
+		}
+	}
+}
+
+.deposit-address-wrapper {
+	margin-left: 9%;
+
+	.deposit-address-field {
+		.destination-input-field,
+		.destination-input-field:focus-within {
+			border: none !important;
+			border-bottom: 1px solid $colors-main-border !important;
+		}
+
+		.ant-input-suffix {
+			width: 15% !important;
+		}
+
+		.divider {
+			border-right: 1px solid var(--calculated_secondary-border);
+			padding-left: 15%;
+			height: 16px;
+			margin-top: 4%;
+		}
+
+		.render-deposit-scan-wrapper {
+			text-decoration: underline;
+			text-transform: uppercase;
+			color: $link;
+			cursor: pointer;
+		}
+	}
+
+	.address-warning-text {
+		width: 70%;
+	}
+}
+
+.generate-deposit-label {
+	color: $colors-black;
+	margin: 1% 9%;
 }
