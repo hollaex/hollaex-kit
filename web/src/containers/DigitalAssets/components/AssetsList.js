@@ -35,6 +35,7 @@ const AssetsList = ({
 	icons,
 }) => {
 	const [isOndDaySort, setIsOneDaySort] = useState(false);
+	let listData = [];
 	const handleClickChange = () => {
 		setIsOneDaySort(false);
 		if (mode === SORT.CHANGESEVENDAY) {
@@ -88,21 +89,32 @@ const AssetsList = ({
 	};
 
 	const getSortedList = () => {
-		return movePinnedItems(
-			coinsListData.sort((a, b) => {
-				const aVal = parseFloat(
-					isOndDaySort
-						? a.oneDayPriceDifferencePercenVal
-						: a.priceDifferencePercentVal
-				);
-				const bVal = parseFloat(
-					isOndDaySort
-						? b.oneDayPriceDifferencePercenVal
-						: b.priceDifferencePercentVal
-				);
-				return is_descending ? bVal - aVal : aVal - bVal;
-			})
+		const topAssets = [];
+
+		pinned_assets.forEach((pin) => {
+			const asset = coinsListData.find(({ symbol }) => symbol === pin);
+			if (asset) {
+				topAssets.push(asset);
+			}
+		});
+		const restAssets = coinsListData.filter(
+			(item) => !pinned_assets.includes(item.symbol)
 		);
+		const sortedValues = restAssets.sort((a, b) => {
+			const aVal = parseFloat(
+				isOndDaySort
+					? a.oneDayPriceDifferencePercenVal
+					: a.priceDifferencePercentVal
+			);
+			const bVal = parseFloat(
+				isOndDaySort
+					? b.oneDayPriceDifferencePercenVal
+					: b.priceDifferencePercentVal
+			);
+			return is_descending ? bVal - aVal : aVal - bVal;
+		});
+		listData = [...topAssets, ...sortedValues];
+		return movePinnedItems(listData);
 	};
 
 	const totalPages = Math.ceil(count / pageSize);

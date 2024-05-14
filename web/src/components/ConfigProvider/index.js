@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getIconByKey, generateAllIcons, addDefaultLogo } from 'utils/icon';
 import { calculateThemes } from 'utils/color';
+import { DEFAULT_CAPTCHA_SITEKEY } from 'config/constants';
 import merge from 'lodash.merge';
 
 export const ProjectConfig = React.createContext('appConfig');
@@ -37,7 +38,13 @@ class ConfigProvider extends Component {
 			sections,
 		};
 	}
-	
+	componentDidMount() {
+		const script = document.createElement('script');
+		script.src = `https://www.google.com/recaptcha/api.js?render=${DEFAULT_CAPTCHA_SITEKEY}`;
+		document.body.appendChild(script);
+		
+	}
+
 	UNSAFE_componentWillUpdate(_, nextState) {
 		const { color, icons } = this.state;
 		if (JSON.stringify(color) !== JSON.stringify(nextState.color)) {
