@@ -626,8 +626,7 @@
         "INTERNAL": "intern",
         "BLOCKCHAIN": "Blockchain",
         "STAKE": "Einsatz",
-        "REFERRAL": "Verweisung",
-        "QUICK_TRADE_TOOLTIP": "Order executed through convert system"
+        "REFERRAL": "Verweisung"
     },
     "ACCOUNT_SECURITY": {
         "OTP": {
