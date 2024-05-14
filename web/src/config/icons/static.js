@@ -161,7 +161,7 @@ const icons = {
 	SWITCH_ASSET_FOR_FEES: '/assets/images/switch-asset-for-fees.svg',
 	CLOCK: '/assets/images/clock.svg',
 	QR_CODE_SHOW: '/assets/images/mini-qr-code.svg',
-	QR_CODE_SCAN: '/assets/images/camera-scan.svg',
+	// QR_CODE_SCAN: '/assets/images/camera-scan.svg',
 	CLOUD_BASIC: '/assets/images/Path 4813.svg',
 	CLOUD_CRYPTO: '/assets/images/Path 4815.svg',
 	CLOUD_FIAT: '/assets/images/Group 5179.svg',

@@ -7,13 +7,13 @@ import { isMobile } from 'react-device-detect';
 import { ExclamationCircleFilled } from '@ant-design/icons';
 
 import { STATIC_ICONS } from 'config/icons';
-import STRINGS from 'config/localizedStrings';
 import { EditWrapper, Button, SmartTarget } from 'components';
 import { required } from 'components/Form/validations';
 import { getNetworkNameByKey } from 'utils/wallet';
+import STRINGS from 'config/localizedStrings';
 import Image from 'components/Image';
-import renderFields from 'components/Form/factoryFields';
 import Fiat from './Fiat';
+import DepositComponent from './Deposit';
 
 export const generateBaseInformation = (id = '') => (
 	<div className="text">
@@ -183,12 +183,16 @@ const RenderContentForm = ({
 	copied,
 	address,
 	showGenerateButton,
-	formFields,
 	icons: ICONS,
 	selectedNetwork,
 	targets,
+	depositCurrency,
+	currentCurrency,
+	openQRCode,
+	updateAddress,
+	depositAddress,
 }) => {
-	const coinObject = coins[currency];
+	const coinObject = coins[depositCurrency] || coins[currency];
 
 	const generalId = 'REMOTE_COMPONENT__FIAT_WALLET_DEPOSIT';
 	const currencySpecificId = `${generalId}__${currency.toUpperCase()}`;
@@ -196,7 +200,7 @@ const RenderContentForm = ({
 		? currencySpecificId
 		: generalId;
 
-	if (coinObject && coinObject.type !== 'fiat') {
+	if ((coinObject && coinObject.type !== 'fiat') || !coinObject) {
 		return (
 			<SmartTarget
 				id={currencySpecificId}
@@ -204,41 +208,52 @@ const RenderContentForm = ({
 				currency={currency}
 			>
 				<div className="withdraw-form-wrapper">
-					<div className="withdraw-form">
-						<div className="d-flex align-items-center">
-							<Image
-								iconId={'DEPOSIT_BITCOIN'}
-								icon={ICONS['DEPOSIT_BITCOIN']}
-								wrapperClassName="form_currency-ball margin-aligner"
-							/>
-							{titleSection}
-						</div>
-						{(currency === 'xrp' ||
-							currency === 'xlm' ||
-							selectedNetwork === 'xlm' ||
-							selectedNetwork === 'ton') && (
-							<div className="d-flex">
-								<div className="d-flex align-items-baseline field_warning_wrapper">
-									<ExclamationCircleFilled className="field_warning_icon" />
-									<div className="field_warning_text">
-										<EditWrapper stringId="DEPOSIT_FORM_TITLE_WARNING_DESTINATION_TAG">
-											{STRINGS['DEPOSIT_FORM_TITLE_WARNING_DESTINATION_TAG']}
-										</EditWrapper>
+					<div className="withdraw-form d-flex">
+						<div className="w-100">
+							{currentCurrency && (
+								<div className="d-flex align-items-center">
+									<Image
+										iconId={'DEPOSIT_BITCOIN'}
+										icon={ICONS['DEPOSIT_BITCOIN']}
+										wrapperClassName="form_currency-ball margin-aligner"
+									/>
+									{titleSection}
+								</div>
+							)}
+							{(currency === 'xrp' ||
+								currency === 'xlm' ||
+								selectedNetwork === 'xlm' ||
+								selectedNetwork === 'ton') && (
+								<div className="d-flex">
+									<div className="d-flex align-items-baseline field_warning_wrapper">
+										<ExclamationCircleFilled className="field_warning_icon" />
+										<div className="field_warning_text">
+											<EditWrapper stringId="DEPOSIT_FORM_TITLE_WARNING_DESTINATION_TAG">
+												{STRINGS['DEPOSIT_FORM_TITLE_WARNING_DESTINATION_TAG']}
+											</EditWrapper>
+										</div>
 									</div>
 								</div>
-							</div>
-						)}
-						{renderFields(formFields)}
-					</div>
-					{showGenerateButton && (
-						<div className="btn-wrapper">
-							<Button
-								stringId="GENERATE_WALLET"
-								label={STRINGS['GENERATE_WALLET']}
-								onClick={onOpen}
+							)}
+							<DepositComponent
+								updateAddress={updateAddress}
+								depositAddress={depositAddress}
+								openQRCode={openQRCode}
+								onCopy={onCopy}
+								coins={coins}
+								currency={currency}
+								showGenerateButton={showGenerateButton}
+								onOpen={onOpen}
 							/>
 						</div>
-					)}
+						<div className="side-icon-wrapper">
+							<Image
+								iconId={'DEPOSIT_TITLE'}
+								icon={ICONS['DEPOSIT_TITLE']}
+								alt={'text'}
+							/>
+						</div>
+					</div>
 					{isMobile && address && (
 						<div className="btn-wrapper">
 							<CopyToClipboard text={address} onCopy={setCopied}>
@@ -261,8 +276,16 @@ const RenderContentForm = ({
 	}
 };
 
-const mapStateToProps = ({ app: { targets } }) => ({
+const mapStateToProps = ({
+	app: {
+		targets,
+		depositFields: { depositCurrency, depositNetwork, depositNetworkOptions },
+	},
+}) => ({
 	targets,
+	depositCurrency,
+	depositNetwork,
+	depositNetworkOptions,
 });
 
 const Form = reduxForm({

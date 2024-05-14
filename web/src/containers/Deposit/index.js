@@ -8,10 +8,10 @@ import { BALANCE_ERROR } from 'config/constants';
 import STRINGS from 'config/localizedStrings';
 import { getCurrencyFromName } from 'utils/currency';
 import { createAddress, cleanCreateAddress } from 'actions/userAction';
-import { NOTIFICATIONS } from 'actions/appActions';
+import { NOTIFICATIONS, depositCurrency } from 'actions/appActions';
 import { DEFAULT_COIN_DATA } from 'config/constants';
 import { openContactForm, setSnackNotification } from 'actions/appActions';
-import { MobileBarBack, Dialog, Notification } from 'components';
+import { MobileBarBack, Dialog, Notification, IconTitle } from 'components';
 import {
 	renderInformation,
 	renderTitleSection,
@@ -25,6 +25,7 @@ import RenderContent, {
 import { getWallet } from 'utils/wallet';
 import QRCode from './QRCode';
 import withConfig from 'components/ConfigProvider/withConfig';
+import strings from 'config/localizedStrings';
 
 class Deposit extends Component {
 	state = {
@@ -36,16 +37,18 @@ class Deposit extends Component {
 		formFields: {},
 		initialValues: {},
 		qrCodeOpen: false,
+		depositAddress: '',
 	};
 
 	UNSAFE_componentWillMount() {
-		if (this.props.quoteData.error === BALANCE_ERROR) {
+		if (this.props?.quoteData?.error === BALANCE_ERROR) {
 			this.setState({ depositPrice: this.props.quoteData.data.price });
 		}
 		if (this.props.verification_level) {
-			this.validateRoute(this.props.routeParams.currency, this.props.coins);
+			this.validateRoute(this.props?.routeParams?.currency, this.props.coins);
 		}
-		this.setCurrency(this.props.routeParams.currency);
+		this.setCurrency(this.props?.routeParams?.currency);
+		this.updateAddress();
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -57,7 +60,7 @@ class Deposit extends Component {
 				nextProps.verification_level &&
 				nextProps.verification_level !== this.props.verification_level
 			) {
-				this.validateRoute(nextProps.routeParams.currency, this.props.coins);
+				this.validateRoute(nextProps.routeParams?.currency, this.props.coins);
 			}
 		} else if (
 			nextProps.selectedNetwork !== selectedNetwork ||
@@ -74,17 +77,43 @@ class Deposit extends Component {
 			);
 		}
 
-		if (nextProps.routeParams.currency !== this.props.routeParams.currency) {
-			this.setCurrency(nextProps.routeParams.currency);
+		if (nextProps.routeParams?.currency !== this.props.routeParams?.currency) {
+			this.setCurrency(nextProps.routeParams?.currency);
 		}
 
 		if (
-			nextProps.addressRequest.success === true &&
-			nextProps.addressRequest.success !== this.props.addressRequest.success
+			nextProps.addressRequest?.success === true &&
+			nextProps.addressRequest?.success !== this.props.addressRequest.success
 		) {
 			this.onCloseDialog();
 		}
 	}
+
+	componentWillUnmount() {
+		const { setDepositCurrency } = this.props;
+		setDepositCurrency('');
+	}
+
+	updateAddress = () => {
+		const { wallet, getDepositCurrency, getDepositNetworkOptions } = this.props;
+		const { currency } = this.state;
+		const currentCurrency = getDepositNetworkOptions
+			? getDepositNetworkOptions
+			: getDepositCurrency
+			? getDepositCurrency
+			: currency;
+
+		const depositAddress = wallet.filter((val) => {
+			if (getDepositNetworkOptions) {
+				return (
+					val.network === currentCurrency && val.currency === currentCurrency
+				);
+			} else {
+				return val.currency === currentCurrency;
+			}
+		});
+		this.setState({ depositAddress: depositAddress[0]?.address });
+	};
 
 	setCurrency = (currencyName) => {
 		const currency = getCurrencyFromName(currencyName, this.props.coins);
@@ -107,7 +136,7 @@ class Deposit extends Component {
 				() => {
 					const { currency, initialNetwork, networks } = this.state;
 					const { wallet, coins, verification_level } = this.props;
-					this.validateRoute(this.props.routeParams.currency, coins);
+					this.validateRoute(this.props.routeParams?.currency, coins);
 					this.generateFormFields(
 						currency,
 						initialNetwork,
@@ -119,17 +148,17 @@ class Deposit extends Component {
 				}
 			);
 		} else if (this.props.isDepositAndWithdraw) {
-			this.props.router.push('/wallet/deposit');
+			return this.props.router?.push('/wallet/deposit');
 		} else {
-			this.props.router.push('/wallet');
+			return this.props.router?.push('/wallet');
 		}
 	};
 
 	validateRoute = (currency, coins) => {
 		if (this.props.isDepositAndWithdraw) {
-			this.props.router.push('/wallet/deposit');
+			return this.props.router?.push('/wallet/deposit');
 		} else if (!coins[currency]) {
-			this.props.router.push('/wallet');
+			return this.props.router?.push('/wallet');
 		} else if (currency) {
 			this.setState({ checked: true });
 		}
@@ -144,7 +173,7 @@ class Deposit extends Component {
 	};
 
 	onGoBack = () => {
-		this.props.router.push('/wallet');
+		return this.props.router?.push('/wallet');
 	};
 
 	onOpenDialog = () => {
@@ -251,6 +280,7 @@ class Deposit extends Component {
 			router,
 			wallet,
 			orders,
+			getDepositCurrency,
 		} = this.props;
 
 		const {
@@ -264,9 +294,15 @@ class Deposit extends Component {
 			showGenerateButton,
 			qrCodeOpen,
 			networks,
+			depositAddress,
 		} = this.state;
 
-		if ((!id || !currency || !checked) && this.props.isDepositAndWithdraw) {
+		const currentCurrency = getDepositCurrency ? getDepositCurrency : currency;
+		const isFiat = getDepositCurrency
+			? coins[getDepositCurrency]?.type === 'fiat'
+			: coins[currency]?.type === 'fiat';
+
+		if ((!id || !currency || !checked) && !this.props.isDepositAndWithdraw) {
 			return <div />;
 		}
 
@@ -274,15 +310,25 @@ class Deposit extends Component {
 			<div>
 				{isMobile && <MobileBarBack onBackClick={this.onGoBack} />}
 				<div className="presentation_container apply_rtl withdrawal-container">
+					{!isMobile && !isFiat && (
+						<IconTitle
+							stringId="SUMMARY.DEPOSIT"
+							text={strings['SUMMARY.DEPOSIT']}
+							iconId="DEPOSIT_TITLE"
+							iconPath={ICONS['DEPOSIT_TITLE']}
+							className="withdraw-icon mb-3 withdraw-main-icon"
+						/>
+					)}
 					{!isMobile &&
+						isFiat &&
 						renderTitleSection(
-							currency,
+							currentCurrency,
 							'deposit',
-							ICONS['DEPOSIT_BITCOIN'],
+							ICONS['DEPOSIT'],
 							coins,
-							'DEPOSIT_BITCOIN'
+							'DEPOSIT'
 						)}
-					<div className="inner_container">
+					<div className={isFiat ? 'mt-5 inner_container' : 'inner_container'}>
 						<div className="information_block">
 							<div
 								className="information_block-text_wrapper"
@@ -299,7 +345,7 @@ class Deposit extends Component {
 						</div>
 						<RenderContent
 							titleSection={renderInformation(
-								currency,
+								currentCurrency,
 								balance,
 								false,
 								generateBaseInformation,
@@ -323,6 +369,10 @@ class Deposit extends Component {
 							formFields={formFields}
 							selectedNetwork={selectedNetwork}
 							router={router}
+							currentCurrency={currentCurrency}
+							openQRCode={this.openQRCode}
+							updateAddress={this.updateAddress}
+							depositAddress={depositAddress}
 						/>
 					</div>
 				</div>
@@ -382,6 +432,9 @@ const mapStateToProps = (store) => ({
 	verification_level: store.user.verification_level,
 	orders: store.order.activeOrders,
 	isDepositAndWithdraw: store.app.depositAndWithdraw,
+	getDepositCurrency: store.app.depositFields.depositCurrency,
+	getDepositNetwork: store.app.depositFields.depositNetwork,
+	getDepositNetworkOptions: store.app.depositFields.depositNetworkOptions,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -389,6 +442,7 @@ const mapDispatchToProps = (dispatch) => ({
 	cleanCreateAddress: bindActionCreators(cleanCreateAddress, dispatch),
 	openContactForm: bindActionCreators(openContactForm, dispatch),
 	setSnackNotification: bindActionCreators(setSnackNotification, dispatch),
+	setDepositCurrency: bindActionCreators(depositCurrency, dispatch),
 });
 
 export default connect(
