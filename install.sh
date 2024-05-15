@@ -1,18 +1,20 @@
 #!/bin/bash
 
+export ARCH=$(echo uname -m | sed s/aarch64/arm64/ | sed s/x86_64/amd64/ | sed s/s390x/s390x/)
+
 # Dependencies installer for Debian (Ubuntu) based Linux.
-if command apt-get -v > /dev/null 2>&1; then
+if command apt -v > /dev/null 2>&1; then
 
     if ! command curl --version > /dev/null 2>&1; then
 
         printf "\n\033[93mHollaEx CLI requires CURL to operate. Installing it now...\033[39m\n"
 
         echo "Updating APT list"
-        sudo apt-get update
+        sudo apt update
         IS_APT_UPDATED=true
 
         echo "Installing Docker"
-        if command sudo apt-get install -y curl; then
+        if command sudo apt install -y curl; then
 
             printf "\n\033[92mCURL has been successfully installed!\033[39m\n"
             echo "Info: $(curl --version)"
@@ -20,7 +22,7 @@ if command apt-get -v > /dev/null 2>&1; then
         else
 
             printf "\n\033[91mFailed to install CURL.\033[39m\n"
-            echo "Please review the logs and try to manually install it. - 'sudo apt-get install -y curl'."
+            echo "Please review the logs and try to manually install it. - 'sudo apt install -y curl'."
             exit 1;
 
         fi
@@ -32,11 +34,11 @@ if command apt-get -v > /dev/null 2>&1; then
         printf "\n\033[93mHollaEx CLI requires Docker to operate. Installing it now...\033[39m\n"
 
         echo "Updating APT list"
-        sudo apt-get update
+        sudo apt update
         IS_APT_UPDATED=true
 
         echo "Installing Docker"
-        if command sudo apt-get install -y docker.io; then
+        if command sudo apt install -y docker.io; then
 
             printf "\n\033[92mDocker has been successfully installed!\033[39m\n"
             echo "Info: $(docker -v)"
@@ -51,33 +53,33 @@ if command apt-get -v > /dev/null 2>&1; then
         else
 
             printf "\n\033[91mFailed to install Docker.\033[39m\n"
-            echo "Please review the logs and try to manually install it. - 'sudo apt-get install -y docker.io'."
+            echo "Please review the logs and try to manually install it. - 'sudo apt install -y docker.io'."
             exit 1;
 
         fi
 
     fi
 
-    if ! command docker-compose -v > /dev/null 2>&1; then
+    if ! command docker compose version > /dev/null 2>&1; then
 
-        printf "\n\033[93mHollaEx CLI requires Docker-Compose to operate. Installing it now...\033[39m\n"
+        printf "\n\033[93mHollaEx CLI requires Docker-Compose v2 to operate. Installing it now...\033[39m\n"
 
         if [[ ! $IS_APT_UPDATED ]]; then
 
             echo "Updating APT list"
-            sudo apt-get update
+            sudo apt update
         fi
 
-        if command sudo apt-get install -y docker-compose; then
+        if command sudo apt install -y docker-compose-v2; then
 
-            printf "\n\033[92mDocker-Compose has been successfully installed!\033[39m\n"
+            printf "\n\033[92mDocker-Compose v2 has been successfully installed!\033[39m\n"
 
-            echo "Info: $(docker-compose -v)"
+            echo "Info: $(docker compose version)"
 
         else
 
-            printf "\n\033[91mFailed to install Docker-Compose.\033[39m\n"
-            echo "Please review the logs and try to manually install it. - 'sudo apt-get install -y docker-compose'."
+            printf "\n\033[91mFailed to install Docker-Compose v2.\033[39m\n"
+            echo "Please review the logs and try to manually install it. - 'sudo apt install -y docker-compose'."
             exit 1;
 
         fi
@@ -91,10 +93,10 @@ if command apt-get -v > /dev/null 2>&1; then
         if [[ ! $IS_APT_UPDATED ]]; then
 
             echo "Updating APT list"
-            sudo apt-get update
+            sudo apt update
         fi
 
-        if command sudo apt-get install -y jq; then
+        if command sudo apt install -y jq; then
 
             printf "\n\033[92mjq has been successfully installed!\033[39m\n"
 
@@ -103,7 +105,34 @@ if command apt-get -v > /dev/null 2>&1; then
         else
 
             printf "\n\033[91mFailed to install jq.\033[39m\n"
-            echo "Please review the logs and try to manually install it. - 'sudo apt-get install -y jq'."
+            echo "Please review the logs and try to manually install it. - 'sudo apt install -y jq'."
+
+        fi
+
+    fi
+
+    if ! command yq --version > /dev/null 2>&1; then
+
+        printf "\n\033[93mHollaEx CLI requires yq to operate. Installing it now...\033[39m\n"
+
+        if [[ ! $IS_APT_UPDATED ]]; then
+
+            echo "Updating APT list"
+            sudo apt update
+        fi
+        
+        if command sudo curl -L https://github.com/mikefarah/yq/releases/download/v4.44.1/yq_$(uname -s)_$ARCH -o /usr/local/bin/yq; then
+            
+            chmod +x /usr/local/bin/yq
+
+            printf "\n\033[92myq has been successfully installed!\033[39m\n"
+
+            echo "Info: $(yq --version)"
+
+        else
+
+            printf "\n\033[91mFailed to install jq.\033[39m\n"
+            echo "Please review the logs and try to manually install it. - 'sudo apt install -y jq'."
 
         fi
 
@@ -116,10 +145,10 @@ if command apt-get -v > /dev/null 2>&1; then
         if [[ ! $IS_APT_UPDATED ]]; then
 
             echo "Updating APT list"
-            sudo apt-get update
+            sudo apt update
         fi
 
-        if command sudo apt-get install -y dnsutils; then
+        if command sudo apt install -y dnsutils; then
 
             printf "\n\033[92mnslookup(dnsutils) has been successfully installed!\033[39m\n"
 
@@ -129,7 +158,7 @@ if command apt-get -v > /dev/null 2>&1; then
         else
 
             printf "\n\033[91mFailed to install nslookup.\033[39m\n"
-            echo "Please review the logs and try to manually install it. - 'sudo apt-get install -y dnsutils'."
+            echo "Please review the logs and try to manually install it. - 'sudo apt install -y dnsutils'."
 
         fi
 
@@ -142,11 +171,11 @@ if command apt-get -v > /dev/null 2>&1; then
         if [[ ! $IS_APT_UPDATED ]]; then
 
             echo "Updating APT list"
-            sudo apt-get update
+            sudo apt update
         fi
 
         echo "Installing Docker"
-        if command sudo apt-get install -y postgresql-client; then
+        if command sudo apt install -y postgresql-client; then
 
             printf "\n\033[92mPSQL Client has been successfully installed!\033[39m\n"
             echo "Info: $(psql --version)"
@@ -154,7 +183,7 @@ if command apt-get -v > /dev/null 2>&1; then
         else
 
             printf "\n\033[91mFailed to install PSQL Client.\033[39m\n"
-            echo "Please review the logs and try to manually install it. - 'sudo apt-get install -y postgresql-client'."
+            echo "Please review the logs and try to manually install it. - 'sudo apt install -y postgresql-client'."
             exit 1;
 
         fi
@@ -486,6 +515,12 @@ if ! command docker -v > /dev/null 2>&1 || ! command docker-compose -v > /dev/nu
         IS_PSQL_CLIENT_INSTALLED=true
     
     fi
+
+    if command yq --version > /dev/null 2>&1; then
+
+        IS_YQ_CLIENT_INSTALLED=true
+    
+    fi
     
     printf "\n\033[93mNote: HollaEx CLI requires Docker, Docker-Compose, and jq to operate.\033[39m\n\n"
 
@@ -551,6 +586,17 @@ if ! command docker -v > /dev/null 2>&1 || ! command docker-compose -v > /dev/nu
     else 
 
         printf "\033[91mcurl: Not Installed\033[39m\n"
+
+    fi
+
+    # yq installation status check
+    if [[ "$IS_YQ_INSTALLED" ]]; then
+
+        printf "\033[92myq: Installed\033[39m\n"
+
+    else 
+
+        printf "\033[91myq: Not Installed\033[39m\n"
 
     fi
 
