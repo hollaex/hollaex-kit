@@ -70,7 +70,7 @@ if command apt -v > /dev/null 2>&1; then
             sudo apt update
         fi
 
-        if command sudo apt install -y docker compose-v2; then
+        if command sudo apt install -y docker-compose-v2; then
 
             printf "\n\033[92mdocker compose v2 has been successfully installed!\033[39m\n"
 
