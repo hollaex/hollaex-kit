@@ -62,7 +62,7 @@ if command apt -v > /dev/null 2>&1; then
 
     if ! command docker compose version > /dev/null 2>&1; then
 
-        printf "\n\033[93mHollaEx CLI requires Docker-Compose v2 to operate. Installing it now...\033[39m\n"
+        printf "\n\033[93mHollaEx CLI requires docker compose v2 to operate. Installing it now...\033[39m\n"
 
         if [[ ! $IS_APT_UPDATED ]]; then
 
@@ -70,16 +70,16 @@ if command apt -v > /dev/null 2>&1; then
             sudo apt update
         fi
 
-        if command sudo apt install -y docker-compose-v2; then
+        if command sudo apt install -y docker compose-v2; then
 
-            printf "\n\033[92mDocker-Compose v2 has been successfully installed!\033[39m\n"
+            printf "\n\033[92mdocker compose v2 has been successfully installed!\033[39m\n"
 
             echo "Info: $(docker compose version)"
 
         else
 
-            printf "\n\033[91mFailed to install Docker-Compose v2.\033[39m\n"
-            echo "Please review the logs and try to manually install it. - 'sudo apt install -y docker-compose'."
+            printf "\n\033[91mFailed to install docker compose v2.\033[39m\n"
+            echo "Please review the logs and try to manually install it. - 'sudo apt install -y docker compose'."
             exit 1;
 
         fi
@@ -125,7 +125,7 @@ if command apt -v > /dev/null 2>&1; then
 
         else
 
-            printf "\n\033[91mFailed to install jq.\033[39m\n"
+            printf "\n\033[91mFailed to install yq.\033[39m\n"
             echo "Please review the logs and try to manually install it. - 'sudo apt install -y jq'."
 
         fi
@@ -251,9 +251,9 @@ elif command brew -v > /dev/null 2>&1; then
 
     fi
 
-    if ! command docker-compose -v > /dev/null 2>&1; then
+    if ! command docker compose version > /dev/null 2>&1; then
 
-        printf "\n\033[93mHollaEx CLI requires Docker-Compose to operate. Installing it now...\033[39m\n"
+        printf "\n\033[93mHollaEx CLI requires docker compose to operate. Installing it now...\033[39m\n"
 
         if [[ ! $IS_BREW_UPDATED ]]; then
 
@@ -261,16 +261,16 @@ elif command brew -v > /dev/null 2>&1; then
             brew update
         fi
 
-        if command brew install docker-compose; then
+        if command brew install docker compose; then
 
-            printf "\n\033[92mDocker-Compose has been successfully installed!\033[39m\n"
+            printf "\n\033[92mdocker compose has been successfully installed!\033[39m\n"
 
-            echo "Info: $(docker-compose -v)"
+            echo "Info: $(docker compose version)"
 
         else
 
-            printf "\n\033[91mFailed to install Docker-Compose.\033[39m\n"
-            echo "Please review the logs and try to manually install it. - 'brew install docker-compose'."
+            printf "\n\033[91mFailed to install docker compose.\033[39m\n"
+            echo "Please review the logs and try to manually install it. - 'brew install docker compose'."
             exit 1;
 
         fi
@@ -389,21 +389,21 @@ elif command yum --version > /dev/null 2>&1; then
 
     fi
 
-    if ! command docker-compose -v > /dev/null 2>&1; then
+    if ! command docker compose version > /dev/null 2>&1; then
 
-        printf "\n\033[93mHollaEx CLI requires Docker-Compose to operate. Installing it now...\033[39m\n"
+        printf "\n\033[93mHollaEx CLI requires docker compose to operate. Installing it now...\033[39m\n"
 
-        if command sudo curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose; then
+        if command sudo curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker compose; then
 
-            sudo chmod +x /usr/local/bin/docker-compose
+            sudo chmod +x /usr/local/bin/docker compose
 
-            printf "\n\033[92mDocker-Compose has been successfully installed!\033[39m\n"
+            printf "\n\033[92mdocker compose has been successfully installed!\033[39m\n"
 
-            echo "Info: $(docker-compose -v)"
+            echo "Info: $(docker compose version)"
 
         else
 
-            printf "\n\033[91mFailed to install Docker-Compose.\033[39m\n"
+            printf "\n\033[91mFailed to install docker compose.\033[39m\n"
             echo "Please review the logs and try to manually install it. - 'https://github.com/docker/compose/releases'."
             exit 1;
 
@@ -472,7 +472,7 @@ elif command yum --version > /dev/null 2>&1; then
 
 fi
 
-if ! command docker -v > /dev/null 2>&1 || ! command docker-compose -v > /dev/null 2>&1 || ! command curl --version > /dev/null 2>&1 || ! command jq --version > /dev/null 2>&1 || ! command nslookup -version > /dev/null 2>&1 || ! command psql --version > /dev/null 2>&1; then
+if ! command docker -v > /dev/null 2>&1 || ! command docker compose version > /dev/null 2>&1 || ! command curl --version > /dev/null 2>&1 || ! command jq --version > /dev/null 2>&1 || ! command nslookup -version > /dev/null 2>&1 || ! command psql --version > /dev/null 2>&1; then
 
     if command docker -v > /dev/null 2>&1; then
 
@@ -480,7 +480,7 @@ if ! command docker -v > /dev/null 2>&1 || ! command docker-compose -v > /dev/nu
     
     fi
 
-    if command docker-compose -v > /dev/null 2>&1; then
+    if command docker compose version > /dev/null 2>&1; then
 
         IS_DOCKER_COMPOSE_INSTALLED=true
     
@@ -516,7 +516,7 @@ if ! command docker -v > /dev/null 2>&1 || ! command docker-compose -v > /dev/nu
     
     fi
     
-    printf "\n\033[93mNote: HollaEx CLI requires Docker, Docker-Compose, and jq to operate.\033[39m\n\n"
+    printf "\n\033[93mNote: HollaEx CLI requires Docker, docker compose, and jq to operate.\033[39m\n\n"
 
     # Docker installation status chekc
     if [[ "$IS_DOCKER_INSTALLED" ]]; then
@@ -529,14 +529,14 @@ if ! command docker -v > /dev/null 2>&1 || ! command docker-compose -v > /dev/nu
     
     fi  
 
-    # Docker-compose installation status check
+    # docker compose installation status check
     if [[ "$IS_DOCKER_COMPOSE_INSTALLED" ]]; then
 
-        printf "\033[92mDocker-Compose: Installed\033[39m\n"
+        printf "\033[92mdocker compose: Installed\033[39m\n"
 
     else
 
-        printf "\033[91mDocker-Compose: Not Installed\033[39m\n"
+        printf "\033[91mdocker compose: Not Installed\033[39m\n"
 
     fi
 
