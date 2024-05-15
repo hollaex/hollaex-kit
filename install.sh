@@ -302,6 +302,31 @@ elif command brew -v > /dev/null 2>&1; then
 
     fi
 
+    if ! command yq --version > /dev/null 2>&1; then
+
+        printf "\n\033[93mHollaEx CLI requires yq to operate. Installing it now...\033[39m\n"
+
+        if [[ ! $IS_BREW_UPDATED ]]; then
+
+            echo "Updating Homebrew list"
+            brew update
+        fi
+
+        if command brew install yq; then
+
+            printf "\n\033[92myq has been successfully installed!\033[39m\n"
+
+            echo "Info: $(yq --version)"
+
+        else
+
+            printf "\n\033[91mFailed to install yq.\033[39m\n"
+            echo "Please review the logs and try to manually install it. - 'brew install yq'."
+
+        fi
+
+    fi
+
     if ! command psql --version > /dev/null 2>&1; then
 
         printf "\n\033[93mHollaEx CLI requires PSQL Client to operate. Installing it now...\033[39m\n"
@@ -425,6 +450,27 @@ elif command yum --version > /dev/null 2>&1; then
 
             printf "\n\033[91mFailed to install jq.\033[39m\n"
             echo "Please review the logs and try to manually install it. - 'sudo yum install -y jq'."
+
+        fi
+
+    fi
+
+    if ! command yq --version > /dev/null 2>&1; then
+
+        printf "\n\033[93mHollaEx CLI requires yq to operate. Installing it now...\033[39m\n"
+
+        if command sudo curl -L https://github.com/mikefarah/yq/releases/download/v4.44.1/yq_$(uname -s)_$ARCH -o /usr/local/bin/yq; then
+            
+            chmod +x /usr/local/bin/yq
+
+            printf "\n\033[92myq has been successfully installed!\033[39m\n"
+
+            echo "Info: $(yq --version)"
+
+        else
+
+            printf "\n\033[91mFailed to install yq.\033[39m\n"
+            echo "Please review the logs and try to manually install it. - 'sudo apt install -y jq'."
 
         fi
 
