@@ -48,7 +48,6 @@ class Deposit extends Component {
 			this.validateRoute(this.props?.routeParams?.currency, this.props.coins);
 		}
 		this.setCurrency(this.props?.routeParams?.currency);
-		this.updateAddress();
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -89,27 +88,28 @@ class Deposit extends Component {
 		}
 	}
 
+	componentDidUpdate(prevProps) {
+		const { wallet, getDepositCurrency } = this.props;
+		if (prevProps.wallet !== wallet) {
+			this.updateAddress(getDepositCurrency);
+		}
+	}
+
 	componentWillUnmount() {
 		const { setDepositCurrency } = this.props;
 		setDepositCurrency('');
 	}
 
-	updateAddress = () => {
-		const { wallet, getDepositCurrency, getDepositNetworkOptions } = this.props;
-		const { currency } = this.state;
-		const currentCurrency = getDepositNetworkOptions
-			? getDepositNetworkOptions
-			: getDepositCurrency
-			? getDepositCurrency
-			: currency;
-
+	updateAddress = (selectedCurrency, hasNetwork = false) => {
+		const { wallet, getDepositCurrency } = this.props;
 		const depositAddress = wallet.filter((val) => {
-			if (getDepositNetworkOptions) {
+			if (hasNetwork) {
 				return (
-					val.network === currentCurrency && val.currency === currentCurrency
+					val.network === selectedCurrency &&
+					val.currency === getDepositCurrency
 				);
 			} else {
-				return val.currency === currentCurrency;
+				return val.currency === selectedCurrency;
 			}
 		});
 		this.setState({ depositAddress: depositAddress[0]?.address });
@@ -186,10 +186,23 @@ class Deposit extends Component {
 	};
 
 	onCreateAddress = () => {
-		const { addressRequest, createAddress, selectedNetwork } = this.props;
+		const {
+			addressRequest,
+			createAddress,
+			selectedNetwork,
+			getDepositCurrency,
+			getDepositNetwork,
+			getDepositNetworkOptions,
+		} = this.props;
 		const { currency } = this.state;
-		if (currency && !addressRequest.error) {
-			createAddress(currency, selectedNetwork);
+		const currentCurrency = getDepositCurrency ? getDepositCurrency : currency;
+		const network = getDepositNetworkOptions
+			? getDepositNetworkOptions
+			: getDepositCurrency
+			? getDepositNetwork
+			: selectedNetwork;
+		if (currentCurrency && !addressRequest.error) {
+			createAddress(currentCurrency, network);
 		}
 	};
 
@@ -278,7 +291,6 @@ class Deposit extends Component {
 			addressRequest,
 			selectedNetwork,
 			router,
-			wallet,
 			orders,
 			getDepositCurrency,
 		} = this.props;
@@ -293,7 +305,6 @@ class Deposit extends Component {
 			initialValues,
 			showGenerateButton,
 			qrCodeOpen,
-			networks,
 			depositAddress,
 		} = this.state;
 
@@ -385,14 +396,15 @@ class Deposit extends Component {
 					showCloseText={true}
 					style={{ 'z-index': 100 }}
 				>
-					{dialogIsOpen && currency && (
+					{dialogIsOpen && currentCurrency && (
 						<Notification
 							type={NOTIFICATIONS.GENERATE_ADDRESS}
 							onBack={this.onCloseDialog}
 							onGenerate={this.onCreateAddress}
-							currency={currency}
+							currency={currentCurrency}
 							data={addressRequest}
 							coins={coins}
+							updateAddress={this.updateAddress}
 						/>
 					)}
 				</Dialog>
@@ -408,8 +420,8 @@ class Deposit extends Component {
 					{qrCodeOpen && (
 						<QRCode
 							closeQRCode={this.closeQRCode}
-							data={getWallet(currency, selectedNetwork, wallet, networks)}
-							currency={currency}
+							data={depositAddress}
+							currency={currentCurrency}
 							onCopy={this.onCopy}
 						/>
 					)}

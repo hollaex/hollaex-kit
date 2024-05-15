@@ -361,8 +361,12 @@ const RenderWithdraw = ({
 							value={selectedAsset}
 						>
 							{Object.entries(coins).map(
-								([_, { symbol, fullname, icon_id }]) => (
-									<Option key={symbol} value={symbol}>
+								([_, { symbol, fullname, icon_id, allow_withdrawal }]) => (
+									<Option
+										key={symbol}
+										value={symbol}
+										disabled={!allow_withdrawal}
+									>
 										<div className="d-flex gap-1">
 											<Coin iconId={icon_id} type="CS3" />
 											<div>{`${fullname} (${symbol.toUpperCase()})`}</div>
@@ -499,7 +503,8 @@ const RenderWithdraw = ({
 					</div>
 				)}
 			</div>
-			{['xrp', 'xlm', 'ton'].includes(selectedAsset) && (
+			{(['xrp', 'xlm'].includes(selectedAsset) ||
+				['xlm', 'ton'].includes(network)) && (
 				<div className="d-flex justify-content-between">
 					<div className="d-flex h-25">
 						<div className="custom-field d-flex flex-column">
@@ -548,7 +553,11 @@ const RenderWithdraw = ({
 									className={`destination-input-field ${
 										!isCheck ? 'opacity-100' : 'opacity-30'
 									}`}
-									type={selectedAsset === 'xrp' ? 'number' : 'text'}
+									type={
+										selectedAsset === 'xrp' || selectedAsset === 'xlm'
+											? 'number'
+											: 'text'
+									}
 									disabled={isCheck}
 								></Input>
 								{optionalTag && <CheckOutlined className="mt-3 ml-3" />}
@@ -578,7 +587,10 @@ const RenderWithdraw = ({
 						<span
 							className={`custom-step${currStep.stepFour ? '-selected' : ''}`}
 						>
-							{['xrp', 'xlm', 'ton'].includes(selectedAsset) ? 5 : 4}
+							{['xrp', 'xlm'].includes(selectedAsset) ||
+							['xlm', 'ton'].includes(network)
+								? 5
+								: 4}
 						</span>
 					</div>
 					<div className="d-flex">

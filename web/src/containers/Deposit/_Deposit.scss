@@ -130,6 +130,10 @@ $qr-code--size: 12rem;
 			width: 300px;
 		}
 	}
+
+	.generate-field-wrapper {
+		margin-left: 8%;
+	}
 }
 
 .deposit-address-wrapper {
@@ -140,6 +144,10 @@ $qr-code--size: 12rem;
 		.destination-input-field:focus-within {
 			border: none !important;
 			border-bottom: 1px solid $colors-main-border !important;
+		}
+
+		.ant-input-affix-wrapper-focused {
+			box-shadow: none;
 		}
 
 		.ant-input-suffix {
@@ -154,10 +162,17 @@ $qr-code--size: 12rem;
 		}
 
 		.render-deposit-scan-wrapper {
-			text-decoration: underline;
 			text-transform: uppercase;
 			color: $link;
 			cursor: pointer;
+
+			div {
+				text-decoration: underline;
+			}
+		}
+
+		.ant-input {
+			color: var(--specials_buttons-links-and-highlights) !important;
 		}
 	}
 
@@ -166,7 +181,57 @@ $qr-code--size: 12rem;
 	}
 }
 
+.destination-tag-field-wrapper {
+	.destination-tag-field {
+		.destination-input-field,
+		.destination-input-field:focus-within {
+			border: none !important;
+			border-bottom: 1px solid $colors-main-border !important;
+		}
+
+		.render-deposit-scan-wrapper {
+			text-transform: uppercase;
+			color: $link;
+			cursor: pointer;
+
+			div {
+				text-decoration: underline;
+			}
+		}
+
+		.ant-input-suffix {
+			width: auto !important;
+		}
+
+		.ant-input:focus,
+		.ant-input-affix-wrapper-focused {
+			box-shadow: none;
+		}
+
+		.ant-input {
+			color: var(--specials_buttons-links-and-highlights) !important;
+		}
+	}
+}
+
+.withdrawal-container
+	.withdraw-form-wrapper
+	.withdraw-form
+	.deposit-wrapper-fields {
+	.custom-field .custom-line-large {
+		height: 90px;
+		border: 1px solid $colors-main-black;
+		margin: 0 100%;
+	}
+
+	.custom-field .custom-line-extra-large {
+		height: 2rem;
+		border: 1px solid $colors-main-black;
+		margin: 0 100%;
+	}
+}
+
 .generate-deposit-label {
 	color: $colors-black;
-	margin: 1% 9%;
+	margin: 1% 3%;
 }

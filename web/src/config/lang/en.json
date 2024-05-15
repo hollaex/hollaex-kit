@@ -1655,7 +1655,8 @@
 		"TRANSACTION_FEE": "Transaction fee to be added:",
 		"SCAN": "SCAN",
 		"ADDRESS": "address:",
-		"OPTIONAL_TAG": "Tag (optional)"
+		"OPTIONAL_TAG": "Tag (optional)",
+		"TAG": "Tag"
 	},
 	"ASYNC_LINK": {
 		"TITLE": "Page not opening automatically?",

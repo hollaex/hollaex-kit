@@ -37,6 +37,7 @@ const HistoryDisplay = (props) => {
 		expandableContent,
 		isFromWallet,
 		onHandleView = () => {},
+		isDepositFromWallet,
 	} = props;
 
 	const [dialogIsOpen, setDialogOpen] = useState(false);
@@ -98,7 +99,7 @@ const HistoryDisplay = (props) => {
 								onClick={handleDownload}
 							/>
 						)}
-						{activeTab === 2 && (
+						{activeTab === 2 && !isDepositFromWallet && (
 							<ActionNotification
 								stringId="DEPOSIT_STATUS.CHECK_DEPOSIT_STATUS"
 								text={STRINGS['DEPOSIT_STATUS.CHECK_DEPOSIT_STATUS']}

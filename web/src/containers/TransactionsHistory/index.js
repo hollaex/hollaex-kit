@@ -101,6 +101,7 @@ class TransactionsHistory extends Component {
 			},
 			getActiveTabFromWallet,
 			isFromWallet,
+			isDepositFromWallet,
 		} = this.props;
 
 		this.generateHeaders(
@@ -115,7 +116,11 @@ class TransactionsHistory extends Component {
 		} else {
 			const activeTab = this.getTabBySearch(search);
 			this.setActiveTab(
-				getActiveTabFromWallet === 'withdraw' || isFromWallet ? 3 : activeTab
+				getActiveTabFromWallet === 'deposit' || isDepositFromWallet
+					? 2
+					: getActiveTabFromWallet === 'withdraw' || isFromWallet
+					? 3
+					: activeTab
 			);
 		}
 	}
@@ -529,8 +534,12 @@ class TransactionsHistory extends Component {
 	};
 
 	onHandleView = () => {
-		const { router, activeTabFromWallet } = this.props;
-		activeTabFromWallet('withdraw');
+		const { router, activeTabFromWallet, isDepositFromWallet } = this.props;
+		if (isDepositFromWallet) {
+			activeTabFromWallet('deposit');
+		} else {
+			activeTabFromWallet('withdraw');
+		}
 		router.push('/transactions');
 	};
 
@@ -546,12 +555,21 @@ class TransactionsHistory extends Component {
 			downloadUserWithdrawal,
 			downloadUserDeposit,
 			isFromWallet,
+			isDepositFromWallet,
 		} = this.props;
 		const filterForWallet = withdrawals.data.filter((item, index) => index < 5);
+		const filterForDepositWallet = deposits.data.filter(
+			(item, index) => index < 5
+		);
 		const withdrawalsForWallet = {
 			...withdrawals,
 			count: 5,
 			data: filterForWallet,
+		};
+		const depositsForWallet = {
+			...deposits,
+			count: 5,
+			data: filterForDepositWallet,
 		};
 		const { headers, activeTab, filters, jumpToPage, params } = this.state;
 		let temp = params[`activeTab_${activeTab}`];
@@ -560,6 +578,7 @@ class TransactionsHistory extends Component {
 			symbol,
 			withIcon: true,
 			isFromWallet,
+			isDepositFromWallet,
 		};
 
 		const prepareNoData = (tab) => {
@@ -615,7 +634,7 @@ class TransactionsHistory extends Component {
 				props.stringId = 'TRANSACTION_HISTORY.TITLE_DEPOSITS';
 				props.title = STRINGS['TRANSACTION_HISTORY.TITLE_DEPOSITS'];
 				props.headers = headers.deposits;
-				props.data = deposits;
+				props.data = isDepositFromWallet ? depositsForWallet : deposits;
 				props.filename = `deposit-history-${moment().unix()}`;
 				props.handleNext = this.handleNext;
 				props.jumpToPage = jumpToPage;
@@ -623,6 +642,7 @@ class TransactionsHistory extends Component {
 				props.filters = filters.deposits;
 				props.noData = prepareNoData('NO_ACTIVE_DEPOSITS');
 				props.refetchData = () => this.requestData(activeTab);
+				props.onHandleView = () => this.onHandleView();
 				break;
 			case 3:
 				props.stringId = 'TRANSACTION_HISTORY.TITLE_WITHDRAWALS';
