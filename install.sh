@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export ARCH=$(echo uname -m | sed s/aarch64/arm64/ | sed s/x86_64/amd64/ | sed s/s390x/s390x/)
+export ARCH=$(uname -m | sed s/aarch64/arm64/ | sed s/x86_64/amd64/ | sed s/s390x/s390x/)
 
 # Dependencies installer for Debian (Ubuntu) based Linux.
 if command apt -v > /dev/null 2>&1; then
@@ -115,12 +115,6 @@ if command apt -v > /dev/null 2>&1; then
 
         printf "\n\033[93mHollaEx CLI requires yq to operate. Installing it now...\033[39m\n"
 
-        if [[ ! $IS_APT_UPDATED ]]; then
-
-            echo "Updating APT list"
-            sudo apt update
-        fi
-        
         if command sudo curl -L https://github.com/mikefarah/yq/releases/download/v4.44.1/yq_$(uname -s)_$ARCH -o /usr/local/bin/yq; then
             
             chmod +x /usr/local/bin/yq
