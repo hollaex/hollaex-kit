@@ -327,20 +327,23 @@ class Wallet extends Component {
 										currency.toUpperCase()
 									)}
 								</EditWrapper>
-								<EditWrapper stringId="CURRENCY_WALLET.WALLET_DEPOSIT">
-									{STRINGS.formatString(
-										STRINGS['CURRENCY_WALLET.WALLET_DEPOSIT'],
-										<Link
-											className="deposit-link"
-											to={`/wallet/${currency}/withdraw`}
-										>
-											{currency.toUpperCase()}
-										</Link>,
-										<Link className="buy-link" to={`/prices/coin/${currency}`}>
-											here
-										</Link>
-									)}
-								</EditWrapper>
+								{coins[currency].allow_deposit &&  coins[currency].allow_withdrawal ? (
+									<EditWrapper stringId="CURRENCY_WALLET.WALLET_DEPOSIT">
+										{STRINGS.formatString(
+											STRINGS['CURRENCY_WALLET.WALLET_DEPOSIT'],
+											<Link
+												className="deposit-link"
+												to={`/wallet/${currency}/withdraw`}
+											>
+												{currency.toUpperCase()}
+											</Link>,
+											<Link className="buy-link" to={`/prices/coin/${currency}`}>
+												here
+											</Link>
+										)}
+									</EditWrapper>
+								) : null
+								}
 							</React.Fragment>
 						) : chartData.length ? (
 							<DonutChart

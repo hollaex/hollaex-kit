@@ -197,6 +197,9 @@ export const EXPLORERS_ENDPOINT = (currency) => {
 
 export const BALANCE_ERROR = 'Insufficient balance to perform the order';
 
+export const DEFAULT_CAPTCHA_SITEKEY =
+	'6LeuOKoUAAAAAGVoZcSWXJH60GHt4crvIaNXn1YA'; // default recaptcha v3; // default recaptcha v3
+	
 export const TIME_ZONE = process.env.REACT_APP_TIMEZONE || 'GMT';
 export const TOKEN_EMAIL = 'token::email';
 export const TOKEN_MAX_AGE = 23 * 60 * 60;
