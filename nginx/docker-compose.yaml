@@ -1,6 +1,6 @@
 version: '3'
+name: "server"
 services:
-
   hollaex-kit-prod-nginx:
     image: nginx-with-certbot
     build:
