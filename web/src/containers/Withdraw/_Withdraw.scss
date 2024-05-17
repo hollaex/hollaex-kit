@@ -122,6 +122,31 @@ $content--margin: 2rem;
 				width: 80%;
 			}
 
+			.withdraw-deposit-icon-wrapper {
+				div {
+					justify-content: unset;
+					align-items: unset;
+				}
+			}
+
+			.withdraw-deposit-disable {
+				opacity: 0.5;
+				pointer-events: none;
+			}
+
+			.withdraw-deposit-icon {
+				width: 100%;
+				height: 2.5rem;
+				border: 2px solid $colors-main-black;
+				border-radius: 100%;
+				padding: 2px;
+			}
+
+			.withdraw-deposit-content {
+				font-size: 14px;
+				padding: 1% 1%;
+			}
+
 			.destination-input-field {
 				width: 80%;
 				height: 38px;
@@ -209,10 +234,14 @@ $content--margin: 2rem;
 				text-wrap: nowrap;
 			}
 
+			.amount-field-icon {
+				margin-top: 1%;
+			}
+
 			.select-wrapper {
 				display: flex;
 				flex-direction: column;
-				width: 70%;
+				width: 65%;
 
 				.select-field:hover {
 					border: 1px solid $colors-main-black;
@@ -337,7 +366,7 @@ $content--margin: 2rem;
 
 		.bottom-content {
 			margin-top: 3%;
-			margin-left: 30%;
+			margin-left: 36%;
 
 			.fee-fields {
 				color: $colors-black;
@@ -355,7 +384,7 @@ $content--margin: 2rem;
 
 		.withdraw-btn-wrapper {
 			display: flex;
-			margin-left: 30%;
+			margin-left: 36%;
 			margin-top: 5%;
 
 			.ant-btn[disabled],
@@ -528,6 +557,68 @@ $content--margin: 2rem;
 						flex-direction: column;
 					}
 				}
+
+				padding: 10% 5% 10% 5%;
+
+				.withdraw-main-label-selected {
+					font-size: 14px;
+				}
+
+				.withdraw-deposit-content {
+					padding: 0 1%;
+				}
+
+				.custom-line-selected-large {
+					height: 21rem;
+					border: 1px solid $colors-main-black;
+				}
+
+				.custom-field {
+					.custom-line-selected {
+						height: 100%;
+					}
+
+					.custom-line {
+						height: 100px;
+					}
+				}
+
+				.mobile-view {
+					margin-top: 5%;
+				}
+
+				.ant-select-clear svg {
+					font-size: 18px;
+				}
+
+				.select-wrapper {
+					width: 100%;
+					margin-left: 10%;
+				}
+
+				.bottom-content {
+					font-size: 14px;
+					display: flex;
+					flex-direction: column;
+					align-items: center;
+					margin-left: unset;
+				}
+
+				.withdraw-btn-wrapper {
+					margin-left: unset;
+					justify-content: center;
+				}
+
+				.withdraw-main-label-selected,
+				.withdraw-main-label,
+				.warning-text {
+					font-size: 14px;
+				}
+
+				.currency-label {
+					width: 15%;
+					font-size: 14px;
+				}
 			}
 		}
 	}
@@ -544,6 +635,39 @@ $content--margin: 2rem;
 						.text {
 							font-size: 12px !important;
 						}
+					}
+				}
+			}
+		}
+
+		.withdrawal-container {
+			.withdraw-form-wrapper {
+				.withdraw-form {
+					.ant-select-clear svg {
+						font-size: 12px;
+					}
+
+					.custom-select-input-style {
+						.ant-select-selector {
+							font-size: 1.5rem !important;
+						}
+
+						.ant-select-selection-item {
+							margin-top: 4%;
+							line-height: unset !important;
+						}
+					}
+
+					.currency-label {
+						font-size: 12px;
+					}
+
+					.mobile-view {
+						margin-top: 3%;
+					}
+
+					.amount-field-icon {
+						margin-top: 2%;
 					}
 				}
 			}

@@ -9,6 +9,7 @@ import { STATIC_ICONS } from 'config/icons';
 import { EditWrapper, Button, SmartTarget } from 'components';
 import { required } from 'components/Form/validations';
 import { getNetworkNameByKey } from 'utils/wallet';
+import { renderLabel } from 'containers/Withdraw/utils';
 import STRINGS from 'config/localizedStrings';
 import Image from 'components/Image';
 import Fiat from './Fiat';
@@ -208,7 +209,21 @@ const RenderContentForm = ({
 				<div className="withdraw-form-wrapper">
 					<div className="withdraw-form d-flex">
 						<div className="w-100">
-							{currentCurrency && (
+							{!coinObject?.allow_deposit && currentCurrency && (
+								<div className="d-flex">
+									<div className="withdraw-deposit-icon-wrapper">
+										<Image
+											iconId={'CLOCK'}
+											icon={ICONS['CLOCK']}
+											svgWrapperClassName="action_notification-svg withdraw-deposit-icon"
+										/>
+									</div>
+									<span className="withdraw-deposit-content">
+										{renderLabel('ACCORDIAN.DISABLED_DEPOSIT_CONTENT')}
+									</span>
+								</div>
+							)}
+							{currentCurrency && coinObject?.allow_deposit && (
 								<div className="d-flex align-items-center">
 									<Image
 										iconId={'DEPOSIT_BITCOIN'}
@@ -228,15 +243,13 @@ const RenderContentForm = ({
 								onOpen={onOpen}
 							/>
 						</div>
-						<div className="side-icon-wrapper">
-							<Image
-								iconId={'DEPOSIT_TITLE'}
-								icon={ICONS['DEPOSIT_TITLE']}
-								alt={'text'}
-							/>
-						</div>
+						{!isMobile && (
+							<div className="side-icon-wrapper">
+								<Image iconId={'DEPOSIT_TITLE'} icon={ICONS['DEPOSIT_TITLE']} />
+							</div>
+						)}
 					</div>
-					{isMobile && address && (
+					{isMobile && address && depositAddress && (
 						<div className="btn-wrapper">
 							<CopyToClipboard text={address} onCopy={setCopied}>
 								<Button

@@ -15,7 +15,11 @@ import {
 	setWithdrawNotificationError,
 } from './notifications';
 import { BASE_CURRENCY } from 'config/constants';
-import { calculateBaseFee, generateBaseInformation } from './utils';
+import {
+	calculateBaseFee,
+	generateBaseInformation,
+	renderLabel,
+} from './utils';
 import { withdrawCurrency } from 'actions/appActions';
 import { renderInformation } from 'containers/Wallet/components';
 import { assetsSelector } from 'containers/Wallet/utils';
@@ -26,6 +30,7 @@ import ReviewModalContent from './ReviewModalContent';
 import QRScanner from './QRScanner';
 import TransactionsHistory from 'containers/TransactionsHistory';
 import RenderWithdraw from './Withdraw';
+import { isMobile } from 'react-device-detect';
 
 export const FORM_NAME = 'WithdrawCryptocurrencyForm';
 
@@ -318,7 +323,21 @@ class Form extends Component {
 					<form autoComplete="off" className="withdraw-form-wrapper">
 						<div className="withdraw-form d-flex">
 							<div className="w-100">
-								{this.state.currency && (
+								{!coinObject?.allow_withdrawal && this.state.currency && (
+									<div className="d-flex">
+										<div className="withdraw-deposit-icon-wrapper">
+											<Image
+												iconId={'CLOCK'}
+												icon={ICONS['CLOCK']}
+												svgWrapperClassName="action_notification-svg withdraw-deposit-icon"
+											/>
+										</div>
+										<span className="withdraw-deposit-content">
+											{renderLabel('ACCORDIAN.DISABLED_WITHDRAW_CONTENT')}
+										</span>
+									</div>
+								)}
+								{this.state.currency && coinObject?.allow_withdrawal && (
 									<div className="d-flex">
 										<Image
 											iconId="WITHDRAW"
@@ -339,14 +358,16 @@ class Form extends Component {
 								/>
 								{!error && <div className="warning_text">{error}</div>}
 							</div>
-							<div className="side-icon-wrapper">
-								<Image
-									iconId={'WITHDRAW_TITLE'}
-									icon={ICONS['WITHDRAW_TITLE']}
-									alt={'text'}
-									svgWrapperClassName="withdraw-main-icon"
-								/>
-							</div>
+							{!isMobile && (
+								<div className="side-icon-wrapper">
+									<Image
+										iconId={'WITHDRAW_TITLE'}
+										icon={ICONS['WITHDRAW_TITLE']}
+										alt={'text'}
+										svgWrapperClassName="withdraw-main-icon"
+									/>
+								</div>
+							)}
 						</div>
 						<Dialog
 							isOpen={dialogIsOpen}

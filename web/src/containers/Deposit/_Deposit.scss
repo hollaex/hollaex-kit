@@ -117,10 +117,6 @@ $qr-code--size: 12rem;
 		width: fit-content;
 	}
 
-	.address-label {
-		margin-left: 20% !important;
-	}
-
 	.btn-wrapper-deposit {
 		display: flex;
 		justify-content: center;
@@ -132,12 +128,12 @@ $qr-code--size: 12rem;
 	}
 
 	.generate-field-wrapper {
-		margin-left: 8%;
+		margin-left: 7%;
 	}
 }
 
 .deposit-address-wrapper {
-	margin-left: 9%;
+	// width: 70%;
 
 	.deposit-address-field {
 		.destination-input-field,
@@ -177,7 +173,9 @@ $qr-code--size: 12rem;
 	}
 
 	.address-warning-text {
-		width: 70%;
+		div {
+			text-wrap: balance;
+		}
 	}
 }
 
@@ -212,6 +210,12 @@ $qr-code--size: 12rem;
 			color: var(--specials_buttons-links-and-highlights) !important;
 		}
 	}
+
+	.tag-text {
+		div {
+			text-wrap: balance;
+		}
+	}
 }
 
 .withdrawal-container
@@ -234,4 +238,42 @@ $qr-code--size: 12rem;
 .generate-deposit-label {
 	color: $colors-black;
 	margin: 1% 3%;
+}
+
+.layout-mobile {
+	.withdrawal-container {
+		.withdraw-form-wrapper {
+			.withdraw-form {
+				.deposit-wrapper-fields {
+					.custom-field .custom-line-large {
+						height: 20rem;
+						border: 1px solid $colors-main-black;
+						margin: 0 100%;
+					}
+
+					.generate-field-wrapper {
+						margin-left: unset;
+					}
+
+					.deposit-address-wrapper {
+						margin-left: 4%;
+					}
+				}
+			}
+		}
+	}
+
+	@media screen and (min-width: 550px) {
+		.withdrawal-container {
+			.withdraw-form-wrapper {
+				.withdraw-form {
+					.deposit-wrapper-fields {
+						.generate-field-wrapper {
+							margin-left: 8%;
+						}
+					}
+				}
+			}
+		}
+	}
 }

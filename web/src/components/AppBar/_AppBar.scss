@@ -135,6 +135,19 @@ $app-menu-width: calc(100vw - 40rem);
 				stroke: $base_top-bar-navigation_text-inactive;
 			}
 		}
+
+		.app-bar-deposit-btn {
+			background-color: $link;
+			padding: 1%;
+			.margin-aligner {
+				margin-bottom: unset;
+				margin-right: unset;
+				svg {
+					width: 15px !important;
+					height: 15px !important;
+				}
+			}
+		}
 	}
 
 	.app_bar-pair-overflow {
