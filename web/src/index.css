@@ -2643,57 +2643,53 @@ table th {
 .deposit-wrapper-fields .generate-field-wrapper {
   margin-left: 7%; }
 
-.deposit-address-wrapper .deposit-address-field .destination-input-field,
-.deposit-address-wrapper .deposit-address-field .destination-input-field:focus-within {
-  border: none !important;
-  border-bottom: 1px solid var(--calculated_important-border) !important; }
+.deposit-address-wrapper {
+  width: 68.5%; }
+  .deposit-address-wrapper .deposit-address-field .destination-input-field,
+  .deposit-address-wrapper .deposit-address-field .destination-input-field:focus-within {
+    border: none !important;
+    border-bottom: 1px solid var(--calculated_important-border) !important; }
+  .deposit-address-wrapper .deposit-address-field .ant-input-affix-wrapper-focused {
+    box-shadow: none; }
+  .deposit-address-wrapper .deposit-address-field .ant-input-suffix {
+    width: 15% !important; }
+  .deposit-address-wrapper .deposit-address-field .divider {
+    border-right: 1px solid var(--calculated_secondary-border);
+    padding-left: 15%;
+    height: 16px;
+    margin-top: 4%; }
+  .deposit-address-wrapper .deposit-address-field .render-deposit-scan-wrapper {
+    text-transform: uppercase;
+    color: var(--specials_buttons-links-and-highlights);
+    cursor: pointer; }
+    .deposit-address-wrapper .deposit-address-field .render-deposit-scan-wrapper div {
+      text-decoration: underline; }
+  .deposit-address-wrapper .deposit-address-field .ant-input {
+    color: var(--specials_buttons-links-and-highlights) !important; }
+  .deposit-address-wrapper .address-warning-text div {
+    text-wrap: wrap; }
 
-.deposit-address-wrapper .deposit-address-field .ant-input-affix-wrapper-focused {
-  box-shadow: none; }
-
-.deposit-address-wrapper .deposit-address-field .ant-input-suffix {
-  width: 15% !important; }
-
-.deposit-address-wrapper .deposit-address-field .divider {
-  border-right: 1px solid var(--calculated_secondary-border);
-  padding-left: 15%;
-  height: 16px;
-  margin-top: 4%; }
-
-.deposit-address-wrapper .deposit-address-field .render-deposit-scan-wrapper {
-  text-transform: uppercase;
-  color: var(--specials_buttons-links-and-highlights);
-  cursor: pointer; }
-  .deposit-address-wrapper .deposit-address-field .render-deposit-scan-wrapper div {
-    text-decoration: underline; }
-
-.deposit-address-wrapper .deposit-address-field .ant-input {
-  color: var(--specials_buttons-links-and-highlights) !important; }
-
-.deposit-address-wrapper .address-warning-text div {
-  text-wrap: balance; }
-
-.destination-tag-field-wrapper .destination-tag-field .destination-input-field,
-.destination-tag-field-wrapper .destination-tag-field .destination-input-field:focus-within {
-  border: none !important;
-  border-bottom: 1px solid var(--calculated_important-border) !important; }
-
-.destination-tag-field-wrapper .destination-tag-field .render-deposit-scan-wrapper {
-  text-transform: uppercase;
-  color: var(--specials_buttons-links-and-highlights);
-  cursor: pointer; }
-  .destination-tag-field-wrapper .destination-tag-field .render-deposit-scan-wrapper div {
-    text-decoration: underline; }
-
-.destination-tag-field-wrapper .destination-tag-field .ant-input-suffix {
-  width: auto !important; }
-
-.destination-tag-field-wrapper .destination-tag-field .ant-input:focus,
-.destination-tag-field-wrapper .destination-tag-field .ant-input-affix-wrapper-focused {
-  box-shadow: none; }
-
-.destination-tag-field-wrapper .destination-tag-field .ant-input {
-  color: var(--specials_buttons-links-and-highlights) !important; }
+.destination-tag-field-wrapper .destination-tag-field {
+  width: 66.5%; }
+  .destination-tag-field-wrapper .destination-tag-field .destination-input-field,
+  .destination-tag-field-wrapper .destination-tag-field .destination-input-field:focus-within {
+    border: none !important;
+    border-bottom: 1px solid var(--calculated_important-border) !important; }
+  .destination-tag-field-wrapper .destination-tag-field .destination-input-field {
+    width: 90% !important; }
+  .destination-tag-field-wrapper .destination-tag-field .render-deposit-scan-wrapper {
+    text-transform: uppercase;
+    color: var(--specials_buttons-links-and-highlights);
+    cursor: pointer; }
+    .destination-tag-field-wrapper .destination-tag-field .render-deposit-scan-wrapper div {
+      text-decoration: underline; }
+  .destination-tag-field-wrapper .destination-tag-field .ant-input-suffix {
+    width: auto !important; }
+  .destination-tag-field-wrapper .destination-tag-field .ant-input:focus,
+  .destination-tag-field-wrapper .destination-tag-field .ant-input-affix-wrapper-focused {
+    box-shadow: none; }
+  .destination-tag-field-wrapper .destination-tag-field .ant-input {
+    color: var(--specials_buttons-links-and-highlights) !important; }
 
 .destination-tag-field-wrapper .tag-text div {
   text-wrap: balance; }
@@ -2721,7 +2717,16 @@ table th {
   margin-left: unset; }
 
 .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .deposit-wrapper-fields .deposit-address-wrapper {
-  margin-left: 4%; }
+  margin-left: 4%;
+  width: unset; }
+  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .deposit-wrapper-fields .deposit-address-wrapper .destination-input-field {
+    width: 88% !important; }
+
+.layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .destination-tag-field-wrapper .destination-tag-field {
+  width: unset !important; }
+
+.layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .destination-tag-field-wrapper .destination-input-field {
+  width: 80% !important; }
 
 @media screen and (min-width: 550px) {
   .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .deposit-wrapper-fields .generate-field-wrapper {

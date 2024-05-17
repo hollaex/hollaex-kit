@@ -384,7 +384,7 @@ class Form extends Component {
 							) : !submitting ? (
 								<ReviewModalContent
 									coins={coins}
-									currency={currency}
+									currency={currentCurrency}
 									data={formData}
 									price={currentPrice}
 									onClickAccept={this.onAcceptDialog}

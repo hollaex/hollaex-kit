@@ -204,9 +204,9 @@ const DepositComponent = ({
 	return (
 		<div
 			className={
-				isDeposit || !currentCurrency
-					? 'deposit-wrapper-fields mt-5'
-					: 'withdraw-deposit-disable deposit-wrapper-fields mt-5'
+				getDepositCurrency && !isDeposit
+					? 'withdraw-deposit-disable deposit-wrapper-fields mt-5'
+					: 'deposit-wrapper-fields mt-5'
 			}
 		>
 			<div>
@@ -441,9 +441,6 @@ const DepositComponent = ({
 											suffix={renderScanIcon()}
 											value={address && address[0]}
 										></Input>
-										{currStep.stepFour && (
-											<CheckOutlined className="mt-3 ml-3" />
-										)}
 									</div>
 									<div className="warning-text d-flex mt-2">
 										<ExclamationCircleFilled className="mt-1 mr-2" />
@@ -470,11 +467,6 @@ const DepositComponent = ({
 						<div className="d-flex h-25">
 							<div className="custom-field d-flex flex-column">
 								<span
-									className={`custom-line-extra-large ${
-										currStep.stepFour ? 'custom-line-extra-large-active' : ''
-									}`}
-								></span>
-								<span
 									className={`custom-step${
 										currStep.stepFour ? '-selected' : ''
 									}`}
@@ -483,7 +475,7 @@ const DepositComponent = ({
 								</span>
 							</div>
 							<div
-								className={`mt-3 pt-4 withdraw-main-label${
+								className={`withdraw-main-label${
 									currStep.stepFour ? '-selected' : ''
 								} ${!isMobile ? 'ml-5' : ''}`}
 							>
@@ -494,7 +486,7 @@ const DepositComponent = ({
 											: 'd-flex w-100 justify-content-between'
 									}
 								>
-									<div className="d-flex">
+									<div className="mt-2 d-flex">
 										<span className={isMobile ? 'ml-5' : ''}>
 											<Coin iconId={iconId} type="CS5" />
 										</span>
