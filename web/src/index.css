@@ -2219,6 +2219,21 @@ table th {
       right: -20px; }
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-select-input-style {
       width: 80%; }
+    .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdraw-deposit-icon-wrapper div {
+      justify-content: unset;
+      align-items: unset; }
+    .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdraw-deposit-disable {
+      opacity: 0.5;
+      pointer-events: none; }
+    .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdraw-deposit-icon {
+      width: 100%;
+      height: 2.5rem;
+      border: 2px solid var(--labels_important-active-labels-text-graphics);
+      border-radius: 100%;
+      padding: 2px; }
+    .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdraw-deposit-content {
+      font-size: 14px;
+      padding: 1% 1%; }
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .destination-input-field {
       width: 80%;
       height: 38px;
@@ -2274,10 +2289,12 @@ table th {
       border: 1px solid var(--labels_important-active-labels-text-graphics) !important; }
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .select-label {
       text-wrap: nowrap; }
+    .withdrawal-container .withdraw-form-wrapper .withdraw-form .amount-field-icon {
+      margin-top: 1%; }
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .select-wrapper {
       display: flex;
       flex-direction: column;
-      width: 70%; }
+      width: 65%; }
       .withdrawal-container .withdraw-form-wrapper .withdraw-form .select-wrapper .select-field:hover {
         border: 1px solid var(--labels_important-active-labels-text-graphics);
         border-radius: 0.35rem; }
@@ -2345,7 +2362,7 @@ table th {
           height: 1rem; }
   .withdrawal-container .withdraw-form-wrapper .bottom-content {
     margin-top: 3%;
-    margin-left: 30%; }
+    margin-left: 36%; }
     .withdrawal-container .withdraw-form-wrapper .bottom-content .fee-fields {
       color: var(--labels_secondary-inactive-label-text-graphics); }
   .withdrawal-container .withdraw-form-wrapper .btn-wrapper {
@@ -2355,7 +2372,7 @@ table th {
       width: 300px; }
   .withdrawal-container .withdraw-form-wrapper .withdraw-btn-wrapper {
     display: flex;
-    margin-left: 30%;
+    margin-left: 36%;
     margin-top: 5%; }
     .withdrawal-container .withdraw-form-wrapper .withdraw-btn-wrapper .ant-btn[disabled],
     .withdrawal-container .withdraw-form-wrapper .withdraw-btn-wrapper .ant-btn[disabled]:hover,
@@ -2454,14 +2471,63 @@ table th {
 .layout-mobile .review_email-wrapper {
   margin: 0px auto !important; }
 
-.layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .field-wrapper .field-label-wrapper {
-  flex-direction: column; }
+.layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form {
+  padding: 10% 5% 10% 5%; }
+  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .field-wrapper .field-label-wrapper {
+    flex-direction: column; }
+  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdraw-main-label-selected {
+    font-size: 14px; }
+  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdraw-deposit-content {
+    padding: 0 1%; }
+  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-line-selected-large {
+    height: 21rem;
+    border: 1px solid var(--labels_important-active-labels-text-graphics); }
+  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line-selected {
+    height: 100%; }
+  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line {
+    height: 100px; }
+  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .mobile-view {
+    margin-top: 5%; }
+  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .ant-select-clear svg {
+    font-size: 18px; }
+  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .select-wrapper {
+    width: 100%;
+    margin-left: 10%; }
+  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .bottom-content {
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: unset; }
+  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdraw-btn-wrapper {
+    margin-left: unset;
+    justify-content: center; }
+  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdraw-main-label-selected,
+  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdraw-main-label,
+  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .warning-text {
+    font-size: 14px; }
+  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .currency-label {
+    width: 15%;
+    font-size: 14px; }
 
 @media screen and (max-width: 550px) {
   .layout-mobile .presentation_container .inner_container .information_block .information_block-text_wrapper .title {
     font-size: 14px !important; }
   .layout-mobile .presentation_container .inner_container .information_block .information_block-text_wrapper .text {
-    font-size: 12px !important; } }
+    font-size: 12px !important; }
+  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .ant-select-clear svg {
+    font-size: 12px; }
+  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-select-input-style .ant-select-selector {
+    font-size: 1.5rem !important; }
+  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-select-input-style .ant-select-selection-item {
+    margin-top: 4%;
+    line-height: unset !important; }
+  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .currency-label {
+    font-size: 12px; }
+  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .mobile-view {
+    margin-top: 3%; }
+  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .amount-field-icon {
+    margin-top: 2%; } }
 
 @media screen and (max-width: 390px) {
   .layout-mobile .presentation_container .inner_container .information_block .information_block-text_wrapper .title {
@@ -2567,9 +2633,6 @@ table th {
   height: 0%;
   width: fit-content; }
 
-.deposit-wrapper-fields .address-label {
-  margin-left: 20% !important; }
-
 .deposit-wrapper-fields .btn-wrapper-deposit {
   display: flex;
   justify-content: center;
@@ -2577,30 +2640,92 @@ table th {
   .deposit-wrapper-fields .btn-wrapper-deposit .holla-button {
     width: 300px; }
 
-.deposit-address-wrapper {
-  margin-left: 9%; }
-  .deposit-address-wrapper .deposit-address-field .destination-input-field,
-  .deposit-address-wrapper .deposit-address-field .destination-input-field:focus-within {
-    border: none !important;
-    border-bottom: 1px solid var(--calculated_important-border) !important; }
-  .deposit-address-wrapper .deposit-address-field .ant-input-suffix {
-    width: 15% !important; }
-  .deposit-address-wrapper .deposit-address-field .divider {
-    border-right: 1px solid var(--calculated_secondary-border);
-    padding-left: 15%;
-    height: 16px;
-    margin-top: 4%; }
-  .deposit-address-wrapper .deposit-address-field .render-deposit-scan-wrapper {
-    text-decoration: underline;
-    text-transform: uppercase;
-    color: var(--specials_buttons-links-and-highlights);
-    cursor: pointer; }
-  .deposit-address-wrapper .address-warning-text {
-    width: 70%; }
+.deposit-wrapper-fields .generate-field-wrapper {
+  margin-left: 7%; }
+
+.deposit-address-wrapper .deposit-address-field .destination-input-field,
+.deposit-address-wrapper .deposit-address-field .destination-input-field:focus-within {
+  border: none !important;
+  border-bottom: 1px solid var(--calculated_important-border) !important; }
+
+.deposit-address-wrapper .deposit-address-field .ant-input-affix-wrapper-focused {
+  box-shadow: none; }
+
+.deposit-address-wrapper .deposit-address-field .ant-input-suffix {
+  width: 15% !important; }
+
+.deposit-address-wrapper .deposit-address-field .divider {
+  border-right: 1px solid var(--calculated_secondary-border);
+  padding-left: 15%;
+  height: 16px;
+  margin-top: 4%; }
+
+.deposit-address-wrapper .deposit-address-field .render-deposit-scan-wrapper {
+  text-transform: uppercase;
+  color: var(--specials_buttons-links-and-highlights);
+  cursor: pointer; }
+  .deposit-address-wrapper .deposit-address-field .render-deposit-scan-wrapper div {
+    text-decoration: underline; }
+
+.deposit-address-wrapper .deposit-address-field .ant-input {
+  color: var(--specials_buttons-links-and-highlights) !important; }
+
+.deposit-address-wrapper .address-warning-text div {
+  text-wrap: balance; }
+
+.destination-tag-field-wrapper .destination-tag-field .destination-input-field,
+.destination-tag-field-wrapper .destination-tag-field .destination-input-field:focus-within {
+  border: none !important;
+  border-bottom: 1px solid var(--calculated_important-border) !important; }
+
+.destination-tag-field-wrapper .destination-tag-field .render-deposit-scan-wrapper {
+  text-transform: uppercase;
+  color: var(--specials_buttons-links-and-highlights);
+  cursor: pointer; }
+  .destination-tag-field-wrapper .destination-tag-field .render-deposit-scan-wrapper div {
+    text-decoration: underline; }
+
+.destination-tag-field-wrapper .destination-tag-field .ant-input-suffix {
+  width: auto !important; }
+
+.destination-tag-field-wrapper .destination-tag-field .ant-input:focus,
+.destination-tag-field-wrapper .destination-tag-field .ant-input-affix-wrapper-focused {
+  box-shadow: none; }
+
+.destination-tag-field-wrapper .destination-tag-field .ant-input {
+  color: var(--specials_buttons-links-and-highlights) !important; }
+
+.destination-tag-field-wrapper .tag-text div {
+  text-wrap: balance; }
+
+.withdrawal-container .withdraw-form-wrapper .withdraw-form .deposit-wrapper-fields .custom-field .custom-line-large {
+  height: 90px;
+  border: 1px solid var(--labels_important-active-labels-text-graphics);
+  margin: 0 100%; }
+
+.withdrawal-container .withdraw-form-wrapper .withdraw-form .deposit-wrapper-fields .custom-field .custom-line-extra-large {
+  height: 2rem;
+  border: 1px solid var(--labels_important-active-labels-text-graphics);
+  margin: 0 100%; }
 
 .generate-deposit-label {
   color: var(--labels_secondary-inactive-label-text-graphics);
-  margin: 1% 9%; }
+  margin: 1% 3%; }
+
+.layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .deposit-wrapper-fields .custom-field .custom-line-large {
+  height: 20rem;
+  border: 1px solid var(--labels_important-active-labels-text-graphics);
+  margin: 0 100%; }
+
+.layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .deposit-wrapper-fields .generate-field-wrapper {
+  margin-left: unset; }
+
+.layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .deposit-wrapper-fields .deposit-address-wrapper {
+  margin-left: 4%; }
+
+@media screen and (min-width: 550px) {
+  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .deposit-wrapper-fields .generate-field-wrapper {
+    margin-left: 8%; } }
 
 .transaction-history-wrapper .ant-row,
 .login-history-section-wrapper .ant-row {
@@ -6900,6 +7025,15 @@ table th {
     .app_bar .app-bar-account svg .account-inactive {
       fill: var(--calculated_base_top-bar-navigation_text-inactive);
       stroke: var(--calculated_base_top-bar-navigation_text-inactive); }
+    .app_bar .app-bar-account .app-bar-deposit-btn {
+      background-color: var(--specials_buttons-links-and-highlights);
+      padding: 1%; }
+      .app_bar .app-bar-account .app-bar-deposit-btn .margin-aligner {
+        margin-bottom: unset;
+        margin-right: unset; }
+        .app_bar .app-bar-account .app-bar-deposit-btn .margin-aligner svg {
+          width: 15px !important;
+          height: 15px !important; }
   .app_bar .app_bar-pair-overflow {
     align-items: center;
     color: var(--calculated_base_top-bar-navigation_text-inactive);

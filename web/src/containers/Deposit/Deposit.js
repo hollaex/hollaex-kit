@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { isMobile } from 'react-device-detect';
 import { Input, Select } from 'antd';
 import {
 	CaretDownOutlined,
@@ -30,7 +32,6 @@ const DepositComponent = ({
 	onCopy,
 	updateAddress,
 	depositAddress,
-	showGenerateButton,
 	...rest
 }) => {
 	const { Option } = Select;
@@ -51,29 +52,11 @@ const DepositComponent = ({
 	const [selectedAsset, setSelectedAsset] = useState('');
 	const [topAssets, setTopAssets] = useState([]);
 	const [isPinnedAssets, setIsPinnedAssets] = useState(false);
+	const [optionalTag, setOptionalTag] = useState('');
 
 	const defaultCurrency = currency !== '' && currency;
-
-	useEffect(() => {
-		const topWallet = assets
-			.filter((item, index) => {
-				return index <= 3;
-			})
-			.map((data) => {
-				return data[0];
-			});
-		if (pinnedAssets.length) {
-			setTopAssets(pinnedAssets);
-		} else {
-			setTopAssets(topWallet);
-		}
-		setSelectedAsset(defaultCurrency);
-		if (defaultCurrency) {
-			setDepositCurrency(defaultCurrency);
-			setCurrStep({ ...currStep, stepTwo: true });
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	const address = depositAddress?.split(':');
+	const isTag = address && address[1];
 
 	const coinLength =
 		coins[getDepositCurrency]?.network &&
@@ -95,7 +78,48 @@ const DepositComponent = ({
 		currStep.stepThree;
 	const iconId = coins[getDepositCurrency]?.icon_id || coins[currency]?.icon_id;
 	const currentCurrency = getDepositCurrency ? getDepositCurrency : currency;
-	const { min } = coins[currentCurrency];
+	const min = coins[currentCurrency];
+	const isDeposit = coins[getDepositCurrency]?.allow_deposit;
+
+	useEffect(() => {
+		const topWallet = assets
+			.filter((item, index) => {
+				return index <= 3;
+			})
+			.map((data) => {
+				return data[0];
+			});
+		if (pinnedAssets.length) {
+			setTopAssets(pinnedAssets);
+		} else {
+			setTopAssets(topWallet);
+		}
+		if (defaultCurrency) {
+			if (['xrp', 'xlm', 'ton'].includes(defaultCurrency)) {
+				setCurrStep({
+					...currStep,
+					stepTwo: true,
+					stepThree: true,
+					stepFour: true,
+				});
+			} else {
+				setCurrStep({ ...currStep, stepTwo: true });
+			}
+			setDepositCurrency(defaultCurrency);
+			setSelectedAsset(defaultCurrency);
+			updateAddress(defaultCurrency);
+			setDepositNetwork(defaultNetwork);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
+	useEffect(() => {
+		if (isTag) {
+			setOptionalTag(address[1]);
+		} else {
+			setOptionalTag('');
+		}
+	}, [address, isTag]);
 
 	const onHandleChangeSelect = (val, pinned_assets = false) => {
 		if (pinned_assets) {
@@ -103,18 +127,26 @@ const DepositComponent = ({
 		}
 		if (val) {
 			if (currStep.stepTwo || currStep.stepThree || currStep.stepFour) {
-				setCurrStep((prev) => ({
-					...prev,
-					stepTwo: false,
-					stepThree: false,
-					stepFour: false,
-				}));
+				if (['xrp', 'xlm', 'ton'].includes(val)) {
+					setCurrStep((prev) => ({
+						...prev,
+						stepTwo: true,
+						stepThree: true,
+						stepFour: true,
+					}));
+				} else {
+					setCurrStep((prev) => ({
+						...prev,
+						stepTwo: true,
+						stepThree: false,
+						stepFour: false,
+					}));
+				}
 			}
 			setCurrStep((prev) => ({ ...prev, stepTwo: true }));
 			setDepositCurrency(val);
 			network = val ? val : coins[getDepositCurrency]?.symbol;
 			setDepositNetworkOptions('');
-			setDepositNetwork(val);
 		} else if (!val) {
 			setDepositCurrency('');
 			setCurrStep((prev) => ({
@@ -124,42 +156,60 @@ const DepositComponent = ({
 				stepFour: false,
 			}));
 		}
+		let currentNetwork =
+			coins[val]?.network && coins[val]?.network !== 'other'
+				? coins[val]?.network
+				: coins[val]?.symbol;
+		setDepositNetwork(currentNetwork);
 		setSelectedAsset(val);
-		updateAddress();
+		updateAddress(val);
 	};
 
 	const onHandleChangeNetwork = (val) => {
 		if (val) {
 			setCurrStep((prev) => ({ ...prev, stepThree: true }));
 			setDepositNetworkOptions(val);
-			updateAddress();
+			updateAddress(val, true);
+			setDepositNetwork(val);
 		} else if (!val) {
 			setCurrStep((prev) => ({ ...prev, stepThree: false, stepFour: false }));
 		}
 	};
 
-	const renderScanIcon = () => {
+	const renderScanIcon = (isTag = false) => {
 		return (
 			<div className="d-flex">
-				<div
-					className="render-scan-wrapper d-flex"
-					onClick={() => openQRCode()}
-				>
-					<div className="img-wrapper">
-						<img alt="scan-icon" src={STATIC_ICONS['QR_CODE_SHOW']}></img>
+				{!isTag && (
+					<>
+						<div
+							className="render-scan-wrapper d-flex"
+							onClick={() => openQRCode()}
+						>
+							<div className="img-wrapper">
+								<img alt="scan-icon" src={STATIC_ICONS['QR_CODE_SHOW']}></img>
+							</div>
+						</div>
+						<div className="divider"></div>
+					</>
+				)}
+				<CopyToClipboard text={isTag ? optionalTag : address && address[0]}>
+					<div className="render-deposit-scan-wrapper" onClick={() => onCopy()}>
+						{renderLabel('COPY_TEXT')}
 					</div>
-				</div>
-				<div className="divider"></div>
-				<div className="render-deposit-scan-wrapper" onClick={() => onCopy()}>
-					{renderLabel('COPY_TEXT')}
-				</div>
+				</CopyToClipboard>
 			</div>
 		);
 	};
 
 	return (
-		<div className="deposit-wrapper-fields mt-5">
-			<div className="d-flex justify-content-between">
+		<div
+			className={
+				isDeposit || !currentCurrency
+					? 'deposit-wrapper-fields mt-5'
+					: 'withdraw-deposit-disable deposit-wrapper-fields mt-5'
+			}
+		>
+			<div>
 				<div className="d-flex">
 					<div className="custom-field d-flex flex-column">
 						<span className="custom-step-selected">1</span>
@@ -167,53 +217,65 @@ const DepositComponent = ({
 							className={`custom-line${currStep.stepTwo ? '-selected' : ''}`}
 						></span>
 					</div>
-					<div className="mt-2 ml-5 withdraw-main-label-selected">
-						{renderLabel('ACCORDIAN.SELECT_ASSET')}
-					</div>
-				</div>
-				<div className="select-wrapper">
-					<div className="d-flex">
-						<Select
-							showSearch={true}
-							className="custom-select-input-style elevated select-field"
-							dropdownClassName="custom-select-style"
-							suffixIcon={<CaretDownOutlined />}
-							placeholder="Select"
-							onChange={onHandleChangeSelect}
-							allowClear={true}
-							value={selectedAsset}
+					<div
+						className={
+							isMobile
+								? 'd-flex w-100 flex-column'
+								: 'd-flex w-100 justify-content-between'
+						}
+					>
+						<div className="mt-2 ml-5 withdraw-main-label-selected">
+							{renderLabel('ACCORDIAN.SELECT_ASSET')}
+						</div>
+						<div
+							className={
+								isMobile ? 'select-wrapper mobile-view' : 'select-wrapper'
+							}
 						>
-							{Object.entries(coins).map(
-								([_, { symbol, fullname, icon_id }]) => (
-									<Option key={symbol} value={symbol}>
-										<div className="d-flex gap-1">
-											<Coin iconId={icon_id} type="CS3" />
-											<div>{`${fullname} (${symbol.toUpperCase()})`}</div>
-										</div>
-									</Option>
-								)
-							)}
-						</Select>
-						{currStep.stepTwo && <CheckOutlined className="mt-3 ml-3" />}
-					</div>
-					<div className="mt-2 d-flex">
-						{topAssets.map((data, inx) => {
-							return (
-								<span
-									key={inx}
-									className={`currency-label ${
-										selectedAsset === data ? 'opacity-100' : 'opacity-30'
-									}`}
-									onClick={() => onHandleChangeSelect(data, true)}
+							<div className="d-flex">
+								<Select
+									showSearch={true}
+									className="custom-select-input-style elevated select-field"
+									dropdownClassName="custom-select-style"
+									suffixIcon={<CaretDownOutlined />}
+									placeholder="Select"
+									onChange={onHandleChangeSelect}
+									allowClear={true}
+									value={selectedAsset}
 								>
-									{data?.toUpperCase()}
-								</span>
-							);
-						})}
+									{Object.entries(coins).map(
+										([_, { symbol, fullname, icon_id }]) => (
+											<Option key={symbol} value={symbol}>
+												<div className="d-flex gap-1">
+													<Coin iconId={icon_id} type="CS3" />
+													<div>{`${fullname} (${symbol.toUpperCase()})`}</div>
+												</div>
+											</Option>
+										)
+									)}
+								</Select>
+								{currStep.stepTwo && <CheckOutlined className="mt-3 ml-3" />}
+							</div>
+							<div className="mt-3 d-flex">
+								{topAssets.map((data, inx) => {
+									return (
+										<span
+											key={inx}
+											className={`currency-label ${
+												selectedAsset === data ? 'opacity-100' : 'opacity-30'
+											}`}
+											onClick={() => onHandleChangeSelect(data, true)}
+										>
+											{data?.toUpperCase()}
+										</span>
+									);
+								})}
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
-			<div className="d-flex justify-content-between">
+			<div>
 				<div className="d-flex h-25">
 					<div className="custom-field d-flex flex-column">
 						<span
@@ -233,80 +295,99 @@ const DepositComponent = ({
 						></span>
 					</div>
 					<div
-						className={`mt-2 ml-5 withdraw-main-label${
-							currStep.stepTwo ? '-selected' : ''
-						}`}
+						className={
+							isMobile
+								? 'd-flex w-100 flex-column'
+								: 'd-flex w-100 justify-content-between'
+						}
 					>
-						{renderLabel('ACCORDIAN.SELECT_NETWORK')}
-					</div>
-				</div>
-				{currStep.stepTwo && (
-					<div className="select-wrapper">
-						<div className="d-flex">
-							<Select
-								showSearch={true}
-								className={`custom-select-input-style elevated ${
-									coinLength && coinLength.length > 1
-										? 'select-field'
-										: 'disabled'
-								}`}
-								dropdownClassName="custom-select-style"
-								suffixIcon={<CaretDownOutlined />}
-								allowClear={true}
-								onChange={onHandleChangeNetwork}
-								value={
-									defaultCurrency && !isPinnedAssets && coinLength?.length < 1
-										? defaultNetwork
-										: coinLength && coinLength.length <= 1
-										? getNetworkNameByKey(network)
-										: coinLength && coinLength.length > 1
-										? getNetworkNameByKey(getDepositNetworkOptions)
-										: coins[getDepositCurrency]?.symbol.toUpperCase()
-								}
-								disabled={
-									(coinLength && coinLength.length === 1) ||
-									!(coinLength && coinLength.length)
+						<div
+							className={`mt-2 ml-5 withdraw-main-label${
+								currStep.stepTwo ? '-selected' : ''
+							}`}
+						>
+							{renderLabel('ACCORDIAN.SELECT_NETWORK')}
+						</div>
+						{currStep.stepTwo && (
+							<div
+								className={
+									isMobile ? 'select-wrapper mobile-view' : 'select-wrapper'
 								}
 							>
-								{coinLength &&
-									coinLength.map((data, inx) => (
-										<Option key={inx} value={data}>
-											<div className="d-flex gap-1">
-												<div>{getNetworkNameByKey(data).toUpperCase()}</div>
-											</div>
-										</Option>
-									))}
-							</Select>
-							{(currStep.stepThree || coinLength) && (
-								<CheckOutlined className="mt-3 ml-3" />
-							)}
-						</div>
-						<div className="d-flex mt-2 warning-text">
-							<ExclamationCircleFilled className="mt-1" />
-							<div className="ml-2 w-75">
-								{renderLabel('DEPOSIT_FORM_NETWORK_WARNING')}
+								<div className="d-flex">
+									<Select
+										showSearch={true}
+										className={`custom-select-input-style elevated ${
+											coinLength && coinLength.length > 1
+												? 'select-field'
+												: 'disabled'
+										}`}
+										dropdownClassName="custom-select-style"
+										suffixIcon={<CaretDownOutlined />}
+										allowClear={true}
+										onChange={onHandleChangeNetwork}
+										value={
+											defaultCurrency &&
+											!isPinnedAssets &&
+											coinLength?.length < 1
+												? defaultNetwork
+												: coinLength && coinLength.length <= 1
+												? getNetworkNameByKey(network)
+												: coinLength && coinLength.length > 1
+												? getNetworkNameByKey(getDepositNetworkOptions)
+												: coins[getDepositCurrency]?.symbol.toUpperCase()
+										}
+										disabled={
+											(coinLength && coinLength.length === 1) ||
+											!(coinLength && coinLength.length)
+										}
+									>
+										{coinLength &&
+											coinLength.map((data, inx) => (
+												<Option key={inx} value={data}>
+													<div className="d-flex gap-1">
+														<div>{getNetworkNameByKey(data).toUpperCase()}</div>
+													</div>
+												</Option>
+											))}
+									</Select>
+									{(currStep.stepThree || coinLength) && (
+										<CheckOutlined className="mt-3 ml-3" />
+									)}
+								</div>
+								<div className="d-flex mt-2 warning-text">
+									<ExclamationCircleFilled className="mt-1" />
+									<div className="ml-2 w-75">
+										{renderLabel('DEPOSIT_FORM_NETWORK_WARNING')}
+									</div>
+								</div>
 							</div>
-						</div>
+						)}
 					</div>
-				)}
+				</div>
 			</div>
-			<div
-				className={`d-flex ${!showGenerateButton && 'justify-content-between'}`}
-			>
+			<div className={!depositAddress && 'd-flex'}>
 				<div className="d-flex h-25">
 					<div className="custom-field d-flex flex-column">
 						<span className={`custom-step${isSteps ? '-selected' : ''}`}>
 							3
 						</span>
+						{currStep.stepFour && depositAddress && (
+							<span
+								className={`custom-line${currStep.stepTwo ? '-large' : ''}`}
+							></span>
+						)}
 					</div>
 					<div
-						className={`mt-2 ml-5 withdraw-main-label${
-							isSteps ? '-selected' : ''
-						}`}
+						className={`d-flex mt-2 ml-5  ${
+							isMobile ? 'flex-column' : 'justify-content-between'
+						} withdraw-main-label${isSteps ? '-selected' : ''}`}
 					>
 						<div className="d-flex">
 							<div className=" d-flex step3-icon-wrapper">
-								<Coin iconId={iconId} type="CS5" />
+								<span>
+									<Coin iconId={iconId} type="CS5" />
+								</span>
 								<span
 									className={`ml-2 withdraw-main-label${
 										isSteps ? '-selected' : ''
@@ -322,61 +403,146 @@ const DepositComponent = ({
 							>
 								{renderLabel('SUMMARY.DEPOSIT')}
 							</div>
+							<span
+								className={`ml-2 withdraw-main-label${
+									isSteps ? '-selected' : ''
+								}`}
+							>
+								{renderLabel('ACCORDIAN.ADDRESS')}
+							</span>
 						</div>
-						<span className="address-label">
-							{renderLabel('ACCORDIAN.ADDRESS')}
-						</span>
+						{/* <div> */}
+						{((coinLength && coinLength.length === 1) ||
+							(currStep.stepTwo && !coinLength) ||
+							currStep.stepThree) &&
+							(!depositAddress && selectedAsset ? (
+								<div className="generate-field-wrapper">
+									<div className="generate-deposit-label">
+										<div>
+											{renderLabel('WITHDRAW_PAGE.GENERATE_DEPOSIT_TEXT_1')}
+										</div>
+										<div>
+											{renderLabel('WITHDRAW_PAGE.GENERATE_DEPOSIT_TEXT_2')}
+										</div>
+									</div>
+									<div className="btn-wrapper-deposit">
+										<Button
+											stringId="GENERATE_WALLET"
+											label={STRINGS['GENERATE_WALLET']}
+											onClick={onOpen}
+										/>
+									</div>
+								</div>
+							) : (
+								<div className="deposit-address-wrapper">
+									<div className="d-flex flex-row deposit-address-field">
+										<Input
+											className="destination-input-field"
+											suffix={renderScanIcon()}
+											value={address && address[0]}
+										></Input>
+										{currStep.stepFour && (
+											<CheckOutlined className="mt-3 ml-3" />
+										)}
+									</div>
+									<div className="warning-text d-flex mt-2">
+										<ExclamationCircleFilled className="mt-1 mr-2" />
+										<div className="address-warning-text">
+											<EditWrapper>
+												{STRINGS.formatString(
+													STRINGS['DEPOSIT_FORM_MIN_WARNING'],
+													min?.min,
+													currentCurrency.toUpperCase()
+												)}
+											</EditWrapper>
+										</div>
+									</div>
+								</div>
+							))}
+						{/* </div> */}
 					</div>
 				</div>
-				{((coinLength && coinLength.length === 1) ||
-					(currStep.stepTwo && !coinLength) ||
-					currStep.stepThree) &&
-					(showGenerateButton ? (
-						<div className="generate-deposit-label">
-							<div>{renderLabel('WITHDRAW_PAGE.GENERATE_DEPOSIT_TEXT_1')}</div>
-							<div>{renderLabel('WITHDRAW_PAGE.GENERATE_DEPOSIT_TEXT_2')}</div>
-						</div>
-					) : (
-						<div className="deposit-address-wrapper">
-							<div className="d-flex flex-row deposit-address-field">
-								<Input
-									className="destination-input-field"
-									suffix={renderScanIcon()}
-									value={depositAddress}
-								></Input>
-								{currStep.stepFour && <CheckOutlined className="mt-3 ml-3" />}
+			</div>
+			{(['xrp', 'xlm'].includes(selectedAsset) ||
+				['xlm', 'ton'].includes(network)) &&
+				depositAddress && (
+					<div className="d-flex justify-content-between">
+						<div className="d-flex h-25">
+							<div className="custom-field d-flex flex-column">
+								<span
+									className={`custom-line-extra-large ${
+										currStep.stepFour ? 'custom-line-extra-large-active' : ''
+									}`}
+								></span>
+								<span
+									className={`custom-step${
+										currStep.stepFour ? '-selected' : ''
+									}`}
+								>
+									4
+								</span>
 							</div>
-							<div className="warning-text d-flex mt-2">
-								<ExclamationCircleFilled className="mt-1 mr-2" />
-								<div className="address-warning-text">
-									<EditWrapper>
-										{STRINGS.formatString(
-											STRINGS['DEPOSIT_FORM_MIN_WARNING'],
-											min,
-											currentCurrency.toUpperCase()
-										)}
-									</EditWrapper>
+							<div
+								className={`mt-3 pt-4 withdraw-main-label${
+									currStep.stepFour ? '-selected' : ''
+								} ${!isMobile ? 'ml-5' : ''}`}
+							>
+								<div
+									className={
+										isMobile
+											? 'd-flex w-100 flex-column'
+											: 'd-flex w-100 justify-content-between'
+									}
+								>
+									<div className="d-flex">
+										<span className={isMobile ? 'ml-5' : ''}>
+											<Coin iconId={iconId} type="CS5" />
+										</span>
+										<span className="ml-2">{renderLabel('ACCORDIAN.TAG')}</span>
+									</div>
+									{((coinLength && coinLength.length === 1) ||
+										(currStep.stepTwo && !coinLength) ||
+										currStep.stepThree) && (
+										<div
+											className={
+												isMobile
+													? 'd-flex select-wrapper destination-tag-field-wrapper mobile-view'
+													: 'd-flex select-wrapper destination-tag-field-wrapper'
+											}
+										>
+											<div className="destination-tag-field">
+												<Input
+													value={optionalTag}
+													className="destination-input-field"
+													type={
+														selectedAsset === 'xrp' || selectedAsset === 'xlm'
+															? 'number'
+															: 'text'
+													}
+													suffix={renderScanIcon(true)}
+												></Input>
+											</div>
+											<div className="d-flex mt-2 warning-text">
+												<ExclamationCircleFilled className="mt-1" />
+												<div className="ml-2 w-75 tag-text">
+													{renderLabel(
+														'DEPOSIT_FORM_TITLE_WARNING_DESTINATION_TAG'
+													)}
+												</div>
+											</div>
+										</div>
+									)}
 								</div>
 							</div>
 						</div>
-					))}
-			</div>
-			{showGenerateButton && (
-				<div className="btn-wrapper-deposit">
-					<Button
-						stringId="GENERATE_WALLET"
-						label={STRINGS['GENERATE_WALLET']}
-						onClick={onOpen}
-					/>
-				</div>
-			)}
+					</div>
+				)}
 		</div>
 	);
 };
 
 const mapStateToProps = (state) => ({
 	getDepositCurrency: state.app.depositFields.depositCurrency,
-	getDepositNetwork: state.app.depositFields.depositNetwork,
 	getDepositNetworkOptions: state.app.depositFields.depositNetworkOptions,
 	pinnedAssets: state.app.pinned_assets,
 	assets: assetsSelector(state),

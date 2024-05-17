@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { isMobile } from 'react-device-detect';
 import { Button, Checkbox, Input, Modal, Select } from 'antd';
 import BigNumber from 'bignumber.js';
 import { Coin, EditWrapper } from 'components';
@@ -66,6 +67,7 @@ const RenderWithdraw = ({
 		coin_customizations,
 		setIsValidAdress,
 		isValidAddress,
+		getNativeCurrency,
 	} = rest;
 	const defaultCurrency = currency !== '' && currency;
 	const iconId = coins[getWithdrawCurrency]?.icon_id;
@@ -78,9 +80,7 @@ const RenderWithdraw = ({
 			? coins[getWithdrawCurrency]?.network
 			: coins[getWithdrawCurrency]?.symbol;
 
-	const curretPrice = getWithdrawCurrency
-		? prices[getWithdrawCurrency]
-		: prices[defaultCurrency];
+	const curretPrice = prices[getNativeCurrency];
 	const estimatedWithdrawValue = curretPrice * getWithdrawAmount || 0;
 	let fee =
 		selectedAsset &&
@@ -332,11 +332,16 @@ const RenderWithdraw = ({
 	const withdrawFeeFormat = `(≈ ${fee} ${getWithdrawCurrency?.toUpperCase()})`;
 	const estimatedFormat = `≈ ${Math.round(
 		estimatedWithdrawValue
-	)} ${getWithdrawCurrency?.toUpperCase()}`;
+	)} ${getNativeCurrency?.toUpperCase()}`;
+	const isWithdrawal = coins[getWithdrawCurrency]?.allow_withdrawal;
 
 	return (
-		<div className="mt-5">
-			<div className="d-flex justify-content-between">
+		<div
+			className={
+				isWithdrawal || !currency ? 'mt-5' : 'withdraw-deposit-disable mt-5'
+			}
+		>
+			<div>
 				<div className="d-flex">
 					<div className="custom-field d-flex flex-column">
 						<span className="custom-step-selected">1</span>
@@ -344,53 +349,65 @@ const RenderWithdraw = ({
 							className={`custom-line${currStep.stepTwo ? '-selected' : ''}`}
 						></span>
 					</div>
-					<div className="mt-2 ml-5 withdraw-main-label-selected">
-						{renderLabel('ACCORDIAN.SELECT_ASSET')}
-					</div>
-				</div>
-				<div className="select-wrapper">
-					<div className="d-flex">
-						<Select
-							showSearch={true}
-							className="custom-select-input-style elevated select-field"
-							dropdownClassName="custom-select-style"
-							suffixIcon={<CaretDownOutlined />}
-							placeholder="Select"
-							onChange={onHandleChangeSelect}
-							allowClear={true}
-							value={selectedAsset}
+					<div
+						className={
+							isMobile
+								? 'd-flex w-100 flex-column'
+								: 'd-flex w-100 justify-content-between'
+						}
+					>
+						<div className="mt-2 ml-5 withdraw-main-label-selected">
+							{renderLabel('ACCORDIAN.SELECT_ASSET')}
+						</div>
+						<div
+							className={
+								isMobile ? 'select-wrapper mobile-view' : 'select-wrapper'
+							}
 						>
-							{Object.entries(coins).map(
-								([_, { symbol, fullname, icon_id }]) => (
-									<Option key={symbol} value={symbol}>
-										<div className="d-flex gap-1">
-											<Coin iconId={icon_id} type="CS3" />
-											<div>{`${fullname} (${symbol.toUpperCase()})`}</div>
-										</div>
-									</Option>
-								)
-							)}
-						</Select>
-						{currStep.stepTwo && <CheckOutlined className="mt-3 ml-3" />}
-					</div>
-					<div className="mt-2 d-flex">
-						{topAssets.map((data, inx) => {
-							return (
-								<span
-									key={inx}
-									className={`currency-label ${
-										selectedAsset === data ? 'opacity-100' : 'opacity-30'
-									}`}
-									onClick={() => onHandleChangeSelect(data, true)}
+							<div className="d-flex">
+								<Select
+									showSearch={true}
+									className="custom-select-input-style elevated select-field"
+									dropdownClassName="custom-select-style"
+									suffixIcon={<CaretDownOutlined />}
+									placeholder="Select"
+									onChange={onHandleChangeSelect}
+									allowClear={true}
+									value={selectedAsset}
 								>
-									{data.toUpperCase()}
-								</span>
-							);
-						})}
+									{Object.entries(coins).map(
+										([_, { symbol, fullname, icon_id }]) => (
+											<Option key={symbol} value={symbol}>
+												<div className="d-flex gap-1">
+													<Coin iconId={icon_id} type="CS3" />
+													<div>{`${fullname} (${symbol.toUpperCase()})`}</div>
+												</div>
+											</Option>
+										)
+									)}
+								</Select>
+								{currStep.stepTwo && <CheckOutlined className="mt-3 ml-3" />}
+							</div>
+							<div className="mt-3 d-flex">
+								{topAssets.map((data, inx) => {
+									return (
+										<span
+											key={inx}
+											className={`currency-label ${
+												selectedAsset === data ? 'opacity-100' : 'opacity-30'
+											}`}
+											onClick={() => onHandleChangeSelect(data, true)}
+										>
+											{data.toUpperCase()}
+										</span>
+									);
+								})}
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
-			<div className="d-flex justify-content-between">
+			<div>
 				<div className="d-flex h-25">
 					<div className="custom-field d-flex flex-column">
 						<span
@@ -410,64 +427,78 @@ const RenderWithdraw = ({
 						></span>
 					</div>
 					<div
-						className={`mt-2 ml-5 withdraw-main-label${
-							currStep.stepTwo ? '-selected' : ''
-						}`}
+						className={
+							isMobile
+								? 'd-flex w-100 flex-column'
+								: 'd-flex w-100 justify-content-between'
+						}
 					>
-						{renderLabel('ACCORDIAN.SELECT_NETWORK')}
-					</div>
-				</div>
-				{currStep.stepTwo && (
-					<div className="select-wrapper">
-						<div className="d-flex">
-							<Select
-								showSearch={true}
-								className={`custom-select-input-style elevated ${
-									coinLength && coinLength.length > 1
-										? 'select-field'
-										: 'disabled'
-								}`}
-								dropdownClassName="custom-select-style"
-								suffixIcon={<CaretDownOutlined />}
-								allowClear={true}
-								onChange={onHandleChangeNetwork}
-								value={
-									defaultCurrency && !isPinnedAssets && coinLength?.length < 1
-										? defaultNetwork
-										: coinLength && coinLength.length <= 1
-										? getNetworkNameByKey(network)
-										: coinLength && coinLength.length > 1
-										? getNetworkNameByKey(getWithdrawNetworkOptions)
-										: coins[getWithdrawCurrency]?.symbol.toUpperCase()
-								}
-								disabled={
-									(coinLength && coinLength.length === 1) ||
-									!(coinLength && coinLength.length)
+						<div
+							className={`mt-2 ml-5 withdraw-main-label${
+								currStep.stepTwo ? '-selected' : ''
+							}`}
+						>
+							{renderLabel('ACCORDIAN.SELECT_NETWORK')}
+						</div>
+						{currStep.stepTwo && (
+							<div
+								className={
+									isMobile ? 'select-wrapper mobile-view' : 'select-wrapper'
 								}
 							>
-								{coinLength &&
-									coinLength.map((data, inx) => (
-										<Option key={inx} value={data}>
-											<div className="d-flex gap-1">
-												<div>{getNetworkNameByKey(data).toUpperCase()}</div>
-											</div>
-										</Option>
-									))}
-							</Select>
-							{(currStep.stepThree || coinLength) && (
-								<CheckOutlined className="mt-3 ml-3" />
-							)}
-						</div>
-						<div className="d-flex mt-2 warning-text">
-							<ExclamationCircleFilled className="mt-1" />
-							<div className="ml-2 w-75">
-								{renderLabel('DEPOSIT_FORM_NETWORK_WARNING')}
+								<div className="d-flex">
+									<Select
+										showSearch={true}
+										className={`custom-select-input-style elevated ${
+											coinLength && coinLength.length > 1
+												? 'select-field'
+												: 'disabled'
+										}`}
+										dropdownClassName="custom-select-style"
+										suffixIcon={<CaretDownOutlined />}
+										allowClear={true}
+										onChange={onHandleChangeNetwork}
+										value={
+											defaultCurrency &&
+											!isPinnedAssets &&
+											coinLength?.length < 1
+												? defaultNetwork
+												: coinLength && coinLength.length <= 1
+												? getNetworkNameByKey(network)
+												: coinLength && coinLength.length > 1
+												? getNetworkNameByKey(getWithdrawNetworkOptions)
+												: coins[getWithdrawCurrency]?.symbol.toUpperCase()
+										}
+										disabled={
+											(coinLength && coinLength.length === 1) ||
+											!(coinLength && coinLength.length)
+										}
+									>
+										{coinLength &&
+											coinLength.map((data, inx) => (
+												<Option key={inx} value={data}>
+													<div className="d-flex gap-1">
+														<div>{getNetworkNameByKey(data).toUpperCase()}</div>
+													</div>
+												</Option>
+											))}
+									</Select>
+									{(currStep.stepThree || coinLength) && (
+										<CheckOutlined className="mt-3 ml-3" />
+									)}
+								</div>
+								<div className="d-flex mt-2 warning-text">
+									<ExclamationCircleFilled className="mt-1" />
+									<div className="ml-2 w-75">
+										{renderLabel('DEPOSIT_FORM_NETWORK_WARNING')}
+									</div>
+								</div>
 							</div>
-						</div>
+						)}
 					</div>
-				)}
+				</div>
 			</div>
-			<div className="d-flex justify-content-between">
+			<div>
 				<div className="d-flex h-25">
 					<div className="custom-field d-flex flex-column">
 						<span className={`custom-step${isSteps ? '-selected' : ''}`}>
@@ -478,29 +509,44 @@ const RenderWithdraw = ({
 						></span>
 					</div>
 					<div
-						className={`mt-2 ml-5 withdraw-main-label${
-							isSteps ? '-selected' : ''
-						}`}
+						className={
+							isMobile
+								? 'd-flex w-100 flex-column'
+								: 'd-flex w-100 justify-content-between'
+						}
 					>
-						{renderLabel('ACCORDIAN.DESTINATION')}
+						<div
+							className={`mt-2 ml-5 withdraw-main-label${
+								isSteps ? '-selected' : ''
+							}`}
+						>
+							{renderLabel('ACCORDIAN.DESTINATION')}
+						</div>
+						{((coinLength && coinLength.length === 1) ||
+							(currStep.stepTwo && !coinLength) ||
+							currStep.stepThree) && (
+							<div
+								className={
+									isMobile
+										? 'd-flex flex-row select-wrapper mobile-view'
+										: 'd-flex flex-row select-wrapper'
+								}
+							>
+								<Input
+									className="destination-input-field"
+									// suffix={renderScanIcon()}
+									onChange={(e) => onHandleAddress(e.target.value)}
+									value={getWithdrawAddress}
+								></Input>
+								{currStep.stepFour && <CheckOutlined className="mt-3 ml-3" />}
+							</div>
+						)}
 					</div>
 				</div>
-				{((coinLength && coinLength.length === 1) ||
-					(currStep.stepTwo && !coinLength) ||
-					currStep.stepThree) && (
-					<div className="d-flex flex-row select-wrapper">
-						<Input
-							className="destination-input-field"
-							// suffix={renderScanIcon()}
-							onChange={(e) => onHandleAddress(e.target.value)}
-							value={getWithdrawAddress}
-						></Input>
-						{currStep.stepFour && <CheckOutlined className="mt-3 ml-3" />}
-					</div>
-				)}
 			</div>
-			{['xrp', 'xlm', 'ton'].includes(selectedAsset) && (
-				<div className="d-flex justify-content-between">
+			{(['xrp', 'xlm'].includes(selectedAsset) ||
+				['xlm', 'ton'].includes(network)) && (
+				<div>
 					<div className="d-flex h-25">
 						<div className="custom-field d-flex flex-column">
 							<span
@@ -520,47 +566,65 @@ const RenderWithdraw = ({
 							></span>
 						</div>
 						<div
-							className={`mt-3 pt-4 ml-5 withdraw-main-label${
-								currStep.stepFour ? '-selected' : ''
-							} ${!isCheck ? 'opacity-100' : 'opacity-50'}`}
+							className={
+								isMobile
+									? 'd-flex w-100 flex-column'
+									: 'd-flex w-100 justify-content-between'
+							}
 						>
-							{renderLabel('ACCORDIAN.OPTIONAL_TAG')}
+							<div
+								className={`mt-3 pt-4 ml-5 withdraw-main-label${
+									currStep.stepFour ? '-selected' : ''
+								} ${!isCheck ? 'opacity-100' : 'opacity-50'}`}
+							>
+								{renderLabel('ACCORDIAN.OPTIONAL_TAG')}
+							</div>
+							{currStep.stepFour && (
+								<div
+									className={
+										isMobile
+											? 'd-flex select-wrapper mobile-view'
+											: 'd-flex select-wrapper'
+									}
+								>
+									<div className="d-flex justify-content-end width-80 mb-2">
+										<div className={isCheck ? 'opacity-100' : 'opacity-30'}>
+											<Checkbox
+												className="pr-3 check-optional"
+												onClick={() => {
+													!isCheck ? setIsVisible(true) : setIsCheck(!isCheck);
+												}}
+												checked={isCheck}
+											/>
+											<span>No Tag</span>
+										</div>
+									</div>
+									<div>
+										<Input
+											onChange={(e) => setOptionalTag(e.target.value)}
+											value={optionalTag}
+											className={`destination-input-field ${
+												!isCheck ? 'opacity-100' : 'opacity-30'
+											}`}
+											type={
+												selectedAsset === 'xrp' || selectedAsset === 'xlm'
+													? 'number'
+													: 'text'
+											}
+											disabled={isCheck}
+										></Input>
+										{optionalTag && <CheckOutlined className="mt-3 ml-3" />}
+									</div>
+									<div className="d-flex mt-2 warning-text">
+										<ExclamationCircleFilled className="mt-1" />
+										<div className="ml-2 w-75">
+											{renderLabel('WITHDRAWALS_FORM_DESTINATION_TAG_WARNING')}
+										</div>
+									</div>
+								</div>
+							)}
 						</div>
 					</div>
-					{currStep.stepFour && (
-						<div className="d-flex select-wrapper">
-							<div className="d-flex justify-content-end width-80 mb-2">
-								<div className={isCheck ? 'opacity-100' : 'opacity-30'}>
-									<Checkbox
-										className="pr-3 check-optional"
-										onClick={() => {
-											!isCheck ? setIsVisible(true) : setIsCheck(!isCheck);
-										}}
-										checked={isCheck}
-									/>
-									<span>No Tag</span>
-								</div>
-							</div>
-							<div>
-								<Input
-									onChange={(e) => setOptionalTag(e.target.value)}
-									value={optionalTag}
-									className={`destination-input-field ${
-										!isCheck ? 'opacity-100' : 'opacity-30'
-									}`}
-									type={selectedAsset === 'xrp' ? 'number' : 'text'}
-									disabled={isCheck}
-								></Input>
-								{optionalTag && <CheckOutlined className="mt-3 ml-3" />}
-							</div>
-							<div className="d-flex mt-2 warning-text">
-								<ExclamationCircleFilled className="mt-1" />
-								<div className="ml-2 w-75">
-									{renderLabel('WITHDRAWALS_FORM_DESTINATION_TAG_WARNING')}
-								</div>
-							</div>
-						</div>
-					)}
 				</div>
 			)}
 			<Modal
@@ -572,18 +636,29 @@ const RenderWithdraw = ({
 			>
 				{renderRemoveTag()}
 			</Modal>
-			<div className="d-flex justify-content-between">
+			<div>
 				<div className="d-flex h-25">
 					<div className="custom-field d-flex flex-column">
 						<span
 							className={`custom-step${currStep.stepFour ? '-selected' : ''}`}
 						>
-							{['xrp', 'xlm', 'ton'].includes(selectedAsset) ? 5 : 4}
+							{['xrp', 'xlm'].includes(selectedAsset) ||
+							['xlm', 'ton'].includes(network)
+								? 5
+								: 4}
 						</span>
 					</div>
-					<div className="d-flex">
+					<div
+						className={
+							isMobile
+								? 'd-flex w-100 flex-column'
+								: 'd-flex w-100 justify-content-between'
+						}
+					>
 						<div className=" d-flex mt-2 ml-5">
-							<Coin iconId={iconId} type="CS4" />
+							<span className="amount-field-icon">
+								<Coin iconId={iconId} type="CS4" />
+							</span>
 							<span
 								className={`ml-2 withdraw-main-label${
 									currStep.stepFour ? '-selected' : ''
@@ -591,29 +666,35 @@ const RenderWithdraw = ({
 							>
 								{getWithdrawCurrency.toUpperCase()}
 							</span>
+							<div
+								className={`ml-1 withdraw-main-label${
+									currStep.stepFour ? '-selected' : ''
+								}`}
+							>
+								{renderLabel('ACCORDIAN.AMOUNT')}
+							</div>
 						</div>
-						<div
-							className={`mt-2 ml-1 withdraw-main-label${
-								currStep.stepFour ? '-selected' : ''
-							}`}
-						>
-							{renderLabel('ACCORDIAN.AMOUNT')}
-						</div>
+						{currStep.stepFour && (
+							<div
+								className={
+									isMobile
+										? 'd-flex flex-row select-wrapper mobile-view'
+										: 'd-flex flex-row select-wrapper'
+								}
+							>
+								<Input
+									disabled={maxAmount === 0}
+									onChange={(e) => onHandleAmount(e.target.value)}
+									value={getWithdrawAmount}
+									className="destination-input-field"
+									suffix={renderAmountIcon()}
+									type="number"
+								></Input>
+								{!isAmount && <CheckOutlined className="mt-3 ml-3" />}
+							</div>
+						)}
 					</div>
 				</div>
-				{currStep.stepFour && (
-					<div className="d-flex flex-row select-wrapper">
-						<Input
-							disabled={maxAmount === 0}
-							onChange={(e) => onHandleAmount(e.target.value)}
-							value={getWithdrawAmount}
-							className="destination-input-field"
-							suffix={renderAmountIcon()}
-							type="number"
-						></Input>
-						{!isAmount && <CheckOutlined className="mt-3 ml-3" />}
-					</div>
-				)}
 			</div>
 			{currStep.stepFour && (
 				<div className="bottom-content">
@@ -649,6 +730,7 @@ const mapStateToForm = (state) => ({
 	getWithdrawAmount: state.app.withdrawFields.withdrawAmount,
 	coin_customizations: state.app.constants.coin_customizations,
 	isValidAddress: state.app.isValidAddress,
+	getNativeCurrency: state.app.constants.native_currency,
 });
 
 const mapDispatchToProps = (dispatch) => ({

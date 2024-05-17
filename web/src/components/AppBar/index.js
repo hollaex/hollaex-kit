@@ -229,6 +229,7 @@ class AppBar extends Component {
 			isHome,
 			activeLanguage,
 			changeLanguage,
+			// icons
 		} = this.props;
 		const { securityPending, verificationPending, walletPending } = this.state;
 
@@ -304,6 +305,14 @@ class AppBar extends Component {
 						id="trade-nav-container"
 						className="d-flex app-bar-account justify-content-end"
 					>
+						{/* <div className='app-bar-deposit-btn d-flex'>
+							<Image
+								iconId={'DEPOSIT_TITLE'}
+								icon={icons['DEPOSIT_TITLE']}
+								wrapperClassName="form_currency-ball margin-aligner"
+							/>
+							<span className='ml-2'>{STRINGS['WALLET_BUTTON_BASE_DEPOSIT']}</span>
+						</div> */}
 						<div className="d-flex app_bar-quicktrade-container">
 							<LanguageSwitcher
 								selected={activeLanguage}

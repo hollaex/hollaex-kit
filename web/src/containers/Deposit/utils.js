@@ -4,16 +4,17 @@ import { Link } from 'react-router';
 import { reduxForm } from 'redux-form';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { isMobile } from 'react-device-detect';
-import { ExclamationCircleFilled } from '@ant-design/icons';
 
 import { STATIC_ICONS } from 'config/icons';
 import { EditWrapper, Button, SmartTarget } from 'components';
 import { required } from 'components/Form/validations';
 import { getNetworkNameByKey } from 'utils/wallet';
+import { renderLabel } from 'containers/Withdraw/utils';
 import STRINGS from 'config/localizedStrings';
 import Image from 'components/Image';
 import Fiat from './Fiat';
 import DepositComponent from './Deposit';
+import TransactionsHistory from 'containers/TransactionsHistory';
 
 export const generateBaseInformation = (id = '') => (
 	<div className="text">
@@ -182,9 +183,7 @@ const RenderContentForm = ({
 	setCopied,
 	copied,
 	address,
-	showGenerateButton,
 	icons: ICONS,
-	selectedNetwork,
 	targets,
 	depositCurrency,
 	currentCurrency,
@@ -210,7 +209,21 @@ const RenderContentForm = ({
 				<div className="withdraw-form-wrapper">
 					<div className="withdraw-form d-flex">
 						<div className="w-100">
-							{currentCurrency && (
+							{!coinObject?.allow_deposit && currentCurrency && (
+								<div className="d-flex">
+									<div className="withdraw-deposit-icon-wrapper">
+										<Image
+											iconId={'CLOCK'}
+											icon={ICONS['CLOCK']}
+											svgWrapperClassName="action_notification-svg withdraw-deposit-icon"
+										/>
+									</div>
+									<span className="withdraw-deposit-content">
+										{renderLabel('ACCORDIAN.DISABLED_DEPOSIT_CONTENT')}
+									</span>
+								</div>
+							)}
+							{currentCurrency && coinObject?.allow_deposit && (
 								<div className="d-flex align-items-center">
 									<Image
 										iconId={'DEPOSIT_BITCOIN'}
@@ -220,21 +233,6 @@ const RenderContentForm = ({
 									{titleSection}
 								</div>
 							)}
-							{(currency === 'xrp' ||
-								currency === 'xlm' ||
-								selectedNetwork === 'xlm' ||
-								selectedNetwork === 'ton') && (
-								<div className="d-flex">
-									<div className="d-flex align-items-baseline field_warning_wrapper">
-										<ExclamationCircleFilled className="field_warning_icon" />
-										<div className="field_warning_text">
-											<EditWrapper stringId="DEPOSIT_FORM_TITLE_WARNING_DESTINATION_TAG">
-												{STRINGS['DEPOSIT_FORM_TITLE_WARNING_DESTINATION_TAG']}
-											</EditWrapper>
-										</div>
-									</div>
-								</div>
-							)}
 							<DepositComponent
 								updateAddress={updateAddress}
 								depositAddress={depositAddress}
@@ -242,19 +240,16 @@ const RenderContentForm = ({
 								onCopy={onCopy}
 								coins={coins}
 								currency={currency}
-								showGenerateButton={showGenerateButton}
 								onOpen={onOpen}
 							/>
 						</div>
-						<div className="side-icon-wrapper">
-							<Image
-								iconId={'DEPOSIT_TITLE'}
-								icon={ICONS['DEPOSIT_TITLE']}
-								alt={'text'}
-							/>
-						</div>
+						{!isMobile && (
+							<div className="side-icon-wrapper">
+								<Image iconId={'DEPOSIT_TITLE'} icon={ICONS['DEPOSIT_TITLE']} />
+							</div>
+						)}
 					</div>
-					{isMobile && address && (
+					{isMobile && address && depositAddress && (
 						<div className="btn-wrapper">
 							<CopyToClipboard text={address} onCopy={setCopied}>
 								<Button
@@ -267,6 +262,7 @@ const RenderContentForm = ({
 						</div>
 					)}
 				</div>
+				<TransactionsHistory isFromWallet={true} isDepositFromWallet={true} />
 			</SmartTarget>
 		);
 	} else if (coinObject && coinObject.type === 'fiat') {
@@ -279,13 +275,11 @@ const RenderContentForm = ({
 const mapStateToProps = ({
 	app: {
 		targets,
-		depositFields: { depositCurrency, depositNetwork, depositNetworkOptions },
+		depositFields: { depositCurrency },
 	},
 }) => ({
 	targets,
 	depositCurrency,
-	depositNetwork,
-	depositNetworkOptions,
 });
 
 const Form = reduxForm({
