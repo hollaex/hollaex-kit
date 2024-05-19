@@ -218,6 +218,7 @@ exports.KIT_CONFIG_KEYS = [
 	'fiat_fees',
 	'balance_history_config',
 	'transaction_limits',
+	'referral_history_config'
 ];
 
 exports.KIT_SECRETS_KEYS = [
@@ -667,6 +668,11 @@ exports.STAKE_SUPPORTED_PLANS = ['fiat', 'boost', 'enterprise'];
 //BALANCE HISTORY CONSTANTS START
 exports.BALANCE_HISTORY_SUPPORTED_PLANS = ['fiat', 'boost', 'enterprise'];
 //BALANCE HISTORY CONSTANTS END 
+
+//REFERRAL HISTORY CONSTANTS START
+
+exports.REFERRAL_HISTORY_SUPPORTED_PLANS = ['fiat', 'boost', 'enterprise'];
+//REFERRAL HISTORY CONSTANTS END
 
 exports.CUSTOM_CSS = `
 	.topbar-wrapper img {

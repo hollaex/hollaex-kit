@@ -61,6 +61,7 @@ Status.findOne()
 				quote: 'xht',
 				spread: 0
 			},
+			referral_history_config: existingKitConfigurations.referral_history_config || {},
 			coin_customizations: existingKitConfigurations.coin_customizations || {},
 			fiat_fees: existingKitConfigurations.fiat_fees || {},
 			balance_history_config: existingKitConfigurations.balance_history_config || {}
