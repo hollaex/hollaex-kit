@@ -4,6 +4,7 @@ const morganType = process.env.NODE_ENV === 'development' ? 'dev' : 'combined';
 const { logEntryRequest, stream, loggerPlugin } = require('../config/logger');
 const cors = require('cors');
 const { domainMiddleware, helmetMiddleware } = require('../config/middleware');
+const { restartPluginProcess } = require('./index');
 const path = require('path');
 const fs = require('fs');
 const latestVersion = require('latest-version');
@@ -85,6 +86,7 @@ const initPluginProcess = async ({ PORT }) => {
 				app,
 				toolsLib,
 				lodash,
+				restartPluginProcess,
 				expressValidator,
 				loggerPlugin,
 				multer,
