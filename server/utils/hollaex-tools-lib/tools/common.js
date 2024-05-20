@@ -25,7 +25,8 @@ const {
 	VALID_USER_META_TYPES,
 	DOMAIN,
 	DEFAULT_FEES,
-	BALANCE_HISTORY_SUPPORTED_PLANS
+	BALANCE_HISTORY_SUPPORTED_PLANS,
+	REFERRAL_HISTORY_SUPPORTED_PLANS,
 } = require(`${SERVER_PATH}/constants`);
 const {
 	COMMUNICATOR_CANNOT_UPDATE,
@@ -33,7 +34,7 @@ const {
 	SUPPORT_DISABLED,
 	NO_NEW_DATA
 } = require(`${SERVER_PATH}/messages`);
-const { each, difference, isPlainObject, isString, pick, isNil, omit, isNumber } = require('lodash');
+const { each, difference, isPlainObject, isString, pick, isNil, omit, isNumber, isDate } = require('lodash');
 const { publisher } = require('./database/redis');
 const { sendEmail: sendSmtpEmail } = require(`${SERVER_PATH}/mail`);
 const { sendSMTPEmail: nodemailerEmail } = require(`${SERVER_PATH}/mail/utils`);
@@ -350,6 +351,45 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 		if(!newKitConfig.balance_history_config.hasOwnProperty('date_enabled')) {
 			throw new Error('date enabled does not exist');
 		}
+	}
+
+	if (newKitConfig.referral_history_config) {
+		const exchangeInfo = getKitConfig().info;
+
+		if (!REFERRAL_HISTORY_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
+			throw new Error('Exchange plan does not support this feature');
+		}
+
+		if (!newKitConfig.referral_history_config.hasOwnProperty('active')) {
+			throw new Error('active key does not exist');
+		}
+
+		if (!newKitConfig.referral_history_config.hasOwnProperty('currency')) {
+			throw new Error('currency key does not exist');
+		}
+
+		if (existingKitConfig?.referral_history_config?.currency && existingKitConfig?.referral_history_config?.currency !== newKitConfig?.referral_history_config?.currency) {
+			throw new Error('currency cannot be changed');
+		}
+
+		if (!newKitConfig.referral_history_config.hasOwnProperty('earning_period')) {
+			throw new Error('earning_period key does not exist');
+		}
+
+		if (!newKitConfig.referral_history_config.hasOwnProperty('distributor_id')) {
+			throw new Error('distributor_id key does not exist');
+		}
+	
+		if (!existingKitConfig?.referral_history_config?.date_enabled && !newKitConfig.referral_history_config.hasOwnProperty('date_enabled')) {
+			newKitConfig.referral_history_config.date_enabled = new Date();
+		}
+
+		const { validateReferralFeature } = require('./user');
+		validateReferralFeature({
+			earning_rate: newKitConfig?.referral_history_config?.earning_rate, 
+			earning_period: newKitConfig?.referral_history_config?.earning_period, 
+			distributor_id: newKitConfig?.referral_history_config?.distributor_id, 
+		});
 	}
 
 	const joinedKitConfig = {};
