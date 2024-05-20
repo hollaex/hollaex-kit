@@ -57,6 +57,8 @@ const {
 	CANNOT_CHANGE_ADMIN_EMAIL,
 	EMAIL_IS_SAME,
 	EMAIL_EXISTS,
+	REFERRAL_HISTORY_NOT_ACTIVE,
+	REFERRAL_UNSUPPORTED_EXCHANGE_PLAN,
 	CANNOT_CHANGE_DELETED_EMAIL,
 	SERVICE_NOT_SUPPORTED,
 	BALANCE_HISTORY_NOT_ACTIVE
@@ -72,6 +74,7 @@ const {
 	OMITTED_USER_FIELDS,
 	DEFAULT_ORDER_RISK_PERCENTAGE,
 	AFFILIATION_CODE_LENGTH,
+	REFERRAL_HISTORY_SUPPORTED_PLANS,
 	LOGIN_TIME_OUT,
 	TOKEN_TIME_LONG,
 	TOKEN_TIME_NORMAL,
@@ -81,18 +84,20 @@ const {
 } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
-const { getKitConfig, isValidTierLevel, getKitTier, isDatetime, getKitCoins } = require('./common');
+const { getKitConfig, isValidTierLevel, getKitTier, isDatetime, getKitSecrets, sendCustomEmail, emailHtmlBoilerplate, getDomain, updateKitConfigSecrets, sleep, getKitCoins } = require('./common');
 const { isValidPassword, createSession } = require('./security');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { all, reject } = require('bluebird');
-const { Op } = require('sequelize');
-const { paginationQuery, timeframeQuery, orderingQuery } = require('./database/helpers');
+const { Op, fn, col, literal } = require('sequelize');
+const { paginationQuery, timeframeQuery, orderingQuery, convertSequelizeCountAndRows } = require('./database/helpers');
 const { parse } = require('json2csv');
 const flatten = require('flat');
 const uuid = require('uuid/v4');
 const { checkCaptcha, validatePassword, verifyOtpBeforeAction } = require('./security');
 const geoip = require('geoip-lite');
 const moment = require('moment');
+const mathjs = require('mathjs');
+const { loggerUser } = require('../../../config/logger');
 const BigNumber = require('bignumber.js');
 
 let networkIdToKitId = {};
@@ -481,38 +486,45 @@ const generateAffiliationCode = () => {
 
 const getUserByAffiliationCode = (affiliationCode) => {
 	const code = affiliationCode.toUpperCase().trim();
-	return dbQuery.findOne('user', {
-		where: { affiliation_code: code },
-		attributes: ['id', 'email', 'affiliation_code']
+	return dbQuery.findOne('referralCode', {
+		where: { code },
+		attributes: ['id', 'user_id', 'discount', 'earning_rate']
 	});
 };
 
 const checkAffiliation = (affiliationCode, user_id) => {
-	// let discount = 0; // default discount rate in percentage
 	return getUserByAffiliationCode(affiliationCode)
 		.then((referrer) => {
 			if (referrer) {
-				return getModel('affiliation').create({
+				return all([getModel('affiliation').create({
 					user_id,
-					referer_id: referrer.id
-				});
+					referer_id: referrer.user_id,
+					earning_rate: referrer.earning_rate,
+					code: affiliationCode,
+				}), 
+				referrer,
+				getModel('referralCode').increment('referral_count', { by: 1, where: { id: referrer.id }})
+			]);
 			} else {
-				return;
+				return [];
 			}
-		});
-	// .then((affiliation) => {
-	// 	return getModel('user').update(
-	// 		{
-	// 			discount
-	// 		},
-	// 		{
-	// 			where: {
-	// 				id: affiliation.user_id
-	// 			},
-	// 			fields: ['discount']
-	// 		}
-	// 	);
-	// });
+		})
+	.then(([affiliation, referrer]) => {
+		if (affiliation?.user_id) {
+			return getModel('user').update(
+				{
+					discount: referrer.discount
+				},
+				{
+					where: {
+						id: affiliation.user_id
+					},
+					fields: ['discount']
+				}
+			);
+		}
+		return;
+	});
 };
 
 const getAffiliationCount = (userId, opts = {
@@ -2354,6 +2366,566 @@ const changeKitUserEmail = async (userId, newEmail, auditInfo) => {
 	return updatedUser;
 };
 
+const getAllAffiliations = (query = {}) => {
+	return dbQuery.findAndCountAll('affiliation', query);
+};
+
+const applyEarningRate = (amount, earning_rate) => {
+	return mathjs.number(
+		mathjs.multiply(
+			mathjs.bignumber(amount),
+			mathjs.divide(
+				mathjs.bignumber(earning_rate),
+				mathjs.bignumber(100)
+			)
+		)
+	);
+};
+
+const addAmounts = (amount1, amount2) => {
+	return mathjs.number(
+		mathjs.add(
+			mathjs.bignumber(amount1),
+			mathjs.bignumber(amount2)
+		)
+	);
+};
+
+const validateReferralFeature = async (data) => {
+
+	const { 
+		earning_period: EARNING_PERIOD, 
+		distributor_id: DISTRIBUTOR_ID,
+	} = data;
+
+	const exchangeInfo = getKitConfig().info;
+
+	if (!REFERRAL_HISTORY_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
+		throw new Error('Exchange plan does not support this feature');
+	}
+	else if (!isNumber(EARNING_PERIOD)) {
+		throw new Error('Earning period with data type number required for plugin');
+	} else if ((!isInteger(EARNING_PERIOD) || EARNING_PERIOD < 0)) {
+		throw new Error('Earning period must be an integer greater than 0');
+	} else if (!isNumber(DISTRIBUTOR_ID)) {
+		throw new Error('Distributor ID required for plugin');
+	} else {
+		const user = await getUserByKitId(DISTRIBUTOR_ID, true, false);
+
+		if (!user) {
+			throw new Error('Distrubutor user does not exist');
+		}
+	}
+};
+
+const getUserReferralCodes = async (
+    opts = {
+        user_id: null,
+        limit: null,
+        page: null,
+        order_by: null,
+        order: null,
+        start_date: null,
+        end_date: null,
+        format: null
+}) => {
+
+    const pagination = paginationQuery(opts.limit, opts.page);
+	const ordering = orderingQuery(opts.order_by, opts.order);
+	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
+
+	const query = {
+		where: {
+            created_at: timeframe,
+            ...(opts.user_id && { user_id: opts.user_id })
+		},
+        order: [ordering],
+		...(!opts.format && pagination),
+	}
+
+	if (opts.format) {
+		return dbQuery.fetchAllRecords('referralCode', query)
+			.then((codes) => {
+				if (opts.format && opts.format === 'csv') {
+					if (codes.data.length === 0) {
+						throw new Error(NO_DATA_FOR_CSV);
+					}
+					const csv = parse(codes.data, Object.keys(codes.data[0]));
+					return csv;
+				} else {
+					return codes;
+				}
+			});
+	} else {
+		return dbQuery.findAndCountAllWithRows('referralCode', query);
+    }
+}
+
+const createUserReferralCode = async (data) => {
+	const { user_id, discount, earning_rate, code } = data;
+
+	if (discount < 0) {
+		throw new Error('discount cannot be negative');	
+	}
+
+	if (discount > 100) {
+		throw new Error('discount cannot be more than 100');	
+	}
+
+	if (earning_rate < 1) {
+		throw new Error('earning rate cannot be less than 1');	
+	}
+
+	if (earning_rate > 100) {
+		throw new Error('earning rate cannot be more than 100');	
+	}
+
+	if (code > 48) {
+		throw new Error('referral code is too large');	
+	}
+
+    const user = await getUserByKitId(user_id);
+   
+    if (!user) {
+        throw new Error(USER_NOT_FOUND);
+    }
+
+    const referralCode = await getModel('referralCode').create(data, {
+		fields: [
+			'user_id',
+			'discount',
+			'earning_rate',
+			'code'
+		]
+    });
+    return referralCode;
+}
+
+const getUnrealizedReferral = async (user_id) => {
+	const exchangeInfo = getKitConfig().info;
+
+	if (!REFERRAL_HISTORY_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
+		throw new Error(REFERRAL_UNSUPPORTED_EXCHANGE_PLAN);
+	}
+
+	const { active } = getKitConfig()?.referral_history_config || {};
+	if  (!active) {
+		throw new Error(REFERRAL_HISTORY_NOT_ACTIVE);
+	}
+
+	const referralHistoryModel = getModel('ReferralHistory');
+	const unrealizedRecords = await referralHistoryModel.findAll({
+		where: { referer: user_id, status: false },
+		attributes: [
+			'referer',
+			[fn('sum', col('accumulated_fees')), 'accumulated_fees'],
+		  ],
+		  group: ['referer'],
+	});	
+
+	return unrealizedRecords;
+};
+
+const getRealizedReferral = async (opts = {
+	user_id: null,
+    limit: null,
+    page: null,
+    order_by: null,
+    order: null,
+    start_date: null,
+    end_date: null,
+    format: null
+}) => {
+    const pagination = paginationQuery(opts.limit, opts.page);
+	const ordering = orderingQuery(opts.order_by, opts.order);
+	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
+
+	const query = {
+		where: {
+			created_at: timeframe,
+			status: true,
+			...(opts.user_id && { referer: opts.user_id })
+		},
+		order: [ordering],
+		...(!opts.format && pagination),
+	}
+     	
+	if (opts.format) {
+		return dbQuery.fetchAllRecords('ReferralHistory', query)
+			.then((file) => {
+				if (opts.format && opts.format === 'csv') {
+					if (file.data.length === 0) {
+						throw new Error(NO_DATA_FOR_CSV);
+					}
+					const csv = parse(file.data, Object.keys(file.data[0]));
+					return csv;
+				} else {
+					return file;
+				}
+			});
+	} else {
+        return dbQuery.findAndCountAllWithRows('ReferralHistory', query)
+	}
+};
+
+const createUnrealizedReferralFees = async (currentTime) => {
+	const { 
+		earning_period: EARNING_PERIOD, 
+		distributor_id: DISTRIBUTOR_ID,
+		date_enabled: DATE_ENABLED
+	} = getKitConfig()?.referral_history_config || {};
+
+	const exchangeInfo = getKitConfig().info;
+
+	if (!REFERRAL_HISTORY_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
+		throw new Error(REFERRAL_UNSUPPORTED_EXCHANGE_PLAN);
+	}
+
+	const { getAllTradesNetwork } = require('./order');
+	const referralHistoryModel = getModel('ReferralHistory');
+
+	let userLastSettleDate = moment(DATE_ENABLED).toISOString();
+
+	const userLastTrade = await referralHistoryModel.findOne({
+		order: [ [ 'last_settled', 'DESC' ]],
+	});
+
+	if (userLastTrade) {
+		userLastSettleDate = moment(userLastTrade.last_settled).toISOString();
+	}
+
+	return all([
+		getUserByKitId(DISTRIBUTOR_ID, true, true),
+		getAllTradesNetwork(
+			null,
+			null,
+			null,
+			'timestamp',
+			'desc',
+			userLastSettleDate ? moment(userLastSettleDate).add(1, 'ms').toISOString() : null,
+			null,
+			'all'
+		)
+	])
+		.then(([distributor, { count, data: trades }]) => {
+			if (!distributor) {
+				throw new Error('No distributor found');
+			}
+
+			if (count === 0) {
+				throw new Error('No trades to settle');
+			}
+
+			const lastSettledTrade = trades[0].timestamp;
+
+			const accumulatedFees = {};
+
+			for (let trade of trades) {
+				const {
+					maker_network_id,
+					taker_network_id,
+					maker_fee,
+					taker_fee,
+					maker_fee_coin,
+					taker_fee_coin
+				} = trade;
+
+				if (maker_fee > 0 && maker_fee_coin) {
+					if (!accumulatedFees[maker_network_id]) {
+						accumulatedFees[maker_network_id] = {};
+					}
+
+					if (!isNumber(accumulatedFees[maker_network_id][maker_fee_coin])) {
+						accumulatedFees[maker_network_id][maker_fee_coin] = 0;
+					}
+
+					accumulatedFees[maker_network_id][maker_fee_coin] = addAmounts(
+						accumulatedFees[maker_network_id][maker_fee_coin],
+						maker_fee
+					);
+				}
+
+				if (taker_fee > 0 && taker_fee_coin) {
+					if (!accumulatedFees[taker_network_id]) {
+						accumulatedFees[taker_network_id] = {};
+					}
+
+					if (!isNumber(accumulatedFees[taker_network_id][taker_fee_coin])) {
+						accumulatedFees[taker_network_id][taker_fee_coin] = 0;
+					}
+
+					accumulatedFees[taker_network_id][taker_fee_coin] = addAmounts(
+						accumulatedFees[taker_network_id][taker_fee_coin],
+						taker_fee
+					);
+				}
+			}
+
+			const tradeUsers = Object.keys(accumulatedFees);
+			const tradeUsersAmount = tradeUsers.length;
+
+			if (tradeUsersAmount === 0) {
+				throw new Error('No trades made with fees');
+			}
+
+
+			return all([
+				accumulatedFees,
+				lastSettledTrade,
+				getAllAffiliations({
+					where: {
+						'$user.network_id$': tradeUsers,
+						created_at: {
+							[Op.gt]: moment(currentTime).subtract(EARNING_PERIOD, 'months').toISOString(),
+							[Op.lte]: currentTime
+						}
+					},
+					include: [
+						{
+							model: getModel('user'),
+							as: 'user',
+							attributes: [
+								'id',
+								'email',
+								'network_id'
+							]
+						},
+						{
+							model: getModel('user'),
+							as: 'referer',
+							attributes: [
+								'id',
+								'email',
+								'network_id'
+							]
+						}
+					]
+				})
+			]);
+		})
+		.then(async ([accumulatedFees, lastSettledTrade, { count, rows: affiliations }]) => {
+			const filteredFees = {};
+			const referralHistory = [];
+			if (count === 0) {
+				throw new Error('No trades made by affiliated users');
+			}
+
+			for (let affiliation of affiliations) {
+				const refereeUser = affiliation.user;
+				const referer = affiliation.referer;
+
+				if (accumulatedFees[refereeUser.network_id]) {
+					// refererKey includes user kit id, user network id, and user email separated by colons
+					const refererKey = `${referer.id}:${referer.network_id}:${referer.email}`;
+					if (!filteredFees[refererKey]) {
+						filteredFees[refererKey] = {};
+					}
+
+					for (let coin in accumulatedFees[refereeUser.network_id]) {
+						if (!isNumber(filteredFees[refererKey][coin])) {
+							filteredFees[refererKey][coin] = 0;
+						}
+
+						filteredFees[refererKey][coin] = addAmounts(
+							filteredFees[refererKey][coin],
+							accumulatedFees[refereeUser.network_id][coin]
+						);
+
+
+						const refIndex = referralHistory.findIndex(data => data.referee === refereeUser.id && data.referer === referer.id && data.coin === coin);
+						if (refIndex >= 0) {
+							referralHistory[refIndex].accumulated_fees = filteredFees[refererKey][coin];
+						} else {
+							referralHistory.push({
+								referer: referer.id,
+								referee: refereeUser.id,
+								last_settled: lastSettledTrade,
+								code: affiliation.code,
+								earning_rate: affiliation.earning_rate,
+								coin,
+								accumulated_fees: filteredFees[refererKey][coin]
+							});
+						}
+					}
+				}
+			}
+
+			const nativeCurrency = getKitConfig()?.referral_history_config?.currency;
+
+			if (!nativeCurrency) {
+				throw new Error('currency in referral config not defined');
+			}
+
+			const exchangeCoins = referralHistory.map(record => record.coin) || [];
+			const conversions = await getNodeLib().getOraclePrices(exchangeCoins, {
+				quote: nativeCurrency,
+				amount: 1
+			});
+
+			for (let record of referralHistory) {
+				record.accumulated_fees = applyEarningRate(record.accumulated_fees, record.earning_rate);
+
+				if (conversions[record.coin] === -1) continue;
+				record.accumulated_fees = new BigNumber(record.accumulated_fees).multipliedBy(conversions[record.coin]).toNumber();
+				record.status = false;
+			}
+		
+			return referralHistoryModel.bulkCreate(referralHistory);
+		})
+		.catch(err => err);
+};
+
+const settleFees = async (user_id) => {
+	const { active, distributor_id } = getKitConfig()?.referral_history_config || {};
+	if  (!active) {
+		throw new Error(REFERRAL_HISTORY_NOT_ACTIVE);
+	}
+
+	const exchangeInfo = getKitConfig().info;
+
+	if (!REFERRAL_HISTORY_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
+		throw new Error(REFERRAL_UNSUPPORTED_EXCHANGE_PLAN);
+	}
+
+	const distributor = await getUserByKitId(distributor_id, true, true);
+
+	const nativeCurrency = getKitConfig()?.referral_history_config?.currency;
+
+	if (!nativeCurrency) {
+		throw new Error('currency in referral config not defined');
+	}
+
+	const { transferAssetByKitIds} = require('./wallet');
+	const referralHistoryModel = getModel('ReferralHistory');
+
+	const unrealizedRecords = await referralHistoryModel.findAll({
+		where: { referer: user_id, status: false },
+	});	
+
+	const exchangeCoins = unrealizedRecords.map(record => record.coin) || [];
+	const conversions = await getNodeLib().getOraclePrices(exchangeCoins, {
+		quote: 'usdt',
+		amount: 1
+	});
+
+
+	let totalValue = 0;
+	for (let record of unrealizedRecords) {
+		totalValue = new BigNumber(record.accumulated_fees).plus(totalValue).toNumber();
+	}
+
+	let feeUsdtValue = 0;
+	if (conversions[nativeCurrency]) {
+		feeUsdtValue = new BigNumber(totalValue).multipliedBy(conversions[nativeCurrency]).toNumber();
+	}
+
+	if (feeUsdtValue < 1) {
+		throw new Error('Total unrealized earned fees are too small to be converted to realized earnings');
+	}
+
+	if (distributor.balance[`${nativeCurrency}_available`] < totalValue) {
+		// send email to admin for insufficient balance
+		sendEmail(
+			MAILTYPE.ALERT,
+			null,
+			{
+				type: 'Insufficient balance for fee settlement!',
+				data: `<div><p>Distributor with ID ${distributor_id} does not have enough balance to proceed with the settlement, Required amount: ${totalValue} ${nativeCurrency.toUpperCase()}, Available Amount: ${distributor.balance[`${nativeCurrency}_available`]} ${nativeCurrency.toUpperCase()}</div></p>`
+			},
+			{}
+		);
+
+		throw new Error('Settlement is not available at the moment, please retry later');
+	}
+
+	try {
+		const settledIds = unrealizedRecords.map(record => record.id);
+		await referralHistoryModel.update({ status: true }, { where : { id : settledIds }}); 
+
+		await transferAssetByKitIds(
+			distributor_id,
+			user_id,
+			nativeCurrency,
+			totalValue,
+			'Referral Settlement',
+			false
+		);
+
+	} catch (error) {
+		// send mail to admin
+		sendEmail(
+			MAILTYPE.ALERT,
+			null,
+			{
+				type: 'Error during fee settlement!',
+				data: `<div><p>Error occured during a fee settlement operation for user id: ${user_id}, error message: ${error.message}</div></p>`
+			},
+			{}
+		);
+
+		// obfuscate the message for the end user
+		throw new Error('Something went wrong');
+	}
+};
+
+const fetchUserReferrals = async (opts = {
+	user_id: null,
+	limit: null,
+	page: null,
+	order_by: null,
+	order: null,
+	start_date: null,
+	end_date: null,
+	format: null
+}) => {
+	const referralHistoryModel = getModel('ReferralHistory');
+	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
+
+	const dateTruc = fn('date_trunc', 'day', col('timestamp'));
+	let query = {
+		where: {
+			referer: opts.user_id
+		},
+		attributes: [
+			[fn('sum', col('accumulated_fees')), 'accumulated_fees']
+		],
+		group: []
+	};
+
+	if (!opts.format) { query.where.created_at = timeframe; query = {...query };}
+
+	if (opts.order_by === 'referee') {
+		query.attributes.push('referee');
+		query.group.push('referee');
+
+		return referralHistoryModel.findAll(query)
+			.then(async (referrals) => {
+				return { count: referrals.length , data: referrals };
+			});
+	} else {
+		query.attributes.push([dateTruc, 'date']);
+		query.group.push('date');
+
+		let result = {};
+		let referrals = await referralHistoryModel.findAll(query);
+		result = { count: referrals.length , data: referrals };
+
+		query = {
+			where: {
+				referer: opts.user_id
+			},
+			attributes: [
+				[fn('sum', col('accumulated_fees')), 'accumulated_fees']
+			  ],
+			group: []
+		};
+
+		referrals = await referralHistoryModel.findAll(query);
+		result.total = referrals?.[0]?.accumulated_fees;
+		return result;
+	}
+};
+
 const getUserBalanceHistory = (opts = {
 	user_id: null,
 	limit: null,
@@ -2700,6 +3272,7 @@ const fetchUserProfitLossInfo = async (user_id, opts = { period: 7 }) => {
 	return results;
 };
 
+
 module.exports = {
 	loginUser,
 	getUserTier,
@@ -2762,5 +3335,16 @@ module.exports = {
 	changeKitUserEmail,
 	storeVerificationCode,
 	signUpUser,
-	verifyUser
+	verifyUser,
+	getAllAffiliations,
+	applyEarningRate,
+	addAmounts,
+	validateReferralFeature,
+	settleFees,
+	getUnrealizedReferral,
+	getRealizedReferral,
+	fetchUserReferrals,
+	createUnrealizedReferralFees,
+	getUserReferralCodes,
+	createUserReferralCode
 };
