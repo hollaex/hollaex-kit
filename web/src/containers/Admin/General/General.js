@@ -792,7 +792,13 @@ class GeneralContent extends Component {
 			defaultEmailData,
 		} = this.state;
 		const { kit = {} } = this.state.constants;
-		const { coins, themeOptions, activeTab, handleTabChange } = this.props;
+		const {
+			coins,
+			themeOptions,
+			activeTab,
+			handleTabChange,
+			enabledPlugins,
+		} = this.props;
 		const generalFields = getGeneralFields(coins);
 
 		if (loading) {
@@ -1130,6 +1136,7 @@ class GeneralContent extends Component {
 						buttonSubmitting={buttonSubmitting}
 						isFiatUpgrade={isFiatUpgrade}
 						coins={coins}
+						enabledPlugins={enabledPlugins}
 					/>
 				) : null}
 				{activeTab === 'security' ? (
@@ -1287,6 +1294,7 @@ const mapStateToProps = (state) => ({
 	tokens: state.user.tokens,
 	user: state.user,
 	constants: state.app.constants,
+	enabledPlugins: state.app.enabledPlugins,
 });
 
 const mapDispatchToProps = (dispatch) => ({

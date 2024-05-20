@@ -17,6 +17,7 @@ const InterfaceForm = ({
 	buttonSubmitting,
 	isFiatUpgrade,
 	coins,
+	enabledPlugins,
 }) => {
 	const [isSubmit, setIsSubmit] = useState(!buttonSubmitting);
 	const [form] = Form.useForm();
@@ -91,7 +92,14 @@ const InterfaceForm = ({
 
 	const handleSubmitData = (formProps) => {
 		if (formProps.referral_history_config && !referralHistoryData.active) {
-			setDisplayReferralHistoryModal(true);
+			if (!enabledPlugins.includes('referral-migrate')) {
+				message.error(
+					'In order to use the Referral System feature, you have to install Referral Migrate plugin to migrate the necessary data from the existing referral plugin to the new system.',
+					10
+				);
+			} else {
+				setDisplayReferralHistoryModal(true);
+			}
 		} else if (
 			formProps.balance_history_config &&
 			!balanceHistoryCurrency.currency

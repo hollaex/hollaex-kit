@@ -2881,7 +2881,7 @@ const fetchUserReferrals = async (opts = {
 	const referralHistoryModel = getModel('ReferralHistory');
 	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
 
-	const dateTruc = fn('date_trunc', 'day', col('timestamp'));
+	const dateTruc = fn('date_trunc', 'day', col('last_settled'));
 	let query = {
 		where: {
 			referer: opts.user_id
