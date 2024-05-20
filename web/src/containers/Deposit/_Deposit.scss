@@ -133,7 +133,7 @@ $qr-code--size: 12rem;
 }
 
 .deposit-address-wrapper {
-	// width: 70%;
+	width: 68.5%;
 
 	.deposit-address-field {
 		.destination-input-field,
@@ -174,17 +174,23 @@ $qr-code--size: 12rem;
 
 	.address-warning-text {
 		div {
-			text-wrap: balance;
+			text-wrap: wrap;
 		}
 	}
 }
 
 .destination-tag-field-wrapper {
 	.destination-tag-field {
+		width: 66.5%;
+
 		.destination-input-field,
 		.destination-input-field:focus-within {
 			border: none !important;
 			border-bottom: 1px solid $colors-main-border !important;
+		}
+
+		.destination-input-field {
+			width: 90% !important;
 		}
 
 		.render-deposit-scan-wrapper {
@@ -257,6 +263,20 @@ $qr-code--size: 12rem;
 
 					.deposit-address-wrapper {
 						margin-left: 4%;
+						width: unset;
+						.destination-input-field {
+							width: 88% !important;
+						}
+					}
+				}
+
+				.destination-tag-field-wrapper {
+					.destination-tag-field {
+						width: unset !important;
+					}
+
+					.destination-input-field {
+						width: 80% !important;
 					}
 				}
 			}

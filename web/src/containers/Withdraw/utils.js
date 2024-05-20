@@ -92,3 +92,51 @@ export const renderEstimatedValueAndFee = (
 		</div>
 	);
 };
+
+export const calculateFee = (
+	selectedAsset,
+	getWithdrawNetworkOptions,
+	coins
+) => {
+	return selectedAsset &&
+		coins[selectedAsset].withdrawal_fees &&
+		Object.keys(coins[selectedAsset]?.withdrawal_fees).length &&
+		coins[selectedAsset].withdrawal_fees[getWithdrawNetworkOptions]?.value
+		? coins[selectedAsset].withdrawal_fees[getWithdrawNetworkOptions]?.value
+		: selectedAsset &&
+		  coins[selectedAsset].withdrawal_fees &&
+		  Object.keys(coins[selectedAsset]?.withdrawal_fees).length &&
+		  coins[selectedAsset].withdrawal_fees[
+				Object.keys(coins[selectedAsset]?.withdrawal_fees)[0]
+		  ]?.value
+		? coins[selectedAsset].withdrawal_fees[
+				Object.keys(coins[selectedAsset]?.withdrawal_fees)[0]
+		  ]?.value
+		: selectedAsset && coins[selectedAsset].withdrawal_fee
+		? coins[selectedAsset]?.withdrawal_fee
+		: 0;
+};
+
+export const calculateFeeCoin = (
+	selectedAsset,
+	getWithdrawNetworkOptions,
+	coins
+) => {
+	return selectedAsset &&
+		coins[selectedAsset].withdrawal_fees &&
+		Object.keys(coins[selectedAsset]?.withdrawal_fees).length &&
+		coins[selectedAsset].withdrawal_fees[getWithdrawNetworkOptions]?.symbol
+		? coins[selectedAsset].withdrawal_fees[getWithdrawNetworkOptions]?.symbol
+		: selectedAsset &&
+		  coins[selectedAsset].withdrawal_fees &&
+		  Object.keys(coins[selectedAsset]?.withdrawal_fees).length &&
+		  coins[selectedAsset].withdrawal_fees[
+				Object.keys(coins[selectedAsset]?.withdrawal_fees)[0]
+		  ]?.symbol
+		? coins[selectedAsset].withdrawal_fees[
+				Object.keys(coins[selectedAsset]?.withdrawal_fees)[0]
+		  ]?.symbol
+		: selectedAsset && coins[selectedAsset].withdrawal_fee
+		? coins[selectedAsset]?.withdrawal_fee
+		: selectedAsset;
+};

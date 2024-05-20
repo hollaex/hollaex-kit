@@ -24,7 +24,7 @@ import {
 	withdrawNetworkOptions,
 } from 'actions/appActions';
 import { getPrices } from 'actions/assetActions';
-import { renderEstimatedValueAndFee, renderLabel } from './utils';
+import { calculateFee, renderEstimatedValueAndFee, renderLabel } from './utils';
 import { validAddress } from 'components/Form/validations';
 
 const RenderWithdraw = ({
@@ -82,24 +82,8 @@ const RenderWithdraw = ({
 
 	const curretPrice = prices[getNativeCurrency];
 	const estimatedWithdrawValue = curretPrice * getWithdrawAmount || 0;
-	let fee =
-		selectedAsset &&
-		coins[selectedAsset].withdrawal_fees &&
-		Object.keys(coins[selectedAsset]?.withdrawal_fees).length &&
-		coins[selectedAsset].withdrawal_fees[
-			Object.keys(coins[selectedAsset]?.withdrawal_fees)[0]
-		]?.value
-			? coins[selectedAsset].withdrawal_fees[
-					Object.keys(coins[selectedAsset]?.withdrawal_fees)[0]
-			  ]?.value
-			: selectedAsset &&
-			  coins[selectedAsset].withdrawal_fees &&
-			  Object.keys(coins[selectedAsset]?.withdrawal_fees).length &&
-			  coins[selectedAsset].withdrawal_fees[getWithdrawNetworkOptions]?.value
-			? coins[selectedAsset].withdrawal_fees[getWithdrawNetworkOptions]?.value
-			: selectedAsset && coins[selectedAsset].withdrawal_fee
-			? coins[selectedAsset]?.withdrawal_fee
-			: 0;
+	let fee = calculateFee(selectedAsset, getWithdrawNetworkOptions, coins);
+	// const feeCoin = calculateFeeCoin(selectedAsset, getWithdrawNetworkOptions, coins);
 
 	const feeMarkup =
 		selectedAsset && coin_customizations?.[selectedAsset]?.fee_markup;
@@ -338,7 +322,9 @@ const RenderWithdraw = ({
 	return (
 		<div
 			className={
-				isWithdrawal || !currency ? 'mt-5' : 'withdraw-deposit-disable mt-5'
+				getWithdrawCurrency && !isWithdrawal
+					? 'withdraw-deposit-disable mt-5'
+					: 'mt-5'
 			}
 		>
 			<div>
