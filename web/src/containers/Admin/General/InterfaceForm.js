@@ -92,7 +92,10 @@ const InterfaceForm = ({
 
 	const handleSubmitData = (formProps) => {
 		if (formProps.referral_history_config && !referralHistoryData.active) {
-			if (!enabledPlugins.includes('referral-migrate')) {
+			if (
+				enabledPlugins.includes('referral') &&
+				!enabledPlugins.includes('referral-migrate')
+			) {
 				message.error(
 					'In order to use the Referral System feature, you have to install Referral Migrate plugin to migrate the necessary data from the existing referral plugin to the new system.',
 					10
