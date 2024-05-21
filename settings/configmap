@@ -2,7 +2,7 @@
 #### All HollaEx CLI commands rely on ENVIRONMENT_EXCHANGE_NAME below. DO NOT MODIFY IT. ####
 #########################################################################################
 
-ENVIRONMENT_EXCHANGE_NAME=hollaex
+ENVIRONMENT_EXCHANGE_NAME=hollaex-kit
 
 ################################
 #### GENERAL CONFIGURATIONS ####

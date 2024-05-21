@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 pvc:
   create: true
-  size: 3Gi
+  size: 4Gi
   name: hollaex-postgres-volume
 
 secretName: hollaex-kit-secret
