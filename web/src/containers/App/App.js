@@ -31,8 +31,7 @@ import { storeTools } from 'actions/toolsAction';
 import STRINGS from 'config/localizedStrings';
 
 import { getChatMinimized, setChatMinimized } from 'utils/theme';
-import { checkUserSessionExpired } from 'utils/utils';
-import { getTokenTimestamp, isLoggedIn, isAdmin } from 'utils/token';
+import { isLoggedIn, isAdmin } from 'utils/token';
 import {
 	AppBar,
 	AppMenuBar,
@@ -100,9 +99,6 @@ class App extends Component {
 		this.setState({
 			chatIsClosed,
 		});
-		if (isLoggedIn() && checkUserSessionExpired(getTokenTimestamp())) {
-			this.logout('Token is expired');
-		}
 	}
 
 	componentDidMount() {
