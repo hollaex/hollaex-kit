@@ -2403,7 +2403,13 @@ const validateReferralFeature = async (data) => {
 	if (!REFERRAL_HISTORY_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
 		throw new Error('Exchange plan does not support this feature');
 	}
-	else if (!isNumber(EARNING_PERIOD)) {
+	if (!isNumber(EARNING_RATE)) {
+		throw new Error('Earning rate with data type number required for plugin');
+	} else if (EARNING_RATE < 1 || EARNING_RATE > 100) {
+		throw new Error('Earning rate must be within the range of 1 ~ 100');
+	} else if (EARNING_RATE % 10 !== 0) {
+		throw new Error('Earning rate must be in increments of 10');
+	} else if (!isNumber(EARNING_PERIOD)) {
 		throw new Error('Earning period with data type number required for plugin');
 	} else if ((!isInteger(EARNING_PERIOD) || EARNING_PERIOD < 0)) {
 		throw new Error('Earning period must be an integer greater than 0');
@@ -2464,12 +2470,20 @@ const getUserReferralCodes = async (
 const createUserReferralCode = async (data) => {
 	const { user_id, discount, earning_rate, code } = data;
 
+	const { 
+		earning_rate: EARNING_RATE, 
+	} = getKitConfig()?.referral_history_config || {};
+
 	if (discount < 0) {
 		throw new Error('discount cannot be negative');	
 	}
 
 	if (discount > 100) {
 		throw new Error('discount cannot be more than 100');	
+	}
+
+	if (discount % 10 !== 0) {
+		throw new Error('discount must be in increments of 10');
 	}
 
 	if (earning_rate < 1) {
@@ -2480,7 +2494,15 @@ const createUserReferralCode = async (data) => {
 		throw new Error('earning rate cannot be more than 100');	
 	}
 
-	if (code > 48) {
+	if (earning_rate % 10 !== 0) {
+		throw new Error('earning rate must be in increments of 10');
+	}
+
+	if (earning_rate + discount > EARNING_RATE) {
+		throw new Error('discount and earning rate combined cannot exceed exchange earning rate');
+	}
+
+	if (code > 12) {
 		throw new Error('referral code is too large');	
 	}
 
@@ -2881,7 +2903,7 @@ const fetchUserReferrals = async (opts = {
 	const referralHistoryModel = getModel('ReferralHistory');
 	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
 
-	const dateTruc = fn('date_trunc', 'day', col('timestamp'));
+	const dateTruc = fn('date_trunc', 'day', col('last_settled'));
 	let query = {
 		where: {
 			referer: opts.user_id
