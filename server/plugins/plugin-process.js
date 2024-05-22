@@ -85,6 +85,7 @@ const initPluginProcess = async ({ PORT }) => {
 				app,
 				toolsLib,
 				lodash,
+				restartPluginProcess,
 				expressValidator,
 				loggerPlugin,
 				multer,
@@ -163,6 +164,10 @@ const initPluginProcess = async ({ PORT }) => {
 
 	}
 };
+
+const restartPluginProcess = () => {
+	process.exit(0);
+}
 
 if (!isMainThread) {
 	loggerPlugin.verbose(

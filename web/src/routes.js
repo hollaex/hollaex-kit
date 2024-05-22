@@ -80,7 +80,6 @@ import {
 	isLoggedIn,
 	getToken,
 	removeToken,
-	getTokenTimestamp,
 	isAdmin,
 	checkRole,
 } from './utils/token';
@@ -89,7 +88,6 @@ import {
 	getInterfaceLanguage,
 	getLanguageFromLocal,
 } from './utils/string';
-import { checkUserSessionExpired } from './utils/utils';
 import { getExchangeInitialized, getSetupCompleted } from './utils/initialize';
 import PluginConfig from 'containers/Admin/PluginConfig';
 import ConfirmChangePassword from 'containers/ConfirmChangePassword';
@@ -120,12 +118,7 @@ if (getLanguageFromLocal()) {
 let token = getToken();
 
 if (token) {
-	// check if the token has expired, in that case, remove token
-	if (checkUserSessionExpired(getTokenTimestamp())) {
-		removeToken();
-	} else {
-		store.dispatch(verifyToken(token));
-	}
+	store.dispatch(verifyToken(token));
 }
 
 function requireAuth(nextState, replace) {
