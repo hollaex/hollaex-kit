@@ -215,7 +215,7 @@ $content--margin: 2rem;
 				}
 
 				.custom-line-selected-large {
-					height: 95px;
+					height: 70px;
 					border: 1px solid $colors-main-black;
 				}
 
@@ -362,11 +362,6 @@ $content--margin: 2rem;
 					}
 				}
 			}
-
-			// .bottom-wrapper {
-			// 	justify-content: center;
-			// 	padding-left: 3rem;
-			// }
 		}
 
 		.bottom-content {
@@ -557,6 +552,18 @@ $content--margin: 2rem;
 		}
 	}
 
+	.withdrawal-remove-tag-modal {
+		.remove-tag-wrapper {
+			.button-wrapper {
+				Button {
+					height: 4rem;
+					font-size: 12px !important;
+					margin-top: 3%;
+				}
+			}
+		}
+	}
+
 	.review_email-wrapper {
 		margin: 0px auto !important;
 	}
@@ -570,7 +577,7 @@ $content--margin: 2rem;
 					}
 				}
 
-				padding: 10% 5% 10% 5%;
+				padding: 5%;
 
 				.withdraw-main-label-selected {
 					font-size: 14px;
@@ -581,7 +588,7 @@ $content--margin: 2rem;
 				}
 
 				.custom-line-selected-large {
-					height: 21rem;
+					height: 13rem;
 					border: 1px solid $colors-main-black;
 				}
 
@@ -605,18 +612,13 @@ $content--margin: 2rem;
 
 				.select-wrapper {
 					width: 100%;
-					margin-left: 10%;
+					margin-left: 5%;
 				}
 
 				.bottom-content {
 					font-size: 14px;
 					margin-top: 3%;
 				}
-
-				// .withdraw-btn-wrapper {
-				// 	margin-left: unset;
-				// 	justify-content: center;
-				// }
 
 				.withdraw-main-label-selected,
 				.withdraw-main-label,
@@ -652,6 +654,10 @@ $content--margin: 2rem;
 		.withdrawal-container {
 			.withdraw-form-wrapper {
 				.withdraw-form {
+					.select-wrapper {
+						margin-left: 7%;
+					}
+
 					.ant-select-clear svg {
 						font-size: 12px;
 					}
@@ -680,7 +686,27 @@ $content--margin: 2rem;
 					}
 
 					.warning-text {
-						font-size: 8px;
+						font-size: 10px;
+					}
+
+					.custom-line-selected-large {
+						height: 16rem;
+					}
+				}
+			}
+		}
+	}
+
+	@media screen and (max-width: 390px) {
+		.withdrawal-container {
+			.withdraw-form-wrapper {
+				.withdraw-form {
+					.custom-line-selected-large {
+						height: 18rem;
+					}
+
+					.withdraw-btn-wrapper {
+						margin-top: 20%;
 					}
 				}
 			}

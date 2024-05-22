@@ -72,6 +72,7 @@ import {
 	SET_DEPOSIT_NETWORK,
 	SET_DEPOSIT_CURRENCY,
 	SET_SELECTED_METHOD,
+	SET_RECEIVER_EMAIL,
 } from 'actions/appActions';
 import { THEME_DEFAULT } from 'config/constants';
 import { getLanguage } from 'utils/string';
@@ -196,6 +197,7 @@ const INITIAL_STATE = {
 	depositAndWithdraw: false,
 	isValidAddress: '',
 	selectedWithdrawMethod: 'Address',
+	receiverWithdrawalEmail: null,
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -816,6 +818,12 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				selectedWithdrawMethod: payload,
+			};
+		}
+		case SET_RECEIVER_EMAIL: {
+			return {
+				...state,
+				receiverWithdrawalEmail: payload,
 			};
 		}
 		default:

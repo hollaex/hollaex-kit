@@ -264,8 +264,8 @@ $qr-code--size: 12rem;
 					}
 
 					.deposit-address-wrapper {
-						margin-left: 4%;
 						width: unset;
+
 						.destination-input-field {
 							width: 88% !important;
 						}
@@ -290,10 +290,6 @@ $qr-code--size: 12rem;
 			.withdraw-form-wrapper {
 				.withdraw-form {
 					.deposit-wrapper-fields {
-						.generate-field-wrapper {
-							margin-left: 8%;
-						}
-
 						.custom-field .custom-line-large {
 							height: 16rem;
 						}

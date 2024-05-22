@@ -411,7 +411,6 @@ const DepositComponent = ({
 								{renderLabel('ACCORDIAN.ADDRESS')}
 							</span>
 						</div>
-						{/* <div> */}
 						{((coinLength && coinLength.length === 1) ||
 							(currStep.stepTwo && !coinLength) ||
 							currStep.stepThree) &&
@@ -456,7 +455,6 @@ const DepositComponent = ({
 									</div>
 								</div>
 							))}
-						{/* </div> */}
 					</div>
 				</div>
 			</div>

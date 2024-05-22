@@ -110,6 +110,7 @@ export const SET_DEPOSIT_CURRENCY = 'SET_DEPOSIT_CURRENCY';
 export const SET_DEPOSIT_NETWORK = 'SET_DEPOSIT_NETWORK';
 export const SET_DEPOSIT_NETWORK_OPTIONS = 'SET_DEPOSIT_OPTIONS';
 export const SET_SELECTED_METHOD = 'SET_SELECTED_METHOD';
+export const SET_RECEIVER_EMAIL = 'SET_RECEIVER_EMAIL';
 
 export const SORT = {
 	VOL: 'volume',
@@ -743,7 +744,12 @@ export const depositNetworkOptions = (networkOptions) => ({
 	payload: networkOptions,
 });
 
-export const setSelectedMethod = (networkOptions) => ({
+export const setSelectedMethod = (method) => ({
 	type: SET_SELECTED_METHOD,
-	payload: networkOptions,
+	payload: method,
+});
+
+export const setReceiverEmail = (email) => ({
+	type: SET_RECEIVER_EMAIL,
+	payload: email,
 });

@@ -237,10 +237,6 @@ class Form extends Component {
 		this.setState({ currency });
 	};
 
-	// onHandleFiat = (val) => {
-	// 	this.setState({ renderFiat: val });
-	// }
-
 	render() {
 		const {
 			submitting,
@@ -269,6 +265,8 @@ class Form extends Component {
 			getWithdrawNetwork,
 			getFee,
 			isFiat,
+			selectedMethod,
+			receiverWithdrawalEmail,
 		} = this.props;
 
 		const currentNetwork = getWithdrawNetwork
@@ -278,9 +276,11 @@ class Form extends Component {
 			...data,
 			fee: getFee,
 			amount: getWithdrawAmount,
-			address: getWithdrawAddress,
-			network: currentNetwork,
+			address: selectedMethod === 'Email' ? '' : getWithdrawAddress,
+			network: selectedMethod === 'Email' ? 'email' : currentNetwork,
 			fee_coin: getWithdrawCurrency,
+			method: selectedMethod === 'Email' ? 'email' : 'address',
+			email: selectedMethod === 'Email' ? receiverWithdrawalEmail : null,
 		};
 		const coinObject = coins[getWithdrawCurrency] || coins[currency];
 		const { dialogIsOpen, dialogOtpOpen } = this.state;
@@ -322,7 +322,7 @@ class Form extends Component {
 						<div className="withdraw-form d-flex">
 							<div className="w-100">
 								{!coinObject?.allow_withdrawal && this.state.currency && (
-									<div className="d-flex">
+									<div className="d-flex mb-5">
 										<div className="withdraw-deposit-icon-wrapper">
 											<Image
 												iconId={'CLOCK'}
@@ -463,6 +463,8 @@ const mapStateToForm = (state) => ({
 	getWithdrawAmount: state.app.withdrawFields.withdrawAmount,
 	getFee: state.app.withdrawFields.withdrawFee,
 	isValidAddress: state.app.isValidAddress,
+	selectedMethod: state.app.selectedWithdrawMethod,
+	receiverWithdrawalEmail: state.app.receiverWithdrawalEmail,
 });
 
 const mapDispatchToProps = (dispatch) => ({

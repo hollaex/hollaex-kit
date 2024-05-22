@@ -2279,7 +2279,7 @@ table th {
       height: 70px;
       border: 1px solid var(--labels_important-active-labels-text-graphics); }
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line-selected-large {
-      height: 95px;
+      height: 70px;
       border: 1px solid var(--labels_important-active-labels-text-graphics); }
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line-extra-large {
       height: 2rem;
@@ -2390,7 +2390,8 @@ table th {
       color: var(--labels_important-active-labels-text-graphics); }
     .withdrawal-container .withdraw-form-wrapper .withdraw-btn-wrapper .holla-button {
       width: 300px; }
-  .withdrawal-container .withdraw-form-wrapper .warning-text, .withdrawal-container .withdraw-form-wrapper .email-text {
+  .withdrawal-container .withdraw-form-wrapper .warning-text,
+  .withdrawal-container .withdraw-form-wrapper .email-text {
     color: var(--specials_notifications-alerts-warnings);
     font-size: 12px;
     width: 90%; }
@@ -2471,11 +2472,16 @@ table th {
 .layout-mobile .presentation_container .inner_container .holla-button {
   font-size: 13px !important; }
 
+.layout-mobile .withdrawal-remove-tag-modal .remove-tag-wrapper .button-wrapper Button {
+  height: 4rem;
+  font-size: 12px !important;
+  margin-top: 3%; }
+
 .layout-mobile .review_email-wrapper {
   margin: 0px auto !important; }
 
 .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form {
-  padding: 10% 5% 10% 5%; }
+  padding: 5%; }
   .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .field-wrapper .field-label-wrapper {
     flex-direction: column; }
   .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdraw-main-label-selected {
@@ -2483,7 +2489,7 @@ table th {
   .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdraw-deposit-content {
     padding: 0 1%; }
   .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-line-selected-large {
-    height: 21rem;
+    height: 13rem;
     border: 1px solid var(--labels_important-active-labels-text-graphics); }
   .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line-selected {
     height: 100%; }
@@ -2495,7 +2501,7 @@ table th {
     font-size: 18px; }
   .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .select-wrapper {
     width: 100%;
-    margin-left: 10%; }
+    margin-left: 5%; }
   .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .bottom-content {
     font-size: 14px;
     margin-top: 3%; }
@@ -2512,6 +2518,8 @@ table th {
     font-size: 14px !important; }
   .layout-mobile .presentation_container .inner_container .information_block .information_block-text_wrapper .text {
     font-size: 12px !important; }
+  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .select-wrapper {
+    margin-left: 7%; }
   .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .ant-select-clear svg {
     font-size: 12px; }
   .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-select-input-style .ant-select-selector {
@@ -2526,7 +2534,15 @@ table th {
   .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .amount-field-icon {
     margin-top: 2%; }
   .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .warning-text {
-    font-size: 8px; } }
+    font-size: 10px; }
+  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-line-selected-large {
+    height: 16rem; } }
+
+@media screen and (max-width: 390px) {
+  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-line-selected-large {
+    height: 18rem; }
+  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdraw-btn-wrapper {
+    margin-top: 20%; } }
 
 .review_email-wrapper {
   margin: auto; }
@@ -2705,7 +2721,6 @@ table th {
   margin-left: unset; }
 
 .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .deposit-wrapper-fields .deposit-address-wrapper {
-  margin-left: 4%;
   width: unset; }
   .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .deposit-wrapper-fields .deposit-address-wrapper .destination-input-field {
     width: 88% !important; }
@@ -2717,8 +2732,6 @@ table th {
   width: 80% !important; }
 
 @media screen and (max-width: 550px) {
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .deposit-wrapper-fields .generate-field-wrapper {
-    margin-left: 8%; }
   .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .deposit-wrapper-fields .custom-field .custom-line-large {
     height: 16rem; } }
 
