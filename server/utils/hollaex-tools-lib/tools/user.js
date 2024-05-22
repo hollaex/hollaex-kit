@@ -2396,6 +2396,7 @@ const validateReferralFeature = async (data) => {
 	const { 
 		earning_period: EARNING_PERIOD, 
 		distributor_id: DISTRIBUTOR_ID,
+		earning_rate: EARNING_RATE,
 	} = data;
 
 	const exchangeInfo = getKitConfig().info;
@@ -3234,6 +3235,9 @@ const fetchUserProfitLossInfo = async (user_id, opts = { period: 7 }) => {
 		const finalBalances = filteredBalanceHistory[filteredBalanceHistory.length - 1].balance;
  
 		results[interval] = {};
+		let totalCumulativePNL = 0;
+		let totalInitialValue = 0;
+		let totalFinalValue = 0;
 		Object.keys(finalBalances).forEach(async (asset) => {
 			if (initialBalances?.[asset] && initialBalances?.[asset]?.native_currency_value) {
 				const cumulativePNL =
@@ -3253,39 +3257,17 @@ const fetchUserProfitLossInfo = async (user_id, opts = { period: 7 }) => {
 					cumulativePNL,
 					cumulativePNLPercentage,
 				};
+
+				totalCumulativePNL += cumulativePNL;
+				totalInitialValue += day1Assets + inflow;
+				totalFinalValue += finalBalances[asset].native_currency_value;
 			}
 		});
-	}
-
-	const weightedAverage = (prices, weights) => {
-		const [sum, weightSum] = weights.reduce(
-		  (acc, w, i) => {
-			acc[0] = acc[0] + prices[i] * w;
-			acc[1] = acc[1] + w;
-			return acc;
-		  },
-		  [0, 0]
-		);
-		return sum / weightSum;
-	  };
-
-	for (const interval of ['7d', '1m', '3m']) {
-		if (results[interval]) {
-			let total = 0;
-			let percentageValues = [];
-			let prices = [];
-			const assets = Object.keys(results[interval]);
+		results[interval].total = totalCumulativePNL;
 	
-			assets?.forEach(asset => {
-				total += results[interval][asset].cumulativePNL;
-				if (conversions[asset]) {
-					prices.push(conversions[asset]);
-					percentageValues.push(results[interval][asset].cumulativePNLPercentage);
-				}
-			});
-			results[interval].total = total;
-			const weightedPercentage = weightedAverage(percentageValues, prices);
-			results[interval].totalPercentage = weightedPercentage ? weightedPercentage.toFixed(2) : null;
+		if (totalInitialValue !== 0) {
+			const totalCumulativePNLPercentage = (totalCumulativePNL / totalInitialValue) * 100;
+			results[interval].totalPercentage = totalCumulativePNLPercentage ? totalCumulativePNLPercentage.toFixed(2) : null;
 		}
 	}
 
