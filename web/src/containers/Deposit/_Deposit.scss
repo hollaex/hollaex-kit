@@ -128,7 +128,7 @@ $qr-code--size: 12rem;
 	}
 
 	.generate-field-wrapper {
-		margin-left: 7%;
+		margin-left: 8%;
 	}
 }
 
@@ -175,13 +175,15 @@ $qr-code--size: 12rem;
 	.address-warning-text {
 		div {
 			text-wrap: wrap;
+			width: 95%;
+			justify-content: unset !important;
 		}
 	}
 }
 
 .destination-tag-field-wrapper {
 	.destination-tag-field {
-		width: 66.5%;
+		// width: 66.5%;
 
 		.destination-input-field,
 		.destination-input-field:focus-within {
@@ -283,13 +285,33 @@ $qr-code--size: 12rem;
 		}
 	}
 
-	@media screen and (min-width: 550px) {
+	@media screen and (max-width: 550px) {
 		.withdrawal-container {
 			.withdraw-form-wrapper {
 				.withdraw-form {
 					.deposit-wrapper-fields {
 						.generate-field-wrapper {
 							margin-left: 8%;
+						}
+
+						.custom-field .custom-line-large {
+							height: 16rem;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	@media screen and (max-width: 450px) {
+		.withdrawal-container {
+			.withdraw-form-wrapper {
+				.withdraw-form {
+					.deposit-wrapper-fields {
+						.btn-wrapper-deposit {
+							.holla-button {
+								width: -webkit-fill-available;
+							}
 						}
 					}
 				}

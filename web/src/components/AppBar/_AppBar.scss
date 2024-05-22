@@ -138,7 +138,10 @@ $app-menu-width: calc(100vw - 40rem);
 
 		.app-bar-deposit-btn {
 			background-color: $link;
-			padding: 1%;
+			padding: 2px 10px 0px 10px;
+			border-radius: 3px;
+			cursor: pointer;
+			font-size: 11px;
 			.margin-aligner {
 				margin-bottom: unset;
 				margin-right: unset;
@@ -1139,7 +1142,7 @@ $app-menu-width: calc(100vw - 40rem);
 		// }
 
 		.app-menu-bar-content {
-			width: 12rem;
+			width: 10rem;
 		}
 	}
 	.app-bar-add-tab-menu {

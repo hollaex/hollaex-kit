@@ -17,6 +17,7 @@ import {
 	getWithdrawalMax,
 	setFee,
 	setIsValidAdress,
+	setSelectedMethod,
 	withdrawAddress,
 	withdrawAmount,
 	withdrawCurrency,
@@ -24,8 +25,13 @@ import {
 	withdrawNetworkOptions,
 } from 'actions/appActions';
 import { getPrices } from 'actions/assetActions';
-import { calculateFee, renderEstimatedValueAndFee, renderLabel } from './utils';
-import { validAddress } from 'components/Form/validations';
+import {
+	calculateFee,
+	calculateFeeCoin,
+	renderEstimatedValueAndFee,
+	renderLabel,
+} from './utils';
+import { email, validAddress } from 'components/Form/validations';
 
 const RenderWithdraw = ({
 	coins,
@@ -36,12 +42,13 @@ const RenderWithdraw = ({
 	...rest
 }) => {
 	const { Option } = Select;
-
+	const methodOptions = ['Address', 'Email'];
 	const [currStep, setCurrStep] = useState({
 		stepOne: false,
 		stepTwo: false,
 		stepThree: false,
 		stepFour: false,
+		stepFive: false,
 	});
 	const [maxAmount, setMaxAmount] = useState(0);
 	const [topAssets, setTopAssets] = useState([]);
@@ -51,6 +58,7 @@ const RenderWithdraw = ({
 	const [optionalTag, setOptionalTag] = useState('');
 	const [isCheck, setIsCheck] = useState(false);
 	const [isVisible, setIsVisible] = useState(false);
+	// const [selectedMethod, setSelectedMethod] = useState('Address');
 
 	const {
 		setWithdrawCurrency,
@@ -68,6 +76,8 @@ const RenderWithdraw = ({
 		setIsValidAdress,
 		isValidAddress,
 		getNativeCurrency,
+		selectedMethod,
+		setSelectedMethod,
 	} = rest;
 	const defaultCurrency = currency !== '' && currency;
 	const iconId = coins[getWithdrawCurrency]?.icon_id;
@@ -83,7 +93,11 @@ const RenderWithdraw = ({
 	const curretPrice = prices[getNativeCurrency];
 	const estimatedWithdrawValue = curretPrice * getWithdrawAmount || 0;
 	let fee = calculateFee(selectedAsset, getWithdrawNetworkOptions, coins);
-	// const feeCoin = calculateFeeCoin(selectedAsset, getWithdrawNetworkOptions, coins);
+	const feeCoin = calculateFeeCoin(
+		selectedAsset,
+		getWithdrawNetworkOptions,
+		coins
+	);
 
 	const feeMarkup =
 		selectedAsset && coin_customizations?.[selectedAsset]?.fee_markup;
@@ -160,7 +174,7 @@ const RenderWithdraw = ({
 		setSelectedAsset(defaultCurrency);
 		if (defaultCurrency) {
 			setWithdrawCurrency(defaultCurrency);
-			setCurrStep({ ...currStep, stepTwo: true });
+			setCurrStep({ ...currStep, stepTwo: true, stepThree: true });
 		}
 		getOraclePrices();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -179,6 +193,20 @@ const RenderWithdraw = ({
 		}
 	};
 
+	const onHandleChangeMethod = (method) => {
+		setSelectedMethod(method);
+		setCurrStep((prev) => ({ ...prev, stepTwo: true }));
+		if (!method) {
+			setCurrStep((prev) => ({
+				...prev,
+				stepTwo: false,
+				stepThree: false,
+				stepFour: false,
+				stepFive: false,
+			}));
+		}
+	};
+
 	const onHandleChangeSelect = (val, pinned_assets = false) => {
 		if (pinned_assets) {
 			setIsPinnedAssets(pinned_assets);
@@ -192,7 +220,7 @@ const RenderWithdraw = ({
 					stepFour: false,
 				}));
 			}
-			setCurrStep((prev) => ({ ...prev, stepTwo: true }));
+			setCurrStep((prev) => ({ ...prev, stepTwo: true, stepThree: true }));
 			setWithdrawCurrency(val);
 			network = val ? val : coins[getWithdrawCurrency]?.symbol;
 			getWithdrawlMAx(val);
@@ -213,24 +241,27 @@ const RenderWithdraw = ({
 
 	const onHandleChangeNetwork = (val) => {
 		if (val) {
-			setCurrStep((prev) => ({ ...prev, stepThree: true }));
+			setCurrStep((prev) => ({ ...prev, stepFour: true }));
 			setWithdrawNetworkOptions(val);
 		} else if (!val) {
-			setCurrStep((prev) => ({ ...prev, stepThree: false, stepFour: false }));
+			setCurrStep((prev) => ({ ...prev, stepFour: false, stepFive: false }));
 		}
 	};
 
-	const onHandleAddress = (val) => {
+	const onHandleAddress = (val, method) => {
 		const isValid = validAddress(
 			getWithdrawCurrency,
 			STRINGS[`WITHDRAWALS_${selectedAsset.toUpperCase()}_INVALID_ADDRESS`],
 			currentNetwork,
 			val
 		)();
+		const validate = email(val);
+		if (validate) {
+		}
 		if (val) {
 			setCurrStep((prev) => ({ ...prev, stepFour: true }));
 		} else if (!val) {
-			setCurrStep((prev) => ({ ...prev, stepFour: false }));
+			setCurrStep((prev) => ({ ...prev, stepFour: false, stepFive: false }));
 		}
 		setWithdrawAddress(val);
 		setIsValidAdress({ isValid: !isValid });
@@ -309,22 +340,31 @@ const RenderWithdraw = ({
 	//  );
 	// };
 
-	const isSteps =
-		(coinLength && coinLength.length === 1) ||
-		(currStep.stepTwo && !coinLength) ||
-		currStep.stepThree;
-	const withdrawFeeFormat = `(≈ ${fee} ${getWithdrawCurrency?.toUpperCase()})`;
+	const isSteps = currStep.stepFour;
+	// (coinLength && coinLength.length === 1) ||
+	// (currStep.stepTwo && !coinLength) ||
+	// currStep.stepThree;
+	const withdrawFeeFormat =
+		selectedMethod === 'Email'
+			? 0
+			: `+ ${fee} ${selectedAsset && feeCoin?.toUpperCase()} (≈ ${fee} ${
+					selectedAsset && feeCoin?.toUpperCase()
+			  })`;
 	const estimatedFormat = `≈ ${Math.round(
 		estimatedWithdrawValue
 	)} ${getNativeCurrency?.toUpperCase()}`;
 	const isWithdrawal = coins[getWithdrawCurrency]?.allow_withdrawal;
+	const isCondition =
+		(['xrp', 'xlm'].includes(selectedAsset) ||
+			['xlm', 'ton'].includes(network)) &&
+		selectedMethod !== 'Email';
 
 	return (
 		<div
 			className={
 				getWithdrawCurrency && !isWithdrawal
-					? 'withdraw-deposit-disable mt-5'
-					: 'mt-5'
+					? 'withdraw-deposit-disable mt-1'
+					: 'mt-1'
 			}
 		>
 			<div>
@@ -343,7 +383,7 @@ const RenderWithdraw = ({
 						}
 					>
 						<div className="mt-2 ml-5 withdraw-main-label-selected">
-							{renderLabel('ACCORDIAN.SELECT_ASSET')}
+							{renderLabel('WITHDRAWALS_FORM_METHOD')}
 						</div>
 						<div
 							className={
@@ -352,49 +392,33 @@ const RenderWithdraw = ({
 						>
 							<div className="d-flex">
 								<Select
-									showSearch={true}
 									className="custom-select-input-style elevated select-field"
 									dropdownClassName="custom-select-style"
 									suffixIcon={<CaretDownOutlined />}
-									placeholder="Select"
-									onChange={onHandleChangeSelect}
+									placeholder="Select Method"
+									onChange={onHandleChangeMethod}
 									allowClear={true}
-									value={selectedAsset}
+									value={selectedMethod}
 								>
-									{Object.entries(coins).map(
-										([_, { symbol, fullname, icon_id }]) => (
-											<Option key={symbol} value={symbol}>
-												<div className="d-flex gap-1">
-													<Coin iconId={icon_id} type="CS3" />
-													<div>{`${fullname} (${symbol.toUpperCase()})`}</div>
-												</div>
-											</Option>
-										)
-									)}
+									{methodOptions.map((val, inx) => (
+										<Option key={inx} value={val}>
+											{val}
+										</Option>
+									))}
 								</Select>
 								{currStep.stepTwo && <CheckOutlined className="mt-3 ml-3" />}
 							</div>
-							<div className="mt-3 d-flex">
-								{topAssets.map((data, inx) => {
-									return (
-										<span
-											key={inx}
-											className={`currency-label ${
-												selectedAsset === data ? 'opacity-100' : 'opacity-30'
-											}`}
-											onClick={() => onHandleChangeSelect(data, true)}
-										>
-											{data.toUpperCase()}
-										</span>
-									);
-								})}
-							</div>
+							{selectedMethod === 'Email' && (
+								<div className="email-text">
+									{renderLabel('WITHDRAWALS_FORM_MAIL_INFO')}
+								</div>
+							)}
 						</div>
 					</div>
 				</div>
 			</div>
 			<div>
-				<div className="d-flex h-25">
+				<div className="d-flex">
 					<div className="custom-field d-flex flex-column">
 						<span
 							className={`custom-step${currStep.stepTwo ? '-selected' : ''}`}
@@ -402,14 +426,7 @@ const RenderWithdraw = ({
 							2
 						</span>
 						<span
-							className={`custom-line${
-								(coinLength && coinLength.length === 1) ||
-								(currStep.stepTwo && !coinLength) ||
-								currStep.stepThree ||
-								currStep.stepTwo
-									? '-selected'
-									: ''
-							}`}
+							className={`custom-line${currStep.stepTwo ? '-selected' : ''}`}
 						></span>
 					</div>
 					<div
@@ -424,71 +441,163 @@ const RenderWithdraw = ({
 								currStep.stepTwo ? '-selected' : ''
 							}`}
 						>
-							{renderLabel('ACCORDIAN.SELECT_NETWORK')}
+							{renderLabel('ACCORDIAN.SELECT_ASSET')}
 						</div>
-						{currStep.stepTwo && (
-							<div
-								className={
-									isMobile ? 'select-wrapper mobile-view' : 'select-wrapper'
-								}
-							>
-								<div className="d-flex">
-									<Select
-										showSearch={true}
-										className={`custom-select-input-style elevated ${
-											coinLength && coinLength.length > 1
-												? 'select-field'
-												: 'disabled'
-										}`}
-										dropdownClassName="custom-select-style"
-										suffixIcon={<CaretDownOutlined />}
-										allowClear={true}
-										onChange={onHandleChangeNetwork}
-										value={
-											defaultCurrency &&
-											!isPinnedAssets &&
-											coinLength?.length < 1
-												? defaultNetwork
-												: coinLength && coinLength.length <= 1
-												? getNetworkNameByKey(network)
-												: coinLength && coinLength.length > 1
-												? getNetworkNameByKey(getWithdrawNetworkOptions)
-												: coins[getWithdrawCurrency]?.symbol.toUpperCase()
-										}
-										disabled={
-											(coinLength && coinLength.length === 1) ||
-											!(coinLength && coinLength.length)
-										}
-									>
-										{coinLength &&
-											coinLength.map((data, inx) => (
-												<Option key={inx} value={data}>
-													<div className="d-flex gap-1">
-														<div>{getNetworkNameByKey(data).toUpperCase()}</div>
-													</div>
-												</Option>
-											))}
-									</Select>
-									{(currStep.stepThree || coinLength) && (
-										<CheckOutlined className="mt-3 ml-3" />
-									)}
-								</div>
-								<div className="d-flex mt-2 warning-text">
-									<ExclamationCircleFilled className="mt-1" />
-									<div className="ml-2 w-75">
-										{renderLabel('DEPOSIT_FORM_NETWORK_WARNING')}
+						<div
+							className={
+								isMobile ? 'select-wrapper mobile-view' : 'select-wrapper'
+							}
+						>
+							{currStep.stepTwo && (
+								<div>
+									<div className="d-flex">
+										<Select
+											showSearch={true}
+											className="custom-select-input-style elevated select-field"
+											dropdownClassName="custom-select-style"
+											suffixIcon={<CaretDownOutlined />}
+											placeholder="Select"
+											onChange={onHandleChangeSelect}
+											allowClear={true}
+											value={selectedAsset}
+										>
+											{Object.entries(coins).map(
+												([_, { symbol, fullname, icon_id }]) => (
+													<Option key={symbol} value={symbol}>
+														<div className="d-flex gap-1">
+															<Coin iconId={icon_id} type="CS3" />
+															<div>{`${fullname} (${symbol.toUpperCase()})`}</div>
+														</div>
+													</Option>
+												)
+											)}
+										</Select>
+										{currStep.stepTwo && (
+											<CheckOutlined className="mt-3 ml-3" />
+										)}
+									</div>
+									<div className="mt-3 d-flex">
+										{topAssets.map((data, inx) => {
+											return (
+												<span
+													key={inx}
+													className={`currency-label ${
+														selectedAsset === data
+															? 'opacity-100'
+															: 'opacity-30'
+													}`}
+													onClick={() => onHandleChangeSelect(data, true)}
+												>
+													{data.toUpperCase()}
+												</span>
+											);
+										})}
 									</div>
 								</div>
-							</div>
-						)}
+							)}
+						</div>
 					</div>
 				</div>
 			</div>
+			{selectedMethod !== 'Email' && (
+				<div>
+					<div className="d-flex h-25">
+						<div className="custom-field d-flex flex-column">
+							<span
+								className={`custom-step${
+									currStep.stepThree ? '-selected' : ''
+								}`}
+							>
+								3
+							</span>
+							<span
+								className={`custom-line${
+									currStep.stepThree || (selectedAsset && selectedMethod)
+										? '-selected'
+										: ''
+								}`}
+							></span>
+						</div>
+						<div
+							className={
+								isMobile
+									? 'd-flex w-100 flex-column'
+									: 'd-flex w-100 justify-content-between'
+							}
+						>
+							<div
+								className={`mt-2 ml-5 withdraw-main-label${
+									currStep.stepThree ? '-selected' : ''
+								}`}
+							>
+								{renderLabel('ACCORDIAN.SELECT_NETWORK')}
+							</div>
+							{(currStep.stepThree || (selectedAsset && selectedMethod)) && (
+								<div
+									className={
+										isMobile ? 'select-wrapper mobile-view' : 'select-wrapper'
+									}
+								>
+									<div className="d-flex">
+										<Select
+											showSearch={true}
+											className={`custom-select-input-style elevated ${
+												coinLength && coinLength.length > 1
+													? 'select-field'
+													: 'disabled'
+											}`}
+											dropdownClassName="custom-select-style"
+											suffixIcon={<CaretDownOutlined />}
+											allowClear={true}
+											onChange={onHandleChangeNetwork}
+											value={
+												defaultCurrency &&
+												!isPinnedAssets &&
+												coinLength?.length < 1
+													? defaultNetwork
+													: coinLength && coinLength.length <= 1
+													? getNetworkNameByKey(network)
+													: coinLength && coinLength.length > 1
+													? getNetworkNameByKey(getWithdrawNetworkOptions)
+													: coins[getWithdrawCurrency]?.symbol.toUpperCase()
+											}
+											disabled={
+												(coinLength && coinLength.length === 1) ||
+												!(coinLength && coinLength.length)
+											}
+										>
+											{coinLength &&
+												coinLength.map((data, inx) => (
+													<Option key={inx} value={data}>
+														<div className="d-flex gap-1">
+															<div>
+																{getNetworkNameByKey(data).toUpperCase()}
+															</div>
+														</div>
+													</Option>
+												))}
+										</Select>
+										{(currStep.stepThree || coinLength) && (
+											<CheckOutlined className="mt-3 ml-3" />
+										)}
+									</div>
+									<div className="d-flex mt-2 warning-text">
+										<ExclamationCircleFilled className="mt-1" />
+										<div className="ml-2 w-75">
+											{renderLabel('DEPOSIT_FORM_NETWORK_WARNING')}
+										</div>
+									</div>
+								</div>
+							)}
+						</div>
+					</div>
+				</div>
+			)}
 			<div>
 				<div className="d-flex h-25">
 					<div className="custom-field d-flex flex-column">
 						<span className={`custom-step${isSteps ? '-selected' : ''}`}>
-							3
+							{selectedMethod === 'Email' ? 3 : 4}
 						</span>
 						<span
 							className={`custom-line${currStep.stepFour ? '-selected' : ''}`}
@@ -506,11 +615,13 @@ const RenderWithdraw = ({
 								isSteps ? '-selected' : ''
 							}`}
 						>
-							{renderLabel('ACCORDIAN.DESTINATION')}
+							{renderLabel(
+								selectedMethod === 'Address'
+									? 'ACCORDIAN.DESTINATION'
+									: 'ACCORDIAN.EMAIL'
+							)}
 						</div>
-						{((coinLength && coinLength.length === 1) ||
-							(currStep.stepTwo && !coinLength) ||
-							currStep.stepThree) && (
+						{(currStep.stepThree || (selectedAsset && selectedMethod)) && (
 							<div
 								className={
 									isMobile
@@ -518,20 +629,26 @@ const RenderWithdraw = ({
 										: 'd-flex flex-row select-wrapper'
 								}
 							>
-								<Input
-									className="destination-input-field"
-									// suffix={renderScanIcon()}
-									onChange={(e) => onHandleAddress(e.target.value)}
-									value={getWithdrawAddress}
-								></Input>
+								{selectedMethod === 'Address' ? (
+									<Input
+										className="destination-input-field"
+										// suffix={renderScanIcon()}
+										onChange={(e) => onHandleAddress(e.target.value, 'address')}
+										value={getWithdrawAddress}
+									></Input>
+								) : (
+									<Input
+										className="destination-input-field"
+										onChange={(e) => onHandleAddress(e.target.value, 'email')}
+									></Input>
+								)}
 								{currStep.stepFour && <CheckOutlined className="mt-3 ml-3" />}
 							</div>
 						)}
 					</div>
 				</div>
 			</div>
-			{(['xrp', 'xlm'].includes(selectedAsset) ||
-				['xlm', 'ton'].includes(network)) && (
+			{isCondition && (
 				<div>
 					<div className="d-flex h-25">
 						<div className="custom-field d-flex flex-column">
@@ -628,11 +745,11 @@ const RenderWithdraw = ({
 						<span
 							className={`custom-step${currStep.stepFour ? '-selected' : ''}`}
 						>
-							{['xrp', 'xlm'].includes(selectedAsset) ||
-							['xlm', 'ton'].includes(network)
-								? 5
-								: 4}
+							{isCondition ? 6 : selectedMethod === 'Email' ? 4 : 5}
 						</span>
+						<span
+							className={currStep.stepFour ? 'custom-line-selected-end' : ''}
+						></span>
 					</div>
 					<div
 						className={
@@ -642,16 +759,20 @@ const RenderWithdraw = ({
 						}
 					>
 						<div className=" d-flex mt-2 ml-5">
-							<span className="amount-field-icon">
-								<Coin iconId={iconId} type="CS4" />
-							</span>
-							<span
-								className={`ml-2 withdraw-main-label${
-									currStep.stepFour ? '-selected' : ''
-								}`}
-							>
-								{getWithdrawCurrency.toUpperCase()}
-							</span>
+							{currStep.stepFour && (
+								<span className="amount-field-icon">
+									<Coin iconId={iconId} type="CS4" />
+								</span>
+							)}
+							{currStep.stepFour && (
+								<span
+									className={`ml-2 withdraw-main-label${
+										currStep.stepFour ? '-selected' : ''
+									}`}
+								>
+									{getWithdrawCurrency.toUpperCase()}
+								</span>
+							)}
 							<div
 								className={`ml-1 withdraw-main-label${
 									currStep.stepFour ? '-selected' : ''
@@ -664,46 +785,81 @@ const RenderWithdraw = ({
 							<div
 								className={
 									isMobile
-										? 'd-flex flex-row select-wrapper mobile-view'
-										: 'd-flex flex-row select-wrapper'
+										? 'd-flex flex-column select-wrapper mobile-view'
+										: 'd-flex flex-column select-wrapper'
 								}
 							>
-								<Input
-									disabled={maxAmount === 0}
-									onChange={(e) => onHandleAmount(e.target.value)}
-									value={getWithdrawAmount}
-									className="destination-input-field"
-									suffix={renderAmountIcon()}
-									type="number"
-								></Input>
-								{!isAmount && <CheckOutlined className="mt-3 ml-3" />}
+								<div className="d-flex">
+									<Input
+										disabled={maxAmount === 0}
+										onChange={(e) => onHandleAmount(e.target.value)}
+										value={getWithdrawAmount}
+										className="destination-input-field"
+										suffix={renderAmountIcon()}
+										type="number"
+									></Input>
+									{!isAmount && <CheckOutlined className="mt-3 ml-3" />}
+								</div>
+								{currStep.stepFour && (
+									<div
+										className={`d-flex h-25 ${
+											!isMobile ? 'bottom-wrapper' : ''
+										}`}
+									>
+										<div className="custom-field d-flex flex-column line-wrapper">
+											<span
+												className={
+													currStep.stepFour ? 'custom-line-selected-end' : ''
+												}
+											></span>
+										</div>
+										<div className="bottom-content-wrapper">
+											<div className="bottom-content">
+												{renderEstimatedValueAndFee(
+													renderLabel,
+													'ACCORDIAN.ESTIMATED',
+													estimatedFormat
+												)}
+												<span>--</span>
+												{renderEstimatedValueAndFee(
+													renderLabel,
+													'ACCORDIAN.TRANSACTION_FEE',
+													withdrawFeeFormat
+												)}
+											</div>
+										</div>
+									</div>
+								)}
+								{currStep.stepFour && (
+									<div className="d-flex h-25 bottom-btn-wrapper">
+										{isCondition && (
+											<div className="custom-field d-flex flex-column line-wrapper">
+												<span
+													className={
+														currStep.stepFour ? 'custom-line-selected-end' : ''
+													}
+												></span>
+											</div>
+										)}
+										{isCondition && (
+											<span className="cross-line-selected"></span>
+										)}
+										<div className="withdraw-btn-wrapper">
+											<Button
+												disabled={''}
+												onClick={onOpenDialog}
+												className="mb-3"
+											>
+												{STRINGS['WITHDRAWALS_BUTTON_TEXT'].toUpperCase()}
+											</Button>
+										</div>
+									</div>
+								)}
 							</div>
 						)}
 					</div>
 				</div>
 			</div>
-			{currStep.stepFour && (
-				<div className="bottom-content">
-					{renderEstimatedValueAndFee(
-						renderLabel,
-						'ACCORDIAN.ESTIMATED',
-						estimatedFormat
-					)}
-					<span>--</span>
-					{renderEstimatedValueAndFee(
-						renderLabel,
-						'ACCORDIAN.TRANSACTION_FEE',
-						withdrawFeeFormat
-					)}
-				</div>
-			)}
-			{currStep.stepFour && (
-				<div className="withdraw-btn-wrapper">
-					<Button disabled={isAmount} onClick={onOpenDialog} className="mb-3">
-						{STRINGS['WITHDRAWALS_BUTTON_TEXT'].toUpperCase()}
-					</Button>
-				</div>
-			)}
 		</div>
 	);
 };
@@ -717,6 +873,7 @@ const mapStateToForm = (state) => ({
 	coin_customizations: state.app.constants.coin_customizations,
 	isValidAddress: state.app.isValidAddress,
 	getNativeCurrency: state.app.constants.native_currency,
+	selectedMethod: state.app.selectedWithdrawMethod,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -730,6 +887,7 @@ const mapDispatchToProps = (dispatch) => ({
 	setWithdrawAmount: bindActionCreators(withdrawAmount, dispatch),
 	setFee: bindActionCreators(setFee, dispatch),
 	setIsValidAdress: bindActionCreators(setIsValidAdress, dispatch),
+	setSelectedMethod: bindActionCreators(setSelectedMethod, dispatch),
 });
 
 export default connect(mapStateToForm, mapDispatchToProps)(RenderWithdraw);

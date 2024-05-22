@@ -109,6 +109,7 @@ export const SET_VALID_ADDRESS = 'SET_VALID_ADDRESS';
 export const SET_DEPOSIT_CURRENCY = 'SET_DEPOSIT_CURRENCY';
 export const SET_DEPOSIT_NETWORK = 'SET_DEPOSIT_NETWORK';
 export const SET_DEPOSIT_NETWORK_OPTIONS = 'SET_DEPOSIT_OPTIONS';
+export const SET_SELECTED_METHOD = 'SET_SELECTED_METHOD';
 
 export const SORT = {
 	VOL: 'volume',
@@ -739,5 +740,10 @@ export const depositNetwork = (network) => ({
 
 export const depositNetworkOptions = (networkOptions) => ({
 	type: SET_DEPOSIT_NETWORK_OPTIONS,
+	payload: networkOptions,
+});
+
+export const setSelectedMethod = (networkOptions) => ({
+	type: SET_SELECTED_METHOD,
 	payload: networkOptions,
 });

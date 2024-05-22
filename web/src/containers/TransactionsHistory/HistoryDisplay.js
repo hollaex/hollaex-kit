@@ -83,13 +83,13 @@ const HistoryDisplay = (props) => {
 
 	return (
 		<div className="history_block-wrapper">
-			{!isMobile && !loading && (
+			{!loading && (
 				<div className="d-flex justify-content-between title text-capitalize">
 					<div>
 						<EditWrapper stringId={stringId}>{title}</EditWrapper>
 					</div>
 					<div className="action_notification-container">
-						{count > 0 && !isFromWallet && (
+						{!isMobile && count > 0 && !isFromWallet && (
 							<ActionNotification
 								stringId="TRANSACTION_HISTORY.TEXT_DOWNLOAD"
 								text={STRINGS['TRANSACTION_HISTORY.TEXT_DOWNLOAD']}
@@ -99,7 +99,7 @@ const HistoryDisplay = (props) => {
 								onClick={handleDownload}
 							/>
 						)}
-						{activeTab === 2 && !isDepositFromWallet && (
+						{!isMobile && activeTab === 2 && !isDepositFromWallet && (
 							<ActionNotification
 								stringId="DEPOSIT_STATUS.CHECK_DEPOSIT_STATUS"
 								text={STRINGS['DEPOSIT_STATUS.CHECK_DEPOSIT_STATUS']}
@@ -109,7 +109,7 @@ const HistoryDisplay = (props) => {
 								onClick={openDialog}
 							/>
 						)}
-						{!isFromWallet && (
+						{!isMobile && !isFromWallet && (
 							<ActionNotification
 								stringId="REFRESH"
 								text={STRINGS['REFRESH']}
@@ -127,6 +127,7 @@ const HistoryDisplay = (props) => {
 								iconPath={STATIC_ICONS['HOLLAEX_TOKEN.VIEW']}
 								className="blue-icon"
 								onClick={onHandleView}
+								isFromWallet={isFromWallet}
 							/>
 						)}
 					</div>
