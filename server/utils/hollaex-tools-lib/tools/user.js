@@ -485,7 +485,7 @@ const generateAffiliationCode = () => {
 };
 
 const getUserByAffiliationCode = (affiliationCode) => {
-	const code = affiliationCode.toUpperCase().trim();
+	const code = affiliationCode.trim();
 	return dbQuery.findOne('referralCode', {
 		where: { code },
 		attributes: ['id', 'user_id', 'discount', 'earning_rate']
@@ -504,27 +504,27 @@ const checkAffiliation = (affiliationCode, user_id) => {
 				}), 
 				referrer,
 				getModel('referralCode').increment('referral_count', { by: 1, where: { id: referrer.id }})
-			]);
+				]);
 			} else {
 				return [];
 			}
 		})
-	.then(([affiliation, referrer]) => {
-		if (affiliation?.user_id) {
-			return getModel('user').update(
-				{
-					discount: referrer.discount
-				},
-				{
-					where: {
-						id: affiliation.user_id
+		.then(([affiliation, referrer]) => {
+			if (affiliation?.user_id) {
+				return getModel('user').update(
+					{
+						discount: referrer.discount
 					},
-					fields: ['discount']
-				}
-			);
-		}
-		return;
-	});
+					{
+						where: {
+							id: affiliation.user_id
+						},
+						fields: ['discount']
+					}
+				);
+			}
+			return;
+		});
 };
 
 const getAffiliationCount = (userId, opts = {
@@ -2426,29 +2426,29 @@ const validateReferralFeature = async (data) => {
 };
 
 const getUserReferralCodes = async (
-    opts = {
-        user_id: null,
-        limit: null,
-        page: null,
-        order_by: null,
-        order: null,
-        start_date: null,
-        end_date: null,
-        format: null
-}) => {
+	opts = {
+		user_id: null,
+		limit: null,
+		page: null,
+		order_by: null,
+		order: null,
+		start_date: null,
+		end_date: null,
+		format: null
+	}) => {
 
-    const pagination = paginationQuery(opts.limit, opts.page);
+	const pagination = paginationQuery(opts.limit, opts.page);
 	const ordering = orderingQuery(opts.order_by, opts.order);
 	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
 
 	const query = {
 		where: {
-            created_at: timeframe,
-            ...(opts.user_id && { user_id: opts.user_id })
+			created_at: timeframe,
+			...(opts.user_id && { user_id: opts.user_id })
 		},
-        order: [ordering],
+		order: [ordering],
 		...(!opts.format && pagination),
-	}
+	};
 
 	if (opts.format) {
 		return dbQuery.fetchAllRecords('referralCode', query)
@@ -2465,8 +2465,8 @@ const getUserReferralCodes = async (
 			});
 	} else {
 		return dbQuery.findAndCountAllWithRows('referralCode', query);
-    }
-}
+	}
+};
 
 const createUserReferralCode = async (data) => {
 	const { user_id, discount, earning_rate, code } = data;
@@ -2507,22 +2507,22 @@ const createUserReferralCode = async (data) => {
 		throw new Error('referral code is too large');	
 	}
 
-    const user = await getUserByKitId(user_id);
+	const user = await getUserByKitId(user_id);
    
-    if (!user) {
-        throw new Error(USER_NOT_FOUND);
-    }
+	if (!user) {
+		throw new Error(USER_NOT_FOUND);
+	}
 
-    const referralCode = await getModel('referralCode').create(data, {
+	const referralCode = await getModel('referralCode').create(data, {
 		fields: [
 			'user_id',
 			'discount',
 			'earning_rate',
 			'code'
 		]
-    });
-    return referralCode;
-}
+	});
+	return referralCode;
+};
 
 const getUnrealizedReferral = async (user_id) => {
 	const exchangeInfo = getKitConfig().info;
@@ -2551,15 +2551,15 @@ const getUnrealizedReferral = async (user_id) => {
 
 const getRealizedReferral = async (opts = {
 	user_id: null,
-    limit: null,
-    page: null,
-    order_by: null,
-    order: null,
-    start_date: null,
-    end_date: null,
-    format: null
+	limit: null,
+	page: null,
+	order_by: null,
+	order: null,
+	start_date: null,
+	end_date: null,
+	format: null
 }) => {
-    const pagination = paginationQuery(opts.limit, opts.page);
+	const pagination = paginationQuery(opts.limit, opts.page);
 	const ordering = orderingQuery(opts.order_by, opts.order);
 	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
 
@@ -2571,7 +2571,7 @@ const getRealizedReferral = async (opts = {
 		},
 		order: [ordering],
 		...(!opts.format && pagination),
-	}
+	};
      	
 	if (opts.format) {
 		return dbQuery.fetchAllRecords('ReferralHistory', query)
@@ -2587,7 +2587,7 @@ const getRealizedReferral = async (opts = {
 				}
 			});
 	} else {
-        return dbQuery.findAndCountAllWithRows('ReferralHistory', query)
+		return dbQuery.findAndCountAllWithRows('ReferralHistory', query);
 	}
 };
 
