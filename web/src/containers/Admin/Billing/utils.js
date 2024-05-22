@@ -83,9 +83,9 @@ export const planData = {
 		},
 	},
 	fiat: {
-		title: 'Fiat Ramp',
+		title: 'Enterprise',
 		description:
-			'For those that want to start a fiat to crypto exchange that have a bank or fiat payment processor',
+			'Top tier plan for enterprises',
 		background: STATIC_ICONS['CLOUD_FIAT_BACKGROUND'],
 		icon: 'FIAT_MASTER_PLAN_BACKGROUND',
 		isPopular: false,
@@ -159,9 +159,9 @@ export const diyPlanData = {
 		],
 	},
 	boost: {
-		title: 'DIY Boost',
+		title: 'Boost',
 		description:
-			'For expert DIY exchange operators seeking more. Comes fully featured out with reduced revenue sharing, one free custom token and market.',
+			'For expert on-premise exchange operators seeking more. Comes fully featured out with reduced revenue sharing, one free custom token and market.',
 		isPopular: true,
 		// icon: DIY_BOOST_ICON,
 		services: {
