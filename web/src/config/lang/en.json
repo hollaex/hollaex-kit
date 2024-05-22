@@ -1726,7 +1726,9 @@
 		"OPTIONAL_TAG": "Tag (optional)",
 		"TAG": "Tag",
 		"DISABLED_DEPOSIT_CONTENT": "The deposit functionality is temporarily unavailable.",
-		"DISABLED_WITHDRAW_CONTENT": "The withdrawal functionality is temporarily unavailable."
+		"DISABLED_WITHDRAW_CONTENT": "The withdrawal functionality is temporarily unavailable.",
+		"DEPOSIT_START_WITH_CAPS": "Deposit",
+		"EMAIL": "Email:"
 	},
 	"ASYNC_LINK": {
 		"TITLE": "Page not opening automatically?",

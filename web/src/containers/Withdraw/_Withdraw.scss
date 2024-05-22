@@ -362,11 +362,16 @@ $content--margin: 2rem;
 					}
 				}
 			}
+
+			// .bottom-wrapper {
+			// 	justify-content: center;
+			// 	padding-left: 3rem;
+			// }
 		}
 
 		.bottom-content {
 			margin-top: 3%;
-			margin-left: 36%;
+			// margin-left: 36%;
 
 			.fee-fields {
 				color: $colors-black;
@@ -384,8 +389,8 @@ $content--margin: 2rem;
 
 		.withdraw-btn-wrapper {
 			display: flex;
-			margin-left: 36%;
-			margin-top: 5%;
+			margin-top: 10%;
+			width: 80%;
 
 			.ant-btn[disabled],
 			.ant-btn[disabled]:hover,
@@ -411,8 +416,15 @@ $content--margin: 2rem;
 			}
 		}
 
-		.warning-text {
+		.warning-text,
+		.email-text {
 			color: $colors-notifications-red;
+			font-size: 12px;
+			width: 90%;
+		}
+
+		.email-text {
+			color: $colors-black !important;
 		}
 
 		.width-80 {
@@ -598,16 +610,13 @@ $content--margin: 2rem;
 
 				.bottom-content {
 					font-size: 14px;
-					display: flex;
-					flex-direction: column;
-					align-items: center;
-					margin-left: unset;
+					margin-top: 3%;
 				}
 
-				.withdraw-btn-wrapper {
-					margin-left: unset;
-					justify-content: center;
-				}
+				// .withdraw-btn-wrapper {
+				// 	margin-left: unset;
+				// 	justify-content: center;
+				// }
 
 				.withdraw-main-label-selected,
 				.withdraw-main-label,
@@ -669,28 +678,10 @@ $content--margin: 2rem;
 					.amount-field-icon {
 						margin-top: 2%;
 					}
-				}
-			}
-		}
-	}
 
-	@media screen and (max-width: 390px) {
-		.presentation_container {
-			.inner_container {
-				.information_block {
-					.information_block-text_wrapper {
-						.title {
-							font-size: 13px !important;
-						}
-
-						.text {
-							font-size: 10px !important;
-						}
+					.warning-text {
+						font-size: 8px;
 					}
-				}
-
-				.holla-button {
-					font-size: 12px !important;
 				}
 			}
 		}
@@ -703,34 +694,6 @@ $content--margin: 2rem;
 	.review_email-content {
 		border-top: 1px solid;
 		padding: 1rem;
-	}
-}
-
-@media screen and (max-width: 1096px) {
-	.withdrawal-container {
-		.withdraw-form-wrapper {
-			.withdraw-form {
-				.field-wrapper {
-					.field-label {
-						font-size: $font-size-mobile-innertxt;
-					}
-
-					.input-box-field {
-						.input_field-input {
-							&::placeholder {
-								font-size: $font-size-mobile-innertxt;
-							}
-						}
-					}
-				}
-			}
-
-			.btn-wrapper {
-				.holla-button {
-					width: 200px;
-				}
-			}
-		}
 	}
 }
 

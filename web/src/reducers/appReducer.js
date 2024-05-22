@@ -71,6 +71,7 @@ import {
 	SET_DEPOSIT_NETWORK_OPTIONS,
 	SET_DEPOSIT_NETWORK,
 	SET_DEPOSIT_CURRENCY,
+	SET_SELECTED_METHOD,
 } from 'actions/appActions';
 import { THEME_DEFAULT } from 'config/constants';
 import { getLanguage } from 'utils/string';
@@ -194,6 +195,7 @@ const INITIAL_STATE = {
 	depositFields: DEPOSIT_FIELDS,
 	depositAndWithdraw: false,
 	isValidAddress: '',
+	selectedWithdrawMethod: 'Address',
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -810,6 +812,12 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 					depositNetworkOptions: payload,
 				},
 			};
+		case SET_SELECTED_METHOD: {
+			return {
+				...state,
+				selectedWithdrawMethod: payload,
+			};
+		}
 		default:
 			return state;
 	}

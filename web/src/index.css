@@ -377,8 +377,8 @@ table th {
     height: auto;
     flex: 1; }
   .app_container.layout-mobile .app_container-content {
-    min-height: calc( 100vh - 10rem);
-    max-height: calc( 100vh - 10rem);
+    min-height: calc( 100vh - 10rem);
+    max-height: calc( 100vh - 10rem);
     max-width: 100vw;
     overflow-y: scroll; }
     .app_container.layout-mobile .app_container-content.chart-embed {
@@ -396,8 +396,8 @@ table th {
       .app_container.layout-mobile .app_container-content .app_container-main.no_bottom_navigation {
         height: 100%; }
   .app_container.layout-mobile .content-with-bar {
-    min-height: calc( 100vh - 17rem);
-    max-height: calc( 100vh - 17rem);
+    min-height: calc( 100vh - 17rem);
+    max-height: calc( 100vh - 17rem);
     max-width: 100vw;
     padding: 1rem;
     margin: 0;
@@ -2361,8 +2361,7 @@ table th {
         .withdrawal-container .withdraw-form-wrapper .withdraw-form .render-scan-wrapper .img-wrapper img {
           height: 1rem; }
   .withdrawal-container .withdraw-form-wrapper .bottom-content {
-    margin-top: 3%;
-    margin-left: 36%; }
+    margin-top: 3%; }
     .withdrawal-container .withdraw-form-wrapper .bottom-content .fee-fields {
       color: var(--labels_secondary-inactive-label-text-graphics); }
   .withdrawal-container .withdraw-form-wrapper .btn-wrapper {
@@ -2372,8 +2371,8 @@ table th {
       width: 300px; }
   .withdrawal-container .withdraw-form-wrapper .withdraw-btn-wrapper {
     display: flex;
-    margin-left: 36%;
-    margin-top: 5%; }
+    margin-top: 10%;
+    width: 80%; }
     .withdrawal-container .withdraw-form-wrapper .withdraw-btn-wrapper .ant-btn[disabled],
     .withdrawal-container .withdraw-form-wrapper .withdraw-btn-wrapper .ant-btn[disabled]:hover,
     .withdrawal-container .withdraw-form-wrapper .withdraw-btn-wrapper .ant-btn[disabled]:focus,
@@ -2391,8 +2390,12 @@ table th {
       color: var(--labels_important-active-labels-text-graphics); }
     .withdrawal-container .withdraw-form-wrapper .withdraw-btn-wrapper .holla-button {
       width: 300px; }
-  .withdrawal-container .withdraw-form-wrapper .warning-text {
-    color: var(--specials_notifications-alerts-warnings); }
+  .withdrawal-container .withdraw-form-wrapper .warning-text, .withdrawal-container .withdraw-form-wrapper .email-text {
+    color: var(--specials_notifications-alerts-warnings);
+    font-size: 12px;
+    width: 90%; }
+  .withdrawal-container .withdraw-form-wrapper .email-text {
+    color: var(--labels_secondary-inactive-label-text-graphics) !important; }
   .withdrawal-container .withdraw-form-wrapper .width-80 {
     width: 80%; }
   .withdrawal-container .withdraw-form-wrapper .check-optional .ant-checkbox-inner {
@@ -2495,13 +2498,7 @@ table th {
     margin-left: 10%; }
   .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .bottom-content {
     font-size: 14px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-left: unset; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdraw-btn-wrapper {
-    margin-left: unset;
-    justify-content: center; }
+    margin-top: 3%; }
   .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdraw-main-label-selected,
   .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdraw-main-label,
   .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .warning-text {
@@ -2527,29 +2524,15 @@ table th {
   .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .mobile-view {
     margin-top: 3%; }
   .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .amount-field-icon {
-    margin-top: 2%; } }
-
-@media screen and (max-width: 390px) {
-  .layout-mobile .presentation_container .inner_container .information_block .information_block-text_wrapper .title {
-    font-size: 13px !important; }
-  .layout-mobile .presentation_container .inner_container .information_block .information_block-text_wrapper .text {
-    font-size: 10px !important; }
-  .layout-mobile .presentation_container .inner_container .holla-button {
-    font-size: 12px !important; } }
+    margin-top: 2%; }
+  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .warning-text {
+    font-size: 8px; } }
 
 .review_email-wrapper {
   margin: auto; }
   .review_email-wrapper .review_email-content {
     border-top: 1px solid;
     padding: 1rem; }
-
-@media screen and (max-width: 1096px) {
-  .withdrawal-container .withdraw-form-wrapper .withdraw-form .field-wrapper .field-label {
-    font-size: 13px; }
-  .withdrawal-container .withdraw-form-wrapper .withdraw-form .field-wrapper .input-box-field .input_field-input::placeholder {
-    font-size: 13px; }
-  .withdrawal-container .withdraw-form-wrapper .btn-wrapper .holla-button {
-    width: 200px; } }
 
 .qr_reader_wrapper {
   width: 25rem;
@@ -2641,7 +2624,7 @@ table th {
     width: 300px; }
 
 .deposit-wrapper-fields .generate-field-wrapper {
-  margin-left: 7%; }
+  margin-left: 8%; }
 
 .deposit-address-wrapper {
   width: 68.5%; }
@@ -2667,29 +2650,34 @@ table th {
   .deposit-address-wrapper .deposit-address-field .ant-input {
     color: var(--specials_buttons-links-and-highlights) !important; }
   .deposit-address-wrapper .address-warning-text div {
-    text-wrap: wrap; }
+    text-wrap: wrap;
+    width: 95%;
+    justify-content: unset !important; }
 
-.destination-tag-field-wrapper .destination-tag-field {
-  width: 66.5%; }
-  .destination-tag-field-wrapper .destination-tag-field .destination-input-field,
-  .destination-tag-field-wrapper .destination-tag-field .destination-input-field:focus-within {
-    border: none !important;
-    border-bottom: 1px solid var(--calculated_important-border) !important; }
-  .destination-tag-field-wrapper .destination-tag-field .destination-input-field {
-    width: 90% !important; }
-  .destination-tag-field-wrapper .destination-tag-field .render-deposit-scan-wrapper {
-    text-transform: uppercase;
-    color: var(--specials_buttons-links-and-highlights);
-    cursor: pointer; }
-    .destination-tag-field-wrapper .destination-tag-field .render-deposit-scan-wrapper div {
-      text-decoration: underline; }
-  .destination-tag-field-wrapper .destination-tag-field .ant-input-suffix {
-    width: auto !important; }
-  .destination-tag-field-wrapper .destination-tag-field .ant-input:focus,
-  .destination-tag-field-wrapper .destination-tag-field .ant-input-affix-wrapper-focused {
-    box-shadow: none; }
-  .destination-tag-field-wrapper .destination-tag-field .ant-input {
-    color: var(--specials_buttons-links-and-highlights) !important; }
+.destination-tag-field-wrapper .destination-tag-field .destination-input-field,
+.destination-tag-field-wrapper .destination-tag-field .destination-input-field:focus-within {
+  border: none !important;
+  border-bottom: 1px solid var(--calculated_important-border) !important; }
+
+.destination-tag-field-wrapper .destination-tag-field .destination-input-field {
+  width: 90% !important; }
+
+.destination-tag-field-wrapper .destination-tag-field .render-deposit-scan-wrapper {
+  text-transform: uppercase;
+  color: var(--specials_buttons-links-and-highlights);
+  cursor: pointer; }
+  .destination-tag-field-wrapper .destination-tag-field .render-deposit-scan-wrapper div {
+    text-decoration: underline; }
+
+.destination-tag-field-wrapper .destination-tag-field .ant-input-suffix {
+  width: auto !important; }
+
+.destination-tag-field-wrapper .destination-tag-field .ant-input:focus,
+.destination-tag-field-wrapper .destination-tag-field .ant-input-affix-wrapper-focused {
+  box-shadow: none; }
+
+.destination-tag-field-wrapper .destination-tag-field .ant-input {
+  color: var(--specials_buttons-links-and-highlights) !important; }
 
 .destination-tag-field-wrapper .tag-text div {
   text-wrap: balance; }
@@ -2728,9 +2716,15 @@ table th {
 .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .destination-tag-field-wrapper .destination-input-field {
   width: 80% !important; }
 
-@media screen and (min-width: 550px) {
+@media screen and (max-width: 550px) {
   .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .deposit-wrapper-fields .generate-field-wrapper {
-    margin-left: 8%; } }
+    margin-left: 8%; }
+  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .deposit-wrapper-fields .custom-field .custom-line-large {
+    height: 16rem; } }
+
+@media screen and (max-width: 450px) {
+  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .deposit-wrapper-fields .btn-wrapper-deposit .holla-button {
+    width: -webkit-fill-available; } }
 
 .transaction-history-wrapper .ant-row,
 .login-history-section-wrapper .ant-row {
@@ -4168,8 +4162,8 @@ table th {
 .layout-mobile .quote-container {
   background-color: transparent;
   overflow-y: scroll;
-  min-height: calc( 100vh - 17rem);
-  max-height: calc( 100vh - 17rem); }
+  min-height: calc( 100vh - 17rem);
+  max-height: calc( 100vh - 17rem); }
   .layout-mobile .quote-container .quick_trade-wrapper {
     flex: 1 1;
     flex-direction: column;
@@ -4342,7 +4336,7 @@ table th {
 
 .layout-mobile .presentation_container.verification_container {
   padding-top: 0 !important;
-  max-height: calc( 100vh - 10rem); }
+  max-height: calc( 100vh - 10rem); }
   .layout-mobile .presentation_container.verification_container .header-content {
     font-size: 13px !important; }
 
@@ -6888,7 +6882,7 @@ table th {
     padding: 0.3rem 0; }
     .modal-market-menu .app-bar-add-tab-content .scroll-view {
       overflow-y: auto;
-      height: calc( 100vh - 19rem - 8rem); }
+      height: calc( 100vh - 19rem - 8rem); }
   .modal-market-menu .app-bar-tab-overflow-content {
     background-color: var(--base_background);
     color: var(--labels_secondary-inactive-label-text-graphics);
@@ -7032,7 +7026,10 @@ table th {
       stroke: var(--calculated_base_top-bar-navigation_text-inactive); }
     .app_bar .app-bar-account .app-bar-deposit-btn {
       background-color: var(--specials_buttons-links-and-highlights);
-      padding: 1%; }
+      padding: 2px 10px 0px 10px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 11px; }
       .app_bar .app-bar-account .app-bar-deposit-btn .margin-aligner {
         margin-bottom: unset;
         margin-right: unset; }
@@ -7746,7 +7743,7 @@ table th {
     height: 5rem;
     min-height: 5rem; }
     .app-menu-bar .app-menu-bar-content {
-      width: 12rem; }
+      width: 10rem; }
   .app-bar-add-tab-menu {
     width: 24rem; }
     .app-bar-add-tab-menu.narrow {
@@ -9356,14 +9353,14 @@ table th {
   right: 0 !important;
   min-width: 100vw;
   max-width: 100vw;
-  min-height: calc( 100vh - 4rem);
-  max-height: calc( 100vh - 4rem);
+  min-height: calc( 100vh - 4rem);
+  max-height: calc( 100vh - 4rem);
   border-radius: 0 !important;
   padding: 0 !important; }
   .layout-mobile .ReactModal__Content .dialog-mobile-content {
     padding: 2.5rem !important;
-    min-height: calc( 100vh - 8rem);
-    max-height: calc( 100vh - 8rem);
+    min-height: calc( 100vh - 8rem);
+    max-height: calc( 100vh - 8rem);
     display: flex; }
 
 .layout-mobile.LogoutModal .ReactModal__Content {

@@ -386,7 +386,7 @@ const DepositComponent = ({
 						<div className="d-flex">
 							<div className=" d-flex step3-icon-wrapper">
 								<span>
-									<Coin iconId={iconId} type="CS5" />
+									<Coin iconId={iconId} type={isMobile ? 'CS8' : 'CS5'} />
 								</span>
 								<span
 									className={`ml-2 withdraw-main-label${
@@ -488,7 +488,7 @@ const DepositComponent = ({
 								>
 									<div className="mt-2 d-flex">
 										<span className={isMobile ? 'ml-5' : ''}>
-											<Coin iconId={iconId} type="CS5" />
+											<Coin iconId={iconId} type={isMobile ? 'CS8' : 'CS5'} />
 										</span>
 										<span className="ml-2">{renderLabel('ACCORDIAN.TAG')}</span>
 									</div>

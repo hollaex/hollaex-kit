@@ -485,7 +485,7 @@ const generateAffiliationCode = () => {
 };
 
 const getUserByAffiliationCode = (affiliationCode) => {
-	const code = affiliationCode.toUpperCase().trim();
+	const code = affiliationCode.trim();
 	return dbQuery.findOne('referralCode', {
 		where: { code },
 		attributes: ['id', 'user_id', 'discount', 'earning_rate']
@@ -504,27 +504,27 @@ const checkAffiliation = (affiliationCode, user_id) => {
 				}), 
 				referrer,
 				getModel('referralCode').increment('referral_count', { by: 1, where: { id: referrer.id }})
-			]);
+				]);
 			} else {
 				return [];
 			}
 		})
-	.then(([affiliation, referrer]) => {
-		if (affiliation?.user_id) {
-			return getModel('user').update(
-				{
-					discount: referrer.discount
-				},
-				{
-					where: {
-						id: affiliation.user_id
+		.then(([affiliation, referrer]) => {
+			if (affiliation?.user_id) {
+				return getModel('user').update(
+					{
+						discount: referrer.discount
 					},
-					fields: ['discount']
-				}
-			);
-		}
-		return;
-	});
+					{
+						where: {
+							id: affiliation.user_id
+						},
+						fields: ['discount']
+					}
+				);
+			}
+			return;
+		});
 };
 
 const getAffiliationCount = (userId, opts = {
@@ -2396,6 +2396,7 @@ const validateReferralFeature = async (data) => {
 	const { 
 		earning_period: EARNING_PERIOD, 
 		distributor_id: DISTRIBUTOR_ID,
+		earning_rate: EARNING_RATE,
 	} = data;
 
 	const exchangeInfo = getKitConfig().info;
@@ -2403,7 +2404,13 @@ const validateReferralFeature = async (data) => {
 	if (!REFERRAL_HISTORY_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
 		throw new Error('Exchange plan does not support this feature');
 	}
-	else if (!isNumber(EARNING_PERIOD)) {
+	if (!isNumber(EARNING_RATE)) {
+		throw new Error('Earning rate with data type number required for plugin');
+	} else if (EARNING_RATE < 1 || EARNING_RATE > 100) {
+		throw new Error('Earning rate must be within the range of 1 ~ 100');
+	} else if (EARNING_RATE % 10 !== 0) {
+		throw new Error('Earning rate must be in increments of 10');
+	} else if (!isNumber(EARNING_PERIOD)) {
 		throw new Error('Earning period with data type number required for plugin');
 	} else if ((!isInteger(EARNING_PERIOD) || EARNING_PERIOD < 0)) {
 		throw new Error('Earning period must be an integer greater than 0');
@@ -2419,29 +2426,29 @@ const validateReferralFeature = async (data) => {
 };
 
 const getUserReferralCodes = async (
-    opts = {
-        user_id: null,
-        limit: null,
-        page: null,
-        order_by: null,
-        order: null,
-        start_date: null,
-        end_date: null,
-        format: null
-}) => {
+	opts = {
+		user_id: null,
+		limit: null,
+		page: null,
+		order_by: null,
+		order: null,
+		start_date: null,
+		end_date: null,
+		format: null
+	}) => {
 
-    const pagination = paginationQuery(opts.limit, opts.page);
+	const pagination = paginationQuery(opts.limit, opts.page);
 	const ordering = orderingQuery(opts.order_by, opts.order);
 	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
 
 	const query = {
 		where: {
-            created_at: timeframe,
-            ...(opts.user_id && { user_id: opts.user_id })
+			created_at: timeframe,
+			...(opts.user_id && { user_id: opts.user_id })
 		},
-        order: [ordering],
+		order: [ordering],
 		...(!opts.format && pagination),
-	}
+	};
 
 	if (opts.format) {
 		return dbQuery.fetchAllRecords('referralCode', query)
@@ -2458,11 +2465,15 @@ const getUserReferralCodes = async (
 			});
 	} else {
 		return dbQuery.findAndCountAllWithRows('referralCode', query);
-    }
-}
+	}
+};
 
 const createUserReferralCode = async (data) => {
 	const { user_id, discount, earning_rate, code } = data;
+
+	const { 
+		earning_rate: EARNING_RATE, 
+	} = getKitConfig()?.referral_history_config || {};
 
 	if (discount < 0) {
 		throw new Error('discount cannot be negative');	
@@ -2470,6 +2481,10 @@ const createUserReferralCode = async (data) => {
 
 	if (discount > 100) {
 		throw new Error('discount cannot be more than 100');	
+	}
+
+	if (discount % 10 !== 0) {
+		throw new Error('discount must be in increments of 10');
 	}
 
 	if (earning_rate < 1) {
@@ -2480,26 +2495,34 @@ const createUserReferralCode = async (data) => {
 		throw new Error('earning rate cannot be more than 100');	
 	}
 
-	if (code > 48) {
+	if (earning_rate % 10 !== 0) {
+		throw new Error('earning rate must be in increments of 10');
+	}
+
+	if (earning_rate + discount > EARNING_RATE) {
+		throw new Error('discount and earning rate combined cannot exceed exchange earning rate');
+	}
+
+	if (code > 12) {
 		throw new Error('referral code is too large');	
 	}
 
-    const user = await getUserByKitId(user_id);
+	const user = await getUserByKitId(user_id);
    
-    if (!user) {
-        throw new Error(USER_NOT_FOUND);
-    }
+	if (!user) {
+		throw new Error(USER_NOT_FOUND);
+	}
 
-    const referralCode = await getModel('referralCode').create(data, {
+	const referralCode = await getModel('referralCode').create(data, {
 		fields: [
 			'user_id',
 			'discount',
 			'earning_rate',
 			'code'
 		]
-    });
-    return referralCode;
-}
+	});
+	return referralCode;
+};
 
 const getUnrealizedReferral = async (user_id) => {
 	const exchangeInfo = getKitConfig().info;
@@ -2528,15 +2551,15 @@ const getUnrealizedReferral = async (user_id) => {
 
 const getRealizedReferral = async (opts = {
 	user_id: null,
-    limit: null,
-    page: null,
-    order_by: null,
-    order: null,
-    start_date: null,
-    end_date: null,
-    format: null
+	limit: null,
+	page: null,
+	order_by: null,
+	order: null,
+	start_date: null,
+	end_date: null,
+	format: null
 }) => {
-    const pagination = paginationQuery(opts.limit, opts.page);
+	const pagination = paginationQuery(opts.limit, opts.page);
 	const ordering = orderingQuery(opts.order_by, opts.order);
 	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
 
@@ -2548,7 +2571,7 @@ const getRealizedReferral = async (opts = {
 		},
 		order: [ordering],
 		...(!opts.format && pagination),
-	}
+	};
      	
 	if (opts.format) {
 		return dbQuery.fetchAllRecords('ReferralHistory', query)
@@ -2564,7 +2587,7 @@ const getRealizedReferral = async (opts = {
 				}
 			});
 	} else {
-        return dbQuery.findAndCountAllWithRows('ReferralHistory', query)
+		return dbQuery.findAndCountAllWithRows('ReferralHistory', query);
 	}
 };
 
@@ -2881,7 +2904,7 @@ const fetchUserReferrals = async (opts = {
 	const referralHistoryModel = getModel('ReferralHistory');
 	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
 
-	const dateTruc = fn('date_trunc', 'day', col('timestamp'));
+	const dateTruc = fn('date_trunc', 'day', col('last_settled'));
 	let query = {
 		where: {
 			referer: opts.user_id
@@ -3212,6 +3235,9 @@ const fetchUserProfitLossInfo = async (user_id, opts = { period: 7 }) => {
 		const finalBalances = filteredBalanceHistory[filteredBalanceHistory.length - 1].balance;
  
 		results[interval] = {};
+		let totalCumulativePNL = 0;
+		let totalInitialValue = 0;
+		let totalFinalValue = 0;
 		Object.keys(finalBalances).forEach(async (asset) => {
 			if (initialBalances?.[asset] && initialBalances?.[asset]?.native_currency_value) {
 				const cumulativePNL =
@@ -3231,39 +3257,17 @@ const fetchUserProfitLossInfo = async (user_id, opts = { period: 7 }) => {
 					cumulativePNL,
 					cumulativePNLPercentage,
 				};
+
+				totalCumulativePNL += cumulativePNL;
+				totalInitialValue += day1Assets + inflow;
+				totalFinalValue += finalBalances[asset].native_currency_value;
 			}
 		});
-	}
-
-	const weightedAverage = (prices, weights) => {
-		const [sum, weightSum] = weights.reduce(
-		  (acc, w, i) => {
-			acc[0] = acc[0] + prices[i] * w;
-			acc[1] = acc[1] + w;
-			return acc;
-		  },
-		  [0, 0]
-		);
-		return sum / weightSum;
-	  };
-
-	for (const interval of ['7d', '1m', '3m']) {
-		if (results[interval]) {
-			let total = 0;
-			let percentageValues = [];
-			let prices = [];
-			const assets = Object.keys(results[interval]);
+		results[interval].total = totalCumulativePNL;
 	
-			assets?.forEach(asset => {
-				total += results[interval][asset].cumulativePNL;
-				if (conversions[asset]) {
-					prices.push(conversions[asset]);
-					percentageValues.push(results[interval][asset].cumulativePNLPercentage);
-				}
-			});
-			results[interval].total = total;
-			const weightedPercentage = weightedAverage(percentageValues, prices);
-			results[interval].totalPercentage = weightedPercentage ? weightedPercentage.toFixed(2) : null;
+		if (totalInitialValue !== 0) {
+			const totalCumulativePNLPercentage = (totalCumulativePNL / totalInitialValue) * 100;
+			results[interval].totalPercentage = totalCumulativePNLPercentage ? totalCumulativePNLPercentage.toFixed(2) : null;
 		}
 	}
 

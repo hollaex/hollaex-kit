@@ -253,7 +253,6 @@ class Form extends Component {
 			icons: ICONS,
 			selectedNetwork,
 			targets,
-			email,
 			qrScannerOpen,
 			closeQRScanner,
 			getQRData,
@@ -277,7 +276,6 @@ class Form extends Component {
 			: getWithdrawNetworkOptions;
 		const formData = {
 			...data,
-			email,
 			fee: getFee,
 			amount: getWithdrawAmount,
 			address: getWithdrawAddress,
