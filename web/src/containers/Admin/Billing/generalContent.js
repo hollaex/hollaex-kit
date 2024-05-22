@@ -658,7 +658,7 @@ const GeneralContent = ({
 											>
 												{selectedType === 'diy'
 													? 'Do-It-Yourself'
-													: selectedType}
+													: selectedType === 'fiat' ? 'Enterprise' : selectedType}
 											</p>
 										</div>
 									</div>

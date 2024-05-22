@@ -22,7 +22,7 @@ import ConfirmPlugin from './ConfirmPlugin';
 const exchangeType = {
 	basic: 'Basic',
 	crypto: 'Crypto Pro',
-	fiat: 'Fiat Ramp',
+	fiat: 'Enterprise',
 	boost: 'Boost',
 };
 
