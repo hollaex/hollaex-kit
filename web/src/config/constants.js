@@ -188,6 +188,9 @@ export const EXPLORERS_ENDPOINT = (currency) => {
 		case 'etc':
 			endpoint = 'https://etc.blockscout.com/tx/';
 			break;
+		case 'ftm':
+			endpoint = 'https://ftmscan.com/tx/';
+			break;
 		default:
 			endpoint = '';
 			break;

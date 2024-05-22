@@ -17,6 +17,7 @@ const InterfaceForm = ({
 	buttonSubmitting,
 	isFiatUpgrade,
 	coins,
+	enabledPlugins,
 }) => {
 	const [isSubmit, setIsSubmit] = useState(!buttonSubmitting);
 	const [form] = Form.useForm();
@@ -32,6 +33,7 @@ const InterfaceForm = ({
 
 	const [referralHistoryData, setReferralHistoryData] = useState({
 		currency: constants?.kit?.referral_history_config?.currency || 'usdt',
+		earning_rate: constants?.kit?.referral_history_config?.earning_rate || 0,
 		earning_period:
 			constants?.kit?.referral_history_config?.earning_period || 0,
 		distributor_id:
@@ -69,6 +71,7 @@ const InterfaceForm = ({
 			const referral_history_config = {
 				active: !!values.referral_history_config,
 				currency: referralHistoryData.currency,
+				earning_rate: Number(referralHistoryData.earning_rate),
 				earning_period: Number(referralHistoryData.earning_period),
 				distributor_id: Number(referralHistoryData.distributor_id),
 				date_enabled: referralHistoryData.date_enabled,
@@ -91,7 +94,17 @@ const InterfaceForm = ({
 
 	const handleSubmitData = (formProps) => {
 		if (formProps.referral_history_config && !referralHistoryData.active) {
-			setDisplayReferralHistoryModal(true);
+			if (
+				enabledPlugins.includes('referral') &&
+				!enabledPlugins.includes('referral-migrate')
+			) {
+				message.error(
+					'In order to use the Referral System feature, you have to install Referral Migrate plugin to migrate the necessary data from the existing referral plugin to the new system.',
+					10
+				);
+			} else {
+				setDisplayReferralHistoryModal(true);
+			}
 		} else if (
 			formProps.balance_history_config &&
 			!balanceHistoryCurrency.currency
@@ -254,6 +267,33 @@ const InterfaceForm = ({
 
 					<div className="mb-4">
 						<div style={{ fontSize: 16 }} className="mb-2">
+							Earning Rate
+							<div style={{ fontSize: 13 }}>
+								Earning rate referee users receive from affiliated users fees
+							</div>
+						</div>
+
+						<Select
+							showSearch
+							className="select-box"
+							placeholder="Select earning rate"
+							value={referralHistoryData.earning_rate}
+							style={{ width: 250 }}
+							onChange={(e) => {
+								setReferralHistoryData({
+									...referralHistoryData,
+									earning_rate: e,
+								});
+							}}
+						>
+							{[10, 20, 30, 40, 50, 60, 70, 80, 90, 100].map((rate) => (
+								<Select.Option value={rate}>{rate}</Select.Option>
+							))}
+						</Select>
+					</div>
+
+					<div className="mb-4">
+						<div style={{ fontSize: 16 }} className="mb-2">
 							Earning Period
 							<div style={{ fontSize: 13 }}>
 								Number of months referee users earn affiliated users fees. Set
@@ -318,6 +358,7 @@ const InterfaceForm = ({
 							onClick={async () => {
 								if (
 									referralHistoryData.currency == null ||
+									referralHistoryData.earning_rate == null ||
 									referralHistoryData.earning_period == null ||
 									referralHistoryData.distributor_id == null
 								) {
@@ -462,10 +503,21 @@ const InterfaceForm = ({
 						<Item name="referral_history_config" valuePropName="checked">
 							<Checkbox className="mt-3">
 								<div className="d-flex align-items-center">
-									<ReactSVG
-										src={STATIC_ICONS.CANDLES_LOGO}
-										className="feature-icon mr-1"
-									/>
+									<span
+										style={{
+											backgroundColor: '#050596',
+											textAlign: 'center',
+											height: 50,
+											display: 'flex',
+											justifyContent: 'center',
+											alignItems: 'center',
+										}}
+									>
+										<ReactSVG
+											src={STATIC_ICONS.REFERRAL_ICON}
+											className="feature-icon mr-1"
+										/>
+									</span>
 									<div className="ml-2 checkbox-txt">
 										Referral System{' '}
 										{referralHistoryData.active && (
