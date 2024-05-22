@@ -327,6 +327,10 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 			throw new Error('currency cannot be changed');
 		}
 
+		if (!newKitConfig.referral_history_config.hasOwnProperty('earning_rate')) {
+			throw new Error('earning_rate key does not exist');
+		}
+		
 		if (!newKitConfig.referral_history_config.hasOwnProperty('earning_period')) {
 			throw new Error('earning_period key does not exist');
 		}

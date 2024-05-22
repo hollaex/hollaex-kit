@@ -92,7 +92,9 @@ const ReferralList = ({
 	const [referralCode, setReferralCode] = useState();
 	const [selectedOption, setSelectedOption] = useState(0);
 	const [referralCodes, setReferralCodes] = useState([]);
-	const [earningRate, setEarningRate] = useState(0);
+	const [earningRate, setEarningRate] = useState(
+		referral_history_config?.earning_rate
+	);
 	const [discount, setDiscount] = useState(0);
 	const [activeTab, setActiveTab] = useState('0');
 	const [realizedData, setRealizedData] = useState([]);
@@ -622,7 +624,7 @@ const ReferralList = ({
 											{STRINGS['REFERRAL_LINK.REFERRAL_CODE']}
 										</EditWrapper>
 									</div>
-									<div
+									{/* <div
 										style={{
 											padding: 10,
 											width: '100%',
@@ -630,7 +632,21 @@ const ReferralList = ({
 										}}
 									>
 										{referralCode}
-									</div>
+									</div> */}
+									<input
+										style={{
+											padding: 10,
+											width: '100%',
+											border: '1px solid #ccc',
+											backgroundColor: 'transparent',
+										}}
+										type="text"
+										value={referralCode}
+										onChange={(e) => {
+											if (e.target.value.length < 12)
+												setReferralCode(e.target.value);
+										}}
+									/>
 									<div style={{ marginTop: 10, fontWeight: 'bold' }}>
 										<EditWrapper stringId="REFERRAL_LINK.EXAMPLE">
 											{STRINGS['REFERRAL_LINK.EXAMPLE']}
@@ -799,12 +815,38 @@ const ReferralList = ({
 												onClick={(e) => {
 													e.stopPropagation();
 													if (selectedOption === 0) {
-														if (earningRate >= 0 && earningRate < 100) {
-															setEarningRate(earningRate + 1);
+														if (
+															earningRate >= 0 &&
+															earningRate <=
+																referral_history_config.earning_rate
+														) {
+															let newDiscount = discount;
+															if (discount >= 10) {
+																newDiscount -= 10;
+																setDiscount(newDiscount);
+															}
+															if (
+																earningRate + newDiscount <
+																referral_history_config.earning_rate
+															)
+																setEarningRate(earningRate + 10);
 														}
 													} else {
-														if (discount >= 0 && discount < 100) {
-															setDiscount(discount + 1);
+														if (
+															discount >= 0 &&
+															discount <= referral_history_config.earning_rate
+														) {
+															let newEarningRate = earningRate;
+															if (earningRate >= 10) {
+																newEarningRate -= 10;
+																if (newEarningRate === 0) return;
+																setEarningRate(newEarningRate);
+															}
+															if (
+																newEarningRate + discount <
+																referral_history_config.earning_rate
+															)
+																setDiscount(discount + 10);
 														}
 													}
 												}}
@@ -815,12 +857,33 @@ const ReferralList = ({
 												onClick={(e) => {
 													e.stopPropagation();
 													if (selectedOption === 0) {
-														if (earningRate > 0 && earningRate < 100) {
-															setEarningRate(earningRate - 1);
+														if (
+															earningRate > 0 &&
+															earningRate <=
+																referral_history_config.earning_rate
+														) {
+															const newEarningRate = earningRate - 10;
+															if (newEarningRate === 0) return;
+															if (earningRate >= 10)
+																setEarningRate(newEarningRate);
+															if (
+																newEarningRate + discount <
+																referral_history_config.earning_rate
+															)
+																setDiscount(discount + 10);
 														}
 													} else {
-														if (discount > 0 && discount < 100) {
-															setDiscount(discount - 1);
+														if (
+															discount > 0 &&
+															discount <= referral_history_config.earning_rate
+														) {
+															const newDiscount = discount - 10;
+															if (discount >= 10) setDiscount(newDiscount);
+															if (
+																earningRate + newDiscount <
+																referral_history_config.earning_rate
+															)
+																setEarningRate(earningRate + 10);
 														}
 													}
 												}}
@@ -1114,7 +1177,7 @@ const ReferralList = ({
 										setLinkStep(0);
 										setReferralCode();
 										setDiscount(0);
-										setEarningRate(0);
+										setEarningRate(referral_history_config?.earning_rate);
 									}}
 									style={{
 										backgroundColor: '#5D63FF',
