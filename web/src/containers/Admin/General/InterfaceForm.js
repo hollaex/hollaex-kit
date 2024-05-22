@@ -503,10 +503,21 @@ const InterfaceForm = ({
 						<Item name="referral_history_config" valuePropName="checked">
 							<Checkbox className="mt-3">
 								<div className="d-flex align-items-center">
-									<ReactSVG
-										src={STATIC_ICONS.CANDLES_LOGO}
-										className="feature-icon mr-1"
-									/>
+									<span
+										style={{
+											backgroundColor: '#050596',
+											textAlign: 'center',
+											height: 50,
+											display: 'flex',
+											justifyContent: 'center',
+											alignItems: 'center',
+										}}
+									>
+										<ReactSVG
+											src={STATIC_ICONS.REFERRAL_ICON}
+											className="feature-icon mr-1"
+										/>
+									</span>
 									<div className="ml-2 checkbox-txt">
 										Referral System{' '}
 										{referralHistoryData.active && (

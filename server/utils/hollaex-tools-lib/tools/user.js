@@ -2396,6 +2396,7 @@ const validateReferralFeature = async (data) => {
 	const { 
 		earning_period: EARNING_PERIOD, 
 		distributor_id: DISTRIBUTOR_ID,
+		earning_rate: EARNING_RATE,
 	} = data;
 
 	const exchangeInfo = getKitConfig().info;
