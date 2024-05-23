@@ -580,7 +580,7 @@ const ReferralList = ({
 			code += characters[randomIndex];
 		}
 
-		return code;
+		return code?.toUpperCase();
 	};
 
 	const createReferralCode = () => {

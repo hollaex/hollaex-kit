@@ -182,7 +182,7 @@ const Referrals = ({
 			code += characters[randomIndex];
 		}
 
-		return code;
+		return code?.toUpperCase();
 	};
 	return (
 		<div className="admin-user-container">
@@ -209,15 +209,20 @@ const Referrals = ({
 					<div style={{ marginBottom: 30, marginTop: 10 }}>
 						<div style={{ marginBottom: 10 }}>
 							<div className="mb-1">Code</div>
-							<div
+							<input
 								style={{
 									padding: 10,
 									width: '100%',
 									border: '1px solid #ccc',
+									backgroundColor: 'transparent',
 								}}
-							>
-								{referralCode}
-							</div>
+								type="text"
+								value={referralCode}
+								onChange={(e) => {
+									if (e.target.value.length <= 6)
+										setReferralCode(e.target.value?.toUpperCase());
+								}}
+							/>
 						</div>
 
 						<div style={{ marginBottom: 10 }}>
@@ -293,6 +298,11 @@ const Referrals = ({
 									}
 									if (referralPayload.discount == null) {
 										message.error('Please select discount');
+										return;
+									}
+
+									if (referralCode.length < 6) {
+										message.error('Referral code must be 6 characters');
 										return;
 									}
 
