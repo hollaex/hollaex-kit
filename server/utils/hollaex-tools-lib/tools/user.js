@@ -2503,11 +2503,11 @@ const createUserReferralCode = async (data) => {
 		throw new Error('discount and earning rate combined cannot exceed exchange earning rate');
 	};
 
-	if (code > 6) {
+	if (code.length > 6) {
 		throw new Error('referral code is too large');	
 	};
 
-	if (code == 0) {
+	if (code.length == 0) {
 		throw new Error('referral code cannot be empty');	
 	};
 
