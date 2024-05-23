@@ -2477,41 +2477,45 @@ const createUserReferralCode = async (data) => {
 
 	if (discount < 0) {
 		throw new Error('discount cannot be negative');	
-	}
+	};
 
 	if (discount > 100) {
 		throw new Error('discount cannot be more than 100');	
-	}
+	};
 
 	if (discount % 10 !== 0) {
 		throw new Error('discount must be in increments of 10');
-	}
+	};
 
 	if (earning_rate < 1) {
 		throw new Error('earning rate cannot be less than 1');	
-	}
+	};
 
 	if (earning_rate > 100) {
 		throw new Error('earning rate cannot be more than 100');	
-	}
+	};
 
 	if (earning_rate % 10 !== 0) {
 		throw new Error('earning rate must be in increments of 10');
-	}
+	};
 
 	if (earning_rate + discount > EARNING_RATE) {
 		throw new Error('discount and earning rate combined cannot exceed exchange earning rate');
-	}
+	};
 
 	if (code > 6) {
 		throw new Error('referral code is too large');	
-	}
+	};
+
+	if (code == 0) {
+		throw new Error('referral code cannot be empty');	
+	};
 
 	const user = await getUserByKitId(user_id);
    
 	if (!user) {
 		throw new Error(USER_NOT_FOUND);
-	}
+	};
 
 	const referralCode = await getModel('referralCode').create(data, {
 		fields: [

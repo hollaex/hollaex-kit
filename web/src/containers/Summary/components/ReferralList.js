@@ -690,6 +690,12 @@ const ReferralList = ({
 								</AntButton>
 								<AntButton
 									onClick={async () => {
+										if (referralCode.length === 0) {
+											showErrorMessage(
+												STRINGS['REFERRAL_LINK.REFERRAL_CODE_ZERO']
+											);
+											return;
+										}
 										setLinkStep(1);
 									}}
 									style={{
