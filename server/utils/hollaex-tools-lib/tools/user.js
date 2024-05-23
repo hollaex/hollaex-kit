@@ -2499,7 +2499,7 @@ const createUserReferralCode = async (data) => {
 		throw new Error('earning rate must be in increments of 10');
 	};
 
-	if (earning_rate + discount > EARNING_RATE) {
+	if (!is_admin && (earning_rate + discount > EARNING_RATE)) {
 		throw new Error('discount and earning rate combined cannot exceed exchange earning rate');
 	};
 
@@ -2709,10 +2709,12 @@ const createUnrealizedReferralFees = async (currentTime) => {
 				getAllAffiliations({
 					where: {
 						'$user.network_id$': tradeUsers,
-						created_at: {
-							[Op.gt]: moment(currentTime).subtract(EARNING_PERIOD, 'months').toISOString(),
-							[Op.lte]: currentTime
-						}
+						...(EARNING_PERIOD && {
+							created_at: {
+								[Op.gt]: moment(currentTime).subtract(EARNING_PERIOD, 'months').toISOString(),
+								[Op.lte]: currentTime
+							}
+						})
 					},
 					include: [
 						{
