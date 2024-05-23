@@ -2503,10 +2503,10 @@ const createUserReferralCode = async (data) => {
 		throw new Error('discount and earning rate combined cannot exceed exchange earning rate');
 	};
 
-	if (code.length !== 6) {
+	if (!is_admin && code.length !== 6) {
 		throw new Error('invalid referral code');	
-	};
-
+	}
+	 
 	const user = await getUserByKitId(user_id);
    
 	if (!user) {
@@ -2523,7 +2523,7 @@ const createUserReferralCode = async (data) => {
 			throw new Error('you cannot create more than 3 referral codes');
 		}
 	};
-	
+
 	const referralCode = await getModel('referralCode').create(data, {
 		fields: [
 			'user_id',
