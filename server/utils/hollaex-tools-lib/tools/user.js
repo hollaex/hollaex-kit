@@ -2499,7 +2499,7 @@ const createUserReferralCode = async (data) => {
 		throw new Error('earning rate must be in increments of 10');
 	};
 
-	if (earning_rate + discount > EARNING_RATE) {
+	if (!is_admin && (earning_rate + discount > EARNING_RATE)) {
 		throw new Error('discount and earning rate combined cannot exceed exchange earning rate');
 	};
 
