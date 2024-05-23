@@ -119,7 +119,6 @@ const Referrals = ({
 				: getUserAffiliation;
 			action(userId, page, limit)
 				.then((response) => {
-					console.log({ response });
 					setData((prevData) =>
 						page === 1 ? response.data : [...prevData, ...response.data]
 					);
