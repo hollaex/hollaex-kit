@@ -275,10 +275,14 @@ export const getUserAffiliation = (user_id, page = 1, limit = 50) => {
 	return requestAuthenticated(`/admin/user/affiliation?${query}`, options);
 };
 
-export const fetchReferralCodesByAdmin = (values) => {
-	const queryValues =
-		values && Object.keys(values).length ? querystring.stringify(values) : '';
-	return requestAuthenticated(`/admin/user/referral/code?${queryValues}`);
+export const fetchReferralCodesByAdmin = (user_id, page = 1, limit = 50) => {
+	const params = { user_id, page, limit };
+	const query = querystring.stringify(params);
+
+	const options = {
+		method: 'GET',
+	};
+	return requestAuthenticated(`/admin/user/referral/code?${query}`, options);
 };
 
 export const postReferralCodeByAdmin = (values) => {

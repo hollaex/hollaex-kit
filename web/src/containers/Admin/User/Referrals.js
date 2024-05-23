@@ -291,7 +291,7 @@ const Referrals = ({
 										message.error('Please select earning rate');
 										return;
 									}
-									if (!referralPayload.discount) {
+									if (referralPayload.discount == null) {
 										message.error('Please select discount');
 										return;
 									}
