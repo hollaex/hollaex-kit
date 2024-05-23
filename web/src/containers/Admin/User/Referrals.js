@@ -1,10 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Table, Spin, Alert } from 'antd';
-import { getUserReferer, getUserAffiliation } from './actions';
+import {
+	getUserReferer,
+	getUserAffiliation,
+	fetchReferralCodesByAdmin,
+} from './actions';
 import { formatTimestampGregorian, DATETIME_FORMAT } from 'utils/date';
 import './index.css';
 
-const COLUMNS = [
+const AFF_COLUMNS = [
 	{
 		title: 'Time referred /signed up',
 		dataIndex: 'created_at',
@@ -28,9 +32,76 @@ const COLUMNS = [
 	},
 ];
 
+const REF_COLUMNS = [
+	{
+		title: 'Creation Date',
+		dataIndex: 'created_at',
+		key: 'created_at',
+		render: (value) => (
+			<div className="d-flex justify-content-start">
+				{formatTimestampGregorian(value, DATETIME_FORMAT)}
+			</div>
+		),
+	},
+	{
+		title: 'Code',
+		dataIndex: 'code',
+		key: 'code',
+		render: (data, key, index) => (
+			<div className="d-flex justify-content-start">{data || '-'}</div>
+		),
+	},
+	{
+		title: 'Referral Count',
+		dataIndex: 'referral_count',
+		key: 'referral_count',
+
+		render: (data, key, index) => {
+			return <div className="d-flex justify-content-start">{data}</div>;
+		},
+	},
+	{
+		title: 'Earning rate',
+		dataIndex: 'earning_rate',
+		key: 'earning_rate',
+
+		render: (data, key, index) => {
+			return <div className="d-flex justify-content-start">{data}%</div>;
+		},
+	},
+	{
+		title: 'Discount given',
+		dataIndex: 'discount',
+		key: 'discount',
+
+		render: (data, key, index) => {
+			return <div className="d-flex justify-content-start">{data}%</div>;
+		},
+	},
+	{
+		title: 'Link',
+		label: 'link',
+		key: 'link',
+		className: 'd-flex justify-content-end',
+		render: (data, key, index) => {
+			return (
+				<div
+					className="d-flex justify-content-end"
+					style={{ gap: 10, textAlign: 'center', alignItems: 'center' }}
+				>
+					<span>.../signup?affiliation_code={data?.code}</span>{' '}
+				</div>
+			);
+		},
+	},
+];
+
 const LIMIT = 50;
 
-const Referrals = ({ userInformation: { id: userId, affiliation_code } }) => {
+const Referrals = ({
+	userInformation: { id: userId, affiliation_code },
+	referral_history_config,
+}) => {
 	const [loading, setLoading] = useState(true);
 	const [invitedBy, setInvitedBy] = useState();
 	const [data, setData] = useState([]);
@@ -39,12 +110,16 @@ const Referrals = ({ userInformation: { id: userId, affiliation_code } }) => {
 	const [count, setCount] = useState();
 	const [isRemaining, setIsRemaining] = useState(true);
 	const [error, setError] = useState();
-	const referralLink = `${process.env.REACT_APP_PUBLIC_URL}/signup?affiliation_code=${affiliation_code}`;
+	// const referralLink = `${process.env.REACT_APP_PUBLIC_URL}/signup?affiliation_code=${affiliation_code}`;
 
 	const requestAffiliations = useCallback(
 		(page, limit) => {
-			getUserAffiliation(userId, page, limit)
+			let action = referral_history_config?.active
+				? fetchReferralCodesByAdmin
+				: getUserAffiliation;
+			action(userId, page, limit)
 				.then((response) => {
+					console.log({ response });
 					setData((prevData) =>
 						page === 1 ? response.data : [...prevData, ...response.data]
 					);
@@ -62,7 +137,7 @@ const Referrals = ({ userInformation: { id: userId, affiliation_code } }) => {
 					setError(message);
 				});
 		},
-		[userId]
+		[userId, referral_history_config.active]
 	);
 
 	const onPageChange = (count, pageSize) => {
@@ -105,14 +180,18 @@ const Referrals = ({ userInformation: { id: userId, affiliation_code } }) => {
 				</div>
 				<div className="user-info-separator" />
 				<div className="d-flex">
-					<div className="bold">Total referred: </div>
+					<div className="bold">
+						{referral_history_config?.active
+							? 'Number of generated codes:'
+							: 'Total referred:'}
+					</div>
 					<div className="px-2">{count}</div>
 				</div>
 				<div className="user-info-separator" />
-				<div className="d-flex">
+				{/* <div className="d-flex">
 					<div className="bold">Referral link: </div>
 					<div className="px-2">{referralLink}</div>
-				</div>
+				</div> */}
 			</div>
 			<div>
 				{error && (
@@ -125,10 +204,9 @@ const Referrals = ({ userInformation: { id: userId, affiliation_code } }) => {
 						closeText="Close"
 					/>
 				)}
-				<div className="bold">Affiliation referral table</div>
 				<Table
 					className="blue-admin-table"
-					columns={COLUMNS}
+					columns={referral_history_config?.active ? REF_COLUMNS : AFF_COLUMNS}
 					dataSource={data}
 					pagination={{
 						current: currentTablePage,

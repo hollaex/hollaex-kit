@@ -248,6 +248,7 @@ class UserContent extends Component {
 			showConfigure,
 			kycPluginName,
 			requestUserData,
+			referral_history_config,
 		} = this.props;
 
 		const { showVerifyEmailModal, showRecoverModal, userTiers } = this.state;
@@ -434,7 +435,10 @@ class UserContent extends Component {
 					}
 					{
 						<TabPane tab="Referrals" key="referrals">
-							<Referrals userInformation={userInformation} />
+							<Referrals
+								userInformation={userInformation}
+								referral_history_config={referral_history_config}
+							/>
 						</TabPane>
 					}
 					{

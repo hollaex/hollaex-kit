@@ -275,6 +275,12 @@ export const getUserAffiliation = (user_id, page = 1, limit = 50) => {
 	return requestAuthenticated(`/admin/user/affiliation?${query}`, options);
 };
 
+export const fetchReferralCodesByAdmin = (values) => {
+	const queryValues =
+		values && Object.keys(values).length ? querystring.stringify(values) : '';
+	return requestAuthenticated(`/admin/user/referral/code?${queryValues}`);
+};
+
 export const getUserReferer = (user_id) => {
 	const options = {
 		method: 'GET',

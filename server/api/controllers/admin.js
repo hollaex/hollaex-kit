@@ -5,7 +5,7 @@ const toolsLib = require('hollaex-tools-lib');
 const { cloneDeep, pick } = require('lodash');
 const { all } = require('bluebird');
 const { INIT_CHANNEL, ROLES } = require('../../constants');
-const { USER_NOT_FOUND, API_KEY_NOT_PERMITTED, PROVIDE_VALID_EMAIL, INVALID_PASSWORD, USER_EXISTS, NO_DATA_FOR_CSV, INVALID_VERIFICATION_CODE, INVALID_OTP_CODE } = require('../../messages');
+const { USER_NOT_FOUND, API_KEY_NOT_PERMITTED, PROVIDE_VALID_EMAIL, INVALID_PASSWORD, USER_EXISTS, NO_DATA_FOR_CSV, INVALID_VERIFICATION_CODE, INVALID_OTP_CODE, REFERRAL_HISTORY_NOT_ACTIVE } = require('../../messages');
 const { sendEmail, testSendSMTPEmail, sendRawEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
 const { errorMessageConverter } = require('../../utils/conversion');
@@ -2892,7 +2892,44 @@ const createTradeByAdmin = (req, res) => {
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
+const getUserReferralCodesByAdmin = (req, res) => {
+	loggerAdmin.info(
+		req.uuid,
+		'controllers/user/getUserReferralCodesByAdmin',
+	);
 
+	const { limit, page, order_by, order, start_date, end_date } = req.swagger.params;
+
+	if (
+		!toolsLib.getKitConfig().referral_history_config ||
+		!toolsLib.getKitConfig().referral_history_config.active
+	) {
+		throw new Error(REFERRAL_HISTORY_NOT_ACTIVE);
+	}
+
+	const user_id = req.swagger.params.user_id.value;
+
+	toolsLib.user.getUserReferralCodes({ 
+		user_id, 	
+		limit: limit.value,
+		page: page.value,
+		order_by: order_by.value,
+		order: order.value,
+		start_date: start_date.value,
+		end_date: end_date.value
+	})
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/user/getUserReferralCodesByAdmin err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
 module.exports = {
 	createInitialAdmin,
 	getAdminKit,
@@ -2963,5 +3000,6 @@ module.exports = {
 	deleteTransactionLimit,
 	getUserBalanceHistoryByAdmin,
 	createTradeByAdmin,
-	performDirectWithdrawalByAdmin
+	performDirectWithdrawalByAdmin,
+	getUserReferralCodesByAdmin
 };

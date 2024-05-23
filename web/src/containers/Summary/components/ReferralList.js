@@ -268,7 +268,7 @@ const ReferralList = ({
 						>
 							<span>.../signup?affiliation_code={data?.code}</span>{' '}
 							<CopyToClipboard
-								text={data?.code}
+								text={`${process.env.REACT_APP_PUBLIC_URL}/signup?affiliation_code=${data?.code}`}
 								onCopy={() => {
 									handleCopy();
 								}}
@@ -580,7 +580,7 @@ const ReferralList = ({
 			code += characters[randomIndex];
 		}
 
-		return code;
+		return code?.toUpperCase();
 	};
 
 	const createReferralCode = () => {
@@ -643,8 +643,8 @@ const ReferralList = ({
 										type="text"
 										value={referralCode}
 										onChange={(e) => {
-											if (e.target.value.length < 12)
-												setReferralCode(e.target.value);
+											if (e.target.value.length <= 6)
+												setReferralCode(e.target.value?.toUpperCase());
 										}}
 									/>
 									<div style={{ marginTop: 10, fontWeight: 'bold' }}>
@@ -653,7 +653,8 @@ const ReferralList = ({
 										</EditWrapper>
 									</div>
 									<div>
-										https://hollaex.com/signup?affiliation_code={referralCode}
+										{process.env.REACT_APP_PUBLIC_URL}/signup?affiliation_code=
+										{referralCode}
 									</div>
 									<div style={{ marginTop: 5, color: '#ccc' }}>
 										<EditWrapper stringId="REFERRAL_LINK.NO_SPECIAL">
@@ -1036,7 +1037,8 @@ const ReferralList = ({
 											</EditWrapper>
 										</div>
 										<div>
-											https://hollaex.com/signup?affiliation_code={referralCode}
+											{process.env.REACT_APP_PUBLIC_URL}
+											/signup?affiliation_code={referralCode}
 										</div>
 									</div>
 								</div>
@@ -1139,10 +1141,11 @@ const ReferralList = ({
 										}}
 									>
 										<div style={{ fontSize: 11 }}>
-											https://hollaex.com/signup?affiliation_code={referralCode}
+											{process.env.REACT_APP_PUBLIC_URL}
+											/signup?affiliation_code={referralCode}
 										</div>
 										<CopyToClipboard
-											text={referralCode}
+											text={`${process.env.REACT_APP_PUBLIC_URL}/signup?affiliation_code=${referralCode}`}
 											onCopy={() => {
 												handleCopy();
 											}}
