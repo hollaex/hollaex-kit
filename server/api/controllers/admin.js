@@ -2930,6 +2930,40 @@ const getUserReferralCodesByAdmin = (req, res) => {
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
+const createUserReferralCodeByAdmin = (req, res) => {
+	loggerAdmin.info(
+		req.uuid,
+		'controllers/user/createUserReferralCodeByAdmin',
+	);
+	const { user_id, discount, earning_rate, code } = req.swagger.params.data.value;
+
+	if (
+		!toolsLib.getKitConfig().referral_history_config ||
+		!toolsLib.getKitConfig().referral_history_config.active
+	) {
+		throw new Error(REFERRAL_HISTORY_NOT_ACTIVE);
+	}
+
+	toolsLib.user.createUserReferralCode({
+		user_id,
+		discount, 
+		earning_rate, 
+		code,
+		is_admin: true
+	})
+		.then(() => {
+			return res.json({ message: 'success' });
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/user/createUserReferralCodeByAdmin err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
 module.exports = {
 	createInitialAdmin,
 	getAdminKit,
@@ -3001,5 +3035,6 @@ module.exports = {
 	getUserBalanceHistoryByAdmin,
 	createTradeByAdmin,
 	performDirectWithdrawalByAdmin,
-	getUserReferralCodesByAdmin
+	getUserReferralCodesByAdmin,
+	createUserReferralCodeByAdmin
 };

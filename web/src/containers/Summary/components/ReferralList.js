@@ -580,7 +580,7 @@ const ReferralList = ({
 			code += characters[randomIndex];
 		}
 
-		return code?.toUpperCase();
+		return code;
 	};
 
 	const createReferralCode = () => {
@@ -624,7 +624,7 @@ const ReferralList = ({
 											{STRINGS['REFERRAL_LINK.REFERRAL_CODE']}
 										</EditWrapper>
 									</div>
-									{/* <div
+									<div
 										style={{
 											padding: 10,
 											width: '100%',
@@ -632,8 +632,8 @@ const ReferralList = ({
 										}}
 									>
 										{referralCode}
-									</div> */}
-									<input
+									</div>
+									{/* <input
 										style={{
 											padding: 10,
 											width: '100%',
@@ -646,7 +646,7 @@ const ReferralList = ({
 											if (e.target.value.length <= 6)
 												setReferralCode(e.target.value?.toUpperCase());
 										}}
-									/>
+									/> */}
 									<div style={{ marginTop: 10, fontWeight: 'bold' }}>
 										<EditWrapper stringId="REFERRAL_LINK.EXAMPLE">
 											{STRINGS['REFERRAL_LINK.EXAMPLE']}
@@ -1077,16 +1077,18 @@ const ReferralList = ({
 								<AntButton
 									onClick={async () => {
 										try {
-											await postReferralCode({
-												earning_rate: earningRate,
-												discount,
-												code: referralCode,
-											});
-											fetchReferralCodes()
-												.then((res) => {
-													setReferralCodes(res.data);
-												})
-												.catch((err) => err);
+											if (referralCodes?.data?.length < 3) {
+												await postReferralCode({
+													earning_rate: earningRate,
+													discount,
+													code: referralCode,
+												});
+												fetchReferralCodes()
+													.then((res) => {
+														setReferralCodes(res.data);
+													})
+													.catch((err) => err);
+											}
 											setLinkStep(3);
 										} catch (error) {
 											showErrorMessage(error.data.message);
@@ -1478,47 +1480,7 @@ const ReferralList = ({
 										{STRINGS['REFERRAL_LINK.INVITE_LINKS_DESC']}
 									</EditWrapper>
 								</div>
-								<div
-									onClick={async () => {
-										if (!referralCode) {
-											try {
-												const code = generateUniqueCode();
-												setReferralCode(code);
-												setDisplayCreateLink(true);
-											} catch (error) {
-												showErrorMessage(error.data.message);
-											}
-										} else setDisplayCreateLink(true);
-									}}
-									style={{
-										color: '#4E54BE',
-										cursor: 'pointer',
-										fontWeight: 'bold',
-										textDecoration: 'underline',
-										marginTop: 5,
-									}}
-								>
-									<EditWrapper stringId="REFERRAL_LINK.CREATE_LINK">
-										{STRINGS['REFERRAL_LINK.CREATE_LINK']}
-									</EditWrapper>
-								</div>
-							</div>
-
-							{referralCodes?.data?.length === 0 && (
-								<div
-									style={{
-										display: 'flex',
-										justifyContent: 'center',
-										alignItems: 'center',
-										flexDirection: 'column',
-										minHeight: 500,
-									}}
-								>
-									<div style={{ marginBottom: 10 }}>
-										<EditWrapper stringId="REFERRAL_LINK.NO_LINK">
-											{STRINGS['REFERRAL_LINK.NO_LINK']}
-										</EditWrapper>
-									</div>
+								{referralCodes?.data?.length < 3 && (
 									<div
 										onClick={async () => {
 											if (!referralCode) {
@@ -1543,6 +1505,50 @@ const ReferralList = ({
 											{STRINGS['REFERRAL_LINK.CREATE_LINK']}
 										</EditWrapper>
 									</div>
+								)}
+							</div>
+
+							{referralCodes?.data?.length === 0 && (
+								<div
+									style={{
+										display: 'flex',
+										justifyContent: 'center',
+										alignItems: 'center',
+										flexDirection: 'column',
+										minHeight: 500,
+									}}
+								>
+									<div style={{ marginBottom: 10 }}>
+										<EditWrapper stringId="REFERRAL_LINK.NO_LINK">
+											{STRINGS['REFERRAL_LINK.NO_LINK']}
+										</EditWrapper>
+									</div>
+									{referralCodes?.data?.length < 3 && (
+										<div
+											onClick={async () => {
+												if (!referralCode) {
+													try {
+														const code = generateUniqueCode();
+														setReferralCode(code);
+														setDisplayCreateLink(true);
+													} catch (error) {
+														showErrorMessage(error.data.message);
+													}
+												} else setDisplayCreateLink(true);
+											}}
+											style={{
+												color: '#4E54BE',
+												cursor: 'pointer',
+												fontWeight: 'bold',
+												textDecoration: 'underline',
+												marginTop: 5,
+											}}
+										>
+											<EditWrapper stringId="REFERRAL_LINK.CREATE_LINK">
+												{STRINGS['REFERRAL_LINK.CREATE_LINK']}
+											</EditWrapper>
+										</div>
+									)}
 								</div>
 							)}
 

@@ -281,6 +281,14 @@ export const fetchReferralCodesByAdmin = (values) => {
 	return requestAuthenticated(`/admin/user/referral/code?${queryValues}`);
 };
 
+export const postReferralCodeByAdmin = (values) => {
+	const options = {
+		method: 'POST',
+		body: JSON.stringify(values),
+	};
+	return requestAuthenticated(`/admin/user/referral/code`, options);
+};
+
 export const getUserReferer = (user_id) => {
 	const options = {
 		method: 'GET',

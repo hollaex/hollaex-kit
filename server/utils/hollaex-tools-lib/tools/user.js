@@ -2469,7 +2469,7 @@ const getUserReferralCodes = async (
 };
 
 const createUserReferralCode = async (data) => {
-	const { user_id, discount, earning_rate, code } = data;
+	const { user_id, discount, earning_rate, code, is_admin } = data;
 
 	const { 
 		earning_rate: EARNING_RATE, 
@@ -2503,12 +2503,8 @@ const createUserReferralCode = async (data) => {
 		throw new Error('discount and earning rate combined cannot exceed exchange earning rate');
 	};
 
-	if (code.length > 6) {
-		throw new Error('referral code is too large');	
-	};
-
-	if (code.length == 0) {
-		throw new Error('referral code cannot be empty');	
+	if (code.length !== 6) {
+		throw new Error('invalid referral code');	
 	};
 
 	const user = await getUserByKitId(user_id);
@@ -2517,6 +2513,17 @@ const createUserReferralCode = async (data) => {
 		throw new Error(USER_NOT_FOUND);
 	};
 
+	if (!is_admin) {
+		const userReferralCodes = await getModel('referralCode').findAll({
+			where: {
+				user_id
+			}
+		})
+		if (userReferralCodes.length > 3) {
+			throw new Error('you cannot create more than 3 referral codes');
+		}
+	};
+	
 	const referralCode = await getModel('referralCode').create(data, {
 		fields: [
 			'user_id',

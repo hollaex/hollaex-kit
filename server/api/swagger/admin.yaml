@@ -3422,6 +3422,47 @@ paths:
         - admin
       x-token-permissions:
         - can_read
+    post:
+      operationId: createUserReferralCodeByAdmin
+      description: create referral code config for user by admin
+      tags:
+        - User
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          type: object
+          required:
+            - user_id
+            - discount
+            - earning_rate
+            - code
+          properties:
+            discount:
+              type: number
+              format: double
+            earning_rate:
+              type: number
+              format: double
+            code:
+              type: string
+              maxLength: 256
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+      x-security-scopes:
+        - admin
   /admin/quicktrade/config:
     x-swagger-router-controller: admin
     put:

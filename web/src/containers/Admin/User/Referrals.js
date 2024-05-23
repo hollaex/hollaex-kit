@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Table, Spin, Alert } from 'antd';
+import { Table, Spin, Alert, message, Select, Modal, Button } from 'antd';
 import {
 	getUserReferer,
 	getUserAffiliation,
 	fetchReferralCodesByAdmin,
+	postReferralCodeByAdmin,
 } from './actions';
 import { formatTimestampGregorian, DATETIME_FORMAT } from 'utils/date';
+import { CloseOutlined } from '@ant-design/icons';
 import './index.css';
 
 const AFF_COLUMNS = [
@@ -110,7 +112,11 @@ const Referrals = ({
 	const [count, setCount] = useState();
 	const [isRemaining, setIsRemaining] = useState(true);
 	const [error, setError] = useState();
-	// const referralLink = `${process.env.REACT_APP_PUBLIC_URL}/signup?affiliation_code=${affiliation_code}`;
+	const [displayCreateReferralCode, setDisplayCreateReferralCode] = useState(
+		false
+	);
+	const [referralPayload, setReferralPayload] = useState({});
+	const [referralCode, setReferralCode] = useState();
 
 	const requestAffiliations = useCallback(
 		(page, limit) => {
@@ -166,8 +172,157 @@ const Referrals = ({
 		);
 	}
 
+	const generateUniqueCode = () => {
+		const characters =
+			'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+		let code = '';
+
+		for (let i = 0; i < 6; i++) {
+			const randomIndex = Math.floor(Math.random() * characters.length);
+			code += characters[randomIndex];
+		}
+
+		return code;
+	};
 	return (
 		<div className="admin-user-container">
+			{displayCreateReferralCode && (
+				<Modal
+					maskClosable={false}
+					closeIcon={<CloseOutlined style={{ color: 'white' }} />}
+					bodyStyle={{
+						backgroundColor: '#27339D',
+						marginTop: 60,
+					}}
+					visible={displayCreateReferralCode}
+					footer={null}
+					onCancel={() => {
+						setDisplayCreateReferralCode(false);
+					}}
+				>
+					<h2 style={{ fontWeight: '600', color: 'white' }}>
+						Create Referral Code
+					</h2>
+					<div style={{ fontWeight: '400', color: 'white' }}>
+						You can create referral code for the selected user below
+					</div>
+					<div style={{ marginBottom: 30, marginTop: 10 }}>
+						<div style={{ marginBottom: 10 }}>
+							<div className="mb-1">Code</div>
+							<div
+								style={{
+									padding: 10,
+									width: '100%',
+									border: '1px solid #ccc',
+								}}
+							>
+								{referralCode}
+							</div>
+						</div>
+
+						<div style={{ marginBottom: 10 }}>
+							<div className="mb-1">Earning Rate</div>
+							<Select
+								onChange={(value) =>
+									setReferralPayload({
+										...referralPayload,
+										earning_rate: value,
+									})
+								}
+								value={referralPayload?.earning_rate}
+								style={{ width: '100%' }}
+								placeholder="Select Earning Rate"
+							>
+								{[10, 20, 30, 40, 50, 60, 70, 80, 90, 100].map((value) => (
+									<Select.Option value={value}>{value}</Select.Option>
+								))}
+							</Select>
+						</div>
+
+						<div style={{ marginBottom: 10 }}>
+							<div className="mb-1">Discount</div>
+							<Select
+								onChange={(value) =>
+									setReferralPayload({
+										...referralPayload,
+										discount: value,
+									})
+								}
+								value={referralPayload?.discount}
+								style={{ width: '100%' }}
+								placeholder="Select Discount"
+							>
+								{[10, 20, 30, 40, 50, 60, 70, 80, 90, 100].map((value) => (
+									<Select.Option value={value}>{value}</Select.Option>
+								))}
+							</Select>
+						</div>
+					</div>
+
+					<div
+						style={{
+							display: 'flex',
+							flexDirection: 'row',
+							gap: 15,
+							justifyContent: 'space-between',
+						}}
+					>
+						<Button
+							onClick={() => {
+								setReferralPayload({
+									type: 'limit',
+								});
+								setDisplayCreateReferralCode(false);
+							}}
+							style={{
+								backgroundColor: '#288500',
+								color: 'white',
+								flex: 1,
+								height: 35,
+							}}
+							type="default"
+						>
+							Back
+						</Button>
+						<Button
+							onClick={async () => {
+								try {
+									if (!referralPayload.earning_rate) {
+										message.error('Please select earning rate');
+										return;
+									}
+									if (!referralPayload.discount) {
+										message.error('Please select discount');
+										return;
+									}
+
+									await postReferralCodeByAdmin({
+										...referralPayload,
+										user_id: userId,
+										code: referralCode,
+									});
+									message.success('Referral code successfully created');
+									setDisplayCreateReferralCode(false);
+									setReferralPayload({});
+									setReferralCode();
+									requestAffiliations(1, LIMIT);
+								} catch (error) {
+									message.error(error.data.message);
+								}
+							}}
+							style={{
+								backgroundColor: '#288500',
+								color: 'white',
+								flex: 1,
+								height: 35,
+							}}
+							type="default"
+						>
+							Create Referral code
+						</Button>
+					</div>
+				</Modal>
+			)}
 			<div className="mt-2">
 				Referral affiliation information and table displaying all the successful
 				referrals that were onboarded onto the platform from this user.
@@ -186,11 +341,35 @@ const Referrals = ({
 					</div>
 					<div className="px-2">{count}</div>
 				</div>
-				<div className="user-info-separator" />
+				{/* <div className="user-info-separator" /> */}
 				{/* <div className="d-flex">
 					<div className="bold">Referral link: </div>
 					<div className="px-2">{referralLink}</div>
 				</div> */}
+				{referral_history_config?.active && (
+					<div
+						style={{
+							display: 'flex',
+							justifyContent: 'flex-end',
+							flex: 1,
+							alignItems: 'flex-end',
+						}}
+					>
+						<Button
+							className="green-btn"
+							type="primary"
+							onClick={() => {
+								setDisplayCreateReferralCode(true);
+								if (!referralCode) {
+									const code = generateUniqueCode();
+									setReferralCode(code);
+								}
+							}}
+						>
+							Create Referral Code
+						</Button>
+					</div>
+				)}
 			</div>
 			<div>
 				{error && (
