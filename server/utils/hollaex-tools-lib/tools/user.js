@@ -2709,10 +2709,12 @@ const createUnrealizedReferralFees = async (currentTime) => {
 				getAllAffiliations({
 					where: {
 						'$user.network_id$': tradeUsers,
-						created_at: {
-							[Op.gt]: moment(currentTime).subtract(EARNING_PERIOD, 'months').toISOString(),
-							[Op.lte]: currentTime
-						}
+						...(EARNING_PERIOD && {
+							created_at: {
+								[Op.gt]: moment(currentTime).subtract(EARNING_PERIOD, 'months').toISOString(),
+								[Op.lte]: currentTime
+							}
+						})
 					},
 					include: [
 						{
