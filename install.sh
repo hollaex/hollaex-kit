@@ -672,6 +672,12 @@ fi
 
 function kit_cross_compatibility_converter() {
 
+  CONFIG_FILE_PATH=$(pwd)/settings/*
+  
+  for i in ${CONFIG_FILE_PATH[@]}; do
+    source $i
+  done;
+
   # Detects whether the old-styled exchange is already running
   if command docker ps | grep $ENVIRONMENT_EXCHANGE_NAME > /dev/null 2>&1; then 
 
