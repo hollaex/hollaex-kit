@@ -20,6 +20,7 @@ import {
 	openContactForm,
 	getWithdrawalMax,
 	withdrawAddress,
+	setReceiverEmail,
 } from 'actions/appActions';
 import { generateFormValues, generateInitialValues } from './formUtils';
 import { renderNeedHelpAction, renderTitleSection } from '../Wallet/components';
@@ -87,6 +88,7 @@ class Withdraw extends Component {
 
 	componentWillUnmount() {
 		this.props.setWithdrawAddress('');
+		this.props.setReceiverEmail('');
 	}
 
 	validateRoute = (currency, coins) => {
@@ -427,6 +429,7 @@ const mapStateToProps = (store) => ({
 const mapDispatchToProps = (dispatch) => ({
 	openContactForm: bindActionCreators(openContactForm, dispatch),
 	setWithdrawAddress: bindActionCreators(withdrawAddress, dispatch),
+	setReceiverEmail: bindActionCreators(setReceiverEmail, dispatch),
 	// requestWithdrawFee: bindActionCreators(requestWithdrawFee, dispatch),
 	dispatch,
 });

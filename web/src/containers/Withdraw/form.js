@@ -20,7 +20,7 @@ import {
 	generateBaseInformation,
 	renderLabel,
 } from './utils';
-import { withdrawCurrency } from 'actions/appActions';
+import { setWithdrawOptionaltag, withdrawCurrency } from 'actions/appActions';
 import { renderInformation } from 'containers/Wallet/components';
 import { assetsSelector } from 'containers/Wallet/utils';
 import Fiat from './Fiat';
@@ -135,10 +135,12 @@ class Form extends Component {
 	};
 
 	onCloseDialog = (ev) => {
+		const { setWithdrawOptionaltag } = this.props;
 		if (ev && ev.preventDefault) {
 			ev.preventDefault();
 		}
 		this.setState({ dialogIsOpen: false, dialogOtpOpen: false });
+		setWithdrawOptionaltag('');
 	};
 
 	onAcceptDialog = () => {
@@ -151,6 +153,7 @@ class Form extends Component {
 			getWithdrawAddress,
 			getWithdrawCurrency,
 			currency,
+			coins,
 		} = this.props;
 		const currentCurrency = getWithdrawCurrency
 			? getWithdrawCurrency
@@ -163,7 +166,7 @@ class Form extends Component {
 		} else {
 			this.onCloseDialog();
 			// this.props.submit();
-			const values = {
+			let values = {
 				...data,
 				email: email,
 				amount: getWithdrawAmount,
@@ -171,6 +174,9 @@ class Form extends Component {
 				fee_coin: currentCurrency,
 				network: network,
 			};
+			if (!coins[currentCurrency]?.network) {
+				delete values.network;
+			}
 			return this.props
 				.onSubmitWithdrawReq({
 					...values,
@@ -267,6 +273,7 @@ class Form extends Component {
 			isFiat,
 			selectedMethod,
 			receiverWithdrawalEmail,
+			optionalTag,
 		} = this.props;
 
 		const currentNetwork = getWithdrawNetwork
@@ -274,8 +281,9 @@ class Form extends Component {
 			: getWithdrawNetworkOptions;
 		const formData = {
 			...data,
-			fee: getFee,
+			fee: selectedMethod === 'Email' ? 0 : getFee,
 			amount: getWithdrawAmount,
+			destination_tag: optionalTag && optionalTag,
 			address: selectedMethod === 'Email' ? '' : getWithdrawAddress,
 			network: selectedMethod === 'Email' ? 'email' : currentNetwork,
 			fee_coin: getWithdrawCurrency,
@@ -461,6 +469,7 @@ const mapStateToForm = (state) => ({
 	getWithdrawNetworkOptions: state.app.withdrawFields.withdrawNetworkOptions,
 	getWithdrawAddress: state.app.withdrawFields.withdrawAddress,
 	getWithdrawAmount: state.app.withdrawFields.withdrawAmount,
+	optionalTag: state.app.withdrawFields.optionalTag,
 	getFee: state.app.withdrawFields.withdrawFee,
 	isValidAddress: state.app.isValidAddress,
 	selectedMethod: state.app.selectedWithdrawMethod,
@@ -469,6 +478,7 @@ const mapStateToForm = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 	setWithdrawCurrency: bindActionCreators(withdrawCurrency, dispatch),
+	setWithdrawOptionaltag: bindActionCreators(setWithdrawOptionaltag, dispatch),
 });
 
 const WithdrawFormWithValues = connect(

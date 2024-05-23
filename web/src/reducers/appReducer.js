@@ -73,6 +73,7 @@ import {
 	SET_DEPOSIT_CURRENCY,
 	SET_SELECTED_METHOD,
 	SET_RECEIVER_EMAIL,
+	SET_WITHDRAW_OTIONAL_TAG,
 } from 'actions/appActions';
 import { THEME_DEFAULT } from 'config/constants';
 import { getLanguage } from 'utils/string';
@@ -117,6 +118,7 @@ const WITHDRAW_FIELDS = {
 	withdrawAddress: '',
 	withdrawAmount: 0,
 	withdrawFee: 0,
+	optionalTag: '',
 };
 
 const DEPOSIT_FIELDS = {
@@ -785,6 +787,11 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				withdrawFields: { ...state.withdrawFields, withdrawFee: payload },
+			};
+		case SET_WITHDRAW_OTIONAL_TAG:
+			return {
+				...state,
+				withdrawFields: { ...state.withdrawFields, optionalTag: payload },
 			};
 		case SET_DEPOSIT_AND_WITHDRAW:
 			return {

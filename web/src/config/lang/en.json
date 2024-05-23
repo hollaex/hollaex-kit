@@ -1093,7 +1093,9 @@
 		"BACK_BTN": "BACK",
 		"REMOVE_TAG": "YES, REMOVE TAG",
 		"GENERATE_DEPOSIT_TEXT_1": "No deposit address detected",
-		"GENERATE_DEPOSIT_TEXT_2": "Generate one below:"
+		"GENERATE_DEPOSIT_TEXT_2": "Generate one below:",
+		"WITHDRAW_ADDRESS": "Withdrawal address",
+		"WITHDRAW_EMAIL_ADDRESS": "Withdrawal email"
 	},
 	"WALLET_BUTTON_BASE_DEPOSIT": "deposit",
 	"WALLET_BUTTON_BASE_WITHDRAW": "withdraw",

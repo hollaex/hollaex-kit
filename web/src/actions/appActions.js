@@ -111,6 +111,7 @@ export const SET_DEPOSIT_NETWORK = 'SET_DEPOSIT_NETWORK';
 export const SET_DEPOSIT_NETWORK_OPTIONS = 'SET_DEPOSIT_OPTIONS';
 export const SET_SELECTED_METHOD = 'SET_SELECTED_METHOD';
 export const SET_RECEIVER_EMAIL = 'SET_RECEIVER_EMAIL';
+export const SET_WITHDRAW_OTIONAL_TAG = 'SET_WITHDRAW_OTIONAL_TAG';
 
 export const SORT = {
 	VOL: 'volume',
@@ -752,4 +753,9 @@ export const setSelectedMethod = (method) => ({
 export const setReceiverEmail = (email) => ({
 	type: SET_RECEIVER_EMAIL,
 	payload: email,
+});
+
+export const setWithdrawOptionaltag = (tag) => ({
+	type: SET_WITHDRAW_OTIONAL_TAG,
+	payload: tag,
 });

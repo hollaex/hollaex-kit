@@ -19,6 +19,7 @@ import {
 	setIsValidAdress,
 	setReceiverEmail,
 	setSelectedMethod,
+	setWithdrawOptionaltag,
 	withdrawAddress,
 	withdrawAmount,
 	withdrawCurrency,
@@ -33,6 +34,7 @@ import {
 	renderLabel,
 } from './utils';
 import { email, validAddress } from 'components/Form/validations';
+import strings from 'config/localizedStrings';
 
 const RenderWithdraw = ({
 	coins,
@@ -80,6 +82,8 @@ const RenderWithdraw = ({
 		selectedMethod,
 		setSelectedMethod,
 		setReceiverEmail,
+		receiverWithdrawalEmail,
+		setWithdrawOptionaltag,
 	} = rest;
 
 	const defaultCurrency = currency !== '' && currency;
@@ -93,7 +97,9 @@ const RenderWithdraw = ({
 			? coins[getWithdrawCurrency]?.network
 			: coins[getWithdrawCurrency]?.symbol;
 
-	const curretPrice = prices[getNativeCurrency];
+	const curretPrice = getWithdrawCurrency
+		? prices[getWithdrawCurrency]
+		: prices[defaultCurrency];
 	const estimatedWithdrawValue = curretPrice * getWithdrawAmount || 0;
 	let fee =
 		selectedMethod === 'Email'
@@ -195,7 +201,11 @@ const RenderWithdraw = ({
 		try {
 			const res = await getWithdrawalMax(
 				getWithdrawCurrency && getWithdrawCurrency,
-				selectedMethod === 'Email' ? 'email' : network
+				selectedMethod === 'Email'
+					? 'email'
+					: getWithdrawNetworkOptions
+					? getWithdrawNetworkOptions
+					: network
 			);
 			isMaxAmount && setWithdrawAmount(res?.data?.amount);
 			setMaxAmount(res?.data?.amount);
@@ -249,7 +259,6 @@ const RenderWithdraw = ({
 			setWithdrawCurrency('');
 			setCurrStep((prev) => ({
 				...prev,
-				stepTwo: false,
 				stepThree: false,
 				stepFour: false,
 				stepFive: false,
@@ -280,7 +289,6 @@ const RenderWithdraw = ({
 		if (method === 'email') {
 			const validate = email(val);
 			if (!validate) {
-				setReceiverEmail(val);
 				setIsValidEmail(true);
 			} else {
 				setIsValidEmail(false);
@@ -292,6 +300,7 @@ const RenderWithdraw = ({
 			setCurrStep((prev) => ({ ...prev, stepFour: false, stepFive: false }));
 		}
 		setWithdrawAddress(val);
+		setReceiverEmail(val);
 		setIsValidAdress({ isValid: !isValid });
 		setWithdrawAmount(0);
 	};
@@ -355,12 +364,17 @@ const RenderWithdraw = ({
 		);
 	};
 
+	const onHandleOptionalTag = (value) => {
+		setOptionalTag(value);
+		setWithdrawOptionaltag(value);
+	};
+
 	const withdrawFeeFormat =
 		selectedMethod === 'Email'
 			? 0
-			: `+ ${fee} ${selectedAsset && feeCoin?.toUpperCase()} (≈ ${fee} ${
-					selectedAsset && feeCoin?.toUpperCase()
-			  })`;
+			: `+ ${fee} ${
+					(getWithdrawCurrency || currency) && feeCoin?.toUpperCase()
+			  }`;
 	const estimatedFormat = `≈ ${Math.round(
 		estimatedWithdrawValue
 	)} ${getNativeCurrency?.toUpperCase()}`;
@@ -651,11 +665,16 @@ const RenderWithdraw = ({
 										className="destination-input-field"
 										onChange={(e) => onHandleAddress(e.target.value, 'address')}
 										value={getWithdrawAddress}
+										placeholder={strings['WITHDRAW_PAGE.WITHDRAW_ADDRESS']}
 									></Input>
 								) : (
 									<Input
 										className="destination-input-field"
 										onChange={(e) => onHandleAddress(e.target.value, 'email')}
+										value={receiverWithdrawalEmail}
+										placeholder={
+											strings['WITHDRAW_PAGE.WITHDRAW_EMAIL_ADDRESS']
+										}
 									></Input>
 								)}
 								{isEmailAndAddress && <CheckOutlined className="mt-3 ml-3" />}
@@ -720,7 +739,7 @@ const RenderWithdraw = ({
 									</div>
 									<div>
 										<Input
-											onChange={(e) => setOptionalTag(e.target.value)}
+											onChange={(e) => onHandleOptionalTag(e.target.value)}
 											value={optionalTag}
 											className={`destination-input-field ${
 												!isCheck ? 'opacity-100' : 'opacity-30'
@@ -890,6 +909,7 @@ const mapStateToForm = (state) => ({
 	isValidAddress: state.app.isValidAddress,
 	getNativeCurrency: state.app.constants.native_currency,
 	selectedMethod: state.app.selectedWithdrawMethod,
+	receiverWithdrawalEmail: state.app.receiverWithdrawalEmail,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -905,6 +925,7 @@ const mapDispatchToProps = (dispatch) => ({
 	setIsValidAdress: bindActionCreators(setIsValidAdress, dispatch),
 	setSelectedMethod: bindActionCreators(setSelectedMethod, dispatch),
 	setReceiverEmail: bindActionCreators(setReceiverEmail, dispatch),
+	setWithdrawOptionaltag: bindActionCreators(setWithdrawOptionaltag, dispatch),
 });
 
 export default connect(mapStateToForm, mapDispatchToProps)(RenderWithdraw);

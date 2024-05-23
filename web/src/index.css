@@ -2494,7 +2494,7 @@ table th {
   .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line-selected {
     height: 100%; }
   .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line {
-    height: 100px; }
+    height: 12rem; }
   .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .mobile-view {
     margin-top: 5%; }
   .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .ant-select-clear svg {
@@ -2670,33 +2670,29 @@ table th {
     width: 95%;
     justify-content: unset !important; }
 
-.destination-tag-field-wrapper .destination-tag-field .destination-input-field,
-.destination-tag-field-wrapper .destination-tag-field .destination-input-field:focus-within {
-  border: none !important;
-  border-bottom: 1px solid var(--calculated_important-border) !important; }
-
-.destination-tag-field-wrapper .destination-tag-field .destination-input-field {
-  width: 90% !important; }
-
-.destination-tag-field-wrapper .destination-tag-field .render-deposit-scan-wrapper {
-  text-transform: uppercase;
-  color: var(--specials_buttons-links-and-highlights);
-  cursor: pointer; }
-  .destination-tag-field-wrapper .destination-tag-field .render-deposit-scan-wrapper div {
-    text-decoration: underline; }
-
-.destination-tag-field-wrapper .destination-tag-field .ant-input-suffix {
-  width: auto !important; }
-
-.destination-tag-field-wrapper .destination-tag-field .ant-input:focus,
-.destination-tag-field-wrapper .destination-tag-field .ant-input-affix-wrapper-focused {
-  box-shadow: none; }
-
-.destination-tag-field-wrapper .destination-tag-field .ant-input {
-  color: var(--specials_buttons-links-and-highlights) !important; }
-
-.destination-tag-field-wrapper .tag-text div {
-  text-wrap: balance; }
+.destination-tag-field-wrapper {
+  margin-left: 29%; }
+  .destination-tag-field-wrapper .destination-tag-field .destination-input-field,
+  .destination-tag-field-wrapper .destination-tag-field .destination-input-field:focus-within {
+    border: none !important;
+    border-bottom: 1px solid var(--calculated_important-border) !important; }
+  .destination-tag-field-wrapper .destination-tag-field .destination-input-field {
+    width: 100% !important; }
+  .destination-tag-field-wrapper .destination-tag-field .render-deposit-scan-wrapper {
+    text-transform: uppercase;
+    color: var(--specials_buttons-links-and-highlights);
+    cursor: pointer; }
+    .destination-tag-field-wrapper .destination-tag-field .render-deposit-scan-wrapper div {
+      text-decoration: underline; }
+  .destination-tag-field-wrapper .destination-tag-field .ant-input-suffix {
+    width: auto !important; }
+  .destination-tag-field-wrapper .destination-tag-field .ant-input:focus,
+  .destination-tag-field-wrapper .destination-tag-field .ant-input-affix-wrapper-focused {
+    box-shadow: none; }
+  .destination-tag-field-wrapper .destination-tag-field .ant-input {
+    color: var(--specials_buttons-links-and-highlights) !important; }
+  .destination-tag-field-wrapper .tag-text div {
+    text-wrap: balance; }
 
 .withdrawal-container .withdraw-form-wrapper .withdraw-form .deposit-wrapper-fields .custom-field .custom-line-large {
   height: 90px;
@@ -2713,7 +2709,7 @@ table th {
   margin: 1% 3%; }
 
 .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .deposit-wrapper-fields .custom-field .custom-line-large {
-  height: 20rem;
+  height: 10rem;
   border: 1px solid var(--labels_important-active-labels-text-graphics);
   margin: 0 100%; }
 
