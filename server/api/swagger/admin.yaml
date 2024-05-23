@@ -3354,6 +3354,115 @@ paths:
       x-security-scopes:
         - admin
         - supervisor
+  /admin/user/referral/code:
+    x-swagger-router-controller: admin
+    get:
+      description: Get user referral codes for admin
+      operationId: getUserReferralCodesByAdmin
+      tags:
+        - User
+      parameters:
+        - name: user_id
+          in: query
+          required: false
+          type: number
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+      x-security-scopes:
+        - admin
+      x-token-permissions:
+        - can_read
+    post:
+      operationId: createUserReferralCodeByAdmin
+      description: create referral code config for user by admin
+      tags:
+        - User
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          type: object
+          required:
+            - user_id
+            - discount
+            - earning_rate
+            - code
+          properties:
+            discount:
+              type: number
+              format: double
+            earning_rate:
+              type: number
+              format: double
+            code:
+              type: string
+              maxLength: 256
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+      x-security-scopes:
+        - admin
   /admin/quicktrade/config:
     x-swagger-router-controller: admin
     put:
