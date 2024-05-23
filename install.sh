@@ -697,6 +697,8 @@ function kit_cross_compatibility_converter() {
 
     echo "name: 'local'" >> $(pwd)/server/docker-compose-prod.yaml
 
+    rm $(pwd)/templates/local/$ENVIRONMENT_EXCHANGE_NAME-docker-compose.yaml
+
   fi
 
   if [[ -f "$(pwd)/templates/local/nginx/conf.d/upstream.conf" ]]; then
