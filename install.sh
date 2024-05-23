@@ -699,10 +699,16 @@ function kit_cross_compatibility_converter() {
 
   if [[ -f "$(pwd)/templates/local/$ENVIRONMENT_EXCHANGE_NAME-docker-compose.yaml" ]]; then
 
+    echo "Stopping the exchange..."
+    sleep 5
+    docker compose -f "$(pwd)/templates/local/$ENVIRONMENT_EXCHANGE_NAME-docker-compose.yaml" stop
+
     echo "Docker-compose file generated with HollaEx CLI v2 has been detected!"
     echo "Converting the Docker-Compose file..."
     yq "del(.services.$ENVIRONMENT_EXCHANGE_NAME-nginx)" $(pwd)/templates/local/$ENVIRONMENT_EXCHANGE_NAME-docker-compose.yaml > $(pwd)/server/docker-compose-prod.yaml
     yq e -i '.services.*.env_file[] = "hollaex-kit.env"' $(pwd)/server/docker-compose-prod.yaml
+
+    echo "name: 'local'" >> $(pwd)/server/docker-compose-prod.yaml
 
   fi
 
