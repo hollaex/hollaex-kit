@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{.Release.Name}}
+  namespace: {{.Release.Namespace}}
+  labels:
+    app: {{.Release.Name}}
+spec:
+  {{if .Values.NodePort.enable }}
+
+  type: NodePort
+  ports:
+    - port: 6379
+      targetPort: 6379
+      nodePort: {{.Values.NodePort.port}}
+
+  {{ else }}
+
+  type: ClusterIP
+  ports:
+    - port: 6379
+      targetPort: 6379
+
+  {{ end }}
+  selector:
+    app: {{.Release.Name}}

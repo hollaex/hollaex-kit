@@ -1,0 +1,58 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{.Release.Name}}
+  namespace: {{.Release.Namespace}}
+spec:
+  schedule: {{.Values.cronRule}}
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: postgres-backup-to-s3
+            image: bitholla/postgres-s3-backup-cronjob:psql15-awscli
+            env:
+            - name: AWS_BUCKET
+              value: {{.Values.awsBucket}}
+            - name: TIMEZONE_SET
+              value: {{.Values.timeZone}}
+            - name: AWS_DEFAULT_REGION
+              value: {{.Values.awsRegion}}
+            - name: AWS_ACCESS_KEY_ID
+              value: {{.Values.awsAccessKey}}
+            - name: AWS_SECRET_ACCESS_KEY
+              value: {{.Values.awsSecretKey}}
+            - name: PGUSER
+              valueFrom:
+                secretKeyRef:
+                  name: {{.Values.secretName}}
+                  key: DB_USERNAME
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{.Values.secretName}}
+                  key: DB_PASSWORD
+            - name: PGHOST
+              valueFrom:
+                secretKeyRef:
+                  name: {{.Values.secretName}}
+                  key: DB_HOST
+            - name: PGDATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: {{.Values.secretName}}
+                  key: DB_NAME
+
+            args:
+            - /bin/sh
+            - -c
+            {{- if eq .Values.pgdumpMode "pg_dumpall" }}
+            - export TZ=$TIMEZONE_SET && export TIMESTAMP="$(date +%y%m%d%H%M)" && pg_dumpall > {{.Release.Namespace}}-$TIMESTAMP.dump && echo successfullly dumped "{{.Release.Namespace}}-$TIMESTAMP, Now pushing it to S3." && ls -al && aws s3 cp {{.Release.Namespace}}-$TIMESTAMP.dump s3://$AWS_BUCKET/backup/{{.Release.Namespace}}-postgres/{{.Release.Namespace}}-$TIMESTAMP.dump
+            {{- else if eq .Values.pgdumpMode "pg_dump" }}
+            - export TZ=$TIMEZONE_SET && export TIMESTAMP="$(date +%y%m%d%H%M)" && pg_dump -Fc > {{.Release.Namespace}}-$TIMESTAMP.dump && echo successfullly dumped "{{.Release.Namespace}}-$TIMESTAMP, Now pushing it to S3." && ls -al && aws s3 cp {{.Release.Namespace}}-$TIMESTAMP.dump s3://$AWS_BUCKET/backup/{{.Release.Namespace}}-postgres/{{.Release.Namespace}}-$TIMESTAMP.dump
+            {{- end }}
+          restartPolicy: OnFailure
+
