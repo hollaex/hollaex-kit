@@ -2273,7 +2273,7 @@ table th {
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line-selected,
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line-selected-large {
       border: 1px solid var(--labels_secondary-inactive-label-text-graphics);
-      height: 55px;
+      height: 60px;
       margin: 0 100%; }
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line-selected {
       height: 70px;

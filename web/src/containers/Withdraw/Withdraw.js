@@ -533,7 +533,7 @@ const RenderWithdraw = ({
 						<div className="custom-field d-flex flex-column">
 							<span
 								className={`custom-step${
-									currStep.stepThree ? '-selected' : ''
+									isEmailAndAddress || selectedAsset ? '-selected' : ''
 								}`}
 							>
 								3
@@ -649,7 +649,7 @@ const RenderWithdraw = ({
 							{renderLabel(
 								selectedMethod === 'Address'
 									? 'ACCORDIAN.DESTINATION'
-									: 'ACCORDIAN.EMAIL'
+									: 'FORM_FIELDS.EMAIL_LABEL'
 							)}
 						</div>
 						{isEmailAndAddress && (
