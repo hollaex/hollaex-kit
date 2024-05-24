@@ -1380,7 +1380,12 @@ const ReferralList = ({
 										</EditWrapper>{' '}
 										<span
 											onClick={() => {
-												if (unrealizedEarnings > 0) setDisplaySettle(true);
+												if (
+													unrealizedEarnings > 0 &&
+													unrealizedEarnings >
+														referral_history_config?.minimum_amount
+												)
+													setDisplaySettle(true);
 											}}
 											style={{
 												textDecoration: 'underline',
@@ -1392,6 +1397,14 @@ const ReferralList = ({
 											<EditWrapper stringId="REFERRAL_LINK.SETTLE_HERE">
 												{STRINGS['REFERRAL_LINK.SETTLE_HERE']}
 											</EditWrapper>
+										</span>
+										<span style={{ fontSize: 11 }}>
+											{' '}
+											(
+											<EditWrapper stringId="REFERRAL_LINK.MIN_TO_SETTLE">
+												{STRINGS['REFERRAL_LINK.MIN_TO_SETTLE']}
+											</EditWrapper>
+											: {referral_history_config?.minimum_amount} USDT)
 										</span>
 									</div>
 								</div>
@@ -1600,7 +1613,12 @@ const ReferralList = ({
 									</EditWrapper>{' '}
 									<span
 										onClick={() => {
-											if (unrealizedEarnings > 0) setDisplaySettle(true);
+											if (
+												unrealizedEarnings > 0 &&
+												unrealizedEarnings >
+													referral_history_config?.minimum_amount
+											)
+												setDisplaySettle(true);
 										}}
 										style={{
 											color: '#4E54BE',

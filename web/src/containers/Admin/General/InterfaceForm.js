@@ -34,6 +34,8 @@ const InterfaceForm = ({
 	const [referralHistoryData, setReferralHistoryData] = useState({
 		currency: constants?.kit?.referral_history_config?.currency || 'usdt',
 		earning_rate: constants?.kit?.referral_history_config?.earning_rate || 0,
+		minimum_amount:
+			constants?.kit?.referral_history_config?.minimum_amount || 1,
 		earning_period:
 			constants?.kit?.referral_history_config?.earning_period || 0,
 		distributor_id:
@@ -72,6 +74,7 @@ const InterfaceForm = ({
 				active: !!values.referral_history_config,
 				currency: referralHistoryData.currency,
 				earning_rate: Number(referralHistoryData.earning_rate),
+				minimum_amount: Number(referralHistoryData.minimum_amount),
 				earning_period: Number(referralHistoryData.earning_period),
 				distributor_id: Number(referralHistoryData.distributor_id),
 				date_enabled: referralHistoryData.date_enabled,
@@ -311,6 +314,24 @@ const InterfaceForm = ({
 							}}
 						/>
 					</div>
+					<div className="mb-4">
+						<div style={{ fontSize: 16 }} className="mb-2">
+							Minimum amount (in USDT)
+							<div style={{ fontSize: 13 }}>
+								Minimum amount reqired to settle fees
+							</div>
+						</div>
+
+						<Input
+							value={referralHistoryData.minimum_amount}
+							onChange={(e) => {
+								setReferralHistoryData({
+									...referralHistoryData,
+									minimum_amount: Number(e.target.value),
+								});
+							}}
+						/>
+					</div>
 
 					<div className="mb-4">
 						<div style={{ fontSize: 16 }} className="mb-2">
@@ -359,6 +380,7 @@ const InterfaceForm = ({
 								if (
 									referralHistoryData.currency == null ||
 									referralHistoryData.earning_rate == null ||
+									referralHistoryData.minimum_amount == null ||
 									referralHistoryData.earning_period == null ||
 									referralHistoryData.distributor_id == null
 								) {
