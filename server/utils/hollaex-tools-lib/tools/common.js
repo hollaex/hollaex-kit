@@ -398,7 +398,7 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 			minimum_amount: newKitConfig?.referral_history_config?.minimum_amount, 
 			earning_period: newKitConfig?.referral_history_config?.earning_period, 
 			distributor_id: newKitConfig?.referral_history_config?.distributor_id, 
-		})
+		});
 	}
 
 	const joinedKitConfig = {};
