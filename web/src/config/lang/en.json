@@ -1093,7 +1093,9 @@
 		"BACK_BTN": "BACK",
 		"REMOVE_TAG": "YES, REMOVE TAG",
 		"GENERATE_DEPOSIT_TEXT_1": "No deposit address detected",
-		"GENERATE_DEPOSIT_TEXT_2": "Generate one below:"
+		"GENERATE_DEPOSIT_TEXT_2": "Generate one below:",
+		"WITHDRAW_ADDRESS": "Withdrawal address",
+		"WITHDRAW_EMAIL_ADDRESS": "Withdrawal email"
 	},
 	"WALLET_BUTTON_BASE_DEPOSIT": "deposit",
 	"WALLET_BUTTON_BASE_WITHDRAW": "withdraw",
@@ -1418,7 +1420,8 @@
 		"NO_LINK": "You've not created any referral links yet.",
 		"ALL_EVENTS": "All settlement events",
 		"EVENTS_DESC": "Below are all the earning settlement events from your invited referrals.",
-		"DATA_BELOW": "Below table data collected"
+		"DATA_BELOW": "Below table data collected",
+		"REFERRAL_CODE_ZERO": "Please input a code"
 	},
 	"NOT_LOGGEDIN": {
 		"TEXT_GENERAL": "To view you must login",

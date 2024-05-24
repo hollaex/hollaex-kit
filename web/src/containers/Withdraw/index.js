@@ -20,6 +20,7 @@ import {
 	openContactForm,
 	getWithdrawalMax,
 	withdrawAddress,
+	setReceiverEmail,
 } from 'actions/appActions';
 import { generateFormValues, generateInitialValues } from './formUtils';
 import { renderNeedHelpAction, renderTitleSection } from '../Wallet/components';
@@ -87,6 +88,7 @@ class Withdraw extends Component {
 
 	componentWillUnmount() {
 		this.props.setWithdrawAddress('');
+		this.props.setReceiverEmail('');
 	}
 
 	validateRoute = (currency, coins) => {
@@ -194,7 +196,7 @@ class Withdraw extends Component {
 
 	onSubmitWithdraw = (currency) => (values) => {
 		const { destination_tag, network, ...rest } = values;
-		const { getWithdrawCurrency } = this.props;
+		const { getWithdrawCurrency, selectedWithdrawMethod } = this.props;
 
 		const currentCurrency = getWithdrawCurrency
 			? getWithdrawCurrency
@@ -209,6 +211,8 @@ class Withdraw extends Component {
 			address,
 			amount: math.eval(values.amount),
 			currency: currentCurrency,
+			method: selectedWithdrawMethod === 'Email' ? 'email' : 'address',
+			network: selectedWithdrawMethod === 'Email' ? 'email' : network,
 		};
 
 		delete paramData.fee_type;
@@ -419,11 +423,13 @@ const mapStateToProps = (store) => ({
 	getWithdrawCurrency: store.app.withdrawFields.withdrawCurrency,
 	getWithdrawNetwork: store.app.withdrawFields.withdrawNetwork,
 	isDepositAndWithdraw: store.app.depositAndWithdraw,
+	selectedWithdrawMethod: store.app.selectedWithdrawMethod,
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	openContactForm: bindActionCreators(openContactForm, dispatch),
 	setWithdrawAddress: bindActionCreators(withdrawAddress, dispatch),
+	setReceiverEmail: bindActionCreators(setReceiverEmail, dispatch),
 	// requestWithdrawFee: bindActionCreators(requestWithdrawFee, dispatch),
 	dispatch,
 });

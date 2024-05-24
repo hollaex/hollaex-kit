@@ -17,7 +17,9 @@ import {
 	getWithdrawalMax,
 	setFee,
 	setIsValidAdress,
+	setReceiverEmail,
 	setSelectedMethod,
+	setWithdrawOptionaltag,
 	withdrawAddress,
 	withdrawAmount,
 	withdrawCurrency,
@@ -32,6 +34,7 @@ import {
 	renderLabel,
 } from './utils';
 import { email, validAddress } from 'components/Form/validations';
+import strings from 'config/localizedStrings';
 
 const RenderWithdraw = ({
 	coins,
@@ -58,7 +61,7 @@ const RenderWithdraw = ({
 	const [optionalTag, setOptionalTag] = useState('');
 	const [isCheck, setIsCheck] = useState(false);
 	const [isVisible, setIsVisible] = useState(false);
-	// const [selectedMethod, setSelectedMethod] = useState('Address');
+	const [isValidEmail, setIsValidEmail] = useState(false);
 
 	const {
 		setWithdrawCurrency,
@@ -78,7 +81,11 @@ const RenderWithdraw = ({
 		getNativeCurrency,
 		selectedMethod,
 		setSelectedMethod,
+		setReceiverEmail,
+		receiverWithdrawalEmail,
+		setWithdrawOptionaltag,
 	} = rest;
+
 	const defaultCurrency = currency !== '' && currency;
 	const iconId = coins[getWithdrawCurrency]?.icon_id;
 	const coinLength =
@@ -90,9 +97,14 @@ const RenderWithdraw = ({
 			? coins[getWithdrawCurrency]?.network
 			: coins[getWithdrawCurrency]?.symbol;
 
-	const curretPrice = prices[getNativeCurrency];
+	const curretPrice = getWithdrawCurrency
+		? prices[getWithdrawCurrency]
+		: prices[defaultCurrency];
 	const estimatedWithdrawValue = curretPrice * getWithdrawAmount || 0;
-	let fee = calculateFee(selectedAsset, getWithdrawNetworkOptions, coins);
+	let fee =
+		selectedMethod === 'Email'
+			? 0
+			: calculateFee(selectedAsset, getWithdrawNetworkOptions, coins);
 	const feeCoin = calculateFeeCoin(
 		selectedAsset,
 		getWithdrawNetworkOptions,
@@ -111,25 +123,6 @@ const RenderWithdraw = ({
 		fee = new BigNumber(fee || 0).plus(roundedMarkup || 0).toNumber();
 	}
 
-	const isAmount = useMemo(() => {
-		return (
-			!getWithdrawAddress ||
-			!getWithdrawCurrency ||
-			getWithdrawAmount <= 0 ||
-			getWithdrawAmount > maxAmount ||
-			maxAmount <= 0 ||
-			!network ||
-			!isValidAddress
-		);
-	}, [
-		getWithdrawAddress,
-		getWithdrawCurrency,
-		getWithdrawAmount,
-		maxAmount,
-		network,
-		isValidAddress,
-	]);
-
 	const currentNetwork =
 		getWithdrawNetworkOptions !== '' ? getWithdrawNetworkOptions : network;
 	const defaultNetwork =
@@ -138,15 +131,6 @@ const RenderWithdraw = ({
 		coins[defaultCurrency]?.network !== 'other'
 			? coins[defaultCurrency]?.network
 			: coins[defaultCurrency]?.symbol;
-
-	const getOraclePrices = async () => {
-		try {
-			const prices = await getPrices({ coins });
-			setPrices(prices);
-		} catch (error) {
-			console.error(error);
-		}
-	};
 
 	useEffect(() => {
 		const topWallet = assets
@@ -177,14 +161,51 @@ const RenderWithdraw = ({
 			setCurrStep({ ...currStep, stepTwo: true, stepThree: true });
 		}
 		getOraclePrices();
+		setCurrStep({ ...currStep, stepTwo: true });
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+
+	const isAmount = useMemo(() => {
+		const isCondition =
+			selectedMethod === 'Email' ? !isValidEmail : !isValidAddress;
+		return (
+			!getWithdrawAddress ||
+			!getWithdrawCurrency ||
+			getWithdrawAmount <= 0 ||
+			getWithdrawAmount > maxAmount ||
+			maxAmount <= 0 ||
+			!network ||
+			isCondition
+		);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [
+		getWithdrawAddress,
+		getWithdrawCurrency,
+		getWithdrawAmount,
+		maxAmount,
+		network,
+		isValidAddress,
+		isValidEmail,
+	]);
+
+	const getOraclePrices = async () => {
+		try {
+			const prices = await getPrices({ coins });
+			setPrices(prices);
+		} catch (error) {
+			console.error(error);
+		}
+	};
 
 	const getWithdrawlMAx = async (getWithdrawCurrency, isMaxAmount = false) => {
 		try {
 			const res = await getWithdrawalMax(
 				getWithdrawCurrency && getWithdrawCurrency,
-				network
+				selectedMethod === 'Email'
+					? 'email'
+					: getWithdrawNetworkOptions
+					? getWithdrawNetworkOptions
+					: network
 			);
 			isMaxAmount && setWithdrawAmount(res?.data?.amount);
 			setMaxAmount(res?.data?.amount);
@@ -194,6 +215,9 @@ const RenderWithdraw = ({
 	};
 
 	const onHandleChangeMethod = (method) => {
+		setWithdrawAddress('');
+		setWithdrawAmount('');
+		setReceiverEmail('');
 		setSelectedMethod(method);
 		setCurrStep((prev) => ({ ...prev, stepTwo: true }));
 		if (!method) {
@@ -212,12 +236,18 @@ const RenderWithdraw = ({
 			setIsPinnedAssets(pinned_assets);
 		}
 		if (val) {
-			if (currStep.stepTwo || currStep.stepThree || currStep.stepFour) {
+			if (
+				currStep.stepTwo ||
+				currStep.stepThree ||
+				currStep.stepFour ||
+				currStep.stepFive
+			) {
 				setCurrStep((prev) => ({
 					...prev,
 					stepTwo: false,
 					stepThree: false,
 					stepFour: false,
+					stepFive: false,
 				}));
 			}
 			setCurrStep((prev) => ({ ...prev, stepTwo: true, stepThree: true }));
@@ -229,14 +259,15 @@ const RenderWithdraw = ({
 			setWithdrawCurrency('');
 			setCurrStep((prev) => ({
 				...prev,
-				stepTwo: false,
 				stepThree: false,
 				stepFour: false,
+				stepFive: false,
 			}));
 			setWithdrawAmount(0);
 		}
 		setSelectedAsset(val);
 		setWithdrawAddress('');
+		setReceiverEmail('');
 	};
 
 	const onHandleChangeNetwork = (val) => {
@@ -255,15 +286,21 @@ const RenderWithdraw = ({
 			currentNetwork,
 			val
 		)();
-		const validate = email(val);
-		if (validate) {
+		if (method === 'email') {
+			const validate = email(val);
+			if (!validate) {
+				setIsValidEmail(true);
+			} else {
+				setIsValidEmail(false);
+			}
 		}
 		if (val) {
-			setCurrStep((prev) => ({ ...prev, stepFour: true }));
+			setCurrStep((prev) => ({ ...prev, stepFive: true }));
 		} else if (!val) {
 			setCurrStep((prev) => ({ ...prev, stepFour: false, stepFive: false }));
 		}
 		setWithdrawAddress(val);
+		setReceiverEmail(val);
 		setIsValidAdress({ isValid: !isValid });
 		setWithdrawAmount(0);
 	};
@@ -327,29 +364,17 @@ const RenderWithdraw = ({
 		);
 	};
 
-	// const renderScanIcon = () => {
-	//  return (
-	//      <div className="render-scan-wrapper d-flex">
-	//          <span className="suffix-text">
-	//              {renderLabel('ACCORDIAN.SCAN')}
-	//          </span>
-	//          <div className="img-wrapper">
-	//              <img alt="scan-icon" src={STATIC_ICONS['QR_CODE_SCAN']}></img>
-	//          </div>
-	//      </div>
-	//  );
-	// };
+	const onHandleOptionalTag = (value) => {
+		setOptionalTag(value);
+		setWithdrawOptionaltag(value);
+	};
 
-	const isSteps = currStep.stepFour;
-	// (coinLength && coinLength.length === 1) ||
-	// (currStep.stepTwo && !coinLength) ||
-	// currStep.stepThree;
 	const withdrawFeeFormat =
 		selectedMethod === 'Email'
 			? 0
-			: `+ ${fee} ${selectedAsset && feeCoin?.toUpperCase()} (≈ ${fee} ${
-					selectedAsset && feeCoin?.toUpperCase()
-			  })`;
+			: `+ ${fee} ${
+					(getWithdrawCurrency || currency) && feeCoin?.toUpperCase()
+			  }`;
 	const estimatedFormat = `≈ ${Math.round(
 		estimatedWithdrawValue
 	)} ${getNativeCurrency?.toUpperCase()}`;
@@ -358,6 +383,10 @@ const RenderWithdraw = ({
 		(['xrp', 'xlm'].includes(selectedAsset) ||
 			['xlm', 'ton'].includes(network)) &&
 		selectedMethod !== 'Email';
+	const isEmailAndAddress =
+		coinLength && coinLength?.length > 1 && selectedMethod !== 'Email'
+			? getWithdrawNetworkOptions !== ''
+			: currStep.stepThree || (selectedAsset && selectedMethod);
 
 	return (
 		<div
@@ -397,7 +426,6 @@ const RenderWithdraw = ({
 									suffixIcon={<CaretDownOutlined />}
 									placeholder="Select Method"
 									onChange={onHandleChangeMethod}
-									allowClear={true}
 									value={selectedMethod}
 								>
 									{methodOptions.map((val, inx) => (
@@ -527,7 +555,9 @@ const RenderWithdraw = ({
 						>
 							<div
 								className={`mt-2 ml-5 withdraw-main-label${
-									currStep.stepThree ? '-selected' : ''
+									currStep.stepThree || (selectedAsset && selectedMethod)
+										? '-selected'
+										: ''
 								}`}
 							>
 								{renderLabel('ACCORDIAN.SELECT_NETWORK')}
@@ -540,7 +570,6 @@ const RenderWithdraw = ({
 								>
 									<div className="d-flex">
 										<Select
-											showSearch={true}
 											className={`custom-select-input-style elevated ${
 												coinLength && coinLength.length > 1
 													? 'select-field'
@@ -596,11 +625,13 @@ const RenderWithdraw = ({
 			<div>
 				<div className="d-flex h-25">
 					<div className="custom-field d-flex flex-column">
-						<span className={`custom-step${isSteps ? '-selected' : ''}`}>
+						<span
+							className={`custom-step${isEmailAndAddress ? '-selected' : ''}`}
+						>
 							{selectedMethod === 'Email' ? 3 : 4}
 						</span>
 						<span
-							className={`custom-line${currStep.stepFour ? '-selected' : ''}`}
+							className={`custom-line${isEmailAndAddress ? '-selected' : ''}`}
 						></span>
 					</div>
 					<div
@@ -612,7 +643,7 @@ const RenderWithdraw = ({
 					>
 						<div
 							className={`mt-2 ml-5 withdraw-main-label${
-								isSteps ? '-selected' : ''
+								isEmailAndAddress ? '-selected' : ''
 							}`}
 						>
 							{renderLabel(
@@ -621,7 +652,7 @@ const RenderWithdraw = ({
 									: 'ACCORDIAN.EMAIL'
 							)}
 						</div>
-						{(currStep.stepThree || (selectedAsset && selectedMethod)) && (
+						{isEmailAndAddress && (
 							<div
 								className={
 									isMobile
@@ -632,17 +663,21 @@ const RenderWithdraw = ({
 								{selectedMethod === 'Address' ? (
 									<Input
 										className="destination-input-field"
-										// suffix={renderScanIcon()}
 										onChange={(e) => onHandleAddress(e.target.value, 'address')}
 										value={getWithdrawAddress}
+										placeholder={strings['WITHDRAW_PAGE.WITHDRAW_ADDRESS']}
 									></Input>
 								) : (
 									<Input
 										className="destination-input-field"
 										onChange={(e) => onHandleAddress(e.target.value, 'email')}
+										value={receiverWithdrawalEmail}
+										placeholder={
+											strings['WITHDRAW_PAGE.WITHDRAW_EMAIL_ADDRESS']
+										}
 									></Input>
 								)}
-								{currStep.stepFour && <CheckOutlined className="mt-3 ml-3" />}
+								{isEmailAndAddress && <CheckOutlined className="mt-3 ml-3" />}
 							</div>
 						)}
 					</div>
@@ -654,17 +689,17 @@ const RenderWithdraw = ({
 						<div className="custom-field d-flex flex-column">
 							<span
 								className={`custom-line-extra-large ${
-									currStep.stepFour ? 'custom-line-extra-large-active' : ''
+									isEmailAndAddress ? 'custom-line-extra-large-active' : ''
 								}`}
 							></span>
 							<span
-								className={`custom-step${currStep.stepFour ? '-selected' : ''}`}
+								className={`custom-step${isEmailAndAddress ? '-selected' : ''}`}
 							>
-								4
+								5
 							</span>
 							<span
 								className={`custom-line${
-									currStep.stepFour ? '-selected-large' : ''
+									isEmailAndAddress ? '-selected-large' : ''
 								}`}
 							></span>
 						</div>
@@ -677,12 +712,12 @@ const RenderWithdraw = ({
 						>
 							<div
 								className={`mt-3 pt-4 ml-5 withdraw-main-label${
-									currStep.stepFour ? '-selected' : ''
+									isEmailAndAddress ? '-selected' : ''
 								} ${!isCheck ? 'opacity-100' : 'opacity-50'}`}
 							>
 								{renderLabel('ACCORDIAN.OPTIONAL_TAG')}
 							</div>
-							{currStep.stepFour && (
+							{isEmailAndAddress && (
 								<div
 									className={
 										isMobile
@@ -704,7 +739,7 @@ const RenderWithdraw = ({
 									</div>
 									<div>
 										<Input
-											onChange={(e) => setOptionalTag(e.target.value)}
+											onChange={(e) => onHandleOptionalTag(e.target.value)}
 											value={optionalTag}
 											className={`destination-input-field ${
 												!isCheck ? 'opacity-100' : 'opacity-30'
@@ -743,12 +778,12 @@ const RenderWithdraw = ({
 				<div className="d-flex h-25">
 					<div className="custom-field d-flex flex-column">
 						<span
-							className={`custom-step${currStep.stepFour ? '-selected' : ''}`}
+							className={`custom-step${currStep.stepFive ? '-selected' : ''}`}
 						>
 							{isCondition ? 6 : selectedMethod === 'Email' ? 4 : 5}
 						</span>
 						<span
-							className={currStep.stepFour ? 'custom-line-selected-end' : ''}
+							className={currStep.stepFive ? 'custom-line-selected-end' : ''}
 						></span>
 					</div>
 					<div
@@ -759,15 +794,15 @@ const RenderWithdraw = ({
 						}
 					>
 						<div className=" d-flex mt-2 ml-5">
-							{currStep.stepFour && (
+							{currStep.stepFive && (
 								<span className="amount-field-icon">
 									<Coin iconId={iconId} type="CS4" />
 								</span>
 							)}
-							{currStep.stepFour && (
+							{currStep.stepFive && (
 								<span
 									className={`ml-2 withdraw-main-label${
-										currStep.stepFour ? '-selected' : ''
+										currStep.stepFive ? '-selected' : ''
 									}`}
 								>
 									{getWithdrawCurrency.toUpperCase()}
@@ -775,13 +810,13 @@ const RenderWithdraw = ({
 							)}
 							<div
 								className={`ml-1 withdraw-main-label${
-									currStep.stepFour ? '-selected' : ''
+									currStep.stepFive ? '-selected' : ''
 								}`}
 							>
 								{renderLabel('ACCORDIAN.AMOUNT')}
 							</div>
 						</div>
-						{currStep.stepFour && (
+						{currStep.stepFive && (
 							<div
 								className={
 									isMobile
@@ -800,7 +835,7 @@ const RenderWithdraw = ({
 									></Input>
 									{!isAmount && <CheckOutlined className="mt-3 ml-3" />}
 								</div>
-								{currStep.stepFour && (
+								{currStep.stepFive && (
 									<div
 										className={`d-flex h-25 ${
 											!isMobile ? 'bottom-wrapper' : ''
@@ -809,7 +844,7 @@ const RenderWithdraw = ({
 										<div className="custom-field d-flex flex-column line-wrapper">
 											<span
 												className={
-													currStep.stepFour ? 'custom-line-selected-end' : ''
+													currStep.stepFive ? 'custom-line-selected-end' : ''
 												}
 											></span>
 										</div>
@@ -830,13 +865,13 @@ const RenderWithdraw = ({
 										</div>
 									</div>
 								)}
-								{currStep.stepFour && (
+								{currStep.stepFive && (
 									<div className="d-flex h-25 bottom-btn-wrapper">
 										{isCondition && (
 											<div className="custom-field d-flex flex-column line-wrapper">
 												<span
 													className={
-														currStep.stepFour ? 'custom-line-selected-end' : ''
+														currStep.stepFive ? 'custom-line-selected-end' : ''
 													}
 												></span>
 											</div>
@@ -846,7 +881,7 @@ const RenderWithdraw = ({
 										)}
 										<div className="withdraw-btn-wrapper">
 											<Button
-												disabled={''}
+												disabled={isAmount}
 												onClick={onOpenDialog}
 												className="mb-3"
 											>
@@ -874,6 +909,7 @@ const mapStateToForm = (state) => ({
 	isValidAddress: state.app.isValidAddress,
 	getNativeCurrency: state.app.constants.native_currency,
 	selectedMethod: state.app.selectedWithdrawMethod,
+	receiverWithdrawalEmail: state.app.receiverWithdrawalEmail,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -888,6 +924,8 @@ const mapDispatchToProps = (dispatch) => ({
 	setFee: bindActionCreators(setFee, dispatch),
 	setIsValidAdress: bindActionCreators(setIsValidAdress, dispatch),
 	setSelectedMethod: bindActionCreators(setSelectedMethod, dispatch),
+	setReceiverEmail: bindActionCreators(setReceiverEmail, dispatch),
+	setWithdrawOptionaltag: bindActionCreators(setWithdrawOptionaltag, dispatch),
 });
 
 export default connect(mapStateToForm, mapDispatchToProps)(RenderWithdraw);

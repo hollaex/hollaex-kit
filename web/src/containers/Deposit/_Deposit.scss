@@ -182,9 +182,8 @@ $qr-code--size: 12rem;
 }
 
 .destination-tag-field-wrapper {
+	margin-left: 29%;
 	.destination-tag-field {
-		// width: 66.5%;
-
 		.destination-input-field,
 		.destination-input-field:focus-within {
 			border: none !important;
@@ -192,7 +191,7 @@ $qr-code--size: 12rem;
 		}
 
 		.destination-input-field {
-			width: 90% !important;
+			width: 100% !important;
 		}
 
 		.render-deposit-scan-wrapper {
@@ -254,7 +253,7 @@ $qr-code--size: 12rem;
 			.withdraw-form {
 				.deposit-wrapper-fields {
 					.custom-field .custom-line-large {
-						height: 20rem;
+						height: 10rem;
 						border: 1px solid $colors-main-black;
 						margin: 0 100%;
 					}
@@ -264,8 +263,8 @@ $qr-code--size: 12rem;
 					}
 
 					.deposit-address-wrapper {
-						margin-left: 4%;
 						width: unset;
+
 						.destination-input-field {
 							width: 88% !important;
 						}
@@ -290,10 +289,6 @@ $qr-code--size: 12rem;
 			.withdraw-form-wrapper {
 				.withdraw-form {
 					.deposit-wrapper-fields {
-						.generate-field-wrapper {
-							margin-left: 8%;
-						}
-
 						.custom-field .custom-line-large {
 							height: 16rem;
 						}

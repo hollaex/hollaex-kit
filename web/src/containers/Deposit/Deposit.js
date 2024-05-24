@@ -411,7 +411,6 @@ const DepositComponent = ({
 								{renderLabel('ACCORDIAN.ADDRESS')}
 							</span>
 						</div>
-						{/* <div> */}
 						{((coinLength && coinLength.length === 1) ||
 							(currStep.stepTwo && !coinLength) ||
 							currStep.stepThree) &&
@@ -456,14 +455,13 @@ const DepositComponent = ({
 									</div>
 								</div>
 							))}
-						{/* </div> */}
 					</div>
 				</div>
 			</div>
 			{(['xrp', 'xlm'].includes(selectedAsset) ||
 				['xlm', 'ton'].includes(network)) &&
 				depositAddress && (
-					<div className="d-flex justify-content-between">
+					<div>
 						<div className="d-flex h-25">
 							<div className="custom-field d-flex flex-column">
 								<span
@@ -516,7 +514,7 @@ const DepositComponent = ({
 											</div>
 											<div className="d-flex mt-2 warning-text">
 												<ExclamationCircleFilled className="mt-1" />
-												<div className="ml-2 w-75 tag-text">
+												<div className="ml-2 tag-text">
 													{renderLabel(
 														'DEPOSIT_FORM_TITLE_WARNING_DESTINATION_TAG'
 													)}
