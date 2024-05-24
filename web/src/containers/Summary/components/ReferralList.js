@@ -1458,7 +1458,11 @@ const ReferralList = ({
 													setDisplaySettle(true);
 												}}
 												size="small"
-												disabled={unrealizedEarnings === 0}
+												disabled={
+													unrealizedEarnings === 0 ||
+													unrealizedEarnings <
+														referral_history_config?.minimum_amount
+												}
 												style={{
 													backgroundColor: '#5E63F6',
 													color: 'white',
