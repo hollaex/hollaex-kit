@@ -325,9 +325,7 @@ class AppBar extends Component {
 								icon={icons['DEPOSIT_TITLE']}
 								wrapperClassName="form_currency-ball margin-aligner"
 							/>
-							<span className="ml-2">
-								{STRINGS['ACCORDIAN.DEPOSIT_START_WITH_CAPS']}
-							</span>
+							<span className="ml-2">{STRINGS['ACCORDIAN.DEPOSIT_LABEL']}</span>
 						</div>
 						<div className="d-flex app_bar-quicktrade-container">
 							<LanguageSwitcher
