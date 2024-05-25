@@ -12,9 +12,9 @@ services:
     ports: 
       - 8080:80 
     networks:
-      - server_hollaex-kit
+      - local_hollaex-kit
       
 networks:
-  server_hollaex-kit:
+  local_hollaex-kit:
     external: true
 

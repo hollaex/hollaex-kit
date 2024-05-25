@@ -22,10 +22,10 @@ services:
       - -c 
       - ip -4 route list match 0/0 | awk '{print $$3 " host.access"}' >> /etc/hosts && nginx -g "daemon off;"
     networks:
-      - server_hollaex-kit
+      - local_hollaex-kit
       
 networks:
-  server_hollaex-kit:
+  local_hollaex-kit:
     external: true
 
 
