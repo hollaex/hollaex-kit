@@ -2,7 +2,7 @@
 version: '3'
 name: "local"
 services:
-  hollaex-kit-prod-redis:
+  hollaex-kit-redis:
     image: redis:7.2.0-alpine
     restart: unless-stopped
     depends_on:
@@ -22,7 +22,7 @@ services:
           memory: 100M
     networks:
       - hollaex-kit
-  hollaex-kit-prod-db:
+  hollaex-kit-db:
     image: postgres:14.9-alpine
     restart: unless-stopped
     volumes:
