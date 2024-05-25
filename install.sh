@@ -692,9 +692,6 @@ function kit_cross_compatibility_converter() {
 
     echo "Docker-compose file generated with HollaEx CLI v2 has been detected!"
 
-    echo "Stopping the server to start the v3 conversion process..."
-    docker compose -f $(pwd)/templates/local/$ENVIRONMENT_EXCHANGE_NAME-docker-compose.yaml stop
-
     echo "Converting the Docker-Compose file..."
     yq "del(.services.$ENVIRONMENT_EXCHANGE_NAME-nginx)" $(pwd)/templates/local/$ENVIRONMENT_EXCHANGE_NAME-docker-compose.yaml > $(pwd)/server/docker-compose-prod.yaml
     yq e -i '.services.*.env_file[] = "hollaex-kit.env"' $(pwd)/server/docker-compose-prod.yaml
@@ -713,6 +710,7 @@ function kit_cross_compatibility_converter() {
     mv $(pwd)/templates/local/nginx/nginx.conf $(pwd)/nginx/nginx.conf
 
     echo "Updating the Nginx file to have an existing docker network bind..."
+    yq e -i ".services |= with_entries(select(.key == \"hollaex-kit-prod-nginx\") | .key = \"$ENVIRONMENT_EXCHANGE_NAME-nginx\")" $(pwd)/nginx/docker-compose.yaml
     yq e -i ".services.*.networks[] = \"local_$ENVIRONMENT_EXCHANGE_NAME-network\"" $(pwd)/nginx/docker-compose.yaml
     yq e -i ".networks |= with_entries(select(.key == \"local_hollaex-kit\") | .key = \"local_$ENVIRONMENT_EXCHANGE_NAME-network\")" $(pwd)/nginx/docker-compose.yaml
 

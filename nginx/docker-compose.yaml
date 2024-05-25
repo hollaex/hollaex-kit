@@ -1,5 +1,5 @@
 version: '3'
-name: "server"
+name: "local"
 services:
   hollaex-kit-prod-nginx:
     image: nginx-with-certbot
