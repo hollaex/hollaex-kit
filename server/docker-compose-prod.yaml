@@ -1,5 +1,6 @@
 # Prod HollaEx Kit Docker-Copmose
 version: '3'
+name: "local"
 services:
   hollaex-kit-prod-redis:
     image: redis:7.2.0-alpine
