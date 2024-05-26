@@ -375,6 +375,10 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 		if (!newKitConfig.referral_history_config.hasOwnProperty('earning_rate')) {
 			throw new Error('earning_rate key does not exist');
 		}
+
+		if (!newKitConfig.referral_history_config.hasOwnProperty('minimum_amount')) {
+			throw new Error('minimum amount key does not exist');
+		}
 		
 		if (!newKitConfig.referral_history_config.hasOwnProperty('earning_period')) {
 			throw new Error('earning_period key does not exist');
@@ -391,6 +395,7 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 		const { validateReferralFeature } = require('./user');
 		validateReferralFeature({
 			earning_rate: newKitConfig?.referral_history_config?.earning_rate, 
+			minimum_amount: newKitConfig?.referral_history_config?.minimum_amount, 
 			earning_period: newKitConfig?.referral_history_config?.earning_period, 
 			distributor_id: newKitConfig?.referral_history_config?.distributor_id, 
 		});

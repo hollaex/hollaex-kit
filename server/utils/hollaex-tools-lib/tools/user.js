@@ -2397,6 +2397,7 @@ const validateReferralFeature = async (data) => {
 		earning_period: EARNING_PERIOD, 
 		distributor_id: DISTRIBUTOR_ID,
 		earning_rate: EARNING_RATE,
+		minimum_amount: MINIMUM_AMOUNT
 	} = data;
 
 	const exchangeInfo = getKitConfig().info;
@@ -2408,6 +2409,10 @@ const validateReferralFeature = async (data) => {
 		throw new Error('Earning rate with data type number required for plugin');
 	} else if (EARNING_RATE < 1 || EARNING_RATE > 100) {
 		throw new Error('Earning rate must be within the range of 1 ~ 100');
+	} else if (!isNumber(MINIMUM_AMOUNT)) {
+		throw new Error('Minimum amount must be integer');
+	} else if (MINIMUM_AMOUNT < 0 ) {
+		throw new Error('Minimum amount must be bigger than 0');
 	} else if (EARNING_RATE % 10 !== 0) {
 		throw new Error('Earning rate must be in increments of 10');
 	} else if (!isNumber(EARNING_PERIOD)) {
@@ -2812,7 +2817,7 @@ const createUnrealizedReferralFees = async (currentTime) => {
 };
 
 const settleFees = async (user_id) => {
-	const { active, distributor_id } = getKitConfig()?.referral_history_config || {};
+	const { active, distributor_id, minimum_amount } = getKitConfig()?.referral_history_config || {};
 	if  (!active) {
 		throw new Error(REFERRAL_HISTORY_NOT_ACTIVE);
 	}
@@ -2855,7 +2860,7 @@ const settleFees = async (user_id) => {
 		feeUsdtValue = new BigNumber(totalValue).multipliedBy(conversions[nativeCurrency]).toNumber();
 	}
 
-	if (feeUsdtValue < 1) {
+	if (feeUsdtValue < minimum_amount) {
 		throw new Error('Total unrealized earned fees are too small to be converted to realized earnings');
 	}
 
