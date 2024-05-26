@@ -1,7 +1,6 @@
 /* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-// import { ReactSVG } from 'react-svg';
 
 import { IconTitle, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
@@ -9,6 +8,7 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import { Button, Checkbox, message, Rate } from 'antd';
 import { fetchFeedback } from './actions/p2pActions';
 import './_P2P.scss';
+
 const P2PProfile = ({
 	data,
 	onClose,
@@ -25,13 +25,13 @@ const P2PProfile = ({
 }) => {
 	const [myDeals, setMyDeals] = useState([]);
 	const [checks, setCheks] = useState([]);
+
 	useEffect(() => {
 		fetchFeedback()
 			.then((res) => {
 				setMyDeals(res.data);
 			})
 			.catch((err) => err);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [refresh]);
 
 	return (
@@ -55,10 +55,26 @@ const P2PProfile = ({
 							className="table-bottom-border"
 							style={{ borderBottom: 'grey 1px solid', padding: 10 }}
 						>
-							<th>Transaction ID</th>
-							<th>User</th>
-							<th>Comment</th>
-							<th>Rating</th>
+							<th>
+								<EditWrapper stringId="P2P.TRANSACTION_ID">
+									{STRINGS['P2P.TRANSACTION_ID']}
+								</EditWrapper>
+							</th>
+							<th>
+								<EditWrapper stringId="P2P.USER">
+									{STRINGS['P2P.USER']}
+								</EditWrapper>
+							</th>
+							<th>
+								<EditWrapper stringId="P2P.COMMENT">
+									{STRINGS['P2P.COMMENT']}
+								</EditWrapper>
+							</th>
+							<th>
+								<EditWrapper stringId="P2P.RATING">
+									{STRINGS['P2P.RATING']}
+								</EditWrapper>
+							</th>
 						</tr>
 					</thead>
 					<tbody className="font-weight-bold">
@@ -71,7 +87,6 @@ const P2PProfile = ({
 										padding: 10,
 										position: 'relative',
 									}}
-									//  key={index}
 								>
 									<td style={{ width: '25%' }} className="td-fit">
 										{deal.transaction.transaction_id}

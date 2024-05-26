@@ -55,9 +55,15 @@ const P2PMyDeals = ({
 						}}
 						style={{ color: 'white', position: 'relative', top: 5 }}
 					>
-						{myDeals.length === 0
-							? 'There are no deals'
-							: `${myDeals.length} Deals:`}
+						{myDeals.length === 0 ? (
+							<EditWrapper stringId="P2P.NO_DEALS">
+								{STRINGS['P2P.NO_DEALS']}
+							</EditWrapper>
+						) : (
+							<EditWrapper stringId="P2P.NUM_DEALS">
+								{myDeals.length} {STRINGS['P2P.NUM_DEALS']}
+							</EditWrapper>
+						)}
 					</Checkbox>
 				</span>
 				<span>
@@ -75,13 +81,15 @@ const P2PMyDeals = ({
 								const res = await fetchDeals({ user_id: user.id });
 								setMyDeals(res.data);
 								setCheks([]);
-								message.success('changes saved');
+								message.success(STRINGS['P2P.CHANGES_SAVED']);
 							} catch (error) {
 								message.error(error.message);
 							}
 						}}
 					>
-						ACTIVATE
+						<EditWrapper stringId="P2P.ACTIVATE">
+							{STRINGS['P2P.ACTIVATE']}
+						</EditWrapper>
 					</Button>
 				</span>
 				<span>
@@ -98,13 +106,15 @@ const P2PMyDeals = ({
 								});
 								const res = await fetchDeals({ user_id: user.id });
 								setMyDeals(res.data);
-								message.success('changes saved');
+								message.success(STRINGS['P2P.CHANGES_SAVED']);
 							} catch (error) {
 								message.error(error.message);
 							}
 						}}
 					>
-						TAKE OFFLINE
+						<EditWrapper stringId="P2P.TAKE_OFFLINE">
+							{STRINGS['P2P.TAKE_OFFLINE']}
+						</EditWrapper>
 					</Button>
 				</span>
 			</div>
@@ -121,13 +131,41 @@ const P2PMyDeals = ({
 							className="table-bottom-border"
 							style={{ borderBottom: 'grey 1px solid', padding: 10 }}
 						>
-							<th>Edit</th>
-							<th>Side</th>
-							<th>Status</th>
-							<th>Price displayed</th>
-							<th>Limit/Available</th>
-							<th>Payment</th>
-							<th>Edit deal</th>
+							<th>
+								<EditWrapper stringId="P2P.EDIT">
+									{STRINGS['P2P.EDIT']}
+								</EditWrapper>
+							</th>
+							<th>
+								<EditWrapper stringId="P2P.SIDE">
+									{STRINGS['P2P.SIDE']}
+								</EditWrapper>
+							</th>
+							<th>
+								<EditWrapper stringId="P2P.STATUS">
+									{STRINGS['P2P.STATUS']}
+								</EditWrapper>
+							</th>
+							<th>
+								<EditWrapper stringId="P2P.PRICE_DISPLAYED">
+									{STRINGS['P2P.PRICE_DISPLAYED']}
+								</EditWrapper>
+							</th>
+							<th>
+								<EditWrapper stringId="P2P.LIMIT_AVAILABLE">
+									{STRINGS['P2P.LIMIT_AVAILABLE']}
+								</EditWrapper>
+							</th>
+							<th>
+								<EditWrapper stringId="P2P.PAYMENT">
+									{STRINGS['P2P.PAYMENT']}
+								</EditWrapper>
+							</th>
+							<th>
+								<EditWrapper stringId="P2P.EDIT_DEAL">
+									{STRINGS['P2P.EDIT_DEAL']}
+								</EditWrapper>
+							</th>
 						</tr>
 					</thead>
 					<tbody className="font-weight-bold">
@@ -169,7 +207,15 @@ const P2PMyDeals = ({
 									</td>
 
 									<td style={{ width: '15%' }} className="td-fit">
-										{deal.status ? 'ACTIVE' : 'INACTIVE'}
+										{deal.status ? (
+											<EditWrapper stringId="P2P.ACTIVE">
+												{STRINGS['P2P.ACTIVE']}
+											</EditWrapper>
+										) : (
+											<EditWrapper stringId="P2P.INACTIVE">
+												{STRINGS['P2P.INACTIVE']}
+											</EditWrapper>
+										)}
 									</td>
 									<td style={{ width: '15%' }} className="td-fit">
 										{deal.exchange_rate * (1 + Number(deal.spread || 0))}{' '}
@@ -177,11 +223,17 @@ const P2PMyDeals = ({
 									</td>
 									<td style={{ width: '15%' }} className="td-fit">
 										<div>
-											Available: {deal.total_order_amount}{' '}
+											<EditWrapper stringId="P2P.AVAILABLE">
+												{STRINGS['P2P.AVAILABLE']}
+											</EditWrapper>
+											: {deal.total_order_amount}{' '}
 											{deal.buying_asset.toUpperCase()}
 										</div>
 										<div>
-											Limit: {deal.min_order_value} - {deal.max_order_value}{' '}
+											<EditWrapper stringId="P2P.LIMIT">
+												{STRINGS['P2P.LIMIT']}
+											</EditWrapper>
+											: {deal.min_order_value} - {deal.max_order_value}{' '}
 											{deal.spending_asset.toUpperCase()}
 										</div>
 									</td>
@@ -205,7 +257,10 @@ const P2PMyDeals = ({
 											}}
 											ghost
 										>
-											Edit {deal.side} deal
+											<EditWrapper stringId="P2P.EDIT_DEAL_BUTTON">
+												{STRINGS['P2P.EDIT_DEAL_BUTTON']}
+											</EditWrapper>
+											: {deal.side.toUpperCase()}
 										</Button>
 									</td>
 								</tr>

@@ -605,7 +605,7 @@ const updateP2pTransaction = async (data) => {
 		const chatMessage = {
 			sender_id: user_id,
 			receiver_id: merchant.id,
-			message: 'Buyer has marked this order as paid. Waiting for vendor to check, confirm and release funds',
+			message: 'BUYER_PAID_ORDER',
 			type: 'notification',
 			created_at: new Date()
 		};
@@ -617,7 +617,7 @@ const updateP2pTransaction = async (data) => {
 		const chatMessage = {
 			sender_id: user_id,
 			receiver_id: merchant.id,
-			message: 'Buyer has cancelled this order, Transaction is closed',
+			message: 'BUYER_CANCELLED_ORDER',
 			type: 'notification',
 			created_at: new Date()
 		};
@@ -629,7 +629,7 @@ const updateP2pTransaction = async (data) => {
 		const chatMessage = {
 			sender_id: user_id,
 			receiver_id: merchant.id,
-			message: 'Buyer has appealed this order, Please contact support to resolve the issue',
+			message: 'BUYER_APPEALED_ORDER',
 			type: 'notification',
 			created_at: new Date()
 		};
@@ -642,7 +642,7 @@ const updateP2pTransaction = async (data) => {
 		const chatMessage = {
 			sender_id: merchant.id,
 			receiver_id: transaction.user_id,
-			message: 'Vendor confirmed the transaction and released the funds.',
+			message: 'VENDOR_CONFIRMED_ORDER',
 			type: 'notification',
 			created_at: new Date()
 		};
@@ -654,7 +654,7 @@ const updateP2pTransaction = async (data) => {
 		const chatMessage = {
 			sender_id: merchant.id,
 			receiver_id: transaction.user_id,
-			message: 'Vendor has cancelled this order, Transaction is closed',
+			message: 'VENDOR_CANCELLED_ORDER',
 			type: 'notification',
 			created_at: new Date()
 		};
@@ -666,7 +666,7 @@ const updateP2pTransaction = async (data) => {
 		const chatMessage = {
 			sender_id: merchant.id,
 			receiver_id: transaction.user_id,
-			message: 'Vendor has appealed this order, Please contact support to resolve the issue',
+			message: 'VENDOR_APPEALED_ORDER',
 			type: 'notification',
 			created_at: new Date()
 		};

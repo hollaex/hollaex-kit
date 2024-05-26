@@ -185,16 +185,16 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 								});
 								requestAdminData().then((res) => {
 									const result = res?.data?.kit?.p2p_config;
-									setEnable(result.enable);
-									setSide(result.side);
-									setDigitalCurrencies(result.digital_currencies);
-									setFiatCurrencies(result.fiat_currencies);
-									setMerchantTier(result.starting_merchant_tier);
-									setUserTier(result.starting_user_tier);
-									setSelectedPaymentMethods(result.bank_payment_methods);
-									setMerchantFee(result.merchant_fee);
-									setUserFee(result.user_fee);
-									setSourceAccount(result.source_account);
+									setEnable(result?.enable);
+									setSide(result?.side);
+									setDigitalCurrencies(result?.digital_currencies);
+									setFiatCurrencies(result?.fiat_currencies);
+									setMerchantTier(result?.starting_merchant_tier);
+									setUserTier(result?.starting_user_tier);
+									setSelectedPaymentMethods(result?.bank_payment_methods);
+									setMerchantFee(result?.merchant_fee);
+									setUserFee(result?.user_fee);
+									setSourceAccount(result?.source_account);
 								});
 							}}
 						/>
@@ -437,9 +437,9 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 									showSearch
 									className="select-box"
 									placeholder="Select a tier level:"
-									value={merchantTier}
+									value={userTier}
 									onChange={(e) => {
-										setMerchantTier(e);
+										setUserTier(e);
 									}}
 								>
 									{Object.values(tiers || {}).map((tier) => {
@@ -472,9 +472,9 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 								className="select-box"
 								placeholder="Select a tier level:"
 								style={{ marginBottom: 40 }}
-								value={userTier}
+								value={merchantTier}
 								onChange={(e) => {
-									setUserTier(e);
+									setMerchantTier(e);
 								}}
 							>
 								{Object.values(tiers || {}).map((tier) => {
@@ -830,16 +830,16 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 										});
 										requestAdminData().then((res) => {
 											const result = res?.data?.kit?.p2p_config;
-											setEnable(result.enable);
-											setSide(result.side);
-											setDigitalCurrencies(result.digital_currencies);
-											setFiatCurrencies(result.fiat_currencies);
-											setMerchantTier(result.starting_merchant_tier);
-											setUserTier(result.starting_user_tier);
-											setSelectedPaymentMethods(result.bank_payment_methods);
-											setMerchantFee(result.merchant_fee);
-											setUserFee(result.user_fee);
-											setSourceAccount(p2p_config.source_account);
+											setEnable(result?.enable);
+											setSide(result?.side);
+											setDigitalCurrencies(result?.digital_currencies);
+											setFiatCurrencies(result?.fiat_currencies);
+											setMerchantTier(result?.starting_merchant_tier);
+											setUserTier(result?.starting_user_tier);
+											setSelectedPaymentMethods(result?.bank_payment_methods);
+											setMerchantFee(result?.merchant_fee);
+											setUserFee(result?.user_fee);
+											setSourceAccount(result?.source_account);
 										});
 										setEditMode(false);
 										setStep(0);

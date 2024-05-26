@@ -67,7 +67,9 @@ const P2POrders = ({
 						setFilter('active');
 					}}
 				>
-					Processing
+					<EditWrapper stringId="P2P.PROCESSING">
+						{STRINGS['P2P.PROCESSING']}
+					</EditWrapper>
 				</Button>
 				<Button
 					ghost
@@ -75,7 +77,9 @@ const P2POrders = ({
 						setFilter();
 					}}
 				>
-					All Orders
+					<EditWrapper stringId="P2P.ALL_ORDERS">
+						{STRINGS['P2P.ALL_ORDERS']}
+					</EditWrapper>
 				</Button>
 				{/* <Button ghost>Profit & Loss Statement</Button> */}
 			</div>
@@ -89,19 +93,45 @@ const P2POrders = ({
 							className="table-bottom-border"
 							style={{ borderBottom: 'grey 1px solid', padding: 10 }}
 						>
-							<th>Type/Coin</th>
-							<th>Fiat amount</th>
-							<th>Price</th>
-							<th>Crypto amount</th>
-							<th>Counterparty</th>
-							<th>Status</th>
+							<th>
+								<EditWrapper stringId="P2P.TYPE_COIN">
+									{STRINGS['P2P.TYPE_COIN']}
+								</EditWrapper>
+							</th>
+							<th>
+								<EditWrapper stringId="P2P.FIAT_AMOUNT">
+									{STRINGS['P2P.FIAT_AMOUNT']}
+								</EditWrapper>
+							</th>
+							<th>
+								<EditWrapper stringId="P2P.PRICE">
+									{STRINGS['P2P.PRICE']}
+								</EditWrapper>
+							</th>
+							<th>
+								<EditWrapper stringId="P2P.CRYPTO_AMOUNT">
+									{STRINGS['P2P.CRYPTO_AMOUNT']}
+								</EditWrapper>
+							</th>
+							<th>
+								<EditWrapper stringId="P2P.COUNTERPARTY">
+									{STRINGS['P2P.COUNTERPARTY']}
+								</EditWrapper>
+							</th>
+							<th>
+								<EditWrapper stringId="P2P.STATUS">
+									{STRINGS['P2P.STATUS']}
+								</EditWrapper>
+							</th>
 							<th
 								style={{
 									display: 'flex',
 									justifyContent: 'flex-end',
 								}}
 							>
-								Operation
+								<EditWrapper stringId="P2P.OPERATION">
+									{STRINGS['P2P.OPERATION']}
+								</EditWrapper>
 							</th>
 						</tr>
 					</thead>
@@ -117,7 +147,6 @@ const P2POrders = ({
 											padding: 10,
 											position: 'relative',
 										}}
-										//  key={index}
 									>
 										<td style={{ width: '17%' }}>
 											<Button
@@ -126,7 +155,7 @@ const P2POrders = ({
 													color: 'white',
 												}}
 											>
-												Buy {transaction?.deal?.buying_asset?.toUpperCase()}
+												<EditWrapper stringId="P2P.BUY_COIN">{`Buy ${transaction?.deal?.buying_asset?.toUpperCase()}`}</EditWrapper>
 											</Button>
 										</td>
 
@@ -166,7 +195,9 @@ const P2POrders = ({
 													cursor: 'pointer',
 												}}
 											>
-												View order
+												<EditWrapper stringId="P2P.VIEW_ORDER">
+													{STRINGS['P2P.VIEW_ORDER']}
+												</EditWrapper>
 											</div>
 										</td>
 									</tr>

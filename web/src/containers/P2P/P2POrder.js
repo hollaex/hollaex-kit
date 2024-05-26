@@ -21,32 +21,6 @@ import { getToken } from 'utils/token';
 import { WS_URL } from 'config/constants';
 import { CloseOutlined } from '@ant-design/icons';
 import './_P2P.scss';
-// const buyerConfirmMessage = () => (
-// 	<div
-// 		style={{
-// 			marginTop: 10,
-// 			marginBottom: 10,
-// 			textAlign: 'center',
-// 			color: 'grey',
-// 		}}
-// 	>
-// 		Buyer has marked this order as paid. Waiting for vendor to check, confirm
-// 		and realease funds (23/08,25 23:53)
-// 	</div>
-// );
-
-// const venderConfirmMessage = () => (
-// 	<div
-// 		style={{
-// 			marginTop: 10,
-// 			marginBottom: 10,
-// 			textAlign: 'center',
-// 			color: 'grey',
-// 		}}
-// 	>
-// 		Vendor confirmed the transaction and released the funds.
-// 	</div>
-// );
 
 const P2POrder = ({
 	data,
@@ -84,15 +58,6 @@ const P2POrder = ({
 			behavior: 'smooth',
 		});
 	}, [selectedOrder.messages]);
-
-	// useEffect(() => {
-	// 	fetchTransactions({ id: selectedOrder.id })
-	// 	.then(transaction =>{
-	// 		setSelectedOrder(transaction.data[0]);
-	// 	})
-	// 	.catch(err => err)
-
-	// }, [selectedOrder.user_status, selectedOrder.merchant_status])
 
 	useEffect(() => {
 		const url = `${WS_URL}/stream?authorization=Bearer ${getToken()}`;
@@ -152,10 +117,6 @@ const P2POrder = ({
 			}
 		};
 
-		// p2pWs.onerror = (evt) => {
-		// 	console.error('p2p socket error', evt);
-		// };
-
 		return () => {
 			p2pWs.send(
 				JSON.stringify({
@@ -165,7 +126,6 @@ const P2POrder = ({
 			);
 			p2pWs.close();
 		};
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	useEffect(() => {
@@ -175,7 +135,6 @@ const P2POrder = ({
 				setHasFeedback(true);
 			}
 		});
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const getTransaction = async () => {
@@ -251,10 +210,18 @@ const P2POrder = ({
 							alignItems: 'center',
 						}}
 					>
-						<h1 className="stake_theme">Appeal this transaction</h1>
+						<h1 className="stake_theme">
+							<EditWrapper stringId="P2P.APPEAL_TRANSACTION">
+								{STRINGS['P2P.APPEAL_TRANSACTION']}
+							</EditWrapper>
+						</h1>
 					</div>
 					<div style={{ flex: 1 }}>
-						<div>Enter the reason why you are appealing this transaction</div>
+						<div>
+							<EditWrapper stringId="P2P.ENTER_REASON">
+								{STRINGS['P2P.ENTER_REASON']}
+							</EditWrapper>
+						</div>
 						<Input
 							width={300}
 							value={appealReason}
@@ -286,7 +253,9 @@ const P2POrder = ({
 						}}
 						type="default"
 					>
-						CANCEL
+						<EditWrapper stringId="P2P.CANCEL">
+							{STRINGS['P2P.CANCEL']}
+						</EditWrapper>
 					</Button>
 					<Button
 						onClick={async () => {
@@ -299,13 +268,7 @@ const P2POrder = ({
 									});
 
 									updateStatus('appeal');
-									// const transaction = await fetchTransactions({
-									// 	id: selectedOrder.id,
-									// });
-									// setSelectedOrder(transaction.data[0]);
-									message.success(
-										'You have appealed the transaction, contact support to resolve your issue'
-									);
+									message.success(STRINGS['P2P.APPEALED_TRANSACTION']);
 								} else {
 									await updateTransaction({
 										id: selectedOrder.id,
@@ -314,13 +277,7 @@ const P2POrder = ({
 									});
 
 									updateStatus('appeal');
-									// const transaction = await fetchTransactions({
-									// 	id: selectedOrder.id,
-									// });
-									// setSelectedOrder(transaction.data[0]);
-									message.success(
-										'You have appealed the transaction, contact support to resolve your issue'
-									);
+									message.success(STRINGS['P2P.APPEALED_TRANSACTION']);
 								}
 								setAppealSide();
 								setDisplayAppealModel(false);
@@ -336,7 +293,7 @@ const P2POrder = ({
 						}}
 						type="default"
 					>
-						OKAY
+						<EditWrapper stringId="P2P.OKAY">{STRINGS['P2P.OKAY']}</EditWrapper>
 					</Button>
 				</div>
 			</Modal>
@@ -372,11 +329,17 @@ const P2POrder = ({
 							}}
 						>
 							<h1 className="stake_theme">
-								Submit feedback for this transaction
+								<EditWrapper stringId="P2P.SUBMIT_FEEDBACK">
+									{STRINGS['P2P.SUBMIT_FEEDBACK']}
+								</EditWrapper>
 							</h1>
 						</div>
 						<div style={{ flex: 1 }}>
-							<div>Input your feedback</div>
+							<div>
+								<EditWrapper stringId="P2P.INPUT_FEEDBACK">
+									{STRINGS['P2P.INPUT_FEEDBACK']}
+								</EditWrapper>
+							</div>
 							<Input
 								width={300}
 								value={feedback}
@@ -386,7 +349,11 @@ const P2POrder = ({
 							/>
 						</div>
 						<div style={{ flex: 1 }}>
-							<div>Select Rating</div>
+							<div>
+								<EditWrapper stringId="P2P.SELECT_RATING">
+									{STRINGS['P2P.SELECT_RATING']}
+								</EditWrapper>
+							</div>
 							<Rate onChange={setRating} value={rating} />
 						</div>
 					</div>
@@ -414,23 +381,25 @@ const P2POrder = ({
 							}}
 							type="default"
 						>
-							CANCEL
+							<EditWrapper stringId="P2P.CANCEL">
+								{STRINGS['P2P.CANCEL']}
+							</EditWrapper>
 						</Button>
 						<Button
 							onClick={async () => {
 								try {
 									if (!rating) {
-										message.error('Please select rating');
+										message.error(STRINGS['P2P.SELECT_RATING']);
 									}
 									if (!feedback) {
-										message.error('Please input feedback');
+										message.error(STRINGS['P2P.INPUT_FEEDBACK']);
 									}
 									await createFeedback({
 										transaction_id: selectedOrder.id,
 										comment: feedback,
 										rating: rating,
 									});
-									message.success('Feedback submitted');
+									message.success(STRINGS['P2P.FEEDBACK_SUBMITTED']);
 									setDisplayFeedbackModel(false);
 									setFeedback();
 									setRating();
@@ -447,7 +416,9 @@ const P2POrder = ({
 							}}
 							type="default"
 						>
-							PROOCED
+							<EditWrapper stringId="P2P.PROCEED">
+								{STRINGS['P2P.PROCEED']}
+							</EditWrapper>
 						</Button>
 					</div>
 				</Modal>
@@ -463,7 +434,7 @@ const P2POrder = ({
 					textDecoration: 'underline',
 				}}
 			>
-				Back
+				<EditWrapper stringId="P2P.BACK">{STRINGS['P2P.BACK']}</EditWrapper>
 			</div>
 			<div
 				className="P2pOrder"
@@ -479,12 +450,18 @@ const P2POrder = ({
 				>
 					<div style={{ flex: 1 }}>
 						<div style={{ display: 'flex', gap: 10 }}>
-							{/* <div>ICON</div> */}
 							<div>
-								<div>ORDER</div>
 								<div>
-									Buy {coin?.fullname?.toUpperCase()} (
-									{coin?.symbol?.toUpperCase()})
+									<EditWrapper stringId="P2P.ORDER">
+										{STRINGS['P2P.ORDER']}
+									</EditWrapper>
+								</div>
+								<div>
+									<EditWrapper stringId="P2P.BUY_COIN">
+										{STRINGS['P2P.BUY_COIN']}
+									</EditWrapper>{' '}
+									{coin?.fullname?.toUpperCase()} ({coin?.symbol?.toUpperCase()}
+									)
 								</div>
 							</div>
 						</div>
@@ -496,7 +473,10 @@ const P2POrder = ({
 							}}
 						></div>
 						<div>
-							Transaction ID{': '}
+							<EditWrapper stringId="P2P.TRANSACTION_ID">
+								{STRINGS['P2P.TRANSACTION_ID']}
+							</EditWrapper>
+							{': '}
 							{selectedOrder.transaction_id}
 						</div>
 
@@ -515,8 +495,13 @@ const P2POrder = ({
 							}}
 						>
 							<div>
-								Amount to{' '}
-								{user.id === selectedOrder?.merchant_id ? 'sell' : 'send'}:
+								<EditWrapper stringId="P2P.AMOUNT_TO">
+									{STRINGS['P2P.AMOUNT_TO']}
+								</EditWrapper>{' '}
+								{user.id === selectedOrder?.merchant_id
+									? STRINGS['P2P.SELL']
+									: STRINGS['P2P.SEND_UPPER']}
+								:
 							</div>
 							<div>
 								{user.id === selectedOrder?.merchant_id && (
@@ -531,7 +516,11 @@ const P2POrder = ({
 										{selectedOrder?.deal?.spending_asset?.toUpperCase()}
 									</div>
 								)}
-								<div>(required flat transfer amount)</div>
+								<div>
+									<EditWrapper stringId="P2P.REQUIRED_FLAT_TRANSFER_AMOUNT">
+										{STRINGS['P2P.REQUIRED_FLAT_TRANSFER_AMOUNT']}
+									</EditWrapper>
+								</div>
 							</div>
 						</div>
 						<div
@@ -548,14 +537,22 @@ const P2POrder = ({
 								justifyContent: 'space-between',
 							}}
 						>
-							<div>Price:</div>
+							<div>
+								<EditWrapper stringId="P2P.PRICE">
+									{STRINGS['P2P.PRICE']}
+								</EditWrapper>
+								:
+							</div>
 							<div>
 								<div style={{ textAlign: 'end' }}>
 									{selectedOrder?.price}{' '}
 									{selectedOrder?.deal?.spending_asset?.toUpperCase()}
 								</div>
 								<div>
-									(per {selectedOrder?.deal?.buying_asset?.toUpperCase()})
+									<EditWrapper stringId="P2P.PER_COIN">
+										{STRINGS['P2P.PER_COIN']}
+									</EditWrapper>{' '}
+									{selectedOrder?.deal?.buying_asset?.toUpperCase()}
 								</div>
 							</div>
 						</div>
@@ -573,7 +570,12 @@ const P2POrder = ({
 								justifyContent: 'space-between',
 							}}
 						>
-							<div>Receiving amount:</div>
+							<div>
+								<EditWrapper stringId="P2P.RECEIVING_AMOUNT">
+									{STRINGS['P2P.RECEIVING_AMOUNT']}
+								</EditWrapper>
+								:
+							</div>
 							{user.id === selectedOrder?.merchant_id && (
 								<div>
 									<div style={{ textAlign: 'end' }}>
@@ -581,8 +583,10 @@ const P2POrder = ({
 										{selectedOrder?.deal?.spending_asset?.toUpperCase()}
 									</div>
 									<div>
-										({selectedOrder?.deal?.spending_asset?.toUpperCase()} amount
-										you'll receive)
+										{selectedOrder?.deal?.spending_asset?.toUpperCase()}{' '}
+										<EditWrapper stringId="P2P.SPENDING_AMOUNT">
+											{STRINGS['P2P.SPENDING_AMOUNT']}
+										</EditWrapper>
 									</div>
 								</div>
 							)}
@@ -594,8 +598,10 @@ const P2POrder = ({
 										{selectedOrder?.deal?.buying_asset?.toUpperCase()}
 									</div>
 									<div>
-										({selectedOrder?.deal?.buying_asset?.toUpperCase()} amount
-										you'll receive)
+										{selectedOrder?.deal?.buying_asset?.toUpperCase()}{' '}
+										<EditWrapper stringId="P2P.BUYING_AMOUNT">
+											{STRINGS['P2P.BUYING_AMOUNT']}
+										</EditWrapper>
 									</div>
 								</div>
 							)}
@@ -614,7 +620,12 @@ const P2POrder = ({
 								justifyContent: 'space-between',
 							}}
 						>
-							<div>Fee:</div>
+							<div>
+								<EditWrapper stringId="P2P.FEE">
+									{STRINGS['P2P.FEE']}
+								</EditWrapper>
+								:
+							</div>
 							{user.id === selectedOrder?.merchant_id && (
 								<div>
 									<div>{p2p_config?.merchant_fee}%</div>
@@ -636,19 +647,24 @@ const P2POrder = ({
 						></div>
 
 						<div style={{ marginBottom: 20 }}>
-							<div>TRANSFER DETAILS</div>
+							<div>
+								<EditWrapper stringId="P2P.TRANSFER_DETAILS">
+									{STRINGS['P2P.TRANSFER_DETAILS']}
+								</EditWrapper>
+							</div>
 							{user.id === selectedOrder?.user_id && (
 								<div style={{ marginBottom: 20 }}>
-									Here's the selected payment method, transfer money to seller.
-									After you've successfully transferred the money please click
-									confirm below to notify the seller
+									<EditWrapper stringId="P2P.PAYMENT_INSTRUCTIONS">
+										{STRINGS['P2P.PAYMENT_INSTRUCTIONS']}
+									</EditWrapper>
 								</div>
 							)}
 
 							{user.id === selectedOrder?.merchant_id && (
 								<div style={{ marginBottom: 20 }}>
-									Below is the payment account and method that is shared with
-									the buyer.
+									<EditWrapper stringId="P2P.PAYMENT_ACCOUNT">
+										{STRINGS['P2P.PAYMENT_ACCOUNT']}
+									</EditWrapper>
 								</div>
 							)}
 
@@ -661,7 +677,12 @@ const P2POrder = ({
 										justifyContent: 'space-between',
 									}}
 								>
-									<div>Payment Method:</div>
+									<div>
+										<EditWrapper stringId="P2P.PAYMENT_METHOD">
+											{STRINGS['P2P.PAYMENT_METHOD']}
+										</EditWrapper>
+										:
+									</div>
 									<div>{selectedOrder?.payment_method_used?.system_name}</div>
 								</div>
 
@@ -683,7 +704,9 @@ const P2POrder = ({
 
 						<div>
 							<div style={{ marginBottom: 10 }}>
-								Expected time until funds are release: 30 minutes
+								<EditWrapper stringId="P2P.EXPECTED_TIME">
+									{STRINGS['P2P.EXPECTED_TIME']}
+								</EditWrapper>
 							</div>
 
 							{user.id === selectedOrder?.user_id && (
@@ -691,37 +714,45 @@ const P2POrder = ({
 									{selectedOrder.user_status === 'pending' && (
 										<>
 											<div style={{ marginBottom: 20 }}>
-												Please make the payment in the time provided above.
+												<EditWrapper stringId="P2P.PAYMENT_TIME">
+													{STRINGS['P2P.PAYMENT_TIME']}
+												</EditWrapper>
 											</div>
 											<div style={{ marginBottom: 20 }}>
-												The order will otherwise be cancelled
+												<EditWrapper stringId="P2P.ORDER_CANCELLED">
+													{STRINGS['P2P.ORDER_CANCELLED']}
+												</EditWrapper>
 											</div>
 										</>
 									)}
 
 									{selectedOrder.user_status === 'confirmed' && (
 										<div style={{ marginBottom: 20 }}>
-											Once funds are released you will find the funds credited
-											to your funding wallet
+											<EditWrapper stringId="P2P.FUNDS_CREDITED">
+												{STRINGS['P2P.FUNDS_CREDITED']}
+											</EditWrapper>
 										</div>
 									)}
 
 									{selectedOrder.merchant_status === 'cancelled' && (
 										<div style={{ marginBottom: 20 }}>
-											Vendor cancelled the order, there will not be transfer of
-											funds, If you think this is an error, Please contact
-											support
+											<EditWrapper stringId="P2P.VENDOR_CANCELLED">
+												{STRINGS['P2P.VENDOR_CANCELLED']}
+											</EditWrapper>
 										</div>
 									)}
 
 									{selectedOrder.merchant_status === 'confirmed' && (
 										<div style={{ marginBottom: 20 }}>
 											<div style={{ fontSize: 16, fontWeight: 'bold' }}>
-												ORDER COMPLETE
+												<EditWrapper stringId="P2P.ORDER_COMPLETE">
+													{STRINGS['P2P.ORDER_COMPLETE']}
+												</EditWrapper>
 											</div>
 											<div>
-												Vendor confirmed the transaction and funds transferred
-												to your balance.
+												<EditWrapper stringId="P2P.FUNDS_TRANSFERRED">
+													{STRINGS['P2P.FUNDS_TRANSFERRED']}
+												</EditWrapper>
 											</div>
 											{!hasFeedback && (
 												<Button
@@ -731,7 +762,9 @@ const P2POrder = ({
 													}}
 													ghost
 												>
-													Submit Feedback
+													<EditWrapper stringId="P2P.SUBMIT_FEEDBACK">
+														{STRINGS['P2P.SUBMIT_FEEDBACK']}
+													</EditWrapper>
 												</Button>
 											)}
 										</div>
@@ -739,16 +772,18 @@ const P2POrder = ({
 									{selectedOrder.merchant_status === 'appeal' && (
 										<>
 											<div style={{ marginTop: 15, marginBottom: 15 }}>
-												Transaction appealed by the vendor, Please contact
-												support with transaction id to resolve the issue
+												<EditWrapper stringId="P2P.VENDOR_APPEALED">
+													{STRINGS['P2P.VENDOR_APPEALED']}
+												</EditWrapper>
 											</div>
 										</>
 									)}
 									{selectedOrder.user_status === 'appeal' && (
 										<>
 											<div style={{ marginTop: 15, marginBottom: 15 }}>
-												You appealed the transaction, Please contact support
-												with transaction id to resolve the issue
+												<EditWrapper stringId="P2P.USER_APPEALED">
+													{STRINGS['P2P.USER_APPEALED']}
+												</EditWrapper>
 											</div>
 										</>
 									)}
@@ -760,11 +795,14 @@ const P2POrder = ({
 									{selectedOrder.merchant_status === 'confirmed' && (
 										<div style={{ marginBottom: 20 }}>
 											<div style={{ fontSize: 16, fontWeight: 'bold' }}>
-												ORDER COMPLETE
+												<EditWrapper stringId="P2P.ORDER_COMPLETE">
+													{STRINGS['P2P.ORDER_COMPLETE']}
+												</EditWrapper>
 											</div>
 											<div>
-												You've marked this order as complete and released the
-												funds
+												<EditWrapper stringId="P2P.ORDER_COMPLETE_VENDOR">
+													{STRINGS['P2P.ORDER_COMPLETE_VENDOR']}
+												</EditWrapper>
 											</div>
 										</div>
 									)}
@@ -772,19 +810,23 @@ const P2POrder = ({
 									{selectedOrder.user_status === 'pending' && (
 										<>
 											<div style={{ marginTop: 15, marginBottom: 15 }}>
-												The buyer has not sent the payment yet. Once you receive
-												payment you will be notified here.
+												<EditWrapper stringId="P2P.PAYMENT_NOT_SENT">
+													{STRINGS['P2P.PAYMENT_NOT_SENT']}
+												</EditWrapper>
 											</div>
 											<div style={{ marginBottom: 15 }}>
-												Please kindly confirm and relase crpyto funds to buyer
-												below once complete
+												<EditWrapper stringId="P2P.CONFIRM_AND_RELEASE">
+													{STRINGS['P2P.CONFIRM_AND_RELEASE']}
+												</EditWrapper>
 											</div>
 										</>
 									)}
 									{selectedOrder.user_status === 'cancelled' && (
 										<>
 											<div style={{ marginTop: 15, marginBottom: 15 }}>
-												Transaction canceled by the buyer
+												<EditWrapper stringId="P2P.TRANSACTION_CANCELLED">
+													{STRINGS['P2P.TRANSACTION_CANCELLED']}
+												</EditWrapper>
 											</div>
 										</>
 									)}
@@ -792,18 +834,23 @@ const P2POrder = ({
 										selectedOrder?.merchant_status !== 'confirmed' && (
 											<>
 												<div style={{ marginTop: 15 }}>
-													Buyer confirmed the payment
+													<EditWrapper stringId="P2P.BUYER_CONFIRMED">
+														{STRINGS['P2P.BUYER_CONFIRMED']}
+													</EditWrapper>
 												</div>
 												<div style={{ marginTop: 5, marginBottom: 15 }}>
-													Please check that the payment from the buyer was sent
-													and confirm and release funds below.
+													<EditWrapper stringId="P2P.CHECK_AND_RELEASE">
+														{STRINGS['P2P.CHECK_AND_RELEASE']}
+													</EditWrapper>
 												</div>
 											</>
 										)}
 									{selectedOrder.user_status === 'appeal' && (
 										<>
 											<div style={{ marginTop: 15, marginBottom: 15 }}>
-												Transaction appealed by the buyer
+												<EditWrapper stringId="P2P.USER_APPEALED">
+													{STRINGS['P2P.USER_APPEALED']}
+												</EditWrapper>
 											</div>
 										</>
 									)}
@@ -832,7 +879,9 @@ const P2POrder = ({
 															top: 5,
 														}}
 													>
-														Appeal
+														<EditWrapper stringId="P2P.APPEAL">
+															{STRINGS['P2P.APPEAL']}
+														</EditWrapper>
 													</div>
 													<div
 														onClick={async () => {
@@ -842,13 +891,8 @@ const P2POrder = ({
 																	user_status: 'cancelled',
 																});
 																updateStatus('cancelled');
-
-																// const transaction = await fetchTransactions({
-																// 	id: selectedOrder.id,
-																// });
-																// setSelectedOrder(transaction.data[0]);
 																message.success(
-																	'You have cancelled the transaction'
+																	STRINGS['P2P.TRANSACTION_CANCELLED']
 																);
 															} catch (error) {
 																message.error(error.data.message);
@@ -861,7 +905,9 @@ const P2POrder = ({
 															top: 5,
 														}}
 													>
-														Cancel order
+														<EditWrapper stringId="P2P.CANCEL_ORDER">
+															{STRINGS['P2P.CANCEL_ORDER']}
+														</EditWrapper>
 													</div>
 												</>
 											)}
@@ -898,7 +944,9 @@ const P2POrder = ({
 													top: 5,
 												}}
 											>
-												Appeal
+												<EditWrapper stringId="P2P.APPEAL">
+													{STRINGS['P2P.APPEAL']}
+												</EditWrapper>
 											</div>
 
 											<Button
@@ -912,36 +960,37 @@ const P2POrder = ({
 														});
 
 														updateStatus('confirmed');
-
-														// const transaction = await fetchTransactions({
-														// 	id: selectedOrder.id,
-														// });
-														// setSelectedOrder(transaction.data[0]);
 														message.success(
-															'You have confirmed the transaction'
+															STRINGS['P2P.CONFIRMED_TRANSACTION']
 														);
 													} catch (error) {
 														message.error(error.data.message);
 													}
 												}}
 											>
-												CONFIRM AND RELEASE CRYPTO
+												<EditWrapper stringId="P2P.CONFIRM_AND_RELEASE_CRYPTO">
+													{STRINGS['P2P.CONFIRM_AND_RELEASE_CRYPTO']}
+												</EditWrapper>
 											</Button>
 										</span>
 									)}
 								{user.id === selectedOrder?.merchant_id &&
 									selectedOrder?.merchant_status === 'appeal' && (
 										<div style={{ fontWeight: 'bold' }}>
-											You have appealed the transaction, Please contact support
-											with transaction id to resolve your issue
+											<EditWrapper stringId="P2P.VENDOR_APPEALED">
+												{STRINGS['P2P.VENDOR_APPEALED']}
+											</EditWrapper>
 										</div>
 									)}
 							</div>
 						</div>
 					</div>
 					<div style={{ flex: 1 }}>
-						<div>CHAT WITH VENDOR</div>
-						{/* chat box */}
+						<div>
+							<EditWrapper stringId="P2P.CHAT_WITH_VENDOR">
+								{STRINGS['P2P.CHAT_WITH_VENDOR']}
+							</EditWrapper>
+						</div>
 						<div
 							className="P2pOrder"
 							style={{
@@ -950,7 +999,12 @@ const P2POrder = ({
 								padding: 15,
 							}}
 						>
-							<div>Vendor name: {selectedOrder?.merchant?.full_name}</div>
+							<div>
+								<EditWrapper stringId="P2P.VENDOR_NAME">
+									{STRINGS['P2P.VENDOR_NAME']}
+								</EditWrapper>{' '}
+								{selectedOrder?.merchant?.full_name}
+							</div>
 							<div
 								style={{
 									borderBottom: '1px solid grey',
@@ -968,7 +1022,9 @@ const P2POrder = ({
 							>
 								{user.id === selectedOrder?.user_id && (
 									<div>
-										You've initiated and created an order with{' '}
+										<EditWrapper stringId="P2P.ORDER_INITIATED">
+											{STRINGS['P2P.ORDER_INITIATED']}
+										</EditWrapper>{' '}
 										{selectedOrder?.merchant?.full_name} (
 										{moment(selectedOrder?.created_at).format(
 											'DD/MMM/YYYY, hh:mmA '
@@ -979,13 +1035,13 @@ const P2POrder = ({
 
 								{user.id === selectedOrder?.user_id && (
 									<div>
-										Please communicate with the vendor to confirm your incoming
-										payment.
+										<EditWrapper stringId="P2P.CONFIRM_PAYMENT">
+											{STRINGS['P2P.CONFIRM_PAYMENT']}
+										</EditWrapper>
 									</div>
 								)}
 							</div>
 
-							{/* chat */}
 							<div
 								ref={ref}
 								style={{
@@ -1027,7 +1083,10 @@ const P2POrder = ({
 															color: 'grey',
 														}}
 													>
-														{message.message} (
+														<EditWrapper stringId={`P2P.${message.message}`}>
+															{STRINGS[`P2P.${message.message}`]}
+														</EditWrapper>{' '}
+														(
 														{moment(message?.created_at || new Date()).format(
 															'DD/MMM/YYYY, hh:mmA '
 														)}
@@ -1044,7 +1103,12 @@ const P2POrder = ({
 																textAlign: 'right',
 															}}
 														>
-															<div>You:</div>
+															<div>
+																<EditWrapper stringId="P2P.YOU">
+																	{STRINGS['P2P.YOU']}
+																</EditWrapper>
+																:
+															</div>
 															<div>{message.message}</div>
 															<div>
 																{moment(
@@ -1065,7 +1129,7 @@ const P2POrder = ({
 															<div>
 																{message.receiver_id ===
 																selectedOrder.merchant_id
-																	? 'Buyer'
+																	? STRINGS['P2P.BUYER']
 																	: selectedOrder?.merchant?.full_name}
 																:
 															</div>
@@ -1086,8 +1150,6 @@ const P2POrder = ({
 
 							<div
 								style={{
-									// position: 'absolute',
-									// bottom: 0,
 									padding: 10,
 									marginBottom: 5,
 									marginTop: 10,
@@ -1143,17 +1205,15 @@ const P2POrder = ({
 													id: selectedOrder.id,
 												});
 
-												// const transaction = await fetchTransactions({
-												// 	id: selectedOrder.id,
-												// });
-												// setSelectedOrder(transaction.data[0]);
 												setChatMessage();
 											} catch (error) {
 												message.error(error.data.message);
 											}
 										}}
 									>
-										SEND
+										<EditWrapper stringId="P2P.SEND_UPPER">
+											{STRINGS['P2P.SEND_UPPER']}
+										</EditWrapper>
 									</div>
 								</div>
 							</div>
@@ -1183,17 +1243,15 @@ const P2POrder = ({
 									});
 
 									updateStatus('cancelled');
-									// const transaction = await fetchTransactions({
-									// 	id: selectedOrder.id,
-									// });
-									// setSelectedOrder(transaction.data[0]);
-									message.success('You have cancelled the transaction');
+									message.success(STRINGS['P2P.TRANSACTION_CANCELLED']);
 								} catch (error) {
 									message.error(error.data.message);
 								}
 							}}
 						>
-							CANCEL
+							<EditWrapper stringId="P2P.CANCEL">
+								{STRINGS['P2P.CANCEL']}
+							</EditWrapper>
 						</Button>
 						<Button
 							style={{ backgroundColor: '#5E63F6', color: 'white' }}
@@ -1204,20 +1262,15 @@ const P2POrder = ({
 										user_status: 'confirmed',
 									});
 									updateStatus('confirmed');
-
-									// const transaction = await fetchTransactions({
-									// 	id: selectedOrder.id,
-									// });
-									// setSelectedOrder(transaction.data[0]);
-									message.success(
-										"You've successfuly confirmed the transaction"
-									);
+									message.success(STRINGS['P2P.CONFIRMED_TRANSACTION']);
 								} catch (error) {
 									message.error(error.data.message);
 								}
 							}}
 						>
-							CONFIRM TRANSFER AND NOTIFY VENDOR
+							<EditWrapper stringId="P2P.CONFIRM_TRANSFER">
+								{STRINGS['P2P.CONFIRM_TRANSFER']}
+							</EditWrapper>
 						</Button>
 					</div>
 				)}

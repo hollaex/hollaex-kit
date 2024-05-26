@@ -88,11 +88,15 @@ const P2PDash = ({
 					justifyContent: 'center',
 				}}
 			>
-				<span>I want to buy</span>
+				<EditWrapper stringId="P2P.I_WANT_TO_BUY">
+					{STRINGS['P2P.I_WANT_TO_BUY']}
+				</EditWrapper>
 				<span>
 					<Switch disabled />
 				</span>
-				<span>I want to sell</span>
+				<EditWrapper stringId="P2P.I_WANT_TO_SELL">
+					{STRINGS['P2P.I_WANT_TO_SELL']}
+				</EditWrapper>
 			</div>
 			<div
 				style={{
@@ -123,7 +127,7 @@ const P2PDash = ({
 						setFilterDigital();
 					}}
 				>
-					All
+					<EditWrapper stringId="P2P.ALL">{STRINGS['P2P.ALL']}</EditWrapper>
 				</Button>
 			</div>
 
@@ -137,7 +141,9 @@ const P2PDash = ({
 				}}
 			>
 				<div style={{ display: 'flex', gap: 10 }}>
-					<span>Spend Fiat currency</span>
+					<EditWrapper stringId="P2P.SPEND_FIAT_CURRENCY">
+						{STRINGS['P2P.SPEND_FIAT_CURRENCY']}
+					</EditWrapper>
 					<span>
 						<Select
 							showSearch
@@ -148,7 +154,7 @@ const P2PDash = ({
 								setFilterCoin(e);
 							}}
 						>
-							<Select.Option value={null}>All</Select.Option>
+							<Select.Option value={null}>{STRINGS['P2P.ALL']}</Select.Option>
 							{p2p_config?.fiat_currencies.map((coin) => (
 								<Select.Option value={coin}>
 									{coin?.toUpperCase()}
@@ -158,7 +164,9 @@ const P2PDash = ({
 					</span>
 				</div>
 				<div style={{ display: 'flex', gap: 10 }}>
-					<span>Amount</span>
+					<EditWrapper stringId="P2P.AMOUNT">
+						{STRINGS['P2P.AMOUNT']}
+					</EditWrapper>
 					<span>
 						<Input
 							value={filterAmount}
@@ -171,7 +179,9 @@ const P2PDash = ({
 				</div>
 
 				<div style={{ display: 'flex', gap: 10 }}>
-					<span>Payment Method</span>
+					<EditWrapper stringId="P2P.PAYMENT_METHOD">
+						{STRINGS['P2P.PAYMENT_METHOD']}
+					</EditWrapper>
 					<span>
 						<Select
 							showSearch
@@ -182,7 +192,7 @@ const P2PDash = ({
 								setFilterMethod(e);
 							}}
 						>
-							<Select.Option value={null}>All</Select.Option>
+							<Select.Option value={null}>{STRINGS['P2P.ALL']}</Select.Option>
 							{methods.map((method) => (
 								<Select.Option value={method.system_name}>
 									{method.system_name}
@@ -193,7 +203,9 @@ const P2PDash = ({
 				</div>
 
 				<div style={{ display: 'flex', gap: 10 }}>
-					<span>Available Regions</span>
+					<EditWrapper stringId="P2P.AVAILABLE_REGIONS">
+						{STRINGS['P2P.AVAILABLE_REGIONS']}
+					</EditWrapper>
 					<span>
 						<Select
 							showSearch
@@ -204,7 +216,7 @@ const P2PDash = ({
 								setFilterRegion(e);
 							}}
 						>
-							<Select.Option value={null}>All</Select.Option>
+							<Select.Option value={null}>{STRINGS['P2P.ALL']}</Select.Option>
 							{COUNTRIES_OPTIONS.map((cn) => (
 								<Select.Option value={cn.value}>{cn.label}</Select.Option>
 							))}
@@ -224,12 +236,30 @@ const P2PDash = ({
 							className="table-bottom-border"
 							style={{ borderBottom: 'grey 1px solid', padding: 10 }}
 						>
-							<th>Vendor</th>
-							<th>Price (Lowest first)</th>
-							<th>Limit/Available</th>
-							<th>Payment</th>
+							<th>
+								<EditWrapper stringId="P2P.VENDOR">
+									{STRINGS['P2P.VENDOR']}
+								</EditWrapper>
+							</th>
+							<th>
+								<EditWrapper stringId="P2P.PRICE_LOWEST_FIRST">
+									{STRINGS['P2P.PRICE_LOWEST_FIRST']}
+								</EditWrapper>
+							</th>
+							<th>
+								<EditWrapper stringId="P2P.LIMIT_AVAILABLE">
+									{STRINGS['P2P.LIMIT_AVAILABLE']}
+								</EditWrapper>
+							</th>
+							<th>
+								<EditWrapper stringId="P2P.PAYMENT">
+									{STRINGS['P2P.PAYMENT']}
+								</EditWrapper>
+							</th>
 							<th style={{ display: 'flex', justifyContent: 'flex-end' }}>
-								Trade
+								<EditWrapper stringId="P2P.TRADE">
+									{STRINGS['P2P.TRADE']}
+								</EditWrapper>
 							</th>
 						</tr>
 					</thead>
@@ -285,11 +315,17 @@ const P2PDash = ({
 												className="td-fit"
 											>
 												<div>
-													Available: {deal.total_order_amount}{' '}
+													<EditWrapper stringId="P2P.AVAILABLE">
+														{STRINGS['P2P.AVAILABLE']}
+													</EditWrapper>
+													: {deal.total_order_amount}{' '}
 													{deal.buying_asset.toUpperCase()}
 												</div>
 												<div>
-													Limit: {deal.min_order_value} - {deal.max_order_value}{' '}
+													<EditWrapper stringId="P2P.LIMIT">
+														{STRINGS['P2P.LIMIT']}
+													</EditWrapper>
+													: {deal.min_order_value} - {deal.max_order_value}{' '}
 													{deal.spending_asset.toUpperCase()}
 												</div>
 											</td>
@@ -333,8 +369,7 @@ const P2PDash = ({
 																		amount_fiat: amountFiat,
 																		payment_method_used: selectedMethod,
 																	});
-																	message.success('Order Created.');
-
+																	message.success(STRINGS['P2P.ORDER_CREATED']);
 																	const transData = await fetchTransactions({
 																		id: transaction.id,
 																	});
@@ -343,7 +378,9 @@ const P2PDash = ({
 																	setDisplayOrder(true);
 																} else {
 																	message.error(
-																		'please select payment method and input amount'
+																		STRINGS[
+																			'P2P.SELECT_PAYMENT_METHOD_AND_AMOUNT'
+																		]
 																	);
 																}
 															} catch (error) {
@@ -371,8 +408,15 @@ const P2PDash = ({
 													style={{ minWidth: '15.5em', padding: 10 }}
 													className="td-fit"
 												>
-													<div>Payment time limit 30 minutes</div>
-													<div>Terms and conditions: {deal.terms}</div>
+													<EditWrapper stringId="P2P.PAYMENT_TIME_LIMIT">
+														{STRINGS['P2P.PAYMENT_TIME_LIMIT']}
+													</EditWrapper>
+													<div>
+														<EditWrapper stringId="P2P.TERMS_CONDITIONS">
+															{STRINGS['P2P.TERMS_CONDITIONS']}
+														</EditWrapper>
+														: {deal.terms}
+													</div>
 												</td>
 												<td
 													style={{ width: '5.5em', padding: 10 }}
@@ -409,7 +453,9 @@ const P2PDash = ({
 																justifyContent: 'space-between',
 															}}
 														>
-															<span>Select payment Method</span>
+															<EditWrapper stringId="P2P.SELECT_PAYMENT_METHOD">
+																{STRINGS['P2P.SELECT_PAYMENT_METHOD']}
+															</EditWrapper>
 															<span>
 																<Select
 																	showSearch
@@ -442,7 +488,9 @@ const P2PDash = ({
 																justifyContent: 'space-between',
 															}}
 														>
-															<span>Spend Amount</span>
+															<EditWrapper stringId="P2P.SPEND_AMOUNT">
+																{STRINGS['P2P.SPEND_AMOUNT']}
+															</EditWrapper>
 															<span>
 																<InputNumber
 																	style={{ width: 100 }}
@@ -475,7 +523,9 @@ const P2PDash = ({
 																justifyContent: 'space-between',
 															}}
 														>
-															<span>Amount to receive</span>
+															<EditWrapper stringId="P2P.AMOUNT_TO_RECEIVE">
+																{STRINGS['P2P.AMOUNT_TO_RECEIVE']}
+															</EditWrapper>
 															<span>
 																<Input
 																	style={{ width: 100 }}

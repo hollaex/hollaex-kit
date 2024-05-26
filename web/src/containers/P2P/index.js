@@ -49,7 +49,7 @@ const P2P = ({
 						setSelectedTransaction(res.data[0]);
 						setDisplayOrder(true);
 					} else {
-						message.error('Transaction not found');
+						message.error(STRINGS['P2P.TRANSACTION_NOT_FOUND']);
 					}
 				})
 				.catch((err) => err);
@@ -62,10 +62,13 @@ const P2P = ({
 				style={{ height: 600, width: '100%', padding: 20, marginBottom: 400 }}
 				className="summary-container"
 			>
-				<div style={{ textAlign: 'center', fontSize: 19 }}>P2P Deals</div>
+				<div style={{ textAlign: 'center', fontSize: 19 }}>
+					<EditWrapper stringId="P2P.TITLE">{STRINGS['P2P.TITLE']}</EditWrapper>
+				</div>
 				<div style={{ textAlign: 'center', marginBottom: 15 }}>
-					P2P deals for buying and selling Bitcoin, USDT, and other
-					cryptocurrencies.
+					<EditWrapper stringId="P2P.DESCRIPTION">
+						{STRINGS['P2P.DESCRIPTION']}
+					</EditWrapper>
 				</div>
 				{displayOrder && (
 					<P2POrder
@@ -87,14 +90,14 @@ const P2P = ({
 					>
 						{user.verification_level >= p2p_config?.starting_user_tier && (
 							<>
-								<TabPane tab="P2P" key="0">
+								<TabPane tab={STRINGS['P2P.TAB_P2P']} key="0">
 									<P2PDash
 										setDisplayOrder={setDisplayOrder}
 										refresh={refresh}
 										setSelectedTransaction={setSelectedTransaction}
 									/>
 								</TabPane>
-								<TabPane tab="ORDERS" key="1">
+								<TabPane tab={STRINGS['P2P.TAB_ORDERS']} key="1">
 									<P2POrders
 										setDisplayOrder={setDisplayOrder}
 										setSelectedTransaction={setSelectedTransaction}
@@ -106,11 +109,11 @@ const P2P = ({
 
 						{user.verification_level >= p2p_config?.starting_merchant_tier && (
 							<>
-								<TabPane tab="PROFILE" key="2">
+								<TabPane tab={STRINGS['P2P.TAB_PROFILE']} key="2">
 									<P2PProfile />
 								</TabPane>
 
-								<TabPane tab="POST DEAL" key="3">
+								<TabPane tab={STRINGS['P2P.TAB_POST_DEAL']} key="3">
 									<P2PPostDeal
 										setTab={setTab}
 										setRefresh={setRefresh}
@@ -119,7 +122,7 @@ const P2P = ({
 										setSelectedDealEdit={setSelectedDealEdit}
 									/>
 								</TabPane>
-								<TabPane tab="MY DEALS" key="4">
+								<TabPane tab={STRINGS['P2P.TAB_MY_DEALS']} key="4">
 									<P2PMyDeals
 										setTab={setTab}
 										setRefresh={setRefresh}
