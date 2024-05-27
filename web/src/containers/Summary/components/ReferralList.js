@@ -304,7 +304,7 @@ const ReferralList = ({
 	const handleSettlementNotification = () => {
 		setSnackNotification({
 			icon: ICONS.COPY_NOTIFICATION,
-			content: 'Settlement successful!',
+			content: STRINGS['REFERRAL_LINK.SETTLEMENT_SUCCESS'],
 		});
 	};
 

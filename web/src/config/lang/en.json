@@ -1407,6 +1407,7 @@
 		"INVITE_LINKS": "Your referral invite links",
 		"INVITE_LINKS_DESC": "Share a link below with friends to start earning commissions on their trading:",
 		"CREATE_LINK": "Create a new referral link",
+		"SETTLEMENT_SUCCESS": "Settlement successful!",
 		"NO_LINK": "You've not created any referral links yet.",
 		"ALL_EVENTS": "All settlement events",
 		"EVENTS_DESC": "Below are all the earning settlement events from your invited referrals.",
