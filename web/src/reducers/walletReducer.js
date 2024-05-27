@@ -44,6 +44,7 @@ const INITIAL_STATE = {
 	depositVerification: INITIAL_VERIFICATION_OBJECT,
 	btcFee: INITIAL_BTC_WHITDRAWALS_FEE,
 	withdrawalCancelData: INITIAL_DELETE_WHITDRAWALS_MSG,
+	activeTabFromWallet: '',
 };
 
 export default function reducer(state = INITIAL_STATE, { type, payload }) {
@@ -328,6 +329,11 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 			};
 		case 'LOGOUT':
 			return INITIAL_STATE;
+		case 'ACTIVE_TAB_FROM_WALLET':
+			return {
+				...state,
+				activeTabFromWallet: payload.tab,
+			};
 		default:
 			return state;
 	}

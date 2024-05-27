@@ -4,11 +4,15 @@ import { SmartTarget, UnderConstruction } from 'components';
 import Form from './Form';
 
 const Fiat = ({ ultimate_fiat, ...rest }) => {
-	const { currency, titleSection } = rest;
+	const { currency, titleSection, withdrawInformation } = rest;
 	return (
 		<SmartTarget {...rest}>
 			{ultimate_fiat ? (
-				<Form titleSection={titleSection} currency={currency} />
+				<Form
+					titleSection={titleSection}
+					currency={currency}
+					withdrawInformation={withdrawInformation}
+				/>
 			) : (
 				<UnderConstruction />
 			)}

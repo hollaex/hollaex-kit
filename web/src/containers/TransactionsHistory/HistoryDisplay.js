@@ -35,6 +35,9 @@ const HistoryDisplay = (props) => {
 		rowKey,
 		expandableRow,
 		expandableContent,
+		isFromWallet,
+		onHandleView = () => {},
+		isDepositFromWallet,
 	} = props;
 
 	const [dialogIsOpen, setDialogOpen] = useState(false);
@@ -80,13 +83,13 @@ const HistoryDisplay = (props) => {
 
 	return (
 		<div className="history_block-wrapper">
-			{!isMobile && !loading && (
+			{!loading && (
 				<div className="d-flex justify-content-between title text-capitalize">
 					<div>
 						<EditWrapper stringId={stringId}>{title}</EditWrapper>
 					</div>
 					<div className="action_notification-container">
-						{count > 0 && (
+						{!isMobile && count > 0 && !isFromWallet && (
 							<ActionNotification
 								stringId="TRANSACTION_HISTORY.TEXT_DOWNLOAD"
 								text={STRINGS['TRANSACTION_HISTORY.TEXT_DOWNLOAD']}
@@ -96,7 +99,7 @@ const HistoryDisplay = (props) => {
 								onClick={handleDownload}
 							/>
 						)}
-						{activeTab === 2 && (
+						{!isMobile && activeTab === 2 && !isDepositFromWallet && (
 							<ActionNotification
 								stringId="DEPOSIT_STATUS.CHECK_DEPOSIT_STATUS"
 								text={STRINGS['DEPOSIT_STATUS.CHECK_DEPOSIT_STATUS']}
@@ -106,18 +109,31 @@ const HistoryDisplay = (props) => {
 								onClick={openDialog}
 							/>
 						)}
-						<ActionNotification
-							stringId="REFRESH"
-							text={STRINGS['REFRESH']}
-							iconId="REFRESH"
-							iconPath={STATIC_ICONS['REFRESH']}
-							className="blue-icon"
-							onClick={refetchData}
-						/>
+						{!isMobile && !isFromWallet && (
+							<ActionNotification
+								stringId="REFRESH"
+								text={STRINGS['REFRESH']}
+								iconId="REFRESH"
+								iconPath={STATIC_ICONS['REFRESH']}
+								className="blue-icon"
+								onClick={refetchData}
+							/>
+						)}
+						{isFromWallet && (
+							<ActionNotification
+								stringId="HOLLAEX_TOKEN.VIEW"
+								text={STRINGS['HOLLAEX_TOKEN.VIEW']}
+								iconId="HOLLAEX_TOKEN.VIEW"
+								iconPath={STATIC_ICONS['HOLLAEX_TOKEN.VIEW']}
+								className="blue-icon"
+								onClick={onHandleView}
+								isFromWallet={isFromWallet}
+							/>
+						)}
 					</div>
 				</div>
 			)}
-			{filters}
+			{!isFromWallet && filters}
 			{loading ? (
 				<Loader />
 			) : (
@@ -134,6 +150,7 @@ const HistoryDisplay = (props) => {
 					jumpToPage={jumpToPage}
 					noData={props.noData}
 					expandable={expandableRow && expandableContent()}
+					displayPaginator={!isFromWallet}
 				/>
 			)}
 			<Dialog

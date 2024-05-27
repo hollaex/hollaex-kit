@@ -7,6 +7,7 @@ $content--margin: 2rem;
 	.review-icon {
 		@include size(8rem);
 		margin: 0 auto;
+
 		svg {
 			@include size(8rem);
 		}
@@ -20,6 +21,7 @@ $content--margin: 2rem;
 		font-size: $font-size-subhead2;
 		border-bottom: 1px solid $colors-main-black;
 		text-align: center;
+
 		.review-fee_message {
 			font-size: $font-size-main;
 		}
@@ -30,6 +32,7 @@ $content--margin: 2rem;
 		width: 1px;
 		height: 3rem;
 		background-color: $arrow-color;
+
 		&:after {
 			content: '';
 			position: absolute;
@@ -76,28 +79,389 @@ $content--margin: 2rem;
 }
 
 .withdrawal-container {
+	width: 75rem !important;
+
+	.transaction-history-wrapper {
+		max-width: 100% !important;
+	}
+
 	.icon_title-wrapper {
 		flex-direction: row;
 		justify-content: flex-start;
 	}
+
+	.icon_title-wrapper .icon_title-text {
+		font-size: 2.5rem;
+	}
+
+	.withdraw-icon {
+		.icon_title-svg {
+			width: unset !important;
+			height: unset !important;
+
+			svg {
+				width: 3rem !important;
+				height: 3rem !important;
+			}
+		}
+	}
+
 	.withdraw-form-wrapper {
 		.withdraw-form {
 			border-radius: 4px;
 			margin: 0 0 40px;
 			background-color: $app-sidebar-background;
-			padding: 30px;
+			padding: 30px 30px 30px 60px;
 
 			& .field-children .field-valid {
 				top: 8px;
 				right: -20px;
 			}
+
+			.custom-select-input-style {
+				width: 80%;
+			}
+
+			.withdraw-deposit-icon-wrapper {
+				div {
+					justify-content: unset;
+					align-items: unset;
+				}
+			}
+
+			.withdraw-deposit-disable {
+				opacity: 0.5;
+				pointer-events: none;
+			}
+
+			.withdraw-deposit-icon {
+				width: 100%;
+				height: 2.5rem;
+				border: 2px solid $colors-main-black;
+				border-radius: 100%;
+				padding: 2px;
+			}
+
+			.withdraw-deposit-content {
+				font-size: 14px;
+				padding: 1% 1%;
+			}
+
+			.destination-input-field {
+				width: 80%;
+				height: 38px;
+				padding: 10px 10px;
+				border-radius: 2px;
+				border: 1px solid var(--calculated_important-border);
+				background-color: var(--base_wallet-sidebar-and-popup);
+				color: $colors-main-black;
+
+				input {
+					background-color: var(--base_wallet-sidebar-and-popup);
+					color: $colors-main-black;
+					text-overflow: ellipsis;
+				}
+			}
+
+			.destination-input-field:hover {
+				border: 1px solid $colors-main-black;
+			}
+
+			.withdraw-main-label {
+				color: $colors-black;
+				font-size: 14px;
+			}
+
+			.withdraw-main-label-selected {
+				color: $colors-main-black;
+				text-wrap: nowrap;
+			}
+
+			.side-icon-wrapper {
+				display: flex;
+				width: 15% !important;
+				height: 25%;
+
+				svg {
+					width: 100%;
+					opacity: 0.1;
+				}
+			}
+
+			.custom-field {
+				.custom-step,
+				.custom-step-selected {
+					border: 2px solid $colors-black;
+					border-radius: 100%;
+					width: fit-content;
+					padding: 10% 70%;
+				}
+
+				.custom-step-selected {
+					border: 2px solid $colors-main-black;
+				}
+
+				.custom-line,
+				.custom-line-selected,
+				.custom-line-selected-large {
+					border: 1px solid $colors-black;
+					height: 60px;
+					margin: 0 100%;
+				}
+
+				.custom-line-selected {
+					height: 70px;
+					border: 1px solid $colors-main-black;
+				}
+
+				.custom-line-selected-large {
+					height: 70px;
+					border: 1px solid $colors-main-black;
+				}
+
+				.custom-line-extra-large {
+					height: 2rem;
+					border: 1px solid $colors-black;
+					margin: 0 100%;
+				}
+
+				.custom-line-extra-large-active {
+					border: 1px solid $colors-main-black !important;
+				}
+			}
+
+			.select-label {
+				text-wrap: nowrap;
+			}
+
+			.amount-field-icon {
+				margin-top: 1%;
+			}
+
+			.select-wrapper {
+				display: flex;
+				flex-direction: column;
+				width: 65%;
+
+				.select-field:hover {
+					border: 1px solid $colors-main-black;
+					border-radius: 0.35rem;
+				}
+
+				.disabled {
+					.ant-select-show-search.ant-select-single:not(.ant-select-customize-input)
+						.ant-select-selector {
+						cursor: not-allowed !important;
+					}
+				}
+
+				.ant-select-show-search.ant-select-single:not(.ant-select-customize-input)
+					.ant-select-selector {
+					cursor: pointer !important;
+				}
+
+				.custom-select-input-style .ant-select-selection-search-input {
+					height: 100% !important;
+				}
+
+				.ant-select-single
+					.ant-select-selector
+					.ant-select-selection-placeholder {
+					margin-top: 1%;
+					pointer-events: unset !important;
+				}
+
+				.custom-select-input-style .ant-select-selection-item {
+					line-height: 40px !important;
+				}
+
+				.custom-select-input-style .ant-select-selector {
+					height: 40px !important;
+				}
+			}
+
+			.opacity-100 {
+				opacity: 1;
+			}
+
+			.opacity-50 {
+				opacity: 0.5;
+			}
+
+			.opacity-30 {
+				opacity: 0.3;
+			}
+
+			.ant-select-clear {
+				user-select: none;
+				width: 1.5rem;
+				height: 1.5rem;
+				border-radius: 50%;
+				background-color: $colors-main-black;
+
+				svg {
+					color: $app-sidebar-background;
+					font-size: 18px;
+				}
+			}
+
+			.ant-input-suffix {
+				width: 5rem;
+			}
+
+			.render-amount-icon-wrapper {
+				color: var(--specials_buttons-links-and-highlights);
+				cursor: pointer;
+
+				.suffix-text {
+					padding-right: 0.5rem;
+					text-transform: uppercase;
+					font-size: 15px;
+
+					.edit-wrapper__container {
+						text-decoration: underline;
+					}
+				}
+
+				.img-wrapper {
+					img {
+						height: 1.5rem;
+					}
+				}
+			}
+
+			.currency-label {
+				border: 1px solid $colors-black;
+				padding: 0.5%;
+				border-radius: 5px;
+				margin-right: 10px;
+				width: 4rem;
+				text-align: center;
+				cursor: pointer;
+			}
+
+			.render-scan-wrapper {
+				color: var(--specials_buttons-links-and-highlights);
+				cursor: pointer;
+
+				.suffix-text {
+					padding-right: 0.5rem;
+					font-size: 15px;
+
+					.edit-wrapper__container {
+						text-decoration: underline;
+					}
+				}
+
+				.img-wrapper {
+					display: flex;
+					align-items: center;
+
+					img {
+						height: 1rem;
+					}
+				}
+			}
 		}
+
+		.bottom-content {
+			margin-top: 3%;
+
+			.fee-fields {
+				color: $colors-black;
+			}
+		}
+
 		.btn-wrapper {
 			display: flex;
 			justify-content: center;
-			align-items: center;
+
 			.holla-button {
 				width: 300px;
+			}
+		}
+
+		.withdraw-btn-wrapper {
+			display: flex;
+			margin-top: 10%;
+			width: 80%;
+
+			.ant-btn[disabled],
+			.ant-btn[disabled]:hover,
+			.ant-btn[disabled]:focus,
+			.ant-btn[disabled]:active,
+			.ant-btn {
+				background: $colors-deactivate-color1;
+				border: unset;
+				width: 300px;
+				font-family: 'Raleway';
+				color: $app-sidebar-background;
+				font-size: 1.1rem;
+			}
+
+			.ant-btn {
+				padding: 0 4px;
+				background: $colors-notifications-blue;
+				color: $colors-main-black;
+			}
+
+			.holla-button {
+				width: 300px;
+			}
+		}
+
+		.warning-text,
+		.email-text {
+			color: $colors-notifications-red;
+			font-size: 12px;
+			width: 90%;
+		}
+
+		.email-text {
+			color: $colors-black !important;
+		}
+
+		.width-80 {
+			width: 80%;
+		}
+
+		.check-optional .ant-checkbox-inner {
+			background-color: var(--base_wallet-sidebar-and-popup) !important;
+		}
+
+		.check-optional {
+			.ant-checkbox-checked .ant-checkbox-inner {
+				border-color: $colors-main-black !important;
+			}
+		}
+	}
+}
+
+.withdrawal-remove-tag-modal {
+	.ant-modal-header {
+		border: none;
+	}
+
+	.ant-modal-header,
+	.ant-modal-body {
+		background-color: var(--base_wallet-sidebar-and-popup) !important;
+	}
+
+	.remove-tag-wrapper {
+		.tag-body {
+			height: 18rem;
+		}
+
+		.button-wrapper {
+			display: flex;
+			justify-content: space-between;
+
+			Button {
+				width: 48%;
+				height: 3rem;
+				border: none !important;
+				color: $colors-main-black !important;
+				font-size: 14px;
 			}
 		}
 	}
@@ -108,6 +472,7 @@ $content--margin: 2rem;
 		min-width: 0;
 		margin: auto;
 	}
+
 	.presentation_container {
 		.action_notification-svg {
 			svg {
@@ -115,16 +480,20 @@ $content--margin: 2rem;
 				height: 1.5rem !important;
 			}
 		}
+
 		.inner_container {
 			.result-message {
 				font-size: $regular--font-size;
 			}
+
 			.deposit_info-wrapper {
 				.deposit_info-crypto-wrapper {
 					width: 100%;
+
 					.field-label {
 						font-size: $title--font-size;
 					}
+
 					.field-children {
 						.custom {
 							font-size: $extra-thick--font-size;
@@ -132,32 +501,39 @@ $content--margin: 2rem;
 					}
 				}
 			}
+
 			.qr_code-wrapper {
 				width: 24rem;
 				max-width: 24rem;
+
 				.qr-code-bg > *:first-child {
 					width: 24rem !important;
 					height: 24rem !important;
 				}
+
 				.qr-text {
 					font-size: $font-size-mobile-innertxt !important;
 				}
 			}
+
 			.information_block {
 				.information_block-text_wrapper {
 					.title {
 						font-size: $font-size-mobile-title;
 					}
+
 					.text {
 						font-size: $font-size-mobile-txt !important;
 					}
 				}
 			}
+
 			.field-label,
 			.field-children,
 			.input_field-input {
 				font-size: $font-size-mobile-txt !important;
 			}
+
 			.field-error-content {
 				font-size: $regular--font-size;
 			}
@@ -168,11 +544,25 @@ $content--margin: 2rem;
 					line-height: $regular--font-size;
 				}
 			}
+
 			.holla-button {
 				font-size: $font-size-mobile-txt !important;
 			}
 		}
 	}
+
+	.withdrawal-remove-tag-modal {
+		.remove-tag-wrapper {
+			.button-wrapper {
+				Button {
+					height: 4rem;
+					font-size: 12px !important;
+					margin-top: 3%;
+				}
+			}
+		}
+	}
+
 	.review_email-wrapper {
 		margin: 0px auto !important;
 	}
@@ -185,9 +575,64 @@ $content--margin: 2rem;
 						flex-direction: column;
 					}
 				}
+
+				padding: 5%;
+
+				.withdraw-main-label-selected {
+					font-size: 14px;
+				}
+
+				.withdraw-deposit-content {
+					padding: 0 1%;
+				}
+
+				.custom-line-selected-large {
+					height: 13rem;
+					border: 1px solid $colors-main-black;
+				}
+
+				.custom-field {
+					.custom-line-selected {
+						height: 100%;
+					}
+
+					.custom-line {
+						height: 12rem;
+					}
+				}
+
+				.mobile-view {
+					margin-top: 5%;
+				}
+
+				.ant-select-clear svg {
+					font-size: 18px;
+				}
+
+				.select-wrapper {
+					width: 100%;
+					margin-left: 5%;
+				}
+
+				.bottom-content {
+					font-size: 14px;
+					margin-top: 3%;
+				}
+
+				.withdraw-main-label-selected,
+				.withdraw-main-label,
+				.warning-text {
+					font-size: 14px;
+				}
+
+				.currency-label {
+					width: 15%;
+					font-size: 14px;
+				}
 			}
 		}
 	}
+
 	@media screen and (max-width: 550px) {
 		.presentation_container {
 			.inner_container {
@@ -196,6 +641,7 @@ $content--margin: 2rem;
 						.title {
 							font-size: 14px !important;
 						}
+
 						.text {
 							font-size: 12px !important;
 						}
@@ -203,23 +649,64 @@ $content--margin: 2rem;
 				}
 			}
 		}
+
+		.withdrawal-container {
+			.withdraw-form-wrapper {
+				.withdraw-form {
+					.select-wrapper {
+						margin-left: 7%;
+					}
+
+					.ant-select-clear svg {
+						font-size: 12px;
+					}
+
+					.custom-select-input-style {
+						.ant-select-selector {
+							font-size: 1.5rem !important;
+						}
+
+						.ant-select-selection-item {
+							margin-top: 4%;
+							line-height: unset !important;
+						}
+					}
+
+					.currency-label {
+						font-size: 12px;
+					}
+
+					.mobile-view {
+						margin-top: 3%;
+					}
+
+					.amount-field-icon {
+						margin-top: 2%;
+					}
+
+					.warning-text {
+						font-size: 10px;
+					}
+
+					.custom-line-selected-large {
+						height: 16rem;
+					}
+				}
+			}
+		}
 	}
 
 	@media screen and (max-width: 390px) {
-		.presentation_container {
-			.inner_container {
-				.information_block {
-					.information_block-text_wrapper {
-						.title {
-							font-size: 13px !important;
-						}
-						.text {
-							font-size: 10px !important;
-						}
+		.withdrawal-container {
+			.withdraw-form-wrapper {
+				.withdraw-form {
+					.custom-line-selected-large {
+						height: 18rem;
 					}
-				}
-				.holla-button {
-					font-size: 12px !important;
+
+					.withdraw-btn-wrapper {
+						margin-top: 20%;
+					}
 				}
 			}
 		}
@@ -232,32 +719,6 @@ $content--margin: 2rem;
 	.review_email-content {
 		border-top: 1px solid;
 		padding: 1rem;
-	}
-}
-
-@media screen and (max-width: 1096px) {
-	.withdrawal-container {
-		.withdraw-form-wrapper {
-			.withdraw-form {
-				.field-wrapper {
-					.field-label {
-						font-size: $font-size-mobile-innertxt;
-					}
-					.input-box-field {
-						.input_field-input {
-							&::placeholder {
-								font-size: $font-size-mobile-innertxt;
-							}
-						}
-					}
-				}
-			}
-			.btn-wrapper {
-				.holla-button {
-					width: 200px;
-				}
-			}
-		}
 	}
 }
 

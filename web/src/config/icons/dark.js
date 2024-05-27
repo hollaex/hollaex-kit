@@ -301,6 +301,9 @@ const nestedIcons = {
 
 	FOOTERBAR_ASSETS_TRADE: '/assets/images/asset-prices-mobile-tab-01.svg',
 	WALLET_FOOTER: '/assets/images/wallet-mobile-tab-02-01 (1).svg',
+
+	WITHDRAW_TITLE: '/assets/images/withdraw-out-box.svg',
+	DEPOSIT_TITLE: '/assets/images/deposit-box.svg',
 };
 
 const icons = flatten(nestedIcons, options);

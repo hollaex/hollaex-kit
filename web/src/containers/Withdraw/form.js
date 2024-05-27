@@ -5,24 +5,32 @@ import {
 	formValueSelector,
 	reset,
 	SubmissionError,
-	stopSubmit
+	stopSubmit,
 } from 'redux-form';
+import { bindActionCreators } from 'redux';
 import math from 'mathjs';
-import { Button, Dialog, OtpForm, Loader, SmartTarget } from 'components';
-import renderFields from 'components/Form/factoryFields';
+import { Dialog, OtpForm, Loader, SmartTarget } from 'components';
 import {
 	setWithdrawEmailConfirmation,
 	setWithdrawNotificationError,
 } from './notifications';
 import { BASE_CURRENCY } from 'config/constants';
-import { calculateBaseFee } from './utils';
+import {
+	calculateBaseFee,
+	generateBaseInformation,
+	renderLabel,
+} from './utils';
+import { setWithdrawOptionaltag, withdrawCurrency } from 'actions/appActions';
+import { renderInformation } from 'containers/Wallet/components';
+import { assetsSelector } from 'containers/Wallet/utils';
 import Fiat from './Fiat';
 import Image from 'components/Image';
 import STRINGS from 'config/localizedStrings';
-import { message } from 'antd';
-import { getWithdrawalMax } from 'actions/appActions';
 import ReviewModalContent from './ReviewModalContent';
 import QRScanner from './QRScanner';
+import TransactionsHistory from 'containers/TransactionsHistory';
+import RenderWithdraw from './Withdraw';
+import { isMobile } from 'react-device-detect';
 
 export const FORM_NAME = 'WithdrawCryptocurrencyForm';
 
@@ -50,6 +58,8 @@ class Form extends Component {
 		dialogOtpOpen: false,
 		otp_code: '',
 		prevFee: null,
+		currency: '',
+		renderFiat: false,
 	};
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -88,50 +98,85 @@ class Form extends Component {
 	}
 
 	componentWillUnmount() {
+		const { setWithdrawCurrency } = this.props;
 		if (errorTimeOut) {
 			clearTimeout(errorTimeOut);
 		}
+		setWithdrawCurrency('');
 	}
 
 	onOpenDialog = (ev) => {
-		if (ev && ev.preventDefault) {
-			ev.preventDefault();
-		}
-		const emailMethod = this.props?.data?.method === 'email';
-		getWithdrawalMax(
-			this.props.currency,
-			!emailMethod ? this.props?.data?.network : 'email'
-		)
-			.then((res) => {
-				if (math.larger(this.props?.data?.amount, res?.data?.amount)) {
-					message.error(
-						`requested amount exceeds maximum withrawal limit of ${
-							res?.data?.amount
-						} ${this?.props?.currency?.toUpperCase()}`
-					);
-				} else {
-					this.setState({ dialogIsOpen: true });
-				}
-			})
-			.catch((err) => {
-				message.error(err.response.data.message);
-			});
+		// if (ev && ev.preventDefault) {
+		// 	ev.preventDefault();
+		// }
+		// const emailMethod = this.props?.data?.method === 'email';
+		// const currentCurrency = coins[getWithdrawCurrency]?.symbol || currency;
+		// const network = getWithdrawNetworkOptions ? getWithdrawNetworkOptions : getWithdrawNetwork ? getWithdrawNetwork : !emailMethod ? this.props?.data?.network : 'email'
+		// const amount = getWithdrawAmount ? getWithdrawAmount : this.props?.data?.amount
+		// getWithdrawalMax(
+		// 	currentCurrency,
+		// 	network
+		// )
+		// .then((res) => {
+		// 		if (math.larger(amount, res?.data?.amount)) {
+		// 			message.error(
+		// 				`requested amount exceeds maximum withrawal limit of ${res?.data?.amount
+		// 				} ${currentCurrency.toUpperCase()}`
+		// 			);
+		// 		} else {
+		// 			this.setState({ dialogIsOpen: true });
+		// 		}
+		// 	})
+		// 	.catch((err) => {
+		// 		message.error(err?.response?.data?.message);
+		// 	});
+
+		this.setState({ dialogIsOpen: true });
 	};
 
 	onCloseDialog = (ev) => {
+		const { setWithdrawOptionaltag } = this.props;
 		if (ev && ev.preventDefault) {
 			ev.preventDefault();
 		}
 		this.setState({ dialogIsOpen: false, dialogOtpOpen: false });
+		setWithdrawOptionaltag('');
 	};
 
 	onAcceptDialog = () => {
+		const {
+			data,
+			email,
+			getWithdrawNetworkOptions,
+			getWithdrawNetwork,
+			getWithdrawAmount,
+			getWithdrawAddress,
+			getWithdrawCurrency,
+			currency,
+			coins,
+		} = this.props;
+		const currentCurrency = getWithdrawCurrency
+			? getWithdrawCurrency
+			: currency;
+		const network = getWithdrawNetworkOptions
+			? getWithdrawNetworkOptions
+			: getWithdrawNetwork;
 		if (this.props.otp_enabled) {
 			this.setState({ dialogOtpOpen: true });
 		} else {
 			this.onCloseDialog();
 			// this.props.submit();
-			const values = { ...this.props.data, email: this.props.email };
+			let values = {
+				...data,
+				email: email,
+				amount: getWithdrawAmount,
+				address: getWithdrawAddress,
+				fee_coin: currentCurrency,
+				network: network,
+			};
+			if (!coins[currentCurrency]?.network) {
+				delete values.network;
+			}
 			return this.props
 				.onSubmitWithdrawReq({
 					...values,
@@ -139,7 +184,7 @@ class Form extends Component {
 				})
 				.then((response) => {
 					this.props.onSubmitSuccess(
-						{ ...response.data, currency: this.props.currency },
+						{ ...response.data, currency: currentCurrency },
 						this.props.dispatch
 					);
 					return response;
@@ -194,46 +239,87 @@ class Form extends Component {
 			});
 	};
 
+	UpdateCurrency = (currency) => {
+		this.setState({ currency });
+	};
+
 	render() {
 		const {
 			submitting,
-			pristine,
 			error,
-			valid,
-			currency,
 			data,
 			openContactForm,
-			formValues,
 			currentPrice,
 			coins,
 			titleSection,
 			icons: ICONS,
 			selectedNetwork,
 			targets,
-			email,
 			qrScannerOpen,
 			closeQRScanner,
 			getQRData,
+			balance,
+			links,
+			orders,
+			pinnedAssets,
+			assets,
+			currency,
+			getWithdrawAmount,
+			getWithdrawAddress,
+			getWithdrawCurrency,
+			getWithdrawNetworkOptions,
+			getWithdrawNetwork,
+			getFee,
+			isFiat,
+			selectedMethod,
+			receiverWithdrawalEmail,
+			optionalTag,
 		} = this.props;
 
-		const formData = { ...data, email };
-
+		const currentNetwork = getWithdrawNetwork
+			? getWithdrawNetwork
+			: getWithdrawNetworkOptions;
+		const formData = {
+			...data,
+			fee: selectedMethod === 'Email' ? 0 : getFee,
+			amount: getWithdrawAmount,
+			destination_tag: optionalTag && optionalTag,
+			address: selectedMethod === 'Email' ? '' : getWithdrawAddress,
+			network: selectedMethod === 'Email' ? 'email' : currentNetwork,
+			fee_coin: getWithdrawCurrency,
+			method: selectedMethod === 'Email' ? 'email' : 'address',
+			email: selectedMethod === 'Email' ? receiverWithdrawalEmail : null,
+		};
+		const coinObject = coins[getWithdrawCurrency] || coins[currency];
 		const { dialogIsOpen, dialogOtpOpen } = this.state;
 		const hasDestinationTag =
 			currency === 'xrp' ||
 			currency === 'xlm' ||
 			selectedNetwork === 'xlm' ||
 			selectedNetwork === 'ton';
-
-		const coinObject = coins[currency];
-
 		const GENERAL_ID = 'REMOTE_COMPONENT__FIAT_WALLET_WITHDRAW';
 		const currencySpecificId = `${GENERAL_ID}__${currency.toUpperCase()}`;
 		const id = targets.includes(currencySpecificId)
 			? currencySpecificId
 			: GENERAL_ID;
+		const currentCurrency = getWithdrawCurrency
+			? getWithdrawCurrency
+			: currency;
 
-		if (coinObject && coinObject.type !== 'fiat') {
+		const withdrawInformation = renderInformation(
+			currentCurrency,
+			balance,
+			false,
+			generateBaseInformation,
+			coins,
+			'withdraw',
+			links,
+			ICONS['BLUE_QUESTION'],
+			'BLUE_QUESTION',
+			orders
+		);
+
+		if ((coinObject && coinObject.type !== 'fiat') || !coinObject) {
 			return (
 				<SmartTarget
 					id={currencySpecificId}
@@ -241,25 +327,53 @@ class Form extends Component {
 					currency={currency}
 				>
 					<form autoComplete="off" className="withdraw-form-wrapper">
-						<div className="withdraw-form">
-							<div className="d-flex">
-								<Image
-									iconId="WITHDRAW"
-									icon={ICONS['WITHDRAW']}
-									wrapperClassName="form_currency-ball margin-aligner"
+						<div className="withdraw-form d-flex">
+							<div className="w-100">
+								{!coinObject?.allow_withdrawal && this.state.currency && (
+									<div className="d-flex mb-5">
+										<div className="withdraw-deposit-icon-wrapper">
+											<Image
+												iconId={'CLOCK'}
+												icon={ICONS['CLOCK']}
+												svgWrapperClassName="action_notification-svg withdraw-deposit-icon"
+											/>
+										</div>
+										<span className="withdraw-deposit-content">
+											{renderLabel('ACCORDIAN.DISABLED_WITHDRAW_CONTENT')}
+										</span>
+									</div>
+								)}
+								{this.state.currency && coinObject?.allow_withdrawal && (
+									<div className="d-flex">
+										<Image
+											iconId="WITHDRAW"
+											icon={ICONS['WITHDRAW']}
+											wrapperClassName="form_currency-ball margin-aligner"
+										/>
+										{withdrawInformation}
+									</div>
+								)}
+								<RenderWithdraw
+									pinnedAssets={pinnedAssets}
+									assets={assets}
+									UpdateCurrency={this.UpdateCurrency}
+									coins={coins}
+									onOpenDialog={this.onOpenDialog}
+									isFiat={isFiat}
+									currency={currency}
 								/>
-								{titleSection}
+								{!error && <div className="warning_text">{error}</div>}
 							</div>
-							{renderFields(formValues)}
-							{error && <div className="warning_text">{error}</div>}
-						</div>
-						<div className="btn-wrapper">
-							<Button
-								label={STRINGS['WITHDRAWALS_BUTTON_TEXT']}
-								disabled={pristine || submitting || !valid}
-								onClick={this.onOpenDialog}
-								className="mb-3"
-							/>
+							{!isMobile && (
+								<div className="side-icon-wrapper">
+									<Image
+										iconId={'WITHDRAW_TITLE'}
+										icon={ICONS['WITHDRAW_TITLE']}
+										alt={'text'}
+										svgWrapperClassName="withdraw-main-icon"
+									/>
+								</div>
+							)}
 						</div>
 						<Dialog
 							isOpen={dialogIsOpen}
@@ -276,12 +390,13 @@ class Form extends Component {
 							) : !submitting ? (
 								<ReviewModalContent
 									coins={coins}
-									currency={currency}
+									currency={currentCurrency}
 									data={formData}
 									price={currentPrice}
 									onClickAccept={this.onAcceptDialog}
 									onClickCancel={this.onCloseDialog}
 									hasDestinationTag={hasDestinationTag}
+									getWithdrawCurrency={getWithdrawCurrency}
 								/>
 							) : (
 								<Loader relative={true} background={false} />
@@ -302,10 +417,18 @@ class Form extends Component {
 							)}
 						</Dialog>
 					</form>
+					<TransactionsHistory isFromWallet={true} />
 				</SmartTarget>
 			);
 		} else if (coinObject && coinObject.type === 'fiat') {
-			return <Fiat id={id} titleSection={titleSection} currency={currency} />;
+			return (
+				<Fiat
+					id={id}
+					titleSection={titleSection}
+					currency={currency}
+					withdrawInformation={withdrawInformation}
+				/>
+			);
 		} else {
 			return <div>{STRINGS['DEPOSIT.NO_DATA']}</div>;
 		}
@@ -339,8 +462,28 @@ const mapStateToForm = (state) => ({
 	coins: state.app.coins,
 	targets: state.app.targets,
 	balance: state.user.balance,
+	pinnedAssets: state.app.pinned_assets,
+	assets: assetsSelector(state),
+	getWithdrawCurrency: state.app.withdrawFields.withdrawCurrency,
+	getWithdrawNetwork: state.app.withdrawFields.withdrawNetwork,
+	getWithdrawNetworkOptions: state.app.withdrawFields.withdrawNetworkOptions,
+	getWithdrawAddress: state.app.withdrawFields.withdrawAddress,
+	getWithdrawAmount: state.app.withdrawFields.withdrawAmount,
+	optionalTag: state.app.withdrawFields.optionalTag,
+	getFee: state.app.withdrawFields.withdrawFee,
+	isValidAddress: state.app.isValidAddress,
+	selectedMethod: state.app.selectedWithdrawMethod,
+	receiverWithdrawalEmail: state.app.receiverWithdrawalEmail,
 });
 
-const WithdrawFormWithValues = connect(mapStateToForm)(WithdrawForm);
+const mapDispatchToProps = (dispatch) => ({
+	setWithdrawCurrency: bindActionCreators(withdrawCurrency, dispatch),
+	setWithdrawOptionaltag: bindActionCreators(setWithdrawOptionaltag, dispatch),
+});
+
+const WithdrawFormWithValues = connect(
+	mapStateToForm,
+	mapDispatchToProps
+)(WithdrawForm);
 
 export default WithdrawFormWithValues;
