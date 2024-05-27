@@ -1,12 +1,12 @@
 'use strict';
 
-const { loggerStake } = require('../../config/logger');
+const { loggerP2P } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
 const { errorMessageConverter } = require('../../utils/conversion');
 const {  ROLES } = require('../../constants');
 const { API_KEY_NOT_PERMITTED } = require('../../messages');
 const createP2PDeal = (req, res) => {
-	loggerStake.verbose(req.uuid, 'controllers/p2p/createP2PDeal/auth', req.auth);
+	loggerP2P.verbose(req.uuid, 'controllers/p2p/createP2PDeal/auth', req.auth);
 
 	const {  
         price_type,
@@ -23,7 +23,7 @@ const createP2PDeal = (req, res) => {
         region
 	} = req.swagger.params.data.value;
 
-	loggerStake.verbose(
+	loggerP2P.verbose(
 		req.uuid,
 		'controllers/p2p/createP2PDeal data',
         price_type,
@@ -60,7 +60,7 @@ const createP2PDeal = (req, res) => {
 			return res.json(data);
 		})
 		.catch((err) => {
-			loggerStake.error(
+			loggerP2P.error(
 				req.uuid,
 				'controllers/p2p/createP2PDeal err',
 				err.message
@@ -70,7 +70,7 @@ const createP2PDeal = (req, res) => {
 };
 
 const updateP2PDeal = (req, res) => {
-	loggerStake.verbose(req.uuid, 'controllers/p2p/updateP2PDeal/auth', req.auth);
+	loggerP2P.verbose(req.uuid, 'controllers/p2p/updateP2PDeal/auth', req.auth);
 
 	const {  
         price_type,
@@ -90,7 +90,7 @@ const updateP2PDeal = (req, res) => {
         id
 	} = req.swagger.params.data.value;
 
-	loggerStake.verbose(
+	loggerP2P.verbose(
 		req.uuid,
 		'controllers/p2p/updateP2PDeal data',
         price_type,
@@ -131,7 +131,7 @@ const updateP2PDeal = (req, res) => {
 			return res.json(data);
 		})
 		.catch((err) => {
-			loggerStake.error(
+			loggerP2P.error(
 				req.uuid,
 				'controllers/p2p/updateP2PDeal err',
 				err.message
@@ -141,7 +141,7 @@ const updateP2PDeal = (req, res) => {
 };
 
 const fetchP2PDeals = (req, res) => {
-	loggerStake.verbose(req.uuid, 'controllers/p2p/fetchP2PDeals/auth', req.auth);
+	loggerP2P.verbose(req.uuid, 'controllers/p2p/fetchP2PDeals/auth', req.auth);
 
 	const { user_id, limit, page, order_by, order, start_date, end_date, format, status } = req.swagger.params;
 
@@ -150,7 +150,7 @@ const fetchP2PDeals = (req, res) => {
 	}
 	
 	if (order_by.value && typeof order_by.value !== 'string') {
-		loggerStake.error(
+		loggerP2P.error(
 			req.uuid,
 			'controllers/p2p/fetchP2PDeals invalid order_by',
 			order_by.value
@@ -181,13 +181,13 @@ const fetchP2PDeals = (req, res) => {
 			}
 		})
 		.catch((err) => {
-			loggerStake.error(req.uuid, 'controllers/p2p/fetchP2PDeals', err.message);
+			loggerP2P.error(req.uuid, 'controllers/p2p/fetchP2PDeals', err.message);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
 const fetchP2PDisputes = (req, res) => {
-	loggerStake.verbose(req.uuid, 'controllers/p2p/fetchP2PDisputes/auth', req.auth);
+	loggerP2P.verbose(req.uuid, 'controllers/p2p/fetchP2PDisputes/auth', req.auth);
 
 	const {user_id, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
@@ -196,7 +196,7 @@ const fetchP2PDisputes = (req, res) => {
 	}
 	
 	if (order_by.value && typeof order_by.value !== 'string') {
-		loggerStake.error(
+		loggerP2P.error(
 			req.uuid,
 			'controllers/p2p/fetchP2PDisputes invalid order_by',
 			order_by.value
@@ -226,14 +226,14 @@ const fetchP2PDisputes = (req, res) => {
 			}
 		})
 		.catch((err) => {
-			loggerStake.error(req.uuid, 'controllers/p2p/fetchP2PDisputes', err.message);
+			loggerP2P.error(req.uuid, 'controllers/p2p/fetchP2PDisputes', err.message);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
 
 const fetchP2PTransactions = (req, res) => {
-	loggerStake.verbose(req.uuid, 'controllers/p2p/fetchP2PTransactions/auth', req.auth);
+	loggerP2P.verbose(req.uuid, 'controllers/p2p/fetchP2PTransactions/auth', req.auth);
 
 	const { id, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
@@ -242,7 +242,7 @@ const fetchP2PTransactions = (req, res) => {
 	}
 	
 	if (order_by.value && typeof order_by.value !== 'string') {
-		loggerStake.error(
+		loggerP2P.error(
 			req.uuid,
 			'controllers/p2p/fetchP2PTransactions invalid order_by',
 			order_by.value
@@ -272,13 +272,13 @@ const fetchP2PTransactions = (req, res) => {
 			}
 		})
 		.catch((err) => {
-			loggerStake.error(req.uuid, 'controllers/p2p/fetchP2PTransactions', err.message);
+			loggerP2P.error(req.uuid, 'controllers/p2p/fetchP2PTransactions', err.message);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
 const createP2PTransaction = (req, res) => {
-	loggerStake.verbose(req.uuid, 'controllers/p2p/createP2PTransaction/auth', req.auth);
+	loggerP2P.verbose(req.uuid, 'controllers/p2p/createP2PTransaction/auth', req.auth);
 
 	const {  
         deal_id,
@@ -286,7 +286,7 @@ const createP2PTransaction = (req, res) => {
 		payment_method_used
 	} = req.swagger.params.data.value;
 
-	loggerStake.verbose(
+	loggerP2P.verbose(
 		req.uuid,
 		'controllers/p2p/createP2PTransaction data',
         deal_id,
@@ -305,7 +305,7 @@ const createP2PTransaction = (req, res) => {
 			return res.json(data);
 		})
 		.catch((err) => {
-			loggerStake.error(
+			loggerP2P.error(
 				req.uuid,
 				'controllers/p2p/createP2PTransaction err',
 				err.message
@@ -315,7 +315,7 @@ const createP2PTransaction = (req, res) => {
 };
 
 const updateP2PTransaction = (req, res) => {
-	loggerStake.verbose(req.uuid, 'controllers/p2p/updateP2PTransaction/auth', req.auth);
+	loggerP2P.verbose(req.uuid, 'controllers/p2p/updateP2PTransaction/auth', req.auth);
 
 	const {  
         id,
@@ -325,7 +325,7 @@ const updateP2PTransaction = (req, res) => {
 
 	} = req.swagger.params.data.value;
 
-	loggerStake.verbose(
+	loggerP2P.verbose(
 		req.uuid,
 		'controllers/p2p/updateP2PTransaction data',
         id,
@@ -346,7 +346,7 @@ const updateP2PTransaction = (req, res) => {
 			return res.json(data);
 		})
 		.catch((err) => {
-			loggerStake.error(
+			loggerP2P.error(
 				req.uuid,
 				'controllers/p2p/updateP2PTransaction err',
 				err.message
@@ -355,7 +355,7 @@ const updateP2PTransaction = (req, res) => {
 		});
 }
 const updateP2PDispute = (req, res) => {
-	loggerStake.verbose(req.uuid, 'controllers/p2p/updateP2PDispute/auth', req.auth);
+	loggerP2P.verbose(req.uuid, 'controllers/p2p/updateP2PDispute/auth', req.auth);
 
 	const {  
         id,
@@ -363,7 +363,7 @@ const updateP2PDispute = (req, res) => {
         status,
 	} = req.swagger.params.data.value;
 
-	loggerStake.verbose(
+	loggerP2P.verbose(
 		req.uuid,
 		'controllers/p2p/updateP2PDispute data',
         id,
@@ -381,7 +381,7 @@ const updateP2PDispute = (req, res) => {
 			return res.json(data);
 		})
 		.catch((err) => {
-			loggerStake.error(
+			loggerP2P.error(
 				req.uuid,
 				'controllers/p2p/updateP2PDispute err',
 				err.message
@@ -391,7 +391,7 @@ const updateP2PDispute = (req, res) => {
 };
 
 const createP2pChatMessage = (req, res) => {
-	loggerStake.verbose(req.uuid, 'controllers/p2p/createP2pChatMessage/auth', req.auth);
+	loggerP2P.verbose(req.uuid, 'controllers/p2p/createP2pChatMessage/auth', req.auth);
 
 	const {  
         receiver_id,
@@ -399,7 +399,7 @@ const createP2pChatMessage = (req, res) => {
         transaction_id
 	} = req.swagger.params.data.value;
 
-	loggerStake.verbose(
+	loggerP2P.verbose(
 		req.uuid,
 		'controllers/p2p/createP2pChatMessage data',
         receiver_id,
@@ -419,7 +419,7 @@ const createP2pChatMessage = (req, res) => {
 			return res.json(data);
 		})
 		.catch((err) => {
-			loggerStake.error(
+			loggerP2P.error(
 				req.uuid,
 				'controllers/p2p/createP2pChatMessage err',
 				err.message
@@ -429,7 +429,7 @@ const createP2pChatMessage = (req, res) => {
 };
 
 const createP2PFeedback = (req, res) => {
-	loggerStake.verbose(req.uuid, 'controllers/p2p/createP2PFeedback/auth', req.auth);
+	loggerP2P.verbose(req.uuid, 'controllers/p2p/createP2PFeedback/auth', req.auth);
 
 	const {  
         transaction_id,
@@ -437,7 +437,7 @@ const createP2PFeedback = (req, res) => {
 		rating
 	} = req.swagger.params.data.value;
 
-	loggerStake.verbose(
+	loggerP2P.verbose(
 		req.uuid,
 		'controllers/p2p/createP2PFeedback data',
 		transaction_id,
@@ -456,7 +456,7 @@ const createP2PFeedback = (req, res) => {
 			return res.json(data);
 		})
 		.catch((err) => {
-			loggerStake.error(
+			loggerP2P.error(
 				req.uuid,
 				'controllers/p2p/createP2PFeedback err',
 				err.message
@@ -466,7 +466,7 @@ const createP2PFeedback = (req, res) => {
 };
 
 const fetchP2PFeedbacks = (req, res) => {
-	loggerStake.verbose(req.uuid, 'controllers/p2p/fetchP2PFeedbacks/auth', req.auth);
+	loggerP2P.verbose(req.uuid, 'controllers/p2p/fetchP2PFeedbacks/auth', req.auth);
 
 	const { transaction_id, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
@@ -475,7 +475,7 @@ const fetchP2PFeedbacks = (req, res) => {
 	}
 	
 	if (order_by.value && typeof order_by.value !== 'string') {
-		loggerStake.error(
+		loggerP2P.error(
 			req.uuid,
 			'controllers/p2p/fetchP2PFeedbacks invalid order_by',
 			order_by.value
@@ -505,7 +505,7 @@ const fetchP2PFeedbacks = (req, res) => {
 			}
 		})
 		.catch((err) => {
-			loggerStake.error(req.uuid, 'controllers/p2p/fetchP2PFeedbacks', err.message);
+			loggerP2P.error(req.uuid, 'controllers/p2p/fetchP2PFeedbacks', err.message);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
