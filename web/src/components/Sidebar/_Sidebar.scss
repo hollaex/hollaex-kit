@@ -18,8 +18,6 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 		min-width: 3rem;
 	}
 }
-.cell-wrapper {
-}
 
 .sidebar-bottom-wrapper {
 	min-height: $bottom_bar--height;
@@ -29,6 +27,18 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 	width: 100%;
 	padding: 0.5rem 0.5rem 0.8rem 0.5rem;
 	justify-content: space-around;
+
+	.sidebar-bottom-button-account {
+		.sidebar-bottom-icon {
+			svg {
+				g {
+					.assets-icon-tab {
+						opacity: 0.5;
+					}
+				}
+			}
+		}
+	}
 
 	.sidebar-bottom-button {
 		justify-content: space-between;
@@ -45,7 +55,7 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 				.quick-trade-tab-active,
 				.assets-icon-tab,
 				.onramp-icon {
-					fill: $base_top-bar-navigation_text_inactive;
+					fill: $colors-black;
 				}
 
 				//ToDo: tab-wallet0
@@ -54,9 +64,8 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 				.trade-active-2,
 				.chat-0,
 				.quick-trade-tab-active,
-				.assets-icon-tab //
-				{
-					stroke: $base-top-bar-navigation_text_inactive;
+				.assets-icon-tab {
+					stroke: $colors-black;
 				}
 
 				.tab-wallet0,
@@ -88,7 +97,7 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 			}
 		}
 		.bottom-bar-text {
-			font-size: 10px;
+			font-size: 9px;
 			text-align: center;
 			margin-top: -17px;
 			font-weight: lighter;
@@ -181,69 +190,6 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 	}
 }
 
-@media screen and (max-width: 375px) {
-	.mobile-trade-wrapper {
-		.pro-trade-footer-icon {
-			height: 50%;
-			margin-top: 20% !important;
-		}
-		.quick-trade-footer-icon {
-			margin-top: 20% !important;
-		}
-		.quick-trade-field,
-		.pro-trade-field {
-			width: 65px !important;
-			height: 65px !important;
-		}
-	}
-	.sidebar-bottom-button-trade {
-		height: 130%;
-		width: 20% !important;
-	}
-}
-
-@media screen and (max-width: 450px) and (min-width: 375px) {
-	.mobile-trade-wrapper {
-		width: 50%;
-		.pro-trade-footer-icon {
-			height: 50%;
-			margin-top: 18% !important;
-		}
-		.quick-trade-footer-icon {
-			height: 40%;
-			margin-top: 20% !important;
-		}
-		.quick-trade-field,
-		.pro-trade-field {
-			width: 75px !important;
-			height: 75px !important;
-		}
-	}
-	.sidebar-bottom-button-trade {
-		height: 135%;
-		width: 18% !important;
-	}
-}
-
-@media screen and (max-width: 550px) and (min-width: 450px) {
-	.mobile-trade-wrapper {
-		width: 50%;
-		.quick-trade-field,
-		.pro-trade-field {
-			width: 85px !important;
-			height: 85px !important;
-		}
-		.pro-trade-footer-icon {
-			height: 40%;
-			margin-top: 25% !important;
-		}
-		.quick-trade-footer-icon {
-			height: 35%;
-			margin-top: 25% !important;
-		}
-	}
-}
-
 @media screen and (max-height: 600px) {
 	.sidebar-bottom-icon {
 		svg {
@@ -252,12 +198,75 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 	}
 }
 
-@media screen and (max-width: 768px) {
-	.mobile-trade-wrapper {
-		.quick-trade-field,
-		.pro-trade-field {
-			width: 100px;
-			height: 100px;
-		}
-	}
-}
+// @media screen and (max-width: 375px) {
+// 	.mobile-trade-wrapper {
+// 		.pro-trade-footer-icon {
+// 			height: 50%;
+// 			margin-top: 20% !important;
+// 		}
+// 		.quick-trade-footer-icon {
+// 			margin-top: 20% !important;
+// 		}
+// 		.quick-trade-field,
+// 		.pro-trade-field {
+// 			width: 65px !important;
+// 			height: 65px !important;
+// 		}
+// 	}
+// 	.sidebar-bottom-button-trade {
+// 		height: 130%;
+// 		width: 20% !important;
+// 	}
+// }
+
+// @media screen and (max-width: 450px) and (min-width: 375px) {
+// 	.mobile-trade-wrapper {
+// 		width: 50%;
+// 		.pro-trade-footer-icon {
+// 			height: 50%;
+// 			margin-top: 18% !important;
+// 		}
+// 		.quick-trade-footer-icon {
+// 			height: 40%;
+// 			margin-top: 20% !important;
+// 		}
+// 		.quick-trade-field,
+// 		.pro-trade-field {
+// 			width: 75px !important;
+// 			height: 75px !important;
+// 		}
+// 	}
+// 	.sidebar-bottom-button-trade {
+// 		height: 135%;
+// 		width: 18% !important;
+// 	}
+// }
+
+// @media screen and (max-width: 550px) and (min-width: 450px) {
+// 	.mobile-trade-wrapper {
+// 		width: 50%;
+// 		.quick-trade-field,
+// 		.pro-trade-field {
+// 			width: 85px !important;
+// 			height: 85px !important;
+// 		}
+// 		.pro-trade-footer-icon {
+// 			height: 40%;
+// 			margin-top: 25% !important;
+// 		}
+// 		.quick-trade-footer-icon {
+// 			height: 35%;
+// 			margin-top: 25% !important;
+// 		}
+// 	}
+// }
+
+// @media screen and (max-width: 768px) {
+// 	.mobile-trade-wrapper {
+// 		.quick-trade-field,
+// 		.pro-trade-field {
+// 			width: 100px;
+// 			height: 100px;
+// 		}
+// 	}
+// }

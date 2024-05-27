@@ -6,30 +6,28 @@ import { isMobile } from 'react-device-detect';
 import math from 'mathjs';
 import { message } from 'antd';
 
-import { Loader, MobileBarBack } from 'components';
+import WithdrawCryptocurrency from './form';
+import strings from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
+import { Loader, MobileBarBack } from 'components';
 import { getCurrencyFromName } from 'utils/currency';
 import {
 	performWithdraw,
 	// requestWithdrawFee
 } from 'actions/walletActions';
 import { errorHandler } from 'components/OtpForm/utils';
-
-import { openContactForm, getWithdrawalMax } from 'actions/appActions';
-
-import WithdrawCryptocurrency from './form';
-import { generateFormValues, generateInitialValues } from './formUtils';
-import { generateBaseInformation } from './utils';
-
 import {
-	renderInformation,
-	renderTitleSection,
-	renderNeedHelpAction,
-} from '../Wallet/components';
-
+	openContactForm,
+	getWithdrawalMax,
+	withdrawAddress,
+	setReceiverEmail,
+} from 'actions/appActions';
+import { generateFormValues, generateInitialValues } from './formUtils';
+import { renderNeedHelpAction, renderTitleSection } from '../Wallet/components';
 import { FORM_NAME } from './form';
 import { STATIC_ICONS } from 'config/icons';
 import { renderBackToWallet } from 'containers/Deposit/utils';
+import { IconTitle } from 'hollaex-web-lib';
 
 class Withdraw extends Component {
 	state = {
@@ -50,8 +48,11 @@ class Withdraw extends Component {
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (!this.state.checked) {
-			if (nextProps.verification_level) {
-				this.validateRoute(nextProps.routeParams.currency, nextProps.coins);
+			if (
+				nextProps.verification_level &&
+				nextProps.verification_level !== this.props.verification_level
+			) {
+				this.validateRoute(nextProps.routeParams.currency, this.props.coins);
 			}
 		} else if (
 			nextProps.activeLanguage !== this.props.activeLanguage ||
@@ -85,8 +86,15 @@ class Withdraw extends Component {
 		}
 	}
 
+	componentWillUnmount() {
+		this.props.setWithdrawAddress('');
+		this.props.setReceiverEmail('');
+	}
+
 	validateRoute = (currency, coins) => {
-		if (!coins[currency]) {
+		if (this.props.isDepositAndWithdraw) {
+			this.props.router.push('/wallet/withdraw');
+		} else if (!coins[currency]) {
 			this.props.router.push('/wallet');
 		} else if (currency) {
 			this.setState({ checked: true });
@@ -127,6 +135,8 @@ class Withdraw extends Component {
 			// if (currency === 'btc' || currency === 'bch' || currency === 'eth') {
 			// 	this.props.requestWithdrawFee(currency);
 			// }
+		} else if (this.props.isDepositAndWithdraw) {
+			this.props.router.push('/wallet/withdraw');
 		} else {
 			this.props.router.push('/wallet');
 		}
@@ -186,6 +196,11 @@ class Withdraw extends Component {
 
 	onSubmitWithdraw = (currency) => (values) => {
 		const { destination_tag, network, ...rest } = values;
+		const { getWithdrawCurrency, selectedWithdrawMethod } = this.props;
+
+		const currentCurrency = getWithdrawCurrency
+			? getWithdrawCurrency
+			: this.state.currency;
 
 		let address = rest.address.trim();
 		if (destination_tag) address = `${rest.address.trim()}:${destination_tag}`;
@@ -195,7 +210,9 @@ class Withdraw extends Component {
 			...rest,
 			address,
 			amount: math.eval(values.amount),
-			currency,
+			currency: currentCurrency,
+			method: selectedWithdrawMethod === 'Email' ? 'email' : 'address',
+			network: selectedWithdrawMethod === 'Email' ? 'email' : network,
 		};
 
 		delete paramData.fee_type;
@@ -210,7 +227,7 @@ class Withdraw extends Component {
 			delete paramData.email;
 		}
 
-		return performWithdraw(currency, paramData)
+		return performWithdraw(currentCurrency, paramData)
 			.then((response) => {
 				return { ...response.data, currency: this.state.currency };
 			})
@@ -269,11 +286,13 @@ class Withdraw extends Component {
 			openContactForm,
 			activeLanguage,
 			router,
-			coins,
 			icons: ICONS,
 			selectedNetwork,
 			email,
 			orders,
+			coins,
+			getWithdrawCurrency,
+			isDepositAndWithdraw,
 		} = this.props;
 		const { links = {} } = this.props.constants;
 		const {
@@ -284,15 +303,17 @@ class Withdraw extends Component {
 			selectedMethodData,
 			qrScannerOpen,
 		} = this.state;
-		if (!currency || !checked) {
+		if ((!currency || !checked) && !this.props.isDepositAndWithdraw) {
 			return <div />;
 		}
 
 		const balanceAvailable = balance[`${currency}_available`];
 
-		if (balanceAvailable === undefined) {
+		if (balanceAvailable === undefined && !this.props.isDepositAndWithdraw) {
 			return <Loader />;
 		}
+
+		const isFiat = coins[getWithdrawCurrency]?.type === 'fiat';
 
 		const formProps = {
 			currency,
@@ -313,6 +334,11 @@ class Withdraw extends Component {
 			closeQRScanner: this.closeQRScanner,
 			qrScannerOpen,
 			getQRData: this.getQRData,
+			balance,
+			links,
+			orders,
+			isFiat,
+			isDepositAndWithdraw,
 		};
 
 		return (
@@ -322,8 +348,9 @@ class Withdraw extends Component {
 				)}
 				<div className="presentation_container apply_rtl withdrawal-container">
 					{!isMobile &&
+						isFiat &&
 						renderTitleSection(
-							currency,
+							getWithdrawCurrency,
 							'withdraw',
 							ICONS['WITHDRAW'],
 							coins,
@@ -333,11 +360,21 @@ class Withdraw extends Component {
 					{verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW &&
 					verification_level <= MAX_VERIFICATION_LEVEL_TO_WITHDRAW ? ( */}
 					<div className="inner_container">
-						<div className="information_block">
-							<div
-								className="information_block-text_wrapper"
-								// style={{ height: '1.5rem' }}
+						{!isFiat && (
+							<IconTitle
+								stringId="WITHDRAW_PAGE.WITHDRAW"
+								text={strings['WITHDRAW_PAGE.WITHDRAW']}
+								iconId="WITHDRAW_TITLE"
+								iconPath={ICONS['WITHDRAW_TITLE']}
+								className="withdraw-icon mb-3 withdraw-main-icon"
 							/>
+						)}
+						<div
+							className={
+								isFiat ? 'mt-5 information_block' : 'information_block'
+							}
+						>
+							<div className="information_block-text_wrapper" />
 							{renderBackToWallet()}
 							{openContactForm &&
 								renderNeedHelpAction(
@@ -347,21 +384,7 @@ class Withdraw extends Component {
 									'BLUE_QUESTION'
 								)}
 						</div>
-						<WithdrawCryptocurrency
-							titleSection={renderInformation(
-								currency,
-								balance,
-								false,
-								generateBaseInformation,
-								coins,
-								'withdraw',
-								links,
-								ICONS['BLUE_QUESTION'],
-								'BLUE_QUESTION',
-								orders
-							)}
-							{...formProps}
-						/>
+						<WithdrawCryptocurrency {...formProps} />
 						{/* {renderExtraInformation(currency, bank_account, ICONS["BLUE_QUESTION"])} */}
 					</div>
 					{/* // This commented code can be used if you want to enforce user to have a verified bank account before doing the withdrawal
@@ -397,10 +420,16 @@ const mapStateToProps = (store) => ({
 	config_level: store.app.config_level,
 	orders: store.order.activeOrders,
 	coin_customizations: store.app.constants.coin_customizations,
+	getWithdrawCurrency: store.app.withdrawFields.withdrawCurrency,
+	getWithdrawNetwork: store.app.withdrawFields.withdrawNetwork,
+	isDepositAndWithdraw: store.app.depositAndWithdraw,
+	selectedWithdrawMethod: store.app.selectedWithdrawMethod,
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	openContactForm: bindActionCreators(openContactForm, dispatch),
+	setWithdrawAddress: bindActionCreators(withdrawAddress, dispatch),
+	setReceiverEmail: bindActionCreators(setReceiverEmail, dispatch),
 	// requestWithdrawFee: bindActionCreators(requestWithdrawFee, dispatch),
 	dispatch,
 });

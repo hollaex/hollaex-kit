@@ -18,6 +18,7 @@ const icons = {
 	CANDLES_LOGO: '/assets/images/Light-theme-candles.svg',
 	SET_ADMIN_NETWORK_KEYS: '/assets/images/set-admin-network-keys.svg',
 	SET_ADMIN_EMAIL: '/assets/images/set-admin-email.svg',
+	REFERRAL_ICON: '/assets/images/referrals-icon.svg',
 	SET_ADMIN_PASSWORD: '/assets/images/set-admin-password.svg',
 	MAX_ICON: '/assets/images/maxIcon.svg',
 	SET_ADMIN_RETYPE_PASSWORD: '/assets/images/set-admin-retype-password.svg',
@@ -161,7 +162,7 @@ const icons = {
 	SWITCH_ASSET_FOR_FEES: '/assets/images/switch-asset-for-fees.svg',
 	CLOCK: '/assets/images/clock.svg',
 	QR_CODE_SHOW: '/assets/images/mini-qr-code.svg',
-	QR_CODE_SCAN: '/assets/images/camera-scan.svg',
+	// QR_CODE_SCAN: '/assets/images/camera-scan.svg',
 	CLOUD_BASIC: '/assets/images/Path 4813.svg',
 	CLOUD_CRYPTO: '/assets/images/Path 4815.svg',
 	CLOUD_FIAT: '/assets/images/Group 5179.svg',
@@ -191,8 +192,9 @@ const icons = {
 	REVOKE_KEY: '/assets/images/revoke-key-red-slash.svg',
 	SMALL_WHITE_KEY: '/assets/images/small-white-key.svg',
 	TRANSPARENT_KEY: '/assets/images/transperent-key.svg',
-	FOOTERBAR_PRO_TRADE: '/assets/images/pro-trade-bottom-nav-mobile.svg',
-	FOOTERBAR_QUICK_TRADE: '/assets/images/quick-trade-tab-white.svg',
+	GOOGLE_AUTHENTICATOR: '/assets/images/google-auth-icon.svg',
+	GOOGLE_PLAY: '/assets/images/google-play.svg',
+	APP_STORE: '/assets/images/appstore-apple_logo_black.svg',
 };
 
 export default icons;

@@ -23,6 +23,7 @@ class SearchBox extends React.Component {
 			outlineClassName = '',
 			name,
 			showCross = false,
+			isFocus,
 		} = this.props;
 		const searchField = {
 			search: {
@@ -41,6 +42,7 @@ class SearchBox extends React.Component {
 					handleSearch('');
 					this.props.dispatch(reset(FORM_NAME));
 				},
+				isFocus,
 			},
 		};
 

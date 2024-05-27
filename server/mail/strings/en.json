@@ -115,6 +115,14 @@
 		"USER_DELETED": {
 			"html": "<div><p><p>Dear ${name} </p></p><p>The request for account deletion is in progress. The information on your account is going to be removed according to the terms of service.</p><p> Regards<br> ${api_name} team </p></div>",
 			"title": "Account Deletion Request"
+		},
+		"OTP_DISABLED": {
+			"html": "<div> <p> Dear ${name} </p> <p> We have recorded that your <b>two-factor authentication (2FA) has been disabled</b> on your account. It is highly recommended that you re-enable 2FA to secure your account.</p> <div> <div>Time: ${time}</div> <div>Country: ${country}</div> <div>IP Address: ${ip}</div> </div> <p> If this was not you please contact us immediately. </p> <p> Regards<br> ${api_name} team </p> </div>",
+			"title": "OTP Disabled"
+		},
+		"OTP_ENABLED": {
+			"html": "<div> <p> Dear ${name} </p> <p> We have recorded that your <b>two-factor authentication (2FA) has been enabled</b> on your account.</p> <div> <div>Time: ${time}</div> <div>Country: ${country}</div> <div>IP Address: ${ip}</div> </div> <p> Regards<br> ${api_name} team </p> </div>",
+			"title": "OTP Enabled"
 		}
 	}
 }

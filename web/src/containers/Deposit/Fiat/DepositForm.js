@@ -39,15 +39,19 @@ const generateFormValues = (
 	step,
 	method,
 	onramp,
-	selectedAccount
+	selectedAccount,
+	fiat_fees
 ) => {
 	const { min, max, increment_unit } = coins[symbol] || DEFAULT_COIN_DATA;
 
-	const { rate: fee } = getFiatDepositFee(symbol);
-	const limit = getFiatDepositLimit();
+	let { rate: fee } = getFiatDepositFee(symbol);
+	const customFee = fiat_fees?.[symbol]?.deposit_fee;
+	const limit = getFiatDepositLimit(symbol);
 
 	const MIN = math.max(fee, min);
 	const MAX = limit && math.larger(limit, 0) ? math.min(limit, max) : max;
+
+	fee = customFee || fee;
 
 	const amountValidate = [required];
 	if (MIN) {
@@ -177,13 +181,17 @@ const generateFormValues = (
 	return fields;
 };
 
-export const generateInitialValues = (verification_level, coins, currency) => {
+export const generateInitialValues = (
+	verification_level,
+	coins,
+	currency,
+	fiat_fees,
+	getDepositCurrency
+) => {
 	const initialValues = {};
-
-	const { rate } = getFiatDepositFee(currency);
-
+	let { rate } = getFiatDepositFee(currency, 0, '', getDepositCurrency);
+	rate = fiat_fees?.[currency]?.deposit_fee || rate;
 	initialValues.fee = rate;
-
 	return initialValues;
 };
 
@@ -203,6 +211,7 @@ const Deposit = ({
 	setStep,
 	router,
 	fee,
+	customFee,
 	onramp,
 	account,
 	method,
@@ -359,6 +368,8 @@ const mapStateToProps = (state, ownProps) => {
 		coins: state.app.coins,
 		user: state.user,
 		onramp: depositOptionsSelector(state, ownProps),
+		fiat_fees: state.app.constants.fiat_fees,
+		getDepositCurrency: state.app.depositFields.depositCurrency,
 	};
 };
 

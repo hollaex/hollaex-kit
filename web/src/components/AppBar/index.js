@@ -8,7 +8,12 @@ import { DEFAULT_URL } from 'config/constants';
 import MenuList from './MenuList';
 import { MobileBarWrapper, EditWrapper, ButtonLink, Image } from 'components';
 import { isLoggedIn } from 'utils/token';
-import { getTickers, changeTheme, setLanguage } from 'actions/appActions';
+import {
+	getTickers,
+	changeTheme,
+	setLanguage,
+	setDepositAndWithdraw,
+} from 'actions/appActions';
 import { updateUserSettings, setUserData } from 'actions/userAction';
 import ThemeSwitcher from './ThemeSwitcher';
 import withEdit from 'components/EditProvider/withEdit';
@@ -216,6 +221,12 @@ class AppBar extends Component {
 		);
 	};
 
+	onHandleDeposit = () => {
+		const { setDepositAndWithdraw, router } = this.props;
+		setDepositAndWithdraw(true);
+		router.push('/wallet/deposit');
+	};
+
 	render() {
 		const {
 			user,
@@ -229,6 +240,7 @@ class AppBar extends Component {
 			isHome,
 			activeLanguage,
 			changeLanguage,
+			icons,
 		} = this.props;
 		const { securityPending, verificationPending, walletPending } = this.state;
 
@@ -304,6 +316,17 @@ class AppBar extends Component {
 						id="trade-nav-container"
 						className="d-flex app-bar-account justify-content-end"
 					>
+						<div
+							className="app-bar-deposit-btn d-flex"
+							onClick={this.onHandleDeposit}
+						>
+							<Image
+								iconId={'DEPOSIT_TITLE'}
+								icon={icons['DEPOSIT_TITLE']}
+								wrapperClassName="form_currency-ball margin-aligner"
+							/>
+							<span className="ml-2">{STRINGS['ACCORDIAN.DEPOSIT_LABEL']}</span>
+						</div>
 						<div className="d-flex app_bar-quicktrade-container">
 							<LanguageSwitcher
 								selected={activeLanguage}
@@ -352,6 +375,7 @@ const mapDispatchToProps = (dispatch) => ({
 	changeTheme: bindActionCreators(changeTheme, dispatch),
 	setUserData: bindActionCreators(setUserData, dispatch),
 	changeLanguage: bindActionCreators(setLanguage, dispatch),
+	setDepositAndWithdraw: bindActionCreators(setDepositAndWithdraw, dispatch),
 });
 
 export default connect(

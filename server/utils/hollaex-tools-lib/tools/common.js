@@ -25,7 +25,8 @@ const {
 	VALID_USER_META_TYPES,
 	DOMAIN,
 	DEFAULT_FEES,
-	BALANCE_HISTORY_SUPPORTED_PLANS
+	BALANCE_HISTORY_SUPPORTED_PLANS,
+	REFERRAL_HISTORY_SUPPORTED_PLANS,
 } = require(`${SERVER_PATH}/constants`);
 const {
 	COMMUNICATOR_CANNOT_UPDATE,
@@ -33,7 +34,7 @@ const {
 	SUPPORT_DISABLED,
 	NO_NEW_DATA
 } = require(`${SERVER_PATH}/messages`);
-const { each, difference, isPlainObject, isString, pick, isNil, omit, isNumber } = require('lodash');
+const { each, difference, isPlainObject, isString, pick, isNil, omit, isNumber, isDate } = require('lodash');
 const { publisher } = require('./database/redis');
 const { sendEmail: sendSmtpEmail } = require(`${SERVER_PATH}/mail`);
 const { sendSMTPEmail: nodemailerEmail } = require(`${SERVER_PATH}/mail/utils`);
@@ -279,6 +280,51 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 		}
 	}
 
+	if (newKitConfig.fiat_fees) {
+		for(let coin of Object.values(newKitConfig.fiat_fees)) {
+		
+			if (coin.withdrawal_fee && coin.withdrawal_fee < 0) {
+				throw new Error('withdrawal fee cannot be negative');
+			}
+
+			if (coin.withdrawal_fee && !isNumber(coin.withdrawal_fee)) {
+				throw new Error('withdrawal fee is not a number');
+			}
+
+			if (coin.deposit_fee && coin.deposit_fee < 0) {
+				throw new Error('deposit fee cannot be negative');
+			}
+
+			if (coin.deposit_fee && !isNumber(coin.deposit_fee)) {
+				throw new Error('deposit fee is not a number');
+			}
+			
+			if (coin.min && coin.min < 0) {
+				throw new Error('min amount cannot be negative');
+			}
+
+			if (coin.min && !isNumber(coin.min)) {
+				throw new Error('min amount is not a number');
+			}
+
+			if (coin.max && coin.max < 0) {
+				throw new Error('max amount cannot be negative');
+			}
+
+			if (coin.max && !isNumber(coin.max)) {
+				throw new Error('max amount is not a number');
+			}
+
+			if (coin.increment_unit && coin.increment_unit < 0) {
+				throw new Error('increment unit cannot be negative');
+			}
+
+			if (coin.increment_unit && !isNumber(coin.increment_unit)) {
+				throw new Error('increment unit is not a number');
+			}
+		}
+	}
+
 	if (newKitConfig.balance_history_config) {
 
 		const exchangeInfo = getKitConfig().info;
@@ -344,6 +390,54 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 		if (newKitConfig.p2p_config.user_fee == null) {
 			throw new Error('buyer_fee cannot be null');
 		} 
+	}
+	
+	if (newKitConfig.referral_history_config) {
+		const exchangeInfo = getKitConfig().info;
+
+		if (!REFERRAL_HISTORY_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
+			throw new Error('Exchange plan does not support this feature');
+		}
+
+		if (!newKitConfig.referral_history_config.hasOwnProperty('active')) {
+			throw new Error('active key does not exist');
+		}
+
+		if (!newKitConfig.referral_history_config.hasOwnProperty('currency')) {
+			throw new Error('currency key does not exist');
+		}
+
+		if (existingKitConfig?.referral_history_config?.currency && existingKitConfig?.referral_history_config?.currency !== newKitConfig?.referral_history_config?.currency) {
+			throw new Error('currency cannot be changed');
+		}
+
+		if (!newKitConfig.referral_history_config.hasOwnProperty('earning_rate')) {
+			throw new Error('earning_rate key does not exist');
+		}
+
+		if (!newKitConfig.referral_history_config.hasOwnProperty('minimum_amount')) {
+			throw new Error('minimum amount key does not exist');
+		}
+		
+		if (!newKitConfig.referral_history_config.hasOwnProperty('earning_period')) {
+			throw new Error('earning_period key does not exist');
+		}
+
+		if (!newKitConfig.referral_history_config.hasOwnProperty('distributor_id')) {
+			throw new Error('distributor_id key does not exist');
+		}
+	
+		if (!existingKitConfig?.referral_history_config?.date_enabled && !newKitConfig.referral_history_config.hasOwnProperty('date_enabled')) {
+			newKitConfig.referral_history_config.date_enabled = new Date();
+		}
+
+		const { validateReferralFeature } = require('./user');
+		validateReferralFeature({
+			earning_rate: newKitConfig?.referral_history_config?.earning_rate, 
+			minimum_amount: newKitConfig?.referral_history_config?.minimum_amount, 
+			earning_period: newKitConfig?.referral_history_config?.earning_period, 
+			distributor_id: newKitConfig?.referral_history_config?.distributor_id, 
+		});
 	}
 
 	const joinedKitConfig = {};

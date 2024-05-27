@@ -112,6 +112,10 @@ const Details = ({
 	const handleClick = () => {
 		if (!isNetwork && !brokerUsed) {
 			router.push(`/trade/${pair}`);
+		} else if (isNetwork && brokerUsed) {
+			router.push(`/quick-trade/${pair}`);
+		} else {
+			router.push(`/prices/coin/${pair.split('-')[0]}`);
 		}
 	};
 
@@ -168,8 +172,8 @@ const Details = ({
 					<Coin iconId={icon_id} type="CS12" />
 					<div className="pl-18">
 						<div
-							className={classNames('pairs', {
-								'pointer underline': !isNetwork && !brokerUsed,
+							className={classNames('pairs pointer', {
+								underline: !isNetwork && !brokerUsed,
 							})}
 							onClick={handleClick}
 						>
@@ -190,7 +194,7 @@ const Details = ({
 								</Radio.Button>
 							</Radio.Group>
 						</div>
-						<div className="d-flex graph-row">
+						<div className="d-flex graph-row justify-content-between">
 							<div>
 								<div className="sub-title caps">
 									{STRINGS['MARKETS_TABLE.LAST_PRICE']}
@@ -226,7 +230,7 @@ const Details = ({
 							<div className="fade-area" />
 							<MiniSparkLine chartData={chartData} isArea />
 						</div>
-						<div className="d-flex pb-40">
+						<div className="d-flex justify-content-between pb-24">
 							<div>
 								<div className="sub-title">
 									{
@@ -275,7 +279,7 @@ const Details = ({
 								<div>
 									<div className="sub-title caps">{STRINGS['ASSET_INFO']}</div>
 									{getLink(
-										`/assets/coin/${pairBase}`,
+										`/prices/coin/${pairBase}`,
 										STRINGS.formatString(
 											STRINGS['QUICK_TRADE_COMPONENT.COIN_INFORMATION'],
 											coins[pairBase].display_name

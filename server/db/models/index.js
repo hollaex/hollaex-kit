@@ -62,6 +62,10 @@ model = require(path.join(__dirname, './p2pMerchant'))(sequelize, Sequelize.Data
 db[model.name] = model;
 model = require(path.join(__dirname, './p2pMerchantFeedback'))(sequelize, Sequelize.DataTypes);
 db[model.name] = model;
+model = require(path.join(__dirname, './referralHistory'))(sequelize, Sequelize.DataTypes);
+db[model.name] = model;
+model = require(path.join(__dirname, './referralCode'))(sequelize, Sequelize.DataTypes);
+db[model.name] = model;
 
 Object.keys(db).forEach(function (modelName) {
 	if ('associate' in db[modelName]) {

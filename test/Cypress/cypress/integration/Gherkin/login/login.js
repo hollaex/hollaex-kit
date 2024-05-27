@@ -1,6 +1,6 @@
 import { commandTimings } from 'cypress-timings'
 commandTimings()
-import {Given, When, Then} from "cypress-cucumber-preprocessor/steps"
+import {Given, When, Then, And} from "cypress-cucumber-preprocessor/steps"
 
 Given ('I am in the Hollaex login page',()=>{
 
@@ -19,7 +19,7 @@ Then ('I should be able to login successfully',()=>{
      
      cy.get('.holla-button').should('be.visible').should('be.enabled').click()
      cy.get('.warning_text').should('not.exist') 
-
+     //cy.wait(5000)
 })
 
 When ('I enter credentials Wrong Username,Password',()=>{
@@ -32,9 +32,24 @@ When ('I enter credentials Wrong Username,Password',()=>{
 Then ('I should not be able to login successfully and get error',()=>{
 
      cy.get('.holla-button').should('be.visible').should('be.enabled').click()
-     cy.get('.warning_text').should('exist') 
+     cy.get('.warning_text').should('exist')    
 })
-
+And  ('I receive the notification Email',()=>{
+     cy.task('getLastEmail', {
+          user: Cypress.env('EMAIL_ADMIN'),
+          password: Cypress.env('EMAIL_PASS'),
+          host: Cypress.env('EMAIL_HOST'),
+          port: 993,
+          tls: true  })
+          .then((emailContent) => {
+          cy.extractText(emailContent).then((extractedText) => {
+          cy.log(`Extracted Text: ${extractedText}`);
+          expect(extractedText).to.include(Cypress.env("USER0"))
+          expect(extractedText).to.include('We have recorded a login') 
+          });
+      
+      });
+})
 When ('I enter credentials Username,wrong Password',()=>{
 
      cy.get('.holla-button').should('be.visible').should('be.disabled')
