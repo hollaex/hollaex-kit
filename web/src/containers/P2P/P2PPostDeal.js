@@ -337,8 +337,12 @@ const P2PPostDeal = ({
 							<div style={{ flex: 7, display: 'flex' }}>
 								<div style={{ flex: 1 }}>
 									<div>
-										<EditWrapper stringId="P2P.TOTAL_ASSET_SELL">
-											{STRINGS['P2P.TOTAL_ASSET_SELL']}
+										<EditWrapper stringId="P2P.TOTAL_ASSET_SELL_1">
+											{STRINGS['P2P.TOTAL_ASSET_SELL_1']}
+										</EditWrapper>{' '}
+										{buyingAsset?.toUpperCase()}{' '}
+										<EditWrapper stringId="P2P.TOTAL_ASSET_SELL_2">
+											{STRINGS['P2P.TOTAL_ASSET_SELL_2']}
 										</EditWrapper>
 									</div>
 									<div>
@@ -358,9 +362,14 @@ const P2PPostDeal = ({
 										</EditWrapper>
 									</div>
 									<div>
-										<EditWrapper stringId="P2P.MIN_MAX_ORDER_VALUE">
-											{STRINGS['P2P.MIN_MAX_ORDER_VALUE']}
-										</EditWrapper>
+										<EditWrapper stringId="P2P.MIN_MAX_ORDER_VALUE_1">
+											{STRINGS['P2P.MIN_MAX_ORDER_VALUE_1']}
+										</EditWrapper>{' '}
+										{spendingAsset?.toUpperCase()}{' '}
+										<EditWrapper stringId="P2P.MIN_MAX_ORDER_VALUE_2">
+											{STRINGS['P2P.MIN_MAX_ORDER_VALUE_2']}
+										</EditWrapper>{' '}
+										{spendingAsset?.toUpperCase()}
 									</div>
 									<div style={{ display: 'flex', gap: 10 }}>
 										<div>
@@ -400,9 +409,14 @@ const P2PPostDeal = ({
 										</EditWrapper>
 									</div>
 									<div>
-										<EditWrapper stringId="P2P.SELECT_PAYMENT_METHODS">
-											{STRINGS['P2P.SELECT_PAYMENT_METHODS']}
-										</EditWrapper>
+										<EditWrapper stringId="P2P.SELECT_PAYMENT_METHODS_1">
+											{STRINGS['P2P.SELECT_PAYMENT_METHODS_1']}
+										</EditWrapper>{' '}
+										{p2p_config?.bank_payment_methods?.length || 0}{' '}
+										<EditWrapper stringId="P2P.SELECT_PAYMENT_METHODS_2">
+											{STRINGS['P2P.SELECT_PAYMENT_METHODS_2']}
+										</EditWrapper>{' '}
+										{spendingAsset?.toUpperCase()}
 									</div>
 
 									{p2p_config?.bank_payment_methods?.map((method) => {

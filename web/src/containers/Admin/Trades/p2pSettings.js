@@ -19,6 +19,7 @@ import { requestTiers } from '../Tiers/action';
 import { updateConstants, requestUsers } from './actions';
 import { requestAdminData } from 'actions/appActions';
 import _debounce from 'lodash/debounce';
+import Coins from '../Coins';
 import './index.css';
 
 const TabPane = Tabs.TabPane;
@@ -64,6 +65,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 	const [enable, setEnable] = useState(false);
 	const [emailOptions, setEmailOptions] = useState([]);
 	const [selectedEmailData, setSelectedEmailData] = useState({});
+	const [p2pConfig, setP2pConfig] = useState({});
 	const searchRef = useRef(null);
 	useEffect(() => {
 		getTiers();
@@ -89,6 +91,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 		setMerchantFee(p2p_config?.merchant_fee);
 		setUserFee(p2p_config?.user_fee);
 		setSourceAccount(p2p_config?.source_account);
+		setP2pConfig(p2p_config);
 	}, []);
 
 	const handleEmailChange = (value) => {
@@ -163,39 +166,44 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 						<Switch
 							checked={enable}
 							onChange={async (e) => {
-								await updateConstants({
-									kit: {
-										features: {
-											...features,
-											p2p: e,
+								try {
+									await updateConstants({
+										kit: {
+											features: {
+												...features,
+												p2p: e,
+											},
+											p2p_config: {
+												enable: e,
+												bank_payment_methods: selectedPaymentMethods,
+												starting_merchant_tier: merchantTier,
+												starting_user_tier: userTier,
+												digital_currencies: digitalCurrencies,
+												fiat_currencies: fiatCurrencies,
+												side: side,
+												merchant_fee: merchantFee,
+												user_fee: userFee,
+												source_account: sourceAccount,
+											},
 										},
-										p2p_config: {
-											enable: e,
-											bank_payment_methods: selectedPaymentMethods,
-											starting_merchant_tier: merchantTier,
-											starting_user_tier: userTier,
-											digital_currencies: digitalCurrencies,
-											fiat_currencies: fiatCurrencies,
-											side: side,
-											merchant_fee: merchantFee,
-											user_fee: userFee,
-											source_account: sourceAccount,
-										},
-									},
-								});
-								requestAdminData().then((res) => {
-									const result = res?.data?.kit?.p2p_config;
-									setEnable(result?.enable);
-									setSide(result?.side);
-									setDigitalCurrencies(result?.digital_currencies);
-									setFiatCurrencies(result?.fiat_currencies);
-									setMerchantTier(result?.starting_merchant_tier);
-									setUserTier(result?.starting_user_tier);
-									setSelectedPaymentMethods(result?.bank_payment_methods);
-									setMerchantFee(result?.merchant_fee);
-									setUserFee(result?.user_fee);
-									setSourceAccount(result?.source_account);
-								});
+									});
+									requestAdminData().then((res) => {
+										const result = res?.data?.kit?.p2p_config;
+										setEnable(result?.enable);
+										setSide(result?.side);
+										setDigitalCurrencies(result?.digital_currencies);
+										setFiatCurrencies(result?.fiat_currencies);
+										setMerchantTier(result?.starting_merchant_tier);
+										setUserTier(result?.starting_user_tier);
+										setSelectedPaymentMethods(result?.bank_payment_methods);
+										setMerchantFee(result?.merchant_fee);
+										setUserFee(result?.user_fee);
+										setSourceAccount(result?.source_account);
+										setP2pConfig(result);
+									});
+								} catch (error) {
+									message.error(error.data.message);
+								}
 							}}
 						/>
 					</div>
@@ -222,58 +230,65 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 					</div>
 				</div>
 			)}
-			{!editMode && (
-				<div style={{ opacity: enable ? 1 : 0.5 }}>
-					<div style={{ marginBottom: 10, marginTop: 10 }}>
-						<div style={{ fontSize: 20, marginBottom: 10, marginTop: 10 }}>
-							Sides
-						</div>
-						<div style={{ marginBottom: 10 }}>Trade sides allowed: {side} </div>
-						<div style={{ borderBottom: '1px solid grey', width: 600 }}></div>
+			<div style={{ opacity: enable ? 1 : 0.5 }}>
+				<div style={{ marginBottom: 10, marginTop: 10 }}>
+					<div style={{ fontSize: 20, marginBottom: 10, marginTop: 10 }}>
+						Sides
 					</div>
-
-					<div style={{ marginBottom: 10, marginTop: 10 }}>
-						<div style={{ fontSize: 20, marginBottom: 10, marginTop: 10 }}>
-							Crypto:
-						</div>
-						<div style={{ marginBottom: 10 }}>
-							Cryptocurrencies allowed for trading:{' '}
-							{digitalCurrencies?.join(', ')}
-						</div>
-						<div style={{ borderBottom: '1px solid grey', width: 600 }}></div>
+					<div style={{ marginBottom: 10 }}>
+						Trade sides allowed: {p2pConfig?.side}{' '}
 					</div>
-
-					<div style={{ marginBottom: 10, marginTop: 10 }}>
-						<div style={{ fontSize: 20, marginBottom: 10, marginTop: 10 }}>
-							Fiat:
-						</div>
-						<div style={{ marginBottom: 10 }}>
-							Fiat currencies allowed for trading: {fiatCurrencies?.join(', ')}
-						</div>
-						<div style={{ borderBottom: '1px solid grey', width: 600 }}></div>
-					</div>
-
-					<div style={{ marginBottom: 10, marginTop: 10 }}>
-						<div style={{ fontSize: 20, marginBottom: 10, marginTop: 10 }}>
-							Payment methods:
-						</div>
-						<div style={{ marginBottom: 10 }}>
-							Outside payment methods allowed:{' '}
-							{selectedPaymentMethods?.map((x) => x.system_name)?.join(', ')}
-						</div>
-						<div style={{ borderBottom: '1px solid grey', width: 600 }}></div>
-					</div>
-
-					<div style={{ marginBottom: 10, marginTop: 10 }}>
-						<div style={{ fontSize: 20, marginBottom: 10, marginTop: 10 }}>
-							Manage:
-						</div>
-						<div style={{ marginBottom: 10 }}>Merchant fee: {merchantFee}%</div>
-						<div style={{ marginBottom: 10 }}>Buyer fee: {userFee}%</div>
-						<div style={{ borderBottom: '1px solid grey', width: 600 }}></div>
-					</div>
+					<div style={{ borderBottom: '1px solid grey', width: 600 }}></div>
 				</div>
-			)}
+
+				<div style={{ marginBottom: 10, marginTop: 10 }}>
+					<div style={{ fontSize: 20, marginBottom: 10, marginTop: 10 }}>
+						Crypto:
+					</div>
+					<div style={{ marginBottom: 10 }}>
+						Cryptocurrencies allowed for trading:{' '}
+						{p2pConfig?.digital_currencies?.join(', ')}
+					</div>
+					<div style={{ borderBottom: '1px solid grey', width: 600 }}></div>
+				</div>
+
+				<div style={{ marginBottom: 10, marginTop: 10 }}>
+					<div style={{ fontSize: 20, marginBottom: 10, marginTop: 10 }}>
+						Fiat:
+					</div>
+					<div style={{ marginBottom: 10 }}>
+						Fiat currencies allowed for trading:{' '}
+						{p2pConfig?.fiat_currencies?.join(', ')}
+					</div>
+					<div style={{ borderBottom: '1px solid grey', width: 600 }}></div>
+				</div>
+
+				<div style={{ marginBottom: 10, marginTop: 10 }}>
+					<div style={{ fontSize: 20, marginBottom: 10, marginTop: 10 }}>
+						Payment methods:
+					</div>
+					<div style={{ marginBottom: 10 }}>
+						Outside payment methods allowed:{' '}
+						{p2pConfig?.bank_payment_methods
+							?.map((x) => x.system_name)
+							?.join(', ')}
+					</div>
+					<div style={{ borderBottom: '1px solid grey', width: 600 }}></div>
+				</div>
+
+				<div style={{ marginBottom: 10, marginTop: 10 }}>
+					<div style={{ fontSize: 20, marginBottom: 10, marginTop: 10 }}>
+						Manage:
+					</div>
+					<div style={{ marginBottom: 10 }}>
+						Merchant fee: {p2pConfig?.merchant_fee}%
+					</div>
+					<div style={{ marginBottom: 10 }}>
+						Buyer fee: {p2pConfig?.user_fee}%
+					</div>
+					<div style={{ borderBottom: '1px solid grey', width: 600 }}></div>
+				</div>
+			</div>
 
 			{displayP2pModel && (
 				<Modal
@@ -381,11 +396,11 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 							<div
 								style={{
 									display: 'flex',
-									justifyContent: 'center',
-									alignItems: 'center',
+									// justifyContent: 'center',
+									// alignItems: 'center',
 									backgroundColor: '#192491',
-									padding: 70,
-									textAlign: 'center',
+									padding: 14,
+									// textAlign: 'center',
 								}}
 							>
 								{fiatCurrencies.length === 0 ? (
@@ -402,7 +417,19 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 								) : (
 									<div>
 										{fiatCurrencies.map((symbol) => {
-											return <div>{symbol?.toUpperCase()}</div>;
+											return (
+												<div>
+													<span style={{ display: 'flex' }}>
+														<Coins type={symbol} />{' '}
+														<span
+															style={{ position: 'relative', top: 8, left: 5 }}
+														>
+															{' '}
+															{symbol?.toUpperCase()}
+														</span>
+													</span>
+												</div>
+											);
 										})}
 									</div>
 								)}
@@ -512,11 +539,11 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 							<div
 								style={{
 									display: 'flex',
-									justifyContent: 'center',
-									alignItems: 'center',
+									// justifyContent: 'center',
+									// alignItems: 'center',
 									backgroundColor: '#192491',
-									padding: 70,
-									textAlign: 'center',
+									padding: 14,
+									// textAlign: 'center',
 								}}
 							>
 								{selectedPaymentMethods.length === 0 ? (
@@ -657,7 +684,14 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 										<div>Type of P2P deals:</div>
 										<div>{side?.toUpperCase()}</div>
 									</div>
-									<div>EDIT</div>
+									<div
+										onClick={() => {
+											setStep(0);
+										}}
+										style={{ cursor: 'pointer' }}
+									>
+										EDIT
+									</div>
 								</div>
 							</div>
 
@@ -676,7 +710,14 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 										<div>Cryptocurrencies allowed for trading: </div>
 										<div>{digitalCurrencies.join(', ')}</div>
 									</div>
-									<div>EDIT</div>
+									<div
+										onClick={() => {
+											setStep(0);
+										}}
+										style={{ cursor: 'pointer' }}
+									>
+										EDIT
+									</div>
 								</div>
 							</div>
 
@@ -695,7 +736,14 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 										<div>Fiat currencies allowed for trading: </div>
 										<div>{fiatCurrencies.join(', ')}</div>
 									</div>
-									<div>EDIT</div>
+									<div
+										onClick={() => {
+											setStep(0);
+										}}
+										style={{ cursor: 'pointer' }}
+									>
+										EDIT
+									</div>
 								</div>
 							</div>
 
@@ -714,7 +762,14 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 										<div>Outside payment methods allowed: </div>
 										<div>{paymentMethods.map((x) => x.system_name)}</div>
 									</div>
-									<div>EDIT</div>
+									<div
+										onClick={() => {
+											setStep(0);
+										}}
+										style={{ cursor: 'pointer' }}
+									>
+										EDIT
+									</div>
 								</div>
 							</div>
 
@@ -733,7 +788,14 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 										<div>Merchant fee: </div>
 										<div>{merchantFee}</div>
 									</div>
-									<div>EDIT</div>
+									<div
+										onClick={() => {
+											setStep(0);
+										}}
+										style={{ cursor: 'pointer' }}
+									>
+										EDIT
+									</div>
 								</div>
 							</div>
 
@@ -752,7 +814,14 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 										<div>Buyer fee: </div>
 										<div>{userFee}</div>
 									</div>
-									<div>EDIT</div>
+									<div
+										onClick={() => {
+											setStep(0);
+										}}
+										style={{ cursor: 'pointer' }}
+									>
+										EDIT
+									</div>
 								</div>
 							</div>
 							{/* <div
@@ -806,6 +875,50 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 						</Button>
 						<Button
 							onClick={async () => {
+								if (step === 0 && digitalCurrencies.length === 0) {
+									message.error('Please select crypto assets');
+									return;
+								}
+								if (step === 0 && !side) {
+									message.error('Please select side');
+									return;
+								}
+
+								if (step === 1 && fiatCurrencies.length === 0) {
+									message.error('Please select fiats');
+									return;
+								}
+
+								if (step === 2 && userTier == null) {
+									message.error('Please select user tier');
+									return;
+								}
+
+								if (step === 2 && merchantTier == null) {
+									message.error('Please select merchant tier');
+									return;
+								}
+
+								if (step === 3 && selectedPaymentMethods.length === 0) {
+									message.error('Please add payment methods');
+									return;
+								}
+
+								if (step === 4 && merchantFee == null) {
+									message.error('Please add merchant fee');
+									return;
+								}
+
+								if (step === 4 && userFee == null) {
+									message.error('Please add user fee');
+									return;
+								}
+
+								if (step === 4 && sourceAccount == null) {
+									message.error('Please add source account');
+									return;
+								}
+
 								if (step === 5) {
 									try {
 										await updateConstants({
@@ -840,6 +953,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 											setMerchantFee(result?.merchant_fee);
 											setUserFee(result?.user_fee);
 											setSourceAccount(result?.source_account);
+											setP2pConfig(result);
 										});
 										setEditMode(false);
 										setStep(0);
@@ -1024,7 +1138,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 									{/* <span>ICON</span> */}
 									{paymentMethods.map((method) => {
 										return (
-											<span
+											<div
 												style={{
 													cursor: 'pointer',
 													fontWeight: selectedPaymentMethods.find(
@@ -1053,7 +1167,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 												}}
 											>
 												{method?.system_name}
-											</span>
+											</div>
 										);
 									})}
 								</div>

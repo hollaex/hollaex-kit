@@ -1868,11 +1868,14 @@
 		"PRICE_PROFIT_SPREAD_SET": "Price and profit spread to set",
 		"UNIT_PRICE": "UNIT PRICE",
 		"PRICE_ADVERTISE_SELL": "Price you'll advertise to sell",
-		"TOTAL_ASSET_SELL": "Total {buyingAsset} you can sell",
+		"TOTAL_ASSET_SELL_1": "Total",
+		"TOTAL_ASSET_SELL_2": "you can sell",
 		"BUY_ORDER_LIMITS": "BUY ORDER LIMITS",
-		"MIN_MAX_ORDER_VALUE": "Minimum and max {spendingAsset} buy order value in {spendingAsset}",
+		"MIN_MAX_ORDER_VALUE_1": "Minimum and max",
+		"MIN_MAX_ORDER_VALUE_2": "buy order value in",
 		"PAYMENT_METHODS_SEND_FIAT": "PAYMENT METHODS TO SEND FIAT",
-		"SELECT_PAYMENT_METHODS": "Select up to {length} methods for {spendingAsset}",
+		"SELECT_PAYMENT_METHODS_1": "Select up to",
+		"SELECT_PAYMENT_METHODS_2": "methods for",
 		"REGION": "Region",
 		"SELECT_REGION": "Select your region under which your deal will be listed",
 		"TERMS": "TERMS",
@@ -1885,6 +1888,9 @@
 		"DEAL_CREATED": "Deal has been created",
 		"NEXT": "NEXT",
 		"ADD_PAYMENT_METHOD_DETAILS": "Add Payment Method Details",
-		"COMPLETE": "Complete"
+		"COMPLETE": "Complete",
+		"STEP_SET_TYPE_PRICE": "Set the type and price",
+		"STEP_SET_TOTAL_AMOUNT_PAYMENT_METHODS": "Set the total amount and payment methods",
+		"STEP_SET_TERMS_AUTO_RESPONSE": "Set terms and an automated response"
 	}
 }
