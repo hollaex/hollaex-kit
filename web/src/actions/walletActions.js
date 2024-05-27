@@ -461,3 +461,10 @@ export const getEstimatedDust = (assets = []) => {
 	const data = { assets };
 	return axios.post(ENDPOINTS.DUST_ESTIMATION, data);
 };
+
+export const activeTabFromWallet = (tab) => ({
+	type: 'ACTIVE_TAB_FROM_WALLET',
+	payload: {
+		tab,
+	},
+});

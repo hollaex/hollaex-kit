@@ -1060,6 +1060,7 @@
 	"QUOTE_SUCCESS_REVIEW_MESSAGE": "You have successfully {0} {1} {2}",
 	"COUNTDOWN_ERROR_MESSAGE": "Countdown is finished",
 	"WITHDRAW_PAGE": {
+		"WITHDRAW": "Withdraw",
 		"BANK_TO_WITHDRAW": "Bank to Withdraw to",
 		"MESSAGE_ABOUT_SEND": "You are about to send",
 		"MESSAGE_BTC_WARNING": "Please ensure the accuracy of this address since {0} transfers are irreversible",
@@ -1084,7 +1085,17 @@
 		"WITHDRAWAL_CONFIRM_ADDRESS": "Address",
 		"WITHDRAWAL_CONFIRM_NETWORK": "Network",
 		"WITHDRAWAL_CANCEL_BUTTON": "CLOSE",
-		"WITHDRAWAL_CONFIRM_BUTTON": "CONFIRM WITHDRAWAL"
+		"WITHDRAWAL_CONFIRM_BUTTON": "CONFIRM WITHDRAWAL",
+		"REMOVE_TAG_NOTE_1": "You've made a selection to remove the Tag (also known as memo, Digital ID, Label and Notes)",
+		"REMOVE_TAG_NOTE_2": "Most exchange, wallets and other platforms do require a Tag. {0} {1}",
+		"REMOVE_TAG_NOTE_3": "Please double-check",
+		"REMOVE_TAG_NOTE_4": "that the Tag is in fact required before removing it.",
+		"BACK_BTN": "BACK",
+		"REMOVE_TAG": "YES, REMOVE TAG",
+		"GENERATE_DEPOSIT_TEXT_1": "No deposit address detected",
+		"GENERATE_DEPOSIT_TEXT_2": "Generate one below:",
+		"WITHDRAW_ADDRESS": "Withdrawal address",
+		"WITHDRAW_EMAIL_ADDRESS": "Withdrawal email"
 	},
 	"WALLET_BUTTON_BASE_DEPOSIT": "deposit",
 	"WALLET_BUTTON_BASE_WITHDRAW": "withdraw",
@@ -1705,7 +1716,22 @@
 	"ACCORDIAN": {
 		"ACCORDIAN_ASSETS": "All wallet assets",
 		"ACCORDIAN_INFO": "ASSET INFO PAGE",
-		"ACCORDIAN_HISTORY": "HISTORY"
+		"ACCORDIAN_HISTORY": "HISTORY",
+		"DEPOSIT": "DEPOSIT",
+		"WITHDRAW": "WITHDRAW",
+		"SELECT_ASSET": "Select asset:",
+		"SELECT_NETWORK": "Select network:",
+		"DESTINATION": "Destination:",
+		"AMOUNT": "Amount:",
+		"ESTIMATED": "Estimated Withdrawal value",
+		"TRANSACTION_FEE": "Transaction fee to be added:",
+		"SCAN": "SCAN",
+		"ADDRESS": "address:",
+		"OPTIONAL_TAG": "Tag (optional)",
+		"TAG": "Tag",
+		"DISABLED_DEPOSIT_CONTENT": "The deposit functionality is temporarily unavailable.",
+		"DISABLED_WITHDRAW_CONTENT": "The withdrawal functionality is temporarily unavailable.",
+		"DEPOSIT_LABEL": "Deposit"
 	},
 	"ASYNC_LINK": {
 		"TITLE": "Page not opening automatically?",
