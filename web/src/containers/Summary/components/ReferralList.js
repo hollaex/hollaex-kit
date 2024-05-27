@@ -1,21 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { Button as AntButton, Spin, Modal, Tabs } from 'antd';
+import {
+	LoadingOutlined,
+	CaretUpOutlined,
+	CaretDownOutlined,
+	CloseOutlined,
+	CheckCircleOutlined,
+} from '@ant-design/icons';
+
 import withConfig from 'components/ConfigProvider/withConfig';
-// eslint-disable-next-line
-import {
-	// Coin,
-	EditWrapper,
-} from 'components';
-// import { Link } from 'react-router';
-import {
-	Button as AntButton,
-	Spin,
-	// DatePicker,
-	// message,
-	Modal,
-	// Input,
-	Tabs,
-} from 'antd';
+import BigNumber from 'bignumber.js';
+import moment from 'moment';
+import STRINGS from 'config/localizedStrings';
+import ICONS from 'config/icons';
+import './_ReferralList.scss';
+import { EditWrapper, Help, IconTitle, Image } from 'components';
 import {
 	fetchReferralHistory,
 	fetchUnrealizedFeeEarnings,
@@ -24,28 +25,10 @@ import {
 	postSettleFees,
 	fetchRealizedFeeEarnings,
 } from './actions';
-import BigNumber from 'bignumber.js';
-import moment from 'moment';
-import STRINGS from 'config/localizedStrings';
-import { CloseOutlined } from '@ant-design/icons';
-
-import { bindActionCreators } from 'redux';
-import {
-	LoadingOutlined,
-	CaretUpOutlined,
-	CaretDownOutlined,
-} from '@ant-design/icons';
-// import DumbField from 'components/Form/FormFields/DumbField';
-import {
-	Table,
-	// Button, IconTitle
-} from 'components';
+import { Table } from 'components';
 import { getUserReferrals } from 'actions/userAction';
 import { setSnackNotification } from 'actions/appActions';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import ICONS from 'config/icons';
-
-import './_ReferralList.scss';
 
 const TabPane = Tabs.TabPane;
 
@@ -59,6 +42,7 @@ const ReferralList = ({
 	coins,
 	referral_history_config,
 	goBackReferral,
+	icons: ICON,
 }) => {
 	const [balanceHistory, setBalanceHistory] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
@@ -585,11 +569,11 @@ const ReferralList = ({
 
 	const createReferralCode = () => {
 		return (
-			<>
+			<div className="referral-pop-up-wrapper">
 				<Modal
 					maskClosable={false}
-					closeIcon={<CloseOutlined className="stake_theme" />}
-					className="stake_table_theme stake_theme"
+					closeIcon={<CloseOutlined className="referral-active-text" />}
+					className="referral_table_theme"
 					bodyStyle={{}}
 					visible={displayCreateLink}
 					width={450}
@@ -600,39 +584,31 @@ const ReferralList = ({
 				>
 					{linkStep === 0 && (
 						<>
-							<div
-								style={{
-									display: 'flex',
-									justifyContent: 'center',
-									flexDirection: 'column',
-									alignItems: 'center',
-								}}
-							>
-								<div className="stake_theme">
-									<div style={{ fontSize: 17, marginBottom: 10 }}>
-										<EditWrapper stringId="REFERRAL_LINK.CREATE_REFERRAL_LINK">
-											{STRINGS['REFERRAL_LINK.CREATE_REFERRAL_LINK']}
-										</EditWrapper>
+							<div>
+								<div className="refer-code-popup-wrapper fs-13">
+									<div className="d-flex new-referral-wrapper">
+										<Image
+											iconId="REFER_DOLLAR_ICON"
+											icon={ICON['REFER_DOLLAR_ICON']}
+											wrapperClassName="refer-icon"
+										/>
+										<div className="new-referral-label font-weight-bold">
+											<EditWrapper stringId="REFERRAL_LINK.CREATE_REFERRAL_LINK">
+												{STRINGS['REFERRAL_LINK.CREATE_REFERRAL_LINK']}
+											</EditWrapper>
+										</div>
 									</div>
-									<div>
+									<div className="referral-active-text">
 										<EditWrapper stringId="REFERRAL_LINK.CREATE_UNIQUE_REFERRAL">
 											{STRINGS['REFERRAL_LINK.CREATE_UNIQUE_REFERRAL']}
 										</EditWrapper>
 									</div>
-									<div style={{ marginTop: 10, marginBottom: 5 }}>
+									<div className="referral-active-text mt-3 mb-2">
 										<EditWrapper stringId="REFERRAL_LINK.REFERRAL_CODE">
 											{STRINGS['REFERRAL_LINK.REFERRAL_CODE']}
 										</EditWrapper>
 									</div>
-									<div
-										style={{
-											padding: 10,
-											width: '100%',
-											border: '1px solid #ccc',
-										}}
-									>
-										{referralCode}
-									</div>
+									<div className="custom-input-field">{referralCode}</div>
 									{/* <input
 										style={{
 											padding: 10,
@@ -647,42 +623,28 @@ const ReferralList = ({
 												setReferralCode(e.target.value?.toUpperCase());
 										}}
 									/> */}
-									<div style={{ marginTop: 10, fontWeight: 'bold' }}>
+									<div className="referral-active-text mt-2 font-weight-bold">
 										<EditWrapper stringId="REFERRAL_LINK.EXAMPLE">
 											{STRINGS['REFERRAL_LINK.EXAMPLE']}
 										</EditWrapper>
 									</div>
-									<div>
+									<div className="referral-active-text">
 										{process.env.REACT_APP_PUBLIC_URL}/signup?affiliation_code=
 										{referralCode}
 									</div>
-									<div style={{ marginTop: 5, color: '#ccc' }}>
+									<div className="referral-active-text mt-3">
 										<EditWrapper stringId="REFERRAL_LINK.NO_SPECIAL">
 											{STRINGS['REFERRAL_LINK.NO_SPECIAL']}
 										</EditWrapper>
 									</div>
 								</div>
 							</div>
-							<div
-								style={{
-									display: 'flex',
-									flexDirection: 'row',
-									gap: 15,
-									justifyContent: 'space-between',
-									marginTop: 30,
-								}}
-							>
+							<div className="referral-popup-btn-wrapper">
 								<AntButton
 									onClick={() => {
 										setDisplayCreateLink(false);
 									}}
-									style={{
-										backgroundColor: '#5D63FF',
-										color: 'white',
-										flex: 1,
-										height: 35,
-									}}
-									type="default"
+									className="back-btn"
 								>
 									<EditWrapper stringId="REFERRAL_LINK.BACK">
 										{STRINGS['REFERRAL_LINK.BACK']}
@@ -698,12 +660,7 @@ const ReferralList = ({
 										}
 										setLinkStep(1);
 									}}
-									style={{
-										backgroundColor: '#5D63FF',
-										color: 'white',
-										flex: 1,
-										height: 35,
-									}}
+									className="next-btn"
 									type="default"
 								>
 									<EditWrapper stringId="REFERRAL_LINK.NEXT">
@@ -715,109 +672,68 @@ const ReferralList = ({
 					)}
 					{linkStep === 1 && (
 						<>
-							<div
-								style={{
-									display: 'flex',
-									justifyContent: 'center',
-									flexDirection: 'column',
-									alignItems: 'center',
-								}}
-							>
-								<div className="stake_theme">
-									<div style={{ fontSize: 17, marginBottom: 10 }}>
-										<EditWrapper stringId="REFERRAL_LINK.EARNING_DISCOUNT">
-											{STRINGS['REFERRAL_LINK.EARNING_DISCOUNT']}
-										</EditWrapper>
+							<div>
+								<div className="referral-popup-earning-wrapper fs-13">
+									<div className="d-flex new-referral-wrapper">
+										<Image
+											iconId="REFER_DOLLAR_ICON"
+											icon={ICON['REFER_DOLLAR_ICON']}
+											wrapperClassName="refer-icon"
+										/>
+										<div className="new-referral-label font-weight-bold">
+											<EditWrapper stringId="REFERRAL_LINK.EARNING_DISCOUNT">
+												{STRINGS['REFERRAL_LINK.EARNING_DISCOUNT']}
+											</EditWrapper>
+										</div>
 									</div>
-									<div style={{ marginBottom: 10 }}>
+									<div className="mb-3">
 										<EditWrapper stringId="REFERRAL_LINK.DESCRIPTION">
 											{STRINGS['REFERRAL_LINK.DESCRIPTION']}
 										</EditWrapper>
 									</div>
-									<div
-										style={{
-											marginTop: 10,
-											marginBottom: 5,
-											fontWeight: 'bold',
-										}}
-									>
-										<EditWrapper stringId="REFERRAL_LINK.DISCOUNT_RATION">
-											{STRINGS['REFERRAL_LINK.DISCOUNT_RATION']}
-										</EditWrapper>
+									<div className="d-flex">
+										<div className="discount-label">
+											<EditWrapper stringId="REFERRAL_LINK.DISCOUNT_RATION">
+												{STRINGS['REFERRAL_LINK.DISCOUNT_RATION']}
+											</EditWrapper>
+										</div>
+										<Help
+											tip={STRINGS['REFERRAL_LINK.DISCOUNT_HOVER_CONTENT']}
+										/>
 									</div>
-									<div
-										style={{
-											padding: 10,
-											width: '100%',
-											border: '1px solid #ccc',
-											borderRadius: 10,
-											display: 'flex',
-											flexDirection: 'row',
-											gap: 10,
-											justifyContent: 'space-between',
-										}}
-									>
+									<div className="earn-field-wrapper">
 										<div
 											onClick={() => {
 												setSelectedOption(0);
 											}}
-											style={{
-												padding: 10,
-												cursor: 'pointer',
-												backgroundColor:
-													selectedOption === 0 ? '#303236' : '#202020',
-											}}
+											className="eraning-rate-field"
 										>
-											<div style={{ fontSize: 11 }}>
+											<div>
 												<EditWrapper stringId="REFERRAL_LINK.YOUR_EARNING_RATE">
 													{STRINGS['REFERRAL_LINK.YOUR_EARNING_RATE']}
 												</EditWrapper>
 											</div>
-											<div
-												style={{
-													display: 'flex',
-													justifyContent: 'space-between',
-												}}
-											>
-												<div>{earningRate}%</div>
-												<div>:</div>
+											<div className="d-flex justify-content-between">
+												<div className="fs-14">{earningRate}%</div>
 											</div>
 										</div>
+										<div className="d-flex align-items-center">:</div>
 										<div
 											onClick={() => {
 												setSelectedOption(1);
 											}}
-											style={{
-												padding: 10,
-												cursor: 'pointer',
-												backgroundColor:
-													selectedOption === 1 ? '#303236' : '#202020',
-											}}
+											className="discount-field"
 										>
-											<div style={{ fontSize: 11 }}>
+											<div>
 												<EditWrapper stringId="REFERRAL_LINK.DISCOUNT_GIVEN_TO_FRIEND">
 													{STRINGS['REFERRAL_LINK.DISCOUNT_GIVEN_TO_FRIEND']}
 												</EditWrapper>
 											</div>
-											<div
-												style={{
-													display: 'flex',
-													justifyContent: 'space-between',
-												}}
-											>
-												<div>{discount}%</div>
-												<div>:</div>
+											<div className="d-flex justify-content-between">
+												<div className="fs-14">{discount}%</div>
 											</div>
 										</div>
-										<div
-											style={{
-												backgroundColor: '#303236',
-												cursor: 'pointer',
-												display: 'flex',
-												flexDirection: 'column',
-												justifyContent: 'space-between',
-											}}
-										>
+										<div className="caret-icon-wrapper">
 											<div
 												onClick={(e) => {
 													e.stopPropagation();
@@ -858,7 +774,7 @@ const ReferralList = ({
 													}
 												}}
 											>
-												<CaretUpOutlined />
+												<CaretUpOutlined className="caret-icon" />
 											</div>
 											<div
 												onClick={(e) => {
@@ -895,31 +811,18 @@ const ReferralList = ({
 													}
 												}}
 											>
-												<CaretDownOutlined />
+												<CaretDownOutlined className="caret-icon" />
 											</div>
 										</div>
 									</div>
 								</div>
 							</div>
-							<div
-								style={{
-									display: 'flex',
-									flexDirection: 'row',
-									gap: 15,
-									justifyContent: 'space-between',
-									marginTop: 30,
-								}}
-							>
+							<div className="referral-popup-btn-wrapper">
 								<AntButton
 									onClick={() => {
 										setLinkStep(0);
 									}}
-									style={{
-										backgroundColor: '#5D63FF',
-										color: 'white',
-										flex: 1,
-										height: 35,
-									}}
+									className="back-btn"
 									type="default"
 								>
 									<EditWrapper stringId="REFERRAL_LINK.BACK">
@@ -930,12 +833,7 @@ const ReferralList = ({
 									onClick={async () => {
 										setLinkStep(2);
 									}}
-									style={{
-										backgroundColor: '#5D63FF',
-										color: 'white',
-										flex: 1,
-										height: 35,
-									}}
+									className="next-btn"
 									type="default"
 								>
 									<EditWrapper stringId="REFERRAL_LINK.NEXT">
@@ -948,54 +846,27 @@ const ReferralList = ({
 
 					{linkStep === 2 && (
 						<>
-							<div
-								style={{
-									display: 'flex',
-									justifyContent: 'center',
-									flexDirection: 'column',
-									alignItems: 'center',
-								}}
-							>
-								<div className="stake_theme">
-									<div style={{ fontSize: 17, marginBottom: 10 }}>
+							<div>
+								<div className="confirm-fild-wrapper fs-13">
+									<div className="mb-3 referral-active-text font-weight-bold">
 										<EditWrapper stringId="REFERRAL_LINK.REVIEW_AND_CONFIRM">
 											{STRINGS['REFERRAL_LINK.REVIEW_AND_CONFIRM']}
 										</EditWrapper>
 									</div>
-									<div style={{ marginBottom: 10 }}>
+									<div className="mb-4">
 										<EditWrapper stringId="REFERRAL_LINK.PLEASE_CHECK_BELOW">
 											{STRINGS['REFERRAL_LINK.PLEASE_CHECK_BELOW']}
 										</EditWrapper>
 									</div>
-									<div
-										style={{
-											marginTop: 10,
-											marginBottom: 5,
-											fontWeight: 'bold',
-										}}
-									>
+									<div className="discount-field">
 										<EditWrapper stringId="REFERRAL_LINK.DISCOUNT_RATIO">
 											{STRINGS['REFERRAL_LINK.DISCOUNT_RATIO']}
 										</EditWrapper>
 									</div>
-									<div
-										style={{
-											padding: 10,
-											width: '100%',
-											border: '1px solid #ccc',
-										}}
-									>
-										<div style={{ width: '50%' }}>
-											<div
-												style={{
-													marginBottom: 10,
-													display: 'flex',
-													flexDirection: 'row',
-													gap: 10,
-													justifyContent: 'space-between',
-												}}
-											>
-												<div>
+									<div className="referral-field-content-wrapper">
+										<div className="w-50">
+											<div className="referral-field-content">
+												<div className="font-weight-bold">
 													<EditWrapper stringId="REFERRAL_LINK.REFERRAL_CODE">
 														{STRINGS['REFERRAL_LINK.REFERRAL_CODE']}
 													</EditWrapper>
@@ -1003,30 +874,16 @@ const ReferralList = ({
 												<div>{referralCode}</div>
 											</div>
 
-											<div
-												style={{
-													display: 'flex',
-													flexDirection: 'row',
-													gap: 10,
-													justifyContent: 'space-between',
-												}}
-											>
-												<div>
+											<div className="earn-rate-content">
+												<div className="font-weight-bold">
 													<EditWrapper stringId="REFERRAL_LINK.YOUR_EARNING_RATE">
 														{STRINGS['REFERRAL_LINK.YOUR_EARNING_RATE']}
 													</EditWrapper>
 												</div>
 												<div>{earningRate}%</div>
 											</div>
-											<div
-												style={{
-													display: 'flex',
-													flexDirection: 'row',
-													gap: 10,
-													justifyContent: 'space-between',
-												}}
-											>
-												<div>
+											<div className="discount-content">
+												<div className="font-weight-bold">
 													<EditWrapper stringId="REFERRAL_LINK.DISCOUNT_GIVEN">
 														{STRINGS['REFERRAL_LINK.DISCOUNT_GIVEN']}
 													</EditWrapper>
@@ -1036,7 +893,7 @@ const ReferralList = ({
 										</div>
 									</div>
 
-									<div style={{ marginTop: 20 }}>
+									<div className="mt-4">
 										<div>
 											<EditWrapper stringId="REFERRAL_LINK.EXAMPLE">
 												{STRINGS['REFERRAL_LINK.EXAMPLE']}
@@ -1044,30 +901,20 @@ const ReferralList = ({
 										</div>
 										<div>
 											{process.env.REACT_APP_PUBLIC_URL}
-											/signup?affiliation_code={referralCode}
+											/signup?affiliation_code={' '}
+											<span className="referral-active-text font-weight-bold">
+												{referralCode}
+											</span>
 										</div>
 									</div>
 								</div>
 							</div>
-							<div
-								style={{
-									display: 'flex',
-									flexDirection: 'row',
-									gap: 15,
-									justifyContent: 'space-between',
-									marginTop: 30,
-								}}
-							>
+							<div className="referral-popup-btn-wrapper">
 								<AntButton
 									onClick={() => {
 										setLinkStep(1);
 									}}
-									style={{
-										backgroundColor: '#5D63FF',
-										color: 'white',
-										flex: 1,
-										height: 35,
-									}}
+									className="back-btn"
 									type="default"
 								>
 									<EditWrapper stringId="REFERRAL_LINK.BACK">
@@ -1094,12 +941,7 @@ const ReferralList = ({
 											showErrorMessage(error.data.message);
 										}
 									}}
-									style={{
-										backgroundColor: '#5D63FF',
-										color: 'white',
-										flex: 1,
-										height: 35,
-									}}
+									className="next-btn"
 									type="default"
 								>
 									<EditWrapper stringId="REFERRAL_LINK.CONFIRM">
@@ -1112,43 +954,31 @@ const ReferralList = ({
 
 					{linkStep === 3 && (
 						<>
-							<div
-								style={{
-									display: 'flex',
-									justifyContent: 'center',
-									flexDirection: 'column',
-									alignItems: 'center',
-								}}
-							>
-								<div className="stake_theme">
-									<div style={{ fontSize: 17, marginBottom: 10 }}>
-										<EditWrapper stringId="REFERRAL_LINK.LINK_CREATED">
-											{STRINGS['REFERRAL_LINK.LINK_CREATED']}
-										</EditWrapper>
+							<div>
+								<div className="referral-final-popup fs-13">
+									<div className="d-flex new-referral-wrapper">
+										<div className="checked-icon">
+											<CheckCircleOutlined />
+										</div>
+										<div className="new-referral-label font-weight-bold">
+											<EditWrapper stringId="REFERRAL_LINK.LINK_CREATED">
+												{STRINGS['REFERRAL_LINK.LINK_CREATED']}
+											</EditWrapper>
+										</div>
 									</div>
-									<div style={{ marginBottom: 10 }}>
+									<div className="desc-label fs-13">
 										<EditWrapper stringId="REFERRAL_LINK.DESCRIPTION_2">
 											{STRINGS['REFERRAL_LINK.DESCRIPTION_2']}
 										</EditWrapper>
 									</div>
 
-									<div style={{ marginTop: 15 }}>
+									<div className="mt-3">
 										<EditWrapper stringId="REFERRAL_LINK.REFERRAL_LINK">
 											{STRINGS['REFERRAL_LINK.REFERRAL_LINK']}
 										</EditWrapper>
 									</div>
-									<div
-										style={{
-											padding: 10,
-											width: '100%',
-											border: '1px solid #ccc',
-											color: '#5D63FF',
-											display: 'flex',
-											justifyContent: 'space-between',
-											alignItems: 'center',
-										}}
-									>
-										<div style={{ fontSize: 11 }}>
+									<div className="custom-input fs-13">
+										<div>
 											{process.env.REACT_APP_PUBLIC_URL}
 											/signup?affiliation_code={referralCode}
 										</div>
@@ -1158,13 +988,7 @@ const ReferralList = ({
 												handleCopy();
 											}}
 										>
-											<div
-												style={{
-													textDecoration: 'underline',
-													fontSize: 11,
-													cursor: 'pointer',
-												}}
-											>
+											<div className="link-content fs-13">
 												<EditWrapper stringId="REFERRAL_LINK.COPY">
 													{STRINGS['REFERRAL_LINK.COPY']}
 												</EditWrapper>
@@ -1173,15 +997,7 @@ const ReferralList = ({
 									</div>
 								</div>
 							</div>
-							<div
-								style={{
-									display: 'flex',
-									flexDirection: 'row',
-									gap: 15,
-									justifyContent: 'space-between',
-									marginTop: 30,
-								}}
-							>
+							<div className="referral-popup-btn-wrapper">
 								<AntButton
 									onClick={async () => {
 										setDisplayCreateLink(false);
@@ -1190,12 +1006,7 @@ const ReferralList = ({
 										setDiscount(0);
 										setEarningRate(referral_history_config?.earning_rate);
 									}}
-									style={{
-										backgroundColor: '#5D63FF',
-										color: 'white',
-										flex: 1,
-										height: 35,
-									}}
+									className="okay-btn"
 									type="default"
 								>
 									<EditWrapper stringId="REFERRAL_LINK.OKAY">
@@ -1206,7 +1017,7 @@ const ReferralList = ({
 						</>
 					)}
 				</Modal>
-			</>
+			</div>
 		);
 	};
 
@@ -1215,8 +1026,8 @@ const ReferralList = ({
 			<>
 				<Modal
 					maskClosable={false}
-					closeIcon={<CloseOutlined className="stake_theme" />}
-					className="stake_table_theme stake_theme"
+					closeIcon={<CloseOutlined className="referral-active-text" />}
+					className="referral_table_theme"
 					bodyStyle={{}}
 					visible={displaySettle}
 					width={450}
@@ -1226,51 +1037,41 @@ const ReferralList = ({
 					}}
 				>
 					<>
-						<div
-							style={{
-								display: 'flex',
-								justifyContent: 'center',
-								flexDirection: 'column',
-							}}
-						>
-							<div className="stake_theme">
-								<div style={{ fontSize: 17, marginBottom: 10 }}>
-									<EditWrapper stringId="REFERRAL_LINK.EARNING_SETTLEMENT">
-										{STRINGS['REFERRAL_LINK.EARNING_SETTLEMENT']}
-									</EditWrapper>
+						<div>
+							<div className="settle-popup-wrapper fs-13">
+								<div className="earning-icon-wrapper">
+									<div>
+										<Image
+											iconId="NEW_REFER_ICON"
+											icon={ICON['NEW_REFER_ICON']}
+											wrapperClassName="refer-icon margin-aligner"
+										/>
+									</div>
+									<div className="earning-label">
+										<EditWrapper stringId="REFERRAL_LINK.EARNING_SETTLEMENT">
+											{STRINGS['REFERRAL_LINK.EARNING_SETTLEMENT']}
+										</EditWrapper>
+									</div>
 								</div>
-								<div style={{ marginBottom: 10 }}>
-									<span style={{ fontWeight: 'bold' }}>Amount to settle:</span>{' '}
+								<div className="mt-4">
+									<span className="font-weight-bold">Amount to settle:</span>{' '}
 									{unrealizedEarnings}{' '}
 									{(referral_history_config?.currency || 'usdt').toUpperCase()}
 								</div>
 
-								<div style={{ marginTop: 15 }}>
+								<div className="mt-5">
 									<EditWrapper stringId="REFERRAL_LINK.DO_YOU_WANT_TO_SETTLE">
 										{STRINGS['REFERRAL_LINK.DO_YOU_WANT_TO_SETTLE']}
 									</EditWrapper>
 								</div>
 							</div>
 						</div>
-						<div
-							style={{
-								display: 'flex',
-								flexDirection: 'row',
-								gap: 15,
-								justifyContent: 'space-between',
-								marginTop: 30,
-							}}
-						>
+						<div className="referral-popup-btn-wrapper">
 							<AntButton
 								onClick={() => {
 									setDisplaySettle(false);
 								}}
-								style={{
-									backgroundColor: '#5D63FF',
-									color: 'white',
-									flex: 1,
-									height: 35,
-								}}
+								className="back-btn"
 								type="default"
 							>
 								<EditWrapper stringId="REFERRAL_LINK.BACK">
@@ -1281,12 +1082,7 @@ const ReferralList = ({
 								onClick={() => {
 									handleSettlement();
 								}}
-								style={{
-									backgroundColor: '#5D63FF',
-									color: 'white',
-									flex: 1,
-									height: 35,
-								}}
+								className="next-btn"
 								type="default"
 							>
 								<EditWrapper stringId="REFERRAL_LINK.SETTLE">
@@ -1311,17 +1107,24 @@ const ReferralList = ({
 	};
 	return (
 		<Spin spinning={isLoading}>
+			<div className="referral-header-icon-wrapper">
+				<IconTitle
+					stringId="REFERRAL_LINK.REFERRAL_EARNINGS"
+					text={`${STRINGS['REFERRAL_LINK.REFERRAL_EARNINGS']}`}
+					textType="title"
+					iconPath={ICON['NEW_REFER_ICON']}
+					iconId="NEW_REFER_ICON"
+				/>
+			</div>
+			<div className="referral-active-text">
+				<EditWrapper stringId="REFERRAL_LINK.REFERRAL_INFO">
+					{STRINGS['REFERRAL_LINK.REFERRAL_INFO']}
+				</EditWrapper>
+			</div>
 			{displayCreateLink && createReferralCode()}
 			{displaySettle && settleReferral()}
-			<div style={{}}>
-				<span
-					style={{
-						cursor: 'pointer',
-						textDecoration: 'underline',
-						color: '#5257CD',
-					}}
-					onClick={() => goBackReferral(false)}
-				>
+			<div>
+				<span className="back-label" onClick={() => goBackReferral(false)}>
 					{'<'}
 					<EditWrapper stringId="REFERRAL_LINK.BACK_LOWER">
 						{STRINGS['REFERRAL_LINK.BACK_LOWER']}
@@ -1335,37 +1138,39 @@ const ReferralList = ({
 			>
 				<TabPane tab="Summary" key="0">
 					<>
-						<div
-							className="summary-block_wrapper"
-							style={{ marginTop: -1, paddingTop: 20 }}
-						>
-							<div style={{ display: 'flex', justifyContent: 'space-between' }}>
-								<div>
-									<div style={{ fontWeight: 'bold', fontSize: 18 }}>
-										<EditWrapper stringId="REFERRAL_LINK.EARNINGS">
-											{STRINGS['REFERRAL_LINK.EARNINGS']}
-										</EditWrapper>
+						<div className="summary-block_wrapper summary-referral-container">
+							<div className="summary-referral-wrapper">
+								<div className="referral-active-text">
+									<div className="earning-icon-wrapper">
+										<div>
+											<Image
+												iconId="REFER_ICON"
+												icon={ICON['REFER_ICON']}
+												wrapperClassName="refer-icon margin-aligner"
+											/>
+										</div>
+										<div className="earning-label">
+											<EditWrapper stringId="REFERRAL_LINK.EARNINGS">
+												{STRINGS['REFERRAL_LINK.EARNINGS']}
+											</EditWrapper>
+										</div>
 									</div>
-									<div style={{ marginTop: 5 }}>
+									<div className="mt-3">
 										<EditWrapper stringId="REFERRAL_LINK.EARNING_DESC">
 											{STRINGS['REFERRAL_LINK.EARNING_DESC']}
 										</EditWrapper>
 									</div>
-									<div
+									<span
 										onClick={() => {
 											handleTabChange('1');
 										}}
-										style={{
-											color: '#4E54BE',
-											cursor: 'pointer',
-											fontWeight: 'bold',
-										}}
+										className="view-history-label"
 									>
 										<EditWrapper stringId="REFERRAL_LINK.VIEW_HISTORY">
 											{STRINGS['REFERRAL_LINK.VIEW_HISTORY']}
 										</EditWrapper>
-									</div>
-									<div style={{ marginTop: 10 }}>
+									</span>
+									{/* <div className='mt-4'>
 										<EditWrapper stringId="REFERRAL_LINK.DATA_COLLECTED">
 											{STRINGS['REFERRAL_LINK.DATA_COLLECTED']}
 										</EditWrapper>{' '}
@@ -1373,8 +1178,8 @@ const ReferralList = ({
 											'YYYY/MM/DD'
 										)}
 										.
-									</div>
-									<div>
+									</div> */}
+									<div className="mt-3">
 										<EditWrapper stringId="REFERRAL_LINK.DATA_DESC">
 											{STRINGS['REFERRAL_LINK.DATA_DESC']}
 										</EditWrapper>{' '}
@@ -1387,18 +1192,13 @@ const ReferralList = ({
 												)
 													setDisplaySettle(true);
 											}}
-											style={{
-												textDecoration: 'underline',
-												color: '#4E54BE',
-												cursor: 'pointer',
-												fontWeight: 'bold',
-											}}
+											className="settle-link"
 										>
 											<EditWrapper stringId="REFERRAL_LINK.SETTLE_HERE">
 												{STRINGS['REFERRAL_LINK.SETTLE_HERE']}
 											</EditWrapper>
 										</span>
-										<span style={{ fontSize: 11 }}>
+										<span>
 											{' '}
 											(
 											<EditWrapper stringId="REFERRAL_LINK.MIN_TO_SETTLE">
@@ -1409,17 +1209,15 @@ const ReferralList = ({
 										</span>
 									</div>
 								</div>
-								<div>
-									<div
-										style={{ borderBottom: '1px solid #ccc', marginBottom: 10 }}
-									></div>
-									<div>
-										<span style={{ fontWeight: 'bold', fontSize: 17 }}>
+								<div className="earn-info-wrapper">
+									<div className="earn-info-border mb-3"></div>
+									<div className="earn-text-wrapper">
+										<span>
 											<EditWrapper stringId="REFERRAL_LINK.EARNT">
 												{STRINGS['REFERRAL_LINK.EARNT']}
 											</EditWrapper>
 										</span>{' '}
-										<div style={{ fontSize: 15 }} className="field-label">
+										<div className="field-label">
 											{getSourceDecimals(
 												referral_history_config?.currency || 'usdt',
 												latestBalance
@@ -1429,14 +1227,8 @@ const ReferralList = ({
 											).toUpperCase()}{' '}
 										</div>
 									</div>
-									<div
-										style={{
-											borderBottom: '1px solid #ccc',
-											marginBottom: 10,
-											marginTop: 10,
-										}}
-									></div>
-									<div style={{ marginBottom: 10 }}>
+									<div className="earn-info-border mt-3"></div>
+									<div className="mt-3">
 										<EditWrapper stringId="REFERRAL_LINK.UNSETTLED">
 											{STRINGS['REFERRAL_LINK.UNSETTLED']}
 										</EditWrapper>{' '}
@@ -1445,14 +1237,7 @@ const ReferralList = ({
 											referral_history_config?.currency || 'usdt'
 										).toUpperCase()}
 									</div>
-									<div
-										style={{
-											display: 'flex',
-											justifyContent: 'flex-end',
-											flexDirection: 'column',
-											alignItems: 'flex-end',
-										}}
-									>
+									<div className="referral-popup-btn-wrapper justify-content-end">
 										<div>
 											<AntButton
 												onClick={() => {
@@ -1464,14 +1249,7 @@ const ReferralList = ({
 													unrealizedEarnings <
 														referral_history_config?.minimum_amount
 												}
-												style={{
-													backgroundColor: '#5E63F6',
-													color: 'white',
-													display: 'flex',
-													alignItems: 'flex-end',
-													fontSize: 13,
-													border: 'none',
-												}}
+												className="settle-btn"
 											>
 												<EditWrapper stringId="REFERRAL_LINK.SETTLE">
 													{STRINGS['REFERRAL_LINK.SETTLE']}
@@ -1483,23 +1261,22 @@ const ReferralList = ({
 							</div>
 						</div>
 
-						<div
-							className="summary-block_wrapper"
-							style={{ marginTop: 20, paddingTop: 20 }}
-						>
+						<div className="summary-block_wrapper new-refer-wrapper">
 							<div>
-								<div style={{ fontWeight: 'bold', fontSize: 18 }}>
-									<EditWrapper stringId="REFERRAL_LINK.INVITE_LINKS">
-										{STRINGS['REFERRAL_LINK.INVITE_LINKS']}
-									</EditWrapper>
-								</div>
-								<div style={{ marginTop: 5 }}>
-									<EditWrapper stringId="REFERRAL_LINK.INVITE_LINKS_DESC">
-										{STRINGS['REFERRAL_LINK.INVITE_LINKS_DESC']}
-									</EditWrapper>
+								<div className="new-refer-icon-wrapper">
+									<Image
+										iconId="REFER_DOLLAR_ICON"
+										icon={ICON['REFER_DOLLAR_ICON']}
+										wrapperClassName="refer-icon margin-aligner"
+									/>
+									<div className="mt-2 referral-active-text font-weight-bold">
+										<EditWrapper stringId="REFERRAL_LINK.INVITE_LINKS">
+											{STRINGS['REFERRAL_LINK.INVITE_LINKS']}
+										</EditWrapper>
+									</div>
 								</div>
 								{referralCodes?.data?.length < 3 && (
-									<div
+									<span
 										onClick={async () => {
 											if (!referralCode) {
 												try {
@@ -1511,32 +1288,25 @@ const ReferralList = ({
 												}
 											} else setDisplayCreateLink(true);
 										}}
-										style={{
-											color: '#4E54BE',
-											cursor: 'pointer',
-											fontWeight: 'bold',
-											textDecoration: 'underline',
-											marginTop: 5,
-										}}
+										className="create-link-label"
 									>
 										<EditWrapper stringId="REFERRAL_LINK.CREATE_LINK">
 											{STRINGS['REFERRAL_LINK.CREATE_LINK']}
 										</EditWrapper>
-									</div>
+									</span>
 								)}
 							</div>
 
 							{referralCodes?.data?.length === 0 && (
-								<div
-									style={{
-										display: 'flex',
-										justifyContent: 'center',
-										alignItems: 'center',
-										flexDirection: 'column',
-										minHeight: 500,
-									}}
-								>
-									<div style={{ marginBottom: 10 }}>
+								<div className="content-field">
+									<div className="no-link-icon">
+										<Image
+											iconId="NEW_REFER_ICON"
+											icon={ICON['NEW_REFER_ICON']}
+											wrapperClassName="margin-aligner"
+										/>
+									</div>
+									<div className="referral-active-text">
 										<EditWrapper stringId="REFERRAL_LINK.NO_LINK">
 											{STRINGS['REFERRAL_LINK.NO_LINK']}
 										</EditWrapper>
@@ -1554,13 +1324,7 @@ const ReferralList = ({
 													}
 												} else setDisplayCreateLink(true);
 											}}
-											style={{
-												color: '#4E54BE',
-												cursor: 'pointer',
-												fontWeight: 'bold',
-												textDecoration: 'underline',
-												marginTop: 5,
-											}}
+											className="create-link-label"
 										>
 											<EditWrapper stringId="REFERRAL_LINK.CREATE_LINK">
 												{STRINGS['REFERRAL_LINK.CREATE_LINK']}
@@ -1587,18 +1351,24 @@ const ReferralList = ({
 					</>
 				</TabPane>
 				<TabPane tab="History" key="1">
-					<div
-						className="summary-block_wrapper"
-						style={{ marginTop: -1, paddingTop: 20 }}
-					>
-						<div>
-							<div>
-								<div style={{ fontSize: 17, fontWeight: 'bold' }}>
-									<EditWrapper stringId="REFERRAL_LINK.ALL_EVENTS">
-										{STRINGS['REFERRAL_LINK.ALL_EVENTS']}
-									</EditWrapper>
+					<div className="summary-block_wrapper history-referral-container">
+						<div className="history-referral-wrapper">
+							<div className="referral-active-text">
+								<div className="earning-icon-wrapper">
+									<div>
+										<Image
+											iconId="REFER_ICON"
+											icon={ICON['REFER_ICON']}
+											wrapperClassName="refer-icon margin-aligner"
+										/>
+									</div>
+									<div className="earning-label">
+										<EditWrapper stringId="REFERRAL_LINK.ALL_EVENTS">
+											{STRINGS['REFERRAL_LINK.ALL_EVENTS']}
+										</EditWrapper>
+									</div>
 								</div>
-								<div style={{ marginBottom: 15 }}>
+								<div className="mb-4">
 									<EditWrapper stringId="REFERRAL_LINK.EVENTS_DESC">
 										{STRINGS['REFERRAL_LINK.EVENTS_DESC']}
 									</EditWrapper>
@@ -1612,7 +1382,7 @@ const ReferralList = ({
 									)}
 									.
 								</div>
-								<div>
+								{/* <div>
 									<EditWrapper stringId="REFERRAL_LINK.DATA_DESC">
 										{STRINGS['REFERRAL_LINK.DATA_DESC']}
 									</EditWrapper>{' '}
@@ -1621,7 +1391,7 @@ const ReferralList = ({
 											if (
 												unrealizedEarnings > 0 &&
 												unrealizedEarnings >
-													referral_history_config?.minimum_amount
+												referral_history_config?.minimum_amount
 											)
 												setDisplaySettle(true);
 										}}
@@ -1636,14 +1406,14 @@ const ReferralList = ({
 											{STRINGS['REFERRAL_LINK.SETTLE_HERE']}
 										</EditWrapper>
 									</span>
-								</div>
-								<div style={{ marginTop: 10 }}>
-									<span style={{ fontWeight: 'bold' }}>
+								</div> */}
+								<div className="mt-3">
+									<span className="font-weight-bold">
 										<EditWrapper stringId="REFERRAL_LINK.EARNT">
 											{STRINGS['REFERRAL_LINK.EARNT']}
 										</EditWrapper>
 									</span>{' '}
-									<span style={{ fontSize: 15 }} className="field-label">
+									<span className="field-label">
 										{getSourceDecimals(
 											referral_history_config?.currency || 'usdt',
 											latestBalance

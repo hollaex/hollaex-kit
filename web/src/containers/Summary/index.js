@@ -184,7 +184,7 @@ class Summary extends Component {
 		return (
 			<div>
 				<div className="summary-container">
-					{!isMobile && (
+					{!isMobile && !this.state.displayReferralList && (
 						<IconTitle
 							stringId="SUMMARY.TITLE"
 							text={`${STRINGS['SUMMARY.TITLE']}`}

@@ -62,6 +62,7 @@ const RenderWithdraw = ({
 	const [isCheck, setIsCheck] = useState(false);
 	const [isVisible, setIsVisible] = useState(false);
 	const [isValidEmail, setIsValidEmail] = useState(false);
+	const [isDisbaleWithdraw, setIsDisbaleWithdraw] = useState(false);
 
 	const {
 		setWithdrawCurrency,
@@ -131,6 +132,7 @@ const RenderWithdraw = ({
 		coins[defaultCurrency]?.network !== 'other'
 			? coins[defaultCurrency]?.network
 			: coins[defaultCurrency]?.symbol;
+	const isWithdrawal = coins[getWithdrawCurrency]?.allow_withdrawal;
 
 	useEffect(() => {
 		const topWallet = assets
@@ -164,6 +166,20 @@ const RenderWithdraw = ({
 		setCurrStep({ ...currStep, stepTwo: true });
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+
+	useEffect(() => {
+		if (getWithdrawCurrency && !isWithdrawal) {
+			setSelectedAsset('');
+			setIsDisbaleWithdraw(true);
+			setCurrStep({
+				stepOne: false,
+				stepTwo: false,
+				stepThree: false,
+				stepFour: false,
+				stepFive: false,
+			});
+		}
+	}, [getWithdrawCurrency, isWithdrawal]);
 
 	const isAmount = useMemo(() => {
 		const isCondition =
@@ -378,7 +394,6 @@ const RenderWithdraw = ({
 	const estimatedFormat = `≈ ${Math.round(
 		estimatedWithdrawValue
 	)} ${getNativeCurrency?.toUpperCase()}`;
-	const isWithdrawal = coins[getWithdrawCurrency]?.allow_withdrawal;
 	const isCondition =
 		(['xrp', 'xlm'].includes(selectedAsset) ||
 			['xlm', 'ton'].includes(network)) &&
@@ -390,11 +405,7 @@ const RenderWithdraw = ({
 
 	return (
 		<div
-			className={
-				getWithdrawCurrency && !isWithdrawal
-					? 'withdraw-deposit-disable mt-1'
-					: 'mt-1'
-			}
+			className={isDisbaleWithdraw ? 'withdraw-deposit-disable mt-1' : 'mt-1'}
 		>
 			<div>
 				<div className="d-flex">

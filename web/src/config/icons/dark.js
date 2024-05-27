@@ -249,6 +249,8 @@ const nestedIcons = {
 	FIAT_KYC: '/assets/images/fiat-kyc.svg',
 
 	REFER_ICON: '/assets/images/refer-icon.svg',
+	REFER_DOLLAR_ICON: '/assets/images/referral-link-dollar-graphic.svg',
+	NEW_REFER_ICON: '/assets/images/Group 5483.svg',
 	STAKETOKEN_ICON: '/assets/images/stake.svg',
 	STAKING_1: '/assets/images/staking_1.png',
 	STAKING_2: '/assets/images/staking_2.svg',
