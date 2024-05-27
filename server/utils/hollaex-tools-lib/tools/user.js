@@ -2843,24 +2843,12 @@ const settleFees = async (user_id) => {
 		where: { referer: user_id, status: false },
 	});	
 
-	const exchangeCoins = unrealizedRecords.map(record => record.coin) || [];
-	const conversions = await getNodeLib().getOraclePrices(exchangeCoins, {
-		quote: 'usdt',
-		amount: 1
-	});
-
-
 	let totalValue = 0;
 	for (let record of unrealizedRecords) {
 		totalValue = new BigNumber(record.accumulated_fees).plus(totalValue).toNumber();
 	}
 
-	let feeUsdtValue = 0;
-	if (conversions[nativeCurrency]) {
-		feeUsdtValue = new BigNumber(totalValue).multipliedBy(conversions[nativeCurrency]).toNumber();
-	}
-
-	if (feeUsdtValue < minimum_amount) {
+	if (totalValue < minimum_amount) {
 		throw new Error('Total unrealized earned fees are too small to be converted to realized earnings');
 	}
 
