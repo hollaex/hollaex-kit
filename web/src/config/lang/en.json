@@ -1364,6 +1364,7 @@
 		"BACK": "BACK",
 		"PROCEED": "PROCEED",
 		"INVITE_LINK": "Referral invite link",
+		"MIN_TO_SETTLE": "Minimum amount to settle",
 		"BACK_LOWER": "Back",
 		"EARNINGS": "Earnings",
 		"EARNINGS_DESCRIPTION": "Earnings generated overtime from all your referred users.",
