@@ -316,7 +316,7 @@ const InterfaceForm = ({
 					</div>
 					<div className="mb-4">
 						<div style={{ fontSize: 16 }} className="mb-2">
-							Minimum amount (in USDT)
+							Minimum amount
 							<div style={{ fontSize: 13 }}>
 								Minimum amount reqired to settle fees
 							</div>

@@ -304,7 +304,7 @@ const ReferralList = ({
 	const handleSettlementNotification = () => {
 		setSnackNotification({
 			icon: ICONS.COPY_NOTIFICATION,
-			content: 'Settlement successful!',
+			content: STRINGS['REFERRAL_LINK.SETTLEMENT_SUCCESS'],
 		});
 	};
 
@@ -1404,7 +1404,8 @@ const ReferralList = ({
 											<EditWrapper stringId="REFERRAL_LINK.MIN_TO_SETTLE">
 												{STRINGS['REFERRAL_LINK.MIN_TO_SETTLE']}
 											</EditWrapper>
-											: {referral_history_config?.minimum_amount} USDT)
+											: {referral_history_config?.minimum_amount}{' '}
+											{(referral_history_config?.currency).toUpperCase()})
 										</span>
 									</div>
 								</div>
