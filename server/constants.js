@@ -218,6 +218,7 @@ exports.KIT_CONFIG_KEYS = [
 	'fiat_fees',
 	'balance_history_config',
 	'transaction_limits',
+	'p2p_config',
 	'referral_history_config'
 ];
 
@@ -289,6 +290,8 @@ exports.WEBSOCKET_CHANNEL = (topic, symbolOrUserId) => {
 			return 'admin';
 		case 'chat':
 			return 'chat';
+		case 'p2pChat':
+			return `p2pChat:${symbolOrUserId}`;
 		default:
 			return;
 	}
@@ -300,6 +303,7 @@ exports.WS_HUB_CHANNEL = 'channel:websocket:hub';
 // Chat
 exports.CHAT_MAX_MESSAGES = 50;
 exports.CHAT_MESSAGE_CHANNEL = 'channel:chat:message';
+exports.P2P_CHAT_MESSAGE_CHANNEL = 'channel:p2p';
 
 // CHANNEL CONSTANTS END --------------------------------------------------
 
@@ -664,6 +668,12 @@ exports.EXCHANGE_PLAN_PRICE_SOURCE = {
 exports.STAKE_SUPPORTED_PLANS = ['fiat', 'boost', 'enterprise'];
 
 //STAKE CONSTANTS END
+
+//P2P CONSTANTS START
+
+exports.P2P_SUPPORTED_PLANS = ['fiat', 'boost', 'enterprise'];
+
+//P2P CONSTANTS END
 
 //BALANCE HISTORY CONSTANTS START
 exports.BALANCE_HISTORY_SUPPORTED_PLANS = ['fiat', 'boost', 'enterprise'];

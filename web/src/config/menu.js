@@ -24,7 +24,7 @@ export const MENU_ITEMS = {
 			hide_from_sidebar: true,
 			hide_from_menulist: true,
 			hide_from_bottom_nav: false,
-		}
+		},
 	],
 	features: [
 		{
@@ -36,7 +36,7 @@ export const MENU_ITEMS = {
 			string_id: 'SUMMARY.MARKETS',
 			hide_from_sidebar: true,
 			hide_from_bottom_nav: false,
-			hide_from_menulist: true
+			hide_from_menulist: true,
 		},
 		{
 			id: 'quick_trade',
@@ -45,13 +45,21 @@ export const MENU_ITEMS = {
 			string_id: 'CONVERT',
 			hide_from_sidebar: true,
 			hide_from_bottom_nav: false,
-			hide_from_menulist: true
+			hide_from_menulist: true,
 		},
 		{
 			id: 'stake_page',
 			path: '/stake',
 			icon_id: 'TAB_STAKE',
 			string_id: 'ACCOUNTS.TAB_STAKE',
+			hide_from_appbar: true,
+			hide_from_bottom_nav: true,
+		},
+		{
+			id: 'p2p',
+			path: '/p2p',
+			icon_id: 'TAB_STAKE',
+			string_id: 'ACCOUNTS.P2P',
 			hide_from_appbar: true,
 			hide_from_bottom_nav: true,
 		},
@@ -78,7 +86,7 @@ export const MENU_ITEMS = {
 			path: '/wallet',
 			icon_id: `${isMobile ? 'WALLET_FOOTER' : 'TAB_WALLET'}`,
 			string_id: 'ACCOUNTS.TAB_WALLET',
-			hide_from_appbar: false
+			hide_from_appbar: false,
 		},
 		{
 			path: '/transactions',

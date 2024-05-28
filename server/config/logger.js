@@ -101,6 +101,7 @@ const LOGGER_NAMES = {
 	init: 'init',
 	broker: 'broker',
 	stake: 'stake',
+	p2p: 'p2p',
 	fiat: 'fiat'
 };
 
@@ -159,5 +160,6 @@ module.exports = {
 	loggerTier: winston.loggers.get(LOGGER_NAMES.tier),
 	loggerBroker: winston.loggers.get(LOGGER_NAMES.broker),
 	loggerStake: winston.loggers.get(LOGGER_NAMES.stake),
+	loggerP2P: winston.loggers.get(LOGGER_NAMES.p2p),
 	loggerFiat: winston.loggers.get(LOGGER_NAMES.loggerFiat)
 };
