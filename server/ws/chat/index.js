@@ -3,7 +3,8 @@ const { debounce, each } = require('lodash');
 const {
 	CHAT_MESSAGE_CHANNEL,
 	CHAT_MAX_MESSAGES,
-	WEBSOCKET_CHANNEL
+	WEBSOCKET_CHANNEL,
+	P2P_CHAT_MESSAGE_CHANNEL
 } = require('../../constants');
 const { storeData, restoreData } = require('./utils');
 const { isUserBanned } = require('./ban');
@@ -17,6 +18,8 @@ let MESSAGES = [];
 
 // redis subscriber, get message and updates MESSAGES array
 subscriber.subscribe(CHAT_MESSAGE_CHANNEL);
+subscriber.subscribe(P2P_CHAT_MESSAGE_CHANNEL);
+
 subscriber.on('message', (channel, data) => {
 	if (channel === CHAT_MESSAGE_CHANNEL) {
 		data = JSON.parse(data);
@@ -24,6 +27,13 @@ subscriber.on('message', (channel, data) => {
 			MESSAGES.push(data.data);
 		} else if (data.type === 'deleteMessage') {
 			MESSAGES.splice(data.data, 1);
+		}
+	} else if(P2P_CHAT_MESSAGE_CHANNEL) {
+		data = JSON.parse(data);
+		if (data.type === 'message') { 
+			publishP2PChatMessage('addMessage', data.data);
+		} else if(data.type === 'status') {
+			publishP2PChatMessage('getStatus', data.data);
 		}
 	}
 });
@@ -58,6 +68,29 @@ const addMessage = (username, verification_level, userId, message) => {
 	}
 };
 
+const addP2PMessage = (user_id, p2pData) => {
+	const created_at = moment();
+	const data = {
+		id: p2pData.id,
+		user_id,
+		...p2pData,
+		created_at
+	};
+	publisher.publish(P2P_CHAT_MESSAGE_CHANNEL, JSON.stringify({ type: 'message', data }));
+};
+
+const getP2PStatus = (user_id, p2pData) => {
+	const created_at = moment();
+	const data = {
+		id: p2pData.id,
+		user_id,
+		status: p2pData.status,
+		created_at
+	};
+	publisher.publish(P2P_CHAT_MESSAGE_CHANNEL, JSON.stringify({ type: 'status', data }));
+
+};
+
 const deleteMessage = (idToDelete) => {
 	const indexOfMessage = MESSAGES.findIndex(({ id }) => id === idToDelete);
 	if (indexOfMessage > -1) {
@@ -79,6 +112,20 @@ const publishChatMessage = (event, data) => {
 	});
 };
 
+const publishP2PChatMessage = (event, data) => {
+	const topic = `p2pChat${data.id}`
+
+	each(getChannels()[WEBSOCKET_CHANNEL('p2pChat', data.id)], (ws) => {
+		if (ws.readyState === WebSocket.OPEN) {
+			ws.send(JSON.stringify({
+				topic: topic,
+				action: event,
+				data
+			}));
+		}
+	});
+};
+
 const maintenanceMessageList = debounce(() => {
 	MESSAGES = getMessages();
 	storeData(MESSAGES_KEY, MESSAGES);
@@ -93,5 +140,7 @@ module.exports = {
 	addMessage,
 	deleteMessage,
 	publishChatMessage,
-	sendInitialMessages
+	sendInitialMessages,
+	addP2PMessage,
+	getP2PStatus
 };

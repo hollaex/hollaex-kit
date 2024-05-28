@@ -658,7 +658,9 @@ const GeneralContent = ({
 											>
 												{selectedType === 'diy'
 													? 'Do-It-Yourself'
-													: selectedType === 'fiat' ? 'Enterprise' : selectedType}
+													: selectedType === 'fiat'
+													? 'Enterprise'
+													: selectedType}
 											</p>
 										</div>
 									</div>
@@ -704,10 +706,7 @@ const GeneralContent = ({
 	};
 
 	const checkDisabled = (method) => {
-		if (
-			method === 'bank' ||
-			method === 'paypal'
-		) {
+		if (method === 'bank' || method === 'paypal') {
 			return true;
 		}
 		return false;

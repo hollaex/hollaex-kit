@@ -86,14 +86,13 @@ const NewOrderNotification = ({
 
 	return (
 		<>
-		<NotificationWraper
-			stringId="CHECK_ORDER"
-			title={STRINGS['CHECK_ORDER']}
-			iconId="CHECK_ORDER"
-			icon={ICONS['CHECK_ORDER']}
-			className="new-order-notification"
-		>
-			
+			<NotificationWraper
+				stringId="CHECK_ORDER"
+				title={STRINGS['CHECK_ORDER']}
+				iconId="CHECK_ORDER"
+				icon={ICONS['CHECK_ORDER']}
+				className="new-order-notification"
+			>
 				<>
 					<EventListener target="document" onKeydown={onKeydown} />
 					<OrderDisplay rows={rows} />
@@ -103,9 +102,8 @@ const NewOrderNotification = ({
 						<Button label={STRINGS['CONFIRM_TEXT']} onClick={onConfirmClick} />
 					</div>
 				</>
-		</NotificationWraper>
+			</NotificationWraper>
 		</>
-
 	);
 };
 

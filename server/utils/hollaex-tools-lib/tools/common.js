@@ -353,6 +353,45 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 		}
 	}
 
+	if (newKitConfig.p2p_config) {
+
+		const exchangeInfo = getKitConfig().info;
+
+		if (!BALANCE_HISTORY_SUPPORTED_PLANS.includes(exchangeInfo.plan))
+			throw new Error('Exchange plan does not support this feature');
+
+		if (newKitConfig.p2p_config.enable == null) {
+			throw new Error('enable cannot be null');
+		} 
+		if (newKitConfig.p2p_config.bank_payment_methods == null) {
+			throw new Error('bank_payment_methods cannot be null');
+		} 
+		if (newKitConfig.p2p_config.starting_merchant_tier == null) {
+			throw new Error('starting_merchant_tier cannot be null');
+		} 
+		if (newKitConfig.p2p_config.starting_user_tier == null) {
+			throw new Error('starting_user_tier cannot be null');
+		} 
+		if (newKitConfig.p2p_config.digital_currencies == null) {
+			throw new Error('digital_currencies cannot be null');
+		} 
+		if (newKitConfig.p2p_config.fiat_currencies == null) {
+			throw new Error('fiat_currencies cannot be null');
+		} 
+		if (newKitConfig.p2p_config.side == null) {
+			throw new Error('side cannot be null');
+		} 
+		if (newKitConfig.p2p_config.source_account == null) {
+			throw new Error('source_account cannot be null');
+		} 
+		if (newKitConfig.p2p_config.merchant_fee == null) {
+			throw new Error('merchant_fee cannot be null');
+		} 
+		if (newKitConfig.p2p_config.user_fee == null) {
+			throw new Error('buyer_fee cannot be null');
+		} 
+	}
+	
 	if (newKitConfig.referral_history_config) {
 		const exchangeInfo = getKitConfig().info;
 

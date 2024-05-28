@@ -161,7 +161,7 @@ export const generateAdminSettings = (key) => {
 				label: 'Allowed domains',
 				placeholder: 'Allowed domains',
 				tokenSeparators: [',', ' ', '   '],
-			}
+			},
 		};
 	} else if (key === 'email') {
 		return {
