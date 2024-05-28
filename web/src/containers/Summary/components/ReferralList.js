@@ -1374,13 +1374,12 @@ const ReferralList = ({
 									</EditWrapper>
 								</div>
 								<div>
-									<EditWrapper stringId="REFERRAL_LINK.DATA_BELOW">
-										{STRINGS['REFERRAL_LINK.DATA_BELOW']}
-									</EditWrapper>{' '}
-									{moment(referral_history_config?.date_enabled).format(
-										'YYYY/MM/DD'
-									)}
-									.
+									<EditWrapper stringId="REFERRAL_LINK.DATA_COLLECTION">
+										{STRINGS.formatString(
+											STRINGS['REFERRAL_LINK.DATA_COLLECTION'],
+											moment(referral_history_config?.date_enabled).format('YYYY/MM/DD')
+										)}
+									</EditWrapper>
 								</div>
 								{/* <div>
 									<EditWrapper stringId="REFERRAL_LINK.DATA_DESC">

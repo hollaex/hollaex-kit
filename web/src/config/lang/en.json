@@ -1380,7 +1380,7 @@
 		"CUSTOM": "Custom",
 		"USERS_LIST": "Users sign up list",
 		"USERS_LIST_DESC": "Top users you've referred and their earnings they have generated for you.",
-		"DATA_COLLECTION": "Below table data collected starting",
+		"DATA_COLLECTION": "Below table data collected starting from {0}.",
 		"TIME_OF_SETTLEMENT": "Time of settlement",
 		"CREATION_DATE": "Creation Date",
 		"REFERRAL_COUNT": "Referral Count",
@@ -1423,7 +1423,6 @@
 		"SETTLEMENT_SUCCESS": "Settlement successful!",
 		"ALL_EVENTS": "All settlement events",
 		"EVENTS_DESC": "Below are all the earning settlement events from your invited referrals.",
-		"DATA_BELOW": "Below table data collected",
 		"REFERRAL_CODE_ZERO": "Please input a code",
 		"REFERRAL_EARNINGS": "Referral Earnings",
 		"DISCOUNT_HOVER_CONTENT": "Adding a discount to your link can help encourage sign-ups, boost trading activity, and may enhance the passive income generated from your referral link."
