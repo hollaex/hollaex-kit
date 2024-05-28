@@ -74,7 +74,6 @@
 			.earning-label {
 				font-size: 18px;
 				font-weight: bold;
-				margin-top: 1%;
 			}
 		}
 
@@ -122,7 +121,6 @@
 			.earning-label {
 				font-size: 18px;
 				font-weight: bold;
-				margin-top: 1%;
 			}
 		}
 	}
@@ -173,6 +171,15 @@
 	.earning-icon-wrapper {
 		display: flex;
 
+		.insufficient-icon {
+			text-align: center;
+
+			svg {
+				width: 5rem !important;
+				height: 5rem !important;
+			}
+		}
+
 		.refer-icon {
 			fill: var(--labels_important-active-labels-text-graphics);
 		}
@@ -184,7 +191,6 @@
 		.earning-label {
 			font-size: 18px;
 			font-weight: bold;
-			margin-top: 1%;
 		}
 	}
 }
@@ -232,7 +238,7 @@
 	.caret-icon-wrapper {
 		width: 15%;
 		text-align: center;
-		padding-top: 3%;
+		padding-left: 3%;
 		border-bottom-right-radius: 10px;
 		border-top-right-radius: 10px;
 		cursor: pointer;
@@ -240,16 +246,35 @@
 		flex-direction: column;
 		background-color: var(--base_background);
 
+		.caret-up-icon {
+			width: 0;
+			height: 40%;
+			line-height: 0;
+		}
+
+		.caret-down-icon {
+			width: 0;
+			height: 0;
+			line-height: 0;
+		}
+
 		.caret-icon {
 			svg {
-				width: 2rem !important;
-				height: 2rem !important;
+				width: 3rem !important;
+				height: 3rem !important;
 			}
 		}
 	}
 }
 
 .confirm-fild-wrapper {
+	.confirm-field-header {
+		font-weight: bold;
+		color: var(--labels_important-active-labels-text-graphics);
+		font-size: 18px;
+		margin-bottom: 3%;
+	}
+
 	.discount-field {
 		margin: 2% 0 1% 0;
 		font-weight: bold;
@@ -322,5 +347,39 @@
 
 	.okay-btn {
 		width: 100% !important;
+	}
+}
+
+.layout-mobile {
+	.summary-block_wrapper {
+		.referral-table-wrapper {
+			.table-wrapper th {
+				font-size: 12px;
+			}
+		}
+	}
+}
+
+@media screen and (max-width: 550px) {
+	.layout-mobile {
+		.summary-block_wrapper {
+			.referral-table-wrapper {
+				.table-wrapper th {
+					font-size: 10px;
+				}
+			}
+		}
+	}
+}
+
+@media screen and (max-width: 450px) {
+	.layout-mobile {
+		.summary-block_wrapper {
+			.referral-table-wrapper {
+				.table-wrapper th {
+					font-size: 8px;
+				}
+			}
+		}
 	}
 }

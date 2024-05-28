@@ -1425,7 +1425,12 @@
 		"DATA_BELOW": "Below table data collected",
 		"REFERRAL_CODE_ZERO": "Please input a code",
 		"REFERRAL_EARNINGS": "Referral Earnings",
-		"DISCOUNT_HOVER_CONTENT": "Adding a discount to your link can help encourage sign-ups, boost trading activity, and may enhance the passive income generated from your referral link."
+		"DISCOUNT_HOVER_CONTENT": "Adding a discount to your link can help encourage sign-ups, boost trading activity, and may enhance the passive income generated from your referral link.",
+		"REFERRAL_INFO": "Referral and earnings information",
+		"BACK_TO_SUMMARY": "to Summary page",
+		"INSUFFICIENT_LABEL": "Insufficient Settlement Amount",
+		"INSUFFICIENT_INFO_1": "Your earnings are currently insufficient for settlement. Please invite more members using your referral link and wait until your unsettled earnings.",
+		"INSUFFICIENT_INFO_2": "exceed 1"
 	},
 	"NOT_LOGGEDIN": {
 		"TEXT_GENERAL": "To view you must login",
