@@ -2311,6 +2311,8 @@ table th {
         line-height: 40px !important; }
       .withdrawal-container .withdraw-form-wrapper .withdraw-form .select-wrapper .custom-select-input-style .ant-select-selector {
         height: 40px !important; }
+    .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdraw-deposit-disable .select-field:hover {
+      border: var(--labels_secondary-inactive-label-text-graphics); }
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .opacity-100 {
       opacity: 1; }
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .opacity-50 {
@@ -10426,7 +10428,6 @@ table th {
 .layout-mobile .ReactModal__Overlay .ReactModal__Content {
   background-color: var(--base_background) !important; }
   .layout-mobile .ReactModal__Overlay .ReactModal__Content .dialog-mobile-content {
-    padding: 2.5rem 0 !important;
     display: block; }
 
 .layout-mobile .trade-details-wrapper {

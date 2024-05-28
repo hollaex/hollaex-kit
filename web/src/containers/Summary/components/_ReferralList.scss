@@ -3,10 +3,324 @@
 }
 
 .highChartColor .highcharts-graph {
-	stroke: white;
+	stroke: var(--labels_important-active-labels-text-graphics);
 }
 
 .highChartColor .highcharts-point {
-	stroke: white;
-	fill: white;
+	stroke: var(--labels_important-active-labels-text-graphics);
+	fill: var(--labels_important-active-labels-text-graphics);
+}
+
+.fs-13 {
+	font-size: 13px;
+}
+
+.fs-14 {
+	font-size: 14px;
+}
+
+.referral-active-text {
+	color: var(--labels_important-active-labels-text-graphics);
+}
+
+.referral-inActive-text {
+	color: var(--labels_secondary-inactive-label-text-graphics);
+}
+
+.referral-header-icon-wrapper {
+	.icon_title-wrapper .icon_title-text.title {
+		padding-top: 5% !important;
+	}
+}
+
+.referral_table_theme {
+	.ant-modal-body {
+		background-color: var(--base_wallet-sidebar-and-popup) !important;
+	}
+}
+
+.back-label {
+	cursor: pointer;
+	text-decoration: underline;
+	color: var(--specials_buttons-links-and-highlights);
+}
+
+.summary-referral-container {
+	padding: 2%;
+
+	.summary-referral-wrapper {
+		display: flex;
+		justify-content: space-between;
+
+		.settle-link,
+		.view-history-label {
+			color: var(--specials_buttons-links-and-highlights);
+			border-bottom: 1px solid var(--specials_buttons-links-and-highlights);
+			cursor: pointer;
+			font-weight: bold;
+		}
+
+		.earning-icon-wrapper {
+			display: flex;
+
+			.refer-icon {
+				fill: var(--labels_important-active-labels-text-graphics);
+			}
+
+			.margin-aligner {
+				margin-bottom: 1% !important;
+			}
+
+			.earning-label {
+				font-size: 18px;
+				font-weight: bold;
+				margin-top: 1%;
+			}
+		}
+
+		.earn-info-wrapper {
+			margin-right: 3%;
+
+			.earn-info-border {
+				border-bottom: 1px solid
+					var(--labels_important-active-labels-text-graphics);
+			}
+
+			.earn-text-wrapper {
+				display: flex;
+				justify-content: center;
+
+				.field-label {
+					margin-left: 2%;
+				}
+			}
+
+			.settle-btn {
+				background-color: var(--specials_buttons-links-and-highlights);
+				color: var(--labels_important-active-labels-text-graphics);
+				border: none;
+			}
+		}
+	}
+}
+
+.history-referral-container {
+	padding: 2%;
+
+	.history-referral-wrapper {
+		.earning-icon-wrapper {
+			display: flex;
+
+			.refer-icon {
+				fill: var(--labels_important-active-labels-text-graphics);
+			}
+
+			.margin-aligner {
+				margin-bottom: 1% !important;
+			}
+
+			.earning-label {
+				font-size: 18px;
+				font-weight: bold;
+				margin-top: 1%;
+			}
+		}
+	}
+}
+
+.new-refer-wrapper {
+	background-color: var(--calculated_quick_trade-bg) !important;
+	color: var(--labels_important-active-labels-text-graphics);
+
+	.new-refer-icon-wrapper {
+		display: flex;
+
+		.margin-aligner {
+			margin-bottom: 1% !important;
+		}
+	}
+
+	.create-link-label {
+		color: var(--specials_buttons-links-and-highlights);
+		border-bottom: 1px solid var(--specials_buttons-links-and-highlights);
+		font-weight: bold;
+		margin-top: 0.5%;
+		cursor: pointer;
+	}
+
+	.content-field {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		min-height: 500px;
+	}
+
+	.no-link-icon {
+		.margin-aligner {
+			margin-bottom: 5%;
+			margin-right: unset;
+
+			svg {
+				width: 100% !important;
+				height: 100% !important;
+			}
+		}
+	}
+}
+
+.settle-popup-wrapper {
+	.earning-icon-wrapper {
+		display: flex;
+
+		.refer-icon {
+			fill: var(--labels_important-active-labels-text-graphics);
+		}
+
+		.margin-aligner {
+			margin-bottom: 1% !important;
+		}
+
+		.earning-label {
+			font-size: 18px;
+			font-weight: bold;
+			margin-top: 1%;
+		}
+	}
+}
+
+.refer-code-popup-wrapper,
+.referral-popup-earning-wrapper,
+.referral-final-popup {
+	.new-referral-wrapper {
+		.new-referral-label {
+			font-size: 16px;
+			margin: 2% 0 3% 2%;
+		}
+	}
+
+	.custom-input-field {
+		padding: 2%;
+		width: 100%;
+		border: 1px solid var(--labels_important-active-labels-text-graphics);
+	}
+}
+
+.referral-popup-earning-wrapper {
+	.discount-label {
+		margin: 5% 0;
+		font-weight: bold;
+	}
+
+	.earn-field-wrapper {
+		// padding: 2%;
+		width: 100%;
+		border: 1px solid var(--labels_important-active-labels-text-graphics);
+		border-radius: 10px;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+
+		.eraning-rate-field,
+		.discount-field {
+			font-size: 12px;
+			cursor: pointer;
+			padding: 2%;
+		}
+	}
+
+	.caret-icon-wrapper {
+		width: 15%;
+		text-align: center;
+		padding-top: 3%;
+		border-bottom-right-radius: 10px;
+		border-top-right-radius: 10px;
+		cursor: pointer;
+		display: flex;
+		flex-direction: column;
+		background-color: var(--base_background);
+
+		.caret-icon {
+			svg {
+				width: 2rem !important;
+				height: 2rem !important;
+			}
+		}
+	}
+}
+
+.confirm-fild-wrapper {
+	.discount-field {
+		margin: 2% 0 1% 0;
+		font-weight: bold;
+	}
+
+	.referral-field-content-wrapper {
+		padding: 2%;
+		width: 100%;
+		border: 1px solid var(--labels_important-active-labels-text-graphics);
+
+		.referral-field-content {
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			margin-bottom: 2%;
+		}
+
+		.earn-rate-content,
+		.discount-content {
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+		}
+	}
+}
+
+.referral-final-popup {
+	.checked-icon {
+		padding-top: 2%;
+
+		svg {
+			width: 2rem;
+			height: 2rem;
+		}
+	}
+
+	.desc-label {
+		margin-bottom: 2%;
+	}
+
+	.custom-input {
+		padding: 2%;
+		width: 100%;
+		border: 1px solid var(--labels_important-active-labels-text-graphics);
+		color: var(--specials_buttons-links-and-highlights);
+		display: flex;
+		justify-content: space-between;
+
+		.link-content {
+			text-decoration: underline;
+			cursor: pointer;
+		}
+	}
+}
+
+.referral-popup-btn-wrapper {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	margin-top: 5%;
+
+	.back-btn,
+	.next-btn,
+	.okay-btn {
+		background-color: var(--specials_buttons-links-and-highlights);
+		width: 45%;
+		color: var(--labels_important-active-labels-text-graphics);
+		border: none;
+	}
+
+	.okay-btn {
+		width: 100% !important;
+	}
 }

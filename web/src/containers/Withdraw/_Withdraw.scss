@@ -280,6 +280,10 @@ $content--margin: 2rem;
 				}
 			}
 
+			.withdraw-deposit-disable .select-field:hover {
+				border: $colors-black;
+			}
+
 			.opacity-100 {
 				opacity: 1;
 			}

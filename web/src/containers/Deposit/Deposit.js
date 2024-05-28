@@ -53,6 +53,7 @@ const DepositComponent = ({
 	const [topAssets, setTopAssets] = useState([]);
 	const [isPinnedAssets, setIsPinnedAssets] = useState(false);
 	const [optionalTag, setOptionalTag] = useState('');
+	const [isDisbaleDeposit, setIsDisbaleDeposit] = useState(false);
 
 	const defaultCurrency = currency !== '' && currency;
 	const address = depositAddress?.split(':');
@@ -73,7 +74,7 @@ const DepositComponent = ({
 			? coins[defaultCurrency]?.network
 			: coins[defaultCurrency]?.symbol;
 	const isSteps =
-		(coinLength && coinLength.length === 1) ||
+		(coinLength && coinLength.length === 1 && !isDisbaleDeposit) ||
 		(currStep.stepTwo && !coinLength) ||
 		currStep.stepThree;
 	const iconId = coins[getDepositCurrency]?.icon_id || coins[currency]?.icon_id;
@@ -120,6 +121,19 @@ const DepositComponent = ({
 			setOptionalTag('');
 		}
 	}, [address, isTag]);
+
+	useEffect(() => {
+		if (getDepositCurrency && !isDeposit) {
+			setSelectedAsset('');
+			setIsDisbaleDeposit(true);
+			setCurrStep({
+				stepOne: false,
+				stepTwo: false,
+				stepThree: false,
+				stepFour: false,
+			});
+		}
+	}, [getDepositCurrency, isDeposit]);
 
 	const onHandleChangeSelect = (val, pinned_assets = false) => {
 		if (pinned_assets) {
@@ -204,7 +218,7 @@ const DepositComponent = ({
 	return (
 		<div
 			className={
-				getDepositCurrency && !isDeposit
+				isDisbaleDeposit
 					? 'withdraw-deposit-disable deposit-wrapper-fields mt-5'
 					: 'deposit-wrapper-fields mt-5'
 			}
@@ -285,7 +299,7 @@ const DepositComponent = ({
 						</span>
 						<span
 							className={`custom-line${
-								(coinLength && coinLength.length === 1) ||
+								(coinLength && coinLength.length === 1 && !isDisbaleDeposit) ||
 								(currStep.stepTwo && !coinLength) ||
 								currStep.stepThree ||
 								currStep.stepTwo
@@ -411,7 +425,7 @@ const DepositComponent = ({
 								{renderLabel('ACCORDIAN.ADDRESS')}
 							</span>
 						</div>
-						{((coinLength && coinLength.length === 1) ||
+						{((coinLength && coinLength.length === 1 && !isDisbaleDeposit) ||
 							(currStep.stepTwo && !coinLength) ||
 							currStep.stepThree) &&
 							(!depositAddress && selectedAsset ? (
