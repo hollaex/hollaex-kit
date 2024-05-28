@@ -84,8 +84,7 @@ export const planData = {
 	},
 	fiat: {
 		title: 'Enterprise',
-		description:
-			'Top tier plan for enterprises',
+		description: 'Top tier plan for enterprises',
 		background: STATIC_ICONS['CLOUD_FIAT_BACKGROUND'],
 		icon: 'FIAT_MASTER_PLAN_BACKGROUND',
 		isPopular: false,
