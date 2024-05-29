@@ -218,7 +218,7 @@ const P2PMyDeals = ({
 										)}
 									</td>
 									<td style={{ width: '15%' }} className="td-fit">
-										{deal.exchange_rate * (1 + Number(deal.spread || 0))}{' '}
+										{deal.exchange_rate * (1 + Number(deal.spread / 100 || 0))}{' '}
 										{deal.spending_asset.toUpperCase()}
 									</td>
 									<td style={{ width: '15%' }} className="td-fit">
