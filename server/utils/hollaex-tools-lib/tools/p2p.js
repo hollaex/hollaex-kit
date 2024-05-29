@@ -429,7 +429,7 @@ const createP2PTransaction = async (data) => {
 
 	const merchantBalance = await getP2PAccountBalance(merchant_id, p2pDeal.buying_asset);
 
-	const price = new BigNumber(exchange_rate).multipliedBy(1 + spread);
+	const price = new BigNumber(exchange_rate).multipliedBy(1 + (spread / 100));
 	const amount_digital_currency = new BigNumber(amount_fiat).dividedBy(price).toNumber();
 
 	const feeAmount = (new BigNumber(amount_digital_currency).multipliedBy(p2pConfig.merchant_fee))
@@ -533,17 +533,41 @@ const updateP2pTransaction = async (data) => {
         throw new Error('transaction does not exist');
     }
 
-	if (moment() > moment(transaction.created_at).add(transaction.transaction_duration || 30 ,'minutes')) {
-		await transaction.update({ transaction_status: 'expired' }, {
-			fields: [
-				'transaction_status'
-			]
-		});
-		throw new Error('Transaction expired');
+	if (transaction.transaction_status === 'expired') {
+		throw new Error(`Transaction expired, ${transaction.transaction_duration} minutes passed without any action`);
 	}
 
+	if (transaction.merchant_status !== 'pending' && moment() > moment(transaction.created_at).add(transaction.transaction_duration || 30 ,'minutes')) {
+		
+		if (transaction.transaction_status !== 'expired') {
+
+			const newMessages = [...transaction.messages];
+
+			const chatMessage = {
+				sender_id: user_id,
+				receiver_id: merchant.id,
+				message: 'ORDER_EXPIRED',
+				type: 'notification',
+				created_at: new Date()
+			};
+		
+			newMessages.push(chatMessage);
+
+			await transaction.update({ transaction_status: 'expired', messages: newMessages }, {
+				fields: [
+					'transaction_status',
+					'messages'
+				]
+			});
+			
+		}
+	
+		throw new Error(`Transaction expired, ${transaction.transaction_duration} minutes passed without any action`);
+	}
+
+
 	if (transaction.transaction_status !== 'active') {
-			throw new Error('Cannot update complete transaction');
+			throw new Error('Cannot update inactive transaction');
 	}
 	if (transaction.merchant_status === 'confirmed' && transaction.user_status === 'confirmed') {
 		throw new Error('Cannot update complete transaction');
@@ -566,8 +590,8 @@ const updateP2pTransaction = async (data) => {
 		
 		//send the fees to the source account
 		if (p2pConfig.source_account !== merchant.id) {
-			await transferAssetByKitIds(merchant.id, p2pConfig.source_account, p2pDeal.buying_asset, merchantFeeAmount, 'P2P Transaction', false, { category: 'p2p' });
-			await transferAssetByKitIds(merchant.id, p2pConfig.source_account, p2pDeal.buying_asset, buyerFeeAmount, 'P2P Transaction', false, { category: 'p2p' });
+			const totalFees =  (new BigNumber(merchantFeeAmount).plus(buyerFeeAmount)).toNumber();
+			await transferAssetByKitIds(merchant.id, p2pConfig.source_account, p2pDeal.buying_asset, totalFees, 'P2P Transaction', false, { category: 'p2p' });
 		}
 		
 		data.transaction_status = 'complete';

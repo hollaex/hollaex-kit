@@ -16,7 +16,7 @@ import {
 	fetchFeedback,
 } from './actions/p2pActions';
 import { withRouter } from 'react-router';
-
+import { formatToCurrency } from 'utils/currency';
 import { getToken } from 'utils/token';
 import { WS_URL } from 'config/constants';
 import { CloseOutlined } from '@ant-design/icons';
@@ -50,6 +50,8 @@ const P2POrder = ({
 	const [hasFeedback, setHasFeedback] = useState(false);
 	const [ws, setWs] = useState();
 	const [ready, setReady] = useState(false);
+	const [displayCancelWarning, setDisplayCancelWarning] = useState();
+
 	const ref = useRef(null);
 
 	useEffect(() => {
@@ -176,6 +178,16 @@ const P2POrder = ({
 					},
 				],
 			})
+		);
+	};
+
+	const userReceiveAmount = () => {
+		const buyerFeeAmount =
+			(selectedOrder.amount_digital_currency * p2p_config?.user_fee) / 100;
+		const min = coins[selectedOrder.deal.spending_asset].min;
+		return formatToCurrency(
+			selectedOrder?.amount_digital_currency - buyerFeeAmount,
+			min
 		);
 	};
 
@@ -423,6 +435,97 @@ const P2POrder = ({
 					</div>
 				</Modal>
 			)}
+
+			{displayCancelWarning && (
+				<Modal
+					maskClosable={false}
+					closeIcon={<CloseOutlined className="stake_theme" />}
+					className="stake_table_theme stake_theme"
+					bodyStyle={{}}
+					visible={displayCancelWarning}
+					width={450}
+					footer={null}
+					onCancel={() => {
+						setDisplayCancelWarning(false);
+					}}
+				>
+					<div
+						style={{
+							display: 'flex',
+							flexDirection: 'column',
+							gap: 15,
+							marginTop: 10,
+						}}
+					>
+						<div
+							style={{
+								flex: 1,
+								display: 'flex',
+								flexDirection: 'column',
+								justifyContent: 'center',
+								alignItems: 'center',
+							}}
+						>
+							<h3 className="stake_theme">
+								<EditWrapper stringId="P2P.CANCEL_WARNING">
+									{STRINGS['P2P.CANCEL_WARNING']}
+								</EditWrapper>
+							</h3>
+						</div>
+					</div>
+
+					<div
+						style={{
+							display: 'flex',
+							flexDirection: 'row',
+							gap: 15,
+							justifyContent: 'space-between',
+							marginTop: 30,
+						}}
+					>
+						<Button
+							onClick={() => {
+								setDisplayCancelWarning(false);
+							}}
+							style={{
+								backgroundColor: '#5D63FF',
+								color: 'white',
+								flex: 1,
+								height: 35,
+							}}
+							type="default"
+						>
+							<EditWrapper stringId="P2P.NO">{STRINGS['P2P.NO']}</EditWrapper>
+						</Button>
+						<Button
+							onClick={async () => {
+								try {
+									await updateTransaction({
+										id: selectedOrder.id,
+										user_status: 'cancelled',
+									});
+									updateStatus('cancelled');
+									message.success(STRINGS['P2P.TRANSACTION_CANCELLED']);
+								} catch (error) {
+									message.error(error.data.message);
+								}
+							}}
+							style={{
+								backgroundColor: '#5D63FF',
+								color: 'white',
+								flex: 1,
+								height: 35,
+							}}
+							type="default"
+						>
+							<EditWrapper stringId="P2P.PROCEED">
+								{STRINGS['P2P.PROCEED']}
+							</EditWrapper>
+						</Button>
+					</div>
+				</Modal>
+			)}
+
 			<div
 				onClick={() => {
 					setDisplayOrder(false);
@@ -499,7 +602,7 @@ const P2POrder = ({
 									{STRINGS['P2P.AMOUNT_TO']}
 								</EditWrapper>{' '}
 								{user.id === selectedOrder?.merchant_id
-									? STRINGS['P2P.SELL']
+									? STRINGS['P2P.RELEASE']
 									: STRINGS['P2P.SEND_UPPER']}
 								:
 							</div>
@@ -594,7 +697,7 @@ const P2POrder = ({
 							{user.id === selectedOrder?.user_id && (
 								<div>
 									<div style={{ textAlign: 'end' }}>
-										{selectedOrder?.amount_digital_currency}{' '}
+										{userReceiveAmount()}{' '}
 										{selectedOrder?.deal?.buying_asset?.toUpperCase()}
 									</div>
 									<div>
@@ -885,18 +988,7 @@ const P2POrder = ({
 													</div>
 													<div
 														onClick={async () => {
-															try {
-																await updateTransaction({
-																	id: selectedOrder.id,
-																	user_status: 'cancelled',
-																});
-																updateStatus('cancelled');
-																message.success(
-																	STRINGS['P2P.TRANSACTION_CANCELLED']
-																);
-															} catch (error) {
-																message.error(error.data.message);
-															}
+															setDisplayCancelWarning(true);
 														}}
 														style={{
 															textDecoration: 'underline',
@@ -1003,7 +1095,11 @@ const P2POrder = ({
 								<EditWrapper stringId="P2P.VENDOR_NAME">
 									{STRINGS['P2P.VENDOR_NAME']}
 								</EditWrapper>{' '}
-								{selectedOrder?.merchant?.full_name}
+								{selectedOrder?.merchant?.full_name || (
+									<EditWrapper stringId="P2P.ANONYMOUS">
+										{STRINGS['P2P.ANONYMOUS']}
+									</EditWrapper>
+								)}
 							</div>
 							<div
 								style={{
@@ -1025,7 +1121,12 @@ const P2POrder = ({
 										<EditWrapper stringId="P2P.ORDER_INITIATED">
 											{STRINGS['P2P.ORDER_INITIATED']}
 										</EditWrapper>{' '}
-										{selectedOrder?.merchant?.full_name} (
+										{selectedOrder?.merchant?.full_name || (
+											<EditWrapper stringId="P2P.ANONYMOUS">
+												{STRINGS['P2P.ANONYMOUS']}
+											</EditWrapper>
+										)}{' '}
+										(
 										{moment(selectedOrder?.created_at).format(
 											'DD/MMM/YYYY, hh:mmA '
 										)}
@@ -1223,6 +1324,7 @@ const P2POrder = ({
 			</div>
 
 			{user.id === selectedOrder?.user_id &&
+				selectedOrder?.transaction_status === 'active' &&
 				selectedOrder.user_status === 'pending' && (
 					<div
 						style={{

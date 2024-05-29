@@ -8,6 +8,7 @@ import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { Button, Checkbox, message } from 'antd';
 import { fetchDeals, editDeal } from './actions/p2pActions';
+import { formatToCurrency } from 'utils/currency';
 import './_P2P.scss';
 const P2PMyDeals = ({
 	data,
@@ -33,6 +34,17 @@ const P2PMyDeals = ({
 			.catch((err) => err);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [refresh]);
+
+	const formatAmount = (currency, amount) => {
+		const min = coins[currency].min;
+		const formattedAmount = formatToCurrency(amount, min);
+		return formattedAmount;
+	};
+
+	const formatRate = (rate, spread, asset) => {
+		const amount = rate * (1 + Number(spread / 100 || 0));
+		return formatAmount(asset, amount);
+	};
 
 	return (
 		<div
@@ -218,7 +230,11 @@ const P2PMyDeals = ({
 										)}
 									</td>
 									<td style={{ width: '15%' }} className="td-fit">
-										{deal.exchange_rate * (1 + Number(deal.spread / 100 || 0))}{' '}
+										{formatRate(
+											deal.exchange_rate,
+											deal.spread,
+											deal.spending_asset
+										)}{' '}
 										{deal.spending_asset.toUpperCase()}
 									</td>
 									<td style={{ width: '15%' }} className="td-fit">

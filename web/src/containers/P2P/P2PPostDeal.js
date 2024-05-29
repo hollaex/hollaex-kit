@@ -9,7 +9,7 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import { Switch, Select, Input } from 'antd';
 import { postDeal, editDeal } from './actions/p2pActions';
 import { CloseOutlined } from '@ant-design/icons';
-
+import { formatToCurrency } from 'utils/currency';
 import { COUNTRIES_OPTIONS } from 'utils/countries';
 
 import './_P2P.scss';
@@ -91,6 +91,17 @@ const P2PPostDeal = ({
 			setStep(1);
 		}
 	}, [selectedDealEdit]);
+
+	const formatAmount = (currency, amount) => {
+		const min = coins[currency].min;
+		const formattedAmount = formatToCurrency(amount, min);
+		return formattedAmount;
+	};
+
+	const formatRate = (rate, spread, asset) => {
+		const amount = rate * (1 + Number(spread / 100 || 0));
+		return formatAmount(asset, amount);
+	};
 
 	return (
 		<div
@@ -311,7 +322,7 @@ const P2PPostDeal = ({
 											</EditWrapper>
 										</div>
 										<div style={{ fontSize: 25 }}>
-											{exchangeRate * (1 + Number(spread / 100 || 0))}
+											{formatRate(exchangeRate, spread, spendingAsset)}
 										</div>
 										<div>
 											<EditWrapper stringId="P2P.PRICE_ADVERTISE_SELL">
@@ -475,6 +486,14 @@ const P2PPostDeal = ({
 									</div>
 									<Select
 										showSearch
+										filterOption={(input, option) =>
+											option.props.children
+												.toLowerCase()
+												.indexOf(input.toLowerCase()) >= 0 ||
+											option.props.value
+												.toLowerCase()
+												.indexOf(input.toLowerCase()) >= 0
+										}
 										style={{ backgroundColor: '#303236', width: 200 }}
 										placeholder="Select Region"
 										value={region}
@@ -701,7 +720,13 @@ const P2PPostDeal = ({
 
 				{selectedMethod?.fields?.map((x, index) => {
 					return (
-						<div style={{ display: 'flex', justifyContent: 'space-between' }}>
+						<div
+							style={{
+								display: 'flex',
+								justifyContent: 'space-between',
+								marginBottom: 10,
+							}}
+						>
 							<div>{x?.name}:</div>
 							<Input
 								style={{ width: 300 }}
