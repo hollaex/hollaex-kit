@@ -55,7 +55,7 @@ const RenderWithdraw = ({
 	});
 	const [maxAmount, setMaxAmount] = useState(0);
 	const [topAssets, setTopAssets] = useState([]);
-	const [selectedAsset, setSelectedAsset] = useState('');
+	const [selectedAsset, setSelectedAsset] = useState(null);
 	const [prices, setPrices] = useState({});
 	const [isPinnedAssets, setIsPinnedAssets] = useState(false);
 	const [optionalTag, setOptionalTag] = useState('');
@@ -157,11 +157,14 @@ const RenderWithdraw = ({
 	}, [getWithdrawCurrency, UpdateCurrency, fee, setFee]);
 
 	useEffect(() => {
-		setSelectedAsset(defaultCurrency);
+		if (defaultCurrency) {
+			setSelectedAsset(defaultCurrency);
+		}
 		if (defaultCurrency) {
 			setWithdrawCurrency(defaultCurrency);
 			setCurrStep({ ...currStep, stepTwo: true, stepThree: true });
 		}
+		setSelectedAsset(null);
 		getOraclePrices();
 		setCurrStep({ ...currStep, stepTwo: true });
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -172,12 +175,14 @@ const RenderWithdraw = ({
 			setSelectedAsset('');
 			setIsDisbaleWithdraw(true);
 			setCurrStep({
-				stepOne: false,
-				stepTwo: false,
+				stepOne: true,
+				stepTwo: true,
 				stepThree: false,
 				stepFour: false,
 				stepFive: false,
 			});
+		} else {
+			setIsDisbaleWithdraw(false);
 		}
 	}, [getWithdrawCurrency, isWithdrawal]);
 
@@ -266,7 +271,11 @@ const RenderWithdraw = ({
 					stepFive: false,
 				}));
 			}
-			setCurrStep((prev) => ({ ...prev, stepTwo: true, stepThree: true }));
+			if (coins[val] && !coins[val].allow_withdrawal) {
+				setCurrStep((prev) => ({ ...prev, stepTwo: true, stepThree: false }));
+			} else {
+				setCurrStep((prev) => ({ ...prev, stepTwo: true, stepThree: true }));
+			}
 			setWithdrawCurrency(val);
 			network = val ? val : coins[getWithdrawCurrency]?.symbol;
 			getWithdrawlMAx(val);
@@ -281,7 +290,9 @@ const RenderWithdraw = ({
 			}));
 			setWithdrawAmount(0);
 		}
-		setSelectedAsset(val);
+		setSelectedAsset(
+			val && coins[val] && coins[val].allow_withdrawal ? val : ''
+		);
 		setWithdrawAddress('');
 		setReceiverEmail('');
 	};
@@ -383,6 +394,17 @@ const RenderWithdraw = ({
 	const onHandleOptionalTag = (value) => {
 		setOptionalTag(value);
 		setWithdrawOptionaltag(value);
+	};
+
+	const onHandleClear = (key) => {
+		setSelectedAsset(null);
+		setWithdrawCurrency('');
+		setCurrStep({
+			...currStep,
+			stepThree: false,
+			stepFour: false,
+			stepFive: false,
+		});
 	};
 
 	const withdrawFeeFormat =
@@ -496,14 +518,25 @@ const RenderWithdraw = ({
 											dropdownClassName="custom-select-style"
 											suffixIcon={<CaretDownOutlined />}
 											placeholder="Select"
-											onChange={onHandleChangeSelect}
 											allowClear={true}
-											value={selectedAsset}
+											value={
+												selectedAsset &&
+												`${
+													coins[selectedAsset].fullname
+												} (${selectedAsset.toUpperCase()})`
+											}
+											onClear={onHandleClear}
 										>
 											{Object.entries(coins).map(
 												([_, { symbol, fullname, icon_id }]) => (
-													<Option key={symbol} value={symbol}>
-														<div className="d-flex gap-1">
+													<Option
+														key={`${fullname} (${symbol.toUpperCase()})`}
+														value={`${fullname} (${symbol.toUpperCase()})`}
+													>
+														<div
+															className="d-flex gap-1"
+															onClick={() => onHandleChangeSelect(symbol)}
+														>
 															<Coin iconId={icon_id} type="CS3" />
 															<div>{`${fullname} (${symbol.toUpperCase()})`}</div>
 														</div>
@@ -617,7 +650,8 @@ const RenderWithdraw = ({
 													</Option>
 												))}
 										</Select>
-										{(currStep.stepThree || coinLength) && (
+										{(currStep.stepThree ||
+											(selectedAsset && selectedMethod)) && (
 											<CheckOutlined className="mt-3 ml-3" />
 										)}
 									</div>

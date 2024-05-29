@@ -2223,8 +2223,7 @@ table th {
       justify-content: unset;
       align-items: unset; }
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdraw-deposit-disable {
-      opacity: 0.5;
-      pointer-events: none; }
+      opacity: 0.5; }
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdraw-deposit-icon {
       width: 100%;
       height: 2.5rem;

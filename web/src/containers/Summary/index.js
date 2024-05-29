@@ -149,6 +149,7 @@ class Summary extends Component {
 			totalAsset,
 			router,
 			icons: ICONS,
+			referral_history_config,
 		} = this.props;
 		const {
 			selectedAccount,
@@ -193,7 +194,7 @@ class Summary extends Component {
 							iconId={`${STRINGS['SUMMARY.TITLE']}`}
 						/>
 					)}
-					{isMobile ? (
+					{isMobile && !this.state.displayReferralList && (
 						<MobileSummary
 							user={user}
 							pairs={pairs}
@@ -209,48 +210,49 @@ class Summary extends Component {
 							userAccountTitle={userAccountTitle}
 							affiliation={affiliation}
 							onInviteFriends={this.onInviteFriends}
+							onDisplayReferralList={this.onDisplayReferralList}
 							onUpgradeAccount={this.onUpgradeAccount}
 							onAccountTypeChange={this.onAccountTypeChange}
 							verification_level={verification_level}
+							referral_history_config={referral_history_config}
 						/>
-					) : (
-						<>
-							{this.state.displayReferralList && (
-								<ReferralList
-									coins={coins}
-									affiliation_code={this.props.user.affiliation_code}
-									goBackReferral={this.goBackReferral}
-								/>
-							)}
+					)}
+					{this.state.displayReferralList && (
+						<ReferralList
+							coins={coins}
+							affiliation_code={this.props.user.affiliation_code}
+							goBackReferral={this.goBackReferral}
+						/>
+					)}
 
-							{this.state.displaySummary && (
-								<div>
-									<div id="summary-header-section"></div>
-									<div className="d-flex">
-										<div className="summary-section_1 trader-account-wrapper d-flex">
-											<SummaryBlock
-												title={userAccountTitle}
-												wrapperClassname="w-100"
-												verification_level={verification_level}
-												icons={ICONS}
-											>
-												<TraderAccounts
-													user={user}
-													pairs={pairs}
-													coins={coins}
-													config={config_level}
-													onUpgradeAccount={this.onUpgradeAccount}
-													onInviteFriends={this.onInviteFriends}
-													verification_level={verification_level}
-													referral_history_config={
-														this.props.referral_history_config
-													}
-													onDisplayReferralList={this.onDisplayReferralList}
-												/>
-											</SummaryBlock>
-										</div>
-										<div className="summary-section_1 requirement-wrapper d-flex">
-											{/* <SummaryBlock
+					{this.state.displaySummary && !isMobile && (
+						<div>
+							<div id="summary-header-section"></div>
+							<div className="d-flex">
+								<div className="summary-section_1 trader-account-wrapper d-flex">
+									<SummaryBlock
+										title={userAccountTitle}
+										wrapperClassname="w-100"
+										verification_level={verification_level}
+										icons={ICONS}
+									>
+										<TraderAccounts
+											user={user}
+											pairs={pairs}
+											coins={coins}
+											config={config_level}
+											onUpgradeAccount={this.onUpgradeAccount}
+											onInviteFriends={this.onInviteFriends}
+											verification_level={verification_level}
+											referral_history_config={
+												this.props.referral_history_config
+											}
+											onDisplayReferralList={this.onDisplayReferralList}
+										/>
+									</SummaryBlock>
+								</div>
+								<div className="summary-section_1 requirement-wrapper d-flex">
+									{/* <SummaryBlock
 												title={STRINGS["SUMMARY.TASKS"]}
 												wrapperClassname="w-100"
 											>
@@ -261,50 +263,50 @@ class Summary extends Component {
 													contentClassName="requirements-content"
 												/>
 											</SummaryBlock> */}
-											{/* <div
+									{/* <div
 												className={classnames(
 													'assets-wrapper',
 													'asset_wrapper_width'
 												)}
 											> */}
-											<SummaryBlock
-												stringId="SUMMARY.ACCOUNT_ASSETS"
-												title={STRINGS['SUMMARY.ACCOUNT_ASSETS']}
-												secondaryTitle={
-													SHOW_TOTAL_ASSETS && BASE_CURRENCY ? (
-														<span>
-															<span className="title-font">{totalAssets}</span>
-															{` ${fullname}`}
-														</span>
-													) : null
-												}
-												wrapperClassname={classnames('assets-wrapper', 'w-100')}
-											>
-												<AccountAssets
-													user={user}
-													chartData={chartData}
-													totalAssets={totalAssets}
-													balance={balance}
-													coins={coins}
-												/>
-											</SummaryBlock>
-											{/* </div> */}
-										</div>
-									</div>
-									<div className="w-100">
-										<SummaryBlock
-											stringId="SUMMARY.MARKETS"
-											title={STRINGS['SUMMARY.MARKETS']}
-										>
-											<Markets
-												user={user}
-												coins={coins}
-												pairs={pairs}
-												router={router}
-												showContent={true}
-											/>
-										</SummaryBlock>
-										{/*<div className="trading-volume-wrapper">
+									<SummaryBlock
+										stringId="SUMMARY.ACCOUNT_ASSETS"
+										title={STRINGS['SUMMARY.ACCOUNT_ASSETS']}
+										secondaryTitle={
+											SHOW_TOTAL_ASSETS && BASE_CURRENCY ? (
+												<span>
+													<span className="title-font">{totalAssets}</span>
+													{` ${fullname}`}
+												</span>
+											) : null
+										}
+										wrapperClassname={classnames('assets-wrapper', 'w-100')}
+									>
+										<AccountAssets
+											user={user}
+											chartData={chartData}
+											totalAssets={totalAssets}
+											balance={balance}
+											coins={coins}
+										/>
+									</SummaryBlock>
+									{/* </div> */}
+								</div>
+							</div>
+							<div className="w-100">
+								<SummaryBlock
+									stringId="SUMMARY.MARKETS"
+									title={STRINGS['SUMMARY.MARKETS']}
+								>
+									<Markets
+										user={user}
+										coins={coins}
+										pairs={pairs}
+										router={router}
+										showContent={true}
+									/>
+								</SummaryBlock>
+								{/*<div className="trading-volume-wrapper">
 											<SummaryBlock
 												title={STRINGS["SUMMARY.TRADING_VOLUME"]}
 												// secondaryTitle={<span>
@@ -317,29 +319,27 @@ class Summary extends Component {
 											>
 											</SummaryBlock>
 										</div>*/}
-									</div>
-									<div className="w-100">
-										<SummaryBlock
-											stringId="SUMMARY.ACCOUNT_DETAILS"
-											title={STRINGS['SUMMARY.ACCOUNT_DETAILS']}
-											secondaryTitle={currentTradingAccount.name}
-										>
-											<AccountDetails
-												user={user}
-												coins={coins}
-												pairs={pairs}
-												config={config_level}
-												currentTradingAccount={currentTradingAccount.symbol}
-												selectedAccount={selectedAccount}
-												lastMonthVolume={lastMonthVolume}
-												onAccountTypeChange={this.onAccountTypeChange}
-												onUpgradeAccount={this.onUpgradeAccount}
-											/>
-										</SummaryBlock>
-									</div>
-								</div>
-							)}
-						</>
+							</div>
+							<div className="w-100">
+								<SummaryBlock
+									stringId="SUMMARY.ACCOUNT_DETAILS"
+									title={STRINGS['SUMMARY.ACCOUNT_DETAILS']}
+									secondaryTitle={currentTradingAccount.name}
+								>
+									<AccountDetails
+										user={user}
+										coins={coins}
+										pairs={pairs}
+										config={config_level}
+										currentTradingAccount={currentTradingAccount.symbol}
+										selectedAccount={selectedAccount}
+										lastMonthVolume={lastMonthVolume}
+										onAccountTypeChange={this.onAccountTypeChange}
+										onUpgradeAccount={this.onUpgradeAccount}
+									/>
+								</SummaryBlock>
+							</div>
+						</div>
 					)}
 				</div>
 				<div id="summary-footer-section"></div>
