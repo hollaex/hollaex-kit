@@ -161,52 +161,54 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 					>
 						Edit Settings
 					</Button>
-					<div style={{ marginTop: 15 }}>
-						Enable{' '}
-						<Switch
-							checked={enable}
-							onChange={async (e) => {
-								try {
-									await updateConstants({
-										kit: {
-											features: {
-												...features,
-												p2p: e,
+					{p2pConfig?.enable !== null && (
+						<div style={{ marginTop: 15 }}>
+							Enable{' '}
+							<Switch
+								checked={enable}
+								onChange={async (e) => {
+									try {
+										await updateConstants({
+											kit: {
+												features: {
+													...features,
+													p2p: e,
+												},
+												p2p_config: {
+													enable: e,
+													bank_payment_methods: selectedPaymentMethods,
+													starting_merchant_tier: merchantTier,
+													starting_user_tier: userTier,
+													digital_currencies: digitalCurrencies,
+													fiat_currencies: fiatCurrencies,
+													side: side,
+													merchant_fee: merchantFee,
+													user_fee: userFee,
+													source_account: sourceAccount,
+												},
 											},
-											p2p_config: {
-												enable: e,
-												bank_payment_methods: selectedPaymentMethods,
-												starting_merchant_tier: merchantTier,
-												starting_user_tier: userTier,
-												digital_currencies: digitalCurrencies,
-												fiat_currencies: fiatCurrencies,
-												side: side,
-												merchant_fee: merchantFee,
-												user_fee: userFee,
-												source_account: sourceAccount,
-											},
-										},
-									});
-									requestAdminData().then((res) => {
-										const result = res?.data?.kit?.p2p_config;
-										setEnable(result?.enable);
-										setSide(result?.side);
-										setDigitalCurrencies(result?.digital_currencies);
-										setFiatCurrencies(result?.fiat_currencies);
-										setMerchantTier(result?.starting_merchant_tier);
-										setUserTier(result?.starting_user_tier);
-										setSelectedPaymentMethods(result?.bank_payment_methods);
-										setMerchantFee(result?.merchant_fee);
-										setUserFee(result?.user_fee);
-										setSourceAccount(result?.source_account);
-										setP2pConfig(result);
-									});
-								} catch (error) {
-									message.error(error.data.message);
-								}
-							}}
-						/>
-					</div>
+										});
+										requestAdminData().then((res) => {
+											const result = res?.data?.kit?.p2p_config;
+											setEnable(result?.enable);
+											setSide(result?.side);
+											setDigitalCurrencies(result?.digital_currencies);
+											setFiatCurrencies(result?.fiat_currencies);
+											setMerchantTier(result?.starting_merchant_tier);
+											setUserTier(result?.starting_user_tier);
+											setSelectedPaymentMethods(result?.bank_payment_methods);
+											setMerchantFee(result?.merchant_fee);
+											setUserFee(result?.user_fee);
+											setSourceAccount(result?.source_account);
+											setP2pConfig(result);
+										});
+									} catch (error) {
+										message.error(error.data.message);
+									}
+								}}
+							/>
+						</div>
+					)}
 				</div>
 			</div>
 			{!p2p_config?.enable && (
@@ -455,7 +457,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 								<div>
 									<span style={{ fontWeight: 'bold' }}>
 										{' '}
-										User tier account level
+										Minimum user tier account level
 									</span>{' '}
 									(it is recommended to select a tier level that requires KYC
 									verification)

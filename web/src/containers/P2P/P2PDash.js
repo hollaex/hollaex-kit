@@ -307,7 +307,8 @@ const P2PDash = ({
 												style={{ width: '20%', padding: 10 }}
 												className="td-fit"
 											>
-												{deal.exchange_rate * (1 + Number(deal.spread || 0))}{' '}
+												{deal.exchange_rate *
+													(1 + Number(deal.spread / 100 || 0))}{' '}
 												{deal.spending_asset.toUpperCase()}
 											</td>
 											<td
@@ -501,7 +502,7 @@ const P2PDash = ({
 																			Number(e) /
 																			Number(
 																				deal.exchange_rate *
-																					(1 + Number(deal.spread || 0))
+																					(1 + Number(deal.spread / 100 || 0))
 																			);
 
 																		const formatted = formatAmount(
