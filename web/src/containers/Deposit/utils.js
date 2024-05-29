@@ -26,13 +26,13 @@ export const generateBaseInformation = (id = '') => (
 	</div>
 );
 
-export const renderBackToWallet = () => {
+export const renderBackToWallet = (callback) => {
 	return (
-		<div style={{ fontSize: '15px' }}>
+		<div style={{ fontSize: '15px' }} onClick={() => callback()}>
 			<EditWrapper stringId="CURRENCY_WALLET.WALLET_PAGE">
 				{STRINGS.formatString(
 					STRINGS['CURRENCY_WALLET.WALLET_PAGE'],
-					<Link className="link-content" to="wallet">
+					<Link className="link-content">
 						{STRINGS['CURRENCY_WALLET.BACK']}
 					</Link>
 				)}

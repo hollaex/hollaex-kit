@@ -35,6 +35,8 @@ const MobileSummary = ({
 	verification_level,
 	onStakeToken,
 	affiliation,
+	onDisplayReferralList,
+	referral_history_config,
 }) => {
 	const { fullname } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 	// const Title = STRINGS.formatString(STRINGS["SUMMARY.LEVEL_OF_ACCOUNT"],verification_level);
@@ -57,6 +59,8 @@ const MobileSummary = ({
 						config={config}
 						logout={logout}
 						onInviteFriends={onInviteFriends}
+						onDisplayReferralList={onDisplayReferralList}
+						referral_history_config={referral_history_config}
 						onUpgradeAccount={onUpgradeAccount}
 						verification_level={verification_level}
 					/>

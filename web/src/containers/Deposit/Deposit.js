@@ -49,7 +49,7 @@ const DepositComponent = ({
 		stepThree: false,
 		stepFour: false,
 	});
-	const [selectedAsset, setSelectedAsset] = useState('');
+	const [selectedAsset, setSelectedAsset] = useState(null);
 	const [topAssets, setTopAssets] = useState([]);
 	const [isPinnedAssets, setIsPinnedAssets] = useState(false);
 	const [optionalTag, setOptionalTag] = useState('');
@@ -127,11 +127,13 @@ const DepositComponent = ({
 			setSelectedAsset('');
 			setIsDisbaleDeposit(true);
 			setCurrStep({
-				stepOne: false,
+				stepOne: true,
 				stepTwo: false,
 				stepThree: false,
 				stepFour: false,
 			});
+		} else {
+			setIsDisbaleDeposit(false);
 		}
 	}, [getDepositCurrency, isDeposit]);
 
@@ -157,7 +159,11 @@ const DepositComponent = ({
 					}));
 				}
 			}
-			setCurrStep((prev) => ({ ...prev, stepTwo: true }));
+			if (coins[val] && !coins[val].allow_deposit) {
+				setCurrStep((prev) => ({ ...prev, stepTwo: false }));
+			} else {
+				setCurrStep((prev) => ({ ...prev, stepTwo: true }));
+			}
 			setDepositCurrency(val);
 			network = val ? val : coins[getDepositCurrency]?.symbol;
 			setDepositNetworkOptions('');
@@ -175,7 +181,7 @@ const DepositComponent = ({
 				? coins[val]?.network
 				: coins[val]?.symbol;
 		setDepositNetwork(currentNetwork);
-		setSelectedAsset(val);
+		setSelectedAsset(val && coins[val] && coins[val].allow_deposit ? val : '');
 		updateAddress(val);
 	};
 
@@ -213,6 +219,17 @@ const DepositComponent = ({
 				</CopyToClipboard>
 			</div>
 		);
+	};
+
+	const onHandleClear = (key) => {
+		setSelectedAsset(null);
+		setDepositCurrency('');
+		setCurrStep({
+			...currStep,
+			stepTwo: false,
+			stepThree: false,
+			stepFour: false,
+		});
 	};
 
 	return (
@@ -253,14 +270,25 @@ const DepositComponent = ({
 									dropdownClassName="custom-select-style"
 									suffixIcon={<CaretDownOutlined />}
 									placeholder="Select"
-									onChange={onHandleChangeSelect}
 									allowClear={true}
-									value={selectedAsset}
+									value={
+										selectedAsset &&
+										`${
+											coins[selectedAsset].fullname
+										} (${selectedAsset.toUpperCase()})`
+									}
+									onClear={onHandleClear}
 								>
 									{Object.entries(coins).map(
 										([_, { symbol, fullname, icon_id }]) => (
-											<Option key={symbol} value={symbol}>
-												<div className="d-flex gap-1">
+											<Option
+												key={`${fullname} (${symbol.toUpperCase()})`}
+												value={`${fullname} (${symbol.toUpperCase()})`}
+											>
+												<div
+													className="d-flex gap-1"
+													onClick={() => onHandleChangeSelect(symbol)}
+												>
 													<Coin iconId={icon_id} type="CS3" />
 													<div>{`${fullname} (${symbol.toUpperCase()})`}</div>
 												</div>
@@ -355,6 +383,7 @@ const DepositComponent = ({
 											(coinLength && coinLength.length === 1) ||
 											!(coinLength && coinLength.length)
 										}
+										placeholder="Select"
 									>
 										{coinLength &&
 											coinLength.map((data, inx) => (
@@ -365,9 +394,7 @@ const DepositComponent = ({
 												</Option>
 											))}
 									</Select>
-									{(currStep.stepThree || coinLength) && (
-										<CheckOutlined className="mt-3 ml-3" />
-									)}
+									{currStep.stepTwo && <CheckOutlined className="mt-3 ml-3" />}
 								</div>
 								<div className="d-flex mt-2 warning-text">
 									<ExclamationCircleFilled className="mt-1" />

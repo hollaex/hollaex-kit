@@ -147,7 +147,10 @@ class Deposit extends Component {
 					);
 				}
 			);
-		} else if (this.props.isDepositAndWithdraw) {
+		} else if (
+			this.props.isDepositAndWithdraw ||
+			this.props.route.path === 'wallet/deposit'
+		) {
 			return this.props.router?.push('/wallet/deposit');
 		} else {
 			return this.props.router?.push('/wallet');
@@ -155,7 +158,10 @@ class Deposit extends Component {
 	};
 
 	validateRoute = (currency, coins) => {
-		if (this.props.isDepositAndWithdraw) {
+		if (
+			this.props.isDepositAndWithdraw ||
+			this.props.route.path === 'wallet/deposit'
+		) {
 			return this.props.router?.push('/wallet/deposit');
 		} else if (!coins[currency]) {
 			return this.props.router?.push('/wallet');
@@ -313,7 +319,11 @@ class Deposit extends Component {
 			? coins[getDepositCurrency]?.type === 'fiat'
 			: coins[currency]?.type === 'fiat';
 
-		if ((!id || !currency || !checked) && !this.props.isDepositAndWithdraw) {
+		if (
+			(!id || !currency || !checked) &&
+			!this.props.isDepositAndWithdraw &&
+			this.props.route.path !== 'wallet/deposit'
+		) {
 			return <div />;
 		}
 
@@ -345,7 +355,7 @@ class Deposit extends Component {
 								className="information_block-text_wrapper"
 								// style={{ height: '1.5rem' }}
 							/>
-							{renderBackToWallet()}
+							{renderBackToWallet(this.onGoBack)}
 							{openContactForm &&
 								renderNeedHelpAction(
 									openContactForm,

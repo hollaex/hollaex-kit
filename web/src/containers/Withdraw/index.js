@@ -92,7 +92,10 @@ class Withdraw extends Component {
 	}
 
 	validateRoute = (currency, coins) => {
-		if (this.props.isDepositAndWithdraw) {
+		if (
+			this.props.isDepositAndWithdraw ||
+			this.props.route.path === 'wallet/withdraw'
+		) {
 			this.props.router.push('/wallet/withdraw');
 		} else if (!coins[currency]) {
 			this.props.router.push('/wallet');
@@ -135,7 +138,10 @@ class Withdraw extends Component {
 			// if (currency === 'btc' || currency === 'bch' || currency === 'eth') {
 			// 	this.props.requestWithdrawFee(currency);
 			// }
-		} else if (this.props.isDepositAndWithdraw) {
+		} else if (
+			this.props.isDepositAndWithdraw ||
+			this.props.route.path === 'wallet/withdraw'
+		) {
 			this.props.router.push('/wallet/withdraw');
 		} else {
 			this.props.router.push('/wallet');
@@ -303,13 +309,21 @@ class Withdraw extends Component {
 			selectedMethodData,
 			qrScannerOpen,
 		} = this.state;
-		if ((!currency || !checked) && !this.props.isDepositAndWithdraw) {
+		if (
+			(!currency || !checked) &&
+			!this.props.isDepositAndWithdraw &&
+			this.props.route.path !== 'wallet/withdraw'
+		) {
 			return <div />;
 		}
 
 		const balanceAvailable = balance[`${currency}_available`];
 
-		if (balanceAvailable === undefined && !this.props.isDepositAndWithdraw) {
+		if (
+			balanceAvailable === undefined &&
+			!this.props.isDepositAndWithdraw &&
+			this.props.route.path !== 'wallet/withdraw'
+		) {
 			return <Loader />;
 		}
 
@@ -375,7 +389,7 @@ class Withdraw extends Component {
 							}
 						>
 							<div className="information_block-text_wrapper" />
-							{renderBackToWallet()}
+							{renderBackToWallet(this.onGoBack)}
 							{openContactForm &&
 								renderNeedHelpAction(
 									openContactForm,
