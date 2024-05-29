@@ -9,7 +9,7 @@ const toQueryString = (values) => {
 export const requestDisputes = (values) => {
 	const queryValues =
 		values && Object.keys(values).length ? querystring.stringify(values) : '';
-	return requestAuthenticated(`/p2p/dispute?${queryValues}`);
+	return requestAuthenticated(`/admin/p2p/dispute?${queryValues}`);
 };
 export const editDispute = (values) => {
 	const options = {
@@ -17,7 +17,7 @@ export const editDispute = (values) => {
 		body: JSON.stringify(values),
 	};
 
-	return requestAuthenticated('/p2p/dispute', options);
+	return requestAuthenticated('/admin/p2p/dispute', options);
 };
 
 export const requestTrades = (id) => {
