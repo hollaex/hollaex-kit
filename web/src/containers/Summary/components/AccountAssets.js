@@ -1,6 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import { isMobile } from 'react-device-detect';
+import { Link } from 'react-router';
 
 import { DonutChart, Carousel, EditWrapper, NotLoggedIn } from 'components';
 import STRINGS from 'config/localizedStrings';
@@ -54,10 +55,17 @@ const AccountAssets = ({ chartData = [], totalAssets, balance, coins }) => {
 	return (
 		<div>
 			<div className="summary-content-txt assets-description">
-				<div>
+				<div className={isMobile ? '' : 'd-flex'}>
 					<EditWrapper stringId="SUMMARY.ACCOUNT_ASSETS_TXT_1">
 						{STRINGS['SUMMARY.ACCOUNT_ASSETS_TXT_1']}
 					</EditWrapper>
+					<Link to="/wallet/deposit">
+						<div className="trade-account-link ml-1">
+							<EditWrapper stringId="SUMMARY.MAKE_A_DEPOSIT">
+								{STRINGS['SUMMARY.MAKE_A_DEPOSIT']}
+							</EditWrapper>
+						</div>
+					</Link>
 				</div>
 				{SHOW_SUMMARY_ACCOUNT_DETAILS ? (
 					<div>

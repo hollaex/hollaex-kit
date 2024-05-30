@@ -41,6 +41,13 @@ export const renderBackToWallet = (callback) => {
 	);
 };
 
+export const onHandleEnter = (value) => {
+	const regex = /\(([^)]+)\)/;
+	const match = value.match(regex);
+	const curr = match ? match[1].toLowerCase() : null;
+	return curr;
+};
+
 export const generateFormFields = ({
 	currency,
 	networks,

@@ -1055,11 +1055,11 @@ const ReferralList = ({
 							</div>
 						</div>
 						<span className="text-center">
-							<EditWrapper stringId="REFERRAL_LINK.INSUFFICIENT_INFO_1">
+							<EditWrapper stringId="REFERRAL_LINK.INSUFFICIENT_INFO">
 								{STRINGS.formatString(
 									STRINGS['REFERRAL_LINK.INSUFFICIENT_INFO_1'],
 									<span className="font-weight-bold">
-										{STRINGS['INSUFFICIENT_INFO_2']}
+										{STRINGS['REFERRAL_LINK.INSUFFICIENT_INFO_2']}
 									</span>,
 									<span className="font-weight-bold">
 										{(
@@ -1457,7 +1457,9 @@ const ReferralList = ({
 									<EditWrapper stringId="REFERRAL_LINK.DATA_COLLECTION">
 										{STRINGS.formatString(
 											STRINGS['REFERRAL_LINK.DATA_COLLECTION'],
-											moment(referral_history_config?.date_enabled).format('YYYY/MM/DD')
+											moment(referral_history_config?.date_enabled).format(
+												'YYYY/MM/DD'
+											)
 										)}
 									</EditWrapper>
 								</div>

@@ -130,6 +130,12 @@ $qr-code--size: 12rem;
 	.generate-field-wrapper {
 		margin-left: 8%;
 	}
+
+	.deposit-network-field {
+		.ant-select-selection-item {
+			cursor: not-allowed;
+		}
+	}
 }
 
 .deposit-address-wrapper {
@@ -183,6 +189,7 @@ $qr-code--size: 12rem;
 
 .destination-tag-field-wrapper {
 	margin-left: 29%;
+
 	.destination-tag-field {
 		.destination-input-field,
 		.destination-input-field:focus-within {

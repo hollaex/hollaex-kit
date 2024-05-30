@@ -450,7 +450,8 @@ $content--margin: 2rem;
 		background-color: var(--base_wallet-sidebar-and-popup) !important;
 	}
 
-	.remove-tag-wrapper {
+	.remove-tag-wrapper,
+	.warning-popup-wrapper {
 		.tag-body {
 			height: 18rem;
 		}
@@ -465,6 +466,15 @@ $content--margin: 2rem;
 				border: none !important;
 				color: $colors-main-black !important;
 				font-size: 14px;
+			}
+		}
+	}
+
+	.warning-popup-wrapper {
+		.button-wrapper {
+			margin-top: 2%;
+			Button {
+				width: 100%;
 			}
 		}
 	}

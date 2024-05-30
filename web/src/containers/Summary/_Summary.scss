@@ -286,6 +286,11 @@ $trade-tab--arrow-size: 0.4rem;
 		color: $link;
 		font-weight: bold;
 	}
+	.deposit-icon {
+		svg {
+			width: 1rem;
+		}
+	}
 	.summary-section_1 {
 		// height: 30rem;
 

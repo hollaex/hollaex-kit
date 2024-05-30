@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { isMobile } from 'react-device-detect';
+import { browserHistory } from 'react-router';
 import { TABLE_PAGE_SIZE } from './constants';
 import {
 	ActionNotification,
@@ -89,6 +90,22 @@ const HistoryDisplay = (props) => {
 						<EditWrapper stringId={stringId}>{title}</EditWrapper>
 					</div>
 					<div className="action_notification-container">
+						{!isMobile && !isFromWallet && activeTab === 3 && (
+							<ActionNotification
+								stringId="REFRESH"
+								text={STRINGS['ACCORDIAN.WITHDRAW']}
+								className="blue-icon"
+								onClick={() => browserHistory.push('wallet/withdraw')}
+							/>
+						)}
+						{!isMobile && activeTab !== 3 && !isDepositFromWallet && (
+							<ActionNotification
+								stringId="ACCORDIAN.DEPOSIT"
+								text={STRINGS['ACCORDIAN.DEPOSIT']}
+								className="blue-icon"
+								onClick={() => browserHistory.push('wallet/deposit')}
+							/>
+						)}
 						{!isMobile && count > 0 && !isFromWallet && (
 							<ActionNotification
 								stringId="TRANSACTION_HISTORY.TEXT_DOWNLOAD"

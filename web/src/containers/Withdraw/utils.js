@@ -136,7 +136,12 @@ export const calculateFeeCoin = (
 		? coins[selectedAsset].withdrawal_fees[
 				Object.keys(coins[selectedAsset]?.withdrawal_fees)[0]
 		  ]?.symbol
-		: selectedAsset && coins[selectedAsset].withdrawal_fee
-		? coins[selectedAsset]?.withdrawal_fee
 		: selectedAsset;
+};
+
+export const onHandleEnter = (value) => {
+	const regex = /\(([^)]+)\)/;
+	const match = value.match(regex);
+	const curr = match ? match[1].toLowerCase() : null;
+	return curr;
 };

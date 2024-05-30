@@ -274,6 +274,7 @@ class Form extends Component {
 			selectedMethod,
 			receiverWithdrawalEmail,
 			optionalTag,
+			router,
 		} = this.props;
 
 		const currentNetwork = getWithdrawNetwork
@@ -361,6 +362,7 @@ class Form extends Component {
 									onOpenDialog={this.onOpenDialog}
 									isFiat={isFiat}
 									currency={currency}
+									router={router}
 								/>
 								{!error && <div className="warning_text">{error}</div>}
 							</div>

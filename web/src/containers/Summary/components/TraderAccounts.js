@@ -157,6 +157,29 @@ const TraderAccounts = ({
 								</Link>
 							</Fragment>
 						)}
+
+						{isLoggedIn() && (
+							<Fragment>
+								<div className="d-flex align-items-center">
+									<div className="deposit-icon mr-2">
+										<Image
+											iconId="DEPOSIT_TITLE"
+											icon={ICONS['DEPOSIT_TITLE']}
+										/>
+									</div>
+									<EditWrapper stringId="SUMMARY.WALLET_FUNDING">
+										{STRINGS.formatString(STRINGS['SUMMARY.WALLET_FUNDING'])}
+									</EditWrapper>
+								</div>
+								<Link to="/wallet/deposit">
+									<div className="trade-account-link mb-2 text-uppercase">
+										<EditWrapper stringId="SUMMARY.MAKE_A_DEPOSIT">
+											{STRINGS['SUMMARY.MAKE_A_DEPOSIT']}
+										</EditWrapper>
+									</div>
+								</Link>
+							</Fragment>
+						)}
 					</Fragment>
 				)}
 				{isAccountDetails && (
