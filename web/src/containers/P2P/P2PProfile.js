@@ -92,7 +92,11 @@ const P2PProfile = ({
 										{deal.transaction.transaction_id}
 									</td>
 									<td style={{ width: '25%' }} className="td-fit">
-										{deal.user.full_name || '-'}
+										{deal.user.full_name || (
+											<EditWrapper stringId="P2P.ANONYMOUS">
+												{STRINGS['P2P.ANONYMOUS']}
+											</EditWrapper>
+										)}
 									</td>
 									<td style={{ width: '25%' }} className="td-fit">
 										{deal.comment}

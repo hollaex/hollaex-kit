@@ -175,7 +175,11 @@ const P2POrders = ({
 											{transaction?.deal?.buying_asset?.toUpperCase()}
 										</td>
 										<td style={{ width: '10%' }}>
-											{transaction?.merchant?.full_name}
+											{transaction?.merchant?.full_name || (
+												<EditWrapper stringId="P2P.ANONYMOUS">
+													{STRINGS['P2P.ANONYMOUS']}
+												</EditWrapper>
+											)}
 										</td>
 										<td style={{ width: '10%' }}>
 											{transaction?.transaction_status?.toUpperCase()}

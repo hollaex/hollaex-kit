@@ -54,7 +54,23 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 		name: null,
 		required: null,
 	});
-	const [paymentMethods, setPaymentMethods] = useState([]);
+	const [paymentMethods, setPaymentMethods] = useState([
+		{
+			fields: [
+				{
+					id: 1,
+					name: 'Bank Number',
+					required: true,
+				},
+				{
+					id: 2,
+					name: 'Full Name',
+					required: true,
+				},
+			],
+			system_name: 'IBAN',
+		},
+	]);
 
 	const [selectedPaymentMethods, setSelectedPaymentMethods] = useState([]);
 
@@ -67,6 +83,9 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 	const [selectedEmailData, setSelectedEmailData] = useState({});
 	const [p2pConfig, setP2pConfig] = useState({});
 	const searchRef = useRef(null);
+	const [filterMethod, setFilterMethod] = useState();
+	const [filterFiat, setFilterFiat] = useState();
+	const [methodEditMode, setMethodEditMode] = useState(false);
 	useEffect(() => {
 		getTiers();
 	}, []);
@@ -92,6 +111,19 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 		setUserFee(p2p_config?.user_fee);
 		setSourceAccount(p2p_config?.source_account);
 		setP2pConfig(p2p_config);
+
+		let methods = [];
+		paymentMethods.forEach((method) => {
+			if (
+				!p2p_config?.bank_payment_methods?.find(
+					(x) => x.system_name == method.system_name
+				)
+			) {
+				methods.push(method);
+			}
+		});
+
+		setPaymentMethods([...p2p_config?.bank_payment_methods, ...methods]);
 	}, []);
 
 	const handleEmailChange = (value) => {
@@ -339,7 +371,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 							<div>Crypto assets</div>
 							<div>Select the crypto assets that vendors can transact with</div>
 							{Object.values(coins || {})
-								.filter((coin) => coin.type !== 'fiat')
+								.filter((coin) => coin.symbol === 'usdt')
 								.map((coin) => {
 									return (
 										<div>
@@ -562,7 +594,12 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 								) : (
 									<div>
 										{selectedPaymentMethods.map((x) => {
-											return <div>{x.system_name}</div>;
+											return (
+												<div>
+													<span>{x.system_name}</span>
+													{/* <span style={{ marginLeft: 10 }} onClick={() => { setMethodEditMode() }}>EDIT</span><span style={{ marginLeft: 5 }} onClick={() => {  }}>DELETE</span> */}
+												</div>
+											);
 										})}
 									</div>
 								)}
@@ -762,7 +799,9 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 								>
 									<div>
 										<div>Outside payment methods allowed: </div>
-										<div>{paymentMethods.map((x) => x.system_name)}</div>
+										<div>
+											{paymentMethods.map((x) => x.system_name)?.join(', ')}
+										</div>
 									</div>
 									<div
 										onClick={() => {
@@ -1004,21 +1043,14 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 
 					<div>
 						<div>Search fiat</div>
-						<Select
-							showSearch
-							className="select-box"
-							placeholder="fiat name or symbol"
-							// value={}
-							onChange={(e) => {}}
-						>
-							{Object.values(coins || {})
-								.filter((coin) => coin.type === 'fiat')
-								.map((coin) => (
-									<Select.Option value={coin.symbol}>
-										{coin.fullname}
-									</Select.Option>
-								))}
-						</Select>
+
+						<Input
+							style={{ width: 200 }}
+							value={filterFiat}
+							onChange={(e) => {
+								setFilterFiat(e.target.value);
+							}}
+						/>
 
 						<div style={{ fontSize: 13, marginTop: 10, marginBottom: 10 }}>
 							Fiat:
@@ -1029,10 +1061,16 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 								height: 200,
 								padding: 10,
 								border: '1px solid white',
+								overflowY: 'auto',
 							}}
 						>
 							{Object.values(coins || {})
 								.filter((coin) => coin.type === 'fiat')
+								.filter((x) =>
+									filterFiat?.length > 0
+										? x.symbol.toLowerCase().includes(filterFiat?.toLowerCase())
+										: true
+								)
 								.map((coin) => {
 									return (
 										<div
@@ -1112,15 +1150,27 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 
 					<div>
 						<div>Search payment methods</div>
-						<Select
+						{/* <Select
 							showSearch
 							className="select-box"
 							placeholder="Input payment system"
-							// value={}
-							onChange={(e) => {}}
+							onChange={(e) => {
+								setSelectedPaymentMethods([
+									...selectedPaymentMethods,
+									defaultPaymentMethods[e],
+								]);
+							}}
 						>
-							{/* <Select.Option value={1}></Select.Option> */}
-						</Select>
+							<Select.Option value={0}>IBAN</Select.Option>
+						</Select> */}
+
+						<Input
+							style={{ width: 200 }}
+							value={filterMethod}
+							onChange={(e) => {
+								setFilterMethod(e.target.value);
+							}}
+						/>
 
 						<div style={{ fontSize: 13, marginTop: 10, marginBottom: 10 }}>
 							Payment Methods:
@@ -1131,6 +1181,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 								height: 200,
 								padding: 10,
 								border: '1px solid white',
+								overflowY: 'auto',
 							}}
 						>
 							{paymentMethods.length === 0 ? (
@@ -1138,40 +1189,48 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 							) : (
 								<div>
 									{/* <span>ICON</span> */}
-									{paymentMethods.map((method) => {
-										return (
-											<div
-												style={{
-													cursor: 'pointer',
-													fontWeight: selectedPaymentMethods.find(
-														(x) => x.system_name === method.system_name
-													)
-														? 'bold'
-														: '200',
-												}}
-												onClick={() => {
-													if (
-														!selectedPaymentMethods.find(
+									{paymentMethods
+										.filter((x) =>
+											filterMethod?.length > 0
+												? x.system_name
+														.toLowerCase()
+														.includes(filterMethod?.toLowerCase())
+												: true
+										)
+										.map((method) => {
+											return (
+												<div
+													style={{
+														cursor: 'pointer',
+														fontWeight: selectedPaymentMethods.find(
 															(x) => x.system_name === method.system_name
 														)
-													) {
-														setSelectedPaymentMethods([
-															...selectedPaymentMethods,
-															method,
-														]);
-													} else {
-														setSelectedPaymentMethods(
-															[...selectedPaymentMethods].filter(
-																(x) => x.system_name !== method.system_name
+															? 'bold'
+															: '200',
+													}}
+													onClick={() => {
+														if (
+															!selectedPaymentMethods.find(
+																(x) => x.system_name === method.system_name
 															)
-														);
-													}
-												}}
-											>
-												{method?.system_name}
-											</div>
-										);
-									})}
+														) {
+															setSelectedPaymentMethods([
+																...selectedPaymentMethods,
+																method,
+															]);
+														} else {
+															setSelectedPaymentMethods(
+																[...selectedPaymentMethods].filter(
+																	(x) => x.system_name !== method.system_name
+																)
+															);
+														}
+													}}
+												>
+													{method?.system_name}
+												</div>
+											);
+										})}
 								</div>
 							)}
 						</div>
@@ -1201,7 +1260,9 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 							Back
 						</Button>
 					</div>
-					<div>Can't find your local payment method?</div>
+					<div style={{ marginTop: 10 }}>
+						Can't find your local payment method?
+					</div>
 					<div
 						style={{ textDecoration: 'underline', cursor: 'pointer' }}
 						onClick={() => {

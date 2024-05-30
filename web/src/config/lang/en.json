@@ -1941,6 +1941,7 @@
 		"TRANSACTION_ID": "Transaction ID",
 		"AMOUNT_TO": "Amount to",
 		"SELL": "sell",
+		"RELEASE": "release",
 		"SEND": "send",
 		"REQUIRED_FLAT_TRANSFER_AMOUNT": "(required flat transfer amount)",
 		"PRICE": "Price",
@@ -1991,6 +1992,7 @@
 		"COMMENT": "Comment",
 		"RATING": "Rating",
 		"BUYER_PAID_ORDER": "Buyer has marked this order as paid. Waiting for vendor to check, confirm and release funds",
+		"ORDER_EXPIRED": "This order expired due to inactivity in the given time",
 		"BUYER_CANCELLED_ORDER": "Buyer has cancelled this order, Transaction is closed",
 		"BUYER_APPEALED_ORDER": "Buyer has appealed this order, Please contact support to resolve the issue",
 		"VENDOR_CONFIRMED_ORDER": "Vendor confirmed the transaction and released the funds.",
@@ -2034,6 +2036,13 @@
 		"COMPLETE": "Complete",
 		"STEP_SET_TYPE_PRICE": "Set the type and price",
 		"STEP_SET_TOTAL_AMOUNT_PAYMENT_METHODS": "Set the total amount and payment methods",
-		"STEP_SET_TERMS_AUTO_RESPONSE": "Set terms and an automated response"
+		"STEP_SET_TERMS_AUTO_RESPONSE": "Set terms and an automated response",
+		"NO": "NO",
+		"CANCEL_WARNING": "Are you sure you want to cancel this order?",
+		"ALL": "ALL",
+		"ANONYMOUS": "Anonymous",
+		"TERMS_CONDITIONS": "Terms and conditions",
+		"PAYMENT_TIME_LIMIT": "Payment time limit 30 minutes",
+		"MINUTES": "minutes"
 	}
 }
