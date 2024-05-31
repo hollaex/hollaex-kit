@@ -547,7 +547,7 @@ const DepositComponent = ({
 										<Button
 											stringId="GENERATE_WALLET"
 											onClick={onOpen}
-											className="holla-button"
+											className="holla-button text-uppercase"
 										>
 											{STRINGS['GENERATE_WALLET']}
 										</Button>
