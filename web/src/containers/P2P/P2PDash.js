@@ -15,6 +15,8 @@ import {
 } from './actions/p2pActions';
 import { COUNTRIES_OPTIONS } from 'utils/countries';
 import { formatToCurrency } from 'utils/currency';
+import { isMobile } from 'react-device-detect';
+import classnames from 'classnames';
 import './_P2P.scss';
 
 const P2PDash = ({
@@ -78,14 +80,14 @@ const P2PDash = ({
 
 	return (
 		<div
-			className="P2pOrder"
+			className={classnames(...['P2pOrder', isMobile ? 'mobile-view-p2p' : ''])}
 			style={{
 				minHeight: 800,
 				width: '100%',
 				padding: 20,
 			}}
 		>
-			<div
+			{/* <div
 				style={{
 					textAlign: 'center',
 					display: 'flex',
@@ -103,7 +105,7 @@ const P2PDash = ({
 				<EditWrapper stringId="P2P.I_WANT_TO_SELL">
 					{STRINGS['P2P.I_WANT_TO_SELL']}
 				</EditWrapper>
-			</div>
+			</div> */}
 			{/* <div
 				style={{
 					textAlign: 'center',
@@ -144,6 +146,7 @@ const P2PDash = ({
 					gap: 10,
 					alignItems: 'center',
 					justifyContent: 'space-between',
+					marginTop: 10,
 				}}
 			>
 				<div style={{ display: 'flex', gap: 10 }}>
@@ -402,9 +405,11 @@ const P2PDash = ({
 																			'P2P.SELECT_PAYMENT_METHOD_AND_AMOUNT'
 																		]
 																	);
+																	setLoading(false);
 																}
 															} catch (error) {
 																message.error(error.data.message);
+																setLoading(false);
 															}
 														}}
 													>

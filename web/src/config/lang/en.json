@@ -1894,7 +1894,7 @@
 	"P2P": {
 		"I_WANT_TO_BUY": "I want to buy",
 		"I_WANT_TO_SELL": "I want to sell",
-		"SPEND_FIAT_CURRENCY": "Spend Fiat currency",
+		"SPEND_FIAT_CURRENCY": "Select Fiat currency",
 		"AMOUNT": "Amount",
 		"PAYMENT_METHOD": "Payment Method",
 		"AVAILABLE_REGIONS": "Available Regions",

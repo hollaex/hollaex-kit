@@ -20,6 +20,8 @@ import { formatToCurrency } from 'utils/currency';
 import { getToken } from 'utils/token';
 import { WS_URL } from 'config/constants';
 import { CloseOutlined } from '@ant-design/icons';
+import { isMobile } from 'react-device-detect';
+import classnames from 'classnames';
 import './_P2P.scss';
 
 const P2POrder = ({
@@ -540,7 +542,9 @@ const P2POrder = ({
 				<EditWrapper stringId="P2P.BACK">{STRINGS['P2P.BACK']}</EditWrapper>
 			</div>
 			<div
-				className="P2pOrder"
+				className={classnames(
+					...['P2pOrder', isMobile ? 'mobile-view-p2p' : '']
+				)}
 				style={{
 					minHeight: 650,
 					width: '100%',
