@@ -15,6 +15,8 @@ import {
 } from './actions/p2pActions';
 import { COUNTRIES_OPTIONS } from 'utils/countries';
 import { formatToCurrency } from 'utils/currency';
+import { isMobile } from 'react-device-detect';
+import classnames from 'classnames';
 import './_P2P.scss';
 
 const P2PDash = ({
@@ -44,6 +46,7 @@ const P2PDash = ({
 	const [filterAmount, setFilterAmount] = useState();
 	const [filterMethod, setFilterMethod] = useState();
 	const [methods, setMethods] = useState([]);
+	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
 		fetchDeals({ status: true })
@@ -70,16 +73,21 @@ const P2PDash = ({
 		return formattedAmount;
 	};
 
+	const formatRate = (rate, spread, asset) => {
+		const amount = rate * (1 + Number(spread / 100 || 0));
+		return formatAmount(asset, amount);
+	};
+
 	return (
 		<div
-			className="P2pOrder"
+			className={classnames(...['P2pOrder', isMobile ? 'mobile-view-p2p' : ''])}
 			style={{
 				minHeight: 800,
 				width: '100%',
 				padding: 20,
 			}}
 		>
-			<div
+			{/* <div
 				style={{
 					textAlign: 'center',
 					display: 'flex',
@@ -97,8 +105,8 @@ const P2PDash = ({
 				<EditWrapper stringId="P2P.I_WANT_TO_SELL">
 					{STRINGS['P2P.I_WANT_TO_SELL']}
 				</EditWrapper>
-			</div>
-			<div
+			</div> */}
+			{/* <div
 				style={{
 					textAlign: 'center',
 					display: 'flex',
@@ -129,7 +137,7 @@ const P2PDash = ({
 				>
 					<EditWrapper stringId="P2P.ALL">{STRINGS['P2P.ALL']}</EditWrapper>
 				</Button>
-			</div>
+			</div> */}
 
 			<div
 				style={{
@@ -138,6 +146,7 @@ const P2PDash = ({
 					gap: 10,
 					alignItems: 'center',
 					justifyContent: 'space-between',
+					marginTop: 10,
 				}}
 			>
 				<div style={{ display: 'flex', gap: 10 }}>
@@ -217,7 +226,9 @@ const P2PDash = ({
 							}}
 						>
 							<Select.Option value={null}>{STRINGS['P2P.ALL']}</Select.Option>
-							{COUNTRIES_OPTIONS.map((cn) => (
+							{COUNTRIES_OPTIONS.filter((cn) =>
+								deals?.find((deal) => deal.region === cn.value)
+							).map((cn) => (
 								<Select.Option value={cn.value}>{cn.label}</Select.Option>
 							))}
 						</Select>
@@ -301,14 +312,22 @@ const P2PDash = ({
 												}}
 												className="td-fit"
 											>
-												<span>+</span> {deal.merchant.full_name}
+												<span>+</span>{' '}
+												{deal.merchant.full_name || (
+													<EditWrapper stringId="P2P.ANONYMOUS">
+														{STRINGS['P2P.ANONYMOUS']}
+													</EditWrapper>
+												)}
 											</td>
 											<td
 												style={{ width: '20%', padding: 10 }}
 												className="td-fit"
 											>
-												{deal.exchange_rate *
-													(1 + Number(deal.spread / 100 || 0))}{' '}
+												{formatRate(
+													deal.exchange_rate,
+													deal.spread,
+													deal.spending_asset
+												)}{' '}
 												{deal.spending_asset.toUpperCase()}
 											</td>
 											<td
@@ -357,6 +376,7 @@ const P2PDash = ({
 															backgroundColor: '#288500',
 															color: 'white',
 														}}
+														disabled={loading}
 														onClick={async () => {
 															try {
 																if (!expandRow && deal.id !== selectedDeal) {
@@ -365,6 +385,7 @@ const P2PDash = ({
 																	return;
 																}
 																if (amountFiat && selectedMethod) {
+																	setLoading(true);
 																	const transaction = await createTransaction({
 																		deal_id: selectedDeal.id,
 																		amount_fiat: amountFiat,
@@ -377,15 +398,18 @@ const P2PDash = ({
 
 																	setSelectedTransaction(transData.data[0]);
 																	setDisplayOrder(true);
+																	setLoading(false);
 																} else {
 																	message.error(
 																		STRINGS[
 																			'P2P.SELECT_PAYMENT_METHOD_AND_AMOUNT'
 																		]
 																	);
+																	setLoading(false);
 																}
 															} catch (error) {
 																message.error(error.data.message);
+																setLoading(false);
 															}
 														}}
 													>

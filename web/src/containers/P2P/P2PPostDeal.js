@@ -9,9 +9,10 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import { Switch, Select, Input } from 'antd';
 import { postDeal, editDeal } from './actions/p2pActions';
 import { CloseOutlined } from '@ant-design/icons';
-
+import { formatToCurrency } from 'utils/currency';
 import { COUNTRIES_OPTIONS } from 'utils/countries';
-
+import { isMobile } from 'react-device-detect';
+import classnames from 'classnames';
 import './_P2P.scss';
 
 const P2PPostDeal = ({
@@ -32,7 +33,7 @@ const P2PPostDeal = ({
 }) => {
 	const [step, setStep] = useState(1);
 
-	const [priceType, setPriceType] = useState();
+	const [priceType, setPriceType] = useState('static');
 	const [buyingAsset, setBuyingAsset] = useState();
 	const [spendingAsset, setSpendingAsset] = useState();
 	const [exchangeRate, setExchangeRate] = useState();
@@ -76,7 +77,7 @@ const P2PPostDeal = ({
 			setRegion(selectedDealEdit?.region);
 			setStep(1);
 		} else {
-			setPriceType();
+			setPriceType('static');
 			setBuyingAsset();
 			setSpendingAsset();
 			setExchangeRate();
@@ -92,11 +93,24 @@ const P2PPostDeal = ({
 		}
 	}, [selectedDealEdit]);
 
+	const formatAmount = (currency, amount) => {
+		const min = coins[currency].min;
+		const formattedAmount = formatToCurrency(amount, min);
+		return formattedAmount;
+	};
+
+	const formatRate = (rate, spread, asset) => {
+		const amount = rate * (1 + Number(spread / 100 || 0));
+		return formatAmount(asset, amount);
+	};
+
 	return (
 		<div
-			className="P2pOrder"
+			className={classnames(
+				...['P2pOrder', isMobile ? 'mobile-view-p2p-post' : '']
+			)}
 			style={{
-				height: 600,
+				height: isMobile ? 800 : 600,
 				width: '100%',
 				padding: 20,
 			}}
@@ -160,7 +174,7 @@ const P2PPostDeal = ({
 								border: 'grey 1px solid',
 							}}
 						>
-							<div style={{ flex: 7, display: 'flex' }}>
+							<div style={{ flex: 7, display: 'flex', gap: 10 }}>
 								<div style={{ flex: 1 }}>
 									<div>
 										<EditWrapper stringId="P2P.SELL_UPPER">
@@ -198,7 +212,7 @@ const P2PPostDeal = ({
 										left: 25,
 									}}
 								>
-									{'>'}
+									{/* {'>'} */}
 								</div>
 								<div style={{ flex: 1 }}>
 									<div>
@@ -233,12 +247,12 @@ const P2PPostDeal = ({
 							<div style={{ flex: 1, borderLeft: 'grey 1px solid' }}></div>
 							<div style={{ flex: 7, display: 'flex' }}>
 								<div style={{ flex: 1 }}>
-									<div>
+									{/* <div>
 										<EditWrapper stringId="P2P.PRICE_UPPER">
 											{STRINGS['P2P.PRICE_UPPER']}
 										</EditWrapper>
-									</div>
-									<div>
+									</div> */}
+									{/* <div>
 										<Select
 											showSearch
 											style={{ backgroundColor: '#303236' }}
@@ -252,20 +266,21 @@ const P2PPostDeal = ({
 												{STRINGS['P2P.STATIC']}
 											</Select.Option>
 										</Select>
-									</div>
+									</div> */}
 
 									{priceType === 'static' && (
 										<>
 											<div style={{ marginTop: 10 }}>
-												<EditWrapper stringId="P2P.FIXED_PRICE">
-													{STRINGS['P2P.FIXED_PRICE']}
+												<EditWrapper stringId="P2P.PRICE_UPPER">
+													{STRINGS['P2P.PRICE_UPPER']}
 												</EditWrapper>
 											</div>
 											<div>
 												<Input
-													style={{ width: 200 }}
+													style={{ width: isMobile ? 120 : 200 }}
 													value={exchangeRate}
 													onChange={(e) => {
+														if (!buyingAsset) return;
 														setExchangeRate(e.target.value);
 													}}
 												/>
@@ -279,7 +294,7 @@ const P2PPostDeal = ({
 									</div>
 									<div>
 										<Input
-											style={{ width: 200 }}
+											style={{ width: isMobile ? 120 : 200 }}
 											value={spread}
 											onChange={(e) => {
 												setSpread(e.target.value);
@@ -300,7 +315,7 @@ const P2PPostDeal = ({
 										left: 5,
 									}}
 								>
-									{'>'}
+									{/* {'>'} */}
 								</div>
 
 								{exchangeRate && (
@@ -311,7 +326,7 @@ const P2PPostDeal = ({
 											</EditWrapper>
 										</div>
 										<div style={{ fontSize: 25 }}>
-											{exchangeRate * (1 + Number(spread / 100 || 0))}
+											{formatRate(exchangeRate, spread, spendingAsset)}
 										</div>
 										<div>
 											<EditWrapper stringId="P2P.PRICE_ADVERTISE_SELL">
@@ -429,11 +444,11 @@ const P2PPostDeal = ({
 													border: '1px solid grey',
 													padding: 5,
 													cursor: 'pointer',
-													fontWeight: paymentMethods?.find(
+													color: paymentMethods?.find(
 														(x) => x.system_name === method.system_name
 													)
-														? 'bold'
-														: '300',
+														? 'white'
+														: 'grey',
 												}}
 												onClick={() => {
 													const newSelected = [...paymentMethods];
@@ -475,6 +490,14 @@ const P2PPostDeal = ({
 									</div>
 									<Select
 										showSearch
+										filterOption={(input, option) =>
+											option.props.children
+												.toLowerCase()
+												.indexOf(input.toLowerCase()) >= 0 ||
+											option.props.value
+												.toLowerCase()
+												.indexOf(input.toLowerCase()) >= 0
+										}
 										style={{ backgroundColor: '#303236', width: 200 }}
 										placeholder="Select Region"
 										value={region}
@@ -557,28 +580,30 @@ const P2PPostDeal = ({
 					display: 'flex',
 					gap: 15,
 					justifyContent: 'center',
-					position: 'absolute',
-					top: '65%',
-					left: '40%',
+					alignItems: 'flex-end',
+					position: 'relative',
+					top: '5%',
 				}}
 			>
-				<Button
-					style={{
-						backgroundColor: '#5E63F6',
-						color: 'white',
-						width: 200,
-						height: 30,
-					}}
-					onClick={() => {
-						if (step > 1) {
-							setStep(step - 1);
-						}
-					}}
-				>
-					<EditWrapper stringId="P2P.BACK_UPPER">
-						{STRINGS['P2P.BACK_UPPER']}
-					</EditWrapper>
-				</Button>
+				{step !== 1 && (
+					<Button
+						style={{
+							backgroundColor: '#5E63F6',
+							color: 'white',
+							width: 200,
+							height: 30,
+						}}
+						onClick={() => {
+							if (step > 1) {
+								setStep(step - 1);
+							}
+						}}
+					>
+						<EditWrapper stringId="P2P.BACK_UPPER">
+							{STRINGS['P2P.BACK_UPPER']}
+						</EditWrapper>
+					</Button>
+				)}
 				<Button
 					style={{
 						backgroundColor: '#5E63F6',
@@ -647,7 +672,7 @@ const P2PPostDeal = ({
 									});
 								}
 
-								setPriceType();
+								setPriceType('static');
 								setBuyingAsset();
 								setSpendingAsset();
 								setExchangeRate();
@@ -662,7 +687,7 @@ const P2PPostDeal = ({
 								setStep(1);
 
 								message.success(
-									`Deal has been ${
+									`${
 										selectedDealEdit
 											? STRINGS['P2P.DEAL_EDITED']
 											: STRINGS['P2P.DEAL_CREATED']
@@ -701,7 +726,13 @@ const P2PPostDeal = ({
 
 				{selectedMethod?.fields?.map((x, index) => {
 					return (
-						<div style={{ display: 'flex', justifyContent: 'space-between' }}>
+						<div
+							style={{
+								display: 'flex',
+								justifyContent: 'space-between',
+								marginBottom: 10,
+							}}
+						>
 							<div>{x?.name}:</div>
 							<Input
 								style={{ width: 300 }}
