@@ -234,11 +234,11 @@ const createP2PDeal = async (data) => {
 	}
 
 	if(max_order_value < 0) {
-		throw new Error('cannot be less than 0');
+		throw new Error('max order value cannot be less than 0');
 	}
 
 	if(min_order_value > max_order_value) {
-		throw new Error('cannot be bigger');
+		throw new Error('min order value cannot be bigger than max');
 	}
 
 	if (margin < 0) {

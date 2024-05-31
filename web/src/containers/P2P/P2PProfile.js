@@ -7,6 +7,8 @@ import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { Button, Checkbox, message, Rate } from 'antd';
 import { fetchFeedback } from './actions/p2pActions';
+import { isMobile } from 'react-device-detect';
+import classnames from 'classnames';
 import './_P2P.scss';
 
 const P2PProfile = ({
@@ -36,7 +38,7 @@ const P2PProfile = ({
 
 	return (
 		<div
-			className="P2pOrder"
+			className={classnames(...['P2pOrder', isMobile ? 'mobile-view-p2p' : ''])}
 			style={{
 				minHeight: 600,
 				width: '100%',

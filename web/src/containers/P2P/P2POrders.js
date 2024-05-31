@@ -10,6 +10,8 @@ import { Button } from 'antd';
 import { fetchTransactions } from './actions/p2pActions';
 import { withRouter } from 'react-router';
 import { formatToCurrency } from 'utils/currency';
+import { isMobile } from 'react-device-detect';
+import classnames from 'classnames';
 import './_P2P.scss';
 const P2POrders = ({
 	data,
@@ -43,7 +45,7 @@ const P2POrders = ({
 
 	return (
 		<div
-			className="P2pOrder"
+			className={classnames(...['P2pOrder', isMobile ? 'mobile-view-p2p' : ''])}
 			style={{
 				minHeight: 600,
 				width: '100%',
