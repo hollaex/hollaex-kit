@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { isMobile } from 'react-device-detect';
-import { Input, Modal, Select } from 'antd';
+import { Input, Modal, Select, Button } from 'antd';
 import {
 	CaretDownOutlined,
 	CheckOutlined,
@@ -15,13 +15,13 @@ import {
 	depositNetwork,
 	depositNetworkOptions,
 } from 'actions/appActions';
-import { Button, Coin, EditWrapper } from 'components';
+import { Coin, EditWrapper } from 'components';
 import { STATIC_ICONS } from 'config/icons';
 import { assetsSelector } from 'containers/Wallet/utils';
 import { renderLabel } from 'containers/Withdraw/utils';
 import { getNetworkNameByKey } from 'utils/wallet';
 import STRINGS from 'config/localizedStrings';
-import { onHandleEnter } from './utils';
+import { onHandleSymbol } from './utils';
 
 const DepositComponent = ({
 	coins,
@@ -33,6 +33,7 @@ const DepositComponent = ({
 	onCopy,
 	updateAddress,
 	depositAddress,
+	router,
 	...rest
 }) => {
 	const { Option } = Select;
@@ -191,6 +192,7 @@ const DepositComponent = ({
 		setDepositNetwork(currentNetwork);
 		setSelectedAsset(val && coins[val] && coins[val].allow_deposit ? val : '');
 		updateAddress(val);
+		router.push(`/wallet/${val}/deposit`);
 	};
 
 	const onHandleChangeNetwork = (val) => {
@@ -242,6 +244,20 @@ const DepositComponent = ({
 		}
 		if (type === 'network') {
 			setDepositNetworkOptions(null);
+		}
+	};
+
+	const onHandleSelect = (symbol) => {
+		const curr = onHandleSymbol(symbol);
+		if (curr !== symbol) {
+			if (
+				['xrp', 'xlm'].includes(defaultCurrency) ||
+				['xlm', 'ton'].includes(defaultNetwork)
+			) {
+				setIsVisible(true);
+			} else {
+				setIsVisible(false);
+			}
 		}
 	};
 
@@ -329,11 +345,12 @@ const DepositComponent = ({
 												const value = highlightedOption
 													.querySelector('div')
 													.textContent.trim();
-												const curr = onHandleEnter(value);
+												const curr = onHandleSymbol(value);
 												onHandleChangeSelect(curr);
 											}
 										}
 									}}
+									onSelect={(e) => onHandleSelect(e)}
 								>
 									{Object.entries(coins).map(
 										([_, { symbol, fullname, icon_id }]) => (
@@ -469,7 +486,7 @@ const DepositComponent = ({
 				</div>
 			</div>
 			<div className={!depositAddress && 'd-flex'}>
-				<div className="d-flex h-25">
+				<div className="d-flex w-100">
 					<div className="custom-field d-flex flex-column">
 						<span className={`custom-step${isSteps ? '-selected' : ''}`}>
 							3
@@ -481,7 +498,7 @@ const DepositComponent = ({
 						)}
 					</div>
 					<div
-						className={`d-flex mt-2 ml-5  ${
+						className={`d-flex mt-2 ml-5 w-100 ${
 							isMobile ? 'flex-column' : 'justify-content-between'
 						} withdraw-main-label${isSteps ? '-selected' : ''}`}
 					>
@@ -529,9 +546,11 @@ const DepositComponent = ({
 									<div className="btn-wrapper-deposit">
 										<Button
 											stringId="GENERATE_WALLET"
-											label={STRINGS['GENERATE_WALLET']}
 											onClick={onOpen}
-										/>
+											className="holla-button"
+										>
+											{STRINGS['GENERATE_WALLET']}
+										</Button>
 									</div>
 								</div>
 							) : (

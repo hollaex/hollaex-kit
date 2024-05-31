@@ -218,8 +218,15 @@
 		font-weight: bold;
 	}
 
+	.discount-tooltip {
+		padding-top: 4%;
+	}
+
+	.discount-tooltip-mobile {
+		padding-top: 3%;
+	}
+
 	.earn-field-wrapper {
-		// padding: 2%;
 		width: 100%;
 		border: 1px solid var(--labels_important-active-labels-text-graphics);
 		border-radius: 10px;
@@ -227,11 +234,36 @@
 		flex-direction: row;
 		justify-content: space-between;
 
+		.earn-info-border {
+			border-bottom: 1px solid
+				var(--labels_important-active-labels-text-graphics);
+		}
+
 		.eraning-rate-field,
-		.discount-field {
+		.discount-field,
+		.eraning-rate-mobile-field,
+		.discount-mobile-field {
 			font-size: 12px;
 			cursor: pointer;
 			padding: 2%;
+		}
+
+		.eraning-rate-mobile-field,
+		.discount-mobile-field {
+			padding: 5% !important;
+		}
+	}
+
+	.earn-border-left {
+		border-left: 1px solid var(--labels_important-active-labels-text-graphics);
+		padding-top: 10%;
+		padding-left: 2% !important;
+
+		.caret-icon-mobile {
+			svg {
+				width: 5rem !important;
+				height: 5rem !important;
+			}
 		}
 	}
 
@@ -246,10 +278,15 @@
 		flex-direction: column;
 		background-color: var(--base_background);
 
-		.caret-up-icon {
+		.caret-up-icon,
+		.caret-up-icon-mobile {
 			width: 0;
 			height: 40%;
 			line-height: 0;
+		}
+
+		.caret-up-icon-mobile {
+			height: 15% !important;
 		}
 
 		.caret-down-icon {

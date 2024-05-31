@@ -139,7 +139,7 @@ export const calculateFeeCoin = (
 		: selectedAsset;
 };
 
-export const onHandleEnter = (value) => {
+export const onHandleSymbol = (value) => {
 	const regex = /\(([^)]+)\)/;
 	const match = value.match(regex);
 	const curr = match ? match[1].toLowerCase() : null;

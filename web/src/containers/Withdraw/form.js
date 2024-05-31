@@ -275,6 +275,7 @@ class Form extends Component {
 			receiverWithdrawalEmail,
 			optionalTag,
 			router,
+			onHandleScan,
 		} = this.props;
 
 		const currentNetwork = getWithdrawNetwork
@@ -363,6 +364,7 @@ class Form extends Component {
 									isFiat={isFiat}
 									currency={currency}
 									router={router}
+									onHandleScan={onHandleScan}
 								/>
 								{!error && <div className="warning_text">{error}</div>}
 							</div>

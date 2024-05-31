@@ -92,9 +92,11 @@ class Withdraw extends Component {
 	}
 
 	validateRoute = (currency, coins) => {
+		const { getWithdrawCurrency } = this.props;
 		if (
-			this.props.isDepositAndWithdraw ||
-			this.props.route.path === 'wallet/withdraw'
+			(this.props.isDepositAndWithdraw ||
+				this.props.route.path === 'wallet/withdraw') &&
+			!getWithdrawCurrency
 		) {
 			this.props.router.push('/wallet/withdraw');
 		} else if (!coins[currency]) {
@@ -105,8 +107,9 @@ class Withdraw extends Component {
 	};
 
 	setCurrency = (currencyName) => {
+		const { getWithdrawCurrency } = this.props;
 		const currency = getCurrencyFromName(currencyName, this.props.coins);
-		if (currency) {
+		if (currency || getWithdrawCurrency) {
 			const { coins } = this.props;
 			const coin = coins[currency];
 			const networks = coin.network && coin.network.split(',');
@@ -284,6 +287,10 @@ class Withdraw extends Component {
 		this.props.router.push('/wallet');
 	};
 
+	onHandleScan = () => {
+		this.setState({ qrScannerOpen: true });
+	};
+
 	render() {
 		const {
 			balance,
@@ -353,6 +360,7 @@ class Withdraw extends Component {
 			orders,
 			isFiat,
 			isDepositAndWithdraw,
+			onHandleScan: this.onHandleScan,
 		};
 
 		return (

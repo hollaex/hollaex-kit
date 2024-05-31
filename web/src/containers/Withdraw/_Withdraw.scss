@@ -450,6 +450,10 @@ $content--margin: 2rem;
 		background-color: var(--base_wallet-sidebar-and-popup) !important;
 	}
 
+	.ant-modal-body {
+		padding-top: 0 !important;
+	}
+
 	.remove-tag-wrapper,
 	.warning-popup-wrapper {
 		.tag-body {
@@ -472,7 +476,7 @@ $content--margin: 2rem;
 
 	.warning-popup-wrapper {
 		.button-wrapper {
-			margin-top: 2%;
+			margin-top: 5%;
 			Button {
 				width: 100%;
 			}
@@ -641,6 +645,12 @@ $content--margin: 2rem;
 				.currency-label {
 					width: 15%;
 					font-size: 14px;
+				}
+
+				.render-scan-wrapper {
+					.suffix-text {
+						font-size: 12px;
+					}
 				}
 			}
 		}

@@ -55,7 +55,7 @@ const AccountAssets = ({ chartData = [], totalAssets, balance, coins }) => {
 	return (
 		<div>
 			<div className="summary-content-txt assets-description">
-				<div className={isMobile ? '' : 'd-flex'}>
+				<div className={isMobile ? '' : 'd-flex mb-3'}>
 					<EditWrapper stringId="SUMMARY.ACCOUNT_ASSETS_TXT_1">
 						{STRINGS['SUMMARY.ACCOUNT_ASSETS_TXT_1']}
 					</EditWrapper>

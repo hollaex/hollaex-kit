@@ -30,7 +30,7 @@ import { getPrices } from 'actions/assetActions';
 import {
 	calculateFee,
 	calculateFeeCoin,
-	onHandleEnter,
+	onHandleSymbol,
 	renderEstimatedValueAndFee,
 	renderLabel,
 } from './utils';
@@ -44,6 +44,7 @@ const RenderWithdraw = ({
 	assets,
 	pinnedAssets,
 	router,
+	onHandleScan,
 	...rest
 }) => {
 	const { Option } = Select;
@@ -291,7 +292,7 @@ const RenderWithdraw = ({
 			network = val ? val : coins[getWithdrawCurrency]?.symbol;
 			getWithdrawlMAx(val);
 			setWithdrawNetworkOptions(null);
-			// router.replace(`wallet/${val}/withdraw`);
+			router.push(`/wallet/${val}/withdraw`);
 		} else if (!val) {
 			setWithdrawCurrency('');
 			setCurrStep((prev) => ({
@@ -438,7 +439,7 @@ const RenderWithdraw = ({
 			setWithdrawCurrency('');
 		}
 		if (type === 'network') {
-			setWithdrawNetworkOptions('');
+			setWithdrawNetworkOptions(null);
 		}
 		setCurrStep({
 			...currStep,
@@ -448,9 +449,26 @@ const RenderWithdraw = ({
 		});
 	};
 
+	const onHandleSelect = (symbol) => {
+		const curr = onHandleSymbol(symbol);
+		if (curr !== symbol) {
+			if (
+				['xrp', 'xlm'].includes(defaultCurrency) ||
+				['xlm', 'ton'].includes(defaultNetwork)
+			) {
+				setIsWarning(true);
+			} else {
+				setIsWarning(false);
+			}
+		}
+	};
+
 	const renderScanIcon = () => {
 		return (
-			<div className="render-scan-wrapper d-flex">
+			<div
+				className="render-scan-wrapper d-flex"
+				onClick={() => onHandleScan()}
+			>
 				<span className="suffix-text">{renderLabel('ACCORDIAN.SCAN')}</span>
 				<div className="img-wrapper">
 					<img alt="scan-icon" src={STATIC_ICONS['QR_CODE_SCAN']}></img>
@@ -458,6 +476,7 @@ const RenderWithdraw = ({
 			</div>
 		);
 	};
+
 	const withdrawFeeFormat =
 		selectedMethod === 'Email'
 			? 0
@@ -477,7 +496,7 @@ const RenderWithdraw = ({
 			: currStep.stepThree || (selectedAsset && selectedMethod);
 	const renderNetwork =
 		coinLength && coinLength?.length > 1 && selectedMethod !== 'Email'
-			? getWithdrawNetworkOptions !== ''
+			? getWithdrawNetworkOptions
 			: true;
 
 	return (
@@ -590,11 +609,12 @@ const RenderWithdraw = ({
 														const value = highlightedOption
 															.querySelector('div')
 															.textContent.trim();
-														const curr = onHandleEnter(value);
+														const curr = onHandleSymbol(value);
 														onHandleChangeSelect(curr);
 													}
 												}
 											}}
+											onSelect={(e) => onHandleSelect(e)}
 										>
 											{Object.entries(coins).map(
 												([_, { symbol, fullname, icon_id }]) => (

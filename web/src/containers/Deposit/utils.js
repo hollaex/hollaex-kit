@@ -41,7 +41,7 @@ export const renderBackToWallet = (callback) => {
 	);
 };
 
-export const onHandleEnter = (value) => {
+export const onHandleSymbol = (value) => {
 	const regex = /\(([^)]+)\)/;
 	const match = value.match(regex);
 	const curr = match ? match[1].toLowerCase() : null;
@@ -197,6 +197,7 @@ const RenderContentForm = ({
 	openQRCode,
 	updateAddress,
 	depositAddress,
+	router,
 }) => {
 	const coinObject = coins[depositCurrency] || coins[currency];
 
@@ -248,6 +249,7 @@ const RenderContentForm = ({
 								coins={coins}
 								currency={currency}
 								onOpen={onOpen}
+								router={router}
 							/>
 						</div>
 						{!isMobile && (

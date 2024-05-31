@@ -118,17 +118,21 @@ $qr-code--size: 12rem;
 	}
 
 	.btn-wrapper-deposit {
-		display: flex;
-		justify-content: center;
-		margin-left: 2.5%;
-
+		margin-left: 3%;
 		.holla-button {
+			background-color: $link;
+			color: $colors-main-black;
 			width: 300px;
+			border: none;
 		}
 	}
 
 	.generate-field-wrapper {
-		margin-left: 8%;
+		display: flex;
+		flex-direction: column;
+		width: 55%;
+		justify-content: space-around;
+		margin-right: 15%;
 	}
 
 	.deposit-network-field {
