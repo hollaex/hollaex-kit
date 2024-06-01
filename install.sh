@@ -714,6 +714,12 @@ function kit_cross_compatibility_converter() {
     yq e -i ".services.*.networks[] = \"local_$ENVIRONMENT_EXCHANGE_NAME-network\"" $(pwd)/nginx/docker-compose.yaml
     yq e -i ".networks |= with_entries(select(.key == \"local_hollaex-kit\") | .key = \"local_$ENVIRONMENT_EXCHANGE_NAME-network\")" $(pwd)/nginx/docker-compose.yaml
 
+    if command docker ps | grep local.*-nginx > /dev/null ; then
+
+        docker compose -f $(pwd)/nginx/docker-compose.yaml up -d
+
+    fi
+    
   fi
 
   # Local web docker-compose
