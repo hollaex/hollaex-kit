@@ -123,6 +123,38 @@
         "OTP_ENABLED": {
             "html": "<div> <p> ${name} 様 </p> <p> お客様のアカウントで<b>二段階認証（2FA）が有効になったことを記録しました</b>。</p> <div> <div>時間: ${time}</div> <div>国: ${country}</div> <div>IPアドレス: ${ip}</div> </div> <p> 敬具<br> ${api_name} チーム </p> </div>",
             "title": "OTP 有効化"
+        },
+        "P2P_MERCHANT_IN_PROGRESS": {
+            "html": "<div><p> 親愛なる${name}様 </p><p>お客様のP2P取引にアクティビティが検出されました。これは、顧客が取引を要求している可能性があります。取引のステータスを確認するには、以下のリンクをクリックしてください:<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">取引状況を確認</Button></a></div><p>私たちのプラットフォームをご利用いただきありがとうございます。</p><p>リクエスト発行元: ${ip}</p><p>敬具<br> ${api_name}チーム </p></div>",
+            "title": "P2P取引の更新情報"
+        },
+        "P2P_BUYER_PAID_ORDER": {
+            "html": "<div><p> 親愛なる${name}様 </p><p>お客様は注文を支払い済みとマークしました。ベンダーが確認し、資金を解放するのを待っています<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">注文ページへ</Button></a></div><p>私たちのプラットフォームをご利用いただきありがとうございます。</p><p>リクエスト発行元: ${ip}</p><p>敬具<br> ${api_name}チーム </p></div>",
+            "title": "P2P注文にアクティビティが検出されました"
+        },
+        "P2P_ORDER_EXPIRED": {
+            "html": "<div><p> 親愛なる${name}様 </p><p>お客様の注文は、指定された時間内にアクティビティがなかったために期限切れとなりました。<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">注文ページへ</Button></a></div><p>私たちのプラットフォームをご利用いただきありがとうございます。</p><p>リクエスト発行元: ${ip}</p><p>敬具<br> ${api_name}チーム </p></div>",
+            "title": "P2P注文にアクティビティが検出されました"
+        },
+        "P2P_BUYER_CANCELLED_ORDER": {
+            "html": "<div><p> 親愛なる${name}様 </p><p>お客様は注文をキャンセルしました。取引は終了しました。<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">注文ページへ</Button></a></div><p>私たちのプラットフォームをご利用いただきありがとうございます。</p><p>リクエスト発行元: ${ip}</p><p>敬具<br> ${api_name}チーム </p></div>",
+            "title": "P2P注文にアクティビティが検出されました"
+        },
+        "P2P_BUYER_APPEALED_ORDER": {
+            "html": "<div><p> 親愛なる${name}様 </p><p>お客様は注文に対して異議を申し立てました。問題を解決するためにサポートに連絡してください。</p><p>リクエスト発行元: ${ip}</p><p>敬具<br> ${api_name}チーム </p></div>",
+            "title": "P2P注文にアクティビティが検出されました"
+        },
+        "P2P_VENDOR_CONFIRMED_ORDER": {
+            "html": "<div><p> 親愛なる${name}様 </p><p>お客様は取引を確認し、資金を解放しました。<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">注文ページへ</Button></a></div><p>私たちのプラットフォームをご利用いただきありがとうございます。</p><p>リクエスト発行元: ${ip}</p><p>敬具<br> ${api_name}チーム </p></div>",
+            "title": "P2P注文にアクティビティが検出されました"
+        },
+        "P2P_VENDOR_CANCELLED_ORDER": {
+            "html": "<div><p> 親愛なる${name}様 </p><p>お客様は注文をキャンセルしました。取引は終了しました。<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">注文ページへ</Button></a></div><p>私たちのプラットフォームをご利用いただきありがとうございます。</p><p>リクエスト発行元: ${ip}</p><p>敬具<br> ${api_name}チーム </p></div>",
+            "title": "P2P注文にアクティビティが検出されました"
+        },
+        "P2P_VENDOR_APPEALED_ORDER": {
+            "html": "<div><p> 親愛なる${name}様 </p><p>お客様は注文に対して異議を申し立てました。問題を解決するためにサポートに連絡してください。<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">注文ページへ</Button></a></div><p>私たちのプラットフォームをご利用いただきありがとうございます。</p><p>リクエスト発行元: ${ip}</p><p>敬具<br> ${api_name}チーム </p></div>",
+            "title": "P2P注文にアクティビティが検出されました"
         }
     }
 }
