@@ -709,6 +709,8 @@ function kit_cross_compatibility_converter() {
     mv $(pwd)/templates/local/nginx/conf.d/* $(pwd)/nginx/conf.d
     mv $(pwd)/templates/local/nginx/nginx.conf $(pwd)/nginx/nginx.conf
 
+    mv $(pwd)/templates/local/letsencrypt $(pwd)/nginx/
+
     echo "Updating the Nginx file to have an existing docker network bind..."
     yq e -i ".services |= with_entries(select(.key == \"hollaex-kit-prod-nginx\") | .key = \"$ENVIRONMENT_EXCHANGE_NAME-nginx\")" $(pwd)/nginx/docker-compose.yaml
     yq e -i ".services.*.networks[] = \"local_$ENVIRONMENT_EXCHANGE_NAME-network\"" $(pwd)/nginx/docker-compose.yaml
