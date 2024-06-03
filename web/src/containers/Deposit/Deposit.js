@@ -120,6 +120,9 @@ const DepositComponent = ({
 			updateAddress(defaultCurrency);
 			setDepositNetwork(defaultNetwork);
 		}
+		return () => {
+			setDepositNetworkOptions(null);
+		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 

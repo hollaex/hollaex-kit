@@ -118,7 +118,9 @@ class Deposit extends Component {
 	setCurrency = (currencyName) => {
 		const { getDepositCurrency } = this.props;
 		const currency = getCurrencyFromName(currencyName, this.props.coins);
-		if (currency || getDepositCurrency) {
+		const isDeposit =
+			this.props?.router?.location?.pathname?.split('/')?.length === 3;
+		if (currency || (getDepositCurrency && !isDeposit)) {
 			const { coins } = this.props;
 			const coin = coins[currency];
 			const networks = coin.network && coin.network.split(',');
