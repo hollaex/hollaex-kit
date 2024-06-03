@@ -450,7 +450,12 @@ $content--margin: 2rem;
 		background-color: var(--base_wallet-sidebar-and-popup) !important;
 	}
 
-	.remove-tag-wrapper {
+	.ant-modal-body {
+		padding-top: 0 !important;
+	}
+
+	.remove-tag-wrapper,
+	.warning-popup-wrapper {
 		.tag-body {
 			height: 18rem;
 		}
@@ -465,6 +470,15 @@ $content--margin: 2rem;
 				border: none !important;
 				color: $colors-main-black !important;
 				font-size: 14px;
+			}
+		}
+	}
+
+	.warning-popup-wrapper {
+		.button-wrapper {
+			margin-top: 5%;
+			Button {
+				width: 100%;
 			}
 		}
 	}
@@ -631,6 +645,12 @@ $content--margin: 2rem;
 				.currency-label {
 					width: 15%;
 					font-size: 14px;
+				}
+
+				.render-scan-wrapper {
+					.suffix-text {
+						font-size: 12px;
+					}
 				}
 			}
 		}

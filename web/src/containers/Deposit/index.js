@@ -116,8 +116,9 @@ class Deposit extends Component {
 	};
 
 	setCurrency = (currencyName) => {
+		const { getDepositCurrency } = this.props;
 		const currency = getCurrencyFromName(currencyName, this.props.coins);
-		if (currency) {
+		if (currency || getDepositCurrency) {
 			const { coins } = this.props;
 			const coin = coins[currency];
 			const networks = coin.network && coin.network.split(',');
@@ -158,9 +159,11 @@ class Deposit extends Component {
 	};
 
 	validateRoute = (currency, coins) => {
+		const { getDepositCurrency } = this.props;
 		if (
-			this.props.isDepositAndWithdraw ||
-			this.props.route.path === 'wallet/deposit'
+			(this.props.isDepositAndWithdraw ||
+				this.props.route.path === 'wallet/withdraw') &&
+			!getDepositCurrency
 		) {
 			return this.props.router?.push('/wallet/deposit');
 		} else if (!coins[currency]) {

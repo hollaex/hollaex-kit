@@ -137,6 +137,7 @@ $app-menu-width: calc(100vw - 40rem);
 		}
 
 		.app-bar-deposit-btn {
+			color: $app-bar-icon-inactive;
 			background-color: $link;
 			padding: 2px 10px 0px 10px;
 			border-radius: 3px;

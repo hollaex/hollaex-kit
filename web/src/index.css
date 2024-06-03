@@ -2412,18 +2412,29 @@ table th {
 .withdrawal-remove-tag-modal .ant-modal-body {
   background-color: var(--base_wallet-sidebar-and-popup) !important; }
 
-.withdrawal-remove-tag-modal .remove-tag-wrapper .tag-body {
+.withdrawal-remove-tag-modal .ant-modal-body {
+  padding-top: 0 !important; }
+
+.withdrawal-remove-tag-modal .remove-tag-wrapper .tag-body,
+.withdrawal-remove-tag-modal .warning-popup-wrapper .tag-body {
   height: 18rem; }
 
-.withdrawal-remove-tag-modal .remove-tag-wrapper .button-wrapper {
+.withdrawal-remove-tag-modal .remove-tag-wrapper .button-wrapper,
+.withdrawal-remove-tag-modal .warning-popup-wrapper .button-wrapper {
   display: flex;
   justify-content: space-between; }
-  .withdrawal-remove-tag-modal .remove-tag-wrapper .button-wrapper Button {
+  .withdrawal-remove-tag-modal .remove-tag-wrapper .button-wrapper Button,
+  .withdrawal-remove-tag-modal .warning-popup-wrapper .button-wrapper Button {
     width: 48%;
     height: 3rem;
     border: none !important;
     color: var(--labels_important-active-labels-text-graphics) !important;
     font-size: 14px; }
+
+.withdrawal-remove-tag-modal .warning-popup-wrapper .button-wrapper {
+  margin-top: 5%; }
+  .withdrawal-remove-tag-modal .warning-popup-wrapper .button-wrapper Button {
+    width: 100%; }
 
 .layout-mobile .review-wrapper {
   min-width: 0;
@@ -2513,6 +2524,8 @@ table th {
   .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .currency-label {
     width: 15%;
     font-size: 14px; }
+  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .render-scan-wrapper .suffix-text {
+    font-size: 12px; }
 
 @media screen and (max-width: 550px) {
   .layout-mobile .presentation_container .inner_container .information_block .information_block-text_wrapper .title {
@@ -2634,14 +2647,22 @@ table th {
   width: fit-content; }
 
 .deposit-wrapper-fields .btn-wrapper-deposit {
-  display: flex;
-  justify-content: center;
-  margin-left: 2.5%; }
+  margin-left: 3%; }
   .deposit-wrapper-fields .btn-wrapper-deposit .holla-button {
-    width: 300px; }
+    background-color: var(--specials_buttons-links-and-highlights);
+    color: var(--labels_important-active-labels-text-graphics);
+    width: 300px;
+    border: none; }
 
 .deposit-wrapper-fields .generate-field-wrapper {
-  margin-left: 8%; }
+  display: flex;
+  flex-direction: column;
+  width: 55%;
+  justify-content: space-around;
+  margin-right: 15%; }
+
+.deposit-wrapper-fields .deposit-network-field .ant-select-selection-item {
+  cursor: not-allowed; }
 
 .deposit-address-wrapper {
   width: 68.5%; }
@@ -4624,6 +4645,8 @@ table th {
   .summary-container .trade-account-link {
     color: var(--specials_buttons-links-and-highlights);
     font-weight: bold; }
+  .summary-container .deposit-icon svg {
+    width: 1rem; }
   .summary-container .summary-section_1 .assets-wrapper .rounded-loading {
     width: 80px;
     height: 80px;
@@ -6687,6 +6710,273 @@ table th {
     .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .trade-details-content .trade_tabs-container {
       font-size: 1.5rem !important; } }
 
+.referralLabel {
+  color: var(--labels_important-active-labels-text-graphics); }
+
+.highChartColor .highcharts-graph {
+  stroke: var(--labels_important-active-labels-text-graphics); }
+
+.highChartColor .highcharts-point {
+  stroke: var(--labels_important-active-labels-text-graphics);
+  fill: var(--labels_important-active-labels-text-graphics); }
+
+.fs-13 {
+  font-size: 13px; }
+
+.fs-14 {
+  font-size: 14px; }
+
+.referral-active-text {
+  color: var(--labels_important-active-labels-text-graphics); }
+
+.referral-inActive-text {
+  color: var(--labels_secondary-inactive-label-text-graphics); }
+
+.referral-header-icon-wrapper .icon_title-wrapper .icon_title-text.title {
+  padding-top: 5% !important; }
+
+.referral_table_theme .ant-modal-body {
+  background-color: var(--base_wallet-sidebar-and-popup) !important; }
+
+.back-label {
+  cursor: pointer;
+  text-decoration: underline;
+  color: var(--specials_buttons-links-and-highlights); }
+
+.summary-referral-container {
+  padding: 2%; }
+  .summary-referral-container .summary-referral-wrapper {
+    display: flex;
+    justify-content: space-between; }
+    .summary-referral-container .summary-referral-wrapper .settle-link,
+    .summary-referral-container .summary-referral-wrapper .view-history-label {
+      color: var(--specials_buttons-links-and-highlights);
+      border-bottom: 1px solid var(--specials_buttons-links-and-highlights);
+      cursor: pointer;
+      font-weight: bold; }
+    .summary-referral-container .summary-referral-wrapper .earning-icon-wrapper {
+      display: flex; }
+      .summary-referral-container .summary-referral-wrapper .earning-icon-wrapper .refer-icon {
+        fill: var(--labels_important-active-labels-text-graphics); }
+      .summary-referral-container .summary-referral-wrapper .earning-icon-wrapper .margin-aligner {
+        margin-bottom: 1% !important; }
+      .summary-referral-container .summary-referral-wrapper .earning-icon-wrapper .earning-label {
+        font-size: 18px;
+        font-weight: bold; }
+    .summary-referral-container .summary-referral-wrapper .earn-info-wrapper {
+      margin-right: 3%; }
+      .summary-referral-container .summary-referral-wrapper .earn-info-wrapper .earn-info-border {
+        border-bottom: 1px solid var(--labels_important-active-labels-text-graphics); }
+      .summary-referral-container .summary-referral-wrapper .earn-info-wrapper .earn-text-wrapper {
+        display: flex;
+        justify-content: center; }
+        .summary-referral-container .summary-referral-wrapper .earn-info-wrapper .earn-text-wrapper .field-label {
+          margin-left: 2%; }
+      .summary-referral-container .summary-referral-wrapper .earn-info-wrapper .settle-btn {
+        background-color: var(--specials_buttons-links-and-highlights);
+        color: var(--labels_important-active-labels-text-graphics);
+        border: none; }
+
+.history-referral-container {
+  padding: 2%; }
+  .history-referral-container .history-referral-wrapper .earning-icon-wrapper {
+    display: flex; }
+    .history-referral-container .history-referral-wrapper .earning-icon-wrapper .refer-icon {
+      fill: var(--labels_important-active-labels-text-graphics); }
+    .history-referral-container .history-referral-wrapper .earning-icon-wrapper .margin-aligner {
+      margin-bottom: 1% !important; }
+    .history-referral-container .history-referral-wrapper .earning-icon-wrapper .earning-label {
+      font-size: 18px;
+      font-weight: bold; }
+
+.new-refer-wrapper {
+  background-color: var(--calculated_quick_trade-bg) !important;
+  color: var(--labels_important-active-labels-text-graphics); }
+  .new-refer-wrapper .new-refer-icon-wrapper {
+    display: flex; }
+    .new-refer-wrapper .new-refer-icon-wrapper .margin-aligner {
+      margin-bottom: 1% !important; }
+  .new-refer-wrapper .create-link-label {
+    color: var(--specials_buttons-links-and-highlights);
+    border-bottom: 1px solid var(--specials_buttons-links-and-highlights);
+    font-weight: bold;
+    margin-top: 0.5%;
+    cursor: pointer; }
+  .new-refer-wrapper .content-field {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 500px; }
+  .new-refer-wrapper .no-link-icon .margin-aligner {
+    margin-bottom: 5%;
+    margin-right: unset; }
+    .new-refer-wrapper .no-link-icon .margin-aligner svg {
+      width: 100% !important;
+      height: 100% !important; }
+
+.settle-popup-wrapper .earning-icon-wrapper {
+  display: flex; }
+  .settle-popup-wrapper .earning-icon-wrapper .insufficient-icon {
+    text-align: center; }
+    .settle-popup-wrapper .earning-icon-wrapper .insufficient-icon svg {
+      width: 5rem !important;
+      height: 5rem !important; }
+  .settle-popup-wrapper .earning-icon-wrapper .refer-icon {
+    fill: var(--labels_important-active-labels-text-graphics); }
+  .settle-popup-wrapper .earning-icon-wrapper .margin-aligner {
+    margin-bottom: 1% !important; }
+  .settle-popup-wrapper .earning-icon-wrapper .earning-label {
+    font-size: 18px;
+    font-weight: bold; }
+
+.refer-code-popup-wrapper .new-referral-wrapper .new-referral-label,
+.referral-popup-earning-wrapper .new-referral-wrapper .new-referral-label,
+.referral-final-popup .new-referral-wrapper .new-referral-label {
+  font-size: 16px;
+  margin: 2% 0 3% 2%; }
+
+.refer-code-popup-wrapper .custom-input-field,
+.referral-popup-earning-wrapper .custom-input-field,
+.referral-final-popup .custom-input-field {
+  padding: 2%;
+  width: 100%;
+  border: 1px solid var(--labels_important-active-labels-text-graphics); }
+
+.referral-popup-earning-wrapper .discount-label {
+  margin: 5% 0;
+  font-weight: bold; }
+
+.referral-popup-earning-wrapper .discount-tooltip {
+  padding-top: 4%; }
+
+.referral-popup-earning-wrapper .discount-tooltip-mobile {
+  padding-top: 3%; }
+
+.referral-popup-earning-wrapper .earn-field-wrapper {
+  width: 100%;
+  border: 1px solid var(--labels_important-active-labels-text-graphics);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between; }
+  .referral-popup-earning-wrapper .earn-field-wrapper .earn-info-border {
+    border-bottom: 1px solid var(--labels_important-active-labels-text-graphics); }
+  .referral-popup-earning-wrapper .earn-field-wrapper .eraning-rate-field,
+  .referral-popup-earning-wrapper .earn-field-wrapper .discount-field,
+  .referral-popup-earning-wrapper .earn-field-wrapper .eraning-rate-mobile-field,
+  .referral-popup-earning-wrapper .earn-field-wrapper .discount-mobile-field {
+    font-size: 12px;
+    cursor: pointer;
+    padding: 2%; }
+  .referral-popup-earning-wrapper .earn-field-wrapper .eraning-rate-mobile-field,
+  .referral-popup-earning-wrapper .earn-field-wrapper .discount-mobile-field {
+    padding: 5% !important; }
+
+.referral-popup-earning-wrapper .earn-border-left {
+  border-left: 1px solid var(--labels_important-active-labels-text-graphics);
+  padding-top: 10%;
+  padding-left: 2% !important; }
+  .referral-popup-earning-wrapper .earn-border-left .caret-icon-mobile svg {
+    width: 5rem !important;
+    height: 5rem !important; }
+
+.referral-popup-earning-wrapper .caret-icon-wrapper {
+  width: 15%;
+  text-align: center;
+  padding-left: 3%;
+  border-bottom-right-radius: 10px;
+  border-top-right-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--base_background); }
+  .referral-popup-earning-wrapper .caret-icon-wrapper .caret-up-icon,
+  .referral-popup-earning-wrapper .caret-icon-wrapper .caret-up-icon-mobile {
+    width: 0;
+    height: 40%;
+    line-height: 0; }
+  .referral-popup-earning-wrapper .caret-icon-wrapper .caret-up-icon-mobile {
+    height: 15% !important; }
+  .referral-popup-earning-wrapper .caret-icon-wrapper .caret-down-icon {
+    width: 0;
+    height: 0;
+    line-height: 0; }
+  .referral-popup-earning-wrapper .caret-icon-wrapper .caret-icon svg {
+    width: 3rem !important;
+    height: 3rem !important; }
+
+.confirm-fild-wrapper .confirm-field-header {
+  font-weight: bold;
+  color: var(--labels_important-active-labels-text-graphics);
+  font-size: 18px;
+  margin-bottom: 3%; }
+
+.confirm-fild-wrapper .discount-field {
+  margin: 2% 0 1% 0;
+  font-weight: bold; }
+
+.confirm-fild-wrapper .referral-field-content-wrapper {
+  padding: 2%;
+  width: 100%;
+  border: 1px solid var(--labels_important-active-labels-text-graphics); }
+  .confirm-fild-wrapper .referral-field-content-wrapper .referral-field-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 2%; }
+  .confirm-fild-wrapper .referral-field-content-wrapper .earn-rate-content,
+  .confirm-fild-wrapper .referral-field-content-wrapper .discount-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; }
+
+.referral-final-popup .checked-icon {
+  padding-top: 2%; }
+  .referral-final-popup .checked-icon svg {
+    width: 2rem;
+    height: 2rem; }
+
+.referral-final-popup .desc-label {
+  margin-bottom: 2%; }
+
+.referral-final-popup .custom-input {
+  padding: 2%;
+  width: 100%;
+  border: 1px solid var(--labels_important-active-labels-text-graphics);
+  color: var(--specials_buttons-links-and-highlights);
+  display: flex;
+  justify-content: space-between; }
+  .referral-final-popup .custom-input .link-content {
+    text-decoration: underline;
+    cursor: pointer; }
+
+.referral-popup-btn-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 5%; }
+  .referral-popup-btn-wrapper .back-btn,
+  .referral-popup-btn-wrapper .next-btn,
+  .referral-popup-btn-wrapper .okay-btn {
+    background-color: var(--specials_buttons-links-and-highlights);
+    width: 45%;
+    color: var(--labels_important-active-labels-text-graphics);
+    border: none; }
+  .referral-popup-btn-wrapper .okay-btn {
+    width: 100% !important; }
+
+.layout-mobile .summary-block_wrapper .referral-table-wrapper .table-wrapper th {
+  font-size: 12px; }
+
+@media screen and (max-width: 550px) {
+  .layout-mobile .summary-block_wrapper .referral-table-wrapper .table-wrapper th {
+    font-size: 10px; } }
+
+@media screen and (max-width: 450px) {
+  .layout-mobile .summary-block_wrapper .referral-table-wrapper .table-wrapper th {
+    font-size: 8px; } }
+
 .sidebar-row {
   min-height: 3rem;
   min-width: 10rem; }
@@ -7035,6 +7325,7 @@ table th {
       fill: var(--calculated_base_top-bar-navigation_text-inactive);
       stroke: var(--calculated_base_top-bar-navigation_text-inactive); }
     .app_bar .app-bar-account .app-bar-deposit-btn {
+      color: var(--calculated_base_top-bar-navigation_text-inactive);
       background-color: var(--specials_buttons-links-and-highlights);
       padding: 2px 10px 0px 10px;
       border-radius: 3px;
