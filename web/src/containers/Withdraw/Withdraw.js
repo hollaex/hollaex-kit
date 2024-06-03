@@ -461,6 +461,7 @@ const RenderWithdraw = ({
 			setWithdrawCurrency('');
 		}
 		if (type === 'network') {
+			setWithdrawAddress(null);
 			setWithdrawNetworkOptions(null);
 		}
 		setCurrStep({
@@ -469,6 +470,8 @@ const RenderWithdraw = ({
 			stepFour: false,
 			stepFive: false,
 		});
+		setIsValidAdress(false);
+		setIsValidEmail(false);
 	};
 
 	const onHandleSelect = (symbol) => {
