@@ -2391,44 +2391,6 @@ const addAmounts = (amount1, amount2) => {
 	);
 };
 
-const validateReferralFeature = async (data) => {
-
-	const { 
-		earning_period: EARNING_PERIOD, 
-		distributor_id: DISTRIBUTOR_ID,
-		earning_rate: EARNING_RATE,
-		minimum_amount: MINIMUM_AMOUNT
-	} = data;
-
-	const exchangeInfo = getKitConfig().info;
-
-	if (!REFERRAL_HISTORY_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
-		throw new Error('Exchange plan does not support this feature');
-	}
-	if (!isNumber(EARNING_RATE)) {
-		throw new Error('Earning rate with data type number required for plugin');
-	} else if (EARNING_RATE < 1 || EARNING_RATE > 100) {
-		throw new Error('Earning rate must be within the range of 1 ~ 100');
-	} else if (!isNumber(MINIMUM_AMOUNT)) {
-		throw new Error('Minimum amount must be integer');
-	} else if (MINIMUM_AMOUNT < 0 ) {
-		throw new Error('Minimum amount must be bigger than 0');
-	} else if (EARNING_RATE % 10 !== 0) {
-		throw new Error('Earning rate must be in increments of 10');
-	} else if (!isNumber(EARNING_PERIOD)) {
-		throw new Error('Earning period with data type number required for plugin');
-	} else if ((!isInteger(EARNING_PERIOD) || EARNING_PERIOD < 0)) {
-		throw new Error('Earning period must be an integer greater than 0');
-	} else if (!isNumber(DISTRIBUTOR_ID)) {
-		throw new Error('Distributor ID required for plugin');
-	} else {
-		const user = await getUserByKitId(DISTRIBUTOR_ID, true, false);
-
-		if (!user) {
-			throw new Error('Distrubutor user does not exist');
-		}
-	}
-};
 
 const getUserReferralCodes = async (
 	opts = {
@@ -3349,7 +3311,6 @@ module.exports = {
 	getAllAffiliations,
 	applyEarningRate,
 	addAmounts,
-	validateReferralFeature,
 	settleFees,
 	getUnrealizedReferral,
 	getRealizedReferral,

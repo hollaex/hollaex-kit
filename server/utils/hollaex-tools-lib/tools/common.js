@@ -34,7 +34,7 @@ const {
 	SUPPORT_DISABLED,
 	NO_NEW_DATA
 } = require(`${SERVER_PATH}/messages`);
-const { each, difference, isPlainObject, isString, pick, isNil, omit, isNumber, isDate } = require('lodash');
+const { each, difference, isPlainObject, isString, pick, isNil, omit, isNumber, isInteger, isDate } = require('lodash');
 const { publisher } = require('./database/redis');
 const { sendEmail: sendSmtpEmail } = require(`${SERVER_PATH}/mail`);
 const { sendSMTPEmail: nodemailerEmail } = require(`${SERVER_PATH}/mail/utils`);
@@ -391,7 +391,7 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 			throw new Error('buyer_fee cannot be null');
 		} 
 	}
-	
+
 	if (newKitConfig.referral_history_config) {
 		const exchangeInfo = getKitConfig().info;
 
@@ -431,13 +431,23 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 			newKitConfig.referral_history_config.date_enabled = new Date();
 		}
 
-		const { validateReferralFeature } = require('./user');
-		validateReferralFeature({
-			earning_rate: newKitConfig?.referral_history_config?.earning_rate, 
-			minimum_amount: newKitConfig?.referral_history_config?.minimum_amount, 
-			earning_period: newKitConfig?.referral_history_config?.earning_period, 
-			distributor_id: newKitConfig?.referral_history_config?.distributor_id, 
-		});
+		if (!isNumber( newKitConfig?.referral_history_config?.earning_rate)) {
+			throw new Error('Earning rate with data type number required for plugin');
+		} else if ( newKitConfig?.referral_history_config?.earning_rate < 1 ||  newKitConfig?.referral_history_config?.earning_rate > 100) {
+			throw new Error('Earning rate must be within the range of 1 ~ 100');
+		} else if (!isNumber( newKitConfig?.referral_history_config?.minimum_amount)) {
+			throw new Error('Minimum amount must be integer');
+		} else if ( newKitConfig?.referral_history_config?.minimum_amount < 0 ) {
+			throw new Error('Minimum amount must be bigger than 0');
+		} else if ( newKitConfig?.referral_history_config?.earning_rate % 10 !== 0) {
+			throw new Error('Earning rate must be in increments of 10');
+		} else if (!isNumber(newKitConfig?.referral_history_config?.earning_period)) {
+			throw new Error('Earning period with data type number required for plugin');
+		} else if ((!isInteger(newKitConfig?.referral_history_config?.earning_period) || newKitConfig?.referral_history_config?.earning_period < 0)) {
+			throw new Error('Earning period must be an integer greater than 0');
+		} else if (!isNumber(newKitConfig?.referral_history_config?.distributor_id)) {
+			throw new Error('Distributor ID required for plugin');
+		}
 	}
 
 	const joinedKitConfig = {};
