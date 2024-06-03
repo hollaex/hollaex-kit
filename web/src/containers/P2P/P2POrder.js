@@ -127,6 +127,9 @@ const P2POrder = ({
 				case 'getStatus': {
 					fetchTransactions({ id: selectedOrder.id })
 						.then((transaction) => {
+							if (transaction.data[0].transaction_status === 'complete') {
+								setHasFeedback(true);
+							}
 							setSelectedOrder(transaction.data[0]);
 						})
 						.catch((err) => err);
@@ -924,6 +927,24 @@ const P2POrder = ({
 													{STRINGS['P2P.FUNDS_TRANSFERRED']}
 												</EditWrapper>
 											</div>
+											<div
+												style={{
+													marginTop: 10,
+													marginBottom: 10,
+													fontSize: 16,
+													cursor: 'pointer',
+													fontWeight: 'bold',
+												}}
+												onClick={() => {
+													router.replace('/transactions?tab=deposits');
+												}}
+											>
+												<EditWrapper stringId="P2P.GO_DEPOSIT">
+													<span style={{ textDecoration: 'underline' }}>
+														{STRINGS['P2P.GO_DEPOSIT']}
+													</span>
+												</EditWrapper>
+											</div>
 											{!hasFeedback && (
 												<Button
 													style={{ marginTop: 5 }}
@@ -972,6 +993,23 @@ const P2POrder = ({
 											<div>
 												<EditWrapper stringId="P2P.ORDER_COMPLETE_VENDOR">
 													{STRINGS['P2P.ORDER_COMPLETE_VENDOR']}
+												</EditWrapper>
+											</div>
+											<div
+												style={{
+													marginTop: 10,
+													fontSize: 16,
+													cursor: 'pointer',
+													fontWeight: 'bold',
+												}}
+												onClick={() => {
+													router.replace('/transactions?tab=withdrawals');
+												}}
+											>
+												<EditWrapper stringId="P2P.GO_WITHDRAWALS">
+													<span style={{ textDecoration: 'underline' }}>
+														{STRINGS['P2P.GO_WITHDRAWALS']}
+													</span>
 												</EditWrapper>
 											</div>
 										</div>
