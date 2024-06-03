@@ -168,6 +168,7 @@ const RenderWithdraw = ({
 				setCurrStep({ ...currStep, stepTwo: true });
 			}
 			setCurrStep({ ...currStep, stepTwo: true, stepThree: true });
+			getWithdrawMAx(defaultCurrency);
 		} else {
 			setSelectedAsset(null);
 		}
@@ -230,7 +231,7 @@ const RenderWithdraw = ({
 		}
 	};
 
-	const getWithdrawlMAx = async (getWithdrawCurrency, isMaxAmount = false) => {
+	const getWithdrawMAx = async (getWithdrawCurrency, isMaxAmount = false) => {
 		try {
 			const res = await getWithdrawalMax(
 				getWithdrawCurrency && getWithdrawCurrency,
@@ -239,6 +240,8 @@ const RenderWithdraw = ({
 					: getWithdrawNetworkOptions
 					? getWithdrawNetworkOptions
 					: network
+					? network
+					: defaultNetwork
 			);
 			isMaxAmount && setWithdrawAmount(res?.data?.amount);
 			setMaxAmount(res?.data?.amount);
@@ -249,7 +252,7 @@ const RenderWithdraw = ({
 
 	const onHandleChangeMethod = (method) => {
 		setWithdrawAddress('');
-		setWithdrawAmount('');
+		setWithdrawAmount(0);
 		setReceiverEmail('');
 		setSelectedMethod(method);
 		setCurrStep((prev) => ({ ...prev, stepTwo: true }));
@@ -290,7 +293,7 @@ const RenderWithdraw = ({
 			}
 			setWithdrawCurrency(val);
 			network = val ? val : coins[getWithdrawCurrency]?.symbol;
-			getWithdrawlMAx(val);
+			getWithdrawMAx(val);
 			setWithdrawNetworkOptions(null);
 			router.push(`/wallet/${val}/withdraw`);
 		} else if (!val) {
@@ -360,7 +363,7 @@ const RenderWithdraw = ({
 	const renderAmountIcon = () => {
 		return (
 			<div
-				onClick={() => getWithdrawlMAx(getWithdrawCurrency, true)}
+				onClick={() => getWithdrawMAx(getWithdrawCurrency, true)}
 				className="d-flex render-amount-icon-wrapper"
 			>
 				<span className="suffix-text">{renderLabel('CALCULATE_MAX')}</span>
@@ -814,7 +817,7 @@ const RenderWithdraw = ({
 										}
 									></Input>
 								)}
-								{isEmailAndAddress && <CheckOutlined className="mt-3 ml-3" />}
+								{isValidEmail && <CheckOutlined className="mt-3 ml-3" />}
 							</div>
 						)}
 					</div>
@@ -973,7 +976,7 @@ const RenderWithdraw = ({
 							>
 								<div className="d-flex">
 									<Input
-										disabled={maxAmount === 0}
+										disabled={getWithdrawAmount < 0}
 										onChange={(e) => onHandleAmount(e.target.value)}
 										value={getWithdrawAmount}
 										className="destination-input-field"
