@@ -279,7 +279,7 @@ const fetchP2PTransactions = (req, res) => {
 
 const createP2PTransaction = (req, res) => {
 	loggerP2P.verbose(req.uuid, 'controllers/p2p/createP2PTransaction/auth', req.auth);
-
+	const ip = req.headers['x-real-ip'];
 	const {  
         deal_id,
 		amount_fiat,
@@ -298,7 +298,8 @@ const createP2PTransaction = (req, res) => {
         deal_id,
 		user_id:  req.auth.sub.id,
 		amount_fiat,
-		payment_method_used
+		payment_method_used,
+		ip
     }
 		)
 		.then((data) => {
@@ -316,7 +317,7 @@ const createP2PTransaction = (req, res) => {
 
 const updateP2PTransaction = (req, res) => {
 	loggerP2P.verbose(req.uuid, 'controllers/p2p/updateP2PTransaction/auth', req.auth);
-
+	const ip = req.headers['x-real-ip'];
 	const {  
         id,
         user_status,
@@ -340,6 +341,7 @@ const updateP2PTransaction = (req, res) => {
         user_status,
         merchant_status,
         cancellation_reason,
+		ip
     }
 		)
 		.then((data) => {

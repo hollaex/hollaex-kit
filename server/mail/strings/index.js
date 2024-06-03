@@ -54,6 +54,16 @@ const MAILTYPE = {
 	// OTP
 	OTP_DISABLED: 'otp_disabled',
 	OTP_ENABLED: 'otp_enabled',
+
+	//P2P
+	P2P_MERCHANT_IN_PROGRESS: 'p2p_merchant_in_progress',
+	P2P_BUYER_PAID_ORDER: 'p2p_buyer_paid_order',
+	P2P_ORDER_EXPIRED: 'p2p_order_expired',
+	P2P_BUYER_CANCELLED_ORDER: 'p2p_buyer_cancelled_order',
+	P2P_BUYER_APPEALED_ORDER: 'p2p_buyer_appealed_order',
+	P2P_VENDOR_CONFIRMED_ORDER: 'p2p_vendor_confirmed_order',
+	P2P_VENDOR_CANCELLED_ORDER: 'p2p_vendor_cancelled_order',
+	P2P_VENDOR_APPEALED_ORDER: 'p2p_vendor_appealed_order',
 };
 
 const languageFile = (lang) => {

@@ -434,6 +434,21 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		html = html.replace(/\$\{name\}/g, email || '');
 		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
 	}
+	else if (type === MAILTYPE.P2P_MERCHANT_IN_PROGRESS ||
+		type === MAILTYPE.P2P_MERCHANT_IN_PROGRESS ||
+		type === MAILTYPE.P2P_BUYER_PAID_ORDER	||
+		type === MAILTYPE.P2P_ORDER_EXPIRED	||
+		type === MAILTYPE.P2P_BUYER_CANCELLED_ORDER	||
+		type === MAILTYPE.P2P_BUYER_APPEALED_ORDER	||
+		type === MAILTYPE.P2P_VENDOR_CONFIRMED_ORDER ||
+		type === MAILTYPE.P2P_VENDOR_CANCELLED_ORDER ||
+		type === MAILTYPE.P2P_VENDOR_APPEALED_ORDER
+	) {
+		html = html.replace(/\$\{name\}/g, email || '');
+		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
+		html = html.replace(/\$\{ip\}/g, data.ip || '');
+		html = html.replace(/\$\{link\}/g, `${domain}/p2p/order/${data.order_id}`);
+	}
 
 	return html;
 };

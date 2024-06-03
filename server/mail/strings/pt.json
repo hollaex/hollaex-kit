@@ -123,6 +123,38 @@
         "OTP_ENABLED": {
             "html": "<div> <p> Prezado/a ${name} </p> <p> Registramos que a sua <b>autenticação de dois fatores (2FA) foi ativada</b> na sua conta.</p> <div> <div>Horário: ${time}</div> <div>País: ${country}</div> <div>Endereço IP: ${ip}</div> </div> <p> Atenciosamente<br> Equipe ${api_name} </p> </div>",
             "title": "OTP Ativado"
+        },
+        "P2P_MERCHANT_IN_PROGRESS": {
+            "html": "<div><p> Caro(a) ${name} </p><p>Detectamos atividade em sua transação P2P, o que pode indicar que um cliente está solicitando uma transação com você. Para verificar o status da sua transação, clique no link abaixo:<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Verificar Status da Transação</Button></a></div><p>Obrigado por usar nossa plataforma.</p><p>Solicitação iniciada de: ${ip}</p><p>Atenciosamente<br> equipe ${api_name} </p></div>",
+            "title": "Atualização sobre sua Transação P2P"
+        },
+        "P2P_BUYER_PAID_ORDER": {
+            "html": "<div><p> Caro(a) ${name} </p><p>Você marcou seu pedido como pago. Aguardando o vendedor verificar, confirmar e liberar os fundos<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Ir para seu pedido</Button></a></div><p>Obrigado por usar nossa plataforma.</p><p>Solicitação iniciada de: ${ip}</p><p>Atenciosamente<br> equipe ${api_name} </p></div>",
+            "title": "Atividade Detectada em seu Pedido P2P"
+        },
+        "P2P_ORDER_EXPIRED": {
+            "html": "<div><p> Caro(a) ${name} </p><p>Seu pedido expirou devido à inatividade no tempo determinado.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Ir para seu pedido</Button></a></div><p>Obrigado por usar nossa plataforma.</p><p>Solicitação iniciada de: ${ip}</p><p>Atenciosamente<br> equipe ${api_name} </p></div>",
+            "title": "Atividade Detectada em seu Pedido P2P"
+        },
+        "P2P_BUYER_CANCELLED_ORDER": {
+            "html": "<div><p> Caro(a) ${name} </p><p>Você cancelou seu pedido. A transação foi encerrada.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Ir para seu pedido</Button></a></div><p>Obrigado por usar nossa plataforma.</p><p>Solicitação iniciada de: ${ip}</p><p>Atenciosamente<br> equipe ${api_name} </p></div>",
+            "title": "Atividade Detectada em seu Pedido P2P"
+        },
+        "P2P_BUYER_APPEALED_ORDER": {
+            "html": "<div><p> Caro(a) ${name} </p><p>Você recorreu do seu pedido. Por favor, entre em contato com o suporte para resolver o problema.</p><p>Solicitação iniciada de: ${ip}</p><p>Atenciosamente<br> equipe ${api_name} </p></div>",
+            "title": "Atividade Detectada em seu Pedido P2P"
+        },
+        "P2P_VENDOR_CONFIRMED_ORDER": {
+            "html": "<div><p> Caro(a) ${name} </p><p>Você confirmou a transação e liberou os fundos.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Ir para seu pedido</Button></a></div><p>Obrigado por usar nossa plataforma.</p><p>Solicitação iniciada de: ${ip}</p><p>Atenciosamente<br> equipe ${api_name} </p></div>",
+            "title": "Atividade Detectada em seu Pedido P2P"
+        },
+        "P2P_VENDOR_CANCELLED_ORDER": {
+            "html": "<div><p> Caro(a) ${name} </p><p>Você cancelou seu pedido. A transação foi encerrada.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Ir para seu pedido</Button></a></div><p>Obrigado por usar nossa plataforma.</p><p>Solicitação iniciada de: ${ip}</p><p>Atenciosamente<br> equipe ${api_name} </p></div>",
+            "title": "Atividade Detectada em seu Pedido P2P"
+        },
+        "P2P_VENDOR_APPEALED_ORDER": {
+            "html": "<div><p> Caro(a) ${name} </p><p>Você recorreu do seu pedido. Por favor, entre em contato com o suporte para resolver o problema.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Ir para seu pedido</Button></a></div><p>Obrigado por usar nossa plataforma.</p><p>Solicitação iniciada de: ${ip}</p><p>Atenciosamente<br> equipe ${api_name} </p></div>",
+            "title": "Atividade Detectada em seu Pedido P2P"
         }
     }
 }
