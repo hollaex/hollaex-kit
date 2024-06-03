@@ -128,7 +128,7 @@ const P2POrder = ({
 					fetchTransactions({ id: selectedOrder.id })
 						.then((transaction) => {
 							if (transaction.data[0].transaction_status === 'complete') {
-								setHasFeedback(true);
+								setHasFeedback(false);
 							}
 							setSelectedOrder(transaction.data[0]);
 						})
@@ -154,11 +154,13 @@ const P2POrder = ({
 
 	useEffect(() => {
 		getTransaction();
-		fetchFeedback({ transaction_id: selectedOrder.id }).then((res) => {
-			if (res?.data?.length > 0) {
-				setHasFeedback(true);
-			}
-		});
+		fetchFeedback({ transaction_id: selectedOrder.id })
+			.then((res) => {
+				if (res?.data?.length > 0) {
+					setHasFeedback(true);
+				}
+			})
+			.catch((err) => err);
 	}, []);
 
 	const getTransaction = async () => {
