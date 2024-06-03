@@ -30,6 +30,7 @@ import { getPrices } from 'actions/assetActions';
 import {
 	calculateFee,
 	calculateFeeCoin,
+	onHandleSymbol,
 	renderEstimatedValueAndFee,
 	renderLabel,
 } from './utils';
@@ -42,6 +43,8 @@ const RenderWithdraw = ({
 	onOpenDialog,
 	assets,
 	pinnedAssets,
+	router,
+	onHandleScan,
 	...rest
 }) => {
 	const { Option } = Select;
@@ -63,6 +66,7 @@ const RenderWithdraw = ({
 	const [isVisible, setIsVisible] = useState(false);
 	const [isValidEmail, setIsValidEmail] = useState(false);
 	const [isDisbaleWithdraw, setIsDisbaleWithdraw] = useState(false);
+	const [isWarning, setIsWarning] = useState(false);
 
 	const {
 		setWithdrawCurrency,
@@ -159,12 +163,20 @@ const RenderWithdraw = ({
 	useEffect(() => {
 		if (defaultCurrency) {
 			setSelectedAsset(defaultCurrency);
-		}
-		if (defaultCurrency) {
 			setWithdrawCurrency(defaultCurrency);
+			if (coinLength?.length > 1) {
+				setCurrStep({ ...currStep, stepTwo: true });
+			}
 			setCurrStep({ ...currStep, stepTwo: true, stepThree: true });
+		} else {
+			setSelectedAsset(null);
 		}
-		setSelectedAsset(null);
+		if (
+			['xrp', 'xlm'].includes(defaultCurrency) ||
+			['xlm', 'ton'].includes(currentNetwork)
+		) {
+			setIsWarning(true);
+		}
 		getOraclePrices();
 		setCurrStep({ ...currStep, stepTwo: true });
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -279,7 +291,8 @@ const RenderWithdraw = ({
 			setWithdrawCurrency(val);
 			network = val ? val : coins[getWithdrawCurrency]?.symbol;
 			getWithdrawlMAx(val);
-			setWithdrawNetworkOptions('');
+			setWithdrawNetworkOptions(null);
+			router.push(`/wallet/${val}/withdraw`);
 		} else if (!val) {
 			setWithdrawCurrency('');
 			setCurrStep((prev) => ({
@@ -391,20 +404,77 @@ const RenderWithdraw = ({
 		);
 	};
 
+	const renderWithdrawWarningPopup = () => {
+		return (
+			<div className="warning-popup-wrapper">
+				<div>
+					<EditWrapper>
+						{STRINGS['WITHDRAW_PAGE.WARNING_WITHDRAW_INFO_1']}
+					</EditWrapper>
+				</div>
+				<div className="mt-3">
+					<EditWrapper>
+						{STRINGS['WITHDRAW_PAGE.WARNING_WITHDRAW_INFO_2']}
+					</EditWrapper>
+				</div>
+				<div className="button-wrapper">
+					<Button className="holla-button" onClick={() => setIsWarning(false)}>
+						<EditWrapper>
+							{STRINGS['USER_SETTINGS.DELETE_ACCOUNT.CONFIRMATION.KEY']}
+						</EditWrapper>
+					</Button>
+				</div>
+			</div>
+		);
+	};
+
 	const onHandleOptionalTag = (value) => {
 		setOptionalTag(value);
 		setWithdrawOptionaltag(value);
 	};
 
-	const onHandleClear = (key) => {
-		setSelectedAsset(null);
-		setWithdrawCurrency('');
+	const onHandleClear = (type) => {
+		if (type === 'coin') {
+			setSelectedAsset(null);
+			setWithdrawCurrency('');
+		}
+		if (type === 'network') {
+			setWithdrawNetworkOptions(null);
+		}
 		setCurrStep({
 			...currStep,
 			stepThree: false,
 			stepFour: false,
 			stepFive: false,
 		});
+	};
+
+	const onHandleSelect = (symbol) => {
+		const curr = onHandleSymbol(symbol);
+		if (curr !== symbol) {
+			if (
+				['xrp', 'xlm'].includes(defaultCurrency) ||
+				['xlm', 'ton'].includes(defaultNetwork)
+			) {
+				setIsWarning(true);
+			} else {
+				setIsWarning(false);
+			}
+		}
+	};
+
+	const renderScanIcon = () => {
+		return (
+			<div
+				className="render-scan-wrapper d-flex"
+				onClick={() => onHandleScan()}
+			>
+				<span className="suffix-text">{renderLabel('ACCORDIAN.SCAN')}</span>
+				<div className="img-wrapper">
+					<img alt="scan-icon" src={STATIC_ICONS['QR_CODE_SCAN']}></img>
+				</div>
+			</div>
+		);
 	};
 
 	const withdrawFeeFormat =
@@ -424,6 +494,10 @@ const RenderWithdraw = ({
 		coinLength && coinLength?.length > 1 && selectedMethod !== 'Email'
 			? getWithdrawNetworkOptions !== ''
 			: currStep.stepThree || (selectedAsset && selectedMethod);
+	const renderNetwork =
+		coinLength && coinLength?.length > 1 && selectedMethod !== 'Email'
+			? getWithdrawNetworkOptions
+			: true;
 
 	return (
 		<div
@@ -525,7 +599,22 @@ const RenderWithdraw = ({
 													coins[selectedAsset].fullname
 												} (${selectedAsset.toUpperCase()})`
 											}
-											onClear={onHandleClear}
+											onClear={() => onHandleClear('coin')}
+											onKeyDown={(e) => {
+												if (e.key === 'Enter') {
+													const highlightedOption = document.querySelector(
+														'.ant-select-item-option-active'
+													);
+													if (highlightedOption) {
+														const value = highlightedOption
+															.querySelector('div')
+															.textContent.trim();
+														const curr = onHandleSymbol(value);
+														onHandleChangeSelect(curr);
+													}
+												}
+											}}
+											onSelect={(e) => onHandleSelect(e)}
 										>
 											{Object.entries(coins).map(
 												([_, { symbol, fullname, icon_id }]) => (
@@ -614,6 +703,7 @@ const RenderWithdraw = ({
 								>
 									<div className="d-flex">
 										<Select
+											placeholder="Select"
 											className={`custom-select-input-style elevated ${
 												coinLength && coinLength.length > 1
 													? 'select-field'
@@ -638,6 +728,7 @@ const RenderWithdraw = ({
 												(coinLength && coinLength.length === 1) ||
 												!(coinLength && coinLength.length)
 											}
+											onClear={() => onHandleClear('network')}
 										>
 											{coinLength &&
 												coinLength.map((data, inx) => (
@@ -697,7 +788,7 @@ const RenderWithdraw = ({
 									: 'FORM_FIELDS.EMAIL_LABEL'
 							)}
 						</div>
-						{isEmailAndAddress && (
+						{isEmailAndAddress && renderNetwork && (
 							<div
 								className={
 									isMobile
@@ -711,6 +802,7 @@ const RenderWithdraw = ({
 										onChange={(e) => onHandleAddress(e.target.value, 'address')}
 										value={getWithdrawAddress}
 										placeholder={strings['WITHDRAW_PAGE.WITHDRAW_ADDRESS']}
+										suffix={renderScanIcon()}
 									></Input>
 								) : (
 									<Input
@@ -810,6 +902,16 @@ const RenderWithdraw = ({
 					</div>
 				</div>
 			)}
+			<Modal
+				title="Warning"
+				visible={isWarning}
+				onCancel={() => setIsWarning(false)}
+				footer={false}
+				className="withdrawal-remove-tag-modal"
+				width="420px"
+			>
+				{renderWithdrawWarningPopup()}
+			</Modal>
 			<Modal
 				title="Remove Tag"
 				visible={isVisible}

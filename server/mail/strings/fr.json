@@ -123,6 +123,38 @@
         "OTP_ENABLED": {
             "html": "<div> <p> Cher/Chère ${name} </p> <p> Nous avons enregistré que votre <b>authentification à deux facteurs (2FA) a été activée</b> sur votre compte.</p> <div> <div>Heure: ${time}</div> <div>Pays: ${country}</div> <div>Adresse IP: ${ip}</div> </div> <p> Cordialement<br> Équipe ${api_name} </p> </div>",
             "title": "OTP Activé"
+        },
+        "P2P_MERCHANT_IN_PROGRESS": {
+            "html": "<div><p> Cher ${name} </p><p>Nous avons détecté une activité sur votre transaction P2P, ce qui peut indiquer qu'un client demande à effectuer une transaction avec vous. Pour vérifier le statut de votre transaction, veuillez cliquer sur le lien ci-dessous:<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Vérifiez le statut de la transaction</Button></a></div><p>Merci d'utiliser notre plateforme.</p><p>Requête initiée depuis: ${ip}</p><p>Cordialement<br> L'équipe ${api_name} </p></div>",
+            "title": "Mise à jour sur votre transaction P2P"
+        },
+        "P2P_BUYER_PAID_ORDER": {
+            "html": "<div><p> Cher ${name} </p><p>Vous avez marqué votre commande comme payée. En attente de la vérification, confirmation et libération des fonds par le vendeur<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Allez à votre commande</Button></a></div><p>Merci d'utiliser notre plateforme.</p><p>Requête initiée depuis: ${ip}</p><p>Cordialement<br> L'équipe ${api_name} </p></div>",
+            "title": "Activité détectée sur votre commande P2P"
+        },
+        "P2P_ORDER_EXPIRED": {
+            "html": "<div><p> Cher ${name} </p><p>Votre commande a expiré en raison d'une inactivité dans le délai imparti.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Allez à votre commande</Button></a></div><p>Merci d'utiliser notre plateforme.</p><p>Requête initiée depuis: ${ip}</p><p>Cordialement<br> L'équipe ${api_name} </p></div>",
+            "title": "Activité détectée sur votre commande P2P"
+        },
+        "P2P_BUYER_CANCELLED_ORDER": {
+            "html": "<div><p> Cher ${name} </p><p>Vous avez annulé votre commande. La transaction est fermée.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Allez à votre commande</Button></a></div><p>Merci d'utiliser notre plateforme.</p><p>Requête initiée depuis: ${ip}</p><p>Cordialement<br> L'équipe ${api_name} </p></div>",
+            "title": "Activité détectée sur votre commande P2P"
+        },
+        "P2P_BUYER_APPEALED_ORDER": {
+            "html": "<div><p> Cher ${name} </p><p>Vous avez fait appel de votre commande. Veuillez contacter le support pour résoudre le problème.</p><p>Requête initiée depuis: ${ip}</p><p>Cordialement<br> L'équipe ${api_name} </p></div>",
+            "title": "Activité détectée sur votre commande P2P"
+        },
+        "P2P_VENDOR_CONFIRMED_ORDER": {
+            "html": "<div><p> Cher ${name} </p><p>Vous avez confirmé la transaction et libéré les fonds.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Allez à votre commande</Button></a></div><p>Merci d'utiliser notre plateforme.</p><p>Requête initiée depuis: ${ip}</p><p>Cordialement<br> L'équipe ${api_name} </p></div>",
+            "title": "Activité détectée sur votre commande P2P"
+        },
+        "P2P_VENDOR_CANCELLED_ORDER": {
+            "html": "<div><p> Cher ${name} </p><p>Vous avez annulé votre commande. La transaction est fermée.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Allez à votre commande</Button></a></div><p>Merci d'utiliser notre plateforme.</p><p>Requête initiée depuis: ${ip}</p><p>Cordialement<br> L'équipe ${api_name} </p></div>",
+            "title": "Activité détectée sur votre commande P2P"
+        },
+        "P2P_VENDOR_APPEALED_ORDER": {
+            "html": "<div><p> Cher ${name} </p><p>Vous avez fait appel de votre commande. Veuillez contacter le support pour résoudre le problème.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Allez à votre commande</Button></a></div><p>Merci d'utiliser notre plateforme.</p><p>Requête initiée depuis: ${ip}</p><p>Cordialement<br> L'équipe ${api_name} </p></div>",
+            "title": "Activité détectée sur votre commande P2P"
         }
     }
 }

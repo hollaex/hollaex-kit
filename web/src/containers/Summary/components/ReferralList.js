@@ -698,45 +698,107 @@ const ReferralList = ({
 												{STRINGS['REFERRAL_LINK.DISCOUNT_RATION']}
 											</EditWrapper>
 										</div>
-										<Help
-											tip={STRINGS['REFERRAL_LINK.DISCOUNT_HOVER_CONTENT']}
-										/>
+										<span
+											className={
+												isMobile
+													? 'discount-tooltip-mobile'
+													: 'discount-tooltip'
+											}
+										>
+											<Help
+												tip={STRINGS['REFERRAL_LINK.DISCOUNT_HOVER_CONTENT']}
+											/>
+										</span>
 									</div>
 									<div className="earn-field-wrapper">
+										{isMobile ? (
+											<div className="d-flex flex-column w-100">
+												<div
+													onClick={() => {
+														setSelectedOption(0);
+													}}
+													className="eraning-rate-mobile-field"
+												>
+													<div className="text-uppercase">
+														<EditWrapper stringId="REFERRAL_LINK.YOUR_EARNING_RATE">
+															{STRINGS['REFERRAL_LINK.YOUR_EARNING_RATE']}
+														</EditWrapper>
+													</div>
+													<div className="d-flex justify-content-between">
+														<div className="fs-14">{earningRate}%</div>
+													</div>
+												</div>
+												<div className="earn-info-border"></div>
+												<div
+													onClick={() => {
+														setSelectedOption(1);
+													}}
+													className="discount-mobile-field"
+												>
+													<div>
+														<EditWrapper stringId="REFERRAL_LINK.DISCOUNT_GIVEN_TO_FRIEND">
+															{
+																STRINGS[
+																	'REFERRAL_LINK.DISCOUNT_GIVEN_TO_FRIEND'
+																]
+															}
+														</EditWrapper>
+													</div>
+													<div className="d-flex justify-content-between">
+														<div className="fs-14">{discount}%</div>
+													</div>
+												</div>
+											</div>
+										) : (
+											<>
+												<div
+													onClick={() => {
+														setSelectedOption(0);
+													}}
+													className="eraning-rate-field"
+												>
+													<div className="text-uppercase">
+														<EditWrapper stringId="REFERRAL_LINK.YOUR_EARNING_RATE">
+															{STRINGS['REFERRAL_LINK.YOUR_EARNING_RATE']}
+														</EditWrapper>
+													</div>
+													<div className="d-flex justify-content-between">
+														<div className="fs-14">{earningRate}%</div>
+													</div>
+												</div>
+												<div className="d-flex align-items-center">:</div>
+												<div
+													onClick={() => {
+														setSelectedOption(1);
+													}}
+													className="discount-field"
+												>
+													<div>
+														<EditWrapper stringId="REFERRAL_LINK.DISCOUNT_GIVEN_TO_FRIEND">
+															{
+																STRINGS[
+																	'REFERRAL_LINK.DISCOUNT_GIVEN_TO_FRIEND'
+																]
+															}
+														</EditWrapper>
+													</div>
+													<div className="d-flex justify-content-between">
+														<div className="fs-14">{discount}%</div>
+													</div>
+												</div>
+											</>
+										)}
 										<div
-											onClick={() => {
-												setSelectedOption(0);
-											}}
-											className="eraning-rate-field"
+											className={
+												isMobile
+													? 'caret-icon-wrapper earn-border-left'
+													: 'caret-icon-wrapper'
+											}
 										>
-											<div>
-												<EditWrapper stringId="REFERRAL_LINK.YOUR_EARNING_RATE">
-													{STRINGS['REFERRAL_LINK.YOUR_EARNING_RATE']}
-												</EditWrapper>
-											</div>
-											<div className="d-flex justify-content-between">
-												<div className="fs-14">{earningRate}%</div>
-											</div>
-										</div>
-										<div className="d-flex align-items-center">:</div>
-										<div
-											onClick={() => {
-												setSelectedOption(1);
-											}}
-											className="discount-field"
-										>
-											<div>
-												<EditWrapper stringId="REFERRAL_LINK.DISCOUNT_GIVEN_TO_FRIEND">
-													{STRINGS['REFERRAL_LINK.DISCOUNT_GIVEN_TO_FRIEND']}
-												</EditWrapper>
-											</div>
-											<div className="d-flex justify-content-between">
-												<div className="fs-14">{discount}%</div>
-											</div>
-										</div>
-										<div className="caret-icon-wrapper">
 											<div
-												className="caret-up-icon"
+												className={
+													isMobile ? 'caret-up-icon-mobile' : 'caret-up-icon'
+												}
 												onClick={(e) => {
 													e.stopPropagation();
 													if (selectedOption === 0) {
@@ -776,7 +838,11 @@ const ReferralList = ({
 													}
 												}}
 											>
-												<CaretUpOutlined className="caret-icon" />
+												<CaretUpOutlined
+													className={
+														isMobile ? 'caret-icon-mobile' : 'caret-icon'
+													}
+												/>
 											</div>
 											<div
 												className="caret-down-icon"
@@ -814,7 +880,11 @@ const ReferralList = ({
 													}
 												}}
 											>
-												<CaretDownOutlined className="caret-icon" />
+												<CaretDownOutlined
+													className={
+														isMobile ? 'caret-icon-mobile' : 'caret-icon'
+													}
+												/>
 											</div>
 										</div>
 									</div>
@@ -1032,7 +1102,7 @@ const ReferralList = ({
 				className="referral_table_theme"
 				bodyStyle={{}}
 				visible={displaySettle}
-				width={450}
+				width={480}
 				footer={null}
 				onCancel={() => {
 					setDisplaySettle(false);
@@ -1055,11 +1125,11 @@ const ReferralList = ({
 							</div>
 						</div>
 						<span className="text-center">
-							<EditWrapper stringId="REFERRAL_LINK.INSUFFICIENT_INFO_1">
+							<EditWrapper stringId="REFERRAL_LINK.INSUFFICIENT_INFO">
 								{STRINGS.formatString(
 									STRINGS['REFERRAL_LINK.INSUFFICIENT_INFO_1'],
 									<span className="font-weight-bold">
-										{STRINGS['INSUFFICIENT_INFO_2']}
+										{STRINGS['REFERRAL_LINK.INSUFFICIENT_INFO_2']}
 									</span>,
 									<span className="font-weight-bold">
 										{(
@@ -1092,7 +1162,7 @@ const ReferralList = ({
 				className="referral_table_theme"
 				bodyStyle={{}}
 				visible={displaySettle}
-				width={450}
+				width={480}
 				footer={null}
 				onCancel={() => {
 					setDisplaySettle(false);
@@ -1457,7 +1527,9 @@ const ReferralList = ({
 									<EditWrapper stringId="REFERRAL_LINK.DATA_COLLECTION">
 										{STRINGS.formatString(
 											STRINGS['REFERRAL_LINK.DATA_COLLECTION'],
-											moment(referral_history_config?.date_enabled).format('YYYY/MM/DD')
+											moment(referral_history_config?.date_enabled).format(
+												'YYYY/MM/DD'
+											)
 										)}
 									</EditWrapper>
 								</div>

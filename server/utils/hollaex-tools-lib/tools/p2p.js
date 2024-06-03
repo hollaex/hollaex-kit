@@ -15,6 +15,8 @@ const dbQuery = require('./database/query');
 const uuid = require('uuid/v4');
 const { parse } = require('json2csv');
 const moment = require('moment');
+const { sendEmail } = require('../../../mail');
+const { MAILTYPE } = require('../../../mail/strings');
 
 const {
 	NO_DATA_FOR_CSV,
@@ -383,6 +385,7 @@ const createP2PTransaction = async (data) => {
 		deal_id,
 		user_id,
 		amount_fiat,
+		ip
     } = data;
     
 	const exchangeInfo = getKitConfig().info;
@@ -478,7 +481,7 @@ const createP2PTransaction = async (data) => {
 
 	data.messages = [firstChatMessage];
 
-	return getModel('p2pTransaction').create(data, {
+	const transaction = await getModel('p2pTransaction').create(data, {
 		fields: [
 			'deal_id',
 			'transaction_id',
@@ -500,6 +503,18 @@ const createP2PTransaction = async (data) => {
 			'messages'
 		]
 	});
+
+	sendEmail(
+		MAILTYPE.P2P_MERCHANT_IN_PROGRESS,
+		merchant.email,
+		{
+			order_id: transaction.id,
+			ip
+		},
+		merchant.settings
+	);
+
+	return transaction;
 };
 
 const updateP2pTransaction = async (data) => {
@@ -509,12 +524,14 @@ const updateP2pTransaction = async (data) => {
 		user_status,
 		merchant_status,
 		cancellation_reason,
+		ip
 	} = data;
 		
 	const transaction = await getModel('p2pTransaction').findOne({ where: { id } });
 	const p2pDeal = await getModel('p2pDeal').findOne({ where: { id: transaction.deal_id } });
 	const merchant = await getUserByKitId(p2pDeal.merchant_id);
 	const p2pConfig = getKitConfig()?.p2p_config;
+	const user = await getUserByKitId(user_id);
 
 	// eslint-disable-next-line no-prototype-builtins
 	if (user_id === transaction.merchant_id && data.hasOwnProperty(user_status)) {
@@ -551,6 +568,16 @@ const updateP2pTransaction = async (data) => {
 				created_at: new Date()
 			};
 		
+			sendEmail(
+				MAILTYPE.P2P_ORDER_EXPIRED,
+				user.email,
+				{
+					order_id: id,
+					ip
+				},
+				user.settings
+			);
+
 			newMessages.push(chatMessage);
 
 			await transaction.update({ transaction_status: 'expired', messages: newMessages }, {
@@ -634,6 +661,16 @@ const updateP2pTransaction = async (data) => {
 			created_at: new Date()
 		};
 	
+		sendEmail(
+			MAILTYPE.P2P_BUYER_PAID_ORDER,
+			user.email,
+			{
+				order_id: id,
+				ip
+			},
+			user.settings
+		);
+
 		newMessages.push(chatMessage);
 	}
 
@@ -645,6 +682,16 @@ const updateP2pTransaction = async (data) => {
 			type: 'notification',
 			created_at: new Date()
 		};
+
+		sendEmail(
+			MAILTYPE.P2P_BUYER_CANCELLED_ORDER,
+			user.email,
+			{
+				order_id: id,
+				ip
+			},
+			user.settings
+		);
 	
 		newMessages.push(chatMessage);
 	}
@@ -658,6 +705,16 @@ const updateP2pTransaction = async (data) => {
 			created_at: new Date()
 		};
 	
+		sendEmail(
+			MAILTYPE.P2P_BUYER_APPEALED_ORDER,
+			user.email,
+			{
+				order_id: id,
+				ip
+			},
+			user.settings
+		);
+		
 		newMessages.push(chatMessage);
 	}
 
@@ -670,6 +727,16 @@ const updateP2pTransaction = async (data) => {
 			type: 'notification',
 			created_at: new Date()
 		};
+
+		sendEmail(
+			MAILTYPE.P2P_VENDOR_CONFIRMED_ORDER,
+			user.email,
+			{
+				order_id: id,
+				ip
+			},
+			user.settings
+		);
 	
 		newMessages.push(chatMessage);
 	}
@@ -682,6 +749,16 @@ const updateP2pTransaction = async (data) => {
 			type: 'notification',
 			created_at: new Date()
 		};
+
+		sendEmail(
+			MAILTYPE.P2P_VENDOR_CANCELLED_ORDER,
+			user.email,
+			{
+				order_id: id,
+				ip
+			},
+			user.settings
+		);
 	
 		newMessages.push(chatMessage);
 	}
@@ -694,6 +771,16 @@ const updateP2pTransaction = async (data) => {
 			type: 'notification',
 			created_at: new Date()
 		};
+
+		sendEmail(
+			MAILTYPE.P2P_VENDOR_APPEALED_ORDER,
+			user.email,
+			{
+				order_id: id,
+				ip
+			},
+			user.settings
+		);
 	
 		newMessages.push(chatMessage);
 	}
