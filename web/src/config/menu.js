@@ -58,9 +58,9 @@ export const MENU_ITEMS = {
 		{
 			id: 'p2p',
 			path: '/p2p',
-			icon_id: 'TAB_STAKE',
+			icon_id: 'TAB_P2P',
 			string_id: 'ACCOUNTS.P2P',
-			hide_from_appbar: true,
+			hide_from_appbar: false,
 			hide_from_bottom_nav: true,
 		},
 		{

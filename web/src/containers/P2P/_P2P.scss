@@ -3,6 +3,13 @@
 		background-color: transparent;
 	}
 	background-color: var(--base_wallet-sidebar-and-popup);
+
+	.buySideP2P {
+		background-color: var(--trading_buying-related-elements);
+	}
+	.sellSideP2P {
+		background-color: var(--trading_selling-related-elements);
+	}
 }
 
 .mobile-view-p2p {

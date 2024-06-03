@@ -22,6 +22,7 @@ import { WS_URL } from 'config/constants';
 import { CloseOutlined } from '@ant-design/icons';
 import { isMobile } from 'react-device-detect';
 import classnames from 'classnames';
+import BigNumber from 'bignumber.js';
 import './_P2P.scss';
 
 const P2POrder = ({
@@ -53,8 +54,9 @@ const P2POrder = ({
 	const [ws, setWs] = useState();
 	const [ready, setReady] = useState(false);
 	const [displayCancelWarning, setDisplayCancelWarning] = useState();
-
+	const [lastClickTime, setLastClickTime] = useState(0);
 	const ref = useRef(null);
+	const buttonRef = useRef(null);
 
 	useEffect(() => {
 		ref.current.scroll({
@@ -62,6 +64,21 @@ const P2POrder = ({
 			behavior: 'smooth',
 		});
 	}, [selectedOrder.messages]);
+
+	const handleKeyDown = (event) => {
+		if (event.key === 'Enter') {
+			buttonRef.current.click();
+		}
+	};
+
+	useEffect(() => {
+		document.addEventListener('keydown', handleKeyDown);
+
+		// Cleanup the event listener on component unmount
+		return () => {
+			document.removeEventListener('keydown', handleKeyDown);
+		};
+	}, []);
 
 	useEffect(() => {
 		const url = `${WS_URL}/stream?authorization=Bearer ${getToken()}`;
@@ -184,13 +201,52 @@ const P2POrder = ({
 	};
 
 	const userReceiveAmount = () => {
-		const buyerFeeAmount =
-			(selectedOrder.amount_digital_currency * p2p_config?.user_fee) / 100;
-		const min = coins[selectedOrder.deal.spending_asset].min;
-		return formatToCurrency(
-			selectedOrder?.amount_digital_currency - buyerFeeAmount,
-			min
-		);
+		const incrementUnit =
+			coins?.[selectedOrder.deal.buying_asset]?.increment_unit;
+		const buyerFeeAmount = new BigNumber(selectedOrder?.amount_digital_currency)
+			.multipliedBy(p2p_config?.user_fee)
+			.dividedBy(100)
+			.toNumber();
+
+		const decimalPoint = new BigNumber(incrementUnit).dp();
+		const sourceAmount = new BigNumber(
+			selectedOrder?.amount_digital_currency - buyerFeeAmount
+		)
+			.decimalPlaces(decimalPoint)
+			.toNumber();
+		return sourceAmount;
+	};
+
+	const sendChatMessage = async () => {
+		const now = Date.now();
+		if (now - lastClickTime >= 1000 && chatMessage?.trim()?.length > 0) {
+			try {
+				await createChatMessage({
+					receiver_id:
+						user.id === selectedOrder?.merchant_id
+							? selectedOrder?.user_id
+							: selectedOrder?.merchant_id,
+					message: chatMessage,
+					transaction_id: selectedOrder.id,
+				});
+
+				addMessage({
+					sender_id: user.id,
+					type: 'message',
+					receiver_id:
+						user.id === selectedOrder?.merchant_id
+							? selectedOrder?.user_id
+							: selectedOrder?.merchant_id,
+					message: chatMessage,
+					id: selectedOrder.id,
+				});
+
+				setChatMessage();
+			} catch (error) {
+				message.error(error.data.message);
+			}
+			setLastClickTime(now);
+		}
 	};
 
 	return (
@@ -508,6 +564,7 @@ const P2POrder = ({
 									});
 									updateStatus('cancelled');
 									message.success(STRINGS['P2P.TRANSACTION_CANCELLED']);
+									setDisplayCancelWarning(false);
 								} catch (error) {
 									message.error(error.data.message);
 								}
@@ -613,7 +670,7 @@ const P2POrder = ({
 							<div>
 								{user.id === selectedOrder?.merchant_id && (
 									<div style={{ textAlign: 'end' }}>
-										{selectedOrder?.amount_digital_currency}{' '}
+										{userReceiveAmount()}{' '}
 										{selectedOrder?.deal?.buying_asset?.toUpperCase()}
 									</div>
 								)}
@@ -624,9 +681,15 @@ const P2POrder = ({
 									</div>
 								)}
 								<div>
-									<EditWrapper stringId="P2P.REQUIRED_FLAT_TRANSFER_AMOUNT">
-										{STRINGS['P2P.REQUIRED_FLAT_TRANSFER_AMOUNT']}
-									</EditWrapper>
+									{user.id === selectedOrder?.merchant_id ? (
+										<EditWrapper stringId="P2P.AMOUNT_SEND_RELEASE">
+											{STRINGS['P2P.AMOUNT_SEND_RELEASE']}
+										</EditWrapper>
+									) : (
+										<EditWrapper stringId="P2P.REQUIRED_FLAT_TRANSFER_AMOUNT">
+											{STRINGS['P2P.REQUIRED_FLAT_TRANSFER_AMOUNT']}
+										</EditWrapper>
+									)}
 								</div>
 							</div>
 						</div>
@@ -1083,9 +1146,15 @@ const P2POrder = ({
 					</div>
 					<div style={{ flex: 1 }}>
 						<div>
-							<EditWrapper stringId="P2P.CHAT_WITH_VENDOR">
-								{STRINGS['P2P.CHAT_WITH_VENDOR']}
-							</EditWrapper>
+							{user.id === selectedOrder?.merchant_id ? (
+								<EditWrapper stringId="P2P.CHAT_WITH_USER">
+									{STRINGS['P2P.CHAT_WITH_USER']}
+								</EditWrapper>
+							) : (
+								<EditWrapper stringId="P2P.CHAT_WITH_VENDOR">
+									{STRINGS['P2P.CHAT_WITH_VENDOR']}
+								</EditWrapper>
+							)}
 						</div>
 						<div
 							className="P2pOrder"
@@ -1096,14 +1165,26 @@ const P2POrder = ({
 							}}
 						>
 							<div>
-								<EditWrapper stringId="P2P.VENDOR_NAME">
-									{STRINGS['P2P.VENDOR_NAME']}
-								</EditWrapper>{' '}
-								{selectedOrder?.merchant?.full_name || (
-									<EditWrapper stringId="P2P.ANONYMOUS">
-										{STRINGS['P2P.ANONYMOUS']}
+								{user.id === selectedOrder?.merchant_id ? (
+									<EditWrapper stringId="P2P.USER_NAME">
+										{STRINGS['P2P.USER_NAME']}
 									</EditWrapper>
-								)}
+								) : (
+									<EditWrapper stringId="P2P.VENDOR_NAME">
+										{STRINGS['P2P.VENDOR_NAME']}
+									</EditWrapper>
+								)}{' '}
+								{user.id === selectedOrder?.merchant_id
+									? selectedOrder?.buyer?.full_name || (
+											<EditWrapper stringId="P2P.ANONYMOUS">
+												{STRINGS['P2P.ANONYMOUS']}
+											</EditWrapper>
+									  )
+									: selectedOrder?.merchant?.full_name || (
+											<EditWrapper stringId="P2P.ANONYMOUS">
+												{STRINGS['P2P.ANONYMOUS']}
+											</EditWrapper>
+									  )}
 							</div>
 							<div
 								style={{
@@ -1288,33 +1369,8 @@ const P2POrder = ({
 											position: 'relative',
 											top: 3,
 										}}
-										onClick={async () => {
-											try {
-												await createChatMessage({
-													receiver_id:
-														user.id === selectedOrder?.merchant_id
-															? selectedOrder?.user_id
-															: selectedOrder?.merchant_id,
-													message: chatMessage,
-													transaction_id: selectedOrder.id,
-												});
-
-												addMessage({
-													sender_id: user.id,
-													type: 'message',
-													receiver_id:
-														user.id === selectedOrder?.merchant_id
-															? selectedOrder?.user_id
-															: selectedOrder?.merchant_id,
-													message: chatMessage,
-													id: selectedOrder.id,
-												});
-
-												setChatMessage();
-											} catch (error) {
-												message.error(error.data.message);
-											}
-										}}
+										ref={buttonRef}
+										onClick={sendChatMessage}
 									>
 										<EditWrapper stringId="P2P.SEND_UPPER">
 											{STRINGS['P2P.SEND_UPPER']}
@@ -1343,13 +1399,7 @@ const P2POrder = ({
 							style={{ backgroundColor: '#5E63F6', color: 'white' }}
 							onClick={async () => {
 								try {
-									await updateTransaction({
-										id: selectedOrder.id,
-										user_status: 'cancelled',
-									});
-
-									updateStatus('cancelled');
-									message.success(STRINGS['P2P.TRANSACTION_CANCELLED']);
+									setDisplayCancelWarning(true);
 								} catch (error) {
 									message.error(error.data.message);
 								}

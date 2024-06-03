@@ -13,6 +13,7 @@ import { formatToCurrency } from 'utils/currency';
 import { COUNTRIES_OPTIONS } from 'utils/countries';
 import { isMobile } from 'react-device-detect';
 import classnames from 'classnames';
+import BigNumber from 'bignumber.js';
 import './_P2P.scss';
 
 const P2PPostDeal = ({
@@ -94,8 +95,7 @@ const P2PPostDeal = ({
 	}, [selectedDealEdit]);
 
 	const formatAmount = (currency, amount) => {
-		const min = coins[currency].min;
-		const formattedAmount = formatToCurrency(amount, min);
+		const formattedAmount = new BigNumber(amount).decimalPlaces(4).toNumber();
 		return formattedAmount;
 	};
 
@@ -191,11 +191,13 @@ const P2PPostDeal = ({
 												setBuyingAsset(e);
 											}}
 										>
-											{p2p_config?.digital_currencies.map((coin) => (
-												<Select.Option value={coin}>
-													{coin?.toUpperCase()}
-												</Select.Option>
-											))}
+											{p2p_config?.digital_currencies
+												.filter((coin) => coin === 'usdt')
+												.map((coin) => (
+													<Select.Option value={coin}>
+														{coin?.toUpperCase()}
+													</Select.Option>
+												))}
 										</Select>
 									</div>
 									<div style={{ marginTop: 4 }}>
@@ -436,42 +438,64 @@ const P2PPostDeal = ({
 
 									{p2p_config?.bank_payment_methods?.map((method) => {
 										return (
-											<div
-												style={{
-													width: 250,
-													display: 'flex',
-													justifyContent: 'space-between',
-													border: '1px solid grey',
-													padding: 5,
-													cursor: 'pointer',
-													color: paymentMethods?.find(
-														(x) => x.system_name === method.system_name
-													)
-														? 'white'
-														: 'grey',
-												}}
-												onClick={() => {
-													const newSelected = [...paymentMethods];
-
-													if (
-														newSelected.find(
+											<div style={{ display: 'flex', gap: 5 }}>
+												<div
+													style={{
+														width: 250,
+														display: 'flex',
+														justifyContent: 'space-between',
+														border: '1px solid grey',
+														padding: 5,
+														cursor: 'pointer',
+														color: paymentMethods?.find(
 															(x) => x.system_name === method.system_name
 														)
-													) {
-														setPaymentMethods(
-															newSelected.filter(
-																(x) => x.system_name !== method.system_name
+															? 'white'
+															: 'grey',
+													}}
+													onClick={() => {
+														const newSelected = [...paymentMethods];
+
+														if (
+															newSelected.find(
+																(x) => x.system_name === method.system_name
 															)
-														);
-													} else {
-														newSelected.push(method);
-														setPaymentMethods(newSelected);
-														setSelectedMethod(method);
-														setAddMethodDetails(true);
-													}
-												}}
-											>
-												<div>{method.system_name}</div>
+														) {
+															setPaymentMethods(
+																newSelected.filter(
+																	(x) => x.system_name !== method.system_name
+																)
+															);
+														} else {
+															newSelected.push(method);
+															setPaymentMethods(newSelected);
+															setSelectedMethod(method);
+															setAddMethodDetails(true);
+														}
+													}}
+												>
+													<div>{method.system_name}</div>
+													{paymentMethods?.find(
+														(x) => x.system_name === method.system_name
+													) && <div style={{ color: 'white' }}>✔</div>}
+												</div>
+												{paymentMethods?.find(
+													(x) => x.system_name === method.system_name
+												) && (
+													<div
+														onClick={() => {
+															setSelectedMethod(method);
+															setAddMethodDetails(true);
+														}}
+														style={{ color: 'white', cursor: 'pointer' }}
+													>
+														<EditWrapper stringId="P2P.EDIT_UPPERCASE">
+															<span style={{ textDecoration: 'underline' }}>
+																{STRINGS['P2P.EDIT_UPPERCASE']}
+															</span>
+														</EditWrapper>
+													</div>
+												)}
 											</div>
 										);
 									})}
@@ -636,6 +660,16 @@ const P2PPostDeal = ({
 							setStep(step + 1);
 						} else {
 							try {
+								if (autoResponse.length > 240) {
+									message.error(STRINGS['P2P.AUTO_RESPONSE_LIMIT']);
+									return;
+								}
+
+								if (terms.length > 240) {
+									message.error(STRINGS['P2P.TERMS_RESPONSE_LIMIT']);
+									return;
+								}
+
 								if (selectedDealEdit) {
 									await editDeal({
 										id: selectedDealEdit.id,
