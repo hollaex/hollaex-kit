@@ -154,6 +154,7 @@ class Form extends Component {
 			getWithdrawCurrency,
 			currency,
 			coins,
+			selectedNetwork,
 		} = this.props;
 		const currentCurrency = getWithdrawCurrency
 			? getWithdrawCurrency
@@ -172,7 +173,7 @@ class Form extends Component {
 				amount: getWithdrawAmount,
 				address: getWithdrawAddress,
 				fee_coin: currentCurrency,
-				network: network,
+				network: network ? network : selectedNetwork,
 			};
 			if (!coins[currentCurrency]?.network) {
 				delete values.network;
@@ -205,7 +206,37 @@ class Form extends Component {
 	};
 
 	onSubmitOtp = ({ otp_code = '' }) => {
-		const values = this.props.data;
+		const {
+			data,
+			getWithdrawAmount,
+			getWithdrawAddress,
+			selectedMethod,
+			receiverWithdrawalEmail,
+			getWithdrawNetworkOptions,
+			getWithdrawNetwork,
+			selectedNetwork,
+		} = this.props;
+		const network = getWithdrawNetworkOptions
+			? getWithdrawNetworkOptions
+			: getWithdrawNetwork;
+		let values = { ...data };
+		if (selectedMethod === 'Email') {
+			values = {
+				...data,
+				email: receiverWithdrawalEmail,
+				amount: getWithdrawAmount,
+				address: '',
+				method: 'email',
+				network: network ? network : selectedNetwork,
+			};
+		} else {
+			values = {
+				...data,
+				amount: getWithdrawAmount,
+				address: getWithdrawAddress,
+				network: network ? network : selectedNetwork,
+			};
+		}
 		return this.props
 			.onSubmitWithdrawReq({
 				...values,
