@@ -953,7 +953,7 @@ const fetchP2PFeedbacks = async (user_id, opts = {
 		where: {
 			created_at: timeframe,
 			user_id: user_id,
-		...(opts.transaction_id && { id: opts.transaction_id }),
+		...(opts.transaction_id && { transaction_id: opts.transaction_id }),
 		},
 		order: [ordering],
 		...(!opts.format && pagination),
