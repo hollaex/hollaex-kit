@@ -1945,6 +1945,7 @@
 		"BACK": "Back",
 		"ORDER": "ORDER",
 		"BUY_COIN": "Buy",
+		"SELL_COIN": "Sell",
 		"TRANSACTION_ID": "Transaction ID",
 		"AMOUNT_TO": "Amount to",
 		"SELL": "sell",

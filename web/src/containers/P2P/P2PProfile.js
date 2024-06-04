@@ -40,7 +40,8 @@ const P2PProfile = ({
 		<div
 			className={classnames(...['P2pOrder', isMobile ? 'mobile-view-p2p' : ''])}
 			style={{
-				minHeight: 600,
+				height: 600,
+				overflowY: 'auto',
 				width: '100%',
 				padding: 20,
 			}}

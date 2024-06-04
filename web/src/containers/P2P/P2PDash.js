@@ -82,7 +82,8 @@ const P2PDash = ({
 		<div
 			className={classnames(...['P2pOrder', isMobile ? 'mobile-view-p2p' : ''])}
 			style={{
-				minHeight: 800,
+				height: 800,
+				overflowY: 'auto',
 				width: '100%',
 				padding: 20,
 			}}
@@ -381,7 +382,7 @@ const P2PDash = ({
 																backgroundColor: '#288500',
 																color: 'white',
 															}}
-															disabled={loading}
+															disabled={loading || expandRow}
 															onClick={async () => {
 																try {
 																	if (!expandRow && deal.id !== selectedDeal) {
