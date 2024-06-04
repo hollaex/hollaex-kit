@@ -154,7 +154,12 @@ const fetchP2PTransactions = async (user_id, opts = {
 				model: getModel('user'),
 				as: 'merchant',
 				attributes: ['id', 'full_name']
-			}
+			},
+			{
+				model: getModel('user'),
+				as: 'buyer',
+				attributes: ['id', 'full_name']
+			},
 		]
 	};
 
@@ -427,6 +432,11 @@ const createP2PTransaction = async (data) => {
 	}
 
 	//Cant have more than 3 active transactions per user
+	const userTransactions = await getModel('p2pTransaction').findAll({ where: { user_id: buyer.id, transaction_status: "active" } });
+
+	if (userTransactions.length > 3) {
+		throw new Error('You have currently 3 active order, please complete them before creating another one');
+	}
 
 	const merchant = await getUserByKitId(p2pDeal.merchant_id);
 
@@ -435,10 +445,14 @@ const createP2PTransaction = async (data) => {
 	const price = new BigNumber(exchange_rate).multipliedBy(1 + (spread / 100));
 	const amount_digital_currency = new BigNumber(amount_fiat).dividedBy(price).toNumber();
 
-	const feeAmount = (new BigNumber(amount_digital_currency).multipliedBy(p2pConfig.merchant_fee))
+	const merchantFeeAmount = (new BigNumber(amount_digital_currency).multipliedBy(p2pConfig.merchant_fee))
 	.dividedBy(100).toNumber();
 
-	if (new BigNumber(merchantBalance).comparedTo(new BigNumber(amount_digital_currency + feeAmount)) !== 1) {
+	const buyerFeeAmount = (new BigNumber(amount_digital_currency).multipliedBy(p2pConfig.user_fee))
+		.dividedBy(100).toNumber();
+		
+
+	if (new BigNumber(merchantBalance).comparedTo(new BigNumber(amount_digital_currency + merchantFeeAmount + buyerFeeAmount)) !== 1) {
         throw new Error('Transaction is not possible at the moment');
     }
 	
@@ -467,7 +481,7 @@ const createP2PTransaction = async (data) => {
 	data.user_id = user_id;
 	data.amount_digital_currency = amount;
 	data.deal_id = deal_id;
-	const lock = await getNodeLib().lockBalance(merchant.network_id, p2pDeal.buying_asset, amount_digital_currency + feeAmount);
+	const lock = await getNodeLib().lockBalance(merchant.network_id, p2pDeal.buying_asset, amount_digital_currency + merchantFeeAmount + buyerFeeAmount);
 	data.locked_asset_id = lock.id;
 	data.price = price.toNumber();
 
@@ -939,11 +953,10 @@ const fetchP2PFeedbacks = async (user_id, opts = {
 		where: {
 			created_at: timeframe,
 			user_id: user_id,
-			
+		...(opts.transaction_id && { transaction_id: opts.transaction_id }),
 		},
 		order: [ordering],
 		...(!opts.format && pagination),
-		...(opts.transaction_id && { transaction_id: opts.transaction_id }),
 		include: [
 			{
 				model: getModel('user'),

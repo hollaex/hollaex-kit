@@ -1963,10 +1963,14 @@
 		"EXPECTED_TIME": "Expected time until funds are release: 30 minutes",
 		"PAYMENT_TIME": "Please make the payment in the time provided above.",
 		"ORDER_CANCELLED": "The order will otherwise be cancelled",
+		"AUTO_RESPONSE_LIMIT": "Auto response text must be no longer than 240 characters",
+		"TERMS_RESPONSE_LIMIT": "Terms must be no longer than 240 characters",
 		"FUNDS_CREDITED": "Once funds are released you will find the funds credited to your funding wallet",
 		"VENDOR_CANCELLED": "Vendor cancelled the order, there will not be transfer of funds, If you think this is an error, Please contact support",
 		"ORDER_COMPLETE": "ORDER COMPLETE",
-		"FUNDS_TRANSFERRED": "Vendor confirmed the transaction and funds transferred to your balance.",
+		"FUNDS_TRANSFERRED": "Vendor confirmed the transaction and funds have been transferred to your balance.",
+		"GO_DEPOSIT": "Go to your deposits",
+		"GO_WITHDRAWALS": "Go to your withdrawals",
 		"VENDOR_APPEALED": "Transaction appealed by the vendor, Please contact support with transaction id to resolve the issue",
 		"USER_APPEALED": "You appealed the transaction, Please contact support with transaction id to resolve the issue",
 		"ORDER_COMPLETE_VENDOR": "You've marked this order as complete and released the funds",
@@ -1980,7 +1984,9 @@
 		"CONFIRM_AND_RELEASE_CRYPTO": "CONFIRM AND RELEASE CRYPTO",
 		"CONFIRMED_TRANSACTION": "You have confirmed the transaction",
 		"CHAT_WITH_VENDOR": "CHAT WITH VENDOR",
+		"CHAT_WITH_USER": "CHAT WITH USER",
 		"VENDOR_NAME": "Vendor name:",
+		"USER_NAME": "User name:",
 		"ORDER_INITIATED": "You've initiated and created an order with",
 		"CONFIRM_PAYMENT": "Please communicate with the vendor to confirm your incoming payment.",
 		"YOU": "You",
@@ -2050,6 +2056,8 @@
 		"ANONYMOUS": "Anonymous",
 		"TERMS_CONDITIONS": "Terms and conditions",
 		"PAYMENT_TIME_LIMIT": "Payment time limit 30 minutes",
-		"MINUTES": "minutes"
+		"AMOUNT_SEND_RELEASE": "(Amount of crypto you'll sell and release)",
+		"MINUTES": "minutes",
+		"EDIT_UPPERCASE": "EDIT"
 	}
 }

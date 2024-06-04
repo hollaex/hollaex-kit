@@ -41,6 +41,7 @@ const nestedIcons = {
 		APPS: '/assets/images/apps.svg',
 		API: '/assets/images/tab-api.svg',
 		STAKE: '/assets/images/stake-page-icon.svg',
+		P2P: '/assets/images/p2p-feature.svg',
 	},
 
 	TOKEN: {

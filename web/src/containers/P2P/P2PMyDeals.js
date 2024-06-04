@@ -211,10 +211,9 @@ const P2PMyDeals = ({
 									<td style={{ width: '15%' }} className="td-fit">
 										<Button
 											style={{
-												backgroundColor:
-													deal.side === 'buy' ? '#288500' : 'red',
 												color: 'white',
 											}}
+											className="sellSideP2P"
 										>
 											{deal.side.toUpperCase()}{' '}
 										</Button>

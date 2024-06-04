@@ -153,11 +153,11 @@ const P2POrders = ({
 										<td style={{ width: '17%' }}>
 											<Button
 												style={{
-													backgroundColor: '#288500',
 													color: 'white',
 												}}
+												className="sellSideP2P"
 											>
-												<EditWrapper stringId="P2P.BUY_COIN">{`Buy ${transaction?.deal?.buying_asset?.toUpperCase()}`}</EditWrapper>
+												<EditWrapper stringId="P2P.BUY_COIN">{`Sell ${transaction?.deal?.buying_asset?.toUpperCase()}`}</EditWrapper>
 											</Button>
 										</td>
 
@@ -177,7 +177,7 @@ const P2POrders = ({
 											{transaction?.deal?.buying_asset?.toUpperCase()}
 										</td>
 										<td style={{ width: '10%' }}>
-											{transaction?.merchant?.full_name || (
+											{transaction?.buyer?.full_name || (
 												<EditWrapper stringId="P2P.ANONYMOUS">
 													{STRINGS['P2P.ANONYMOUS']}
 												</EditWrapper>
