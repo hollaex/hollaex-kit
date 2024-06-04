@@ -365,58 +365,68 @@ const P2PDash = ({
 												style={{ width: '30%', padding: 10 }}
 												className="td-fit"
 											>
-												<div
-													style={{
-														display: 'flex',
-														justifyContent: 'flex-end',
-													}}
-												>
-													<Button
+												{!(
+													expandRow &&
+													expandRow &&
+													deal.id === selectedDeal.id
+												) && (
+													<div
 														style={{
-															backgroundColor: '#288500',
-															color: 'white',
-														}}
-														disabled={loading}
-														onClick={async () => {
-															try {
-																if (!expandRow && deal.id !== selectedDeal) {
-																	setExpandRow(true);
-																	setSelectedDeal(deal);
-																	return;
-																}
-																if (amountFiat && selectedMethod) {
-																	setLoading(true);
-																	const transaction = await createTransaction({
-																		deal_id: selectedDeal.id,
-																		amount_fiat: amountFiat,
-																		payment_method_used: selectedMethod,
-																	});
-																	message.success(STRINGS['P2P.ORDER_CREATED']);
-																	const transData = await fetchTransactions({
-																		id: transaction.id,
-																	});
-
-																	setSelectedTransaction(transData.data[0]);
-																	setDisplayOrder(true);
-																	setLoading(false);
-																} else {
-																	message.error(
-																		STRINGS[
-																			'P2P.SELECT_PAYMENT_METHOD_AND_AMOUNT'
-																		]
-																	);
-																	setLoading(false);
-																}
-															} catch (error) {
-																message.error(error.data.message);
-																setLoading(false);
-															}
+															display: 'flex',
+															justifyContent: 'flex-end',
 														}}
 													>
-														{deal.side === 'sell' ? 'BUY' : 'SELL'}{' '}
-														{deal.buying_asset.toUpperCase()} {'>'}
-													</Button>
-												</div>
+														<Button
+															style={{
+																backgroundColor: '#288500',
+																color: 'white',
+															}}
+															disabled={loading}
+															onClick={async () => {
+																try {
+																	if (!expandRow && deal.id !== selectedDeal) {
+																		setExpandRow(true);
+																		setSelectedDeal(deal);
+																		return;
+																	}
+																	if (amountFiat && selectedMethod) {
+																		setLoading(true);
+																		const transaction = await createTransaction(
+																			{
+																				deal_id: selectedDeal.id,
+																				amount_fiat: amountFiat,
+																				payment_method_used: selectedMethod,
+																			}
+																		);
+																		message.success(
+																			STRINGS['P2P.ORDER_CREATED']
+																		);
+																		const transData = await fetchTransactions({
+																			id: transaction.id,
+																		});
+
+																		setSelectedTransaction(transData.data[0]);
+																		setDisplayOrder(true);
+																		setLoading(false);
+																	} else {
+																		message.error(
+																			STRINGS[
+																				'P2P.SELECT_PAYMENT_METHOD_AND_AMOUNT'
+																			]
+																		);
+																		setLoading(false);
+																	}
+																} catch (error) {
+																	message.error(error.data.message);
+																	setLoading(false);
+																}
+															}}
+														>
+															{deal.side === 'sell' ? 'BUY' : 'SELL'}{' '}
+															{deal.buying_asset.toUpperCase()} {'>'}
+														</Button>
+													</div>
+												)}
 											</td>
 										</tr>
 										{expandRow && expandRow && deal.id === selectedDeal.id && (
@@ -513,9 +523,13 @@ const P2PDash = ({
 																justifyContent: 'space-between',
 															}}
 														>
-															<EditWrapper stringId="P2P.SPEND_AMOUNT">
-																{STRINGS['P2P.SPEND_AMOUNT']}
-															</EditWrapper>
+															<span>
+																<EditWrapper stringId="P2P.SPEND_AMOUNT">
+																	{STRINGS['P2P.SPEND_AMOUNT']}
+																</EditWrapper>{' '}
+																({deal.spending_asset.toUpperCase()})
+															</span>
+
 															<span>
 																<InputNumber
 																	style={{ width: 100 }}
@@ -548,16 +562,101 @@ const P2PDash = ({
 																justifyContent: 'space-between',
 															}}
 														>
-															<EditWrapper stringId="P2P.AMOUNT_TO_RECEIVE">
-																{STRINGS['P2P.AMOUNT_TO_RECEIVE']}
-															</EditWrapper>
+															<span>
+																<EditWrapper stringId="P2P.AMOUNT_TO_RECEIVE">
+																	{STRINGS['P2P.AMOUNT_TO_RECEIVE']}
+																</EditWrapper>{' '}
+																({deal.buying_asset.toUpperCase()})
+															</span>
+
 															<span>
 																<Input
 																	style={{ width: 100 }}
 																	readOnly
 																	value={amountCurrency}
+																	placeholder={deal.buying_asset.toUpperCase()}
 																/>
 															</span>
+														</div>
+														<div
+															style={{
+																display: 'flex',
+																justifyContent: 'flex-end',
+																marginTop: 15,
+																gap: 10,
+															}}
+														>
+															<Button
+																style={{
+																	backgroundColor: '#949596',
+																	color: 'white',
+																}}
+																onClick={async () => {
+																	setExpandRow(false);
+																	setSelectedDeal(null);
+																	setAmountCurrency();
+																	setAmountFiat();
+																}}
+															>
+																<EditWrapper stringId="P2P.CANCEL">
+																	{STRINGS['P2P.CANCEL']}
+																</EditWrapper>
+															</Button>
+
+															<Button
+																style={{
+																	backgroundColor: '#288500',
+																	color: 'white',
+																}}
+																disabled={loading}
+																onClick={async () => {
+																	try {
+																		if (
+																			!expandRow &&
+																			deal.id !== selectedDeal
+																		) {
+																			setExpandRow(true);
+																			setSelectedDeal(deal);
+																			return;
+																		}
+																		if (amountFiat && selectedMethod) {
+																			setLoading(true);
+																			const transaction = await createTransaction(
+																				{
+																					deal_id: selectedDeal.id,
+																					amount_fiat: amountFiat,
+																					payment_method_used: selectedMethod,
+																				}
+																			);
+																			message.success(
+																				STRINGS['P2P.ORDER_CREATED']
+																			);
+																			const transData = await fetchTransactions(
+																				{
+																					id: transaction.id,
+																				}
+																			);
+
+																			setSelectedTransaction(transData.data[0]);
+																			setDisplayOrder(true);
+																			setLoading(false);
+																		} else {
+																			message.error(
+																				STRINGS[
+																					'P2P.SELECT_PAYMENT_METHOD_AND_AMOUNT'
+																				]
+																			);
+																			setLoading(false);
+																		}
+																	} catch (error) {
+																		message.error(error.data.message);
+																		setLoading(false);
+																	}
+																}}
+															>
+																{deal.side === 'sell' ? 'BUY' : 'SELL'}{' '}
+																{deal.buying_asset.toUpperCase()} {'>'}
+															</Button>
 														</div>
 													</div>
 												</td>

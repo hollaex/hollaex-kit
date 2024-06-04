@@ -2,13 +2,14 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
-import { Button, Checkbox, Input, Modal, Select } from 'antd';
+import { Button, Checkbox, Input, Modal, Select, message } from 'antd';
 import BigNumber from 'bignumber.js';
 import { Coin, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 import {
 	CaretDownOutlined,
 	CheckOutlined,
+	CloseOutlined,
 	ExclamationCircleFilled,
 } from '@ant-design/icons';
 import { getNetworkNameByKey } from 'utils/wallet';
@@ -168,6 +169,7 @@ const RenderWithdraw = ({
 				setCurrStep({ ...currStep, stepTwo: true });
 			}
 			setCurrStep({ ...currStep, stepTwo: true, stepThree: true });
+			getWithdrawMAx(defaultCurrency);
 		} else {
 			setSelectedAsset(null);
 		}
@@ -179,6 +181,11 @@ const RenderWithdraw = ({
 		}
 		getOraclePrices();
 		setCurrStep({ ...currStep, stepTwo: true });
+
+		return () => {
+			setIsValidAdress(false);
+			setIsValidEmail(false);
+		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -230,7 +237,7 @@ const RenderWithdraw = ({
 		}
 	};
 
-	const getWithdrawlMAx = async (getWithdrawCurrency, isMaxAmount = false) => {
+	const getWithdrawMAx = async (getWithdrawCurrency, isMaxAmount = false) => {
 		try {
 			const res = await getWithdrawalMax(
 				getWithdrawCurrency && getWithdrawCurrency,
@@ -239,6 +246,8 @@ const RenderWithdraw = ({
 					: getWithdrawNetworkOptions
 					? getWithdrawNetworkOptions
 					: network
+					? network
+					: defaultNetwork
 			);
 			isMaxAmount && setWithdrawAmount(res?.data?.amount);
 			setMaxAmount(res?.data?.amount);
@@ -253,6 +262,8 @@ const RenderWithdraw = ({
 		setReceiverEmail('');
 		setSelectedMethod(method);
 		setCurrStep((prev) => ({ ...prev, stepTwo: true }));
+		setIsValidAdress(false);
+		setIsValidEmail(false);
 		if (!method) {
 			setCurrStep((prev) => ({
 				...prev,
@@ -290,8 +301,10 @@ const RenderWithdraw = ({
 			}
 			setWithdrawCurrency(val);
 			network = val ? val : coins[getWithdrawCurrency]?.symbol;
-			getWithdrawlMAx(val);
+			getWithdrawMAx(val);
 			setWithdrawNetworkOptions(null);
+			setIsValidAdress(false);
+			setIsValidEmail(false);
 			router.push(`/wallet/${val}/withdraw`);
 		} else if (!val) {
 			setWithdrawCurrency('');
@@ -301,7 +314,7 @@ const RenderWithdraw = ({
 				stepFour: false,
 				stepFive: false,
 			}));
-			setWithdrawAmount(0);
+			setWithdrawAmount('');
 		}
 		setSelectedAsset(
 			val && coins[val] && coins[val].allow_withdrawal ? val : ''
@@ -342,11 +355,20 @@ const RenderWithdraw = ({
 		setWithdrawAddress(val);
 		setReceiverEmail(val);
 		setIsValidAdress({ isValid: !isValid });
-		setWithdrawAmount(0);
+		setWithdrawAmount('');
 	};
 
 	const onHandleAmount = (val) => {
 		setWithdrawAmount(val);
+		if (val > maxAmount && maxAmount > 0) {
+			message.error(
+				`requested amount exceeds maximum withrawal limit of ${maxAmount} ${
+					getWithdrawCurrency
+						? getWithdrawCurrency.toUpperCase()
+						: defaultCurrency.toUpperCase()
+				}`
+			);
+		}
 	};
 
 	const onHandleRemove = () => {
@@ -360,7 +382,7 @@ const RenderWithdraw = ({
 	const renderAmountIcon = () => {
 		return (
 			<div
-				onClick={() => getWithdrawlMAx(getWithdrawCurrency, true)}
+				onClick={() => getWithdrawMAx(getWithdrawCurrency, true)}
 				className="d-flex render-amount-icon-wrapper"
 			>
 				<span className="suffix-text">{renderLabel('CALCULATE_MAX')}</span>
@@ -439,6 +461,7 @@ const RenderWithdraw = ({
 			setWithdrawCurrency('');
 		}
 		if (type === 'network') {
+			setWithdrawAddress(null);
 			setWithdrawNetworkOptions(null);
 		}
 		setCurrStep({
@@ -447,6 +470,8 @@ const RenderWithdraw = ({
 			stepFour: false,
 			stepFive: false,
 		});
+		setIsValidAdress(false);
+		setIsValidEmail(false);
 	};
 
 	const onHandleSelect = (symbol) => {
@@ -498,7 +523,9 @@ const RenderWithdraw = ({
 		coinLength && coinLength?.length > 1 && selectedMethod !== 'Email'
 			? getWithdrawNetworkOptions
 			: true;
-
+	const renderAmountField =
+		(selectedMethod === 'Email' && isValidEmail) ||
+		(selectedMethod === 'Address' && isValidAddress);
 	return (
 		<div
 			className={isDisbaleWithdraw ? 'withdraw-deposit-disable mt-1' : 'mt-1'}
@@ -814,7 +841,11 @@ const RenderWithdraw = ({
 										}
 									></Input>
 								)}
-								{isEmailAndAddress && <CheckOutlined className="mt-3 ml-3" />}
+								{isValidEmail || isValidAddress ? (
+									<CheckOutlined className="mt-3 ml-3" />
+								) : (
+									<CloseOutlined className="mt-3 ml-3" />
+								)}
 							</div>
 						)}
 					</div>
@@ -925,12 +956,12 @@ const RenderWithdraw = ({
 				<div className="d-flex h-25">
 					<div className="custom-field d-flex flex-column">
 						<span
-							className={`custom-step${currStep.stepFive ? '-selected' : ''}`}
+							className={`custom-step${renderAmountField ? '-selected' : ''}`}
 						>
 							{isCondition ? 6 : selectedMethod === 'Email' ? 4 : 5}
 						</span>
 						<span
-							className={currStep.stepFive ? 'custom-line-selected-end' : ''}
+							className={renderAmountField ? 'custom-line-selected-end' : ''}
 						></span>
 					</div>
 					<div
@@ -941,15 +972,15 @@ const RenderWithdraw = ({
 						}
 					>
 						<div className=" d-flex mt-2 ml-5">
-							{currStep.stepFive && (
+							{renderAmountField && (
 								<span className="amount-field-icon">
 									<Coin iconId={iconId} type="CS4" />
 								</span>
 							)}
-							{currStep.stepFive && (
+							{renderAmountField && (
 								<span
 									className={`ml-2 withdraw-main-label${
-										currStep.stepFive ? '-selected' : ''
+										renderAmountField ? '-selected' : ''
 									}`}
 								>
 									{getWithdrawCurrency.toUpperCase()}
@@ -957,13 +988,13 @@ const RenderWithdraw = ({
 							)}
 							<div
 								className={`ml-1 withdraw-main-label${
-									currStep.stepFive ? '-selected' : ''
+									renderAmountField ? '-selected' : ''
 								}`}
 							>
 								{renderLabel('ACCORDIAN.AMOUNT')}
 							</div>
 						</div>
-						{currStep.stepFive && (
+						{renderAmountField && (
 							<div
 								className={
 									isMobile
@@ -973,14 +1004,19 @@ const RenderWithdraw = ({
 							>
 								<div className="d-flex">
 									<Input
-										disabled={maxAmount === 0}
+										disabled={getWithdrawAmount < 0}
 										onChange={(e) => onHandleAmount(e.target.value)}
 										value={getWithdrawAmount}
 										className="destination-input-field"
 										suffix={renderAmountIcon()}
 										type="number"
+										placeholder="Enter Amount"
 									></Input>
-									{!isAmount && <CheckOutlined className="mt-3 ml-3" />}
+									{!isAmount ? (
+										<CheckOutlined className="mt-3 ml-3" />
+									) : (
+										<CloseOutlined className="mt-3 ml-3" />
+									)}
 								</div>
 								{currStep.stepFive && (
 									<div

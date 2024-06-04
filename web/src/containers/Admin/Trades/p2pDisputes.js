@@ -107,7 +107,9 @@ const P2PDisputes = ({ coins }) => {
 			dataIndex: '',
 			key: '',
 			render: (user_id, data) => {
-				return (
+				return !data.status ? (
+					<div className="d-flex">Closed</div>
+				) : (
 					<div className="d-flex">
 						<Button
 							disabled={!data.status}

@@ -105,6 +105,13 @@ module.exports = function (sequelize, DataTypes) {
             onDelete: 'CASCADE'
         });
 
+        Transaction.belongsTo(models.User, {
+            as: 'buyer',
+            foreignKey: 'user_id',
+            targetKey: 'id',
+            onDelete: 'CASCADE'
+        });
+
         Transaction.belongsTo(models.P2pDeal, {
             as: 'deal',
             foreignKey: 'deal_id',
