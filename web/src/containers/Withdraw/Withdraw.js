@@ -174,8 +174,8 @@ const RenderWithdraw = ({
 			setSelectedAsset(null);
 		}
 		if (
-			['xrp', 'xlm'].includes(defaultCurrency) ||
-			['xlm', 'ton'].includes(currentNetwork)
+			['xrp', 'xlm', 'ton', 'pmn'].includes(defaultCurrency) ||
+			['xrp', 'xlm', 'ton', 'pmn'].includes(currentNetwork)
 		) {
 			setIsWarning(true);
 		}
@@ -478,8 +478,8 @@ const RenderWithdraw = ({
 		const curr = onHandleSymbol(symbol);
 		if (curr !== symbol) {
 			if (
-				['xrp', 'xlm'].includes(defaultCurrency) ||
-				['xlm', 'ton'].includes(defaultNetwork)
+				['xrp', 'xlm', 'ton'].includes(defaultCurrency) ||
+				['xrp', 'xlm', 'ton'].includes(defaultNetwork)
 			) {
 				setIsWarning(true);
 			} else {
@@ -841,7 +841,13 @@ const RenderWithdraw = ({
 										}
 									></Input>
 								)}
-								{isValidEmail || isValidAddress ? (
+								{selectedMethod === 'Email' ? (
+									isValidEmail ? (
+										<CheckOutlined className="mt-3 ml-3" />
+									) : (
+										<CloseOutlined className="mt-3 ml-3" />
+									)
+								) : isValidAddress ? (
 									<CheckOutlined className="mt-3 ml-3" />
 								) : (
 									<CloseOutlined className="mt-3 ml-3" />
