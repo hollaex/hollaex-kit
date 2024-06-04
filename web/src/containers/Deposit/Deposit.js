@@ -110,8 +110,8 @@ const DepositComponent = ({
 				setCurrStep({ ...currStep, stepTwo: true });
 			}
 			if (
-				['xrp', 'xlm'].includes(defaultCurrency) ||
-				['xlm', 'ton'].includes(defaultNetwork)
+				['xrp', 'xlm', 'ton', 'pmn'].includes(defaultCurrency) ||
+				['xrp', 'xlm', 'ton', 'pmn'].includes(defaultNetwork)
 			) {
 				setIsVisible(true);
 			}
@@ -254,8 +254,8 @@ const DepositComponent = ({
 		const curr = onHandleSymbol(symbol);
 		if (curr !== symbol) {
 			if (
-				['xrp', 'xlm'].includes(defaultCurrency) ||
-				['xlm', 'ton'].includes(defaultNetwork)
+				['xrp', 'xlm', 'ton'].includes(defaultCurrency) ||
+				['xrp', 'xlm', 'ton'].includes(defaultNetwork)
 			) {
 				setIsVisible(true);
 			} else {
