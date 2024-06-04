@@ -53,8 +53,10 @@ class Form extends Component {
 			onClickHelp,
 			icons: ICONS,
 			isEnableOtpForm,
+			isWithdraw,
 		} = this.props;
 		const { formValues } = this.state;
+		const errorMsg = isWithdraw ? '' : error;
 
 		return (
 			<div className="otp_form-wrapper">
@@ -98,7 +100,7 @@ class Form extends Component {
 					<div className="w-100 otp_form-fields">
 						{renderFields(formValues, {
 							isSubmitting: submitting,
-							error,
+							error: errorMsg,
 							handleSubmit,
 						})}
 					</div>
