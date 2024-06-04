@@ -155,6 +155,7 @@ class Form extends Component {
 			currency,
 			coins,
 			selectedNetwork,
+			optionalTag,
 		} = this.props;
 		const currentCurrency = getWithdrawCurrency
 			? getWithdrawCurrency
@@ -171,7 +172,9 @@ class Form extends Component {
 				...data,
 				email: email,
 				amount: getWithdrawAmount,
-				address: getWithdrawAddress,
+				address: optionalTag
+					? `${getWithdrawAddress}:${optionalTag}`
+					: getWithdrawAddress,
 				fee_coin: currentCurrency,
 				network: network ? network : selectedNetwork,
 			};
@@ -208,6 +211,9 @@ class Form extends Component {
 	onSubmitOtp = ({ otp_code = '' }) => {
 		const {
 			data,
+			coins,
+			currency,
+			getWithdrawCurrency,
 			getWithdrawAmount,
 			getWithdrawAddress,
 			selectedMethod,
@@ -215,10 +221,14 @@ class Form extends Component {
 			getWithdrawNetworkOptions,
 			getWithdrawNetwork,
 			selectedNetwork,
+			optionalTag,
 		} = this.props;
 		const network = getWithdrawNetworkOptions
 			? getWithdrawNetworkOptions
 			: getWithdrawNetwork;
+		const currentCurrency = getWithdrawCurrency
+			? getWithdrawCurrency
+			: currency;
 		let values = { ...data };
 		if (selectedMethod === 'Email') {
 			values = {
@@ -233,9 +243,14 @@ class Form extends Component {
 			values = {
 				...data,
 				amount: getWithdrawAmount,
-				address: getWithdrawAddress,
+				address: optionalTag
+					? `${getWithdrawAddress}:${optionalTag}`
+					: getWithdrawAddress,
 				network: network ? network : selectedNetwork,
 			};
+		}
+		if (!coins[currentCurrency]?.network) {
+			delete values.network;
 		}
 		return this.props
 			.onSubmitWithdrawReq({
@@ -317,7 +332,12 @@ class Form extends Component {
 			fee: selectedMethod === 'Email' ? 0 : getFee,
 			amount: getWithdrawAmount,
 			destination_tag: optionalTag && optionalTag,
-			address: selectedMethod === 'Email' ? '' : getWithdrawAddress,
+			address:
+				selectedMethod === 'Email'
+					? ''
+					: optionalTag
+					? `${getWithdrawAddress}:${optionalTag}`
+					: getWithdrawAddress,
 			network: selectedMethod === 'Email' ? 'email' : currentNetwork,
 			fee_coin: getWithdrawCurrency,
 			method: selectedMethod === 'Email' ? 'email' : 'address',
