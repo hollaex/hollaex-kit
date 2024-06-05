@@ -37,6 +37,9 @@ const { isEmail } = require('validator');
 const BigNumber = require('bignumber.js');
 
 const isValidAddress = (currency, address, network) => {
+	if (address.indexOf('://') > -1) {
+		return false;
+	}
 	if (network === 'eth' || network === 'ethereum') {
 		return WAValidator.validate(address, 'eth');
 	} else if (network === 'stellar' || network === 'xlm') {

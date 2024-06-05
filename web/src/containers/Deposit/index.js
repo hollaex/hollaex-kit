@@ -204,6 +204,7 @@ class Deposit extends Component {
 			getDepositCurrency,
 			getDepositNetwork,
 			getDepositNetworkOptions,
+			coins,
 		} = this.props;
 		const { currency } = this.state;
 		const currentCurrency = getDepositCurrency ? getDepositCurrency : currency;
@@ -212,8 +213,13 @@ class Deposit extends Component {
 			: getDepositCurrency
 			? getDepositNetwork
 			: selectedNetwork;
-		if (currentCurrency && !addressRequest.error) {
-			createAddress(currentCurrency, network);
+		const hasNetwork = coins[currentCurrency]?.network;
+		if (hasNetwork) {
+			if (currentCurrency && !addressRequest.error) {
+				createAddress(currentCurrency, network);
+			}
+		} else if (currentCurrency && !addressRequest.error) {
+			createAddress(currentCurrency);
 		}
 	};
 
@@ -356,10 +362,7 @@ class Deposit extends Component {
 						)}
 					<div className={isFiat ? 'mt-5 inner_container' : 'inner_container'}>
 						<div className="information_block">
-							<div
-								className="information_block-text_wrapper"
-								// style={{ height: '1.5rem' }}
-							/>
+							<div className="information_block-text_wrapper" />
 							{renderBackToWallet(this.onGoBack)}
 							{openContactForm &&
 								renderNeedHelpAction(

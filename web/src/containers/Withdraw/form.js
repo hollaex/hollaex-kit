@@ -154,7 +154,7 @@ class Form extends Component {
 			getWithdrawCurrency,
 			currency,
 			coins,
-			selectedNetwork,
+			optionalTag,
 		} = this.props;
 		const currentCurrency = getWithdrawCurrency
 			? getWithdrawCurrency
@@ -162,6 +162,12 @@ class Form extends Component {
 		const network = getWithdrawNetworkOptions
 			? getWithdrawNetworkOptions
 			: getWithdrawNetwork;
+		const defaultNetwork =
+			currentCurrency &&
+			coins[currentCurrency]?.network &&
+			coins[currentCurrency]?.network !== 'other'
+				? coins[currentCurrency]?.network
+				: coins[currentCurrency]?.symbol;
 		if (this.props.otp_enabled) {
 			this.setState({ dialogOtpOpen: true });
 		} else {
@@ -171,9 +177,11 @@ class Form extends Component {
 				...data,
 				email: email,
 				amount: getWithdrawAmount,
-				address: getWithdrawAddress,
+				address: optionalTag
+					? `${getWithdrawAddress}:${optionalTag}`
+					: getWithdrawAddress,
 				fee_coin: currentCurrency,
-				network: network ? network : selectedNetwork,
+				network: network ? network : defaultNetwork,
 			};
 			if (!coins[currentCurrency]?.network) {
 				delete values.network;
@@ -208,17 +216,29 @@ class Form extends Component {
 	onSubmitOtp = ({ otp_code = '' }) => {
 		const {
 			data,
+			coins,
+			currency,
+			getWithdrawCurrency,
 			getWithdrawAmount,
 			getWithdrawAddress,
 			selectedMethod,
 			receiverWithdrawalEmail,
 			getWithdrawNetworkOptions,
 			getWithdrawNetwork,
-			selectedNetwork,
+			optionalTag,
 		} = this.props;
 		const network = getWithdrawNetworkOptions
 			? getWithdrawNetworkOptions
 			: getWithdrawNetwork;
+		const currentCurrency = getWithdrawCurrency
+			? getWithdrawCurrency
+			: currency;
+		const defaultNetwork =
+			currentCurrency &&
+			coins[currentCurrency]?.network &&
+			coins[currentCurrency]?.network !== 'other'
+				? coins[currentCurrency]?.network
+				: coins[currentCurrency]?.symbol;
 		let values = { ...data };
 		if (selectedMethod === 'Email') {
 			values = {
@@ -227,15 +247,20 @@ class Form extends Component {
 				amount: getWithdrawAmount,
 				address: '',
 				method: 'email',
-				network: network ? network : selectedNetwork,
+				network: network ? network : defaultNetwork,
 			};
 		} else {
 			values = {
 				...data,
 				amount: getWithdrawAmount,
-				address: getWithdrawAddress,
-				network: network ? network : selectedNetwork,
+				address: optionalTag
+					? `${getWithdrawAddress}:${optionalTag}`
+					: getWithdrawAddress,
+				network: network ? network : defaultNetwork,
 			};
+		}
+		if (!coins[currentCurrency]?.network) {
+			delete values.network;
 		}
 		return this.props
 			.onSubmitWithdrawReq({
@@ -317,7 +342,12 @@ class Form extends Component {
 			fee: selectedMethod === 'Email' ? 0 : getFee,
 			amount: getWithdrawAmount,
 			destination_tag: optionalTag && optionalTag,
-			address: selectedMethod === 'Email' ? '' : getWithdrawAddress,
+			address:
+				selectedMethod === 'Email'
+					? ''
+					: optionalTag
+					? `${getWithdrawAddress}:${optionalTag}`
+					: getWithdrawAddress,
 			network: selectedMethod === 'Email' ? 'email' : currentNetwork,
 			fee_coin: getWithdrawCurrency,
 			method: selectedMethod === 'Email' ? 'email' : 'address',
@@ -421,6 +451,7 @@ class Form extends Component {
 								<OtpForm
 									onSubmit={this.onSubmitOtp}
 									onClickHelp={openContactForm}
+									isWithdraw={true}
 								/>
 							) : !submitting ? (
 								<ReviewModalContent

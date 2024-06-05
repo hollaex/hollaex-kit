@@ -412,7 +412,7 @@ export const generateRoutes = (routes = []) => {
 					component={MainWallet}
 					onEnter={requireAuth}
 				/>
-				<Route path="p2p" name="P2P" component={P2P} onEnter={requireAuth} />
+				<Route path="p2p" name="P2P" component={P2P} />
 
 				<Route
 					path="p2p/order/:order_id"
