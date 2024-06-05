@@ -154,7 +154,6 @@ class Form extends Component {
 			getWithdrawCurrency,
 			currency,
 			coins,
-			selectedNetwork,
 			optionalTag,
 		} = this.props;
 		const currentCurrency = getWithdrawCurrency
@@ -163,6 +162,12 @@ class Form extends Component {
 		const network = getWithdrawNetworkOptions
 			? getWithdrawNetworkOptions
 			: getWithdrawNetwork;
+		const defaultNetwork =
+			currentCurrency &&
+			coins[currentCurrency]?.network &&
+			coins[currentCurrency]?.network !== 'other'
+				? coins[currentCurrency]?.network
+				: coins[currentCurrency]?.symbol;
 		if (this.props.otp_enabled) {
 			this.setState({ dialogOtpOpen: true });
 		} else {
@@ -176,7 +181,7 @@ class Form extends Component {
 					? `${getWithdrawAddress}:${optionalTag}`
 					: getWithdrawAddress,
 				fee_coin: currentCurrency,
-				network: network ? network : selectedNetwork,
+				network: network ? network : defaultNetwork,
 			};
 			if (!coins[currentCurrency]?.network) {
 				delete values.network;
@@ -220,7 +225,6 @@ class Form extends Component {
 			receiverWithdrawalEmail,
 			getWithdrawNetworkOptions,
 			getWithdrawNetwork,
-			selectedNetwork,
 			optionalTag,
 		} = this.props;
 		const network = getWithdrawNetworkOptions
@@ -229,6 +233,12 @@ class Form extends Component {
 		const currentCurrency = getWithdrawCurrency
 			? getWithdrawCurrency
 			: currency;
+		const defaultNetwork =
+			currentCurrency &&
+			coins[currentCurrency]?.network &&
+			coins[currentCurrency]?.network !== 'other'
+				? coins[currentCurrency]?.network
+				: coins[currentCurrency]?.symbol;
 		let values = { ...data };
 		if (selectedMethod === 'Email') {
 			values = {
@@ -237,7 +247,7 @@ class Form extends Component {
 				amount: getWithdrawAmount,
 				address: '',
 				method: 'email',
-				network: network ? network : selectedNetwork,
+				network: network ? network : defaultNetwork,
 			};
 		} else {
 			values = {
@@ -246,7 +256,7 @@ class Form extends Component {
 				address: optionalTag
 					? `${getWithdrawAddress}:${optionalTag}`
 					: getWithdrawAddress,
-				network: network ? network : selectedNetwork,
+				network: network ? network : defaultNetwork,
 			};
 		}
 		if (!coins[currentCurrency]?.network) {
@@ -441,6 +451,7 @@ class Form extends Component {
 								<OtpForm
 									onSubmit={this.onSubmitOtp}
 									onClickHelp={openContactForm}
+									isWithdraw={true}
 								/>
 							) : !submitting ? (
 								<ReviewModalContent
