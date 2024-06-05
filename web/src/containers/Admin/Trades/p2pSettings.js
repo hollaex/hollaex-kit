@@ -593,11 +593,30 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 									</>
 								) : (
 									<div>
-										{selectedPaymentMethods.map((x) => {
+										{selectedPaymentMethods.map((x, index) => {
 											return (
 												<div>
 													<span>{x.system_name}</span>
-													{/* <span style={{ marginLeft: 10 }} onClick={() => { setMethodEditMode() }}>EDIT</span><span style={{ marginLeft: 5 }} onClick={() => {  }}>DELETE</span> */}
+													<span
+														style={{
+															marginLeft: 10,
+															textDecoration: 'underline',
+															fontWeight: 'bold',
+															cursor: 'pointer',
+														}}
+														onClick={() => {
+															setDisplayNewPayment(true);
+															setMethodEditMode(true);
+															setCustomFields(x.fields);
+															setPaymentMethod({
+																...paymentMethod,
+																system_name: x.system_name,
+																selected_index: index,
+															});
+														}}
+													>
+														EDIT
+													</span>
 												</div>
 											);
 										})}
@@ -1290,7 +1309,9 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 					}}
 				>
 					<h1 style={{ fontWeight: '600', color: 'white' }}>
-						Create and add new payment methods
+						{methodEditMode
+							? 'Edit payment methods'
+							: 'Create and add new payment methods'}
 					</h1>
 					<div>
 						To add a payment method to your P2P platform, you can do so manually
@@ -1351,7 +1372,11 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 					})}
 
 					<div
-						style={{ fontWeight: 'bold', textDecoration: 'underline' }}
+						style={{
+							fontWeight: 'bold',
+							textDecoration: 'underline',
+							cursor: 'pointer',
+						}}
 						onClick={() => {
 							setPaymentFieldAdd(true);
 						}}
@@ -1370,6 +1395,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 						<Button
 							onClick={() => {
 								setDisplayNewPayment(false);
+								setMethodEditMode(false);
 							}}
 							style={{
 								backgroundColor: '#288500',
@@ -1384,13 +1410,31 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 
 						<Button
 							onClick={() => {
-								paymentMethods.push({
-									system_name: paymentMethod.system_name,
-									fields: customFields,
-								});
+								if (methodEditMode) {
+									const foundMethodIndex = paymentMethods.findIndex(
+										(x, index) => index === paymentMethod.selected_index
+									);
 
-								setPaymentMethods(paymentMethods);
-								setDisplayNewPayment(false);
+									if (foundMethodIndex > -1) {
+										const newMethods = [...paymentMethods];
+										newMethods[foundMethodIndex] = {
+											system_name: paymentMethod.system_name,
+											fields: customFields,
+										};
+										setPaymentMethods([...newMethods]);
+										setSelectedPaymentMethods([...newMethods]);
+										setDisplayNewPayment(false);
+									}
+								} else {
+									paymentMethods.push({
+										system_name: paymentMethod.system_name,
+										fields: customFields,
+									});
+
+									setPaymentMethods(paymentMethods);
+									setDisplayNewPayment(false);
+								}
+								setMethodEditMode(false);
 							}}
 							style={{
 								backgroundColor: '#288500',
@@ -1400,7 +1444,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 							}}
 							type="default"
 						>
-							Add
+							{methodEditMode ? 'Finish edit' : 'Add'}
 						</Button>
 					</div>
 				</Modal>
@@ -1449,7 +1493,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 
 					<div>
 						<div style={{ fontWeight: '600' }}>Required or optional</div>
-						<div style={{ marginLeft: 20 }}>
+						<div style={{ marginLeft: 20, marginTop: 5 }}>
 							<Radio.Group>
 								<Space direction="vertical" style={{ color: 'white' }}>
 									<Radio value={1} style={{ color: 'white' }}>
@@ -1481,6 +1525,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 						<Button
 							onClick={() => {
 								setPaymentFieldAdd(false);
+								setCustomField({});
 							}}
 							style={{
 								backgroundColor: '#288500',
@@ -1499,6 +1544,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 
 								setCustomFields([...customFields, customField]);
 								setPaymentFieldAdd(false);
+								setCustomField({});
 							}}
 							style={{
 								backgroundColor: '#288500',

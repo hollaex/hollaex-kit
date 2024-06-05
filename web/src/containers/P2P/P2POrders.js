@@ -25,6 +25,7 @@ const P2POrders = ({
 	setDisplayOrder,
 	setSelectedTransaction,
 	refresh,
+	user,
 	router,
 }) => {
 	const [transactions, setTransactions] = useState([]);
@@ -47,7 +48,8 @@ const P2POrders = ({
 		<div
 			className={classnames(...['P2pOrder', isMobile ? 'mobile-view-p2p' : ''])}
 			style={{
-				minHeight: 600,
+				height: 600,
+				overflowY: 'auto',
 				width: '100%',
 				padding: 20,
 			}}
@@ -151,14 +153,35 @@ const P2POrders = ({
 										}}
 									>
 										<td style={{ width: '17%' }}>
-											<Button
-												style={{
-													color: 'white',
-												}}
-												className="sellSideP2P"
-											>
-												<EditWrapper stringId="P2P.BUY_COIN">{`Sell ${transaction?.deal?.buying_asset?.toUpperCase()}`}</EditWrapper>
-											</Button>
+											{transaction?.user_id === user.id ? (
+												<Button
+													style={{
+														color: 'white',
+													}}
+													className="buySideP2P"
+												>
+													<span>
+														<EditWrapper stringId="P2P.BUY_COIN">
+															{STRINGS['P2P.BUY_COIN']}
+														</EditWrapper>
+														{` ${transaction?.deal?.buying_asset?.toUpperCase()}`}
+													</span>
+												</Button>
+											) : (
+												<Button
+													style={{
+														color: 'white',
+													}}
+													className="sellSideP2P"
+												>
+													<span>
+														<EditWrapper stringId="P2P.SELL_COIN">
+															{STRINGS['P2P.SELL_COIN']}
+														</EditWrapper>
+														{` ${transaction?.deal?.buying_asset?.toUpperCase()}`}
+													</span>
+												</Button>
+											)}
 										</td>
 
 										<td style={{ width: '17%', padding: 10 }}>
@@ -222,6 +245,7 @@ const mapStateToProps = (state) => ({
 	constants: state.app.constants,
 	transaction_limits: state.app.transaction_limits,
 	router: state.router,
+	user: state.user,
 });
 
 export default connect(mapStateToProps)(withRouter(withConfig(P2POrders)));
