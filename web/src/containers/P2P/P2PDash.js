@@ -325,7 +325,13 @@ const P2PDash = ({
 												)}
 											</td>
 											<td
-												style={{ width: '20%', padding: 10 }}
+												style={{ width: '20%', padding: 10, cursor: 'pointer' }}
+												onClick={() => {
+													setExpandRow(!expandRow);
+													setSelectedDeal(deal);
+													setAmountCurrency();
+													setAmountFiat();
+												}}
 												className="td-fit"
 											>
 												{formatRate(
@@ -336,8 +342,14 @@ const P2PDash = ({
 												{deal.spending_asset.toUpperCase()}
 											</td>
 											<td
-												style={{ width: '20%', padding: 10 }}
+												style={{ width: '20%', padding: 10, cursor: 'pointer' }}
 												className="td-fit"
+												onClick={() => {
+													setExpandRow(!expandRow);
+													setSelectedDeal(deal);
+													setAmountCurrency();
+													setAmountFiat();
+												}}
 											>
 												<div>
 													<EditWrapper stringId="P2P.AVAILABLE">
@@ -360,6 +372,13 @@ const P2PDash = ({
 													flexWrap: 'wrap',
 													display: 'flex',
 													padding: 10,
+													cursor: 'pointer'
+												}}
+												onClick={() => {
+													setExpandRow(!expandRow);
+													setSelectedDeal(deal);
+													setAmountCurrency();
+													setAmountFiat();
 												}}
 											>
 												{deal.payment_methods
