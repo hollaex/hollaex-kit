@@ -935,8 +935,9 @@ const createMerchantFeedback = async (data) => {
 	});
 };
 
-const fetchP2PFeedbacks = async (user_id, opts = {
+const fetchP2PFeedbacks = async (opts = {
 	transaction_id: null,
+	merchant_id: null,
     limit: null,
     page: null,
     order_by: null,
@@ -952,8 +953,8 @@ const fetchP2PFeedbacks = async (user_id, opts = {
 	const query = {
 		where: {
 			created_at: timeframe,
-			user_id: user_id,
 		...(opts.transaction_id && { transaction_id: opts.transaction_id }),
+		...(opts.merchant_id && { merchant_id: opts.merchant_id }),
 		},
 		order: [ordering],
 		...(!opts.format && pagination),
@@ -963,10 +964,6 @@ const fetchP2PFeedbacks = async (user_id, opts = {
 				as: 'user',
 				attributes: ['id', 'full_name']
 			},
-			{
-				model: getModel('P2pTransaction'),
-				as: 'transaction',
-			}
 		]
 	};
 
@@ -988,6 +985,59 @@ const fetchP2PFeedbacks = async (user_id, opts = {
 	}
 };
 
+const fetchP2PProfile = async (user_id) => {
+  
+	const P2pTransaction = getModel('p2pTransaction');
+	const P2pMerchantsFeedback = getModel('P2pMerchantsFeedback');
+	
+	// Total Transactions per Merchant
+	const totalTransactions = await P2pTransaction.count({
+        where: { merchant_id: user_id }
+    });
+
+	// Completion Rate of Transactions
+    const completedTransactions = await P2pTransaction.count({
+        where: {
+            merchant_id: user_id,
+            transaction_status: 'complete'
+        }
+    });
+
+    const completionRate =  (completedTransactions / totalTransactions) * 100;
+
+	// Positive Feedback Percentage
+	const totalFeedbacks = await P2pMerchantsFeedback.count({
+        where: { merchant_id: user_id }
+    });
+    const positiveFeedbackCount = await P2pMerchantsFeedback.count({
+        where: {
+            merchant_id: user_id,
+            rating: {
+                [Op.gte]: 3
+            }
+        }
+    });
+
+	const negativeFeedbackCount = await P2pMerchantsFeedback.count({
+        where: {
+            merchant_id: user_id,
+            rating: {
+                [Op.lte]: 2
+            }
+        }
+    });
+
+    const positiveFeedbackRate = (positiveFeedbackCount / totalFeedbacks) * 100;
+
+	return {
+		totalTransactions,
+		completionRate,
+		positiveFeedbackRate,
+		positiveFeedbackCount,
+		negativeFeedbackCount
+	}
+};
+
 module.exports = {
 	createP2PDeal,
 	createP2PTransaction,
@@ -1001,5 +1051,6 @@ module.exports = {
 	fetchP2PTransactions,
 	fetchP2PDisputes,
 	updateP2PDeal,
-	fetchP2PFeedbacks
+	fetchP2PFeedbacks,
+	fetchP2PProfile
 };
