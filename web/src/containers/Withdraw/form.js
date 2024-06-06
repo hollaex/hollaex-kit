@@ -17,6 +17,7 @@ import {
 import { BASE_CURRENCY } from 'config/constants';
 import {
 	calculateBaseFee,
+	calculateFeeCoin,
 	generateBaseInformation,
 	renderLabel,
 } from './utils';
@@ -337,6 +338,13 @@ class Form extends Component {
 		const currentNetwork = getWithdrawNetwork
 			? getWithdrawNetwork
 			: getWithdrawNetworkOptions;
+
+		const feeCoin = calculateFeeCoin(
+			currency,
+			getWithdrawNetworkOptions,
+			coins
+		);
+
 		const formData = {
 			...data,
 			fee: selectedMethod === 'Email' ? 0 : getFee,
@@ -349,7 +357,7 @@ class Form extends Component {
 					? `${getWithdrawAddress}:${optionalTag}`
 					: getWithdrawAddress,
 			network: selectedMethod === 'Email' ? 'email' : currentNetwork,
-			fee_coin: getWithdrawCurrency,
+			fee_coin: feeCoin,
 			method: selectedMethod === 'Email' ? 'email' : 'address',
 			email: selectedMethod === 'Email' ? receiverWithdrawalEmail : null,
 		};
