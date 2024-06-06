@@ -359,7 +359,9 @@ const RenderWithdraw = ({
 	};
 
 	const onHandleAmount = (val) => {
-		setWithdrawAmount(val);
+		if (val >= 0) {
+			setWithdrawAmount(val);
+		}
 		if (val > maxAmount && maxAmount > 0) {
 			message.error(
 				`requested amount exceeds maximum withrawal limit of ${maxAmount} ${
