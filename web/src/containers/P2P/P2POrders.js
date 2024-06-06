@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { IconTitle, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { Button } from 'antd';
+import { Button, Radio } from 'antd';
 import { fetchTransactions } from './actions/p2pActions';
 import { withRouter } from 'react-router';
 import { formatToCurrency } from 'utils/currency';
@@ -30,6 +30,8 @@ const P2POrders = ({
 }) => {
 	const [transactions, setTransactions] = useState([]);
 	const [filter, setFilter] = useState();
+	const [option, setOption] = useState("2");
+
 	useEffect(() => {
 		fetchTransactions()
 			.then((res) => {
@@ -65,27 +67,30 @@ const P2POrders = ({
 					justifyContent: 'center',
 				}}
 			>
-				<Button
-					ghost
-					onClick={() => {
-						setFilter('active');
-					}}
-				>
-					<EditWrapper stringId="P2P.PROCESSING">
-						{STRINGS['P2P.PROCESSING']}
-					</EditWrapper>
-				</Button>
-				<Button
-					ghost
-					onClick={() => {
-						setFilter();
-					}}
-				>
-					<EditWrapper stringId="P2P.ALL_ORDERS">
-						{STRINGS['P2P.ALL_ORDERS']}
-					</EditWrapper>
-				</Button>
-				{/* <Button ghost>Profit & Loss Statement</Button> */}
+				 <Radio.Group value={option} onChange={(e) => setOption(e.target.value)}>
+					<Radio.Button
+						style={{ backgroundColor: 'transparent', color: 'white', marginRight: 5}}
+						value="1"
+						onClick={() => {
+							setFilter('active');
+						}}
+					>
+						<EditWrapper stringId="P2P.PROCESSING">
+							{STRINGS['P2P.PROCESSING']}
+						</EditWrapper>
+					</Radio.Button>
+					<Radio.Button
+						style={{ backgroundColor: 'transparent', color: 'white'}}
+						value="2"
+						onClick={() => {
+							setFilter();
+						}}
+					>
+						<EditWrapper stringId="P2P.ALL_ORDERS">
+							{STRINGS['P2P.ALL_ORDERS']}
+						</EditWrapper>
+					</Radio.Button>
+       			 </Radio.Group>
 			</div>
 
 			<div style={{ display: 'flex', marginTop: 20 }}>

@@ -14,7 +14,6 @@ import P2PPostDeal from './P2PPostDeal';
 import P2PProfile from './P2PProfile';
 import P2POrder from './P2POrder';
 import { fetchTransactions } from './actions/p2pActions';
-import { NotLoggedIn } from 'components';
 const TabPane = Tabs.TabPane;
 
 const P2P = ({
@@ -53,11 +52,10 @@ const P2P = ({
 					}
 				})
 				.catch((err) => err);
-		}
-	}, []);
+		} else setDisplayOrder(false);
+	}, [window.location.pathname]);
 
 	return (
-		<NotLoggedIn>
 			<div
 				style={{ height: 600, width: '100%', padding: 20, marginBottom: 400 }}
 				className="summary-container"
@@ -88,15 +86,16 @@ const P2P = ({
 							setTab(e);
 						}}
 					>
-						{user.verification_level >= p2p_config?.starting_user_tier && (
-							<>
-								<TabPane tab={STRINGS['P2P.TAB_P2P']} key="0">
+						<TabPane tab={STRINGS['P2P.TAB_P2P']} key="0">
 									<P2PDash
 										setDisplayOrder={setDisplayOrder}
 										refresh={refresh}
 										setSelectedTransaction={setSelectedTransaction}
 									/>
 								</TabPane>
+
+						{user?.id && user.verification_level >= p2p_config?.starting_user_tier && (
+							<>
 								<TabPane tab={STRINGS['P2P.TAB_ORDERS']} key="1">
 									<P2POrders
 										setDisplayOrder={setDisplayOrder}
@@ -107,7 +106,7 @@ const P2P = ({
 							</>
 						)}
 
-						{user.verification_level >= p2p_config?.starting_merchant_tier && (
+						{user?.id && user.verification_level >= p2p_config?.starting_merchant_tier && (
 							<>
 								<TabPane tab={STRINGS['P2P.TAB_PROFILE']} key="2">
 									<P2PProfile />
@@ -135,7 +134,6 @@ const P2P = ({
 					</Tabs>
 				)}
 			</div>
-		</NotLoggedIn>
 	);
 };
 

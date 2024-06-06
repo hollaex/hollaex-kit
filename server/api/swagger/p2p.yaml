@@ -72,15 +72,6 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
-      security:
-        - Token: []
-      x-security-types:
-        - bearer
-        - hmac
-      x-security-scopes:
-        - user
-      x-token-permissions:
-        - can_read
     post:
       description: Create deal for p2p
       operationId: createP2PDeal

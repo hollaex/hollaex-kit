@@ -382,7 +382,7 @@ const P2PDash = ({
 																backgroundColor: '#288500',
 																color: 'white',
 															}}
-															disabled={loading || expandRow}
+															disabled={loading || expandRow || !user?.id}
 															onClick={async () => {
 																try {
 																	if (!expandRow && deal.id !== selectedDeal) {
