@@ -198,6 +198,7 @@ const RenderContentForm = ({
 	updateAddress,
 	depositAddress,
 	router,
+	selectedNetwork,
 }) => {
 	const coinObject = coins[depositCurrency] || coins[currency];
 
@@ -250,6 +251,7 @@ const RenderContentForm = ({
 								currency={currency}
 								onOpen={onOpen}
 								router={router}
+								selectedNetwork={selectedNetwork}
 							/>
 						</div>
 						{!isMobile && (

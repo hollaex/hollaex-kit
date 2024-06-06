@@ -1,6 +1,6 @@
 import React from 'react';
 import mathjs from 'mathjs';
-import { Accordion, EditWrapper } from 'components';
+import { Accordion, Coin, EditWrapper } from 'components';
 import {
 	BANK_WITHDRAWAL_BASE_FEE,
 	BANK_WITHDRAWAL_DYNAMIC_FEE_RATE,
@@ -11,6 +11,7 @@ import {
 import STRINGS from 'config/localizedStrings';
 
 import { renderBankInformation } from '../Wallet/components';
+import { getNetworkNameByKey } from 'utils/wallet';
 
 export const generateBaseInformation = (currency, limits = {}) => {
 	const { minAmount = 2, maxAmount = 10000 } = limits;
@@ -144,4 +145,15 @@ export const onHandleSymbol = (value) => {
 	const match = value.match(regex);
 	const curr = match ? match[1].toLowerCase() : null;
 	return curr;
+};
+
+export const renderNetworkWithLabel = (iconId, network) => {
+	return network && iconId ? (
+		<div className="d-flex">
+			<span>{getNetworkNameByKey(network)}</span>
+			<div className="network-icon mt-1 ml-2">
+				<Coin iconId={iconId} type="CS2" className="withdraw-network-icon" />
+			</div>
+		</div>
+	) : null;
 };

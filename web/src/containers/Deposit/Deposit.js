@@ -7,6 +7,7 @@ import { Input, Modal, Select, Button } from 'antd';
 import {
 	CaretDownOutlined,
 	CheckOutlined,
+	CloseOutlined,
 	ExclamationCircleFilled,
 } from '@ant-design/icons';
 
@@ -18,8 +19,7 @@ import {
 import { Coin, EditWrapper } from 'components';
 import { STATIC_ICONS } from 'config/icons';
 import { assetsSelector } from 'containers/Wallet/utils';
-import { renderLabel } from 'containers/Withdraw/utils';
-import { getNetworkNameByKey } from 'utils/wallet';
+import { renderLabel, renderNetworkWithLabel } from 'containers/Withdraw/utils';
 import STRINGS from 'config/localizedStrings';
 import { onHandleSymbol } from './utils';
 
@@ -34,6 +34,7 @@ const DepositComponent = ({
 	updateAddress,
 	depositAddress,
 	router,
+	selectedNetwork,
 	...rest
 }) => {
 	const { Option } = Select;
@@ -292,6 +293,10 @@ const DepositComponent = ({
 		(['xrp', 'xlm'].includes(selectedAsset) ||
 			['xlm', 'ton'].includes(network)) &&
 		depositAddress;
+	const networkIcon = selectedNetwork
+		? coins[selectedNetwork]?.icon_id
+		: coins[defaultNetwork]?.icon_id;
+	const networkOptionsIcon = coins[getDepositNetworkOptions]?.icon_id;
 
 	return (
 		<div
@@ -330,7 +335,7 @@ const DepositComponent = ({
 									className="custom-select-input-style elevated select-field"
 									dropdownClassName="custom-select-style"
 									suffixIcon={<CaretDownOutlined />}
-									placeholder="Select"
+									placeholder={STRINGS['WITHDRAW_PAGE.SELECT']}
 									allowClear={true}
 									value={
 										selectedAsset &&
@@ -454,28 +459,44 @@ const DepositComponent = ({
 											coinLength?.length < 1
 												? defaultNetwork
 												: coinLength && coinLength.length <= 1
-												? getNetworkNameByKey(network)
+												? renderNetworkWithLabel(networkIcon, network)
 												: coinLength && coinLength.length > 1
-												? getNetworkNameByKey(getDepositNetworkOptions)
+												? renderNetworkWithLabel(
+														networkOptionsIcon,
+														getDepositNetworkOptions
+												  )
 												: coins[getDepositCurrency]?.symbol.toUpperCase()
 										}
 										disabled={
 											(coinLength && coinLength.length === 1) ||
 											!(coinLength && coinLength.length)
 										}
-										placeholder="Select"
+										placeholder={STRINGS['WITHDRAW_PAGE.SELECT']}
 										onClear={() => onHandleClear('network')}
 									>
 										{coinLength &&
 											coinLength.map((data, inx) => (
 												<Option key={inx} value={data}>
 													<div className="d-flex gap-1">
-														<div>{getNetworkNameByKey(data).toUpperCase()}</div>
+														<div>
+															{renderNetworkWithLabel(
+																coins[data]?.icon_id,
+																data
+															)}
+														</div>
 													</div>
 												</Option>
 											))}
 									</Select>
-									{currStep.stepTwo && <CheckOutlined className="mt-3 ml-3" />}
+									{(coinLength &&
+										coinLength.length === 1 &&
+										!isDisbaleDeposit) ||
+									(currStep.stepTwo && !coinLength) ||
+									currStep.stepThree ? (
+										<CheckOutlined className="mt-3 ml-3" />
+									) : (
+										<CloseOutlined className="mt-3 ml-3" />
+									)}
 								</div>
 								<div className="d-flex mt-2 warning-text">
 									<ExclamationCircleFilled className="mt-1" />
@@ -658,7 +679,7 @@ const DepositComponent = ({
 						</div>
 					</div>
 					<Modal
-						title="Warning"
+						title={STRINGS['WITHDRAW_PAGE.WARNING']}
 						visible={isVisible}
 						onCancel={() => setIsVisible(false)}
 						footer={false}

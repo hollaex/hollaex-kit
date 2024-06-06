@@ -44,6 +44,15 @@ $qr-code--size: 12rem;
 	}
 }
 
+.qr-popup-buttons {
+	display: flex;
+	justify-content: space-between;
+	.qr-back-btn,
+	.qr-copy-btn {
+		width: 45%;
+	}
+}
+
 .deposit_info-qr-wrapper {
 	$qr-code-margin: 1rem;
 

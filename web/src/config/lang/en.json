@@ -1101,7 +1101,12 @@
 		"WARNING_DEPOSIT_INFO_1": "To receive this deposit, both the Address and Tag are required.",
 		"WARNING_DEPOSIT_INFO_2": "Entering incorrect details can lead to permanent loss of funds or significant delays.",
 		"WARNING_WITHDRAW_INFO_1": "When making a withdrawal of this asset, ensure all required fields are correctly completed.",
-		"WARNING_WITHDRAW_INFO_2": "Incorrect details can lead to permanent loss of funds or significant delays."
+		"WARNING_WITHDRAW_INFO_2": "Incorrect details can lead to permanent loss of funds or significant delays.",
+		"METHOD_FIELD_LABEL": "Select Method",
+		"SELECT": "Select",
+		"ENTER_AMOUNT": "Enter Amount",
+		"REMOVE_TITLE": "Remove Tag",
+		"MAX_AMOUNT_WARNING_INFO": "This amount exceeds your maximum withdrawal limit."
 	},
 	"WALLET_BUTTON_BASE_DEPOSIT": "deposit",
 	"WALLET_BUTTON_BASE_WITHDRAW": "withdraw",

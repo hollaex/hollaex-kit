@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
-import { Button, Checkbox, Input, Modal, Select, message } from 'antd';
+import { Button, Checkbox, Input, Modal, Select } from 'antd';
 import BigNumber from 'bignumber.js';
 import { Coin, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
@@ -12,7 +12,6 @@ import {
 	CloseOutlined,
 	ExclamationCircleFilled,
 } from '@ant-design/icons';
-import { getNetworkNameByKey } from 'utils/wallet';
 import { STATIC_ICONS } from 'config/icons';
 import {
 	getWithdrawalMax,
@@ -34,6 +33,7 @@ import {
 	onHandleSymbol,
 	renderEstimatedValueAndFee,
 	renderLabel,
+	renderNetworkWithLabel,
 } from './utils';
 import { email, validAddress } from 'components/Form/validations';
 import strings from 'config/localizedStrings';
@@ -46,10 +46,14 @@ const RenderWithdraw = ({
 	pinnedAssets,
 	router,
 	onHandleScan,
+	selectedNetwork,
 	...rest
 }) => {
 	const { Option } = Select;
-	const methodOptions = ['Address', 'Email'];
+	const methodOptions = [
+		strings['WITHDRAW_PAGE.WITHDRAWAL_CONFIRM_ADDRESS'],
+		strings['FORM_FIELDS.EMAIL_LABEL'],
+	];
 	const [currStep, setCurrStep] = useState({
 		stepOne: false,
 		stepTwo: false,
@@ -362,15 +366,6 @@ const RenderWithdraw = ({
 		if (val >= 0) {
 			setWithdrawAmount(val);
 		}
-		if (val > maxAmount && maxAmount > 0) {
-			message.error(
-				`requested amount exceeds maximum withrawal limit of ${maxAmount} ${
-					getWithdrawCurrency
-						? getWithdrawCurrency.toUpperCase()
-						: defaultCurrency.toUpperCase()
-				}`
-			);
-		}
 	};
 
 	const onHandleRemove = () => {
@@ -528,6 +523,12 @@ const RenderWithdraw = ({
 	const renderAmountField =
 		(selectedMethod === 'Email' && isValidEmail) ||
 		(selectedMethod === 'Address' && isValidAddress);
+	const isErrorAmountField = getWithdrawAmount > maxAmount && maxAmount > 0;
+	const networkIcon = selectedNetwork
+		? coins[selectedNetwork]?.icon_id
+		: coins[defaultNetwork]?.icon_id;
+	const networkOptionsIcon = coins[getWithdrawNetworkOptions]?.icon_id;
+
 	return (
 		<div
 			className={isDisbaleWithdraw ? 'withdraw-deposit-disable mt-1' : 'mt-1'}
@@ -560,7 +561,7 @@ const RenderWithdraw = ({
 									className="custom-select-input-style elevated select-field"
 									dropdownClassName="custom-select-style"
 									suffixIcon={<CaretDownOutlined />}
-									placeholder="Select Method"
+									placeholder={strings['WITHDRAW_PAGE.METHOD_FIELD_LABEL']}
 									onChange={onHandleChangeMethod}
 									value={selectedMethod}
 								>
@@ -620,7 +621,7 @@ const RenderWithdraw = ({
 											className="custom-select-input-style elevated select-field"
 											dropdownClassName="custom-select-style"
 											suffixIcon={<CaretDownOutlined />}
-											placeholder="Select"
+											placeholder={strings['WITHDRAW_PAGE.SELECT']}
 											allowClear={true}
 											value={
 												selectedAsset &&
@@ -662,8 +663,17 @@ const RenderWithdraw = ({
 												)
 											)}
 										</Select>
-										{currStep.stepTwo && (
+										{selectedMethod === 'Email' ? (
+											isEmailAndAddress && renderNetwork ? (
+												<CheckOutlined className="mt-3 ml-3" />
+											) : (
+												<CloseOutlined className="mt-3 ml-3" />
+											)
+										) : currStep.stepThree ||
+										  (selectedAsset && selectedMethod) ? (
 											<CheckOutlined className="mt-3 ml-3" />
+										) : (
+											<CloseOutlined className="mt-3 ml-3" />
 										)}
 									</div>
 									<div className="mt-3 d-flex">
@@ -730,9 +740,9 @@ const RenderWithdraw = ({
 										isMobile ? 'select-wrapper mobile-view' : 'select-wrapper'
 									}
 								>
-									<div className="d-flex">
+									<div className="d-flex withdraw-network-field">
 										<Select
-											placeholder="Select"
+											placeholder={strings['WITHDRAW_PAGE.SELECT']}
 											className={`custom-select-input-style elevated ${
 												coinLength && coinLength.length > 1
 													? 'select-field'
@@ -748,9 +758,12 @@ const RenderWithdraw = ({
 												coinLength?.length < 1
 													? defaultNetwork
 													: coinLength && coinLength.length <= 1
-													? getNetworkNameByKey(network)
+													? renderNetworkWithLabel(networkIcon, network)
 													: coinLength && coinLength.length > 1
-													? getNetworkNameByKey(getWithdrawNetworkOptions)
+													? renderNetworkWithLabel(
+															networkOptionsIcon,
+															getWithdrawNetworkOptions
+													  )
 													: coins[getWithdrawCurrency]?.symbol.toUpperCase()
 											}
 											disabled={
@@ -764,15 +777,21 @@ const RenderWithdraw = ({
 													<Option key={inx} value={data}>
 														<div className="d-flex gap-1">
 															<div>
-																{getNetworkNameByKey(data).toUpperCase()}
+																{renderNetworkWithLabel(
+																	coins[data]?.icon_id,
+																	data
+																)}
 															</div>
 														</div>
 													</Option>
 												))}
 										</Select>
-										{(currStep.stepThree ||
-											(selectedAsset && selectedMethod)) && (
+										{selectedMethod !== 'Email' &&
+										isEmailAndAddress &&
+										renderNetwork ? (
 											<CheckOutlined className="mt-3 ml-3" />
+										) : (
+											<CloseOutlined className="mt-3 ml-3" />
 										)}
 									</div>
 									<div className="d-flex mt-2 warning-text">
@@ -942,7 +961,7 @@ const RenderWithdraw = ({
 				</div>
 			)}
 			<Modal
-				title="Warning"
+				title={strings['WITHDRAW_PAGE.WARNING']}
 				visible={isWarning}
 				onCancel={() => setIsWarning(false)}
 				footer={false}
@@ -952,7 +971,7 @@ const RenderWithdraw = ({
 				{renderWithdrawWarningPopup()}
 			</Modal>
 			<Modal
-				title="Remove Tag"
+				title={strings['WITHDRAW_PAGE.REMOVE_TITLE']}
 				visible={isVisible}
 				onCancel={() => setIsVisible(false)}
 				footer={false}
@@ -1015,10 +1034,14 @@ const RenderWithdraw = ({
 										disabled={getWithdrawAmount < 0}
 										onChange={(e) => onHandleAmount(e.target.value)}
 										value={getWithdrawAmount}
-										className="destination-input-field"
+										className={
+											isErrorAmountField
+												? `destination-input-field field-error`
+												: `destination-input-field`
+										}
 										suffix={renderAmountIcon()}
 										type="number"
-										placeholder="Enter Amount"
+										placeholder={strings['WITHDRAW_PAGE.ENTER_AMOUNT']}
 									></Input>
 									{!isAmount ? (
 										<CheckOutlined className="mt-3 ml-3" />
@@ -1026,6 +1049,17 @@ const RenderWithdraw = ({
 										<CloseOutlined className="mt-3 ml-3" />
 									)}
 								</div>
+								{isErrorAmountField && (
+									<div className="d-flex mt-2 warning_text">
+										<ExclamationCircleFilled className="mt-1 mr-1" />
+										{renderLabel('WITHDRAW_PAGE.MAX_AMOUNT_WARNING_INFO')}
+									</div>
+								)}
+								{/* {maxAmount <= 0 && 
+									<div className="d-flex mt-2 warning_text">
+                                    <ExclamationCircleFilled className="mt-1 mr-1" />
+									{renderLabel('WITHDRAW_PAGE.MAX_AMOUNT_WARNING_INFO')}
+								</div>} */}
 								{currStep.stepFive && (
 									<div
 										className={`d-flex h-25 ${

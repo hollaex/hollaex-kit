@@ -434,6 +434,7 @@ class Form extends Component {
 									currency={currency}
 									router={router}
 									onHandleScan={onHandleScan}
+									selectedNetwork={selectedNetwork}
 								/>
 								{!error && <div className="warning_text">{error}</div>}
 							</div>

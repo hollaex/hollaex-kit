@@ -166,6 +166,14 @@ $content--margin: 2rem;
 				border: 1px solid $colors-main-black;
 			}
 
+			.field-error {
+				border: 2px solid $colors-notifications-red;
+			}
+
+			.field-error:hover {
+				border: 2px solid $colors-notifications-red;
+			}
+
 			.withdraw-main-label {
 				color: $colors-black;
 				font-size: 14px;
@@ -415,7 +423,7 @@ $content--margin: 2rem;
 
 		.warning-text,
 		.email-text {
-			color: $colors-notifications-red;
+			color: $colors-notification-pending;
 			font-size: 12px;
 			width: 90%;
 		}
