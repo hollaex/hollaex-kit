@@ -33,6 +33,7 @@ const P2P = ({
 	const [selectedTransaction, setSelectedTransaction] = useState();
 	const [refresh, setRefresh] = useState(false);
 	const [selectedDealEdit, setSelectedDealEdit] = useState();
+	const [selectedProfile, setSelectedProfile] = useState();
 
 	useEffect(() => {
 		const arr = window.location.pathname.split('/');
@@ -55,6 +56,11 @@ const P2P = ({
 		} else setDisplayOrder(false);
 	}, [window.location.pathname]);
 
+
+	const changeProfileTab = (merchant) => {
+		setSelectedProfile(merchant);
+		setTab('2');
+	}
 	return (
 			<div
 				style={{ height: 600, width: '100%', padding: 20, marginBottom: 400 }}
@@ -83,6 +89,10 @@ const P2P = ({
 							if (e !== '3') {
 								setSelectedDealEdit();
 							}
+
+							if (e !== '2') {
+								setSelectedProfile();
+							}
 							setTab(e);
 						}}
 					>
@@ -91,6 +101,7 @@ const P2P = ({
 										setDisplayOrder={setDisplayOrder}
 										refresh={refresh}
 										setSelectedTransaction={setSelectedTransaction}
+										changeProfileTab={changeProfileTab}
 									/>
 								</TabPane>
 
@@ -109,7 +120,7 @@ const P2P = ({
 						{user?.id && user.verification_level >= p2p_config?.starting_merchant_tier && (
 							<>
 								<TabPane tab={STRINGS['P2P.TAB_PROFILE']} key="2">
-									<P2PProfile />
+									<P2PProfile setSelectedProfile={setSelectedProfile} selectedProfile={selectedProfile} />
 								</TabPane>
 
 								<TabPane tab={STRINGS['P2P.TAB_POST_DEAL']} key="3">

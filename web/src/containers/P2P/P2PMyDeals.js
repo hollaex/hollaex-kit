@@ -135,7 +135,7 @@ const P2PMyDeals = ({
 			</div>
 
 			<div
-				className="wallet-assets_block"
+				className="stake_theme"
 				style={{ display: 'flex', marginTop: 20 }}
 			>
 				<table

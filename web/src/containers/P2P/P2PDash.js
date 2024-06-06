@@ -33,6 +33,7 @@ const P2PDash = ({
 	refresh,
 	setSelectedTransaction,
 	p2p_config,
+	changeProfileTab
 }) => {
 	const [expandRow, setExpandRow] = useState(false);
 	const [selectedDeal, setSelectedDeal] = useState();
@@ -237,7 +238,7 @@ const P2PDash = ({
 				</div>
 			</div>
 			<div
-				className="wallet-assets_block"
+				className="stake_theme"
 				style={{ display: 'flex', marginTop: 20 }}
 			>
 				<table
@@ -295,7 +296,7 @@ const P2PDash = ({
 								return (
 									<>
 										<tr
-											className="table-row"
+											className= {(expandRow && expandRow && deal.id === selectedDeal.id) ? "subTable" : "table-row"}
 											style={{
 												borderBottom: 'grey 1px solid',
 												padding: 10,
@@ -306,10 +307,13 @@ const P2PDash = ({
 											<td
 												style={{ width: '20%', padding: 10, cursor: 'pointer' }}
 												onClick={() => {
-													setExpandRow(!expandRow);
-													setSelectedDeal(deal);
-													setAmountCurrency();
-													setAmountFiat();
+													// setExpandRow(!expandRow);
+													// setSelectedDeal(deal);
+													// setAmountCurrency();
+													// setAmountFiat();
+
+
+													changeProfileTab(deal.merchant);
 												}}
 												className="td-fit"
 											>
@@ -432,7 +436,7 @@ const P2PDash = ({
 										</tr>
 										{expandRow && expandRow && deal.id === selectedDeal.id && (
 											<tr
-												className="table-row"
+												className="subTable"
 												style={{
 													borderBottom: 'grey 1px solid',
 													padding: 10,

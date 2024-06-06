@@ -72,3 +72,10 @@ export const fetchFeedback = (values) => {
 		values && Object.keys(values).length ? querystring.stringify(values) : '';
 	return requestAuthenticated(`/p2p/feedback?${queryValues}`);
 };
+
+
+export const fetchP2PProfile = (values) => {
+	const queryValues =
+		values && Object.keys(values).length ? querystring.stringify(values) : '';
+	return requestAuthenticated(`/p2p/profile?${queryValues}`);
+};
