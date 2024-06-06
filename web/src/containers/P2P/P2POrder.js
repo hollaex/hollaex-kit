@@ -54,6 +54,7 @@ const P2POrder = ({
 	const [ws, setWs] = useState();
 	const [ready, setReady] = useState(false);
 	const [displayCancelWarning, setDisplayCancelWarning] = useState();
+	const [displayConfirmWarning, setDisplayConfirmWarning] = useState();
 	const [lastClickTime, setLastClickTime] = useState(0);
 	const ref = useRef(null);
 	const buttonRef = useRef(null);
@@ -590,6 +591,98 @@ const P2POrder = ({
 				</Modal>
 			)}
 
+			{displayConfirmWarning && (
+				<Modal
+					maskClosable={false}
+					closeIcon={<CloseOutlined className="stake_theme" />}
+					className="stake_table_theme stake_theme"
+					bodyStyle={{}}
+					visible={displayConfirmWarning}
+					width={450}
+					footer={null}
+					onCancel={() => {
+						setDisplayConfirmWarning(false);
+					}}
+				>
+					<div
+						style={{
+							display: 'flex',
+							flexDirection: 'column',
+							gap: 15,
+							marginTop: 10,
+						}}
+					>
+						<div
+							style={{
+								flex: 1,
+								display: 'flex',
+								flexDirection: 'column',
+								justifyContent: 'center',
+								alignItems: 'center',
+							}}
+						>
+							<h3 className="stake_theme">
+								<EditWrapper stringId="P2P.CONFIRM_WARNING">
+									{STRINGS['P2P.CONFIRM_WARNING']}
+								</EditWrapper>
+							</h3>
+						</div>
+					</div>
+
+					<div
+						style={{
+							display: 'flex',
+							flexDirection: 'row',
+							gap: 15,
+							justifyContent: 'space-between',
+							marginTop: 30,
+						}}
+					>
+						<Button
+							onClick={() => {
+								setDisplayConfirmWarning(false);
+							}}
+							style={{
+								backgroundColor: '#5D63FF',
+								color: 'white',
+								flex: 1,
+								height: 35,
+							}}
+							type="default"
+						>
+							<EditWrapper stringId="P2P.NO">{STRINGS['P2P.NO']}</EditWrapper>
+						</Button>
+						<Button
+							onClick={async () => {
+								try {
+									await updateTransaction({
+										id: selectedOrder.id,
+										merchant_status: 'confirmed',
+									});
+									updateStatus('confirmed');
+									message.success(STRINGS['P2P.CONFIRMED_TRANSACTION']);
+									setDisplayConfirmWarning(false);
+								} catch (error) {
+									message.error(error.data.message);
+								}
+							}}
+							style={{
+								backgroundColor: '#5D63FF',
+								color: 'white',
+								flex: 1,
+								height: 35,
+							}}
+							type="default"
+						>
+							<EditWrapper stringId="P2P.PROCEED">
+								{STRINGS['P2P.PROCEED']}
+							</EditWrapper>
+						</Button>
+					</div>
+				</Modal>
+			)}
+
+
 			<div
 				onClick={() => {
 					setDisplayOrder(false);
@@ -626,9 +719,16 @@ const P2POrder = ({
 									</EditWrapper>
 								</div>
 								<div>
+									{user.id === selectedOrder.merchant_id ?
+									<EditWrapper stringId="P2P.SELL_COIN">
+									{STRINGS['P2P.SELL_COIN']}
+								</EditWrapper>
+									:
 									<EditWrapper stringId="P2P.BUY_COIN">
-										{STRINGS['P2P.BUY_COIN']}
-									</EditWrapper>{' '}
+									{STRINGS['P2P.BUY_COIN']}
+								</EditWrapper>
+									}
+									{' '}
 									{coin?.fullname?.toUpperCase()} ({coin?.symbol?.toUpperCase()}
 									)
 								</div>
@@ -680,7 +780,7 @@ const P2POrder = ({
 									</div>
 								)}
 								{user.id === selectedOrder?.user_id && (
-									<div style={{ textAlign: 'end' }}>
+									<div style={{ textAlign: 'end' , fontWeight: 'bold', fontSize: 16 }}>
 										{selectedOrder?.amount_fiat}{' '}
 										{selectedOrder?.deal?.spending_asset?.toUpperCase()}
 									</div>
@@ -753,7 +853,7 @@ const P2POrder = ({
 							</div>
 							{user.id === selectedOrder?.merchant_id && (
 								<div>
-									<div style={{ textAlign: 'end' }}>
+									<div style={{ textAlign: 'end', fontWeight: 'bold', fontSize: 16 }}>
 										{selectedOrder?.amount_fiat}{' '}
 										{selectedOrder?.deal?.spending_asset?.toUpperCase()}
 									</div>
@@ -843,7 +943,7 @@ const P2POrder = ({
 								</div>
 							)}
 
-							<div style={{ border: '1px solid grey', padding: 15 }}>
+							<div style={{ borderLeft: `4px solid ${user.id === selectedOrder.merchant_id ? 'red' : 'green'}`, padding: 15 }}>
 								<div
 									style={{
 										display: 'flex',
@@ -852,13 +952,13 @@ const P2POrder = ({
 										justifyContent: 'space-between',
 									}}
 								>
-									<div>
+									<div style={{ fontWeight: 'bold' }}>
 										<EditWrapper stringId="P2P.PAYMENT_METHOD">
 											{STRINGS['P2P.PAYMENT_METHOD']}
 										</EditWrapper>
 										:
 									</div>
-									<div>{selectedOrder?.payment_method_used?.system_name}</div>
+									<div style={{ fontWeight: 'bold' }}>{selectedOrder?.payment_method_used?.system_name}</div>
 								</div>
 
 								{selectedOrder?.payment_method_used?.fields?.map((x) => {
@@ -869,8 +969,8 @@ const P2POrder = ({
 												justifyContent: 'space-between',
 											}}
 										>
-											<div>{x?.name}:</div>
-											<div>{x?.value}</div>
+											<div style={{ fontWeight: 'bold'}}>{x?.name}:</div>
+											<div style={{ fontWeight: 'bold'}}>{x?.value}</div>
 										</div>
 									);
 								})}
@@ -1153,15 +1253,7 @@ const P2POrder = ({
 												style={{ backgroundColor: '#5E63F6', color: 'white' }}
 												onClick={async () => {
 													try {
-														await updateTransaction({
-															id: selectedOrder.id,
-															merchant_status: 'confirmed',
-														});
-
-														updateStatus('confirmed');
-														message.success(
-															STRINGS['P2P.CONFIRMED_TRANSACTION']
-														);
+														setDisplayConfirmWarning(true);
 													} catch (error) {
 														message.error(error.data.message);
 													}
@@ -1309,12 +1401,19 @@ const P2POrder = ({
 															color: 'grey',
 														}}
 													>
+														{message.message === 'BUYER_PAID_ORDER' && user.id === selectedOrder.user_id ?
+														<EditWrapper stringId={`P2P.BUYER_SENT_FUNDS`}>
+														{STRINGS[`P2P.BUYER_SENT_FUNDS`]}
+													</EditWrapper>
+														:
 														<EditWrapper stringId={`P2P.${message.message}`}>
 															{STRINGS[`P2P.${message.message}`]}
-														</EditWrapper>{' '}
+														</EditWrapper>
+														}
+														{' '}
 														(
 														{moment(message?.created_at || new Date()).format(
-															'DD/MMM/YYYY, hh:mmA '
+															'DD/MMM/YYYY, hh:mmA'
 														)}
 														)
 													</div>
