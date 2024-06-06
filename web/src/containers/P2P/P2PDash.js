@@ -307,22 +307,21 @@ const P2PDash = ({
 											<td
 												style={{ width: '20%', padding: 10, cursor: 'pointer' }}
 												onClick={() => {
-													// setExpandRow(!expandRow);
-													// setSelectedDeal(deal);
-													// setAmountCurrency();
-													// setAmountFiat();
-
-
-													changeProfileTab(deal.merchant);
+													setExpandRow(!expandRow);
+													setSelectedDeal(deal);
+													setAmountCurrency();
+													setAmountFiat();
 												}}
 												className="td-fit"
 											>
 												<span>+</span>{' '}
-												{deal.merchant.full_name || (
+												<span onClick={() => {
+													changeProfileTab(deal.merchant);
+												}}>{deal.merchant.full_name || (
 													<EditWrapper stringId="P2P.ANONYMOUS">
 														{STRINGS['P2P.ANONYMOUS']}
 													</EditWrapper>
-												)}
+												)}</span>
 											</td>
 											<td
 												style={{ width: '20%', padding: 10, cursor: 'pointer' }}
