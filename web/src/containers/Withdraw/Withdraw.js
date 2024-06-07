@@ -1012,7 +1012,7 @@ const RenderWithdraw = ({
 								: 'd-flex w-100 justify-content-between'
 						}
 					>
-						<div className=" d-flex align-items-center mt-2 ml-5">
+						<div className=" d-flex mt-2 ml-5">
 							<span className="amount-field-icon">
 								<Coin iconId={iconId} type="CS4" />
 							</span>
