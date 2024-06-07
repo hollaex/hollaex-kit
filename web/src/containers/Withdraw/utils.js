@@ -149,7 +149,7 @@ export const onHandleSymbol = (value) => {
 
 export const renderNetworkWithLabel = (iconId, network) => {
 	return network && iconId ? (
-		<div className="d-flex">
+		<div className="d-flex align-items-center">
 			<span>{getNetworkNameByKey(network)}</span>
 			<div className="network-icon mt-1 ml-2">
 				<Coin iconId={iconId} type="CS2" className="withdraw-network-icon" />

@@ -806,9 +806,23 @@ const RenderWithdraw = ({
 					</div>
 				</div>
 			)}
-			<div>
-				<div className="d-flex h-25">
-					<div className="custom-field d-flex flex-column">
+			<div
+				className={
+					['xrp', 'xlm', 'ton', 'pmn'].includes(getWithdrawCurrency) &&
+					selectedMethod &&
+					selectedMethod !== 'Email' &&
+					'destination-field'
+				}
+			>
+				<div className="d-flex h-25 ">
+					<div
+						className={`custom-field d-flex flex-column ${
+							['xrp', 'xlm', 'ton', 'pmn'].includes(getWithdrawCurrency) &&
+							selectedMethod &&
+							selectedMethod !== 'Email' &&
+							`destination-field`
+						}`}
+					>
 						<span
 							className={`custom-step${isEmailAndAddress ? '-selected' : ''}`}
 						>
@@ -998,21 +1012,17 @@ const RenderWithdraw = ({
 								: 'd-flex w-100 justify-content-between'
 						}
 					>
-						<div className=" d-flex mt-2 ml-5">
-							{renderAmountField && (
-								<span className="amount-field-icon">
-									<Coin iconId={iconId} type="CS4" />
-								</span>
-							)}
-							{renderAmountField && (
-								<span
-									className={`ml-2 withdraw-main-label${
-										renderAmountField ? '-selected' : ''
-									}`}
-								>
-									{getWithdrawCurrency.toUpperCase()}
-								</span>
-							)}
+						<div className=" d-flex align-items-center mt-2 ml-5">
+							<span className="amount-field-icon">
+								<Coin iconId={iconId} type="CS4" />
+							</span>
+							<span
+								className={`ml-2 withdraw-main-label${
+									renderAmountField ? '-selected' : ''
+								}`}
+							>
+								{getWithdrawCurrency.toUpperCase()}
+							</span>
 							<div
 								className={`ml-1 withdraw-main-label${
 									renderAmountField ? '-selected' : ''
@@ -1055,11 +1065,12 @@ const RenderWithdraw = ({
 										{renderLabel('WITHDRAW_PAGE.MAX_AMOUNT_WARNING_INFO')}
 									</div>
 								)}
-								{/* {maxAmount <= 0 && 
-									<div className="d-flex mt-2 warning_text">
-                                    <ExclamationCircleFilled className="mt-1 mr-1" />
-									{renderLabel('WITHDRAW_PAGE.MAX_AMOUNT_WARNING_INFO')}
-								</div>} */}
+								{!maxAmount && maxAmount === 0 && (
+									<div className="d-flex mt-2 warning-text">
+										<ExclamationCircleFilled className="mt-1 mr-1" />
+										{renderLabel('WITHDRAW_PAGE.ZERO_BALANCE')}
+									</div>
+								)}
 								{currStep.stepFive && (
 									<div
 										className={`d-flex h-25 ${
