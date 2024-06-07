@@ -2062,6 +2062,14 @@
 		"PAYMENT_TIME_LIMIT": "Payment time limit 30 minutes",
 		"AMOUNT_SEND_RELEASE": "(Amount of crypto you'll sell and release)",
 		"MINUTES": "minutes",
-		"EDIT_UPPERCASE": "EDIT"
+		"EDIT_UPPERCASE": "EDIT",
+		"DATE": "Date",
+		"DISPLAY_NAME": "Display Name",
+		"TOTAL_ORDERS": "Total Orders",
+		"COMPLETION_RATE": "Completion Rate",
+		"POSITIVE_FEEDBACK": "Positive Feedback",
+		"POSITIVE": "Positive",
+		"NEGATIVE": "Negative",
+		"NO_FEEDBACK": "No feedback found"
 	}
 }
