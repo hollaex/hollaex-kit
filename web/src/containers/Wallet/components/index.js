@@ -132,6 +132,16 @@ export const renderNeedHelpAction = (
 	/>
 );
 
+export const renderDeposit = (renderDeposit) => (
+	<ActionNotification
+		stringId="SUMMARY.DEPOSIT"
+		text={STRINGS['SUMMARY.DEPOSIT']}
+		status="information"
+		onClick={() => renderDeposit()}
+		className="render-deposit mt-1"
+	/>
+);
+
 export const renderInformation = (
 	symbol = BASE_CURRENCY,
 	balance,
