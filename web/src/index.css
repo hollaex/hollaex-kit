@@ -2247,6 +2247,10 @@ table th {
         text-overflow: ellipsis; }
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .destination-input-field:hover {
       border: 1px solid var(--labels_important-active-labels-text-graphics); }
+    .withdrawal-container .withdraw-form-wrapper .withdraw-form .field-error {
+      border: 2px solid var(--specials_notifications-alerts-warnings); }
+    .withdrawal-container .withdraw-form-wrapper .withdraw-form .field-error:hover {
+      border: 2px solid var(--specials_notifications-alerts-warnings); }
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdraw-main-label {
       color: var(--labels_secondary-inactive-label-text-graphics);
       font-size: 14px; }
@@ -2393,7 +2397,7 @@ table th {
       width: 300px; }
   .withdrawal-container .withdraw-form-wrapper .warning-text,
   .withdrawal-container .withdraw-form-wrapper .email-text {
-    color: var(--specials_notifications-alerts-warnings);
+    color: var(--specials_pending-waiting-caution);
     font-size: 12px;
     width: 90%; }
   .withdrawal-container .withdraw-form-wrapper .email-text {
@@ -2596,6 +2600,12 @@ table th {
     .qr_code-wrapper .qr-code-bg > *:first-child {
       width: 11rem !important;
       height: 11rem !important; }
+
+.qr-popup-buttons {
+  display: flex;
+  justify-content: space-between; }
+  .qr-popup-buttons .qr-back-btn, .qr-popup-buttons .qr-copy-btn {
+    width: 45%; }
 
 .deposit_info-qr-wrapper .qr-text {
   text-align: center;

@@ -93,7 +93,9 @@ const P2POrders = ({
        			 </Radio.Group>
 			</div>
 
-			<div style={{ display: 'flex', marginTop: 20 }}>
+			<div style={{ display: 'flex', marginTop: 20 }}
+				className="stake_theme"
+			>
 				<table
 					style={{ border: 'none', borderCollapse: 'collapse', width: '100%' }}
 				>

@@ -123,7 +123,9 @@ const P2PPostDeal = ({
 				</Steps>
 			</div>
 
-			<div>
+			<div
+			className="stake_theme"
+			>
 				<div style={{ marginTop: 50 }}>
 					<div
 						style={{
@@ -608,6 +610,7 @@ const P2PPostDeal = ({
 					position: 'relative',
 					top: '5%',
 				}}
+				className="stake_theme"
 			>
 				{step !== 1 && (
 					<Button

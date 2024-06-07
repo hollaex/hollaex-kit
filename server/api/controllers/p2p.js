@@ -470,7 +470,7 @@ const createP2PFeedback = (req, res) => {
 const fetchP2PFeedbacks = (req, res) => {
 	loggerP2P.verbose(req.uuid, 'controllers/p2p/fetchP2PFeedbacks/auth', req.auth);
 
-	const { transaction_id, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
+	const { transaction_id, merchant_id, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
 	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1) {
 		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
@@ -485,8 +485,9 @@ const fetchP2PFeedbacks = (req, res) => {
 		return res.status(400).json({ message: 'Invalid order by' });
 	}
 
-	toolsLib.p2p.fetchP2PFeedbacks(req.auth.sub.id, {
+	toolsLib.p2p.fetchP2PFeedbacks({
 		transaction_id: transaction_id.value,
+		merchant_id: merchant_id.value,
 		limit: limit.value,
 		page: page.value,
 		order_by: order_by.value,
@@ -511,6 +512,23 @@ const fetchP2PFeedbacks = (req, res) => {
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
+
+const fetchP2PProfile = (req, res) => {
+	loggerP2P.verbose(req.uuid, 'controllers/p2p/fetchP2PProfile/auth', req.auth);
+
+	const { user_id } = req.swagger.params;
+
+	
+	toolsLib.p2p.fetchP2PProfile(user_id.value)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerP2P.error(req.uuid, 'controllers/p2p/fetchP2PProfile', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
 module.exports = {
 	createP2PDeal,
     fetchP2PDeals,
@@ -522,5 +540,6 @@ module.exports = {
     updateP2PDeal,
     updateP2PDispute,
 	createP2PFeedback,
-	fetchP2PFeedbacks
+	fetchP2PFeedbacks,
+	fetchP2PProfile
 };

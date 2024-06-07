@@ -11,10 +11,7 @@ import strings from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { Loader, MobileBarBack } from 'components';
 import { getCurrencyFromName } from 'utils/currency';
-import {
-	performWithdraw,
-	// requestWithdrawFee
-} from 'actions/walletActions';
+import { performWithdraw } from 'actions/walletActions';
 import { errorHandler } from 'components/OtpForm/utils';
 import {
 	openContactForm,
@@ -23,7 +20,7 @@ import {
 	setReceiverEmail,
 } from 'actions/appActions';
 import { generateFormValues, generateInitialValues } from './formUtils';
-import { renderNeedHelpAction, renderTitleSection } from '../Wallet/components';
+import { renderDeposit, renderTitleSection } from '../Wallet/components';
 import { FORM_NAME } from './form';
 import { STATIC_ICONS } from 'config/icons';
 import { renderBackToWallet } from 'containers/Deposit/utils';
@@ -287,6 +284,10 @@ class Withdraw extends Component {
 		this.props.router.push('/wallet');
 	};
 
+	onHandleDeposit = () => {
+		this.props.router.push('/wallet/deposit');
+	};
+
 	onHandleScan = () => {
 		this.setState({ qrScannerOpen: true });
 	};
@@ -398,13 +399,7 @@ class Withdraw extends Component {
 						>
 							<div className="information_block-text_wrapper" />
 							{renderBackToWallet(this.onGoBack)}
-							{openContactForm &&
-								renderNeedHelpAction(
-									openContactForm,
-									links,
-									ICONS['BLUE_QUESTION'],
-									'BLUE_QUESTION'
-								)}
+							{openContactForm && renderDeposit(this.onHandleDeposit)}
 						</div>
 						<WithdrawCryptocurrency {...formProps} />
 						{/* {renderExtraInformation(currency, bank_account, ICONS["BLUE_QUESTION"])} */}

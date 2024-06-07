@@ -33,6 +33,7 @@ const P2PDash = ({
 	refresh,
 	setSelectedTransaction,
 	p2p_config,
+	changeProfileTab
 }) => {
 	const [expandRow, setExpandRow] = useState(false);
 	const [selectedDeal, setSelectedDeal] = useState();
@@ -237,7 +238,7 @@ const P2PDash = ({
 				</div>
 			</div>
 			<div
-				className="wallet-assets_block"
+				className="stake_theme"
 				style={{ display: 'flex', marginTop: 20 }}
 			>
 				<table
@@ -295,7 +296,7 @@ const P2PDash = ({
 								return (
 									<>
 										<tr
-											className="table-row"
+											className= {(expandRow && expandRow && deal.id === selectedDeal.id) ? "subTable" : "table-row"}
 											style={{
 												borderBottom: 'grey 1px solid',
 												padding: 10,
@@ -314,14 +315,22 @@ const P2PDash = ({
 												className="td-fit"
 											>
 												<span>+</span>{' '}
-												{deal.merchant.full_name || (
+												<span onClick={() => {
+													changeProfileTab(deal.merchant);
+												}}>{deal.merchant.full_name || (
 													<EditWrapper stringId="P2P.ANONYMOUS">
 														{STRINGS['P2P.ANONYMOUS']}
 													</EditWrapper>
-												)}
+												)}</span>
 											</td>
 											<td
-												style={{ width: '20%', padding: 10 }}
+												style={{ width: '20%', padding: 10, cursor: 'pointer' }}
+												onClick={() => {
+													setExpandRow(!expandRow);
+													setSelectedDeal(deal);
+													setAmountCurrency();
+													setAmountFiat();
+												}}
 												className="td-fit"
 											>
 												{formatRate(
@@ -332,8 +341,14 @@ const P2PDash = ({
 												{deal.spending_asset.toUpperCase()}
 											</td>
 											<td
-												style={{ width: '20%', padding: 10 }}
+												style={{ width: '20%', padding: 10, cursor: 'pointer' }}
 												className="td-fit"
+												onClick={() => {
+													setExpandRow(!expandRow);
+													setSelectedDeal(deal);
+													setAmountCurrency();
+													setAmountFiat();
+												}}
 											>
 												<div>
 													<EditWrapper stringId="P2P.AVAILABLE">
@@ -356,6 +371,13 @@ const P2PDash = ({
 													flexWrap: 'wrap',
 													display: 'flex',
 													padding: 10,
+													cursor: 'pointer'
+												}}
+												onClick={() => {
+													setExpandRow(!expandRow);
+													setSelectedDeal(deal);
+													setAmountCurrency();
+													setAmountFiat();
 												}}
 											>
 												{deal.payment_methods
@@ -432,7 +454,7 @@ const P2PDash = ({
 										</tr>
 										{expandRow && expandRow && deal.id === selectedDeal.id && (
 											<tr
-												className="table-row"
+												className="subTable"
 												style={{
 													borderBottom: 'grey 1px solid',
 													padding: 10,
