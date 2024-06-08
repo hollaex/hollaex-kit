@@ -101,11 +101,16 @@ class Deposit extends Component {
 	}
 
 	updateAddress = (selectedCurrency, hasNetwork = false) => {
-		const { wallet, getDepositCurrency } = this.props;
+		const { wallet, getDepositCurrency, getDepositNetworkOptions } = this.props;
 		const depositAddress = wallet.filter((val) => {
 			if (hasNetwork) {
 				return (
 					val.network === selectedCurrency &&
+					val.currency === getDepositCurrency
+				);
+			} else if (selectedCurrency) {
+				return (
+					val.network === getDepositNetworkOptions &&
 					val.currency === getDepositCurrency
 				);
 			} else {

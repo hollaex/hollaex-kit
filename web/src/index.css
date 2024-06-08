@@ -2365,6 +2365,8 @@ table th {
         align-items: center; }
         .withdrawal-container .withdraw-form-wrapper .withdraw-form .render-scan-wrapper .img-wrapper img {
           height: 1rem; }
+    .withdrawal-container .withdraw-form-wrapper .withdraw-form .destination-field {
+      height: 60px; }
   .withdrawal-container .withdraw-form-wrapper .bottom-content {
     margin-top: 3%; }
     .withdrawal-container .withdraw-form-wrapper .bottom-content .fee-fields {
@@ -2419,21 +2421,23 @@ table th {
 .withdrawal-remove-tag-modal .ant-modal-body {
   padding-top: 0 !important; }
 
-.withdrawal-remove-tag-modal .remove-tag-wrapper .tag-body,
-.withdrawal-remove-tag-modal .warning-popup-wrapper .tag-body {
-  height: 18rem; }
-
-.withdrawal-remove-tag-modal .remove-tag-wrapper .button-wrapper,
-.withdrawal-remove-tag-modal .warning-popup-wrapper .button-wrapper {
-  display: flex;
-  justify-content: space-between; }
-  .withdrawal-remove-tag-modal .remove-tag-wrapper .button-wrapper Button,
-  .withdrawal-remove-tag-modal .warning-popup-wrapper .button-wrapper Button {
-    width: 48%;
-    height: 3rem;
-    border: none !important;
-    color: var(--labels_important-active-labels-text-graphics) !important;
-    font-size: 14px; }
+.withdrawal-remove-tag-modal .remove-tag-wrapper,
+.withdrawal-remove-tag-modal .warning-popup-wrapper {
+  color: var(--labels_important-active-labels-text-graphics); }
+  .withdrawal-remove-tag-modal .remove-tag-wrapper .tag-body,
+  .withdrawal-remove-tag-modal .warning-popup-wrapper .tag-body {
+    height: 18rem; }
+  .withdrawal-remove-tag-modal .remove-tag-wrapper .button-wrapper,
+  .withdrawal-remove-tag-modal .warning-popup-wrapper .button-wrapper {
+    display: flex;
+    justify-content: space-between; }
+    .withdrawal-remove-tag-modal .remove-tag-wrapper .button-wrapper Button,
+    .withdrawal-remove-tag-modal .warning-popup-wrapper .button-wrapper Button {
+      width: 48%;
+      height: 3rem;
+      border: none !important;
+      color: var(--labels_important-active-labels-text-graphics) !important;
+      font-size: 14px; }
 
 .withdrawal-remove-tag-modal .warning-popup-wrapper .button-wrapper {
   margin-top: 5%; }
@@ -2498,6 +2502,8 @@ table th {
 
 .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form {
   padding: 5%; }
+  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .destination-field {
+    height: 75px; }
   .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .field-wrapper .field-label-wrapper {
     flex-direction: column; }
   .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdraw-main-label-selected {

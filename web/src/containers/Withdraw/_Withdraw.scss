@@ -373,6 +373,10 @@ $content--margin: 2rem;
 					}
 				}
 			}
+
+			.destination-field {
+				height: 60px;
+			}
 		}
 
 		.bottom-content {
@@ -464,6 +468,8 @@ $content--margin: 2rem;
 
 	.remove-tag-wrapper,
 	.warning-popup-wrapper {
+		color: $colors-main-black;
+
 		.tag-body {
 			height: 18rem;
 		}
@@ -595,6 +601,10 @@ $content--margin: 2rem;
 	.withdrawal-container {
 		.withdraw-form-wrapper {
 			.withdraw-form {
+				.destination-field {
+					height: 75px;
+				}
+
 				.field-wrapper {
 					.field-label-wrapper {
 						flex-direction: column;

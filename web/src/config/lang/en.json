@@ -1106,7 +1106,8 @@
 		"SELECT": "Select",
 		"ENTER_AMOUNT": "Enter Amount",
 		"REMOVE_TITLE": "Remove Tag",
-		"MAX_AMOUNT_WARNING_INFO": "This amount exceeds your maximum withdrawal limit."
+		"MAX_AMOUNT_WARNING_INFO": "This amount exceeds your maximum withdrawal limit.",
+		"ZERO_BALANCE": "You do not have enough available balance."
 	},
 	"WALLET_BUTTON_BASE_DEPOSIT": "deposit",
 	"WALLET_BUTTON_BASE_WITHDRAW": "withdraw",

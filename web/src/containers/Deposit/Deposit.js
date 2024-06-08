@@ -528,9 +528,11 @@ const DepositComponent = ({
 					>
 						<div className="d-flex">
 							<div className=" d-flex step3-icon-wrapper">
-								<span>
-									<Coin iconId={iconId} type={isMobile ? 'CS8' : 'CS5'} />
-								</span>
+								{getDepositCurrency && (
+									<span>
+										<Coin iconId={iconId} type={isMobile ? 'CS8' : 'CS5'} />
+									</span>
+								)}
 								<span
 									className={`ml-2 withdraw-main-label${
 										isSteps ? '-selected' : ''
