@@ -156,9 +156,9 @@ const P2PPostDeal = ({
 							style={{
 								fontSize: 17,
 								textAlign: 'center',
-								marginTop: 20,
-								color: 'white',
+								marginTop: 20
 							}}
+							className='whiteTextP2P'
 						>
 							<EditWrapper stringId="P2P.UPDATE_DEAL">
 								{STRINGS['P2P.UPDATE_DEAL']}
@@ -186,7 +186,7 @@ const P2PPostDeal = ({
 									<div>
 										<Select
 											showSearch
-											style={{ backgroundColor: '#303236', width: 150 }}
+											style={{ width: 150 }}
 											placeholder="USDT"
 											value={buyingAsset}
 											onChange={(e) => {
@@ -227,7 +227,7 @@ const P2PPostDeal = ({
 									<div>
 										<Select
 											showSearch
-											style={{ backgroundColor: '#303236', width: 150 }}
+											style={{ width: 150 }}
 											placeholder="USD"
 											value={spendingAsset}
 											onChange={(e) => {
@@ -449,12 +449,13 @@ const P2PPostDeal = ({
 														border: '1px solid grey',
 														padding: 5,
 														cursor: 'pointer',
-														color: paymentMethods?.find(
-															(x) => x.system_name === method.system_name
-														)
-															? 'white'
-															: 'grey',
 													}}
+
+													className={paymentMethods?.find(
+														(x) => x.system_name === method.system_name
+													)
+														? 'whiteTextP2P'
+														: 'greyTextP2P'}
 													onClick={() => {
 														const newSelected = [...paymentMethods];
 
@@ -479,7 +480,7 @@ const P2PPostDeal = ({
 													<div>{method.system_name}</div>
 													{paymentMethods?.find(
 														(x) => x.system_name === method.system_name
-													) && <div style={{ color: 'white' }}>✔</div>}
+													) && <div className='whiteTextP2P'>✔</div>}
 												</div>
 												{paymentMethods?.find(
 													(x) => x.system_name === method.system_name
@@ -489,7 +490,8 @@ const P2PPostDeal = ({
 															setSelectedMethod(method);
 															setAddMethodDetails(true);
 														}}
-														style={{ color: 'white', cursor: 'pointer' }}
+														className='whiteTextP2P'
+														style={{ cursor: 'pointer' }}
 													>
 														<EditWrapper stringId="P2P.EDIT_UPPERCASE">
 															<span style={{ textDecoration: 'underline' }}>
@@ -524,7 +526,7 @@ const P2PPostDeal = ({
 												.toLowerCase()
 												.indexOf(input.toLowerCase()) >= 0
 										}
-										style={{ backgroundColor: '#303236', width: 200 }}
+										style={{ width: 200 }}
 										placeholder="Select Region"
 										value={region}
 										onChange={(e) => {
@@ -552,7 +554,7 @@ const P2PPostDeal = ({
 						>
 							<div style={{ flex: 7, display: 'flex' }}>
 								<div style={{ flex: 1 }}>
-									<div style={{ color: 'white', fontWeight: 'bold' }}>
+									<div style={{ fontWeight: 'bold' }} className='whiteTextP2P'>
 										<EditWrapper stringId="P2P.TERMS">
 											{STRINGS['P2P.TERMS']}
 										</EditWrapper>
@@ -576,7 +578,7 @@ const P2PPostDeal = ({
 							<div style={{ flex: 1, borderLeft: 'grey 1px solid' }}></div>
 							<div style={{ flex: 7, display: 'flex' }}>
 								<div style={{ flex: 1 }}>
-									<div style={{ color: 'white', fontWeight: 'bold' }}>
+									<div style={{ fontWeight: 'bold' }} className='whiteTextP2P'>
 										<EditWrapper stringId="P2P.FIRST_RESPONSE">
 											{STRINGS['P2P.FIRST_RESPONSE']}
 										</EditWrapper>
@@ -615,11 +617,10 @@ const P2PPostDeal = ({
 				{step !== 1 && (
 					<Button
 						style={{
-							backgroundColor: '#5E63F6',
-							color: 'white',
 							width: 200,
 							height: 30,
 						}}
+						className='purpleButtonP2P'
 						onClick={() => {
 							if (step > 1) {
 								setStep(step - 1);
@@ -633,11 +634,10 @@ const P2PPostDeal = ({
 				)}
 				<Button
 					style={{
-						backgroundColor: '#5E63F6',
-						color: 'white',
 						width: 200,
 						height: 30,
 					}}
+					className='purpleButtonP2P'
 					onClick={async () => {
 						if (
 							step === 1 &&
@@ -744,18 +744,20 @@ const P2PPostDeal = ({
 
 			<Modal
 				maskClosable={false}
-				closeIcon={<CloseOutlined style={{ color: 'white' }} />}
+				closeIcon={<CloseOutlined className='whiteTextP2P' />}
 				bodyStyle={{
-					backgroundColor: '#1A1B1E',
 					marginTop: 60,
 				}}
+				className='stake_theme'
 				visible={addMethodDetails}
 				footer={null}
 				onCancel={() => {
 					setAddMethodDetails(false);
 				}}
 			>
-				<div style={{ marginBottom: 20, fontSize: 17 }}>
+				<div style={{ marginBottom: 20, fontSize: 17 }}
+				className='whiteTextP2P'
+				>
 					<EditWrapper stringId="P2P.ADD_PAYMENT_METHOD_DETAILS">
 						{STRINGS['P2P.ADD_PAYMENT_METHOD_DETAILS']}
 					</EditWrapper>
@@ -769,6 +771,7 @@ const P2PPostDeal = ({
 								justifyContent: 'space-between',
 								marginBottom: 10,
 							}}
+							className='whiteTextP2P'
 						>
 							<div>{x?.name}:</div>
 							<Input
@@ -809,11 +812,10 @@ const P2PPostDeal = ({
 							setAddMethodDetails(false);
 						}}
 						style={{
-							backgroundColor: '#5E63F6',
-							color: 'white',
 							flex: 1,
 							height: 35,
 						}}
+						className='purpleButtonP2P'
 						type="default"
 					>
 						<EditWrapper stringId="P2P.BACK_UPPER">
@@ -825,11 +827,10 @@ const P2PPostDeal = ({
 							setAddMethodDetails(false);
 						}}
 						style={{
-							backgroundColor: '#5E63F6',
-							color: 'white',
 							flex: 1,
 							height: 35,
 						}}
+						className='purpleButtonP2P'
 						type="default"
 					>
 						<EditWrapper stringId="P2P.COMPLETE">
