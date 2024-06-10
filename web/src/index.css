@@ -2523,7 +2523,7 @@ table th {
   .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line-selected {
     height: 100%; }
   .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line {
-    height: 12rem; }
+    height: 13rem; }
   .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line-network-selected {
     height: 15rem; }
   .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line-selected-mobile {
@@ -2563,7 +2563,8 @@ table th {
         margin-left: 7%; }
       .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .ant-select-clear svg {
         font-size: 12px; }
-      .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-step-selected, .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-step {
+      .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-step-selected,
+      .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-step {
         padding: 33% 70% 10%; }
       .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-select-input-style .ant-select-selector {
         font-size: 1.5rem !important; }
@@ -2767,7 +2768,7 @@ table th {
   margin: 1% 3%; }
 
 .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .deposit-wrapper-fields .custom-field .custom-line-large {
-  height: 10rem;
+  height: 11rem;
   border: 1px solid var(--labels_important-active-labels-text-graphics);
   margin: 0 100%; }
 
@@ -2787,7 +2788,7 @@ table th {
 
 @media screen and (max-width: 550px) {
   .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .deposit-wrapper-fields .custom-field .custom-line-large {
-    height: 16rem; } }
+    height: 17rem; } }
 
 @media screen and (max-width: 450px) {
   .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .deposit-wrapper-fields .btn-wrapper-deposit .holla-button {

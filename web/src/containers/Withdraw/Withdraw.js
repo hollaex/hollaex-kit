@@ -759,6 +759,7 @@ const RenderWithdraw = ({
 								>
 									<div className="d-flex withdraw-network-field">
 										<Select
+											showSearch={true}
 											placeholder={strings['WITHDRAW_PAGE.SELECT']}
 											className={`custom-select-input-style elevated ${
 												coinLength && coinLength.length > 1
