@@ -327,6 +327,18 @@ const RenderWithdraw = ({
 		setReceiverEmail('');
 	};
 
+	const renderPinnedAsset = (data) => {
+		const icon_id = coins[data]?.icon_id;
+		return (
+			<div className="d-flex justify-content-around">
+				{data.toUpperCase()}
+				<span className="pinned-asset-icon">
+					<Coin iconId={icon_id} type="CS1" />
+				</span>
+			</div>
+		);
+	};
+
 	const onHandleChangeNetwork = (val) => {
 		if (val) {
 			setCurrStep((prev) => ({ ...prev, stepFour: true }));
@@ -514,7 +526,7 @@ const RenderWithdraw = ({
 		selectedMethod !== 'Email';
 	const isEmailAndAddress =
 		coinLength && coinLength?.length > 1 && selectedMethod !== 'Email'
-			? getWithdrawNetworkOptions !== ''
+			? getWithdrawNetworkOptions !== null
 			: currStep.stepThree || (selectedAsset && selectedMethod);
 	const renderNetwork =
 		coinLength && coinLength?.length > 1 && selectedMethod !== 'Email'
@@ -538,7 +550,12 @@ const RenderWithdraw = ({
 					<div className="custom-field d-flex flex-column">
 						<span className="custom-step-selected">1</span>
 						<span
-							className={`custom-line${currStep.stepTwo ? '-selected' : ''}`}
+							className={`custom-line${currStep.stepTwo ? '-selected' : ''} ${
+								selectedMethod === 'Address' &&
+								isMobile &&
+								isMobile &&
+								'custom-line-selected-mobile '
+							}`}
 						></span>
 					</div>
 					<div
@@ -688,7 +705,7 @@ const RenderWithdraw = ({
 													}`}
 													onClick={() => onHandleChangeSelect(data, true)}
 												>
-													{data.toUpperCase()}
+													{renderPinnedAsset(data)}
 												</span>
 											);
 										})}
@@ -715,7 +732,7 @@ const RenderWithdraw = ({
 									currStep.stepThree || (selectedAsset && selectedMethod)
 										? '-selected'
 										: ''
-								}`}
+								} ${isMobile && 'custom-line-network-selected '}`}
 							></span>
 						</div>
 						<div
@@ -807,12 +824,12 @@ const RenderWithdraw = ({
 				</div>
 			)}
 			<div
-				className={
+				className={`${
 					['xrp', 'xlm', 'ton', 'pmn'].includes(getWithdrawCurrency) &&
 					selectedMethod &&
 					selectedMethod !== 'Email' &&
 					'destination-field'
-				}
+				} ${isMobile && isMobile && 'destination-field-mobile'}`}
 			>
 				<div className="d-flex h-25 ">
 					<div
@@ -820,8 +837,8 @@ const RenderWithdraw = ({
 							['xrp', 'xlm', 'ton', 'pmn'].includes(getWithdrawCurrency) &&
 							selectedMethod &&
 							selectedMethod !== 'Email' &&
-							`destination-field`
-						}`}
+							'destination-field'
+						} ${isMobile && isMobile && 'destination-field-mobile'}`}
 					>
 						<span
 							className={`custom-step${isEmailAndAddress ? '-selected' : ''}`}
@@ -829,7 +846,9 @@ const RenderWithdraw = ({
 							{selectedMethod === 'Email' ? 3 : 4}
 						</span>
 						<span
-							className={`custom-line${isEmailAndAddress ? '-selected' : ''}`}
+							className={`custom-line${isEmailAndAddress ? '-selected' : ''} ${
+								isMobile && 'custom-line-selected-mobile'
+							}`}
 						></span>
 					</div>
 					<div
@@ -1017,16 +1036,16 @@ const RenderWithdraw = ({
 								<Coin iconId={iconId} type="CS4" />
 							</span>
 							<span
-								className={`ml-2 withdraw-main-label${
-									renderAmountField ? '-selected' : ''
-								}`}
+								className={`${
+									getWithdrawCurrency && `ml-2`
+								} withdraw-main-label${renderAmountField ? '-selected' : ''}`}
 							>
 								{getWithdrawCurrency.toUpperCase()}
 							</span>
 							<div
-								className={`ml-1 withdraw-main-label${
-									renderAmountField ? '-selected' : ''
-								}`}
+								className={`${
+									getWithdrawCurrency && `ml-2`
+								} withdraw-main-label${renderAmountField ? '-selected' : ''}`}
 							>
 								{renderLabel('ACCORDIAN.AMOUNT')}
 							</div>
