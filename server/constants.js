@@ -132,6 +132,7 @@ const updateKitInfo = (newInfo) => {
 
 const updateKit = (newKitConfig) => {
 	Object.assign(configuration.kit, newKitConfig);
+	overrideNetworkFields();
 };
 
 const updateSecrets = (newSecretsConfig) => {
@@ -147,6 +148,17 @@ const updateFrozenUser = (action, userId) => {
 		frozenUsers[userId] = true;
 	} else if (action === 'remove') {
 		delete frozenUsers[userId];
+	}
+};
+
+const overrideNetworkFields = () => {
+	for (let coin of Object.values(configuration.coins)) {
+		if (coin.type === 'fiat') {
+			configuration.coins[coin.symbol] = {
+				...coin,
+				...configuration?.kit?.fiat_fees?.[coin.symbol]
+			}
+		}
 	}
 };
 
@@ -203,8 +215,11 @@ exports.KIT_CONFIG_KEYS = [
 	'user_payments',
 	'dust',
 	'coin_customizations',
+	'fiat_fees',
 	'balance_history_config',
 	'transaction_limits',
+	'p2p_config',
+	'referral_history_config'
 ];
 
 exports.KIT_SECRETS_KEYS = [
@@ -275,6 +290,8 @@ exports.WEBSOCKET_CHANNEL = (topic, symbolOrUserId) => {
 			return 'admin';
 		case 'chat':
 			return 'chat';
+		case 'p2pChat':
+			return `p2pChat:${symbolOrUserId}`;
 		default:
 			return;
 	}
@@ -286,6 +303,7 @@ exports.WS_HUB_CHANNEL = 'channel:websocket:hub';
 // Chat
 exports.CHAT_MAX_MESSAGES = 50;
 exports.CHAT_MESSAGE_CHANNEL = 'channel:chat:message';
+exports.P2P_CHAT_MESSAGE_CHANNEL = 'channel:p2p';
 
 // CHANNEL CONSTANTS END --------------------------------------------------
 
@@ -369,8 +387,8 @@ exports.DEFAULT_ORDER_RISK_PERCENTAGE = 90; // used in settings in percentage to
 
 // SECURITY CONSTANTS START --------------------------------------------------
 
-exports.TOKEN_TIME_NORMAL = '24h';
-exports.TOKEN_TIME_LONG = '30d';
+exports.TOKEN_TIME_NORMAL = '7d';
+exports.TOKEN_TIME_LONG = '90d';
 
 exports.TOKEN_TYPES = {
 	HMAC: 'hmac'
@@ -651,9 +669,20 @@ exports.STAKE_SUPPORTED_PLANS = ['fiat', 'boost', 'enterprise'];
 
 //STAKE CONSTANTS END
 
+//P2P CONSTANTS START
+
+exports.P2P_SUPPORTED_PLANS = ['fiat', 'boost', 'enterprise'];
+
+//P2P CONSTANTS END
+
 //BALANCE HISTORY CONSTANTS START
 exports.BALANCE_HISTORY_SUPPORTED_PLANS = ['fiat', 'boost', 'enterprise'];
 //BALANCE HISTORY CONSTANTS END 
+
+//REFERRAL HISTORY CONSTANTS START
+
+exports.REFERRAL_HISTORY_SUPPORTED_PLANS = ['fiat', 'boost', 'enterprise'];
+//REFERRAL HISTORY CONSTANTS END
 
 exports.CUSTOM_CSS = `
 	.topbar-wrapper img {

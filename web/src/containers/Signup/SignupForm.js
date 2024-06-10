@@ -60,12 +60,7 @@ export const generateFormFields = (strings, theme, links = {}) => ({
 				text={strings['SIGN_UP.TERMS.policy']}
 			/>
 		),
-	},
-	captcha: {
-		type: 'captcha',
-		theme,
-		validate: [required],
-	},
+	}
 });
 
 const validate = (values) => {

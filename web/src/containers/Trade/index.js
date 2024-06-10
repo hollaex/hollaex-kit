@@ -21,7 +21,6 @@ import {
 	changePair,
 	setNotification,
 	NOTIFICATIONS,
-	RISKY_ORDER,
 	setTradeTab,
 } from 'actions/appActions';
 import { NORMAL_CLOSURE_CODE, isIntentionalClosure } from 'utils/webSocket';
@@ -307,16 +306,6 @@ class Trade extends PureComponent {
 	openCheckOrder = (order, onConfirm) => {
 		const { setNotification, fees, pairData } = this.props;
 		setNotification(NOTIFICATIONS.NEW_ORDER, {
-			order,
-			onConfirm,
-			fees,
-			pairData,
-		});
-	};
-
-	onRiskyTrade = (order, onConfirm) => {
-		const { setNotification, fees, pairData } = this.props;
-		setNotification(RISKY_ORDER, {
 			order,
 			onConfirm,
 			fees,
@@ -613,7 +602,6 @@ class Trade extends PureComponent {
 								focusOnSizeInput={this.focusOnSizeInput}
 								submitOrder={this.onSubmitOrder}
 								openCheckOrder={this.openCheckOrder}
-								onRiskyTrade={this.onRiskyTrade}
 								symbol={symbol}
 								balance={balance}
 								fees={fees}
@@ -767,7 +755,6 @@ class Trade extends PureComponent {
 						settings={settings}
 						orderbookReady={orderbookReady}
 						openCheckOrder={this.openCheckOrder}
-						onRiskyTrade={this.onRiskyTrade}
 						onSubmitOrder={this.onSubmitOrder}
 						pair={pair}
 						setPriceRef={this.setPriceRef}

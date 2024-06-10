@@ -119,6 +119,12 @@ const startPluginProcess = async () => {
 	});
 
 	pluginWorkerThread = childProcess;
+
+	pluginWorkerThread.on("exit", (code) => {
+		if (code === 0) {
+			startPluginProcess();
+		}
+	  });
 };
 
 const installPlugin = async (plugin) => {

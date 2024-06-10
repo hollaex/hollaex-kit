@@ -96,6 +96,22 @@ export const TOGGLE_DIGITAL_ASSETS_SORT = 'TOGGLE_DIGITAL_ASSETS_SORT';
 export const SET_ADMIN_SORT = 'SET_ADMIN_SORT';
 export const SET_ADMIN_WALLET_SORT = 'SET_ADMIN_WALLET_SORT';
 export const SET_ADMIN_DIGITAL_ASSETS_SORT = 'SET_ADMIN_DIGITAL_ASSETS_SORT';
+export const SET_SELECTED_ACCOUNT = 'SET_SELECTED_ACCOUNT';
+export const SET_SELECTED_STEP = 'SET_SELECTED_STEP';
+export const SET_WITHDRAW_CURRENCY = 'SET_WITHDRAW_CURRENCY';
+export const SET_WITHDRAW_NETWORK = 'SET_WITHDRAW_NETWORK';
+export const SET_WITHDRAW_NETWORK_OPTIONS = 'SET_WITHDRAW_NETWORK_OPTIONS';
+export const SET_WITHDRAW_ADDRESS = 'SET_WITHDRAW_ADDRESS';
+export const SET_WITHDRAW_AMOUNT = 'SET_WITHDRAW_AMOUNT';
+export const SET_WITHDRAW_FEE = 'SET_WITHDRAW_FEE';
+export const SET_DEPOSIT_AND_WITHDRAW = 'SET_DEPOSIT_AND_WITHDRAW';
+export const SET_VALID_ADDRESS = 'SET_VALID_ADDRESS';
+export const SET_DEPOSIT_CURRENCY = 'SET_DEPOSIT_CURRENCY';
+export const SET_DEPOSIT_NETWORK = 'SET_DEPOSIT_NETWORK';
+export const SET_DEPOSIT_NETWORK_OPTIONS = 'SET_DEPOSIT_OPTIONS';
+export const SET_SELECTED_METHOD = 'SET_SELECTED_METHOD';
+export const SET_RECEIVER_EMAIL = 'SET_RECEIVER_EMAIL';
+export const SET_WITHDRAW_OTIONAL_TAG = 'SET_WITHDRAW_OTIONAL_TAG';
 
 export const SORT = {
 	VOL: 'volume',
@@ -281,6 +297,10 @@ export const openHelpdesk = () => {
 
 export const openContactForm = () => {
 	return openHelpfulResourcesForm();
+};
+
+export const setSelectedStep = (selectedStep) => {
+	return { type: SET_SELECTED_STEP, payload: { selectedStep } };
 };
 
 export const openHelpfulResourcesForm = (data = {}) =>
@@ -529,6 +549,13 @@ export const openRiskPortfolioOrderWarning = (data = {}) =>
 export const logoutconfirm = (data = {}) =>
 	setNotification(LOGOUT_CONFORMATION, data, true);
 
+export const setSelectedAccount = (selectedAccount) => ({
+	type: SET_SELECTED_ACCOUNT,
+	payload: {
+		selectedAccount,
+	},
+});
+
 export const requestPlugins = () => axios.get(`${PLUGIN_URL}/plugins`);
 export const requestInitial = () => axios.get('/kit');
 export const requestConstant = () => axios.get('/constants');
@@ -662,3 +689,73 @@ export const getWithdrawalMax = (currency, network) => {
 		`/user/withdrawal/max?currency=${currency}&network=${network}`
 	);
 };
+
+export const withdrawCurrency = (currency) => ({
+	type: SET_WITHDRAW_CURRENCY,
+	payload: currency,
+});
+
+export const withdrawNetwork = (network) => ({
+	type: SET_WITHDRAW_NETWORK,
+	payload: network,
+});
+
+export const withdrawNetworkOptions = (networkOptions) => ({
+	type: SET_WITHDRAW_NETWORK_OPTIONS,
+	payload: networkOptions,
+});
+
+export const withdrawAddress = (address) => ({
+	type: SET_WITHDRAW_ADDRESS,
+	payload: address,
+});
+
+export const withdrawAmount = (amount) => ({
+	type: SET_WITHDRAW_AMOUNT,
+	payload: amount,
+});
+
+export const setFee = (amount) => ({
+	type: SET_WITHDRAW_FEE,
+	payload: amount,
+});
+
+export const setDepositAndWithdraw = (val) => ({
+	type: SET_DEPOSIT_AND_WITHDRAW,
+	payload: val,
+});
+
+export const setIsValidAdress = (val) => ({
+	type: SET_VALID_ADDRESS,
+	payload: val,
+});
+
+export const depositCurrency = (currency) => ({
+	type: SET_DEPOSIT_CURRENCY,
+	payload: currency,
+});
+
+export const depositNetwork = (network) => ({
+	type: SET_DEPOSIT_NETWORK,
+	payload: network,
+});
+
+export const depositNetworkOptions = (networkOptions) => ({
+	type: SET_DEPOSIT_NETWORK_OPTIONS,
+	payload: networkOptions,
+});
+
+export const setSelectedMethod = (method) => ({
+	type: SET_SELECTED_METHOD,
+	payload: method,
+});
+
+export const setReceiverEmail = (email) => ({
+	type: SET_RECEIVER_EMAIL,
+	payload: email,
+});
+
+export const setWithdrawOptionaltag = (tag) => ({
+	type: SET_WITHDRAW_OTIONAL_TAG,
+	payload: tag,
+});

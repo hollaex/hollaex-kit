@@ -122,7 +122,10 @@
 		"TAB_SIGNOUT": "Keluar",
 		"TAB_APPS": "Aplikasi",
 		"TAB_STAKE": "Mempertaruhkan",
-		"TAB_FIAT": "Kontrol fiat"
+		"TAB_FIAT": "Kontrol fiat",
+		"TAB_TRADE": "Berdagang",
+		"PRO_TRADE": "Pro",
+		"QUICK_TRADE": "Cepat"
 	},
 	"CONTACT_FORM": {
 		"CATEGORY_LABEL": "Kategori",
@@ -228,7 +231,9 @@
 		"ERROR_INVALID": "Kode OTP yang tidak valid",
 		"OTP_FORM_INFO": "Masukkan kode 6 digit Anda untuk melanjutkan",
 		"OTP_FORM_SUBNOTE_LINE_1": "Kode Anda juga dikenal sebagai autentikator dua faktor (2FA) atau kode OTP.",
-		"OTP_FORM_SUBNOTE_LINE_2": "Jika Anda kehilangan kode, hubungi dukungan."
+		"OTP_FORM_SUBNOTE_LINE_2": "Jika Anda kehilangan kode, hubungi dukungan.",
+		"OTP_FORM_SUBNOTE_LINE_3": "(Untuk menambahkan akun baru ke Google Authenticator, klik tombol '+'. Anda dapat memindai kode QR yang diberikan pada langkah sebelumnya atau memasukkan kunci secara manual untuk menambahkan akun Anda ke aplikasi.)",
+		"INPUT_TEXT": "Masukkan kode 6 digit dari aplikasi Google Authenticator ponsel Anda:"
 	},
 	"QUICK_TRADE_COMPONENT": {
 		"TITLE": "Cepat",
@@ -248,7 +253,16 @@
 		"SOURCE_TEXT": "Kesepakatan OTC broker",
 		"SOURCE_TEXT_NETWORK": "Kesepakatan OTC broker jaringan",
 		"VISIT": "Kunjungi{0}",
-		"ASSET_INFO_PAGE": "halaman info aset"
+		"ASSET_INFO_PAGE": "halaman info aset",
+		"CHANGE_TEXT_7D": "Perubahan 7D",
+		"HIGH_7D": "7D TINGGI",
+		"LOW_7D": "7D RENDAH",
+		"7D": "7D",
+		"1D": "1D",
+		"COIN_NAME": "{0} ({1})",
+		"COIN_INFORMATION": "{0} informasi",
+		"PRICE_TREND": "Tren Harga",
+		"VIEW_TREND": "Lihat Tren"
 	},
 	"PREVIOUS_PAGE": "halaman sebelumnya",
 	"NEXT_PAGE": "halaman berikutnya",
@@ -576,6 +590,28 @@
 			"ADJUST": "(SESUAIKAN PERSENTASE)",
 			"ACTIVATE_RISK_MANAGEMENT": "Aktifkan Manajemen Risiko",
 			"WARNING_POP_UP": "Pop up peringatan"
+		},
+		"TITLE_ACCOUNT": "Akun",
+		"DELETE_ACCOUNT": {
+			"ACCESS": {
+				"TEXT": "Ingin menghapus akun Anda? Klik {0}.",
+				"LINK": "Di Sini",
+				"DANGER_ZONE": {
+					"TITLE": "Zona Bahaya",
+					"TEXT": "Menghapus akun Anda akan membuat akun dan dana Anda tidak dapat diakses.",
+					"PROCEED": "Melanjutkan",
+					"CANCEL": "Membatalkan"
+				}
+			},
+			"CONFIRMATION": {
+				"TITLE": "Hapus akun",
+				"TEXT_1": "Menghapus akun Anda akan menghapus secara permanen semua data Anda dari bursa. Tindakan ini tidak dapat diubah.",
+				"TEXT_2": "KETIK {0} untuk mengonfirmasi penghapusan akun.",
+				"KEY": "SAYA MENGERTI",
+				"DELETE": "MENGHAPUS",
+				"CANCEL": "Membatalkan",
+				"PLACEHOLDER": "Ketik di sini"
+			}
 		}
 	},
 	"TRANSACTION_HISTORY": {
@@ -589,7 +625,12 @@
 		"WITHDRAWALS": "Penarikan",
 		"ORDERID": "Id pemesanan",
 		"TRIGGER_STOP_PRICE": "Pemicu/berhenti harga",
-		"TIME_OF_LAST_TRADE": "Waktu perdagangan terakhir"
+		"TIME_OF_LAST_TRADE": "Waktu perdagangan terakhir",
+		"INTERNAL": "intern",
+		"BLOCKCHAIN": "blockchain",
+		"STAKE": "mempertaruhkan",
+		"REFERRAL": "rujukan",
+		"QUICK_TRADE_TOOLTIP": "Pesanan dieksekusi melalui sistem konversi"
 	},
 	"ACCOUNT_SECURITY": {
 		"TITLE_TEXT": "Atur pengaturan keamanan akun Anda. Mulai dari Autentikasi dua-faktor, kata sandi, Kunci API, dan fungsi lain yang berkaitan dengan keamanan.",
@@ -613,7 +654,7 @@
 				"MESSAGE_4": "Anda dapat menyimpan kode ini dengan aman untuk memulihkan 2FA Anda apabila Anda mengubah atau kehilangan ponsel Anda di masa depan.",
 				"MESSAGE_5": "Manual",
 				"INPUT": "Masukkan Kata Sandi Sekali Pakai (OTP)",
-				"WARNING": "Kami sangat menyarankan Anda mengaktifkan autentikasi 2 faktor (2FA). Dengan mengaktifkannya, tingkat keamanan dana Anda akan sangat ditingkatkan.",
+				"WARNING": "Kami {0} {1}",
 				"ENABLE": "Aktifkan Autentikasi Dua-Faktor",
 				"DISABLE": "Nonaktifkan Autentikasi Dua-Faktor",
 				"SECRET_1": "Enter yor secret key",
@@ -622,12 +663,43 @@
 				"INPUT_1": "Secret Key",
 				"TITLE_2": "Masukkan One-Time Password (OTP)",
 				"MESSAGE_6": "Silakan masukkan 6 digit one-time password di bawah.",
-				"INPUT_2": "One-Time Password (OTP)"
+				"INPUT_2": "One-Time Password (OTP)",
+				"STRONGLY_RECOMMEND": "sangat merekomendasikan",
+				"WARNING_CONTENT": "bahwa Anda mengaktifkan otentikasi dua faktor untuk meningkatkan keamanan akun Anda dan melindungi dana Anda"
 			},
 			"FORM": {
 				"PLACEHOLDER": "Masukkan OTP yang ditunjukkan di aplikasi Autentikasi Google.",
 				"BUTTON": "Aktifkan 2FA"
-			}
+			},
+			"DOWNLOAD_APP": "Unduh dan pasang",
+			"GOOGLE_AUTHENTICATOR": "Google Otentikator:",
+			"DOWNLOAD_FROM": "Unduh dari",
+			"GOOGLE_PLAY": "Google Play",
+			"APPLE": "Toko aplikasi",
+			"APP_INFO": "Google Authenticator akan menghasilkan kode acak yang diperlukan untuk tindakan sensitif, seperti masuk dan menarik dana.",
+			"DONT_UNINSTALL": "Tolong jangan uninstall aplikasinya.",
+			"INFO_UNINSTALL": "Jika ponsel hilang secara tidak sengaja atau pencopotan pemasangan yang tidak disengaja, Anda mungkin mengalami keterlambatan dalam mendapatkan kembali akses ke akun Anda. Dalam kasus seperti itu, Anda perlu menghubungi tim dukungan kami untuk mendapatkan bantuan.",
+			"BACK": "KEMBALI",
+			"PROCEED": "MELANJUTKAN",
+			"NEXT": "Berikutnya",
+			"NOTE": "Catatan: {0} {1}",
+			"MANUEL_DESCRIPTION": "Silakan masukkan seed 2FA manual dari langkah sebelumnya.",
+			"MANUEL_DESCRIPTION_2": "Harap hati-hati menuliskan dan menyimpan verifikasi manual di atas",
+			"MANUEL_DESCRIPTION_3": "kunci karena dapat digunakan untuk pemulihan akun.",
+			"MANUEL_KEY": "Benih manual 2FA",
+			"MANUEL_PLACEHOLDER": "Masukkan benih 2FA Anda",
+			"MANUEL_WARNING": "(Pastikan Anda telah menuliskannya dan menyimpannya dengan aman untuk digunakan di masa mendatang.)",
+			"MANUEL_ERROR_1": "Silakan masukkan benih 2FA manual",
+			"MANUEL_ERROR_2": "Silakan masukan seed 2FA manual dari langkah sebelumnya",
+			"ACCOUNT_SECURED": "Akun Aman",
+			"2FA_ENABLED": "2FA DIAKTIFKAN",
+			"2FA_DISABLED": "2FA DONAKTIFKAN",
+			"2FA_CONTENT_ONE": "Mengaktifkan {0} {1} .",
+			"2FA_CONTENT_TWO": "(Otentikasi Dua Faktor) menambahkan lapisan perlindungan ekstra untuk melindungi dana Anda. Setelah diaktifkan, Anda akan diminta memasukkan kode verifikasi dari ponsel Anda setiap kali Anda masuk atau menarik aset. Fitur ini secara signifikan meningkatkan keamanan akun Anda",
+			"2FA_CONTENT_THREE": "(Otentikasi Dua Faktor) menambahkan lapisan perlindungan ekstra untuk melindungi dana Anda",
+			"2FA_CONTENT_FOUR": "Untuk menonaktifkan 2FA Anda harus memasukkan kode 2FA (OTP) Anda",
+			"INPUT_SIX_DIGIT_CODE": "Masukkan kode 6 digit dari aplikasi Google Authenticator ponsel Anda:",
+			"INPUT_CONTENT": "(Untuk menambahkan akun baru ke Google Authenticator, klik tombol '+'. Anda dapat memindai kode QR yang diberikan pada langkah sebelumnya atau memasukkan kunci secara manual untuk menambahkan akun Anda ke aplikasi.)"
 		},
 		"CHANGE_PASSWORD": {
 			"TITLE": "Ubah Kata Sandi",
@@ -781,7 +853,7 @@
 	"WALLET_BUTTON_BASE_WITHDRAW": "Penarikan",
 	"WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT": "Terima",
 	"WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW": "Kirim",
-	"AVAILABLE_BALANCE_TEXT": "Saldo {0} yang ttersedia: {1} {2}",
+	"AVAILABLE_BALANCE_TEXT": "Tersedia {0} Saldo: {1} {2} {3}",
 	"BALANCE_TEXT": "Balance",
 	"CURRENCY_BALANCE_TEXT": "{0} Balance",
 	"WALLET_ALL_ASSETS": "Semua Aset",
@@ -1010,7 +1082,8 @@
 		"VIEW_MORE_MARKETS": "Lihat lebih banyak pasar",
 		"VIEW_VERIFICATION": "melihat verifikasi",
 		"EARN_COMMISSION": "Dapatkan komisi",
-		"ID_VERIFICATION": "verifikasi ID:"
+		"ID_VERIFICATION": "verifikasi ID:",
+		"VOLUME_7D": "Volume 7D"
 	},
 	"REFERRAL_LINK": {
 		"TITLE": "Undang teman Anda",
@@ -1077,7 +1150,9 @@
 		"BUTTON": "kirim",
 		"ERROR_INVALID": "Kode yang Anda masukkan salah. Silakan coba lagi",
 		"OTP_LABEL": "Kode 2FA (OTP)",
-		"OTP_PLACEHOLDER": "Masukkan kode autentikasi dua faktor 6 digit Anda"
+		"OTP_PLACEHOLDER": "Masukkan kode autentikasi dua faktor 6 digit Anda",
+		"FORM_TITLE_TEXT": "Kode unik telah dikirim ke email Anda yang diperlukan untuk menyelesaikan proses. Silakan masukkan kode yang dikirimkan ke email Anda di bawah{0}.",
+		"OTP_NOTE": " beserta kode OTP Anda"
 	},
 	"USER_APPS": {
 		"TITLE": "Aplikasi pertukaran Anda",
@@ -1203,7 +1278,11 @@
 		"COMPLETED_TOOLTIP": "Taruhan sudah matang. Lanjutkan mempertaruhkan untuk mendapatkan lebih banyak hadiah atau batalkan taruhan untuk mengklaim hadiah.",
 		"CONNECT_ERROR": "Silakan periksa dompet Anda",
 		"INSTALL_METAMASK": "Anda harus menginstal Metamask ke browser Anda: https://metamask.io/download.html",
-		"INSTALL_METAMASK_TITLE": "MetaMask tidak terdeteksi"
+		"INSTALL_METAMASK_TITLE": "MetaMask tidak terdeteksi",
+		"INSTALL_METAMASK_DETAILS": {
+			"TITLE": "Instal MetaMask",
+			"PROMPT": "Anda harus memasang Metamask ke browser Anda: {0}"
+		}
 	},
 	"UNSTAKE": {
 		"TITLE": "Lepas pasak",
@@ -1335,7 +1414,9 @@
 		"REQUIRES_24H_TO_SETTLE_NOTICE": "Memerlukan 24 jam untuk penyelesaian",
 		"SUCCESSFUL_UNSTAKE_NOTICE": "Anda telah berhasil menarik",
 		"VISIT_WALLET_BUTTON": "KUNJUNGI DOMPET",
-		"CLOSE_BUTTON": "TUTUP"
+		"CLOSE_BUTTON": "TUTUP",
+		"ACTIVE_STAKES": "Taruhan Aktif",
+		"STAKES_HISTORY": "Sejarah"
 	},
 	"MOVE_XHT": {
 		"TITLE": "Pindahkan XHT",
@@ -1358,8 +1439,16 @@
 	"CURRENCY_WALLET": {
 		"BACK": "Kembali",
 		"WALLET_PAGE": "{0} ke laman dompet",
-		"LEARN_MORE": "Belajarlah lagi",
-		"ABOUT": "{0} tentang"
+		"LEARN_MORE": "Pelajari lebih lanjut {0}",
+		"ABOUT": "tentang",
+		"TOTAL_BALANCE": "Total Saldo : {0} {1}",
+		"AVAILABLE_BALANCE": "Saldo Tersedia : {0} {1} {2}",
+		"PERCENTAGE_SHARE": "Persentase Pembagian {0}",
+		"EARN_BY": "Hasilkan paling lambat tanggal {0} {1}",
+		"STAKING": "mempertaruhkan",
+		"TOOLTIP": "Saldo tidak dalam keadaan tertunda atau terkunci dalam perdagangan (open order)",
+		"WALLET_HAS_BALANCE_PERCENTAGE": "Dompet Anda saat ini tidak menampung {0} apa pun.",
+		"WALLET_DEPOSIT": "Anda dapat mencoba menyetorkan {0} atau membeli {1}"
 	},
 	"WITHDRAWALS_FORM_NETWORK_LABEL": "Jaringan",
 	"DEPOSIT_FORM_NETWORK_WARNING": "Pastikan jaringan yang dipilih kompatibel dengan jaringan dompet pengirim",
@@ -1453,7 +1542,11 @@
 		"VIEW_MARKETS": "Lihat Pasar",
 		"TRADING_SYMBOL": "Simbol Perdagangan",
 		"TYPE": "Jenis",
-		"SOURCE": "SUMBER"
+		"SOURCE": "SUMBER",
+		"CHANGE_7D": "Perubahan (7 hari)",
+		"CHANGE_1D": "Ganti (1 hari)",
+		"CHART_7D": "Grafik (7 hari)",
+		"ASSET": "Aset"
 	},
 	"SUMMARY_MARKETS": {
 		"HOLLAEX": "Ingin mendaftarkan aset digital Anda? Mulai pasar Anda sendiri dengan HollaEx Anda {0} {1}",
@@ -1600,7 +1693,12 @@
 		"QUICK_TRADE": "PERDAGANGAN CEPAT",
 		"MARKETS": "PASAR",
 		"WALLET": "DOMPET",
-		"PRICE_SOURCE": "Sumber harga"
+		"PRICE_SOURCE": "Sumber harga",
+		"PRO_TRADE": "PERDAGANGAN PRO",
+		"ORDERBOOK": "Memesan buku",
+		"NETWORK": "Pialang Jaringan OTC",
+		"BROKER": "OTC Broker Lokal",
+		"BROKERAGE": "NA - (Perantara)"
 	},
 	"HOLLAEX_TOKEN": {
 		"REMOVE_FAVOURITES": "Hapus dari favorit",
@@ -1618,7 +1716,15 @@
 		"TRADE": "BERDAGANG",
 		"LIST": "Ingin mendaftarkan aset digital Anda?",
 		"WEBSITE": "Situs web",
-		"EXPLORER": "Penjelajah"
+		"EXPLORER": "Penjelajah",
+		"QUICK_TRADE": "PERDAGANGAN CEPAT {0}",
+		"PRICES": {
+			"TITLE": "Harga",
+			"QUICK_TRADE": "Perdagangan Cepat",
+			"SUBTITLE": "Untuk melihat harga beli dan jual untuk {0} kunjungi {1}",
+			"FOOTER": "Biaya perdagangan pengambil pasar berlaku untuk semua perdagangan yang dilakukan melalui Quick Trade."
+		},
+		"PRO_TRADE": "LIHAT {0} PASAR"
 	},
 	"ACCORDIAN": {
 		"ACCORDIAN_ASSETS": "Semua aset dompet",
@@ -1671,12 +1777,25 @@
 				"TABLE_1": {
 					"TITLE": "Batas penarikan independen",
 					"SUBTITLE": "Aset yang dipisahkan dari aturan batas kolektif yang mengikuti aturan penarikan 24 jam independennya sendiri:",
-					"HEADER": { "CURRENCY": "Mata uang/aset", "LIMIT": "batas 24 jam" },
-					"LIMIT_TEXT": "(Aset yang semuanya berbagi jumlah batas penarikan kolektif)"
+					"HEADER": {
+						"CURRENCY": "Mata uang/aset",
+						"LIMIT": "batas 24 jam",
+						"LIMIT_2": "Batas bulanan"
+					},
+					"LIMIT_TEXT": "(Aset yang semuanya berbagi jumlah batas penarikan kolektif)",
+					"LIMIT_TEXT_2": "(Batas hanya berdasarkan mata uangnya sendiri)",
+					"VALUED": "(Bernilai)",
+					"NO_INDEPENDENT": "Tidak ada batasan independen untuk tingkatan ini",
+					"LIMIT_TEXT_3": "(Aset yang semuanya memiliki jumlah batas penarikan harian kolektif yang sama dalam mata uang {0})",
+					"LIMIT_TEXT_4": "(Aset yang semuanya memiliki jumlah batas penarikan kolektif kolektif dalam mata uang {0})"
 				},
 				"TABLE_2": {
 					"TITLE": "Batas penarikan standar bersama kolektif",
 					"SUBTITLE": "Di bawah ini adalah aset yang semuanya memiliki aturan jumlah batas penarikan standar 24 jam yang sama:"
+				},
+				"TABLE_3": {
+					"TITLE": "Batasan Kolektif",
+					"SUBTITLE": "Gabungan batas penarikan harian dan bulanan untuk sekelompok koin"
 				}
 			}
 		}
@@ -1752,5 +1871,60 @@
 				"CONFIRM": "MENGONFIRMASI"
 			}
 		}
-	}
+	},
+	"TRADE_TOOLS": "Peralatan",
+	"SECOND": "Kedua",
+	"CANT_FIND_MARKETS": "Tidak dapat menemukan pasar apa pun dari aset tersebut.",
+	"TRY_VISITING_ASSETS": "Coba kunjungi {0}.",
+	"ASSETS_PAGE": "Halaman aset",
+	"NETWORK": "Jaringan",
+	"CATEGORY": "Kategori",
+	"ASSETS": "Aktiva",
+	"QUICK_TRADE_QUOTE_EXPIRED_FIRST_LINE": "Penawaran harga telah kedaluwarsa.",
+	"QUICK_TRADE_QUOTE_EXPIRED_SECOND_LINE": "Klik requote untuk mendapatkan harga baru.",
+	"QUICK_TRADE_QUOTE_EXPIRED_BUTTON": "REQUOTE",
+	"ZERO_ASSET_2": "terdeteksi. Membuat",
+	"ZERO_ASSET_3": "setor di bawah.",
+	"QUOTE_CONFIRMATION_EXPIRY_MSG": "Penawaran harga akan berakhir pada {0} {1}",
+	"QUOTE_CONFIRMATION_EXPIRED_MSG_TEXT_1": "Harga telah kedaluwarsa.",
+	"QUOTE_CONFIRMATION_EXPIRED_MSG_TEXT_2": "Kembali untuk mendapatkan penawaran harga baru.",
+	"RISKY_TRADE_DISCLAIMER": {
+		"MSG_1": "Harap periksa apakah Anda memang ingin memperdagangkan {0} ({1}) karena aset ini mungkin memiliki risiko tinggi",
+		"MSG_2": "volatilitas ekstrim",
+		"MSG_3": "Centang kotak di bawah untuk mengonfirmasi bahwa Anda memahami bahwa nilai aset ini tidak pasti dan tidak dijamin.",
+		"UNDERSTAND_RISK_MSG": "Ya, saya memahami risikonya"
+	},
+	"PROFIT_LOSS": {
+		"BACK": "Kembali",
+		"BACK_TO_WALLET": "ke dompet",
+		"WALLET_PERFORMANCE_TITLE": "Menyeimbangkan kinerja",
+		"WALLET_PERFORMANCE_DESCRIPTION": "Kinerja saldo dompet Anda dari waktu ke waktu dan kerusakan aset. Klik tanggal di bawah untuk melihat kinerja dompet Anda pada hari itu.",
+		"PL_7_DAY": "P&L 7 Hari",
+		"EST_TOTAL_BALANCE": "Timur. Jumlah Saldo",
+		"WEEK": "pekan",
+		"MONTH": "bulan",
+		"MONTHS": "bulan",
+		"WALLET_BALANCE": "Rincian saldo dompet",
+		"WALLET_BALANCE_DESCRIPTION_1": "Di bawah ini adalah rincian dompet",
+		"WALLET_BALANCE_DESCRIPTION_2": "Klik bagan di atas untuk memperbarui tabel di bawah.",
+		"DATE_SELECT": "Pilih Tanggal",
+		"ASSET_NAME": "Nama aset",
+		"BALANCE_AMOUNT": "Jumlah Saldo",
+		"VALUE": "Nilai",
+		"PERFORMANCE_TREND": "Tren Kinerja 7 Hari",
+		"CUSTOM_DATE_DESCRIPTION": "Pilih tanggal tertentu untuk mengambil data riwayat Anda (perbedaan tanggal tidak boleh lebih dari 3 bulan)",
+		"SELECT_START_DATE": "Pilih tanggal mulai",
+		"SELECT_END_DATE": "Pilih tanggal akhir",
+		"CUSTOM": "Kebiasaan",
+		"BACK_CUSTOM": "KEMBALI",
+		"PROOCED_CUSTOM": "DIPROSES",
+		"PL_DAYS": "Hari P&L",
+		"VIEW_MORE": "Lihat Selengkapnya {0}",
+		"SHOW_ASSET_BREAKDOWN": "Tampilkan Perincian Aset",
+		"PL_SUMMARY": "Ringkasan Keuntungan dan Kerugian",
+		"BALANCE_HISTORY": "Riwayat Saldo"
+	},
+	"ASSET_INFO": "Informasi aset",
+	"TAKER_FEES_APPLIED": "Biaya pengambil diterapkan",
+	"CANCEL_WITHDRAWAL_ADDRESS": "Alamat Penarikan"
 }

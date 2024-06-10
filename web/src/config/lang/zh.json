@@ -57,7 +57,11 @@
 		"SECTION_3_CARD_5_TEXT": "我们可以为您的需求多一份关怀，有在线专业人员为您解答问题与咨询",
 		"SECTION_3_CARD_6_TITLE": "KYC集成",
 		"SECTION_3_CARD_6_TEXT": "通过灵活且可集成的模块，可在不同的司法管辖区应用KYC及用户验证方法。",
-		"SECTION_3_BUTTON_1": "查看演示"
+		"SECTION_3_BUTTON_1": "查看演示",
+		"MAIN_TITLE": "加密货币交易交易所",
+		"MAIN_TEXT": "轻松买卖加密资产。只需使用您的电子邮件注册即可 24/7 交易主要加密资产。",
+		"TRADE_CRYPTO": "开始交易",
+		"VIEW_EXCHANGE": "查看交流"
 	},
 	"FOOTER": {
 		"FOOTER_LANGUAGE_TEXT": "LANGUAGE",
@@ -94,7 +98,9 @@
 			"SECTION_6_LINK_2": "Telegram"
 		},
 		"CLICK_HERE": "请点击此处",
-		"VISIT_HERE": "访问此处"
+		"VISIT_HERE": "访问此处",
+		"TERMS_OF_SERVICE": "服务条款",
+		"PRIVACY_POLICY": "隐私政策"
 	},
 	"ACCOUNTS": {
 		"TITLE": "账号",
@@ -106,7 +112,14 @@
 		"TAB_WALLET": "钱包",
 		"TAB_SUMMARY": "概要",
 		"TAB_API": "API",
-		"TAB_SIGNOUT": "退出"
+		"TAB_SIGNOUT": "退出",
+		"TAB_APPS": "应用",
+		"TAB_HISTORY": "历史",
+		"TAB_STAKE": "赌注",
+		"TAB_FIAT": "菲亚特控制",
+		"TAB_TRADE": "贸易",
+		"PRO_TRADE": "专业版",
+		"QUICK_TRADE": "快的"
 	},
 	"CONTACT_FORM": {
 		"CATEGORY_LABEL": "咨询类型",
@@ -137,19 +150,23 @@
 			"DESTINATION_TAG": "{0} 目标标签（Destination Tag）",
 			"BTC": "比特币接收地址",
 			"ETH": "Ethereum接收地址",
-			"BCH": "Bitcoin Cash接收地址"
+			"BCH": "Bitcoin Cash接收地址",
+			"MEMO": "您的{0}备忘录"
 		},
 		"INCREASE_LIMIT": "需要增加每日限额吗？",
 		"QR_CODE": "其他人可以使用该QR码像你转账。",
 		"NO_DATA": "没有信息",
-		"FULL_MESSAGE_LIMIT": "{0}: {1} {2} {3}"
+		"FULL_MESSAGE_LIMIT": "{0}: {1} {2} {3}",
+		"QR_CODE_TITLE": "{0}存款信息"
 	},
 	"LOGIN": {
 		"LOGIN_TO": "{0} 登录",
 		"CANT_LOGIN": "无法登录？",
 		"NO_ACCOUNT": "没有账号？",
 		"CREATE_ACCOUNT": "创建账号",
-		"HELP": "Help"
+		"HELP": "Help",
+		"LOOKING_PRICES": "寻找价格？",
+		"VIEW_MARKETS": "查看市场"
 	},
 	"FORM_FIELDS": {
 		"EMAIL_LABEL": "电子邮件",
@@ -178,7 +195,9 @@
 		"USER_EXIST": "电子邮件已被注册",
 		"ACCEPT_TERMS": "你还没有同意使用条款和隐私政策",
 		"STEP": "无效的值，为{0}",
-		"ONLY_NUMBERS": "值只能包含数字"
+		"ONLY_NUMBERS": "值只能包含数字",
+		"MIN_VALUE_NE": "值必须大于 {0}。",
+		"MAX_VALUE_NE": "值必须小于 {0}。"
 	},
 	"NOTIFICATIONS": {
 		"BUTTONS": {
@@ -203,14 +222,41 @@
 		"OTP_TITLE": "安全验证",
 		"OTP_HELP": "帮助",
 		"OTP_BUTTON": "提交",
-		"ERROR_INVALID": "无效的OTP码"
+		"ERROR_INVALID": "无效的OTP码",
+		"OTP_FORM_INFO": "输入您的 6 位数代码以继续",
+		"OTP_FORM_SUBNOTE_LINE_1": "您的代码也称为双因素身份验证器 (2FA) 或 OTP 代码。",
+		"OTP_FORM_SUBNOTE_LINE_2": "如果您丢失了代码，请联系支持人员。",
+		"OTP_FORM_SUBNOTE_LINE_3": "（要向 Google Authenticator 添加新帐户，请点击“+”按钮。您可以扫描上一步中提供的二维码，也可以手动输入密钥将您的帐户添加到应用程序中。）",
+		"INPUT_TEXT": "输入手机 Google Authenticator 应用中收到的 6 位数代码："
 	},
 	"QUICK_TRADE_COMPONENT": {
 		"TITLE": "快速交易",
 		"TOTAL_COST": "总费用",
 		"BUTTON": "预览交易结果",
 		"INPUT": "{0}{1}",
-		"TRADE_TITLE": "{0} {1}"
+		"TRADE_TITLE": "{0} {1}",
+		"INFO": "交易加密货币的最快、最简单的方式",
+		"CHANGE_TEXT": "改变",
+		"CHANGE_TEXT_7D": "7D变化",
+		"HIGH_7D": "7D高",
+		"LOW_7D": "7天低",
+		"7D": "7D",
+		"1D": "一维",
+		"HIGH_24H": "24小时高点",
+		"LOW_24H": "24小时低点",
+		"BEST_BID": "最佳出价",
+		"BEST_ASK": "最佳询问",
+		"FOOTER_TEXT": "快速交易费用使用市场接受者费率",
+		"FOOTER_TEXT_1": "源自",
+		"GO_TO_TEXT": "去",
+		"SOURCE_TEXT": "经纪商场外交易",
+		"SOURCE_TEXT_NETWORK": "网络经纪商场外交易",
+		"VISIT": "访问{0}",
+		"ASSET_INFO_PAGE": "资产信息页面",
+		"COIN_NAME": "{0} ({1})",
+		"COIN_INFORMATION": "{0}信息",
+		"PRICE_TREND": "价格趋势",
+		"VIEW_TREND": "查看趋势"
 	},
 	"PREVIOUS_PAGE": "上一页",
 	"NEXT_PAGE": "下一页",
@@ -220,7 +266,8 @@
 		"AVAILABLE_TRADING": "可供取款",
 		"ORDERS_PLURAL": "订单",
 		"ORDERS_SINGULAR": "订单",
-		"HOLD_ORDERS": "You have {0} open {1}, resulting in a hold of {2} {3} placed on your {4} balance"
+		"HOLD_ORDERS": "You have {0} open {1}, resulting in a hold of {2} {3} placed on your {4} balance",
+		"LOADING_ASSETS": "正在加载资源..."
 	},
 	"REQUEST_RESET_PASSWORD": {
 		"TITLE": "找回账号",
@@ -262,7 +309,9 @@
 	},
 	"VERIFICATION_EMAIL_REQUEST": {
 		"TITLE": "重新发送电子邮件",
-		"BUTTON": "申请邮件"
+		"BUTTON": "申请邮件",
+		"SUBTITLE": "在下面提出另一个电子邮件验证请求",
+		"SUPPORT": "联系支持人员"
 	},
 	"VERIFICATION_EMAIL_REQUEST_SUCCESS": {
 		"TITLE": "重新发送了电子邮件",
@@ -373,7 +422,8 @@
 				"PHONE_NUMBER_PLACEHOLDER": "请输入手机号码",
 				"SMS_SEND": "发送SMS",
 				"SMS_CODE_LABEL": "SMS码",
-				"SMS_CODE_PLACEHOLDER": "输入SMS码"
+				"SMS_CODE_PLACEHOLDER": "输入SMS码",
+				"CONNECTING_LOADING": "正在连接"
 			},
 			"INFORMATION": {
 				"TEXT": "*重要: 请按照身份证上的姓名准确填写，如果您是企业账号，请联系客服以获得企业账号。",
@@ -425,7 +475,9 @@
 					"LIST_ITEM_3": "清晰显示有效的到期日期",
 					"WARNING_1": "只允许有效的护照，并且提交高像素的照片或扫描图像:",
 					"WARNING_2": "确保上传的文件，任何使用错误的或伪造文件的行为都将产生法律后果，并导致账户被立即冻结。",
-					"WARNING_3": "请不要提交护照作为居住证明"
+					"WARNING_3": "请不要提交护照作为居住证明",
+					"LIST_ITEM_0": "所有文档的总大小不应超过 {0}mb",
+					"VIOLATION_ERROR": "您上传的所有文档的总大小超出了 {0}mb 的上传限制。请上传较小的文件以继续。"
 				},
 				"POR": {
 					"SECTION_1_TEXT_1": "为避免在验证账户时出现延误，请确认以下内容:",
@@ -474,7 +526,20 @@
 			"LIST_ITEM_1": "提高提款限额",
 			"LIST_ITEM_2": "提高充值限额",
 			"LIST_ITEM_3": "低手续费"
-		}
+		},
+		"BASE_WITHDRAWAL": "法币提款",
+		"BASE_DEPOSITS": "法定存款",
+		"EMAIL_VERIFICATION": "发送验证邮件",
+		"VERIFICATION_SENT": "已发送验证",
+		"VERIFICATION_SENT_INFO": "检查您的电子邮件并单击链接以验证电子邮件。",
+		"OKAY": "好的",
+		"TITLE_PAYMENT": "添加付款方式",
+		"PAYMENT_VERIFICATION": "付款验证",
+		"START_PAYMENT_VERIFICATION": "开始验证",
+		"PAYMENT_VERIFICATION_TEXT_1": "在下面添加您的付款帐户详细信息。",
+		"PAYMENT_VERIFICATION_TEXT_2": "经过验证后，您的帐户将获得更多各种货币的提款和存款方式。",
+		"ADD_ANOTHER_PAYMENT_METHOD": "添加其他付款方式",
+		"PAYMENT_VERIFICATION_HELP_TEXT": "为了验证此部分，您必须完成 {0} 部分。"
 	},
 	"USER_SETTINGS": {
 		"TITLE_TEXT_1": "可以改变账户设置",
@@ -519,7 +584,30 @@
 			"VALUE_ASSET": "近似值",
 			"ADJUST": "(设置百分比)",
 			"ACTIVATE_RISK_MANAGEMENT": "激活风险管理",
-			"WARNING_POP_UP": "警告弹窗"
+			"WARNING_POP_UP": "警告弹窗",
+			"INFO_TEXT_1": "{0}的总资产价值：{1}"
+		},
+		"TITLE_ACCOUNT": "帐户",
+		"DELETE_ACCOUNT": {
+			"ACCESS": {
+				"TEXT": "想要删除您的帐户吗？单击{0}。",
+				"LINK": "这里",
+				"DANGER_ZONE": {
+					"TITLE": "危险区",
+					"TEXT": "删除您的帐户将使您的帐户和资金都无法访问。",
+					"PROCEED": "继续",
+					"CANCEL": "取消"
+				}
+			},
+			"CONFIRMATION": {
+				"TITLE": "删除帐户",
+				"TEXT_1": "删除您的帐户将从交易所永久删除您的所有数据。此操作是不可逆转的。",
+				"TEXT_2": "输入 {0} 以确认帐户删除。",
+				"KEY": "我明白",
+				"DELETE": "删除",
+				"CANCEL": "取消",
+				"PLACEHOLDER": "在此输入"
+			}
 		}
 	},
 	"TRANSACTION_HISTORY": {
@@ -530,7 +618,15 @@
 		"TEXT_DOWNLOAD": "下载历史记录",
 		"TRADES": "交易",
 		"DEPOSITS": "充值",
-		"WITHDRAWALS": "提款"
+		"WITHDRAWALS": "提款",
+		"ORDERID": "订单号",
+		"TRIGGER_STOP_PRICE": "触发/止损价格",
+		"TIME_OF_LAST_TRADE": "最后交易时间",
+		"INTERNAL": "内部的",
+		"BLOCKCHAIN": "区块链",
+		"STAKE": "赌注",
+		"REFERRAL": "转介",
+		"QUICK_TRADE_TOOLTIP": "订单通过转换系统执行"
 	},
 	"ACCOUNT_SECURITY": {
 		"TITLE_TEXT": "调整账户的安全设置，谷歌验证、密码、API密钥等安全相关功能。",
@@ -551,7 +647,7 @@
 				"MESSAGE_4": "你可以安全地保存该QR码，以便以后更换或丢失手机时恢复2FA。",
 				"MESSAGE_5": "指南",
 				"INPUT": "请在下方输入谷歌验证码",
-				"WARNING": "强烈建议你设置谷歌验证（2FA），这将大幅提高资金的安全性。 ",
+				"WARNING": "我们{0} {1}",
 				"ENABLE": "启用谷歌验证（2FA）",
 				"DISABLE": "禁用谷歌验证（2FA）",
 				"SECRET_1": "Enter yor secret key",
@@ -560,9 +656,40 @@
 				"INPUT_1": "Secret Key",
 				"TITLE_2": "Enter One-Time Password (OTP)",
 				"MESSAGE_6": "Please enter your 6-digit one-time password below.",
-				"INPUT_2": "One-Time Password (OTP)"
+				"INPUT_2": "One-Time Password (OTP)",
+				"STRONGLY_RECOMMEND": "强烈推荐",
+				"WARNING_CONTENT": "启用双重身份验证以增强帐户安全性并保护您的资金"
 			},
-			"FORM": { "PLACEHOLDER": "请输入6位谷歌验证码", "BUTTON": "启用2FA" }
+			"FORM": { "PLACEHOLDER": "请输入6位谷歌验证码", "BUTTON": "启用2FA" },
+			"DOWNLOAD_APP": "下载并安装",
+			"GOOGLE_AUTHENTICATOR": "Google 身份验证器：",
+			"DOWNLOAD_FROM": "下载自",
+			"GOOGLE_PLAY": "谷歌播放",
+			"APPLE": "应用商店",
+			"APP_INFO": "Google Authenticator 将生成敏感操作（例如登录和提取资金）所必需的随机代码。",
+			"DONT_UNINSTALL": "请不要卸载该应用程序。",
+			"INFO_UNINSTALL": "如果手机意外丢失或无意卸载，您可能会在重新访问帐户时遇到延迟。在这种情况下，您需要联系我们的支持团队寻求帮助。",
+			"BACK": "后退",
+			"PROCEED": "继续",
+			"NEXT": "下一个",
+			"NOTE": "注意：{0} {1}",
+			"MANUEL_DESCRIPTION": "请输入上一步中的手动 2FA 种子。",
+			"MANUEL_DESCRIPTION_2": "请认真记录并保存上述手动验证",
+			"MANUEL_DESCRIPTION_3": "密钥，因为它可以用于帐户恢复。",
+			"MANUEL_KEY": "手动 2FA 种子",
+			"MANUEL_PLACEHOLDER": "输入您的 2FA 种子",
+			"MANUEL_WARNING": "（请确保您已将其写下来并安全存储以供将来使用。）",
+			"MANUEL_ERROR_1": "请输入手动 2FA 种子",
+			"MANUEL_ERROR_2": "请输入上一步中的手动 2FA 种子",
+			"ACCOUNT_SECURED": "账户安全",
+			"2FA_ENABLED": "已启用 2FA",
+			"2FA_DISABLED": "2FA 已禁用",
+			"2FA_CONTENT_ONE": "正在激活 {0} {1} 。",
+			"2FA_CONTENT_TWO": "（双重身份验证）增加了一层额外的保护来保护您的资金。启用后，每次登录或提取资产时，您都需要输入手机验证码。此功能大大增强了您帐户的安全性",
+			"2FA_CONTENT_THREE": "（双重身份验证）增加了一层额外的保护来保护你的资金",
+			"2FA_CONTENT_FOUR": "要禁用 2FA，您需要输入 2FA (OTP) 代码",
+			"INPUT_SIX_DIGIT_CODE": "输入手机 Google Authenticator 应用中收到的 6 位数代码：",
+			"INPUT_CONTENT": "（要向 Google Authenticator 添加新帐户，请点击“+”按钮。您可以扫描上一步中提供的二维码，也可以手动输入密钥将您的帐户添加到应用程序中。）"
 		},
 		"CHANGE_PASSWORD": {
 			"TITLE": "更改密码",
@@ -589,7 +716,9 @@
 			"CONTENT": {
 				"TITLE": "交易记录",
 				"MESSAGE": "Below is login history list with details IP, country and time details. If you see any suspicious activity you should change your password and contact support"
-			}
+			},
+			"IP_ADDRESS": "IP地址",
+			"TIME": "约会时间"
 		},
 		"FREEZE": {
 			"TITLE": "Freeze Account",
@@ -656,7 +785,9 @@
 		"REQUIRES_24H_TO_SETTLE_NOTICE": "需要 24 小时来结算。",
 		"SUCCESSFUL_UNSTAKE_NOTICE": "您已成功解锁",
 		"VISIT_WALLET_BUTTON": "访问钱包",
-		"CLOSE_BUTTON": "关闭"
+		"CLOSE_BUTTON": "关闭",
+		"ACTIVE_STAKES": "活跃股份",
+		"STAKES_HISTORY": "历史"
 	},
 	"CURRENCY": "加密货币",
 	"TYPE": "Type",
@@ -746,13 +877,16 @@
 		"WITHDRAWAL_CONFIRM_ADDRESS": "地址",
 		"WITHDRAWAL_CONFIRM_NETWORK": "网络",
 		"WITHDRAWAL_CANCEL_BUTTON": "关闭",
-		"WITHDRAWAL_CONFIRM_BUTTON": "确认提款"
+		"WITHDRAWAL_CONFIRM_BUTTON": "确认提款",
+		"MESSAGE_FEE_COIN": "交易费为{0}",
+		"WITHDRAWALS_FORM_ERROR_TITLE": "转账信息不正确",
+		"WITHDRAWALS_FORM_ERROR": "您的资金转账失败。将资金发送到电子邮件需要用户在此交易所拥有帐户。检查电子邮件是否正确，请重试。"
 	},
 	"WALLET_BUTTON_BASE_DEPOSIT": "充值",
 	"WALLET_BUTTON_BASE_WITHDRAW": "提款",
 	"WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT": "receive",
 	"WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW": "send",
-	"AVAILABLE_BALANCE_TEXT": "可用余额 : {1} {2}",
+	"AVAILABLE_BALANCE_TEXT": "可用{0}余额：{1} {2} {3}",
 	"BALANCE_TEXT": "可用",
 	"CURRENCY_BALANCE_TEXT": "{0} Balance",
 	"WALLET_ALL_ASSETS": "全部资产",
@@ -859,7 +993,8 @@
 		"CHAT_MESSAGE_BOX_PLACEHOLDER": "信息",
 		"SIGN_UP_CHAT": "注册聊天",
 		"JOIN_CHAT": "设置聊天用户名",
-		"TROLLBOX": "Trollbox ({0})"
+		"TROLLBOX": "Trollbox ({0})",
+		"SET_USERNAME": "设置聊天用户名"
 	},
 	"INVALID_USERNAME": "用户名长度必须在3~5个字符之间，只可包含小写、数字和下划线（_）",
 	"USERNAME_TAKEN": "该用户名已被注册，请重新输入。",
@@ -1005,7 +1140,18 @@
 		"WAVE_NUMBER": "波段号",
 		"DISCOUNT": "( {0}%折扣 )",
 		"MY_FEES_LIMITS": " 我的手续费及限额",
-		"VIEW_MORE_MARKETS": "查看更多行情"
+		"VIEW_MORE_MARKETS": "查看更多行情",
+		"ONE_REQUIREMENT": "仅一项要求：",
+		"DEPOSIT_AND_WITHDRAWAL_FEES": "存款和取款费用",
+		"DEPOSITS": "存款",
+		"WITHDRAWALS": "提款",
+		"MARKETS": "市场",
+		"CHANGE_24H": "24小时变化",
+		"VOLUME_24H": "24小时成交量",
+		"VOLUME_7D": "7D 体积",
+		"VIEW_VERIFICATION": "查看验证",
+		"EARN_COMMISSION": "赚取佣金",
+		"ID_VERIFICATION": "身份验证："
 	},
 	"REFERRAL_LINK": {
 		"TITLE": "邀请好友",
@@ -1022,7 +1168,11 @@
 		"PENDING_REFERRAL": "Commissions Pending:",
 		"EARN_REFERRAL": "Commissions Earn:",
 		"XHT_COUNT": "{0} XHT",
-		"APPLY_BUTTON": "APPLY"
+		"APPLY_BUTTON": "APPLY",
+		"VIEW": "看法",
+		"TABLE_TITLE": "所有成功推荐",
+		"USER": "用户/电子邮件",
+		"TIME": "报名时间"
 	},
 	"USER_LEVEL": "用户级别",
 	"LIMIT_AMOUNT": "限额",
@@ -1045,7 +1195,22 @@
 		"APPLY_TODAY": "立即申请"
 	},
 	"OPEN_WALLET": "Open 钱包",
-	"MARKETS_TABLE": { "VIEW_MARKETS": "查看行情" },
+	"MARKETS_TABLE": {
+		"VIEW_MARKETS": "查看行情",
+		"TITLE": "现场市场",
+		"MARKETS": "市场",
+		"LAST_PRICE": "最后价格",
+		"CHANGE_24H": "变更（24小时）",
+		"CHANGE_7D": "变更（7天）",
+		"CHANGE_1D": "变更（1天）",
+		"VOLUME_24h": "成交量（24小时）",
+		"CHART_24H": "图表（24小时）",
+		"CHART_7D": "图表（7 天）",
+		"TRADING_SYMBOL": "交易符号",
+		"ASSET": "资产",
+		"TYPE": "类型",
+		"SOURCE": "来源"
+	},
 	"MARKET_OPTIONS": { "LIST": "列表", "CARD": "图表" },
 	"ALL": "全部",
 	"ASSET_TXT": "资产",
@@ -1057,7 +1222,8 @@
 	"CONVERT": "从",
 	"LIMITS_BLOCK": {
 		"HEADER_ROW_DESCRIPTION": "24小时充值/提款限额（{0} 级账户)",
-		"HEADER_ROW_AMOUNT": "24小时限额 ({0})"
+		"HEADER_ROW_AMOUNT": "24小时限额 ({0})",
+		"HEADER_ROW_TYPE": "类型（所有资产）"
 	},
 	"DEPOSIT_FORM_NETWORK_WARNING": "请再次确认充值网络与发送方网络是一致的",
 	"WITHDRAWALS_FORM_NETWORK_WARNING": "请再次确认提款网络与目标地址的网络是一致的",
@@ -1072,5 +1238,713 @@
 	"ESTIMATED_PRICE": "成交金额",
 	"TRIGGER_PRICE": "触发价格",
 	"POST_ONLY": "高级现价委托",
-	"POST_ONLY_TOOLTIP": "将始终作为挂单方进行的委托方式"
+	"POST_ONLY_TOOLTIP": "将始终作为挂单方进行的委托方式",
+	"TRADE_TOOLS": "工具",
+	"CANCEL_BASE_WITHDRAWAL": "取消{0}提款",
+	"NO_ACTIVE_ORDERS": "未检测到订单。在专业版或快速交易页面下订单",
+	"NO_ACTIVE_TRADES": "好像还没有任何交易",
+	"NO_ACTIVE_DEPOSITS": "好像还没有存款。",
+	"NO_ACTIVE_WITHDRAWALS": "好像还没有提款",
+	"SECOND": "第二",
+	"CANT_FIND_MARKETS": "无法从该资产中找到任何市场。",
+	"TRY_VISITING_ASSETS": "尝试访问{0}。",
+	"ASSETS_PAGE": "资产页面",
+	"APPLY_HERE": "在此申请",
+	"SWAP": "转变",
+	"TO": "到",
+	"NA": "不适用",
+	"QR_CODE": {
+		"SCAN": "扫描",
+		"SHOW": "显示二维码",
+		"NO_RESULT": "没有结果",
+		"NOT_FOUND": "未找到",
+		"PERMISSION_DENIED": "没有权限"
+	},
+	"EMAIL_CODE_FORM": {
+		"TITLE": "输入您的安全码",
+		"LABEL": "输入验证码（请检查您的邮箱）",
+		"PLACEHOLDER": "输入发送到您的电子邮件的代码",
+		"FORM_TITLE_TEXT": "完成该过程所需的唯一代码已发送到您的电子邮件。请在下面输入发送到您的电子邮件的代码{0}。",
+		"OTP_NOTE": " 以及您的 OTP 代码",
+		"BUTTON": "提交",
+		"ERROR_INVALID": "您输入的代码不正确。请再试一次",
+		"OTP_LABEL": "2FA 代码 (OTP)",
+		"OTP_PLACEHOLDER": "输入您的 6 位双因素验证码"
+	},
+	"USER_APPS": {
+		"TITLE": "您的交换应用程序",
+		"SUBTITLE": "您的交易账户申请信息和额外功能如下。",
+		"ALL_APPS": {
+			"TAB_TITLE": "所有应用程序",
+			"TITLE": "交换应用程序",
+			"SUBTITLE": "只需选择下面的应用程序并单击“添加”按钮即可从您的交易帐户获得更多功能。",
+			"SEARCH_PLACEHOLDER": "搜索应用程序...",
+			"ADD": {
+				"SUCCESSFUL": "您已成功添加新应用程序！",
+				"FAILED": "出了些问题"
+			}
+		},
+		"MY_APPS": {
+			"TAB_TITLE": "我的应用程序",
+			"TITLE": "我的交换应用程序",
+			"SUBTITLE": "以下是您活跃的交换应用程序。您可以单击查看展开每个应用程序的信息、功能并添加/删除它们。应用程序旨在为您的交易体验提供更多功能。"
+		},
+		"TABLE": {
+			"APP_NAME": "应用名称",
+			"DESCRIPTION": "描述",
+			"ACTION": "行动",
+			"CONFIGURE": "配置",
+			"VIEW_APP": "查看应用程序",
+			"ADD": "添加",
+			"NOT_FOUND": "找不到这个应用程序...",
+			"RETRY": "尝试另一个搜索词"
+		},
+		"APP_DETAILS": {
+			"BACK_PLACEHOLDER": "{0} {1}",
+			"BACK_TO_APPS": "到我的应用程序",
+			"BACK": "后退"
+		},
+		"CONFIGURE": {
+			"TITLE": "配置应用程序",
+			"SUBTITLE": "下面配置您的应用程序：",
+			"REMOVE": "删除应用程序",
+			"TEXT": "如果您的应用程序出现问题，请点击下面的帮助与我们联系。",
+			"BACK": "后退",
+			"HELP": "帮助"
+		},
+		"REMOVE": {
+			"TITLE": "删除应用程序",
+			"SUBTITLE": "这将从您的“我的应用程序”列表中删除该应用程序。",
+			"TEXT": "您确定要删除此应用程序吗？",
+			"BACK": "后退",
+			"CONFIRM": "确认"
+		}
+	},
+	"STAKE": {
+		"NETWORK_WARNING": "网络不兼容。请将您的网络更改为 {0}",
+		"EARN": "赚",
+		"TITLE": "赌注",
+		"MODAL_TITLE": "投注并赚取{0}",
+		"REVIEW_MODAL_TITLE": "检查并确认质押",
+		"AVAILABLE_TOKEN": "{0} ({1}) 可抵押：{2}",
+		"DEFI_TITLE": "DeFi 资产质押",
+		"DEFI_TEXT": "质押 DeFi 风格将在交易所之外使用您自己的钱包。首先，您需要建立连接，连接后您可以直接从钱包中进行质押并开始赚钱。",
+		"GET_STAKES": "获得赌注",
+		"CURRENT_ETH_BLOCK": "当前 ETH 区块：{0}",
+		"ON_EXCHANGE_XHT": "交易所 {0} 余额：{1} {2}",
+		"LOGIN_HERE": "在此登录",
+		"MOVE_XHT": "移动{0}",
+		"ESTIMATED_STAKED": "质押总价值的估计值",
+		"ESTIMATED_EARNINGS": "预计收益值",
+		"CONNECT_WALLET": "连接钱包",
+		"BACK": "后退",
+		"NEXT": "下一个",
+		"REVIEW": "审查",
+		"ESTIMATED": "东方。",
+		"BLOCK": "堵塞",
+		"CANCEL": "取消",
+		"PROCEED": "继续",
+		"GO_TO_WALLET": "去钱包",
+		"AMOUNT_LABEL": "质押金额",
+		"PERIOD_SUBTITLE": "您投入的时间越长，您获得的奖励就越多。选择下面的质押期限。",
+		"STAKE_AND_EARN_DETAILS": "质押 ~{0} 并赚取 {1}",
+		"PREDICTED_EARNINGS": "预计收益",
+		"VARIABLE_TITLE": "多变的*",
+		"VARIABLE_TEXT": "*{0}了解可变费率的工作原理。",
+		"READ_MORE": "阅读更多",
+		"CURRENT_BLOCK": "当前块：{0}",
+		"END_BLOCK": "结束块：{0}",
+		"DURATION": "期间",
+		"END_ON_BLOCK": "结束于块：{0}",
+		"SLASHING_TITLE": "削减（提前解除质押）",
+		"SLASHING_TEXT_1": "您本金的 {0}%",
+		"SLASHING_TEXT_2": "所有收入被没收",
+		"REVIEW_NOTE": "持续时间是通过以太坊区块的时间来衡量的。请您在质押前检查并确认上述详细信息，提前取消质押将导致您的本金被扣除一定比例并没收收益。",
+		"WAITING_TITLE": "等待确认中",
+		"WAITING_TEXT": "在您的钱包中确认此交易",
+		"PENDING_TEXT": "交易待处理...",
+		"CHECKING_ALLOWANCE": "正在检查{0}津贴...",
+		"WAITING_PROMPT": "{0} {1} {2}",
+		"WAITING_STAKE": "确认投注金额",
+		"WAITING_WITHDRAW": "允许支出",
+		"WAITING_UNSTAKE": "取消质押",
+		"WAITING_STAKE_ING": "质押待定",
+		"WAITING_WITHDRAW_ING": "允许支出的处理",
+		"WAITING_UNSTAKE_ING": "取消质押",
+		"SUCCESSFUL_STAKE_TITLE": "您已成功投注 {0}",
+		"SUCCESSFUL_STAKE_AMOUNT": "质押金额",
+		"SUCCESSFUL_STAKE_DURATION_KEY": "期间",
+		"SUCCESSFUL_STAKE_DURATION_DEF": "结束于块 {0} ({1})",
+		"SUCCESSFUL_STAKE_DESTINATION": "目的地",
+		"SUCCESSFUL_UNSTAKE_ADDRESS": "我的地址",
+		"OKAY": "好的",
+		"ERROR_TITLE": "错误：{0}被拒绝",
+		"ERROR_SUBTITLE": "如果这是一个错误，您可以返回并重试",
+		"SUCCESSFUL_UNSTAKE_TITLE": "您已成功取消抵押 {0}",
+		"SUCCESSFUL_UNSTAKE_AMOUNT": "总共收到",
+		"EARNINGS": "收益",
+		"ORIGINAL_AMOUNT": "原始质押金额",
+		"CONNECT_A_WALLET": "连接到钱包",
+		"CONNECT_WALLET_TABLE": "{0} 查看历史权益事件",
+		"ZERO_STAKES": "零风险",
+		"PENDING_TRANSACTIONS": "待处理 {0} {1}",
+		"VIEW_ON": "在 {0} 上查看",
+		"BLOCKCHAIN": "区块链",
+		"VIEW_POT": "查看分布 POT",
+		"COMPLETED": "成熟",
+		"COMPLETED_TOOLTIP": "股权已经成熟。继续质押以获得更多奖励，或取消质押以获得奖励。",
+		"CONNECT_ERROR": "请检查你的钱包",
+		"INSTALL_METAMASK_DETAILS": {
+			"TITLE": "安装元掩码",
+			"PROMPT": "您必须将 Metamask 安装到您的浏览器中：{0}"
+		},
+		"INSTALL_METAMASK_TITLE": "未检测到 MetaMask"
+	},
+	"UNSTAKE": {
+		"TITLE": "取消质押",
+		"EARLY_TITLE": "尽早取消质押",
+		"EARLY_WARNING_TITLE": "看来您正在尝试提前取消质押",
+		"EARLY_WARNING_TEXT_1": "这可能会导致您的初始本金份额被扣除，所有收入都被没收。",
+		"EARLY_WARNING_TEXT_2": "您确定要继续吗？",
+		"BACK": "回去",
+		"REVIEW": "移除桩",
+		"DURATION": "东方。成熟期",
+		"CANCEL": "取消",
+		"PROCEED": "继续",
+		"EARNINGS_FORFEITED": "没收收益",
+		"PRICE_FORMAT": "{0} {1}",
+		"EST_PENDING": "东方。待处理：{0}",
+		"AMOUNT_SLASHED": "金额大幅削减*",
+		"AMOUNT_TO_RECEIVE": "收到金额",
+		"SLASH_FOOTNOTE": "*所有削减的金额都会分配给剩余的质押者。请考虑从初始本金中削减的金额、没收的收益和剩余期限，并确定提前取消质押所损失的价值是否值得。",
+		"AMOUNT_NOTE": "金额将分配到您的钱包地址",
+		"TOTAL_EARNT": "总收入",
+		"PENDING_EARNINGS": "待定收入*",
+		"PENDING_EARNINGS_FOOTNOTE": "*待处理收入是尚未清算的金额，需要进行区块链交易才能添加到您的总接收金额中。"
+	},
+	"STAKE_TABLE": {
+		"CURRENCY": "货币",
+		"AVAILABLE": "可质押",
+		"TOTAL": "总质押",
+		"REWARD_RATE": "奖励率",
+		"EARNINGS": "收益",
+		"STAKE": "赌注",
+		"VARIABLE": "多变的"
+	},
+	"STAKE_LIST": {
+		"AMOUNT": "质押金额",
+		"DURATION": "东方。成熟期",
+		"START": "开始质押",
+		"END": "端桩",
+		"EARNINGS": "收益",
+		"STAKE": "赌注"
+	},
+	"STAKE_DETAILS": {
+		"BACK_SUBTITLE": "{0} 前往质押页面",
+		"GO_BACK": "回去",
+		"CONTRACT_SUBTITLE": "代币合约：{0}",
+		"VIEW_MORE": "查看更多",
+		"VIEW": "看法",
+		"TOKEN": "{0}令牌",
+		"TABS": {
+			"PUBLIC_INFO": "公开信息",
+			"DISTRIBUTIONS": "发行版",
+			"MY_STAKING": "我的质押"
+		},
+		"PUBLIC_INFO": {
+			"TITLE": "质押信息",
+			"SUBTITLE": "以下是 {0} ({1}) 的质押代币经济学。",
+			"TOTAL_DISTRIBUTED_REWARDS": "分配奖励总额 ({0})",
+			"POT_BALANCE": "资金池余额",
+			"UNCLAIMED_REWARDS": "无人认领的奖励",
+			"TOTAL_STAKED": "总质押",
+			"REWARD_RATE": "奖励率",
+			"MY_STAKE": "我的股份 ({0}%)",
+			"MY_STAKE_PERCENTLESS": "我的股份",
+			"OTHER_STAKE": "其他人持股 ({0}%)",
+			"EVENTS_TITLE": "近期发放奖励"
+		},
+		"DISTRIBUTIONS": {
+			"TITLE": "已分发{0}奖励",
+			"SUBTITLE": "以下是向 {0} 的质押者进行的分配的历史列表。",
+			"TIME": "时间分布",
+			"TRANSACTION_ID": "交易ID",
+			"AMOUNT": "分配金额"
+		},
+		"MY_STAKING": {
+			"TITLE": "我的质押",
+			"SUBTITLE": "下面显示了与您的 {0} 质押相关的信息和一些历史事件。",
+			"EVENTS_TITLE": "历史权益事件",
+			"TIME": "时间",
+			"EVENT": "事件",
+			"TRANSACTION_ID": "交易ID",
+			"AMOUNT": "数量"
+		}
+	},
+	"MOVE_XHT": {
+		"TITLE": "移动XHT",
+		"TEXT_1": "要质押 XHT，您必须首先将您的 XHT 移至您自己的钱包中。",
+		"TEXT_2": "您当前连接的钱包地址是：",
+		"LABEL": "钱包地址",
+		"TEXT_3": "检查上述钱包地址是否安全非常重要。 XHT将被转移到上述钱包地址。"
+	},
+	"MOVE_AMOUNT": {
+		"TITLE": "输入金额",
+		"PROMPT": "输入您想要移动的金额。",
+		"BALANCE": "{0}余额：{1}",
+		"LABEL": "移动量",
+		"FEE": "交易费用：{0} {1}"
+	},
+	"SIDES_VERBS": { "buy": "买", "sell": "卖" },
+	"AVERAGE": "平均的",
+	"NETWORK": "网络",
+	"CATEGORY": "类别",
+	"ORDER_HISTORY": "订单历史",
+	"FILLED": "填充",
+	"LOWEST_PRICE": "最低价格 ({0})",
+	"PHASE": "阶段",
+	"INCOMING": "传入",
+	"ASSETS": "资产",
+	"CURRENCY_WALLET": {
+		"BACK": "后退",
+		"WALLET_PAGE": "{0}到钱包页面",
+		"LEARN_MORE": "了解详情{0}",
+		"ABOUT": "关于",
+		"TOTAL_BALANCE": "总余额：{0} {1}",
+		"AVAILABLE_BALANCE": "可用余额：{0} {1} {2}",
+		"PERCENTAGE_SHARE": "百分比份额{0}",
+		"EARN_BY": "赚取 {0} {1}",
+		"STAKING": "质押",
+		"TOOLTIP": "余额未处于待处理状态或锁定交易（未结订单）",
+		"WALLET_HAS_BALANCE_PERCENTAGE": "您的钱包目前没有任何{0}。",
+		"WALLET_DEPOSIT": "您可以尝试存入 {0} 或购买 {1}"
+	},
+	"DEPOSIT_FORM_MIN_WARNING": "仅接受 {0} {1} 或以上的存款。任何低于此最低阈值的存款都将导致资金永久损失。",
+	"DEPOSIT_FORM_TITLE_WARNING_DESTINATION_TAG": "输入地址和标签，这是成功存入您的帐户所必需的。",
+	"WITHDRAW_PAGE_DESTINATION_TAG_NONE": "没有任何",
+	"WITHDRAW_PAGE_DESTINATION_TAG_MESSAGE": "目标标记：{0}",
+	"WITHDRAW_PAGE_NETWORK_TYPE_MESSAGE": "{0} 地址网络类型：{1}",
+	"WITHDRAWALS_FORM_FEE_WARNING": "{0} ({1}) 是撤回该资产的要求",
+	"WITHDRAWALS_FORM_DESTINATION_TAG_WARNING": "检查接收地址是否需要标签。也称为备忘录、数字 ID、标签和注释。",
+	"WITHDRAWALS_FORM_NETWORK_PLACEHOLDER": "选择网络",
+	"WITHDRAWALS_FORM_DESTINATION_TAG_LABEL": "目的地标签（可选）",
+	"WITHDRAWALS_FORM_MEMO_LABEL": "备注（可选）",
+	"WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER": "输入目的地标签",
+	"WITHDRAWALS_FORM_FEE_COMMON_LABEL_COIN": "交易费用 ({0})",
+	"24H_MAX": "24小时高：",
+	"24H_MIN": "24小时低",
+	"24H_VAL": "24小时成交量",
+	"WALLET_HIDE_ZERO_BALANCE": "隐藏零余额",
+	"WALLET_ESTIMATED_TOTAL_BALANCE": "预计总余额",
+	"WALLET_ASSETS_SEARCH_TXT": "搜索",
+	"QUICK_TRADE_QUOTE_EXPIRED_FIRST_LINE": "报价已过期。",
+	"QUICK_TRADE_QUOTE_EXPIRED_SECOND_LINE": "单击重新报价以获得新价格。",
+	"QUICK_TRADE_QUOTE_EXPIRED_BUTTON": "重新报价",
+	"QUICK_TRADE_SUCCESS": "成功！",
+	"QUICK_TRADE_INSUFFICIENT_FUND": "不充足的资金",
+	"QUICK_TRADE_INSUFFICIENT_FUND_MESSAGE": "您的钱包中没有足够的资金来完成此交易。",
+	"QUICK_TRADE_BROKER_NOT_AVAILABLE_MESSAGE": "经纪商场外交易目前不可用。",
+	"ABOUT_LINK": "关于{0}",
+	"DEVELOPERS_TOKEN": {
+		"API_KEY": "API密钥",
+		"SECRET_KEY": "密钥",
+		"ACCESS": "使用权",
+		"BASIC_ACCESS": "基本访问权限",
+		"BASIC_ACCESS_PROMPT": "选择此 API 密钥可以访问的内容。",
+		"READING_ACCESS": "阅读（钱包余额等）",
+		"TRADING_ACCESS": "贸易",
+		"IP_ACCESS": "IP接入",
+		"IP_ACCESS_PROMPT": "配置与此 API 密钥配合使用的 IP 地址。",
+		"ANY_IP_ADDRESS": "任意IP地址",
+		"ONLY_TRUSTED_IPS": "仅受信任的 IP",
+		"ADD_IP_PH": "输入 IP 地址。可以添加多个IP",
+		"ADD_IP": "添加",
+		"ADVANCED_ACCESS": "高级访问",
+		"ADVANCED_ACCESS_PROMPT": "需要激活可信 IP。",
+		"WITHDRAWAL_ACCESS": "提款",
+		"SAVE": "节省",
+		"BEWARE": "请注意，允许提款会带来一定的风险！"
+	},
+	"ZERO_ASSET_2": "检测到。做一个",
+	"ZERO_ASSET_3": "存款如下。",
+	"NOT_LOGGEDIN": {
+		"TEXT_GENERAL": "要查看您必须登录",
+		"TXT_1": "要开始交易，您必须登录",
+		"TXT_2": "{0}或{1}",
+		"LOGIN_HERE": "在此登录"
+	},
+	"ORDER_TYPE": "类型",
+	"TRIGGER_CONDITIONS": "扳机",
+	"TRANSACTION_STATUS": {
+		"PENDING": "待办的",
+		"REJECTED": "拒绝",
+		"COMPLETED": "完全的"
+	},
+	"DEPOSIT_STATUS": {
+		"NEW": "新的",
+		"SEARCH_FIELD_LABEL": "粘贴您的交易 ID",
+		"CHECK_DEPOSIT_STATUS": "检查存款状态",
+		"SEARCH_BLOCKCHAIN_FOR_DEPOSIT": "在区块链中搜索您的存款",
+		"STATUS_DESCRIPTION": "您可以通过传递下面的交易 ID（哈希）来检查您的存款状态。",
+		"TRANSACTION_ID": "交易ID（哈希）",
+		"SEARCH_SUCCESS": "搜索完成",
+		"ADDRESS_FIELD_LABEL": "粘贴您的地址",
+		"CURRENCY_FIELD_LABEL": "选择货币",
+		"DESTINATION_TAG_LABEL": "标签（可选）",
+		"MEMO_LABEL": "备注（可选）",
+		"DESTINATION_TAG_PLACEHOLDER": "粘贴您的标签",
+		"MEMO_PLACEHOLDER": "粘贴您的备忘录"
+	},
+	"CANCEL_ORDERS": {
+		"HEADING": "取消订单",
+		"SUB_HEADING": "取消所有订单",
+		"INFO_1": "这将取消您在 {0} 市场的未平仓订单。",
+		"INFO_2": "您确定要取消所有未结订单吗？"
+	},
+	"AMOUNT_IN": "金额在",
+	"SUMMARY_MARKETS": {
+		"HOLLAEX": "想列出您的数字资产吗？使用 HollaEx {0} {1} 开拓您自己的市场",
+		"WHITE_LABEL": "白色标签",
+		"SOLUTION": "解决方案",
+		"VISIT_COIN_INFO_PAGE": "访问硬币信息页面 {0}",
+		"HERE": "这里"
+	},
+	"PAGE_UNDER_CONSTRUCTION": "本页面正在建设中。请尽快重新访问此页面。",
+	"UNDEFINED_ERROR_TITLE": "您遇到了无法识别的错误",
+	"UNDEFINED_ERROR": "哇！出现未知错误。这可能是连接问题或其他一些问题。您可以稍后重试或尝试刷新。",
+	"REFRESH": "刷新",
+	"FEE_REDUCTION": "费用减免",
+	"FEE_REDUCTION_DESCRIPTION": "*您的帐户有适用的费用折扣。折扣将适用于您账户的交易费用。",
+	"CHANGE_PASSWORD_FAILED": "修改密码失败",
+	"SPEND_AMOUNT": "消费金额",
+	"ESTIMATE_RECEIVE_AMOUNT": "预计收款金额",
+	"TOOLS": {
+		"ORDERBOOK": "订单簿",
+		"CHART": "图表",
+		"PUBLIC_SALES": "公开销售",
+		"ORDER_ENTRY": "订单输入",
+		"RECENT_TRADES": "最近的交易",
+		"OPEN_ORDERS": "未结订单",
+		"WALLET": "钱包",
+		"DEPTH_CHART": "深度图",
+		"COMING_SOON": "即将推出"
+	},
+	"RESET_LAYOUT": "重置布局",
+	"WALLET_BALANCE_LOADING": "平衡加载...",
+	"CONNECT_VIA_DESKTOP": {
+		"TITLE": "通过桌面连接",
+		"SUBTITLE": "目前不支持通过移动设备进行 DeFi 质押。",
+		"TEXT": "要连接您的钱包，请使用台式机/笔记本电脑。"
+	},
+	"ORDER_HISTORY_CLOSED": "关闭",
+	"FIAT": {
+		"UNVERIFIED": {
+			"TITLE": "完成验证",
+			"TEXT": "为了进行 {0}，您需要完成验证，其中包括验证您的银行详细信息。请点击下面的继续按钮。",
+			"DEPOSIT": "订金",
+			"WITHDRAWAL": "退出"
+		},
+		"REVIEW_DEPOSIT": {
+			"TITLE": "检查并确认存款详情",
+			"SUBTITLE": "请检查下面的存款详细信息，以确保一切正确。",
+			"FORMAT": "{0} {1}",
+			"AMOUNT": "存入金额",
+			"FEE": "押金费用",
+			"TRANSACTION_ID": "交易ID",
+			"NOTE": "为避免延误，请确保您的存款金额、备注和交易 ID 与上述详细信息相符。如果出现问题，请联系支持人员。",
+			"BACK": "后退",
+			"PROCEED": "继续"
+		}
+	},
+	"DEPOSIT_FEE_NOTE": "请注意，存入您账户的总金额将为金额减去存款费用",
+	"AMOUNT_LABEL": "输入存入金额（必须与实际金额一致）",
+	"TRANSACTION_ID_LABEL": "输入存款的交易ID",
+	"FEE_LABEL": "存款费",
+	"AMOUNT_FORMAT": "{0} {1}",
+	"PENDING_DEPOSIT_TITLE": "存款待处理",
+	"PENDING_DEPOSIT_TEXT_1": "您的存款现在正在排队等待验证，并将保持待处理状态直至清算。",
+	"PENDING_DEPOSIT_TEXT_2": "通常存款会在 24 小时内清算，但最长可能需要 48 小时，清算后您的存款金额减去费用将记入您的余额。",
+	"DEPOSIT_HOME_NOTE": "要存款，请输入您将从自己的银行帐户存入的金额。为避免延误，请确保您在下面输入的金额与您将要或已从银行帐户发送的实际金额相符。",
+	"DEPOSIT_TXID_NOTE": "为避免存款延迟，在进行银行存款时，请务必在交易备注或消息中输入上面显示的唯一备注。确保下面的金额与您从银行实际存入的金额相符，并且包含交易完成后银行提供的交易 ID。",
+	"DEPOSIT_BANK_TEXT": "使用下面的银行详细信息进行存款。",
+	"MIN_DEPOSIT": "最低存款额",
+	"MAX_DEPOSIT": "最高存款额",
+	"BACK": "后退",
+	"DONE": "完毕",
+	"PENDING_WITHDRAWAL_TITLE": "提款待处理",
+	"PENDING_WITHDRAWAL_TEXT_1": "您的提款现在正在等待验证，并将保持待处理状态直至清除。",
+	"DEPOSIT_AMOUNT_MIN_VALIDATION": "交易太小，无法发送。尝试更大的量。",
+	"DEPOSIT_AMOUNT_MAX_VALIDATION": "交易太大而无法发送。尝试较小的量。",
+	"ACCOUNT_NAME": "帐户名称",
+	"ACCOUNT_NUMBER": "帐号",
+	"BANK_NAME": "银行名",
+	"VERIFY_BANK_WITHDRAW": "为了提款，您需要完成验证，其中包括验证您的银行详细信息。请点击下面的继续按钮。",
+	"VERIFICATION_TITLE": "完成验证",
+	"WITHDRAW_NOTE": "请注意：您只能提款至您名下的账户。",
+	"USER_PAYMENT": { "TITLE": "付款方式" },
+	"QUOTE_CONFIRMATION_MSG_TEXT_1": "请检查您的订单并在下面确认。",
+	"QUOTE_CONFIRMATION_MSG_TEXT_2": "收到的金额为估计值，不包含交易费用",
+	"QUOTE_CONFIRMATION_EXPIRY_MSG": "报价将于 {0} {1} 后到期",
+	"QUOTE_CONFIRMATION_EXPIRED_MSG_TEXT_1": "价格已过期。",
+	"QUOTE_CONFIRMATION_EXPIRED_MSG_TEXT_2": "返回以获取新的报价。",
+	"ORDER_EXPIRED_MSG": "订单已过期。请刷新！",
+	"WITHDRAWALS_FORM_METHOD": "方法",
+	"WITHDRAWALS_FORM_ADDRESS_EXCHANGE": "交换用户电子邮件",
+	"WITHDRAWALS_FORM_EXCHANGE_PLACEHOLDER": "输入用户在此交易所的电子邮件",
+	"WITHDRAWALS_FORM_MAIL_INFO": "输入用户在该交易所的 HollaEx 账户邮箱，即可免费转账。",
+	"RISKY_TRADE_DISCLAIMER": {
+		"MSG_1": "请检查您是否确实想要交易 {0} ({1})，因为该资产可能存在很高的风险",
+		"MSG_2": "极度波动",
+		"MSG_3": "选中下面的框以确认您了解该资产的价值是不确定且不受保证的。",
+		"UNDERSTAND_RISK_MSG": "是的，我了解风险"
+	},
+	"DUST": {
+		"TITLE": "钱包掸子",
+		"LINK": "钱包掸子",
+		"TOOLTIP": "将微小的钱包余额（灰尘）转换为加密货币",
+		"BACK_PLACEHOLDER": "{0} {1}",
+		"BACK_TO_WALLET": "到我的钱包",
+		"BACK": "后退",
+		"ESTIMATED_TOTAL": "估计总粉尘值",
+		"CONVERT_ALL": "转变",
+		"NO_DUST": "没有灰尘资产！",
+		"SECTION": {
+			"TITLE": "转换钱包灰尘",
+			"TEXT_1": "转换所有价值不超过 {0} {1} 的低钱包余额。",
+			"TEXT_2": "所有对话都将在 {0} ({1}) 中解决。"
+		},
+		"CONFIRMATION": {
+			"TITLE": "转换灰尘",
+			"SUBTITLE": "正在转换的资产",
+			"BACK": "后退",
+			"CONFIRM": "确认",
+			"GET": "你会得到",
+			"FEE": "转换费",
+			"PLEASE": "请注意",
+			"NOTE": "每 24 小时可以将灰尘转化为 {0} 一次。只有价值低于 {1} {2} 的余额才会被转换。"
+		},
+		"SUCCESSFUL": {
+			"TITLE": "尘埃转换成功！",
+			"TEXT": "您已收到",
+			"VIEW_HISTORY": "查看历史记录",
+			"CLOSE": "关闭"
+		}
+	},
+	"PROFIT_LOSS": {
+		"BACK": "后退",
+		"BACK_TO_WALLET": "到钱包",
+		"WALLET_PERFORMANCE_TITLE": "平衡性能",
+		"WALLET_PERFORMANCE_DESCRIPTION": "您的钱包随时间的余额表现和资产细分。单击下面的日期即可查看您的钱包当天的表现。",
+		"PL_7_DAY": "7 天盈亏",
+		"EST_TOTAL_BALANCE": "东方。总余额",
+		"WEEK": "星期",
+		"MONTH": "月",
+		"MONTHS": "月",
+		"WALLET_BALANCE": "钱包余额明细",
+		"WALLET_BALANCE_DESCRIPTION_1": "以下是钱包细分",
+		"WALLET_BALANCE_DESCRIPTION_2": "单击上面的图表可更新下表。",
+		"DATE_SELECT": "选择日期",
+		"ASSET_NAME": "资产名称",
+		"BALANCE_AMOUNT": "余额",
+		"VALUE": "价值",
+		"PERFORMANCE_TREND": "7 天表现趋势",
+		"CUSTOM_DATE_DESCRIPTION": "选择特定日期来获取您的历史数据（日期差异不能超过 3 个月）",
+		"SELECT_START_DATE": "选择开始日期",
+		"SELECT_END_DATE": "选择结束日期",
+		"CUSTOM": "风俗",
+		"BACK_CUSTOM": "后退",
+		"PROOCED_CUSTOM": "已处理",
+		"PL_DAYS": "当日盈亏",
+		"VIEW_MORE": "查看更多 {0}",
+		"SHOW_ASSET_BREAKDOWN": "显示资产明细",
+		"PL_SUMMARY": "损益摘要",
+		"BALANCE_HISTORY": "余额历史记录"
+	},
+	"ASSET_INFO": "资产信息",
+	"TAKER_FEES_APPLIED": "收取接受者费用",
+	"ASSET_INFO_PAGE": "资产信息页面",
+	"DIGITAL_ASSETS": {
+		"DIGITAL_ASSETS_TITLE": "数字资产",
+		"GO_BACK": "回去",
+		"ASSETS_INFO": "以下是平台上的可用资产。",
+		"ASSETS_INFO_DETAIL": "您可以单击下面列表中的资产以了解更多信息。",
+		"QUICK_TRADE": "快捷交易",
+		"PRO_TRADE": "专业贸易",
+		"MARKETS": "市场",
+		"WALLET": "钱包",
+		"PRICE_SOURCE": "价格来源",
+		"ORDERBOOK": "订单簿",
+		"NETWORK": "网络经纪商场外交易",
+		"BROKER": "本地经纪商场外交易",
+		"BROKERAGE": "NA -（经纪业务）"
+	},
+	"HOLLAEX_TOKEN": {
+		"REMOVE_FAVOURITES": "从收藏夹中删除",
+		"ADD_FAVOURITES": "加入“最喜欢的",
+		"GO_BACK": " 回去",
+		"BALANCE": "平衡：",
+		"OPEN_WALLET": "（打开钱包）",
+		"ABOUT": "关于",
+		"VIEW": "查看更多",
+		"COMING_SOON": "即将推出...",
+		"NO_DESCRIPTION": "该数字资产目前没有描述。",
+		"STAKE": "赌注",
+		"MORE": "更多的",
+		"INFO": "信息",
+		"TRADE": "贸易",
+		"QUICK_TRADE": "快速交易{0}",
+		"PRICES": {
+			"TITLE": "价格",
+			"QUICK_TRADE": "快速交易",
+			"SUBTITLE": "要查看 {0} 的买入和卖出价格，请访问 {1}",
+			"FOOTER": "市场接受者交易费用适用于通过快速交易执行的所有交易。"
+		},
+		"LIST": "想列出您的数字资产吗？",
+		"WEBSITE": "网站",
+		"EXPLORER": "探险家",
+		"PRO_TRADE": "查看{0}市场"
+	},
+	"ACCORDIAN": {
+		"ACCORDIAN_ASSETS": "所有钱包资产",
+		"ACCORDIAN_INFO": "资产信息页面",
+		"ACCORDIAN_HISTORY": "历史"
+	},
+	"ASYNC_LINK": {
+		"TITLE": "页面没有自动打开？",
+		"TEXT": "您的浏览器可能阻止该页面。尝试复制并粘贴下面的链接："
+	},
+	"TERMS_OF_SERVICES": { "TO_GET_ACCESS": "要获得访问权限，请联系" },
+	"FEES_AND_LIMITS": {
+		"LINK": "查看我的费用和限制",
+		"COIN_PAGE_LINK": "交易费用和限额",
+		"BACK": { "PLACEHOLDER": "{0} {1}", "BACK": "回去", "TO": "总结" },
+		"TITLE": "费用和限制",
+		"SEARCH_PLACEHOLDER": "搜索...",
+		"TABS": {
+			"TRADING_FEES": {
+				"TITLE": "交易费用",
+				"TABLE": {
+					"TITLE": "市场交易费用",
+					"SUBTITLE": "以下是市场个别交易费用规则。",
+					"HEADER": {
+						"MARKET": "市场",
+						"MAKER": "挂单交易费用（限价单）",
+						"TAKER": "Taker交易费用（市价订单）"
+					}
+				}
+			},
+			"WITHDRAWAL_FEES": {
+				"TITLE": "提款费用",
+				"TABLE": {
+					"TITLE": "提款时扣除费用",
+					"SUBTITLE": "以下是提取资产时的所有费用。",
+					"NOT_ALLOWED": "不允许",
+					"HEADER": {
+						"CURRENCY": "货币/资产",
+						"DEPOSIT": "存款费",
+						"WITHDRAWAL": "提款费"
+					}
+				}
+			},
+			"WITHDRAWAL_LIMITS": {
+				"TITLE": "提款限额",
+				"TABLE_1": {
+					"TITLE": "独立提款限额",
+					"SUBTITLE": "脱离集合限额规则且遵循各自独立的24小时提现规则的资产：",
+					"HEADER": {
+						"CURRENCY": "货币/资产",
+						"LIMIT": "每日限额",
+						"LIMIT_2": "每月限额"
+					},
+					"LIMIT_TEXT": "（共享共同提现限额的资产）",
+					"LIMIT_TEXT_2": "（限额仅基于本国货币）",
+					"VALUED": "（有价值）",
+					"NO_INDEPENDENT": "此级别没有独立限制",
+					"LIMIT_TEXT_3": "（所有资产共享一个以 {0} 计价的集体每日提款限额）",
+					"LIMIT_TEXT_4": "（所有资产共享每月集体提款限额，以 {0} 计价）"
+				},
+				"TABLE_2": {
+					"TITLE": "独立限制",
+					"SUBTITLE": "具有本国货币每日和每月提款限额的资产："
+				},
+				"TABLE_3": {
+					"TITLE": "集体限制",
+					"SUBTITLE": "一组币的每日和每月联合提款限额"
+				}
+			}
+		}
+	},
+	"STATUS_TEXT": {
+		"INCOMPLETE": "不完整的",
+		"PENDING": "待办的",
+		"REJECTED": "拒绝",
+		"VERIFIED": "已验证"
+	},
+	"LOGINS_HISTORY": {
+		"TAB": "登录记录",
+		"CONTENT": {
+			"TITLE": "登录尝试记录",
+			"SUBTITLE": "您帐户上所有失败的登录尝试的历史记录及其潜在来源。",
+			"DOWNLOAD_HISTORY": "下载历史记录",
+			"FILTER": {
+				"STATUS": "地位",
+				"ALL": "全部",
+				"FAILED": "失败的",
+				"SUCCESS": "成功"
+			},
+			"TABLE": {
+				"HEADER": {
+					"LAST_SEEN": {
+						"TITLE": "最后一次露面",
+						"DESCRIPTION": "（最近的在前）"
+					},
+					"FAILED_ATTEMPTS": "失败的尝试",
+					"COUNTRY": "国家",
+					"IP_ADDRESS": "IP地址"
+				},
+				"CELL": {
+					"FAILED_LOGIN": "登录失败：{0}x",
+					"SUCCESS": "成功",
+					"DEVICE": "设备"
+				}
+			}
+		}
+	},
+	"SESSIONS": {
+		"TAB": "会议",
+		"CONTENT": {
+			"TITLE": "活跃期",
+			"SUBTITLE": {
+				"TEXT": "以下是您帐户的活动会话。要结束活动会话，请单击 {0}，它将注销该会话。",
+				"LINK": "撤销"
+			},
+			"DOWNLOAD": "下载",
+			"TABLE": {
+				"HEADER": {
+					"LAST_SEEN": {
+						"TITLE": "最后一次露面",
+						"DESCRIPTION": "（最近的在前）"
+					},
+					"SESSION_STARTED": "会话开始",
+					"SESSION_EXPIRY": "会话到期",
+					"STATUS": "地位"
+				},
+				"CELL": {
+					"ACTIVE": "积极的",
+					"COUNTRY": "国家",
+					"IP_ADDRESS": "IP地址",
+					"DEVICE": "设备",
+					"LOGIN_TIME": "登录成功时间"
+				}
+			},
+			"NOTIFICATION": "会话已撤销/注销",
+			"MODAL": {
+				"TITLE": "撤销会话",
+				"PROMPT": "您确定要撤销并注销此会话吗？",
+				"BACK": "后退",
+				"CONFIRM": "确认"
+			}
+		}
+	},
+	"CANCEL_WITHDRAWAL_ADDRESS": "提现地址"
 }

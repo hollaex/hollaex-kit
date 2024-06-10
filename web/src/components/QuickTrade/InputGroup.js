@@ -5,6 +5,7 @@ import math from 'mathjs';
 import { isNumeric, isFloat } from 'validator';
 import {
 	CaretDownOutlined,
+	CaretUpOutlined,
 	LoadingOutlined,
 	SyncOutlined,
 } from '@ant-design/icons';
@@ -13,7 +14,6 @@ import { DEFAULT_COIN_DATA } from 'config/constants';
 import { minValue, maxValue } from 'components/Form/validations';
 import { FieldError } from 'components/Form/FormFields/FieldWrapper';
 import { translateError } from './utils';
-import STRINGS from 'config/localizedStrings';
 import { Coin } from 'components';
 import { getDecimals } from 'utils/utils';
 
@@ -23,6 +23,16 @@ class InputGroup extends React.PureComponent {
 	state = {
 		isOpen: false,
 	};
+
+	onHandleSearch = React.createRef();
+
+	componentDidUpdate() {
+		const { isOpen } = this.state;
+		const { setIsOpenTopField, setIsOpenBottomField } = this.props;
+
+		setIsOpenTopField && setIsOpenTopField(isOpen);
+		setIsOpenBottomField && setIsOpenBottomField(isOpen);
+	}
 
 	onDropdownVisibleChange = (isOpen) => {
 		this.setState({ isOpen });
@@ -115,8 +125,20 @@ class InputGroup extends React.PureComponent {
 								open={isOpen}
 								size="default"
 								showSearch
-								filterOption={true}
-								className="input-group__select"
+								filterOption={(input, option) => {
+									const coin = coins[option.value] || DEFAULT_COIN_DATA;
+									return (
+										option.value.toLowerCase().indexOf(input.toLowerCase()) >=
+											0 ||
+										coin.fullname.toLowerCase().indexOf(input.toLowerCase()) >=
+											0
+									);
+								}}
+								className={
+									isOpen
+										? 'input-group__select_disabled'
+										: 'input-group__select'
+								}
 								value={selectValue}
 								onChange={onSelect}
 								onDropdownVisibleChange={this.onDropdownVisibleChange}
@@ -125,10 +147,19 @@ class InputGroup extends React.PureComponent {
 								listHeight={35 * 6}
 								dropdownClassName="custom-select-style"
 								suffixIcon={
-									<CaretDownOutlined
-										onClick={() => this.onDropdownVisibleChange(!isOpen)}
-									/>
+									!isOpen ? (
+										<CaretDownOutlined
+											onClick={() => this.onDropdownVisibleChange(!isOpen)}
+										/>
+									) : (
+										<CaretUpOutlined
+											onClick={() => this.onDropdownVisibleChange(!isOpen)}
+										/>
+									)
 								}
+								onSelect={() => {
+									this.onHandleSearch.current.focus();
+								}}
 							>
 								{options.map((symbol, index) => {
 									const { display_name, icon_id } =
@@ -140,20 +171,32 @@ class InputGroup extends React.PureComponent {
 											key={index}
 											className="d-flex"
 										>
-											<div className="d-flex align-items-center quick-trade-select-wrapper">
+											<div
+												className={
+													isOpen
+														? 'd-flex align-items-center quick-trade-select-wrapper ml-3'
+														: 'd-flex align-items-center quick-trade-select-wrapper'
+												}
+											>
 												<div
 													className={
 														window.innerWidth > 768
-															? 'input-group__coin-icons-wrap'
-															: 'input-group__coin-icons-wrap_mobile-view'
+															? 'input-group__coin-icons-wrap mb-1'
+															: 'input-group__coin-icons-wrap_mobile-view mt-2'
 													}
 												>
 													<Coin
 														iconId={icon_id}
-														type={window.innerWidth > 768 ? 'CS9' : 'CS11'}
+														type={
+															window.innerWidth > 768 && !isOpen
+																? 'CS8'
+																: isOpen
+																? 'CS6'
+																: 'CS11'
+														}
 													/>
 												</div>
-												<span className="ml-3 mr-6">{display_name}</span>
+												<span className="ml-2 mr-4">{display_name}</span>
 											</div>
 										</Option>
 									);
@@ -162,10 +205,15 @@ class InputGroup extends React.PureComponent {
 						</div>
 						<div>
 							<Input
+								ref={this.onHandleSearch}
 								type="number"
-								placeholder={STRINGS['AMOUNT']}
+								placeholder={loading ? '' : '0'}
 								style={{}}
-								className="input-group__input"
+								className={
+									inputValue > 0
+										? 'input-group__input active-input'
+										: 'input-group__input'
+								}
 								value={inputValue || ''}
 								onChange={this.onChangeEvent}
 								bordered={false}

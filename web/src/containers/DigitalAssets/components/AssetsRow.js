@@ -98,7 +98,10 @@ const AssetsRow = ({ coinData, loading, index, quicktrade, pairs, icons }) => {
 		<tr id={`market-list-row-${key}`} className="table-row table-bottom-border">
 			<td className="sticky-col">
 				{!loading ? (
-					<div className="d-flex align-items-center" onClick={() => browserHistory.push(`/assets/coin/${symbol}`)} >
+					<div
+						className="d-flex align-items-center"
+						onClick={() => browserHistory.push(`/prices/coin/${symbol}`)}
+					>
 						<Coin iconId={icon_id} />
 						<div className="px-2">{fullname}</div>
 					</div>
@@ -116,7 +119,9 @@ const AssetsRow = ({ coinData, loading, index, quicktrade, pairs, icons }) => {
 			<td>
 				{!loading ? (
 					<div>
-						<span className="title-font ml-1">{lastPrice}</span>
+						<span className="title-font ml-1 last-price-label">
+							{lastPrice}
+						</span>
 						<span className="title-font ml-2">{'USDT'}</span>
 					</div>
 				) : (
@@ -149,7 +154,7 @@ const AssetsRow = ({ coinData, loading, index, quicktrade, pairs, icons }) => {
 					<Loading index={index} />
 				)}
 			</td>
-			<td className="td-chart pr-4">
+			<td className="pr-4">
 				{!loading ? (
 					<MiniSparkLine
 						chartData={getLastValuesFromParts(chartData?.price || [])}

@@ -56,7 +56,11 @@
 		"SECTION_3_CARD_5_TEXT": "Nous pouvons vous aider plus particulièrement et vous proposer de parler directement avec un professionnel en ligne pour vous aider avec vos problèmes et vos demandes.",
 		"SECTION_3_CARD_6_TITLE": "PROCESSUS KYC",
 		"SECTION_3_CARD_6_TEXT": "Modules flexibles et intégrables pour appliquer les processus KYC et de vérification des utilisateurs dans différentes jurisdictions.",
-		"SECTION_3_BUTTON_1": "Voir la Demo"
+		"SECTION_3_BUTTON_1": "Voir la Demo",
+		"MAIN_TITLE": "Échange de crypto-monnaie",
+		"MAIN_TEXT": "Achetez et vendez facilement des actifs cryptographiques. Inscrivez-vous simplement avec votre e-mail et négociez les principaux actifs cryptographiques 24h/24 et 7j/7.",
+		"TRADE_CRYPTO": "Commencer à trader",
+		"VIEW_EXCHANGE": "Voir l'échange"
 	},
 	"FOOTER": {
 		"FOOTER_LANGUAGE_TEXT": "LANGUES",
@@ -101,7 +105,9 @@
 			"SECTION_6_LINK_9": "YouTube"
 		},
 		"CLICK_HERE": "Cliquez ici",
-		"VISIT_HERE": "Visitez ici"
+		"VISIT_HERE": "Visitez ici",
+		"TERMS_OF_SERVICE": "Conditions d'utilisation",
+		"PRIVACY_POLICY": "politique de confidentialité"
 	},
 	"ACCOUNTS": {
 		"TITLE": "Compte",
@@ -114,7 +120,13 @@
 		"TAB_SUMMARY": "Tableau de bord",
 		"TAB_HISTORY": "Historique",
 		"TAB_API": "API",
-		"TAB_SIGNOUT": "Se déconnecter"
+		"TAB_SIGNOUT": "Se déconnecter",
+		"TAB_APPS": "applications",
+		"TAB_STAKE": "Miser",
+		"TAB_FIAT": "Commandes Fiat",
+		"TAB_TRADE": "Commerce",
+		"PRO_TRADE": "Pro",
+		"QUICK_TRADE": "Rapide"
 	},
 	"CONTACT_FORM": {
 		"CATEGORY_LABEL": "Catégorie",
@@ -151,14 +163,17 @@
 		"INCREASE_LIMIT": "Voudriez-vous augmenter votre limite quotidienne?",
 		"QR_CODE": "Ce QR Code peut être scanner par une personne qui souhaite vous envoyer des fonds",
 		"NO_DATA": "Aucune information disponible",
-		"FULL_MESSAGE_LIMIT": "{0}: {1} {2} {3}"
+		"FULL_MESSAGE_LIMIT": "{0}: {1} {2} {3}",
+		"QR_CODE_TITLE": "{0} Informations sur le dépôt"
 	},
 	"LOGIN": {
 		"LOGIN_TO": "S'identifier à {0}",
 		"CANT_LOGIN": "Identification impossible?",
 		"NO_ACCOUNT": "Vous n'avez pas de compte?",
 		"CREATE_ACCOUNT": "Créez-en un ici",
-		"HELP": "Aide"
+		"HELP": "Aide",
+		"LOOKING_PRICES": "Vous cherchez des prix ?",
+		"VIEW_MARKETS": "Voir les marchés"
 	},
 	"FORM_FIELDS": {
 		"EMAIL_LABEL": "Email",
@@ -187,7 +202,9 @@
 		"USER_EXIST": "Cet email est déjà inscrit",
 		"ACCEPT_TERMS": "Vous n'avez pas accepté les conditions d'utilisation et politique de confidentialité.",
 		"STEP": "Valeur invalide, l'étape est {0}",
-		"ONLY_NUMBERS": "La valeur ne peut contenir que des chiffres"
+		"ONLY_NUMBERS": "La valeur ne peut contenir que des chiffres",
+		"MIN_VALUE_NE": "La valeur doit être supérieure à {0}.",
+		"MAX_VALUE_NE": "La valeur doit être inférieure à {0}."
 	},
 	"NOTIFICATIONS": {
 		"BUTTONS": {
@@ -212,14 +229,41 @@
 		"OTP_TITLE": "Code d'authentification",
 		"OTP_HELP": "aide",
 		"OTP_BUTTON": "soumettre",
-		"ERROR_INVALID": "Code OTP invalide"
+		"ERROR_INVALID": "Code OTP invalide",
+		"OTP_FORM_INFO": "Entrez votre code à 6 chiffres pour continuer",
+		"OTP_FORM_SUBNOTE_LINE_1": "Votre code est également appelé code d’authentification à deux facteurs (2FA) ou code OTP.",
+		"OTP_FORM_SUBNOTE_LINE_2": "Si vous avez perdu votre code, veuillez contacter l'assistance.",
+		"OTP_FORM_SUBNOTE_LINE_3": "(Pour ajouter un nouveau compte à Google Authenticator, cliquez sur le bouton « + ». Vous pouvez soit scanner le code QR fourni à l'étape précédente, soit saisir manuellement la clé pour ajouter votre compte à l'application.)",
+		"INPUT_TEXT": "Saisissez le code à 6 chiffres de l'application Google Authenticator de votre téléphone :"
 	},
 	"QUICK_TRADE_COMPONENT": {
 		"TITLE": "Quick Trade",
 		"TOTAL_COST": "Coût total",
-		"BUTTON": "Vérifier la commande {0}",
+		"BUTTON": "Évaluer le commerce rapide",
 		"INPUT": "{0} à {1}",
-		"TRADE_TITLE": "{0} {1}"
+		"TRADE_TITLE": "{0} {1}",
+		"INFO": "Le moyen le plus rapide et le plus simple d'échanger votre crypto",
+		"CHANGE_TEXT": "changement",
+		"CHANGE_TEXT_7D": "Changement 7D",
+		"HIGH_7D": "7D HAUT",
+		"LOW_7D": "7D FAIBLE",
+		"7D": "7D",
+		"1D": "1D",
+		"HIGH_24H": "24H HAUT",
+		"LOW_24H": "24H BAS",
+		"BEST_BID": "MEILLEURE ENCHÈRE",
+		"BEST_ASK": "MEILLEURE DEMANDE",
+		"FOOTER_TEXT": "Les frais de transaction rapide utilisent les taux des preneurs de marché",
+		"FOOTER_TEXT_1": "Provenant de",
+		"GO_TO_TEXT": "Aller à",
+		"SOURCE_TEXT": "Transaction de gré à gré avec un courtier",
+		"SOURCE_TEXT_NETWORK": "Offre OTC de courtier en réseau",
+		"VISIT": "Visitez{0}",
+		"ASSET_INFO_PAGE": "Page d'informations sur les actifs",
+		"COIN_NAME": "{0} ({1})",
+		"COIN_INFORMATION": "{0} informations",
+		"PRICE_TREND": "Tendance des prix",
+		"VIEW_TREND": "Voir la tendance"
 	},
 	"PREVIOUS_PAGE": "page précédente",
 	"NEXT_PAGE": "page suivante",
@@ -272,7 +316,9 @@
 	},
 	"VERIFICATION_EMAIL_REQUEST": {
 		"TITLE": "Renvoyer la demande par email",
-		"BUTTON": "Recevoir un email"
+		"BUTTON": "Recevoir un email",
+		"SUBTITLE": "Faites une autre demande de vérification par e-mail ci-dessous",
+		"SUPPORT": "Contactez le support"
 	},
 	"VERIFICATION_EMAIL_REQUEST_SUCCESS": {
 		"TITLE": "Renvoyé email",
@@ -436,7 +482,9 @@
 					"LIST_ITEM_3": "VALIDE, avec la date d'expiration clairement visible.",
 					"WARNING_1": "Seul un passeport valide est accepté; Photos (haute qualité) ou scan de ces documents sont acceptés:",
 					"WARNING_2": "Assurez-vous de télécharger vos propres documents. Toute utilisation de documents falsifiés ou faux aura des conséquences juridiques et entraînera le gel de votre compte immédiatement.",
-					"WARNING_3": "Veuillez ne pas soumettre le passeport comme preuve de résidence."
+					"WARNING_3": "Veuillez ne pas soumettre le passeport comme preuve de résidence.",
+					"LIST_ITEM_0": "La taille totale de tous les documents ne doit pas dépasser {0} Mo.",
+					"VIOLATION_ERROR": "La taille totale de tous vos documents importés dépasse la limite d'importation de {0} Mo. Veuillez télécharger des fichiers plus petits pour continuer."
 				},
 				"POR": {
 					"SECTION_1_TEXT_1": "Pour éviter des retards lors de la vérification de votre compte, veuillez vous assurer que:",
@@ -485,7 +533,18 @@
 			"LIST_ITEM_1": "Augmentation des limites de retrait",
 			"LIST_ITEM_2": "Augmentation des limites de dépôt",
 			"LIST_ITEM_3": "Frais moins élevés"
-		}
+		},
+		"EMAIL_VERIFICATION": "Envoyer email de vérification",
+		"VERIFICATION_SENT": "Vérification envoyée",
+		"VERIFICATION_SENT_INFO": "Vérifiez votre courrier électronique et cliquez sur le lien pour vérifier votre courrier électronique.",
+		"OKAY": "D'accord",
+		"TITLE_PAYMENT": "Ajouter des modes de paiement",
+		"PAYMENT_VERIFICATION": "Vérification du paiement",
+		"START_PAYMENT_VERIFICATION": "Commencer la vérification",
+		"PAYMENT_VERIFICATION_TEXT_1": "Ajoutez les détails de votre compte de paiement ci-dessous.",
+		"PAYMENT_VERIFICATION_TEXT_2": "Une fois vérifiés, votre compte bénéficiera de davantage de méthodes de retrait et de dépôt pour différentes devises.",
+		"ADD_ANOTHER_PAYMENT_METHOD": "AJOUTER UN AUTRE MODE DE PAIEMENT",
+		"PAYMENT_VERIFICATION_HELP_TEXT": "Pour que cette section soit vérifiée, vous devez remplir la section {0}."
 	},
 	"USER_SETTINGS": {
 		"TITLE_TEXT_1": "Modifiez les paramètres de votre compte. Depuis l'interface, les notifications, le nom d'utilisateur et d'autres personnalisations.",
@@ -532,6 +591,28 @@
 			"ADJUST": "(AJUSTER LE POURCENTAGE)",
 			"ACTIVATE_RISK_MANAGEMENT": "Activer la gestion des risques",
 			"WARNING_POP_UP": "Fenêtre d'avertissement"
+		},
+		"TITLE_ACCOUNT": "Compte",
+		"DELETE_ACCOUNT": {
+			"ACCESS": {
+				"TEXT": "Vous souhaitez supprimer votre compte ? Cliquez sur {0}.",
+				"LINK": "ici",
+				"DANGER_ZONE": {
+					"TITLE": "Zone dangereuse",
+					"TEXT": "La suppression de votre compte rendra votre compte et vos fonds inaccessibles.",
+					"PROCEED": "Procéder",
+					"CANCEL": "Annuler"
+				}
+			},
+			"CONFIRMATION": {
+				"TITLE": "Supprimer le compte",
+				"TEXT_1": "La suppression de votre compte supprimera définitivement toutes vos données de l'échange. Cette action est irréversible.",
+				"TEXT_2": "TAPEZ {0} pour confirmer la suppression du compte.",
+				"KEY": "JE COMPRENDS",
+				"DELETE": "SUPPRIMER",
+				"CANCEL": "Annuler",
+				"PLACEHOLDER": "Écrivez ici"
+			}
 		}
 	},
 	"TRANSACTION_HISTORY": {
@@ -542,7 +623,15 @@
 		"TEXT_DOWNLOAD": "TÉLÉCHARGER L'HISTORIQUE",
 		"TRADES": "Échanges",
 		"DEPOSITS": "Dépôts",
-		"WITHDRAWALS": "Retraits"
+		"WITHDRAWALS": "Retraits",
+		"ORDERID": "numéro de commande",
+		"TRIGGER_STOP_PRICE": "Prix de déclenchement/stop",
+		"TIME_OF_LAST_TRADE": "Heure de la dernière transaction",
+		"INTERNAL": "interne",
+		"BLOCKCHAIN": "chaîne de blocs",
+		"STAKE": "miser",
+		"REFERRAL": "référence",
+		"QUICK_TRADE_TOOLTIP": "Ordre exécuté via le système de conversion"
 	},
 	"ACCOUNT_SECURITY": {
 		"TITLE_TEXT": "Ajustez les paramètres de sécurité de votre compte. De l'authentification à deux facteurs au mot de passe, en passant par les clés API et d'autres fonctions liées à la sécurité.",
@@ -566,7 +655,7 @@
 				"MESSAGE_4": "Vous pouvez sauvegarder ce code en toute sécurité pour récupérer votre 2FA au cas où vous changeriez ou perdriez votre téléphone portable.",
 				"MESSAGE_5": "Manuellement",
 				"INPUT": "Entrez votre One-Time Password (OTP)",
-				"WARNING": "Nous vous recommandons vivement de configurer l'authentification à 2 facteurs (2FA). Cela augmentera considérablement la sécurité de vos fonds.",
+				"WARNING": "Nous {0} {1}",
 				"ENABLE": "Activer l'authentification à deux facteurs ",
 				"DISABLE": "Désactiver l'authentification à deux facteurs",
 				"SECRET_1": "Entrez votre clé secrète",
@@ -575,12 +664,43 @@
 				"INPUT_1": "Clé Secrète",
 				"TITLE_2": "Entrez votre One-Time Password (OTP)",
 				"MESSAGE_6": "Veuillez saisir votre mot de passe unique à 6 chiffres ci-dessous.",
-				"INPUT_2": "One-Time Password (OTP)"
+				"INPUT_2": "One-Time Password (OTP)",
+				"STRONGLY_RECOMMEND": "fortement recommandé",
+				"WARNING_CONTENT": "que vous activez l'authentification à deux facteurs pour améliorer la sécurité de votre compte et protéger vos fonds"
 			},
 			"FORM": {
 				"PLACEHOLDER": "Saisissez votre OTP fourni par Google Authenticator.",
 				"BUTTON": "Activer 2FA"
-			}
+			},
+			"DOWNLOAD_APP": "Télécharger et installer",
+			"GOOGLE_AUTHENTICATOR": "Authentificateur Google :",
+			"DOWNLOAD_FROM": "Télécharger à partir de",
+			"GOOGLE_PLAY": "Jeu de Google",
+			"APPLE": "Magasin d'applications",
+			"APP_INFO": "Google Authenticator générera des codes aléatoires nécessaires aux actions sensibles, telles que la connexion et le retrait de fonds.",
+			"DONT_UNINSTALL": "Veuillez ne pas désinstaller l'application.",
+			"INFO_UNINSTALL": "En cas de perte accidentelle de téléphone ou de désinstallation involontaire, vous pourriez rencontrer des retards pour retrouver l'accès à votre compte. Dans de tels cas, vous devrez contacter notre équipe d’assistance pour obtenir de l’aide.",
+			"BACK": "DOS",
+			"PROCEED": "PROCÉDER",
+			"NEXT": "Suivant",
+			"NOTE": "Remarque : {0} {1}",
+			"MANUEL_DESCRIPTION": "Veuillez saisir la graine 2FA manuelle de l'étape précédente.",
+			"MANUEL_DESCRIPTION_2": "Veuillez noter et conserver soigneusement la vérification manuelle ci-dessus",
+			"MANUEL_DESCRIPTION_3": "clé car elle peut être utilisée pour la récupération de compte.",
+			"MANUEL_KEY": "Graine 2FA manuelle",
+			"MANUEL_PLACEHOLDER": "Entrez votre graine 2FA",
+			"MANUEL_WARNING": "(Assurez-vous de l'avoir noté et stocké en toute sécurité pour une utilisation future.)",
+			"MANUEL_ERROR_1": "Veuillez saisir la graine 2FA manuelle",
+			"MANUEL_ERROR_2": "Veuillez saisir la graine 2FA manuelle de l'étape précédente",
+			"ACCOUNT_SECURED": "Compte sécurisé",
+			"2FA_ENABLED": "2FA ACTIVÉ",
+			"2FA_DISABLED": "2FA DÉSACTIVÉ",
+			"2FA_CONTENT_ONE": "Activation de {0} {1} .",
+			"2FA_CONTENT_TWO": "(Authentification à deux facteurs) ajoute une couche de protection supplémentaire pour protéger vos fonds. Une fois activé, vous devrez saisir un code de vérification depuis votre téléphone chaque fois que vous vous connecterez ou retirerez des actifs. Cette fonctionnalité améliore considérablement la sécurité de votre compte",
+			"2FA_CONTENT_THREE": "(Authentification à deux facteurs) ajoute une couche de protection supplémentaire pour protéger vos fonds",
+			"2FA_CONTENT_FOUR": "Pour désactiver 2FA, vous devrez entrer votre code 2FA (OTP)",
+			"INPUT_SIX_DIGIT_CODE": "Saisissez le code à 6 chiffres de l'application Google Authenticator de votre téléphone :",
+			"INPUT_CONTENT": "(Pour ajouter un nouveau compte à Google Authenticator, cliquez sur le bouton « + ». Vous pouvez soit scanner le code QR fourni à l'étape précédente, soit saisir manuellement la clé pour ajouter votre compte à l'application.)"
 		},
 		"CHANGE_PASSWORD": {
 			"TITLE": "Changer le mot de passe",
@@ -610,7 +730,9 @@
 			"CONTENT": {
 				"TITLE": "Historique des connexions",
 				"MESSAGE": "Vous trouverez ci-dessous la liste de l'historique des connexions avec les détails de l'IP, du pays et l'heure. Si vous constatez une activité suspecte, vous devez changer votre mot de passe et contacter le service d'assistance."
-			}
+			},
+			"IP_ADDRESS": "Adresse IP",
+			"TIME": "Date/Heure"
 		},
 		"FREEZE": {
 			"TITLE": "Geler le compte",
@@ -677,7 +799,9 @@
 		"REQUIRES_24H_TO_SETTLE_NOTICE": "Nécessite 24 heures pour se régler",
 		"SUCCESSFUL_UNSTAKE_NOTICE": "Vous avez déstaké avec succès",
 		"VISIT_WALLET_BUTTON": "VISITER LE PORTEFEUILLE",
-		"CLOSE_BUTTON": "FERMER"
+		"CLOSE_BUTTON": "FERMER",
+		"ACTIVE_STAKES": "Enjeux actifs",
+		"STAKES_HISTORY": "Histoire"
 	},
 	"CURRENCY": "Devise",
 	"TYPE": "Type",
@@ -774,13 +898,16 @@
 		"WITHDRAWAL_CONFIRM_ADDRESS": "Adresse",
 		"WITHDRAWAL_CONFIRM_NETWORK": "Réseau",
 		"WITHDRAWAL_CANCEL_BUTTON": "FERMER",
-		"WITHDRAWAL_CONFIRM_BUTTON": "CONFIRMER LE RETRAIT"
+		"WITHDRAWAL_CONFIRM_BUTTON": "CONFIRMER LE RETRAIT",
+		"MESSAGE_FEE_COIN": "Frais de transaction de {0}",
+		"WITHDRAWALS_FORM_ERROR_TITLE": "Informations de transfert incorrectes",
+		"WITHDRAWALS_FORM_ERROR": "Votre transfert de fonds a échoué. L’envoi de fonds vers un e-mail nécessite que l’utilisateur dispose d’un compte au sein de cet échange. Vérifiez que l'e-mail est correct et réessayez."
 	},
 	"WALLET_BUTTON_BASE_DEPOSIT": "dépôt",
 	"WALLET_BUTTON_BASE_WITHDRAW": "retrait",
 	"WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT": "recevoir",
 	"WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW": "envoyer",
-	"AVAILABLE_BALANCE_TEXT": "Disponible {0} Solde: {1} {2}",
+	"AVAILABLE_BALANCE_TEXT": "Solde {0} disponible : {1} {2} {3}",
 	"BALANCE_TEXT": "Solde",
 	"CURRENCY_BALANCE_TEXT": "{0} Solde",
 	"WALLET_ALL_ASSETS": "Toutes les monnaies",
@@ -887,7 +1014,8 @@
 		"CHAT_MESSAGE_BOX_PLACEHOLDER": "Message",
 		"SIGN_UP_CHAT": "Inscrivez-vous au chat",
 		"JOIN_CHAT": "Définir le nom d'utilisateur pour discuter",
-		"TROLLBOX": "Trollbox ({0})"
+		"TROLLBOX": "Trollbox ({0})",
+		"SET_USERNAME": "DÉFINIR LE NOM D'UTILISATEUR POUR CHATTER"
 	},
 	"INVALID_USERNAME": "Le nom d'utilisateur doit comporter entre 3 et 15 caractères. Ne contient que des minuscules, des chiffres et des traits de soulignement",
 	"USERNAME_TAKEN": "Ce nom d'utilisateur a déjà été pris. Veuillez en essayer un autre.",
@@ -1032,19 +1160,36 @@
 		"LEARN_MORE_WAVE_AUCTION": "En savoir plus l'enchère",
 		"WAVE_NUMBER": "Wave Number",
 		"DISCOUNT": "( {0}% discount )",
-		"MY_FEES_LIMITS": " Mes frais et limites"
+		"MY_FEES_LIMITS": " Mes frais et limites",
+		"DEPOSIT_AND_WITHDRAWAL_FEES": "Frais de dépôt et de retrait",
+		"DEPOSITS": "Dépôts",
+		"WITHDRAWALS": "Retraits",
+		"TITLE_OF_ACCOUNT": "{0} Compte",
+		"MARKETS": "Marchés",
+		"CHANGE_24H": "Changement 24H",
+		"VOLUME_24H": "Volume 24H",
+		"VOLUME_7D": "Volumes 7D",
+		"VIEW_MORE_MARKETS": "Voir plus de marchés",
+		"VIEW_VERIFICATION": "voir la vérification",
+		"EARN_COMMISSION": "Gagnez des commissions",
+		"ID_VERIFICATION": "Vérification d'identité :"
 	},
 	"REFERRAL_LINK": {
 		"TITLE": "Inviter un ami",
 		"INFO_TEXT": "Parrainez vos amis en leur donnant ce lien et bénéficiez d'avantages en intégrant d'autres personnes.",
 		"COPY_FIELD_LABEL": "Partagez le lien ci-dessous avec des amis et gagnez des commissions:",
 		"REFERRED_USER_COUT": "Vous avez parrainé {0} utilisateur(s)",
-		"COPY_LINK_BUTTON": "COPIER LE LIEN DE PARRAINAGE"
+		"COPY_LINK_BUTTON": "COPIER LE LIEN DE PARRAINAGE",
+		"VIEW": "voir",
+		"TABLE_TITLE": "Toutes les références réussies",
+		"USER": "Utilisateur / email",
+		"TIME": "Heure d'inscription"
 	},
 	"NOT_LOGGEDIN": {
 		"TXT_1": "Pour commencer à trader, vous devez vous connecter",
 		"TXT_2": "{0} ou {1}",
-		"LOGIN_HERE": "Connectez-vous ici"
+		"LOGIN_HERE": "Connectez-vous ici",
+		"TEXT_GENERAL": "Pour voir, vous devez vous connecter"
 	},
 	"USER_LEVEL": "Niveau de l'utilisateur",
 	"LIMIT_AMOUNT": "montant limite",
@@ -1066,5 +1211,749 @@
 		"LEARN_MORE": "En savoir plus",
 		"APPLY_TODAY": "S'inscrire aujourd'hui"
 	},
-	"OPEN_WALLET": "Ouvrir portefeuille"
+	"OPEN_WALLET": "Ouvrir portefeuille",
+	"TRADE_TOOLS": "Outils",
+	"NO_ACTIVE_TRADES": "On dirait qu'il n'y a pas encore d'échanges",
+	"NO_ACTIVE_DEPOSITS": "On dirait qu'il n'y a pas encore de dépôts.",
+	"NO_ACTIVE_WITHDRAWALS": "Il semble qu'il n'y ait pas encore de retraits",
+	"HELP_RESOURCE_GUIDE": {
+		"CONTACT_US": "Contactez-nous",
+		"TEXT": "N'hésitez pas à {0} pour plus d'informations et tout problème en nous envoyant un e-mail"
+	},
+	"SECOND": "deuxième",
+	"CANT_FIND_MARKETS": "Je ne trouve aucun marché pour cet actif.",
+	"TRY_VISITING_ASSETS": "Essayez de visiter le {0}.",
+	"ASSETS_PAGE": "Page Actifs",
+	"CONVERT": "Convertir",
+	"SWAP": "Changer",
+	"TO": "À",
+	"NA": "N / A",
+	"QR_CODE": {
+		"SCAN": "Analyse",
+		"SHOW": "Afficher le QR",
+		"NO_RESULT": "Pas de résultat",
+		"NOT_FOUND": "Pas trouvé",
+		"PERMISSION_DENIED": "Permission refusée"
+	},
+	"EMAIL_CODE_FORM": {
+		"TITLE": "Saisissez vos codes de sécurité",
+		"LABEL": "Saisissez le code (veuillez vérifier votre email)",
+		"PLACEHOLDER": "Saisissez le code envoyé à votre email",
+		"FORM_TITLE_TEXT": "Un code unique a été envoyé à votre adresse e-mail et est nécessaire pour terminer le processus. Veuillez saisir le code envoyé à votre adresse e-mail ci-dessous{0}.",
+		"OTP_NOTE": " avec votre code OTP",
+		"BUTTON": "soumettre",
+		"ERROR_INVALID": "Le code que vous avez saisi est incorrect. Veuillez réessayer",
+		"OTP_LABEL": "Code 2FA (OTP)",
+		"OTP_PLACEHOLDER": "Entrez votre code d'authentification à deux facteurs à 6 chiffres"
+	},
+	"USER_APPS": {
+		"TITLE": "Vos applications d'échange",
+		"SUBTITLE": "Informations sur les applications de votre compte Exchange et fonctionnalités supplémentaires ci-dessous.",
+		"ALL_APPS": {
+			"TAB_TITLE": "Toutes les applications",
+			"TITLE": "Applications d'échange",
+			"SUBTITLE": "Obtenez plus de fonctionnalités de votre compte Exchange en sélectionnant simplement une application ci-dessous et en cliquant sur le bouton Ajouter.",
+			"SEARCH_PLACEHOLDER": "Rechercher des applications...",
+			"ADD": {
+				"SUCCESSFUL": "Vous avez ajouté avec succès une nouvelle application !",
+				"FAILED": "Quelque chose s'est mal passé"
+			}
+		},
+		"MY_APPS": {
+			"TAB_TITLE": "Mes applications",
+			"TITLE": "Mes applications d'échange",
+			"SUBTITLE": "Vous trouverez ci-dessous vos demandes d'échange actives. Vous pouvez cliquer pour voir développer les informations et fonctions de chaque application et les ajouter/supprimer. Les applications sont conçues pour offrir davantage de fonctionnalités à votre expérience d'échange."
+		},
+		"TABLE": {
+			"APP_NAME": "Nom de l'application",
+			"DESCRIPTION": "Description",
+			"ACTION": "Action",
+			"CONFIGURE": "Configurer",
+			"VIEW_APP": "Voir l'application",
+			"ADD": "Ajouter",
+			"NOT_FOUND": "Je ne trouve pas cette application...",
+			"RETRY": "Essayez un autre terme de recherche"
+		},
+		"APP_DETAILS": {
+			"BACK_PLACEHOLDER": "{0} {1}",
+			"BACK_TO_APPS": "à mes applications",
+			"BACK": "Dos"
+		},
+		"CONFIGURE": {
+			"TITLE": "Configurer l'application",
+			"SUBTITLE": "Configurez votre application ci-dessous :",
+			"REMOVE": "Supprimer l'application",
+			"TEXT": "Si vous rencontrez des problèmes avec votre application, veuillez nous contacter en cliquant sur l'aide ci-dessous.",
+			"BACK": "DOS",
+			"HELP": "AIDE"
+		},
+		"REMOVE": {
+			"TITLE": "Supprimer l'application",
+			"SUBTITLE": "Cela supprimera l'application de votre liste « Mes applications ».",
+			"TEXT": "Êtes-vous sûr de vouloir supprimer cette application ?",
+			"BACK": "DOS",
+			"CONFIRM": "CONFIRMER"
+		}
+	},
+	"STAKE": {
+		"NETWORK_WARNING": "Réseau incompatible. Veuillez changer votre réseau en {0}",
+		"EARN": "Gagner",
+		"TITLE": "Miser",
+		"MODAL_TITLE": "Misez et gagnez {0}",
+		"REVIEW_MODAL_TITLE": "Vérifier et confirmer la mise",
+		"AVAILABLE_TOKEN": "{0} ({1}) disponibles pour miser : {2}",
+		"DEFI_TITLE": "Jalonnement d'actifs DeFi",
+		"DEFI_TEXT": "Le style Staking DeFi utilisera votre propre portefeuille en dehors de l’échange. Pour commencer, vous devez établir une connexion, une fois connecté, vous pouvez miser et commencer à gagner directement depuis votre portefeuille.",
+		"GET_STAKES": "Obtenez des mises",
+		"CURRENT_ETH_BLOCK": "Bloc ETH actuel : {0}",
+		"ON_EXCHANGE_XHT": "Sur le solde d'échange {0} : {1} {2}",
+		"LOGIN_HERE": "Connectez-vous ici",
+		"MOVE_XHT": "Déplacer {0}",
+		"ESTIMATED_STAKED": "Valeur estimée du total misé",
+		"ESTIMATED_EARNINGS": "Valeur estimée des gains",
+		"CONNECT_WALLET": "Connecter le portefeuille",
+		"BACK": "Dos",
+		"NEXT": "Suivant",
+		"REVIEW": "Revoir",
+		"ESTIMATED": "EST.",
+		"BLOCK": "Bloc",
+		"CANCEL": "Annuler",
+		"PROCEED": "Procéder",
+		"GO_TO_WALLET": "aller au portefeuille",
+		"AMOUNT_LABEL": "Montant à miser",
+		"PERIOD_SUBTITLE": "Plus vous misez longtemps, plus vous êtes récompensé. Sélectionnez la durée de mise ci-dessous.",
+		"STAKE_AND_EARN_DETAILS": "Misez pour ~{0} et gagnez {1}",
+		"PREDICTED_EARNINGS": "Gains prévus",
+		"VARIABLE_TITLE": "Variable*",
+		"VARIABLE_TEXT": "*{0} sur le fonctionnement du taux variable.",
+		"READ_MORE": "En savoir plus",
+		"CURRENT_BLOCK": "Bloc actuel : {0}",
+		"END_BLOCK": "Fin du bloc : {0}",
+		"DURATION": "Durée",
+		"END_ON_BLOCK": "Fin au bloc : {0}",
+		"SLASHING_TITLE": "Slashing (départ anticipé)",
+		"SLASHING_TEXT_1": "{0} % de votre mise en principe",
+		"SLASHING_TEXT_2": "Tous les gains perdus",
+		"REVIEW_NOTE": "La durée est mesurée par le timing des blocs Ethereum. Veuillez vérifier et confirmer les détails ci-dessus avant de miser, car un retrait anticipé entraînera la déduction d'un pourcentage du principe de votre mise et la perte des gains.",
+		"WAITING_TITLE": "En attente de confirmation",
+		"WAITING_TEXT": "Confirmez cette transaction dans votre portefeuille",
+		"PENDING_TEXT": "Transaction en attente...",
+		"CHECKING_ALLOWANCE": "Vérification de l'allocation {0}...",
+		"WAITING_PROMPT": "{0} {1} {2}",
+		"WAITING_STAKE": "Confirmez le montant de la mise",
+		"WAITING_WITHDRAW": "Autoriser les dépenses",
+		"WAITING_UNSTAKE": "Détacher",
+		"WAITING_STAKE_ING": "Jalonnement en attente",
+		"WAITING_WITHDRAW_ING": "Traitement de l'autorisation des dépenses",
+		"WAITING_UNSTAKE_ING": "Détachement",
+		"SUCCESSFUL_STAKE_TITLE": "Vous avez misé avec succès {0}",
+		"SUCCESSFUL_STAKE_AMOUNT": "Montant misé",
+		"SUCCESSFUL_STAKE_DURATION_KEY": "Durée",
+		"SUCCESSFUL_STAKE_DURATION_DEF": "Se termine au bloc {0} ({1})",
+		"SUCCESSFUL_STAKE_DESTINATION": "Destination",
+		"SUCCESSFUL_UNSTAKE_ADDRESS": "Mon adresse",
+		"OKAY": "D'accord",
+		"ERROR_TITLE": "Erreur : {0} a été rejeté",
+		"ERROR_SUBTITLE": "Si c'était une erreur, vous pouvez revenir en arrière et réessayer",
+		"SUCCESSFUL_UNSTAKE_TITLE": "Vous avez réussi à débloquer {0}",
+		"SUCCESSFUL_UNSTAKE_AMOUNT": "Total à recevoir",
+		"EARNINGS": "Gains",
+		"ORIGINAL_AMOUNT": "Montant initial misé",
+		"CONNECT_A_WALLET": "Connectez-vous à un portefeuille",
+		"CONNECT_WALLET_TABLE": "{0} pour voir l'historique des événements de mise",
+		"ZERO_STAKES": "Zéro enjeu",
+		"PENDING_TRANSACTIONS": "En attente {0} {1}",
+		"VIEW_ON": "Voir sur le {0}",
+		"BLOCKCHAIN": "chaîne de blocs",
+		"VIEW_POT": "Voir le POT de distribution",
+		"COMPLETED": "Affiné",
+		"COMPLETED_TOOLTIP": "L’enjeu est mature. Continuez à miser pour gagner plus de récompenses ou annulez votre mise pour réclamer des récompenses.",
+		"CONNECT_ERROR": "Veuillez vérifier votre portefeuille",
+		"INSTALL_METAMASK_DETAILS": {
+			"TITLE": "Installer MetaMask",
+			"PROMPT": "Vous devez installer Metamask dans votre navigateur : {0}"
+		},
+		"INSTALL_METAMASK_TITLE": "MetaMask non détecté"
+	},
+	"UNSTAKE": {
+		"TITLE": "Détacher",
+		"EARLY_TITLE": "Détacher tôt",
+		"EARLY_WARNING_TITLE": "On dirait que vous essayez de vous désengager plus tôt",
+		"EARLY_WARNING_TEXT_1": "Cela pourrait entraîner la déduction d’un pourcentage de votre mise principale initiale et la perte de tous les gains.",
+		"EARLY_WARNING_TEXT_2": "Êtes-vous sur de vouloir continuer?",
+		"BACK": "RETOURNER",
+		"REVIEW": "SUPPRIMER LE Pieu",
+		"DURATION": "EST. maturation duration",
+		"CANCEL": "Annuler",
+		"PROCEED": "Procéder",
+		"EARNINGS_FORFEITED": "Gains perdus",
+		"PRICE_FORMAT": "{0} {1}",
+		"EST_PENDING": "EST. pending: {0}",
+		"AMOUNT_SLASHED": "Montant réduit*",
+		"AMOUNT_TO_RECEIVE": "Montant à recevoir",
+		"SLASH_FOOTNOTE": "*Tous les montants réduits sont distribués aux joueurs restants. Veuillez considérer le montant réduit par rapport au principe initial, les gains perdus et la durée restante et déterminer si la valeur perdue lors du déversement anticipé en vaut le coût.",
+		"AMOUNT_NOTE": "Les montants seront distribués à l'adresse de votre portefeuille",
+		"TOTAL_EARNT": "Gain total",
+		"PENDING_EARNINGS": "Gains en attente*",
+		"PENDING_EARNINGS_FOOTNOTE": "*Les gains en attente sont des montants qui n'ont pas été compensés et qui nécessitent une transaction blockchain afin d'être ajoutés au montant total de votre réception."
+	},
+	"STAKE_TABLE": {
+		"CURRENCY": "Devise",
+		"AVAILABLE": "Disponible pour miser",
+		"TOTAL": "Total jalonné",
+		"REWARD_RATE": "Taux de récompense",
+		"EARNINGS": "Gains",
+		"STAKE": "Miser",
+		"VARIABLE": "Variable"
+	},
+	"STAKE_LIST": {
+		"AMOUNT": "MONTANTS MISE EN GARDE",
+		"DURATION": "EST. MATURATION DURATION",
+		"START": "JALonnement COMMENCÉ",
+		"END": "ENJEU DE FIN",
+		"EARNINGS": "GAINS",
+		"STAKE": "MISER"
+	},
+	"STAKE_DETAILS": {
+		"BACK_SUBTITLE": "{0} vers la page de jalonnement",
+		"GO_BACK": "Retourner",
+		"CONTRACT_SUBTITLE": "Contrat de jeton : {0}",
+		"VIEW_MORE": "VOIR PLUS",
+		"VIEW": "Voir",
+		"TOKEN": "{0} Jeton",
+		"TABS": {
+			"PUBLIC_INFO": "Informations publiques",
+			"DISTRIBUTIONS": "Distribution",
+			"MY_STAKING": "Mon jalonnement"
+		},
+		"PUBLIC_INFO": {
+			"TITLE": "Informations de jalonnement",
+			"SUBTITLE": "Vous trouverez ci-dessous une tokenomics de mise pour {0} ({1}).",
+			"TOTAL_DISTRIBUTED_REWARDS": "Total des récompenses distribuées ({0})",
+			"POT_BALANCE": "Solde du pot",
+			"UNCLAIMED_REWARDS": "Récompenses non réclamées",
+			"TOTAL_STAKED": "Total jalonné",
+			"REWARD_RATE": "Taux de récompense",
+			"MY_STAKE": "Ma mise ({0} %)",
+			"MY_STAKE_PERCENTLESS": "Ma mise",
+			"OTHER_STAKE": "Participation des autres ({0} %)",
+			"EVENTS_TITLE": "Récompenses distribuées récemment"
+		},
+		"DISTRIBUTIONS": {
+			"TITLE": "{0} récompenses distribuées",
+			"SUBTITLE": "Vous trouverez ci-dessous une liste historique des distributions effectuées aux actionnaires de {0}.",
+			"TIME": "Temps distribué",
+			"TRANSACTION_ID": "identifiant de transaction",
+			"AMOUNT": "Montant distribué"
+		},
+		"MY_STAKING": {
+			"TITLE": "Mon jalonnement",
+			"SUBTITLE": "Ci-dessous affiche des informations et certains événements historiques liés à votre mise en {0}.",
+			"EVENTS_TITLE": "Événements d'enjeu historique",
+			"TIME": "Temps",
+			"EVENT": "Événement",
+			"TRANSACTION_ID": "identifiant de transaction",
+			"AMOUNT": "Montant"
+		}
+	},
+	"MOVE_XHT": {
+		"TITLE": "Déplacer XHT",
+		"TEXT_1": "Pour miser sur XHT, vous devez d’abord déplacer votre XHT dans votre propre portefeuille.",
+		"TEXT_2": "L'adresse de votre portefeuille actuellement connecté est :",
+		"LABEL": "Adresse du portefeuille",
+		"TEXT_3": "Il est important de vérifier que l’adresse du portefeuille ci-dessus est sécurisée. XHT sera déplacé vers l'adresse du portefeuille ci-dessus."
+	},
+	"MOVE_AMOUNT": {
+		"TITLE": "Montant saisi",
+		"PROMPT": "Saisissez le montant que vous souhaitez déplacer.",
+		"BALANCE": "{0} solde : {1}",
+		"LABEL": "Montant à déplacer",
+		"FEE": "Frais de transaction : {0} {1}"
+	},
+	"SIDES_VERBS": { "buy": "acheté", "sell": "vendu" },
+	"AVERAGE": "Moyenne",
+	"NETWORK": "Réseau",
+	"CATEGORY": "Catégorie",
+	"ORDER_HISTORY": "Historique des commandes",
+	"ESTIMATED_PRICE": "Prix estimé",
+	"ASSETS": "Actifs",
+	"CURRENCY_WALLET": {
+		"BACK": "Dos",
+		"WALLET_PAGE": "{0} vers la page du portefeuille",
+		"LEARN_MORE": "En savoir plus {0}",
+		"ABOUT": "à propos",
+		"TOTAL_BALANCE": "Solde total : {0} {1}",
+		"AVAILABLE_BALANCE": "Solde disponible : {0} {1} {2}",
+		"PERCENTAGE_SHARE": "Part en pourcentage {0}",
+		"EARN_BY": "Gagnez avant le {0} {1}",
+		"STAKING": "jalonnement",
+		"TOOLTIP": "Solde non en attente ou bloqué dans des transactions (ordres ouverts)",
+		"WALLET_HAS_BALANCE_PERCENTAGE": "Votre portefeuille ne contient actuellement aucun {0}.",
+		"WALLET_DEPOSIT": "Vous pouvez essayer de déposer {0} ou d'acheter {1}"
+	},
+	"WITHDRAWALS_FORM_NETWORK_LABEL": "Réseau",
+	"DEPOSIT_FORM_NETWORK_WARNING": "Assurez-vous que le réseau sélectionné est compatible avec le réseau des portefeuilles des expéditeurs",
+	"DEPOSIT_FORM_MIN_WARNING": "Seuls les dépôts de {0} {1} ou plus seront acceptés. Tout dépôt inférieur à ce seuil minimum entraînera une perte permanente de fonds.",
+	"DEPOSIT_FORM_TITLE_WARNING_DESTINATION_TAG": "Entrez l'adresse et l'étiquette, qui sont nécessaires pour effectuer un dépôt sur votre compte avec succès.",
+	"WITHDRAW_PAGE_DESTINATION_TAG_NONE": "Aucun",
+	"WITHDRAW_PAGE_DESTINATION_TAG_MESSAGE": "Balise de destination : {0}",
+	"WITHDRAW_PAGE_NETWORK_TYPE_MESSAGE": "{0} type de réseau d'adresse : {1}",
+	"WITHDRAWALS_FORM_NETWORK_WARNING": "Assurez-vous que le réseau sélectionné est compatible avec le portefeuille de destination",
+	"WITHDRAWALS_FORM_FEE_WARNING": "{0} ({1}) est une condition nécessaire au retrait de cet actif",
+	"WITHDRAWALS_FORM_DESTINATION_TAG_WARNING": "Vérifiez si l'adresse de réception nécessite une balise. Également connu sous le nom de mémo, d'identification numérique, d'étiquette et de notes.",
+	"WITHDRAWALS_FORM_NETWORK_PLACEHOLDER": "Sélectionnez un réseau",
+	"WITHDRAWALS_FORM_FEE_COMMON_LABEL_COIN": "Frais de transaction ({0})",
+	"24H_MAX": "24H maximum :",
+	"24H_MIN": "24H bas",
+	"24H_VAL": "Vol 24H",
+	"WALLET_HIDE_ZERO_BALANCE": "Masquer le solde nul",
+	"WALLET_ESTIMATED_TOTAL_BALANCE": "Solde total estimé",
+	"WALLET_ASSETS_SEARCH_TXT": "Recherche",
+	"ORDER_ENTRY_ADVANCED": "Avancé",
+	"QUICK_TRADE_QUOTE_EXPIRED_FIRST_LINE": "Le devis est expiré.",
+	"QUICK_TRADE_QUOTE_EXPIRED_SECOND_LINE": "Cliquez sur requoter pour obtenir un nouveau prix.",
+	"QUICK_TRADE_QUOTE_EXPIRED_BUTTON": "DEMANDEZ",
+	"QUICK_TRADE_SUCCESS": "Succès!",
+	"QUICK_TRADE_INSUFFICIENT_FUND": "Fonds insuffisants",
+	"QUICK_TRADE_INSUFFICIENT_FUND_MESSAGE": "Vous n'avez pas suffisamment de fonds dans votre portefeuille pour finaliser cette transaction.",
+	"QUICK_TRADE_BROKER_NOT_AVAILABLE_MESSAGE": "L’offre de courtier OTC n’est actuellement pas disponible.",
+	"ABOUT_LINK": "Environ {0}",
+	"DEVELOPERS_TOKEN": {
+		"API_KEY": "clé API",
+		"SECRET_KEY": "Clef secrète",
+		"ACCESS": "Accéder",
+		"BASIC_ACCESS": "Accès de base",
+		"BASIC_ACCESS_PROMPT": "Sélectionnez à quoi cette clé API peut accéder.",
+		"READING_ACCESS": "Lecture (soldes de portefeuilles, etc.)",
+		"TRADING_ACCESS": "Commerce",
+		"IP_ACCESS": "Accès IP",
+		"IP_ACCESS_PROMPT": "Configurez quelle adresse IP fonctionnera avec cette clé API.",
+		"ANY_IP_ADDRESS": "N'importe quelle adresse IP",
+		"ONLY_TRUSTED_IPS": "Uniquement des adresses IP fiables",
+		"ADD_IP_PH": "Entrez l'adresse IP. Vous pouvez ajouter plusieurs IP",
+		"ADD_IP": "Ajouter",
+		"ADVANCED_ACCESS": "Accès avancé",
+		"ADVANCED_ACCESS_PROMPT": "Nécessite que des adresses IP de confiance soient activées.",
+		"WITHDRAWAL_ACCESS": "Retraits",
+		"SAVE": "Sauvegarder",
+		"BEWARE": "Attention, autoriser les retraits comporte certains risques !"
+	},
+	"ZERO_ASSET_2": "détecté. Faire un",
+	"ZERO_ASSET_3": "dépôt ci-dessous.",
+	"CUMULATIVE_AMOUNT_SYMBOL": "Total",
+	"POST_ONLY": "Publier uniquement",
+	"CLEAR": "Clair",
+	"ORDER_TYPE": "Taper",
+	"ORDER_MODE": "Mode de commande",
+	"TRIGGER_CONDITIONS": "Déclenchement",
+	"TRANSACTION_STATUS": {
+		"PENDING": "En attente",
+		"REJECTED": "Rejeté",
+		"COMPLETED": "Complété"
+	},
+	"DEPOSIT_STATUS": {
+		"NEW": "Nouveau",
+		"SEARCH_FIELD_LABEL": "Collez votre identifiant de transaction",
+		"CHECK_DEPOSIT_STATUS": "Vérifier l'état du dépôt",
+		"SEARCH_BLOCKCHAIN_FOR_DEPOSIT": "Recherchez votre dépôt dans la blockchain",
+		"STATUS_DESCRIPTION": "Vous pouvez vérifier l'état de votre dépôt en transmettant l'ID de transaction (hash) ci-dessous.",
+		"TRANSACTION_ID": "ID de transaction (hachage)",
+		"SEARCH_SUCCESS": "Recherche terminée",
+		"ADDRESS_FIELD_LABEL": "Collez votre adresse",
+		"CURRENCY_FIELD_LABEL": "Sélectionnez la devise",
+		"DESTINATION_TAG_LABEL": "Balise (facultatif)",
+		"MEMO_LABEL": "Mémo (facultatif)",
+		"DESTINATION_TAG_PLACEHOLDER": "Collez votre balise",
+		"MEMO_PLACEHOLDER": "Collez votre mémo"
+	},
+	"CANCEL_ORDERS": {
+		"HEADING": "Annuler les commandes",
+		"SUB_HEADING": "Annuler toutes les commandes",
+		"INFO_1": "Cela annulera vos commandes ouvertes pour le marché {0}.",
+		"INFO_2": "Êtes-vous sûr de vouloir annuler toutes vos commandes ouvertes ?"
+	},
+	"AMOUNT_IN": "Montant en",
+	"LIMITS_BLOCK": {
+		"HEADER_ROW_DESCRIPTION": "Allocation de dépôt et de retrait 24 h pour tous les actifs ({0})",
+		"HEADER_ROW_TYPE": "Type (Tous les actifs)",
+		"HEADER_ROW_AMOUNT": "Montant 24 h ({0})"
+	},
+	"MARKETS_TABLE": {
+		"TITLE": "Marchés en direct",
+		"MARKETS": "Marchés",
+		"LAST_PRICE": "Dernier prix",
+		"CHANGE_24H": "Changement (24 heures)",
+		"CHANGE_7D": "Changement (7 jours)",
+		"CHANGE_1D": "Changement (1 jour)",
+		"VOLUME_24h": "Volume (24 heures)",
+		"CHART_24H": "Graphique (24 heures)",
+		"CHART_7D": "Graphique (7 jours)",
+		"VIEW_MARKETS": "Voir les marchés",
+		"TRADING_SYMBOL": "Symbole commercial",
+		"ASSET": "Actif",
+		"TYPE": "Taper",
+		"SOURCE": "SOURCE"
+	},
+	"SUMMARY_MARKETS": {
+		"HOLLAEX": "Vous souhaitez lister vos actifs numériques ? Démarrez votre propre marché avec votre HollaEx {0} {1}",
+		"WHITE_LABEL": "marque blanche",
+		"SOLUTION": "solution",
+		"VISIT_COIN_INFO_PAGE": "Consultez la page d'informations sur les pièces {0}",
+		"HERE": "ici"
+	},
+	"PAGE_UNDER_CONSTRUCTION": "Cette page est en cours de construction. Veuillez revoir cette page bientôt.",
+	"UNDEFINED_ERROR_TITLE": "Vous avez rencontré une erreur non identifiée",
+	"UNDEFINED_ERROR": "Ouah! Une erreur inconnue s'est produite. Cela peut être un problème de connexion ou bien d'autres choses. Vous pouvez réessayer plus tard ou essayer d'actualiser.",
+	"POST_ONLY_TOOLTIP": "Les ordres de publication uniquement ne sont exécutés que sous forme d’ordre limité.",
+	"REFRESH": "Rafraîchir",
+	"FEE_REDUCTION": "Réduction des frais",
+	"FEE_REDUCTION_DESCRIPTION": "*Votre compte bénéficie d'une réduction sur les frais. La réduction s'applique sur les frais de trading en fonction de votre compte.",
+	"CHANGE_PASSWORD_FAILED": "échec du changement de mot de passe",
+	"MARKET_OPTIONS": { "LIST": "Liste", "CARD": "Carte" },
+	"ALL": "Tous",
+	"ASSET_TXT": "Actif",
+	"ONE_DAY": "Un jour",
+	"ONE_WEEK": "1 semaine",
+	"MONTH": "{0} mois",
+	"START_DATE": "Date de début",
+	"END_DATE": "Date de fin",
+	"REGULAR": "Régulier",
+	"STOPS": "Arrêts",
+	"VIEW_ALL": "Voir tout",
+	"TRIGGER_PRICE": "Prix de déclenchement",
+	"SPEND_AMOUNT": "Montant dépensé",
+	"ESTIMATE_RECEIVE_AMOUNT": "Montant de réception estimé",
+	"TOOLS": {
+		"ORDERBOOK": "Carnet de commande",
+		"CHART": "Graphique",
+		"PUBLIC_SALES": "Ventes publiques",
+		"ORDER_ENTRY": "La saisie des commandes",
+		"RECENT_TRADES": "Transactions récentes",
+		"OPEN_ORDERS": "Commandes ouvertes",
+		"WALLET": "Portefeuille",
+		"DEPTH_CHART": "Tableau de profondeur",
+		"COMING_SOON": "à venir"
+	},
+	"RESET_LAYOUT": "Réinitialiser la mise en page",
+	"WALLET_BALANCE_LOADING": "Chargement du solde...",
+	"CONNECT_VIA_DESKTOP": {
+		"TITLE": "Connectez-vous via le bureau",
+		"SUBTITLE": "Le jalonnement DeFi via vos appareils mobiles n’est pas pris en charge pour le moment.",
+		"TEXT": "Pour connecter votre portefeuille, veuillez utiliser un ordinateur de bureau/portable."
+	},
+	"ORDER_HISTORY_CLOSED": "Fermé",
+	"FIAT": {
+		"UNVERIFIED": {
+			"TITLE": "Vérification complète",
+			"TEXT": "Afin d'effectuer un {0}, vous devez effectuer votre vérification qui inclut la vérification de vos coordonnées bancaires. Veuillez cliquer sur le bouton Continuer ci-dessous.",
+			"DEPOSIT": "dépôt",
+			"WITHDRAWAL": "retrait"
+		},
+		"REVIEW_DEPOSIT": {
+			"TITLE": "Vérifier et confirmer les détails du dépôt",
+			"SUBTITLE": "Veuillez vérifier les détails du dépôt ci-dessous pour vous assurer que tout est correct.",
+			"FORMAT": "{0} {1}",
+			"AMOUNT": "montant à déposer",
+			"FEE": "Frais de dépôt",
+			"TRANSACTION_ID": "identifiant de transaction",
+			"NOTE": "Pour éviter les retards, assurez-vous que le montant de votre dépôt, la note et l'ID de transaction correspondent aux détails ci-dessus. Si des problèmes surviennent, veuillez contacter le support.",
+			"BACK": "Dos",
+			"PROCEED": "Procéder"
+		}
+	},
+	"DEPOSIT_FEE_NOTE": "Notez que le montant total déposé sur votre compte sera le montant moins les frais de dépôt.",
+	"AMOUNT_LABEL": "Saisissez le montant déposé (doit être identique au montant réel)",
+	"TRANSACTION_ID_LABEL": "Entrez l'ID de transaction du dépôt",
+	"FEE_LABEL": "Frais de dépôt",
+	"AMOUNT_FORMAT": "{0} {1}",
+	"PENDING_DEPOSIT_TITLE": "Dépôt en attente",
+	"PENDING_DEPOSIT_TEXT_1": "Votre dépôt est maintenant en file d'attente pour vérification et restera en attente jusqu'à ce qu'il soit effacé.",
+	"PENDING_DEPOSIT_TEXT_2": "Généralement, les dépôts sont compensés dans les 24 heures, mais peuvent prendre jusqu'à 48 heures. Après avoir compensé le montant de votre dépôt moins les frais, ils seront crédités sur votre solde.",
+	"DEPOSIT_HOME_NOTE": "Pour effectuer un dépôt, veuillez saisir le montant que vous déposerez depuis votre propre compte bancaire. Pour éviter les retards, assurez-vous que le montant que vous saisissez ci-dessous correspond au montant réel que vous allez ou avez envoyé depuis votre compte bancaire.",
+	"DEPOSIT_TXID_NOTE": "Pour éviter les retards avec votre dépôt, assurez-vous de saisir votre note unique affichée ci-dessus lors de votre dépôt bancaire dans la note ou le message de votre transaction. Assurez-vous que le montant ci-dessous correspond à ce que vous déposez réellement auprès de votre banque et que vous incluez l'ID de transaction fourni par votre banque une fois la transaction effectuée.",
+	"DEPOSIT_BANK_TEXT": "Utilisez les coordonnées bancaires ci-dessous pour effectuer votre dépôt.",
+	"MIN_DEPOSIT": "Dépôt minimum",
+	"MAX_DEPOSIT": "Dépôt maximum",
+	"BACK": "Dos",
+	"DONE": "Fait",
+	"PENDING_WITHDRAWAL_TITLE": "Retrait en attente",
+	"PENDING_WITHDRAWAL_TEXT_1": "Votre retrait est maintenant en attente de vérification et restera en attente jusqu'à ce qu'il soit effacé.",
+	"DEPOSIT_AMOUNT_MIN_VALIDATION": "La transaction est trop petite pour être envoyée. Essayez une plus grande quantité.",
+	"DEPOSIT_AMOUNT_MAX_VALIDATION": "La transaction est trop volumineuse pour être envoyée. Essayez une plus petite quantité.",
+	"ACCOUNT_NAME": "nom du compte",
+	"ACCOUNT_NUMBER": "numéro de compte",
+	"BANK_NAME": "Nom de banque",
+	"VERIFY_BANK_WITHDRAW": "Afin d'effectuer un retrait, vous devez effectuer votre vérification qui comprend la vérification de vos coordonnées bancaires. Veuillez cliquer sur le bouton Continuer ci-dessous.",
+	"VERIFICATION_TITLE": "Vérification complète",
+	"WITHDRAW_NOTE": "Attention : vous ne pouvez effectuer un retrait que sur un compte à votre nom.",
+	"USER_PAYMENT": { "TITLE": "Paiements" },
+	"QUOTE_CONFIRMATION_MSG_TEXT_1": "Veuillez vérifier votre commande et la confirmer ci-dessous.",
+	"QUOTE_CONFIRMATION_MSG_TEXT_2": "Le montant à recevoir est une estimation et n'inclut pas les frais de négociation",
+	"QUOTE_CONFIRMATION_EXPIRY_MSG": "Le devis expirera dans {0} {1}",
+	"QUOTE_CONFIRMATION_EXPIRED_MSG_TEXT_1": "Le prix est expiré.",
+	"QUOTE_CONFIRMATION_EXPIRED_MSG_TEXT_2": "Revenez en arrière pour obtenir un nouveau devis.",
+	"ORDER_EXPIRED_MSG": "Commande expirée. Rafraichissez, s'il vous plait!",
+	"WITHDRAWALS_FORM_METHOD": "Méthode",
+	"WITHDRAWALS_FORM_ADDRESS_EXCHANGE": "E-mail de l'utilisateur Exchange",
+	"WITHDRAWALS_FORM_EXCHANGE_PLACEHOLDER": "Saisissez l'e-mail de l'utilisateur sur cet échange",
+	"WITHDRAWALS_FORM_MAIL_INFO": "Saisissez l'adresse e-mail du compte HollaEx d'un utilisateur présent sur cet échange et transférez-le gratuitement.",
+	"RISKY_TRADE_DISCLAIMER": {
+		"MSG_1": "Veuillez vérifier que vous souhaitez effectivement trader {0} ({1}), car cet actif peut comporter un risque élevé de",
+		"MSG_2": "volatilité extrême",
+		"MSG_3": "Cochez la case ci-dessous pour confirmer que vous comprenez que la valeur de cet actif est incertaine et non garantie.",
+		"UNDERSTAND_RISK_MSG": "Oui, je comprends les risques"
+	},
+	"DUST": {
+		"TITLE": "Plumeau de portefeuille",
+		"LINK": "Plumeau de portefeuille",
+		"TOOLTIP": "Convertissez les petits soldes de portefeuille (poussière) en crypto",
+		"BACK_PLACEHOLDER": "{0} {1}",
+		"BACK_TO_WALLET": "à mon portefeuille",
+		"BACK": "Dos",
+		"ESTIMATED_TOTAL": "Valeur totale estimée de la poussière",
+		"CONVERT_ALL": "convertir",
+		"NO_DUST": "Pas de poussière !",
+		"SECTION": {
+			"TITLE": "Convertir la poussière du portefeuille",
+			"TEXT_1": "Convertissez tous les soldes de portefeuille faibles d'une valeur inférieure ou égale à {0} {1}.",
+			"TEXT_2": "Toutes les conversations seront réglées dans {0} ({1})."
+		},
+		"CONFIRMATION": {
+			"TITLE": "Convertir la poussière",
+			"SUBTITLE": "Actifs en cours de conversion",
+			"BACK": "dos",
+			"CONFIRM": "confirmer",
+			"GET": "Tu auras",
+			"FEE": "Frais de conversion",
+			"PLEASE": "Veuillez noter",
+			"NOTE": "Vous pouvez convertir la poussière en {0} une fois toutes les 24 heures. Seuls les soldes d'une valeur inférieure à {1} {2} seront convertis."
+		},
+		"SUCCESSFUL": {
+			"TITLE": "Conversion de poussière réussie !",
+			"TEXT": "Vous avez reçu",
+			"VIEW_HISTORY": "voir l'historique",
+			"CLOSE": "fermer"
+		}
+	},
+	"PROFIT_LOSS": {
+		"BACK": "Dos",
+		"BACK_TO_WALLET": "au portefeuille",
+		"WALLET_PERFORMANCE_TITLE": "Performances d'équilibre",
+		"WALLET_PERFORMANCE_DESCRIPTION": "La performance du solde de votre portefeuille au fil du temps et la répartition des actifs. Cliquez sur les dates ci-dessous pour voir les performances de votre portefeuille ce jour-là.",
+		"PL_7_DAY": "P&L sur 7 jours",
+		"EST_TOTAL_BALANCE": "Est. Total Balance",
+		"WEEK": "semaine",
+		"MONTH": "mois",
+		"MONTHS": "mois",
+		"WALLET_BALANCE": "Répartition du solde du portefeuille",
+		"WALLET_BALANCE_DESCRIPTION_1": "Vous trouverez ci-dessous une répartition du portefeuille sur",
+		"WALLET_BALANCE_DESCRIPTION_2": "Cliquez sur le graphique ci-dessus pour mettre à jour le tableau ci-dessous.",
+		"DATE_SELECT": "Sélectionner une date",
+		"ASSET_NAME": "Nom de l'actif",
+		"BALANCE_AMOUNT": "Montant du solde",
+		"VALUE": "Valeur",
+		"PERFORMANCE_TREND": "Tendance des performances sur 7 jours",
+		"CUSTOM_DATE_DESCRIPTION": "Sélectionnez des dates spécifiques pour récupérer vos données d'historique (la différence de date ne peut pas dépasser 3 mois)",
+		"SELECT_START_DATE": "Sélectionnez la date de début",
+		"SELECT_END_DATE": "Sélectionnez la date de fin",
+		"CUSTOM": "Coutume",
+		"BACK_CUSTOM": "DOS",
+		"PROOCED_CUSTOM": "PROCÉDÉ",
+		"PL_DAYS": "Jour P&L",
+		"VIEW_MORE": "Voir plus {0}",
+		"SHOW_ASSET_BREAKDOWN": "Afficher la répartition des actifs",
+		"PL_SUMMARY": "Résumé des résultats",
+		"BALANCE_HISTORY": "Historique du solde"
+	},
+	"ASSET_INFO": "Informations sur l'actif",
+	"TAKER_FEES_APPLIED": "Des frais de preneur sont appliqués",
+	"ASSET_INFO_PAGE": "Page d'informations sur l'actif",
+	"DIGITAL_ASSETS": {
+		"DIGITAL_ASSETS_TITLE": "Actifs numériques",
+		"GO_BACK": "Retourner",
+		"ASSETS_INFO": "Vous trouverez ci-dessous les actifs disponibles sur la plateforme.",
+		"ASSETS_INFO_DETAIL": "Vous pouvez cliquer sur un actif dans la liste ci-dessous pour en savoir plus.",
+		"QUICK_TRADE": "ÉCHANGE RAPIDE",
+		"PRO_TRADE": "COMMERCE PRO",
+		"MARKETS": "MARCHÉS",
+		"WALLET": "PORTEFEUILLE",
+		"PRICE_SOURCE": "Source de prix",
+		"ORDERBOOK": "Carnet de commande",
+		"NETWORK": "Courtier de réseau OTC",
+		"BROKER": "Courtier local OTC",
+		"BROKERAGE": "NA - (Courtage)"
+	},
+	"HOLLAEX_TOKEN": {
+		"REMOVE_FAVOURITES": "Supprimer des favoris",
+		"ADD_FAVOURITES": "Ajouter aux Favoris",
+		"GO_BACK": " Retourner",
+		"BALANCE": "Équilibre:",
+		"OPEN_WALLET": "(Ouvrir le portefeuille)",
+		"ABOUT": "À propos",
+		"VIEW": "Voir plus",
+		"COMING_SOON": "À venir...",
+		"NO_DESCRIPTION": "Cet actif numérique n'a actuellement aucune description.",
+		"STAKE": "Miser",
+		"MORE": "Plus",
+		"INFO": "Info",
+		"TRADE": "COMMERCE",
+		"QUICK_TRADE": "ÉCHANGE RAPIDE {0}",
+		"PRICES": {
+			"TITLE": "Des prix",
+			"QUICK_TRADE": "Échange rapide",
+			"SUBTITLE": "Pour afficher les prix d'achat et de vente de {0}, visitez {1}",
+			"FOOTER": "Les frais de négociation des preneurs de marché sont appliqués à toutes les transactions exécutées via Quick Trade."
+		},
+		"LIST": "Vous souhaitez lister vos actifs numériques ?",
+		"WEBSITE": "Site web",
+		"EXPLORER": "Explorateur",
+		"PRO_TRADE": "VOIR {0} MARCHÉ"
+	},
+	"ACCORDIAN": {
+		"ACCORDIAN_ASSETS": "Tous les actifs du portefeuille",
+		"ACCORDIAN_INFO": "PAGE D'INFORMATION SUR L'ACTIF",
+		"ACCORDIAN_HISTORY": "HISTOIRE"
+	},
+	"ASYNC_LINK": {
+		"TITLE": "La page ne s'ouvre pas automatiquement ?",
+		"TEXT": "Votre navigateur bloque peut-être la page. Essayez plutôt de copier et coller le lien ci-dessous :"
+	},
+	"TERMS_OF_SERVICES": { "TO_GET_ACCESS": "Pour avoir accès, contactez" },
+	"FEES_AND_LIMITS": {
+		"LINK": "consulter mes frais et mes limites",
+		"COIN_PAGE_LINK": "Frais et limites de négociation",
+		"BACK": {
+			"PLACEHOLDER": "{0} {1}",
+			"BACK": "Retourner",
+			"TO": "au résumé"
+		},
+		"TITLE": "Frais et limites",
+		"SEARCH_PLACEHOLDER": "Recherche...",
+		"TABS": {
+			"TRADING_FEES": {
+				"TITLE": "Frais de négociation",
+				"TABLE": {
+					"TITLE": "Frais de négociation sur le marché",
+					"SUBTITLE": "Vous trouverez ci-dessous les règles relatives aux frais de négociation individuels des marchés.",
+					"HEADER": {
+						"MARKET": "Marché",
+						"MAKER": "Frais de trading Maker (ordres limités)",
+						"TAKER": "Frais de négociation du preneur (ordres au marché)"
+					}
+				}
+			},
+			"WITHDRAWAL_FEES": {
+				"TITLE": "Frais de retrait",
+				"TABLE": {
+					"TITLE": "Frais déduits lors du retrait",
+					"SUBTITLE": "Vous trouverez ci-dessous tous les frais lors du retrait d'un actif.",
+					"NOT_ALLOWED": "Interdit",
+					"HEADER": {
+						"CURRENCY": "Devise/actif",
+						"DEPOSIT": "Frais de dépôt",
+						"WITHDRAWAL": "Frais de retrait"
+					}
+				}
+			},
+			"WITHDRAWAL_LIMITS": {
+				"TITLE": "Limites de retrait",
+				"TABLE_1": {
+					"TITLE": "Limite de retrait indépendante",
+					"SUBTITLE": "Actifs séparés de la règle de limite collective qui suivent leur propre règle de retrait indépendante en 24h :",
+					"HEADER": {
+						"CURRENCY": "Devise/actif",
+						"LIMIT": "Limite journalière",
+						"LIMIT_2": "Limite mensuelle"
+					},
+					"LIMIT_TEXT": "(Actifs qui partagent tous un montant limite de retrait collectif)",
+					"LIMIT_TEXT_2": "(Limite basée uniquement sur sa propre devise)",
+					"VALUED": "(Estimé)",
+					"NO_INDEPENDENT": "Il n'y a pas de limite indépendante pour ce niveau",
+					"LIMIT_TEXT_3": "(Actifs partageant tous un montant de limite de retrait quotidien collectif libellé en {0})",
+					"LIMIT_TEXT_4": "(Actifs partageant tous un montant de limite de retrait mensuel collectif libellé en {0})"
+				},
+				"TABLE_2": {
+					"TITLE": "Limites indépendantes",
+					"SUBTITLE": "Actifs avec leurs propres limites de retrait journalières et mensuelles dans leur propre devise :"
+				},
+				"TABLE_3": {
+					"TITLE": "Limites collectives",
+					"SUBTITLE": "Limite de retrait combinée quotidienne et mensuelle pour un groupe de pièces"
+				}
+			}
+		}
+	},
+	"STATUS_TEXT": {
+		"INCOMPLETE": "incomplet",
+		"PENDING": "en attente",
+		"REJECTED": "rejeté",
+		"VERIFIED": "vérifié"
+	},
+	"LOGINS_HISTORY": {
+		"TAB": "Historique de connexion",
+		"CONTENT": {
+			"TITLE": "Enregistrement des tentatives de connexion",
+			"SUBTITLE": "Enregistrement historique de toutes les tentatives de connexion échouées sur votre compte et de leur origine potentielle.",
+			"DOWNLOAD_HISTORY": "DOWNLOAD_HISTORY",
+			"FILTER": {
+				"STATUS": "Statut",
+				"ALL": "Tous",
+				"FAILED": "Échoué",
+				"SUCCESS": "Succès"
+			},
+			"TABLE": {
+				"HEADER": {
+					"LAST_SEEN": {
+						"TITLE": "Vu pour la dernière fois",
+						"DESCRIPTION": "(Le plus récent d'abord)"
+					},
+					"FAILED_ATTEMPTS": "Tentatives échouées",
+					"COUNTRY": "Pays",
+					"IP_ADDRESS": "Adresse IP"
+				},
+				"CELL": {
+					"FAILED_LOGIN": "Échec de connexion : {0}x",
+					"SUCCESS": "Succès",
+					"DEVICE": "Appareil"
+				}
+			}
+		}
+	},
+	"SESSIONS": {
+		"TAB": "Séances",
+		"CONTENT": {
+			"TITLE": "Sessions actives",
+			"SUBTITLE": {
+				"TEXT": "Vous trouverez ci-dessous les sessions actives de votre compte. Pour mettre fin à une session active, cliquez sur {0} et cette session sera déconnectée.",
+				"LINK": "Révoquer"
+			},
+			"DOWNLOAD": "Télécharger",
+			"TABLE": {
+				"HEADER": {
+					"LAST_SEEN": {
+						"TITLE": "Vu pour la dernière fois",
+						"DESCRIPTION": "(Le plus récent d'abord)"
+					},
+					"SESSION_STARTED": "Séance démarrée",
+					"SESSION_EXPIRY": "Expiration de la session",
+					"STATUS": "Statut"
+				},
+				"CELL": {
+					"ACTIVE": "Actif",
+					"COUNTRY": "Pays",
+					"IP_ADDRESS": "Adresse IP",
+					"DEVICE": "Appareil",
+					"LOGIN_TIME": "Temps de connexion réussi"
+				}
+			},
+			"NOTIFICATION": "Session révoquée/déconnectée",
+			"MODAL": {
+				"TITLE": "Révoquer la session",
+				"PROMPT": "Êtes-vous sûr de vouloir révoquer et vous déconnecter de cette session ?",
+				"BACK": "DOS",
+				"CONFIRM": "CONFIRMER"
+			}
+		}
+	},
+	"CANCEL_WITHDRAWAL_ADDRESS": "Adresse de retrait"
 }

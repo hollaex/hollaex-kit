@@ -1,7 +1,6 @@
 {
 	"APP_TITLE": "HollaEx",
 	"APP_SUB_TITLE": "Açık Kaynak Kodlu Kripto Para Borsası",
-
 	"LOGOUT_CONFIRM_TEXT": "Emin misiniz? Çıkış yapmak istiyor musunuz?",
 	"ADD_TRADING_PAIR": "Piyasa seçiniz",
 	"CANCEL_BASE_WITHDRAWAL": "{0} Çekimini İptal Et",
@@ -43,7 +42,7 @@
 	"VIEW_INFO": "Bilgi sayfasını incele",
 	"APPLY_HERE": "Buradan Başvurun",
 	"CONVERT": "Dönüştür",
-	"TO": "",
+	"TO": "İle",
 	"HOME": {
 		"MAIN_TITLE": "Kripto Para Borsası",
 		"MAIN_TEXT": "Kolayca kripto varlık alım satımı yapın. Sadece e-mail adresiniz ile kayıt olun ve majör kripto para varlıklarında 7/24 işlem yapın.",
@@ -84,7 +83,12 @@
 		"TAB_SUMMARY": "Özet",
 		"TAB_HISTORY": "Geçmiş",
 		"TAB_SIGNOUT": "Çıkış",
-		"TAB_STAKE": "Stake"
+		"TAB_STAKE": "Stake",
+		"TAB_APPS": "Uygulamalar",
+		"TAB_FIAT": "Fiat kontrolleri",
+		"TAB_TRADE": "Ticaret",
+		"PRO_TRADE": "Profesyonel",
+		"QUICK_TRADE": "Hızlı"
 	},
 	"REQUEST_XHT_ACCESS": {
 		"REQUEST_TITLE": "Erişim İste",
@@ -121,14 +125,17 @@
 			"MEMO": "{0} memo'nuz"
 		},
 		"QR_CODE": "Bu QR kodu, size fon göndermek isteyen kişi tarafından okutulabilir.",
-		"NO_DATA": "Bilgi yok"
+		"NO_DATA": "Bilgi yok",
+		"QR_CODE_TITLE": "{0} Para Yatırma Bilgileri"
 	},
 	"LOGIN": {
 		"LOGIN_TO": "{0}'a giriş yapın",
 		"CANT_LOGIN": "Giriş yapamadınız mı?",
 		"NO_ACCOUNT": "Hesabınız yok mu?",
 		"CREATE_ACCOUNT": "Buradan hesap açın",
-		"HELP": "Yardım"
+		"HELP": "Yardım",
+		"LOOKING_PRICES": "Fiyatları mı arıyorsunuz?",
+		"VIEW_MARKETS": "Piyasaları görüntüle"
 	},
 	"FORM_FIELDS": {
 		"EMAIL_LABEL": "E-Posta",
@@ -176,17 +183,19 @@
 			"INFORMATION_PENDING_2": "Bu işlem 10-30 dakika arası sürebilir. {0} blokzincirde onaylandığında, size bir E-Posta göndereceğiz."
 		}
 	},
-	"REFERRAL_SUCCESS": {
-		"TITLE": "İstek gönderildi",
-		"BUTTON_TEXT": "Tamam"
-	},
+	"REFERRAL_SUCCESS": { "TITLE": "İstek gönderildi", "BUTTON_TEXT": "Tamam" },
 	"OTP_FORM": {
 		"OTP_FORM_TITLE": "Devam etmek için onay kodunuzu giriniz",
 		"OTP_LABEL": "OTP Kodu",
 		"OTP_PLACEHOLDER": "Onay kodunuzu giriniz",
 		"OTP_TITLE": "Onay kodu",
 		"OTP_BUTTON": "Gönder",
-		"ERROR_INVALID": "Hatalı OTP Kodu"
+		"ERROR_INVALID": "Hatalı OTP Kodu",
+		"OTP_FORM_INFO": "Devam etmek için 6 haneli kodunuzu girin",
+		"OTP_FORM_SUBNOTE_LINE_1": "Kodunuz aynı zamanda iki faktörlü kimlik doğrulayıcı (2FA) veya OTP kodu olarak da bilinir.",
+		"OTP_FORM_SUBNOTE_LINE_2": "Kodunuzu kaybettiyseniz lütfen destek ekibiyle iletişime geçin.",
+		"OTP_FORM_SUBNOTE_LINE_3": "(To add a new account to Google Authenticator, click the '+' button. You can either scan the provided QR code in the previous step or manually enter the key to add your account to the app.)",
+		"INPUT_TEXT": "Input the 6-digit code from your phone's Google Authenticator app:"
 	},
 	"EMAIL_CODE_FORM": {
 		"TITLE": "Güvenlik kodlarınızı giriniz",
@@ -196,7 +205,9 @@
 		"BUTTON": "gönder",
 		"ERROR_INVALID": "Girdiğiniz kod yanlıştır. Lütfen tekrar deneyin.",
 		"OTP_LABEL": "2FA Kodu (OTP)",
-		"OTP_PLACEHOLDER": "Lütfen 6 haneli 2FA kodunuzu giriniz."
+		"OTP_PLACEHOLDER": "Lütfen 6 haneli 2FA kodunuzu giriniz.",
+		"FORM_TITLE_TEXT": "İşlemi tamamlamak için gereken e-postanıza benzersiz bir kod gönderildi. Lütfen e-postanıza gönderilen kodu aşağıya girin{0}.",
+		"OTP_NOTE": " OTP kodunuzla birlikte"
 	},
 	"QUICK_TRADE_COMPONENT": {
 		"TITLE": "Hızlı İşlem",
@@ -210,7 +221,19 @@
 		"FOOTER_TEXT": "Hızlı işlem komisyon oranı, piyasa emri komisyon oranı ile aynıdır.",
 		"FOOTER_TEXT_1": "'den/'dan kaynaklanan",
 		"GO_TO_TEXT": "Git",
-		"SOURCE_TEXT": "Broker OTC işlemi"
+		"SOURCE_TEXT": "Broker OTC işlemi",
+		"CHANGE_TEXT_7D": "7D Değişimi",
+		"HIGH_7D": "7D YÜKSEK",
+		"LOW_7D": "7D DÜŞÜK",
+		"7D": "7 boyutlu",
+		"1D": "1 boyutlu",
+		"SOURCE_TEXT_NETWORK": "Ağ komisyoncusu OTC anlaşması",
+		"VISIT": "Ziyaret edin{0}",
+		"ASSET_INFO_PAGE": "Varlıklar bilgi sayfası",
+		"COIN_NAME": "{0} ({1})",
+		"COIN_INFORMATION": "{0} bilgi",
+		"PRICE_TREND": "Fiyat Eğilimi",
+		"VIEW_TREND": "Trendi Görüntüle"
 	},
 	"PREVIOUS_PAGE": "önceki sayfa",
 	"NEXT_PAGE": "sonraki sayfa",
@@ -262,7 +285,9 @@
 	},
 	"VERIFICATION_EMAIL_REQUEST": {
 		"TITLE": "E-Posta İsteğini Tekrarla",
-		"BUTTON": "E-Posta İsteği"
+		"BUTTON": "E-Posta İsteği",
+		"SUBTITLE": "Aşağıda başka bir e-posta doğrulama isteğinde bulunun",
+		"SUPPORT": "İletişim desteği"
 	},
 	"VERIFICATION_EMAIL_REQUEST_SUCCESS": {
 		"TITLE": "E-Posta'yı Tekrar Gönder",
@@ -344,10 +369,7 @@
 				"FULL_NAME_PLACEHOLDER": "Adınızı kimlikteki tam haliyle yazınız",
 				"GENDER_LABEL": "Cinsiyet",
 				"GENDER_PLACEHOLDER": "Cinsiyetinizi yazınız",
-				"GENDER_OPTIONS": {
-					"MAN": "Erkek",
-					"WOMAN": "Kadın"
-				},
+				"GENDER_OPTIONS": { "MAN": "Erkek", "WOMAN": "Kadın" },
 				"NATIONALITY_LABEL": "Uyruk",
 				"NATIONALITY_PLACEHOLDER": "Kimliğinizde gözüken uyruğunuzu yazınız",
 				"DOB_LABEL": "Doğum tarihi",
@@ -453,7 +475,14 @@
 			"LIST_ITEM_1": "Arttırılmış çekim limitleri",
 			"LIST_ITEM_2": "Arttırılmış yatırım limitleri",
 			"LIST_ITEM_3": "Daha düşük komisyonlar"
-		}
+		},
+		"TITLE_PAYMENT": "Ödeme yöntemleri ekleyin",
+		"PAYMENT_VERIFICATION": "Ödeme Doğrulaması",
+		"START_PAYMENT_VERIFICATION": "Doğrulamayı Başlat",
+		"PAYMENT_VERIFICATION_TEXT_1": "Ödeme hesabı ayrıntılarınızı aşağıya ekleyin.",
+		"PAYMENT_VERIFICATION_TEXT_2": "Doğrulandıktan sonra hesabınız çeşitli para birimleri için daha fazla para çekme ve para yatırma yöntemi kazanacaktır.",
+		"ADD_ANOTHER_PAYMENT_METHOD": "BAŞKA BİR ÖDEME YÖNTEMİ EKLEYİN",
+		"PAYMENT_VERIFICATION_HELP_TEXT": "Bu bölümün doğrulanması için {0} bölümünü tamamlamanız gerekmektedir."
 	},
 	"USER_SETTINGS": {
 		"TITLE_TEXT_1": "Hesap ayarlarınızı değiştirin. Arayüz, uyarılar, kullanıcı adı ve diğer düzenlemeleri yapabilirsiniz.",
@@ -499,6 +528,28 @@
 			"ADJUST": "(ORANI DEĞİŞTİR)",
 			"ACTIVATE_RISK_MANAGEMENT": "Aktif Risk Yönetimi",
 			"WARNING_POP_UP": "Uyarı pop up'ları"
+		},
+		"TITLE_ACCOUNT": "Hesap",
+		"DELETE_ACCOUNT": {
+			"ACCESS": {
+				"TEXT": "hesabını silmek istiyor musun? {0}'ı tıklayın.",
+				"LINK": "Burada",
+				"DANGER_ZONE": {
+					"TITLE": "Tehlikeli bölge",
+					"TEXT": "Hesabınızı silmek, hem hesabınızı hem de paranızı erişilemez hale getirecektir.",
+					"PROCEED": "İlerlemek",
+					"CANCEL": "İptal etmek"
+				}
+			},
+			"CONFIRMATION": {
+				"TITLE": "Hesabı sil",
+				"TEXT_1": "Hesabınızı silmek, tüm verilerinizi borsadan kalıcı olarak kaldıracaktır. Bu eylem geri döndürülemez.",
+				"TEXT_2": "Hesabın silinmesini onaylamak için {0} YAZIN.",
+				"KEY": "ANLADIM",
+				"DELETE": "SİLMEK",
+				"CANCEL": "İptal etmek",
+				"PLACEHOLDER": "Buraya yaz"
+			}
 		}
 	},
 	"TRANSACTION_HISTORY": {
@@ -509,7 +560,15 @@
 		"TEXT_DOWNLOAD": "İNDİRME GEÇMİŞİ",
 		"TRADES": "İşlemler",
 		"DEPOSITS": "Yatırımlar",
-		"WITHDRAWALS": "Çekimler"
+		"WITHDRAWALS": "Çekimler",
+		"ORDERID": "Sipariş Kimliği",
+		"TRIGGER_STOP_PRICE": "Tetikleme/durdurma fiyatı",
+		"TIME_OF_LAST_TRADE": "Son ticaretin zamanı",
+		"INTERNAL": "dahili",
+		"BLOCKCHAIN": "blok zinciri",
+		"STAKE": "hisse",
+		"REFERRAL": "Referans",
+		"QUICK_TRADE_TOOLTIP": "Dönüştürme sistemi aracılığıyla yürütülen sipariş"
 	},
 	"ACCOUNT_SECURITY": {
 		"TITLE_TEXT": "Hesabınızın güvenlik seviyesini arttırın. İki Faktörlü Doğrulama, Şifre, API anahtarları ve diğer güvenlik fonksiyonları.",
@@ -532,15 +591,46 @@
 				"MESSAGE_3": "Eğer kodu taramakta sorun yaşarsanız, aşağıdaki kodu cihazınıza kendiniz girebilirsiniz.",
 				"MESSAGE_4": "Telefonunuzu kaybetmeniz ya da değiştirmeniz durumunda, 2FA doğrulamanızı tekrar yaratabilmeniz için, bu kodu lütfen saklayınız.",
 				"MESSAGE_5": "Manual",
-				"WARNING": "İki-Faktörlü doğrulamayı (2FA) aktiflemenizi şiddetle öneriyoruz. Bu şekilde fonlarınızın güvenliğini önemli ölçüde arttırabilirsiniz.",
+				"WARNING": "Biz {0} {1}",
 				"ENABLE": "İki-Faktörlü Doğrulamayı Aktifle",
 				"DISABLE": "İki-Faktörlü Doğrulamayı Kapat",
-				"INPUT": "Lütfen OTP kodunuzu giriniz"
+				"INPUT": "Lütfen OTP kodunuzu giriniz",
+				"STRONGLY_RECOMMEND": "şiddetle tavsiye ederim",
+				"WARNING_CONTENT": "hesabınızın güvenliğini artırmak ve paranızı korumak için iki faktörlü kimlik doğrulamayı etkinleştirmeniz"
 			},
 			"FORM": {
 				"PLACEHOLDER": "Google Authenticator tarafından sağlanan OTP kodunuzu giriniz.",
 				"BUTTON": "2FA AKTİFLE"
-			}
+			},
+			"DOWNLOAD_APP": "Download and install",
+			"GOOGLE_AUTHENTICATOR": "Google Authenticator:",
+			"DOWNLOAD_FROM": "Download from",
+			"GOOGLE_PLAY": "GooglePlay",
+			"APPLE": "App Store",
+			"APP_INFO": "Google Authenticator will generate random codes that are necessary for sensitive actions, such as logging in and withdrawing funds.",
+			"DONT_UNINSTALL": "Lütfen uygulamayı kaldırmayın.",
+			"INFO_UNINSTALL": "Telefonunuzun kazara kaybolması veya istemeden kaldırılması durumunda, hesabınıza yeniden erişim sağlamada gecikmeler yaşayabilirsiniz. Bu gibi durumlarda yardım için destek ekibimizle iletişime geçmeniz gerekecektir.",
+			"BACK": "GERİ",
+			"PROCEED": "İLERLEMEK",
+			"NEXT": "Sonraki",
+			"NOTE": "Not: {0} {1}",
+			"MANUEL_DESCRIPTION": "Lütfen önceki adımdaki manuel 2FA tohumunu girin.",
+			"MANUEL_DESCRIPTION_2": "Lütfen yukarıdaki manuel doğrulamayı dikkatlice yazıp saklayın.",
+			"MANUEL_DESCRIPTION_3": "Hesap kurtarma için kullanılabilecek anahtar.",
+			"MANUEL_KEY": "Manuel 2FA tohumu",
+			"MANUEL_PLACEHOLDER": "2FA tohumunuzu girin",
+			"MANUEL_WARNING": "(Bunu bir yere yazdığınızdan ve ileride kullanmak üzere güvenli bir şekilde sakladığınızdan emin olun.)",
+			"MANUEL_ERROR_1": "Lütfen 2FA tohum kılavuzunu girin",
+			"MANUEL_ERROR_2": "Lütfen önceki adımdaki manuel 2FA tohumunu girin",
+			"ACCOUNT_SECURED": "Hesap Güvence Altında",
+			"2FA_ENABLED": "2FA ETKİN",
+			"2FA_DISABLED": "2FA DEVRE DIŞI",
+			"2FA_CONTENT_ONE": "{0} {1} etkinleştiriliyor.",
+			"2FA_CONTENT_TWO": "(İki Faktörlü Kimlik Doğrulama), paranızı korumak için ekstra bir koruma katmanı ekler. Etkinleştirildiğinde, her giriş yaptığınızda veya varlıkları çektiğinizde telefonunuzdan bir doğrulama kodu girmeniz istenecektir. Bu özellik hesabınızın güvenliğini önemli ölçüde artırır",
+			"2FA_CONTENT_THREE": "(İki Faktörlü Kimlik Doğrulama), paranızı korumak için ekstra bir koruma katmanı ekler",
+			"2FA_CONTENT_FOUR": "2FA'yı devre dışı bırakmak için 2FA (OTP) kodunuzu girmeniz gerekecektir.",
+			"INPUT_SIX_DIGIT_CODE": "Telefonunuzun Google Authenticator uygulamasından 6 haneli kodu girin:",
+			"INPUT_CONTENT": "(Google Authenticator'a yeni bir hesap eklemek için '+' düğmesini tıklayın. Önceki adımda verilen QR kodunu tarayabilir veya hesabınızı uygulamaya eklemek için anahtarı manuel olarak girebilirsiniz.)"
 		},
 		"CHANGE_PASSWORD": {
 			"TITLE": "Şifre",
@@ -568,9 +658,7 @@
 			"TITLE": "Giriş Geçmişi",
 			"IP_ADDRESS": "IP Adresi",
 			"TIME": "Tarih/Zaman",
-			"CONTENT": {
-				"TITLE": "Giriş Geçmişi"
-			}
+			"CONTENT": { "TITLE": "Giriş Geçmişi" }
 		},
 		"FREEZE": {
 			"TITLE": "Hesabı Dondur",
@@ -676,15 +764,14 @@
 				"CARD": "En yüksek Ödüller / En yüksek Bonuslar",
 				"TEXT": "Kazançlarınıza en yüksek bonus ve ödüller"
 			},
-			"3": {
-				"CARD": "",
-				"TEXT": ""
-			},
-			"4": {
-				"CARD": "",
-				"TEXT": ""
-			}
-		}
+			"3": { "CARD": "", "TEXT": "" },
+			"4": { "CARD": "", "TEXT": "" }
+		},
+		"INSTALL_METAMASK_DETAILS": {
+			"TITLE": "MetaMask'ı yükleyin",
+			"PROMPT": "Tarayıcınıza Metamask'ı yüklemelisiniz: {0}"
+		},
+		"INSTALL_METAMASK_TITLE": "MetaMask algılanmadı"
 	},
 	"UNSTAKE": {
 		"TITLE": "Stake İptal",
@@ -816,7 +903,9 @@
 		"REQUIRES_24H_TO_SETTLE_NOTICE": "Uzlaşma için 24 saat gerekmektedir.",
 		"SUCCESSFUL_UNSTAKE_NOTICE": "Başarıyla unstake yaptınız",
 		"VISIT_WALLET_BUTTON": "CÜZDANI GÖRÜNTÜLE",
-		"CLOSE_BUTTON": "KAPAT"
+		"CLOSE_BUTTON": "KAPAT",
+		"ACTIVE_STAKES": "Aktif Bahisler",
+		"STAKES_HISTORY": "Tarih"
 	},
 	"MOVE_XHT": {
 		"TITLE": "XHT Aktarımı",
@@ -834,31 +923,13 @@
 	},
 	"CURRENCY": "Para Birimi",
 	"TYPE": "Tür",
-	"TYPES_VALUES": {
-		"market": "piyasa",
-		"limit": "limit"
-	},
-	"TYPES": {
-		"MARKET": "piyasa",
-		"LIMIT": "limit"
-	},
+	"TYPES_VALUES": { "market": "piyasa", "limit": "limit" },
+	"TYPES": { "MARKET": "piyasa", "LIMIT": "limit" },
 	"SIDE": "Kenar",
-	"SIDES_VALUES": {
-		"buy": "al",
-		"sell": "sat"
-	},
-	"SIDES_VERBS": {
-		"buy": "alındı",
-		"sell": "satıldı"
-	},
-	"SIDES": {
-		"BUY": "al",
-		"SELL": "sat"
-	},
-	"DEFAULT_TOGGLE_OPTIONS": {
-		"ON": "açık",
-		"OFF": "kapalı"
-	},
+	"SIDES_VALUES": { "buy": "al", "sell": "sat" },
+	"SIDES_VERBS": { "buy": "alındı", "sell": "satıldı" },
+	"SIDES": { "BUY": "al", "SELL": "sat" },
+	"DEFAULT_TOGGLE_OPTIONS": { "ON": "açık", "OFF": "kapalı" },
 	"SIZE": "Miktar",
 	"PRICE": "Fiyat",
 	"FEE": "Komisyon",
@@ -956,13 +1027,15 @@
 		"WITHDRAWAL_CONFIRM_ADDRESS": "Adres",
 		"WITHDRAWAL_CONFIRM_NETWORK": "Ağ",
 		"WITHDRAWAL_CANCEL_BUTTON": "KAPAT",
-		"WITHDRAWAL_CONFIRM_BUTTON": "ÇEKMEYİ ONAYLA"
+		"WITHDRAWAL_CONFIRM_BUTTON": "ÇEKMEYİ ONAYLA",
+		"WITHDRAWALS_FORM_ERROR_TITLE": "Yanlış aktarım bilgisi",
+		"WITHDRAWALS_FORM_ERROR": "Para transferiniz başarısız oldu. Bir e-postaya para göndermek, kullanıcının bu borsada bir hesabının olmasını gerektirir. E-postanın doğru olup olmadığını kontrol edin ve lütfen tekrar deneyin."
 	},
 	"WALLET_BUTTON_BASE_DEPOSIT": "yatırım",
 	"WALLET_BUTTON_BASE_WITHDRAW": "çekim",
 	"WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT": "alım",
 	"WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW": "gönderim",
-	"AVAILABLE_BALANCE_TEXT": "Serbest {0} Bakiyesi: {1} {2}",
+	"AVAILABLE_BALANCE_TEXT": "Mevcut {0} Bakiye: {1} {2} {3}",
 	"BALANCE_TEXT": "Bakiye",
 	"CURRENCY_BALANCE_TEXT": "{0} Bakiyesi",
 	"WALLET_ALL_ASSETS": "Tüm Varlıklar",
@@ -1095,7 +1168,8 @@
 		"SHOW_IMAGE": "Resmi Göster",
 		"HIDE_IMAGE": "Resmi Gizle",
 		"CHAT_MESSAGE_BOX_PLACEHOLDER": "Mesaj",
-		"TROLLBOX": "Trol Kutusu ({0})"
+		"TROLLBOX": "Trol Kutusu ({0})",
+		"SET_USERNAME": "SOHBET İÇİN KULLANICI ADINI AYARLAYIN"
 	},
 	"INVALID_USERNAME": "Kullanıcı adı 3-15 karakter arasında olmalıdır. Sadece küçük harfler, rakamlar veya altçizgi(ler) içerebilir.",
 	"USERNAME_TAKEN": "Bu kullanıcı adı zaten alınmış. Lütfen yeni bir kullanıcı adı deneyin.",
@@ -1194,19 +1268,31 @@
 		"MARKETS": "Piyasalar",
 		"CHANGE_24H": "24S Değişim",
 		"VOLUME_24H": "24S Hacim",
-		"VIEW_MORE_MARKETS": "Daha fazla piyasayı inceleyin"
+		"VIEW_MORE_MARKETS": "Daha fazla piyasayı inceleyin",
+		"DEPOSIT_AND_WITHDRAWAL_FEES": "Para yatırma ve çekme ücretleri",
+		"DEPOSITS": "Mevduat",
+		"WITHDRAWALS": "Para Çekme",
+		"VOLUME_7D": "7D Hacmi",
+		"VIEW_VERIFICATION": "doğrulamayı görüntüle",
+		"EARN_COMMISSION": "Komisyon kazanın",
+		"ID_VERIFICATION": "Kimlik doğrulama:"
 	},
 	"REFERRAL_LINK": {
 		"TITLE": "Arkadaşınızı davet edin",
 		"INFO_TEXT": "Bu linki vererek arkadaşlarınızı davet edin ve komisyon kazanın.",
 		"COPY_FIELD_LABEL": "Aşağıdaki linki arkadaşlarınızla paylaşın ve komisyon kazanın:",
 		"REFERRED_USER_COUT": "{0} adet kullanıcı yönlendirdiniz.",
-		"COPY_LINK_BUTTON": "YÖNLENDİRME LİNKİNİ KOPYALA"
+		"COPY_LINK_BUTTON": "YÖNLENDİRME LİNKİNİ KOPYALA",
+		"VIEW": "görüş",
+		"TABLE_TITLE": "Tüm başarılı yönlendirmeler",
+		"USER": "Kullanıcı e-postası",
+		"TIME": "Kayıt zamanı"
 	},
 	"NOT_LOGGEDIN": {
 		"TXT_1": "İşlem yapmak için giriş yapmanız gerekmektedir",
 		"TXT_2": "{0} ve {1}",
-		"LOGIN_HERE": "Giriş yapın"
+		"LOGIN_HERE": "Giriş yapın",
+		"TEXT_GENERAL": "Görüntülemek için giriş yapmalısınız"
 	},
 	"WAVES": {
 		"TITLE": "Dalga Bilgisi",
@@ -1225,9 +1311,7 @@
 	"EXPIRED_INFO_1": "Deneme süreciniz tamamlandı.",
 	"EXPIRED_INFO_2": "Borsanızı aktiflemek için teminat yatırın.",
 	"EXPIRED_BUTTON_TXT": "BORSAYI AKTİFLE",
-	"TRADE_POSTS": {
-		"LEARN_MORE": "Daha fazla öğren"
-	},
+	"TRADE_POSTS": { "LEARN_MORE": "Daha fazla öğren" },
 	"OPEN_WALLET": "Cüzdanı aç",
 	"CUMULATIVE_AMOUNT_SYMBOL": "Toplam",
 	"POST_ONLY": "Yalnızca yayınla",
@@ -1249,7 +1333,11 @@
 		"TRANSACTION_ID": "İşlem ID (hash)",
 		"SEARCH_SUCCESS": "Arama tamamlandı",
 		"ADDRESS_FIELD_LABEL": "Adresinizi yapıştırın",
-		"CURRENCY_FIELD_LABEL": "Para birimini seçin"
+		"CURRENCY_FIELD_LABEL": "Para birimini seçin",
+		"DESTINATION_TAG_LABEL": "Etiket (isteğe bağlı)",
+		"MEMO_LABEL": "Not (isteğe bağlı)",
+		"DESTINATION_TAG_PLACEHOLDER": "Etiketinizi yapıştırın",
+		"MEMO_PLACEHOLDER": "Notunuzu yapıştırın"
 	},
 	"CANCEL_ORDERS": {
 		"HEADING": "Emirleri iptal et",
@@ -1270,7 +1358,14 @@
 		"CHANGE_24H": "Değişim (24 saat)",
 		"VOLUME_24h": "Hacim (24 saat)",
 		"CHART_24H": "Grafik (24 saat)",
-		"VIEW_MARKETS": "Piyasaları İncele"
+		"VIEW_MARKETS": "Piyasaları İncele",
+		"CHANGE_7D": "Değişim (7 gün)",
+		"CHANGE_1D": "Değişim (1 gün)",
+		"CHART_7D": "Grafik (7 gün)",
+		"TRADING_SYMBOL": "Ticaret Sembolü",
+		"ASSET": "Varlık",
+		"TYPE": "Tip",
+		"SOURCE": "KAYNAK"
 	},
 	"PAGE_UNDER_CONSTRUCTION": "Bu sayfa yapım aşamasındadır. Lütfen bu sayfayı daha sonra tekrar kontrol ediniz.",
 	"UNDEFINED_ERROR_TITLE": "Tanımlanmamış Hataya sebep oldunuz.",
@@ -1280,10 +1375,7 @@
 	"FEE_REDUCTION": "Komisyon indirimi",
 	"FEE_REDUCTION_DESCRIPTION": "*Hesabınızda komisyon indirimi tanımlanmıştır. Bu indirim, hesabınızdaki işlemlerden kesilecek komisyonlara uygulanacaktır.",
 	"CHANGE_PASSWORD_FAILED": "şifre değişimi başarısız",
-	"MARKET_OPTIONS": {
-		"LIST": "Liste",
-		"CARD": "Kart"
-	},
+	"MARKET_OPTIONS": { "LIST": "Liste", "CARD": "Kart" },
 	"ALL": "Tümü",
 	"ASSET_TXT": "Varlık",
 	"ONE_DAY": "1 gün",
@@ -1315,5 +1407,424 @@
 		"SUBTITLE": "Mobil cihaz üzerinden DEFI STAKING şu anda desteklenmemektedir.",
 		"TEXT": "Cüzdanınızı bağlamak için, lütfen masaüstü/dizüstü bilgisayar kullanınız."
 	},
-	"ORDER_HISTORY_CLOSED": "Kapandı"
+	"ORDER_HISTORY_CLOSED": "Kapandı",
+	"TRADE_TOOLS": "Aletler",
+	"NO_ACTIVE_ORDERS": "Hiçbir sipariş algılanmadı. Siparişlerinizi Pro veya Hızlı ticaret sayfasına yerleştirin",
+	"NO_ACTIVE_TRADES": "Henüz herhangi bir işlem yok gibi görünüyor",
+	"NO_ACTIVE_DEPOSITS": "Henüz herhangi bir para yatırma işlemi yok gibi görünüyor.",
+	"NO_ACTIVE_WITHDRAWALS": "Henüz para çekme işlemi yapılmamış gibi görünüyor",
+	"SECOND": "ikinci",
+	"CANT_FIND_MARKETS": "Bu varlıktan herhangi bir pazar bulunamıyor.",
+	"TRY_VISITING_ASSETS": "{0}'ı ziyaret etmeyi deneyin.",
+	"ASSETS_PAGE": "Varlıklar sayfası",
+	"SWAP": "Anahtar",
+	"NA": "Yok",
+	"QR_CODE": {
+		"SCAN": "Tara",
+		"SHOW": "QR'yi göster",
+		"NO_RESULT": "Sonuç yok",
+		"NOT_FOUND": "Bulunamadı",
+		"PERMISSION_DENIED": "İzin reddedildi"
+	},
+	"USER_APPS": {
+		"TITLE": "Değişim uygulamalarınız",
+		"SUBTITLE": "Döviz hesabı uygulama bilgileriniz ve ekstra işlevler aşağıdadır.",
+		"ALL_APPS": {
+			"TAB_TITLE": "Tüm uygulamalar",
+			"TITLE": "Uygulamaları değiştir",
+			"SUBTITLE": "Aşağıdan bir uygulamayı seçip Ekle düğmesine tıklayarak borsa hesabınızdan daha fazla işlevsellik elde edin.",
+			"SEARCH_PLACEHOLDER": "Uygulamaları ara...",
+			"ADD": {
+				"SUCCESSFUL": "Başarıyla yeni bir uygulama eklediniz!",
+				"FAILED": "Bir şeyler yanlış gitti"
+			}
+		},
+		"MY_APPS": {
+			"TAB_TITLE": "Benim uygulamalarım",
+			"TITLE": "Değişim uygulamalarım",
+			"SUBTITLE": "Aktif değişim başvurularınız aşağıdadır. Her uygulamanın bilgilerini, işlevlerini genişletmek ve eklemek/kaldırmak için tıklayabilirsiniz. Uygulamalar, değişim deneyiminize daha fazla işlevsellik sağlamak için tasarlanmıştır."
+		},
+		"TABLE": {
+			"APP_NAME": "Uygulama ismi",
+			"DESCRIPTION": "Tanım",
+			"ACTION": "Aksiyon",
+			"CONFIGURE": "Yapılandır",
+			"VIEW_APP": "Uygulamayı görüntüle",
+			"ADD": "Eklemek",
+			"NOT_FOUND": "Bu uygulamayı bulamıyorum...",
+			"RETRY": "Başka bir arama terimi deneyin"
+		},
+		"APP_DETAILS": {
+			"BACK_PLACEHOLDER": "{0} {1}",
+			"BACK_TO_APPS": "uygulamalarıma",
+			"BACK": "Geri"
+		},
+		"CONFIGURE": {
+			"TITLE": "Uygulamayı yapılandır",
+			"SUBTITLE": "Uygulamanızı aşağıda yapılandırın:",
+			"REMOVE": "Uygulamayı kaldır",
+			"TEXT": "Uygulamanızla ilgili sorun yaşıyorsanız lütfen aşağıdaki yardıma tıklayarak bizimle iletişime geçin.",
+			"BACK": "GERİ",
+			"HELP": "YARDIM"
+		},
+		"REMOVE": {
+			"TITLE": "Uygulamayı kaldır",
+			"SUBTITLE": "Bu, uygulamayı 'Uygulamalarım' listenizden kaldıracaktır.",
+			"TEXT": "Bu uygulamayı kaldırmak istediğinizden emin misiniz?",
+			"BACK": "GERİ",
+			"CONFIRM": "ONAYLAMAK"
+		}
+	},
+	"AVERAGE": "Ortalama",
+	"NETWORK": "Ağ",
+	"CATEGORY": "Kategori",
+	"ASSETS": "Varlıklar",
+	"CURRENCY_WALLET": {
+		"BACK": "Geri",
+		"WALLET_PAGE": "{0} cüzdan sayfasına",
+		"LEARN_MORE": "Daha fazla bilgi edinin {0}",
+		"ABOUT": "hakkında",
+		"TOTAL_BALANCE": "Toplam Bakiye : {0} {1}",
+		"AVAILABLE_BALANCE": "Mevcut Bakiye : {0} {1} {2}",
+		"PERCENTAGE_SHARE": "Yüzde Payı {0}",
+		"EARN_BY": "{0} {1} tarihine kadar kazanın",
+		"STAKING": "esnetme",
+		"TOOLTIP": "Bakiyenin bekleme durumunda olmaması veya işlemlerde kilitli olmaması (açık emirler)",
+		"WALLET_HAS_BALANCE_PERCENTAGE": "Cüzdanınız şu anda hiç {0} tutmuyor.",
+		"WALLET_DEPOSIT": "{0} yatırmayı veya {1} satın almayı deneyebilirsiniz"
+	},
+	"DEPOSIT_FORM_MIN_WARNING": "Yalnızca {0} {1} veya daha fazla miktardaki para yatırma işlemleri kabul edilecektir. Bu minimum eşiğin altındaki herhangi bir para yatırma işlemi, kalıcı fon kaybına yol açacaktır.",
+	"24H_MAX": "24 Saat Yüksek:",
+	"24H_MIN": "24 Saat Düşük",
+	"24H_VAL": "24 Saat Cilt",
+	"QUICK_TRADE_QUOTE_EXPIRED_FIRST_LINE": "Fiyat teklifinin süresi dolmuştur.",
+	"QUICK_TRADE_QUOTE_EXPIRED_SECOND_LINE": "Yeni bir fiyat almak için yeniden fiyat teklifi ver'i tıklayın.",
+	"QUICK_TRADE_QUOTE_EXPIRED_BUTTON": "TEKLİF VER",
+	"ABOUT_LINK": "{0} hakkında",
+	"ZERO_ASSET_2": "saptanmış. Yapmak",
+	"ZERO_ASSET_3": "aşağıda para yatırın.",
+	"SUMMARY_MARKETS": {
+		"HOLLAEX": "Dijital varlıklarınızı listelemek mi istiyorsunuz? HollaEx'inizle kendi pazarınızı kurun {0} {1}",
+		"WHITE_LABEL": "Beyaz etiket",
+		"SOLUTION": "çözüm",
+		"VISIT_COIN_INFO_PAGE": "Madeni para bilgileri sayfasını ziyaret edin {0}",
+		"HERE": "Burada"
+	},
+	"RESET_LAYOUT": "Düzeni Sıfırla",
+	"FIAT": {
+		"UNVERIFIED": {
+			"TITLE": "Doğrulamayı tamamla",
+			"TEXT": "{0} oluşturmak için banka bilgilerinizin doğrulanmasını da içeren doğrulama işlemini tamamlamanız gerekmektedir. Lütfen aşağıdaki devam butonuna tıklayın.",
+			"DEPOSIT": "Depozito",
+			"WITHDRAWAL": "para çekme"
+		},
+		"REVIEW_DEPOSIT": {
+			"TITLE": "Para yatırma ayrıntılarını kontrol edin ve onaylayın",
+			"SUBTITLE": "Her şeyin doğru olduğundan emin olmak için lütfen aşağıdaki para yatırma ayrıntılarını kontrol edin.",
+			"FORMAT": "{0} {1}",
+			"AMOUNT": "Yatırılacak tutar",
+			"FEE": "Depozito ücreti",
+			"TRANSACTION_ID": "İşlem Kimliği",
+			"NOTE": "Gecikmeleri önlemek için yatırdığınız tutarın, notun ve işlem kimliğinin yukarıdaki ayrıntılarla eşleştiğinden emin olun. Sorun ortaya çıkarsa lütfen destekle iletişime geçin.",
+			"BACK": "Geri",
+			"PROCEED": "İlerlemek"
+		}
+	},
+	"DEPOSIT_FEE_NOTE": "Hesabınıza yatırılan toplam tutarın, yatırma ücreti hariç tutardan çıkacağını unutmayın.",
+	"AMOUNT_LABEL": "Yatırılan tutarı girin (gerçek tutarla aynı olmalıdır)",
+	"TRANSACTION_ID_LABEL": "Yatırılan işlemin işlem kimliğini girin",
+	"FEE_LABEL": "Depozito Ücreti",
+	"AMOUNT_FORMAT": "{0} {1}",
+	"PENDING_DEPOSIT_TITLE": "Mevduat beklemede",
+	"PENDING_DEPOSIT_TEXT_1": "Para yatırma işleminiz şu anda doğrulama için sırada ve temizlenene kadar bekleme durumunda kalacak.",
+	"PENDING_DEPOSIT_TEXT_2": "Yatırılan tutar genellikle 24 saat içinde temizlenir ancak 48 saate kadar da sürebilir; yatırdığınız tutar düşüldükten sonra bakiyenize yansıtılacaktır.",
+	"DEPOSIT_HOME_NOTE": "Para yatırmak için lütfen kendi banka hesabınızdan yatıracağınız tutarı giriniz. Gecikmeleri önlemek için aşağıya girdiğiniz tutarın, banka hesabınızdan göndereceğiniz veya gönderdiğiniz gerçek tutarla eşleştiğinden emin olun.",
+	"DEPOSIT_TXID_NOTE": "Para yatırma işleminizde gecikme yaşanmaması için lütfen banka havalenizi yaparken yukarıda görüntülenen benzersiz notunuzu işleminizin notu veya mesajına girdiğinizden emin olun. Aşağıdaki tutarın, bankanızdan yatırdığınız tutarla eşleştiğinden ve işlem yapıldıktan sonra bankanız tarafından sağlanan işlem kimliğini eklediğinizden emin olun.",
+	"DEPOSIT_BANK_TEXT": "Para yatırma işleminizi gerçekleştirmek için aşağıdaki banka bilgilerini kullanın.",
+	"MIN_DEPOSIT": "Minimum depozito",
+	"MAX_DEPOSIT": "Maksimum para yatırma",
+	"BACK": "Geri",
+	"DONE": "Tamamlamak",
+	"PENDING_WITHDRAWAL_TITLE": "Para çekme işlemi bekleniyor",
+	"PENDING_WITHDRAWAL_TEXT_1": "Para çekme işleminiz şu anda doğrulama için sırada ve onaylanana kadar bekleme durumunda kalacak.",
+	"DEPOSIT_AMOUNT_MIN_VALIDATION": "İşlem gönderilemeyecek kadar küçük. Daha büyük bir miktar deneyin.",
+	"DEPOSIT_AMOUNT_MAX_VALIDATION": "İşlem gönderilemeyecek kadar büyük. Daha küçük bir miktar deneyin.",
+	"ACCOUNT_NAME": "hesap adı",
+	"ACCOUNT_NUMBER": "hesap numarası",
+	"BANK_NAME": "banka adı",
+	"VERIFY_BANK_WITHDRAW": "Para çekme işlemi yapabilmek için banka bilgilerinizin doğrulanmasını da içeren doğrulama işlemini tamamlamanız gerekmektedir. Lütfen aşağıdaki devam butonuna tıklayın.",
+	"VERIFICATION_TITLE": "Doğrulamayı tamamla",
+	"WITHDRAW_NOTE": "Lütfen dikkat: Yalnızca adınıza ait bir hesaba para çekebilirsiniz.",
+	"USER_PAYMENT": { "TITLE": "Ödemeler" },
+	"QUOTE_CONFIRMATION_MSG_TEXT_1": "Lütfen siparişinizi kontrol edin ve aşağıdan onaylayın.",
+	"QUOTE_CONFIRMATION_MSG_TEXT_2": "Alınacak tutar tahminidir ve işlem ücretini içermemektedir",
+	"QUOTE_CONFIRMATION_EXPIRY_MSG": "Fiyat teklifinin süresi {0} {1} içinde dolacak",
+	"QUOTE_CONFIRMATION_EXPIRED_MSG_TEXT_1": "Fiyatın süresi doldu.",
+	"QUOTE_CONFIRMATION_EXPIRED_MSG_TEXT_2": "Yeni bir fiyat teklifi almak için geri dönün.",
+	"ORDER_EXPIRED_MSG": "Siparişin süresi doldu. Lütfen yenileyin!",
+	"WITHDRAWALS_FORM_METHOD": "Yöntem",
+	"WITHDRAWALS_FORM_ADDRESS_EXCHANGE": "Kullanıcı e-postasını değiştir",
+	"WITHDRAWALS_FORM_EXCHANGE_PLACEHOLDER": "Bu exchange'deki kullanıcının e-posta adresini girin",
+	"WITHDRAWALS_FORM_MAIL_INFO": "Bir kullanıcının bu borsadaki HollaEx hesabı e-postasını girin ve ücretsiz olarak aktarın.",
+	"RISKY_TRADE_DISCLAIMER": {
+		"MSG_1": "Bu varlık yüksek bir risk taşıyabileceğinden lütfen {0} ({1}) ile işlem yapmak isteyip istemediğinizi kontrol edin.",
+		"MSG_2": "aşırı oynaklık",
+		"MSG_3": "Bu varlığın değerinin belirsiz olduğunu ve garanti edilmediğini anladığınızı onaylamak için aşağıdaki kutuyu işaretleyin.",
+		"UNDERSTAND_RISK_MSG": "Evet, riskleri anlıyorum"
+	},
+	"DUST": {
+		"TITLE": "Cüzdan silgi",
+		"LINK": "Cüzdan silgi",
+		"TOOLTIP": "Küçük cüzdan bakiyelerini (toz) kriptoya dönüştürün",
+		"BACK_PLACEHOLDER": "{0} {1}",
+		"BACK_TO_WALLET": "cüzdanıma",
+		"BACK": "Geri",
+		"ESTIMATED_TOTAL": "Tahmini toplam toz değeri",
+		"CONVERT_ALL": "dönüştürmek",
+		"NO_DUST": "Toz varlığı yok!",
+		"SECTION": {
+			"TITLE": "Cüzdan tozunu dönüştürün",
+			"TEXT_1": "{0} {1} veya daha düşük değere sahip tüm düşük cüzdan bakiyelerini dönüştürün.",
+			"TEXT_2": "Tüm görüşmeler {0} ({1}) içinde çözümlenecek."
+		},
+		"CONFIRMATION": {
+			"TITLE": "Tozu Dönüştür",
+			"SUBTITLE": "Dönüştürülen varlıklar",
+			"BACK": "geri",
+			"CONFIRM": "onaylamak",
+			"GET": "Alacaksın",
+			"FEE": "Dönüşüm ücreti",
+			"PLEASE": "lütfen aklınızda bulundurun",
+			"NOTE": "Tozu 24 saatte bir {0}'a dönüştürebilirsiniz. Yalnızca {1} {2}'nin altında değere sahip bakiyeler dönüştürülecektir."
+		},
+		"SUCCESSFUL": {
+			"TITLE": "Toz dönüşümü başarılı!",
+			"TEXT": "Aldığınız",
+			"VIEW_HISTORY": "geçmişi görüntüle",
+			"CLOSE": "kapalı"
+		}
+	},
+	"PROFIT_LOSS": {
+		"BACK": "Geri",
+		"BACK_TO_WALLET": "cüzdana",
+		"WALLET_PERFORMANCE_TITLE": "Denge performansı",
+		"WALLET_PERFORMANCE_DESCRIPTION": "Cüzdanınızın zaman içindeki bakiye performansı ve varlık dökümü. Cüzdanınızın o günkü performansını görmek için aşağıdaki tarihlere tıklayın.",
+		"PL_7_DAY": "7 Günlük Kâr-Zarar",
+		"EST_TOTAL_BALANCE": "Doğu. Toplam Bakiye",
+		"WEEK": "hafta",
+		"MONTH": "ay",
+		"MONTHS": "aylar",
+		"WALLET_BALANCE": "Cüzdan bakiyesi dökümü",
+		"WALLET_BALANCE_DESCRIPTION_1": "Aşağıda bir cüzdan dökümü bulunmaktadır",
+		"WALLET_BALANCE_DESCRIPTION_2": "Aşağıdaki tabloyu güncellemek için yukarıdaki grafiğe tıklayın.",
+		"DATE_SELECT": "Tarih seç",
+		"ASSET_NAME": "Öğe adı",
+		"BALANCE_AMOUNT": "Bakiye tutarı",
+		"VALUE": "Değer",
+		"PERFORMANCE_TREND": "7 Günlük Performans Trendi",
+		"CUSTOM_DATE_DESCRIPTION": "Geçmiş verilerinizi almak için belirli tarihleri seçin (tarih farkı 3 ayı geçemez)",
+		"SELECT_START_DATE": "Başlangıç tarihini seçin",
+		"SELECT_END_DATE": "Bitiş tarihini seçin",
+		"CUSTOM": "Gelenek",
+		"BACK_CUSTOM": "GERİ",
+		"PROOCED_CUSTOM": "PROOCELENMİŞ",
+		"PL_DAYS": "Gün Kâr-Zararı",
+		"VIEW_MORE": "Daha Fazlasını Görüntüle {0}",
+		"SHOW_ASSET_BREAKDOWN": "Varlık Dökümünü Göster",
+		"PL_SUMMARY": "Kâr ve Zarar Özeti",
+		"BALANCE_HISTORY": "Bakiye Geçmişi"
+	},
+	"ASSET_INFO": "Varlık bilgisi",
+	"TAKER_FEES_APPLIED": "Alıcı ücretleri uygulanır",
+	"ASSET_INFO_PAGE": "Varlık bilgisi sayfası",
+	"DIGITAL_ASSETS": {
+		"DIGITAL_ASSETS_TITLE": "Dijital varlıklar",
+		"GO_BACK": "Geri gitmek",
+		"ASSETS_INFO": "Aşağıda platformdaki mevcut varlıklar bulunmaktadır.",
+		"ASSETS_INFO_DETAIL": "Daha fazla bilgi edinmek için aşağıdaki listedeki bir varlığa tıklayabilirsiniz.",
+		"QUICK_TRADE": "HIZLI TİCARET",
+		"PRO_TRADE": "PRO TİCARET",
+		"MARKETS": "PAZARLAR",
+		"WALLET": "CÜZDAN",
+		"PRICE_SOURCE": "Fiyat kaynağı",
+		"ORDERBOOK": "Sipariş defteri",
+		"NETWORK": "Ağ Brokerı OTC",
+		"BROKER": "Yerel Broker OTC",
+		"BROKERAGE": "NA - (Komisyonculuk)"
+	},
+	"HOLLAEX_TOKEN": {
+		"REMOVE_FAVOURITES": "Favorilerinden kaldır",
+		"ADD_FAVOURITES": "Favorilere ekle",
+		"GO_BACK": " Geri gitmek",
+		"BALANCE": "Denge:",
+		"OPEN_WALLET": "(Cüzdanı aç)",
+		"ABOUT": "Hakkında",
+		"VIEW": "Daha fazla göster",
+		"COMING_SOON": "Yakında gelecek...",
+		"NO_DESCRIPTION": "Bu dijital varlığın şu anda bir açıklaması yok.",
+		"STAKE": "Bahis",
+		"MORE": "Daha",
+		"INFO": "bilgi",
+		"TRADE": "TİCARET",
+		"QUICK_TRADE": "HIZLI TİCARET {0}",
+		"PRICES": {
+			"TITLE": "Fiyat:% s",
+			"QUICK_TRADE": "Hızlı Ticaret",
+			"SUBTITLE": "{0} alış ve satış fiyatlarını görüntülemek için {1} adresini ziyaret edin",
+			"FOOTER": "Hızlı Ticaret aracılığıyla gerçekleştirilen tüm işlemlere piyasa alıcı işlem ücretleri uygulanır."
+		},
+		"LIST": "Dijital varlıklarınızı listelemek mi istiyorsunuz?",
+		"WEBSITE": "İnternet sitesi",
+		"EXPLORER": "Kaşif",
+		"PRO_TRADE": "{0} PAZARINI GÖRÜNTÜLE"
+	},
+	"ACCORDIAN": {
+		"ACCORDIAN_ASSETS": "Tüm cüzdan varlıkları",
+		"ACCORDIAN_INFO": "VARLIK BİLGİSİ SAYFASI",
+		"ACCORDIAN_HISTORY": "TARİH"
+	},
+	"ASYNC_LINK": {
+		"TITLE": "Sayfa otomatik olarak açılmıyor mu?",
+		"TEXT": "Tarayıcınız sayfayı engelliyor olabilir. Bunun yerine aşağıdaki bağlantıyı kopyalayıp yapıştırmayı deneyin:"
+	},
+	"TERMS_OF_SERVICES": {
+		"TO_GET_ACCESS": "Erişim elde etmek için iletişime geçin"
+	},
+	"FEES_AND_LIMITS": {
+		"LINK": "ücretlerimi ve limitlerimi görüntüle",
+		"COIN_PAGE_LINK": "İşlem ücretleri ve limitler",
+		"BACK": {
+			"PLACEHOLDER": "{0} {1}",
+			"BACK": "Geri gitmek",
+			"TO": "özetlemek"
+		},
+		"TITLE": "Ücretler ve limitler",
+		"SEARCH_PLACEHOLDER": "Aramak...",
+		"TABS": {
+			"TRADING_FEES": {
+				"TITLE": "Ticaret ücretleri",
+				"TABLE": {
+					"TITLE": "Piyasa işlem ücretleri",
+					"SUBTITLE": "Aşağıda piyasaların bireysel işlem ücreti kuralları bulunmaktadır.",
+					"HEADER": {
+						"MARKET": "Pazar",
+						"MAKER": "Maker ticaret ücretleri (limitli emirler)",
+						"TAKER": "Taker işlem ücretleri (piyasa emirleri)"
+					}
+				}
+			},
+			"WITHDRAWAL_FEES": {
+				"TITLE": "Para çekme ücretleri",
+				"TABLE": {
+					"TITLE": "Para çekme sırasında kesilen ücretler",
+					"SUBTITLE": "Bir varlığın çekilmesine ilişkin tüm ücretler aşağıda verilmiştir.",
+					"NOT_ALLOWED": "İzin verilmedi",
+					"HEADER": {
+						"CURRENCY": "Para birimi/varlık",
+						"DEPOSIT": "Depozito Ücreti",
+						"WITHDRAWAL": "Para çekme ücreti"
+					}
+				}
+			},
+			"WITHDRAWAL_LIMITS": {
+				"TITLE": "Para çekme limitleri",
+				"TABLE_1": {
+					"TITLE": "Bağımsız para çekme limiti",
+					"SUBTITLE": "Kendi bağımsız 24 saatlik para çekme kuralına uyan kolektif limit kuralından ayrılan varlıklar:",
+					"HEADER": {
+						"CURRENCY": "Para birimi/varlık",
+						"LIMIT": "Günlük sınır",
+						"LIMIT_2": "Aylık sınır"
+					},
+					"LIMIT_TEXT": "(Hepsi toplu para çekme limiti tutarını paylaşan varlıklar)",
+					"LIMIT_TEXT_2": "(Sınır yalnızca kendi para birimine dayalıdır)",
+					"VALUED": "(Değerli)",
+					"NO_INDEPENDENT": "Bu katman için bağımsız bir sınır yoktur",
+					"LIMIT_TEXT_3": "(Hepsi {0} cinsinden toplu bir günlük para çekme limiti tutarını paylaşan varlıklar)",
+					"LIMIT_TEXT_4": "(Hepsi {0} cinsinden toplu aylık para çekme limiti tutarını paylaşan varlıklar)"
+				},
+				"TABLE_2": {
+					"TITLE": "Bağımsız Limitler",
+					"SUBTITLE": "Kendi para birimlerinde kendi günlük ve aylık para çekme limitleri olan varlıklar:"
+				},
+				"TABLE_3": {
+					"TITLE": "Toplu Limitler",
+					"SUBTITLE": "Bir grup madeni para için günlük ve aylık toplam para çekme limiti"
+				}
+			}
+		}
+	},
+	"STATUS_TEXT": {
+		"INCOMPLETE": "tamamlanmamış",
+		"PENDING": "askıda olması",
+		"REJECTED": "Reddedilmiş",
+		"VERIFIED": "doğrulandı"
+	},
+	"LOGINS_HISTORY": {
+		"TAB": "Giriş Geçmişi",
+		"CONTENT": {
+			"TITLE": "Giriş Denemeleri Kaydı",
+			"SUBTITLE": "Hesabınızdaki tüm başarısız giriş denemelerinin ve bunların potansiyel kaynaklarının geçmiş kaydı.",
+			"DOWNLOAD_HISTORY": "DOWNLOAD_HISTORY",
+			"FILTER": {
+				"STATUS": "Durum",
+				"ALL": "Tüm",
+				"FAILED": "Arızalı",
+				"SUCCESS": "Başarı"
+			},
+			"TABLE": {
+				"HEADER": {
+					"LAST_SEEN": {
+						"TITLE": "Son görülen",
+						"DESCRIPTION": "(En yenisi ilk sırada)"
+					},
+					"FAILED_ATTEMPTS": "Başarısızlıkla sonuçlanmış denemeler",
+					"COUNTRY": "Ülke",
+					"IP_ADDRESS": "IP adresi"
+				},
+				"CELL": {
+					"FAILED_LOGIN": "Giriş başarısız oldu: {0}x",
+					"SUCCESS": "Başarı",
+					"DEVICE": "Cihaz"
+				}
+			}
+		}
+	},
+	"SESSIONS": {
+		"TAB": "Oturumlar",
+		"CONTENT": {
+			"TITLE": "Aktif oturumlar",
+			"SUBTITLE": {
+				"TEXT": "Aşağıda hesabınızın aktif oturumları verilmiştir. Etkin bir oturumu sonlandırmak için {0}'a tıklayın; oturum kapatılacaktır.",
+				"LINK": "Geri çekmek"
+			},
+			"DOWNLOAD": "İndirmek",
+			"TABLE": {
+				"HEADER": {
+					"LAST_SEEN": {
+						"TITLE": "Son görülen",
+						"DESCRIPTION": "(En yenisi ilk sırada)"
+					},
+					"SESSION_STARTED": "Oturum başladı",
+					"SESSION_EXPIRY": "Oturumun sona ermesi",
+					"STATUS": "Durum"
+				},
+				"CELL": {
+					"ACTIVE": "Aktif",
+					"COUNTRY": "Ülke",
+					"IP_ADDRESS": "IP adresi",
+					"DEVICE": "Cihaz",
+					"LOGIN_TIME": "Başarılı oturum açma süresi"
+				}
+			},
+			"NOTIFICATION": "Oturum iptal edildi/oturum kapatıldı",
+			"MODAL": {
+				"TITLE": "Oturumu iptal et",
+				"PROMPT": "Bu oturumu iptal etmek ve oturumu kapatmak istediğinizden emin misiniz?",
+				"BACK": "GERİ",
+				"CONFIRM": "ONAYLAMAK"
+			}
+		}
+	},
+	"CANCEL_WITHDRAWAL_ADDRESS": "Withdrawal Address"
 }

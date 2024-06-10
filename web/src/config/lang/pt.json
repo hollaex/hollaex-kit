@@ -122,7 +122,10 @@
 		"TAB_SIGNOUT": "Sair",
 		"TAB_APPS": "aplicativos",
 		"TAB_STAKE": "Estaca",
-		"TAB_FIAT": "Controles Fiat"
+		"TAB_FIAT": "Controles Fiat",
+		"TAB_TRADE": "Troca",
+		"PRO_TRADE": "Pró",
+		"QUICK_TRADE": "Rápido"
 	},
 	"CONTACT_FORM": {
 		"CATEGORY_LABEL": "Categoria",
@@ -228,7 +231,9 @@
 		"ERROR_INVALID": "Código OTP inválido",
 		"OTP_FORM_INFO": "Digite seu código de 6 dígitos para continuar",
 		"OTP_FORM_SUBNOTE_LINE_1": "Seu código também é conhecido como autenticador de dois fatores (2FA) ou código OTP.",
-		"OTP_FORM_SUBNOTE_LINE_2": "Se você perdeu seu código, entre em contato com o suporte."
+		"OTP_FORM_SUBNOTE_LINE_2": "Se você perdeu seu código, entre em contato com o suporte.",
+		"OTP_FORM_SUBNOTE_LINE_3": "(To add a new account to Google Authenticator, click the '+' button. You can either scan the provided QR code in the previous step or manually enter the key to add your account to the app.)",
+		"INPUT_TEXT": "Input the 6-digit code from your phone's Google Authenticator app:"
 	},
 	"QUICK_TRADE_COMPONENT": {
 		"TITLE": "Trade Rápido",
@@ -248,7 +253,16 @@
 		"SOURCE_TEXT": "Negociação OTC do corretor",
 		"SOURCE_TEXT_NETWORK": "Negociação OTC do corretor de rede",
 		"VISIT": "Visite{0}",
-		"ASSET_INFO_PAGE": "Página de informações de recursos"
+		"ASSET_INFO_PAGE": "Página de informações de recursos",
+		"CHANGE_TEXT_7D": "Mudança 7D",
+		"HIGH_7D": "7D ALTO",
+		"LOW_7D": "7D BAIXO",
+		"7D": "7D",
+		"1D": "1D",
+		"COIN_NAME": "{0} ({1})",
+		"COIN_INFORMATION": "{0} informações",
+		"PRICE_TREND": "Tendência de preços",
+		"VIEW_TREND": "Ver tendência"
 	},
 	"PREVIOUS_PAGE": "página anterior",
 	"NEXT_PAGE": "próxima página",
@@ -576,6 +590,28 @@
 			"ADJUST": "(AJUSTAR PORCENTAGEM)",
 			"ACTIVATE_RISK_MANAGEMENT": "Ativar gerenciamento de risco",
 			"WARNING_POP_UP": "Pop-ups de aviso"
+		},
+		"TITLE_ACCOUNT": "Conta",
+		"DELETE_ACCOUNT": {
+			"ACCESS": {
+				"TEXT": "Quer excluir sua conta? Clique em {0}.",
+				"LINK": "aqui",
+				"DANGER_ZONE": {
+					"TITLE": "Zona de perigo",
+					"TEXT": "Excluir sua conta tornará sua conta e seus fundos inacessíveis.",
+					"PROCEED": "Continuar",
+					"CANCEL": "Cancelar"
+				}
+			},
+			"CONFIRMATION": {
+				"TITLE": "Deletar conta",
+				"TEXT_1": "Excluir sua conta removerá permanentemente todos os seus dados da troca. Esta ação é irreversível.",
+				"TEXT_2": "DIGITE {0} para confirmar a exclusão da conta.",
+				"KEY": "EU ENTENDO",
+				"DELETE": "EXCLUIR",
+				"CANCEL": "Cancelar",
+				"PLACEHOLDER": "Digite aqui"
+			}
 		}
 	},
 	"TRANSACTION_HISTORY": {
@@ -589,7 +625,11 @@
 		"WITHDRAWALS": "Saques",
 		"ORDERID": "ID do pedido",
 		"TRIGGER_STOP_PRICE": "Preço de gatilho/parada",
-		"TIME_OF_LAST_TRADE": "Hora da última negociação"
+		"TIME_OF_LAST_TRADE": "Hora da última negociação",
+		"INTERNAL": "interno",
+		"BLOCKCHAIN": "blockchain",
+		"STAKE": "estaca",
+		"REFERRAL": "referência"
 	},
 	"ACCOUNT_SECURITY": {
 		"TITLE_TEXT": "Ajuste as configurações de segurança para sua conta: autenticação de dois fatores (2FA), senha, chaves API e outras funções relacionadas à segurança.",
@@ -612,15 +652,46 @@
 				"MESSAGE_3": "Se você tiver alguma problema ao fazer o escaneamento, você pode inserir manualmente o código abaixo.",
 				"MESSAGE_4": "Você deve guardar este código com em um lugar seguro pois ele será necessário quando você for recuperar seu 2FA. Isso pode acontecer caso você troque ou perca seu telefone celular.",
 				"MESSAGE_5": "Manual",
-				"WARNING": "É altamente recomendável que você configure a autenticação de dois fatores (2FA). Isso aumentará muito a segurança de seus recursos.",
+				"WARNING": "Nós {0} {1}",
 				"ENABLE": "Ativar autenticação de dois fatores",
 				"DISABLE": "Desativar autenticação de dois fatores",
-				"INPUT": "Insira seu OTP"
+				"INPUT": "Insira seu OTP",
+				"STRONGLY_RECOMMEND": "fortemente recomendado",
+				"WARNING_CONTENT": "que você habilite a autenticação de dois fatores para aumentar a segurança de sua conta e proteger seus fundos"
 			},
 			"FORM": {
 				"PLACEHOLDER": "Digite seu OTP fornecido pelo Google Authenticator.",
 				"BUTTON": "Ativar 2FA"
-			}
+			},
+			"DOWNLOAD_APP": "Download and install",
+			"GOOGLE_AUTHENTICATOR": "Autenticador do Google:",
+			"DOWNLOAD_FROM": "Download from",
+			"GOOGLE_PLAY": "GooglePlay",
+			"APPLE": "App Store",
+			"APP_INFO": "Google Authenticator will generate random codes that are necessary for sensitive actions, such as logging in and withdrawing funds.",
+			"DONT_UNINSTALL": "Por favor, não desinstale o aplicativo.",
+			"INFO_UNINSTALL": "No caso de perda acidental do telefone ou desinstalação não intencional, você poderá enfrentar atrasos na recuperação do acesso à sua conta. Nesses casos, você precisará entrar em contato com nossa equipe de suporte para obter assistência.",
+			"BACK": "VOLTAR",
+			"PROCEED": "CONTINUAR",
+			"NEXT": "Próximo",
+			"NOTE": "Observação: {0} {1}",
+			"MANUEL_DESCRIPTION": "Insira a semente 2FA manual da etapa anterior.",
+			"MANUEL_DESCRIPTION_2": "Anote e guarde cuidadosamente a verificação manual acima",
+			"MANUEL_DESCRIPTION_3": "chave, pois pode ser usada para recuperação de conta.",
+			"MANUEL_KEY": "Semente 2FA manual",
+			"MANUEL_PLACEHOLDER": "Insira sua semente 2FA",
+			"MANUEL_WARNING": "(Certifique-se de anotá-lo e armazená-lo com segurança para uso futuro.)",
+			"MANUEL_ERROR_1": "Por favor, insira a semente 2FA manual",
+			"MANUEL_ERROR_2": "Insira a semente 2FA manual da etapa anterior",
+			"ACCOUNT_SECURED": "Conta protegida",
+			"2FA_ENABLED": "2FA ATIVADO",
+			"2FA_DISABLED": "2FA DESATIVADO",
+			"2FA_CONTENT_ONE": "Ativando {0} {1} .",
+			"2FA_CONTENT_TWO": "(Autenticação de dois fatores) adiciona uma camada extra de proteção para proteger seus fundos. Uma vez ativado, você será solicitado a inserir um código de verificação do seu telefone sempre que fizer login ou retirar ativos. Este recurso aumenta significativamente a segurança da sua conta",
+			"2FA_CONTENT_THREE": "(Autenticação de dois fatores) adiciona uma camada extra de proteção para proteger seus fundos",
+			"2FA_CONTENT_FOUR": "Para desativar o 2FA, você precisará inserir seu código 2FA (OTP)",
+			"INPUT_SIX_DIGIT_CODE": "Insira o código de 6 dígitos do aplicativo Google Authenticator do seu telefone:",
+			"INPUT_CONTENT": "(Para adicionar uma nova conta ao Google Authenticator, clique no botão ‘+’. Você pode digitalizar o código QR fornecido na etapa anterior ou inserir manualmente a chave para adicionar sua conta ao aplicativo.)"
 		},
 		"CHANGE_PASSWORD": {
 			"TITLE": "Senha",
@@ -776,7 +847,7 @@
 	"WALLET_BUTTON_BASE_WITHDRAW": "saque",
 	"WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT": "receber",
 	"WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW": "enviar",
-	"AVAILABLE_BALANCE_TEXT": "Saldo {0} disponível: {1} {2}",
+	"AVAILABLE_BALANCE_TEXT": "Disponível {0} Saldo: {1} {2} {3}",
 	"BALANCE_TEXT": "Saldo",
 	"CURRENCY_BALANCE_TEXT": "{0} Saldo",
 	"WALLET_ALL_ASSETS": "Todos os ativos",
@@ -1012,7 +1083,8 @@
 		"WITHDRAWALS": "Retiradas",
 		"VIEW_VERIFICATION": "ver verificação",
 		"EARN_COMMISSION": "Ganhe comissões",
-		"ID_VERIFICATION": "verificação de identidade:"
+		"ID_VERIFICATION": "verificação de identidade:",
+		"VOLUME_7D": "Volume 7D"
 	},
 	"REFERRAL_LINK": {
 		"TITLE": "Convide seu amigo",
@@ -1127,7 +1199,9 @@
 		"BUTTON": "enviar",
 		"ERROR_INVALID": "O código que você digitou está incorreto. Por favor, tente novamente",
 		"OTP_LABEL": "Código 2FA (OTP)",
-		"OTP_PLACEHOLDER": "Digite seu código de autenticação de dois fatores de 6 dígitos"
+		"OTP_PLACEHOLDER": "Digite seu código de autenticação de dois fatores de 6 dígitos",
+		"FORM_TITLE_TEXT": "Um código exclusivo foi enviado para seu e-mail, necessário para finalizar o processo. Insira o código enviado para seu e-mail abaixo{0}.",
+		"OTP_NOTE": " junto com seu código OTP"
 	},
 	"USER_APPS": {
 		"TITLE": "Seus aplicativos de troca",
@@ -1253,7 +1327,11 @@
 		"COMPLETED_TOOLTIP": "A aposta é madura. Continue apostando para ganhar mais recompensas ou desfaça a aposta para reivindicar recompensas.",
 		"CONNECT_ERROR": "Por favor, verifique sua carteira",
 		"INSTALL_METAMASK": "Você deve instalar o Metamask em seu navegador: https://metamask.io/download.html",
-		"INSTALL_METAMASK_TITLE": "MetaMask não detectado"
+		"INSTALL_METAMASK_TITLE": "MetaMask não detectado",
+		"INSTALL_METAMASK_DETAILS": {
+			"TITLE": "Instale MetaMask",
+			"PROMPT": "Você deve instalar o Metamask em seu navegador: {0}"
+		}
 	},
 	"UNSTAKE": {
 		"TITLE": "Desempacotar",
@@ -1385,7 +1463,9 @@
 		"REQUIRES_24H_TO_SETTLE_NOTICE": "Requer 24 horas para a liquidação.",
 		"SUCCESSFUL_UNSTAKE_NOTICE": "Você desbloqueou com sucesso",
 		"VISIT_WALLET_BUTTON": "VISITAR CARTEIRA",
-		"CLOSE_BUTTON": "FECHAR"
+		"CLOSE_BUTTON": "FECHAR",
+		"ACTIVE_STAKES": "Apostas ativas",
+		"STAKES_HISTORY": "História"
 	},
 	"MOVE_XHT": {
 		"TITLE": "Mover XHT",
@@ -1406,8 +1486,16 @@
 	"CURRENCY_WALLET": {
 		"BACK": "Voltar",
 		"WALLET_PAGE": "{0} para a página da carteira",
-		"LEARN_MORE": "Saber mais",
-		"ABOUT": "{0} sobre"
+		"LEARN_MORE": "Saiba mais {0}",
+		"ABOUT": "sobre",
+		"TOTAL_BALANCE": "Saldo total: {0} {1}",
+		"AVAILABLE_BALANCE": "Saldo disponível: {0} {1} {2}",
+		"PERCENTAGE_SHARE": "Participação percentual {0}",
+		"EARN_BY": "Ganhe por {0} {1}",
+		"STAKING": "apostar",
+		"TOOLTIP": "Saldo não pendente ou bloqueado em negociações (ordens abertas)",
+		"WALLET_HAS_BALANCE_PERCENTAGE": "Sua carteira atualmente não contém nenhum {0}.",
+		"WALLET_DEPOSIT": "Você pode tentar depositar {0} ou comprar {1}"
 	},
 	"WITHDRAWALS_FORM_NETWORK_LABEL": "Rede",
 	"DEPOSIT_FORM_NETWORK_WARNING": "Certifique-se de que a rede selecionada é compatível com a rede das carteiras dos remetentes",
@@ -1457,7 +1545,11 @@
 		"VIEW_MARKETS": "Exibir mercados",
 		"TRADING_SYMBOL": "Símbolo de Negociação",
 		"TYPE": "Tipo",
-		"SOURCE": "FONTE"
+		"SOURCE": "FONTE",
+		"CHANGE_7D": "Mudança (7 dias)",
+		"CHANGE_1D": "Mudança (1 dia)",
+		"CHART_7D": "Gráfico (7 dias)",
+		"ASSET": "Ativo"
 	},
 	"SUMMARY_MARKETS": {
 		"HOLLAEX": "Quer listar seus ativos digitais? Comece seu próprio mercado com seu HollaEx {0} {1}",
@@ -1601,7 +1693,12 @@
 		"QUICK_TRADE": "NEGOCIAÇÃO RÁPIDA",
 		"MARKETS": "MERCADOS",
 		"WALLET": "CARTEIRA",
-		"PRICE_SOURCE": "Fonte de preços"
+		"PRICE_SOURCE": "Fonte de preços",
+		"PRO_TRADE": "COMÉRCIO PRO",
+		"ORDERBOOK": "Carteira de pedidos",
+		"NETWORK": "Corretor de rede OTC",
+		"BROKER": "Corretor local OTC",
+		"BROKERAGE": "NA - (Corretora)"
 	},
 	"HOLLAEX_TOKEN": {
 		"REMOVE_FAVOURITES": "Remova dos favoritos",
@@ -1619,7 +1716,15 @@
 		"TRADE": "TROCA",
 		"LIST": "Quer listar seus ativos digitais?",
 		"WEBSITE": "Local na rede Internet",
-		"EXPLORER": "Explorador"
+		"EXPLORER": "Explorador",
+		"QUICK_TRADE": "NEGOCIAÇÃO RÁPIDA {0}",
+		"PRICES": {
+			"TITLE": "Preços",
+			"QUICK_TRADE": "Negociação rápida",
+			"SUBTITLE": "Para visualizar os preços de compra e venda de {0}, visite {1}",
+			"FOOTER": "As taxas de negociação do tomador de mercado são aplicadas a todas as negociações executadas por meio do Quick Trade."
+		},
+		"PRO_TRADE": "VER {0} MERCADO"
 	},
 	"ACCORDIAN": {
 		"ACCORDIAN_ASSETS": "Todos os ativos da carteira",
@@ -1668,12 +1773,25 @@
 				"TABLE_1": {
 					"TITLE": "Limite de retirada independente",
 					"SUBTITLE": "Ativos desvinculados da regra de limite coletivo que seguem sua própria regra independente de saque 24h:",
-					"HEADER": { "CURRENCY": "Moeda/ativo", "LIMIT": "limite de 24h" },
-					"LIMIT_TEXT": "(Ativos que compartilham um valor de limite de saque coletivo)"
+					"HEADER": {
+						"CURRENCY": "Moeda/ativo",
+						"LIMIT": "limite de 24h",
+						"LIMIT_2": "Limite mensal"
+					},
+					"LIMIT_TEXT": "(Ativos que compartilham um valor de limite de saque coletivo)",
+					"LIMIT_TEXT_2": "(Limite baseado apenas na sua própria moeda)",
+					"VALUED": "(Valorizado)",
+					"NO_INDEPENDENT": "Não há limite independente para este nível",
+					"LIMIT_TEXT_3": "(Ativos que compartilham um valor limite de saque diário coletivo denominado em {0})",
+					"LIMIT_TEXT_4": "(Ativos que compartilham um valor limite coletivo de retirada mensal denominado em {0})"
 				},
 				"TABLE_2": {
 					"TITLE": "Limite de retirada padrão compartilhado coletivo",
 					"SUBTITLE": "Abaixo estão os ativos que compartilham a mesma regra de valor de limite de retirada padrão de 24 horas:"
+				},
+				"TABLE_3": {
+					"TITLE": "Limites Coletivos",
+					"SUBTITLE": "Limite combinado de retirada diária e mensal para um grupo de moedas"
 				}
 			}
 		}
@@ -1749,5 +1867,60 @@
 				"CONFIRM": "CONFIRME"
 			}
 		}
-	}
+	},
+	"TRADE_TOOLS": "Ferramentas",
+	"SECOND": "segundo",
+	"CANT_FIND_MARKETS": "Não foi possível encontrar nenhum mercado desse ativo.",
+	"TRY_VISITING_ASSETS": "Tente visitar o {0}.",
+	"ASSETS_PAGE": "Página de recursos",
+	"NETWORK": "Rede",
+	"CATEGORY": "Categoria",
+	"ASSETS": "Ativos",
+	"QUICK_TRADE_QUOTE_EXPIRED_FIRST_LINE": "A cotação de preço expirou.",
+	"QUICK_TRADE_QUOTE_EXPIRED_SECOND_LINE": "Clique em recotar para obter um novo preço.",
+	"QUICK_TRADE_QUOTE_EXPIRED_BUTTON": "REQUOTAR",
+	"ZERO_ASSET_2": "detectou. Faça um",
+	"ZERO_ASSET_3": "deposite abaixo.",
+	"QUOTE_CONFIRMATION_EXPIRY_MSG": "A cotação de preço expirará em {0} {1}",
+	"QUOTE_CONFIRMATION_EXPIRED_MSG_TEXT_1": "O preço expirou.",
+	"QUOTE_CONFIRMATION_EXPIRED_MSG_TEXT_2": "Volte para obter uma nova cotação de preço.",
+	"RISKY_TRADE_DISCLAIMER": {
+		"MSG_1": "Verifique se você realmente deseja negociar {0} ({1}), pois este ativo pode apresentar um alto risco de",
+		"MSG_2": "extrema volatilidade",
+		"MSG_3": "Marque a caixa abaixo para confirmar que você entende que o valor deste ativo é incerto e não garantido.",
+		"UNDERSTAND_RISK_MSG": "Sim, eu entendo os riscos"
+	},
+	"PROFIT_LOSS": {
+		"BACK": "Voltar",
+		"BACK_TO_WALLET": "para carteira",
+		"WALLET_PERFORMANCE_TITLE": "Desempenho de equilíbrio",
+		"WALLET_PERFORMANCE_DESCRIPTION": "O desempenho do equilíbrio da sua carteira ao longo do tempo e a divisão dos ativos. Clique nas datas abaixo para ver o desempenho da sua carteira naquele dia.",
+		"PL_7_DAY": "Lucro e perda de 7 dias",
+		"EST_TOTAL_BALANCE": "Leste. Balanço total",
+		"WEEK": "semana",
+		"MONTH": "mês",
+		"MONTHS": "meses",
+		"WALLET_BALANCE": "Detalhamento do saldo da carteira",
+		"WALLET_BALANCE_DESCRIPTION_1": "Abaixo está um detalhamento da carteira em",
+		"WALLET_BALANCE_DESCRIPTION_2": "Clique no gráfico acima para atualizar a tabela abaixo.",
+		"DATE_SELECT": "Selecione a data",
+		"ASSET_NAME": "Nome do recurso",
+		"BALANCE_AMOUNT": "Valor do saldo",
+		"VALUE": "Valor",
+		"PERFORMANCE_TREND": "Tendência de desempenho em 7 dias",
+		"CUSTOM_DATE_DESCRIPTION": "Selecione datas específicas para buscar seus dados históricos (a diferença de data não pode ultrapassar 3 meses)",
+		"SELECT_START_DATE": "Selecione a data de início",
+		"SELECT_END_DATE": "Selecione a data de término",
+		"CUSTOM": "Personalizado",
+		"BACK_CUSTOM": "VOLTAR",
+		"PROOCED_CUSTOM": "PROCEDIDO",
+		"PL_DAYS": "P&L do dia",
+		"VIEW_MORE": "Ver mais {0}",
+		"SHOW_ASSET_BREAKDOWN": "Mostrar detalhamento de ativos",
+		"PL_SUMMARY": "Resumo de lucros e perdas",
+		"BALANCE_HISTORY": "Histórico de saldo"
+	},
+	"ASSET_INFO": "Informações do recurso",
+	"TAKER_FEES_APPLIED": "Taxas de tomador são aplicadas",
+	"CANCEL_WITHDRAWAL_ADDRESS": "Withdrawal Address"
 }

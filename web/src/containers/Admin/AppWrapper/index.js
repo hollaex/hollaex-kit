@@ -16,10 +16,8 @@ import {
 	isSupport,
 	isSupervisor,
 	isAdmin,
-	getTokenTimestamp,
 	checkRole,
 } from 'utils/token';
-import { checkUserSessionExpired } from 'utils/utils';
 import { getExchangeInitialized, getSetupCompleted } from 'utils/initialize';
 import { logout } from 'actions/authAction';
 import { getMe, setMe } from 'actions/userAction';
@@ -104,12 +102,6 @@ class AppWrapper extends React.Component {
 			myPlugins: [],
 			isConfigure: false,
 		};
-	}
-
-	UNSAFE_componentWillMount() {
-		if (isLoggedIn() && checkUserSessionExpired(getTokenTimestamp())) {
-			this.logout('Token is expired');
-		}
 	}
 
 	componentDidMount() {

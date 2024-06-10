@@ -70,7 +70,10 @@
 		"TAB_HISTORY": "Storia",
 		"TAB_SIGNOUT": "Disconnessione",
 		"TAB_STAKE": "Palo",
-		"TAB_FIAT": "Comandi Fiat"
+		"TAB_FIAT": "Comandi Fiat",
+		"TAB_TRADE": "Commercio",
+		"PRO_TRADE": "Pro",
+		"QUICK_TRADE": "Presto"
 	},
 	"CONTACT_FORM": {
 		"CATEGORY_LABEL": "Categoria",
@@ -179,7 +182,9 @@
 		"OTP_PLACEHOLDER": "Inserisci il codice di autenticazione",
 		"OTP_TITLE": "Codice autenticatore",
 		"OTP_BUTTON": "invia",
-		"ERROR_INVALID": "Codice OTP non valido"
+		"ERROR_INVALID": "Codice OTP non valido",
+		"OTP_FORM_SUBNOTE_LINE_3": "(Per aggiungere un nuovo account a Google Authenticator, fai clic sul pulsante \"+\". Puoi scansionare il codice QR fornito nel passaggio precedente o inserire manualmente la chiave per aggiungere il tuo account all'app.)",
+		"INPUT_TEXT": "Inserisci il codice a 6 cifre dall'app Google Authenticator del tuo telefono:"
 	},
 	"EMAIL_CODE_FORM": {
 		"TITLE": "Inserisci i tuoi codici di sicurezza",
@@ -189,7 +194,9 @@
 		"BUTTON": "invia",
 		"ERROR_INVALID": "Il codice che hai inserito non è corretto. Per favore riprova",
 		"OTP_LABEL": "Codice 2FA (OTP)",
-		"OTP_PLACEHOLDER": "Inserisci il tuo codice di autenticazione a due fattori di 6 cifre"
+		"OTP_PLACEHOLDER": "Inserisci il tuo codice di autenticazione a due fattori di 6 cifre",
+		"FORM_TITLE_TEXT": "È stato inviato alla tua email un codice univoco necessario per completare il processo. Inserisci il codice inviato al tuo indirizzo email qui sotto{0}.",
+		"OTP_NOTE": " insieme al tuo codice OTP"
 	},
 	"QUICK_TRADE_COMPONENT": {
 		"TITLE": "Commercio veloce",
@@ -206,7 +213,16 @@
 		"SOURCE_TEXT": "Broker affare OTC",
 		"SOURCE_TEXT_NETWORK": "Broker di rete affare OTC",
 		"VISIT": "Visita{0}",
-		"ASSET_INFO_PAGE": "Pagina delle informazioni sulle risorse"
+		"ASSET_INFO_PAGE": "Pagina delle informazioni sulle risorse",
+		"CHANGE_TEXT_7D": "Cambiamento 7D",
+		"HIGH_7D": "7D ALTA",
+		"LOW_7D": "7D BASSO",
+		"7D": "7D",
+		"1D": "1D",
+		"COIN_NAME": "{0} ({1})",
+		"COIN_INFORMATION": "{0} informazioni",
+		"PRICE_TREND": "Andamento dei prezzi",
+		"VIEW_TREND": "Visualizza tendenza"
 	},
 	"PREVIOUS_PAGE": "pagina precedente",
 	"NEXT_PAGE": "pagina successiva",
@@ -499,6 +515,28 @@
 			"ADJUST": "(REGOLA LA PERCENTUALE)",
 			"ACTIVATE_RISK_MANAGEMENT": "Attiva la gestione del rischio",
 			"WARNING_POP_UP": "Pop-up di avviso"
+		},
+		"TITLE_ACCOUNT": "Account",
+		"DELETE_ACCOUNT": {
+			"ACCESS": {
+				"TEXT": "Vuoi eliminare il tuo account? Fare clic su {0}.",
+				"LINK": "Qui",
+				"DANGER_ZONE": {
+					"TITLE": "Zona pericolosa",
+					"TEXT": "L'eliminazione del tuo account renderà inaccessibili sia il tuo account che i tuoi fondi.",
+					"PROCEED": "Procedere",
+					"CANCEL": "Annulla"
+				}
+			},
+			"CONFIRMATION": {
+				"TITLE": "Eliminare l'account",
+				"TEXT_1": "L'eliminazione del tuo account rimuoverà definitivamente tutti i tuoi dati dall'exchange. Questa azione è irreversibile.",
+				"TEXT_2": "DIGITARE {0} per confermare l'eliminazione dell'account.",
+				"KEY": "CAPISCO",
+				"DELETE": "ELIMINARE",
+				"CANCEL": "Annulla",
+				"PLACEHOLDER": "Digitare qui"
+			}
 		}
 	},
 	"USER_APPS": {
@@ -561,7 +599,12 @@
 		"WITHDRAWALS": "Prelievi",
 		"ORDERID": "ID ordine",
 		"TRIGGER_STOP_PRICE": "Prezzo di attivazione/arresto",
-		"TIME_OF_LAST_TRADE": "Ora dell'ultimo scambio"
+		"TIME_OF_LAST_TRADE": "Ora dell'ultimo scambio",
+		"INTERNAL": "interno",
+		"BLOCKCHAIN": "blockchain",
+		"STAKE": "palo",
+		"REFERRAL": "rinvio",
+		"QUICK_TRADE_TOOLTIP": "Ordine eseguito tramite sistema di conversione"
 	},
 	"ACCOUNT_SECURITY": {
 		"TITLE_TEXT": "Regola le impostazioni di sicurezza per il tuo account. Da Autenticazione a due fattori, password, chiavi API e altre funzioni relative alla sicurezza.",
@@ -584,15 +627,46 @@
 				"MESSAGE_3": "Se hai problemi con la scansione di questo, puoi inserire manualmente il codice qui sotto",
 				"MESSAGE_4": "Devi archiviare questo codice in modo sicuro per recuperare il tuo 2FA nel caso in cui dovessi cambiare o perdere il tuo telefono cellulare in futuro.",
 				"MESSAGE_5": "Manuale",
-				"WARNING": "Ti consigliamo vivamente di impostare l'autenticazione a due fattori (2FA). In questo modo aumenterai notevolmente la sicurezza dei tuoi fondi.",
+				"WARNING": "Noi {0} {1}",
 				"ENABLE": "Abilita l'autenticazione a due fattori",
 				"DISABLE": "Disabilita l'autenticazione a due fattori",
-				"INPUT": "Inserisci la tua OTP"
+				"INPUT": "Inserisci la tua OTP",
+				"STRONGLY_RECOMMEND": "fortemente raccomandato",
+				"WARNING_CONTENT": "di abilitare l'autenticazione a due fattori per migliorare la sicurezza del tuo account e proteggere i tuoi fondi"
 			},
 			"FORM": {
 				"PLACEHOLDER": "Inserisci la tua OTP fornita da Google Authenticator.",
 				"BUTTON": "Abilita 2FA"
-			}
+			},
+			"DOWNLOAD_APP": "Scarica e installa",
+			"GOOGLE_AUTHENTICATOR": "Autenticatore di Google:",
+			"DOWNLOAD_FROM": "Scarica da",
+			"GOOGLE_PLAY": "Google Play",
+			"APPLE": "App Store",
+			"APP_INFO": "Google Authenticator genererà codici casuali necessari per azioni sensibili, come l'accesso e il prelievo di fondi.",
+			"DONT_UNINSTALL": "Si prega di non disinstallare l'app.",
+			"INFO_UNINSTALL": "In caso di perdita accidentale del telefono o disinstallazione involontaria, potresti riscontrare ritardi nel riottenere l'accesso al tuo account. In questi casi, dovrai contattare il nostro team di supporto per ricevere assistenza.",
+			"BACK": "INDIETRO",
+			"PROCEED": "PROCEDERE",
+			"NEXT": "Prossimo",
+			"NOTE": "Nota: {0} {1}",
+			"MANUEL_DESCRIPTION": "Inserisci il seed 2FA manuale del passaggio precedente.",
+			"MANUEL_DESCRIPTION_2": "Si prega di annotare attentamente e conservare la verifica manuale di cui sopra",
+			"MANUEL_DESCRIPTION_3": "chiave in quanto può essere utilizzata per il recupero dell'account.",
+			"MANUEL_KEY": "Seme manuale 2FA",
+			"MANUEL_PLACEHOLDER": "Inserisci il tuo seme 2FA",
+			"MANUEL_WARNING": "(Assicurati di averlo annotato e di conservarlo in modo sicuro per un uso futuro.)",
+			"MANUEL_ERROR_1": "Inserisci il seed 2FA manuale",
+			"MANUEL_ERROR_2": "Inserisci il seed 2FA manuale dal passaggio precedente",
+			"ACCOUNT_SECURED": "Conto protetto",
+			"2FA_ENABLED": "2FA ABILITATO",
+			"2FA_DISABLED": "2FA DISABILITATO",
+			"2FA_CONTENT_ONE": "Attivazione di {0} {1} .",
+			"2FA_CONTENT_TWO": "(Autenticazione a due fattori) aggiunge un ulteriore livello di protezione per salvaguardare i tuoi fondi. Una volta abilitato, ti verrà richiesto di inserire un codice di verifica dal tuo telefono ogni volta che accedi o prelevi risorse. Questa funzione migliora significativamente la sicurezza del tuo account",
+			"2FA_CONTENT_THREE": "(Autenticazione a due fattori) aggiunge un ulteriore livello di protezione per salvaguardare i tuoi fondi",
+			"2FA_CONTENT_FOUR": "Per disabilitare 2FA dovrai inserire il tuo codice 2FA (OTP).",
+			"INPUT_SIX_DIGIT_CODE": "Inserisci il codice a 6 cifre dall'app Google Authenticator del tuo telefono:",
+			"INPUT_CONTENT": "(Per aggiungere un nuovo account a Google Authenticator, fai clic sul pulsante \"+\". Puoi scansionare il codice QR fornito nel passaggio precedente o inserire manualmente la chiave per aggiungere il tuo account all'app.)"
 		},
 		"CHANGE_PASSWORD": {
 			"TITLE": "Parola d'ordine",
@@ -713,7 +787,11 @@
 		"COMPLETED_TOOLTIP": "La posta in gioco è matura. Continua a fare staking per guadagnare più premi o annulla lo staking per richiedere premi.",
 		"CONNECT_ERROR": "Per favore controlla il tuo portafoglio",
 		"INSTALL_METAMASK": "Devi installare Metamask nel tuo browser: https://metamask.io/download.html",
-		"INSTALL_METAMASK_TITLE": "MetaMask non rilevato"
+		"INSTALL_METAMASK_TITLE": "MetaMask non rilevato",
+		"INSTALL_METAMASK_DETAILS": {
+			"TITLE": "Installa MetaMask",
+			"PROMPT": "Devi installare Metamask nel tuo browser: {0}"
+		}
 	},
 	"UNSTAKE": {
 		"TITLE": "Annulla puntata",
@@ -845,7 +923,9 @@
 		"REQUIRES_24H_TO_SETTLE_NOTICE": "Richiede 24 ore per la regolamentazione",
 		"SUCCESSFUL_UNSTAKE_NOTICE": "Hai ritirato con successo",
 		"VISIT_WALLET_BUTTON": "VISITA IL PORTAFOGLIO",
-		"CLOSE_BUTTON": "CHIUDI"
+		"CLOSE_BUTTON": "CHIUDI",
+		"ACTIVE_STAKES": "Puntate attive",
+		"STAKES_HISTORY": "Storia"
 	},
 	"MOVE_XHT": {
 		"TITLE": "Sposta XHT",
@@ -918,8 +998,16 @@
 	"CURRENCY_WALLET": {
 		"BACK": "Indietro",
 		"WALLET_PAGE": "{0} alla pagina del portafoglio",
-		"LEARN_MORE": "Saperne di più",
-		"ABOUT": "{0} circa"
+		"LEARN_MORE": "Ulteriori informazioni {0}",
+		"ABOUT": "Di",
+		"TOTAL_BALANCE": "Saldo totale: {0} {1}",
+		"AVAILABLE_BALANCE": "Saldo disponibile: {0} {1} {2}",
+		"PERCENTAGE_SHARE": "Quota percentuale {0}",
+		"EARN_BY": "Guadagna entro {0} {1}",
+		"STAKING": "puntata",
+		"TOOLTIP": "Saldo non in sospeso o bloccato nelle transazioni (ordini aperti)",
+		"WALLET_HAS_BALANCE_PERCENTAGE": "Il tuo portafoglio attualmente non contiene {0}.",
+		"WALLET_DEPOSIT": "Puoi provare a depositare {0} o ad acquistare {1}"
 	},
 	"LOGOUT": "Disconnettersi",
 	"WITHDRAWALS_MIN_VALUE_ERROR": "La transazione è troppo piccola per essere inviata. Prova una quantità maggiore.",
@@ -986,7 +1074,7 @@
 	"24H_MAX": "Alta 24H:",
 	"24H_MIN": "24 ore basso",
 	"24H_VAL": "24 ore vol",
-	"AVAILABLE_BALANCE_TEXT": "Saldo {0} disponibile: {1} {2}",
+	"AVAILABLE_BALANCE_TEXT": "Saldo {0} disponibile: {1} {2} {3}",
 	"BALANCE_TEXT": "Bilancia",
 	"CURRENCY_BALANCE_TEXT": "{0} Saldo",
 	"WALLET_ALL_ASSETS": "Tutti i beni",
@@ -1219,7 +1307,8 @@
 		"VIEW_MORE_MARKETS": "Visualizza più mercati",
 		"VIEW_VERIFICATION": "visualizzare la verifica",
 		"EARN_COMMISSION": "Guadagna commissioni",
-		"ID_VERIFICATION": "Verifica dell'identità:"
+		"ID_VERIFICATION": "Verifica dell'identità:",
+		"VOLUME_7D": "Volume 7D"
 	},
 	"REFERRAL_LINK": {
 		"TITLE": "Invita il tuo amico",
@@ -1298,7 +1387,11 @@
 		"VIEW_MARKETS": "Visualizza i mercati",
 		"TRADING_SYMBOL": "Simbolo commerciale",
 		"TYPE": "Tipo",
-		"SOURCE": "FONTE"
+		"SOURCE": "FONTE",
+		"CHANGE_7D": "Modifica (7 giorni)",
+		"CHANGE_1D": "Modifica (1 giorno)",
+		"CHART_7D": "Grafico (7 giorni)",
+		"ASSET": "Risorsa"
 	},
 	"SUMMARY_MARKETS": {
 		"HOLLAEX": "Vuoi elencare le tue risorse digitali? Avvia il tuo mercato con il tuo HollaEx {0} {1}",
@@ -1443,7 +1536,12 @@
 		"QUICK_TRADE": "COMMERCIO VELOCE",
 		"MARKETS": "MERCATI",
 		"WALLET": "PORTAFOGLIO",
-		"PRICE_SOURCE": "Fonte del prezzo"
+		"PRICE_SOURCE": "Fonte del prezzo",
+		"PRO_TRADE": "PROFESSIONISTA DEL COMMERCIO",
+		"ORDERBOOK": "Portafoglio ordini",
+		"NETWORK": "Broker di rete OTC",
+		"BROKER": "Broker locale OTC",
+		"BROKERAGE": "NA - (Intermediazione)"
 	},
 	"HOLLAEX_TOKEN": {
 		"REMOVE_FAVOURITES": "Rimuovi dai preferiti",
@@ -1461,7 +1559,15 @@
 		"TRADE": "COMMERCIO",
 		"LIST": "Vuoi elencare le tue risorse digitali?",
 		"WEBSITE": "Sito web",
-		"EXPLORER": "Esploratore"
+		"EXPLORER": "Esploratore",
+		"QUICK_TRADE": "SCAMBI VELOCI {0}",
+		"PRICES": {
+			"TITLE": "Prezzi",
+			"QUICK_TRADE": "Commercio veloce",
+			"SUBTITLE": "Per visualizzare i prezzi di acquisto e vendita di {0}, visita {1}",
+			"FOOTER": "Le commissioni di negoziazione del market take vengono applicate a tutte le operazioni eseguite tramite Quick Trade."
+		},
+		"PRO_TRADE": "VISUALIZZA MERCATO {0}"
 	},
 	"ACCORDIAN": {
 		"ACCORDIAN_ASSETS": "Tutte le risorse del portafoglio",
@@ -1516,13 +1622,23 @@
 					"SUBTITLE": "Attività separate dalla regola del limite collettivo che seguono la propria regola di prelievo indipendente di 24 ore:",
 					"HEADER": {
 						"CURRENCY": "Valuta/attività",
-						"LIMIT": "Limite di 24 ore"
+						"LIMIT": "Limite di 24 ore",
+						"LIMIT_2": "Limite mensile"
 					},
-					"LIMIT_TEXT": "(Attività che condividono tutte un importo limite di prelievo collettivo)"
+					"LIMIT_TEXT": "(Attività che condividono tutte un importo limite di prelievo collettivo)",
+					"LIMIT_TEXT_2": "(Limite basato solo sulla propria valuta)",
+					"VALUED": "(Valore)",
+					"NO_INDEPENDENT": "Non esiste un limite indipendente per questo livello",
+					"LIMIT_TEXT_3": "(Asset che condividono tutti un importo limite di prelievo giornaliero collettivo denominato in {0})",
+					"LIMIT_TEXT_4": "(Asset che condividono tutti un importo limite di prelievo mensile collettivo denominato in {0})"
 				},
 				"TABLE_2": {
 					"TITLE": "Limite di prelievo standard condiviso collettivo",
 					"SUBTITLE": "Di seguito sono riportati gli asset che condividono tutti la stessa regola standard sull'importo del limite di prelievo di 24 ore:"
+				},
+				"TABLE_3": {
+					"TITLE": "Limiti collettivi",
+					"SUBTITLE": "Limite di prelievo giornaliero e mensile combinato per un gruppo di monete"
 				}
 			}
 		}
@@ -1598,5 +1714,60 @@
 				"CONFIRM": "CONFERMARE"
 			}
 		}
-	}
+	},
+	"TRADE_TOOLS": "Utensili",
+	"SECOND": "secondo",
+	"CANT_FIND_MARKETS": "Impossibile trovare mercati per quell'asset.",
+	"TRY_VISITING_ASSETS": "Prova a visitare il {0}.",
+	"ASSETS_PAGE": "Pagina delle risorse",
+	"NETWORK": "Rete",
+	"CATEGORY": "Categoria",
+	"ASSETS": "Risorse",
+	"QUICK_TRADE_QUOTE_EXPIRED_FIRST_LINE": "Il preventivo è scaduto.",
+	"QUICK_TRADE_QUOTE_EXPIRED_SECOND_LINE": "Fare clic su Riquotare per ottenere un nuovo prezzo.",
+	"QUICK_TRADE_QUOTE_EXPIRED_BUTTON": "RICHIEDI",
+	"ZERO_ASSET_2": "rilevato. Fare un",
+	"ZERO_ASSET_3": "deposito qui sotto.",
+	"QUOTE_CONFIRMATION_EXPIRY_MSG": "Il preventivo scadrà tra {0} {1}",
+	"QUOTE_CONFIRMATION_EXPIRED_MSG_TEXT_1": "Il prezzo è scaduto.",
+	"QUOTE_CONFIRMATION_EXPIRED_MSG_TEXT_2": "Torna indietro per ottenere un nuovo preventivo.",
+	"RISKY_TRADE_DISCLAIMER": {
+		"MSG_1": "Verifica di voler effettivamente scambiare {0} ({1}) poiché questo asset potrebbe comportare un rischio elevato di",
+		"MSG_2": "volatilità estrema",
+		"MSG_3": "Seleziona la casella sottostante per confermare di aver compreso che il valore di questo bene è incerto e non garantito.",
+		"UNDERSTAND_RISK_MSG": "Sì, capisco i rischi"
+	},
+	"PROFIT_LOSS": {
+		"BACK": "Indietro",
+		"BACK_TO_WALLET": "al portafoglio",
+		"WALLET_PERFORMANCE_TITLE": "Prestazioni di equilibrio",
+		"WALLET_PERFORMANCE_DESCRIPTION": "L'andamento del saldo del tuo portafoglio nel tempo e la ripartizione degli asset. Fai clic sulle date qui sotto per vedere la performance del tuo portafoglio quel giorno.",
+		"PL_7_DAY": "Profitti e perdite a 7 giorni",
+		"EST_TOTAL_BALANCE": "Est. Saldo totale",
+		"WEEK": "settimana",
+		"MONTH": "mese",
+		"MONTHS": "mesi",
+		"WALLET_BALANCE": "Ripartizione del saldo del portafoglio",
+		"WALLET_BALANCE_DESCRIPTION_1": "Di seguito è riportata una ripartizione del portafoglio",
+		"WALLET_BALANCE_DESCRIPTION_2": "Fare clic sul grafico qui sopra per aggiornare la tabella seguente.",
+		"DATE_SELECT": "Seleziona Data",
+		"ASSET_NAME": "Nome della risorsa",
+		"BALANCE_AMOUNT": "Importo del saldo",
+		"VALUE": "Valore",
+		"PERFORMANCE_TREND": "Andamento delle prestazioni a 7 giorni",
+		"CUSTOM_DATE_DESCRIPTION": "Seleziona date specifiche per recuperare i dati della cronologia (la differenza di date non può superare i 3 mesi)",
+		"SELECT_START_DATE": "Seleziona la data di inizio",
+		"SELECT_END_DATE": "Seleziona la data di fine",
+		"CUSTOM": "Costume",
+		"BACK_CUSTOM": "INDIETRO",
+		"PROOCED_CUSTOM": "PROCEDUTO",
+		"PL_DAYS": "Conti e perdite giornalieri",
+		"VIEW_MORE": "Visualizza altro {0}",
+		"SHOW_ASSET_BREAKDOWN": "Mostra la suddivisione delle risorse",
+		"PL_SUMMARY": "Riepilogo profitti e perdite",
+		"BALANCE_HISTORY": "Storia dell'equilibrio"
+	},
+	"ASSET_INFO": "Informazioni sulle risorse",
+	"TAKER_FEES_APPLIED": "Vengono applicate le commissioni dell'acquirente",
+	"CANCEL_WITHDRAWAL_ADDRESS": "Indirizzo di ritiro"
 }

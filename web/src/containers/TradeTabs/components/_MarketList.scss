@@ -65,6 +65,9 @@
 						}
 					}
 				}
+				.last-price-label {
+					color: $colors-main-black;
+				}
 			}
 
 			.table-bottom-border td,
@@ -210,6 +213,41 @@
 		.sticky-col {
 			color: $colors-main-black;
 			background-color: $app-light-background;
+		}
+	}
+}
+
+.digital-market-wrapper {
+	.market-list__block-table {
+		margin-bottom: 1rem;
+		.table-row {
+			cursor: text !important;
+			&:hover {
+				background-color: unset !important;
+			}
+			.sticky-col {
+				color: $colors-main-black;
+				cursor: pointer;
+				&:hover {
+					opacity: 0.5;
+				}
+			}
+		}
+	}
+}
+
+.trade_tabs-container {
+	.market-pairs {
+		color: $colors-main-black;
+	}
+}
+
+@media screen and (max-width: 786px) {
+	.layout-mobile {
+		.digital-market-wrapper {
+			.view-more-btn {
+				padding: 10%;
+			}
 		}
 	}
 }

@@ -53,9 +53,10 @@ Then ('The user profile page of "userlevel@testsae.com" should present the level
     cy.get('[name="password"]').clear().type(Cypress.env('PASSWORD'))
     cy.get('.holla-button').should('be.visible').should('be.enabled').click()
     cy.get('.warning_text').should('not.exist') 
+    cy.wait(3000)
     cy.get('@tier')
     .then(val => {
-         cy.get('.trader-account-wrapper > .w-100 > .align-items-center > :nth-child(2) > .summary-block-title')
+        cy.get('.trader-account-wrapper > .w-100 > .d-flex.mb-2 > .edit-wrapper__container > .summary-block-title')
          .should('contain',val)
          cy.log('second', val)           
     })

@@ -37,6 +37,9 @@ const { isEmail } = require('validator');
 const BigNumber = require('bignumber.js');
 
 const isValidAddress = (currency, address, network) => {
+	if (address.indexOf('://') > -1) {
+		return false;
+	}
 	if (network === 'eth' || network === 'ethereum') {
 		return WAValidator.validate(address, 'eth');
 	} else if (network === 'stellar' || network === 'xlm') {
@@ -84,6 +87,13 @@ const getWithdrawalFee = (currency, network, amount, level) => {
 			fee_coin =  coinConfiguration.withdrawal_fees[currency].symbol;
 			fee = value;
 		}
+
+		const customFee = getKitConfig()?.fiat_fees?.[currency]?.withdrawal_fee;
+		if (customFee) {
+			fee_coin = currency;
+			fee = customFee;
+		}
+
 	}
 
 	if (network === 'email') {
@@ -339,7 +349,7 @@ const calculateWithdrawalMax = async (user_id, currency, selectedNetwork) => {
 
 			amount = new BigNumber(balance[`${currency}_available`]).minus(new BigNumber(fee)).toNumber();
 
-			if (coinMarkup?.fee_markup) {
+			if (coinMarkup?.fee_markup && selectedNetwork !== 'email') {
 				amount = new BigNumber(amount).minus(new BigNumber(coinMarkup.fee_markup)).toNumber();
 			}
 		}
@@ -404,7 +414,7 @@ const validateWithdrawal = async (user, address, amount, currency, network = nul
 
 	const balance = await getNodeLib().getUserBalance(user.network_id);
 
-	if (coinMarkup?.fee_markup) {
+	if (coinMarkup?.fee_markup && network !== 'fiat' && network !== 'email') {
 		fee = math.number(math.add(math.bignumber(fee), math.bignumber(coinMarkup.fee_markup)));
 	}
 	
@@ -1134,6 +1144,12 @@ const getDepositFee = (currency, network, amount, level) => {
 		let value = deposit_fees[currency].value;
 		fee_coin =  deposit_fees[currency].symbol;
 		fee = value;
+	}
+
+	const customFee = getKitConfig()?.fiat_fees?.[currency]?.deposit_fee;
+	if (customFee) {
+		fee_coin = currency;
+		fee = customFee;
 	}
 
 	return {

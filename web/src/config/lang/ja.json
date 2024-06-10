@@ -126,7 +126,10 @@
 		"TAB_SIGNOUT": "ログアウト",
 		"TAB_APPS": "アプリ",
 		"TAB_STAKE": "ステーク",
-		"TAB_FIAT": "フィアットコントロール"
+		"TAB_FIAT": "フィアットコントロール",
+		"TAB_TRADE": "貿易",
+		"PRO_TRADE": "プロ",
+		"QUICK_TRADE": "素早い"
 	},
 	"CONTACT_FORM": {
 		"CATEGORY_LABEL": "お問い合わせの種類",
@@ -235,7 +238,9 @@
 		"ERROR_INVALID": "無効なOTPコードです。",
 		"OTP_FORM_INFO": "続行するには6桁のコードを入力してください",
 		"OTP_FORM_SUBNOTE_LINE_1": "コードは、2 要素認証 (2FA) または OTP コードとも呼ばれます。",
-		"OTP_FORM_SUBNOTE_LINE_2": "コードを紛失した場合は、サポートまでご連絡ください。"
+		"OTP_FORM_SUBNOTE_LINE_2": "コードを紛失した場合は、サポートまでご連絡ください。",
+		"OTP_FORM_SUBNOTE_LINE_3": "(Google Authenticator に新しいアカウントを追加するには、「+」ボタンをクリックします。前の手順で提供された QR コードをスキャンするか、キーを手動で入力してアプリにアカウントを追加できます。)",
+		"INPUT_TEXT": "携帯電話の Google Authenticator アプリから 6 桁のコードを入力します。"
 	},
 	"QUICK_TRADE_COMPONENT": {
 		"TITLE": "クイック取引",
@@ -255,7 +260,16 @@
 		"SOURCE_TEXT": "ブローカーOTC取引",
 		"SOURCE_TEXT_NETWORK": "ネットワークブローカーのOTC取引",
 		"VISIT": "訪問{0}",
-		"ASSET_INFO_PAGE": "アセット情報ページ"
+		"ASSET_INFO_PAGE": "アセット情報ページ",
+		"CHANGE_TEXT_7D": "7Dチェンジ",
+		"HIGH_7D": "7Dハイ",
+		"LOW_7D": "7D ロー",
+		"7D": "7D",
+		"1D": "1D",
+		"COIN_NAME": "{0} ({1})",
+		"COIN_INFORMATION": "{0} 情報",
+		"PRICE_TREND": "価格動向",
+		"VIEW_TREND": "トレンドの表示"
 	},
 	"PREVIOUS_PAGE": "前のページ",
 	"NEXT_PAGE": "次のページ",
@@ -583,6 +597,28 @@
 			"ADJUST": "(パーセンテージの設定)",
 			"ACTIVATE_RISK_MANAGEMENT": "リスク管理の実行",
 			"WARNING_POP_UP": "警告メッセージ"
+		},
+		"TITLE_ACCOUNT": "アカウント",
+		"DELETE_ACCOUNT": {
+			"ACCESS": {
+				"TEXT": "アカウントを削除したいですか? {0}をクリックします。",
+				"LINK": "ここ",
+				"DANGER_ZONE": {
+					"TITLE": "危険区域",
+					"TEXT": "アカウントを削除すると、アカウントと資金の両方にアクセスできなくなります。",
+					"PROCEED": "進む",
+					"CANCEL": "キャンセル"
+				}
+			},
+			"CONFIRMATION": {
+				"TITLE": "アカウントを削除する",
+				"TEXT_1": "アカウントを削除すると、すべてのデータが取引所から永久に削除されます。この操作は元に戻せません。",
+				"TEXT_2": "「{0}」と入力してアカウントの削除を確認します。",
+				"KEY": "わかりました",
+				"DELETE": "消去",
+				"CANCEL": "キャンセル",
+				"PLACEHOLDER": "ここに入力"
+			}
 		}
 	},
 	"TRANSACTION_HISTORY": {
@@ -596,7 +632,12 @@
 		"WITHDRAWALS": "出金",
 		"ORDERID": "注文ID",
 		"TRIGGER_STOP_PRICE": "トリガー/ストップ価格",
-		"TIME_OF_LAST_TRADE": "前回の取引時刻"
+		"TIME_OF_LAST_TRADE": "前回の取引時刻",
+		"INTERNAL": "内部",
+		"BLOCKCHAIN": "ブロックチェーン",
+		"STAKE": "賭け金",
+		"REFERRAL": "照会",
+		"QUICK_TRADE_TOOLTIP": "変換システムを通じて実行される注文"
 	},
 	"ACCOUNT_SECURITY": {
 		"TITLE_TEXT": "2段階認証、パスワード、APIキー、その他のセキュリティ関連機能でアカウントのセキュリティ設定を調整できます。",
@@ -620,7 +661,7 @@
 				"MESSAGE_4": "この2段階認証コードを安全に保存して、携帯電話を変更または、紛失した場合に復元することができます。",
 				"MESSAGE_5": "手動で入力",
 				"INPUT": "OTPコードを入力してください。",
-				"WARNING": "アカウントのセキュリティをより強化するため、認証アプリによる2段階認証(2FA)の設定を強く推奨いたします。",
+				"WARNING": "私たち{0} {1}",
 				"ENABLE": "2段階認証を設定する",
 				"DISABLE": "2段階認証を解除する",
 				"SECRET_1": "Enter yor secret key",
@@ -629,12 +670,43 @@
 				"INPUT_1": "Secret Key",
 				"TITLE_2": "OTP(One-Time Password)コード入力",
 				"MESSAGE_6": "下に6桁のOTPコードを入力してください。",
-				"INPUT_2": "OTPコード"
+				"INPUT_2": "OTPコード",
+				"STRONGLY_RECOMMEND": "強くお勧めします",
+				"WARNING_CONTENT": "アカウントのセキュリティを強化し、資金を保護するために2要素認証を有効にしてください"
 			},
 			"FORM": {
 				"PLACEHOLDER": "Google Authenticatorから発行されたOTPコードを入力してください。",
 				"BUTTON": "2段階認証を設定する"
-			}
+			},
+			"DOWNLOAD_APP": "Download and install",
+			"GOOGLE_AUTHENTICATOR": "Google Authenticator:",
+			"DOWNLOAD_FROM": "ダウンロードはこちら",
+			"GOOGLE_PLAY": "グーグルプレイ",
+			"APPLE": "アプリストア",
+			"APP_INFO": "Google Authenticator は、ログインや資金の引き出しなどの機密性の高い操作に必要なランダムなコードを生成します。",
+			"DONT_UNINSTALL": "アプリをアンインストールしないでください。",
+			"INFO_UNINSTALL": "誤って携帯電話を紛失したり、意図せずにアンインストールしたりした場合、アカウントへのアクセスが回復するまでに時間がかかることがあります。そのような場合は、サポート チームに連絡して支援を受ける必要があります。",
+			"BACK": "戻る",
+			"PROCEED": "進む",
+			"NEXT": "次",
+			"NOTE": "注記: {0} {1}",
+			"MANUEL_DESCRIPTION": "前の手順で手動の 2FA シードを入力してください。",
+			"MANUEL_DESCRIPTION_2": "上記の手動検証を注意深く書き留めて保管してください",
+			"MANUEL_DESCRIPTION_3": "アカウントの回復に使用できるキーです。",
+			"MANUEL_KEY": "手動 2FA シード",
+			"MANUEL_PLACEHOLDER": "2FAシードを入力してください",
+			"MANUEL_WARNING": "(将来使用するために必ず書き留めて安全に保管してください。)",
+			"MANUEL_ERROR_1": "手動2FAシードを入力してください",
+			"MANUEL_ERROR_2": "前の手順で手動2FAシードを入力してください",
+			"ACCOUNT_SECURED": "アカウントは保護されています",
+			"2FA_ENABLED": "2FAが有効",
+			"2FA_DISABLED": "2FAが無効です",
+			"2FA_CONTENT_ONE": "{0} {1} をアクティブ化しています。",
+			"2FA_CONTENT_TWO": "（2要素認証）は、資金を保護するための追加の保護層を追加します。有効にすると、ログインまたは資産を引き出すたびに、携帯電話から確認コードを入力する必要があります。この機能により、アカウントのセキュリティが大幅に強化されます。",
+			"2FA_CONTENT_THREE": "（2要素認証）は、資金を保護するための追加の保護層を追加します",
+			"2FA_CONTENT_FOUR": "2FAを無効にするには、2FA（OTP）コードを入力する必要があります",
+			"INPUT_SIX_DIGIT_CODE": "携帯電話の Google Authenticator アプリから 6 桁のコードを入力します。",
+			"INPUT_CONTENT": "(Google Authenticator に新しいアカウントを追加するには、「+」ボタンをクリックします。前の手順で提供された QR コードをスキャンするか、キーを手動で入力してアプリにアカウントを追加できます。)"
 		},
 		"CHANGE_PASSWORD": {
 			"TITLE": "パスワードの変更",
@@ -788,7 +860,7 @@
 	"WALLET_BUTTON_BASE_WITHDRAW": "出金",
 	"WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT": "受取",
 	"WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW": "送金",
-	"AVAILABLE_BALANCE_TEXT": "使用可能な {0} 残高 : {1} {2}",
+	"AVAILABLE_BALANCE_TEXT": "利用可能な {0} 残高: {1} {2} {3}",
 	"BALANCE_TEXT": "残高",
 	"CURRENCY_BALANCE_TEXT": "{0} Balance",
 	"WALLET_ALL_ASSETS": "総資産",
@@ -1052,7 +1124,8 @@
 		"VOLUME_24H": "24時間のボリューム",
 		"VIEW_VERIFICATION": "確認を表示",
 		"EARN_COMMISSION": "コミッションを獲得する",
-		"ID_VERIFICATION": "本人確認："
+		"ID_VERIFICATION": "本人確認：",
+		"VOLUME_7D": "7Dボリューム"
 	},
 	"REFERRAL_LINK": {
 		"TITLE": "お友達招待",
@@ -1107,7 +1180,11 @@
 		"CHART_24H": "チャート（24時間）",
 		"TRADING_SYMBOL": "取引シンボル",
 		"TYPE": "タイプ",
-		"SOURCE": "ソース"
+		"SOURCE": "ソース",
+		"CHANGE_7D": "変更(7日間)",
+		"CHANGE_1D": "変更(1日)",
+		"CHART_7D": "チャート（7日間）",
+		"ASSET": "資産"
 	},
 	"MARKET_OPTIONS": { "LIST": "リスト", "CARD": "カード" },
 	"ALL": "すべて",
@@ -1153,7 +1230,9 @@
 		"BUTTON": "送信",
 		"ERROR_INVALID": "入力したコードは間違っています。もう一度試してください",
 		"OTP_LABEL": "2FA コード (OTP)",
-		"OTP_PLACEHOLDER": "6 桁の 2 要素認証コードを入力してください"
+		"OTP_PLACEHOLDER": "6 桁の 2 要素認証コードを入力してください",
+		"FORM_TITLE_TEXT": "プロセスを完了するために必要な一意のコードがメールに送信されました。メールに送信されたコードを以下に入力してください。{0}",
+		"OTP_NOTE": " OTPコードと一緒に"
 	},
 	"USER_APPS": {
 		"TITLE": "あなたの交換アプリ",
@@ -1279,7 +1358,11 @@
 		"COMPLETED_TOOLTIP": "ステークは成熟しています。ステークを続けてさらに多くの報酬を獲得するか、ステークを解除して報酬を獲得してください。",
 		"CONNECT_ERROR": "財布を確認してください",
 		"INSTALL_METAMASK": "Metamask をブラウザにインストールする必要があります: https://metamask.io/download.html",
-		"INSTALL_METAMASK_TITLE": "メタマスクが検出されない"
+		"INSTALL_METAMASK_TITLE": "メタマスクが検出されない",
+		"INSTALL_METAMASK_DETAILS": {
+			"TITLE": "メタマスクをインストールする",
+			"PROMPT": "メタマスクをブラウザにインストールする必要があります: {0}"
+		}
 	},
 	"UNSTAKE": {
 		"TITLE": "ステークを解除する",
@@ -1411,7 +1494,9 @@
 		"REQUIRES_24H_TO_SETTLE_NOTICE": "決済には24時間かかります",
 		"SUCCESSFUL_UNSTAKE_NOTICE": "正常に資産を引き出しました",
 		"VISIT_WALLET_BUTTON": "ウォレットを訪問",
-		"CLOSE_BUTTON": "閉じる"
+		"CLOSE_BUTTON": "閉じる",
+		"ACTIVE_STAKES": "アクティブステークス",
+		"STAKES_HISTORY": "歴史"
 	},
 	"MOVE_XHT": {
 		"TITLE": "XHTの移動",
@@ -1433,8 +1518,16 @@
 	"CURRENCY_WALLET": {
 		"BACK": "戻る",
 		"WALLET_PAGE": "{0} ウォレット ページへ",
-		"LEARN_MORE": "もっと詳しく知る",
-		"ABOUT": "{0}について"
+		"LEARN_MORE": "詳細はこちら{0}",
+		"ABOUT": "について",
+		"TOTAL_BALANCE": "合計残高: {0} {1}",
+		"AVAILABLE_BALANCE": "利用可能な残高 : {0} {1} {2}",
+		"PERCENTAGE_SHARE": "割合シェア {0}",
+		"EARN_BY": "{0} {1}までに獲得",
+		"STAKING": "ステーキング",
+		"TOOLTIP": "残高が保留状態ではない、または取引でロックアップされていない（オープン注文）",
+		"WALLET_HAS_BALANCE_PERCENTAGE": "現在、ウォレットには {0} がありません。",
+		"WALLET_DEPOSIT": "{0} を入金するか、{1} を購入してみてください"
 	},
 	"DEPOSIT_FORM_NETWORK_WARNING": "選択したネットワークが送信者のウォレット ネットワークと互換性があることを確認してください",
 	"DEPOSIT_FORM_MIN_WARNING": "{0} {1} 以上の入金のみ受け付けます。この最低閾値を下回る入金は資金を永久に失うことになります。",
@@ -1638,7 +1731,12 @@
 		"QUICK_TRADE": "クイックトレード",
 		"MARKETS": "市場",
 		"WALLET": "財布",
-		"PRICE_SOURCE": "価格ソース"
+		"PRICE_SOURCE": "価格ソース",
+		"PRO_TRADE": "プロトレード",
+		"ORDERBOOK": "オーダーブック",
+		"NETWORK": "ネットワークブローカーOTC",
+		"BROKER": "ローカルブローカーOTC",
+		"BROKERAGE": "NA - (仲介)"
 	},
 	"HOLLAEX_TOKEN": {
 		"REMOVE_FAVOURITES": "お気に入りから削除",
@@ -1656,7 +1754,15 @@
 		"TRADE": "トレード",
 		"LIST": "デジタル資産をリストしたいですか?",
 		"WEBSITE": "Webサイト",
-		"EXPLORER": "冒険者"
+		"EXPLORER": "冒険者",
+		"QUICK_TRADE": "クイックトレード {0}",
+		"PRICES": {
+			"TITLE": "価格",
+			"QUICK_TRADE": "クイックトレード",
+			"SUBTITLE": "{0} の売買価格を確認するには、{1} にアクセスしてください",
+			"FOOTER": "マーケットテイカー取引手数料は、クイックトレードを通じて実行されるすべての取引に適用されます。"
+		},
+		"PRO_TRADE": "{0} マーケットを見る"
 	},
 	"ACCORDIAN": {
 		"ACCORDIAN_ASSETS": "すべてのウォレット資産",
@@ -1707,12 +1813,25 @@
 				"TABLE_1": {
 					"TITLE": "独立した出金制限",
 					"SUBTITLE": "独自の独立した 24 時間出金ルールに従う集合制限ルールから切り離された資産:",
-					"HEADER": { "CURRENCY": "通貨・資産", "LIMIT": "24時間制限" },
-					"LIMIT_TEXT": "（すべての資産が一括出金限度額を共有する）"
+					"HEADER": {
+						"CURRENCY": "通貨・資産",
+						"LIMIT": "24時間制限",
+						"LIMIT_2": "月間限度額"
+					},
+					"LIMIT_TEXT": "（すべての資産が一括出金限度額を共有する）",
+					"LIMIT_TEXT_2": "(自国通貨のみに基づく制限)",
+					"VALUED": "(貴重品)",
+					"NO_INDEPENDENT": "この層には独立した制限はありません",
+					"LIMIT_TEXT_3": "(すべての資産が、{0} で指定された 1 日あたりの出金限度額を共有します)",
+					"LIMIT_TEXT_4": "(すべての資産が月単位の一括引き出し限度額を共有しており、{0} で表示されます)"
 				},
 				"TABLE_2": {
 					"TITLE": "共同共通標準出金限度額",
 					"SUBTITLE": "以下は、すべて同じ標準の 24 時間出金制限額ルールを共有する資産です。"
+				},
+				"TABLE_3": {
+					"TITLE": "集合的な制限",
+					"SUBTITLE": "コインのグループに対する日次および月次の合計出金限度額"
 				}
 			}
 		}
@@ -1788,5 +1907,60 @@
 				"CONFIRM": "確認"
 			}
 		}
-	}
+	},
+	"TRADE_TOOLS": "ツール",
+	"SECOND": "2番",
+	"CANT_FIND_MARKETS": "そのアセットからマーケットが見つかりません。",
+	"TRY_VISITING_ASSETS": "{0} にアクセスしてみてください。",
+	"ASSETS_PAGE": "アセットページ",
+	"NETWORK": "通信網",
+	"CATEGORY": "カテゴリー",
+	"ASSETS": "資産",
+	"QUICK_TRADE_QUOTE_EXPIRED_FIRST_LINE": "価格見積もりの有効期限が切れています。",
+	"QUICK_TRADE_QUOTE_EXPIRED_SECOND_LINE": "新しい価格を取得するには、「再見積」をクリックしてください。",
+	"QUICK_TRADE_QUOTE_EXPIRED_BUTTON": "見積依頼",
+	"ZERO_ASSET_2": "検出されました。作る",
+	"ZERO_ASSET_3": "以下に入金してください。",
+	"QUOTE_CONFIRMATION_EXPIRY_MSG": "価格見積は {0} {1} に期限切れになります",
+	"QUOTE_CONFIRMATION_EXPIRED_MSG_TEXT_1": "価格は期限切れです。",
+	"QUOTE_CONFIRMATION_EXPIRED_MSG_TEXT_2": "戻って新しい価格見積もりを取得します。",
+	"RISKY_TRADE_DISCLAIMER": {
+		"MSG_1": "この資産には高いリスクが伴う可能性があるため、本当に {0} ({1}) を取引したいかどうかを確認してください。",
+		"MSG_2": "極端なボラティリティ",
+		"MSG_3": "この資産の価値は不確実で保証されていないことを理解していることを確認するには、下のボックスにチェックを入れてください。",
+		"UNDERSTAND_RISK_MSG": "はい、リスクは理解しています"
+	},
+	"PROFIT_LOSS": {
+		"BACK": "戻る",
+		"BACK_TO_WALLET": "財布に",
+		"WALLET_PERFORMANCE_TITLE": "バランス性能",
+		"WALLET_PERFORMANCE_DESCRIPTION": "ウォレットの長期にわたる残高パフォーマンスと資産の内訳。下の日付をクリックすると、その日のウォレットのパフォーマンスが表示されます。",
+		"PL_7_DAY": "7日間の損益",
+		"EST_TOTAL_BALANCE": "東。総合収支",
+		"WEEK": "週",
+		"MONTH": "月",
+		"MONTHS": "月",
+		"WALLET_BALANCE": "ウォレット残高の内訳",
+		"WALLET_BALANCE_DESCRIPTION_1": "以下はウォレットの内訳です",
+		"WALLET_BALANCE_DESCRIPTION_2": "上のグラフをクリックして下の表を更新します。",
+		"DATE_SELECT": "日付を選択してください",
+		"ASSET_NAME": "アセット名",
+		"BALANCE_AMOUNT": "残高",
+		"VALUE": "価値",
+		"PERFORMANCE_TREND": "7日間のパフォーマンス傾向",
+		"CUSTOM_DATE_DESCRIPTION": "履歴データを取得する特定の日付を選択してください (日付の差が 3 か月を超えることはできません)",
+		"SELECT_START_DATE": "開始日を選択してください",
+		"SELECT_END_DATE": "終了日を選択してください",
+		"CUSTOM": "カスタム",
+		"BACK_CUSTOM": "戻る",
+		"PROOCED_CUSTOM": "進行済み",
+		"PL_DAYS": "日次損益",
+		"VIEW_MORE": "もっと見る{0}",
+		"SHOW_ASSET_BREAKDOWN": "資産の内訳を表示",
+		"PL_SUMMARY": "損益サマリー",
+		"BALANCE_HISTORY": "残高履歴"
+	},
+	"ASSET_INFO": "資産情報",
+	"TAKER_FEES_APPLIED": "テイカー手数料が適用されます",
+	"CANCEL_WITHDRAWAL_ADDRESS": "出金先住所"
 }

@@ -175,14 +175,14 @@ class AddTradeTab extends Component {
 						{!isMobile && (
 							<div className="d-flex justify-content-end">
 								<span className="trade_tabs-link link-separator">
-									<Link to="/assets">{STRINGS['ASSET_INFO_PAGE']}</Link>
+									<Link to="/prices">{STRINGS['ASSET_INFO_PAGE']}</Link>
 								</span>
 								{constants &&
 								constants.features &&
 								constants.features.quick_trade ? (
 									<span className="trade_tabs-link link-separator">
 										<Link to={`/quick-trade/${quickPair}`}>
-											{STRINGS['QUICK_TRADE']}
+											{STRINGS['DIGITAL_ASSETS.QUICK_TRADE']}
 										</Link>
 									</span>
 								) : null}

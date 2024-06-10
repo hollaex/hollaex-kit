@@ -11,7 +11,12 @@ import {
 	Help,
 	ActionNotification,
 } from 'components';
-import { DEFAULT_COIN_DATA } from 'config/constants';
+import { DEFAULT_COIN_DATA, BASE_CURRENCY } from 'config/constants';
+import {
+	formatCurrencyByIncrementalUnit,
+	calculateOraclePrice,
+} from 'utils/currency';
+import { assetsSelector } from './utils';
 import { formatToCurrency, getCurrencyFromName } from 'utils/currency';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
@@ -129,7 +134,31 @@ class Wallet extends Component {
 			coins[currency] || DEFAULT_COIN_DATA;
 		const balanceValue = balance[`${currency}_balance`] || 0;
 		const availableBalanceValue = balance[`${currency}_available`] || 0;
-
+		const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+		const filteredAssets = this.props.assets.filter(
+			(val) => val[1].symbol === currency
+		);
+		const [assetsValue] = filteredAssets.map(
+			([_, { increment_unit, oraclePrice }]) => ({
+				increment_unit,
+				oraclePrice,
+			})
+		);
+		const balanceText =
+			assetsValue &&
+			assetsValue.increment_unit &&
+			assetsValue &&
+			assetsValue.oraclePrice
+				? currency === BASE_CURRENCY
+					? formatCurrencyByIncrementalUnit(
+							balanceValue,
+							assetsValue.increment_unit
+					  )
+					: formatCurrencyByIncrementalUnit(
+							calculateOraclePrice(balanceValue, assetsValue.oraclePrice),
+							baseCoin.increment_unit
+					  )
+				: null;
 		return (
 			<div className="currency-wallet-wrapper">
 				<div className="d-flex mt-5 mb-5">
@@ -195,6 +224,22 @@ class Wallet extends Component {
 									)}
 								</EditWrapper>
 							</span>
+							{!isMobile &&
+								(currency !== BASE_CURRENCY &&
+								parseFloat(balanceText || 0) > 0 ? (
+									<p className="estimated-balance">
+										{`(≈ ${baseCoin.display_name} ${balanceText})`}
+									</p>
+								) : (
+									balanceText !== '0' && (
+										<div
+											className="loading-row-anime w-half"
+											style={{
+												animationDelay: `.${0 + 1}s`,
+											}}
+										/>
+									)
+								))}
 							<p className="available-balance-wrapper">
 								<EditWrapper stringId="CURRENCY_WALLET.AVAILABLE_BALANCE">
 									{STRINGS.formatString(
@@ -224,7 +269,7 @@ class Wallet extends Component {
 								{STRINGS.formatString(
 									STRINGS['CURRENCY_WALLET.LEARN_MORE'],
 									<Link
-										to={`/assets/coin/${currency}`}
+										to={`/prices/coin/${currency}`}
 										className="link-content"
 									>
 										{STRINGS['CURRENCY_WALLET.ABOUT']} {currency.toUpperCase()}
@@ -282,20 +327,23 @@ class Wallet extends Component {
 										currency.toUpperCase()
 									)}
 								</EditWrapper>
-								<EditWrapper stringId="CURRENCY_WALLET.WALLET_DEPOSIT">
-									{STRINGS.formatString(
-										STRINGS['CURRENCY_WALLET.WALLET_DEPOSIT'],
-										<Link
-											className="deposit-link"
-											to={`/wallet/${currency}/withdraw`}
-										>
-											{currency.toUpperCase()}
-										</Link>,
-										<Link className="buy-link" to={`/assets/coin/${currency}`}>
-											here
-										</Link>
-									)}
-								</EditWrapper>
+								{coins[currency].allow_deposit &&  coins[currency].allow_withdrawal ? (
+									<EditWrapper stringId="CURRENCY_WALLET.WALLET_DEPOSIT">
+										{STRINGS.formatString(
+											STRINGS['CURRENCY_WALLET.WALLET_DEPOSIT'],
+											<Link
+												className="deposit-link"
+												to={`/wallet/${currency}/withdraw`}
+											>
+												{currency.toUpperCase()}
+											</Link>,
+											<Link className="buy-link" to={`/prices/coin/${currency}`}>
+												here
+											</Link>
+										)}
+									</EditWrapper>
+								) : null
+								}
 							</React.Fragment>
 						) : chartData.length ? (
 							<DonutChart
@@ -319,17 +367,26 @@ class Wallet extends Component {
 	}
 }
 
-const mapStateToProps = ({ app, orderbook, user, asset: { chartData } }) => ({
-	coins: app.coins,
-	price: orderbook.price,
-	balance: user.balance,
-	activeLanguage: app.language,
-	contracts: app.contracts,
-	constants: app.constants,
-	quicktrade: app.quicktrade,
-	pairs: app.pairs,
-	pair: app.pair,
-	chartData,
-});
+const mapStateToProps = (store) => {
+	const {
+		app,
+		orderbook,
+		user,
+		asset: { chartData },
+	} = store;
+	return {
+		coins: app.coins,
+		price: orderbook.price,
+		balance: user.balance,
+		activeLanguage: app.language,
+		contracts: app.contracts,
+		constants: app.constants,
+		quicktrade: app.quicktrade,
+		pairs: app.pairs,
+		pair: app.pair,
+		chartData,
+		assets: assetsSelector(store),
+	};
+};
 
 export default connect(mapStateToProps)(withConfig(Wallet));

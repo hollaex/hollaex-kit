@@ -119,13 +119,15 @@ const CoinConfiguration = ({ coins }) => {
 				const data = response?.data?.kit?.coin_customizations || {};
 
 				for (const coin of Object.values(coins)) {
-					data[coin.symbol] = {
-						...(data[coin.symbol] || {
-							symbol: coin.symbol,
-							fee_markup: null,
-						}),
-						fullname: coin.fullname,
-					};
+					if (coin.type !== 'fiat') {
+						data[coin.symbol] = {
+							...(data[coin.symbol] || {
+								symbol: coin.symbol,
+								fee_markup: null,
+							}),
+							fullname: coin.fullname,
+						};
+					} else delete data[coin.symbol];
 				}
 				setCoinCustomizations(Object.values(data));
 				setCoinData(data);

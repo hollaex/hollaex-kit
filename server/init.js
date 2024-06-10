@@ -138,7 +138,14 @@ const checkStatus = () => {
 			const exchangePairs = [];
 
 			for (let coin of exchange.coins) {
-				configuration.coins[coin.symbol] = coin;
+				if (coin.type === 'fiat') {
+					configuration.coins[coin.symbol] = {
+						...coin,
+						...configuration?.kit?.fiat_fees?.[coin.symbol]
+					}
+				} else {
+					configuration.coins[coin.symbol] = coin;
+				}
 			}
 
 			for (let pair of exchange.pairs) {

@@ -658,6 +658,8 @@ const GeneralContent = ({
 											>
 												{selectedType === 'diy'
 													? 'Do-It-Yourself'
+													: selectedType === 'fiat'
+													? 'Enterprise'
 													: selectedType}
 											</p>
 										</div>
@@ -704,10 +706,7 @@ const GeneralContent = ({
 	};
 
 	const checkDisabled = (method) => {
-		if (
-			method === 'bank' ||
-			(selectedType === 'basic' && method === 'paypal')
-		) {
+		if (method === 'bank' || method === 'paypal') {
 			return true;
 		}
 		return false;
@@ -862,7 +861,7 @@ const GeneralContent = ({
 												{opt.method === 'cryptoCurrency' ? (
 													<>
 														<span>{opt.label} </span>
-														<span className="danger"> (up to 10% off) </span>
+														<span className="danger"> (up to 5% off) </span>
 														<span>
 															<img
 																src={STATIC_ICONS['FIRE_BALL']}

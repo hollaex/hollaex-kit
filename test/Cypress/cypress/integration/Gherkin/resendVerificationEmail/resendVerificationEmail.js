@@ -53,64 +53,29 @@ Then ('I should be redirected contact us page',()=>{
 
 When ('I confirm the registration by Email',()=>{
 
-    cy.visit(Cypress.env('EMAIL_PAGE'))
-
-    // Login to the email account
-    cy.get('#wdc_username_div').type(Cypress.env('EMAIL_ADMIN_USERNAME'));
-    cy.get('#wdc_password').type(Cypress.env('EMAIL_PASS'));
-    cy.get('#wdc_login_button').click();
-
-    // Open the latest email in the inbox
-    cy.get('#ext-gen52').click();
-    //prior signup email
-    cy.get(':nth-child(2) > .x-grid3-row-table > tbody[role="presentation"] > .x-grid3-row-body-tr > .x-grid3-body-cell > .x-grid3-row-body > .mail-body-row > tbody > tr > .subject > .grid_compact')
-    .contains('sandbox Sign Up')
-    //the last emil
-    cy.get('.x-grid3-row-first > .x-grid3-row-table > tbody[role="presentation"] > .x-grid3-row-body-tr > .x-grid3-body-cell > .x-grid3-row-body > .mail-body-row > tbody > tr > .subject > .grid_compact')
-      .dblclick();
-    cy.wait(5000);
-
-    // Verify the email content
-    cy.get('.preview-title').contains('sandbox Sign Up');
-    cy.fixture('example')
-    .then((user)=>{
-         cy.get('.giraffe-emailaddress-link').last().contains(user.email);
-     })
-    
-    cy.get('iframe').then(($iframe) => {
-      const $emailBody = $iframe.contents().find('body');
-      cy.wrap($emailBody).as('emailBody');
+   
+    cy.task('getLastEmail', {
+    user: Cypress.env('EMAIL_ADMIN'),
+    password: Cypress.env('EMAIL_PASS'),
+    host: Cypress.env('EMAIL_HOST'),
+    port: 993,
+    tls: true  })
+    .then((emailContent) => {
+     cy.extractText(emailContent).then((extractedText) => {
+     cy.log(`Extracted Text: ${extractedText}`);
+     cy.fixture('example')
+      .then((user)=>{
+       expect(extractedText).to.include(user.email)
+    })
+  
+      cy.findFirstHyperlinkAfterMyWord(extractedText,'[').then((link) => {
+      cy.forceVisit(link);
+      cy.contains('Confirm Sign Up').should('exist')
+      cy.contains('CONFIRM SIGN UP').click()
+      cy.contains('Success').should('exist')
     });
-    cy.get('@emailBody')
-      .find('a')
-      .should('exist');
-    cy.get('@emailBody')
-      .contains('You need to confirm your email account by clicking the button below.');
-
-    // Get all the links with "https" protocol from the email body
-    cy.get('@emailBody')
-      .find('a')
-      .then(($links) => {
-        const httpsLinks = [];
-        $links.each((index, link) => {
-          const href = link.href;
-          if (href && href.startsWith('https')) {
-            httpsLinks.push(href);
-          }
-        });
-        cy.wrap(httpsLinks[1]).as('httpsLink');
-      });
-
-    // Log the list of https links
-    cy.get('@httpsLink')
-      .then((httpsLink) => {
-        console.log(httpsLink);
-        cy.forceVisit(httpsLink);
-      });
-     cy.contains('Confirm Sign Up').should('exist')
-     cy.contains('CONFIRM SIGN UP').click()
-     cy.contains('Success').should('exist')
-    
+  });
+  })
 })
 
 Then ('I am eligible to log in',()=>{})

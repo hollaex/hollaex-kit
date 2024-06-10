@@ -7,6 +7,7 @@ import {
 	App as Container,
 	Account,
 	MainWallet,
+	P2P,
 	CurrencyWallet,
 	Login,
 	Signup,
@@ -80,7 +81,6 @@ import {
 	isLoggedIn,
 	getToken,
 	removeToken,
-	getTokenTimestamp,
 	isAdmin,
 	checkRole,
 } from './utils/token';
@@ -89,7 +89,6 @@ import {
 	getInterfaceLanguage,
 	getLanguageFromLocal,
 } from './utils/string';
-import { checkUserSessionExpired } from './utils/utils';
 import { getExchangeInitialized, getSetupCompleted } from './utils/initialize';
 import PluginConfig from 'containers/Admin/PluginConfig';
 import ConfirmChangePassword from 'containers/ConfirmChangePassword';
@@ -120,12 +119,7 @@ if (getLanguageFromLocal()) {
 let token = getToken();
 
 if (token) {
-	// check if the token has expired, in that case, remove token
-	if (checkUserSessionExpired(getTokenTimestamp())) {
-		removeToken();
-	} else {
-		store.dispatch(verifyToken(token));
-	}
+	store.dispatch(verifyToken(token));
 }
 
 function requireAuth(nextState, replace) {
@@ -396,16 +390,37 @@ export const generateRoutes = (routes = []) => {
 					name="Fees and limits"
 					component={FeesAndLimits}
 				/>
-				<Route path="assets" name="Digital Asset" component={DigitalAssets} />
+				<Route path="prices" name="Digital Asset" component={DigitalAssets} />
 				<Route path="white-label" name="WhiteLabel" component={WhiteLabel} />
 				<Route path="verification" name="Verification" component={Account} />
 				<Route path="wallet" name="Wallet" component={MainWallet} />
+				<Route
+					path="wallet/deposit"
+					name="Withdraw Deposit"
+					component={Deposit}
+					onEnter={requireAuth}
+				/>
+				<Route
+					path="wallet/withdraw"
+					name="Wallet"
+					component={Withdraw}
+					onEnter={requireAuth}
+				/>
 				<Route
 					path="wallet/history"
 					name="Wallet History"
 					component={MainWallet}
 					onEnter={requireAuth}
 				/>
+				<Route path="p2p" name="P2P" component={P2P} />
+
+				<Route
+					path="p2p/order/:order_id"
+					name="P2P Order"
+					component={P2P}
+					onEnter={requireAuth}
+				/>
+
 				<Route
 					path="wallet/:currency"
 					name="Wallet"
@@ -439,7 +454,7 @@ export const generateRoutes = (routes = []) => {
 					component={QuickTrade}
 				/>
 				<Route
-					path="assets/coin/:token"
+					path="prices/coin/:token"
 					name="Coin Page"
 					component={CoinPage}
 				/>

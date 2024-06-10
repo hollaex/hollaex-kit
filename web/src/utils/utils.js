@@ -3,7 +3,6 @@ import momentJ from 'moment-jalaali';
 import math from 'mathjs';
 import _toLower from 'lodash/toLower';
 import {
-	TOKEN_TIME,
 	TIMESTAMP_FORMAT,
 	TIMESTAMP_FORMAT_FA,
 	DEFAULT_TIMESTAMP_FORMAT,
@@ -42,12 +41,6 @@ bitcoin.toBTC = (satoshi) => {
 };
 
 export default bitcoin;
-
-export const checkUserSessionExpired = (loginTime) => {
-	const currentTime = Date.now();
-
-	return currentTime - loginTime > TOKEN_TIME;
-};
 
 export const getFormattedBOD = (date, format = DEFAULT_TIMESTAMP_FORMAT) => {
 	if (getLanguage() === 'fa') {

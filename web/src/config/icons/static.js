@@ -18,6 +18,7 @@ const icons = {
 	CANDLES_LOGO: '/assets/images/Light-theme-candles.svg',
 	SET_ADMIN_NETWORK_KEYS: '/assets/images/set-admin-network-keys.svg',
 	SET_ADMIN_EMAIL: '/assets/images/set-admin-email.svg',
+	REFERRAL_ICON: '/assets/images/referrals-icon.svg',
 	SET_ADMIN_PASSWORD: '/assets/images/set-admin-password.svg',
 	MAX_ICON: '/assets/images/maxIcon.svg',
 	SET_ADMIN_RETYPE_PASSWORD: '/assets/images/set-admin-retype-password.svg',
@@ -191,6 +192,9 @@ const icons = {
 	REVOKE_KEY: '/assets/images/revoke-key-red-slash.svg',
 	SMALL_WHITE_KEY: '/assets/images/small-white-key.svg',
 	TRANSPARENT_KEY: '/assets/images/transperent-key.svg',
+	GOOGLE_AUTHENTICATOR: '/assets/images/google-auth-icon.svg',
+	GOOGLE_PLAY: '/assets/images/google-play.svg',
+	APP_STORE: '/assets/images/appstore-apple_logo_black.svg',
 };
 
 export default icons;

@@ -141,7 +141,7 @@ class Markets extends Component {
 						<EditWrapper stringId="SUMMARY_MARKETS.VISIT_COIN_INFO_PAGE">
 							{STRINGS.formatString(
 								STRINGS['SUMMARY_MARKETS.VISIT_COIN_INFO_PAGE'],
-								<Link to="assets" className="link-text">
+								<Link to="prices" className="link-text">
 									{STRINGS['SUMMARY_MARKETS.HERE']}
 								</Link>
 							)}

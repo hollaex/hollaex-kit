@@ -126,7 +126,10 @@
 		"TAB_SIGNOUT": "Đăng xuất",
 		"TAB_APPS": "ứng dụng",
 		"TAB_STAKE": "Cổ phần",
-		"TAB_FIAT": "điều khiển fiat"
+		"TAB_FIAT": "điều khiển fiat",
+		"TAB_TRADE": "Buôn bán",
+		"PRO_TRADE": "chuyên nghiệp",
+		"QUICK_TRADE": "Nhanh"
 	},
 	"CONTACT_FORM": {
 		"CATEGORY_LABEL": "Hạng mục",
@@ -232,7 +235,9 @@
 		"ERROR_INVALID": "Mã OTP không hợp lệ",
 		"OTP_FORM_INFO": "Nhập mã gồm 6 chữ số của bạn để tiếp tục",
 		"OTP_FORM_SUBNOTE_LINE_1": "Mã của bạn còn được gọi là mã xác thực hai yếu tố (2FA) hoặc mã OTP.",
-		"OTP_FORM_SUBNOTE_LINE_2": "Nếu bạn bị mất mã, vui lòng liên hệ với bộ phận hỗ trợ."
+		"OTP_FORM_SUBNOTE_LINE_2": "Nếu bạn bị mất mã, vui lòng liên hệ với bộ phận hỗ trợ.",
+		"OTP_FORM_SUBNOTE_LINE_3": "(Để thêm tài khoản mới vào Google Authenticator, hãy nhấp vào nút '+'. Bạn có thể quét mã QR được cung cấp ở bước trước hoặc nhập khóa theo cách thủ công để thêm tài khoản của bạn vào ứng dụng.)",
+		"INPUT_TEXT": "Nhập mã gồm 6 chữ số từ ứng dụng Google Authenticator trên điện thoại của bạn:"
 	},
 	"QUICK_TRADE_COMPONENT": {
 		"TITLE": "Giao dịch nhanh",
@@ -252,7 +257,16 @@
 		"SOURCE_TEXT": "Giao dịch OTC của nhà môi giới",
 		"SOURCE_TEXT_NETWORK": "Giao dịch OTC của nhà môi giới mạng",
 		"VISIT": "Truy cập{0}",
-		"ASSET_INFO_PAGE": "Trang thông tin tài sản"
+		"ASSET_INFO_PAGE": "Trang thông tin tài sản",
+		"CHANGE_TEXT_7D": "Thay đổi 7D",
+		"HIGH_7D": "CAO 7D",
+		"LOW_7D": "7D THẤP",
+		"7D": "7D",
+		"1D": "1D",
+		"COIN_NAME": "{0} ({1})",
+		"COIN_INFORMATION": "thông tin {0}",
+		"PRICE_TREND": "Xu hướng giá",
+		"VIEW_TREND": "Xem xu hướng"
 	},
 	"PREVIOUS_PAGE": "Trang trước",
 	"NEXT_PAGE": "Trang tiếp theo",
@@ -583,6 +597,28 @@
 			"ADJUST": "(ĐIỀU CHỈNH TỶ LỆ)",
 			"ACTIVATE_RISK_MANAGEMENT": "Bật quản lý nguy hiểm",
 			"WARNING_POP_UP": "Cửa sổ cảnh báo"
+		},
+		"TITLE_ACCOUNT": "Tài khoản",
+		"DELETE_ACCOUNT": {
+			"ACCESS": {
+				"TEXT": "Bạn muốn xóa tài khoản của mình? Nhấp vào {0}.",
+				"LINK": "đây",
+				"DANGER_ZONE": {
+					"TITLE": "Khu vực nguy hiểm",
+					"TEXT": "Xóa tài khoản của bạn sẽ khiến cả tài khoản và tiền của bạn không thể truy cập được.",
+					"PROCEED": "Tiếp tục",
+					"CANCEL": "Hủy bỏ"
+				}
+			},
+			"CONFIRMATION": {
+				"TITLE": "Xóa tài khoản",
+				"TEXT_1": "Xóa tài khoản của bạn sẽ xóa vĩnh viễn tất cả dữ liệu của bạn khỏi sàn giao dịch. Hành động này là không thể đảo ngược.",
+				"TEXT_2": "LOẠI {0} để xác nhận xóa tài khoản.",
+				"KEY": "TÔI HIỂU",
+				"DELETE": "XÓA BỎ",
+				"CANCEL": "Hủy bỏ",
+				"PLACEHOLDER": "Nhập ở đây"
+			}
 		}
 	},
 	"TRANSACTION_HISTORY": {
@@ -596,7 +632,12 @@
 		"WITHDRAWALS": "Rút tiền",
 		"ORDERID": "ID đơn đặt hàng",
 		"TRIGGER_STOP_PRICE": "Giá kích hoạt/dừng",
-		"TIME_OF_LAST_TRADE": "Thời gian giao dịch cuối cùng"
+		"TIME_OF_LAST_TRADE": "Thời gian giao dịch cuối cùng",
+		"INTERNAL": "nội bộ",
+		"BLOCKCHAIN": "chuỗi khối",
+		"STAKE": "cổ phần",
+		"REFERRAL": "giới thiệu",
+		"QUICK_TRADE_TOOLTIP": "Lệnh được thực hiện thông qua hệ thống chuyển đổi"
 	},
 	"ACCOUNT_SECURITY": {
 		"TITLE_TEXT": "Điều chỉnh các cài đặt bảo mật cho tài khoản của quý khách. Có thể cài đặt Xác thực 2 yếu tố, mật khẩu, khóa API và các chức năng bảo mật khác.",
@@ -620,7 +661,7 @@
 				"MESSAGE_4": "Quý khách có thể bảo quản mã này một cách an toàn để thiết lập lại 2FA trong trường hợp thay đổi hoặc bị mất điện thoại.",
 				"MESSAGE_5": "Thủ công",
 				"INPUT": "Vui lòng nhập mã (OTP) một lần",
-				"WARNING": "Chúng tôi khuyến khích quý khách cài đặt Xác thực 2 yếu tố (2FA). Điều này sẽ giúp nâng cao độ bảo mật cho tài khoản của quý khách.",
+				"WARNING": "Chúng tôi {0} {1}",
 				"ENABLE": "Bật Xác thực 2 yếu tố",
 				"DISABLE": "Tắt Xác thực 2 yếu Tối",
 				"SECRET_1": "Enter yor secret key",
@@ -629,12 +670,43 @@
 				"INPUT_1": "Secret Key",
 				"TITLE_2": "Nhập mật khẩu một lần (OTP)",
 				"MESSAGE_6": "Vui lòng nhập mật khẩu một lần bao gồm 6 ký tự xuống phía dưới.",
-				"INPUT_2": "Mật khẩu một lần (OTP)"
+				"INPUT_2": "Mật khẩu một lần (OTP)",
+				"STRONGLY_RECOMMEND": "khuyến khích mạnh mẽ",
+				"WARNING_CONTENT": "rằng bạn kích hoạt xác thực hai yếu tố để tăng cường tính bảo mật cho tài khoản và bảo vệ tiền của bạn"
 			},
 			"FORM": {
 				"PLACEHOLDER": "Vui lòng nhập OTP được cung cấp bởi Google Authenticator.",
 				"BUTTON": "Bật 2FA"
-			}
+			},
+			"DOWNLOAD_APP": "Tải xuống và cài đặt",
+			"GOOGLE_AUTHENTICATOR": "Trình xác thực của Google:",
+			"DOWNLOAD_FROM": "Tải xuống từ",
+			"GOOGLE_PLAY": "GooglePlay",
+			"APPLE": "Cửa hàng ứng dụng",
+			"APP_INFO": "Google Authenticator sẽ tạo mã ngẫu nhiên cần thiết cho các hành động nhạy cảm, chẳng hạn như đăng nhập và rút tiền.",
+			"DONT_UNINSTALL": "Vui lòng không gỡ cài đặt ứng dụng.",
+			"INFO_UNINSTALL": "Trong trường hợp vô tình làm mất điện thoại hoặc vô tình gỡ cài đặt, bạn có thể gặp phải sự chậm trễ trong việc lấy lại quyền truy cập vào tài khoản của mình. Trong những trường hợp như vậy, bạn sẽ cần liên hệ với nhóm hỗ trợ của chúng tôi để được hỗ trợ.",
+			"BACK": "MẶT SAU",
+			"PROCEED": "TIẾP TỤC",
+			"NEXT": "Kế tiếp",
+			"NOTE": "Lưu ý: {0} {1}",
+			"MANUEL_DESCRIPTION": "Vui lòng nhập hạt giống 2FA thủ công từ bước trước.",
+			"MANUEL_DESCRIPTION_2": "Vui lòng viết cẩn thận và lưu trữ xác minh thủ công ở trên",
+			"MANUEL_DESCRIPTION_3": "key vì nó có thể được sử dụng để khôi phục tài khoản.",
+			"MANUEL_KEY": "Hướng dẫn sử dụng hạt giống 2FA",
+			"MANUEL_PLACEHOLDER": "Nhập hạt giống 2FA của bạn",
+			"MANUEL_WARNING": "(Hãy chắc chắn rằng bạn đã viết nó ra và lưu trữ an toàn để sử dụng sau này.)",
+			"MANUEL_ERROR_1": "Vui lòng nhập hạt giống 2FA thủ công",
+			"MANUEL_ERROR_2": "Vui lòng nhập hạt giống 2FA thủ công từ bước trước",
+			"ACCOUNT_SECURED": "Tài khoản được bảo mật",
+			"2FA_ENABLED": "BẬT 2FA",
+			"2FA_DISABLED": "2FA bị TẮT",
+			"2FA_CONTENT_ONE": "Đang kích hoạt {0} {1} .",
+			"2FA_CONTENT_TWO": "(Xác thực hai yếu tố) bổ sung thêm một lớp bảo vệ để bảo vệ tiền của bạn. Sau khi được bật, bạn sẽ được yêu cầu nhập mã xác minh từ điện thoại của mình mỗi lần đăng nhập hoặc rút tài sản. Tính năng này tăng cường đáng kể tính bảo mật cho tài khoản của bạn",
+			"2FA_CONTENT_THREE": "(Xác thực hai yếu tố) bổ sung thêm một lớp bảo vệ để bảo vệ tiền của bạn",
+			"2FA_CONTENT_FOUR": "Để tắt 2FA, bạn cần nhập mã 2FA (OTP) của mình",
+			"INPUT_SIX_DIGIT_CODE": "Nhập mã gồm 6 chữ số từ ứng dụng Google Authenticator trên điện thoại của bạn:",
+			"INPUT_CONTENT": "(Để thêm tài khoản mới vào Google Authenticator, hãy nhấp vào nút '+'. Bạn có thể quét mã QR được cung cấp ở bước trước hoặc nhập khóa theo cách thủ công để thêm tài khoản của bạn vào ứng dụng.)"
 		},
 		"CHANGE_PASSWORD": {
 			"TITLE": "Thay đổi mật khẩu",
@@ -733,7 +805,9 @@
 		"REQUIRES_24H_TO_SETTLE_NOTICE": "Yêu cầu 24 giờ để thanh toán.",
 		"SUCCESSFUL_UNSTAKE_NOTICE": "Bạn đã rút cọc thành công",
 		"VISIT_WALLET_BUTTON": "TRUY CẬP VÍ",
-		"CLOSE_BUTTON": "ĐÓNG"
+		"CLOSE_BUTTON": "ĐÓNG",
+		"ACTIVE_STAKES": "Cổ phần đang hoạt động",
+		"STAKES_HISTORY": "Lịch sử"
 	},
 	"CURRENCY": "Loại tiền",
 	"TYPE": "Type",
@@ -839,7 +913,7 @@
 	"WALLET_BUTTON_BASE_WITHDRAW": "Rút tiền",
 	"WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT": "Nhận",
 	"WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW": "Gửi",
-	"AVAILABLE_BALANCE_TEXT": "Số dư {0} khả dụng : {1} {2}",
+	"AVAILABLE_BALANCE_TEXT": "Số dư {0} khả dụng: {1} {2} {3}",
 	"BALANCE_TEXT": "Số dư",
 	"CURRENCY_BALANCE_TEXT": "{0} Balance",
 	"WALLET_ALL_ASSETS": "Tất cả tài sản",
@@ -1103,7 +1177,8 @@
 		"VIEW_MORE_MARKETS": "Xem thêm thị trường",
 		"VIEW_VERIFICATION": "xem xác minh",
 		"EARN_COMMISSION": "Kiếm tiền hoa hồng",
-		"ID_VERIFICATION": "xác minh ID:"
+		"ID_VERIFICATION": "xác minh ID:",
+		"VOLUME_7D": "Khối lượng 7D"
 	},
 	"REFERRAL_LINK": {
 		"TITLE": "Mời bạn",
@@ -1159,7 +1234,11 @@
 		"CHART_24H": "Biểu đồ (24 giờ)",
 		"TRADING_SYMBOL": "Biểu tượng giao dịch",
 		"TYPE": "Kiểu",
-		"SOURCE": "NGUỒN"
+		"SOURCE": "NGUỒN",
+		"CHANGE_7D": "Thay đổi (7 ngày)",
+		"CHANGE_1D": "Thay đổi (1 ngày)",
+		"CHART_7D": "Biểu đồ (7 ngày)",
+		"ASSET": "Tài sản"
 	},
 	"ORDER_MODE": "Chế độ đặt hàng",
 	"REGULAR": "Thông thường",
@@ -1204,7 +1283,9 @@
 		"BUTTON": "nộp",
 		"ERROR_INVALID": "Mã bạn đã nhập không chính xác. Vui lòng thử lại",
 		"OTP_LABEL": "Mã 2FA (OTP)",
-		"OTP_PLACEHOLDER": "Nhập mã xác thực hai yếu tố gồm 6 chữ số của bạn"
+		"OTP_PLACEHOLDER": "Nhập mã xác thực hai yếu tố gồm 6 chữ số của bạn",
+		"FORM_TITLE_TEXT": "Một mã duy nhất đã được gửi đến email của bạn, mã này được yêu cầu để hoàn tất quá trình. Vui lòng nhập mã được gửi tới email của bạn bên dưới{0}.",
+		"OTP_NOTE": " cùng với mã OTP của bạn"
 	},
 	"USER_APPS": {
 		"TITLE": "Ứng dụng trao đổi của bạn",
@@ -1330,7 +1411,11 @@
 		"COMPLETED_TOOLTIP": "Cổ phần đã trưởng thành. Tiếp tục đặt cược để kiếm thêm phần thưởng hoặc hủy đặt cược để nhận phần thưởng.",
 		"CONNECT_ERROR": "Vui lòng kiểm tra ví của bạn",
 		"INSTALL_METAMASK": "Bạn phải cài đặt Metamask vào trình duyệt của mình: https://metamask.io/download.html",
-		"INSTALL_METAMASK_TITLE": "MetaMask không được phát hiện"
+		"INSTALL_METAMASK_TITLE": "MetaMask không được phát hiện",
+		"INSTALL_METAMASK_DETAILS": {
+			"TITLE": "Cài đặt MetaMask",
+			"PROMPT": "Bạn phải cài đặt Metamask vào trình duyệt của mình: {0}"
+		}
 	},
 	"UNSTAKE": {
 		"TITLE": "hủy bỏ cổ phần",
@@ -1433,8 +1518,16 @@
 	"CURRENCY_WALLET": {
 		"BACK": "Mặt sau",
 		"WALLET_PAGE": "{0} đến trang ví",
-		"LEARN_MORE": "Tìm hiểu thêm",
-		"ABOUT": "{0} về"
+		"LEARN_MORE": "Tìm hiểu thêm {0}",
+		"ABOUT": "Về",
+		"TOTAL_BALANCE": "Tổng số dư : {0} {1}",
+		"AVAILABLE_BALANCE": "Số dư khả dụng: {0} {1} {2}",
+		"PERCENTAGE_SHARE": "Phần trăm Chia sẻ {0}",
+		"EARN_BY": "Kiếm được bằng {0} {1}",
+		"STAKING": "đặt cược",
+		"TOOLTIP": "Số dư không ở trạng thái chờ xử lý hoặc bị khóa trong giao dịch (lệnh mở)",
+		"WALLET_HAS_BALANCE_PERCENTAGE": "Ví của bạn hiện không chứa bất kỳ {0} nào.",
+		"WALLET_DEPOSIT": "Bạn có thể thử gửi {0} hoặc mua {1}"
 	},
 	"WITHDRAWALS_FORM_NETWORK_LABEL": "Mạng",
 	"DEPOSIT_FORM_NETWORK_WARNING": "Đảm bảo mạng đã chọn tương thích với mạng ví của người gửi",
@@ -1644,7 +1737,12 @@
 		"QUICK_TRADE": "GIAO DỊCH NHANH CHÓNG",
 		"MARKETS": "CHỢ",
 		"WALLET": "CÁI VÍ",
-		"PRICE_SOURCE": "nguồn giá"
+		"PRICE_SOURCE": "nguồn giá",
+		"PRO_TRADE": "GIAO DỊCH CHUYÊN NGHIỆP",
+		"ORDERBOOK": "Quyển sổ đặc Mua hàng",
+		"NETWORK": "Nhà môi giới mạng OTC",
+		"BROKER": "Nhà môi giới địa phương OTC",
+		"BROKERAGE": "NA - (Môi giới)"
 	},
 	"HOLLAEX_TOKEN": {
 		"REMOVE_FAVOURITES": "Loại bỏ khỏi mục ưa thích",
@@ -1662,7 +1760,15 @@
 		"TRADE": "BUÔN BÁN",
 		"LIST": "Bạn muốn liệt kê các tài sản kỹ thuật số của mình?",
 		"WEBSITE": "Trang mạng",
-		"EXPLORER": "nhà thám hiểm"
+		"EXPLORER": "nhà thám hiểm",
+		"QUICK_TRADE": "GIAO DỊCH NHANH CHÓNG {0}",
+		"PRICES": {
+			"TITLE": "Giá cả",
+			"QUICK_TRADE": "Giao dịch nhanh",
+			"SUBTITLE": "Để xem giá mua và bán của {0}, hãy truy cập {1}",
+			"FOOTER": "Phí giao dịch của người thực hiện thị trường được áp dụng cho tất cả các giao dịch được thực hiện thông qua Giao dịch nhanh."
+		},
+		"PRO_TRADE": "XEM THỊ TRƯỜNG {0}"
 	},
 	"ACCORDIAN": {
 		"ACCORDIAN_ASSETS": "Tất cả tài sản ví",
@@ -1717,12 +1823,25 @@
 				"TABLE_1": {
 					"TITLE": "Giới hạn rút tiền độc lập",
 					"SUBTITLE": "Các tài sản được tách biệt khỏi quy tắc giới hạn tập thể tuân theo quy tắc rút tiền 24 giờ độc lập của riêng chúng:",
-					"HEADER": { "CURRENCY": "Tiền tệ/tài sản", "LIMIT": "giới hạn 24h" },
-					"LIMIT_TEXT": "(Các tài sản có chung số tiền giới hạn rút tiền chung)"
+					"HEADER": {
+						"CURRENCY": "Tiền tệ/tài sản",
+						"LIMIT": "giới hạn 24h",
+						"LIMIT_2": "Giới hạn hàng tháng"
+					},
+					"LIMIT_TEXT": "(Các tài sản có chung số tiền giới hạn rút tiền chung)",
+					"LIMIT_TEXT_2": "(Giới hạn chỉ dựa trên loại tiền tệ của chính nó)",
+					"VALUED": "(Có giá trị)",
+					"NO_INDEPENDENT": "Không có giới hạn độc lập cho cấp độ này",
+					"LIMIT_TEXT_3": "(Tất cả các tài sản đều có chung số tiền giới hạn rút tiền hàng ngày có mệnh giá bằng {0})",
+					"LIMIT_TEXT_4": "(Tất cả các tài sản đều có chung số tiền giới hạn rút tiền hàng tháng có mệnh giá bằng {0})"
 				},
 				"TABLE_2": {
 					"TITLE": "Giới hạn rút tiền tiêu chuẩn được chia sẻ tập thể",
 					"SUBTITLE": "Dưới đây là các tài sản có chung quy tắc giới hạn số tiền rút tiền trong 24 giờ tiêu chuẩn:"
+				},
+				"TABLE_3": {
+					"TITLE": "Giới hạn tập thể",
+					"SUBTITLE": "Tổng giới hạn rút tiền hàng ngày và hàng tháng cho một nhóm tiền"
 				}
 			}
 		}
@@ -1798,5 +1917,60 @@
 				"CONFIRM": "XÁC NHẬN"
 			}
 		}
-	}
+	},
+	"TRADE_TOOLS": "Công cụ",
+	"SECOND": "thứ hai",
+	"CANT_FIND_MARKETS": "Không thể tìm thấy bất kỳ thị trường nào từ tài sản đó.",
+	"TRY_VISITING_ASSETS": "Hãy thử truy cập {0}.",
+	"ASSETS_PAGE": "Trang tài sản",
+	"NETWORK": "Mạng",
+	"CATEGORY": "Loại",
+	"ASSETS": "Tài sản",
+	"QUICK_TRADE_QUOTE_EXPIRED_FIRST_LINE": "Báo giá đã hết hạn.",
+	"QUICK_TRADE_QUOTE_EXPIRED_SECOND_LINE": "Bấm vào báo giá lại để nhận giá mới.",
+	"QUICK_TRADE_QUOTE_EXPIRED_BUTTON": "YÊU CẦU",
+	"ZERO_ASSET_2": "được phát hiện. Làm một",
+	"ZERO_ASSET_3": "đặt cọc bên dưới.",
+	"QUOTE_CONFIRMATION_EXPIRY_MSG": "Báo giá sẽ hết hạn sau {0} {1}",
+	"QUOTE_CONFIRMATION_EXPIRED_MSG_TEXT_1": "Giá đã hết hạn.",
+	"QUOTE_CONFIRMATION_EXPIRED_MSG_TEXT_2": "Quay lại để nhận báo giá mới.",
+	"RISKY_TRADE_DISCLAIMER": {
+		"MSG_1": "Vui lòng kiểm tra xem bạn có thực sự muốn giao dịch {0} ({1}) không vì tài sản này có thể có rủi ro cao về",
+		"MSG_2": "biến động cực độ",
+		"MSG_3": "Chọn hộp bên dưới để xác nhận rằng bạn hiểu rằng giá trị của nội dung này là không chắc chắn và không được đảm bảo.",
+		"UNDERSTAND_RISK_MSG": "Có, tôi hiểu những rủi ro"
+	},
+	"PROFIT_LOSS": {
+		"BACK": "Mặt sau",
+		"BACK_TO_WALLET": "để ví",
+		"WALLET_PERFORMANCE_TITLE": "Cân bằng hiệu suất",
+		"WALLET_PERFORMANCE_DESCRIPTION": "Hiệu suất số dư của ví của bạn theo thời gian và phân tích tài sản. Nhấp vào ngày bên dưới để xem hiệu suất ví của bạn vào ngày đó.",
+		"PL_7_DAY": "Lãi lỗ 7 ngày",
+		"EST_TOTAL_BALANCE": "Phía đông. Tổng số dư",
+		"WEEK": "tuần",
+		"MONTH": "tháng",
+		"MONTHS": "tháng",
+		"WALLET_BALANCE": "Phân tích số dư ví",
+		"WALLET_BALANCE_DESCRIPTION_1": "Dưới đây là bảng phân tích ví trên",
+		"WALLET_BALANCE_DESCRIPTION_2": "Nhấp vào biểu đồ ở trên để cập nhật bảng bên dưới.",
+		"DATE_SELECT": "Chọn ngày",
+		"ASSET_NAME": "Tên tài sản",
+		"BALANCE_AMOUNT": "Số dư",
+		"VALUE": "Giá trị",
+		"PERFORMANCE_TREND": "Xu hướng hiệu suất trong 7 ngày",
+		"CUSTOM_DATE_DESCRIPTION": "Chọn ngày cụ thể để tìm nạp dữ liệu lịch sử của bạn (chênh lệch ngày không được quá 3 tháng)",
+		"SELECT_START_DATE": "Chọn ngày bắt đầu",
+		"SELECT_END_DATE": "Chọn ngày kết thúc",
+		"CUSTOM": "Phong tục",
+		"BACK_CUSTOM": "MẶT SAU",
+		"PROOCED_CUSTOM": "ĐƯỢC TIẾN HÀNH",
+		"PL_DAYS": "Lãi & Lỗ trong ngày",
+		"VIEW_MORE": "Xem thêm {0}",
+		"SHOW_ASSET_BREAKDOWN": "Hiển thị phân tích tài sản",
+		"PL_SUMMARY": "Tóm tắt P&L",
+		"BALANCE_HISTORY": "Lịch sử số dư"
+	},
+	"ASSET_INFO": "Thông tin tài sản",
+	"TAKER_FEES_APPLIED": "Phí Taker được áp dụng",
+	"CANCEL_WITHDRAWAL_ADDRESS": "Địa chỉ rút tiền"
 }

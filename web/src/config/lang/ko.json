@@ -57,7 +57,11 @@
 		"SECTION_3_CARD_5_TEXT": "고객의 니즈에 특별히 주의를 기울이며, 고객의 이슈와 문의에 도움을 줄 온라인 전문가를 제공합니다.",
 		"SECTION_3_CARD_6_TITLE": "KYC 통합",
 		"SECTION_3_CARD_6_TEXT": "유연하고 통합가능한 모듈로 KYC 및 사용자 인증방법을 다른 관할구역에서 적용할 수 있습니다.",
-		"SECTION_3_BUTTON_1": "데모 보기"
+		"SECTION_3_BUTTON_1": "데모 보기",
+		"MAIN_TITLE": "암호화폐 거래 거래소",
+		"MAIN_TEXT": "암호화폐 자산을 쉽게 사고 팔 수 있습니다. 이메일로 가입하시면 연중무휴 24시간 주요 암호화폐 자산을 거래하실 수 있습니다.",
+		"TRADE_CRYPTO": "거래 시작",
+		"VIEW_EXCHANGE": "교환 보기"
 	},
 	"FOOTER": {
 		"FOOTER_LANGUAGE_TEXT": "LANGUAGE",
@@ -94,7 +98,9 @@
 			"SECTION_6_LINK_2": "텔레그램"
 		},
 		"CLICK_HERE": "이곳을 클릭하세요.",
-		"VISIT_HERE": "방문하기"
+		"VISIT_HERE": "방문하기",
+		"TERMS_OF_SERVICE": "서비스 약관",
+		"PRIVACY_POLICY": "개인 정보 정책"
 	},
 	"ACCOUNTS": {
 		"TITLE": "계정",
@@ -107,7 +113,13 @@
 		"TAB_SUMMARY": "개요",
 		"TAB_HISTORY": "내역",
 		"TAB_API": "API",
-		"TAB_SIGNOUT": "로그아웃"
+		"TAB_SIGNOUT": "로그아웃",
+		"TAB_APPS": "앱",
+		"TAB_STAKE": "말뚝",
+		"TAB_FIAT": "법정화폐 통제",
+		"TAB_TRADE": "거래",
+		"PRO_TRADE": "찬성",
+		"QUICK_TRADE": "빠른"
 	},
 	"CONTACT_FORM": {
 		"CATEGORY_LABEL": "문의 유형",
@@ -138,19 +150,23 @@
 			"DESTINATION_TAG": "{0} 데스티네이션 태그(Destination Tag)",
 			"BTC": "비트코인 입금 주소",
 			"ETH": "이더리움 입금 주소",
-			"BCH": "비트코인캐시 입금 주소"
+			"BCH": "비트코인캐시 입금 주소",
+			"MEMO": "귀하의 {0} 메모"
 		},
 		"INCREASE_LIMIT": "한도 증액이 필요하십니까?",
 		"QR_CODE": "회원님에게 할당된 입금 전용주소로 입금을 위해 이 QR 코드를 스캔하실 수 있습니다.",
 		"NO_DATA": "이용가능한 정보가 없습니다.",
-		"FULL_MESSAGE_LIMIT": "{0}: {1} {2} {3}"
+		"FULL_MESSAGE_LIMIT": "{0}: {1} {2} {3}",
+		"QR_CODE_TITLE": "{0} 입금 정보"
 	},
 	"LOGIN": {
 		"LOGIN_TO": "{0} 로그인",
 		"CANT_LOGIN": "로그인이 안되십니까?",
 		"NO_ACCOUNT": "계정이 없으십니까?",
 		"CREATE_ACCOUNT": "계정만들기",
-		"HELP": "Help"
+		"HELP": "Help",
+		"LOOKING_PRICES": "가격을 찾고 계시나요?",
+		"VIEW_MARKETS": "시장 보기"
 	},
 	"FORM_FIELDS": {
 		"EMAIL_LABEL": "이메일",
@@ -179,7 +195,9 @@
 		"USER_EXIST": "이미 등록되어있는 이메일주소입니다.",
 		"ACCEPT_TERMS": "이용약관 및 개인정보 보호 정책에 동의하지 않으셨습니다.",
 		"STEP": "잘못된 값, step is {0}",
-		"ONLY_NUMBERS": "숫자만 입력가능합니다."
+		"ONLY_NUMBERS": "숫자만 입력가능합니다.",
+		"MIN_VALUE_NE": "값은 {0}보다 커야 합니다.",
+		"MAX_VALUE_NE": "값은 {0}보다 작아야 합니다."
 	},
 	"NOTIFICATIONS": {
 		"BUTTONS": {
@@ -204,14 +222,41 @@
 		"OTP_TITLE": "인증 번호",
 		"OTP_HELP": "도움",
 		"OTP_BUTTON": "확인",
-		"ERROR_INVALID": "OTP 번호가 유효하지 않습니다."
+		"ERROR_INVALID": "OTP 번호가 유효하지 않습니다.",
+		"OTP_FORM_INFO": "계속하려면 6자리 코드를 입력하세요.",
+		"OTP_FORM_SUBNOTE_LINE_1": "귀하의 코드는 2FA(2단계 인증기) 또는 OTP 코드라고도 합니다.",
+		"OTP_FORM_SUBNOTE_LINE_2": "코드를 분실한 경우 지원팀에 문의하세요.",
+		"OTP_FORM_SUBNOTE_LINE_3": "(Google OTP에 새 계정을 추가하려면 '+' 버튼을 클릭하세요. 이전 단계에서 제공된 QR 코드를 스캔하거나 수동으로 키를 입력하여 앱에 계정을 추가할 수 있습니다.)",
+		"INPUT_TEXT": "휴대전화의 Google OTP 앱에서 6자리 코드를 입력하세요."
 	},
 	"QUICK_TRADE_COMPONENT": {
 		"TITLE": "퀵트레이딩",
 		"TOTAL_COST": "총 금액",
-		"BUTTON": "{0} 주문 확인하기",
+		"BUTTON": "빠른 거래 검토",
 		"INPUT": "{0} {1}",
-		"TRADE_TITLE": "{0} {1}"
+		"TRADE_TITLE": "{0} {1}",
+		"INFO": "암호화폐를 거래하는 가장 빠르고 간단한 방법",
+		"CHANGE_TEXT": "변화",
+		"CHANGE_TEXT_7D": "7D 변화",
+		"HIGH_7D": "7D 높음",
+		"LOW_7D": "7일 낮음",
+		"7D": "7D",
+		"1D": "1D",
+		"HIGH_24H": "24시간 최고",
+		"LOW_24H": "24시간 최저",
+		"BEST_BID": "최고 입찰",
+		"BEST_ASK": "가장 좋은 질문",
+		"FOOTER_TEXT": "빠른 거래 수수료는 시장 테이커 요율을 사용합니다.",
+		"FOOTER_TEXT_1": "출처:",
+		"GO_TO_TEXT": "이동",
+		"SOURCE_TEXT": "브로커 OTC 거래",
+		"SOURCE_TEXT_NETWORK": "네트워크 브로커 OTC 거래",
+		"VISIT": "방문{0}",
+		"ASSET_INFO_PAGE": "자산 정보 페이지",
+		"COIN_NAME": "{0} ({1})",
+		"COIN_INFORMATION": "{0} 정보",
+		"PRICE_TREND": "가격 추세",
+		"VIEW_TREND": "추세 보기"
 	},
 	"PREVIOUS_PAGE": "이전페이지",
 	"NEXT_PAGE": "다음페이지",
@@ -221,7 +266,8 @@
 		"AVAILABLE_TRADING": "출금 가능 자산",
 		"ORDERS_PLURAL": "주문",
 		"ORDERS_SINGULAR": "주문",
-		"HOLD_ORDERS": "You have {0} open {1}, resulting in a hold of {2} {3} placed on your {4} balance"
+		"HOLD_ORDERS": "You have {0} open {1}, resulting in a hold of {2} {3} placed on your {4} balance",
+		"LOADING_ASSETS": "애셋 로드 중..."
 	},
 	"REQUEST_RESET_PASSWORD": {
 		"TITLE": "비밀번호 재설정",
@@ -263,7 +309,9 @@
 	},
 	"VERIFICATION_EMAIL_REQUEST": {
 		"TITLE": "이메일인증 재전송하기",
-		"BUTTON": "전송하기"
+		"BUTTON": "전송하기",
+		"SUBTITLE": "아래에서 다시 이메일 확인을 요청하세요.",
+		"SUPPORT": "연락처 지원"
 	},
 	"VERIFICATION_EMAIL_REQUEST_SUCCESS": {
 		"TITLE": "이메일이 재전송되었습니다.",
@@ -374,7 +422,8 @@
 				"PHONE_NUMBER_PLACEHOLDER": "휴대폰 번호를 입력해주시기 바랍니다.",
 				"SMS_SEND": "SMS보내기",
 				"SMS_CODE_LABEL": "SMS코드",
-				"SMS_CODE_PLACEHOLDER": "전송된 SMS코드를 입력해주시기 바랍니다."
+				"SMS_CODE_PLACEHOLDER": "전송된 SMS코드를 입력해주시기 바랍니다.",
+				"CONNECTING_LOADING": "연결 중"
 			},
 			"INFORMATION": {
 				"TEXT": "*중요: 회원님의 신분증과 동일하게 성명을 정확히 입력해주시기바랍니다. 기업 계정은 고객센터로 문의해주시기 바랍니다.",
@@ -426,7 +475,9 @@
 					"LIST_ITEM_3": "유효한 기간내의 파일로 만료 날짜가 선명하게 표시될 것",
 					"WARNING_1": "유효한 여권만 허용됩니다. 고품질의 사진 또는 스캔된 이미지를 제출해주시기바랍니다:",
 					"WARNING_2": "회원 본인의 문서가 맞는지 확인하시기 바랍니다. 이유를 불문하고 잘못되거나 위조된 문서를 사용할 시 법적처벌을 받게되며 계좌는 즉시 동결됩니다.",
-					"WARNING_3": "여권을 거주지 증빙서류로 제출하실 수 없습니다."
+					"WARNING_3": "여권을 거주지 증빙서류로 제출하실 수 없습니다.",
+					"LIST_ITEM_0": "모든 문서의 총 크기는 {0}MB를 초과할 수 없습니다.",
+					"VIOLATION_ERROR": "업로드한 모든 문서의 총 크기가 업로드 제한인 {0}MB를 초과합니다. 계속하려면 더 작은 파일을 업로드하세요."
 				},
 				"POR": {
 					"SECTION_1_TEXT_1": "본인인증 검토과정의 지연을 방지하기 위해 다음의 내용을 확인해주시기 바랍니다:",
@@ -475,7 +526,20 @@
 			"LIST_ITEM_1": "출금 한도 증가",
 			"LIST_ITEM_2": "입금 한도 증가",
 			"LIST_ITEM_3": "낮은 수수료"
-		}
+		},
+		"BASE_WITHDRAWAL": "법정화폐 인출",
+		"BASE_DEPOSITS": "법정화폐 예금",
+		"EMAIL_VERIFICATION": "확인 이메일 보내기",
+		"VERIFICATION_SENT": "확인 전송됨",
+		"VERIFICATION_SENT_INFO": "이메일을 확인하고 링크를 클릭하여 이메일을 확인하세요.",
+		"OKAY": "좋아요",
+		"TITLE_PAYMENT": "결제 수단 추가",
+		"PAYMENT_VERIFICATION": "결제 확인",
+		"START_PAYMENT_VERIFICATION": "인증 시작",
+		"PAYMENT_VERIFICATION_TEXT_1": "아래에 결제 계좌 세부정보를 추가하세요.",
+		"PAYMENT_VERIFICATION_TEXT_2": "확인된 후에는 귀하의 계정에 다양한 통화에 대한 더 많은 인출 및 입금 방법이 제공됩니다.",
+		"ADD_ANOTHER_PAYMENT_METHOD": "다른 결제 수단 추가",
+		"PAYMENT_VERIFICATION_HELP_TEXT": "이 섹션을 확인하려면 {0} 섹션을 완료해야 합니다."
 	},
 	"USER_SETTINGS": {
 		"TITLE_TEXT_1": "환경설정을 하실 수 있습니다.",
@@ -522,6 +586,28 @@
 			"ADJUST": "(백분율 설정하기)",
 			"ACTIVATE_RISK_MANAGEMENT": "리스크관리 실행",
 			"WARNING_POP_UP": "경고알림창"
+		},
+		"TITLE_ACCOUNT": "계정",
+		"DELETE_ACCOUNT": {
+			"ACCESS": {
+				"TEXT": "계정을 삭제하고 싶으신가요? {0}을 클릭합니다.",
+				"LINK": "여기",
+				"DANGER_ZONE": {
+					"TITLE": "위험지대",
+					"TEXT": "귀하의 계좌를 삭제하면 귀하의 계좌와 자금에 모두 접근할 수 없게 됩니다.",
+					"PROCEED": "진행하다",
+					"CANCEL": "취소"
+				}
+			},
+			"CONFIRMATION": {
+				"TITLE": "계정 삭제",
+				"TEXT_1": "계정을 삭제하면 교환에서 모든 데이터가 영구적으로 제거됩니다. 이 작업은 되돌릴 수 없습니다.",
+				"TEXT_2": "계정 삭제를 확인하려면 {0}을 입력하세요.",
+				"KEY": "이해합니다",
+				"DELETE": "삭제",
+				"CANCEL": "취소",
+				"PLACEHOLDER": "여기에 입력하세요"
+			}
 		}
 	},
 	"TRANSACTION_HISTORY": {
@@ -532,7 +618,15 @@
 		"TEXT_DOWNLOAD": "기록 다운로드",
 		"TRADES": "주문체결",
 		"DEPOSITS": "입금",
-		"WITHDRAWALS": "출금"
+		"WITHDRAWALS": "출금",
+		"ORDERID": "주문 아이디",
+		"TRIGGER_STOP_PRICE": "트리거/스톱 가격",
+		"TIME_OF_LAST_TRADE": "마지막 거래 시간",
+		"INTERNAL": "내부",
+		"BLOCKCHAIN": "블록체인",
+		"STAKE": "말뚝",
+		"REFERRAL": "추천",
+		"QUICK_TRADE_TOOLTIP": "전환 시스템을 통해 실행된 주문"
 	},
 	"ACCOUNT_SECURITY": {
 		"TITLE_TEXT": "계정의 보안 설정을 변경하세요. 이중인증, 비밀번호, API 키 및 관련 보안기능",
@@ -556,7 +650,7 @@
 				"MESSAGE_4": "이 2단계 인증 키를 안전하게 저장하시어 향후 휴대전화의 변경 또는 분실의 경우 복구를 위한 대비를 하실 수 있습니다.",
 				"MESSAGE_5": "수동",
 				"INPUT": "OTP 코드를 입력해주시기바랍니다.",
-				"WARNING": "2단계 인증(2FA) 설정을 적극권장합니다. 이를 통해 회원님의 자산의 보안이 크게 향상됩니다.",
+				"WARNING": "우리는 {0} {1}",
 				"ENABLE": "2단계 인증(2FA)  사용함",
 				"DISABLE": "2단계 인증(2FA) 사용안함",
 				"SECRET_1": "Enter yor secret key",
@@ -565,12 +659,43 @@
 				"INPUT_1": "Secret Key",
 				"TITLE_2": "OTP 입력",
 				"MESSAGE_6": "6자리 OTP 숫자를 입력하세요.",
-				"INPUT_2": "OTP 입력"
+				"INPUT_2": "OTP 입력",
+				"STRONGLY_RECOMMEND": "강력 추천",
+				"WARNING_CONTENT": "계정 보안을 강화하고 자금을 보호하기 위해 이중 인증을 활성화한다는 점"
 			},
 			"FORM": {
 				"PLACEHOLDER": "Google Authenticator에서 제공된 OTP를 입력해주시기바랍니다.",
 				"BUTTON": "2단계 인증(2FA)활성화"
-			}
+			},
+			"DOWNLOAD_APP": "다운로드 및 설치",
+			"GOOGLE_AUTHENTICATOR": "Google OTP:",
+			"DOWNLOAD_FROM": "에서 다운로드",
+			"GOOGLE_PLAY": "구글 플레이",
+			"APPLE": "앱 스토어",
+			"APP_INFO": "Google OTP는 로그인 및 자금 인출과 같은 민감한 작업에 필요한 임의의 코드를 생성합니다.",
+			"DONT_UNINSTALL": "앱을 제거하지 마세요.",
+			"INFO_UNINSTALL": "실수로 휴대폰을 분실하거나 의도치 않게 제거하는 경우 계정에 다시 액세스하는 데 지연이 발생할 수 있습니다. 이러한 경우에는 지원팀에 문의하여 도움을 받아야 합니다.",
+			"BACK": "뒤쪽에",
+			"PROCEED": "진행하다",
+			"NEXT": "다음",
+			"NOTE": "참고: {0} {1}",
+			"MANUEL_DESCRIPTION": "이전 단계의 수동 2FA 시드를 입력하세요.",
+			"MANUEL_DESCRIPTION_2": "위의 수동 인증 내용을 꼼꼼히 적어서 보관해주세요.",
+			"MANUEL_DESCRIPTION_3": "계정 복구에 사용될 수 있는 키입니다.",
+			"MANUEL_KEY": "수동 2FA 시드",
+			"MANUEL_PLACEHOLDER": "2FA 시드를 입력하세요",
+			"MANUEL_WARNING": "(나중에 사용할 수 있도록 적어서 안전하게 보관하십시오.)",
+			"MANUEL_ERROR_1": "수동 2FA 시드를 입력하세요.",
+			"MANUEL_ERROR_2": "이전 단계의 수동 2FA 시드를 입력하세요.",
+			"ACCOUNT_SECURED": "계정이 보호됨",
+			"2FA_ENABLED": "2FA 활성화됨",
+			"2FA_DISABLED": "2FA 비활성화됨",
+			"2FA_CONTENT_ONE": "{0} {1} 활성화 중입니다.",
+			"2FA_CONTENT_TWO": "(2단계 인증)은 귀하의 자금을 보호하기 위해 추가 보호 계층을 추가합니다. 활성화되면 로그인하거나 자산을 출금할 때마다 휴대폰에서 인증 코드를 입력해야 합니다. 이 기능은 계정 보안을 크게 강화합니다.",
+			"2FA_CONTENT_THREE": "(2단계 인증)은 귀하의 자금을 보호하기 위해 추가 보호 계층을 추가합니다.",
+			"2FA_CONTENT_FOUR": "2FA를 비활성화하려면 2FA(OTP) 코드를 입력해야 합니다.",
+			"INPUT_SIX_DIGIT_CODE": "휴대전화의 Google OTP 앱에서 6자리 코드를 입력하세요.",
+			"INPUT_CONTENT": "(Google OTP에 새 계정을 추가하려면 '+' 버튼을 클릭하세요. 이전 단계에서 제공된 QR 코드를 스캔하거나 수동으로 키를 입력하여 앱에 계정을 추가할 수 있습니다.)"
 		},
 		"CHANGE_PASSWORD": {
 			"TITLE": "비밀번호 변경",
@@ -600,7 +725,9 @@
 			"CONTENT": {
 				"TITLE": "Logins History",
 				"MESSAGE": "Below is login history list with details IP, country and time details. If you see any suspicious activity you should change your password and contact support"
-			}
+			},
+			"IP_ADDRESS": "IP 주소",
+			"TIME": "날짜 시간"
 		},
 		"FREEZE": {
 			"TITLE": "Freeze Account",
@@ -667,7 +794,9 @@
 		"REQUIRES_24H_TO_SETTLE_NOTICE": "결제에는 24시간이 걸립니다",
 		"SUCCESSFUL_UNSTAKE_NOTICE": "성공적으로 스테이크를 해제했습니다",
 		"VISIT_WALLET_BUTTON": "지갑 방문",
-		"CLOSE_BUTTON": "닫기"
+		"CLOSE_BUTTON": "닫기",
+		"ACTIVE_STAKES": "활성 스테이크",
+		"STAKES_HISTORY": "역사"
 	},
 	"CURRENCY": "Currency",
 	"TYPE": "Type",
@@ -757,13 +886,16 @@
 		"WITHDRAWAL_CONFIRM_ADDRESS": "주소",
 		"WITHDRAWAL_CONFIRM_NETWORK": "네트워크",
 		"WITHDRAWAL_CANCEL_BUTTON": "닫기",
-		"WITHDRAWAL_CONFIRM_BUTTON": "출금 확인"
+		"WITHDRAWAL_CONFIRM_BUTTON": "출금 확인",
+		"MESSAGE_FEE_COIN": "{0}의 거래 수수료",
+		"WITHDRAWALS_FORM_ERROR_TITLE": "잘못된 이체 정보",
+		"WITHDRAWALS_FORM_ERROR": "귀하의 자금 이체에 실패했습니다. 이메일로 자금을 보내려면 사용자가 이 거래소 내에 계정이 있어야 합니다. 이메일이 올바른지 확인하신 후 다시 시도해 주세요."
 	},
 	"WALLET_BUTTON_BASE_DEPOSIT": "입금",
 	"WALLET_BUTTON_BASE_WITHDRAW": "출금",
 	"WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT": "받기",
 	"WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW": "보내기",
-	"AVAILABLE_BALANCE_TEXT": "사용가능 {0} 잔고: {1} {2}",
+	"AVAILABLE_BALANCE_TEXT": "사용 가능한 {0} 잔액: {1} {2} {3}",
 	"BALANCE_TEXT": "주문가능",
 	"CURRENCY_BALANCE_TEXT": "{0} Balance",
 	"WALLET_ALL_ASSETS": "All Assets",
@@ -870,7 +1002,8 @@
 		"CHAT_MESSAGE_BOX_PLACEHOLDER": "메세지",
 		"SIGN_UP_CHAT": "로그인하여 채팅하기",
 		"JOIN_CHAT": "채팅 유저명 설정하기",
-		"TROLLBOX": "Trollbox ({0})"
+		"TROLLBOX": "Trollbox ({0})",
+		"SET_USERNAME": "채팅할 사용자 이름 설정"
 	},
 	"INVALID_USERNAME": "유저명은 3~15자로 영문소문자, 숫자, _만 사용가능합니다.",
 	"USERNAME_TAKEN": "이미 사용중인 유저명입니다. 다시 시도하시기바랍니다.",
@@ -957,7 +1090,7 @@
 		"REQUEST_ACCOUNT_UPGRADE": "계정 업그레이드 요청",
 		"FEES_AND_LIMIT": " {0}의 수수료 및 입출금한도 구조",
 		"FEES_AND_LIMIT_TXT_1": "암호화폐 거래를 시작하는 것은 새로운 시작을 의미합니다. 리스크를 감내하고 지혜롭게 많은 거래를 함으로서 계정은 업데이트됩니다.",
-		"FEES_AND_LIMIT_TXT_2": "각 계정의 레벨에 따라 수수료와 입출금한도가 다릅니다. 자세한 정보 확인을 위해 {0}에 방문하시기바랍니다.",
+		"FEES_AND_LIMIT_TXT_2": "각 계좌에는 자체 수수료와 입출금 한도가 있습니다.",
 		"DEPOSIT_WITHDRAWAL_ALLOWENCE": "입출금 한도",
 		"TRADING_FEE_STRUCTURE": "거래수수료 구조",
 		"WITHDRAWAL": "출금",
@@ -1015,20 +1148,37 @@
 		"WAVE_NUMBER": "웨이브 번호",
 		"DISCOUNT": "( {0}% 할인 )",
 		"MY_FEES_LIMITS": " 나의 수수료와 한도",
-		"VIEW_MORE_MARKETS": " 마켓 더보기"
+		"VIEW_MORE_MARKETS": " 마켓 더보기",
+		"ONE_REQUIREMENT": "단 하나의 요구사항:",
+		"DEPOSIT_AND_WITHDRAWAL_FEES": "입출금 수수료",
+		"DEPOSITS": "매장",
+		"WITHDRAWALS": "인출",
+		"TITLE_OF_ACCOUNT": "{0} 계정",
+		"MARKETS": "시장",
+		"CHANGE_24H": "24시간 변경",
+		"VOLUME_24H": "24시간 거래량",
+		"VOLUME_7D": "7D 볼륨",
+		"VIEW_VERIFICATION": "확인 보기",
+		"EARN_COMMISSION": "커미션 받기",
+		"ID_VERIFICATION": "신분증 확인:"
 	},
 	"REFERRAL_LINK": {
 		"TITLE": "친구초대하기",
-		"INFO_TEXT": "링크를 공유하여 친구에게 추천하세요. 이 링크를 통해 가입함으로써 회원님의 친구는 {0}% 할인을 받게됩니다.",
+		"INFO_TEXT": "이 링크를 제공하여 친구를 추천하고 다른 사람들을 온보딩하여 혜택을 받으세요.",
 		"INFO_TEXT_1": "회원님의 추천으로 가입하여 거래하신 분의 거래 수수료의 {0}%가 매달 회원님의 계정으로 입금됩니다.",
 		"COPY_FIELD_LABEL": "아래 링크를 공유하여 커미션을 받으세요:",
 		"REFERRED_USER_COUT": "{0} 명의 추천을 받음",
-		"COPY_LINK_BUTTON": "추천인 링크 복사하기"
+		"COPY_LINK_BUTTON": "추천인 링크 복사하기",
+		"VIEW": "보다",
+		"TABLE_TITLE": "모든 성공적인 추천",
+		"USER": "사용자 / 이메일",
+		"TIME": "가입 시간"
 	},
 	"NOT_LOGGEDIN": {
 		"TXT_1": "로그인이 필요합니다",
 		"TXT_2": "{0} / {1}",
-		"LOGIN_HERE": "로그인하기"
+		"LOGIN_HERE": "로그인하기",
+		"TEXT_GENERAL": "보려면 로그인이 필요합니다"
 	},
 	"USER_LEVEL": "사용자 레벨",
 	"LIMIT_AMOUNT": "한도액",
@@ -1068,10 +1218,729 @@
 	"TRIGGER_PRICE": "감시 가격",
 	"START_DATE": "시작일",
 	"END_DATE": "종료일",
-	"MARKETS_TABLE": { "VIEW_MARKETS": "마켓 보기" },
+	"MARKETS_TABLE": {
+		"VIEW_MARKETS": "마켓 보기",
+		"TITLE": "라이브 시장",
+		"MARKETS": "시장",
+		"LAST_PRICE": "마지막 가격",
+		"CHANGE_24H": "변경(24시간)",
+		"CHANGE_7D": "변경(7일)",
+		"CHANGE_1D": "변경(1일)",
+		"VOLUME_24h": "볼륨(24시간)",
+		"CHART_24H": "차트(24시간)",
+		"CHART_7D": "차트(7일)",
+		"TRADING_SYMBOL": "거래 기호",
+		"ASSET": "유산",
+		"TYPE": "유형",
+		"SOURCE": "원천"
+	},
 	"MARKET_OPTIONS": { "LIST": "리스트", "CARD": "카드" },
 	"LIMITS_BLOCK": {
 		"HEADER_ROW_DESCRIPTION": "24시간 입금 및 출금 한도 ({0})",
-		"HEADER_ROW_AMOUNT": "24시간 한도 ({0})"
-	}
+		"HEADER_ROW_AMOUNT": "24시간 한도 ({0})",
+		"HEADER_ROW_TYPE": "유형(모든 자산)"
+	},
+	"TRADE_TOOLS": "도구",
+	"CANCEL_BASE_WITHDRAWAL": "{0} 출금 취소",
+	"NO_ACTIVE_ORDERS": "감지된 주문이 없습니다. Pro 또는 Quick 거래 페이지에서 주문하세요.",
+	"NO_ACTIVE_TRADES": "아직 거래가 없는 것 같습니다.",
+	"NO_ACTIVE_DEPOSITS": "아직 입금이 없는 것 같습니다.",
+	"NO_ACTIVE_WITHDRAWALS": "아직 인출이 없는 것 같습니다.",
+	"SECOND": "두번째",
+	"CANT_FIND_MARKETS": "해당 자산에서 시장을 찾을 수 없습니다.",
+	"TRY_VISITING_ASSETS": "{0}을(를) 방문해 보세요.",
+	"ASSETS_PAGE": "자산 페이지",
+	"APPLY_HERE": "여기에서 신청하세요",
+	"CONVERT": "전환하다",
+	"SWAP": "스위치",
+	"TO": "에게",
+	"NA": "해당 없음",
+	"QR_CODE": {
+		"SCAN": "주사",
+		"SHOW": "QR 표시",
+		"NO_RESULT": "결과가 없다",
+		"NOT_FOUND": "찾을 수 없음",
+		"PERMISSION_DENIED": "권한이 거부되었습니다"
+	},
+	"EMAIL_CODE_FORM": {
+		"TITLE": "보안 코드를 입력하세요",
+		"LABEL": "코드 입력(이메일을 확인해주세요)",
+		"PLACEHOLDER": "이메일로 전송된 코드를 입력하세요",
+		"FORM_TITLE_TEXT": "프로세스를 완료하는 데 필요한 고유 코드가 이메일로 전송되었습니다. 아래에 이메일로 전송된 코드를 입력하세요{0}.",
+		"OTP_NOTE": " OTP 코드와 함께",
+		"BUTTON": "제출하다",
+		"ERROR_INVALID": "입력한 코드가 올바르지 않습니다. 다시 시도해 주세요",
+		"OTP_LABEL": "2FA 코드(OTP)",
+		"OTP_PLACEHOLDER": "6자리 2단계 인증 코드를 입력하세요."
+	},
+	"USER_APPS": {
+		"TITLE": "교환 앱",
+		"SUBTITLE": "귀하의 거래소 계정 신청 정보 및 추가 기능은 아래와 같습니다.",
+		"ALL_APPS": {
+			"TAB_TITLE": "모든 앱",
+			"TITLE": "앱 교환",
+			"SUBTITLE": "아래 앱을 선택하고 추가 버튼을 클릭하면 교환 계정에서 더 많은 기능을 얻을 수 있습니다.",
+			"SEARCH_PLACEHOLDER": "앱 검색...",
+			"ADD": {
+				"SUCCESSFUL": "새 앱이 성공적으로 추가되었습니다!",
+				"FAILED": "문제가 발생했습니다."
+			}
+		},
+		"MY_APPS": {
+			"TAB_TITLE": "나의 앱들",
+			"TITLE": "내 교환 앱",
+			"SUBTITLE": "다음은 귀하의 활성 교환 신청서입니다. 클릭하면 각 애플리케이션의 정보, 기능을 확장하고 추가/제거할 수 있습니다. 앱은 교환 경험에 더 많은 기능을 제공하도록 설계되었습니다."
+		},
+		"TABLE": {
+			"APP_NAME": "앱 이름",
+			"DESCRIPTION": "설명",
+			"ACTION": "행동",
+			"CONFIGURE": "구성",
+			"VIEW_APP": "앱 보기",
+			"ADD": "추가하다",
+			"NOT_FOUND": "이 앱을 찾을 수 없습니다...",
+			"RETRY": "다른 검색어를 사용해 보세요."
+		},
+		"APP_DETAILS": {
+			"BACK_PLACEHOLDER": "{0} {1}",
+			"BACK_TO_APPS": "내 앱에",
+			"BACK": "뒤쪽에"
+		},
+		"CONFIGURE": {
+			"TITLE": "앱 구성",
+			"SUBTITLE": "아래에서 앱을 구성하세요.",
+			"REMOVE": "앱 삭제",
+			"TEXT": "앱에 문제가 있는 경우 아래 도움말을 클릭하여 문의해 주세요.",
+			"BACK": "뒤쪽에",
+			"HELP": "돕다"
+		},
+		"REMOVE": {
+			"TITLE": "앱 삭제",
+			"SUBTITLE": "그러면 '내 앱' 목록에서 해당 앱이 제거됩니다.",
+			"TEXT": "이 앱을 삭제하시겠습니까?",
+			"BACK": "뒤쪽에",
+			"CONFIRM": "확인하다"
+		}
+	},
+	"STAKE": {
+		"NETWORK_WARNING": "호환되지 않는 네트워크입니다. 네트워크를 {0}(으)로 변경하세요",
+		"EARN": "벌다",
+		"TITLE": "말뚝",
+		"MODAL_TITLE": "스테이킹하고 {0}을(를) 획득하세요",
+		"REVIEW_MODAL_TITLE": "스테이크 확인 및 확인",
+		"AVAILABLE_TOKEN": "{0} ({1}) 스테이킹 가능: {2}",
+		"DEFI_TITLE": "DeFi 자산 스테이킹",
+		"DEFI_TEXT": "스테이킹 DeFi 스타일은 거래소 외부에서 자신의 지갑을 사용합니다. 시작하려면 연결을 설정해야 하며, 일단 연결되면 지갑에서 직접 스테이킹하고 수익을 올릴 수 있습니다.",
+		"GET_STAKES": "스테이크 받기",
+		"CURRENT_ETH_BLOCK": "현재 ETH 블록: {0}",
+		"ON_EXCHANGE_XHT": "교환 {0} 잔액: {1} {2}",
+		"LOGIN_HERE": "여기에 로그인하세요",
+		"MOVE_XHT": "{0} 이동",
+		"ESTIMATED_STAKED": "스테이킹된 총 예상 가치",
+		"ESTIMATED_EARNINGS": "예상 수익 가치",
+		"CONNECT_WALLET": "지갑 연결",
+		"BACK": "뒤쪽에",
+		"NEXT": "다음",
+		"REVIEW": "검토",
+		"ESTIMATED": "동쪽.",
+		"BLOCK": "차단하다",
+		"CANCEL": "취소",
+		"PROCEED": "진행하다",
+		"GO_TO_WALLET": "지갑으로 가다",
+		"AMOUNT_LABEL": "스테이크 금액",
+		"PERIOD_SUBTITLE": "오랫동안 스테이킹할수록 더 많은 보상을 받을 수 있습니다. 아래에서 스테이크 기간을 선택하세요.",
+		"STAKE_AND_EARN_DETAILS": "~{0}에 베팅하고 {1}을(를) 획득하세요",
+		"PREDICTED_EARNINGS": "예상 수입",
+		"VARIABLE_TITLE": "변하기 쉬운*",
+		"VARIABLE_TEXT": "*{0} 변동율이 어떻게 작동하는지 알아보세요.",
+		"READ_MORE": "더 읽어보세요",
+		"CURRENT_BLOCK": "현재 블록: {0}",
+		"END_BLOCK": "끝 블록: {0}",
+		"DURATION": "지속",
+		"END_ON_BLOCK": "블록 종료: {0}",
+		"SLASHING_TITLE": "슬래싱(초기 언스테이크)",
+		"SLASHING_TEXT_1": "지분 원칙의 {0}%",
+		"SLASHING_TEXT_2": "모든 수입이 몰수됨",
+		"REVIEW_NOTE": "기간은 Ethereum 블록의 타이밍으로 측정됩니다. 조기에 스테이킹을 해제하면 스테이킹 원칙의 일부가 공제되고 수익이 몰수되므로 스테이킹하기 전에 위의 세부 사항을 확인하고 확인하십시오.",
+		"WAITING_TITLE": "확인을 기다리는 중",
+		"WAITING_TEXT": "지갑에서 이 거래를 확인하세요",
+		"PENDING_TEXT": "거래 보류 중...",
+		"CHECKING_ALLOWANCE": "{0} 허용량 확인 중...",
+		"WAITING_PROMPT": "{0} {1} {2}",
+		"WAITING_STAKE": "지분 금액 확인",
+		"WAITING_WITHDRAW": "지출 허용",
+		"WAITING_UNSTAKE": "언스테이크",
+		"WAITING_STAKE_ING": "스테이킹 보류 중",
+		"WAITING_WITHDRAW_ING": "지출 허용 처리",
+		"WAITING_UNSTAKE_ING": "언스테이킹",
+		"SUCCESSFUL_STAKE_TITLE": "{0}을(를) 성공적으로 스테이킹했습니다.",
+		"SUCCESSFUL_STAKE_AMOUNT": "스테이킹된 금액",
+		"SUCCESSFUL_STAKE_DURATION_KEY": "지속",
+		"SUCCESSFUL_STAKE_DURATION_DEF": "블록 {0}({1})에서 끝납니다.",
+		"SUCCESSFUL_STAKE_DESTINATION": "목적지",
+		"SUCCESSFUL_UNSTAKE_ADDRESS": "내 주소",
+		"OKAY": "좋아요",
+		"ERROR_TITLE": "오류: {0}이(가) 거부되었습니다",
+		"ERROR_SUBTITLE": "실수였다면 돌아가서 다시 시도해 보세요.",
+		"SUCCESSFUL_UNSTAKE_TITLE": "{0}을(를) 성공적으로 언스테이킹했습니다.",
+		"SUCCESSFUL_UNSTAKE_AMOUNT": "받을 총액",
+		"EARNINGS": "수입",
+		"ORIGINAL_AMOUNT": "원래 스테이킹된 금액",
+		"CONNECT_A_WALLET": "지갑에 연결",
+		"CONNECT_WALLET_TABLE": "{0} 역사적 스테이크 이벤트를 보려면",
+		"ZERO_STAKES": "제로 스테이크",
+		"PENDING_TRANSACTIONS": "보류 중 {0} {1}",
+		"VIEW_ON": "{0}에서 보기",
+		"BLOCKCHAIN": "블록체인",
+		"VIEW_POT": "유통 POT 보기",
+		"COMPLETED": "숙성됨",
+		"COMPLETED_TOOLTIP": "스테이크가 성숙해졌습니다. 계속 스테이킹하여 더 많은 보상을 얻거나 스테이킹을 해제하여 보상을 받으세요.",
+		"CONNECT_ERROR": "지갑을 확인해 주세요",
+		"INSTALL_METAMASK_DETAILS": {
+			"TITLE": "메타마스크 설치",
+			"PROMPT": "브라우저에 Metamask를 설치해야 합니다: {0}"
+		},
+		"INSTALL_METAMASK_TITLE": "메타마스크가 감지되지 않음"
+	},
+	"UNSTAKE": {
+		"TITLE": "언스테이크",
+		"EARLY_TITLE": "조기에 스테이크 해제",
+		"EARLY_WARNING_TITLE": "일찍 언스테이크를 시도하는 것 같습니다.",
+		"EARLY_WARNING_TEXT_1": "이로 인해 초기 기본 지분의 일부가 공제되고 모든 수입이 몰수될 수 있습니다.",
+		"EARLY_WARNING_TEXT_2": "계속하시겠습니까?",
+		"BACK": "돌아가기",
+		"REVIEW": "스테이크 제거",
+		"DURATION": "동쪽. 숙성 기간",
+		"CANCEL": "취소",
+		"PROCEED": "진행하다",
+		"EARNINGS_FORFEITED": "수입 몰수",
+		"PRICE_FORMAT": "{0} {1}",
+		"EST_PENDING": "동쪽. 보류 중: {0}",
+		"AMOUNT_SLASHED": "삭감된 금액*",
+		"AMOUNT_TO_RECEIVE": "받을 금액",
+		"SLASH_FOOTNOTE": "*삭제된 모든 금액은 나머지 스테이커에게 분배됩니다. 초기 원칙에서 삭감된 금액, 상실된 수익 및 남은 기간을 고려하여 조기 언스테이킹으로 인해 손실된 가치가 비용만큼 가치가 있는지 판단하시기 바랍니다.",
+		"AMOUNT_NOTE": "금액은 귀하의 지갑 주소로 분배됩니다",
+		"TOTAL_EARNT": "총 수익",
+		"PENDING_EARNINGS": "대기 중인 수입*",
+		"PENDING_EARNINGS_FOOTNOTE": "*보류 수입은 정산되지 않은 금액이며 총 수령 금액에 추가하려면 블록체인 거래가 필요합니다."
+	},
+	"STAKE_TABLE": {
+		"CURRENCY": "통화",
+		"AVAILABLE": "스테이킹 가능",
+		"TOTAL": "스테이킹된 총 금액",
+		"REWARD_RATE": "보상률",
+		"EARNINGS": "수입",
+		"STAKE": "말뚝",
+		"VARIABLE": "변하기 쉬운"
+	},
+	"STAKE_LIST": {
+		"AMOUNT": "스테이킹된 금액",
+		"DURATION": "동쪽. 성숙 기간",
+		"START": "스테이킹 시작",
+		"END": "최종 스테이크",
+		"EARNINGS": "수입",
+		"STAKE": "말뚝"
+	},
+	"STAKE_DETAILS": {
+		"BACK_SUBTITLE": "스테이킹 페이지로 {0}",
+		"GO_BACK": "돌아가기",
+		"CONTRACT_SUBTITLE": "토큰 계약: {0}",
+		"VIEW_MORE": "더보기",
+		"VIEW": "보다",
+		"TOKEN": "{0} 토큰",
+		"TABS": {
+			"PUBLIC_INFO": "공개 정보",
+			"DISTRIBUTIONS": "배포판",
+			"MY_STAKING": "내 스테이킹"
+		},
+		"PUBLIC_INFO": {
+			"TITLE": "스테이킹 정보",
+			"SUBTITLE": "다음은 {0}({1})에 대한 스테이킹 토큰경제학입니다.",
+			"TOTAL_DISTRIBUTED_REWARDS": "총 분배 보상({0})",
+			"POT_BALANCE": "냄비 잔액",
+			"UNCLAIMED_REWARDS": "청구되지 않은 보상",
+			"TOTAL_STAKED": "스테이킹된 총 금액",
+			"REWARD_RATE": "보상률",
+			"MY_STAKE": "내 지분({0}%)",
+			"MY_STAKE_PERCENTLESS": "내 지분",
+			"OTHER_STAKE": "기타 지분({0}%)",
+			"EVENTS_TITLE": "최근 분배된 보상"
+		},
+		"DISTRIBUTIONS": {
+			"TITLE": "{0} 보상 분배",
+			"SUBTITLE": "다음은 {0}의 스테이커에게 이루어진 배포 내역 목록입니다.",
+			"TIME": "시간분배",
+			"TRANSACTION_ID": "거래 ID",
+			"AMOUNT": "배분금액"
+		},
+		"MY_STAKING": {
+			"TITLE": "내 스테이킹",
+			"SUBTITLE": "아래에는 귀하의 {0} 스테이킹과 관련된 정보 및 일부 역사적 사건이 표시되어 있습니다.",
+			"EVENTS_TITLE": "역사적인 스테이크 행사",
+			"TIME": "시간",
+			"EVENT": "이벤트",
+			"TRANSACTION_ID": "거래 ID",
+			"AMOUNT": "양"
+		}
+	},
+	"MOVE_XHT": {
+		"TITLE": "XHT 이동",
+		"TEXT_1": "XHT를 스테이킹하려면 먼저 XHT를 자신의 지갑으로 옮겨야 합니다.",
+		"TEXT_2": "현재 연결된 지갑 주소는 다음과 같습니다.",
+		"LABEL": "지갑 주소",
+		"TEXT_3": "위 지갑 주소가 안전한지 확인하는 것이 중요합니다. XHT는 위 지갑 주소로 이동됩니다."
+	},
+	"MOVE_AMOUNT": {
+		"TITLE": "입력금액",
+		"PROMPT": "이동하려는 금액을 입력하세요.",
+		"BALANCE": "{0} 잔액: {1}",
+		"LABEL": "이사할 금액",
+		"FEE": "거래 수수료: {0} {1}"
+	},
+	"SIDES_VERBS": { "buy": "구입했다", "sell": "판매된" },
+	"AVERAGE": "평균",
+	"NETWORK": "회로망",
+	"CATEGORY": "범주",
+	"ORDER_HISTORY": "주문 내역",
+	"FILLED": "채우는",
+	"LOWEST_PRICE": "최저 가격({0})",
+	"PHASE": "단계",
+	"INCOMING": "들어오는",
+	"ASSETS": "자산",
+	"CURRENCY_WALLET": {
+		"BACK": "뒤쪽에",
+		"WALLET_PAGE": "지갑 페이지로 {0}",
+		"LEARN_MORE": "자세히 알아보기 {0}",
+		"ABOUT": "~에 대한",
+		"TOTAL_BALANCE": "총 잔액: {0} {1}",
+		"AVAILABLE_BALANCE": "사용 가능한 잔액: {0} {1} {2}",
+		"PERCENTAGE_SHARE": "백분율 점유율 {0}",
+		"EARN_BY": "{0}까지 적립하세요 {1}",
+		"STAKING": "스테이킹",
+		"TOOLTIP": "보류 상태가 아니거나 거래가 잠겨 있지 않은 잔액(미결 주문)",
+		"WALLET_HAS_BALANCE_PERCENTAGE": "귀하의 지갑에는 현재 {0}이(가) 보관되어 있지 않습니다.",
+		"WALLET_DEPOSIT": "{0}을(를) 입금하거나 {1}을(를) 구매해 보세요."
+	},
+	"WITHDRAWALS_FORM_NETWORK_LABEL": "회로망",
+	"DEPOSIT_FORM_NETWORK_WARNING": "선택한 네트워크가 보낸 사람 지갑 네트워크와 호환되는지 확인하세요.",
+	"DEPOSIT_FORM_MIN_WARNING": "{0} {1} 이상의 입금만 허용됩니다. 이 최소 한도 미만의 예금은 영구적인 자금 손실을 초래합니다.",
+	"DEPOSIT_FORM_TITLE_WARNING_DESTINATION_TAG": "계좌에 성공적으로 입금하기 위해 필요한 주소와 태그를 모두 입력하세요.",
+	"WITHDRAW_PAGE_DESTINATION_TAG_NONE": "없음",
+	"WITHDRAW_PAGE_DESTINATION_TAG_MESSAGE": "대상 태그: {0}",
+	"WITHDRAW_PAGE_NETWORK_TYPE_MESSAGE": "{0} 주소 네트워크 유형: {1}",
+	"WITHDRAWALS_FORM_NETWORK_WARNING": "선택한 네트워크가 대상 지갑과 호환되는지 확인하세요",
+	"WITHDRAWALS_FORM_FEE_WARNING": "{0}({1})은 이 자산을 인출하기 위한 요구사항입니다.",
+	"WITHDRAWALS_FORM_DESTINATION_TAG_WARNING": "수신 주소에 태그가 필요한지 확인하세요. 메모, 디지털 ID, 라벨, 메모라고도 합니다.",
+	"WITHDRAWALS_FORM_NETWORK_PLACEHOLDER": "네트워크 선택",
+	"WITHDRAWALS_FORM_DESTINATION_TAG_LABEL": "대상 태그(선택사항)",
+	"WITHDRAWALS_FORM_MEMO_LABEL": "메모(선택사항)",
+	"WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER": "대상 태그를 입력하세요.",
+	"WITHDRAWALS_FORM_FEE_COMMON_LABEL_COIN": "거래 수수료({0})",
+	"24H_MAX": "24시간 최고:",
+	"24H_MIN": "24시간 낮음",
+	"24H_VAL": "24시간 볼륨",
+	"WALLET_HIDE_ZERO_BALANCE": "제로 잔액 숨기기",
+	"WALLET_ESTIMATED_TOTAL_BALANCE": "예상 총 잔액",
+	"WALLET_ASSETS_SEARCH_TXT": "찾다",
+	"QUICK_TRADE_QUOTE_EXPIRED_FIRST_LINE": "가격 견적이 만료되었습니다.",
+	"QUICK_TRADE_QUOTE_EXPIRED_SECOND_LINE": "새 가격을 받으려면 재견적을 클릭하세요.",
+	"QUICK_TRADE_QUOTE_EXPIRED_BUTTON": "견적 요청",
+	"QUICK_TRADE_SUCCESS": "성공!",
+	"QUICK_TRADE_INSUFFICIENT_FUND": "자금 부족",
+	"QUICK_TRADE_INSUFFICIENT_FUND_MESSAGE": "이 거래를 완료하기에는 지갑에 자금이 부족합니다.",
+	"QUICK_TRADE_BROKER_NOT_AVAILABLE_MESSAGE": "브로커 OTC 거래는 현재 제공되지 않습니다.",
+	"ABOUT_LINK": "{0} 소개",
+	"DEVELOPERS_TOKEN": {
+		"API_KEY": "API 키",
+		"SECRET_KEY": "비밀키",
+		"ACCESS": "입장",
+		"BASIC_ACCESS": "기본 액세스",
+		"BASIC_ACCESS_PROMPT": "이 API 키가 액세스할 수 있는 항목을 선택하세요.",
+		"READING_ACCESS": "읽기(지갑 잔액 등)",
+		"TRADING_ACCESS": "거래",
+		"IP_ACCESS": "IP 액세스",
+		"IP_ACCESS_PROMPT": "이 API 키와 함께 작동할 IP 주소를 구성합니다.",
+		"ANY_IP_ADDRESS": "모든 IP 주소",
+		"ONLY_TRUSTED_IPS": "신뢰할 수 있는 IP만",
+		"ADD_IP_PH": "IP 주소를 입력하세요. 여러 개의 IP를 추가할 수 있습니다.",
+		"ADD_IP": "추가하다",
+		"ADVANCED_ACCESS": "고급 액세스",
+		"ADVANCED_ACCESS_PROMPT": "신뢰할 수 있는 IP가 활성화되어야 합니다.",
+		"WITHDRAWAL_ACCESS": "인출",
+		"SAVE": "구하다",
+		"BEWARE": "인출을 허용하면 특정 위험이 따르므로 주의하세요!"
+	},
+	"ZERO_ASSET_2": "감지되었습니다. 을 만들다",
+	"ZERO_ASSET_3": "아래에 입금하세요.",
+	"ORDER_TYPE": "유형",
+	"TRIGGER_CONDITIONS": "방아쇠",
+	"TRANSACTION_STATUS": {
+		"PENDING": "보류 중",
+		"REJECTED": "거부됨",
+		"COMPLETED": "완전한"
+	},
+	"DEPOSIT_STATUS": {
+		"NEW": "새로운",
+		"SEARCH_FIELD_LABEL": "거래 ID를 붙여넣으세요.",
+		"CHECK_DEPOSIT_STATUS": "입금상태 확인",
+		"SEARCH_BLOCKCHAIN_FOR_DEPOSIT": "블록체인에서 보증금을 검색하세요",
+		"STATUS_DESCRIPTION": "아래의 거래ID(해시)를 전달하시면 입금상태를 확인하실 수 있습니다.",
+		"TRANSACTION_ID": "거래 ID(해시)",
+		"SEARCH_SUCCESS": "검색 완료",
+		"ADDRESS_FIELD_LABEL": "주소를 붙여넣으세요",
+		"CURRENCY_FIELD_LABEL": "통화를 선택하세요",
+		"DESTINATION_TAG_LABEL": "태그(선택사항)",
+		"MEMO_LABEL": "메모(선택사항)",
+		"DESTINATION_TAG_PLACEHOLDER": "태그를 붙여넣으세요.",
+		"MEMO_PLACEHOLDER": "메모 붙여넣기"
+	},
+	"CANCEL_ORDERS": {
+		"HEADING": "주문 취소",
+		"SUB_HEADING": "모든 주문 취소",
+		"INFO_1": "이렇게 하면 {0} 시장의 미결 주문이 취소됩니다.",
+		"INFO_2": "진행 중인 주문을 모두 취소하시겠습니까?"
+	},
+	"AMOUNT_IN": "금액",
+	"SUMMARY_MARKETS": {
+		"HOLLAEX": "디지털 자산을 나열하고 싶으십니까? HollaEx로 자신만의 시장을 시작하세요. {0} {1}",
+		"WHITE_LABEL": "화이트 라벨",
+		"SOLUTION": "해결책",
+		"VISIT_COIN_INFO_PAGE": "코인 정보 페이지 {0}를 방문하세요.",
+		"HERE": "여기"
+	},
+	"PAGE_UNDER_CONSTRUCTION": "이 페이지는 준비중입니다. 곧 이 페이지를 다시 방문해 주세요.",
+	"UNDEFINED_ERROR_TITLE": "알 수 없는 오류가 발생했습니다",
+	"UNDEFINED_ERROR": "우와! 알 수 없는 오류가 발생했습니다. 이는 연결 문제일 수도 있고 다른 여러 가지 문제일 수도 있습니다. 나중에 다시 시도하거나 새로고침해 보세요.",
+	"REFRESH": "새로 고치다",
+	"FEE_REDUCTION": "수수료 감면",
+	"FEE_REDUCTION_DESCRIPTION": "*귀하의 계정에는 수수료 할인이 적용되어 있습니다. 할인은 귀하의 계좌에 따른 거래 수수료에 적용됩니다.",
+	"CHANGE_PASSWORD_FAILED": "비밀번호 변경 실패",
+	"ASSET_TXT": "유산",
+	"SPEND_AMOUNT": "지출 금액",
+	"ESTIMATE_RECEIVE_AMOUNT": "예상 수령 금액",
+	"TOOLS": {
+		"ORDERBOOK": "주문장",
+		"CHART": "차트",
+		"PUBLIC_SALES": "공개판매",
+		"ORDER_ENTRY": "주문입력",
+		"RECENT_TRADES": "최근 거래",
+		"OPEN_ORDERS": "오픈 주문",
+		"WALLET": "지갑",
+		"DEPTH_CHART": "깊이 차트",
+		"COMING_SOON": "곧 온다"
+	},
+	"RESET_LAYOUT": "레이아웃 재설정",
+	"WALLET_BALANCE_LOADING": "잔액 로드 중...",
+	"CONNECT_VIA_DESKTOP": {
+		"TITLE": "데스크톱을 통해 연결",
+		"SUBTITLE": "현재 모바일 장치를 통한 DeFi 스테이킹은 지원되지 않습니다.",
+		"TEXT": "지갑을 연결하려면 데스크톱/노트북 컴퓨터를 사용하세요."
+	},
+	"ORDER_HISTORY_CLOSED": "닫은",
+	"FIAT": {
+		"UNVERIFIED": {
+			"TITLE": "검증 완료",
+			"TEXT": "{0}을(를) 생성하려면 은행 세부정보 확인을 포함한 확인을 완료해야 합니다. 아래 진행 버튼을 눌러주세요.",
+			"DEPOSIT": "보증금",
+			"WITHDRAWAL": "철수"
+		},
+		"REVIEW_DEPOSIT": {
+			"TITLE": "입금내역 확인 및 확인",
+			"SUBTITLE": "아래 입금 내역을 확인하여 모든 사항이 정확한지 확인하시기 바랍니다.",
+			"FORMAT": "{0} {1}",
+			"AMOUNT": "입금할 금액",
+			"FEE": "입금 수수료",
+			"TRANSACTION_ID": "거래 ID",
+			"NOTE": "지연을 방지하려면 입금액, 메모, 거래 ID가 위의 세부정보와 일치하는지 확인하세요. 문제가 발생하면 지원팀에 문의하세요.",
+			"BACK": "뒤쪽에",
+			"PROCEED": "진행하다"
+		}
+	},
+	"DEPOSIT_FEE_NOTE": "귀하의 계좌에 입금된 총액은 입금 수수료를 뺀 금액입니다.",
+	"AMOUNT_LABEL": "입금금액을 입력하세요. (실제금액과 동일해야 합니다.)",
+	"TRANSACTION_ID_LABEL": "예금의 거래 ID를 입력하세요.",
+	"FEE_LABEL": "입금 수수료",
+	"AMOUNT_FORMAT": "{0} {1}",
+	"PENDING_DEPOSIT_TITLE": "입금 대기 중",
+	"PENDING_DEPOSIT_TEXT_1": "귀하의 입금액은 현재 확인 대기열에 있으며, 처리될 때까지 보류 상태로 유지됩니다.",
+	"PENDING_DEPOSIT_TEXT_2": "일반적으로 입금액은 24시간 이내에 취소되지만 최대 48시간이 걸릴 수 있습니다. 입금액을 취소한 후 수수료를 뺀 금액이 잔액에 적립됩니다.",
+	"DEPOSIT_HOME_NOTE": "입금을 하시려면 본인의 은행계좌에서 입금하실 금액을 입력해주세요. 지연을 방지하려면 아래에 입력한 금액이 은행 계좌에서 송금할 실제 금액과 일치하는지 확인하세요.",
+	"DEPOSIT_TXID_NOTE": "입금이 지연되는 것을 방지하려면 거래 메모나 메시지에 은행 입금 시 위에 표시된 고유 메모를 입력하시기 바랍니다. 아래 금액이 실제로 은행에서 입금한 금액과 일치하는지 확인하고, 거래가 완료된 후 은행에서 제공한 거래 ID를 포함했는지 확인하세요.",
+	"DEPOSIT_BANK_TEXT": "아래 은행 정보를 사용하여 입금하세요.",
+	"MIN_DEPOSIT": "최소 입금액",
+	"MAX_DEPOSIT": "최대 입금액",
+	"BACK": "뒤쪽에",
+	"DONE": "완료",
+	"PENDING_WITHDRAWAL_TITLE": "출금 대기 중",
+	"PENDING_WITHDRAWAL_TEXT_1": "귀하의 출금은 현재 확인 대기 중이며, 처리될 때까지 보류 상태로 유지됩니다.",
+	"DEPOSIT_AMOUNT_MIN_VALIDATION": "거래 금액이 너무 작아서 보낼 수 없습니다. 더 많은 양을 사용해 보세요.",
+	"DEPOSIT_AMOUNT_MAX_VALIDATION": "거래 규모가 너무 커서 보낼 수 없습니다. 더 적은 양을 사용해 보세요.",
+	"ACCOUNT_NAME": "계정 이름",
+	"ACCOUNT_NUMBER": "계좌 번호",
+	"BANK_NAME": "은행 이름",
+	"VERIFY_BANK_WITHDRAW": "인출하려면 은행 정보 확인을 포함한 확인을 완료해야 합니다. 아래 진행 버튼을 눌러주세요.",
+	"VERIFICATION_TITLE": "검증 완료",
+	"WITHDRAW_NOTE": "참고: 귀하의 이름으로 된 계좌로만 출금이 가능합니다.",
+	"USER_PAYMENT": { "TITLE": "결제" },
+	"QUOTE_CONFIRMATION_MSG_TEXT_1": "주문 내용을 확인하시고 아래 내용을 확인해 주시기 바랍니다.",
+	"QUOTE_CONFIRMATION_MSG_TEXT_2": "수령할 금액은 추정치이며 거래 수수료는 포함되어 있지 않습니다.",
+	"QUOTE_CONFIRMATION_EXPIRY_MSG": "가격 견적은 {0} {1} 후에 만료됩니다.",
+	"QUOTE_CONFIRMATION_EXPIRED_MSG_TEXT_1": "가격이 만료되었습니다.",
+	"QUOTE_CONFIRMATION_EXPIRED_MSG_TEXT_2": "새로운 가격 견적을 받으려면 돌아가세요.",
+	"ORDER_EXPIRED_MSG": "주문이 만료되었습니다. 새로고침해 주세요!",
+	"WITHDRAWALS_FORM_METHOD": "방법",
+	"WITHDRAWALS_FORM_ADDRESS_EXCHANGE": "사용자 이메일 교환",
+	"WITHDRAWALS_FORM_EXCHANGE_PLACEHOLDER": "이 교환에 사용자의 이메일을 입력하세요",
+	"WITHDRAWALS_FORM_MAIL_INFO": "본 거래소에 있는 사용자의 HollaEx 계정 이메일을 입력하고 무료로 송금하세요.",
+	"RISKY_TRADE_DISCLAIMER": {
+		"MSG_1": "이 자산은 높은 위험을 초래할 수 있으므로 실제로 {0}({1})을(를) 거래하고 싶은지 확인하십시오.",
+		"MSG_2": "극심한 변동성",
+		"MSG_3": "이 자산의 가치는 불확실하며 보장되지 않는다는 점을 이해했음을 확인하려면 아래 상자를 선택하세요.",
+		"UNDERSTAND_RISK_MSG": "예, 위험을 이해합니다"
+	},
+	"DUST": {
+		"TITLE": "지갑 살포기",
+		"LINK": "지갑 살포기",
+		"TOOLTIP": "작은 지갑 잔액(더스트)을 암호화폐로 변환하세요",
+		"BACK_PLACEHOLDER": "{0} {1}",
+		"BACK_TO_WALLET": "내 지갑으로",
+		"BACK": "뒤쪽에",
+		"ESTIMATED_TOTAL": "예상 총 먼지 값",
+		"CONVERT_ALL": "전환하다",
+		"NO_DUST": "먼지 자산이 없습니다!",
+		"SECTION": {
+			"TITLE": "지갑 먼지 변환",
+			"TEXT_1": "{0} {1} 이하의 값을 보유한 모든 낮은 지갑 잔액을 변환하세요.",
+			"TEXT_2": "모든 대화는 {0}({1})에 완료됩니다."
+		},
+		"CONFIRMATION": {
+			"TITLE": "먼지 변환",
+			"SUBTITLE": "변환 중인 자산",
+			"BACK": "뒤쪽에",
+			"CONFIRM": "확인하다",
+			"GET": "당신은 얻을 것이다",
+			"FEE": "전환 수수료",
+			"PLEASE": "참고하세요",
+			"NOTE": "24시간마다 먼지를 {0}로 변환할 수 있습니다. {1} {2} 미만의 잔액만 변환됩니다."
+		},
+		"SUCCESSFUL": {
+			"TITLE": "먼지 변환 성공!",
+			"TEXT": "당신은 받았습니다",
+			"VIEW_HISTORY": "기록 보기",
+			"CLOSE": "닫다"
+		}
+	},
+	"PROFIT_LOSS": {
+		"BACK": "뒤쪽에",
+		"BACK_TO_WALLET": "지갑에",
+		"WALLET_PERFORMANCE_TITLE": "성능 균형",
+		"WALLET_PERFORMANCE_DESCRIPTION": "시간 경과에 따른 지갑 잔액 성과 및 자산 분석. 아래 날짜를 클릭하면 해당 날짜의 지갑 실적을 확인할 수 있습니다.",
+		"PL_7_DAY": "7일 손익",
+		"EST_TOTAL_BALANCE": "동쪽. 전체 균형",
+		"WEEK": "주",
+		"MONTH": "월",
+		"MONTHS": "개월",
+		"WALLET_BALANCE": "월렛 잔액 분석",
+		"WALLET_BALANCE_DESCRIPTION_1": "아래는 지갑 내역입니다.",
+		"WALLET_BALANCE_DESCRIPTION_2": "아래 표를 업데이트하려면 위 차트를 클릭하세요.",
+		"DATE_SELECT": "날짜 선택",
+		"ASSET_NAME": "자산 이름",
+		"BALANCE_AMOUNT": "잔액",
+		"VALUE": "값",
+		"PERFORMANCE_TREND": "7일 실적 추세",
+		"CUSTOM_DATE_DESCRIPTION": "기록 데이터를 가져오려면 특정 날짜를 선택하세요(날짜 차이는 3개월을 초과할 수 없음).",
+		"SELECT_START_DATE": "시작일 선택",
+		"SELECT_END_DATE": "종료일 선택",
+		"CUSTOM": "관습",
+		"BACK_CUSTOM": "뒤쪽에",
+		"PROOCED_CUSTOM": "처리됨",
+		"PL_DAYS": "일손익",
+		"VIEW_MORE": "더보기 {0}",
+		"SHOW_ASSET_BREAKDOWN": "자산 분석 표시",
+		"PL_SUMMARY": "손익 요약",
+		"BALANCE_HISTORY": "잔액 내역"
+	},
+	"ASSET_INFO": "자산 정보",
+	"TAKER_FEES_APPLIED": "테이커 수수료가 적용됩니다.",
+	"ASSET_INFO_PAGE": "자산 정보 페이지",
+	"DIGITAL_ASSETS": {
+		"DIGITAL_ASSETS_TITLE": "디지털 자산",
+		"GO_BACK": "돌아가기",
+		"ASSETS_INFO": "다음은 플랫폼에서 사용 가능한 자산입니다.",
+		"ASSETS_INFO_DETAIL": "자세한 내용을 보려면 아래 목록에서 자산을 클릭하세요.",
+		"QUICK_TRADE": "빠른 거래",
+		"PRO_TRADE": "프로 트레이드",
+		"MARKETS": "시장",
+		"WALLET": "지갑",
+		"PRICE_SOURCE": "가격 소스",
+		"ORDERBOOK": "주문장",
+		"NETWORK": "네트워크 브로커 OTC",
+		"BROKER": "지역 브로커 OTC",
+		"BROKERAGE": "NA - (중개)"
+	},
+	"HOLLAEX_TOKEN": {
+		"REMOVE_FAVOURITES": "즐겨찾기에서 제거",
+		"ADD_FAVOURITES": "즐겨 찾기에 추가",
+		"GO_BACK": " 돌아가기",
+		"BALANCE": "균형:",
+		"OPEN_WALLET": "(지갑을 열어라)",
+		"ABOUT": "에 대한",
+		"VIEW": "더보기",
+		"COMING_SOON": "출시 예정...",
+		"NO_DESCRIPTION": "이 디지털 자산은 현재 설명이 없습니다.",
+		"STAKE": "말뚝",
+		"MORE": "더",
+		"INFO": "정보",
+		"TRADE": "거래",
+		"QUICK_TRADE": "빠른 거래 {0}",
+		"PRICES": {
+			"TITLE": "물가",
+			"QUICK_TRADE": "빠른 거래",
+			"SUBTITLE": "{0}의 구매 및 판매 가격을 보려면 {1}을(를) 방문하세요.",
+			"FOOTER": "마켓 테이커 거래 수수료는 Quick Trade를 통해 실행되는 모든 거래에 적용됩니다."
+		},
+		"LIST": "디지털 자산을 나열하고 싶으십니까?",
+		"WEBSITE": "웹사이트",
+		"EXPLORER": "탐침",
+		"PRO_TRADE": "{0} 시장 보기"
+	},
+	"ACCORDIAN": {
+		"ACCORDIAN_ASSETS": "모든 지갑 자산",
+		"ACCORDIAN_INFO": "자산 정보 페이지",
+		"ACCORDIAN_HISTORY": "역사"
+	},
+	"ASYNC_LINK": {
+		"TITLE": "페이지가 자동으로 열리지 않나요?",
+		"TEXT": "브라우저가 페이지를 차단하고 있을 수 있습니다. 대신 아래 링크를 복사하여 붙여넣어 보세요."
+	},
+	"TERMS_OF_SERVICES": {
+		"TO_GET_ACCESS": "액세스하려면 다음 주소로 연락하세요."
+	},
+	"FEES_AND_LIMITS": {
+		"LINK": "내 수수료 및 한도 보기",
+		"COIN_PAGE_LINK": "거래 수수료 및 한도",
+		"BACK": { "PLACEHOLDER": "{0} {1}", "BACK": "돌아가기", "TO": "요약하기" },
+		"TITLE": "수수료 및 한도",
+		"SEARCH_PLACEHOLDER": "찾다...",
+		"TABS": {
+			"TRADING_FEES": {
+				"TITLE": "거래 수수료",
+				"TABLE": {
+					"TITLE": "시장 거래 수수료",
+					"SUBTITLE": "다음은 시장별 거래 수수료 규정입니다.",
+					"HEADER": {
+						"MARKET": "시장",
+						"MAKER": "메이커 거래 수수료(주문 제한)",
+						"TAKER": "테이커 거래 수수료(시장 주문)"
+					}
+				}
+			},
+			"WITHDRAWAL_FEES": {
+				"TITLE": "출금 수수료",
+				"TABLE": {
+					"TITLE": "탈퇴시 수수료 공제",
+					"SUBTITLE": "다음은 자산 인출 시 발생하는 모든 수수료입니다.",
+					"NOT_ALLOWED": "허용되지 않음",
+					"HEADER": {
+						"CURRENCY": "통화/자산",
+						"DEPOSIT": "입금 수수료",
+						"WITHDRAWAL": "인출 수수료"
+					}
+				}
+			},
+			"WITHDRAWAL_LIMITS": {
+				"TITLE": "출금한도",
+				"TABLE_1": {
+					"TITLE": "독립출금한도",
+					"SUBTITLE": "자체적으로 독립적인 24시간 출금 규정을 따르는 집합적 한도 규정에서 분리된 자산:",
+					"HEADER": {
+						"CURRENCY": "통화/자산",
+						"LIMIT": "일일 한도",
+						"LIMIT_2": "월 한도"
+					},
+					"LIMIT_TEXT": "(공동 출금 한도 금액을 공유하는 자산)",
+					"LIMIT_TEXT_2": "(자국 통화만을 기준으로 한도)",
+					"VALUED": "(가치있는)",
+					"NO_INDEPENDENT": "이 계층에는 독립적인 제한이 없습니다.",
+					"LIMIT_TEXT_3": "(모두 {0}로 표시된 일괄 일일 인출 한도 금액을 공유하는 자산)",
+					"LIMIT_TEXT_4": "(모두 {0}로 표시된 일괄 월별 인출 한도 금액을 공유하는 자산)"
+				},
+				"TABLE_2": {
+					"TITLE": "독립한계",
+					"SUBTITLE": "자국 통화로 일일 및 월별 인출 한도가 있는 자산:"
+				},
+				"TABLE_3": {
+					"TITLE": "집단적 한계",
+					"SUBTITLE": "코인 그룹에 대한 일일 및 월간 통합 인출 한도"
+				}
+			}
+		}
+	},
+	"STATUS_TEXT": {
+		"INCOMPLETE": "불완전한",
+		"PENDING": "보류 중",
+		"REJECTED": "거부됨",
+		"VERIFIED": "검증됨"
+	},
+	"LOGINS_HISTORY": {
+		"TAB": "로그인 기록",
+		"CONTENT": {
+			"TITLE": "로그인 시도 기록",
+			"SUBTITLE": "귀하의 계정에서 실패한 모든 로그인 시도와 그 잠재적 출처에 대한 기록입니다.",
+			"DOWNLOAD_HISTORY": "다운로드_역사",
+			"FILTER": {
+				"STATUS": "상태",
+				"ALL": "모두",
+				"FAILED": "실패한",
+				"SUCCESS": "성공"
+			},
+			"TABLE": {
+				"HEADER": {
+					"LAST_SEEN": { "TITLE": "마지막으로 본", "DESCRIPTION": "(최근순)" },
+					"FAILED_ATTEMPTS": "실패한 시도",
+					"COUNTRY": "국가",
+					"IP_ADDRESS": "IP 주소"
+				},
+				"CELL": {
+					"FAILED_LOGIN": "로그인 실패: {0}x",
+					"SUCCESS": "성공",
+					"DEVICE": "장치"
+				}
+			}
+		}
+	},
+	"SESSIONS": {
+		"TAB": "세션",
+		"CONTENT": {
+			"TITLE": "활성 세션",
+			"SUBTITLE": {
+				"TEXT": "다음은 귀하 계정의 활성 세션입니다. 활성 세션을 종료하려면 {0}을 클릭하세요. 그러면 해당 세션이 로그아웃됩니다.",
+				"LINK": "취소"
+			},
+			"DOWNLOAD": "다운로드",
+			"TABLE": {
+				"HEADER": {
+					"LAST_SEEN": { "TITLE": "마지막으로 본", "DESCRIPTION": "(최근순)" },
+					"SESSION_STARTED": "세션이 시작되었습니다",
+					"SESSION_EXPIRY": "세션 만료",
+					"STATUS": "상태"
+				},
+				"CELL": {
+					"ACTIVE": "활동적인",
+					"COUNTRY": "국가",
+					"IP_ADDRESS": "IP 주소",
+					"DEVICE": "장치",
+					"LOGIN_TIME": "로그인 성공 시간"
+				}
+			},
+			"NOTIFICATION": "세션이 취소됨/로그아웃됨",
+			"MODAL": {
+				"TITLE": "세션 취소",
+				"PROMPT": "이 세션을 취소하고 로그아웃하시겠습니까?",
+				"BACK": "뒤쪽에",
+				"CONFIRM": "확인하다"
+			}
+		}
+	},
+	"CANCEL_WITHDRAWAL_ADDRESS": "출금주소"
 }

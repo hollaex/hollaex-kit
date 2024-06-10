@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { object, string, func } from 'prop-types';
 import classnames from 'classnames';
 import { StarFilled, StarOutlined, ThunderboltFilled } from '@ant-design/icons';
-import { Link } from 'react-router';
+import { browserHistory } from 'react-router';
 import { Slider, PriceChange, Coin } from 'components';
 import { DEFAULT_COIN_DATA } from 'config/constants';
 import STRINGS from 'config/localizedStrings';
@@ -79,10 +79,15 @@ class MarketSelector extends Component {
 		return unique(Object.entries(pairs).map(([_, { pair_2 }]) => pair_2));
 	};
 
-	filterData = (data, filterValue, key1, key2) => {
+	filterData = (data, filterValue, key1, key2, key3) => {
 		return data.filter((item) => {
 			const value1 = item[key1] || item[key2];
-			return value1.toLowerCase().indexOf(filterValue) !== -1;
+			const value2 = item[key3];
+
+			return (
+				value1.toLowerCase().indexOf(filterValue) !== -1 ||
+				value2?.toLowerCase()?.indexOf(filterValue) !== -1
+			);
 		});
 	};
 
@@ -93,7 +98,7 @@ class MarketSelector extends Component {
 		const tabResult =
 			tabSymbol === 'all'
 				? coinsData
-				: this.filterData(coinsData, tabSymbol, 'key', 'symbol');
+				: this.filterData(coinsData, tabSymbol, 'key', 'symbol', 'fullname');
 
 		this.setState({ searchResult: tabResult, selectedTabMenu: tabSymbol });
 	};
@@ -107,10 +112,16 @@ class MarketSelector extends Component {
 		const tabResult =
 			selectedTabMenu === 'all'
 				? coinsData
-				: this.filterData(coinsData, selectedTabMenu, 'key', 'symbol');
+				: this.filterData(
+						coinsData,
+						selectedTabMenu,
+						'key',
+						'symbol',
+						'fullname'
+				  );
 		const result = !value
 			? tabResult
-			: this.filterData(tabResult, searchValue, 'key', 'symbol');
+			: this.filterData(tabResult, searchValue, 'key', 'symbol', 'fullname');
 
 		this.setState({ searchResult: result, searchValue: value });
 	};
@@ -118,6 +129,13 @@ class MarketSelector extends Component {
 	onViewMarketsClick = () => {
 		this.props.onViewMarketsClick();
 		this.closeAddTabMenu();
+	};
+
+	onViewAssetsClick = () => {
+		browserHistory.push('/prices');
+		if (isMobile) {
+			window.location.reload();
+		}
 	};
 
 	closeAddTabMenu = () => {
@@ -220,8 +238,11 @@ class MarketSelector extends Component {
 							name={STRINGS['SEARCH_TXT']}
 							placeHolder={`${STRINGS['SEARCH_TXT']}...`}
 							className="app-bar-search-field"
-							handleSearch={(e) => this.handleSearch(e.target.value)}
+							handleSearch={(e) =>
+								this.handleSearch(e.target && e.target.value)
+							}
 							showCross
+							isFocus={true}
 						/>
 					</div>
 					<div className="scroll-view">
@@ -300,24 +321,24 @@ class MarketSelector extends Component {
 								<br />
 								{STRINGS.formatString(
 									STRINGS['TRY_VISITING_ASSETS'],
-									<Link
-										to="assets"
+									<span
+										onClick={() => this.onViewAssetsClick()}
 										className="text-underline blue-link pointer"
 									>
 										{STRINGS['ASSETS_PAGE']}
-									</Link>
+									</span>
 								)}
 							</div>
 						)}
-					</div>
-					<div className="d-flex justify-content-center app_bar-link blue-link pointer">
-						{constants && constants.features && constants.features.pro_trade && (
-							<div onClick={this.onViewMarketsClick}>
-								<EditWrapper stringId="VIEW_MARKET">
-									{STRINGS['VIEW_MARKET']}
-								</EditWrapper>
-							</div>
-						)}
+						<div className="d-flex justify-content-center app_bar-link blue-link pointer">
+							{constants && constants.features && constants.features.pro_trade && (
+								<div onClick={this.onViewMarketsClick}>
+									<EditWrapper stringId="VIEW_MARKET">
+										{STRINGS['VIEW_MARKET']}
+									</EditWrapper>
+								</div>
+							)}
+						</div>
 					</div>
 				</div>
 			</div>

@@ -16,8 +16,10 @@ const TraderAccounts = ({
 	onUpgradeAccount,
 	logout,
 	onInviteFriends,
+	onDisplayReferralList,
 	verification_level,
 	selectedAccount,
+	referral_history_config,
 	icons: ICONS,
 }) => {
 	const level = selectedAccount
@@ -119,7 +121,14 @@ const TraderAccounts = ({
 									stringId="REFERRAL_LINK.TITLE"
 									renderWrapper={(children) => (
 										<div className="trade-account-link mb-4">
-											<span className="pointer caps" onClick={onInviteFriends}>
+											<span
+												className="pointer caps"
+												onClick={
+													referral_history_config?.active
+														? onDisplayReferralList
+														: onInviteFriends
+												}
+											>
 												{children}
 											</span>
 										</div>
@@ -143,6 +152,29 @@ const TraderAccounts = ({
 									<div className="trade-account-link mb-2 caps">
 										<EditWrapper stringId="SUMMARY.VIEW_VERIFICATION">
 											{STRINGS['SUMMARY.VIEW_VERIFICATION']}
+										</EditWrapper>
+									</div>
+								</Link>
+							</Fragment>
+						)}
+
+						{isLoggedIn() && (
+							<Fragment>
+								<div className="d-flex align-items-center">
+									<div className="deposit-icon mr-2">
+										<Image
+											iconId="DEPOSIT_TITLE"
+											icon={ICONS['DEPOSIT_TITLE']}
+										/>
+									</div>
+									<EditWrapper stringId="SUMMARY.WALLET_FUNDING">
+										{STRINGS.formatString(STRINGS['SUMMARY.WALLET_FUNDING'])}
+									</EditWrapper>
+								</div>
+								<Link to="/wallet/deposit">
+									<div className="trade-account-link mb-2 text-uppercase">
+										<EditWrapper stringId="SUMMARY.MAKE_A_DEPOSIT">
+											{STRINGS['SUMMARY.MAKE_A_DEPOSIT']}
 										</EditWrapper>
 									</div>
 								</Link>

@@ -175,8 +175,6 @@ class Home extends Component {
 				const {
 					constants: { features: { quick_trade = false } = {} } = {},
 					isReady,
-					pair,
-					// sections,
 				} = this.props;
 
 				const sectionsNumber = Object.entries(this.state.sectionData)
@@ -191,7 +189,7 @@ class Home extends Component {
 								minHeight: this.calculateMinHeight(sectionsNumber),
 							}}
 							onClickDemo={
-								pair ? this.goTo(`trade/${pair}`) : this.goTo('markets')
+								this.goTo('accounts')
 							}
 							onClickTrade={this.goTo('signup')}
 						/>

@@ -1,15 +1,33 @@
+import { isMobile } from 'react-device-detect';
 import { createSelector } from 'reselect';
 import { MENU_ITEMS } from 'config/menu';
 import { STAKING_INDEX_COIN, isStakingAvailable } from 'config/contracts';
+import { MarketsSelector } from 'containers/Trade/utils';
 
 const getConstants = (state) => state.app.constants;
 const getRemoteRoutes = (state) => state.app.remoteRoutes;
 const getContracts = (state) => state.app.contracts;
 const getToken = (state) => state.auth.token;
+const getFavourites = (state) => state.app.favourites;
+const getMarkets = (state) => MarketsSelector(state);
 
 export const menuItemsSelector = createSelector(
-	[getConstants, getRemoteRoutes, getContracts, getToken],
-	(constants = {}, remoteRoutes = [], contracts = {}, token) => {
+	[
+		getConstants,
+		getRemoteRoutes,
+		getContracts,
+		getToken,
+		getFavourites,
+		getMarkets,
+	],
+	(
+		constants = {},
+		remoteRoutes = [],
+		contracts = {},
+		token,
+		getFavourites = {},
+		getMarkets = {}
+	) => {
 		const { features = {} } = constants;
 		const featureItems = MENU_ITEMS.features
 			.filter(
@@ -43,18 +61,39 @@ export const menuItemsSelector = createSelector(
 						item.hide_from_menulist = false;
 						item.hide_from_sidebar = false;
 					}
-
+					if (id === 'pro_trade') {
+						if (getFavourites && getFavourites.length) {
+							item.path = `/trade/${getFavourites[0]}`;
+						} else {
+							item.path = `/trade/${getMarkets[0]?.key}`;
+						}
+					}
 					return item;
 				}
 			);
 
-		const menuItems = [
-			...MENU_ITEMS.top,
-			...featureItems,
-			...MENU_ITEMS.middle,
-			...remoteRoutes,
-			...(token ? MENU_ITEMS.bottom : []),
-		];
+		const menuItems = isMobile
+			? remoteRoutes && remoteRoutes.length
+				? [
+						...MENU_ITEMS.top,
+						...featureItems,
+						MENU_ITEMS.middle[0],
+						remoteRoutes[0],
+						...(token ? MENU_ITEMS.bottom : []),
+				  ]
+				: [
+						...MENU_ITEMS.top,
+						...featureItems,
+						...MENU_ITEMS.middle,
+						...(token ? MENU_ITEMS.bottom : []),
+				  ]
+			: [
+					...MENU_ITEMS.top,
+					...MENU_ITEMS.middle,
+					...featureItems,
+					...remoteRoutes,
+					...(token ? MENU_ITEMS.bottom : []),
+			  ];
 
 		return menuItems;
 	}

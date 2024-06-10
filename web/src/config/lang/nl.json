@@ -70,7 +70,10 @@
 		"TAB_HISTORY": "Geschiedenis",
 		"TAB_SIGNOUT": "Afmelden",
 		"TAB_STAKE": "Inzet",
-		"TAB_FIAT": "Fiat regelt"
+		"TAB_FIAT": "Fiat regelt",
+		"TAB_TRADE": "Handel",
+		"PRO_TRADE": "Pro",
+		"QUICK_TRADE": "Snel"
 	},
 	"CONTACT_FORM": {
 		"CATEGORY_LABEL": "Categorie",
@@ -176,7 +179,9 @@
 		"OTP_PLACEHOLDER": "Voer de authenticatiecode in",
 		"OTP_TITLE": "Verificatiecode",
 		"OTP_BUTTON": "indienen",
-		"ERROR_INVALID": "Ongeldige OTP-code"
+		"ERROR_INVALID": "Ongeldige OTP-code",
+		"OTP_FORM_SUBNOTE_LINE_3": "(To add a new account to Google Authenticator, click the '+' button. You can either scan the provided QR code in the previous step or manually enter the key to add your account to the app.)",
+		"INPUT_TEXT": "Input the 6-digit code from your phone's Google Authenticator app:"
 	},
 	"EMAIL_CODE_FORM": {
 		"TITLE": "Voer uw beveiligingscodes in",
@@ -186,7 +191,9 @@
 		"BUTTON": "indienen",
 		"ERROR_INVALID": "De code die je hebt ingevoerd is onjuist. Probeer het opnieuw",
 		"OTP_LABEL": "2FA-code (OTP)",
-		"OTP_PLACEHOLDER": "Voer uw 6-cijferige tweefactorauthenticatiecode in"
+		"OTP_PLACEHOLDER": "Voer uw 6-cijferige tweefactorauthenticatiecode in",
+		"FORM_TITLE_TEXT": "Er is een unieke code naar uw e-mailadres verzonden die nodig is om het proces te voltooien. Voer hieronder de code in die naar uw e-mailadres is verzonden{0}.",
+		"OTP_NOTE": " samen met uw OTP-code"
 	},
 	"QUICK_TRADE_COMPONENT": {
 		"TITLE": "Snelle handel",
@@ -203,7 +210,16 @@
 		"SOURCE_TEXT": "Makelaar OTC-deal",
 		"SOURCE_TEXT_NETWORK": "Netwerkmakelaar OTC-deal",
 		"VISIT": "Bezoek{0}",
-		"ASSET_INFO_PAGE": "Activa info pagina"
+		"ASSET_INFO_PAGE": "Activa info pagina",
+		"CHANGE_TEXT_7D": "7D Verandering",
+		"HIGH_7D": "7D HOOG",
+		"LOW_7D": "7D LAAG",
+		"7D": "7D",
+		"1D": "1D",
+		"COIN_NAME": "{0} ({1})",
+		"COIN_INFORMATION": "{0} informatie",
+		"PRICE_TREND": "Prijstrend",
+		"VIEW_TREND": "Bekijk Trend"
 	},
 	"PREVIOUS_PAGE": "vorige bladzijde",
 	"NEXT_PAGE": "volgende bladzijde",
@@ -496,6 +512,28 @@
 			"ADJUST": "(PERCENTAGE AANPASSEN)",
 			"ACTIVATE_RISK_MANAGEMENT": "Activeer risicomanagement",
 			"WARNING_POP_UP": "Waarschuwing pop-ups"
+		},
+		"TITLE_ACCOUNT": "Rekening",
+		"DELETE_ACCOUNT": {
+			"ACCESS": {
+				"TEXT": "Wilt u uw account verwijderen? Klik op {0}.",
+				"LINK": "hier",
+				"DANGER_ZONE": {
+					"TITLE": "Gevarenzone",
+					"TEXT": "Als u uw account verwijdert, zijn zowel uw account als uw tegoeden ontoegankelijk.",
+					"PROCEED": "Doorgaan",
+					"CANCEL": "Annuleren"
+				}
+			},
+			"CONFIRMATION": {
+				"TITLE": "Account verwijderen",
+				"TEXT_1": "Als u uw account verwijdert, worden al uw gegevens permanent uit de uitwisseling verwijderd. Deze actie is onomkeerbaar.",
+				"TEXT_2": "TYPE {0} om de verwijdering van het account te bevestigen.",
+				"KEY": "IK BEGRIJP",
+				"DELETE": "VERWIJDEREN",
+				"CANCEL": "Annuleren",
+				"PLACEHOLDER": "Typ hier"
+			}
 		}
 	},
 	"USER_APPS": {
@@ -558,7 +596,11 @@
 		"WITHDRAWALS": "Opnames",
 		"ORDERID": "Order ID",
 		"TRIGGER_STOP_PRICE": "Trigger/stop-prijs",
-		"TIME_OF_LAST_TRADE": "Tijd van laatste transactie"
+		"TIME_OF_LAST_TRADE": "Tijd van laatste transactie",
+		"INTERNAL": "intern",
+		"BLOCKCHAIN": "blockchain",
+		"STAKE": "inzet",
+		"REFERRAL": "verwijzing"
 	},
 	"ACCOUNT_SECURITY": {
 		"TITLE_TEXT": "Pas de beveiligingsinstellingen voor uw account aan. Van tweefactorauthenticatie, wachtwoord, API-sleutels en andere beveiligingsgerelateerde functies.",
@@ -581,15 +623,46 @@
 				"MESSAGE_3": "Als u problemen heeft met het scannen hiervan, kunt u de onderstaande code handmatig invoeren",
 				"MESSAGE_4": "U moet deze code veilig opslaan om uw 2FA te herstellen voor het geval u uw mobiele telefoon in de toekomst wijzigt of kwijtraakt.",
 				"MESSAGE_5": "Handmatig",
-				"WARNING": "We raden u ten zeerste aan om tweefactorauthenticatie (2FA) in te stellen. Als u dit doet, wordt de veiligheid van uw geld aanzienlijk vergroot.",
+				"WARNING": "Wij {0} {1}",
 				"ENABLE": "Schakel tweefactorauthenticatie in",
 				"DISABLE": "Schakel tweefactorauthenticatie uit",
-				"INPUT": "Voer uw OTP in"
+				"INPUT": "Voer uw OTP in",
+				"STRONGLY_RECOMMEND": "sterk aangeraden",
+				"WARNING_CONTENT": "dat u tweefactorauthenticatie inschakelt om de veiligheid van uw account te verbeteren en uw geld te beschermen"
 			},
 			"FORM": {
 				"PLACEHOLDER": "Voer uw OTP in die wordt verstrekt door Google Authenticator.",
 				"BUTTON": "Schakel 2FA in"
-			}
+			},
+			"DOWNLOAD_APP": "Download and install",
+			"GOOGLE_AUTHENTICATOR": "Google Authenticator:",
+			"DOWNLOAD_FROM": "Download from",
+			"GOOGLE_PLAY": "GooglePlay",
+			"APPLE": "App Store",
+			"APP_INFO": "Google Authenticator will generate random codes that are necessary for sensitive actions, such as logging in and withdrawing funds.",
+			"DONT_UNINSTALL": "Verwijder de app alstublieft niet.",
+			"INFO_UNINSTALL": "In het geval van onbedoeld verlies van uw telefoon of onbedoelde verwijdering, kunt u vertraging ondervinden bij het opnieuw verkrijgen van toegang tot uw account. In dergelijke gevallen moet u contact opnemen met ons ondersteuningsteam voor hulp.",
+			"BACK": "RUG",
+			"PROCEED": "DOORGAAN",
+			"NEXT": "Volgende",
+			"NOTE": "Opmerking: {0} {1}",
+			"MANUEL_DESCRIPTION": "Voer het handmatige 2FA-zaad uit de vorige stap in.",
+			"MANUEL_DESCRIPTION_2": "Noteer de bovenstaande handmatige verificatie zorgvuldig en bewaar deze",
+			"MANUEL_DESCRIPTION_3": "sleutel omdat deze kan worden gebruikt voor accountherstel.",
+			"MANUEL_KEY": "Handmatig 2FA zaad",
+			"MANUEL_PLACEHOLDER": "Voer uw 2FA-zaad in",
+			"MANUEL_WARNING": "(Zorg ervoor dat u het opschrijft en veilig bewaart voor toekomstig gebruik.)",
+			"MANUEL_ERROR_1": "Voer de handleiding 2FA Seed in",
+			"MANUEL_ERROR_2": "Voer het handmatige 2FA-zaad uit de vorige stap in",
+			"ACCOUNT_SECURED": "Account beveiligd",
+			"2FA_ENABLED": "2FA INGESCHAKELD",
+			"2FA_DISABLED": "2FA UITGESCHAKELD",
+			"2FA_CONTENT_ONE": "Activeren van {0} {1} .",
+			"2FA_CONTENT_TWO": "(Two-Factor Authentication) voegt een extra beschermingslaag toe om uw geld te beschermen. Eenmaal ingeschakeld, moet u elke keer dat u inlogt of activa opneemt, vanaf uw telefoon een verificatiecode invoeren. Deze functie verbetert de veiligheid van uw account aanzienlijk",
+			"2FA_CONTENT_THREE": "(Two-Factor Authentication) voegt een extra beschermingslaag toe om uw geld te beschermen",
+			"2FA_CONTENT_FOUR": "Om 2FA uit te schakelen, moet u uw 2FA (OTP)-code invoeren",
+			"INPUT_SIX_DIGIT_CODE": "Voer de 6-cijferige code in via de Google Authenticator-app van uw telefoon:",
+			"INPUT_CONTENT": "(Om een nieuw account aan Google Authenticator toe te voegen, klikt u op de knop '+'. U kunt de meegeleverde QR-code in de vorige stap scannen of handmatig de sleutel invoeren om uw account aan de app toe te voegen.)"
 		},
 		"CHANGE_PASSWORD": {
 			"TITLE": "Wachtwoord",
@@ -710,7 +783,11 @@
 		"COMPLETED_TOOLTIP": "De inzet is volwassen. Ga door met uitzetten om meer beloningen te verdienen of uitzetten om beloningen te claimen.",
 		"CONNECT_ERROR": "Controleer uw portemonnee",
 		"INSTALL_METAMASK": "U moet Metamask in uw browser installeren: https://metamask.io/download.html",
-		"INSTALL_METAMASK_TITLE": "MetaMask niet gedetecteerd"
+		"INSTALL_METAMASK_TITLE": "MetaMask niet gedetecteerd",
+		"INSTALL_METAMASK_DETAILS": {
+			"TITLE": "Installeer MetaMask",
+			"PROMPT": "U moet Metamask in uw browser installeren: {0}"
+		}
 	},
 	"UNSTAKE": {
 		"TITLE": "Uitzetten",
@@ -842,7 +919,9 @@
 		"REQUIRES_24H_TO_SETTLE_NOTICE": "Er is 24 uur nodig om af te wikkelen.",
 		"SUCCESSFUL_UNSTAKE_NOTICE": "Je hebt succesvol unstaked",
 		"VISIT_WALLET_BUTTON": "BEZOEK WALLET",
-		"CLOSE_BUTTON": "SLUITEN"
+		"CLOSE_BUTTON": "SLUITEN",
+		"ACTIVE_STAKES": "Actieve inzet",
+		"STAKES_HISTORY": "Geschiedenis"
 	},
 	"MOVE_XHT": {
 		"TITLE": "Verplaats XHT",
@@ -915,8 +994,16 @@
 	"CURRENCY_WALLET": {
 		"BACK": "Rug",
 		"WALLET_PAGE": "{0} naar portemonneepagina",
-		"LEARN_MORE": "Kom meer te weten",
-		"ABOUT": "{0} ongeveer"
+		"LEARN_MORE": "Meer informatie {0}",
+		"ABOUT": "over",
+		"TOTAL_BALANCE": "Totaal saldo: {0} {1}",
+		"AVAILABLE_BALANCE": "Beschikbaar saldo: {0} {1} {2}",
+		"PERCENTAGE_SHARE": "Percentage aandeel {0}",
+		"EARN_BY": "Verdien vóór {0} {1}",
+		"STAKING": "uitzetten",
+		"TOOLTIP": "Saldo bevindt zich niet in de status 'in behandeling' of is geblokkeerd in transacties (openstaande orders)",
+		"WALLET_HAS_BALANCE_PERCENTAGE": "Uw portemonnee bevat momenteel geen {0}.",
+		"WALLET_DEPOSIT": "U kunt proberen {0} te storten of {1} te kopen"
 	},
 	"LOGOUT": "Uitloggen",
 	"WITHDRAWALS_MIN_VALUE_ERROR": "De transactie is te klein om te verzenden. Probeer een grotere hoeveelheid.",
@@ -983,7 +1070,7 @@
 	"24H_MAX": "24 uur hoog:",
 	"24H_MIN": "24 uur laag",
 	"24H_VAL": "24H Vol",
-	"AVAILABLE_BALANCE_TEXT": "Beschikbaar saldo {0}: {1} {2}",
+	"AVAILABLE_BALANCE_TEXT": "Beschikbaar {0} Saldo: {1} {2} {3}",
 	"BALANCE_TEXT": "Evenwicht",
 	"CURRENCY_BALANCE_TEXT": "{0} Saldo",
 	"WALLET_ALL_ASSETS": "Alle activa",
@@ -1216,7 +1303,8 @@
 		"VIEW_MORE_MARKETS": "Bekijk meer markten",
 		"VIEW_VERIFICATION": "verificatie bekijken",
 		"EARN_COMMISSION": "Verdien commissies",
-		"ID_VERIFICATION": "ID-verificatie:"
+		"ID_VERIFICATION": "ID-verificatie:",
+		"VOLUME_7D": "7D-volume"
 	},
 	"REFERRAL_LINK": {
 		"TITLE": "Nodig je vriend uit",
@@ -1295,7 +1383,11 @@
 		"VIEW_MARKETS": "Markten bekijken",
 		"TRADING_SYMBOL": "Handelssymbool",
 		"TYPE": "Type",
-		"SOURCE": "BRON"
+		"SOURCE": "BRON",
+		"CHANGE_7D": "Wijziging (7 dagen)",
+		"CHANGE_1D": "Wijziging (1 dag)",
+		"CHART_7D": "Grafiek (7 dagen)",
+		"ASSET": "Bezit"
 	},
 	"SUMMARY_MARKETS": {
 		"HOLLAEX": "Wilt u uw digitale activa vermelden? Start uw eigen markt met uw HollaEx {0} {1}",
@@ -1440,7 +1532,12 @@
 		"QUICK_TRADE": "SNELLE HANDEL",
 		"MARKETS": "MARKTEN",
 		"WALLET": "PORTEMONNEE",
-		"PRICE_SOURCE": "Prijs bron"
+		"PRICE_SOURCE": "Prijs bron",
+		"PRO_TRADE": "PRO HANDEL",
+		"ORDERBOOK": "Orderboek",
+		"NETWORK": "Netwerkmakelaar OTC",
+		"BROKER": "Lokale makelaar OTC",
+		"BROKERAGE": "NA - (makelaardij)"
 	},
 	"HOLLAEX_TOKEN": {
 		"REMOVE_FAVOURITES": "Verwijder uit favorieten",
@@ -1458,7 +1555,15 @@
 		"TRADE": "HANDEL",
 		"LIST": "Wilt u uw digitale activa vermelden?",
 		"WEBSITE": "Website",
-		"EXPLORER": "Ontdekkingsreiziger"
+		"EXPLORER": "Ontdekkingsreiziger",
+		"QUICK_TRADE": "SNELLE HANDEL {0}",
+		"PRICES": {
+			"TITLE": "Prijzen",
+			"QUICK_TRADE": "Snelle handel",
+			"SUBTITLE": "Ga naar {1} om de koop- en verkoopprijzen voor {0} te bekijken",
+			"FOOTER": "Er worden handelskosten voor marktnemers in rekening gebracht op alle transacties die via de Quick Trade worden uitgevoerd."
+		},
+		"PRO_TRADE": "BEKIJK {0} MARKT"
 	},
 	"ACCORDIAN": {
 		"ACCORDIAN_ASSETS": "Alle portefeuilleactiva",
@@ -1513,12 +1618,25 @@
 				"TABLE_1": {
 					"TITLE": "Onafhankelijke opnamelimiet",
 					"SUBTITLE": "Activa die gescheiden zijn van de collectieve limietregel die hun eigen onafhankelijke 24-uurs opnameregel volgen:",
-					"HEADER": { "CURRENCY": "Valuta/actief", "LIMIT": "24 uur limiet" },
-					"LIMIT_TEXT": "(Activa die allemaal een gezamenlijk opnamelimietbedrag delen)"
+					"HEADER": {
+						"CURRENCY": "Valuta/actief",
+						"LIMIT": "24 uur limiet",
+						"LIMIT_2": "Maandelijkse limiet"
+					},
+					"LIMIT_TEXT": "(Activa die allemaal een gezamenlijk opnamelimietbedrag delen)",
+					"LIMIT_TEXT_2": "(Limiet alleen gebaseerd op de eigen valuta)",
+					"VALUED": "(Gewaardeerd)",
+					"NO_INDEPENDENT": "Er is geen onafhankelijke limiet voor dit niveau",
+					"LIMIT_TEXT_3": "(Activiteiten die allemaal een collectief dagelijks opnamelimietbedrag delen, uitgedrukt in {0})",
+					"LIMIT_TEXT_4": "(Activiteiten die allemaal een gezamenlijk maandelijks opnamelimietbedrag delen, uitgedrukt in {0})"
 				},
 				"TABLE_2": {
 					"TITLE": "Collectieve gedeelde standaard opnamelimiet",
 					"SUBTITLE": "Hieronder staan de activa die allemaal dezelfde standaard 24-uurs opnamelimietbedragregel delen:"
+				},
+				"TABLE_3": {
+					"TITLE": "Collectieve grenzen",
+					"SUBTITLE": "Gecombineerde dagelijkse en maandelijkse opnamelimiet voor een groep munten"
 				}
 			}
 		}
@@ -1594,5 +1712,60 @@
 				"CONFIRM": "BEVESTIGEN"
 			}
 		}
-	}
+	},
+	"TRADE_TOOLS": "Hulpmiddelen",
+	"SECOND": "seconde",
+	"CANT_FIND_MARKETS": "Kan geen markten voor dat actief vinden.",
+	"TRY_VISITING_ASSETS": "Bezoek de {0}.",
+	"ASSETS_PAGE": "Pagina Activa",
+	"NETWORK": "Netwerk",
+	"CATEGORY": "Categorie",
+	"ASSETS": "Activa",
+	"QUICK_TRADE_QUOTE_EXPIRED_FIRST_LINE": "Prijsopgave is verlopen.",
+	"QUICK_TRADE_QUOTE_EXPIRED_SECOND_LINE": "Klik op requote om een nieuwe prijs te krijgen.",
+	"QUICK_TRADE_QUOTE_EXPIRED_BUTTON": "VERZOEK",
+	"ZERO_ASSET_2": "gedetecteerd. Maak een",
+	"ZERO_ASSET_3": "storting hieronder.",
+	"QUOTE_CONFIRMATION_EXPIRY_MSG": "De prijsopgave vervalt over {0} {1}",
+	"QUOTE_CONFIRMATION_EXPIRED_MSG_TEXT_1": "Prijs is verlopen.",
+	"QUOTE_CONFIRMATION_EXPIRED_MSG_TEXT_2": "Ga terug voor een nieuwe prijsopgave.",
+	"RISKY_TRADE_DISCLAIMER": {
+		"MSG_1": "Controleer of u inderdaad in {0} ({1}) wilt handelen, aangezien dit activum een hoog risico met zich mee kan brengen",
+		"MSG_2": "extreme volatiliteit",
+		"MSG_3": "Vink het onderstaande vakje aan om te bevestigen dat u begrijpt dat de waarde van dit item onzeker en niet gegarandeerd is.",
+		"UNDERSTAND_RISK_MSG": "Ja, ik begrijp de risico's"
+	},
+	"PROFIT_LOSS": {
+		"BACK": "Rug",
+		"BACK_TO_WALLET": "naar portemonnee",
+		"WALLET_PERFORMANCE_TITLE": "Evenwicht tussen prestaties",
+		"WALLET_PERFORMANCE_DESCRIPTION": "De balansprestaties van uw portemonnee in de loop van de tijd en de uitsplitsing van de activa. Klik op de onderstaande datums om de prestaties van uw portemonnee op die dag te bekijken.",
+		"PL_7_DAY": "7 dagen winst en verlies",
+		"EST_TOTAL_BALANCE": "Oosten. Eindbalans",
+		"WEEK": "week",
+		"MONTH": "maand",
+		"MONTHS": "maanden",
+		"WALLET_BALANCE": "Uitsplitsing van het portemonneesaldo",
+		"WALLET_BALANCE_DESCRIPTION_1": "Hieronder vindt u een overzicht van de portemonnee",
+		"WALLET_BALANCE_DESCRIPTION_2": "Klik op het bovenstaande diagram om de onderstaande tabel bij te werken.",
+		"DATE_SELECT": "Selecteer een datum",
+		"ASSET_NAME": "Naam van item",
+		"BALANCE_AMOUNT": "Saldobedrag",
+		"VALUE": "Waarde",
+		"PERFORMANCE_TREND": "Prestatietrend van 7 dagen",
+		"CUSTOM_DATE_DESCRIPTION": "Selecteer specifieke datums om uw geschiedenisgegevens op te halen (datumverschil mag niet verder gaan dan 3 maanden)",
+		"SELECT_START_DATE": "Selecteer startdatum",
+		"SELECT_END_DATE": "Selecteer einddatum",
+		"CUSTOM": "Aangepast",
+		"BACK_CUSTOM": "RUG",
+		"PROOCED_CUSTOM": "VERWERKT",
+		"PL_DAYS": "Dag P&L",
+		"VIEW_MORE": "Bekijk meer {0}",
+		"SHOW_ASSET_BREAKDOWN": "Activaverdeling weergeven",
+		"PL_SUMMARY": "P&L-samenvatting",
+		"BALANCE_HISTORY": "Saldogeschiedenis"
+	},
+	"ASSET_INFO": "Informatie over activa",
+	"TAKER_FEES_APPLIED": "Er worden takerkosten in rekening gebracht",
+	"CANCEL_WITHDRAWAL_ADDRESS": "Herroepingsadres"
 }

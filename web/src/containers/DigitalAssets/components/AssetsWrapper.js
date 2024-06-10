@@ -51,7 +51,7 @@ class AssetsWrapper extends Component {
 		const lastPrice = price[price.length - 1];
 		const priceDifference = lastPrice - firstPrice;
 		const priceDifferencePercent = formatPercentage(
-			priceDifference / firstPrice
+			(priceDifference / firstPrice) * 100
 		);
 		const formattedNumber = (val) =>
 			formatToCurrency(val, 0, val < 1 && countDecimals(val) > 8);
@@ -239,6 +239,7 @@ class AssetsWrapper extends Component {
 							placeHolder={`${STRINGS['SEARCH_ASSETS']}...`}
 							handleSearch={this.handleTabSearch}
 							showCross
+							isFocus={true}
 						/>
 					</div>
 				</div>

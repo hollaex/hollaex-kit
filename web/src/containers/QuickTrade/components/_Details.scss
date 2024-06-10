@@ -1,13 +1,12 @@
 $colors-white: white;
 
 .trade-details-wrapper {
-	width: 100%;
-	padding: 3.3rem 3rem 2.5rem;
+	padding: 5rem;
 	font-family: $en--font-family;
 	background-color: $quick-trade-background;
 
 	.trade-details-content {
-        position: relative;
+		position: relative;
 		height: 450px;
 		.pb-24 {
 			padding-bottom: 24px;
@@ -22,8 +21,7 @@ $colors-white: white;
 			padding-left: 18px;
 		}
 		.chart {
-			height: 164px;
-			margin: 10px 0 0;
+			height: 144px;
 			.fade-area {
 				position: relative;
 			}
@@ -42,11 +40,18 @@ $colors-white: white;
 			.highcharts-axis.highcharts-xaxis {
 				display: none;
 			}
+			.highcharts-root {
+				height: 100%;
+			}
+		}
+		.price-change {
+			&.large {
+				font-size: 1.8rem;
+			}
 		}
 		.trade_tabs-container {
 			margin: 0;
-			padding-left: 80px;
-			width: 100% !important;
+			width: auto !important;
 		}
 
 		.main-coin-wrapper {
@@ -66,10 +71,10 @@ $colors-white: white;
 			white-space: nowrap;
 		}
 
-        // .graph-row {
-        //     position: absolute;
-        //     margin-top: 2rem;
-        // }
+		// .graph-row {
+		//     position: absolute;
+		//     margin-top: 2rem;
+		// }
 	}
 
 	.f-size-16 {
@@ -95,7 +100,7 @@ $colors-white: white;
 
 	.day-change-block {
 		text-align: end;
-		margin: 2rem 2rem 2rem 0;
+		margin: 3rem 0;
 		.ant-radio-group {
 			.ant-radio-button-wrapper {
 				background: transparent;

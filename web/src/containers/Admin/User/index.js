@@ -240,6 +240,7 @@ class App extends Component {
 				refreshData={this.refreshData}
 				onChangeUserDataSuccess={this.onChangeUserDataSuccess}
 				requestUserData={this.requestUserData}
+				referral_history_config={this.props.referral_history_config}
 			/>
 		) : (
 			<div className="app_container-content user-container">
@@ -256,6 +257,7 @@ class App extends Component {
 const mapStateToProps = (state) => ({
 	pluginNames: state.app.pluginNames,
 	coins: state.app.coins,
+	referral_history_config: state.app.constants.referral_history_config,
 	constants: state.app.constants,
 });
 

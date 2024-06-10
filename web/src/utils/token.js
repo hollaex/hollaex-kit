@@ -20,10 +20,6 @@ export const removeToken = () => {
 	localStorage.removeItem(DASH_TOKEN_TIME_KEY);
 };
 
-export const getTokenTimestamp = () => {
-	return localStorage.getItem(TOKEN_TIME_KEY);
-};
-
 export const isLoggedIn = () => {
 	let token = getToken();
 	return !!token;

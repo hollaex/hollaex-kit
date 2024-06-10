@@ -1,6 +1,6 @@
 import React from 'react';
 import mathjs from 'mathjs';
-import { Accordion } from 'components';
+import { Accordion, Coin, EditWrapper } from 'components';
 import {
 	BANK_WITHDRAWAL_BASE_FEE,
 	BANK_WITHDRAWAL_DYNAMIC_FEE_RATE,
@@ -11,6 +11,7 @@ import {
 import STRINGS from 'config/localizedStrings';
 
 import { renderBankInformation } from '../Wallet/components';
+import { getNetworkNameByKey } from 'utils/wallet';
 
 export const generateBaseInformation = (currency, limits = {}) => {
 	const { minAmount = 2, maxAmount = 10000 } = limits;
@@ -74,4 +75,85 @@ export const calculateBaseFee = (amount = 0) => {
 	}
 	const fee = mathjs.ceil(withdrawalFee.done());
 	return fee;
+};
+
+export const renderLabel = (label) => {
+	return <EditWrapper stringId={label}>{STRINGS[label]}</EditWrapper>;
+};
+
+export const renderEstimatedValueAndFee = (
+	renderWithdrawlabel,
+	label,
+	format
+) => {
+	return (
+		<div className="d-flex">
+			<div className="mt-2 ml-1">{renderWithdrawlabel(label)}</div>
+			<div className="mt-2 ml-1 fee-fields">{format}</div>
+		</div>
+	);
+};
+
+export const calculateFee = (
+	selectedAsset,
+	getWithdrawNetworkOptions,
+	coins
+) => {
+	return selectedAsset &&
+		coins[selectedAsset].withdrawal_fees &&
+		Object.keys(coins[selectedAsset]?.withdrawal_fees).length &&
+		coins[selectedAsset].withdrawal_fees[getWithdrawNetworkOptions]?.value
+		? coins[selectedAsset].withdrawal_fees[getWithdrawNetworkOptions]?.value
+		: selectedAsset &&
+		  coins[selectedAsset].withdrawal_fees &&
+		  Object.keys(coins[selectedAsset]?.withdrawal_fees).length &&
+		  coins[selectedAsset].withdrawal_fees[
+				Object.keys(coins[selectedAsset]?.withdrawal_fees)[0]
+		  ]?.value
+		? coins[selectedAsset].withdrawal_fees[
+				Object.keys(coins[selectedAsset]?.withdrawal_fees)[0]
+		  ]?.value
+		: selectedAsset && coins[selectedAsset].withdrawal_fee
+		? coins[selectedAsset]?.withdrawal_fee
+		: 0;
+};
+
+export const calculateFeeCoin = (
+	selectedAsset,
+	getWithdrawNetworkOptions,
+	coins
+) => {
+	return selectedAsset &&
+		coins[selectedAsset].withdrawal_fees &&
+		Object.keys(coins[selectedAsset]?.withdrawal_fees).length &&
+		coins[selectedAsset].withdrawal_fees[getWithdrawNetworkOptions]?.symbol
+		? coins[selectedAsset].withdrawal_fees[getWithdrawNetworkOptions]?.symbol
+		: selectedAsset &&
+		  coins[selectedAsset].withdrawal_fees &&
+		  Object.keys(coins[selectedAsset]?.withdrawal_fees).length &&
+		  coins[selectedAsset].withdrawal_fees[
+				Object.keys(coins[selectedAsset]?.withdrawal_fees)[0]
+		  ]?.symbol
+		? coins[selectedAsset].withdrawal_fees[
+				Object.keys(coins[selectedAsset]?.withdrawal_fees)[0]
+		  ]?.symbol
+		: selectedAsset;
+};
+
+export const onHandleSymbol = (value) => {
+	const regex = /\(([^)]+)\)/;
+	const match = value.match(regex);
+	const curr = match ? match[1].toLowerCase() : null;
+	return curr;
+};
+
+export const renderNetworkWithLabel = (iconId, network) => {
+	return network && iconId ? (
+		<div className="d-flex">
+			<span>{getNetworkNameByKey(network)}</span>
+			<div className="network-icon mt-1 ml-2">
+				<Coin iconId={iconId} type="CS2" className="withdraw-network-icon" />
+			</div>
+		</div>
+	) : null;
 };

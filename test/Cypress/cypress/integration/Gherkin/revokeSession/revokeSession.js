@@ -94,7 +94,7 @@ Then ('I should be able to revoke ny current session successfully',()=>{
  cy.get('.edit-wrapper__container > .font-weight-bold')
  .contains('Are you sure you want to revoke and logout of this session?')
  cy.get(':nth-child(3) > .holla-button').click()
- cy.get(':nth-child(2) > .app-menu-bar-content-item > .edit-wrapper__container > :nth-child(1)').click()
+ cy.get(':nth-child(3) > .app-menu-bar-content-item > .edit-wrapper__container > :nth-child(1)').click()
  cy.contains('XHT/USDT').click()
  cy.get('.notification-content-information')
  .contains('Your session is expired. Please login again.')

@@ -115,6 +115,47 @@
         "USER_DELETED": {
 			"html": "<div><p><p>${name} عزیز </p></p><p>درخواست حذف حساب در حال انجام است. اطلاعات حساب شما طبق شرایط خدمات حذف می شود.</p><p> با احترام<br> تیم ${api_name} </p></div>",
 			"title": "درخواست حذف اکانت"
-		}
+		},
+        "OTP_DISABLED": {
+            "html": "<div> <p> عزیز ${name} </p> <p> ما ثبت کرده‌ایم که <b>احراز هویت دو عاملی (2FA) در حساب شما غیرفعال شده است</b>. برای امن کردن حساب خود، توصیه می‌شود که دوباره 2FA را فعال کنید.</p> <div> <div>زمان: ${time}</div> <div>کشور: ${country}</div> <div>آدرس IP: ${ip}</div> </div> <p> اگر این کار شما نبوده است، لطفاً بلافاصله با ما تماس بگیرید. </p> <p> با احترام<br> تیم ${api_name} </p> </div>",
+            "title": "احراز هویت دو عاملی غیرفعال شد"
+          },
+        "OTP_ENABLED": {
+            "html": "<div> <p> عزیز ${name} </p> <p> ما ثبت کرده‌ایم که <b>احراز هویت دو عاملی (2FA) در حساب شما فعال شده است</b>.</p> <div> <div>زمان: ${time}</div> <div>کشور: ${country}</div> <div>آدرس IP: ${ip}</div> </div> <p> با احترام<br> تیم ${api_name} </p> </div>",
+            "title": "احراز هویت دو عاملی فعال شد"
+        },
+        "P2P_MERCHANT_IN_PROGRESS": {
+            "html": "<div><p> عزیز ${name} </p><p>ما فعالیتی در معامله P2P شما شناسایی کرده‌ایم که ممکن است نشان‌دهنده درخواست مشتری برای معامله با شما باشد. برای بررسی وضعیت معامله خود، لطفاً روی لینک زیر کلیک کنید:<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">بررسی وضعیت معامله</Button></a></div><p>از اینکه از پلتفرم ما استفاده می‌کنید سپاسگزاریم.</p><p>درخواست از: ${ip}</p><p>با احترام<br> تیم ${api_name} </p></div>",
+            "title": "به‌روزرسانی در مورد معامله P2P شما"
+        },
+        "P2P_BUYER_PAID_ORDER": {
+            "html": "<div><p> عزیز ${name} </p><p>شما سفارش خود را به عنوان پرداخت شده علامت‌گذاری کرده‌اید. در انتظار فروشنده برای بررسی، تأیید و آزادسازی وجوه<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">رفتن به سفارش شما</Button></a></div><p>از اینکه از پلتفرم ما استفاده می‌کنید سپاسگزاریم.</p><p>درخواست از: ${ip}</p><p>با احترام<br> تیم ${api_name} </p></div>",
+            "title": "فعالیت شناسایی شده در سفارش P2P شما"
+        },
+        "P2P_ORDER_EXPIRED": {
+            "html": "<div><p> عزیز ${name} </p><p>سفارش شما به دلیل عدم فعالیت در زمان داده شده منقضی شده است.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">رفتن به سفارش شما</Button></a></div><p>از اینکه از پلتفرم ما استفاده می‌کنید سپاسگزاریم.</p><p>درخواست از: ${ip}</p><p>با احترام<br> تیم ${api_name} </p></div>",
+            "title": "فعالیت شناسایی شده در سفارش P2P شما"
+        },
+        "P2P_BUYER_CANCELLED_ORDER": {
+            "html": "<div><p> عزیز ${name} </p><p>شما سفارش خود را لغو کرده‌اید. معامله بسته شده است.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">رفتن به سفارش شما</Button></a></div><p>از اینکه از پلتفرم ما استفاده می‌کنید سپاسگزاریم.</p><p>درخواست از: ${ip}</p><p>با احترام<br> تیم ${api_name} </p></div>",
+            "title": "فعالیت شناسایی شده در سفارش P2P شما"
+        },
+        "P2P_BUYER_APPEALED_ORDER": {
+            "html": "<div><p> عزیز ${name} </p><p>شما به سفارش خود اعتراض کرده‌اید. لطفاً با پشتیبانی تماس بگیرید تا مشکل حل شود.</p><p>درخواست از: ${ip}</p><p>با احترام<br> تیم ${api_name} </p></div>",
+            "title": "فعالیت شناسایی شده در سفارش P2P شما"
+        },
+        "P2P_VENDOR_CONFIRMED_ORDER": {
+            "html": "<div><p> عزیز ${name} </p><p>شما معامله را تأیید کرده و وجوه را آزاد کرده‌اید.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">رفتن به سفارش شما</Button></a></div><p>از اینکه از پلتفرم ما استفاده می‌کنید سپاسگزاریم.</p><p>درخواست از: ${ip}</p><p>با احترام<br> تیم ${api_name} </p></div>",
+            "title": "فعالیت شناسایی شده در سفارش P2P شما"
+        },
+        "P2P_VENDOR_CANCELLED_ORDER": {
+            "html": "<div><p> عزیز ${name} </p><p>شما سفارش خود را لغو کرده‌اید. معامله بسته شده است.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">رفتن به سفارش شما</Button></a></div><p>از اینکه از پلتفرم ما استفاده می‌کنید سپاسگزاریم.</p><p>درخواست از: ${ip}</p><p>با احترام<br> تیم ${api_name} </p></div>",
+            "title": "فعالیت شناسایی شده در سفارش P2P شما"
+        },
+        "P2P_VENDOR_APPEALED_ORDER": {
+            "html": "<div><p> عزیز ${name} </p><p>شما به سفارش خود اعتراض کرده‌اید. لطفاً با پشتیبانی تماس بگیرید تا مشکل حل شود.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">رفتن به سفارش شما</Button></a></div><p>از اینکه از پلتفرم ما استفاده می‌کنید سپاسگزاریم.</p><p>درخواست از: ${ip}</p><p>با احترام<br> تیم ${api_name} </p></div>",
+            "title": "فعالیت شناسایی شده در سفارش P2P شما"
+        }
+        
     }
 }

@@ -33,17 +33,29 @@ $qr-code--size: 12rem;
 	$qr-code-margin: 1rem;
 	width: $qr-code--size;
 	max-width: $qr-code--size;
+
 	.qr-code-bg {
 		background-color: white;
 		margin: $qr-code-margin;
+
 		> *:first-child {
 			@include size-important($qr-code--size - $qr-code-margin);
 		}
 	}
 }
 
+.qr-popup-buttons {
+	display: flex;
+	justify-content: space-between;
+	.qr-back-btn,
+	.qr-copy-btn {
+		width: 45%;
+	}
+}
+
 .deposit_info-qr-wrapper {
 	$qr-code-margin: 1rem;
+
 	.qr-text {
 		text-align: center;
 		display: flex;
@@ -82,9 +94,11 @@ $qr-code--size: 12rem;
 	.verification-content-wrapper {
 		position: relative;
 	}
+
 	.error {
 		font-size: $font-size-subhead2;
 	}
+
 	.block-wrapper {
 		margin: 1rem;
 	}
@@ -93,5 +107,230 @@ $qr-code--size: 12rem;
 .multiple-actions-wrapper {
 	.mini-qr {
 		fill: $link;
+	}
+}
+
+.deposit-wrapper-fields {
+	.currency-label {
+		border: 1px solid $colors-black;
+		padding: 0.5%;
+		border-radius: 5px;
+		margin-right: 10px;
+		width: 4rem;
+		text-align: center;
+		cursor: pointer;
+	}
+
+	.step3-icon-wrapper {
+		height: 0%;
+		width: fit-content;
+	}
+
+	.btn-wrapper-deposit {
+		margin-left: 3%;
+		.holla-button {
+			background-color: $link;
+			color: $colors-main-black;
+			width: 300px;
+			border: none;
+		}
+	}
+
+	.generate-field-wrapper {
+		display: flex;
+		flex-direction: column;
+		width: 55%;
+		justify-content: space-around;
+		margin-right: 15%;
+	}
+
+	.deposit-network-field {
+		.ant-select-selection-item {
+			cursor: not-allowed;
+		}
+	}
+}
+
+.deposit-address-wrapper {
+	width: 68.5%;
+
+	.deposit-address-field {
+		.destination-input-field,
+		.destination-input-field:focus-within {
+			border: none !important;
+			border-bottom: 1px solid $colors-main-border !important;
+		}
+
+		.ant-input-affix-wrapper-focused {
+			box-shadow: none;
+		}
+
+		.ant-input-suffix {
+			width: 15% !important;
+		}
+
+		.divider {
+			border-right: 1px solid var(--calculated_secondary-border);
+			padding-left: 15%;
+			height: 16px;
+			margin-top: 4%;
+		}
+
+		.render-deposit-scan-wrapper {
+			text-transform: uppercase;
+			color: $link;
+			cursor: pointer;
+
+			div {
+				text-decoration: underline;
+			}
+		}
+
+		.ant-input {
+			color: var(--specials_buttons-links-and-highlights) !important;
+		}
+	}
+
+	.address-warning-text {
+		div {
+			text-wrap: wrap;
+			width: 95%;
+			justify-content: unset !important;
+		}
+	}
+}
+
+.destination-tag-field-wrapper {
+	margin-left: 28%;
+
+	.destination-tag-field {
+		.destination-input-field,
+		.destination-input-field:focus-within {
+			border: none !important;
+			border-bottom: 1px solid $colors-main-border !important;
+		}
+
+		.destination-input-field {
+			width: 100% !important;
+		}
+
+		.render-deposit-scan-wrapper {
+			text-transform: uppercase;
+			color: $link;
+			cursor: pointer;
+
+			div {
+				text-decoration: underline;
+			}
+		}
+
+		.ant-input-suffix {
+			width: auto !important;
+		}
+
+		.ant-input:focus,
+		.ant-input-affix-wrapper-focused {
+			box-shadow: none;
+		}
+
+		.ant-input {
+			color: var(--specials_buttons-links-and-highlights) !important;
+		}
+	}
+
+	.tag-text {
+		div {
+			text-wrap: balance;
+		}
+	}
+}
+
+.withdrawal-container
+	.withdraw-form-wrapper
+	.withdraw-form
+	.deposit-wrapper-fields {
+	.custom-field .custom-line-large {
+		height: 90px;
+		border: 1px solid $colors-main-black;
+		margin: 0 100%;
+	}
+
+	.custom-field .custom-line-extra-large {
+		height: 2rem;
+		border: 1px solid $colors-main-black;
+		margin: 0 100%;
+	}
+}
+
+.generate-deposit-label {
+	color: $colors-black;
+	margin: 1% 3%;
+}
+
+.layout-mobile {
+	.withdrawal-container {
+		.withdraw-form-wrapper {
+			.withdraw-form {
+				.deposit-wrapper-fields {
+					.custom-field .custom-line-large {
+						height: 10rem;
+						border: 1px solid $colors-main-black;
+						margin: 0 100%;
+					}
+
+					.generate-field-wrapper {
+						margin-left: unset;
+					}
+
+					.deposit-address-wrapper {
+						width: unset;
+
+						.destination-input-field {
+							width: 88% !important;
+						}
+					}
+				}
+
+				.destination-tag-field-wrapper {
+					.destination-tag-field {
+						width: unset !important;
+					}
+
+					.destination-input-field {
+						width: 80% !important;
+					}
+				}
+			}
+		}
+	}
+
+	@media screen and (max-width: 550px) {
+		.withdrawal-container {
+			.withdraw-form-wrapper {
+				.withdraw-form {
+					.deposit-wrapper-fields {
+						.custom-field .custom-line-large {
+							height: 16rem;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	@media screen and (max-width: 450px) {
+		.withdrawal-container {
+			.withdraw-form-wrapper {
+				.withdraw-form {
+					.deposit-wrapper-fields {
+						.btn-wrapper-deposit {
+							.holla-button {
+								width: -webkit-fill-available;
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 }

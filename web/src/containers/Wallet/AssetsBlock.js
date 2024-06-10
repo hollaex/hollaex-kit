@@ -74,6 +74,7 @@ const AssetsBlock = ({
 	const [graphData, setGraphData] = useState([]);
 	const [historyData, setHistoryData] = useState([]);
 	const [userPL, setUserPL] = useState();
+	const [plLoading, setPlLoading] = useState(false);
 
 	const handleUpgrade = (info = {}) => {
 		if (
@@ -97,6 +98,7 @@ const AssetsBlock = ({
 			})
 			.catch((err) => err);
 
+		setPlLoading(true);
 		fetchBalanceHistory({
 			start_date: moment().subtract(7, 'days').toISOString(),
 			end_date: moment().subtract().toISOString(),
@@ -124,10 +126,10 @@ const AssetsBlock = ({
 
 				setGraphData(newGraphData);
 				setHistoryData(response.data || []);
-				// setIsLoading(false);
+				setPlLoading(false);
 			})
 			.catch((error) => {
-				// setIsLoading(false);
+				setPlLoading(false);
 			});
 		// eslint-disable-next-line
 	}, []);
@@ -410,28 +412,34 @@ const AssetsBlock = ({
 															</div>
 														</div>
 													)}
-													{!isUpgrade && balance_history_config?.active && (
-														<div
-															className={
-																Number(userPL?.['7d']?.total || 0) === 0
-																	? 'profitNeutral'
-																	: (userPL?.['7d']?.total || 0) > 0
-																	? 'profitPositive'
-																	: 'profitNegative'
-															}
-														>
-															<EditWrapper stringId="PROFIT_LOSS.PL_7_DAY">
-																{STRINGS['PROFIT_LOSS.PL_7_DAY']}
-															</EditWrapper>{' '}
-															{Number(userPL?.['7d']?.total || 0) > 0
-																? '+'
-																: ' '}
-															{''}
-															{userPL?.['7d']?.totalPercentage
-																? `${userPL?.['7d']?.totalPercentage}% `
-																: ' '}
-														</div>
-													)}
+													{!isUpgrade &&
+														balance_history_config?.active &&
+														Number(userPL?.['7d']?.total || 0) !== 0 && (
+															<div
+																onClick={() => {
+																	handleBalanceHistory(true);
+																}}
+																style={{ cursor: 'pointer' }}
+																className={
+																	Number(userPL?.['7d']?.total || 0) === 0
+																		? 'profitNeutral'
+																		: (userPL?.['7d']?.total || 0) > 0
+																		? 'profitPositive'
+																		: 'profitNegative'
+																}
+															>
+																<EditWrapper stringId="PROFIT_LOSS.PL_7_DAY">
+																	{STRINGS['PROFIT_LOSS.PL_7_DAY']}
+																</EditWrapper>{' '}
+																{Number(userPL?.['7d']?.total || 0) > 0
+																	? '+'
+																	: ' '}
+																{''}
+																{userPL?.['7d']?.totalPercentage
+																	? `${userPL?.['7d']?.totalPercentage}% `
+																	: ' '}
+															</div>
+														)}
 												</div>
 											)}
 										>
@@ -462,7 +470,7 @@ const AssetsBlock = ({
 							{!isUpgrade &&
 							balance_history_config?.active &&
 							historyData.length > 1 ? (
-								<div>
+								<div className="profit-loss-wrapper">
 									<div
 										style={{
 											marginTop: 10,
@@ -489,9 +497,21 @@ const AssetsBlock = ({
 											options={options}
 										/>{' '}
 									</div>
+									<div
+										className="view-more-content"
+										onClick={() => handleBalanceHistory(true)}
+									>
+										<EditWrapper stringId="STAKE_DETAILS.VIEW_MORE">
+											{STRINGS.formatString(
+												STRINGS['PROFIT_LOSS.VIEW_MORE'],
+												'>'
+											)}
+										</EditWrapper>
+									</div>
 								</div>
 							) : (
-								(isUpgrade || !balance_history_config?.active) && (
+								!plLoading &&
+								Number(userPL?.['7d']?.total || 0) === 0 && (
 									<Image
 										icon={ICONS['WALLET_GRAPHIC']}
 										wrapperClassName="wallet-graphic-icon"
@@ -512,6 +532,7 @@ const AssetsBlock = ({
 									placeHolder={`${STRINGS['WALLET_ASSETS_SEARCH_TXT']}...`}
 									handleSearch={handleSearch}
 									showCross
+									isFocus={true}
 								/>
 							</EditWrapper>
 						</div>
@@ -701,7 +722,7 @@ const AssetsBlock = ({
 												/>
 											</div>
 										</td>
-										{!isMobile && (
+										{
 											<td>
 												{markets.length > 1 ? (
 													<TradeInputGroup
@@ -723,7 +744,7 @@ const AssetsBlock = ({
 													/>
 												)}
 											</td>
-										)}
+										}
 										{/* {hasEarn && (
 										<td>
 											<ActionNotification

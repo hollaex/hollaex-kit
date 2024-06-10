@@ -114,10 +114,6 @@ class Signup extends Component {
 			})
 			.catch((error) => {
 				const errors = {};
-				errorTimeOut = setTimeout(() => {
-					this.props.change(FORM_NAME, 'captcha', '');
-				}, 5000);
-
 				if (error.response && error.response.status === 409) {
 					errors.email = STRINGS['VALIDATIONS.USER_EXIST'];
 				} else if (error.response) {
