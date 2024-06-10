@@ -473,23 +473,23 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 
 					{step === 2 && (
 						<div>
-							<div>Requirements</div>
-							<div>
-								Set the account required for users to P2P trade (market taker)
-							</div>
-							<div style={{ marginTop: 20, marginBottom: 40 }}>
-								{' '}
+							<h2>Requirements</h2>
+							<p>
+								Set the minimum account tier required for users and vendor to use and create P2P trades.
+							</p>
+							<p>
+								Users are the end users accessing the P2P trade and Vendors are the users who create P2P deals.
 								Vendors (market makers) can setup public P2P deals with their
 								own prices however should be held to a higher standard as
 								stipulated from your account tier levels.
-							</div>
+							</p>
 
 							<div style={{ marginBottom: 40 }}>
-								<div style={{ fontSize: 20 }}>User account requirement</div>
+								<div style={{ fontSize: 18 }}>User account minimum tier</div>
 								<div>
 									<span style={{ fontWeight: 'bold' }}>
 										{' '}
-										Minimum user tier account level
+										Minimum tier for the user's account to participate in P2P trading
 									</span>{' '}
 									(it is recommended to select a tier level that requires KYC
 									verification)
@@ -509,24 +509,15 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 										);
 									})}
 								</Select>
-								<div style={{ display: 'flex', marginTop: 10, gap: 5 }}>
-									{/* <div>ICON</div> */}
-									<div>
-										<div style={{ fontWeight: 'bold' }}>Requirements:</div>
-										<div>• KYC Verification </div>
-										<div>• Email Verification</div>
-										<div>• SMS Verification</div>
-									</div>
-								</div>
 							</div>
 
-							<div style={{ fontSize: 20 }}>Vendor account requirement</div>
+							<div style={{ fontSize: 18 }}>Vendor account minimum tier</div>
 							<div>
 								<span style={{ fontWeight: 'bold' }}>
 									{' '}
-									Vendor tier account level
+									Minimum tier account level to be a Vender
 								</span>{' '}
-								(higher or equal to user account)
+								(higher or equal than user account)
 							</div>
 							<Select
 								showSearch

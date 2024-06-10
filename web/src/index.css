@@ -2610,7 +2610,8 @@ table th {
 .qr-popup-buttons {
   display: flex;
   justify-content: space-between; }
-  .qr-popup-buttons .qr-back-btn, .qr-popup-buttons .qr-copy-btn {
+  .qr-popup-buttons .qr-back-btn,
+  .qr-popup-buttons .qr-copy-btn {
     width: 45%; }
 
 .deposit_info-qr-wrapper .qr-text {
