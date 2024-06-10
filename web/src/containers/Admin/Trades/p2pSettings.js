@@ -205,26 +205,6 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 			fields: [
 				{
 					id: 1,
-					name: 'Device Account Number',
-					required: true,
-				},
-			],
-			system_name: 'Apple Pay',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Email',
-					required: true,
-				},
-			],
-			system_name: 'Google Pay',
-		},
-		{
-			fields: [
-				{
-					id: 1,
 					name: 'MTCN',
 					required: true,
 				},
