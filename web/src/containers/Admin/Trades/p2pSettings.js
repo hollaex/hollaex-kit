@@ -1807,7 +1807,9 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 									<div>
 										<div>Outside payment methods allowed: </div>
 										<div>
-											{paymentMethods.map((x) => x.system_name)?.join(', ')}
+											{selectedPaymentMethods
+												.map((x) => x.system_name)
+												?.join(', ')}
 										</div>
 									</div>
 									<div
@@ -2421,6 +2423,17 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 									setPaymentMethods(paymentMethods);
 									setDisplayNewPayment(false);
 								}
+								setPaymentMethod({
+									system_name: null,
+									fields: {},
+								});
+								setCustomFields([
+									{
+										id: 1,
+										name: null,
+										required: true,
+									},
+								]);
 								setMethodEditMode(false);
 							}}
 							style={{
