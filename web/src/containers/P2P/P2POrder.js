@@ -322,11 +322,10 @@ const P2POrder = ({
 							setDisplayAppealModel(false);
 						}}
 						style={{
-							backgroundColor: '#5D63FF',
-							color: 'white',
 							flex: 1,
 							height: 35,
 						}}
+						className='purpleButtonP2P'
 						type="default"
 					>
 						<EditWrapper stringId="P2P.CANCEL">
@@ -362,11 +361,10 @@ const P2POrder = ({
 							}
 						}}
 						style={{
-							backgroundColor: '#5D63FF',
-							color: 'white',
 							flex: 1,
 							height: 35,
 						}}
+						className='purpleButtonP2P'
 						type="default"
 					>
 						<EditWrapper stringId="P2P.OKAY">{STRINGS['P2P.OKAY']}</EditWrapper>
@@ -450,11 +448,10 @@ const P2POrder = ({
 								setRating();
 							}}
 							style={{
-								backgroundColor: '#5D63FF',
-								color: 'white',
 								flex: 1,
 								height: 35,
 							}}
+							className='purpleButtonP2P'
 							type="default"
 						>
 							<EditWrapper stringId="P2P.CANCEL">
@@ -485,11 +482,10 @@ const P2POrder = ({
 								}
 							}}
 							style={{
-								backgroundColor: '#5D63FF',
-								color: 'white',
 								flex: 1,
 								height: 35,
 							}}
+							className='purpleButtonP2P'
 							type="default"
 						>
 							<EditWrapper stringId="P2P.PROCEED">
@@ -552,11 +548,10 @@ const P2POrder = ({
 								setDisplayCancelWarning(false);
 							}}
 							style={{
-								backgroundColor: '#5D63FF',
-								color: 'white',
 								flex: 1,
 								height: 35,
 							}}
+							className='purpleButtonP2P'
 							type="default"
 						>
 							<EditWrapper stringId="P2P.NO">{STRINGS['P2P.NO']}</EditWrapper>
@@ -576,11 +571,10 @@ const P2POrder = ({
 								}
 							}}
 							style={{
-								backgroundColor: '#5D63FF',
-								color: 'white',
 								flex: 1,
 								height: 35,
 							}}
+							className='purpleButtonP2P'
 							type="default"
 						>
 							<EditWrapper stringId="P2P.PROCEED">
@@ -643,11 +637,10 @@ const P2POrder = ({
 								setDisplayConfirmWarning(false);
 							}}
 							style={{
-								backgroundColor: '#5D63FF',
-								color: 'white',
 								flex: 1,
 								height: 35,
 							}}
+							className='purpleButtonP2P'
 							type="default"
 						>
 							<EditWrapper stringId="P2P.NO">{STRINGS['P2P.NO']}</EditWrapper>
@@ -667,11 +660,10 @@ const P2POrder = ({
 								}
 							}}
 							style={{
-								backgroundColor: '#5D63FF',
-								color: 'white',
 								flex: 1,
 								height: 35,
 							}}
+							className='purpleButtonP2P'
 							type="default"
 						>
 							<EditWrapper stringId="P2P.PROCEED">
@@ -1250,7 +1242,7 @@ const P2POrder = ({
 
 											<Button
 												disabled={selectedOrder.user_status !== 'confirmed'}
-												style={{ backgroundColor: '#5E63F6', color: 'white' }}
+												className='purpleButtonP2P'
 												onClick={async () => {
 													try {
 														setDisplayConfirmWarning(true);
@@ -1330,8 +1322,8 @@ const P2POrder = ({
 									marginTop: 15,
 									marginBottom: 20,
 									textAlign: 'center',
-									color: 'grey',
 								}}
+								className='greyTextP2P'
 							>
 								{user.id === selectedOrder?.user_id && (
 									<div>
@@ -1398,8 +1390,8 @@ const P2POrder = ({
 															marginTop: 10,
 															marginBottom: 10,
 															textAlign: 'center',
-															color: 'grey',
 														}}
+														className='greyTextP2P'
 													>
 														{message.message === 'BUYER_PAID_ORDER' && user.id === selectedOrder.user_id ?
 														<EditWrapper stringId={`P2P.BUYER_SENT_FUNDS`}>
@@ -1503,11 +1495,11 @@ const P2POrder = ({
 									</div>
 									<div
 										style={{
-											color: '#5A60E5',
 											cursor: 'pointer',
 											position: 'relative',
 											top: 3,
 										}}
+										className='purpleTextP2P'
 										ref={buttonRef}
 										onClick={sendChatMessage}
 									>
@@ -1535,7 +1527,7 @@ const P2POrder = ({
 						}}
 					>
 						<Button
-							style={{ backgroundColor: '#5E63F6', color: 'white' }}
+							className='purpleButtonP2P'
 							onClick={async () => {
 								try {
 									setDisplayCancelWarning(true);
@@ -1549,7 +1541,7 @@ const P2POrder = ({
 							</EditWrapper>
 						</Button>
 						<Button
-							style={{ backgroundColor: '#5E63F6', color: 'white' }}
+							className='purpleButtonP2P'
 							onClick={async () => {
 								try {
 									await updateTransaction({

@@ -158,7 +158,7 @@ const P2PDash = ({
 					<span>
 						<Select
 							showSearch
-							style={{ backgroundColor: '#303236', width: 120 }}
+							style={{ width: 120 }}
 							placeholder="Select fiat"
 							value={filterCoin}
 							onChange={(e) => {
@@ -196,7 +196,7 @@ const P2PDash = ({
 					<span>
 						<Select
 							showSearch
-							style={{ backgroundColor: '#303236', width: 120 }}
+							style={{ width: 120 }}
 							placeholder="All payment methods"
 							value={filterMethod}
 							onChange={(e) => {
@@ -220,7 +220,7 @@ const P2PDash = ({
 					<span>
 						<Select
 							showSearch
-							style={{ backgroundColor: '#303236', width: 120 }}
+							style={{  width: 120 }}
 							placeholder="All Region"
 							value={filterRegion}
 							onChange={(e) => {
@@ -400,10 +400,7 @@ const P2PDash = ({
 														}}
 													>
 														<Button
-															style={{
-																backgroundColor: '#288500',
-																color: 'white',
-															}}
+															className="greenButtonP2P"
 															disabled={loading || expandRow || !user?.id}
 															onClick={async () => {
 																try {
@@ -610,10 +607,8 @@ const P2PDash = ({
 															}}
 														>
 															<Button
-																style={{
-																	backgroundColor: '#949596',
-																	color: 'white',
-																}}
+																
+																className='greyButtonP2P'
 																onClick={async () => {
 																	setExpandRow(false);
 																	setSelectedDeal(null);
@@ -627,10 +622,7 @@ const P2PDash = ({
 															</Button>
 
 															<Button
-																style={{
-																	backgroundColor: '#288500',
-																	color: 'white',
-																}}
+																className='greenButtonP2P'
 																disabled={loading}
 																onClick={async () => {
 																	try {
