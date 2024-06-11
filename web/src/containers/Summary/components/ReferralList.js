@@ -43,8 +43,8 @@ const ReferralList = ({
 	setSnackNotification,
 	coins,
 	referral_history_config,
-	goBackReferral,
 	icons: ICON,
+	router,
 }) => {
 	const [balanceHistory, setBalanceHistory] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
@@ -1246,85 +1246,89 @@ const ReferralList = ({
 		return sourceAmount;
 	};
 	return (
-		<Spin spinning={isLoading}>
-			<div className="referral-header-icon-wrapper">
-				<IconTitle
-					stringId="REFERRAL_LINK.REFERRAL_EARNINGS"
-					text={`${STRINGS['REFERRAL_LINK.REFERRAL_EARNINGS']}`}
-					textType="title"
-					iconPath={ICON['NEW_REFER_ICON']}
-					iconId="NEW_REFER_ICON"
-				/>
-			</div>
-			{!isMobile && (
-				<div className="referral-active-text">
-					<EditWrapper stringId="REFERRAL_LINK.REFERRAL_INFO">
-						{STRINGS['REFERRAL_LINK.REFERRAL_INFO']}
-					</EditWrapper>
+		<div className="referral-list-wrapper">
+			<Spin spinning={isLoading}>
+				<div className="referral-header-icon-wrapper">
+					<IconTitle
+						stringId="REFERRAL_LINK.REFERRAL_EARNINGS"
+						text={`${STRINGS['REFERRAL_LINK.REFERRAL_EARNINGS']}`}
+						textType="title"
+						iconPath={ICON['NEW_REFER_ICON']}
+						iconId="NEW_REFER_ICON"
+					/>
 				</div>
-			)}
-			{displayCreateLink && createReferralCode()}
-			{displaySettle && settleReferral()}
-			{!isMobile && (
-				<div>
-					<span className="back-label" onClick={() => goBackReferral(false)}>
-						{'<'}
-						<EditWrapper stringId="REFERRAL_LINK.BACK_LOWER">
-							{STRINGS['REFERRAL_LINK.BACK_LOWER']}
+				{!isMobile && (
+					<div className="referral-active-text">
+						<EditWrapper stringId="REFERRAL_LINK.REFERRAL_INFO">
+							{STRINGS['REFERRAL_LINK.REFERRAL_INFO']}
 						</EditWrapper>
-					</span>
-					<span className="ml-2">
-						<EditWrapper stringId="REFERRAL_LINK.BACK_TO_SUMMARY">
-							{STRINGS['REFERRAL_LINK.BACK_TO_SUMMARY']}
-						</EditWrapper>
-					</span>
-				</div>
-			)}
-			<Tabs
-				defaultActiveKey="0"
-				activeKey={activeTab}
-				onChange={handleTabChange}
-			>
-				<TabPane tab="Summary" key="0">
-					<div className="summary-block_wrapper summary-referral-container">
-						<div
-							className={
-								isMobile
-									? 'summary-referral-wrapper align-items-center flex-column'
-									: 'summary-referral-wrapper'
-							}
+					</div>
+				)}
+				{displayCreateLink && createReferralCode()}
+				{displaySettle && settleReferral()}
+				{!isMobile && (
+					<div>
+						<span
+							className="back-label"
+							onClick={() => router.push('/summary')}
 						>
-							<div className="referral-active-text">
-								<div className="earning-icon-wrapper">
-									<div>
-										<Image
-											iconId="REFER_ICON"
-											icon={ICON['REFER_ICON']}
-											wrapperClassName="refer-icon margin-aligner"
-										/>
+							{'<'}
+							<EditWrapper stringId="REFERRAL_LINK.BACK_LOWER">
+								{STRINGS['REFERRAL_LINK.BACK_LOWER']}
+							</EditWrapper>
+						</span>
+						<span className="ml-2">
+							<EditWrapper stringId="REFERRAL_LINK.BACK_TO_SUMMARY">
+								{STRINGS['REFERRAL_LINK.BACK_TO_SUMMARY']}
+							</EditWrapper>
+						</span>
+					</div>
+				)}
+				<Tabs
+					defaultActiveKey="0"
+					activeKey={activeTab}
+					onChange={handleTabChange}
+				>
+					<TabPane tab="Summary" key="0">
+						<div className="summary-block_wrapper summary-referral-container">
+							<div
+								className={
+									isMobile
+										? 'summary-referral-wrapper align-items-center flex-column'
+										: 'summary-referral-wrapper'
+								}
+							>
+								<div className="referral-active-text">
+									<div className="earning-icon-wrapper">
+										<div>
+											<Image
+												iconId="REFER_ICON"
+												icon={ICON['REFER_ICON']}
+												wrapperClassName="refer-icon margin-aligner"
+											/>
+										</div>
+										<div className="earning-label">
+											<EditWrapper stringId="REFERRAL_LINK.EARNINGS">
+												{STRINGS['REFERRAL_LINK.EARNINGS']}
+											</EditWrapper>
+										</div>
 									</div>
-									<div className="earning-label">
-										<EditWrapper stringId="REFERRAL_LINK.EARNINGS">
-											{STRINGS['REFERRAL_LINK.EARNINGS']}
+									<div className="mt-3">
+										<EditWrapper stringId="REFERRAL_LINK.EARNING_DESC">
+											{STRINGS['REFERRAL_LINK.EARNING_DESC']}
 										</EditWrapper>
 									</div>
-								</div>
-								<div className="mt-3">
-									<EditWrapper stringId="REFERRAL_LINK.EARNING_DESC">
-										{STRINGS['REFERRAL_LINK.EARNING_DESC']}
-									</EditWrapper>
-								</div>
-								<span
-									onClick={() => {
-										handleTabChange('1');
-									}}
-									className="view-history-label"
-								>
-									<EditWrapper stringId="REFERRAL_LINK.VIEW_HISTORY">
-										{STRINGS['REFERRAL_LINK.VIEW_HISTORY']}
-									</EditWrapper>
-								</span>
-								{/* <div className='mt-4'>
+									<span
+										onClick={() => {
+											handleTabChange('1');
+										}}
+										className="view-history-label"
+									>
+										<EditWrapper stringId="REFERRAL_LINK.VIEW_HISTORY">
+											{STRINGS['REFERRAL_LINK.VIEW_HISTORY']}
+										</EditWrapper>
+									</span>
+									{/* <div className='mt-4'>
 										<EditWrapper stringId="REFERRAL_LINK.DATA_COLLECTED">
 											{STRINGS['REFERRAL_LINK.DATA_COLLECTED']}
 										</EditWrapper>{' '}
@@ -1333,130 +1337,116 @@ const ReferralList = ({
 										)}
 										.
 									</div> */}
-							</div>
-							<div
-								className={
-									isMobile ? 'earn-info-wrapper w-50 mt-5' : 'earn-info-wrapper'
-								}
-							>
-								<div className="earn-info-border mb-3"></div>
-								<div className="earn-text-wrapper">
-									<span>
-										<EditWrapper stringId="REFERRAL_LINK.EARNT">
-											{STRINGS['REFERRAL_LINK.EARNT']}
-										</EditWrapper>
-									</span>{' '}
-									<div className="field-label">
-										{getSourceDecimals(
-											referral_history_config?.currency || 'usdt',
-											latestBalance
-										)}{' '}
-										{(
-											referral_history_config?.currency || 'usdt'
-										).toUpperCase()}{' '}
-									</div>
-								</div>
-								<div className="earn-info-border mt-3"></div>
-								<div className="mt-3">
-									<EditWrapper stringId="REFERRAL_LINK.UNSETTLED">
-										{STRINGS['REFERRAL_LINK.UNSETTLED']}
-									</EditWrapper>{' '}
-									{unrealizedEarnings}{' '}
-									{(referral_history_config?.currency || 'usdt').toUpperCase()}
-									<span style={{ marginLeft: 5 }}>
-										<Tooltip
-											title={`${STRINGS['REFERRAL_LINK.DATA_DESC']} ${
-												STRINGS['REFERRAL_LINK.SETTLE_HERE']
-											} (${STRINGS['REFERRAL_LINK.MIN_TO_SETTLE']} ${
-												referral_history_config?.minimum_amount
-											} ${(referral_history_config?.currency).toUpperCase()})`}
+									<div className="mt-3">
+										<EditWrapper stringId="REFERRAL_LINK.DATA_DESC">
+											{STRINGS['REFERRAL_LINK.DATA_DESC']}
+										</EditWrapper>{' '}
+										<span
+											onClick={() => {
+												if (
+													unrealizedEarnings > 0 &&
+													unrealizedEarnings >
+														referral_history_config?.minimum_amount
+												)
+													setDisplaySettle(true);
+											}}
+											className="settle-link"
 										>
-											<InfoCircleOutlined />
-										</Tooltip>
-									</span>
+											<EditWrapper stringId="REFERRAL_LINK.SETTLE_HERE">
+												{STRINGS['REFERRAL_LINK.SETTLE_HERE']}
+											</EditWrapper>
+										</span>
+										<span>
+											{' '}
+											(
+											<EditWrapper stringId="REFERRAL_LINK.MIN_TO_SETTLE">
+												{STRINGS['REFERRAL_LINK.MIN_TO_SETTLE']}
+											</EditWrapper>
+											: {referral_history_config?.minimum_amount}{' '}
+											{(referral_history_config?.currency).toUpperCase()})
+										</span>
+									</div>
 								</div>
 								<div
 									className={
 										isMobile
-											? 'referral-popup-btn-wrapper justify-content-center'
-											: 'referral-popup-btn-wrapper justify-content-end'
+											? 'earn-info-wrapper w-50 mt-5'
+											: 'earn-info-wrapper'
 									}
 								>
-									<div>
-										<AntButton
-											onClick={() => {
-												setDisplaySettle(true);
-											}}
-											size="small"
-											disabled={
-												unrealizedEarnings === 0 ||
-												unrealizedEarnings <
-													referral_history_config?.minimum_amount
-											}
-											className="settle-btn"
-										>
-											<EditWrapper stringId="REFERRAL_LINK.SETTLE">
-												{STRINGS['REFERRAL_LINK.SETTLE']}
+									<div className="earn-info-border mb-3"></div>
+									<div className="earn-text-wrapper">
+										<span>
+											<EditWrapper stringId="REFERRAL_LINK.EARNT">
+												{STRINGS['REFERRAL_LINK.EARNT']}
 											</EditWrapper>
-										</AntButton>
+										</span>{' '}
+										<div className="field-label">
+											{getSourceDecimals(
+												referral_history_config?.currency || 'usdt',
+												latestBalance
+											)}{' '}
+											{(
+												referral_history_config?.currency || 'usdt'
+											).toUpperCase()}{' '}
+										</div>
+									</div>
+									<div className="earn-info-border mt-3"></div>
+									<div className="mt-3">
+										<EditWrapper stringId="REFERRAL_LINK.UNSETTLED">
+											{STRINGS['REFERRAL_LINK.UNSETTLED']}
+										</EditWrapper>{' '}
+										{unrealizedEarnings}{' '}
+										{(
+											referral_history_config?.currency || 'usdt'
+										).toUpperCase()}
+									</div>
+									<div
+										className={
+											isMobile
+												? 'referral-popup-btn-wrapper justify-content-center'
+												: 'referral-popup-btn-wrapper justify-content-end'
+										}
+									>
+										<div>
+											<AntButton
+												onClick={() => {
+													setDisplaySettle(true);
+												}}
+												size="small"
+												disabled={
+													unrealizedEarnings === 0 ||
+													unrealizedEarnings <
+														referral_history_config?.minimum_amount
+												}
+												className="settle-btn"
+											>
+												<EditWrapper stringId="REFERRAL_LINK.SETTLE">
+													{STRINGS['REFERRAL_LINK.SETTLE']}
+												</EditWrapper>
+											</AntButton>
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
 
-					<div className="summary-block_wrapper new-refer-wrapper">
-						<div>
-							<div className="new-refer-icon-wrapper">
-								<Image
-									iconId="REFER_DOLLAR_ICON"
-									icon={ICON['REFER_DOLLAR_ICON']}
-									wrapperClassName="refer-icon margin-aligner"
-								/>
-								<div className="mt-2 referral-active-text font-weight-bold">
-									<EditWrapper stringId="REFERRAL_LINK.INVITE_LINKS">
-										{STRINGS['REFERRAL_LINK.INVITE_LINKS']}
-									</EditWrapper>
-								</div>
-							</div>
-							{referralCodes?.data?.length < 3 && (
-								<span
-									onClick={async () => {
-										if (!referralCode) {
-											try {
-												const code = generateUniqueCode();
-												setReferralCode(code);
-												setDisplayCreateLink(true);
-											} catch (error) {
-												showErrorMessage(error.data.message);
-											}
-										} else setDisplayCreateLink(true);
-									}}
-									className="create-link-label"
-								>
-									<EditWrapper stringId="REFERRAL_LINK.CREATE_LINK">
-										{STRINGS['REFERRAL_LINK.CREATE_LINK']}
-									</EditWrapper>
-								</span>
-							)}
-						</div>
-
-						{referralCodes?.data?.length === 0 && (
-							<div className="content-field">
-								<div className="no-link-icon">
+						<div className="summary-block_wrapper new-refer-wrapper">
+							<div>
+								<div className="new-refer-icon-wrapper">
 									<Image
-										iconId="NEW_REFER_ICON"
-										icon={ICON['NEW_REFER_ICON']}
-										wrapperClassName="margin-aligner"
+										iconId="REFER_DOLLAR_ICON"
+										icon={ICON['REFER_DOLLAR_ICON']}
+										wrapperClassName="refer-icon margin-aligner"
 									/>
-								</div>
-								<div className="referral-active-text">
-									<EditWrapper stringId="REFERRAL_LINK.NO_LINK">
-										{STRINGS['REFERRAL_LINK.NO_LINK']}
-									</EditWrapper>
+									<div className="mt-2 referral-active-text font-weight-bold">
+										<EditWrapper stringId="REFERRAL_LINK.INVITE_LINKS">
+											{STRINGS['REFERRAL_LINK.INVITE_LINKS']}
+										</EditWrapper>
+									</div>
 								</div>
 								{referralCodes?.data?.length < 3 && (
-									<div
+									<span
 										onClick={async () => {
 											if (!referralCode) {
 												try {
@@ -1473,60 +1463,96 @@ const ReferralList = ({
 										<EditWrapper stringId="REFERRAL_LINK.CREATE_LINK">
 											{STRINGS['REFERRAL_LINK.CREATE_LINK']}
 										</EditWrapper>
-									</div>
+									</span>
 								)}
 							</div>
-						)}
 
-						{referralCodes?.data?.length > 0 && (
-							<div className="my-2 referral-table-wrapper">
-								<Table
-									rowClassName="pt-2 pb-2"
-									headers={HEADERSREFERRAL}
-									data={referralCodes.data}
-									count={referralCodes.count}
-									handleNext={handleNext}
-									pageSize={10}
-									displayPaginator={!referralCodes.loading}
-								/>
-							</div>
-						)}
-					</div>
-				</TabPane>
-				<TabPane tab="History" key="1">
-					<div className="summary-block_wrapper history-referral-container">
-						<div className="history-referral-wrapper">
-							<div className="referral-active-text">
-								<div className="earning-icon-wrapper">
-									<div>
+							{referralCodes?.data?.length === 0 && (
+								<div className="content-field">
+									<div className="no-link-icon">
 										<Image
-											iconId="REFER_ICON"
-											icon={ICON['REFER_ICON']}
-											wrapperClassName="refer-icon margin-aligner"
+											iconId="NEW_REFER_ICON"
+											icon={ICON['NEW_REFER_ICON']}
+											wrapperClassName="margin-aligner"
 										/>
 									</div>
-									<div className="earning-label">
-										<EditWrapper stringId="REFERRAL_LINK.ALL_EVENTS">
-											{STRINGS['REFERRAL_LINK.ALL_EVENTS']}
+									<div className="referral-active-text">
+										<EditWrapper stringId="REFERRAL_LINK.NO_LINK">
+											{STRINGS['REFERRAL_LINK.NO_LINK']}
 										</EditWrapper>
 									</div>
+									{referralCodes?.data?.length < 3 && (
+										<div
+											onClick={async () => {
+												if (!referralCode) {
+													try {
+														const code = generateUniqueCode();
+														setReferralCode(code);
+														setDisplayCreateLink(true);
+													} catch (error) {
+														showErrorMessage(error.data.message);
+													}
+												} else setDisplayCreateLink(true);
+											}}
+											className="create-link-label"
+										>
+											<EditWrapper stringId="REFERRAL_LINK.CREATE_LINK">
+												{STRINGS['REFERRAL_LINK.CREATE_LINK']}
+											</EditWrapper>
+										</div>
+									)}
 								</div>
-								<div className="mb-4">
-									<EditWrapper stringId="REFERRAL_LINK.EVENTS_DESC">
-										{STRINGS['REFERRAL_LINK.EVENTS_DESC']}
-									</EditWrapper>
+							)}
+
+							{referralCodes?.data?.length > 0 && (
+								<div className="my-2 referral-table-wrapper">
+									<Table
+										rowClassName="pt-2 pb-2"
+										headers={HEADERSREFERRAL}
+										data={referralCodes.data}
+										count={referralCodes.count}
+										handleNext={handleNext}
+										pageSize={10}
+										displayPaginator={!referralCodes.loading}
+									/>
 								</div>
-								<div>
-									<EditWrapper stringId="REFERRAL_LINK.DATA_COLLECTION">
-										{STRINGS.formatString(
-											STRINGS['REFERRAL_LINK.DATA_COLLECTION'],
-											moment(referral_history_config?.date_enabled).format(
-												'YYYY/MM/DD'
-											)
-										)}
-									</EditWrapper>
-								</div>
-								{/* <div>
+							)}
+						</div>
+					</TabPane>
+					<TabPane tab="History" key="1">
+						<div className="summary-block_wrapper history-referral-container">
+							<div className="history-referral-wrapper">
+								<div className="referral-active-text">
+									<div className="earning-icon-wrapper">
+										<div>
+											<Image
+												iconId="REFER_ICON"
+												icon={ICON['REFER_ICON']}
+												wrapperClassName="refer-icon margin-aligner"
+											/>
+										</div>
+										<div className="earning-label">
+											<EditWrapper stringId="REFERRAL_LINK.ALL_EVENTS">
+												{STRINGS['REFERRAL_LINK.ALL_EVENTS']}
+											</EditWrapper>
+										</div>
+									</div>
+									<div className="mb-4">
+										<EditWrapper stringId="REFERRAL_LINK.EVENTS_DESC">
+											{STRINGS['REFERRAL_LINK.EVENTS_DESC']}
+										</EditWrapper>
+									</div>
+									<div>
+										<EditWrapper stringId="REFERRAL_LINK.DATA_COLLECTION">
+											{STRINGS.formatString(
+												STRINGS['REFERRAL_LINK.DATA_COLLECTION'],
+												moment(referral_history_config?.date_enabled).format(
+													'YYYY/MM/DD'
+												)
+											)}
+										</EditWrapper>
+									</div>
+									{/* <div>
 									<EditWrapper stringId="REFERRAL_LINK.DATA_DESC">
 										{STRINGS['REFERRAL_LINK.DATA_DESC']}
 									</EditWrapper>{' '}
@@ -1551,27 +1577,27 @@ const ReferralList = ({
 										</EditWrapper>
 									</span>
 								</div> */}
-								<div className="mt-3">
-									<span className="font-weight-bold">
-										<EditWrapper stringId="REFERRAL_LINK.EARNT">
-											{STRINGS['REFERRAL_LINK.EARNT']}
-										</EditWrapper>
-									</span>{' '}
-									<span className="field-label">
-										{getSourceDecimals(
-											referral_history_config?.currency || 'usdt',
-											latestBalance
-										)}{' '}
-										{(
-											referral_history_config?.currency || 'usdt'
-										).toUpperCase()}{' '}
-									</span>
+									<div className="mt-3">
+										<span className="font-weight-bold">
+											<EditWrapper stringId="REFERRAL_LINK.EARNT">
+												{STRINGS['REFERRAL_LINK.EARNT']}
+											</EditWrapper>
+										</span>{' '}
+										<span className="field-label">
+											{getSourceDecimals(
+												referral_history_config?.currency || 'usdt',
+												latestBalance
+											)}{' '}
+											{(
+												referral_history_config?.currency || 'usdt'
+											).toUpperCase()}{' '}
+										</span>
+									</div>
 								</div>
+								<div></div>
 							</div>
-							<div></div>
-						</div>
 
-						{/* <div
+							{/* <div
 							style={{
 								display: 'flex',
 								gap: 5,
@@ -1673,26 +1699,27 @@ const ReferralList = ({
 								</EditWrapper>
 							</AntButton>
 						</div> */}
-						<div className="my-2 referral-table-wrapper">
-							<Table
-								rowClassName="pt-2 pb-2"
-								headers={HEADERS}
-								data={realizedData.data}
-								count={realizedData.count}
-								handleNext={handleNext}
-								pageSize={10}
-								displayPaginator={!realizedData.loading}
-							/>
-							{realizedData.loading && (
-								<div className="d-flex my-5 py-5 align-items-center justify-content-center">
-									<LoadingOutlined style={{ fontSize: '3rem' }} />
-								</div>
-							)}
+							<div className="my-2 referral-table-wrapper">
+								<Table
+									rowClassName="pt-2 pb-2"
+									headers={HEADERS}
+									data={realizedData.data}
+									count={realizedData.count}
+									handleNext={handleNext}
+									pageSize={10}
+									displayPaginator={!realizedData.loading}
+								/>
+								{realizedData.loading && (
+									<div className="d-flex my-5 py-5 align-items-center justify-content-center">
+										<LoadingOutlined style={{ fontSize: '3rem' }} />
+									</div>
+								)}
+							</div>
 						</div>
-					</div>
-				</TabPane>
-			</Tabs>
-		</Spin>
+					</TabPane>
+				</Tabs>
+			</Spin>
+		</div>
 	);
 };
 

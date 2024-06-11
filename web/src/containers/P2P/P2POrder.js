@@ -322,11 +322,10 @@ const P2POrder = ({
 							setDisplayAppealModel(false);
 						}}
 						style={{
-							backgroundColor: '#5D63FF',
-							color: 'white',
 							flex: 1,
 							height: 35,
 						}}
+						className="purpleButtonP2P"
 						type="default"
 					>
 						<EditWrapper stringId="P2P.CANCEL">
@@ -362,11 +361,10 @@ const P2POrder = ({
 							}
 						}}
 						style={{
-							backgroundColor: '#5D63FF',
-							color: 'white',
 							flex: 1,
 							height: 35,
 						}}
+						className="purpleButtonP2P"
 						type="default"
 					>
 						<EditWrapper stringId="P2P.OKAY">{STRINGS['P2P.OKAY']}</EditWrapper>
@@ -450,11 +448,10 @@ const P2POrder = ({
 								setRating();
 							}}
 							style={{
-								backgroundColor: '#5D63FF',
-								color: 'white',
 								flex: 1,
 								height: 35,
 							}}
+							className="purpleButtonP2P"
 							type="default"
 						>
 							<EditWrapper stringId="P2P.CANCEL">
@@ -485,11 +482,10 @@ const P2POrder = ({
 								}
 							}}
 							style={{
-								backgroundColor: '#5D63FF',
-								color: 'white',
 								flex: 1,
 								height: 35,
 							}}
+							className="purpleButtonP2P"
 							type="default"
 						>
 							<EditWrapper stringId="P2P.PROCEED">
@@ -552,11 +548,10 @@ const P2POrder = ({
 								setDisplayCancelWarning(false);
 							}}
 							style={{
-								backgroundColor: '#5D63FF',
-								color: 'white',
 								flex: 1,
 								height: 35,
 							}}
+							className="purpleButtonP2P"
 							type="default"
 						>
 							<EditWrapper stringId="P2P.NO">{STRINGS['P2P.NO']}</EditWrapper>
@@ -576,11 +571,10 @@ const P2POrder = ({
 								}
 							}}
 							style={{
-								backgroundColor: '#5D63FF',
-								color: 'white',
 								flex: 1,
 								height: 35,
 							}}
+							className="purpleButtonP2P"
 							type="default"
 						>
 							<EditWrapper stringId="P2P.PROCEED">
@@ -643,11 +637,10 @@ const P2POrder = ({
 								setDisplayConfirmWarning(false);
 							}}
 							style={{
-								backgroundColor: '#5D63FF',
-								color: 'white',
 								flex: 1,
 								height: 35,
 							}}
+							className="purpleButtonP2P"
 							type="default"
 						>
 							<EditWrapper stringId="P2P.NO">{STRINGS['P2P.NO']}</EditWrapper>
@@ -667,11 +660,10 @@ const P2POrder = ({
 								}
 							}}
 							style={{
-								backgroundColor: '#5D63FF',
-								color: 'white',
 								flex: 1,
 								height: 35,
 							}}
+							className="purpleButtonP2P"
 							type="default"
 						>
 							<EditWrapper stringId="P2P.PROCEED">
@@ -681,7 +673,6 @@ const P2POrder = ({
 					</div>
 				</Modal>
 			)}
-
 
 			<div
 				onClick={() => {
@@ -719,16 +710,15 @@ const P2POrder = ({
 									</EditWrapper>
 								</div>
 								<div>
-									{user.id === selectedOrder.merchant_id ?
-									<EditWrapper stringId="P2P.SELL_COIN">
-									{STRINGS['P2P.SELL_COIN']}
-								</EditWrapper>
-									:
-									<EditWrapper stringId="P2P.BUY_COIN">
-									{STRINGS['P2P.BUY_COIN']}
-								</EditWrapper>
-									}
-									{' '}
+									{user.id === selectedOrder.merchant_id ? (
+										<EditWrapper stringId="P2P.SELL_COIN">
+											{STRINGS['P2P.SELL_COIN']}
+										</EditWrapper>
+									) : (
+										<EditWrapper stringId="P2P.BUY_COIN">
+											{STRINGS['P2P.BUY_COIN']}
+										</EditWrapper>
+									)}{' '}
 									{coin?.fullname?.toUpperCase()} ({coin?.symbol?.toUpperCase()}
 									)
 								</div>
@@ -780,7 +770,13 @@ const P2POrder = ({
 									</div>
 								)}
 								{user.id === selectedOrder?.user_id && (
-									<div style={{ textAlign: 'end' , fontWeight: 'bold', fontSize: 16 }}>
+									<div
+										style={{
+											textAlign: 'end',
+											fontWeight: 'bold',
+											fontSize: 16,
+										}}
+									>
 										{selectedOrder?.amount_fiat}{' '}
 										{selectedOrder?.deal?.spending_asset?.toUpperCase()}
 									</div>
@@ -853,7 +849,13 @@ const P2POrder = ({
 							</div>
 							{user.id === selectedOrder?.merchant_id && (
 								<div>
-									<div style={{ textAlign: 'end', fontWeight: 'bold', fontSize: 16 }}>
+									<div
+										style={{
+											textAlign: 'end',
+											fontWeight: 'bold',
+											fontSize: 16,
+										}}
+									>
 										{selectedOrder?.amount_fiat}{' '}
 										{selectedOrder?.deal?.spending_asset?.toUpperCase()}
 									</div>
@@ -943,7 +945,14 @@ const P2POrder = ({
 								</div>
 							)}
 
-							<div style={{ borderLeft: `4px solid ${user.id === selectedOrder.merchant_id ? 'red' : 'green'}`, padding: 15 }}>
+							<div
+								style={{
+									borderLeft: `4px solid ${
+										user.id === selectedOrder.merchant_id ? 'red' : 'green'
+									}`,
+									padding: 15,
+								}}
+							>
 								<div
 									style={{
 										display: 'flex',
@@ -958,7 +967,9 @@ const P2POrder = ({
 										</EditWrapper>
 										:
 									</div>
-									<div style={{ fontWeight: 'bold' }}>{selectedOrder?.payment_method_used?.system_name}</div>
+									<div style={{ fontWeight: 'bold' }}>
+										{selectedOrder?.payment_method_used?.system_name}
+									</div>
 								</div>
 
 								{selectedOrder?.payment_method_used?.fields?.map((x) => {
@@ -969,8 +980,8 @@ const P2POrder = ({
 												justifyContent: 'space-between',
 											}}
 										>
-											<div style={{ fontWeight: 'bold'}}>{x?.name}:</div>
-											<div style={{ fontWeight: 'bold'}}>{x?.value}</div>
+											<div style={{ fontWeight: 'bold' }}>{x?.name}:</div>
+											<div style={{ fontWeight: 'bold' }}>{x?.value}</div>
 										</div>
 									);
 								})}
@@ -1250,7 +1261,7 @@ const P2POrder = ({
 
 											<Button
 												disabled={selectedOrder.user_status !== 'confirmed'}
-												style={{ backgroundColor: '#5E63F6', color: 'white' }}
+												className="purpleButtonP2P"
 												onClick={async () => {
 													try {
 														setDisplayConfirmWarning(true);
@@ -1330,8 +1341,8 @@ const P2POrder = ({
 									marginTop: 15,
 									marginBottom: 20,
 									textAlign: 'center',
-									color: 'grey',
 								}}
+								className="greyTextP2P"
 							>
 								{user.id === selectedOrder?.user_id && (
 									<div>
@@ -1398,19 +1409,19 @@ const P2POrder = ({
 															marginTop: 10,
 															marginBottom: 10,
 															textAlign: 'center',
-															color: 'grey',
 														}}
+														className="greyTextP2P"
 													>
-														{message.message === 'BUYER_PAID_ORDER' && user.id === selectedOrder.user_id ?
-														<EditWrapper stringId={`P2P.BUYER_SENT_FUNDS`}>
-														{STRINGS[`P2P.BUYER_SENT_FUNDS`]}
-													</EditWrapper>
-														:
-														<EditWrapper stringId={`P2P.${message.message}`}>
-															{STRINGS[`P2P.${message.message}`]}
-														</EditWrapper>
-														}
-														{' '}
+														{message.message === 'BUYER_PAID_ORDER' &&
+														user.id === selectedOrder.user_id ? (
+															<EditWrapper stringId={`P2P.BUYER_SENT_FUNDS`}>
+																{STRINGS[`P2P.BUYER_SENT_FUNDS`]}
+															</EditWrapper>
+														) : (
+															<EditWrapper stringId={`P2P.${message.message}`}>
+																{STRINGS[`P2P.${message.message}`]}
+															</EditWrapper>
+														)}{' '}
 														(
 														{moment(message?.created_at || new Date()).format(
 															'DD/MMM/YYYY, hh:mmA'
@@ -1503,11 +1514,11 @@ const P2POrder = ({
 									</div>
 									<div
 										style={{
-											color: '#5A60E5',
 											cursor: 'pointer',
 											position: 'relative',
 											top: 3,
 										}}
+										className="purpleTextP2P"
 										ref={buttonRef}
 										onClick={sendChatMessage}
 									>
@@ -1535,7 +1546,7 @@ const P2POrder = ({
 						}}
 					>
 						<Button
-							style={{ backgroundColor: '#5E63F6', color: 'white' }}
+							className="purpleButtonP2P"
 							onClick={async () => {
 								try {
 									setDisplayCancelWarning(true);
@@ -1549,7 +1560,7 @@ const P2POrder = ({
 							</EditWrapper>
 						</Button>
 						<Button
-							style={{ backgroundColor: '#5E63F6', color: 'white' }}
+							className="purpleButtonP2P"
 							onClick={async () => {
 								try {
 									await updateTransaction({

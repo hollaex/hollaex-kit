@@ -68,7 +68,8 @@ const P2PMyDeals = ({
 								setCheks([]);
 							}
 						}}
-						style={{ color: 'white', position: 'relative', top: 5 }}
+						style={{ position: 'relative', top: 5 }}
+						className="whiteTextP2P"
 					>
 						{myDeals.length === 0 ? (
 							<EditWrapper stringId="P2P.NO_DEALS">
@@ -83,10 +84,7 @@ const P2PMyDeals = ({
 				</span>
 				<span>
 					<Button
-						style={{
-							backgroundColor: '#5E63F6',
-							color: 'white',
-						}}
+						className="purpleButtonP2P"
 						onClick={async () => {
 							try {
 								await editDeal({
@@ -109,10 +107,7 @@ const P2PMyDeals = ({
 				</span>
 				<span>
 					<Button
-						style={{
-							backgroundColor: '#5E63F6',
-							color: 'white',
-						}}
+						className="purpleButtonP2P"
 						onClick={async () => {
 							try {
 								await editDeal({
@@ -134,10 +129,7 @@ const P2PMyDeals = ({
 				</span>
 			</div>
 
-			<div
-				className="stake_theme"
-				style={{ display: 'flex', marginTop: 20 }}
-			>
+			<div className="stake_theme" style={{ display: 'flex', marginTop: 20 }}>
 				<table
 					style={{ border: 'none', borderCollapse: 'collapse', width: '100%' }}
 				>
@@ -210,12 +202,7 @@ const P2PMyDeals = ({
 									</td>
 
 									<td style={{ width: '15%' }} className="td-fit">
-										<Button
-											style={{
-												color: 'white',
-											}}
-											className="sellSideP2P"
-										>
+										<Button className="sellSideP2P">
 											{deal.side.toUpperCase()}{' '}
 										</Button>
 									</td>
@@ -274,6 +261,7 @@ const P2PMyDeals = ({
 												setTab('3');
 											}}
 											ghost
+											className="whiteTextP2P"
 										>
 											<EditWrapper stringId="P2P.EDIT_DEAL_BUTTON">
 												{STRINGS['P2P.EDIT_DEAL_BUTTON']}

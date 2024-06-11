@@ -30,7 +30,7 @@ const P2POrders = ({
 }) => {
 	const [transactions, setTransactions] = useState([]);
 	const [filter, setFilter] = useState();
-	const [option, setOption] = useState("2");
+	const [option, setOption] = useState('2');
 
 	useEffect(() => {
 		fetchTransactions()
@@ -67,9 +67,10 @@ const P2POrders = ({
 					justifyContent: 'center',
 				}}
 			>
-				 <Radio.Group value={option} onChange={(e) => setOption(e.target.value)}>
+				<Radio.Group value={option} onChange={(e) => setOption(e.target.value)}>
 					<Radio.Button
-						style={{ backgroundColor: 'transparent', color: 'white', marginRight: 5}}
+						style={{ marginRight: 5 }}
+						className="transparentButtonP2P"
 						value="1"
 						onClick={() => {
 							setFilter('active');
@@ -80,7 +81,7 @@ const P2POrders = ({
 						</EditWrapper>
 					</Radio.Button>
 					<Radio.Button
-						style={{ backgroundColor: 'transparent', color: 'white'}}
+						className="transparentButtonP2P"
 						value="2"
 						onClick={() => {
 							setFilter();
@@ -90,12 +91,10 @@ const P2POrders = ({
 							{STRINGS['P2P.ALL_ORDERS']}
 						</EditWrapper>
 					</Radio.Button>
-       			 </Radio.Group>
+				</Radio.Group>
 			</div>
 
-			<div style={{ display: 'flex', marginTop: 20 }}
-				className="stake_theme"
-			>
+			<div style={{ display: 'flex', marginTop: 20 }} className="stake_theme">
 				<table
 					style={{ border: 'none', borderCollapse: 'collapse', width: '100%' }}
 				>
@@ -161,12 +160,7 @@ const P2POrders = ({
 									>
 										<td style={{ width: '17%' }}>
 											{transaction?.user_id === user.id ? (
-												<Button
-													style={{
-														color: 'white',
-													}}
-													className="buySideP2P"
-												>
+												<Button className="buySideP2P">
 													<span>
 														<EditWrapper stringId="P2P.BUY_COIN">
 															{STRINGS['P2P.BUY_COIN']}
@@ -175,12 +169,7 @@ const P2POrders = ({
 													</span>
 												</Button>
 											) : (
-												<Button
-													style={{
-														color: 'white',
-													}}
-													className="sellSideP2P"
-												>
+												<Button className="sellSideP2P">
 													<span>
 														<EditWrapper stringId="P2P.SELL_COIN">
 															{STRINGS['P2P.SELL_COIN']}
@@ -227,9 +216,9 @@ const P2POrders = ({
 												style={{
 													display: 'flex',
 													justifyContent: 'flex-end',
-													color: '#5E63F6',
 													cursor: 'pointer',
 												}}
+												className="purpleTextP2P"
 											>
 												<EditWrapper stringId="P2P.VIEW_ORDER">
 													{STRINGS['P2P.VIEW_ORDER']}
