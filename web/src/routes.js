@@ -391,7 +391,12 @@ export const generateRoutes = (routes = []) => {
 					name="Fees and limits"
 					component={FeesAndLimits}
 				/>
-				<Route path="referral" name="referral" component={ReferralList} />
+				<Route
+					path="referral"
+					name="referral"
+					component={ReferralList}
+					onEnter={requireAuth}
+				/>
 				<Route path="prices" name="Digital Asset" component={DigitalAssets} />
 				<Route path="white-label" name="WhiteLabel" component={WhiteLabel} />
 				<Route path="verification" name="Verification" component={Account} />

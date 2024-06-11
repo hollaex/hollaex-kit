@@ -33,9 +33,6 @@ const TradingFees = ({
 	const icon = ICONS[`LEVEL_ACCOUNT_ICON_${selectedLevel}`]
 		? ICONS[`LEVEL_ACCOUNT_ICON_${selectedLevel}`]
 		: ICONS['LEVEL_ACCOUNT_ICON_4'];
-	const defaultSelectedAccount = localStorage.getItem(
-		'setDefaultSelectedAccount'
-	);
 
 	return (
 		<div>
@@ -83,30 +80,29 @@ const TradingFees = ({
 									</div>
 								</div>
 							</div>
-							{accountData?.name === defaultSelectedAccount &&
-								user.discount > 0 && (
-									<>
-										<div className="d-flex">
-											<div>
-												<ReactSVG
-													src={ICONS['GREEN_CHECK']}
-													className="currency_ball-wrapper s mr-2"
-												/>
-											</div>
-											<div>
-												{STRINGS['FEE_REDUCTION']}: {user.discount}%
-											</div>
+							{user.discount > 0 && (
+								<>
+									<div className="d-flex">
+										<div>
+											<ReactSVG
+												src={ICONS['GREEN_CHECK']}
+												className="currency_ball-wrapper s mr-2"
+											/>
 										</div>
-										<div
-											className="blue-link pointer text-uppercase mt-2"
-											onClick={() => browserHistory.push('/referral')}
-										>
-											<EditWrapper stringId="REFERRAL_LINK.GO_TO_REFERRAL">
-												{STRINGS['REFERRAL_LINK.GO_TO_REFERRAL']}
-											</EditWrapper>
+										<div>
+											{STRINGS['FEE_REDUCTION']}: {user.discount}%
 										</div>
-									</>
-								)}
+									</div>
+									<div
+										className="blue-link pointer text-uppercase mt-2"
+										onClick={() => browserHistory.push('/referral')}
+									>
+										<EditWrapper stringId="REFERRAL_LINK.GO_TO_REFERRAL">
+											{STRINGS['REFERRAL_LINK.GO_TO_REFERRAL']}
+										</EditWrapper>
+									</div>
+								</>
+							)}
 						</div>
 						<div className="w-100 pl-3">
 							<div

@@ -34,7 +34,13 @@
 
 	.referral-header-icon-wrapper {
 		.icon_title-wrapper {
-			display: block;
+			display: flex;
+			justify-content: flex-start;
+			flex-direction: row;
+			.icon_title-text.title {
+				font-size: 3rem !important;
+				padding-top: 2.25rem !important;
+			}
 		}
 	}
 

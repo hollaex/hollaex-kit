@@ -190,9 +190,6 @@ class Summary extends Component {
 				STRINGS['SUMMARY.LEVEL_OF_ACCOUNT'],
 				verification_level
 			);
-		if (userAccountTitle) {
-			localStorage.setItem('setDefaultSelectedAccount', userAccountTitle);
-		}
 
 		return (
 			<div>

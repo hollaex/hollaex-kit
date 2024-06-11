@@ -6770,7 +6770,12 @@ table th {
   .referral-list-wrapper .referral-inActive-text {
     color: var(--labels_secondary-inactive-label-text-graphics); }
   .referral-list-wrapper .referral-header-icon-wrapper .icon_title-wrapper {
-    display: block; }
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row; }
+    .referral-list-wrapper .referral-header-icon-wrapper .icon_title-wrapper .icon_title-text.title {
+      font-size: 3rem !important;
+      padding-top: 2.25rem !important; }
   .referral-list-wrapper .referral_table_theme .ant-modal-body {
     background-color: var(--base_wallet-sidebar-and-popup) !important; }
   .referral-list-wrapper .back-label {
