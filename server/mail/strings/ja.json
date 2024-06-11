@@ -137,7 +137,7 @@
             "title": "P2P注文にアクティビティが検出されました"
         },
         "P2P_ORDER_CLOSED": {
-            "html": "<div><p> 親愛なる${name}様 </p><p>サポートチームがあなたの異議申し立てに関する判決に達した後、あなたの注文が閉じられました<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">注文ページへ</Button></a></div><p>私たちのプラットフォームをご利用いただきありがとうございます。</p><p>敬具<br> ${api_name}チーム </p></div>",
+            "html": "<div><p> 親愛なる${name}様 </p><p>サポートチームが異議申し立てのリクエストについて判決を出した後、あなたの注文は閉じられました<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">注文ページへ</Button></a></div><p>私たちのプラットフォームをご利用いただきありがとうございます。</p><p>敬具<br> ${api_name}チーム </p></div>",
             "title": "P2P注文に活動が検出されました"
         },
         "P2P_BUYER_CANCELLED_ORDER": {

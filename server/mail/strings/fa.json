@@ -137,7 +137,7 @@
             "title": "فعالیت شناسایی شده در سفارش P2P شما"
         },
         "P2P_ORDER_CLOSED": {
-            "html": "<div><p> عزیز ${name} </p><p>سفارش شما توسط تیم پشتیبانی ما پس از رسیدن به نتیجه در درخواست تجدیدنظر شما بسته شده است<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">به سفارش خود بروید</Button></a></div><p>از اینکه از پلتفرم ما استفاده می‌کنید متشکریم.</p><p>با احترام<br> تیم ${api_name} </p></div>",
+            "html": "<div><p> عزیز ${name} </p><p>سفارش شما توسط تیم پشتیبانی ما پس از رسیدن به نتیجه در درخواست تجدیدنظر بسته شده است<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">به سفارش خود بروید</Button></a></div><p>از اینکه از پلتفرم ما استفاده می‌کنید متشکریم.</p><p>با احترام<br> تیم ${api_name} </p></div>",
             "title": "فعالیت در سفارش P2P شما شناسایی شد"
         },
         "P2P_BUYER_CANCELLED_ORDER": {

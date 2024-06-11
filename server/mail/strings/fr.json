@@ -137,7 +137,7 @@
             "title": "Activité détectée sur votre commande P2P"
         },
         "P2P_ORDER_CLOSED": {
-            "html": "<div><p> Cher ${name} </p><p>Votre commande a été clôturée par notre équipe de support après avoir rendu un verdict sur votre demande d'appel<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Aller à votre commande</Button></a></div><p>Merci d'utiliser notre plateforme.</p><p>Cordialement<br> L'équipe ${api_name} </p></div>",
+            "html": "<div><p> Cher ${name} </p><p>Votre commande a été clôturée par notre équipe de support après avoir rendu un verdict sur la demande d'appel<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Aller à votre commande</Button></a></div><p>Merci d'utiliser notre plateforme.</p><p>Cordialement<br> L'équipe ${api_name} </p></div>",
             "title": "Activité détectée sur votre commande P2P"
         },
         "P2P_BUYER_CANCELLED_ORDER": {

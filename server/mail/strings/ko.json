@@ -137,7 +137,7 @@
             "title": "귀하의 P2P 주문에서 감지된 활동"
         },
         "P2P_ORDER_CLOSED": {
-            "html": "<div><p> 친애하는 ${name} 님 </p><p>지원 팀이 귀하의 항소 요청에 대한 판결에 도달한 후 주문이 종료되었습니다<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">주문 페이지로 이동</Button></a></div><p>저희 플랫폼을 이용해 주셔서 감사합니다.</p><p>감사합니다<br> ${api_name} 팀 </p></div>",
+            "html": "<div><p> 친애하는 ${name} 님 </p><p>지원 팀이 항소 요청에 대한 판결을 내린 후 주문이 종료되었습니다<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">주문 페이지로 이동</Button></a></div><p>저희 플랫폼을 이용해 주셔서 감사합니다.</p><p>감사합니다<br> ${api_name} 팀 </p></div>",
             "title": "P2P 주문에 활동이 감지되었습니다"
         },
         "P2P_BUYER_CANCELLED_ORDER": {
