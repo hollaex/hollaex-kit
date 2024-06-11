@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Button as AntButton, Spin, Modal, Tabs } from 'antd';
+import { Button as AntButton, Spin, Modal, Tabs, Tooltip } from 'antd';
 import {
 	LoadingOutlined,
 	CaretUpOutlined,
 	CaretDownOutlined,
 	CloseOutlined,
 	CheckCircleOutlined,
+	InfoCircleOutlined,
 } from '@ant-design/icons';
 import { isMobile } from 'react-device-detect';
 
@@ -283,6 +284,7 @@ const ReferralList = ({
 		setSnackNotification({
 			icon: ICONS.COPY_NOTIFICATION,
 			content: STRINGS['COPY_SUCCESS_TEXT'],
+			timer: 2000,
 		});
 	};
 
@@ -290,6 +292,7 @@ const ReferralList = ({
 		setSnackNotification({
 			icon: ICONS.COPY_NOTIFICATION,
 			content: STRINGS['REFERRAL_LINK.SETTLEMENT_SUCCESS'],
+			timer: 2000,
 		});
 	};
 
@@ -297,6 +300,7 @@ const ReferralList = ({
 		setSnackNotification({
 			icon: ICONS.COPY_NOTIFICATION,
 			content: message,
+			timer: 2000,
 		});
 	};
 
@@ -387,8 +391,15 @@ const ReferralList = ({
 					}
 				})
 				.catch((err) => err);
+			fetchRealizedFeeEarnings()
+				.then((res) => {
+					setRealizedData(res);
+				})
+				.catch((err) => err);
+
 			setDisplaySettle(false);
 			handleSettlementNotification();
+			setActiveTab('1');
 		} catch (error) {
 			showErrorMessage(error.data.message);
 		}
@@ -1326,35 +1337,6 @@ const ReferralList = ({
 										)}
 										.
 									</div> */}
-									<div className="mt-3">
-										<EditWrapper stringId="REFERRAL_LINK.DATA_DESC">
-											{STRINGS['REFERRAL_LINK.DATA_DESC']}
-										</EditWrapper>{' '}
-										<span
-											onClick={() => {
-												if (
-													unrealizedEarnings > 0 &&
-													unrealizedEarnings >
-														referral_history_config?.minimum_amount
-												)
-													setDisplaySettle(true);
-											}}
-											className="settle-link"
-										>
-											<EditWrapper stringId="REFERRAL_LINK.SETTLE_HERE">
-												{STRINGS['REFERRAL_LINK.SETTLE_HERE']}
-											</EditWrapper>
-										</span>
-										<span>
-											{' '}
-											(
-											<EditWrapper stringId="REFERRAL_LINK.MIN_TO_SETTLE">
-												{STRINGS['REFERRAL_LINK.MIN_TO_SETTLE']}
-											</EditWrapper>
-											: {referral_history_config?.minimum_amount}{' '}
-											{(referral_history_config?.currency).toUpperCase()})
-										</span>
-									</div>
 								</div>
 								<div
 									className={
@@ -1389,6 +1371,17 @@ const ReferralList = ({
 										{(
 											referral_history_config?.currency || 'usdt'
 										).toUpperCase()}
+										<span style={{ marginLeft: 5 }}>
+											<Tooltip
+												title={`${STRINGS['REFERRAL_LINK.DATA_DESC']} ${
+													STRINGS['REFERRAL_LINK.SETTLE_HERE']
+												} (${STRINGS['REFERRAL_LINK.MIN_TO_SETTLE']} ${
+													referral_history_config?.minimum_amount
+												} ${(referral_history_config?.currency).toUpperCase()})`}
+											>
+												<InfoCircleOutlined />
+											</Tooltip>
+										</span>
 									</div>
 									<div
 										className={
