@@ -6,14 +6,14 @@
 
 	.buySideP2P {
 		background-color: var(--trading_buying-related-elements);
-		color: var(--calculated_base_top-bar-navigation_text)  !important;
+		color: var(--calculated_base_top-bar-navigation_text) !important;
 	}
 	.sellSideP2P {
-		background-color:  var(--specials_checks-okay-done);
-		color: var(--calculated_base_top-bar-navigation_text)  !important;
+		background-color: var(--specials_checks-okay-done);
+		color: var(--calculated_base_top-bar-navigation_text) !important;
 	}
 	.subTable {
-		background-color: var(--highcharts-neutral-color-10);
+		background-color: var(--base_secondary-navigation-bar);
 	}
 }
 .greenButtonP2P {
@@ -23,21 +23,21 @@
 }
 
 .greyButtonP2P {
-	background-color: var(--labels_inactive-button)  !important;
-	color: var(--calculated_base_top-bar-navigation_text)  !important;
+	background-color: var(--labels_inactive-button) !important;
+	color: var(--calculated_base_top-bar-navigation_text) !important;
 	border: none;
 }
 .whiteTextP2P {
-	color: var(--labels_important-active-labels-text-graphics)  !important;
+	color: var(--labels_important-active-labels-text-graphics) !important;
 }
 
 .purpleTextP2P {
-	color: var(--specials_buttons-links-and-highlights)  !important;
+	color: var(--specials_buttons-links-and-highlights) !important;
 }
 
 .purpleButtonP2P {
-	background-color: var(--specials_buttons-links-and-highlights)  !important;
-	color: var(--calculated_base_top-bar-navigation_text)  !important;
+	background-color: var(--specials_buttons-links-and-highlights) !important;
+	color: var(--calculated_base_top-bar-navigation_text) !important;
 	border: none;
 }
 .greyTextP2P {
