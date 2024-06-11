@@ -136,6 +136,10 @@
             "html": "<div><p> Kính gửi ${name} </p><p>Đơn hàng của bạn đã hết hạn do không có hoạt động trong thời gian quy định.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Đi đến đơn hàng của bạn</Button></a></div><p>Cảm ơn bạn đã sử dụng nền tảng của chúng tôi.</p><p>Yêu cầu được thực hiện từ: ${ip}</p><p>Trân trọng<br> đội ngũ ${api_name} </p></div>",
             "title": "Hoạt động được phát hiện trên Đơn hàng P2P của bạn"
         },
+        "P2P_ORDER_CLOSED": {
+            "html": "<div><p> Kính gửi ${name} </p><p>Đơn hàng của bạn đã được đội ngũ hỗ trợ của chúng tôi đóng lại sau khi đạt được quyết định về yêu cầu kháng cáo của bạn<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Đi đến đơn hàng của bạn</Button></a></div><p>Cảm ơn bạn đã sử dụng nền tảng của chúng tôi.</p><p>Trân trọng<br> đội ngũ ${api_name} </p></div>",
+            "title": "Hoạt động được phát hiện trên Đơn hàng P2P của bạn"
+        },
         "P2P_BUYER_CANCELLED_ORDER": {
             "html": "<div><p> Kính gửi ${name} </p><p>Bạn đã hủy đơn hàng của mình. Giao dịch đã đóng.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Đi đến đơn hàng của bạn</Button></a></div><p>Cảm ơn bạn đã sử dụng nền tảng của chúng tôi.</p><p>Yêu cầu được thực hiện từ: ${ip}</p><p>Trân trọng<br> đội ngũ ${api_name} </p></div>",
             "title": "Hoạt động được phát hiện trên Đơn hàng P2P của bạn"

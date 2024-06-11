@@ -136,6 +136,10 @@
 			"html": "<div><p> Sevgili ${name} </p><p>Belirtilen süre içinde aktivite olmadığı için siparişinizin süresi doldu.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Siparişinize Git</Button></a></div><p>Platformumuzu kullandığınız için teşekkür ederiz.</p><p>İstek şu IP'den yapıldı: ${ip}</p><p>Saygılarımızla<br> ${api_name} ekibi </p></div>",
 			"title": "P2P Siparişinizde Aktivite Tespit Edildi"
 		},
+		"P2P_ORDER_CLOSED": {
+			"html": "<div><p> Sevgili ${name} </p><p>Destek ekibimiz, itiraz talebiniz hakkında bir karara vardıktan sonra siparişinizi kapattı<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Siparişinize Git</Button></a></div><p>Platformumuzu kullandığınız için teşekkür ederiz.</p><p>Saygılarımızla<br> ${api_name} ekibi </p></div>",
+			"title": "P2P Siparişinizde Aktivite Tespit Edildi"
+		},
 		"P2P_BUYER_CANCELLED_ORDER": {
 			"html": "<div><p> Sevgili ${name} </p><p>Siparişinizi iptal ettiniz. İşlem kapatıldı.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Siparişinize Git</Button></a></div><p>Platformumuzu kullandığınız için teşekkür ederiz.</p><p>İstek şu IP'den yapıldı: ${ip}</p><p>Saygılarımızla<br> ${api_name} ekibi </p></div>",
 			"title": "P2P Siparişinizde Aktivite Tespit Edildi"

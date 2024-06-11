@@ -134,13 +134,13 @@ const P2PPostDeal = ({
 							justifyContent: 'center',
 						}}
 					>
-						<span style={{ fontSize: 18 }}>
+						<span className="openGreyTextP2P" style={{ fontSize: 18 }}>
 							<EditWrapper stringId="P2P.I_WANT_TO_BUY">
 								{STRINGS['P2P.I_WANT_TO_BUY']}
 							</EditWrapper>
 						</span>
 						<span>
-							<Switch checked disabled />
+							<Switch checked />
 						</span>
 						<span style={{ fontSize: 18 }}>
 							<EditWrapper stringId="P2P.I_WANT_TO_SELL">
@@ -275,7 +275,10 @@ const P2PPostDeal = ({
 											<div style={{ marginTop: 10 }}>
 												<EditWrapper stringId="P2P.PRICE_UPPER">
 													{STRINGS['P2P.PRICE_UPPER']}
-												</EditWrapper>
+												</EditWrapper>{' '}
+												{spendingAsset
+													? `(${spendingAsset?.toUpperCase()})`
+													: ''}
 											</div>
 											<div>
 												<Input
@@ -333,7 +336,8 @@ const P2PPostDeal = ({
 										<div>
 											<EditWrapper stringId="P2P.PRICE_ADVERTISE_SELL">
 												{STRINGS['P2P.PRICE_ADVERTISE_SELL']}
-											</EditWrapper>
+											</EditWrapper>{' '}
+											{buyingAsset ? `${buyingAsset?.toUpperCase()}` : ''}
 										</div>
 									</div>
 								)}
@@ -390,22 +394,48 @@ const P2PPostDeal = ({
 									</div>
 									<div style={{ display: 'flex', gap: 10 }}>
 										<div>
-											<Input
-												style={{ width: 150 }}
-												value={minOrderValue}
-												onChange={(e) => {
-													setMinOrderValue(e.target.value);
-												}}
-											/>
+											<div>
+												<Input
+													style={{ width: 150 }}
+													value={minOrderValue}
+													placeholder="MIN"
+													onChange={(e) => {
+														setMinOrderValue(e.target.value);
+													}}
+												/>
+											</div>
+											<div style={{ marginTop: 2 }}>
+												{minOrderValue
+													? (
+															minOrderValue /
+															formatRate(exchangeRate, spread, spendingAsset)
+													  ).toFixed(4) +
+													  ' ' +
+													  buyingAsset?.toUpperCase()
+													: ''}{' '}
+											</div>
 										</div>
 										<div>
-											<Input
-												style={{ width: 150 }}
-												value={maxOrderValue}
-												onChange={(e) => {
-													setMaxOrderValue(e.target.value);
-												}}
-											/>
+											<div>
+												<Input
+													style={{ width: 150 }}
+													value={maxOrderValue}
+													placeholder="MAX"
+													onChange={(e) => {
+														setMaxOrderValue(e.target.value);
+													}}
+												/>
+											</div>
+											<div style={{ marginTop: 2 }}>
+												{maxOrderValue
+													? (
+															maxOrderValue /
+															formatRate(exchangeRate, spread, spendingAsset)
+													  ).toFixed(4) +
+													  ' ' +
+													  buyingAsset?.toUpperCase()
+													: ''}{' '}
+											</div>
 										</div>
 									</div>
 								</div>

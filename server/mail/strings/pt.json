@@ -136,6 +136,10 @@
             "html": "<div><p> Caro(a) ${name} </p><p>Seu pedido expirou devido à inatividade no tempo determinado.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Ir para seu pedido</Button></a></div><p>Obrigado por usar nossa plataforma.</p><p>Solicitação iniciada de: ${ip}</p><p>Atenciosamente<br> equipe ${api_name} </p></div>",
             "title": "Atividade Detectada em seu Pedido P2P"
         },
+        "P2P_ORDER_CLOSED": {
+            "html": "<div><p> Caro(a) ${name} </p><p>Seu pedido foi encerrado pela nossa equipe de suporte após chegar a um veredicto sobre sua solicitação de apelação<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Ir para seu pedido</Button></a></div><p>Obrigado por usar nossa plataforma.</p><p>Atenciosamente<br> equipe ${api_name} </p></div>",
+            "title": "Atividade Detectada em seu Pedido P2P"
+        },
         "P2P_BUYER_CANCELLED_ORDER": {
             "html": "<div><p> Caro(a) ${name} </p><p>Você cancelou seu pedido. A transação foi encerrada.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Ir para seu pedido</Button></a></div><p>Obrigado por usar nossa plataforma.</p><p>Solicitação iniciada de: ${ip}</p><p>Atenciosamente<br> equipe ${api_name} </p></div>",
             "title": "Atividade Detectada em seu Pedido P2P"

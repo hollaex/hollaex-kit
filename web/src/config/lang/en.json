@@ -2018,6 +2018,7 @@
 		"BUYER_CANCELLED_ORDER": "Buyer has cancelled this order, Transaction is closed",
 		"BUYER_APPEALED_ORDER": "Buyer has appealed this order, Please contact support to resolve the issue",
 		"VENDOR_CONFIRMED_ORDER": "Vendor confirmed the transaction and released the funds.",
+		"ORDER_CLOSED": "The order has been closed after reaching a verdict on the appeal request",
 		"VENDOR_CANCELLED_ORDER": "Vendor has cancelled this order, Transaction is closed",
 		"VENDOR_APPEALED_ORDER": "Vendor has appealed this order, Please contact support to resolve the issue",
 		"SET_TYPE_PRICE": "Set the type and price",
@@ -2077,6 +2078,13 @@
 		"POSITIVE_FEEDBACK": "Positive Feedback",
 		"POSITIVE": "Positive",
 		"NEGATIVE": "Negative",
-		"NO_FEEDBACK": "No feedback found"
+		"NO_FEEDBACK": "No feedback found",
+		"INPUT_FIAT_AMOUNT": "Input fiat amount",
+		"SELECT_FIAT": "Select fiat",
+		"ALL_PAYMENT_METHODS": "All payment methods",
+		"ALL_REGION": "All Region",
+		"BUYER_NOT_MADE_THE_PAYMENT": "The buyer has not confirmed their payment yet.",
+		"PRICE_TO_ADVERTISE": "Price you’ll advertise to sell",
+		"VIEW_PROFILE": "View vendor's profile"
 	}
 }

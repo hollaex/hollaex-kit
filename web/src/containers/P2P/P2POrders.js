@@ -27,6 +27,7 @@ const P2POrders = ({
 	refresh,
 	user,
 	router,
+	changeProfileTab,
 }) => {
 	const [transactions, setTransactions] = useState([]);
 	const [filter, setFilter] = useState();
@@ -147,7 +148,11 @@ const P2POrders = ({
 					</thead>
 					<tbody className="font-weight-bold">
 						{transactions
-							.filter((x) => (filter ? x.transaction_status === filter : true))
+							.filter((x) =>
+								filter
+									? ['active', 'appealed'].includes(x.transaction_status)
+									: true
+							)
 							.map((transaction) => {
 								return (
 									<tr
@@ -196,10 +201,27 @@ const P2POrders = ({
 											{transaction?.deal?.buying_asset?.toUpperCase()}
 										</td>
 										<td style={{ width: '10%' }}>
-											{transaction?.buyer?.full_name || (
-												<EditWrapper stringId="P2P.ANONYMOUS">
-													{STRINGS['P2P.ANONYMOUS']}
-												</EditWrapper>
+											{transaction?.user_id === user.id ? (
+												<span
+													style={{ cursor: 'pointer' }}
+													onClick={() => {
+														changeProfileTab(transaction?.merchant);
+													}}
+												>
+													{transaction?.merchant?.full_name || (
+														<EditWrapper stringId="P2P.ANONYMOUS">
+															{STRINGS['P2P.ANONYMOUS']}
+														</EditWrapper>
+													)}
+												</span>
+											) : (
+												<span>
+													{transaction?.buyer?.full_name || (
+														<EditWrapper stringId="P2P.ANONYMOUS">
+															{STRINGS['P2P.ANONYMOUS']}
+														</EditWrapper>
+													)}
+												</span>
 											)}
 										</td>
 										<td style={{ width: '10%' }}>

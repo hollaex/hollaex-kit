@@ -9,7 +9,7 @@
 		color: var(--calculated_base_top-bar-navigation_text) !important;
 	}
 	.sellSideP2P {
-		background-color: var(--specials_checks-okay-done);
+		background-color: var(--trading_selling-related-elements);
 		color: var(--calculated_base_top-bar-navigation_text) !important;
 	}
 	.subTable {
@@ -42,6 +42,9 @@
 }
 .greyTextP2P {
 	color: var(--labels_inactive-button);
+}
+.openGreyTextP2P {
+	color: var(--labels_secondary-inactive-label-text-graphics);
 }
 
 .transparentButtonP2P {
