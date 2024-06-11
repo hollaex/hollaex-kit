@@ -2504,49 +2504,51 @@ table th {
 .layout-mobile .review_email-wrapper {
   margin: 0px auto !important; }
 
-.layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form {
-  margin: 0 0 30px;
-  padding: 5%; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .destination-field {
-    height: 75px; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .destination-field-mobile {
-    height: 11rem; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .field-wrapper .field-label-wrapper {
-    flex-direction: column; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdraw-main-label-selected {
-    font-size: 14px; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdraw-deposit-content {
-    padding: 0 1%; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-line-selected-large {
-    height: 13rem;
-    border: 1px solid var(--labels_important-active-labels-text-graphics); }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line-selected {
-    height: 100%; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line {
-    height: 13rem; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line-network-selected {
-    height: 15rem; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line-selected-mobile {
-    height: 9rem; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .mobile-view {
-    margin-top: 5%; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .ant-select-clear svg {
-    font-size: 18px; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .select-wrapper {
-    width: 100%;
-    margin-left: 5%; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .bottom-content {
-    font-size: 14px;
-    margin-top: 3%; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdraw-main-label-selected,
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdraw-main-label,
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .warning-text {
-    font-size: 14px; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .currency-label {
-    width: 15%;
-    font-size: 14px; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .render-scan-wrapper .suffix-text {
-    font-size: 12px; }
+.layout-mobile .withdrawal-container {
+  padding-top: 0px !important; }
+  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form {
+    margin: 0 0 30px;
+    padding: 5%; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .destination-field {
+      height: 75px; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .destination-field-mobile {
+      height: 11rem; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .field-wrapper .field-label-wrapper {
+      flex-direction: column; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdraw-main-label-selected {
+      font-size: 14px; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdraw-deposit-content {
+      padding: 0 1%; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-line-selected-large {
+      height: 13rem;
+      border: 1px solid var(--labels_important-active-labels-text-graphics); }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line-selected {
+      height: 100%; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line {
+      height: 13rem; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line-network-selected {
+      height: 15rem; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line-selected-mobile {
+      height: 9rem; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .mobile-view {
+      margin-top: 5%; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .ant-select-clear svg {
+      font-size: 18px; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .select-wrapper {
+      width: 100%;
+      margin-left: 5%; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .bottom-content {
+      font-size: 14px;
+      margin-top: 3%; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdraw-main-label-selected,
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdraw-main-label,
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .warning-text {
+      font-size: 14px; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .currency-label {
+      width: 15%;
+      font-size: 14px; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .render-scan-wrapper .suffix-text {
+      font-size: 12px; }
 
 @media screen and (max-width: 550px) {
   .layout-mobile .presentation_container .inner_container .withdraw-icon {
@@ -2555,32 +2557,30 @@ table th {
     font-size: 14px !important; }
   .layout-mobile .presentation_container .inner_container .information_block .information_block-text_wrapper .text {
     font-size: 12px !important; }
-  .layout-mobile .withdrawal-container {
-    padding-top: 0px !important; }
-    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form {
-      margin: 0 0 20px; }
-      .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .select-wrapper {
-        margin-left: 7%; }
-      .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .ant-select-clear svg {
-        font-size: 12px; }
-      .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-step-selected,
-      .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-step {
-        padding: 33% 70% 10%; }
-      .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-select-input-style .ant-select-selector {
-        font-size: 1.5rem !important; }
-      .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-select-input-style .ant-select-selection-item {
-        margin-top: 4%;
-        line-height: unset !important; }
-      .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .currency-label {
-        font-size: 12px; }
-      .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .mobile-view {
-        margin-top: 3%; }
-      .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .amount-field-icon {
-        margin-top: 2%; }
-      .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .warning-text {
-        font-size: 10px; }
-      .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-line-selected-large {
-        height: 17rem; } }
+  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form {
+    margin: 0 0 20px; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .select-wrapper {
+      margin-left: 7%; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .ant-select-clear svg {
+      font-size: 12px; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-step-selected,
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-step {
+      padding: 33% 70% 10%; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-select-input-style .ant-select-selector {
+      font-size: 1.5rem !important; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-select-input-style .ant-select-selection-item {
+      margin-top: 4%;
+      line-height: unset !important; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .currency-label {
+      font-size: 12px; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .mobile-view {
+      margin-top: 3%; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .amount-field-icon {
+      margin-top: 2%; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .warning-text {
+      font-size: 10px; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-line-selected-large {
+      height: 17rem; } }
 
 @media screen and (max-width: 390px) {
   .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-line-selected-large {

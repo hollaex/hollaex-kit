@@ -373,6 +373,7 @@ class Deposit extends Component {
 							<div className="information_block-text_wrapper" />
 							{renderBackToWallet(this.onGoBack)}
 							{openContactForm &&
+								!isMobile &&
 								renderNeedHelpAction(
 									openContactForm,
 									constants.links,
