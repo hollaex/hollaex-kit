@@ -33,8 +33,6 @@ import { getLastMonthVolume } from './components/utils';
 import { getUserReferrals } from 'actions/userAction';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { openContactForm } from 'actions/appActions';
-import ReferralList from './components/ReferralList';
-
 import { isLoggedIn } from 'utils/token';
 
 class Summary extends Component {
@@ -62,6 +60,16 @@ class Summary extends Component {
 				pairs
 			);
 			this.setState({ lastMonthVolume });
+		}
+
+		if (this.state.displayReferralList) {
+			this.props.router.push('/referral');
+		}
+	}
+
+	componentDidUpdate() {
+		if (this.state.displayReferralList) {
+			this.props.router.push('/referral');
 		}
 	}
 
@@ -182,6 +190,10 @@ class Summary extends Component {
 				STRINGS['SUMMARY.LEVEL_OF_ACCOUNT'],
 				verification_level
 			);
+		if (userAccountTitle) {
+			localStorage.setItem('setDefaultSelectedAccount', userAccountTitle);
+		}
+
 		return (
 			<div>
 				<div className="summary-container">
@@ -217,14 +229,6 @@ class Summary extends Component {
 							referral_history_config={referral_history_config}
 						/>
 					)}
-					{this.state.displayReferralList && (
-						<ReferralList
-							coins={coins}
-							affiliation_code={this.props.user.affiliation_code}
-							goBackReferral={this.goBackReferral}
-						/>
-					)}
-
 					{this.state.displaySummary && !isMobile && (
 						<div>
 							<div id="summary-header-section"></div>

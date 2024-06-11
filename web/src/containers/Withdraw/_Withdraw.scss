@@ -346,9 +346,12 @@ $content--margin: 2rem;
 				padding: 0.5%;
 				border-radius: 5px;
 				margin-right: 10px;
-				width: 4rem;
+				width: 5rem;
 				text-align: center;
 				cursor: pointer;
+				.pinned-asset-icon {
+					padding-top: 3%;
+				}
 			}
 
 			.render-scan-wrapper {
@@ -376,6 +379,10 @@ $content--margin: 2rem;
 
 			.destination-field {
 				height: 60px;
+			}
+
+			.destination-field-mobile {
+				height: 6rem;
 			}
 		}
 
@@ -601,8 +608,13 @@ $content--margin: 2rem;
 	.withdrawal-container {
 		.withdraw-form-wrapper {
 			.withdraw-form {
+				margin: 0 0 30px;
 				.destination-field {
 					height: 75px;
+				}
+
+				.destination-field-mobile {
+					height: 11rem;
 				}
 
 				.field-wrapper {
@@ -632,7 +644,15 @@ $content--margin: 2rem;
 					}
 
 					.custom-line {
-						height: 12rem;
+						height: 13rem;
+					}
+
+					.custom-line-network-selected {
+						height: 15rem;
+					}
+
+					.custom-line-selected-mobile {
+						height: 9rem;
 					}
 				}
 
@@ -677,6 +697,9 @@ $content--margin: 2rem;
 	@media screen and (max-width: 550px) {
 		.presentation_container {
 			.inner_container {
+				.withdraw-icon {
+					margin-top: 0px !important;
+				}
 				.information_block {
 					.information_block-text_wrapper {
 						.title {
@@ -692,14 +715,23 @@ $content--margin: 2rem;
 		}
 
 		.withdrawal-container {
+			padding-top: 0px !important;
 			.withdraw-form-wrapper {
 				.withdraw-form {
+					margin: 0 0 20px;
 					.select-wrapper {
 						margin-left: 7%;
 					}
 
 					.ant-select-clear svg {
 						font-size: 12px;
+					}
+
+					.custom-field {
+						.custom-step-selected,
+						.custom-step {
+							padding: 33% 70% 10%;
+						}
 					}
 
 					.custom-select-input-style {
@@ -730,7 +762,7 @@ $content--margin: 2rem;
 					}
 
 					.custom-line-selected-large {
-						height: 16rem;
+						height: 17rem;
 					}
 				}
 			}
