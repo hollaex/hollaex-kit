@@ -606,6 +606,7 @@ $content--margin: 2rem;
 	}
 
 	.withdrawal-container {
+		padding-top: 0px !important;
 		.withdraw-form-wrapper {
 			.withdraw-form {
 				margin: 0 0 30px;
@@ -715,7 +716,6 @@ $content--margin: 2rem;
 		}
 
 		.withdrawal-container {
-			padding-top: 0px !important;
 			.withdraw-form-wrapper {
 				.withdraw-form {
 					margin: 0 0 20px;

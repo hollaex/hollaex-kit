@@ -49,9 +49,6 @@ const TraderAccounts = ({
 		identity_status,
 		'verification-stauts user-status'
 	);
-	const defaultSelectedAccount = localStorage.getItem(
-		'setDefaultSelectedAccount'
-	);
 
 	return (
 		<div className="d-flex">
@@ -89,7 +86,7 @@ const TraderAccounts = ({
 						{description}
 					</EditWrapper>
 				</div>
-				{defaultSelectedAccount === title && user.discount > 0 ? (
+				{user.discount > 0 ? (
 					<div className="d-flex mb-2">
 						<div>
 							<ReactSVG
