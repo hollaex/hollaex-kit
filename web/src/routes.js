@@ -68,6 +68,7 @@ import {
 	CoinPage,
 	WhiteLabel,
 	FeesAndLimits,
+	ReferralList,
 } from './containers';
 import chat from './containers/Admin/Chat';
 import { Billing } from 'containers/Admin';
@@ -390,6 +391,7 @@ export const generateRoutes = (routes = []) => {
 					name="Fees and limits"
 					component={FeesAndLimits}
 				/>
+				<Route path="referral" name="referral" component={ReferralList} />
 				<Route path="prices" name="Digital Asset" component={DigitalAssets} />
 				<Route path="white-label" name="WhiteLabel" component={WhiteLabel} />
 				<Route path="verification" name="Verification" component={Account} />

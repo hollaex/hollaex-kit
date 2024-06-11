@@ -1443,7 +1443,8 @@
 		"BACK_TO_SUMMARY": "to Summary page",
 		"INSUFFICIENT_LABEL": "Insufficient Settlement Amount",
 		"INSUFFICIENT_INFO_1": "Your earnings are currently insufficient for settlement. Please invite more members using your referral link and wait until your unsettled earnings {0} {1}",
-		"INSUFFICIENT_INFO_2": "exceed 1"
+		"INSUFFICIENT_INFO_2": "exceed 1",
+		"GO_TO_REFERRAL": "Go To Referral"
 	},
 	"NOT_LOGGEDIN": {
 		"TEXT_GENERAL": "To view you must login",
