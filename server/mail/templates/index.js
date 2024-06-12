@@ -438,6 +438,7 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		type === MAILTYPE.P2P_MERCHANT_IN_PROGRESS ||
 		type === MAILTYPE.P2P_BUYER_PAID_ORDER	||
 		type === MAILTYPE.P2P_ORDER_EXPIRED	||
+		type === MAILTYPE.P2P_ORDER_CLOSED	||
 		type === MAILTYPE.P2P_BUYER_CANCELLED_ORDER	||
 		type === MAILTYPE.P2P_BUYER_APPEALED_ORDER	||
 		type === MAILTYPE.P2P_VENDOR_CONFIRMED_ORDER ||

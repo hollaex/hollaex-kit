@@ -136,6 +136,10 @@
 			"html": "<div><p> Эрхэм ${name} </p><p>Таны захиалга заасан хугацаанд үйл ажиллагаа байхгүй учир дууссан байна.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Таны захиалгад очих</Button></a></div><p>Манай платформыг ашигласанд баярлалаа.</p><p>Хүсэлт ирсэн IP: ${ip}</p><p>Хүндэтгэсэн<br> ${api_name} баг </p></div>",
 			"title": "Таны P2P захиалгад үйл ажиллагаа илэрсэн байна"
 		},
+		"P2P_ORDER_CLOSED": {
+			"html": "<div><p> Эрхэм ${name} </p><p>Таны захиалгыг манай дэмжлэгийн баг таны давж заалдах хүсэлтийн талаар шийдвэр гаргасны дараа хаасан байна<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Таны захиалгад очих</Button></a></div><p>Манай платформыг ашигласанд баярлалаа.</p><p>Хүндэтгэсэн<br> ${api_name} баг </p></div>",
+			"title": "Таны P2P захиалгад үйл ажиллагаа илэрсэн байна"
+		},
 		"P2P_BUYER_CANCELLED_ORDER": {
 			"html": "<div><p> Эрхэм ${name} </p><p>Та захиалгаа цуцалсан байна. Гүйлгээ хаагдсан байна.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Таны захиалгад очих</Button></a></div><p>Манай платформыг ашигласанд баярлалаа.</p><p>Хүсэлт ирсэн IP: ${ip}</p><p>Хүндэтгэсэн<br> ${api_name} баг </p></div>",
 			"title": "Таны P2P захиалгад үйл ажиллагаа илэрсэн байна"

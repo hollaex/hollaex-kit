@@ -136,6 +136,10 @@
             "html": "<div><p> Estimado ${name} </p><p>Su pedido ha expirado debido a la inactividad en el tiempo dado.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Ir a su pedido</Button></a></div><p>Gracias por usar nuestra plataforma.</p><p>Solicitud iniciada desde: ${ip}</p><p>Saludos<br> equipo ${api_name} </p></div>",
             "title": "Actividad detectada en su pedido P2P"
         },
+        "P2P_ORDER_CLOSED": {
+            "html": "<div><p> Estimado ${name} </p><p>Su pedido ha sido cerrado por nuestro equipo de soporte después de llegar a un veredicto sobre la solicitud de apelación<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Ir a su pedido</Button></a></div><p>Gracias por usar nuestra plataforma.</p><p>Saludos<br> equipo ${api_name} </p></div>",
+            "title": "Actividad detectada en su pedido P2P"
+        },
         "P2P_BUYER_CANCELLED_ORDER": {
             "html": "<div><p> Estimado ${name} </p><p>Ha cancelado su pedido. La transacción está cerrada.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Ir a su pedido</Button></a></div><p>Gracias por usar nuestra plataforma.</p><p>Solicitud iniciada desde: ${ip}</p><p>Saludos<br> equipo ${api_name} </p></div>",
             "title": "Actividad detectada en su pedido P2P"

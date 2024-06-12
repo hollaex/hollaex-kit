@@ -56,73 +56,81 @@ const P2P = ({
 		} else setDisplayOrder(false);
 	}, [window.location.pathname]);
 
-
 	const changeProfileTab = (merchant) => {
 		setSelectedProfile(merchant);
 		setTab('2');
-	}
+	};
 	return (
-			<div
-				style={{ height: 600, width: '100%', padding: 20, marginBottom: 400 }}
-				className="summary-container"
-			>
-				<div style={{ textAlign: 'center', fontSize: 19 }}>
-					<EditWrapper stringId="P2P.TITLE">{STRINGS['P2P.TITLE']}</EditWrapper>
-				</div>
-				<div style={{ textAlign: 'center', marginBottom: 15 }}>
-					<EditWrapper stringId="P2P.DESCRIPTION">
-						{STRINGS['P2P.DESCRIPTION']}
-					</EditWrapper>
-				</div>
-				{displayOrder && (
-					<P2POrder
-						setDisplayOrder={setDisplayOrder}
-						setSelectedTransaction={setSelectedTransaction}
-						selectedTransaction={selectedTransaction}
-					/>
-				)}
-				{!displayOrder && (
-					<Tabs
-						defaultActiveKey="0"
-						activeKey={tab}
-						onChange={(e) => {
-							if (e !== '3') {
-								setSelectedDealEdit();
-							}
+		<div
+			style={{ height: 600, width: '100%', padding: 20, marginBottom: 400 }}
+			className="summary-container"
+		>
+			<div style={{ textAlign: 'center', fontSize: 19 }}>
+				<EditWrapper stringId="P2P.TITLE">{STRINGS['P2P.TITLE']}</EditWrapper>
+			</div>
+			<div style={{ textAlign: 'center', marginBottom: 15 }}>
+				<EditWrapper stringId="P2P.DESCRIPTION">
+					{STRINGS['P2P.DESCRIPTION']}
+				</EditWrapper>
+			</div>
+			{displayOrder && (
+				<P2POrder
+					setDisplayOrder={setDisplayOrder}
+					setSelectedTransaction={setSelectedTransaction}
+					selectedTransaction={selectedTransaction}
+					changeProfileTab={changeProfileTab}
+				/>
+			)}
+			{!displayOrder && (
+				<Tabs
+					defaultActiveKey="0"
+					activeKey={tab}
+					onChange={(e) => {
+						if (e !== '3') {
+							setSelectedDealEdit();
+						}
 
-							if (e !== '2') {
-								setSelectedProfile();
-							}
-							setTab(e);
-						}}
-					>
-						<TabPane tab={STRINGS['P2P.TAB_P2P']} key="0">
-									<P2PDash
-										setDisplayOrder={setDisplayOrder}
-										refresh={refresh}
-										setSelectedTransaction={setSelectedTransaction}
-										changeProfileTab={changeProfileTab}
-									/>
-								</TabPane>
+						if (e !== '2') {
+							setSelectedProfile();
+						}
+						setTab(e);
+					}}
+				>
+					<TabPane tab={STRINGS['P2P.TAB_P2P']} key="0">
+						<P2PDash
+							setDisplayOrder={setDisplayOrder}
+							refresh={refresh}
+							setSelectedTransaction={setSelectedTransaction}
+							changeProfileTab={changeProfileTab}
+						/>
+					</TabPane>
 
-						{user?.id && user.verification_level >= p2p_config?.starting_user_tier && (
+					{user?.id &&
+						user.verification_level >= p2p_config?.starting_user_tier && (
 							<>
 								<TabPane tab={STRINGS['P2P.TAB_ORDERS']} key="1">
 									<P2POrders
 										setDisplayOrder={setDisplayOrder}
 										setSelectedTransaction={setSelectedTransaction}
 										refresh={refresh}
+										changeProfileTab={changeProfileTab}
 									/>
 								</TabPane>
 							</>
 						)}
 
-						{user?.id && user.verification_level >= p2p_config?.starting_merchant_tier && (
-							<>
-								<TabPane tab={STRINGS['P2P.TAB_PROFILE']} key="2">
-									<P2PProfile setSelectedProfile={setSelectedProfile} selectedProfile={selectedProfile} />
-								</TabPane>
+					{user?.id && (
+						<TabPane tab={STRINGS['P2P.TAB_PROFILE']} key="2">
+							<P2PProfile
+								setSelectedProfile={setSelectedProfile}
+								selectedProfile={selectedProfile}
+							/>
+						</TabPane>
+					)}
 
+					{user?.id &&
+						user.verification_level >= p2p_config?.starting_merchant_tier && (
+							<>
 								<TabPane tab={STRINGS['P2P.TAB_POST_DEAL']} key="3">
 									<P2PPostDeal
 										setTab={setTab}
@@ -142,9 +150,9 @@ const P2P = ({
 								</TabPane>
 							</>
 						)}
-					</Tabs>
-				)}
-			</div>
+				</Tabs>
+			)}
+		</div>
 	);
 };
 

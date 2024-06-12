@@ -6,7 +6,7 @@ import { ReactSVG } from 'react-svg';
 import { IconTitle, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { Button, Input, message, Modal, Rate } from 'antd';
+import { Button, Input, message, Modal, Rate, Tooltip } from 'antd';
 import moment from 'moment';
 import {
 	createChatMessage,
@@ -428,7 +428,13 @@ const P2POrder = ({
 									{STRINGS['P2P.SELECT_RATING']}
 								</EditWrapper>
 							</div>
-							<Rate onChange={setRating} value={rating} />
+							<Rate
+								defaultValue={1}
+								onChange={(e) => {
+									if (e > 0) setRating(e);
+								}}
+								value={rating}
+							/>
 						</div>
 					</div>
 
@@ -461,7 +467,7 @@ const P2POrder = ({
 						<Button
 							onClick={async () => {
 								try {
-									if (!rating) {
+									if (!rating || rating === 0) {
 										message.error(STRINGS['P2P.SELECT_RATING']);
 									}
 									if (!feedback) {
@@ -620,6 +626,11 @@ const P2POrder = ({
 									{STRINGS['P2P.CONFIRM_WARNING']}
 								</EditWrapper>
 							</h3>
+							<h4 className="stake_theme">
+								{userReceiveAmount()}{' '}
+								{selectedOrder?.deal?.buying_asset?.toUpperCase()} will be
+								released from your balance
+							</h4>
 						</div>
 					</div>
 
@@ -1259,21 +1270,30 @@ const P2POrder = ({
 												</EditWrapper>
 											</div>
 
-											<Button
-												disabled={selectedOrder.user_status !== 'confirmed'}
-												className="purpleButtonP2P"
-												onClick={async () => {
-													try {
-														setDisplayConfirmWarning(true);
-													} catch (error) {
-														message.error(error.data.message);
-													}
-												}}
+											<Tooltip
+												placement="rightBottom"
+												title={
+													selectedOrder.user_status !== 'confirmed'
+														? STRINGS['P2P.BUYER_NOT_MADE_THE_PAYMENT']
+														: ''
+												}
 											>
-												<EditWrapper stringId="P2P.CONFIRM_AND_RELEASE_CRYPTO">
-													{STRINGS['P2P.CONFIRM_AND_RELEASE_CRYPTO']}
-												</EditWrapper>
-											</Button>
+												<Button
+													disabled={selectedOrder.user_status !== 'confirmed'}
+													className="purpleButtonP2P"
+													onClick={async () => {
+														try {
+															setDisplayConfirmWarning(true);
+														} catch (error) {
+															message.error(error.data.message);
+														}
+													}}
+												>
+													<EditWrapper stringId="P2P.CONFIRM_AND_RELEASE_CRYPTO">
+														{STRINGS['P2P.CONFIRM_AND_RELEASE_CRYPTO']}
+													</EditWrapper>
+												</Button>
+											</Tooltip>
 										</span>
 									)}
 								{user.id === selectedOrder?.merchant_id &&
@@ -1342,7 +1362,7 @@ const P2POrder = ({
 									marginBottom: 20,
 									textAlign: 'center',
 								}}
-								className="greyTextP2P"
+								className="openGreyTextP2P"
 							>
 								{user.id === selectedOrder?.user_id && (
 									<div>
@@ -1410,7 +1430,7 @@ const P2POrder = ({
 															marginBottom: 10,
 															textAlign: 'center',
 														}}
-														className="greyTextP2P"
+														className="openGreyTextP2P"
 													>
 														{message.message === 'BUYER_PAID_ORDER' &&
 														user.id === selectedOrder.user_id ? (

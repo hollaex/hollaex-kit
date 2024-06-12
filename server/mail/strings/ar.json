@@ -136,6 +136,10 @@
             "html": "<div><p> عزيزي ${name} </p><p>انتهت صلاحية طلبك بسبب عدم النشاط في الوقت المحدد.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">انتقل إلى طلبك</Button></a></div><p>شكرًا لاستخدامك منصتنا.</p><p>تم تقديم الطلب من: ${ip}</p><p>تحياتنا<br> فريق ${api_name} </p></div>",
             "title": "تم اكتشاف نشاط في طلبك P2P"
         },
+        "P2P_ORDER_CLOSED": {
+            "html": "<div><p> عزيزي ${name} </p><p>تم إغلاق طلبك بواسطة فريق الدعم بعد الوصول إلى قرار بشأن طلب الاستئناف<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">انتقل إلى طلبك</Button></a></div><p>شكرًا لاستخدامك منصتنا.</p><p>مع تحيات<br> فريق ${api_name} </p></div>",
+            "title": "تم اكتشاف نشاط في طلبك P2P"
+        },
         "P2P_BUYER_CANCELLED_ORDER": {
             "html": "<div><p> عزيزي ${name} </p><p>لقد قمت بإلغاء طلبك. تم إغلاق الصفقة.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">انتقل إلى طلبك</Button></a></div><p>شكرًا لاستخدامك منصتنا.</p><p>تم تقديم الطلب من: ${ip}</p><p>تحياتنا<br> فريق ${api_name} </p></div>",
             "title": "تم اكتشاف نشاط في طلبك P2P"
