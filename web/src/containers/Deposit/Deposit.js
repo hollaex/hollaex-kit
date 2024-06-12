@@ -341,6 +341,21 @@ const DepositComponent = ({
 								isMobile ? 'select-wrapper mobile-view' : 'select-wrapper'
 							}
 						>
+							<div className="mb-3 d-flex">
+								{topAssets.map((data, inx) => {
+									return (
+										<span
+											key={inx}
+											className={`currency-label ${
+												selectedAsset === data ? 'opacity-100' : 'opacity-30'
+											}`}
+											onClick={() => onHandleChangeSelect(data, true)}
+										>
+											{renderPinnedAsset(data)}
+										</span>
+									);
+								})}
+							</div>
 							<div className="d-flex">
 								<Select
 									showSearch={true}
@@ -390,21 +405,6 @@ const DepositComponent = ({
 									)}
 								</Select>
 								{currStep.stepTwo && <CheckOutlined className="mt-3 ml-3" />}
-							</div>
-							<div className="mt-3 d-flex">
-								{topAssets.map((data, inx) => {
-									return (
-										<span
-											key={inx}
-											className={`currency-label ${
-												selectedAsset === data ? 'opacity-100' : 'opacity-30'
-											}`}
-											onClick={() => onHandleChangeSelect(data, true)}
-										>
-											{renderPinnedAsset(data)}
-										</span>
-									);
-								})}
 							</div>
 						</div>
 					</div>

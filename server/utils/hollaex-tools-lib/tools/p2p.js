@@ -832,16 +832,65 @@ const createP2pDispute = async (data) => {
 const updateP2pDispute = async (data) => {
 	const p2pDispute = await getModel('p2pDispute').findOne({ where: { id: data.id } });
 
-	if(!p2pDispute) {
-	throw new Error('no record found');
-	}
+	if (!p2pDispute) {
+		throw new Error('no record found');
+	};
 
-	return p2pDispute.update(data, {
+	const dispute = await p2pDispute.update(data, {
 		fields: [
 			'resolution',
 			'status'
 		]
 	});
+
+	if (data.status == false) {
+		const transaction = await getModel('p2pTransaction').findOne({ where: { id: dispute.transaction_id } });
+		transaction.update({
+			transaction_status: 'closed'
+		}, { fields: ['transaction_status']});
+	
+
+		const chatMessage = {
+			sender_id: transaction.user_id,
+			receiver_id: transaction.merchant_id,
+			message: 'ORDER_CLOSED',
+			type: 'notification',
+			created_at: new Date()
+		};
+	
+		const merchant = await getUserByKitId(transaction.merchant_id);
+		const user = await getUserByKitId(transaction.user_id);
+		
+		sendEmail(
+			MAILTYPE.P2P_ORDER_CLOSED,
+			user.email,
+			{
+				order_id: transaction.id,
+			},
+			user.settings
+		);
+
+		sendEmail(
+			MAILTYPE.P2P_ORDER_CLOSED,
+			merchant.email,
+			{
+				order_id: transaction.id,
+			},
+			merchant.settings
+		);
+
+		const newMessages = [...transaction.messages];
+		newMessages.push(chatMessage);
+		
+		transaction.update({ messages: newMessages }, {
+			fields: [
+				'messages'		
+			]
+		});
+
+	}
+
+	return dispute;
 };
 
 const createP2pChatMessage = async (data) => {
@@ -923,6 +972,10 @@ const createMerchantFeedback = async (data) => {
 		throw new Error ('undefined rating');
 	}
 	
+	if (data.rating < 1) {
+		throw new Error ('undefined rating');
+	}
+
 	data.merchant_id = transaction.merchant_id;
 	return getModel('P2pMerchantsFeedback').create(data, {
 		fields: [

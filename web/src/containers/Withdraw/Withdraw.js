@@ -632,6 +632,23 @@ const RenderWithdraw = ({
 						>
 							{currStep.stepTwo && (
 								<div>
+									<div className="mb-3 d-flex">
+										{topAssets.map((data, inx) => {
+											return (
+												<span
+													key={inx}
+													className={`currency-label ${
+														selectedAsset === data
+															? 'opacity-100'
+															: 'opacity-30'
+													}`}
+													onClick={() => onHandleChangeSelect(data, true)}
+												>
+													{renderPinnedAsset(data)}
+												</span>
+											);
+										})}
+									</div>
 									<div className="d-flex">
 										<Select
 											showSearch={true}
@@ -692,23 +709,6 @@ const RenderWithdraw = ({
 										) : (
 											<CloseOutlined className="mt-3 ml-3" />
 										)}
-									</div>
-									<div className="mt-3 d-flex">
-										{topAssets.map((data, inx) => {
-											return (
-												<span
-													key={inx}
-													className={`currency-label ${
-														selectedAsset === data
-															? 'opacity-100'
-															: 'opacity-30'
-													}`}
-													onClick={() => onHandleChangeSelect(data, true)}
-												>
-													{renderPinnedAsset(data)}
-												</span>
-											);
-										})}
 									</div>
 								</div>
 							)}

@@ -6,7 +6,7 @@ import { ReactSVG } from 'react-svg';
 import { IconTitle, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { Button, Input, message, Modal, Rate } from 'antd';
+import { Button, Input, message, Modal, Rate, Tooltip } from 'antd';
 import moment from 'moment';
 import {
 	createChatMessage,
@@ -325,7 +325,7 @@ const P2POrder = ({
 							flex: 1,
 							height: 35,
 						}}
-						className='purpleButtonP2P'
+						className="purpleButtonP2P"
 						type="default"
 					>
 						<EditWrapper stringId="P2P.CANCEL">
@@ -364,7 +364,7 @@ const P2POrder = ({
 							flex: 1,
 							height: 35,
 						}}
-						className='purpleButtonP2P'
+						className="purpleButtonP2P"
 						type="default"
 					>
 						<EditWrapper stringId="P2P.OKAY">{STRINGS['P2P.OKAY']}</EditWrapper>
@@ -428,7 +428,13 @@ const P2POrder = ({
 									{STRINGS['P2P.SELECT_RATING']}
 								</EditWrapper>
 							</div>
-							<Rate onChange={setRating} value={rating} />
+							<Rate
+								defaultValue={1}
+								onChange={(e) => {
+									if (e > 0) setRating(e);
+								}}
+								value={rating}
+							/>
 						</div>
 					</div>
 
@@ -451,7 +457,7 @@ const P2POrder = ({
 								flex: 1,
 								height: 35,
 							}}
-							className='purpleButtonP2P'
+							className="purpleButtonP2P"
 							type="default"
 						>
 							<EditWrapper stringId="P2P.CANCEL">
@@ -461,7 +467,7 @@ const P2POrder = ({
 						<Button
 							onClick={async () => {
 								try {
-									if (!rating) {
+									if (!rating || rating === 0) {
 										message.error(STRINGS['P2P.SELECT_RATING']);
 									}
 									if (!feedback) {
@@ -485,7 +491,7 @@ const P2POrder = ({
 								flex: 1,
 								height: 35,
 							}}
-							className='purpleButtonP2P'
+							className="purpleButtonP2P"
 							type="default"
 						>
 							<EditWrapper stringId="P2P.PROCEED">
@@ -551,7 +557,7 @@ const P2POrder = ({
 								flex: 1,
 								height: 35,
 							}}
-							className='purpleButtonP2P'
+							className="purpleButtonP2P"
 							type="default"
 						>
 							<EditWrapper stringId="P2P.NO">{STRINGS['P2P.NO']}</EditWrapper>
@@ -574,7 +580,7 @@ const P2POrder = ({
 								flex: 1,
 								height: 35,
 							}}
-							className='purpleButtonP2P'
+							className="purpleButtonP2P"
 							type="default"
 						>
 							<EditWrapper stringId="P2P.PROCEED">
@@ -620,6 +626,11 @@ const P2POrder = ({
 									{STRINGS['P2P.CONFIRM_WARNING']}
 								</EditWrapper>
 							</h3>
+							<h4 className="stake_theme">
+								{userReceiveAmount()}{' '}
+								{selectedOrder?.deal?.buying_asset?.toUpperCase()} will be
+								released from your balance
+							</h4>
 						</div>
 					</div>
 
@@ -640,7 +651,7 @@ const P2POrder = ({
 								flex: 1,
 								height: 35,
 							}}
-							className='purpleButtonP2P'
+							className="purpleButtonP2P"
 							type="default"
 						>
 							<EditWrapper stringId="P2P.NO">{STRINGS['P2P.NO']}</EditWrapper>
@@ -663,7 +674,7 @@ const P2POrder = ({
 								flex: 1,
 								height: 35,
 							}}
-							className='purpleButtonP2P'
+							className="purpleButtonP2P"
 							type="default"
 						>
 							<EditWrapper stringId="P2P.PROCEED">
@@ -673,7 +684,6 @@ const P2POrder = ({
 					</div>
 				</Modal>
 			)}
-
 
 			<div
 				onClick={() => {
@@ -711,16 +721,15 @@ const P2POrder = ({
 									</EditWrapper>
 								</div>
 								<div>
-									{user.id === selectedOrder.merchant_id ?
-									<EditWrapper stringId="P2P.SELL_COIN">
-									{STRINGS['P2P.SELL_COIN']}
-								</EditWrapper>
-									:
-									<EditWrapper stringId="P2P.BUY_COIN">
-									{STRINGS['P2P.BUY_COIN']}
-								</EditWrapper>
-									}
-									{' '}
+									{user.id === selectedOrder.merchant_id ? (
+										<EditWrapper stringId="P2P.SELL_COIN">
+											{STRINGS['P2P.SELL_COIN']}
+										</EditWrapper>
+									) : (
+										<EditWrapper stringId="P2P.BUY_COIN">
+											{STRINGS['P2P.BUY_COIN']}
+										</EditWrapper>
+									)}{' '}
 									{coin?.fullname?.toUpperCase()} ({coin?.symbol?.toUpperCase()}
 									)
 								</div>
@@ -772,7 +781,13 @@ const P2POrder = ({
 									</div>
 								)}
 								{user.id === selectedOrder?.user_id && (
-									<div style={{ textAlign: 'end' , fontWeight: 'bold', fontSize: 16 }}>
+									<div
+										style={{
+											textAlign: 'end',
+											fontWeight: 'bold',
+											fontSize: 16,
+										}}
+									>
 										{selectedOrder?.amount_fiat}{' '}
 										{selectedOrder?.deal?.spending_asset?.toUpperCase()}
 									</div>
@@ -845,7 +860,13 @@ const P2POrder = ({
 							</div>
 							{user.id === selectedOrder?.merchant_id && (
 								<div>
-									<div style={{ textAlign: 'end', fontWeight: 'bold', fontSize: 16 }}>
+									<div
+										style={{
+											textAlign: 'end',
+											fontWeight: 'bold',
+											fontSize: 16,
+										}}
+									>
 										{selectedOrder?.amount_fiat}{' '}
 										{selectedOrder?.deal?.spending_asset?.toUpperCase()}
 									</div>
@@ -935,7 +956,14 @@ const P2POrder = ({
 								</div>
 							)}
 
-							<div style={{ borderLeft: `4px solid ${user.id === selectedOrder.merchant_id ? 'red' : 'green'}`, padding: 15 }}>
+							<div
+								style={{
+									borderLeft: `4px solid ${
+										user.id === selectedOrder.merchant_id ? 'red' : 'green'
+									}`,
+									padding: 15,
+								}}
+							>
 								<div
 									style={{
 										display: 'flex',
@@ -950,7 +978,9 @@ const P2POrder = ({
 										</EditWrapper>
 										:
 									</div>
-									<div style={{ fontWeight: 'bold' }}>{selectedOrder?.payment_method_used?.system_name}</div>
+									<div style={{ fontWeight: 'bold' }}>
+										{selectedOrder?.payment_method_used?.system_name}
+									</div>
 								</div>
 
 								{selectedOrder?.payment_method_used?.fields?.map((x) => {
@@ -961,8 +991,8 @@ const P2POrder = ({
 												justifyContent: 'space-between',
 											}}
 										>
-											<div style={{ fontWeight: 'bold'}}>{x?.name}:</div>
-											<div style={{ fontWeight: 'bold'}}>{x?.value}</div>
+											<div style={{ fontWeight: 'bold' }}>{x?.name}:</div>
+											<div style={{ fontWeight: 'bold' }}>{x?.value}</div>
 										</div>
 									);
 								})}
@@ -1240,21 +1270,30 @@ const P2POrder = ({
 												</EditWrapper>
 											</div>
 
-											<Button
-												disabled={selectedOrder.user_status !== 'confirmed'}
-												className='purpleButtonP2P'
-												onClick={async () => {
-													try {
-														setDisplayConfirmWarning(true);
-													} catch (error) {
-														message.error(error.data.message);
-													}
-												}}
+											<Tooltip
+												placement="rightBottom"
+												title={
+													selectedOrder.user_status !== 'confirmed'
+														? STRINGS['P2P.BUYER_NOT_MADE_THE_PAYMENT']
+														: ''
+												}
 											>
-												<EditWrapper stringId="P2P.CONFIRM_AND_RELEASE_CRYPTO">
-													{STRINGS['P2P.CONFIRM_AND_RELEASE_CRYPTO']}
-												</EditWrapper>
-											</Button>
+												<Button
+													disabled={selectedOrder.user_status !== 'confirmed'}
+													className="purpleButtonP2P"
+													onClick={async () => {
+														try {
+															setDisplayConfirmWarning(true);
+														} catch (error) {
+															message.error(error.data.message);
+														}
+													}}
+												>
+													<EditWrapper stringId="P2P.CONFIRM_AND_RELEASE_CRYPTO">
+														{STRINGS['P2P.CONFIRM_AND_RELEASE_CRYPTO']}
+													</EditWrapper>
+												</Button>
+											</Tooltip>
 										</span>
 									)}
 								{user.id === selectedOrder?.merchant_id &&
@@ -1323,7 +1362,7 @@ const P2POrder = ({
 									marginBottom: 20,
 									textAlign: 'center',
 								}}
-								className='greyTextP2P'
+								className="openGreyTextP2P"
 							>
 								{user.id === selectedOrder?.user_id && (
 									<div>
@@ -1391,18 +1430,18 @@ const P2POrder = ({
 															marginBottom: 10,
 															textAlign: 'center',
 														}}
-														className='greyTextP2P'
+														className="openGreyTextP2P"
 													>
-														{message.message === 'BUYER_PAID_ORDER' && user.id === selectedOrder.user_id ?
-														<EditWrapper stringId={`P2P.BUYER_SENT_FUNDS`}>
-														{STRINGS[`P2P.BUYER_SENT_FUNDS`]}
-													</EditWrapper>
-														:
-														<EditWrapper stringId={`P2P.${message.message}`}>
-															{STRINGS[`P2P.${message.message}`]}
-														</EditWrapper>
-														}
-														{' '}
+														{message.message === 'BUYER_PAID_ORDER' &&
+														user.id === selectedOrder.user_id ? (
+															<EditWrapper stringId={`P2P.BUYER_SENT_FUNDS`}>
+																{STRINGS[`P2P.BUYER_SENT_FUNDS`]}
+															</EditWrapper>
+														) : (
+															<EditWrapper stringId={`P2P.${message.message}`}>
+																{STRINGS[`P2P.${message.message}`]}
+															</EditWrapper>
+														)}{' '}
 														(
 														{moment(message?.created_at || new Date()).format(
 															'DD/MMM/YYYY, hh:mmA'
@@ -1499,7 +1538,7 @@ const P2POrder = ({
 											position: 'relative',
 											top: 3,
 										}}
-										className='purpleTextP2P'
+										className="purpleTextP2P"
 										ref={buttonRef}
 										onClick={sendChatMessage}
 									>
@@ -1527,7 +1566,7 @@ const P2POrder = ({
 						}}
 					>
 						<Button
-							className='purpleButtonP2P'
+							className="purpleButtonP2P"
 							onClick={async () => {
 								try {
 									setDisplayCancelWarning(true);
@@ -1541,7 +1580,7 @@ const P2POrder = ({
 							</EditWrapper>
 						</Button>
 						<Button
-							className='purpleButtonP2P'
+							className="purpleButtonP2P"
 							onClick={async () => {
 								try {
 									await updateTransaction({

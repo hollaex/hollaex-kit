@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import { ReactSVG } from 'react-svg';
 import { Switch, message } from 'antd';
@@ -33,7 +33,7 @@ const P2PDash = ({
 	refresh,
 	setSelectedTransaction,
 	p2p_config,
-	changeProfileTab
+	changeProfileTab,
 }) => {
 	const [expandRow, setExpandRow] = useState(false);
 	const [selectedDeal, setSelectedDeal] = useState();
@@ -48,7 +48,7 @@ const P2PDash = ({
 	const [filterMethod, setFilterMethod] = useState();
 	const [methods, setMethods] = useState([]);
 	const [loading, setLoading] = useState(false);
-
+	const inputRef = useRef(null);
 	useEffect(() => {
 		fetchDeals({ status: true })
 			.then((res) => {
@@ -159,7 +159,7 @@ const P2PDash = ({
 						<Select
 							showSearch
 							style={{ width: 120 }}
-							placeholder="Select fiat"
+							placeholder={STRINGS['P2P.SELECT_FIAT']}
 							value={filterCoin}
 							onChange={(e) => {
 								setFilterCoin(e);
@@ -184,7 +184,7 @@ const P2PDash = ({
 							onChange={(e) => {
 								setFilterAmount(e.target.value);
 							}}
-							placeholder="Input spend amount"
+							placeholder={STRINGS['P2P.INPUT_FIAT_AMOUNT']}
 						/>
 					</span>
 				</div>
@@ -197,7 +197,7 @@ const P2PDash = ({
 						<Select
 							showSearch
 							style={{ width: 120 }}
-							placeholder="All payment methods"
+							placeholder={STRINGS['P2P.ALL_PAYMENT_METHODS']}
 							value={filterMethod}
 							onChange={(e) => {
 								setFilterMethod(e);
@@ -220,8 +220,8 @@ const P2PDash = ({
 					<span>
 						<Select
 							showSearch
-							style={{  width: 120 }}
-							placeholder="All Region"
+							style={{ width: 120 }}
+							placeholder={STRINGS['P2P.ALL_REGION']}
 							value={filterRegion}
 							onChange={(e) => {
 								setFilterRegion(e);
@@ -237,10 +237,7 @@ const P2PDash = ({
 					</span>
 				</div>
 			</div>
-			<div
-				className="stake_theme"
-				style={{ display: 'flex', marginTop: 20 }}
-			>
+			<div className="stake_theme" style={{ display: 'flex', marginTop: 20 }}>
 				<table
 					style={{ border: 'none', borderCollapse: 'collapse', width: '100%' }}
 				>
@@ -296,7 +293,11 @@ const P2PDash = ({
 								return (
 									<>
 										<tr
-											className= {(expandRow && expandRow && deal.id === selectedDeal.id) ? "subTable" : "table-row"}
+											className={
+												expandRow && expandRow && deal.id === selectedDeal.id
+													? 'subTable'
+													: 'table-row'
+											}
 											style={{
 												borderBottom: 'grey 1px solid',
 												padding: 10,
@@ -315,13 +316,18 @@ const P2PDash = ({
 												className="td-fit"
 											>
 												<span>+</span>{' '}
-												<span onClick={() => {
-													changeProfileTab(deal.merchant);
-												}}>{deal.merchant.full_name || (
-													<EditWrapper stringId="P2P.ANONYMOUS">
-														{STRINGS['P2P.ANONYMOUS']}
-													</EditWrapper>
-												)}</span>
+												<span
+													onClick={() => {
+														if (!user.id) return;
+														changeProfileTab(deal.merchant);
+													}}
+												>
+													{deal.merchant.full_name || (
+														<EditWrapper stringId="P2P.ANONYMOUS">
+															{STRINGS['P2P.ANONYMOUS']}
+														</EditWrapper>
+													)}
+												</span>
 											</td>
 											<td
 												style={{ width: '20%', padding: 10, cursor: 'pointer' }}
@@ -371,7 +377,7 @@ const P2PDash = ({
 													flexWrap: 'wrap',
 													display: 'flex',
 													padding: 10,
-													cursor: 'pointer'
+													cursor: 'pointer',
 												}}
 												onClick={() => {
 													setExpandRow(!expandRow);
@@ -463,6 +469,22 @@ const P2PDash = ({
 													style={{ minWidth: '15.5em', padding: 10 }}
 													className="td-fit"
 												>
+													<div
+														onClick={() => {
+															changeProfileTab(deal.merchant);
+														}}
+														style={{
+															position: 'relative',
+															bottom: 50,
+															cursor: 'pointer',
+														}}
+													>
+														(
+														<EditWrapper stringId="P2P.VIEW_PROFILE">
+															{STRINGS['P2P.VIEW_PROFILE']}
+														</EditWrapper>
+														)
+													</div>
 													<EditWrapper stringId="P2P.PAYMENT_TIME_LIMIT">
 														{STRINGS['P2P.PAYMENT_TIME_LIMIT']}
 													</EditWrapper>
@@ -592,6 +614,7 @@ const P2PDash = ({
 															<span>
 																<Input
 																	style={{ width: 100 }}
+																	className="greyButtonP2P"
 																	readOnly
 																	value={amountCurrency}
 																	placeholder={deal.buying_asset.toUpperCase()}
@@ -607,8 +630,7 @@ const P2PDash = ({
 															}}
 														>
 															<Button
-																
-																className='greyButtonP2P'
+																className="greyButtonP2P"
 																onClick={async () => {
 																	setExpandRow(false);
 																	setSelectedDeal(null);
@@ -622,8 +644,8 @@ const P2PDash = ({
 															</Button>
 
 															<Button
-																className='greenButtonP2P'
-																disabled={loading}
+																className="greenButtonP2P"
+																disabled={loading || !user?.id}
 																onClick={async () => {
 																	try {
 																		if (
