@@ -429,6 +429,37 @@ export const generateRoutes = (routes = []) => {
 				/>
 
 				<Route
+					path="p2p/orders"
+					name="P2P Orders"
+					component={P2P}
+					onEnter={requireAuth}
+				/>
+				<Route
+					path="p2p/deals"
+					name="P2P Deals"
+					component={P2P}
+					onEnter={requireAuth}
+				/>
+				<Route
+					path="p2p/mydeals"
+					name="P2P Deals"
+					component={P2P}
+					onEnter={requireAuth}
+				/>
+				<Route
+					path="p2p/profile"
+					name="P2P Deals"
+					component={P2P}
+					onEnter={requireAuth}
+				/>
+				<Route
+					path="p2p/post-deal"
+					name="P2P Deals"
+					component={P2P}
+					onEnter={requireAuth}
+				/>
+
+				<Route
 					path="wallet/:currency"
 					name="Wallet"
 					component={CurrencyWallet}
