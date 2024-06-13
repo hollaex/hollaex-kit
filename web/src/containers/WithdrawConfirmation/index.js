@@ -54,6 +54,7 @@ class ConfirmWithdrawal extends Component {
 		if (!confirm) {
 			const {
 				currency,
+				fee_coin,
 				amount,
 				address,
 				fee,
@@ -106,7 +107,7 @@ class ConfirmWithdrawal extends Component {
 								:{' '}
 								<span style={{ fontWeight: 'bold' }}>
 									{' '}
-									{fee} {currency?.toUpperCase()}
+									{fee} {(fee_coin || currency)?.toUpperCase()}
 								</span>{' '}
 							</div>
 							<hr style={{ borderBottom: '1px solid #ccc' }} />

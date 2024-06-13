@@ -44,16 +44,24 @@ const Form = ({
 	coins,
 	onramp = {},
 	fiat_fees,
+	getDepositCurrency,
 }) => {
 	const [activeTab, setActiveTab] = useState();
 	const [tabs, setTabs] = useState({});
 	const [activeStep, setActiveStep] = useState(STEPS.HOME);
 	const [initialValues, setInitialValues] = useState({});
 
+	const currentCurrency = getDepositCurrency ? getDepositCurrency : currency;
+
 	useEffect(() => {
 		setTabs(getTabs());
 		setInitialValues(
-			generateInitialValues(verification_level, coins, currency, fiat_fees)
+			generateInitialValues(
+				verification_level,
+				coins,
+				currentCurrency,
+				fiat_fees
+			)
 		);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -294,7 +302,9 @@ const Form = ({
 		);
 	};
 
-	const { icon_id } = coins[currency] || DEFAULT_COIN_DATA;
+	const { icon_id } = getDepositCurrency
+		? coins[getDepositCurrency]
+		: coins[currency] || DEFAULT_COIN_DATA;
 
 	return (
 		<div className="withdraw-form-wrapper">
@@ -322,6 +332,7 @@ const mapStateToProps = (store, ownProps) => ({
 	coins: store.app.coins,
 	onramp: store.app.onramp[ownProps.currency],
 	fiat_fees: store.app.constants.fiat_fees,
+	getDepositCurrency: store.app.depositFields.depositCurrency,
 });
 
 export default connect(mapStateToProps)(withRouter(withConfig(Form)));

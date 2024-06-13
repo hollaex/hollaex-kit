@@ -320,7 +320,7 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		html = html.replace(/\$\{fee\}/g, data.fee || '0');
 		html = html.replace(/\$\{address\}/g, data.address || '');
 		html = html.replace(/\$\{ip\}/g, data.ip || '');
-		html = html.replace(/\$\{link\}/g, data.confirmation_link || `${domain}/confirm-withdraw/${data.transaction_id}?currency=${data.currency}&amount=${data.amount}&address=${data.address}&fee=${data.fee}&network=${data.network}`);
+		html = html.replace(/\$\{link\}/g, data.confirmation_link || `${domain}/confirm-withdraw/${data.transaction_id}?currency=${data.currency}&amount=${data.amount}&address=${data.address}&fee=${data.fee}&fee_coin=${data.fee_coin}&network=${data.network}`);
 		if(data.network) {
 			html = html.replace(/\$\{network\}/g, data.network || '');
 		} else {
@@ -433,6 +433,22 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		html = html.replace(/\$\{ip\}/g, data.ip || '');
 		html = html.replace(/\$\{name\}/g, email || '');
 		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
+	}
+	else if (type === MAILTYPE.P2P_MERCHANT_IN_PROGRESS ||
+		type === MAILTYPE.P2P_MERCHANT_IN_PROGRESS ||
+		type === MAILTYPE.P2P_BUYER_PAID_ORDER	||
+		type === MAILTYPE.P2P_ORDER_EXPIRED	||
+		type === MAILTYPE.P2P_ORDER_CLOSED	||
+		type === MAILTYPE.P2P_BUYER_CANCELLED_ORDER	||
+		type === MAILTYPE.P2P_BUYER_APPEALED_ORDER	||
+		type === MAILTYPE.P2P_VENDOR_CONFIRMED_ORDER ||
+		type === MAILTYPE.P2P_VENDOR_CANCELLED_ORDER ||
+		type === MAILTYPE.P2P_VENDOR_APPEALED_ORDER
+	) {
+		html = html.replace(/\$\{name\}/g, email || '');
+		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
+		html = html.replace(/\$\{ip\}/g, data.ip || '');
+		html = html.replace(/\$\{link\}/g, `${domain}/p2p/order/${data.order_id}`);
 	}
 
 	return html;

@@ -42,7 +42,6 @@ class ConfigProvider extends Component {
 		const script = document.createElement('script');
 		script.src = `https://www.google.com/recaptcha/api.js?render=${DEFAULT_CAPTCHA_SITEKEY}`;
 		document.body.appendChild(script);
-		
 	}
 
 	UNSAFE_componentWillUpdate(_, nextState) {

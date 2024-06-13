@@ -26,9 +26,14 @@ module.exports = function (sequelize, DataTypes) {
 					key: 'id'
 				}
 			},
+			earning_rate: {
+				type: DataTypes.DOUBLE,
+				allowNull: true
+			},
 			code: {
 				type: DataTypes.STRING,
-				allowNull: true
+				allowNull: true,
+				unique: true
 			}
 		},
 		{

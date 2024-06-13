@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { browserHistory } from 'react-router';
 import classnames from 'classnames';
 import { CurrencyBallWithPrice, ActionNotification, Button } from 'components';
 
@@ -40,6 +41,12 @@ const DepositNotification = ({
 		onClose();
 		openContactForm();
 	};
+
+	const onHandleDeposit = () => {
+		onClose();
+		browserHistory.push('/transactions?tab=2');
+	};
+
 	return (
 		<div className="notification-content-wrapper">
 			<Header {...headerProps} />
@@ -68,8 +75,14 @@ const DepositNotification = ({
 			</div>
 			<div className="notification-buttons-wrapper d-flex">
 				<Button
+					label={STRINGS['SUMMARY.DEPOSIT']}
+					onClick={() => onHandleDeposit()}
+					className="w-50 mr-2"
+				/>
+				<Button
 					label={STRINGS['NOTIFICATIONS.BUTTONS.OKAY']}
 					onClick={onClose}
+					className="w-50"
 				/>
 			</div>
 		</div>

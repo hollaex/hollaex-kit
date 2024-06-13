@@ -86,30 +86,11 @@ const clearTokenInApp = (router, path = '/') => {
 export function verifyToken(token) {
 	return (dispatch) => {
 		dispatch({ type: 'VERIFY_TOKEN_PENDING' });
-		axios({
-			method: 'GET',
-			url: '/verify-token',
-			headers: {
-				Authorization: `Bearer ${token}`,
-			},
-		})
-			.then((response) => {
-				setTokenInApp(token);
-				dispatch({
-					type: 'VERIFY_TOKEN_FULFILLED',
-					payload: token,
-				});
-			})
-			.catch((error) => {
-				const message = error.response
-					? error.response.data.message
-					: 'Invalid token';
-				logout(message)(dispatch);
-				dispatch({
-					type: 'VERIFY_TOKEN_REJECTED',
-				});
-				clearTokenInApp(browserHistory, '/login');
-			});
+		setTokenInApp(token);
+		dispatch({
+			type: 'VERIFY_TOKEN_FULFILLED',
+			payload: token,
+		});
 	};
 }
 

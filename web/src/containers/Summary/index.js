@@ -40,6 +40,8 @@ class Summary extends Component {
 		selectedAccount: '',
 		currentTradingAccount: this.props.verification_level,
 		lastMonthVolume: 0,
+		displaySummary: true,
+		displayReferralList: false,
 	};
 
 	componentDidMount() {
@@ -58,6 +60,16 @@ class Summary extends Component {
 				pairs
 			);
 			this.setState({ lastMonthVolume });
+		}
+
+		if (this.state.displayReferralList) {
+			this.props.router.push('/referral');
+		}
+	}
+
+	componentDidUpdate() {
+		if (this.state.displayReferralList) {
+			this.props.router.push('/referral');
 		}
 	}
 
@@ -120,6 +132,14 @@ class Summary extends Component {
 		});
 	};
 
+	onDisplayReferralList = () => {
+		this.setState({ displayReferralList: true, displaySummary: false });
+	};
+
+	goBackReferral = () => {
+		this.setState({ displayReferralList: false, displaySummary: true });
+	};
+
 	onStakeToken = () => {
 		this.props.setNotification(NOTIFICATIONS.STAKE_TOKEN);
 	};
@@ -137,6 +157,7 @@ class Summary extends Component {
 			totalAsset,
 			router,
 			icons: ICONS,
+			referral_history_config,
 		} = this.props;
 		const {
 			selectedAccount,
@@ -169,10 +190,11 @@ class Summary extends Component {
 				STRINGS['SUMMARY.LEVEL_OF_ACCOUNT'],
 				verification_level
 			);
+
 		return (
 			<div>
 				<div className="summary-container">
-					{!isMobile && (
+					{!isMobile && !this.state.displayReferralList && (
 						<IconTitle
 							stringId="SUMMARY.TITLE"
 							text={`${STRINGS['SUMMARY.TITLE']}`}
@@ -181,7 +203,7 @@ class Summary extends Component {
 							iconId={`${STRINGS['SUMMARY.TITLE']}`}
 						/>
 					)}
-					{isMobile ? (
+					{isMobile && !this.state.displayReferralList && (
 						<MobileSummary
 							user={user}
 							pairs={pairs}
@@ -197,11 +219,14 @@ class Summary extends Component {
 							userAccountTitle={userAccountTitle}
 							affiliation={affiliation}
 							onInviteFriends={this.onInviteFriends}
+							onDisplayReferralList={this.onDisplayReferralList}
 							onUpgradeAccount={this.onUpgradeAccount}
 							onAccountTypeChange={this.onAccountTypeChange}
 							verification_level={verification_level}
+							referral_history_config={referral_history_config}
 						/>
-					) : (
+					)}
+					{this.state.displaySummary && !isMobile && (
 						<div>
 							<div id="summary-header-section"></div>
 							<div className="d-flex">
@@ -220,27 +245,31 @@ class Summary extends Component {
 											onUpgradeAccount={this.onUpgradeAccount}
 											onInviteFriends={this.onInviteFriends}
 											verification_level={verification_level}
+											referral_history_config={
+												this.props.referral_history_config
+											}
+											onDisplayReferralList={this.onDisplayReferralList}
 										/>
 									</SummaryBlock>
 								</div>
 								<div className="summary-section_1 requirement-wrapper d-flex">
 									{/* <SummaryBlock
-										title={STRINGS["SUMMARY.TASKS"]}
-										wrapperClassname="w-100"
-									>
-										<SummaryRequirements
-											coins={coins}
-											user={user}
-											lastMonthVolume={lastMonthVolume}
-											contentClassName="requirements-content"
-										/>
-									</SummaryBlock> */}
+												title={STRINGS["SUMMARY.TASKS"]}
+												wrapperClassname="w-100"
+											>
+												<SummaryRequirements
+													coins={coins}
+													user={user}
+													lastMonthVolume={lastMonthVolume}
+													contentClassName="requirements-content"
+												/>
+											</SummaryBlock> */}
 									{/* <div
-										className={classnames(
-											'assets-wrapper',
-											'asset_wrapper_width'
-										)}
-									> */}
+												className={classnames(
+													'assets-wrapper',
+													'asset_wrapper_width'
+												)}
+											> */}
 									<SummaryBlock
 										stringId="SUMMARY.ACCOUNT_ASSETS"
 										title={STRINGS['SUMMARY.ACCOUNT_ASSETS']}
@@ -279,18 +308,18 @@ class Summary extends Component {
 									/>
 								</SummaryBlock>
 								{/*<div className="trading-volume-wrapper">
-									<SummaryBlock
-										title={STRINGS["SUMMARY.TRADING_VOLUME"]}
-										// secondaryTitle={<span>
-										//     <span className="title-font">
-										//         {` ${formatAverage(formatBaseAmount(lastMonthVolume))}`}
-										//     </span>
-										//     {` ${fullname} ${STRINGS.formatString(STRINGS["SUMMARY.NOMINAL_TRADING_WITH_MONTH"], moment().subtract(1, "month").startOf("month").format('MMMM')).join('')}`}
-										// </span>
-										// }
-									>
-									</SummaryBlock>
-								</div>*/}
+											<SummaryBlock
+												title={STRINGS["SUMMARY.TRADING_VOLUME"]}
+												// secondaryTitle={<span>
+												//     <span className="title-font">
+												//         {` ${formatAverage(formatBaseAmount(lastMonthVolume))}`}
+												//     </span>
+												//     {` ${fullname} ${STRINGS.formatString(STRINGS["SUMMARY.NOMINAL_TRADING_WITH_MONTH"], moment().subtract(1, "month").startOf("month").format('MMMM')).join('')}`}
+												// </span>
+												// }
+											>
+											</SummaryBlock>
+										</div>*/}
 							</div>
 							<div className="w-100">
 								<SummaryBlock
@@ -336,6 +365,7 @@ const mapStateToProps = (state) => ({
 	constants: state.app.constants,
 	chartData: state.asset.chartData,
 	totalAsset: state.asset.totalAsset,
+	referral_history_config: state.app.constants.referral_history_config,
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -37,6 +37,9 @@ const { isEmail } = require('validator');
 const BigNumber = require('bignumber.js');
 
 const isValidAddress = (currency, address, network) => {
+	if (address.indexOf('://') > -1) {
+		return false;
+	}
 	if (network === 'eth' || network === 'ethereum') {
 		return WAValidator.validate(address, 'eth');
 	} else if (network === 'stellar' || network === 'xlm') {
@@ -346,7 +349,7 @@ const calculateWithdrawalMax = async (user_id, currency, selectedNetwork) => {
 
 			amount = new BigNumber(balance[`${currency}_available`]).minus(new BigNumber(fee)).toNumber();
 
-			if (coinMarkup?.fee_markup) {
+			if (coinMarkup?.fee_markup && selectedNetwork !== 'email') {
 				amount = new BigNumber(amount).minus(new BigNumber(coinMarkup.fee_markup)).toNumber();
 			}
 		}
@@ -411,7 +414,7 @@ const validateWithdrawal = async (user, address, amount, currency, network = nul
 
 	const balance = await getNodeLib().getUserBalance(user.network_id);
 
-	if (coinMarkup?.fee_markup && network !== 'fiat') {
+	if (coinMarkup?.fee_markup && network !== 'fiat' && network !== 'email') {
 		fee = math.number(math.add(math.bignumber(fee), math.bignumber(coinMarkup.fee_markup)));
 	}
 	

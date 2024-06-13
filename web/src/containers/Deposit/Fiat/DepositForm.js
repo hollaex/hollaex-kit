@@ -185,11 +185,11 @@ export const generateInitialValues = (
 	verification_level,
 	coins,
 	currency,
-	fiat_fees
+	fiat_fees,
+	getDepositCurrency
 ) => {
 	const initialValues = {};
-
-	let { rate } = getFiatDepositFee(currency);
+	let { rate } = getFiatDepositFee(currency, 0, '', getDepositCurrency);
 	rate = fiat_fees?.[currency]?.deposit_fee || rate;
 	initialValues.fee = rate;
 	return initialValues;
@@ -369,6 +369,7 @@ const mapStateToProps = (state, ownProps) => {
 		user: state.user,
 		onramp: depositOptionsSelector(state, ownProps),
 		fiat_fees: state.app.constants.fiat_fees,
+		getDepositCurrency: state.app.depositFields.depositCurrency,
 	};
 };
 

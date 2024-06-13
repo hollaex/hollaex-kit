@@ -276,6 +276,12 @@ $header-margin: 2rem;
 		.action_notification-svg {
 			padding-top: 7px;
 		}
+
+		.link {
+			border-right: 1px solid $colors-border;
+			padding-right: 0.5rem;
+			padding-left: 0.5rem;
+		}
 	}
 
 	border-top: $wrapper-border;

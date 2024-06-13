@@ -132,6 +132,16 @@ export const renderNeedHelpAction = (
 	/>
 );
 
+export const renderDeposit = (renderDeposit) => (
+	<ActionNotification
+		stringId="SUMMARY.DEPOSIT"
+		text={STRINGS['SUMMARY.DEPOSIT']}
+		status="information"
+		onClick={() => renderDeposit()}
+		className="render-deposit mt-1"
+	/>
+);
+
 export const renderInformation = (
 	symbol = BASE_CURRENCY,
 	balance,
@@ -216,7 +226,7 @@ export const renderTitleSection = (symbol, type, icon, coins, iconId) => {
 		<IconTitle
 			text={text}
 			stringId={stringId}
-			iconPath={coins[symbol].logo}
+			iconPath={coins[symbol]?.logo}
 			iconId={iconId}
 			textType="title"
 		/>
