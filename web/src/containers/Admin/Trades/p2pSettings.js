@@ -1579,6 +1579,23 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 													>
 														EDIT
 													</span>
+													<span
+														style={{
+															marginLeft: 10,
+															textDecoration: 'underline',
+															fontWeight: 'bold',
+															cursor: 'pointer',
+														}}
+														onClick={() => {
+															setSelectedPaymentMethods(
+																[...selectedPaymentMethods].filter(
+																	(a) => a.system_name !== x.system_name
+																)
+															);
+														}}
+													>
+														X
+													</span>
 												</div>
 											);
 										})}

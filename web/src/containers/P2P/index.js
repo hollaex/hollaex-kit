@@ -14,6 +14,7 @@ import P2PPostDeal from './P2PPostDeal';
 import P2PProfile from './P2PProfile';
 import P2POrder from './P2POrder';
 import { fetchTransactions } from './actions/p2pActions';
+import { withRouter } from 'react-router';
 const TabPane = Tabs.TabPane;
 
 const P2P = ({
@@ -26,6 +27,7 @@ const P2P = ({
 	transaction_limits,
 	tiers = {},
 	user,
+	router,
 	p2p_config,
 }) => {
 	const [displayOrder, setDisplayOrder] = useState(false);
@@ -49,11 +51,28 @@ const P2P = ({
 						setSelectedTransaction(res.data[0]);
 						setDisplayOrder(true);
 					} else {
+						router.push('/p2p');
 						message.error(STRINGS['P2P.TRANSACTION_NOT_FOUND']);
 					}
 				})
-				.catch((err) => err);
+				.catch((err) => {
+					router.push('/p2p');
+					return err;
+				});
 		} else setDisplayOrder(false);
+
+		if (arr?.[2] === 'orders') {
+			setTab('1');
+		}
+		if (arr?.[2] === 'profile') {
+			setTab('2');
+		}
+		if (arr?.[2] === 'post-deal') {
+			setTab('3');
+		}
+		if (arr?.[2] === 'mydeals') {
+			setTab('4');
+		}
 	}, [window.location.pathname]);
 
 	const changeProfileTab = (merchant) => {
@@ -65,14 +84,21 @@ const P2P = ({
 			style={{ height: 600, width: '100%', padding: 20, marginBottom: 400 }}
 			className="summary-container"
 		>
-			<div style={{ textAlign: 'center', fontSize: 19 }}>
-				<EditWrapper stringId="P2P.TITLE">{STRINGS['P2P.TITLE']}</EditWrapper>
-			</div>
-			<div style={{ textAlign: 'center', marginBottom: 15 }}>
-				<EditWrapper stringId="P2P.DESCRIPTION">
-					{STRINGS['P2P.DESCRIPTION']}
-				</EditWrapper>
-			</div>
+			{!displayOrder && (
+				<>
+					<div style={{ textAlign: 'center', fontSize: 19 }}>
+						<EditWrapper stringId="P2P.TITLE">
+							{STRINGS['P2P.TITLE']}
+						</EditWrapper>
+					</div>
+					<div style={{ textAlign: 'center', marginBottom: 15 }}>
+						<EditWrapper stringId="P2P.DESCRIPTION">
+							{STRINGS['P2P.DESCRIPTION']}
+						</EditWrapper>
+					</div>
+				</>
+			)}
+
 			{displayOrder && (
 				<P2POrder
 					setDisplayOrder={setDisplayOrder}
@@ -93,6 +119,19 @@ const P2P = ({
 						if (e !== '2') {
 							setSelectedProfile();
 						}
+
+						if (e === '0') {
+							router.push('/p2p');
+						} else if (e === '1') {
+							router.push('/p2p/orders');
+						} else if (e === '2') {
+							router.push('/p2p/profile');
+						} else if (e === '3') {
+							router.push('/p2p/post-deal');
+						} else if (e === '4') {
+							router.push('/p2p/mydeals');
+						}
+
 						setTab(e);
 					}}
 				>
@@ -165,4 +204,4 @@ const mapStateToProps = (state) => ({
 	p2p_config: state.app.constants.p2p_config,
 });
 
-export default connect(mapStateToProps)(withConfig(P2P));
+export default connect(mapStateToProps)(withRouter(withConfig(P2P)));
