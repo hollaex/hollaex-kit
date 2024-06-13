@@ -233,7 +233,7 @@ const P2POrders = ({
 												onClick={() => {
 													setDisplayOrder(true);
 													setSelectedTransaction(transaction);
-													router.push(`p2p/order/${transaction.id}`);
+													router.replace(`/p2p/order/${transaction.id}`);
 												}}
 												style={{
 													display: 'flex',
