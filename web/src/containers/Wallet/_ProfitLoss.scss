@@ -30,6 +30,30 @@
 	fill: rgba(255, 255, 255, 0.07);
 }
 
+.profit-loss-chart-wrapper {
+	background-color: var(--base_wallet-sidebar-and-popup);
+	padding: 2% 5% 5% 5%;
+	.profitNegative {
+		color: var(--trading_selling-related-elements);
+	}
+
+	.profitPositive {
+		color: var(--trading_buying-related-elements);
+	}
+
+	.profitNeutral {
+		color: '#ccc';
+	}
+
+	.caret-right-icon {
+		padding-bottom: 1%;
+	}
+
+	.view-more-wrapper {
+		color: var(--labels_important-active-labels-text-graphics);
+	}
+}
+
 .profitNegative {
 	color: var(--trading_selling-related-elements);
 }
@@ -121,5 +145,41 @@
 	}
 	.date-text {
 		color: var(--labels_important-active-labels-text-graphics);
+	}
+}
+
+.layout-mobile {
+	.wallet-assets_block {
+		.balance-history {
+			display: flex;
+			flex-direction: column-reverse;
+
+			.total-balance {
+				display: flex;
+				flex-direction: column;
+			}
+		}
+
+		.balance-history-date_select {
+			display: flex;
+			gap: 5px;
+			align-items: center;
+			margin-bottom: 2rem;
+		}
+	}
+
+	.profit-loss-link {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 1rem;
+
+		.profit-loss-tab-label {
+			cursor: pointer !important;
+			text-decoration: underline !important;
+			color: var(--specials_buttons-links-and-highlights);
+			font-size: 12px !important;
+		}
 	}
 }
