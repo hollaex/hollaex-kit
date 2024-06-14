@@ -1078,6 +1078,19 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 		setMerchantFee(p2p_config?.merchant_fee);
 		setUserFee(p2p_config?.user_fee);
 		setSourceAccount(p2p_config?.source_account);
+		if (p2p_config?.source_account) {
+			getAllUserData({ id: p2p_config?.source_account }).then((res) => {
+				let emailData = {};
+				res &&
+					res.forEach((item) => {
+						if (item.value === p2p_config?.source_account) {
+							emailData = item;
+						}
+					});
+				setSelectedEmailData(emailData);
+				setSourceAccount(Number(p2p_config?.source_account));
+			});
+		}
 		setP2pConfig(p2p_config);
 
 		let methods = [];
@@ -1125,6 +1138,8 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 					value: user.id,
 				}));
 				setEmailOptions(userData);
+
+				return userData;
 			}
 		} catch (error) {
 			console.log('error', error);
@@ -1249,7 +1264,9 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 					</div>
 					<div style={{ marginBottom: 10 }}>
 						Cryptocurrencies allowed for trading:{' '}
-						{p2pConfig?.digital_currencies?.join(', ')}
+						{p2pConfig?.digital_currencies
+							?.filter((x) => x === 'usdt')
+							?.join(', ')}
 					</div>
 					<div style={{ borderBottom: '1px solid grey', width: 600 }}></div>
 				</div>
@@ -1287,6 +1304,16 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 					</div>
 					<div style={{ marginBottom: 10 }}>
 						Buyer fee: {p2pConfig?.user_fee}%
+					</div>
+					<div style={{ borderBottom: '1px solid grey', width: 600 }}></div>
+				</div>
+
+				<div style={{ marginBottom: 10, marginTop: 10 }}>
+					<div style={{ fontSize: 20, marginBottom: 10, marginTop: 10 }}>
+						Fee Source Account:
+					</div>
+					<div style={{ marginBottom: 10 }}>
+						{selectedEmailData?.label || '-'}
 					</div>
 					<div style={{ borderBottom: '1px solid grey', width: 600 }}></div>
 				</div>
@@ -1865,6 +1892,33 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 									</div>
 								</div>
 							</div>
+
+							<div
+								style={{
+									width: '90%',
+									border: '1px solid white',
+									marginBottom: 20,
+									padding: 20,
+								}}
+							>
+								<div
+									style={{ display: 'flex', justifyContent: 'space-between' }}
+								>
+									<div>
+										<div>Fee Source Account: </div>
+										<div>{selectedEmailData.label}</div>
+									</div>
+									<div
+										onClick={() => {
+											setStep(0);
+										}}
+										style={{ cursor: 'pointer' }}
+									>
+										EDIT
+									</div>
+								</div>
+							</div>
+
 							{/* <div
 								style={{
 									width: '90%',

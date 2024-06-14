@@ -83,7 +83,7 @@ module.exports = {
                 allowNull: true,
             },
             transaction_status: {
-                type: Sequelize.ENUM('active', 'cancelled', 'complete', 'appealed', 'expired', 'closed'),
+                type: Sequelize.ENUM('active', 'cancelled', 'complete', 'appealed', 'expired'),
                 allowNull: false,
             },
             messages: {
