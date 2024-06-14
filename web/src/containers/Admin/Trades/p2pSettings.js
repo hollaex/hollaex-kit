@@ -1142,7 +1142,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 				return userData;
 			}
 		} catch (error) {
-			console.log('error', error);
+			return error;
 		}
 	};
 
