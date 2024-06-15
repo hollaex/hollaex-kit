@@ -238,7 +238,11 @@
 		"AVAILABLE_WITHDRAWAL": "Available for trading",
 		"ORDERS_PLURAL": "orders",
 		"ORDERS_SINGULAR": "order",
-		"HOLD_ORDERS": "You have {0} open {1}, resulting in a hold of {2} {3} placed on your {4} balance"
+		"HOLD_ORDERS": "You have {0} open {1}, resulting in a hold of {2} {3} placed on your {4} balance",
+		"MOBILE_WALLET_BALANCE_LABEL": "Balance/Est. USDT",
+		"MOBILE_WALLET_SHARE_LABEL": "%Share/Est. USDT",
+		"VIEW_MORE_WALLET_INFO": "VIEW MORE WALLET INFO",
+		"VIEW_WALLET_TRANSACTION_HISTORY": "VIEW WALLET TRANSACTION HISTORY"
 	},
 	"REQUEST_RESET_PASSWORD": {
 		"TITLE": "Account Recovery",
@@ -1121,6 +1125,7 @@
 	"CURRENCY_BALANCE_TEXT": "{0} Balance",
 	"WALLET_ALL_ASSETS": "All Assets",
 	"WALLET_HIDE_ZERO_BALANCE": "Hide zero balance",
+	"BALANCES": "Balances",
 	"WALLET_ESTIMATED_TOTAL_BALANCE": "Estimated Total Balance",
 	"WALLET_ASSETS_SEARCH_TXT": "Search",
 	"PAGINATOR_FORMAT": "{0} / {1}",
@@ -1689,7 +1694,12 @@
 		"VIEW_MORE": "View More {0}",
 		"SHOW_ASSET_BREAKDOWN": "Show Asset Breakdown",
 		"PL_SUMMARY": "P&L Summary",
-		"BALANCE_HISTORY": "Balance History"
+		"BALANCE_HISTORY": "Balance History",
+		"PERCENTAGE": "Percentage",
+		"WALLET_BALANCE_ESTIMATE": "Today's wallet balance estimate ",
+		"VIEW_BALANCE_HISTORY": "VIEW BALANCE HISTORY",
+		"VIEW_PERCENTAGE_SHARE": "VIEW PERCENTAGE SHARE",
+		"VIEW_WALLET_P&L": "VIEW WALLET P&L"
 	},
 	"ASSET_INFO": "Asset info",
 	"TAKER_FEES_APPLIED": "Taker fees are applied",
