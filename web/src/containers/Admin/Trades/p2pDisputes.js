@@ -33,22 +33,6 @@ const P2PDisputes = ({ coins }) => {
 
 	const columns = [
 		{
-			title: 'Defendant Id',
-			dataIndex: 'defendant_id',
-			key: 'defendant_id',
-			render: (user_id, data) => {
-				return (
-					<div className="d-flex">
-						<Button className="ant-btn green-btn ant-tooltip-open ant-btn-primary">
-							<Link to={`/admin/user?id=${data?.defendant_id}`}>
-								{data?.defendant_id}
-							</Link>
-						</Button>
-					</div>
-				);
-			},
-		},
-		{
 			title: 'Initiator Id',
 			dataIndex: 'initiator_id',
 			key: 'initiator_id',
@@ -65,7 +49,23 @@ const P2PDisputes = ({ coins }) => {
 			},
 		},
 		{
-			title: 'Reason',
+			title: 'Defendant Id',
+			dataIndex: 'defendant_id',
+			key: 'defendant_id',
+			render: (user_id, data) => {
+				return (
+					<div className="d-flex">
+						<Button className="ant-btn green-btn ant-tooltip-open ant-btn-primary">
+							<Link to={`/admin/user?id=${data?.defendant_id}`}>
+								{data?.defendant_id}
+							</Link>
+						</Button>
+					</div>
+				);
+			},
+		},
+		{
+			title: 'User’s Reason',
 			dataIndex: 'reason',
 			key: 'reason',
 			render: (user_id, data) => {

@@ -311,17 +311,13 @@ const P2PDash = ({
 													setExpandRow(!expandRow);
 													setSelectedDeal(deal);
 													setAmountCurrency();
+													setSelectedMethod();
 													setAmountFiat();
 												}}
 												className="td-fit"
 											>
 												<span>+</span>{' '}
-												<span
-													onClick={() => {
-														if (!user.id) return;
-														changeProfileTab(deal.merchant);
-													}}
-												>
+												<span>
 													{deal.merchant.full_name || (
 														<EditWrapper stringId="P2P.ANONYMOUS">
 															{STRINGS['P2P.ANONYMOUS']}
@@ -335,6 +331,7 @@ const P2PDash = ({
 													setExpandRow(!expandRow);
 													setSelectedDeal(deal);
 													setAmountCurrency();
+													setSelectedMethod();
 													setAmountFiat();
 												}}
 												className="td-fit"
@@ -353,6 +350,7 @@ const P2PDash = ({
 													setExpandRow(!expandRow);
 													setSelectedDeal(deal);
 													setAmountCurrency();
+													setSelectedMethod();
 													setAmountFiat();
 												}}
 											>
@@ -383,6 +381,7 @@ const P2PDash = ({
 													setExpandRow(!expandRow);
 													setSelectedDeal(deal);
 													setAmountCurrency();
+													setSelectedMethod();
 													setAmountFiat();
 												}}
 											>
@@ -475,7 +474,7 @@ const P2PDash = ({
 														}}
 														style={{
 															position: 'relative',
-															bottom: 50,
+															bottom: 40,
 															cursor: 'pointer',
 														}}
 													>
@@ -635,6 +634,7 @@ const P2PDash = ({
 																	setExpandRow(false);
 																	setSelectedDeal(null);
 																	setAmountCurrency();
+																	setSelectedMethod();
 																	setAmountFiat();
 																}}
 															>
