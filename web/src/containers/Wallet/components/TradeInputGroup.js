@@ -13,6 +13,7 @@ const TradeInputGroup = ({
 	icons: ICONS,
 	pairs,
 	tradeClassName,
+	text,
 }) => {
 	return (
 		<Dropdown
@@ -43,7 +44,7 @@ const TradeInputGroup = ({
 			<Space>
 				<ActionNotification
 					stringId="TRADE_TAB_TRADE"
-					text={STRINGS['TRADE_TAB_TRADE']}
+					text={text ? text : STRINGS['TRADE_TAB_TRADE']}
 					iconId="BLUE_TRADE_ICON"
 					iconPath={ICONS['BLUE_TRADE_ICON']}
 					className="csv-action"

@@ -1177,15 +1177,27 @@ const P2POrder = ({
 												</div>
 											</>
 										)}
-									{selectedOrder.user_status === 'appeal' && (
-										<>
-											<div style={{ marginTop: 15, marginBottom: 15 }}>
-												<EditWrapper stringId="P2P.USER_APPEALED">
-													{STRINGS['P2P.USER_APPEALED']}
-												</EditWrapper>
-											</div>
-										</>
-									)}
+									{user.id === selectedOrder.user_id &&
+										selectedOrder.user_status === 'appeal' && (
+											<>
+												<div style={{ marginTop: 15, marginBottom: 15 }}>
+													<EditWrapper stringId="P2P.USER_APPEALED">
+														{STRINGS['P2P.USER_APPEALED']}
+													</EditWrapper>
+												</div>
+											</>
+										)}
+
+									{user.id === selectedOrder.merchant_id &&
+										selectedOrder.user_status === 'appeal' && (
+											<>
+												<div style={{ marginTop: 15, marginBottom: 15 }}>
+													<EditWrapper stringId="P2P.BUYER_APPEALED_ORDER">
+														{STRINGS['P2P.BUYER_APPEALED_ORDER']}
+													</EditWrapper>
+												</div>
+											</>
+										)}
 								</>
 							)}
 
@@ -1299,8 +1311,8 @@ const P2POrder = ({
 								{user.id === selectedOrder?.merchant_id &&
 									selectedOrder?.merchant_status === 'appeal' && (
 										<div style={{ fontWeight: 'bold' }}>
-											<EditWrapper stringId="P2P.VENDOR_APPEALED">
-												{STRINGS['P2P.VENDOR_APPEALED']}
+											<EditWrapper stringId="P2P.USER_APPEALED">
+												{STRINGS['P2P.USER_APPEALED']}
 											</EditWrapper>
 										</div>
 									)}
@@ -1376,7 +1388,7 @@ const P2POrder = ({
 										)}{' '}
 										(
 										{moment(selectedOrder?.created_at).format(
-											'DD/MMM/YYYY, hh:mmA '
+											'DD/MMM/YYYY, hh:mmA'
 										)}
 										).
 									</div>
@@ -1386,6 +1398,31 @@ const P2POrder = ({
 									<div>
 										<EditWrapper stringId="P2P.CONFIRM_PAYMENT">
 											{STRINGS['P2P.CONFIRM_PAYMENT']}
+										</EditWrapper>
+									</div>
+								)}
+
+								{user.id === selectedOrder?.merchant_id && (
+									<div>
+										<EditWrapper stringId="P2P.ORDER_INITIATED_VENDOR">
+											{STRINGS['P2P.ORDER_INITIATED_VENDOR']}
+										</EditWrapper>{' '}
+										{selectedOrder?.buyer?.full_name || (
+											<EditWrapper stringId="P2P.ANONYMOUS">
+												{STRINGS['P2P.ANONYMOUS']}
+											</EditWrapper>
+										)}{' '}
+										(
+										{moment(selectedOrder?.created_at).format(
+											'DD/MMM/YYYY, hh:mmA'
+										)}
+										).
+									</div>
+								)}
+								{user.id === selectedOrder?.merchant_id && (
+									<div>
+										<EditWrapper stringId="P2P.CONFIRM_PAYMENT_VENDOR">
+											{STRINGS['P2P.CONFIRM_PAYMENT_VENDOR']}
 										</EditWrapper>
 									</div>
 								)}
