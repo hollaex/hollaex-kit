@@ -3,7 +3,14 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import classnames from 'classnames';
 import { isMobile } from 'react-device-detect';
-import { IconTitle, Accordion, MobileBarTabs, NotLoggedIn } from 'components';
+import {
+	IconTitle,
+	Accordion,
+	MobileBarTabs,
+	NotLoggedIn,
+	Button,
+	MobileBarBack,
+} from 'components';
 import { TransactionsHistory, Stake } from 'containers';
 import { changeSymbol } from 'actions/orderbookAction';
 import {
@@ -190,6 +197,7 @@ class Wallet extends Component {
 						goToWallet={this.goToWallet}
 						isZeroBalanceHidden={isZeroBalanceHidden}
 						handleBalanceHistory={this.handleBalanceHistory}
+						setActiveTab={this.setActiveTab}
 					/>
 				),
 				isOpen: true,
@@ -222,6 +230,9 @@ class Wallet extends Component {
 						coins={coins}
 						searchResult={this.getMobileSlider(coins, oraclePrices)}
 						router={this.props.router}
+						totalAssets={totalAssets}
+						loading={isFetching}
+						BASE_CURRENCY={BASE_CURRENCY}
 					/>
 				),
 			},
@@ -257,9 +268,16 @@ class Wallet extends Component {
 		this.setState({ showDustSection: false });
 	};
 
+	goBack = () => {
+		this.handleBalanceHistory(false);
+	};
+
 	render() {
 		const { sections, activeTab, mobileTabs, showDustSection } = this.state;
-		const { icons: ICONS } = this.props;
+		const { icons: ICONS, router, assets, isFetching, pairs } = this.props;
+
+		const isNotWalletHistory = router?.location?.pathname !== '/wallet/history';
+		const isWalletHistory = router?.location?.pathname === '/wallet/history';
 
 		if (mobileTabs.length === 0) {
 			return <div />;
@@ -268,11 +286,16 @@ class Wallet extends Component {
 			<div className="apply_rtl">
 				{isMobile ? (
 					<div>
-						<MobileBarTabs
-							tabs={mobileTabs}
-							activeTab={activeTab}
-							setActiveTab={this.setActiveTab}
-						/>
+						{isNotWalletHistory && (
+							<MobileBarTabs
+								tabs={mobileTabs}
+								activeTab={activeTab}
+								setActiveTab={this.setActiveTab}
+							/>
+						)}
+						{isWalletHistory && (
+							<MobileBarBack onBackClick={() => this.goBack()} />
+						)}
 						<div className="content-with-bar d-flex">
 							{mobileTabs[activeTab].content}
 						</div>
@@ -309,11 +332,31 @@ class Wallet extends Component {
 										) : (
 											<ProfitLossSection
 												handleBalanceHistory={this.handleBalanceHistory}
+												assets={assets}
+												loading={isFetching}
+												navigate={this.goToPage}
+												pairs={pairs}
 											/>
 										)}
 									</NotLoggedIn>
 								</>
 							)}
+						</div>
+					</div>
+				)}
+				{isMobile && router?.location?.pathname === '/wallet' && (
+					<div className="bottom-bar-button">
+						<div className="bottom-bar-deposit-button">
+							<Button
+								onClick={() => this.goToPage('/wallet/deposit')}
+								label={STRINGS['WALLET_BUTTON_BASE_DEPOSIT']}
+							/>
+						</div>
+						<div className="bottom-bar-withdraw-button">
+							<Button
+								onClick={() => this.goToPage('/wallet/withdraw')}
+								label={STRINGS['WALLET_BUTTON_BASE_WITHDRAW']}
+							/>
 						</div>
 					</div>
 				)}

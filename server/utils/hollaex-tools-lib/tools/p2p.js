@@ -291,6 +291,7 @@ const updateP2PDeal = async (data) => {
 		total_order_amount,
 		min_order_value,
 		max_order_value,
+		payment_method_used,
 		status,
     } = data;
         
@@ -390,6 +391,7 @@ const createP2PTransaction = async (data) => {
 		deal_id,
 		user_id,
 		amount_fiat,
+		payment_method_used,
 		ip
     } = data;
     
@@ -465,6 +467,11 @@ const createP2PTransaction = async (data) => {
 	}
 
 	//Check the payment method
+	const hasMethod = p2pDeal.payment_methods.find(method => method.system_name === payment_method_used.system_name);
+
+	if (!hasMethod) {
+		throw new Error('invalid payment method');
+	}
 
 	const coinConfiguration = getKitCoin(p2pDeal.buying_asset);
 	const { increment_unit } = coinConfiguration;
@@ -643,11 +650,11 @@ const updateP2pTransaction = async (data) => {
 		let initiator_id;
 		let defendant_id;
 		if (user_status === 'appeal') {
+			initiator_id = transaction.user_id;
+			defendant_id = transaction.merchant_id; 
+		} else {
 			initiator_id = transaction.merchant_id;
 			defendant_id = transaction.user_id;
-		} else {
-			initiator_id = transaction.user_id;
-			defendant_id = transaction.merchant_id;
 		}
 		await getNodeLib().unlockBalance(merchant.network_id, transaction.locked_asset_id);
 		await createP2pDispute({ 
@@ -845,7 +852,7 @@ const updateP2pDispute = async (data) => {
 
 	if (data.status == false) {
 		const transaction = await getModel('p2pTransaction').findOne({ where: { id: dispute.transaction_id } });
-		transaction.update({
+		await transaction.update({
 			transaction_status: 'closed'
 		}, { fields: ['transaction_status']});
 	
