@@ -238,7 +238,11 @@
 		"AVAILABLE_WITHDRAWAL": "Available for trading",
 		"ORDERS_PLURAL": "orders",
 		"ORDERS_SINGULAR": "order",
-		"HOLD_ORDERS": "You have {0} open {1}, resulting in a hold of {2} {3} placed on your {4} balance"
+		"HOLD_ORDERS": "You have {0} open {1}, resulting in a hold of {2} {3} placed on your {4} balance",
+		"MOBILE_WALLET_BALANCE_LABEL": "Balance/Est. USDT",
+		"MOBILE_WALLET_SHARE_LABEL": "%Share/Est. USDT",
+		"VIEW_MORE_WALLET_INFO": "VIEW MORE WALLET INFO",
+		"VIEW_WALLET_TRANSACTION_HISTORY": "VIEW WALLET TRANSACTION HISTORY"
 	},
 	"REQUEST_RESET_PASSWORD": {
 		"TITLE": "Account Recovery",
@@ -1121,6 +1125,7 @@
 	"CURRENCY_BALANCE_TEXT": "{0} Balance",
 	"WALLET_ALL_ASSETS": "All Assets",
 	"WALLET_HIDE_ZERO_BALANCE": "Hide zero balance",
+	"BALANCES": "Balances",
 	"WALLET_ESTIMATED_TOTAL_BALANCE": "Estimated Total Balance",
 	"WALLET_ASSETS_SEARCH_TXT": "Search",
 	"PAGINATOR_FORMAT": "{0} / {1}",
@@ -1443,7 +1448,8 @@
 		"BACK_TO_SUMMARY": "to Summary page",
 		"INSUFFICIENT_LABEL": "Insufficient Settlement Amount",
 		"INSUFFICIENT_INFO_1": "Your earnings are currently insufficient for settlement. Please invite more members using your referral link and wait until your unsettled earnings {0} {1}",
-		"INSUFFICIENT_INFO_2": "exceed 1"
+		"INSUFFICIENT_INFO_2": "exceed 1",
+		"GO_TO_REFERRAL": "Go To Referral"
 	},
 	"NOT_LOGGEDIN": {
 		"TEXT_GENERAL": "To view you must login",
@@ -1688,7 +1694,12 @@
 		"VIEW_MORE": "View More {0}",
 		"SHOW_ASSET_BREAKDOWN": "Show Asset Breakdown",
 		"PL_SUMMARY": "P&L Summary",
-		"BALANCE_HISTORY": "Balance History"
+		"BALANCE_HISTORY": "Balance History",
+		"PERCENTAGE": "Percentage",
+		"WALLET_BALANCE_ESTIMATE": "Today's wallet balance estimate ",
+		"VIEW_BALANCE_HISTORY": "VIEW BALANCE HISTORY",
+		"VIEW_PERCENTAGE_SHARE": "VIEW PERCENTAGE SHARE",
+		"VIEW_WALLET_P&L": "VIEW WALLET P&L"
 	},
 	"ASSET_INFO": "Asset info",
 	"TAKER_FEES_APPLIED": "Taker fees are applied",
@@ -1994,6 +2005,8 @@
 		"CHAT_WITH_USER": "CHAT WITH USER",
 		"VENDOR_NAME": "Vendor name:",
 		"USER_NAME": "User name:",
+		"ORDER_INITIATED_VENDOR": "Order has been initiated with",
+		"CONFIRM_PAYMENT_VENDOR": "Please communicate with the buyer to confirm this transaction.",
 		"ORDER_INITIATED": "You've initiated and created an order with",
 		"CONFIRM_PAYMENT": "Please communicate with the vendor to confirm your incoming payment.",
 		"YOU": "You",
@@ -2011,14 +2024,15 @@
 		"USER": "User",
 		"COMMENT": "Comment",
 		"RATING": "Rating",
-		"BUYER_PAID_ORDER": "Buyer has marked this order as paid. Waiting for vendor to check, confirm and release funds",
-		"BUYER_SENT_FUNDS": "You’ve signaled to the merchant that you’ve sent the funds. Please wait for a response from the vendor merchant",
-		"ORDER_EXPIRED": "This order expired due to inactivity in the given time",
-		"BUYER_CANCELLED_ORDER": "Buyer has cancelled this order, Transaction is closed",
-		"BUYER_APPEALED_ORDER": "Buyer has appealed this order, Please contact support to resolve the issue",
+		"BUYER_PAID_ORDER": "Buyer has marked this order as paid. Waiting for vendor to check, confirm and release funds.",
+		"BUYER_SENT_FUNDS": "You’ve signaled to the merchant that you’ve sent the funds. Please wait for a response from the vendor merchant.",
+		"ORDER_EXPIRED": "This order expired due to inactivity in the given time.",
+		"BUYER_CANCELLED_ORDER": "Buyer has cancelled this order, Transaction is closed.",
+		"BUYER_APPEALED_ORDER": "Buyer has appealed this order, Please contact support to resolve the issue.",
 		"VENDOR_CONFIRMED_ORDER": "Vendor confirmed the transaction and released the funds.",
-		"VENDOR_CANCELLED_ORDER": "Vendor has cancelled this order, Transaction is closed",
-		"VENDOR_APPEALED_ORDER": "Vendor has appealed this order, Please contact support to resolve the issue",
+		"ORDER_CLOSED": "The order has been closed after reaching a verdict on the appeal request.",
+		"VENDOR_CANCELLED_ORDER": "Vendor has cancelled this order, Transaction is closed.",
+		"VENDOR_APPEALED_ORDER": "Vendor has appealed this order, Please contact support to resolve the issue.",
 		"SET_TYPE_PRICE": "Set the type and price",
 		"SET_AMOUNT_PAYMENT_METHODS": "Set the total amount and payment methods",
 		"SET_TERMS_RESPONSE": "Set terms and an automated response",
@@ -2076,6 +2090,13 @@
 		"POSITIVE_FEEDBACK": "Positive Feedback",
 		"POSITIVE": "Positive",
 		"NEGATIVE": "Negative",
-		"NO_FEEDBACK": "No feedback found"
+		"NO_FEEDBACK": "No feedback found",
+		"INPUT_FIAT_AMOUNT": "Input fiat amount",
+		"SELECT_FIAT": "Select fiat",
+		"ALL_PAYMENT_METHODS": "All payment methods",
+		"ALL_REGION": "All Region",
+		"BUYER_NOT_MADE_THE_PAYMENT": "The buyer has not confirmed their payment yet.",
+		"PRICE_TO_ADVERTISE": "Price you’ll advertise to sell",
+		"VIEW_PROFILE": "View vendor's profile"
 	}
 }

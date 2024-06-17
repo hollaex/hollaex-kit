@@ -59,6 +59,7 @@ const MAILTYPE = {
 	P2P_MERCHANT_IN_PROGRESS: 'p2p_merchant_in_progress',
 	P2P_BUYER_PAID_ORDER: 'p2p_buyer_paid_order',
 	P2P_ORDER_EXPIRED: 'p2p_order_expired',
+	P2P_ORDER_CLOSED: 'p2p_order_closed',
 	P2P_BUYER_CANCELLED_ORDER: 'p2p_buyer_cancelled_order',
 	P2P_BUYER_APPEALED_ORDER: 'p2p_buyer_appealed_order',
 	P2P_VENDOR_CONFIRMED_ORDER: 'p2p_vendor_confirmed_order',

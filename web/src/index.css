@@ -1727,6 +1727,15 @@ table th {
   color: #34363a;
   animation: dotFlashing 3s infinite; }
 
+.layout-mobile .estimated-balance-wrapper .balance-wrapper {
+  color: var(--labels_important-active-labels-text-graphics); }
+  .layout-mobile .estimated-balance-wrapper .balance-wrapper .estimated-balance-label {
+    font-size: 16px;
+    font-weight: bold; }
+  .layout-mobile .estimated-balance-wrapper .balance-wrapper .estimated-balance-amount {
+    font-family: 'Raleway';
+    font-size: 4rem; }
+
 .layout-mobile .wallet-container .action_notification-wrapper .action_notification-text {
   font-size: 1.2rem !important;
   line-height: 1.2rem !important; }
@@ -1742,12 +1751,20 @@ table th {
 
 .layout-mobile .wallet-container .wallet-assets_block {
   padding: 6px; }
+  .layout-mobile .wallet-container .wallet-assets_block .profit-loss-preformance {
+    color: var(--labels_important-active-labels-text-graphics); }
+  .layout-mobile .wallet-container .wallet-assets_block .wallet-assets_block-table thead tr .mobile-balance-header {
+    text-align: end !important; }
   .layout-mobile .wallet-container .wallet-assets_block .wallet-assets_block-table thead tr th:nth-child(3) {
-    text-align: center; }
+    text-align: end; }
   .layout-mobile .wallet-container .wallet-assets_block .wallet-assets_block-table .td-wallet,
   .layout-mobile .wallet-container .wallet-assets_block .wallet-assets_block-table .td-amount,
   .layout-mobile .wallet-container .wallet-assets_block .wallet-assets_block-table .td-name {
     min-width: unset !important; }
+  .layout-mobile .wallet-container .wallet-assets_block .wallet-assets_block-table .td-amount .more-icon-wrapper svg {
+    width: 3rem;
+    height: 3rem;
+    fill: var(--labels_important-active-labels-text-graphics) !important; }
   .layout-mobile .wallet-container .wallet-assets_block .wallet-assets_block-table .td-wallet .deposit-withdrawal-wrapper {
     margin: 0 auto;
     width: 18rem; }
@@ -1763,7 +1780,41 @@ table th {
   .layout-mobile .wallet-container .wallet-assets_block .wallet-assets_block-table tfoot {
     font-size: 13px !important; }
   .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper {
-    flex-direction: column; }
+    flex-direction: column;
+    font-weight: bold;
+    color: var(--labels_important-active-labels-text-graphics); }
+    .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .edit-wrapper__container .tooltip_icon_wrapper div {
+      width: 100%; }
+    .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-label {
+      font-size: 14px; }
+    .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-icon {
+      padding: 1.5%;
+      border-radius: 20px;
+      align-items: center;
+      display: flex;
+      justify-content: center;
+      background-color: var(--specials_buttons-links-and-highlights); }
+    .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-field .edit-wrapper__container {
+      width: 100%; }
+      .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-field .edit-wrapper__container .field-children div div {
+        width: 6%; }
+      .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-field .edit-wrapper__container .field-children div input {
+        width: 100%; }
+      .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-field .edit-wrapper__container .field-content-outline:before, .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-field .edit-wrapper__container .field-content-outline:after {
+        height: unset !important; }
+      .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-field .edit-wrapper__container .field-children {
+        border: 1px solid var(--labels_secondary-inactive-label-text-graphics);
+        border-radius: 5px; }
+    .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-field .field-error-content {
+      display: none; }
+    .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-field .edit-wrapper__container div:nth-child(1) {
+      width: 100%; }
+    .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .hide-zero-balance-checkbox .ant-checkbox-inner {
+      background-color: var(--base_wallet-sidebar-and-popup); }
+    .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .hide-zero-balance-checkbox .ant-checkbox-inner:focus, .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .hide-zero-balance-checkbox .ant-checkbox-inner:focus-within {
+      border-color: var(--labels_important-active-labels-text-graphics) !important; }
+    .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .hide-zero-balance-field {
+      gap: 10px; }
 
 .layout-mobile .wallet-container .action-button-wrapper {
   padding: 5px 2px; }
@@ -1788,6 +1839,8 @@ table th {
   margin: 5rem 0rem !important; }
 
 @media screen and (max-width: 550px) {
+  .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .edit-wrapper__container .tooltip_icon_wrapper div {
+    width: 1.5rem; }
   .layout-mobile .button-container .holla-button {
     font-size: 10px !important; }
   .layout-mobile .currency-wallet-wrapper .wallet-content-wrapper {
@@ -1842,7 +1895,13 @@ table th {
   .dust-dialog-content .large-font {
     font-size: 4.5rem !important; }
 
-.wallet-container {
+.wallet-container .fill_secondary-color {
+  color: var(--labels_secondary-inactive-label-text-graphics); }
+
+.wallet-container .fill-active-color {
+  color: var(--labels_important-active-labels-text-graphics); }
+
+.wallet-container .header-wrapper {
   border-top: 1px solid var(--labels_important-active-labels-text-graphics); }
   .wallet-container .header-wrapper .image-Wrapper .action_notification-svg svg {
     width: 1.25rem;
@@ -1856,128 +1915,141 @@ table th {
     border-right: 1px solid var(--calculated_secondary-border);
     padding-right: 0.5rem;
     padding-left: 0.5rem; }
-  .wallet-container.no-border {
-    border: none !important; }
-  .wallet-container .ant-switch {
-    background-color: var(--base_background);
-    border: 2px solid var(--labels_secondary-inactive-label-text-graphics); }
-    .wallet-container .ant-switch .ant-switch-handle {
-      width: 15px !important;
-      height: 15px !important; }
-      .wallet-container .ant-switch .ant-switch-handle:before {
-        background-color: var(--labels_secondary-inactive-label-text-graphics); }
-  .wallet-container .ant-switch-checked {
-    background-color: var(--base_background);
-    border: 2px solid var(--labels_important-active-labels-text-graphics); }
-    .wallet-container .ant-switch-checked .ant-switch-handle {
-      left: calc(100% - 15px - 2px); }
-      .wallet-container .ant-switch-checked .ant-switch-handle:before {
-        background-color: var(--labels_important-active-labels-text-graphics); }
-  .wallet-container .wallet-header_block > * {
-    margin-bottom: 2rem; }
-  .wallet-container .wallet-header_block .wallet-header_block-currency_title {
-    font-size: 1.4rem;
-    position: relative; }
-  .wallet-container .wallet-header_block .with_price-block_amount-value {
-    font-size: 4.5rem;
-    line-height: 4.5rem; }
-  .wallet-container .paper-clip-icon .action_notification-svg {
-    background-color: var(--specials_buttons-links-and-highlights);
-    width: 1.2rem;
-    height: 1.2rem;
-    border-radius: 50%;
-    display: flex;
-    margin-left: 5px; }
-    .wallet-container .paper-clip-icon .action_notification-svg svg {
-      width: 0.8rem !important;
-      height: 0.8rem !important; }
-  .wallet-container .wallet-buttons_action {
-    margin: 2.5rem 0 3.75rem; }
-    .wallet-container .wallet-buttons_action > *:first-child {
-      flex: 2; }
-    .wallet-container .wallet-buttons_action > *:last-child {
-      flex: 1; }
-    .wallet-container .wallet-buttons_action .separator {
-      width: 1rem; }
-  .wallet-container .accordion_wrapper .accordion_section_content_text {
-    color: var(--labels_important-active-labels-text-graphics) !important; }
-    .wallet-container .accordion_wrapper .accordion_section_content_text:after {
-      border-left-color: var(--calculated_important-border) !important; }
-  .wallet-container .empty-wallet-assets_block {
-    padding: 20px !important; }
-  .wallet-container .wallet-assets_block {
-    background-color: var(--base_wallet-sidebar-and-popup);
-    padding: 0px 20px;
-    overflow-y: auto; }
-    .wallet-container .wallet-assets_block .donut-container {
-      width: 10rem !important;
-      min-width: 10rem !important; }
-    .wallet-container .wallet-assets_block .donut-container-empty {
-      width: 13rem !important;
-      min-width: 13rem !important; }
-    .wallet-container .wallet-assets_block .td-wallet {
-      min-width: 225px; }
-      .wallet-container .wallet-assets_block .td-wallet .deposit-withdrawal-wrapper {
-        margin-left: -3rem;
-        width: 14rem; }
-    .wallet-container .wallet-assets_block .wallet-assets_block-table {
-      width: 100%;
-      font-size: 1rem;
-      margin-bottom: 3rem; }
-      .wallet-container .wallet-assets_block .wallet-assets_block-table thead tr,
-      .wallet-container .wallet-assets_block .wallet-assets_block-table tfoot tr {
-        height: 3.5rem;
-        vertical-align: bottom; }
-      .wallet-container .wallet-assets_block .wallet-assets_block-table tfoot {
-        font-size: 1.1rem; }
-        .wallet-container .wallet-assets_block .wallet-assets_block-table tfoot td {
-          white-space: nowrap; }
-      .wallet-container .wallet-assets_block .wallet-assets_block-table .table-row {
-        height: 2.5rem; }
-      .wallet-container .wallet-assets_block .wallet-assets_block-table .table-bottom-border td,
-      .wallet-container .wallet-assets_block .wallet-assets_block-table th {
-        position: relative; }
-        .wallet-container .wallet-assets_block .wallet-assets_block-table .table-bottom-border td:not(:first-child),
-        .wallet-container .wallet-assets_block .wallet-assets_block-table th:not(:first-child) {
-          border-bottom: 1px solid var(--calculated_important-border);
-          padding: 1rem 0.25rem; }
-      .wallet-container .wallet-assets_block .wallet-assets_block-table .td-fit {
-        width: 1%;
+
+.wallet-container.no-border {
+  border: none !important; }
+
+.wallet-container .ant-switch {
+  background-color: var(--base_background);
+  border: 2px solid var(--labels_secondary-inactive-label-text-graphics); }
+  .wallet-container .ant-switch .ant-switch-handle {
+    width: 15px !important;
+    height: 15px !important; }
+    .wallet-container .ant-switch .ant-switch-handle:before {
+      background-color: var(--labels_secondary-inactive-label-text-graphics); }
+
+.wallet-container .ant-switch-checked {
+  background-color: var(--base_background);
+  border: 2px solid var(--labels_important-active-labels-text-graphics); }
+  .wallet-container .ant-switch-checked .ant-switch-handle {
+    left: calc(100% - 15px - 2px); }
+    .wallet-container .ant-switch-checked .ant-switch-handle:before {
+      background-color: var(--labels_important-active-labels-text-graphics); }
+
+.wallet-container .wallet-header_block > * {
+  margin-bottom: 2rem; }
+
+.wallet-container .wallet-header_block .wallet-header_block-currency_title {
+  font-size: 1.4rem;
+  position: relative; }
+
+.wallet-container .wallet-header_block .with_price-block_amount-value {
+  font-size: 4.5rem;
+  line-height: 4.5rem; }
+
+.wallet-container .paper-clip-icon .action_notification-svg {
+  background-color: var(--specials_buttons-links-and-highlights);
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 50%;
+  display: flex;
+  margin-left: 5px; }
+  .wallet-container .paper-clip-icon .action_notification-svg svg {
+    width: 0.8rem !important;
+    height: 0.8rem !important; }
+
+.wallet-container .wallet-buttons_action {
+  margin: 2.5rem 0 3.75rem; }
+  .wallet-container .wallet-buttons_action > *:first-child {
+    flex: 2; }
+  .wallet-container .wallet-buttons_action > *:last-child {
+    flex: 1; }
+  .wallet-container .wallet-buttons_action .separator {
+    width: 1rem; }
+
+.wallet-container .accordion_wrapper .accordion_section_content_text {
+  color: var(--labels_important-active-labels-text-graphics) !important; }
+  .wallet-container .accordion_wrapper .accordion_section_content_text:after {
+    border-left-color: var(--calculated_important-border) !important; }
+
+.wallet-container .empty-wallet-assets_block {
+  padding: 20px !important; }
+
+.wallet-container .wallet-assets_block {
+  background-color: var(--base_wallet-sidebar-and-popup);
+  padding: 0px 20px;
+  overflow-y: auto; }
+  .wallet-container .wallet-assets_block .donut-container {
+    width: 10rem !important;
+    min-width: 10rem !important; }
+  .wallet-container .wallet-assets_block .donut-container-empty {
+    width: 13rem !important;
+    min-width: 13rem !important; }
+  .wallet-container .wallet-assets_block .td-wallet {
+    min-width: 225px; }
+    .wallet-container .wallet-assets_block .td-wallet .deposit-withdrawal-wrapper {
+      margin-left: -3rem;
+      width: 14rem; }
+  .wallet-container .wallet-assets_block .wallet-assets_block-table {
+    width: 100%;
+    font-size: 1rem;
+    margin-bottom: 3rem; }
+    .wallet-container .wallet-assets_block .wallet-assets_block-table thead tr,
+    .wallet-container .wallet-assets_block .wallet-assets_block-table tfoot tr {
+      height: 3.5rem;
+      vertical-align: bottom; }
+    .wallet-container .wallet-assets_block .wallet-assets_block-table tfoot {
+      font-size: 1.1rem; }
+      .wallet-container .wallet-assets_block .wallet-assets_block-table tfoot td {
         white-space: nowrap; }
-      .wallet-container .wallet-assets_block .wallet-assets_block-table .td-name {
-        min-width: 200px !important; }
-      .wallet-container .wallet-assets_block .wallet-assets_block-table .table-icon > div {
-        vertical-align: middle;
-        margin: auto; }
-      .wallet-container .wallet-assets_block .wallet-assets_block-table .td-amount {
-        min-width: 150px !important;
-        direction: ltr; }
-    .wallet-container .wallet-assets_block .search-field {
-      background-color: var(--base_wallet-sidebar-and-popup); }
-    .wallet-container .wallet-assets_block .loading-anime {
-      width: 100px;
-      height: 20px;
-      border-radius: 7px;
-      animation: mymove 3s infinite; }
-    .wallet-container .wallet-assets_block .loading-row-anime {
-      height: 20px;
-      border-radius: 7px;
-      animation: mymove 3s infinite; }
-    .wallet-container .wallet-assets_block .loading-row-anime.w-half {
-      width: 100px; }
-    .wallet-container .wallet-assets_block .loading-row-anime.w-full {
-      width: 200px; }
-    .wallet-container .wallet-assets_block .wallet-graphic-icon {
-      opacity: 0.1; }
-  .wallet-container .accordion_wrapper .action_notification-wrapper {
-    position: relative; }
-  .wallet-container .action-button-wrapper {
-    border: 1px solid var(--specials_buttons-links-and-highlights);
-    padding: 5px 12px; }
-    .wallet-container .action-button-wrapper:hover {
-      background-color: var(--specials_buttons-links-and-highlights); }
-      .wallet-container .action-button-wrapper:hover .notification-info {
-        color: white !important; }
+    .wallet-container .wallet-assets_block .wallet-assets_block-table .table-row {
+      height: 2.5rem; }
+    .wallet-container .wallet-assets_block .wallet-assets_block-table .table-bottom-border td,
+    .wallet-container .wallet-assets_block .wallet-assets_block-table th {
+      position: relative; }
+      .wallet-container .wallet-assets_block .wallet-assets_block-table .table-bottom-border td:not(:first-child),
+      .wallet-container .wallet-assets_block .wallet-assets_block-table th:not(:first-child) {
+        border-bottom: 1px solid var(--calculated_important-border);
+        padding: 1rem 0.25rem; }
+    .wallet-container .wallet-assets_block .wallet-assets_block-table .td-fit {
+      width: 1%;
+      white-space: nowrap; }
+    .wallet-container .wallet-assets_block .wallet-assets_block-table .td-name {
+      min-width: 200px !important; }
+    .wallet-container .wallet-assets_block .wallet-assets_block-table .table-icon > div {
+      vertical-align: middle;
+      margin: auto; }
+    .wallet-container .wallet-assets_block .wallet-assets_block-table .td-amount {
+      min-width: 150px !important;
+      direction: ltr; }
+  .wallet-container .wallet-assets_block .search-field {
+    background-color: var(--base_wallet-sidebar-and-popup); }
+  .wallet-container .wallet-assets_block .loading-anime {
+    width: 100px;
+    height: 20px;
+    border-radius: 7px;
+    animation: mymove 3s infinite; }
+  .wallet-container .wallet-assets_block .loading-row-anime {
+    height: 20px;
+    border-radius: 7px;
+    animation: mymove 3s infinite; }
+  .wallet-container .wallet-assets_block .loading-row-anime.w-half {
+    width: 100px; }
+  .wallet-container .wallet-assets_block .loading-row-anime.w-full {
+    width: 200px; }
+  .wallet-container .wallet-assets_block .wallet-graphic-icon {
+    opacity: 0.1; }
+
+.wallet-container .accordion_wrapper .action_notification-wrapper {
+  position: relative; }
+
+.wallet-container .action-button-wrapper {
+  border: 1px solid var(--specials_buttons-links-and-highlights);
+  padding: 5px 12px; }
+  .wallet-container .action-button-wrapper:hover {
+    background-color: var(--specials_buttons-links-and-highlights); }
+    .wallet-container .action-button-wrapper:hover .notification-info {
+      color: white !important; }
 
 .show-equals:after {
   content: '=';
@@ -2135,6 +2207,22 @@ table th {
       .currency-wallet-wrapper .wallet-content-wrapper .donut-wrapper .animation-wrapper {
         display: flex;
         justify-content: center; }
+
+.layout-mobile .bottom-bar-button {
+  padding: 3%;
+  display: flex;
+  justify-content: space-around; }
+  .layout-mobile .bottom-bar-button .bottom-bar-deposit-button,
+  .layout-mobile .bottom-bar-button .bottom-bar-withdraw-button {
+    width: 45%; }
+    .layout-mobile .bottom-bar-button .bottom-bar-deposit-button button,
+    .layout-mobile .bottom-bar-button .bottom-bar-withdraw-button button {
+      border-radius: 5px; }
+  .layout-mobile .bottom-bar-button .bottom-bar-withdraw-button button {
+    color: var(--labels_important-active-labels-text-graphics);
+    background-color: var(--base_wallet-sidebar-and-popup) !important;
+    border-radius: 5px;
+    border-color: var(--labels_important-active-labels-text-graphics) !important; }
 
 .review-wrapper .review-icon {
   width: 8rem;
@@ -2349,9 +2437,11 @@ table th {
       padding: 0.5%;
       border-radius: 5px;
       margin-right: 10px;
-      width: 4rem;
+      width: 5rem;
       text-align: center;
       cursor: pointer; }
+      .withdrawal-container .withdraw-form-wrapper .withdraw-form .currency-label .pinned-asset-icon {
+        padding-top: 3%; }
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .render-scan-wrapper {
       color: var(--specials_buttons-links-and-highlights);
       cursor: pointer; }
@@ -2367,6 +2457,8 @@ table th {
           height: 1rem; }
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .destination-field {
       height: 60px; }
+    .withdrawal-container .withdraw-form-wrapper .withdraw-form .destination-field-mobile {
+      height: 6rem; }
   .withdrawal-container .withdraw-form-wrapper .bottom-content {
     margin-top: 3%; }
     .withdrawal-container .withdraw-form-wrapper .bottom-content .fee-fields {
@@ -2500,67 +2592,83 @@ table th {
 .layout-mobile .review_email-wrapper {
   margin: 0px auto !important; }
 
-.layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form {
-  padding: 5%; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .destination-field {
-    height: 75px; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .field-wrapper .field-label-wrapper {
-    flex-direction: column; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdraw-main-label-selected {
-    font-size: 14px; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdraw-deposit-content {
-    padding: 0 1%; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-line-selected-large {
-    height: 13rem;
-    border: 1px solid var(--labels_important-active-labels-text-graphics); }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line-selected {
-    height: 100%; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line {
-    height: 12rem; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .mobile-view {
-    margin-top: 5%; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .ant-select-clear svg {
-    font-size: 18px; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .select-wrapper {
-    width: 100%;
-    margin-left: 5%; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .bottom-content {
-    font-size: 14px;
-    margin-top: 3%; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdraw-main-label-selected,
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdraw-main-label,
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .warning-text {
-    font-size: 14px; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .currency-label {
-    width: 15%;
-    font-size: 14px; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .render-scan-wrapper .suffix-text {
-    font-size: 12px; }
+.layout-mobile .withdrawal-container {
+  padding-top: 0px !important; }
+  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form {
+    margin: 0 0 30px;
+    padding: 5%; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .destination-field {
+      height: 75px; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .destination-field-mobile {
+      height: 11rem; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .field-wrapper .field-label-wrapper {
+      flex-direction: column; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdraw-main-label-selected {
+      font-size: 14px; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdraw-deposit-content {
+      padding: 0 1%; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-line-selected-large {
+      height: 13rem;
+      border: 1px solid var(--labels_important-active-labels-text-graphics); }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line-selected {
+      height: 100%; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line {
+      height: 13rem; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line-network-selected {
+      height: 15rem; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line-selected-mobile {
+      height: 9rem; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .mobile-view {
+      margin-top: 5%; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .ant-select-clear svg {
+      font-size: 18px; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .select-wrapper {
+      width: 100%;
+      margin-left: 5%; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .bottom-content {
+      font-size: 14px;
+      margin-top: 3%; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdraw-main-label-selected,
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdraw-main-label,
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .warning-text {
+      font-size: 14px; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .currency-label {
+      width: 15%;
+      font-size: 14px; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .render-scan-wrapper .suffix-text {
+      font-size: 12px; }
 
 @media screen and (max-width: 550px) {
+  .layout-mobile .presentation_container .inner_container .withdraw-icon {
+    margin-top: 0px !important; }
   .layout-mobile .presentation_container .inner_container .information_block .information_block-text_wrapper .title {
     font-size: 14px !important; }
   .layout-mobile .presentation_container .inner_container .information_block .information_block-text_wrapper .text {
     font-size: 12px !important; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .select-wrapper {
-    margin-left: 7%; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .ant-select-clear svg {
-    font-size: 12px; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-select-input-style .ant-select-selector {
-    font-size: 1.5rem !important; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-select-input-style .ant-select-selection-item {
-    margin-top: 4%;
-    line-height: unset !important; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .currency-label {
-    font-size: 12px; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .mobile-view {
-    margin-top: 3%; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .amount-field-icon {
-    margin-top: 2%; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .warning-text {
-    font-size: 10px; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-line-selected-large {
-    height: 16rem; } }
+  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form {
+    margin: 0 0 20px; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .select-wrapper {
+      margin-left: 7%; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .ant-select-clear svg {
+      font-size: 12px; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-step-selected,
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-step {
+      padding: 33% 70% 10%; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-select-input-style .ant-select-selector {
+      font-size: 1.5rem !important; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-select-input-style .ant-select-selection-item {
+      margin-top: 4%;
+      line-height: unset !important; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .currency-label {
+      font-size: 12px; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .mobile-view {
+      margin-top: 3%; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .amount-field-icon {
+      margin-top: 2%; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .warning-text {
+      font-size: 10px; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-line-selected-large {
+      height: 17rem; } }
 
 @media screen and (max-width: 390px) {
   .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-line-selected-large {
@@ -2748,7 +2856,7 @@ table th {
   margin: 1% 3%; }
 
 .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .deposit-wrapper-fields .custom-field .custom-line-large {
-  height: 10rem;
+  height: 11rem;
   border: 1px solid var(--labels_important-active-labels-text-graphics);
   margin: 0 100%; }
 
@@ -2768,7 +2876,7 @@ table th {
 
 @media screen and (max-width: 550px) {
   .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .deposit-wrapper-fields .custom-field .custom-line-large {
-    height: 16rem; } }
+    height: 17rem; } }
 
 @media screen and (max-width: 450px) {
   .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .deposit-wrapper-fields .btn-wrapper-deposit .holla-button {
@@ -6737,262 +6845,243 @@ table th {
   stroke: var(--labels_important-active-labels-text-graphics);
   fill: var(--labels_important-active-labels-text-graphics); }
 
-.fs-13 {
-  font-size: 13px; }
-
-.fs-14 {
-  font-size: 14px; }
-
-.referral-active-text {
-  color: var(--labels_important-active-labels-text-graphics); }
-
-.referral-inActive-text {
-  color: var(--labels_secondary-inactive-label-text-graphics); }
-
-.referral-header-icon-wrapper .icon_title-wrapper .icon_title-text.title {
-  padding-top: 5% !important; }
-
-.referral_table_theme .ant-modal-body {
-  background-color: var(--base_wallet-sidebar-and-popup) !important; }
-
-.back-label {
-  cursor: pointer;
-  text-decoration: underline;
-  color: var(--specials_buttons-links-and-highlights); }
-
-.summary-referral-container {
-  padding: 2%; }
-  .summary-referral-container .summary-referral-wrapper {
+.referral-list-wrapper {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto; }
+  .referral-list-wrapper .fs-13 {
+    font-size: 13px; }
+  .referral-list-wrapper .fs-14 {
+    font-size: 14px; }
+  .referral-list-wrapper .referral-active-text {
+    color: var(--labels_important-active-labels-text-graphics); }
+  .referral-list-wrapper .referral-inActive-text {
+    color: var(--labels_secondary-inactive-label-text-graphics); }
+  .referral-list-wrapper .referral-header-icon-wrapper .icon_title-wrapper {
     display: flex;
-    justify-content: space-between; }
-    .summary-referral-container .summary-referral-wrapper .settle-link,
-    .summary-referral-container .summary-referral-wrapper .view-history-label {
-      color: var(--specials_buttons-links-and-highlights);
-      border-bottom: 1px solid var(--specials_buttons-links-and-highlights);
-      cursor: pointer;
-      font-weight: bold; }
-    .summary-referral-container .summary-referral-wrapper .earning-icon-wrapper {
+    justify-content: flex-start;
+    flex-direction: row; }
+    .referral-list-wrapper .referral-header-icon-wrapper .icon_title-wrapper .icon_title-text.title {
+      font-size: 3rem !important;
+      padding-top: 2.25rem !important; }
+  .referral-list-wrapper .referral_table_theme .ant-modal-body {
+    background-color: var(--base_wallet-sidebar-and-popup) !important; }
+  .referral-list-wrapper .back-label {
+    cursor: pointer;
+    text-decoration: underline;
+    color: var(--specials_buttons-links-and-highlights); }
+  .referral-list-wrapper .summary-referral-container {
+    padding: 2%; }
+    .referral-list-wrapper .summary-referral-container .summary-referral-wrapper {
+      display: flex;
+      justify-content: space-between; }
+      .referral-list-wrapper .summary-referral-container .summary-referral-wrapper .settle-link,
+      .referral-list-wrapper .summary-referral-container .summary-referral-wrapper .view-history-label {
+        color: var(--specials_buttons-links-and-highlights);
+        border-bottom: 1px solid var(--specials_buttons-links-and-highlights);
+        cursor: pointer;
+        font-weight: bold; }
+      .referral-list-wrapper .summary-referral-container .summary-referral-wrapper .earning-icon-wrapper {
+        display: flex; }
+        .referral-list-wrapper .summary-referral-container .summary-referral-wrapper .earning-icon-wrapper .refer-icon {
+          fill: var(--labels_important-active-labels-text-graphics); }
+        .referral-list-wrapper .summary-referral-container .summary-referral-wrapper .earning-icon-wrapper .margin-aligner {
+          margin-bottom: 1% !important; }
+        .referral-list-wrapper .summary-referral-container .summary-referral-wrapper .earning-icon-wrapper .earning-label {
+          font-size: 18px;
+          font-weight: bold; }
+      .referral-list-wrapper .summary-referral-container .summary-referral-wrapper .earn-info-wrapper {
+        margin-right: 3%; }
+        .referral-list-wrapper .summary-referral-container .summary-referral-wrapper .earn-info-wrapper .earn-info-border {
+          border-bottom: 1px solid var(--labels_important-active-labels-text-graphics); }
+        .referral-list-wrapper .summary-referral-container .summary-referral-wrapper .earn-info-wrapper .earn-text-wrapper {
+          display: flex;
+          justify-content: center; }
+          .referral-list-wrapper .summary-referral-container .summary-referral-wrapper .earn-info-wrapper .earn-text-wrapper .field-label {
+            margin-left: 2%; }
+        .referral-list-wrapper .summary-referral-container .summary-referral-wrapper .earn-info-wrapper .settle-btn {
+          background-color: var(--specials_buttons-links-and-highlights);
+          color: var(--labels_important-active-labels-text-graphics);
+          border: none; }
+  .referral-list-wrapper .history-referral-container {
+    padding: 2%; }
+    .referral-list-wrapper .history-referral-container .history-referral-wrapper .earning-icon-wrapper {
       display: flex; }
-      .summary-referral-container .summary-referral-wrapper .earning-icon-wrapper .refer-icon {
+      .referral-list-wrapper .history-referral-container .history-referral-wrapper .earning-icon-wrapper .refer-icon {
         fill: var(--labels_important-active-labels-text-graphics); }
-      .summary-referral-container .summary-referral-wrapper .earning-icon-wrapper .margin-aligner {
+      .referral-list-wrapper .history-referral-container .history-referral-wrapper .earning-icon-wrapper .margin-aligner {
         margin-bottom: 1% !important; }
-      .summary-referral-container .summary-referral-wrapper .earning-icon-wrapper .earning-label {
+      .referral-list-wrapper .history-referral-container .history-referral-wrapper .earning-icon-wrapper .earning-label {
         font-size: 18px;
         font-weight: bold; }
-    .summary-referral-container .summary-referral-wrapper .earn-info-wrapper {
-      margin-right: 3%; }
-      .summary-referral-container .summary-referral-wrapper .earn-info-wrapper .earn-info-border {
-        border-bottom: 1px solid var(--labels_important-active-labels-text-graphics); }
-      .summary-referral-container .summary-referral-wrapper .earn-info-wrapper .earn-text-wrapper {
-        display: flex;
-        justify-content: center; }
-        .summary-referral-container .summary-referral-wrapper .earn-info-wrapper .earn-text-wrapper .field-label {
-          margin-left: 2%; }
-      .summary-referral-container .summary-referral-wrapper .earn-info-wrapper .settle-btn {
-        background-color: var(--specials_buttons-links-and-highlights);
-        color: var(--labels_important-active-labels-text-graphics);
-        border: none; }
-
-.history-referral-container {
-  padding: 2%; }
-  .history-referral-container .history-referral-wrapper .earning-icon-wrapper {
+  .referral-list-wrapper .new-refer-wrapper {
+    background-color: var(--calculated_quick_trade-bg) !important;
+    color: var(--labels_important-active-labels-text-graphics); }
+    .referral-list-wrapper .new-refer-wrapper .new-refer-icon-wrapper {
+      display: flex; }
+      .referral-list-wrapper .new-refer-wrapper .new-refer-icon-wrapper .margin-aligner {
+        margin-bottom: 1% !important; }
+    .referral-list-wrapper .new-refer-wrapper .create-link-label {
+      color: var(--specials_buttons-links-and-highlights);
+      border-bottom: 1px solid var(--specials_buttons-links-and-highlights);
+      font-weight: bold;
+      margin-top: 0.5%;
+      cursor: pointer; }
+    .referral-list-wrapper .new-refer-wrapper .content-field {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 500px; }
+    .referral-list-wrapper .new-refer-wrapper .no-link-icon .margin-aligner {
+      margin-bottom: 5%;
+      margin-right: unset; }
+      .referral-list-wrapper .new-refer-wrapper .no-link-icon .margin-aligner svg {
+        width: 100% !important;
+        height: 100% !important; }
+  .referral-list-wrapper .settle-popup-wrapper .earning-icon-wrapper {
     display: flex; }
-    .history-referral-container .history-referral-wrapper .earning-icon-wrapper .refer-icon {
+    .referral-list-wrapper .settle-popup-wrapper .earning-icon-wrapper .insufficient-icon {
+      text-align: center; }
+      .referral-list-wrapper .settle-popup-wrapper .earning-icon-wrapper .insufficient-icon svg {
+        width: 5rem !important;
+        height: 5rem !important; }
+    .referral-list-wrapper .settle-popup-wrapper .earning-icon-wrapper .refer-icon {
       fill: var(--labels_important-active-labels-text-graphics); }
-    .history-referral-container .history-referral-wrapper .earning-icon-wrapper .margin-aligner {
+    .referral-list-wrapper .settle-popup-wrapper .earning-icon-wrapper .margin-aligner {
       margin-bottom: 1% !important; }
-    .history-referral-container .history-referral-wrapper .earning-icon-wrapper .earning-label {
+    .referral-list-wrapper .settle-popup-wrapper .earning-icon-wrapper .earning-label {
       font-size: 18px;
       font-weight: bold; }
-
-.new-refer-wrapper {
-  background-color: var(--calculated_quick_trade-bg) !important;
-  color: var(--labels_important-active-labels-text-graphics); }
-  .new-refer-wrapper .new-refer-icon-wrapper {
-    display: flex; }
-    .new-refer-wrapper .new-refer-icon-wrapper .margin-aligner {
-      margin-bottom: 1% !important; }
-  .new-refer-wrapper .create-link-label {
-    color: var(--specials_buttons-links-and-highlights);
-    border-bottom: 1px solid var(--specials_buttons-links-and-highlights);
-    font-weight: bold;
-    margin-top: 0.5%;
-    cursor: pointer; }
-  .new-refer-wrapper .content-field {
+  .referral-list-wrapper .refer-code-popup-wrapper .new-referral-wrapper .new-referral-label,
+  .referral-list-wrapper .referral-popup-earning-wrapper .new-referral-wrapper .new-referral-label,
+  .referral-list-wrapper .referral-final-popup .new-referral-wrapper .new-referral-label {
+    font-size: 16px;
+    margin: 2% 0 3% 2%; }
+  .referral-list-wrapper .refer-code-popup-wrapper .custom-input-field,
+  .referral-list-wrapper .referral-popup-earning-wrapper .custom-input-field,
+  .referral-list-wrapper .referral-final-popup .custom-input-field {
+    padding: 2%;
+    width: 100%;
+    border: 1px solid var(--labels_important-active-labels-text-graphics); }
+  .referral-list-wrapper .referral-popup-earning-wrapper .discount-label {
+    margin: 5% 0;
+    font-weight: bold; }
+  .referral-list-wrapper .referral-popup-earning-wrapper .discount-tooltip {
+    padding-top: 4%; }
+  .referral-list-wrapper .referral-popup-earning-wrapper .discount-tooltip-mobile {
+    padding-top: 3%; }
+  .referral-list-wrapper .referral-popup-earning-wrapper .earn-field-wrapper {
+    width: 100%;
+    border: 1px solid var(--labels_important-active-labels-text-graphics);
+    border-radius: 10px;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: 500px; }
-  .new-refer-wrapper .no-link-icon .margin-aligner {
-    margin-bottom: 5%;
-    margin-right: unset; }
-    .new-refer-wrapper .no-link-icon .margin-aligner svg {
-      width: 100% !important;
-      height: 100% !important; }
-
-.settle-popup-wrapper .earning-icon-wrapper {
-  display: flex; }
-  .settle-popup-wrapper .earning-icon-wrapper .insufficient-icon {
-    text-align: center; }
-    .settle-popup-wrapper .earning-icon-wrapper .insufficient-icon svg {
+    flex-direction: row;
+    justify-content: space-between; }
+    .referral-list-wrapper .referral-popup-earning-wrapper .earn-field-wrapper .earn-info-border {
+      border-bottom: 1px solid var(--labels_important-active-labels-text-graphics); }
+    .referral-list-wrapper .referral-popup-earning-wrapper .earn-field-wrapper .eraning-rate-field,
+    .referral-list-wrapper .referral-popup-earning-wrapper .earn-field-wrapper .discount-field,
+    .referral-list-wrapper .referral-popup-earning-wrapper .earn-field-wrapper .eraning-rate-mobile-field,
+    .referral-list-wrapper .referral-popup-earning-wrapper .earn-field-wrapper .discount-mobile-field {
+      font-size: 12px;
+      cursor: pointer;
+      padding: 2%; }
+    .referral-list-wrapper .referral-popup-earning-wrapper .earn-field-wrapper .eraning-rate-mobile-field,
+    .referral-list-wrapper .referral-popup-earning-wrapper .earn-field-wrapper .discount-mobile-field {
+      padding: 5% !important; }
+  .referral-list-wrapper .referral-popup-earning-wrapper .earn-border-left {
+    border-left: 1px solid var(--labels_important-active-labels-text-graphics);
+    padding-top: 10%;
+    padding-left: 2% !important; }
+    .referral-list-wrapper .referral-popup-earning-wrapper .earn-border-left .caret-icon-mobile svg {
       width: 5rem !important;
       height: 5rem !important; }
-  .settle-popup-wrapper .earning-icon-wrapper .refer-icon {
-    fill: var(--labels_important-active-labels-text-graphics); }
-  .settle-popup-wrapper .earning-icon-wrapper .margin-aligner {
-    margin-bottom: 1% !important; }
-  .settle-popup-wrapper .earning-icon-wrapper .earning-label {
-    font-size: 18px;
-    font-weight: bold; }
-
-.refer-code-popup-wrapper .new-referral-wrapper .new-referral-label,
-.referral-popup-earning-wrapper .new-referral-wrapper .new-referral-label,
-.referral-final-popup .new-referral-wrapper .new-referral-label {
-  font-size: 16px;
-  margin: 2% 0 3% 2%; }
-
-.refer-code-popup-wrapper .custom-input-field,
-.referral-popup-earning-wrapper .custom-input-field,
-.referral-final-popup .custom-input-field {
-  padding: 2%;
-  width: 100%;
-  border: 1px solid var(--labels_important-active-labels-text-graphics); }
-
-.referral-popup-earning-wrapper .discount-label {
-  margin: 5% 0;
-  font-weight: bold; }
-
-.referral-popup-earning-wrapper .discount-tooltip {
-  padding-top: 4%; }
-
-.referral-popup-earning-wrapper .discount-tooltip-mobile {
-  padding-top: 3%; }
-
-.referral-popup-earning-wrapper .earn-field-wrapper {
-  width: 100%;
-  border: 1px solid var(--labels_important-active-labels-text-graphics);
-  border-radius: 10px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between; }
-  .referral-popup-earning-wrapper .earn-field-wrapper .earn-info-border {
-    border-bottom: 1px solid var(--labels_important-active-labels-text-graphics); }
-  .referral-popup-earning-wrapper .earn-field-wrapper .eraning-rate-field,
-  .referral-popup-earning-wrapper .earn-field-wrapper .discount-field,
-  .referral-popup-earning-wrapper .earn-field-wrapper .eraning-rate-mobile-field,
-  .referral-popup-earning-wrapper .earn-field-wrapper .discount-mobile-field {
-    font-size: 12px;
+  .referral-list-wrapper .referral-popup-earning-wrapper .caret-icon-wrapper {
+    width: 15%;
+    text-align: center;
+    padding-left: 3%;
+    border-bottom-right-radius: 10px;
+    border-top-right-radius: 10px;
     cursor: pointer;
-    padding: 2%; }
-  .referral-popup-earning-wrapper .earn-field-wrapper .eraning-rate-mobile-field,
-  .referral-popup-earning-wrapper .earn-field-wrapper .discount-mobile-field {
-    padding: 5% !important; }
-
-.referral-popup-earning-wrapper .earn-border-left {
-  border-left: 1px solid var(--labels_important-active-labels-text-graphics);
-  padding-top: 10%;
-  padding-left: 2% !important; }
-  .referral-popup-earning-wrapper .earn-border-left .caret-icon-mobile svg {
-    width: 5rem !important;
-    height: 5rem !important; }
-
-.referral-popup-earning-wrapper .caret-icon-wrapper {
-  width: 15%;
-  text-align: center;
-  padding-left: 3%;
-  border-bottom-right-radius: 10px;
-  border-top-right-radius: 10px;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  background-color: var(--base_background); }
-  .referral-popup-earning-wrapper .caret-icon-wrapper .caret-up-icon,
-  .referral-popup-earning-wrapper .caret-icon-wrapper .caret-up-icon-mobile {
-    width: 0;
-    height: 40%;
-    line-height: 0; }
-  .referral-popup-earning-wrapper .caret-icon-wrapper .caret-up-icon-mobile {
-    height: 15% !important; }
-  .referral-popup-earning-wrapper .caret-icon-wrapper .caret-down-icon {
-    width: 0;
-    height: 0;
-    line-height: 0; }
-  .referral-popup-earning-wrapper .caret-icon-wrapper .caret-icon svg {
-    width: 3rem !important;
-    height: 3rem !important; }
-
-.confirm-fild-wrapper .confirm-field-header {
-  font-weight: bold;
-  color: var(--labels_important-active-labels-text-graphics);
-  font-size: 18px;
-  margin-bottom: 3%; }
-
-.confirm-fild-wrapper .discount-field {
-  margin: 2% 0 1% 0;
-  font-weight: bold; }
-
-.confirm-fild-wrapper .referral-field-content-wrapper {
-  padding: 2%;
-  width: 100%;
-  border: 1px solid var(--labels_important-active-labels-text-graphics); }
-  .confirm-fild-wrapper .referral-field-content-wrapper .referral-field-content {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--base_background); }
+    .referral-list-wrapper .referral-popup-earning-wrapper .caret-icon-wrapper .caret-up-icon,
+    .referral-list-wrapper .referral-popup-earning-wrapper .caret-icon-wrapper .caret-up-icon-mobile {
+      width: 0;
+      height: 40%;
+      line-height: 0; }
+    .referral-list-wrapper .referral-popup-earning-wrapper .caret-icon-wrapper .caret-up-icon-mobile {
+      height: 15% !important; }
+    .referral-list-wrapper .referral-popup-earning-wrapper .caret-icon-wrapper .caret-down-icon {
+      width: 0;
+      height: 0;
+      line-height: 0; }
+    .referral-list-wrapper .referral-popup-earning-wrapper .caret-icon-wrapper .caret-icon svg {
+      width: 3rem !important;
+      height: 3rem !important; }
+  .referral-list-wrapper .confirm-fild-wrapper .confirm-field-header {
+    font-weight: bold;
+    color: var(--labels_important-active-labels-text-graphics);
+    font-size: 18px;
+    margin-bottom: 3%; }
+  .referral-list-wrapper .confirm-fild-wrapper .discount-field {
+    margin: 2% 0 1% 0;
+    font-weight: bold; }
+  .referral-list-wrapper .confirm-fild-wrapper .referral-field-content-wrapper {
+    padding: 2%;
+    width: 100%;
+    border: 1px solid var(--labels_important-active-labels-text-graphics); }
+    .referral-list-wrapper .confirm-fild-wrapper .referral-field-content-wrapper .referral-field-content {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      margin-bottom: 2%; }
+    .referral-list-wrapper .confirm-fild-wrapper .referral-field-content-wrapper .earn-rate-content,
+    .referral-list-wrapper .confirm-fild-wrapper .referral-field-content-wrapper .discount-content {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between; }
+  .referral-list-wrapper .referral-final-popup .checked-icon {
+    padding-top: 2%; }
+    .referral-list-wrapper .referral-final-popup .checked-icon svg {
+      width: 2rem;
+      height: 2rem; }
+  .referral-list-wrapper .referral-final-popup .desc-label {
+    margin-bottom: 2%; }
+  .referral-list-wrapper .referral-final-popup .custom-input {
+    padding: 2%;
+    width: 100%;
+    border: 1px solid var(--labels_important-active-labels-text-graphics);
+    color: var(--specials_buttons-links-and-highlights);
+    display: flex;
+    justify-content: space-between; }
+    .referral-list-wrapper .referral-final-popup .custom-input .link-content {
+      text-decoration: underline;
+      cursor: pointer; }
+  .referral-list-wrapper .referral-popup-btn-wrapper {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin-bottom: 2%; }
-  .confirm-fild-wrapper .referral-field-content-wrapper .earn-rate-content,
-  .confirm-fild-wrapper .referral-field-content-wrapper .discount-content {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between; }
-
-.referral-final-popup .checked-icon {
-  padding-top: 2%; }
-  .referral-final-popup .checked-icon svg {
-    width: 2rem;
-    height: 2rem; }
-
-.referral-final-popup .desc-label {
-  margin-bottom: 2%; }
-
-.referral-final-popup .custom-input {
-  padding: 2%;
-  width: 100%;
-  border: 1px solid var(--labels_important-active-labels-text-graphics);
-  color: var(--specials_buttons-links-and-highlights);
-  display: flex;
-  justify-content: space-between; }
-  .referral-final-popup .custom-input .link-content {
-    text-decoration: underline;
-    cursor: pointer; }
-
-.referral-popup-btn-wrapper {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin-top: 5%; }
-  .referral-popup-btn-wrapper .back-btn,
-  .referral-popup-btn-wrapper .next-btn,
-  .referral-popup-btn-wrapper .okay-btn {
-    background-color: var(--specials_buttons-links-and-highlights);
-    width: 45%;
-    color: var(--labels_important-active-labels-text-graphics);
-    border: none; }
-  .referral-popup-btn-wrapper .okay-btn {
-    width: 100% !important; }
-
-.layout-mobile .summary-block_wrapper .referral-table-wrapper .table-wrapper th {
-  font-size: 12px; }
-
-@media screen and (max-width: 550px) {
-  .layout-mobile .summary-block_wrapper .referral-table-wrapper .table-wrapper th {
-    font-size: 10px; } }
-
-@media screen and (max-width: 450px) {
-  .layout-mobile .summary-block_wrapper .referral-table-wrapper .table-wrapper th {
-    font-size: 8px; } }
+    margin-top: 5%; }
+    .referral-list-wrapper .referral-popup-btn-wrapper .back-btn,
+    .referral-list-wrapper .referral-popup-btn-wrapper .next-btn,
+    .referral-list-wrapper .referral-popup-btn-wrapper .okay-btn {
+      background-color: var(--specials_buttons-links-and-highlights);
+      width: 45%;
+      color: var(--labels_important-active-labels-text-graphics);
+      border: none; }
+    .referral-list-wrapper .referral-popup-btn-wrapper .okay-btn {
+      width: 100% !important; }
+  .referral-list-wrapper .layout-mobile .summary-block_wrapper .referral-table-wrapper .table-wrapper th {
+    font-size: 12px; }
+  @media screen and (max-width: 550px) {
+    .referral-list-wrapper .layout-mobile .summary-block_wrapper .referral-table-wrapper .table-wrapper th {
+      font-size: 10px; } }
+  @media screen and (max-width: 450px) {
+    .referral-list-wrapper .layout-mobile .summary-block_wrapper .referral-table-wrapper .table-wrapper th {
+      font-size: 8px; } }
 
 .sidebar-row {
   min-height: 3rem;
@@ -9162,7 +9251,9 @@ table th {
 
 @media screen and (max-width: 550px) {
   .field-children .clear-field {
-    bottom: 1.5rem; } }
+    bottom: 1.5rem;
+    padding: 1.5rem;
+    margin-right: 1rem; } }
 
 .mainContainer {
   display: flex;
@@ -9724,11 +9815,12 @@ table th {
 .layout-mobile .holla-button-font {
   font-size: 1.2rem; }
 
-.layout-mobile .accordion_wrapper .accordion_section .accordion_section_title {
-  font-size: 1.75rem; }
-
-.layout-mobile .accordion_wrapper .accordion_section .accordion_section_content {
-  font-size: 13px !important; }
+.layout-mobile .accordion_wrapper .accordion_section {
+  border-bottom: unset !important; }
+  .layout-mobile .accordion_wrapper .accordion_section .accordion_section_title {
+    font-size: 1.75rem; }
+  .layout-mobile .accordion_wrapper .accordion_section .accordion_section_content {
+    font-size: 13px !important; }
 
 .layout-mobile .accordion_wrapper .action_notification-svg svg {
   width: 1.75rem !important;

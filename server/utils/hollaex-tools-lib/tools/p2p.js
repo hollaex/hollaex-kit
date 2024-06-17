@@ -291,6 +291,7 @@ const updateP2PDeal = async (data) => {
 		total_order_amount,
 		min_order_value,
 		max_order_value,
+		payment_method_used,
 		status,
     } = data;
         
@@ -390,6 +391,7 @@ const createP2PTransaction = async (data) => {
 		deal_id,
 		user_id,
 		amount_fiat,
+		payment_method_used,
 		ip
     } = data;
     
@@ -465,6 +467,11 @@ const createP2PTransaction = async (data) => {
 	}
 
 	//Check the payment method
+	const hasMethod = p2pDeal.payment_methods.find(method => method.system_name === payment_method_used.system_name);
+
+	if (!hasMethod) {
+		throw new Error('invalid payment method');
+	}
 
 	const coinConfiguration = getKitCoin(p2pDeal.buying_asset);
 	const { increment_unit } = coinConfiguration;
@@ -643,11 +650,11 @@ const updateP2pTransaction = async (data) => {
 		let initiator_id;
 		let defendant_id;
 		if (user_status === 'appeal') {
+			initiator_id = transaction.user_id;
+			defendant_id = transaction.merchant_id; 
+		} else {
 			initiator_id = transaction.merchant_id;
 			defendant_id = transaction.user_id;
-		} else {
-			initiator_id = transaction.user_id;
-			defendant_id = transaction.merchant_id;
 		}
 		await getNodeLib().unlockBalance(merchant.network_id, transaction.locked_asset_id);
 		await createP2pDispute({ 
@@ -832,16 +839,65 @@ const createP2pDispute = async (data) => {
 const updateP2pDispute = async (data) => {
 	const p2pDispute = await getModel('p2pDispute').findOne({ where: { id: data.id } });
 
-	if(!p2pDispute) {
-	throw new Error('no record found');
-	}
+	if (!p2pDispute) {
+		throw new Error('no record found');
+	};
 
-	return p2pDispute.update(data, {
+	const dispute = await p2pDispute.update(data, {
 		fields: [
 			'resolution',
 			'status'
 		]
 	});
+
+	if (data.status == false) {
+		const transaction = await getModel('p2pTransaction').findOne({ where: { id: dispute.transaction_id } });
+		await transaction.update({
+			transaction_status: 'closed'
+		}, { fields: ['transaction_status']});
+	
+
+		const chatMessage = {
+			sender_id: transaction.user_id,
+			receiver_id: transaction.merchant_id,
+			message: 'ORDER_CLOSED',
+			type: 'notification',
+			created_at: new Date()
+		};
+	
+		const merchant = await getUserByKitId(transaction.merchant_id);
+		const user = await getUserByKitId(transaction.user_id);
+		
+		sendEmail(
+			MAILTYPE.P2P_ORDER_CLOSED,
+			user.email,
+			{
+				order_id: transaction.id,
+			},
+			user.settings
+		);
+
+		sendEmail(
+			MAILTYPE.P2P_ORDER_CLOSED,
+			merchant.email,
+			{
+				order_id: transaction.id,
+			},
+			merchant.settings
+		);
+
+		const newMessages = [...transaction.messages];
+		newMessages.push(chatMessage);
+		
+		transaction.update({ messages: newMessages }, {
+			fields: [
+				'messages'		
+			]
+		});
+
+	}
+
+	return dispute;
 };
 
 const createP2pChatMessage = async (data) => {
@@ -923,6 +979,10 @@ const createMerchantFeedback = async (data) => {
 		throw new Error ('undefined rating');
 	}
 	
+	if (data.rating < 1) {
+		throw new Error ('undefined rating');
+	}
+
 	data.merchant_id = transaction.merchant_id;
 	return getModel('P2pMerchantsFeedback').create(data, {
 		fields: [

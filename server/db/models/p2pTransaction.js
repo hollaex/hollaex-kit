@@ -82,7 +82,7 @@ module.exports = function (sequelize, DataTypes) {
                 allowNull: true,
             },
             transaction_status: {
-                type: DataTypes.ENUM('active', 'cancelled', 'complete', 'appealed', 'expired'),
+                type: DataTypes.ENUM('active', 'cancelled', 'complete', 'appealed', 'expired', 'closed'),
                 allowNull: false,
             },
             messages: {
