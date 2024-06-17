@@ -683,9 +683,9 @@ class Assets extends Component {
 			isLoading,
 		} = this.state;
 
-		const { owner_id, created_by, verified } = selectedAsset;
+		const { owner_id, created_by, verified, type } = selectedAsset;
 		const showMintAndBurnButtons = verified && owner_id === user_id;
-		const showConfigureButton = created_by === user_id || owner_id === user_id;
+		const showConfigureButton = created_by === user_id || owner_id === user_id || type === 'fiat';
 
 		if (isConfigure) {
 			return (
