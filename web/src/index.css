@@ -1800,7 +1800,8 @@ table th {
         width: 6%; }
       .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-field .edit-wrapper__container .field-children div input {
         width: 100%; }
-      .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-field .edit-wrapper__container .field-content-outline:before, .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-field .edit-wrapper__container .field-content-outline:after {
+      .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-field .edit-wrapper__container .field-content-outline:before,
+      .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-field .edit-wrapper__container .field-content-outline:after {
         height: unset !important; }
       .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-field .edit-wrapper__container .field-children {
         border: 1px solid var(--labels_secondary-inactive-label-text-graphics);
@@ -1811,7 +1812,8 @@ table th {
       width: 100%; }
     .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .hide-zero-balance-checkbox .ant-checkbox-inner {
       background-color: var(--base_wallet-sidebar-and-popup); }
-    .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .hide-zero-balance-checkbox .ant-checkbox-inner:focus, .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .hide-zero-balance-checkbox .ant-checkbox-inner:focus-within {
+    .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .hide-zero-balance-checkbox .ant-checkbox-inner:focus,
+    .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .hide-zero-balance-checkbox .ant-checkbox-inner:focus-within {
       border-color: var(--labels_important-active-labels-text-graphics) !important; }
     .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .hide-zero-balance-field {
       gap: 10px; }
@@ -2357,7 +2359,7 @@ table th {
       border: 2px solid var(--labels_secondary-inactive-label-text-graphics);
       border-radius: 100%;
       width: fit-content;
-      padding: 10% 70%; }
+      padding: 3px 10px; }
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-step-selected {
       border: 2px solid var(--labels_important-active-labels-text-graphics); }
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line,
