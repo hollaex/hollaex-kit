@@ -1800,7 +1800,8 @@ table th {
         width: 6%; }
       .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-field .edit-wrapper__container .field-children div input {
         width: 100%; }
-      .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-field .edit-wrapper__container .field-content-outline:before, .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-field .edit-wrapper__container .field-content-outline:after {
+      .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-field .edit-wrapper__container .field-content-outline:before,
+      .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-field .edit-wrapper__container .field-content-outline:after {
         height: unset !important; }
       .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-field .edit-wrapper__container .field-children {
         border: 1px solid var(--labels_secondary-inactive-label-text-graphics);
@@ -1811,7 +1812,8 @@ table th {
       width: 100%; }
     .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .hide-zero-balance-checkbox .ant-checkbox-inner {
       background-color: var(--base_wallet-sidebar-and-popup); }
-    .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .hide-zero-balance-checkbox .ant-checkbox-inner:focus, .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .hide-zero-balance-checkbox .ant-checkbox-inner:focus-within {
+    .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .hide-zero-balance-checkbox .ant-checkbox-inner:focus,
+    .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .hide-zero-balance-checkbox .ant-checkbox-inner:focus-within {
       border-color: var(--labels_important-active-labels-text-graphics) !important; }
     .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .hide-zero-balance-field {
       gap: 10px; }
@@ -2357,7 +2359,7 @@ table th {
       border: 2px solid var(--labels_secondary-inactive-label-text-graphics);
       border-radius: 100%;
       width: fit-content;
-      padding: 10% 70%; }
+      padding: 3px 10px; }
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-step-selected {
       border: 2px solid var(--labels_important-active-labels-text-graphics); }
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line,
@@ -6849,239 +6851,273 @@ table th {
   width: 80%;
   margin-left: auto;
   margin-right: auto; }
-  .referral-list-wrapper .fs-13 {
-    font-size: 13px; }
-  .referral-list-wrapper .fs-14 {
-    font-size: 14px; }
-  .referral-list-wrapper .referral-active-text {
-    color: var(--labels_important-active-labels-text-graphics); }
-  .referral-list-wrapper .referral-inActive-text {
-    color: var(--labels_secondary-inactive-label-text-graphics); }
-  .referral-list-wrapper .referral-header-icon-wrapper .icon_title-wrapper {
+
+.fs-13 {
+  font-size: 13px; }
+
+.fs-14 {
+  font-size: 14px; }
+
+.referral-active-text {
+  color: var(--labels_important-active-labels-text-graphics); }
+
+.referral-inActive-text {
+  color: var(--labels_secondary-inactive-label-text-graphics); }
+
+.referral-header-icon-wrapper .icon_title-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row; }
+  .referral-header-icon-wrapper .icon_title-wrapper .icon_title-text.title {
+    font-size: 3rem !important;
+    padding-top: 2.25rem !important; }
+
+.referral_table_theme .ant-modal-body {
+  background-color: var(--base_wallet-sidebar-and-popup) !important; }
+
+.back-label {
+  cursor: pointer;
+  text-decoration: underline;
+  color: var(--specials_buttons-links-and-highlights); }
+
+.summary-referral-container {
+  padding: 2%; }
+  .summary-referral-container .summary-referral-wrapper {
     display: flex;
-    justify-content: flex-start;
-    flex-direction: row; }
-    .referral-list-wrapper .referral-header-icon-wrapper .icon_title-wrapper .icon_title-text.title {
-      font-size: 3rem !important;
-      padding-top: 2.25rem !important; }
-  .referral-list-wrapper .referral_table_theme .ant-modal-body {
-    background-color: var(--base_wallet-sidebar-and-popup) !important; }
-  .referral-list-wrapper .back-label {
-    cursor: pointer;
-    text-decoration: underline;
-    color: var(--specials_buttons-links-and-highlights); }
-  .referral-list-wrapper .summary-referral-container {
-    padding: 2%; }
-    .referral-list-wrapper .summary-referral-container .summary-referral-wrapper {
-      display: flex;
-      justify-content: space-between; }
-      .referral-list-wrapper .summary-referral-container .summary-referral-wrapper .settle-link,
-      .referral-list-wrapper .summary-referral-container .summary-referral-wrapper .view-history-label {
-        color: var(--specials_buttons-links-and-highlights);
-        border-bottom: 1px solid var(--specials_buttons-links-and-highlights);
-        cursor: pointer;
-        font-weight: bold; }
-      .referral-list-wrapper .summary-referral-container .summary-referral-wrapper .earning-icon-wrapper {
-        display: flex; }
-        .referral-list-wrapper .summary-referral-container .summary-referral-wrapper .earning-icon-wrapper .refer-icon {
-          fill: var(--labels_important-active-labels-text-graphics); }
-        .referral-list-wrapper .summary-referral-container .summary-referral-wrapper .earning-icon-wrapper .margin-aligner {
-          margin-bottom: 1% !important; }
-        .referral-list-wrapper .summary-referral-container .summary-referral-wrapper .earning-icon-wrapper .earning-label {
-          font-size: 18px;
-          font-weight: bold; }
-      .referral-list-wrapper .summary-referral-container .summary-referral-wrapper .earn-info-wrapper {
-        margin-right: 3%; }
-        .referral-list-wrapper .summary-referral-container .summary-referral-wrapper .earn-info-wrapper .earn-info-border {
-          border-bottom: 1px solid var(--labels_important-active-labels-text-graphics); }
-        .referral-list-wrapper .summary-referral-container .summary-referral-wrapper .earn-info-wrapper .earn-text-wrapper {
-          display: flex;
-          justify-content: center; }
-          .referral-list-wrapper .summary-referral-container .summary-referral-wrapper .earn-info-wrapper .earn-text-wrapper .field-label {
-            margin-left: 2%; }
-        .referral-list-wrapper .summary-referral-container .summary-referral-wrapper .earn-info-wrapper .settle-btn {
-          background-color: var(--specials_buttons-links-and-highlights);
-          color: var(--labels_important-active-labels-text-graphics);
-          border: none; }
-  .referral-list-wrapper .history-referral-container {
-    padding: 2%; }
-    .referral-list-wrapper .history-referral-container .history-referral-wrapper .earning-icon-wrapper {
-      display: flex; }
-      .referral-list-wrapper .history-referral-container .history-referral-wrapper .earning-icon-wrapper .refer-icon {
-        fill: var(--labels_important-active-labels-text-graphics); }
-      .referral-list-wrapper .history-referral-container .history-referral-wrapper .earning-icon-wrapper .margin-aligner {
-        margin-bottom: 1% !important; }
-      .referral-list-wrapper .history-referral-container .history-referral-wrapper .earning-icon-wrapper .earning-label {
-        font-size: 18px;
-        font-weight: bold; }
-  .referral-list-wrapper .new-refer-wrapper {
-    background-color: var(--calculated_quick_trade-bg) !important;
-    color: var(--labels_important-active-labels-text-graphics); }
-    .referral-list-wrapper .new-refer-wrapper .new-refer-icon-wrapper {
-      display: flex; }
-      .referral-list-wrapper .new-refer-wrapper .new-refer-icon-wrapper .margin-aligner {
-        margin-bottom: 1% !important; }
-    .referral-list-wrapper .new-refer-wrapper .create-link-label {
+    justify-content: space-between; }
+    .summary-referral-container .summary-referral-wrapper .settle-link,
+    .summary-referral-container .summary-referral-wrapper .view-history-label {
       color: var(--specials_buttons-links-and-highlights);
       border-bottom: 1px solid var(--specials_buttons-links-and-highlights);
-      font-weight: bold;
-      margin-top: 0.5%;
-      cursor: pointer; }
-    .referral-list-wrapper .new-refer-wrapper .content-field {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      min-height: 500px; }
-    .referral-list-wrapper .new-refer-wrapper .no-link-icon .margin-aligner {
-      margin-bottom: 5%;
-      margin-right: unset; }
-      .referral-list-wrapper .new-refer-wrapper .no-link-icon .margin-aligner svg {
-        width: 100% !important;
-        height: 100% !important; }
-  .referral-list-wrapper .settle-popup-wrapper .earning-icon-wrapper {
+      cursor: pointer;
+      font-weight: bold; }
+    .summary-referral-container .summary-referral-wrapper .earning-icon-wrapper {
+      display: flex; }
+      .summary-referral-container .summary-referral-wrapper .earning-icon-wrapper .refer-icon {
+        fill: var(--labels_important-active-labels-text-graphics); }
+      .summary-referral-container .summary-referral-wrapper .earning-icon-wrapper .margin-aligner {
+        margin-bottom: 1% !important; }
+      .summary-referral-container .summary-referral-wrapper .earning-icon-wrapper .earning-label {
+        font-size: 18px;
+        font-weight: bold; }
+    .summary-referral-container .summary-referral-wrapper .earn-info-wrapper {
+      margin-right: 3%; }
+      .summary-referral-container .summary-referral-wrapper .earn-info-wrapper .earn-info-border {
+        border-bottom: 1px solid var(--labels_important-active-labels-text-graphics); }
+      .summary-referral-container .summary-referral-wrapper .earn-info-wrapper .earn-text-wrapper {
+        display: flex;
+        justify-content: center; }
+        .summary-referral-container .summary-referral-wrapper .earn-info-wrapper .earn-text-wrapper .field-label {
+          margin-left: 2%; }
+      .summary-referral-container .summary-referral-wrapper .earn-info-wrapper .settle-btn {
+        background-color: var(--specials_buttons-links-and-highlights);
+        color: var(--labels_important-active-labels-text-graphics);
+        border: none; }
+
+.history-referral-container {
+  padding: 2%; }
+  .history-referral-container .history-referral-wrapper .earning-icon-wrapper {
     display: flex; }
-    .referral-list-wrapper .settle-popup-wrapper .earning-icon-wrapper .insufficient-icon {
-      text-align: center; }
-      .referral-list-wrapper .settle-popup-wrapper .earning-icon-wrapper .insufficient-icon svg {
-        width: 5rem !important;
-        height: 5rem !important; }
-    .referral-list-wrapper .settle-popup-wrapper .earning-icon-wrapper .refer-icon {
+    .history-referral-container .history-referral-wrapper .earning-icon-wrapper .refer-icon {
       fill: var(--labels_important-active-labels-text-graphics); }
-    .referral-list-wrapper .settle-popup-wrapper .earning-icon-wrapper .margin-aligner {
+    .history-referral-container .history-referral-wrapper .earning-icon-wrapper .margin-aligner {
       margin-bottom: 1% !important; }
-    .referral-list-wrapper .settle-popup-wrapper .earning-icon-wrapper .earning-label {
+    .history-referral-container .history-referral-wrapper .earning-icon-wrapper .earning-label {
       font-size: 18px;
       font-weight: bold; }
-  .referral-list-wrapper .refer-code-popup-wrapper .new-referral-wrapper .new-referral-label,
-  .referral-list-wrapper .referral-popup-earning-wrapper .new-referral-wrapper .new-referral-label,
-  .referral-list-wrapper .referral-final-popup .new-referral-wrapper .new-referral-label {
+
+.new-refer-wrapper {
+  background-color: var(--calculated_quick_trade-bg) !important;
+  color: var(--labels_important-active-labels-text-graphics); }
+  .new-refer-wrapper .new-refer-icon-wrapper {
+    display: flex; }
+    .new-refer-wrapper .new-refer-icon-wrapper .margin-aligner {
+      margin-bottom: 1% !important; }
+  .new-refer-wrapper .create-link-label {
+    color: var(--specials_buttons-links-and-highlights);
+    border-bottom: 1px solid var(--specials_buttons-links-and-highlights);
+    font-weight: bold;
+    margin-top: 0.5%;
+    cursor: pointer; }
+  .new-refer-wrapper .content-field {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 500px; }
+  .new-refer-wrapper .no-link-icon .margin-aligner {
+    margin-bottom: 5%;
+    margin-right: unset; }
+    .new-refer-wrapper .no-link-icon .margin-aligner svg {
+      width: 100% !important;
+      height: 100% !important; }
+
+.settle-popup-wrapper {
+  color: var(--labels_important-active-labels-text-graphics); }
+  .settle-popup-wrapper .earning-icon-wrapper {
+    display: flex; }
+    .settle-popup-wrapper .earning-icon-wrapper .insufficient-icon {
+      text-align: center; }
+      .settle-popup-wrapper .earning-icon-wrapper .insufficient-icon svg {
+        width: 5rem !important;
+        height: 5rem !important; }
+    .settle-popup-wrapper .earning-icon-wrapper .refer-icon {
+      fill: var(--labels_important-active-labels-text-graphics); }
+    .settle-popup-wrapper .earning-icon-wrapper .margin-aligner {
+      margin-bottom: 1% !important; }
+    .settle-popup-wrapper .earning-icon-wrapper .earning-label {
+      font-size: 18px;
+      font-weight: bold; }
+
+.refer-code-popup-wrapper,
+.referral-popup-earning-wrapper,
+.referral-final-popup {
+  color: var(--labels_important-active-labels-text-graphics); }
+  .refer-code-popup-wrapper .new-referral-wrapper .new-referral-label,
+  .referral-popup-earning-wrapper .new-referral-wrapper .new-referral-label,
+  .referral-final-popup .new-referral-wrapper .new-referral-label {
     font-size: 16px;
     margin: 2% 0 3% 2%; }
-  .referral-list-wrapper .refer-code-popup-wrapper .custom-input-field,
-  .referral-list-wrapper .referral-popup-earning-wrapper .custom-input-field,
-  .referral-list-wrapper .referral-final-popup .custom-input-field {
+  .refer-code-popup-wrapper .custom-input-field,
+  .referral-popup-earning-wrapper .custom-input-field,
+  .referral-final-popup .custom-input-field {
     padding: 2%;
     width: 100%;
     border: 1px solid var(--labels_important-active-labels-text-graphics); }
-  .referral-list-wrapper .referral-popup-earning-wrapper .discount-label {
-    margin: 5% 0;
-    font-weight: bold; }
-  .referral-list-wrapper .referral-popup-earning-wrapper .discount-tooltip {
-    padding-top: 4%; }
-  .referral-list-wrapper .referral-popup-earning-wrapper .discount-tooltip-mobile {
-    padding-top: 3%; }
-  .referral-list-wrapper .referral-popup-earning-wrapper .earn-field-wrapper {
-    width: 100%;
-    border: 1px solid var(--labels_important-active-labels-text-graphics);
-    border-radius: 10px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between; }
-    .referral-list-wrapper .referral-popup-earning-wrapper .earn-field-wrapper .earn-info-border {
-      border-bottom: 1px solid var(--labels_important-active-labels-text-graphics); }
-    .referral-list-wrapper .referral-popup-earning-wrapper .earn-field-wrapper .eraning-rate-field,
-    .referral-list-wrapper .referral-popup-earning-wrapper .earn-field-wrapper .discount-field,
-    .referral-list-wrapper .referral-popup-earning-wrapper .earn-field-wrapper .eraning-rate-mobile-field,
-    .referral-list-wrapper .referral-popup-earning-wrapper .earn-field-wrapper .discount-mobile-field {
-      font-size: 12px;
-      cursor: pointer;
-      padding: 2%; }
-    .referral-list-wrapper .referral-popup-earning-wrapper .earn-field-wrapper .eraning-rate-mobile-field,
-    .referral-list-wrapper .referral-popup-earning-wrapper .earn-field-wrapper .discount-mobile-field {
-      padding: 5% !important; }
-  .referral-list-wrapper .referral-popup-earning-wrapper .earn-border-left {
-    border-left: 1px solid var(--labels_important-active-labels-text-graphics);
-    padding-top: 10%;
-    padding-left: 2% !important; }
-    .referral-list-wrapper .referral-popup-earning-wrapper .earn-border-left .caret-icon-mobile svg {
-      width: 5rem !important;
-      height: 5rem !important; }
-  .referral-list-wrapper .referral-popup-earning-wrapper .caret-icon-wrapper {
-    width: 15%;
-    text-align: center;
-    padding-left: 3%;
-    border-bottom-right-radius: 10px;
-    border-top-right-radius: 10px;
+
+.referral-popup-earning-wrapper .discount-label {
+  margin: 5% 0;
+  font-weight: bold; }
+
+.referral-popup-earning-wrapper .discount-tooltip {
+  padding-top: 4%; }
+
+.referral-popup-earning-wrapper .discount-tooltip-mobile {
+  padding-top: 3%; }
+
+.referral-popup-earning-wrapper .earn-field-wrapper {
+  width: 100%;
+  border: 1px solid var(--labels_important-active-labels-text-graphics);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between; }
+  .referral-popup-earning-wrapper .earn-field-wrapper .earn-info-border {
+    border-bottom: 1px solid var(--labels_important-active-labels-text-graphics); }
+  .referral-popup-earning-wrapper .earn-field-wrapper .eraning-rate-field,
+  .referral-popup-earning-wrapper .earn-field-wrapper .discount-field,
+  .referral-popup-earning-wrapper .earn-field-wrapper .eraning-rate-mobile-field,
+  .referral-popup-earning-wrapper .earn-field-wrapper .discount-mobile-field {
+    font-size: 12px;
     cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    background-color: var(--base_background); }
-    .referral-list-wrapper .referral-popup-earning-wrapper .caret-icon-wrapper .caret-up-icon,
-    .referral-list-wrapper .referral-popup-earning-wrapper .caret-icon-wrapper .caret-up-icon-mobile {
-      width: 0;
-      height: 40%;
-      line-height: 0; }
-    .referral-list-wrapper .referral-popup-earning-wrapper .caret-icon-wrapper .caret-up-icon-mobile {
-      height: 15% !important; }
-    .referral-list-wrapper .referral-popup-earning-wrapper .caret-icon-wrapper .caret-down-icon {
-      width: 0;
-      height: 0;
-      line-height: 0; }
-    .referral-list-wrapper .referral-popup-earning-wrapper .caret-icon-wrapper .caret-icon svg {
-      width: 3rem !important;
-      height: 3rem !important; }
-  .referral-list-wrapper .confirm-fild-wrapper .confirm-field-header {
+    padding: 2%; }
+  .referral-popup-earning-wrapper .earn-field-wrapper .eraning-rate-mobile-field,
+  .referral-popup-earning-wrapper .earn-field-wrapper .discount-mobile-field {
+    padding: 5% !important; }
+
+.referral-popup-earning-wrapper .earn-border-left {
+  border-left: 1px solid var(--labels_important-active-labels-text-graphics);
+  padding-top: 10%;
+  padding-left: 2% !important; }
+  .referral-popup-earning-wrapper .earn-border-left .caret-icon-mobile svg {
+    width: 5rem !important;
+    height: 5rem !important; }
+
+.referral-popup-earning-wrapper .caret-icon-wrapper {
+  width: 15%;
+  text-align: center;
+  padding-left: 3%;
+  border-bottom-right-radius: 10px;
+  border-top-right-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--base_background); }
+  .referral-popup-earning-wrapper .caret-icon-wrapper .caret-up-icon,
+  .referral-popup-earning-wrapper .caret-icon-wrapper .caret-up-icon-mobile {
+    width: 0;
+    height: 40%;
+    line-height: 0; }
+  .referral-popup-earning-wrapper .caret-icon-wrapper .caret-up-icon-mobile {
+    height: 15% !important; }
+  .referral-popup-earning-wrapper .caret-icon-wrapper .caret-down-icon {
+    width: 0;
+    height: 0;
+    line-height: 0; }
+  .referral-popup-earning-wrapper .caret-icon-wrapper .caret-icon svg {
+    width: 3rem !important;
+    height: 3rem !important; }
+
+.confirm-fild-wrapper {
+  color: var(--labels_important-active-labels-text-graphics); }
+  .confirm-fild-wrapper .confirm-field-header {
     font-weight: bold;
     color: var(--labels_important-active-labels-text-graphics);
     font-size: 18px;
     margin-bottom: 3%; }
-  .referral-list-wrapper .confirm-fild-wrapper .discount-field {
+  .confirm-fild-wrapper .discount-field {
     margin: 2% 0 1% 0;
     font-weight: bold; }
-  .referral-list-wrapper .confirm-fild-wrapper .referral-field-content-wrapper {
+  .confirm-fild-wrapper .referral-field-content-wrapper {
     padding: 2%;
     width: 100%;
     border: 1px solid var(--labels_important-active-labels-text-graphics); }
-    .referral-list-wrapper .confirm-fild-wrapper .referral-field-content-wrapper .referral-field-content {
+    .confirm-fild-wrapper .referral-field-content-wrapper .referral-field-content {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
       margin-bottom: 2%; }
-    .referral-list-wrapper .confirm-fild-wrapper .referral-field-content-wrapper .earn-rate-content,
-    .referral-list-wrapper .confirm-fild-wrapper .referral-field-content-wrapper .discount-content {
+    .confirm-fild-wrapper .referral-field-content-wrapper .earn-rate-content,
+    .confirm-fild-wrapper .referral-field-content-wrapper .discount-content {
       display: flex;
       flex-direction: row;
       justify-content: space-between; }
-  .referral-list-wrapper .referral-final-popup .checked-icon {
-    padding-top: 2%; }
-    .referral-list-wrapper .referral-final-popup .checked-icon svg {
-      width: 2rem;
-      height: 2rem; }
-  .referral-list-wrapper .referral-final-popup .desc-label {
-    margin-bottom: 2%; }
-  .referral-list-wrapper .referral-final-popup .custom-input {
-    padding: 2%;
-    width: 100%;
-    border: 1px solid var(--labels_important-active-labels-text-graphics);
-    color: var(--specials_buttons-links-and-highlights);
-    display: flex;
-    justify-content: space-between; }
-    .referral-list-wrapper .referral-final-popup .custom-input .link-content {
-      text-decoration: underline;
-      cursor: pointer; }
-  .referral-list-wrapper .referral-popup-btn-wrapper {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-top: 5%; }
-    .referral-list-wrapper .referral-popup-btn-wrapper .back-btn,
-    .referral-list-wrapper .referral-popup-btn-wrapper .next-btn,
-    .referral-list-wrapper .referral-popup-btn-wrapper .okay-btn {
-      background-color: var(--specials_buttons-links-and-highlights);
-      width: 45%;
-      color: var(--labels_important-active-labels-text-graphics);
-      border: none; }
-    .referral-list-wrapper .referral-popup-btn-wrapper .okay-btn {
-      width: 100% !important; }
-  .referral-list-wrapper .layout-mobile .summary-block_wrapper .referral-table-wrapper .table-wrapper th {
-    font-size: 12px; }
-  @media screen and (max-width: 550px) {
-    .referral-list-wrapper .layout-mobile .summary-block_wrapper .referral-table-wrapper .table-wrapper th {
-      font-size: 10px; } }
-  @media screen and (max-width: 450px) {
-    .referral-list-wrapper .layout-mobile .summary-block_wrapper .referral-table-wrapper .table-wrapper th {
-      font-size: 8px; } }
+
+.referral-final-popup .checked-icon {
+  padding-top: 2%; }
+  .referral-final-popup .checked-icon svg {
+    width: 2rem;
+    height: 2rem; }
+
+.referral-final-popup .desc-label {
+  margin-bottom: 2%; }
+
+.referral-final-popup .custom-input {
+  padding: 2%;
+  width: 100%;
+  border: 1px solid var(--labels_important-active-labels-text-graphics);
+  color: var(--specials_buttons-links-and-highlights);
+  display: flex;
+  justify-content: space-between; }
+  .referral-final-popup .custom-input .link-content {
+    text-decoration: underline;
+    cursor: pointer; }
+
+.referral-popup-btn-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 5%; }
+  .referral-popup-btn-wrapper .back-btn,
+  .referral-popup-btn-wrapper .next-btn,
+  .referral-popup-btn-wrapper .okay-btn {
+    background-color: var(--specials_buttons-links-and-highlights);
+    width: 45%;
+    color: var(--labels_important-active-labels-text-graphics);
+    border: none; }
+  .referral-popup-btn-wrapper .okay-btn {
+    width: 100% !important; }
+
+.layout-mobile .summary-block_wrapper .referral-table-wrapper .table-wrapper th {
+  font-size: 12px; }
+
+@media screen and (max-width: 550px) {
+  .layout-mobile .summary-block_wrapper .referral-table-wrapper .table-wrapper th {
+    font-size: 10px; } }
+
+@media screen and (max-width: 450px) {
+  .layout-mobile .summary-block_wrapper .referral-table-wrapper .table-wrapper th {
+    font-size: 8px; } }
 
 .sidebar-row {
   min-height: 3rem;
