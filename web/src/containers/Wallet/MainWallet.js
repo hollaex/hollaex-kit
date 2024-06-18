@@ -344,22 +344,24 @@ class Wallet extends Component {
 						</div>
 					</div>
 				)}
-				{isMobile && router?.location?.pathname === '/wallet' && (
-					<div className="bottom-bar-button">
-						<div className="bottom-bar-deposit-button">
-							<Button
-								onClick={() => this.goToPage('/wallet/deposit')}
-								label={STRINGS['WALLET_BUTTON_BASE_DEPOSIT']}
-							/>
+				{isMobile &&
+					router?.location?.pathname === '/wallet' &&
+					this.state.activeTab === 0 && (
+						<div className="bottom-bar-button">
+							<div className="bottom-bar-deposit-button">
+								<Button
+									onClick={() => this.goToPage('/wallet/deposit')}
+									label={STRINGS['WALLET_BUTTON_BASE_DEPOSIT']}
+								/>
+							</div>
+							<div className="bottom-bar-withdraw-button">
+								<Button
+									onClick={() => this.goToPage('/wallet/withdraw')}
+									label={STRINGS['WALLET_BUTTON_BASE_WITHDRAW']}
+								/>
+							</div>
 						</div>
-						<div className="bottom-bar-withdraw-button">
-							<Button
-								onClick={() => this.goToPage('/wallet/withdraw')}
-								label={STRINGS['WALLET_BUTTON_BASE_WITHDRAW']}
-							/>
-						</div>
-					</div>
-				)}
+					)}
 			</div>
 		);
 	}
