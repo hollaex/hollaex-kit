@@ -339,6 +339,7 @@ const AssetsBlock = ({
 									<span className="hide-zero-balance-checkbox">
 										<Checkbox
 											onClick={(e) => onToggle(e.target.checked)}
+											checked={isZeroBalanceHidden}
 										></Checkbox>
 									</span>
 								</div>

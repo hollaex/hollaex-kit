@@ -311,6 +311,9 @@ const ProfitLossSection = ({
 									calculateOraclePrice(balance, oraclePrice),
 									baseCoin.increment_unit
 							  );
+					const getBalancePercentage = chartData.filter(
+						(coin) => coin.symbol === symbol
+					);
 					if (sourceAmount > 0) {
 						return (
 							<tr className="table-row" key={index}>
@@ -374,6 +377,22 @@ const ProfitLossSection = ({
 									>
 										= {sourceAmountNative}{' '}
 										{balance_history_config?.currency?.toUpperCase() || 'USDT'}
+									</td>
+								)}
+								{!isMobile && (
+									<td
+										style={{
+											borderBottom: '1px solid grey',
+											minWidth: '15.5em',
+										}}
+										className="td-fit"
+									>
+										<div>{getBalancePercentage[0]?.balancePercentage}</div>
+										{isMobile &&
+											selectedCoin[0] !== BASE_CURRENCY &&
+											parseFloat(balanceText || 0) > 0 && (
+												<div className="text-end">{`(≈ $${balanceText})`}</div>
+											)}
 									</td>
 								)}
 							</tr>
@@ -1183,6 +1202,13 @@ const ProfitLossSection = ({
 													<th>
 														<EditWrapper stringId="PROFIT_LOSS.VALUE">
 															{STRINGS['PROFIT_LOSS.VALUE']}
+														</EditWrapper>
+													</th>
+												)}
+												{!isMobile && (
+													<th>
+														<EditWrapper stringId="PROFIT_LOSS.BALANCE_PERCENTAGE">
+															{STRINGS['PROFIT_LOSS.BALANCE_PERCENTAGE']}
 														</EditWrapper>
 													</th>
 												)}
