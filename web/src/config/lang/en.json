@@ -115,7 +115,8 @@
 		},
 		"QR_CODE": "This QR code contains the deposit information and can be scanned with a QR code reader.",
 		"NO_DATA": "No information available",
-		"QR_CODE_TITLE": "{0} Deposit Information"
+		"QR_CODE_TITLE": "{0} Deposit Information",
+		"VIEW_DEPOSIT": "View Deposit"
 	},
 	"QR_CODE": {
 		"SCAN": "Scan",
@@ -1373,7 +1374,7 @@
 		"TABLE_TITLE": "All successful referrals",
 		"USER": "User / email",
 		"TIME": "Time of sign up",
-		"CODE": "Code used",
+		"CODE": "Code",
 		"EARNING": "Earnings value",
 		"HISTORY_DESCRIPTION": "Select specific dates to fetch your referral history data",
 		"START_DATE": "Start Date",
@@ -1402,7 +1403,7 @@
 		"TIME_OF_SETTLEMENT": "Time of settlement",
 		"CREATION_DATE": "Creation Date",
 		"REFERRAL_COUNT": "Referral Count",
-		"YOUR_EARNING_RATE": "Your earning rate:",
+		"YOUR_EARNING_RATE": "Earning rate:",
 		"DISCOUNT_GIVEN": "Discount given:",
 		"LINK": "Link",
 		"CREATE_REFERRAL_LINK": "Create new referral code/link",
@@ -1449,7 +1450,8 @@
 		"INSUFFICIENT_LABEL": "Insufficient Settlement Amount",
 		"INSUFFICIENT_INFO_1": "Your earnings are currently insufficient for settlement. Please invite more members using your referral link and wait until your unsettled earnings {0} {1}",
 		"INSUFFICIENT_INFO_2": "exceed 1",
-		"GO_TO_REFERRAL": "Go To Referral"
+		"GO_TO_REFERRAL": "Go To Referral",
+		"REFER_DESC": "Share a link below with friends to Start earning commissions on their trading"
 	},
 	"NOT_LOGGEDIN": {
 		"TEXT_GENERAL": "To view you must login",
@@ -1718,7 +1720,8 @@
 		"ORDERBOOK": "Orderbook",
 		"NETWORK": "Network Broker OTC",
 		"BROKER": "Local Broker OTC",
-		"BROKERAGE": "NA - (Brokerage)"
+		"BROKERAGE": "NA - (Brokerage)",
+		"LOADING_PRICES": "Loading Prices..."
 	},
 	"HOLLAEX_TOKEN": {
 		"REMOVE_FAVOURITES": "Remove from favourites",
