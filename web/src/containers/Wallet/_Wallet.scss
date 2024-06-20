@@ -806,6 +806,10 @@ $header-margin: 2rem;
 }
 
 .layout-mobile {
+	.footer-button {
+		margin-top: 4%;
+		margin-bottom: 2%;
+	}
 	.bottom-bar-button {
 		padding: 3%;
 		display: flex;
