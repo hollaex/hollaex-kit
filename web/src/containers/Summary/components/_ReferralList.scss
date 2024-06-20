@@ -350,7 +350,6 @@
 	.caret-icon-wrapper {
 		width: 15%;
 		text-align: center;
-		padding-top: 2%;
 		padding-left: 3%;
 		border-bottom-right-radius: 10px;
 		border-top-right-radius: 10px;
@@ -603,16 +602,6 @@
 				.table-wrapper th {
 					font-size: 12px;
 				}
-			}
-		}
-	}
-}
-
-@media (min-width: 1920px) {
-	.referral-popup-earning-wrapper {
-		.earn-field-wrapper {
-			.caret-icon-wrapper {
-				padding-top: 0%;
 			}
 		}
 	}
