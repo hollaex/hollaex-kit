@@ -377,8 +377,8 @@ table th {
     height: auto;
     flex: 1; }
   .app_container.layout-mobile .app_container-content {
-    min-height: calc( 100vh - 10rem);
-    max-height: calc( 100vh - 10rem);
+    min-height: calc( 100vh - 10rem);
+    max-height: calc( 100vh - 10rem);
     max-width: 100vw;
     overflow-y: scroll; }
     .app_container.layout-mobile .app_container-content.chart-embed {
@@ -396,8 +396,8 @@ table th {
       .app_container.layout-mobile .app_container-content .app_container-main.no_bottom_navigation {
         height: 100%; }
   .app_container.layout-mobile .content-with-bar {
-    min-height: calc( 100vh - 17rem);
-    max-height: calc( 100vh - 17rem);
+    min-height: calc( 100vh - 17rem);
+    max-height: calc( 100vh - 17rem);
     max-width: 100vw;
     padding: 1rem;
     margin: 0;
@@ -2209,6 +2209,10 @@ table th {
       .currency-wallet-wrapper .wallet-content-wrapper .donut-wrapper .animation-wrapper {
         display: flex;
         justify-content: center; }
+
+.layout-mobile .footer-button {
+  margin-top: 4%;
+  margin-bottom: 2%; }
 
 .layout-mobile .bottom-bar-button {
   padding: 3%;
@@ -4320,8 +4324,8 @@ table th {
 .layout-mobile .quote-container {
   background-color: transparent;
   overflow-y: scroll;
-  min-height: calc( 100vh - 17rem);
-  max-height: calc( 100vh - 17rem); }
+  min-height: calc( 100vh - 17rem);
+  max-height: calc( 100vh - 17rem); }
   .layout-mobile .quote-container .quick_trade-wrapper {
     flex: 1 1;
     flex-direction: column;
@@ -4494,7 +4498,7 @@ table th {
 
 .layout-mobile .presentation_container.verification_container {
   padding-top: 0 !important;
-  max-height: calc( 100vh - 10rem); }
+  max-height: calc( 100vh - 10rem); }
   .layout-mobile .presentation_container.verification_container .header-content {
     font-size: 13px !important; }
 
@@ -5380,6 +5384,15 @@ table th {
       cursor: pointer; }
       .digital-market-wrapper .market-list__block-table .table-row .sticky-col:hover {
         opacity: 0.5; }
+
+.digital-market-wrapper .custom-header-wrapper {
+  color: var(--labels_secondary-inactive-label-text-graphics);
+  font-family: "Raleway";
+  font-weight: bold; }
+
+.digital-market-wrapper .custom-border-bottom {
+  border-bottom: 1px solid var(--labels_important-active-labels-text-graphics);
+  margin-bottom: 10%; }
 
 .trade_tabs-container .market-pairs {
   color: var(--labels_important-active-labels-text-graphics); }
@@ -6858,6 +6871,26 @@ table th {
 .fs-14 {
   font-size: 14px; }
 
+.summary-block_wrapper {
+  background-color: var(--base_wallet-sidebar-and-popup); }
+  .summary-block_wrapper .referral-table-wrapper .history-table-link {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 3%;
+    color: var(--specials_buttons-links-and-highlights); }
+  .summary-block_wrapper .referral-table-wrapper .referral-copy-link {
+    color: var(--labels_important-active-labels-text-graphics);
+    padding: 5px;
+    cursor: pointer;
+    background-color: var(--specials_buttons-links-and-highlights);
+    border-radius: 10px; }
+  .summary-block_wrapper .referral-table-wrapper .summary-table-link {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 3%; }
+
 .referral-active-text {
   color: var(--labels_important-active-labels-text-graphics); }
 
@@ -6875,6 +6908,9 @@ table th {
 .referral_table_theme .ant-modal-body {
   background-color: var(--base_wallet-sidebar-and-popup) !important; }
 
+.referral_table_theme .ReactModal__Content {
+  width: 40rem; }
+
 .back-label {
   cursor: pointer;
   text-decoration: underline;
@@ -6888,7 +6924,7 @@ table th {
     .summary-referral-container .summary-referral-wrapper .settle-link,
     .summary-referral-container .summary-referral-wrapper .view-history-label {
       color: var(--specials_buttons-links-and-highlights);
-      border-bottom: 1px solid var(--specials_buttons-links-and-highlights);
+      text-decoration: underline;
       cursor: pointer;
       font-weight: bold; }
     .summary-referral-container .summary-referral-wrapper .earning-icon-wrapper {
@@ -6916,6 +6952,9 @@ table th {
 
 .history-referral-container {
   padding: 2%; }
+  .history-referral-container .summary-history-referral {
+    display: flex;
+    justify-content: space-between !important; }
   .history-referral-container .history-referral-wrapper .earning-icon-wrapper {
     display: flex; }
     .history-referral-container .history-referral-wrapper .earning-icon-wrapper .refer-icon {
@@ -6925,17 +6964,28 @@ table th {
     .history-referral-container .history-referral-wrapper .earning-icon-wrapper .earning-label {
       font-size: 18px;
       font-weight: bold; }
+  .history-referral-container .history-refer-icon .margin-aligner {
+    opacity: 0.5;
+    margin-bottom: unset;
+    margin-right: unset; }
+    .history-referral-container .history-refer-icon .margin-aligner svg {
+      width: 40% !important;
+      height: 70% !important; }
+  .history-referral-container .history-refer-icon .margin-aligner div {
+    display: flex;
+    justify-content: flex-end; }
 
 .new-refer-wrapper {
   background-color: var(--calculated_quick_trade-bg) !important;
-  color: var(--labels_important-active-labels-text-graphics); }
+  color: var(--labels_important-active-labels-text-graphics);
+  padding: 15px; }
   .new-refer-wrapper .new-refer-icon-wrapper {
     display: flex; }
     .new-refer-wrapper .new-refer-icon-wrapper .margin-aligner {
       margin-bottom: 1% !important; }
   .new-refer-wrapper .create-link-label {
     color: var(--specials_buttons-links-and-highlights);
-    border-bottom: 1px solid var(--specials_buttons-links-and-highlights);
+    text-decoration: underline;
     font-weight: bold;
     margin-top: 0.5%;
     cursor: pointer; }
@@ -6955,12 +7005,16 @@ table th {
 .settle-popup-wrapper {
   color: var(--labels_important-active-labels-text-graphics); }
   .settle-popup-wrapper .earning-icon-wrapper {
-    display: flex; }
+    display: flex;
+    align-items: center; }
     .settle-popup-wrapper .earning-icon-wrapper .insufficient-icon {
       text-align: center; }
       .settle-popup-wrapper .earning-icon-wrapper .insufficient-icon svg {
         width: 5rem !important;
         height: 5rem !important; }
+    .settle-popup-wrapper .earning-icon-wrapper .margin-aligner svg {
+      width: 4rem !important;
+      height: 4rem !important; }
     .settle-popup-wrapper .earning-icon-wrapper .refer-icon {
       fill: var(--labels_important-active-labels-text-graphics); }
     .settle-popup-wrapper .earning-icon-wrapper .margin-aligner {
@@ -6983,7 +7037,7 @@ table th {
   .referral-final-popup .custom-input-field {
     padding: 2%;
     width: 100%;
-    border: 1px solid var(--labels_important-active-labels-text-graphics); }
+    border: 1px solid var(--specials_buttons-links-and-highlights); }
 
 .referral-popup-earning-wrapper .discount-label {
   margin: 5% 0;
@@ -7017,15 +7071,18 @@ table th {
 
 .referral-popup-earning-wrapper .earn-border-left {
   border-left: 1px solid var(--labels_important-active-labels-text-graphics);
-  padding-top: 10%;
-  padding-left: 2% !important; }
+  padding-top: 10% !important;
+  padding-left: 1% !important; }
   .referral-popup-earning-wrapper .earn-border-left .caret-icon-mobile svg {
     width: 5rem !important;
     height: 5rem !important; }
+  .referral-popup-earning-wrapper .earn-border-left .caret-down-icon-mobile svg {
+    height: 8rem !important; }
 
 .referral-popup-earning-wrapper .caret-icon-wrapper {
   width: 15%;
   text-align: center;
+  padding-top: 2%;
   padding-left: 3%;
   border-bottom-right-radius: 10px;
   border-top-right-radius: 10px;
@@ -7054,7 +7111,7 @@ table th {
     font-weight: bold;
     color: var(--labels_important-active-labels-text-graphics);
     font-size: 18px;
-    margin-bottom: 3%; }
+    margin-bottom: 1%; }
   .confirm-fild-wrapper .discount-field {
     margin: 2% 0 1% 0;
     font-weight: bold; }
@@ -7066,7 +7123,7 @@ table th {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
-      margin-bottom: 2%; }
+      margin-bottom: 10%; }
     .confirm-fild-wrapper .referral-field-content-wrapper .earn-rate-content,
     .confirm-fild-wrapper .referral-field-content-wrapper .discount-content {
       display: flex;
@@ -7088,7 +7145,8 @@ table th {
   border: 1px solid var(--labels_important-active-labels-text-graphics);
   color: var(--specials_buttons-links-and-highlights);
   display: flex;
-  justify-content: space-between; }
+  justify-content: space-between;
+  align-items: center; }
   .referral-final-popup .custom-input .link-content {
     text-decoration: underline;
     cursor: pointer; }
@@ -7108,16 +7166,91 @@ table th {
   .referral-popup-btn-wrapper .okay-btn {
     width: 100% !important; }
 
-.layout-mobile .summary-block_wrapper .referral-table-wrapper .table-wrapper th {
+.layout-mobile .referral-list-wrapper {
+  width: 100%; }
+  .layout-mobile .referral-list-wrapper .earning-discount-label {
+    font-size: 18px; }
+  .layout-mobile .referral-list-wrapper .ant-tabs-nav-list {
+    margin-left: 2rem; }
+  .layout-mobile .referral-list-wrapper .referral-popup {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important; }
+  .layout-mobile .referral-list-wrapper .refer-code-popup-wrapper .unique-referral,
+  .layout-mobile .referral-list-wrapper .referral-popup-earning-wrapper .unique-referral,
+  .layout-mobile .referral-list-wrapper .referral-final-popup .unique-referral {
+    margin-bottom: 15%; }
+  .layout-mobile .referral-list-wrapper .refer-code-popup-wrapper .referral-label-mobile,
+  .layout-mobile .referral-list-wrapper .referral-popup-earning-wrapper .referral-label-mobile,
+  .layout-mobile .referral-list-wrapper .referral-final-popup .referral-label-mobile {
+    font-size: 14px; }
+  .layout-mobile .referral-list-wrapper .history-referral-container .referral-history-content {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start; }
+  .layout-mobile .referral-list-wrapper .history-referral-container .events-desc-border {
+    width: 14%;
+    border-bottom: 1px solid var(--labels_secondary-inactive-label-text-graphics); }
+  .layout-mobile .referral-list-wrapper .settle-pop-up .settle {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important; }
+  .layout-mobile .referral-list-wrapper .settle-pop-up .settle-popup-wrapper {
+    margin-bottom: 10%; }
+    .layout-mobile .referral-list-wrapper .settle-pop-up .settle-popup-wrapper .referral-earning-settlement {
+      font-size: 18px; }
+
+.layout-mobile .summary-block_wrapper .create-referral-link {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 2rem; }
+
+.layout-mobile .summary-block_wrapper .new-refer-mobile-wrapper {
+  padding: 2rem; }
+
+.layout-mobile .summary-block_wrapper .referral-active-wrapper {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem; }
+
+.layout-mobile .summary-block_wrapper .referral-active-text .earn-info-wrapper {
+  width: 75% !important; }
+  .layout-mobile .summary-block_wrapper .referral-active-text .earn-info-wrapper .earn-text-wrapper {
+    justify-content: flex-start;
+    padding: 5% 0; }
+
+.layout-mobile .summary-block_wrapper .referral-table-wrapper .table-wrapper th,
+.layout-mobile .summary-block_wrapper .referral-table-wrapper tr {
   font-size: 12px; }
 
+.layout-mobile .summary-block_wrapper .referral-table-wrapper .table-wrapper th {
+  text-wrap: nowrap; }
+
+.layout-mobile .summary-block_wrapper .referral-table-wrapper td {
+  padding: 1rem !important; }
+
+.layout-mobile .summary-block_wrapper .referral-table-wrapper .table_container .table-content {
+  overflow-x: scroll; }
+
+.layout-mobile .content-field {
+  min-height: 20rem !important; }
+
 @media screen and (max-width: 550px) {
+  .layout-mobile .icon_title-wrapper {
+    margin-left: 2rem; }
   .layout-mobile .summary-block_wrapper .referral-table-wrapper .table-wrapper th {
-    font-size: 10px; } }
+    padding: 1rem; } }
 
 @media screen and (max-width: 450px) {
   .layout-mobile .summary-block_wrapper .referral-table-wrapper .table-wrapper th {
-    font-size: 8px; } }
+    font-size: 12px; } }
+
+@media (min-width: 1920px) {
+  .referral-popup-earning-wrapper .earn-field-wrapper .caret-icon-wrapper {
+    padding-top: 0%; } }
 
 .sidebar-row {
   min-height: 3rem;
@@ -7324,7 +7457,7 @@ table th {
     padding: 0.3rem 0; }
     .modal-market-menu .app-bar-add-tab-content .scroll-view {
       overflow-y: auto;
-      height: calc( 100vh - 19rem - 8rem); }
+      height: calc( 100vh - 19rem - 8rem); }
   .modal-market-menu .app-bar-tab-overflow-content {
     background-color: var(--base_background);
     color: var(--labels_secondary-inactive-label-text-graphics);
@@ -8186,7 +8319,7 @@ table th {
     height: 5rem;
     min-height: 5rem; }
     .app-menu-bar .app-menu-bar-content {
-      width: 10rem; }
+      width: 8rem; }
   .app-bar-add-tab-menu {
     width: 24rem; }
     .app-bar-add-tab-menu.narrow {
@@ -9798,14 +9931,14 @@ table th {
   right: 0 !important;
   min-width: 100vw;
   max-width: 100vw;
-  min-height: calc( 100vh - 4rem);
-  max-height: calc( 100vh - 4rem);
+  min-height: calc( 100vh - 4rem);
+  max-height: calc( 100vh - 4rem);
   border-radius: 0 !important;
   padding: 0 !important; }
   .layout-mobile .ReactModal__Content .dialog-mobile-content {
     padding: 2.5rem !important;
-    min-height: calc( 100vh - 8rem);
-    max-height: calc( 100vh - 8rem);
+    min-height: calc( 100vh - 8rem);
+    max-height: calc( 100vh - 8rem);
     display: flex; }
 
 .layout-mobile.LogoutModal .ReactModal__Content {

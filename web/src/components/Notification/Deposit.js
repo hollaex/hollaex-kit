@@ -75,7 +75,7 @@ const DepositNotification = ({
 			</div>
 			<div className="notification-buttons-wrapper d-flex">
 				<Button
-					label={STRINGS['SUMMARY.DEPOSIT']}
+					label={STRINGS['DEPOSIT.VIEW_DEPOSIT']}
 					onClick={() => onHandleDeposit()}
 					className="w-50 mr-2"
 				/>

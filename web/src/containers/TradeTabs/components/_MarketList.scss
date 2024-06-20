@@ -234,6 +234,16 @@
 			}
 		}
 	}
+
+	.custom-header-wrapper {
+		color: $colors-black;
+		font-family: 'Raleway';
+		font-weight: bold;
+	}
+	.custom-border-bottom {
+		border-bottom: 1px solid $colors-main-black;
+		margin-bottom: 10%;
+	}
 }
 
 .trade_tabs-container {
