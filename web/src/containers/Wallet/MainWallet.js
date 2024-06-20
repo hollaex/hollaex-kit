@@ -347,7 +347,11 @@ class Wallet extends Component {
 				{isMobile &&
 					router?.location?.pathname === '/wallet' &&
 					this.state.activeTab === 0 && (
-						<div className="bottom-bar-button">
+						<div
+							className={`bottom-bar-button ${
+								router?.location?.pathname === '/wallet' && 'footer-button'
+							}`}
+						>
 							<div className="bottom-bar-deposit-button">
 								<Button
 									onClick={() => this.goToPage('/wallet/deposit')}
