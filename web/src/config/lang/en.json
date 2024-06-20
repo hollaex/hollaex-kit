@@ -1699,7 +1699,8 @@
 		"WALLET_BALANCE_ESTIMATE": "Today's wallet balance estimate ",
 		"VIEW_BALANCE_HISTORY": "VIEW BALANCE HISTORY",
 		"VIEW_PERCENTAGE_SHARE": "VIEW PERCENTAGE SHARE",
-		"VIEW_WALLET_P&L": "VIEW WALLET P&L"
+		"VIEW_WALLET_P&L": "VIEW WALLET P&L",
+		"BALANCE_PERCENTAGE": "Balance Percentage"
 	},
 	"ASSET_INFO": "Asset info",
 	"TAKER_FEES_APPLIED": "Taker fees are applied",
