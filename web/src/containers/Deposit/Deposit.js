@@ -320,7 +320,7 @@ const DepositComponent = ({
 		>
 			<div>
 				<div className="d-flex">
-					<div className="custom-field d-flex flex-column">
+					<div className="custom-field d-flex flex-column align-items-center">
 						<span className="custom-step-selected">1</span>
 						<span
 							className={`custom-line${currStep.stepTwo ? '-selected' : ''}`}
@@ -412,7 +412,7 @@ const DepositComponent = ({
 			</div>
 			<div>
 				<div className="d-flex h-25">
-					<div className="custom-field d-flex flex-column">
+					<div className="custom-field d-flex flex-column align-items-center">
 						<span
 							className={`custom-step${currStep.stepTwo ? '-selected' : ''}`}
 						>
@@ -523,7 +523,7 @@ const DepositComponent = ({
 			</div>
 			<div className={!depositAddress && 'd-flex'}>
 				<div className="d-flex w-100">
-					<div className="custom-field d-flex flex-column">
+					<div className="custom-field d-flex flex-column align-items-center">
 						<span className={`custom-step${isSteps ? '-selected' : ''}`}>
 							3
 						</span>
@@ -620,7 +620,7 @@ const DepositComponent = ({
 			{renderOptionalField && (
 				<div>
 					<div className="d-flex h-25">
-						<div className="custom-field d-flex flex-column">
+						<div className="custom-field d-flex flex-column align-items-center">
 							<span
 								className={`custom-step${
 									(coinLength &&
