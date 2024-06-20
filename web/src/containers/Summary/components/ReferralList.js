@@ -644,11 +644,6 @@ const ReferralList = ({
 										{process.env.REACT_APP_PUBLIC_URL}/signup?affiliation_code=
 										{referralCode}
 									</div>
-									<div className="referral-active-text mt-3">
-										<EditWrapper stringId="REFERRAL_LINK.NO_SPECIAL">
-											{STRINGS['REFERRAL_LINK.NO_SPECIAL']}
-										</EditWrapper>
-									</div>
 								</div>
 							</div>
 							<div className="referral-popup-btn-wrapper">
