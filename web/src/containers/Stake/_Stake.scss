@@ -10,3 +10,142 @@
 .area-disabled {
 	opacity: 0.5;
 }
+
+.wallet-wrapper {
+	.cefi-stake {
+		width: 50px;
+		height: 40px;
+		margin-bottom: 10px;
+	}
+	.stake-button-wrapper {
+		margin: 2% 0;
+		display: flex;
+		justify-content: center;
+		.stakingOption {
+			margin-right: 5px;
+			padding: 10px;
+			border-radius: 10px;
+			cursor: pointer;
+		}
+		.stakingoption-opacity {
+			opacity: 1;
+		}
+		.stakingoption-half-opacity {
+			opacity: 0.7;
+		}
+	}
+}
+
+.layout-mobile {
+	.stake-wrapper {
+		padding: 0 !important;
+
+		.stake-icon-container {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+
+			.stake-icon-wrapper {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+
+				.stake-title {
+					font-size: 20px;
+					font-weight: bold;
+				}
+
+				.stake-icon {
+					svg {
+						width: 5rem !important;
+					}
+				}
+			}
+
+			.icon_title-wrapper {
+				margin-top: 0;
+			}
+		}
+
+		.stake-button-wrapper {
+			margin: 4% 0;
+			display: flex;
+			justify-content: center;
+
+			.stake-button-container {
+				width: 46%;
+				display: flex;
+				flex-direction: row;
+				justify-content: center;
+				gap: 4%;
+
+				.defi-button,
+				.cefi-button {
+					padding: 10px;
+					border-radius: 10px;
+					cursor: pointer;
+				}
+
+				.stake-text-bold {
+					font-weight: bold;
+					opacity: 1;
+				}
+
+				.stake-text-normal {
+					font-weight: normal;
+					opacity: 0.7;
+				}
+			}
+		}
+
+		.wallet-container {
+			.wallet-assets_block {
+				border-top: 1px solid var(--calculated_secondary-border);
+				.estimated-stake-content {
+					min-width: max-content;
+					padding-top: 0.5rem;
+					text-align: right;
+					display: flex;
+					flex-direction: column;
+					align-items: flex-end;
+					justify-content: flex-end;
+					.stake-estimated-table {
+						width: 40%;
+
+						.kit-divider {
+							width: 100%;
+						}
+					}
+				}
+			}
+		}
+
+		.stake-table {
+			overflow-x: scroll;
+
+			table th {
+				.edit-wrapper__container,
+				td {
+					width: 15rem;
+					display: flex;
+					align-items: center;
+					justify-content: flex-start !important;
+				}
+
+				tbody td {
+					display: flex;
+					align-items: center;
+					justify-content: flex-start;
+				}
+			}
+
+			table th:last-child {
+				.edit-wrapper__container,
+				td {
+					justify-content: center !important;
+				}
+			}
+		}
+	}
+}
