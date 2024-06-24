@@ -1226,7 +1226,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 					)}
 				</div>
 			</div>
-			{!p2p_config?.enable && (
+			{p2pConfig?.side == null && (
 				<div
 					style={{
 						padding: 20,
@@ -1456,6 +1456,24 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 															{' '}
 															{symbol?.toUpperCase()}
 														</span>
+														<span
+															style={{
+																marginTop: 7,
+																marginLeft: 10,
+																textDecoration: 'underline',
+																fontWeight: 'bold',
+																cursor: 'pointer',
+															}}
+															onClick={() => {
+																setFiatCurrencies(
+																	[...fiatCurrencies].filter(
+																		(x) => x !== symbol
+																	)
+																);
+															}}
+														>
+															X
+														</span>
 													</span>
 												</div>
 											);
@@ -1497,6 +1515,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 									className="select-box"
 									placeholder="Select a tier level:"
 									value={userTier}
+									style={{ width: 120 }}
 									onChange={(e) => {
 										setUserTier(e);
 									}}
@@ -1521,7 +1540,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 								showSearch
 								className="select-box"
 								placeholder="Select a tier level:"
-								style={{ marginBottom: 40 }}
+								style={{ marginBottom: 40, width: 120 }}
 								value={merchantTier}
 								onChange={(e) => {
 									setMerchantTier(e);
@@ -1802,7 +1821,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 									</div>
 									<div
 										onClick={() => {
-											setStep(0);
+											setStep(1);
 										}}
 										style={{ cursor: 'pointer' }}
 									>
@@ -1832,7 +1851,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 									</div>
 									<div
 										onClick={() => {
-											setStep(0);
+											setStep(3);
 										}}
 										style={{ cursor: 'pointer' }}
 									>
@@ -1858,7 +1877,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 									</div>
 									<div
 										onClick={() => {
-											setStep(0);
+											setStep(4);
 										}}
 										style={{ cursor: 'pointer' }}
 									>
@@ -1884,7 +1903,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 									</div>
 									<div
 										onClick={() => {
-											setStep(0);
+											setStep(4);
 										}}
 										style={{ cursor: 'pointer' }}
 									>
@@ -1910,7 +1929,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 									</div>
 									<div
 										onClick={() => {
-											setStep(0);
+											setStep(4);
 										}}
 										style={{ cursor: 'pointer' }}
 									>

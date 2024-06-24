@@ -390,6 +390,15 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 		if (newKitConfig.p2p_config.user_fee == null) {
 			throw new Error('buyer_fee cannot be null');
 		} 
+
+		const percentagePattern = /^(100(\.00?)?|(\d{1,2})(\.\d{1,2})?)$/;
+
+		if (!percentagePattern.test(newKitConfig.p2p_config.merchant_fee)) {
+				throw new Error('merchant_fee must be in percentage format');
+		}
+		if (!percentagePattern.test(newKitConfig.p2p_config.user_fee)) {
+			throw new Error('buyer_fee must be in percentage format');
+		}
 	}
 
 	if (newKitConfig.referral_history_config) {
