@@ -41,7 +41,7 @@ export const formatCurrency = (amount = 0, min = 0, fullFormat = false) => {
 };
 
 export const roundNumber = (number = 0, decimals = 4) => {
-	if (number === 0) {
+	if (number === 0 || number === Infinity || isNaN(number)) {
 		return 0;
 	} else if (decimals > 0) {
 		const multipliedNumber = math.multiply(

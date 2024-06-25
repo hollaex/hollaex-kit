@@ -18,6 +18,7 @@ const icons = {
 	CANDLES_LOGO: '/assets/images/Light-theme-candles.svg',
 	SET_ADMIN_NETWORK_KEYS: '/assets/images/set-admin-network-keys.svg',
 	SET_ADMIN_EMAIL: '/assets/images/set-admin-email.svg',
+	REFERRAL_ICON: '/assets/images/referrals-icon.svg',
 	SET_ADMIN_PASSWORD: '/assets/images/set-admin-password.svg',
 	MAX_ICON: '/assets/images/maxIcon.svg',
 	SET_ADMIN_RETYPE_PASSWORD: '/assets/images/set-admin-retype-password.svg',

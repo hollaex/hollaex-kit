@@ -51,9 +51,19 @@ const QrCode = ({ closeQRCode, data = '', currency = '', onCopy }) => {
 					</div>
 				</div>
 			)}
-			<div className="w-100">
-				<EditWrapper stringId="BACK_TEXT" />
-				<Button label={STRINGS['BACK_TEXT']} onClick={closeQRCode} />
+			<div className="qr-popup-buttons">
+				<div className="qr-back-btn">
+					<EditWrapper stringId="BACK_TEXT" />
+					<Button label={STRINGS['BACK_TEXT']} onClick={closeQRCode} />
+				</div>
+				<div className="qr-copy-btn">
+					<CopyToClipboard text={address} onCopy={onCopy}>
+						<span className="blue-link pointer underline-text font-small">
+							<EditWrapper stringId="COPY_TEXT" />
+							<Button label={STRINGS['COPY_TEXT']} />
+						</span>
+					</CopyToClipboard>
+				</div>
 			</div>
 		</div>
 	);

@@ -123,6 +123,42 @@
         "OTP_ENABLED": {
             "html": "<div> <p> عزيزي/عزيزتي ${name} </p> <p> لقد سجلنا أن <b>المصادقة ذات العاملين (2FA) تم تمكينها</b> على حسابك.</p> <div> <div>الوقت: ${time}</div> <div>البلد: ${country}</div> <div>عنوان IP: ${ip}</div> </div> <p> بكل تقدير<br> فريق ${api_name} </p> </div>",
             "title": "تم تمكين 2FA"
+        },
+        "P2P_MERCHANT_IN_PROGRESS": {
+            "html": "<div><p> عزيزي ${name} </p><p>لقد اكتشفنا نشاطًا في صفقتك P2P، مما قد يشير إلى طلب عميل للتعامل معك. للتحقق من حالة صفقتك، يرجى النقر على الرابط أدناه:<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">تحقق من حالة الصفقة</Button></a></div><p>شكرًا لاستخدامك منصتنا.</p><p>تم تقديم الطلب من: ${ip}</p><p>تحياتنا<br> فريق ${api_name} </p></div>",
+            "title": "تحديث حول صفقتك P2P"
+        },
+        "P2P_BUYER_PAID_ORDER": {
+            "html": "<div><p> عزيزي ${name} </p><p>لقد قمت بتحديد طلبك على أنه مدفوع. بانتظار البائع للتحقق، التأكيد وإطلاق الأموال<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">انتقل إلى طلبك</Button></a></div><p>شكرًا لاستخدامك منصتنا.</p><p>تم تقديم الطلب من: ${ip}</p><p>تحياتنا<br> فريق ${api_name} </p></div>",
+            "title": "تم اكتشاف نشاط في طلبك P2P"
+        },
+        "P2P_ORDER_EXPIRED": {
+            "html": "<div><p> عزيزي ${name} </p><p>انتهت صلاحية طلبك بسبب عدم النشاط في الوقت المحدد.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">انتقل إلى طلبك</Button></a></div><p>شكرًا لاستخدامك منصتنا.</p><p>تم تقديم الطلب من: ${ip}</p><p>تحياتنا<br> فريق ${api_name} </p></div>",
+            "title": "تم اكتشاف نشاط في طلبك P2P"
+        },
+        "P2P_ORDER_CLOSED": {
+            "html": "<div><p> عزيزي ${name} </p><p>تم إغلاق طلبك بواسطة فريق الدعم بعد الوصول إلى قرار بشأن طلب الاستئناف<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">انتقل إلى طلبك</Button></a></div><p>شكرًا لاستخدامك منصتنا.</p><p>مع تحيات<br> فريق ${api_name} </p></div>",
+            "title": "تم اكتشاف نشاط في طلبك P2P"
+        },
+        "P2P_BUYER_CANCELLED_ORDER": {
+            "html": "<div><p> عزيزي ${name} </p><p>لقد قمت بإلغاء طلبك. تم إغلاق الصفقة.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">انتقل إلى طلبك</Button></a></div><p>شكرًا لاستخدامك منصتنا.</p><p>تم تقديم الطلب من: ${ip}</p><p>تحياتنا<br> فريق ${api_name} </p></div>",
+            "title": "تم اكتشاف نشاط في طلبك P2P"
+        },
+        "P2P_BUYER_APPEALED_ORDER": {
+            "html": "<div><p> عزيزي ${name} </p><p>لقد قمت بالاستئناف على طلبك. يرجى الاتصال بالدعم لحل المشكلة.</p><p>تم تقديم الطلب من: ${ip}</p><p>تحياتنا<br> فريق ${api_name} </p></div>",
+            "title": "تم اكتشاف نشاط في طلبك P2P"
+        },
+        "P2P_VENDOR_CONFIRMED_ORDER": {
+            "html": "<div><p> عزيزي ${name} </p><p>لقد قمت بتأكيد الصفقة وإطلاق الأموال.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">انتقل إلى طلبك</Button></a></div><p>شكرًا لاستخدامك منصتنا.</p><p>تم تقديم الطلب من: ${ip}</p><p>تحياتنا<br> فريق ${api_name} </p></div>",
+            "title": "تم اكتشاف نشاط في طلبك P2P"
+        },
+        "P2P_VENDOR_CANCELLED_ORDER": {
+            "html": "<div><p> عزيزي ${name} </p><p>لقد قمت بإلغاء طلبك. تم إغلاق الصفقة.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">انتقل إلى طلبك</Button></a></div><p>شكرًا لاستخدامك منصتنا.</p><p>تم تقديم الطلب من: ${ip}</p><p>تحياتنا<br> فريق ${api_name} </p></div>",
+            "title": "تم اكتشاف نشاط في طلبك P2P"
+        },
+        "P2P_VENDOR_APPEALED_ORDER": {
+            "html": "<div><p> عزيزي ${name} </p><p>لقد قمت بالاستئناف على طلبك. يرجى الاتصال بالدعم لحل المشكلة.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">انتقل إلى طلبك</Button></a></div><p>شكرًا لاستخدامك منصتنا.</p><p>تم تقديم الطلب من: ${ip}</p><p>تحياتنا<br> فريق ${api_name} </p></div>",
+            "title": "تم اكتشاف نشاط في طلبك P2P"
         }
     }
 }

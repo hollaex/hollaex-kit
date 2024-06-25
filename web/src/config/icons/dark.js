@@ -41,6 +41,7 @@ const nestedIcons = {
 		APPS: '/assets/images/apps.svg',
 		API: '/assets/images/tab-api.svg',
 		STAKE: '/assets/images/stake-page-icon.svg',
+		P2P: '/assets/images/p2p-feature.svg',
 	},
 
 	TOKEN: {
@@ -249,6 +250,8 @@ const nestedIcons = {
 	FIAT_KYC: '/assets/images/fiat-kyc.svg',
 
 	REFER_ICON: '/assets/images/refer-icon.svg',
+	REFER_DOLLAR_ICON: '/assets/images/referral-link-dollar-graphic.svg',
+	NEW_REFER_ICON: '/assets/images/Group 5483.svg',
 	STAKETOKEN_ICON: '/assets/images/stake.svg',
 	STAKING_1: '/assets/images/staking_1.png',
 	STAKING_2: '/assets/images/staking_2.svg',
@@ -301,6 +304,9 @@ const nestedIcons = {
 
 	FOOTERBAR_ASSETS_TRADE: '/assets/images/asset-prices-mobile-tab-01.svg',
 	WALLET_FOOTER: '/assets/images/wallet-mobile-tab-02-01 (1).svg',
+
+	WITHDRAW_TITLE: '/assets/images/withdraw-out-box.svg',
+	DEPOSIT_TITLE: '/assets/images/deposit-box.svg',
 };
 
 const icons = flatten(nestedIcons, options);

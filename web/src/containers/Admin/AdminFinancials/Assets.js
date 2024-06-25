@@ -683,9 +683,9 @@ class Assets extends Component {
 			isLoading,
 		} = this.state;
 
-		const { owner_id, created_by, verified } = selectedAsset;
-		const showMintAndBurnButtons = verified && owner_id === user_id;
-		const showConfigureButton = created_by === user_id || owner_id === user_id;
+		const { owner_id, created_by, verified, type } = selectedAsset;
+		const showMintAndBurnButtons = verified && (owner_id === user_id || type === 'fiat');
+		const showConfigureButton = created_by === user_id || owner_id === user_id ;
 
 		if (isConfigure) {
 			return (
@@ -736,39 +736,39 @@ class Assets extends Component {
 							isLoading={isLoading}
 						/>
 					</div>
-					{showConfigureButton && (
-						<div>
-							<div className="d-flex">
-								<Button
-									type="primary"
-									className="green-btn"
-									onClick={this.handleConfigure}
-								>
-									Configure
-								</Button>
-								<div className="separator" />
-								{showMintAndBurnButtons && (
-									<Fragment>
-										<Button
-											className="green-btn"
-											type="primary"
-											onClick={() => this.handleConfigureEdit('mint')}
-										>
-											Mint
-										</Button>
-										<div className="separator" />
-										<Button
-											className="green-btn"
-											type="primary"
-											onClick={() => this.handleConfigureEdit('burn')}
-										>
-											Burn
-										</Button>
-									</Fragment>
-								)}
-							</div>
+					<div>
+						<div className="d-flex">
+							{showConfigureButton && (
+							<Button
+								type="primary"
+								className="green-btn"
+								onClick={this.handleConfigure}
+							>
+								Configure
+							</Button>
+							)}
+							<div className="separator" />
+							{showMintAndBurnButtons && (
+								<Fragment>
+									<Button
+										className="green-btn"
+										type="primary"
+										onClick={() => this.handleConfigureEdit('mint')}
+									>
+										Mint
+									</Button>
+									<div className="separator" />
+									<Button
+										className="green-btn"
+										type="primary"
+										onClick={() => this.handleConfigureEdit('burn')}
+									>
+										Burn
+									</Button>
+								</Fragment>
+							)}
 						</div>
-					)}
+					</div>
 				</div>
 			);
 		}

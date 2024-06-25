@@ -123,6 +123,42 @@
 		"OTP_ENABLED": {
 			"html": "<div> <p> Dear ${name} </p> <p> We have recorded that your <b>two-factor authentication (2FA) has been enabled</b> on your account.</p> <div> <div>Time: ${time}</div> <div>Country: ${country}</div> <div>IP Address: ${ip}</div> </div> <p> Regards<br> ${api_name} team </p> </div>",
 			"title": "OTP Enabled"
+		},
+		"P2P_MERCHANT_IN_PROGRESS": {
+			"html": "<div><p> Dear ${name} </p><p>We have detected activity on your P2P deal, which may indicate a customer requesting to transact with you. To check the status of your deal, please click the link below:<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Check Deal Status</Button></a></div><p>Thank you for using our platform.</p><p>Request initiated from: ${ip}</p><p> Regards<br> ${api_name} team </p></div>",
+			"title": "Update on Your P2P Deal"
+		},
+		"P2P_BUYER_PAID_ORDER": {
+			"html": "<div><p> Dear ${name} </p><p>You have marked your order as paid. Waiting for vendor to check, confirm and release funds<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Go to your order</Button></a></div><p>Thank you for using our platform.</p><p>Request initiated from: ${ip}</p><p> Regards<br> ${api_name} team </p></div>",
+			"title": "Activity Detected on Your P2P Order"
+		},
+		"P2P_ORDER_EXPIRED": {
+			"html": "<div><p> Dear ${name} </p><p>Your order expired due to inactivity in the given time.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Go to your order</Button></a></div><p>Thank you for using our platform.</p><p>Request initiated from: ${ip}</p><p> Regards<br> ${api_name} team </p></div>",
+			"title": "Activity Detected on Your P2P Order"
+		},
+		"P2P_ORDER_CLOSED": {
+			"html": "<div><p> Dear ${name} </p><p>Your order has been closed by our support team after reaching a verdict on the appeal request<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Go to your order</Button></a></div><p>Thank you for using our platform.</p><p> Regards<br> ${api_name} team </p></div>",
+			"title": "Activity Detected on Your P2P Order"
+		},
+		"P2P_BUYER_CANCELLED_ORDER": {
+			"html": "<div><p> Dear ${name} </p><p>You have cancelled your order. Transaction is closed.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Go to your order</Button></a></div><p>Thank you for using our platform.</p><p>Request initiated from: ${ip}</p><p> Regards<br> ${api_name} team </p></div>",
+			"title": "Activity Detected on Your P2P Order"
+		},
+		"P2P_BUYER_APPEALED_ORDER": {
+			"html": "<div><p> Dear ${name} </p><p>You have appealed your order. Please contact support to resolve the issue.</p><p>Request initiated from: ${ip}</p><p> Regards<br> ${api_name} team </p></div>",
+			"title": "Activity Detected on Your P2P Order"
+		},
+		"P2P_VENDOR_CONFIRMED_ORDER": {
+			"html": "<div><p> Dear ${name} </p><p>You have confirmed the transaction and released the funds.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Go to your order</Button></a></div><p>Thank you for using our platform.</p><p>Request initiated from: ${ip}</p><p> Regards<br> ${api_name} team </p></div>",
+			"title": "Activity Detected on Your P2P Order"
+		},
+		"P2P_VENDOR_CANCELLED_ORDER": {
+			"html": "<div><p> Dear ${name} </p><p>You have cancelled your order. Transaction is closed.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Go to your order</Button></a></div><p>Thank you for using our platform.</p><p>Request initiated from: ${ip}</p><p> Regards<br> ${api_name} team </p></div>",
+			"title": "Activity Detected on Your P2P Order"
+		},
+		"P2P_VENDOR_APPEALED_ORDER": {
+			"html": "<div><p> Dear ${name} </p><p>You have appealed your order. Please contact support to resolve the issue.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Go to your order</Button></a></div><p>Thank you for using our platform.</p><p>Request initiated from: ${ip}</p><p> Regards<br> ${api_name} team </p></div>",
+			"title": "Activity Detected on Your P2P Order"
 		}
 	}
 }

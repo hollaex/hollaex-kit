@@ -2,6 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import Image from 'components/Image';
 import { isMobile } from 'react-device-detect';
+import { MoreOutlined } from '@ant-design/icons';
 
 const getClassNames = (status) => {
 	switch (status) {
@@ -39,7 +40,9 @@ const ActionNotification = ({
 	showActionText,
 	hideActionText = false,
 	disable = false,
+	isFromWallet = false,
 }) => {
+	const isVisibale = isFromWallet ? isFromWallet : !isMobile;
 	// This is to prevent action when edit string or upload icons are clicked
 	const onActionClick = ({ target: { dataset = {} } }) => {
 		const { stringId, iconId } = dataset;
@@ -69,29 +72,35 @@ const ActionNotification = ({
 			)}
 			onClick={onActionClick}
 		>
-			{!hideActionText && (showActionText || !isMobile) && (
+			{!hideActionText && (showActionText || isVisibale) && (
 				<div
 					className={classnames(
 						'action_notification-text',
 						getClassNames(status)
 					)}
 				>
-					{text}
+					{text === 'mobile-trade' ? (
+						<MoreOutlined color="more-icon" width="2em" height="2em" />
+					) : (
+						text
+					)}
 				</div>
 			)}
-			<Image
-				iconId={iconId}
-				stringId={stringId}
-				icon={iconPath}
-				alt={text}
-				svgWrapperClassName="action_notification-svg"
-				imageWrapperClassName={classnames('action_notification-image', {
-					rotate_ltr: rotateIfLtr,
-					rotate_rtl: rotateIfRtl,
-					rotate,
-					reverse: reverseImage,
-				})}
-			/>
+			{text !== 'mobile-trade' && (
+				<Image
+					iconId={iconId}
+					stringId={stringId}
+					icon={iconPath}
+					alt={text}
+					svgWrapperClassName="action_notification-svg"
+					imageWrapperClassName={classnames('action_notification-image', {
+						rotate_ltr: rotateIfLtr,
+						rotate_rtl: rotateIfRtl,
+						rotate,
+						reverse: reverseImage,
+					})}
+				/>
+			)}
 		</div>
 	);
 };

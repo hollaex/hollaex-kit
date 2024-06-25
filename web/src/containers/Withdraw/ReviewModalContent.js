@@ -41,8 +41,9 @@ const ReviewModalContent = ({
 	onClickCancel,
 	icons: ICONS,
 	hasDestinationTag,
+	getWithdrawCurrency,
 }) => {
-	const { min, fullname, display_name, withdrawal_fees, network } =
+	const { min, fullname, withdrawal_fees, network } =
 		coins[currency || BASE_CURRENCY] || DEFAULT_COIN_DATA;
 	const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 	const fee_coin = data.fee_coin ? data.fee_coin : '';
@@ -54,6 +55,7 @@ const ReviewModalContent = ({
 	let min_fee;
 	let max_fee;
 	const feeKey = network ? data.network : currency;
+	const display_name = getWithdrawCurrency.toUpperCase();
 	if (withdrawal_fees && withdrawal_fees[feeKey]) {
 		min_fee = withdrawal_fees[feeKey].min;
 		max_fee = withdrawal_fees[feeKey].max;

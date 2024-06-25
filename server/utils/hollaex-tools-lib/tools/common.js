@@ -25,7 +25,8 @@ const {
 	VALID_USER_META_TYPES,
 	DOMAIN,
 	DEFAULT_FEES,
-	BALANCE_HISTORY_SUPPORTED_PLANS
+	BALANCE_HISTORY_SUPPORTED_PLANS,
+	REFERRAL_HISTORY_SUPPORTED_PLANS,
 } = require(`${SERVER_PATH}/constants`);
 const {
 	COMMUNICATOR_CANNOT_UPDATE,
@@ -33,7 +34,7 @@ const {
 	SUPPORT_DISABLED,
 	NO_NEW_DATA
 } = require(`${SERVER_PATH}/messages`);
-const { each, difference, isPlainObject, isString, pick, isNil, omit, isNumber } = require('lodash');
+const { each, difference, isPlainObject, isString, pick, isNil, omit, isNumber, isInteger, isDate } = require('lodash');
 const { publisher } = require('./database/redis');
 const { sendEmail: sendSmtpEmail } = require(`${SERVER_PATH}/mail`);
 const { sendSMTPEmail: nodemailerEmail } = require(`${SERVER_PATH}/mail/utils`);
@@ -349,6 +350,103 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 
 		if(!newKitConfig.balance_history_config.hasOwnProperty('date_enabled')) {
 			throw new Error('date enabled does not exist');
+		}
+	}
+
+	if (newKitConfig.p2p_config) {
+
+		const exchangeInfo = getKitConfig().info;
+
+		if (!BALANCE_HISTORY_SUPPORTED_PLANS.includes(exchangeInfo.plan))
+			throw new Error('Exchange plan does not support this feature');
+
+		if (newKitConfig.p2p_config.enable == null) {
+			throw new Error('enable cannot be null');
+		} 
+		if (newKitConfig.p2p_config.bank_payment_methods == null) {
+			throw new Error('bank_payment_methods cannot be null');
+		} 
+		if (newKitConfig.p2p_config.starting_merchant_tier == null) {
+			throw new Error('starting_merchant_tier cannot be null');
+		} 
+		if (newKitConfig.p2p_config.starting_user_tier == null) {
+			throw new Error('starting_user_tier cannot be null');
+		} 
+		if (newKitConfig.p2p_config.digital_currencies == null) {
+			throw new Error('digital_currencies cannot be null');
+		} 
+		if (newKitConfig.p2p_config.fiat_currencies == null) {
+			throw new Error('fiat_currencies cannot be null');
+		} 
+		if (newKitConfig.p2p_config.side == null) {
+			throw new Error('side cannot be null');
+		} 
+		if (newKitConfig.p2p_config.source_account == null) {
+			throw new Error('source_account cannot be null');
+		} 
+		if (newKitConfig.p2p_config.merchant_fee == null) {
+			throw new Error('merchant_fee cannot be null');
+		} 
+		if (newKitConfig.p2p_config.user_fee == null) {
+			throw new Error('buyer_fee cannot be null');
+		} 
+	}
+
+	if (newKitConfig.referral_history_config) {
+		const exchangeInfo = getKitConfig().info;
+
+		if (!REFERRAL_HISTORY_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
+			throw new Error('Exchange plan does not support this feature');
+		}
+
+		if (!newKitConfig.referral_history_config.hasOwnProperty('active')) {
+			throw new Error('active key does not exist');
+		}
+
+		if (!newKitConfig.referral_history_config.hasOwnProperty('currency')) {
+			throw new Error('currency key does not exist');
+		}
+
+		if (existingKitConfig?.referral_history_config?.currency && existingKitConfig?.referral_history_config?.currency !== newKitConfig?.referral_history_config?.currency) {
+			throw new Error('currency cannot be changed');
+		}
+
+		if (!newKitConfig.referral_history_config.hasOwnProperty('earning_rate')) {
+			throw new Error('earning_rate key does not exist');
+		}
+
+		if (!newKitConfig.referral_history_config.hasOwnProperty('minimum_amount')) {
+			throw new Error('minimum amount key does not exist');
+		}
+		
+		if (!newKitConfig.referral_history_config.hasOwnProperty('earning_period')) {
+			throw new Error('earning_period key does not exist');
+		}
+
+		if (!newKitConfig.referral_history_config.hasOwnProperty('distributor_id')) {
+			throw new Error('distributor_id key does not exist');
+		}
+	
+		if (!existingKitConfig?.referral_history_config?.date_enabled && !newKitConfig.referral_history_config.hasOwnProperty('date_enabled')) {
+			newKitConfig.referral_history_config.date_enabled = new Date();
+		}
+
+		if (!isNumber( newKitConfig?.referral_history_config?.earning_rate)) {
+			throw new Error('Earning rate with data type number required for plugin');
+		} else if ( newKitConfig?.referral_history_config?.earning_rate < 1 ||  newKitConfig?.referral_history_config?.earning_rate > 100) {
+			throw new Error('Earning rate must be within the range of 1 ~ 100');
+		} else if (!isNumber( newKitConfig?.referral_history_config?.minimum_amount)) {
+			throw new Error('Minimum amount must be integer');
+		} else if ( newKitConfig?.referral_history_config?.minimum_amount < 0 ) {
+			throw new Error('Minimum amount must be bigger than 0');
+		} else if ( newKitConfig?.referral_history_config?.earning_rate % 10 !== 0) {
+			throw new Error('Earning rate must be in increments of 10');
+		} else if (!isNumber(newKitConfig?.referral_history_config?.earning_period)) {
+			throw new Error('Earning period with data type number required for plugin');
+		} else if ((!isInteger(newKitConfig?.referral_history_config?.earning_period) || newKitConfig?.referral_history_config?.earning_period < 0)) {
+			throw new Error('Earning period must be an integer greater than 0');
+		} else if (!isNumber(newKitConfig?.referral_history_config?.distributor_id)) {
+			throw new Error('Distributor ID required for plugin');
 		}
 	}
 

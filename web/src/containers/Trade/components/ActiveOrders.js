@@ -225,7 +225,7 @@ const ActiveOrders = ({
 				return type === 'caretUp' ? a.price - b.price : b.price - a.price;
 			}
 		});
-		setFilteredOrders((prev) => [...prev, ...filteredData]);
+		setFilteredOrders([...filteredData]);
 	};
 
 	return (
