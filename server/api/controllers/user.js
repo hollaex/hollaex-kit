@@ -35,6 +35,7 @@ const { all } = require('bluebird');
 const { each, isInteger } = require('lodash');
 const { publisher } = require('../../db/pubsub');
 const { isDate } = require('moment');
+const moment = require('moment');
 const DeviceDetector = require('node-device-detector');
 const uuid = require('uuid/v4');
 
@@ -1476,6 +1477,37 @@ const fetchUserReferrals = (req, res) => {
 		});
 };
 
+const fetchUserTradingVolume = (req, res) => {
+	const { to, from } = req.swagger.params;
+
+	loggerUser.info(
+		req.uuid,
+		'controllers/user/fetchUserTradingVolume',
+		to.value,
+		from.value
+	);
+
+	const currentTime = moment().seconds(0).milliseconds(0).toISOString();
+
+	toolsLib.user.fetchUserTradingVolume(
+		{
+			user_id: req.auth.sub.id,
+			to: moment(currentTime).toISOString(),
+			from: moment(currentTime).subtract(30, 'days').toISOString()
+		}
+	)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerUser.error(
+				req.uuid,
+				'controllers/user/fetchUserTradingVolume err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
 
 module.exports = {
 	signUpUser,
@@ -1514,5 +1546,6 @@ module.exports = {
 	fetchUserProfitLossInfo,
 	fetchUserReferrals,
 	createUserReferralCode,
-	getUserReferralCodes
+	getUserReferralCodes,
+	fetchUserTradingVolume
 };

@@ -1496,6 +1496,47 @@ paths:
         - bearer
       x-security-scopes:
         - user
+  /user/trading-volume:
+    x-swagger-router-controller: user
+    get:
+      description:  Get user's trading volume of last 30 days
+      operationId: fetchUserTradingVolume
+      tags:
+        - User
+      parameters:
+        - in: query
+          name: to
+          description: starting date
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: from
+          description: ending date
+          required: false
+          type: string
+          format: date-time
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+      x-security-scopes:
+        - user
+      x-token-permissions:
+        - can_read
   /user/referral/code:
     x-swagger-router-controller: user
     get:

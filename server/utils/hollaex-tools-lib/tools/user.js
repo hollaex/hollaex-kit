@@ -84,7 +84,7 @@ const {
 } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
-const { getKitConfig, isValidTierLevel, getKitTier, isDatetime, getKitSecrets, sendCustomEmail, emailHtmlBoilerplate, getDomain, updateKitConfigSecrets, sleep, getKitCoins } = require('./common');
+const { getKitConfig, isValidTierLevel, getKitTier, isDatetime, getAssetsPrices, getKitSecrets, sendCustomEmail, emailHtmlBoilerplate, getDomain, updateKitConfigSecrets, sleep, getKitCoins } = require('./common');
 const { isValidPassword, createSession } = require('./security');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { all, reject } = require('bluebird');
@@ -2391,6 +2391,11 @@ const addAmounts = (amount1, amount2) => {
 	);
 };
 
+const multiplyAmounts = (x, y) => {
+	return mathjs.number(
+	  mathjs.multiply(mathjs.bignumber(x), mathjs.bignumber(y))
+	);
+  };
 
 const getUserReferralCodes = async (
 	opts = {
@@ -3244,6 +3249,71 @@ const fetchUserProfitLossInfo = async (user_id, opts = { period: 7 }) => {
 	return results;
 };
 
+const getOracleIndex = async () => {
+	const coins = getKitCoins();
+	const data = await getAssetsPrices(
+	  coins,
+	  getKitConfig().native_currency
+	);
+  
+	return data;
+  };
+
+
+const fetchUserTradingVolume = async (opts = {
+	user_id: null,
+	to: null,
+	from: null
+	}) => {
+
+	let { user_id, to, from } = opts;
+	const currentTime = moment().seconds(0).milliseconds(0).toISOString();
+
+	if (!from) {
+		from = moment(currentTime).subtract(30, 'days').toISOString();
+	}
+
+	if (!to) {
+		to = moment(currentTime).toISOString();
+	}
+
+	let volume = {};
+
+	const oracleIndex = await getOracleIndex();
+
+	const { getAllUserTradesByKitId } = require('./order');
+	const trades = await getAllUserTradesByKitId(
+		user_id,
+		null,
+		null,
+		null,
+		null,
+		null,
+		from,
+		to,
+		'all'
+	);
+
+	if (trades.data && trades.data.length > 0) {
+		for (const trade of trades.data) {
+			const { symbol } = trade;
+			let size = trade.size;
+
+			const basePair = symbol.split('-')[0];
+
+			if (basePair !== getKitConfig().native_currency) {
+				if (!isNumber(oracleIndex[basePair]) || oracleIndex[basePair] <= 0) {
+					continue;
+				}
+				size = multiplyAmounts(oracleIndex[basePair], size);
+			}
+			volume[basePair] = addAmounts(volume[basePair] || 0, size);
+		}
+	}
+
+	return { user_id, volume };
+};
+
 
 module.exports = {
 	loginUser,
@@ -3317,5 +3387,6 @@ module.exports = {
 	fetchUserReferrals,
 	createUnrealizedReferralFees,
 	getUserReferralCodes,
-	createUserReferralCode
+	createUserReferralCode,
+	fetchUserTradingVolume
 };
