@@ -27,16 +27,8 @@ const StakesAndEarnings = ({ totalEarningsValue, totalStakesValue, coins }) => {
 	);
 
 	return (
-		<div
-			className="secondary-text"
-			style={{
-				minWidth: 'max-content',
-				paddingTop: '0.5rem',
-				textAlign: 'right',
-				marginLeft: '3rem',
-			}}
-		>
-			<div>
+		<div className="secondary-text estimated-stake-content">
+			<div className="stake-estimated-table">
 				<EditWrapper stringId="STAKE.ESTIMATED_STAKED">
 					{STRINGS['STAKE.ESTIMATED_STAKED']}
 				</EditWrapper>
@@ -45,7 +37,7 @@ const StakesAndEarnings = ({ totalEarningsValue, totalStakesValue, coins }) => {
 				</div>
 				<div className="kit-divider" />
 			</div>
-			<div>
+			<div className="stake-estimated-table">
 				<EditWrapper stringId="STAKE.ESTIMATED_EARNINGS">
 					{STRINGS['STAKE.ESTIMATED_EARNINGS']}
 				</EditWrapper>
