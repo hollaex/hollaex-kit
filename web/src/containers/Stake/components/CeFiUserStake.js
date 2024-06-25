@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-
+import { Link } from 'react-router';
+import { isMobile } from 'react-device-detect';
 import {
 	Button as AntBtn,
 	Tabs,
@@ -9,6 +10,7 @@ import {
 	message,
 	Progress,
 } from 'antd';
+import { CheckCircleFilled, WarningFilled } from '@ant-design/icons';
 
 import {
 	requestUserStakePools,
@@ -17,16 +19,14 @@ import {
 	deleteStaker,
 	getSlashEstimate,
 } from 'containers/Admin/Stakes/actions';
-import moment from 'moment';
-import BigNumber from 'bignumber.js';
-import { Link } from 'react-router';
-import classnames from 'classnames';
-import { isMobile } from 'react-device-detect';
-import STRINGS from 'config/localizedStrings';
 import { formatToCurrency } from 'utils/currency';
 import '../CeFiStake.scss';
-import { Dialog, Image, NotLoggedIn } from 'components';
+import { Dialog, Help, Image, NotLoggedIn } from 'components';
 import { EditWrapper } from 'components';
+import moment from 'moment';
+import BigNumber from 'bignumber.js';
+import STRINGS from 'config/localizedStrings';
+import classnames from 'classnames';
 import icons from 'config/icons/dark';
 
 const TabPane = Tabs.TabPane;
@@ -115,7 +115,10 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 										showInfo={false}
 									/>
 								</div>
-								<div className="w-100">{data?.stake?.duration} days</div>
+								<div className="w-100">
+									{data?.stake?.duration}{' '}
+									{STRINGS['CEFI_STAKE.DAYS'].toLowerCase()}
+								</div>
 							</span>
 						) : (
 							'∞ Perpetual'
@@ -180,10 +183,10 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 					<div className="stake-status-field">
 						{data.status === 'unstaking' ? (
 							<span className="stake-status-content font-weight-bold">
-								UNSTAKING...
+								{STRINGS['CEFI_STAKE.UNSTAKING']}
 							</span>
 						) : data.status === 'closed' ? (
-							'UNSTAKED'
+							<span>{STRINGS['CEFI_STAKE.UNSTAKED']}</span>
 						) : (
 							<AntBtn
 								disabled={
@@ -208,9 +211,14 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 								className="ant-btn green-btn ant-tooltip-open ant-btn-primary stake_theme stake-table-button"
 							>
 								{data.stake.early_unstake &&
-								calculateRemainingDays(data?.stake?.duration, data.created_at)
-									? 'UNSTAKE EARLY'
-									: 'UNSTAKE'}
+								calculateRemainingDays(
+									data?.stake?.duration,
+									data.created_at
+								) ? (
+									<span>{STRINGS['UNSTAKE.EARLY_TITLE'].toUpperCase()}</span>
+								) : (
+									<span>{STRINGS['UNSTAKE.TITLE'].toUpperCase()}</span>
+								)}
 							</AntBtn>
 						)}
 					</div>
@@ -305,13 +313,15 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 				>
 					<div className="action_model_popup_wrapper">
 						<div className="action_model_popup_content">
-							<h1 className="stake_theme">Staking 101</h1>
+							<h1 className="stake_theme">
+								<EditWrapper stringId="CEFI_STAKE.STAKING">
+									{STRINGS['CEFI_STAKE.STAKING']}
+								</EditWrapper>
+							</h1>
 						</div>
 						<div className={`w-100 ${isMobile && 'action_model_content'}`}>
 							<h4
-								className={`stake_theme font-weight-bold ${
-									isMobile && 'action_model_header'
-								}`}
+								className={`stake_theme ${isMobile && 'action_model_header'}`}
 							>
 								{STRINGS['CEFI_STAKE.READ_BEFORE_AGREE_AND_EARN']}
 							</h4>
@@ -320,11 +330,11 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 							>
 								<div
 									className={`stake_theme stake_detail_text ${
-										isMobile && 'action_model_agreement_content '
+										isMobile && 'action_model_agreement_content'
 									}`}
 								>
 									{STRINGS['CEFI_STAKE.AGREEMENT_INTRODUCTION_1']}{' '}
-									<span className="font-weight-bold stake_theme">
+									<span className="stake_theme">
 										{STRINGS['CEFI_STAKE.AGREEMENT_INTRODUCTION_2']}
 									</span>{' '}
 									{STRINGS['CEFI_STAKE.AGREEMENT_INTRODUCTION_3']}
@@ -373,26 +383,32 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 						<div className="stake_theme stake_amount_theme">
 							<h3 className="stake_theme">{selectedPool.name}</h3>
 							<div>-</div>
-							<div>APY: {selectedPool.apy}%</div>
+							<div>
+								<EditWrapper stringId="CEFI_STAKE.APY_LABEL">
+									<span>{STRINGS['CEFI_STAKE.APY_LABEL']}: </span>
+									{selectedPool.apy}%
+								</EditWrapper>
+							</div>
 						</div>
 						<div className="stake_theme stake_amount_popup_content">
 							<div>
-								<span className="font-weight-bold">
-									{selectedPool.currency.toUpperCase()} available:
+								<span>
+									<EditWrapper stringId="P2P.AVAILABLE">
+										{selectedPool.currency.toUpperCase()}
+										<span> {STRINGS['P2P.AVAILABLE']}:</span>
+									</EditWrapper>
 								</span>{' '}
 								<span className="blue-link underline-text">
 									{balance[`${selectedPool.currency}_available`]}
 								</span>
 							</div>
 							<div className={`${isMobile && 'mt-4 mb-3'}`}>
-								<span className="font-weight-bold">
-									{STRINGS['CEFI_STAKE.AMOUNT_TO_STAKE_LABEL']}:
-								</span>
+								<span>{STRINGS['CEFI_STAKE.AMOUNT_TO_STAKE_LABEL']}:</span>
 							</div>
 							<div className={`mt-2 ${!isMobile && 'mb-3'}`}>
 								<Input
 									className="stake_theme stake_amount_field"
-									placeholder="Input amount"
+									placeholder={STRINGS['MOVE_AMOUNT.TITLE']}
 									onChange={(e) => {
 										setStakerAmount(e.target.value);
 									}}
@@ -437,7 +453,7 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 							onClick={async () => {
 								if (stakerAmount < selectedPool.min_amount) {
 									message.error(
-										`Staking pool's minimum amount allowed is ${
+										`${STRINGS['CEFI_STAKE.MINIMUM_AMOUNT_ALLOWED']} ${
 											selectedPool.min_amount
 										} ${selectedPool.currency.toUpperCase()}`
 									);
@@ -446,7 +462,7 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 
 								if (stakerAmount > selectedPool.max_amount) {
 									message.error(
-										`Staking pool's maximum amount allowed is ${
+										`${STRINGS['CEFI_STAKE.MAXIMUM_AMOUNT_ALLOWED']} ${
 											selectedPool.max_amount
 										} ${selectedPool.currency.toUpperCase()} `
 									);
@@ -492,15 +508,32 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 							{STRINGS['CEFI_STAKE.LOCKUP_DURATION_LABEL']}:{' '}
 							<span className="stake_detail_text">
 								{selectedPool.duration
-									? `${selectedPool.duration} days`
+									? `${selectedPool.duration} ${STRINGS[
+											'CEFI_STAKE.DAYS'
+									  ].toLowerCase()}`
 									: 'Perpetual'}
 							</span>
 						</div>
 						<div className="stake_theme stake_text">-</div>
-
 						{selectedPool.slashing && (
 							<>
-								<h4 className="stake_theme stake_text_header">Slashing</h4>
+								<h4 className="stake_theme stake_text_header">
+									<EditWrapper stringId="CEFI_STAKE.SLASHING">
+										{STRINGS['CEFI_STAKE.SLASHING']}
+										<Help
+											tip={STRINGS.formatString(
+												STRINGS['CEFI_STAKE.TOOLTIP'],
+												<div>
+													<span className="blue-link">
+														{STRINGS['TRADE_POSTS.LEARN_MORE']}
+													</span>
+												</div>
+											)}
+										>
+											<div className="text-underline pointer blue-link"></div>
+										</Help>
+									</EditWrapper>
+								</h4>
 								<div className="stake_theme stake_text">
 									{
 										STRINGS[
@@ -521,20 +554,27 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 								</div>
 							</>
 						)}
-
 						{selectedPool.slashing && (
 							<div className="danger_message_wrapper">
-								<div>{STRINGS['CEFI_STAKE.SLASHING_RULES_ENFORCED_LABEL']}</div>
-								<div>{STRINGS['CEFI_STAKE.SLASHING_RULES_NOTICE']}</div>
+								<div className="danger-icon">
+									<WarningFilled />
+								</div>
+								<div>
+									<div>
+										{STRINGS['CEFI_STAKE.SLASHING_RULES_ENFORCED_LABEL']}
+									</div>
+									<div>{STRINGS['CEFI_STAKE.SLASHING_RULES_NOTICE']}</div>
+								</div>
 							</div>
 						)}
-
 						{!selectedPool.duration && (
 							<div className="success_message_wrapper">
+								<div className="checked-icon">
+									<CheckCircleFilled />
+								</div>
 								<div>{STRINGS['CEFI_STAKE.UNSTAKE_ANYTIME_LABEL']}</div>
 							</div>
 						)}
-
 						{selectedPool.duration && !selectedPool.early_unstake ? (
 							<div className="warning_message_wrapper">
 								<div>{STRINGS['CEFI_STAKE.FULL_DURATION_LOCK_LABEL']}</div>
@@ -591,14 +631,18 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 						<div className="stake_theme">
 							{STRINGS['CEFI_STAKE.ANNUAL_PERCENTAGE_YIELD_LABEL']}:
 							<span className="stake_detail_text">
-								{' '}
-								{selectedPool.apy}% APY
+								<EditWrapper stringId="CEFI_STAKE.APY_LABEL">
+									{' '}
+									{selectedPool.apy}%
+									<span> {STRINGS['CEFI_STAKE.APY_LABEL']}</span>
+								</EditWrapper>
 							</span>
 						</div>
 						<div className="stake_theme">
 							{STRINGS['CEFI_STAKE.DURATION_LABEL']}:{' '}
 							<span className="stake_detail_text">
-								{selectedPool.duration} days{' '}
+								{selectedPool.duration}{' '}
+								{STRINGS['CEFI_STAKE.DAYS'].toLowerCase()}{' '}
 							</span>
 						</div>
 						<div className="stake_theme">
@@ -621,8 +665,7 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 								{stakerAmount} {selectedPool.currency.toUpperCase()}
 							</span>
 						</div>
-						<hr />
-						{isMobile && <div className="stake_detail_line"></div>}
+						<div className="mt-3 mb-3 stake_detail_line"></div>
 						<div className="stake_theme mt-4 mb-3 stake_detail_text">
 							{selectedPool.disclaimer}
 						</div>
@@ -675,31 +718,38 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 					<div className="stake_theme confirm_stake_popup_wrapper">
 						<div className="stake_theme confirm_stake_theme mb-2">
 							<h3 className="stake_theme">
-								{STRINGS['CEFI_STAKE.CONFIRM_BUTTON']}{' '}
-								{selectedPool.currency.toUpperCase()} Stake
+								<EditWrapper stringId="STAKE_LIST.STAKE">
+									{STRINGS['CEFI_STAKE.CONFIRM_BUTTON']}{' '}
+									{selectedPool.currency.toUpperCase()}
+									<span className="text-capitalize">
+										{' '}
+										{STRINGS['STAKE_LIST.STAKE'].toLowerCase()}
+									</span>
+								</EditWrapper>
 							</h3>
 						</div>
-						{isMobile &&
-							stakePools
-								.filter((pool) => pool.status === 'active' && pool.onboarding)
-								.map((pool) => {
-									return (
-										<div className="stakepool_card_icon">
-											<img
-												src={coins?.[pool?.currency]?.logo}
-												width={30}
-												height={30}
-												alt=""
-											/>
-										</div>
-									);
-								})}
+						{stakePools
+							.filter((pool) => pool.status === 'active' && pool.onboarding)
+							.map((pool) => {
+								return (
+									<div className="stakepool_card_icon">
+										<img
+											src={coins?.[pool?.currency]?.logo}
+											width={30}
+											height={30}
+											alt=""
+										/>
+									</div>
+								);
+							})}
 						<div className="confirm_stake_content_wrapper">
-							<div className={isMobile && 'confirm_stake_content'}>
+							<div className="confirm_stake_content">
 								<div>
-									<span className="stake_theme font-weight-bold mt-5">
-										Here we go!{' '}
-									</span>
+									<EditWrapper stringId="CEFI_STAKE.CONFIRM_STAKE_DECS">
+										<span className="stake_theme mt-5">
+											{STRINGS['CEFI_STAKE.CONFIRM_STAKE_DECS']}{' '}
+										</span>
+									</EditWrapper>
 								</div>
 								<div className="stake_theme rules_notice_text stake_detail_text">
 									{STRINGS['CEFI_STAKE.STAKE_RULES_NOTICE']}
@@ -707,12 +757,12 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 							</div>
 							<div className="stake_theme mt-5  stake_detail_text">
 								{' '}
-								Do you understand?
+								{STRINGS['CEFI_STAKE.DO_YOU_UNDERSTAND']}
 							</div>
 							<div className="stake_theme mt-2">
 								<Input
 									className="stake_theme confirm_stake_field"
-									placeholder="Type 'I UNDERSTAND'"
+									placeholder={`${STRINGS['TYPE']} '${STRINGS['CEFI_STAKE.I_UNDERSTAND_BUTTON']}'`}
 									onChange={(e) => setConfirmText(e.target.value)}
 									value={confirmText}
 								/>
@@ -743,7 +793,9 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 										stake_id: selectedPool.id,
 										amount: Number(stakerAmount),
 									});
-									message.success(`Successfuly staked in ${selectedPool.name}`);
+									message.success(
+										`${STRINGS['CEFI_STAKE.SUCCESSFULLY_STAKED_IN']} ${selectedPool.name}`
+									);
 								} catch (error) {
 									message.error(error.response.data.message);
 									return;
@@ -766,7 +818,8 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 							disabled={confirmText !== 'I UNDERSTAND'}
 							type="default"
 						>
-							I UNDERSTAND, STAKE
+							{STRINGS['CEFI_STAKE.I_UNDERSTAND_BUTTON']},{' '}
+							{STRINGS['STAKE.TITLE'].toUpperCase()}
 						</AntBtn>
 					</div>
 				</Dialog>
@@ -786,25 +839,26 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 				>
 					<div className="confirmation_model_popup_wrapper">
 						<div className="confirmation_model_content">
-							{isMobile &&
-								stakePools
-									.filter((pool) => pool.status === 'active' && pool.onboarding)
-									.map((pool) => {
-										return (
-											<div className="stakepool_card_icon mb-5">
-												<img
-													src={coins?.[pool?.currency]?.logo}
-													width={50}
-													height={50}
-													alt=""
-												/>
-											</div>
-										);
-									})}
+							{stakePools
+								.filter((pool) => pool.status === 'active' && pool.onboarding)
+								.map((pool) => {
+									return (
+										<div className="stakepool_card_icon mb-5">
+											<img
+												src={coins?.[pool?.currency]?.logo}
+												width={50}
+												height={50}
+												alt=""
+											/>
+										</div>
+									);
+								})}
 							<h3 className="stake_theme confirmation_amount_text">
 								{stakerAmount} {selectedPool.currency.toUpperCase()}
 							</h3>
-							<div className="successful_stack_text">Successfully staked</div>
+							<div className="successful_stack_text">
+								{STRINGS['CEFI_STAKE.SUCCESSFULLY_STAKED']}
+							</div>
 							<div className="mt-5 mb-5 stake_detail_line"></div>
 							<div className="confirmation_label congrats_text mb-3">
 								{STRINGS['CEFI_STAKE.CONGRATULATIONS_NOTICE']}
@@ -854,7 +908,7 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 							}}
 							type="default"
 						>
-							VIEW ACTIVE STAKES
+							{STRINGS['CEFI_STAKE.VIEW_ACTIVE_STAKES']}
 						</AntBtn>
 					</div>
 				</Dialog>
@@ -874,85 +928,122 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 				>
 					<div className="review_unstake_popup_wrapper">
 						<div className="review_unstake_content">
-							<h3 className="stake_theme">Review and unstake</h3>
-							{isMobile && (
-								<div className="review_unstack_wrapper mb-4">
-									{isMobile &&
-										stakePools
-											.filter(
-												(pool) => pool.status === 'active' && pool.onboarding
-											)
-											.map((pool) => {
-												return (
-													<div className="stakepool_card_icon">
-														<img
-															src={coins?.[pool?.currency]?.logo}
-															width={30}
-															height={30}
-															alt=""
-														/>
-													</div>
-												);
-											})}
-									<div className="review_unstack_amount_wrapper">
-										<div>
-											<span className="font-weight-normal">
-												{STRINGS['UNSTAKE.AMOUNT_TO_RECEIVE']}:
-											</span>{' '}
-											<span className="stake_detail_text">
-												{selectedStaker.reward_currency
-													? selectedStaker.reward > 0
-														? `${roundToIncrementUnit(
-																new BigNumber(selectedStaker.reward)
-																	.minus(
-																		new BigNumber(
-																			selectedStaker.slashedValues.slashingEarning
-																		)
-																	)
-																	.toNumber(),
-																selectedStaker.reward_currency
-														  )} ${selectedStaker.reward_currency.toUpperCase()}`
-														: 'No reward amount to receive'
-													: `${new BigNumber(selectedStaker.amount)
+							<h3 className="stake_theme">
+								<EditWrapper stringId="CEFI_STAKE.REVIEW_AND_UNSTAKE">
+									{STRINGS['CEFI_STAKE.REVIEW_AND_UNSTAKE']}
+								</EditWrapper>
+							</h3>
+							<div className="review_unstack_wrapper mb-4">
+								{stakePools
+									.filter((pool) => pool.status === 'active' && pool.onboarding)
+									.map((pool) => {
+										return (
+											<div className="stakepool_card_icon">
+												<img
+													src={coins?.[pool?.currency]?.logo}
+													width={30}
+													height={30}
+													alt=""
+												/>
+											</div>
+										);
+									})}
+								<div className="review_unstack_amount_wrapper">
+									<div>
+										<span className="font-weight-normal">
+											{STRINGS['UNSTAKE.AMOUNT_TO_RECEIVE']}:
+										</span>{' '}
+										<span className="stake_detail_text">
+											{selectedStaker.reward_currency ? (
+												selectedStaker.reward > 0 ? (
+													`${roundToIncrementUnit(
+														new BigNumber(selectedStaker.reward)
 															.minus(
 																new BigNumber(
-																	selectedStaker.slashedValues.slashingPrinciple
+																	selectedStaker.slashedValues.slashingEarning
 																)
 															)
-															.plus(
-																new BigNumber(selectedStaker.reward).minus(
-																	new BigNumber(
-																		selectedStaker.slashedValues.slashingEarning
-																	)
-																)
+															.toNumber(),
+														selectedStaker.reward_currency
+													)} ${selectedStaker.reward_currency.toUpperCase()}`
+												) : (
+													<span>{STRINGS['CEFI_STAKE.NO_REWARD']}</span>
+												)
+											) : (
+												`${new BigNumber(selectedStaker.amount)
+													.minus(
+														new BigNumber(
+															selectedStaker.slashedValues.slashingPrinciple
+														)
+													)
+													.plus(
+														new BigNumber(selectedStaker.reward).minus(
+															new BigNumber(
+																selectedStaker.slashedValues.slashingEarning
 															)
-															.toNumber()} ${selectedStaker.currency.toUpperCase()}`}
-											</span>
-										</div>
-										<span className="review_settle_notice stake_detail_text">
-											({STRINGS['CEFI_STAKE.REQUIRES_24H_TO_SETTLE_NOTICE']})
+														)
+													)
+													.toNumber()} ${selectedStaker.currency.toUpperCase()}`
+											)}
 										</span>
 									</div>
+									<span className="review_settle_notice stake_detail_text">
+										({STRINGS['CEFI_STAKE.REQUIRES_24H_TO_SETTLE_NOTICE']})
+									</span>
 								</div>
-							)}
-							<div className={isMobile && 'mb-4'}>
+							</div>
+							<div
+								className={`time_remaining_progress_content ${
+									isMobile && 'mb-4'
+								}`}
+							>
 								<span>{STRINGS['CEFI_STAKE.TIME_REMAINING_LABEL']}:</span>{' '}
-								<span className="stake_detail_text">
-									{selectedStaker?.stake?.duration ? (
-										<>
-											{calculateRemainingDays(
-												selectedStaker?.stake?.duration,
-												selectedStaker.created_at
-											)}{' '}
-											days (
-											{selectedStaker?.stake?.duration &&
-												formatDate(selectedStaker?.closing)}
-											)
-										</>
-									) : (
-										'Perpetual'
-									)}
-								</span>
+								<div>
+									<div className="d-flex">
+										{selectedStaker?.stake?.duration ? (
+											<span className="duration-field">
+												<div className="w-100 d-flex">
+													<Progress
+														percent={
+															((selectedStaker?.stake?.duration -
+																calculateRemainingDays(
+																	selectedStaker?.stake?.duration,
+																	selectedStaker.created_at
+																)) *
+																100) /
+															selectedStaker?.stake?.duration
+														}
+														showInfo={false}
+													/>
+													<Image
+														iconId={'CLOCK'}
+														icon={icons['CLOCK']}
+														alt={'text'}
+														svgWrapperClassName="action_notification-svg"
+													/>
+												</div>
+											</span>
+										) : (
+											'∞ Perpetual'
+										)}{' '}
+									</div>
+									<span className="stake_detail_text">
+										{selectedStaker?.stake?.duration ? (
+											<>
+												{calculateRemainingDays(
+													selectedStaker?.stake?.duration,
+													selectedStaker.created_at
+												)}{' '}
+												days (
+												{selectedStaker?.stake?.duration &&
+													formatDate(selectedStaker?.closing)}
+												)
+											</>
+										) : (
+											'Perpetual'
+										)}
+									</span>
+								</div>
 							</div>
 							<div className={isMobile && 'mb-4'}>
 								<span>
@@ -989,40 +1080,44 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 									)
 								</span>
 							</div>
-							{isMobile && <div className="mt-4 stake_detail_line"></div>}
+							<div className="mt-4 stake_detail_line"></div>
 							<div className="mt-4">
 								<span>
 									{selectedStaker.reward_currency && 'Reward'}{' '}
 									{STRINGS['CEFI_STAKE.AMOUNT_TO_RECEIVE_LABEL']}:
 								</span>{' '}
 								<span className="stake_detail_text">
-									{selectedStaker.reward_currency
-										? selectedStaker.reward > 0
-											? `${roundToIncrementUnit(
-													new BigNumber(selectedStaker.reward)
-														.minus(
-															new BigNumber(
-																selectedStaker.slashedValues.slashingEarning
-															)
-														)
-														.toNumber(),
-													selectedStaker.reward_currency
-											  )} ${selectedStaker.reward_currency.toUpperCase()}`
-											: 'No reward amount to receive'
-										: `${new BigNumber(selectedStaker.amount)
-												.minus(
-													new BigNumber(
-														selectedStaker.slashedValues.slashingPrinciple
-													)
-												)
-												.plus(
-													new BigNumber(selectedStaker.reward).minus(
+									{selectedStaker.reward_currency ? (
+										selectedStaker.reward > 0 ? (
+											`${roundToIncrementUnit(
+												new BigNumber(selectedStaker.reward)
+													.minus(
 														new BigNumber(
 															selectedStaker.slashedValues.slashingEarning
 														)
 													)
+													.toNumber(),
+												selectedStaker.reward_currency
+											)} ${selectedStaker.reward_currency.toUpperCase()}`
+										) : (
+											<span>{STRINGS['CEFI_STAKE.NO_REWARD']}</span>
+										)
+									) : (
+										`${new BigNumber(selectedStaker.amount)
+											.minus(
+												new BigNumber(
+													selectedStaker.slashedValues.slashingPrinciple
 												)
-												.toNumber()} ${selectedStaker.currency.toUpperCase()}`}
+											)
+											.plus(
+												new BigNumber(selectedStaker.reward).minus(
+													new BigNumber(
+														selectedStaker.slashedValues.slashingEarning
+													)
+												)
+											)
+											.toNumber()} ${selectedStaker.currency.toUpperCase()}`
+									)}
 								</span>
 							</div>
 							<div className="stake_detail_text">
@@ -1038,7 +1133,7 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 							}}
 							type="default"
 						>
-							Cancel
+							{STRINGS['STAKE.CANCEL']}
 						</AntBtn>
 						<AntBtn
 							className="stake_popup_button"
@@ -1064,7 +1159,7 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 							}}
 							type="default"
 						>
-							UNSTAKE
+							{STRINGS['UNSTAKE.TITLE'].toUpperCase()}
 						</AntBtn>
 					</div>
 				</Dialog>
@@ -1091,101 +1186,104 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 									wrapperClassName="unstaked-logo"
 								/>
 								<h2 className="stake_theme">
-									You've successfully unstaked{' '}
+									{STRINGS['CEFI_STAKE.SUCCESSFULLY_UNSTAKED']}{' '}
 									{selectedStaker.currency.toUpperCase()}
 								</h2>
 							</div>
-							{isMobile && (
-								<div className="review_unstack_wrapper mb-4">
-									{isMobile &&
-										stakePools
-											.filter(
-												(pool) => pool.status === 'active' && pool.onboarding
-											)
-											.map((pool) => {
-												return (
-													<div className="stakepool_card_icon">
-														<img
-															src={coins?.[pool?.currency]?.logo}
-															width={30}
-															height={30}
-															alt=""
-														/>
-													</div>
-												);
-											})}
-									<div className="review_unstack_amount_wrapper">
-										<div>
-											<span className="font-weight-normal">
-												{STRINGS['UNSTAKE.AMOUNT_TO_RECEIVE']}:
-											</span>{' '}
-											<span className="stake_detail_text">
-												{selectedStaker.reward_currency
-													? selectedStaker.reward > 0
-														? `${roundToIncrementUnit(
-																new BigNumber(selectedStaker.reward)
-																	.minus(
-																		new BigNumber(
-																			selectedStaker.slashedValues.slashingEarning
-																		)
-																	)
-																	.toNumber(),
-																selectedStaker.reward_currency
-														  )} ${selectedStaker.reward_currency.toUpperCase()}`
-														: 'No reward amount to receive'
-													: `${new BigNumber(selectedStaker.amount)
+							<div className="review_unstack_wrapper mb-4">
+								{stakePools
+									.filter((pool) => pool.status === 'active' && pool.onboarding)
+									.map((pool) => {
+										return (
+											<div className="stakepool_card_icon">
+												<img
+													src={coins?.[pool?.currency]?.logo}
+													width={30}
+													height={30}
+													alt=""
+												/>
+											</div>
+										);
+									})}
+								<div className="review_unstack_amount_wrapper">
+									<div>
+										<span className="font-weight-normal">
+											{STRINGS['UNSTAKE.AMOUNT_TO_RECEIVE']}:
+										</span>{' '}
+										<span className="stake_detail_text">
+											{selectedStaker.reward_currency ? (
+												selectedStaker.reward > 0 ? (
+													`${roundToIncrementUnit(
+														new BigNumber(selectedStaker.reward)
 															.minus(
 																new BigNumber(
-																	selectedStaker.slashedValues.slashingPrinciple
+																	selectedStaker.slashedValues.slashingEarning
 																)
 															)
-															.plus(
-																new BigNumber(selectedStaker.reward).minus(
-																	new BigNumber(
-																		selectedStaker.slashedValues.slashingEarning
-																	)
-																)
+															.toNumber(),
+														selectedStaker.reward_currency
+													)} ${selectedStaker.reward_currency.toUpperCase()}`
+												) : (
+													<span>{STRINGS['CEFI_STAKE.NO_REWARD']}</span>
+												)
+											) : (
+												`${new BigNumber(selectedStaker.amount)
+													.minus(
+														new BigNumber(
+															selectedStaker.slashedValues.slashingPrinciple
+														)
+													)
+													.plus(
+														new BigNumber(selectedStaker.reward).minus(
+															new BigNumber(
+																selectedStaker.slashedValues.slashingEarning
 															)
-															.toNumber()} ${selectedStaker.currency.toUpperCase()}`}
-											</span>
-										</div>
+														)
+													)
+													.toNumber()} ${selectedStaker.currency.toUpperCase()}`
+											)}
+										</span>
 									</div>
 								</div>
-							)}
-							{isMobile && <div className="mt-4 mb-4 stake_detail_line"></div>}
+							</div>
+							<div className="mt-4 mb-4 stake_detail_line"></div>
 							<div className="mt-4">
 								<span>
 									{selectedStaker.reward_currency && 'Reward'}{' '}
 									{STRINGS['CEFI_STAKE.AMOUNT_TO_RECEIVE_LABEL']}:
 								</span>{' '}
 								<span className="stake_detail_text">
-									{selectedStaker.reward_currency
-										? selectedStaker.reward > 0
-											? `${roundToIncrementUnit(
-													new BigNumber(selectedStaker.reward)
-														.minus(
-															new BigNumber(
-																selectedStaker.slashedValues.slashingEarning
-															)
-														)
-														.toNumber(),
-													selectedStaker.reward_currency
-											  )} ${selectedStaker.reward_currency.toUpperCase()}`
-											: 'No reward amount to receive'
-										: `${new BigNumber(selectedStaker.amount)
-												.minus(
-													new BigNumber(
-														selectedStaker.slashedValues.slashingPrinciple
-													)
-												)
-												.plus(
-													new BigNumber(selectedStaker.reward).minus(
+									{selectedStaker.reward_currency ? (
+										selectedStaker.reward > 0 ? (
+											`${roundToIncrementUnit(
+												new BigNumber(selectedStaker.reward)
+													.minus(
 														new BigNumber(
 															selectedStaker.slashedValues.slashingEarning
 														)
 													)
+													.toNumber(),
+												selectedStaker.reward_currency
+											)} ${selectedStaker.reward_currency.toUpperCase()}`
+										) : (
+											<span>{STRINGS['CEFI_STAKE.NO_REWARD']}</span>
+										)
+									) : (
+										`${new BigNumber(selectedStaker.amount)
+											.minus(
+												new BigNumber(
+													selectedStaker.slashedValues.slashingPrinciple
 												)
-												.toNumber()} ${selectedStaker.currency.toUpperCase()}`}
+											)
+											.plus(
+												new BigNumber(selectedStaker.reward).minus(
+													new BigNumber(
+														selectedStaker.slashedValues.slashingEarning
+													)
+												)
+											)
+											.toNumber()} ${selectedStaker.currency.toUpperCase()}`
+									)}
 								</span>
 							</div>
 							<div className="stake_detail_text">
@@ -1286,13 +1384,11 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 						<div className="stake_table_theme stake-tabs">
 							<div className="stake-cefi-content-wrapper">
 								<div>
-									{isMobile && (
-										<Image
-											iconId="STAKING_CEFI_LOGO"
-											icon={icons['STAKING_CEFI_LOGO']}
-											wrapperClassName="cefi-logo"
-										/>
-									)}
+									<Image
+										iconId="STAKING_CEFI_LOGO"
+										icon={icons['STAKING_CEFI_LOGO']}
+										wrapperClassName="cefi-logo"
+									/>
 								</div>
 								<div>
 									<div className="stake_theme font-weight-bold">
@@ -1351,7 +1447,8 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 															<span className="stake_theme font-weight-bold">
 																{STRINGS['CEFI_STAKE.DURATION_LABEL']}:
 															</span>{' '}
-															{pool.duration} days
+															{pool.duration}{' '}
+															{STRINGS['CEFI_STAKE.DAYS'].toLowerCase()}
 														</>
 													) : (
 														'Perpetual Staking'
@@ -1359,17 +1456,21 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 												</div>
 												<div>
 													<span className="stake_theme font-weight-bold">
-														APY:
+														{STRINGS['CEFI_STAKE.APY_LABEL']}:
 													</span>{' '}
 													{pool.apy}%
 												</div>
 												<div>-</div>
 												<div>
-													<span className="font-weight-bold">Min:</span>{' '}
+													<span className="stake_theme font-weight-bold">
+														{STRINGS['CEFI_STAKE.MIN']}:
+													</span>{' '}
 													{pool.min_amount} {pool.currency.toUpperCase()}
 												</div>
 												<div>
-													<span className="font-weight-bold">Max:</span>{' '}
+													<span className="stake_theme font-weight-bold">
+														{STRINGS['CALCULATE_MAX']}:
+													</span>{' '}
 													{pool.max_amount} {pool.currency.toUpperCase()}
 												</div>
 												{pool?.reward_currency && (
