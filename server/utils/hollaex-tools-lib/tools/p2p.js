@@ -202,7 +202,8 @@ const createP2PDeal = async (data) => {
 		side,
 		buying_asset,
 		spending_asset,
-		margin,
+		spread,
+		exchange_rate,
 		total_order_amount,
 		min_order_value,
 		max_order_value,
@@ -221,40 +222,45 @@ const createP2PDeal = async (data) => {
 	//Check Merhcant Tier
 	if (p2pConfig.starting_merchant_tier > merchant.verification_level) {
 		throw new Error('Your tier does not support creating P2P deals');
-	}
+	};
 
 	if (!subscribedToCoin(spending_asset)) {
         throw new Error('Invalid coin ' + spending_asset);
-    }
+    };
 
 	if (!subscribedToCoin(buying_asset)) {
         throw new Error('Invalid coin ' + buying_asset);
-    }
+    };
 
 	const balance = await getP2PAccountBalance(merchant_id, buying_asset);
 
-	if(new BigNumber(balance).comparedTo(new BigNumber(total_order_amount)) !== 1) {
+	if (new BigNumber(balance).comparedTo(new BigNumber(total_order_amount)) !== 1) {
         throw new Error(FUNDING_ACCOUNT_INSUFFICIENT_BALANCE);
-    }
-	if(min_order_value < 0) {
-			throw new Error('cannot be less than 0');
-	}
+    };
 
-	if(max_order_value < 0) {
+	if (min_order_value < 0) {
+		throw new Error('min order alue cannot be less than 0');
+	};
+
+	if (max_order_value < 0) {
 		throw new Error('max order value cannot be less than 0');
-	}
+	};
 
-	if(min_order_value > max_order_value) {
-		throw new Error('min order value cannot be bigger than max');
-	}
+	if (min_order_value > max_order_value) {
+		throw new Error('min order value cannot be bigger than max order value');
+	};
 
-	if (margin < 0) {
-		throw new Error('Margin cannot be less than 0');
-	}
+	if (spread < 0) {
+		throw new Error('spread cannot be less than 0');
+	};
+
+	if (exchange_rate < 0) {
+		throw new Error('exchange rate cannot be less than 0');
+	};
 
 	if (side !== 'sell') {
 		throw new Error('side can only be sell');
-	}
+	};
 
 	data.status = true;
 
@@ -287,7 +293,8 @@ const updateP2PDeal = async (data) => {
 		side,
 		buying_asset,
 		spending_asset,
-		margin,
+		spread,
+		exchange_rate,
 		total_order_amount,
 		min_order_value,
 		max_order_value,
@@ -330,40 +337,44 @@ const updateP2PDeal = async (data) => {
 
 	if (!subscribedToCoin(spending_asset)) {
         throw new Error('Invalid coin ' + spending_asset);
-    }
+    };
 
 	if (!subscribedToCoin(buying_asset)) {
         throw new Error('Invalid coin ' + buying_asset);
-    }
+    };
 
 	const balance = await getP2PAccountBalance(merchant_id, buying_asset);
 
-	if(new BigNumber(balance).comparedTo(new BigNumber(total_order_amount)) !== 1) {
+	if (new BigNumber(balance).comparedTo(new BigNumber(total_order_amount)) !== 1) {
         throw new Error(FUNDING_ACCOUNT_INSUFFICIENT_BALANCE);
-    }
-	if(min_order_value < 0) {
-			throw new Error('cannot be less than 0');
-	}
+    };
+	if (min_order_value < 0) {
+			throw new Error('min order alue cannot be less than 0');
+	};
 
-	if(max_order_value < 0) {
-		throw new Error('cannot be less than 0');
-	}
+	if (max_order_value < 0) {
+		throw new Error('max order value cannot be less than 0');
+	};
 
-	if(min_order_value > max_order_value) {
-		throw new Error('cannot be bigger');
-	}
+	if (min_order_value > max_order_value) {
+		throw new Error('min order value cannot be bigger than max order value');
+	};
 
-	if (margin < 0) {
-		throw new Error('Margin cannot be less than 0');
-	}
+	if (spread < 0) {
+		throw new Error('spread cannot be less than 0');
+	};
+
+	if (exchange_rate < 0) {
+		throw new Error('exchange rate cannot be less than 0');
+	};
 
 	if (side !== 'sell') {
 		throw new Error('side can only be sell');
-	}
+	};
 
 	if (data.status == null) {
 		data.status = true;
-	}
+	};
 
 	return p2pDeal.update(data, {
 		fields: [

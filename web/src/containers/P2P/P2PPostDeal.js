@@ -6,7 +6,7 @@ import { Button, Steps, message, Modal } from 'antd';
 import { IconTitle, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { Switch, Select, Input } from 'antd';
+import { Switch, Select, Input, InputNumber } from 'antd';
 import { postDeal, editDeal } from './actions/p2pActions';
 import { CloseOutlined } from '@ant-design/icons';
 import { formatToCurrency } from 'utils/currency';
@@ -281,12 +281,15 @@ const P2PPostDeal = ({
 													: ''}
 											</div>
 											<div>
-												<Input
+												<InputNumber
 													style={{ width: isMobile ? 120 : 200 }}
 													value={exchangeRate}
 													onChange={(e) => {
 														if (!buyingAsset) return;
-														setExchangeRate(e.target.value);
+														if (isNaN(e)) return;
+														if (e >= 0) {
+															setExchangeRate(e);
+														}
 													}}
 												/>
 											</div>
@@ -298,11 +301,14 @@ const P2PPostDeal = ({
 										</EditWrapper>
 									</div>
 									<div>
-										<Input
+										<InputNumber
 											style={{ width: isMobile ? 120 : 200 }}
 											value={spread}
 											onChange={(e) => {
-												setSpread(e.target.value);
+												if (isNaN(e)) return;
+												if (e >= 0) {
+													setSpread(e);
+												}
 											}}
 										/>
 									</div>
