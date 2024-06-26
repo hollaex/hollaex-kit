@@ -1104,7 +1104,9 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 			}
 		});
 
-		setPaymentMethods([...p2p_config?.bank_payment_methods, ...methods]);
+		if (p2p_config?.bank_payment_methods?.length > 0) {
+			setPaymentMethods([...p2p_config?.bank_payment_methods, ...methods]);
+		}
 	}, []);
 
 	const handleEmailChange = (value) => {
