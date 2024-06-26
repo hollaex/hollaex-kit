@@ -71,7 +71,7 @@ class Stake extends Component {
 										});
 									}}
 								>
-									DeFi Staking
+									{STRINGS['STAKE.DEFI_STAKING']}
 								</span>
 								<span
 									className={`stakingOption cefi-button ${
@@ -85,7 +85,7 @@ class Stake extends Component {
 										});
 									}}
 								>
-									CeFi Staking
+									{STRINGS['STAKE.CEFI_STAKING']}
 								</span>
 							</div>
 						)}

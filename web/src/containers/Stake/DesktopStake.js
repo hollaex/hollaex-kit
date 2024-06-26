@@ -287,8 +287,16 @@ class Stake extends Component {
 						</div>
 					)}
 
-					<h2>Stake</h2>
-					<div>Earn rewards for staking your digital assets</div>
+					<h2 className="stake_header">
+						<EditWrapper stringId="STAKE.TITLE">
+							{STRINGS['STAKE.TITLE']}
+						</EditWrapper>
+					</h2>
+					<div>
+						<EditWrapper stringId="STAKE.EARN_REWARD">
+							{STRINGS['STAKE.EARN_REWARD']}
+						</EditWrapper>
+					</div>
 				</div>
 
 				<div className="stake-button-wrapper">
@@ -307,7 +315,7 @@ class Stake extends Component {
 										});
 									}}
 								>
-									DeFi Staking
+									{STRINGS['STAKE.DEFI_STAKING']}
 								</span>
 								<span
 									className={`stakingOption ${
@@ -321,7 +329,7 @@ class Stake extends Component {
 										});
 									}}
 								>
-									CeFi Staking
+									{STRINGS['STAKE.CEFI_STAKING']}
 								</span>
 							</div>
 						)}

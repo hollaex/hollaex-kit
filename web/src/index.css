@@ -6532,6 +6532,9 @@ table th {
   height: 40px;
   margin-bottom: 10px; }
 
+.wallet-wrapper .stake_header {
+  color: var(--labels_important-active-labels-text-graphics); }
+
 .wallet-wrapper .stake-button-wrapper {
   margin: 2% 0;
   display: flex;
@@ -6673,6 +6676,9 @@ table th {
 .tabOption-half-opacity {
   opacity: 0.7; }
 
+.stake_table_theme .ReactModal__Content .action_notification-wrapper {
+  margin: 0.5rem 0.5rem 0 0 !important; }
+
 .stake_table_theme .stake_detail_text {
   color: var(--labels_secondary-inactive-label-text-graphics); }
 
@@ -6701,7 +6707,7 @@ table th {
   .stake_table_theme .stake_popup_button_wrapper .stake_popup_button {
     width: 100%;
     background-color: var(--specials_buttons-links-and-highlights);
-    color: var(--labels_important-active-labels-text-graphics);
+    color: var(--calculated_base_footer_text);
     height: 3rem;
     border: none; }
 
@@ -6752,16 +6758,45 @@ table th {
 .stake_table_theme .confirm_stake_popup_wrapper .confirm_stake_theme {
   margin-bottom: 5% !important; }
 
+.stake_table_theme .confirm_stake_popup_wrapper .confirm_stake_content_wrapper .confirm_stake_content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  line-height: 20px; }
+  .stake_table_theme .confirm_stake_popup_wrapper .confirm_stake_content_wrapper .confirm_stake_content .rules_notice_text {
+    text-align: center; }
+
 .stake_table_theme .confirm_stake_popup_wrapper .confirm_stake_content_wrapper .confirm_stake_field {
   margin-bottom: 3% !important; }
+
+.stake_table_theme .confirm_stake_popup_wrapper .stakepool_card_icon {
+  position: absolute; }
+
+.stake_table_theme .stake_duration_model_wrapper .tooltip_icon_wrapper {
+  height: 1.2rem;
+  width: 1.2rem;
+  position: relative;
+  top: 0rem;
+  margin: 0 0.6rem; }
 
 .stake_table_theme .stake_duration_model_wrapper .danger_message_wrapper,
 .stake_table_theme .stake_duration_model_wrapper .success_message_wrapper,
 .stake_table_theme .stake_duration_model_wrapper .warning_message_wrapper {
-  padding: 5%;
+  padding: 3%;
   background-color: var(--highcharts-negative-color);
   margin: 5% 0 8%;
-  font-size: 12px; }
+  font-size: 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px; }
+  .stake_table_theme .stake_duration_model_wrapper .danger_message_wrapper .checked-icon svg, .stake_table_theme .stake_duration_model_wrapper .danger_message_wrapper .danger-icon svg,
+  .stake_table_theme .stake_duration_model_wrapper .success_message_wrapper .checked-icon svg,
+  .stake_table_theme .stake_duration_model_wrapper .success_message_wrapper .danger-icon svg,
+  .stake_table_theme .stake_duration_model_wrapper .warning_message_wrapper .checked-icon svg,
+  .stake_table_theme .stake_duration_model_wrapper .warning_message_wrapper .danger-icon svg {
+    width: 2rem;
+    height: 1.5rem; }
 
 .stake_table_theme .stake_duration_model_wrapper .success_message_wrapper {
   background-color: var(--specials_checks-okay-done) !important; }
@@ -6801,8 +6836,7 @@ table th {
   .stake_table_theme .unstake_confirm_popup_wrapper .unstake_confirm_content {
     display: flex;
     justify-content: center;
-    flex-direction: column;
-    height: 12rem; }
+    flex-direction: column; }
     .stake_table_theme .review_unstake_popup_wrapper .review_unstake_content .unstake_header,
     .stake_table_theme .review_unstake_popup_wrapper .unstake_confirm_content .unstake_header,
     .stake_table_theme .unstake_confirm_popup_wrapper .review_unstake_content .unstake_header,
@@ -6810,6 +6844,45 @@ table th {
       display: flex;
       align-items: center;
       gap: 10px; }
+    .stake_table_theme .review_unstake_popup_wrapper .review_unstake_content .time_remaining_progress_content,
+    .stake_table_theme .review_unstake_popup_wrapper .unstake_confirm_content .time_remaining_progress_content,
+    .stake_table_theme .unstake_confirm_popup_wrapper .review_unstake_content .time_remaining_progress_content,
+    .stake_table_theme .unstake_confirm_popup_wrapper .unstake_confirm_content .time_remaining_progress_content {
+      display: flex;
+      gap: 10px; }
+      .stake_table_theme .review_unstake_popup_wrapper .review_unstake_content .time_remaining_progress_content .duration-field,
+      .stake_table_theme .review_unstake_popup_wrapper .unstake_confirm_content .time_remaining_progress_content .duration-field,
+      .stake_table_theme .unstake_confirm_popup_wrapper .review_unstake_content .time_remaining_progress_content .duration-field,
+      .stake_table_theme .unstake_confirm_popup_wrapper .unstake_confirm_content .time_remaining_progress_content .duration-field {
+        width: 100%; }
+        .stake_table_theme .review_unstake_popup_wrapper .review_unstake_content .time_remaining_progress_content .duration-field .ant-progress-inner,
+        .stake_table_theme .review_unstake_popup_wrapper .unstake_confirm_content .time_remaining_progress_content .duration-field .ant-progress-inner,
+        .stake_table_theme .unstake_confirm_popup_wrapper .review_unstake_content .time_remaining_progress_content .duration-field .ant-progress-inner,
+        .stake_table_theme .unstake_confirm_popup_wrapper .unstake_confirm_content .time_remaining_progress_content .duration-field .ant-progress-inner {
+          height: 1rem;
+          border-radius: unset; }
+        .stake_table_theme .review_unstake_popup_wrapper .review_unstake_content .time_remaining_progress_content .duration-field .ant-progress-bg,
+        .stake_table_theme .review_unstake_popup_wrapper .unstake_confirm_content .time_remaining_progress_content .duration-field .ant-progress-bg,
+        .stake_table_theme .unstake_confirm_popup_wrapper .review_unstake_content .time_remaining_progress_content .duration-field .ant-progress-bg,
+        .stake_table_theme .unstake_confirm_popup_wrapper .unstake_confirm_content .time_remaining_progress_content .duration-field .ant-progress-bg {
+          height: 100% !important;
+          border-radius: 0;
+          background-color: var(--specials_pending-waiting-caution) !important; }
+        .stake_table_theme .review_unstake_popup_wrapper .review_unstake_content .time_remaining_progress_content .duration-field .action_notification-svg,
+        .stake_table_theme .review_unstake_popup_wrapper .unstake_confirm_content .time_remaining_progress_content .duration-field .action_notification-svg,
+        .stake_table_theme .unstake_confirm_popup_wrapper .review_unstake_content .time_remaining_progress_content .duration-field .action_notification-svg,
+        .stake_table_theme .unstake_confirm_popup_wrapper .unstake_confirm_content .time_remaining_progress_content .duration-field .action_notification-svg {
+          margin-top: 0.2rem;
+          margin-left: 0.5rem; }
+          .stake_table_theme .review_unstake_popup_wrapper .review_unstake_content .time_remaining_progress_content .duration-field .action_notification-svg svg,
+          .stake_table_theme .review_unstake_popup_wrapper .unstake_confirm_content .time_remaining_progress_content .duration-field .action_notification-svg svg,
+          .stake_table_theme .unstake_confirm_popup_wrapper .review_unstake_content .time_remaining_progress_content .duration-field .action_notification-svg svg,
+          .stake_table_theme .unstake_confirm_popup_wrapper .unstake_confirm_content .time_remaining_progress_content .duration-field .action_notification-svg svg {
+            width: 1rem;
+            height: 1rem;
+            background-color: var(--specials_pending-waiting-caution);
+            border-radius: 1rem;
+            padding: 2px; }
   .stake_table_theme .review_unstake_popup_wrapper .review_unstack_wrapper,
   .stake_table_theme .unstake_confirm_popup_wrapper .review_unstack_wrapper {
     display: flex;
@@ -6822,15 +6895,20 @@ table th {
       font-size: 12px; }
 
 .terms_condition_dialog_wrapper .ReactModal__Content {
-  width: 35%; }
+  width: 50%; }
+  .terms_condition_dialog_wrapper .ReactModal__Content .anticon-close {
+    font-size: 20px !important; }
 
 .stake_amount_dialog .ReactModal__Content,
 .duartion_model_dialog_wrapper .ReactModal__Content,
-.confirm_stake_dialog_wrapper .ReactModal__Content {
-  width: 20%; }
-
+.confirm_stake_dialog_wrapper .ReactModal__Content,
 .stake_details_dialog_wrapper .ReactModal__Content {
-  width: 32%; }
+  width: 30%; }
+  .stake_amount_dialog .ReactModal__Content .anticon-close,
+  .duartion_model_dialog_wrapper .ReactModal__Content .anticon-close,
+  .confirm_stake_dialog_wrapper .ReactModal__Content .anticon-close,
+  .stake_details_dialog_wrapper .ReactModal__Content .anticon-close {
+    font-size: 20px !important; }
 
 .dialog-mobile-content .stake_detail_line {
   width: 5%;
@@ -6873,6 +6951,18 @@ table th {
 .dialog-mobile-content .stake_duration_model_wrapper .stake_text {
   font-size: 13px; }
 
+.dialog-mobile-content .stake_duration_model_wrapper .tooltip_icon_wrapper {
+  height: 1.5rem;
+  width: 1.5rem; }
+
+.dialog-mobile-content .stake_duration_model_wrapper .danger_message_wrapper .checked-icon svg, .dialog-mobile-content .stake_duration_model_wrapper .danger_message_wrapper .danger-icon svg,
+.dialog-mobile-content .stake_duration_model_wrapper .success_message_wrapper .checked-icon svg,
+.dialog-mobile-content .stake_duration_model_wrapper .success_message_wrapper .danger-icon svg,
+.dialog-mobile-content .stake_duration_model_wrapper .warning_message_wrapper .checked-icon svg,
+.dialog-mobile-content .stake_duration_model_wrapper .warning_message_wrapper .danger-icon svg {
+  width: 2rem;
+  height: 2rem; }
+
 .dialog-mobile-content .stake_detail_popup_wrapper {
   font-size: 13px; }
   .dialog-mobile-content .stake_detail_popup_wrapper h1 {
@@ -6886,17 +6976,8 @@ table th {
 
 .dialog-mobile-content .confirm_stake_popup_wrapper .confirm_stake_content_wrapper {
   font-size: 12px; }
-  .dialog-mobile-content .confirm_stake_popup_wrapper .confirm_stake_content_wrapper .confirm_stake_content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    line-height: 20px; }
-    .dialog-mobile-content .confirm_stake_popup_wrapper .confirm_stake_content_wrapper .confirm_stake_content .rules_notice_text {
-      text-align: center; }
 
 .dialog-mobile-content .confirm_stake_popup_wrapper .stakepool_card_icon {
-  position: absolute;
   margin-bottom: 2%; }
 
 .dialog-mobile-content .confirmation_model_popup_wrapper .confirmation_model_content {
@@ -6935,15 +7016,43 @@ table th {
     .dialog-mobile-content .unstake_confirm_popup_wrapper .unstake_confirm_content .unstake_header .unstaked-logo svg {
       width: 6rem;
       height: 6rem; }
+    .dialog-mobile-content .review_unstake_popup_wrapper .review_unstake_content .time_remaining_progress_content,
+    .dialog-mobile-content .review_unstake_popup_wrapper .unstake_confirm_content .time_remaining_progress_content,
+    .dialog-mobile-content .unstake_confirm_popup_wrapper .review_unstake_content .time_remaining_progress_content,
+    .dialog-mobile-content .unstake_confirm_popup_wrapper .unstake_confirm_content .time_remaining_progress_content {
+      display: flex;
+      gap: 10px; }
+      .dialog-mobile-content .review_unstake_popup_wrapper .review_unstake_content .time_remaining_progress_content .duration-field,
+      .dialog-mobile-content .review_unstake_popup_wrapper .unstake_confirm_content .time_remaining_progress_content .duration-field,
+      .dialog-mobile-content .unstake_confirm_popup_wrapper .review_unstake_content .time_remaining_progress_content .duration-field,
+      .dialog-mobile-content .unstake_confirm_popup_wrapper .unstake_confirm_content .time_remaining_progress_content .duration-field {
+        width: 100%; }
+        .dialog-mobile-content .review_unstake_popup_wrapper .review_unstake_content .time_remaining_progress_content .duration-field .ant-progress-inner,
+        .dialog-mobile-content .review_unstake_popup_wrapper .unstake_confirm_content .time_remaining_progress_content .duration-field .ant-progress-inner,
+        .dialog-mobile-content .unstake_confirm_popup_wrapper .review_unstake_content .time_remaining_progress_content .duration-field .ant-progress-inner,
+        .dialog-mobile-content .unstake_confirm_popup_wrapper .unstake_confirm_content .time_remaining_progress_content .duration-field .ant-progress-inner {
+          height: 2rem; }
+        .dialog-mobile-content .review_unstake_popup_wrapper .review_unstake_content .time_remaining_progress_content .duration-field .action_notification-svg,
+        .dialog-mobile-content .review_unstake_popup_wrapper .unstake_confirm_content .time_remaining_progress_content .duration-field .action_notification-svg,
+        .dialog-mobile-content .unstake_confirm_popup_wrapper .review_unstake_content .time_remaining_progress_content .duration-field .action_notification-svg,
+        .dialog-mobile-content .unstake_confirm_popup_wrapper .unstake_confirm_content .time_remaining_progress_content .duration-field .action_notification-svg {
+          margin-top: 0.5rem; }
+          .dialog-mobile-content .review_unstake_popup_wrapper .review_unstake_content .time_remaining_progress_content .duration-field .action_notification-svg svg,
+          .dialog-mobile-content .review_unstake_popup_wrapper .unstake_confirm_content .time_remaining_progress_content .duration-field .action_notification-svg svg,
+          .dialog-mobile-content .unstake_confirm_popup_wrapper .review_unstake_content .time_remaining_progress_content .duration-field .action_notification-svg svg,
+          .dialog-mobile-content .unstake_confirm_popup_wrapper .unstake_confirm_content .time_remaining_progress_content .duration-field .action_notification-svg svg {
+            width: 2rem;
+            height: 2rem; }
 
 .stake_table_wrapper .stake-tabs {
   width: 100%;
-  padding: 3%; }
+  padding: 3%;
+  background-color: var(--base_wallet-sidebar-and-popup); }
   .stake_table_wrapper .stake-tabs .stake-cefi-content-wrapper {
     display: flex;
     justify-content: space-between;
     margin-bottom: 5%;
-    gap: 10px; }
+    gap: 2%; }
     .stake_table_wrapper .stake-tabs .stake-cefi-content-wrapper .stake-cefi-value {
       width: 100%;
       display: 'flex';
@@ -6970,7 +7079,7 @@ table th {
         padding: 12%;
         border-radius: 20px;
         width: 12rem;
-        color: var(--labels_important-active-labels-text-graphics);
+        color: var(--calculated_base_footer_text);
         text-align: center;
         display: flex;
         justify-content: center;
@@ -6979,7 +7088,8 @@ table th {
 
 .stake_table_wrapper .mystakes-tab {
   width: 100%;
-  padding: 3%; }
+  padding: 3%;
+  background-color: var(--base_wallet-sidebar-and-popup); }
   .stake_table_wrapper .mystakes-tab .mystakes-content-wrapper {
     display: flex;
     justify-content: space-between;
@@ -6996,9 +7106,10 @@ table th {
       font-size: 18px; }
   .stake_table_wrapper .mystakes-tab .tabOption {
     margin-right: 5px;
-    padding: 10px;
+    padding: 6px;
     border-radius: 10px;
-    cursor: pointer; }
+    cursor: pointer;
+    border: 1px solid var(--calculated_important-border); }
   .stake_table_wrapper .mystakes-tab .mystakes-table-wrapper table .duration-field {
     display: flex;
     flex-direction: row;
@@ -7042,6 +7153,14 @@ table th {
 .layout-mobile .mobileZoom .ant-table-thead > tr > th {
   padding: 1rem 5rem;
   font-size: 18px; }
+
+@media screen and (min-width: 1920px) {
+  .terms_condition_dialog_wrapper .ReactModal__Content {
+    width: 35%; }
+  .stake_amount_dialog .ReactModal__Content,
+  .duartion_model_dialog_wrapper .ReactModal__Content,
+  .confirm_stake_dialog_wrapper .ReactModal__Content {
+    width: 20%; } }
 
 .add-app-button {
   border-radius: 24px;

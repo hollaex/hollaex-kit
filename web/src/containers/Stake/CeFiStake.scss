@@ -74,6 +74,11 @@
 }
 
 .stake_table_theme {
+	.ReactModal__Content {
+		.action_notification-wrapper {
+			margin: 0.5rem 0.5rem 0 0 !important;
+		}
+	}
 	.stake_detail_text {
 		color: var(--labels_secondary-inactive-label-text-graphics);
 	}
@@ -106,7 +111,7 @@
 		.stake_popup_button {
 			width: 100%;
 			background-color: var(--specials_buttons-links-and-highlights);
-			color: var(--labels_important-active-labels-text-graphics);
+			color: var(--calculated_base_footer_text);
 			height: 3rem;
 			border: none;
 		}
@@ -160,20 +165,51 @@
 		}
 
 		.confirm_stake_content_wrapper {
+			.confirm_stake_content {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				line-height: 20px;
+				.rules_notice_text {
+					text-align: center;
+				}
+			}
 			.confirm_stake_field {
 				margin-bottom: 3% !important;
 			}
 		}
+
+		.stakepool_card_icon {
+			position: absolute;
+		}
 	}
 
 	.stake_duration_model_wrapper {
+		.tooltip_icon_wrapper {
+			height: 1.2rem;
+			width: 1.2rem;
+			position: relative;
+			top: 0rem;
+			margin: 0 0.6rem;
+		}
 		.danger_message_wrapper,
 		.success_message_wrapper,
 		.warning_message_wrapper {
-			padding: 5%;
+			padding: 3%;
 			background-color: var(--highcharts-negative-color);
 			margin: 5% 0 8%;
 			font-size: 12px;
+			display: flex;
+			align-items: flex-start;
+			gap: 10px;
+			.checked-icon,
+			.danger-icon {
+				svg {
+					width: 2rem;
+					height: 1.5rem;
+				}
+			}
 		}
 
 		.success_message_wrapper {
@@ -224,11 +260,39 @@
 			display: flex;
 			justify-content: center;
 			flex-direction: column;
-			height: 12rem;
 			.unstake_header {
 				display: flex;
 				align-items: center;
 				gap: 10px;
+			}
+			.time_remaining_progress_content {
+				display: flex;
+				gap: 10px;
+				.duration-field {
+					width: 100%;
+					.ant-progress-inner {
+						height: 1rem;
+						border-radius: unset;
+					}
+					.ant-progress-bg {
+						height: 100% !important;
+						border-radius: 0;
+						background-color: var(
+							--specials_pending-waiting-caution
+						) !important;
+					}
+					.action_notification-svg {
+						margin-top: 0.2rem;
+						margin-left: 0.5rem;
+						svg {
+							width: 1rem;
+							height: 1rem;
+							background-color: var(--specials_pending-waiting-caution);
+							border-radius: 1rem;
+							padding: 2px;
+						}
+					}
+				}
 			}
 		}
 		.review_unstack_wrapper {
@@ -246,21 +310,22 @@
 
 .terms_condition_dialog_wrapper {
 	.ReactModal__Content {
-		width: 35%;
+		width: 50%;
+		.anticon-close {
+			font-size: 20px !important;
+		}
 	}
 }
 
 .stake_amount_dialog,
 .duartion_model_dialog_wrapper,
-.confirm_stake_dialog_wrapper {
-	.ReactModal__Content {
-		width: 20%;
-	}
-}
-
+.confirm_stake_dialog_wrapper,
 .stake_details_dialog_wrapper {
 	.ReactModal__Content {
-		width: 32%;
+		width: 30%;
+		.anticon-close {
+			font-size: 20px !important;
+		}
 	}
 }
 
@@ -319,6 +384,21 @@
 		.stake_text {
 			font-size: 13px;
 		}
+		.tooltip_icon_wrapper {
+			height: 1.5rem;
+			width: 1.5rem;
+		}
+		.danger_message_wrapper,
+		.success_message_wrapper,
+		.warning_message_wrapper {
+			.checked-icon,
+			.danger-icon {
+				svg {
+					width: 2rem;
+					height: 2rem;
+				}
+			}
+		}
 	}
 	.stake_detail_popup_wrapper {
 		font-size: 13px;
@@ -335,19 +415,8 @@
 		}
 		.confirm_stake_content_wrapper {
 			font-size: 12px;
-			.confirm_stake_content {
-				display: flex;
-				flex-direction: column;
-				justify-content: center;
-				align-items: center;
-				line-height: 20px;
-				.rules_notice_text {
-					text-align: center;
-				}
-			}
 		}
 		.stakepool_card_icon {
-			position: absolute;
 			margin-bottom: 2%;
 		}
 	}
@@ -388,6 +457,23 @@
 					}
 				}
 			}
+			.time_remaining_progress_content {
+				display: flex;
+				gap: 10px;
+				.duration-field {
+					width: 100%;
+					.ant-progress-inner {
+						height: 2rem;
+					}
+					.action_notification-svg {
+						margin-top: 0.5rem;
+						svg {
+							width: 2rem;
+							height: 2rem;
+						}
+					}
+				}
+			}
 		}
 	}
 }
@@ -396,12 +482,13 @@
 	.stake-tabs {
 		width: 100%;
 		padding: 3%;
+		background-color: var(--base_wallet-sidebar-and-popup);
 
 		.stake-cefi-content-wrapper {
 			display: flex;
 			justify-content: space-between;
 			margin-bottom: 5%;
-			gap: 10px;
+			gap: 2%;
 
 			.stake-cefi-value {
 				width: 100%;
@@ -436,7 +523,7 @@
 					padding: 12%;
 					border-radius: 20px;
 					width: 12rem;
-					color: var(--labels_important-active-labels-text-graphics);
+					color: var(--calculated_base_footer_text);
 					text-align: center;
 					display: flex;
 					justify-content: center;
@@ -450,6 +537,7 @@
 	.mystakes-tab {
 		width: 100%;
 		padding: 3%;
+		background-color: var(--base_wallet-sidebar-and-popup);
 
 		.mystakes-content-wrapper {
 			display: flex;
@@ -475,9 +563,10 @@
 
 		.tabOption {
 			margin-right: 5px;
-			padding: 10px;
+			padding: 6px;
 			border-radius: 10px;
 			cursor: pointer;
+			border: 1px solid var(--calculated_important-border);
 		}
 
 		.mystakes-table-wrapper {
@@ -555,5 +644,21 @@
 	.mobileZoom .ant-table-thead > tr > th {
 		padding: 1rem 5rem;
 		font-size: 18px;
+	}
+}
+
+@media screen and (min-width: 1920px) {
+	.terms_condition_dialog_wrapper {
+		.ReactModal__Content {
+			width: 35%;
+		}
+	}
+
+	.stake_amount_dialog,
+	.duartion_model_dialog_wrapper,
+	.confirm_stake_dialog_wrapper {
+		.ReactModal__Content {
+			width: 20%;
+		}
 	}
 }
