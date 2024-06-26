@@ -187,7 +187,7 @@ const getP2PAccountBalance = async (account_id, coin) => {
     let symbols = {};
 
     for (const key of Object.keys(balance)) {
-        if (key.includes('available') && balance[key]) {
+        if (key.includes('available') && balance[key] != null) {
             let symbol = key?.split('_')?.[0];
             symbols[symbol] = balance[key];
         }
