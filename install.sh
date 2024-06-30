@@ -749,7 +749,7 @@ function kit_cross_compatibility_converter() {
 
   if [[ -f "$(pwd)/templates/kubernetes/config/${ENVIRONMENT_EXCHANGE_NAME}-secret.yaml" ]]; then
 
-    echo "Kubernetes configmap generated with HollaEx CLI v2 has been detected."
+    echo "Kubernetes secret generated with HollaEx CLI v2 has been detected."
     echo "Converting it..."
     mv $(pwd)/templates/kubernetes/config/${ENVIRONMENT_EXCHANGE_NAME}-secret.yaml $(pwd)/server/tools/kubernetes/env/secret.yaml
 
@@ -757,7 +757,7 @@ function kit_cross_compatibility_converter() {
 
   if [[ -f "$(pwd)/templates/kubernetes/config/${ENVIRONMENT_EXCHANGE_NAME}-ingress.yaml" ]]; then
 
-    echo "Kubernetes configmap generated with HollaEx CLI v2 has been detected."
+    echo "Kubernetes ingress yamls generated with HollaEx CLI v2 has been detected."
     echo "Converting it..."
     mv $(pwd)/templates/kubernetes/config/${ENVIRONMENT_EXCHANGE_NAME}-ingress.yaml $(pwd)/server/tools/kubernetes/ingress/hollaex-kit-ingress.yaml
 
