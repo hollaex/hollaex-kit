@@ -718,6 +718,7 @@ function kit_cross_compatibility_converter() {
 
     if command docker ps | grep local.*-nginx > /dev/null ; then
 
+        docker compose -f $(pwd)/nginx/docker-compose.yaml down
         docker compose -f $(pwd)/nginx/docker-compose.yaml up -d
 
     fi
