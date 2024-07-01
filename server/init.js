@@ -330,10 +330,10 @@ const checkStatus = () => {
 			return networkNodeLib;
 		})
 		.catch((err) => {
-			loggerInit.info('init/checkStatus/catch error', err.message);
+			loggerInit.error('init/checkStatus/catch error', err.message);
 			setTimeout(() => {
-				process.exit(0);
-			}, 5000);
+				process.exit(1);
+			}, 60000);
 		});
 };
 
