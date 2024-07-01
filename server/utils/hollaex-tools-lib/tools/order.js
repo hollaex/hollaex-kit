@@ -1325,7 +1325,7 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip) => {
 								type,
 								side: 'buy', 
 								size: initialAmount,
-								price: 1 / price
+								price: price
 							},
 							...result.trades
 						]
