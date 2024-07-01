@@ -173,5 +173,5 @@ checkStatus()
 			message
 		);
 
-		setTimeout(() => { process.exit(1); }, 5000);
+		setTimeout(() => { process.exit(1); }, 60000);
 	});

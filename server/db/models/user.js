@@ -112,6 +112,10 @@ module.exports = function (sequelize, DataTypes) {
 				type: DataTypes.BOOLEAN,
 				defaultValue: true
 			},
+			withdrawal_blocked: {
+				type: DataTypes.DATE,
+				allowNull: true
+			},
 			note: {
 				type: DataTypes.STRING,
 				defaultValue: ''

@@ -2839,6 +2839,43 @@ const getUserBalanceHistoryByAdmin = (req, res) => {
 		});
 };
 
+const disableUserWithdrawal = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/disableUserWithdrawal auth',
+		req.auth
+	);
+
+	const {
+		user_id,
+		expiry_date
+	} = req.swagger.params.data.value;
+
+	loggerAdmin.info(
+		req.uuid,
+		'controllers/admin/disableUserWithdrawal',
+		user_id,
+		expiry_date
+	);
+
+		toolsLib.user.disableUserWithdrawal(user_id, { expiry_date })
+		.then((data) => {
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
+			loggerAdmin.info(
+				req.uuid,
+				'controllers/admin/disableUserWithdrawal successful'
+			);
+			return res.status(200).json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/disableUserWithdrawal err',
+				err
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
 
 const createTradeByAdmin = (req, res) => {
 	loggerAdmin.verbose(
@@ -3034,6 +3071,7 @@ module.exports = {
 	deleteTransactionLimit,
 	getUserBalanceHistoryByAdmin,
 	createTradeByAdmin,
+	disableUserWithdrawal,
 	performDirectWithdrawalByAdmin,
 	getUserReferralCodesByAdmin,
 	createUserReferralCodeByAdmin

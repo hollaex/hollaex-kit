@@ -14,6 +14,7 @@ import {
 	updateTransaction,
 	createFeedback,
 	fetchFeedback,
+	fetchP2PProfile,
 } from './actions/p2pActions';
 import { withRouter } from 'react-router';
 import { formatToCurrency } from 'utils/currency';
@@ -56,6 +57,10 @@ const P2POrder = ({
 	const [displayCancelWarning, setDisplayCancelWarning] = useState();
 	const [displayConfirmWarning, setDisplayConfirmWarning] = useState();
 	const [lastClickTime, setLastClickTime] = useState(0);
+	const [displayUserFeedback, setDisplayUserFeedback] = useState(false);
+	const [userFeedback, setUserFeedback] = useState([]);
+	const [userProfile, setUserProfile] = useState();
+	const [selectedProfile, setSelectedProfile] = useState();
 	const ref = useRef(null);
 	const buttonRef = useRef(null);
 
@@ -371,6 +376,222 @@ const P2POrder = ({
 					</Button>
 				</div>
 			</Modal>
+
+			{displayUserFeedback && (
+				<Modal
+					maskClosable={false}
+					closeIcon={<CloseOutlined className="stake_theme" />}
+					className="stake_table_theme stake_theme"
+					bodyStyle={{}}
+					visible={displayUserFeedback}
+					width={500}
+					footer={null}
+					onCancel={() => {
+						setDisplayUserFeedback(false);
+					}}
+				>
+					<div
+						style={{
+							display: 'flex',
+							flexDirection: 'column',
+							gap: 15,
+							marginTop: 10,
+						}}
+					>
+						<div
+							style={{
+								flex: 1,
+								display: 'flex',
+								flexDirection: 'column',
+								justifyContent: 'center',
+								alignItems: 'center',
+							}}
+						>
+							<h3 className="stake_theme">
+								{selectedProfile?.full_name || (
+									<EditWrapper stringId="P2P.ANONYMOUS">
+										{STRINGS['P2P.ANONYMOUS']}
+									</EditWrapper>
+								)}
+								{` `}(
+								<EditWrapper stringId="P2P.TAB_PROFILE">
+									{STRINGS['P2P.TAB_PROFILE']}
+								</EditWrapper>
+								)
+							</h3>
+
+							<div>
+								<div
+									style={{
+										textAlign: 'center',
+										display: 'flex',
+										justifyContent: 'center',
+										alignItems: 'center',
+									}}
+								>
+									<div
+										style={{
+											display: 'flex',
+											justifyContent: 'space-between',
+											gap: 10,
+											marginBottom: 10,
+										}}
+									>
+										<div
+											style={{
+												padding: 20,
+												textAlign: 'center',
+												fontWeight: 'bold',
+												borderRadius: 5,
+												border: '1px solid grey',
+											}}
+										>
+											<div style={{ fontSize: 16 }}>
+												<EditWrapper stringId="P2P.TOTAL_ORDERS">
+													{STRINGS['P2P.TOTAL_ORDERS']}
+												</EditWrapper>
+											</div>
+											<div style={{ fontSize: 17 }}>
+												{userProfile?.totalTransactions} times
+											</div>
+										</div>
+										<div
+											style={{
+												padding: 20,
+												textAlign: 'center',
+												fontWeight: 'bold',
+												borderRadius: 5,
+												border: '1px solid grey',
+											}}
+										>
+											<div style={{ fontSize: 16 }}>
+												<EditWrapper stringId="P2P.COMPLETION_RATE">
+													{STRINGS['P2P.COMPLETION_RATE']}
+												</EditWrapper>
+											</div>
+											<div style={{ fontSize: 17 }}>
+												{(userProfile?.completionRate || 0).toFixed(2)}%
+											</div>
+										</div>
+										<div
+											style={{
+												padding: 20,
+												textAlign: 'center',
+												fontWeight: 'bold',
+												borderRadius: 5,
+												border: '1px solid grey',
+											}}
+										>
+											<div style={{ fontSize: 16 }}>
+												<EditWrapper stringId="P2P.POSITIVE_FEEDBACK">
+													{STRINGS['P2P.POSITIVE_FEEDBACK']}
+												</EditWrapper>
+											</div>
+											<div style={{ fontSize: 17 }}>
+												{(userProfile?.positiveFeedbackRate || 0).toFixed(2)}%
+											</div>
+											<div>
+												<EditWrapper stringId="P2P.POSITIVE">
+													{STRINGS['P2P.POSITIVE']}
+												</EditWrapper>{' '}
+												{userProfile?.positiveFeedbackCount} /{' '}
+												<EditWrapper stringId="P2P.NEGATIVE">
+													{STRINGS['P2P.NEGATIVE']}
+												</EditWrapper>{' '}
+												{userProfile?.negativeFeedbackCount}
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div
+									style={{
+										marginTop: 10,
+										marginBottom: 10,
+										border: '1px solid grey',
+										padding: 5,
+										width: 150,
+										borderRadius: 10,
+										fontWeight: 'bold',
+										cursor: 'default',
+										textAlign: 'center',
+									}}
+								>
+									Feedback({userFeedback.length || 0})
+								</div>
+								{userFeedback.length == 0 ? (
+									<div
+										style={{
+											textAlign: 'center',
+											fontSize: 15,
+											border: '1px solid grey',
+											padding: 10,
+											borderRadius: 5,
+										}}
+									>
+										<EditWrapper stringId="P2P.NO_FEEDBACK">
+											{STRINGS['P2P.NO_FEEDBACK']}
+										</EditWrapper>
+									</div>
+								) : (
+									<table
+										style={{
+											border: 'none',
+											borderCollapse: 'collapse',
+											width: '100%',
+										}}
+									>
+										<thead>
+											<tr
+												className="table-bottom-border"
+												style={{ borderBottom: 'grey 1px solid', padding: 10 }}
+											>
+												<th>
+													<EditWrapper stringId="P2P.COMMENT">
+														{STRINGS['P2P.COMMENT']}
+													</EditWrapper>
+												</th>
+												<th>
+													<EditWrapper stringId="P2P.RATING">
+														{STRINGS['P2P.RATING']}
+													</EditWrapper>
+												</th>
+											</tr>
+										</thead>
+										<tbody className="font-weight-bold">
+											{userFeedback.map((deal) => {
+												return (
+													<tr
+														className="table-row"
+														style={{
+															borderBottom: 'grey 1px solid',
+															padding: 10,
+															position: 'relative',
+														}}
+													>
+														<td style={{ width: '25%' }} className="td-fit">
+															{deal.comment}
+														</td>
+														<td style={{ width: '25%' }} className="td-fit">
+															<Rate
+																disabled
+																allowHalf={false}
+																autoFocus={false}
+																allowClear={false}
+																value={deal.rating}
+															/>
+														</td>
+													</tr>
+												);
+											})}
+										</tbody>
+									</table>
+								)}
+							</div>
+						</div>
+					</div>
+				</Modal>
+			)}
 
 			{displayFeedbackModal && (
 				<Modal
@@ -1339,7 +1560,26 @@ const P2POrder = ({
 								padding: 15,
 							}}
 						>
-							<div>
+							<div
+								style={{ cursor: 'pointer' }}
+								onClick={async () => {
+									try {
+										if (user.id === selectedOrder?.merchant_id) return;
+										setSelectedProfile(selectedOrder?.merchant);
+										const feedbacks = await fetchFeedback({
+											merchant_id: selectedOrder?.merchant_id,
+										});
+										const profile = await fetchP2PProfile({
+											user_id: selectedOrder?.merchant_id,
+										});
+										setUserFeedback(feedbacks.data);
+										setUserProfile(profile);
+										setDisplayUserFeedback(true);
+									} catch (error) {
+										return error;
+									}
+								}}
+							>
 								{user.id === selectedOrder?.merchant_id ? (
 									<EditWrapper stringId="P2P.USER_NAME">
 										{STRINGS['P2P.USER_NAME']}
@@ -1564,6 +1804,12 @@ const P2POrder = ({
 									<div style={{ flex: 6 }}>
 										<Input
 											value={chatMessage}
+											disabled={selectedOrder.transaction_status !== 'active'}
+											className={
+												selectedOrder.transaction_status !== 'active'
+													? 'greyButtonP2P'
+													: ''
+											}
 											onChange={(e) => {
 												setChatMessage(e.target.value);
 											}}

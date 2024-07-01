@@ -283,6 +283,8 @@ const nestedIcons = {
 	STAKING_VARIABLE: '/assets/stake/variable_icon.svg',
 	STAKING_UNLOCK: '/assets/stake/unlock-unstake-icon.svg',
 	STAKING_BACKGROUND: '/assets/stake/stake-background.jpg',
+	STAKING_CEFI_LOGO: '/assets/stake/Group 5977.svg',
+	STAKING__LOCK: '/assets/stake/Group 5950.svg',
 	META_MASK_NOT_FOUND: '/assets/icons/metamask-fox-stake-not-detected.svg',
 	STAKING_ACCOUNT: '',
 	METAMASK: '',

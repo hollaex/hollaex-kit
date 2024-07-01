@@ -229,16 +229,9 @@ class Stake extends Component {
 					{this.state.selectedStaking === 'defi' && <Account />}
 				</div>
 
-				<div
-					style={{
-						display: 'flex',
-						flexDirection: 'column',
-						justifyContent: 'center',
-						alignItems: 'center',
-					}}
-				>
+				<div className="d-flex flex-direction-column align-items-center justify-content-center">
 					{this.state.selectedStaking === 'cefi' && (
-						<div style={{ width: 50, height: 40, marginBottom: 10 }}>
+						<div className="cefi-stake">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								width="59.482"
@@ -294,58 +287,49 @@ class Stake extends Component {
 						</div>
 					)}
 
-					<h2>Stake</h2>
-					<div>Earn rewards for staking your digital assets</div>
+					<h2 className="stake_header">
+						<EditWrapper stringId="STAKE.TITLE">
+							{STRINGS['STAKE.TITLE']}
+						</EditWrapper>
+					</h2>
+					<div>
+						<EditWrapper stringId="STAKE.EARN_REWARD">
+							{STRINGS['STAKE.EARN_REWARD']}
+						</EditWrapper>
+					</div>
 				</div>
 
-				<div
-					style={{
-						marginTop: 20,
-						marginBottom: 20,
-						display: 'flex',
-						justifyContent: 'center',
-					}}
-				>
+				<div className="stake-button-wrapper">
 					{this.props?.constants?.features?.cefi_stake &&
 						this.props?.constants?.features?.stake_page && (
 							<div className="d-flex">
 								<span
-									className="stakingOption"
-									style={{
-										marginRight: 5,
-										padding: 10,
-										borderRadius: 10,
-										cursor: 'pointer',
-										fontWeight:
-											this.state.selectedStaking === 'defi' ? 'bold' : 'normal',
-										opacity: this.state.selectedStaking === 'defi' ? 1 : 0.7,
-									}}
+									className={`stakingOption ${
+										this.state.selectedStaking === 'defi'
+											? 'font-weight-bold stakingoption-opacity'
+											: 'font-weight-normal stakingoption-half-opacity'
+									}`}
 									onClick={() => {
 										this.setState({
 											selectedStaking: 'defi',
 										});
 									}}
 								>
-									DeFi Staking
+									{STRINGS['STAKE.DEFI_STAKING']}
 								</span>
 								<span
-									className="stakingOption"
-									style={{
-										marginLeft: 5,
-										padding: 10,
-										borderRadius: 10,
-										cursor: 'pointer',
-										fontWeight:
-											this.state.selectedStaking === 'cefi' ? 'bold' : 'normal',
-										opacity: this.state.selectedStaking === 'cefi' ? 1 : 0.7,
-									}}
+									className={`stakingOption ${
+										this.state.selectedStaking === 'cefi'
+											? 'font-weight-bold stakingoption-opacity'
+											: 'font-weight-normal stakingoption-half-opacity'
+									}`}
 									onClick={() => {
 										this.setState({
 											selectedStaking: 'cefi',
 										});
 									}}
 								>
-									CeFi Staking
+									{STRINGS['STAKE.CEFI_STAKING']}
 								</span>
 							</div>
 						)}

@@ -15,7 +15,18 @@
 	.subTable {
 		background-color: var(--base_secondary-navigation-bar);
 	}
+
+	.postDealButton {
+		margin-top: 20px;
+	}
 }
+
+.postDealWrapper {
+	min-height: 600px;
+	width: 100%;
+	padding: 20px;
+}
+
 .greenButtonP2P {
 	background-color: var(--specials_checks-okay-done) !important;
 	color: var(--calculated_base_top-bar-navigation_text) !important;
