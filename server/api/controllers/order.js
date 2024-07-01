@@ -484,6 +484,60 @@ const adminCancelOrder = (req, res) => {
 		});
 };
 
+const getUserChainTradeQuote = (req, res) => {
+	loggerOrders.verbose(req.uuid, 'controllers/order/getUserChainTradeQuote/auth', req.auth);
+
+	const { symbol, size } = req.swagger.params;
+
+	const bearerToken = req.headers['authorization'];
+	const ip = req.headers['x-real-ip'];
+
+	toolsLib.order.getUserChainTradeQuote(bearerToken, symbol.value, size.value, ip)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerOrders.error(req.uuid, 'controllers/order/getUserChainTradeQuote', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const executeUserChainTrade = (req, res) => {
+	loggerOrders.verbose(
+		req.uuid,
+		'controllers/order/executeUserChainTrade auth',
+		req.auth
+	);
+	loggerOrders.verbose(
+		req.uuid,
+		'controllers/order/executeUserChainTrade',
+		req.swagger.params.data.value
+	);
+
+
+	const { token } = req.swagger.params.data.value;
+	const user_id = req.auth.sub.id;
+
+	const opts = {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	};
+
+	toolsLib.order.executeUserChainTrade(user_id, token, opts)
+		.then((result) => {
+			return res.json({ result });
+		})
+		.catch((err) => {
+			loggerOrders.error(
+				req.uuid,
+				'controllers/order/executeUserChainTrade error',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+		});
+};
+
 module.exports = {
 	createOrder,
 	createOrderByAdmin,
@@ -496,5 +550,7 @@ module.exports = {
 	getQuickTrade,
 	dustBalance,
 	orderExecute,
-	dustEstimatePrice
+	dustEstimatePrice,
+	getUserChainTradeQuote,
+	executeUserChainTrade
 };
