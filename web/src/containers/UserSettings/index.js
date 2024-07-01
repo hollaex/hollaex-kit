@@ -156,11 +156,7 @@ class UserSettings extends Component {
 		{ activeLanguage = '', username = '', settings = {}, coins = {} },
 		activeTab
 	) => {
-		const {
-			constants = {},
-			icons: ICONS,
-			themeOptions,
-		} = this.props;
+		const { constants = {}, icons: ICONS, themeOptions } = this.props;
 		const formValues = generateFormValues({
 			options: themeOptions.map(({ value }) => ({ value, label: value })),
 		});
@@ -451,13 +447,13 @@ class UserSettings extends Component {
 				>
 					<div className="header-content">
 						<div>
-							<EditWrapper stringId="USER_SETTINGS.TITLE_TEXT_1">
-								{STRINGS['USER_SETTINGS.TITLE_TEXT_1']}
+							<EditWrapper stringId="USER_SETTINGS.TITLE_TEXT">
+								{STRINGS['USER_SETTINGS.TITLE_TEXT']}
 							</EditWrapper>
 						</div>
 						<div className="mb-3">
-							<EditWrapper stringId="USER_SETTINGS.TITLE_TEXT_2">
-								{STRINGS['USER_SETTINGS.TITLE_TEXT_2']}
+							<EditWrapper stringId="USER_SETTINGS.TITLE_TEXT_1">
+								{STRINGS['USER_SETTINGS.TITLE_TEXT_1']}
 							</EditWrapper>
 						</div>
 					</div>
