@@ -107,13 +107,12 @@ const P2PPostDeal = ({
 	return (
 		<div
 			className={classnames(
-				...['P2pOrder', isMobile ? 'mobile-view-p2p-post' : '']
+				...[
+					'P2pOrder',
+					'postDealWrapper',
+					isMobile ? 'mobile-view-p2p-post' : '',
+				]
 			)}
-			style={{
-				height: isMobile ? 800 : 600,
-				width: '100%',
-				padding: 20,
-			}}
 		>
 			<div>
 				<Steps current={step - 1}>
@@ -647,7 +646,7 @@ const P2PPostDeal = ({
 					position: 'relative',
 					top: '5%',
 				}}
-				className="stake_theme"
+				className={classnames(['stake_theme', 'postDealButton'])}
 			>
 				{step !== 1 && (
 					<Button
