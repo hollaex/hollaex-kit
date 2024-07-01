@@ -4,7 +4,7 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 // eslint-disable-next-line
-import { Coin, EditWrapper } from 'components';
+import { Coin, DonutChart, EditWrapper, MobileBarBack } from 'components';
 import { Link } from 'react-router';
 import { Button, Spin, DatePicker, message, Modal, Tabs } from 'antd';
 import { fetchBalanceHistory, fetchPlHistory } from './actions';
@@ -13,6 +13,13 @@ import moment from 'moment';
 import STRINGS from 'config/localizedStrings';
 import { CloseOutlined } from '@ant-design/icons';
 import './_ProfitLoss.scss';
+import { isMobile } from 'react-device-detect';
+import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
+import { assetsSelector } from './utils';
+import {
+	calculateOraclePrice,
+	formatCurrencyByIncrementalUnit,
+} from 'utils/currency';
 const TabPane = Tabs.TabPane;
 const ProfitLossSection = ({
 	coins,
@@ -20,6 +27,9 @@ const ProfitLossSection = ({
 	handleBalanceHistory,
 	balances,
 	pricesInNative,
+	chartData,
+	assets,
+	loading,
 }) => {
 	const month = Array.apply(0, Array(12)).map(function (_, i) {
 		return moment().month(i).format('MMM');
@@ -50,6 +60,7 @@ const ProfitLossSection = ({
 	const [customDate, setCustomDate] = useState(false);
 	const [customDateValues, setCustomDateValues] = useState();
 	const [loadingPnl, setLoadingPnl] = useState(false);
+	const [activeTab, setActiveTab] = useState('0');
 
 	const options = {
 		chart: {
@@ -272,6 +283,12 @@ const ProfitLossSection = ({
 		return (
 			<>
 				{sortedCoins.map((coin, index) => {
+					const { symbol } = coin;
+					const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+					const selectedCoin = assets.find((coin) => coin[0] === symbol);
+					const { increment_unit } = selectedCoin;
+					const oraclePrice = pricesInNative[coin?.symbol];
+					const balance = balances[`${coin?.symbol}_balance`];
 					const incrementUnit = coins[coin.symbol].increment_unit;
 					const decimalPoint = new BigNumber(incrementUnit).dp();
 					const sourceAmount = new BigNumber(
@@ -279,7 +296,6 @@ const ProfitLossSection = ({
 					)
 						.decimalPlaces(decimalPoint)
 						.toNumber();
-
 					const incrementUnitNative =
 						coins[balance_history_config?.currency || 'usdt'].increment_unit;
 					const decimalPointNative = new BigNumber(incrementUnitNative).dp();
@@ -288,7 +304,16 @@ const ProfitLossSection = ({
 					)
 						.decimalPlaces(decimalPointNative)
 						.toNumber();
-
+					const balanceText =
+						coin?.symbol === BASE_CURRENCY
+							? formatCurrencyByIncrementalUnit(balance, increment_unit)
+							: formatCurrencyByIncrementalUnit(
+									calculateOraclePrice(balance, oraclePrice),
+									baseCoin.increment_unit
+							  );
+					const getBalancePercentage = chartData.filter(
+						(coin) => coin.symbol === symbol
+					);
 					if (sourceAmount > 0) {
 						return (
 							<tr className="table-row" key={index}>
@@ -304,29 +329,72 @@ const ProfitLossSection = ({
 										to={`/prices/coin/${coin.symbol}`}
 										className="underline"
 									>
-										<div
-											className="d-flex align-items-center wallet-hover cursor-pointer"
-											style={{ cursor: 'pointer' }}
-										>
-											<Coin iconId={coin.icon_id} />
-											<div className="px-2">{coin.display_name}</div>
-										</div>
+										{isMobile ? (
+											<div
+												className="d-flex align-items-center wallet-hover cursor-pointer"
+												style={{ cursor: 'pointer' }}
+											>
+												<Coin iconId={coin.icon_id} type="CS11" />
+												<div className="ml-3">
+													<div className="px-2 fill-active-color">
+														{coin.display_name}
+													</div>
+													<div className="h4">{coin?.fullname}</div>
+												</div>
+											</div>
+										) : (
+											<div
+												className="d-flex align-items-center wallet-hover cursor-pointer"
+												style={{ cursor: 'pointer' }}
+											>
+												<Coin iconId={coin.icon_id} />
+												<div className="px-2">{coin.display_name}</div>
+											</div>
+										)}
 									</Link>
 								</td>
 								<td
 									style={{ borderBottom: '1px solid grey', minWidth: '15.5em' }}
 									className="td-fit"
 								>
-									{sourceAmount} {coin.symbol.toUpperCase()}
+									<div className={isMobile && 'text-end fill-active-color'}>
+										{sourceAmount}
+									</div>
+									{isMobile &&
+										selectedCoin[0] !== BASE_CURRENCY &&
+										parseFloat(balanceText || 0) > 0 && (
+											<div className="text-end">{`(≈ $${balanceText})`}</div>
+										)}
 								</td>
 
-								<td
-									style={{ borderBottom: '1px solid grey', minWidth: '15.5em' }}
-									className="td-fit"
-								>
-									= {sourceAmountNative}{' '}
-									{balance_history_config?.currency?.toUpperCase() || 'USDT'}
-								</td>
+								{!isMobile && (
+									<td
+										style={{
+											borderBottom: '1px solid grey',
+											minWidth: '15.5em',
+										}}
+										className="td-fit"
+									>
+										= {sourceAmountNative}{' '}
+										{balance_history_config?.currency?.toUpperCase() || 'USDT'}
+									</td>
+								)}
+								{!isMobile && (
+									<td
+										style={{
+											borderBottom: '1px solid grey',
+											minWidth: '15.5em',
+										}}
+										className="td-fit"
+									>
+										<div>{getBalancePercentage[0]?.balancePercentage}</div>
+										{isMobile &&
+											selectedCoin[0] !== BASE_CURRENCY &&
+											parseFloat(balanceText || 0) > 0 && (
+												<div className="text-end">{`(≈ $${balanceText})`}</div>
+											)}
+									</td>
+								)}
 							</tr>
 						);
 					}
@@ -537,36 +605,43 @@ const ProfitLossSection = ({
 			return '1m';
 		} else return '3m';
 	};
+
+	const onHandleTab = (activeKey) => {
+		setActiveTab(activeKey);
+	};
+
 	return (
 		<Spin spinning={isLoading}>
-			<div style={{ marginTop: 20 }}>
+			<div className={`${!isMobile && 'mt-4'}`}>
 				{customDateModal()}
-
-				<div style={{ position: 'absolute', top: -25, left: -5 }}>
-					<span
-						style={{
-							cursor: 'pointer',
-							textDecoration: 'underline',
-							color: '#5257CD',
-						}}
-						onClick={() => handleBalanceHistory(false)}
-					>
-						{'<'}
-						<EditWrapper stringId="PROFIT_LOSS.BACK">
-							{STRINGS['PROFIT_LOSS.BACK']}
+				{!isMobile && (
+					<div style={{ position: 'absolute', top: -25, left: -5 }}>
+						<span
+							style={{
+								cursor: 'pointer',
+								textDecoration: 'underline',
+								color: '#5257CD',
+							}}
+							onClick={() => handleBalanceHistory(false)}
+						>
+							{'<'}
+							<EditWrapper stringId="PROFIT_LOSS.BACK">
+								{STRINGS['PROFIT_LOSS.BACK']}
+							</EditWrapper>
+						</span>{' '}
+						<EditWrapper stringId="PROFIT_LOSS.BACK_TO_WALLET">
+							{STRINGS['PROFIT_LOSS.BACK_TO_WALLET']}
 						</EditWrapper>
-					</span>{' '}
-					<EditWrapper stringId="PROFIT_LOSS.BACK_TO_WALLET">
-						{STRINGS['PROFIT_LOSS.BACK_TO_WALLET']}
-					</EditWrapper>
-				</div>
-				<Tabs defaultActiveKey="0">
+					</div>
+				)}
+				<Tabs defaultActiveKey="0" activeKey={activeTab} onChange={onHandleTab}>
 					<TabPane tab={STRINGS['PROFIT_LOSS.PL_SUMMARY']} key="0">
 						<div
 							className="wallet-assets_block"
-							style={{ marginTop: -10, paddingTop: 20 }}
+							style={{ marginTop: -10, padding: 15, paddingTop: 20 }}
 						>
 							<div
+								className={`${isMobile && `mb-0`}`}
 								style={{
 									display: 'flex',
 									justifyContent: 'space-between',
@@ -575,7 +650,7 @@ const ProfitLossSection = ({
 								}}
 							>
 								<div>
-									<div>
+									<div className={`${isMobile && 'profit-loss-preformance'}`}>
 										<EditWrapper stringId="PROFIT_LOSS.WALLET_PERFORMANCE_TITLE">
 											{STRINGS['PROFIT_LOSS.WALLET_PERFORMANCE_TITLE']}
 										</EditWrapper>
@@ -586,155 +661,409 @@ const ProfitLossSection = ({
 										</EditWrapper>
 									</div>
 								</div>
-								<div>
+								{!isMobile && (
 									<div>
-										<EditWrapper stringId="PROFIT_LOSS.EST_TOTAL_BALANCE">
-											{STRINGS['PROFIT_LOSS.EST_TOTAL_BALANCE']}
-										</EditWrapper>{' '}
-										{moment(latestBalance?.created_at).format('DD/MMM/YYYY')}
-									</div>
-									<div style={{ fontSize: '1.5em', marginBottom: 5 }}>
-										{balance_history_config?.currency?.toUpperCase() || 'USDT'}{' '}
-										{getSourceDecimals(
-											balance_history_config?.currency || 'usdt',
-											latestBalance?.total
-										)
-											?.toString()
-											.replace(/\B(?=(\d{3})+(?!\d))/g, ',') || '0'}
-									</div>
-									<Spin spinning={loadingPnl}>
-										<div
-											className={
-												Number(userPL?.[getPeriod(currentDay)]?.total || 0) ===
-												0
-													? 'profitNeutral'
-													: (userPL?.[getPeriod(currentDay)]?.total || 0) > 0
-													? 'profitPositive'
-													: 'profitNegative'
-											}
-										>
-											{' '}
-											{currentDay + ' '}
-											<EditWrapper stringId="PROFIT_LOSS.PL_DAYS">
-												{STRINGS['PROFIT_LOSS.PL_DAYS']}
+										<div>
+											<EditWrapper stringId="PROFIT_LOSS.EST_TOTAL_BALANCE">
+												{STRINGS['PROFIT_LOSS.EST_TOTAL_BALANCE']}
 											</EditWrapper>{' '}
-											{Number(userPL?.[getPeriod(currentDay)]?.total || 0) > 0
-												? '+'
-												: ' '}
-											{''}
+											{moment(latestBalance?.created_at).format('DD/MMM/YYYY')}
+										</div>
+										<div style={{ fontSize: '1.5em', marginBottom: 5 }}>
+											{balance_history_config?.currency?.toUpperCase() ||
+												'USDT'}{' '}
 											{getSourceDecimals(
 												balance_history_config?.currency || 'usdt',
-												userPL?.[getPeriod(currentDay)]?.total
+												latestBalance?.total
 											)
 												?.toString()
 												.replace(/\B(?=(\d{3})+(?!\d))/g, ',') || '0'}
-											{userPL?.[getPeriod(currentDay)]?.totalPercentage
-												? ` (${
-														userPL?.[getPeriod(currentDay)]?.totalPercentage
-												  }%) `
-												: ' '}
-											{balance_history_config?.currency?.toUpperCase() ||
-												'USDT'}
 										</div>
-									</Spin>
-								</div>
+										<Spin spinning={loadingPnl}>
+											<div
+												className={
+													Number(
+														userPL?.[getPeriod(currentDay)]?.total || 0
+													) === 0
+														? 'profitNeutral'
+														: (userPL?.[getPeriod(currentDay)]?.total || 0) > 0
+														? 'profitPositive'
+														: 'profitNegative'
+												}
+											>
+												{' '}
+												{currentDay + ' '}
+												<EditWrapper stringId="PROFIT_LOSS.PL_DAYS">
+													{STRINGS['PROFIT_LOSS.PL_DAYS']}
+												</EditWrapper>{' '}
+												{Number(userPL?.[getPeriod(currentDay)]?.total || 0) > 0
+													? '+'
+													: ' '}
+												{''}
+												{getSourceDecimals(
+													balance_history_config?.currency || 'usdt',
+													userPL?.[getPeriod(currentDay)]?.total
+												)
+													?.toString()
+													.replace(/\B(?=(\d{3})+(?!\d))/g, ',') || '0'}
+												{userPL?.[getPeriod(currentDay)]?.totalPercentage
+													? ` (${
+															userPL?.[getPeriod(currentDay)]?.totalPercentage
+													  }%) `
+													: ' '}
+												{balance_history_config?.currency?.toUpperCase() ||
+													'USDT'}
+											</div>
+										</Spin>
+									</div>
+								)}
 							</div>
-
 							<div
+								className={`${
+									isMobile ? 'flex-direction-column' : 'flex-direction-row'
+								}`}
 								style={{
 									display: 'flex',
-									gap: 5,
-									marginTop: 15,
-									marginBottom: 15,
 								}}
 							>
-								<Button
+								<div
 									style={{
-										fontWeight: currentDay === 7 ? 'bold' : '400',
-										fontSize: '1em',
-									}}
-									className="plButton"
-									ghost
-									onClick={() => {
-										setCurrentDay(7);
-										setQueryValues({
-											start_date: moment().subtract(7, 'days').toISOString(),
-											end_date: moment().subtract().toISOString(),
-										});
+										display: 'flex',
+										gap: 5,
+										marginTop: 15,
+										marginBottom: 15,
 									}}
 								>
-									<span style={{ marginRight: 3 }}>1</span>
-									<EditWrapper stringId="PROFIT_LOSS.WEEK">
-										{STRINGS['PROFIT_LOSS.WEEK']}
-									</EditWrapper>
-								</Button>
-								<Button
-									style={{
-										fontWeight: currentDay === 30 ? 'bold' : '400',
-										fontSize: '1em',
-									}}
-									className="plButton"
-									ghost
-									onClick={() => {
-										setCurrentDay(30);
-										setQueryValues({
-											start_date: moment().subtract(30, 'days').toISOString(),
-											end_date: moment().subtract().toISOString(),
-										});
-									}}
-								>
-									<span style={{ marginRight: 3 }}>1 </span>{' '}
-									<EditWrapper stringId="PROFIT_LOSS.MONTH">
-										{STRINGS['PROFIT_LOSS.MONTH']}
-									</EditWrapper>
-								</Button>
-								<Button
-									style={{
-										fontWeight: currentDay === 90 ? 'bold' : '400',
-										fontSize: '1em',
-									}}
-									className="plButton"
-									ghost
-									onClick={() => {
-										setCurrentDay(90);
-										setQueryValues({
-											start_date: moment().subtract(90, 'days').toISOString(),
-											end_date: moment().subtract().toISOString(),
-										});
-									}}
-								>
-									<span style={{ marginRight: 3 }}>3 </span>{' '}
-									<EditWrapper stringId="PROFIT_LOSS.MONTHS">
-										{STRINGS['PROFIT_LOSS.MONTHS']}
-									</EditWrapper>
-								</Button>
+									<Button
+										style={{
+											fontWeight: currentDay === 7 ? 'bold' : '400',
+											fontSize: '1em',
+										}}
+										className="plButton"
+										ghost
+										onClick={() => {
+											setCurrentDay(7);
+											setQueryValues({
+												start_date: moment().subtract(7, 'days').toISOString(),
+												end_date: moment().subtract().toISOString(),
+											});
+										}}
+									>
+										<span style={{ marginRight: 3 }}>1</span>
+										<EditWrapper stringId="PROFIT_LOSS.WEEK">
+											{STRINGS['PROFIT_LOSS.WEEK']}
+										</EditWrapper>
+									</Button>
+									<Button
+										style={{
+											fontWeight: currentDay === 30 ? 'bold' : '400',
+											fontSize: '1em',
+										}}
+										className="plButton"
+										ghost
+										onClick={() => {
+											setCurrentDay(30);
+											setQueryValues({
+												start_date: moment().subtract(30, 'days').toISOString(),
+												end_date: moment().subtract().toISOString(),
+											});
+										}}
+									>
+										<span style={{ marginRight: 3 }}>1 </span>{' '}
+										<EditWrapper stringId="PROFIT_LOSS.MONTH">
+											{STRINGS['PROFIT_LOSS.MONTH']}
+										</EditWrapper>
+									</Button>
+									<Button
+										style={{
+											fontWeight: currentDay === 90 ? 'bold' : '400',
+											fontSize: '1em',
+										}}
+										className="plButton"
+										ghost
+										onClick={() => {
+											setCurrentDay(90);
+											setQueryValues({
+												start_date: moment().subtract(90, 'days').toISOString(),
+												end_date: moment().subtract().toISOString(),
+											});
+										}}
+									>
+										<span style={{ marginRight: 3 }}>3 </span>{' '}
+										<EditWrapper stringId="PROFIT_LOSS.MONTHS">
+											{STRINGS['PROFIT_LOSS.MONTHS']}
+										</EditWrapper>
+									</Button>
+								</div>
+								{isMobile && (
+									<div
+										className={
+											Number(userPL?.[getPeriod(currentDay)]?.total || 0) === 0
+												? 'profitNeutral mb-5'
+												: (userPL?.[getPeriod(currentDay)]?.total || 0) > 0
+												? 'profitPositive mb-5'
+												: 'profitNegative mb-5'
+										}
+									>
+										{' '}
+										{currentDay + ' '}
+										<EditWrapper stringId="PROFIT_LOSS.PL_DAYS">
+											{STRINGS['PROFIT_LOSS.PL_DAYS']}
+										</EditWrapper>{' '}
+										{Number(userPL?.[getPeriod(currentDay)]?.total || 0) > 0
+											? '+'
+											: ' '}
+										{''}
+										{getSourceDecimals(
+											balance_history_config?.currency || 'usdt',
+											userPL?.[getPeriod(currentDay)]?.total
+										)
+											?.toString()
+											.replace(/\B(?=(\d{3})+(?!\d))/g, ',') || '0'}
+										{userPL?.[getPeriod(currentDay)]?.totalPercentage
+											? ` (${
+													userPL?.[getPeriod(currentDay)]?.totalPercentage
+											  }%) `
+											: ' '}
+										{balance_history_config?.currency?.toUpperCase() || 'USDT'}
+									</div>
+								)}
 								{/* <Button
-									style={{
-										fontWeight: currentDay === 'custom' ? 'bold' : '400',
-										fontSize: '1em',
-									}}
-									className="plButton"
-									ghost
-									onClick={() => {
-										setCustomDate(true);
-									}}
-								>
-									<EditWrapper stringId="PROFIT_LOSS.CUSTOM">
-										{STRINGS['PROFIT_LOSS.CUSTOM']}
-									</EditWrapper>
-								</Button> */}
+                                    style={{
+                                        fontWeight: currentDay === 'custom' ? 'bold' : '400',
+                                        fontSize: '1em',
+                                    }}
+                                    className="plButton"
+                                    ghost
+                                    onClick={() => {
+                                        setCustomDate(true);
+                                    }}
+                                >
+                                    <EditWrapper stringId="PROFIT_LOSS.CUSTOM">
+                                        {STRINGS['PROFIT_LOSS.CUSTOM']}
+                                    </EditWrapper>
+                                </Button> */}
 							</div>
 
 							<div className="highChartColor">
 								<HighchartsReact highcharts={Highcharts} options={options} />
 							</div>
+							{isMobile && (
+								<div className="profit-loss-link mb-5">
+									<div className="d-flex flex-direction-column align-items-center">
+										<div>
+											<EditWrapper stringId="PROFIT_LOSS.WALLET_BALANCE_ESTIMATE">
+												{STRINGS['PROFIT_LOSS.WALLET_BALANCE_ESTIMATE']}
+											</EditWrapper>
+											<span>
+												{' '}
+												(
+												{moment(latestBalance?.created_at).format(
+													'DD/MMM/YYYY'
+												)}
+												):
+											</span>
+										</div>
+										<div style={{ fontSize: '1em', marginBottom: 5 }}>
+											{balance_history_config?.currency?.toUpperCase() ||
+												'USDT'}{' '}
+											{getSourceDecimals(
+												balance_history_config?.currency || 'usdt',
+												latestBalance?.total
+											)
+												?.toString()
+												.replace(/\B(?=(\d{3})+(?!\d))/g, ',') || '0'}
+										</div>
+									</div>
+									<div onClick={() => setActiveTab('2')}>
+										<EditWrapper stringId="PROFIT_LOSS.VIEW_BALANCE_HISTORY">
+											<span className="profit-loss-tab-label">
+												{STRINGS['PROFIT_LOSS.VIEW_BALANCE_HISTORY']}
+											</span>
+										</EditWrapper>
+									</div>
+
+									<div onClick={() => setActiveTab('1')}>
+										<EditWrapper stringId="PROFIT_LOSS.VIEW_PERCENTAGE_SHARE">
+											<span className="profit-loss-tab-label">
+												{STRINGS['PROFIT_LOSS.VIEW_PERCENTAGE_SHARE']}
+											</span>
+										</EditWrapper>
+									</div>
+								</div>
+							)}
 						</div>
 					</TabPane>
-					{currentBalance && (
-						<TabPane tab={STRINGS['PROFIT_LOSS.BALANCE_HISTORY']} key="1">
+					{isMobile && (
+						<TabPane tab={STRINGS['PROFIT_LOSS.PERCENTAGE']} key="1">
 							<div
 								className="wallet-assets_block"
-								style={{ marginTop: -10, paddingTop: 20 }}
+								style={{ marginTop: -10, padding: 15, paddingTop: 20 }}
+							>
+								<div>
+									<DonutChart
+										coins={coins}
+										chartData={chartData}
+										showOpenWallet={false}
+										centerText={true}
+									/>
+								</div>
+								<div className="wallet-assets_block">
+									<table className="wallet-assets_block-table">
+										<thead>
+											<tr className="table-bottom-border">
+												<th />
+												<th>
+													<EditWrapper stringId="ASSETS">
+														{STRINGS['ASSETS']}
+													</EditWrapper>
+												</th>
+												<th>
+													<EditWrapper stringId="WALLET.MOBILE_WALLET_SHARE_LABEL">
+														{STRINGS['WALLET.MOBILE_WALLET_SHARE_LABEL']}
+													</EditWrapper>
+												</th>
+											</tr>
+										</thead>
+										<tbody>
+											{assets.map(
+												(
+													[
+														key,
+														{
+															increment_unit,
+															oraclePrice,
+															balance,
+															fullname,
+															symbol = '',
+															icon_id,
+														} = DEFAULT_COIN_DATA,
+													],
+													index
+												) => {
+													// const markets = getAllAvailableMarkets(key);
+													const getBalancePercentage = chartData.filter(
+														(coin) => coin.symbol === symbol
+													);
+													const baseCoin =
+														coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+													const balanceText =
+														key === BASE_CURRENCY
+															? formatCurrencyByIncrementalUnit(
+																	balance,
+																	increment_unit
+															  )
+															: formatCurrencyByIncrementalUnit(
+																	calculateOraclePrice(balance, oraclePrice),
+																	baseCoin.increment_unit
+															  );
+													return (
+														<tr
+															className="table-row table-bottom-border"
+															key={key}
+														>
+															<td className="table-icon td-fit" />
+															<td className="td-name td-fit">
+																{assets && !loading ? (
+																	<div className="d-flex align-items-center wallet-hover cursor-pointer">
+																		<Link
+																			to={`/wallet/${key.toLowerCase()}`}
+																			className="mt-3"
+																		>
+																			<Coin iconId={icon_id} type="CS11" />
+																		</Link>
+																		<Link to={`/wallet/${key.toLowerCase()}`}>
+																			<div className="px-2 fill-active-color font-weight-bold">
+																				<EditWrapper
+																					stringId={`${symbol?.toUpperCase()}_FULLNAME`}
+																				>
+																					{symbol?.toUpperCase()}
+																				</EditWrapper>
+																			</div>
+																			<div className="ml-2 fill_secondary-color">
+																				<EditWrapper
+																					stringId={`${symbol?.toUpperCase()}_FULLNAME`}
+																				>
+																					{fullname}
+																				</EditWrapper>
+																			</div>
+																		</Link>
+																	</div>
+																) : (
+																	<div
+																		className="loading-row-anime w-half"
+																		style={{
+																			animationDelay: `.${index + 1}s`,
+																		}}
+																	/>
+																)}
+															</td>
+															<td className="td-amount">
+																{assets &&
+																baseCoin &&
+																!loading &&
+																increment_unit ? (
+																	<div className="d-flex justify-content-end">
+																		<div className="d-flex flex-column align-items-end">
+																			<div className="font-weight-bold fill-active-color">
+																				{
+																					getBalancePercentage[0]
+																						?.balancePercentage
+																				}
+																			</div>
+																			{key !== BASE_CURRENCY &&
+																				parseFloat(balanceText || 0) > 0 && (
+																					<div className="fill_secondary-color">
+																						{`(≈  $${balanceText})`}
+																					</div>
+																				)}
+																		</div>
+																	</div>
+																) : (
+																	<div
+																		className="loading-row-anime w-full"
+																		style={{
+																			animationDelay: `.${index + 1}s`,
+																		}}
+																	/>
+																)}
+															</td>
+														</tr>
+													);
+												}
+											)}
+										</tbody>
+									</table>
+								</div>
+								{isMobile && (
+									<div className="profit-loss-link mb-5">
+										<div onClick={() => setActiveTab('2')}>
+											<EditWrapper stringId="PROFIT_LOSS.VIEW_BALANCE_HISTORY">
+												<span className="profit-loss-tab-label">
+													{STRINGS['PROFIT_LOSS.VIEW_BALANCE_HISTORY']}
+												</span>
+											</EditWrapper>
+										</div>
+										<div onClick={() => setActiveTab('0')}>
+											<EditWrapper stringId="PROFIT_LOSS.VIEW_WALLET_P&L">
+												<span className="profit-loss-tab-label">
+													{STRINGS['PROFIT_LOSS.VIEW_WALLET_P&L']}
+												</span>
+											</EditWrapper>
+										</div>
+									</div>
+								)}
+							</div>
+						</TabPane>
+					)}
+					{currentBalance && (
+						<TabPane
+							tab={STRINGS['PROFIT_LOSS.BALANCE_HISTORY']}
+							key={isMobile ? '2' : '1'}
+						>
+							<div
+								className="wallet-assets_block "
+								style={{ marginTop: -10, padding: 15, paddingTop: 20 }}
 							>
 								<div
 									style={{
@@ -743,41 +1072,51 @@ const ProfitLossSection = ({
 										gap: 15,
 									}}
 								>
-									<div>
-										<div style={{ fontWeight: 'bold' }}>
-											<EditWrapper stringId="PROFIT_LOSS.WALLET_BALANCE">
-												{STRINGS['PROFIT_LOSS.WALLET_BALANCE']}
-											</EditWrapper>
-										</div>
-										<div style={{ maxWidth: 300, marginBottom: 10 }}>
-											<EditWrapper stringId="PROFIT_LOSS.WALLET_BALANCE_DESCRIPTION_1">
-												{STRINGS['PROFIT_LOSS.WALLET_BALANCE_DESCRIPTION_1']}
-											</EditWrapper>{' '}
-											{moment(currentBalance?.created_at).format('DD/MMM/YYYY')}
-											.
-											<EditWrapper stringId="PROFIT_LOSS.WALLET_BALANCE_DESCRIPTION_2">
-												{STRINGS['PROFIT_LOSS.WALLET_BALANCE_DESCRIPTION_2']}
-											</EditWrapper>
-										</div>
-									</div>
-									<div>
+									{!isMobile && (
 										<div>
-											<EditWrapper stringId="PROFIT_LOSS.EST_TOTAL_BALANCE">
-												{STRINGS['PROFIT_LOSS.EST_TOTAL_BALANCE']}
-											</EditWrapper>{' '}
-											{moment(currentBalance?.created_at).format('DD/MMM/YYYY')}
+											<div style={{ fontWeight: 'bold' }}>
+												<EditWrapper stringId="PROFIT_LOSS.WALLET_BALANCE">
+													{STRINGS['PROFIT_LOSS.WALLET_BALANCE']}
+												</EditWrapper>
+											</div>
+											<div style={{ maxWidth: 300, marginBottom: 10 }}>
+												<EditWrapper stringId="PROFIT_LOSS.WALLET_BALANCE_DESCRIPTION_1">
+													{STRINGS['PROFIT_LOSS.WALLET_BALANCE_DESCRIPTION_1']}
+												</EditWrapper>{' '}
+												{moment(currentBalance?.created_at).format(
+													'DD/MMM/YYYY'
+												)}
+												.
+												<EditWrapper stringId="PROFIT_LOSS.WALLET_BALANCE_DESCRIPTION_2">
+													{STRINGS['PROFIT_LOSS.WALLET_BALANCE_DESCRIPTION_2']}
+												</EditWrapper>
+											</div>
 										</div>
-										<div style={{ fontSize: '1.5em', marginBottom: 5 }}>
-											{balance_history_config?.currency?.toUpperCase() ||
-												'USDT'}{' '}
-											{getSourceDecimals(
-												balance_history_config?.currency || 'usdt',
-												currentBalance?.total
-											)
-												?.toString()
-												.replace(/\B(?=(\d{3})+(?!\d))/g, ',') || '0'}
+									)}
+									<div className={`${isMobile && `balance-history`}`}>
+										<div className={`${isMobile && `total-balance`}`}>
+											<div>
+												<EditWrapper stringId="PROFIT_LOSS.EST_TOTAL_BALANCE">
+													{STRINGS['PROFIT_LOSS.EST_TOTAL_BALANCE']}
+												</EditWrapper>{' '}
+												{moment(currentBalance?.created_at).format(
+													'DD/MMM/YYYY'
+												)}
+											</div>
+											<div style={{ fontSize: '1.5em', marginBottom: 5 }}>
+												{balance_history_config?.currency?.toUpperCase() ||
+													'USDT'}{' '}
+												{getSourceDecimals(
+													balance_history_config?.currency || 'usdt',
+													currentBalance?.total
+												)
+													?.toString()
+													.replace(/\B(?=(\d{3})+(?!\d))/g, ',') || '0'}
+											</div>
 										</div>
-										<div>
+										<div
+											className={`${isMobile && `balance-history-date_select`}`}
+										>
 											<div>
 												<EditWrapper stringId="PROFIT_LOSS.DATE_SELECT">
 													{STRINGS['PROFIT_LOSS.DATE_SELECT']}
@@ -847,15 +1186,32 @@ const ProfitLossSection = ({
 													</EditWrapper>
 												</th>
 												<th>
-													<EditWrapper stringId="PROFIT_LOSS.BALANCE_AMOUNT">
-														{STRINGS['PROFIT_LOSS.BALANCE_AMOUNT']}
+													<EditWrapper
+														stringId={
+															isMobile
+																? 'WALLET.MOBILE_WALLET_BALANCE_LABEL'
+																: 'PROFIT_LOSS.BALANCE_AMOUNT'
+														}
+													>
+														{isMobile
+															? STRINGS['WALLET.MOBILE_WALLET_BALANCE_LABEL']
+															: STRINGS['PROFIT_LOSS.BALANCE_AMOUNT']}
 													</EditWrapper>
 												</th>
-												<th>
-													<EditWrapper stringId="PROFIT_LOSS.VALUE">
-														{STRINGS['PROFIT_LOSS.VALUE']}
-													</EditWrapper>
-												</th>
+												{!isMobile && (
+													<th>
+														<EditWrapper stringId="PROFIT_LOSS.VALUE">
+															{STRINGS['PROFIT_LOSS.VALUE']}
+														</EditWrapper>
+													</th>
+												)}
+												{!isMobile && (
+													<th>
+														<EditWrapper stringId="PROFIT_LOSS.BALANCE_PERCENTAGE">
+															{STRINGS['PROFIT_LOSS.BALANCE_PERCENTAGE']}
+														</EditWrapper>
+													</th>
+												)}
 											</tr>
 										</thead>
 										<tbody className="account-limits-content font-weight-bold">
@@ -863,6 +1219,25 @@ const ProfitLossSection = ({
 										</tbody>
 									</table>
 								</div>
+								{isMobile && (
+									<div className="profit-loss-link mb-5">
+										<div onClick={() => setActiveTab('0')}>
+											<EditWrapper stringId="PROFIT_LOSS.VIEW_WALLET_P&L">
+												<span className="profit-loss-tab-label">
+													{STRINGS['PROFIT_LOSS.VIEW_WALLET_P&L']}
+												</span>
+											</EditWrapper>
+										</div>
+
+										<div onClick={() => setActiveTab('1')}>
+											<EditWrapper stringId="PROFIT_LOSS.VIEW_PERCENTAGE_SHARE">
+												<span className="profit-loss-tab-label">
+													{STRINGS['PROFIT_LOSS.VIEW_PERCENTAGE_SHARE']}
+												</span>
+											</EditWrapper>
+										</div>
+									</div>
+								)}
 							</div>
 						</TabPane>
 					)}
@@ -878,6 +1253,9 @@ const mapStateToProps = (state) => ({
 	pricesInNative: state.asset.oraclePrices,
 	dust: state.app.constants.dust,
 	balance_history_config: state.app.constants.balance_history_config,
+	chartData: state.asset.chartData,
+	assets: assetsSelector(state),
+	quickTrade: state.app.quickTrade,
 });
 
 const mapDispatchToProps = (dispatch) => ({});

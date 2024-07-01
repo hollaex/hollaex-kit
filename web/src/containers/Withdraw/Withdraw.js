@@ -2,9 +2,9 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
-import { Button, Checkbox, Input, Modal, Select } from 'antd';
+import { Button, Input, Select } from 'antd';
 import BigNumber from 'bignumber.js';
-import { Coin, EditWrapper } from 'components';
+import { Coin } from 'components';
 import STRINGS from 'config/localizedStrings';
 import {
 	CaretDownOutlined,
@@ -67,11 +67,11 @@ const RenderWithdraw = ({
 	const [prices, setPrices] = useState({});
 	const [isPinnedAssets, setIsPinnedAssets] = useState(false);
 	const [optionalTag, setOptionalTag] = useState('');
-	const [isCheck, setIsCheck] = useState(false);
-	const [isVisible, setIsVisible] = useState(false);
 	const [isValidEmail, setIsValidEmail] = useState(false);
 	const [isDisbaleWithdraw, setIsDisbaleWithdraw] = useState(false);
-	const [isWarning, setIsWarning] = useState(false);
+	// const [isCheck, setIsCheck] = useState(false);
+	// const [isVisible, setIsVisible] = useState(false);
+	// const [isWarning, setIsWarning] = useState(false);
 
 	const {
 		setWithdrawCurrency,
@@ -177,12 +177,12 @@ const RenderWithdraw = ({
 		} else {
 			setSelectedAsset(null);
 		}
-		if (
-			['xrp', 'xlm', 'ton', 'pmn'].includes(defaultCurrency) ||
-			['xrp', 'xlm', 'ton', 'pmn'].includes(currentNetwork)
-		) {
-			setIsWarning(true);
-		}
+		// if (
+		// 	['xrp', 'xlm', 'ton', 'pmn'].includes(defaultCurrency) ||
+		// 	['xrp', 'xlm', 'ton', 'pmn'].includes(currentNetwork)
+		// ) {
+		// 	setIsWarning(true);
+		// }
 		getOraclePrices();
 		setCurrStep({ ...currStep, stepTwo: true });
 
@@ -327,6 +327,18 @@ const RenderWithdraw = ({
 		setReceiverEmail('');
 	};
 
+	const renderPinnedAsset = (data) => {
+		const icon_id = coins[data]?.icon_id;
+		return (
+			<div className="d-flex justify-content-around">
+				{data.toUpperCase()}
+				<span className="pinned-asset-icon">
+					<Coin iconId={icon_id} type="CS1" />
+				</span>
+			</div>
+		);
+	};
+
 	const onHandleChangeNetwork = (val) => {
 		if (val) {
 			setCurrStep((prev) => ({ ...prev, stepFour: true }));
@@ -368,13 +380,13 @@ const RenderWithdraw = ({
 		}
 	};
 
-	const onHandleRemove = () => {
-		if (!isCheck) {
-			setOptionalTag('');
-		}
-		setIsCheck(true);
-		setIsVisible(false);
-	};
+	// const onHandleRemove = () => {
+	// 	if (!isCheck) {
+	// 		setOptionalTag('');
+	// 	}
+	// 	setIsCheck(true);
+	// 	setIsVisible(false);
+	// };
 
 	const renderAmountIcon = () => {
 		return (
@@ -390,62 +402,62 @@ const RenderWithdraw = ({
 		);
 	};
 
-	const renderRemoveTag = () => {
-		return (
-			<div className="remove-tag-wrapper">
-				<div className="tag-body">
-					<div className="mb-4">
-						<EditWrapper>
-							{STRINGS['WITHDRAW_PAGE.REMOVE_TAG_NOTE_1']}
-						</EditWrapper>
-					</div>
-					<div className="mb-4">
-						<EditWrapper>
-							{STRINGS.formatString(
-								STRINGS['WITHDRAW_PAGE.REMOVE_TAG_NOTE_2'],
-								<span className="font-weight-bold">
-									{STRINGS['WITHDRAW_PAGE.REMOVE_TAG_NOTE_3']}
-								</span>,
-								STRINGS['WITHDRAW_PAGE.REMOVE_TAG_NOTE_4']
-							)}
-						</EditWrapper>
-					</div>
-				</div>
-				<div className="button-wrapper">
-					<Button className="holla-button" onClick={() => setIsVisible(false)}>
-						<EditWrapper>{STRINGS['WITHDRAW_PAGE.BACK_BTN']}</EditWrapper>
-					</Button>
-					<Button className="holla-button" onClick={onHandleRemove}>
-						<EditWrapper>{STRINGS['WITHDRAW_PAGE.REMOVE_TAG']}</EditWrapper>
-					</Button>
-				</div>
-			</div>
-		);
-	};
+	// const renderRemoveTag = () => {
+	// 	return (
+	// 		<div className="remove-tag-wrapper">
+	// 			<div className="tag-body">
+	// 				<div className="mb-4">
+	// 					<EditWrapper>
+	// 						{STRINGS['WITHDRAW_PAGE.REMOVE_TAG_NOTE_1']}
+	// 					</EditWrapper>
+	// 				</div>
+	// 				<div className="mb-4">
+	// 					<EditWrapper>
+	// 						{STRINGS.formatString(
+	// 							STRINGS['WITHDRAW_PAGE.REMOVE_TAG_NOTE_2'],
+	// 							<span className="font-weight-bold">
+	// 								{STRINGS['WITHDRAW_PAGE.REMOVE_TAG_NOTE_3']}
+	// 							</span>,
+	// 							STRINGS['WITHDRAW_PAGE.REMOVE_TAG_NOTE_4']
+	// 						)}
+	// 					</EditWrapper>
+	// 				</div>
+	// 			</div>
+	// 			<div className="button-wrapper">
+	// 				<Button className="holla-button" onClick={() => setIsVisible(false)}>
+	// 					<EditWrapper>{STRINGS['WITHDRAW_PAGE.BACK_BTN']}</EditWrapper>
+	// 				</Button>
+	// 				<Button className="holla-button" onClick={onHandleRemove}>
+	// 					<EditWrapper>{STRINGS['WITHDRAW_PAGE.REMOVE_TAG']}</EditWrapper>
+	// 				</Button>
+	// 			</div>
+	// 		</div>
+	// 	);
+	// };
 
-	const renderWithdrawWarningPopup = () => {
-		return (
-			<div className="warning-popup-wrapper">
-				<div>
-					<EditWrapper>
-						{STRINGS['WITHDRAW_PAGE.WARNING_WITHDRAW_INFO_1']}
-					</EditWrapper>
-				</div>
-				<div className="mt-3">
-					<EditWrapper>
-						{STRINGS['WITHDRAW_PAGE.WARNING_WITHDRAW_INFO_2']}
-					</EditWrapper>
-				</div>
-				<div className="button-wrapper">
-					<Button className="holla-button" onClick={() => setIsWarning(false)}>
-						<EditWrapper>
-							{STRINGS['USER_SETTINGS.DELETE_ACCOUNT.CONFIRMATION.KEY']}
-						</EditWrapper>
-					</Button>
-				</div>
-			</div>
-		);
-	};
+	// const renderWithdrawWarningPopup = () => {
+	// 	return (
+	// 		<div className="warning-popup-wrapper">
+	// 			<div>
+	// 				<EditWrapper>
+	// 					{STRINGS['WITHDRAW_PAGE.WARNING_WITHDRAW_INFO_1']}
+	// 				</EditWrapper>
+	// 			</div>
+	// 			<div className="mt-3">
+	// 				<EditWrapper>
+	// 					{STRINGS['WITHDRAW_PAGE.WARNING_WITHDRAW_INFO_2']}
+	// 				</EditWrapper>
+	// 			</div>
+	// 			<div className="button-wrapper">
+	// 				<Button className="holla-button" onClick={() => setIsWarning(false)}>
+	// 					<EditWrapper>
+	// 						{STRINGS['USER_SETTINGS.DELETE_ACCOUNT.CONFIRMATION.KEY']}
+	// 					</EditWrapper>
+	// 				</Button>
+	// 			</div>
+	// 		</div>
+	// 	);
+	// };
 
 	const onHandleOptionalTag = (value) => {
 		setOptionalTag(value);
@@ -471,19 +483,19 @@ const RenderWithdraw = ({
 		setIsValidEmail(false);
 	};
 
-	const onHandleSelect = (symbol) => {
-		const curr = onHandleSymbol(symbol);
-		if (curr !== symbol) {
-			if (
-				['xrp', 'xlm', 'ton'].includes(defaultCurrency) ||
-				['xrp', 'xlm', 'ton'].includes(defaultNetwork)
-			) {
-				setIsWarning(true);
-			} else {
-				setIsWarning(false);
-			}
-		}
-	};
+	// const onHandleSelect = (symbol) => {
+	// 	const curr = onHandleSymbol(symbol);
+	// 	if (curr !== symbol) {
+	// 		if (
+	// 			['xrp', 'xlm', 'ton'].includes(defaultCurrency) ||
+	// 			['xrp', 'xlm', 'ton'].includes(defaultNetwork)
+	// 		) {
+	// 			setIsWarning(true);
+	// 		} else {
+	// 			setIsWarning(false);
+	// 		}
+	// 	}
+	// };
 
 	const renderScanIcon = () => {
 		return (
@@ -514,7 +526,7 @@ const RenderWithdraw = ({
 		selectedMethod !== 'Email';
 	const isEmailAndAddress =
 		coinLength && coinLength?.length > 1 && selectedMethod !== 'Email'
-			? getWithdrawNetworkOptions !== ''
+			? getWithdrawNetworkOptions !== null
 			: currStep.stepThree || (selectedAsset && selectedMethod);
 	const renderNetwork =
 		coinLength && coinLength?.length > 1 && selectedMethod !== 'Email'
@@ -535,10 +547,15 @@ const RenderWithdraw = ({
 		>
 			<div>
 				<div className="d-flex">
-					<div className="custom-field d-flex flex-column">
+					<div className="custom-field d-flex flex-column align-items-center">
 						<span className="custom-step-selected">1</span>
 						<span
-							className={`custom-line${currStep.stepTwo ? '-selected' : ''}`}
+							className={`custom-line${currStep.stepTwo ? '-selected' : ''} ${
+								selectedMethod === 'Address' &&
+								isMobile &&
+								isMobile &&
+								'custom-line-selected-mobile '
+							}`}
 						></span>
 					</div>
 					<div
@@ -584,7 +601,7 @@ const RenderWithdraw = ({
 			</div>
 			<div>
 				<div className="d-flex">
-					<div className="custom-field d-flex flex-column">
+					<div className="custom-field d-flex flex-column align-items-center">
 						<span
 							className={`custom-step${currStep.stepTwo ? '-selected' : ''}`}
 						>
@@ -615,6 +632,23 @@ const RenderWithdraw = ({
 						>
 							{currStep.stepTwo && (
 								<div>
+									<div className="mb-3 d-flex">
+										{topAssets.map((data, inx) => {
+											return (
+												<span
+													key={inx}
+													className={`currency-label ${
+														selectedAsset === data
+															? 'opacity-100'
+															: 'opacity-30'
+													}`}
+													onClick={() => onHandleChangeSelect(data, true)}
+												>
+													{renderPinnedAsset(data)}
+												</span>
+											);
+										})}
+									</div>
 									<div className="d-flex">
 										<Select
 											showSearch={true}
@@ -644,7 +678,7 @@ const RenderWithdraw = ({
 													}
 												}
 											}}
-											onSelect={(e) => onHandleSelect(e)}
+											// onSelect={(e) => onHandleSelect(e)}
 										>
 											{Object.entries(coins).map(
 												([_, { symbol, fullname, icon_id }]) => (
@@ -676,23 +710,6 @@ const RenderWithdraw = ({
 											<CloseOutlined className="mt-3 ml-3" />
 										)}
 									</div>
-									<div className="mt-3 d-flex">
-										{topAssets.map((data, inx) => {
-											return (
-												<span
-													key={inx}
-													className={`currency-label ${
-														selectedAsset === data
-															? 'opacity-100'
-															: 'opacity-30'
-													}`}
-													onClick={() => onHandleChangeSelect(data, true)}
-												>
-													{data.toUpperCase()}
-												</span>
-											);
-										})}
-									</div>
 								</div>
 							)}
 						</div>
@@ -702,7 +719,7 @@ const RenderWithdraw = ({
 			{selectedMethod !== 'Email' && (
 				<div>
 					<div className="d-flex h-25">
-						<div className="custom-field d-flex flex-column">
+						<div className="custom-field d-flex flex-column align-items-center">
 							<span
 								className={`custom-step${
 									isEmailAndAddress || selectedAsset ? '-selected' : ''
@@ -715,7 +732,7 @@ const RenderWithdraw = ({
 									currStep.stepThree || (selectedAsset && selectedMethod)
 										? '-selected'
 										: ''
-								}`}
+								} ${isMobile && 'custom-line-network-selected '}`}
 							></span>
 						</div>
 						<div
@@ -742,6 +759,7 @@ const RenderWithdraw = ({
 								>
 									<div className="d-flex withdraw-network-field">
 										<Select
+											showSearch={true}
 											placeholder={strings['WITHDRAW_PAGE.SELECT']}
 											className={`custom-select-input-style elevated ${
 												coinLength && coinLength.length > 1
@@ -807,21 +825,21 @@ const RenderWithdraw = ({
 				</div>
 			)}
 			<div
-				className={
+				className={`${
 					['xrp', 'xlm', 'ton', 'pmn'].includes(getWithdrawCurrency) &&
 					selectedMethod &&
 					selectedMethod !== 'Email' &&
 					'destination-field'
-				}
+				} ${isMobile && isMobile && 'destination-field-mobile'}`}
 			>
 				<div className="d-flex h-25 ">
 					<div
-						className={`custom-field d-flex flex-column ${
+						className={`custom-field d-flex flex-column align-items-center ${
 							['xrp', 'xlm', 'ton', 'pmn'].includes(getWithdrawCurrency) &&
 							selectedMethod &&
 							selectedMethod !== 'Email' &&
-							`destination-field`
-						}`}
+							'destination-field'
+						} ${isMobile && isMobile && 'destination-field-mobile'}`}
 					>
 						<span
 							className={`custom-step${isEmailAndAddress ? '-selected' : ''}`}
@@ -829,7 +847,9 @@ const RenderWithdraw = ({
 							{selectedMethod === 'Email' ? 3 : 4}
 						</span>
 						<span
-							className={`custom-line${isEmailAndAddress ? '-selected' : ''}`}
+							className={`custom-line${isEmailAndAddress ? '-selected' : ''} ${
+								isMobile && 'custom-line-selected-mobile'
+							}`}
 						></span>
 					</div>
 					<div
@@ -895,7 +915,7 @@ const RenderWithdraw = ({
 			{isCondition && (
 				<div>
 					<div className="d-flex h-25">
-						<div className="custom-field d-flex flex-column">
+						<div className="custom-field d-flex flex-column align-items-center">
 							<span
 								className={`custom-line-extra-large ${
 									isEmailAndAddress ? 'custom-line-extra-large-active' : ''
@@ -922,7 +942,7 @@ const RenderWithdraw = ({
 							<div
 								className={`mt-3 pt-4 ml-5 withdraw-main-label${
 									isEmailAndAddress ? '-selected' : ''
-								} ${!isCheck ? 'opacity-100' : 'opacity-50'}`}
+								}`}
 							>
 								{renderLabel('ACCORDIAN.OPTIONAL_TAG')}
 							</div>
@@ -931,10 +951,10 @@ const RenderWithdraw = ({
 									className={
 										isMobile
 											? 'd-flex select-wrapper mobile-view'
-											: 'd-flex select-wrapper'
+											: 'd-flex select-wrapper mt-4'
 									}
 								>
-									<div className="d-flex justify-content-end width-80 mb-2">
+									{/* <div className="d-flex justify-content-end width-80 mb-2">
 										<div className={isCheck ? 'opacity-100' : 'opacity-30'}>
 											<Checkbox
 												className="pr-3 check-optional"
@@ -945,20 +965,18 @@ const RenderWithdraw = ({
 											/>
 											<span>No Tag</span>
 										</div>
-									</div>
+									</div> */}
 									<div>
 										<Input
 											onChange={(e) => onHandleOptionalTag(e.target.value)}
 											value={optionalTag}
-											className={`destination-input-field ${
-												!isCheck ? 'opacity-100' : 'opacity-30'
-											}`}
+											className="destination-input-field"
 											type={
 												selectedAsset === 'xrp' || selectedAsset === 'xlm'
 													? 'number'
 													: 'text'
 											}
-											disabled={isCheck}
+											// disabled={isCheck}
 										></Input>
 										{optionalTag && <CheckOutlined className="mt-3 ml-3" />}
 									</div>
@@ -974,7 +992,7 @@ const RenderWithdraw = ({
 					</div>
 				</div>
 			)}
-			<Modal
+			{/* <Modal
 				title={strings['WITHDRAW_PAGE.WARNING']}
 				visible={isWarning}
 				onCancel={() => setIsWarning(false)}
@@ -992,10 +1010,10 @@ const RenderWithdraw = ({
 				className="withdrawal-remove-tag-modal"
 			>
 				{renderRemoveTag()}
-			</Modal>
+			</Modal> */}
 			<div>
 				<div className="d-flex h-25">
-					<div className="custom-field d-flex flex-column">
+					<div className="custom-field d-flex flex-column align-items-center">
 						<span
 							className={`custom-step${renderAmountField ? '-selected' : ''}`}
 						>
@@ -1017,16 +1035,16 @@ const RenderWithdraw = ({
 								<Coin iconId={iconId} type="CS4" />
 							</span>
 							<span
-								className={`ml-2 withdraw-main-label${
-									renderAmountField ? '-selected' : ''
-								}`}
+								className={`${
+									getWithdrawCurrency && `ml-2`
+								} withdraw-main-label${renderAmountField ? '-selected' : ''}`}
 							>
 								{getWithdrawCurrency.toUpperCase()}
 							</span>
 							<div
-								className={`ml-1 withdraw-main-label${
-									renderAmountField ? '-selected' : ''
-								}`}
+								className={`${
+									getWithdrawCurrency && `ml-2`
+								} withdraw-main-label${renderAmountField ? '-selected' : ''}`}
 							>
 								{renderLabel('ACCORDIAN.AMOUNT')}
 							</div>
@@ -1077,7 +1095,7 @@ const RenderWithdraw = ({
 											!isMobile ? 'bottom-wrapper' : ''
 										}`}
 									>
-										<div className="custom-field d-flex flex-column line-wrapper">
+										<div className="custom-field d-flex flex-column align-items-center line-wrapper">
 											<span
 												className={
 													currStep.stepFive ? 'custom-line-selected-end' : ''
@@ -1104,7 +1122,7 @@ const RenderWithdraw = ({
 								{currStep.stepFive && (
 									<div className="d-flex h-25 bottom-btn-wrapper">
 										{isCondition && (
-											<div className="custom-field d-flex flex-column line-wrapper">
+											<div className="custom-field d-flex flex-column align-items-center line-wrapper">
 												<span
 													className={
 														currStep.stepFive ? 'custom-line-selected-end' : ''

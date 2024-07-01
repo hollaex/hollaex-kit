@@ -142,7 +142,7 @@ const checkStatus = () => {
 					configuration.coins[coin.symbol] = {
 						...coin,
 						...configuration?.kit?.fiat_fees?.[coin.symbol]
-					}
+					};
 				} else {
 					configuration.coins[coin.symbol] = coin;
 				}
@@ -162,12 +162,12 @@ const checkStatus = () => {
 				// only add the network pair if both coins in the market are already subscribed in the exchange
 				const [ base, quote ] = e.split('-');
 				if (configuration.coins[base] && configuration.coins[quote]) {
-					configuration.networkQuickTrades.push(exchange.brokers[e])
+					configuration.networkQuickTrades.push(exchange.brokers[e]);
 					return e;
 				}
 			});
 
-			let quickTradePairs = quickTrades.map((q) => q.symbol)
+			let quickTradePairs = quickTrades.map((q) => q.symbol);
 
 			// check the status of quickTrades
 			for (let qt of quickTrades) {
@@ -220,8 +220,8 @@ const checkStatus = () => {
 					symbol: qt.symbol,
 					active: qt.active
 				};
-				configuration.quicktrade.push(item)
-			})
+				configuration.quicktrade.push(item);
+			});
 
 			
 			for (let tier of tiers) {
@@ -241,7 +241,7 @@ const checkStatus = () => {
 					};
 					const defaultFees = DEFAULT_FEES[exchange.plan]
 						? DEFAULT_FEES[exchange.plan]
-						: { maker: 0.2, taker: 0.2 }
+						: { maker: 0.2, taker: 0.2 };
 
 					for (let pair of quickTradePairs) {
 						if (!isNumber(tier.fees.maker[pair])) {
@@ -328,6 +328,12 @@ const checkStatus = () => {
 			);
 			loggerInit.info('init/checkStatus/activation complete');
 			return networkNodeLib;
+		})
+		.catch((err) => {
+			loggerInit.info('init/checkStatus/catch error', err.message);
+			setTimeout(() => {
+				process.exit(0);
+			}, 5000);
 		});
 };
 

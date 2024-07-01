@@ -109,6 +109,7 @@ const EMPTY_SNACK_NOTIFICATION = {
 	content: '',
 	isDialog: false,
 	dialogData: [],
+	timer: 0,
 };
 
 const WITHDRAW_FIELDS = {
@@ -322,6 +323,7 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 					icon: payload.icon ? payload.icon : '',
 					useSvg: payload.useSvg ? payload.useSvg : true,
 					content: payload.content ? payload.content : '',
+					timer: payload.timer ? payload.timer : 0,
 				},
 			};
 

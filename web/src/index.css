@@ -1727,6 +1727,15 @@ table th {
   color: #34363a;
   animation: dotFlashing 3s infinite; }
 
+.layout-mobile .estimated-balance-wrapper .balance-wrapper {
+  color: var(--labels_important-active-labels-text-graphics); }
+  .layout-mobile .estimated-balance-wrapper .balance-wrapper .estimated-balance-label {
+    font-size: 16px;
+    font-weight: bold; }
+  .layout-mobile .estimated-balance-wrapper .balance-wrapper .estimated-balance-amount {
+    font-family: 'Raleway';
+    font-size: 4rem; }
+
 .layout-mobile .wallet-container .action_notification-wrapper .action_notification-text {
   font-size: 1.2rem !important;
   line-height: 1.2rem !important; }
@@ -1742,12 +1751,20 @@ table th {
 
 .layout-mobile .wallet-container .wallet-assets_block {
   padding: 6px; }
+  .layout-mobile .wallet-container .wallet-assets_block .profit-loss-preformance {
+    color: var(--labels_important-active-labels-text-graphics); }
+  .layout-mobile .wallet-container .wallet-assets_block .wallet-assets_block-table thead tr .mobile-balance-header {
+    text-align: end !important; }
   .layout-mobile .wallet-container .wallet-assets_block .wallet-assets_block-table thead tr th:nth-child(3) {
-    text-align: center; }
+    text-align: end; }
   .layout-mobile .wallet-container .wallet-assets_block .wallet-assets_block-table .td-wallet,
   .layout-mobile .wallet-container .wallet-assets_block .wallet-assets_block-table .td-amount,
   .layout-mobile .wallet-container .wallet-assets_block .wallet-assets_block-table .td-name {
     min-width: unset !important; }
+  .layout-mobile .wallet-container .wallet-assets_block .wallet-assets_block-table .td-amount .more-icon-wrapper svg {
+    width: 3rem;
+    height: 3rem;
+    fill: var(--labels_important-active-labels-text-graphics) !important; }
   .layout-mobile .wallet-container .wallet-assets_block .wallet-assets_block-table .td-wallet .deposit-withdrawal-wrapper {
     margin: 0 auto;
     width: 18rem; }
@@ -1763,7 +1780,43 @@ table th {
   .layout-mobile .wallet-container .wallet-assets_block .wallet-assets_block-table tfoot {
     font-size: 13px !important; }
   .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper {
-    flex-direction: column; }
+    flex-direction: column;
+    font-weight: bold;
+    color: var(--labels_important-active-labels-text-graphics); }
+    .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .edit-wrapper__container .tooltip_icon_wrapper div {
+      width: 100%; }
+    .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-label {
+      font-size: 14px; }
+    .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-icon {
+      padding: 1.5%;
+      border-radius: 20px;
+      align-items: center;
+      display: flex;
+      justify-content: center;
+      background-color: var(--specials_buttons-links-and-highlights); }
+    .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-field .edit-wrapper__container {
+      width: 100%; }
+      .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-field .edit-wrapper__container .field-children div div {
+        width: 6%; }
+      .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-field .edit-wrapper__container .field-children div input {
+        width: 100%; }
+      .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-field .edit-wrapper__container .field-content-outline:before,
+      .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-field .edit-wrapper__container .field-content-outline:after {
+        height: unset !important; }
+      .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-field .edit-wrapper__container .field-children {
+        border: 1px solid var(--labels_secondary-inactive-label-text-graphics);
+        border-radius: 5px; }
+    .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-field .field-error-content {
+      display: none; }
+    .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-field .edit-wrapper__container div:nth-child(1) {
+      width: 100%; }
+    .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .hide-zero-balance-checkbox .ant-checkbox-inner {
+      background-color: var(--base_wallet-sidebar-and-popup); }
+    .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .hide-zero-balance-checkbox .ant-checkbox-inner:focus,
+    .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .hide-zero-balance-checkbox .ant-checkbox-inner:focus-within {
+      border-color: var(--labels_important-active-labels-text-graphics) !important; }
+    .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .hide-zero-balance-field {
+      gap: 10px; }
 
 .layout-mobile .wallet-container .action-button-wrapper {
   padding: 5px 2px; }
@@ -1788,6 +1841,8 @@ table th {
   margin: 5rem 0rem !important; }
 
 @media screen and (max-width: 550px) {
+  .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .edit-wrapper__container .tooltip_icon_wrapper div {
+    width: 1.5rem; }
   .layout-mobile .button-container .holla-button {
     font-size: 10px !important; }
   .layout-mobile .currency-wallet-wrapper .wallet-content-wrapper {
@@ -1842,7 +1897,13 @@ table th {
   .dust-dialog-content .large-font {
     font-size: 4.5rem !important; }
 
-.wallet-container {
+.wallet-container .fill_secondary-color {
+  color: var(--labels_secondary-inactive-label-text-graphics); }
+
+.wallet-container .fill-active-color {
+  color: var(--labels_important-active-labels-text-graphics); }
+
+.wallet-container .header-wrapper {
   border-top: 1px solid var(--labels_important-active-labels-text-graphics); }
   .wallet-container .header-wrapper .image-Wrapper .action_notification-svg svg {
     width: 1.25rem;
@@ -1856,128 +1917,141 @@ table th {
     border-right: 1px solid var(--calculated_secondary-border);
     padding-right: 0.5rem;
     padding-left: 0.5rem; }
-  .wallet-container.no-border {
-    border: none !important; }
-  .wallet-container .ant-switch {
-    background-color: var(--base_background);
-    border: 2px solid var(--labels_secondary-inactive-label-text-graphics); }
-    .wallet-container .ant-switch .ant-switch-handle {
-      width: 15px !important;
-      height: 15px !important; }
-      .wallet-container .ant-switch .ant-switch-handle:before {
-        background-color: var(--labels_secondary-inactive-label-text-graphics); }
-  .wallet-container .ant-switch-checked {
-    background-color: var(--base_background);
-    border: 2px solid var(--labels_important-active-labels-text-graphics); }
-    .wallet-container .ant-switch-checked .ant-switch-handle {
-      left: calc(100% - 15px - 2px); }
-      .wallet-container .ant-switch-checked .ant-switch-handle:before {
-        background-color: var(--labels_important-active-labels-text-graphics); }
-  .wallet-container .wallet-header_block > * {
-    margin-bottom: 2rem; }
-  .wallet-container .wallet-header_block .wallet-header_block-currency_title {
-    font-size: 1.4rem;
-    position: relative; }
-  .wallet-container .wallet-header_block .with_price-block_amount-value {
-    font-size: 4.5rem;
-    line-height: 4.5rem; }
-  .wallet-container .paper-clip-icon .action_notification-svg {
-    background-color: var(--specials_buttons-links-and-highlights);
-    width: 1.2rem;
-    height: 1.2rem;
-    border-radius: 50%;
-    display: flex;
-    margin-left: 5px; }
-    .wallet-container .paper-clip-icon .action_notification-svg svg {
-      width: 0.8rem !important;
-      height: 0.8rem !important; }
-  .wallet-container .wallet-buttons_action {
-    margin: 2.5rem 0 3.75rem; }
-    .wallet-container .wallet-buttons_action > *:first-child {
-      flex: 2; }
-    .wallet-container .wallet-buttons_action > *:last-child {
-      flex: 1; }
-    .wallet-container .wallet-buttons_action .separator {
-      width: 1rem; }
-  .wallet-container .accordion_wrapper .accordion_section_content_text {
-    color: var(--labels_important-active-labels-text-graphics) !important; }
-    .wallet-container .accordion_wrapper .accordion_section_content_text:after {
-      border-left-color: var(--calculated_important-border) !important; }
-  .wallet-container .empty-wallet-assets_block {
-    padding: 20px !important; }
-  .wallet-container .wallet-assets_block {
-    background-color: var(--base_wallet-sidebar-and-popup);
-    padding: 0px 20px;
-    overflow-y: auto; }
-    .wallet-container .wallet-assets_block .donut-container {
-      width: 10rem !important;
-      min-width: 10rem !important; }
-    .wallet-container .wallet-assets_block .donut-container-empty {
-      width: 13rem !important;
-      min-width: 13rem !important; }
-    .wallet-container .wallet-assets_block .td-wallet {
-      min-width: 225px; }
-      .wallet-container .wallet-assets_block .td-wallet .deposit-withdrawal-wrapper {
-        margin-left: -3rem;
-        width: 14rem; }
-    .wallet-container .wallet-assets_block .wallet-assets_block-table {
-      width: 100%;
-      font-size: 1rem;
-      margin-bottom: 3rem; }
-      .wallet-container .wallet-assets_block .wallet-assets_block-table thead tr,
-      .wallet-container .wallet-assets_block .wallet-assets_block-table tfoot tr {
-        height: 3.5rem;
-        vertical-align: bottom; }
-      .wallet-container .wallet-assets_block .wallet-assets_block-table tfoot {
-        font-size: 1.1rem; }
-        .wallet-container .wallet-assets_block .wallet-assets_block-table tfoot td {
-          white-space: nowrap; }
-      .wallet-container .wallet-assets_block .wallet-assets_block-table .table-row {
-        height: 2.5rem; }
-      .wallet-container .wallet-assets_block .wallet-assets_block-table .table-bottom-border td,
-      .wallet-container .wallet-assets_block .wallet-assets_block-table th {
-        position: relative; }
-        .wallet-container .wallet-assets_block .wallet-assets_block-table .table-bottom-border td:not(:first-child),
-        .wallet-container .wallet-assets_block .wallet-assets_block-table th:not(:first-child) {
-          border-bottom: 1px solid var(--calculated_important-border);
-          padding: 1rem 0.25rem; }
-      .wallet-container .wallet-assets_block .wallet-assets_block-table .td-fit {
-        width: 1%;
+
+.wallet-container.no-border {
+  border: none !important; }
+
+.wallet-container .ant-switch {
+  background-color: var(--base_background);
+  border: 2px solid var(--labels_secondary-inactive-label-text-graphics); }
+  .wallet-container .ant-switch .ant-switch-handle {
+    width: 15px !important;
+    height: 15px !important; }
+    .wallet-container .ant-switch .ant-switch-handle:before {
+      background-color: var(--labels_secondary-inactive-label-text-graphics); }
+
+.wallet-container .ant-switch-checked {
+  background-color: var(--base_background);
+  border: 2px solid var(--labels_important-active-labels-text-graphics); }
+  .wallet-container .ant-switch-checked .ant-switch-handle {
+    left: calc(100% - 15px - 2px); }
+    .wallet-container .ant-switch-checked .ant-switch-handle:before {
+      background-color: var(--labels_important-active-labels-text-graphics); }
+
+.wallet-container .wallet-header_block > * {
+  margin-bottom: 2rem; }
+
+.wallet-container .wallet-header_block .wallet-header_block-currency_title {
+  font-size: 1.4rem;
+  position: relative; }
+
+.wallet-container .wallet-header_block .with_price-block_amount-value {
+  font-size: 4.5rem;
+  line-height: 4.5rem; }
+
+.wallet-container .paper-clip-icon .action_notification-svg {
+  background-color: var(--specials_buttons-links-and-highlights);
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 50%;
+  display: flex;
+  margin-left: 5px; }
+  .wallet-container .paper-clip-icon .action_notification-svg svg {
+    width: 0.8rem !important;
+    height: 0.8rem !important; }
+
+.wallet-container .wallet-buttons_action {
+  margin: 2.5rem 0 3.75rem; }
+  .wallet-container .wallet-buttons_action > *:first-child {
+    flex: 2; }
+  .wallet-container .wallet-buttons_action > *:last-child {
+    flex: 1; }
+  .wallet-container .wallet-buttons_action .separator {
+    width: 1rem; }
+
+.wallet-container .accordion_wrapper .accordion_section_content_text {
+  color: var(--labels_important-active-labels-text-graphics) !important; }
+  .wallet-container .accordion_wrapper .accordion_section_content_text:after {
+    border-left-color: var(--calculated_important-border) !important; }
+
+.wallet-container .empty-wallet-assets_block {
+  padding: 20px !important; }
+
+.wallet-container .wallet-assets_block {
+  background-color: var(--base_wallet-sidebar-and-popup);
+  padding: 0px 20px;
+  overflow-y: auto; }
+  .wallet-container .wallet-assets_block .donut-container {
+    width: 10rem !important;
+    min-width: 10rem !important; }
+  .wallet-container .wallet-assets_block .donut-container-empty {
+    width: 13rem !important;
+    min-width: 13rem !important; }
+  .wallet-container .wallet-assets_block .td-wallet {
+    min-width: 225px; }
+    .wallet-container .wallet-assets_block .td-wallet .deposit-withdrawal-wrapper {
+      margin-left: -3rem;
+      width: 14rem; }
+  .wallet-container .wallet-assets_block .wallet-assets_block-table {
+    width: 100%;
+    font-size: 1rem;
+    margin-bottom: 3rem; }
+    .wallet-container .wallet-assets_block .wallet-assets_block-table thead tr,
+    .wallet-container .wallet-assets_block .wallet-assets_block-table tfoot tr {
+      height: 3.5rem;
+      vertical-align: bottom; }
+    .wallet-container .wallet-assets_block .wallet-assets_block-table tfoot {
+      font-size: 1.1rem; }
+      .wallet-container .wallet-assets_block .wallet-assets_block-table tfoot td {
         white-space: nowrap; }
-      .wallet-container .wallet-assets_block .wallet-assets_block-table .td-name {
-        min-width: 200px !important; }
-      .wallet-container .wallet-assets_block .wallet-assets_block-table .table-icon > div {
-        vertical-align: middle;
-        margin: auto; }
-      .wallet-container .wallet-assets_block .wallet-assets_block-table .td-amount {
-        min-width: 150px !important;
-        direction: ltr; }
-    .wallet-container .wallet-assets_block .search-field {
-      background-color: var(--base_wallet-sidebar-and-popup); }
-    .wallet-container .wallet-assets_block .loading-anime {
-      width: 100px;
-      height: 20px;
-      border-radius: 7px;
-      animation: mymove 3s infinite; }
-    .wallet-container .wallet-assets_block .loading-row-anime {
-      height: 20px;
-      border-radius: 7px;
-      animation: mymove 3s infinite; }
-    .wallet-container .wallet-assets_block .loading-row-anime.w-half {
-      width: 100px; }
-    .wallet-container .wallet-assets_block .loading-row-anime.w-full {
-      width: 200px; }
-    .wallet-container .wallet-assets_block .wallet-graphic-icon {
-      opacity: 0.1; }
-  .wallet-container .accordion_wrapper .action_notification-wrapper {
-    position: relative; }
-  .wallet-container .action-button-wrapper {
-    border: 1px solid var(--specials_buttons-links-and-highlights);
-    padding: 5px 12px; }
-    .wallet-container .action-button-wrapper:hover {
-      background-color: var(--specials_buttons-links-and-highlights); }
-      .wallet-container .action-button-wrapper:hover .notification-info {
-        color: white !important; }
+    .wallet-container .wallet-assets_block .wallet-assets_block-table .table-row {
+      height: 2.5rem; }
+    .wallet-container .wallet-assets_block .wallet-assets_block-table .table-bottom-border td,
+    .wallet-container .wallet-assets_block .wallet-assets_block-table th {
+      position: relative; }
+      .wallet-container .wallet-assets_block .wallet-assets_block-table .table-bottom-border td:not(:first-child),
+      .wallet-container .wallet-assets_block .wallet-assets_block-table th:not(:first-child) {
+        border-bottom: 1px solid var(--calculated_important-border);
+        padding: 1rem 0.25rem; }
+    .wallet-container .wallet-assets_block .wallet-assets_block-table .td-fit {
+      width: 1%;
+      white-space: nowrap; }
+    .wallet-container .wallet-assets_block .wallet-assets_block-table .td-name {
+      min-width: 200px !important; }
+    .wallet-container .wallet-assets_block .wallet-assets_block-table .table-icon > div {
+      vertical-align: middle;
+      margin: auto; }
+    .wallet-container .wallet-assets_block .wallet-assets_block-table .td-amount {
+      min-width: 150px !important;
+      direction: ltr; }
+  .wallet-container .wallet-assets_block .search-field {
+    background-color: var(--base_wallet-sidebar-and-popup); }
+  .wallet-container .wallet-assets_block .loading-anime {
+    width: 100px;
+    height: 20px;
+    border-radius: 7px;
+    animation: mymove 3s infinite; }
+  .wallet-container .wallet-assets_block .loading-row-anime {
+    height: 20px;
+    border-radius: 7px;
+    animation: mymove 3s infinite; }
+  .wallet-container .wallet-assets_block .loading-row-anime.w-half {
+    width: 100px; }
+  .wallet-container .wallet-assets_block .loading-row-anime.w-full {
+    width: 200px; }
+  .wallet-container .wallet-assets_block .wallet-graphic-icon {
+    opacity: 0.1; }
+
+.wallet-container .accordion_wrapper .action_notification-wrapper {
+  position: relative; }
+
+.wallet-container .action-button-wrapper {
+  border: 1px solid var(--specials_buttons-links-and-highlights);
+  padding: 5px 12px; }
+  .wallet-container .action-button-wrapper:hover {
+    background-color: var(--specials_buttons-links-and-highlights); }
+    .wallet-container .action-button-wrapper:hover .notification-info {
+      color: white !important; }
 
 .show-equals:after {
   content: '=';
@@ -2136,6 +2210,26 @@ table th {
         display: flex;
         justify-content: center; }
 
+.layout-mobile .footer-button {
+  margin-top: 4%;
+  margin-bottom: 2%; }
+
+.layout-mobile .bottom-bar-button {
+  padding: 3%;
+  display: flex;
+  justify-content: space-around; }
+  .layout-mobile .bottom-bar-button .bottom-bar-deposit-button,
+  .layout-mobile .bottom-bar-button .bottom-bar-withdraw-button {
+    width: 45%; }
+    .layout-mobile .bottom-bar-button .bottom-bar-deposit-button button,
+    .layout-mobile .bottom-bar-button .bottom-bar-withdraw-button button {
+      border-radius: 5px; }
+  .layout-mobile .bottom-bar-button .bottom-bar-withdraw-button button {
+    color: var(--labels_important-active-labels-text-graphics);
+    background-color: var(--base_wallet-sidebar-and-popup) !important;
+    border-radius: 5px;
+    border-color: var(--labels_important-active-labels-text-graphics) !important; }
+
 .review-wrapper .review-icon {
   width: 8rem;
   height: 8rem;
@@ -2269,7 +2363,7 @@ table th {
       border: 2px solid var(--labels_secondary-inactive-label-text-graphics);
       border-radius: 100%;
       width: fit-content;
-      padding: 10% 70%; }
+      padding: 3px 10px; }
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-step-selected {
       border: 2px solid var(--labels_important-active-labels-text-graphics); }
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line,
@@ -2349,9 +2443,11 @@ table th {
       padding: 0.5%;
       border-radius: 5px;
       margin-right: 10px;
-      width: 4rem;
+      width: 5rem;
       text-align: center;
       cursor: pointer; }
+      .withdrawal-container .withdraw-form-wrapper .withdraw-form .currency-label .pinned-asset-icon {
+        padding-top: 3%; }
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .render-scan-wrapper {
       color: var(--specials_buttons-links-and-highlights);
       cursor: pointer; }
@@ -2367,6 +2463,8 @@ table th {
           height: 1rem; }
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .destination-field {
       height: 60px; }
+    .withdrawal-container .withdraw-form-wrapper .withdraw-form .destination-field-mobile {
+      height: 6rem; }
   .withdrawal-container .withdraw-form-wrapper .bottom-content {
     margin-top: 3%; }
     .withdrawal-container .withdraw-form-wrapper .bottom-content .fee-fields {
@@ -2500,67 +2598,83 @@ table th {
 .layout-mobile .review_email-wrapper {
   margin: 0px auto !important; }
 
-.layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form {
-  padding: 5%; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .destination-field {
-    height: 75px; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .field-wrapper .field-label-wrapper {
-    flex-direction: column; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdraw-main-label-selected {
-    font-size: 14px; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdraw-deposit-content {
-    padding: 0 1%; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-line-selected-large {
-    height: 13rem;
-    border: 1px solid var(--labels_important-active-labels-text-graphics); }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line-selected {
-    height: 100%; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line {
-    height: 12rem; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .mobile-view {
-    margin-top: 5%; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .ant-select-clear svg {
-    font-size: 18px; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .select-wrapper {
-    width: 100%;
-    margin-left: 5%; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .bottom-content {
-    font-size: 14px;
-    margin-top: 3%; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdraw-main-label-selected,
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdraw-main-label,
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .warning-text {
-    font-size: 14px; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .currency-label {
-    width: 15%;
-    font-size: 14px; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .render-scan-wrapper .suffix-text {
-    font-size: 12px; }
+.layout-mobile .withdrawal-container {
+  padding-top: 0px !important; }
+  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form {
+    margin: 0 0 30px;
+    padding: 5%; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .destination-field {
+      height: 75px; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .destination-field-mobile {
+      height: 11rem; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .field-wrapper .field-label-wrapper {
+      flex-direction: column; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdraw-main-label-selected {
+      font-size: 14px; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdraw-deposit-content {
+      padding: 0 1%; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-line-selected-large {
+      height: 13rem;
+      border: 1px solid var(--labels_important-active-labels-text-graphics); }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line-selected {
+      height: 100%; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line {
+      height: 13rem; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line-network-selected {
+      height: 15rem; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line-selected-mobile {
+      height: 9rem; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .mobile-view {
+      margin-top: 5%; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .ant-select-clear svg {
+      font-size: 18px; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .select-wrapper {
+      width: 100%;
+      margin-left: 5%; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .bottom-content {
+      font-size: 14px;
+      margin-top: 3%; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdraw-main-label-selected,
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdraw-main-label,
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .warning-text {
+      font-size: 14px; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .currency-label {
+      width: 15%;
+      font-size: 14px; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .render-scan-wrapper .suffix-text {
+      font-size: 12px; }
 
 @media screen and (max-width: 550px) {
+  .layout-mobile .presentation_container .inner_container .withdraw-icon {
+    margin-top: 0px !important; }
   .layout-mobile .presentation_container .inner_container .information_block .information_block-text_wrapper .title {
     font-size: 14px !important; }
   .layout-mobile .presentation_container .inner_container .information_block .information_block-text_wrapper .text {
     font-size: 12px !important; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .select-wrapper {
-    margin-left: 7%; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .ant-select-clear svg {
-    font-size: 12px; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-select-input-style .ant-select-selector {
-    font-size: 1.5rem !important; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-select-input-style .ant-select-selection-item {
-    margin-top: 4%;
-    line-height: unset !important; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .currency-label {
-    font-size: 12px; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .mobile-view {
-    margin-top: 3%; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .amount-field-icon {
-    margin-top: 2%; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .warning-text {
-    font-size: 10px; }
-  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-line-selected-large {
-    height: 16rem; } }
+  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form {
+    margin: 0 0 20px; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .select-wrapper {
+      margin-left: 7%; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .ant-select-clear svg {
+      font-size: 12px; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-step-selected,
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-step {
+      padding: 33% 70% 10%; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-select-input-style .ant-select-selector {
+      font-size: 1.5rem !important; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-select-input-style .ant-select-selection-item {
+      margin-top: 4%;
+      line-height: unset !important; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .currency-label {
+      font-size: 12px; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .mobile-view {
+      margin-top: 3%; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .amount-field-icon {
+      margin-top: 2%; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .warning-text {
+      font-size: 10px; }
+    .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-line-selected-large {
+      height: 17rem; } }
 
 @media screen and (max-width: 390px) {
   .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-line-selected-large {
@@ -2610,7 +2724,8 @@ table th {
 .qr-popup-buttons {
   display: flex;
   justify-content: space-between; }
-  .qr-popup-buttons .qr-back-btn, .qr-popup-buttons .qr-copy-btn {
+  .qr-popup-buttons .qr-back-btn,
+  .qr-popup-buttons .qr-copy-btn {
     width: 45%; }
 
 .deposit_info-qr-wrapper .qr-text {
@@ -2747,7 +2862,7 @@ table th {
   margin: 1% 3%; }
 
 .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .deposit-wrapper-fields .custom-field .custom-line-large {
-  height: 10rem;
+  height: 11rem;
   border: 1px solid var(--labels_important-active-labels-text-graphics);
   margin: 0 100%; }
 
@@ -2767,7 +2882,7 @@ table th {
 
 @media screen and (max-width: 550px) {
   .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .deposit-wrapper-fields .custom-field .custom-line-large {
-    height: 16rem; } }
+    height: 17rem; } }
 
 @media screen and (max-width: 450px) {
   .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .deposit-wrapper-fields .btn-wrapper-deposit .holla-button {
@@ -5270,6 +5385,15 @@ table th {
       .digital-market-wrapper .market-list__block-table .table-row .sticky-col:hover {
         opacity: 0.5; }
 
+.digital-market-wrapper .custom-header-wrapper {
+  color: var(--labels_secondary-inactive-label-text-graphics);
+  font-family: 'Raleway';
+  font-weight: bold; }
+
+.digital-market-wrapper .custom-border-bottom {
+  border-bottom: 1px solid var(--labels_important-active-labels-text-graphics);
+  margin-bottom: 10%; }
+
 .trade_tabs-container .market-pairs {
   color: var(--labels_important-active-labels-text-graphics); }
 
@@ -6317,7 +6441,7 @@ table th {
   color: var(--specials_buttons-links-and-highlights);
   background-color: var(--calculated_specials_highlight-box);
   border-radius: 0.5rem;
-  margin: 1rem 0.5rem;
+  margin: 1rem 0rem;
   font-weight: bold; }
   .staking-account__connect:hover {
     opacity: 0.8; }
@@ -6402,6 +6526,641 @@ table th {
 
 .area-disabled {
   opacity: 0.5; }
+
+.wallet-wrapper .cefi-stake {
+  width: 50px;
+  height: 40px;
+  margin-bottom: 10px; }
+
+.wallet-wrapper .stake_header {
+  color: var(--labels_important-active-labels-text-graphics); }
+
+.wallet-wrapper .stake-button-wrapper {
+  margin: 2% 0;
+  display: flex;
+  justify-content: center; }
+  .wallet-wrapper .stake-button-wrapper .stakingOption {
+    margin-right: 5px;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer; }
+  .wallet-wrapper .stake-button-wrapper .stakingoption-opacity {
+    opacity: 1; }
+  .wallet-wrapper .stake-button-wrapper .stakingoption-half-opacity {
+    opacity: 0.7; }
+
+.layout-mobile .stake-wrapper {
+  padding: 0 !important; }
+  .layout-mobile .stake-wrapper .stake-icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center; }
+    .layout-mobile .stake-wrapper .stake-icon-container .stake-icon-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center; }
+      .layout-mobile .stake-wrapper .stake-icon-container .stake-icon-wrapper .stake-title {
+        font-size: 20px;
+        font-weight: bold; }
+      .layout-mobile .stake-wrapper .stake-icon-container .stake-icon-wrapper .stake-icon svg {
+        width: 5rem !important; }
+    .layout-mobile .stake-wrapper .stake-icon-container .icon_title-wrapper {
+      margin-top: 0; }
+  .layout-mobile .stake-wrapper .stake-button-wrapper {
+    margin: 4% 0;
+    display: flex;
+    justify-content: center; }
+    .layout-mobile .stake-wrapper .stake-button-wrapper .stake-button-container {
+      width: 46%;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      gap: 4%; }
+      .layout-mobile .stake-wrapper .stake-button-wrapper .stake-button-container .defi-button,
+      .layout-mobile .stake-wrapper .stake-button-wrapper .stake-button-container .cefi-button {
+        padding: 10px;
+        border-radius: 10px;
+        cursor: pointer; }
+      .layout-mobile .stake-wrapper .stake-button-wrapper .stake-button-container .stake-text-bold {
+        font-weight: bold;
+        opacity: 1; }
+      .layout-mobile .stake-wrapper .stake-button-wrapper .stake-button-container .stake-text-normal {
+        font-weight: normal;
+        opacity: 0.7; }
+  .layout-mobile .stake-wrapper .wallet-container .wallet-assets_block {
+    border-top: 1px solid var(--calculated_secondary-border); }
+    .layout-mobile .stake-wrapper .wallet-container .wallet-assets_block .estimated-stake-content {
+      min-width: max-content;
+      padding-top: 0.5rem;
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: flex-end; }
+      .layout-mobile .stake-wrapper .wallet-container .wallet-assets_block .estimated-stake-content .stake-estimated-table {
+        width: 40%; }
+        .layout-mobile .stake-wrapper .wallet-container .wallet-assets_block .estimated-stake-content .stake-estimated-table .kit-divider {
+          width: 100%; }
+  .layout-mobile .stake-wrapper .stake-table {
+    overflow-x: scroll; }
+    .layout-mobile .stake-wrapper .stake-table table th .edit-wrapper__container,
+    .layout-mobile .stake-wrapper .stake-table table th td {
+      width: 15rem;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start !important; }
+    .layout-mobile .stake-wrapper .stake-table table th tbody td {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start; }
+    .layout-mobile .stake-wrapper .stake-table table th:last-child .edit-wrapper__container,
+    .layout-mobile .stake-wrapper .stake-table table th:last-child td {
+      justify-content: center !important; }
+
+.cefi_stake .ant-table-thead > tr > th {
+  background-color: var(--base_background);
+  color: var(--labels_important-active-labels-text-graphics);
+  padding: 0rem 1rem; }
+
+.cefi_stake .ant-table-tbody > tr > td {
+  background-color: var(--base_background);
+  color: var(--labels_important-active-labels-text-graphics);
+  border-bottom: 1px solid #25262c; }
+
+.cefi_stake .ant-table-tbody > tr.ant-table-placeholder:hover > td {
+  background-color: var(--base_background); }
+
+.cefi_stake .ant-table-tbody > tr.ant-table-row:hover > td {
+  background-color: var(--base_background); }
+
+.stake_theme {
+  color: var(--labels_important-active-labels-text-graphics); }
+
+.stake_table_theme {
+  background-color: var(--base_background); }
+
+.stakepool_card {
+  background-color: var(--base_secondary-navigation-bar); }
+
+.stake_theme > .ant-modal-content {
+  background-color: var(--base_background); }
+
+.stakepool_card > .ant-modal-content {
+  background-color: var(--base_secondary-navigation-bar); }
+
+.mobileZoom {
+  zoom: 0.55;
+  position: relative;
+  left: -50px; }
+
+.mobileZoom .ant-table-thead > tr > th {
+  padding: 16px 4px; }
+
+.mobileZoom .ant-table-tbody > tr > td {
+  padding: 16px 4px; }
+
+.stakingOption {
+  background-color: var(--base_wallet-sidebar-and-popup); }
+
+.tabOption {
+  background-color: var(--base_wallet-sidebar-and-popup);
+  color: var(--labels_important-active-labels-text-graphics); }
+
+.stake_half_opacity {
+  opacity: 0.4; }
+
+.stake_opacity {
+  opacity: 1; }
+
+.tabOption-half-opacity {
+  opacity: 0.7; }
+
+.stake_table_theme .ReactModal__Content .action_notification-wrapper {
+  margin: 0.5rem 0.5rem 0 0 !important; }
+
+.stake_table_theme .stake_detail_text {
+  color: var(--labels_secondary-inactive-label-text-graphics); }
+
+.stake_table_theme .stake_detail_line {
+  width: 5%;
+  border-bottom: 1px solid var(--labels_secondary-inactive-label-text-graphics); }
+
+.stake_table_theme .action_model_popup_wrapper {
+  display: flex;
+  gap: 30px;
+  height: 15%; }
+  .stake_table_theme .action_model_popup_wrapper .action_model_popup_content {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url(/assets/images/staking_3.png);
+    background-size: cover; }
+
+.stake_table_theme .stake_popup_button_wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  justify-content: space-between;
+  margin-top: 5%; }
+  .stake_table_theme .stake_popup_button_wrapper .stake_popup_button {
+    width: 100%;
+    background-color: var(--specials_buttons-links-and-highlights);
+    color: var(--calculated_base_footer_text);
+    height: 3rem;
+    border: none; }
+
+.stake_table_theme .stake_amount_popup_wrapper,
+.stake_table_theme .confirm_stake_popup_wrapper {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center; }
+  .stake_table_theme .stake_amount_popup_wrapper .stake_amount_theme,
+  .stake_table_theme .stake_amount_popup_wrapper .confirm_stake_theme,
+  .stake_table_theme .confirm_stake_popup_wrapper .stake_amount_theme,
+  .stake_table_theme .confirm_stake_popup_wrapper .confirm_stake_theme {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    height: 16rem;
+    background-image: url(/assets/images/staking_2.png);
+    background-size: cover;
+    width: 100%;
+    margin-bottom: 3%; }
+  .stake_table_theme .stake_amount_popup_wrapper .confirm_stake_theme,
+  .stake_table_theme .confirm_stake_popup_wrapper .confirm_stake_theme {
+    background-image: url(/assets/images/staking_1.png); }
+  .stake_table_theme .stake_amount_popup_wrapper .stake_amount_popup_content,
+  .stake_table_theme .stake_amount_popup_wrapper .confirm_stake_content_wrapper,
+  .stake_table_theme .confirm_stake_popup_wrapper .stake_amount_popup_content,
+  .stake_table_theme .confirm_stake_popup_wrapper .confirm_stake_content_wrapper {
+    width: 100%; }
+    .stake_table_theme .stake_amount_popup_wrapper .stake_amount_popup_content .stake_amount_field,
+    .stake_table_theme .stake_amount_popup_wrapper .stake_amount_popup_content .confirm_stake_field,
+    .stake_table_theme .stake_amount_popup_wrapper .confirm_stake_content_wrapper .stake_amount_field,
+    .stake_table_theme .stake_amount_popup_wrapper .confirm_stake_content_wrapper .confirm_stake_field,
+    .stake_table_theme .confirm_stake_popup_wrapper .stake_amount_popup_content .stake_amount_field,
+    .stake_table_theme .confirm_stake_popup_wrapper .stake_amount_popup_content .confirm_stake_field,
+    .stake_table_theme .confirm_stake_popup_wrapper .confirm_stake_content_wrapper .stake_amount_field,
+    .stake_table_theme .confirm_stake_popup_wrapper .confirm_stake_content_wrapper .confirm_stake_field {
+      background-color: var(--base_background); }
+    .stake_table_theme .stake_amount_popup_wrapper .stake_amount_popup_content .stake_amount_field .ant-input,
+    .stake_table_theme .stake_amount_popup_wrapper .confirm_stake_content_wrapper .stake_amount_field .ant-input,
+    .stake_table_theme .confirm_stake_popup_wrapper .stake_amount_popup_content .stake_amount_field .ant-input,
+    .stake_table_theme .confirm_stake_popup_wrapper .confirm_stake_content_wrapper .stake_amount_field .ant-input {
+      background-color: var(--base_background);
+      color: var(--labels_important-active-labels-text-graphics);
+      padding-left: 3%; }
+
+.stake_table_theme .confirm_stake_popup_wrapper .confirm_stake_theme {
+  margin-bottom: 5% !important; }
+
+.stake_table_theme .confirm_stake_popup_wrapper .confirm_stake_content_wrapper .confirm_stake_content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  line-height: 20px; }
+  .stake_table_theme .confirm_stake_popup_wrapper .confirm_stake_content_wrapper .confirm_stake_content .rules_notice_text {
+    text-align: center; }
+
+.stake_table_theme .confirm_stake_popup_wrapper .confirm_stake_content_wrapper .confirm_stake_field {
+  margin-bottom: 3% !important; }
+
+.stake_table_theme .confirm_stake_popup_wrapper .stakepool_card_icon {
+  position: absolute; }
+
+.stake_table_theme .stake_duration_model_wrapper .tooltip_icon_wrapper {
+  height: 1.2rem;
+  width: 1.2rem;
+  position: relative;
+  top: 0rem;
+  margin: 0 0.6rem; }
+
+.stake_table_theme .stake_duration_model_wrapper .danger_message_wrapper,
+.stake_table_theme .stake_duration_model_wrapper .success_message_wrapper,
+.stake_table_theme .stake_duration_model_wrapper .warning_message_wrapper {
+  padding: 3%;
+  background-color: var(--highcharts-negative-color);
+  margin: 5% 0 8%;
+  font-size: 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px; }
+  .stake_table_theme .stake_duration_model_wrapper .danger_message_wrapper .checked-icon svg, .stake_table_theme .stake_duration_model_wrapper .danger_message_wrapper .danger-icon svg,
+  .stake_table_theme .stake_duration_model_wrapper .success_message_wrapper .checked-icon svg,
+  .stake_table_theme .stake_duration_model_wrapper .success_message_wrapper .danger-icon svg,
+  .stake_table_theme .stake_duration_model_wrapper .warning_message_wrapper .checked-icon svg,
+  .stake_table_theme .stake_duration_model_wrapper .warning_message_wrapper .danger-icon svg {
+    width: 2rem;
+    height: 1.5rem; }
+
+.stake_table_theme .stake_duration_model_wrapper .success_message_wrapper {
+  background-color: var(--specials_checks-okay-done) !important; }
+
+.stake_table_theme .stake_duration_model_wrapper .warning_message_wrapper {
+  background-color: var(--specials_pending-waiting-caution) !important; }
+
+.stake_table_theme .confirmation_model_popup_wrapper {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center; }
+  .stake_table_theme .confirmation_model_popup_wrapper .confirmation_model_content {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    text-align: center; }
+    .stake_table_theme .confirmation_model_popup_wrapper .confirmation_model_content .confirmation_label {
+      font-size: 12px;
+      font-weight: bold; }
+      .stake_table_theme .confirmation_model_popup_wrapper .confirmation_model_content .confirmation_label .active_link {
+        color: var(--specials_buttons-links-and-highlights);
+        text-decoration: underline; }
+      .stake_table_theme .confirmation_model_popup_wrapper .confirmation_model_content .confirmation_label .active_link:hover {
+        cursor: pointer; }
+
+.stake_table_theme .review_unstake_popup_wrapper,
+.stake_table_theme .unstake_confirm_popup_wrapper {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center; }
+  .stake_table_theme .review_unstake_popup_wrapper .review_unstake_content,
+  .stake_table_theme .review_unstake_popup_wrapper .unstake_confirm_content,
+  .stake_table_theme .unstake_confirm_popup_wrapper .review_unstake_content,
+  .stake_table_theme .unstake_confirm_popup_wrapper .unstake_confirm_content {
+    display: flex;
+    justify-content: center;
+    flex-direction: column; }
+    .stake_table_theme .review_unstake_popup_wrapper .review_unstake_content .unstake_header,
+    .stake_table_theme .review_unstake_popup_wrapper .unstake_confirm_content .unstake_header,
+    .stake_table_theme .unstake_confirm_popup_wrapper .review_unstake_content .unstake_header,
+    .stake_table_theme .unstake_confirm_popup_wrapper .unstake_confirm_content .unstake_header {
+      display: flex;
+      align-items: center;
+      gap: 10px; }
+    .stake_table_theme .review_unstake_popup_wrapper .review_unstake_content .time_remaining_progress_content,
+    .stake_table_theme .review_unstake_popup_wrapper .unstake_confirm_content .time_remaining_progress_content,
+    .stake_table_theme .unstake_confirm_popup_wrapper .review_unstake_content .time_remaining_progress_content,
+    .stake_table_theme .unstake_confirm_popup_wrapper .unstake_confirm_content .time_remaining_progress_content {
+      display: flex;
+      gap: 10px; }
+      .stake_table_theme .review_unstake_popup_wrapper .review_unstake_content .time_remaining_progress_content .duration-field,
+      .stake_table_theme .review_unstake_popup_wrapper .unstake_confirm_content .time_remaining_progress_content .duration-field,
+      .stake_table_theme .unstake_confirm_popup_wrapper .review_unstake_content .time_remaining_progress_content .duration-field,
+      .stake_table_theme .unstake_confirm_popup_wrapper .unstake_confirm_content .time_remaining_progress_content .duration-field {
+        width: 100%; }
+        .stake_table_theme .review_unstake_popup_wrapper .review_unstake_content .time_remaining_progress_content .duration-field .ant-progress-inner,
+        .stake_table_theme .review_unstake_popup_wrapper .unstake_confirm_content .time_remaining_progress_content .duration-field .ant-progress-inner,
+        .stake_table_theme .unstake_confirm_popup_wrapper .review_unstake_content .time_remaining_progress_content .duration-field .ant-progress-inner,
+        .stake_table_theme .unstake_confirm_popup_wrapper .unstake_confirm_content .time_remaining_progress_content .duration-field .ant-progress-inner {
+          height: 1rem;
+          border-radius: unset; }
+        .stake_table_theme .review_unstake_popup_wrapper .review_unstake_content .time_remaining_progress_content .duration-field .ant-progress-bg,
+        .stake_table_theme .review_unstake_popup_wrapper .unstake_confirm_content .time_remaining_progress_content .duration-field .ant-progress-bg,
+        .stake_table_theme .unstake_confirm_popup_wrapper .review_unstake_content .time_remaining_progress_content .duration-field .ant-progress-bg,
+        .stake_table_theme .unstake_confirm_popup_wrapper .unstake_confirm_content .time_remaining_progress_content .duration-field .ant-progress-bg {
+          height: 100% !important;
+          border-radius: 0;
+          background-color: var(--specials_pending-waiting-caution) !important; }
+        .stake_table_theme .review_unstake_popup_wrapper .review_unstake_content .time_remaining_progress_content .duration-field .action_notification-svg,
+        .stake_table_theme .review_unstake_popup_wrapper .unstake_confirm_content .time_remaining_progress_content .duration-field .action_notification-svg,
+        .stake_table_theme .unstake_confirm_popup_wrapper .review_unstake_content .time_remaining_progress_content .duration-field .action_notification-svg,
+        .stake_table_theme .unstake_confirm_popup_wrapper .unstake_confirm_content .time_remaining_progress_content .duration-field .action_notification-svg {
+          margin-top: 0.2rem;
+          margin-left: 0.5rem; }
+          .stake_table_theme .review_unstake_popup_wrapper .review_unstake_content .time_remaining_progress_content .duration-field .action_notification-svg svg,
+          .stake_table_theme .review_unstake_popup_wrapper .unstake_confirm_content .time_remaining_progress_content .duration-field .action_notification-svg svg,
+          .stake_table_theme .unstake_confirm_popup_wrapper .review_unstake_content .time_remaining_progress_content .duration-field .action_notification-svg svg,
+          .stake_table_theme .unstake_confirm_popup_wrapper .unstake_confirm_content .time_remaining_progress_content .duration-field .action_notification-svg svg {
+            width: 1rem;
+            height: 1rem;
+            background-color: var(--specials_pending-waiting-caution);
+            border-radius: 1rem;
+            padding: 2px; }
+  .stake_table_theme .review_unstake_popup_wrapper .review_unstack_wrapper,
+  .stake_table_theme .unstake_confirm_popup_wrapper .review_unstack_wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    align-items: center;
+    margin-top: 5%; }
+    .stake_table_theme .review_unstake_popup_wrapper .review_unstack_wrapper .review_settle_notice,
+    .stake_table_theme .unstake_confirm_popup_wrapper .review_unstack_wrapper .review_settle_notice {
+      font-size: 12px; }
+
+.terms_condition_dialog_wrapper .ReactModal__Content {
+  width: 50%; }
+  .terms_condition_dialog_wrapper .ReactModal__Content .anticon-close {
+    font-size: 20px !important; }
+
+.stake_amount_dialog .ReactModal__Content,
+.duartion_model_dialog_wrapper .ReactModal__Content,
+.confirm_stake_dialog_wrapper .ReactModal__Content,
+.stake_details_dialog_wrapper .ReactModal__Content {
+  width: 30%; }
+  .stake_amount_dialog .ReactModal__Content .anticon-close,
+  .duartion_model_dialog_wrapper .ReactModal__Content .anticon-close,
+  .confirm_stake_dialog_wrapper .ReactModal__Content .anticon-close,
+  .stake_details_dialog_wrapper .ReactModal__Content .anticon-close {
+    font-size: 20px !important; }
+
+.dialog-mobile-content .stake_detail_line {
+  width: 5%;
+  border-bottom: 1px solid var(--labels_secondary-inactive-label-text-graphics); }
+
+.dialog-mobile-content .stake_detail_text {
+  color: var(--labels_secondary-inactive-label-text-graphics); }
+
+.dialog-mobile-content .action_model_popup_wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: auto; }
+  .dialog-mobile-content .action_model_popup_wrapper .action_model_popup_content {
+    height: 20rem; }
+  .dialog-mobile-content .action_model_popup_wrapper .action_model_content .action_model_header {
+    font-size: 18px; }
+  .dialog-mobile-content .action_model_popup_wrapper .action_model_content .action_model_agreement_wrapper {
+    overflow-y: scroll; }
+    .dialog-mobile-content .action_model_popup_wrapper .action_model_content .action_model_agreement_wrapper .action_model_agreement_content {
+      font-size: 13px; }
+
+.dialog-mobile-content .stake_popup_button_wrapper .stake_popup_button {
+  height: unset; }
+
+.dialog-mobile-content .stake_amount_popup_wrapper .stake_amount_theme {
+  height: 20rem; }
+  .dialog-mobile-content .stake_amount_popup_wrapper .stake_amount_theme h3 {
+    font-size: 20px; }
+
+.dialog-mobile-content .stake_amount_popup_wrapper .stake_amount_popup_content {
+  font-size: 13px; }
+
+.dialog-mobile-content .stake_duration_model_wrapper h1 {
+  font-size: 26px; }
+
+.dialog-mobile-content .stake_duration_model_wrapper .stake_text_header {
+  font-size: 14px; }
+
+.dialog-mobile-content .stake_duration_model_wrapper .stake_text {
+  font-size: 13px; }
+
+.dialog-mobile-content .stake_duration_model_wrapper .tooltip_icon_wrapper {
+  height: 1.5rem;
+  width: 1.5rem; }
+
+.dialog-mobile-content .stake_duration_model_wrapper .danger_message_wrapper .checked-icon svg, .dialog-mobile-content .stake_duration_model_wrapper .danger_message_wrapper .danger-icon svg,
+.dialog-mobile-content .stake_duration_model_wrapper .success_message_wrapper .checked-icon svg,
+.dialog-mobile-content .stake_duration_model_wrapper .success_message_wrapper .danger-icon svg,
+.dialog-mobile-content .stake_duration_model_wrapper .warning_message_wrapper .checked-icon svg,
+.dialog-mobile-content .stake_duration_model_wrapper .warning_message_wrapper .danger-icon svg {
+  width: 2rem;
+  height: 2rem; }
+
+.dialog-mobile-content .stake_detail_popup_wrapper {
+  font-size: 13px; }
+  .dialog-mobile-content .stake_detail_popup_wrapper h1 {
+    font-size: 26px; }
+
+.dialog-mobile-content .confirm_stake_popup_wrapper h3 {
+  font-size: 20px; }
+
+.dialog-mobile-content .confirm_stake_popup_wrapper .confirm_stake_theme {
+  height: 20rem; }
+
+.dialog-mobile-content .confirm_stake_popup_wrapper .confirm_stake_content_wrapper {
+  font-size: 12px; }
+
+.dialog-mobile-content .confirm_stake_popup_wrapper .stakepool_card_icon {
+  margin-bottom: 2%; }
+
+.dialog-mobile-content .confirmation_model_popup_wrapper .confirmation_model_content {
+  font-size: 14px; }
+  .dialog-mobile-content .confirmation_model_popup_wrapper .confirmation_model_content .confirmation_amount_text {
+    font-size: 20px; }
+  .dialog-mobile-content .confirmation_model_popup_wrapper .confirmation_model_content .successful_stack_text {
+    font-size: 18px !important; }
+  .dialog-mobile-content .confirmation_model_popup_wrapper .confirmation_model_content .congrats_text {
+    font-weight: 700 !important; }
+  .dialog-mobile-content .confirmation_model_popup_wrapper .confirmation_model_content .confirmation_label {
+    font-size: 14px;
+    font-weight: normal; }
+
+.dialog-mobile-content .review_unstake_popup_wrapper,
+.dialog-mobile-content .unstake_confirm_popup_wrapper {
+  align-items: start;
+  font-size: 14px; }
+  .dialog-mobile-content .review_unstake_popup_wrapper .review_unstake_content,
+  .dialog-mobile-content .review_unstake_popup_wrapper .unstake_confirm_content,
+  .dialog-mobile-content .unstake_confirm_popup_wrapper .review_unstake_content,
+  .dialog-mobile-content .unstake_confirm_popup_wrapper .unstake_confirm_content {
+    height: auto !important; }
+    .dialog-mobile-content .review_unstake_popup_wrapper .review_unstake_content h3,
+    .dialog-mobile-content .review_unstake_popup_wrapper .review_unstake_content h2,
+    .dialog-mobile-content .review_unstake_popup_wrapper .unstake_confirm_content h3,
+    .dialog-mobile-content .review_unstake_popup_wrapper .unstake_confirm_content h2,
+    .dialog-mobile-content .unstake_confirm_popup_wrapper .review_unstake_content h3,
+    .dialog-mobile-content .unstake_confirm_popup_wrapper .review_unstake_content h2,
+    .dialog-mobile-content .unstake_confirm_popup_wrapper .unstake_confirm_content h3,
+    .dialog-mobile-content .unstake_confirm_popup_wrapper .unstake_confirm_content h2 {
+      font-size: 24px; }
+    .dialog-mobile-content .review_unstake_popup_wrapper .review_unstake_content .unstake_header .unstaked-logo svg,
+    .dialog-mobile-content .review_unstake_popup_wrapper .unstake_confirm_content .unstake_header .unstaked-logo svg,
+    .dialog-mobile-content .unstake_confirm_popup_wrapper .review_unstake_content .unstake_header .unstaked-logo svg,
+    .dialog-mobile-content .unstake_confirm_popup_wrapper .unstake_confirm_content .unstake_header .unstaked-logo svg {
+      width: 6rem;
+      height: 6rem; }
+    .dialog-mobile-content .review_unstake_popup_wrapper .review_unstake_content .time_remaining_progress_content,
+    .dialog-mobile-content .review_unstake_popup_wrapper .unstake_confirm_content .time_remaining_progress_content,
+    .dialog-mobile-content .unstake_confirm_popup_wrapper .review_unstake_content .time_remaining_progress_content,
+    .dialog-mobile-content .unstake_confirm_popup_wrapper .unstake_confirm_content .time_remaining_progress_content {
+      display: flex;
+      gap: 10px; }
+      .dialog-mobile-content .review_unstake_popup_wrapper .review_unstake_content .time_remaining_progress_content .duration-field,
+      .dialog-mobile-content .review_unstake_popup_wrapper .unstake_confirm_content .time_remaining_progress_content .duration-field,
+      .dialog-mobile-content .unstake_confirm_popup_wrapper .review_unstake_content .time_remaining_progress_content .duration-field,
+      .dialog-mobile-content .unstake_confirm_popup_wrapper .unstake_confirm_content .time_remaining_progress_content .duration-field {
+        width: 100%; }
+        .dialog-mobile-content .review_unstake_popup_wrapper .review_unstake_content .time_remaining_progress_content .duration-field .ant-progress-inner,
+        .dialog-mobile-content .review_unstake_popup_wrapper .unstake_confirm_content .time_remaining_progress_content .duration-field .ant-progress-inner,
+        .dialog-mobile-content .unstake_confirm_popup_wrapper .review_unstake_content .time_remaining_progress_content .duration-field .ant-progress-inner,
+        .dialog-mobile-content .unstake_confirm_popup_wrapper .unstake_confirm_content .time_remaining_progress_content .duration-field .ant-progress-inner {
+          height: 2rem; }
+        .dialog-mobile-content .review_unstake_popup_wrapper .review_unstake_content .time_remaining_progress_content .duration-field .action_notification-svg,
+        .dialog-mobile-content .review_unstake_popup_wrapper .unstake_confirm_content .time_remaining_progress_content .duration-field .action_notification-svg,
+        .dialog-mobile-content .unstake_confirm_popup_wrapper .review_unstake_content .time_remaining_progress_content .duration-field .action_notification-svg,
+        .dialog-mobile-content .unstake_confirm_popup_wrapper .unstake_confirm_content .time_remaining_progress_content .duration-field .action_notification-svg {
+          margin-top: 0.5rem; }
+          .dialog-mobile-content .review_unstake_popup_wrapper .review_unstake_content .time_remaining_progress_content .duration-field .action_notification-svg svg,
+          .dialog-mobile-content .review_unstake_popup_wrapper .unstake_confirm_content .time_remaining_progress_content .duration-field .action_notification-svg svg,
+          .dialog-mobile-content .unstake_confirm_popup_wrapper .review_unstake_content .time_remaining_progress_content .duration-field .action_notification-svg svg,
+          .dialog-mobile-content .unstake_confirm_popup_wrapper .unstake_confirm_content .time_remaining_progress_content .duration-field .action_notification-svg svg {
+            width: 2rem;
+            height: 2rem; }
+
+.stake_table_wrapper .stake-tabs {
+  width: 100%;
+  padding: 3%;
+  background-color: var(--base_wallet-sidebar-and-popup); }
+  .stake_table_wrapper .stake-tabs .stake-cefi-content-wrapper {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5%;
+    gap: 2%; }
+    .stake_table_wrapper .stake-tabs .stake-cefi-content-wrapper .stake-cefi-value {
+      width: 100%;
+      display: 'flex';
+      justify-content: 'flex-end'; }
+  .stake_table_wrapper .stake-tabs .stakepool_card_wrapper {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px; }
+    .stake_table_wrapper .stake-tabs .stakepool_card_wrapper .stakepool_card {
+      width: 35%;
+      padding: 2%;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+      border-top: 1px solid var(--specials_pending-waiting-caution); }
+      .stake_table_wrapper .stake-tabs .stakepool_card_wrapper .stakepool_card .stakepool_card_icon {
+        position: relative;
+        bottom: 40px; }
+      .stake_table_wrapper .stake-tabs .stakepool_card_wrapper .stakepool_card .stakepool_button {
+        margin-top: 20%;
+        background-color: var(--specials_buttons-links-and-highlights);
+        padding: 12%;
+        border-radius: 20px;
+        width: 12rem;
+        color: var(--calculated_base_footer_text);
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: none; }
+
+.stake_table_wrapper .mystakes-tab {
+  width: 100%;
+  padding: 3%;
+  background-color: var(--base_wallet-sidebar-and-popup); }
+  .stake_table_wrapper .mystakes-tab .mystakes-content-wrapper {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5%;
+    gap: 10px; }
+    .stake_table_wrapper .mystakes-tab .mystakes-content-wrapper .estimated-total-stake {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end; }
+    .stake_table_wrapper .mystakes-tab .mystakes-content-wrapper .total-estimated-stake {
+      margin-bottom: 20px; }
+    .stake_table_wrapper .mystakes-tab .mystakes-content-wrapper .stack-amount,
+    .stake_table_wrapper .mystakes-tab .mystakes-content-wrapper .stack-reward {
+      font-size: 18px; }
+  .stake_table_wrapper .mystakes-tab .tabOption {
+    margin-right: 5px;
+    padding: 6px;
+    border-radius: 10px;
+    cursor: pointer;
+    border: 1px solid var(--calculated_important-border); }
+  .stake_table_wrapper .mystakes-tab .mystakes-table-wrapper table .duration-field {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: 10px; }
+  .stake_table_wrapper .mystakes-tab .mystakes-table-wrapper table .stake-status-field {
+    display: flex;
+    gap: 20px; }
+    .stake_table_wrapper .mystakes-tab .mystakes-table-wrapper table .stake-status-field .stake-status-content {
+      color: var(--specials_pending-waiting-caution); }
+    .stake_table_wrapper .mystakes-tab .mystakes-table-wrapper table .stake-status-field .stake-table-button {
+      background-color: var(--specials_buttons-links-and-highlights); }
+
+.layout-mobile .stake-wrapper .stake-tabs {
+  width: 100%;
+  padding: 4%; }
+  .layout-mobile .stake-wrapper .stake-tabs .stake-cefi-content-wrapper {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 5%;
+    margin-bottom: 15%; }
+
+.layout-mobile .stake_table_wrapper .stake_table_theme .stakepool_card_wrapper .stakepool_card {
+  width: 100%;
+  height: 100%;
+  padding: 0 10% 10% 10%; }
+  .layout-mobile .stake_table_wrapper .stake_table_theme .stakepool_card_wrapper .stakepool_card .stakepool_card_icon {
+    bottom: 18px; }
+
+.layout-mobile .stake_table_wrapper .stake_table_theme .tabOption {
+  border: 1px solid var(--labels_important-active-labels-text-graphics); }
+
+.layout-mobile .mobileZoom {
+  zoom: 0.55;
+  position: relative;
+  left: 0 !important; }
+  .layout-mobile .mobileZoom .ant-table-content {
+    overflow-x: scroll; }
+
+.layout-mobile .mobileZoom .ant-table-thead > tr > th {
+  padding: 1rem 5rem;
+  font-size: 18px; }
+
+@media screen and (min-width: 1920px) {
+  .terms_condition_dialog_wrapper .ReactModal__Content {
+    width: 35%; }
+  .stake_amount_dialog .ReactModal__Content,
+  .duartion_model_dialog_wrapper .ReactModal__Content,
+  .confirm_stake_dialog_wrapper .ReactModal__Content {
+    width: 20%; } }
 
 .add-app-button {
   border-radius: 24px;
@@ -6736,11 +7495,36 @@ table th {
   stroke: var(--labels_important-active-labels-text-graphics);
   fill: var(--labels_important-active-labels-text-graphics); }
 
+.referral-list-wrapper {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto; }
+
 .fs-13 {
   font-size: 13px; }
 
 .fs-14 {
   font-size: 14px; }
+
+.summary-block_wrapper {
+  background-color: var(--base_wallet-sidebar-and-popup); }
+  .summary-block_wrapper .referral-table-wrapper .history-table-link {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 3%;
+    color: var(--specials_buttons-links-and-highlights); }
+  .summary-block_wrapper .referral-table-wrapper .referral-copy-link {
+    color: var(--labels_important-active-labels-text-graphics);
+    padding: 5px;
+    cursor: pointer;
+    background-color: var(--specials_buttons-links-and-highlights);
+    border-radius: 10px; }
+  .summary-block_wrapper .referral-table-wrapper .summary-table-link {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 3%; }
 
 .referral-active-text {
   color: var(--labels_important-active-labels-text-graphics); }
@@ -6748,11 +7532,19 @@ table th {
 .referral-inActive-text {
   color: var(--labels_secondary-inactive-label-text-graphics); }
 
-.referral-header-icon-wrapper .icon_title-wrapper .icon_title-text.title {
-  padding-top: 5% !important; }
+.referral-header-icon-wrapper .icon_title-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row; }
+  .referral-header-icon-wrapper .icon_title-wrapper .icon_title-text.title {
+    font-size: 3rem !important;
+    padding-top: 2.25rem !important; }
 
 .referral_table_theme .ant-modal-body {
   background-color: var(--base_wallet-sidebar-and-popup) !important; }
+
+.referral_table_theme .ReactModal__Content {
+  width: 40rem; }
 
 .back-label {
   cursor: pointer;
@@ -6767,7 +7559,7 @@ table th {
     .summary-referral-container .summary-referral-wrapper .settle-link,
     .summary-referral-container .summary-referral-wrapper .view-history-label {
       color: var(--specials_buttons-links-and-highlights);
-      border-bottom: 1px solid var(--specials_buttons-links-and-highlights);
+      text-decoration: underline;
       cursor: pointer;
       font-weight: bold; }
     .summary-referral-container .summary-referral-wrapper .earning-icon-wrapper {
@@ -6795,6 +7587,9 @@ table th {
 
 .history-referral-container {
   padding: 2%; }
+  .history-referral-container .summary-history-referral {
+    display: flex;
+    justify-content: space-between !important; }
   .history-referral-container .history-referral-wrapper .earning-icon-wrapper {
     display: flex; }
     .history-referral-container .history-referral-wrapper .earning-icon-wrapper .refer-icon {
@@ -6804,17 +7599,28 @@ table th {
     .history-referral-container .history-referral-wrapper .earning-icon-wrapper .earning-label {
       font-size: 18px;
       font-weight: bold; }
+  .history-referral-container .history-refer-icon .margin-aligner {
+    opacity: 0.5;
+    margin-bottom: unset;
+    margin-right: unset; }
+    .history-referral-container .history-refer-icon .margin-aligner svg {
+      width: 40% !important;
+      height: 70% !important; }
+  .history-referral-container .history-refer-icon .margin-aligner div {
+    display: flex;
+    justify-content: flex-end; }
 
 .new-refer-wrapper {
   background-color: var(--calculated_quick_trade-bg) !important;
-  color: var(--labels_important-active-labels-text-graphics); }
+  color: var(--labels_important-active-labels-text-graphics);
+  padding: 15px; }
   .new-refer-wrapper .new-refer-icon-wrapper {
     display: flex; }
     .new-refer-wrapper .new-refer-icon-wrapper .margin-aligner {
       margin-bottom: 1% !important; }
   .new-refer-wrapper .create-link-label {
     color: var(--specials_buttons-links-and-highlights);
-    border-bottom: 1px solid var(--specials_buttons-links-and-highlights);
+    text-decoration: underline;
     font-weight: bold;
     margin-top: 0.5%;
     cursor: pointer; }
@@ -6831,33 +7637,42 @@ table th {
       width: 100% !important;
       height: 100% !important; }
 
-.settle-popup-wrapper .earning-icon-wrapper {
-  display: flex; }
-  .settle-popup-wrapper .earning-icon-wrapper .insufficient-icon {
-    text-align: center; }
-    .settle-popup-wrapper .earning-icon-wrapper .insufficient-icon svg {
-      width: 5rem !important;
-      height: 5rem !important; }
-  .settle-popup-wrapper .earning-icon-wrapper .refer-icon {
-    fill: var(--labels_important-active-labels-text-graphics); }
-  .settle-popup-wrapper .earning-icon-wrapper .margin-aligner {
-    margin-bottom: 1% !important; }
-  .settle-popup-wrapper .earning-icon-wrapper .earning-label {
-    font-size: 18px;
-    font-weight: bold; }
+.settle-popup-wrapper {
+  color: var(--labels_important-active-labels-text-graphics); }
+  .settle-popup-wrapper .earning-icon-wrapper {
+    display: flex;
+    align-items: center; }
+    .settle-popup-wrapper .earning-icon-wrapper .insufficient-icon {
+      text-align: center; }
+      .settle-popup-wrapper .earning-icon-wrapper .insufficient-icon svg {
+        width: 5rem !important;
+        height: 5rem !important; }
+    .settle-popup-wrapper .earning-icon-wrapper .margin-aligner svg {
+      width: 4rem !important;
+      height: 4rem !important; }
+    .settle-popup-wrapper .earning-icon-wrapper .refer-icon {
+      fill: var(--labels_important-active-labels-text-graphics); }
+    .settle-popup-wrapper .earning-icon-wrapper .margin-aligner {
+      margin-bottom: 1% !important; }
+    .settle-popup-wrapper .earning-icon-wrapper .earning-label {
+      font-size: 18px;
+      font-weight: bold; }
 
-.refer-code-popup-wrapper .new-referral-wrapper .new-referral-label,
-.referral-popup-earning-wrapper .new-referral-wrapper .new-referral-label,
-.referral-final-popup .new-referral-wrapper .new-referral-label {
-  font-size: 16px;
-  margin: 2% 0 3% 2%; }
-
-.refer-code-popup-wrapper .custom-input-field,
-.referral-popup-earning-wrapper .custom-input-field,
-.referral-final-popup .custom-input-field {
-  padding: 2%;
-  width: 100%;
-  border: 1px solid var(--labels_important-active-labels-text-graphics); }
+.refer-code-popup-wrapper,
+.referral-popup-earning-wrapper,
+.referral-final-popup {
+  color: var(--labels_important-active-labels-text-graphics); }
+  .refer-code-popup-wrapper .new-referral-wrapper .new-referral-label,
+  .referral-popup-earning-wrapper .new-referral-wrapper .new-referral-label,
+  .referral-final-popup .new-referral-wrapper .new-referral-label {
+    font-size: 16px;
+    margin: 2% 0 3% 2%; }
+  .refer-code-popup-wrapper .custom-input-field,
+  .referral-popup-earning-wrapper .custom-input-field,
+  .referral-final-popup .custom-input-field {
+    padding: 2%;
+    width: 100%;
+    border: 1px solid var(--specials_buttons-links-and-highlights); }
 
 .referral-popup-earning-wrapper .discount-label {
   margin: 5% 0;
@@ -6891,11 +7706,13 @@ table th {
 
 .referral-popup-earning-wrapper .earn-border-left {
   border-left: 1px solid var(--labels_important-active-labels-text-graphics);
-  padding-top: 10%;
-  padding-left: 2% !important; }
+  padding-top: 10% !important;
+  padding-left: 1% !important; }
   .referral-popup-earning-wrapper .earn-border-left .caret-icon-mobile svg {
     width: 5rem !important;
     height: 5rem !important; }
+  .referral-popup-earning-wrapper .earn-border-left .caret-down-icon-mobile svg {
+    height: 8rem !important; }
 
 .referral-popup-earning-wrapper .caret-icon-wrapper {
   width: 15%;
@@ -6922,30 +7739,30 @@ table th {
     width: 3rem !important;
     height: 3rem !important; }
 
-.confirm-fild-wrapper .confirm-field-header {
-  font-weight: bold;
-  color: var(--labels_important-active-labels-text-graphics);
-  font-size: 18px;
-  margin-bottom: 3%; }
-
-.confirm-fild-wrapper .discount-field {
-  margin: 2% 0 1% 0;
-  font-weight: bold; }
-
-.confirm-fild-wrapper .referral-field-content-wrapper {
-  padding: 2%;
-  width: 100%;
-  border: 1px solid var(--labels_important-active-labels-text-graphics); }
-  .confirm-fild-wrapper .referral-field-content-wrapper .referral-field-content {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-bottom: 2%; }
-  .confirm-fild-wrapper .referral-field-content-wrapper .earn-rate-content,
-  .confirm-fild-wrapper .referral-field-content-wrapper .discount-content {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between; }
+.confirm-fild-wrapper {
+  color: var(--labels_important-active-labels-text-graphics); }
+  .confirm-fild-wrapper .confirm-field-header {
+    font-weight: bold;
+    color: var(--labels_important-active-labels-text-graphics);
+    font-size: 18px;
+    margin-bottom: 1%; }
+  .confirm-fild-wrapper .discount-field {
+    margin: 2% 0 1% 0;
+    font-weight: bold; }
+  .confirm-fild-wrapper .referral-field-content-wrapper {
+    padding: 2%;
+    width: 100%;
+    border: 1px solid var(--labels_important-active-labels-text-graphics); }
+    .confirm-fild-wrapper .referral-field-content-wrapper .referral-field-content {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      margin-bottom: 10%; }
+    .confirm-fild-wrapper .referral-field-content-wrapper .earn-rate-content,
+    .confirm-fild-wrapper .referral-field-content-wrapper .discount-content {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between; }
 
 .referral-final-popup .checked-icon {
   padding-top: 2%; }
@@ -6962,7 +7779,8 @@ table th {
   border: 1px solid var(--labels_important-active-labels-text-graphics);
   color: var(--specials_buttons-links-and-highlights);
   display: flex;
-  justify-content: space-between; }
+  justify-content: space-between;
+  align-items: center; }
   .referral-final-popup .custom-input .link-content {
     text-decoration: underline;
     cursor: pointer; }
@@ -6982,16 +7800,92 @@ table th {
   .referral-popup-btn-wrapper .okay-btn {
     width: 100% !important; }
 
-.layout-mobile .summary-block_wrapper .referral-table-wrapper .table-wrapper th {
+.layout-mobile .referral-list-wrapper {
+  width: 100%; }
+  .layout-mobile .referral-list-wrapper .earning-discount-label {
+    font-size: 18px; }
+  .layout-mobile .referral-list-wrapper .ant-tabs-nav-list {
+    margin-left: 2rem; }
+  .layout-mobile .referral-list-wrapper .referral-popup {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important; }
+  .layout-mobile .referral-list-wrapper .refer-code-popup-wrapper .unique-referral,
+  .layout-mobile .referral-list-wrapper .referral-popup-earning-wrapper .unique-referral,
+  .layout-mobile .referral-list-wrapper .referral-final-popup .unique-referral {
+    margin-bottom: 15%; }
+  .layout-mobile .referral-list-wrapper .refer-code-popup-wrapper .referral-label-mobile,
+  .layout-mobile .referral-list-wrapper .referral-popup-earning-wrapper .referral-label-mobile,
+  .layout-mobile .referral-list-wrapper .referral-final-popup .referral-label-mobile {
+    font-size: 14px; }
+  .layout-mobile .referral-list-wrapper .refer-code-popup-wrapper .new-referral-wrapper .new-referral-label,
+  .layout-mobile .referral-list-wrapper .referral-popup-earning-wrapper .new-referral-wrapper .new-referral-label,
+  .layout-mobile .referral-list-wrapper .referral-final-popup .new-referral-wrapper .new-referral-label {
+    font-size: 16px;
+    margin: 2% 0 3% 0%; }
+  .layout-mobile .referral-list-wrapper .history-referral-container .referral-history-content {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start; }
+  .layout-mobile .referral-list-wrapper .history-referral-container .events-desc-border {
+    width: 14%;
+    border-bottom: 1px solid var(--labels_secondary-inactive-label-text-graphics); }
+  .layout-mobile .referral-list-wrapper .settle-pop-up .settle {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important; }
+  .layout-mobile .referral-list-wrapper .settle-pop-up .settle-popup-wrapper {
+    margin-bottom: 10%; }
+    .layout-mobile .referral-list-wrapper .settle-pop-up .settle-popup-wrapper .referral-earning-settlement {
+      font-size: 18px; }
+
+.layout-mobile .summary-block_wrapper .create-referral-link {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 2rem; }
+
+.layout-mobile .summary-block_wrapper .new-refer-mobile-wrapper {
+  padding: 2rem; }
+
+.layout-mobile .summary-block_wrapper .referral-active-wrapper {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem; }
+
+.layout-mobile .summary-block_wrapper .referral-active-text .earn-info-wrapper {
+  width: 75% !important; }
+  .layout-mobile .summary-block_wrapper .referral-active-text .earn-info-wrapper .earn-text-wrapper {
+    justify-content: flex-start;
+    padding: 5% 0; }
+
+.layout-mobile .summary-block_wrapper .referral-table-wrapper .table-wrapper th,
+.layout-mobile .summary-block_wrapper .referral-table-wrapper tr {
   font-size: 12px; }
 
+.layout-mobile .summary-block_wrapper .referral-table-wrapper .table-wrapper th {
+  text-wrap: nowrap; }
+
+.layout-mobile .summary-block_wrapper .referral-table-wrapper td {
+  padding: 1rem !important; }
+
+.layout-mobile .summary-block_wrapper .referral-table-wrapper .table_container .table-content {
+  overflow-x: scroll; }
+
+.layout-mobile .content-field {
+  min-height: 20rem !important; }
+
 @media screen and (max-width: 550px) {
+  .layout-mobile .icon_title-wrapper {
+    margin-left: 2rem; }
   .layout-mobile .summary-block_wrapper .referral-table-wrapper .table-wrapper th {
-    font-size: 10px; } }
+    padding: 1rem; } }
 
 @media screen and (max-width: 450px) {
   .layout-mobile .summary-block_wrapper .referral-table-wrapper .table-wrapper th {
-    font-size: 8px; } }
+    font-size: 12px; } }
 
 .sidebar-row {
   min-height: 3rem;
@@ -8060,7 +8954,7 @@ table th {
     height: 5rem;
     min-height: 5rem; }
     .app-menu-bar .app-menu-bar-content {
-      width: 10rem; }
+      width: 8rem; }
   .app-bar-add-tab-menu {
     width: 24rem; }
     .app-bar-add-tab-menu.narrow {
@@ -9161,7 +10055,9 @@ table th {
 
 @media screen and (max-width: 550px) {
   .field-children .clear-field {
-    bottom: 1.5rem; } }
+    bottom: 1.5rem;
+    padding: 1.5rem;
+    margin-right: 1rem; } }
 
 .mainContainer {
   display: flex;
@@ -9723,11 +10619,12 @@ table th {
 .layout-mobile .holla-button-font {
   font-size: 1.2rem; }
 
-.layout-mobile .accordion_wrapper .accordion_section .accordion_section_title {
-  font-size: 1.75rem; }
-
-.layout-mobile .accordion_wrapper .accordion_section .accordion_section_content {
-  font-size: 13px !important; }
+.layout-mobile .accordion_wrapper .accordion_section {
+  border-bottom: unset !important; }
+  .layout-mobile .accordion_wrapper .accordion_section .accordion_section_title {
+    font-size: 1.75rem; }
+  .layout-mobile .accordion_wrapper .accordion_section .accordion_section_content {
+    font-size: 13px !important; }
 
 .layout-mobile .accordion_wrapper .action_notification-svg svg {
   width: 1.75rem !important;

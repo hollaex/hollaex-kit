@@ -109,13 +109,16 @@ class Deposit extends Component {
 					val.currency === getDepositCurrency
 				);
 			} else if (selectedCurrency) {
-				return (
-					val.network === getDepositNetworkOptions &&
-					val.currency === getDepositCurrency
-				);
-			} else {
-				return val.currency === selectedCurrency;
+				if (getDepositNetworkOptions) {
+					return (
+						val.network === getDepositNetworkOptions &&
+						val.currency === getDepositCurrency
+					);
+				} else {
+					return val.currency === selectedCurrency;
+				}
 			}
+			return wallet;
 		});
 		this.setState({ depositAddress: depositAddress[0]?.address });
 	};
@@ -370,6 +373,7 @@ class Deposit extends Component {
 							<div className="information_block-text_wrapper" />
 							{renderBackToWallet(this.onGoBack)}
 							{openContactForm &&
+								!isMobile &&
 								renderNeedHelpAction(
 									openContactForm,
 									constants.links,

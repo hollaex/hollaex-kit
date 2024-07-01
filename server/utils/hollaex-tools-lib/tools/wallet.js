@@ -19,7 +19,8 @@ const {
 	USER_NOT_FOUND,
 	USER_NOT_REGISTERED_ON_NETWORK,
 	INVALID_NETWORK,
-	NETWORK_REQUIRED
+	NETWORK_REQUIRED,
+	WITHDRAWAL_DISABLED
 } = require(`${SERVER_PATH}/messages`);
 const { getUserByKitId, mapNetworkIdToKitId, mapKitIdToNetworkId } = require('./user');
 const { findTransactionLimitPerTier } = require('./tier');
@@ -408,6 +409,8 @@ const validateWithdrawal = async (user, address, amount, currency, network = nul
 		throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
 	} else if (user.verification_level < 1) {
 		throw new Error(UPGRADE_VERIFICATION_LEVEL(1));
+	} else if(user.withdrawal_blocked && moment().isBefore(moment(user.withdrawal_blocked))) {
+		throw new Error(WITHDRAWAL_DISABLED);	
 	}
 
 	let { fee, fee_coin } = getWithdrawalFee(currency, network, amount, user.verification_level);

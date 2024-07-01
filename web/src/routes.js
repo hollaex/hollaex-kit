@@ -68,6 +68,7 @@ import {
 	CoinPage,
 	WhiteLabel,
 	FeesAndLimits,
+	ReferralList,
 } from './containers';
 import chat from './containers/Admin/Chat';
 import { Billing } from 'containers/Admin';
@@ -390,6 +391,12 @@ export const generateRoutes = (routes = []) => {
 					name="Fees and limits"
 					component={FeesAndLimits}
 				/>
+				<Route
+					path="referral"
+					name="referral"
+					component={ReferralList}
+					onEnter={requireAuth}
+				/>
 				<Route path="prices" name="Digital Asset" component={DigitalAssets} />
 				<Route path="white-label" name="WhiteLabel" component={WhiteLabel} />
 				<Route path="verification" name="Verification" component={Account} />
@@ -417,6 +424,37 @@ export const generateRoutes = (routes = []) => {
 				<Route
 					path="p2p/order/:order_id"
 					name="P2P Order"
+					component={P2P}
+					onEnter={requireAuth}
+				/>
+
+				<Route
+					path="p2p/orders"
+					name="P2P Orders"
+					component={P2P}
+					onEnter={requireAuth}
+				/>
+				<Route
+					path="p2p/deals"
+					name="P2P Deals"
+					component={P2P}
+					onEnter={requireAuth}
+				/>
+				<Route
+					path="p2p/mydeals"
+					name="P2P Deals"
+					component={P2P}
+					onEnter={requireAuth}
+				/>
+				<Route
+					path="p2p/profile"
+					name="P2P Deals"
+					component={P2P}
+					onEnter={requireAuth}
+				/>
+				<Route
+					path="p2p/post-deal"
+					name="P2P Deals"
 					component={P2P}
 					onEnter={requireAuth}
 				/>

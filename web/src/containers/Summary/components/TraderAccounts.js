@@ -86,8 +86,8 @@ const TraderAccounts = ({
 						{description}
 					</EditWrapper>
 				</div>
-				{!isAccountDetails && user.discount ? (
-					<div className="d-flex">
+				{user.discount > 0 ? (
+					<div className="d-flex mb-2">
 						<div>
 							<ReactSVG
 								src={ICONS['GREEN_CHECK']}

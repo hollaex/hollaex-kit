@@ -199,6 +199,18 @@ const DepositComponent = ({
 		router.push(`/wallet/${val}/deposit`);
 	};
 
+	const renderPinnedAsset = (data) => {
+		const icon_id = coins[data]?.icon_id;
+		return (
+			<div className="d-flex justify-content-around">
+				{data.toUpperCase()}
+				<span className="pinned-asset-icon">
+					<Coin iconId={icon_id} type="CS1" />
+				</span>
+			</div>
+		);
+	};
+
 	const onHandleChangeNetwork = (val) => {
 		if (val) {
 			setCurrStep((prev) => ({ ...prev, stepThree: true }));
@@ -303,12 +315,12 @@ const DepositComponent = ({
 			className={
 				isDisbaleDeposit
 					? 'withdraw-deposit-disable deposit-wrapper-fields mt-5'
-					: 'deposit-wrapper-fields mt-5'
+					: `deposit-wrapper-fields ${isMobile ? '' : 'mt-5'}`
 			}
 		>
 			<div>
 				<div className="d-flex">
-					<div className="custom-field d-flex flex-column">
+					<div className="custom-field d-flex flex-column align-items-center">
 						<span className="custom-step-selected">1</span>
 						<span
 							className={`custom-line${currStep.stepTwo ? '-selected' : ''}`}
@@ -329,6 +341,21 @@ const DepositComponent = ({
 								isMobile ? 'select-wrapper mobile-view' : 'select-wrapper'
 							}
 						>
+							<div className="mb-3 d-flex">
+								{topAssets.map((data, inx) => {
+									return (
+										<span
+											key={inx}
+											className={`currency-label ${
+												selectedAsset === data ? 'opacity-100' : 'opacity-30'
+											}`}
+											onClick={() => onHandleChangeSelect(data, true)}
+										>
+											{renderPinnedAsset(data)}
+										</span>
+									);
+								})}
+							</div>
 							<div className="d-flex">
 								<Select
 									showSearch={true}
@@ -379,28 +406,13 @@ const DepositComponent = ({
 								</Select>
 								{currStep.stepTwo && <CheckOutlined className="mt-3 ml-3" />}
 							</div>
-							<div className="mt-3 d-flex">
-								{topAssets.map((data, inx) => {
-									return (
-										<span
-											key={inx}
-											className={`currency-label ${
-												selectedAsset === data ? 'opacity-100' : 'opacity-30'
-											}`}
-											onClick={() => onHandleChangeSelect(data, true)}
-										>
-											{data?.toUpperCase()}
-										</span>
-									);
-								})}
-							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 			<div>
 				<div className="d-flex h-25">
-					<div className="custom-field d-flex flex-column">
+					<div className="custom-field d-flex flex-column align-items-center">
 						<span
 							className={`custom-step${currStep.stepTwo ? '-selected' : ''}`}
 						>
@@ -511,7 +523,7 @@ const DepositComponent = ({
 			</div>
 			<div className={!depositAddress && 'd-flex'}>
 				<div className="d-flex w-100">
-					<div className="custom-field d-flex flex-column">
+					<div className="custom-field d-flex flex-column align-items-center">
 						<span className={`custom-step${isSteps ? '-selected' : ''}`}>
 							3
 						</span>
@@ -523,7 +535,7 @@ const DepositComponent = ({
 					</div>
 					<div
 						className={`d-flex mt-2 ml-5 w-100 ${
-							isMobile ? 'flex-column' : 'justify-content-between'
+							isMobile ? 'flex-column mb-5' : 'justify-content-between'
 						} withdraw-main-label${isSteps ? '-selected' : ''}`}
 					>
 						<div className="d-flex">
@@ -534,17 +546,17 @@ const DepositComponent = ({
 									</span>
 								)}
 								<span
-									className={`ml-2 withdraw-main-label${
-										isSteps ? '-selected' : ''
-									}`}
+									className={`${
+										getDepositCurrency && `ml-2`
+									} withdraw-main-label${isSteps ? '-selected' : ''}`}
 								>
 									{getDepositCurrency.toUpperCase()}
 								</span>
 							</div>
 							<div
-								className={`ml-1 withdraw-main-label${
-									isSteps ? '-selected' : ''
-								}`}
+								className={`${
+									getDepositCurrency && `ml-2`
+								} withdraw-main-label${isSteps ? '-selected' : ''}`}
 							>
 								{renderLabel('SUMMARY.DEPOSIT')}
 							</div>
@@ -608,7 +620,7 @@ const DepositComponent = ({
 			{renderOptionalField && (
 				<div>
 					<div className="d-flex h-25">
-						<div className="custom-field d-flex flex-column">
+						<div className="custom-field d-flex flex-column align-items-center">
 							<span
 								className={`custom-step${
 									(coinLength &&

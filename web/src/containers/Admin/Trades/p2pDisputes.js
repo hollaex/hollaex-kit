@@ -6,6 +6,7 @@ import moment from 'moment';
 // import { ExclamationCircleFilled } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import { CloseOutlined } from '@ant-design/icons';
+import { Link } from 'react-router';
 
 const P2PDisputes = ({ coins }) => {
 	const [userData, setUserData] = useState([]);
@@ -39,7 +40,9 @@ const P2PDisputes = ({ coins }) => {
 				return (
 					<div className="d-flex">
 						<Button className="ant-btn green-btn ant-tooltip-open ant-btn-primary">
-							{data?.initiator_id}
+							<Link to={`/admin/user?id=${data?.initiator_id}`}>
+								{data?.initiator_id}
+							</Link>
 						</Button>
 					</div>
 				);
@@ -53,14 +56,16 @@ const P2PDisputes = ({ coins }) => {
 				return (
 					<div className="d-flex">
 						<Button className="ant-btn green-btn ant-tooltip-open ant-btn-primary">
-							{data?.defendant_id}
+							<Link to={`/admin/user?id=${data?.defendant_id}`}>
+								{data?.defendant_id}
+							</Link>
 						</Button>
 					</div>
 				);
 			},
 		},
 		{
-			title: 'Reason',
+			title: 'User’s Reason',
 			dataIndex: 'reason',
 			key: 'reason',
 			render: (user_id, data) => {
