@@ -1628,6 +1628,27 @@ const setUsernameById = (userId, username) => {
 		});
 };
 
+const disableUserWithdrawal = async (user_id, opts = { expiry_date : null }) => {
+	const user = await getUserByKitId(user_id, false);
+	let { expiry_date } = opts;
+
+	if (!user) {
+		throw new Error(USER_NOT_FOUND);
+	};
+
+	let withdrawal_blocked = null;
+
+	if (expiry_date) {
+		withdrawal_blocked = moment(expiry_date).toISOString();
+	};
+
+	return user.update(
+		{ withdrawal_blocked },
+		{ fields: ['withdrawal_blocked'], returning: true }
+	);
+};
+
+
 const createUserCryptoAddressByNetworkId = (networkId, crypto, opts = {
 	network: null,
 	additionalHeaders: null
@@ -3278,6 +3299,7 @@ module.exports = {
 	createAudit,
 	createAuditLog,
 	getUserStatsByKitId,
+	disableUserWithdrawal,
 	getExchangeOperators,
 	inviteExchangeOperator,
 	createUserOnNetwork,

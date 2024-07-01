@@ -3231,6 +3231,48 @@ paths:
         - admin
       x-token-permissions:
         - can_withdraw
+  /admin/user/disable-withdrawal:
+    x-swagger-router-controller: admin
+    post:
+      description: Block user withdrawal ability by admin
+      operationId: disableUserWithdrawal
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - user_id
+            properties:
+              user_id:
+                type: number
+                format: int32
+              expiry_date:
+                type: ['string', 'null']
+                format: date-time
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
   /admin/user/sessions:
     x-swagger-router-controller: admin
     get:
