@@ -19,6 +19,7 @@ const { verifyBearerTokenPromise, verifyHmacTokenPromise} = require('./security'
 const { client } = require('./database/redis');
 const { parseNumber } = require('./common');
 const BigNumber = require('bignumber.js');
+const uuid = require('uuid/v4');
 
 const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, opts = { stop: null, meta: null, additionalHeaders: null }) => {
 	if (symbol && !subscribedToPair(symbol)) {
@@ -1254,6 +1255,166 @@ const createTrade = async (order, opts = { additionalHeaders: null }) => {
 	);
 };
 
+const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip) => {
+
+	let user_id = null;
+	if (bearerToken) {
+		const auth = await verifyBearerTokenPromise(bearerToken, ip);
+		if (auth) {
+			user_id = auth.sub.id;
+		}
+	} else if (userInfo) {
+		user_id = userInfo.user_id;
+	}
+
+	const assets = symbol.split('-');
+	const from = assets[0];
+	const to = assets[1];
+	const rates = {};
+	
+	const quickTrades = getQuickTrades();
+
+	//Find all the available prices with their types on the exchange.
+	for (const quickTrade of quickTrades) {
+		if (quickTrade.type === 'network') continue;
+		try {
+			const assets = quickTrade.symbol.split('-');
+			const quotePrice = await getUserQuickTrade(assets[0], 1, null, assets[1],  null, null, { additionalHeaders: null }, { headers: { 'api-key': null } });
+			rates[quickTrade.symbol] = { type: quickTrade.type, price: quotePrice.receiving_amount }
+
+		
+		} catch (error) {
+			continue;
+		}
+	}
+
+	const findConversionRate = (startCurrency, endCurrency, rates, visited = new Set(), initialAmount) => {
+		if (startCurrency === endCurrency) return { path: [startCurrency], totalRate: initialAmount, trades: [] };
+	
+		visited.add(startCurrency);
+	
+		for (let [pair, { type, price }] of Object.entries(rates)) {
+			const [from, to] = pair.split('-');
+			if (from === startCurrency && !visited.has(to)) {
+				const result = findConversionRate(to, endCurrency, rates, visited, initialAmount * price);
+				if (result) {
+					return {
+						path: [startCurrency, ...result.path],
+						totalRate: result.totalRate,
+						trades: [
+							{
+								symbol: `${from}-${to}`,
+								type,
+								side: 'sell', 
+								size: initialAmount,
+								price: price
+							},
+							...result.trades
+						]
+					};
+				}
+			} else if (to === startCurrency && !visited.has(from)) {
+				const result = findConversionRate(from, endCurrency, rates, visited, initialAmount / price);
+				if (result) {
+					return {
+						path: [startCurrency, ...result.path],
+						totalRate: result.totalRate,
+						trades: [
+							{
+								symbol: `${from}-${to}`,
+								type,
+								side: 'buy', 
+								size: initialAmount,
+								price: 1 / price
+							},
+							...result.trades
+						]
+					};
+				}
+			}
+		}
+	
+		visited.delete(startCurrency);
+		return null;
+	}
+	const result = findConversionRate(from, to, rates, new Set(), size);
+	let token;
+
+	if (result?.totalRate && user_id) {
+		result.user_id = user_id;
+		token = uuid();
+		client.setexAsync(token, 30, JSON.stringify(result));
+	}
+	return { token, quote_amount: result?.totalRate };
+}
+
+const executeUserChainTrade = async (user_id, token, opts) => {
+	const storedToken = await client.getAsync(token);
+	if (!storedToken) {
+		throw new Error(TOKEN_EXPIRED);
+	}
+	const tradeInfo = JSON.parse(storedToken);
+
+	const user = await getUserByKitId(user_id);
+
+	if (!user) {
+		throw new Error(USER_NOT_FOUND);
+	}
+
+	if (tradeInfo.user_id !== user.id) {
+		throw new Error(USER_NOT_FOUND);
+	}
+	
+	const successfulTrades = [];
+
+	for (const trade of tradeInfo?.trades) {
+		try {
+			const { symbol, price, side, size, type } = trade;
+			if (size < 0) {
+				throw new Error(INVALID_SIZE);
+			} 
+		
+			if (price < 0) {
+				throw new Error(INVALID_PRICE);
+			} 
+		
+			let res;
+			if (type === 'pro') {
+				res = await createUserOrderByKitId(user.id, symbol, side, size, 'market', 0, opts);
+
+			}
+			else if (type === 'broker') {
+
+				const brokerPair = await getModel('broker').findOne({ where: { symbol } });
+		
+				const broker = await getUserByKitId(brokerPair.user_id);
+		
+				const tierBroker = getKitTier(broker.verification_level);
+				const tierUser = getKitTier(user.verification_level);
+		
+				const makerFee = tierBroker.fees.maker[symbol];
+				const takerFee = tierUser.fees.taker[symbol];
+		
+				res = await getNodeLib().createBrokerTrade(
+					symbol,
+					side,
+					price,
+					size,
+					broker.network_id,
+					user.network_id,
+					{ maker: makerFee, taker: takerFee }
+				);
+			}
+
+			successfulTrades.push(res);
+		} catch (error) {
+			throw new Error(`Error occured during trade executions. Failed trade ${trade.symbol}, successful trades: ${successfulTrades.map(trade => trade.symbol).join(', ')}`);
+		}
+	}
+
+	return successfulTrades;
+}
+
 module.exports = {
 	getAllExchangeOrders,
 	createUserOrderByKitId,
@@ -1283,7 +1444,9 @@ module.exports = {
 	executeUserOrder,
 	dustPriceEstimate,
 	updateQuickTradeConfig,
-	createTrade
+	createTrade,
+	getUserChainTradeQuote,
+	executeUserChainTrade
 	// getUserTradesByKitIdStream,
 	// getUserTradesByNetworkIdStream,
 	// getAllTradesNetworkStream,

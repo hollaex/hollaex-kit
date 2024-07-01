@@ -241,6 +241,67 @@ paths:
         - hmac
       x-security-scopes:
         - user
+  /order/chain:
+    x-swagger-router-controller: order
+    get:
+      operationId: getUserChainTradeQuote
+      description: Get rate for chained trades
+      tags:
+        - Order
+      parameters:
+        - in: query
+          name: symbol
+          description: symbol for the desired conversation e.g xht-btc => from xht to btc
+          required: true
+          type: string
+          maxLength: 256
+        - in: query
+          name: size
+          description: size for the conversation e.g, from 5 xht to x btc (x is size)
+          required: true
+          type: number
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+    post:
+      operationId: executeUserChainTrade
+      description: execute chained orders
+      tags:
+        - Order
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              token:
+                type: string
+                maxLength: 256
+            required:
+              - token
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - user
   /orders:
     x-swagger-router-controller: order
     get:
