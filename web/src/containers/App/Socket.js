@@ -120,6 +120,17 @@ class Container extends Component {
 	};
 
 	getUserDetails = () => {
+		const themeOptions = [
+			'dark',
+			'white',
+			'Dark theme',
+			'long black',
+			'LONG FLAT BLACK',
+			'yellow-piller',
+		];
+		const isValidTheme = themeOptions.includes(
+			this.props?.router?.location?.query?.theme
+		);
 		return this.props
 			.getMe()
 			.then(({ value }) => {
@@ -162,6 +173,17 @@ class Container extends Component {
 										},
 									},
 								};
+							} else if (
+								this.props?.router?.location?.query?.theme &&
+								isValidTheme
+							) {
+								this.props.changeTheme(
+									this.props?.router?.location?.query?.theme
+								);
+								localStorage.setItem(
+									'theme',
+									this.props?.router?.location?.query?.theme
+								);
 							} else if (
 								data.settings.interface.theme !== this.props.activeTheme
 							) {
