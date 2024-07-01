@@ -234,7 +234,6 @@ class App extends Component {
 		const isValidTheme = themeOptions.includes(
 			this.props?.router?.location?.query?.theme
 		);
-		this.props.getMe();
 		if (!params.has('theme') && isValidTheme) {
 			params.set('theme', activeTheme);
 			const currentUrl = window.location.href.split('?')[0];
