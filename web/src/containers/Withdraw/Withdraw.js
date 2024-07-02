@@ -112,7 +112,7 @@ const RenderWithdraw = ({
 		: prices[defaultCurrency];
 	const estimatedWithdrawValue = curretPrice * getWithdrawAmount || 0;
 	let fee =
-		selectedMethod === 'Email'
+		selectedMethod === strings['FORM_FIELDS.EMAIL_LABEL']
 			? 0
 			: calculateFee(selectedAsset, getWithdrawNetworkOptions, coins);
 	const feeCoin = calculateFeeCoin(
@@ -211,7 +211,9 @@ const RenderWithdraw = ({
 
 	const isAmount = useMemo(() => {
 		const isCondition =
-			selectedMethod === 'Email' ? !isValidEmail : !isValidAddress;
+			selectedMethod === strings['FORM_FIELDS.EMAIL_LABEL']
+				? !isValidEmail
+				: !isValidAddress;
 		return (
 			!getWithdrawAddress ||
 			!getWithdrawCurrency ||
@@ -245,7 +247,7 @@ const RenderWithdraw = ({
 		try {
 			const res = await getWithdrawalMax(
 				getWithdrawCurrency && getWithdrawCurrency,
-				selectedMethod === 'Email'
+				selectedMethod === strings['FORM_FIELDS.EMAIL_LABEL']
 					? 'email'
 					: getWithdrawNetworkOptions
 					? getWithdrawNetworkOptions
@@ -512,7 +514,7 @@ const RenderWithdraw = ({
 	};
 
 	const withdrawFeeFormat =
-		selectedMethod === 'Email'
+		selectedMethod === strings['FORM_FIELDS.EMAIL_LABEL']
 			? 0
 			: `+ ${fee} ${
 					(getWithdrawCurrency || currency) && feeCoin?.toUpperCase()
@@ -523,18 +525,24 @@ const RenderWithdraw = ({
 	const isCondition =
 		(['xrp', 'xlm'].includes(selectedAsset) ||
 			['xlm', 'ton'].includes(network)) &&
-		selectedMethod !== 'Email';
+		selectedMethod !== strings['FORM_FIELDS.EMAIL_LABEL'];
 	const isEmailAndAddress =
-		coinLength && coinLength?.length > 1 && selectedMethod !== 'Email'
+		coinLength &&
+		coinLength?.length > 1 &&
+		selectedMethod !== strings['FORM_FIELDS.EMAIL_LABEL']
 			? getWithdrawNetworkOptions !== null
 			: currStep.stepThree || (selectedAsset && selectedMethod);
 	const renderNetwork =
-		coinLength && coinLength?.length > 1 && selectedMethod !== 'Email'
+		coinLength &&
+		coinLength?.length > 1 &&
+		selectedMethod !== strings['FORM_FIELDS.EMAIL_LABEL']
 			? getWithdrawNetworkOptions
 			: true;
 	const renderAmountField =
-		(selectedMethod === 'Email' && isValidEmail) ||
-		(selectedMethod === 'Address' && isValidAddress);
+		(selectedMethod === strings['FORM_FIELDS.EMAIL_LABEL'] && isValidEmail) ||
+		((selectedMethod === strings['WITHDRAW_PAGE.WITHDRAWAL_CONFIRM_ADDRESS'] ||
+			(selectedMethod && selectedMethod === 'Address')) &&
+			isValidAddress);
 	const isErrorAmountField = getWithdrawAmount > maxAmount && maxAmount > 0;
 	const networkIcon = selectedNetwork
 		? coins[selectedNetwork]?.icon_id
@@ -551,7 +559,8 @@ const RenderWithdraw = ({
 						<span className="custom-step-selected">1</span>
 						<span
 							className={`custom-line${currStep.stepTwo ? '-selected' : ''} ${
-								selectedMethod === 'Address' &&
+								selectedMethod ===
+									strings['WITHDRAW_PAGE.WITHDRAWAL_CONFIRM_ADDRESS'] &&
 								isMobile &&
 								isMobile &&
 								'custom-line-selected-mobile '
@@ -580,7 +589,11 @@ const RenderWithdraw = ({
 									suffixIcon={<CaretDownOutlined />}
 									placeholder={strings['WITHDRAW_PAGE.METHOD_FIELD_LABEL']}
 									onChange={onHandleChangeMethod}
-									value={selectedMethod}
+									value={
+										selectedMethod === 'Address'
+											? strings['WITHDRAW_PAGE.WITHDRAWAL_CONFIRM_ADDRESS']
+											: selectedMethod
+									}
 								>
 									{methodOptions.map((val, inx) => (
 										<Option key={inx} value={val}>
@@ -590,7 +603,7 @@ const RenderWithdraw = ({
 								</Select>
 								{currStep.stepTwo && <CheckOutlined className="mt-3 ml-3" />}
 							</div>
-							{selectedMethod === 'Email' && (
+							{selectedMethod === strings['FORM_FIELDS.EMAIL_LABEL'] && (
 								<div className="email-text">
 									{renderLabel('WITHDRAWALS_FORM_MAIL_INFO')}
 								</div>
@@ -697,7 +710,7 @@ const RenderWithdraw = ({
 												)
 											)}
 										</Select>
-										{selectedMethod === 'Email' ? (
+										{selectedMethod === strings['FORM_FIELDS.EMAIL_LABEL'] ? (
 											isEmailAndAddress && renderNetwork ? (
 												<CheckOutlined className="mt-3 ml-3" />
 											) : (
@@ -716,7 +729,7 @@ const RenderWithdraw = ({
 					</div>
 				</div>
 			</div>
-			{selectedMethod !== 'Email' && (
+			{selectedMethod !== strings['FORM_FIELDS.EMAIL_LABEL'] && (
 				<div>
 					<div className="d-flex h-25">
 						<div className="custom-field d-flex flex-column align-items-center">
@@ -804,7 +817,7 @@ const RenderWithdraw = ({
 													</Option>
 												))}
 										</Select>
-										{selectedMethod !== 'Email' &&
+										{selectedMethod !== strings['FORM_FIELDS.EMAIL_LABEL'] &&
 										isEmailAndAddress &&
 										renderNetwork ? (
 											<CheckOutlined className="mt-3 ml-3" />
@@ -828,7 +841,7 @@ const RenderWithdraw = ({
 				className={`${
 					['xrp', 'xlm', 'ton', 'pmn'].includes(getWithdrawCurrency) &&
 					selectedMethod &&
-					selectedMethod !== 'Email' &&
+					selectedMethod !== strings['FORM_FIELDS.EMAIL_LABEL'] &&
 					'destination-field'
 				} ${isMobile && isMobile && 'destination-field-mobile'}`}
 			>
@@ -837,14 +850,14 @@ const RenderWithdraw = ({
 						className={`custom-field d-flex flex-column align-items-center ${
 							['xrp', 'xlm', 'ton', 'pmn'].includes(getWithdrawCurrency) &&
 							selectedMethod &&
-							selectedMethod !== 'Email' &&
+							selectedMethod !== strings['FORM_FIELDS.EMAIL_LABEL'] &&
 							'destination-field'
 						} ${isMobile && isMobile && 'destination-field-mobile'}`}
 					>
 						<span
 							className={`custom-step${isEmailAndAddress ? '-selected' : ''}`}
 						>
-							{selectedMethod === 'Email' ? 3 : 4}
+							{selectedMethod === strings['FORM_FIELDS.EMAIL_LABEL'] ? 3 : 4}
 						</span>
 						<span
 							className={`custom-line${isEmailAndAddress ? '-selected' : ''} ${
@@ -865,7 +878,9 @@ const RenderWithdraw = ({
 							}`}
 						>
 							{renderLabel(
-								selectedMethod === 'Address'
+								selectedMethod ===
+									strings['WITHDRAW_PAGE.WITHDRAWAL_CONFIRM_ADDRESS'] ||
+									selectedMethod === 'Address'
 									? 'ACCORDIAN.DESTINATION'
 									: 'FORM_FIELDS.EMAIL_LABEL'
 							)}
@@ -878,7 +893,9 @@ const RenderWithdraw = ({
 										: 'd-flex flex-row select-wrapper'
 								}
 							>
-								{selectedMethod === 'Address' ? (
+								{selectedMethod ===
+									strings['WITHDRAW_PAGE.WITHDRAWAL_CONFIRM_ADDRESS'] ||
+								selectedMethod === 'Address' ? (
 									<Input
 										className="destination-input-field"
 										onChange={(e) => onHandleAddress(e.target.value, 'address')}
@@ -896,7 +913,7 @@ const RenderWithdraw = ({
 										}
 									></Input>
 								)}
-								{selectedMethod === 'Email' ? (
+								{selectedMethod === strings['FORM_FIELDS.EMAIL_LABEL'] ? (
 									isValidEmail ? (
 										<CheckOutlined className="mt-3 ml-3" />
 									) : (
@@ -1017,7 +1034,11 @@ const RenderWithdraw = ({
 						<span
 							className={`custom-step${renderAmountField ? '-selected' : ''}`}
 						>
-							{isCondition ? 6 : selectedMethod === 'Email' ? 4 : 5}
+							{isCondition
+								? 6
+								: selectedMethod === strings['FORM_FIELDS.EMAIL_LABEL']
+								? 4
+								: 5}
 						</span>
 						<span
 							className={renderAmountField ? 'custom-line-selected-end' : ''}

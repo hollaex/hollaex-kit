@@ -217,12 +217,12 @@ $content--margin: 2rem;
 				}
 
 				.custom-line-selected {
-					height: 70px;
+					height: 80px;
 					border: 1px solid $colors-main-black;
 				}
 
 				.custom-line-selected-large {
-					height: 70px;
+					height: 80px;
 					border: 1px solid $colors-main-black;
 				}
 
@@ -314,10 +314,6 @@ $content--margin: 2rem;
 					color: $app-sidebar-background;
 					font-size: 18px;
 				}
-			}
-
-			.ant-input-suffix {
-				width: 5rem;
 			}
 
 			.render-amount-icon-wrapper {

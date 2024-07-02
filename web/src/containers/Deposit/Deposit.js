@@ -636,7 +636,7 @@ const DepositComponent = ({
 							</span>
 						</div>
 						<div
-							className={`withdraw-main-label${
+							className={`optional-tag withdraw-main-label${
 								(coinLength && coinLength.length === 1 && !isDisbaleDeposit) ||
 								(currStep.stepTwo && !coinLength) ||
 								currStep.stepThree
