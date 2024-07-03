@@ -200,18 +200,18 @@ $qr-code--size: 12rem;
 	}
 }
 
+.optional-tag {
+	width: 100%;
+}
+
 .destination-tag-field-wrapper {
-	margin-left: 28%;
+	width: 67% !important;
 
 	.destination-tag-field {
 		.destination-input-field,
 		.destination-input-field:focus-within {
 			border: none !important;
 			border-bottom: 1px solid $colors-main-border !important;
-		}
-
-		.destination-input-field {
-			width: 100% !important;
 		}
 
 		.render-deposit-scan-wrapper {
@@ -292,6 +292,8 @@ $qr-code--size: 12rem;
 				}
 
 				.destination-tag-field-wrapper {
+					width: 100% !important;
+
 					.destination-tag-field {
 						width: unset !important;
 					}

@@ -120,7 +120,7 @@ const startPluginProcess = async () => {
 
 	pluginWorkerThread = childProcess;
 
-	pluginWorkerThread.on("exit", (code) => {
+	pluginWorkerThread.on('exit', (code) => {
 		if (code === 0) {
 			startPluginProcess();
 		}
@@ -217,7 +217,7 @@ checkStatus()
 			message
 		);
 
-		setTimeout(() => { process.exit(1); }, 5000);
+		setTimeout(() => { process.exit(1); }, 60000);
 	});
 
 module.exports = {
