@@ -62,6 +62,16 @@ spec:
         args:
           - node tools/dbs/setSecurity.js;
 
+{{- else if eq .Values.job.mode "hollaex_setup" }}
+
+        args:
+          - sequelize db:migrate;
+            node tools/dbs/runTriggers.js;
+            sequelize db:seed:all;
+            node tools/dbs/setActivationCode.js;
+            node tools/dbs/checkConfig.js;
+            node tools/dbs/setKitVersion.js;
+
 {{- else if eq .Values.job.mode "hollaex_upgrade" }}
 
         args:
