@@ -2373,10 +2373,10 @@ table th {
       height: 60px;
       margin: 0 100%; }
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line-selected {
-      height: 70px;
+      height: 80px;
       border: 1px solid var(--labels_important-active-labels-text-graphics); }
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line-selected-large {
-      height: 70px;
+      height: 80px;
       border: 1px solid var(--labels_important-active-labels-text-graphics); }
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .custom-field .custom-line-extra-large {
       height: 2rem;
@@ -2425,8 +2425,6 @@ table th {
       .withdrawal-container .withdraw-form-wrapper .withdraw-form .ant-select-clear svg {
         color: var(--base_wallet-sidebar-and-popup);
         font-size: 18px; }
-    .withdrawal-container .withdraw-form-wrapper .withdraw-form .ant-input-suffix {
-      width: 5rem; }
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .render-amount-icon-wrapper {
       color: var(--specials_buttons-links-and-highlights);
       cursor: pointer; }
@@ -2823,14 +2821,15 @@ table th {
     width: 95%;
     justify-content: unset !important; }
 
+.optional-tag {
+  width: 100%; }
+
 .destination-tag-field-wrapper {
-  margin-left: 28%; }
+  width: 67% !important; }
   .destination-tag-field-wrapper .destination-tag-field .destination-input-field,
   .destination-tag-field-wrapper .destination-tag-field .destination-input-field:focus-within {
     border: none !important;
     border-bottom: 1px solid var(--calculated_important-border) !important; }
-  .destination-tag-field-wrapper .destination-tag-field .destination-input-field {
-    width: 100% !important; }
   .destination-tag-field-wrapper .destination-tag-field .render-deposit-scan-wrapper {
     text-transform: uppercase;
     color: var(--specials_buttons-links-and-highlights);
@@ -2874,11 +2873,12 @@ table th {
   .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .deposit-wrapper-fields .deposit-address-wrapper .destination-input-field {
     width: 88% !important; }
 
-.layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .destination-tag-field-wrapper .destination-tag-field {
-  width: unset !important; }
-
-.layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .destination-tag-field-wrapper .destination-input-field {
-  width: 80% !important; }
+.layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .destination-tag-field-wrapper {
+  width: 100% !important; }
+  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .destination-tag-field-wrapper .destination-tag-field {
+    width: unset !important; }
+  .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .destination-tag-field-wrapper .destination-input-field {
+    width: 80% !important; }
 
 @media screen and (max-width: 550px) {
   .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .deposit-wrapper-fields .custom-field .custom-line-large {

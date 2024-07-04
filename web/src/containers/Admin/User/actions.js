@@ -170,6 +170,15 @@ export const deactivateOtp = (values) => {
 	return requestAuthenticated('/admin/deactivate-otp', options);
 };
 
+export const disableWithdrawal = (values) => {
+	const options = {
+		method: 'POST',
+		body: JSON.stringify(values),
+	};
+
+	return requestAuthenticated('/admin/user/disable-withdrawal', options);
+};
+
 export const flagUser = (values) => {
 	const options = {
 		method: 'POST',

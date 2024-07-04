@@ -311,9 +311,8 @@ const ProfitLossSection = ({
 									calculateOraclePrice(balance, oraclePrice),
 									baseCoin.increment_unit
 							  );
-					const getBalancePercentage = chartData.filter(
-						(coin) => coin.symbol === symbol
-					);
+					const totalValue = currentBalance?.total;
+					const assetValue = sourceAmountNative;
 					if (sourceAmount > 0) {
 						return (
 							<tr className="table-row" key={index}>
@@ -387,7 +386,10 @@ const ProfitLossSection = ({
 										}}
 										className="td-fit"
 									>
-										<div>{getBalancePercentage[0]?.balancePercentage}</div>
+										<div>{`${calculatePercentages(
+											totalValue,
+											assetValue
+										)}%`}</div>
 										{isMobile &&
 											selectedCoin[0] !== BASE_CURRENCY &&
 											parseFloat(balanceText || 0) > 0 && (
@@ -609,6 +611,11 @@ const ProfitLossSection = ({
 	const onHandleTab = (activeKey) => {
 		setActiveTab(activeKey);
 	};
+
+	function calculatePercentages(totalValue, value) {
+		const percentage = (value / totalValue) * 100;
+		return percentage.toFixed(1);
+	}
 
 	return (
 		<Spin spinning={isLoading}>
