@@ -61,7 +61,9 @@ const {
 	REFERRAL_UNSUPPORTED_EXCHANGE_PLAN,
 	CANNOT_CHANGE_DELETED_EMAIL,
 	SERVICE_NOT_SUPPORTED,
-	BALANCE_HISTORY_NOT_ACTIVE
+	BALANCE_HISTORY_NOT_ACTIVE,
+	ADDRESSBOOK_MISSING_FIELDS,
+	ADDRESSBOOK_ALREADY_EXISTS
 } = require(`${SERVER_PATH}/messages`);
 const { publisher, client } = require('./database/redis');
 const {
@@ -3265,6 +3267,61 @@ const fetchUserProfitLossInfo = async (user_id, opts = { period: 7 }) => {
 	return results;
 };
 
+const fetchUserAddressBook = async (user_id) => {
+	const user = await getUserByKitId(user_id);
+
+	if (!user) {
+		throw new Error(USER_NOT_FOUND);
+	}
+
+	const userAddressBook = await getModel('userAddressBook').findOne({ where: { user_id } });
+
+	if (!userAddressBook) {
+		throw new Error('User address book not found');
+	}
+
+	return userAddressBook;
+};
+
+
+const updateUserAddresses = async (user_id, data) => {
+	const { addresses } = data;
+
+	addresses.forEach((addressObj) => {
+		if (!addressObj.address || !addressObj.network) {
+			throw new Error(ADDRESSBOOK_MISSING_FIELDS);
+		}
+	});
+
+	const user = await getUserByKitId(user_id);
+
+	if (!user) {
+		throw new Error(USER_NOT_FOUND);
+	}
+
+	let userAddressBook = await getModel('userAddressBook').findOne({ where: { user_id } });
+	if (!userAddressBook) {
+		userAddressBook = await getModel('userAddressBook').create({
+			user_id,
+			addresses
+		});
+	} else {
+		// Check if any address in the payload already exists
+		const existingAddresses = userAddressBook.addresses.map(a => a.address);
+		const duplicateAddresses = addresses.filter(a => existingAddresses.includes(a.address));
+		if (duplicateAddresses.length > 0) {
+			throw new Error(ADDRESSBOOK_ALREADY_EXISTS);
+		}
+		
+		// Update the addresses
+		userAddressBook = await userAddressBook.update({ addresses }, {
+			fields: ['addresses']
+		});
+	}
+
+	return userAddressBook;
+};
+
 
 module.exports = {
 	loginUser,
@@ -3339,5 +3396,7 @@ module.exports = {
 	fetchUserReferrals,
 	createUnrealizedReferralFees,
 	getUserReferralCodes,
-	createUserReferralCode
+	createUserReferralCode,
+	updateUserAddresses,
+	fetchUserAddressBook
 };
