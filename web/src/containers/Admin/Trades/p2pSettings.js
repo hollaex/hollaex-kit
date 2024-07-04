@@ -20,11 +20,12 @@ import { updateConstants, requestUsers } from './actions';
 import { requestAdminData } from 'actions/appActions';
 import _debounce from 'lodash/debounce';
 import Coins from '../Coins';
+import _toLower from 'lodash/toLower';
 import './index.css';
 
 const TabPane = Tabs.TabPane;
 
-const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
+const P2PSettings = ({ coins, pairs, p2p_config, features, constants }) => {
 	const [displayP2pModel, setDisplayP2pModel] = useState(false);
 	const [displayFiatAdd, setDisplayFiatAdd] = useState(false);
 	const [displayPaymentAdd, setDisplayPaymentAdd] = useState(false);
@@ -1153,8 +1154,42 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 			searchRef.current.focus();
 		}
 	};
+	const handleUpgrade = (info = {}) => {
+		if (
+			_toLower(info.plan) !== 'fiat' &&
+			_toLower(info.plan) !== 'boost' &&
+			_toLower(info.type) !== 'enterprise'
+		) {
+			return true;
+		} else {
+			return false;
+		}
+	};
 
-	return (
+	const isUpgrade = handleUpgrade(constants.info);
+	return isUpgrade ? (
+		<div className="d-flex">
+			<div className="d-flex align-items-center justify-content-between upgrade-section mt-2 mb-5">
+				<div>
+					<div className="font-weight-bold">Enable P2P Trading</div>
+					<div>
+						Enable peer-to-peer trading between merchants and exchange users
+					</div>
+				</div>
+				<div className="ml-5 button-wrapper">
+					<a
+						href="https://dash.hollaex.com/billing"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						<Button type="primary" className="w-100">
+							Upgrade Now
+						</Button>
+					</a>
+				</div>
+			</div>
+		</div>
+	) : (
 		<div className="admin-earnings-container w-100">
 			<div style={{ display: 'flex', justifyContent: 'space-between' }}>
 				<div>
@@ -2640,6 +2675,7 @@ const mapStateToProps = (state) => ({
 	broker: state.app.broker,
 	features: state.app.constants.features,
 	p2p_config: state.app.constants.p2p_config,
+	constants: state.app.constants,
 });
 
 const mapDispatchToProps = (dispatch) => ({

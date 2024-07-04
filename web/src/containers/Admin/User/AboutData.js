@@ -2,7 +2,16 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import { ReactSVG } from 'react-svg';
 import { SubmissionError } from 'redux-form';
-import { Button, Form, Input, message, Modal, Select } from 'antd';
+import {
+	Button,
+	Form,
+	Input,
+	message,
+	Modal,
+	Select,
+	Radio,
+	Space,
+} from 'antd';
 import {
 	ExclamationCircleFilled,
 	CaretUpFilled,
@@ -23,6 +32,7 @@ import {
 	updateDiscount,
 	deleteNotes,
 	changeUserEmail,
+	disableWithdrawal,
 } from './actions';
 import {
 	validateRequired,
@@ -33,7 +43,8 @@ import { STATIC_ICONS } from 'config/icons';
 import Image from 'components/Image';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { sendEmailCode } from 'actions/userAction';
-
+import moment from 'moment';
+import { CloseOutlined, CloseCircleOutlined } from '@ant-design/icons';
 const VerificationForm = AdminHocForm('VERIFICATION_FORM');
 
 const ModalBtn = ({ onClick, btnName, disabled, className }) => {
@@ -468,6 +479,9 @@ const AboutData = ({
 		userCode: '',
 		userOtp: '',
 	});
+	const [displayWithdrawalBlock, setDisplayWithdrawalBlock] = useState(false);
+	const [selectedBanDate, setSelectedBanDate] = useState(null);
+	const [selectedBanOption, setSelectedBanOption] = useState(null);
 
 	useEffect(() => {
 		if (userData.discount) {
@@ -523,6 +537,16 @@ const AboutData = ({
 
 	const handleNav = (type) => {
 		setModalKey(type);
+	};
+
+	const setWithdrawalBlockOptions = () => {
+		if (!userData.withdrawal_blocked) setSelectedBanOption(null);
+		else if (moment(userData.withdrawal_blocked).diff(moment(), 'years') > 1) {
+			setSelectedBanOption('ban');
+		} else {
+			setSelectedBanOption('48h');
+		}
+		setDisplayWithdrawalBlock(true);
 	};
 
 	const {
@@ -825,6 +849,69 @@ const AboutData = ({
 							</Fragment>
 						)}
 					</div>
+
+					<div className="about-info d-flex align-items-center justify-content-center">
+						{userData.withdrawal_blocked ? (
+							<Fragment>
+								<div
+									className="about-info-content"
+									style={{ textAlign: 'start' }}
+								>
+									{moment(userData.withdrawal_blocked).diff(moment(), 'years') >
+									1 ? (
+										<div>Withdrawal is banned</div>
+									) : (
+										<div>
+											Withdrawal is blocked until{' '}
+											{moment(userData.withdrawal_blocked)
+												.format('DD/MMM/YYYY, hh:mmA ')
+												.toUpperCase()}
+										</div>
+									)}
+									<div
+										onClick={() => {
+											setWithdrawalBlockOptions();
+										}}
+										style={{ textDecoration: 'underline', cursor: 'pointer' }}
+									>
+										EDIT
+									</div>
+								</div>
+								<div className="about-icon-active">
+									<CloseCircleOutlined
+										style={{ fontSize: 30, color: '#FF0000', marginLeft: 10 }}
+									/>
+								</div>
+							</Fragment>
+						) : (
+							<Fragment>
+								<div style={{ textAlign: 'start' }}>
+									<div>Withdrawal Block</div>
+									<div>
+										None{' '}
+										<span
+											onClick={() => {
+												setWithdrawalBlockOptions();
+											}}
+											style={{ textDecoration: 'underline', cursor: 'pointer' }}
+										>
+											EDIT
+										</span>
+									</div>
+								</div>
+								<div>
+									<CloseCircleOutlined
+										style={{
+											fontSize: 30,
+											color: 'grey',
+											opacity: 0.9,
+											marginLeft: 10,
+										}}
+									/>
+								</div>
+							</Fragment>
+						)}
+					</div>
 				</div>
 			</div>
 			<div className="about-wrapper">
@@ -1000,6 +1087,129 @@ const AboutData = ({
 						refreshAllData={refreshAllData}
 					/>
 				</Modal>
+				{displayWithdrawalBlock && (
+					<Modal
+						maskClosable={false}
+						closeIcon={<CloseOutlined style={{ color: 'white' }} />}
+						bodyStyle={{
+							backgroundColor: '#27339D',
+							marginTop: 60,
+						}}
+						width={610}
+						visible={displayWithdrawalBlock}
+						footer={null}
+						onCancel={() => {
+							setDisplayWithdrawalBlock(false);
+						}}
+					>
+						<h1 style={{ fontWeight: '600', color: 'white' }}>
+							Block Withdrawal
+						</h1>
+
+						<h5
+							style={{
+								fontWeight: '600',
+								color: 'white',
+								marginBottom: 40,
+								marginTop: 10,
+							}}
+						>
+							Restrict user's withdrawal ability
+						</h5>
+
+						<Radio.Group
+							onChange={(e) => {
+								if (e.target.value === 'ban') {
+									setSelectedBanDate(moment().add(100, 'years').toISOString());
+								} else if (e.target.value === '48h') {
+									setSelectedBanDate(moment().add(48, 'hours').toISOString());
+								} else {
+									setSelectedBanDate(e.target.value);
+								}
+								setSelectedBanOption(e.target.value);
+							}}
+							value={selectedBanOption}
+						>
+							<Space direction="vertical">
+								<Radio
+									style={{
+										color: 'white',
+										fontWeight: 'bold',
+										fontSize: 16,
+										marginBottom: 3,
+									}}
+									value={null}
+								>
+									None (it follows the users tier withdrawal limit)
+								</Radio>
+								<Radio
+									style={{ color: 'white', fontWeight: 'bold', fontSize: 16 }}
+									value={'ban'}
+								>
+									Ban (user will not be able to make any withdrawal)
+								</Radio>
+								<Radio
+									style={{ color: 'white', fontWeight: 'bold', fontSize: 16 }}
+									value={'48h'}
+								>
+									48h (user will not be able to make a withdrawal within the
+									next 48 hours)
+								</Radio>
+							</Space>
+						</Radio.Group>
+
+						<div
+							style={{
+								display: 'flex',
+								flexDirection: 'row',
+								gap: 15,
+								justifyContent: 'space-between',
+								marginTop: 30,
+							}}
+						>
+							<Button
+								onClick={() => {
+									setDisplayWithdrawalBlock(false);
+								}}
+								style={{
+									backgroundColor: '#288500',
+									color: 'white',
+									flex: 1,
+									height: 35,
+								}}
+								type="default"
+							>
+								Back
+							</Button>
+							<Button
+								onClick={async () => {
+									try {
+										await disableWithdrawal({
+											user_id: userData.id,
+											expiry_date: selectedBanDate,
+										});
+
+										refreshData({ withdrawal_blocked: selectedBanDate });
+										setDisplayWithdrawalBlock(false);
+										message.success('Changes saved.');
+									} catch (err) {
+										const errMsg = err.data ? err.data.message : err.message;
+										message.error(errMsg);
+									}
+								}}
+								style={{
+									backgroundColor: '#288500',
+									color: 'white',
+									flex: 1,
+									height: 35,
+								}}
+								type="default"
+							>
+								Proceed
+							</Button>
+						</div>
+					</Modal>
+				)}
 			</div>
 		</div>
 	);
