@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
-
+import { Link } from 'react-router';
+import { isMobile } from 'react-device-detect';
 import {
 	Button as AntBtn,
 	Tabs,
-	Modal,
 	Input,
 	Spin,
 	Table,
 	message,
 	Progress,
 } from 'antd';
+import { CheckCircleFilled, WarningFilled } from '@ant-design/icons';
 
-import { CloseOutlined } from '@ant-design/icons';
 import {
 	requestUserStakePools,
 	createStaker,
@@ -19,16 +19,15 @@ import {
 	deleteStaker,
 	getSlashEstimate,
 } from 'containers/Admin/Stakes/actions';
-import moment from 'moment';
-import BigNumber from 'bignumber.js';
-import { Link } from 'react-router';
-import classnames from 'classnames';
-import { isMobile } from 'react-device-detect';
-import STRINGS from 'config/localizedStrings';
 import { formatToCurrency } from 'utils/currency';
 import '../CeFiStake.scss';
-import { NotLoggedIn } from 'components';
+import { Dialog, Help, Image, NotLoggedIn } from 'components';
 import { EditWrapper } from 'components';
+import moment from 'moment';
+import BigNumber from 'bignumber.js';
+import STRINGS from 'config/localizedStrings';
+import classnames from 'classnames';
+import icons from 'config/icons/dark';
 
 const TabPane = Tabs.TabPane;
 
@@ -101,15 +100,8 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 				return (
 					<div className="d-flex">
 						{data?.stake?.duration ? (
-							<span
-								style={{
-									display: 'flex',
-									flexDirection: 'row',
-									width: 120,
-									gap: 10,
-								}}
-							>
-								<div style={{ flex: 1 }}>
+							<span className="duration-field">
+								<div className="w-100">
 									<Progress
 										percent={
 											((data?.stake?.duration -
@@ -123,7 +115,10 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 										showInfo={false}
 									/>
 								</div>
-								<div style={{ flex: 1 }}>{data?.stake?.duration} days</div>
+								<div className="w-100">
+									{data?.stake?.duration}{' '}
+									{STRINGS['CEFI_STAKE.DAYS'].toLowerCase()}
+								</div>
 							</span>
 						) : (
 							'∞ Perpetual'
@@ -158,15 +153,15 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 			key: 'earnt',
 			render: (_user_id, data) => {
 				// const incrementUnit =
-				// 	coins[data.reward_currency || data.currency].increment_unit;
+				//  coins[data.reward_currency || data.currency].increment_unit;
 
 				const min = coins[data.reward_currency || data.currency].min;
 				// const decimalPoint = new BigNumber(incrementUnit).dp();
 				// const sourceAmount =
-				// 	data?.reward &&
-				// 	new BigNumber(data?.reward - data?.slashed)
-				// 		.decimalPlaces(decimalPoint)
-				// 		.toNumber();
+				//  data?.reward &&
+				//  new BigNumber(data?.reward - data?.slashed)
+				//      .decimalPlaces(decimalPoint)
+				//      .toNumber();
 
 				const formattedAmount =
 					data?.reward && formatToCurrency(data?.reward - data?.slashed, min);
@@ -185,13 +180,13 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 			key: 'status',
 			render: (_user_id, data) => {
 				return (
-					<div className="d-flex" style={{ gap: 20 }}>
+					<div className="stake-status-field">
 						{data.status === 'unstaking' ? (
-							<span style={{ color: '#FF9900', fontWeight: 'bold' }}>
-								UNSTAKING...
+							<span className="stake-status-content font-weight-bold">
+								{STRINGS['CEFI_STAKE.UNSTAKING']}
 							</span>
 						) : data.status === 'closed' ? (
-							'UNSTAKED'
+							<span>{STRINGS['CEFI_STAKE.UNSTAKED']}</span>
 						) : (
 							<AntBtn
 								disabled={
@@ -213,15 +208,17 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 										message.error(error.response.data.message);
 									}
 								}}
-								style={{
-									backgroundColor: '#5D63FF',
-								}}
-								className="ant-btn green-btn ant-tooltip-open ant-btn-primary stake_theme"
+								className="ant-btn green-btn ant-tooltip-open ant-btn-primary stake_theme stake-table-button"
 							>
 								{data.stake.early_unstake &&
-								calculateRemainingDays(data?.stake?.duration, data.created_at)
-									? 'UNSTAKE EARLY'
-									: 'UNSTAKE'}
+								calculateRemainingDays(
+									data?.stake?.duration,
+									data.created_at
+								) ? (
+									<span>{STRINGS['UNSTAKE.EARLY_TITLE'].toUpperCase()}</span>
+								) : (
+									<span>{STRINGS['UNSTAKE.TITLE'].toUpperCase()}</span>
+								)}
 							</AntBtn>
 						)}
 					</div>
@@ -275,13 +272,13 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 	};
 
 	// const pageChange = (count, pageSize) => {
-	// 	const { page, limit, isRemaining } = queryFilters;
-	// 	const pageCount = count % 5 === 0 ? 5 : count % 5;
-	// 	const apiPageTemp = Math.floor(count / 5);
-	// 	if (limit === pageSize * pageCount && apiPageTemp >= page && isRemaining) {
-	// 		requestExchangeStakers(page + 1, limit);
-	// 	}
-	// 	setQueryFilters({ ...queryFilters, currentTablePage: count });
+	//  const { page, limit, isRemaining } = queryFilters;
+	//  const pageCount = count % 5 === 0 ? 5 : count % 5;
+	//  const apiPageTemp = Math.floor(count / 5);
+	//  if (limit === pageSize * pageCount && apiPageTemp >= page && isRemaining) {
+	//      requestExchangeStakers(page + 1, limit);
+	//  }
+	//  setQueryFilters({ ...queryFilters, currentTablePage: count });
 	// };
 
 	const formatDate = (date) => {
@@ -307,90 +304,66 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 	const readBeforeActionModel = () => {
 		return (
 			<>
-				<Modal
-					maskClosable={false}
-					closeIcon={<CloseOutlined className="stake_theme" />}
-					className="stake_table_theme stake_theme"
-					bodyStyle={{}}
-					visible={readBeforeAction}
-					width={800}
-					footer={null}
-					onCancel={() => {
+				<Dialog
+					className="stake_table_theme stake_theme terms_condition_dialog_wrapper"
+					isOpen={readBeforeAction}
+					onCloseDialog={() => {
 						setReadBeforeAction(false);
 					}}
 				>
-					<div style={{ display: 'flex', gap: 30 }}>
-						<div
-							style={{
-								flex: 1,
-								display: 'flex',
-								justifyContent: 'center',
-								alignItems: 'center',
-								backgroundImage: 'url(/assets/images/staking_3.png)',
-								backgroundSize: 'cover',
-							}}
-						>
-							<h1 className="stake_theme">Staking 101</h1>
+					<div className="action_model_popup_wrapper">
+						<div className="action_model_popup_content">
+							<h1 className="stake_theme">
+								<EditWrapper stringId="CEFI_STAKE.STAKING">
+									{STRINGS['CEFI_STAKE.STAKING']}
+								</EditWrapper>
+							</h1>
 						</div>
-						<div style={{ flex: 1 }}>
+						<div className={`w-100 ${isMobile && 'action_model_content'}`}>
 							<h4
-								className="stake_theme"
-								style={{
-									fontWeight: 'bold',
-								}}
+								className={`stake_theme ${isMobile && 'action_model_header'}`}
 							>
 								{STRINGS['CEFI_STAKE.READ_BEFORE_AGREE_AND_EARN']}
 							</h4>
-							<div className="stake_theme">
-								{STRINGS['CEFI_STAKE.AGREEMENT_INTRODUCTION_1']}{' '}
-								<span style={{ fontWeight: 'bold' }}>
-									{STRINGS['CEFI_STAKE.AGREEMENT_INTRODUCTION_2']}
-								</span>{' '}
-								{STRINGS['CEFI_STAKE.AGREEMENT_INTRODUCTION_3']}
+							<div
+								className={`${isMobile && 'action_model_agreement_wrapper'}`}
+							>
+								<div
+									className={`stake_theme stake_detail_text ${
+										isMobile && 'action_model_agreement_content'
+									}`}
+								>
+									{STRINGS['CEFI_STAKE.AGREEMENT_INTRODUCTION_1']}{' '}
+									<span className="stake_theme">
+										{STRINGS['CEFI_STAKE.AGREEMENT_INTRODUCTION_2']}
+									</span>{' '}
+									{STRINGS['CEFI_STAKE.AGREEMENT_INTRODUCTION_3']}
+								</div>
 							</div>
 						</div>
 					</div>
-
-					<div
-						style={{
-							display: 'flex',
-							flexDirection: 'row',
-							gap: 15,
-							justifyContent: 'space-between',
-							marginTop: 30,
-						}}
-					>
+					<div className="stake_popup_button_wrapper">
 						<AntBtn
+							className="stake_popup_button"
 							onClick={() => {
 								setReadBeforeAction(false);
-							}}
-							style={{
-								backgroundColor: '#5D63FF',
-								color: 'white',
-								flex: 1,
-								height: 35,
 							}}
 							type="default"
 						>
 							{STRINGS['CEFI_STAKE.BACK_BUTTON']}
 						</AntBtn>
 						<AntBtn
+							className="stake_popup_button"
 							onClick={async () => {
 								setReadBeforeAction(false);
 								setStakeAmount(true);
-							}}
-							style={{
-								backgroundColor: '#5D63FF',
-								color: 'white',
-								flex: 1,
-								height: 35,
 							}}
 							type="default"
 						>
 							{STRINGS['CEFI_STAKE.I_UNDERSTAND_BUTTON']}
 						</AntBtn>
 					</div>
-				</Modal>
+				</Dialog>
 			</>
 		);
 	};
@@ -398,108 +371,89 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 	const stakeAmountModel = () => {
 		return (
 			<>
-				<Modal
-					maskClosable={false}
-					closeIcon={<CloseOutlined className="stake_theme" />}
-					className="stake_table_theme stake_theme"
-					bodyStyle={{}}
-					visible={stakeAmount}
-					width={400}
+				<Dialog
+					className="stake_table_theme stake_theme stake_amount_dialog"
+					isOpen={stakeAmount}
 					footer={null}
-					onCancel={() => {
+					onCloseDialog={() => {
 						setStakeAmount(false);
 					}}
 				>
-					<div
-						style={{
-							display: 'flex',
-							justifyContent: 'center',
-							flexDirection: 'column',
-							alignItems: 'center',
-						}}
-					>
-						<div
-							className="stake_theme"
-							style={{
-								display: 'flex',
-								justifyContent: 'center',
-								flexDirection: 'column',
-								alignItems: 'center',
-								height: 200,
-								backgroundImage: 'url(/assets/images/staking_2.png)',
-								backgroundSize: 'cover',
-								width: '100%',
-								marginBottom: 10,
-							}}
-						>
+					<div className="stake_amount_popup_wrapper">
+						<div className="stake_theme stake_amount_theme">
 							<h3 className="stake_theme">{selectedPool.name}</h3>
 							<div>-</div>
-							<div>APY: {selectedPool.apy}%</div>
-						</div>
-						<div
-							className="stake_theme"
-							style={{
-								width: '100%',
-							}}
-						>
 							<div>
-								<span style={{ fontWeight: 'bold' }}>
-									{selectedPool.currency.toUpperCase()} available:
-								</span>{' '}
-								{balance[`${selectedPool.currency}_available`]}
+								<EditWrapper stringId="CEFI_STAKE.APY_LABEL">
+									<span>{STRINGS['CEFI_STAKE.APY_LABEL']}: </span>
+									{selectedPool.apy}%
+								</EditWrapper>
 							</div>
+						</div>
+						<div className="stake_theme stake_amount_popup_content">
 							<div>
-								<span style={{ fontWeight: 'bold' }}>
-									{STRINGS['CEFI_STAKE.AMOUNT_TO_STAKE_LABEL']}:
+								<span>
+									<EditWrapper stringId="P2P.AVAILABLE">
+										{selectedPool.currency.toUpperCase()}
+										<span> {STRINGS['P2P.AVAILABLE']}:</span>
+									</EditWrapper>
+								</span>{' '}
+								<span className="blue-link underline-text">
+									{balance[`${selectedPool.currency}_available`]}
 								</span>
 							</div>
-							<div style={{ marginTop: 5 }}>
+							<div className={`${isMobile && 'mt-4 mb-3'}`}>
+								<span>{STRINGS['CEFI_STAKE.AMOUNT_TO_STAKE_LABEL']}:</span>
+							</div>
+							<div className={`mt-2 ${!isMobile && 'mb-3'}`}>
 								<Input
-									className="stake_theme"
-									style={{
-										backgroundColor: 'rgba(0,0,0,0.1)',
-									}}
-									placeholder="Input amount"
+									className="stake_theme stake_amount_field"
+									placeholder={STRINGS['MOVE_AMOUNT.TITLE']}
 									onChange={(e) => {
 										setStakerAmount(e.target.value);
 									}}
+									prefix={stakePools
+										.filter(
+											(pool) => pool.status === 'active' && pool.onboarding
+										)
+										.map((pool) => {
+											return (
+												<div className="stakepool_card_icon">
+													<img
+														src={coins?.[pool?.currency]?.logo}
+														width={20}
+														height={20}
+														alt=""
+													/>
+												</div>
+											);
+										})}
+									suffix={selectedPool.currency.toUpperCase()}
 									value={stakerAmount}
 								/>
 							</div>
 							{/* <div style={{ color: '#FF0000', marginTop: 10 }}>
-								Staking pool's maximum amount allowed is 1,000 ABC
-							</div> */}
+                                Staking pool's maximum amount allowed is 1,000 ABC
+                            </div> */}
 						</div>
 					</div>
-					<div
-						style={{
-							display: 'flex',
-							flexDirection: 'row',
-							gap: 15,
-							justifyContent: 'space-between',
-							marginTop: 30,
-						}}
-					>
+					<div className="stake_popup_button_wrapper">
 						<AntBtn
+							className="stake_popup_button"
 							onClick={() => {
 								setReadBeforeAction(true);
 								setStakeAmount(false);
-							}}
-							style={{
-								backgroundColor: '#5D63FF',
-								color: 'white',
-								flex: 1,
-								height: 35,
 							}}
 							type="default"
 						>
 							{STRINGS['CEFI_STAKE.BACK_BUTTON']}
 						</AntBtn>
 						<AntBtn
+							className="stake_popup_button"
 							onClick={async () => {
 								if (stakerAmount < selectedPool.min_amount) {
 									message.error(
-										`Staking pool's minimum amount allowed is ${
+										`${STRINGS['CEFI_STAKE.MINIMUM_AMOUNT_ALLOWED']} ${
 											selectedPool.min_amount
 										} ${selectedPool.currency.toUpperCase()}`
 									);
@@ -508,7 +462,7 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 
 								if (stakerAmount > selectedPool.max_amount) {
 									message.error(
-										`Staking pool's maximum amount allowed is ${
+										`${STRINGS['CEFI_STAKE.MAXIMUM_AMOUNT_ALLOWED']} ${
 											selectedPool.max_amount
 										} ${selectedPool.currency.toUpperCase()} `
 									);
@@ -518,19 +472,13 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 								setStakeAmount(false);
 								setDuration(true);
 							}}
-							style={{
-								backgroundColor: '#5D63FF',
-								color: 'white',
-								flex: 1,
-								height: 35,
-							}}
 							type="default"
 							disabled={!stakerAmount}
 						>
 							{STRINGS['CEFI_STAKE.NEXT_BUTTON']}
 						</AntBtn>
 					</div>
-				</Modal>
+				</Dialog>
 			</>
 		);
 	};
@@ -538,131 +486,126 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 	const durationModel = () => {
 		return (
 			<>
-				<Modal
-					maskClosable={false}
-					closeIcon={<CloseOutlined className="stake_theme" />}
-					className="stake_table_theme stake_theme"
-					bodyStyle={{}}
-					visible={duration}
-					width={420}
-					footer={null}
-					onCancel={() => {
+				<Dialog
+					className="stake_table_theme stake_theme duartion_model_dialog_wrapper"
+					isOpen={duration}
+					onCloseDialog={() => {
 						setDuration(false);
 					}}
 				>
-					<div>
-						<h1 className="stake_theme">
-							{STRINGS['CEFI_STAKE.DURATION_LABEL']}
-						</h1>
-						<div className="stake_theme">
-							{STRINGS['CEFI_STAKE.LOCKUP_DURATION_LABEL']}:{' '}
-							{selectedPool.duration
-								? `${selectedPool.duration} days`
-								: 'Perpetual'}
+					<div className="stake_duration_model_wrapper">
+						<div className="d-flex">
+							<Image
+								iconId="STAKING__LOCK"
+								icon={icons['STAKING__LOCK']}
+								wrapperClassName="cefi-logo"
+							/>
+							<h1 className="stake_theme ml-2 mt-3">
+								{STRINGS['CEFI_STAKE.DURATION_LABEL']}
+							</h1>
 						</div>
-						<div className="stake_theme">-</div>
-
+						<div className="stake_theme stake_text">
+							{STRINGS['CEFI_STAKE.LOCKUP_DURATION_LABEL']}:{' '}
+							<span className="stake_detail_text">
+								{selectedPool.duration
+									? `${selectedPool.duration} ${STRINGS[
+											'CEFI_STAKE.DAYS'
+									  ].toLowerCase()}`
+									: 'Perpetual'}
+							</span>
+						</div>
+						<div className="stake_theme stake_text">-</div>
 						{selectedPool.slashing && (
 							<>
-								<h4 className="stake_theme">Slashing</h4>
-								<div className="stake_theme">
+								<h4 className="stake_theme stake_text_header">
+									<EditWrapper stringId="CEFI_STAKE.SLASHING">
+										{STRINGS['CEFI_STAKE.SLASHING']}
+										<Help
+											tip={STRINGS.formatString(
+												STRINGS['CEFI_STAKE.TOOLTIP'],
+												<div>
+													<span className="blue-link">
+														{STRINGS['TRADE_POSTS.LEARN_MORE']}
+													</span>
+												</div>
+											)}
+										>
+											<div className="text-underline pointer blue-link"></div>
+										</Help>
+									</EditWrapper>
+								</h4>
+								<div className="stake_theme stake_text">
 									{
 										STRINGS[
 											'CEFI_STAKE.PENALTY_UPON_INITIAL_STAKE_PRINCIPLE_LABEL'
 										]
 									}
-									: -{selectedPool.slashing_principle_percentage}%{' '}
+									:
+									<span className="stake_detail_text">
+										{' '}
+										-{selectedPool.slashing_principle_percentage}%{' '}
+									</span>
 								</div>
-								<div className="stake_theme">
+								<div className="stake_theme stake_text">
 									{STRINGS['CEFI_STAKE.FORFEITURE_OF_EARNINGS_LABEL']}: -
-									{selectedPool.slashing_earning_percentage}%
+									<span className="stake_detail_text">
+										{selectedPool.slashing_earning_percentage}%
+									</span>
 								</div>
 							</>
 						)}
-
 						{selectedPool.slashing && (
-							<div
-								style={{
-									padding: 20,
-									backgroundColor: '#FF0000',
-									marginTop: 20,
-									fontSize: 12,
-								}}
-							>
-								<div>{STRINGS['CEFI_STAKE.SLASHING_RULES_ENFORCED_LABEL']}</div>
-								<div>{STRINGS['CEFI_STAKE.SLASHING_RULES_NOTICE']}</div>
+							<div className="danger_message_wrapper">
+								<div className="danger-icon">
+									<WarningFilled />
+								</div>
+								<div>
+									<div>
+										{STRINGS['CEFI_STAKE.SLASHING_RULES_ENFORCED_LABEL']}
+									</div>
+									<div>{STRINGS['CEFI_STAKE.SLASHING_RULES_NOTICE']}</div>
+								</div>
 							</div>
 						)}
-
 						{!selectedPool.duration && (
-							<div
-								style={{
-									padding: 20,
-									backgroundColor: '#388200',
-									marginTop: 20,
-									fontSize: 12,
-								}}
-							>
+							<div className="success_message_wrapper">
+								<div className="checked-icon">
+									<CheckCircleFilled />
+								</div>
 								<div>{STRINGS['CEFI_STAKE.UNSTAKE_ANYTIME_LABEL']}</div>
 							</div>
 						)}
-
 						{selectedPool.duration && !selectedPool.early_unstake ? (
-							<div
-								style={{
-									padding: 20,
-									backgroundColor: '#FF6F00',
-									marginTop: 20,
-									fontSize: 12,
-								}}
-							>
+							<div className="warning_message_wrapper">
 								<div>{STRINGS['CEFI_STAKE.FULL_DURATION_LOCK_LABEL']}</div>
 							</div>
 						) : (
 							<></>
 						)}
 					</div>
-					<div
-						style={{
-							display: 'flex',
-							flexDirection: 'row',
-							gap: 15,
-							justifyContent: 'space-between',
-							marginTop: 30,
-						}}
-					>
+					<div className="stake_popup_button_wrapper">
 						<AntBtn
+							className="stake_popup_button"
 							onClick={() => {
 								setStakeAmount(true);
 								setDuration(false);
-							}}
-							style={{
-								backgroundColor: '#5D63FF',
-								color: 'white',
-								flex: 1,
-								height: 35,
 							}}
 							type="default"
 						>
 							{STRINGS['CEFI_STAKE.BACK_BUTTON']}
 						</AntBtn>
 						<AntBtn
+							className="stake_popup_button"
 							onClick={async () => {
 								setDuration(false);
 								setStakeDetails(true);
-							}}
-							style={{
-								backgroundColor: '#5D63FF',
-								color: 'white',
-								flex: 1,
-								height: 35,
 							}}
 							type="default"
 						>
 							{STRINGS['CEFI_STAKE.PROCEED_BUTTON']}
 						</AntBtn>
 					</div>
-				</Modal>
+				</Dialog>
 			</>
 		);
 	};
@@ -670,99 +613,94 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 	const stakeDetailsModel = () => {
 		return (
 			<>
-				<Modal
-					maskClosable={false}
-					closeIcon={<CloseOutlined className="stake_theme" />}
-					className="stake_table_theme stake_theme"
-					bodyStyle={{}}
-					visible={stakeDetails}
-					width={450}
-					footer={null}
-					onCancel={() => {
+				<Dialog
+					className="stake_table_theme stake_theme stake_details_dialog_wrapper"
+					isOpen={stakeDetails}
+					onCloseDialog={() => {
 						setStakeDetails(false);
 					}}
 				>
-					<div>
+					<div className="stake_detail_popup_wrapper">
 						<h1 className="stake_theme">
 							{STRINGS['CEFI_STAKE.CHECK_STAKE_DETAILS_BUTTON']}
 						</h1>
 						<div className="stake_theme">
-							{STRINGS['CEFI_STAKE.STAKING_POOL_LABEL']}: {selectedPool.name}
+							{STRINGS['CEFI_STAKE.STAKING_POOL_LABEL']}:{' '}
+							<span className="stake_detail_text">{selectedPool.name}</span>
 						</div>
 						<div className="stake_theme">
-							{STRINGS['CEFI_STAKE.ANNUAL_PERCENTAGE_YIELD_LABEL']}:{' '}
-							{selectedPool.apy}% APY
+							{STRINGS['CEFI_STAKE.ANNUAL_PERCENTAGE_YIELD_LABEL']}:
+							<span className="stake_detail_text">
+								<EditWrapper stringId="CEFI_STAKE.APY_LABEL">
+									{' '}
+									{selectedPool.apy}%
+									<span> {STRINGS['CEFI_STAKE.APY_LABEL']}</span>
+								</EditWrapper>
+							</span>
 						</div>
 						<div className="stake_theme">
-							{STRINGS['CEFI_STAKE.DURATION_LABEL']}: {selectedPool.duration}{' '}
-							days{' '}
+							{STRINGS['CEFI_STAKE.DURATION_LABEL']}:{' '}
+							<span className="stake_detail_text">
+								{selectedPool.duration}{' '}
+								{STRINGS['CEFI_STAKE.DAYS'].toLowerCase()}{' '}
+							</span>
 						</div>
 						<div className="stake_theme">
 							{STRINGS['CEFI_STAKE.PENALTY_UPON_INITIAL_STAKE_PRINCIPLE_LABEL']}
-							: -{selectedPool.slashing_principle_percentage}%
+							:{' '}
+							<span className="stake_detail_text">
+								-{selectedPool.slashing_principle_percentage}%
+							</span>
 						</div>
 						<div className="stake_theme">
-							{STRINGS['CEFI_STAKE.FORFEITURE_OF_EARNINGS_DETAILS_LABEL']}: -
-							{selectedPool.slashing_earning_percentage}%
+							{STRINGS['CEFI_STAKE.FORFEITURE_OF_EARNINGS_DETAILS_LABEL']}:{' '}
+							<span className="stake_detail_text">
+								-{selectedPool.slashing_earning_percentage}%
+							</span>
 						</div>
 
-						<div className="stake_theme" style={{ marginTop: 20 }}>
-							{STRINGS['CEFI_STAKE.STAKE_AMOUNT_LABEL']}: {stakerAmount}{' '}
-							{selectedPool.currency.toUpperCase()}
+						<div className={`stake_theme ${!isMobile && 'mt-4'}`}>
+							{STRINGS['CEFI_STAKE.STAKE_AMOUNT_LABEL']}:{' '}
+							<span className="stake_detail_text">
+								{stakerAmount} {selectedPool.currency.toUpperCase()}
+							</span>
 						</div>
-						<hr />
-
-						<div
-							className="stake_theme"
-							style={{ marginTop: 20, marginBottom: 10 }}
-						>
+						<div className="mt-3 mb-3 stake_detail_line"></div>
+						<div className="stake_theme mt-4 mb-3 stake_detail_text">
 							{selectedPool.disclaimer}
 						</div>
-						<div className="stake_theme">
-							{STRINGS['CEFI_STAKE.SETTLEMENT_NOTICE']}
+						<div className="stake_theme stake_detail_text">
+							{STRINGS.formatString(
+								STRINGS['CEFI_STAKE.SETTLEMENT_NOTICE'],
+								<span className="stake_theme">
+									{STRINGS['CEFI_STAKE.SETTLEMENT_NOTICE_TITLE']}
+								</span>
+							)}
 						</div>
 					</div>
-					<div
-						style={{
-							display: 'flex',
-							flexDirection: 'row',
-							gap: 15,
-							justifyContent: 'space-between',
-							marginTop: 30,
-						}}
-					>
+					<div className={`stake_popup_button_wrapper  ${!isMobile && 'mt-5'}`}>
 						<AntBtn
+							className="stake_popup_button"
 							onClick={() => {
 								setDuration(true);
 								setStakeDetails(false);
-							}}
-							style={{
-								backgroundColor: '#5D63FF',
-								color: 'white',
-								flex: 1,
-								height: 35,
 							}}
 							type="default"
 						>
 							{STRINGS['CEFI_STAKE.BACK_BUTTON']}
 						</AntBtn>
 						<AntBtn
+							className="stake_popup_button"
 							onClick={async () => {
 								setStakeDetails(false);
 								setConfirmStake(true);
-							}}
-							style={{
-								backgroundColor: '#5D63FF',
-								color: 'white',
-								flex: 1,
-								height: 35,
 							}}
 							type="default"
 						>
 							{STRINGS['CEFI_STAKE.PROCEED_BUTTON']}
 						</AntBtn>
 					</div>
-				</Modal>
+				</Dialog>
 			</>
 		);
 	};
@@ -770,69 +708,61 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 	const confirmStakeModel = () => {
 		return (
 			<>
-				<Modal
-					maskClosable={false}
-					closeIcon={<CloseOutlined className="stake_theme" />}
-					className="stake_table_theme stake_theme"
-					bodyStyle={{}}
-					visible={confirmStake}
-					width={400}
-					footer={null}
-					onCancel={() => {
+				<Dialog
+					className="stake_table_theme stake_theme confirm_stake_dialog_wrapper"
+					isOpen={confirmStake}
+					onCloseDialog={() => {
 						setConfirmStake(false);
 					}}
 				>
-					<div
-						className="stake_theme"
-						style={{
-							display: 'flex',
-							justifyContent: 'center',
-							flexDirection: 'column',
-							alignItems: 'center',
-						}}
-					>
-						<div
-							className="stake_theme"
-							style={{
-								display: 'flex',
-								justifyContent: 'center',
-								flexDirection: 'column',
-								alignItems: 'center',
-								height: 200,
-								backgroundImage: 'url(/assets/images/staking_1.png)',
-								backgroundSize: 'cover',
-								width: '100%',
-								marginBottom: 20,
-							}}
-						>
+					<div className="stake_theme confirm_stake_popup_wrapper">
+						<div className="stake_theme confirm_stake_theme mb-2">
 							<h3 className="stake_theme">
-								{STRINGS['CEFI_STAKE.CONFIRM_BUTTON']}{' '}
-								{selectedPool.currency.toUpperCase()} Stake
+								<EditWrapper stringId="STAKE_LIST.STAKE">
+									{STRINGS['CEFI_STAKE.CONFIRM_BUTTON']}{' '}
+									{selectedPool.currency.toUpperCase()}
+									<span className="text-capitalize">
+										{' '}
+										{STRINGS['STAKE_LIST.STAKE'].toLowerCase()}
+									</span>
+								</EditWrapper>
 							</h3>
 						</div>
-						<div style={{ width: '100%' }}>
-							<div>
-								<span
-									className="stake_theme"
-									style={{ fontWeight: 'bold', marginTop: 20 }}
-								>
-									Here we go!{' '}
-								</span>
+						{stakePools
+							.filter((pool) => pool.status === 'active' && pool.onboarding)
+							.map((pool) => {
+								return (
+									<div className="stakepool_card_icon">
+										<img
+											src={coins?.[pool?.currency]?.logo}
+											width={30}
+											height={30}
+											alt=""
+										/>
+									</div>
+								);
+							})}
+						<div className="confirm_stake_content_wrapper">
+							<div className="confirm_stake_content">
+								<div>
+									<EditWrapper stringId="CEFI_STAKE.CONFIRM_STAKE_DECS">
+										<span className="stake_theme mt-5">
+											{STRINGS['CEFI_STAKE.CONFIRM_STAKE_DECS']}{' '}
+										</span>
+									</EditWrapper>
+								</div>
+								<div className="stake_theme rules_notice_text stake_detail_text">
+									{STRINGS['CEFI_STAKE.STAKE_RULES_NOTICE']}
+								</div>
 							</div>
-							<div className="stake_theme">
-								{STRINGS['CEFI_STAKE.STAKE_RULES_NOTICE']}
-							</div>
-							<div className="stake_theme" style={{ marginTop: 30 }}>
+							<div className="stake_theme mt-5  stake_detail_text">
 								{' '}
-								Do you understand?
+								{STRINGS['CEFI_STAKE.DO_YOU_UNDERSTAND']}
 							</div>
-							<div className="stake_theme" style={{ marginTop: 5 }}>
+							<div className="stake_theme mt-2">
 								<Input
-									className="stake_theme"
-									style={{
-										backgroundColor: 'rgba(0,0,0,0.1)',
-									}}
-									placeholder="Type 'I UNDERSTAND'"
+									className="stake_theme confirm_stake_field"
+									placeholder={`${STRINGS['TYPE']} '${STRINGS['CEFI_STAKE.I_UNDERSTAND_BUTTON']}'`}
 									onChange={(e) => setConfirmText(e.target.value)}
 									value={confirmText}
 								/>
@@ -840,38 +770,32 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 						</div>
 					</div>
 
-					<div
-						style={{
-							display: 'flex',
-							flexDirection: 'row',
-							gap: 15,
-							justifyContent: 'space-between',
-							marginTop: 30,
-						}}
-					>
+					<div className="stake_popup_button_wrapper">
 						<AntBtn
+							className="stake_popup_button"
 							onClick={() => {
 								setStakeDetails(true);
 								setConfirmStake(false);
-							}}
-							style={{
-								backgroundColor: '#5D63FF',
-								color: 'white',
-								flex: 1,
-								height: 35,
 							}}
 							type="default"
 						>
 							{STRINGS['CEFI_STAKE.BACK_BUTTON']}
 						</AntBtn>
 						<AntBtn
+							className={`stake_popup_button ${
+								confirmText !== 'I UNDERSTAND'
+									? 'stake_half_opacity'
+									: 'stake_opacity'
+							}`}
 							onClick={async () => {
 								try {
 									await createStaker({
 										stake_id: selectedPool.id,
 										amount: Number(stakerAmount),
 									});
-									message.success(`Successfuly staked in ${selectedPool.name}`);
+									message.success(
+										`${STRINGS['CEFI_STAKE.SUCCESSFULLY_STAKED_IN']} ${selectedPool.name}`
+									);
 								} catch (error) {
 									message.error(error.response.data.message);
 									return;
@@ -891,20 +815,14 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 								setStakeAmount(false);
 								setReadBeforeAction(false);
 							}}
-							style={{
-								backgroundColor: '#5D63FF',
-								color: 'white',
-								flex: 1,
-								height: 35,
-								opacity: confirmText !== 'I UNDERSTAND' ? 0.4 : 1,
-							}}
 							disabled={confirmText !== 'I UNDERSTAND'}
 							type="default"
 						>
-							I UNDERSTAND, STAKE
+							{STRINGS['CEFI_STAKE.I_UNDERSTAND_BUTTON']},{' '}
+							{STRINGS['STAKE.TITLE'].toUpperCase()}
 						</AntBtn>
 					</div>
-				</Modal>
+				</Dialog>
 			</>
 		);
 	};
@@ -912,97 +830,88 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 	const confirmationModel = () => {
 		return (
 			<>
-				<Modal
-					maskClosable={false}
-					closeIcon={<CloseOutlined className="stake_theme" />}
-					className="stake_table_theme stake_theme"
-					bodyStyle={{}}
-					visible={confirmation}
-					width={450}
-					footer={null}
-					onCancel={() => {
+				<Dialog
+					className="stake_table_theme stake_theme confirmation_model_dialog_wrapper"
+					isOpen={confirmation}
+					onCloseDialog={() => {
 						setConfirmation(false);
 					}}
 				>
-					<div
-						style={{
-							display: 'flex',
-							justifyContent: 'center',
-							flexDirection: 'column',
-							alignItems: 'center',
-						}}
-					>
-						<div
-							style={{
-								display: 'flex',
-								justifyContent: 'center',
-								flexDirection: 'column',
-								alignItems: 'center',
-								textAlign: 'center',
-							}}
-						>
-							<h3 className="stake_theme">
+					<div className="confirmation_model_popup_wrapper">
+						<div className="confirmation_model_content">
+							{stakePools
+								.filter((pool) => pool.status === 'active' && pool.onboarding)
+								.map((pool) => {
+									return (
+										<div className="stakepool_card_icon mb-5">
+											<img
+												src={coins?.[pool?.currency]?.logo}
+												width={50}
+												height={50}
+												alt=""
+											/>
+										</div>
+									);
+								})}
+							<h3 className="stake_theme confirmation_amount_text">
 								{stakerAmount} {selectedPool.currency.toUpperCase()}
 							</h3>
-							<div>Successfully staked</div>
-							<div style={{ marginTop: 30, marginBottom: 30 }}>-</div>
-							<div style={{ fontSize: 12, fontWeight: 'bold' }}>
+							<div className="successful_stack_text">
+								{STRINGS['CEFI_STAKE.SUCCESSFULLY_STAKED']}
+							</div>
+							<div className="mt-5 mb-5 stake_detail_line"></div>
+							<div className="confirmation_label congrats_text mb-3">
 								{STRINGS['CEFI_STAKE.CONGRATULATIONS_NOTICE']}
 							</div>
-							<div style={{ fontSize: 12 }}>
+							<div className="confirmation_label mb-3">
 								{STRINGS['CEFI_STAKE.EARNINGS_START_NOTICE']}
 							</div>
-							<div style={{ fontSize: 12 }}>
+							<div className="confirmation_label mb-3">
 								{' '}
-								{STRINGS['CEFI_STAKE.REVIEW_PROGRESS_LABEL']}
+								{STRINGS.formatString(
+									STRINGS['CEFI_STAKE.REVIEW_PROGRESS_LABEL'],
+									<span
+										className="active_link"
+										onClick={async () => {
+											setConfirmation(false);
+											handleTabChange('1');
+											setStakerAmount();
+											setSelectedPool();
+										}}
+									>
+										{STRINGS['CEFI_STAKE.REVIEW_PROGRESS_ACTIVE_LINK']}
+									</span>
+								)}
 							</div>
 						</div>
 					</div>
 
-					<div
-						style={{
-							display: 'flex',
-							flexDirection: 'row',
-							gap: 15,
-							justifyContent: 'space-between',
-							marginTop: 30,
-						}}
-					>
+					<div className="stake_popup_button_wrapper">
 						<AntBtn
+							className="stake_popup_button"
 							onClick={() => {
 								setConfirmation(false);
 								setStakerAmount();
 								setSelectedPool();
-							}}
-							style={{
-								backgroundColor: '#5D63FF',
-								color: 'white',
-								flex: 1,
-								height: 35,
 							}}
 							type="default"
 						>
 							{STRINGS['CEFI_STAKE.CLOSE_BUTTON']}
 						</AntBtn>
 						<AntBtn
+							className="stake_popup_button"
 							onClick={async () => {
 								setConfirmation(false);
 								handleTabChange('1');
 								setStakerAmount();
 								setSelectedPool();
 							}}
-							style={{
-								backgroundColor: '#5D63FF',
-								color: 'white',
-								flex: 1,
-								height: 35,
-							}}
 							type="default"
 						>
-							VIEW ACTIVE STAKES
+							{STRINGS['CEFI_STAKE.VIEW_ACTIVE_STAKES']}
 						</AntBtn>
 					</div>
-				</Modal>
+				</Dialog>
 			</>
 		);
 	};
@@ -1010,94 +919,177 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 	const reviewUnstakeModel = () => {
 		return (
 			<>
-				<Modal
-					maskClosable={false}
-					closeIcon={<CloseOutlined className="stake_theme" />}
+				<Dialog
 					className="stake_table_theme stake_theme"
-					bodyStyle={{}}
-					visible={reviewUnstake}
-					width={400}
-					footer={null}
-					onCancel={() => {
+					isOpen={reviewUnstake}
+					onCloseDialog={() => {
 						setReviewUnstake(false);
 					}}
 				>
-					<div
-						style={{
-							display: 'flex',
-							justifyContent: 'center',
-							flexDirection: 'column',
-							alignItems: 'center',
-						}}
-					>
-						<div
-							style={{
-								display: 'flex',
-								justifyContent: 'center',
-								flexDirection: 'column',
-								height: 200,
-							}}
-						>
-							<h3 className="stake_theme">Review and unstake</h3>
-							<div>
-								<span style={{ fontWeight: 'bold' }}>
-									{STRINGS['CEFI_STAKE.TIME_REMAINING_LABEL']}:
-								</span>{' '}
-								{selectedStaker?.stake?.duration ? (
-									<>
-										{calculateRemainingDays(
-											selectedStaker?.stake?.duration,
-											selectedStaker.created_at
-										)}{' '}
-										days (
-										{selectedStaker?.stake?.duration &&
-											formatDate(selectedStaker?.closing)}
-										)
-									</>
-								) : (
-									'Perpetual'
-								)}
+					<div className="review_unstake_popup_wrapper">
+						<div className="review_unstake_content">
+							<h3 className="stake_theme">
+								<EditWrapper stringId="CEFI_STAKE.REVIEW_AND_UNSTAKE">
+									{STRINGS['CEFI_STAKE.REVIEW_AND_UNSTAKE']}
+								</EditWrapper>
+							</h3>
+							<div className="review_unstack_wrapper mb-4">
+								{stakePools
+									.filter((pool) => pool.status === 'active' && pool.onboarding)
+									.map((pool) => {
+										return (
+											<div className="stakepool_card_icon">
+												<img
+													src={coins?.[pool?.currency]?.logo}
+													width={30}
+													height={30}
+													alt=""
+												/>
+											</div>
+										);
+									})}
+								<div className="review_unstack_amount_wrapper">
+									<div>
+										<span className="font-weight-normal">
+											{STRINGS['UNSTAKE.AMOUNT_TO_RECEIVE']}:
+										</span>{' '}
+										<span className="stake_detail_text">
+											{selectedStaker.reward_currency ? (
+												selectedStaker.reward > 0 ? (
+													`${roundToIncrementUnit(
+														new BigNumber(selectedStaker.reward)
+															.minus(
+																new BigNumber(
+																	selectedStaker.slashedValues.slashingEarning
+																)
+															)
+															.toNumber(),
+														selectedStaker.reward_currency
+													)} ${selectedStaker.reward_currency.toUpperCase()}`
+												) : (
+													<span>{STRINGS['CEFI_STAKE.NO_REWARD']}</span>
+												)
+											) : (
+												`${new BigNumber(selectedStaker.amount)
+													.minus(
+														new BigNumber(
+															selectedStaker.slashedValues.slashingPrinciple
+														)
+													)
+													.plus(
+														new BigNumber(selectedStaker.reward).minus(
+															new BigNumber(
+																selectedStaker.slashedValues.slashingEarning
+															)
+														)
+													)
+													.toNumber()} ${selectedStaker.currency.toUpperCase()}`
+											)}
+										</span>
+									</div>
+									<span className="review_settle_notice stake_detail_text">
+										({STRINGS['CEFI_STAKE.REQUIRES_24H_TO_SETTLE_NOTICE']})
+									</span>
+								</div>
 							</div>
-							<div>
-								<span style={{ fontWeight: 'bold' }}>
+							<div
+								className={`time_remaining_progress_content ${
+									isMobile && 'mb-4'
+								}`}
+							>
+								<span>{STRINGS['CEFI_STAKE.TIME_REMAINING_LABEL']}:</span>{' '}
+								<div>
+									<div className="d-flex">
+										{selectedStaker?.stake?.duration ? (
+											<span className="duration-field">
+												<div className="w-100 d-flex">
+													<Progress
+														percent={
+															((selectedStaker?.stake?.duration -
+																calculateRemainingDays(
+																	selectedStaker?.stake?.duration,
+																	selectedStaker.created_at
+																)) *
+																100) /
+															selectedStaker?.stake?.duration
+														}
+														showInfo={false}
+													/>
+													<Image
+														iconId={'CLOCK'}
+														icon={icons['CLOCK']}
+														alt={'text'}
+														svgWrapperClassName="action_notification-svg"
+													/>
+												</div>
+											</span>
+										) : (
+											'∞ Perpetual'
+										)}{' '}
+									</div>
+									<span className="stake_detail_text">
+										{selectedStaker?.stake?.duration ? (
+											<>
+												{calculateRemainingDays(
+													selectedStaker?.stake?.duration,
+													selectedStaker.created_at
+												)}{' '}
+												days (
+												{selectedStaker?.stake?.duration &&
+													formatDate(selectedStaker?.closing)}
+												)
+											</>
+										) : (
+											'Perpetual'
+										)}
+									</span>
+								</div>
+							</div>
+							<div className={isMobile && 'mb-4'}>
+								<span>
 									{STRINGS['CEFI_STAKE.PENALTY_UPON_INITIAL_STAKE_PRINCIPLE']}:
 								</span>{' '}
-								{roundToIncrementUnit(
-									selectedStaker.slashedValues.slashingPrinciple,
-									selectedStaker.currency
-								)}{' '}
-								{selectedStaker.currency.toUpperCase()} (-
-								{selectedStaker?.stake?.slashing_principle_percentage
-									? `${selectedStaker?.stake?.slashing_principle_percentage}%`
-									: '-'}
-								)
+								<span className="stake_detail_text">
+									{roundToIncrementUnit(
+										selectedStaker.slashedValues.slashingPrinciple,
+										selectedStaker.currency
+									)}{' '}
+									{selectedStaker.currency.toUpperCase()} (-
+									{selectedStaker?.stake?.slashing_principle_percentage
+										? `${selectedStaker?.stake?.slashing_principle_percentage}%`
+										: '-'}
+									)
+								</span>
 							</div>
 							<div>
-								<span style={{ fontWeight: 'bold' }}>
+								<span>
 									{STRINGS['CEFI_STAKE.FORFEITURE_OF_EARNINGS_LABEL']}:
 								</span>{' '}
-								{roundToIncrementUnit(
-									selectedStaker.slashedValues.slashingEarning,
-									selectedStaker.reward_currency || selectedStaker.currency
-								)}{' '}
-								{(
-									selectedStaker.reward_currency || selectedStaker.currency
-								).toUpperCase()}{' '}
-								(-
-								{selectedStaker?.stake?.slashing_earning_percentage
-									? `${selectedStaker?.stake?.slashing_earning_percentage}%`
-									: '-'}
-								)
+								<span className="stake_detail_text">
+									{roundToIncrementUnit(
+										selectedStaker.slashedValues.slashingEarning,
+										selectedStaker.reward_currency || selectedStaker.currency
+									)}{' '}
+									{(
+										selectedStaker.reward_currency || selectedStaker.currency
+									).toUpperCase()}{' '}
+									(-
+									{selectedStaker?.stake?.slashing_earning_percentage
+										? `${selectedStaker?.stake?.slashing_earning_percentage}%`
+										: '-'}
+									)
+								</span>
 							</div>
-
-							<div style={{ marginTop: 20 }}>
-								<span style={{ fontWeight: 'bold' }}>
+							<div className="mt-4 stake_detail_line"></div>
+							<div className="mt-4">
+								<span>
 									{selectedStaker.reward_currency && 'Reward'}{' '}
 									{STRINGS['CEFI_STAKE.AMOUNT_TO_RECEIVE_LABEL']}:
 								</span>{' '}
-								{selectedStaker.reward_currency
-									? selectedStaker.reward > 0
-										? `${roundToIncrementUnit(
+								<span className="stake_detail_text">
+									{selectedStaker.reward_currency ? (
+										selectedStaker.reward > 0 ? (
+											`${roundToIncrementUnit(
 												new BigNumber(selectedStaker.reward)
 													.minus(
 														new BigNumber(
@@ -1106,9 +1098,12 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 													)
 													.toNumber(),
 												selectedStaker.reward_currency
-										  )} ${selectedStaker.reward_currency.toUpperCase()}`
-										: 'No reward amount to receive'
-									: `${new BigNumber(selectedStaker.amount)
+											)} ${selectedStaker.reward_currency.toUpperCase()}`
+										) : (
+											<span>{STRINGS['CEFI_STAKE.NO_REWARD']}</span>
+										)
+									) : (
+										`${new BigNumber(selectedStaker.amount)
 											.minus(
 												new BigNumber(
 													selectedStaker.slashedValues.slashingPrinciple
@@ -1121,35 +1116,27 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 													)
 												)
 											)
-											.toNumber()} ${selectedStaker.currency.toUpperCase()}`}
+											.toNumber()} ${selectedStaker.currency.toUpperCase()}`
+									)}
+								</span>
 							</div>
-							<div>({STRINGS['CEFI_STAKE.REQUIRES_24H_TO_SETTLE_NOTICE']})</div>
+							<div className="stake_detail_text">
+								({STRINGS['CEFI_STAKE.REQUIRES_24H_TO_SETTLE_NOTICE']})
+							</div>
 						</div>
 					</div>
-					<div
-						style={{
-							display: 'flex',
-							flexDirection: 'row',
-							gap: 15,
-							justifyContent: 'space-between',
-							marginTop: 30,
-						}}
-					>
+					<div className="stake_popup_button_wrapper">
 						<AntBtn
+							className="stake_popup_button"
 							onClick={() => {
 								setReviewUnstake(false);
 							}}
-							style={{
-								backgroundColor: '#5D63FF',
-								color: 'white',
-								flex: 1,
-								height: 35,
-							}}
 							type="default"
 						>
-							Cancel
+							{STRINGS['STAKE.CANCEL']}
 						</AntBtn>
 						<AntBtn
+							className="stake_popup_button"
 							onClick={async () => {
 								try {
 									await deleteStaker({ id: selectedStaker.id });
@@ -1160,7 +1147,7 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 									setStakePools(stakes.data);
 
 									// message.success(
-									// 	`Successfuly unstaked in ${selectedStaker.id}`
+									//  `Successfuly unstaked in ${selectedStaker.id}`
 									// );
 								} catch (error) {
 									message.error(error.response.data.message);
@@ -1170,18 +1157,12 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 								setReviewUnstake(false);
 								setUnstakeConfirm(true);
 							}}
-							style={{
-								backgroundColor: '#5D63FF',
-								color: 'white',
-								flex: 1,
-								height: 35,
-							}}
 							type="default"
 						>
-							UNSTAKE
+							{STRINGS['UNSTAKE.TITLE'].toUpperCase()}
 						</AntBtn>
 					</div>
-				</Modal>
+				</Dialog>
 			</>
 		);
 	};
@@ -1189,46 +1170,92 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 	const unstakeConfirmModel = () => {
 		return (
 			<>
-				<Modal
-					maskClosable={false}
-					closeIcon={<CloseOutlined className="stake_theme" />}
-					className="stake_table_theme stake_theme"
-					bodyStyle={{}}
-					visible={unstakeConfirm}
-					width={400}
-					footer={null}
-					onCancel={() => {
+				<Dialog
+					className="stake_table_theme stake_theme unstack_confirm_dialog_wrapper"
+					isOpen={unstakeConfirm}
+					onCloseDialog={() => {
 						setUnstakeConfirm(false);
 					}}
 				>
-					<div
-						style={{
-							display: 'flex',
-							justifyContent: 'center',
-							flexDirection: 'column',
-							alignItems: 'center',
-						}}
-					>
-						<div
-							style={{
-								display: 'flex',
-								justifyContent: 'center',
-								flexDirection: 'column',
-								height: 200,
-							}}
-						>
-							<h2 className="stake_theme">
-								You've successfully unstaked{' '}
-								{selectedStaker.currency.toUpperCase()}
-							</h2>
-							<div style={{ marginTop: 20 }}>
-								<span style={{ fontWeight: 'bold' }}>
+					<div className="unstake_confirm_popup_wrapper">
+						<div className="unstake_confirm_content">
+							<div className="unstake_header">
+								<Image
+									iconId="STAKING_UNLOCK"
+									icon={icons['STAKING_UNLOCK']}
+									wrapperClassName="unstaked-logo"
+								/>
+								<h2 className="stake_theme">
+									{STRINGS['CEFI_STAKE.SUCCESSFULLY_UNSTAKED']}{' '}
+									{selectedStaker.currency.toUpperCase()}
+								</h2>
+							</div>
+							<div className="review_unstack_wrapper mb-4">
+								{stakePools
+									.filter((pool) => pool.status === 'active' && pool.onboarding)
+									.map((pool) => {
+										return (
+											<div className="stakepool_card_icon">
+												<img
+													src={coins?.[pool?.currency]?.logo}
+													width={30}
+													height={30}
+													alt=""
+												/>
+											</div>
+										);
+									})}
+								<div className="review_unstack_amount_wrapper">
+									<div>
+										<span className="font-weight-normal">
+											{STRINGS['UNSTAKE.AMOUNT_TO_RECEIVE']}:
+										</span>{' '}
+										<span className="stake_detail_text">
+											{selectedStaker.reward_currency ? (
+												selectedStaker.reward > 0 ? (
+													`${roundToIncrementUnit(
+														new BigNumber(selectedStaker.reward)
+															.minus(
+																new BigNumber(
+																	selectedStaker.slashedValues.slashingEarning
+																)
+															)
+															.toNumber(),
+														selectedStaker.reward_currency
+													)} ${selectedStaker.reward_currency.toUpperCase()}`
+												) : (
+													<span>{STRINGS['CEFI_STAKE.NO_REWARD']}</span>
+												)
+											) : (
+												`${new BigNumber(selectedStaker.amount)
+													.minus(
+														new BigNumber(
+															selectedStaker.slashedValues.slashingPrinciple
+														)
+													)
+													.plus(
+														new BigNumber(selectedStaker.reward).minus(
+															new BigNumber(
+																selectedStaker.slashedValues.slashingEarning
+															)
+														)
+													)
+													.toNumber()} ${selectedStaker.currency.toUpperCase()}`
+											)}
+										</span>
+									</div>
+								</div>
+							</div>
+							<div className="mt-4 mb-4 stake_detail_line"></div>
+							<div className="mt-4">
+								<span>
 									{selectedStaker.reward_currency && 'Reward'}{' '}
 									{STRINGS['CEFI_STAKE.AMOUNT_TO_RECEIVE_LABEL']}:
 								</span>{' '}
-								{selectedStaker.reward_currency
-									? selectedStaker.reward > 0
-										? `${roundToIncrementUnit(
+								<span className="stake_detail_text">
+									{selectedStaker.reward_currency ? (
+										selectedStaker.reward > 0 ? (
+											`${roundToIncrementUnit(
 												new BigNumber(selectedStaker.reward)
 													.minus(
 														new BigNumber(
@@ -1237,9 +1264,12 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 													)
 													.toNumber(),
 												selectedStaker.reward_currency
-										  )} ${selectedStaker.reward_currency.toUpperCase()}`
-										: 'No reward amount to receive'
-									: `${new BigNumber(selectedStaker.amount)
+											)} ${selectedStaker.reward_currency.toUpperCase()}`
+										) : (
+											<span>{STRINGS['CEFI_STAKE.NO_REWARD']}</span>
+										)
+									) : (
+										`${new BigNumber(selectedStaker.amount)
 											.minus(
 												new BigNumber(
 													selectedStaker.slashedValues.slashingPrinciple
@@ -1252,45 +1282,31 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 													)
 												)
 											)
-											.toNumber()} ${selectedStaker.currency.toUpperCase()}`}
+											.toNumber()} ${selectedStaker.currency.toUpperCase()}`
+									)}
+								</span>
 							</div>
-							<div>({STRINGS['CEFI_STAKE.REQUIRES_24H_TO_SETTLE_NOTICE']})</div>
+							<div className="stake_detail_text">
+								({STRINGS['CEFI_STAKE.REQUIRES_24H_TO_SETTLE_NOTICE']})
+							</div>
 						</div>
 					</div>
-					<div
-						style={{
-							display: 'flex',
-							flexDirection: 'row',
-							gap: 15,
-							justifyContent: 'space-between',
-							marginTop: 30,
-						}}
-					>
+					<div className="stake_popup_button_wrapper">
 						<AntBtn
+							className="stake_popup_button"
 							onClick={() => {
 								setUnstakeConfirm(false);
 								setSelectedStaker();
-							}}
-							style={{
-								backgroundColor: '#5D63FF',
-								color: 'white',
-								flex: 1,
-								height: 35,
 							}}
 							type="default"
 						>
 							{STRINGS['CEFI_STAKE.CLOSE_BUTTON']}
 						</AntBtn>
 						<AntBtn
+							className="stake_popup_button"
 							onClick={async () => {
 								setUnstakeConfirm(false);
 								setSelectedStaker();
-							}}
-							style={{
-								backgroundColor: '#5D63FF',
-								color: 'white',
-								flex: 1,
-								height: 35,
 							}}
 							type="default"
 						>
@@ -1299,7 +1315,7 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 							</Link>
 						</AntBtn>
 					</div>
-				</Modal>
+				</Dialog>
 			</>
 		);
 	};
@@ -1348,7 +1364,7 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 	};
 
 	return (
-		<div>
+		<div className="stake_table_wrapper">
 			{readBeforeAction && readBeforeActionModel()}
 			{stakeAmount && stakeAmountModel()}
 			{duration && durationModel()}
@@ -1365,87 +1381,54 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 					onChange={handleTabChange}
 				>
 					<TabPane tab="POOLS" key="0">
-						<div
-							className="stake_table_theme"
-							style={{
-								width: '100%',
-								padding: 30,
-							}}
-						>
-							<div
-								style={{
-									display: 'flex',
-									justifyContent: 'space-between',
-									marginBottom: 50,
-								}}
-							>
-								<div style={{ flex: 1 }}>
-									<div
-										className="stake_theme"
-										style={{
-											fontWeight: 'bold',
-										}}
-									>
+						<div className="stake_table_theme stake-tabs">
+							<div className="stake-cefi-content-wrapper">
+								<div>
+									<Image
+										iconId="STAKING_CEFI_LOGO"
+										icon={icons['STAKING_CEFI_LOGO']}
+										wrapperClassName="cefi-logo"
+									/>
+								</div>
+								<div>
+									<div className="stake_theme font-weight-bold">
 										{STRINGS['CEFI_STAKE.STAKE_POOL_TITLE']}
 									</div>
-									<div style={{}}>{STRINGS['CEFI_STAKE.INTRODUCTION_1']}</div>
+									<div>{STRINGS['CEFI_STAKE.INTRODUCTION_1']}</div>
 								</div>
-								<div
-									style={{
-										flex: 1,
-										display: 'flex',
-										justifyContent: 'flex-end',
-									}}
-								>
-									{/* <div>
-										{userStakeData?.length > 0 && (
-											<div>{STRINGS['CEFI_STAKE.CURRENT_STAKING_VALUE']}:</div>
-										)}
-										<div>
-											{accumulateAmount(userStakeData).map((stake) => (
-												<div>
-													{stake.currency.toUpperCase()}: {stake.amount}
-												</div>
-											))}
-										</div>
-									</div> */}
-								</div>
+								{!isMobile && (
+									<div className="stake-cefi-value">
+										{/* <div>
+                                        {userStakeData?.length > 0 && (
+                                            <div>{STRINGS['CEFI_STAKE.CURRENT_STAKING_VALUE']}:</div>
+                                        )}
+                                        <div>
+                                            {accumulateAmount(userStakeData).map((stake) => (
+                                                <div>
+                                                    {stake.currency.toUpperCase()}: {stake.amount}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div> */}
+									</div>
+								)}
 							</div>
 
-							<div
-								style={{
-									display: 'flex',
-									justifyContent: 'center',
-									gap: 15,
-									flexWrap: 'wrap',
-								}}
-							>
+							<div className="stakepool_card_wrapper">
 								{stakePools
 									.filter((pool) => pool.status === 'active' && pool.onboarding)
 									.map((pool) => {
 										// const alreadyStaked =
-										// 	(userStakeData || [])?.filter(
-										// 		(staker) =>
-										// 			staker.stake_id == pool.id && staker.status !== 'closed'
-										// 	)?.length > 0;
+										//  (userStakeData || [])?.filter(
+										//      (staker) =>
+										//          staker.stake_id == pool.id && staker.status !== 'closed'
+										//  )?.length > 0;
 
 										const alreadyStaked = false;
 
 										return (
-											<div
-												className="stakepool_card"
-												style={{
-													width: 330,
-													height: 300,
-													padding: 20,
-													display: 'flex',
-													justifyContent: 'center',
-													flexDirection: 'column',
-													alignItems: 'center',
-													borderTop: '1px solid #E19F23',
-												}}
-											>
-												<div style={{ position: 'relative', bottom: 40 }}>
+											<div className="stakepool_card">
+												<div className="stakepool_card_icon">
 													<img
 														src={coins?.[pool?.currency]?.logo}
 														width={30}
@@ -1453,74 +1436,63 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 														alt=""
 													/>
 												</div>
-												<h3 className="stake_theme" style={{}}>
-													{pool.name}
-												</h3>
+												{isMobile ? (
+													<h2 className="stake_theme">{pool.name}</h2>
+												) : (
+													<h3 className="stake_theme">{pool.name}</h3>
+												)}
 												<div>
 													{pool.duration ? (
 														<>
-															<span
-																className="stake_theme"
-																style={{
-																	fontWeight: 'bold',
-																}}
-															>
+															<span className="stake_theme font-weight-bold">
 																{STRINGS['CEFI_STAKE.DURATION_LABEL']}:
 															</span>{' '}
-															{pool.duration} days
+															{pool.duration}{' '}
+															{STRINGS['CEFI_STAKE.DAYS'].toLowerCase()}
 														</>
 													) : (
 														'Perpetual Staking'
 													)}
 												</div>
 												<div>
-													<span
-														className="stake_theme"
-														style={{
-															fontWeight: 'bold',
-														}}
-													>
-														APY:
+													<span className="stake_theme font-weight-bold">
+														{STRINGS['CEFI_STAKE.APY_LABEL']}:
 													</span>{' '}
 													{pool.apy}%
 												</div>
 												<div>-</div>
 												<div>
-													<span style={{ fontWeight: 'bold' }}>Min:</span>{' '}
+													<span className="stake_theme font-weight-bold">
+														{STRINGS['CEFI_STAKE.MIN']}:
+													</span>{' '}
 													{pool.min_amount} {pool.currency.toUpperCase()}
 												</div>
 												<div>
-													<span style={{ fontWeight: 'bold' }}>Max:</span>{' '}
+													<span className="stake_theme font-weight-bold">
+														{STRINGS['CALCULATE_MAX']}:
+													</span>{' '}
 													{pool.max_amount} {pool.currency.toUpperCase()}
 												</div>
 												{pool?.reward_currency && (
-													<div className="stake_theme" style={{}}>
+													<div className="stake_theme">
 														{STRINGS['CEFI_STAKE.REWARDS_IN_LABEL']}{' '}
-														<span style={{ fontWeight: 'bold' }}>
+														<span className="font-weight-bold">
 															{pool.reward_currency.toUpperCase()}
 														</span>
 													</div>
 												)}
 												<div>
 													<AntBtn
+														className={`stakepool_button ${
+															alreadyStaked
+																? 'stake-half-opacity'
+																: 'stake-opacity'
+														}`}
 														onClick={() => {
 															setReadBeforeAction(true);
 															setSelectedPool(pool);
 														}}
 														disabled={alreadyStaked}
-														style={{
-															marginTop: 30,
-															backgroundColor: '#5D63FF',
-															padding: 20,
-															borderRadius: 20,
-															width: 160,
-															color: 'white',
-															textAlign: 'center',
-															display: 'flex',
-															justifyContent: 'center',
-															alignItems: 'center',
-															opacity: alreadyStaked ? 0.4 : 1,
-														}}
 													>
 														{' '}
 														{alreadyStaked ? 'STAKED' : 'STAKE'}{' '}
@@ -1533,114 +1505,86 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 						</div>
 					</TabPane>
 					<TabPane tab="MY STAKES" key="1">
-						<div
-							className="stake_table_theme"
-							style={{
-								width: '100%',
-								padding: 30,
-							}}
-						>
-							<div
-								style={{
-									display: 'flex',
-									justifyContent: 'space-between',
-									marginBottom: 50,
-									gap: 10,
-								}}
-							>
-								<div style={{ flex: 1 }}>
-									<div
-										className="stake_theme"
-										style={{
-											fontWeight: 'bold',
-										}}
-									>
+						<div className="stake_table_theme mystakes-tab">
+							<div className="mystakes-content-wrapper">
+								<div className="w-100">
+									<div className="stake_theme font-weight-bold">
 										{STRINGS['CEFI_STAKE.ALL_STAKING_EVENTS']}
 									</div>
-									<div style={{}}>
-										{STRINGS['CEFI_STAKE.MONITOR_ACTIVE_STAKES']}
-									</div>
-									<div style={{ marginTop: 20 }}>
+									<div>{STRINGS['CEFI_STAKE.MONITOR_ACTIVE_STAKES']}</div>
+									<div className={`mt-4 ${isMobile && 'mb-4'}`}>
 										{STRINGS['CEFI_STAKE.USE_FILTERS_FOR_HISTORICAL_EVENTS']}
 									</div>
 								</div>
-								<div
-									style={{
-										flex: 1,
-										display: 'flex',
-										justifyContent: 'flex-end',
-									}}
-								>
-									<div>
-										<div style={{ marginBottom: 20 }}>
-											{userStakeData?.length > 0 && (
-												<div>
-													{STRINGS['CEFI_STAKE.ESTIMATED_TOTAL_STAKED']}
-												</div>
-											)}
-											<div style={{ fontSize: 18 }}>
-												{accumulateAmount(
-													userStakeData.filter((staker) =>
-														['staking', 'unstaking'].includes(staker.status)
-													)
-												).map((stake) => (
-													<div>
-														{stake.currency.toUpperCase()}: {stake.amount}
-													</div>
-												))}
-											</div>
-										</div>
+								{!isMobile && (
+									<div className="estimated-total-stake">
 										<div>
-											{userStakeData?.length > 0 && (
-												<div>
-													{STRINGS['CEFI_STAKE.ESTIMATED_EARNINGS_VALUE']}
-												</div>
-											)}
-											<div style={{ fontSize: 18 }}>
-												{accumulateReward(userStakeData).map((stake) => {
-													const min = coins[stake.currency].min;
-
-													// const incrementUnit =
-													// 	coins[stake.currency].increment_unit;
-													// const decimalPoint = new BigNumber(
-													// 	incrementUnit
-													// ).dp();
-													// const sourceAmount =
-													// 	stake?.reward &&
-													// 	new BigNumber(stake?.reward)
-													// 		.decimalPlaces(decimalPoint)
-													// 		.toNumber();
-
-													const formattedAmount =
-														stake?.reward &&
-														formatToCurrency(stake?.reward, min);
-
-													return (
+											<div className="mb-4">
+												{userStakeData?.length > 0 && (
+													<div>
+														{STRINGS['CEFI_STAKE.ESTIMATED_TOTAL_STAKED']}
+													</div>
+												)}
+												<div className="stack-amount">
+													{accumulateAmount(
+														userStakeData.filter((staker) =>
+															['staking', 'unstaking'].includes(staker.status)
+														)
+													).map((stake) => (
 														<div>
-															{(
-																stake.reward_currency || stake.currency
-															).toUpperCase()}
-															: {formattedAmount}
+															{stake.currency.toUpperCase()}: {stake.amount}
 														</div>
-													);
-												})}
+													))}
+												</div>
+											</div>
+											<div>
+												{userStakeData?.length > 0 && (
+													<div>
+														{STRINGS['CEFI_STAKE.ESTIMATED_EARNINGS_VALUE']}
+													</div>
+												)}
+												<div className="stack-reward">
+													{accumulateReward(userStakeData).map((stake) => {
+														const min = coins[stake.currency].min;
+
+														// const incrementUnit =
+														//  coins[stake.currency].increment_unit;
+														// const decimalPoint = new BigNumber(
+														//  incrementUnit
+														// ).dp();
+														// const sourceAmount =
+														//  stake?.reward &&
+														//  new BigNumber(stake?.reward)
+														//      .decimalPlaces(decimalPoint)
+														//      .toNumber();
+
+														const formattedAmount =
+															stake?.reward &&
+															formatToCurrency(stake?.reward, min);
+
+														return (
+															<div>
+																{(
+																	stake.reward_currency || stake.currency
+																).toUpperCase()}
+																: {formattedAmount}
+															</div>
+														);
+													})}
+												</div>
 											</div>
 										</div>
 									</div>
-								</div>
+								)}
 							</div>
 
-							<div className="d-flex">
+							<div className={`d-flex ${isMobile && 'mb-5'}`}>
 								<span
-									className="tabOption"
-									style={{
-										marginRight: 5,
-										padding: 10,
-										borderRadius: 10,
-										cursor: 'pointer',
-										fontWeight: tabOption === 'active' ? 'bold' : 'normal',
-										opacity: tabOption === 'active' ? 1 : 0.7,
-									}}
+									className={`tabOption ${
+										tabOption === 'active'
+											? 'font-weight-bold stake_opacity'
+											: 'font-weight-normal tabOption-half-opacity'
+									}`}
 									onClick={() => {
 										setTabOption('active');
 									}}
@@ -1650,15 +1594,11 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 									</EditWrapper>
 								</span>
 								<span
-									className="tabOption"
-									style={{
-										marginLeft: 5,
-										padding: 10,
-										borderRadius: 10,
-										cursor: 'pointer',
-										fontWeight: tabOption === 'history' ? 'bold' : 'normal',
-										opacity: tabOption === 'history' ? 1 : 0.7,
-									}}
+									className={`tabOption ${
+										tabOption === 'history'
+											? 'font-weight-bold stake_opacity'
+											: 'font-weight-normal tabOption-half-opacity'
+									}`}
 									onClick={() => {
 										setTabOption('history');
 									}}
@@ -1668,7 +1608,7 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 									</EditWrapper>
 								</span>
 							</div>
-							<div className="mt-4">
+							<div className="mt-4 mystakes-table-wrapper">
 								<Spin spinning={isLoading}>
 									<Table
 										className={classnames(
@@ -1687,8 +1627,8 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 											return data.id;
 										}}
 										// pagination={{
-										// 	current: queryFilters.currentTablePage,
-										// 	onChange: pageChange,
+										//  current: queryFilters.currentTablePage,
+										//  onChange: pageChange,
 										// }}
 										pagination={false}
 									/>
