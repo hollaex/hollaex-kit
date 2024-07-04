@@ -63,7 +63,8 @@ const {
 	SERVICE_NOT_SUPPORTED,
 	BALANCE_HISTORY_NOT_ACTIVE,
 	ADDRESSBOOK_MISSING_FIELDS,
-	ADDRESSBOOK_ALREADY_EXISTS
+	ADDRESSBOOK_ALREADY_EXISTS,
+	ADDRESSBOOK_NOT_FOUND
 } = require(`${SERVER_PATH}/messages`);
 const { publisher, client } = require('./database/redis');
 const {
@@ -3277,7 +3278,7 @@ const fetchUserAddressBook = async (user_id) => {
 	const userAddressBook = await getModel('userAddressBook').findOne({ where: { user_id } });
 
 	if (!userAddressBook) {
-		throw new Error('User address book not found');
+		throw new Error(ADDRESSBOOK_NOT_FOUND);
 	}
 
 	return userAddressBook;

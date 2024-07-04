@@ -264,3 +264,4 @@ exports.BALANCE_HISTORY_NOT_ACTIVE = 'This feature is not active on the exchange
 exports.WITHDRAWAL_DISABLED = 'Withdrawal disabled for this user';
 exports.ADDRESSBOOK_MISSING_FIELDS = 'Each address must contain both address and network fields';
 exports.ADDRESSBOOK_ALREADY_EXISTS = 'One or more addresses already exist in the address book';
+exports.ADDRESSBOOK_NOT_FOUND = 'User address book not found';
