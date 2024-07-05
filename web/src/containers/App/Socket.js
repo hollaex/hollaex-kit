@@ -6,7 +6,15 @@ import { WS_URL, SESSION_TIME, BASE_CURRENCY } from 'config/constants';
 import { isMobile } from 'react-device-detect';
 import { setWsHeartbeat } from 'ws-heartbeat/client';
 
-import { getMe, setMe, setBalance, updateUser } from 'actions/userAction';
+import withConfig from 'components/ConfigProvider/withConfig';
+import {
+	getMe,
+	setMe,
+	setBalance,
+	updateUser,
+	updateUserSettings,
+	setUserData,
+} from 'actions/userAction';
 import { addUserTrades } from 'actions/walletActions';
 import {
 	setUserOrders,
@@ -120,16 +128,9 @@ class Container extends Component {
 	};
 
 	getUserDetails = () => {
-		const themeOptions = [
-			'dark',
-			'white',
-			'Dark theme',
-			'long black',
-			'LONG FLAT BLACK',
-			'yellow-piller',
-		];
-		const isValidTheme = themeOptions.includes(
-			this.props?.router?.location?.query?.theme
+		const { themeOptions } = this.props;
+		const isValidTheme = themeOptions.some(
+			(option) => option.value === this.props?.router?.location?.query?.theme
 		);
 		return this.props
 			.getMe()
@@ -137,6 +138,7 @@ class Container extends Component {
 				if (value && value.data && value.data.id) {
 					const data = value.data;
 					const { defaults = {} } = this.props.constants;
+					const params = new URLSearchParams(window.location.search);
 					let userData = { ...data };
 					if (data.settings) {
 						if (
@@ -173,22 +175,52 @@ class Container extends Component {
 										},
 									},
 								};
-							} else if (
+							}
+							if (
+								data.settings.interface.theme !== this.props.activeTheme &&
 								this.props?.router?.location?.query?.theme &&
 								isValidTheme
 							) {
-								this.props.changeTheme(
-									this.props?.router?.location?.query?.theme
-								);
-								localStorage.setItem(
-									'theme',
-									this.props?.router?.location?.query?.theme
-								);
-							} else if (
-								data.settings.interface.theme !== this.props.activeTheme
-							) {
+								params.set('theme', data.settings.interface.theme);
+								const currentUrl = window.location.href.split('?')[0];
+								const newUrl = `${currentUrl}?${params.toString()}`;
+								this.props.router.replace(newUrl);
 								this.props.changeTheme(data.settings.interface.theme);
 								localStorage.setItem('theme', data.settings.interface.theme);
+							} else if (
+								this.props?.router?.location?.query?.theme !==
+									data.settings.interface.theme &&
+								isValidTheme
+							) {
+								const { settings = { interface: {} } } = this.props.user;
+								const settingsObj = { interface: { ...settings.interface } };
+								const theme = (
+									themeOptions.find(
+										({ value }) =>
+											value === this.props?.router?.location?.query?.theme
+									) || themeOptions[0]
+								).value;
+								settingsObj.interface.theme = theme;
+								return updateUserSettings(settingsObj)
+									.then(({ data }) => {
+										this.props.setUserData(data);
+										this.props.setMe(data);
+										if (data.settings && data.settings.interface) {
+											this.props.changeTheme(
+												this.props?.router?.location?.query?.theme
+											);
+											localStorage.setItem(
+												'theme',
+												this.props?.router?.location?.query?.theme
+											);
+										}
+									})
+									.catch((err) => {
+										const error = { _error: err.message };
+										if (err.response && err.response.data) {
+											error._error = err.response.data.message;
+										}
+									});
 							}
 						}
 					}
@@ -690,6 +722,10 @@ const mapDispatchToProps = (dispatch) => ({
 	getMe: bindActionCreators(getMe, dispatch),
 	requestTiers: bindActionCreators(requestTiers, dispatch),
 	setPairsTradesFetched: bindActionCreators(setPairsTradesFetched, dispatch),
+	setUserData: bindActionCreators(setUserData, dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Container);
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withConfig(Container));

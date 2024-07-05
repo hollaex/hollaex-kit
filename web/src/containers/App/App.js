@@ -223,18 +223,11 @@ class App extends Component {
 		if (JSON.stringify(prevProps.tools) !== JSON.stringify(tools)) {
 			storeTools(tools);
 		}
-		const themeOptions = [
-			'dark',
-			'white',
-			'Dark theme',
-			'long black',
-			'LONG FLAT BLACK',
-			'yellow-piller',
-		];
-		const isValidTheme = themeOptions.includes(
-			this.props?.router?.location?.query?.theme
+		const { themeOptions } = this.props;
+		const isValidTheme = themeOptions.some(
+			(option) => option.value === this.props?.router?.location?.query?.theme
 		);
-		if (!params.has('theme') && isValidTheme) {
+		if (!params.has('theme')) {
 			params.set('theme', activeTheme);
 			const currentUrl = window.location.href.split('?')[0];
 			const newUrl = `${currentUrl}?${params.toString()}`;
