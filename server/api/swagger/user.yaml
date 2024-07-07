@@ -287,6 +287,8 @@ paths:
                   properties:
                     address:
                       type: string
+                    label:
+                      type: string
                     network:
                       type: string
       responses:

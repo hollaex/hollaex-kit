@@ -3289,7 +3289,7 @@ const updateUserAddresses = async (user_id, data) => {
 	const { addresses } = data;
 
 	addresses.forEach((addressObj) => {
-		if (!addressObj.address || !addressObj.network) {
+		if (!addressObj.address || !addressObj.network || !addressObj.label) {
 			throw new Error(ADDRESSBOOK_MISSING_FIELDS);
 		}
 	});
