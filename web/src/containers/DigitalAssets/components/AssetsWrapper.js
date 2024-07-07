@@ -1,18 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
+import { isMobile } from 'react-device-detect';
 import {
 	formatPercentage,
 	formatToCurrency,
 	countDecimals,
 } from 'utils/currency';
-import { isMobile } from 'react-device-detect';
 import { SearchBox } from 'components';
 import STRINGS from 'config/localizedStrings';
 import { quicktradePairSelector } from 'containers/QuickTrade/components/utils';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { getMiniCharts } from 'actions/chartAction';
 import AssetsList from 'containers/DigitalAssets/components/AssetsList';
+import { RenderLoading } from './utils';
 
 function onHandleInitialLoading(ms) {
 	return new Promise((resolve) => setTimeout(resolve, ms));
@@ -51,7 +52,7 @@ class AssetsWrapper extends Component {
 		const lastPrice = price[price.length - 1];
 		const priceDifference = lastPrice - firstPrice;
 		const priceDifferencePercent = formatPercentage(
-			priceDifference / firstPrice * 100
+			(priceDifference / firstPrice) * 100
 		);
 		const formattedNumber = (val) =>
 			formatToCurrency(val, 0, val < 1 && countDecimals(val) > 8);
@@ -239,19 +240,24 @@ class AssetsWrapper extends Component {
 							placeHolder={`${STRINGS['SEARCH_ASSETS']}...`}
 							handleSearch={this.handleTabSearch}
 							showCross
+							isFocus={true}
 						/>
 					</div>
 				</div>
-				<AssetsList
-					loading={isLoading ? true : !data.length}
-					coinsListData={data}
-					page={page}
-					pageSize={pageSize}
-					count={count}
-					goToNextPage={this.goToNextPage}
-					goToPreviousPage={this.goToPreviousPage}
-					showPaginator={count > pageSize}
-				/>
+				{data.length ? (
+					<AssetsList
+						loading={isLoading}
+						coinsListData={data}
+						page={page}
+						pageSize={pageSize}
+						count={count}
+						goToNextPage={this.goToNextPage}
+						goToPreviousPage={this.goToPreviousPage}
+						showPaginator={count > pageSize}
+					/>
+				) : (
+					<RenderLoading />
+				)}
 			</div>
 		);
 	}

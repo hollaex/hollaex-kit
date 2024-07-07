@@ -33,28 +33,28 @@ const CoinPage = ({
 	addToFavourites,
 	removeFromFavourites,
 	quicktradePairs,
-	markets
+	markets,
 }) => {
 	const {
 		params: { token: currentCoin },
 	} = router;
 
 	const currentCoinUpper = currentCoin?.toUpperCase();
-	
-	const currentQuicktradePair =
-		Object.keys(quicktradePairs).find((pair) =>
-			pair.split('-').includes(currentCoin)
-		);
 
-	const market = markets.find(
-		({ symbol }) => currentCoin === symbol
+	const currentQuicktradePair = Object.keys(quicktradePairs).find((pair) =>
+		pair.split('-').includes(currentCoin)
 	);
-	
+
+	const market = markets.find(({ symbol }) => currentCoin === symbol);
+
 	const isBroker =
 		currentQuicktradePair &&
-		[TYPES.NETWORK, TYPES.BROKER].includes(quicktradePairs[currentQuicktradePair].type);
+		[TYPES.NETWORK, TYPES.BROKER].includes(
+			quicktradePairs[currentQuicktradePair].type
+		);
 
-	const isNetwork = quicktradePairs[currentQuicktradePair]?.type === TYPES.NETWORK;
+	const isNetwork =
+		quicktradePairs[currentQuicktradePair]?.type === TYPES.NETWORK;
 
 	const [data, setData] = useState([]);
 	const [chartData, setChartData] = useState({});
@@ -62,13 +62,13 @@ const CoinPage = ({
 
 	useEffect(() => {
 		handleMarket();
-		const assetValues = Object.keys(coins).map((
-			val) => coins[val].code).toLocaleString();
+		const assetValues = Object.keys(coins)
+			.map((val) => coins[val].code)
+			.toLocaleString();
 
-		getMiniCharts(assetValues)
-			.then((chartValues) =>{
-				setChartData(chartValues);
-			});
+		getMiniCharts(assetValues).then((chartValues) => {
+			setChartData(chartValues);
+		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -78,8 +78,7 @@ const CoinPage = ({
 	}, [data, chartData]);
 
 	const handleOptions = () => {
-		const selectedPair = currentCoin+'-usdt';
-
+		const selectedPair = currentCoin + '-usdt';
 
 		const ChartData = {
 			...chartData[selectedPair],
@@ -150,9 +149,7 @@ const CoinPage = ({
 							</div>
 						</div>
 						<div className="d-flex justify-content-between mt-3 mb-4 balance-wrapper">
-							<div>
-								
-							</div>
+							<div></div>
 							<div className="d-flex image-Wrapper">
 								<Image
 									iconId={''}
@@ -165,7 +162,9 @@ const CoinPage = ({
 									<EditWrapper stringId="HOLLAEX_TOKEN.BALANCE">
 										{STRINGS['HOLLAEX_TOKEN.BALANCE']}
 									</EditWrapper>{' '}
-									{formatCurrency(available_balance[`${currentCoin}_available`])}{' '}
+									{formatCurrency(
+										available_balance[`${currentCoin}_available`]
+									)}{' '}
 									{currentCoinUpper}{' '}
 									<Link className="link" to={'/wallet'}>
 										<EditWrapper stringId="HOLLAEX_TOKEN.OPEN_WALLET">
@@ -228,7 +227,9 @@ const CoinPage = ({
 							<EditWrapper stringId="HOLLAEX_TOKEN.TRADE">
 								<Button
 									label={STRINGS.formatString(
-										STRINGS['HOLLAEX_TOKEN.QUICK_TRADE'],
+										isBroker
+											? STRINGS['HOLLAEX_TOKEN.QUICK_TRADE']
+											: STRINGS['HOLLAEX_TOKEN.PRO_TRADE'],
 										currentCoinUpper
 									)}
 									type="button"
@@ -239,8 +240,8 @@ const CoinPage = ({
 						</div>
 					</div>
 					<div className="trade-details-wrapper">
-						<Details 
-							coinChartData={lineChartData} 
+						<Details
+							coinChartData={lineChartData}
 							pair={`${currentCoin}-usdt`}
 							brokerUsed={isBroker}
 							networkName={market?.display_name}

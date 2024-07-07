@@ -45,6 +45,12 @@ $close-button--margin: 1.5rem;
 		padding-bottom: $dialog--padding;
 	}
 }
+.cancel-withdraw-pop-up {
+	.ReactModal__Content {
+		width: 25% !important;
+		padding: 0rem 2.5rem 2.5rem 2.5rem !important;
+	}
+}
 
 .ReactModal__Content {
 	padding: $dialog--padding !important;
@@ -78,6 +84,12 @@ $close-button--margin: 1.5rem;
 	> * {
 		flex: 0;
 	}
+}
+
+.success_disable-display-wrapper,
+.success_active-display-wrapper {
+	min-width: $otp-dialog-min-width;
+	min-height: $otp-dialog-min-height;
 }
 
 .success_display-content {

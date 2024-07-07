@@ -115,6 +115,50 @@
 		"USER_DELETED": {
 			"html": "<div><p><p>Эрхэм ${name} </p></p><p>Бүртгэлийг устгах хүсэлт хийгдэж байна. Үйлчилгээний нөхцлийн дагуу таны дансны мэдээллийг устгах болно.</p><p> Хүндэтгэсэн<br> ${api_name} баг </p></div>",
 			"title": "Бүртгэл устгах хүсэлт"
+		},
+		"OTP_DISABLED": {
+			"html": "<div> <p> ${name} </p> <p> Таны дансны <b>хоёр чухал хамгаалалт (2FA) идэвхигүй болсон байна</b> гэж бичлэгт орууллаа. Таны дансаа аюулгүй болгохын тулд 2FA-г дахин идэвхжүүлэхийг та нарийвчлан зөвшөөрч байна.</p> <div> <div>Цаг: ${time}</div> <div>Улс: ${country}</div> <div>IP Хаяг: ${ip}</div> </div> <p> Энэ нь та биш эсэхийг баталгаажуулж байгаа бол тухайлбарыг бидэнтэй холбогдоно уу. </p> <p> Таны нэртэй<br> ${api_name} баг </p> </div>",
+			"title": "OTP Идэвхгүй болсон"
+		  },
+		"OTP_ENABLED": {
+			"html": "<div> <p> ${name} </p> <p> Таны дансны <b>хоёр чухал хамгаалалт (2FA) идэвхлэгдсэн байна</b> гэж бичлэгт орууллаа.</p> <div> <div>Цаг: ${time}</div> <div>Улс: ${country}</div> <div>IP Хаяг: ${ip}</div> </div> <p> Таны нэртэй<br> ${api_name} баг </p> </div>",
+			"title": "OTP Идэвхлэгдсэн"
+		},
+		"P2P_MERCHANT_IN_PROGRESS": {
+			"html": "<div><p> Эрхэм ${name} </p><p>Таны P2P гүйлгээнд үйл ажиллагаа илэрсэн байна. Энэ нь хэрэглэгч таныг гүйлгээ хийхийг хүсч байгааг илэрхийлж болно. Гүйлгээний байдлыг шалгахын тулд доорх холбоос дээр дарна уу:<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Гүйлгээний байдлыг шалгах</Button></a></div><p>Манай платформыг ашигласанд баярлалаа.</p><p>Хүсэлт ирсэн IP: ${ip}</p><p>Хүндэтгэсэн<br> ${api_name} баг </p></div>",
+			"title": "Таны P2P гүйлгээний шинэчлэлт"
+		},
+		"P2P_BUYER_PAID_ORDER": {
+			"html": "<div><p> Эрхэм ${name} </p><p>Та захиалгаа төлөгдсөн гэж тэмдэглэсэн байна. Худалдагч баталгаажуулж, мөнгийг чөлөөлөхийг хүлээж байна<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Таны захиалгад очих</Button></a></div><p>Манай платформыг ашигласанд баярлалаа.</p><p>Хүсэлт ирсэн IP: ${ip}</p><p>Хүндэтгэсэн<br> ${api_name} баг </p></div>",
+			"title": "Таны P2P захиалгад үйл ажиллагаа илэрсэн байна"
+		},
+		"P2P_ORDER_EXPIRED": {
+			"html": "<div><p> Эрхэм ${name} </p><p>Таны захиалга заасан хугацаанд үйл ажиллагаа байхгүй учир дууссан байна.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Таны захиалгад очих</Button></a></div><p>Манай платформыг ашигласанд баярлалаа.</p><p>Хүсэлт ирсэн IP: ${ip}</p><p>Хүндэтгэсэн<br> ${api_name} баг </p></div>",
+			"title": "Таны P2P захиалгад үйл ажиллагаа илэрсэн байна"
+		},
+		"P2P_ORDER_CLOSED": {
+			"html": "<div><p> Эрхэм ${name} </p><p>Таны захиалгыг манай дэмжлэгийн баг таны давж заалдах хүсэлтийн талаар шийдвэр гаргасны дараа хаасан байна<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Таны захиалгад очих</Button></a></div><p>Манай платформыг ашигласанд баярлалаа.</p><p>Хүндэтгэсэн<br> ${api_name} баг </p></div>",
+			"title": "Таны P2P захиалгад үйл ажиллагаа илэрсэн байна"
+		},
+		"P2P_BUYER_CANCELLED_ORDER": {
+			"html": "<div><p> Эрхэм ${name} </p><p>Та захиалгаа цуцалсан байна. Гүйлгээ хаагдсан байна.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Таны захиалгад очих</Button></a></div><p>Манай платформыг ашигласанд баярлалаа.</p><p>Хүсэлт ирсэн IP: ${ip}</p><p>Хүндэтгэсэн<br> ${api_name} баг </p></div>",
+			"title": "Таны P2P захиалгад үйл ажиллагаа илэрсэн байна"
+		},
+		"P2P_BUYER_APPEALED_ORDER": {
+			"html": "<div><p> Эрхэм ${name} </p><p>Та захиалгандаа гомдол гаргасан байна. Асуудлыг шийдвэрлэхийн тулд дэмжлэгтэй холбогдоно уу.</p><p>Хүсэлт ирсэн IP: ${ip}</p><p>Хүндэтгэсэн<br> ${api_name} баг </p></div>",
+			"title": "Таны P2P захиалгад үйл ажиллагаа илэрсэн байна"
+		},
+		"P2P_VENDOR_CONFIRMED_ORDER": {
+			"html": "<div><p> Эрхэм ${name} </p><p>Та гүйлгээг баталгаажуулж, мөнгийг чөлөөлсөн байна.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Таны захиалгад очих</Button></a></div><p>Манай платформыг ашигласанд баярлалаа.</p><p>Хүсэлт ирсэн IP: ${ip}</p><p>Хүндэтгэсэн<br> ${api_name} баг </p></div>",
+			"title": "Таны P2P захиалгад үйл ажиллагаа илэрсэн байна"
+		},
+		"P2P_VENDOR_CANCELLED_ORDER": {
+			"html": "<div><p> Эрхэм ${name} </p><p>Та захиалгаа цуцалсан байна. Гүйлгээ хаагдсан байна.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Таны захиалгад очих</Button></a></div><p>Манай платформыг ашигласанд баярлалаа.</p><p>Хүсэлт ирсэн IP: ${ip}</p><p>Хүндэтгэсэн<br> ${api_name} баг </p></div>",
+			"title": "Таны P2P захиалгад үйл ажиллагаа илэрсэн байна"
+		},
+		"P2P_VENDOR_APPEALED_ORDER": {
+			"html": "<div><p> Эрхэм ${name} </p><p>Та захиалгандаа гомдол гаргасан байна. Асуудлыг шийдвэрлэхийн тулд дэмжлэгтэй холбогдоно уу.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Таны захиалгад очих</Button></a></div><p>Манай платформыг ашигласанд баярлалаа.</p><p>Хүсэлт ирсэн IP: ${ip}</p><p>Хүндэтгэсэн<br> ${api_name} баг </p></div>",
+			"title": "Таны P2P захиалгад үйл ажиллагаа илэрсэн байна"
 		}
 	}
 }

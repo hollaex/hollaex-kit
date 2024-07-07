@@ -170,6 +170,15 @@ export const deactivateOtp = (values) => {
 	return requestAuthenticated('/admin/deactivate-otp', options);
 };
 
+export const disableWithdrawal = (values) => {
+	const options = {
+		method: 'POST',
+		body: JSON.stringify(values),
+	};
+
+	return requestAuthenticated('/admin/user/disable-withdrawal', options);
+};
+
 export const flagUser = (values) => {
 	const options = {
 		method: 'POST',
@@ -273,6 +282,24 @@ export const getUserAffiliation = (user_id, page = 1, limit = 50) => {
 		method: 'GET',
 	};
 	return requestAuthenticated(`/admin/user/affiliation?${query}`, options);
+};
+
+export const fetchReferralCodesByAdmin = (user_id, page = 1, limit = 50) => {
+	const params = { user_id, page, limit };
+	const query = querystring.stringify(params);
+
+	const options = {
+		method: 'GET',
+	};
+	return requestAuthenticated(`/admin/user/referral/code?${query}`, options);
+};
+
+export const postReferralCodeByAdmin = (values) => {
+	const options = {
+		method: 'POST',
+		body: JSON.stringify(values),
+	};
+	return requestAuthenticated(`/admin/user/referral/code`, options);
 };
 
 export const getUserReferer = (user_id) => {

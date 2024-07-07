@@ -16,6 +16,7 @@ $main-text--color: $colors-deactivate-color2;
 	}
 	.accordion_wrapper {
 		.accordion_section {
+			border-bottom: unset !important;
 			.accordion_section_title {
 				font-size: 1.75rem;
 			}

@@ -84,7 +84,7 @@ const Review = ({
 			<div className={classnames(...ROW_CLASSNAMES)}>
 				<div />
 				<div className="text-price blue-link pointer caps">
-					<Link to={`/assets/coin/${symbol?.toLowerCase()}`}>
+					<Link to={`/prices/coin/${symbol?.toLowerCase()}`}>
 						<EditWrapper stringId="ABOUT_LINK">
 							{STRINGS.formatString(STRINGS['ABOUT_LINK'], symbol)}
 						</EditWrapper>

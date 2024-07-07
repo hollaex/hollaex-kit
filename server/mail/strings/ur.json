@@ -115,6 +115,50 @@
 		"USER_DELETED": {
 			"html": "<div><p><p>پیارے ${name} </p></p><p>لاگ ان کی بہت زیادہ کوششوں کی وجہ سے آپ کا اکاؤنٹ ${login_timeout} منٹ کے لیے مقفل کر دیا گیا ہے۔<br />اکاؤنٹ حذف کرنے کی درخواست جاری ہے۔ سروس کی شرائط کے مطابق آپ کے اکاؤنٹ پر موجود معلومات کو ہٹا دیا جائے گا۔</p><p> حوالے<br> ${api_name} ٹیم</p></div>",
 			"title": "اکاؤنٹ حذف کرنے کی درخواست"
+		},
+		"OTP_DISABLED": {
+			"html": "<div> <p> عزیز ${name} </p> <p> ہم نے ریکارڈ کیا ہے کہ آپ کی <b>دو مرحلی تصدیق (2FA) غیر فعال کردی گئی ہے</b> آپ کے اکاؤنٹ پر۔ آپ کے اکاؤنٹ کی حفاظت کے لئے 2FA کو دوبارہ فعال کرنا بہت زیادہ مشورہ دیا گیا ہے۔</p> <div> <div>وقت: ${time}</div> <div>ملک: ${country}</div> <div>IP پتہ: ${ip}</div> </div> <p> اگر یہ آپ نہیں تھے تو براہ کرم فوراً ہم سے رابطہ کریں۔ </p> <p> خیریت واحترام<br> ${api_name} ٹیم </p> </div>",
+			"title": "OTP غیر فعال"
+		  },
+		"OTP_ENABLED": {
+			"html": "<div> <p> عزیز ${name} </p> <p> ہم نے ریکارڈ کیا ہے کہ آپ کی <b>دو مرحلی تصدیق (2FA) فعال کردی گئی ہے</b> آپ کے اکاؤنٹ پر۔</p> <div> <div>وقت: ${time}</div> <div>ملک: ${country}</div> <div>IP پتہ: ${ip}</div> </div> <p> خیریت واحترام<br> ${api_name} ٹیم </p> </div>",
+			"title": "OTP فعال"
+		},
+		"P2P_MERCHANT_IN_PROGRESS": {
+			"html": "<div><p> محترم ${name} </p><p>ہم نے آپ کی P2P ڈیل پر سرگرمی کا پتہ لگایا ہے، جس سے ظاہر ہوتا ہے کہ ایک کسٹمر آپ کے ساتھ ٹرانزیکٹ کرنا چاہتا ہے۔ اپنی ڈیل کی حالت چیک کرنے کے لئے نیچے دیئے گئے لنک پر کلک کریں:<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">ڈیل کی حالت چیک کریں</Button></a></div><p>ہمارا پلیٹ فارم استعمال کرنے کا شکریہ۔</p><p>درخواست شروع کی گئی IP: ${ip}</p><p>نیک تمنائیں<br> ${api_name} ٹیم </p></div>",
+			"title": "آپ کی P2P ڈیل کی تازہ کاری"
+		},
+		"P2P_BUYER_PAID_ORDER": {
+			"html": "<div><p> محترم ${name} </p><p>آپ نے اپنا آرڈر ادا کیا ہوا نشان زد کیا ہے۔ فروخت کنندہ کے چیک، تصدیق اور فنڈز جاری کرنے کا انتظار<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">اپنے آرڈر پر جائیں</Button></a></div><p>ہمارا پلیٹ فارم استعمال کرنے کا شکریہ۔</p><p>درخواست شروع کی گئی IP: ${ip}</p><p>نیک تمنائیں<br> ${api_name} ٹیم </p></div>",
+			"title": "آپ کے P2P آرڈر میں سرگرمی کا پتہ چلا ہے"
+		},
+		"P2P_ORDER_EXPIRED": {
+			"html": "<div><p> محترم ${name} </p><p>آپ کے آرڈر کا وقت مکمل ہو گیا ہے کیونکہ دی گئی مدت میں کوئی سرگرمی نہیں ہوئی۔<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">اپنے آرڈر پر جائیں</Button></a></div><p>ہمارا پلیٹ فارم استعمال کرنے کا شکریہ۔</p><p>درخواست شروع کی گئی IP: ${ip}</p><p>نیک تمنائیں<br> ${api_name} ٹیم </p></div>",
+			"title": "آپ کے P2P آرڈر میں سرگرمی کا پتہ چلا ہے"
+		},
+		"P2P_ORDER_CLOSED": {
+			"html": "<div><p> محترم ${name} </p><p>آپ کے اپیل کی درخواست پر فیصلہ آنے کے بعد آپ کا آرڈر ہماری سپورٹ ٹیم نے بند کر دیا ہے<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">اپنے آرڈر پر جائیں</Button></a></div><p>ہمارا پلیٹ فارم استعمال کرنے کا شکریہ۔</p><p>نیک تمنائیں<br> ${api_name} ٹیم </p></div>",
+			"title": "آپ کے P2P آرڈر میں سرگرمی کا پتہ چلا ہے"
+		},
+		"P2P_BUYER_CANCELLED_ORDER": {
+			"html": "<div><p> محترم ${name} </p><p>آپ نے اپنا آرڈر منسوخ کر دیا ہے۔ ٹرانزیکشن بند ہو گئی ہے۔<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">اپنے آرڈر پر جائیں</Button></a></div><p>ہمارا پلیٹ فارم استعمال کرنے کا شکریہ۔</p><p>درخواست شروع کی گئی IP: ${ip}</p><p>نیک تمنائیں<br> ${api_name} ٹیم </p></div>",
+			"title": "آپ کے P2P آرڈر میں سرگرمی کا پتہ چلا ہے"
+		},
+		"P2P_BUYER_APPEALED_ORDER": {
+			"html": "<div><p> محترم ${name} </p><p>آپ نے اپنے آرڈر پر اپیل کی ہے۔ مسئلہ حل کرنے کے لئے برائے مہربانی سپورٹ سے رابطہ کریں۔</p><p>درخواست شروع کی گئی IP: ${ip}</p><p>نیک تمنائیں<br> ${api_name} ٹیم </p></div>",
+			"title": "آپ کے P2P آرڈر میں سرگرمی کا پتہ چلا ہے"
+		},
+		"P2P_VENDOR_CONFIRMED_ORDER": {
+			"html": "<div><p> محترم ${name} </p><p>آپ نے ٹرانزیکشن کی تصدیق کی ہے اور فنڈز جاری کیے ہیں۔<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">اپنے آرڈر پر جائیں</Button></a></div><p>ہمارا پلیٹ فارم استعمال کرنے کا شکریہ۔</p><p>درخواست شروع کی گئی IP: ${ip}</p><p>نیک تمنائیں<br> ${api_name} ٹیم </p></div>",
+			"title": "آپ کے P2P آرڈر میں سرگرمی کا پتہ چلا ہے"
+		},
+		"P2P_VENDOR_CANCELLED_ORDER": {
+			"html": "<div><p> محترم ${name} </p><p>آپ نے اپنا آرڈر منسوخ کر دیا ہے۔ ٹرانزیکشن بند ہو گئی ہے۔<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">اپنے آرڈر پر جائیں</Button></a></div><p>ہمارا پلیٹ فارم استعمال کرنے کا شکریہ۔</p><p>درخواست شروع کی گئی IP: ${ip}</p><p>نیک تمنائیں<br> ${api_name} ٹیم </p></div>",
+			"title": "آپ کے P2P آرڈر میں سرگرمی کا پتہ چلا ہے"
+		},
+		"P2P_VENDOR_APPEALED_ORDER": {
+			"html": "<div><p> محترم ${name} </p><p>آپ نے اپنے آرڈر پر اپیل کی ہے۔ مسئلہ حل کرنے کے لئے برائے مہربانی سپورٹ سے رابطہ کریں۔<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">اپنے آرڈر پر جائیں</Button></a></div><p>ہمارا پلیٹ فارم استعمال کرنے کا شکریہ۔</p><p>درخواست شروع کی گئی IP: ${ip}</p><p>نیک تمنائیں<br> ${api_name} ٹیم </p></div>",
+			"title": "آپ کے P2P آرڈر میں سرگرمی کا پتہ چلا ہے"
 		}
 	}
 }

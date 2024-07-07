@@ -11,7 +11,6 @@ import {
 import STRINGS from 'config/localizedStrings';
 import { STATIC_ICONS } from 'config/icons';
 import { DEFAULT_COIN_DATA } from 'config/constants';
-import { getLanguage } from 'utils/string';
 import { getTheme } from 'utils/theme';
 import { toFixed } from 'utils/currency';
 import { getDecimals } from 'utils/utils';
@@ -60,7 +59,10 @@ export const generateInitialValues = (
 		const roundedMarkup = new BigNumber(feeMarkup)
 			.decimalPlaces(decimalPoint)
 			.toNumber();
-		initialValues.fee += roundedMarkup;
+
+		initialValues.fee = new BigNumber(initialValues.fee || 0)
+			.plus(roundedMarkup || 0)
+			.toNumber();
 	}
 
 	initialValues.destination_tag = '';
@@ -377,13 +379,6 @@ export const generateFormValues = (
 			ishorizontalfield: true,
 		};
 	}
-
-	fields.captcha = {
-		type: 'captcha',
-		language: getLanguage(),
-		theme: theme,
-		validate: [required],
-	};
 
 	return fields;
 };

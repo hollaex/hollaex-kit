@@ -109,14 +109,13 @@ $close-icon--height: 2rem;
 		background: var(--base_secondary-navigation-bar);
 		padding: 1.5rem;
 		border-radius: 10px;
-		width: 465px;
-		border: 2px solid transparent;
+		width: 415px;
+		border: 1px solid $colors-super-pale-black;
 		&:focus-within {
 			background: var(--base_wallet-sidebar-and-popup);
-			border: 2px solid #5d63ff;
+			border: 2px solid #5d63ff !important;
 		}
 
-		  
 		.currency-dropdown:hover,
 		.input-group__select:hover {
 			.input-group__select,
@@ -130,17 +129,41 @@ $close-icon--height: 2rem;
 		}
 	}
 
-	.currency-dropdown {
-		border: 1px solid #b2b3b3;
-		border-radius: 5px;
+	.active-border {
+		border: 1px solid $colors-main-black !important;
+		&:focus-within {
+			background: var(--base_wallet-sidebar-and-popup);
+			border: 1px solid $colors-main-black !important;
+		}
 	}
 
-	.input-group__input {
+	.quick-trade-input:hover,
+	.currency-dropdown:hover {
+		border: 1px solid $colors-main-black;
+	}
+
+	.currency-dropdown {
+		border: 1px solid $colors-super-pale-black;
+		border-radius: 30px;
+		height: 100%;
+		cursor: pointer;
+		margin-top: 1%;
+		.ant-select-arrow {
+			top: 50% !important;
+		}
+	}
+
+	.active-input {
+		color: $colors-main-black !important;
+	}
+
+	.input-group__input,
+	.active-input {
 		text-align: right;
 		color: var(--labels_secondary-inactive-label-text-graphics);
 		font-size: 2.1rem;
 		margin-left: 1rem;
-		height: 60px;
+		height: 40px;
 		&:focus,
 		&:active {
 			background-color: $app-light-background !important;
@@ -158,9 +181,10 @@ $close-icon--height: 2rem;
 		display: block;
 	}
 
-	.input-group__select {
+	.input-group__select,
+	.input-group__select_disabled {
 		color: var(--labels_secondary-inactive-label-text-graphics);
-		padding: 1.125rem 1rem;
+		margin-left: 5%;
 		font-size: 1.4rem;
 		.ant-select-selector {
 			padding: 0;
@@ -170,6 +194,10 @@ $close-icon--height: 2rem;
 		.anticon {
 			color: var(--labels_important-active-labels-text-graphics);
 		}
+	}
+
+	.input-group__select_disabled {
+		font-size: 1.2rem;
 	}
 }
 .quick_trade-wrapper.width-none {
@@ -184,6 +212,19 @@ $close-icon--height: 2rem;
 	height: 664px;
 	border: 1px solid $colors-super-pale-black;
 	font-size: 1.3rem;
+
+	border-radius: 10px;
+
+	.trade-details-wrapper {
+		border-top-left-radius: 10px;
+		border-bottom-left-radius: 10px;
+	}
+
+	.goto-wallet-container {
+		.go-to-text :hover {
+			opacity: 0.7;
+		}
+	}
 
 	.review-block-wrapper {
 		margin: 1rem 0;
@@ -225,12 +266,12 @@ $close-icon--height: 2rem;
 		padding: 5rem;
 		background: transparent
 			linear-gradient(
-				316deg,
-				var(--base_secondary-navigation-bar, 0.25) 0%,
-				var(--base_wallet-sidebar-and-popup, 0.25) 100%
+				var(--base_wallet-sidebar-and-popup, 0.5) 50%,
+				var(--base_secondary-navigation-bar, 0.25) 60%
 			)
 			0% 0% no-repeat padding-box;
-
+		border-top-right-radius: 10px;
+		border-bottom-right-radius: 10px;
 		.inner-content {
 			width: 450px;
 			display: flex;
@@ -239,6 +280,10 @@ $close-icon--height: 2rem;
 			margin-left: auto;
 			.btn-wrapper {
 				padding: 1rem 0;
+				.holla-button {
+					border-radius: 10px;
+					width: fit-content !important;
+				}
 				.holla-button.disabled {
 					svg {
 						fill: rgba(0, 0, 0, 0.38) !important;
@@ -250,7 +295,7 @@ $close-icon--height: 2rem;
 				}
 			}
 			.btn-margin-wrapper {
-				margin-top: 5rem;
+				margin-bottom: 5rem;
 			}
 			.py-2 {
 				display: flex;
@@ -273,6 +318,9 @@ $close-icon--height: 2rem;
 				span {
 					color: $link_2;
 				}
+				.balance-value-text:hover {
+					opacity: 0.7;
+				}
 			}
 			.footer-text {
 				font-size: 1rem;
@@ -283,7 +331,7 @@ $close-icon--height: 2rem;
 			}
 			.swap-wrapper-wrapper {
 				align-self: self-start;
-				margin-left: 4rem;
+				margin-left: 10%;
 			}
 		}
 	}
@@ -313,7 +361,7 @@ $close-icon--height: 2rem;
 		.ReactModal__Content {
 			background-color: $quick-trade-background !important;
 			.dialog-mobile-content {
-				padding: 2.5rem 0 !important;
+				// padding: 2.5rem 0 !important;
 				display: block;
 			}
 		}
@@ -351,8 +399,12 @@ $close-icon--height: 2rem;
 		margin: 0;
 
 		.input-group__input {
-			height: 60px;
+			height: 40px;
 			font-size: 2.5rem;
+		}
+
+		.currency-dropdown {
+			margin-top: 0;
 		}
 	}
 	.quick_trade-wrapper {
@@ -395,6 +447,9 @@ $close-icon--height: 2rem;
 				.btn-wrapper {
 					align-items: center !important;
 					margin-top: 5rem;
+					.holla-button {
+						border-radius: unset !important;
+					}
 				}
 				.footer-text {
 					font-size: $font-size-mobile-txt !important;
@@ -408,17 +463,13 @@ $close-icon--height: 2rem;
 			padding: 2rem 1.7rem;
 			border-radius: 10px;
 			width: 100%;
-			min-height: 19.25rem;
 			font-size: 2.25rem;
 		}
 
 		.input-group__select {
 			font-size: 2.3rem;
-			min-height: 60px;
-			padding: 1rem 0.5rem;
 			width: 15rem;
 			.ant-select-selector {
-				margin-top: 0.375rem;
 				height: 5rem;
 			}
 		}
@@ -447,6 +498,7 @@ $close-icon--height: 2rem;
 	.swap-wrapper,
 	.swap-wrapper-wrapper {
 		width: 100% !important;
+		margin-left: unset !important;
 	}
 
 	.price-title-wrapper {
@@ -471,6 +523,26 @@ $close-icon--height: 2rem;
 .loading-border {
 	position: absolute;
 	border: 1px solid $link;
+}
+
+@media (min-width: 450px) and (max-width: 768px) {
+	.quick_trade-container {
+		.currency-dropdown {
+			margin-right: 15%;
+		}
+	}
+}
+
+@media (min-width: 768px) and (max-width: 800px) {
+	.ant-select-arrow {
+		right: 20px !important;
+		font-size: 14px !important;
+	}
+	.quick_trade-container {
+		.input-group__input {
+			height: 60px !important;
+		}
+	}
 }
 
 @media (min-width: 1500px) {

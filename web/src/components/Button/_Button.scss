@@ -18,6 +18,7 @@
 		background-color: $colors-deactivate-color4 !important;
 
 		.button-icon {
+			display: none;
 			svg {
 				fill: rgba(0, 0, 0, 0.38) !important;
 			}

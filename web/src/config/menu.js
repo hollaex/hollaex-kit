@@ -1,3 +1,5 @@
+import { isMobile } from 'react-device-detect';
+
 export const MENU_ITEMS = {
 	top: [
 		{
@@ -16,48 +18,34 @@ export const MENU_ITEMS = {
 				'/verification',
 				'/settings',
 			],
-			icon_id: 'ACCOUNT_LINE',
+			icon_id: `${isMobile ? 'FOOTER_ACCOUNT_LINE' : 'ACCOUNT_LINE'}`,
 			string_id: 'ACCOUNT_TEXT',
 			hide_from_appbar: true,
 			hide_from_sidebar: true,
 			hide_from_menulist: true,
 			hide_from_bottom_nav: false,
 		},
-		{
-			id: 'assets',
-			path: '/assets',
-			icon_id: 'FOOTERBAR_ASSETS_TRADE',
-			string_id: 'ASSETS',
-			hide_from_sidebar: true,
-			hide_from_appbar: false,
-			hide_from_menulist: true,
-			hide_from_bottom_nav: false,
-		},
 	],
 	features: [
 		{
-			id: 'trade_tab',
-			path: '/trade',
-			icon_id: 'SIDEBAR_TRADING_ACTIVE',
-			string_id: 'ACCOUNTS.TAB_TRADE',
-			hide_from_sidebar: true,
-			hide_from_bottom_nav: false,
-		},
-		{
 			id: 'pro_trade',
 			path: '/markets',
-			icon_id: 'SIDEBAR_TRADING_ACTIVE',
-			string_id: 'PRO_TRADE',
+			icon_id: `${
+				isMobile ? 'FOOTER_TRADING_ACTIVE' : 'SIDEBAR_TRADING_ACTIVE'
+			}`,
+			string_id: 'SUMMARY.MARKETS',
 			hide_from_sidebar: true,
 			hide_from_bottom_nav: false,
+			hide_from_menulist: true,
 		},
 		{
 			id: 'quick_trade',
 			path: 'quick-trade',
-			icon_id: 'QUICK_TRADE_TAB_ACTIVE',
-			string_id: 'QUICK_TRADE',
+			icon_id: 'FOOTER_QUICK_ACTIVE',
+			string_id: 'CONVERT',
 			hide_from_sidebar: true,
 			hide_from_bottom_nav: false,
+			hide_from_menulist: true,
 		},
 		{
 			id: 'stake_page',
@@ -65,6 +53,14 @@ export const MENU_ITEMS = {
 			icon_id: 'TAB_STAKE',
 			string_id: 'ACCOUNTS.TAB_STAKE',
 			hide_from_appbar: true,
+			hide_from_bottom_nav: true,
+		},
+		{
+			id: 'p2p',
+			path: '/p2p',
+			icon_id: 'TAB_P2P',
+			string_id: 'ACCOUNTS.P2P',
+			hide_from_appbar: false,
 			hide_from_bottom_nav: true,
 		},
 		{
@@ -88,15 +84,16 @@ export const MENU_ITEMS = {
 	middle: [
 		{
 			path: '/wallet',
-			icon_id: 'TAB_WALLET',
+			icon_id: `${isMobile ? 'WALLET_FOOTER' : 'TAB_WALLET'}`,
 			string_id: 'ACCOUNTS.TAB_WALLET',
+			hide_from_appbar: false,
 		},
 		{
 			path: '/transactions',
 			icon_id: 'TAB_HISTORY',
 			string_id: 'ACCOUNTS.TAB_HISTORY',
 			hide_from_appbar: true,
-			hide_from_bottom_nav: false,
+			hide_from_bottom_nav: true,
 		},
 		{
 			path: '/security',
@@ -113,14 +110,24 @@ export const MENU_ITEMS = {
 			hide_from_bottom_nav: true,
 		},
 		{
+			id: 'prices',
+			path: '/prices',
+			icon_id: 'FOOTERBAR_ASSETS_TRADE',
+			string_id: 'HOLLAEX_TOKEN.PRICES.TITLE',
+			hide_from_sidebar: true,
+			hide_from_appbar: false,
+			hide_from_menulist: true,
+			hide_from_bottom_nav: false,
+		},
+	],
+	bottom: [
+		{
 			path: '/settings',
 			icon_id: 'TAB_SETTING',
 			string_id: 'ACCOUNTS.TAB_SETTINGS',
 			hide_from_appbar: true,
 			hide_from_bottom_nav: true,
 		},
-	],
-	bottom: [
 		{
 			path: 'help',
 			icon_id: 'SIDEBAR_HELP',

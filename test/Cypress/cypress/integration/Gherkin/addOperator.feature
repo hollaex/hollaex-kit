@@ -18,12 +18,8 @@ Scenario: Admin assignes, reassignes, changes and revokes a role to a user
     When Admin gives a non-member user a Role
     Then The new user is in the role table with supervisor role
 
-Scenario: Invtied user login in the email box
-    Given The invited user logged in 
-    When The user got the temporary password
-    Then Password is saved
-
 Scenario: The user login as the supervisor
-    Given The user can loged in
+    Given The user got the temporary password is saved
+    And The user can loged in
     Then The status is supervisor
 

@@ -28,8 +28,8 @@
 		font-size: 0.9rem;
 		height: 2.5rem;
 		padding: 0.5rem 0.8rem;
-		width: 3.2rem;
-		max-width: 3.2rem;
+		width: 4.2rem;
+		max-width: 4.2rem;
 		/* (22 -6) / 5 */
 	}
 
@@ -41,7 +41,9 @@
 
 	.app-bar-add-tab-content {
 		font-size: 0.9rem;
-		overflow-y: scroll;
+		// overflow-y: scroll;
+		scrollbar-width: thin;
+		scrollbar-color: $colors-black $app-background-color;
 		padding: 0.3rem 0;
 		.scroll-view {
 			overflow-y: auto;

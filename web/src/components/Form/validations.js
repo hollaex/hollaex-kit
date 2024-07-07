@@ -37,7 +37,7 @@ export const passwordsMatch = (value, allValues) =>
 export const username = (value = '') =>
 	!usernameRegEx.test(value) ? STRINGS['INVALID_USERNAME'] : undefined;
 
-export const validAddress = (symbol = '', message, network) => {
+export const validAddress = (symbol = '', message, network, key = '') => {
 	let currency = network ? network.toUpperCase() : symbol.toUpperCase();
 	return (address) => {
 		let valid;
@@ -48,7 +48,10 @@ export const validAddress = (symbol = '', message, network) => {
 
 			const supported = WAValidator.findCurrency(currency);
 			if (supported) {
-				valid = WAValidator.validate(address, currency);
+				valid = WAValidator.validate(
+					address ? address : (address = key),
+					currency
+				);
 			} else {
 				valid = true;
 			}

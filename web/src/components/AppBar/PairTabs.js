@@ -13,10 +13,13 @@ import { Slider, EditWrapper, PriceChange } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { formatToCurrency } from 'utils/currency';
 import { MarketsSelector } from 'containers/Trade/utils';
+import { getSparklines } from 'actions/chartAction';
+import SparkLine from 'containers/TradeTabs/components/SparkLine';
 
 class PairTabs extends Component {
 	state = {
 		activePairTab: '',
+		sparkLine: [],
 	};
 
 	componentDidMount() {
@@ -27,6 +30,9 @@ class PairTabs extends Component {
 		}
 		this.setState({ activePairTab: active });
 		this.initTabs(pairs, active);
+		getSparklines(Object.keys(pairs)).then((sparkLine) =>
+			this.setState({ sparkLine })
+		);
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -84,6 +90,7 @@ class PairTabs extends Component {
 			activePairTab,
 			isMarketSelectorVisible,
 			isToolsSelectorVisible,
+			sparkLine,
 		} = this.state;
 
 		const { location, favourites, markets, quicktrade } = this.props;
@@ -149,7 +156,24 @@ class PairTabs extends Component {
 											<div className="title-font ml-1">
 												{formatToCurrency(close, increment_price)}
 											</div>
-											<PriceChange market={market} key={key} />
+											<PriceChange
+												className="markets-drop-down"
+												market={market}
+												key={key}
+											/>
+											<SparkLine
+												data={
+													!sparkLine[key] ||
+													(sparkLine[key] &&
+														sparkLine[key].close &&
+														sparkLine[key].close.length < 2)
+														? { close: [0.1, 0.1, 0.1], open: [] }
+														: sparkLine[key]
+												}
+												containerProps={{
+													style: { height: '100%', width: '100%' },
+												}}
+											/>
 										</div>
 									) : (
 										<div className="d-flex align-items-center">
@@ -175,7 +199,7 @@ class PairTabs extends Component {
 							{favourites && favourites.length > 0 && (
 								<TabList
 									items={favourites}
-									markets={[...filterQuickTrade , ...markets]}
+									markets={[...filterQuickTrade, ...markets]}
 									activePairTab={activePairTab}
 									onTabClick={this.onTabClick}
 								/>
@@ -237,7 +261,7 @@ const mapStateToProps = (state) => {
 		favourites,
 		constants,
 		markets: MarketsSelector(state),
-		quicktrade
+		quicktrade,
 	};
 };
 

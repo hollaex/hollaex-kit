@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Select } from 'antd';
+import { Select, Input } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
 import classnames from 'classnames';
 import { isMobile } from 'react-device-detect';
 import { Image, IconTitle, EditWrapper } from 'components';
@@ -17,6 +18,8 @@ const WithdrawalLimits = ({
 	setSelectedLevel,
 	options,
 	icons: ICONS,
+	search,
+	setSearch,
 }) => {
 	const accountData = config_level[selectedLevel] || {};
 	const description =
@@ -87,16 +90,35 @@ const WithdrawalLimits = ({
 									}
 									textType="title bold text-align-left"
 									iconPath={ICONS['FEES_AND_LIMITS_WITHDRAWAL_LIMITS']}
+									className="fees-limits-title"
 								/>
-								<div className="py-4">
+								<div className="d-flex justify-content-between">
+									<div className="py-4">
+										<div>
+											<EditWrapper stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_2.SUBTITLE">
+												{
+													STRINGS[
+														'FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_2.SUBTITLE'
+													]
+												}
+											</EditWrapper>
+										</div>
+									</div>
 									<div>
-										<EditWrapper stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_2.SUBTITLE">
-											{
-												STRINGS[
-													'FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_2.SUBTITLE'
-												]
+										<Input
+											allowClear
+											prefix={<SearchOutlined className="secondary-text" />}
+											placeholder={
+												STRINGS['FEES_AND_LIMITS.SEARCH_PLACEHOLDER']
 											}
-										</EditWrapper>
+											value={search}
+											onChange={({ target: { value } }) => setSearch(value)}
+											style={{
+												width: 200,
+											}}
+											bordered={false}
+											className="kit-divider"
+										/>
 									</div>
 								</div>
 								<div className="wallet-assets_block">
@@ -107,6 +129,7 @@ const WithdrawalLimits = ({
 										tiers={config_level}
 										transaction_limits={transaction_limits}
 										type={'individual'}
+										search={search}
 									/>
 								</div>
 							</div>
@@ -120,6 +143,7 @@ const WithdrawalLimits = ({
 									}
 									textType="title bold text-align-left"
 									iconPath={ICONS['FEES_AND_LIMITS_WITHDRAWAL_LIMITS']}
+									className="fees-limits-title"
 								/>
 								<div className="py-4">
 									<div>

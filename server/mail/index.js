@@ -13,6 +13,9 @@ const SEND_EMAIL_COPY = () => GET_KIT_SECRETS().emails.send_email_to_support;
 const API_NAME = () => GET_KIT_CONFIG().api_name;
 const SUPPORT_SOURCE = () => `'${API_NAME()} Support <${SENDER_EMAIL()}>'`;
 const BCC_ADDRESSES = () => SEND_EMAIL_COPY() ? [AUDIT_EMAIL()] : [];
+const SMTP_SERVER = () => GET_KIT_SECRETS().smtp.server;
+const SMTP_USER = () => GET_KIT_SECRETS().smtp.user;
+
 const DEFAULT_LANGUAGE = () => {
 	try {
 		return GET_KIT_CONFIG().defaults.language;
@@ -60,6 +63,14 @@ const sendEmail = (
 		case MAILTYPE.USER_DELETED:
 		case MAILTYPE.DEPOSIT:
 		case MAILTYPE.WITHDRAWAL:
+		case MAILTYPE.P2P_MERCHANT_IN_PROGRESS:
+		case MAILTYPE.P2P_BUYER_PAID_ORDER:
+		case MAILTYPE.P2P_ORDER_EXPIRED:
+		case MAILTYPE.P2P_BUYER_CANCELLED_ORDER:
+		case MAILTYPE.P2P_BUYER_APPEALED_ORDER:
+		case MAILTYPE.P2P_VENDOR_CONFIRMED_ORDER:
+		case MAILTYPE.P2P_VENDOR_CANCELLED_ORDER:
+		case MAILTYPE.P2P_VENDOR_APPEALED_ORDER:
 		case MAILTYPE.DOC_REJECTED:
 		case MAILTYPE.DOC_VERIFIED: {
 			to.BccAddresses = BCC_ADDRESSES();
@@ -75,6 +86,13 @@ const sendEmail = (
 		case MAILTYPE.USER_VERIFICATION:
 		case MAILTYPE.CONTACT_FORM: {
 			to.ToAddresses = [AUDIT_EMAIL()];
+			break;
+		}
+		case MAILTYPE.OTP_DISABLED:
+		case MAILTYPE.OTP_ENABLED:{
+			if (data.time) data.time = formatDate(data.time, language);
+			if (data.ip) data.country = getCountryFromIp(data.ip);
+			to.BccAddresses = BCC_ADDRESSES();
 			break;
 		}
 		default:
@@ -111,13 +129,15 @@ const sendRawEmail = (
 };
 
 const send = (params) => {
-	return sendSMTPEmail(params)
-		.then((info) => {
-			return info;
-		})
-		.catch((error) => {
-			loggerEmail.error('mail/index/sendSTMPEmail', error);
-		});
+	if (SMTP_SERVER() && SMTP_USER() && SMTP_SERVER().length > 1) {
+		return sendSMTPEmail(params)
+			.then((info) => {
+				return info;
+			})
+			.catch((error) => {
+				loggerEmail.error('mail/index/sendSTMPEmail', error);
+			});
+	}
 };
 
 const testSendSMTPEmail = (receiver = '', smtp = {}) => {
