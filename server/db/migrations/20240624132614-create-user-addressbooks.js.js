@@ -21,8 +21,9 @@ module.exports = {
 				}
 			},
 			addresses: {
-				type: Sequelize.ARRAY(Sequelize.JSONB),
+				type: Sequelize.JSONB,
 				allowNull: false,
+				defaultValue: []
 			},
 			created_at: {
 				allowNull: false,

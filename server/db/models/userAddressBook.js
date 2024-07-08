@@ -20,7 +20,7 @@ module.exports = function (sequelize, DataTypes) {
 				}
 			},
 			addresses: {
-				type: DataTypes.ARRAY(DataTypes.JSONB),
+				type: DataTypes.JSONB,
 				allowNull: false,
 			}
 		},
