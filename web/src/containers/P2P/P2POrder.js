@@ -204,6 +204,10 @@ const P2POrder = ({
 						data: {
 							id: selectedOrder.id,
 							status,
+							receiver_id:
+								user.id === selectedOrder?.merchant_id
+									? selectedOrder?.user_id
+									: selectedOrder?.merchant_id,
 						},
 					},
 				],

@@ -46,6 +46,8 @@ import { playBackgroundAudioNotification } from 'utils/utils';
 import { getToken, isLoggedIn } from 'utils/token';
 import { NORMAL_CLOSURE_CODE, isIntentionalClosure } from 'utils/webSocket';
 import { ERROR_TOKEN_EXPIRED } from 'components/Notification/Logout';
+import { notification } from 'antd';
+import STRINGS from 'config/localizedStrings';
 
 class Container extends Component {
 	constructor(props) {
@@ -260,7 +262,14 @@ class Container extends Component {
 			privateSocket.send(
 				JSON.stringify({
 					op: 'subscribe',
-					args: ['trade', 'wallet', 'order', 'deposit', 'usertrade'],
+					args: [
+						'trade',
+						'wallet',
+						'order',
+						'deposit',
+						'usertrade',
+						`p2pChat:${this.props.user.id}`,
+					],
 				})
 			);
 			// this.wsInterval = setInterval(() => {
@@ -420,6 +429,32 @@ class Container extends Component {
 						data.data.coins = this.props.coins;
 						this.props.setNotification(NOTIFICATIONS.DEPOSIT, data.data, show);
 					}
+					break;
+				case 'p2pChat':
+					notification.open({
+						message: (data.action = 'getStatus'
+							? STRINGS['P2P.STATUS_UPDATE']
+							: STRINGS['P2P.NEW_MESSAGE']),
+						description: (
+							<div>
+								<div
+									style={{
+										textDecoration: 'underline',
+										fontWeight: 'bold',
+										cursor: 'pointer',
+									}}
+									onClick={() => {
+										window.location.href = `${window.location.origin}/p2p/order/${data.data.id}`;
+									}}
+								>
+									{STRINGS['P2P.CLICK_TO_VIEW']}
+								</div>
+							</div>
+						),
+
+						placement: 'bottomRight',
+						type: 'info',
+					});
 					break;
 				default:
 					break;
