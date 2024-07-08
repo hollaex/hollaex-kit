@@ -158,6 +158,7 @@ class Summary extends Component {
 			router,
 			icons: ICONS,
 			referral_history_config,
+			sparkLineChartData,
 		} = this.props;
 		const {
 			selectedAccount,
@@ -213,6 +214,7 @@ class Summary extends Component {
 							logout={this.logoutConfirm}
 							balance={balance}
 							chartData={chartData}
+							sparkLineChartData={sparkLineChartData}
 							totalAssets={totalAssets}
 							lastMonthVolume={lastMonthVolume}
 							traderAccTitle={traderAccTitle}
@@ -305,6 +307,7 @@ class Summary extends Component {
 										pairs={pairs}
 										router={router}
 										showContent={true}
+										chartData={sparkLineChartData}
 									/>
 								</SummaryBlock>
 								{/*<div className="trading-volume-wrapper">
@@ -366,6 +369,7 @@ const mapStateToProps = (state) => ({
 	chartData: state.asset.chartData,
 	totalAsset: state.asset.totalAsset,
 	referral_history_config: state.app.constants.referral_history_config,
+	sparkLineChartData: state.app.sparkLineChartData,
 });
 
 const mapDispatchToProps = (dispatch) => ({
