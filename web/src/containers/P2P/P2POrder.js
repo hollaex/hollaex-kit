@@ -167,6 +167,29 @@ const P2POrder = ({
 				}
 			})
 			.catch((err) => err);
+
+		if (
+			selectedOrder.user_status === 'pending' &&
+			moment() >
+				moment(selectedOrder.created_at).add(
+					selectedOrder.transaction_duration || 30,
+					'minutes'
+				)
+		) {
+			if (selectedOrder.transaction_status !== 'expired') {
+				updateTransaction({
+					id: selectedOrder.id,
+					transaction_status: 'expired',
+				})
+					.then((res) => {
+						setSelectedOrder({
+							...selectedOrder,
+							transaction_status: 'expired',
+						});
+					})
+					.catch((err) => err);
+			}
+		}
 	}, []);
 
 	const getTransaction = async () => {
