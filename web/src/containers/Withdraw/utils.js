@@ -11,7 +11,7 @@ import {
 import STRINGS from 'config/localizedStrings';
 
 import { renderBankInformation } from '../Wallet/components';
-import { getNetworkNameByKey } from 'utils/wallet';
+import { getNetworkName, getNetworkNameByKey } from 'utils/wallet';
 
 export const generateBaseInformation = (currency, limits = {}) => {
 	const { minAmount = 2, maxAmount = 10000 } = limits;
@@ -157,3 +157,18 @@ export const renderNetworkWithLabel = (iconId, network) => {
 		</div>
 	) : null;
 };
+
+export const renderNetworkField = (network) => {
+	return network ? getNetworkName(network) : null;
+};
+
+export const networkList = [
+	{ network: 'ERC20', iconId: 'ETH_ICON' },
+	{ network: 'BEP20', iconId: 'BNB_ICON' },
+	{ network: 'TRC20', iconId: 'TRX_ICON' },
+	{ network: 'klaytn', iconId: 'KLAY_ICON' },
+	{ network: 'Polygon', iconId: 'MATIC_ICON' },
+	{ network: 'Solana', iconId: 'SOL_ICON' },
+	{ network: 'Stellar', iconId: 'XLM_ICON' },
+	{ network: 'Fantom', iconId: 'FTM_ICON' },
+];

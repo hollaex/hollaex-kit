@@ -30,9 +30,11 @@ import { getPrices } from 'actions/assetActions';
 import {
 	calculateFee,
 	calculateFeeCoin,
+	networkList,
 	onHandleSymbol,
 	renderEstimatedValueAndFee,
 	renderLabel,
+	renderNetworkField,
 	renderNetworkWithLabel,
 } from './utils';
 import { email, validAddress } from 'components/Form/validations';
@@ -69,6 +71,7 @@ const RenderWithdraw = ({
 	const [optionalTag, setOptionalTag] = useState('');
 	const [isValidEmail, setIsValidEmail] = useState(false);
 	const [isDisbaleWithdraw, setIsDisbaleWithdraw] = useState(false);
+	const [networkData, setNetworkData] = useState(null);
 	// const [isCheck, setIsCheck] = useState(false);
 	// const [isVisible, setIsVisible] = useState(false);
 	// const [isWarning, setIsWarning] = useState(false);
@@ -344,7 +347,8 @@ const RenderWithdraw = ({
 	const onHandleChangeNetwork = (val) => {
 		if (val) {
 			setCurrStep((prev) => ({ ...prev, stepFour: true }));
-			setWithdrawNetworkOptions(val);
+			setWithdrawNetworkOptions(renderNetworkField(val));
+			setNetworkData(val);
 		} else if (!val) {
 			setCurrStep((prev) => ({ ...prev, stepFour: false, stepFive: false }));
 		}
@@ -474,6 +478,7 @@ const RenderWithdraw = ({
 		if (type === 'network') {
 			setWithdrawAddress(null);
 			setWithdrawNetworkOptions(null);
+			setNetworkData(null);
 		}
 		setCurrStep({
 			...currStep,
@@ -789,12 +794,18 @@ const RenderWithdraw = ({
 												coinLength?.length < 1
 													? defaultNetwork
 													: coinLength && coinLength.length <= 1
-													? renderNetworkWithLabel(networkIcon, network)
+													? getWithdrawNetworkOptions &&
+													  getWithdrawNetworkOptions
+														? networkData
+														: renderNetworkWithLabel(networkIcon, network)
 													: coinLength && coinLength.length > 1
-													? renderNetworkWithLabel(
-															networkOptionsIcon,
-															getWithdrawNetworkOptions
-													  )
+													? getWithdrawNetworkOptions &&
+													  getWithdrawNetworkOptions
+														? networkData
+														: renderNetworkWithLabel(
+																networkOptionsIcon,
+																getWithdrawNetworkOptions
+														  )
 													: coins[getWithdrawCurrency]?.symbol.toUpperCase()
 											}
 											disabled={
@@ -803,7 +814,8 @@ const RenderWithdraw = ({
 											}
 											onClear={() => onHandleClear('network')}
 										>
-											{coinLength &&
+											{coinLength?.length === 1 &&
+												coinLength &&
 												coinLength.map((data, inx) => (
 													<Option key={inx} value={data}>
 														<div className="d-flex gap-1">
@@ -816,6 +828,35 @@ const RenderWithdraw = ({
 														</div>
 													</Option>
 												))}
+											{coinLength &&
+												coinLength?.length > 1 &&
+												networkList.map((data, inx) => {
+													const coin = data.iconId.split('_');
+													return coinLength.map((coinData, coinInx) => {
+														if (coinData === coin[0]?.toLowerCase()) {
+															return (
+																<Option
+																	key={`${inx}-${coinInx}`}
+																	value={data?.network}
+																>
+																	<div className="d-flex gap-1">
+																		<div className="d-flex">
+																			{data?.network}
+																			<div className="ml-2 mt-1">
+																				<Coin
+																					iconId={data.iconId}
+																					type="CS2"
+																					className="mt-2 withdraw-network-icon"
+																				/>
+																			</div>
+																		</div>
+																	</div>
+																</Option>
+															);
+														}
+														return null;
+													});
+												})}
 										</Select>
 										{selectedMethod !== strings['FORM_FIELDS.EMAIL_LABEL'] &&
 										isEmailAndAddress &&
