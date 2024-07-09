@@ -2801,6 +2801,8 @@ table th {
     border-bottom: 1px solid var(--calculated_important-border) !important; }
   .deposit-address-wrapper .deposit-address-field .ant-input-affix-wrapper-focused {
     box-shadow: none; }
+  .deposit-address-wrapper .deposit-address-field .tag-field .ant-input-suffix {
+    justify-content: end; }
   .deposit-address-wrapper .deposit-address-field .ant-input-suffix {
     width: 15% !important; }
   .deposit-address-wrapper .deposit-address-field .divider {

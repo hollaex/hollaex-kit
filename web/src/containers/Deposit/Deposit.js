@@ -637,8 +637,14 @@ const DepositComponent = ({
 								<div className="deposit-address-wrapper">
 									<div className="d-flex flex-row deposit-address-field">
 										<Input
-											className="destination-input-field"
-											suffix={renderScanIcon()}
+											className={`${
+												['xrp', 'xlm', 'ton'].includes(selectedAsset)
+													? 'destination-input-field tag-field'
+													: 'destination-input-field'
+											}`}
+											suffix={renderScanIcon(
+												['xrp', 'xlm', 'ton'].includes(selectedAsset)
+											)}
 											value={address && address[0]}
 										></Input>
 									</div>
