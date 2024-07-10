@@ -483,8 +483,8 @@
 		"PAYMENT_VERIFICATION_HELP_TEXT": "In order for this section to be verified you must complete the {0} section."
 	},
 	"USER_SETTINGS": {
-		"TITLE_TEXT_1": "Change the settings of your account. From interface, notifcations, username and other customizations.",
-		"TITLE_TEXT_2": "Saving your settings will apply the changes and save it.",
+		"TITLE_TEXT": "Revise your account settings by adjusting preferences such as interface layout, notification preferences, username, and other customizations.",
+		"TITLE_TEXT_1": "Once you've made your desired changes, saving your settings will apply them and ensure they are retained.",
 		"TITLE_NOTIFICATION": "Notification",
 		"TITLE_INTERFACE": "Interface",
 		"TITLE_LANGUAGE": "Language",
@@ -2123,6 +2123,9 @@
 		"ALL_REGION": "All Region",
 		"BUYER_NOT_MADE_THE_PAYMENT": "The buyer has not confirmed their payment yet.",
 		"PRICE_TO_ADVERTISE": "Price you’ll advertise to sell",
-		"VIEW_PROFILE": "View vendor's profile"
+		"VIEW_PROFILE": "View vendor's profile",
+		"CLICK_TO_VIEW": "CLICK TO VIEW",
+		"NEW_MESSAGE:": "You have a new message for your order",
+		"STATUS_UPDATE": "You have an update on your order"
 	}
 }

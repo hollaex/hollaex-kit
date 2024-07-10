@@ -225,21 +225,22 @@ class Wallet extends Component {
 								</EditWrapper>
 							</span>
 							{!isMobile &&
-								(currency !== BASE_CURRENCY &&
-								parseFloat(balanceText || 0) > 0 ? (
-									<p className="estimated-balance">
-										{`(≈ ${baseCoin.display_name} ${balanceText})`}
-									</p>
-								) : (
-									balanceText !== '0' && (
-										<div
-											className="loading-row-anime w-half"
-											style={{
-												animationDelay: `.${0 + 1}s`,
-											}}
-										/>
+								(currency !== BASE_CURRENCY ? (
+									parseFloat(balanceText || 0) > 0 ? (
+										<p className="estimated-balance">
+											{`(≈ ${baseCoin.display_name} ${balanceText})`}
+										</p>
+									) : (
+										balanceText !== '0' && (
+											<div
+												className="loading-row-anime w-half"
+												style={{
+													animationDelay: `.${0 + 1}s`,
+												}}
+											/>
+										)
 									)
-								))}
+								) : null)}
 							<p className="available-balance-wrapper">
 								<EditWrapper stringId="CURRENCY_WALLET.AVAILABLE_BALANCE">
 									{STRINGS.formatString(
@@ -327,7 +328,8 @@ class Wallet extends Component {
 										currency.toUpperCase()
 									)}
 								</EditWrapper>
-								{coins[currency].allow_deposit &&  coins[currency].allow_withdrawal ? (
+								{coins[currency].allow_deposit &&
+								coins[currency].allow_withdrawal ? (
 									<EditWrapper stringId="CURRENCY_WALLET.WALLET_DEPOSIT">
 										{STRINGS.formatString(
 											STRINGS['CURRENCY_WALLET.WALLET_DEPOSIT'],
@@ -337,13 +339,15 @@ class Wallet extends Component {
 											>
 												{currency.toUpperCase()}
 											</Link>,
-											<Link className="buy-link" to={`/prices/coin/${currency}`}>
+											<Link
+												className="buy-link"
+												to={`/prices/coin/${currency}`}
+											>
 												here
 											</Link>
 										)}
 									</EditWrapper>
-								) : null
-								}
+								) : null}
 							</React.Fragment>
 						) : chartData.length ? (
 							<DonutChart

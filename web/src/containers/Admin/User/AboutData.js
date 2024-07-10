@@ -851,7 +851,8 @@ const AboutData = ({
 					</div>
 
 					<div className="about-info d-flex align-items-center justify-content-center">
-						{userData.withdrawal_blocked ? (
+						{userData.withdrawal_blocked &&
+						moment().isBefore(moment(userData?.withdrawal_blocked)) ? (
 							<Fragment>
 								<div
 									className="about-info-content"
@@ -1095,7 +1096,7 @@ const AboutData = ({
 							backgroundColor: '#27339D',
 							marginTop: 60,
 						}}
-						width={610}
+						width={650}
 						visible={displayWithdrawalBlock}
 						footer={null}
 						onCancel={() => {
@@ -1140,7 +1141,10 @@ const AboutData = ({
 									}}
 									value={null}
 								>
-									None (it follows the users tier withdrawal limit)
+									None{' '}
+									<Link to="/admin/financials?tab=2">
+										(it follows the users tier withdrawal limit)
+									</Link>
 								</Radio>
 								<Radio
 									style={{ color: 'white', fontWeight: 'bold', fontSize: 16 }}

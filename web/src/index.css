@@ -2801,6 +2801,8 @@ table th {
     border-bottom: 1px solid var(--calculated_important-border) !important; }
   .deposit-address-wrapper .deposit-address-field .ant-input-affix-wrapper-focused {
     box-shadow: none; }
+  .deposit-address-wrapper .deposit-address-field .tag-field .ant-input-suffix {
+    justify-content: end; }
   .deposit-address-wrapper .deposit-address-field .ant-input-suffix {
     width: 15% !important; }
   .deposit-address-wrapper .deposit-address-field .divider {
@@ -5386,6 +5388,7 @@ table th {
         opacity: 0.5; }
 
 .digital-market-wrapper .custom-header-wrapper {
+  margin-top: 10%;
   color: var(--labels_secondary-inactive-label-text-graphics);
   font-family: 'Raleway';
   font-weight: bold; }
@@ -5614,7 +5617,7 @@ table th {
   justify-content: flex-start; }
 
 .settings_container .header_title-wrapper .action_notification-wrapper {
-  top: 30px; }
+  top: 15px; }
 
 .settings_container .settings-form-wrapper .settings-form {
   padding: 10px 30px 30px 30px;
@@ -5656,6 +5659,10 @@ table th {
     font-size: 12px; }
   .settings_container .tab_controller-wrapper .tab_item {
     font-size: 13px; } }
+
+@media screen and (min-width: 1920px) {
+  .settings_container .header_title-wrapper .action_notification-wrapper {
+    top: 30px; } }
 
 .expired_exchange_wrapper {
   padding: 2rem; }
@@ -9888,7 +9895,8 @@ table th {
 .field-content {
   position: relative;
   display: flex;
-  flex-direction: column; }
+  flex-direction: column;
+  scrollbar-color: var(--labels_secondary-inactive-label-text-graphics) var(--base_background); }
 
 .field-children {
   padding: 0.4rem 1rem 0.4rem;

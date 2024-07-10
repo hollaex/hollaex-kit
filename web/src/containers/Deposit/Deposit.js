@@ -19,7 +19,12 @@ import {
 import { Coin, EditWrapper } from 'components';
 import { STATIC_ICONS } from 'config/icons';
 import { assetsSelector } from 'containers/Wallet/utils';
-import { renderLabel, renderNetworkWithLabel } from 'containers/Withdraw/utils';
+import {
+	networkList,
+	renderLabel,
+	renderNetworkField,
+	renderNetworkWithLabel,
+} from 'containers/Withdraw/utils';
 import STRINGS from 'config/localizedStrings';
 import { onHandleSymbol } from './utils';
 
@@ -58,6 +63,7 @@ const DepositComponent = ({
 	const [optionalTag, setOptionalTag] = useState('');
 	const [isDisbaleDeposit, setIsDisbaleDeposit] = useState(false);
 	const [isVisible, setIsVisible] = useState(false);
+	const [networkData, setNetworkData] = useState(null);
 
 	const defaultCurrency = currency !== '' && currency;
 	const address = depositAddress?.split(':');
@@ -215,8 +221,9 @@ const DepositComponent = ({
 		if (val) {
 			setCurrStep((prev) => ({ ...prev, stepThree: true }));
 			setDepositNetworkOptions(val);
-			updateAddress(val, true);
+			updateAddress(renderNetworkField(val), true);
 			setDepositNetwork(val);
+			setNetworkData(val);
 		} else if (!val) {
 			setCurrStep((prev) => ({ ...prev, stepThree: false, stepFour: false }));
 		}
@@ -260,6 +267,7 @@ const DepositComponent = ({
 		}
 		if (type === 'network') {
 			setDepositNetworkOptions(null);
+			setNetworkData(null);
 		}
 	};
 
@@ -471,12 +479,16 @@ const DepositComponent = ({
 											coinLength?.length < 1
 												? defaultNetwork
 												: coinLength && coinLength.length <= 1
-												? renderNetworkWithLabel(networkIcon, network)
+												? getDepositNetworkOptions && getDepositNetworkOptions
+													? networkData
+													: renderNetworkWithLabel(networkIcon, network)
 												: coinLength && coinLength.length > 1
-												? renderNetworkWithLabel(
-														networkOptionsIcon,
-														getDepositNetworkOptions
-												  )
+												? getDepositNetworkOptions && getDepositNetworkOptions
+													? networkData
+													: renderNetworkWithLabel(
+															networkOptionsIcon,
+															getDepositNetworkOptions
+													  )
 												: coins[getDepositCurrency]?.symbol.toUpperCase()
 										}
 										disabled={
@@ -487,6 +499,7 @@ const DepositComponent = ({
 										onClear={() => onHandleClear('network')}
 									>
 										{coinLength &&
+											coinLength?.length === 1 &&
 											coinLength.map((data, inx) => (
 												<Option key={inx} value={data}>
 													<div className="d-flex gap-1">
@@ -499,6 +512,35 @@ const DepositComponent = ({
 													</div>
 												</Option>
 											))}
+										{coinLength &&
+											coinLength?.length > 1 &&
+											networkList.map((data, inx) => {
+												const coin = data.iconId.split('_');
+												return coinLength.map((coinData, coinInx) => {
+													if (coinData === coin[0]?.toLowerCase()) {
+														return (
+															<Option
+																key={`${inx}-${coinInx}`}
+																value={data?.network}
+															>
+																<div className="d-flex gap-1">
+																	<div className="d-flex">
+																		{data?.network}
+																		<div className="ml-2 mt-1">
+																			<Coin
+																				iconId={data.iconId}
+																				type="CS2"
+																				className="mt-2 withdraw-network-icon"
+																			/>
+																		</div>
+																	</div>
+																</div>
+															</Option>
+														);
+													}
+													return null;
+												});
+											})}
 									</Select>
 									{(coinLength &&
 										coinLength.length === 1 &&
@@ -595,8 +637,14 @@ const DepositComponent = ({
 								<div className="deposit-address-wrapper">
 									<div className="d-flex flex-row deposit-address-field">
 										<Input
-											className="destination-input-field"
-											suffix={renderScanIcon()}
+											className={`${
+												['xrp', 'xlm', 'ton'].includes(selectedAsset)
+													? 'destination-input-field tag-field'
+													: 'destination-input-field'
+											}`}
+											suffix={renderScanIcon(
+												['xrp', 'xlm', 'ton'].includes(selectedAsset)
+											)}
 											value={address && address[0]}
 										></Input>
 									</div>

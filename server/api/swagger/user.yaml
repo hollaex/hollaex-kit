@@ -245,6 +245,68 @@ paths:
         - bearer
       x-security-scopes:
         - user
+  /user/addressbook:
+    x-swagger-router-controller: user
+    get:
+      description: Fetch address book for user
+      operationId: fetchUserAddressBook
+      tags:
+        - User
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - user
+    post:
+      description: Update addresses for user address book
+      operationId: updateUserAddresses
+      tags:
+        - User
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              addresses:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    address:
+                      type: string
+                    label:
+                      type: string
+                    network:
+                      type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - user
   /user/affiliation:
     x-swagger-router-controller: user
     get:
