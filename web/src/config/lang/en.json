@@ -2123,6 +2123,9 @@
 		"ALL_REGION": "All Region",
 		"BUYER_NOT_MADE_THE_PAYMENT": "The buyer has not confirmed their payment yet.",
 		"PRICE_TO_ADVERTISE": "Price you’ll advertise to sell",
-		"VIEW_PROFILE": "View vendor's profile"
+		"VIEW_PROFILE": "View vendor's profile",
+		"CLICK_TO_VIEW": "CLICK TO VIEW",
+		"NEW_MESSAGE:": "You have a new message for your order",
+		"STATUS_UPDATE": "You have an update on your order"
 	}
 }
