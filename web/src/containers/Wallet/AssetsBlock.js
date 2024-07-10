@@ -289,6 +289,11 @@ const AssetsBlock = ({
 		return unique([...quickTrade, ...trade]);
 	};
 
+	const onHandleClose = () => {
+		setIsSearchActive(false);
+		handleSearch();
+	};
+
 	return showDustSection ? (
 		<DustSection goToWallet={goToWallet} />
 	) : (
@@ -329,7 +334,7 @@ const AssetsBlock = ({
 												isFocus={true}
 											/>
 										</EditWrapper>
-										<div onClick={() => setIsSearchActive(false)}>
+										<div onClick={() => onHandleClose()}>
 											<EditWrapper stringId="CLOSE_TEXT">
 												<span className="blue-link close-text-link">
 													{STRINGS['CLOSE_TEXT']}
