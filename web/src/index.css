@@ -1761,10 +1761,11 @@ table th {
   .layout-mobile .wallet-container .wallet-assets_block .wallet-assets_block-table .td-amount,
   .layout-mobile .wallet-container .wallet-assets_block .wallet-assets_block-table .td-name {
     min-width: unset !important; }
-  .layout-mobile .wallet-container .wallet-assets_block .wallet-assets_block-table .td-amount .more-icon-wrapper svg {
-    width: 3rem;
-    height: 3rem;
-    fill: var(--labels_important-active-labels-text-graphics) !important; }
+  .layout-mobile .wallet-container .wallet-assets_block .wallet-assets_block-table .td-amount .amount-field {
+    display: flex;
+    align-items: center; }
+    .layout-mobile .wallet-container .wallet-assets_block .wallet-assets_block-table .td-amount .amount-field .more-icon {
+      font-size: 25px; }
   .layout-mobile .wallet-container .wallet-assets_block .wallet-assets_block-table .td-wallet .deposit-withdrawal-wrapper {
     margin: 0 auto;
     width: 18rem; }
@@ -1794,22 +1795,33 @@ table th {
       display: flex;
       justify-content: center;
       background-color: var(--specials_buttons-links-and-highlights); }
-    .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-field .edit-wrapper__container {
-      width: 100%; }
-      .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-field .edit-wrapper__container .field-children div div {
-        width: 6%; }
-      .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-field .edit-wrapper__container .field-children div input {
+    .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-field {
+      display: flex;
+      align-items: center;
+      gap: 10px; }
+      .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-field .edit-wrapper__container {
         width: 100%; }
-      .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-field .edit-wrapper__container .field-content-outline:before,
-      .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-field .edit-wrapper__container .field-content-outline:after {
-        height: unset !important; }
-      .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-field .edit-wrapper__container .field-children {
-        border: 1px solid var(--labels_secondary-inactive-label-text-graphics);
-        border-radius: 5px; }
-    .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-field .field-error-content {
-      display: none; }
-    .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-field .edit-wrapper__container div:nth-child(1) {
-      width: 100%; }
+        .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-field .edit-wrapper__container .field-children div div {
+          width: 6%; }
+        .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-field .edit-wrapper__container .field-children div input {
+          width: 100%; }
+        .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-field .edit-wrapper__container .field-content-outline:before,
+        .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-field .edit-wrapper__container .field-content-outline:after {
+          height: unset !important; }
+        .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-field .edit-wrapper__container .field-children {
+          border: 1px solid var(--labels_secondary-inactive-label-text-graphics);
+          border-radius: 5px; }
+      .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-field .field-error-content {
+        display: none; }
+      .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-field .edit-wrapper__container div:nth-child(1) {
+        width: 100%; }
+      .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .wallet-search-field .close-text-link {
+        text-transform: uppercase !important;
+        font-size: 10px !important;
+        text-decoration: underline;
+        display: flex;
+        align-items: center;
+        gap: 2px; }
     .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .hide-zero-balance-checkbox .ant-checkbox-inner {
       background-color: var(--base_wallet-sidebar-and-popup); }
     .layout-mobile .wallet-container .wallet-assets_block .zero-balance-wrapper .hide-zero-balance-checkbox .ant-checkbox-inner:focus,
@@ -2801,6 +2813,8 @@ table th {
     border-bottom: 1px solid var(--calculated_important-border) !important; }
   .deposit-address-wrapper .deposit-address-field .ant-input-affix-wrapper-focused {
     box-shadow: none; }
+  .deposit-address-wrapper .deposit-address-field .tag-field .ant-input-suffix {
+    justify-content: end; }
   .deposit-address-wrapper .deposit-address-field .ant-input-suffix {
     width: 15% !important; }
   .deposit-address-wrapper .deposit-address-field .divider {

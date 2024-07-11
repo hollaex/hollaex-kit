@@ -586,7 +586,7 @@ const updateP2pTransaction = async (data) => {
 		throw new Error(`Transaction expired, ${transaction.transaction_duration} minutes passed without any action`);
 	}
 
-	if (transaction.merchant_status !== 'pending' && moment() > moment(transaction.created_at).add(transaction.transaction_duration || 30 ,'minutes')) {
+	if (transaction.user_status === 'pending' && moment() > moment(transaction.created_at).add(transaction.transaction_duration || 30 ,'minutes')) {
 		
 		if (transaction.transaction_status !== 'expired') {
 
@@ -608,6 +608,16 @@ const updateP2pTransaction = async (data) => {
 					ip
 				},
 				user.settings
+			);
+
+			sendEmail(
+				MAILTYPE.P2P_ORDER_EXPIRED,
+				merchant.email,
+				{
+					order_id: id,
+					ip
+				},
+				merchant.settings
 			);
 
 			newMessages.push(chatMessage);
