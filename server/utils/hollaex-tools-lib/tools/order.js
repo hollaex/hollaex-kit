@@ -346,6 +346,13 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 		return responseObj;
 	} 
 	else {
+		let symbol = spending_amount ? `${spending_currency}-${receiving_currency}` : `${receiving_currency}-${spending_currency}`;
+		let size = spending_amount || receiving_amount;
+		const result = await getUserChainTradeQuote(bearerToken, symbol, size, ip);
+
+		if (result?.quote_amount) {
+			return result;
+		} 
 		throw new Error(QUICK_TRADE_TYPE_NOT_SUPPORTED);
 	}
 };
@@ -1369,7 +1376,7 @@ const executeUserChainTrade = async (user_id, token, opts) => {
 
 	for (const trade of tradeInfo?.trades) {
 		try {
-			const { symbol, price, side, size, type } = trade;
+			let { symbol, price, side, size, type } = trade;
 			if (size < 0) {
 				throw new Error(INVALID_SIZE);
 			} 
@@ -1379,9 +1386,13 @@ const executeUserChainTrade = async (user_id, token, opts) => {
 			} 
 		
 			let res;
+			let currentFee = 0;
 			if (type === 'pro') {
+				const fee = size * currentFee;
+                size = size - fee;
 				res = await createUserOrderByKitId(user.id, symbol, side, size, 'market', 0, opts);
 
+				currentFee = res?.fee_structure?.taker || 0; 
 			}
 			else if (type === 'broker') {
 
@@ -1394,7 +1405,10 @@ const executeUserChainTrade = async (user_id, token, opts) => {
 		
 				const makerFee = tierBroker.fees.maker[symbol];
 				const takerFee = tierUser.fees.taker[symbol];
-		
+
+				const fee = size * currentFee;
+                size = size - fee;
+
 				res = await getNodeLib().createBrokerTrade(
 					symbol,
 					side,
@@ -1404,6 +1418,7 @@ const executeUserChainTrade = async (user_id, token, opts) => {
 					user.network_id,
 					{ maker: makerFee, taker: takerFee }
 				);
+				currentFee = takerFee || 0; 
 			}
 
 			successfulTrades.push(res);
