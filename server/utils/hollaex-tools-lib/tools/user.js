@@ -72,6 +72,7 @@ const {
 	AUDIT_KEYS,
 	USER_FIELD_ADMIN_LOG,
 	ADDRESS_FIELDS,
+	CRYPTO_ADDRESS_FIELDS,
 	ID_FIELDS,
 	SETTING_KEYS,
 	OMITTED_USER_FIELDS,
@@ -3288,13 +3289,20 @@ const fetchUserAddressBook = async (user_id) => {
 };
 
 
+
+
 const updateUserAddresses = async (user_id, data) => {
 	const { addresses } = data;
 
 	addresses.forEach((addressObj) => {
-		if (!addressObj.address || !addressObj.network || !addressObj.label) {
+		if (!addressObj.address || !addressObj.network || !addressObj.label || !addressObj.currency) {
 			throw new Error(ADDRESSBOOK_MISSING_FIELDS);
 		}
+		Object.keys(addressObj).forEach((key) => {
+			if (!CRYPTO_ADDRESS_FIELDS.includes(key)) {
+				throw new Error(ADDRESSBOOK_MISSING_FIELDS);
+			}
+		});
 	});
 
 	// Check for duplicate labels in the payload
