@@ -265,7 +265,7 @@ class Wallet extends Component {
 								</EditWrapper>
 							</div>
 						)}
-						<div className="link-container mb-5">
+						<div className="link-container mb-3">
 							<EditWrapper stringId="CURRENCY_WALLET.LEARN_MORE">
 								{STRINGS.formatString(
 									STRINGS['CURRENCY_WALLET.LEARN_MORE'],
@@ -274,6 +274,19 @@ class Wallet extends Component {
 										className="link-content"
 									>
 										{STRINGS['CURRENCY_WALLET.ABOUT']} {currency.toUpperCase()}
+									</Link>
+								)}
+							</EditWrapper>
+						</div>
+						<div className="link-container mb-5">
+							<EditWrapper stringId="ADDRESS_BOOK.ADD_ADDRESS_DESC">
+								{STRINGS.formatString(
+									STRINGS['ADDRESS_BOOK.ADD_ADDRESS_DESC'],
+									<Link
+										to="/wallet/address-book"
+										className="link-content text-lowercase"
+									>
+										{STRINGS['ADDRESS_BOOK.ADDRESS_BOOK']}
 									</Link>
 								)}
 							</EditWrapper>

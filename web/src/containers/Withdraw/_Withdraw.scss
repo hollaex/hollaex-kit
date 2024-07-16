@@ -146,6 +146,9 @@ $content--margin: 2rem;
 				padding: 1% 1%;
 			}
 
+			.destination-input-address-field {
+				width: 100% !important;
+			}
 			.destination-input-field {
 				width: 80%;
 				height: 38px;
@@ -244,7 +247,25 @@ $content--margin: 2rem;
 			.amount-field-icon {
 				margin-top: 1%;
 			}
-
+			.destination-field-wrapper {
+				display: flex;
+				flex-direction: column;
+				width: 65%;
+				.select-wrapper {
+					width: 100%;
+					.destination-input-wrapper {
+						width: 80%;
+						display: flex;
+						flex-direction: column;
+						gap: 5px;
+					}
+				}
+				.address-link {
+					.edit-wrapper__container {
+						text-decoration: underline !important;
+					}
+				}
+			}
 			.select-wrapper {
 				display: flex;
 				flex-direction: column;
@@ -609,9 +630,11 @@ $content--margin: 2rem;
 				.destination-field {
 					height: 75px;
 				}
-
+				.destination-field-wrapper {
+					width: 100%;
+				}
 				.destination-field-mobile {
-					height: 11rem;
+					height: 12rem;
 				}
 
 				.field-wrapper {
@@ -649,7 +672,7 @@ $content--margin: 2rem;
 					}
 
 					.custom-line-selected-mobile {
-						height: 9rem;
+						height: 10rem;
 					}
 				}
 
