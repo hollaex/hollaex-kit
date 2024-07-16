@@ -3305,6 +3305,13 @@ const updateUserAddresses = async (user_id, data) => {
 		});
 	});
 
+	// Check for duplicate labels in the payload
+	const labels = addresses.map(a => a.label);
+	const uniqueLabels = new Set(labels);
+	if (uniqueLabels.size !== labels.length) {
+		throw new Error(ADDRESSBOOK_ALREADY_EXISTS);
+	}
+
 	const user = await getUserByKitId(user_id);
 
 	if (!user) {
@@ -3318,13 +3325,6 @@ const updateUserAddresses = async (user_id, data) => {
 			addresses
 		});
 	} else {
-		// Check if any address in the payload already exists
-		const existingAddresses = userAddressBook.addresses.map(a => a.address);
-		const duplicateAddresses = addresses.filter(a => existingAddresses.includes(a.address) || existingAddresses.includes(a.label));
-		if (duplicateAddresses.length > 0) {
-			throw new Error(ADDRESSBOOK_ALREADY_EXISTS);
-		}
-		
 		// Update the addresses
 		userAddressBook = await userAddressBook.update({ addresses }, {
 			fields: ['addresses']
