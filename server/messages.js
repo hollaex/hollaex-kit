@@ -263,5 +263,5 @@ exports.FAILED_GET_QUOTE = 'Failed to get the quote';
 exports.BALANCE_HISTORY_NOT_ACTIVE = 'This feature is not active on the exchange';
 exports.WITHDRAWAL_DISABLED = 'Withdrawal disabled for this user';
 exports.ADDRESSBOOK_MISSING_FIELDS = 'Each address must contain both address, network and label fields';
-exports.ADDRESSBOOK_ALREADY_EXISTS = 'One or more addresses or labels already exist in the address book';
+exports.ADDRESSBOOK_ALREADY_EXISTS = 'Address label already exists in the payload';
 exports.ADDRESSBOOK_NOT_FOUND = 'User address book not found';
