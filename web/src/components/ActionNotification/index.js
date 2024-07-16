@@ -2,7 +2,6 @@ import React from 'react';
 import classnames from 'classnames';
 import Image from 'components/Image';
 import { isMobile } from 'react-device-detect';
-import { MoreOutlined } from '@ant-design/icons';
 
 const getClassNames = (status) => {
 	switch (status) {
@@ -79,28 +78,22 @@ const ActionNotification = ({
 						getClassNames(status)
 					)}
 				>
-					{text === 'mobile-trade' ? (
-						<MoreOutlined color="more-icon" width="2em" height="2em" />
-					) : (
-						text
-					)}
+					{text}
 				</div>
 			)}
-			{text !== 'mobile-trade' && (
-				<Image
-					iconId={iconId}
-					stringId={stringId}
-					icon={iconPath}
-					alt={text}
-					svgWrapperClassName="action_notification-svg"
-					imageWrapperClassName={classnames('action_notification-image', {
-						rotate_ltr: rotateIfLtr,
-						rotate_rtl: rotateIfRtl,
-						rotate,
-						reverse: reverseImage,
-					})}
-				/>
-			)}
+			<Image
+				iconId={iconId}
+				stringId={stringId}
+				icon={iconPath}
+				alt={text}
+				svgWrapperClassName="action_notification-svg"
+				imageWrapperClassName={classnames('action_notification-image', {
+					rotate_ltr: rotateIfLtr,
+					rotate_rtl: rotateIfRtl,
+					rotate,
+					reverse: reverseImage,
+				})}
+			/>
 		</div>
 	);
 };

@@ -116,12 +116,6 @@ const DepositComponent = ({
 			} else {
 				setCurrStep({ ...currStep, stepTwo: true });
 			}
-			if (
-				['xrp', 'xlm', 'ton', 'pmn'].includes(defaultCurrency) ||
-				['xrp', 'xlm', 'ton', 'pmn'].includes(defaultNetwork)
-			) {
-				setIsVisible(true);
-			}
 			setDepositCurrency(defaultCurrency);
 			setSelectedAsset(defaultCurrency);
 			updateAddress(defaultCurrency);
@@ -131,7 +125,7 @@ const DepositComponent = ({
 			setDepositNetworkOptions(null);
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [defaultCurrency]);
 
 	useEffect(() => {
 		if (isTag) {
@@ -155,6 +149,18 @@ const DepositComponent = ({
 			setIsDisbaleDeposit(false);
 		}
 	}, [getDepositCurrency, isDeposit]);
+
+	useEffect(() => {
+		if (selectedAsset) {
+			if (
+				['xrp', 'xlm', 'ton', 'pmn'].includes(defaultCurrency) ||
+				['xrp', 'xlm', 'ton', 'pmn'].includes(defaultNetwork)
+			) {
+				setIsVisible(true);
+			}
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [selectedAsset]);
 
 	const onHandleChangeSelect = (val, pinned_assets = false) => {
 		if (pinned_assets) {
@@ -229,7 +235,7 @@ const DepositComponent = ({
 		}
 	};
 
-	const renderScanIcon = (isTag = false) => {
+	const renderScanIcon = (isTag = false, type = 'address') => {
 		return (
 			<div className="d-flex">
 				{!isTag && (
@@ -245,7 +251,9 @@ const DepositComponent = ({
 						<div className="divider"></div>
 					</>
 				)}
-				<CopyToClipboard text={isTag ? optionalTag : address && address[0]}>
+				<CopyToClipboard
+					text={type !== 'address' ? optionalTag : address && address[0]}
+				>
 					<div className="render-deposit-scan-wrapper" onClick={() => onCopy()}>
 						{renderLabel('COPY_TEXT')}
 					</div>
@@ -273,7 +281,7 @@ const DepositComponent = ({
 
 	const onHandleSelect = (symbol) => {
 		const curr = onHandleSymbol(symbol);
-		if (curr !== symbol) {
+		if (curr !== symbol && ['xrp', 'xlm', 'ton'].includes(curr)) {
 			if (
 				['xrp', 'xlm', 'ton'].includes(defaultCurrency) ||
 				['xrp', 'xlm', 'ton'].includes(defaultNetwork)
@@ -326,6 +334,16 @@ const DepositComponent = ({
 					: `deposit-wrapper-fields ${isMobile ? '' : 'mt-5'}`
 			}
 		>
+			<Modal
+				title={STRINGS['WITHDRAW_PAGE.WARNING']}
+				visible={isVisible}
+				onCancel={() => setIsVisible(false)}
+				footer={false}
+				className="withdrawal-remove-tag-modal"
+				width={'420px'}
+			>
+				{renderDepositWarningPopup()}
+			</Modal>
 			<div>
 				<div className="d-flex">
 					<div className="custom-field d-flex flex-column align-items-center">
@@ -643,7 +661,8 @@ const DepositComponent = ({
 													: 'destination-input-field'
 											}`}
 											suffix={renderScanIcon(
-												['xrp', 'xlm', 'ton'].includes(selectedAsset)
+												['xrp', 'xlm', 'ton'].includes(selectedAsset),
+												'address'
 											)}
 											value={address && address[0]}
 										></Input>
@@ -724,7 +743,7 @@ const DepositComponent = ({
 														? 'number'
 														: 'text'
 												}
-												suffix={renderScanIcon(true)}
+												suffix={renderScanIcon(true, 'optionalTag')}
 											></Input>
 										</div>
 										<div className="d-flex mt-2 warning-text">
@@ -740,16 +759,6 @@ const DepositComponent = ({
 							</div>
 						</div>
 					</div>
-					<Modal
-						title={STRINGS['WITHDRAW_PAGE.WARNING']}
-						visible={isVisible}
-						onCancel={() => setIsVisible(false)}
-						footer={false}
-						className="withdrawal-remove-tag-modal"
-						width={'420px'}
-					>
-						{renderDepositWarningPopup()}
-					</Modal>
 				</div>
 			)}
 		</div>

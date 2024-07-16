@@ -3,11 +3,13 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
-import { Checkbox, Switch } from 'antd';
+import { Checkbox, Dropdown, Menu, Switch } from 'antd';
 import {
 	CaretUpOutlined,
 	CaretDownOutlined,
 	SearchOutlined,
+	CloseCircleOutlined,
+	MoreOutlined,
 } from '@ant-design/icons';
 import { fetchBalanceHistory, fetchPlHistory } from './actions';
 import classnames from 'classnames';
@@ -287,6 +289,11 @@ const AssetsBlock = ({
 		return unique([...quickTrade, ...trade]);
 	};
 
+	const onHandleClose = () => {
+		setIsSearchActive(false);
+		handleSearch();
+	};
+
 	return showDustSection ? (
 		<DustSection goToWallet={goToWallet} />
 	) : (
@@ -324,8 +331,17 @@ const AssetsBlock = ({
 												placeHolder={`${STRINGS['WALLET_ASSETS_SEARCH_TXT']}...`}
 												handleSearch={handleSearch}
 												showCross
+												isFocus={true}
 											/>
 										</EditWrapper>
+										<div onClick={() => onHandleClose()}>
+											<EditWrapper stringId="CLOSE_TEXT">
+												<span className="blue-link close-text-link">
+													{STRINGS['CLOSE_TEXT']}
+													<CloseCircleOutlined />
+												</span>
+											</EditWrapper>
+										</div>
 									</div>
 								)}
 							</div>
@@ -713,24 +729,53 @@ const AssetsBlock = ({
 											<td className="td-amount">
 												{assets && baseCoin && !loading && increment_unit ? (
 													<div className="d-flex justify-content-end">
-														<div className="d-flex flex-column align-items-end">
-															<div className="font-weight-bold">{balance}</div>
-															{key !== BASE_CURRENCY &&
-																parseFloat(balanceText || 0) > 0 && (
-																	<div className="fill_secondary-color">
-																		{`(≈  $${balanceText})`}
+														<Dropdown
+															size="small"
+															overlayClassName="custom-dropdown-style"
+															style={{
+																width: 130,
+															}}
+															overlay={
+																<Menu onClick={({ key }) => goToTrade(key)}>
+																	{markets.map((market) => {
+																		const { display_name, icon_id } =
+																			pairs[market] ||
+																			quicktrade.find(
+																				({ symbol }) => symbol === market
+																			) ||
+																			{};
+																		return (
+																			<Menu.Item className="caps" key={market}>
+																				<div className="d-flex align-items-center">
+																					<Coin
+																						iconId={icon_id}
+																						type={isMobile ? 'CS5' : 'CS2'}
+																					/>
+																					<div className="app_bar-pair-font">
+																						{display_name}
+																					</div>
+																				</div>
+																			</Menu.Item>
+																		);
+																	})}
+																</Menu>
+															}
+														>
+															<div className="amount-field">
+																<div className="d-flex flex-column align-items-end">
+																	<div className="font-weight-bold">
+																		{balance}
 																	</div>
-																)}
-														</div>
-														<div className="more-icon-wrapper">
-															<TradeInputGroup
-																quicktrade={quicktrade}
-																markets={markets}
-																goToTrade={goToTrade}
-																pairs={pairs}
-																text="mobile-trade"
-															/>
-														</div>
+																	{key !== BASE_CURRENCY &&
+																		parseFloat(balanceText || 0) > 0 && (
+																			<div className="fill_secondary-color">
+																				{`(≈  $${balanceText})`}
+																			</div>
+																		)}
+																</div>
+																<MoreOutlined className="more-icon" />
+															</div>
+														</Dropdown>
 													</div>
 												) : (
 													<div
