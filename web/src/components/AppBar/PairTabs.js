@@ -13,10 +13,12 @@ import { Slider, EditWrapper, PriceChange } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { formatToCurrency } from 'utils/currency';
 import { MarketsSelector } from 'containers/Trade/utils';
+import SparkLine from 'containers/TradeTabs/components/SparkLine';
 
 class PairTabs extends Component {
 	state = {
 		activePairTab: '',
+		// sparkLine: [],
 	};
 
 	componentDidMount() {
@@ -27,6 +29,9 @@ class PairTabs extends Component {
 		}
 		this.setState({ activePairTab: active });
 		this.initTabs(pairs, active);
+		// getSparklines(Object.keys(pairs)).then((chartData) =>
+		//     this.props.changeSparkLineChartData(chartData)
+		// );
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -84,9 +89,16 @@ class PairTabs extends Component {
 			activePairTab,
 			isMarketSelectorVisible,
 			isToolsSelectorVisible,
+			// sparkLine,
 		} = this.state;
 
-		const { location, favourites, markets, quicktrade } = this.props;
+		const {
+			location,
+			favourites,
+			markets,
+			quicktrade,
+			sparkLineChartData,
+		} = this.props;
 		const market = markets.find(({ key }) => key === activePairTab) || {};
 		const {
 			key,
@@ -149,7 +161,24 @@ class PairTabs extends Component {
 											<div className="title-font ml-1">
 												{formatToCurrency(close, increment_price)}
 											</div>
-											<PriceChange market={market} key={key} />
+											<PriceChange
+												className="markets-drop-down"
+												market={market}
+												key={key}
+											/>
+											<SparkLine
+												data={
+													!sparkLineChartData[key] ||
+													(sparkLineChartData[key] &&
+														sparkLineChartData[key].close &&
+														sparkLineChartData[key].close.length < 2)
+														? { close: [0.1, 0.1, 0.1], open: [] }
+														: sparkLineChartData[key]
+												}
+												containerProps={{
+													style: { height: '100%', width: '100%' },
+												}}
+											/>
 										</div>
 									) : (
 										<div className="d-flex align-items-center">
@@ -175,7 +204,7 @@ class PairTabs extends Component {
 							{favourites && favourites.length > 0 && (
 								<TabList
 									items={favourites}
-									markets={[...filterQuickTrade , ...markets]}
+									markets={[...filterQuickTrade, ...markets]}
 									activePairTab={activePairTab}
 									onTabClick={this.onTabClick}
 								/>
@@ -226,7 +255,14 @@ class PairTabs extends Component {
 
 const mapStateToProps = (state) => {
 	const {
-		app: { language: activeLanguage, pairs, favourites, constants, quicktrade },
+		app: {
+			language: activeLanguage,
+			pairs,
+			favourites,
+			constants,
+			quicktrade,
+			sparkLineChartData,
+		},
 		orderbook: { prices },
 	} = state;
 
@@ -237,7 +273,8 @@ const mapStateToProps = (state) => {
 		favourites,
 		constants,
 		markets: MarketsSelector(state),
-		quicktrade
+		quicktrade,
+		sparkLineChartData,
 	};
 };
 

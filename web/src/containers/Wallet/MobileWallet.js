@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import classnames from 'classnames';
-import { Accordion } from '../../components';
+import { Accordion, EditWrapper } from '../../components';
 import CurrencySlider from './components/CurrencySlider';
 import ProfitLossSection from './ProfitLossSection';
+import strings from 'config/localizedStrings';
 
 const MobileWallet = ({
 	sections,
@@ -12,6 +13,9 @@ const MobileWallet = ({
 	coins,
 	searchResult,
 	router,
+	totalAssets,
+	loading,
+	BASE_CURRENCY,
 }) => {
 	const [activeBalanceHistory, setActiveBalanceHistory] = useState(false);
 
@@ -20,6 +24,9 @@ const MobileWallet = ({
 			setActiveBalanceHistory(true);
 		}
 	}, []);
+
+	const isNotWalletHistory = router?.location?.pathname !== '/wallet/history';
+	const isWalletHistory = router?.location?.pathname === '/wallet/history';
 
 	const handleBalanceHistory = (value) => {
 		setActiveBalanceHistory(value);
@@ -42,22 +49,54 @@ const MobileWallet = ({
 				'w-100'
 			)}
 		>
-			<div className="d-flex f-05">
-				<CurrencySlider
-					balance={balance}
-					prices={prices}
-					navigate={navigate}
-					coins={coins}
-					searchResult={searchResult}
-					handleBalanceHistory={handleBalanceHistory}
-				/>
-			</div>
+			{isNotWalletHistory && totalAssets.length && !loading ? (
+				<div className="estimated-balance-wrapper">
+					<EditWrapper
+						stringId="WALLET_ESTIMATED_TOTAL_BALANCE"
+						render={(children) => (
+							<div className="balance-wrapper">
+								{BASE_CURRENCY && (
+									<div>
+										<div className="estimated-balance-label">
+											{strings['WALLET_ESTIMATED_TOTAL_BALANCE']}
+										</div>
+										<div className="font-title estimated-balance-amount">
+											{totalAssets}
+										</div>
+									</div>
+								)}
+							</div>
+						)}
+					>
+						{strings['WALLET_ESTIMATED_TOTAL_BALANCE']}
+					</EditWrapper>
+				</div>
+			) : (
+				isNotWalletHistory && (
+					<div>
+						<div className="mb-2">{strings['WALLET_BALANCE_LOADING']}</div>
+						<div className="loading-anime" />
+					</div>
+				)
+			)}
+			{isNotWalletHistory && (
+				<div className="d-flex f-05">
+					<CurrencySlider
+						balance={balance}
+						prices={prices}
+						navigate={navigate}
+						coins={coins}
+						searchResult={searchResult}
+						handleBalanceHistory={handleBalanceHistory}
+					/>
+				</div>
+			)}
 			<div className="f-1 wallet-container">
-				{!activeBalanceHistory ? (
-					<Accordion sections={sections} showActionText={true} />
+				{activeBalanceHistory && isWalletHistory ? (
+					<ProfitLossSection handleBalanceHistory={handleBalanceHistory} />
 				) : (
-					<div style={{ marginTop: 30 }}>
-						<ProfitLossSection handleBalanceHistory={handleBalanceHistory} />
+					<div>
+						<Accordion sections={sections} showActionText={true} />
 					</div>
 				)}
 			</div>

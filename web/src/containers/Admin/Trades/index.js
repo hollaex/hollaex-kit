@@ -10,6 +10,7 @@ import { setExchange } from 'actions/assetActions';
 import OtcDeskContainer from './otcdesk';
 import QuickTradeTab from './QuickTradeConfig';
 import ExchangeOrdersContainer from '../Orders';
+import P2P from './p2p';
 import './index.css';
 
 const TabPane = Tabs.TabPane;
@@ -108,7 +109,22 @@ const PairsTab = (props) => {
 						balanceData={props.user && props.user.balance}
 					/>
 				</TabPane>
-				<TabPane tab="Quick Trade" key="3">
+				<TabPane tab="P2P" key="3">
+					<P2P
+						coins={props.coinObjects}
+						pairs={pairData}
+						allCoins={props.coins}
+						exchange={props.exchange}
+						user={props.user}
+						balanceData={props.user && props.user.balance}
+						quickTradeData={quickTradeData}
+						features={props.features}
+						brokers={props.broker}
+						networkQuickTrades={props.networkQuickTrades}
+						handleTabChange={handleTabChange}
+					/>
+				</TabPane>
+				<TabPane tab="Quick Trade" key="4">
 					<QuickTradeTab
 						coins={props.coinObjects}
 						pairs={pairData}

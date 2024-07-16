@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import classnames from 'classnames';
 import { isMobile } from 'react-device-detect';
+import { CaretRightOutlined } from '@ant-design/icons';
 import {
 	Button,
 	//  DonutChart,
 	EditWrapper,
 } from 'components';
-import { calculatePrice } from 'utils/currency';
-import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
-import Currency from './Currency';
-import Arrow from './Arrow';
+import { DEFAULT_COIN_DATA } from 'config/constants';
 import STRINGS from 'config/localizedStrings';
 import _toLower from 'lodash/toLower';
 import { fetchBalanceHistory, fetchPlHistory } from '../actions';
@@ -122,18 +119,19 @@ class CurrencySlider extends Component {
 
 	render() {
 		const {
-			balance,
-			prices,
+			// balance,
+			// prices,
 			navigate,
 			coins,
-			searchResult,
+			// searchResult,
 			// chartData,
+			handleBalanceHistory,
 		} = this.props;
 		const { currentCurrency } = this.state;
-		const balanceValue = balance[`${currentCurrency}_balance`];
-		const baseBalance =
-			currentCurrency !== BASE_CURRENCY &&
-			calculatePrice(balanceValue, prices[currentCurrency]);
+		// const balanceValue = balance[`${currentCurrency}_balance`];
+		// const baseBalance =
+		// 	currentCurrency !== BASE_CURRENCY &&
+		// 	calculatePrice(balanceValue, prices[currentCurrency]);
 		const { fullname, allow_deposit, allow_withdrawal } =
 			coins[currentCurrency] || DEFAULT_COIN_DATA;
 
@@ -249,7 +247,7 @@ class CurrencySlider extends Component {
 								</div>
 							)}
 						</div> */}
-						<div>
+						<div className="profit-loss-chart-wrapper">
 							{!isUpgrade &&
 								this.props.balance_history_config?.active &&
 								Number(this.state.userPL?.['7d']?.total || 0) !== 0 &&
@@ -258,8 +256,6 @@ class CurrencySlider extends Component {
 										<div
 											style={{
 												marginTop: 10,
-												display: 'flex',
-												justifyContent: 'center',
 												fontSize: '1.5rem',
 											}}
 										>
@@ -267,14 +263,68 @@ class CurrencySlider extends Component {
 												{STRINGS['PROFIT_LOSS.PERFORMANCE_TREND']}
 											</EditWrapper>
 										</div>
+										<div
+											onClick={() => {
+												this.props.handleBalanceHistory(true);
+											}}
+											className={
+												Number(this.state.userPL?.['7d']?.total || 0) === 0
+													? 'profitNeutral'
+													: (this.state.userPL?.['7d']?.total || 0) > 0
+													? 'profitPositive'
+													: 'profitNegative'
+											}
+											style={{
+												marginTop: 5,
+												display: 'flex',
+												fontSize: '1.5rem',
+												cursor: 'pointer',
+											}}
+										>
+											<div>
+												<EditWrapper stringId="PROFIT_LOSS.PL_7_DAY">
+													{STRINGS['PROFIT_LOSS.PL_7_DAY']}
+												</EditWrapper>{' '}
+												{Number(this.state.userPL?.['7d']?.total || 0) > 0
+													? '+'
+													: ' '}
+												{''}
+												{getSourceDecimals(
+													this.props.balance_history_config?.currency || 'usdt',
+													this.state.userPL?.['7d']?.total
+														?.toString()
+														.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+												) || '0'}
+												{this.state.userPL?.['7d']?.totalPercentage
+													? ` (${this.state.userPL?.['7d']?.totalPercentage}%) `
+													: ' '}
+												{this.props.balance_history_config?.currency?.toUpperCase() ||
+													'USDT'}
+											</div>
+											<div className="view-more-wrapper ml-3">
+												<div
+													className="view-more-content"
+													onClick={() => handleBalanceHistory(true)}
+												>
+													<EditWrapper stringId="HOLLAEX_TOKEN.VIEW">
+														{STRINGS['HOLLAEX_TOKEN.VIEW']}
+													</EditWrapper>
+													<span className="ml-1">
+														<CaretRightOutlined
+															width="1.5em"
+															height="1.5em"
+															className="caret-right-icon"
+														/>
+													</span>
+												</div>
+											</div>
+										</div>
 										<div style={{ width: '21rem', opacity: 0, fontSize: 1 }}>
 											{STRINGS['PROFIT_LOSS.WALLET_PERFORMANCE_TITLE']}
 										</div>
 
 										<div
-											onClick={() => {
-												this.props.handleBalanceHistory(true);
-											}}
+											onClick={() => handleBalanceHistory(true)}
 											style={{ zoom: 0.3, cursor: 'pointer' }}
 											className="highChartColor highChartColorOverview"
 										>
@@ -284,48 +334,13 @@ class CurrencySlider extends Component {
 												options={options}
 											/>{' '}
 										</div>
-
-										<div
-											className={
-												Number(this.state.userPL?.['7d']?.total || 0) === 0
-													? 'profitNeutral'
-													: (this.state.userPL?.['7d']?.total || 0) > 0
-													? 'profitPositive'
-													: 'profitNegative'
-											}
-											style={{
-												marginTop: 10,
-												display: 'flex',
-												justifyContent: 'center',
-												fontSize: '1.5rem',
-											}}
-										>
-											<EditWrapper stringId="PROFIT_LOSS.PL_7_DAY">
-												{STRINGS['PROFIT_LOSS.PL_7_DAY']}
-											</EditWrapper>{' '}
-											{Number(this.state.userPL?.['7d']?.total || 0) > 0
-												? '+'
-												: ' '}
-											{''}
-											{getSourceDecimals(
-												this.props.balance_history_config?.currency || 'usdt',
-												this.state.userPL?.['7d']?.total
-													?.toString()
-													.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-											) || '0'}
-											{this.state.userPL?.['7d']?.totalPercentage
-												? ` (${this.state.userPL?.['7d']?.totalPercentage}%) `
-												: ' '}
-											{this.props.balance_history_config?.currency?.toUpperCase() ||
-												'USDT'}
-										</div>
 									</div>
 								)}
 						</div>
 					</div>
 				)}
 
-				<div className="d-flex mb-5 flex-row">
+				{/* <div className="d-flex mb-5 flex-row">
 					<div className="d-flex align-items-center arrow-container">
 						<Arrow className="left" onClick={() => this.previousCurrency()} />
 					</div>
@@ -342,7 +357,7 @@ class CurrencySlider extends Component {
 					<div className="d-flex align-items-center arrow-container">
 						<Arrow className="right" onClick={() => this.nextCurrency()} />
 					</div>
-				</div>
+				</div> */}
 
 				{!isMobile && (
 					<div className="mb-4 button-container">

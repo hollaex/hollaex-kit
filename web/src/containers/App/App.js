@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import { connect } from 'react-redux';
 import classnames from 'classnames';
 import EventListener from 'react-event-listener';
 import { Helmet } from 'react-helmet';
@@ -31,8 +32,7 @@ import { storeTools } from 'actions/toolsAction';
 import STRINGS from 'config/localizedStrings';
 
 import { getChatMinimized, setChatMinimized } from 'utils/theme';
-import { checkUserSessionExpired } from 'utils/utils';
-import { getTokenTimestamp, isLoggedIn, isAdmin } from 'utils/token';
+import { isLoggedIn, isAdmin } from 'utils/token';
 import {
 	AppBar,
 	AppMenuBar,
@@ -100,9 +100,6 @@ class App extends Component {
 		this.setState({
 			chatIsClosed,
 		});
-		if (isLoggedIn() && checkUserSessionExpired(getTokenTimestamp())) {
-			this.logout('Token is expired');
-		}
 	}
 
 	componentDidMount() {
@@ -216,7 +213,8 @@ class App extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		const { tools } = this.props;
+		const { tools, activeTheme } = this.props;
+		const params = new URLSearchParams(window.location.search);
 		if (
 			JSON.stringify(prevProps.location) !== JSON.stringify(this.props.location)
 		) {
@@ -224,6 +222,21 @@ class App extends Component {
 		}
 		if (JSON.stringify(prevProps.tools) !== JSON.stringify(tools)) {
 			storeTools(tools);
+		}
+		const { themeOptions } = this.props;
+		const isValidTheme = themeOptions.some(
+			(option) => option.value === this.props?.router?.location?.query?.theme
+		);
+		if (!params.has('theme')) {
+			params.set('theme', activeTheme);
+			const currentUrl = window.location.href.split('?')[0];
+			const newUrl = `${currentUrl}?${params.toString()}`;
+			this.props.router.replace(newUrl);
+		} else if (!isValidTheme) {
+			params.set('theme', 'dark');
+			const currentUrl = window.location.href.split('?')[0];
+			const newUrl = `${currentUrl}?${params.toString()}`;
+			this.props.router.replace(newUrl);
 		}
 	}
 
@@ -995,4 +1008,8 @@ class App extends Component {
 	}
 }
 
-export default withEdit(withConfig(App));
+const mapStateToProps = (store) => ({
+	activeTheme: store.app.theme,
+});
+
+export default connect(mapStateToProps)(withEdit(withConfig(App)));

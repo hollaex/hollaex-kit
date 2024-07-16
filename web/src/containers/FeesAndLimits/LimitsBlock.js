@@ -70,10 +70,21 @@ const getAccumulatedCoinList = (limits, coins, tier) => {
 	return accumulatedCoins;
 };
 
-const getRows = (coins, level, tiers, ICONS, transaction_limits, type) => {
-	const individualLimits = transaction_limits.filter(
-		(limit) =>
-			limit.limit_currency !== 'default' && limit.tier === Number(level)
+const getRows = (
+	coins,
+	level,
+	tiers,
+	ICONS,
+	transaction_limits,
+	type,
+	search
+) => {
+	const individualLimits = transaction_limits.filter((limit) =>
+		search
+			? limit.limit_currency !== 'default' &&
+			  limit.tier === Number(level) &&
+			  limit.currency.toString().includes(search && search)
+			: limit.limit_currency !== 'default' && limit.tier === Number(level)
 	);
 	return (
 		<Fragment>
@@ -88,7 +99,7 @@ const getRows = (coins, level, tiers, ICONS, transaction_limits, type) => {
 							<td className="table-icon td-fit" />
 							<td className="td-name td-fit">
 								<Link
-									to={`/assets/coin/${limit.currency}`}
+									to={`/prices/coin/${limit.currency}`}
 									className="underline"
 								>
 									<div
@@ -155,7 +166,7 @@ const getRowsCollectiveIcon = (
 						<tr className="table-row" key={index}>
 							<td className="table-icon td-fit" />
 							<td className="td-name td-fit">
-								<Link to={`/assets/coin/${coin_name}`} className="underline">
+								<Link to={`/prices/coin/${coin_name}`} className="underline">
 									<div
 										className="d-flex align-items-center wallet-hover cursor-pointer"
 										style={{ cursor: 'pointer' }}
@@ -251,6 +262,7 @@ const LimitsBlock = ({
 	icons,
 	transaction_limits,
 	type,
+	search,
 }) => {
 	return type === 'individual' ? (
 		<div className="wallet-assets_block">
@@ -288,7 +300,15 @@ const LimitsBlock = ({
 					</tr>
 				</thead>
 				<tbody className="account-limits-content font-weight-bold">
-					{getRows(coins, level, tiers, icons, transaction_limits, type)}
+					{getRows(
+						coins,
+						level,
+						tiers,
+						icons,
+						transaction_limits,
+						type,
+						search
+					)}
 				</tbody>
 			</table>
 		</div>

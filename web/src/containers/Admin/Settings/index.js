@@ -83,9 +83,8 @@ class Settings extends Component {
 			description,
 			defaults = {},
 			emails = {},
-			secrets = { smtp: {}, captcha: {} },
+			secrets = { smtp: {} },
 			accounts = {},
-			captcha = {},
 			links = {},
 			color = {},
 		} = this.state.constants || {};
@@ -116,10 +115,7 @@ class Settings extends Component {
 			description,
 		};
 
-		let initialSecurityValues = {
-			...captcha,
-			...secrets.captcha,
-		};
+		let initialSecurityValues = {};
 		if (secrets.allowed_domains) {
 			initialSecurityValues.allowed_domains =
 				typeof secrets.allowed_domains === 'string'
@@ -227,21 +223,6 @@ class Settings extends Component {
 			formValues = {};
 			Object.keys(formProps).forEach((val) => {
 				if (
-					val === 'site_key' &&
-					initialSecurityValues[val] !== formProps[val]
-				) {
-					if (!formValues.captcha) formValues.captcha = {};
-					formValues.captcha[val] = formProps[val];
-				} else if (val === 'secret_key') {
-					if (
-						initialSecurityValues[val] !== formProps[val] &&
-						!formProps[val].includes('*')
-					) {
-						if (!formValues.secrets || !formValues.secrets.captcha)
-							formValues.secrets = { captcha: {} };
-						formValues.secrets.captcha[val] = formProps[val];
-					}
-				} else if (
 					(val === 'allowed_domains' || val === 'admin_whitelist') &&
 					initialSecurityValues[val] !== formProps[val]
 				) {

@@ -13,7 +13,6 @@ import {
 	email,
 } from '../../components/AdminForm/validations';
 import { STATIC_ICONS } from 'config/icons';
-import { getLanguage } from '../../utils/string';
 import { getExchangeInitialized } from '../../utils/initialize';
 import { isAdmin } from '../../utils/token';
 
@@ -54,9 +53,6 @@ const Login = (props) => {
 					} else {
 						errMsg = error.message;
 					}
-					setTimeout(() => {
-						props.change('LOGIN_FORM', 'captcha', '');
-					}, 5000);
 					message.error(errMsg);
 				});
 		}
@@ -97,12 +93,6 @@ const Login = (props) => {
 									label: '2FA (if active)',
 									maxLength: "6",
 									onInput: maxLengthCheck
-								},
-								captcha: {
-									type: 'captcha',
-									language: getLanguage(),
-									theme: props.theme,
-									validate: [validateRequired],
 								},
 							}}
 							onSubmit={handleSubmit}

@@ -39,7 +39,9 @@ const ActionNotification = ({
 	showActionText,
 	hideActionText = false,
 	disable = false,
+	isFromWallet = false,
 }) => {
+	const isVisibale = isFromWallet ? isFromWallet : !isMobile;
 	// This is to prevent action when edit string or upload icons are clicked
 	const onActionClick = ({ target: { dataset = {} } }) => {
 		const { stringId, iconId } = dataset;
@@ -69,7 +71,7 @@ const ActionNotification = ({
 			)}
 			onClick={onActionClick}
 		>
-			{!hideActionText && (showActionText || !isMobile) && (
+			{!hideActionText && (showActionText || isVisibale) && (
 				<div
 					className={classnames(
 						'action_notification-text',

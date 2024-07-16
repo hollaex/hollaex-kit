@@ -16,7 +16,7 @@ const {
 	NOT_AUTHORIZED
 } = require('../messages');
 const { subscriber } = require('../db/pubsub');
-const { sendInitialMessages, addMessage, deleteMessage } = require('./chat');
+const { sendInitialMessages, addMessage, deleteMessage, addP2PMessage, getP2PStatus } = require('./chat');
 const { getUsername, changeUsername } = require('./chat/username');
 const { sendBannedUsers, banUser, unbanUser } = require('./chat/ban');
 const { sendNetworkWsMessage } = require('./hub');
@@ -101,6 +101,11 @@ const initializeTopic = (topic, ws, symbol) => {
 			addSubscriber(WEBSOCKET_CHANNEL(topic), ws);
 			sendInitialMessages(ws);
 			break;
+
+		case 'p2pChat':
+			addSubscriber(WEBSOCKET_CHANNEL(topic, symbol), ws);
+			addSubscriber(WEBSOCKET_CHANNEL(topic, ws.auth.sub.id), ws);
+			break;
 		case 'admin':
 			// this channel can only be subscribed by the exchange admin
 			if (!ws.auth.sub) {
@@ -168,6 +173,11 @@ const terminateTopic = (topic, ws, symbol) => {
 			break;
 		case 'chat':
 			removeSubscriber(WEBSOCKET_CHANNEL(topic), ws);
+			ws.send(JSON.stringify({ message: `Unsubscribed from channel ${topic}:${ws.auth.sub.id}` }));
+			break;
+		case 'p2pChat':
+			removeSubscriber(WEBSOCKET_CHANNEL(topic, symbol), ws);
+			removeSubscriber(WEBSOCKET_CHANNEL(topic, ws.auth.sub.id), ws);
 			ws.send(JSON.stringify({ message: `Unsubscribed from channel ${topic}:${ws.auth.sub.id}` }));
 			break;
 		case 'admin':
@@ -323,6 +333,30 @@ const handleChatData = (action, ws, data) => {
 		});
 };
 
+const handleP2pData = (action, ws, data) => {
+	if (!ws.auth.sub) {
+		throw new Error('Not authorized');
+	} else if (action === 'deleteMessage' || action === 'getBannedUsers' || action === 'banUser' || action === 'unbanUser') {
+		if (
+			ws.auth.scopes.indexOf(ROLES.ADMIN) === -1 &&
+			ws.auth.scopes.indexOf(ROLES.SUPERVISOR) === -1 &&
+			ws.auth.scopes.indexOf(ROLES.SUPPORT) === -1
+		) {
+			throw new Error('Not authorized');
+		}
+	}
+	switch (action) {
+		case 'addMessage':
+			addP2PMessage(ws.auth.sub.id, data);
+			break;
+		case 'getStatus':
+			getP2PStatus(ws.auth.sub.id, data)
+			break;
+		default:
+			throw new Error('Invalid action');
+	}
+};
+
 const handleDepositWithdrawalData = (data) => {
 	switch (data.topic) {
 		case 'deposit':
@@ -352,5 +386,6 @@ module.exports = {
 	terminateTopic,
 	authorizeUser,
 	terminateClosedChannels,
-	handleChatData
+	handleChatData,
+	handleP2pData
 };

@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { loadReCaptcha } from 'react-recaptcha-v3';
 import { getIconByKey, generateAllIcons, addDefaultLogo } from 'utils/icon';
 import { calculateThemes } from 'utils/color';
-import merge from 'lodash.merge';
 import { DEFAULT_CAPTCHA_SITEKEY } from 'config/constants';
+import merge from 'lodash.merge';
 
 export const ProjectConfig = React.createContext('appConfig');
 
@@ -39,15 +38,10 @@ class ConfigProvider extends Component {
 			sections,
 		};
 	}
-
 	componentDidMount() {
-		const {
-			initialConfig: { captcha = {} },
-		} = this.props;
-
-		// ReCaptcha Initialization
-		const siteKey = captcha.site_key || DEFAULT_CAPTCHA_SITEKEY;
-		loadReCaptcha(siteKey, () => {});
+		const script = document.createElement('script');
+		script.src = `https://www.google.com/recaptcha/api.js?render=${DEFAULT_CAPTCHA_SITEKEY}`;
+		document.body.appendChild(script);
 	}
 
 	UNSAFE_componentWillUpdate(_, nextState) {

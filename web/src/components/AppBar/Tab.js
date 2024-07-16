@@ -19,7 +19,7 @@ const Tab = ({
 		pair: { increment_price } = {},
 		ticker: { close } = {},
 		display_name,
-		type
+		type,
 	} = market;
 
 	return (
@@ -45,7 +45,7 @@ const Tab = ({
 					<div className="app_bar-currency-txt">{display_name}</div>
 					{increment_price && (
 						<>
-							<div className="title-font ml-1">
+							<div className="title-font fav-price-label ml-1">
 								<span className="app_bar-currency-txt">:</span>
 								{formatToCurrency(close, increment_price)}
 							</div>
@@ -57,7 +57,6 @@ const Tab = ({
 							<ThunderboltFilled />
 						</div>
 					)}
-					
 				</div>
 			</div>
 		</div>

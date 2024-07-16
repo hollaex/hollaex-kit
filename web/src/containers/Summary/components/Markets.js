@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
 import { withRouter } from 'react-router';
+import { bindActionCreators } from 'redux';
 
 import { SearchBox } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
@@ -12,13 +13,14 @@ import { getSparklines } from 'actions/chartAction';
 import { EditWrapper } from 'components';
 import { MarketsSelector } from 'containers/Trade/utils';
 import MarketList from 'containers/TradeTabs/components/MarketList';
+import { changeSparkLineChartData } from 'actions/appActions';
 
 class Markets extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			data: [],
-			chartData: {},
+			// chartData: {},
 			pageSize: 10,
 			page: 0,
 			count: 0,
@@ -32,7 +34,7 @@ class Markets extends Component {
 		this.constructData(page, searchValue);
 
 		getSparklines(Object.keys(pairs)).then((chartData) =>
-			this.setState({ chartData })
+			this.props.changeSparkLineChartData(chartData)
 		);
 	}
 
@@ -120,7 +122,7 @@ class Markets extends Component {
 	};
 
 	render() {
-		const { data, chartData, page, pageSize, count } = this.state;
+		const { data, page, pageSize, count } = this.state;
 		const {
 			showSearch = true,
 			showMarkets = false,
@@ -128,6 +130,7 @@ class Markets extends Component {
 			isHome = false,
 			showContent = false,
 			renderContent,
+			sparkLineChartData,
 		} = this.props;
 
 		if (isHome) {
@@ -141,7 +144,7 @@ class Markets extends Component {
 						<EditWrapper stringId="SUMMARY_MARKETS.VISIT_COIN_INFO_PAGE">
 							{STRINGS.formatString(
 								STRINGS['SUMMARY_MARKETS.VISIT_COIN_INFO_PAGE'],
-								<Link to="assets" className="link-text">
+								<Link to="prices" className="link-text">
 									{STRINGS['SUMMARY_MARKETS.HERE']}
 								</Link>
 							)}
@@ -166,7 +169,7 @@ class Markets extends Component {
 				<MarketList
 					loading={!data.length}
 					markets={data}
-					chartData={chartData}
+					chartData={sparkLineChartData}
 					handleClick={this.handleClick}
 				/>
 
@@ -216,6 +219,17 @@ const mapStateToProps = (state) => ({
 	tickers: state.app.tickers,
 	constants: state.app.constants,
 	markets: MarketsSelector(state),
+	sparkLineChartData: state.app.sparkLineChartData,
 });
 
-export default connect(mapStateToProps)(withRouter(withConfig(Markets)));
+const mapDispatchToProps = (dispatch) => ({
+	changeSparkLineChartData: bindActionCreators(
+		changeSparkLineChartData,
+		dispatch
+	),
+});
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withRouter(withConfig(Markets)));

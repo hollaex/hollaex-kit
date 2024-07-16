@@ -135,6 +135,23 @@ $app-menu-width: calc(100vw - 40rem);
 				stroke: $base_top-bar-navigation_text-inactive;
 			}
 		}
+
+		.app-bar-deposit-btn {
+			color: $app-bar-icon-inactive;
+			background-color: $link;
+			padding: 2px 10px 0px 10px;
+			border-radius: 3px;
+			cursor: pointer;
+			font-size: 11px;
+			.margin-aligner {
+				margin-bottom: unset;
+				margin-right: unset;
+				svg {
+					width: 15px !important;
+					height: 15px !important;
+				}
+			}
+		}
 	}
 
 	.app_bar-pair-overflow {
@@ -753,6 +770,10 @@ $app-menu-width: calc(100vw - 40rem);
 		}
 	}
 
+	.fav-price-label {
+		color: $colors-main-black !important;
+	}
+
 	.app_bar-currency-txt {
 		font-weight: 600;
 	}
@@ -983,8 +1004,8 @@ $app-menu-width: calc(100vw - 40rem);
 		font-size: 1rem;
 		height: 2.5rem;
 		padding: 0.5rem 0.8rem;
-		width: 3.2rem;
-		max-width: 3.2rem;
+		width: 4.2rem;
+		max-width: 4.2rem;
 		/* (22 -6) / 5 */
 	}
 
@@ -996,7 +1017,9 @@ $app-menu-width: calc(100vw - 40rem);
 
 	.app-bar-add-tab-content {
 		font-size: 1rem;
-		overflow-y: scroll;
+		// overflow-y: scroll;
+		scrollbar-width: thin;
+		scrollbar-color: $colors-black $app-background-color;
 		padding: 0.3rem 0;
 		.scroll-view {
 			overflow-y: auto;
@@ -1041,7 +1064,7 @@ $app-menu-width: calc(100vw - 40rem);
 	.app-bar-add-tab-content-no-market {
 		display: block;
 		text-align: center;
-    	width: 100%;
+		width: 100%;
 		margin: auto;
 		margin-top: 50%;
 		transform: translateY(-50%);
@@ -1120,7 +1143,7 @@ $app-menu-width: calc(100vw - 40rem);
 		// }
 
 		.app-menu-bar-content {
-			width: 12rem;
+			width: 8rem;
 		}
 	}
 	.app-bar-add-tab-menu {

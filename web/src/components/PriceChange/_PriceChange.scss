@@ -29,11 +29,13 @@
 
 		&.up {
 			color: $buy;
+			display: flex;
 
 			&:before {
 				visibility: visible;
 				@include css-triangle($buy, 'up', $trade-tab--arrow-size);
 				margin-bottom: 0.2rem;
+				margin-top: 15%;
 			}
 		}
 	}
@@ -60,6 +62,13 @@
 				border-color: $buy-bids-text;
 			}
 		}
+	}
+
+	.markets-drop-down {
+		display: flex;
+	}
+	.markets-drop-down.down:before {
+		margin: 10% 0 0 0;
 	}
 }
 

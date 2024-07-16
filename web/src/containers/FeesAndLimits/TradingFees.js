@@ -1,5 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { ReactSVG } from 'react-svg';
+import { browserHistory } from 'react-router';
 import { Select, Input } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import classnames from 'classnames';
@@ -19,6 +21,7 @@ const TradingFees = ({
 	icons: ICONS,
 	search,
 	setSearch,
+	user,
 }) => {
 	const accountData = config_level[selectedLevel] || {};
 	const description =
@@ -77,6 +80,29 @@ const TradingFees = ({
 									</div>
 								</div>
 							</div>
+							{user.discount > 0 && (
+								<>
+									<div className="d-flex">
+										<div>
+											<ReactSVG
+												src={ICONS['GREEN_CHECK']}
+												className="currency_ball-wrapper s mr-2"
+											/>
+										</div>
+										<div>
+											{STRINGS['FEE_REDUCTION']}: {user.discount}%
+										</div>
+									</div>
+									<div
+										className="blue-link pointer text-uppercase mt-2"
+										onClick={() => browserHistory.push('/referral')}
+									>
+										<EditWrapper stringId="REFERRAL_LINK.GO_TO_REFERRAL">
+											{STRINGS['REFERRAL_LINK.GO_TO_REFERRAL']}
+										</EditWrapper>
+									</div>
+								</>
+							)}
 						</div>
 						<div className="w-100 pl-3">
 							<div
@@ -97,6 +123,7 @@ const TradingFees = ({
 										}
 										textType="title bold text-align-left"
 										iconPath={ICONS['FEES_AND_LIMITS_TRADING_FEES']}
+										className="fees-limits-title"
 									/>
 									<div className="py-4">
 										<div>
@@ -150,6 +177,7 @@ const mapStateToProps = (state) => {
 			value: key,
 			label: name,
 		})),
+		user: state.user || {},
 	};
 };
 

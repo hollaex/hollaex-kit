@@ -80,11 +80,12 @@ const sendSMTPTestEmail = async (params, smtp) => {
 		let transport;
 		if (Object.keys(smtp).length > 0) {
 			transport = nodemailer.createTransport({
-				host: smtp.server,
-				port: smtp.port,
+				host: smtp.server || SMTP_SERVER(),
+				port: smtp.port || SMTP_PORT(),
+				secure: false,
 				auth: {
-					user: smtp.user,
-					pass: smtp.password
+					user: smtp.user || SMTP_USER(),
+					pass: smtp.password || SMTP_PASSWORD()
 				},
 				logger: true
 			});
@@ -92,6 +93,7 @@ const sendSMTPTestEmail = async (params, smtp) => {
 			transport = nodemailer.createTransport({
 				host: SMTP_SERVER(),
 				port: SMTP_PORT(),
+				secure: false,
 				auth: {
 					user: SMTP_USER(),
 					pass: SMTP_PASSWORD()

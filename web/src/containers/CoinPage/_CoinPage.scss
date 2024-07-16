@@ -193,13 +193,6 @@
 					}
 
 					.chart {
-						height: 100px;
-						margin: 10px 0;
-
-						div:last-child {
-							padding-top: 1rem;
-						}
-
 						.fade-area {
 							position: relative;
 						}
@@ -220,7 +213,7 @@
 
 					.trade_tabs-container {
 						margin: 0 !important;
-						width: 100% !important;
+						width: auto !important;
 					}
 				}
 
@@ -237,7 +230,7 @@
 
 				.fullname {
 					color: $colors-deactivate;
-					font-size: 0.65rem;
+					font-size: 1rem;
 					white-space: nowrap;
 				}
 

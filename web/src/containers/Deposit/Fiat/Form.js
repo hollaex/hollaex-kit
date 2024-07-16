@@ -43,16 +43,25 @@ const Form = ({
 	router,
 	coins,
 	onramp = {},
+	fiat_fees,
+	getDepositCurrency,
 }) => {
 	const [activeTab, setActiveTab] = useState();
 	const [tabs, setTabs] = useState({});
 	const [activeStep, setActiveStep] = useState(STEPS.HOME);
 	const [initialValues, setInitialValues] = useState({});
 
+	const currentCurrency = getDepositCurrency ? getDepositCurrency : currency;
+
 	useEffect(() => {
 		setTabs(getTabs());
 		setInitialValues(
-			generateInitialValues(verification_level, coins, currency)
+			generateInitialValues(
+				verification_level,
+				coins,
+				currentCurrency,
+				fiat_fees
+			)
 		);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -144,12 +153,14 @@ const Form = ({
 		const { type } = tabs[activeTab] || {};
 		const isManual = type === 'manual';
 		const { rate: fee } = getFiatDepositFee(currency);
-		const limit = getFiatDepositLimit();
+		const limit = getFiatDepositLimit(currency);
 
 		const { min, max, display_name } = coins[currency] || DEFAULT_COIN_DATA;
 
 		const MIN = math.max(fee, min);
 		const MAX = limit && math.larger(limit, 0) ? math.min(limit, max) : max;
+
+		const customFee = fiat_fees?.[currency]?.deposit_fee;
 
 		return (
 			<Fragment>
@@ -201,7 +212,7 @@ const Form = ({
 								<div className="pl-4">
 									{STRINGS.formatString(
 										STRINGS['AMOUNT_FORMAT'],
-										fee,
+										customFee || fee,
 										display_name
 									)}
 								</div>
@@ -291,7 +302,9 @@ const Form = ({
 		);
 	};
 
-	const { icon_id } = coins[currency] || DEFAULT_COIN_DATA;
+	const { icon_id } = getDepositCurrency
+		? coins[getDepositCurrency]
+		: coins[currency] || DEFAULT_COIN_DATA;
 
 	return (
 		<div className="withdraw-form-wrapper">
@@ -318,6 +331,8 @@ const mapStateToProps = (store, ownProps) => ({
 	user: store.user,
 	coins: store.app.coins,
 	onramp: store.app.onramp[ownProps.currency],
+	fiat_fees: store.app.constants.fiat_fees,
+	getDepositCurrency: store.app.depositFields.depositCurrency,
 });
 
 export default connect(mapStateToProps)(withRouter(withConfig(Form)));

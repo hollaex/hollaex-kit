@@ -52,43 +52,67 @@ class Form extends Component {
 			error,
 			onClickHelp,
 			icons: ICONS,
+			isEnableOtpForm,
+			isWithdraw,
 		} = this.props;
 		const { formValues } = this.state;
+		const errorMsg = isWithdraw ? '' : error;
 
 		return (
 			<div className="otp_form-wrapper">
-				<IconTitle
-					stringId="OTP_FORM.OTP_TITLE"
-					text={STRINGS['OTP_FORM.OTP_TITLE']}
-					iconId="SET_NEW_PASSWORD"
-					iconPath={ICONS['SET_NEW_PASSWORD']}
-				/>
-				<div className="otp_form-title-wrapper">
-					{onClickHelp && (
-						<ActionNotification
-							stringId="NEED_HELP_TEXT"
-							text={STRINGS['NEED_HELP_TEXT']}
-							onClick={onClickHelp}
-							iconId="BLUE_QUESTION"
-							iconPath={ICONS['BLUE_QUESTION']}
-							status="information"
+				{isEnableOtpForm ? (
+					<React.Fragment>
+						<IconTitle
+							stringId="ACCOUNT_SECURITY.OTP.CONTENT.TITLE"
+							text={STRINGS['ACCOUNT_SECURITY.OTP.CONTENT.TITLE']}
+							iconId="OTP_KEYS"
+							iconPath={ICONS['OTP_KEYS']}
+							className="w-100 m-0"
+							textType="title"
 						/>
-					)}
-				</div>
+						<div className="text-center my-4">
+							{STRINGS['OTP_FORM.INPUT_TEXT']}
+						</div>
+					</React.Fragment>
+				) : (
+					<IconTitle
+						stringId="OTP_FORM.OTP_TITLE"
+						text={STRINGS['OTP_FORM.OTP_TITLE']}
+						iconId="SET_NEW_PASSWORD"
+						iconPath={ICONS['SET_NEW_PASSWORD']}
+					/>
+				)}
+				{!isEnableOtpForm && (
+					<div className="otp_form-title-wrapper">
+						{onClickHelp && (
+							<ActionNotification
+								stringId="NEED_HELP_TEXT"
+								text={STRINGS['NEED_HELP_TEXT']}
+								onClick={onClickHelp}
+								iconId="BLUE_QUESTION"
+								iconPath={ICONS['BLUE_QUESTION']}
+								status="information"
+							/>
+						)}
+					</div>
+				)}
 				<form onSubmit={handleSubmit} className="w-100" ref={this.setFormRef}>
 					<div className="w-100 otp_form-fields">
 						{renderFields(formValues, {
 							isSubmitting: submitting,
-							error,
+							error: errorMsg,
 							handleSubmit,
 						})}
 					</div>
-					<div className="otp_form-info-text">
-						{STRINGS['OTP_FORM.OTP_FORM_INFO']}
-					</div>
-					<div className="otp_form-subnote-text">
-						{STRINGS['OTP_FORM.OTP_FORM_SUBNOTE_LINE_1']}
-						{STRINGS['OTP_FORM.OTP_FORM_SUBNOTE_LINE_2']}
+					{!isEnableOtpForm && (
+						<div className="otp_form-info-text mt-0">
+							{STRINGS['OTP_FORM.OTP_FORM_INFO']}
+						</div>
+					)}
+					<div className={`${isEnableOtpForm && 'mt-0'} otp_form-subnote-text`}>
+						{isEnableOtpForm
+							? STRINGS['OTP_FORM.OTP_FORM_SUBNOTE_LINE_3']
+							: `${STRINGS['OTP_FORM.OTP_FORM_SUBNOTE_LINE_1']} ${STRINGS['OTP_FORM.OTP_FORM_SUBNOTE_LINE_2']}`}
 					</div>
 				</form>
 			</div>

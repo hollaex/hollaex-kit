@@ -42,7 +42,9 @@ class MarketRow extends Component {
 					{!loading ? (
 						<div className="d-flex align-items-center">
 							<Coin iconId={icon_id} />
-							<div className="px-2">{isAsset ? fullname : display_name}</div>
+							<div className="px-2 market-pairs">
+								{isAsset ? fullname : display_name}
+							</div>
 						</div>
 					) : (
 						<div
@@ -56,7 +58,7 @@ class MarketRow extends Component {
 				<td>
 					{!loading ? (
 						<div>
-							<span className="title-font ml-1">
+							<span className="title-font ml-1 last-price-label">
 								{formatToCurrency(ticker.close, increment_price)}
 							</span>
 							<span className="title-font ml-2">{pair_2_display}</span>
@@ -103,7 +105,10 @@ class MarketRow extends Component {
 								{ticker.volume > 0 && (
 									<div>
 										<span className="title-font ml-1 important-text">
-											{volume_native_text}
+											{volume_native_text.split(' ')[0]}
+										</span>
+										<span className="ml-1">
+											{volume_native_text.split(' ')[1]}
 										</span>
 									</div>
 								)}

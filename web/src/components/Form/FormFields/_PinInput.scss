@@ -28,17 +28,22 @@
 	}
 
 	.active {
-		border: 1px solid $colors-black !important;
+		border: 2px solid $colors-black !important;
 	}
 
 	.error {
 		border: 1px solid $colors-notifications-red !important;
 	}
 
-	.group {
+	.leftGroup,
+	.rightGroup {
 		padding: 1rem;
 		& input {
 			margin: 0 0.25rem;
 		}
+	}
+
+	.leftGroup .error:first-child {
+		border: 2px solid $colors-notifications-red !important;
 	}
 }

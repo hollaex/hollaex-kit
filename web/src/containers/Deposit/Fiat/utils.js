@@ -6,13 +6,15 @@ const DEPOSIT_FEES_KEY = 'deposit_fees';
 const WITHDRAWAL_LIMIT_KEY = 'withdrawal_limit';
 const DEPOSIT_LIMIT_KEY = 'deposit_limit';
 
-export const getFiatFee = (currency, amount, network, type) => {
+export const getFiatFee = (currency, amount, network, type, getCurrency) => {
 	const {
 		app: { coins },
 	} = store.getState();
 
 	const feeNetwork = network || currency;
-	const { [type]: fees, [type.slice(0, -1)]: fee } = coins[currency];
+	const { [type]: fees, [type.slice(0, -1)]: fee } = getCurrency
+		? coins[getCurrency]
+		: coins[currency];
 	if (fees && fees[feeNetwork]) {
 		const { symbol, value } = fees[feeNetwork];
 
@@ -32,13 +34,29 @@ export const getFiatFee = (currency, amount, network, type) => {
 	return { symbol: currency, rate: 0, value: 0 };
 };
 
-export const getFiatWithdrawalFee = (currency, amount = 0, network) =>
-	getFiatFee(currency, amount, network, WITHDRAWAL_FEES_KEY);
+export const getFiatWithdrawalFee = (
+	currency,
+	amount = 0,
+	network,
+	getWithdrawCurrency
+) =>
+	getFiatFee(
+		currency,
+		amount,
+		network,
+		WITHDRAWAL_FEES_KEY,
+		getWithdrawCurrency
+	);
 
-export const getFiatDepositFee = (currency, amount = 0, network) =>
-	getFiatFee(currency, amount, network, DEPOSIT_FEES_KEY);
+export const getFiatDepositFee = (
+	currency,
+	amount = 0,
+	network,
+	getDepositCurrency
+) =>
+	getFiatFee(currency, amount, network, DEPOSIT_FEES_KEY, getDepositCurrency);
 
-export const getFiatLimit = (type) => {
+export const getFiatLimit = (type, currency) => {
 	const transactionType =
 		type === WITHDRAWAL_LIMIT_KEY ? 'withdrawal' : 'deposit';
 	const {
@@ -46,16 +64,28 @@ export const getFiatLimit = (type) => {
 		user: { verification_level },
 	} = store.getState();
 
-	return (
-		transaction_limits?.find(
-			(limit) =>
-				limit.tier === verification_level && limit.type === transactionType
-		)?.amount || 0
+	const independentLimit = transaction_limits?.find(
+		(limit) =>
+			limit.limit_currency === currency &&
+			limit.tier === verification_level &&
+			limit.type === transactionType
 	);
+	const defaultLimit = transaction_limits?.find(
+		(limit) =>
+			limit.limit_currency === 'default' &&
+			limit.tier === verification_level &&
+			limit.type === transactionType
+	);
+
+	const limit = independentLimit || defaultLimit;
+
+	return limit?.amount || 0;
 };
 
-export const getFiatWithdrawalLimit = () => getFiatLimit(WITHDRAWAL_LIMIT_KEY);
-export const getFiatDepositLimit = () => getFiatLimit(DEPOSIT_LIMIT_KEY);
+export const getFiatWithdrawalLimit = (symbol) =>
+	getFiatLimit(WITHDRAWAL_LIMIT_KEY, symbol);
+export const getFiatDepositLimit = (symbol) =>
+	getFiatLimit(DEPOSIT_LIMIT_KEY, symbol);
 
 export const getOnramp = (state, ownProps) =>
 	state.app.onramp[ownProps.currency][ownProps.method];

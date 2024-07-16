@@ -115,6 +115,50 @@
         "USER_DELETED": {
 			"html":  "<div><p><p>${name}님, 친애하는 </p></p><p>계정 삭제 요청이 진행 중입니다. 귀하의 계정 정보는 서비스 약관에 따라 삭제됩니다.</p><p> 감사합니다.<br> ${api_name} 팀 </p></div>",
 			"title": "계정 삭제 요청"
-		}
+		},
+        "OTP_DISABLED": {
+            "html": "<div> <p> ${name} 님 </p> <p> 귀하의 계정에서 <b>이중 인증 (2FA)이 해제되었다는 것을 기록했습니다</b>. 귀하의 계정을 보호하기 위해 2FA를 다시 활성화하는 것이 강력히 권장됩니다.</p> <div> <div>시간: ${time}</div> <div>국가: ${country}</div> <div>IP 주소: ${ip}</div> </div> <p> 만약 귀하가 아니라면 즉시 저희에게 연락해주십시오. </p> <p> 성의를 다하여<br> ${api_name} 팀 </p> </div>",
+            "title": "OTP 비활성화됨"
+          },
+        "OTP_ENABLED": {
+            "html": "<div> <p> ${name} 님 </p> <p> 귀하의 계정에서 <b>이중 인증 (2FA)이 활성화되었다는 것을 기록했습니다</b>.</p> <div> <div>시간: ${time}</div> <div>국가: ${country}</div> <div>IP 주소: ${ip}</div> </div> <p> 성의를 다하여<br> ${api_name} 팀 </p> </div>",
+            "title": "OTP 활성화됨"
+        },
+        "P2P_MERCHANT_IN_PROGRESS": {
+            "html": "<div><p> 친애하는 ${name} 님 </p><p>귀하의 P2P 거래에 활동이 감지되었습니다. 이는 고객이 귀하와 거래를 요청하고 있음을 나타낼 수 있습니다. 거래 상태를 확인하려면 아래 링크를 클릭하십시오:<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">거래 상태 확인</Button></a></div><p>저희 플랫폼을 이용해 주셔서 감사합니다.</p><p>요청이 발생한 위치: ${ip}</p><p>감사합니다<br> ${api_name} 팀 </p></div>",
+            "title": "귀하의 P2P 거래 업데이트"
+        },
+        "P2P_BUYER_PAID_ORDER": {
+            "html": "<div><p> 친애하는 ${name} 님 </p><p>귀하는 주문을 결제 완료로 표시했습니다. 판매자가 확인하고 자금을 해제하기를 기다리고 있습니다<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">주문 확인하기</Button></a></div><p>저희 플랫폼을 이용해 주셔서 감사합니다.</p><p>요청이 발생한 위치: ${ip}</p><p>감사합니다<br> ${api_name} 팀 </p></div>",
+            "title": "귀하의 P2P 주문에서 감지된 활동"
+        },
+        "P2P_ORDER_EXPIRED": {
+            "html": "<div><p> 친애하는 ${name} 님 </p><p>지정된 시간 내에 활동이 없어서 귀하의 주문이 만료되었습니다.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">주문 확인하기</Button></a></div><p>저희 플랫폼을 이용해 주셔서 감사합니다.</p><p>요청이 발생한 위치: ${ip}</p><p>감사합니다<br> ${api_name} 팀 </p></div>",
+            "title": "귀하의 P2P 주문에서 감지된 활동"
+        },
+        "P2P_ORDER_CLOSED": {
+            "html": "<div><p> 친애하는 ${name} 님 </p><p>지원 팀이 항소 요청에 대한 판결을 내린 후 주문이 종료되었습니다<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">주문 페이지로 이동</Button></a></div><p>저희 플랫폼을 이용해 주셔서 감사합니다.</p><p>감사합니다<br> ${api_name} 팀 </p></div>",
+            "title": "P2P 주문에 활동이 감지되었습니다"
+        },
+        "P2P_BUYER_CANCELLED_ORDER": {
+            "html": "<div><p> 친애하는 ${name} 님 </p><p>귀하는 주문을 취소했습니다. 거래가 종료되었습니다.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">주문 확인하기</Button></a></div><p>저희 플랫폼을 이용해 주셔서 감사합니다.</p><p>요청이 발생한 위치: ${ip}</p><p>감사합니다<br> ${api_name} 팀 </p></div>",
+            "title": "귀하의 P2P 주문에서 감지된 활동"
+        },
+        "P2P_BUYER_APPEALED_ORDER": {
+            "html": "<div><p> 친애하는 ${name} 님 </p><p>귀하는 주문에 대해 이의를 제기했습니다. 문제를 해결하려면 지원팀에 문의하십시오.</p><p>요청이 발생한 위치: ${ip}</p><p>감사합니다<br> ${api_name} 팀 </p></div>",
+            "title": "귀하의 P2P 주문에서 감지된 활동"
+        },
+        "P2P_VENDOR_CONFIRMED_ORDER": {
+            "html": "<div><p> 친애하는 ${name} 님 </p><p>귀하는 거래를 확인하고 자금을 해제했습니다.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">주문 확인하기</Button></a></div><p>저희 플랫폼을 이용해 주셔서 감사합니다.</p><p>요청이 발생한 위치: ${ip}</p><p>감사합니다<br> ${api_name} 팀 </p></div>",
+            "title": "귀하의 P2P 주문에서 감지된 활동"
+        },
+        "P2P_VENDOR_CANCELLED_ORDER": {
+            "html": "<div><p> 친애하는 ${name} 님 </p><p>귀하는 주문을 취소했습니다. 거래가 종료되었습니다.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">주문 확인하기</Button></a></div><p>저희 플랫폼을 이용해 주셔서 감사합니다.</p><p>요청이 발생한 위치: ${ip}</p><p>감사합니다<br> ${api_name} 팀 </p></div>",
+            "title": "귀하의 P2P 주문에서 감지된 활동"
+        },
+        "P2P_VENDOR_APPEALED_ORDER": {
+            "html": "<div><p> 친애하는 ${name} 님 </p><p>귀하는 주문에 대해 이의를 제기했습니다. 문제를 해결하려면 지원팀에 문의하십시오.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">주문 확인하기</Button></a></div><p>저희 플랫폼을 이용해 주셔서 감사합니다.</p><p>요청이 발생한 위치: ${ip}</p><p>감사합니다<br> ${api_name} 팀 </p></div>",
+            "title": "귀하의 P2P 주문에서 감지된 활동"
+        }
     }
 }
