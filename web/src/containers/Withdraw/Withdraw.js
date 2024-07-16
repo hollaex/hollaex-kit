@@ -2,9 +2,10 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
+import { Link } from 'react-router';
 import { Button, Input, Select } from 'antd';
 import BigNumber from 'bignumber.js';
-import { Coin } from 'components';
+import { Coin, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 import {
 	CaretDownOutlined,
@@ -36,6 +37,7 @@ import {
 	renderLabel,
 	renderNetworkField,
 	renderNetworkWithLabel,
+	renderScanIcon,
 } from './utils';
 import { email, validAddress } from 'components/Form/validations';
 import strings from 'config/localizedStrings';
@@ -504,20 +506,6 @@ const RenderWithdraw = ({
 	// 	}
 	// };
 
-	const renderScanIcon = () => {
-		return (
-			<div
-				className="render-scan-wrapper d-flex"
-				onClick={() => onHandleScan()}
-			>
-				<span className="suffix-text">{renderLabel('ACCORDIAN.SCAN')}</span>
-				<div className="img-wrapper">
-					<img alt="scan-icon" src={STATIC_ICONS['QR_CODE_SCAN']}></img>
-				</div>
-			</div>
-		);
-	};
-
 	const withdrawFeeFormat =
 		selectedMethod === strings['FORM_FIELDS.EMAIL_LABEL']
 			? 0
@@ -926,47 +914,60 @@ const RenderWithdraw = ({
 									: 'FORM_FIELDS.EMAIL_LABEL'
 							)}
 						</div>
-						{isEmailAndAddress && renderNetwork && (
-							<div
-								className={
-									isMobile
-										? 'd-flex flex-row select-wrapper mobile-view'
-										: 'd-flex flex-row select-wrapper'
-								}
-							>
-								{selectedMethod ===
-									strings['WITHDRAW_PAGE.WITHDRAWAL_CONFIRM_ADDRESS'] ||
-								selectedMethod === 'Address' ? (
-									<Input
-										className="destination-input-field"
-										onChange={(e) => onHandleAddress(e.target.value, 'address')}
-										value={getWithdrawAddress}
-										placeholder={strings['WITHDRAW_PAGE.WITHDRAW_ADDRESS']}
-										suffix={renderScanIcon()}
-									></Input>
-								) : (
-									<Input
-										className="destination-input-field"
-										onChange={(e) => onHandleAddress(e.target.value, 'email')}
-										value={receiverWithdrawalEmail}
-										placeholder={
-											strings['WITHDRAW_PAGE.WITHDRAW_EMAIL_ADDRESS']
-										}
-									></Input>
-								)}
-								{selectedMethod === strings['FORM_FIELDS.EMAIL_LABEL'] ? (
-									isValidEmail ? (
+						<div className="destination-field-wrapper">
+							{isEmailAndAddress && renderNetwork && (
+								<div
+									className={
+										isMobile
+											? 'd-flex flex-row select-wrapper mobile-view'
+											: 'd-flex flex-row select-wrapper'
+									}
+								>
+									{selectedMethod ===
+										strings['WITHDRAW_PAGE.WITHDRAWAL_CONFIRM_ADDRESS'] ||
+									selectedMethod === 'Address' ? (
+										<div className="destination-input-wrapper">
+											<Input
+												className="destination-input-field destination-input-address-field"
+												onChange={(e) =>
+													onHandleAddress(e.target.value, 'address')
+												}
+												value={getWithdrawAddress}
+												placeholder={strings['WITHDRAW_PAGE.WITHDRAW_ADDRESS']}
+												suffix={renderScanIcon(onHandleScan)}
+											></Input>
+											<div className="blue-link address-link">
+												<Link to="/wallet/address-book">
+													<EditWrapper stringId="ADDRESS_BOOK.MANAGE_ADDRESS_BOOK">
+														{STRINGS['ADDRESS_BOOK.MANAGE_ADDRESS_BOOK']}
+													</EditWrapper>
+												</Link>
+											</div>
+										</div>
+									) : (
+										<Input
+											className="destination-input-field"
+											onChange={(e) => onHandleAddress(e.target.value, 'email')}
+											value={receiverWithdrawalEmail}
+											placeholder={
+												strings['WITHDRAW_PAGE.WITHDRAW_EMAIL_ADDRESS']
+											}
+										></Input>
+									)}
+									{selectedMethod === strings['FORM_FIELDS.EMAIL_LABEL'] ? (
+										isValidEmail ? (
+											<CheckOutlined className="mt-3 ml-3" />
+										) : (
+											<CloseOutlined className="mt-3 ml-3" />
+										)
+									) : isValidAddress ? (
 										<CheckOutlined className="mt-3 ml-3" />
 									) : (
 										<CloseOutlined className="mt-3 ml-3" />
-									)
-								) : isValidAddress ? (
-									<CheckOutlined className="mt-3 ml-3" />
-								) : (
-									<CloseOutlined className="mt-3 ml-3" />
-								)}
-							</div>
-						)}
+									)}
+								</div>
+							)}
+						</div>
 					</div>
 				</div>
 			</div>

@@ -1,5 +1,10 @@
-import math from 'mathjs';
+import React from 'react';
+import { Button } from 'antd';
 import { createSelector } from 'reselect';
+import math from 'mathjs';
+
+import STRINGS from 'config/localizedStrings';
+import { EditWrapper } from 'components';
 import { calculateOraclePrice } from 'utils/currency';
 import { WALLET_SORT } from 'actions/appActions';
 
@@ -107,4 +112,22 @@ export const searchAssets = (assets, searchValue = '', isZeroBalanceHidden) => {
 			);
 		}
 	});
+};
+
+export const RenderBtn = ({
+	string,
+	buttonClassName,
+	onHandleClick,
+	disabled = false,
+}) => {
+	return (
+		<Button
+			className={buttonClassName}
+			type="default"
+			onClick={() => onHandleClick()}
+			disabled={disabled}
+		>
+			<EditWrapper stringId={string}>{STRINGS[string]}</EditWrapper>
+		</Button>
+	);
 };
