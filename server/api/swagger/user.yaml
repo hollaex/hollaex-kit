@@ -293,6 +293,9 @@ paths:
                       type: string
                     currency:
                       type: string
+                    created_at:
+                      type: string
+                      format: date-time
       responses:
         200:
           description: Success
