@@ -72,6 +72,7 @@ const {
 	AUDIT_KEYS,
 	USER_FIELD_ADMIN_LOG,
 	ADDRESS_FIELDS,
+	CRYPTO_ADDRESS_FIELDS,
 	ID_FIELDS,
 	SETTING_KEYS,
 	OMITTED_USER_FIELDS,
@@ -3288,14 +3289,28 @@ const fetchUserAddressBook = async (user_id) => {
 };
 
 
+
+
 const updateUserAddresses = async (user_id, data) => {
 	const { addresses } = data;
 
 	addresses.forEach((addressObj) => {
-		if (!addressObj.address || !addressObj.network || !addressObj.label) {
+		if (!addressObj.address || !addressObj.network || !addressObj.label || !addressObj.currency) {
 			throw new Error(ADDRESSBOOK_MISSING_FIELDS);
 		}
+		Object.keys(addressObj).forEach((key) => {
+			if (!CRYPTO_ADDRESS_FIELDS.includes(key)) {
+				throw new Error(ADDRESSBOOK_MISSING_FIELDS);
+			}
+		});
 	});
+
+	// Check for duplicate labels in the payload
+	const labels = addresses.map(a => a.label);
+	const uniqueLabels = new Set(labels);
+	if (uniqueLabels.size !== labels.length) {
+		throw new Error(ADDRESSBOOK_ALREADY_EXISTS);
+	}
 
 	const user = await getUserByKitId(user_id);
 
@@ -3310,13 +3325,6 @@ const updateUserAddresses = async (user_id, data) => {
 			addresses
 		});
 	} else {
-		// Check if any address in the payload already exists
-		const existingAddresses = userAddressBook.addresses.map(a => a.address);
-		const duplicateAddresses = addresses.filter(a => existingAddresses.includes(a.address) || existingAddresses.includes(a.label));
-		if (duplicateAddresses.length > 0) {
-			throw new Error(ADDRESSBOOK_ALREADY_EXISTS);
-		}
-		
 		// Update the addresses
 		userAddressBook = await userAddressBook.update({ addresses }, {
 			fields: ['addresses']

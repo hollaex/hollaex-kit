@@ -291,6 +291,8 @@ paths:
                       type: string
                     network:
                       type: string
+                    currency:
+                      type: string
       responses:
         200:
           description: Success
