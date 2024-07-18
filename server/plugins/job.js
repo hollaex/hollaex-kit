@@ -15,24 +15,6 @@ const getTimezone = () => {
 	return isNumber(validTimezones[kitTimezone]) ? kitTimezone : 'Etc/UTC';
 };
 
-
-setTimeout(async () => {
-	const balances = await toolsLib.user.getAllBalancesAdmin({ format: 'all' });
-
-	const userBalances = balances?.data?.reduce((groups, item) => {
-		const group = (groups[item.user_id] || []);
-		group.push(item);
-		groups[item.user_id] = group;
-		return groups;
-	  }, {});
-
-
-	  let symbols = {};
-	  (userBalances['1'] || []).forEach(balance => { symbols[balance.symbol] = balance.available });
-	 
-
-	console.log(symbols)
-}, 1000 * 10)
 const unstakingCheckRunner = () => {
 	cron.schedule('0 0 0 * * *', async () => {
 		loggerPlugin.verbose(
