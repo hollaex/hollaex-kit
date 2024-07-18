@@ -15,24 +15,6 @@ const getTimezone = () => {
 	return isNumber(validTimezones[kitTimezone]) ? kitTimezone : 'Etc/UTC';
 };
 
-
-setTimeout(async () => {
-	const balances = await toolsLib.user.getAllBalancesAdmin({ format: 'all' });
-
-	const userBalances = balances?.data?.reduce((groups, item) => {
-		const group = (groups[item.user_id] || []);
-		group.push(item);
-		groups[item.user_id] = group;
-		return groups;
-	  }, {});
-
-
-	  let symbols = {};
-	  (userBalances['1'] || []).forEach(balance => { symbols[balance.symbol] = balance.available });
-	 
-
-	console.log(symbols)
-}, 1000 * 10)
 const unstakingCheckRunner = () => {
 	cron.schedule('0 0 0 * * *', async () => {
 		loggerPlugin.verbose(
@@ -43,40 +25,20 @@ const unstakingCheckRunner = () => {
 			const stakePoolModel = toolsLib.database.getModel('stake');
 			const stakerData = await stakerModel.findAll({ where: { status: 'unstaking' } });
 
-			const balances = await toolsLib.user.getAllBalancesAdmin({ format: 'all' });
-
-			const userBalances = balances?.data?.reduce((groups, item) => {
-				const group = (groups[item.user_id] || []);
-				group.push(item);
-				groups[item.user_id] = group;
-				return groups;
-			  }, {});
-
-
 			for (const staker of stakerData) {
 				const user = await toolsLib.user.getUserByKitId(staker.user_id);
 				const stakePool = await stakePoolModel.findOne({ where: { id: staker.stake_id } });
 
-				// const balance = await toolsLib.wallet.getUserBalanceByKitId(stakePool.account_id);
-				const balance = userBalances[stakePool.account_id];
-				if (!balance){
-					sendEmail(
-						MAILTYPE.ALERT,
-						adminAccount.email,
-						{
-							type: 'Error! Source account balance not found during unstaking process',
-							data: `Source account balance not found for user id ${stakePool.account_id}. Please contact support `
-						},
-						adminAccount.settings
-					);
-					
-					continue;
+				const balance = await toolsLib.wallet.getUserBalanceByKitId(stakePool.account_id);
+				let symbols = {};
+				
+				for (const key of Object.keys(balance)) {
+					if (key.includes('available') && balance[key] != null) {
+						let symbol = key?.split('_')?.[0];
+						symbols[symbol] = balance[key];
+					}
 				}
 
-				let symbols = {};
-
-				(balance || []).forEach(balance => { symbols[balance.symbol] = balance.available });
-				
 				const amountAfterSlash =  new BigNumber(staker.reward).minus(new BigNumber(staker.slashed)).toNumber();
 				let totalAmount = staker.amount;
 
