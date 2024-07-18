@@ -285,9 +285,6 @@ paths:
                 items:
                   type: object
                   properties:
-                    id:
-                      type: number
-                      format: int32
                     address:
                       type: string
                     label:
@@ -296,9 +293,6 @@ paths:
                       type: string
                     currency:
                       type: string
-                    created_at:
-                      type: string
-                      format: date-time
       responses:
         200:
           description: Success
