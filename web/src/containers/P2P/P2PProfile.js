@@ -782,7 +782,6 @@ const P2PProfile = ({
 
 									let hasValidation = true;
 									payload.fields?.forEach((field) => {
-										console.log(field.name);
 										if (!field.name || !field.value) {
 											message.error('Please input all method fields');
 											hasValidation = false;
