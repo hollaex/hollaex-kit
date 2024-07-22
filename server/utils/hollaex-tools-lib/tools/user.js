@@ -3339,6 +3339,84 @@ const updateUserAddresses = async (user_id, data) => {
 	return userAddressBook;
 };
 
+const getPaymentDetails = async (user_id, opts = {
+	limit: null,
+	page: null,
+	order_by: null,
+	order: null,
+	start_date: null,
+	end_date: null,
+	is_p2p: null,
+	is_fiat_control: null,
+	status: null,
+}) => {
+	const pagination = paginationQuery(opts.limit, opts.page);
+	const ordering = orderingQuery(opts.order_by, opts.order);
+	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
+
+	const query = {
+		where: {
+			created_at: timeframe,
+			user_id,
+			...(opts.is_p2p && { is_p2p: opts.is_p2p }),
+			...(opts.is_fiat_control && { is_fiat_control: opts.is_fiat_control }),
+			...(opts.status && { status: opts.status })
+		},
+		order: [ordering],
+		...(!opts.format && pagination),
+	};
+
+
+	return dbQuery.findAndCountAllWithRows('paymentDetail', query);
+};
+
+const createPaymentDetail = async (data) => {
+	const { user_id, name, label, details, is_p2p, is_fiat_control, status } = data;
+
+	const user = await getUserByKitId(user_id);
+   
+	if (!user) {
+		throw new Error(USER_NOT_FOUND);
+	}
+	
+	const paymentDetail = await getModel('paymentDetail').create({
+		user_id,
+		name,
+		label,
+		details,
+		is_p2p,
+		is_fiat_control,
+		status
+	});
+	return paymentDetail;
+};
+
+const updatePaymentDetail = async (id, data) => {
+	const paymentDetail = await getModel('paymentDetail').findOne({ where: { id } });
+	if (!paymentDetail) {
+		throw new Error('Payment detail not found');
+	}
+
+	await paymentDetail.update(data, {
+		fields: [
+			'name',
+			'label',
+			'details',
+			'is_p2p',
+			'is_fiat_control'
+		]
+	});
+	return paymentDetail;
+};
+
+const deletePaymentDetail = async (id) => {
+	const paymentDetail = await getModel('paymentDetail').findOne({ where: { id } });
+	if (!paymentDetail) {
+		throw new Error('Payment detail not found');
+	}
+	await paymentDetail.destroy();
+};
+
 
 module.exports = {
 	loginUser,
@@ -3415,5 +3493,9 @@ module.exports = {
 	getUserReferralCodes,
 	createUserReferralCode,
 	updateUserAddresses,
-	fetchUserAddressBook
+	fetchUserAddressBook,
+	getPaymentDetails,
+	createPaymentDetail,
+	updatePaymentDetail,
+	deletePaymentDetail
 };

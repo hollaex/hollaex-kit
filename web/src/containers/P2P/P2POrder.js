@@ -1716,7 +1716,12 @@ const P2POrder = ({
 														textAlign: 'center',
 													}}
 												>
-													<div>{selectedOrder?.merchant?.full_name}:</div>
+													<div>
+														{message.sender_id === selectedOrder?.merchant_id
+															? selectedOrder?.merchant?.full_name
+															: selectedOrder?.buyer?.full_name}
+														:
+													</div>
 													<div>{message.message}</div>
 													<div>
 														{moment(message?.created_at || new Date()).format(
