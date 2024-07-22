@@ -154,7 +154,7 @@ const calculateSize = (orderData, side, responseObject, symbol) => {
 
 		if (incrementUnit < 1) {
 			const decimalPoint = new BigNumber(incrementUnit).dp();
-			const sourceAmount = new BigNumber(targetedAmount).decimalPlaces(decimalPoint).toNumber();
+			const sourceAmount = new BigNumber(targetedAmount)?.decimalPlaces(decimalPoint)?.toNumber();
 			receiving_amount = sourceAmount;
 		} else {
 			receiving_amount = targetedAmount - (targetedAmount % incrementUnit);
@@ -167,7 +167,7 @@ const calculateSize = (orderData, side, responseObject, symbol) => {
 
 		if (incrementUnit < 1) { 
 			const decimalPoint = new BigNumber(incrementUnit).dp();
-			const sourceAmount = new BigNumber(targetedAmount).decimalPlaces(decimalPoint).toNumber();
+			const sourceAmount = new BigNumber(targetedAmount)?.decimalPlaces(decimalPoint)?.toNumber();
 			spending_amount = sourceAmount;
 		} else {
 			spending_amount = targetedAmount - (targetedAmount % incrementUnit);
@@ -280,9 +280,9 @@ const calculatePrice = async (side, spread, formula, refresh_interval, brokerId,
 	let convertedPrice = calculateFormula(formula);
 
 	if (side === 'buy') {
-		convertedPrice = new BigNumber(convertedPrice).multipliedBy((1 + (spread / 100))).toNumber();
+		convertedPrice = new BigNumber(convertedPrice)?.multipliedBy((1 + (spread / 100)))?.toNumber();
 	} else if (side === 'sell') {
-		convertedPrice =  new BigNumber(convertedPrice).multipliedBy((1 - (spread / 100))).toNumber();
+		convertedPrice =  new BigNumber(convertedPrice)?.multipliedBy((1 - (spread / 100)))?.toNumber();
 	}
 	
 	return convertedPrice;
@@ -368,8 +368,8 @@ const testBroker = async (data) => {
 
 		const decimalPoint = new BigNumber(price).dp();
 		return {
-			buy_price: new BigNumber(price * (1 - (spread / 100))).decimalPlaces(decimalPoint).toNumber(),
-			sell_price: new BigNumber(price * (1 + (spread / 100))).decimalPlaces(decimalPoint).toNumber()
+			buy_price: new BigNumber(price * (1 - (spread / 100)))?.decimalPlaces(decimalPoint)?.toNumber(),
+			sell_price: new BigNumber(price * (1 + (spread / 100)))?.decimalPlaces(decimalPoint)?.toNumber()
 		};
 	} catch (err) {
 		throw new Error(err);
