@@ -33,7 +33,9 @@ const P2PPostDeal = ({
 	setSelectedDealEdit,
 }) => {
 	const [step, setStep] = useState(1);
-	const [p2pSide, setP2pSide] = useState('sell');
+	const [p2pSide, setP2pSide] = useState(
+		p2p_config.side === 'all' || p2p_config.side === 'sell' ? 'sell' : 'buy'
+	);
 	const [priceType, setPriceType] = useState('static');
 	const [buyingAsset, setBuyingAsset] = useState();
 	const [spendingAsset, setSpendingAsset] = useState();
@@ -143,6 +145,9 @@ const P2PPostDeal = ({
 							<Switch
 								checked={p2pSide === 'sell' ? true : false}
 								onChange={(checked) => {
+									if (p2p_config.side === 'sell' && !checked) return;
+									if (p2p_config.side === 'buy' && checked) return;
+
 									if (checked) {
 										setP2pSide('sell');
 									} else {

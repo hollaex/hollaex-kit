@@ -2137,6 +2137,22 @@
 		"VIEW_PROFILE": "View vendor's profile",
 		"CLICK_TO_VIEW": "CLICK TO VIEW",
 		"NEW_MESSAGE:": "You have a new message for your order",
-		"STATUS_UPDATE": "You have an update on your order"
+		"STATUS_UPDATE": "You have an update on your order",
+		"ADDITIONAL_PAYMENT_DETAILS": "Add an additional payment details",
+		"PAYMENT_FIELD_INFO": "This new payment field is additional and should assist P2P participants in their fiat currency transfers. This should be account details related to payment method. This may including phone numbers, usernames, unique account numbers, and other necessary information for transactions depending on the payment methods system.",
+		"PAYMENT_DETAIL_NAME": "Payment detail name",
+		"REQUIRED_OR_OPTIONAL": "Required or optional",
+		"CREATE_NEW_PAYMENT_METHODS": "Create and add new payment methods",
+		"MANUAL_PAYMENT_METHOD_ENTRY": "To add a payment method to your P2P platform, you can do so manually by entering the name of the payment method and the required payment details. For example, PayPal uses email addresses to send and receive funds.",
+		"USERS_PAYMENT_SELECTION": "Once the payment method is added, your P2P merchants and users will be able to select it and enter the necessary information when making or receiving payments. The details they provide will be shared with the other party in the P2P transaction.",
+		"METHOD_NAME_AND_DETAIL": "Name of method and main payment detail",
+		"ADD_NEW_PAYMENT_METHODS": "Create new payment methods",
+		"DETAIL_NAME": "Payment detail name",
+		"DETAIL_VALUE": "Payment detail value",
+		"DETAIL_REQUIRED": "Required",
+		"IMPORTANT_DETAIL": "(Important payment detail)",
+		"DETAIL_OPTIONAL": "Optional",
+		"OPTIONAL_DETAIL": "(Optional payment detail)",
+		"ADD_NEW_PAYMENT_FIELD": "Add new payment detail field"
 	}
 }

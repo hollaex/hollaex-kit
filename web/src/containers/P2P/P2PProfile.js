@@ -640,29 +640,33 @@ const P2PProfile = ({
 						}}
 					>
 						<h1 style={{ fontWeight: '600', color: 'white' }}>
-							Create and add new payment methods
+							<EditWrapper stringId="P2P.CREATE_NEW_PAYMENT_METHODS">
+								{STRINGS['P2P.CREATE_NEW_PAYMENT_METHODS']}
+							</EditWrapper>
 						</h1>
 						<div>
-							To add a payment method to your P2P platform, you can do so
-							manually by entering the name of the payment method and the
-							required payment details. For example, PayPal uses email addresses
-							to send and receive funds.{' '}
+							<EditWrapper stringId="P2P.MANUAL_PAYMENT_METHOD_ENTRY">
+								{STRINGS['P2P.MANUAL_PAYMENT_METHOD_ENTRY']}
+							</EditWrapper>{' '}
 						</div>
 
 						<div style={{ marginTop: 20, marginBottom: 30 }}>
-							Once the payment method is added, your P2P merchants and users
-							will be able to select it and enter the necessary information when
-							making or receiving payments. The details they provide will be
-							shared with the other party in the P2P transaction.
+							<EditWrapper stringId="P2P.USERS_PAYMENT_SELECTION">
+								{STRINGS['P2P.USERS_PAYMENT_SELECTION']}
+							</EditWrapper>
 						</div>
 
 						<div style={{ fontSize: 20 }}>
-							Name of method and main payment detail
+							<EditWrapper stringId="P2P.METHOD_NAME_AND_DETAIL">
+								{STRINGS['P2P.METHOD_NAME_AND_DETAIL']}
+							</EditWrapper>
 						</div>
 
 						<div style={{ marginBottom: 20 }}>
 							<div style={{ fontWeight: 'bold' }}>
-								Create new payment methods
+								<EditWrapper stringId="P2P.ADD_NEW_PAYMENT_METHODS">
+									{STRINGS['P2P.ADD_NEW_PAYMENT_METHODS']}
+								</EditWrapper>
 							</div>
 							<Input
 								placeholder="Enter your system name"
@@ -682,7 +686,11 @@ const P2PProfile = ({
 									<div style={{ fontWeight: 'bold', fontSize: 17 }}>
 										FIELD {field.id}#
 									</div>
-									<div style={{ fontWeight: 'bold' }}>Payment detail name</div>
+									<div style={{ fontWeight: 'bold' }}>
+										<EditWrapper stringId="P2P.DETAIL_NAME">
+											{STRINGS['P2P.DETAIL_NAME']}
+										</EditWrapper>
+									</div>
 									<Input
 										placeholder="Input the payment detail name"
 										value={field.name}
@@ -699,7 +707,9 @@ const P2PProfile = ({
 										}}
 									/>
 									<div style={{ fontWeight: 'bold', marginTop: 5 }}>
-										Payment detail value
+										<EditWrapper stringId="P2P.DETAIL_VALUE">
+											{STRINGS['P2P.DETAIL_VALUE']}
+										</EditWrapper>
 									</div>
 									<Input
 										placeholder="Input the payment detail value"
@@ -730,7 +740,9 @@ const P2PProfile = ({
 								setPaymentFieldAdd(true);
 							}}
 						>
-							Add new payment detail field
+							<EditWrapper stringId="P2P.ADD_NEW_PAYMENT_FIELD">
+								{STRINGS['P2P.ADD_NEW_PAYMENT_FIELD']}
+							</EditWrapper>
 						</div>
 						<div
 							style={{
@@ -835,19 +847,22 @@ const P2PProfile = ({
 						}}
 					>
 						<h1 style={{ fontWeight: '600', color: 'white' }}>
-							Add an additional payment details
+							<EditWrapper stringId="P2P.ADDITIONAL_PAYMENT_DETAILS">
+								{STRINGS['P2P.ADDITIONAL_PAYMENT_DETAILS']}
+							</EditWrapper>
 						</h1>
 						<div style={{ marginBottom: 20 }}>
-							This new payment field is additional and should assist P2P
-							participants in their fiat currency transfers. This should be
-							account details related to payment method. This may including
-							phone numbers, usernames, unique account numbers, and other
-							necessary information for transactions depending on the payment
-							methods system.{' '}
+							<EditWrapper stringId="P2P.PAYMENT_FIELD_INFO">
+								{STRINGS['P2P.PAYMENT_FIELD_INFO']}
+							</EditWrapper>{' '}
 						</div>
 
 						<div style={{ marginBottom: 20 }}>
-							<div style={{ fontWeight: 'bold' }}>Payment detail name</div>
+							<div style={{ fontWeight: 'bold' }}>
+								<EditWrapper stringId="P2P.PAYMENT_DETAIL_NAME">
+									{STRINGS['P2P.PAYMENT_DETAIL_NAME']}
+								</EditWrapper>
+							</div>
 							<Input
 								placeholder="Input the payment detail name"
 								value={customField?.name}
@@ -861,21 +876,33 @@ const P2PProfile = ({
 						</div>
 
 						<div>
-							<div style={{ fontWeight: '600' }}>Required or optional</div>
+							<div style={{ fontWeight: '600' }}>
+								<EditWrapper stringId="P2P.REQUIRED_OR_OPTIONAL">
+									{STRINGS['P2P.REQUIRED_OR_OPTIONAL']}
+								</EditWrapper>
+							</div>
 							<div style={{ marginLeft: 20, marginTop: 5 }}>
 								<Radio.Group>
 									<Space direction="vertical" style={{ color: 'white' }}>
 										<Radio value={1} style={{ color: 'white' }}>
-											Required
+											<EditWrapper stringId="P2P.DETAIL_REQUIRED">
+												{STRINGS['P2P.DETAIL_REQUIRED']}
+											</EditWrapper>
 										</Radio>
 										<div style={{ marginLeft: 20 }}>
-											(Important payment detail)
+											<EditWrapper stringId="P2P.IMPORTANT_DETAIL">
+												{STRINGS['P2P.IMPORTANT_DETAIL']}
+											</EditWrapper>
 										</div>
 										<Radio value={2} style={{ color: 'white' }}>
-											Optional
+											<EditWrapper stringId="P2P.DETAIL_OPTIONAL">
+												{STRINGS['P2P.DETAIL_OPTIONAL']}
+											</EditWrapper>
 										</Radio>
 										<div style={{ marginLeft: 20 }}>
-											(Optional payment detail)
+											<EditWrapper stringId="P2P.OPTIONAL_DETAIL">
+												{STRINGS['P2P.OPTIONAL_DETAIL']}
+											</EditWrapper>
 										</div>
 									</Space>
 								</Radio.Group>
