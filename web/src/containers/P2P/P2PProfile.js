@@ -733,7 +733,6 @@ const P2PProfile = ({
 						<div
 							style={{
 								fontWeight: 'bold',
-								textDecoration: 'underline',
 								cursor: 'pointer',
 							}}
 							onClick={() => {
@@ -741,7 +740,9 @@ const P2PProfile = ({
 							}}
 						>
 							<EditWrapper stringId="P2P.ADD_NEW_PAYMENT_FIELD">
-								{STRINGS['P2P.ADD_NEW_PAYMENT_FIELD']}
+								<span style={{ textDecoration: 'underline' }}>
+									{STRINGS['P2P.ADD_NEW_PAYMENT_FIELD']}
+								</span>
 							</EditWrapper>
 						</div>
 						<div
@@ -872,40 +873,6 @@ const P2PProfile = ({
 									});
 								}}
 							/>
-						</div>
-
-						<div>
-							<div style={{ fontWeight: '600' }}>
-								<EditWrapper stringId="P2P.REQUIRED_OR_OPTIONAL">
-									{STRINGS['P2P.REQUIRED_OR_OPTIONAL']}
-								</EditWrapper>
-							</div>
-							<div style={{ marginLeft: 20, marginTop: 5 }}>
-								<Radio.Group>
-									<Space direction="vertical" style={{ color: 'white' }}>
-										<Radio value={1} style={{ color: 'white' }}>
-											<EditWrapper stringId="P2P.DETAIL_REQUIRED">
-												{STRINGS['P2P.DETAIL_REQUIRED']}
-											</EditWrapper>
-										</Radio>
-										<div style={{ marginLeft: 20 }}>
-											<EditWrapper stringId="P2P.IMPORTANT_DETAIL">
-												{STRINGS['P2P.IMPORTANT_DETAIL']}
-											</EditWrapper>
-										</div>
-										<Radio value={2} style={{ color: 'white' }}>
-											<EditWrapper stringId="P2P.DETAIL_OPTIONAL">
-												{STRINGS['P2P.DETAIL_OPTIONAL']}
-											</EditWrapper>
-										</Radio>
-										<div style={{ marginLeft: 20 }}>
-											<EditWrapper stringId="P2P.OPTIONAL_DETAIL">
-												{STRINGS['P2P.OPTIONAL_DETAIL']}
-											</EditWrapper>
-										</div>
-									</Space>
-								</Radio.Group>
-							</div>
 						</div>
 
 						<div
