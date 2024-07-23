@@ -1134,7 +1134,8 @@
 		"ENTER_AMOUNT": "Enter Amount",
 		"REMOVE_TITLE": "Remove Tag",
 		"MAX_AMOUNT_WARNING_INFO": "This amount exceeds your maximum withdrawal limit.",
-		"ZERO_BALANCE": "You do not have enough available balance."
+		"ZERO_BALANCE": "You do not have enough available balance.",
+		"NEW_ADDRESS": "New Address"
 	},
 	"WALLET_BUTTON_BASE_DEPOSIT": "deposit",
 	"WALLET_BUTTON_BASE_WITHDRAW": "withdraw",
@@ -1748,7 +1749,10 @@
 		"WITHDRAWAL_ADDRESS_BOOK": "Withdrawal address book",
 		"ADD_ADDRESS_DESC": "Add withdrawal address to {0}",
 		"ADDRESS_BOOK": "Address book",
-		"MANAGE_ADDRESS_BOOK": "Manage address book"
+		"MANAGE_ADDRESS_BOOK": "Manage address book",
+		"VIEW_ADDRESS_BOOK_LABEL": "View address book",
+		"ASSET_ALREADY_HAVE_ADDRESS": "This Asset has already Exists. Please try another.",
+		"ADD_WITHDRAWAL_ADDRESS_LINK": "Add withdrawal address"
 	},
 	"ASSET_INFO": "Asset info",
 	"TAKER_FEES_APPLIED": "Taker fees are applied",

@@ -4,9 +4,11 @@ import { createSelector } from 'reselect';
 import math from 'mathjs';
 
 import STRINGS from 'config/localizedStrings';
+import withConfig from 'components/ConfigProvider/withConfig';
 import { EditWrapper } from 'components';
 import { calculateOraclePrice } from 'utils/currency';
 import { WALLET_SORT } from 'actions/appActions';
+import { Image } from 'hollaex-web-lib';
 
 const getCoins = (state) => state.app.coins;
 const getBalances = (state) => state.user.balance;
@@ -131,3 +133,34 @@ export const RenderBtn = ({
 		</Button>
 	);
 };
+
+const AddressBookEmptyTable = ({ setRenderPopUps, icons: ICONS }) => {
+	return (
+		<div>
+			<div className="empty-content-display">
+				<div className="no-link-icon">
+					<Image
+						iconId="WITHDRAW_TITLE"
+						icon={ICONS['WITHDRAW_TITLE']}
+						wrapperClassName="form_currency-ball margin-aligner"
+					/>
+				</div>
+				<div className="address-book-text">
+					<EditWrapper stringId="ADDRESS_BOOK.NO_LINK">
+						{STRINGS['ADDRESS_BOOK.NO_LINK']}
+					</EditWrapper>
+				</div>
+				<div
+					className="blue-link"
+					onClick={() => setRenderPopUps((prev) => ({ ...prev, step1: true }))}
+				>
+					<EditWrapper stringId="ADDRESS_BOOK.ADD_WITHDRAWAL_ADDRESS_LINK">
+						{STRINGS['ADDRESS_BOOK.ADD_WITHDRAWAL_ADDRESS_LINK']}
+					</EditWrapper>
+				</div>
+			</div>
+		</div>
+	);
+};
+
+export default withConfig(AddressBookEmptyTable);

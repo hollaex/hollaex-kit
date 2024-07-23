@@ -82,10 +82,29 @@
 					th {
 						padding: 1%;
 						width: 0%;
+
+						.edit-wrapper__container,
+						.link-content,
+						.edit-wrapper__container div {
+							width: 100%;
+						}
 					}
 
 					th {
 						padding-bottom: 0;
+					}
+
+					th:last-child,
+					td:last-child {
+						.edit-wrapper__container div {
+							text-align: end;
+						}
+					}
+
+					th:not(:last-child) {
+						.edit-wrapper__container {
+							justify-content: flex-start !important;
+						}
 					}
 
 					.table_header-wrapper {
@@ -98,6 +117,27 @@
 								display: flex;
 								gap: 5px;
 								justify-content: flex-start !important;
+							}
+
+							td:last-child div {
+								justify-content: flex-end !important;
+							}
+
+							.network-field {
+								width: 40%;
+							}
+
+							.address-field-wrapper {
+								.address-content {
+									width: 85%;
+									justify-content: space-between !important;
+
+									span {
+										width: 20rem;
+										overflow: hidden;
+										text-overflow: ellipsis;
+									}
+								}
 							}
 
 							.remove-btn,
@@ -127,7 +167,27 @@
 				display: flex;
 				flex-direction: column;
 				align-items: center;
-				justify-content: center;
+				justify-content: flex-start;
+				gap: 3px;
+
+				.no-link-icon {
+					.form_currency-ball {
+						margin-bottom: 0;
+
+						div {
+							display: flex;
+							align-items: center;
+							justify-content: center;
+
+							svg {
+								width: 12% !important;
+								height: 0% !important;
+								color: $colors-black !important;
+								opacity: 0.1;
+							}
+						}
+					}
+				}
 			}
 		}
 	}
@@ -417,5 +477,33 @@
 .layout-mobile {
 	.address-book-popup-wrapper {
 		width: 100% !important;
+	}
+}
+
+@media screen and (min-width: 1920px) {
+	.address-book-form {
+		.address-book-content-wrapper {
+			.address-book-table-wrapper {
+				.table-content {
+					.table-wrapper {
+						.table_body-wrapper {
+							.table_body-row {
+								.network-field {
+									width: 30%;
+								}
+
+								.address-field-wrapper {
+									.address-content {
+										span {
+											width: 80%;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 }
