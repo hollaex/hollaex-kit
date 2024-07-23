@@ -4399,7 +4399,7 @@ paths:
         - admin
     delete:
       description: Delete a payment detail
-      operationId: deletePaymentDetail
+      operationId: deletePaymentDetailByAdmin
       tags:
         - PaymentDetails
       parameters:
@@ -4409,6 +4409,9 @@ paths:
           schema:
             type: object
             properties:
+              user_id:
+                type: integer
+                format: int32
               id:
                 type: integer
                 format: int32

@@ -76,7 +76,7 @@ const P2PDash = ({
 			})
 			.catch((err) => err);
 
-		fetchP2PPaymentMethods({ is_p2p: true })
+		fetchP2PPaymentMethods({ is_p2p: true, status: 3 })
 			.then((res) => {
 				setMyMethods(res.data);
 			})

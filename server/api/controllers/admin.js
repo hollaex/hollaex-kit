@@ -3054,7 +3054,7 @@ const createPaymentDetailByAdmin = (req, res) => {
 const updatePaymentDetailByAdmin = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/updatePaymentDetailByAdmin/auth', req.auth);
 
-	const { user_id, id, name, label, details, is_p2p, is_fiat_control } = req.swagger.params.data.value;
+	const { user_id, id, name, label, details, is_p2p, is_fiat_control, status } = req.swagger.params.data.value;
 
 	toolsLib.user.updatePaymentDetail(id, {
 		user_id,
@@ -3062,8 +3062,9 @@ const updatePaymentDetailByAdmin = (req, res) => {
 		label,
 		details,
 		is_p2p,
-		is_fiat_control
-	})
+		is_fiat_control,
+		status
+	}, true)
 		.then((data) => {
 			return res.json(data);
 		})

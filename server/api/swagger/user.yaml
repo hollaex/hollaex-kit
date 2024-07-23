@@ -1841,7 +1841,8 @@ paths:
           name: status
           description: status
           required: false
-          type: boolean
+          type: number
+          format: int32
         - in: query
           name: limit
           description: "Number of elements to return. Default: 50. Maximun: 100"
@@ -1959,9 +1960,6 @@ paths:
                 type: boolean
               is_fiat_control:
                 type: boolean
-              status:
-                type: integer
-                format: int32
       responses:
         200:
           description: Success

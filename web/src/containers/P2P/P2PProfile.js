@@ -311,6 +311,9 @@ const P2PProfile = ({
 									{myMethods
 										?.map((x) => x.details)
 										.map((method) => {
+											const info = myMethods.find(
+												(x) => x?.details?.system_name === method?.system_name
+											);
 											return (
 												<div style={{ display: 'flex', gap: 5 }}>
 													<div
@@ -372,7 +375,9 @@ const P2PProfile = ({
 																	method?.system_name
 															);
 															await deleteP2PPaymentMethod({ id: found.id });
-															message.success('Payment method deleted.');
+															message.success(
+																STRINGS['P2P.PAYMENT_METHOD_DELETED']
+															);
 															fetchP2PPaymentMethods({ is_p2p: true })
 																.then((res) => {
 																	setMyMethods(res.data);
@@ -391,6 +396,30 @@ const P2PProfile = ({
 																{STRINGS['P2P.DELETE_UPPERCASE']}
 															</span>
 														</EditWrapper>
+													</div>
+													<div>
+														{info?.status === 0 && (
+															<span
+																style={{
+																	position: 'relative',
+																	top: 5,
+																	marginLeft: 6,
+																}}
+															>
+																(Unverified)
+															</span>
+														)}
+														{info?.status === 3 && (
+															<span
+																style={{
+																	position: 'relative',
+																	top: 5,
+																	marginLeft: 6,
+																}}
+															>
+																(Verified)
+															</span>
+														)}
 													</div>
 												</div>
 											);
@@ -606,7 +635,7 @@ const P2PProfile = ({
 									})
 									.catch((err) => err);
 
-								message.success('Payment method updated.');
+								message.success(STRINGS['P2P.PAYMENT_METHOD_UPDATED']);
 								setRefresh(!refresh);
 								setAddMethodDetails(false);
 							}}
@@ -795,7 +824,7 @@ const P2PProfile = ({
 										is_p2p: true,
 									});
 
-									message.success('Payment method created!');
+									message.success(STRINGS['P2P.PAYMENT_METHOD_CREATED']);
 
 									fetchP2PPaymentMethods({ is_p2p: true })
 										.then((res) => {

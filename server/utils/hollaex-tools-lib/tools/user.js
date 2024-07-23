@@ -3391,11 +3391,13 @@ const createPaymentDetail = async (data) => {
 	return paymentDetail;
 };
 
-const updatePaymentDetail = async (id, data) => {
+const updatePaymentDetail = async (id, data, isAdmin = false) => {
 	const paymentDetail = await getModel('paymentDetail').findOne({ where: { id, user_id: data.user_id } });
 	if (!paymentDetail) {
 		throw new Error('Payment detail not found');
 	}
+
+	if (!isAdmin) { delete data.status };
 
 	await paymentDetail.update(data, {
 		fields: [
@@ -3403,7 +3405,8 @@ const updatePaymentDetail = async (id, data) => {
 			'label',
 			'details',
 			'is_p2p',
-			'is_fiat_control'
+			'is_fiat_control',
+			'status'
 		]
 	});
 	return paymentDetail;

@@ -2153,6 +2153,9 @@
 		"IMPORTANT_DETAIL": "(Important payment detail)",
 		"DETAIL_OPTIONAL": "Optional",
 		"OPTIONAL_DETAIL": "(Optional payment detail)",
-		"ADD_NEW_PAYMENT_FIELD": "Add new payment detail field"
+		"ADD_NEW_PAYMENT_FIELD": "Add new payment detail field",
+		"PAYMENT_METHOD_CREATED": "Payment method created! Waiting for verification by admin",
+		"PAYMENT_METHOD_DELETED": "Payment method deleted.",
+		"PAYMENT_METHOD_UPDATED": "Payment method updated."
 	}
 }
