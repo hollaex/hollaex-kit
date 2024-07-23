@@ -3392,7 +3392,7 @@ const createPaymentDetail = async (data) => {
 };
 
 const updatePaymentDetail = async (id, data) => {
-	const paymentDetail = await getModel('paymentDetail').findOne({ where: { id } });
+	const paymentDetail = await getModel('paymentDetail').findOne({ where: { id, user_id: data.user_id } });
 	if (!paymentDetail) {
 		throw new Error('Payment detail not found');
 	}
@@ -3409,8 +3409,8 @@ const updatePaymentDetail = async (id, data) => {
 	return paymentDetail;
 };
 
-const deletePaymentDetail = async (id) => {
-	const paymentDetail = await getModel('paymentDetail').findOne({ where: { id } });
+const deletePaymentDetail = async (id, user_id) => {
+	const paymentDetail = await getModel('paymentDetail').findOne({ where: { id, user_id } });
 	if (!paymentDetail) {
 		throw new Error('Payment detail not found');
 	}

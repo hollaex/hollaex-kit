@@ -1561,9 +1561,11 @@ const createPaymentDetail = (req, res) => {
 const updatePaymentDetail = (req, res) => {
 	loggerUser.verbose(req.uuid, 'controllers/user/updatePaymentDetail/auth', req.auth);
 
+	const user_id = req.auth.sub.id;
 	const { id, name, label, details, is_p2p, is_fiat_control } = req.swagger.params.data.value;
 
 	toolsLib.user.updatePaymentDetail(id, {
+		user_id,
 		name,
 		label,
 		details,
@@ -1582,9 +1584,10 @@ const updatePaymentDetail = (req, res) => {
 const deletePaymentDetail = (req, res) => {
 	loggerUser.verbose(req.uuid, 'controllers/user/deletePaymentDetail/auth', req.auth);
 
+	const user_id = req.auth.sub.id;
 	const { id } = req.swagger.params.data.value;
 
-	toolsLib.user.deletePaymentDetail(id)
+	toolsLib.user.deletePaymentDetail(id, user_id)
 		.then(() => {
 			return res.json({
 				message: "Success"
