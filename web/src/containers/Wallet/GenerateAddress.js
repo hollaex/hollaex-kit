@@ -24,10 +24,8 @@ import { FORM_NAME } from 'containers/Withdraw/form';
 const GenerateAddress = ({
 	topAssets,
 	selectedAsset,
-	networkoptions,
 	setTopAssets,
 	setSelectedAsset,
-	setNetworkOptions,
 	assets,
 	pinnedAssets,
 	coins,
@@ -43,18 +41,22 @@ const GenerateAddress = ({
 	const { Option } = Select;
 
 	const displayAssets =
-		selectedAsset &&
-		`${coins[selectedAsset].fullname} (${selectedAsset.toUpperCase()})`;
+		selectedAsset?.selectedCurrency &&
+		`${
+			coins[selectedAsset?.selectedCurrency].fullname
+		} (${selectedAsset?.selectedCurrency.toUpperCase()})`;
 
 	const displayNetwork =
 		coinLength?.length === 1
 			? renderNetworkWithLabel(networkIcon, network)
 			: coinLength?.length > 1
-			? networkoptions
+			? selectedAsset?.networkOptions
 			: network?.toUpperCase();
 
 	const currentNetwork =
-		coinLength?.length === 1 ? network : renderNetworkField(networkoptions);
+		coinLength?.length === 1
+			? network
+			: renderNetworkField(selectedAsset?.networkOptions);
 
 	useEffect(() => {
 		const topWallet = assets
@@ -85,13 +87,22 @@ const GenerateAddress = ({
 	};
 
 	const onHandleChangeSelect = (symbol) => {
-		setSelectedAsset(symbol);
 		setIsValidAddress(null);
+		setSelectedAsset((prev) => ({
+			...prev,
+			selectedCurrency: symbol,
+			networkOptions: null,
+			address: null,
+		}));
 	};
 
 	const onHandleChangeNetwork = (symbol) => {
-		setNetworkOptions(symbol);
 		setIsValidAddress(null);
+		setSelectedAsset((prev) => ({
+			...prev,
+			networkOptions: symbol,
+			address: '',
+		}));
 	};
 
 	const onHandleScan = () => {
@@ -104,14 +115,18 @@ const GenerateAddress = ({
 
 	const onHandleAddress = (val) => {
 		const isValid = validAddress(
-			selectedAsset,
-			STRINGS[`WITHDRAWALS_${selectedAsset?.toUpperCase()}_INVALID_ADDRESS`],
+			selectedAsset?.selectedCurrency,
+			STRINGS[
+				`WITHDRAWALS_${selectedAsset?.selectedCurrency?.toUpperCase()}_INVALID_ADDRESS`
+			],
 			currentNetwork,
 			val
 		)();
+		setSelectedAsset((prev) => ({ ...prev, address: val }));
 		if (!isValid) {
-			setIsValidAddress(val);
-		} else {
+			setIsValidAddress(true);
+		}
+		if (isValid) {
 			setIsValidAddress(false);
 		}
 	};
@@ -141,7 +156,9 @@ const GenerateAddress = ({
 								<span
 									key={inx}
 									className={`currency-label ${
-										selectedAsset === data ? 'opacity-100' : 'opacity-30'
+										selectedAsset?.selectedCurrency === data
+											? 'opacity-100'
+											: 'opacity-30'
 									}`}
 									onClick={() => onHandleChangeSelect(data)}
 								>
@@ -173,7 +190,12 @@ const GenerateAddress = ({
 									}
 								}
 							}}
-							onClear={() => setSelectedAsset(null)}
+							onClear={() =>
+								setSelectedAsset((prev) => ({
+									...prev,
+									selectedCurrency: null,
+								}))
+							}
 						>
 							{Object.entries(coins).map(
 								([_, { symbol, fullname, icon_id }]) => (
@@ -192,7 +214,7 @@ const GenerateAddress = ({
 								)
 							)}
 						</Select>
-						{selectedAsset ? (
+						{selectedAsset?.selectedCurrency ? (
 							<CheckOutlined className="mt-3 ml-3" />
 						) : (
 							<CloseOutlined className="mt-3 ml-3" />
@@ -203,7 +225,9 @@ const GenerateAddress = ({
 			<div className="select-network-field">
 				<div
 					className={
-						!selectedAsset ? 'input-label-field-disable' : 'input-label-field'
+						!selectedAsset?.selectedCurrency
+							? 'input-label-field-disable'
+							: 'input-label-field'
 					}
 				>
 					<div className="custom-field">
@@ -217,7 +241,7 @@ const GenerateAddress = ({
 					</div>
 				</div>
 				<div className="network-field">
-					{selectedAsset && (
+					{selectedAsset?.selectedCurrency && (
 						<div className="d-flex">
 							<Select
 								className="custom-select-input-style elevated select-field"
@@ -298,6 +322,7 @@ const GenerateAddress = ({
 								onChange={(e) => onHandleAddress(e.target.value)}
 								suffix={renderScanIcon(onHandleScan)}
 								placeholder={STRINGS['WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER']}
+								value={selectedAsset?.address}
 							/>
 							{isValidAddress ? (
 								<CheckOutlined className="mt-3 ml-3" />
@@ -333,4 +358,5 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
 	dispatch,
 });
+
 export default connect(mapStateToProps, mapDispatchToProps)(GenerateAddress);

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { isMobile } from 'react-device-detect';
-import { Input, Button } from 'antd';
+import { Input, Button, message, Spin } from 'antd';
 import { ExclamationCircleFilled } from '@ant-design/icons';
 
 import GenerateAddress from './GenerateAddress';
@@ -10,7 +10,8 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import icons from 'config/icons/dark';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import STRINGS from 'config/localizedStrings';
-import { Coin, Dialog, EditWrapper, IconTitle, Image, Table } from 'components';
+import AddressBookEmptyTable from './utils';
+import { Coin, Dialog, EditWrapper, IconTitle, Table } from 'components';
 import { assetsSelector, RenderBtn } from './utils';
 import {
 	networkList,
@@ -41,9 +42,13 @@ const AddressBook = ({
 	});
 	const [userLabel, setUserLabel] = useState('');
 	const [topAssets, setTopAssets] = useState([]);
-	const [selectedAsset, setSelectedAsset] = useState(null);
-	const [networkOptions, setNetworkOptions] = useState(null);
+	const [selectedAsset, setSelectedAsset] = useState({
+		selectedCurrency: null,
+		networkOptions: null,
+		address: null,
+	});
 	const [isValidAddress, setIsValidAddress] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
 
 	const AddressBookTableData = [
 		{
@@ -53,7 +58,7 @@ const AddressBook = ({
 			renderCell: (data, key) => (
 				<td key={key}>
 					<div className="d-flex justify-content-start table_text">
-						{data?.addresses?.map((data) => data?.label) || '-'}
+						{data?.label || '-'}
 					</div>
 				</td>
 			),
@@ -65,29 +70,14 @@ const AddressBook = ({
 			renderCell: (data, key) => (
 				<td key={key}>
 					<div className="d-flex justify-content-center">
-						{data?.addresses?.map((data) => {
-							const asset = getNetworkNameByKey(data?.network);
-							const networkIcon = networkList.filter((item) =>
-								asset === item?.network ? item?.iconId : null
-							);
-							return (
-								<div className="table-content">
-									<Coin
-										iconId={
-											networkIcon[0]?.iconId
-												? networkIcon[0]?.iconId
-												: coins[data?.network?.toLowerCase()]?.icon_id
-										}
-										type="CS2"
-									/>
-									<span>
-										{`${
-											coins[data?.network]?.fullname
-										} (${data?.network?.toUpperCase()})`}
-									</span>
-								</div>
-							);
-						}) || '-'}
+						<div className="table-content">
+							<Coin iconId={coins[data?.currency]?.icon_id} type="CS7" />
+							<span className="text-nowrap mt-1">
+								{`${
+									coins[data?.currency]?.fullname
+								} (${data?.currency?.toUpperCase()})`}
+							</span>
+						</div>
 					</div>
 				</td>
 			),
@@ -96,60 +86,53 @@ const AddressBook = ({
 			stringId: 'WITHDRAWALS_FORM_NETWORK_LABEL',
 			label: STRINGS['WITHDRAWALS_FORM_NETWORK_LABEL'],
 			key: 'network',
-			renderCell: (data, key) => (
-				<td key={key}>
-					<div className="d-flex justify-content-center">
-						{data?.addresses?.map((data) => {
-							const asset = getNetworkNameByKey(data?.network);
-							const networkIcon = networkList.filter((item) =>
-								asset === item?.network ? item?.iconId : null
-							);
-							return (
-								<div className="table-content">
-									<span>{asset ? asset : data?.network?.toUpperCase()}</span>
-									<Coin
-										iconId={
-											networkIcon[0]?.iconId
-												? networkIcon[0]?.iconId
-												: coins[data?.network?.toLowerCase()]?.icon_id
-										}
-										type="CS2"
-									/>
-								</div>
-							);
-						}) || '-'}
-					</div>
-				</td>
-			),
+			renderCell: (data, key) => {
+				let network =
+					coins[data?.network]?.network &&
+					coins[data?.network]?.network !== 'other'
+						? getNetworkNameByKey(coins[data?.network]?.network)
+						: coins[data?.currency]?.symbol?.toUpperCase();
+				return (
+					<td key={key}>
+						<div className="d-flex justify-content-center">
+							<span className="network-field">{network}</span>
+							<Coin
+								iconId={
+									coins[data?.network]?.icon_id
+										? coins[data?.network]?.icon_id
+										: coins[data?.currency]?.icon_id
+								}
+								type="CS2"
+							/>
+						</div>
+					</td>
+				);
+			},
 		},
 		{
 			stringId: 'WITHDRAW_PAGE.WITHDRAWAL_CONFIRM_ADDRESS',
 			label: STRINGS['WITHDRAW_PAGE.WITHDRAWAL_CONFIRM_ADDRESS'],
 			key: 'address',
 			renderCell: (data, key) => (
-				<td key={key}>
+				<td key={key} className="address-field-wrapper">
 					<div className="d-flex justify-content-center">
-						{data?.addresses?.map((data) => {
-							return (
-								<div className="align-items-center">
-									<span>{data?.address}</span>
-									<CopyToClipboard
-										text={data?.address}
-										onCopy={() => {
-											handleCopy();
-										}}
-									>
-										<Button className="copy-btn">
-											<div className="remove-btn">
-												<EditWrapper stringId="REFERRAL_LINK.COPY">
-													{STRINGS['REFERRAL_LINK.COPY']}
-												</EditWrapper>
-											</div>
-										</Button>
-									</CopyToClipboard>
-								</div>
-							);
-						}) || '-'}
+						<div className="align-items-center address-content">
+							<span>{data?.address}</span>
+							<CopyToClipboard
+								text={data?.address}
+								onCopy={() => {
+									handleCopy();
+								}}
+							>
+								<Button className="copy-btn">
+									<div className="remove-btn">
+										<EditWrapper stringId="REFERRAL_LINK.COPY">
+											{STRINGS['REFERRAL_LINK.COPY']}
+										</EditWrapper>
+									</div>
+								</Button>
+							</CopyToClipboard>
+						</div>
 					</div>
 				</td>
 			),
@@ -158,20 +141,18 @@ const AddressBook = ({
 			stringId: 'ADDRESS_BOOK.DATE_ADDED',
 			label: STRINGS['ADDRESS_BOOK.DATE_ADDED'],
 			key: 'date added',
-			renderCell: (data, key) => {
-				let formatDate = '';
-				if (data?.created_at) {
-					const date = new Date(data.created_at);
-					if (!isNaN(date)) {
-						formatDate = date.toISOString().slice(0, 10).replace(/-/g, '/');
-					}
-				}
-				return (
-					<td key={key}>
-						<div className="d-flex justify-content-center">{formatDate}</div>
-					</td>
-				);
-			},
+			renderCell: (data, key) => (
+				<td key={key}>
+					<div className="d-flex justify-content-center">
+						{data?.created_at
+							? new Date(data.created_at)
+									.toISOString()
+									.slice(0, 10)
+									.replace(/-/g, '/')
+							: '-'}
+					</div>
+				</td>
+			),
 		},
 		{
 			stringId: 'ADDRESS_BOOK.REMOVE',
@@ -182,7 +163,7 @@ const AddressBook = ({
 					<div className="d-flex justify-content-end">
 						<div
 							className="link-content fs-13 text-uppercase remove-btn"
-							onClick={() => onHandleRemove()}
+							onClick={() => onHandleAddressBookDetails(data, 'revoke')}
 						>
 							<EditWrapper stringId="ADDRESS_BOOK.REMOVE">
 								{STRINGS['ADDRESS_BOOK.REMOVE']}
@@ -195,17 +176,21 @@ const AddressBook = ({
 	];
 
 	const coinLength =
-		coins[selectedAsset]?.network && coins[selectedAsset]?.network.split(',');
+		coins[selectedAsset?.selectedCurrency]?.network &&
+		coins[selectedAsset?.selectedCurrency]?.network?.split(',');
 	let network =
-		coins[selectedAsset]?.network && coins[selectedAsset]?.network !== 'other'
-			? coins[selectedAsset]?.network
-			: coins[selectedAsset]?.symbol;
+		coins[selectedAsset?.selectedCurrency]?.network &&
+		coins[selectedAsset?.selectedCurrency]?.network !== 'other'
+			? coins[selectedAsset?.selectedCurrency]?.network
+			: coins[selectedAsset?.selectedCurrency]?.symbol;
 	const networkIcon = coins[network]?.icon_id;
 
 	useEffect(() => {
 		const getAddress = async () => {
+			setIsLoading(false);
 			const res = await getAddressBookDetails();
-			setGetUserData(res);
+			setIsLoading(true);
+			setGetUserData(res?.addresses);
 		};
 		getAddress();
 	}, []);
@@ -222,12 +207,13 @@ const AddressBook = ({
 		});
 	};
 
-	const onHandleRemove = () => {};
-
 	const onHandleClose = (currStep) => {
 		setRenderPopUps((prev) => ({ ...prev, [currStep]: false }));
-		setSelectedAsset(null);
-		setNetworkOptions(null);
+		setSelectedAsset((prev) => ({
+			...prev,
+			selectedCurrency: null,
+			networkOptions: null,
+		}));
 		setIsValidAddress(null);
 		setUserLabel('');
 	};
@@ -236,8 +222,11 @@ const AddressBook = ({
 		setRenderPopUps((prev) => ({ ...prev, [previousStep]: false }));
 		setRenderPopUps((prev) => ({ ...prev, [nextStep]: true }));
 		if (previousStep === 'step2' && nextStep === 'step1') {
-			setSelectedAsset(null);
-			setNetworkOptions(null);
+			setSelectedAsset((prev) => ({
+				...prev,
+				selectedCurrency: null,
+				networkOptions: null,
+			}));
 			setIsValidAddress(null);
 		}
 		if (previousStep === 'step3' && nextStep === 'step2') {
@@ -245,25 +234,63 @@ const AddressBook = ({
 		}
 	};
 
-	const onHandleConfirm = async () => {
-		try {
-			const selectedNetwork = networkOptions
-				? renderNetworkField(networkOptions)
-				: network;
+	const onHandleAddressBookDetails = async (data, type) => {
+		const selectedNetwork = selectedAsset?.networkOptions
+			? renderNetworkField(selectedAsset?.networkOptions)
+			: network;
+		const hasAsset = getUserData.some(
+			(val) =>
+				val?.currency === selectedAsset?.selectedCurrency &&
+				val?.network === selectedNetwork
+		);
+
+		const filterData = () =>
+			getUserData.filter((val) => val.label !== data.label);
+		const removeCreatedAt = (arr) => arr.map(({ created_at, ...rest }) => rest);
+
+		if (type === 'revoke') {
+			const filteredData = filterData();
+			const restFilteredData = removeCreatedAt(filteredData);
+			setGetUserData(filteredData);
+
+			try {
+				await setUserLabelAndAddress({ addresses: restFilteredData });
+			} catch (error) {
+				console.error(error);
+			}
+		} else if (!hasAsset) {
 			const currValue = {
-				addresses: [
-					{
-						label: userLabel,
-						address: isValidAddress,
-						network: selectedNetwork,
-					},
-				],
+				label: userLabel,
+				address: selectedAsset?.address,
+				network: selectedNetwork,
+				currency: selectedAsset?.selectedCurrency,
 			};
-			const userDetails = { addresses: [getUserData, currValue] };
-			await setUserLabelAndAddress(userDetails);
-		} catch (error) {
-			console.error(error);
+			const restGetUserData = removeCreatedAt(getUserData);
+			setGetUserData([
+				...getUserData,
+				{ ...currValue, created_at: new Date().toISOString() },
+			]);
+
+			try {
+				await setUserLabelAndAddress({
+					addresses: [...restGetUserData, currValue],
+				});
+			} catch (error) {
+				console.error(error);
+			}
+		} else {
+			message.error(STRINGS['ADDRESS_BOOK.ASSET_ALREADY_HAVE_ADDRESS']);
 		}
+
+		onHandleClose('step3');
+	};
+
+	const onHandleUserLabel = () => {
+		const isValidLabel = getUserData.filter((data) => userLabel === data.label);
+		return (
+			(isValidLabel && isValidLabel.length) ||
+			!/^(?=.*[a-zA-Z])[a-zA-Z0-9]{3,15}$/.test(userLabel)
+		);
 	};
 
 	return (
@@ -301,8 +328,6 @@ const AddressBook = ({
 									setTopAssets={setTopAssets}
 									selectedAsset={selectedAsset}
 									setSelectedAsset={setSelectedAsset}
-									networkoptions={networkOptions}
-									setNetworkOptions={setNetworkOptions}
 									assets={assets}
 									pinnedAssets={pinnedAssets}
 									coins={coins}
@@ -373,10 +398,13 @@ const AddressBook = ({
 										</EditWrapper>
 									</div>
 									<div className="selected-asset">
-										<Coin iconId={coins[selectedAsset]?.icon_id} type="CS2" />
+										<Coin
+											iconId={coins[selectedAsset?.selectedCurrency]?.icon_id}
+											type="CS2"
+										/>
 										<span>{`${
-											coins[selectedAsset].fullname
-										} (${selectedAsset.toUpperCase()})`}</span>
+											coins[selectedAsset?.selectedCurrency]?.fullname
+										} (${selectedAsset?.selectedCurrency?.toUpperCase()})`}</span>
 									</div>
 								</div>
 								<div className="assets-field">
@@ -392,9 +420,9 @@ const AddressBook = ({
 												renderNetworkWithLabel(networkIcon, network)
 											) : coinLength?.length > 1 ? (
 												<div className="selected-network">
-													<span>{networkOptions}</span>
+													<span>{selectedAsset?.networkOptions}</span>
 													{networkList.map((data) =>
-														data.network === networkOptions ? (
+														data.network === selectedAsset?.networkOptions ? (
 															<Coin iconId={data.iconId} type="CS2" />
 														) : null
 													)}
@@ -414,7 +442,7 @@ const AddressBook = ({
 										</EditWrapper>
 									</div>
 									<div>
-										<span>{isValidAddress}</span>
+										<span>{selectedAsset?.address}</span>
 									</div>
 								</div>
 							</div>
@@ -427,9 +455,7 @@ const AddressBook = ({
 								<RenderBtn
 									string="REFERRAL_LINK.NEXT"
 									buttonClassName="next-btn"
-									disabled={
-										!/^(?=.*[a-zA-Z])[a-zA-Z0-9]{3,15}$/.test(userLabel)
-									}
+									disabled={onHandleUserLabel()}
 									onHandleClick={() => onHandlePopUpBtn('step2', 'step3')}
 								/>
 							</div>
@@ -475,10 +501,13 @@ const AddressBook = ({
 										</EditWrapper>
 									</div>
 									<div className="selected-asset">
-										<Coin iconId={coins[selectedAsset].icon_id} type="CS2" />
+										<Coin
+											iconId={coins[selectedAsset?.selectedCurrency]?.icon_id}
+											type="CS2"
+										/>
 										<span>{`${
-											coins[selectedAsset].fullname
-										} (${selectedAsset.toUpperCase()})`}</span>
+											coins[selectedAsset?.selectedCurrency]?.fullname
+										} (${selectedAsset?.selectedCurrency?.toUpperCase()})`}</span>
 									</div>
 								</div>
 								<div className="assets-field">
@@ -494,9 +523,9 @@ const AddressBook = ({
 												renderNetworkWithLabel(networkIcon, network)
 											) : coinLength?.length > 1 ? (
 												<div className="selected-network">
-													<span>{networkOptions}</span>
+													<span>{selectedAsset?.networkOptions}</span>
 													{networkList.map((data) =>
-														data.network === networkOptions ? (
+														data.network === selectedAsset?.networkOptions ? (
 															<Coin iconId={data.iconId} type="CS2" />
 														) : null
 													)}
@@ -517,7 +546,7 @@ const AddressBook = ({
 										</EditWrapper>
 									</div>
 									<div>
-										<span>{isValidAddress}</span>
+										<span>{selectedAsset?.address}</span>
 									</div>
 								</div>
 							</div>
@@ -539,7 +568,7 @@ const AddressBook = ({
 							<Button
 								className="text-uppercase next-btn"
 								type="default"
-								onClick={() => onHandleConfirm()}
+								onClick={() => onHandleAddressBookDetails(null, 'confirm')}
 								disabled={false}
 							>
 								<EditWrapper stringId={'DUST.CONFIRMATION.CONFIRM'}>
@@ -605,40 +634,23 @@ const AddressBook = ({
 						</span>
 					</div>
 					<div className="address-book-table-wrapper">
-						{getUserData === 0 && (
-							<div className="empty-content-display">
-								<div className="no-link-icon">
-									<Image
-										iconId={'WITHDRAW_TITLE'}
-										icon={ICONS['WITHDRAW_TITLE']}
-										alt={'text'}
-										svgWrapperClassName="withdraw-main-icon"
-									/>
-								</div>
-								<div className="address-book-text">
-									<EditWrapper stringId="ADDRESS_BOOK.NO_LINK">
-										{STRINGS['ADDRESS_BOOK.NO_LINK']}
-									</EditWrapper>
-								</div>
-								<div
-									className="blue-link"
-									onClick={() =>
-										setRenderPopUps((prev) => ({ ...prev, step1: true }))
-									}
-								>
-									<EditWrapper stringId="ADDRESS_BOOK.ADD_WITHDRAW_ADDRESS">
-										{STRINGS['ADDRESS_BOOK.ADD_WITHDRAW_ADDRESS']}
-									</EditWrapper>
-								</div>
+						{isLoading ? (
+							<Table
+								showHeaderNoData={true}
+								rowClassName="pt-2 pb-2"
+								headers={AddressBookTableData}
+								data={getUserData}
+								count={getUserData?.length}
+								pageSize={10}
+								noData={
+									<AddressBookEmptyTable setRenderPopUps={setRenderPopUps} />
+								}
+							/>
+						) : (
+							<div className="d-flex justify-content-center align-items-center">
+								<Spin size="large" />
 							</div>
 						)}
-						<Table
-							rowClassName="pt-2 pb-2"
-							headers={AddressBookTableData}
-							data={[getUserData]}
-							count={5}
-							pageSize={10}
-						/>
 					</div>
 				</div>
 			</div>
