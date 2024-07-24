@@ -12,6 +12,7 @@ import STRINGS from 'config/localizedStrings';
 
 import { renderBankInformation } from '../Wallet/components';
 import { getNetworkName, getNetworkNameByKey } from 'utils/wallet';
+import { STATIC_ICONS } from 'config/icons';
 
 export const generateBaseInformation = (currency, limits = {}) => {
 	const { minAmount = 2, maxAmount = 10000 } = limits;
@@ -172,3 +173,14 @@ export const networkList = [
 	{ network: 'Stellar', iconId: 'XLM_ICON' },
 	{ network: 'Fantom', iconId: 'FTM_ICON' },
 ];
+
+export const renderScanIcon = (onHandleScan) => {
+	return (
+		<div className="render-scan-wrapper d-flex" onClick={() => onHandleScan()}>
+			<span className="suffix-text">{renderLabel('ACCORDIAN.SCAN')}</span>
+			<div className="img-wrapper">
+				<img alt="scan-icon" src={STATIC_ICONS['QR_CODE_SCAN']}></img>
+			</div>
+		</div>
+	);
+};
