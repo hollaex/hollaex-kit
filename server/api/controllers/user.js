@@ -1506,6 +1506,32 @@ const updateUserAddresses = (req, res) => {
 		});
 };
 
+const generateUserAffiliationCode = (req, res) => {
+	loggerUser.info(
+		req.uuid,
+		'controllers/user/generateUserAffiliationCode',
+	);
+	try {
+		const characters =
+		'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+		let code = '';
+
+		for (let i = 0; i < 6; i++) {
+			const randomIndex = Math.floor(Math.random() * characters.length);
+			code += characters[randomIndex];
+		}
+		
+		return res.json({ code });
+	} catch (err) {
+		loggerUser.error(
+			req.uuid,
+			'controllers/user/generateUserAffiliationCode err',
+			err.message
+		);
+		return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+	}
+}
+
 
 module.exports = {
 	signUpUser,
@@ -1546,5 +1572,6 @@ module.exports = {
 	createUserReferralCode,
 	getUserReferralCodes,
 	updateUserAddresses,
-	fetchUserAddressBook
+	fetchUserAddressBook,
+	generateUserAffiliationCode
 };

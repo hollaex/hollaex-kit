@@ -25,6 +25,7 @@ import {
 	fetchReferralCodes,
 	postSettleFees,
 	fetchRealizedFeeEarnings,
+	generateReferralCode,
 } from './actions';
 import { Table } from 'components';
 import { getUserReferrals } from 'actions/userAction';
@@ -1522,8 +1523,8 @@ const ReferralList = ({
 													onClick={async () => {
 														if (!referralCode) {
 															try {
-																const code = generateUniqueCode();
-																setReferralCode(code);
+																const data = await generateReferralCode();
+																setReferralCode(data.code);
 																setDisplayCreateLink(true);
 															} catch (error) {
 																showErrorMessage(error.data.message);
@@ -1558,8 +1559,9 @@ const ReferralList = ({
 												onClick={async () => {
 													if (!referralCode) {
 														try {
-															const code = generateUniqueCode();
-															setReferralCode(code);
+															const data = await generateReferralCode();
+															setReferralCode(data.code);
+
 															setDisplayCreateLink(true);
 														} catch (error) {
 															showErrorMessage(error.data.message);
