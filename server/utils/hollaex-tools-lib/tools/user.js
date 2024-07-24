@@ -3294,6 +3294,8 @@ const fetchUserAddressBook = async (user_id) => {
 const updateUserAddresses = async (user_id, data) => {
 	const { addresses } = data;
 
+	let userAddressBook = await getModel('userAddressBook').findOne({ where: { user_id } });
+
 	addresses.forEach((addressObj) => {
 		if (!addressObj.address || !addressObj.network || !addressObj.label || !addressObj.currency) {
 			throw new Error(ADDRESSBOOK_MISSING_FIELDS);
@@ -3305,8 +3307,11 @@ const updateUserAddresses = async (user_id, data) => {
 			}
 		});
 
-		if (!addressObj.created_at) {
+		const hasCreatedAt = userAddressBook?.addresses?.find?.(address => address.label === addressObj.label)?.created_at;
+		if (!hasCreatedAt) {
 			addressObj.created_at = moment().toISOString();
+		} else {
+			addressObj.created_at = hasCreatedAt;
 		}
 	});
 
@@ -3323,7 +3328,6 @@ const updateUserAddresses = async (user_id, data) => {
 		throw new Error(USER_NOT_FOUND);
 	}
 
-	let userAddressBook = await getModel('userAddressBook').findOne({ where: { user_id } });
 	if (!userAddressBook) {
 		userAddressBook = await getModel('userAddressBook').create({
 			user_id,
