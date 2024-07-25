@@ -187,10 +187,14 @@ const AddressBook = ({
 
 	useEffect(() => {
 		const getAddress = async () => {
-			setIsLoading(false);
-			const res = await getAddressBookDetails();
-			setIsLoading(true);
-			setGetUserData(res?.addresses);
+			try {
+				setIsLoading(false);
+				const res = await getAddressBookDetails();
+				setIsLoading(true);
+				setGetUserData(res?.addresses);
+			} catch (error) {
+				console.error(error);
+			}
 		};
 		getAddress();
 	}, []);
@@ -441,7 +445,7 @@ const AddressBook = ({
 											{STRINGS['WITHDRAW_PAGE.WITHDRAWAL_CONFIRM_ADDRESS']}:
 										</EditWrapper>
 									</div>
-									<div>
+									<div className="selected-asset-address">
 										<span>{selectedAsset?.address}</span>
 									</div>
 								</div>
@@ -545,7 +549,7 @@ const AddressBook = ({
 											{STRINGS['WITHDRAW_PAGE.WITHDRAWAL_CONFIRM_ADDRESS']}:
 										</EditWrapper>
 									</div>
-									<div>
+									<div className="selected-asset-address">
 										<span>{selectedAsset?.address}</span>
 									</div>
 								</div>
@@ -604,7 +608,13 @@ const AddressBook = ({
 							'BLUE_QUESTION'
 						)}
 				</div>
-				<div className="address-book-content-wrapper">
+				<div
+					className={
+						isMobile
+							? 'address-book-content-wrapper'
+							: 'address-book-content-wrapper mb-5'
+					}
+				>
 					<div className="address-book-content">
 						<div className="address-book-title-text">
 							<EditWrapper stringId="ADDRESS_BOOK.WITHDRAWAL_ADDRESS_BOOK">
