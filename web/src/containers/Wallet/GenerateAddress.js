@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { change } from 'redux-form';
+import { isMobile } from 'react-device-detect';
 import { Input, Select } from 'antd';
 import {
 	CaretDownOutlined,
@@ -79,7 +80,11 @@ const GenerateAddress = ({
 		return (
 			<div className="d-flex justify-content-around">
 				{data.toUpperCase()}
-				<span className="pinned-asset-icon ml-1 mt-1">
+				<span
+					className={`${
+						!isMobile ? 'pinned-asset-icon ml-1 mt-1' : 'pinned-asset-icon ml-1'
+					}`}
+				>
 					<Coin iconId={icon_id} type="CS1" />
 				</span>
 			</div>
@@ -143,82 +148,84 @@ const GenerateAddress = ({
 						<div className="select-step">1</div>
 						<div className="custom-line"></div>
 					</div>
+				</div>
+				<div className="select-field">
 					<div className="label-content">
 						<EditWrapper stringId="ACCORDIAN.SELECT_ASSET">
 							{STRINGS['ACCORDIAN.SELECT_ASSET']}
 						</EditWrapper>
 					</div>
-				</div>
-				<div className="select-field">
-					<div className="mb-3 d-flex">
-						{topAssets.map((data, inx) => {
-							return (
-								<span
-									key={inx}
-									className={`currency-label ${
-										selectedAsset?.selectedCurrency === data
-											? 'opacity-100'
-											: 'opacity-30'
-									}`}
-									onClick={() => onHandleChangeSelect(data)}
-								>
-									{renderPinnedAsset(data)}
-								</span>
-							);
-						})}
-					</div>
-					<div className="d-flex">
-						<Select
-							showSearch={true}
-							className="custom-select-input-style elevated select-field"
-							dropdownClassName="custom-select-style"
-							placeholder={STRINGS['WITHDRAW_PAGE.SELECT']}
-							allowClear={true}
-							value={displayAssets}
-							suffixIcon={<CaretDownOutlined />}
-							onKeyDown={(e) => {
-								if (e.key === 'Enter') {
-									const highlightedOption = document.querySelector(
-										'.ant-select-item-option-active'
-									);
-									if (highlightedOption) {
-										const value = highlightedOption
-											.querySelector('div')
-											.textContent.trim();
-										const curr = onHandleSymbol(value);
-										onHandleChangeSelect(curr);
-									}
-								}
-							}}
-							onClear={() =>
-								setSelectedAsset((prev) => ({
-									...prev,
-									selectedCurrency: null,
-								}))
-							}
-						>
-							{Object.entries(coins).map(
-								([_, { symbol, fullname, icon_id }]) => (
-									<Option
-										key={`${fullname} (${symbol.toUpperCase()})`}
-										value={`${fullname} (${symbol.toUpperCase()})`}
+					<div className={`asset-input ${isMobile && 'mt-4'}`}>
+						<div className="mb-3 d-flex selected-asset-btn">
+							{topAssets.map((data, inx) => {
+								return (
+									<span
+										key={inx}
+										className={`currency-label ${
+											selectedAsset?.selectedCurrency === data
+												? 'opacity-100'
+												: 'opacity-30'
+										}`}
+										onClick={() => onHandleChangeSelect(data)}
 									>
-										<div
-											className="d-flex gap-1"
-											onClick={() => onHandleChangeSelect(symbol)}
+										{renderPinnedAsset(data)}
+									</span>
+								);
+							})}
+						</div>
+						<div className="d-flex">
+							<Select
+								showSearch={true}
+								className="custom-select-input-style elevated select-field"
+								dropdownClassName="custom-select-style"
+								placeholder={STRINGS['WITHDRAW_PAGE.SELECT']}
+								allowClear={true}
+								value={displayAssets}
+								suffixIcon={<CaretDownOutlined />}
+								onKeyDown={(e) => {
+									if (e.key === 'Enter') {
+										const highlightedOption = document.querySelector(
+											'.ant-select-item-option-active'
+										);
+										if (highlightedOption) {
+											const value = highlightedOption
+												.querySelector('div')
+												.textContent.trim();
+											const curr = onHandleSymbol(value);
+											onHandleChangeSelect(curr);
+										}
+									}
+								}}
+								onClear={() =>
+									setSelectedAsset((prev) => ({
+										...prev,
+										selectedCurrency: null,
+									}))
+								}
+							>
+								{Object.entries(coins).map(
+									([_, { symbol, fullname, icon_id }]) => (
+										<Option
+											key={`${fullname} (${symbol.toUpperCase()})`}
+											value={`${fullname} (${symbol.toUpperCase()})`}
 										>
-											<Coin iconId={icon_id} type="CS3" />
-											<div>{`${fullname} (${symbol.toUpperCase()})`}</div>
-										</div>
-									</Option>
-								)
+											<div
+												className="d-flex gap-1"
+												onClick={() => onHandleChangeSelect(symbol)}
+											>
+												<Coin iconId={icon_id} type="CS3" />
+												<div>{`${fullname} (${symbol.toUpperCase()})`}</div>
+											</div>
+										</Option>
+									)
+								)}
+							</Select>
+							{selectedAsset?.selectedCurrency ? (
+								<CheckOutlined className="mt-3 ml-3" />
+							) : (
+								<CloseOutlined className="mt-3 ml-3" />
 							)}
-						</Select>
-						{selectedAsset?.selectedCurrency ? (
-							<CheckOutlined className="mt-3 ml-3" />
-						) : (
-							<CloseOutlined className="mt-3 ml-3" />
-						)}
+						</div>
 					</div>
 				</div>
 			</div>
@@ -234,15 +241,27 @@ const GenerateAddress = ({
 						<div className="select-step">2</div>
 						<div className="custom-line"></div>
 					</div>
-					<div className="label-content">
+				</div>
+				<div className="select-field network-field">
+					<div
+						className={
+							!selectedAsset?.selectedCurrency
+								? 'label-disable label-content'
+								: 'label-active label-content'
+						}
+					>
 						<EditWrapper stringId="ACCORDIAN.SELECT_NETWORK">
 							{STRINGS['ACCORDIAN.SELECT_NETWORK']}
 						</EditWrapper>
 					</div>
-				</div>
-				<div className="network-field">
 					{selectedAsset?.selectedCurrency && (
-						<div className="d-flex">
+						<div
+							className={`${
+								isMobile
+									? 'd-flex network-input  mt-4'
+									: 'd-flex network-input '
+							}`}
+						>
 							<Select
 								className="custom-select-input-style elevated select-field"
 								dropdownClassName="custom-select-style"
@@ -252,6 +271,7 @@ const GenerateAddress = ({
 								allowClear={true}
 								showSearch={true}
 								suffixIcon={<CaretDownOutlined />}
+								disabled={coinLength?.length > 1 ? false : true}
 							>
 								{coinLength &&
 									coinLength?.length > 1 &&
@@ -301,7 +321,15 @@ const GenerateAddress = ({
 					<div className="custom-field">
 						<div className="select-step">3</div>
 					</div>
-					<div className="label-content">
+				</div>
+				<div className="select-field ">
+					<div
+						className={
+							!displayNetwork
+								? 'label-disable label-content'
+								: 'label-active label-content'
+						}
+					>
 						<div>
 							<EditWrapper stringId="USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.ADDRESS_LABEL">
 								{
@@ -313,10 +341,12 @@ const GenerateAddress = ({
 							</EditWrapper>
 						</div>
 					</div>
-				</div>
-				<div className="network-field">
 					{displayNetwork && (
-						<div className="d-flex">
+						<div
+							className={`${
+								isMobile ? 'd-flex network-input mt-4' : 'd-flex network-input'
+							}`}
+						>
 							<Input
 								className="destination-input-field"
 								onChange={(e) => onHandleAddress(e.target.value)}

@@ -8003,7 +8003,7 @@ table th {
       .address-book-form .address-book-content-wrapper .address-book-table-wrapper .table-content .table-wrapper .table_body-wrapper .table_body-row td:last-child div {
         justify-content: flex-end !important; }
       .address-book-form .address-book-content-wrapper .address-book-table-wrapper .table-content .table-wrapper .table_body-wrapper .table_body-row .network-field {
-        width: 40%; }
+        width: 100%; }
       .address-book-form .address-book-content-wrapper .address-book-table-wrapper .table-content .table-wrapper .table_body-wrapper .table_body-row .address-field-wrapper .address-content {
         width: 85%;
         justify-content: space-between !important; }
@@ -8089,6 +8089,14 @@ table th {
       .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .ant-select-clear svg {
         color: var(--base_wallet-sidebar-and-popup);
         font-size: 18px; }
+    .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .ant-select-arrow,
+    .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .ant-select-arrow,
+    .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .ant-select-arrow {
+      top: 20%; }
+    .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .ant-select-clear,
+    .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .ant-select-clear,
+    .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .ant-select-clear {
+      top: 17%; }
     .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field,
     .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field,
     .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field,
@@ -8103,6 +8111,26 @@ table th {
       flex-direction: row;
       justify-content: space-between;
       gap: 15px; }
+      .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .label-disable,
+      .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .label-disable,
+      .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .label-disable,
+      .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .label-disable,
+      .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .label-disable,
+      .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .label-disable,
+      .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .label-disable,
+      .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .label-disable,
+      .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .label-disable {
+        opacity: 0.5; }
+      .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .label-active,
+      .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .label-active,
+      .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .label-active,
+      .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .label-active,
+      .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .label-active,
+      .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .label-active,
+      .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .label-active,
+      .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .label-active,
+      .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .label-active {
+        opacity: 1; }
       .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .input-label-field,
       .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .input-label-field-disable,
       .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .input-label-field,
@@ -8121,7 +8149,7 @@ table th {
       .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .input-label-field-disable,
       .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .input-label-field,
       .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .input-label-field-disable {
-        width: 40%;
+        width: 10%;
         display: flex;
         gap: 10%; }
         .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .input-label-field .custom-field,
@@ -8191,25 +8219,6 @@ table th {
             height: 5.5rem;
             width: 1%;
             background-color: var(--labels_important-active-labels-text-graphics); }
-        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .input-label-field .label-content,
-        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .input-label-field-disable .label-content,
-        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .input-label-field .label-content,
-        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .input-label-field-disable .label-content,
-        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .input-label-field .label-content,
-        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .input-label-field-disable .label-content,
-        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .input-label-field .label-content,
-        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .input-label-field-disable .label-content,
-        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .input-label-field .label-content,
-        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .input-label-field-disable .label-content,
-        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .input-label-field .label-content,
-        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .input-label-field-disable .label-content,
-        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .input-label-field .label-content,
-        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .input-label-field-disable .label-content,
-        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .input-label-field .label-content,
-        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .input-label-field-disable .label-content,
-        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .input-label-field .label-content,
-        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .input-label-field-disable .label-content {
-          margin-top: 3%; }
       .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .input-label-field-disable,
       .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .input-label-field-disable,
       .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .input-label-field-disable,
@@ -8221,268 +8230,300 @@ table th {
       .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .input-label-field-disable {
         opacity: 0.5; }
       .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field,
-      .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field,
       .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field,
-      .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field,
       .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field,
-      .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field,
       .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field,
-      .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field,
       .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field,
-      .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field,
       .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field,
-      .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field,
       .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field,
-      .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field,
       .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field,
-      .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field,
-      .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field,
-      .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field {
+      .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field {
+        width: 90%;
+        display: flex;
+        justify-content: space-between; }
+        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .asset-input .selected-asset-btn,
+        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .asset-input .selected-asset-btn,
+        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .asset-input .selected-asset-btn,
+        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .asset-input .selected-asset-btn,
+        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .asset-input .selected-asset-btn,
+        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .asset-input .selected-asset-btn,
+        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .asset-input .selected-asset-btn,
+        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .asset-input .selected-asset-btn,
+        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .asset-input .selected-asset-btn {
+          width: 95%; }
+        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .label-content,
+        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .label-content,
+        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .label-content,
+        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .label-content,
+        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .label-content,
+        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .label-content,
+        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .label-content,
+        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .label-content,
+        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .label-content {
+          margin-top: 1%; }
+      .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .network-input,
+      .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .network-input,
+      .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .network-input,
+      .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .network-input,
+      .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .network-input,
+      .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .network-input,
+      .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .network-input,
+      .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .network-input,
+      .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .network-input,
+      .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .network-input,
+      .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .network-input,
+      .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .network-input,
+      .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .network-input,
+      .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .network-input,
+      .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .network-input,
+      .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .network-input,
+      .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .network-input,
+      .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .network-input {
         width: 60%; }
-        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .opacity-100,
-        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .opacity-100,
-        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .opacity-100,
-        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .opacity-100,
-        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .opacity-100,
-        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .opacity-100,
-        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .opacity-100,
-        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .opacity-100,
-        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .opacity-100,
-        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .opacity-100,
-        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .opacity-100,
-        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .opacity-100,
-        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .opacity-100,
-        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .opacity-100,
-        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .opacity-100,
-        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .opacity-100,
-        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .opacity-100,
-        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .opacity-100 {
-          opacity: 1; }
-        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .opacity-30,
-        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .opacity-30,
-        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .opacity-30,
-        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .opacity-30,
-        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .opacity-30,
-        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .opacity-30,
-        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .opacity-30,
-        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .opacity-30,
-        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .opacity-30,
-        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .opacity-30,
-        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .opacity-30,
-        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .opacity-30,
-        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .opacity-30,
-        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .opacity-30,
-        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .opacity-30,
-        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .opacity-30,
-        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .opacity-30,
-        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .opacity-30 {
-          opacity: 0.5; }
-        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .currency-label,
-        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .currency-label,
-        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .currency-label,
-        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .currency-label,
-        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .currency-label,
-        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .currency-label,
-        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .currency-label,
-        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .currency-label,
-        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .currency-label,
-        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .currency-label,
-        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .currency-label,
-        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .currency-label,
-        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .currency-label,
-        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .currency-label,
-        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .currency-label,
-        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .currency-label,
-        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .currency-label,
-        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .currency-label {
-          border: 1px solid var(--labels_secondary-inactive-label-text-graphics);
-          padding: 0.5%;
-          border-radius: 5px;
-          margin-right: 10px;
-          width: 4.5rem;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer; }
-        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field,
-        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field,
-        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field,
-        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field,
-        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field,
-        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field,
-        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field,
-        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field,
-        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field,
-        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field,
-        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field,
-        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field,
-        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field,
-        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field,
-        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field,
-        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field,
-        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field,
-        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field {
-          border-radius: 2px;
-          border: 1px solid var(--calculated_important-border) !important;
+      .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .opacity-100,
+      .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .opacity-100,
+      .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .opacity-100,
+      .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .opacity-100,
+      .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .opacity-100,
+      .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .opacity-100,
+      .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .opacity-100,
+      .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .opacity-100,
+      .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .opacity-100,
+      .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .opacity-100,
+      .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .opacity-100,
+      .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .opacity-100,
+      .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .opacity-100,
+      .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .opacity-100,
+      .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .opacity-100,
+      .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .opacity-100,
+      .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .opacity-100,
+      .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .opacity-100 {
+        opacity: 1; }
+      .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .opacity-30,
+      .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .opacity-30,
+      .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .opacity-30,
+      .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .opacity-30,
+      .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .opacity-30,
+      .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .opacity-30,
+      .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .opacity-30,
+      .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .opacity-30,
+      .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .opacity-30,
+      .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .opacity-30,
+      .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .opacity-30,
+      .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .opacity-30,
+      .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .opacity-30,
+      .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .opacity-30,
+      .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .opacity-30,
+      .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .opacity-30,
+      .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .opacity-30,
+      .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .opacity-30 {
+        opacity: 0.5; }
+      .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .currency-label,
+      .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .currency-label,
+      .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .currency-label,
+      .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .currency-label,
+      .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .currency-label,
+      .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .currency-label,
+      .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .currency-label,
+      .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .currency-label,
+      .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .currency-label,
+      .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .currency-label,
+      .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .currency-label,
+      .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .currency-label,
+      .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .currency-label,
+      .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .currency-label,
+      .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .currency-label,
+      .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .currency-label,
+      .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .currency-label,
+      .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .currency-label {
+        border: 1px solid var(--labels_secondary-inactive-label-text-graphics);
+        padding: 0.5%;
+        border-radius: 5px;
+        margin-right: 10px;
+        width: 4.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer; }
+      .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field,
+      .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field,
+      .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field,
+      .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field,
+      .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field,
+      .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field,
+      .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field,
+      .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field,
+      .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field,
+      .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field,
+      .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field,
+      .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field,
+      .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field,
+      .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field,
+      .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field,
+      .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field,
+      .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field,
+      .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field {
+        border-radius: 2px;
+        border: 1px solid var(--calculated_important-border) !important;
+        background-color: var(--base_wallet-sidebar-and-popup);
+        color: var(--labels_important-active-labels-text-graphics); }
+        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field .ant-input,
+        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field .ant-input,
+        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field .ant-input,
+        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field .ant-input,
+        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field .ant-input,
+        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field .ant-input,
+        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field .ant-input,
+        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field .ant-input,
+        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field .ant-input,
+        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field .ant-input,
+        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field .ant-input,
+        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field .ant-input,
+        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field .ant-input,
+        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field .ant-input,
+        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field .ant-input,
+        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field .ant-input,
+        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field .ant-input,
+        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field .ant-input {
           background-color: var(--base_wallet-sidebar-and-popup);
-          color: var(--labels_important-active-labels-text-graphics); }
-          .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field .ant-input,
-          .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field .ant-input,
-          .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field .ant-input,
-          .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field .ant-input,
-          .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field .ant-input,
-          .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field .ant-input,
-          .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field .ant-input,
-          .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field .ant-input,
-          .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field .ant-input,
-          .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field .ant-input,
-          .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field .ant-input,
-          .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field .ant-input,
-          .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field .ant-input,
-          .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field .ant-input,
-          .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field .ant-input,
-          .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field .ant-input,
-          .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field .ant-input,
-          .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field .ant-input {
-            background-color: var(--base_wallet-sidebar-and-popup);
-            color: var(--labels_important-active-labels-text-graphics);
-            text-overflow: ellipsis; }
-          .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field .ant-input:focus,
-          .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field .ant-input:focus,
-          .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field .ant-input:focus,
-          .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field .ant-input:focus,
-          .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field .ant-input:focus,
-          .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field .ant-input:focus,
-          .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field .ant-input:focus,
-          .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field .ant-input:focus,
-          .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field .ant-input:focus,
-          .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field .ant-input:focus,
-          .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field .ant-input:focus,
-          .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field .ant-input:focus,
-          .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field .ant-input:focus,
-          .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field .ant-input:focus,
-          .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field .ant-input:focus,
-          .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field .ant-input:focus,
-          .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field .ant-input:focus,
-          .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field .ant-input:focus {
-            box-shadow: unset; }
-          .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field .render-scan-wrapper,
-          .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field .render-scan-wrapper,
-          .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field .render-scan-wrapper,
-          .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field .render-scan-wrapper,
-          .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field .render-scan-wrapper,
-          .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field .render-scan-wrapper,
-          .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field .render-scan-wrapper,
-          .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field .render-scan-wrapper,
-          .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field .render-scan-wrapper,
-          .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field .render-scan-wrapper,
-          .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field .render-scan-wrapper,
-          .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field .render-scan-wrapper,
-          .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field .render-scan-wrapper,
-          .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field .render-scan-wrapper,
-          .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field .render-scan-wrapper,
-          .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field .render-scan-wrapper,
-          .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field .render-scan-wrapper,
-          .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field .render-scan-wrapper {
-            color: var(--specials_buttons-links-and-highlights);
-            cursor: pointer; }
-            .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field .render-scan-wrapper .suffix-text,
-            .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field .render-scan-wrapper .suffix-text,
-            .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field .render-scan-wrapper .suffix-text,
-            .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field .render-scan-wrapper .suffix-text,
-            .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field .render-scan-wrapper .suffix-text,
-            .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field .render-scan-wrapper .suffix-text,
-            .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field .render-scan-wrapper .suffix-text,
-            .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field .render-scan-wrapper .suffix-text,
-            .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field .render-scan-wrapper .suffix-text,
-            .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field .render-scan-wrapper .suffix-text,
-            .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field .render-scan-wrapper .suffix-text,
-            .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field .render-scan-wrapper .suffix-text,
-            .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field .render-scan-wrapper .suffix-text,
-            .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field .render-scan-wrapper .suffix-text,
-            .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field .render-scan-wrapper .suffix-text,
-            .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field .render-scan-wrapper .suffix-text,
-            .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field .render-scan-wrapper .suffix-text,
-            .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field .render-scan-wrapper .suffix-text {
-              padding-right: 0.5rem;
-              font-size: 15px; }
-              .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field .render-scan-wrapper .suffix-text .edit-wrapper__container,
-              .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field .render-scan-wrapper .suffix-text .edit-wrapper__container,
-              .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field .render-scan-wrapper .suffix-text .edit-wrapper__container,
-              .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field .render-scan-wrapper .suffix-text .edit-wrapper__container,
-              .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field .render-scan-wrapper .suffix-text .edit-wrapper__container,
-              .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field .render-scan-wrapper .suffix-text .edit-wrapper__container,
-              .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field .render-scan-wrapper .suffix-text .edit-wrapper__container,
-              .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field .render-scan-wrapper .suffix-text .edit-wrapper__container,
-              .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field .render-scan-wrapper .suffix-text .edit-wrapper__container,
-              .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field .render-scan-wrapper .suffix-text .edit-wrapper__container,
-              .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field .render-scan-wrapper .suffix-text .edit-wrapper__container,
-              .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field .render-scan-wrapper .suffix-text .edit-wrapper__container,
-              .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field .render-scan-wrapper .suffix-text .edit-wrapper__container,
-              .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field .render-scan-wrapper .suffix-text .edit-wrapper__container,
-              .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field .render-scan-wrapper .suffix-text .edit-wrapper__container,
-              .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field .render-scan-wrapper .suffix-text .edit-wrapper__container,
-              .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field .render-scan-wrapper .suffix-text .edit-wrapper__container,
-              .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field .render-scan-wrapper .suffix-text .edit-wrapper__container {
-                text-decoration: underline; }
-            .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field .render-scan-wrapper .img-wrapper,
-            .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field .render-scan-wrapper .img-wrapper,
-            .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field .render-scan-wrapper .img-wrapper,
-            .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field .render-scan-wrapper .img-wrapper,
-            .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field .render-scan-wrapper .img-wrapper,
-            .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field .render-scan-wrapper .img-wrapper,
-            .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field .render-scan-wrapper .img-wrapper,
-            .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field .render-scan-wrapper .img-wrapper,
-            .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field .render-scan-wrapper .img-wrapper,
-            .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field .render-scan-wrapper .img-wrapper,
-            .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field .render-scan-wrapper .img-wrapper,
-            .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field .render-scan-wrapper .img-wrapper,
-            .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field .render-scan-wrapper .img-wrapper,
-            .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field .render-scan-wrapper .img-wrapper,
-            .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field .render-scan-wrapper .img-wrapper,
-            .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field .render-scan-wrapper .img-wrapper,
-            .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field .render-scan-wrapper .img-wrapper,
-            .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field .render-scan-wrapper .img-wrapper {
-              display: flex;
-              align-items: center; }
-              .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field .render-scan-wrapper .img-wrapper img,
-              .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field .render-scan-wrapper .img-wrapper img,
-              .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field .render-scan-wrapper .img-wrapper img,
-              .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field .render-scan-wrapper .img-wrapper img,
-              .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field .render-scan-wrapper .img-wrapper img,
-              .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field .render-scan-wrapper .img-wrapper img,
-              .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field .render-scan-wrapper .img-wrapper img,
-              .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field .render-scan-wrapper .img-wrapper img,
-              .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field .render-scan-wrapper .img-wrapper img,
-              .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field .render-scan-wrapper .img-wrapper img,
-              .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field .render-scan-wrapper .img-wrapper img,
-              .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field .render-scan-wrapper .img-wrapper img,
-              .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field .render-scan-wrapper .img-wrapper img,
-              .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field .render-scan-wrapper .img-wrapper img,
-              .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field .render-scan-wrapper .img-wrapper img,
-              .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field .render-scan-wrapper .img-wrapper img,
-              .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field .render-scan-wrapper .img-wrapper img,
-              .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field .render-scan-wrapper .img-wrapper img {
-                height: 1rem; }
-        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field:focus-within,
-        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field:focus-within,
-        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field:focus-within,
-        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field:focus-within,
-        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field:focus-within,
-        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field:focus-within,
-        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field:focus-within,
-        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field:focus-within,
-        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field:focus-within,
-        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field:focus-within,
-        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field:focus-within,
-        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field:focus-within,
-        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field:focus-within,
-        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field:focus-within,
-        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field:focus-within,
-        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field:focus-within,
-        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field:focus-within,
-        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field:focus-within {
-          border: 1px solid var(--calculated_important-border) !important; }
+          color: var(--labels_important-active-labels-text-graphics);
+          text-overflow: ellipsis; }
+        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field .ant-input:focus,
+        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field .ant-input:focus,
+        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field .ant-input:focus,
+        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field .ant-input:focus,
+        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field .ant-input:focus,
+        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field .ant-input:focus,
+        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field .ant-input:focus,
+        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field .ant-input:focus,
+        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field .ant-input:focus,
+        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field .ant-input:focus,
+        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field .ant-input:focus,
+        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field .ant-input:focus,
+        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field .ant-input:focus,
+        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field .ant-input:focus,
+        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field .ant-input:focus,
+        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field .ant-input:focus,
+        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field .ant-input:focus,
+        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field .ant-input:focus {
+          box-shadow: unset; }
+        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field .render-scan-wrapper,
+        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field .render-scan-wrapper,
+        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field .render-scan-wrapper,
+        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field .render-scan-wrapper,
+        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field .render-scan-wrapper,
+        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field .render-scan-wrapper,
+        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field .render-scan-wrapper,
+        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field .render-scan-wrapper,
+        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field .render-scan-wrapper,
+        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field .render-scan-wrapper,
+        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field .render-scan-wrapper,
+        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field .render-scan-wrapper,
+        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field .render-scan-wrapper,
+        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field .render-scan-wrapper,
+        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field .render-scan-wrapper,
+        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field .render-scan-wrapper,
+        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field .render-scan-wrapper,
+        .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field .render-scan-wrapper {
+          color: var(--specials_buttons-links-and-highlights);
+          cursor: pointer; }
+          .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field .render-scan-wrapper .suffix-text,
+          .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field .render-scan-wrapper .suffix-text,
+          .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field .render-scan-wrapper .suffix-text,
+          .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field .render-scan-wrapper .suffix-text,
+          .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field .render-scan-wrapper .suffix-text,
+          .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field .render-scan-wrapper .suffix-text,
+          .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field .render-scan-wrapper .suffix-text,
+          .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field .render-scan-wrapper .suffix-text,
+          .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field .render-scan-wrapper .suffix-text,
+          .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field .render-scan-wrapper .suffix-text,
+          .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field .render-scan-wrapper .suffix-text,
+          .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field .render-scan-wrapper .suffix-text,
+          .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field .render-scan-wrapper .suffix-text,
+          .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field .render-scan-wrapper .suffix-text,
+          .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field .render-scan-wrapper .suffix-text,
+          .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field .render-scan-wrapper .suffix-text,
+          .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field .render-scan-wrapper .suffix-text,
+          .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field .render-scan-wrapper .suffix-text {
+            padding-right: 0.5rem;
+            font-size: 15px; }
+            .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field .render-scan-wrapper .suffix-text .edit-wrapper__container,
+            .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field .render-scan-wrapper .suffix-text .edit-wrapper__container,
+            .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field .render-scan-wrapper .suffix-text .edit-wrapper__container,
+            .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field .render-scan-wrapper .suffix-text .edit-wrapper__container,
+            .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field .render-scan-wrapper .suffix-text .edit-wrapper__container,
+            .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field .render-scan-wrapper .suffix-text .edit-wrapper__container,
+            .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field .render-scan-wrapper .suffix-text .edit-wrapper__container,
+            .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field .render-scan-wrapper .suffix-text .edit-wrapper__container,
+            .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field .render-scan-wrapper .suffix-text .edit-wrapper__container,
+            .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field .render-scan-wrapper .suffix-text .edit-wrapper__container,
+            .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field .render-scan-wrapper .suffix-text .edit-wrapper__container,
+            .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field .render-scan-wrapper .suffix-text .edit-wrapper__container,
+            .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field .render-scan-wrapper .suffix-text .edit-wrapper__container,
+            .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field .render-scan-wrapper .suffix-text .edit-wrapper__container,
+            .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field .render-scan-wrapper .suffix-text .edit-wrapper__container,
+            .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field .render-scan-wrapper .suffix-text .edit-wrapper__container,
+            .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field .render-scan-wrapper .suffix-text .edit-wrapper__container,
+            .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field .render-scan-wrapper .suffix-text .edit-wrapper__container {
+              text-decoration: underline; }
+          .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field .render-scan-wrapper .img-wrapper,
+          .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field .render-scan-wrapper .img-wrapper,
+          .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field .render-scan-wrapper .img-wrapper,
+          .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field .render-scan-wrapper .img-wrapper,
+          .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field .render-scan-wrapper .img-wrapper,
+          .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field .render-scan-wrapper .img-wrapper,
+          .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field .render-scan-wrapper .img-wrapper,
+          .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field .render-scan-wrapper .img-wrapper,
+          .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field .render-scan-wrapper .img-wrapper,
+          .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field .render-scan-wrapper .img-wrapper,
+          .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field .render-scan-wrapper .img-wrapper,
+          .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field .render-scan-wrapper .img-wrapper,
+          .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field .render-scan-wrapper .img-wrapper,
+          .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field .render-scan-wrapper .img-wrapper,
+          .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field .render-scan-wrapper .img-wrapper,
+          .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field .render-scan-wrapper .img-wrapper,
+          .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field .render-scan-wrapper .img-wrapper,
+          .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field .render-scan-wrapper .img-wrapper {
+            display: flex;
+            align-items: center; }
+            .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field .render-scan-wrapper .img-wrapper img,
+            .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field .render-scan-wrapper .img-wrapper img,
+            .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field .render-scan-wrapper .img-wrapper img,
+            .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field .render-scan-wrapper .img-wrapper img,
+            .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field .render-scan-wrapper .img-wrapper img,
+            .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field .render-scan-wrapper .img-wrapper img,
+            .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field .render-scan-wrapper .img-wrapper img,
+            .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field .render-scan-wrapper .img-wrapper img,
+            .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field .render-scan-wrapper .img-wrapper img,
+            .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field .render-scan-wrapper .img-wrapper img,
+            .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field .render-scan-wrapper .img-wrapper img,
+            .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field .render-scan-wrapper .img-wrapper img,
+            .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field .render-scan-wrapper .img-wrapper img,
+            .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field .render-scan-wrapper .img-wrapper img,
+            .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field .render-scan-wrapper .img-wrapper img,
+            .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field .render-scan-wrapper .img-wrapper img,
+            .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field .render-scan-wrapper .img-wrapper img,
+            .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field .render-scan-wrapper .img-wrapper img {
+              height: 1rem; }
+      .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field:focus-within,
+      .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field:focus-within,
+      .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field:focus-within,
+      .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field:focus-within,
+      .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field:focus-within,
+      .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field:focus-within,
+      .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field:focus-within,
+      .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field:focus-within,
+      .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field:focus-within,
+      .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field:focus-within,
+      .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field:focus-within,
+      .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field:focus-within,
+      .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field:focus-within,
+      .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .destination-input-field:focus-within,
+      .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field:focus-within,
+      .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .destination-input-field:focus-within,
+      .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field:focus-within,
+      .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .destination-input-field:focus-within {
+        border: 1px solid var(--calculated_important-border) !important; }
       .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .custom-select-input-style,
       .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .custom-select-input-style,
       .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .custom-select-input-style,
@@ -8563,6 +8604,11 @@ table th {
     display: flex;
     align-items: flex-start;
     gap: 5px; }
+    .address_book_popup_wrapper .address-book-popup-wrapper .selected-assets-content .assets-field .selected-asset-address,
+    .address_book_popup_wrapper .name-address-popup-wrapper .selected-assets-content .assets-field .selected-asset-address,
+    .address_book_popup_wrapper .check-confirm-content-wrapper .selected-assets-content .assets-field .selected-asset-address {
+      overflow: hidden;
+      text-overflow: ellipsis; }
     .address_book_popup_wrapper .address-book-popup-wrapper .selected-assets-content .assets-field .selected-asset,
     .address_book_popup_wrapper .address-book-popup-wrapper .selected-assets-content .assets-field .selected-network,
     .address_book_popup_wrapper .name-address-popup-wrapper .selected-assets-content .assets-field .selected-asset,
@@ -8572,6 +8618,15 @@ table th {
       display: flex;
       align-items: flex-start;
       gap: 5px; }
+  .address_book_popup_wrapper .address-book-popup-wrapper .selected-assets-content .confirm_name_detail,
+  .address_book_popup_wrapper .name-address-popup-wrapper .selected-assets-content .confirm_name_detail,
+  .address_book_popup_wrapper .check-confirm-content-wrapper .selected-assets-content .confirm_name_detail {
+    padding: 3%;
+    border-bottom: 1px solid var(--labels_secondary-inactive-label-text-graphics); }
+  .address_book_popup_wrapper .address-book-popup-wrapper .selected-assets-content .assets-content,
+  .address_book_popup_wrapper .name-address-popup-wrapper .selected-assets-content .assets-content,
+  .address_book_popup_wrapper .check-confirm-content-wrapper .selected-assets-content .assets-content {
+    padding: 3%; }
 
 .address_book_popup_wrapper .address-book-popup-wrapper .confirm-title-text,
 .address_book_popup_wrapper .name-address-popup-wrapper .confirm-title-text,
@@ -8603,14 +8658,8 @@ table th {
   .address_book_popup_wrapper .check-confirm-content-wrapper .address-book-popup-button-wrapper .okay-btn {
     width: 100% !important; }
 
-.address_book_popup_wrapper .check-confirm-content-wrapper .selected-assets-content {
-  border: 1px solid var(--labels_secondary-inactive-label-text-graphics); }
-  .address_book_popup_wrapper .check-confirm-content-wrapper .selected-assets-content .confirm_name_detail {
-    padding: 3%;
-    border-bottom: 1px solid var(--labels_secondary-inactive-label-text-graphics); }
-  .address_book_popup_wrapper .check-confirm-content-wrapper .selected-assets-content .assets-content {
-    padding: 3%; }
-
+.address_book_popup_wrapper .address-book-popup-wrapper .warning-message-wrapper,
+.address_book_popup_wrapper .name-address-popup-wrapper .warning-message-wrapper,
 .address_book_popup_wrapper .check-confirm-content-wrapper .warning-message-wrapper {
   margin: 3%;
   font-size: 12px;
@@ -8619,15 +8668,181 @@ table th {
   align-items: center;
   gap: 2px; }
 
+.address_book_popup_wrapper .check-confirm-content-wrapper .selected-assets-content {
+  border: 1px solid var(--labels_secondary-inactive-label-text-graphics); }
+
 .add_withdrawal_address_wrapper .ReactModal__Content {
   width: 50rem; }
 
 .layout-mobile .address-book-popup-wrapper {
   width: 100% !important; }
+  .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .ant-select-clear,
+  .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .ant-select-clear {
+    width: 18px;
+    height: 18px; }
+  .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-network-field .network-field .ant-select-arrow,
+  .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .ant-select-arrow {
+    top: 57%; }
+  .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-network-field .network-field .ant-select-clear,
+  .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .network-field .ant-select-clear {
+    top: 50%; }
+  .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-method-field,
+  .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-network-field,
+  .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .address-field,
+  .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field,
+  .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field,
+  .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field {
+    display: flex; }
+    .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-method-field .input-label-field .custom-field .select-step,
+    .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-method-field .input-label-field-disable .custom-field .select-step,
+    .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-network-field .input-label-field .custom-field .select-step,
+    .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-network-field .input-label-field-disable .custom-field .select-step,
+    .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .address-field .input-label-field .custom-field .select-step,
+    .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .address-field .input-label-field-disable .custom-field .select-step,
+    .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .input-label-field .custom-field .select-step,
+    .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .input-label-field-disable .custom-field .select-step,
+    .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .input-label-field .custom-field .select-step,
+    .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .input-label-field-disable .custom-field .select-step,
+    .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .input-label-field .custom-field .select-step,
+    .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .input-label-field-disable .custom-field .select-step {
+      height: 3.4rem; }
+    .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-method-field .input-label-field .custom-field .custom-line,
+    .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-method-field .input-label-field-disable .custom-field .custom-line,
+    .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-network-field .input-label-field .custom-field .custom-line,
+    .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-network-field .input-label-field-disable .custom-field .custom-line,
+    .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .address-field .input-label-field .custom-field .custom-line,
+    .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .address-field .input-label-field-disable .custom-field .custom-line,
+    .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .input-label-field .custom-field .custom-line,
+    .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .input-label-field-disable .custom-field .custom-line,
+    .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .input-label-field .custom-field .custom-line,
+    .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .input-label-field-disable .custom-field .custom-line,
+    .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .input-label-field .custom-field .custom-line,
+    .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .input-label-field-disable .custom-field .custom-line {
+      height: 12rem; }
+    .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-method-field .custom-select-input-style .ant-select-selector,
+    .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-network-field .custom-select-input-style .ant-select-selector,
+    .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .address-field .custom-select-input-style .ant-select-selector,
+    .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .custom-select-input-style .ant-select-selector,
+    .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .custom-select-input-style .ant-select-selector,
+    .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .custom-select-input-style .ant-select-selector {
+      font-size: 10px !important;
+      height: 4.4rem !important; }
+    .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-method-field .custom-select-input-style .ant-select-selection-item,
+    .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-network-field .custom-select-input-style .ant-select-selection-item,
+    .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .address-field .custom-select-input-style .ant-select-selection-item,
+    .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .custom-select-input-style .ant-select-selection-item,
+    .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .custom-select-input-style .ant-select-selection-item,
+    .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .custom-select-input-style .ant-select-selection-item {
+      line-height: 3.5rem !important; }
+    .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-method-field .destination-input-field,
+    .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-network-field .destination-input-field,
+    .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .address-field .destination-input-field,
+    .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .destination-input-field,
+    .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .destination-input-field,
+    .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .destination-input-field {
+      background-color: var(--base_background) !important;
+      color: var(--labels_important-active-labels-text-graphics); }
+      .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-method-field .destination-input-field .ant-input,
+      .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-network-field .destination-input-field .ant-input,
+      .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .address-field .destination-input-field .ant-input,
+      .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .destination-input-field .ant-input,
+      .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .destination-input-field .ant-input,
+      .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .destination-input-field .ant-input {
+        background-color: var(--base_background) !important; }
+      .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-method-field .destination-input-field .destination-input-field:focus-within,
+      .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-network-field .destination-input-field .destination-input-field:focus-within,
+      .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .address-field .destination-input-field .destination-input-field:focus-within,
+      .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .destination-input-field .destination-input-field:focus-within,
+      .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .destination-input-field .destination-input-field:focus-within,
+      .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .destination-input-field .destination-input-field:focus-within {
+        background-color: var(--base_background) !important; }
+    .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-method-field .select-field,
+    .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-network-field .select-field,
+    .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .address-field .select-field,
+    .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field,
+    .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field,
+    .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field {
+      display: flex;
+      flex-direction: column;
+      justify-content: unset;
+      margin-bottom: 1%; }
+      .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-method-field .select-field .currency-label,
+      .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-network-field .select-field .currency-label,
+      .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .address-field .select-field .currency-label,
+      .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .currency-label,
+      .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .currency-label,
+      .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .currency-label {
+        width: 22%; }
+      .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-method-field .select-field .network-input,
+      .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-network-field .select-field .network-input,
+      .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .address-field .select-field .network-input,
+      .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .network-input,
+      .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .network-input,
+      .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .network-input {
+        width: 100%; }
+    .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-method-field .input-label-field,
+    .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-network-field .input-label-field,
+    .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .address-field .input-label-field,
+    .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .input-label-field,
+    .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .input-label-field,
+    .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .input-label-field {
+      display: flex; }
+
+.layout-mobile .check-confirm-content-wrapper .warning-message-wrapper {
+  margin: unset;
+  margin-top: 3%; }
+
+.layout-mobile .address-book-form .address-book-content-wrapper .address-book-table-wrapper .table-content {
+  overflow-x: scroll; }
+  .layout-mobile .address-book-form .address-book-content-wrapper .address-book-table-wrapper .table-content .table-wrapper th {
+    min-width: 8rem;
+    text-wrap: nowrap; }
+  .layout-mobile .address-book-form .address-book-content-wrapper .address-book-table-wrapper .table-content .table-wrapper th,
+  .layout-mobile .address-book-form .address-book-content-wrapper .address-book-table-wrapper .table-content .table-wrapper td,
+  .layout-mobile .address-book-form .address-book-content-wrapper .address-book-table-wrapper .table-content .table-wrapper .remove-btn {
+    font-size: 10px; }
+
+@media only screen and (min-width: 768px) {
+  .layout-mobile .address-book-popup-wrapper {
+    font-size: 20px; }
+    .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-method-field .select-field .currency-label,
+    .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .currency-label {
+      width: 25%;
+      height: 3rem; }
+    .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-method-field .input-label-field .custom-field .select-step,
+    .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-network-field .input-label-field .custom-field .select-step,
+    .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .address-field .input-label-field .custom-field .select-step,
+    .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .input-label-field .custom-field .select-step,
+    .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .input-label-field .custom-field .select-step,
+    .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .input-label-field .custom-field .select-step {
+      width: 3rem !important; }
+    .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-method-field .ant-select-single .ant-select-selector .ant-select-selection-placeholder,
+    .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-network-field .ant-select-single .ant-select-selector .ant-select-selection-placeholder,
+    .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .address-field .ant-select-single .ant-select-selector .ant-select-selection-placeholder,
+    .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .ant-select-single .ant-select-selector .ant-select-selection-placeholder,
+    .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .ant-select-single .ant-select-selector .ant-select-selection-placeholder,
+    .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .ant-select-single .ant-select-selector .ant-select-selection-placeholder {
+      margin-top: 2% !important;
+      font-size: 14px !important; }
+    .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-method-field .select-field .destination-input-field,
+    .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-network-field .select-field .destination-input-field,
+    .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .address-field .select-field .destination-input-field,
+    .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .destination-input-field,
+    .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .destination-input-field,
+    .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .destination-input-field {
+      height: 4rem; }
+    .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-method-field .custom-select-input-style .ant-select-selection-item,
+    .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-network-field .custom-select-input-style .ant-select-selection-item,
+    .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .address-field .custom-select-input-style .ant-select-selection-item,
+    .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .custom-select-input-style .ant-select-selection-item,
+    .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .custom-select-input-style .ant-select-selection-item,
+    .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .custom-select-input-style .ant-select-selection-item {
+      margin-top: 1%;
+      font-size: 14px; } }
 
 @media screen and (min-width: 1920px) {
   .address-book-form .address-book-content-wrapper .address-book-table-wrapper .table-content .table-wrapper .table_body-wrapper .table_body-row .network-field {
-    width: 30%; }
+    width: 50%; }
   .address-book-form .address-book-content-wrapper .address-book-table-wrapper .table-content .table-wrapper .table_body-wrapper .table_body-row .address-field-wrapper .address-content span {
     width: 80%; } }
 
