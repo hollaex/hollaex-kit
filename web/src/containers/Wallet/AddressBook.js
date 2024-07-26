@@ -70,7 +70,7 @@ const AddressBook = ({
 			renderCell: (data, key) => (
 				<td key={key}>
 					<div className="d-flex justify-content-center">
-						<div className="table-content">
+						<div className="asset-label">
 							<Coin iconId={coins[data?.currency]?.icon_id} type="CS7" />
 							<span className="text-nowrap mt-1">
 								{`${
@@ -271,13 +271,13 @@ const AddressBook = ({
 			};
 			const restGetUserData = removeCreatedAt(getUserData);
 			setGetUserData([
-				...getUserData,
 				{ ...currValue, created_at: new Date().toISOString() },
+				...getUserData,
 			]);
 
 			try {
 				await setUserLabelAndAddress({
-					addresses: [...restGetUserData, currValue],
+					addresses: [currValue, ...restGetUserData],
 				});
 			} catch (error) {
 				console.error(error);
@@ -646,8 +646,8 @@ const AddressBook = ({
 					<div className="address-book-table-wrapper">
 						{isLoading ? (
 							<Table
+								className="address-book-table"
 								showHeaderNoData={true}
-								rowClassName="pt-2 pb-2"
 								headers={AddressBookTableData}
 								data={getUserData}
 								count={getUserData?.length}

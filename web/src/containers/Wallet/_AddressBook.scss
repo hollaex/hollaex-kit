@@ -564,6 +564,13 @@
 
 						.ant-select-selection-item {
 							line-height: 3.5rem !important;
+
+							div {
+								div,
+								span {
+									margin-top: 1%;
+								}
+							}
 						}
 					}
 
@@ -626,6 +633,12 @@
 						td,
 						.remove-btn {
 							font-size: 10px;
+						}
+
+						.asset-label {
+							span {
+								min-width: 13rem;
+							}
 						}
 					}
 				}
