@@ -8734,6 +8734,19 @@ table th {
     .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .custom-select-input-style .ant-select-selection-item,
     .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .custom-select-input-style .ant-select-selection-item {
       line-height: 3.5rem !important; }
+      .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-method-field .custom-select-input-style .ant-select-selection-item div div,
+      .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-method-field .custom-select-input-style .ant-select-selection-item div span,
+      .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-network-field .custom-select-input-style .ant-select-selection-item div div,
+      .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-network-field .custom-select-input-style .ant-select-selection-item div span,
+      .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .address-field .custom-select-input-style .ant-select-selection-item div div,
+      .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .address-field .custom-select-input-style .ant-select-selection-item div span,
+      .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .custom-select-input-style .ant-select-selection-item div div,
+      .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .custom-select-input-style .ant-select-selection-item div span,
+      .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .custom-select-input-style .ant-select-selection-item div div,
+      .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .custom-select-input-style .ant-select-selection-item div span,
+      .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .custom-select-input-style .ant-select-selection-item div div,
+      .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .custom-select-input-style .ant-select-selection-item div span {
+        margin-top: 1%; }
     .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-method-field .destination-input-field,
     .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-network-field .destination-input-field,
     .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .address-field .destination-input-field,
@@ -8801,6 +8814,8 @@ table th {
   .layout-mobile .address-book-form .address-book-content-wrapper .address-book-table-wrapper .table-content .table-wrapper td,
   .layout-mobile .address-book-form .address-book-content-wrapper .address-book-table-wrapper .table-content .table-wrapper .remove-btn {
     font-size: 10px; }
+  .layout-mobile .address-book-form .address-book-content-wrapper .address-book-table-wrapper .table-content .table-wrapper .asset-label span {
+    min-width: 13rem; }
 
 @media only screen and (min-width: 768px) {
   .layout-mobile .address-book-popup-wrapper {
