@@ -1134,6 +1134,7 @@
 		"ENTER_AMOUNT": "Enter Amount",
 		"REMOVE_TITLE": "Remove Tag",
 		"MAX_AMOUNT_WARNING_INFO": "This amount exceeds your maximum withdrawal limit.",
+		"MIN_AMOUNT_WARNING_INFO": "The minimum withdrawal amount is {0}",
 		"ZERO_BALANCE": "You do not have enough available balance.",
 		"NEW_ADDRESS": "New Address"
 	},
