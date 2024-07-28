@@ -409,6 +409,28 @@ const P2PProfile = ({
 																(Unverified)
 															</span>
 														)}
+														{info?.status === 1 && (
+															<span
+																style={{
+																	position: 'relative',
+																	top: 5,
+																	marginLeft: 6,
+																}}
+															>
+																(Pending)
+															</span>
+														)}
+														{info?.status === 2 && (
+															<span
+																style={{
+																	position: 'relative',
+																	top: 5,
+																	marginLeft: 6,
+																}}
+															>
+																(Rejected)
+															</span>
+														)}
 														{info?.status === 3 && (
 															<span
 																style={{

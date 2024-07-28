@@ -113,6 +113,8 @@ const PaymentMethods = ({ user }) => {
 				return (
 					<div className="d-flex">
 						{data?.status === 0 && 'Unverified'}
+						{data?.status === 1 && 'Pending'}
+						{data?.status === 2 && 'Rejected'}
 						{data?.status === 3 && 'Verified'}
 					</div>
 				);
@@ -343,6 +345,8 @@ const PaymentMethods = ({ user }) => {
 								}}
 							>
 								<Select.Option value={0}>Unverified</Select.Option>
+								<Select.Option value={1}>Pending</Select.Option>
+								<Select.Option value={2}>Rejected</Select.Option>
 								<Select.Option value={3}>Verified</Select.Option>
 							</Select>
 						</div>
