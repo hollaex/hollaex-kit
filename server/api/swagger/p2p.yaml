@@ -109,6 +109,9 @@ paths:
                 type: string
               auto_response:
                 type: string
+              side:
+                type: string
+                enum: ['sell', 'buy']
               payment_methods:
                 type: array
                 items:
@@ -168,6 +171,9 @@ paths:
                 type: string
               auto_response:
                 type: string
+              side:
+                type: string
+                enum: ['sell', 'buy']
               payment_methods:
                 type: array
                 items:
@@ -298,6 +304,9 @@ paths:
               deal_id:
                 type: integer
                 format: int32
+              side:
+                type: string
+                enum: ['buy', 'sell']
               amount_fiat:
                 type: number
                 format: double

@@ -141,6 +141,7 @@ const P2P = ({
 							refresh={refresh}
 							setSelectedTransaction={setSelectedTransaction}
 							changeProfileTab={changeProfileTab}
+							setTab={setTab}
 						/>
 					</TabPane>
 
@@ -163,6 +164,7 @@ const P2P = ({
 							<P2PProfile
 								setSelectedProfile={setSelectedProfile}
 								selectedProfile={selectedProfile}
+								setRefresh={setRefresh}
 							/>
 						</TabPane>
 					)}
