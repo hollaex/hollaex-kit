@@ -72,6 +72,7 @@ const {
 	AUDIT_KEYS,
 	USER_FIELD_ADMIN_LOG,
 	ADDRESS_FIELDS,
+	CRYPTO_ADDRESS_FIELDS,
 	ID_FIELDS,
 	SETTING_KEYS,
 	OMITTED_USER_FIELDS,
@@ -3288,14 +3289,38 @@ const fetchUserAddressBook = async (user_id) => {
 };
 
 
+
+
 const updateUserAddresses = async (user_id, data) => {
 	const { addresses } = data;
 
+	let userAddressBook = await getModel('userAddressBook').findOne({ where: { user_id } });
+
 	addresses.forEach((addressObj) => {
-		if (!addressObj.address || !addressObj.network || !addressObj.label) {
+		if (!addressObj.address || !addressObj.network || !addressObj.label || !addressObj.currency) {
 			throw new Error(ADDRESSBOOK_MISSING_FIELDS);
 		}
+
+		Object.keys(addressObj).forEach((key) => {
+			if (!CRYPTO_ADDRESS_FIELDS.includes(key)) {
+				throw new Error(ADDRESSBOOK_MISSING_FIELDS);
+			}
+		});
+
+		const hasCreatedAt = userAddressBook?.addresses?.find?.(address => address.label === addressObj.label)?.created_at;
+		if (!hasCreatedAt) {
+			addressObj.created_at = moment().toISOString();
+		} else {
+			addressObj.created_at = hasCreatedAt;
+		}
 	});
+
+	// Check for duplicate labels in the payload
+	const labels = addresses.map(a => a.label);
+	const uniqueLabels = new Set(labels);
+	if (uniqueLabels.size !== labels.length) {
+		throw new Error(ADDRESSBOOK_ALREADY_EXISTS);
+	}
 
 	const user = await getUserByKitId(user_id);
 
@@ -3303,20 +3328,12 @@ const updateUserAddresses = async (user_id, data) => {
 		throw new Error(USER_NOT_FOUND);
 	}
 
-	let userAddressBook = await getModel('userAddressBook').findOne({ where: { user_id } });
 	if (!userAddressBook) {
 		userAddressBook = await getModel('userAddressBook').create({
 			user_id,
 			addresses
 		});
 	} else {
-		// Check if any address in the payload already exists
-		const existingAddresses = userAddressBook.addresses.map(a => a.address);
-		const duplicateAddresses = addresses.filter(a => existingAddresses.includes(a.address) || existingAddresses.includes(a.label));
-		if (duplicateAddresses.length > 0) {
-			throw new Error(ADDRESSBOOK_ALREADY_EXISTS);
-		}
-		
 		// Update the addresses
 		userAddressBook = await userAddressBook.update({ addresses }, {
 			fields: ['addresses']

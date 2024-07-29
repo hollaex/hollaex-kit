@@ -26,6 +26,7 @@ import { getWallet } from 'utils/wallet';
 import QRCode from './QRCode';
 import withConfig from 'components/ConfigProvider/withConfig';
 import strings from 'config/localizedStrings';
+import { networkList, renderNetworkField } from 'containers/Withdraw/utils';
 
 class Deposit extends Component {
 	state = {
@@ -102,6 +103,12 @@ class Deposit extends Component {
 
 	updateAddress = (selectedCurrency, hasNetwork = false) => {
 		const { wallet, getDepositCurrency, getDepositNetworkOptions } = this.props;
+		const networkItems = networkList?.map((data) => {
+			return data.network;
+		});
+		if (networkItems?.includes(selectedCurrency)) {
+			return renderNetworkField(selectedCurrency);
+		}
 		const depositAddress = wallet.filter((val) => {
 			if (hasNetwork) {
 				return (

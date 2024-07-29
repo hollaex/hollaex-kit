@@ -427,7 +427,7 @@ const InterfaceForm = ({
 									className="feature-icon mr-1"
 								/>
 								<div className="ml-2 checkbox-txt">
-									Pro trade
+									Pro trade (Market)
 									<div className="small-text">
 										(Chart, orderbook, limit orders with wallet)
 									</div>
@@ -449,7 +449,7 @@ const InterfaceForm = ({
 									</div>
 								</div>
 								<div className="ml-2 checkbox-txt">
-									Quick trade
+									Quick trade (Convert)
 									<div className="d-flex justify-content-between">
 										<div className="small-text">
 											(Simple buy/sell interface with wallet)
