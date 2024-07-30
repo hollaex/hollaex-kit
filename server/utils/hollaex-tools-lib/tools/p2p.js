@@ -199,7 +199,6 @@ const getP2PAccountBalance = async (account_id, coin) => {
 const createP2PDeal = async (data) => {
 	let {
 		merchant_id,
-		side,
 		buying_asset,
 		spending_asset,
 		spread,
@@ -258,10 +257,6 @@ const createP2PDeal = async (data) => {
 		throw new Error('exchange rate cannot be less than 0');
 	};
 
-	if (side !== 'sell') {
-		throw new Error('side can only be sell');
-	};
-
 	data.status = true;
 
 	return getModel('p2pDeal').create(data, {
@@ -290,7 +285,6 @@ const updateP2PDeal = async (data) => {
 		id,
 		edited_ids,
 		merchant_id,
-		side,
 		buying_asset,
 		spending_asset,
 		spread,
@@ -368,9 +362,6 @@ const updateP2PDeal = async (data) => {
 		throw new Error('exchange rate cannot be less than 0');
 	};
 
-	if (side !== 'sell') {
-		throw new Error('side can only be sell');
-	};
 
 	if (data.status == null) {
 		data.status = true;
@@ -402,6 +393,7 @@ const createP2PTransaction = async (data) => {
 		deal_id,
 		user_id,
 		amount_fiat,
+		side,
 		payment_method_used,
 		ip
     } = data;
@@ -445,7 +437,9 @@ const createP2PTransaction = async (data) => {
 	}
 
 	//Cant have more than 3 active transactions per user
-	const userTransactions = await getModel('p2pTransaction').findAll({ where: { user_id: buyer.id, transaction_status: "active" } });
+	const userTransactions = await getModel('p2pTransaction').findAll({ where: { 
+		...(side === 'buy' ? { merchant_id: buyer.id } : { user_id: buyer.id }), 
+		transaction_status: "active" } });
 
 	if (userTransactions.length > 3) {
 		throw new Error('You have currently 3 active order, please complete them before creating another one');
@@ -453,7 +447,7 @@ const createP2PTransaction = async (data) => {
 
 	const merchant = await getUserByKitId(p2pDeal.merchant_id);
 
-	const merchantBalance = await getP2PAccountBalance(merchant_id, p2pDeal.buying_asset);
+	const merchantBalance = await getP2PAccountBalance(side === 'buy' ? user_id : merchant_id, p2pDeal.buying_asset);
 
 	const price = new BigNumber(exchange_rate).multipliedBy(1 + (spread / 100));
 	const amount_digital_currency = new BigNumber(amount_fiat).dividedBy(price).toNumber();
@@ -469,18 +463,18 @@ const createP2PTransaction = async (data) => {
         throw new Error('Transaction is not possible at the moment');
     }
 	
-	if (new BigNumber(amount_fiat).comparedTo(new BigNumber(max_order_value)) === 1) {
+	if (new BigNumber(side === 'sell' ? amount_fiat : amount_digital_currency).comparedTo(new BigNumber(max_order_value)) === 1) {
 		throw new Error('input amount cannot be bigger than max allowable order amount');
 	}
 
-	if (new BigNumber(amount_fiat).comparedTo(new BigNumber(min_order_value)) === -1) {
+	if (new BigNumber(side === 'sell' ? amount_fiat : amount_digital_currency).comparedTo(new BigNumber(min_order_value)) === -1) {
 		throw new Error('input amount cannot be lower than min allowable order amount');
 	}
 
 	//Check the payment method
 	const hasMethod = p2pDeal.payment_methods.find(method => method.system_name === payment_method_used.system_name);
 
-	if (!hasMethod) {
+	if (!hasMethod && side === 'sell') {
 		throw new Error('invalid payment method');
 	}
 
@@ -495,11 +489,11 @@ const createP2PTransaction = async (data) => {
 	data.transaction_status = 'active';
 	data.transaction_duration = 30;
 	data.transaction_id = uuid();
-	data.merchant_id = merchant_id;
-	data.user_id = user_id;
+	data.merchant_id = side === 'buy' ? user_id : merchant_id;
+	data.user_id = side === 'buy' ? merchant_id :  user_id;
 	data.amount_digital_currency = amount;
 	data.deal_id = deal_id;
-	const lock = await getNodeLib().lockBalance(merchant.network_id, p2pDeal.buying_asset, amount_digital_currency + merchantFeeAmount + buyerFeeAmount);
+	const lock = await getNodeLib().lockBalance(side === 'buy' ? buyer.network_id : merchant.network_id, p2pDeal.buying_asset, amount_digital_currency + merchantFeeAmount + buyerFeeAmount);
 	data.locked_asset_id = lock.id;
 	data.price = price.toNumber();
 
@@ -561,7 +555,7 @@ const updateP2pTransaction = async (data) => {
 		
 	const transaction = await getModel('p2pTransaction').findOne({ where: { id } });
 	const p2pDeal = await getModel('p2pDeal').findOne({ where: { id: transaction.deal_id } });
-	const merchant = await getUserByKitId(p2pDeal.merchant_id);
+	const merchant = await getUserByKitId(transaction.merchant_id);
 	const p2pConfig = getKitConfig()?.p2p_config;
 	const user = await getUserByKitId(user_id);
 
@@ -594,7 +588,7 @@ const updateP2pTransaction = async (data) => {
 
 			const chatMessage = {
 				sender_id: user_id,
-				receiver_id: merchant.id,
+				receiver_id: transaction.merchant_id,
 				message: 'ORDER_EXPIRED',
 				type: 'notification',
 				created_at: new Date()
@@ -655,12 +649,12 @@ const updateP2pTransaction = async (data) => {
 		const buyerFeeAmount = (new BigNumber(transaction.amount_digital_currency).multipliedBy(p2pConfig.user_fee))
 		.dividedBy(100).toNumber();
 		const buyerTotalAmount = new BigNumber(transaction.amount_digital_currency).minus(new BigNumber(buyerFeeAmount)).toNumber();
-		await transferAssetByKitIds(merchant.id, transaction.user_id, p2pDeal.buying_asset, buyerTotalAmount, 'P2P Transaction', false, { category: 'p2p' });
+		await transferAssetByKitIds(transaction.merchant_id, transaction.user_id, p2pDeal.buying_asset, buyerTotalAmount, 'P2P Transaction', false, { category: 'p2p' });
 		
 		//send the fees to the source account
-		if (p2pConfig.source_account !== merchant.id) {
+		if (p2pConfig.source_account !== transaction.merchant_id) {
 			const totalFees =  (new BigNumber(merchantFeeAmount).plus(buyerFeeAmount)).toNumber();
-			await transferAssetByKitIds(merchant.id, p2pConfig.source_account, p2pDeal.buying_asset, totalFees, 'P2P Transaction', false, { category: 'p2p' });
+			await transferAssetByKitIds(transaction.merchant_id, p2pConfig.source_account, p2pDeal.buying_asset, totalFees, 'P2P Transaction', false, { category: 'p2p' });
 		}
 		
 		data.transaction_status = 'complete';
@@ -677,7 +671,8 @@ const updateP2pTransaction = async (data) => {
 			initiator_id = transaction.merchant_id;
 			defendant_id = transaction.user_id;
 		}
-		await getNodeLib().unlockBalance(merchant.network_id, transaction.locked_asset_id);
+
+		await getNodeLib().unlockBalance( merchant.network_id, transaction.locked_asset_id);
 		await createP2pDispute({ 
 			transaction_id: transaction.id,
 			initiator_id,
@@ -697,7 +692,7 @@ const updateP2pTransaction = async (data) => {
 	if (user_status === 'confirmed') {
 		const chatMessage = {
 			sender_id: user_id,
-			receiver_id: merchant.id,
+			receiver_id: transaction.merchant_id,
 			message: 'BUYER_PAID_ORDER',
 			type: 'notification',
 			created_at: new Date()
@@ -719,7 +714,7 @@ const updateP2pTransaction = async (data) => {
 	if (user_status === 'cancelled') {
 		const chatMessage = {
 			sender_id: user_id,
-			receiver_id: merchant.id,
+			receiver_id: transaction.merchant_id,
 			message: 'BUYER_CANCELLED_ORDER',
 			type: 'notification',
 			created_at: new Date()
@@ -741,7 +736,7 @@ const updateP2pTransaction = async (data) => {
 	if (user_status === 'appeal') {
 		const chatMessage = {
 			sender_id: user_id,
-			receiver_id: merchant.id,
+			receiver_id: transaction.merchant_id,
 			message: 'BUYER_APPEALED_ORDER',
 			type: 'notification',
 			created_at: new Date()
@@ -763,7 +758,7 @@ const updateP2pTransaction = async (data) => {
 
 	if (merchant_status === 'confirmed') {
 		const chatMessage = {
-			sender_id: merchant.id,
+			sender_id: transaction.merchant_id,
 			receiver_id: transaction.user_id,
 			message: 'VENDOR_CONFIRMED_ORDER',
 			type: 'notification',
@@ -785,7 +780,7 @@ const updateP2pTransaction = async (data) => {
 	
 	if (merchant_status === 'cancelled') {
 		const chatMessage = {
-			sender_id: merchant.id,
+			sender_id: transaction.merchant_id,
 			receiver_id: transaction.user_id,
 			message: 'VENDOR_CANCELLED_ORDER',
 			type: 'notification',
@@ -807,7 +802,7 @@ const updateP2pTransaction = async (data) => {
 
 	if (merchant_status === 'appeal') {
 		const chatMessage = {
-			sender_id: merchant.id,
+			sender_id: transaction.merchant_id,
 			receiver_id: transaction.user_id,
 			message: 'VENDOR_APPEALED_ORDER',
 			type: 'notification',
