@@ -1392,6 +1392,8 @@ const P2PSettings = ({ coins, pairs, p2p_config, features, constants }) => {
 								}}
 							>
 								<Select.Option value={'sell'}>Sell</Select.Option>
+								<Select.Option value={'buy'}>Buy</Select.Option>
+								<Select.Option value={'all'}>All</Select.Option>
 							</Select>
 
 							<div style={{ fontSize: 13, marginTop: 10, marginBottom: 10 }}>
