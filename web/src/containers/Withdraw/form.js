@@ -340,9 +340,9 @@ class Form extends Component {
 			onHandleScan,
 		} = this.props;
 
-		const currentNetwork = getWithdrawNetwork
-			? getWithdrawNetwork
-			: getWithdrawNetworkOptions;
+		const currentNetwork = getWithdrawNetworkOptions
+			? getWithdrawNetworkOptions
+			: getWithdrawNetwork;
 
 		const feeCoin = calculateFeeCoin(
 			currency,
