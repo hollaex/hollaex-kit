@@ -212,7 +212,8 @@
 
 	.address-book-popup-wrapper,
 	.name-address-popup-wrapper,
-	.check-confirm-content-wrapper {
+	.confirm-popup-wrapper,
+	.remove-popup-wrapper {
 		.address-book-header-content,
 		.name-address-header-content,
 		.confirm-header-wrapper {
@@ -244,18 +245,20 @@
 				.select-network-field {
 					.network-field {
 						.ant-select-arrow {
-							top: 20%;
+							margin-top: 1%;
+							top: 85%;
 						}
 
 						.ant-select-clear {
-							top: 17%;
+							top: 100%;
 						}
 					}
 				}
 
 				.select-method-field,
 				.select-network-field,
-				.address-field {
+				.address-field,
+				.optional-tag-field {
 					width: 100%;
 					display: flex;
 					flex-direction: row;
@@ -305,6 +308,7 @@
 
 					.select-field {
 						width: 90%;
+						height: 35%;
 						display: flex;
 						justify-content: space-between;
 
@@ -465,6 +469,20 @@
 			.assets-content {
 				padding: 3%;
 			}
+
+			.remove_name_detail,
+			.remove-assets-content {
+				padding: 0 3% 0 0;
+			}
+			.remove_name_detail {
+				padding: 2%;
+				border: 1px solid var(--labels_important-active-labels-text-graphics);
+				border-bottom: unset;
+			}
+			.remove-assets-content {
+				padding: 2%;
+				border: 1px solid var(--labels_important-active-labels-text-graphics);
+			}
 		}
 
 		.confirm-title-text {
@@ -486,6 +504,12 @@
 				border: none;
 			}
 
+			.disable-btn {
+				background-color: var(--labels_inactive-button) !important;
+				width: 45%;
+				border: none;
+			}
+
 			.okay-btn {
 				width: 100% !important;
 			}
@@ -499,9 +523,16 @@
 			align-items: center;
 			gap: 2px;
 		}
+
+		.remove-message-wrapper {
+			margin: unset !important;
+			margin-top: 2% !important;
+			gap: 5px;
+			align-items: baseline;
+		}
 	}
 
-	.check-confirm-content-wrapper {
+	.confirm-popup-wrapper {
 		.selected-assets-content {
 			border: 1px solid var(--labels_secondary-inactive-label-text-graphics);
 		}
@@ -517,6 +548,8 @@
 .layout-mobile {
 	.address-book-popup-wrapper {
 		width: 100% !important;
+		height: max-content;
+		overflow: scroll;
 
 		.address-book-popup-wrapper,
 		.address-book-content {
@@ -529,18 +562,19 @@
 				.select-network-field {
 					.network-field {
 						.ant-select-arrow {
-							top: 57%;
+							top: 25%;
 						}
 
 						.ant-select-clear {
-							top: 50%;
+							top: 40%;
 						}
 					}
 				}
 
 				.select-method-field,
 				.select-network-field,
-				.address-field {
+				.address-field,
+				.optional-tag-field {
 					display: flex;
 
 					.input-label-field,
@@ -608,9 +642,12 @@
 				}
 			}
 		}
+		.address-book-popup-button-wrapper {
+			margin: 5% 0 20% 0;
+		}
 	}
 
-	.check-confirm-content-wrapper {
+	.confirm-popup-wrapper {
 		.warning-message-wrapper {
 			margin: unset;
 			margin-top: 3%;
@@ -629,15 +666,33 @@
 							text-wrap: nowrap;
 						}
 
+						th:nth-child(2) {
+							min-width: 20rem;
+						}
+
 						th,
 						td,
 						.remove-btn {
 							font-size: 10px;
 						}
 
-						.asset-label {
-							span {
-								min-width: 13rem;
+						.table_body-wrapper {
+							.table_body-row {
+								.asset-label {
+									span {
+										min-width: 13rem;
+									}
+								}
+
+								td:nth-child(2) {
+									.asset-label {
+										width: 85%;
+									}
+								}
+
+								.network-field {
+									width: 8rem;
+								}
 							}
 						}
 					}
@@ -664,7 +719,8 @@
 
 					.select-method-field,
 					.select-network-field,
-					.address-field {
+					.address-field,
+					.optional-tag-field {
 						.input-label-field {
 							.custom-field {
 								.select-step {
@@ -690,7 +746,7 @@
 
 						.custom-select-input-style {
 							.ant-select-selection-item {
-								margin-top: 1%;
+								margin-top: unset;
 								font-size: 14px;
 							}
 						}

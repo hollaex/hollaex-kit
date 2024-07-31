@@ -1,4 +1,5 @@
 import React from 'react';
+import { isMobile } from 'react-device-detect';
 import mathjs from 'mathjs';
 import { Accordion, Coin, EditWrapper } from 'components';
 import {
@@ -152,7 +153,9 @@ export const renderNetworkWithLabel = (iconId, network) => {
 	return network && iconId ? (
 		<div className="d-flex">
 			<span>{getNetworkNameByKey(network)}</span>
-			<div className="network-icon mt-1 ml-2">
+			<div
+				className={isMobile ? 'network-icon ml-2' : 'network-icon mt-1 ml-2'}
+			>
 				<Coin iconId={iconId} type="CS2" className="withdraw-network-icon" />
 			</div>
 		</div>

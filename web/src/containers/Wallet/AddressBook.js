@@ -46,6 +46,8 @@ const AddressBook = ({
 		selectedCurrency: null,
 		networkOptions: null,
 		address: null,
+		optionalTag: null,
+		selectedData: null,
 	});
 	const [isValidAddress, setIsValidAddress] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
@@ -113,29 +115,32 @@ const AddressBook = ({
 			stringId: 'WITHDRAW_PAGE.WITHDRAWAL_CONFIRM_ADDRESS',
 			label: STRINGS['WITHDRAW_PAGE.WITHDRAWAL_CONFIRM_ADDRESS'],
 			key: 'address',
-			renderCell: (data, key) => (
-				<td key={key} className="address-field-wrapper">
-					<div className="d-flex justify-content-center">
-						<div className="align-items-center address-content">
-							<span>{data?.address}</span>
-							<CopyToClipboard
-								text={data?.address}
-								onCopy={() => {
-									handleCopy();
-								}}
-							>
-								<Button className="copy-btn">
-									<div className="remove-btn">
-										<EditWrapper stringId="REFERRAL_LINK.COPY">
-											{STRINGS['REFERRAL_LINK.COPY']}
-										</EditWrapper>
-									</div>
-								</Button>
-							</CopyToClipboard>
+			renderCell: (data, key) => {
+				const hasOptionalTag = data?.address?.split(':')[0];
+				return (
+					<td key={key} className="address-field-wrapper">
+						<div className="d-flex justify-content-center">
+							<div className="align-items-center address-content">
+								<span>{hasOptionalTag ? hasOptionalTag : data?.address}</span>
+								<CopyToClipboard
+									text={hasOptionalTag ? hasOptionalTag : data?.address}
+									onCopy={() => {
+										handleCopy();
+									}}
+								>
+									<Button className="copy-btn">
+										<div className="remove-btn">
+											<EditWrapper stringId="REFERRAL_LINK.COPY">
+												{STRINGS['REFERRAL_LINK.COPY']}
+											</EditWrapper>
+										</div>
+									</Button>
+								</CopyToClipboard>
+							</div>
 						</div>
-					</div>
-				</td>
-			),
+					</td>
+				);
+			},
 		},
 		{
 			stringId: 'ADDRESS_BOOK.DATE_ADDED',
@@ -163,7 +168,7 @@ const AddressBook = ({
 					<div className="d-flex justify-content-end">
 						<div
 							className="link-content fs-13 text-uppercase remove-btn"
-							onClick={() => onHandleAddressBookDetails(data, 'revoke')}
+							onClick={() => onHandleRemove(data)}
 						>
 							<EditWrapper stringId="ADDRESS_BOOK.REMOVE">
 								{STRINGS['ADDRESS_BOOK.REMOVE']}
@@ -184,6 +189,9 @@ const AddressBook = ({
 			? coins[selectedAsset?.selectedCurrency]?.network
 			: coins[selectedAsset?.selectedCurrency]?.symbol;
 	const networkIcon = coins[network]?.icon_id;
+	const hasOptionalTag =
+		['xrp', 'xlm'].includes(selectedAsset?.selectedCurrency) ||
+		['xlm', 'ton'].includes(network);
 
 	useEffect(() => {
 		const getAddress = async () => {
@@ -222,6 +230,11 @@ const AddressBook = ({
 		setUserLabel('');
 	};
 
+	const onHandleRemove = (data) => {
+		setRenderPopUps((prev) => ({ ...prev, remove: true }));
+		setSelectedAsset((prev) => ({ ...prev, selectedData: data }));
+	};
+
 	const onHandlePopUpBtn = (previousStep, nextStep) => {
 		setRenderPopUps((prev) => ({ ...prev, [previousStep]: false }));
 		setRenderPopUps((prev) => ({ ...prev, [nextStep]: true }));
@@ -230,8 +243,10 @@ const AddressBook = ({
 				...prev,
 				selectedCurrency: null,
 				networkOptions: null,
+				optionalTag: null,
 			}));
 			setIsValidAddress(null);
+			setUserLabel('');
 		}
 		if (previousStep === 'step3' && nextStep === 'step2') {
 			setUserLabel('');
@@ -259,13 +274,18 @@ const AddressBook = ({
 
 			try {
 				await setUserLabelAndAddress({ addresses: restFilteredData });
+				message.success(STRINGS['ADDRESS_BOOK.REVOKE_ADDRESS']);
 			} catch (error) {
 				console.error(error);
 			}
 		} else if (!hasAsset) {
+			const address =
+				hasOptionalTag && selectedAsset?.optionalTag
+					? `${selectedAsset?.address}:${selectedAsset?.optionalTag}`
+					: selectedAsset?.address;
 			const currValue = {
 				label: userLabel,
-				address: selectedAsset?.address,
+				address,
 				network: selectedNetwork,
 				currency: selectedAsset?.selectedCurrency,
 			};
@@ -340,6 +360,7 @@ const AddressBook = ({
 									networkIcon={networkIcon}
 									isValidAddress={isValidAddress}
 									setIsValidAddress={setIsValidAddress}
+									hasOptionalTag={hasOptionalTag}
 								/>
 							</div>
 							<div className="address-book-popup-button-wrapper">
@@ -350,7 +371,7 @@ const AddressBook = ({
 								/>
 								<RenderBtn
 									string="REFERRAL_LINK.NEXT"
-									buttonClassName="next-btn"
+									buttonClassName={!isValidAddress ? 'disable-btn' : 'next-btn'}
 									disabled={!isValidAddress}
 									onHandleClick={() => onHandlePopUpBtn('step1', 'step2')}
 								/>
@@ -449,6 +470,18 @@ const AddressBook = ({
 										<span>{selectedAsset?.address}</span>
 									</div>
 								</div>
+								{hasOptionalTag && selectedAsset?.optionalTag && (
+									<div className="assets-field">
+										<div className="confirm-title-text">
+											<EditWrapper stringId="ACCORDIAN.TAG">
+												{STRINGS['ACCORDIAN.TAG']}
+											</EditWrapper>
+										</div>
+										<div className="selected-asset-address">
+											<span>{selectedAsset?.optionalTag}</span>
+										</div>
+									</div>
+								)}
 							</div>
 							<div className="address-book-popup-button-wrapper">
 								<RenderBtn
@@ -458,7 +491,9 @@ const AddressBook = ({
 								/>
 								<RenderBtn
 									string="REFERRAL_LINK.NEXT"
-									buttonClassName="next-btn"
+									buttonClassName={
+										onHandleUserLabel() ? 'disable-btn' : 'next-btn'
+									}
 									disabled={onHandleUserLabel()}
 									onHandleClick={() => onHandlePopUpBtn('step2', 'step3')}
 								/>
@@ -473,7 +508,7 @@ const AddressBook = ({
 					onCloseDialog={() => onHandleClose('step3')}
 					className="address_book_popup_wrapper"
 				>
-					<div className="check-confirm-content-wrapper">
+					<div className="confirm-popup-wrapper">
 						<div className="confirm-header-wrapper">
 							<div className="address-book-title">
 								<EditWrapper stringId="ADDRESS_BOOK.CHECK_AND_CONFIRM">
@@ -553,6 +588,18 @@ const AddressBook = ({
 										<span>{selectedAsset?.address}</span>
 									</div>
 								</div>
+								{hasOptionalTag && selectedAsset?.optionalTag && (
+									<div className="assets-field">
+										<div className="confirm-title-text">
+											<EditWrapper stringId="ACCORDIAN.TAG">
+												{STRINGS['ACCORDIAN.TAG']}
+											</EditWrapper>
+										</div>
+										<div className="selected-asset-address">
+											<span>{selectedAsset?.optionalTag}</span>
+										</div>
+									</div>
+								)}
 							</div>
 						</div>
 						<div className="warning-message-wrapper">
@@ -573,7 +620,6 @@ const AddressBook = ({
 								className="text-uppercase next-btn"
 								type="default"
 								onClick={() => onHandleAddressBookDetails(null, 'confirm')}
-								disabled={false}
 							>
 								<EditWrapper stringId={'DUST.CONFIRMATION.CONFIRM'}>
 									{STRINGS['DUST.CONFIRMATION.CONFIRM']}
@@ -662,6 +708,120 @@ const AddressBook = ({
 							</div>
 						)}
 					</div>
+					<Dialog
+						isOpen={renderPopUps?.remove}
+						onCloseDialog={() =>
+							setRenderPopUps((prev) => ({ ...prev, remove: false }))
+						}
+						className="address_book_popup_wrapper"
+					>
+						<div className="remove-popup-wrapper">
+							<div className="confirm-header-wrapper">
+								<div className="address-book-title">
+									<EditWrapper stringId="ADDRESS_BOOK.REMOVE_ADDRESS">
+										{STRINGS['ADDRESS_BOOK.REMOVE_ADDRESS']}
+									</EditWrapper>
+								</div>
+							</div>
+							<div className="selected-assets-content mt-4">
+								<div className="assets-field remove_name_detail">
+									<div className="confirm-title-text">
+										<EditWrapper stringId="DEVELOPERS_TOKENS_TABLE.NAME">
+											{STRINGS['DEVELOPERS_TOKENS_TABLE.NAME']}:
+										</EditWrapper>
+									</div>
+									<div>
+										<span> {selectedAsset?.selectedData?.label}</span>
+									</div>
+								</div>
+								<div className="remove-assets-content">
+									<div className="assets-field">
+										<div className="confirm-title-text">
+											<EditWrapper stringId="ASSETS">
+												{STRINGS['ASSETS']}:
+											</EditWrapper>
+										</div>
+										<div className="selected-asset">
+											<Coin
+												iconId={
+													coins[selectedAsset?.selectedData?.currency]?.icon_id
+												}
+												type="CS2"
+											/>
+											<span>{`${
+												coins[selectedAsset?.selectedData?.currency]?.fullname
+											} (${selectedAsset?.selectedData?.currency?.toUpperCase()})`}</span>
+										</div>
+									</div>
+									<div className="assets-field">
+										<div className="confirm-title-text">
+											<EditWrapper stringId="WITHDRAWALS_FORM_NETWORK_LABEL">
+												{STRINGS['WITHDRAWALS_FORM_NETWORK_LABEL']}:
+											</EditWrapper>
+										</div>
+										<div>
+											{renderNetworkWithLabel(
+												coins[selectedAsset?.selectedData?.network]?.icon_id,
+												selectedAsset?.selectedData?.network
+											)}
+										</div>
+									</div>
+									<div className="mt-3 mb-3 address-book-detail-line"></div>
+									<div className="assets-field">
+										<div className="confirm-title-text">
+											<EditWrapper stringId="WITHDRAW_PAGE.WITHDRAWAL_CONFIRM_ADDRESS">
+												{STRINGS['WITHDRAW_PAGE.WITHDRAWAL_CONFIRM_ADDRESS']}:
+											</EditWrapper>
+										</div>
+										<div className="selected-asset-address">
+											<span>{selectedAsset?.selectedData?.address}</span>
+										</div>
+									</div>
+									{selectedAsset?.selectedData?.address?.split(':')[1] && (
+										<div className="assets-field">
+											<div className="confirm-title-text">
+												<EditWrapper stringId="ACCORDIAN.TAG">
+													{STRINGS['ACCORDIAN.TAG']}
+												</EditWrapper>
+											</div>
+											<div className="selected-asset-address">
+												<span>
+													{selectedAsset?.selectedData?.address?.split(':')[1]}
+												</span>
+											</div>
+										</div>
+									)}
+								</div>
+							</div>
+							<div className="remove-message-wrapper">
+								<div className="mt-1">
+									<EditWrapper stringId="ADDRESS_BOOK.REMOVE_CONTENT">
+										{STRINGS['ADDRESS_BOOK.REMOVE_CONTENT']}
+									</EditWrapper>
+								</div>
+							</div>
+							<div className="d-flex address-book-popup-button-wrapper">
+								<RenderBtn
+									string="REFERRAL_LINK.BACK"
+									buttonClassName="back-btn"
+									onHandleClick={() =>
+										setRenderPopUps((prev) => ({ ...prev, remove: false }))
+									}
+								/>
+								<RenderBtn
+									string="ADDRESS_BOOK.REMOVE"
+									buttonClassName="next-btn text-uppercase"
+									onHandleClick={() => {
+										onHandleAddressBookDetails(
+											selectedAsset?.selectedData,
+											'revoke'
+										);
+										setRenderPopUps((prev) => ({ ...prev, remove: false }));
+									}}
+								/>
+							</div>
+						</div>
+					</Dialog>
 				</div>
 			</div>
 		</div>
