@@ -8978,7 +8978,8 @@ table th {
   .address_book_popup_wrapper .confirm-popup-wrapper .selected-assets-content .assets-content,
   .address_book_popup_wrapper .remove-popup-wrapper .selected-assets-content .assets-content {
     padding: 3%; }
-  .address_book_popup_wrapper .address-book-popup-wrapper .selected-assets-content .remove_name_detail, .address_book_popup_wrapper .address-book-popup-wrapper .selected-assets-content .remove-assets-content,
+  .address_book_popup_wrapper .address-book-popup-wrapper .selected-assets-content .remove_name_detail,
+  .address_book_popup_wrapper .address-book-popup-wrapper .selected-assets-content .remove-assets-content,
   .address_book_popup_wrapper .name-address-popup-wrapper .selected-assets-content .remove_name_detail,
   .address_book_popup_wrapper .name-address-popup-wrapper .selected-assets-content .remove-assets-content,
   .address_book_popup_wrapper .confirm-popup-wrapper .selected-assets-content .remove_name_detail,
@@ -9047,7 +9048,7 @@ table th {
 .address_book_popup_wrapper .name-address-popup-wrapper .warning-message-wrapper,
 .address_book_popup_wrapper .confirm-popup-wrapper .warning-message-wrapper,
 .address_book_popup_wrapper .remove-popup-wrapper .warning-message-wrapper {
-  margin: 3%;
+  margin: 3% 0;
   font-size: 12px;
   color: var(--specials_pending-waiting-caution) !important;
   display: flex;
