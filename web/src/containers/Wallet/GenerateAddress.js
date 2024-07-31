@@ -99,6 +99,7 @@ const GenerateAddress = ({
 			selectedCurrency: symbol,
 			networkOptions: null,
 			address: null,
+			optionalTag: null,
 		}));
 	};
 
@@ -108,6 +109,7 @@ const GenerateAddress = ({
 			...prev,
 			networkOptions: symbol,
 			address: '',
+			optionalTag: null,
 		}));
 	};
 
