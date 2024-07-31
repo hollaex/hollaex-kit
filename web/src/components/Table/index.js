@@ -110,6 +110,13 @@ class Table extends Component {
 
 		const count = this.props.count || this.props.data.length;
 		const { data, page, headers } = this.state;
+		if (className === 'address-book-table') {
+			const totalPages = Math.ceil(count / pageSize);
+			const currentPage = page + 1;
+			if (page !== 0 && currentPage > totalPages) {
+				this.goToPreviousPage();
+			}
+		}
 
 		if (count === 0) {
 			if (!showHeaderNoData) {
