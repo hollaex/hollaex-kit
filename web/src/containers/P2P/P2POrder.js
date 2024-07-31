@@ -159,7 +159,6 @@ const P2POrder = ({
 	}, []);
 
 	useEffect(() => {
-		getTransaction();
 		fetchFeedback({ transaction_id: selectedOrder.id })
 			.then((res) => {
 				if (res?.data?.length > 0) {
