@@ -18,6 +18,8 @@ import {
 	getWithdrawalMax,
 	withdrawAddress,
 	setReceiverEmail,
+	withdrawNetwork,
+	withdrawNetworkOptions,
 } from 'actions/appActions';
 import { generateFormValues, generateInitialValues } from './formUtils';
 import { renderDeposit, renderTitleSection } from '../Wallet/components';
@@ -84,6 +86,8 @@ class Withdraw extends Component {
 	}
 
 	componentWillUnmount() {
+		this.props.setWithdrawNetwork('');
+		this.props.setWithdrawNetworkOptions('');
 		this.props.setWithdrawAddress('');
 		this.props.setReceiverEmail('');
 	}
@@ -447,6 +451,11 @@ const mapDispatchToProps = (dispatch) => ({
 	openContactForm: bindActionCreators(openContactForm, dispatch),
 	setWithdrawAddress: bindActionCreators(withdrawAddress, dispatch),
 	setReceiverEmail: bindActionCreators(setReceiverEmail, dispatch),
+	setWithdrawNetwork: bindActionCreators(withdrawNetwork, dispatch),
+	setWithdrawNetworkOptions: bindActionCreators(
+		withdrawNetworkOptions,
+		dispatch
+	),
 	// requestWithdrawFee: bindActionCreators(requestWithdrawFee, dispatch),
 	dispatch,
 });
