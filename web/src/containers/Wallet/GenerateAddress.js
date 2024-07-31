@@ -36,6 +36,7 @@ const GenerateAddress = ({
 	setIsValidAddress,
 	isValidAddress,
 	dispatch,
+	hasOptionalTag,
 }) => {
 	const [qrScannerOpen, setQrScannerOpen] = useState(false);
 
@@ -140,6 +141,12 @@ const GenerateAddress = ({
 		dispatch(change(FORM_NAME, 'address', data));
 	};
 
+	const onHandleOptionalTag = (value) => {
+		if (hasOptionalTag) {
+			setSelectedAsset((prev) => ({ ...prev, optionalTag: value }));
+		}
+	};
+
 	return (
 		<div className="generate-address-form-wrapper">
 			<div className="select-method-field">
@@ -204,20 +211,21 @@ const GenerateAddress = ({
 								}
 							>
 								{Object.entries(coins).map(
-									([_, { symbol, fullname, icon_id }]) => (
-										<Option
-											key={`${fullname} (${symbol.toUpperCase()})`}
-											value={`${fullname} (${symbol.toUpperCase()})`}
-										>
-											<div
-												className="d-flex gap-1"
-												onClick={() => onHandleChangeSelect(symbol)}
+									([_, { symbol, fullname, icon_id, type }]) =>
+										type !== 'fiat' && (
+											<Option
+												key={`${fullname} (${symbol.toUpperCase()})`}
+												value={`${fullname} (${symbol.toUpperCase()})`}
 											>
-												<Coin iconId={icon_id} type="CS3" />
-												<div>{`${fullname} (${symbol.toUpperCase()})`}</div>
-											</div>
-										</Option>
-									)
+												<div
+													className="d-flex gap-1"
+													onClick={() => onHandleChangeSelect(symbol)}
+												>
+													<Coin iconId={icon_id} type="CS3" />
+													<div>{`${fullname} (${symbol.toUpperCase()})`}</div>
+												</div>
+											</Option>
+										)
 								)}
 							</Select>
 							{selectedAsset?.selectedCurrency ? (
@@ -320,6 +328,7 @@ const GenerateAddress = ({
 				>
 					<div className="custom-field">
 						<div className="select-step">3</div>
+						{hasOptionalTag && <div className="custom-line"></div>}
 					</div>
 				</div>
 				<div className="select-field ">
@@ -377,6 +386,62 @@ const GenerateAddress = ({
 					</Dialog>
 				</div>
 			</div>
+			{hasOptionalTag && (
+				<div className="optional-tag-field">
+					<div
+						className={
+							!displayNetwork
+								? 'input-label-field-disable'
+								: 'input-label-field'
+						}
+					>
+						<div className="custom-field">
+							<div className="select-step">4</div>
+						</div>
+					</div>
+					<div className="select-field ">
+						<div
+							className={
+								!displayNetwork
+									? 'label-disable label-content'
+									: 'label-active label-content'
+							}
+						>
+							<div>
+								<EditWrapper stringId="DEPOSIT_STATUS.DESTINATION_TAG_LABEL">
+									{STRINGS['DEPOSIT_STATUS.DESTINATION_TAG_LABEL']}:
+								</EditWrapper>
+							</div>
+						</div>
+						{displayNetwork && (
+							<div
+								className={`${
+									isMobile
+										? 'd-flex network-input mt-4'
+										: 'd-flex network-input'
+								}`}
+							>
+								<Input
+									className="destination-input-field"
+									onChange={(e) => onHandleOptionalTag(e.target.value)}
+									value={selectedAsset?.optionalTag}
+									type={
+										selectedAsset?.selectedCurrency === 'xrp' ||
+										selectedAsset?.selectedCurrency === 'xlm'
+											? 'number'
+											: 'text'
+									}
+								/>
+								{selectedAsset?.optionalTag ? (
+									<CheckOutlined className="mt-3 ml-3" />
+								) : (
+									<CloseOutlined className="mt-3 ml-3" />
+								)}
+							</div>
+						)}
+					</div>
+				</div>
+			)}
 		</div>
 	);
 };
