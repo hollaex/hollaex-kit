@@ -8,7 +8,7 @@ const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { INVALID_SYMBOL, NO_DATA_FOR_CSV, USER_NOT_FOUND, USER_NOT_REGISTERED_ON_NETWORK, TOKEN_EXPIRED, BROKER_NOT_FOUND, BROKER_PAUSED, BROKER_SIZE_EXCEED, QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED, QUICK_TRADE_ORDER_CURRENT_PRICE_ERROR, QUICK_TRADE_VALUE_IS_TOO_SMALL, FAIR_PRICE_BROKER_ERROR, AMOUNT_NEGATIVE_ERROR, QUICK_TRADE_CONFIG_NOT_FOUND, QUICK_TRADE_TYPE_NOT_SUPPORTED, PRICE_NOT_FOUND, INVALID_PRICE, INVALID_SIZE, BALANCE_NOT_AVAILABLE } = require(`${SERVER_PATH}/messages`);
 const { parse } = require('json2csv');
 const { BASE_SCOPES } = require(`${SERVER_PATH}/constants`);
-const { subscribedToPair, getKitTier, getDefaultFees, getAssetsPrices, getPublicTrades, getQuickTrades } = require('./common');
+const { subscribedToPair, getKitTier, getDefaultFees, getAssetsPrices, getPublicTrades, getQuickTrades, getKitCoin } = require('./common');
 const { reject } = require('bluebird');
 const { loggerOrders } = require(`${SERVER_PATH}/config/logger`);
 const math = require('mathjs');
@@ -61,7 +61,14 @@ const executeUserOrder = async (user_id, opts, token) => {
 
 	let res;
 	if (type === 'market') {
-		res = await createUserOrderByKitId(user_id, symbol, side, size, type, 0, opts);
+		const coins = symbol.split('-');
+		const baseCoinInfo = getKitCoin(coins[0]);
+		const decimalPoint = new BigNumber(baseCoinInfo.increment_unit).dp();
+		let roundedAmount = size;
+		if(new BigNumber(size).dp() > decimalPoint) {
+			roundedAmount = new BigNumber(size).decimalPlaces(decimalPoint, BigNumber.ROUND_DOWN).toNumber();
+		}
+		res = await createUserOrderByKitId(user_id, symbol, side, roundedAmount, type, 0, opts);
 	}
 	else if (type === 'broker') {
 		const brokerPair = await getModel('broker').findOne({ where: { symbol } });
