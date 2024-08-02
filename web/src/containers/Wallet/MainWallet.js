@@ -31,6 +31,7 @@ import { isStakingAvailable, STAKING_INDEX_COIN } from 'config/contracts';
 import { assetsSelector, searchAssets } from './utils';
 import ProfitLossSection from './ProfitLossSection';
 import { setPricesAndAsset } from 'actions/assetActions';
+import { setActiveBalanceHistory } from 'actions/walletActions';
 
 const ZERO_BALANCE_KEY = 'isZeroBalanceHidden';
 
@@ -137,6 +138,7 @@ class Wallet extends Component {
 	};
 
 	handleBalanceHistory = (value) => {
+		this.props.setActiveBalanceHistory(value);
 		this.setState({ activeBalanceHistory: value }, () => {
 			if (value) {
 				this.props.router.push('/wallet/history');
@@ -389,6 +391,10 @@ const mapStateToProps = (store) => ({
 const mapDispatchToProps = (dispatch) => ({
 	changeSymbol: bindActionCreators(changeSymbol, dispatch),
 	setPricesAndAsset: bindActionCreators(setPricesAndAsset, dispatch),
+	setActiveBalanceHistory: bindActionCreators(
+		setActiveBalanceHistory,
+		dispatch
+	),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withConfig(Wallet));
