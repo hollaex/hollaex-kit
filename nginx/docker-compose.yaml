@@ -25,7 +25,7 @@ services:
       - local_hollaex-kit
       
 networks:
-  local_hollaex-kit:
+  local_hollaex-kit-network:
     external: true
 
 

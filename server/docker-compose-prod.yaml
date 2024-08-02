@@ -21,7 +21,7 @@ services:
           cpus: "0.1"
           memory: 100M
     networks:
-      - hollaex-kit
+      - hollaex-kit-network
   hollaex-kit-db:
     image: postgres:14.9-alpine
     restart: unless-stopped
@@ -41,7 +41,7 @@ services:
           memory: 100M
     command: ["sh", "-c", "export POSTGRES_DB=$${DB_NAME} && export POSTGRES_USER=$${DB_USERNAME} && export POSTGRES_PASSWORD=$${DB_PASSWORD} && ln -sf /usr/local/bin/docker-entrypoint.sh ./docker-entrypoint.sh && ./docker-entrypoint.sh postgres"]
     networks:
-      - hollaex-kit
+      - hollaex-kit-network
   hollaex-kit-server-api:
     image: hollaex/hollaex-kit:2.11.4-cli-deprecation-46ea26c
     build:
@@ -65,7 +65,7 @@ services:
     ports:
       - 10010:10010
     networks:
-      - hollaex-kit
+      - hollaex-kit-network
     depends_on:
       - hollaex-kit-redis
       - hollaex-kit-db
@@ -92,7 +92,7 @@ services:
     ports:
       - 10080:10080
     networks:
-      - hollaex-kit
+      - hollaex-kit-network
     depends_on:
       - hollaex-kit-server-api
       - hollaex-kit-redis
@@ -119,12 +119,12 @@ services:
       - plugins/index.js
       - 10011:10011
     networks:
-      - hollaex-kit
+      - hollaex-kit-network
     depends_on:
       - hollaex-kit-server-api
       - hollaex-kit-redis
       - hollaex-kit-db
 networks:
-  hollaex-kit:
+  hollaex-kit-network:
 volumes:
   hollaex_db_vol:
