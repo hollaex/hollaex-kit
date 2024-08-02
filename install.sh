@@ -714,7 +714,7 @@ function kit_cross_compatibility_converter() {
     echo "Updating the Nginx file to have an existing docker network bind..."
     yq e -i ".services |= with_entries(select(.key == \"hollaex-kit-prod-nginx\") | .key = \"$ENVIRONMENT_EXCHANGE_NAME-nginx\")" $(pwd)/nginx/docker-compose.yaml
     yq e -i ".services.*.networks[] = \"local_$ENVIRONMENT_EXCHANGE_NAME-network\"" $(pwd)/nginx/docker-compose.yaml
-    yq e -i ".networks |= with_entries(select(.key == \"local_hollaex-kit\") | .key = \"local_$ENVIRONMENT_EXCHANGE_NAME-network\")" $(pwd)/nginx/docker-compose.yaml
+    yq e -i ".networks |= with_entries(select(.key == \"local_hollaex-kit-network\") | .key = \"local_$ENVIRONMENT_EXCHANGE_NAME-network\")" $(pwd)/nginx/docker-compose.yaml
 
     if command docker ps | grep local.*-nginx > /dev/null ; then
 
