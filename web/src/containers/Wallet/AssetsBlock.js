@@ -11,6 +11,7 @@ import {
 	CloseCircleOutlined,
 	MoreOutlined,
 } from '@ant-design/icons';
+
 import { fetchBalanceHistory, fetchPlHistory } from './actions';
 import classnames from 'classnames';
 import Highcharts from 'highcharts';
@@ -40,9 +41,9 @@ import {
 	CURRENCY_PRICE_FORMAT,
 	DEFAULT_COIN_DATA,
 } from 'config/constants';
+import { unique } from 'utils/data';
 import withConfig from 'components/ConfigProvider/withConfig';
 import TradeInputGroup from './components/TradeInputGroup';
-import { unique } from 'utils/data';
 import DustSection from './DustSection';
 import moment from 'moment';
 import _toLower from 'lodash/toLower';
@@ -890,7 +891,7 @@ const AssetsBlock = ({
 
 				{isMobile && (
 					<div className="profit-loss-link mb-5">
-						<div onClick={() => navigate('/wallet/history')}>
+						<div onClick={() => handleBalanceHistory(true)}>
 							<EditWrapper stringId="WALLET.VIEW_MORE_WALLET_INFO">
 								<span className="profit-loss-tab-label">
 									{STRINGS['WALLET.VIEW_MORE_WALLET_INFO']}

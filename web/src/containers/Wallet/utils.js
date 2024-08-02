@@ -321,7 +321,7 @@ export const AddressBookDialog = ({
 									{renderPopUps.step3
 										? selectedAsset?.address
 										: renderPopUps.remove &&
-										  selectedAsset?.selectedData?.address}
+										  selectedAsset?.selectedData?.address.split(':')[0]}
 								</span>
 							</div>
 						</div>

@@ -3070,6 +3070,8 @@ table th {
   .layout-mobile .inner_container .history_block-wrapper {
     max-height: calc(100% - 1rem);
     overflow-x: scroll; }
+    .layout-mobile .inner_container .history_block-wrapper .history-title {
+      font-size: 14px; }
     .layout-mobile .inner_container .history_block-wrapper .table-content {
       overflow-x: scroll;
       white-space: nowrap;
@@ -3079,6 +3081,21 @@ table th {
       font-size: 1rem !important; }
     .layout-mobile .inner_container .history_block-wrapper .table-wrapper .table_body-wrapper {
       height: 4.5rem; }
+  .layout-mobile .inner_container #trades-filters .ant-select-selector .ant-select-selection-item, .layout-mobile .inner_container #orders-filters .ant-select-selector .ant-select-selection-item, .layout-mobile .inner_container #deposits-filters .ant-select-selector .ant-select-selection-item, .layout-mobile .inner_container #withdrawals-filters .ant-select-selector .ant-select-selection-item {
+    font-size: 13px; }
+    .layout-mobile .inner_container #trades-filters .ant-select-selector .ant-select-selection-item div, .layout-mobile .inner_container #orders-filters .ant-select-selector .ant-select-selection-item div, .layout-mobile .inner_container #deposits-filters .ant-select-selector .ant-select-selection-item div, .layout-mobile .inner_container #withdrawals-filters .ant-select-selector .ant-select-selection-item div {
+      align-items: flex-start; }
+  .layout-mobile .inner_container #trades-filters .ant-form-item .ant-form-item-label, .layout-mobile .inner_container #orders-filters .ant-form-item .ant-form-item-label, .layout-mobile .inner_container #deposits-filters .ant-form-item .ant-form-item-label, .layout-mobile .inner_container #withdrawals-filters .ant-form-item .ant-form-item-label {
+    padding: unset; }
+    .layout-mobile .inner_container #trades-filters .ant-form-item .ant-form-item-label label, .layout-mobile .inner_container #orders-filters .ant-form-item .ant-form-item-label label, .layout-mobile .inner_container #deposits-filters .ant-form-item .ant-form-item-label label, .layout-mobile .inner_container #withdrawals-filters .ant-form-item .ant-form-item-label label {
+      font-size: 13px;
+      height: unset; }
+  .layout-mobile .inner_container #trades-filters .ant-form-item .ant-form-item-control .ant-form-item-control-input-content .ant-radio-group, .layout-mobile .inner_container #orders-filters .ant-form-item .ant-form-item-control .ant-form-item-control-input-content .ant-radio-group, .layout-mobile .inner_container #deposits-filters .ant-form-item .ant-form-item-control .ant-form-item-control-input-content .ant-radio-group, .layout-mobile .inner_container #withdrawals-filters .ant-form-item .ant-form-item-control .ant-form-item-control-input-content .ant-radio-group {
+    padding: unset; }
+  .layout-mobile .inner_container #trades-filters .ant-picker, .layout-mobile .inner_container #orders-filters .ant-picker, .layout-mobile .inner_container #deposits-filters .ant-picker, .layout-mobile .inner_container #withdrawals-filters .ant-picker {
+    margin: unset; }
+    .layout-mobile .inner_container #trades-filters .ant-picker .ant-picker-input input, .layout-mobile .inner_container #orders-filters .ant-picker .ant-picker-input input, .layout-mobile .inner_container #deposits-filters .ant-picker .ant-picker-input input, .layout-mobile .inner_container #withdrawals-filters .ant-picker .ant-picker-input input {
+      font-size: 13px; }
 
 .layout-mobile .display_table-wrapper .display_table-cell {
   min-height: 2rem !important; }
