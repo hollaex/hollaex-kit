@@ -86,7 +86,7 @@ const HistoryDisplay = (props) => {
 		<div className="history_block-wrapper">
 			{!loading && (
 				<div className="d-flex justify-content-between title text-capitalize">
-					<div>
+					<div className="history-title">
 						<EditWrapper stringId={stringId}>{title}</EditWrapper>
 					</div>
 					<div className="action_notification-container">
