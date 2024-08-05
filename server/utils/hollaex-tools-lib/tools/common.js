@@ -458,6 +458,21 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 			throw new Error('Distributor ID required for plugin');
 		}
 	}
+	if (newKitConfig.chain_trade_config) {
+		const exchangeInfo = getKitConfig().info;
+
+		if (!REFERRAL_HISTORY_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
+			throw new Error('Exchange plan does not support this feature');
+		}
+
+		if (!newKitConfig.referral_history_config.hasOwnProperty('active')) {
+			throw new Error('active key does not exist');
+		}
+
+		if (!newKitConfig.referral_history_config.hasOwnProperty('currency')) {
+			throw new Error('currency key does not exist');
+		}
+	}
 
 	const joinedKitConfig = {};
 
