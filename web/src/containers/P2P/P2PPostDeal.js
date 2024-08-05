@@ -103,7 +103,10 @@ const P2PPostDeal = ({
 	};
 
 	const formatRate = (rate, spread, asset) => {
-		const amount = rate * (1 + Number(spread / 100 || 0));
+		const amount =
+			p2pSide === 'sell'
+				? rate * (1 + Number(spread / 100 || 0))
+				: rate * (1 - Number(spread / 100 || 0));
 		return formatAmount(asset, amount);
 	};
 
