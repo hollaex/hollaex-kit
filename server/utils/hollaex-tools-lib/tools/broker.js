@@ -154,7 +154,7 @@ const calculateSize = (orderData, side, responseObject, symbol) => {
 
 		if (incrementUnit < 1) {
 			const decimalPoint = new BigNumber(incrementUnit).dp();
-			const sourceAmount = new BigNumber(targetedAmount)?.decimalPlaces(decimalPoint)?.toNumber();
+			const sourceAmount = new BigNumber(targetedAmount)?.decimalPlaces(decimalPoint, BigNumber.ROUND_DOWN)?.toNumber();
 			receiving_amount = sourceAmount;
 		} else {
 			receiving_amount = targetedAmount - (targetedAmount % incrementUnit);
@@ -167,7 +167,7 @@ const calculateSize = (orderData, side, responseObject, symbol) => {
 
 		if (incrementUnit < 1) { 
 			const decimalPoint = new BigNumber(incrementUnit).dp();
-			const sourceAmount = new BigNumber(targetedAmount)?.decimalPlaces(decimalPoint)?.toNumber();
+			const sourceAmount = new BigNumber(targetedAmount)?.decimalPlaces(decimalPoint, BigNumber.ROUND_DOWN)?.toNumber();
 			spending_amount = sourceAmount;
 		} else {
 			spending_amount = targetedAmount - (targetedAmount % incrementUnit);
@@ -368,8 +368,8 @@ const testBroker = async (data) => {
 
 		const decimalPoint = new BigNumber(price).dp();
 		return {
-			buy_price: new BigNumber(price * (1 - (spread / 100)))?.decimalPlaces(decimalPoint)?.toNumber(),
-			sell_price: new BigNumber(price * (1 + (spread / 100)))?.decimalPlaces(decimalPoint)?.toNumber()
+			buy_price: new BigNumber(price * (1 - (spread / 100)))?.decimalPlaces(decimalPoint, BigNumber.ROUND_DOWN)?.toNumber(),
+			sell_price: new BigNumber(price * (1 + (spread / 100)))?.decimalPlaces(decimalPoint, BigNumber.ROUND_DOWN)?.toNumber()
 		};
 	} catch (err) {
 		throw new Error(err);
