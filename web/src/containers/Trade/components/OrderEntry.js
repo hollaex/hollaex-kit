@@ -406,6 +406,19 @@ class OrderEntry extends Component {
 		}
 	};
 
+	handleKey = (event) => {
+		const key = event.key;
+		const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Delete'];
+
+		if (allowedKeys?.includes(key) || /[0-9.]/.test(key)) {
+			if (key === '.' && event.target.value?.includes('.')) {
+				event.preventDefault();
+			}
+			return event.target.value;
+		}
+		event.preventDefault();
+	};
+
 	generateFormValues = (props, buyingPair = '') => {
 		const {
 			min_size,
@@ -538,6 +551,7 @@ class OrderEntry extends Component {
 				validate: [required, minValue(min_size), maxValue(max_size)],
 				currency: pair_base_display,
 				setRef: this.props.setSizeRef,
+				onKeyDown: (event) => this.handleKey(event),
 			},
 			slider: {
 				name: 'size-slider',
