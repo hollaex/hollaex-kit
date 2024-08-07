@@ -1,0 +1,12 @@
+secretName: hollaex-kit-secret
+
+cronRule: "0 1,13 * * *" 
+
+timeZone: UTC
+
+pgdumpMode: pg_dump
+
+awsRegion:
+awsBucket:
+awsAccessKey: 
+awsSecretKey: 
