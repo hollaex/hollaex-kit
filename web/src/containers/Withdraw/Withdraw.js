@@ -55,6 +55,7 @@ const RenderWithdraw = ({
 	router,
 	onHandleScan,
 	selectedNetwork,
+	optionalTag,
 	...rest
 }) => {
 	const { Option } = Select;
@@ -73,7 +74,6 @@ const RenderWithdraw = ({
 	const [topAssets, setTopAssets] = useState([]);
 	const [selectedAddress, setSelectedAddress] = useState([]);
 	const [prices, setPrices] = useState({});
-	const [optionalTag, setOptionalTag] = useState('');
 	const [selectedAsset, setSelectedAsset] = useState({
 		selectedCurrency: null,
 		networkData: null,
@@ -83,6 +83,9 @@ const RenderWithdraw = ({
 		isPinnedAssets: false,
 		isValidEmail: false,
 		isDisbaleWithdraw: false,
+		isSelected: false,
+		dropdownOpen: false,
+		isOptionalTag: false,
 	});
 	// const [isCheck, setIsCheck] = useState(false);
 	// const [isVisible, setIsVisible] = useState(false);
@@ -208,6 +211,7 @@ const RenderWithdraw = ({
 			}
 			setCurrStep({ ...currStep, stepTwo: true, stepThree: true });
 			getWithdrawMAx(defaultCurrency);
+			setWithdrawOptionaltag(null);
 		} else {
 			setSelectedAsset((prev) => ({ ...prev, selectedCurrency: null }));
 		}
@@ -300,10 +304,16 @@ const RenderWithdraw = ({
 		setWithdrawAddress('');
 		setWithdrawAmount('');
 		setReceiverEmail('');
+		setWithdrawOptionaltag(null);
 		setSelectedMethod(method);
 		setCurrStep((prev) => ({ ...prev, stepTwo: true }));
 		setIsValidAdress(false);
-		setIsValidField((prev) => ({ ...prev, isValidEmail: false }));
+		setIsValidField((prev) => ({
+			...prev,
+			isValidEmail: false,
+			isOptionalTag: false,
+		}));
+		setSelectedAsset((prev) => ({ ...prev, addressField: null }));
 		if (!method) {
 			setCurrStep((prev) => ({
 				...prev,
@@ -364,6 +374,8 @@ const RenderWithdraw = ({
 		}));
 		setWithdrawAddress('');
 		setReceiverEmail('');
+		setWithdrawOptionaltag(null);
+		setIsValidField((prev) => ({ ...prev, isOptionalTag: false }));
 	};
 
 	const renderPinnedAsset = (data) => {
@@ -386,9 +398,11 @@ const RenderWithdraw = ({
 		} else if (!val) {
 			setCurrStep((prev) => ({ ...prev, stepFour: false, stepFive: false }));
 		}
-		setSelectedAsset((prev) => ({ ...prev, addressField: null }));
 		setWithdrawAddress(null);
 		setIsValidAdress(false);
+		setWithdrawOptionaltag(null);
+		setSelectedAsset((prev) => ({ ...prev, addressField: null }));
+		setIsValidField((prev) => ({ ...prev, isOptionalTag: false }));
 	};
 
 	const onHandleAddress = (val, method) => {
@@ -418,6 +432,7 @@ const RenderWithdraw = ({
 		setReceiverEmail(val);
 		setIsValidAdress({ isValid: !isValid });
 		setWithdrawAmount('');
+		setWithdrawOptionaltag(null);
 	};
 
 	const onHandleAmount = (val) => {
@@ -523,7 +538,9 @@ const RenderWithdraw = ({
 	// };
 
 	const onHandleOptionalTag = (value) => {
-		setOptionalTag(value);
+		if (value === '') {
+			setIsValidField((prev) => ({ ...prev, isOptionalTag: true }));
+		}
 		setWithdrawOptionaltag(value);
 	};
 
@@ -554,8 +571,13 @@ const RenderWithdraw = ({
 			stepFour: false,
 			stepFive: false,
 		});
+		setWithdrawOptionaltag(null);
 		setIsValidAdress(false);
-		setIsValidField((prev) => ({ ...prev, isValidEmail: false }));
+		setIsValidField((prev) => ({
+			...prev,
+			isValidEmail: false,
+			isOptionalTag: false,
+		}));
 	};
 
 	// const onHandleSelect = (symbol) => {
@@ -572,18 +594,35 @@ const RenderWithdraw = ({
 	// 	}
 	// };
 
+	const handleDropdownVisibleChange = (open) => {
+		setIsValidField((prev) => ({ ...prev, dropdownOpen: open }));
+	};
+
 	const onchangeAddressField = (val) => {
+		if (val) {
+			if (val === STRINGS['WITHDRAW_PAGE.NEW_ADDRESS']) {
+				setWithdrawOptionaltag(null);
+				setWithdrawAddress(null);
+				setIsValidAdress(false);
+			}
+			if (val !== STRINGS['WITHDRAW_PAGE.NEW_ADDRESS']) {
+				setIsValidField((prev) => ({ ...prev, isSelected: true }));
+				onHandleAddress(val, 'address');
+				if (isCondition && address?.length > 1) {
+					setWithdrawOptionaltag(address[1]);
+				}
+			}
+			if (val === STRINGS['ADDRESS_BOOK.VIEW_ADDRESS_BOOK_LABEL']) {
+				setWithdrawOptionaltag(null);
+				return router.push('/wallet/address-book');
+			}
+		}
 		setSelectedAsset((prev) => ({ ...prev, addressField: val }));
-		if (val === STRINGS['WITHDRAW_PAGE.NEW_ADDRESS']) {
-			setWithdrawAddress(null);
-			setIsValidAdress(false);
-		}
-		if (val !== STRINGS['WITHDRAW_PAGE.NEW_ADDRESS']) {
-			onHandleAddress(val, 'address');
-		}
-		if (val === STRINGS['ADDRESS_BOOK.VIEW_ADDRESS_BOOK_LABEL']) {
-			return router.push('/wallet/address-book');
-		}
+		setIsValidField((prev) => ({
+			...prev,
+			isOptionalTag: false,
+			dropdownOpen: false,
+		}));
 	};
 
 	const withdrawFeeFormat =
@@ -643,14 +682,37 @@ const RenderWithdraw = ({
 			)
 		);
 	})();
+
+	const address = getAddress[0]?.address?.split(':');
+
 	const selectAddressField = [
 		{
 			value: STRINGS['WITHDRAW_PAGE.NEW_ADDRESS'],
 			label: STRINGS['WITHDRAW_PAGE.NEW_ADDRESS'],
 		},
 		{
-			value: getAddress[0]?.address,
-			label: `${getAddress[0]?.label}: ${getAddress[0]?.address}`,
+			value: address && address[0],
+			label: (
+				<div className="d-flex asset-address-field">
+					<span>{getAddress[0]?.label}</span>
+					<div className="d-flex flex-direction-column">
+						<span>: {address && address[0]}</span>
+						{address &&
+							address.length > 1 &&
+							isCondition &&
+							(!isValidField?.isSelected || isValidField?.dropdownOpen) && (
+								<div className="assets-field">
+									<div className="ml-2">
+										<EditWrapper stringId="ACCORDIAN.TAG">
+											{STRINGS['ACCORDIAN.TAG']}
+										</EditWrapper>
+										<span className="ml-1"> {address && address[1]}</span>
+									</div>
+								</div>
+							)}
+					</div>
+				</div>
+			),
 		},
 		{
 			value: STRINGS['ADDRESS_BOOK.VIEW_ADDRESS_BOOK_LABEL'],
@@ -1063,6 +1125,7 @@ const RenderWithdraw = ({
 													allowClear={true}
 													value={selectedAsset?.addressField}
 													onChange={onchangeAddressField}
+													onDropdownVisibleChange={handleDropdownVisibleChange}
 													onClear={() => onHandleClear('address')}
 												>
 													{selectAddressField.map((data) => {
@@ -1070,8 +1133,7 @@ const RenderWithdraw = ({
 															<Option key={data.value}>
 																<div
 																	className={
-																		data.value ===
-																			`${getAddress[0]?.address}` &&
+																		data.value === `${address && address[0]}` &&
 																		'withdraw-dropdown-address'
 																	}
 																>
@@ -1408,6 +1470,7 @@ const mapStateToForm = (state) => ({
 	getNativeCurrency: state.app.constants.native_currency,
 	selectedMethod: state.app.selectedWithdrawMethod,
 	receiverWithdrawalEmail: state.app.receiverWithdrawalEmail,
+	optionalTag: state.app.withdrawFields.optionalTag,
 });
 
 const mapDispatchToProps = (dispatch) => ({

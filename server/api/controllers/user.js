@@ -1506,6 +1506,99 @@ const updateUserAddresses = (req, res) => {
 		});
 };
 
+const getPaymentDetails = (req, res) => {
+	loggerUser.verbose(req.uuid, 'controllers/user/getPaymentDetails/auth', req.auth);
+
+	const { is_p2p, is_fiat_control, status, limit, page, order_by, order, start_date, end_date } = req.swagger.params;
+
+	const user_id = req.auth.sub.id;
+
+	toolsLib.user.getPaymentDetails(user_id,
+		{
+			limit: limit.value,
+			page: page.value,
+			order_by: order_by.value,
+			order: order.value,
+			start_date: start_date.value,
+			end_date: end_date.value,
+			is_p2p: is_p2p.value,
+			is_fiat_control: is_fiat_control.value,
+			status: status.value,
+		})
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/getPaymentDetails', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const createPaymentDetail = (req, res) => {
+	loggerUser.verbose(req.uuid, 'controllers/user/createPaymentDetail/auth', req.auth);
+
+	const user_id = req.auth.sub.id;
+	const { name, label, details, is_p2p, is_fiat_control, status } = req.swagger.params.data.value;
+
+	toolsLib.user.createPaymentDetail({
+		user_id,
+		name,
+		label,
+		details,
+		is_p2p,
+		is_fiat_control,
+		status
+	})
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/createPaymentDetail', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const updatePaymentDetail = (req, res) => {
+	loggerUser.verbose(req.uuid, 'controllers/user/updatePaymentDetail/auth', req.auth);
+
+	const user_id = req.auth.sub.id;
+	const { id, name, label, details, is_p2p, is_fiat_control } = req.swagger.params.data.value;
+
+	toolsLib.user.updatePaymentDetail(id, {
+		user_id,
+		name,
+		label,
+		details,
+		is_p2p,
+		is_fiat_control
+	})
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/updatePaymentDetail', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const deletePaymentDetail = (req, res) => {
+	loggerUser.verbose(req.uuid, 'controllers/user/deletePaymentDetail/auth', req.auth);
+
+	const user_id = req.auth.sub.id;
+	const { id } = req.swagger.params.data.value;
+
+	toolsLib.user.deletePaymentDetail(id, user_id)
+		.then(() => {
+			return res.json({
+				message: "Success"
+			});
+		})
+		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/deletePaymentDetail', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
 
 module.exports = {
 	signUpUser,
@@ -1546,5 +1639,9 @@ module.exports = {
 	createUserReferralCode,
 	getUserReferralCodes,
 	updateUserAddresses,
-	fetchUserAddressBook
+	fetchUserAddressBook,
+	getPaymentDetails,
+	createPaymentDetail,
+	updatePaymentDetail,
+	deletePaymentDetail
 };

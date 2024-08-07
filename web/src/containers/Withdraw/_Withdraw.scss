@@ -727,6 +727,19 @@ $content--margin: 2rem;
 						font-size: 12px;
 					}
 				}
+
+				.destination-field {
+					.destination-field-wrapper {
+						.destination-input-wrapper {
+							.custom-select-input-style {
+								.ant-select-selection-item {
+									margin-top: 2%;
+									line-height: 25px !important;
+								}
+							}
+						}
+					}
+				}
 			}
 		}
 	}
@@ -768,7 +781,7 @@ $content--margin: 2rem;
 					.custom-field {
 						.custom-step-selected,
 						.custom-step {
-							padding: 33% 70% 10%;
+							padding: 5px 10px 5px;
 						}
 					}
 
@@ -822,6 +835,12 @@ $content--margin: 2rem;
 			}
 		}
 	}
+
+	.withdraw-dropdown-address {
+		.asset-address-field {
+			margin-bottom: 5%;
+		}
+	}
 }
 
 .review_email-wrapper {
@@ -839,5 +858,7 @@ $content--margin: 2rem;
 }
 
 .withdraw-dropdown-address {
+	width: 100%;
 	border-bottom: 1px solid $colors-black !important;
+	overflow: hidden;
 }

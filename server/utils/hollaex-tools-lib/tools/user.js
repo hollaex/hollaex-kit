@@ -63,6 +63,7 @@ const {
 	SERVICE_NOT_SUPPORTED,
 	BALANCE_HISTORY_NOT_ACTIVE,
 	ADDRESSBOOK_MISSING_FIELDS,
+	PAYMENT_DETAIL_NOT_FOUND,
 	ADDRESSBOOK_ALREADY_EXISTS,
 	ADDRESSBOOK_NOT_FOUND
 } = require(`${SERVER_PATH}/messages`);
@@ -3343,6 +3344,104 @@ const updateUserAddresses = async (user_id, data) => {
 	return userAddressBook;
 };
 
+const getPaymentDetails = async (user_id, opts = {
+	limit: null,
+	page: null,
+	order_by: null,
+	order: null,
+	start_date: null,
+	end_date: null,
+	is_p2p: null,
+	is_fiat_control: null,
+	status: null,
+}) => {
+	const pagination = paginationQuery(opts.limit, opts.page);
+	const ordering = orderingQuery(opts.order_by, opts.order);
+	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
+
+	const query = {
+		where: {
+			created_at: timeframe,
+			user_id,
+			...(opts.is_p2p && { is_p2p: opts.is_p2p }),
+			...(opts.is_fiat_control && { is_fiat_control: opts.is_fiat_control }),
+			...(opts.status && { status: opts.status })
+		},
+		order: [ordering],
+		...(!opts.format && pagination),
+	};
+
+
+	return dbQuery.findAndCountAllWithRows('paymentDetail', query);
+};
+
+const createPaymentDetail = async (data) => {
+	const { user_id, name, label, details, is_p2p, is_fiat_control, status } = data;
+
+	const user = await getUserByKitId(user_id);
+   
+	if (!user) {
+		throw new Error(USER_NOT_FOUND);
+	}
+	
+	const adminAccount = await getUserByKitId(1);
+
+	sendEmail(
+		MAILTYPE.ALERT,
+		adminAccount.email,
+		{
+			type: 'An exchange user added a new payment method, Awaiting your approval',
+			data: `User ID: ${user_id} added a new payment method. Account details: <ul>${details.fields.map(field => (`<li key=${field.id}>${field.name}: ${field.value}</li>`))}</ul>`
+		},
+		adminAccount.settings
+	);
+
+	const paymentDetail = await getModel('paymentDetail').create({
+		user_id,
+		name,
+		label,
+		details,
+		is_p2p,
+		is_fiat_control,
+		status
+	});
+	return paymentDetail;
+};
+
+const updatePaymentDetail = async (id, data, isAdmin = false) => {
+	const paymentDetail = await getModel('paymentDetail').findOne({ where: { id, user_id: data.user_id } });
+	if (!paymentDetail) {
+		throw new Error(PAYMENT_DETAIL_NOT_FOUND);
+	}
+
+	if (!isAdmin) { delete data.status };
+
+	if (data.status === 3) {
+		const user = await getUserByKitId(data.user_id);
+		sendEmail(MAILTYPE.BANK_VERIFIED, user.email, { bankAccounts: paymentDetail?.details?.fields }, user.settings);
+	}
+
+	await paymentDetail.update(data, {
+		fields: [
+			'name',
+			'label',
+			'details',
+			'is_p2p',
+			'is_fiat_control',
+			'status'
+		]
+	});
+	return paymentDetail;
+};
+
+const deletePaymentDetail = async (id, user_id) => {
+	const paymentDetail = await getModel('paymentDetail').findOne({ where: { id, user_id } });
+	if (!paymentDetail) {
+		throw new Error(PAYMENT_DETAIL_NOT_FOUND);
+	}
+	await paymentDetail.destroy();
+};
+
 
 module.exports = {
 	loginUser,
@@ -3419,5 +3518,9 @@ module.exports = {
 	getUserReferralCodes,
 	createUserReferralCode,
 	updateUserAddresses,
-	fetchUserAddressBook
+	fetchUserAddressBook,
+	getPaymentDetails,
+	createPaymentDetail,
+	updatePaymentDetail,
+	deletePaymentDetail
 };
