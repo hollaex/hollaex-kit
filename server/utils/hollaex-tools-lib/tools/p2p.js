@@ -449,7 +449,7 @@ const createP2PTransaction = async (data) => {
 
 	const merchantBalance = await getP2PAccountBalance(side === 'buy' ? user_id : merchant_id, p2pDeal.buying_asset);
 
-	const price = new BigNumber(exchange_rate).multipliedBy(1 + (spread / 100));
+	const price = new BigNumber(exchange_rate).multipliedBy(p2pDeal.side === 'sell' ? (1 + (spread / 100)) : (1 - (spread / 100)));
 	const amount_digital_currency = new BigNumber(amount_fiat).dividedBy(price).toNumber();
 
 	const merchantFeeAmount = (new BigNumber(amount_digital_currency).multipliedBy(p2pConfig.merchant_fee))
