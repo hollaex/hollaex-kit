@@ -89,8 +89,11 @@ const P2PDash = ({
 		return formattedAmount;
 	};
 
-	const formatRate = (rate, spread, asset) => {
-		const amount = rate * (1 + Number(spread / 100 || 0));
+	const formatRate = (rate, spread, asset, side) => {
+		const amount =
+			side === 'sell'
+				? rate * (1 + Number(spread / 100 || 0))
+				: rate * (1 - Number(spread / 100 || 0));
 		return formatAmount(asset, amount);
 	};
 
@@ -570,7 +573,8 @@ const P2PDash = ({
 												{formatRate(
 													deal.exchange_rate,
 													deal.spread,
-													deal.spending_asset
+													deal.spending_asset,
+													deal.side
 												)}{' '}
 												{deal.spending_asset.toUpperCase()}
 											</td>
@@ -1089,7 +1093,7 @@ const P2PDash = ({
 																				Number(e) *
 																				Number(
 																					deal.exchange_rate *
-																						(1 + Number(deal.spread / 100 || 0))
+																						(1 - Number(deal.spread / 100 || 0))
 																				);
 
 																			const formatted = formatAmount(
