@@ -14,6 +14,7 @@ import {
 	Input,
 	Radio,
 	Space,
+	Select,
 } from 'antd';
 import {
 	fetchFeedback,
@@ -27,6 +28,7 @@ import { isMobile } from 'react-device-detect';
 import classnames from 'classnames';
 import moment from 'moment';
 import { CloseOutlined } from '@ant-design/icons';
+import DEFAULT_PAYMENT_METHODS from 'utils/defaultPaymentMethods';
 import './_P2P.scss';
 
 const P2PProfile = ({
@@ -719,7 +721,7 @@ const P2PProfile = ({
 									{STRINGS['P2P.ADD_NEW_PAYMENT_METHODS']}
 								</EditWrapper>
 							</div>
-							<Input
+							{/* <Input
 								placeholder="Enter your system name"
 								value={paymentMethod.system_name}
 								onChange={(e) => {
@@ -728,22 +730,49 @@ const P2PProfile = ({
 										system_name: e.target.value,
 									});
 								}}
-							/>
+							/> */}
+
+							<Select
+								showSearch
+								placeholder="Select Payment System"
+								style={{ width: 200 }}
+								onChange={(e) => {
+									setPaymentMethod({
+										...paymentMethod,
+										system_name: e,
+									});
+									setCustomFields(
+										DEFAULT_PAYMENT_METHODS.find(
+											(method) => method.system_name === e
+										).fields
+									);
+								}}
+							>
+								{DEFAULT_PAYMENT_METHODS.map((method) => {
+									return (
+										<Select.Option value={method.system_name}>
+											{method.system_name}
+										</Select.Option>
+									);
+								})}
+							</Select>
 						</div>
 
 						{customFields.map((field) => {
 							return (
 								<div style={{ marginBottom: 30 }}>
-									<div style={{ fontWeight: 'bold', fontSize: 17 }}>
+									<div style={{ fontWeight: 'bold', fontSize: 16 }}>
 										FIELD {field.id}#
 									</div>
-									<div style={{ fontWeight: 'bold' }}>
-										<EditWrapper stringId="P2P.DETAIL_NAME">
+									<div style={{ fontWeight: 'bold', fontSize: 17 }}>
+										{/* <EditWrapper stringId="P2P.DETAIL_NAME">
 											{STRINGS['P2P.DETAIL_NAME']}
-										</EditWrapper>
+										</EditWrapper> */}
+										{field.name}
 									</div>
-									<Input
+									{/* <Input
 										placeholder="Input the payment detail name"
+										readOnly
 										value={field.name}
 										onChange={(e) => {
 											const newCustomFields = [...customFields];
@@ -756,7 +785,7 @@ const P2PProfile = ({
 
 											setCustomFields(newCustomFields);
 										}}
-									/>
+									/> */}
 									<div style={{ fontWeight: 'bold', marginTop: 5 }}>
 										<EditWrapper stringId="P2P.DETAIL_VALUE">
 											{STRINGS['P2P.DETAIL_VALUE']}
@@ -781,7 +810,7 @@ const P2PProfile = ({
 							);
 						})}
 
-						<div
+						{/* <div
 							style={{
 								fontWeight: 'bold',
 								cursor: 'pointer',
@@ -795,7 +824,7 @@ const P2PProfile = ({
 									{STRINGS['P2P.ADD_NEW_PAYMENT_FIELD']}
 								</span>
 							</EditWrapper>
-						</div>
+						</div> */}
 						<div
 							style={{
 								display: 'flex',
