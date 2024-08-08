@@ -851,7 +851,8 @@ const AboutData = ({
 					</div>
 
 					<div className="about-info d-flex align-items-center justify-content-center">
-						{userData.withdrawal_blocked ? (
+						{userData.withdrawal_blocked &&
+						moment().isBefore(moment(userData?.withdrawal_blocked)) ? (
 							<Fragment>
 								<div
 									className="about-info-content"

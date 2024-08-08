@@ -165,6 +165,12 @@ $qr-code--size: 12rem;
 			box-shadow: none;
 		}
 
+		.tag-field {
+			.ant-input-suffix {
+				justify-content: end;
+			}
+		}
+
 		.ant-input-suffix {
 			width: 15% !important;
 		}

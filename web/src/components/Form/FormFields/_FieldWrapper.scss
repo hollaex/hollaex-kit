@@ -73,6 +73,7 @@ $outline-height: 1.5px;
 	position: relative;
 	display: flex;
 	flex-direction: column;
+	scrollbar-color: $colors-black $app-background-color;
 	// margin-bottom: $underline-margin-bottom;
 }
 

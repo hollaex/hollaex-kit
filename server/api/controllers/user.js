@@ -1476,6 +1476,36 @@ const fetchUserReferrals = (req, res) => {
 		});
 };
 
+const fetchUserAddressBook = (req, res) => {
+	loggerUser.verbose(req.uuid, 'controllers/user/fetchUserAddressBook/auth', req.auth);
+
+	toolsLib.user.fetchUserAddressBook(req.auth.sub.id)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/fetchUserAddressBook', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const updateUserAddresses = (req, res) => {
+	loggerUser.verbose(req.uuid, 'controllers/user/updateUserAddresses/auth', req.auth);
+
+	const { addresses } = req.swagger.params.data.value;
+
+	loggerUser.verbose(req.uuid, 'controllers/user/updateUserAddresses data', req.auth.sub.id, addresses);
+
+	toolsLib.user.updateUserAddresses(req.auth.sub.id, { addresses })
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/updateUserAddresses err', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
 
 module.exports = {
 	signUpUser,
@@ -1514,5 +1544,7 @@ module.exports = {
 	fetchUserProfitLossInfo,
 	fetchUserReferrals,
 	createUserReferralCode,
-	getUserReferralCodes
+	getUserReferralCodes,
+	updateUserAddresses,
+	fetchUserAddressBook
 };

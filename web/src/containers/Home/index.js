@@ -6,7 +6,6 @@ import { Spin } from 'antd';
 
 import STRINGS from 'config/localizedStrings';
 import { changePair, getExchangeInfo, getTickers } from 'actions/appActions';
-import { getSparklines } from 'actions/chartAction';
 import Markets from 'containers/Summary/components/Markets';
 import { Image, QuickTrade, EditWrapper } from 'components';
 
@@ -51,7 +50,7 @@ class Home extends Component {
 			minHeight: MIN_HEIGHT,
 		},
 		sectionData: {},
-		chartData: {},
+		// chartData: {},
 		isLoading: false,
 		isHover: false,
 		hoveredIndex: 0,
@@ -67,12 +66,12 @@ class Home extends Component {
 	}
 
 	componentDidMount() {
-		const { sections, pairs, getExchangeInfo, getTickers } = this.props;
+		const { sections, getExchangeInfo, getTickers } = this.props;
 		getExchangeInfo();
 		getTickers();
-		getSparklines(Object.keys(pairs)).then((chartData) =>
-			this.setState({ chartData })
-		);
+		// getSparklines(Object.keys(pairs)).then((chartData) =>
+		//  this.props.changeSparkLineData(chartData)
+		// );
 		this.generateSections(sections);
 
 		setTimeout(() => {
@@ -188,16 +187,14 @@ class Home extends Component {
 							style={{
 								minHeight: this.calculateMinHeight(sectionsNumber),
 							}}
-							onClickDemo={
-								this.goTo('accounts')
-							}
+							onClickDemo={this.goTo('accounts')}
 							onClickTrade={this.goTo('signup')}
 						/>
 					</div>
 				);
 			}
 			case 'market_list': {
-				const { router, coins, pairs } = this.props;
+				const { router, coins, pairs, sparkLineChartData } = this.props;
 				return (
 					<div className="home-page_section-wrapper">
 						<div className="d-flex justify-content-center">
@@ -220,6 +217,7 @@ class Home extends Component {
 								showMarkets={true}
 								isHome={true}
 								renderContent={this.renderContent}
+								chartData={sparkLineChartData}
 							/>
 						</div>
 					</div>
@@ -295,8 +293,8 @@ class Home extends Component {
 				);
 			}
 			case 'carousel_section': {
-				const { markets } = this.props;
-				const { chartData, carouselLoading } = this.state;
+				const { markets, sparkLineChartData } = this.props;
+				const { carouselLoading } = this.state;
 				let testMarket = [];
 				let loopCnt = 0;
 				if (markets.length < 12) {
@@ -347,7 +345,7 @@ class Home extends Component {
 														market={sec}
 														onDragStart={this.handleDragStart}
 														role="presentation"
-														chartData={chartData}
+														chartData={sparkLineChartData}
 													/>
 												)}
 											</div>
@@ -403,6 +401,7 @@ const mapStateToProps = (store) => {
 		fetchingAuth: store.auth.fetching,
 		isReady: store.app.isReady,
 		markets: MarketsSelector(store),
+		sparkLineChartData: store.app.sparkLineChartData,
 	};
 };
 

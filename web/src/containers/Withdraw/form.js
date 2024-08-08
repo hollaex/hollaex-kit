@@ -20,6 +20,7 @@ import {
 	calculateFeeCoin,
 	generateBaseInformation,
 	renderLabel,
+	renderNetworkField,
 } from './utils';
 import { setWithdrawOptionaltag, withdrawCurrency } from 'actions/appActions';
 import { renderInformation } from 'containers/Wallet/components';
@@ -160,9 +161,15 @@ class Form extends Component {
 		const currentCurrency = getWithdrawCurrency
 			? getWithdrawCurrency
 			: currency;
-		const network = getWithdrawNetworkOptions
-			? getWithdrawNetworkOptions
-			: getWithdrawNetwork;
+		const coinLength =
+			coins[getWithdrawCurrency]?.network &&
+			coins[getWithdrawCurrency]?.network.split(',');
+		const network =
+			coinLength && coinLength === 1
+				? getWithdrawNetworkOptions
+					? getWithdrawNetworkOptions
+					: getWithdrawNetwork
+				: renderNetworkField(getWithdrawNetworkOptions)?.toLowerCase();
 		const defaultNetwork =
 			currentCurrency &&
 			coins[currentCurrency]?.network &&

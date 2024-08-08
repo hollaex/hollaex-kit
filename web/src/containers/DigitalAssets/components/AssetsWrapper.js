@@ -231,30 +231,32 @@ class AssetsWrapper extends Component {
 
 		return (
 			<div>
-				<div className="d-flex justify-content-start">
-					<div className={isMobile ? '' : 'w-25 pb-4'}>
-						<SearchBox
-							name={STRINGS['SEARCH_ASSETS']}
-							className="trade_tabs-search-field"
-							outlineClassName="trade_tabs-search-outline"
-							placeHolder={`${STRINGS['SEARCH_ASSETS']}...`}
-							handleSearch={this.handleTabSearch}
-							showCross
-							isFocus={true}
+				{data.length ? (
+					<div>
+						<div className="d-flex justify-content-start">
+							<div className={isMobile ? '' : 'w-25 pb-4'}>
+								<SearchBox
+									name={STRINGS['SEARCH_ASSETS']}
+									className="trade_tabs-search-field"
+									outlineClassName="trade_tabs-search-outline"
+									placeHolder={`${STRINGS['SEARCH_ASSETS']}...`}
+									handleSearch={this.handleTabSearch}
+									showCross
+									isFocus={true}
+								/>
+							</div>
+						</div>
+						<AssetsList
+							loading={isLoading}
+							coinsListData={data}
+							page={page}
+							pageSize={pageSize}
+							count={count}
+							goToNextPage={this.goToNextPage}
+							goToPreviousPage={this.goToPreviousPage}
+							showPaginator={count > pageSize}
 						/>
 					</div>
-				</div>
-				{data.length ? (
-					<AssetsList
-						loading={isLoading}
-						coinsListData={data}
-						page={page}
-						pageSize={pageSize}
-						count={count}
-						goToNextPage={this.goToNextPage}
-						goToPreviousPage={this.goToPreviousPage}
-						showPaginator={count > pageSize}
-					/>
 				) : (
 					<RenderLoading />
 				)}
