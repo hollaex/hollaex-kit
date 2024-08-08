@@ -1,3 +1,4 @@
+# Dev mode HollaEx Kit Docker-Copmose
 version: '3'
 services:
   hollaex-kit-redis:
@@ -30,13 +31,13 @@ services:
       - 10013:10013
     build:
       context: .
-      dockerfile: ./tools/Dockerfile.pm2
+      dockerfile: ./tools/Dockerfile
     env_file:
       - ./tools/hollaex-kit.env.local
     entrypoint:
       - /bin/sh
       - -c 
-      - ip -4 route list match 0/0 | awk '{print $$3 " host.docker.internal"}' >> /etc/hosts && cat /etc/hosts && pm2-runtime start ecosystem.config.js --env development;
+      - pm2-runtime start ecosystem.config.js --env development;
     volumes:
       - ./api:/app/api
       - ./config:/app/config
@@ -50,7 +51,8 @@ services:
       - ./messages.js:/app/messages.js
       - ./logs:/app/logs
       - ./test:/app/test
-      - ./tools:/app/tools
+      - ./tools/dbs:/app/tools/dbs
+      - ./tools/general:/app/tools/general
       - ./utils:/app/utils
       - /app/utils/hollaex-network-lib/node_modules
       - /app/utils/hollaex-tools-lib/node_modules
@@ -64,10 +66,10 @@ services:
   hollaex-kit-nginx:
     image: nginx:1.15.8-alpine
     volumes:
-      - ./tools/nginx:/etc/nginx
-      - ./tools/nginx/conf.d:/etc/nginx/conf.d
-      - ./tools/nginx/logs:/var/log
-      - ./tools/nginx/static:/usr/share/nginx/html
+      - ./tools/nginx-dev:/etc/nginx
+      - ./tools/nginx-dev/conf.d:/etc/nginx/conf.d
+      - ./tools/nginx-dev/logs:/var/log
+      - ./tools/nginx-dev/static:/usr/share/nginx/html
     ports:
       - 80:80
     environment:
