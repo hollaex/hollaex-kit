@@ -37,7 +37,7 @@ const createDepositRequest = (req, res) => {
 				throw new Error('User not found');
 			}
 			
-			const { fee } = toolsLib.wallet.validateDeposit(user, amount, currency, 'fiat');
+			const { fee } = await toolsLib.wallet.validateDeposit(user, amount, currency, 'fiat');
 
 			const { count: depositCount } = await toolsLib.wallet.getUserDepositsByKitId(
 				userId,
