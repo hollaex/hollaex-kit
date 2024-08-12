@@ -2180,7 +2180,7 @@
 		"MANUAL_PAYMENT_METHOD_ENTRY": "To add a payment method to your P2P platform, you can do so manually by entering the name of the payment method and the required payment details. For example, PayPal uses email addresses to send and receive funds.",
 		"USERS_PAYMENT_SELECTION": "Once the payment method is added, your P2P merchants and users will be able to select it and enter the necessary information when making or receiving payments. The details they provide will be shared with the other party in the P2P transaction.",
 		"METHOD_NAME_AND_DETAIL": "Name of method and main payment detail",
-		"ADD_NEW_PAYMENT_METHODS": "Create new payment methods",
+		"ADD_NEW_PAYMENT_METHODS": "Select new payment methods",
 		"DETAIL_NAME": "Payment detail name",
 		"DETAIL_VALUE": "Payment detail value",
 		"DETAIL_REQUIRED": "Required",
