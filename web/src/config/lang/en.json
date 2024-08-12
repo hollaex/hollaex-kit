@@ -1755,7 +1755,6 @@
 		"ADDRESS_BOOK": "Address book",
 		"MANAGE_ADDRESS_BOOK": "Manage address book",
 		"VIEW_ADDRESS_BOOK_LABEL": "View address book",
-		"ASSET_ALREADY_HAVE_ADDRESS": "This Asset has already Exists. Please try another.",
 		"ADD_WITHDRAWAL_ADDRESS_LINK": "Add withdrawal address",
 		"REVOKE_ADDRESS": "Your Address is Removed",
 		"REMOVE_ADDRESS": "Remove Address",

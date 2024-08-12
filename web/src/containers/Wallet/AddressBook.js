@@ -257,11 +257,6 @@ const AddressBook = ({
 		const selectedNetwork = selectedAsset?.networkOptions
 			? renderNetworkField(selectedAsset?.networkOptions)
 			: network;
-		const hasAsset = getUserData.some(
-			(val) =>
-				val?.currency === selectedAsset?.selectedCurrency &&
-				val?.network === selectedNetwork
-		);
 
 		const filterData = () =>
 			getUserData.filter((val) => val.label !== data.label);
@@ -278,7 +273,7 @@ const AddressBook = ({
 			} catch (error) {
 				console.error(error);
 			}
-		} else if (!hasAsset) {
+		} else {
 			const address =
 				hasOptionalTag && selectedAsset?.optionalTag
 					? `${selectedAsset?.address}:${selectedAsset?.optionalTag}`
@@ -302,8 +297,6 @@ const AddressBook = ({
 			} catch (error) {
 				console.error(error);
 			}
-		} else {
-			message.error(STRINGS['ADDRESS_BOOK.ASSET_ALREADY_HAVE_ADDRESS']);
 		}
 
 		onHandleClose('step3');
