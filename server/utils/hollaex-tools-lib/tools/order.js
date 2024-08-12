@@ -8,7 +8,7 @@ const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { INVALID_SYMBOL, NO_DATA_FOR_CSV, USER_NOT_FOUND, USER_NOT_REGISTERED_ON_NETWORK, TOKEN_EXPIRED, BROKER_NOT_FOUND, BROKER_PAUSED, BROKER_SIZE_EXCEED, QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED, QUICK_TRADE_ORDER_CURRENT_PRICE_ERROR, QUICK_TRADE_VALUE_IS_TOO_SMALL, FAIR_PRICE_BROKER_ERROR, AMOUNT_NEGATIVE_ERROR, QUICK_TRADE_CONFIG_NOT_FOUND, QUICK_TRADE_TYPE_NOT_SUPPORTED, PRICE_NOT_FOUND, INVALID_PRICE, INVALID_SIZE, BALANCE_NOT_AVAILABLE } = require(`${SERVER_PATH}/messages`);
 const { parse } = require('json2csv');
 const { BASE_SCOPES } = require(`${SERVER_PATH}/constants`);
-const { subscribedToPair, getKitTier, getDefaultFees, getAssetsPrices, getPublicTrades, getQuickTrades } = require('./common');
+const { subscribedToPair, getKitTier, getDefaultFees, getAssetsPrices, getPublicTrades, getQuickTrades, getKitConfig } = require('./common');
 const { reject } = require('bluebird');
 const { loggerOrders } = require(`${SERVER_PATH}/config/logger`);
 const math = require('mathjs');
@@ -1262,38 +1262,45 @@ const createTrade = async (order, opts = { additionalHeaders: null }) => {
 	);
 };
 
-const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip) => {
+const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, id = null) => {
 
-	let user_id = null;
+	let user_id = id;
 	if (bearerToken) {
 		const auth = await verifyBearerTokenPromise(bearerToken, ip);
 		if (auth) {
 			user_id = auth.sub.id;
 		}
-	} else if (userInfo) {
-		user_id = userInfo.user_id;
 	}
 
 	const assets = symbol.split('-');
 	const from = assets[0];
 	const to = assets[1];
-	const rates = {};
+	let rates = {};
 	
 	const quickTrades = getQuickTrades();
 
-	//Find all the available prices with their types on the exchange.
-	for (const quickTrade of quickTrades) {
-		if (quickTrade.type === 'network') continue;
-		try {
-			const assets = quickTrade.symbol.split('-');
-			const quotePrice = await getUserQuickTrade(assets[0], 1, null, assets[1],  null, null, { additionalHeaders: null }, { headers: { 'api-key': null } });
-			rates[quickTrade.symbol] = { type: quickTrade.type, price: quotePrice.receiving_amount }
+	let data = null;
+	if (user_id) {
+		data = await client.getAsync(`${user_id}-rates`);
+		rates = data ? JSON.parse(data) : {};
+	}
 
-		
-		} catch (error) {
-			continue;
+	//Find all the available prices with their types on the exchange.
+	if(!data) {
+		for (const quickTrade of quickTrades) {
+			if (quickTrade.type === 'network') continue;
+			try {
+				const assets = quickTrade.symbol.split('-');
+				const quotePrice = await getUserQuickTrade(assets[0], 1, null, assets[1],  null, null, { additionalHeaders: null }, { headers: { 'api-key': null } });
+				rates[quickTrade.symbol] = { type: quickTrade.type, price: quotePrice.receiving_amount }
+			
+			} catch (error) {
+				continue;
+			}
 		}
 	}
+
+	await client.setexAsync(`${user_id}-rates`, 3600, JSON.stringify(rates));
 
 	const findConversionRate = (startCurrency, endCurrency, rates, visited = new Set(), initialAmount) => {
 		if (startCurrency === endCurrency) return { path: [startCurrency], totalRate: initialAmount, trades: [] };
@@ -1348,6 +1355,12 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip) => {
 	let token;
 
 	if (result?.totalRate && user_id) {
+		result.symbol = symbol;
+		result.size = size;
+		result.price = result?.totalRate / size;
+		result.quote_asset = to;
+		result.base_asset = from;
+
 		result.user_id = user_id;
 		token = uuid();
 		client.setexAsync(token, 30, JSON.stringify(result));
@@ -1355,11 +1368,13 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip) => {
 	return { token, quote_amount: result?.totalRate };
 }
 
-const executeUserChainTrade = async (user_id, token, opts) => {
-	const storedToken = await client.getAsync(token);
+const executeUserChainTrade = async (user_id, userToken) => {
+	const storedToken = await client.getAsync(userToken);
 	if (!storedToken) {
 		throw new Error(TOKEN_EXPIRED);
 	}
+	const { source_account, currency} = getKitConfig()?.chain_trade_config || {};
+	
 	const tradeInfo = JSON.parse(storedToken);
 
 	const user = await getUserByKitId(user_id);
@@ -1371,7 +1386,71 @@ const executeUserChainTrade = async (user_id, token, opts) => {
 	if (tradeInfo.user_id !== user.id) {
 		throw new Error(USER_NOT_FOUND);
 	}
+
+	const sourceUser = await getUserByKitId(source_account);
+
+	if (!sourceUser) {
+		throw new Error(USER_NOT_FOUND);
+	}
+
+	let lastRate;
+
+	if (tradeInfo.quote_asset !== currency) {
+		const initialRate = await getUserChainTradeQuote(null, `${tradeInfo.base_asset}-${currency}`, tradeInfo.size, null, sourceUser.id);
+		lastRate = await getUserChainTradeQuote(null, `${currency}-${tradeInfo.quote_asset}`,  JSON.parse(await client.getAsync(initialRate.token)).totalRate, null, sourceUser.id);
+	} else {
+		lastRate = await getUserChainTradeQuote(null, `${tradeInfo.base_asset}-${currency}`, tradeInfo.size, null, sourceUser.id);
+	}
 	
+
+	const token = JSON.parse(await client.getAsync(lastRate.token));
+	let successfulTrades = [];
+	try {
+		successfulTrades = await executeTrades(token, sourceUser);
+	} catch (error) {
+		throw new Error(error.message);
+	}
+	const lastTrade = successfulTrades[successfulTrades.length - 1];
+
+	const assets = lastTrade.symbol.split('-');
+	const to = assets[0];
+	
+	
+	// trade between end user and middle man account
+	const result = await getNodeLib().createBrokerTrade(
+		tradeInfo.symbol,
+		'buy',
+		to === tradeInfo.quote_asset ? (lastTrade.size / tradeInfo.size) : ((lastTrade.size * lastTrade.price ) /  tradeInfo.size),
+		tradeInfo.size,
+		sourceUser.network_id,
+		user.network_id,
+		{ maker: 0, taker: 0 }
+	);
+
+	try {
+		// get the currency amount back for the middle man account
+		const { token } = await getUserChainTradeQuote(null, `${tradeInfo.base_asset}-${currency}`, tradeInfo.size, null, sourceUser.id);
+		const sourceTradeInfo = JSON.parse(await client.getAsync(token));
+		await executeTrades(sourceTradeInfo, sourceUser);
+
+	} catch (error) {
+		//send email to admin about this error.
+		const admin = await getUserByKitId(1);
+		sendEmail(
+			MAILTYPE.ALERT,
+			admin.email,
+			{
+				type: 'Error in chain trades!',
+				data: `Error encountered for source account id: ${sourceUser.id}. Error message: ${error.message}`
+			},
+			admin.settings
+		);
+	}
+
+	return result;
+}
+
+const executeTrades = async (tradeInfo, sourceUser) => {
 	const successfulTrades = [];
 
 	for (const trade of tradeInfo?.trades) {
@@ -1390,7 +1469,7 @@ const executeUserChainTrade = async (user_id, token, opts) => {
 			if (type === 'pro') {
 				const fee = size * currentFee;
                 size = size - fee;
-				res = await createUserOrderByKitId(user.id, symbol, side, size, 'market', 0, opts);
+				res = await createUserOrderByKitId(sourceUser.id, symbol, side, size, 'market', 0, opts);
 
 				currentFee = res?.fee_structure?.taker || 0; 
 			}
@@ -1401,7 +1480,7 @@ const executeUserChainTrade = async (user_id, token, opts) => {
 				const broker = await getUserByKitId(brokerPair.user_id);
 		
 				const tierBroker = getKitTier(broker.verification_level);
-				const tierUser = getKitTier(user.verification_level);
+				const tierUser = getKitTier(sourceUser.verification_level);
 		
 				const makerFee = tierBroker.fees.maker[symbol];
 				const takerFee = tierUser.fees.taker[symbol];
@@ -1415,7 +1494,7 @@ const executeUserChainTrade = async (user_id, token, opts) => {
 					price,
 					size,
 					broker.network_id,
-					user.network_id,
+					sourceUser.network_id,
 					{ maker: makerFee, taker: takerFee }
 				);
 				currentFee = takerFee || 0; 

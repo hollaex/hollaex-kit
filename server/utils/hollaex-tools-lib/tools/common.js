@@ -465,13 +465,22 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 			throw new Error('Exchange plan does not support this feature');
 		}
 
-		if (!newKitConfig.referral_history_config.hasOwnProperty('active')) {
+		if (!newKitConfig.chain_trade_config.hasOwnProperty('active')) {
 			throw new Error('active key does not exist');
 		}
 
-		if (!newKitConfig.referral_history_config.hasOwnProperty('currency')) {
-			throw new Error('currency key does not exist');
+		if (!newKitConfig.chain_trade_config.hasOwnProperty('source_account')) {
+			throw new Error('source account does not exist');
 		}
+
+		if (!newKitConfig.chain_trade_config.hasOwnProperty('amount')) {
+			throw new Error('amount does not exist');
+		}
+
+		if (!newKitConfig.chain_trade_config.hasOwnProperty('currency')) {
+			throw new Error('currency does not exist');
+		}
+		
 	}
 
 	const joinedKitConfig = {};
