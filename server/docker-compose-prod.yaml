@@ -34,11 +34,11 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.1"
-          memory: 100M
+          cpus: "0.6"
+          memory: 600M
         reservations:
           cpus: "0.1"
-          memory: 100M
+          memory: 300M
     command: ["sh", "-c", "export POSTGRES_DB=$${DB_NAME} && export POSTGRES_USER=$${DB_USERNAME} && export POSTGRES_PASSWORD=$${DB_PASSWORD} && ln -sf /usr/local/bin/docker-entrypoint.sh ./docker-entrypoint.sh && ./docker-entrypoint.sh postgres"]
     networks:
       - hollaex-kit-network
@@ -55,10 +55,10 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.2"
+          cpus: "1"
           memory: 1024M
         reservations:
-          cpus: "0.05"
+          cpus: "0.1"
           memory: 512M
     command:
       - app.js
@@ -82,10 +82,10 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.2"
+          cpus: "1"
           memory: 512M
         reservations:
-          cpus: "0.05"
+          cpus: "0.1"
           memory: 256M
     command:
       - ws/index.js
@@ -110,10 +110,10 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.2"
+          cpus: "1"
           memory: 1200M
         reservations:
-          cpus: "0.05"
+          cpus: "0.1"
           memory: 700M
     command:
       - plugins/index.js
