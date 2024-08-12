@@ -12,7 +12,7 @@ import { SwapOutlined } from '@ant-design/icons';
 
 import { changePair } from 'actions/appActions';
 import { isLoggedIn } from 'utils/token';
-import { Button, EditWrapper, Dialog } from 'components';
+import { Button, EditWrapper, Dialog, Image } from 'components';
 import STRINGS from 'config/localizedStrings';
 import InputGroup from './InputGroup';
 import { getMiniCharts } from 'actions/chartAction';
@@ -33,6 +33,7 @@ import { getQuickTrade, executeQuickTrade } from 'actions/quickTradeActions';
 import { FieldError } from 'components/Form/FormFields/FieldWrapper';
 import { translateError } from 'components/QuickTrade/utils';
 import QuoteExpiredBlock from './QuoteExpiredBlock';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 const PAIR2_STATIC_SIZE = 0.000001;
 const SPENDING = {
@@ -58,6 +59,7 @@ const QuickTrade = ({
 	router,
 	router: { params },
 	changePair,
+	icons: ICONS,
 }) => {
 	const getTargetOptions = (source) =>
 		sourceOptions.filter((key) => {
@@ -97,6 +99,9 @@ const QuickTrade = ({
 	const [time, setTime] = useState(moment());
 	const [lineChartData, setLineChartData] = useState({});
 	const [allChartsData, setAllChartsData] = useState({});
+	const [showPriceTrendModal, setShowPriceTrendModal] = useState(false);
+	const [isOpenTopField, setIsOpenTopField] = useState(false);
+	const [isOpenBottomField, setIsOpenBottomField] = useState(false);
 
 	const resetForm = () => {
 		setTargetAmount();
@@ -232,6 +237,22 @@ const QuickTrade = ({
 		}
 	};
 
+	const addSecondsToExpiry = (expiry) => {
+		const expiryDate = new Date(expiry);
+
+		if (!expiry || !moment(expiryDate).isBefore(moment())) {
+			return expiry;
+		}
+
+		const dateObj = new Date();
+		const SECONDS_TO_ADD = 20;
+		expiryDate.setTime(dateObj.getTime() + SECONDS_TO_ADD * 1000);
+
+		const updatedExpiry = expiryDate.toISOString();
+
+		return updatedExpiry;
+	};
+
 	const getQuote = ({
 		sourceAmount: spending_amount,
 		targetAmount: receiving_amount,
@@ -262,7 +283,7 @@ const QuickTrade = ({
 						}) => {
 							setSpending();
 							setToken(token);
-							setExpiry(expiry);
+							setExpiry(addSecondsToExpiry(expiry));
 							setTargetAmount(receiving_amount);
 							setSourceAmount(spending_amount);
 						}
@@ -398,24 +419,68 @@ const QuickTrade = ({
 		});
 	};
 
+	const handlePriceTrendsModal = () => {
+		setShowPriceTrendModal(true);
+	};
+
+	const handlePriceTrendClose = () => {
+		setShowPriceTrendModal(false);
+	};
+
 	return (
 		<Fragment>
 			<div className="quick_trade-container">
-				<Header />
+				<Header viewTrendsClick={handlePriceTrendsModal} />
 
 				<div className={classnames('quick_trade-wrapper', 'd-flex')}>
-					{!isMobile && (
-						<Details
-							coinChartData={lineChartData}
-							pair={pair}
-							brokerUsed={isUseBroker}
-							networkName={display_name}
-							isNetwork={isNetwork}
-						/>
-					)}
+					<Details
+						coinChartData={lineChartData}
+						pair={pair}
+						brokerUsed={isUseBroker}
+						networkName={display_name}
+						isNetwork={isNetwork}
+						showOnlyTitle={isMobile}
+					/>
+					<Dialog
+						isOpen={showPriceTrendModal}
+						label="price-trend-modal"
+						onCloseDialog={handlePriceTrendClose}
+						shouldCloseOnOverlayClick={false}
+						showCloseText
+						style={{ 'z-index': 100 }}
+					>
+						<div>
+							<div className="d-flex price-title-wrapper">
+								<div>
+									<Image
+										iconId="CHART_VIEW"
+										icon={ICONS['CHART_VIEW']}
+										wrapperClassName="quick_trade_price_trend_icon price_trend_title_icon"
+									/>
+
+									{STRINGS['QUICK_TRADE_COMPONENT.PRICE_TREND']}
+								</div>
+								<div onClick={handlePriceTrendClose}>
+									<Image
+										iconId="CLOSE_CROSS"
+										icon={ICONS['CLOSE_CROSS']}
+										wrapperClassName="close-modal-icon"
+									/>
+								</div>
+							</div>
+							<Details
+								coinChartData={lineChartData}
+								pair={pair}
+								brokerUsed={isUseBroker}
+								networkName={display_name}
+								isNetwork={isNetwork}
+							/>
+						</div>
+					</Dialog>
+
 					<div className="d-flex flex-column trade-section">
 						<div className="inner-content">
-							<div className="balance-text mb-3">
+							<div className="balance-text mb-3 goto-wallet-container">
 								<EditWrapper
 									stringId="QUICK_TRADE_COMPONENT.GO_TO_TEXT"
 									renderWrapper={(children) => (
@@ -425,7 +490,7 @@ const QuickTrade = ({
 									{STRINGS['QUICK_TRADE_COMPONENT.GO_TO_TEXT']}
 								</EditWrapper>{' '}
 								<Link to="/wallet">
-									<span>
+									<span className="go-to-text">
 										<EditWrapper stringId="WALLET_TITLE">
 											{STRINGS['WALLET_TITLE']}
 										</EditWrapper>
@@ -433,8 +498,14 @@ const QuickTrade = ({
 								</Link>
 							</div>
 
-							<div className="quick-trade-input">
-								<div className="d-flex justify-content-between mb-4">
+							<div
+								className={
+									isOpenTopField
+										? 'active-border quick-trade-input'
+										: 'quick-trade-input'
+								}
+							>
+								<div className="d-flex justify-content-between mb-3">
 									<div className="bold caps-first">
 										<EditWrapper stringId={'CONVERT'}>
 											{STRINGS['CONVERT']}
@@ -453,7 +524,7 @@ const QuickTrade = ({
 									onSelect={onSelectSource}
 									onInputChange={onChangeSourceAmount}
 									forwardError={() => {}}
-									autoFocus={autoFocus}
+									autoFocus={isMobile ? false : autoFocus}
 									decimal={
 										coins[selectedSource]?.increment_unit || PAIR2_STATIC_SIZE
 									}
@@ -463,11 +534,12 @@ const QuickTrade = ({
 									selectedBalance={selectedBalance}
 									loading={loadingSource}
 									disabled={loadingSource}
+									setIsOpenTopField={setIsOpenTopField}
 								/>
 							</div>
 							<div className="d-flex swap-wrapper-wrapper">
 								<div className="swap-wrapper">
-									<div className="swap-container my-2">
+									<div className="swap-container">
 										<div
 											className="pointer blue-link"
 											onClick={() => onSwap(selectedSource, selectedTarget)}
@@ -480,8 +552,14 @@ const QuickTrade = ({
 									</div>
 								</div>
 							</div>
-							<div className="quick-trade-input">
-								<div className="d-flex justify-content-between mb-4">
+							<div
+								className={
+									isOpenBottomField
+										? 'active-border quick-trade-input'
+										: 'quick-trade-input'
+								}
+							>
+								<div className="d-flex justify-content-between mb-3">
 									<div className="bold caps-first">
 										<EditWrapper stringId={'TO'}>{STRINGS['TO']}</EditWrapper>
 									</div>
@@ -506,6 +584,7 @@ const QuickTrade = ({
 									coins={coins}
 									loading={loadingTarget}
 									disabled={loadingTarget}
+									setIsOpenBottomField={setIsOpenBottomField}
 								/>
 							</div>
 
@@ -536,7 +615,10 @@ const QuickTrade = ({
 									'd-flex',
 									'flex-column',
 									'align-items-end',
-									'btn-wrapper'
+									'btn-wrapper',
+									{
+										'btn-margin-wrapper': !hasExpiredOnce,
+									}
 								)}
 							>
 								<EditWrapper stringId={'QUICK_TRADE_COMPONENT.BUTTON'} />
@@ -546,9 +628,8 @@ const QuickTrade = ({
 									disabled={disabled}
 									type="button"
 									className={!isMobile ? 'w-50' : 'w-100'}
-									// iconId={'SETUP_QUICK_TRADE'}
-									// iconList={STATIC_ICONS}
-
+									iconId={'QUICK_TRADE_TAB_ACTIVE'}
+									iconList={ICONS}
 								/>
 							</div>
 							<Footer
@@ -630,4 +711,4 @@ const mapStateToProps = (store) => {
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(withRouter(QuickTrade));
+)(withRouter(withConfig(QuickTrade)));

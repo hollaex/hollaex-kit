@@ -1,0 +1,82 @@
+.P2pOrder {
+	.ant-steps-item-active .ant-steps-item-content {
+		background-color: transparent;
+	}
+	background-color: var(--base_wallet-sidebar-and-popup);
+
+	.buySideP2P {
+		background-color: var(--trading_buying-related-elements);
+		color: var(--calculated_base_top-bar-navigation_text) !important;
+	}
+	.sellSideP2P {
+		background-color: var(--trading_selling-related-elements);
+		color: var(--calculated_base_top-bar-navigation_text) !important;
+	}
+	.subTable {
+		background-color: var(--base_secondary-navigation-bar);
+	}
+
+	.postDealButton {
+		margin-top: 20px;
+	}
+}
+
+.postDealWrapper {
+	min-height: 600px;
+	width: 100%;
+	padding: 20px;
+}
+
+.greenButtonP2P {
+	background-color: var(--specials_checks-okay-done) !important;
+	color: var(--calculated_base_top-bar-navigation_text) !important;
+	border: none;
+}
+.redButtonP2P {
+	background-color: var(--trading_selling-related-elements) !important;
+	color: var(--calculated_base_top-bar-navigation_text) !important;
+	border: none;
+}
+.greyButtonP2P {
+	background-color: var(--labels_inactive-button) !important;
+	color: var(--calculated_base_top-bar-navigation_text) !important;
+	border: none;
+}
+.whiteTextP2P {
+	color: var(--labels_important-active-labels-text-graphics) !important;
+}
+
+.purpleTextP2P {
+	color: var(--specials_buttons-links-and-highlights) !important;
+}
+
+.purpleButtonP2P {
+	background-color: var(--specials_buttons-links-and-highlights) !important;
+	color: var(--calculated_base_top-bar-navigation_text) !important;
+	border: none;
+}
+.greyTextP2P {
+	color: var(--labels_inactive-button);
+}
+.openGreyTextP2P {
+	color: var(--labels_secondary-inactive-label-text-graphics);
+}
+
+.transparentButtonP2P {
+	background-color: transparent !important;
+	color: var(--labels_important-active-labels-text-graphics) !important;
+}
+
+.postDealP2PModel {
+	background-color: var(--base_secondary-navigation-bar) !important;
+}
+
+.mobile-view-p2p {
+	zoom: 0.5;
+	position: relative;
+}
+
+.mobile-view-p2p-post {
+	zoom: 0.4;
+	position: relative;
+}

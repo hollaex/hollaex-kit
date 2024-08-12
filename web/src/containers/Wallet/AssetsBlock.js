@@ -3,8 +3,15 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
-import { Switch } from 'antd';
-import { CaretUpOutlined, CaretDownOutlined } from '@ant-design/icons';
+import { Checkbox, Dropdown, Menu, Switch } from 'antd';
+import {
+	CaretUpOutlined,
+	CaretDownOutlined,
+	SearchOutlined,
+	CloseCircleOutlined,
+	MoreOutlined,
+} from '@ant-design/icons';
+
 import { fetchBalanceHistory, fetchPlHistory } from './actions';
 import classnames from 'classnames';
 import Highcharts from 'highcharts';
@@ -34,13 +41,12 @@ import {
 	CURRENCY_PRICE_FORMAT,
 	DEFAULT_COIN_DATA,
 } from 'config/constants';
+import { unique } from 'utils/data';
 import withConfig from 'components/ConfigProvider/withConfig';
 import TradeInputGroup from './components/TradeInputGroup';
-import { unique } from 'utils/data';
 import DustSection from './DustSection';
 import moment from 'moment';
 import _toLower from 'lodash/toLower';
-import BigNumber from 'bignumber.js';
 
 const AssetsBlock = ({
 	coins,
@@ -67,6 +73,7 @@ const AssetsBlock = ({
 	handleBalanceHistory,
 	balance_history_config,
 	info,
+	setActiveTab,
 }) => {
 	const emptyDonut = useMemo(() => {
 		return chartData && !!chartData.length;
@@ -75,6 +82,8 @@ const AssetsBlock = ({
 	const [graphData, setGraphData] = useState([]);
 	const [historyData, setHistoryData] = useState([]);
 	const [userPL, setUserPL] = useState();
+	const [plLoading, setPlLoading] = useState(false);
+	const [isSearchActive, setIsSearchActive] = useState(false);
 
 	const handleUpgrade = (info = {}) => {
 		if (
@@ -91,12 +100,14 @@ const AssetsBlock = ({
 	const isUpgrade = handleUpgrade(info);
 
 	useEffect(() => {
+		if (isMobile) return;
 		fetchPlHistory()
 			.then((res) => {
 				setUserPL(res);
 			})
 			.catch((err) => err);
 
+		setPlLoading(true);
 		fetchBalanceHistory({
 			start_date: moment().subtract(7, 'days').toISOString(),
 			end_date: moment().subtract().toISOString(),
@@ -113,10 +124,10 @@ const AssetsBlock = ({
 					);
 					// if (!balanceData) continue;
 					newGraphData.push([
-						`${moment().subtract(i, 'days').date()} ${
-							month[moment().subtract(i, 'days').month()]
-						}`,
-						balanceData ? balanceData.total : 0,
+						`   `,
+						balanceData
+							? balanceData.total
+							: response?.data?.[response.data.length - 1]?.total,
 					]);
 				}
 
@@ -124,28 +135,21 @@ const AssetsBlock = ({
 
 				setGraphData(newGraphData);
 				setHistoryData(response.data || []);
-				// setIsLoading(false);
+				setPlLoading(false);
 			})
 			.catch((error) => {
-				// setIsLoading(false);
+				setPlLoading(false);
 			});
+		return () => {
+			setIsSearchActive(false);
+		};
 		// eslint-disable-next-line
 	}, []);
-	const month = [
-		'Jan',
-		'Feb',
-		'Mar',
-		'Apr',
-		'May',
-		'Jun',
-		'Jul',
-		'Aug',
-		'Sep',
-		'Oct',
-		'Nov',
-		'Dec',
-	];
+
 	const options = {
+		chart: {
+			type: 'area',
+		},
 		title: {
 			text: '',
 		},
@@ -174,6 +178,17 @@ const AssetsBlock = ({
 			title: {
 				text: null,
 			},
+			min: (() => {
+				let min = graphData?.[0]?.[1];
+
+				graphData.forEach((graph) => {
+					if (min > graph[1]) {
+						min = graph[1];
+					}
+				});
+
+				return min;
+			})(),
 		},
 		plotOptions: {
 			series: {
@@ -194,16 +209,6 @@ const AssetsBlock = ({
 				color: '#FFFF00',
 			},
 		],
-	};
-
-	const getSourceDecimals = (symbol, value) => {
-		const incrementUnit = coins[symbol].increment_unit;
-		const decimalPoint = new BigNumber(incrementUnit).dp();
-		const sourceAmount = new BigNumber(value || 0)
-			.decimalPlaces(decimalPoint)
-			.toNumber();
-
-		return sourceAmount;
 	};
 
 	const handleClickAmount = () => {
@@ -285,201 +290,260 @@ const AssetsBlock = ({
 		return unique([...quickTrade, ...trade]);
 	};
 
+	const onHandleClose = () => {
+		setIsSearchActive(false);
+		handleSearch();
+	};
+
 	return showDustSection ? (
 		<DustSection goToWallet={goToWallet} />
 	) : (
-		<div
-			className={
-				emptyDonut
-					? 'wallet-assets_block'
-					: 'wallet-assets_block empty-wallet-assets_block'
-			}
-		>
+		<div>
 			{isMobile ? (
-				<section className="ml-4 pt-4">
-					{totalAssets.length && !loading ? (
-						<EditWrapper
-							stringId="WALLET_ESTIMATED_TOTAL_BALANCE"
-							render={(children) => (
-								<div className="wallet-search-improvement">
-									{BASE_CURRENCY && (
-										<div>
-											<div>{STRINGS['WALLET_ESTIMATED_TOTAL_BALANCE']}</div>
-											<div className="font-title">{totalAssets}</div>
-										</div>
-									)}
-								</div>
-							)}
-						>
-							{STRINGS['WALLET_ESTIMATED_TOTAL_BALANCE']}
-						</EditWrapper>
-					) : (
-						<div>
-							<div className="mb-2">{STRINGS['WALLET_BALANCE_LOADING']}</div>
-							<div className="loading-anime" />
-						</div>
-					)}
-					<div className="d-flex justify-content-between zero-balance-wrapper">
-						<EditWrapper stringId="WALLET_ASSETS_SEARCH_TXT">
-							<SearchBox
-								name="search-assets"
-								placeHolder={`${STRINGS['WALLET_ASSETS_SEARCH_TXT']}...`}
-								handleSearch={handleSearch}
-								showCross
-							/>
-						</EditWrapper>
-						<div className="d-flex">
-							<div className="d-flex px-4 align-items-center">
-								<EditWrapper stringId="DUST.TOOLTIP,DUST.LINK">
-									<Help tip={STRINGS['DUST.TOOLTIP']}>
-										<div
-											className="text-underline pointer blue-link"
-											onClick={goToDustSection}
+				<div
+					className={
+						emptyDonut
+							? 'wallet-assets_block'
+							: 'wallet-assets_block empty-wallet-assets_block'
+					}
+				>
+					<section className="mx-4 pt-4">
+						<div className="d-flex zero-balance-wrapper">
+							<div>
+								{!isSearchActive ? (
+									<div className="d-flex justify-content-between">
+										<span className="wallet-search-label">
+											<EditWrapper stringId="BALANCES">
+												{STRINGS['BALANCES']}
+											</EditWrapper>
+										</span>
+										<span
+											className="wallet-search-icon"
+											onClick={() => setIsSearchActive(true)}
 										>
-											{STRINGS['DUST.LINK']}
-										</div>
-									</Help>
-								</EditWrapper>
-							</div>
-							<div className="d-flex align-items-center">
-								<span>
-									<EditWrapper stringId="WALLET_HIDE_ZERO_BALANCE">
-										{STRINGS['WALLET_HIDE_ZERO_BALANCE']}
-									</EditWrapper>
-								</span>
-								<Switch
-									checked={isZeroBalanceHidden}
-									onClick={onToggle}
-									className="mx-2"
-								/>
-							</div>
-						</div>
-					</div>
-				</section>
-			) : (
-				<section>
-					<div className="d-flex align-items-center justify-content-between">
-						<div className="d-flex align-items-center">
-							<div
-								className={classnames(
-									`${
-										emptyDonut
-											? 'donut-container'
-											: 'donut-container donut-container-empty'
-									}`,
-									{
-										'd-flex align-items-center justify-content-center loading-wrapper': !chartData.length,
-									}
-								)}
-							>
-								{chartData.length ? (
-									<DonutChart
-										coins={coins}
-										chartData={chartData}
-										showOpenWallet={false}
-									/>
+											<SearchOutlined rotate={90} />
+										</span>
+									</div>
 								) : (
-									<div>
-										<div className="rounded-loading">
-											<div className="inner-round" />
+									<div className="wallet-search-field w-100">
+										<EditWrapper stringId="WALLET_ASSETS_SEARCH_TXT">
+											<SearchBox
+												name="search-assets"
+												placeHolder={`${STRINGS['WALLET_ASSETS_SEARCH_TXT']}...`}
+												handleSearch={handleSearch}
+												showCross
+												isFocus={true}
+											/>
+										</EditWrapper>
+										<div onClick={() => onHandleClose()}>
+											<EditWrapper stringId="CLOSE_TEXT">
+												<span className="blue-link close-text-link">
+													{STRINGS['CLOSE_TEXT']}
+													<CloseCircleOutlined />
+												</span>
+											</EditWrapper>
 										</div>
 									</div>
 								)}
 							</div>
-							{totalAssets.length && !loading ? (
-								<div className="mb-3">
-									<EditWrapper
-										stringId="WALLET_ESTIMATED_TOTAL_BALANCE"
-										render={(children) => (
-											<div className="wallet-search-improvement">
-												{BASE_CURRENCY && (
-													<div>
-														<div>
-															{STRINGS['WALLET_ESTIMATED_TOTAL_BALANCE']}
-														</div>
-														<div className="font-title">{totalAssets}</div>
-													</div>
-												)}
+							<div className="d-flex justify-content-between mt-3">
+								<div className="d-flex align-items-center hide-zero-balance-field">
+									<span className="fill_secondary-color">
+										<EditWrapper stringId="WALLET_HIDE_ZERO_BALANCE">
+											{STRINGS['WALLET_HIDE_ZERO_BALANCE']}
+										</EditWrapper>
+									</span>
+									<span className="hide-zero-balance-checkbox">
+										<Checkbox
+											onClick={(e) => onToggle(e.target.checked)}
+											checked={isZeroBalanceHidden}
+										></Checkbox>
+									</span>
+								</div>
+								<div className="d-flex align-items-center">
+									<EditWrapper stringId="DUST.TOOLTIP,DUST.LINK">
+										<Help tip={STRINGS['DUST.TOOLTIP']}>
+											<div
+												className="text-underline pointer blue-link"
+												onClick={goToDustSection}
+											>
+												{STRINGS['DUST.LINK']}
 											</div>
-										)}
-									>
-										{STRINGS['WALLET_ESTIMATED_TOTAL_BALANCE']}
+										</Help>
 									</EditWrapper>
-									<div className="d-flex align-items-center mt-2">
-										<EditWrapper stringId="DUST.TOOLTIP,DUST.LINK">
-											<Help tip={STRINGS['DUST.TOOLTIP']}>
-												<div
-													className="text-underline pointer blue-link"
-													onClick={goToDustSection}
-												>
-													{STRINGS['DUST.LINK']}
+								</div>
+							</div>
+						</div>
+					</section>
+				</div>
+			) : (
+				<section>
+					<div
+						className={
+							emptyDonut
+								? 'wallet-assets_block'
+								: 'wallet-assets_block empty-wallet-assets_block'
+						}
+						style={{ overflowY: 'unset' }}
+					>
+						<div className="d-flex align-items-center justify-content-between">
+							<div className="d-flex align-items-center">
+								<div
+									className={classnames(
+										`${
+											emptyDonut
+												? 'donut-container'
+												: 'donut-container donut-container-empty'
+										}`,
+										{
+											'd-flex align-items-center justify-content-center loading-wrapper': !chartData.length,
+										}
+									)}
+								>
+									{chartData.length ? (
+										<DonutChart
+											coins={coins}
+											chartData={chartData}
+											showOpenWallet={false}
+											centerText={true}
+										/>
+									) : (
+										<div>
+											<div className="rounded-loading">
+												<div className="inner-round" />
+											</div>
+										</div>
+									)}
+								</div>
+								{totalAssets.length && !loading ? (
+									<div className="mb-3">
+										<EditWrapper
+											stringId="WALLET_ESTIMATED_TOTAL_BALANCE"
+											render={(children) => (
+												<div className="wallet-search-improvement">
+													{BASE_CURRENCY && (
+														<div>
+															<div>
+																{STRINGS['WALLET_ESTIMATED_TOTAL_BALANCE']}
+															</div>
+															<div className="header-title plButton">
+																{totalAssets}
+															</div>
+														</div>
+													)}
+													{!isUpgrade &&
+														balance_history_config?.active &&
+														Number(userPL?.['7d']?.total || 0) !== 0 && (
+															<div
+																onClick={() => {
+																	handleBalanceHistory(true);
+																}}
+																style={{ cursor: 'pointer' }}
+																className={
+																	Number(userPL?.['7d']?.total || 0) === 0
+																		? 'profitNeutral'
+																		: (userPL?.['7d']?.total || 0) > 0
+																		? 'profitPositive'
+																		: 'profitNegative'
+																}
+															>
+																<EditWrapper stringId="PROFIT_LOSS.PL_7_DAY">
+																	{STRINGS['PROFIT_LOSS.PL_7_DAY']}
+																</EditWrapper>{' '}
+																{Number(userPL?.['7d']?.total || 0) > 0
+																	? '+'
+																	: ' '}
+																{''}
+																{userPL?.['7d']?.totalPercentage
+																	? `${userPL?.['7d']?.totalPercentage}% `
+																	: ' '}
+															</div>
+														)}
 												</div>
-											</Help>
+											)}
+										>
+											{STRINGS['WALLET_ESTIMATED_TOTAL_BALANCE']}
+										</EditWrapper>
+										<div className="d-flex align-items-center mt-2">
+											<EditWrapper stringId="DUST.TOOLTIP,DUST.LINK">
+												<Help tip={STRINGS['DUST.TOOLTIP']}>
+													<div
+														className="text-underline pointer blue-link"
+														onClick={goToDustSection}
+													>
+														{STRINGS['DUST.LINK']}
+													</div>
+												</Help>
+											</EditWrapper>
+										</div>
+									</div>
+								) : (
+									<div>
+										<div className="mb-2">
+											{STRINGS['WALLET_BALANCE_LOADING']}
+										</div>
+										<div className="loading-anime" />
+									</div>
+								)}
+							</div>
+							{!isUpgrade &&
+							balance_history_config?.active &&
+							historyData.length > 1 ? (
+								<div className="profit-loss-wrapper">
+									<div
+										style={{
+											marginTop: 10,
+											display: 'flex',
+											justifyContent: 'flex-end',
+										}}
+									>
+										<EditWrapper stringId="PROFIT_LOSS.PERFORMANCE_TREND">
+											{STRINGS['PROFIT_LOSS.PERFORMANCE_TREND']}
+										</EditWrapper>
+									</div>
+									<div style={{ width: '21rem', opacity: 0, fontSize: 1 }}>
+										{STRINGS['PROFIT_LOSS.WALLET_PERFORMANCE_TITLE']}
+									</div>
+
+									<div
+										onClick={() => handleBalanceHistory(true)}
+										style={{ zoom: 0.3, cursor: 'pointer' }}
+										className="highChartColor highChartColorOverview"
+									>
+										{' '}
+										<HighchartsReact
+											highcharts={Highcharts}
+											options={options}
+										/>{' '}
+									</div>
+									<div
+										className="view-more-content"
+										onClick={() => handleBalanceHistory(true)}
+									>
+										<EditWrapper stringId="STAKE_DETAILS.VIEW_MORE">
+											{STRINGS.formatString(
+												STRINGS['PROFIT_LOSS.VIEW_MORE'],
+												'>'
+											)}
 										</EditWrapper>
 									</div>
 								</div>
 							) : (
-								<div>
-									<div className="mb-2">
-										{STRINGS['WALLET_BALANCE_LOADING']}
-									</div>
-									<div className="loading-anime" />
-								</div>
+								!plLoading &&
+								Number(userPL?.['7d']?.total || 0) === 0 && (
+									<Image
+										icon={ICONS['WALLET_GRAPHIC']}
+										wrapperClassName="wallet-graphic-icon"
+									/>
+								)
 							)}
 						</div>
-						{!isUpgrade &&
-						balance_history_config?.active &&
-						historyData.length > 1 ? (
-							<div>
-								<div style={{ marginTop: 10 }}>
-									<EditWrapper stringId="PROFIT_LOSS.PERFORMANCE_TREND">
-										{STRINGS['PROFIT_LOSS.PERFORMANCE_TREND']}
-									</EditWrapper>
-								</div>
-								<div style={{ width: 300, opacity: 0, fontSize: 1 }}>
-									{STRINGS['PROFIT_LOSS.WALLET_PERFORMANCE_TITLE']}
-								</div>
-
-								<div
-									onClick={() => handleBalanceHistory(true)}
-									style={{ zoom: 0.5, cursor: 'pointer' }}
-									className="highChartColor"
-								>
-									{' '}
-									<HighchartsReact
-										highcharts={Highcharts}
-										options={options}
-									/>{' '}
-								</div>
-
-								<div
-									className={
-										Number(userPL?.['7d']?.total || 0) === 0
-											? 'profitNeutral'
-											: (userPL?.['7d']?.total || 0) > 0
-											? 'profitPositive'
-											: 'profitNegative'
-									}
-								>
-									<EditWrapper stringId="PROFIT_LOSS.PL_7_DAY">
-										{STRINGS['PROFIT_LOSS.PL_7_DAY']}
-									</EditWrapper>{' '}
-									{Number(userPL?.['7d']?.total || 0) > 0 ? '+' : ''}{' '}
-									{getSourceDecimals(
-										balance_history_config?.currency || 'usdt',
-										userPL?.['7d']?.total
-									) || '0'}{' '}
-									{balance_history_config?.currency?.toUpperCase() || 'USDT'}
-								</div>
-							</div>
-						) : (
-							<Image
-								icon={ICONS['WALLET_GRAPHIC']}
-								wrapperClassName="wallet-graphic-icon"
-							/>
-						)}
 					</div>
-					<div className="d-flex justify-content-between pl-3 pr-3">
+
+					<div
+						className="d-flex justify-content-between pl-3 pr-3 wallet-assets_block"
+						style={{ marginTop: '2rem' }}
+					>
 						<div>
 							<EditWrapper stringId="WALLET_ASSETS_SEARCH_TXT">
 								<SearchBox
@@ -487,6 +551,7 @@ const AssetsBlock = ({
 									placeHolder={`${STRINGS['WALLET_ASSETS_SEARCH_TXT']}...`}
 									handleSearch={handleSearch}
 									showCross
+									isFocus={true}
 								/>
 							</EditWrapper>
 						</div>
@@ -502,6 +567,12 @@ const AssetsBlock = ({
 										checked={isZeroBalanceHidden}
 										onClick={onToggle}
 										className="mx-2"
+										checkedChildren={STRINGS[
+											'DEFAULT_TOGGLE_OPTIONS.ON'
+										].toUpperCase()}
+										unCheckedChildren={STRINGS[
+											'DEFAULT_TOGGLE_OPTIONS.OFF'
+										].toUpperCase()}
 									/>
 								</div>
 							</div>
@@ -509,181 +580,295 @@ const AssetsBlock = ({
 					</div>
 				</section>
 			)}
+
 			<div className="d-flex justify-content-end">
 				<EditWrapper configId="WALLET_LIST_CONFIGS" position={[0, 0]} />
 			</div>
-			<table className="wallet-assets_block-table">
-				<thead>
-					<tr className="table-bottom-border">
-						<th />
-						<th>
-							<EditWrapper stringId="CURRENCY">
-								{STRINGS['CURRENCY']}
-							</EditWrapper>
-						</th>
-						<th>
-							<div onClick={handleClickAmount} className="d-flex pointer">
-								<EditWrapper stringId="AMOUNT">{STRINGS['AMOUNT']}</EditWrapper>
-								{renderCaret(WALLET_SORT.AMOUNT)}
-							</div>
-						</th>
-						<th className="td-amount" />
-						<th>
-							<EditWrapper stringId="DEPOSIT_WITHDRAW,WALLET_BUTTON_BASE_DEPOSIT,WALLET_BUTTON_BASE_WITHDRAW,GENERATE_WALLET">
-								{STRINGS['DEPOSIT_WITHDRAW']}
-							</EditWrapper>
-						</th>
-						{!isMobile && (
-							<th>
-								<EditWrapper stringId="TRADE_TAB_TRADE">
-									{STRINGS['TRADE_TAB_TRADE']}
+			<div
+				className={
+					emptyDonut
+						? 'wallet-assets_block'
+						: 'wallet-assets_block empty-wallet-assets_block'
+				}
+			>
+				<table className="wallet-assets_block-table">
+					<thead>
+						<tr className="table-bottom-border">
+							<th />
+							<th className={isMobile ? 'fill_secondary-color' : ''}>
+								<EditWrapper stringId="CURRENCY">
+									{isMobile
+										? STRINGS['MARKETS_TABLE.ASSET']
+										: STRINGS['CURRENCY']}
 								</EditWrapper>
 							</th>
-						)}
-						{/* {hasEarn && (
+							{isMobile && (
+								<th className="fill_secondary-color mobile-balance-header">
+									<EditWrapper stringId="CURRENCY">
+										{STRINGS['WALLET.MOBILE_WALLET_BALANCE_LABEL']}
+									</EditWrapper>
+								</th>
+							)}
+							{!isMobile && (
+								<th>
+									<div onClick={handleClickAmount} className="d-flex pointer">
+										<EditWrapper stringId="AMOUNT">
+											{STRINGS['AMOUNT']}
+										</EditWrapper>
+										{renderCaret(WALLET_SORT.AMOUNT)}
+									</div>
+								</th>
+							)}
+							<th className="td-amount" />
+							{!isMobile && (
+								<th>
+									<EditWrapper stringId="DEPOSIT_WITHDRAW,WALLET_BUTTON_BASE_DEPOSIT,WALLET_BUTTON_BASE_WITHDRAW,GENERATE_WALLET">
+										{STRINGS['DEPOSIT_WITHDRAW']}
+									</EditWrapper>
+								</th>
+							)}
+							{!isMobile && (
+								<th>
+									<EditWrapper stringId="TRADE_TAB_TRADE">
+										{STRINGS['TRADE_TAB_TRADE']}
+									</EditWrapper>
+								</th>
+							)}
+							{/* {hasEarn && (
 							<th>
 								<EditWrapper stringId="STAKE.EARN">
 									{STRINGS['STAKE.EARN']}
 								</EditWrapper>
 							</th>
 						)} */}
-					</tr>
-				</thead>
-				<tbody>
-					{assets.map(
-						(
-							[
-								key,
-								{
-									increment_unit,
-									allow_deposit,
-									allow_withdrawal,
-									oraclePrice,
-									balance,
-									fullname,
-									symbol = '',
-									display_name,
-									icon_id,
-								} = DEFAULT_COIN_DATA,
-							],
-							index
-						) => {
-							const markets = getAllAvailableMarkets(key);
-							const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
-							const balanceText =
-								key === BASE_CURRENCY
-									? formatCurrencyByIncrementalUnit(balance, increment_unit)
-									: formatCurrencyByIncrementalUnit(
-											calculateOraclePrice(balance, oraclePrice),
-											baseCoin.increment_unit
-									  );
-							return (
-								<tr className="table-row table-bottom-border" key={key}>
-									<td className="table-icon td-fit" />
-									<td className="td-name td-fit">
-										{assets && !loading ? (
-											<div className="d-flex align-items-center wallet-hover cursor-pointer">
-												<Link to={`/wallet/${key.toLowerCase()}`}>
-													<Coin iconId={icon_id} />
-												</Link>
-												<Link to={`/wallet/${key.toLowerCase()}`}>
-													<div className="px-2">
-														<EditWrapper
-															stringId={`${symbol?.toUpperCase()}_FULLNAME`}
+						</tr>
+					</thead>
+					<tbody>
+						{assets.map(
+							(
+								[
+									key,
+									{
+										increment_unit,
+										allow_deposit,
+										allow_withdrawal,
+										oraclePrice,
+										balance,
+										fullname,
+										symbol = '',
+										display_name,
+										icon_id,
+									} = DEFAULT_COIN_DATA,
+								],
+								index
+							) => {
+								const markets = getAllAvailableMarkets(key);
+								const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+								const balanceText =
+									key === BASE_CURRENCY
+										? formatCurrencyByIncrementalUnit(balance, increment_unit)
+										: formatCurrencyByIncrementalUnit(
+												calculateOraclePrice(balance, oraclePrice),
+												baseCoin.increment_unit
+										  );
+								return (
+									<tr className="table-row table-bottom-border" key={key}>
+										<td className="table-icon td-fit" />
+										<td className="td-name td-fit">
+											{assets && !loading ? (
+												isMobile ? (
+													<div className="d-flex align-items-center wallet-hover cursor-pointer">
+														<Link
+															to={`/wallet/${key.toLowerCase()}`}
+															className="mt-3"
 														>
-															{fullname}
-														</EditWrapper>
+															<Coin iconId={icon_id} type="CS11" />
+														</Link>
+														<Link to={`/wallet/${key.toLowerCase()}`}>
+															<div className="px-2 font-weight-bold">
+																<EditWrapper
+																	stringId={`${symbol?.toUpperCase()}_FULLNAME`}
+																>
+																	{symbol?.toUpperCase()}
+																</EditWrapper>
+															</div>
+															<div className="ml-2 fill_secondary-color">
+																<EditWrapper
+																	stringId={`${symbol?.toUpperCase()}_FULLNAME`}
+																>
+																	{fullname}
+																</EditWrapper>
+															</div>
+														</Link>
 													</div>
-												</Link>
-											</div>
-										) : (
-											<div
-												className="loading-row-anime w-half"
-												style={{
-													animationDelay: `.${index + 1}s`,
-												}}
-											/>
-										)}
-									</td>
-									<td className="td-amount">
-										{assets && baseCoin && !loading && increment_unit ? (
-											<div className="d-flex">
-												<div className="mr-4">
-													{STRINGS.formatString(
-														CURRENCY_PRICE_FORMAT,
-														formatCurrencyByIncrementalUnit(
-															balance,
-															increment_unit
-														),
-														display_name
-													)}
-												</div>
-												{!isMobile &&
-													key !== BASE_CURRENCY &&
-													parseFloat(balanceText || 0) > 0 && (
-														<div>
-															{`(≈ ${baseCoin.display_name} ${balanceText})`}
-														</div>
-													)}
-											</div>
-										) : (
-											<div
-												className="loading-row-anime w-full"
-												style={{
-													animationDelay: `.${index + 1}s`,
-												}}
-											/>
-										)}
-									</td>
-									<th className="td-amount" />
-									<td className="td-wallet">
-										<div className="d-flex justify-content-between deposit-withdrawal-wrapper">
-											<ActionNotification
-												stringId="WALLET_BUTTON_BASE_DEPOSIT"
-												text={STRINGS['WALLET_BUTTON_BASE_DEPOSIT']}
-												iconId="BLUE_PLUS"
-												iconPath={ICONS['BLUE_DEPOSIT_ICON']}
-												onClick={() => navigate(`wallet/${key}/deposit`)}
-												className="csv-action action-button-wrapper"
-												showActionText={isMobile}
-												disable={!allow_deposit}
-											/>
-											<ActionNotification
-												stringId="WALLET_BUTTON_BASE_WITHDRAW"
-												text={STRINGS['WALLET_BUTTON_BASE_WITHDRAW']}
-												iconId="BLUE_PLUS"
-												iconPath={ICONS['BLUE_WITHROW_ICON']}
-												onClick={() => navigate(`wallet/${key}/withdraw`)}
-												className="csv-action action-button-wrapper"
-												showActionText={isMobile}
-												disable={!allow_withdrawal}
-											/>
-										</div>
-									</td>
-									{!isMobile && (
-										<td>
-											{markets.length > 1 ? (
-												<TradeInputGroup
-													quicktrade={quicktrade}
-													markets={markets}
-													goToTrade={goToTrade}
-													pairs={pairs}
-												/>
+												) : (
+													<div className="d-flex align-items-center wallet-hover cursor-pointer">
+														<Link to={`/wallet/${key.toLowerCase()}`}>
+															<Coin iconId={icon_id} />
+														</Link>
+														<Link to={`/wallet/${key.toLowerCase()}`}>
+															<div className="px-2">
+																<EditWrapper
+																	stringId={`${symbol?.toUpperCase()}_FULLNAME`}
+																>
+																	{fullname}
+																</EditWrapper>
+															</div>
+														</Link>
+													</div>
+												)
 											) : (
-												<ActionNotification
-													stringId="TRADE_TAB_TRADE"
-													text={STRINGS['TRADE_TAB_TRADE']}
-													iconId="BLUE_TRADE_ICON"
-													iconPath={ICONS['BLUE_TRADE_ICON']}
-													onClick={() => goToTrade(markets[0])}
-													className="csv-action"
-													showActionText={isMobile}
-													disable={markets.length === 0}
+												<div
+													className="loading-row-anime w-half"
+													style={{
+														animationDelay: `.${index + 1}s`,
+													}}
 												/>
 											)}
 										</td>
-									)}
-									{/* {hasEarn && (
+										{isMobile ? (
+											<td className="td-amount">
+												{assets && baseCoin && !loading && increment_unit ? (
+													<div className="d-flex justify-content-end">
+														<Dropdown
+															size="small"
+															overlayClassName="custom-dropdown-style"
+															style={{
+																width: 130,
+															}}
+															overlay={
+																<Menu onClick={({ key }) => goToTrade(key)}>
+																	{markets.map((market) => {
+																		const { display_name, icon_id } =
+																			pairs[market] ||
+																			quicktrade.find(
+																				({ symbol }) => symbol === market
+																			) ||
+																			{};
+																		return (
+																			<Menu.Item className="caps" key={market}>
+																				<div className="d-flex align-items-center">
+																					<Coin
+																						iconId={icon_id}
+																						type={isMobile ? 'CS5' : 'CS2'}
+																					/>
+																					<div className="app_bar-pair-font">
+																						{display_name}
+																					</div>
+																				</div>
+																			</Menu.Item>
+																		);
+																	})}
+																</Menu>
+															}
+														>
+															<div className="amount-field">
+																<div className="d-flex flex-column align-items-end">
+																	<div className="font-weight-bold">
+																		{balance}
+																	</div>
+																	{key !== BASE_CURRENCY &&
+																		parseFloat(balanceText || 0) > 0 && (
+																			<div className="fill_secondary-color">
+																				{`(≈  $${balanceText})`}
+																			</div>
+																		)}
+																</div>
+																<MoreOutlined className="more-icon" />
+															</div>
+														</Dropdown>
+													</div>
+												) : (
+													<div
+														className="loading-row-anime w-full"
+														style={{
+															animationDelay: `.${index + 1}s`,
+														}}
+													/>
+												)}
+											</td>
+										) : (
+											<td className="td-amount">
+												{assets && baseCoin && !loading && increment_unit ? (
+													<div className="d-flex">
+														<div className="mr-4">
+															{STRINGS.formatString(
+																CURRENCY_PRICE_FORMAT,
+																formatCurrencyByIncrementalUnit(
+																	balance,
+																	increment_unit
+																),
+																display_name
+															)}
+														</div>
+														{key !== BASE_CURRENCY &&
+															parseFloat(balanceText || 0) > 0 && (
+																<div>
+																	{`(≈ ${baseCoin.display_name} ${balanceText})`}
+																</div>
+															)}
+													</div>
+												) : (
+													<div
+														className="loading-row-anime w-full"
+														style={{
+															animationDelay: `.${index + 1}s`,
+														}}
+													/>
+												)}
+											</td>
+										)}
+										{!isMobile && <th className="td-amount" />}
+										{!isMobile && (
+											<td className="td-wallet">
+												<div className="d-flex justify-content-between deposit-withdrawal-wrapper">
+													<ActionNotification
+														stringId="WALLET_BUTTON_BASE_DEPOSIT"
+														text={STRINGS['WALLET_BUTTON_BASE_DEPOSIT']}
+														iconId="BLUE_PLUS"
+														iconPath={ICONS['BLUE_DEPOSIT_ICON']}
+														onClick={() => navigate(`wallet/${key}/deposit`)}
+														className="csv-action action-button-wrapper"
+														showActionText={isMobile}
+														disable={!allow_deposit}
+													/>
+													<ActionNotification
+														stringId="WALLET_BUTTON_BASE_WITHDRAW"
+														text={STRINGS['WALLET_BUTTON_BASE_WITHDRAW']}
+														iconId="BLUE_PLUS"
+														iconPath={ICONS['BLUE_WITHROW_ICON']}
+														onClick={() => navigate(`wallet/${key}/withdraw`)}
+														className="csv-action action-button-wrapper"
+														showActionText={isMobile}
+														disable={!allow_withdrawal}
+													/>
+												</div>
+											</td>
+										)}
+										{!isMobile && (
+											<td>
+												{markets.length > 1 ? (
+													<TradeInputGroup
+														quicktrade={quicktrade}
+														markets={markets}
+														goToTrade={goToTrade}
+														pairs={pairs}
+													/>
+												) : (
+													<ActionNotification
+														stringId="TRADE_TAB_TRADE"
+														text={STRINGS['TRADE_TAB_TRADE']}
+														iconId="BLUE_TRADE_ICON"
+														iconPath={ICONS['BLUE_TRADE_ICON']}
+														onClick={() => goToTrade(markets[0])}
+														className="csv-action"
+														showActionText={isMobile}
+														disable={markets.length === 0}
+													/>
+												)}
+											</td>
+										)}
+										{/* {hasEarn && (
 										<td>
 											<ActionNotification
 												stringId="STAKE.EARN"
@@ -697,12 +882,33 @@ const AssetsBlock = ({
 											/>
 										</td>
 									)} */}
-								</tr>
-							);
-						}
-					)}
-				</tbody>
-			</table>
+									</tr>
+								);
+							}
+						)}
+					</tbody>
+				</table>
+
+				{isMobile && (
+					<div className="profit-loss-link mb-5">
+						<div onClick={() => handleBalanceHistory(true)}>
+							<EditWrapper stringId="WALLET.VIEW_MORE_WALLET_INFO">
+								<span className="profit-loss-tab-label">
+									{STRINGS['WALLET.VIEW_MORE_WALLET_INFO']}
+								</span>
+							</EditWrapper>
+						</div>
+
+						<div onClick={() => setActiveTab(1)}>
+							<EditWrapper stringId="WALLET.VIEW_WALLET_TRANSACTION_HISTORY">
+								<span className="profit-loss-tab-label">
+									{STRINGS['WALLET.VIEW_WALLET_TRANSACTION_HISTORY']}
+								</span>
+							</EditWrapper>
+						</div>
+					</div>
+				)}
+			</div>
 		</div>
 	);
 };

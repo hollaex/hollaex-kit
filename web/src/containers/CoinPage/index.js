@@ -5,7 +5,6 @@ import { bindActionCreators } from 'redux';
 import classnames from 'classnames';
 
 import { quicktradePairSelector } from 'containers/QuickTrade/components/utils';
-import { StarFilled, StarOutlined } from '@ant-design/icons';
 import { MarketsSelector } from 'containers/Trade/utils';
 import math from 'mathjs';
 import STRINGS from 'config/localizedStrings';
@@ -13,9 +12,9 @@ import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 import { Button, EditWrapper, Image, Coin } from 'components';
 import { getMiniCharts } from 'actions/chartAction';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { isLoggedIn } from 'utils/token';
 import { addToFavourites, removeFromFavourites } from 'actions/appActions';
 import Details from 'containers/QuickTrade/components/Details';
+import { formatCurrency } from 'utils';
 
 const TYPES = {
 	PRO: 'pro',
@@ -34,44 +33,42 @@ const CoinPage = ({
 	addToFavourites,
 	removeFromFavourites,
 	quicktradePairs,
-	markets
+	markets,
 }) => {
 	const {
 		params: { token: currentCoin },
 	} = router;
 
 	const currentCoinUpper = currentCoin?.toUpperCase();
-	
-	const currentQuicktradePair =
-		Object.keys(quicktradePairs).find((pair) =>
-			pair.split('-').includes(currentCoin)
-		);
 
-	const market = markets.find(
-		({ symbol }) => currentCoin === symbol
+	const currentQuicktradePair = Object.keys(quicktradePairs).find((pair) =>
+		pair.split('-').includes(currentCoin)
 	);
-	
+
+	const market = markets.find(({ symbol }) => currentCoin === symbol);
+
 	const isBroker =
 		currentQuicktradePair &&
-		[TYPES.NETWORK, TYPES.BROKER].includes(quicktradePairs[currentQuicktradePair].type);
+		[TYPES.NETWORK, TYPES.BROKER].includes(
+			quicktradePairs[currentQuicktradePair].type
+		);
 
-	const isNetwork = quicktradePairs[currentQuicktradePair]?.type === TYPES.NETWORK;
+	const isNetwork =
+		quicktradePairs[currentQuicktradePair]?.type === TYPES.NETWORK;
 
 	const [data, setData] = useState([]);
 	const [chartData, setChartData] = useState({});
-	const [selectedPair, setselectedPair] = useState([]);
 	const [lineChartData, setLineChartData] = useState({});
-	const selectedPairCoins = selectedPair && selectedPair?.[0];
 
 	useEffect(() => {
 		handleMarket();
-		const assetValues = Object.keys(coins).map((
-			val) => coins[val].code).toLocaleString();
+		const assetValues = Object.keys(coins)
+			.map((val) => coins[val].code)
+			.toLocaleString();
 
-		getMiniCharts(assetValues)
-			.then((chartValues) =>{
-				setChartData(chartValues);
-			});
+		getMiniCharts(assetValues).then((chartValues) => {
+			setChartData(chartValues);
+		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -81,8 +78,7 @@ const CoinPage = ({
 	}, [data, chartData]);
 
 	const handleOptions = () => {
-		const selectedPair = currentCoin+'-usdt';
-
+		const selectedPair = currentCoin + '-usdt';
 
 		const ChartData = {
 			...chartData[selectedPair],
@@ -90,7 +86,6 @@ const CoinPage = ({
 			type: 'line',
 		};
 		setLineChartData(ChartData);
-		setselectedPair(selectedPair);
 	};
 
 	const handleMarket = () => {
@@ -118,24 +113,7 @@ const CoinPage = ({
 		setData(market);
 	};
 
-	const handleBack = () => {
-		router.goBack();
-	};
-
 	const pairBase_fullName = coins[currentCoin]?.fullname;
-
-
-	const isFavourite = (pair) => {
-		return isLoggedIn() && favourites.includes(pair);
-	};
-
-	const toggleFavourite = (pair) => {
-		if (isLoggedIn()) {
-			return isFavourite(pair)
-				? removeFromFavourites(pair)
-				: addToFavourites(pair);
-		}
-	};
 
 	const handleTrade = (pair) => {
 		if (isBroker) {
@@ -166,42 +144,12 @@ const CoinPage = ({
 						<div className="title">
 							<div className="d-flex justify-content-between title-child-container">
 								<div>
-									<span>{pairBase_fullName}</span> {currentCoinUpper}
-								</div>
-								<div
-									className="pl-3 pr-2 favourite-content"
-									onClick={() => toggleFavourite(selectedPairCoins?.key)}
-								>
-									{isFavourite(selectedPairCoins?.key) ? (
-										<div className="d-flex align-items-center star-icon">
-											<div className="favourite-text">
-												<EditWrapper stringId="HOLLAEX_TOKEN.REMOVE_FAVOURITES">
-													{STRINGS['HOLLAEX_TOKEN.REMOVE_FAVOURITES']}
-												</EditWrapper>
-											</div>
-											<StarFilled className="stared-market" />
-										</div>
-									) : (
-										!isBroker && (
-											<div className="d-flex align-items-center">
-												<span className="favourite-text-2">
-													<EditWrapper stringId="HOLLAEX_TOKEN.ADD_FAVOURITES">
-														{STRINGS['HOLLAEX_TOKEN.ADD_FAVOURITES']}
-													</EditWrapper>
-												</span>
-												<StarOutlined />
-											</div>
-										)
-									)}
+									<span>{pairBase_fullName}</span> ({currentCoinUpper})
 								</div>
 							</div>
 						</div>
 						<div className="d-flex justify-content-between mt-3 mb-4 balance-wrapper">
-							<div className="link" onClick={handleBack}>
-								<EditWrapper stringId="HOLLAEX_TOKEN.GO_BACK">
-									&lt; {STRINGS['HOLLAEX_TOKEN.GO_BACK']}
-								</EditWrapper>
-							</div>
+							<div></div>
 							<div className="d-flex image-Wrapper">
 								<Image
 									iconId={''}
@@ -214,7 +162,9 @@ const CoinPage = ({
 									<EditWrapper stringId="HOLLAEX_TOKEN.BALANCE">
 										{STRINGS['HOLLAEX_TOKEN.BALANCE']}
 									</EditWrapper>{' '}
-									{available_balance[`${currentCoin}_available`]}{' '}
+									{formatCurrency(
+										available_balance[`${currentCoin}_available`]
+									)}{' '}
 									{currentCoinUpper}{' '}
 									<Link className="link" to={'/wallet'}>
 										<EditWrapper stringId="HOLLAEX_TOKEN.OPEN_WALLET">
@@ -277,7 +227,9 @@ const CoinPage = ({
 							<EditWrapper stringId="HOLLAEX_TOKEN.TRADE">
 								<Button
 									label={STRINGS.formatString(
-										STRINGS['HOLLAEX_TOKEN.QUICK_TRADE'],
+										isBroker
+											? STRINGS['HOLLAEX_TOKEN.QUICK_TRADE']
+											: STRINGS['HOLLAEX_TOKEN.PRO_TRADE'],
 										currentCoinUpper
 									)}
 									type="button"
@@ -288,8 +240,8 @@ const CoinPage = ({
 						</div>
 					</div>
 					<div className="trade-details-wrapper">
-						<Details 
-							coinChartData={lineChartData} 
+						<Details
+							coinChartData={lineChartData}
 							pair={`${currentCoin}-usdt`}
 							brokerUsed={isBroker}
 							networkName={market?.display_name}

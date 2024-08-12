@@ -12,7 +12,6 @@ Given ('Alice logged in successfully',()=>{
      cy.get('#trade-nav-container > :nth-child(4) > :nth-child(2)')
      .should('contain','tester+alice@hollaex.email')
 }) 
-
 And ('Alice has X amount of XHTT',()=>{
      cy.wait(3000)
      cy.contains('Wallet').click()
@@ -27,7 +26,6 @@ And ('Alice has X amount of XHTT',()=>{
      })
      cy.contains('Signout').click()
 }) 
-
 When ('Bob logged in successfully',()=>{
 
      cy.get('.holla-button').should('be.visible').should('be.disabled')
@@ -39,7 +37,6 @@ When ('Bob logged in successfully',()=>{
      cy.get('#trade-nav-container > :nth-child(4) > :nth-child(2)')
      .should('contain',Cypress.env('BOB'))
 })
-
 And ('Bob enables 2FA',()=>{
 
      cy.get('.app-menu-bar-side > :nth-child(6)').as('Car Keys').click()
@@ -61,7 +58,6 @@ And ('Bob enables 2FA',()=>{
      cy.reload()
      
 })
-
 And ('Bob transferred a minimal amount of XHTT to Alice',()=>{
     cy.wait(3000)
     cy.contains('Wallet').click()
@@ -80,9 +76,12 @@ And ('Bob transferred a minimal amount of XHTT to Alice',()=>{
     cy.get(':nth-child(3) > :nth-child(1) > :nth-child(1) > .field-content > .field-children > div > .input_field-input')
     .clear()
     .type('0xc99fc19ebdcc683d15d116360525c09417c109df')
+    cy.get(':nth-child(4) > :nth-child(1) > :nth-child(1) > .field-content > .field-children > [style="display: flex;"] > .input_field-input')
+    .clear()
+    .type('0.0001')
     cy.get('.holla-button').click()
     cy.get('.review-crypto-amount > :nth-child(1)')
-    .should('contain','1.0001 XHT')//changed
+    .should('contain','10.0001 XHT')//changed
     cy.get('.review-wrapper > .flex-column > :nth-child(4)')
     .should('contain','0xc99fc19ebdcc683d15d116360525c09417c109df')
     cy.get('.button-success').click()
@@ -100,9 +99,8 @@ And ('Bob transferred a minimal amount of XHTT to Alice',()=>{
    .should('contain','Confirm via Email')
   
     cy.get('.d-flex > .holla-button').click()
-    cy.wait(10000)
+    cy.wait(5000)
 })
-
 And ('Bob disables 2FA',()=>{
       cy.get('.app-menu-bar-side > :nth-child(6)').click()
       cy.contains('2FA').click()
@@ -123,64 +121,34 @@ And ('Bob disables 2FA',()=>{
   
  
 }) 
-
 When ('Bob confirm the transfer by Email',()=>{
 
-     cy.visit(Cypress.env('EMAIL_PAGE'));
-
-    // Login to the email account
-    cy.get('#wdc_username_div').type(Cypress.env('EMAIL_BOB'));
-    cy.get('#wdc_password').type(Cypress.env('EMAIL_PASS'));
-    cy.get('#wdc_login_button').click();
-
-    // Open the latest email in the inbox
-    cy.get('#ext-gen52').click();
-    cy.get('.x-grid3-row-first > .x-grid3-row-table > tbody[role="presentation"] > .x-grid3-row-body-tr > .x-grid3-body-cell > .x-grid3-row-body > .mail-body-row > tbody > tr > .subject > .grid_compact')
-      .dblclick();
-    cy.wait(5000);
-
-    // Verify the email content
-    cy.get('.preview-title').contains('sandbox XHT Withdrawal Request');
-    cy.fixture('example')
-    cy.get('.giraffe-emailaddress-link').last().contains('bob')
-    
-    cy.get('iframe').then(($iframe) => {
-      const $emailBody = $iframe.contents().find('body');
-      cy.wrap($emailBody).as('emailBody');
-    });
-    cy.get('@emailBody')
-      .find('a')
-      .should('exist');
-    cy.get('@emailBody')
-      .contains('You have made a XHT withdrawal request');
-
-    // Get all the links with "https" protocol from the email body
-    cy.get('@emailBody')
-      .find('a')
-      .then(($links) => {
-        const httpsLinks = [];
-        $links.each((index, link) => {
-          const href = link.href;
-          if (href && href.startsWith('https')) {
-            httpsLinks.push(href);
-          }
+      cy.task('getLastEmail', {
+          user: Cypress.env('BOB'),
+          password: Cypress.env('EMAIL_PASS'),
+          host: Cypress.env('EMAIL_HOST'),
+          port: 993,
+          tls: true  })
+          .then((emailContent) => {
+           cy.extractText(emailContent).then((extractedText) => {
+           cy.log(`Extracted Text: ${extractedText}`);
+           cy.fixture('example')
+            .then((user)=>{
+             expect(extractedText).to.include('bob')
+             expect(extractedText).to.include('You have made a XHT withdrawal request');
+          })
+            
+            cy.findFirstHyperlinkAfterMyWord(extractedText,'[').then((link) => {
+            cy.forceVisit(link.slice(0, -1));
+          });
         });
-        cy.wrap(httpsLinks[1]).as('httpsLink');
-      });
-
-    // Log the list of https links
-    cy.get('@httpsLink')
-      .then((httpsLink) => {
-        console.log(httpsLink);
-       cy.forceVisit(httpsLink);
-      });
-
-      cy.contains('Final Withdrawal Confirmation').should('exist')
+        })
+      
+         cy.contains('Final Withdrawal Confirmation').should('exist')
       cy.contains('CONFIRM WITHDRAWAL').click()
       cy.contains('Success').should('exist')
-     cy.writeFile('cypress\\fixtures\\timestamp.json', { name: 'timestamp', time: Date.now() })
+      cy.writeFile('cypress\\fixtures\\timestamp.json', { name: 'timestamp', time: Date.now() })
 }) 
-
 Then ('Bob cancels the transfer',()=>{
      cy.contains('Cancel').click()
      cy.contains('Cancel')
@@ -217,7 +185,7 @@ When ('Bob confirms that has not sent the minimal amount of XHTT',()=>{
                   var balance = user.balance;
                   var eq = balance-newBalance
                   //expect(eq).to.equal(0);
-                  const expectedValue = 1;
+                  const expectedValue = 10.0002;
                   const actualValue = eq/* Get the actual value from your application */;
                   const tolerance = 0.0001; // Define an acceptable tolerance
                 
@@ -259,7 +227,6 @@ When ('Bob confirms that has not sent the minimal amount of XHTT',()=>{
     // cy.contains('Signout').click()  
 
 })  
-
 And ('Bob confirms that has sent the minimal amount of XHTT',()=>{
      cy.visit(Cypress.env('LOGIN_PAGE'))
      cy.get('.holla-button').should('be.visible').should('be.disabled')
@@ -404,9 +371,12 @@ And ('Bob transferred a minimal amount of XHTT to wrong Alice address',()=>{
      cy.get(':nth-child(3) > :nth-child(1) > :nth-child(1) > .field-content > .field-children > div > .input_field-input')
      .clear()
      .type('0x97b7b520e553794a610dc25d06414719ffb44a77')
+     cy.get(':nth-child(4) > :nth-child(1) > :nth-child(1) > .field-content > .field-children > [style="display: flex;"] > .input_field-input')
+     .clear()
+     .type('0.0001')
      cy.get('.holla-button').click()
      cy.get('.review-crypto-amount > :nth-child(1)')
-     .should('contain','1.0001 XHT')//changed
+     .should('contain','10.0001 XHT')//changed
      cy.get('.review-wrapper > .flex-column > :nth-child(4)')
      .should('contain','0x97b7b520e553794a610dc25d06414719ffb44a77')
      cy.get('.button-success').click()
@@ -417,7 +387,6 @@ And ('Bob transferred a minimal amount of XHTT to wrong Alice address',()=>{
       cy.wait(10000)
 
 })
-
 And ('Bob transferred a minimal amount of XHTT to real Alice address',()=>{
 
      cy.wait(3000)
@@ -437,9 +406,12 @@ And ('Bob transferred a minimal amount of XHTT to real Alice address',()=>{
      cy.get(':nth-child(3) > :nth-child(1) > :nth-child(1) > .field-content > .field-children > div > .input_field-input')
      .clear()
      .type('0x97b7b520e553794a610dc25d06414719ffb44a77')
+     cy.get(':nth-child(4) > :nth-child(1) > :nth-child(1) > .field-content > .field-children > [style="display: flex;"] > .input_field-input')
+     .clear()
+     .type('0.0001')
      cy.get('.holla-button').click()
      cy.get('.review-crypto-amount > :nth-child(1)')
-     .should('contain','1.0001 XHT')//changed
+     .should('contain','10.0001 XHT')//changed
      cy.get('.review-wrapper > .flex-column > :nth-child(4)')
      .should('contain','0x97b7b520e553794a610dc25d06414719ffb44a77')
      cy.get('.button-success').click()

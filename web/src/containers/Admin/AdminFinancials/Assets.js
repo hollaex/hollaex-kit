@@ -27,35 +27,6 @@ import { STATIC_ICONS } from 'config/icons';
 
 const { Item } = Breadcrumb;
 
-const ASSET_TYPE_LIST = [
-	{ key: 'Bitcoin', value: 'btc' },
-	{ key: 'Bitcoin Cash', value: 'bch' },
-	{ key: 'Ripple', value: 'xrp' },
-	{ key: 'Ethereum', value: 'eth' },
-	{ key: 'HollaEx', value: 'hex' },
-	{ key: 'HollaEx', value: 'xht' },
-	{ key: 'Bitcoin Satoshi Vision', value: 'bsv' },
-	{ key: 'USD Tether', value: 'usdt' },
-	{ key: 'BNB', value: 'bnb' },
-	{ key: 'UNUS SED LEO', value: 'leo' },
-	{ key: 'Maker', value: 'mkr' },
-	{ key: 'USD Coin', value: 'usdc' },
-	{ key: 'BAT', value: 'bat' },
-	{ key: 'Monero', value: 'xmr' },
-	{ key: 'EOS', value: 'eos' },
-	{ key: 'Litecoin', value: 'ltc' },
-	{ key: 'Stellar', value: 'xlm' },
-	{ key: 'Cardano', value: 'ada' },
-	{ key: 'Tron', value: 'trx' },
-	{ key: 'NEO', value: 'neo' },
-	{ key: 'NEM', value: 'nem' },
-	{ key: 'Ethereum Classic', value: 'etc' },
-	{ key: 'Dash', value: 'dash' },
-	{ key: 'IOTA', value: 'miota' },
-	{ key: 'ZRX', value: 'zrx' },
-	{ key: 'Gold Tether', value: 'xaut' },
-];
-
 const filterOptions = [
 	{
 		label: 'All',
@@ -411,28 +382,12 @@ class Assets extends Component {
 				(await res.data) &&
 				res.data.data &&
 				res.data.data.map((item) => {
-					// NOTE: Monero set disabled
-					if (item.symbol === 'xmr') {
-						return {
-							key: 'Monero',
-							value: 'xmr',
-							disabled: true,
-							...item,
-						};
-					}
-					const filter = ASSET_TYPE_LIST.filter(
-						(obj) => obj.value === item.symbol
-					);
-					if (filter.length === 0) {
-						return {
-							key: item.fullname,
-							value: item.symbol,
-							...item,
-						};
-					} else {
-						return { ...filter[0], ...item };
-					}
-				});
+				return {
+					key: item.fullname,
+					value: item.symbol,
+					...item,
+				};
+			});
 
 			return this.props.setCoins(coins);
 		} catch (error) {
@@ -728,9 +683,9 @@ class Assets extends Component {
 			isLoading,
 		} = this.state;
 
-		const { owner_id, created_by, verified } = selectedAsset;
-		const showMintAndBurnButtons = verified && owner_id === user_id;
-		const showConfigureButton = created_by === user_id || owner_id === user_id;
+		const { owner_id, created_by, verified, type } = selectedAsset;
+		const showMintAndBurnButtons = verified && (owner_id === user_id || type === 'fiat');
+		const showConfigureButton = created_by === user_id || owner_id === user_id ;
 
 		if (isConfigure) {
 			return (
@@ -781,39 +736,39 @@ class Assets extends Component {
 							isLoading={isLoading}
 						/>
 					</div>
-					{showConfigureButton && (
-						<div>
-							<div className="d-flex">
-								<Button
-									type="primary"
-									className="green-btn"
-									onClick={this.handleConfigure}
-								>
-									Configure
-								</Button>
-								<div className="separator" />
-								{showMintAndBurnButtons && (
-									<Fragment>
-										<Button
-											className="green-btn"
-											type="primary"
-											onClick={() => this.handleConfigureEdit('mint')}
-										>
-											Mint
-										</Button>
-										<div className="separator" />
-										<Button
-											className="green-btn"
-											type="primary"
-											onClick={() => this.handleConfigureEdit('burn')}
-										>
-											Burn
-										</Button>
-									</Fragment>
-								)}
-							</div>
+					<div>
+						<div className="d-flex">
+							{showConfigureButton && (
+							<Button
+								type="primary"
+								className="green-btn"
+								onClick={this.handleConfigure}
+							>
+								Configure
+							</Button>
+							)}
+							<div className="separator" />
+							{showMintAndBurnButtons && (
+								<Fragment>
+									<Button
+										className="green-btn"
+										type="primary"
+										onClick={() => this.handleConfigureEdit('mint')}
+									>
+										Mint
+									</Button>
+									<div className="separator" />
+									<Button
+										className="green-btn"
+										type="primary"
+										onClick={() => this.handleConfigureEdit('burn')}
+									>
+										Burn
+									</Button>
+								</Fragment>
+							)}
 						</div>
-					)}
+					</div>
 				</div>
 			);
 		}
@@ -977,6 +932,7 @@ class Assets extends Component {
 								rowKey={(data, index) => index}
 								dataSource={coins}
 								loading={!coins.length}
+								pagination={false}
 							/>
 						</div>
 					</Fragment>

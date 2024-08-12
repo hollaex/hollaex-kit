@@ -3,17 +3,13 @@ import momentJ from 'moment-jalaali';
 import math from 'mathjs';
 import _toLower from 'lodash/toLower';
 import {
-	TOKEN_TIME,
 	TIMESTAMP_FORMAT,
 	TIMESTAMP_FORMAT_FA,
 	DEFAULT_TIMESTAMP_FORMAT,
 	AUDIOS,
-	NETWORK_API_URL,
 } from '../config/constants';
 import { getLanguage } from './string';
 import _orderBy from 'lodash/orderBy';
-import { getDashToken } from './token';
-import axios from 'axios';
 
 const bitcoin = {
 	COIN: 100000000,
@@ -45,12 +41,6 @@ bitcoin.toBTC = (satoshi) => {
 };
 
 export default bitcoin;
-
-export const checkUserSessionExpired = (loginTime) => {
-	const currentTime = Date.now();
-
-	return currentTime - loginTime > TOKEN_TIME;
-};
 
 export const getFormattedBOD = (date, format = DEFAULT_TIMESTAMP_FORMAT) => {
 	if (getLanguage() === 'fa') {
@@ -325,47 +315,4 @@ export const constractPaymentOption = (paymentsData) => {
 		tempData.push({ name: key, ...paymentsData[key] });
 	});
 	return _orderBy(tempData, ['orderBy'], ['asc']);
-};
-
-export const _FetchDash = (
-	url,
-	method,
-	data = null,
-	baseURL = NETWORK_API_URL
-) => {
-	const tempToken =
-		'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsiaWQiOjI4MjYsImVtYWlsIjoicmFtKzQyQGJpdGhvbGxhLmNvbSJ9LCJzY29wZXMiOlsidXNlciIsIm9wZXJhdG9yIl0sImlwIjoiNTkuOTMuMzIuMTI3IiwiaXNzIjoiYml0aG9sbGEuY29tIiwiaWF0IjoxNjc0MTE0OTkzLCJleHAiOjE2NzQyMDEzOTN9.Ob7Ep6MA-jj06QlpLeUYC6DjxOSxgwmUk8fLX6d_TBA';
-	return new Promise((resolve, reject) => {
-		const ID_TOKEN = getDashToken();
-		if (url.includes('plan') || url.includes('pay')) {
-			axios.defaults.headers.post['Content-Type'] = 'application/json';
-			axios.defaults.headers.common['Authorization'] = `Bearer ${tempToken}`;
-		} else if (ID_TOKEN) {
-			console.log('ID_TOKEN', ID_TOKEN);
-			axios.defaults.headers.post['Content-Type'] = 'application/json';
-			axios.defaults.headers.common['Authorization'] = `Bearer ${ID_TOKEN}`;
-		}
-		const config = {
-			baseURL,
-			method,
-			url,
-		};
-		if (data) {
-			config.data = data;
-		}
-		axios(config)
-			.then((res) => {
-				resolve(res);
-			})
-			.catch((err) => {
-				if (err.response === undefined) {
-					reject({
-						data: {
-							message: 'Request Failed',
-						},
-					});
-				}
-				reject(err.response);
-			});
-	});
 };

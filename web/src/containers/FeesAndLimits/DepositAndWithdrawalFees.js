@@ -1,9 +1,9 @@
 import React from 'react';
 import { Coin, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
-import { formatPercentage } from 'utils/currency';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { getNetworkNameByKey } from 'utils/wallet';
+import BigNumber from 'bignumber.js';
 
 const renderRow = (
 	icon_id,
@@ -29,19 +29,37 @@ const renderRow = (
 	);
 };
 
-const getFeeText = (data, level) => {
-	const { symbol, type = 'static', value, levels } = data;
+const getFeeText = (data, level, type, coin_customizations, coins) => {
+	const { symbol, value } = data;
 
-	const fee = levels && levels[level] ? levels[level] : value;
-	const text =
-		type === 'percentage'
-			? formatPercentage(fee)
-			: `${fee} ${symbol?.toUpperCase()}`;
+	let fee = value;
+
+	if (type === 'withdrawal') {
+		const feeMarkup = coin_customizations?.[symbol]?.fee_markup;
+		if (feeMarkup) {
+			const incrementUnit = coins?.[symbol]?.increment_unit;
+			const decimalPoint = new BigNumber(incrementUnit).dp();
+			const roundedMarkup = new BigNumber(feeMarkup)
+				.decimalPlaces(decimalPoint)
+				.toNumber();
+
+			fee = new BigNumber(fee || 0).plus(roundedMarkup || 0).toNumber();
+		}
+	}
+	const text = `${fee} ${symbol?.toUpperCase()}`;
 
 	return text;
 };
 
-const getRows = (level, coins, icons, search, strings) => {
+const getRows = (
+	level,
+	coins,
+	icons,
+	search,
+	strings,
+	coin_customizations,
+	fiat_fees
+) => {
 	const rowData = [];
 	Object.entries(coins)
 		.filter(([key]) => !search || (search && key.includes(search)))
@@ -55,6 +73,7 @@ const getRows = (level, coins, icons, search, strings) => {
 				symbol,
 				network: networks,
 				allow_withdrawal,
+				type,
 			} = coin;
 			if (withdrawal_fees) {
 				Object.keys(withdrawal_fees).forEach((network, n_index) => {
@@ -63,11 +82,23 @@ const getRows = (level, coins, icons, search, strings) => {
 						withdrawal_fees_data['symbol'] = symbol;
 					}
 					const withdrawal_text = allow_withdrawal
-						? getFeeText(withdrawal_fees_data, level)
+						? getFeeText(
+								withdrawal_fees_data,
+								level,
+								'withdrawal',
+								coin_customizations,
+								coins
+						  )
 						: strings['FEES_AND_LIMITS.TABS.WITHDRAWAL_FEES.TABLE.NOT_ALLOWED'];
 					const deposit_text =
 						deposit_fees && deposit_fees[network]
-							? getFeeText(deposit_fees[network], level)
+							? getFeeText(
+									deposit_fees[network],
+									level,
+									'deposit',
+									coin_customizations,
+									coins
+							  )
 							: 'N/A';
 					const index = `${c_index}_${n_index}`;
 					const display_text =
@@ -87,8 +118,15 @@ const getRows = (level, coins, icons, search, strings) => {
 					);
 				});
 			} else {
+				let customFee;
+				if (type === 'fiat') {
+					customFee = fiat_fees?.[symbol]?.withdrawal_fee;
+				}
+
 				const withdrawal_text = allow_withdrawal
-					? `${withdrawal_fee} ${display_name}`
+					? `${
+							type === 'fiat' ? customFee || withdrawal_fee : withdrawal_fee
+					  } ${display_name}`
 					: strings['FEES_AND_LIMITS.TABS.WITHDRAWAL_FEES.TABLE.NOT_ALLOWED'];
 				rowData.push(
 					renderRow(
@@ -105,7 +143,14 @@ const getRows = (level, coins, icons, search, strings) => {
 	return rowData;
 };
 
-const DepositAndWithdrawalFees = ({ coins, level, icons, search }) => {
+const DepositAndWithdrawalFees = ({
+	coins,
+	level,
+	icons,
+	search,
+	coin_customizations,
+	fiat_fees,
+}) => {
 	return (
 		<div className="wallet-assets_block">
 			<table className="wallet-assets_block-table">
@@ -142,7 +187,17 @@ const DepositAndWithdrawalFees = ({ coins, level, icons, search }) => {
 						</th>
 					</tr>
 				</thead>
-				<tbody>{getRows(level, coins, icons, search, STRINGS)}</tbody>
+				<tbody>
+					{getRows(
+						level,
+						coins,
+						icons,
+						search,
+						STRINGS,
+						coin_customizations,
+						fiat_fees
+					)}
+				</tbody>
 			</table>
 		</div>
 	);

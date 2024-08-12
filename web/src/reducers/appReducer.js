@@ -58,6 +58,23 @@ import {
 	SET_EXPLORE_PLUGINS,
 	OVERWRITE_CURRENCY_NAMES,
 	SET_TRANSACTION_LIMITS,
+	SET_SELECTED_ACCOUNT,
+	SET_SELECTED_STEP,
+	SET_WITHDRAW_CURRENCY,
+	SET_WITHDRAW_NETWORK,
+	SET_WITHDRAW_ADDRESS,
+	SET_WITHDRAW_AMOUNT,
+	SET_WITHDRAW_NETWORK_OPTIONS,
+	SET_WITHDRAW_FEE,
+	SET_DEPOSIT_AND_WITHDRAW,
+	SET_VALID_ADDRESS,
+	SET_DEPOSIT_NETWORK_OPTIONS,
+	SET_DEPOSIT_NETWORK,
+	SET_DEPOSIT_CURRENCY,
+	SET_SELECTED_METHOD,
+	SET_RECEIVER_EMAIL,
+	SET_WITHDRAW_OTIONAL_TAG,
+	SET_CHART_DATA,
 } from 'actions/appActions';
 import { THEME_DEFAULT } from 'config/constants';
 import { getLanguage } from 'utils/string';
@@ -93,6 +110,23 @@ const EMPTY_SNACK_NOTIFICATION = {
 	content: '',
 	isDialog: false,
 	dialogData: [],
+	timer: 0,
+};
+
+const WITHDRAW_FIELDS = {
+	withdrawCurrency: '',
+	withdrawNetwork: '',
+	withdrawNetworkOptions: '',
+	withdrawAddress: '',
+	withdrawAmount: 0,
+	withdrawFee: 0,
+	optionalTag: '',
+};
+
+const DEPOSIT_FIELDS = {
+	depositCurrency: '',
+	depositNetwork: '',
+	depositNetworkOptions: '',
 };
 
 const INITIAL_STATE = {
@@ -107,74 +141,14 @@ const INITIAL_STATE = {
 	snackNotification: EMPTY_SNACK_NOTIFICATION,
 	theme: THEME_DEFAULT,
 	language: getLanguage(),
+	sparkLineChartData: {},
 	pairs: {},
 	pair: '',
 	activeOrdersMarket: '',
 	recentTradesMarket: '',
 	tickers: {},
 	orderLimits: {},
-	coins: {
-		bch: {
-			id: 4,
-			fullname: 'Bitcoin Cash',
-			symbol: 'bch',
-			active: true,
-			allow_deposit: true,
-			allow_withdrawal: true,
-			withdrawal_fee: 0.0001,
-			min: 0.0001,
-			max: 100000,
-			increment_unit: 0.001,
-		},
-		xrp: {
-			id: 5,
-			fullname: 'Ripple',
-			symbol: 'xrp',
-			active: true,
-			allow_deposit: true,
-			allow_withdrawal: true,
-			withdrawal_fee: 0.0001,
-			min: 0.0001,
-			max: 100000,
-			increment_unit: 0.001,
-		},
-		eur: {
-			id: 1,
-			fullname: 'Euro',
-			symbol: 'eur',
-			active: true,
-			allow_deposit: true,
-			allow_withdrawal: true,
-			withdrawal_fee: 0.0001,
-			min: 0.0001,
-			max: 100000,
-			increment_unit: 0.0001,
-		},
-		btc: {
-			id: 2,
-			fullname: 'Bitcoin',
-			symbol: 'btc',
-			active: true,
-			allow_deposit: true,
-			allow_withdrawal: true,
-			withdrawal_fee: 0.0001,
-			min: 0.0001,
-			max: 100000,
-			increment_unit: 0.0001,
-		},
-		eth: {
-			id: 3,
-			fullname: 'Ethereum',
-			symbol: 'eth',
-			active: true,
-			allow_deposit: true,
-			allow_withdrawal: true,
-			withdrawal_fee: 0.0001,
-			min: 0.0001,
-			max: 100000,
-			increment_unit: 0.001,
-		},
-	},
+	coins: {},
 	constants: {},
 	config_level: {},
 	info: { is_trial: false, active: true, status: true },
@@ -221,6 +195,14 @@ const INITIAL_STATE = {
 		is_descending: true,
 	},
 	default_digital_assets_sort: DIGITAL_ASSETS_SORT.CHANGE,
+	selectedAccount: 1,
+	selectedStep: 0,
+	withdrawFields: WITHDRAW_FIELDS,
+	depositFields: DEPOSIT_FIELDS,
+	depositAndWithdraw: false,
+	isValidAddress: '',
+	selectedWithdrawMethod: 'Address',
+	receiverWithdrawalEmail: null,
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -241,6 +223,11 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 				pair: payload.pair,
 				activeOrdersMarket: payload.pair,
 				recentTradesMarket: payload.pair,
+			};
+		case SET_CHART_DATA:
+			return {
+				...state,
+				sparkLineChartData: payload.sparkLineChartData,
 			};
 		case SET_ACTIVE_ORDERS_MARKET:
 			return {
@@ -343,6 +330,7 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 					icon: payload.icon ? payload.icon : '',
 					useSvg: payload.useSvg ? payload.useSvg : true,
 					content: payload.content ? payload.content : '',
+					timer: payload.timer ? payload.timer : 0,
 				},
 			};
 
@@ -766,6 +754,94 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 				pinned_assets: payload.pinned_assets,
 				default_digital_assets_sort: payload.default_digital_assets_sort,
 			};
+		case SET_SELECTED_ACCOUNT:
+			return {
+				...state,
+				selectedAccount: payload.selectedAccount,
+			};
+		case SET_SELECTED_STEP:
+			return {
+				...state,
+				selectedStep: payload.selectedStep,
+			};
+		case SET_WITHDRAW_CURRENCY:
+			return {
+				...state,
+				withdrawFields: { ...state.withdrawFields, withdrawCurrency: payload },
+			};
+		case SET_WITHDRAW_NETWORK:
+			return {
+				...state,
+				withdrawFields: { ...state.withdrawFields, withdrawNetwork: payload },
+			};
+		case SET_WITHDRAW_NETWORK_OPTIONS:
+			return {
+				...state,
+				withdrawFields: {
+					...state.withdrawFields,
+					withdrawNetworkOptions: payload,
+				},
+			};
+		case SET_WITHDRAW_ADDRESS:
+			return {
+				...state,
+				withdrawFields: { ...state.withdrawFields, withdrawAddress: payload },
+			};
+		case SET_WITHDRAW_AMOUNT:
+			return {
+				...state,
+				withdrawFields: { ...state.withdrawFields, withdrawAmount: payload },
+			};
+		case SET_WITHDRAW_FEE:
+			return {
+				...state,
+				withdrawFields: { ...state.withdrawFields, withdrawFee: payload },
+			};
+		case SET_WITHDRAW_OTIONAL_TAG:
+			return {
+				...state,
+				withdrawFields: { ...state.withdrawFields, optionalTag: payload },
+			};
+		case SET_DEPOSIT_AND_WITHDRAW:
+			return {
+				...state,
+				depositAndWithdraw: payload,
+			};
+		case SET_VALID_ADDRESS:
+			return {
+				...state,
+				isValidAddress: payload.isValid,
+			};
+		case SET_DEPOSIT_CURRENCY:
+			return {
+				...state,
+				depositFields: { ...state.depositFields, depositCurrency: payload },
+			};
+		case SET_DEPOSIT_NETWORK:
+			return {
+				...state,
+				depositFields: { ...state.depositFields, depositNetwork: payload },
+			};
+		case SET_DEPOSIT_NETWORK_OPTIONS:
+			return {
+				...state,
+				depositFields: {
+					...state.depositFields,
+					depositNetworkOptions: payload,
+				},
+			};
+		case SET_SELECTED_METHOD: {
+			return {
+				...state,
+				selectedWithdrawMethod: payload,
+			};
+		}
+		case SET_RECEIVER_EMAIL: {
+			return {
+				...state,
+				receiverWithdrawalEmail: payload,
+			};
+		}
 		default:
 			return state;
 	}

@@ -139,6 +139,7 @@ const Filters = ({ coins = {}, onSearch, formName, activeTab }) => {
 							width: 100,
 						}}
 						size="small"
+						showSearch={true}
 						className="custom-select-input-style elevated"
 						dropdownClassName="custom-select-style"
 						bordered={false}
@@ -166,6 +167,7 @@ const Filters = ({ coins = {}, onSearch, formName, activeTab }) => {
 							width: 140,
 						}}
 						size="small"
+						showSearch={true}
 						className="custom-select-input-style elevated"
 						dropdownClassName="custom-select-style"
 						bordered={false}

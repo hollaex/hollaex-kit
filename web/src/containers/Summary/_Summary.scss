@@ -169,6 +169,9 @@ $trade-tab--arrow-size: 0.4rem;
 	display: flex;
 	justify-content: center;
 	padding-top: 2rem;
+	.market-wrapper-mobile-view {
+		width: 90% !important;
+	}
 	.market-wrapper {
 		width: 70%;
 		.gray-text {
@@ -282,6 +285,11 @@ $trade-tab--arrow-size: 0.4rem;
 	.trade-account-link {
 		color: $link;
 		font-weight: bold;
+	}
+	.deposit-icon {
+		svg {
+			width: 1rem;
+		}
 	}
 	.summary-section_1 {
 		// height: 30rem;
@@ -644,7 +652,7 @@ $trade-tab--arrow-size: 0.4rem;
 }
 
 .trader-wrapper-icon {
-	width: 5rem;
+	width: 4rem;
 	margin-right: 1rem;
 	svg {
 		.level_icon,
@@ -809,7 +817,7 @@ $trade-tab--arrow-size: 0.4rem;
 			font-size: 1.8rem;
 		}
 		.summary-content-txt {
-			font-size: 1.2rem !important;
+			font-size: 1.3rem !important;
 		}
 	}
 }
@@ -818,7 +826,7 @@ $trade-tab--arrow-size: 0.4rem;
 		width: $content-display-width !important;
 
 		.summary-block_wrapper .summary-block-title {
-			font-size: 1.2rem;
+			font-size: 1.3rem;
 		}
 
 		.summary-content-txt {

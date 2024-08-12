@@ -42,31 +42,7 @@ Cypress.Commands.add('getIframe', (iframe) => {
         .then(cy.wrap).invoke('text').then((text)=> {return text.toString()})
 		
 		})
-// Cypress.Commands.add('defineNewUser',(User,i) =>{
-// 	const newUser = randomstring.generate(i)+'@'+User ;
-// 	//console.log(newUser);
 
-// 	if (typeof localStorage === 'undefined' || localStorage === null) {
-// 		var LocalStorage = require('node-localstorage').LocalStorage;
-// 		localStorage = new LocalStorage('./../Utils/scratch');
-// 	}
-  
-// 	localStorage.setItem('NewUser', newUser);
-// 	//console.log(localStorage.getItem('NewUser'));
-// 	return localStorage.getItem('NewUser');
-// })
-// Cypress.Commands.add('getNewUser',()=>{
-// 	if (typeof localStorage === 'undefined' || localStorage === null) {
-// 		var LocalStorage = require('node-localstorage').LocalStorage;
-// 		localStorage = new LocalStorage('./../Utils/scratch');
-// 	}
-  
-// 	return localStorage.getItem('NewUser');
-// })
-
-
-//var text= null;
-// var Link =null;
 Cypress.Commands.add('finder',(str,obj)=>{
 	let arr = null;
 	arr = (str.replace(/(=\\r\\n|\\n|\\r|\\t)/gm,"")).split(' ');
@@ -229,4 +205,57 @@ Cypress.Commands.add('wallectCheck',(buySell,wallet,Fee,Size,Price)=>{
 }
 })
 
+// cypress/support/commands.js
 
+// Add a custom command for extracting text between "Dear" and "Regards"
+Cypress.Commands.add('extractText', (emailBody,firstWord,lastWord) => {
+  const START = firstWord || 'Dear';
+  const END = lastWord || 'Regards'
+  const startIndex = emailBody.indexOf(START);
+  const endIndex = emailBody.indexOf(END, startIndex);
+  
+  if (startIndex !== -1 && endIndex !== -1) {
+    return emailBody.substring(startIndex, endIndex + END.length);
+  } else {
+    return "The specified text was not found.";
+  }
+});
+
+// Add a custom command for finding the first word after "operation."
+Cypress.Commands.add('findFirstWordAfterMyWord', (extractedText,myWord) => {
+
+  if(myWord === 'Password:'){
+    const bodyText = extractedText;
+    const passwordRegex = /Password: ([\w-]+)/;
+    const passwordMatch = bodyText.match(passwordRegex);
+    const tempPassword = passwordMatch && passwordMatch[1];
+    return tempPassword
+  }else{
+  const parts = extractedText.split(myWord);
+  if (parts.length > 1) {
+    const firstWordWithPunctuation = parts[1].trim().split(/\s+|\b/)[0];
+    
+    const firstWord = firstWordWithPunctuation.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");
+
+    
+    return firstWord;
+  } else {
+    return "The word was not found.";
+  }}
+});
+//Add a custom command for finding hyperlink
+Cypress.Commands.add('findFirstHyperlinkAfterMyWord', (extractedText, myWord) => {
+  const parts = extractedText.split(myWord);
+  if (parts.length > 1) {
+    // Look for a URL starting with http:// or https:// after the specified word
+    const possibleLinkPart = parts[1].trim();
+    const urlMatch = possibleLinkPart.match(/https?:\/\/[^ \s]+/);
+    if (urlMatch) {
+      return urlMatch[0]; // Return the first match
+    } else {
+      return "No hyperlink found after the word.";
+    }
+  } else {
+    return "The word was not found.";
+  }
+});

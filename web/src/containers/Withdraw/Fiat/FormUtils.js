@@ -170,15 +170,6 @@ export const generateFormValues = (
 		};
 	}
 
-	fields.captcha = {
-		type: 'captcha',
-		language,
-		theme,
-		validate: [required],
-		strings: STRINGS,
-		constants,
-	};
-
 	return fields;
 };
 
@@ -189,18 +180,9 @@ export const generateInitialValues = (
 	selectedBank,
 	withdrawal_fee
 ) => {
-	const { min } = coins[symbol] || DEFAULT_COIN_DATA;
 	const initialValues = {};
 
-	if (min) {
-		if (withdrawal_fee) {
-			initialValues.amount = mathjs.max(min, mathjs.number(withdrawal_fee));
-		} else {
-			initialValues.amount = min;
-		}
-	} else {
-		initialValues.amount = '';
-	}
+	initialValues.amount = '';
 
 	if (banks && banks.length > 0) {
 		initialValues.bank = selectedBank;

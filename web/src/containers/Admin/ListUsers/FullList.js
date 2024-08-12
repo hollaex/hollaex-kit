@@ -43,9 +43,8 @@ class FullListUsers extends Component {
 		requestUsers({ page, limit, ...(filters != null && filters) })
 			.then((res) => {
 				let temp = page === 1 ? res.data : [...this.state.users, ...res.data];
-				let users = temp.sort((a, b) => {
-					return new Date(b.created_at) - new Date(a.created_at);
-				});
+				let users = temp;
+
 				this.setState({
 					users,
 					loading: false,

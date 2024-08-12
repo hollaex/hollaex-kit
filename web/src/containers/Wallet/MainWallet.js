@@ -3,7 +3,14 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import classnames from 'classnames';
 import { isMobile } from 'react-device-detect';
-import { IconTitle, Accordion, MobileBarTabs, NotLoggedIn } from 'components';
+import {
+	IconTitle,
+	Accordion,
+	MobileBarTabs,
+	NotLoggedIn,
+	Button,
+	MobileBarBack,
+} from 'components';
 import { TransactionsHistory, Stake } from 'containers';
 import { changeSymbol } from 'actions/orderbookAction';
 import {
@@ -23,6 +30,8 @@ import { STATIC_ICONS } from 'config/icons';
 import { isStakingAvailable, STAKING_INDEX_COIN } from 'config/contracts';
 import { assetsSelector, searchAssets } from './utils';
 import ProfitLossSection from './ProfitLossSection';
+import { setPricesAndAsset } from 'actions/assetActions';
+import { setActiveBalanceHistory } from 'actions/walletActions';
 
 const ZERO_BALANCE_KEY = 'isZeroBalanceHidden';
 
@@ -60,6 +69,7 @@ class Wallet extends Component {
 			this.props.isFetching,
 			this.props.assets
 		);
+		this.props.setPricesAndAsset(this.props.balance, this.props.coins);
 
 		if (this.props.location.pathname === '/wallet/history') {
 			this.setState({ activeBalanceHistory: true });
@@ -128,7 +138,14 @@ class Wallet extends Component {
 	};
 
 	handleBalanceHistory = (value) => {
-		this.setState({ activeBalanceHistory: value });
+		this.props.setActiveBalanceHistory(value);
+		this.setState({ activeBalanceHistory: value }, () => {
+			if (value) {
+				this.props.router.push('/wallet/history');
+			} else {
+				this.props.router.push('/wallet');
+			}
+		});
 	};
 
 	generateSections = (
@@ -141,7 +158,7 @@ class Wallet extends Component {
 		pairs,
 		total,
 		oraclePrices,
-		{ features: { stake_page = false } = {} } = {},
+		{ features: { stake_page = false, cefi_stake = false } = {} } = {},
 		contracts = {},
 		isFetching,
 		assets
@@ -182,6 +199,7 @@ class Wallet extends Component {
 						goToWallet={this.goToWallet}
 						isZeroBalanceHidden={isZeroBalanceHidden}
 						handleBalanceHistory={this.handleBalanceHistory}
+						setActiveTab={this.setActiveTab}
 					/>
 				),
 				isOpen: true,
@@ -213,6 +231,10 @@ class Wallet extends Component {
 						navigate={this.goToPage}
 						coins={coins}
 						searchResult={this.getMobileSlider(coins, oraclePrices)}
+						router={this.props.router}
+						totalAssets={totalAssets}
+						loading={isFetching}
+						BASE_CURRENCY={BASE_CURRENCY}
 					/>
 				),
 			},
@@ -222,7 +244,7 @@ class Wallet extends Component {
 			},
 		];
 
-		if (stake_page) {
+		if (stake_page || cefi_stake) {
 			mobileTabs.push({
 				title: STRINGS['ACCOUNTS.TAB_STAKE'],
 				content: <Stake />,
@@ -248,9 +270,16 @@ class Wallet extends Component {
 		this.setState({ showDustSection: false });
 	};
 
+	goBack = () => {
+		this.handleBalanceHistory(false);
+	};
+
 	render() {
 		const { sections, activeTab, mobileTabs, showDustSection } = this.state;
-		const { icons: ICONS } = this.props;
+		const { icons: ICONS, router, assets, isFetching, pairs } = this.props;
+
+		const isNotWalletHistory = router?.location?.pathname !== '/wallet/history';
+		const isWalletHistory = router?.location?.pathname === '/wallet/history';
 
 		if (mobileTabs.length === 0) {
 			return <div />;
@@ -259,11 +288,16 @@ class Wallet extends Component {
 			<div className="apply_rtl">
 				{isMobile ? (
 					<div>
-						<MobileBarTabs
-							tabs={mobileTabs}
-							activeTab={activeTab}
-							setActiveTab={this.setActiveTab}
-						/>
+						{isNotWalletHistory && (
+							<MobileBarTabs
+								tabs={mobileTabs}
+								activeTab={activeTab}
+								setActiveTab={this.setActiveTab}
+							/>
+						)}
+						{isWalletHistory && (
+							<MobileBarBack onBackClick={() => this.goBack()} />
+						)}
 						<div className="content-with-bar d-flex">
 							{mobileTabs[activeTab].content}
 						</div>
@@ -300,6 +334,10 @@ class Wallet extends Component {
 										) : (
 											<ProfitLossSection
 												handleBalanceHistory={this.handleBalanceHistory}
+												assets={assets}
+												loading={isFetching}
+												navigate={this.goToPage}
+												pairs={pairs}
 											/>
 										)}
 									</NotLoggedIn>
@@ -308,6 +346,28 @@ class Wallet extends Component {
 						</div>
 					</div>
 				)}
+				{isMobile &&
+					router?.location?.pathname === '/wallet' &&
+					this.state.activeTab === 0 && (
+						<div
+							className={`bottom-bar-button ${
+								router?.location?.pathname === '/wallet' && 'footer-button'
+							}`}
+						>
+							<div className="bottom-bar-deposit-button">
+								<Button
+									onClick={() => this.goToPage('/wallet/deposit')}
+									label={STRINGS['WALLET_BUTTON_BASE_DEPOSIT']}
+								/>
+							</div>
+							<div className="bottom-bar-withdraw-button">
+								<Button
+									onClick={() => this.goToPage('/wallet/withdraw')}
+									label={STRINGS['WALLET_BUTTON_BASE_WITHDRAW']}
+								/>
+							</div>
+						</div>
+					)}
 			</div>
 		);
 	}
@@ -330,6 +390,11 @@ const mapStateToProps = (store) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 	changeSymbol: bindActionCreators(changeSymbol, dispatch),
+	setPricesAndAsset: bindActionCreators(setPricesAndAsset, dispatch),
+	setActiveBalanceHistory: bindActionCreators(
+		setActiveBalanceHistory,
+		dispatch
+	),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withConfig(Wallet));

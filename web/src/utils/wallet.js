@@ -38,6 +38,8 @@ export const getNetworkNameByKey = (network) => {
 				return 'Solana';
 			case 'xlm':
 				return 'Stellar';
+			case 'ftm':
+				return 'Fantom';
 			default:
 				return network.toUpperCase();
 		}
@@ -48,4 +50,31 @@ export const getNetworkNameByKey = (network) => {
 
 export const getNetworkLabelByKey = (network) => {
 	return `${network.toUpperCase()} (${getNetworkNameByKey(network)})`;
+};
+
+export const getNetworkName = (network) => {
+	if (network) {
+		switch (network) {
+			case 'ERC20':
+				return 'eth';
+			case 'TRC20':
+				return 'trx';
+			case 'BEP20':
+				return 'bnb';
+			case 'klaytn':
+				return 'klay';
+			case 'Polygon':
+				return 'matic';
+			case 'Solana':
+				return 'sol';
+			case 'Stellar':
+				return 'xlm';
+			case 'Fantom':
+				return 'ftm';
+			default:
+				return network.toUpperCase();
+		}
+	} else {
+		return network;
+	}
 };

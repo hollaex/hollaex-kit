@@ -41,6 +41,7 @@ const nestedIcons = {
 		APPS: '/assets/images/apps.svg',
 		API: '/assets/images/tab-api.svg',
 		STAKE: '/assets/images/stake-page-icon.svg',
+		P2P: '/assets/images/p2p-feature.svg',
 	},
 
 	TOKEN: {
@@ -163,6 +164,7 @@ const nestedIcons = {
 	COPY_NEW: '/assets/images/copy.svg',
 	COPY_NOTIFICATION: '/assets/images/copy-icon-snack-notification.svg',
 	ACCOUNT_LINE: '/assets/images/account.svg',
+	FOOTER_ACCOUNT_LINE: '/assets/images/account-summary-tab-01.svg',
 	ACCOUNT_RECOVERY: '/assets/images/account-recovery.svg',
 	BITCOIN_WALLET: '/assets/images/bitcoin-wallet.svg',
 	CHECK_SENDING_BITCOIN: '/assets/images/check-sending-bitcoin.svg',
@@ -217,8 +219,11 @@ const nestedIcons = {
 	SIDEBAR_ACCOUNT_INACTIVE: '/assets/images/account_2-inactive.svg',
 	SIDEBAR_POST_ACTIVE: '/assets/images/post-active.svg',
 	SIDEBAR_TRADING_ACTIVE: '/assets/images/trade-active.svg',
+	FOOTER_TRADING_ACTIVE:
+		'/assets/images/pro-trade-markets-mobile-tab-01 copy-01.svg',
 	SIDEBAR_QUICK_TRADING_ACTIVE:
 		'/assets/images/quick-trade-tab-selected-01.svg',
+	FOOTER_QUICK_ACTIVE: '/assets/images/quick-trade-convert-mobile-tab-01.svg',
 	SIDEBAR_QUICK_TRADING_INACTIVE: '/assets/images/quick-trade-tab-01-01.svg',
 	SIDEBAR_ADMIN_DASH_ACTIVE: '/assets/images/admin-dash-icon.svg',
 	ARROW_TRANSFER_HISTORY_ACTIVE: '/assets/images/arrow-trans-history.svg',
@@ -240,16 +245,20 @@ const nestedIcons = {
 
 	NOTE_KYC: '/assets/images/note-KYC.svg',
 	SIDEBAR_HELP: '/assets/images/help-question-mark-icon.svg',
+	FOOTER_PLUGIN: '/assets/images/card-active-plugin-mobile-tab-01.svg',
 	CONNECT_LOADING: '/assets/images/connect-loading.svg',
 	FIAT_KYC: '/assets/images/fiat-kyc.svg',
 
 	REFER_ICON: '/assets/images/refer-icon.svg',
+	REFER_DOLLAR_ICON: '/assets/images/referral-link-dollar-graphic.svg',
+	NEW_REFER_ICON: '/assets/images/Group 5483.svg',
 	STAKETOKEN_ICON: '/assets/images/stake.svg',
 	STAKING_1: '/assets/images/staking_1.png',
 	STAKING_2: '/assets/images/staking_2.svg',
 	STAKING_3: '/assets/images/staking_3.svg',
 	DEFAULT_ICON: '/assets/icons/coin-graphic-not-detected.svg',
 	EXPIRED_ICON: '/assets/images/expired.svg',
+	CHART_VIEW: '/assets/images/chart-view-mobile.svg',
 
 	HAP_ACCOUNT_ICON: '/assets/icons/hap-account-icon.svg',
 	ACCOUNT_SUMMARY: '/assets/icons/account-icon-summary.svg',
@@ -274,6 +283,8 @@ const nestedIcons = {
 	STAKING_VARIABLE: '/assets/stake/variable_icon.svg',
 	STAKING_UNLOCK: '/assets/stake/unlock-unstake-icon.svg',
 	STAKING_BACKGROUND: '/assets/stake/stake-background.jpg',
+	STAKING_CEFI_LOGO: '/assets/stake/Group 5977.svg',
+	STAKING__LOCK: '/assets/stake/Group 5950.svg',
 	META_MASK_NOT_FOUND: '/assets/icons/metamask-fox-stake-not-detected.svg',
 	STAKING_ACCOUNT: '',
 	METAMASK: '',
@@ -292,6 +303,14 @@ const nestedIcons = {
 	WALLET_GRAPHIC: '/assets/images/wallet-background-graphic-dark-theme.svg',
 	WALLET_ARROW_DOWN: '/assets/images/deposit-arrow-down.svg',
 	WALLET_ARROW_UP: '/assets/images/withdraw-arrow-up.svg',
+
+	FOOTERBAR_ASSETS_TRADE: '/assets/images/asset-prices-mobile-tab-01.svg',
+	WALLET_FOOTER: '/assets/images/wallet-mobile-tab-02-01 (1).svg',
+
+	WITHDRAW_TITLE: '/assets/images/withdraw-out-box.svg',
+	DEPOSIT_TITLE: '/assets/images/deposit-box.svg',
+
+	ADDRESS_BOOK: '/assets/images/global-address-book.svg',
 };
 
 const icons = flatten(nestedIcons, options);

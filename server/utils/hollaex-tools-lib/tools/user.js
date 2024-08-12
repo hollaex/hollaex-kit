@@ -57,9 +57,15 @@ const {
 	CANNOT_CHANGE_ADMIN_EMAIL,
 	EMAIL_IS_SAME,
 	EMAIL_EXISTS,
+	REFERRAL_HISTORY_NOT_ACTIVE,
+	REFERRAL_UNSUPPORTED_EXCHANGE_PLAN,
 	CANNOT_CHANGE_DELETED_EMAIL,
 	SERVICE_NOT_SUPPORTED,
-	BALANCE_HISTORY_NOT_ACTIVE
+	BALANCE_HISTORY_NOT_ACTIVE,
+	ADDRESSBOOK_MISSING_FIELDS,
+	PAYMENT_DETAIL_NOT_FOUND,
+	ADDRESSBOOK_ALREADY_EXISTS,
+	ADDRESSBOOK_NOT_FOUND
 } = require(`${SERVER_PATH}/messages`);
 const { publisher, client } = require('./database/redis');
 const {
@@ -67,31 +73,36 @@ const {
 	AUDIT_KEYS,
 	USER_FIELD_ADMIN_LOG,
 	ADDRESS_FIELDS,
+	CRYPTO_ADDRESS_FIELDS,
 	ID_FIELDS,
 	SETTING_KEYS,
 	OMITTED_USER_FIELDS,
 	DEFAULT_ORDER_RISK_PERCENTAGE,
 	AFFILIATION_CODE_LENGTH,
+	REFERRAL_HISTORY_SUPPORTED_PLANS,
 	LOGIN_TIME_OUT,
 	TOKEN_TIME_LONG,
 	TOKEN_TIME_NORMAL,
 	VERIFY_STATUS,
-	EVENTS_CHANNEL
+	EVENTS_CHANNEL,
+	BALANCE_HISTORY_SUPPORTED_PLANS
 } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
-const { getKitConfig, isValidTierLevel, getKitTier, isDatetime, getKitCoins } = require('./common');
+const { getKitConfig, isValidTierLevel, getKitTier, isDatetime, getKitSecrets, sendCustomEmail, emailHtmlBoilerplate, getDomain, updateKitConfigSecrets, sleep, getKitCoins } = require('./common');
 const { isValidPassword, createSession } = require('./security');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { all, reject } = require('bluebird');
-const { Op } = require('sequelize');
-const { paginationQuery, timeframeQuery, orderingQuery } = require('./database/helpers');
+const { Op, fn, col, literal } = require('sequelize');
+const { paginationQuery, timeframeQuery, orderingQuery, convertSequelizeCountAndRows } = require('./database/helpers');
 const { parse } = require('json2csv');
 const flatten = require('flat');
 const uuid = require('uuid/v4');
 const { checkCaptcha, validatePassword, verifyOtpBeforeAction } = require('./security');
 const geoip = require('geoip-lite');
 const moment = require('moment');
+const mathjs = require('mathjs');
+const { loggerUser } = require('../../../config/logger');
 const BigNumber = require('bignumber.js');
 
 let networkIdToKitId = {};
@@ -479,39 +490,46 @@ const generateAffiliationCode = () => {
 };
 
 const getUserByAffiliationCode = (affiliationCode) => {
-	const code = affiliationCode.toUpperCase().trim();
-	return dbQuery.findOne('user', {
-		where: { affiliation_code: code },
-		attributes: ['id', 'email', 'affiliation_code']
+	const code = affiliationCode.trim();
+	return dbQuery.findOne('referralCode', {
+		where: { code },
+		attributes: ['id', 'user_id', 'discount', 'earning_rate']
 	});
 };
 
 const checkAffiliation = (affiliationCode, user_id) => {
-	// let discount = 0; // default discount rate in percentage
 	return getUserByAffiliationCode(affiliationCode)
 		.then((referrer) => {
 			if (referrer) {
-				return getModel('affiliation').create({
+				return all([getModel('affiliation').create({
 					user_id,
-					referer_id: referrer.id
-				});
+					referer_id: referrer.user_id,
+					earning_rate: referrer.earning_rate,
+					code: affiliationCode,
+				}), 
+				referrer,
+				getModel('referralCode').increment('referral_count', { by: 1, where: { id: referrer.id }})
+				]);
 			} else {
-				return;
+				return [];
 			}
+		})
+		.then(([affiliation, referrer]) => {
+			if (affiliation?.user_id) {
+				return getModel('user').update(
+					{
+						discount: referrer.discount
+					},
+					{
+						where: {
+							id: affiliation.user_id
+						},
+						fields: ['discount']
+					}
+				);
+			}
+			return;
 		});
-	// .then((affiliation) => {
-	// 	return getModel('user').update(
-	// 		{
-	// 			discount
-	// 		},
-	// 		{
-	// 			where: {
-	// 				id: affiliation.user_id
-	// 			},
-	// 			fields: ['discount']
-	// 		}
-	// 	);
-	// });
 };
 
 const getAffiliationCount = (userId, opts = {
@@ -620,7 +638,6 @@ const getAllUsersAdmin = (opts = {
 	email: null,
 	username: null,
 	full_name: null,
-	pending_verification: null,
 	dob_start_date: null,
 	dob_end_date: null,
 	gender: null,
@@ -647,7 +664,16 @@ const getAllUsersAdmin = (opts = {
 	const pagination = paginationQuery(opts.limit, opts.page);
 	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
 	const dob_timeframe = timeframeQuery(dob_start_date, dob_end_date);
-	const ordering = orderingQuery(opts.order_by, opts.order);
+
+	let orderBy = 'id';
+	let order = 'desc';
+	if (opts.order_by) {
+		orderBy = opts.order_by;
+	}
+	if (opts.order) {
+		order = opts.order;
+	}
+	const ordering = orderingQuery(orderBy, order);
 	let query = {
 		where: {
 			created_at: timeframe,
@@ -661,12 +687,12 @@ const getAllUsersAdmin = (opts = {
 		order: [ordering]
 	};
 	query.attributes = {
-		exclude: ['balance', 'password', 'updated_at']
+		exclude: ['balance', 'password']
 	};
 
 	if (opts.search) {
 		query.attributes = {
-			exclude: ['balance', 'password', 'updated_at']
+			exclude: ['balance', 'password']
 		};
 		if (opts.id) {
 			query.where.id = opts.id;
@@ -1193,7 +1219,7 @@ const updateUserNote = (userId, note, auditInfo) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
 			}
-			createAuditLog({ email: auditInfo.userEmail, session_id: auditInfo.sessionId }, auditInfo.apiPath, auditInfo.method, note, user.note);
+			createAuditLog({ email: auditInfo.userEmail, session_id: auditInfo.sessionId }, auditInfo.apiPath, auditInfo.method, { note, user_id: user.id }, { note: user.note, user_id: user.id });
 			return user.update({ note }, { fields: ['note'] });
 		});
 };
@@ -1524,7 +1550,7 @@ const getUserAudits = (opts = {
 }) => {
 	const exchangeInfo = getKitConfig().info;
 
-	if(!['fiat', 'boost', 'enterprise'].includes(exchangeInfo.plan)) {
+	if(!BALANCE_HISTORY_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
 		throw new Error(SERVICE_NOT_SUPPORTED);
 	}
 
@@ -1606,6 +1632,27 @@ const setUsernameById = (userId, username) => {
 			);
 		});
 };
+
+const disableUserWithdrawal = async (user_id, opts = { expiry_date : null }) => {
+	const user = await getUserByKitId(user_id, false);
+	let { expiry_date } = opts;
+
+	if (!user) {
+		throw new Error(USER_NOT_FOUND);
+	}
+
+	let withdrawal_blocked = null;
+
+	if (expiry_date) {
+		withdrawal_blocked = moment(expiry_date).toISOString();
+	}
+
+	return user.update(
+		{ withdrawal_blocked },
+		{ fields: ['withdrawal_blocked'], returning: true }
+	);
+};
+
 
 const createUserCryptoAddressByNetworkId = (networkId, crypto, opts = {
 	network: null,
@@ -2345,6 +2392,557 @@ const changeKitUserEmail = async (userId, newEmail, auditInfo) => {
 	return updatedUser;
 };
 
+const getAllAffiliations = (query = {}) => {
+	return dbQuery.findAndCountAll('affiliation', query);
+};
+
+const applyEarningRate = (amount, earning_rate) => {
+	return mathjs.number(
+		mathjs.multiply(
+			mathjs.bignumber(amount),
+			mathjs.divide(
+				mathjs.bignumber(earning_rate),
+				mathjs.bignumber(100)
+			)
+		)
+	);
+};
+
+const addAmounts = (amount1, amount2) => {
+	return mathjs.number(
+		mathjs.add(
+			mathjs.bignumber(amount1),
+			mathjs.bignumber(amount2)
+		)
+	);
+};
+
+
+const getUserReferralCodes = async (
+	opts = {
+		user_id: null,
+		limit: null,
+		page: null,
+		order_by: null,
+		order: null,
+		start_date: null,
+		end_date: null,
+		format: null
+	}) => {
+
+	const pagination = paginationQuery(opts.limit, opts.page);
+	const ordering = orderingQuery(opts.order_by, opts.order);
+	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
+
+	const query = {
+		where: {
+			created_at: timeframe,
+			...(opts.user_id && { user_id: opts.user_id })
+		},
+		order: [ordering],
+		...(!opts.format && pagination),
+	};
+
+	if (opts.format) {
+		return dbQuery.fetchAllRecords('referralCode', query)
+			.then((codes) => {
+				if (opts.format && opts.format === 'csv') {
+					if (codes.data.length === 0) {
+						throw new Error(NO_DATA_FOR_CSV);
+					}
+					const csv = parse(codes.data, Object.keys(codes.data[0]));
+					return csv;
+				} else {
+					return codes;
+				}
+			});
+	} else {
+		return dbQuery.findAndCountAllWithRows('referralCode', query);
+	}
+};
+
+const createUserReferralCode = async (data) => {
+	const { user_id, discount, earning_rate, code, is_admin } = data;
+
+	const { 
+		earning_rate: EARNING_RATE, 
+	} = getKitConfig()?.referral_history_config || {};
+
+	if (discount < 0) {
+		throw new Error('discount cannot be negative');	
+	}
+
+	if (discount > 100) {
+		throw new Error('discount cannot be more than 100');	
+	}
+
+	if (discount % 10 !== 0) {
+		throw new Error('discount must be in increments of 10');
+	}
+
+	if (earning_rate < 1) {
+		throw new Error('earning rate cannot be less than 1');	
+	}
+
+	if (earning_rate > 100) {
+		throw new Error('earning rate cannot be more than 100');	
+	}
+
+	if (earning_rate % 10 !== 0) {
+		throw new Error('earning rate must be in increments of 10');
+	}
+
+	if (!is_admin && (earning_rate + discount > EARNING_RATE)) {
+		throw new Error('discount and earning rate combined cannot exceed exchange earning rate');
+	}
+
+	if (!is_admin && code.length !== 6) {
+		throw new Error('invalid referral code');	
+	}
+	 
+	const user = await getUserByKitId(user_id);
+   
+	if (!user) {
+		throw new Error(USER_NOT_FOUND);
+	}
+
+	if (!is_admin) {
+		const userReferralCodes = await getModel('referralCode').findAll({
+			where: {
+				user_id
+			}
+		});
+		if (userReferralCodes.length > 3) {
+			throw new Error('you cannot create more than 3 referral codes');
+		}
+	}
+
+	const referralCode = await getModel('referralCode').create(data, {
+		fields: [
+			'user_id',
+			'discount',
+			'earning_rate',
+			'code'
+		]
+	});
+	return referralCode;
+};
+
+const getUnrealizedReferral = async (user_id) => {
+	const exchangeInfo = getKitConfig().info;
+
+	if (!REFERRAL_HISTORY_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
+		throw new Error(REFERRAL_UNSUPPORTED_EXCHANGE_PLAN);
+	}
+
+	const { active } = getKitConfig()?.referral_history_config || {};
+	if  (!active) {
+		throw new Error(REFERRAL_HISTORY_NOT_ACTIVE);
+	}
+
+	const referralHistoryModel = getModel('ReferralHistory');
+	const unrealizedRecords = await referralHistoryModel.findAll({
+		where: { referer: user_id, status: false },
+		attributes: [
+			'referer',
+			[fn('sum', col('accumulated_fees')), 'accumulated_fees'],
+		  ],
+		  group: ['referer'],
+	});	
+
+	return unrealizedRecords;
+};
+
+const getRealizedReferral = async (opts = {
+	user_id: null,
+	limit: null,
+	page: null,
+	order_by: null,
+	order: null,
+	start_date: null,
+	end_date: null,
+	format: null
+}) => {
+	const pagination = paginationQuery(opts.limit, opts.page);
+	const ordering = orderingQuery(opts.order_by, opts.order);
+	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
+
+	const query = {
+		where: {
+			created_at: timeframe,
+			status: true,
+			...(opts.user_id && { referer: opts.user_id })
+		},
+		order: [ordering],
+		...(!opts.format && pagination),
+	};
+     	
+	if (opts.format) {
+		return dbQuery.fetchAllRecords('ReferralHistory', query)
+			.then((file) => {
+				if (opts.format && opts.format === 'csv') {
+					if (file.data.length === 0) {
+						throw new Error(NO_DATA_FOR_CSV);
+					}
+					const csv = parse(file.data, Object.keys(file.data[0]));
+					return csv;
+				} else {
+					return file;
+				}
+			});
+	} else {
+		return dbQuery.findAndCountAllWithRows('ReferralHistory', query);
+	}
+};
+
+const createUnrealizedReferralFees = async (currentTime) => {
+	const { 
+		earning_period: EARNING_PERIOD, 
+		distributor_id: DISTRIBUTOR_ID,
+		date_enabled: DATE_ENABLED
+	} = getKitConfig()?.referral_history_config || {};
+
+	const exchangeInfo = getKitConfig().info;
+
+	if (!REFERRAL_HISTORY_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
+		throw new Error(REFERRAL_UNSUPPORTED_EXCHANGE_PLAN);
+	}
+
+	const { getAllTradesNetwork } = require('./order');
+	const referralHistoryModel = getModel('ReferralHistory');
+
+	let userLastSettleDate = moment(DATE_ENABLED).toISOString();
+
+	const userLastTrade = await referralHistoryModel.findOne({
+		order: [ [ 'last_settled', 'DESC' ]],
+	});
+
+	if (userLastTrade) {
+		userLastSettleDate = moment(userLastTrade.last_settled).toISOString();
+	}
+
+	return all([
+		getUserByKitId(DISTRIBUTOR_ID, true, true),
+		getAllTradesNetwork(
+			null,
+			null,
+			null,
+			'timestamp',
+			'desc',
+			userLastSettleDate ? moment(userLastSettleDate).add(1, 'ms').toISOString() : null,
+			null,
+			'all'
+		)
+	])
+		.then(([distributor, { count, data: trades }]) => {
+			if (!distributor) {
+				throw new Error('No distributor found');
+			}
+
+			if (count === 0) {
+				throw new Error('No trades to settle');
+			}
+
+			const lastSettledTrade = trades[0].timestamp;
+
+			const accumulatedFees = {};
+
+			for (let trade of trades) {
+				const {
+					maker_network_id,
+					taker_network_id,
+					maker_fee,
+					taker_fee,
+					maker_fee_coin,
+					taker_fee_coin
+				} = trade;
+
+				if (maker_fee > 0 && maker_fee_coin) {
+					if (!accumulatedFees[maker_network_id]) {
+						accumulatedFees[maker_network_id] = {};
+					}
+
+					if (!isNumber(accumulatedFees[maker_network_id][maker_fee_coin])) {
+						accumulatedFees[maker_network_id][maker_fee_coin] = 0;
+					}
+
+					accumulatedFees[maker_network_id][maker_fee_coin] = addAmounts(
+						accumulatedFees[maker_network_id][maker_fee_coin],
+						maker_fee
+					);
+				}
+
+				if (taker_fee > 0 && taker_fee_coin) {
+					if (!accumulatedFees[taker_network_id]) {
+						accumulatedFees[taker_network_id] = {};
+					}
+
+					if (!isNumber(accumulatedFees[taker_network_id][taker_fee_coin])) {
+						accumulatedFees[taker_network_id][taker_fee_coin] = 0;
+					}
+
+					accumulatedFees[taker_network_id][taker_fee_coin] = addAmounts(
+						accumulatedFees[taker_network_id][taker_fee_coin],
+						taker_fee
+					);
+				}
+			}
+
+			const tradeUsers = Object.keys(accumulatedFees);
+			const tradeUsersAmount = tradeUsers.length;
+
+			if (tradeUsersAmount === 0) {
+				throw new Error('No trades made with fees');
+			}
+
+
+			return all([
+				accumulatedFees,
+				lastSettledTrade,
+				getAllAffiliations({
+					where: {
+						'$user.network_id$': tradeUsers,
+						...(EARNING_PERIOD && {
+							created_at: {
+								[Op.gt]: moment(currentTime).subtract(EARNING_PERIOD, 'months').toISOString(),
+								[Op.lte]: currentTime
+							}
+						})
+					},
+					include: [
+						{
+							model: getModel('user'),
+							as: 'user',
+							attributes: [
+								'id',
+								'email',
+								'network_id'
+							]
+						},
+						{
+							model: getModel('user'),
+							as: 'referer',
+							attributes: [
+								'id',
+								'email',
+								'network_id'
+							]
+						}
+					]
+				})
+			]);
+		})
+		.then(async ([accumulatedFees, lastSettledTrade, { count, rows: affiliations }]) => {
+			const filteredFees = {};
+			const referralHistory = [];
+			if (count === 0) {
+				throw new Error('No trades made by affiliated users');
+			}
+
+			for (let affiliation of affiliations) {
+				const refereeUser = affiliation.user;
+				const referer = affiliation.referer;
+
+				if (accumulatedFees[refereeUser.network_id]) {
+					// refererKey includes user kit id, user network id, and user email separated by colons
+					const refererKey = `${referer.id}:${referer.network_id}:${referer.email}`;
+					if (!filteredFees[refererKey]) {
+						filteredFees[refererKey] = {};
+					}
+
+					for (let coin in accumulatedFees[refereeUser.network_id]) {
+						if (!isNumber(filteredFees[refererKey][coin])) {
+							filteredFees[refererKey][coin] = 0;
+						}
+
+						filteredFees[refererKey][coin] = addAmounts(
+							filteredFees[refererKey][coin],
+							accumulatedFees[refereeUser.network_id][coin]
+						);
+
+
+						const refIndex = referralHistory.findIndex(data => data.referee === refereeUser.id && data.referer === referer.id && data.coin === coin);
+						if (refIndex >= 0) {
+							referralHistory[refIndex].accumulated_fees = filteredFees[refererKey][coin];
+						} else {
+							referralHistory.push({
+								referer: referer.id,
+								referee: refereeUser.id,
+								last_settled: lastSettledTrade,
+								code: affiliation.code,
+								earning_rate: affiliation.earning_rate,
+								coin,
+								accumulated_fees: filteredFees[refererKey][coin]
+							});
+						}
+					}
+				}
+			}
+
+			const nativeCurrency = getKitConfig()?.referral_history_config?.currency;
+
+			if (!nativeCurrency) {
+				throw new Error('currency in referral config not defined');
+			}
+
+			const exchangeCoins = referralHistory.map(record => record.coin) || [];
+			const conversions = await getNodeLib().getOraclePrices(exchangeCoins, {
+				quote: nativeCurrency,
+				amount: 1
+			});
+
+			for (let record of referralHistory) {
+				record.accumulated_fees = applyEarningRate(record.accumulated_fees, record.earning_rate);
+
+				if (conversions[record.coin] === -1) continue;
+				record.accumulated_fees = new BigNumber(record.accumulated_fees).multipliedBy(conversions[record.coin]).toNumber();
+				record.status = false;
+			}
+		
+			return referralHistoryModel.bulkCreate(referralHistory);
+		})
+		.catch(err => err);
+};
+
+const settleFees = async (user_id) => {
+	const { active, distributor_id, minimum_amount } = getKitConfig()?.referral_history_config || {};
+	if  (!active) {
+		throw new Error(REFERRAL_HISTORY_NOT_ACTIVE);
+	}
+
+	const exchangeInfo = getKitConfig().info;
+
+	if (!REFERRAL_HISTORY_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
+		throw new Error(REFERRAL_UNSUPPORTED_EXCHANGE_PLAN);
+	}
+
+	const distributor = await getUserByKitId(distributor_id, true, true);
+
+	const nativeCurrency = getKitConfig()?.referral_history_config?.currency;
+
+	if (!nativeCurrency) {
+		throw new Error('currency in referral config not defined');
+	}
+
+	const { transferAssetByKitIds} = require('./wallet');
+	const referralHistoryModel = getModel('ReferralHistory');
+
+	const unrealizedRecords = await referralHistoryModel.findAll({
+		where: { referer: user_id, status: false },
+	});	
+
+	let totalValue = 0;
+	for (let record of unrealizedRecords) {
+		totalValue = new BigNumber(record.accumulated_fees).plus(totalValue).toNumber();
+	}
+
+	if (totalValue < minimum_amount) {
+		throw new Error('Total unrealized earned fees are too small to be converted to realized earnings');
+	}
+
+	if (distributor.balance[`${nativeCurrency}_available`] < totalValue) {
+		// send email to admin for insufficient balance
+		sendEmail(
+			MAILTYPE.ALERT,
+			null,
+			{
+				type: 'Insufficient balance for fee settlement!',
+				data: `<div><p>Distributor with ID ${distributor_id} does not have enough balance to proceed with the settlement, Required amount: ${totalValue} ${nativeCurrency.toUpperCase()}, Available Amount: ${distributor.balance[`${nativeCurrency}_available`]} ${nativeCurrency.toUpperCase()}</div></p>`
+			},
+			{}
+		);
+
+		throw new Error('Settlement is not available at the moment, please retry later');
+	}
+
+	try {
+		const settledIds = unrealizedRecords.map(record => record.id);
+		await referralHistoryModel.update({ status: true }, { where : { id : settledIds }}); 
+
+		await transferAssetByKitIds(
+			distributor_id,
+			user_id,
+			nativeCurrency,
+			totalValue,
+			'Referral Settlement',
+			false
+		);
+
+	} catch (error) {
+		// send mail to admin
+		sendEmail(
+			MAILTYPE.ALERT,
+			null,
+			{
+				type: 'Error during fee settlement!',
+				data: `<div><p>Error occured during a fee settlement operation for user id: ${user_id}, error message: ${error.message}</div></p>`
+			},
+			{}
+		);
+
+		// obfuscate the message for the end user
+		throw new Error('Something went wrong');
+	}
+};
+
+const fetchUserReferrals = async (opts = {
+	user_id: null,
+	limit: null,
+	page: null,
+	order_by: null,
+	order: null,
+	start_date: null,
+	end_date: null,
+	format: null
+}) => {
+	const referralHistoryModel = getModel('ReferralHistory');
+	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
+
+	const dateTruc = fn('date_trunc', 'day', col('last_settled'));
+	let query = {
+		where: {
+			referer: opts.user_id
+		},
+		attributes: [
+			[fn('sum', col('accumulated_fees')), 'accumulated_fees']
+		],
+		group: []
+	};
+
+	if (!opts.format) { query.where.created_at = timeframe; query = {...query };}
+
+	if (opts.order_by === 'referee') {
+		query.attributes.push('referee');
+		query.group.push('referee');
+
+		return referralHistoryModel.findAll(query)
+			.then(async (referrals) => {
+				return { count: referrals.length , data: referrals };
+			});
+	} else {
+		query.attributes.push([dateTruc, 'date']);
+		query.group.push('date');
+
+		let result = {};
+		let referrals = await referralHistoryModel.findAll(query);
+		result = { count: referrals.length , data: referrals };
+
+		query = {
+			where: {
+				referer: opts.user_id
+			},
+			attributes: [
+				[fn('sum', col('accumulated_fees')), 'accumulated_fees']
+			  ],
+			group: []
+		};
+
+		referrals = await referralHistoryModel.findAll(query);
+		result.total = referrals?.[0]?.accumulated_fees;
+		return result;
+	}
+};
+
 const getUserBalanceHistory = (opts = {
 	user_id: null,
 	limit: null,
@@ -2355,6 +2953,14 @@ const getUserBalanceHistory = (opts = {
 	endDate: null,
 	format: null
 }) => {
+
+	const exchangeInfo = getKitConfig().info;
+	
+	if(!['fiat', 'boost', 'enterprise'].includes(exchangeInfo.plan)) {
+		throw new Error(SERVICE_NOT_SUPPORTED);
+	}
+
+
 	if(!getKitConfig()?.balance_history_config?.active) { throw new Error(BALANCE_HISTORY_NOT_ACTIVE); }
 
 	const timeframe = timeframeQuery(opts.startDate, opts.endDate);
@@ -2402,7 +3008,7 @@ const getUserBalanceHistory = (opts = {
 					const balance = await getUserBalanceByKitId(opts.user_id);
 
 					for (const key of Object.keys(balance)) {
-						if (key.includes('available') && balance[key]) {
+						if (key.includes('balance') && balance[key]) {
 							let symbol = key?.split('_')?.[0];
 							symbols[symbol] = balance[key];
 						}
@@ -2439,19 +3045,25 @@ const getUserBalanceHistory = (opts = {
 
 
 
-const fetchUserProfitLossInfo = async (user_id) => {
+const fetchUserProfitLossInfo = async (user_id, opts = { period: 7 }) => {
+
+	const exchangeInfo = getKitConfig().info;
+
+	if(!BALANCE_HISTORY_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
+		throw new Error(SERVICE_NOT_SUPPORTED);
+	}
+
 
 	if(!getKitConfig()?.balance_history_config?.active) { throw new Error(BALANCE_HISTORY_NOT_ACTIVE); }
 
-	const data = await  client.getAsync(`${user_id}user-pl-info`);
+	const data = await  client.getAsync(`${user_id}-${opts.period}user-pl-info`);
 	if (data) return JSON.parse(data);
 
 	const { getAllUserTradesByKitId } = require('./order');
 	const { getUserWithdrawalsByKitId, getUserDepositsByKitId } = require('./wallet');
 
 	const balanceHistoryModel = getModel('balanceHistory');
-	// Set it to weeks instead of years
-	const startDate = moment().subtract(1, 'weeks').toDate();
+	const startDate = moment().subtract(opts.period, 'days').toDate();
 	const endDate = moment().toDate();
 	const timeframe = timeframeQuery(startDate, endDate);
 	const userTrades = await getAllUserTradesByKitId(user_id, null, null, null, 'timestamp', 'asc', startDate, endDate, 'all');
@@ -2481,7 +3093,7 @@ const fetchUserProfitLossInfo = async (user_id) => {
 	const balance = await getUserBalanceByKitId(user_id);
 
 	for (const key of Object.keys(balance)) {
-		if (key.includes('available') && balance[key]) {
+		if (key.includes('balance') && balance[key]) {
 			let symbol = key?.split('_')?.[0];
 			symbols[symbol] = balance[key];
 		}
@@ -2537,6 +3149,8 @@ const fetchUserProfitLossInfo = async (user_id) => {
 			case '1m':
 				dateThreshold.subtract(1, 'month');
 				break;
+			case '3m':
+				dateThreshold.subtract(3, 'months');
 			case '6m':
 				dateThreshold.subtract(6, 'months');
 				break;
@@ -2550,7 +3164,7 @@ const fetchUserProfitLossInfo = async (user_id) => {
 		return data.filter((entry) => (moment(entry.created_at || entry.timestamp).isSameOrAfter(dateThreshold)) && (conditionalDate ? moment(entry.created_at || entry.timestamp).isAfter(moment(conditionalDate)) : true));
 	};
 	
-	const timeIntervals = ['1d', '7d', '1m', '6m', '1y'];
+	const timeIntervals = ['1d', '7d', '1m', '3m', '6m', '1y'];
 	
 	const results = {};
 	
@@ -2615,41 +3229,219 @@ const fetchUserProfitLossInfo = async (user_id) => {
 		const finalBalances = filteredBalanceHistory[filteredBalanceHistory.length - 1].balance;
  
 		results[interval] = {};
+		let totalCumulativePNL = 0;
+		let totalInitialValue = 0;
+		let totalFinalValue = 0;
 		Object.keys(finalBalances).forEach(async (asset) => {
-			const cumulativePNL =
-			finalBalances[asset].native_currency_value -
-			initialBalances[asset].native_currency_value -
-			(netInflowFromDepositsPerAsset[asset] || 0) -
-			(netInflowFromTradesPerAsset[asset] || 0) -
-			(netOutflowFromWithdrawalsPerAsset[asset] || 0);
-		
+			if (initialBalances?.[asset] && initialBalances?.[asset]?.native_currency_value) {
+				const cumulativePNL =
+				finalBalances[asset].native_currency_value -
+				initialBalances[asset].native_currency_value -
+				(netInflowFromDepositsPerAsset[asset] || 0) -
+				(netInflowFromTradesPerAsset[asset] || 0) -
+				(netOutflowFromWithdrawalsPerAsset[asset] || 0);
 			
-			const day1Assets = initialBalances[asset].native_currency_value;
-			const inflow = netInflowFromDepositsPerAsset[asset] || 0;
-			const cumulativePNLPercentage =
-			cumulativePNL / (day1Assets + inflow) * 100; 
-		
-			results[interval][asset] = {
-				cumulativePNL,
-				cumulativePNLPercentage,
-			};
+				
+				const day1Assets = initialBalances[asset].native_currency_value;
+				const inflow = netInflowFromDepositsPerAsset[asset] || 0;
+				const cumulativePNLPercentage =
+				cumulativePNL / (day1Assets + inflow) * 100; 
+			
+				results[interval][asset] = {
+					cumulativePNL,
+					cumulativePNLPercentage,
+				};
+
+				totalCumulativePNL += cumulativePNL;
+				totalInitialValue += day1Assets + inflow;
+				totalFinalValue += finalBalances[asset].native_currency_value;
+			}
 		});
+		results[interval].total = totalCumulativePNL;
+	
+		if (totalInitialValue !== 0) {
+			const totalCumulativePNLPercentage = (totalCumulativePNL / totalInitialValue) * 100;
+			results[interval].totalPercentage = totalCumulativePNLPercentage ? totalCumulativePNLPercentage.toFixed(2) : null;
+		}
 	}
 
-	if (results['7d']) {
-		let total = 0;
-		const assets = Object.keys(results['7d']);
-
-		assets?.forEach(asset => {
-			total += results['7d'][asset].cumulativePNL;
-		});
-		results['7d'].total = total;
-	}
-
-	client.setexAsync(`${user_id}user-pl-info`, 86400, JSON.stringify(results));
+	client.setexAsync(`${user_id}-${opts.period}user-pl-info`, 3600, JSON.stringify(results));
 
 	return results;
 };
+
+const fetchUserAddressBook = async (user_id) => {
+	const user = await getUserByKitId(user_id);
+
+	if (!user) {
+		throw new Error(USER_NOT_FOUND);
+	}
+
+	const userAddressBook = await getModel('userAddressBook').findOne({ where: { user_id } });
+
+	if (!userAddressBook) {
+		return {
+			user_id: user.id,
+			addresses: []
+		};
+	}
+
+	return userAddressBook;
+};
+
+
+
+
+const updateUserAddresses = async (user_id, data) => {
+	const { addresses } = data;
+
+	let userAddressBook = await getModel('userAddressBook').findOne({ where: { user_id } });
+
+	addresses.forEach((addressObj) => {
+		if (!addressObj.address || !addressObj.network || !addressObj.label || !addressObj.currency) {
+			throw new Error(ADDRESSBOOK_MISSING_FIELDS);
+		}
+
+		Object.keys(addressObj).forEach((key) => {
+			if (!CRYPTO_ADDRESS_FIELDS.includes(key)) {
+				throw new Error(ADDRESSBOOK_MISSING_FIELDS);
+			}
+		});
+
+		const hasCreatedAt = userAddressBook?.addresses?.find?.(address => address.label === addressObj.label)?.created_at;
+		if (!hasCreatedAt) {
+			addressObj.created_at = moment().toISOString();
+		} else {
+			addressObj.created_at = hasCreatedAt;
+		}
+	});
+
+	// Check for duplicate labels in the payload
+	const labels = addresses.map(a => a.label);
+	const uniqueLabels = new Set(labels);
+	if (uniqueLabels.size !== labels.length) {
+		throw new Error(ADDRESSBOOK_ALREADY_EXISTS);
+	}
+
+	const user = await getUserByKitId(user_id);
+
+	if (!user) {
+		throw new Error(USER_NOT_FOUND);
+	}
+
+	if (!userAddressBook) {
+		userAddressBook = await getModel('userAddressBook').create({
+			user_id,
+			addresses
+		});
+	} else {
+		// Update the addresses
+		userAddressBook = await userAddressBook.update({ addresses }, {
+			fields: ['addresses']
+		});
+	}
+
+	return userAddressBook;
+};
+
+const getPaymentDetails = async (user_id, opts = {
+	limit: null,
+	page: null,
+	order_by: null,
+	order: null,
+	start_date: null,
+	end_date: null,
+	is_p2p: null,
+	is_fiat_control: null,
+	status: null,
+}) => {
+	const pagination = paginationQuery(opts.limit, opts.page);
+	const ordering = orderingQuery(opts.order_by, opts.order);
+	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
+
+	const query = {
+		where: {
+			created_at: timeframe,
+			user_id,
+			...(opts.is_p2p && { is_p2p: opts.is_p2p }),
+			...(opts.is_fiat_control && { is_fiat_control: opts.is_fiat_control }),
+			...(opts.status && { status: opts.status })
+		},
+		order: [ordering],
+		...(!opts.format && pagination),
+	};
+
+
+	return dbQuery.findAndCountAllWithRows('paymentDetail', query);
+};
+
+const createPaymentDetail = async (data) => {
+	const { user_id, name, label, details, is_p2p, is_fiat_control, status } = data;
+
+	const user = await getUserByKitId(user_id);
+   
+	if (!user) {
+		throw new Error(USER_NOT_FOUND);
+	}
+	
+	const adminAccount = await getUserByKitId(1);
+
+	sendEmail(
+		MAILTYPE.ALERT,
+		adminAccount.email,
+		{
+			type: 'An exchange user added a new payment method, Awaiting your approval',
+			data: `User ID: ${user_id} added a new payment method. Account details: <ul>${details.fields.map(field => (`<li key=${field.id}>${field.name}: ${field.value}</li>`))}</ul>`
+		},
+		adminAccount.settings
+	);
+
+	const paymentDetail = await getModel('paymentDetail').create({
+		user_id,
+		name,
+		label,
+		details,
+		is_p2p,
+		is_fiat_control,
+		status
+	});
+	return paymentDetail;
+};
+
+const updatePaymentDetail = async (id, data, isAdmin = false) => {
+	const paymentDetail = await getModel('paymentDetail').findOne({ where: { id, user_id: data.user_id } });
+	if (!paymentDetail) {
+		throw new Error(PAYMENT_DETAIL_NOT_FOUND);
+	}
+
+	if (!isAdmin) { delete data.status };
+
+	if (data.status === 3) {
+		const user = await getUserByKitId(data.user_id);
+		sendEmail(MAILTYPE.BANK_VERIFIED, user.email, { bankAccounts: paymentDetail?.details?.fields }, user.settings);
+	}
+
+	await paymentDetail.update(data, {
+		fields: [
+			'name',
+			'label',
+			'details',
+			'is_p2p',
+			'is_fiat_control',
+			'status'
+		]
+	});
+	return paymentDetail;
+};
+
+const deletePaymentDetail = async (id, user_id) => {
+	const paymentDetail = await getModel('paymentDetail').findOne({ where: { id, user_id } });
+	if (!paymentDetail) {
+		throw new Error(PAYMENT_DETAIL_NOT_FOUND);
+	}
+	await paymentDetail.destroy();
+};
+
 
 module.exports = {
 	loginUser,
@@ -2684,6 +3476,7 @@ module.exports = {
 	createAudit,
 	createAuditLog,
 	getUserStatsByKitId,
+	disableUserWithdrawal,
 	getExchangeOperators,
 	inviteExchangeOperator,
 	createUserOnNetwork,
@@ -2713,5 +3506,21 @@ module.exports = {
 	changeKitUserEmail,
 	storeVerificationCode,
 	signUpUser,
-	verifyUser
+	verifyUser,
+	getAllAffiliations,
+	applyEarningRate,
+	addAmounts,
+	settleFees,
+	getUnrealizedReferral,
+	getRealizedReferral,
+	fetchUserReferrals,
+	createUnrealizedReferralFees,
+	getUserReferralCodes,
+	createUserReferralCode,
+	updateUserAddresses,
+	fetchUserAddressBook,
+	getPaymentDetails,
+	createPaymentDetail,
+	updatePaymentDetail,
+	deletePaymentDetail
 };

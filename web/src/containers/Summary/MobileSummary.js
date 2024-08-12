@@ -35,6 +35,9 @@ const MobileSummary = ({
 	verification_level,
 	onStakeToken,
 	affiliation,
+	onDisplayReferralList,
+	referral_history_config,
+	sparkLineChartData,
 }) => {
 	const { fullname } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 	// const Title = STRINGS.formatString(STRINGS["SUMMARY.LEVEL_OF_ACCOUNT"],verification_level);
@@ -57,6 +60,8 @@ const MobileSummary = ({
 						config={config}
 						logout={logout}
 						onInviteFriends={onInviteFriends}
+						onDisplayReferralList={onDisplayReferralList}
+						referral_history_config={referral_history_config}
 						onUpgradeAccount={onUpgradeAccount}
 						verification_level={verification_level}
 					/>
@@ -95,7 +100,12 @@ const MobileSummary = ({
 					stringId="SUMMARY.MARKETS"
 					title={STRINGS['SUMMARY.MARKETS']}
 				>
-					<Markets user={user} coins={coins} pairs={pairs} />
+					<Markets
+						user={user}
+						coins={coins}
+						pairs={pairs}
+						chartData={sparkLineChartData}
+					/>
 				</SummaryBlock>
 			</div>
 			{/*<div className="trading-volume-wrapper w-100">

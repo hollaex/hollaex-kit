@@ -4,6 +4,21 @@ const { INVALID_OTP_CODE } = require('../../messages');
 const { loggerOtp } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
 const { errorMessageConverter } = require('../../utils/conversion');
+const { EVENTS_CHANNEL } = require('../../constants');
+const { publisher } = require('../../db/pubsub');
+const { sendEmail } = require('../../mail');
+const { MAILTYPE } = require('../../mail/strings');
+
+const sendOtpEmailNotification = async (userId, status, ip, domain) => {
+	const user = await toolsLib.user.getUserByKitId(userId);
+	const time = new Date();
+	const data = {
+		ip,
+		time
+	}
+
+	sendEmail(status ? MAILTYPE.OTP_ENABLED : MAILTYPE.OTP_DISABLED, user.email, data, user.settings, domain);
+};
 
 const requestOtp = (req, res) => {
 	loggerOtp.verbose(req.uuid, 'controllers/otp/requestOtp', req.auth);
@@ -22,7 +37,7 @@ const requestOtp = (req, res) => {
 		})
 		.catch((err) => {
 			loggerOtp.error(req.uuid, 'controllers/otp/requestOtp', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -30,6 +45,9 @@ const activateOtp = (req, res) => {
 	loggerOtp.verbose(req.uuid, 'controllers/otp/activateOtp', req.auth);
 	const { id } = req.auth.sub;
 	const { code } = req.swagger.params.data.value;
+	const ip = req.headers['x-real-ip'];
+	const domain = req.headers['x-real-origin'];
+
 	loggerOtp.verbose(
 		req.uuid,
 		'controllers/otp/activateOtp/code',
@@ -53,11 +71,20 @@ const activateOtp = (req, res) => {
 				'controllers/otp/activateOtp',
 				user.dataValues
 			);
+			sendOtpEmailNotification(id, true, ip, domain);
+			publisher.publish(EVENTS_CHANNEL, JSON.stringify({
+				type: 'user',
+				data: {
+					action: 'otp_enabled',
+					user_id: id
+				}
+			}));
+
 			return res.json({ message: 'OTP enabled' });
 		})
 		.catch((err) => {
 			loggerOtp.error(req.uuid, 'controllers/otp/activateOtp', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -65,6 +92,9 @@ const deactivateOtp = (req, res) => {
 	loggerOtp.verbose(req.uuid, 'controllers/otp/deactivateOtp', req.auth);
 	const { id } = req.auth.sub;
 	const { code } = req.swagger.params.data.value;
+	const ip = req.headers['x-real-ip'];
+	const domain = req.headers['x-real-origin'];
+
 	loggerOtp.verbose(
 		req.uuid,
 		'controllers/otp/deactivateOtp/code',
@@ -82,6 +112,15 @@ const deactivateOtp = (req, res) => {
 			return toolsLib.security.updateUserOtpEnabled(id, false);
 		})
 		.then(() => {
+			sendOtpEmailNotification(id, false, ip, domain);
+			publisher.publish(EVENTS_CHANNEL, JSON.stringify({
+				type: 'user',
+				data: {
+					action: 'otp_disabled',
+					user_id: id
+				}
+			}));
+
 			return res.json({ message: 'OTP disabled' });
 		})
 		.catch((err) => {
@@ -90,7 +129,7 @@ const deactivateOtp = (req, res) => {
 				'controllers/otp/deactivateOtp',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -113,7 +152,7 @@ const deactivateOtpAdmin = (req, res) => {
 				'controllers/otp/deactivateOtpAdmin',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 

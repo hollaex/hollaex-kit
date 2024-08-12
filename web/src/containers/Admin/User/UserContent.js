@@ -33,6 +33,7 @@ import {
 	requestTiers,
 } from './actions';
 import UserMetaForm from './UserMetaForm';
+import PaymentMethods from './PaymentMethods';
 
 // import Flagger from '../Flaguser';
 // import Notes from './Notes';
@@ -248,6 +249,7 @@ class UserContent extends Component {
 			showConfigure,
 			kycPluginName,
 			requestUserData,
+			referral_history_config,
 		} = this.props;
 
 		const { showVerifyEmailModal, showRecoverModal, userTiers } = this.state;
@@ -375,6 +377,11 @@ class UserContent extends Component {
 							/>
 						</div>
 					</TabPane>
+					<TabPane tab="Payment Methods" key="payment_methods">
+						<div>
+							<PaymentMethods user={userInformation} />
+						</div>
+					</TabPane>
 					{!isSupportUser && !isKYC() && (
 						<TabPane tab="Balance" key="balance">
 							<UserBalance coins={coins} userData={userInformation} />
@@ -434,7 +441,10 @@ class UserContent extends Component {
 					}
 					{
 						<TabPane tab="Referrals" key="referrals">
-							<Referrals userInformation={userInformation} />
+							<Referrals
+								userInformation={userInformation}
+								referral_history_config={referral_history_config}
+							/>
 						</TabPane>
 					}
 					{

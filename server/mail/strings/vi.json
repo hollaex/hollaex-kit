@@ -115,6 +115,50 @@
         "USER_DELETED": {
 			"html": "<div><p><p>Kính gửi ${name} </p></p><p>Yêu cầu xóa tài khoản đang được tiến hành. Thông tin trên tài khoản của bạn sẽ bị xóa theo điều khoản dịch vụ.</p><p> Trân trọng<br> nhóm ${api_name} </p></div>",
 			"title": "Yêu cầu xóa tài khoản"
-		}
+		},
+        "OTP_DISABLED": {
+            "html": "<div> <p> Kính gửi ${name} </p> <p> Chúng tôi đã ghi nhận rằng <b>xác thực hai yếu tố (2FA) đã bị tắt</b> trên tài khoản của bạn. Đề nghị bạn kích hoạt lại 2FA để bảo vệ tài khoản của mình.</p> <div> <div>Thời gian: ${time}</div> <div>Quốc gia: ${country}</div> <div>Địa chỉ IP: ${ip}</div> </div> <p> Nếu đây không phải là bạn, vui lòng liên hệ với chúng tôi ngay lập tức. </p> <p> Trân trọng<br> Đội ${api_name} </p> </div>",
+            "title": "OTP Đã Tắt"
+          },
+        "OTP_ENABLED": {
+            "html": "<div> <p> Kính gửi ${name} </p> <p> Chúng tôi đã ghi nhận rằng <b>xác thực hai yếu tố (2FA) đã được kích hoạt</b> trên tài khoản của bạn.</p> <div> <div>Thời gian: ${time}</div> <div>Quốc gia: ${country}</div> <div>Địa chỉ IP: ${ip}</div> </div> <p> Trân trọng<br> Đội ${api_name} </p> </div>",
+            "title": "OTP Đã Kích Hoạt"
+        },
+        "P2P_MERCHANT_IN_PROGRESS": {
+            "html": "<div><p> Kính gửi ${name} </p><p>Chúng tôi đã phát hiện hoạt động trên giao dịch P2P của bạn, điều này có thể cho thấy rằng một khách hàng đang yêu cầu giao dịch với bạn. Để kiểm tra trạng thái giao dịch của bạn, vui lòng nhấp vào liên kết dưới đây:<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Kiểm tra Trạng thái Giao dịch</Button></a></div><p>Cảm ơn bạn đã sử dụng nền tảng của chúng tôi.</p><p>Yêu cầu được thực hiện từ: ${ip}</p><p>Trân trọng<br> đội ngũ ${api_name} </p></div>",
+            "title": "Cập nhật về Giao dịch P2P của bạn"
+        },
+        "P2P_BUYER_PAID_ORDER": {
+            "html": "<div><p> Kính gửi ${name} </p><p>Bạn đã đánh dấu đơn hàng của mình là đã thanh toán. Đang chờ người bán kiểm tra, xác nhận và giải phóng quỹ<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Đi đến đơn hàng của bạn</Button></a></div><p>Cảm ơn bạn đã sử dụng nền tảng của chúng tôi.</p><p>Yêu cầu được thực hiện từ: ${ip}</p><p>Trân trọng<br> đội ngũ ${api_name} </p></div>",
+            "title": "Hoạt động được phát hiện trên Đơn hàng P2P của bạn"
+        },
+        "P2P_ORDER_EXPIRED": {
+            "html": "<div><p> Kính gửi ${name} </p><p>Đơn hàng của bạn đã hết hạn do không có hoạt động trong thời gian quy định.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Đi đến đơn hàng của bạn</Button></a></div><p>Cảm ơn bạn đã sử dụng nền tảng của chúng tôi.</p><p>Yêu cầu được thực hiện từ: ${ip}</p><p>Trân trọng<br> đội ngũ ${api_name} </p></div>",
+            "title": "Hoạt động được phát hiện trên Đơn hàng P2P của bạn"
+        },
+        "P2P_ORDER_CLOSED": {
+            "html": "<div><p> Kính gửi ${name} </p><p>Đơn hàng của bạn đã được đội ngũ hỗ trợ của chúng tôi đóng lại sau khi đạt được quyết định về yêu cầu kháng cáo<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Đi đến đơn hàng của bạn</Button></a></div><p>Cảm ơn bạn đã sử dụng nền tảng của chúng tôi.</p><p>Trân trọng<br> đội ngũ ${api_name} </p></div>",
+            "title": "Hoạt động được phát hiện trên Đơn hàng P2P của bạn"
+        },
+        "P2P_BUYER_CANCELLED_ORDER": {
+            "html": "<div><p> Kính gửi ${name} </p><p>Bạn đã hủy đơn hàng của mình. Giao dịch đã đóng.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Đi đến đơn hàng của bạn</Button></a></div><p>Cảm ơn bạn đã sử dụng nền tảng của chúng tôi.</p><p>Yêu cầu được thực hiện từ: ${ip}</p><p>Trân trọng<br> đội ngũ ${api_name} </p></div>",
+            "title": "Hoạt động được phát hiện trên Đơn hàng P2P của bạn"
+        },
+        "P2P_BUYER_APPEALED_ORDER": {
+            "html": "<div><p> Kính gửi ${name} </p><p>Bạn đã khiếu nại đơn hàng của mình. Vui lòng liên hệ với bộ phận hỗ trợ để giải quyết vấn đề.</p><p>Yêu cầu được thực hiện từ: ${ip}</p><p>Trân trọng<br> đội ngũ ${api_name} </p></div>",
+            "title": "Hoạt động được phát hiện trên Đơn hàng P2P của bạn"
+        },
+        "P2P_VENDOR_CONFIRMED_ORDER": {
+            "html": "<div><p> Kính gửi ${name} </p><p>Bạn đã xác nhận giao dịch và giải phóng quỹ.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Đi đến đơn hàng của bạn</Button></a></div><p>Cảm ơn bạn đã sử dụng nền tảng của chúng tôi.</p><p>Yêu cầu được thực hiện từ: ${ip}</p><p>Trân trọng<br> đội ngũ ${api_name} </p></div>",
+            "title": "Hoạt động được phát hiện trên Đơn hàng P2P của bạn"
+        },
+        "P2P_VENDOR_CANCELLED_ORDER": {
+            "html": "<div><p> Kính gửi ${name} </p><p>Bạn đã hủy đơn hàng của mình. Giao dịch đã đóng.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Đi đến đơn hàng của bạn</Button></a></div><p>Cảm ơn bạn đã sử dụng nền tảng của chúng tôi.</p><p>Yêu cầu được thực hiện từ: ${ip}</p><p>Trân trọng<br> đội ngũ ${api_name} </p></div>",
+            "title": "Hoạt động được phát hiện trên Đơn hàng P2P của bạn"
+        },
+        "P2P_VENDOR_APPEALED_ORDER": {
+            "html": "<div><p> Kính gửi ${name} </p><p>Bạn đã khiếu nại đơn hàng của mình. Vui lòng liên hệ với bộ phận hỗ trợ để giải quyết vấn đề.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Đi đến đơn hàng của bạn</Button></a></div><p>Cảm ơn bạn đã sử dụng nền tảng của chúng tôi.</p><p>Yêu cầu được thực hiện từ: ${ip}</p><p>Trân trọng<br> đội ngũ ${api_name} </p></div>",
+            "title": "Hoạt động được phát hiện trên Đơn hàng P2P của bạn"
+        }
     }
 }

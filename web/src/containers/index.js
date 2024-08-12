@@ -37,6 +37,9 @@ export { default as DigitalAssets } from './DigitalAssets';
 export { default as CoinPage } from './CoinPage';
 export { default as WhiteLabel } from './WhiteLabel';
 export { default as FeesAndLimits } from './FeesAndLimits';
+export { default as ReferralList } from './Summary/components/ReferralList';
+export { default as P2P } from './P2P';
+export { default as AddressBook } from './Wallet/AddressBook';
 
 // ADMIN PAGE
 export { default as AdminDashboard } from './Admin/Dashboard';

@@ -14,9 +14,11 @@ const DEFAULT_CHART_OPTIONS = {
 	},
 	chart: {
 		styledMode: true,
+		width: 200,
+		height: (9 / 16) * 60 + '%',
 	},
 	xAxis: {
-		visible: true,
+		visible: false,
 		minorTickInterval: 'auto',
 		labels: {
 			enabled: false,
@@ -25,7 +27,7 @@ const DEFAULT_CHART_OPTIONS = {
 		maxPadding: 0.05,
 	},
 	yAxis: {
-		visible: true,
+		visible: false,
 		minorTickInterval: 'auto',
 		tickAmount: 10,
 		labels: {

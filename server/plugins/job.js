@@ -6,7 +6,9 @@ const { sendEmail } = require('../mail');
 const { isNumber } = require('lodash');
 const BigNumber = require('bignumber.js');
 const moment = require('moment');
+
 const { loggerPlugin } = require('../config/logger');
+
 
 const getTimezone = () => {
 	const kitTimezone = toolsLib.getKitSecrets().emails.timezone;
@@ -24,6 +26,7 @@ const unstakingCheckRunner = () => {
 			const stakerData = await stakerModel.findAll({ where: { status: 'unstaking' } });
 
 			for (const staker of stakerData) {
+				await toolsLib.sleep(1000);
 				const user = await toolsLib.user.getUserByKitId(staker.user_id);
 				const stakePool = await stakePoolModel.findOne({ where: { id: staker.stake_id } });
 
@@ -31,7 +34,7 @@ const unstakingCheckRunner = () => {
 				let symbols = {};
 				
 				for (const key of Object.keys(balance)) {
-					if (key.includes('available') && balance[key]) {
+					if (key.includes('available') && balance[key] != null) {
 						let symbol = key?.split('_')?.[0];
 						symbols[symbol] = balance[key];
 					}
@@ -138,7 +141,7 @@ const unstakingCheckRunner = () => {
 
 				let symbols = {};
 
-				(userBalances[userId] || []).forEach(balance => { symbols[balance.symbol] = balance.available });
+				(userBalances[userId] || []).forEach(balance => { symbols[balance.symbol] = balance.balance });
 
 				const coins = Object.keys(symbols);
 
@@ -167,6 +170,7 @@ const unstakingCheckRunner = () => {
 				err.message
 			);
 		}
+
 	}, {
 		scheduled: true,
 		timezone: getTimezone()
@@ -248,10 +252,47 @@ const updateRewardsCheckRunner = () => {
 	});
 }
 
+const referralTradesRunner = () =>{
+	cron.schedule('0 */4 * * *', async () => {
+		loggerPlugin.verbose(
+			'/plugins referralTradesRunner start'
+		);
+		try {
+			const statusModel = toolsLib.database.getModel('status');
+			const status = await statusModel.findOne({});
+			if (!status?.kit?.referral_history_config?.active) return;
+
+			const currentTime = moment().seconds(0).milliseconds(0).toISOString();
+			await toolsLib.user.createUnrealizedReferralFees(currentTime);
+
+		} catch (err) {
+			const adminAccount = await toolsLib.user.getUserByKitId(1);
+			sendEmail(
+				MAILTYPE.ALERT,
+				adminAccount.email,
+				{
+					type: 'Error during referralTradesRunner process!',
+					data: err.message
+				},
+				adminAccount.settings
+			);
+			loggerPlugin.error(
+				'/plugins referralTradesRunner error:',
+				err.message
+			);
+		}
+	}, {
+		scheduled: true,
+		timezone: getTimezone()
+	});
+}
+
 unstakingCheckRunner();
 updateRewardsCheckRunner();
+referralTradesRunner();
 
 module.exports = {
     unstakingCheckRunner,
-    updateRewardsCheckRunner
+    updateRewardsCheckRunner,
+	referralTradesRunner
 }

@@ -23,9 +23,6 @@ definitions:
       otp_code:
         type: string
         maxLength: 256
-      captcha:
-        type: string
-        maxLength: 5000
       referral:
         type: string
         maxLength: 256
@@ -1033,7 +1030,7 @@ definitions:
         maxLength: 256
       description:
         type: string
-        maxLength: 256
+        maxLength: 5000
       native_currency_limit:
         type: boolean
   PostTierBody:
@@ -1056,7 +1053,7 @@ definitions:
         maxLength: 256
       description:
         type: string
-        maxLength: 256
+        maxLength: 5000
       note:
         type: string
         maxLength: 256

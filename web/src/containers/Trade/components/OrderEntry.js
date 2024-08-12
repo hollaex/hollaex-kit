@@ -13,7 +13,6 @@ import {
 	// formatBaseAmount,
 	roundNumber,
 	formatToCurrency,
-	calculateOraclePrice,
 } from 'utils/currency';
 import { getDecimals, playBackgroundAudioNotification } from 'utils/utils';
 import {
@@ -347,16 +346,11 @@ class OrderEntry extends Component {
 			price,
 			size,
 			pair_base,
-			pair_2,
 			increment_size,
 			increment_price,
 			openCheckOrder,
-			onRiskyTrade,
 			submit,
-			settings: { risk = {}, notification = {} },
-			totalAsset,
-			oraclePrices,
-			estimatedPrice,
+			settings: { notification = {} },
 		} = this.props;
 
 		const orderTotal = mathjs.add(
@@ -376,21 +370,6 @@ class OrderEntry extends Component {
 
 		const isMarket = type === 'market';
 
-		const riskySize = formatNumber(
-			mathjs.multiply(
-				mathjs.divide(totalAsset, 100),
-				risk.order_portfolio_percentage
-			),
-			getDecimals(increment_size)
-		);
-
-		const calculatedOrderValue = calculateOraclePrice(
-			isMarket ? estimatedPrice : mathjs.multiply(size, price),
-			oraclePrices[pair_2]
-		);
-
-		const isRiskyOrder = mathjs.largerEq(calculatedOrderValue, riskySize);
-
 		if (isMarket) {
 			delete order.price;
 		} else if (price) {
@@ -398,18 +377,6 @@ class OrderEntry extends Component {
 		}
 		if (notification.popup_order_confirmation) {
 			openCheckOrder(order, () => {
-				if (risk.popup_warning && isRiskyOrder) {
-					order['order_portfolio_percentage'] = risk.order_portfolio_percentage;
-					onRiskyTrade(order, () => {
-						submit(FORM_NAME);
-					});
-				} else {
-					submit(FORM_NAME);
-				}
-			});
-		} else if (risk.popup_warning && isRiskyOrder) {
-			order['order_portfolio_percentage'] = risk.order_portfolio_percentage;
-			onRiskyTrade(order, () => {
 				submit(FORM_NAME);
 			});
 		} else {
@@ -437,6 +404,19 @@ class OrderEntry extends Component {
 		if (name === 'order_mode') {
 			this.setState({ orderType: value });
 		}
+	};
+
+	handleKey = (event) => {
+		const key = event.key;
+		const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Delete'];
+
+		if (allowedKeys?.includes(key) || /[0-9.]/.test(key)) {
+			if (key === '.' && event.target.value?.includes('.')) {
+				event.preventDefault();
+			}
+			return event.target.value;
+		}
+		event.preventDefault();
 	};
 
 	generateFormValues = (props, buyingPair = '') => {
@@ -571,6 +551,7 @@ class OrderEntry extends Component {
 				validate: [required, minValue(min_size), maxValue(max_size)],
 				currency: pair_base_display,
 				setRef: this.props.setSizeRef,
+				onKeyDown: (event) => this.handleKey(event),
 			},
 			slider: {
 				name: 'size-slider',
@@ -727,7 +708,6 @@ const mapStateToProps = (state) => {
 		bids,
 		marketPrice,
 		order_entry_data: state.orderbook.order_entry_data,
-		totalAsset: state.asset.totalAsset,
 		oraclePrices: state.asset.oraclePrices,
 		estimatedPrice,
 	};

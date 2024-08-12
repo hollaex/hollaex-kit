@@ -28,6 +28,7 @@ export const ACTION_KEYS = {
 	WITHDRAWAL_CANCEL_PENDING: 'WITHDRAWAL_CANCEL_PENDING',
 	WITHDRAWAL_CANCEL_FULFILLED: 'WITHDRAWAL_CANCEL_FULFILLED',
 	WITHDRAWAL_CANCEL_REJECTED: 'WITHDRAWAL_CANCEL_REJECTED',
+	SETACTIVEBALANCEHISTORY: 'SETACTIVEBALANCEHISTORY',
 };
 
 const ENDPOINTS = {
@@ -461,3 +462,17 @@ export const getEstimatedDust = (assets = []) => {
 	const data = { assets };
 	return axios.post(ENDPOINTS.DUST_ESTIMATION, data);
 };
+
+export const activeTabFromWallet = (tab) => ({
+	type: 'ACTIVE_TAB_FROM_WALLET',
+	payload: {
+		tab,
+	},
+});
+
+export const setActiveBalanceHistory = (activeBalanceHistory) => ({
+	type: ACTION_KEYS.SETACTIVEBALANCEHISTORY,
+	payload: {
+		activeBalanceHistory,
+	},
+});

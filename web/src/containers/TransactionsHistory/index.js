@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import classnames from 'classnames';
-import moment from 'moment';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
 import { withRouter } from 'react-router';
+import classnames from 'classnames';
+import moment from 'moment';
 import { getFormatTimestamp } from 'utils/utils';
 
 import {
@@ -13,6 +14,7 @@ import {
 	getUserWithdrawals,
 	withdrawalCancel,
 	downloadUserTrades,
+	activeTabFromWallet,
 } from 'actions/walletActions';
 
 import {
@@ -48,6 +50,7 @@ import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { STATIC_ICONS } from 'config/icons';
 import { Image } from 'hollaex-web-lib';
+import { quicktradePairSelector } from 'containers/QuickTrade/components/utils';
 
 const GROUP_CLASSES = [...FLEX_CENTER_CLASSES, 'flex-column'];
 const transactionTabs = ['trades', 'orders', 'deposits', 'withdrawals'];
@@ -96,7 +99,11 @@ class TransactionsHistory extends Component {
 			router: {
 				location: { query, search },
 			},
+			getActiveTabFromWallet,
+			isFromWallet,
+			isDepositFromWallet,
 		} = this.props;
+
 		this.generateHeaders(
 			this.props.symbol,
 			this.props.coins,
@@ -108,13 +115,26 @@ class TransactionsHistory extends Component {
 			this.setActiveTab(parseInt(query.tab, 10));
 		} else {
 			const activeTab = this.getTabBySearch(search);
-			this.setActiveTab(activeTab);
+			this.setActiveTab(
+				getActiveTabFromWallet === 'deposit' || isDepositFromWallet
+					? 2
+					: getActiveTabFromWallet === 'withdraw' || isFromWallet
+					? 3
+					: activeTab
+			);
 		}
 	}
 
 	componentDidUpdate() {
-		const activeTabName = this.getActiveTabName();
-		this.updateParams(activeTabName);
+		const { isFromWallet } = this.props;
+		if (!isFromWallet) {
+			const activeTabName = this.getActiveTabName();
+			this.updateParams(activeTabName);
+		}
+	}
+
+	componentWillUnmount() {
+		this.props.activeTabFromWallet('');
 	}
 
 	getTabBySearch = (search) => {
@@ -132,7 +152,7 @@ class TransactionsHistory extends Component {
 	};
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
-		const { pairs, coins, prices } = this.props;
+		const { coins, pairs, prices, quicktradePairs } = this.props;
 		if (
 			nextProps.activeLanguage !== this.props.activeLanguage ||
 			JSON.stringify(nextProps.prices) !== JSON.stringify(prices)
@@ -153,6 +173,8 @@ class TransactionsHistory extends Component {
 		}
 		if (
 			JSON.stringify(nextProps.pairs) !== JSON.stringify(pairs) ||
+			JSON.stringify(nextProps.quicktradePairs) !==
+				JSON.stringify(quicktradePairs) ||
 			JSON.stringify(nextProps.coins) !== JSON.stringify(coins)
 		) {
 			this.generateFilters();
@@ -357,12 +379,12 @@ class TransactionsHistory extends Component {
 	};
 
 	generateFilters = () => {
-		const { pairs, coins, icons } = this.props;
+		const { quicktradePairs, coins, icons } = this.props;
 		this.setState({
 			filters: {
 				orders: (
 					<TradeAndOrderFilters
-						pairs={pairs}
+						pairs={quicktradePairs}
 						onSearch={this.onSearch}
 						formName="orders"
 						activeTab={1}
@@ -370,7 +392,7 @@ class TransactionsHistory extends Component {
 				),
 				trades: (
 					<TradeAndOrderFilters
-						pairs={pairs}
+						pairs={quicktradePairs}
 						onSearch={this.onSearch}
 						formName="trades"
 						activeTab={0}
@@ -399,7 +421,14 @@ class TransactionsHistory extends Component {
 	};
 
 	setActiveTab = (activeTab = 0) => {
-		const { symbol, orders, trades, withdrawals, deposits } = this.props;
+		const {
+			symbol,
+			orders,
+			trades,
+			withdrawals,
+			deposits,
+			activeTabFromWallet,
+		} = this.props;
 		const { jumpToPage } = this.state;
 		if (jumpToPage !== 0) {
 			this.setState({
@@ -427,6 +456,7 @@ class TransactionsHistory extends Component {
 				}
 			}
 		);
+		activeTabFromWallet('');
 	};
 	withdrawalPopup = (id, amount, currency) => {
 		if (id) {
@@ -503,6 +533,16 @@ class TransactionsHistory extends Component {
 		}
 	};
 
+	onHandleView = () => {
+		const { router, activeTabFromWallet, isDepositFromWallet } = this.props;
+		if (isDepositFromWallet) {
+			activeTabFromWallet('deposit');
+		} else {
+			activeTabFromWallet('withdraw');
+		}
+		router.push('/transactions');
+	};
+
 	renderActiveTab = () => {
 		const {
 			orders,
@@ -514,13 +554,31 @@ class TransactionsHistory extends Component {
 			downloadUserOrders,
 			downloadUserWithdrawal,
 			downloadUserDeposit,
+			isFromWallet,
+			isDepositFromWallet,
 		} = this.props;
+		const filterForWallet = withdrawals.data.filter((item, index) => index < 5);
+		const filterForDepositWallet = deposits.data.filter(
+			(item, index) => index < 5
+		);
+		const withdrawalsForWallet = {
+			...withdrawals,
+			count: 5,
+			data: filterForWallet,
+		};
+		const depositsForWallet = {
+			...deposits,
+			count: 5,
+			data: filterForDepositWallet,
+		};
 		const { headers, activeTab, filters, jumpToPage, params } = this.state;
 		let temp = params[`activeTab_${activeTab}`];
 
 		const props = {
 			symbol,
 			withIcon: true,
+			isFromWallet,
+			isDepositFromWallet,
 		};
 
 		const prepareNoData = (tab) => {
@@ -576,7 +634,7 @@ class TransactionsHistory extends Component {
 				props.stringId = 'TRANSACTION_HISTORY.TITLE_DEPOSITS';
 				props.title = STRINGS['TRANSACTION_HISTORY.TITLE_DEPOSITS'];
 				props.headers = headers.deposits;
-				props.data = deposits;
+				props.data = isDepositFromWallet ? depositsForWallet : deposits;
 				props.filename = `deposit-history-${moment().unix()}`;
 				props.handleNext = this.handleNext;
 				props.jumpToPage = jumpToPage;
@@ -584,12 +642,13 @@ class TransactionsHistory extends Component {
 				props.filters = filters.deposits;
 				props.noData = prepareNoData('NO_ACTIVE_DEPOSITS');
 				props.refetchData = () => this.requestData(activeTab);
+				props.onHandleView = () => this.onHandleView();
 				break;
 			case 3:
 				props.stringId = 'TRANSACTION_HISTORY.TITLE_WITHDRAWALS';
 				props.title = STRINGS['TRANSACTION_HISTORY.TITLE_WITHDRAWALS'];
 				props.headers = headers.withdrawals;
-				props.data = withdrawals;
+				props.data = isFromWallet ? withdrawalsForWallet : withdrawals;
 				props.filename = `withdrawal-history-${moment().unix()}`;
 				props.handleNext = this.handleNext;
 				props.jumpToPage = jumpToPage;
@@ -597,6 +656,7 @@ class TransactionsHistory extends Component {
 				props.filters = filters.withdrawals;
 				props.noData = prepareNoData('NO_ACTIVE_WITHDRAWALS');
 				props.refetchData = () => this.requestData(activeTab);
+				props.onHandleView = () => this.onHandleView();
 				break;
 			default:
 				return <div />;
@@ -606,7 +666,7 @@ class TransactionsHistory extends Component {
 	};
 
 	render() {
-		const { coins, icons: ICONS } = this.props;
+		const { coins, icons: ICONS, isFromWallet = false } = this.props;
 		let { activeTab, dialogIsOpen, amount, currency } = this.state;
 		const { onCloseDialog } = this;
 
@@ -623,7 +683,7 @@ class TransactionsHistory extends Component {
 					isMobile && 'overflow-y'
 				)}
 			>
-				{!isMobile && (
+				{!isMobile && !isFromWallet && (
 					<IconTitle
 						stringId="TRANSACTION_HISTORY.TITLE"
 						text={STRINGS['TRANSACTION_HISTORY.TITLE']}
@@ -632,72 +692,75 @@ class TransactionsHistory extends Component {
 						textType="title"
 					/>
 				)}
-				<TabController
-					tabs={[
-						{
-							title: isMobile ? (
-								<EditWrapper>
-									{STRINGS['TRANSACTION_HISTORY.TRADES']}
-								</EditWrapper>
-							) : (
-								<EditWrapper
-									stringId="TRANSACTION_HISTORY.TRADES"
-									render={(string) => <div>{string}</div>}
-								>
-									{STRINGS['TRANSACTION_HISTORY.TRADES']}
-								</EditWrapper>
-							),
-						},
-						{
-							title: isMobile ? (
-								<EditWrapper>{STRINGS['ORDER_HISTORY']}</EditWrapper>
-							) : (
-								<EditWrapper
-									stringId="ORDER_HISTORY"
-									render={(string) => <div>{string}</div>}
-								>
-									{STRINGS['ORDER_HISTORY']}
-								</EditWrapper>
-							),
-						},
-						{
-							title: isMobile ? (
-								<EditWrapper>
-									{STRINGS['TRANSACTION_HISTORY.DEPOSITS']}
-								</EditWrapper>
-							) : (
-								<EditWrapper
-									stringId="TRANSACTION_HISTORY.DEPOSITS"
-									render={(string) => <div>{string}</div>}
-								>
-									{STRINGS['TRANSACTION_HISTORY.DEPOSITS']}
-								</EditWrapper>
-							),
-						},
-						{
-							title: isMobile ? (
-								<EditWrapper>
-									{STRINGS['TRANSACTION_HISTORY.WITHDRAWALS']}
-								</EditWrapper>
-							) : (
-								<EditWrapper
-									stringId="TRANSACTION_HISTORY.WITHDRAWALS"
-									render={(string) => <div>{string}</div>}
-								>
-									{STRINGS['TRANSACTION_HISTORY.WITHDRAWALS']}
-								</EditWrapper>
-							),
-						},
-					]}
-					activeTab={activeTab}
-					setActiveTab={this.setActiveTab}
-				/>
+				{!isFromWallet && (
+					<TabController
+						tabs={[
+							{
+								title: isMobile ? (
+									<EditWrapper>
+										{STRINGS['TRANSACTION_HISTORY.TRADES']}
+									</EditWrapper>
+								) : (
+									<EditWrapper
+										stringId="TRANSACTION_HISTORY.TRADES"
+										render={(string) => <div>{string}</div>}
+									>
+										{STRINGS['TRANSACTION_HISTORY.TRADES']}
+									</EditWrapper>
+								),
+							},
+							{
+								title: isMobile ? (
+									<EditWrapper>{STRINGS['ORDER_HISTORY']}</EditWrapper>
+								) : (
+									<EditWrapper
+										stringId="ORDER_HISTORY"
+										render={(string) => <div>{string}</div>}
+									>
+										{STRINGS['ORDER_HISTORY']}
+									</EditWrapper>
+								),
+							},
+							{
+								title: isMobile ? (
+									<EditWrapper>
+										{STRINGS['TRANSACTION_HISTORY.DEPOSITS']}
+									</EditWrapper>
+								) : (
+									<EditWrapper
+										stringId="TRANSACTION_HISTORY.DEPOSITS"
+										render={(string) => <div>{string}</div>}
+									>
+										{STRINGS['TRANSACTION_HISTORY.DEPOSITS']}
+									</EditWrapper>
+								),
+							},
+							{
+								title: isMobile ? (
+									<EditWrapper>
+										{STRINGS['TRANSACTION_HISTORY.WITHDRAWALS']}
+									</EditWrapper>
+								) : (
+									<EditWrapper
+										stringId="TRANSACTION_HISTORY.WITHDRAWALS"
+										render={(string) => <div>{string}</div>}
+									>
+										{STRINGS['TRANSACTION_HISTORY.WITHDRAWALS']}
+									</EditWrapper>
+								),
+							},
+						]}
+						activeTab={activeTab}
+						setActiveTab={this.setActiveTab}
+					/>
+				)}
 				<Dialog
 					isOpen={dialogIsOpen}
 					label="token-modal"
 					onCloseDialog={onCloseDialog}
 					shouldCloseOnOverlayClick={true}
 					showCloseText={false}
+					className="cancel-withdraw-pop-up"
 				>
 					<div>
 						<IconTitle
@@ -707,15 +770,15 @@ class TransactionsHistory extends Component {
 							text={STRINGS.formatString(
 								STRINGS['CANCEL_BASE_WITHDRAWAL'],
 								coins && coins[currency] && coins[currency].fullname
-									? coins[currency].fullname
+									? `${coins[currency].fullname} ${STRINGS['SUMMARY.WITHDRAWAL']}`
 									: ''
 							)}
 							textType="title"
 							underline={true}
-							className="w-100"
+							className="w-100 cancel-widrawal-pop-up"
 						/>
 						<div>
-							<div className="text-center mt-5 mb-5">
+							<div className="text-center mt-3 mb-3">
 								<div>{STRINGS['CANCEL_WITHDRAWAL_POPUP_CONFIRM']}</div>
 								<div className={classnames(...GROUP_CLASSES)}>
 									<CurrencyBallWithPrice
@@ -733,7 +796,7 @@ class TransactionsHistory extends Component {
 								<Button label={STRINGS['BACK_TEXT']} onClick={this.onClose} />
 								<div className="separator" />
 								<Button
-									label={STRINGS['CANCEL_WITHDRAWAL']}
+									label={STRINGS['USER_APPS.REMOVE.CONFIRM']}
 									onClick={this.withdrawalCancel}
 								/>
 							</div>
@@ -752,6 +815,7 @@ const mapStateToProps = (store) => ({
 	prices: store.asset.oraclePrices,
 	pairs: store.app.pairs,
 	coins: store.app.coins,
+	quicktradePairs: quicktradePairSelector(store),
 	orders: orderHistorySelector(store),
 	trades: tradeHistorySelector(store),
 	deposits: depositHistorySelector(store),
@@ -760,6 +824,7 @@ const mapStateToProps = (store) => ({
 	activeLanguage: store.app.language,
 	cancelData: store.wallet.withdrawalCancelData,
 	discount: store.user.discount || 0,
+	getActiveTabFromWallet: store.wallet.activeTabFromWallet,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -780,6 +845,7 @@ const mapDispatchToProps = (dispatch) => ({
 		dispatch(downloadUserTrades('withdrawal', params)),
 	downloadUserOrders: (params) =>
 		dispatch(downloadUserTrades('orders', params)),
+	activeTabFromWallet: bindActionCreators(activeTabFromWallet, dispatch),
 });
 
 export default connect(

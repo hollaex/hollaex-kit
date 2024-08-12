@@ -38,7 +38,7 @@
 	}
 	.header_title-wrapper {
 		.action_notification-wrapper {
-			top: 30px;
+			top: 15px;
 		}
 	}
 	.settings-form-wrapper {
@@ -113,6 +113,16 @@
 		.tab_controller-wrapper {
 			.tab_item {
 				font-size: $font-size-mobile-txt;
+			}
+		}
+	}
+}
+
+@media screen and (min-width: 1920px) {
+	.settings_container {
+		.header_title-wrapper {
+			.action_notification-wrapper {
+				top: 30px;
 			}
 		}
 	}

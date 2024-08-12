@@ -7,12 +7,12 @@ I want to check elements existence and sequencing of the landing page
 Scenario: Successfull Landing Page Arrangements
 
     Given I am on the Hollaex landing page
-    When All elements exist
+    And I record all elements locations
     Then I should be able to click on the live market
-    And I login check quick trade
+    And I login and check quick trade
     Then I visit the landing page in edit mode
     And I check the sequence of elements Title, Market list, and Quick trade calculator
     When I change the sequence
-    Then Elements should move
-    And I arrange elements in Market list, and Quick trade calculator
+    Then Elements should be arranged
+    
 

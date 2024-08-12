@@ -73,6 +73,7 @@ $outline-height: 1.5px;
 	position: relative;
 	display: flex;
 	flex-direction: column;
+	scrollbar-color: $colors-black $app-background-color;
 	// margin-bottom: $underline-margin-bottom;
 }
 
@@ -328,5 +329,15 @@ $outline-height: 1.5px;
 
 	.field_warning_wrapper {
 		padding-bottom: 1rem;
+	}
+}
+
+@media screen and (max-width: 550px) {
+	.field-children {
+		.clear-field {
+			bottom: 1.5rem;
+			padding: 1.5rem;
+			margin-right: 1rem;
+		}
 	}
 }

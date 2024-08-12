@@ -33,16 +33,19 @@ When ('I change Footer small text',()=>{
  cy.contains('Back to Website').click()
 }) 
 Then ('Footer small text should be changed',()=>{
- cy.contains('Terms of Service',{matchCase:false})
- .invoke('removeAttr', 'target').click({force: true})
- cy.url().should('contain',website+"term"+randomTest)
- cy.go('back')
- cy.get('.app_bar-icon').click()
- cy.wait(6000)
- cy.get('.footer-row-bottom > .d-flex').contains('Privacy Policy',{matchCase:false})
- .invoke('removeAttr', 'target').click({force: true})
- cy.url().should('contain',website+"privacy"+randomTest)
- cy.go('back')
+  cy.contains('Terms of Service', { matchCase: false }).then($link => {
+    const url = $link.prop('href');
+    console.log('URL:', url);
+    expect(url).to.include(website+"term"+randomTest); // Assert that the URL contains 
+  });
+ 
+  cy.get('.footer-row-bottom > .d-flex').contains('Privacy Policy',{matchCase:false})
+   .then($link => {
+   const url = $link.prop('href');
+   console.log('URL:', url);
+   expect(url).to.include(website+"privacy"+randomTest); // Assert that the URL contains 
+  });
+
 }) 
 
 When ('I change Referral Badge',()=>{
@@ -63,10 +66,12 @@ Then ('Referral Badge should be changed',()=>{
  cy.get('.app_bar-icon').click()
  cy.get('.footer-row-bottom > :nth-child(1)')
  .contains('For white label exchange services - Visit HollaEx.com'+randomTest)
- .invoke('removeAttr', 'target').click({force: true})
- cy.url().should('contain',website+randomTest)
- cy.go('back')
- cy.wait(3000)
+  .then($link => {
+  const url = $link.prop('href');
+  console.log('URL:', url);
+  expect(url).to.include(website+randomTest); // Assert that the URL contains 
+  });
+
 }) 
 When ('I add a column in Footer Links',()=>{
  cy.contains('Operator controls').click({force:true})
@@ -106,9 +111,12 @@ Then ('The column should be on the Footer page',()=>{
  cy.get('.footer-links-section--title').last().contains(randomTest)
  cy.get('.flex-column').last()
  .contains(randomTest)
- .invoke('removeAttr', 'target').click({force: true})
- cy.url().should('contain',website+randomTest)
- cy.go('back')
+ .then($link => {
+  const url = $link.prop('href');
+  console.log('URL:', url);
+  expect(url).to.include(website+randomTest); // Assert that the URL contains 
+  });
+
 }) 
 When ('I delete a column in Footer Links',()=>{
  cy.contains('Operator controls').click({force:true})
@@ -134,8 +142,7 @@ When ('I hided referral badge',()=>{
  cy.get('.ant-checkbox-input')
  .should('not.be.checked').check()
  cy.get(':nth-child(4) > div.w-100 > .ant-btn').click()
-
-  cy.get('.ant-message-notice-content').contains('Updated successfully')
+ cy.get('.ant-message-notice-content').contains('Updated successfully')
 }) 
 Then ('Referral badge should be hidden',()=>{
  cy.contains('Back to Website').click()

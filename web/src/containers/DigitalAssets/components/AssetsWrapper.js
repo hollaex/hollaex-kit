@@ -1,18 +1,23 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
+import { isMobile } from 'react-device-detect';
 import {
 	formatPercentage,
 	formatToCurrency,
 	countDecimals,
 } from 'utils/currency';
-import { isMobile } from 'react-device-detect';
 import { SearchBox } from 'components';
 import STRINGS from 'config/localizedStrings';
 import { quicktradePairSelector } from 'containers/QuickTrade/components/utils';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { getMiniCharts } from 'actions/chartAction';
 import AssetsList from 'containers/DigitalAssets/components/AssetsList';
+import { RenderLoading } from './utils';
+
+function onHandleInitialLoading(ms) {
+	return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 class AssetsWrapper extends Component {
 	constructor(props) {
@@ -25,6 +30,7 @@ class AssetsWrapper extends Component {
 			page: 0,
 			count: 0,
 			searchValue: '',
+			isLoading: true,
 		};
 	}
 
@@ -46,7 +52,7 @@ class AssetsWrapper extends Component {
 		const lastPrice = price[price.length - 1];
 		const priceDifference = lastPrice - firstPrice;
 		const priceDifferencePercent = formatPercentage(
-			priceDifference / firstPrice
+			(priceDifference / firstPrice) * 100
 		);
 		const formattedNumber = (val) =>
 			formatToCurrency(val, 0, val < 1 && countDecimals(val) > 8);
@@ -123,7 +129,7 @@ class AssetsWrapper extends Component {
 		this.constructData(this.state.page);
 	};
 
-	componentDidMount() {
+	async componentDidMount() {
 		const { coins } = this.props;
 		const { page, searchValue } = this.state;
 		this.constructData(page, searchValue);
@@ -134,6 +140,8 @@ class AssetsWrapper extends Component {
 			this.setState({ chartData: chartValues });
 			this.getCoinsData(coinsList, chartValues);
 		});
+		await onHandleInitialLoading(15 * 100);
+		this.setState({ isLoading: false });
 	}
 
 	componentDidUpdate(prevProps) {
@@ -218,41 +226,40 @@ class AssetsWrapper extends Component {
 		}
 	};
 
-	handleAssetsClick = (pair) => {
-		const { router } = this.props;
-		if (pair && router) {
-			router.push(`/assets/coin/${pair.split('-')[0]}`);
-		}
-	};
-	
 	render() {
-		const { data, page, pageSize, count } = this.state;
+		const { data, page, pageSize, count, isLoading } = this.state;
 
 		return (
 			<div>
-				<div className="d-flex justify-content-start">
-					<div className={isMobile ? '' : 'w-25 pb-4'}>
-						<SearchBox
-							name={STRINGS['SEARCH_ASSETS']}
-							className="trade_tabs-search-field"
-							outlineClassName="trade_tabs-search-outline"
-							placeHolder={`${STRINGS['SEARCH_ASSETS']}...`}
-							handleSearch={this.handleTabSearch}
-							showCross
+				{data.length ? (
+					<div>
+						<div className="d-flex justify-content-start">
+							<div className={isMobile ? '' : 'w-25 pb-4'}>
+								<SearchBox
+									name={STRINGS['SEARCH_ASSETS']}
+									className="trade_tabs-search-field"
+									outlineClassName="trade_tabs-search-outline"
+									placeHolder={`${STRINGS['SEARCH_ASSETS']}...`}
+									handleSearch={this.handleTabSearch}
+									showCross
+									isFocus={true}
+								/>
+							</div>
+						</div>
+						<AssetsList
+							loading={isLoading}
+							coinsListData={data}
+							page={page}
+							pageSize={pageSize}
+							count={count}
+							goToNextPage={this.goToNextPage}
+							goToPreviousPage={this.goToPreviousPage}
+							showPaginator={count > pageSize}
 						/>
 					</div>
-				</div>
-				<AssetsList
-					loading={!data.length}
-					coinsListData={data}
-					handleClick={this.handleAssetsClick}
-					page={page}
-					pageSize={pageSize}
-					count={count}
-					goToNextPage={this.goToNextPage}
-					goToPreviousPage={this.goToPreviousPage}
-					showPaginator={count > pageSize}
-				/>
+				) : (
+					<RenderLoading />
+				)}
 			</div>
 		);
 	}

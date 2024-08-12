@@ -1,4 +1,4 @@
-import {Given, And, When, Then} from "cypress-cucumber-preprocessor/steps"
+import {Given, When, Then} from "cypress-cucumber-preprocessor/steps"
 const loginButton = '.my-2 > [href="/login"]'
 
 Given ('I am not logged in',()=>{
@@ -51,10 +51,10 @@ When ('I traverse through pages',()=>{
     cy.url().should('eq', Cypress.env('LOGIN_PAGE'))
     cy.visit(Cypress.env('LANDING_PAGE')+"/trade/xht-usdt")
     cy.contains('To start trading you must login')
-    cy.get('[href="/login"] > .holla-button').click()
+    cy.get('[href="/login"] > .holla-button').first().click()
     cy.url().should('eq', Cypress.env('LOGIN_PAGE'))
-    cy.visit(Cypress.env('LANDING_PAGE')+"/quick-trade/xht-usdt")
-    cy.get('.pairs').contains('XHT/USDT')
+    cy.visit(Cypress.env('LANDING_PAGE')+"/quick-trade/xrp-usdt")
+    cy.contains('XRP/USDT')
     cy.get('.login-container').click()
     cy.url().should('eq', Cypress.env('LOGIN_PAGE'))
  })

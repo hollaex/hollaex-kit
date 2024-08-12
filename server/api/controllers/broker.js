@@ -27,7 +27,7 @@ const getTrackedExchangeMarkets = (req, res) => {
 				'controllers/broker/getTrackedExchangeMarkets err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -100,7 +100,7 @@ const createBrokerPair = (req, res) => {
 				'controllers/broker/createBrokerPair err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 const testBroker = (req, res) => {
@@ -128,7 +128,7 @@ const testBroker = (req, res) => {
 				'controllers/broker/testBroker err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -162,7 +162,7 @@ const testRebalance = (req, res) => {
 				'controllers/broker/testRebalance err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -219,7 +219,7 @@ function updateBrokerPair(req, res) {
 				'controllers/broker/updateBrokerPair err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 }
 
@@ -242,7 +242,7 @@ function deleteBrokerPair(req, res) {
 				'controllers/broker/updateBrokerPair err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 }
 
@@ -281,7 +281,7 @@ function getBrokerPairs(req, res) {
 				'controllers/broker/getBrokerDeals err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 
 }

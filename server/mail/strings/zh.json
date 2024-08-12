@@ -111,6 +111,50 @@
 		"USER_DELETED": {
 			"html": "<div><p><p>亲爱的${name} </p></p><p>删除帐户的请求正在进行中。 根据服务条款，您帐户上的信息将被删除。。</p><p>此致<br>${api_name}团队</p></div>",
 			"title": "帐户删除请求"
-		}
+		},
+        "OTP_DISABLED": {
+            "html": "<div> <p> 尊敬的 ${name} 先生/女士 </p> <p> 我们记录到您的账户上的 <b>双因素认证 (2FA) 已经被停用</b>。强烈建议您重新启用 2FA 以保护您的账户。</p> <div> <div>时间：${time}</div> <div>国家：${country}</div> <div>IP 地址：${ip}</div> </div> <p> 如果这不是您本人操作，请立即联系我们。 </p> <p> 敬启<br> ${api_name} 团队 </p> </div>",
+            "title": "OTP 已停用"
+          },
+        "OTP_ENABLED": {
+            "html": "<div> <p> 尊敬的 ${name} 先生/女士 </p> <p> 我们记录到您的账户上的 <b>双因素认证 (2FA) 已经被启用</b>。</p> <div> <div>时间：${time}</div> <div>国家：${country}</div> <div>IP 地址：${ip}</div> </div> <p> 敬启<br> ${api_name} 团队 </p> </div>",
+            "title": "OTP 已启用"
+        },
+        "P2P_MERCHANT_IN_PROGRESS": {
+            "html": "<div><p> 亲爱的 ${name} </p><p>我们检测到您的P2P交易中有活动，这可能表明有客户请求与您进行交易。要检查您的交易状态，请点击以下链接：<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">检查交易状态</Button></a></div><p>感谢您使用我们的平台。</p><p>请求发起自：${ip}</p><p>此致<br> ${api_name}团队 </p></div>",
+            "title": "您的P2P交易更新"
+        },
+        "P2P_BUYER_PAID_ORDER": {
+            "html": "<div><p> 亲爱的 ${name} </p><p>您已将订单标记为已付款。等待卖家检查、确认并释放资金<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">前往您的订单</Button></a></div><p>感谢您使用我们的平台。</p><p>请求发起自：${ip}</p><p>此致<br> ${api_name}团队 </p></div>",
+            "title": "您的P2P订单中检测到活动"
+        },
+        "P2P_ORDER_EXPIRED": {
+            "html": "<div><p> 亲爱的 ${name} </p><p>由于在规定时间内没有活动，您的订单已过期。<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">前往您的订单</Button></a></div><p>感谢您使用我们的平台。</p><p>请求发起自：${ip}</p><p>此致<br> ${api_name}团队 </p></div>",
+            "title": "您的P2P订单中检测到活动"
+        },
+        "P2P_ORDER_CLOSED": {
+            "html": "<div><p> 亲爱的 ${name} </p><p>在对您的申诉请求做出裁决后，您的订单已由我们的支持团队关闭<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">前往您的订单</Button></a></div><p>感谢您使用我们的平台。</p><p>此致<br> ${api_name}团队 </p></div>",
+            "title": "您的P2P订单中检测到活动"
+        },
+        "P2P_BUYER_CANCELLED_ORDER": {
+            "html": "<div><p> 亲爱的 ${name} </p><p>您已取消您的订单。交易已关闭。<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">前往您的订单</Button></a></div><p>感谢您使用我们的平台。</p><p>请求发起自：${ip}</p><p>此致<br> ${api_name}团队 </p></div>",
+            "title": "您的P2P订单中检测到活动"
+        },
+        "P2P_BUYER_APPEALED_ORDER": {
+            "html": "<div><p> 亲爱的 ${name} </p><p>您已对您的订单提出申诉。请联系支持以解决此问题。</p><p>请求发起自：${ip}</p><p>此致<br> ${api_name}团队 </p></div>",
+            "title": "您的P2P订单中检测到活动"
+        },
+        "P2P_VENDOR_CONFIRMED_ORDER": {
+            "html": "<div><p> 亲爱的 ${name} </p><p>您已确认交易并释放资金。<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">前往您的订单</Button></a></div><p>感谢您使用我们的平台。</p><p>请求发起自：${ip}</p><p>此致<br> ${api_name}团队 </p></div>",
+            "title": "您的P2P订单中检测到活动"
+        },
+        "P2P_VENDOR_CANCELLED_ORDER": {
+            "html": "<div><p> 亲爱的 ${name} </p><p>您已取消您的订单。交易已关闭。<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">前往您的订单</Button></a></div><p>感谢您使用我们的平台。</p><p>请求发起自：${ip}</p><p>此致<br> ${api_name}团队 </p></div>",
+            "title": "您的P2P订单中检测到活动"
+        },
+        "P2P_VENDOR_APPEALED_ORDER": {
+            "html": "<div><p> 亲爱的 ${name} </p><p>您已对您的订单提出申诉。请联系支持以解决此问题。<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">前往您的订单</Button></a></div><p>感谢您使用我们的平台。</p><p>请求发起自：${ip}</p><p>此致<br> ${api_name}团队 </p></div>",
+            "title": "您的P2P订单中检测到活动"
+        }
     }
 }

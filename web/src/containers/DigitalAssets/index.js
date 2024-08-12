@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
+import { isMobile } from 'react-device-detect';
 
 import withConfig from 'components/ConfigProvider/withConfig';
 import AssetsWrapper from './components/AssetsWrapper';
@@ -8,10 +9,15 @@ import { EditWrapper, IconTitle } from 'components';
 import STRINGS from 'config/localizedStrings';
 
 const DigitalAssets = ({ pair, icons: ICONS, showQuickTrade }) => {
-
 	return (
 		<div className="digital-market-wrapper">
-			<div className="market-wrapper">
+			<div
+				className={
+					isMobile
+						? 'market-wrapper market-wrapper-mobile-view'
+						: 'market-wrapper'
+				}
+			>
 				<div className="header-container">
 					<div className="d-flex">
 						<IconTitle
@@ -38,21 +44,21 @@ const DigitalAssets = ({ pair, icons: ICONS, showQuickTrade }) => {
 						</div>
 					</div>
 					<div className="link-container">
+						<Link className="link-1" to="/wallet/deposit">
+							<EditWrapper stringId="ACCORDIAN.DEPOSIT">
+								{STRINGS['ACCORDIAN.DEPOSIT']}
+							</EditWrapper>
+						</Link>
 						{showQuickTrade && (
-							<Link className="link-1" to={`/quick-trade/${pair}`}>
+							<Link className="link-2" to={`/quick-trade/${pair}`}>
 								<EditWrapper stringId="DIGITAL_ASSETS.QUICK_TRADE">
 									{STRINGS['DIGITAL_ASSETS.QUICK_TRADE']}
 								</EditWrapper>
 							</Link>
 						)}
-						<Link className="link-2" to="/markets">
+						<Link className="link-3" to="/markets">
 							<EditWrapper stringId="DIGITAL_ASSETS.PRO_TRADE">
 								{STRINGS['DIGITAL_ASSETS.PRO_TRADE']}
-							</EditWrapper>
-						</Link>
-						<Link className="link-3" to="/wallet">
-							<EditWrapper stringId="DIGITAL_ASSETS.WALLET">
-								{STRINGS['DIGITAL_ASSETS.WALLET']}
 							</EditWrapper>
 						</Link>
 					</div>

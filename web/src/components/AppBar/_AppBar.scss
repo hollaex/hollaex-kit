@@ -31,7 +31,7 @@ $app-menu-width: calc(100vw - 40rem);
 
 	.app_bar-icon-logo {
 		height: 4rem;
-		width: 5rem;
+		width: 7rem;
 		background-size: contain;
 		background-position: left center;
 		background-repeat: no-repeat;
@@ -133,6 +133,23 @@ $app-menu-width: calc(100vw - 40rem);
 			.account-inactive {
 				fill: $base_top-bar-navigation_text-inactive;
 				stroke: $base_top-bar-navigation_text-inactive;
+			}
+		}
+
+		.app-bar-deposit-btn {
+			color: $app-bar-icon-inactive;
+			background-color: $link;
+			padding: 2px 10px 0px 10px;
+			border-radius: 3px;
+			cursor: pointer;
+			font-size: 11px;
+			.margin-aligner {
+				margin-bottom: unset;
+				margin-right: unset;
+				svg {
+					width: 15px !important;
+					height: 15px !important;
+				}
 			}
 		}
 	}
@@ -724,8 +741,8 @@ $app-menu-width: calc(100vw - 40rem);
 	background: $app-light-background;
 	display: flex;
 	font-size: $navigation_bar-font_size;
-	height: $navigation_bar-height;
-	min-height: $navigation_bar-height;
+	height: $market_bar-height;
+	min-height: $market_bar-height;
 	position: relative;
 	width: 100%;
 
@@ -751,6 +768,10 @@ $app-menu-width: calc(100vw - 40rem);
 			min-width: 14rem;
 			max-width: 14rem;
 		}
+	}
+
+	.fav-price-label {
+		color: $colors-main-black !important;
 	}
 
 	.app_bar-currency-txt {
@@ -910,7 +931,7 @@ $app-menu-width: calc(100vw - 40rem);
 .app-bar-add-tab-search {
 	color: $trade-tabs-inactive-color;
 	height: 2.2rem;
-	margin-bottom: 0.5rem;
+	margin-bottom: 1rem;
 }
 
 .search-field {
@@ -980,11 +1001,11 @@ $app-menu-width: calc(100vw - 40rem);
 	.app-bar-tab-menu-list {
 		background-color: $app-bar-background-color;
 		color: $app-bar-menu-list-color;
-		font-size: 0.9rem;
+		font-size: 1rem;
 		height: 2.5rem;
 		padding: 0.5rem 0.8rem;
-		width: 3.2rem;
-		max-width: 3.2rem;
+		width: 4.2rem;
+		max-width: 4.2rem;
 		/* (22 -6) / 5 */
 	}
 
@@ -995,8 +1016,10 @@ $app-menu-width: calc(100vw - 40rem);
 	}
 
 	.app-bar-add-tab-content {
-		font-size: 0.9rem;
-		overflow-y: scroll;
+		font-size: 1rem;
+		// overflow-y: scroll;
+		scrollbar-width: thin;
+		scrollbar-color: $colors-black $app-background-color;
 		padding: 0.3rem 0;
 		.scroll-view {
 			overflow-y: auto;
@@ -1041,7 +1064,7 @@ $app-menu-width: calc(100vw - 40rem);
 	.app-bar-add-tab-content-no-market {
 		display: block;
 		text-align: center;
-    	width: 100%;
+		width: 100%;
 		margin: auto;
 		margin-top: 50%;
 		transform: translateY(-50%);
@@ -1120,7 +1143,7 @@ $app-menu-width: calc(100vw - 40rem);
 		// }
 
 		.app-menu-bar-content {
-			width: 12rem;
+			width: 8rem;
 		}
 	}
 	.app-bar-add-tab-menu {

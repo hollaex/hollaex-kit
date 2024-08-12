@@ -186,18 +186,18 @@ $app-content-display-width: 75rem;
 $content-display-vertical-margin: 1rem;
 $background-patter--size: 30rem;
 
-$font-size-headline: 4rem;
-$font-size-headline2: 3.5rem;
-$font-size-subhead1: 2.6rem;
-$font-size-subhead2: 1.8rem;
-$font-size-subhead3: 1.3rem;
-$font-size-subhead4: 1.2rem;
+$font-size-headline: 4.5rem;
+$font-size-headline2: 4rem;
+$font-size-subhead1: 2.9rem;
+$font-size-subhead2: 2rem;
+$font-size-subhead3: 1.4rem;
+$font-size-subhead4: 1.3rem;
 $font-size-main: 1.1rem;
 $font-size-subtext: 1rem;
-$font-size-mobile-title: 15px;
+$font-size-mobile-title: 17px;
 $font-size-mobile-txt: 13px;
-$font-size-mobile-innertxt: 11px;
-$font-size-small-expandable: 0.84rem;
+$font-size-mobile-innertxt: 13px;
+$font-size-small: 0.9rem;
 
 $form-width-max: $content-display-width / 2;
 
@@ -212,9 +212,14 @@ $title--font-family: $raleway-extrabold--font-family;
 $dialog-min-width: 25rem;
 $dialog-min-height: 30rem;
 
+// SUCCESS OTP DIALOG
+$otp-dialog-min-width: 20rem;
+$otp-dialog-min-height: 14rem;
+
 // APP BAR
-$navigation_bar-height: 36px;
-$navigation_bar-height-lg: 45px;
+$navigation_bar-height: 4rem;
+$navigation_bar-height-lg: 5rem;
+$market_bar-height: 3rem;
 $navigation_bar-action_button: 7.5rem;
 $navigation_bar-font_size: $font-size-subtext;
 

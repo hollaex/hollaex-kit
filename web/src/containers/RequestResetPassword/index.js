@@ -67,9 +67,6 @@ class RequestResetPassword extends Component {
 					} else {
 						errors._error = error.message;
 					}
-					errorTimeOut = setTimeout(() => {
-						this.props.change('ResetPasswordForm', 'captcha', '');
-					}, 5000);
 					throw new SubmissionError(errors);
 				}
 			});

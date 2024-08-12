@@ -1,0 +1,563 @@
+paths:
+  /p2p/deal:
+    x-swagger-router-controller: p2p
+    get:
+      description: Get p2p deals
+      operationId: fetchP2PDeals
+      tags:
+        - User
+      parameters:
+        - in: query
+          name: user_id
+          description: "user_id"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: status
+          description: "status"
+          required: false
+          type: boolean
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv', 'all']
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+    post:
+      description: Create deal for p2p
+      operationId: createP2PDeal
+      tags:
+        - P2P
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              price_type:
+                type: string
+              buying_asset:
+                type: string
+              spending_asset:
+                type: string
+              exchange_rate:
+                type: number
+                format: double
+              spread:
+                type: number
+                format: double
+              total_order_amount:
+                type: number
+                format: double
+              min_order_value:
+                type: number
+                format: double
+              max_order_value:
+                type: number
+                format: double
+              terms:
+                type: string
+              auto_response:
+                type: string
+              side:
+                type: string
+                enum: ['sell', 'buy']
+              payment_methods:
+                type: array
+                items:
+                  type: object
+              region:
+                type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - user
+    put:
+      description: Update deal for p2p
+      operationId: updateP2PDeal
+      tags:
+        - P2P
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              price_type:
+                type: string
+              buying_asset:
+                type: string
+              spending_asset:
+                type: string
+              exchange_rate:
+                type: number
+                format: double
+              spread:
+                type: number
+                format: double
+              total_order_amount:
+                type: number
+                format: double
+              min_order_value:
+                type: number
+                format: double
+              max_order_value:
+                type: number
+                format: double
+              terms:
+                type: string
+              auto_response:
+                type: string
+              side:
+                type: string
+                enum: ['sell', 'buy']
+              payment_methods:
+                type: array
+                items:
+                  type: object
+              region:
+                type: string
+              edited_ids:
+                type: array
+                items:
+                  type: integer
+                  format: int32
+              status:
+                type: boolean
+              id:
+                type: integer
+                format: int32
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - user
+  /p2p/order:
+    x-swagger-router-controller: p2p
+    get:
+      description: Get p2p transactions
+      operationId: fetchP2PTransactions
+      tags:
+        - User
+      parameters:
+        - in: query
+          name: user_id
+          description: "user_id"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: id
+          description: transaction id
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv', 'all']
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - user
+      x-token-permissions:
+        - can_read
+    post:
+      description: Create transaction for p2p
+      operationId: createP2PTransaction
+      tags:
+        - P2P
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              deal_id:
+                type: integer
+                format: int32
+              side:
+                type: string
+                enum: ['buy', 'sell']
+              amount_fiat:
+                type: number
+                format: double
+              payment_method_used:
+                type: object
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - user
+    put:
+      description: update transaction for p2p
+      operationId: updateP2PTransaction
+      tags:
+        - P2P
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                format: int32
+              user_status:
+                type: string
+              merchant_status:
+                type: string
+              cancellation_reason:
+                type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - user
+  /p2p/order/chat:
+    x-swagger-router-controller: p2p
+    post:
+      description: Create message for transaction chat
+      operationId: createP2pChatMessage
+      tags:
+        - P2P
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              receiver_id:
+                type: integer
+                format: int32
+              message:
+                type: string
+              transaction_id:
+                type: integer
+                format: int32
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - user
+  /p2p/feedback:
+    x-swagger-router-controller: p2p
+    get:
+      description: Get p2p feedback
+      operationId: fetchP2PFeedbacks
+      tags:
+        - User
+      parameters:
+        - in: query
+          name: transaction_id
+          description: "transaction_id"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: merchant_id
+          description: "id for merchant"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv', 'all']
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - user
+      x-token-permissions:
+        - can_read
+    post:
+      description: create feedback for p2p
+      operationId: createP2PFeedback
+      tags:
+        - P2P
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - comment
+              - rating
+              - transaction_id
+            properties:
+              rating:
+                type: integer
+                format: int32
+              transaction_id:
+                type: integer
+                format: int32
+              comment:
+                type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - user
+/p2p/profile:
+    x-swagger-router-controller: p2p
+    get:
+      description: Get p2p feedback
+      operationId: fetchP2PProfile
+      tags:
+        - User
+      parameters:
+        - in: query
+          name: user_id
+          description: "user_id"
+          required: false
+          type: number
+          format: int32
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+      x-security-scopes:
+        - user
+      x-token-permissions:
+        - can_read

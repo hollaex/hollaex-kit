@@ -82,6 +82,9 @@ And ('Bob transferred a minimal amount of XHTT to Alice',()=>{
     cy.get('#method-email-1').click()
     cy.get(':nth-child(2) > :nth-child(1) > :nth-child(1) > .field-content > .field-children')
     .type('tester+alice@hollaex.email')
+    cy.get('.with-notification > :nth-child(1) > :nth-child(1) > .field-content > .field-children > [style="display: flex;"] > .input_field-input')
+    .clear()
+    .type('0.0001')
     cy.get('.holla-button').click()
     cy.get('.review-crypto-amount > :nth-child(1)')
     .should('contain','0.0001 XHT')//changed
@@ -128,59 +131,31 @@ And ('Bob disables 2FA',()=>{
 
 When ('Bob confirm the transfer by Email',()=>{
 
-     cy.visit(Cypress.env('EMAIL_PAGE'));
-
-    // Login to the email account
-    cy.get('#wdc_username_div').type(Cypress.env('EMAIL_BOB'));
-    cy.get('#wdc_password').type(Cypress.env('EMAIL_PASS'));
-    cy.get('#wdc_login_button').click();
-
-    // Open the latest email in the inbox
-    cy.get('#ext-gen52').click();
-    cy.get('.x-grid3-row-first > .x-grid3-row-table > tbody[role="presentation"] > .x-grid3-row-body-tr > .x-grid3-body-cell > .x-grid3-row-body > .mail-body-row > tbody > tr > .subject > .grid_compact')
-      .dblclick();
-    cy.wait(5000);
-
-    // Verify the email content
-    cy.get('.preview-title').contains('sandbox XHT Withdrawal Request');
-    cy.fixture('example')
-    cy.get('.giraffe-emailaddress-link').last().contains('bob')
-    
-    cy.get('iframe').then(($iframe) => {
-      const $emailBody = $iframe.contents().find('body');
-      cy.wrap($emailBody).as('emailBody');
+  cy.task('getLastEmail', {
+    user: Cypress.env('BOB'),
+    password: Cypress.env('EMAIL_PASS'),
+    host: Cypress.env('EMAIL_HOST'),
+    port: 993,
+    tls: true  })
+    .then((emailContent) => {
+     cy.extractText(emailContent).then((extractedText) => {
+     cy.log(`Extracted Text: ${extractedText}`);
+     cy.fixture('example')
+      .then((user)=>{
+       expect(extractedText).to.include('bob')
+       expect(extractedText).to.include('You have made a XHT withdrawal request');
+    })
+      
+      cy.findFirstHyperlinkAfterMyWord(extractedText,'[').then((link) => {
+      cy.forceVisit(link.slice(0, -1));
     });
-    cy.get('@emailBody')
-      .find('a')
-      .should('exist');
-    cy.get('@emailBody')
-      .contains('You have made a XHT withdrawal request');
+  });
+  })
 
-    // Get all the links with "https" protocol from the email body
-    cy.get('@emailBody')
-      .find('a')
-      .then(($links) => {
-        const httpsLinks = [];
-        $links.each((index, link) => {
-          const href = link.href;
-          if (href && href.startsWith('https')) {
-            httpsLinks.push(href);
-          }
-        });
-        cy.wrap(httpsLinks[1]).as('httpsLink');
-      });
-
-    // Log the list of https links
-    cy.get('@httpsLink')
-      .then((httpsLink) => {
-        console.log(httpsLink);
-       cy.forceVisit(httpsLink);
-      });
-
-      cy.contains('Final Withdrawal Confirmation').should('exist')
-      cy.contains('CONFIRM WITHDRAWAL').click()
-      cy.contains('Success').should('exist')
-     cy.writeFile('cypress\\fixtures\\timestamp.json', { name: 'timestamp', time: Date.now() })
+   cy.contains('Final Withdrawal Confirmation').should('exist')
+cy.contains('CONFIRM WITHDRAWAL').click()
+cy.contains('Success').should('exist')
+cy.writeFile('cypress\\fixtures\\timestamp.json', { name: 'timestamp', time: Date.now() })
 }) 
 
 Then ('Bob cancels the transfer',()=>{
@@ -400,6 +375,9 @@ And ('Bob transferred a minimal amount of XHTT to wrong Alice address',()=>{
     cy.get('#method-email-1').click()
     cy.get(':nth-child(2) > :nth-child(1) > :nth-child(1) > .field-content > .field-children')
     .type('Iamnotalice@hollaex.email')
+    cy.get('.with-notification > :nth-child(1) > :nth-child(1) > .field-content > .field-children > [style="display: flex;"] > .input_field-input')
+    .clear()
+    .type('0.0001')
     cy.get('.holla-button').click()
     cy.get('.review-crypto-amount > :nth-child(1)')
     .should('contain','0.0001 XHT')//changed
@@ -436,6 +414,9 @@ And ('Bob transferred a minimal amount of XHTT to deleted Alice address',()=>{
     cy.get('#method-email-1').click()
     cy.get(':nth-child(2) > :nth-child(1) > :nth-child(1) > .field-content > .field-children')
     .type('tester+aliceDeleted@hollaex.email')
+    cy.get('.with-notification > :nth-child(1) > :nth-child(1) > .field-content > .field-children > [style="display: flex;"] > .input_field-input')
+    .clear()
+    .type('0.0001')
     cy.get('.holla-button').click()
     cy.get('.review-crypto-amount > :nth-child(1)')
     .should('contain','0.0001 XHT')//changed
@@ -452,54 +433,28 @@ And ('Bob transferred a minimal amount of XHTT to deleted Alice address',()=>{
 
 When ('Bob confirm the transfer by Email and gets error',()=>{
 
-     cy.visit(Cypress.env('EMAIL_PAGE'));
-
-    // Login to the email account
-    cy.get('#wdc_username_div').type(Cypress.env('EMAIL_BOB'));
-    cy.get('#wdc_password').type(Cypress.env('EMAIL_PASS'));
-    cy.get('#wdc_login_button').click();
-
-    // Open the latest email in the inbox
-    cy.get('#ext-gen52').click();
-    cy.get('.x-grid3-row-first > .x-grid3-row-table > tbody[role="presentation"] > .x-grid3-row-body-tr > .x-grid3-body-cell > .x-grid3-row-body > .mail-body-row > tbody > tr > .subject > .grid_compact')
-      .dblclick();
-    cy.wait(5000);
-
-    // Verify the email content
-    cy.get('.preview-title').contains('sandbox XHT Withdrawal Request');
-    cy.fixture('example')
-    cy.get('.giraffe-emailaddress-link').last().contains('bob')
-    
-    cy.get('iframe').then(($iframe) => {
-      const $emailBody = $iframe.contents().find('body');
-      cy.wrap($emailBody).as('emailBody');
+  cy.task('getLastEmail', {
+    user: Cypress.env('BOB'),
+    password: Cypress.env('EMAIL_PASS'),
+    host: Cypress.env('EMAIL_HOST'),
+    port: 993,
+    tls: true  })
+    .then((emailContent) => {
+     cy.extractText(emailContent).then((extractedText) => {
+     cy.log(`Extracted Text: ${extractedText}`);
+     cy.fixture('example')
+      .then((user)=>{
+       expect(extractedText).to.include('bob')
+       expect(extractedText).to.include('You have made a XHT withdrawal request');
+    })
+      
+      cy.findFirstHyperlinkAfterMyWord(extractedText,'[').then((link) => {
+      cy.forceVisit(link.slice(0, -1));
     });
-    cy.get('@emailBody')
-      .find('a')
-      .should('exist');
-    cy.get('@emailBody')
-      .contains('You have made a XHT withdrawal request');
+  });
+  })
 
-    // Get all the links with "https" protocol from the email body
-    cy.get('@emailBody')
-      .find('a')
-      .then(($links) => {
-        const httpsLinks = [];
-        $links.each((index, link) => {
-          const href = link.href;
-          if (href && href.startsWith('https')) {
-            httpsLinks.push(href);
-          }
-        });
-        cy.wrap(httpsLinks[1]).as('httpsLink');
-      });
 
-    // Log the list of https links
-    cy.get('@httpsLink')
-      .then((httpsLink) => {
-        console.log(httpsLink);
-       cy.forceVisit(httpsLink);
-      });
       cy.contains('Final Withdrawal Confirmation').should('exist')
       cy.contains('CONFIRM WITHDRAWAL').click()
       cy.contains('Error').should('exist')
