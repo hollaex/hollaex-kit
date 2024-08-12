@@ -28,7 +28,6 @@ import { isMobile } from 'react-device-detect';
 import classnames from 'classnames';
 import moment from 'moment';
 import { CloseOutlined } from '@ant-design/icons';
-import DEFAULT_PAYMENT_METHODS from 'utils/defaultPaymentMethods';
 import './_P2P.scss';
 
 const P2PProfile = ({
@@ -47,6 +46,7 @@ const P2PProfile = ({
 	selectedProfile,
 	setSelectedProfile,
 	setRefresh,
+	p2p_config,
 }) => {
 	const [myDeals, setMyDeals] = useState([]);
 	const [checks, setCheks] = useState([]);
@@ -99,8 +99,20 @@ const P2PProfile = ({
 				setMyMethods(res.data);
 			})
 			.catch((err) => err);
+
+		setDefaultPaymentMethod();
 	}, [refresh, selectedProfile]);
 
+	const setDefaultPaymentMethod = () => {
+		const defaultPaymentOption = p2p_config?.bank_payment_methods?.[0];
+		if (defaultPaymentOption) {
+			setPaymentMethod({
+				...paymentMethod,
+				system_name: defaultPaymentOption?.system_name,
+			});
+			setCustomFields(defaultPaymentOption?.fields);
+		}
+	};
 	return (
 		<div
 			className={classnames(...['P2pOrder', isMobile ? 'mobile-view-p2p' : ''])}
@@ -736,19 +748,20 @@ const P2PProfile = ({
 								showSearch
 								placeholder="Select Payment System"
 								style={{ width: 200 }}
+								value={paymentMethod?.system_name}
 								onChange={(e) => {
 									setPaymentMethod({
 										...paymentMethod,
 										system_name: e,
 									});
 									setCustomFields(
-										DEFAULT_PAYMENT_METHODS.find(
+										p2p_config?.bank_payment_methods.find(
 											(method) => method.system_name === e
 										).fields
 									);
 								}}
 							>
-								{DEFAULT_PAYMENT_METHODS.map((method) => {
+								{p2p_config?.bank_payment_methods.map((method) => {
 									return (
 										<Select.Option value={method.system_name}>
 											{method.system_name}
@@ -885,10 +898,7 @@ const P2PProfile = ({
 
 									setPaymentMethods(paymentMethods);
 									setDisplayNewPayment(false);
-									setPaymentMethod({
-										system_name: null,
-										fields: {},
-									});
+									setDefaultPaymentMethod();
 									setCustomFields([
 										{
 											id: 1,
@@ -1010,6 +1020,7 @@ const mapStateToProps = (state) => ({
 	constants: state.app.constants,
 	transaction_limits: state.app.transaction_limits,
 	user: state.user,
+	p2p_config: state.app.constants.p2p_config,
 });
 
 export default connect(mapStateToProps)(withConfig(P2PProfile));
