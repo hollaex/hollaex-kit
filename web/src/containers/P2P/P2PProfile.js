@@ -111,6 +111,11 @@ const P2PProfile = ({
 				system_name: defaultPaymentOption?.system_name,
 			});
 			setCustomFields(defaultPaymentOption?.fields);
+		} else {
+			setPaymentMethod({
+				system_name: null,
+				fields: {},
+			});
 		}
 	};
 	return (
