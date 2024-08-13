@@ -1294,12 +1294,11 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, id = nu
 	//Find all the available prices with their types on the exchange.
 	if(!data) {
 		for (const quickTrade of quickTrades) {
-			if (quickTrade.type === 'network') continue;
+			// if (quickTrade.type === 'network') continue;
 			try {
 				const assets = quickTrade.symbol.split('-');
-				const quotePrice = await getUserQuickTrade(assets[0], 1, null, assets[1],  null, null, { additionalHeaders: null }, { headers: { 'api-key': null } });
-				rates[quickTrade.symbol] = { type: quickTrade.type, price: quotePrice.receiving_amount }
-			
+				const quotePrice = await getUserQuickTrade(assets[0], 1, null, assets[1],  bearerToken, ip, { additionalHeaders: null }, { headers: { 'api-key': null } });
+				rates[quickTrade.symbol] = { type: quickTrade.type, price: quotePrice.receiving_amount, token: quotePrice?.token || null }
 			} catch (error) {
 				continue;
 			}
@@ -1313,7 +1312,7 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, id = nu
 	
 		visited.add(startCurrency);
 	
-		for (let [pair, { type, price }] of Object.entries(rates)) {
+		for (let [pair, { type, price, token }] of Object.entries(rates)) {
 			const [from, to] = pair.split('-');
 			if (from === startCurrency && !visited.has(to)) {
 				const result = findConversionRate(to, endCurrency, rates, visited, initialAmount * price);
@@ -1327,7 +1326,8 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, id = nu
 								type,
 								side: 'sell', 
 								size: initialAmount,
-								price: price
+								price: price,
+								token
 							},
 							...result.trades
 						]
@@ -1345,7 +1345,8 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, id = nu
 								type,
 								side: 'buy', 
 								size: initialAmount / price,
-								price: price
+								price: price,
+								token
 							},
 							...result.trades
 						]
@@ -1511,6 +1512,11 @@ const executeTrades = async (tradeInfo, sourceUser) => {
 					{ maker: makerFee, taker: takerFee }
 				);
 				currentFee = takerFee || 0; 
+			}
+			else if (type === 'network') {
+				const tierUser = getKitTier(sourceUser.verification_level);
+				const fee = tierUser.fees.taker[symbol];
+				res = await getNodeLib().executeQuote(trade?.token, sourceUser.network_id, fee);
 			}
 
 			successfulTrades.push(res);
