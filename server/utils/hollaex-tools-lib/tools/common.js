@@ -473,10 +473,6 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 			throw new Error('source account does not exist');
 		}
 
-		if (!newKitConfig.chain_trade_config.hasOwnProperty('amount')) {
-			throw new Error('amount does not exist');
-		}
-
 		if (!newKitConfig.chain_trade_config.hasOwnProperty('currency')) {
 			throw new Error('currency does not exist');
 		}
