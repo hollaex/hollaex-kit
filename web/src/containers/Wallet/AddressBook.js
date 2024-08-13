@@ -3,14 +3,13 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { isMobile } from 'react-device-detect';
 import { Input, Button, message, Spin } from 'antd';
-import { ExclamationCircleFilled } from '@ant-design/icons';
 
 import GenerateAddress from './GenerateAddress';
 import withConfig from 'components/ConfigProvider/withConfig';
 import icons from 'config/icons/dark';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import STRINGS from 'config/localizedStrings';
-import AddressBookEmptyTable from './utils';
+import AddressBookEmptyTable, { AddressBookDialog } from './utils';
 import { Coin, Dialog, EditWrapper, IconTitle, Table } from 'components';
 import { assetsSelector, RenderBtn } from './utils';
 import {
@@ -46,6 +45,8 @@ const AddressBook = ({
 		selectedCurrency: null,
 		networkOptions: null,
 		address: null,
+		optionalTag: null,
+		selectedData: null,
 	});
 	const [isValidAddress, setIsValidAddress] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
@@ -70,7 +71,7 @@ const AddressBook = ({
 			renderCell: (data, key) => (
 				<td key={key}>
 					<div className="d-flex justify-content-center">
-						<div className="table-content">
+						<div className="asset-label">
 							<Coin iconId={coins[data?.currency]?.icon_id} type="CS7" />
 							<span className="text-nowrap mt-1">
 								{`${
@@ -113,29 +114,32 @@ const AddressBook = ({
 			stringId: 'WITHDRAW_PAGE.WITHDRAWAL_CONFIRM_ADDRESS',
 			label: STRINGS['WITHDRAW_PAGE.WITHDRAWAL_CONFIRM_ADDRESS'],
 			key: 'address',
-			renderCell: (data, key) => (
-				<td key={key} className="address-field-wrapper">
-					<div className="d-flex justify-content-center">
-						<div className="align-items-center address-content">
-							<span>{data?.address}</span>
-							<CopyToClipboard
-								text={data?.address}
-								onCopy={() => {
-									handleCopy();
-								}}
-							>
-								<Button className="copy-btn">
-									<div className="remove-btn">
-										<EditWrapper stringId="REFERRAL_LINK.COPY">
-											{STRINGS['REFERRAL_LINK.COPY']}
-										</EditWrapper>
-									</div>
-								</Button>
-							</CopyToClipboard>
+			renderCell: (data, key) => {
+				const hasOptionalTag = data?.address?.split(':')[0];
+				return (
+					<td key={key} className="address-field-wrapper">
+						<div className="d-flex justify-content-center">
+							<div className="align-items-center address-content">
+								<span>{hasOptionalTag ? hasOptionalTag : data?.address}</span>
+								<CopyToClipboard
+									text={hasOptionalTag ? hasOptionalTag : data?.address}
+									onCopy={() => {
+										handleCopy();
+									}}
+								>
+									<Button className="copy-btn">
+										<div className="remove-btn">
+											<EditWrapper stringId="REFERRAL_LINK.COPY">
+												{STRINGS['REFERRAL_LINK.COPY']}
+											</EditWrapper>
+										</div>
+									</Button>
+								</CopyToClipboard>
+							</div>
 						</div>
-					</div>
-				</td>
-			),
+					</td>
+				);
+			},
 		},
 		{
 			stringId: 'ADDRESS_BOOK.DATE_ADDED',
@@ -163,7 +167,7 @@ const AddressBook = ({
 					<div className="d-flex justify-content-end">
 						<div
 							className="link-content fs-13 text-uppercase remove-btn"
-							onClick={() => onHandleAddressBookDetails(data, 'revoke')}
+							onClick={() => onHandleRemove(data)}
 						>
 							<EditWrapper stringId="ADDRESS_BOOK.REMOVE">
 								{STRINGS['ADDRESS_BOOK.REMOVE']}
@@ -184,13 +188,20 @@ const AddressBook = ({
 			? coins[selectedAsset?.selectedCurrency]?.network
 			: coins[selectedAsset?.selectedCurrency]?.symbol;
 	const networkIcon = coins[network]?.icon_id;
+	const hasOptionalTag =
+		['xrp', 'xlm'].includes(selectedAsset?.selectedCurrency) ||
+		['xlm', 'ton'].includes(network);
 
 	useEffect(() => {
 		const getAddress = async () => {
-			setIsLoading(false);
-			const res = await getAddressBookDetails();
-			setIsLoading(true);
-			setGetUserData(res?.addresses);
+			try {
+				setIsLoading(false);
+				const res = await getAddressBookDetails();
+				setIsLoading(true);
+				setGetUserData(res?.addresses);
+			} catch (error) {
+				console.error(error);
+			}
 		};
 		getAddress();
 	}, []);
@@ -213,9 +224,15 @@ const AddressBook = ({
 			...prev,
 			selectedCurrency: null,
 			networkOptions: null,
+			optionalTag: null,
 		}));
 		setIsValidAddress(null);
 		setUserLabel('');
+	};
+
+	const onHandleRemove = (data) => {
+		setRenderPopUps((prev) => ({ ...prev, remove: true }));
+		setSelectedAsset((prev) => ({ ...prev, selectedData: data }));
 	};
 
 	const onHandlePopUpBtn = (previousStep, nextStep) => {
@@ -226,8 +243,10 @@ const AddressBook = ({
 				...prev,
 				selectedCurrency: null,
 				networkOptions: null,
+				optionalTag: null,
 			}));
 			setIsValidAddress(null);
+			setUserLabel('');
 		}
 		if (previousStep === 'step3' && nextStep === 'step2') {
 			setUserLabel('');
@@ -238,11 +257,6 @@ const AddressBook = ({
 		const selectedNetwork = selectedAsset?.networkOptions
 			? renderNetworkField(selectedAsset?.networkOptions)
 			: network;
-		const hasAsset = getUserData.some(
-			(val) =>
-				val?.currency === selectedAsset?.selectedCurrency &&
-				val?.network === selectedNetwork
-		);
 
 		const filterData = () =>
 			getUserData.filter((val) => val.label !== data.label);
@@ -255,31 +269,34 @@ const AddressBook = ({
 
 			try {
 				await setUserLabelAndAddress({ addresses: restFilteredData });
+				message.success(STRINGS['ADDRESS_BOOK.REVOKE_ADDRESS']);
 			} catch (error) {
 				console.error(error);
 			}
-		} else if (!hasAsset) {
+		} else {
+			const address =
+				hasOptionalTag && selectedAsset?.optionalTag
+					? `${selectedAsset?.address}:${selectedAsset?.optionalTag}`
+					: selectedAsset?.address;
 			const currValue = {
 				label: userLabel,
-				address: selectedAsset?.address,
+				address,
 				network: selectedNetwork,
 				currency: selectedAsset?.selectedCurrency,
 			};
 			const restGetUserData = removeCreatedAt(getUserData);
 			setGetUserData([
-				...getUserData,
 				{ ...currValue, created_at: new Date().toISOString() },
+				...getUserData,
 			]);
 
 			try {
 				await setUserLabelAndAddress({
-					addresses: [...restGetUserData, currValue],
+					addresses: [currValue, ...restGetUserData],
 				});
 			} catch (error) {
 				console.error(error);
 			}
-		} else {
-			message.error(STRINGS['ADDRESS_BOOK.ASSET_ALREADY_HAVE_ADDRESS']);
 		}
 
 		onHandleClose('step3');
@@ -301,6 +318,7 @@ const AddressBook = ({
 					isOpen={renderPopUps.step1}
 					onCloseDialog={() => {
 						onHandleClose('step1');
+						setSelectedAsset((prev) => ({ ...prev, optionalTag: null }));
 					}}
 				>
 					<div className="address-book-popup-wrapper">
@@ -336,6 +354,7 @@ const AddressBook = ({
 									networkIcon={networkIcon}
 									isValidAddress={isValidAddress}
 									setIsValidAddress={setIsValidAddress}
+									hasOptionalTag={hasOptionalTag}
 								/>
 							</div>
 							<div className="address-book-popup-button-wrapper">
@@ -346,7 +365,7 @@ const AddressBook = ({
 								/>
 								<RenderBtn
 									string="REFERRAL_LINK.NEXT"
-									buttonClassName="next-btn"
+									buttonClassName={!isValidAddress ? 'disable-btn' : 'next-btn'}
 									disabled={!isValidAddress}
 									onHandleClick={() => onHandlePopUpBtn('step1', 'step2')}
 								/>
@@ -441,10 +460,22 @@ const AddressBook = ({
 											{STRINGS['WITHDRAW_PAGE.WITHDRAWAL_CONFIRM_ADDRESS']}:
 										</EditWrapper>
 									</div>
-									<div>
+									<div className="selected-asset-address">
 										<span>{selectedAsset?.address}</span>
 									</div>
 								</div>
+								{hasOptionalTag && selectedAsset?.optionalTag && (
+									<div className="assets-field">
+										<div className="confirm-title-text">
+											<EditWrapper stringId="ACCORDIAN.TAG">
+												{STRINGS['ACCORDIAN.TAG']}
+											</EditWrapper>
+										</div>
+										<div className="selected-asset-address">
+											<span>{selectedAsset?.optionalTag}</span>
+										</div>
+									</div>
+								)}
 							</div>
 							<div className="address-book-popup-button-wrapper">
 								<RenderBtn
@@ -454,7 +485,9 @@ const AddressBook = ({
 								/>
 								<RenderBtn
 									string="REFERRAL_LINK.NEXT"
-									buttonClassName="next-btn"
+									buttonClassName={
+										onHandleUserLabel() ? 'disable-btn' : 'next-btn'
+									}
 									disabled={onHandleUserLabel()}
 									onHandleClick={() => onHandlePopUpBtn('step2', 'step3')}
 								/>
@@ -464,120 +497,19 @@ const AddressBook = ({
 				</Dialog>
 			)}
 			{renderPopUps.step3 && (
-				<Dialog
-					isOpen={renderPopUps.step3}
-					onCloseDialog={() => onHandleClose('step3')}
-					className="address_book_popup_wrapper"
-				>
-					<div className="check-confirm-content-wrapper">
-						<div className="confirm-header-wrapper">
-							<div className="address-book-title">
-								<EditWrapper stringId="ADDRESS_BOOK.CHECK_AND_CONFIRM">
-									{STRINGS['ADDRESS_BOOK.CHECK_AND_CONFIRM']}
-								</EditWrapper>
-							</div>
-							<div>
-								<EditWrapper stringId="ADDRESS_BOOK.WARNING_ADDRESS">
-									{STRINGS['ADDRESS_BOOK.WARNING_ADDRESS']}
-								</EditWrapper>
-							</div>
-						</div>
-						<div className="selected-assets-content mt-4">
-							<div className="assets-field confirm_name_detail">
-								<div className="confirm-title-text">
-									<EditWrapper stringId="DEVELOPERS_TOKENS_TABLE.NAME">
-										{STRINGS['DEVELOPERS_TOKENS_TABLE.NAME']}:
-									</EditWrapper>
-								</div>
-								<div>
-									<span> {userLabel}</span>
-								</div>
-							</div>
-							<div className="assets-content">
-								<div className="assets-field">
-									<div className="confirm-title-text">
-										<EditWrapper stringId="ASSETS">
-											{STRINGS['ASSETS']}:
-										</EditWrapper>
-									</div>
-									<div className="selected-asset">
-										<Coin
-											iconId={coins[selectedAsset?.selectedCurrency]?.icon_id}
-											type="CS2"
-										/>
-										<span>{`${
-											coins[selectedAsset?.selectedCurrency]?.fullname
-										} (${selectedAsset?.selectedCurrency?.toUpperCase()})`}</span>
-									</div>
-								</div>
-								<div className="assets-field">
-									<div className="confirm-title-text">
-										<EditWrapper stringId="WITHDRAWALS_FORM_NETWORK_LABEL">
-											{STRINGS['WITHDRAWALS_FORM_NETWORK_LABEL']}:
-										</EditWrapper>
-									</div>
-									<div>
-										<span>
-											{' '}
-											{coinLength?.length === 1 ? (
-												renderNetworkWithLabel(networkIcon, network)
-											) : coinLength?.length > 1 ? (
-												<div className="selected-network">
-													<span>{selectedAsset?.networkOptions}</span>
-													{networkList.map((data) =>
-														data.network === selectedAsset?.networkOptions ? (
-															<Coin iconId={data.iconId} type="CS2" />
-														) : null
-													)}
-												</div>
-											) : coins[network]?.network ? (
-												coins[network]?.network?.toUpperCase()
-											) : (
-												coins[network]?.symbol?.toUpperCase()
-											)}
-										</span>
-									</div>
-								</div>
-								<div className="mt-3 mb-3 address-book-detail-line"></div>
-								<div className="assets-field">
-									<div className="confirm-title-text">
-										<EditWrapper stringId="WITHDRAW_PAGE.WITHDRAWAL_CONFIRM_ADDRESS">
-											{STRINGS['WITHDRAW_PAGE.WITHDRAWAL_CONFIRM_ADDRESS']}:
-										</EditWrapper>
-									</div>
-									<div>
-										<span>{selectedAsset?.address}</span>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div className="warning-message-wrapper">
-							<ExclamationCircleFilled />
-							<div className="mt-1">
-								<EditWrapper stringId="ADDRESS_BOOK.ENSURE_DESC">
-									{STRINGS['ADDRESS_BOOK.ENSURE_DESC']}
-								</EditWrapper>
-							</div>
-						</div>
-						<div className="address-book-popup-button-wrapper">
-							<RenderBtn
-								string="REFERRAL_LINK.BACK"
-								buttonClassName="back-btn"
-								onHandleClick={() => onHandlePopUpBtn('step3', 'step2')}
-							/>
-							<Button
-								className="text-uppercase next-btn"
-								type="default"
-								onClick={() => onHandleAddressBookDetails(null, 'confirm')}
-								disabled={false}
-							>
-								<EditWrapper stringId={'DUST.CONFIRMATION.CONFIRM'}>
-									{STRINGS['DUST.CONFIRMATION.CONFIRM']}
-								</EditWrapper>
-							</Button>
-						</div>
-					</div>
-				</Dialog>
+				<AddressBookDialog
+					coins={coins}
+					coinLength={coinLength}
+					network={network}
+					networkIcon={networkIcon}
+					selectedAsset={selectedAsset}
+					renderPopUps={renderPopUps}
+					userLabel={userLabel}
+					hasOptionalTag={hasOptionalTag}
+					onHandleClose={onHandleClose}
+					onHandlePopUpBtn={onHandlePopUpBtn}
+					onHandleAddressBookDetails={onHandleAddressBookDetails}
+				/>
 			)}
 			<div className="address-book-form">
 				<div className="address-book-tab-header-content">
@@ -604,7 +536,13 @@ const AddressBook = ({
 							'BLUE_QUESTION'
 						)}
 				</div>
-				<div className="address-book-content-wrapper">
+				<div
+					className={
+						isMobile
+							? 'address-book-content-wrapper'
+							: 'address-book-content-wrapper mb-5'
+					}
+				>
 					<div className="address-book-content">
 						<div className="address-book-title-text">
 							<EditWrapper stringId="ADDRESS_BOOK.WITHDRAWAL_ADDRESS_BOOK">
@@ -636,8 +574,8 @@ const AddressBook = ({
 					<div className="address-book-table-wrapper">
 						{isLoading ? (
 							<Table
+								className="address-book-table"
 								showHeaderNoData={true}
-								rowClassName="pt-2 pb-2"
 								headers={AddressBookTableData}
 								data={getUserData}
 								count={getUserData?.length}
@@ -652,6 +590,21 @@ const AddressBook = ({
 							</div>
 						)}
 					</div>
+					<AddressBookDialog
+						coins={coins}
+						coinLength={coinLength}
+						network={network}
+						networkIcon={networkIcon}
+						selectedAsset={selectedAsset}
+						renderPopUps={renderPopUps}
+						userLabel={userLabel}
+						hasOptionalTag={hasOptionalTag}
+						onHandleClose={onHandleClose}
+						onHandlePopUpBtn={onHandlePopUpBtn}
+						onHandleAddressBookDetails={onHandleAddressBookDetails}
+						setRenderPopUps={setRenderPopUps}
+						onHandleRemove={onHandleRemove}
+					/>
 				</div>
 			</div>
 		</div>

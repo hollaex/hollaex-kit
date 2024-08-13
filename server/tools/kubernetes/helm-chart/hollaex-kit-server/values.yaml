@@ -1,0 +1,30 @@
+imageRegistry: hollaex/hollaex-kit
+dockerTag: 2.11.4-cli-deprecation-46ea26c
+imagePullSecrets:
+  - name: docker-registry-secret
+envName: hollaex-kit-configmap
+secretName: hollaex-kit-secret
+DEPLOYMENT_MODE: api
+PAIR:
+stable:
+  replicaCount: 1
+staging:
+  enable: false
+  replicaCount: 1
+  dockerTag:
+nodeSelector: {}
+autoScaling:
+  hpa:
+    enable: false
+    memory:
+      threshold: 80
+APM_URL:
+podRestart_webhook_url:
+job:
+  enable: false
+resources:
+  limits:
+    memory: "1536Mi"
+  requests:
+    cpu: "100m"
+    memory: "512Mi"

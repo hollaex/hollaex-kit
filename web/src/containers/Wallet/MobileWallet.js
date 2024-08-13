@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { Accordion, EditWrapper } from '../../components';
 import CurrencySlider from './components/CurrencySlider';
 import ProfitLossSection from './ProfitLossSection';
 import strings from 'config/localizedStrings';
+import { setActiveBalanceHistory } from 'actions/walletActions';
 
 const MobileWallet = ({
 	sections,
@@ -16,13 +19,14 @@ const MobileWallet = ({
 	totalAssets,
 	loading,
 	BASE_CURRENCY,
+	getActiveBalanceHistory,
+	setActiveBalanceHistory,
 }) => {
-	const [activeBalanceHistory, setActiveBalanceHistory] = useState(false);
-
 	useEffect(() => {
 		if (window.location.pathname === '/wallet/history') {
 			setActiveBalanceHistory(true);
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const isNotWalletHistory = router?.location?.pathname !== '/wallet/history';
@@ -92,7 +96,7 @@ const MobileWallet = ({
 				</div>
 			)}
 			<div className="f-1 wallet-container">
-				{activeBalanceHistory && isWalletHistory ? (
+				{getActiveBalanceHistory && isWalletHistory ? (
 					<ProfitLossSection handleBalanceHistory={handleBalanceHistory} />
 				) : (
 					<div>
@@ -104,4 +108,15 @@ const MobileWallet = ({
 	);
 };
 
-export default MobileWallet;
+const mapStateToProps = (store) => ({
+	getActiveBalanceHistory: store.wallet.activeBalanceHistory,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	setActiveBalanceHistory: bindActionCreators(
+		setActiveBalanceHistory,
+		dispatch
+	),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(MobileWallet);

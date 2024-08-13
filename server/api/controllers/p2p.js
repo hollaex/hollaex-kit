@@ -20,7 +20,8 @@ const createP2PDeal = (req, res) => {
         terms,
         auto_response,
         payment_methods,
-        region
+        region,
+		side
 	} = req.swagger.params.data.value;
 
 	loggerP2P.verbose(
@@ -36,12 +37,13 @@ const createP2PDeal = (req, res) => {
         max_order_value,
         terms,
         auto_response,
-        region
+        region,
+		side
 	);
 
 	toolsLib.p2p.createP2PDeal({
         merchant_id: req.auth.sub.id,
-        side: 'sell',
+        side,
         price_type,
         buying_asset,
         spending_asset,
@@ -87,6 +89,7 @@ const updateP2PDeal = (req, res) => {
         region,
         edited_ids,
         status,
+		side,
         id
 	} = req.swagger.params.data.value;
 
@@ -104,14 +107,15 @@ const updateP2PDeal = (req, res) => {
         terms,
         auto_response,
         region,
-        id
+        id,
+		side
 	);
 
 	toolsLib.p2p.updateP2PDeal({
         id,
         merchant_id: req.auth.sub.id,
         edited_ids,
-        side: 'sell',
+        side,
         price_type,
         buying_asset,
         spending_asset,
@@ -283,7 +287,8 @@ const createP2PTransaction = (req, res) => {
 	const {  
         deal_id,
 		amount_fiat,
-		payment_method_used
+		payment_method_used,
+		side
 	} = req.swagger.params.data.value;
 
 	loggerP2P.verbose(
@@ -291,13 +296,15 @@ const createP2PTransaction = (req, res) => {
 		'controllers/p2p/createP2PTransaction data',
         deal_id,
 		amount_fiat,
-		payment_method_used
+		payment_method_used,
+		side
 	);
 
 	toolsLib.p2p.createP2PTransaction({
         deal_id,
 		user_id:  req.auth.sub.id,
 		amount_fiat,
+		side,
 		payment_method_used,
 		ip
     }

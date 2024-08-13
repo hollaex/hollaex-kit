@@ -5,6 +5,8 @@ import { isMobile } from 'react-device-detect';
 import { Link } from 'react-router';
 import { Button, Input, Select } from 'antd';
 import BigNumber from 'bignumber.js';
+import math from 'mathjs';
+
 import { Coin, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 import {
@@ -41,6 +43,8 @@ import {
 } from './utils';
 import { email, validAddress } from 'components/Form/validations';
 import { getAddressBookDetails } from 'containers/Wallet/actions';
+import { getDecimals } from 'utils/utils';
+import { roundNumber, toFixed } from 'utils/currency';
 
 const RenderWithdraw = ({
 	coins,
@@ -51,6 +55,7 @@ const RenderWithdraw = ({
 	router,
 	onHandleScan,
 	selectedNetwork,
+	optionalTag,
 	...rest
 }) => {
 	const { Option } = Select;
@@ -69,7 +74,6 @@ const RenderWithdraw = ({
 	const [topAssets, setTopAssets] = useState([]);
 	const [selectedAddress, setSelectedAddress] = useState([]);
 	const [prices, setPrices] = useState({});
-	const [optionalTag, setOptionalTag] = useState('');
 	const [selectedAsset, setSelectedAsset] = useState({
 		selectedCurrency: null,
 		networkData: null,
@@ -79,6 +83,9 @@ const RenderWithdraw = ({
 		isPinnedAssets: false,
 		isValidEmail: false,
 		isDisbaleWithdraw: false,
+		isSelected: false,
+		dropdownOpen: false,
+		isOptionalTag: false,
 	});
 	// const [isCheck, setIsCheck] = useState(false);
 	// const [isVisible, setIsVisible] = useState(false);
@@ -184,6 +191,15 @@ const RenderWithdraw = ({
 	}, [getWithdrawCurrency, UpdateCurrency, fee, setFee]);
 
 	useEffect(() => {
+		const getAddress = async () => {
+			try {
+				const res = await getAddressBookDetails();
+				setSelectedAddress([res]);
+			} catch (err) {
+				console.error(err);
+			}
+		};
+		getAddress();
 		if (defaultCurrency) {
 			setSelectedAsset((prev) => ({
 				...prev,
@@ -195,6 +211,7 @@ const RenderWithdraw = ({
 			}
 			setCurrStep({ ...currStep, stepTwo: true, stepThree: true });
 			getWithdrawMAx(defaultCurrency);
+			setWithdrawOptionaltag(null);
 		} else {
 			setSelectedAsset((prev) => ({ ...prev, selectedCurrency: null }));
 		}
@@ -229,14 +246,6 @@ const RenderWithdraw = ({
 			setIsValidField((prev) => ({ ...prev, isDisbaleWithdraw: false }));
 		}
 	}, [getWithdrawCurrency, isWithdrawal]);
-
-	useEffect(() => {
-		const getAddress = async () => {
-			const res = await getAddressBookDetails();
-			setSelectedAddress([res]);
-		};
-		getAddress();
-	}, []);
 
 	const isAmount = useMemo(() => {
 		const isCondition =
@@ -295,10 +304,16 @@ const RenderWithdraw = ({
 		setWithdrawAddress('');
 		setWithdrawAmount('');
 		setReceiverEmail('');
+		setWithdrawOptionaltag(null);
 		setSelectedMethod(method);
 		setCurrStep((prev) => ({ ...prev, stepTwo: true }));
 		setIsValidAdress(false);
-		setIsValidField((prev) => ({ ...prev, isValidEmail: false }));
+		setIsValidField((prev) => ({
+			...prev,
+			isValidEmail: false,
+			isOptionalTag: false,
+		}));
+		setSelectedAsset((prev) => ({ ...prev, addressField: null }));
 		if (!method) {
 			setCurrStep((prev) => ({
 				...prev,
@@ -355,9 +370,12 @@ const RenderWithdraw = ({
 			...prev,
 			selectedCurrency:
 				val && coins[val] && coins[val].allow_withdrawal ? val : '',
+			addressField: null,
 		}));
 		setWithdrawAddress('');
 		setReceiverEmail('');
+		setWithdrawOptionaltag(null);
+		setIsValidField((prev) => ({ ...prev, isOptionalTag: false }));
 	};
 
 	const renderPinnedAsset = (data) => {
@@ -380,9 +398,11 @@ const RenderWithdraw = ({
 		} else if (!val) {
 			setCurrStep((prev) => ({ ...prev, stepFour: false, stepFive: false }));
 		}
-		setSelectedAsset((prev) => ({ ...prev, addressField: null }));
 		setWithdrawAddress(null);
 		setIsValidAdress(false);
+		setWithdrawOptionaltag(null);
+		setSelectedAsset((prev) => ({ ...prev, addressField: null }));
+		setIsValidField((prev) => ({ ...prev, isOptionalTag: false }));
 	};
 
 	const onHandleAddress = (val, method) => {
@@ -412,11 +432,29 @@ const RenderWithdraw = ({
 		setReceiverEmail(val);
 		setIsValidAdress({ isValid: !isValid });
 		setWithdrawAmount('');
+		setWithdrawOptionaltag(null);
 	};
 
 	const onHandleAmount = (val) => {
 		if (val >= 0) {
-			setWithdrawAmount(val);
+			const curr = defaultCurrency
+				? defaultCurrency
+				: selectedAsset?.selectedCurrency;
+			const { increment_unit, min } = coins[curr];
+			let decimal = getDecimals(increment_unit);
+			let decValue = toFixed(val);
+			let valueDecimal = getDecimals(decValue);
+			let result = val;
+			if (decimal < valueDecimal) {
+				const newValue = decValue
+					.toString()
+					.substring(0, decValue.toString().length - (valueDecimal - decimal));
+				result = roundNumber(val, 8);
+				if (math.larger(newValue, min)) {
+					result = parseFloat(newValue);
+				}
+			}
+			setWithdrawAmount(result);
 		}
 	};
 
@@ -500,7 +538,9 @@ const RenderWithdraw = ({
 	// };
 
 	const onHandleOptionalTag = (value) => {
-		setOptionalTag(value);
+		if (value === '') {
+			setIsValidField((prev) => ({ ...prev, isOptionalTag: true }));
+		}
 		setWithdrawOptionaltag(value);
 	};
 
@@ -531,8 +571,13 @@ const RenderWithdraw = ({
 			stepFour: false,
 			stepFive: false,
 		});
+		setWithdrawOptionaltag(null);
 		setIsValidAdress(false);
-		setIsValidField((prev) => ({ ...prev, isValidEmail: false }));
+		setIsValidField((prev) => ({
+			...prev,
+			isValidEmail: false,
+			isOptionalTag: false,
+		}));
 	};
 
 	// const onHandleSelect = (symbol) => {
@@ -549,18 +594,35 @@ const RenderWithdraw = ({
 	// 	}
 	// };
 
+	const handleDropdownVisibleChange = (open) => {
+		setIsValidField((prev) => ({ ...prev, dropdownOpen: open }));
+	};
+
 	const onchangeAddressField = (val) => {
+		if (val) {
+			if (val === STRINGS['WITHDRAW_PAGE.NEW_ADDRESS']) {
+				setWithdrawOptionaltag(null);
+				setWithdrawAddress(null);
+				setIsValidAdress(false);
+			}
+			if (val !== STRINGS['WITHDRAW_PAGE.NEW_ADDRESS']) {
+				setIsValidField((prev) => ({ ...prev, isSelected: true }));
+				onHandleAddress(val, 'address');
+				if (isCondition && address?.length > 1) {
+					setWithdrawOptionaltag(address[1]);
+				}
+			}
+			if (val === STRINGS['ADDRESS_BOOK.VIEW_ADDRESS_BOOK_LABEL']) {
+				setWithdrawOptionaltag(null);
+				return router.push('/wallet/address-book');
+			}
+		}
 		setSelectedAsset((prev) => ({ ...prev, addressField: val }));
-		if (val === STRINGS['WITHDRAW_PAGE.NEW_ADDRESS']) {
-			setWithdrawAddress(null);
-			setIsValidAdress(false);
-		}
-		if (val !== STRINGS['WITHDRAW_PAGE.NEW_ADDRESS']) {
-			onHandleAddress(val, 'address');
-		}
-		if (val === STRINGS['ADDRESS_BOOK.VIEW_ADDRESS_BOOK_LABEL']) {
-			return router.push('/wallet/address-book');
-		}
+		setIsValidField((prev) => ({
+			...prev,
+			isOptionalTag: false,
+			dropdownOpen: false,
+		}));
 	};
 
 	const withdrawFeeFormat =
@@ -595,7 +657,12 @@ const RenderWithdraw = ({
 		((selectedMethod === STRINGS['WITHDRAW_PAGE.WITHDRAWAL_CONFIRM_ADDRESS'] ||
 			(selectedMethod && selectedMethod === 'Address')) &&
 			isValidAddress);
-	const isErrorAmountField = getWithdrawAmount > maxAmount && maxAmount > 0;
+	const isErrorMaxAmountField = getWithdrawAmount > maxAmount && maxAmount > 0;
+	const minAmount = defaultCurrency
+		? coins[defaultCurrency]?.min
+		: coins[selectedAsset && selectedAsset?.selectedCurrency]?.min;
+	const isErrorMinAmountField =
+		getWithdrawAmount && getWithdrawAmount < minAmount && minAmount > 0;
 	const networkIcon = selectedNetwork
 		? coins[selectedNetwork]?.icon_id
 		: coins[defaultNetwork]?.icon_id;
@@ -615,14 +682,37 @@ const RenderWithdraw = ({
 			)
 		);
 	})();
+
+	const address = getAddress[0]?.address?.split(':');
+
 	const selectAddressField = [
 		{
 			value: STRINGS['WITHDRAW_PAGE.NEW_ADDRESS'],
 			label: STRINGS['WITHDRAW_PAGE.NEW_ADDRESS'],
 		},
 		{
-			value: getAddress[0]?.address,
-			label: `${getAddress[0]?.label}: ${getAddress[0]?.address}`,
+			value: address && address[0],
+			label: (
+				<div className="d-flex asset-address-field">
+					<span>{getAddress[0]?.label}</span>
+					<div className="d-flex flex-direction-column">
+						<span>: {address && address[0]}</span>
+						{address &&
+							address.length > 1 &&
+							isCondition &&
+							(!isValidField?.isSelected || isValidField?.dropdownOpen) && (
+								<div className="assets-field">
+									<div className="ml-2">
+										<EditWrapper stringId="ACCORDIAN.TAG">
+											{STRINGS['ACCORDIAN.TAG']}
+										</EditWrapper>
+										<span className="ml-1"> {address && address[1]}</span>
+									</div>
+								</div>
+							)}
+					</div>
+				</div>
+			),
 		},
 		{
 			value: STRINGS['ADDRESS_BOOK.VIEW_ADDRESS_BOOK_LABEL'],
@@ -762,21 +852,10 @@ const RenderWithdraw = ({
 												} (${selectedAsset?.selectedCurrency.toUpperCase()})`
 											}
 											onClear={() => onHandleClear('coin')}
-											onKeyDown={(e) => {
-												if (e.key === 'Enter') {
-													const highlightedOption = document.querySelector(
-														'.ant-select-item-option-active'
-													);
-													if (highlightedOption) {
-														const value = highlightedOption
-															.querySelector('div')
-															.textContent.trim();
-														const curr = onHandleSymbol(value);
-														onHandleChangeSelect(curr);
-													}
-												}
+											onSelect={(e) => {
+												const curr = onHandleSymbol(e);
+												onHandleChangeSelect(curr);
 											}}
-											// onSelect={(e) => onHandleSelect(e)}
 										>
 											{Object.entries(coins).map(
 												([_, { symbol, fullname, icon_id }]) => (
@@ -1044,8 +1123,9 @@ const RenderWithdraw = ({
 													dropdownClassName="custom-select-style"
 													suffixIcon={<CaretDownOutlined />}
 													allowClear={true}
-													value={selectedAsset.addressField}
+													value={selectedAsset?.addressField}
 													onChange={onchangeAddressField}
+													onDropdownVisibleChange={handleDropdownVisibleChange}
 													onClear={() => onHandleClear('address')}
 												>
 													{selectAddressField.map((data) => {
@@ -1053,8 +1133,7 @@ const RenderWithdraw = ({
 															<Option key={data.value}>
 																<div
 																	className={
-																		data.value ===
-																			`${getAddress[0]?.address}` &&
+																		data.value === `${address && address[0]}` &&
 																		'withdraw-dropdown-address'
 																	}
 																>
@@ -1273,7 +1352,11 @@ const RenderWithdraw = ({
 										onChange={(e) => onHandleAmount(e.target.value)}
 										value={getWithdrawAmount}
 										className={
-											isErrorAmountField
+											(isErrorMaxAmountField && isErrorMinAmountField) ||
+											(maxAmount &&
+												maxAmount &&
+												isErrorMinAmountField &&
+												isErrorMinAmountField)
 												? `destination-input-field field-error`
 												: `destination-input-field`
 										}
@@ -1281,18 +1364,28 @@ const RenderWithdraw = ({
 										type="number"
 										placeholder={STRINGS['WITHDRAW_PAGE.ENTER_AMOUNT']}
 									></Input>
-									{!isAmount ? (
+									{!isAmount && !isErrorMinAmountField ? (
 										<CheckOutlined className="mt-3 ml-3" />
 									) : (
 										<CloseOutlined className="mt-3 ml-3" />
 									)}
 								</div>
-								{isErrorAmountField && (
+								{isErrorMaxAmountField && (
 									<div className="d-flex mt-2 warning_text">
 										<ExclamationCircleFilled className="mt-1 mr-1" />
 										{renderLabel('WITHDRAW_PAGE.MAX_AMOUNT_WARNING_INFO')}
 									</div>
 								)}
+								{maxAmount && maxAmount && isErrorMinAmountField ? (
+									<div className="d-flex mt-2 warning_text">
+										<ExclamationCircleFilled className="mt-1 mr-1" />
+										{STRINGS.formatString(
+											STRINGS['WITHDRAW_PAGE.MIN_AMOUNT_WARNING_INFO'],
+											minAmount,
+											selectedAsset
+										)}
+									</div>
+								) : null}
 								{!maxAmount && maxAmount === 0 && (
 									<div className="d-flex mt-2 warning-text">
 										<ExclamationCircleFilled className="mt-1 mr-1" />
@@ -1345,7 +1438,10 @@ const RenderWithdraw = ({
 										)}
 										<div className="withdraw-btn-wrapper">
 											<Button
-												disabled={isAmount}
+												disabled={
+													isAmount ||
+													(isErrorMinAmountField && isErrorMinAmountField)
+												}
 												onClick={onOpenDialog}
 												className="mb-3"
 											>
@@ -1374,6 +1470,7 @@ const mapStateToForm = (state) => ({
 	getNativeCurrency: state.app.constants.native_currency,
 	selectedMethod: state.app.selectedWithdrawMethod,
 	receiverWithdrawalEmail: state.app.receiverWithdrawalEmail,
+	optionalTag: state.app.withdrawFields.optionalTag,
 });
 
 const mapDispatchToProps = (dispatch) => ({

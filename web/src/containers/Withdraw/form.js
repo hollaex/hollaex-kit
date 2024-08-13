@@ -137,12 +137,10 @@ class Form extends Component {
 	};
 
 	onCloseDialog = (ev) => {
-		const { setWithdrawOptionaltag } = this.props;
 		if (ev && ev.preventDefault) {
 			ev.preventDefault();
 		}
 		this.setState({ dialogIsOpen: false, dialogOtpOpen: false });
-		setWithdrawOptionaltag('');
 	};
 
 	onAcceptDialog = () => {
@@ -342,9 +340,9 @@ class Form extends Component {
 			onHandleScan,
 		} = this.props;
 
-		const currentNetwork = getWithdrawNetwork
-			? getWithdrawNetwork
-			: getWithdrawNetworkOptions;
+		const currentNetwork = getWithdrawNetworkOptions
+			? getWithdrawNetworkOptions
+			: getWithdrawNetwork;
 
 		const feeCoin = calculateFeeCoin(
 			currency,
@@ -360,9 +358,9 @@ class Form extends Component {
 			address:
 				selectedMethod === 'Email'
 					? ''
-					: optionalTag
-					? `${getWithdrawAddress}:${optionalTag}`
-					: getWithdrawAddress,
+					: // : optionalTag
+					  // ? `${getWithdrawAddress}:${optionalTag}`
+					  getWithdrawAddress,
 			network: selectedMethod === 'Email' ? 'email' : currentNetwork,
 			fee_coin: feeCoin,
 			method: selectedMethod === 'Email' ? 'email' : 'address',

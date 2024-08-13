@@ -1,0 +1,4 @@
+apiVersion: v1
+description: A Helm chart for HollaEx Kit
+name: hollaex-kit
+version: 2.9.2

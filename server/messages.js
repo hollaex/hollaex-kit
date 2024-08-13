@@ -265,3 +265,4 @@ exports.WITHDRAWAL_DISABLED = 'Withdrawal disabled for this user';
 exports.ADDRESSBOOK_MISSING_FIELDS = 'Each address must contain both address, network, currency and label fields';
 exports.ADDRESSBOOK_ALREADY_EXISTS = 'Address label already exists in the payload';
 exports.ADDRESSBOOK_NOT_FOUND = 'User address book not found';
+exports.PAYMENT_DETAIL_NOT_FOUND = 'Payment detail not found';
