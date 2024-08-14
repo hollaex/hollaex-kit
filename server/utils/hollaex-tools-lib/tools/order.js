@@ -1305,7 +1305,7 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, id = nu
 		}
 	}
 
-	await client.setexAsync(`${user_id}-rates`, 3600, JSON.stringify(rates));
+	await client.setexAsync(`${user_id}-rates`, 30, JSON.stringify(rates));
 
 	const findConversionRate = (startCurrency, endCurrency, rates, visited = new Set(), initialAmount) => {
 		if (startCurrency === endCurrency) return { path: [startCurrency], totalRate: initialAmount, trades: [] };
