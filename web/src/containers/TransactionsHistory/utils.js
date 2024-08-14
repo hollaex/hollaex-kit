@@ -665,7 +665,8 @@ export const generateWithdrawalsHeaders = (
 	symbol,
 	coins = {},
 	withdrawalPopup,
-	ICONS
+	ICONS,
+	type
 ) => {
 	return [
 		// {
@@ -684,6 +685,25 @@ export const generateWithdrawalsHeaders = (
 		// 		);
 		// 	},
 		// },
+		type === 'deposit' && {
+			key: 'icon',
+			className: 'sticky-col',
+			renderCell: (
+				{ display_name, icon_id },
+				key,
+				index,
+				isExpandable,
+				isExpanded
+			) => {
+				return (
+					<td key={index}>
+						<div className="d-flex">
+							{isExpanded ? <MinusSquareOutlined /> : <PlusSquareOutlined />}
+						</div>
+					</td>
+				);
+			},
+		},
 		{
 			stringId: 'CURRENCY',
 			label: STRINGS['CURRENCY'],
@@ -813,7 +833,7 @@ export const generateWithdrawalsHeaders = (
 				);
 			},
 		},
-		{
+		type === 'withdraw' && {
 			stringId: 'MORE,CANCEL,VIEW',
 			label: STRINGS['MORE'],
 			key: 'transaction_id',

@@ -295,13 +295,15 @@ class TransactionsHistory extends Component {
 					symbol,
 					coins,
 					withdrawalPopup,
-					ICONS
+					ICONS,
+					'deposit'
 				),
 				withdrawals: generateWithdrawalsHeaders(
 					symbol,
 					coins,
 					withdrawalPopup,
-					ICONS
+					ICONS,
+					'withdraw'
 				),
 			},
 		});
@@ -374,6 +376,43 @@ class TransactionsHistory extends Component {
 				this.state.defaultExpand && this.state.current_order_id === data.id
 					? true
 					: false,
+			rowExpandable: () => true,
+		};
+	};
+
+	getExpandableRowContentForDeposit = () => {
+		return {
+			expandedRowRender: (obj) => {
+				return (
+					<div
+						className={`expandable-container ${isMobile ? 'text-center' : ''}`}
+					>
+						{obj?.address !== 'mint' && obj?.address !== 'burn' && (
+							<div>
+								<EditWrapper
+									stringId="ACCORDIAN.ADDRESS"
+									render={(string) => (
+										<p className="font-bold text-capitalize">{string}</p>
+									)}
+								>
+									{STRINGS['ACCORDIAN.ADDRESS']}
+								</EditWrapper>
+								<p>{obj.address}</p>
+							</div>
+						)}
+						<div>
+							<EditWrapper
+								stringId="WITHDRAW_NOTIFICATION_TRANSACTION_ID"
+								render={(string) => <p className="font-bold">{string}</p>}
+							>
+								{STRINGS['WITHDRAW_NOTIFICATION_TRANSACTION_ID']}
+							</EditWrapper>
+							<p>{obj?.transaction_id}</p>
+						</div>
+					</div>
+				);
+			},
+			defaultExpanded: () => false,
 			rowExpandable: () => true,
 		};
 	};
@@ -643,6 +682,8 @@ class TransactionsHistory extends Component {
 				props.noData = prepareNoData('NO_ACTIVE_DEPOSITS');
 				props.refetchData = () => this.requestData(activeTab);
 				props.onHandleView = () => this.onHandleView();
+				props.expandableRow = true;
+				props.expandableContent = this.getExpandableRowContentForDeposit;
 				break;
 			case 3:
 				props.stringId = 'TRANSACTION_HISTORY.TITLE_WITHDRAWALS';

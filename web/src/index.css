@@ -2222,12 +2222,11 @@ table th {
         display: flex;
         justify-content: center; }
 
-.layout-mobile .footer-button {
-  margin-top: 4%;
-  margin-bottom: 2%; }
-
 .layout-mobile .bottom-bar-button {
   padding: 3%;
+  position: sticky;
+  bottom: 0%;
+  background: var(--base_background);
   display: flex;
   justify-content: space-around; }
   .layout-mobile .bottom-bar-button .bottom-bar-deposit-button,
@@ -3217,6 +3216,14 @@ table th {
   .history_block-wrapper .loader_wrapper {
     top: 0;
     left: 0; }
+  .history_block-wrapper .transactions-history-table .table_body-wrapper .expandable-container .custom-row-line {
+    width: 5px;
+    height: 1px;
+    background-color: var(--labels_important-active-labels-text-graphics); }
+  .history_block-wrapper .transactions-history-table .table_body-wrapper .expandable-container .blue-link .edit-wrapper__container {
+    text-decoration: underline !important; }
+  .history_block-wrapper .transactions-history-table .table_body-wrapper .expandable-container .blue-link:hover {
+    cursor: pointer; }
   .history_block-wrapper .table-wrapper .table_body-wrapper.with_icon tr td:first-child {
     border-top: 1px solid var(--calculated_secondary-border) !important;
     border-bottom: 1px solid var(--calculated_secondary-border) !important; }
