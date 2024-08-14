@@ -167,6 +167,7 @@ const RenderWithdraw = ({
 			: coins[defaultCurrency]?.symbol;
 	const isWithdrawal = coins[getWithdrawCurrency]?.allow_withdrawal;
 	const isValidUserEmail = isValidField?.isValidEmail;
+	const { selectedCurrency } = selectedAsset;
 
 	useEffect(() => {
 		const topWallet = assets
@@ -250,15 +251,16 @@ const RenderWithdraw = ({
 		const networkOption = defaultNetwork?.split(',')?.length;
 		if (defaultCurrency) {
 			if (
-				selectedMethod === 'Email' ||
-				networkOption <= 1 ||
-				selectedAsset?.networkData
+				selectedCurrency &&
+				(selectedMethod === 'Email' ||
+					networkOption <= 1 ||
+					selectedAsset?.networkData)
 			) {
 				getWithdrawMAx(defaultCurrency);
 			}
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [getWithdrawNetworkOptions, selectedMethod]);
+	}, [getWithdrawNetworkOptions, selectedMethod, selectedCurrency]);
 
 	const isAmount = useMemo(() => {
 		const isCondition =

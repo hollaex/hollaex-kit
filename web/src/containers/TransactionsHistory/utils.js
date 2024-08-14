@@ -665,8 +665,7 @@ export const generateWithdrawalsHeaders = (
 	symbol,
 	coins = {},
 	withdrawalPopup,
-	ICONS,
-	type
+	ICONS
 ) => {
 	return [
 		// {
@@ -685,7 +684,7 @@ export const generateWithdrawalsHeaders = (
 		// 		);
 		// 	},
 		// },
-		type === 'deposit' && {
+		{
 			key: 'icon',
 			className: 'sticky-col',
 			renderCell: (
@@ -833,7 +832,7 @@ export const generateWithdrawalsHeaders = (
 				);
 			},
 		},
-		type === 'withdraw' && {
+		{
 			stringId: 'MORE,CANCEL,VIEW',
 			label: STRINGS['MORE'],
 			key: 'transaction_id',
