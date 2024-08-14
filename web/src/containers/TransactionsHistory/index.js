@@ -295,15 +295,13 @@ class TransactionsHistory extends Component {
 					symbol,
 					coins,
 					withdrawalPopup,
-					ICONS,
-					'deposit'
+					ICONS
 				),
 				withdrawals: generateWithdrawalsHeaders(
 					symbol,
 					coins,
 					withdrawalPopup,
-					ICONS,
-					'withdraw'
+					ICONS
 				),
 			},
 		});
@@ -698,6 +696,8 @@ class TransactionsHistory extends Component {
 				props.noData = prepareNoData('NO_ACTIVE_WITHDRAWALS');
 				props.refetchData = () => this.requestData(activeTab);
 				props.onHandleView = () => this.onHandleView();
+				props.expandableRow = true;
+				props.expandableContent = this.getExpandableRowContentForDeposit;
 				break;
 			default:
 				return <div />;
