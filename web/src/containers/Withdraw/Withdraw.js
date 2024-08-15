@@ -167,6 +167,7 @@ const RenderWithdraw = ({
 			: coins[defaultCurrency]?.symbol;
 	const isWithdrawal = coins[getWithdrawCurrency]?.allow_withdrawal;
 	const isValidUserEmail = isValidField?.isValidEmail;
+	const { selectedCurrency } = selectedAsset;
 
 	useEffect(() => {
 		const topWallet = assets
@@ -210,7 +211,6 @@ const RenderWithdraw = ({
 				setCurrStep({ ...currStep, stepTwo: true });
 			}
 			setCurrStep({ ...currStep, stepTwo: true, stepThree: true });
-			getWithdrawMAx(defaultCurrency);
 			setWithdrawOptionaltag(null);
 		} else {
 			setSelectedAsset((prev) => ({ ...prev, selectedCurrency: null }));
@@ -246,6 +246,21 @@ const RenderWithdraw = ({
 			setIsValidField((prev) => ({ ...prev, isDisbaleWithdraw: false }));
 		}
 	}, [getWithdrawCurrency, isWithdrawal]);
+
+	useEffect(() => {
+		const networkOption = defaultNetwork?.split(',')?.length;
+		if (defaultCurrency) {
+			if (
+				selectedCurrency &&
+				(selectedMethod === 'Email' ||
+					networkOption <= 1 ||
+					selectedAsset?.networkData)
+			) {
+				getWithdrawMAx(defaultCurrency);
+			}
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [getWithdrawNetworkOptions, selectedMethod, selectedCurrency]);
 
 	const isAmount = useMemo(() => {
 		const isCondition =
@@ -351,7 +366,6 @@ const RenderWithdraw = ({
 			}
 			setWithdrawCurrency(val);
 			network = val ? val : coins[getWithdrawCurrency]?.symbol;
-			getWithdrawMAx(val);
 			setWithdrawNetworkOptions('');
 			setIsValidAdress(false);
 			setIsValidField((prev) => ({ ...prev, isValidEmail: false }));
