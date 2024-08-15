@@ -3073,8 +3073,7 @@ paths:
       operationId: createUserWalletByAdmin
       description: Create a crypto address for the user by admin
       tags:
-        - User
-        - Wallet
+        - Admin
       parameters:
         - name: data
           in: body
@@ -3402,7 +3401,7 @@ paths:
       description: Get user referral codes for admin
       operationId: getUserReferralCodesByAdmin
       tags:
-        - User
+        - Admin
       parameters:
         - name: user_id
           in: query
@@ -3468,7 +3467,7 @@ paths:
       operationId: createUserReferralCodeByAdmin
       description: create referral code config for user by admin
       tags:
-        - User
+        - Admin
       parameters:
       - name: data
         in: body
@@ -3994,7 +3993,7 @@ paths:
       description: Get p2p disputes
       operationId: fetchP2PDisputes
       tags:
-        - User
+        - Admin
       parameters:
         - in: query
           name: user_id
@@ -4169,7 +4168,7 @@ paths:
       operationId: performDirectWithdrawalByAdmin
       description: Make a withdrawal without email confirmation for admin
       tags:
-        - User
+        - Admin
       parameters:
         - name: data
           in: body
