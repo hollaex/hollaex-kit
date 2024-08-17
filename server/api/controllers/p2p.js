@@ -10,6 +10,7 @@ const createP2PDeal = (req, res) => {
 
 	const {  
         price_type,
+		dynamic_pair,
         buying_asset,
         spending_asset,
         exchange_rate,
@@ -28,6 +29,7 @@ const createP2PDeal = (req, res) => {
 		req.uuid,
 		'controllers/p2p/createP2PDeal data',
         price_type,
+		dynamic_pair,
         buying_asset,
         spending_asset,
         exchange_rate,
@@ -45,6 +47,7 @@ const createP2PDeal = (req, res) => {
         merchant_id: req.auth.sub.id,
         side,
         price_type,
+		dynamic_pair,
         buying_asset,
         spending_asset,
         exchange_rate,
@@ -76,6 +79,7 @@ const updateP2PDeal = (req, res) => {
 
 	const {  
         price_type,
+		dynamic_pair,
         buying_asset,
         spending_asset,
         exchange_rate,
@@ -97,6 +101,7 @@ const updateP2PDeal = (req, res) => {
 		req.uuid,
 		'controllers/p2p/updateP2PDeal data',
         price_type,
+		dynamic_pair,
         buying_asset,
         spending_asset,
         exchange_rate,
@@ -117,6 +122,7 @@ const updateP2PDeal = (req, res) => {
         edited_ids,
         side,
         price_type,
+		dynamic_pair,
         buying_asset,
         spending_asset,
         exchange_rate,

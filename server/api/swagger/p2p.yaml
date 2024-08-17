@@ -86,6 +86,8 @@ paths:
             properties:
               price_type:
                 type: string
+              dynamic_pair:
+                type: string
               buying_asset:
                 type: string
               spending_asset:
@@ -147,6 +149,8 @@ paths:
             type: object
             properties:
               price_type:
+                type: string
+              dynamic_pair:
                 type: string
               buying_asset:
                 type: string

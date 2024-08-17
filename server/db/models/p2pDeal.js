@@ -39,6 +39,10 @@ module.exports = function (sequelize, DataTypes) {
                 type: DataTypes.DOUBLE,
                 allowNull: true,
             },
+            dynamic_pair: {
+                type: DataTypes.STRING,
+                allowNull: true,
+            },
             spread: {
                 type: DataTypes.DOUBLE,
                 allowNull: true,
