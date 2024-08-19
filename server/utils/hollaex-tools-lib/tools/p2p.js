@@ -24,6 +24,7 @@ const {
 	NO_DATA_FOR_CSV,
     FUNDING_ACCOUNT_INSUFFICIENT_BALANCE,
     USER_NOT_FOUND,
+	P2P_DEAL_NOT_FOUND
 } = require(`${SERVER_PATH}/messages`);
 
 
@@ -427,6 +428,28 @@ const updateP2PDeal = async (data) => {
 		]
 	});
 };
+
+const deleteP2PDeal = async (removed_ids, user_id) => {
+	const deals = await getModel('p2pDeal').findAll({
+		where: {
+			id: removed_ids,
+			merchant_id: user_id 
+		}
+	});
+
+	if (deals?.length === 0) {
+		throw new Error(P2P_DEAL_NOT_FOUND);
+	};
+
+
+	const promises = deals.map(async (deal) => {
+		return await deal.destroy();
+	  });
+	
+	  const results = await Promise.all(promises);
+	  return results;
+};
+
 
 const createP2PTransaction = async (data) => {
 	let {
@@ -1167,6 +1190,7 @@ module.exports = {
 	fetchP2PTransactions,
 	fetchP2PDisputes,
 	updateP2PDeal,
+	deleteP2PDeal,
 	fetchP2PFeedbacks,
 	fetchP2PProfile
 };

@@ -149,6 +149,32 @@ const updateP2PDeal = (req, res) => {
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
+const deleteP2PDeal = (req, res) => {
+	loggerP2P.verbose(req.uuid, 'controllers/p2p/deleteP2PDeal/auth', req.auth);
+
+	const {  
+        removed_ids
+	} = req.swagger.params.data.value;
+
+	loggerP2P.verbose(
+		req.uuid,
+		'controllers/p2p/deleteP2PDeal data',
+        removed_ids
+	);
+
+	toolsLib.p2p.deleteP2PDeal(removed_ids, req.auth.sub.id)
+		.then(() => {
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerP2P.error(
+				req.uuid,
+				'controllers/p2p/deleteP2PDeal err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
 
 const fetchP2PDeals = (req, res) => {
 	loggerP2P.verbose(req.uuid, 'controllers/p2p/fetchP2PDeals/auth', req.auth);
@@ -551,6 +577,7 @@ module.exports = {
     updateP2PTransaction,
     fetchP2PDisputes,
     updateP2PDeal,
+	deleteP2PDeal,
     updateP2PDispute,
 	createP2PFeedback,
 	fetchP2PFeedbacks,

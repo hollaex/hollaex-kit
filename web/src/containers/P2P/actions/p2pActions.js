@@ -31,6 +31,15 @@ export const editDeal = (values) => {
 	return requestAuthenticated('/p2p/deal', options);
 };
 
+export const removeDeal = (values) => {
+	const options = {
+		method: 'DELETE',
+		body: JSON.stringify(values),
+	};
+
+	return requestAuthenticated('/p2p/deal', options);
+};
+
 export const createTransaction = (values) => {
 	const options = {
 		method: 'POST',

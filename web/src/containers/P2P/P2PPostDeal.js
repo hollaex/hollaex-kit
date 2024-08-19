@@ -175,8 +175,8 @@ const P2PPostDeal = ({
 						}}
 					>
 						<span
-							className={`${p2pSide === 'buy' ? 'redTextP2P' : ''}`}
-							style={{ fontSize: 18 }}
+							className={`${p2pSide === 'buy' ? 'greenTextP2P' : ''}`}
+							style={{ fontSize: 18, fontWeight: 'bold' }}
 						>
 							<EditWrapper stringId="P2P.I_WANT_TO_BUY">
 								{STRINGS['P2P.I_WANT_TO_BUY']}
@@ -186,6 +186,7 @@ const P2PPostDeal = ({
 							<Switch
 								checked={p2pSide === 'sell' ? true : false}
 								onChange={(checked) => {
+									if (step !== 1) return;
 									if (p2p_config.side === 'sell' && !checked) return;
 									if (p2p_config.side === 'buy' && checked) return;
 
@@ -197,7 +198,10 @@ const P2PPostDeal = ({
 								}}
 							/>
 						</span>
-						<span style={{ fontSize: 18 }}>
+						<span
+							className={`${p2pSide === 'sell' ? 'redTextP2P' : ''}`}
+							style={{ fontSize: 18, fontWeight: 'bold' }}
+						>
 							<EditWrapper stringId="P2P.I_WANT_TO_SELL">
 								{STRINGS['P2P.I_WANT_TO_SELL']}
 							</EditWrapper>
@@ -252,13 +256,11 @@ const P2PPostDeal = ({
 												setBuyingAsset(e);
 											}}
 										>
-											{p2p_config?.digital_currencies
-												.filter((coin) => coin === 'usdt')
-												.map((coin) => (
-													<Select.Option value={coin}>
-														{coin?.toUpperCase()}
-													</Select.Option>
-												))}
+											{p2p_config?.digital_currencies.map((coin) => (
+												<Select.Option value={coin}>
+													{coin?.toUpperCase()}
+												</Select.Option>
+											))}
 										</Select>
 									</div>
 									<div style={{ marginTop: 4 }}>
