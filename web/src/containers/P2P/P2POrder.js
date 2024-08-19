@@ -285,6 +285,11 @@ const P2POrder = ({
 			setLastClickTime(now);
 		}
 	};
+	const formatAmount = (currency, amount) => {
+		const min = coins[currency].min;
+		const formattedAmount = formatToCurrency(amount, min);
+		return formattedAmount;
+	};
 
 	return (
 		<>
@@ -1074,7 +1079,10 @@ const P2POrder = ({
 							</div>
 							<div>
 								<div style={{ textAlign: 'end' }}>
-									{selectedOrder?.price}{' '}
+									{formatAmount(
+										selectedOrder?.deal?.spending_asset,
+										selectedOrder?.price
+									)}{' '}
 									{selectedOrder?.deal?.spending_asset?.toUpperCase()}
 								</div>
 								<div>

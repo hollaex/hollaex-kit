@@ -472,7 +472,8 @@ const createP2PTransaction = async (data) => {
 
 	const p2pDeal = await getModel('p2pDeal').findOne({ where: { id: deal_id } });
 
-	const { max_order_value, min_order_value, exchange_rate, spread } = p2pDeal;
+	const { max_order_value, min_order_value, spread, price_type } = p2pDeal;
+	let { exchange_rate } = p2pDeal;
 	const { merchant_id } = p2pDeal;
 
     if (!p2pDeal) {
@@ -512,6 +513,19 @@ const createP2PTransaction = async (data) => {
 
 	const merchantBalance = await getP2PAccountBalance(side === 'buy' ? user_id : merchant_id, p2pDeal.buying_asset);
 
+	if (price_type === 'dynamic') {
+		const broker = await getModel('broker').findOne({ type: 'dynamic', symbol:  p2pDeal.dynamic_pair });
+		const { formula, increment_size } = broker;
+
+		const result = await testBroker({
+			formula,
+			increment_size,
+			spread: 1
+		});
+
+		exchange_rate = result.buy_price;
+		
+	}
 	const price = new BigNumber(exchange_rate).multipliedBy(p2pDeal.side === 'sell' ? (1 + (spread / 100)) : (1 - (spread / 100)));
 	const amount_digital_currency = new BigNumber(amount_fiat).dividedBy(price).toNumber();
 
