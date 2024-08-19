@@ -42,6 +42,7 @@ import {
 	setSnackDialog,
 	requestTiers,
 } from 'actions/appActions';
+import { p2pAddMessage, p2pGetStatus } from 'actions/p2pAction';
 import { playBackgroundAudioNotification } from 'utils/utils';
 import { getToken, isLoggedIn } from 'utils/token';
 import { NORMAL_CLOSURE_CODE, isIntentionalClosure } from 'utils/webSocket';
@@ -262,14 +263,7 @@ class Container extends Component {
 			privateSocket.send(
 				JSON.stringify({
 					op: 'subscribe',
-					args: [
-						'trade',
-						'wallet',
-						'order',
-						'deposit',
-						'usertrade',
-						`p2pChat:${this.props.user.id}`,
-					],
+					args: ['trade', 'wallet', 'order', 'deposit', 'usertrade', `p2pChat`],
 				})
 			);
 			// this.wsInterval = setInterval(() => {
@@ -431,6 +425,12 @@ class Container extends Component {
 					}
 					break;
 				case 'p2pChat':
+					if (data.action === 'getStatus') {
+						this.props.p2pGetStatus(data.data);
+					} else {
+						this.props.p2pAddMessage(data.data);
+					}
+
 					notification.open({
 						message: (data.action = 'getStatus'
 							? STRINGS['P2P.STATUS_UPDATE']
@@ -735,6 +735,8 @@ const mapDispatchToProps = (dispatch) => ({
 	setMe: bindActionCreators(setMe, dispatch),
 	setBalance: bindActionCreators(setBalance, dispatch),
 	setUserOrders: bindActionCreators(setUserOrders, dispatch),
+	p2pAddMessage: bindActionCreators(p2pAddMessage, dispatch),
+	p2pGetStatus: bindActionCreators(p2pGetStatus, dispatch),
 	addOrder: bindActionCreators(addOrder, dispatch),
 	updateOrder: bindActionCreators(updateOrder, dispatch),
 	removeOrder: bindActionCreators(removeOrder, dispatch),
