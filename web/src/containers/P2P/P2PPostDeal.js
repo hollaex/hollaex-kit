@@ -118,14 +118,15 @@ const P2PPostDeal = ({
 
 	const getDynamicRate = async (pair) => {
 		try {
-			const assets = pair.split('-');
-			const result = await getQuickTrade({
-				spending_currency: assets[0],
-				receiving_currency: assets[1],
-				spending_amount: 1,
+			const broker = brokerData.find((broker) => broker.symbol === pair);
+			const { formula, increment_size } = broker;
+			const result = await createTestBroker({
+				formula,
+				increment_size,
+				spread: 1,
 			});
 
-			setDynamicRate(result.receiving_amount);
+			setDynamicRate(result.data.buy_price);
 		} catch (error) {
 			if (error) {
 				message.error(error.message);
