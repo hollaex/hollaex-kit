@@ -44,6 +44,14 @@ const P2PDeals = ({ coins }) => {
 			},
 		},
 		{
+			title: 'Side',
+			dataIndex: 'side',
+			key: 'side',
+			render: (user_id, data) => {
+				return <div className="d-flex">{data?.side?.toUpperCase()}</div>;
+			},
+		},
+		{
 			title: 'Price',
 			dataIndex: 'price',
 			key: 'price',
@@ -108,6 +116,28 @@ const P2PDeals = ({ coins }) => {
 				return <div className="d-flex">{formatDate(data?.created_at)}</div>;
 			},
 		},
+		// {
+		// 	title: 'Edit',
+		// 	dataIndex: 'edit',
+		// 	key: 'edit',
+		// 	render: (user_id, data) => {
+		// 		return (
+		// 			<div className="d-flex">
+		// 				<Button
+		// 					onClick={(e) => {
+		// 						e.stopPropagation();
+		// 						// setEditMode(true);
+		// 						// setSelectedCoin(data);
+		// 						// setDisplayCostumizationModal(true);
+		// 					}}
+		// 					style={{ backgroundColor: '#CB7300', color: 'white' }}
+		// 				>
+		// 					Edit
+		// 				</Button>
+		// 			</div>
+		// 		);
+		// 	},
+		// },
 
 		// {
 		// 	title: 'Action',

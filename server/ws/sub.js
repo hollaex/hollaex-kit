@@ -103,7 +103,6 @@ const initializeTopic = (topic, ws, symbol) => {
 			break;
 
 		case 'p2pChat':
-			addSubscriber(WEBSOCKET_CHANNEL(topic, symbol), ws);
 			addSubscriber(WEBSOCKET_CHANNEL(topic, ws.auth.sub.id), ws);
 			break;
 		case 'admin':
