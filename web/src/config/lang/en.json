@@ -2005,6 +2005,8 @@
 		"ACTIVATE": "ACTIVATE",
 		"TAKE_OFFLINE": "TAKE OFFLINE",
 		"REMOVE": "REMOVE",
+		"DYNAMIC": "DYNAMIC",
+		"TYPE": "TYPE",
 		"EDIT": "Edit",
 		"SIDE": "Side",
 		"STATUS": "Status",

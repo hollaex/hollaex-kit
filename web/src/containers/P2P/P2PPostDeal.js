@@ -319,10 +319,10 @@ const P2PPostDeal = ({
 							<div style={{ flex: 7, display: 'flex' }}>
 								<div style={{ flex: 1 }}>
 									<div>
-										{/* <EditWrapper stringId="P2P.PRICE_UPPER">
-											{STRINGS['P2P.PRICE_UPPER']}
-										</EditWrapper> */}
-										TYPE:
+										<EditWrapper stringId="P2P.TYPE">
+											{STRINGS['P2P.TYPE']}
+										</EditWrapper>
+										:
 									</div>
 									<div>
 										<Select
@@ -332,12 +332,17 @@ const P2PPostDeal = ({
 											value={priceType}
 											onChange={(e) => {
 												setPriceType(e);
+												setExchangeRate();
+												setDynamicRate();
+												setDynamicPair();
 											}}
 										>
 											<Select.Option value={'static'}>
 												{STRINGS['P2P.STATIC']}
 											</Select.Option>
-											<Select.Option value={'dynamic'}>DYNAMIC</Select.Option>
+											<Select.Option value={'dynamic'}>
+												{STRINGS['P2P.DYNAMIC']}
+											</Select.Option>
 										</Select>
 									</div>
 
