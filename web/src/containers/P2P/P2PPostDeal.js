@@ -9,7 +9,7 @@ import { createTestBroker } from 'containers/Admin/Trades/actions';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { Switch, Select, Input, InputNumber } from 'antd';
-import { postDeal, editDeal } from './actions/p2pActions';
+import { postDeal, editDeal, getQuickTrade } from './actions/p2pActions';
 import { CloseOutlined } from '@ant-design/icons';
 import { formatToCurrency } from 'utils/currency';
 import { COUNTRIES_OPTIONS } from 'utils/countries';
@@ -25,6 +25,7 @@ const P2PPostDeal = ({
 	pairs,
 	constants = {},
 	icons: ICONS,
+	broker,
 	transaction_limits,
 	tiers = {},
 	p2p_config,
@@ -106,7 +107,7 @@ const P2PPostDeal = ({
 
 	const getBrokerData = async () => {
 		try {
-			const res = await getBroker();
+			const res = broker;
 			setBrokerData(res);
 		} catch (error) {
 			if (error) {
@@ -117,15 +118,14 @@ const P2PPostDeal = ({
 
 	const getDynamicRate = async (pair) => {
 		try {
-			const broker = brokerData.find((broker) => broker.symbol === pair);
-			const { formula, increment_size } = broker;
-			const result = await createTestBroker({
-				formula,
-				increment_size,
-				spread: 1,
+			const assets = pair.split('-');
+			const result = await getQuickTrade({
+				spending_currency: assets[0],
+				receiving_currency: assets[1],
+				spending_amount: 1,
 			});
 
-			setDynamicRate(result.data.buy_price);
+			setDynamicRate(result.receiving_amount);
 		} catch (error) {
 			if (error) {
 				message.error(error.message);
@@ -1140,6 +1140,7 @@ const P2PPostDeal = ({
 const mapStateToProps = (state) => ({
 	pairs: state.app.pairs,
 	coins: state.app.coins,
+	broker: state.app.broker,
 	constants: state.app.constants,
 	transaction_limits: state.app.transaction_limits,
 	p2p_config: state.app.constants.p2p_config,

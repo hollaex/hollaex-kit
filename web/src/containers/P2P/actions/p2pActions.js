@@ -76,6 +76,12 @@ export const createFeedback = (values) => {
 	return requestAuthenticated('/p2p/feedback', options);
 };
 
+export const getQuickTrade = (values) => {
+	const queryValues =
+		values && Object.keys(values).length ? querystring.stringify(values) : '';
+	return requestAuthenticated(`/quick-trade?${queryValues}`);
+};
+
 export const fetchFeedback = (values) => {
 	const queryValues =
 		values && Object.keys(values).length ? querystring.stringify(values) : '';
