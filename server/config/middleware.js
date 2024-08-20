@@ -151,43 +151,6 @@ const rateLimitMiddleware = (app) => {
 			return res.status(429).json({ message: 'Too many requests. Your account is blocked for 2 minutes' });
 		}
 	});
-
-	limiter({
-		path: '/plugins/sms/verify',
-		method: 'get',
-		total: 5,
-		expire: 1000 * 60 * 24,
-		lookup: (req, res, opts, next) => {
-			if (req.headers.hasOwnProperty('authorization') && req.headers.authorization.indexOf('Bearer ') > -1) {
-				opts.lookup = 'headers.authorization';
-			} else {
-				opts.lookup = 'headers.x-forwarded-for';
-			}
-			return next();
-		},
-		onRateLimited: function (req, res, next) {
-			logger.verbose('config/middleware/rateLimitMiddleware', 'abuse', 'request-withdrawal');
-			return res.status(429).json({ message: 'Too many requests. Your account is blocked for 24 hours' });
-		}
-	});
-	limiter({
-		path: '/plugins/sms/verify',
-		method: 'post',
-		total: 5,
-		expire: 1000 * 60 * 24,
-		lookup: (req, res, opts, next) => {
-			if (req.headers.hasOwnProperty('authorization') && req.headers.authorization.indexOf('Bearer ') > -1) {
-				opts.lookup = 'headers.authorization';
-			} else {
-				opts.lookup = 'headers.x-forwarded-for';
-			}
-			return next();
-		},
-		onRateLimited: function (req, res, next) {
-			logger.verbose('config/middleware/rateLimitMiddleware', 'abuse', 'request-withdrawal');
-			return res.status(429).json({ message: 'Too many requests. Your account is blocked for 24 hours' });
-		}
-	});
 };
 
 module.exports = {
