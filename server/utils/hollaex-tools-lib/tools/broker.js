@@ -37,7 +37,9 @@ const {
 	REBALANCE_SYMBOL_MISSING,
 	PRICE_NOT_FOUND,
 	QUOTE_EXPIRY_TIME_ERROR,
-	FAILED_GET_QUOTE
+	FAILED_GET_QUOTE,
+	INVALID_SIZE,
+	INVALID_PRICE
 } = require(`${SERVER_PATH}/messages`);
 
 const validateBrokerPair = (brokerPair) => {
@@ -289,6 +291,14 @@ const calculatePrice = async (side, spread, formula, refresh_interval, brokerId,
 };
 
 const generateRandomToken = (user_id, symbol, side, expiryTime = 30, price, size, type) => {
+	if (!size) {
+		throw new Error(INVALID_SIZE);
+	};
+
+	if (!price) {
+		throw new Error(INVALID_PRICE);
+	};
+
 	// Generate random token
 	const randomToken = randomString({
 		length: 32,
