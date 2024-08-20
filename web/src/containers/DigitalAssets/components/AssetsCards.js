@@ -45,17 +45,19 @@ const sortCoinsData = (coinsData) => ({
 const renderPercentage = (percentage, type) => (
 	<span
 		className={
-			type === 'gainers' || percentage >= 0
+			percentage &&
+			(type === 'gainers' || percentage >= 0
 				? 'gainer-percentage'
-				: 'loser-percentage'
+				: 'loser-percentage')
 		}
 	>
-		{type === 'gainers' || percentage >= 0 ? (
-			<CaretUpOutlined />
-		) : (
-			<CaretDownOutlined />
-		)}
-		{percentage >= 0 ? `+${percentage}` : percentage}
+		{percentage &&
+			(type === 'gainers' || percentage >= 0 ? (
+				<CaretUpOutlined />
+			) : (
+				<CaretDownOutlined />
+			))}
+		{percentage ? (percentage >= 0 ? `+${percentage}` : percentage) : '0%'}
 	</span>
 );
 

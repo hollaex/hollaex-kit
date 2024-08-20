@@ -4741,7 +4741,8 @@ table th {
 
 .layout-mobile .digital-market-wrapper .market-list__container .market-list__block .market-list__block-table .sticky-col {
   background-color: transparent; }
-  .layout-mobile .digital-market-wrapper .market-list__container .market-list__block .market-list__block-table .sticky-col .table-asset-container, .layout-mobile .digital-market-wrapper .market-list__container .market-list__block .market-list__block-table .sticky-col .coin-symbol {
+  .layout-mobile .digital-market-wrapper .market-list__container .market-list__block .market-list__block-table .sticky-col .table-asset-container,
+  .layout-mobile .digital-market-wrapper .market-list__container .market-list__block .market-list__block-table .sticky-col .coin-symbol {
     width: 100%;
     overflow: hidden;
     text-wrap: nowrap;
@@ -5617,6 +5618,8 @@ table th {
   .digital-market-wrapper .market-list__block-table .table-bottom-border td,
   .digital-market-wrapper .market-list__block-table th {
     line-height: unset; }
+  .digital-market-wrapper .market-list__block-table .font-raleway {
+    font-family: Raleway; }
   .digital-market-wrapper .market-list__block-table thead {
     color: var(--labels_secondary-inactive-label-text-graphics);
     background-color: var(--base_secondary-navigation-bar); }
@@ -9657,7 +9660,8 @@ table th {
       .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .currency-label,
       .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .optional-tag-field .select-field .currency-label {
         width: 22%; }
-      .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-method-field .select-field .network-input, .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-method-field .select-field .asset-input,
+      .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-method-field .select-field .network-input,
+      .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-method-field .select-field .asset-input,
       .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-network-field .select-field .network-input,
       .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-network-field .select-field .asset-input,
       .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .address-field .select-field .network-input,

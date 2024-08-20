@@ -159,7 +159,9 @@ const AssetsRow = ({
 									key={key}
 								/>
 							) : (
-								<span className="d-flex justify-content-end"> {'0%'}</span>
+								<span className="d-flex justify-content-end font-raleway">
+									0%
+								</span>
 							)}
 						</div>
 					) : (
@@ -182,7 +184,7 @@ const AssetsRow = ({
 									isMobileMarket={true}
 								/>
 							) : (
-								<span> {'0%'}</span>
+								<span className="font-raleway">0%</span>
 							)}
 							{chartData?.price ? (
 								<MiniSparkLine
@@ -227,7 +229,7 @@ const AssetsRow = ({
 								key={key}
 							/>
 						) : (
-							'0%'
+							<span className="font-raleway">0%</span>
 						)
 					) : (
 						<Loading index={index} />
@@ -247,7 +249,7 @@ const AssetsRow = ({
 								key={key}
 							/>
 						) : (
-							'0%'
+							<span className="font-raleway">0%</span>
 						)
 					) : (
 						<Loading index={index} />
@@ -273,14 +275,16 @@ const AssetsRow = ({
 			{!isMobile && (
 				<td>
 					{!loading ? (
-						<div className="ml-1 market-capital mr-3">{`${
-							coins[symbol]?.market_cap
-								? coins[symbol]?.market_cap.toLocaleString('en-US', {
-										style: 'currency',
-										currency: 'USD',
-								  })
-								: '0'
-						}`}</div>
+						<div className="ml-1 market-capital mr-3">
+							{coins[symbol]?.market_cap ? (
+								coins[symbol].market_cap.toLocaleString('en-US', {
+									style: 'currency',
+									currency: 'USD',
+								})
+							) : (
+								<span className="font-raleway">0</span>
+							)}
+						</div>
 					) : (
 						<Loading index={index} />
 					)}
