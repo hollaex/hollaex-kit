@@ -86,6 +86,8 @@ paths:
             properties:
               price_type:
                 type: string
+              dynamic_pair:
+                type: string
               buying_asset:
                 type: string
               spending_asset:
@@ -148,6 +150,8 @@ paths:
             properties:
               price_type:
                 type: string
+              dynamic_pair:
+                type: string
               buying_asset:
                 type: string
               spending_asset:
@@ -190,6 +194,39 @@ paths:
               id:
                 type: integer
                 format: int32
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - user
+    delete:
+      description: Delete deal for p2p
+      operationId: deleteP2PDeal
+      tags:
+        - P2P
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              removed_ids:
+                type: array
+                items:
+                  type: integer
+                  format: int32
       responses:
         200:
           description: Success

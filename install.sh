@@ -1,5 +1,19 @@
 #!/bin/bash
 
+# Prevent to proceed if there are git conflicts on the settings files
+function check_git_conflict() {
+    local file=$1
+
+    if grep -q '<< HEAD' "$file" && grep -q '==' "$file" && grep -q '>>' "$file"; then
+        echo -e "\nError: Git conflict detected in file: $file"
+        echo "Please check the file and fix the Git conflict to proceed."
+        exit 1;
+    fi
+}
+
+check_git_conflict settings/configmap;
+check_git_conflict settings/secret;
+
 export ARCH=$(uname -m | sed s/aarch64/arm64/ | sed s/x86_64/amd64/ | sed s/s390x/s390x/)
 
 # Dependencies installer for Debian (Ubuntu) based Linux.
@@ -668,7 +682,6 @@ if [[ "$DOCKER_USERGROUP_ADDED" ]]; then
     newgrp docker
 
 fi
-
 
 function kit_cross_compatibility_converter() {
 
