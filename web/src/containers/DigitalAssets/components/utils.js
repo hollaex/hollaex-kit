@@ -1,3 +1,4 @@
+import React from 'react';
 import math from 'mathjs';
 import { createSelector } from 'reselect';
 import { DIGITAL_ASSETS_SORT } from 'actions/appActions';
@@ -147,6 +148,17 @@ export const dataSelector = createSelector(
 		return Object.values(data);
 	}
 );
+
+export const Loading = ({ index }) => {
+	return (
+		<div
+			className="loading-anime"
+			style={{
+				animationDelay: `.${index + 1}s`,
+			}}
+		/>
+	);
+};
 
 // export const RenderLoading = () => {
 // 	const renderCaret = () => (

@@ -4771,23 +4771,20 @@ table th {
   position: absolute;
   top: 7%; }
 
-.layout-mobile .assets-card-container .gainer-icon .edit-wrapper__container:nth-child(1) {
-  margin-top: 2%; }
-
-.layout-mobile .assets-card-container .gainer-icon .edit-wrapper__container:nth-child(2) .icon_title-text {
-  font-size: 12px !important; }
-
-.layout-mobile .assets-card-container .digital-assets-cards .assets-wrapper .assets-value .gainer-price {
-  font-weight: bold; }
-
-.layout-mobile .assets-card-container .gainer-asset-card {
-  border-top: 3px solid var(--trading_buying-related-elements) !important; }
-
-.layout-mobile .assets-card-container .losers-asset-card {
-  border-top: 3px solid var(--trading_selling-related-elements) !important; }
-
-.layout-mobile .assets-card-container .new-asset-card {
-  border-top: 3px solid var(--labels_secondary-inactive-label-text-graphics) !important; }
+.layout-mobile .asset-cards-swipe-container {
+  min-height: 20%; }
+  .layout-mobile .asset-cards-swipe-container .assets-card-container .gainer-icon .edit-wrapper__container:nth-child(1) {
+    margin-top: 2%; }
+  .layout-mobile .asset-cards-swipe-container .assets-card-container .gainer-icon .edit-wrapper__container:nth-child(2) .icon_title-text {
+    font-size: 12px !important; }
+  .layout-mobile .asset-cards-swipe-container .assets-card-container .digital-assets-cards .assets-wrapper .assets-value .gainer-price {
+    font-weight: bold; }
+  .layout-mobile .asset-cards-swipe-container .assets-card-container .gainer-asset-card {
+    border-top: 3px solid var(--trading_buying-related-elements) !important; }
+  .layout-mobile .asset-cards-swipe-container .assets-card-container .losers-asset-card {
+    border-top: 3px solid var(--trading_selling-related-elements) !important; }
+  .layout-mobile .asset-cards-swipe-container .assets-card-container .new-asset-card {
+    border-top: 3px solid var(--labels_secondary-inactive-label-text-graphics) !important; }
 
 .layout-mobile .fee-limits-wrapper {
   margin: 1rem auto 3rem; }
@@ -5655,7 +5652,7 @@ table th {
   .digital-market-wrapper .market-list__block-table tbody tr td .asset-text,
   .digital-market-wrapper .market-list__block-table tbody tr td .last-price-label {
     font-weight: bold;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; }
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; }
   .digital-market-wrapper .market-list__block-table tbody tr td .asset-text {
     text-wrap: nowrap; }
   .digital-market-wrapper .market-list__block-table tbody tr td .price-change,
@@ -5786,7 +5783,14 @@ table th {
 
 .assets-card-container {
   display: flex;
-  gap: 20px; }
+  gap: 20px;
+  min-height: 20%; }
+  .assets-card-container .loading-anime {
+    margin-top: 3%;
+    height: 35px;
+    width: 100%;
+    border-radius: 7px;
+    animation: mymove 1s infinite; }
   .assets-card-container .ant-card-head-title {
     padding: unset !important;
     font-weight: bold; }

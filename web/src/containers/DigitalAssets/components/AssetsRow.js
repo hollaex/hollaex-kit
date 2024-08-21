@@ -9,17 +9,7 @@ import { getLastValuesFromParts } from 'utils/array';
 import { isMobile } from 'react-device-detect';
 import { browserHistory } from 'react-router';
 import { unique } from 'utils/data';
-
-const Loading = ({ index }) => {
-	return (
-		<div
-			className="loading-anime"
-			style={{
-				animationDelay: `.${index + 1}s`,
-			}}
-		/>
-	);
-};
+import { Loading } from './utils';
 
 const AssetsRow = ({
 	coinData,

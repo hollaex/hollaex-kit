@@ -594,6 +594,15 @@
 .assets-card-container {
 	display: flex;
 	gap: 20px;
+	min-height: 20%;
+
+	.loading-anime {
+		margin-top: 3%;
+		height: 35px;
+		width: 100%;
+		border-radius: 7px;
+		animation: mymove 1s infinite;
+	}
 
 	.ant-card-head-title {
 		padding: unset !important;

@@ -183,39 +183,42 @@ $trade-tab--arrow-size: 0.4rem;
 		}
 	}
 
-	.assets-card-container {
-		.gainer-icon {
-			.edit-wrapper__container:nth-child(1) {
-				margin-top: 2%;
-			}
-
-			.edit-wrapper__container:nth-child(2) {
-				.icon_title-text {
-					font-size: 12px !important;
+	.asset-cards-swipe-container {
+		min-height: 20%;
+		.assets-card-container {
+			.gainer-icon {
+				.edit-wrapper__container:nth-child(1) {
+					margin-top: 2%;
 				}
-			}
-		}
 
-		.digital-assets-cards {
-			.assets-wrapper {
-				.assets-value {
-					.gainer-price {
-						font-weight: bold;
+				.edit-wrapper__container:nth-child(2) {
+					.icon_title-text {
+						font-size: 12px !important;
 					}
 				}
 			}
-		}
 
-		.gainer-asset-card {
-			border-top: 3px solid $buy !important;
-		}
+			.digital-assets-cards {
+				.assets-wrapper {
+					.assets-value {
+						.gainer-price {
+							font-weight: bold;
+						}
+					}
+				}
+			}
 
-		.losers-asset-card {
-			border-top: 3px solid $sell !important;
-		}
+			.gainer-asset-card {
+				border-top: 3px solid $buy !important;
+			}
 
-		.new-asset-card {
-			border-top: 3px solid $colors-black !important;
+			.losers-asset-card {
+				border-top: 3px solid $sell !important;
+			}
+
+			.new-asset-card {
+				border-top: 3px solid $colors-black !important;
+			}
 		}
 	}
 
