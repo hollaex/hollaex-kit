@@ -45,7 +45,7 @@ const { isMainThread, workerData } = require('worker_threads');
 const { Plugin } = require('../db/models');
 const { checkStatus } = require('../init');
 const { sleep } = require('../utils/hollaex-tools-lib/tools/common');
-
+const rateLimit = require('express-rate-limit');
 
 const initPluginProcess = async ({ PORT }) => {
 
@@ -120,6 +120,7 @@ const initPluginProcess = async ({ PORT }) => {
 				tripleBeam,
 				bodyParser,
 				morgan,
+				rateLimit,
 				meta: plugin.meta,
 				publicMeta: plugin.public_meta,
 				installedLibraries: {}
