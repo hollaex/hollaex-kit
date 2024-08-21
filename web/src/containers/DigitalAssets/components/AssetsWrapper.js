@@ -6,6 +6,7 @@ import { withRouter } from 'react-router';
 import { isMobile } from 'react-device-detect';
 import { CloseOutlined, SearchOutlined } from '@ant-design/icons';
 
+import AssetsCards from './AssetsCards';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import AssetsList from 'containers/DigitalAssets/components/AssetsList';
@@ -366,6 +367,7 @@ class AssetsWrapper extends Component {
 			: listButton;
 		return (
 			<div>
+				<AssetsCards loading={isLoading} />
 				<div>
 					<div className="custom-carousel"></div>
 					<div className="d-flex justify-content-start">

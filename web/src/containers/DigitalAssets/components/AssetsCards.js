@@ -13,6 +13,7 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import icons from 'config/icons/dark';
 import { Coin, EditWrapper, IconTitle } from 'components';
 import { quicktradePairSelector } from 'containers/QuickTrade/components/utils';
+import { Loading } from './utils';
 
 const cardTypes = ['gainers', 'losers', 'newAssets'];
 const cardTitles = [
@@ -61,48 +62,54 @@ const renderPercentage = (percentage, type) => (
 	</span>
 );
 
-const renderCards = (data, coins, type) =>
+const renderCards = (data, coins, type, loading) =>
 	data.map(
-		({
-			symbol,
-			lastPrice,
-			oneDayPriceDifferencePercent,
-			oneDayPriceDifferencePercenVal,
-		}) => (
-			<div className="assets-wrapper mb-2" key={symbol}>
-				<div className="asset-container">
-					<Coin
-						iconId={coins[symbol].icon_id}
-						type={isMobile ? 'CS10' : 'CS8'}
-					/>
-					<div className="d-flex flex-column">
-						<span className={isMobile && 'font-weight-bold'}>
-							{coins[symbol].fullname}
-						</span>
-						<span className="asset-symbol">{symbol.toUpperCase()}</span>
+		(
+			{
+				symbol,
+				lastPrice,
+				oneDayPriceDifferencePercent,
+				oneDayPriceDifferencePercenVal,
+			},
+			index
+		) =>
+			loading ? (
+				<Loading index={index} />
+			) : (
+				<div className="assets-wrapper mb-2" key={symbol}>
+					<div className="asset-container">
+						<Coin
+							iconId={coins[symbol].icon_id}
+							type={isMobile ? 'CS10' : 'CS8'}
+						/>
+						<div className="d-flex flex-column">
+							<span className={isMobile && 'font-weight-bold'}>
+								{coins[symbol].fullname}
+							</span>
+							<span className="asset-symbol">{symbol.toUpperCase()}</span>
+						</div>
+					</div>
+					<div className="asset-container align-items-center">
+						<div className="assets-value">
+							<span className="gainer-price">
+								{lastPrice ? `$${lastPrice}` : '-'}
+							</span>
+							{renderPercentage(
+								type === 'newAssets'
+									? oneDayPriceDifferencePercenVal
+									: oneDayPriceDifferencePercent,
+								type
+							)}
+						</div>
+						<div className="right-arrow-icon">
+							<RightOutlined />
+						</div>
 					</div>
 				</div>
-				<div className="asset-container align-items-center">
-					<div className="assets-value">
-						<span className="gainer-price">
-							{lastPrice ? `$${lastPrice}` : '-'}
-						</span>
-						{renderPercentage(
-							type === 'newAssets'
-								? oneDayPriceDifferencePercenVal
-								: oneDayPriceDifferencePercent,
-							type
-						)}
-					</div>
-					<div className="right-arrow-icon">
-						<RightOutlined />
-					</div>
-				</div>
-			</div>
-		)
+			)
 	);
 
-const AssetsCards = ({ coins, coinsData }) => {
+const AssetsCards = ({ coins, coinsData, loading }) => {
 	const [currentIndex, setCurrentIndex] = useState(0);
 	const [isVisible, setIsVisible] = useState(true);
 
@@ -134,7 +141,7 @@ const AssetsCards = ({ coins, coinsData }) => {
 			)}
 			{isVisible &&
 				(isMobile ? (
-					<div className="d-flex flex-column align-items-center justify-content-center">
+					<div className="d-flex flex-column align-items-center justify-content-center asset-cards-swipe-container">
 						<div className="d-flex align-items-center justify-content-center assets-card-container">
 							<div
 								className={`digital-assets-cards nav-area left-nav ${
@@ -183,7 +190,8 @@ const AssetsCards = ({ coins, coinsData }) => {
 								{renderCards(
 									sortedCoinsData[cardTypes[currentIndex]],
 									coins,
-									cardTypes[currentIndex]
+									cardTypes[currentIndex],
+									loading
 								)}
 							</Card>
 							<div
@@ -246,7 +254,7 @@ const AssetsCards = ({ coins, coinsData }) => {
 										: 'new-asset-card'
 								}`}
 							>
-								{renderCards(sortedCoinsData[type], coins, type)}
+								{renderCards(sortedCoinsData[type], coins, type, loading)}
 							</Card>
 						))}
 					</div>

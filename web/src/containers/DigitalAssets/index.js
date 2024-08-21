@@ -6,7 +6,6 @@ import { isMobile } from 'react-device-detect';
 import withConfig from 'components/ConfigProvider/withConfig';
 import AssetsWrapper from './components/AssetsWrapper';
 import STRINGS from 'config/localizedStrings';
-import AssetsCards from './components/AssetsCards';
 import { EditWrapper, IconTitle } from 'components';
 
 const DigitalAssets = ({ pair, icons: ICONS, showQuickTrade }) => {
@@ -27,7 +26,6 @@ const DigitalAssets = ({ pair, icons: ICONS, showQuickTrade }) => {
 								</EditWrapper>
 							</div>
 						</div>
-						<AssetsCards />
 						<AssetsWrapper />
 					</div>
 				</div>
@@ -78,7 +76,6 @@ const DigitalAssets = ({ pair, icons: ICONS, showQuickTrade }) => {
 							</Link>
 						</div>
 					</div>
-					<AssetsCards />
 					<AssetsWrapper />
 				</div>
 			)}
