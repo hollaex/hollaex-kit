@@ -85,6 +85,7 @@ const getP2PStatus = (user_id, p2pData) => {
 		id: p2pData.id,
 		user_id,
 		status: p2pData.status,
+		...p2pData,
 		created_at
 	};
 	publisher.publish(P2P_CHAT_MESSAGE_CHANNEL, JSON.stringify({ type: 'status', data }));
@@ -113,12 +114,10 @@ const publishChatMessage = (event, data) => {
 };
 
 const publishP2PChatMessage = (event, data) => {
-	const topic = `p2pChat${data.id}`
-
-	each(getChannels()[WEBSOCKET_CHANNEL('p2pChat', data.id)], (ws) => {
+	each(getChannels()[WEBSOCKET_CHANNEL('p2pChat', data.receiver_id)], (ws) => {
 		if (ws.readyState === WebSocket.OPEN) {
 			ws.send(JSON.stringify({
-				topic: topic,
+				topic: `p2pChat`,
 				action: event,
 				data
 			}));

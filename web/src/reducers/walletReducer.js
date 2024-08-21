@@ -45,6 +45,7 @@ const INITIAL_STATE = {
 	btcFee: INITIAL_BTC_WHITDRAWALS_FEE,
 	withdrawalCancelData: INITIAL_DELETE_WHITDRAWALS_MSG,
 	activeTabFromWallet: '',
+	activeBalanceHistory: false,
 };
 
 export default function reducer(state = INITIAL_STATE, { type, payload }) {
@@ -333,6 +334,11 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 			return {
 				...state,
 				activeTabFromWallet: payload.tab,
+			};
+		case 'SETACTIVEBALANCEHISTORY':
+			return {
+				...state,
+				activeBalanceHistory: payload.activeBalanceHistory,
 			};
 		default:
 			return state;

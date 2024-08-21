@@ -216,6 +216,60 @@ $sections-font--color: $colors-deactivate-color2;
 	}
 }
 
+.wallet-info-wrapper-container {
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+
+	.wallet-info-wrapper {
+		display: flex;
+		align-items: flex-start;
+		gap: 15px;
+		color: var(--labels_secondary-inactive-label-text-graphics);
+		border-bottom: 1px solid
+			var(--labels_secondary-inactive-label-text-graphics);
+
+		.balance-info-wrapper {
+			font-size: 12px;
+
+			.avaliable-balance-wrapper {
+				gap: 5px;
+			}
+
+			.wallet-line {
+				margin: 3% 0 3%;
+				padding: 0.2%;
+				width: 10%;
+				background-color: $colors-black;
+			}
+
+			.estimated-balance,
+			.avaliable-balance-wrapper,
+			.hold-orders-text {
+				color: $colors-main-black;
+			}
+
+			.avaliable-balance {
+				color: $colors-black;
+				font-weight: 100;
+			}
+
+			.wallet-button-wrapper {
+				margin-top: 3%;
+				display: flex;
+				width: 75%;
+				gap: 10px;
+				margin-bottom: 10%;
+
+				.wallet-button {
+					height: 100%;
+					border-radius: 5px;
+				}
+			}
+		}
+	}
+}
+
 @media (min-width: 1920px) {
 	.wallet-wrapper {
 		.donut-container-empty {

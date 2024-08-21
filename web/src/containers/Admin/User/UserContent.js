@@ -33,6 +33,7 @@ import {
 	requestTiers,
 } from './actions';
 import UserMetaForm from './UserMetaForm';
+import PaymentMethods from './PaymentMethods';
 
 // import Flagger from '../Flaguser';
 // import Notes from './Notes';
@@ -374,6 +375,11 @@ class UserContent extends Component {
 								onChangeSuccess={onChangeUserDataSuccess}
 								refreshData={refreshData}
 							/>
+						</div>
+					</TabPane>
+					<TabPane tab="Payment Methods" key="payment_methods">
+						<div>
+							<PaymentMethods user={userInformation} />
 						</div>
 					</TabPane>
 					{!isSupportUser && !isKYC() && (

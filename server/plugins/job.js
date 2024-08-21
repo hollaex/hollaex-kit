@@ -26,6 +26,7 @@ const unstakingCheckRunner = () => {
 			const stakerData = await stakerModel.findAll({ where: { status: 'unstaking' } });
 
 			for (const staker of stakerData) {
+				await toolsLib.sleep(1000);
 				const user = await toolsLib.user.getUserByKitId(staker.user_id);
 				const stakePool = await stakePoolModel.findOne({ where: { id: staker.stake_id } });
 

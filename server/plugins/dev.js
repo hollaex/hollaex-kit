@@ -40,6 +40,7 @@ const geoipLite = require('geoip-lite');
 const nodemailer = require('nodemailer');
 const wsHeartbeatServer = require('ws-heartbeat/server');
 const wsHeartbeatClient = require('ws-heartbeat/client');
+const rateLimit = require('express-limiter');
 const winston = require('winston');
 
 let pluginName = 'hello';
@@ -125,6 +126,7 @@ checkStatus()
 			winston,
 			bodyParser,
 			morgan,
+			rateLimit,
 			pluginLibraries: {
 				app,
 				toolsLib,

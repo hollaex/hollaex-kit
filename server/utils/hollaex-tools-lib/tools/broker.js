@@ -37,7 +37,9 @@ const {
 	REBALANCE_SYMBOL_MISSING,
 	PRICE_NOT_FOUND,
 	QUOTE_EXPIRY_TIME_ERROR,
-	FAILED_GET_QUOTE
+	FAILED_GET_QUOTE,
+	INVALID_SIZE,
+	INVALID_PRICE
 } = require(`${SERVER_PATH}/messages`);
 
 const validateBrokerPair = (brokerPair) => {
@@ -154,7 +156,7 @@ const calculateSize = (orderData, side, responseObject, symbol) => {
 
 		if (incrementUnit < 1) {
 			const decimalPoint = new BigNumber(incrementUnit).dp();
-			const sourceAmount = new BigNumber(targetedAmount).decimalPlaces(decimalPoint).toNumber();
+			const sourceAmount = new BigNumber(targetedAmount)?.decimalPlaces(decimalPoint, BigNumber.ROUND_DOWN)?.toNumber();
 			receiving_amount = sourceAmount;
 		} else {
 			receiving_amount = targetedAmount - (targetedAmount % incrementUnit);
@@ -167,7 +169,7 @@ const calculateSize = (orderData, side, responseObject, symbol) => {
 
 		if (incrementUnit < 1) { 
 			const decimalPoint = new BigNumber(incrementUnit).dp();
-			const sourceAmount = new BigNumber(targetedAmount).decimalPlaces(decimalPoint).toNumber();
+			const sourceAmount = new BigNumber(targetedAmount)?.decimalPlaces(decimalPoint, BigNumber.ROUND_DOWN)?.toNumber();
 			spending_amount = sourceAmount;
 		} else {
 			spending_amount = targetedAmount - (targetedAmount % incrementUnit);
@@ -280,15 +282,23 @@ const calculatePrice = async (side, spread, formula, refresh_interval, brokerId,
 	let convertedPrice = calculateFormula(formula);
 
 	if (side === 'buy') {
-		convertedPrice = new BigNumber(convertedPrice).multipliedBy((1 + (spread / 100))).toNumber();
+		convertedPrice = new BigNumber(convertedPrice)?.multipliedBy((1 + (spread / 100)))?.toNumber();
 	} else if (side === 'sell') {
-		convertedPrice =  new BigNumber(convertedPrice).multipliedBy((1 - (spread / 100))).toNumber();
+		convertedPrice =  new BigNumber(convertedPrice)?.multipliedBy((1 - (spread / 100)))?.toNumber();
 	}
 	
 	return convertedPrice;
 };
 
 const generateRandomToken = (user_id, symbol, side, expiryTime = 30, price, size, type) => {
+	if (!size) {
+		throw new Error(INVALID_SIZE);
+	};
+
+	if (!price) {
+		throw new Error(INVALID_PRICE);
+	};
+
 	// Generate random token
 	const randomToken = randomString({
 		length: 32,
@@ -368,8 +378,8 @@ const testBroker = async (data) => {
 
 		const decimalPoint = new BigNumber(price).dp();
 		return {
-			buy_price: new BigNumber(price * (1 - (spread / 100))).decimalPlaces(decimalPoint).toNumber(),
-			sell_price: new BigNumber(price * (1 + (spread / 100))).decimalPlaces(decimalPoint).toNumber()
+			buy_price: new BigNumber(price * (1 - (spread / 100)))?.decimalPlaces(decimalPoint, BigNumber.ROUND_DOWN)?.toNumber(),
+			sell_price: new BigNumber(price * (1 + (spread / 100)))?.decimalPlaces(decimalPoint, BigNumber.ROUND_DOWN)?.toNumber()
 		};
 	} catch (err) {
 		throw new Error(err);
