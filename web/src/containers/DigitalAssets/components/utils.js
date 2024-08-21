@@ -1,13 +1,8 @@
-import React from 'react';
-import { Spin } from 'antd';
-import { CaretDownOutlined, CaretUpOutlined } from '@ant-design/icons';
 import math from 'mathjs';
-import STRINGS from 'config/localizedStrings';
 import { createSelector } from 'reselect';
 import { DIGITAL_ASSETS_SORT } from 'actions/appActions';
 import { unsortedMarketsSelector, getPairs } from 'containers/Trade/utils';
 import { getPinnedAssets } from 'containers/Wallet/utils';
-import { EditWrapper } from 'components';
 
 const getSortMode = (state) => state.app.digital_assets_sort.mode;
 const getSortDir = (state) => state.app.digital_assets_sort.is_descending;
@@ -153,66 +148,83 @@ export const dataSelector = createSelector(
 	}
 );
 
-export const RenderLoading = () => {
-	const renderCaret = () => (
-		<div className="market-list__caret d-flex flex-direction-column mx-1 secondary-text">
-			<CaretUpOutlined />
-			<CaretDownOutlined />
-		</div>
-	);
+// export const RenderLoading = () => {
+// 	const renderCaret = () => (
+// 		<div className="market-list__caret d-flex flex-direction-column mx-1 secondary-text">
+// 			<CaretUpOutlined />
+// 			<CaretDownOutlined />
+// 		</div>
+// 	);
 
-	return (
-		<div>
-			<div className="d-flex justify-content-around custom-header-wrapper">
-				<div>
-					<EditWrapper stringId="MARKETS_TABLE.ASSET">
-						{STRINGS['MARKETS_TABLE.ASSET']}
-					</EditWrapper>
-				</div>
-				<div className="d-flex">
-					<EditWrapper stringId="MARKETS_TABLE.TRADING_SYMBOL">
-						{STRINGS['MARKETS_TABLE.TRADING_SYMBOL']}
-					</EditWrapper>
-				</div>
-				<div>
-					<EditWrapper stringId="MARKETS_TABLE.LAST_PRICE">
-						{STRINGS['MARKETS_TABLE.LAST_PRICE']}
-					</EditWrapper>
-				</div>
-				<div className="d-flex pointer">
-					<EditWrapper stringId="MARKETS_TABLE.CHANGE_1D">
-						{STRINGS['MARKETS_TABLE.CHANGE_1D']}
-					</EditWrapper>
-					{renderCaret()}
-				</div>
-				<div className="d-flex pointer">
-					<EditWrapper stringId="MARKETS_TABLE.CHANGE_7D">
-						{STRINGS['MARKETS_TABLE.CHANGE_7D']}
-					</EditWrapper>
-					{renderCaret()}
-				</div>
-				<div>
-					<EditWrapper stringId="MARKETS_TABLE.CHART_7D">
-						{STRINGS['MARKETS_TABLE.CHART_7D']}
-					</EditWrapper>
-				</div>
-				<div>
-					<EditWrapper stringId="TRADE_TAB_TRADE">
-						{STRINGS['TRADE_TAB_TRADE']}
-					</EditWrapper>
-				</div>
-			</div>
-			<div className="custom-border-bottom"></div>
-			<Spin
-				className="d-flex justify-content-center"
-				loading={true}
-				size="large"
-			></Spin>
-			<div className="text-center">
-				<EditWrapper stringId="DIGITAL_ASSETS.LOADING_PRICES">
-					{STRINGS['DIGITAL_ASSETS.LOADING_PRICES']}
-				</EditWrapper>
-			</div>
-		</div>
-	);
-};
+// 	return (
+// 		<div>
+// 			<div className="d-flex justify-content-around custom-header-wrapper">
+// 				<div>
+// 					<EditWrapper stringId="MARKETS_TABLE.ASSET">
+// 						{STRINGS['MARKETS_TABLE.ASSET']}
+// 					</EditWrapper>
+// 				</div>
+// 				{!isMobile && <div>
+// 					<EditWrapper stringId="PRICE">
+// 						{STRINGS['PRICE']}
+// 					</EditWrapper>
+// 				</div>}
+// 				{!isMobile && <div className="d-flex pointer">
+// 					<EditWrapper stringId={STRINGS.formatString(
+// 						STRINGS['MARKETS_TABLE.PERCENTAGE'],
+// 						STRINGS['MARKETS_TABLE.24H']
+// 					)}>
+// 						{STRINGS.formatString(
+// 							STRINGS['MARKETS_TABLE.PERCENTAGE'],
+// 							STRINGS['MARKETS_TABLE.24H']
+// 						)}
+// 					</EditWrapper>
+// 					{renderCaret()}
+// 				</div>}
+// 				{!isMobile && <div className="d-flex pointer">
+// 					<EditWrapper stringId={STRINGS.formatString(
+// 						STRINGS['MARKETS_TABLE.PERCENTAGE'],
+// 						STRINGS['QUICK_TRADE_COMPONENT.7D']
+// 					)}>
+// 						{STRINGS.formatString(
+// 							STRINGS['MARKETS_TABLE.PERCENTAGE'],
+// 							STRINGS['QUICK_TRADE_COMPONENT.7D']
+// 						)}
+// 					</EditWrapper>
+// 					{renderCaret()}
+// 				</div>}
+// 				{isMobile && <div className='d-flex justify-content-center'>
+// 					<EditWrapper stringId="DIGITAL_ASSETS.PRICE_24H">
+// 						{STRINGS['DIGITAL_ASSETS.PRICE_24H']}
+// 					</EditWrapper>
+// 				</div>}
+// 				<div>
+// 					<EditWrapper stringId="MARKETS_TABLE.TREND_7D">
+// 						{STRINGS['MARKETS_TABLE.TREND_7D']}
+// 					</EditWrapper>
+// 				</div>
+// 				{!isMobile && <div>
+// 					<EditWrapper stringId="DIGITAL_ASSETS.CARDS.MARKET_CAP">
+// 						{STRINGS['DIGITAL_ASSETS.CARDS.MARKET_CAP']}
+// 					</EditWrapper>
+// 				</div>}
+// 				<div>
+// 					<EditWrapper stringId="TRADE_TAB_TRADE">
+// 						{STRINGS['TRADE_TAB_TRADE']}
+// 					</EditWrapper>
+// 				</div>
+// 			</div>
+// 			<div className="custom-border-bottom"></div>
+// 			<Spin
+// 				className="d-flex justify-content-center"
+// 				loading={true}
+// 				size="large"
+// 			></Spin>
+// 			<div className="text-center">
+// 				<EditWrapper stringId="DIGITAL_ASSETS.LOADING_PRICES">
+// 					{STRINGS['DIGITAL_ASSETS.LOADING_PRICES']}
+// 				</EditWrapper>
+// 			</div>
+// 		</div>
+// 	);
+// };
