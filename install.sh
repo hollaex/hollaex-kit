@@ -74,9 +74,9 @@ if command apt -v > /dev/null 2>&1; then
 
     fi
 
-    if ! command docker compose version > /dev/null 2>&1; then
+    if ! command docker-compose version > /dev/null 2>&1; then
 
-        printf "\n\033[93mHollaEx CLI requires docker compose v2 to operate. Installing it now...\033[39m\n"
+        printf "\n\033[93mHollaEx CLI requires docker-compose to operate. Installing it now...\033[39m\n"
 
         export DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
         mkdir -p $DOCKER_CONFIG/cli-plugins
@@ -84,6 +84,10 @@ if command apt -v > /dev/null 2>&1; then
         if command sudo curl -SL https://github.com/docker/compose/releases/download/v2.29.1/docker-compose-$(uname -s)-$(uname -m) -o $DOCKER_CONFIG/cli-plugins/docker-compose; then
 
             chmod +x $DOCKER_CONFIG/cli-plugins/docker-compose
+
+            curl -SL https://github.com/docker/compose/releases/download/v2.29.1/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+
+            chmod +x /usr/local/bin/docker-compose
 
             printf "\n\033[92mdocker compose has been successfully installed!\033[39m\n"
 
