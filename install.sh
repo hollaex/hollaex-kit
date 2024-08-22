@@ -266,30 +266,32 @@ elif command brew -v > /dev/null 2>&1; then
 
     fi
 
-    if ! command docker compose version > /dev/null 2>&1; then
+    # No manual install for docker compose for mac since it's included in the docker for mac desktop.
 
-        printf "\n\033[93mHollaEx CLI requires docker compose to operate. Installing it now...\033[39m\n"
+    # if ! command docker compose version > /dev/null 2>&1; then
 
-        export DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
-        mkdir -p $DOCKER_CONFIG/cli-plugins
+    #     printf "\n\033[93mHollaEx CLI requires docker compose to operate. Installing it now...\033[39m\n"
 
-        if command sudo curl -SL https://github.com/docker/compose/releases/download/v2.29.1/docker-compose-$(uname -s)-$(uname -m) -o $DOCKER_CONFIG/cli-plugins/docker-compose; then
+    #     export DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
+    #     mkdir -p $DOCKER_CONFIG/cli-plugins
 
-            chmod +x $DOCKER_CONFIG/cli-plugins/docker-compose
+    #     if command sudo curl -SL https://github.com/docker/compose/releases/download/v2.29.1/docker-compose-$(uname -s)-$(uname -m) -o $DOCKER_CONFIG/cli-plugins/docker-compose; then
 
-            printf "\n\033[92mdocker compose has been successfully installed!\033[39m\n"
+    #         chmod +x $DOCKER_CONFIG/cli-plugins/docker-compose
 
-            echo "Info: $(docker compose version)"
+    #         printf "\n\033[92mdocker compose has been successfully installed!\033[39m\n"
 
-        else
+    #         echo "Info: $(docker compose version)"
 
-            printf "\n\033[91mFailed to install docker compose.\033[39m\n"
-            echo "Please review the logs and try to manually install it. - 'https://github.com/docker/compose/releases'."
-            exit 1;
+    #     else
 
-        fi
+    #         printf "\n\033[91mFailed to install docker compose.\033[39m\n"
+    #         echo "Please review the logs and try to manually install it. - 'https://github.com/docker/compose/releases'."
+    #         exit 1;
 
-    fi
+    #     fi
+
+    # fi
 
     if ! command jq --version > /dev/null 2>&1; then
 
