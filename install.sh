@@ -78,22 +78,21 @@ if command apt -v > /dev/null 2>&1; then
 
         printf "\n\033[93mHollaEx CLI requires docker compose v2 to operate. Installing it now...\033[39m\n"
 
-        if [[ ! $IS_APT_UPDATED ]]; then
+        export DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
+        mkdir -p $DOCKER_CONFIG/cli-plugins
 
-            echo "Updating APT list"
-            sudo apt update
-        fi
+        if command sudo curl -SL https://github.com/docker/compose/releases/download/v2.29.1/docker-compose-$(uname -s)-$(uname -m) -o $DOCKER_CONFIG/cli-plugins/docker-compose; then
 
-        if command sudo apt install -y docker-compose-v2; then
+            chmod +x $DOCKER_CONFIG/cli-plugins/docker-compose
 
-            printf "\n\033[92mdocker compose v2 has been successfully installed!\033[39m\n"
+            printf "\n\033[92mdocker compose has been successfully installed!\033[39m\n"
 
             echo "Info: $(docker compose version)"
 
         else
 
-            printf "\n\033[91mFailed to install docker compose v2.\033[39m\n"
-            echo "Please review the logs and try to manually install it. - 'sudo apt install -y docker compose'."
+            printf "\n\033[91mFailed to install docker compose.\033[39m\n"
+            echo "Please review the logs and try to manually install it. - 'https://github.com/docker/compose/releases'."
             exit 1;
 
         fi
@@ -115,6 +114,8 @@ if command apt -v > /dev/null 2>&1; then
             printf "\n\033[92mjq has been successfully installed!\033[39m\n"
 
             echo "Info: $(jq --version)"
+
+            
 
         else
 
@@ -269,13 +270,12 @@ elif command brew -v > /dev/null 2>&1; then
 
         printf "\n\033[93mHollaEx CLI requires docker compose to operate. Installing it now...\033[39m\n"
 
-        if [[ ! $IS_BREW_UPDATED ]]; then
+        export DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
+        mkdir -p $DOCKER_CONFIG/cli-plugins
 
-            echo "Updating Homebrew list"
-            brew update
-        fi
+        if command sudo curl -SL https://github.com/docker/compose/releases/download/v2.29.1/docker-compose-$(uname -s)-$(uname -m) -o $DOCKER_CONFIG/cli-plugins/docker-compose; then
 
-        if command brew install docker compose; then
+            chmod +x $DOCKER_CONFIG/cli-plugins/docker-compose
 
             printf "\n\033[92mdocker compose has been successfully installed!\033[39m\n"
 
@@ -284,7 +284,7 @@ elif command brew -v > /dev/null 2>&1; then
         else
 
             printf "\n\033[91mFailed to install docker compose.\033[39m\n"
-            echo "Please review the logs and try to manually install it. - 'brew install docker compose'."
+            echo "Please review the logs and try to manually install it. - 'https://github.com/docker/compose/releases'."
             exit 1;
 
         fi
@@ -432,9 +432,12 @@ elif command yum --version > /dev/null 2>&1; then
 
         printf "\n\033[93mHollaEx CLI requires docker compose to operate. Installing it now...\033[39m\n"
 
-        if command sudo curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker compose; then
+        export DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
+        mkdir -p $DOCKER_CONFIG/cli-plugins
 
-            sudo chmod +x /usr/local/bin/docker compose
+        if command sudo curl -SL https://github.com/docker/compose/releases/download/v2.29.1/docker-compose-$(uname -s)-$(uname -m) -o $DOCKER_CONFIG/cli-plugins/docker-compose; then
+
+            chmod +x $DOCKER_CONFIG/cli-plugins/docker-compose
 
             printf "\n\033[92mdocker compose has been successfully installed!\033[39m\n"
 
