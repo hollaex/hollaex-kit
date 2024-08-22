@@ -266,32 +266,30 @@ elif command brew -v > /dev/null 2>&1; then
 
     fi
 
-    # No manual install for docker compose for mac since it's included in the docker for mac desktop.
+    if ! command docker-compose version > /dev/null 2>&1; then
 
-    # if ! command docker compose version > /dev/null 2>&1; then
+        printf "\n\033[93mHollaEx CLI requires docker-compose to operate. Installing it now...\033[39m\n"
 
-    #     printf "\n\033[93mHollaEx CLI requires docker compose to operate. Installing it now...\033[39m\n"
+        export DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
+        mkdir -p $DOCKER_CONFIG/cli-plugins
 
-    #     export DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
-    #     mkdir -p $DOCKER_CONFIG/cli-plugins
+        if command sudo curl -SL https://github.com/docker/compose/releases/download/v2.29.1/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose; then
 
-    #     if command sudo curl -SL https://github.com/docker/compose/releases/download/v2.29.1/docker-compose-$(uname -s)-$(uname -m) -o $DOCKER_CONFIG/cli-plugins/docker-compose; then
+            chmod +x /usr/local/bin/docker-compose
 
-    #         chmod +x $DOCKER_CONFIG/cli-plugins/docker-compose
+            printf "\n\033[92mdocker compose has been successfully installed!\033[39m\n"
 
-    #         printf "\n\033[92mdocker compose has been successfully installed!\033[39m\n"
+            echo "Info: $(docker-compose version)"
 
-    #         echo "Info: $(docker compose version)"
+        else
 
-    #     else
+            printf "\n\033[91mFailed to install docker compose.\033[39m\n"
+            echo "Please review the logs and try to manually install it. - 'https://github.com/docker/compose/releases'."
+            exit 1;
 
-    #         printf "\n\033[91mFailed to install docker compose.\033[39m\n"
-    #         echo "Please review the logs and try to manually install it. - 'https://github.com/docker/compose/releases'."
-    #         exit 1;
+        fi
 
-    #     fi
-
-    # fi
+    fi
 
     if ! command jq --version > /dev/null 2>&1; then
 
@@ -430,20 +428,20 @@ elif command yum --version > /dev/null 2>&1; then
 
     fi
 
-    if ! command docker compose version > /dev/null 2>&1; then
+    if ! command docker-compose version > /dev/null 2>&1; then
 
-        printf "\n\033[93mHollaEx CLI requires docker compose to operate. Installing it now...\033[39m\n"
+        printf "\n\033[93mHollaEx CLI requires docker-compose to operate. Installing it now...\033[39m\n"
 
         export DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
         mkdir -p $DOCKER_CONFIG/cli-plugins
 
-        if command sudo curl -SL https://github.com/docker/compose/releases/download/v2.29.1/docker-compose-$(uname -s)-$(uname -m) -o $DOCKER_CONFIG/cli-plugins/docker-compose; then
+        if command sudo curl -SL https://github.com/docker/compose/releases/download/v2.29.1/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose; then
 
-            chmod +x $DOCKER_CONFIG/cli-plugins/docker-compose
+            chmod +x /usr/local/bin/docker-compose
 
             printf "\n\033[92mdocker compose has been successfully installed!\033[39m\n"
 
-            echo "Info: $(docker compose version)"
+            echo "Info: $(docker-compose version)"
 
         else
 
@@ -537,7 +535,7 @@ elif command yum --version > /dev/null 2>&1; then
 
 fi
 
-if ! command docker -v > /dev/null 2>&1 || ! command docker compose version > /dev/null 2>&1 || ! command curl --version > /dev/null 2>&1 || ! command jq --version > /dev/null 2>&1 || ! command nslookup -version > /dev/null 2>&1 || ! command psql --version > /dev/null 2>&1; then
+if ! command docker -v > /dev/null 2>&1 || ! command docker-compose version > /dev/null 2>&1 || ! command curl --version > /dev/null 2>&1 || ! command jq --version > /dev/null 2>&1 || ! command nslookup -version > /dev/null 2>&1 || ! command psql --version > /dev/null 2>&1; then
 
     if command docker -v > /dev/null 2>&1; then
 
@@ -545,7 +543,7 @@ if ! command docker -v > /dev/null 2>&1 || ! command docker compose version > /d
     
     fi
 
-    if command docker compose version > /dev/null 2>&1; then
+    if command docker-compose version > /dev/null 2>&1; then
 
         IS_DOCKER_COMPOSE_INSTALLED=true
     
@@ -736,8 +734,8 @@ function kit_cross_compatibility_converter() {
 
     if command docker ps | grep local.*-nginx > /dev/null ; then
 
-        docker compose -f $(pwd)/nginx/docker-compose.yaml down
-        docker compose -f $(pwd)/nginx/docker-compose.yaml up -d
+        docker-compose -f $(pwd)/nginx/docker-compose.yaml down
+        docker-compose -f $(pwd)/nginx/docker-compose.yaml up -d
 
     fi
     
