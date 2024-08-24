@@ -77,12 +77,24 @@ if command apt -v > /dev/null 2>&1; then
   
     if command docker-compose --version | grep -q '^docker-compose version 1'; then
 
-        echo -e "\n\033[91mError: Detected Docker Compose v1 instead of v2.\033[39m"
+        echo -e "\n\033[91mWarning: Detected Docker Compose v1 instead of v2.\033[39m"
         echo "HollaEx CLI v3+ requires Docker Compose v2."
-        echo "To proceed, please uninstall the current Docker Compose v1 and then run the install.sh script."
-        echo -e "The install.sh script will automatically install Docker Compose v2 for you.\n"
 
-        exit 1;
+        if command sudo apt list --installed docker-compose; then
+
+            echo "Removing Docker-Compose v1 through the APT..."
+
+            sudo apt remove -y docker-compose
+            hash -r
+
+        else
+            
+            echo "To proceed, please uninstall the current Docker Compose v1 and then run the install.sh script."
+            echo -e "The install.sh script will automatically install Docker Compose v2 for you.\n"
+
+            exit 1;
+        
+        fi
 
     fi
 
