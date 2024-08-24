@@ -10,6 +10,7 @@ const createP2PDeal = (req, res) => {
 
 	const {  
         price_type,
+		dynamic_pair,
         buying_asset,
         spending_asset,
         exchange_rate,
@@ -28,6 +29,7 @@ const createP2PDeal = (req, res) => {
 		req.uuid,
 		'controllers/p2p/createP2PDeal data',
         price_type,
+		dynamic_pair,
         buying_asset,
         spending_asset,
         exchange_rate,
@@ -45,6 +47,7 @@ const createP2PDeal = (req, res) => {
         merchant_id: req.auth.sub.id,
         side,
         price_type,
+		dynamic_pair,
         buying_asset,
         spending_asset,
         exchange_rate,
@@ -76,6 +79,7 @@ const updateP2PDeal = (req, res) => {
 
 	const {  
         price_type,
+		dynamic_pair,
         buying_asset,
         spending_asset,
         exchange_rate,
@@ -97,6 +101,7 @@ const updateP2PDeal = (req, res) => {
 		req.uuid,
 		'controllers/p2p/updateP2PDeal data',
         price_type,
+		dynamic_pair,
         buying_asset,
         spending_asset,
         exchange_rate,
@@ -117,6 +122,7 @@ const updateP2PDeal = (req, res) => {
         edited_ids,
         side,
         price_type,
+		dynamic_pair,
         buying_asset,
         spending_asset,
         exchange_rate,
@@ -138,6 +144,32 @@ const updateP2PDeal = (req, res) => {
 			loggerP2P.error(
 				req.uuid,
 				'controllers/p2p/updateP2PDeal err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+const deleteP2PDeal = (req, res) => {
+	loggerP2P.verbose(req.uuid, 'controllers/p2p/deleteP2PDeal/auth', req.auth);
+
+	const {  
+        removed_ids
+	} = req.swagger.params.data.value;
+
+	loggerP2P.verbose(
+		req.uuid,
+		'controllers/p2p/deleteP2PDeal data',
+        removed_ids
+	);
+
+	toolsLib.p2p.deleteP2PDeal(removed_ids, req.auth.sub.id)
+		.then(() => {
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerP2P.error(
+				req.uuid,
+				'controllers/p2p/deleteP2PDeal err',
 				err.message
 			);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
@@ -545,6 +577,7 @@ module.exports = {
     updateP2PTransaction,
     fetchP2PDisputes,
     updateP2PDeal,
+	deleteP2PDeal,
     updateP2PDispute,
 	createP2PFeedback,
 	fetchP2PFeedbacks,

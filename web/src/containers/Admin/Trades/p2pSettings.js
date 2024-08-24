@@ -422,38 +422,36 @@ const P2PSettings = ({ coins, pairs, p2p_config, features, constants }) => {
 							></div>
 							<div>Crypto assets</div>
 							<div>Select the crypto assets that vendors can transact with</div>
-							{Object.values(coins || {})
-								.filter((coin) => coin.symbol === 'usdt')
-								.map((coin) => {
-									return (
-										<div>
-											<Checkbox
-												style={{ color: 'white' }}
-												checked={digitalCurrencies.includes(coin.symbol)}
-												onChange={(e) => {
-													if (e.target.checked) {
-														if (!digitalCurrencies.includes(coin.symbol)) {
-															setDigitalCurrencies([
-																...digitalCurrencies,
-																coin.symbol,
-															]);
-														}
-													} else {
-														if (digitalCurrencies.includes(coin.symbol)) {
-															setDigitalCurrencies(
-																[...digitalCurrencies].filter(
-																	(symbol) => symbol !== coin.symbol
-																)
-															);
-														}
+							{Object.values(coins || {}).map((coin) => {
+								return (
+									<div>
+										<Checkbox
+											style={{ color: 'white' }}
+											checked={digitalCurrencies.includes(coin.symbol)}
+											onChange={(e) => {
+												if (e.target.checked) {
+													if (!digitalCurrencies.includes(coin.symbol)) {
+														setDigitalCurrencies([
+															...digitalCurrencies,
+															coin.symbol,
+														]);
 													}
-												}}
-											>
-												{coin.fullname} ({coin?.symbol?.toUpperCase()})
-											</Checkbox>
-										</div>
-									);
-								})}
+												} else {
+													if (digitalCurrencies.includes(coin.symbol)) {
+														setDigitalCurrencies(
+															[...digitalCurrencies].filter(
+																(symbol) => symbol !== coin.symbol
+															)
+														);
+													}
+												}
+											}}
+										>
+											{coin.fullname} ({coin?.symbol?.toUpperCase()})
+										</Checkbox>
+									</div>
+								);
+							})}
 						</div>
 					)}
 
