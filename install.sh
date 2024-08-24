@@ -75,12 +75,18 @@ if command apt -v > /dev/null 2>&1; then
     fi
 
   
-    if ! command -v docker-compose > /dev/null 2>&1 || docker-compose --version | grep -q '^docker-compose version 1'; then
+    if command docker-compose --version | grep -q '^docker-compose version 1'; then
 
-        echo "docker compose v2 is not installed or the current version is v1.x."
+        echo -e "\n\033[91mError: Detected Docker Compose v1 instead of v2.\033[39m"
+        echo "HollaEx CLI v3+ requires Docker Compose v2."
+        echo "To proceed, please uninstall the current Docker Compose v1 and then run the install.sh script."
+        echo -e "The install.sh script will automatically install Docker Compose v2 for you.\n"
 
-        echo "Removing the old docker-compose v2 binary (if it exists)..."
-        rm -f $(which docker-compose)
+        exit 1;
+
+    fi
+
+    if ! command -v docker-compose > /dev/null 2>&1; then
 
         printf "\n\033[93mHollaEx CLI requires docker-compose v2 to operate. Installing it now...\033[39m\n"
 
@@ -270,12 +276,18 @@ elif command brew -v > /dev/null 2>&1; then
 
     fi
 
-    if ! command -v docker-compose > /dev/null 2>&1 || docker-compose --version | grep -q '^docker-compose version 1'; then
+    if command docker-compose --version | grep -q '^docker-compose version 1'; then
 
-        echo "docker compose v2 is not installed or the current version is v1.x."
+        echo -e "\n\033[91mError: Detected Docker Compose v1 instead of v2.\033[39m"
+        echo "HollaEx CLI v3+ requires Docker Compose v2."
+        echo "To proceed, please uninstall the current Docker Compose v1 and then run the install.sh script."
+        echo -e "The install.sh script will automatically install Docker Compose v2 for you.\n"
 
-        echo "Removing the old docker-compose v2 binary (if it exists)..."
-        rm -f $(which docker-compose)
+        exit 1;
+
+    fi
+
+    if ! command -v docker-compose > /dev/null 2>&1; then
 
         printf "\n\033[93mHollaEx CLI requires docker-compose v2 to operate. Installing it now...\033[39m\n"
 
@@ -435,12 +447,18 @@ elif command yum --version > /dev/null 2>&1; then
 
     fi
 
-    if ! command -v docker-compose > /dev/null 2>&1 || docker-compose --version | grep -q '^docker-compose version 1'; then
+    if command docker-compose --version | grep -q '^docker-compose version 1'; then
 
-        echo "docker compose v2 is not installed or the current version is v1.x."
+        echo -e "\n\033[91mError: Detected Docker Compose v1 instead of v2.\033[39m"
+        echo "HollaEx CLI v3+ requires Docker Compose v2."
+        echo "To proceed, please uninstall the current Docker Compose v1 and then run the install.sh script."
+        echo -e "The install.sh script will automatically install Docker Compose v2 for you.\n"
 
-        echo "Removing the old docker-compose v2 binary (if it exists)..."
-        rm -f $(which docker-compose)
+        exit 1;
+
+    fi
+
+    if ! command -v docker-compose > /dev/null 2>&1; then
 
         printf "\n\033[93mHollaEx CLI requires docker-compose v2 to operate. Installing it now...\033[39m\n"
 
