@@ -85,7 +85,6 @@ if command apt -v > /dev/null 2>&1; then
             echo "Removing Docker-Compose v1 through the APT..."
 
             sudo apt remove -y docker-compose
-            hash -r
 
         else
             
@@ -109,6 +108,7 @@ if command apt -v > /dev/null 2>&1; then
             printf "\n\033[92mdocker compose v2has been successfully installed!\033[39m\n"
 
             echo "Info: $(docker-compose version)"
+            export PATH="/usr/local/bin:$PATH"
             
 
         else
