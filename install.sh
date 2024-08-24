@@ -74,24 +74,27 @@ if command apt -v > /dev/null 2>&1; then
 
     fi
 
-    if ! command docker-compose version > /dev/null 2>&1; then
+  
+    if ! command -v docker-compose > /dev/null 2>&1 || docker-compose --version | grep -q '^docker-compose version 1'; then
 
-        printf "\n\033[93mHollaEx CLI requires docker-compose to operate. Installing it now...\033[39m\n"
+        echo "docker compose v2 is not installed or the current version is v1.x."
 
-        export DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
-        mkdir -p $DOCKER_CONFIG/cli-plugins
+        echo "Removing the old docker-compose v2 binary (if it exists)..."
+        rm -f $(which docker-compose)
+
+        printf "\n\033[93mHollaEx CLI requires docker-compose v2 to operate. Installing it now...\033[39m\n"
 
         if command sudo curl -SL https://github.com/docker/compose/releases/download/v2.29.1/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose; then
 
             chmod +x /usr/local/bin/docker-compose
 
-            printf "\n\033[92mdocker compose has been successfully installed!\033[39m\n"
+            printf "\n\033[92mdocker compose v2has been successfully installed!\033[39m\n"
 
             echo "Info: $(docker-compose version)"
 
         else
 
-            printf "\n\033[91mFailed to install docker compose.\033[39m\n"
+            printf "\n\033[91mFailed to install docker compose v2.\033[39m\n"
             echo "Please review the logs and try to manually install it. - 'https://github.com/docker/compose/releases'."
             exit 1;
 
@@ -266,24 +269,26 @@ elif command brew -v > /dev/null 2>&1; then
 
     fi
 
-    if ! command docker-compose version > /dev/null 2>&1; then
+    if ! command -v docker-compose > /dev/null 2>&1 || docker-compose --version | grep -q '^docker-compose version 1'; then
 
-        printf "\n\033[93mHollaEx CLI requires docker-compose to operate. Installing it now...\033[39m\n"
+        echo "docker compose v2 is not installed or the current version is v1.x."
 
-        export DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
-        mkdir -p $DOCKER_CONFIG/cli-plugins
+        echo "Removing the old docker-compose v2 binary (if it exists)..."
+        rm -f $(which docker-compose)
+
+        printf "\n\033[93mHollaEx CLI requires docker-compose v2 to operate. Installing it now...\033[39m\n"
 
         if command sudo curl -SL https://github.com/docker/compose/releases/download/v2.29.1/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose; then
 
             chmod +x /usr/local/bin/docker-compose
 
-            printf "\n\033[92mdocker compose has been successfully installed!\033[39m\n"
+            printf "\n\033[92mdocker compose v2has been successfully installed!\033[39m\n"
 
             echo "Info: $(docker-compose version)"
 
         else
 
-            printf "\n\033[91mFailed to install docker compose.\033[39m\n"
+            printf "\n\033[91mFailed to install docker compose v2.\033[39m\n"
             echo "Please review the logs and try to manually install it. - 'https://github.com/docker/compose/releases'."
             exit 1;
 
@@ -428,24 +433,26 @@ elif command yum --version > /dev/null 2>&1; then
 
     fi
 
-    if ! command docker-compose version > /dev/null 2>&1; then
+    if ! command -v docker-compose > /dev/null 2>&1 || docker-compose --version | grep -q '^docker-compose version 1'; then
 
-        printf "\n\033[93mHollaEx CLI requires docker-compose to operate. Installing it now...\033[39m\n"
+        echo "docker compose v2 is not installed or the current version is v1.x."
 
-        export DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
-        mkdir -p $DOCKER_CONFIG/cli-plugins
+        echo "Removing the old docker-compose v2 binary (if it exists)..."
+        rm -f $(which docker-compose)
+
+        printf "\n\033[93mHollaEx CLI requires docker-compose v2 to operate. Installing it now...\033[39m\n"
 
         if command sudo curl -SL https://github.com/docker/compose/releases/download/v2.29.1/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose; then
 
             chmod +x /usr/local/bin/docker-compose
 
-            printf "\n\033[92mdocker compose has been successfully installed!\033[39m\n"
+            printf "\n\033[92mdocker compose v2has been successfully installed!\033[39m\n"
 
             echo "Info: $(docker-compose version)"
 
         else
 
-            printf "\n\033[91mFailed to install docker compose.\033[39m\n"
+            printf "\n\033[91mFailed to install docker compose v2.\033[39m\n"
             echo "Please review the logs and try to manually install it. - 'https://github.com/docker/compose/releases'."
             exit 1;
 
@@ -592,7 +599,7 @@ if ! command docker -v > /dev/null 2>&1 || ! command docker-compose version > /d
     
     fi  
 
-    # docker compose installation status check
+    # docker compose v2installation status check
     if [[ "$IS_DOCKER_COMPOSE_INSTALLED" ]]; then
 
         printf "\033[92mdocker compose: Installed\033[39m\n"
