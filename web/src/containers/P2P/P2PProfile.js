@@ -368,24 +368,26 @@ const P2PProfile = ({
 													>
 														<div>{method.system_name}</div>
 													</div>
-													<div
-														onClick={() => {
-															setSelectedMethod(method);
-															setAddMethodDetails(true);
-														}}
-														className="whiteTextP2P"
-														style={{
-															cursor: 'pointer',
-															position: 'relative',
-															top: 5,
-														}}
-													>
-														<EditWrapper stringId="P2P.EDIT_UPPERCASE">
-															<span style={{ textDecoration: 'underline' }}>
-																{STRINGS['P2P.EDIT_UPPERCASE']}
-															</span>
-														</EditWrapper>
-													</div>
+													{info?.status !== 3 && (
+														<div
+															onClick={() => {
+																setSelectedMethod(method);
+																setAddMethodDetails(true);
+															}}
+															className="whiteTextP2P"
+															style={{
+																cursor: 'pointer',
+																position: 'relative',
+																top: 5,
+															}}
+														>
+															<EditWrapper stringId="P2P.EDIT_UPPERCASE">
+																<span style={{ textDecoration: 'underline' }}>
+																	{STRINGS['P2P.EDIT_UPPERCASE']}
+																</span>
+															</EditWrapper>
+														</div>
+													)}
 													<div
 														onClick={async () => {
 															const found = myMethods.find(
@@ -649,36 +651,41 @@ const P2PProfile = ({
 						</Button>
 						<Button
 							onClick={async () => {
-								const newSelected = [
-									...(myMethods?.map((x) => x.details) || []),
-								];
+								try {
+									const newSelected = [
+										...(myMethods?.map((x) => x.details) || []),
+									];
 
-								const Index = newSelected.findIndex(
-									(x) => x.system_name === selectedMethod.system_name
-								);
+									const Index = newSelected.findIndex(
+										(x) => x.system_name === selectedMethod.system_name
+									);
 
-								newSelected[Index].fields = selectedMethod.fields;
+									newSelected[Index].fields = selectedMethod.fields;
 
-								const payload = newSelected[Index];
+									const payload = newSelected[Index];
 
-								const found = myMethods.find(
-									(x) => x?.details?.system_name === selectedMethod?.system_name
-								);
+									const found = myMethods.find(
+										(x) =>
+											x?.details?.system_name === selectedMethod?.system_name
+									);
 
-								await updateP2PPaymentMethod({
-									id: found.id,
-									details: payload,
-								});
+									await updateP2PPaymentMethod({
+										id: found.id,
+										details: payload,
+									});
 
-								fetchP2PPaymentMethods({ is_p2p: true })
-									.then((res) => {
-										setMyMethods(res.data);
-									})
-									.catch((err) => err);
+									fetchP2PPaymentMethods({ is_p2p: true })
+										.then((res) => {
+											setMyMethods(res.data);
+										})
+										.catch((err) => err);
 
-								message.success(STRINGS['P2P.PAYMENT_METHOD_UPDATED']);
-								setRefresh(!refresh);
-								setAddMethodDetails(false);
+									message.success(STRINGS['P2P.PAYMENT_METHOD_UPDATED']);
+									setRefresh(!refresh);
+									setAddMethodDetails(false);
+								} catch (error) {
+									message.error(error.data.message);
+								}
 							}}
 							style={{
 								flex: 1,

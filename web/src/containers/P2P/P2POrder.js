@@ -152,6 +152,14 @@ const P2POrder = ({
 		p2pWs.onopen = (evt) => {
 			setWs(p2pWs);
 			setReady(true);
+
+			setInterval(() => {
+				p2pWs.send(
+					JSON.stringify({
+						op: 'ping',
+					})
+				);
+			}, 55000);
 		};
 
 		return () => {
