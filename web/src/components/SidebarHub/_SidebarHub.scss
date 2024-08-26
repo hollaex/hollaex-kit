@@ -30,7 +30,7 @@ $deactive-tab-border: $boder--width solid $border--color;
 }
 
 @mixin bottom-border($color, $height) {
-	border-bottom: $height solid $color;
+	// border-bottom: $height solid $color;
 }
 
 .sidebar_hub-wrapper {
@@ -89,6 +89,7 @@ $deactive-tab-border: $boder--width solid $border--color;
 
 	.sidebar_hub-content {
 		// margin: $section--bottom-margin $content--margin;
+		margin-bottom: 5%;
 		.sidebar_hub-section {
 			border-top: $deactive-tab-border;
 

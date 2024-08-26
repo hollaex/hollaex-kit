@@ -309,6 +309,8 @@ const nestedIcons = {
 
 	WITHDRAW_TITLE: '/assets/images/withdraw-out-box.svg',
 	DEPOSIT_TITLE: '/assets/images/deposit-box.svg',
+
+	ADDRESS_BOOK: '/assets/images/global-address-book.svg',
 };
 
 const icons = flatten(nestedIcons, options);

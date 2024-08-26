@@ -685,6 +685,25 @@ export const generateWithdrawalsHeaders = (
 		// 	},
 		// },
 		{
+			key: 'icon',
+			className: 'sticky-col',
+			renderCell: (
+				{ display_name, icon_id },
+				key,
+				index,
+				isExpandable,
+				isExpanded
+			) => {
+				return (
+					<td key={index}>
+						<div className="d-flex">
+							{isExpanded ? <MinusSquareOutlined /> : <PlusSquareOutlined />}
+						</div>
+					</td>
+				);
+			},
+		},
+		{
 			stringId: 'CURRENCY',
 			label: STRINGS['CURRENCY'],
 			className: 'sticky-col',

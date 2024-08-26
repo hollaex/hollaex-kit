@@ -45,7 +45,7 @@ const { isMainThread, workerData } = require('worker_threads');
 const { Plugin } = require('../db/models');
 const { checkStatus } = require('../init');
 const { sleep } = require('../utils/hollaex-tools-lib/tools/common');
-
+const rateLimit = require('express-limiter');
 
 const initPluginProcess = async ({ PORT }) => {
 
@@ -120,6 +120,7 @@ const initPluginProcess = async ({ PORT }) => {
 				tripleBeam,
 				bodyParser,
 				morgan,
+				rateLimit,
 				meta: plugin.meta,
 				publicMeta: plugin.public_meta,
 				installedLibraries: {}
@@ -167,12 +168,12 @@ const initPluginProcess = async ({ PORT }) => {
 
 const restartPluginProcess = () => {
 	process.exit(0);
-}
+};
 
 if (!isMainThread) {
 	loggerPlugin.verbose(
 		'plugins/plugin-process',
-		`Plugin thread initializing`
+		'Plugin thread initializing'
 	);
 	checkStatus()
 		.then(async () => {
@@ -180,7 +181,7 @@ if (!isMainThread) {
 
 			loggerPlugin.verbose(
 				'plugins/plugin-process',
-				`Plugin thread checkStatus complete`
+				'Plugin thread checkStatus complete'
 			);
 			try {
 				initPluginProcess(JSON.parse(workerData));
@@ -199,7 +200,7 @@ if (!isMainThread) {
 				err.message
 			);
 			setTimeout(() => { process.exit(1); }, 1000 * 5);
-		})
+		});
 
 
 }

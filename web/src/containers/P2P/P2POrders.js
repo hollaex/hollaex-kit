@@ -190,7 +190,10 @@ const P2POrders = ({
 											{transaction?.deal?.spending_asset?.toUpperCase()}
 										</td>
 										<td style={{ width: '17%' }}>
-											{transaction?.price}{' '}
+											{formatAmount(
+												transaction?.deal?.buying_asset,
+												transaction?.price
+											)}{' '}
 											{transaction?.deal?.buying_asset?.toUpperCase()}
 										</td>
 										<td style={{ width: '17%' }}>

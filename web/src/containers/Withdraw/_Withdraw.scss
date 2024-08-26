@@ -146,6 +146,11 @@ $content--margin: 2rem;
 				padding: 1% 1%;
 			}
 
+			.destination-input-address-field,
+			.destination-select-field {
+				width: 100% !important;
+			}
+
 			.destination-input-field {
 				width: 80%;
 				height: 38px;
@@ -243,6 +248,33 @@ $content--margin: 2rem;
 
 			.amount-field-icon {
 				margin-top: 1%;
+			}
+
+			.destination-field-wrapper {
+				display: flex;
+				flex-direction: column;
+				width: 65%;
+
+				.select-wrapper {
+					width: 100%;
+
+					.destination-input-wrapper {
+						width: 80%;
+						display: flex;
+						flex-direction: column;
+						gap: 10px;
+
+						.custom-select-input-style .ant-select-selection-item {
+							text-transform: unset;
+						}
+					}
+				}
+
+				.address-link {
+					.edit-wrapper__container {
+						text-decoration: underline !important;
+					}
+				}
 			}
 
 			.select-wrapper {
@@ -345,6 +377,7 @@ $content--margin: 2rem;
 				width: 5rem;
 				text-align: center;
 				cursor: pointer;
+
 				.pinned-asset-icon {
 					padding-top: 3%;
 				}
@@ -374,7 +407,7 @@ $content--margin: 2rem;
 			}
 
 			.destination-field {
-				height: 60px;
+				height: 80px;
 			}
 
 			.destination-field-mobile {
@@ -494,6 +527,7 @@ $content--margin: 2rem;
 	.warning-popup-wrapper {
 		.button-wrapper {
 			margin-top: 5%;
+
 			Button {
 				width: 100%;
 			}
@@ -603,15 +637,21 @@ $content--margin: 2rem;
 
 	.withdrawal-container {
 		padding-top: 0px !important;
+
 		.withdraw-form-wrapper {
 			.withdraw-form {
 				margin: 0 0 30px;
+
 				.destination-field {
 					height: 75px;
 				}
 
+				.destination-field-wrapper {
+					width: 100%;
+				}
+
 				.destination-field-mobile {
-					height: 11rem;
+					height: 15rem;
 				}
 
 				.field-wrapper {
@@ -649,7 +689,7 @@ $content--margin: 2rem;
 					}
 
 					.custom-line-selected-mobile {
-						height: 9rem;
+						height: 13rem;
 					}
 				}
 
@@ -687,6 +727,19 @@ $content--margin: 2rem;
 						font-size: 12px;
 					}
 				}
+
+				.destination-field {
+					.destination-field-wrapper {
+						.destination-input-wrapper {
+							.custom-select-input-style {
+								.ant-select-selection-item {
+									margin-top: 2%;
+									line-height: 25px !important;
+								}
+							}
+						}
+					}
+				}
 			}
 		}
 	}
@@ -697,6 +750,7 @@ $content--margin: 2rem;
 				.withdraw-icon {
 					margin-top: 0px !important;
 				}
+
 				.information_block {
 					.information_block-text_wrapper {
 						.title {
@@ -715,6 +769,7 @@ $content--margin: 2rem;
 			.withdraw-form-wrapper {
 				.withdraw-form {
 					margin: 0 0 20px;
+
 					.select-wrapper {
 						margin-left: 7%;
 					}
@@ -726,7 +781,7 @@ $content--margin: 2rem;
 					.custom-field {
 						.custom-step-selected,
 						.custom-step {
-							padding: 33% 70% 10%;
+							padding: 5px 10px 5px;
 						}
 					}
 
@@ -780,6 +835,12 @@ $content--margin: 2rem;
 			}
 		}
 	}
+
+	.withdraw-dropdown-address {
+		.asset-address-field {
+			margin-bottom: 5%;
+		}
+	}
 }
 
 .review_email-wrapper {
@@ -794,4 +855,10 @@ $content--margin: 2rem;
 .qr_reader_wrapper {
 	width: 25rem;
 	margin: 2rem;
+}
+
+.withdraw-dropdown-address {
+	width: 100%;
+	border-bottom: 1px solid $colors-black !important;
+	overflow: hidden;
 }

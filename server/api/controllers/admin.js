@@ -3001,6 +3001,96 @@ const createUserReferralCodeByAdmin = (req, res) => {
 		});
 };
 
+
+const getPaymentDetailsByAdmin = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/getPaymentDetailsByAdmin/auth', req.auth);
+
+	const { user_id, is_p2p, is_fiat_control, status, limit, page, order_by, order, start_date, end_date } = req.swagger.params;
+
+	toolsLib.user.getPaymentDetails(user_id.value,
+		{
+			limit: limit.value,
+			page: page.value,
+			order_by: order_by.value,
+			order: order.value,
+			start_date: start_date.value,
+			end_date: end_date.value,
+			is_p2p: is_p2p.value,
+			is_fiat_control: is_fiat_control.value,
+			status: status.value,
+		})
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/getPaymentDetailsByAdmin', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const createPaymentDetailByAdmin = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/createPaymentDetailByAdmin/auth', req.auth);
+
+	const { user_id, name, label, details, is_p2p, is_fiat_control, status } = req.swagger.params.data.value;
+
+	toolsLib.user.createPaymentDetail({
+		user_id,
+		name,
+		label,
+		details,
+		is_p2p,
+		is_fiat_control,
+		status
+	})
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/createPaymentDetailByAdmin', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const updatePaymentDetailByAdmin = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/updatePaymentDetailByAdmin/auth', req.auth);
+
+	const { user_id, id, name, label, details, is_p2p, is_fiat_control, status } = req.swagger.params.data.value;
+
+	toolsLib.user.updatePaymentDetail(id, {
+		user_id,
+		name,
+		label,
+		details,
+		is_p2p,
+		is_fiat_control,
+		status
+	}, true)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/updatePaymentDetailByAdmin', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const deletePaymentDetailByAdmin = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/deletePaymentDetailByAdmin/auth', req.auth);
+
+	const { id, user_id } = req.swagger.params.data.value;
+
+	toolsLib.user.deletePaymentDetail(id, user_id)
+		.then(() => {
+			return res.json({
+				message: "Success"
+			});
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/deletePaymentDetailByAdmin', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
 module.exports = {
 	createInitialAdmin,
 	getAdminKit,
@@ -3074,5 +3164,9 @@ module.exports = {
 	disableUserWithdrawal,
 	performDirectWithdrawalByAdmin,
 	getUserReferralCodesByAdmin,
-	createUserReferralCodeByAdmin
+	createUserReferralCodeByAdmin,
+	getPaymentDetailsByAdmin,
+	createPaymentDetailByAdmin,
+	updatePaymentDetailByAdmin,
+	deletePaymentDetailByAdmin
 };
