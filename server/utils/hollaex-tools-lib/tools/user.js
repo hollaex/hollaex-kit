@@ -66,6 +66,7 @@ const {
 	ADDRESSBOOK_MISSING_FIELDS,
 	PAYMENT_DETAIL_NOT_FOUND,
 	ADDRESSBOOK_ALREADY_EXISTS,
+	UNAUTHORIZED_UPDATE_METHOD,
 	ADDRESSBOOK_NOT_FOUND
 } = require(`${SERVER_PATH}/messages`);
 const { publisher, client } = require('./database/redis');
@@ -3426,6 +3427,10 @@ const updatePaymentDetail = async (id, data, isAdmin = false) => {
 	if (data.status === 3) {
 		const user = await getUserByKitId(data.user_id);
 		sendEmail(MAILTYPE.BANK_VERIFIED, user.email, { bankAccounts: paymentDetail?.details?.fields }, user.settings);
+	}
+
+	if (!isAdmin && paymentDetail.status === 3) {
+		throw new Error(UNAUTHORIZED_UPDATE_METHOD);
 	}
 
 	await paymentDetail.update(data, {
