@@ -120,7 +120,7 @@ const executeUserOrder = async (user_id, opts, token) => {
 	return res;
 };
 
-const getUserQuickTrade = async (spending_currency, spending_amount, receiving_amount, receiving_currency, bearerToken, ip, opts, req = null) => {
+const getUserQuickTrade = async (spending_currency, spending_amount, receiving_amount, receiving_currency, bearerToken, ip, opts, req = null, user) => {
 
 	if (spending_amount) spending_amount = new BigNumber(spending_amount).toNumber();
 	if (receiving_amount) receiving_amount = new BigNumber(receiving_amount).toNumber();
@@ -144,7 +144,7 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 	}
 	if (!quickTradeConfig) throw new Error(QUICK_TRADE_CONFIG_NOT_FOUND);
 
-	let userInfo = null;
+	let userInfo = user || null;
 
 	const apiKey = req.headers['api-key'];
 	if (apiKey && req) {
@@ -1265,7 +1265,7 @@ const createTrade = async (order, opts = { additionalHeaders: null }) => {
 	);
 };
 
-const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, id = null) => {
+const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, id = null, network_id = null) => {
 	if (
 		!getKitConfig().chain_trade_config ||
 		!getKitConfig().chain_trade_config.active
@@ -1300,7 +1300,7 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, id = nu
 			// if (quickTrade.type === 'network') continue;
 			try {
 				const assets = quickTrade.symbol.split('-');
-				const quotePrice = await getUserQuickTrade(assets[0], 1, null, assets[1],  bearerToken, ip, { additionalHeaders: null }, { headers: { 'api-key': null } });
+				const quotePrice = await getUserQuickTrade(assets[0], 1, null, assets[1],  bearerToken, ip, { additionalHeaders: null }, { headers: { 'api-key': null } }, { user_id: id, network_id });
 				rates[quickTrade.symbol] = { type: quickTrade.type, price: quotePrice.receiving_amount, token: quotePrice?.token || null }
 			} catch (error) {
 				continue;
@@ -1420,10 +1420,10 @@ const executeUserChainTrade = async (user_id, userToken) => {
 	let lastRate;
 
 	if (tradeInfo.quote_asset !== currency) {
-		const initialRate = await getUserChainTradeQuote(null, `${tradeInfo.base_asset}-${currency}`, tradeInfo.size, null, sourceUser.id);
-		lastRate = await getUserChainTradeQuote(null, `${currency}-${tradeInfo.quote_asset}`,  JSON.parse(await client.getAsync(initialRate.token)).totalRate, null, sourceUser.id);
+		const initialRate = await getUserChainTradeQuote(null, `${tradeInfo.base_asset}-${currency}`, tradeInfo.size, null, sourceUser.id, sourceUser.network_id);
+		lastRate = await getUserChainTradeQuote(null, `${currency}-${tradeInfo.quote_asset}`,  JSON.parse(await client.getAsync(initialRate.token)).totalRate, null, sourceUser.id, sourceUser.network_id);
 	} else {
-		lastRate = await getUserChainTradeQuote(null, `${tradeInfo.base_asset}-${currency}`, tradeInfo.size, null, sourceUser.id);
+		lastRate = await getUserChainTradeQuote(null, `${tradeInfo.base_asset}-${currency}`, tradeInfo.size, null, sourceUser.id, sourceUser.network_id);
 	}
 	
 
@@ -1453,7 +1453,7 @@ const executeUserChainTrade = async (user_id, userToken) => {
 
 	try {
 		// get the currency amount back for the middle man account
-		const { token } = await getUserChainTradeQuote(null, `${tradeInfo.base_asset}-${currency}`, tradeInfo.size, null, sourceUser.id);
+		const { token } = await getUserChainTradeQuote(null, `${tradeInfo.base_asset}-${currency}`, tradeInfo.size, null, sourceUser.id, sourceUser.network_id);
 		const sourceTradeInfo = JSON.parse(await client.getAsync(token));
 		await executeTrades(sourceTradeInfo, sourceUser);
 
