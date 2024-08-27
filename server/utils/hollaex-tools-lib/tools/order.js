@@ -1430,9 +1430,9 @@ const executeUserChainTrade = async (user_id, userToken) => {
 		lastRate = await getUserChainTradeQuote(null, `${tradeInfo.base_asset}-${currency}`, tradeInfo.size, null, sourceUser.id, sourceUser.network_id);
 	}
 	
-		if (!lastRate?.token) {
-			throw new Error('Rate not found!');
-		};
+	if (!lastRate?.token) {
+		throw new Error('Rate not found!');
+	};
 		
 	const token = JSON.parse(await client.getAsync(lastRate.token));
 	let successfulTrades = [];
