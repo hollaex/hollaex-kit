@@ -118,7 +118,7 @@ class Deposit extends Component {
 			} else if (selectedCurrency) {
 				if (getDepositNetworkOptions) {
 					return (
-						val.network === getDepositNetworkOptions &&
+						val.network === renderNetworkField(getDepositNetworkOptions) &&
 						val.currency === getDepositCurrency
 					);
 				} else {
@@ -224,7 +224,7 @@ class Deposit extends Component {
 		const { currency } = this.state;
 		const currentCurrency = getDepositCurrency ? getDepositCurrency : currency;
 		const network = getDepositNetworkOptions
-			? getDepositNetworkOptions
+			? renderNetworkField(getDepositNetworkOptions)
 			: getDepositCurrency
 			? getDepositNetwork
 			: selectedNetwork;

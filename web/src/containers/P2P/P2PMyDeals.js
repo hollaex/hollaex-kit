@@ -7,7 +7,7 @@ import { IconTitle, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { Button, Checkbox, message } from 'antd';
-import { fetchDeals, editDeal } from './actions/p2pActions';
+import { fetchDeals, editDeal, removeDeal } from './actions/p2pActions';
 import { formatToCurrency } from 'utils/currency';
 import { isMobile } from 'react-device-detect';
 import classnames from 'classnames';
@@ -119,6 +119,7 @@ const P2PMyDeals = ({
 								});
 								const res = await fetchDeals({ user_id: user.id });
 								setMyDeals(res.data);
+								setCheks([]);
 								message.success(STRINGS['P2P.CHANGES_SAVED']);
 							} catch (error) {
 								message.error(error.message);
@@ -127,6 +128,28 @@ const P2PMyDeals = ({
 					>
 						<EditWrapper stringId="P2P.TAKE_OFFLINE">
 							{STRINGS['P2P.TAKE_OFFLINE']}
+						</EditWrapper>
+					</Button>
+				</span>
+				<span>
+					<Button
+						className="purpleButtonP2P"
+						onClick={async () => {
+							try {
+								await removeDeal({
+									removed_ids: checks,
+									status: false,
+								});
+								setMyDeals(myDeals.filter((deal) => !checks.includes(deal.id)));
+								setCheks([]);
+								message.success(STRINGS['P2P.CHANGES_SAVED']);
+							} catch (error) {
+								message.error(error.message);
+							}
+						}}
+					>
+						<EditWrapper stringId="P2P.REMOVE">
+							{STRINGS['P2P.REMOVE']}
 						</EditWrapper>
 					</Button>
 				</span>

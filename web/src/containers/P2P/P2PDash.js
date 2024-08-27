@@ -18,7 +18,11 @@ import { COUNTRIES_OPTIONS } from 'utils/countries';
 import { formatToCurrency } from 'utils/currency';
 import { isMobile } from 'react-device-detect';
 import classnames from 'classnames';
-import { CloseOutlined } from '@ant-design/icons';
+import {
+	CloseOutlined,
+	PlusSquareOutlined,
+	MinusSquareOutlined,
+} from '@ant-design/icons';
 import { fetchFeedback, fetchP2PProfile } from './actions/p2pActions';
 import './_P2P.scss';
 
@@ -550,7 +554,13 @@ const P2PDash = ({
 												}}
 												className="td-fit"
 											>
-												<span>+</span>{' '}
+												<span>
+													{expandRow ? (
+														<MinusSquareOutlined />
+													) : (
+														<PlusSquareOutlined />
+													)}
+												</span>{' '}
 												<span>
 													{deal.merchant.full_name || (
 														<EditWrapper stringId="P2P.ANONYMOUS">
@@ -589,41 +599,22 @@ const P2PDash = ({
 													setAmountFiat();
 												}}
 											>
-												{deal.side === 'sell' ? (
-													<>
-														<div>
-															<EditWrapper stringId="P2P.AVAILABLE">
-																{STRINGS['P2P.AVAILABLE']}
-															</EditWrapper>
-															: {deal.total_order_amount}{' '}
-															{deal.buying_asset.toUpperCase()}
-														</div>
-														<div>
-															<EditWrapper stringId="P2P.LIMIT">
-																{STRINGS['P2P.LIMIT']}
-															</EditWrapper>
-															: {deal.min_order_value} - {deal.max_order_value}{' '}
-															{deal.spending_asset.toUpperCase()}
-														</div>
-													</>
-												) : (
-													<>
-														<div>
-															<EditWrapper stringId="P2P.AVAILABLE">
-																{STRINGS['P2P.AVAILABLE']}
-															</EditWrapper>
-															: {deal.total_order_amount}{' '}
-															{deal.spending_asset.toUpperCase()}
-														</div>
-														<div>
-															<EditWrapper stringId="P2P.LIMIT">
-																{STRINGS['P2P.LIMIT']}
-															</EditWrapper>
-															: {deal.min_order_value} - {deal.max_order_value}{' '}
-															{deal.buying_asset.toUpperCase()}
-														</div>
-													</>
-												)}
+												<>
+													<div>
+														<EditWrapper stringId="P2P.AVAILABLE">
+															{STRINGS['P2P.AVAILABLE']}
+														</EditWrapper>
+														: {deal.total_order_amount}{' '}
+														{deal.buying_asset.toUpperCase()}
+													</div>
+													<div>
+														<EditWrapper stringId="P2P.LIMIT">
+															{STRINGS['P2P.LIMIT']}
+														</EditWrapper>
+														: {deal.min_order_value} - {deal.max_order_value}{' '}
+														{deal.spending_asset.toUpperCase()}
+													</div>
+												</>
 											</td>
 											<td
 												style={{

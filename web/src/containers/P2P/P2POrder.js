@@ -41,6 +41,9 @@ const P2POrder = ({
 	user,
 	router,
 	p2p_config,
+	p2p_message,
+	p2p_status,
+	p2p_transaction_id,
 }) => {
 	const coin = coins[selectedTransaction.deal.buying_asset];
 	const [selectedOrder, setSelectedOrder] = useState(selectedTransaction);
@@ -87,76 +90,27 @@ const P2POrder = ({
 	}, []);
 
 	useEffect(() => {
-		const url = `${WS_URL}/stream?authorization=Bearer ${getToken()}`;
-		const p2pWs = new WebSocket(url);
-
-		p2pWs.onopen = (evt) => {
-			setWs(p2pWs);
-			setReady(true);
-			p2pWs.send(
-				JSON.stringify({
-					op: 'subscribe',
-					args: [`p2pChat:${selectedTransaction.id}`],
-				})
-			);
-			setInterval(() => {
-				p2pWs.send(
-					JSON.stringify({
-						op: 'ping',
-					})
-				);
-			}, 55000);
-		};
-
-		p2pWs.onmessage = (evt) => {
-			const data = JSON.parse(evt.data);
-			switch (data.action) {
-				case 'addMessage': {
-					if (data.data) {
-						const { id } = data.data;
-						if (selectedOrder.id === id) {
-							setSelectedOrder((prevState) => {
-								const messages = [...prevState.messages];
-
-								messages.push(data.data);
-
-								return {
-									...prevState,
-									messages,
-								};
-							});
-						}
-					}
-					break;
+		setSelectedOrder((prevState) => {
+			if (
+				p2p_message.id === selectedOrder.id &&
+				p2p_message.receiver_id === user.id &&
+				(p2p_message.sender_id === prevState.merchant_id ||
+					p2p_message.sender_id === prevState.user_id)
+			) {
+				const found =
+					prevState?.messages?.[prevState?.messages?.length - 1]?.message ===
+					p2p_message.message;
+				if (!found) {
+					prevState?.messages.push(p2p_message);
 				}
-
-				case 'getStatus': {
-					fetchTransactions({ id: selectedOrder.id })
-						.then((transaction) => {
-							if (transaction.data[0].transaction_status === 'complete') {
-								setHasFeedback(false);
-							}
-							setSelectedOrder(transaction.data[0]);
-						})
-						.catch((err) => err);
-					break;
-				}
-
-				default:
-					break;
 			}
-		};
+			return { ...prevState, ...{ messages: prevState?.messages } };
+		});
+	}, [p2p_message]);
 
-		return () => {
-			p2pWs.send(
-				JSON.stringify({
-					op: 'unsubscribe',
-					args: [`p2pChat:${selectedTransaction.id}`],
-				})
-			);
-			p2pWs.close();
-		};
-	}, []);
+	useEffect(() => {
+		if (p2p_transaction_id === selectedOrder.id) updateP2PStatus();
+	}, [p2p_status]);
 
 	useEffect(() => {
 		fetchFeedback({ transaction_id: selectedOrder.id })
@@ -191,6 +145,38 @@ const P2POrder = ({
 		}
 	}, []);
 
+	useEffect(() => {
+		const url = `${WS_URL}/stream?authorization=Bearer ${getToken()}`;
+		const p2pWs = new WebSocket(url);
+
+		p2pWs.onopen = (evt) => {
+			setWs(p2pWs);
+			setReady(true);
+
+			setInterval(() => {
+				p2pWs.send(
+					JSON.stringify({
+						op: 'ping',
+					})
+				);
+			}, 55000);
+		};
+
+		return () => {
+			p2pWs.close();
+		};
+	}, []);
+
+	const updateP2PStatus = () => {
+		fetchTransactions({ id: selectedOrder.id })
+			.then((transaction) => {
+				if (transaction.data[0].transaction_status === 'complete') {
+					setHasFeedback(false);
+				}
+				setSelectedOrder(transaction.data[0]);
+			})
+			.catch((err) => err);
+	};
 	const getTransaction = async () => {
 		try {
 			const transaction = await fetchTransactions({
@@ -214,6 +200,11 @@ const P2POrder = ({
 				],
 			})
 		);
+
+		setSelectedOrder((prevState) => {
+			prevState?.messages.push(message);
+			return prevState;
+		});
 	};
 
 	const updateStatus = (status) => {
@@ -284,6 +275,11 @@ const P2POrder = ({
 			}
 			setLastClickTime(now);
 		}
+	};
+	const formatAmount = (currency, amount) => {
+		const min = coins[currency].min;
+		const formattedAmount = formatToCurrency(amount, min);
+		return formattedAmount;
 	};
 
 	return (
@@ -372,7 +368,7 @@ const P2POrder = ({
 										merchant_status: 'appeal',
 										cancellation_reason: appealReason,
 									});
-
+									updateP2PStatus();
 									updateStatus('appeal');
 									message.success(STRINGS['P2P.APPEALED_TRANSACTION']);
 								} else {
@@ -381,7 +377,7 @@ const P2POrder = ({
 										user_status: 'appeal',
 										cancellation_reason: appealReason,
 									});
-
+									updateP2PStatus();
 									updateStatus('appeal');
 									message.success(STRINGS['P2P.APPEALED_TRANSACTION']);
 								}
@@ -816,6 +812,7 @@ const P2POrder = ({
 										id: selectedOrder.id,
 										user_status: 'cancelled',
 									});
+									updateP2PStatus();
 									updateStatus('cancelled');
 									message.success(STRINGS['P2P.TRANSACTION_CANCELLED']);
 									setDisplayCancelWarning(false);
@@ -910,6 +907,7 @@ const P2POrder = ({
 										id: selectedOrder.id,
 										merchant_status: 'confirmed',
 									});
+									updateP2PStatus();
 									updateStatus('confirmed');
 									message.success(STRINGS['P2P.CONFIRMED_TRANSACTION']);
 									setDisplayConfirmWarning(false);
@@ -1074,7 +1072,10 @@ const P2POrder = ({
 							</div>
 							<div>
 								<div style={{ textAlign: 'end' }}>
-									{selectedOrder?.price}{' '}
+									{formatAmount(
+										selectedOrder?.deal?.spending_asset,
+										selectedOrder?.price
+									)}{' '}
 									{selectedOrder?.deal?.spending_asset?.toUpperCase()}
 								</div>
 								<div>
@@ -1901,6 +1902,7 @@ const P2POrder = ({
 										id: selectedOrder.id,
 										user_status: 'confirmed',
 									});
+									updateP2PStatus();
 									updateStatus('confirmed');
 									message.success(STRINGS['P2P.CONFIRMED_TRANSACTION']);
 								} catch (error) {
@@ -1923,6 +1925,9 @@ const mapStateToProps = (state) => ({
 	coins: state.app.coins,
 	constants: state.app.constants,
 	transaction_limits: state.app.transaction_limits,
+	p2p_message: state.p2p.chat,
+	p2p_status: state.p2p.status,
+	p2p_transaction_id: state.p2p.transaction_id,
 	user: state.user,
 	p2p_config: state.app.constants.p2p_config,
 });

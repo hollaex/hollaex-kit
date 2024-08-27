@@ -17,7 +17,8 @@ const {
 	isArray,
 	isInteger,
 	isEmpty,
-	uniq
+	uniq,
+	uniqWith
 } = require('lodash');
 const { isEmail } = require('validator');
 const randomString = require('random-string');
@@ -65,6 +66,7 @@ const {
 	ADDRESSBOOK_MISSING_FIELDS,
 	PAYMENT_DETAIL_NOT_FOUND,
 	ADDRESSBOOK_ALREADY_EXISTS,
+	UNAUTHORIZED_UPDATE_METHOD,
 	ADDRESSBOOK_NOT_FOUND
 } = require(`${SERVER_PATH}/messages`);
 const { publisher, client } = require('./database/redis');
@@ -3323,6 +3325,12 @@ const updateUserAddresses = async (user_id, data) => {
 		throw new Error(ADDRESSBOOK_ALREADY_EXISTS);
 	}
 
+	// Check for duplicate address in the payload
+	const uniqueAddresses = uniqWith(addresses, (addresssA, addressB) => addresssA.address === addressB.address && addresssA.network === addressB.network && addresssA.currency === addressB.currency);
+	if (uniqueAddresses.length != addresses.length) {
+		throw new Error(ADDRESSBOOK_ALREADY_EXISTS);
+	}
+
 	const user = await getUserByKitId(user_id);
 
 	if (!user) {
@@ -3414,11 +3422,15 @@ const updatePaymentDetail = async (id, data, isAdmin = false) => {
 		throw new Error(PAYMENT_DETAIL_NOT_FOUND);
 	}
 
-	if (!isAdmin) { delete data.status };
+	if (!isAdmin) { delete data.status; }
 
 	if (data.status === 3) {
 		const user = await getUserByKitId(data.user_id);
 		sendEmail(MAILTYPE.BANK_VERIFIED, user.email, { bankAccounts: paymentDetail?.details?.fields }, user.settings);
+	}
+
+	if (!isAdmin && paymentDetail.status === 3) {
+		throw new Error(UNAUTHORIZED_UPDATE_METHOD);
 	}
 
 	await paymentDetail.update(data, {

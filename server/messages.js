@@ -266,3 +266,5 @@ exports.ADDRESSBOOK_MISSING_FIELDS = 'Each address must contain both address, ne
 exports.ADDRESSBOOK_ALREADY_EXISTS = 'Address label already exists in the payload';
 exports.ADDRESSBOOK_NOT_FOUND = 'User address book not found';
 exports.PAYMENT_DETAIL_NOT_FOUND = 'Payment detail not found';
+exports.UNAUTHORIZED_UPDATE_METHOD = 'You cannot update verified payment method';
+exports.P2P_DEAL_NOT_FOUND = 'P2P Deal not found!';
