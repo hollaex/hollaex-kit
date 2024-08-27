@@ -21,6 +21,7 @@ const { parseNumber } = require('./common');
 const BigNumber = require('bignumber.js');
 const uuid = require('uuid/v4');
 const { sendEmail } = require('../../../mail');
+const { MAILTYPE } = require('../../../mail/strings');
 
 const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, opts = { stop: null, meta: null, additionalHeaders: null }) => {
 	if (symbol && !subscribedToPair(symbol)) {
