@@ -1421,12 +1421,19 @@ const executeUserChainTrade = async (user_id, userToken) => {
 
 	if (tradeInfo.quote_asset !== currency) {
 		const initialRate = await getUserChainTradeQuote(null, `${tradeInfo.base_asset}-${currency}`, tradeInfo.size, null, sourceUser.id, sourceUser.network_id);
+		if (!initialRate?.token) {
+			throw new Error('Rate not found!');
+		};
+
 		lastRate = await getUserChainTradeQuote(null, `${currency}-${tradeInfo.quote_asset}`,  JSON.parse(await client.getAsync(initialRate.token)).totalRate, null, sourceUser.id, sourceUser.network_id);
 	} else {
 		lastRate = await getUserChainTradeQuote(null, `${tradeInfo.base_asset}-${currency}`, tradeInfo.size, null, sourceUser.id, sourceUser.network_id);
 	}
 	
-
+		if (!lastRate?.token) {
+			throw new Error('Rate not found!');
+		};
+		
 	const token = JSON.parse(await client.getAsync(lastRate.token));
 	let successfulTrades = [];
 	try {
@@ -1454,6 +1461,10 @@ const executeUserChainTrade = async (user_id, userToken) => {
 	try {
 		// get the currency amount back for the middle man account
 		const { token } = await getUserChainTradeQuote(null, `${tradeInfo.base_asset}-${currency}`, tradeInfo.size, null, sourceUser.id, sourceUser.network_id);
+		if (!token) {
+			throw new Error('Rate not found!');
+		};
+
 		const sourceTradeInfo = JSON.parse(await client.getAsync(token));
 		await executeTrades(sourceTradeInfo, sourceUser);
 
