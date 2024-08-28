@@ -82,8 +82,8 @@ const InterfaceForm = ({
 			};
 			handleSaveInterface(
 				formValues,
-				balance_history_config,
-				referral_history_config
+				values.balance_history_config ? balance_history_config : null,
+				values.referral_history_config ? referral_history_config : null
 			);
 		}
 	};
