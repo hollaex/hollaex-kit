@@ -17,7 +17,7 @@ const { setPriceEssentials } = require('../../orderbook');
 const { getUserBalanceByKitId } = require('./wallet');
 const { verifyBearerTokenPromise, verifyHmacTokenPromise} = require('./security');
 const { client } = require('./database/redis');
-const { parseNumber } = require('./common');
+const { parseNumber, getTickers } = require('./common');
 const BigNumber = require('bignumber.js');
 const uuid = require('uuid/v4');
 const { sendEmail } = require('../../../mail');
@@ -1289,6 +1289,7 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, id = nu
 	const quickTrades = getQuickTrades();
 
 	let data = null;
+	const tickers = await getTickers();
 	if (user_id) {
 		data = await client.getAsync(`${user_id}-rates`);
 		rates = data ? JSON.parse(data) : {};
@@ -1299,9 +1300,14 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, id = nu
 		for (const quickTrade of quickTrades) {
 			// if (quickTrade.type === 'network') continue;
 			try {
-				const assets = quickTrade.symbol.split('-');
-				const quotePrice = await getUserQuickTrade(assets[0], 1, null, assets[1],  bearerToken, ip, { additionalHeaders: null }, { headers: { 'api-key': null } }, { user_id: id, network_id });
-				rates[quickTrade.symbol] = { type: quickTrade.type, price: quotePrice.receiving_amount, token: quotePrice?.token || null }
+				if (quickTrade.type === 'pro' && quickTrade.active) {
+					rates[quickTrade.symbol] = { type: quickTrade.type, price: tickers[quickTrade.symbol].open };
+				} else {
+					const assets = quickTrade.symbol.split('-');
+					const quotePrice = await getUserQuickTrade(assets[0], 1, null, assets[1],  bearerToken, ip, { additionalHeaders: null }, { headers: { 'api-key': null } }, { user_id: id, network_id });
+					rates[quickTrade.symbol] = { type: quickTrade.type, price: quotePrice.receiving_amount, token: quotePrice?.token || null }
+				}
+				
 			} catch (error) {
 				continue;
 			}
