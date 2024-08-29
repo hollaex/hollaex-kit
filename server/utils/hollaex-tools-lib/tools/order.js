@@ -8,7 +8,7 @@ const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { INVALID_SYMBOL, NO_DATA_FOR_CSV, USER_NOT_FOUND, USER_NOT_REGISTERED_ON_NETWORK, TOKEN_EXPIRED, BROKER_NOT_FOUND, BROKER_PAUSED, BROKER_SIZE_EXCEED, QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED, QUICK_TRADE_ORDER_CURRENT_PRICE_ERROR, QUICK_TRADE_VALUE_IS_TOO_SMALL, FAIR_PRICE_BROKER_ERROR, AMOUNT_NEGATIVE_ERROR, QUICK_TRADE_CONFIG_NOT_FOUND, QUICK_TRADE_TYPE_NOT_SUPPORTED, PRICE_NOT_FOUND, INVALID_PRICE, INVALID_SIZE, BALANCE_NOT_AVAILABLE, FEATURE_NOT_ACTIVE } = require(`${SERVER_PATH}/messages`);
 const { parse } = require('json2csv');
 const { BASE_SCOPES } = require(`${SERVER_PATH}/constants`);
-const { subscribedToPair, getKitTier, getDefaultFees, getAssetsPrices, getPublicTrades, getQuickTrades, getKitConfig, getKitPairsConfig } = require('./common');
+const { subscribedToPair, getKitTier, getDefaultFees, getAssetsPrices, getPublicTrades, getQuickTrades, getTradePaths, getKitConfig, getKitPairsConfig } = require('./common');
 const { reject } = require('bluebird');
 const { loggerOrders } = require(`${SERVER_PATH}/config/logger`);
 const math = require('mathjs');
@@ -1265,6 +1265,64 @@ const createTrade = async (order, opts = { additionalHeaders: null }) => {
 	);
 };
 
+const findConversionRate = (startCurrency, endCurrency, rates, visited = new Set(), initialAmount) => {
+	if (startCurrency === endCurrency) return { path: [startCurrency], totalRate: initialAmount, trades: [] };
+
+	visited.add(startCurrency);
+	let shortestPath = null;
+
+	for (let [pair, { type, price, token }] of Object.entries(rates)) {
+		const [from, to] = pair.split('-');
+		if (from === startCurrency && !visited.has(to)) {
+			const result = findConversionRate(to, endCurrency, rates, visited, initialAmount * price);
+			if (result) {
+				const currentPath = {
+					path: [startCurrency, ...result.path],
+					totalRate: result.totalRate,
+					trades: [
+						{
+							symbol: `${from}-${to}`,
+							type,
+							side: 'sell', 
+							size: initialAmount,
+							price: price,
+							token
+						},
+						...result.trades
+					]
+				};
+				if (!shortestPath || currentPath.trades.length < shortestPath.trades.length) {
+					shortestPath = currentPath;
+				}
+			}
+		} else if (to === startCurrency && !visited.has(from)) {
+			const result = findConversionRate(from, endCurrency, rates, visited, initialAmount / price);
+			if (result) {
+				const currentPath = {
+					path: [startCurrency, ...result.path],
+					totalRate: result.totalRate,
+					trades: [
+						{
+							symbol: `${from}-${to}`,
+							type,
+							side: 'buy', 
+							size: initialAmount / price,
+							price: price,
+							token
+						},
+						...result.trades
+					]
+				};
+				if (!shortestPath || currentPath.trades.length < shortestPath.trades.length) {
+					shortestPath = currentPath;
+				}
+			}
+		}
+	}
+
+	visited.delete(startCurrency);
+	return shortestPath;
+}
 const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, id = null, network_id = null) => {
 	if (
 		!getKitConfig().chain_trade_config ||
@@ -1284,96 +1342,38 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, id = nu
 	const assets = symbol.split('-');
 	const from = assets[0];
 	const to = assets[1];
-	let rates = {};
 	
-	const quickTrades = getQuickTrades();
 
+	let rates = getTradePaths()[symbol] || [];
+	if (!rates || rates?.length < 1) {
+		throw new Error('Rate not found!');
+	};
 	let data = null;
 	const tickers = await getTickers();
+	let prices = {};
 	if (user_id) {
 		data = await client.getAsync(`${user_id}-rates`);
-		rates = data ? JSON.parse(data) : {};
+		prices = data ? JSON.parse(data) : {};
 	}
-
 	//Find all the available prices with their types on the exchange.
 	if(!data) {
-		for (const quickTrade of quickTrades) {
-			// if (quickTrade.type === 'network') continue;
+		for (const rate of rates) {
 			try {
-				if (quickTrade.type === 'pro' && quickTrade.active) {
-					rates[quickTrade.symbol] = { type: quickTrade.type, price: tickers[quickTrade.symbol].open };
+				if (rate.type === 'pro' && rate.active) {
+					prices[rate.symbol] = { type: rate.type, price: tickers[rate.symbol].open };
 				} else {
-					const assets = quickTrade.symbol.split('-');
+					const assets = rate.symbol.split('-');
 					const quotePrice = await getUserQuickTrade(assets[0], 1, null, assets[1],  bearerToken, ip, { additionalHeaders: null }, { headers: { 'api-key': null } }, { user_id: id, network_id });
-					rates[quickTrade.symbol] = { type: quickTrade.type, price: quotePrice.receiving_amount, token: quotePrice?.token || null }
+					prices[rate.symbol] = { type: rate.type, price: quotePrice.receiving_amount, token: quotePrice?.token || null }
 				}
-				
 			} catch (error) {
 				continue;
 			}
 		}
 	}
-	await client.setexAsync(`${user_id}-rates`, 25, JSON.stringify(rates));
-
-	const findConversionRate = (startCurrency, endCurrency, rates, visited = new Set(), initialAmount) => {
-		if (startCurrency === endCurrency) return { path: [startCurrency], totalRate: initialAmount, trades: [] };
 	
-		visited.add(startCurrency);
-		let shortestPath = null;
-
-		for (let [pair, { type, price, token }] of Object.entries(rates)) {
-			const [from, to] = pair.split('-');
-			if (from === startCurrency && !visited.has(to)) {
-				const result = findConversionRate(to, endCurrency, rates, visited, initialAmount * price);
-				if (result) {
-					const currentPath = {
-						path: [startCurrency, ...result.path],
-						totalRate: result.totalRate,
-						trades: [
-							{
-								symbol: `${from}-${to}`,
-								type,
-								side: 'sell', 
-								size: initialAmount,
-								price: price,
-								token
-							},
-							...result.trades
-						]
-					};
-					if (!shortestPath || currentPath.trades.length < shortestPath.trades.length) {
-						shortestPath = currentPath;
-					}
-				}
-			} else if (to === startCurrency && !visited.has(from)) {
-				const result = findConversionRate(from, endCurrency, rates, visited, initialAmount / price);
-				if (result) {
-					const currentPath = {
-						path: [startCurrency, ...result.path],
-						totalRate: result.totalRate,
-						trades: [
-							{
-								symbol: `${from}-${to}`,
-								type,
-								side: 'buy', 
-								size: initialAmount / price,
-								price: price,
-								token
-							},
-							...result.trades
-						]
-					};
-					if (!shortestPath || currentPath.trades.length < shortestPath.trades.length) {
-						shortestPath = currentPath;
-					}
-				}
-			}
-		}
-	
-		visited.delete(startCurrency);
-		return shortestPath;
-	}
-	const result = findConversionRate(from, to, rates, new Set(), size);
+	await client.setexAsync(`${user_id}-rates`, 25, JSON.stringify(prices));
+	const result = findConversionRate(from, to, prices, new Set(), size);
 	let token;
 
 	if (result?.totalRate && user_id) {
@@ -1596,7 +1596,8 @@ module.exports = {
 	updateQuickTradeConfig,
 	createTrade,
 	getUserChainTradeQuote,
-	executeUserChainTrade
+	executeUserChainTrade,
+	findConversionRate
 	// getUserTradesByKitIdStream,
 	// getUserTradesByNetworkIdStream,
 	// getAllTradesNetworkStream,
