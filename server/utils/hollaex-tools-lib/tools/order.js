@@ -141,6 +141,7 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 	let side = 'sell';
 
 	const quickTrades = getQuickTrades();
+	const tradePaths = getTradePaths();
 	let quickTradeConfig = quickTrades.find(quickTrade => quickTrade.symbol === originalPair);
 
 	if (!quickTradeConfig) {
@@ -148,7 +149,7 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 		symbol = flippedPair;
 		side = 'buy';
 	}
-	if (!quickTradeConfig) throw new Error(QUICK_TRADE_CONFIG_NOT_FOUND);
+	if (!quickTradeConfig && !tradePaths[originalPair] && !tradePaths[flippedPair]) throw new Error(QUICK_TRADE_CONFIG_NOT_FOUND);
 
 	let userInfo = user || null;
 

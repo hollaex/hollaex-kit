@@ -156,7 +156,7 @@ const calculateSize = (orderData, side, responseObject, symbol) => {
 
 		if (incrementUnit < 1) {
 			const decimalPoint = new BigNumber(incrementUnit).dp();
-			const sourceAmount = new BigNumber(targetedAmount)?.decimalPlaces(decimalPoint, BigNumber.ROUND_DOWN)?.toNumber();
+			const sourceAmount = new BigNumber(targetedAmount)?.decimalPlaces(decimalPoint)?.toNumber();
 			receiving_amount = sourceAmount;
 		} else {
 			receiving_amount = targetedAmount - (targetedAmount % incrementUnit);
@@ -169,7 +169,7 @@ const calculateSize = (orderData, side, responseObject, symbol) => {
 
 		if (incrementUnit < 1) { 
 			const decimalPoint = new BigNumber(incrementUnit).dp();
-			const sourceAmount = new BigNumber(targetedAmount)?.decimalPlaces(decimalPoint, BigNumber.ROUND_DOWN)?.toNumber();
+			const sourceAmount = new BigNumber(targetedAmount)?.decimalPlaces(decimalPoint)?.toNumber();
 			spending_amount = sourceAmount;
 		} else {
 			spending_amount = targetedAmount - (targetedAmount % incrementUnit);
@@ -343,7 +343,7 @@ const fetchBrokerQuote = async (brokerQuote) => {
 			throw new Error(BROKER_PAUSED);
 		}
 		if (broker.type === 'dynamic') {
-			return getQuoteDynamicBroker(side, broker, user_id, orderData);
+			return { token: '1', expiry: new Date(), spending_amount: 1, receiving_amount: 1};
 		} else {
 			return getQuoteManualBroker(broker, side, user_id, orderData);
 		}
@@ -378,8 +378,8 @@ const testBroker = async (data) => {
 
 		const decimalPoint = new BigNumber(price).dp();
 		return {
-			buy_price: new BigNumber(price * (1 - (spread / 100)))?.decimalPlaces(decimalPoint, BigNumber.ROUND_DOWN)?.toNumber(),
-			sell_price: new BigNumber(price * (1 + (spread / 100)))?.decimalPlaces(decimalPoint, BigNumber.ROUND_DOWN)?.toNumber()
+			buy_price: new BigNumber(price * (1 - (spread / 100)))?.decimalPlaces(decimalPoint)?.toNumber(),
+			sell_price: new BigNumber(price * (1 + (spread / 100)))?.decimalPlaces(decimalPoint)?.toNumber()
 		};
 	} catch (err) {
 		throw new Error(err);
