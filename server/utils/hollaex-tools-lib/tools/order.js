@@ -1387,6 +1387,21 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, id = nu
 	let token;
 
 	if (result?.totalRate && user_id) {
+		try {
+			for(const trade of result?.trades) {
+				// This is for getting the right token for network brokers, because we obtained the size for the trade so we need to get a new token with the updated size
+				if (trade.type === 'network') {
+					const assets = trade.symbol.split('-');
+					const quotePrice = await getUserQuickTrade(assets[0], 1, null, assets[1],  bearerToken, ip, { additionalHeaders: null }, { headers: { 'api-key': null } }, { user_id: id, network_id });
+					trade.token = quotePrice?.token || null;
+					console.log({GG: trade.token})
+				}
+			}
+	
+		} catch (error) {
+			throw new Error('Rate not found!');
+		}
+
 		result.symbol = symbol;
 		result.size = size;
 		result.price = result?.totalRate / size;
