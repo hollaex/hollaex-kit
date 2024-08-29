@@ -1381,8 +1381,10 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, id = nu
 			}
 		}
 	}
-	
-	await client.setexAsync(`${user_id}-${symbol}-rates`, 25, JSON.stringify(prices));
+	let hasNetworkBroker = Object.values(prices || {}).find(price => price.type === 'network');
+	if (!hasNetworkBroker)
+		await client.setexAsync(`${user_id}-${symbol}-rates`, 25, JSON.stringify(prices));
+
 	const result = findConversionRate(from, to, prices, new Set(), size);
 	let token;
 
