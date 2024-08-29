@@ -66,6 +66,10 @@ model = require(path.join(__dirname, './referralHistory'))(sequelize, Sequelize.
 db[model.name] = model;
 model = require(path.join(__dirname, './referralCode'))(sequelize, Sequelize.DataTypes);
 db[model.name] = model;
+model = require(path.join(__dirname, './userAddressBook'))(sequelize, Sequelize.DataTypes);
+db[model.name] = model;
+model = require(path.join(__dirname, './paymentDetail'))(sequelize, Sequelize.DataTypes);
+db[model.name] = model;
 
 Object.keys(db).forEach(function (modelName) {
 	if ('associate' in db[modelName]) {

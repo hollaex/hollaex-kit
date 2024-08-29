@@ -7,6 +7,7 @@ import _isEqual from 'lodash/isEqual';
 import { STATIC_ICONS } from 'config/icons';
 import FormButton from 'components/FormButton/Button';
 import { CloseOutlined } from '@ant-design/icons';
+import { Link } from 'react-router';
 const { Item } = Form;
 
 const InterfaceForm = ({
@@ -97,9 +98,9 @@ const InterfaceForm = ({
 			};
 			handleSaveInterface(
 				formValues,
-				balance_history_config,
-				referral_history_config,
-				chain_trade_config
+				values.balance_history_config ? balance_history_config : null,
+				values.referral_history_config ? referral_history_config : null,
+				values.chain_trade_config ? chain_trade_config : null,
 			);
 		}
 	};
@@ -559,7 +560,7 @@ const InterfaceForm = ({
 									className="feature-icon mr-1"
 								/>
 								<div className="ml-2 checkbox-txt">
-									Pro trade
+									Pro trade (Market)
 									<div className="small-text">
 										(Chart, orderbook, limit orders with wallet)
 									</div>
@@ -581,7 +582,7 @@ const InterfaceForm = ({
 									</div>
 								</div>
 								<div className="ml-2 checkbox-txt">
-									Quick trade
+									Quick trade (Convert)
 									<div className="d-flex justify-content-between">
 										<div className="small-text">
 											(Simple buy/sell interface with wallet)
@@ -651,6 +652,39 @@ const InterfaceForm = ({
 									</div>
 								</div>
 							</Checkbox>
+						</Item>
+					)}
+
+					{!isFiatUpgrade && (
+						<Item name="p2p_config" valuePropName="checked">
+							<Link to={'/admin/trade?tab=3'}>
+								<Checkbox
+									checked={constants?.kit?.p2p_config?.enable}
+									className="mt-3"
+								>
+									<div className="d-flex align-items-center">
+										<div
+											style={{
+												backgroundColor: '#050596',
+												height: 50,
+												textAlign: 'center',
+											}}
+										>
+											<ReactSVG
+												src={STATIC_ICONS.P2P_FEATURE}
+												className="feature-icon mr-1"
+											/>
+										</div>
+
+										<div className="ml-2 checkbox-txt">
+											P2P
+											<div className="small-text">
+												(P2P Trading for merchants and exchange users)
+											</div>
+										</div>
+									</div>
+								</Checkbox>
+							</Link>
 						</Item>
 					)}
 

@@ -170,6 +170,15 @@ export const deactivateOtp = (values) => {
 	return requestAuthenticated('/admin/deactivate-otp', options);
 };
 
+export const disableWithdrawal = (values) => {
+	const options = {
+		method: 'POST',
+		body: JSON.stringify(values),
+	};
+
+	return requestAuthenticated('/admin/user/disable-withdrawal', options);
+};
+
 export const flagUser = (values) => {
 	const options = {
 		method: 'POST',
@@ -344,4 +353,37 @@ export const changeUserEmail = (values) => {
 	} catch (error) {
 		return error;
 	}
+};
+
+export const fetchP2PPaymentMethods = (values) => {
+	const queryValues =
+		values && Object.keys(values).length ? querystring.stringify(values) : '';
+	return requestAuthenticated(`/admin/user/payment-details?${queryValues}`);
+};
+
+export const createP2PPaymentMethod = (values) => {
+	const options = {
+		method: 'POST',
+		body: JSON.stringify(values),
+	};
+
+	return requestAuthenticated('/admin/user/payment-details', options);
+};
+
+export const deleteP2PPaymentMethod = (values) => {
+	const options = {
+		method: 'DELETE',
+		body: JSON.stringify(values),
+	};
+
+	return requestAuthenticated('/admin/user/payment-details', options);
+};
+
+export const updateP2PPaymentMethod = (values) => {
+	const options = {
+		method: 'PUT',
+		body: JSON.stringify(values),
+	};
+
+	return requestAuthenticated('/admin/user/payment-details', options);
 };

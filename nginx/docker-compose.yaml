@@ -1,0 +1,32 @@
+version: '3'
+name: "local"
+services:
+  hollaex-kit-prod-nginx:
+    image: nginx-with-certbot
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    volumes:
+      - ./:/etc/nginx
+      - ./logs:/var/log/nginx
+      - ./static/:/usr/share/nginx/html
+      - ./letsencrypt:/etc/letsencrypt
+    ports:
+      - 80:80
+      - 443:443
+    environment:
+      - NGINX_PORT=80
+    entrypoint: 
+      - /bin/sh
+      - -c 
+      - ip -4 route list match 0/0 | awk '{print $$3 " host.access"}' >> /etc/hosts && nginx -g "daemon off;"
+    networks:
+      - local_hollaex-kit-network
+      
+networks:
+  local_hollaex-kit-network:
+    external: true
+
+
+

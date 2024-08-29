@@ -20,11 +20,13 @@ import { updateConstants, requestUsers } from './actions';
 import { requestAdminData } from 'actions/appActions';
 import _debounce from 'lodash/debounce';
 import Coins from '../Coins';
+import _toLower from 'lodash/toLower';
+import DEFAULT_PAYMENT_METHODS from 'utils/defaultPaymentMethods';
 import './index.css';
 
 const TabPane = Tabs.TabPane;
 
-const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
+const P2PSettings = ({ coins, pairs, p2p_config, features, constants }) => {
 	const [displayP2pModel, setDisplayP2pModel] = useState(false);
 	const [displayFiatAdd, setDisplayFiatAdd] = useState(false);
 	const [displayPaymentAdd, setDisplayPaymentAdd] = useState(false);
@@ -55,990 +57,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 		required: null,
 	});
 
-	const defaultPaymentMethods = [
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Bank Number',
-					required: true,
-				},
-				{
-					id: 2,
-					name: 'Full Name',
-					required: true,
-				},
-			],
-			system_name: 'IBAN',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Account Number',
-					required: true,
-				},
-				{
-					id: 2,
-					name: 'Routing Number',
-					required: true,
-				},
-				{
-					id: 3,
-					name: 'Account Holder Name',
-					required: true,
-				},
-			],
-			system_name: 'Wire Transfer',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Account Number',
-					required: true,
-				},
-				{
-					id: 2,
-					name: 'Routing Number',
-					required: true,
-				},
-				{
-					id: 3,
-					name: 'Account Holder Name',
-					required: true,
-				},
-			],
-			system_name: 'ACH Transfer',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Account Number',
-					required: true,
-				},
-				{
-					id: 2,
-					name: 'SWIFT Code',
-					required: true,
-				},
-				{
-					id: 3,
-					name: 'Account Holder Name',
-					required: true,
-				},
-			],
-			system_name: 'SWIFT Transfer',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'IBAN',
-					required: true,
-				},
-				{
-					id: 2,
-					name: 'BIC',
-					required: true,
-				},
-				{
-					id: 3,
-					name: 'Account Holder Name',
-					required: true,
-				},
-			],
-			system_name: 'SEPA Transfer',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Email',
-					required: true,
-				},
-				{
-					id: 2,
-					name: 'Currency',
-					required: true,
-				},
-			],
-			system_name: 'Wise',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Email',
-					required: true,
-				},
-				{
-					id: 2,
-					name: 'Currency',
-					required: true,
-				},
-			],
-			system_name: 'PayPal',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Email or Phone',
-					required: true,
-				},
-			],
-			system_name: 'Zelle',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Username',
-					required: true,
-				},
-			],
-			system_name: 'Venmo',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'MTCN',
-					required: true,
-				},
-			],
-			system_name: 'Western Union',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Reference Number',
-					required: true,
-				},
-			],
-			system_name: 'MoneyGram',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Phone Number',
-					required: true,
-				},
-			],
-			system_name: 'Revolut',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Account Number',
-					required: true,
-				},
-			],
-			system_name: 'Alipay',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'WeChat ID',
-					required: true,
-				},
-			],
-			system_name: 'WeChat Pay',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Phone Number',
-					required: true,
-				},
-			],
-			system_name: 'Square Cash',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Card Number',
-					required: true,
-				},
-				{
-					id: 2,
-					name: 'Expiry Date',
-					required: true,
-				},
-				{
-					id: 3,
-					name: 'CVV',
-					required: true,
-				},
-			],
-			system_name: 'Stripe',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Email',
-					required: true,
-				},
-			],
-			system_name: 'Amazon Pay',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Account Number',
-					required: true,
-				},
-			],
-			system_name: 'Payoneer',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Email',
-					required: true,
-				},
-			],
-			system_name: 'Skrill',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Account ID',
-					required: true,
-				},
-			],
-			system_name: 'Neteller',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Voucher Code',
-					required: true,
-				},
-			],
-			system_name: 'Paysafe',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Email',
-					required: true,
-				},
-			],
-			system_name: 'Klarna',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Account Number',
-					required: true,
-				},
-			],
-			system_name: 'Afterpay',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Account Number',
-					required: true,
-				},
-			],
-			system_name: 'Bill.com',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Email',
-					required: true,
-				},
-			],
-			system_name: 'QuickBooks Payments',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Account Number',
-					required: true,
-				},
-			],
-			system_name: 'GoCardless',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Card Number',
-					required: true,
-				},
-				{
-					id: 2,
-					name: 'Expiry Date',
-					required: true,
-				},
-				{
-					id: 3,
-					name: 'CVV',
-					required: true,
-				},
-			],
-			system_name: 'Braintree',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Card Number',
-					required: true,
-				},
-				{
-					id: 2,
-					name: 'Expiry Date',
-					required: true,
-				},
-				{
-					id: 3,
-					name: 'CVV',
-					required: true,
-				},
-			],
-			system_name: 'WorldPay',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Email',
-					required: true,
-				},
-			],
-			system_name: 'Adyen',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Card Number',
-					required: true,
-				},
-				{
-					id: 2,
-					name: 'Expiry Date',
-					required: true,
-				},
-				{
-					id: 3,
-					name: 'CVV',
-					required: true,
-				},
-			],
-			system_name: 'BlueSnap',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Phone Number',
-					required: true,
-				},
-			],
-			system_name: 'Chase QuickPay',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Account Number',
-					required: true,
-				},
-				{
-					id: 2,
-					name: 'Routing Number',
-					required: true,
-				},
-			],
-			system_name: 'Citibank Transfer',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Card Number',
-					required: true,
-				},
-				{
-					id: 2,
-					name: 'Expiry Date',
-					required: true,
-				},
-				{
-					id: 3,
-					name: 'CVV',
-					required: true,
-				},
-			],
-			system_name: 'Barclaycard',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Email',
-					required: true,
-				},
-			],
-			system_name: 'Paysend',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Card Number',
-					required: true,
-				},
-				{
-					id: 2,
-					name: 'Expiry Date',
-					required: true,
-				},
-				{
-					id: 3,
-					name: 'CVV',
-					required: true,
-				},
-			],
-			system_name: 'Monzo',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Account Number',
-					required: true,
-				},
-				{
-					id: 2,
-					name: 'Routing Number',
-					required: true,
-				},
-			],
-			system_name: 'HSBC Transfer',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Phone Number',
-					required: true,
-				},
-			],
-			system_name: 'Cash App',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Account Number',
-					required: true,
-				},
-			],
-			system_name: 'N26 Transfer',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Email',
-					required: true,
-				},
-			],
-			system_name: 'TransferGo',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Email',
-					required: true,
-				},
-			],
-			system_name: 'BitPay',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Email',
-					required: true,
-				},
-			],
-			system_name: 'Coinbase',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Wallet Address',
-					required: true,
-				},
-			],
-			system_name: 'Blockchain Transfer',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Account Number',
-					required: true,
-				},
-				{
-					id: 2,
-					name: 'Routing Number',
-					required: true,
-				},
-			],
-			system_name: 'Lloyds Bank Transfer',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Card Number',
-					required: true,
-				},
-				{
-					id: 2,
-					name: 'Expiry Date',
-					required: true,
-				},
-				{
-					id: 3,
-					name: 'CVV',
-					required: true,
-				},
-			],
-			system_name: 'Revolut Card Payment',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Card Number',
-					required: true,
-				},
-				{
-					id: 2,
-					name: 'Expiry Date',
-					required: true,
-				},
-				{
-					id: 3,
-					name: 'CVV',
-					required: true,
-				},
-			],
-			system_name: 'N26 Card Payment',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Card Number',
-					required: true,
-				},
-				{
-					id: 2,
-					name: 'Expiry Date',
-					required: true,
-				},
-				{
-					id: 3,
-					name: 'CVV',
-					required: true,
-				},
-			],
-			system_name: 'Monzo Card Payment',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Card Number',
-					required: true,
-				},
-				{
-					id: 2,
-					name: 'Expiry Date',
-					required: true,
-				},
-				{
-					id: 3,
-					name: 'CVV',
-					required: true,
-				},
-			],
-			system_name: 'TransferWise Card Payment',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Account Number',
-					required: true,
-				},
-			],
-			system_name: 'N26 Bank Transfer',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Email',
-					required: true,
-				},
-			],
-			system_name: 'Zen Pay',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Phone Number',
-					required: true,
-				},
-			],
-			system_name: 'Ally Bank Transfer',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Phone Number',
-					required: true,
-				},
-			],
-			system_name: 'Bank of America Transfer',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Account Number',
-					required: true,
-				},
-				{
-					id: 2,
-					name: 'Routing Number',
-					required: true,
-				},
-			],
-			system_name: 'Santander Transfer',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Card Number',
-					required: true,
-				},
-				{
-					id: 2,
-					name: 'Expiry Date',
-					required: true,
-				},
-				{
-					id: 3,
-					name: 'CVV',
-					required: true,
-				},
-			],
-			system_name: 'First Direct Card Payment',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Phone Number',
-					required: true,
-				},
-			],
-			system_name: 'PNC Bank Transfer',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Card Number',
-					required: true,
-				},
-				{
-					id: 2,
-					name: 'Expiry Date',
-					required: true,
-				},
-				{
-					id: 3,
-					name: 'CVV',
-					required: true,
-				},
-			],
-			system_name: 'USAA Card Payment',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Account Number',
-					required: true,
-				},
-				{
-					id: 2,
-					name: 'Routing Number',
-					required: true,
-				},
-			],
-			system_name: 'Chime Bank Transfer',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Phone Number',
-					required: true,
-				},
-			],
-			system_name: 'Capital One Transfer',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Phone Number',
-					required: true,
-				},
-			],
-			system_name: 'Fifth Third Bank Transfer',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Card Number',
-					required: true,
-				},
-				{
-					id: 2,
-					name: 'Expiry Date',
-					required: true,
-				},
-				{
-					id: 3,
-					name: 'CVV',
-					required: true,
-				},
-			],
-			system_name: 'Discover Card Payment',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Email',
-					required: true,
-				},
-			],
-			system_name: 'Netspend',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Account Number',
-					required: true,
-				},
-			],
-			system_name: 'N26 Bank Payment',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Email',
-					required: true,
-				},
-			],
-			system_name: 'M-Pesa',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Email',
-					required: true,
-				},
-			],
-			system_name: 'Payza',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Card Number',
-					required: true,
-				},
-				{
-					id: 2,
-					name: 'Expiry Date',
-					required: true,
-				},
-				{
-					id: 3,
-					name: 'CVV',
-					required: true,
-				},
-			],
-			system_name: 'JCB Card Payment',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Account Number',
-					required: true,
-				},
-			],
-			system_name: 'Zenith Bank Transfer',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Account Number',
-					required: true,
-				},
-			],
-			system_name: 'GTBank Transfer',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Email',
-					required: true,
-				},
-			],
-			system_name: 'Paytm',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Account Number',
-					required: true,
-				},
-			],
-			system_name: 'Ecobank Transfer',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Phone Number',
-					required: true,
-				},
-			],
-			system_name: 'FirstBank Transfer',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Email',
-					required: true,
-				},
-			],
-			system_name: 'Remitly',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Card Number',
-					required: true,
-				},
-				{
-					id: 2,
-					name: 'Expiry Date',
-					required: true,
-				},
-				{
-					id: 3,
-					name: 'CVV',
-					required: true,
-				},
-			],
-			system_name: 'Hyperwallet',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Email',
-					required: true,
-				},
-			],
-			system_name: 'Payoneer Transfer',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Phone Number',
-					required: true,
-				},
-			],
-			system_name: 'Xoom',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Phone Number',
-					required: true,
-				},
-			],
-			system_name: 'Bradesco Transfer',
-		},
-		{
-			fields: [
-				{
-					id: 1,
-					name: 'Email',
-					required: true,
-				},
-			],
-			system_name: 'Interac e-Transfer',
-		},
-	];
-
-	const [paymentMethods, setPaymentMethods] = useState(defaultPaymentMethods);
+	const [paymentMethods, setPaymentMethods] = useState(DEFAULT_PAYMENT_METHODS);
 
 	const [selectedPaymentMethods, setSelectedPaymentMethods] = useState([]);
 
@@ -1153,8 +172,42 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 			searchRef.current.focus();
 		}
 	};
+	const handleUpgrade = (info = {}) => {
+		if (
+			_toLower(info.plan) !== 'fiat' &&
+			_toLower(info.plan) !== 'boost' &&
+			_toLower(info.type) !== 'enterprise'
+		) {
+			return true;
+		} else {
+			return false;
+		}
+	};
 
-	return (
+	const isUpgrade = handleUpgrade(constants.info);
+	return isUpgrade ? (
+		<div className="d-flex">
+			<div className="d-flex align-items-center justify-content-between upgrade-section mt-2 mb-5">
+				<div>
+					<div className="font-weight-bold">Enable P2P Trading</div>
+					<div>
+						Enable peer-to-peer trading between merchants and exchange users
+					</div>
+				</div>
+				<div className="ml-5 button-wrapper">
+					<a
+						href="https://dash.hollaex.com/billing"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						<Button type="primary" className="w-100">
+							Upgrade Now
+						</Button>
+					</a>
+				</div>
+			</div>
+		</div>
+	) : (
 		<div className="admin-earnings-container w-100">
 			<div style={{ display: 'flex', justifyContent: 'space-between' }}>
 				<div>
@@ -1357,6 +410,8 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 								}}
 							>
 								<Select.Option value={'sell'}>Sell</Select.Option>
+								<Select.Option value={'buy'}>Buy</Select.Option>
+								<Select.Option value={'all'}>All</Select.Option>
 							</Select>
 
 							<div style={{ fontSize: 13, marginTop: 10, marginBottom: 10 }}>
@@ -1367,38 +422,36 @@ const P2PSettings = ({ coins, pairs, p2p_config, features }) => {
 							></div>
 							<div>Crypto assets</div>
 							<div>Select the crypto assets that vendors can transact with</div>
-							{Object.values(coins || {})
-								.filter((coin) => coin.symbol === 'usdt')
-								.map((coin) => {
-									return (
-										<div>
-											<Checkbox
-												style={{ color: 'white' }}
-												checked={digitalCurrencies.includes(coin.symbol)}
-												onChange={(e) => {
-													if (e.target.checked) {
-														if (!digitalCurrencies.includes(coin.symbol)) {
-															setDigitalCurrencies([
-																...digitalCurrencies,
-																coin.symbol,
-															]);
-														}
-													} else {
-														if (digitalCurrencies.includes(coin.symbol)) {
-															setDigitalCurrencies(
-																[...digitalCurrencies].filter(
-																	(symbol) => symbol !== coin.symbol
-																)
-															);
-														}
+							{Object.values(coins || {}).map((coin) => {
+								return (
+									<div>
+										<Checkbox
+											style={{ color: 'white' }}
+											checked={digitalCurrencies.includes(coin.symbol)}
+											onChange={(e) => {
+												if (e.target.checked) {
+													if (!digitalCurrencies.includes(coin.symbol)) {
+														setDigitalCurrencies([
+															...digitalCurrencies,
+															coin.symbol,
+														]);
 													}
-												}}
-											>
-												{coin.fullname} ({coin?.symbol?.toUpperCase()})
-											</Checkbox>
-										</div>
-									);
-								})}
+												} else {
+													if (digitalCurrencies.includes(coin.symbol)) {
+														setDigitalCurrencies(
+															[...digitalCurrencies].filter(
+																(symbol) => symbol !== coin.symbol
+															)
+														);
+													}
+												}
+											}}
+										>
+											{coin.fullname} ({coin?.symbol?.toUpperCase()})
+										</Checkbox>
+									</div>
+								);
+							})}
 						</div>
 					)}
 
@@ -2640,6 +1693,7 @@ const mapStateToProps = (state) => ({
 	broker: state.app.broker,
 	features: state.app.constants.features,
 	p2p_config: state.app.constants.p2p_config,
+	constants: state.app.constants,
 });
 
 const mapDispatchToProps = (dispatch) => ({

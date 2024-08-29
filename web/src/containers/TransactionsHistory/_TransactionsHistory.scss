@@ -10,7 +10,9 @@
 		.history_block-wrapper {
 			max-height: calc(100% - 1rem);
 			overflow-x: scroll;
-
+			.history-title {
+				font-size: 14px;
+			}
 			.table-content {
 				overflow-x: scroll;
 				white-space: nowrap;
@@ -23,6 +25,43 @@
 				}
 				.table_body-wrapper {
 					height: 4.5rem;
+				}
+			}
+		}
+		#trades-filters,
+		#orders-filters,
+		#deposits-filters,
+		#withdrawals-filters {
+			.ant-select-selector {
+				.ant-select-selection-item {
+					font-size: 13px;
+					div {
+						align-items: flex-start;
+					}
+				}
+			}
+			.ant-form-item {
+				.ant-form-item-label {
+					padding: unset;
+					label {
+						font-size: 13px;
+						height: unset;
+					}
+				}
+				.ant-form-item-control {
+					.ant-form-item-control-input-content {
+						.ant-radio-group {
+							padding: unset;
+						}
+					}
+				}
+			}
+			.ant-picker {
+				margin: unset;
+				.ant-picker-input {
+					input {
+						font-size: 13px;
+					}
 				}
 			}
 		}
@@ -162,6 +201,25 @@
 	.loader_wrapper {
 		top: 0;
 		left: 0;
+	}
+	.transactions-history-table {
+		.table_body-wrapper {
+			.expandable-container {
+				.custom-row-line {
+					width: 5px;
+					height: 1px;
+					background-color: $colors-main-black;
+				}
+				.blue-link {
+					.edit-wrapper__container {
+						text-decoration: underline !important;
+					}
+				}
+				.blue-link:hover {
+					cursor: pointer;
+				}
+			}
+		}
 	}
 	.table-wrapper {
 		.table_body-wrapper.with_icon {

@@ -1,0 +1,19 @@
+imageRegistry: bitholla/hollaex-core-kit-testnet
+dockerTag: 2.11.4-cli-deprecation-46ea26c-web
+imagePullSecrets:
+  - name: docker-registry-secret
+stable:
+  replicaCount: 1
+nodeSelector: {}
+autoScaling:
+  hpa:
+    enable: false
+    maxReplicas: 4
+    avgMemory: 500000000
+podRestart_webhook_url:
+resources:
+  limits:
+    memory: "100Mi"
+  requests:
+    cpu: "10m"
+    memory: "100Mi"

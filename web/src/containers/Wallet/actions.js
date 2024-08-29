@@ -12,3 +12,15 @@ export const fetchPlHistory = (values) => {
 		values && Object.keys(values).length ? querystring.stringify(values) : '';
 	return requestAuthenticated(`/user/balance-pl?${queryValues}`);
 };
+
+export const getAddressBookDetails = () => {
+	return requestAuthenticated(`/user/addressbook`);
+};
+
+export const setUserLabelAndAddress = (values) => {
+	const options = {
+		method: 'POST',
+		body: JSON.stringify(values),
+	};
+	return requestAuthenticated(`/user/addressbook`, options);
+};

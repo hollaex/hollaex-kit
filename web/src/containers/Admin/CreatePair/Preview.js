@@ -28,6 +28,7 @@ const Preview = ({
 	buttonSubmitting = false,
 }) => {
 	const [isVisible, setIsVisible] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
 
 	const pair_base_data =
 		allCoins.filter((data) => data.symbol === formData.pair_base)[0] || {};
@@ -41,9 +42,11 @@ const Preview = ({
 					id: exchange.id,
 					pairs: [...pairs, `${formData.pair_base}-${formData.pair_2}`],
 				};
+				setIsLoading(true);
 				await updateExchange(formProps);
 				await getMyExchange();
 				onClose();
+				setIsLoading(false);
 				message.success('Pairs added successfully');
 			} catch (error) {
 				let errMsg =
@@ -243,6 +246,7 @@ const Preview = ({
 						onHandleRemoveMarket={onDelete}
 						removePair={formData}
 						removeContent={'Markets'}
+						isLoading={isLoading}
 					/>
 				</Modal>
 			) : null}

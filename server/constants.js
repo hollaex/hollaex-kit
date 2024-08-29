@@ -157,7 +157,7 @@ const overrideNetworkFields = () => {
 			configuration.coins[coin.symbol] = {
 				...coin,
 				...configuration?.kit?.fiat_fees?.[coin.symbol]
-			}
+			};
 		}
 	}
 };
@@ -634,6 +634,7 @@ exports.USER_FIELD_ADMIN_LOG = [
 ];
 
 exports.ADDRESS_FIELDS = ['city', 'address', 'country', 'postal_code'];
+exports.CRYPTO_ADDRESS_FIELDS = ['address', 'network', 'label', 'currency'];
 
 exports.VERIFY_STATUS = {
 	EMPTY: 0,

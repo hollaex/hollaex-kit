@@ -19,7 +19,12 @@ import {
 import { Coin, EditWrapper } from 'components';
 import { STATIC_ICONS } from 'config/icons';
 import { assetsSelector } from 'containers/Wallet/utils';
-import { renderLabel, renderNetworkWithLabel } from 'containers/Withdraw/utils';
+import {
+	networkList,
+	renderLabel,
+	renderNetworkField,
+	renderNetworkWithLabel,
+} from 'containers/Withdraw/utils';
 import STRINGS from 'config/localizedStrings';
 import { onHandleSymbol } from './utils';
 
@@ -58,6 +63,7 @@ const DepositComponent = ({
 	const [optionalTag, setOptionalTag] = useState('');
 	const [isDisbaleDeposit, setIsDisbaleDeposit] = useState(false);
 	const [isVisible, setIsVisible] = useState(false);
+	const [networkData, setNetworkData] = useState(null);
 
 	const defaultCurrency = currency !== '' && currency;
 	const address = depositAddress?.split(':');
@@ -110,12 +116,6 @@ const DepositComponent = ({
 			} else {
 				setCurrStep({ ...currStep, stepTwo: true });
 			}
-			if (
-				['xrp', 'xlm', 'ton', 'pmn'].includes(defaultCurrency) ||
-				['xrp', 'xlm', 'ton', 'pmn'].includes(defaultNetwork)
-			) {
-				setIsVisible(true);
-			}
 			setDepositCurrency(defaultCurrency);
 			setSelectedAsset(defaultCurrency);
 			updateAddress(defaultCurrency);
@@ -125,7 +125,7 @@ const DepositComponent = ({
 			setDepositNetworkOptions(null);
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [defaultCurrency]);
 
 	useEffect(() => {
 		if (isTag) {
@@ -149,6 +149,18 @@ const DepositComponent = ({
 			setIsDisbaleDeposit(false);
 		}
 	}, [getDepositCurrency, isDeposit]);
+
+	useEffect(() => {
+		if (selectedAsset) {
+			if (
+				['xrp', 'xlm', 'ton', 'pmn'].includes(defaultCurrency) ||
+				['xrp', 'xlm', 'ton', 'pmn'].includes(defaultNetwork)
+			) {
+				setIsVisible(true);
+			}
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [selectedAsset]);
 
 	const onHandleChangeSelect = (val, pinned_assets = false) => {
 		if (pinned_assets) {
@@ -215,14 +227,15 @@ const DepositComponent = ({
 		if (val) {
 			setCurrStep((prev) => ({ ...prev, stepThree: true }));
 			setDepositNetworkOptions(val);
-			updateAddress(val, true);
+			updateAddress(renderNetworkField(val), true);
 			setDepositNetwork(val);
+			setNetworkData(val);
 		} else if (!val) {
 			setCurrStep((prev) => ({ ...prev, stepThree: false, stepFour: false }));
 		}
 	};
 
-	const renderScanIcon = (isTag = false) => {
+	const renderScanIcon = (isTag = false, type = 'address') => {
 		return (
 			<div className="d-flex">
 				{!isTag && (
@@ -238,7 +251,9 @@ const DepositComponent = ({
 						<div className="divider"></div>
 					</>
 				)}
-				<CopyToClipboard text={isTag ? optionalTag : address && address[0]}>
+				<CopyToClipboard
+					text={type !== 'address' ? optionalTag : address && address[0]}
+				>
 					<div className="render-deposit-scan-wrapper" onClick={() => onCopy()}>
 						{renderLabel('COPY_TEXT')}
 					</div>
@@ -260,12 +275,13 @@ const DepositComponent = ({
 		}
 		if (type === 'network') {
 			setDepositNetworkOptions(null);
+			setNetworkData(null);
 		}
 	};
 
 	const onHandleSelect = (symbol) => {
 		const curr = onHandleSymbol(symbol);
-		if (curr !== symbol) {
+		if (curr !== symbol && ['xrp', 'xlm', 'ton'].includes(curr)) {
 			if (
 				['xrp', 'xlm', 'ton'].includes(defaultCurrency) ||
 				['xrp', 'xlm', 'ton'].includes(defaultNetwork)
@@ -318,6 +334,16 @@ const DepositComponent = ({
 					: `deposit-wrapper-fields ${isMobile ? '' : 'mt-5'}`
 			}
 		>
+			<Modal
+				title={STRINGS['WITHDRAW_PAGE.WARNING']}
+				visible={isVisible}
+				onCancel={() => setIsVisible(false)}
+				footer={false}
+				className="withdrawal-remove-tag-modal"
+				width={'420px'}
+			>
+				{renderDepositWarningPopup()}
+			</Modal>
 			<div>
 				<div className="d-flex">
 					<div className="custom-field d-flex flex-column align-items-center">
@@ -471,12 +497,16 @@ const DepositComponent = ({
 											coinLength?.length < 1
 												? defaultNetwork
 												: coinLength && coinLength.length <= 1
-												? renderNetworkWithLabel(networkIcon, network)
+												? getDepositNetworkOptions && getDepositNetworkOptions
+													? networkData
+													: renderNetworkWithLabel(networkIcon, network)
 												: coinLength && coinLength.length > 1
-												? renderNetworkWithLabel(
-														networkOptionsIcon,
-														getDepositNetworkOptions
-												  )
+												? getDepositNetworkOptions && getDepositNetworkOptions
+													? networkData
+													: renderNetworkWithLabel(
+															networkOptionsIcon,
+															getDepositNetworkOptions
+													  )
 												: coins[getDepositCurrency]?.symbol.toUpperCase()
 										}
 										disabled={
@@ -487,6 +517,7 @@ const DepositComponent = ({
 										onClear={() => onHandleClear('network')}
 									>
 										{coinLength &&
+											coinLength?.length === 1 &&
 											coinLength.map((data, inx) => (
 												<Option key={inx} value={data}>
 													<div className="d-flex gap-1">
@@ -499,6 +530,35 @@ const DepositComponent = ({
 													</div>
 												</Option>
 											))}
+										{coinLength &&
+											coinLength?.length > 1 &&
+											networkList.map((data, inx) => {
+												const coin = data.iconId.split('_');
+												return coinLength.map((coinData, coinInx) => {
+													if (coinData === coin[0]?.toLowerCase()) {
+														return (
+															<Option
+																key={`${inx}-${coinInx}`}
+																value={data?.network}
+															>
+																<div className="d-flex gap-1">
+																	<div className="d-flex">
+																		{data?.network}
+																		<div className="ml-2 mt-1">
+																			<Coin
+																				iconId={data.iconId}
+																				type="CS2"
+																				className="mt-2 withdraw-network-icon"
+																			/>
+																		</div>
+																	</div>
+																</div>
+															</Option>
+														);
+													}
+													return null;
+												});
+											})}
 									</Select>
 									{(coinLength &&
 										coinLength.length === 1 &&
@@ -595,8 +655,15 @@ const DepositComponent = ({
 								<div className="deposit-address-wrapper">
 									<div className="d-flex flex-row deposit-address-field">
 										<Input
-											className="destination-input-field"
-											suffix={renderScanIcon()}
+											className={`${
+												['xrp', 'xlm', 'ton'].includes(selectedAsset)
+													? 'destination-input-field tag-field'
+													: 'destination-input-field'
+											}`}
+											suffix={renderScanIcon(
+												['xrp', 'xlm', 'ton'].includes(selectedAsset),
+												'address'
+											)}
 											value={address && address[0]}
 										></Input>
 									</div>
@@ -636,7 +703,7 @@ const DepositComponent = ({
 							</span>
 						</div>
 						<div
-							className={`withdraw-main-label${
+							className={`optional-tag withdraw-main-label${
 								(coinLength && coinLength.length === 1 && !isDisbaleDeposit) ||
 								(currStep.stepTwo && !coinLength) ||
 								currStep.stepThree
@@ -676,7 +743,7 @@ const DepositComponent = ({
 														? 'number'
 														: 'text'
 												}
-												suffix={renderScanIcon(true)}
+												suffix={renderScanIcon(true, 'optionalTag')}
 											></Input>
 										</div>
 										<div className="d-flex mt-2 warning-text">
@@ -692,16 +759,6 @@ const DepositComponent = ({
 							</div>
 						</div>
 					</div>
-					<Modal
-						title={STRINGS['WITHDRAW_PAGE.WARNING']}
-						visible={isVisible}
-						onCancel={() => setIsVisible(false)}
-						footer={false}
-						className="withdrawal-remove-tag-modal"
-						width={'420px'}
-					>
-						{renderDepositWarningPopup()}
-					</Modal>
 				</div>
 			)}
 		</div>
