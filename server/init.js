@@ -225,7 +225,7 @@ const checkStatus = () => {
 
 			let rates = {}
 			configuration.quicktrade.forEach(quicktrade => {
-				rates[quicktrade.symbol] = { type: quicktrade.type };
+				rates[quicktrade.symbol] = { type: quicktrade.type, active: quicktrade.active };
 			});
 			
 			const generatePossibleSymbols = (rates) => {

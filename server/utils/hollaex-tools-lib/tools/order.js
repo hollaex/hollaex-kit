@@ -1278,7 +1278,7 @@ const findConversionRate = (startCurrency, endCurrency, rates, visited = new Set
 	visited.add(startCurrency);
 	let shortestPath = null;
 
-	for (let [pair, { type, price, token }] of Object.entries(rates)) {
+	for (let [pair, { type, active, price, token }] of Object.entries(rates)) {
 		const [from, to] = pair.split('-');
 		if (from === startCurrency && !visited.has(to)) {
 			const result = findConversionRate(to, endCurrency, rates, visited, initialAmount * price);
@@ -1290,6 +1290,7 @@ const findConversionRate = (startCurrency, endCurrency, rates, visited = new Set
 						{
 							symbol: `${from}-${to}`,
 							type,
+							active,
 							side: 'sell', 
 							size: initialAmount,
 							price: price,
@@ -1312,6 +1313,7 @@ const findConversionRate = (startCurrency, endCurrency, rates, visited = new Set
 						{
 							symbol: `${from}-${to}`,
 							type,
+							active,
 							side: 'buy', 
 							size: initialAmount / price,
 							price: price,
@@ -1362,6 +1364,7 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, id = nu
 		data = await client.getAsync(`${user_id}-${symbol}-rates`);
 		prices = data ? JSON.parse(data) : {};
 	}
+
 	//Find all the available prices with their types on the exchange.
 	if(!data) {
 		for (const rate of rates) {
