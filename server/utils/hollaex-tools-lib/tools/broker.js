@@ -343,7 +343,7 @@ const fetchBrokerQuote = async (brokerQuote) => {
 			throw new Error(BROKER_PAUSED);
 		}
 		if (broker.type === 'dynamic') {
-			return { token: '1', expiry: new Date(), spending_amount: 1, receiving_amount: 1};
+			return getQuoteDynamicBroker(side, broker, user_id, orderData);
 		} else {
 			return getQuoteManualBroker(broker, side, user_id, orderData);
 		}
