@@ -1359,7 +1359,7 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, id = nu
 	const tickers = await getTickers();
 	let prices = {};
 	if (user_id) {
-		data = await client.getAsync(`${user_id}-rates`);
+		data = await client.getAsync(`${user_id}-${symbol}-rates`);
 		prices = data ? JSON.parse(data) : {};
 	}
 	//Find all the available prices with their types on the exchange.
@@ -1379,7 +1379,7 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, id = nu
 		}
 	}
 	
-	await client.setexAsync(`${user_id}-rates`, 25, JSON.stringify(prices));
+	await client.setexAsync(`${user_id}-${symbol}-rates`, 25, JSON.stringify(prices));
 	const result = findConversionRate(from, to, prices, new Set(), size);
 	let token;
 
