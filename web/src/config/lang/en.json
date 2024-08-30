@@ -1550,7 +1550,11 @@
 		"TRADING_SYMBOL": "Trading Symbol",
 		"ASSET": "Asset",
 		"TYPE": "Type",
-		"SOURCE": "SOURCE"
+		"SOURCE": "SOURCE",
+		"PERCENTAGE": "% {0}",
+		"24H": "24H",
+		"TREND_7D": "Trend 7D",
+		"BUY": "Buy {0} {1}"
 	},
 	"SUMMARY_MARKETS": {
 		"HOLLAEX": "Want to list your digital assets? Start your own market with your HollaEx {0} {1}",
@@ -1777,7 +1781,17 @@
 		"NETWORK": "Network Broker OTC",
 		"BROKER": "Local Broker OTC",
 		"BROKERAGE": "NA - (Brokerage)",
-		"LOADING_PRICES": "Loading Prices..."
+		"LOADING_PRICES": "Loading Prices...",
+		"INPUT_LABEL": "Input asset name or symbol",
+		"HIGHLIGHTS": "Highlights",
+		"MOBILE_DESC": "Select a market below to start trading its orderbook.",
+		"PRICE_24H": "Price/24H %",
+		"CARDS": {
+			"GAINERS": "Gainers",
+			"LOSERS": "Losers",
+			"MARKET_CAP": "Market Cap",
+			"24H": "{0} 24H"
+		}
 	},
 	"HOLLAEX_TOKEN": {
 		"REMOVE_FAVOURITES": "Remove from favourites",
