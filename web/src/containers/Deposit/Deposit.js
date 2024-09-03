@@ -340,6 +340,7 @@ const DepositComponent = ({
 				onCancel={() => setIsVisible(false)}
 				footer={false}
 				className="withdrawal-remove-tag-modal"
+				closeIcon={<CloseOutlined />}
 				width={'420px'}
 			>
 				{renderDepositWarningPopup()}
