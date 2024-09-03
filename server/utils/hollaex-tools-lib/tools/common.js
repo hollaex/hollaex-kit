@@ -47,7 +47,7 @@ const { checkStatus: checkExchangeStatus, getNodeLib } = require(`${SERVER_PATH}
 const rp = require('request-promise');
 const { isEmail: isValidEmail } = require('validator');
 const moment = require('moment');
-const { GET_BROKER, GET_QUICKTRADE, GET_NETWORK_QUICKTRADE } = require('../../../constants');
+const { GET_BROKER, GET_QUICKTRADE, GET_NETWORK_QUICKTRADE, GET_TRADEPATHS } = require('../../../constants');
 const BigNumber = require('bignumber.js');
 // const { Transform } = require('json2csv');
 
@@ -457,6 +457,26 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 		} else if (!isNumber(newKitConfig?.referral_history_config?.distributor_id)) {
 			throw new Error('Distributor ID required for plugin');
 		}
+	}
+	if (newKitConfig.chain_trade_config) {
+		const exchangeInfo = getKitConfig().info;
+
+		if (!REFERRAL_HISTORY_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
+			throw new Error('Exchange plan does not support this feature');
+		}
+
+		if (!newKitConfig.chain_trade_config.hasOwnProperty('active')) {
+			throw new Error('active key does not exist');
+		}
+
+		if (!newKitConfig.chain_trade_config.hasOwnProperty('source_account')) {
+			throw new Error('source account does not exist');
+		}
+
+		if (!newKitConfig.chain_trade_config.hasOwnProperty('currency')) {
+			throw new Error('currency does not exist');
+		}
+		
 	}
 
 	const joinedKitConfig = {};
@@ -1016,6 +1036,10 @@ const getQuickTrades = () => {
 	return GET_QUICKTRADE();
 };
 
+const getTradePaths = () => {
+	return GET_TRADEPATHS();
+};
+
 const getTransactionLimits = () => {
 	return GET_TRANSACTION_LIMITS();
 };
@@ -1097,5 +1121,6 @@ module.exports = {
 	getNetworkQuickTrades,
 	parseNumber,
 	getQuickTradePairs,
-	getTransactionLimits
+	getTransactionLimits,
+	getTradePaths
 };

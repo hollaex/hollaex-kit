@@ -62,6 +62,7 @@ Status.findOne()
 				spread: 0
 			},
 			referral_history_config: existingKitConfigurations.referral_history_config || {},
+			chain_trade_config: existingKitConfigurations.chain_trade_config || {},
 			coin_customizations: existingKitConfigurations.coin_customizations || {},
 			balance_history_config: existingKitConfigurations.balance_history_config || {},
 			p2p_config: existingKitConfigurations.p2p_config || {},
