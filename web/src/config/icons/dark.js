@@ -314,6 +314,7 @@ const nestedIcons = {
 	DEPOSIT_TITLE: '/assets/images/deposit-box.svg',
 
 	ADDRESS_BOOK: '/assets/images/global-address-book.svg',
+	CHAT_P2P_ICON: '/assets/images/chat-icon-p2p-02.svg',
 };
 
 const icons = flatten(nestedIcons, options);

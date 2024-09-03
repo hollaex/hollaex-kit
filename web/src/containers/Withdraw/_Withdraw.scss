@@ -491,6 +491,16 @@ $content--margin: 2rem;
 .withdrawal-remove-tag-modal {
 	.ant-modal-header {
 		border: none;
+		.ant-modal-title {
+			color: $colors-main-black;
+		}
+	}
+	.ant-modal-content {
+		.ant-modal-close-x {
+			svg {
+				fill: $colors-main-black !important;
+			}
+		}
 	}
 
 	.ant-modal-header,
