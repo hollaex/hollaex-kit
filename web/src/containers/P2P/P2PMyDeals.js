@@ -8,7 +8,7 @@ import './_P2P.scss';
 import classnames from 'classnames';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { EditWrapper } from 'components';
+import { Coin, EditWrapper } from 'components';
 import { fetchDeals, editDeal, removeDeal } from './actions/p2pActions';
 import { formatToCurrency } from 'utils/currency';
 
@@ -226,7 +226,7 @@ const P2PMyDeals = ({
 										)}
 									</td>
 									<td className="td-fit w-fit-content fs-">
-										<span className="font-weight-bold fs-16">{`$ ${formatRate(
+										<span className="font-weight-bold fs-16">{` ${formatRate(
 											deal.exchange_rate,
 											deal.spread,
 											deal.spending_asset,
@@ -235,15 +235,19 @@ const P2PMyDeals = ({
 										{deal.spending_asset.toUpperCase()}
 									</td>
 									<td className="td-fit w-fit-content">
-										<div className="mt-3 mb-2">
+										<div className="mt-3 mb-2 avaliable-amount-detail">
 											<span className="secondary-text-inactive">
 												<EditWrapper stringId="P2P.AVAILABLE">
 													{STRINGS['P2P.AVAILABLE']}
 												</EditWrapper>
 												:
-											</span>{' '}
-											{deal.total_order_amount}{' '}
-											{deal.buying_asset.toUpperCase()}
+											</span>
+											<span>{deal.total_order_amount}</span>
+											<span>{deal.buying_asset.toUpperCase()}</span>
+											<Coin
+												iconId={coins[deal?.buying_asset]?.icon_id}
+												type="CS4"
+											/>
 										</div>
 										<div>
 											<span className="secondary-text-inactive">
@@ -252,7 +256,7 @@ const P2PMyDeals = ({
 												</EditWrapper>
 												:
 											</span>{' '}
-											{`$${deal.min_order_value} - $${deal.max_order_value}`}{' '}
+											{`${deal.min_order_value} - ${deal.max_order_value}`}{' '}
 											{deal.spending_asset.toUpperCase()}
 										</div>
 									</td>

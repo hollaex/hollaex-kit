@@ -434,8 +434,8 @@ const P2PDash = ({
 					</span>
 				</div>
 			</div>
-			<div className="stake_theme p2p-table-container">
-				<table className="p2p-stake-table w-100">
+			<div className="stake_theme p2p-table-container mt-5">
+				<table className="p2p-stake-table fs-12 w-100">
 					<thead className="p2p-stake-table-header secondary-text">
 						<tr>
 							<th className="text-align-start p2p-vendor-header">
@@ -502,7 +502,7 @@ const P2PDash = ({
 												className="td-fit vendor-title"
 											>
 												<span>
-													{expandRow ? (
+													{expandRow && deal.id === selectedDeal.id ? (
 														<MinusSquareOutlined />
 													) : (
 														<PlusSquareOutlined />
@@ -526,7 +526,7 @@ const P2PDash = ({
 												}}
 												className="td-fit price-value"
 											>
-												<span className="fs-16">{`$${formatRate(
+												<span className="fs-16">{`${formatRate(
 													deal.exchange_rate,
 													deal.spread,
 													deal.spending_asset,
@@ -567,7 +567,7 @@ const P2PDash = ({
 													</div>
 													<div className="mt-3">
 														<span className="ml-1">
-															${deal.min_order_value} - ${deal.max_order_value}{' '}
+															{deal.min_order_value} - {deal.max_order_value}{' '}
 														</span>
 														<span>{deal.spending_asset.toUpperCase()}</span>
 													</div>
@@ -773,6 +773,7 @@ const P2PDash = ({
 																			setAmountCurrency(formatted);
 																		}}
 																		placeholder={deal.spending_asset.toUpperCase()}
+																		autoFocus={true}
 																	/>
 																</span>
 															</div>
@@ -814,7 +815,6 @@ const P2PDash = ({
 																		{STRINGS['P2P.CANCEL']}
 																	</EditWrapper>
 																</Button>
-
 																<Button
 																	className={
 																		selectedDeal.side === 'sell'
@@ -982,6 +982,7 @@ const P2PDash = ({
 																			setAmountCurrency(formatted);
 																		}}
 																		placeholder={deal.buying_asset.toUpperCase()}
+																		autoFocus={true}
 																	/>
 																</span>
 															</div>
