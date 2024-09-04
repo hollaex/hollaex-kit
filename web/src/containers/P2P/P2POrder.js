@@ -1535,7 +1535,7 @@ const P2POrder = ({
 							</div>
 
 							<div ref={ref} className="chat-area">
-								<div className="chat-message-container mr-3">
+								<div className="chat-message-container">
 									{selectedOrder?.messages?.map((message, index) => {
 										if (index === 0) {
 											return (
@@ -1559,7 +1559,7 @@ const P2POrder = ({
 										} else {
 											if (message.type === 'notification') {
 												return (
-													<div className="d-flex flex-column text-center secondary-text my-3">
+													<div className="notification-message d-flex flex-column text-center secondary-text my-3">
 														{message.message === 'BUYER_PAID_ORDER' &&
 														user?.id === selectedOrder?.user_id ? (
 															<EditWrapper stringId={`P2P.BUYER_SENT_FUNDS`}>

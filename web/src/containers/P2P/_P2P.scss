@@ -66,9 +66,9 @@
 }
 
 .p2p-summary-container {
-	height: max-content;
 	width: 85%;
 	padding: 20px;
+	height: max-content;
 	margin-left: auto;
 	margin-right: auto;
 
@@ -115,12 +115,12 @@
 		background-color: var(--base_wallet-sidebar-and-popup);
 
 		.p2p-order-search-container {
+			display: flex;
 			text-align: center;
 			text-wrap: nowrap;
-			display: flex;
-			gap: 10px;
 			align-items: center;
 			justify-content: space-between;
+			gap: 10px;
 			margin-top: 10px;
 
 			.p2p-fiat-currency-container,
@@ -144,11 +144,11 @@
 						display: flex;
 						align-items: center;
 						border-radius: 5px;
-						border-color: var(--calculated_important-border);
-						background-color: transparent;
-						color: var(--labels_important-active-labels-text-graphics);
 						height: 20px;
 						font-size: 12px;
+						background-color: transparent;
+						border-color: var(--calculated_important-border);
+						color: var(--labels_important-active-labels-text-graphics);
 
 						.ant-select-selection-search {
 							input {
@@ -201,15 +201,10 @@
 		}
 
 		.p2p-table-container {
-			font-weight: normal !important;
 			display: flex;
-			margin-top: 5%;
+			font-weight: normal !important;
 
 			.p2p-stake-table {
-				border: none;
-				border-collapse: collapse;
-				font-size: 12px;
-
 				.p2p-stake-table-header {
 					font-family: 'Raleway Extrabold';
 
@@ -365,13 +360,18 @@
 								justify-content: flex-end;
 								margin-top: 15px;
 								gap: 10px;
+
+								.greyButtonP2P {
+									color: var(
+										--labels_important-active-labels-text-graphics
+									) !important;
+									background-color: var(
+										--base_wallet-sidebar-and-popup
+									) !important;
+								}
 							}
 						}
 					}
-
-					// .empty-row {
-					// width: 0% !important;
-					// }
 				}
 			}
 		}
@@ -421,7 +421,7 @@
 		}
 
 		.subTable {
-			background-color: var(--base_secondary-navigation-bar);
+			background-color: var(--calculated_super-pale_label-text-graphics);
 		}
 
 		.postDealButton {
@@ -436,13 +436,6 @@
 			align-items: center;
 			justify-content: center;
 			gap: 5%;
-
-			.radio-buttons {
-				display: flex;
-				gap: 10px;
-				align-items: center;
-				justify-content: center;
-			}
 
 			.transaction-button {
 				border: 1px solid var(--calculated_secondary-border);
@@ -549,7 +542,6 @@
 					font-size: 13px;
 
 					.date-text {
-						// padding: 0 2%;
 						text-wrap: nowrap;
 						color: var(--labels_secondary-inactive-label-text-graphics);
 						background: transparent !important;
@@ -623,7 +615,6 @@
 		}
 
 		.p2p-order-table-wrapper {
-			// display: flex;
 			margin-top: 4%;
 
 			.p2p-order-table {
@@ -654,9 +645,12 @@
 					}
 				}
 
+				.table-row-inactive {
+					td:not(:last-child) {
+						opacity: 0.5;
+					}
+				}
 				tbody {
-					font-size: 12px;
-
 					tr {
 						.trade-button,
 						.transaction-fiat-amount,
@@ -668,6 +662,33 @@
 							padding: 0.5% 0;
 							width: 15%;
 							font-weight: normal;
+							.active-green {
+								color: var(--specials_checks-okay-done);
+							}
+
+							.active-orange {
+								color: var(--specials_pending-waiting-caution);
+							}
+
+							.active-yellow {
+								color: var(--specials_my-username-in-chat);
+							}
+
+							.inactive-text {
+								color: var(--labels_secondary-inactive-label-text-graphics);
+							}
+
+							.crypto-amount-detail {
+								display: flex;
+								gap: 5px;
+								align-items: center;
+							}
+
+							.transaction-status-detail {
+								display: flex;
+								gap: 5px;
+								text-transform: capitalize;
+							}
 						}
 
 						.trade-button {
@@ -790,10 +811,13 @@
 						}
 					}
 
-					.edit-deal-btn,
-					.edit-deal-btn:hover {
+					.edit-deal-btn {
 						border: 1px solid
 							var(--labels_important-active-labels-text-graphics);
+					}
+
+					.edit-deal-btn:hover {
+						opacity: 0.5;
 					}
 
 					.buySideP2P {
@@ -823,6 +847,12 @@
 						display: flex;
 						flex-wrap: wrap;
 						padding: 5px;
+					}
+
+					.avaliable-amount-detail {
+						display: flex;
+						align-items: center;
+						gap: 5px;
 					}
 				}
 			}
@@ -1066,7 +1096,6 @@
 			}
 
 			.p2p-post-deal-content {
-				// margin-top: 3%;
 				display: flex;
 				flex-direction: column;
 				align-items: center;
@@ -1074,9 +1103,7 @@
 
 				.toggle-container {
 					z-index: 1;
-					// position: relative;
 					padding: 1% 2%;
-					// top: 2rem;
 					display: flex;
 					gap: 10px;
 					width: max-content;
@@ -1414,11 +1441,14 @@
 	}
 
 	.order-verification-container,
-	.custom-stepper-container {
-		.check-icon {
+	.custom-stepper-container,
+	.p2p-order-tab-container {
+		.check-icon,
+		.active-icon {
 			height: 20px;
 
-			.anticon-check-circle {
+			.anticon-check-circle,
+			.anticon-play-square {
 				svg {
 					height: 2rem;
 					width: 2rem;
@@ -1432,13 +1462,36 @@
 					}
 
 					path:nth-child(3) {
-						fill: var(--labels_important-active-labels-text-graphics);
+						fill: white;
 					}
 				}
 			}
 		}
 	}
+	.p2p-order-tab-container {
+		.active-icon {
+			.anticon-play-square {
+				svg {
+					path:nth-child(2) {
+						fill: var(--specials_pending-waiting-caution) !important;
+					}
+				}
+			}
+		}
 
+		.complete-check-icon,
+		.active-icon {
+			margin-top: 1.5%;
+
+			.anticon-check-circle,
+			.anticon-play-square {
+				svg {
+					height: 15px !important;
+					width: 15px !important;
+				}
+			}
+		}
+	}
 	.order-verification-container {
 		.anticon-check-circle {
 			svg {
@@ -1710,15 +1763,15 @@
 			}
 
 			.chat-field {
-				// scrollbar-width: thin;
 				scrollbar-color: var(--labels_secondary-inactive-label-text-graphics)
 					transparent;
 				border: 1px solid var(--calculated_secondary-border);
 				position: relative;
-				padding: 5%;
+				padding: 5% 0;
 				background-color: var(--base_background);
 
 				.vendor-name-field {
+					margin: 0 5%;
 					padding: 1% 0 5%;
 					display: flex;
 					justify-content: center;
@@ -1732,6 +1785,7 @@
 
 				.chat-details-container {
 					margin: 2% 0 3%;
+					padding: 0 5%;
 					text-align: center;
 				}
 
@@ -1744,6 +1798,7 @@
 
 					.chat-message-container {
 						.initial-message {
+							padding: 2% 5%;
 							display: flex;
 							flex-direction: column;
 							margin-bottom: 3%;
@@ -1751,13 +1806,23 @@
 						}
 					}
 
+					.chat-message-container
+						> div:nth-child(even):not(.initial-message):not(.notification-message) {
+						background-color: var(--base_secondary-navigation-bar) !important;
+					}
+
+					.notification-message {
+						padding: 2% 5%;
+					}
 					.user-message-container {
+						padding: 2% 5%;
 						display: flex;
 						flex-direction: column;
 						text-align: right;
 					}
 
 					.merchant-message-container {
+						padding: 2% 5%;
 						display: flex;
 						flex-direction: column;
 						margin-bottom: 2%;
@@ -1789,6 +1854,7 @@
 					pointer-events: all;
 
 					.message-input-field {
+						padding: 0 5%;
 						.ant-input-affix-wrapper,
 						.ant-input {
 							background-color: transparent;
@@ -2277,7 +2343,6 @@
 						padding: 5px;
 						width: 30%;
 						border-radius: 10px;
-						// font-weight: bold;
 						cursor: default;
 						text-align: center;
 					}

@@ -3,13 +3,14 @@ import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { isMobile } from 'react-device-detect';
 import { Button } from 'antd';
+import { CheckCircleTwoTone, PlaySquareTwoTone } from '@ant-design/icons';
 
 import './_P2P.scss';
 import classnames from 'classnames';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import Filter from './Filters';
-import { EditWrapper } from 'components';
+import { Coin, EditWrapper } from 'components';
 import { fetchTransactions } from './actions/p2pActions';
 import { formatToCurrency } from 'utils/currency';
 
@@ -145,8 +146,26 @@ const P2POrders = ({
 									: true
 							)
 							?.map((transaction) => {
+								const statusClassMap = {
+									complete: 'active-green',
+									appealed: 'active-orange',
+									active: 'active-yellow',
+								};
+
+								const transactionStatusClass =
+									statusClassMap[transaction?.transaction_status] ||
+									'inactive-text';
+								const isDisabled = ['expired', 'cancelled'].includes(
+									transaction?.transaction_status
+								);
 								return (
-									<tr className="table-row">
+									<tr
+										className={
+											isDisabled
+												? 'table-row table-row-inactive fs-12'
+												: 'table-row fs-12'
+										}
+									>
 										<td className="trade-button important-text">
 											{transaction?.user_id === user?.id ? (
 												<Button className="p2p-buy-order-button important-text border-0">
@@ -188,16 +207,23 @@ const P2POrders = ({
 											</span>
 										</td>
 										<td className="crypto-amount">
-											<span>
-												$
-												{formatAmount(
-													transaction?.deal?.buying_asset,
-													transaction?.amount_digital_currency
-												)}
-											</span>
-											<span className="ml-2">
-												{transaction?.deal?.buying_asset?.toUpperCase()}
-											</span>
+											<div className="crypto-amount-detail">
+												<span>
+													{formatAmount(
+														transaction?.deal?.buying_asset,
+														transaction?.amount_digital_currency
+													)}
+												</span>
+												<span>
+													{transaction?.deal?.buying_asset?.toUpperCase()}
+												</span>
+												<Coin
+													iconId={
+														coins[transaction?.deal?.buying_asset]?.icon_id
+													}
+													type="CS4"
+												/>
+											</div>
 										</td>
 										<td className="transaction-user-name">
 											{transaction?.user_id === user?.id ? (
@@ -224,9 +250,21 @@ const P2POrders = ({
 											)}
 										</td>
 										<td className="transaction-status">
-											<span>
-												{transaction?.transaction_status?.toUpperCase()}
-											</span>
+											<div className="transaction-status-detail">
+												<span className={transactionStatusClass}>
+													{transaction?.transaction_status}
+												</span>
+												{transaction?.transaction_status === 'complete' && (
+													<span className="complete-check-icon check-icon">
+														<CheckCircleTwoTone />
+													</span>
+												)}
+												{transaction?.transaction_status === 'active' && (
+													<span className="active-icon">
+														<PlaySquareTwoTone />
+													</span>
+												)}
+											</div>
 										</td>
 
 										<td className="view-orders">
