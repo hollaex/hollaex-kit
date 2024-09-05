@@ -292,6 +292,9 @@ const nestedIcons = {
 	CONNECT_DESKTOP: '/assets/stake/connect-via-desktop.svg',
 	SEARCH_BLOCKCHAIN: '/assets/images/search-blockchain.svg',
 	ASSET_INFO_COIN: '/assets/images/digital-assets-coins.svg',
+	GAINER_CARD_ICON: '/assets/images/gainer-arrow-up.svg',
+	LOSER_CARD_ICON: '/assets/images/arrow-down-loser.svg',
+	NEW_ASSET_CARD_ICON: '/assets/images/new-coin-bolt.svg',
 	CLOCK: '/assets/images/clock.svg',
 	REVOKE_SESSION: '/assets/images/signout.svg',
 
