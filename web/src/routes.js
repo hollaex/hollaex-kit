@@ -255,8 +255,7 @@ function withAdminProps(Component, key) {
 		'plugins',
 		'tiers',
 		'roles',
-		'billing',
-		'fiat',
+		'billing'
 	];
 
 	PATHS.map((data) => {
