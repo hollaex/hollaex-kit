@@ -1,20 +1,18 @@
-/* eslint-disable */
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { ReactSVG } from 'react-svg';
+import { withRouter } from 'react-router';
+import { Tabs, message } from 'antd';
 
-import { IconTitle, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { Tabs, message } from 'antd';
 import P2PDash from './P2PDash';
 import P2PMyDeals from './P2PMyDeals';
 import P2POrders from './P2POrders';
 import P2PPostDeal from './P2PPostDeal';
 import P2PProfile from './P2PProfile';
 import P2POrder from './P2POrder';
+import { EditWrapper } from 'components';
 import { fetchTransactions } from './actions/p2pActions';
-import { withRouter } from 'react-router';
 const TabPane = Tabs.TabPane;
 
 const P2P = ({
@@ -73,6 +71,7 @@ const P2P = ({
 		if (arr?.[2] === 'mydeals') {
 			setTab('4');
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [window.location.pathname]);
 
 	const changeProfileTab = (merchant) => {
@@ -80,18 +79,15 @@ const P2P = ({
 		setTab('2');
 	};
 	return (
-		<div
-			style={{ height: 600, width: '100%', padding: 20, marginBottom: 400 }}
-			className="summary-container"
-		>
+		<div className="p2p-summary-container">
 			{!displayOrder && (
 				<>
-					<div style={{ textAlign: 'center', fontSize: 19 }}>
+					<div className="p2p-title">
 						<EditWrapper stringId="P2P.TITLE">
 							{STRINGS['P2P.TITLE']}
 						</EditWrapper>
 					</div>
-					<div style={{ textAlign: 'center', marginBottom: 15 }}>
+					<div className="secondary-text text-center mb-3">
 						<EditWrapper stringId="P2P.DESCRIPTION">
 							{STRINGS['P2P.DESCRIPTION']}
 						</EditWrapper>

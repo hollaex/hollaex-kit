@@ -1,17 +1,17 @@
-/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-// import { ReactSVG } from 'react-svg';
+import { isMobile } from 'react-device-detect';
+import { Button, Checkbox, message } from 'antd';
+import { RightOutlined } from '@ant-design/icons';
 
-import { IconTitle, EditWrapper } from 'components';
+import './_P2P.scss';
+import classnames from 'classnames';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { Button, Checkbox, message } from 'antd';
+import { Coin, EditWrapper } from 'components';
 import { fetchDeals, editDeal, removeDeal } from './actions/p2pActions';
 import { formatToCurrency } from 'utils/currency';
-import { isMobile } from 'react-device-detect';
-import classnames from 'classnames';
-import './_P2P.scss';
+
 const P2PMyDeals = ({
 	data,
 	onClose,
@@ -53,15 +53,15 @@ const P2PMyDeals = ({
 
 	return (
 		<div
-			className={classnames(...['P2pOrder', isMobile ? 'mobile-view-p2p' : ''])}
-			style={{
-				height: 600,
-				overflowY: 'auto',
-				width: '100%',
-				padding: 20,
-			}}
+			className={classnames(
+				...[
+					'P2pOrder',
+					'p2p-mydeals-wrapper w-100',
+					isMobile ? 'mobile-view-p2p' : '',
+				]
+			)}
 		>
-			<div style={{ display: 'flex', gap: 10 }}>
+			<div className="p2p-mydeals-content-wrapper">
 				<span>
 					<Checkbox
 						onChange={(e) => {
@@ -71,7 +71,6 @@ const P2PMyDeals = ({
 								setCheks([]);
 							}
 						}}
-						style={{ position: 'relative', top: 5 }}
 						className="whiteTextP2P"
 					>
 						{myDeals.length === 0 ? (
@@ -154,21 +153,11 @@ const P2PMyDeals = ({
 					</Button>
 				</span>
 			</div>
-
-			<div className="stake_theme" style={{ display: 'flex', marginTop: 20 }}>
-				<table
-					style={{ border: 'none', borderCollapse: 'collapse', width: '100%' }}
-				>
-					<thead>
-						<tr
-							className="table-bottom-border"
-							style={{ borderBottom: 'grey 1px solid', padding: 10 }}
-						>
-							<th>
-								<EditWrapper stringId="P2P.EDIT">
-									{STRINGS['P2P.EDIT']}
-								</EditWrapper>
-							</th>
+			<div className="p2p-mydeals-table-wrapper">
+				<table className="p2p-mydeals-table-content-wrapper important-text w-100">
+					<thead className="secondary-text">
+						<tr className="table-bottom-border">
+							<th></th>
 							<th>
 								<EditWrapper stringId="P2P.SIDE">
 									{STRINGS['P2P.SIDE']}
@@ -201,19 +190,11 @@ const P2PMyDeals = ({
 							</th>
 						</tr>
 					</thead>
-					<tbody className="font-weight-bold">
+					<tbody>
 						{myDeals.map((deal) => {
 							return (
-								<tr
-									className="table-row"
-									style={{
-										borderBottom: 'grey 1px solid',
-										padding: 10,
-										position: 'relative',
-									}}
-									//  key={index}
-								>
-									<td style={{ width: '5%' }} className="td-fit">
+								<tr className="table-row">
+									<td className="td-fit w-fit-content">
 										<Checkbox
 											checked={checks.find((id) => id === deal.id)}
 											onChange={(e) => {
@@ -226,18 +207,14 @@ const P2PMyDeals = ({
 											}}
 										/>
 									</td>
-
-									<td style={{ width: '15%' }} className="td-fit">
-										<Button
-											className={
-												deal.side === 'sell' ? 'sellSideP2P' : 'buySideP2P'
-											}
-										>
-											{deal.side.toUpperCase()}{' '}
-										</Button>
+									<td
+										className={`td-fit w-fit-content ${
+											deal.side === 'sell' ? 'sellSideP2P' : 'buySideP2P'
+										}`}
+									>
+										<Button className="text-capitalize">{deal.side} </Button>
 									</td>
-
-									<td style={{ width: '15%' }} className="td-fit">
+									<td className="td-fit w-fit-content">
 										{deal.status ? (
 											<EditWrapper stringId="P2P.ACTIVE">
 												{STRINGS['P2P.ACTIVE']}
@@ -248,56 +225,59 @@ const P2PMyDeals = ({
 											</EditWrapper>
 										)}
 									</td>
-									<td style={{ width: '15%' }} className="td-fit">
-										{formatRate(
+									<td className="td-fit w-fit-content fs-">
+										<span className="font-weight-bold fs-16">{` ${formatRate(
 											deal.exchange_rate,
 											deal.spread,
 											deal.spending_asset,
 											deal.side
-										)}{' '}
+										)}`}</span>{' '}
 										{deal.spending_asset.toUpperCase()}
 									</td>
-									<td style={{ width: '15%' }} className="td-fit">
-										<div>
-											<EditWrapper stringId="P2P.AVAILABLE">
-												{STRINGS['P2P.AVAILABLE']}
-											</EditWrapper>
-											: {deal.total_order_amount}{' '}
-											{deal.buying_asset.toUpperCase()}
+									<td className="td-fit w-fit-content">
+										<div className="mt-3 mb-2 avaliable-amount-detail">
+											<span className="secondary-text-inactive">
+												<EditWrapper stringId="P2P.AVAILABLE">
+													{STRINGS['P2P.AVAILABLE']}
+												</EditWrapper>
+												:
+											</span>
+											<span>{deal.total_order_amount}</span>
+											<span>{deal.buying_asset.toUpperCase()}</span>
+											<Coin
+												iconId={coins[deal?.buying_asset]?.icon_id}
+												type="CS4"
+											/>
 										</div>
 										<div>
-											<EditWrapper stringId="P2P.LIMIT">
-												{STRINGS['P2P.LIMIT']}
-											</EditWrapper>
-											: {deal.min_order_value} - {deal.max_order_value}{' '}
+											<span className="secondary-text-inactive">
+												<EditWrapper stringId="P2P.LIMIT">
+													{STRINGS['P2P.LIMIT']}
+												</EditWrapper>
+												:
+											</span>{' '}
+											{`${deal.min_order_value} - ${deal.max_order_value}`}{' '}
 											{deal.spending_asset.toUpperCase()}
 										</div>
 									</td>
-									<td
-										style={{
-											width: '15%',
-											flexWrap: 'wrap',
-											display: 'flex',
-											padding: 5,
-										}}
-									>
+									<td className="w-fit-content pay-methods mt-2">
 										{deal.payment_methods
 											.map((method) => method.system_name)
 											.join(', ')}
 									</td>
-									<td style={{ width: '15%' }} className="td-fit">
+									<td className="td-fit w-fit-content">
 										<Button
 											onClick={() => {
 												setSelectedDealEdit(deal);
 												setTab('3');
 											}}
 											ghost
-											className="whiteTextP2P"
+											className="whiteTextP2P edit-deal-btn"
 										>
 											<EditWrapper stringId="P2P.EDIT_DEAL_BUTTON">
 												{STRINGS['P2P.EDIT_DEAL_BUTTON']}
 											</EditWrapper>
-											: {deal.side.toUpperCase()}
+											<RightOutlined />
 										</Button>
 									</td>
 								</tr>

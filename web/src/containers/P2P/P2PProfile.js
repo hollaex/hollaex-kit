@@ -1,21 +1,15 @@
 /* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import { isMobile } from 'react-device-detect';
+import { Button, message, Rate, Modal, Input, Select } from 'antd';
+import moment from 'moment';
 
-import { IconTitle, EditWrapper } from 'components';
+import './_P2P.scss';
+import classnames from 'classnames';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
-import {
-	Button,
-	Checkbox,
-	message,
-	Rate,
-	Modal,
-	Input,
-	Radio,
-	Space,
-	Select,
-} from 'antd';
+import { Dialog, EditWrapper } from 'components';
 import {
 	fetchFeedback,
 	fetchP2PProfile,
@@ -24,11 +18,6 @@ import {
 	updateP2PPaymentMethod,
 	deleteP2PPaymentMethod,
 } from './actions/p2pActions';
-import { isMobile } from 'react-device-detect';
-import classnames from 'classnames';
-import moment from 'moment';
-import { CloseOutlined } from '@ant-design/icons';
-import './_P2P.scss';
 
 const P2PProfile = ({
 	data,
@@ -49,9 +38,9 @@ const P2PProfile = ({
 	p2p_config,
 }) => {
 	const [myDeals, setMyDeals] = useState([]);
-	const [checks, setCheks] = useState([]);
+	// const [checks] = useState([]);
 	const [myProfile, setMyProfile] = useState();
-	const [selectedUser, setSelectedUser] = useState(user);
+	const [selectedUser] = useState(user);
 	const [selectedTab, setSelectedTab] = useState('0');
 	const [paymentMethods, setPaymentMethods] = useState([]);
 	const [selectedMethod, setSelectedMethod] = useState({
@@ -61,9 +50,10 @@ const P2PProfile = ({
 	});
 	const [addMethodDetails, setAddMethodDetails] = useState();
 	const [myMethods, setMyMethods] = useState([]);
-	const [displayPaymentAdd, setDisplayPaymentAdd] = useState(false);
+	// const [displayPaymentAdd, setDisplayPaymentAdd] = useState(false);
 	const [displayNewPayment, setDisplayNewPayment] = useState(false);
 	const [paymentFieldAdd, setPaymentFieldAdd] = useState(false);
+	const [displayConfirmation, setDisplayConfirmation] = useState(false);
 	const [paymentMethod, setPaymentMethod] = useState({
 		system_name: null,
 		fields: {},
@@ -101,6 +91,7 @@ const P2PProfile = ({
 			.catch((err) => err);
 
 		setDefaultPaymentMethod();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [refresh, selectedProfile]);
 
 	const setDefaultPaymentMethod = () => {
@@ -120,25 +111,21 @@ const P2PProfile = ({
 	};
 	return (
 		<div
-			className={classnames(...['P2pOrder', isMobile ? 'mobile-view-p2p' : ''])}
-			style={{
-				height: 600,
-				overflowY: 'auto',
-				width: '100%',
-				padding: 20,
-			}}
+			className={classnames(
+				...[
+					'P2pOrder p2p-profile-wrapper w-100',
+					isMobile ? 'mobile-view-p2p' : '',
+				]
+			)}
 		>
-			<div
-				className="stake_theme"
-				style={{ display: 'flex', marginTop: 20, flexDirection: 'column' }}
-			>
-				<div style={{ fontWeight: 'bold', fontSize: 17, marginTop: -25 }}>
+			<div className="p2p-profile-content-wrapper">
+				<div className="display-label fs-16 important-text">
 					<EditWrapper stringId="P2P.DISPLAY_NAME">
 						{STRINGS['P2P.DISPLAY_NAME']}
 					</EditWrapper>
 				</div>
-				<div style={{ marginBottom: 20 }}>
-					{(selectedProfile || selectedUser).full_name || (
+				<div className="mb-4">
+					{(selectedProfile || selectedUser)?.full_name || (
 						<EditWrapper stringId="P2P.ANONYMOUS">
 							{STRINGS['P2P.ANONYMOUS']}
 						</EditWrapper>
@@ -149,77 +136,35 @@ const P2PProfile = ({
 					<div><Checkbox style={{ color: 'white' }} checked={true}>SMS</Checkbox></div>
 					<div><Checkbox style={{ color: 'white' }} checked={true}>ID</Checkbox></div>
 				</div> */}
-				<div
-					style={{
-						textAlign: 'center',
-						display: 'flex',
-						justifyContent: 'center',
-						alignItems: 'center',
-					}}
-				>
-					<div
-						style={{
-							display: 'flex',
-							justifyContent: 'space-between',
-							gap: 10,
-							marginBottom: 10,
-							width: '70%',
-						}}
-					>
-						<div
-							style={{
-								padding: 20,
-								width: 200,
-								textAlign: 'center',
-								fontWeight: 'bold',
-								borderRadius: 5,
-								border: '1px solid grey',
-							}}
-						>
-							<div style={{ fontSize: 16 }}>
+				<div className="profile-card-wrapper">
+					<div className="profile-card-content-wrapper important-text">
+						<div className="profile-cards">
+							<div className="fs-14 text-uppercase">
 								<EditWrapper stringId="P2P.TOTAL_ORDERS">
 									{STRINGS['P2P.TOTAL_ORDERS']}
 								</EditWrapper>
 							</div>
-							<div style={{ fontSize: 17 }}>
-								{myProfile?.totalTransactions} times
+							<div className="fs-18">
+								{myProfile?.totalTransactions} {STRINGS['P2P.TIMES']}
 							</div>
 						</div>
-						<div
-							style={{
-								padding: 20,
-								width: 200,
-								textAlign: 'center',
-								fontWeight: 'bold',
-								borderRadius: 5,
-								border: '1px solid grey',
-							}}
-						>
-							<div style={{ fontSize: 16 }}>
+						<div className="profile-cards">
+							<div className="fs-14 text-uppercase">
 								<EditWrapper stringId="P2P.COMPLETION_RATE">
 									{STRINGS['P2P.COMPLETION_RATE']}
 								</EditWrapper>
 							</div>
-							<div style={{ fontSize: 17 }}>
+							<div className="fs-18">
 								{(myProfile?.completionRate || 0).toFixed(2)}%
 							</div>
 						</div>
-						<div
-							style={{
-								padding: 20,
-								width: 200,
-								textAlign: 'center',
-								fontWeight: 'bold',
-								borderRadius: 5,
-								border: '1px solid grey',
-							}}
-						>
-							<div style={{ fontSize: 16 }}>
+						<div className="profile-cards">
+							<div className="fs-14 text-uppercase">
 								<EditWrapper stringId="P2P.POSITIVE_FEEDBACK">
 									{STRINGS['P2P.POSITIVE_FEEDBACK']}
 								</EditWrapper>
 							</div>
-							<div style={{ fontSize: 17 }}>
+							<div className="fs-18">
 								{(myProfile?.positiveFeedbackRate || 0).toFixed(2)}%
 							</div>
 							<div>
@@ -236,19 +181,13 @@ const P2PProfile = ({
 					</div>
 				</div>
 
-				<div style={{ display: 'flex', flexDirection: 'row', gap: 10 }}>
+				<div className="p2p-btn-wrapper mt-3 mb-5">
 					<div
-						style={{
-							marginTop: 10,
-							marginBottom: 10,
-							border: '1px solid grey',
-							padding: 5,
-							width: 200,
-							borderRadius: 10,
-							fontWeight: 'bold',
-							cursor: 'pointer',
-							textAlign: 'center',
-						}}
+						className={`${
+							selectedTab === '0'
+								? 'active-btn important-text method-btn'
+								: 'method-btn'
+						}`}
 						onClick={() => {
 							setSelectedTab('0');
 						}}
@@ -259,62 +198,46 @@ const P2PProfile = ({
 					</div>
 
 					<div
-						style={{
-							marginTop: 10,
-							marginBottom: 10,
-							border: '1px solid grey',
-							padding: 5,
-							width: 150,
-							borderRadius: 10,
-							fontWeight: 'bold',
-							cursor: 'pointer',
-							textAlign: 'center',
-						}}
+						className={`${
+							selectedTab === '1'
+								? 'active-btn important-text feedback-btn'
+								: 'feedback-btn'
+						}`}
 						onClick={() => {
 							setSelectedTab('1');
 						}}
 					>
-						Feedback({myDeals.length || 0})
+						<EditWrapper stringId="P2P.P2P_METHODS">
+							{STRINGS['P2P.FEEDBACK']}
+						</EditWrapper>
+						({myDeals.length || 0})
 					</div>
 				</div>
 				{selectedTab === '0' && (
-					<div>
-						<div style={{ display: 'flex', justifyContent: 'space-between' }}>
-							<div style={{ flex: 1 }}>
-								<div style={{ maxWidth: 500 }}>
-									<div
-										style={{
-											fontSize: 15,
-											fontWeight: 'bold',
-											marginBottom: 10,
-										}}
-									>
+					<div className="payment-method-wrapper">
+						<div className="d-flex justify-content-between">
+							<div className="flex-1">
+								<div className="pay-method-desc-wrapper">
+									<div className="pay-method-label important-text">
 										<EditWrapper stringId="P2P.PAYMENT_METHODS">
 											{STRINGS['P2P.PAYMENT_METHODS']}
 										</EditWrapper>
 									</div>
-									<div>
+									<div className="secondary-text">
 										<EditWrapper stringId="P2P.PAYMENT_METHODS_DEC">
 											{STRINGS['P2P.PAYMENT_METHODS_DEC']}
 										</EditWrapper>
 									</div>
 								</div>
 							</div>
-							<div style={{ flex: 1 }}>
+							<div className="flex-1">
 								<div>
-									<div
-										style={{
-											fontSize: 15,
-											fontWeight: 'bold',
-											marginBottom: 10,
-										}}
-									>
+									<div className="pay-method-label important-text">
 										<EditWrapper stringId="P2P.PAYMENT_METHODS_SEND_FIAT">
 											{STRINGS['P2P.PAYMENT_METHODS_SEND_FIAT']}
 										</EditWrapper>
 									</div>
-
-									<div style={{ marginBottom: 10 }}>
+									<div className="mt-2 mb-3">
 										<Button
 											className="purpleButtonP2P"
 											onClick={() => {
@@ -334,17 +257,9 @@ const P2PProfile = ({
 												(x) => x?.details?.system_name === method?.system_name
 											);
 											return (
-												<div style={{ display: 'flex', gap: 5 }}>
+												<div className="payment-fields">
 													<div
-														style={{
-															width: 250,
-															display: 'flex',
-															justifyContent: 'space-between',
-															border: '1px solid grey',
-															padding: 5,
-															cursor: 'pointer',
-														}}
-														className={'whiteTextP2P'}
+														className="whiteTextP2P field pay-field"
 														onClick={() => {
 															const newSelected = [...paymentMethods];
 
@@ -374,94 +289,47 @@ const P2PProfile = ({
 																setSelectedMethod(method);
 																setAddMethodDetails(true);
 															}}
-															className="whiteTextP2P"
-															style={{
-																cursor: 'pointer',
-																position: 'relative',
-																top: 5,
-															}}
+															className="edit-txt blue-link"
 														>
 															<EditWrapper stringId="P2P.EDIT_UPPERCASE">
-																<span style={{ textDecoration: 'underline' }}>
-																	{STRINGS['P2P.EDIT_UPPERCASE']}
-																</span>
+																<span>{STRINGS['P2P.EDIT_UPPERCASE']}</span>
 															</EditWrapper>
 														</div>
 													)}
 													<div
-														onClick={async () => {
-															const found = myMethods.find(
-																(x) =>
-																	x?.details?.system_name ===
-																	method?.system_name
-															);
-															await deleteP2PPaymentMethod({ id: found.id });
-															message.success(
-																STRINGS['P2P.PAYMENT_METHOD_DELETED']
-															);
-															fetchP2PPaymentMethods({ is_p2p: true })
-																.then((res) => {
-																	setMyMethods(res.data);
-																})
-																.catch((err) => err);
+														onClick={() => {
+															setSelectedMethod(method);
+															setDisplayConfirmation(true);
 														}}
-														className="whiteTextP2P"
-														style={{
-															cursor: 'pointer',
-															position: 'relative',
-															top: 5,
-														}}
+														className="delete-txt blue-link"
 													>
 														<EditWrapper stringId="P2P.DELETE_UPPERCASE">
-															<span style={{ textDecoration: 'underline' }}>
-																{STRINGS['P2P.DELETE_UPPERCASE']}
-															</span>
+															<span>{STRINGS['P2P.DELETE_UPPERCASE']}</span>
 														</EditWrapper>
 													</div>
 													<div>
 														{info?.status === 0 && (
-															<span
-																style={{
-																	position: 'relative',
-																	top: 5,
-																	marginLeft: 6,
-																}}
-															>
-																(Unverified)
+															<span className="unverified-label">
+																({STRINGS['P2P.UNVERIFIED']})
 															</span>
 														)}
 														{info?.status === 1 && (
-															<span
-																style={{
-																	position: 'relative',
-																	top: 5,
-																	marginLeft: 6,
-																}}
-															>
-																(Pending)
+															<span className="pending-label">
+																({STRINGS['TRANSACTION_STATUS.PENDING']})
 															</span>
 														)}
 														{info?.status === 2 && (
-															<span
-																style={{
-																	position: 'relative',
-																	top: 5,
-																	marginLeft: 6,
-																}}
-															>
-																(Rejected)
+															<span className="rejected-label">
+																({STRINGS['TRANSACTION_STATUS.REJECTED']})
 															</span>
 														)}
 														{info?.status === 3 && (
-															<span
-																style={{
-																	position: 'relative',
-																	top: 5,
-																	marginLeft: 6,
-																}}
-															>
-																(Verified)
-															</span>
+															<div className="d-flex">
+																<div className="verified-label">
+																	({STRINGS['P2P.VERIFIED']})
+																</div>
+																<div className="mt-2 ml-2">✔</div>
+															</div>
 														)}
 													</div>
 												</div>
@@ -473,34 +341,17 @@ const P2PProfile = ({
 					</div>
 				)}
 				{selectedTab === '1' && (
-					<div>
-						{myDeals.length == 0 ? (
-							<div
-								style={{
-									textAlign: 'center',
-									fontSize: 15,
-									border: '1px solid grey',
-									padding: 10,
-									borderRadius: 5,
-								}}
-							>
+					<div className="feedback-wrapper">
+						{myDeals.length === 0 ? (
+							<div className="no-feedback">
 								<EditWrapper stringId="P2P.NO_FEEDBACK">
 									{STRINGS['P2P.NO_FEEDBACK']}
 								</EditWrapper>
 							</div>
 						) : (
-							<table
-								style={{
-									border: 'none',
-									borderCollapse: 'collapse',
-									width: '100%',
-								}}
-							>
+							<table className="feedback-table-wrapper w-100">
 								<thead>
-									<tr
-										className="table-bottom-border"
-										style={{ borderBottom: 'grey 1px solid', padding: 10 }}
-									>
+									<tr className="table-header-wrapper">
 										<th>
 											<EditWrapper stringId="P2P.DATE">
 												{STRINGS['P2P.DATE']}
@@ -523,33 +374,24 @@ const P2PProfile = ({
 										</th>
 									</tr>
 								</thead>
-								<tbody className="font-weight-bold">
+								<tbody className="important-text">
 									{myDeals.map((deal) => {
 										return (
-											<tr
-												className="table-row"
-												style={{
-													borderBottom: 'grey 1px solid',
-													padding: 10,
-													position: 'relative',
-												}}
-											>
-												<td style={{ width: '25%' }} className="td-fit">
+											<tr className="table-row">
+												<td className="w-25 td-fit">
 													{moment(deal.created_at).format(
 														'DD/MMM/YYYY, hh:mmA'
 													)}
 												</td>
-												<td style={{ width: '25%' }} className="td-fit">
+												<td className="w-25 td-fit">
 													{deal.user.full_name || (
 														<EditWrapper stringId="P2P.ANONYMOUS">
 															{STRINGS['P2P.ANONYMOUS']}
 														</EditWrapper>
 													)}
 												</td>
-												<td style={{ width: '25%' }} className="td-fit">
-													{deal.comment}
-												</td>
-												<td style={{ width: '25%' }} className="td-fit">
+												<td className="w-25 td-fit">{deal.comment}</td>
+												<td className="w-25 td-fit">
 													<Rate
 														disabled
 														allowHalf={false}
@@ -566,23 +408,15 @@ const P2PProfile = ({
 						)}
 					</div>
 				)}
-				<Modal
-					maskClosable={false}
-					closeIcon={<CloseOutlined className="whiteTextP2P" />}
-					bodyStyle={{
-						marginTop: 60,
-					}}
-					className="stake_theme"
-					visible={addMethodDetails}
+				<Dialog
+					className="add-payment-method-detail-popup"
+					isOpen={addMethodDetails}
 					footer={null}
-					onCancel={() => {
+					onCloseDialog={() => {
 						setAddMethodDetails(false);
 					}}
 				>
-					<div
-						style={{ marginBottom: 20, fontSize: 17 }}
-						className="whiteTextP2P"
-					>
+					<div className="whiteTextP2P add-payment-title">
 						<EditWrapper stringId="P2P.ADD_PAYMENT_METHOD_DETAILS">
 							{STRINGS['P2P.ADD_PAYMENT_METHOD_DETAILS']}
 						</EditWrapper>
@@ -590,17 +424,10 @@ const P2PProfile = ({
 
 					{selectedMethod?.fields?.map((x, index) => {
 						return (
-							<div
-								style={{
-									display: 'flex',
-									justifyContent: 'space-between',
-									marginBottom: 10,
-								}}
-								className="whiteTextP2P"
-							>
-								<div>{x?.name}:</div>
+							<div className="whiteTextP2P selected-payment-method-field-wrapper">
+								<div className="payment-method-title">{x?.name}:</div>
 								<Input
-									style={{ width: 300 }}
+									className="custom-input-field"
 									value={x.value}
 									onChange={(e) => {
 										if (!selectedMethod.fields[index].value)
@@ -625,24 +452,12 @@ const P2PProfile = ({
 						);
 					})}
 
-					<div
-						style={{
-							display: 'flex',
-							flexDirection: 'row',
-							gap: 15,
-							justifyContent: 'space-between',
-							marginTop: 30,
-						}}
-					>
+					<div className="new-payment-popup-button-container">
 						<Button
 							onClick={() => {
 								setAddMethodDetails(false);
 							}}
-							style={{
-								flex: 1,
-								height: 35,
-							}}
-							className="purpleButtonP2P"
+							className="purpleButtonP2P back-btn"
 							type="default"
 						>
 							<EditWrapper stringId="P2P.BACK_UPPER">
@@ -687,36 +502,27 @@ const P2PProfile = ({
 									message.error(error.data.message);
 								}
 							}}
-							style={{
-								flex: 1,
-								height: 35,
-							}}
-							className="purpleButtonP2P"
+							className="purpleButtonP2P complete-btn"
 							type="default"
 						>
 							<EditWrapper stringId="P2P.COMPLETE">
-								{STRINGS['P2P.COMPLETE']}
+								{STRINGS['P2P.COMPLETE'].toUpperCase()}
 							</EditWrapper>
 						</Button>
 					</div>
-				</Modal>
+				</Dialog>
 
 				{displayNewPayment && (
-					<Modal
-						maskClosable={false}
-						closeIcon={<CloseOutlined style={{ color: 'white' }} />}
-						bodyStyle={{
-							marginTop: 60,
-						}}
-						className="stake_theme"
-						visible={displayNewPayment}
-						width={600}
-						footer={null}
-						onCancel={() => {
+					<Dialog
+						className="p2p-new-payment-pop-up"
+						isOpen={displayNewPayment}
+						onCloseDialog={() => {
 							setDisplayNewPayment(false);
 						}}
+						shouldCloseOnOverlayClick={true}
+						showCloseText={true}
 					>
-						<h1 style={{ fontWeight: '600', color: 'white' }}>
+						<h1 className="new-payment-method-title">
 							<EditWrapper stringId="P2P.CREATE_NEW_PAYMENT_METHODS">
 								{STRINGS['P2P.CREATE_NEW_PAYMENT_METHODS']}
 							</EditWrapper>
@@ -726,40 +532,39 @@ const P2PProfile = ({
 								{STRINGS['P2P.MANUAL_PAYMENT_METHOD_ENTRY']}
 							</EditWrapper>{' '}
 						</div>
-
-						<div style={{ marginTop: 20, marginBottom: 30 }}>
+						<div className="mt-3 mb-3">
 							<EditWrapper stringId="P2P.USERS_PAYMENT_SELECTION">
 								{STRINGS['P2P.USERS_PAYMENT_SELECTION']}
 							</EditWrapper>
 						</div>
-
-						<div style={{ fontSize: 20 }}>
+						<div className="custom-line mb-3"></div>
+						<div className="name-detail-title">
 							<EditWrapper stringId="P2P.METHOD_NAME_AND_DETAIL">
 								{STRINGS['P2P.METHOD_NAME_AND_DETAIL']}
 							</EditWrapper>
 						</div>
-
-						<div style={{ marginBottom: 20 }}>
-							<div style={{ fontWeight: 'bold' }}>
+						<div className="mt-3 mb-3 new-payment-field-container">
+							<div>
 								<EditWrapper stringId="P2P.ADD_NEW_PAYMENT_METHODS">
 									{STRINGS['P2P.ADD_NEW_PAYMENT_METHODS']}
 								</EditWrapper>
 							</div>
 							{/* <Input
-								placeholder="Enter your system name"
-								value={paymentMethod.system_name}
-								onChange={(e) => {
+									placeholder="Enter your system name"
+									value={paymentMethod.system_name}
+									onChange={(e) => {
 									setPaymentMethod({
-										...paymentMethod,
-										system_name: e.target.value,
+									...paymentMethod,
+									system_name: e.target.value,
 									});
 								}}
 							/> */}
 
 							<Select
 								showSearch
-								placeholder="Select Payment System"
-								style={{ width: 200 }}
+								className="new-payment-field"
+								dropdownClassName="p2p-custom-style-dropdown"
+								placeholder={STRINGS['P2P.SELECT_PAYMENT_SYSTEM_LABEL']}
 								value={paymentMethod?.system_name}
 								onChange={(e) => {
 									setPaymentMethod({
@@ -783,41 +588,43 @@ const P2PProfile = ({
 							</Select>
 						</div>
 
-						{customFields.map((field) => {
+						{customFields?.map((field) => {
 							return (
-								<div style={{ marginBottom: 30 }}>
-									<div style={{ fontWeight: 'bold', fontSize: 16 }}>
-										FIELD {field.id}#
+								<div className="new-payment-details-input-wrapper mb-3">
+									<div className="font-weight-bold fs-16">
+										{STRINGS['P2P.FIELD']}
+										{field.id}#
 									</div>
-									<div style={{ fontWeight: 'bold', fontSize: 17 }}>
+									<div className="payment-method-title">
 										{/* <EditWrapper stringId="P2P.DETAIL_NAME">
 											{STRINGS['P2P.DETAIL_NAME']}
 										</EditWrapper> */}
 										{field.name}
 									</div>
 									{/* <Input
-										placeholder="Input the payment detail name"
-										readOnly
-										value={field.name}
-										onChange={(e) => {
+											placeholder="Input the payment detail name"
+											readOnly
+											value={field.name}
+											onChange={(e) => {
 											const newCustomFields = [...customFields];
 											const found = newCustomFields.find(
-												(x) => x.id === field.id
+											(x) => x.id === field.id
 											);
 											if (found) {
-												found.name = e?.target?.value;
+											found.name = e?.target?.value;
 											}
 
 											setCustomFields(newCustomFields);
-										}}
-									/> */}
-									<div style={{ fontWeight: 'bold', marginTop: 5 }}>
+											}}
+										/> */}
+									<div className="payment-detail-title mb-2">
 										<EditWrapper stringId="P2P.DETAIL_VALUE">
 											{STRINGS['P2P.DETAIL_VALUE']}
 										</EditWrapper>
 									</div>
 									<Input
-										placeholder="Input the payment detail value"
+										className="custom-input-field"
+										placeholder={STRINGS['P2P.NEW_PAYMENT_PLACEHOLDER']}
 										value={field.value}
 										onChange={(e) => {
 											const newCustomFields = [...customFields];
@@ -827,7 +634,6 @@ const P2PProfile = ({
 											if (found) {
 												found.value = e?.target?.value;
 											}
-
 											setCustomFields(newCustomFields);
 										}}
 									/>
@@ -836,41 +642,29 @@ const P2PProfile = ({
 						})}
 
 						{/* <div
-							style={{
+								style={{
 								fontWeight: 'bold',
 								cursor: 'pointer',
-							}}
-							onClick={() => {
+								}}
+								onClick={() => {
 								setPaymentFieldAdd(true);
-							}}
-						>
-							<EditWrapper stringId="P2P.ADD_NEW_PAYMENT_FIELD">
-								<span style={{ textDecoration: 'underline' }}>
+								}}
+								>
+									<EditWrapper stringId="P2P.ADD_NEW_PAYMENT_FIELD">
+									<span style={{ textDecoration: 'underline' }}>
 									{STRINGS['P2P.ADD_NEW_PAYMENT_FIELD']}
-								</span>
-							</EditWrapper>
+									</span>
+									</EditWrapper>
 						</div> */}
-						<div
-							style={{
-								display: 'flex',
-								flexDirection: 'row',
-								gap: 15,
-								justifyContent: 'space-between',
-								marginTop: 30,
-							}}
-						>
+						<div className="new-payment-popup-button-container">
 							<Button
 								onClick={() => {
 									setDisplayNewPayment(false);
 								}}
-								style={{
-									flex: 1,
-									height: 35,
-								}}
-								className="purpleButtonP2P"
+								className="purpleButtonP2P back-btn"
 								type="default"
 							>
-								Back
+								{STRINGS['BACK_TEXT'].toUpperCase()}
 							</Button>
 
 							<Button
@@ -882,14 +676,14 @@ const P2PProfile = ({
 									paymentMethods.push(payload);
 
 									if (!payload.system_name) {
-										message.error('Please input method name');
+										message.error(STRINGS['P2P.INPUT_METHOD_NAME_TEXT']);
 										return;
 									}
 
 									let hasValidation = true;
 									payload.fields?.forEach((field) => {
 										if (!field.name || !field.value) {
-											message.error('Please input all method fields');
+											message.error(STRINGS['P2P.FIELD_VALIDATION_TEXT']);
 											hasValidation = false;
 										}
 									});
@@ -920,53 +714,43 @@ const P2PProfile = ({
 									]);
 									setRefresh(!refresh);
 								}}
-								style={{
-									flex: 1,
-									height: 35,
-								}}
-								className="purpleButtonP2P"
+								className="purpleButtonP2P add-btn"
 								type="default"
 							>
-								Add
+								{STRINGS['DEVELOPERS_TOKEN.ADD_IP'].toUpperCase()}
 							</Button>
 						</div>
-					</Modal>
+					</Dialog>
 				)}
 
 				{paymentFieldAdd && (
-					<Modal
-						maskClosable={false}
-						closeIcon={<CloseOutlined style={{ color: 'white' }} />}
-						bodyStyle={{
-							marginTop: 60,
-						}}
-						className="stake_theme"
-						visible={paymentFieldAdd}
-						width={450}
-						footer={null}
-						onCancel={() => {
+					<Dialog
+						className="additional-payment-detail-popup"
+						isOpen={paymentFieldAdd}
+						onCloseDialog={() => {
 							setPaymentFieldAdd(false);
 						}}
 					>
-						<h1 style={{ fontWeight: '600', color: 'white' }}>
+						<h1 className="new-payment-method-title">
 							<EditWrapper stringId="P2P.ADDITIONAL_PAYMENT_DETAILS">
 								{STRINGS['P2P.ADDITIONAL_PAYMENT_DETAILS']}
 							</EditWrapper>
 						</h1>
-						<div style={{ marginBottom: 20 }}>
+						<div className="mt-3">
 							<EditWrapper stringId="P2P.PAYMENT_FIELD_INFO">
 								{STRINGS['P2P.PAYMENT_FIELD_INFO']}
 							</EditWrapper>{' '}
 						</div>
 
-						<div style={{ marginBottom: 20 }}>
-							<div style={{ fontWeight: 'bold' }}>
+						<div className="new-payment-details-input-wrapper mt-3">
+							<div className="payment-detail-label">
 								<EditWrapper stringId="P2P.PAYMENT_DETAIL_NAME">
 									{STRINGS['P2P.PAYMENT_DETAIL_NAME']}
 								</EditWrapper>
 							</div>
 							<Input
-								placeholder="Input the payment detail name"
+								className="custom-input-field mt-2"
+								placeholder={STRINGS['P2P.INPUT_PAYMENT_DETAIL_TEXT']}
 								value={customField?.name}
 								onChange={(e) => {
 									setCustomField({
@@ -977,28 +761,16 @@ const P2PProfile = ({
 							/>
 						</div>
 
-						<div
-							style={{
-								display: 'flex',
-								flexDirection: 'row',
-								gap: 15,
-								justifyContent: 'space-between',
-								marginTop: 30,
-							}}
-						>
+						<div className="new-payment-popup-button-container">
 							<Button
 								onClick={() => {
 									setPaymentFieldAdd(false);
 									setCustomField({});
 								}}
-								style={{
-									flex: 1,
-									height: 35,
-								}}
-								className="purpleButtonP2P"
+								className="purpleButtonP2P back-btn"
 								type="default"
 							>
-								Back
+								{STRINGS['BACK_TEXT'].toUpperCase()}
 							</Button>
 
 							<Button
@@ -1009,17 +781,59 @@ const P2PProfile = ({
 									setPaymentFieldAdd(false);
 									setCustomField({});
 								}}
-								style={{
-									flex: 1,
-									height: 35,
-								}}
-								className="purpleButtonP2P"
+								className="purpleButtonP2P add-btn"
 								type="default"
 							>
-								Add
+								{STRINGS['DEVELOPERS_TOKEN.ADD_IP'].toUpperCase()}
 							</Button>
 						</div>
-					</Modal>
+					</Dialog>
+				)}
+				{displayConfirmation && (
+					<Dialog
+						className="p2p-new-payment-pop-up confirm-delete-popup-wrapper"
+						isOpen={displayConfirmation}
+						onCloseDialog={() => {
+							setDisplayConfirmation(false);
+						}}
+						shouldCloseOnOverlayClick={true}
+						showCloseText={true}
+					>
+						<div className="confirm-delete-popup-container">
+							<div className="confirm-popup-delete-title">
+								<EditWrapper stringId="P2P.DELETE_WARNING">
+									{STRINGS['P2P.DELETE_WARNING']}
+								</EditWrapper>
+							</div>
+							<div className="confirm-popup-button-container">
+								<Button
+									className="back-btn"
+									onClick={() => setDisplayConfirmation(false)}
+								>
+									{STRINGS['P2P.NO']}
+								</Button>
+								<Button
+									className="confirm-btn"
+									onClick={async () => {
+										const found = myMethods.find(
+											(x) =>
+												x?.details?.system_name === selectedMethod?.system_name
+										);
+										await deleteP2PPaymentMethod({ id: found.id });
+										message.success(STRINGS['P2P.PAYMENT_METHOD_DELETED']);
+										fetchP2PPaymentMethods({ is_p2p: true })
+											.then((res) => {
+												setMyMethods(res.data);
+											})
+											.catch((err) => err);
+										setDisplayConfirmation(false);
+									}}
+								>
+									{STRINGS['REFERRAL_LINK.CONFIRM']}
+								</Button>
+							</div>
+						</div>
+					</Dialog>
 				)}
 			</div>
 		</div>
