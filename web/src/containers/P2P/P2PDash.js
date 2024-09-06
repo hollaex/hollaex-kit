@@ -9,12 +9,18 @@ import {
 	InputNumber,
 	Rate,
 } from 'antd';
-import { PlusSquareOutlined, MinusSquareOutlined } from '@ant-design/icons';
+import {
+	PlusSquareOutlined,
+	MinusSquareOutlined,
+	ExclamationOutlined,
+	ExclamationCircleFilled,
+} from '@ant-design/icons';
 
 import './_P2P.scss';
 import classnames from 'classnames';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
+import NoDealsData from './Utilis';
 import { EditWrapper, Dialog, Coin } from 'components';
 import {
 	fetchDeals,
@@ -58,6 +64,7 @@ const P2PDash = ({
 	const [methods, setMethods] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [displayUserFeedback, setDisplayUserFeedback] = useState(false);
+	const [displayOrderCreation, setDisplayOrderCreation] = useState(false);
 	const [userFeedback, setUserFeedback] = useState([]);
 	const [userProfile, setUserProfile] = useState();
 	const [selectedProfile, setSelectedProfile] = useState();
@@ -65,7 +72,7 @@ const P2PDash = ({
 	// const inputRef = useRef(null);
 	const [isBuySelected, setIsBuySelected] = useState(true);
 	const [buyValue, setBuyValue] = useState([]);
-	const [selectedCoin, setSelectedCoin] = useState(null);
+	const [selectedCoin, setSelectedCoin] = useState('USDT');
 
 	const displayAssets = ['USDT', 'XHT', 'BTC', 'ETH'];
 
@@ -118,14 +125,27 @@ const P2PDash = ({
 		setBuyValue(filteredDeals);
 	};
 
-	const selectedAsset = (asset) => {
+	const handleCryptoAsset = (asset) => {
 		setSelectedCoin(asset);
+
+		const filteredDeals = deals.filter((deal) =>
+			!isBuySelected ? deal.side === 'buy' : deal.side === 'sell'
+		);
+		const cryptoAsset = filteredDeals.filter((deal) =>
+			asset?.includes(deal?.buying_asset?.toUpperCase())
+		);
+		setBuyValue(cryptoAsset);
 	};
 
 	return (
 		<div
 			className={classnames(
-				...['p2p-tab-container', isMobile ? 'mobile-view-p2p' : '']
+				...[
+					buyValue?.length > 0
+						? 'p2p-tab-container'
+						: 'p2p-tab-container p2p-no-deals-container',
+					isMobile ? 'mobile-view-p2p' : '',
+				]
 			)}
 		>
 			{displayUserFeedback && (
@@ -334,7 +354,7 @@ const P2PDash = ({
 								selectedCoin === asset ? 'selected-asset asset' : 'asset'
 							}
 							key={asset}
-							onClick={() => selectedAsset(asset)}
+							onClick={() => handleCryptoAsset(asset)}
 						>
 							{asset}
 						</div>
@@ -434,664 +454,942 @@ const P2PDash = ({
 					</span>
 				</div>
 			</div>
-			<div className="stake_theme p2p-table-container mt-5">
-				<table className="p2p-stake-table fs-12 w-100">
-					<thead className="p2p-stake-table-header secondary-text">
-						<tr>
-							<th className="text-align-start p2p-vendor-header">
-								<EditWrapper stringId="P2P.VENDOR">
-									{STRINGS['P2P.VENDOR']}
-								</EditWrapper>
-							</th>
-							<th>
-								<EditWrapper stringId="P2P.PRICE_LOWEST_FIRST">
-									{STRINGS['P2P.PRICE_LOWEST_FIRST']}
-								</EditWrapper>
-							</th>
-							<th>
-								<EditWrapper stringId="P2P.LIMIT_AVAILABLE">
-									{STRINGS['P2P.LIMIT_AVAILABLE']}
-								</EditWrapper>
-							</th>
-							<th>
-								<EditWrapper stringId="P2P.PAYMENT">
-									{STRINGS['P2P.PAYMENT']}
-								</EditWrapper>
-							</th>
-							<th className="text-align-center">
-								<EditWrapper stringId="P2P.TRADE">
-									{STRINGS['P2P.TRADE']}
-								</EditWrapper>
-							</th>
-						</tr>
-					</thead>
-					<tbody className="p2p-table-body-container">
-						{buyValue
-							?.filter(
-								(deal) =>
-									(filterCoin ? filterCoin === deal.spending_asset : true) &&
-									(filterDigital
-										? filterDigital === deal.buying_asset
-										: true) &&
-									(filterAmount ? filterAmount < deal.max_order_value : true) &&
-									(filterMethod
-										? deal.payment_methods.find(
-												(x) => x.system_name === filterMethod
-										  )
-										: true) &&
-									(filterRegion ? filterRegion === deal.region : true)
-							)
-							.map((deal) => {
-								return (
-									<>
-										<tr
-											className={
-												expandRow && expandRow && deal.id === selectedDeal.id
-													? 'subTable p2p-expendable-row'
-													: 'p2p-table-row'
-											}
-										>
-											<td
-												onClick={() => {
-													setExpandRow(!expandRow);
-													setSelectedDeal(deal);
-													setAmountCurrency();
-													setSelectedMethod();
-													setAmountFiat();
-												}}
-												className="td-fit vendor-title"
-											>
-												<span>
-													{expandRow && deal.id === selectedDeal.id ? (
-														<MinusSquareOutlined />
-													) : (
-														<PlusSquareOutlined />
-													)}
-												</span>{' '}
-												<span className="ml-2">
-													{deal.merchant.full_name || (
-														<EditWrapper stringId="P2P.ANONYMOUS">
-															{STRINGS['P2P.ANONYMOUS']}
-														</EditWrapper>
-													)}
-												</span>
-											</td>
-											<td
-												onClick={() => {
-													setExpandRow(!expandRow);
-													setSelectedDeal(deal);
-													setAmountCurrency();
-													setSelectedMethod();
-													setAmountFiat();
-												}}
-												className="td-fit price-value"
-											>
-												<span className="fs-16">{`${formatRate(
-													deal.exchange_rate,
-													deal.spread,
-													deal.spending_asset,
-													deal.side
-												)}`}</span>{' '}
-												<span>{deal.spending_asset.toUpperCase()}</span>
-											</td>
-											<td
-												className="td-fit avaliable-amount"
-												onClick={() => {
-													setExpandRow(!expandRow);
-													setSelectedDeal(deal);
-													setAmountCurrency();
-													setSelectedMethod();
-													setAmountFiat();
-												}}
-											>
-												<div className="p2p-avaliable-price">
-													<EditWrapper stringId="P2P.AVAILABLE">
-														{STRINGS['P2P.AVAILABLE']}:
-													</EditWrapper>
-													<div className="mt-3" s>
-														<EditWrapper stringId="P2P.LIMIT">
-															{STRINGS['P2P.LIMIT']}:
-														</EditWrapper>
-													</div>
-												</div>
-												<div className="p2p-limit-price">
-													<div className="p2p-avaliable-price">
-														<span className="ml-1">
-															{deal.total_order_amount}{' '}
-														</span>
-														<span>{deal.buying_asset.toUpperCase()}</span>
-														<Coin
-															iconId={coins[deal?.buying_asset].icon_id}
-															type="CS4"
-														/>
-													</div>
-													<div className="mt-3">
-														<span className="ml-1">
-															{deal.min_order_value} - {deal.max_order_value}{' '}
-														</span>
-														<span>{deal.spending_asset.toUpperCase()}</span>
-													</div>
-												</div>
-											</td>
-											<td
-												className="payment-methods"
-												onClick={() => {
-													setExpandRow(!expandRow);
-													setSelectedDeal(deal);
-													setAmountCurrency();
-													setSelectedMethod();
-													setAmountFiat();
-												}}
-											>
-												<span>
-													{deal.payment_methods
-														.map((method) => method.system_name)
-														.join(', ')}
-												</span>
-											</td>
-											<td className="td-fit trade-button">
-												{!(
-													expandRow &&
-													expandRow &&
-													deal.id === selectedDeal.id
-												) && (
-													<div>
-														<Button
-															className={
-																deal.side === 'sell'
-																	? 'greenButtonP2P'
-																	: 'redButtonP2P'
-															}
-															disabled={loading || expandRow || !user?.id}
-															onClick={async () => {
-																try {
-																	if (!expandRow && deal.id !== selectedDeal) {
-																		setExpandRow(true);
-																		setSelectedDeal(deal);
-																		return;
-																	}
-																	if (amountFiat && selectedMethod) {
-																		setLoading(true);
-																		const transaction = await createTransaction(
-																			{
-																				deal_id: selectedDeal.id,
-																				amount_fiat:
-																					selectedDeal.side === 'sell'
-																						? amountFiat
-																						: amountCurrency,
-																				payment_method_used: selectedMethod,
-																				side: selectedDeal.side,
-																			}
-																		);
-																		message.success(
-																			STRINGS['P2P.ORDER_CREATED']
-																		);
-																		const transData = await fetchTransactions({
-																			id: transaction.id,
-																		});
-																		setSelectedTransaction(transData.data[0]);
-																		setDisplayOrder(true);
-																		setLoading(false);
-																	} else {
-																		message.error(
-																			STRINGS[
-																				'P2P.SELECT_PAYMENT_METHOD_AND_AMOUNT'
-																			]
-																		);
-																		setLoading(false);
-																	}
-																} catch (error) {
-																	message.error(error.data.message);
-																	setLoading(false);
-																}
-															}}
-														>
-															{deal.side === 'sell' ? 'BUY' : 'SELL'}{' '}
-															{deal.buying_asset.toUpperCase()} {'>'}
-														</Button>
-													</div>
-												)}
-											</td>
-										</tr>
-										{expandRow && expandRow && deal.id === selectedDeal.id && (
-											<tr className="subTable p2p-expendable-row">
-												<td className="td-fit title-description">
-													<div
-														className="ml-3"
-														onClick={async () => {
-															// changeProfileTab(deal.merchant);
-															try {
-																setSelectedProfile(deal.merchant);
-																const feedbacks = await fetchFeedback({
-																	merchant_id: deal.merchant.id,
-																});
-																const profile = await fetchP2PProfile({
-																	user_id: deal.merchant.id,
-																});
-																setUserFeedback(feedbacks.data);
-																setUserProfile(profile);
-																setDisplayUserFeedback(true);
-															} catch (error) {
-																return error;
-															}
-														}}
-													>
-														(
-														<EditWrapper stringId="P2P.VIEW_PROFILE">
-															{STRINGS['P2P.VIEW_PROFILE']}
-														</EditWrapper>
-														)
-													</div>
-													<div className="payment-description secondary-text ml-3">
-														<EditWrapper
-															stringId={STRINGS.formatString(
-																STRINGS['P2P.PAYMENT_TIME_LIMIT_LABEL'],
-																STRINGS['P2P.30_MINUTES']
-															)}
-														>
-															{STRINGS.formatString(
-																STRINGS['P2P.PAYMENT_TIME_LIMIT_LABEL'],
-																<span className="payment-time-limit">
-																	{STRINGS['P2P.30_MINUTES']}
+			{buyValue.length > 0 ? (
+				<div className="stake_theme p2p-table-container mt-5">
+					<table className="p2p-stake-table fs-12 w-100">
+						<thead className="p2p-stake-table-header secondary-text">
+							<tr>
+								<th className="text-align-start p2p-vendor-header">
+									<EditWrapper stringId="P2P.VENDOR">
+										{STRINGS['P2P.VENDOR']}
+									</EditWrapper>
+								</th>
+								<th>
+									<EditWrapper stringId="P2P.PRICE_LOWEST_FIRST">
+										{STRINGS['P2P.PRICE_LOWEST_FIRST']}
+									</EditWrapper>
+								</th>
+								<th>
+									<EditWrapper stringId="P2P.LIMIT_AVAILABLE">
+										{STRINGS['P2P.LIMIT_AVAILABLE']}
+									</EditWrapper>
+								</th>
+								<th>
+									<EditWrapper stringId="P2P.PAYMENT">
+										{STRINGS['P2P.PAYMENT']}
+									</EditWrapper>
+								</th>
+								<th className="text-align-center">
+									<EditWrapper stringId="P2P.TRADE">
+										{STRINGS['P2P.TRADE']}
+									</EditWrapper>
+								</th>
+							</tr>
+						</thead>
+						<tbody className="p2p-table-body-container">
+							{buyValue
+								?.filter(
+									(deal) =>
+										(filterCoin ? filterCoin === deal.spending_asset : true) &&
+										(filterDigital
+											? filterDigital === deal.buying_asset
+											: true) &&
+										(filterAmount
+											? filterAmount < deal.max_order_value
+											: true) &&
+										(filterMethod
+											? deal.payment_methods.find(
+													(x) => x.system_name === filterMethod
+											  )
+											: true) &&
+										(filterRegion ? filterRegion === deal.region : true)
+								)
+								.map((deal) => {
+									return (
+										<>
+											{displayOrderCreation && (
+												<Dialog
+													isOpen={displayOrderCreation}
+													onCloseDialog={() => setDisplayOrderCreation(false)}
+													className="p2p-order-creation-popup-wrapper"
+												>
+													<div className="order-creation-popup-container">
+														<div className="asset-order-creation-title important-text font-weight-bold fs-16">
+															<span className="asset-icon">
+																<Coin
+																	iconId={coins[deal?.buying_asset]?.icon_id}
+																	type="CS8"
+																/>
+															</span>
+															<span>{coins[deal?.buying_asset]?.fullname}</span>
+															<span>({deal.buying_asset?.toUpperCase()})</span>
+															<EditWrapper stringId="P2P.ORDER_CREATION">
+																<span>{STRINGS['P2P.ORDER_CREATION']}</span>
+															</EditWrapper>
+														</div>
+														<div className="order-creation-description mt-3">
+															<EditWrapper
+																stringId={STRINGS.formatString(
+																	STRINGS['P2P.ORDER_CREATION_DESC_1'],
+																	STRINGS['P2P.ORDER_CREATION_DESC_2'],
+																	STRINGS['P2P.YOU_HAVE_TEXT'],
+																	<span className="important-text text-decoration-underline">
+																		15 {STRINGS['P2P.MINUTES']}
+																	</span>,
+																	STRINGS['P2P.COMPLETE_PAYMENT_PROCESS']
+																)}
+															>
+																{STRINGS.formatString(
+																	STRINGS['P2P.ORDER_CREATION_DESC_1'],
+																	STRINGS['P2P.ORDER_CREATION_DESC_2'],
+																	STRINGS['P2P.YOU_HAVE_TEXT'],
+																	<span className="important-text text-decoration-underline">
+																		15 {STRINGS['P2P.MINUTES']}
+																	</span>,
+																	STRINGS['P2P.COMPLETE_PAYMENT_PROCESS']
+																)}
+															</EditWrapper>
+														</div>
+														<div className="warning-message-container mt-3">
+															<div className="warning-message-details">
+																<span className="warning-title font-weight-bold important-text">
+																	<EditWrapper stringId="WITHDRAW_PAGE.WARNING">
+																		{STRINGS[
+																			'WITHDRAW_PAGE.WARNING'
+																		]?.toUpperCase()}
+																		<ExclamationOutlined />
+																	</EditWrapper>
 																</span>
-															)}
-														</EditWrapper>
+																<span className="warning-description">
+																	<EditWrapper stringId="P2P.WARINNG_DESC">
+																		{STRINGS['P2P.WARINNG_DESC']}
+																	</EditWrapper>
+																</span>
+																<span className="cancelling-order-message">
+																	<EditWrapper stringId="P2P.ORDER_CANCEL_DESC">
+																		<span className="text-decoration-underline font-weight-bold">
+																			{STRINGS['P2P.ORDER_CANCEL_DESC']}
+																		</span>
+																	</EditWrapper>
+																</span>
+															</div>
+															<div className="confirm-order-creation mt-3 mb-5">
+																<EditWrapper
+																	stringId={STRINGS.formatString(
+																		STRINGS['P2P.CONFIRM_ORDER_CREATION'],
+																		deal.side === 'sell'
+																			? STRINGS['P2P.SEND_MONEY']
+																			: STRINGS['P2P.RECEIVE_MONEY']
+																	)}
+																>
+																	{STRINGS.formatString(
+																		STRINGS['P2P.CONFIRM_ORDER_CREATION'],
+																		deal.side === 'sell'
+																			? STRINGS['P2P.SEND_MONEY']
+																			: STRINGS['P2P.RECEIVE_MONEY']
+																	)}
+																</EditWrapper>
+															</div>
+														</div>
+														<div className="order-create-button-container w-100">
+															<Button
+																className="w-50 back-btn important-text"
+																onClick={() => setDisplayOrderCreation(false)}
+															>
+																<EditWrapper stringId="BACK_TEXT">
+																	{STRINGS['BACK_TEXT'].toUpperCase()}
+																</EditWrapper>
+															</Button>
+															<Button
+																className="w-50 create-order-btn important-text"
+																onClick={async () => {
+																	try {
+																		if (amountFiat && selectedMethod) {
+																			setLoading(true);
+																			const transaction = await createTransaction(
+																				{
+																					deal_id: selectedDeal.id,
+																					amount_fiat:
+																						selectedDeal.side === 'sell'
+																							? amountFiat
+																							: Number(amountCurrency),
+																					payment_method_used: selectedMethod,
+																					side: selectedDeal.side,
+																				}
+																			);
+																			message.success(
+																				STRINGS['P2P.ORDER_CREATED']
+																			);
+																			const transData = await fetchTransactions(
+																				{
+																					id: transaction.id,
+																				}
+																			);
+
+																			setSelectedTransaction(transData.data[0]);
+																			setDisplayOrder(true);
+																			setLoading(false);
+																		} else {
+																			message.error(
+																				STRINGS[
+																					'P2P.SELECT_PAYMENT_METHOD_AND_AMOUNT'
+																				]
+																			);
+																			setLoading(false);
+																		}
+																	} catch (error) {
+																		message.error(error.data.message);
+																		setLoading(false);
+																		setDisplayOrderCreation(false);
+																	}
+																}}
+															>
+																<EditWrapper
+																	strings={STRINGS[
+																		'P2P.CREATE_ORDER'
+																	].toUpperCase()}
+																>
+																	{STRINGS['P2P.CREATE_ORDER'].toUpperCase()}
+																</EditWrapper>
+															</Button>
+														</div>
 													</div>
-													<div className="p2p-terms-condition secondary-text mt-4 ml-3">
-														<EditWrapper stringId="P2P.TERMS_CONDITIONS">
-															{STRINGS['P2P.TERMS_CONDITIONS']}:
+												</Dialog>
+											)}
+											<tr
+												className={
+													expandRow && expandRow && deal.id === selectedDeal.id
+														? 'subTable p2p-expendable-row'
+														: 'p2p-table-row'
+												}
+											>
+												<td
+													onClick={() => {
+														setExpandRow(!expandRow);
+														setSelectedDeal(deal);
+														setAmountCurrency();
+														setSelectedMethod();
+														setAmountFiat();
+													}}
+													className="td-fit vendor-title"
+												>
+													<span>
+														{expandRow && deal.id === selectedDeal.id ? (
+															<MinusSquareOutlined />
+														) : (
+															<PlusSquareOutlined />
+														)}
+													</span>{' '}
+													<span className="ml-2">
+														{deal.merchant.full_name || (
+															<EditWrapper stringId="P2P.ANONYMOUS">
+																{STRINGS['P2P.ANONYMOUS']}
+															</EditWrapper>
+														)}
+													</span>
+												</td>
+												<td
+													onClick={() => {
+														setExpandRow(!expandRow);
+														setSelectedDeal(deal);
+														setAmountCurrency();
+														setSelectedMethod();
+														setAmountFiat();
+													}}
+													className="td-fit price-value"
+												>
+													<span className="fs-16">{`${formatRate(
+														deal.exchange_rate,
+														deal.spread,
+														deal.spending_asset,
+														deal.side
+													)}`}</span>{' '}
+													<span>{deal.spending_asset.toUpperCase()}</span>
+												</td>
+												<td
+													className="td-fit avaliable-amount"
+													onClick={() => {
+														setExpandRow(!expandRow);
+														setSelectedDeal(deal);
+														setAmountCurrency();
+														setSelectedMethod();
+														setAmountFiat();
+													}}
+												>
+													<div className="p2p-avaliable-price">
+														<EditWrapper stringId="P2P.AVAILABLE">
+															{STRINGS['P2P.AVAILABLE']}:
 														</EditWrapper>
-														<span className="deal-terms ml-1">
-															{deal.terms}
-														</span>
+														<div className="mt-3" s>
+															<EditWrapper stringId="P2P.LIMIT">
+																{STRINGS['P2P.LIMIT']}:
+															</EditWrapper>
+														</div>
+													</div>
+													<div className="p2p-limit-price">
+														<div className="p2p-avaliable-price">
+															<span className="ml-1">
+																{deal.total_order_amount}{' '}
+															</span>
+															<span>{deal.buying_asset.toUpperCase()}</span>
+															<Coin
+																iconId={coins[deal?.buying_asset].icon_id}
+																type="CS4"
+															/>
+														</div>
+														<div className="mt-3">
+															<span className="ml-1">
+																{deal.min_order_value} - {deal.max_order_value}{' '}
+															</span>
+															<span>{deal.spending_asset.toUpperCase()}</span>
+														</div>
 													</div>
 												</td>
 												<td
-													className="td-fit payment-details-container"
-													colspan="4"
+													className="payment-methods"
+													onClick={() => {
+														setExpandRow(!expandRow);
+														setSelectedDeal(deal);
+														setAmountCurrency();
+														setSelectedMethod();
+														setAmountFiat();
+													}}
 												>
-													{selectedDeal?.side === 'sell' ? (
-														<div className="payment-details">
-															<div className="payment-method">
-																<EditWrapper stringId="P2P.SELECT_PAYMENT_METHOD">
-																	{STRINGS['P2P.SELECT_PAYMENT_METHOD']}:
-																</EditWrapper>
-																<span className="payment-method-field-container">
-																	<Select
-																		showSearch
-																		className="payment-method-field w-100"
-																		dropdownClassName="p2p-custom-style-dropdown"
-																		placeholder="Payment Method"
-																		value={selectedMethod?.system_name}
-																		onChange={(e) => {
-																			setSelectedMethod(
-																				deal.payment_methods.find(
-																					(x) => x.system_name === e
-																				)
+													<span>
+														{deal.payment_methods
+															.map((method) => method.system_name)
+															.join(', ')}
+													</span>
+												</td>
+												<td className="td-fit trade-button">
+													{!(
+														expandRow &&
+														expandRow &&
+														deal.id === selectedDeal.id
+													) && (
+														<div>
+															<Button
+																className={
+																	deal.side === 'sell'
+																		? 'greenButtonP2P'
+																		: 'redButtonP2P'
+																}
+																disabled={loading || expandRow || !user?.id}
+																onClick={async () => {
+																	try {
+																		if (
+																			!expandRow &&
+																			deal.id !== selectedDeal
+																		) {
+																			setExpandRow(true);
+																			setSelectedDeal(deal);
+																			return;
+																		}
+																		if (amountFiat && selectedMethod) {
+																			setLoading(true);
+																			const transaction = await createTransaction(
+																				{
+																					deal_id: selectedDeal.id,
+																					amount_fiat:
+																						selectedDeal.side === 'sell'
+																							? amountFiat
+																							: amountCurrency,
+																					payment_method_used: selectedMethod,
+																					side: selectedDeal.side,
+																				}
 																			);
-																		}}
-																	>
-																		{deal.payment_methods.map((method) => {
-																			return (
-																				<Select.Option
-																					value={method.system_name}
-																				>
-																					{method.system_name}
-																				</Select.Option>
+																			message.success(
+																				STRINGS['P2P.ORDER_CREATED']
 																			);
-																		})}
-																	</Select>
-																</span>
-															</div>
-
-															<div className="p2p-amount-spent">
-																<span>
-																	<EditWrapper stringId="P2P.SPEND_AMOUNT">
-																		{STRINGS['P2P.SPEND_AMOUNT']}
-																	</EditWrapper>{' '}
-																	({deal.spending_asset.toUpperCase()}):
-																</span>
-
-																<span className="amount-spent-field-container">
-																	<InputNumber
-																		className="amount-spent-field"
-																		value={amountFiat}
-																		onChange={(e) => {
-																			setAmountFiat(e);
-																			const currencyAmount =
-																				Number(e) /
-																				Number(
-																					deal.exchange_rate *
-																						(1 + Number(deal.spread / 100 || 0))
-																				);
-
-																			const formatted = formatAmount(
-																				deal.buying_asset,
-																				currencyAmount
+																			const transData = await fetchTransactions(
+																				{
+																					id: transaction.id,
+																				}
 																			);
-
-																			setAmountCurrency(formatted);
-																		}}
-																		placeholder={deal.spending_asset.toUpperCase()}
-																		autoFocus={true}
-																	/>
-																</span>
-															</div>
-															<div className="p2p-amount-receive">
-																<div className="amount-receive-title">
-																	<span>
-																		<EditWrapper stringId="P2P.AMOUNT_TO_RECEIVE">
-																			{STRINGS['P2P.AMOUNT_TO_RECEIVE']}
-																		</EditWrapper>{' '}
-																		({deal.buying_asset.toUpperCase()})
-																	</span>
-																	<Coin
-																		iconId={coins[deal?.buying_asset].icon_id}
-																		type="CS4"
-																	/>
-																</div>
-
-																<span className="amount-receive-field-container">
-																	<Input
-																		className="greyButtonP2P amount-receive-field"
-																		readOnly
-																		value={amountCurrency}
-																		placeholder={deal.buying_asset.toUpperCase()}
-																	/>
-																</span>
-															</div>
-															<div className="trade-button-container">
-																<Button
-																	className="greyButtonP2P"
-																	onClick={async () => {
-																		setExpandRow(false);
-																		setSelectedDeal(null);
-																		setAmountCurrency();
-																		setSelectedMethod();
-																		setAmountFiat();
-																	}}
-																>
-																	<EditWrapper stringId="P2P.CANCEL">
-																		{STRINGS['P2P.CANCEL']}
-																	</EditWrapper>
-																</Button>
-																<Button
-																	className={
-																		selectedDeal.side === 'sell'
-																			? 'greenButtonP2P'
-																			: 'redButtonP2P'
-																	}
-																	disabled={loading || !user?.id}
-																	onClick={async () => {
-																		try {
-																			if (
-																				!expandRow &&
-																				deal.id !== selectedDeal
-																			) {
-																				setExpandRow(true);
-																				setSelectedDeal(deal);
-																				return;
-																			}
-																			if (amountFiat && selectedMethod) {
-																				setLoading(true);
-																				const transaction = await createTransaction(
-																					{
-																						deal_id: selectedDeal.id,
-																						amount_fiat:
-																							selectedDeal.side === 'sell'
-																								? amountFiat
-																								: amountCurrency,
-																						payment_method_used: selectedMethod,
-																						side: selectedDeal.side,
-																					}
-																				);
-																				message.success(
-																					STRINGS['P2P.ORDER_CREATED']
-																				);
-																				const transData = await fetchTransactions(
-																					{
-																						id: transaction.id,
-																					}
-																				);
-
-																				setSelectedTransaction(
-																					transData.data[0]
-																				);
-																				setDisplayOrder(true);
-																				setLoading(false);
-																			} else {
-																				message.error(
-																					STRINGS[
-																						'P2P.SELECT_PAYMENT_METHOD_AND_AMOUNT'
-																					]
-																				);
-																				setLoading(false);
-																			}
-																		} catch (error) {
-																			message.error(error.data.message);
+																			setSelectedTransaction(transData.data[0]);
+																			setDisplayOrder(true);
+																			setLoading(false);
+																		} else {
+																			message.error(
+																				STRINGS[
+																					'P2P.SELECT_PAYMENT_METHOD_AND_AMOUNT'
+																				]
+																			);
 																			setLoading(false);
 																		}
-																	}}
-																>
-																	{deal.side === 'sell' ? 'BUY' : 'SELL'}{' '}
-																	{deal.buying_asset.toUpperCase()} {'>'}
-																</Button>
-															</div>
-														</div>
-													) : (
-														<div className="payment-details">
-															<div className="payment-method">
-																<EditWrapper stringId="P2P.SELECT_PAYMENT_METHOD">
-																	{STRINGS['P2P.SELECT_PAYMENT_METHOD']}
-																</EditWrapper>
-																{deal?.payment_methods?.filter((a) =>
-																	myMethods?.find(
-																		(x) =>
-																			x.name.toLowerCase() ===
-																			a.system_name?.toLowerCase()
-																	)
-																).length === 0 && (
-																	<span className="add-payment-container">
-																		<Button
-																			onClick={() => {
-																				setTab('2');
-																			}}
-																			className="purpleButtonP2P add-payment-button w-100"
-																		>
-																			<EditWrapper stringId="P2P.ADD_PAYMENT_METHOD">
-																				{STRINGS['P2P.ADD_PAYMENT_METHOD']}
-																			</EditWrapper>
-																		</Button>
-																	</span>
-																)}
-																{deal?.payment_methods?.filter((a) =>
-																	myMethods?.find(
-																		(x) =>
-																			x.name.toLowerCase() ===
-																			a.system_name?.toLowerCase()
-																	)
-																).length > 0 && (
-																	<span className="payment-method-field-container">
-																		<Select
-																			className="payment-method-field w-100"
-																			dropdownClassName="p2p-custom-style-dropdown"
-																			showSearch
-																			placeholder="Payment Method"
-																			value={selectedMethod?.system_name}
-																			onChange={(e) => {
-																				setSelectedMethod(
-																					myMethods.find((x) => x.name === e)
-																						.details
-																				);
-																			}}
-																		>
-																			{deal?.payment_methods
-																				?.filter((a) =>
-																					myMethods?.find(
-																						(x) =>
-																							x.name.toLowerCase() ===
-																							a.system_name?.toLowerCase()
-																					)
-																				)
-																				.map((method) => {
-																					return (
-																						<Select.Option
-																							value={method.system_name}
-																						>
-																							{method.system_name}
-																						</Select.Option>
-																					);
-																				})}
-																		</Select>
-																	</span>
-																)}
-															</div>
-
-															<div className="p2p-amount-spent">
-																<div className="amount-receive-title">
-																	<span>
-																		<EditWrapper stringId="P2P.SELL_AMOUNT">
-																			{STRINGS['P2P.SELL_AMOUNT']}
-																		</EditWrapper>{' '}
-																		({deal.buying_asset.toUpperCase()})
-																	</span>
-																	<Coin
-																		iconId={coins[deal?.buying_asset].icon_id}
-																		type="CS4"
-																	/>
-																</div>
-
-																<span className="amount-spent-field-container">
-																	<InputNumber
-																		className="amount-spent-field"
-																		value={amountFiat}
-																		onChange={(e) => {
-																			setAmountFiat(e);
-																			const currencyAmount =
-																				Number(e) *
-																				Number(
-																					deal.exchange_rate *
-																						(1 - Number(deal.spread / 100 || 0))
-																				);
-
-																			const formatted = formatAmount(
-																				deal.spending_asset,
-																				currencyAmount
-																			);
-
-																			setAmountCurrency(formatted);
-																		}}
-																		placeholder={deal.buying_asset.toUpperCase()}
-																		autoFocus={true}
-																	/>
-																</span>
-															</div>
-															<div className="p2p-amount-receive">
-																<span>
-																	<EditWrapper stringId="P2P.AMOUNT_TO_RECEIVE">
-																		{STRINGS['P2P.AMOUNT_TO_RECEIVE']}
-																	</EditWrapper>{' '}
-																	({deal.spending_asset.toUpperCase()})
-																</span>
-
-																<span className="amount-receive-field-container">
-																	<Input
-																		className="greyButtonP2P amount-receive-field"
-																		readOnly
-																		value={amountCurrency}
-																		placeholder={deal.spending_asset.toUpperCase()}
-																	/>
-																</span>
-															</div>
-															<div className="trade-button-container">
-																<Button
-																	className="greyButtonP2P"
-																	onClick={async () => {
-																		setExpandRow(false);
-																		setSelectedDeal(null);
-																		setAmountCurrency();
-																		setSelectedMethod();
-																		setAmountFiat();
-																	}}
-																>
-																	<EditWrapper stringId="P2P.CANCEL">
-																		{STRINGS['P2P.CANCEL']}
-																	</EditWrapper>
-																</Button>
-
-																<Button
-																	className={
-																		selectedDeal.side === 'sell'
-																			? 'greenButtonP2P'
-																			: 'redButtonP2P'
+																	} catch (error) {
+																		message.error(error.data.message);
+																		setLoading(false);
 																	}
-																	disabled={loading || !user?.id}
-																	onClick={async () => {
-																		try {
-																			if (
-																				!expandRow &&
-																				deal.id !== selectedDeal
-																			) {
-																				setExpandRow(true);
-																				setSelectedDeal(deal);
-																				return;
-																			}
-																			if (amountFiat && selectedMethod) {
-																				setLoading(true);
-																				const transaction = await createTransaction(
-																					{
-																						deal_id: selectedDeal.id,
-																						amount_fiat:
-																							selectedDeal.side === 'sell'
-																								? amountFiat
-																								: Number(amountCurrency),
-																						payment_method_used: selectedMethod,
-																						side: selectedDeal.side,
-																					}
-																				);
-																				message.success(
-																					STRINGS['P2P.ORDER_CREATED']
-																				);
-																				const transData = await fetchTransactions(
-																					{
-																						id: transaction.id,
-																					}
-																				);
-
-																				setSelectedTransaction(
-																					transData.data[0]
-																				);
-																				setDisplayOrder(true);
-																				setLoading(false);
-																			} else {
-																				message.error(
-																					STRINGS[
-																						'P2P.SELECT_PAYMENT_METHOD_AND_AMOUNT'
-																					]
-																				);
-																				setLoading(false);
-																			}
-																		} catch (error) {
-																			message.error(error.data.message);
-																			setLoading(false);
-																		}
-																	}}
-																>
-																	{deal.side === 'sell' ? 'BUY' : 'SELL'}{' '}
-																	{deal.buying_asset.toUpperCase()} {'>'}
-																</Button>
-															</div>
+																}}
+															>
+																{deal.side === 'sell' ? 'BUY' : 'SELL'}{' '}
+																{deal.buying_asset.toUpperCase()} {'>'}
+															</Button>
 														</div>
 													)}
 												</td>
 											</tr>
-										)}
-									</>
-								);
-							})}
-					</tbody>
-				</table>
-			</div>
+											{expandRow && expandRow && deal.id === selectedDeal.id && (
+												<tr className="subTable p2p-expendable-row">
+													<td className="td-fit title-description">
+														<div
+															className="ml-3 mb-4 vendor-profile-description"
+															onClick={async () => {
+																// changeProfileTab(deal.merchant);
+																try {
+																	setSelectedProfile(deal.merchant);
+																	const feedbacks = await fetchFeedback({
+																		merchant_id: deal.merchant.id,
+																	});
+																	const profile = await fetchP2PProfile({
+																		user_id: deal.merchant.id,
+																	});
+																	setUserFeedback(feedbacks.data);
+																	setUserProfile(profile);
+																	setDisplayUserFeedback(true);
+																} catch (error) {
+																	return error;
+																}
+															}}
+														>
+															<EditWrapper stringId="P2P.VIEW_PROFILE">
+																({STRINGS['P2P.VIEW_PROFILE']})
+															</EditWrapper>
+														</div>
+														<div className="payment-description secondary-text ml-3">
+															<EditWrapper
+																stringId={STRINGS.formatString(
+																	STRINGS['P2P.PAYMENT_TIME_LIMIT_LABEL'],
+																	STRINGS['P2P.30_MINUTES']
+																)}
+															>
+																{STRINGS.formatString(
+																	STRINGS['P2P.PAYMENT_TIME_LIMIT_LABEL'],
+																	<span className="payment-time-limit">
+																		{STRINGS['P2P.30_MINUTES']}
+																	</span>
+																)}
+															</EditWrapper>
+														</div>
+														<div className="p2p-terms-condition secondary-text mt-4 ml-3">
+															<EditWrapper stringId="P2P.TERMS_CONDITIONS">
+																{STRINGS['P2P.TERMS_CONDITIONS']}:
+															</EditWrapper>
+															<span className="deal-terms ml-1">
+																{deal.terms}
+															</span>
+														</div>
+													</td>
+													<td
+														className="td-fit payment-details-container"
+														colspan="4"
+													>
+														{selectedDeal?.side === 'sell' ? (
+															<div className="payment-details">
+																<div className="payment-method">
+																	<EditWrapper stringId="P2P.SELECT_PAYMENT_METHOD">
+																		{STRINGS['P2P.SELECT_PAYMENT_METHOD']}:
+																	</EditWrapper>
+																	<span
+																		className={
+																			!selectedMethod?.system_name
+																				? 'payment-method-field-container error-field'
+																				: 'payment-method-field-container'
+																		}
+																	>
+																		<Select
+																			showSearch
+																			className="payment-method-field w-100"
+																			dropdownClassName="p2p-custom-style-dropdown"
+																			placeholder="Payment Method"
+																			value={selectedMethod?.system_name}
+																			onChange={(e) => {
+																				setSelectedMethod(
+																					deal.payment_methods.find(
+																						(x) => x.system_name === e
+																					)
+																				);
+																			}}
+																		>
+																			{deal.payment_methods.map((method) => {
+																				return (
+																					<Select.Option
+																						value={method.system_name}
+																					>
+																						{method.system_name}
+																					</Select.Option>
+																				);
+																			})}
+																		</Select>
+																	</span>
+																</div>
+
+																<div className="p2p-amount-spent">
+																	<span>
+																		<EditWrapper stringId="P2P.SPEND_AMOUNT">
+																			{STRINGS['P2P.SPEND_AMOUNT']}
+																		</EditWrapper>{' '}
+																		({deal.spending_asset.toUpperCase()}):
+																	</span>
+
+																	<span className="amount-spent-field-container">
+																		<InputNumber
+																			className={
+																				amountFiat <= 0 ||
+																				!amountFiat ||
+																				deal.min_order_value > amountFiat ||
+																				deal.max_order_value < amountFiat
+																					? 'error-field amount-spent-field'
+																					: 'amount-spent-field'
+																			}
+																			value={amountFiat}
+																			onChange={(e) => {
+																				setAmountFiat(e);
+																				const currencyAmount =
+																					Number(e) /
+																					Number(
+																						deal.exchange_rate *
+																							(1 +
+																								Number(deal.spread / 100 || 0))
+																					);
+
+																				const formatted = formatAmount(
+																					deal.buying_asset,
+																					currencyAmount
+																				);
+
+																				setAmountCurrency(formatted);
+																			}}
+																			placeholder={deal.spending_asset.toUpperCase()}
+																			autoFocus={true}
+																		/>
+																	</span>
+																</div>
+																<div className="error-field-container">
+																	{deal.min_order_value > amountFiat && (
+																		<div className="error-message">
+																			<ExclamationCircleFilled />
+																			<EditWrapper
+																				stringId={STRINGS.formatString(
+																					STRINGS['P2P.MINIMUM_AMOUNT_WARNING'],
+																					STRINGS[
+																						'P2P.SPEND_AMOUNT'
+																					].toLowerCase(),
+																					deal.min_order_value
+																				)}
+																			>
+																				<span className="error-message ml-1">
+																					{STRINGS.formatString(
+																						STRINGS[
+																							'P2P.MINIMUM_AMOUNT_WARNING'
+																						],
+																						STRINGS[
+																							'P2P.SPEND_AMOUNT'
+																						].toLowerCase(),
+																						deal.min_order_value
+																					)}
+																				</span>
+																			</EditWrapper>
+																		</div>
+																	)}
+																	{deal.max_order_value < amountFiat && (
+																		<div className="error-message">
+																			<ExclamationCircleFilled />
+																			<EditWrapper
+																				stringId={STRINGS.formatString(
+																					STRINGS['P2P.MAXIMUM_AMOUNT_WARNING'],
+																					STRINGS[
+																						'P2P.SPEND_AMOUNT'
+																					].toLowerCase(),
+																					deal.max_order_value
+																				)}
+																			>
+																				<span className="error-message ml-1">
+																					{STRINGS.formatString(
+																						STRINGS[
+																							'P2P.MAXIMUM_AMOUNT_WARNING'
+																						],
+																						STRINGS[
+																							'P2P.SPEND_AMOUNT'
+																						].toLowerCase(),
+																						deal.max_order_value
+																					)}
+																				</span>
+																			</EditWrapper>
+																		</div>
+																	)}
+																</div>
+																<div className="p2p-amount-receive">
+																	<div className="amount-receive-title">
+																		<span>
+																			<EditWrapper stringId="P2P.AMOUNT_TO_RECEIVE">
+																				{STRINGS['P2P.AMOUNT_TO_RECEIVE']}
+																			</EditWrapper>{' '}
+																			({deal.buying_asset.toUpperCase()})
+																		</span>
+																		<Coin
+																			iconId={coins[deal?.buying_asset].icon_id}
+																			type="CS4"
+																		/>
+																	</div>
+
+																	<span className="amount-receive-field-container">
+																		<Input
+																			className="greyButtonP2P amount-receive-field"
+																			readOnly
+																			value={amountCurrency}
+																			placeholder={deal.buying_asset.toUpperCase()}
+																		/>
+																	</span>
+																</div>
+																<div className="error-field-container">
+																	{deal.min_order_value <= amountFiat &&
+																		deal.max_order_value >= amountFiat &&
+																		!selectedMethod?.system_name && (
+																			<span className="error-message">
+																				<ExclamationCircleFilled />
+																				<EditWrapper stringId="P2P.SELECT_PAYMENT_METHOD_AND_AMOUNT">
+																					<span className="ml-1">
+																						{
+																							STRINGS[
+																								'P2P.SELECT_PAYMENT_METHOD_AND_AMOUNT'
+																							]
+																						}
+																					</span>
+																				</EditWrapper>
+																			</span>
+																		)}
+																</div>
+																<div className="trade-button-container">
+																	<Button
+																		className="greyButtonP2P"
+																		onClick={async () => {
+																			setExpandRow(false);
+																			setSelectedDeal(null);
+																			setAmountCurrency();
+																			setSelectedMethod();
+																			setAmountFiat();
+																		}}
+																	>
+																		<EditWrapper stringId="P2P.CANCEL">
+																			{STRINGS['P2P.CANCEL']}
+																		</EditWrapper>
+																	</Button>
+																	<Button
+																		className={
+																			selectedDeal.side === 'sell'
+																				? 'greenButtonP2P'
+																				: 'redButtonP2P'
+																		}
+																		disabled={
+																			loading ||
+																			!user?.id ||
+																			amountFiat <= 0 ||
+																			!selectedMethod?.system_name ||
+																			deal.min_order_value > amountFiat ||
+																			deal.max_order_value < amountFiat
+																		}
+																		onClick={async () => {
+																			try {
+																				if (
+																					!expandRow &&
+																					deal.id !== selectedDeal
+																				) {
+																					setExpandRow(true);
+																					setSelectedDeal(deal);
+																					return;
+																				} else {
+																					setDisplayOrderCreation(true);
+																				}
+																			} catch (error) {
+																				// message.error(error.data.message);
+																				setLoading(false);
+																			}
+																		}}
+																	>
+																		{deal.side === 'sell' ? 'BUY' : 'SELL'}{' '}
+																		{deal.buying_asset.toUpperCase()} {'>'}
+																	</Button>
+																</div>
+															</div>
+														) : (
+															<div className="payment-details">
+																<div className="payment-method">
+																	<EditWrapper stringId="P2P.SELECT_PAYMENT_METHOD">
+																		{STRINGS['P2P.SELECT_PAYMENT_METHOD']}
+																	</EditWrapper>
+																	{deal?.payment_methods?.filter((a) =>
+																		myMethods?.find(
+																			(x) =>
+																				x.name.toLowerCase() ===
+																				a.system_name?.toLowerCase()
+																		)
+																	).length === 0 && (
+																		<span className="add-payment-container">
+																			<Button
+																				onClick={() => {
+																					setTab('2');
+																				}}
+																				className="purpleButtonP2P add-payment-button w-100"
+																			>
+																				<EditWrapper stringId="P2P.ADD_PAYMENT_METHOD">
+																					{STRINGS['P2P.ADD_PAYMENT_METHOD']}
+																				</EditWrapper>
+																			</Button>
+																		</span>
+																	)}
+																	{deal?.payment_methods?.filter((a) =>
+																		myMethods?.find(
+																			(x) =>
+																				x.name.toLowerCase() ===
+																				a.system_name?.toLowerCase()
+																		)
+																	).length > 0 && (
+																		<span
+																			className={
+																				!selectedMethod?.system_name
+																					? 'payment-method-field-container error-field'
+																					: 'payment-method-field-container'
+																			}
+																		>
+																			<Select
+																				className="payment-method-field w-100"
+																				dropdownClassName="p2p-custom-style-dropdown"
+																				showSearch
+																				placeholder="Payment Method"
+																				value={selectedMethod?.system_name}
+																				onChange={(e) => {
+																					setSelectedMethod(
+																						myMethods.find((x) => x.name === e)
+																							.details
+																					);
+																				}}
+																			>
+																				{deal?.payment_methods
+																					?.filter((a) =>
+																						myMethods?.find(
+																							(x) =>
+																								x.name.toLowerCase() ===
+																								a.system_name?.toLowerCase()
+																						)
+																					)
+																					.map((method) => {
+																						return (
+																							<Select.Option
+																								value={method.system_name}
+																							>
+																								{method.system_name}
+																							</Select.Option>
+																						);
+																					})}
+																			</Select>
+																		</span>
+																	)}
+																</div>
+
+																<div className="p2p-amount-spent">
+																	<div className="amount-receive-title">
+																		<span>
+																			<EditWrapper stringId="P2P.SELL_AMOUNT">
+																				{STRINGS['P2P.SELL_AMOUNT']}
+																			</EditWrapper>{' '}
+																			({deal.buying_asset.toUpperCase()})
+																		</span>
+																		<Coin
+																			iconId={coins[deal?.buying_asset].icon_id}
+																			type="CS4"
+																		/>
+																	</div>
+
+																	<span className="amount-spent-field-container">
+																		<InputNumber
+																			className={
+																				amountFiat <= 0 ||
+																				!amountFiat ||
+																				deal.min_order_value > amountFiat ||
+																				deal.max_order_value < amountFiat
+																					? 'error-field amount-spent-field'
+																					: 'amount-spent-field'
+																			}
+																			value={amountFiat}
+																			onChange={(e) => {
+																				setAmountFiat(e);
+																				const currencyAmount =
+																					Number(e) *
+																					Number(
+																						deal.exchange_rate *
+																							(1 -
+																								Number(deal.spread / 100 || 0))
+																					);
+
+																				const formatted = formatAmount(
+																					deal.spending_asset,
+																					currencyAmount
+																				);
+
+																				setAmountCurrency(formatted);
+																			}}
+																			placeholder={deal.buying_asset.toUpperCase()}
+																			autoFocus={true}
+																		/>
+																	</span>
+																</div>
+																<div className="error-field-container">
+																	{deal.min_order_value > amountFiat && (
+																		<div className="error-message">
+																			<ExclamationCircleFilled />
+																			<EditWrapper
+																				stringId={STRINGS.formatString(
+																					STRINGS['P2P.MINIMUM_AMOUNT_WARNING'],
+																					STRINGS[
+																						'P2P.SPEND_AMOUNT'
+																					].toLowerCase(),
+																					deal.min_order_value
+																				)}
+																			>
+																				<span className="error-message ml-1">
+																					{STRINGS.formatString(
+																						STRINGS[
+																							'P2P.MINIMUM_AMOUNT_WARNING'
+																						],
+																						STRINGS[
+																							'P2P.SPEND_AMOUNT'
+																						].toLowerCase(),
+																						deal.min_order_value
+																					)}
+																				</span>
+																			</EditWrapper>
+																		</div>
+																	)}
+																	{deal.max_order_value < amountFiat && (
+																		<div className="error-message">
+																			<ExclamationCircleFilled />
+																			<EditWrapper
+																				stringId={STRINGS.formatString(
+																					STRINGS['P2P.MAXIMUM_AMOUNT_WARNING'],
+																					STRINGS[
+																						'P2P.SPEND_AMOUNT'
+																					].toLowerCase(),
+																					deal.max_order_value
+																				)}
+																			>
+																				<span className="error-message ml-1">
+																					{STRINGS.formatString(
+																						STRINGS[
+																							'P2P.MAXIMUM_AMOUNT_WARNING'
+																						],
+																						STRINGS[
+																							'P2P.SPEND_AMOUNT'
+																						].toLowerCase(),
+																						deal.max_order_value
+																					)}
+																				</span>
+																			</EditWrapper>
+																		</div>
+																	)}
+																</div>
+																<div className="p2p-amount-receive">
+																	<span>
+																		<EditWrapper stringId="P2P.AMOUNT_TO_RECEIVE">
+																			{STRINGS['P2P.AMOUNT_TO_RECEIVE']}
+																		</EditWrapper>{' '}
+																		({deal.spending_asset.toUpperCase()})
+																	</span>
+
+																	<span className="amount-receive-field-container">
+																		<Input
+																			className="greyButtonP2P amount-receive-field"
+																			readOnly
+																			value={amountCurrency}
+																			placeholder={deal.spending_asset.toUpperCase()}
+																		/>
+																	</span>
+																</div>
+																<div className="error-field-container">
+																	{deal.min_order_value <= amountFiat &&
+																		deal.max_order_value >= amountFiat &&
+																		!selectedMethod?.system_name && (
+																			<span className="error-message">
+																				<ExclamationCircleFilled />
+																				<EditWrapper stringId="P2P.SELECT_PAYMENT_METHOD_AND_AMOUNT">
+																					<span className="ml-1">
+																						{
+																							STRINGS[
+																								'P2P.SELECT_PAYMENT_METHOD_AND_AMOUNT'
+																							]
+																						}
+																					</span>
+																				</EditWrapper>
+																			</span>
+																		)}
+																</div>
+																<div className="trade-button-container">
+																	<Button
+																		className="greyButtonP2P"
+																		onClick={async () => {
+																			setExpandRow(false);
+																			setSelectedDeal(null);
+																			setAmountCurrency();
+																			setSelectedMethod();
+																			setAmountFiat();
+																		}}
+																	>
+																		<EditWrapper stringId="P2P.CANCEL">
+																			{STRINGS['P2P.CANCEL']}
+																		</EditWrapper>
+																	</Button>
+
+																	<Button
+																		className={
+																			selectedDeal.side === 'sell'
+																				? 'greenButtonP2P'
+																				: 'redButtonP2P'
+																		}
+																		disabled={
+																			loading ||
+																			!user?.id ||
+																			amountFiat <= 0 ||
+																			!selectedMethod?.system_name ||
+																			deal.min_order_value > amountFiat ||
+																			deal.max_order_value < amountFiat
+																		}
+																		onClick={async () => {
+																			try {
+																				if (
+																					!expandRow &&
+																					deal.id !== selectedDeal
+																				) {
+																					setExpandRow(true);
+																					setSelectedDeal(deal);
+																					return;
+																				} else {
+																					setDisplayOrderCreation(true);
+																				}
+																			} catch (error) {
+																				message.error(error.data.message);
+																				setLoading(false);
+																			}
+																		}}
+																	>
+																		{deal.side === 'sell' ? 'BUY' : 'SELL'}{' '}
+																		{deal.buying_asset.toUpperCase()} {'>'}
+																	</Button>
+																</div>
+															</div>
+														)}
+													</td>
+												</tr>
+											)}
+										</>
+									);
+								})}
+						</tbody>
+					</table>
+				</div>
+			) : (
+				<NoDealsData />
+			)}
 		</div>
 	);
 };
