@@ -75,6 +75,7 @@ import {
 	SET_RECEIVER_EMAIL,
 	SET_WITHDRAW_OTIONAL_TAG,
 	SET_CHART_DATA,
+	SET_COINS_DATA,
 } from 'actions/appActions';
 import { THEME_DEFAULT } from 'config/constants';
 import { getLanguage } from 'utils/string';
@@ -203,6 +204,7 @@ const INITIAL_STATE = {
 	isValidAddress: '',
 	selectedWithdrawMethod: 'Address',
 	receiverWithdrawalEmail: null,
+	coinsData: [],
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -840,6 +842,12 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				receiverWithdrawalEmail: payload,
+			};
+		}
+		case SET_COINS_DATA: {
+			return {
+				...state,
+				coinsData: payload,
 			};
 		}
 		default:

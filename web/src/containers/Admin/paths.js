@@ -193,6 +193,11 @@ export const ADMIN_PATHS = [
 
 export const SUPERVISOR_PATH = [
 	{
+		path: '/admin/fiat',
+		label: 'Fiat controls',
+		routeKey: 'trade',
+	},
+	{
 		path: '/admin/financials',
 		label: 'Assets',
 		routeKey: 'financials',

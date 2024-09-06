@@ -292,7 +292,9 @@ const QuickTradeTab = ({
 				</div>
 
 				<div style={{ marginBottom: 30 }}>
-					Change liquidity and price source for BTC/USDT Quick Trade market.
+					Change liquidity and price source for{' '}
+					{selectedConfig?.symbol?.split('-')?.join('/')?.toUpperCase()} Quick
+					Trade market.
 				</div>
 
 				<div style={{ marginBottom: 30 }}>

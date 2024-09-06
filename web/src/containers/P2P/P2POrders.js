@@ -1,18 +1,19 @@
-/* eslint-disable */
 import React, { useEffect, useState } from 'react';
+import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
-// import { ReactSVG } from 'react-svg';
+import { isMobile } from 'react-device-detect';
+import { Button } from 'antd';
+import { CheckCircleTwoTone, PlaySquareTwoTone } from '@ant-design/icons';
 
-import { IconTitle, EditWrapper } from 'components';
+import './_P2P.scss';
+import classnames from 'classnames';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { Button, Radio } from 'antd';
+import Filter from './Filters';
+import { Coin, EditWrapper } from 'components';
 import { fetchTransactions } from './actions/p2pActions';
-import { withRouter } from 'react-router';
 import { formatToCurrency } from 'utils/currency';
-import { isMobile } from 'react-device-detect';
-import classnames from 'classnames';
-import './_P2P.scss';
+
 const P2POrders = ({
 	data,
 	onClose,
@@ -31,12 +32,17 @@ const P2POrders = ({
 }) => {
 	const [transactions, setTransactions] = useState([]);
 	const [filter, setFilter] = useState();
-	const [option, setOption] = useState('2');
+	const [transactionDetails, setTransactionDetails] = useState([]);
+	// const [option, setOption] = useState('2');
+	const [transactionStatus, setTransactionStatus] = useState('P2P.ALL_ORDERS');
+
+	const orderStatus = ['P2P.PROCESSING', 'P2P.ALL_ORDERS'];
 
 	useEffect(() => {
 		fetchTransactions()
 			.then((res) => {
 				setTransactions(res.data);
+				setTransactionDetails(res.data);
 			})
 			.catch((err) => err);
 	}, [refresh]);
@@ -47,64 +53,55 @@ const P2POrders = ({
 		return formattedAmount;
 	};
 
+	const handleStatus = (status) => {
+		setTransactionStatus(status);
+		if (status === 'P2P.PROCESSING') {
+			setFilter('active');
+			setTransactions(transactionDetails);
+		}
+		if (status === 'P2P.ALL_ORDERS') {
+			setFilter();
+		}
+	};
 	return (
 		<div
-			className={classnames(...['P2pOrder', isMobile ? 'mobile-view-p2p' : ''])}
-			style={{
-				height: 600,
-				overflowY: 'auto',
-				width: '100%',
-				padding: 20,
-			}}
+			className={classnames(
+				...[
+					'P2pOrder p2p-order-tab-container',
+					isMobile ? 'mobile-view-p2p' : '',
+				]
+			)}
 		>
-			<div
-				style={{
-					textAlign: 'center',
-					display: 'flex',
-					gap: 10,
-					marginTop: 25,
-					marginBottom: 25,
-					alignItems: 'center',
-					justifyContent: 'center',
-				}}
-			>
-				<Radio.Group value={option} onChange={(e) => setOption(e.target.value)}>
-					<Radio.Button
-						style={{ marginRight: 5 }}
-						className="transparentButtonP2P"
-						value="1"
-						onClick={() => {
-							setFilter('active');
-						}}
-					>
-						<EditWrapper stringId="P2P.PROCESSING">
-							{STRINGS['P2P.PROCESSING']}
-						</EditWrapper>
-					</Radio.Button>
-					<Radio.Button
-						className="transparentButtonP2P"
-						value="2"
-						onClick={() => {
-							setFilter();
-						}}
-					>
-						<EditWrapper stringId="P2P.ALL_ORDERS">
-							{STRINGS['P2P.ALL_ORDERS']}
-						</EditWrapper>
-					</Radio.Button>
-				</Radio.Group>
-			</div>
-
-			<div style={{ display: 'flex', marginTop: 20 }} className="stake_theme">
-				<table
-					style={{ border: 'none', borderCollapse: 'collapse', width: '100%' }}
-				>
-					<thead>
-						<tr
-							className="table-bottom-border"
-							style={{ borderBottom: 'grey 1px solid', padding: 10 }}
+			<div className="order-status-button-container">
+				{orderStatus?.map((status) => {
+					return (
+						<div
+							className={
+								transactionStatus === status
+									? 'transaction-button-active important-text transaction-button'
+									: 'transaction-button'
+							}
+							onClick={() => handleStatus(status)}
 						>
-							<th>
+							<EditWrapper stringId={status}>{STRINGS[status]}</EditWrapper>
+						</div>
+					);
+				})}
+			</div>
+			{transactionStatus === 'P2P.ALL_ORDERS' && (
+				<Filter
+					transaction={transactions}
+					transactionFilter={filter}
+					setTransactions={setTransactions}
+					transactionDetails={transactionDetails}
+					setTransactionDetails={setTransactionDetails}
+				/>
+			)}
+			<div className="stake_theme p2p-order-table-wrapper">
+				<table className="p2p-order-table w-100">
+					<thead>
+						<tr className="table-bottom-border">
+							<th className="trade-button-header">
 								<EditWrapper stringId="P2P.TYPE_COIN">
 									{STRINGS['P2P.TYPE_COIN']}
 								</EditWrapper>
@@ -134,38 +131,44 @@ const P2POrders = ({
 									{STRINGS['P2P.STATUS']}
 								</EditWrapper>
 							</th>
-							<th
-								style={{
-									display: 'flex',
-									justifyContent: 'flex-end',
-								}}
-							>
+							<th>
 								<EditWrapper stringId="P2P.OPERATION">
 									{STRINGS['P2P.OPERATION']}
 								</EditWrapper>
 							</th>
 						</tr>
 					</thead>
-					<tbody className="font-weight-bold">
+					<tbody className="p2p-order-table-body">
 						{transactions
-							.filter((x) =>
+							?.filter((x) =>
 								filter
-									? ['active', 'appealed'].includes(x.transaction_status)
+									? ['active', 'appealed']?.includes(x?.transaction_status)
 									: true
 							)
-							.map((transaction) => {
+							?.map((transaction) => {
+								const statusClassMap = {
+									complete: 'active-green',
+									appealed: 'active-orange',
+									active: 'active-yellow',
+								};
+
+								const transactionStatusClass =
+									statusClassMap[transaction?.transaction_status] ||
+									'inactive-text';
+								const isDisabled = ['expired', 'cancelled'].includes(
+									transaction?.transaction_status
+								);
 								return (
 									<tr
-										className="table-row"
-										style={{
-											borderBottom: 'grey 1px solid',
-											padding: 10,
-											position: 'relative',
-										}}
+										className={
+											isDisabled
+												? 'table-row table-row-inactive fs-12'
+												: 'table-row fs-12'
+										}
 									>
-										<td style={{ width: '17%' }}>
-											{transaction?.user_id === user.id ? (
-												<Button className="buySideP2P">
+										<td className="trade-button important-text">
+											{transaction?.user_id === user?.id ? (
+												<Button className="p2p-buy-order-button important-text border-0">
 													<span>
 														<EditWrapper stringId="P2P.BUY_COIN">
 															{STRINGS['P2P.BUY_COIN']}
@@ -174,7 +177,7 @@ const P2POrders = ({
 													</span>
 												</Button>
 											) : (
-												<Button className="sellSideP2P">
+												<Button className="p2p-sell-order-button important-text border-0">
 													<span>
 														<EditWrapper stringId="P2P.SELL_COIN">
 															{STRINGS['P2P.SELL_COIN']}
@@ -185,26 +188,45 @@ const P2POrders = ({
 											)}
 										</td>
 
-										<td style={{ width: '17%', padding: 10 }}>
-											{transaction?.amount_fiat}{' '}
-											{transaction?.deal?.spending_asset?.toUpperCase()}
+										<td className="transaction-fiat-amount">
+											<span>${transaction?.amount_fiat}</span>
+											<span className="ml-2">
+												{transaction?.deal?.spending_asset?.toUpperCase()}
+											</span>
 										</td>
-										<td style={{ width: '17%' }}>
-											{formatAmount(
-												transaction?.deal?.buying_asset,
-												transaction?.price
-											)}{' '}
-											{transaction?.deal?.buying_asset?.toUpperCase()}
+										<td className="transaction-currency-amount">
+											<span>
+												$
+												{formatAmount(
+													transaction?.deal?.buying_asset,
+													transaction?.price
+												)}
+											</span>
+											<span className="ml-2">
+												{transaction?.deal?.buying_asset?.toUpperCase()}
+											</span>
 										</td>
-										<td style={{ width: '17%' }}>
-											{formatAmount(
-												transaction?.deal?.buying_asset,
-												transaction?.amount_digital_currency
-											)}{' '}
-											{transaction?.deal?.buying_asset?.toUpperCase()}
+										<td className="crypto-amount">
+											<div className="crypto-amount-detail">
+												<span>
+													{formatAmount(
+														transaction?.deal?.buying_asset,
+														transaction?.amount_digital_currency
+													)}
+												</span>
+												<span>
+													{transaction?.deal?.buying_asset?.toUpperCase()}
+												</span>
+												<Coin
+													iconId={
+														coins[transaction?.deal?.buying_asset]?.icon_id
+													}
+													type="CS4"
+												/>
+											</div>
 										</td>
-										<td style={{ width: '10%' }}>
-											{transaction?.user_id === user.id ? (
+										<td className="transaction-user-name">
+											{transaction?.user_id === user?.id ? (
 												<span
 													style={{ cursor: 'pointer' }}
 													onClick={() => {
@@ -227,26 +249,36 @@ const P2POrders = ({
 												</span>
 											)}
 										</td>
-										<td style={{ width: '10%' }}>
-											{transaction?.transaction_status?.toUpperCase()}
+										<td className="transaction-status">
+											<div className="transaction-status-detail">
+												<span className={transactionStatusClass}>
+													{transaction?.transaction_status}
+												</span>
+												{transaction?.transaction_status === 'complete' && (
+													<span className="complete-check-icon check-icon">
+														<CheckCircleTwoTone />
+													</span>
+												)}
+												{transaction?.transaction_status === 'active' && (
+													<span className="active-icon">
+														<PlaySquareTwoTone />
+													</span>
+												)}
+											</div>
 										</td>
 
-										<td style={{ width: '17%' }}>
+										<td className="view-orders">
 											<div
 												onClick={() => {
 													setDisplayOrder(true);
 													setSelectedTransaction(transaction);
-													router.replace(`/p2p/order/${transaction.id}`);
+													router.replace(`/p2p/order/${transaction?.id}`);
 												}}
-												style={{
-													display: 'flex',
-													justifyContent: 'flex-end',
-													cursor: 'pointer',
-												}}
-												className="purpleTextP2P"
 											>
 												<EditWrapper stringId="P2P.VIEW_ORDER">
-													{STRINGS['P2P.VIEW_ORDER']}
+													<span className="purpleTextP2P">
+														{STRINGS['P2P.VIEW_ORDER']}
+													</span>
 												</EditWrapper>
 											</div>
 										</td>
