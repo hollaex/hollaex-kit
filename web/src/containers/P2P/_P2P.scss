@@ -105,6 +105,18 @@
 		min-height: 30rem !important;
 	}
 
+	.no-deals-data {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		margin: 0 auto;
+	}
+
+	.p2p-no-deals-container {
+		min-height: fit-content !important;
+	}
+
 	.p2p-tab-container,
 	.p2p-order-tab-container,
 	.p2p-post-deal-container,
@@ -203,7 +215,6 @@
 		.p2p-table-container {
 			display: flex;
 			font-weight: normal !important;
-
 			.p2p-stake-table {
 				.p2p-stake-table-header {
 					font-family: 'Raleway Extrabold';
@@ -284,6 +295,13 @@
 						display: flex;
 						flex-direction: column;
 						margin-top: 5%;
+						.vendor-profile-description {
+							.edit-wrapper__container {
+								color: var(--specials_buttons-links-and-highlights);
+								text-decoration: underline;
+								cursor: pointer;
+							}
+						}
 					}
 
 					.payment-details-container {
@@ -315,6 +333,11 @@
 
 								.add-payment-container {
 									width: 58%;
+								}
+
+								.error-field {
+									border: 2px solid
+										var(--specials_notifications-alerts-warnings) !important;
 								}
 
 								.amount-spent-field,
@@ -355,7 +378,12 @@
 									width: 58%;
 								}
 							}
-
+							.error-field-container {
+								height: 20px;
+								.error-message {
+									color: var(--specials_notifications-alerts-warnings);
+								}
+							}
 							.trade-button-container {
 								justify-content: flex-end;
 								margin-top: 15px;
@@ -421,7 +449,7 @@
 		}
 
 		.subTable {
-			background-color: var(--calculated_super-pale_label-text-graphics);
+			background-color: var(--base_background);
 		}
 
 		.postDealButton {
@@ -1704,14 +1732,6 @@
 						display: flex;
 						gap: 10px;
 
-						.appeal-link,
-						.cancel-link {
-							.edit-wrapper__container {
-								text-decoration: underline;
-								font-size: 14px;
-							}
-						}
-
 						.appeal-link:hover,
 						.cancel-link:hover {
 							cursor: pointer;
@@ -1814,18 +1834,25 @@
 					.notification-message {
 						padding: 2% 5%;
 					}
-					.user-message-container {
+					.user-message-wrapper {
 						padding: 2% 5%;
 						display: flex;
-						flex-direction: column;
-						text-align: right;
+						flex-direction: row-reverse;
+						.user-message-container {
+							width: 60%;
+							display: flex;
+							flex-direction: column;
+							text-align: right;
+						}
 					}
 
-					.merchant-message-container {
+					.merchant-message-wrapper {
 						padding: 2% 5%;
-						display: flex;
-						flex-direction: column;
-						margin-bottom: 2%;
+						.merchant-message-container {
+							width: 60%;
+							display: flex;
+							flex-direction: column;
+						}
 					}
 
 					.user-message-container,
@@ -1914,6 +1941,86 @@
 		.confirm-btn {
 			width: 70%;
 			background-color: var(--specials_buttons-links-and-highlights);
+		}
+	}
+}
+
+.p2p-order-creation-popup-wrapper {
+	.ReactModal__Content {
+		width: 50rem;
+
+		.order-creation-popup-container {
+			margin-top: 3%;
+
+			.asset-order-creation-title {
+				display: flex;
+				align-items: center;
+				gap: 5px;
+
+				.asset-icon {
+					.edit-wrapper__container {
+						svg {
+							path {
+								margin-top: 5%;
+							}
+						}
+					}
+				}
+			}
+
+			.order-creation-description {
+				color: var(--labels_secondary-inactive-label-text-graphics);
+			}
+
+			.warning-message-container {
+				.warning-message-details {
+					padding: 4%;
+					background-color: var(--base_secondary-navigation-bar);
+					border: 1px solid var(--calculated_secondary-border);
+
+					.warning-title {
+						.edit-wrapper__container {
+							font-size: 12px;
+						}
+					}
+
+					.warning-description {
+						.edit-wrapper__container {
+							font-size: 12px;
+							color: var(--labels_secondary-inactive-label-text-graphics);
+						}
+					}
+
+					.cancelling-order-message {
+						.edit-wrapper__container {
+							font-size: 12px;
+							color: var(--specials_pending-waiting-caution);
+						}
+					}
+				}
+
+				.confirm-order-creation {
+					.edit-wrapper__container {
+						font-size: 12px;
+					}
+				}
+			}
+
+			.order-create-button-container {
+				display: flex;
+				gap: 10px;
+
+				.back-btn,
+				.create-order-btn {
+					background-color: var(--specials_buttons-links-and-highlights);
+					border: none;
+				}
+
+				.back-btn:hover,
+				.create-order-btn:hover {
+					color: var(--labels_important-active-labels-text-graphics);
+				}
+			}
 		}
 	}
 }

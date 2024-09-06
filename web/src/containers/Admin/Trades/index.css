@@ -761,3 +761,14 @@
 .otc-Container .errMsg {
 	color: red;
 }
+
+.p2p-admin-select-asset
+	.ant-select-item-option-content
+	.edit-wrapper__container {
+	position: relative;
+	top: 5px;
+}
+
+.p2p-admin-select-asset .ant-select-item {
+	cursor: text;
+}
