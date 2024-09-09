@@ -1300,7 +1300,7 @@ const P2POrder = ({
 											selectedOrder?.merchant_status === 'pending' && (
 												<>
 													<div
-														className="blue-link"
+														className="blue-link mt-1"
 														onClick={async () => {
 															try {
 																setDisplayAppealModel(true);
@@ -1311,7 +1311,7 @@ const P2POrder = ({
 														}}
 													>
 														<EditWrapper stringId="P2P.APPEAL">
-															<span className="text-decoration-underline">
+															<span className="text-decoration-underline appeal-link">
 																{STRINGS['P2P.APPEAL']}
 															</span>
 														</EditWrapper>
@@ -1322,9 +1322,13 @@ const P2POrder = ({
 															setDisplayCancelWarning(true);
 														}}
 													>
-														<EditWrapper stringId="P2P.CANCEL_ORDER">
-															{STRINGS['P2P.CANCEL_ORDER']}
-														</EditWrapper>
+														<span className="cancel-link">
+															<EditWrapper stringId="P2P.CANCEL_ORDER">
+																<span className="text-decoration-underline">
+																	{STRINGS['P2P.CANCEL_ORDER']}
+																</span>
+															</EditWrapper>
+														</span>
 													</div>
 												</>
 											)}
@@ -1550,7 +1554,7 @@ const P2POrder = ({
 													<div className="message-time">
 														(
 														{moment(message?.created_at || new Date()).format(
-															'DD/MMM/YYYY, hh:mmA '
+															'DD/MMM/YYYY, hh:mmA'
 														)}
 														)
 													</div>
@@ -1574,7 +1578,7 @@ const P2POrder = ({
 															(
 															{moment(
 																message?.created_at || new Date()
-															)?.format('DD/MMM/YYYY, hh:mmA ')}
+															)?.format('DD/MMM/YYYY, hh:mmA')}
 															)
 														</span>
 													</div>
@@ -1582,43 +1586,49 @@ const P2POrder = ({
 											} else {
 												if (message?.sender_id === user?.id) {
 													return (
-														<div className="user-message-container">
-															<div className="user-name">
-																<EditWrapper stringId="P2P.YOU">
-																	{STRINGS['P2P.YOU']}:
-																</EditWrapper>
-															</div>
-															<div className="user-message">
-																{message?.message}
-															</div>
-															<div className="message-time secondary-text">
-																(
-																{moment(
-																	message?.created_at || new Date()
-																).format('DD/MMM/YYYY, hh:mmA ')}
-																)
+														<div className="user-message-wrapper">
+															<div className="user-message-container">
+																<span className="user-name">
+																	<EditWrapper stringId="P2P.YOU">
+																		<span>{STRINGS['P2P.YOU']}:</span>
+																	</EditWrapper>
+																</span>
+																<span className="user-message ml-2">
+																	{message?.message}
+																</span>
+																<div className="message-time secondary-text">
+																	(
+																	{moment(
+																		message?.created_at || new Date()
+																	).format('DD/MMM/YYYY, hh:mmA')}
+																	)
+																</div>
 															</div>
 														</div>
 													);
 												} else {
 													return (
-														<div className="merchant-message-container">
-															<div className="merchant-name">
-																{message?.receiver_id ===
-																selectedOrder?.merchant_id
-																	? STRINGS['P2P.BUYER']
-																	: selectedOrder?.merchant?.full_name}
-																:
-															</div>
-															<div className="merchant-message">
-																{message?.message}
-															</div>
-															<div className="message-time secondary-text">
-																(
-																{moment(
-																	message?.created_at || new Date()
-																)?.format('DD/MMM/YYYY, hh:mmA ')}
-																)
+														<div className="merchant-message-wrapper">
+															<div className="merchant-message-container">
+																<div className="merchant-detail">
+																	<div className="important-text">
+																		{message?.receiver_id ===
+																		selectedOrder?.merchant_id
+																			? STRINGS['P2P.BUYER']
+																			: selectedOrder?.merchant?.full_name}
+																		:
+																	</div>
+																	<div className="merchant-message">
+																		{message?.message}
+																	</div>
+																</div>
+																<div className="message-time secondary-text">
+																	(
+																	{moment(
+																		message?.created_at || new Date()
+																	)?.format('DD/MMM/YYYY, hh:mmA')}
+																	)
+																</div>
 															</div>
 														</div>
 													);

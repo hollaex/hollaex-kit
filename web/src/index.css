@@ -5666,7 +5666,9 @@ table th {
   .digital-market-wrapper .market-list__block-table tbody tr td .asset-text,
   .digital-market-wrapper .market-list__block-table tbody tr td .last-price-label {
     font-weight: bold;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; }
+    font-family: system-ui, -apple-system, BlinkMacSystemFont,
+ 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans',
+ 'Helvetica Neue', sans-serif; }
   .digital-market-wrapper .market-list__block-table tbody tr td .asset-text {
     text-wrap: nowrap; }
   .digital-market-wrapper .market-list__block-table tbody tr td .price-change,
@@ -9859,6 +9861,14 @@ table th {
     margin-right: auto; }
   .p2p-summary-container .p2p-post-deal-container {
     min-height: 30rem !important; }
+  .p2p-summary-container .no-deals-data {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto; }
+  .p2p-summary-container .p2p-no-deals-container {
+    min-height: fit-content !important; }
   .p2p-summary-container .p2p-tab-container,
   .p2p-summary-container .p2p-order-tab-container,
   .p2p-summary-container .p2p-post-deal-container,
@@ -10303,6 +10313,13 @@ table th {
         display: flex;
         flex-direction: column;
         margin-top: 5%; }
+        .p2p-summary-container .p2p-tab-container .p2p-table-container .p2p-stake-table .p2p-expendable-row .title-description .vendor-profile-description .edit-wrapper__container,
+        .p2p-summary-container .p2p-order-tab-container .p2p-table-container .p2p-stake-table .p2p-expendable-row .title-description .vendor-profile-description .edit-wrapper__container,
+        .p2p-summary-container .p2p-post-deal-container .p2p-table-container .p2p-stake-table .p2p-expendable-row .title-description .vendor-profile-description .edit-wrapper__container,
+        .p2p-summary-container .p2p-order-wrapper .p2p-table-container .p2p-stake-table .p2p-expendable-row .title-description .vendor-profile-description .edit-wrapper__container {
+          color: var(--specials_buttons-links-and-highlights);
+          text-decoration: underline;
+          cursor: pointer; }
       .p2p-summary-container .p2p-tab-container .p2p-table-container .p2p-stake-table .p2p-expendable-row .payment-details-container,
       .p2p-summary-container .p2p-order-tab-container .p2p-table-container .p2p-stake-table .p2p-expendable-row .payment-details-container,
       .p2p-summary-container .p2p-post-deal-container .p2p-table-container .p2p-stake-table .p2p-expendable-row .payment-details-container,
@@ -10375,6 +10392,23 @@ table th {
             .p2p-summary-container .p2p-order-wrapper .p2p-table-container .p2p-stake-table .p2p-expendable-row .payment-details-container .payment-details .p2p-amount-receive .add-payment-container,
             .p2p-summary-container .p2p-order-wrapper .p2p-table-container .p2p-stake-table .p2p-expendable-row .payment-details-container .payment-details .trade-button-container .add-payment-container {
               width: 58%; }
+            .p2p-summary-container .p2p-tab-container .p2p-table-container .p2p-stake-table .p2p-expendable-row .payment-details-container .payment-details .payment-method .error-field,
+            .p2p-summary-container .p2p-tab-container .p2p-table-container .p2p-stake-table .p2p-expendable-row .payment-details-container .payment-details .p2p-amount-spent .error-field,
+            .p2p-summary-container .p2p-tab-container .p2p-table-container .p2p-stake-table .p2p-expendable-row .payment-details-container .payment-details .p2p-amount-receive .error-field,
+            .p2p-summary-container .p2p-tab-container .p2p-table-container .p2p-stake-table .p2p-expendable-row .payment-details-container .payment-details .trade-button-container .error-field,
+            .p2p-summary-container .p2p-order-tab-container .p2p-table-container .p2p-stake-table .p2p-expendable-row .payment-details-container .payment-details .payment-method .error-field,
+            .p2p-summary-container .p2p-order-tab-container .p2p-table-container .p2p-stake-table .p2p-expendable-row .payment-details-container .payment-details .p2p-amount-spent .error-field,
+            .p2p-summary-container .p2p-order-tab-container .p2p-table-container .p2p-stake-table .p2p-expendable-row .payment-details-container .payment-details .p2p-amount-receive .error-field,
+            .p2p-summary-container .p2p-order-tab-container .p2p-table-container .p2p-stake-table .p2p-expendable-row .payment-details-container .payment-details .trade-button-container .error-field,
+            .p2p-summary-container .p2p-post-deal-container .p2p-table-container .p2p-stake-table .p2p-expendable-row .payment-details-container .payment-details .payment-method .error-field,
+            .p2p-summary-container .p2p-post-deal-container .p2p-table-container .p2p-stake-table .p2p-expendable-row .payment-details-container .payment-details .p2p-amount-spent .error-field,
+            .p2p-summary-container .p2p-post-deal-container .p2p-table-container .p2p-stake-table .p2p-expendable-row .payment-details-container .payment-details .p2p-amount-receive .error-field,
+            .p2p-summary-container .p2p-post-deal-container .p2p-table-container .p2p-stake-table .p2p-expendable-row .payment-details-container .payment-details .trade-button-container .error-field,
+            .p2p-summary-container .p2p-order-wrapper .p2p-table-container .p2p-stake-table .p2p-expendable-row .payment-details-container .payment-details .payment-method .error-field,
+            .p2p-summary-container .p2p-order-wrapper .p2p-table-container .p2p-stake-table .p2p-expendable-row .payment-details-container .payment-details .p2p-amount-spent .error-field,
+            .p2p-summary-container .p2p-order-wrapper .p2p-table-container .p2p-stake-table .p2p-expendable-row .payment-details-container .payment-details .p2p-amount-receive .error-field,
+            .p2p-summary-container .p2p-order-wrapper .p2p-table-container .p2p-stake-table .p2p-expendable-row .payment-details-container .payment-details .trade-button-container .error-field {
+              border: 2px solid var(--specials_notifications-alerts-warnings) !important; }
             .p2p-summary-container .p2p-tab-container .p2p-table-container .p2p-stake-table .p2p-expendable-row .payment-details-container .payment-details .payment-method .amount-spent-field,
             .p2p-summary-container .p2p-tab-container .p2p-table-container .p2p-stake-table .p2p-expendable-row .payment-details-container .payment-details .payment-method .amount-receive-field,
             .p2p-summary-container .p2p-tab-container .p2p-table-container .p2p-stake-table .p2p-expendable-row .payment-details-container .payment-details .payment-method .payment-method-field-container,
@@ -10721,6 +10755,16 @@ table th {
             .p2p-summary-container .p2p-order-wrapper .p2p-table-container .p2p-stake-table .p2p-expendable-row .payment-details-container .payment-details .trade-button-container .amount-spent-field-container,
             .p2p-summary-container .p2p-order-wrapper .p2p-table-container .p2p-stake-table .p2p-expendable-row .payment-details-container .payment-details .trade-button-container .amount-receive-field-container {
               width: 58%; }
+          .p2p-summary-container .p2p-tab-container .p2p-table-container .p2p-stake-table .p2p-expendable-row .payment-details-container .payment-details .error-field-container,
+          .p2p-summary-container .p2p-order-tab-container .p2p-table-container .p2p-stake-table .p2p-expendable-row .payment-details-container .payment-details .error-field-container,
+          .p2p-summary-container .p2p-post-deal-container .p2p-table-container .p2p-stake-table .p2p-expendable-row .payment-details-container .payment-details .error-field-container,
+          .p2p-summary-container .p2p-order-wrapper .p2p-table-container .p2p-stake-table .p2p-expendable-row .payment-details-container .payment-details .error-field-container {
+            height: 20px; }
+            .p2p-summary-container .p2p-tab-container .p2p-table-container .p2p-stake-table .p2p-expendable-row .payment-details-container .payment-details .error-field-container .error-message,
+            .p2p-summary-container .p2p-order-tab-container .p2p-table-container .p2p-stake-table .p2p-expendable-row .payment-details-container .payment-details .error-field-container .error-message,
+            .p2p-summary-container .p2p-post-deal-container .p2p-table-container .p2p-stake-table .p2p-expendable-row .payment-details-container .payment-details .error-field-container .error-message,
+            .p2p-summary-container .p2p-order-wrapper .p2p-table-container .p2p-stake-table .p2p-expendable-row .payment-details-container .payment-details .error-field-container .error-message {
+              color: var(--specials_notifications-alerts-warnings); }
           .p2p-summary-container .p2p-tab-container .p2p-table-container .p2p-stake-table .p2p-expendable-row .payment-details-container .payment-details .trade-button-container,
           .p2p-summary-container .p2p-order-tab-container .p2p-table-container .p2p-stake-table .p2p-expendable-row .payment-details-container .payment-details .trade-button-container,
           .p2p-summary-container .p2p-post-deal-container .p2p-table-container .p2p-stake-table .p2p-expendable-row .payment-details-container .payment-details .trade-button-container,
@@ -10768,7 +10812,8 @@ table th {
       .p2p-summary-container .p2p-order-tab-container .crypto-assets .selected-asset,
       .p2p-summary-container .p2p-post-deal-container .crypto-assets .selected-asset,
       .p2p-summary-container .p2p-order-wrapper .crypto-assets .selected-asset {
-        border: 1px solid var(--calculated_important-border); }
+        border: 1px solid var(--calculated_important-border);
+        border-radius: 5px; }
     .p2p-summary-container .p2p-tab-container .ant-steps-item-active .ant-steps-item-content,
     .p2p-summary-container .p2p-order-tab-container .ant-steps-item-active .ant-steps-item-content,
     .p2p-summary-container .p2p-post-deal-container .ant-steps-item-active .ant-steps-item-content,
@@ -10790,7 +10835,7 @@ table th {
     .p2p-summary-container .p2p-order-tab-container .subTable,
     .p2p-summary-container .p2p-post-deal-container .subTable,
     .p2p-summary-container .p2p-order-wrapper .subTable {
-      background-color: var(--calculated_super-pale_label-text-graphics); }
+      background-color: var(--base_background); }
     .p2p-summary-container .p2p-tab-container .postDealButton,
     .p2p-summary-container .p2p-order-tab-container .postDealButton,
     .p2p-summary-container .p2p-post-deal-container .postDealButton,
@@ -10883,6 +10928,10 @@ table th {
         .p2p-summary-container .p2p-order-tab-container .trade-filter-container .p2p-trade-select-field .filters .asset-filter .ant-select-selector {
           height: 20px;
           width: 10rem; }
+        .p2p-summary-container .p2p-order-tab-container .trade-filter-container .p2p-trade-select-field .filters .asset-filter .crypto-field .ant-select-selection-item div:nth-child(1) {
+          align-items: normal;
+          position: relative;
+          top: 0px; }
     .p2p-summary-container .p2p-order-tab-container .trade-filter-container .date-filters {
       width: fit-content;
       display: flex;
@@ -10924,6 +10973,9 @@ table th {
           min-height: unset; }
           .p2p-summary-container .p2p-order-tab-container .trade-filter-container .custom-date-picker-container .range-picker .ant-form-item-control-input .ant-picker {
             border: 1px solid var(--labels_important-active-labels-text-graphics) !important; }
+            .p2p-summary-container .p2p-order-tab-container .trade-filter-container .custom-date-picker-container .range-picker .ant-form-item-control-input .ant-picker .ant-picker-clear {
+              background-color: transparent;
+              color: var(--labels_important-active-labels-text-graphics); }
           .p2p-summary-container .p2p-order-tab-container .trade-filter-container .custom-date-picker-container .range-picker .ant-form-item-control-input .ant-picker,
           .p2p-summary-container .p2p-order-tab-container .trade-filter-container .custom-date-picker-container .range-picker .ant-form-item-control-input .ant-picker-separator,
           .p2p-summary-container .p2p-order-tab-container .trade-filter-container .custom-date-picker-container .range-picker .ant-form-item-control-input .ant-picker-input input {
@@ -11102,6 +11154,12 @@ table th {
             display: flex;
             align-items: center;
             gap: 5px; }
+          .p2p-summary-container .p2p-mydeals-wrapper .p2p-mydeals-table-wrapper .p2p-mydeals-table-content-wrapper .table-row .custom-circle {
+            margin-top: 2%;
+            width: 12px;
+            height: 12px;
+            background-color: var(--specials_checks-okay-done);
+            border-radius: 25px; }
   .p2p-summary-container .p2p-profile-wrapper {
     height: 100%;
     padding: 20px;
@@ -11671,10 +11729,6 @@ table th {
     .p2p-summary-container .p2p-order-wrapper .p2p-order-container .p2p-order-details-container .order-verification-container .order-cancel-container {
       display: flex;
       gap: 10px; }
-      .p2p-summary-container .p2p-order-wrapper .p2p-order-container .p2p-order-details-container .order-verification-container .order-cancel-container .appeal-link .edit-wrapper__container,
-      .p2p-summary-container .p2p-order-wrapper .p2p-order-container .p2p-order-details-container .order-verification-container .order-cancel-container .cancel-link .edit-wrapper__container {
-        text-decoration: underline;
-        font-size: 14px; }
       .p2p-summary-container .p2p-order-wrapper .p2p-order-container .p2p-order-details-container .order-verification-container .order-cancel-container .appeal-link:hover,
       .p2p-summary-container .p2p-order-wrapper .p2p-order-container .p2p-order-details-container .order-verification-container .order-cancel-container .cancel-link:hover {
         cursor: pointer; }
@@ -11737,16 +11791,21 @@ table th {
         background-color: var(--base_secondary-navigation-bar) !important; }
       .p2p-summary-container .p2p-order-wrapper .user-chat-container .chat-field .chat-area .notification-message {
         padding: 2% 5%; }
-      .p2p-summary-container .p2p-order-wrapper .user-chat-container .chat-field .chat-area .user-message-container {
+      .p2p-summary-container .p2p-order-wrapper .user-chat-container .chat-field .chat-area .user-message-wrapper {
         padding: 2% 5%;
         display: flex;
-        flex-direction: column;
-        text-align: right; }
-      .p2p-summary-container .p2p-order-wrapper .user-chat-container .chat-field .chat-area .merchant-message-container {
-        padding: 2% 5%;
-        display: flex;
-        flex-direction: column;
-        margin-bottom: 2%; }
+        flex-direction: row-reverse; }
+        .p2p-summary-container .p2p-order-wrapper .user-chat-container .chat-field .chat-area .user-message-wrapper .user-message-container {
+          width: 60%;
+          display: flex;
+          flex-direction: column;
+          text-align: right; }
+      .p2p-summary-container .p2p-order-wrapper .user-chat-container .chat-field .chat-area .merchant-message-wrapper {
+        padding: 2% 5%; }
+        .p2p-summary-container .p2p-order-wrapper .user-chat-container .chat-field .chat-area .merchant-message-wrapper .merchant-message-container {
+          width: 60%;
+          display: flex;
+          flex-direction: column; }
       .p2p-summary-container .p2p-order-wrapper .user-chat-container .chat-field .chat-area .user-message-container .user-name,
       .p2p-summary-container .p2p-order-wrapper .user-chat-container .chat-field .chat-area .user-message-container .merchant-name,
       .p2p-summary-container .p2p-order-wrapper .user-chat-container .chat-field .chat-area .merchant-message-container .user-name,
@@ -11807,6 +11866,43 @@ table th {
       width: 70%;
       background-color: var(--specials_buttons-links-and-highlights); }
 
+.p2p-order-creation-popup-wrapper .ReactModal__Content {
+  width: 50rem; }
+  .p2p-order-creation-popup-wrapper .ReactModal__Content .order-creation-popup-container {
+    margin-top: 3%; }
+    .p2p-order-creation-popup-wrapper .ReactModal__Content .order-creation-popup-container .asset-order-creation-title {
+      display: flex;
+      align-items: center;
+      gap: 5px; }
+      .p2p-order-creation-popup-wrapper .ReactModal__Content .order-creation-popup-container .asset-order-creation-title .asset-icon .edit-wrapper__container svg path {
+        margin-top: 5%; }
+    .p2p-order-creation-popup-wrapper .ReactModal__Content .order-creation-popup-container .order-creation-description {
+      color: var(--labels_secondary-inactive-label-text-graphics); }
+    .p2p-order-creation-popup-wrapper .ReactModal__Content .order-creation-popup-container .warning-message-container .warning-message-details {
+      padding: 4%;
+      background-color: var(--base_secondary-navigation-bar);
+      border: 1px solid var(--calculated_secondary-border); }
+      .p2p-order-creation-popup-wrapper .ReactModal__Content .order-creation-popup-container .warning-message-container .warning-message-details .warning-title .edit-wrapper__container {
+        font-size: 12px; }
+      .p2p-order-creation-popup-wrapper .ReactModal__Content .order-creation-popup-container .warning-message-container .warning-message-details .warning-description .edit-wrapper__container {
+        font-size: 12px;
+        color: var(--labels_secondary-inactive-label-text-graphics); }
+      .p2p-order-creation-popup-wrapper .ReactModal__Content .order-creation-popup-container .warning-message-container .warning-message-details .cancelling-order-message .edit-wrapper__container {
+        font-size: 12px;
+        color: var(--specials_pending-waiting-caution); }
+    .p2p-order-creation-popup-wrapper .ReactModal__Content .order-creation-popup-container .warning-message-container .confirm-order-creation .edit-wrapper__container {
+      font-size: 12px; }
+    .p2p-order-creation-popup-wrapper .ReactModal__Content .order-creation-popup-container .order-create-button-container {
+      display: flex;
+      gap: 10px; }
+      .p2p-order-creation-popup-wrapper .ReactModal__Content .order-creation-popup-container .order-create-button-container .back-btn,
+      .p2p-order-creation-popup-wrapper .ReactModal__Content .order-creation-popup-container .order-create-button-container .create-order-btn {
+        background-color: var(--specials_buttons-links-and-highlights);
+        border: none; }
+      .p2p-order-creation-popup-wrapper .ReactModal__Content .order-creation-popup-container .order-create-button-container .back-btn:hover,
+      .p2p-order-creation-popup-wrapper .ReactModal__Content .order-creation-popup-container .order-create-button-container .create-order-btn:hover {
+        color: var(--labels_important-active-labels-text-graphics); }
+
 .payment-method-details-popup-wrapper .ReactModal__Content {
   width: 40rem; }
   .payment-method-details-popup-wrapper .ReactModal__Content .add-payment-method-title .edit-wrapper__container {
@@ -11836,6 +11932,11 @@ table th {
     .payment-method-details-popup-wrapper .ReactModal__Content .payment-button-container .complete-btn {
       width: 100%;
       height: 5%; }
+
+.filter-asset-dropdown .ant-select-item .ant-select-item-option-content div:nth-child(1) {
+  gap: 5px !important;
+  align-items: normal !important;
+  margin-top: 3%; }
 
 .p2p-custom-style-dropdown {
   background-color: var(--base_background); }
@@ -12178,6 +12279,8 @@ table th {
       width: 100%;
       background-color: var(--specials_buttons-links-and-highlights);
       border: none; }
+    .feedback-submit-popup-wrapper .ReactModal__Content .submit-transaction-button-container .cancel-btn:hover, .feedback-submit-popup-wrapper .ReactModal__Content .submit-transaction-button-container .proceed-btn:hover, .feedback-submit-popup-wrapper .ReactModal__Content .submit-transaction-button-container .proceed-btn:active, .feedback-submit-popup-wrapper .ReactModal__Content .submit-transaction-button-container .cancel-btn:active {
+      color: var(--labels_important-active-labels-text-graphics); }
 
 .cancel-popup-wrapper .ReactModal__Content,
 .confirm-popup-wrapper .ReactModal__Content {
