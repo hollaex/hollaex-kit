@@ -5,7 +5,7 @@ import strings from 'config/localizedStrings';
 import { IconTitle } from 'hollaex-web-lib';
 import { EditWrapper } from 'components';
 
-const NoDealsData = () => {
+const NoDealsData = ({ trade }) => {
 	return (
 		<div className="no-deals-data">
 			<IconTitle
@@ -14,10 +14,16 @@ const NoDealsData = () => {
 				iconPath={icons['TAB_P2P']}
 				iconId={strings['ACCOUNTS.P2P']}
 			/>
-			<span>
-				<EditWrapper stringId="P2P.NO_DEALS_DATA">
-					{strings['P2P.NO_DEALS_DATA']}
-				</EditWrapper>
+			<span className="important-text">
+				{trade === 'deals' ? (
+					<EditWrapper stringId="P2P.NO_DEALS_DESC">
+						{strings['P2P.NO_DEALS_DESC']}
+					</EditWrapper>
+				) : (
+					<EditWrapper stringId="P2P.NO_ORDERS_DESC">
+						{strings['P2P.NO_ORDERS_DESC']}
+					</EditWrapper>
+				)}
 			</span>
 		</div>
 	);

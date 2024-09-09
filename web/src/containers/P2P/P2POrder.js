@@ -1554,7 +1554,7 @@ const P2POrder = ({
 													<div className="message-time">
 														(
 														{moment(message?.created_at || new Date()).format(
-															'DD/MMM/YYYY, hh:mmA '
+															'DD/MMM/YYYY, hh:mmA'
 														)}
 														)
 													</div>
@@ -1578,7 +1578,7 @@ const P2POrder = ({
 															(
 															{moment(
 																message?.created_at || new Date()
-															)?.format('DD/MMM/YYYY, hh:mmA ')}
+															)?.format('DD/MMM/YYYY, hh:mmA')}
 															)
 														</span>
 													</div>
@@ -1600,7 +1600,7 @@ const P2POrder = ({
 																	(
 																	{moment(
 																		message?.created_at || new Date()
-																	).format('DD/MMM/YYYY, hh:mmA ')}
+																	).format('DD/MMM/YYYY, hh:mmA')}
 																	)
 																</div>
 															</div>
@@ -1626,7 +1626,7 @@ const P2POrder = ({
 																	(
 																	{moment(
 																		message?.created_at || new Date()
-																	)?.format('DD/MMM/YYYY, hh:mmA ')}
+																	)?.format('DD/MMM/YYYY, hh:mmA')}
 																	)
 																</div>
 															</div>

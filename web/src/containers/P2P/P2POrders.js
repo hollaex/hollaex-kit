@@ -30,6 +30,7 @@ const P2POrders = ({
 	user,
 	router,
 	changeProfileTab,
+	tab,
 }) => {
 	const [transactions, setTransactions] = useState([]);
 	const [filter, setFilter] = useState();
@@ -38,6 +39,8 @@ const P2POrders = ({
 	const [transactionStatus, setTransactionStatus] = useState('P2P.ALL_ORDERS');
 
 	const orderStatus = ['P2P.PROCESSING', 'P2P.ALL_ORDERS'];
+	const digitalCurrencies = localStorage?.getItem('digitalCurrencies');
+	const selectedCurrencies = JSON.parse(digitalCurrencies);
 
 	useEffect(() => {
 		fetchTransactions()
@@ -98,6 +101,8 @@ const P2POrders = ({
 					setTransactions={setTransactions}
 					transactionDetails={transactionDetails}
 					setTransactionDetails={setTransactionDetails}
+					selectedCurrencies={selectedCurrencies}
+					tab={tab}
 				/>
 			)}
 			<div className="stake_theme p2p-order-table-wrapper">
@@ -193,14 +198,13 @@ const P2POrders = ({
 											</td>
 
 											<td className="transaction-fiat-amount">
-												<span>${transaction?.amount_fiat}</span>
+												<span>{transaction?.amount_fiat}</span>
 												<span className="ml-2">
 													{transaction?.deal?.spending_asset?.toUpperCase()}
 												</span>
 											</td>
 											<td className="transaction-currency-amount">
 												<span>
-													$
 													{formatAmount(
 														transaction?.deal?.buying_asset,
 														transaction?.price

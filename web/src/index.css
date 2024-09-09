@@ -10812,7 +10812,8 @@ table th {
       .p2p-summary-container .p2p-order-tab-container .crypto-assets .selected-asset,
       .p2p-summary-container .p2p-post-deal-container .crypto-assets .selected-asset,
       .p2p-summary-container .p2p-order-wrapper .crypto-assets .selected-asset {
-        border: 1px solid var(--calculated_important-border); }
+        border: 1px solid var(--calculated_important-border);
+        border-radius: 5px; }
     .p2p-summary-container .p2p-tab-container .ant-steps-item-active .ant-steps-item-content,
     .p2p-summary-container .p2p-order-tab-container .ant-steps-item-active .ant-steps-item-content,
     .p2p-summary-container .p2p-post-deal-container .ant-steps-item-active .ant-steps-item-content,
@@ -10927,6 +10928,10 @@ table th {
         .p2p-summary-container .p2p-order-tab-container .trade-filter-container .p2p-trade-select-field .filters .asset-filter .ant-select-selector {
           height: 20px;
           width: 10rem; }
+        .p2p-summary-container .p2p-order-tab-container .trade-filter-container .p2p-trade-select-field .filters .asset-filter .crypto-field .ant-select-selection-item div:nth-child(1) {
+          align-items: normal;
+          position: relative;
+          top: 0px; }
     .p2p-summary-container .p2p-order-tab-container .trade-filter-container .date-filters {
       width: fit-content;
       display: flex;
@@ -10968,6 +10973,9 @@ table th {
           min-height: unset; }
           .p2p-summary-container .p2p-order-tab-container .trade-filter-container .custom-date-picker-container .range-picker .ant-form-item-control-input .ant-picker {
             border: 1px solid var(--labels_important-active-labels-text-graphics) !important; }
+            .p2p-summary-container .p2p-order-tab-container .trade-filter-container .custom-date-picker-container .range-picker .ant-form-item-control-input .ant-picker .ant-picker-clear {
+              background-color: transparent;
+              color: var(--labels_important-active-labels-text-graphics); }
           .p2p-summary-container .p2p-order-tab-container .trade-filter-container .custom-date-picker-container .range-picker .ant-form-item-control-input .ant-picker,
           .p2p-summary-container .p2p-order-tab-container .trade-filter-container .custom-date-picker-container .range-picker .ant-form-item-control-input .ant-picker-separator,
           .p2p-summary-container .p2p-order-tab-container .trade-filter-container .custom-date-picker-container .range-picker .ant-form-item-control-input .ant-picker-input input {
@@ -11146,6 +11154,12 @@ table th {
             display: flex;
             align-items: center;
             gap: 5px; }
+          .p2p-summary-container .p2p-mydeals-wrapper .p2p-mydeals-table-wrapper .p2p-mydeals-table-content-wrapper .table-row .custom-circle {
+            margin-top: 2%;
+            width: 12px;
+            height: 12px;
+            background-color: var(--specials_checks-okay-done);
+            border-radius: 25px; }
   .p2p-summary-container .p2p-profile-wrapper {
     height: 100%;
     padding: 20px;
@@ -11919,6 +11933,11 @@ table th {
       width: 100%;
       height: 5%; }
 
+.filter-asset-dropdown .ant-select-item .ant-select-item-option-content div:nth-child(1) {
+  gap: 5px !important;
+  align-items: normal !important;
+  margin-top: 3%; }
+
 .p2p-custom-style-dropdown {
   background-color: var(--base_background); }
   .p2p-custom-style-dropdown .ant-select-item {
@@ -12260,6 +12279,8 @@ table th {
       width: 100%;
       background-color: var(--specials_buttons-links-and-highlights);
       border: none; }
+    .feedback-submit-popup-wrapper .ReactModal__Content .submit-transaction-button-container .cancel-btn:hover, .feedback-submit-popup-wrapper .ReactModal__Content .submit-transaction-button-container .proceed-btn:hover, .feedback-submit-popup-wrapper .ReactModal__Content .submit-transaction-button-container .proceed-btn:active, .feedback-submit-popup-wrapper .ReactModal__Content .submit-transaction-button-container .cancel-btn:active {
+      color: var(--labels_important-active-labels-text-graphics); }
 
 .cancel-popup-wrapper .ReactModal__Content,
 .confirm-popup-wrapper .ReactModal__Content {

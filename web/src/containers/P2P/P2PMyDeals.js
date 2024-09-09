@@ -220,12 +220,17 @@ const P2PMyDeals = ({
 										</td>
 										<td className="td-fit w-fit-content">
 											{deal.status ? (
-												<EditWrapper stringId="P2P.ACTIVE">
-													{STRINGS['P2P.ACTIVE']}
-												</EditWrapper>
+												<span className="d-flex ">
+													<span className="custom-circle"></span>
+													<EditWrapper stringId="P2P.ONLINE">
+														<span className="ml-2">
+															{STRINGS['P2P.ONLINE']}
+														</span>
+													</EditWrapper>
+												</span>
 											) : (
-												<EditWrapper stringId="P2P.INACTIVE">
-													{STRINGS['P2P.INACTIVE']}
+												<EditWrapper stringId="P2P.OFFLINE">
+													{STRINGS['P2P.OFFLINE']}
 												</EditWrapper>
 											)}
 										</td>
@@ -290,7 +295,7 @@ const P2PMyDeals = ({
 						</tbody>
 					</table>
 				) : (
-					<NoDealsData />
+					<NoDealsData trade="deals" />
 				)}
 			</div>
 		</div>
