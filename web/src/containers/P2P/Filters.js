@@ -234,11 +234,11 @@ const Filter = ({
 							onChange={(e) => handleTransaction('asset', e)}
 						>
 							<Select.Option value={null}>{STRINGS['P2P.ALL']}</Select.Option>
-							{Object.entries(coins)
-								.filter(([_, { symbol }]) =>
-									selectedCurrencies.includes(symbol)
+							{Object?.entries(coins)
+								?.filter(([_, { symbol }]) =>
+									selectedCurrencies?.includes(symbol)
 								)
-								.map(([_, { symbol, fullname, icon_id }]) => (
+								?.map(([_, { symbol, fullname, icon_id }]) => (
 									<Select.Option key={`${symbol}-${icon_id}`} value={symbol}>
 										<div className="d-flex gap-1">
 											<Coin iconId={icon_id} type="CS1" />
