@@ -2255,6 +2255,9 @@
 		"SEND_MONEY": "send the money",
 		"RECEIVE_MONEY": "receive the money",
 		"CREATE_ORDER": "Create Order",
-		"NO_DEALS_DATA": "Looks like there is no data here"
+		"NO_ORDERS_DESC": "Looks like there are no orders here.",
+		"NO_DEALS_DESC": "Looks like there are no deals here.",
+		"ONLINE": "ONLINE",
+		"OFFLINE": "OFFLINE"
 	}
 }

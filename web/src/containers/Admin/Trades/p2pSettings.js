@@ -446,17 +446,25 @@ const P2PSettings = ({ coins, pairs, p2p_config, features, constants }) => {
 													onChange={(e) => {
 														if (e.target.checked) {
 															if (!digitalCurrencies.includes(coin.symbol)) {
-																setDigitalCurrencies([
+																const updatedCurrencies = [
 																	...digitalCurrencies,
 																	coin.symbol,
-																]);
+																];
+																setDigitalCurrencies(updatedCurrencies);
+																localStorage.setItem(
+																	'digitalCurrencies',
+																	JSON.stringify(updatedCurrencies)
+																);
 															}
 														} else {
 															if (digitalCurrencies.includes(coin.symbol)) {
-																setDigitalCurrencies(
-																	[...digitalCurrencies].filter(
-																		(symbol) => symbol !== coin.symbol
-																	)
+																const updatedCurrencies = [
+																	...digitalCurrencies,
+																].filter((symbol) => symbol !== coin.symbol);
+																setDigitalCurrencies(updatedCurrencies);
+																localStorage.setItem(
+																	'digitalCurrencies',
+																	JSON.stringify(updatedCurrencies)
 																);
 															}
 														}
