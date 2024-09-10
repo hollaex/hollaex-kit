@@ -3323,9 +3323,16 @@ const fetchUserTradingVolume = async (opts = {
 	
 		return { user_id, volume };
 	} else {
-		const data = await client.getAsync(`${user_id}-volumes`);
-		if(data) return { user_id, volume: JSON.parse(data) };
+		const data = await client.getAsync(`${user_id}-asset-volumes`);
+		if(data) return JSON.parse(data);
 		let volume = {
+			1: {},
+			7: {},
+			30: {},
+			90: {},
+		};
+
+		let volumeNative = {
 			1: {},
 			7: {},
 			30: {},
@@ -3352,6 +3359,7 @@ const fetchUserTradingVolume = async (opts = {
 			for (const trade of trades.data) {
 				const { symbol, timestamp } = trade;
 				let size = trade.size;
+				let nativeSize = trade.size;
 				const basePair = symbol.split('-')[0];
 		
 				if (basePair !== getKitConfig().native_currency) {
@@ -3366,14 +3374,18 @@ const fetchUserTradingVolume = async (opts = {
 		
 				if (daysDiff <= 1) {
 					volume[1][basePair] = addAmounts(volume[1][basePair] || 0, size);
+					volumeNative[1][basePair] = addAmounts(volumeNative[1][basePair] || 0, nativeSize);
 				}
 				if (daysDiff <= 7) {
 					volume[7][basePair] = addAmounts(volume[7][basePair] || 0, size);
+					volumeNative[7][basePair] = addAmounts(volumeNative[7][basePair] || 0, nativeSize);
 				}
 				if (daysDiff <= 30) {
 					volume[30][basePair] = addAmounts(volume[30][basePair] || 0, size);
+					volumeNative[30][basePair] = addAmounts(volumeNative[30][basePair] || 0, nativeSize);
 				}
 				volume[90][basePair] = addAmounts(volume[90][basePair] || 0, size);
+				volumeNative[90][basePair] = addAmounts(volumeNative[90][basePair] || 0, nativeSize);
 			}
 		}
 
@@ -3390,8 +3402,9 @@ const fetchUserTradingVolume = async (opts = {
 		
 		const sortedVolumes = sortTopVolumes(volume);
 
-		await client.setexAsync(`${user_id}-volumes`, 60 * 60 * 2, JSON.stringify(sortedVolumes));
-		return { user_id, volume: sortedVolumes };
+		await client.setexAsync(`${user_id}-asset-volumes`, 60 * 60 * 2, JSON.stringify({ user_id, volume: sortedVolumes, volumeNative }));
+
+		return { user_id, volume: sortedVolumes, volumeNative };
 
 	}
 

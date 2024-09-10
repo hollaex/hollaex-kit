@@ -8,6 +8,7 @@ import {
 	Account,
 	MainWallet,
 	P2P,
+	Volume,
 	CurrencyWallet,
 	Login,
 	Signup,
@@ -417,6 +418,12 @@ export const generateRoutes = (routes = []) => {
 					path="wallet/history"
 					name="Wallet History"
 					component={MainWallet}
+					onEnter={requireAuth}
+				/>
+				<Route
+					path="wallet/volume"
+					name="Volume"
+					component={Volume}
 					onEnter={requireAuth}
 				/>
 				<Route path="p2p" name="P2P" component={P2P} />

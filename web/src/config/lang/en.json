@@ -1756,6 +1756,7 @@
 		"ACCORDIAN_INFO": "ASSET INFO PAGE",
 		"ACCORDIAN_HISTORY": "HISTORY",
 		"DEPOSIT": "DEPOSIT",
+		"VOLUME": "VOLUME",
 		"WITHDRAW": "WITHDRAW",
 		"SELECT_ASSET": "Select asset:",
 		"SELECT_NETWORK": "Select network:",
@@ -2104,5 +2105,14 @@
 		"BUYER_NOT_MADE_THE_PAYMENT": "The buyer has not confirmed their payment yet.",
 		"PRICE_TO_ADVERTISE": "Price you’ll advertise to sell",
 		"VIEW_PROFILE": "View vendor's profile"
+	},
+	"VOLUME": {
+		"VOLUME": "VOLUME",
+		"BACK": "Back",
+		"MARKETS": "MARKETS",
+		"CONVERT": "CONVERT",
+		"HISTORY": "HISTORY",
+		"TRADING_VOLUME": "Trading Volume",
+		"VOLUME_DECS": "Traded amounts on your account across different time periods, along with the top 3 assets traded in each period"
 	}
 }
