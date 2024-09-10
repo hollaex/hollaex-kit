@@ -2390,6 +2390,22 @@ const addAmounts = (amount1, amount2) => {
 		)
 	);
 };
+const sortTopVolumes = (volumeData, topN = 4) => {
+    const topSortedVolumes = {};
+
+    for (const period in volumeData) {
+        const periodData = volumeData[period];
+        
+        if (Object.keys(periodData).length > 0) {
+            topSortedVolumes[period] = Object.entries(periodData)
+                .sort(([, valueA], [, valueB]) => valueB - valueA)
+                .slice(0, topN) 
+                .map(([key, value]) => ({ [key]: value })); 
+        }
+    }
+    
+    return topSortedVolumes;
+};
 
 const multiplyAmounts = (x, y) => {
 	return mathjs.number(
@@ -3269,49 +3285,117 @@ const fetchUserTradingVolume = async (opts = {
 	let { user_id, to, from } = opts;
 	const currentTime = moment().seconds(0).milliseconds(0).toISOString();
 
-	if (!from) {
-		from = moment(currentTime).subtract(30, 'days').toISOString();
-	}
-
-	if (!to) {
-		to = moment(currentTime).toISOString();
-	}
-
-	let volume = {};
-
-	const oracleIndex = await getOracleIndex();
-
 	const { getAllUserTradesByKitId } = require('./order');
-	const trades = await getAllUserTradesByKitId(
-		user_id,
-		null,
-		null,
-		null,
-		null,
-		null,
-		from,
-		to,
-		'all'
-	);
 
-	if (trades.data && trades.data.length > 0) {
-		for (const trade of trades.data) {
-			const { symbol } = trade;
-			let size = trade.size;
+	if(!from && !to) {
+		let volume = {};
 
-			const basePair = symbol.split('-')[0];
-
-			if (basePair !== getKitConfig().native_currency) {
-				if (!isNumber(oracleIndex[basePair]) || oracleIndex[basePair] <= 0) {
-					continue;
+		const oracleIndex = await getOracleIndex();
+	
+		const trades = await getAllUserTradesByKitId(
+			user_id,
+			null,
+			null,
+			null,
+			null,
+			null,
+			from,
+			to,
+			'all'
+		);
+	
+		if (trades.data && trades.data.length > 0) {
+			for (const trade of trades.data) {
+				const { symbol } = trade;
+				let size = trade.size;
+	
+				const basePair = symbol.split('-')[0];
+	
+				if (basePair !== getKitConfig().native_currency) {
+					if (!isNumber(oracleIndex[basePair]) || oracleIndex[basePair] <= 0) {
+						continue;
+					}
+					size = multiplyAmounts(oracleIndex[basePair], size);
 				}
-				size = multiplyAmounts(oracleIndex[basePair], size);
+				volume[basePair] = addAmounts(volume[basePair] || 0, size);
 			}
-			volume[basePair] = addAmounts(volume[basePair] || 0, size);
 		}
+	
+		return { user_id, volume };
+	} else {
+		const data = await client.getAsync(`${user_id}-volumes`);
+		if(data) return { user_id, volume: JSON.parse(data) };
+		let volume = {
+			1: {},
+			7: {},
+			30: {},
+			90: {},
+		};
+		
+		const to = moment(currentTime).toISOString();
+		const from90Days = moment(currentTime).subtract(90, 'days').toISOString();
+		
+		const oracleIndex = await getOracleIndex();
+		const trades = await getAllUserTradesByKitId(
+			user_id,
+			null,
+			null,
+			null,
+			null,
+			null,
+			from90Days,
+			to,
+			'all'
+		);
+		
+		if (trades.data && trades.data.length > 0) {
+			for (const trade of trades.data) {
+				const { symbol, timestamp } = trade;
+				let size = trade.size;
+				const basePair = symbol.split('-')[0];
+		
+				if (basePair !== getKitConfig().native_currency) {
+					if (!isNumber(oracleIndex[basePair]) || oracleIndex[basePair] <= 0) {
+						continue;
+					}
+					size = multiplyAmounts(oracleIndex[basePair], size);
+				}
+		
+				const tradeDate = moment(timestamp);
+				const daysDiff = moment(currentTime).diff(tradeDate, 'days');
+		
+				if (daysDiff <= 1) {
+					volume[1][basePair] = addAmounts(volume[1][basePair] || 0, size);
+				}
+				if (daysDiff <= 7) {
+					volume[7][basePair] = addAmounts(volume[7][basePair] || 0, size);
+				}
+				if (daysDiff <= 30) {
+					volume[30][basePair] = addAmounts(volume[30][basePair] || 0, size);
+				}
+				volume[90][basePair] = addAmounts(volume[90][basePair] || 0, size);
+			}
+		}
+
+		for (const period in volume) {
+			const periodData = volume[period];
+			let totalGain = 0;
+
+			for(const coin in periodData) {
+				totalGain += periodData[coin];
+			}
+			
+			volume[period].total = totalGain;
+		}
+		
+		const sortedVolumes = sortTopVolumes(volume);
+
+		await client.setexAsync(`${user_id}-volumes`, 60 * 60 * 2, JSON.stringify(sortedVolumes));
+		return { user_id, volume: sortedVolumes };
+
 	}
 
-	return { user_id, volume };
+	
 };
 
 
