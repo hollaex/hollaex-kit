@@ -1,33 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import withConfig from 'components/ConfigProvider/withConfig';
-import Highcharts from 'highcharts';
-import HighchartsReact from 'highcharts-react-official';
-// eslint-disable-next-line
-import {
-	Coin,
-	DonutChart,
-	EditWrapper,
-	MobileBarBack,
-	CheckTitle,
-} from 'components';
-import { Link } from 'react-router';
-import { Button, Spin, DatePicker, message, Modal, Tabs } from 'antd';
+
+import { EditWrapper, CheckTitle } from 'components';
+import { Spin } from 'antd';
 import { fetchUserVolume } from './actions/volumeActions';
 import BigNumber from 'bignumber.js';
-import moment from 'moment';
 import STRINGS from 'config/localizedStrings';
-import { CloseOutlined } from '@ant-design/icons';
-import { isMobile } from 'react-device-detect';
-import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
-import {
-	calculateOraclePrice,
-	formatCurrencyByIncrementalUnit,
-} from 'utils/currency';
-import { IconTitle } from 'components';
-import { formatToCurrency } from 'utils/currency';
+
 import './_Volume.scss';
-const TabPane = Tabs.TabPane;
 const Volume = ({ coins, icons: ICONS, router }) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [volumeData, setVolumeData] = useState([]);
@@ -259,11 +240,13 @@ const Volume = ({ coins, icons: ICONS, router }) => {
 													</div>
 												);
 											}
+											return <></>;
 										})}
 									</div>
 								</div>
 							);
 						}
+						return <></>;
 					})}
 				</div>
 			</div>
