@@ -7,6 +7,7 @@ import _isEqual from 'lodash/isEqual';
 import { STATIC_ICONS } from 'config/icons';
 import FormButton from 'components/FormButton/Button';
 import { CloseOutlined } from '@ant-design/icons';
+import { Link } from 'react-router';
 const { Item } = Form;
 
 const InterfaceForm = ({
@@ -45,10 +46,20 @@ const InterfaceForm = ({
 		active: constants?.kit?.referral_history_config?.active,
 	});
 
+	const [chainTradeData, setChainTradeData] = useState({
+		currency: constants?.kit?.chain_trade_config?.currency,
+		source_account: constants?.kit?.chain_trade_config?.source_account,
+		date_enabled:
+			constants?.kit?.chain_trade_config?.date_enabled || new Date(),
+		active: constants?.kit?.chain_trade_config?.active,
+	});
+
 	const [
 		displayReferralHistoryModal,
 		setDisplayReferralHistoryModal,
 	] = useState(false);
+
+	const [displayChainTradeModal, setDisplayChainTradeModal] = useState(false);
 
 	const handleSubmit = (values) => {
 		let formValues = {};
@@ -61,6 +72,7 @@ const InterfaceForm = ({
 				cefi_stake: !!values.cefi_stake,
 				balance_history_config: !!values.balance_history_config,
 				referral_history_config: !!values.referral_history_config,
+				chain_trade_config: !!values.chain_trade_config,
 				home_page: isUpgrade ? false : !!values.home_page,
 				ultimate_fiat: !!values.ultimate_fiat,
 				apps: !!values.apps,
@@ -79,10 +91,16 @@ const InterfaceForm = ({
 				distributor_id: Number(referralHistoryData.distributor_id),
 				date_enabled: referralHistoryData.date_enabled,
 			};
+			const chain_trade_config = {
+				active: !!values.chain_trade_config,
+				currency: chainTradeData.currency,
+				source_account: Number(chainTradeData.source_account),
+			};
 			handleSaveInterface(
 				formValues,
-				balance_history_config,
-				referral_history_config
+				values.balance_history_config ? balance_history_config : null,
+				values.referral_history_config ? referral_history_config : null,
+				values.chain_trade_config ? chain_trade_config : null,
 			);
 		}
 	};
@@ -108,6 +126,8 @@ const InterfaceForm = ({
 			} else {
 				setDisplayReferralHistoryModal(true);
 			}
+		} else if (formProps.chain_trade_config && !chainTradeData.active) {
+			setDisplayChainTradeModal(true);
 		} else if (
 			formProps.balance_history_config &&
 			!balanceHistoryCurrency.currency
@@ -404,6 +424,120 @@ const InterfaceForm = ({
 					</div>
 				</Modal>
 			)}
+			{displayChainTradeModal && (
+				<Modal
+					maskClosable={false}
+					closeIcon={<CloseOutlined style={{ color: 'white' }} />}
+					bodyStyle={{
+						backgroundColor: '#27339D',
+						marginTop: 60,
+					}}
+					visible={displayChainTradeModal}
+					width={500}
+					footer={null}
+					onCancel={() => {
+						setDisplayChainTradeModal(false);
+					}}
+				>
+					<h2 style={{ fontWeight: '600', color: 'white' }}>
+						Chain Trade Config
+					</h2>
+
+					<div className="mb-4">
+						<div style={{ fontSize: 16 }} className="mb-2">
+							Currency
+							<div style={{ fontSize: 13 }}>
+								Currency to set as main source coin
+							</div>
+						</div>
+
+						<Select
+							showSearch
+							className="select-box"
+							placeholder="Select main asset for source account"
+							value={chainTradeData.currency}
+							style={{ width: 250 }}
+							onChange={(e) => {
+								setChainTradeData({
+									...chainTradeData,
+									currency: e,
+								});
+							}}
+						>
+							{Object.keys(coins).map((key) => (
+								<Select.Option value={key}>{coins[key].fullname}</Select.Option>
+							))}
+						</Select>
+					</div>
+
+					<div className="mb-4">
+						<div style={{ fontSize: 16 }} className="mb-2">
+							Source Account ID
+							<div style={{ fontSize: 13 }}>
+								Account ID to send to manage chain trades from
+							</div>
+						</div>
+
+						<Input
+							value={chainTradeData.source_account}
+							onChange={(e) => {
+								setChainTradeData({
+									...chainTradeData,
+									source_account: Number(e.target.value),
+								});
+							}}
+						/>
+					</div>
+
+					<div
+						style={{
+							display: 'flex',
+							flexDirection: 'row',
+							gap: 15,
+							justifyContent: 'space-between',
+							marginTop: 30,
+						}}
+					>
+						<Button
+							onClick={() => {
+								setDisplayChainTradeModal(false);
+							}}
+							style={{
+								backgroundColor: '#288500',
+								color: 'white',
+								flex: 1,
+								height: 35,
+							}}
+							type="default"
+						>
+							Back
+						</Button>
+						<Button
+							onClick={async () => {
+								if (
+									chainTradeData.currency == null ||
+									chainTradeData.source_account == null
+								) {
+									message.error('Please input all the fields');
+									return;
+								}
+								setIsSubmit(true);
+								handleSubmit(form.getFieldsValue());
+								setDisplayChainTradeModal(false);
+							}}
+							style={{
+								backgroundColor: '#288500',
+								color: 'white',
+								flex: 1,
+								height: 35,
+							}}
+							type="default"
+						>
+							Proceed
+						</Button>
+					</div>
+				</Modal>
+			)}
 
 			<div className="sub-title">Features</div>
 			<div className="description">
@@ -426,7 +560,7 @@ const InterfaceForm = ({
 									className="feature-icon mr-1"
 								/>
 								<div className="ml-2 checkbox-txt">
-									Pro trade
+									Pro trade (Market)
 									<div className="small-text">
 										(Chart, orderbook, limit orders with wallet)
 									</div>
@@ -448,7 +582,7 @@ const InterfaceForm = ({
 									</div>
 								</div>
 								<div className="ml-2 checkbox-txt">
-									Quick trade
+									Quick trade (Convert)
 									<div className="d-flex justify-content-between">
 										<div className="small-text">
 											(Simple buy/sell interface with wallet)
@@ -522,6 +656,39 @@ const InterfaceForm = ({
 					)}
 
 					{!isFiatUpgrade && (
+						<Item name="p2p_config" valuePropName="checked">
+							<Link to={'/admin/trade?tab=3'}>
+								<Checkbox
+									checked={constants?.kit?.p2p_config?.enable}
+									className="mt-3"
+								>
+									<div className="d-flex align-items-center">
+										<div
+											style={{
+												backgroundColor: '#050596',
+												height: 50,
+												textAlign: 'center',
+											}}
+										>
+											<ReactSVG
+												src={STATIC_ICONS.P2P_FEATURE}
+												className="feature-icon mr-1"
+											/>
+										</div>
+
+										<div className="ml-2 checkbox-txt">
+											P2P
+											<div className="small-text">
+												(P2P Trading for merchants and exchange users)
+											</div>
+										</div>
+									</div>
+								</Checkbox>
+							</Link>
+						</Item>
+					)}
+
+					{!isFiatUpgrade && (
 						<Item name="referral_history_config" valuePropName="checked">
 							<Checkbox className="mt-3">
 								<div className="d-flex align-items-center">
@@ -564,6 +731,59 @@ const InterfaceForm = ({
 										)}
 										<div className="small-text">
 											(User referral system with analytics)
+										</div>
+									</div>
+								</div>
+							</Checkbox>
+						</Item>
+					)}
+
+					{!isFiatUpgrade && (
+						<Item name="chain_trade_config" valuePropName="checked">
+							<Checkbox className="mt-3">
+								<div className="d-flex align-items-center">
+									<span
+										style={{
+											backgroundColor: '#050596',
+											textAlign: 'center',
+											height: 50,
+											display: 'flex',
+											justifyContent: 'center',
+											alignItems: 'center',
+										}}
+									>
+										<ReactSVG
+											src={STATIC_ICONS.MPESA_ICON}
+											className="d-flex feature-icon justify-content-center mr-2 mt-3 ml-1 pl-1"
+											beforeInjection={(svg) => {
+												svg.setAttribute('style', 'width: 60px');
+											}}
+										/>
+									</span>
+									<div className="ml-2 checkbox-txt">
+										Chain Trading{' '}
+										{chainTradeData.active && (
+											<span
+												style={{
+													padding: 5,
+													position: 'relative',
+													left: 5,
+													bottom: 5,
+													color: 'white',
+													backgroundColor: '#288500',
+													cursor: 'pointer',
+												}}
+												onClick={(e) => {
+													e.stopPropagation();
+													e.preventDefault();
+													setDisplayChainTradeModal(true);
+												}}
+											>
+												Configure
+											</span>
+										)}
+										<div className="small-text">
+											(Enable Chain Trading for Users)
 										</div>
 									</div>
 								</div>

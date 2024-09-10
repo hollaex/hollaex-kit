@@ -112,6 +112,8 @@ export const SET_DEPOSIT_NETWORK_OPTIONS = 'SET_DEPOSIT_OPTIONS';
 export const SET_SELECTED_METHOD = 'SET_SELECTED_METHOD';
 export const SET_RECEIVER_EMAIL = 'SET_RECEIVER_EMAIL';
 export const SET_WITHDRAW_OTIONAL_TAG = 'SET_WITHDRAW_OTIONAL_TAG';
+export const SET_CHART_DATA = 'SET_CHART_DATA';
+export const SET_COINS_DATA = 'SET_COINS_DATA';
 
 export const SORT = {
 	VOL: 'volume',
@@ -372,6 +374,13 @@ export const changePair = (pair) => ({
 	type: CHANGE_PAIR,
 	payload: {
 		pair,
+	},
+});
+
+export const changeSparkLineChartData = (sparkLineChartData) => ({
+	type: SET_CHART_DATA,
+	payload: {
+		sparkLineChartData,
 	},
 });
 
@@ -758,4 +767,9 @@ export const setReceiverEmail = (email) => ({
 export const setWithdrawOptionaltag = (tag) => ({
 	type: SET_WITHDRAW_OTIONAL_TAG,
 	payload: tag,
+});
+
+export const setCoinsData = (coinsData) => ({
+	type: SET_COINS_DATA,
+	payload: coinsData,
 });

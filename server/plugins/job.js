@@ -26,6 +26,7 @@ const unstakingCheckRunner = () => {
 			const stakerData = await stakerModel.findAll({ where: { status: 'unstaking' } });
 
 			for (const staker of stakerData) {
+				await toolsLib.sleep(1000);
 				const user = await toolsLib.user.getUserByKitId(staker.user_id);
 				const stakePool = await stakePoolModel.findOne({ where: { id: staker.stake_id } });
 
@@ -33,7 +34,7 @@ const unstakingCheckRunner = () => {
 				let symbols = {};
 				
 				for (const key of Object.keys(balance)) {
-					if (key.includes('available') && balance[key]) {
+					if (key.includes('available') && balance[key] != null) {
 						let symbol = key?.split('_')?.[0];
 						symbols[symbol] = balance[key];
 					}

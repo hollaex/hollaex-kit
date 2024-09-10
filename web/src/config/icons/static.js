@@ -16,6 +16,7 @@ const icons = {
 	DEFAULT_PLUGINS: '/assets/plugins/default-plugin.png',
 	HOLLAEX_INIT_LOGO: '/assets/images/hollaex-icon-01.svg',
 	CANDLES_LOGO: '/assets/images/Light-theme-candles.svg',
+	P2P_FEATURE: '/assets/images/p2p-feature-admin.svg',
 	SET_ADMIN_NETWORK_KEYS: '/assets/images/set-admin-network-keys.svg',
 	SET_ADMIN_EMAIL: '/assets/images/set-admin-email.svg',
 	REFERRAL_ICON: '/assets/images/referrals-icon.svg',

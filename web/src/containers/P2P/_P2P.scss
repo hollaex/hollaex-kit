@@ -1,25 +1,21 @@
-.P2pOrder {
-	.ant-steps-item-active .ant-steps-item-content {
-		background-color: transparent;
-	}
-	background-color: var(--base_wallet-sidebar-and-popup);
-
-	.buySideP2P {
-		background-color: var(--trading_buying-related-elements);
-		color: var(--calculated_base_top-bar-navigation_text) !important;
-	}
-	.sellSideP2P {
-		background-color: var(--trading_selling-related-elements);
-		color: var(--calculated_base_top-bar-navigation_text) !important;
-	}
-	.subTable {
-		background-color: var(--base_secondary-navigation-bar);
-	}
-}
 .greenButtonP2P {
 	background-color: var(--specials_checks-okay-done) !important;
 	color: var(--calculated_base_top-bar-navigation_text) !important;
 	border: none;
+}
+
+.redButtonP2P {
+	background-color: var(--trading_selling-related-elements) !important;
+	color: var(--calculated_base_top-bar-navigation_text) !important;
+	border: none;
+}
+
+.redTextP2P {
+	color: var(--trading_selling-related-elements) !important;
+}
+
+.greenTextP2P {
+	color: var(--specials_checks-okay-done) !important;
 }
 
 .greyButtonP2P {
@@ -27,6 +23,7 @@
 	color: var(--calculated_base_top-bar-navigation_text) !important;
 	border: none;
 }
+
 .whiteTextP2P {
 	color: var(--labels_important-active-labels-text-graphics) !important;
 }
@@ -40,9 +37,11 @@
 	color: var(--calculated_base_top-bar-navigation_text) !important;
 	border: none;
 }
+
 .greyTextP2P {
 	color: var(--labels_inactive-button);
 }
+
 .openGreyTextP2P {
 	color: var(--labels_secondary-inactive-label-text-graphics);
 }
@@ -64,4 +63,2603 @@
 .mobile-view-p2p-post {
 	zoom: 0.4;
 	position: relative;
+}
+
+.p2p-summary-container {
+	width: 85%;
+	padding: 20px;
+	height: max-content;
+	margin-left: auto;
+	margin-right: auto;
+
+	.p2p-title {
+		text-align: center;
+		font-size: 19px;
+	}
+
+	.toggle-buy-text {
+		color: var(--trading_buying-related-elements);
+		font-weight: bold;
+	}
+
+	.toggle-sell-text {
+		color: var(--trading_selling-related-elements);
+		font-weight: bold;
+	}
+
+	.toggle-buy {
+		background-color: var(--trading_buying-related-elements);
+	}
+
+	.toggle-sell {
+		background-color: var(--trading_selling-related-elements);
+	}
+
+	.p2p-order-wrapper {
+		width: 90% !important;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	.p2p-post-deal-container {
+		min-height: 30rem !important;
+	}
+
+	.no-deals-data {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		margin: 0 auto;
+	}
+
+	.p2p-no-deals-container {
+		min-height: fit-content !important;
+	}
+
+	.p2p-tab-container,
+	.p2p-order-tab-container,
+	.p2p-post-deal-container,
+	.p2p-order-wrapper {
+		min-height: 50rem;
+		width: 100%;
+		padding: 20px;
+		background-color: var(--base_wallet-sidebar-and-popup);
+
+		.p2p-order-search-container {
+			display: flex;
+			text-align: center;
+			text-wrap: nowrap;
+			align-items: center;
+			justify-content: space-between;
+			gap: 10px;
+			margin-top: 10px;
+
+			.p2p-fiat-currency-container,
+			.p2p-amount,
+			.p2p-payment-method,
+			.p2p-avaliable-regions {
+				display: flex;
+				gap: 10px;
+				font-size: 12px !important;
+
+				.edit-wrapper__container {
+					color: var(--labels_important-active-labels-text-graphics);
+					font-weight: bold;
+				}
+
+				.p2p-select-field {
+					display: flex;
+					align-items: center;
+
+					.ant-select-selector {
+						display: flex;
+						align-items: center;
+						border-radius: 5px;
+						height: 20px;
+						font-size: 12px;
+						background-color: transparent;
+						border-color: var(--calculated_important-border);
+						color: var(--labels_important-active-labels-text-graphics);
+
+						.ant-select-selection-search {
+							input {
+								height: 100% !important;
+								font-size: 12px;
+							}
+						}
+
+						.ant-select-selection-item {
+							color: var(--labels_secondary-inactive-label-text-graphics);
+						}
+					}
+
+					.ant-select-arrow {
+						color: var(--labels_important-active-labels-text-graphics);
+					}
+				}
+			}
+
+			.p2p-amount {
+				.ant-input-affix-wrapper {
+					display: flex;
+					align-items: center;
+					border: unset !important;
+					border-bottom: 1px solid var(--calculated_important-border) !important;
+					background-color: transparent;
+					color: var(--labels_important-active-labels-text-graphics);
+					height: 20px;
+					font-size: 12px;
+					box-shadow: unset;
+
+					input {
+						background-color: transparent;
+						color: var(--labels_important-active-labels-text-graphics);
+						font-size: 12px !important;
+					}
+
+					.ant-input-suffix {
+						text-transform: uppercase;
+						text-decoration: underline;
+						color: var(--specials_buttons-links-and-highlights);
+					}
+				}
+
+				.ant-input-affix-wrapper-focused {
+					border: transparent !important;
+					border-bottom: 1px solid var(--calculated_important-border) !important;
+				}
+			}
+		}
+
+		.p2p-table-container {
+			display: flex;
+			font-weight: normal !important;
+			.p2p-stake-table {
+				.p2p-stake-table-header {
+					font-family: 'Raleway Extrabold';
+
+					tr {
+						border-bottom: 1px solid var(--calculated_secondary-border);
+						padding: 10px;
+
+						.p2p-vendor-header {
+							.edit-wrapper__container {
+								margin-left: 15%;
+							}
+						}
+					}
+				}
+
+				.p2p-table-body-container {
+					.p2p-table-row,
+					.p2p-expendable-row {
+						border-bottom: 1px solid var(--calculated_secondary-border);
+						position: relative;
+
+						.vendor-title,
+						.price-value,
+						.avaliable-amount,
+						.payment-methods,
+						.trade-button {
+							padding: 10px 0;
+						}
+
+						.vendor-title:hover,
+						.price-value:hover,
+						.avaliable-amount:hover,
+						.payment-methods:hover {
+							cursor: pointer;
+						}
+
+						.vendor-title,
+						.avaliable-amount {
+							display: flex;
+
+							.p2p-avaliable-price,
+							.p2p-limit-price {
+								display: flex;
+								flex-direction: column;
+								align-items: flex-start;
+
+								.p2p-avaliable-price {
+									display: flex;
+									align-items: flex-start;
+									gap: 5px;
+									flex-direction: row;
+								}
+
+								.edit-wrapper__container {
+									color: var(--labels_secondary-inactive-label-text-graphics);
+								}
+							}
+						}
+
+						.trade-button {
+							width: 10%;
+							text-align: end;
+						}
+					}
+				}
+
+				.p2p-expendable-row {
+					.payment-description,
+					.p2p-terms-condition {
+						.payment-time-limit,
+						.deal-terms {
+							color: var(--labels_important-active-labels-text-graphics);
+						}
+					}
+
+					.title-description {
+						display: flex;
+						flex-direction: column;
+						margin-top: 5%;
+						.vendor-profile-description {
+							.edit-wrapper__container {
+								color: var(--specials_buttons-links-and-highlights);
+								text-decoration: underline;
+								cursor: pointer;
+							}
+						}
+					}
+
+					.payment-details-container {
+						padding: 10px;
+						width: 70%;
+
+						.payment-details {
+							display: flex;
+							flex-direction: column;
+							align-items: flex-end;
+
+							.payment-method,
+							.p2p-amount-spent,
+							.p2p-amount-receive,
+							.trade-button-container {
+								display: flex;
+								width: 80%;
+								gap: 15px;
+								margin-bottom: 5px;
+								justify-content: space-between;
+								align-items: flex-start;
+
+								.amount-receive-title {
+									display: flex;
+									flex-direction: row;
+									align-items: center;
+									gap: 5px;
+								}
+
+								.add-payment-container {
+									width: 58%;
+								}
+
+								.error-field {
+									border: 2px solid
+										var(--specials_notifications-alerts-warnings) !important;
+								}
+
+								.amount-spent-field,
+								.amount-receive-field,
+								.payment-method-field-container {
+									border: 1px solid
+										var(--labels_important-active-labels-text-graphics);
+									color: var(
+										--labels_important-active-labels-text-graphics
+									) !important;
+									background-color: var(
+										--base_wallet-sidebar-and-popup
+									) !important;
+
+									input,
+									.payment-method-field,
+									.ant-select-selector,
+									.ant-select-arrow {
+										color: var(
+											--labels_important-active-labels-text-graphics
+										) !important;
+										background-color: var(
+											--base_wallet-sidebar-and-popup
+										) !important;
+										border: unset;
+									}
+
+									.ant-input-suffix {
+										text-transform: uppercase;
+										text-decoration: underline;
+										color: var(--specials_buttons-links-and-highlights);
+									}
+								}
+
+								.payment-method-field-container,
+								.amount-spent-field-container,
+								.amount-receive-field-container {
+									width: 58%;
+								}
+							}
+							.error-field-container {
+								height: 20px;
+								.error-message {
+									color: var(--specials_notifications-alerts-warnings);
+								}
+							}
+							.trade-button-container {
+								justify-content: flex-end;
+								margin-top: 15px;
+								gap: 10px;
+
+								.greyButtonP2P {
+									color: var(
+										--labels_important-active-labels-text-graphics
+									) !important;
+									background-color: var(
+										--base_wallet-sidebar-and-popup
+									) !important;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		.p2p-buy-sell-toggle {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 10px;
+			margin: 2% 0;
+			font-size: 18px;
+		}
+
+		.crypto-assets {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			margin-bottom: 3%;
+			font-size: 12px;
+			gap: 15px;
+
+			.asset {
+				padding: 0 1%;
+			}
+
+			.asset:hover {
+				cursor: pointer;
+			}
+
+			.selected-asset {
+				border: 1px solid var(--calculated_important-border);
+				border-radius: 5px;
+			}
+		}
+
+		.ant-steps-item-active .ant-steps-item-content {
+			background-color: transparent;
+		}
+
+		.buySideP2P {
+			background-color: var(--trading_buying-related-elements);
+			color: var(--calculated_base_top-bar-navigation_text) !important;
+		}
+
+		.sellSideP2P {
+			background-color: var(--trading_selling-related-elements);
+			color: var(--calculated_base_top-bar-navigation_text) !important;
+		}
+
+		.subTable {
+			background-color: var(--base_background);
+		}
+
+		.postDealButton {
+			margin-top: 3%;
+		}
+	}
+
+	.p2p-order-tab-container {
+		.order-status-button-container {
+			margin-bottom: 3%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 5%;
+
+			.transaction-button {
+				border: 1px solid var(--calculated_secondary-border);
+				padding: 0.5% 1.5%;
+				border-radius: 5px;
+				width: 22%;
+				text-align: center;
+			}
+
+			.transaction-button-active {
+				border: 1px solid var(--calculated_important-border);
+			}
+
+			.transaction-button:hover {
+				cursor: pointer;
+			}
+		}
+
+		.trade-filter-container {
+			display: flex;
+			gap: 10px;
+			flex-direction: column;
+			align-items: flex-start;
+			width: 90%;
+
+			.p2p-trade-select-field {
+				display: flex;
+				width: fit-content;
+
+				.filters {
+					width: fit-content;
+					display: flex;
+					gap: 10px;
+					padding: 0 2%;
+					align-items: center;
+					border-right: 2px solid var(--calculated_secondary-border);
+
+					.asset-filter,
+					.side-filter,
+					.status-filter {
+						display: flex;
+						align-items: center;
+						gap: 5px;
+
+						.crypto-field {
+							.ant-select-selection-item {
+								div:nth-child(1) {
+									gap: 5px !important;
+									align-items: center;
+									margin-bottom: 5%;
+								}
+							}
+						}
+
+						.edit-wrapper__container {
+							color: var(--labels_important-active-labels-text-graphics);
+							font-size: 14px;
+						}
+
+						.ant-select,
+						.ant-select-selector {
+							height: 20px;
+							width: 7rem;
+							background-color: transparent;
+							color: var(--labels_important-active-labels-text-graphics);
+							border: 1px solid var(--calculated_secondary-border);
+							border-radius: 5px;
+
+							.ant-select-selection-item {
+								font-size: 12px;
+								line-height: unset;
+							}
+
+							.ant-select-arrow {
+								color: var(--labels_important-active-labels-text-graphics);
+							}
+
+							.ant-select-selection-placeholder {
+								line-height: 20px;
+							}
+						}
+					}
+
+					.asset-filter {
+						.ant-select,
+						.ant-select-selector {
+							height: 20px;
+							width: 10rem;
+						}
+
+						.crypto-field {
+							.ant-select-selection-item {
+								div:nth-child(1) {
+									align-items: normal;
+									position: relative;
+									top: 0px;
+								}
+							}
+						}
+					}
+				}
+			}
+
+			.date-filters {
+				width: fit-content;
+				display: flex;
+				gap: 5px;
+				padding: 0 2%;
+
+				.ant-radio-group {
+					display: flex;
+					gap: 5px;
+					align-items: center;
+					font-size: 13px;
+
+					.date-text {
+						text-wrap: nowrap;
+						color: var(--labels_secondary-inactive-label-text-graphics);
+						background: transparent !important;
+						border: none;
+					}
+
+					.ant-radio-button-wrapper::before {
+						background-color: transparent;
+					}
+
+					.date-text:hover {
+						cursor: pointer;
+						color: var(--labels_important-active-labels-text-graphics);
+					}
+
+					.active-date-text {
+						border: 1px solid var(--calculated_important-border);
+						color: var(--labels_important-active-labels-text-graphics);
+					}
+				}
+			}
+
+			.custom-text-active {
+				border: 1px solid var(--calculated_important-border);
+				color: var(--labels_important-active-labels-text-graphics);
+			}
+
+			.custom-text {
+				padding: 0 1%;
+			}
+
+			.custom-text:hover {
+				cursor: pointer;
+				color: var(--labels_important-active-labels-text-graphics);
+			}
+
+			.custom-date-picker-container {
+				display: flex;
+				gap: 15px;
+				margin: 1% 0 0 1%;
+
+				.range-picker {
+					margin-bottom: unset !important;
+
+					.ant-form-item-control-input {
+						min-height: unset;
+
+						.ant-picker {
+							border: 1px solid
+								var(--labels_important-active-labels-text-graphics) !important;
+							.ant-picker-clear {
+								background-color: transparent;
+								color: var(--labels_important-active-labels-text-graphics);
+							}
+						}
+
+						.ant-picker,
+						.ant-picker-separator,
+						.ant-picker-input input {
+							background-color: var(--base_wallet-sidebar-and-popup) !important;
+							color: var(
+								--labels_important-active-labels-text-graphics
+							) !important;
+						}
+
+						.ant-picker:hover,
+						.ant-picker:focus {
+							border: 1px solid
+								var(--labels_important-active-labels-text-graphics);
+							box-shadow: none;
+						}
+					}
+				}
+			}
+		}
+
+		.p2p-order-table-wrapper {
+			margin-top: 4%;
+
+			.p2p-order-table {
+				border: none;
+				border-collapse: 'collapse';
+
+				thead,
+				tbody {
+					tr {
+						border-bottom: 1px solid var(--calculated_secondary-border);
+					}
+				}
+
+				thead {
+					tr {
+						color: var(--labels_secondary-inactive-label-text-graphics);
+						font-size: 12px;
+
+						.trade-button-header {
+							.edit-wrapper__container {
+								margin-left: 5%;
+							}
+						}
+
+						th {
+							padding-bottom: 0.5%;
+						}
+					}
+				}
+
+				.table-row-inactive {
+					td:not(:last-child) {
+						opacity: 0.5;
+					}
+				}
+				tbody {
+					tr {
+						.trade-button,
+						.transaction-fiat-amount,
+						.transaction-currency-amount,
+						.crypto-amount,
+						.transaction-user-name,
+						.transaction-status,
+						.view-orders {
+							padding: 0.5% 0;
+							width: 15%;
+							font-weight: normal;
+							.active-green {
+								color: var(--specials_checks-okay-done);
+							}
+
+							.active-orange {
+								color: var(--specials_pending-waiting-caution);
+							}
+
+							.active-yellow {
+								color: var(--specials_my-username-in-chat);
+							}
+
+							.inactive-text {
+								color: var(--labels_secondary-inactive-label-text-graphics);
+							}
+
+							.crypto-amount-detail {
+								display: flex;
+								gap: 5px;
+								align-items: center;
+							}
+
+							.transaction-status-detail {
+								display: flex;
+								gap: 5px;
+								text-transform: capitalize;
+							}
+						}
+
+						.trade-button {
+							.p2p-sell-order-button,
+							.p2p-buy-order-button {
+								margin-left: 5%;
+								padding: 0.5% 7%;
+								width: fit-content;
+								font-size: 12px;
+								height: 25px;
+							}
+
+							.p2p-buy-order-button {
+								background-color: var(--specials_checks-okay-done);
+							}
+
+							.p2p-sell-order-button {
+								background-color: var(--trading_selling-related-elements);
+							}
+
+							.p2p-sell-order-button:hover,
+							.p2p-buy-order-button:hover {
+								color: var(--labels_important-active-labels-text-graphics);
+							}
+						}
+
+						.view-orders {
+							.purpleTextP2P {
+								color: var(--specials_buttons-links-and-highlights) !important;
+								text-transform: uppercase;
+								text-decoration: underline;
+							}
+
+							.purpleTextP2P:hover {
+								cursor: pointer;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	.p2p-mydeals-wrapper {
+		height: 100%;
+		overflow-y: auto;
+		padding: 20px;
+		background-color: var(--base_wallet-sidebar-and-popup);
+
+		.ant-checkbox-checked {
+			.ant-checkbox-inner::after {
+				border-color: var(
+					--labels_important-active-labels-text-graphics
+				) !important;
+			}
+		}
+
+		.ant-checkbox-checked::after {
+			border: 1px solid var(--labels_secondary-inactive-label-text-graphics) !important;
+		}
+
+		.ant-checkbox-checked,
+		.ant-checkbox-inner {
+			background-color: transparent;
+			border-color: var(--calculated_secondary-border) !important;
+		}
+
+		.p2p-mydeals-content-wrapper {
+			display: flex;
+			gap: 10px;
+
+			.whiteTextP2P {
+				position: relative;
+				top: 5px;
+				color: var(--labels_important-active-labels-text-graphics) !important;
+			}
+
+			.purpleButtonP2P {
+				background-color: var(
+					--specials_buttons-links-and-highlights
+				) !important;
+				color: var(--calculated_base_top-bar-navigation_text) !important;
+				border: none;
+			}
+		}
+
+		.p2p-mydeals-table-wrapper {
+			display: flex;
+			margin-top: 20px;
+
+			.p2p-mydeals-table-content-wrapper {
+				border: none;
+				border-collapse: collapse;
+				font-size: 12px;
+
+				.table-bottom-border,
+				.table-row {
+					border-bottom: 1px solid var(--calculated_secondary-border);
+					padding: 10px;
+				}
+
+				.table-row {
+					position: relative;
+
+					.ant-checkbox-checked .ant-checkbox-inner,
+					.ant-checkbox-inner {
+						background-color: transparent;
+						border-color: var(--calculated_secondary-border) !important;
+					}
+
+					.ant-checkbox-input:hover {
+						border-color: var(--calculated_secondary-border) !important;
+					}
+
+					.buySideP2P,
+					.sellSideP2P {
+						.ant-btn {
+							height: 25px !important;
+							font-size: 12px;
+						}
+					}
+
+					.edit-deal-btn {
+						border: 1px solid
+							var(--labels_important-active-labels-text-graphics);
+					}
+
+					.edit-deal-btn:hover {
+						opacity: 0.5;
+					}
+
+					.buySideP2P {
+						.ant-btn {
+							background-color: var(--specials_checks-okay-done) !important;
+							color: var(--calculated_base_top-bar-navigation_text) !important;
+							border: unset;
+						}
+					}
+
+					.sellSideP2P {
+						.ant-btn {
+							background-color: var(
+								--trading_selling-related-elements
+							) !important;
+							color: var(--calculated_base_top-bar-navigation_text) !important;
+							border: unset;
+						}
+					}
+
+					.w-fit-content {
+						width: fit-content;
+						padding-bottom: 1%;
+					}
+
+					.pay-methods {
+						display: flex;
+						flex-wrap: wrap;
+						padding: 5px;
+					}
+
+					.avaliable-amount-detail {
+						display: flex;
+						align-items: center;
+						gap: 5px;
+					}
+					.custom-circle {
+						margin-top: 2%;
+						width: 12px;
+						height: 12px;
+						background-color: var(--specials_checks-okay-done);
+						border-radius: 25px;
+					}
+				}
+			}
+		}
+	}
+
+	.p2p-profile-wrapper {
+		height: 100%;
+		padding: 20px;
+		overflow-y: auto;
+		background-color: var(--base_wallet-sidebar-and-popup);
+
+		.p2p-profile-content-wrapper {
+			display: flex;
+			flex-direction: column;
+
+			.display-label {
+				font-weight: bold;
+				text-transform: uppercase;
+			}
+
+			.profile-card-wrapper {
+				display: flex;
+				justify-content: center;
+
+				.fs-14 {
+					font-size: 14px;
+				}
+
+				.fs-18 {
+					font-size: 18px;
+				}
+
+				.profile-card-content-wrapper {
+					display: flex;
+					justify-content: space-between;
+					gap: 10px;
+					margin-bottom: 10px;
+					width: 70%;
+
+					.profile-cards {
+						padding: 20px;
+						width: 100%;
+						text-align: center;
+						font-weight: bold;
+						border-radius: 5px;
+						border: 1px solid var(--calculated_secondary-border);
+					}
+				}
+			}
+
+			.p2p-btn-wrapper {
+				display: flex;
+				flex-direction: row;
+				gap: 10px;
+
+				.active-btn {
+					border: 1px solid var(--labels_important-active-labels-text-graphics) !important;
+				}
+
+				.method-btn,
+				.feedback-btn {
+					margin: 10px 0;
+					border: 1px solid var(--calculated_secondary-border);
+					padding: 5px;
+					width: fit-content;
+					border-radius: 5px;
+					font-weight: bold;
+					cursor: pointer;
+					text-align: center;
+				}
+			}
+
+			.payment-method-wrapper {
+				.flex-1 {
+					flex: 1 1 0%;
+
+					.pay-method-desc-wrapper {
+						width: 80%;
+
+						.pay-method-label {
+							font-size: 15px;
+							font-weight: bold;
+							margin-bottom: 10px;
+						}
+					}
+				}
+
+				.payment-fields {
+					display: flex;
+					gap: 5px;
+
+					.pay-field {
+						width: 40%;
+						display: flex;
+						justify-content: space-between;
+						border: 1px solid var(--calculated_secondary-border);
+						padding: 5px;
+						cursor: pointer;
+					}
+
+					.edit-txt,
+					.delete-txt {
+						position: relative;
+						top: 5px;
+
+						.edit-wrapper__container {
+							text-decoration: underline;
+						}
+					}
+
+					.edit-txt:hover,
+					.delete-txt:hover {
+						cursor: pointer;
+					}
+
+					.pending-label,
+					.unverified-label,
+					.rejected-label,
+					.verified-label {
+						position: relative;
+						top: 5px;
+						margin-left: 5px;
+					}
+				}
+			}
+
+			.feedback-wrapper {
+				.no-feedback {
+					text-align: center;
+					font-size: 15px;
+					border: 1px solid var(--calculated_secondary-border);
+					padding: 10px;
+					border-radius: 5px;
+				}
+
+				.feedback-table-wrapper {
+					border: none;
+					border-collapse: collapse;
+
+					.table-header-wrapper {
+						border-bottom: 1px solid var(--calculated_secondary-border);
+						padding: 10px;
+					}
+
+					.table-row {
+						position: relative;
+						padding: 10px;
+						border-bottom: 1px solid var(--calculated_secondary-border);
+
+						.ant-rate-star-zero {
+							.ant-rate-star-second {
+								color: var(--labels_inactive-button) !important;
+							}
+						}
+					}
+
+					tbody {
+						font-size: 12px;
+					}
+				}
+			}
+		}
+	}
+
+	.p2p-post-deal-container {
+		.post-deal-description,
+		.custom-step-container {
+			padding: 0 4%;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+
+			.terms-content {
+				width: 20%;
+				text-align: center;
+			}
+		}
+
+		.custom-step-container {
+			margin-top: 2%;
+
+			.custom-step {
+				padding: 3px 10px;
+				border: 1px solid var(--labels_secondary-inactive-label-text-graphics);
+				border-radius: 20px;
+			}
+
+			.custom-step-active {
+				border: 1.5px solid var(--labels_important-active-labels-text-graphics);
+			}
+
+			.step-active {
+				border-color: var(--labels_important-active-labels-text-graphics);
+			}
+			.step-one {
+				margin-left: 7%;
+			}
+
+			.step-three {
+				margin-right: 7%;
+			}
+
+			.custom-line {
+				width: 90%;
+				height: 1px;
+				background-color: var(--labels_secondary-inactive-label-text-graphics);
+			}
+
+			.custom-line-active {
+				height: 1.5px;
+				background-color: var(--labels_important-active-labels-text-graphics);
+			}
+		}
+
+		.p2p-post-deal-content-container {
+			.p2p-custom-input-field {
+				width: 100%;
+				font-size: 12px;
+
+				.ant-select-selector {
+					font-size: 12px;
+					background-color: transparent;
+					color: var(--labels_important-active-labels-text-graphics);
+					height: 25px;
+
+					.ant-select-selection-item,
+					.ant-select-selection-placeholder {
+						line-height: 25px;
+					}
+				}
+
+				.ant-select-selector:hover,
+				.ant-select-selector {
+					border: 1px solid var(--labels_important-active-labels-text-graphics);
+				}
+
+				.ant-select-arrow {
+					color: var(--labels_important-active-labels-text-graphics);
+				}
+			}
+
+			.p2p-post-deal-content {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+
+				.toggle-container {
+					z-index: 1;
+					padding: 1% 2%;
+					display: flex;
+					gap: 10px;
+					width: max-content;
+					align-items: center;
+					justify-content: center;
+					font-size: 18px;
+					background-color: var(--base_wallet-sidebar-and-popup);
+				}
+
+				.p2p-update-deal {
+					font-size: 17px;
+					text-align: center;
+					margin-top: 1%;
+				}
+
+				.p2p-trade-field-container {
+					position: relative;
+					bottom: 2rem;
+					display: flex;
+					width: 100%;
+					padding: 3%;
+					border: 1px solid var(--labels_important-active-labels-text-graphics);
+					font-size: 12px;
+
+					.p2p-buy-sell-field {
+						display: flex;
+						align-items: center;
+						justify-content: flex-end;
+						gap: 10%;
+						padding: 0 4% 0 0;
+						border-right: 2px dotted var(--calculated_secondary-border);
+
+						.select-asset-field {
+							display: flex;
+							align-items: center;
+							gap: 5px;
+						}
+
+						.crypto-text {
+							.edit-wrapper__container {
+								margin-top: 5%;
+							}
+						}
+
+						.p2p-buy-sell-arrow-field {
+							.anticon-arrow-right {
+								font-size: 20px;
+								color: var(--labels_important-active-labels-text-graphics);
+							}
+						}
+					}
+
+					.p2p-price-field-container {
+						padding: 0 0 0 3%;
+						display: flex;
+						align-items: center;
+						gap: 10px;
+
+						.p2p-price-field {
+							display: flex;
+							flex-direction: column;
+							gap: 10px;
+
+							.currency-field {
+								width: 82%;
+
+								.ant-input-number {
+									background-color: transparent;
+									color: var(--labels_important-active-labels-text-graphics);
+									border: 1px solid
+										var(--labels_important-active-labels-text-graphics);
+
+									input {
+										height: 25px;
+									}
+								}
+
+								.ant-input-number:hover,
+								.ant-input-number-focused {
+									border: 1px solid
+										var(--labels_important-active-labels-text-graphics);
+								}
+							}
+
+							.p2p-custom-input-field {
+								width: 82%;
+							}
+						}
+
+						.equal-symbol {
+							font-size: 25px;
+							position: relative;
+							left: 5px;
+							font-size: 26px;
+						}
+
+						.exchange-rate-container,
+						.dynamic-rate-container {
+							margin-left: 5%;
+							width: 48%;
+
+							.p2p-assets-rate {
+								font-size: 22px;
+								font-weight: bold;
+								display: flex;
+								align-items: center;
+
+								sup {
+									font-size: 9px;
+									margin-left: 2%;
+								}
+							}
+						}
+					}
+				}
+
+				.p2p-payment-method-container {
+					.p2p-buy-sell-field {
+						justify-content: center;
+						gap: 10px;
+
+						.total-amount-text {
+							font-weight: bold;
+							text-transform: uppercase;
+						}
+
+						.buy-sell-description-text {
+							margin-bottom: 1%;
+							font-size: 11px;
+						}
+
+						.total-amount-order-container {
+							display: flex;
+							flex-direction: column;
+
+							.p2p-total-amount-wrapper {
+								padding-bottom: 5%;
+								border-bottom: 2px dotted var(--calculated_secondary-border);
+
+								.total-amount-field {
+									display: flex;
+									flex-direction: column;
+									padding: 5% 5% 0;
+								}
+
+								.total-amount-input-field {
+									.ant-input-affix-wrapper {
+										width: 90%;
+
+										.ant-input-suffix {
+											div {
+												display: flex;
+												gap: 5px;
+											}
+										}
+									}
+								}
+							}
+
+							.total-amount-input-field {
+								padding: 0 15% 0 5%;
+
+								.ant-input-affix-wrapper {
+									background-color: transparent;
+									height: 25px;
+
+									.ant-input,
+									.ant-input-suffix {
+										color: var(--labels_important-active-labels-text-graphics);
+										background-color: transparent;
+									}
+								}
+
+								.ant-input-affix-wrapper,
+								.ant-input-affix-wrapper:hover,
+								.ant-input-affix-wrapper:focus {
+									border: 1px solid
+										var(--labels_important-active-labels-text-graphics);
+								}
+							}
+
+							.order-limit-container {
+								padding: 5% 5% 0;
+
+								.max-min-field-wrapper {
+									width: 75%;
+									display: flex;
+									gap: 20px;
+									align-items: flex-start;
+
+									.min-input-field,
+									.max-input-field {
+										padding: unset !important;
+										margin-top: 5%;
+									}
+
+									.value-description {
+										margin-top: 2%;
+									}
+
+									.tilt-symbol {
+										font-size: 25px;
+										font-weight: bold;
+									}
+								}
+							}
+						}
+					}
+
+					.p2p-payment-method-wrapper {
+						flex-direction: column;
+						align-items: flex-start;
+						padding: 0 0 0 7%;
+
+						.payment-receive-container {
+							.payment-text {
+								font-weight: bold;
+							}
+
+							.payment-list {
+								display: flex;
+								align-items: center;
+								gap: 5px;
+
+								.payment-method {
+									width: 80%;
+									display: flex;
+									justify-content: space-between;
+									border: 1px solid
+										var(--labels_secondary-inactive-label-text-graphics);
+									padding: 2% 5%;
+								}
+
+								.payment-method:hover,
+								.edit-button:hover {
+									cursor: pointer;
+								}
+
+								.edit-link {
+									cursor: pointer;
+								}
+							}
+						}
+
+						.select-region-container {
+							.region-title {
+								font-weight: bold;
+								text-transform: uppercase;
+							}
+
+							.p2p-custom-input-field {
+								width: 80%;
+							}
+						}
+					}
+				}
+
+				.p2p-deal-terms-container {
+					.terms-conditions-wrapper {
+						display: flex;
+						padding: 3%;
+						border-right: 2px dotted var(--calculated_secondary-border);
+
+						.terms-input-field {
+							.terms-title {
+								font-weight: bold;
+								margin-bottom: 2%;
+							}
+
+							.terms-and-condition-field {
+								margin-top: 5%;
+								font-size: 12px;
+								background-color: transparent;
+							}
+
+							.terms-and-condition-field:hover,
+							.terms-and-condition-field:focus {
+								border: 1px solid
+									var(--labels_important-active-labels-text-graphics);
+							}
+						}
+					}
+
+					.response-field-wrapper {
+						border: none !important;
+
+						.terms-input-field {
+							.terms-and-condition-field {
+								margin: unset !important;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	.post-deal-button-wrapper {
+		margin-top: 3%;
+		display: flex;
+		gap: 15px;
+		justify-content: center;
+		align-items: flex-end;
+
+		.back-btn,
+		.next-btn {
+			width: 35%;
+			height: 40px;
+		}
+	}
+
+	.back-to-orders-link {
+		width: 90% !important;
+		margin-left: auto;
+		margin-right: auto;
+		color: var(--specials_buttons-links-and-highlights);
+		margin-bottom: 1%;
+		font-size: 14px;
+
+		.edit-wrapper__container {
+			text-decoration: underline !important;
+		}
+	}
+
+	.back-to-order-text {
+		color: var(--labels_important-active-labels-text-graphics);
+
+		.edit-wrapper__container {
+			text-decoration: none !important;
+		}
+	}
+
+	.back-to-orders-link:hover {
+		cursor: pointer;
+	}
+
+	.order-verification-container,
+	.custom-stepper-container,
+	.p2p-order-tab-container {
+		.check-icon,
+		.active-icon {
+			height: 20px;
+
+			.anticon-check-circle,
+			.anticon-play-square {
+				svg {
+					height: 2rem;
+					width: 2rem;
+
+					path:nth-child(1) {
+						fill: transparent;
+					}
+
+					path:nth-child(2) {
+						fill: var(--specials_checks-okay-done);
+					}
+
+					path:nth-child(3) {
+						fill: white;
+					}
+				}
+			}
+		}
+	}
+	.p2p-order-tab-container {
+		.active-icon {
+			.anticon-play-square {
+				svg {
+					path:nth-child(2) {
+						fill: var(--specials_pending-waiting-caution) !important;
+					}
+				}
+			}
+		}
+
+		.complete-check-icon,
+		.active-icon {
+			margin-top: 1.5%;
+
+			.anticon-check-circle,
+			.anticon-play-square {
+				svg {
+					height: 15px !important;
+					width: 15px !important;
+				}
+			}
+		}
+	}
+	.order-verification-container {
+		.anticon-check-circle {
+			svg {
+				height: 20px !important;
+				width: 20px !important;
+			}
+		}
+	}
+
+	.custom-stepper-container {
+		width: 90% !important;
+		margin-left: auto;
+		margin-right: auto;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 2%;
+		color: var(--labels_secondary-inactive-label-text-graphics);
+
+		.trade-step-one,
+		.trade-step-two,
+		.trade-step-three {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			gap: 5px;
+
+			.trade-step-container {
+				display: flex;
+				align-items: center;
+			}
+		}
+
+		.trade-step-active {
+			font-size: 16px;
+			color: var(--labels_important-active-labels-text-graphics);
+
+			.important-text {
+				font-weight: bold;
+			}
+		}
+
+		.trade-step-one:hover,
+		.trade-step-two:hover,
+		.trade-step-three:hover {
+			cursor: pointer;
+		}
+
+		.trade-custom-line {
+			margin-top: 3%;
+			width: 10%;
+			height: 1px;
+			background-color: var(--labels_secondary-inactive-label-text-graphics);
+		}
+	}
+
+	.order-expiry-limit-container {
+		width: 90% !important;
+		margin-left: auto;
+		margin-right: auto;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 1%;
+
+		.time-remaining-container,
+		.order-details-container {
+			display: flex;
+			gap: 5px;
+		}
+	}
+
+	.p2p-order-wrapper {
+		.p2p-order-container {
+			display: flex;
+			gap: 20px;
+			padding: 3%;
+			font-size: 12px;
+
+			.p2p-order-details-container {
+				.trade-assets-container {
+					padding-bottom: 2%;
+					display: flex;
+					gap: 10px;
+					border-bottom: 1px solid
+						var(--labels_important-active-labels-text-graphics);
+
+					.order-title {
+						font-size: 12px;
+					}
+
+					.order-title,
+					.asset-name {
+						font-weight: bold;
+					}
+				}
+
+				.transaction-container,
+				.release-amount-container,
+				.asset-price-container,
+				.receive-amount-container,
+				.trading-fee-container {
+					display: flex;
+					align-items: flex-start;
+					justify-content: space-between;
+					padding: 2% 0;
+					border-bottom: 1px solid
+						var(--labels_secondary-inactive-label-text-graphics);
+					color: var(--labels_secondary-inactive-label-text-graphics);
+				}
+
+				.transaction-container {
+					border-color: var(--labels_important-active-labels-text-graphics);
+				}
+
+				.release-amount-container,
+				.asset-price-container,
+				.receive-amount-container {
+					.release-amount-title {
+						.edit-wrapper__container,
+						span {
+							color: var(--labels_important-active-labels-text-graphics);
+							font-weight: bold;
+						}
+					}
+
+					.trading-amount-container {
+						display: flex;
+						flex-direction: column;
+						align-items: flex-end;
+						gap: 5px;
+
+						.amount-field {
+							display: flex;
+							align-items: center;
+							gap: 5px;
+
+							.receive-amount {
+								font-size: 22px;
+								margin-right: 3%;
+								font-weight: bold;
+							}
+						}
+					}
+				}
+
+				.amount-transfer-container {
+					margin-top: 5%;
+
+					.transfer-title {
+						font-size: 20px;
+						font-weight: bold;
+					}
+
+					.payment-details {
+						margin: 3% 0%;
+						padding: 5%;
+						border: 1px solid var(--calculated_secondary-border);
+
+						.payment-methods-list {
+							display: flex;
+							gap: 10px;
+							margin-bottom: 10px;
+							justify-content: space-between;
+
+							.payment-title {
+								font-weight: bold;
+							}
+						}
+					}
+
+					.active-buy {
+						border-left: 5px solid var(--specials_checks-okay-done);
+					}
+
+					.active-sell {
+						border-left: 5px solid var(--trading_selling-related-elements);
+					}
+				}
+
+				.order-verification-container {
+					.order-confirmed-container {
+						.order-complete-title,
+						.go-to-deposit-link,
+						.go-to-withdraw-link {
+							font-size: 14px;
+							font-weight: bold;
+						}
+
+						.go-to-deposit-link,
+						.go-to-withdraw-link {
+							.edit-wrapper__container {
+								text-decoration: underline;
+							}
+						}
+
+						.go-to-deposit-link:hover,
+						.go-to-withdraw-link:hover {
+							cursor: pointer;
+						}
+					}
+
+					.user-appealed-text,
+					.vendor-appealed-text {
+						margin: 2% 0;
+					}
+
+					.order-cancel-container {
+						display: flex;
+						gap: 10px;
+
+						.appeal-link:hover,
+						.cancel-link:hover {
+							cursor: pointer;
+						}
+
+						.appeal-confirm-button-container-active {
+							display: flex;
+							gap: 10px;
+							pointer-events: all;
+							opacity: 1;
+						}
+
+						.appeal-confirm-button-container {
+							pointer-events: none;
+							opacity: 0.5;
+						}
+					}
+				}
+			}
+		}
+
+		.user-chat-container {
+			.message-time {
+				font-size: 10px;
+			}
+
+			.chat-title {
+				font-weight: bold;
+				margin-bottom: 2%;
+				display: flex;
+				gap: 5px;
+
+				.margin-aligner {
+					margin-bottom: unset;
+					margin-right: unset;
+					position: relative;
+					top: 5px;
+
+					svg {
+						path {
+							fill: var(--labels_important-active-labels-text-graphics);
+						}
+					}
+				}
+			}
+
+			.chat-field::-webkit-scrollbar {
+				width: 12px;
+			}
+
+			.chat-field {
+				scrollbar-color: var(--labels_secondary-inactive-label-text-graphics)
+					transparent;
+				border: 1px solid var(--calculated_secondary-border);
+				position: relative;
+				padding: 5% 0;
+				background-color: var(--base_background);
+
+				.vendor-name-field {
+					margin: 0 5%;
+					padding: 1% 0 5%;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					border-bottom: 1px solid var(--calculated_secondary-border);
+				}
+
+				.vendor-name-field:hover {
+					cursor: pointer;
+				}
+
+				.chat-details-container {
+					margin: 2% 0 3%;
+					padding: 0 5%;
+					text-align: center;
+				}
+
+				.chat-area {
+					height: 520px;
+					overflow-y: auto;
+					scrollbar-width: thin;
+					display: flex;
+					flex-direction: column-reverse;
+
+					.chat-message-container {
+						.initial-message {
+							padding: 2% 5%;
+							display: flex;
+							flex-direction: column;
+							margin-bottom: 3%;
+							text-align: center;
+						}
+					}
+
+					.chat-message-container
+						> div:nth-child(even):not(.initial-message):not(.notification-message) {
+						background-color: var(--base_secondary-navigation-bar) !important;
+					}
+
+					.notification-message {
+						padding: 2% 5%;
+					}
+					.user-message-wrapper {
+						padding: 2% 5%;
+						display: flex;
+						flex-direction: row-reverse;
+						.user-message-container {
+							width: 60%;
+							display: flex;
+							flex-direction: column;
+							text-align: right;
+						}
+					}
+
+					.merchant-message-wrapper {
+						padding: 2% 5%;
+						.merchant-message-container {
+							width: 60%;
+							display: flex;
+							flex-direction: column;
+						}
+					}
+
+					.user-message-container,
+					.merchant-message-container {
+						.user-name,
+						.merchant-name {
+							color: var(--specials_my-username-in-chat);
+						}
+
+						.user-message,
+						.merchant-message {
+							color: var(--specials_chat-messages);
+						}
+					}
+				}
+
+				.disable-field {
+					pointer-events: none;
+				}
+
+				.active-field {
+					display: flex;
+					justify-content: space-between;
+					align-items: center;
+					gap: 10px;
+					pointer-events: all;
+
+					.message-input-field {
+						padding: 0 5%;
+						.ant-input-affix-wrapper,
+						.ant-input {
+							background-color: transparent;
+							color: var(--labels_important-active-labels-text-graphics);
+						}
+
+						.ant-input-affix-wrapper,
+						.ant-input-affix-wrapper:hover,
+						.ant-input-affix-wrapper:focus {
+							border: 1px solid var(--calculated_secondary-border);
+							box-shadow: none;
+						}
+					}
+
+					.send-btn {
+						display: flex;
+						align-items: center;
+						gap: 3px;
+
+						.edit-wrapper__container {
+							font-weight: bold;
+							text-decoration: underline !important;
+						}
+					}
+
+					.send-btn:hover {
+						cursor: pointer;
+					}
+
+					.disabled-btn {
+						cursor: not-allowed !important;
+						opacity: 0.5;
+					}
+				}
+			}
+		}
+	}
+
+	.confirm-notify-button-container {
+		width: 80% !important;
+		margin-left: auto;
+		margin-right: auto;
+		display: flex;
+		gap: 10px;
+		align-items: center;
+		justify-content: center;
+		margin-top: 2%;
+
+		.cancel-btn,
+		.confirm-btn {
+			width: 13%;
+			height: 45px;
+			background-color: var(--labels_inactive-button);
+			border: none;
+		}
+
+		.confirm-btn {
+			width: 70%;
+			background-color: var(--specials_buttons-links-and-highlights);
+		}
+	}
+}
+
+.p2p-order-creation-popup-wrapper {
+	.ReactModal__Content {
+		width: 50rem;
+
+		.order-creation-popup-container {
+			margin-top: 3%;
+
+			.asset-order-creation-title {
+				display: flex;
+				align-items: center;
+				gap: 5px;
+
+				.asset-icon {
+					.edit-wrapper__container {
+						svg {
+							path {
+								margin-top: 5%;
+							}
+						}
+					}
+				}
+			}
+
+			.order-creation-description {
+				color: var(--labels_secondary-inactive-label-text-graphics);
+			}
+
+			.warning-message-container {
+				.warning-message-details {
+					padding: 4%;
+					background-color: var(--base_secondary-navigation-bar);
+					border: 1px solid var(--calculated_secondary-border);
+
+					.warning-title {
+						.edit-wrapper__container {
+							font-size: 12px;
+						}
+					}
+
+					.warning-description {
+						.edit-wrapper__container {
+							font-size: 12px;
+							color: var(--labels_secondary-inactive-label-text-graphics);
+						}
+					}
+
+					.cancelling-order-message {
+						.edit-wrapper__container {
+							font-size: 12px;
+							color: var(--specials_pending-waiting-caution);
+						}
+					}
+				}
+
+				.confirm-order-creation {
+					.edit-wrapper__container {
+						font-size: 12px;
+					}
+				}
+			}
+
+			.order-create-button-container {
+				display: flex;
+				gap: 10px;
+
+				.back-btn,
+				.create-order-btn {
+					background-color: var(--specials_buttons-links-and-highlights);
+					border: none;
+				}
+
+				.back-btn:hover,
+				.create-order-btn:hover {
+					color: var(--labels_important-active-labels-text-graphics);
+				}
+			}
+		}
+	}
+}
+
+.payment-method-details-popup-wrapper {
+	.ReactModal__Content {
+		width: 40rem;
+
+		.add-payment-method-title {
+			.edit-wrapper__container {
+				margin-bottom: 5%;
+				font-size: 18px;
+			}
+		}
+
+		.payment-method-field {
+			display: flex;
+			justify-content: space-between;
+			margin-bottom: 3%;
+			align-items: center;
+			gap: 10px;
+
+			.ant-input {
+				width: 70%;
+				height: 25px;
+				background-color: transparent;
+				color: var(--labels_important-active-labels-text-graphics);
+			}
+
+			.ant-input:focus,
+			.ant-input:hover {
+				border: 1px solid var(--labels_important-active-labels-text-graphics);
+			}
+		}
+
+		.payment-button-container {
+			display: flex;
+			flex-direction: row;
+			gap: 15px;
+			justify-content: center;
+			margin-top: 3%;
+
+			.back-btn,
+			.complete-btn {
+				width: 100%;
+				height: 5%;
+			}
+		}
+	}
+}
+
+.filter-asset-dropdown {
+	.ant-select-item {
+		.ant-select-item-option-content {
+			div:nth-child(1) {
+				gap: 5px !important;
+				align-items: normal !important;
+				margin-top: 3%;
+			}
+		}
+	}
+}
+
+.p2p-custom-style-dropdown {
+	background-color: var(--base_background);
+
+	.ant-select-item {
+		color: var(--labels_secondary-inactive-label-text-graphics);
+
+		.ant-select-item-option-content {
+			div:nth-child(1) {
+				align-items: center;
+				gap: 5px !important;
+			}
+		}
+	}
+
+	.ant-select-item:hover,
+	.ant-select-item-option-active,
+	.ant-select-item-option-selected {
+		background-color: var(--base_wallet-sidebar-and-popup) !important;
+	}
+}
+
+.p2p-profile-popup-wrapper {
+	.vender-profile-popup-container {
+		display: flex;
+		flex-direction: column;
+		gap: 15px;
+		margin-top: 10px;
+
+		.vendor-details {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+
+			.profile-description-card-container {
+				text-align: center;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+
+				.profile-description-cards {
+					display: flex;
+					justify-content: space-between;
+					gap: 10px;
+					margin-bottom: 10px;
+
+					.p2p-profile-card {
+						padding: 20px;
+						text-align: center;
+						font-weight: bold;
+						border-radius: 5px;
+						border: 1px solid var(--calculated_secondary-border);
+
+						.p2p-profile-card-content {
+							font-size: 17px;
+						}
+					}
+				}
+			}
+
+			.feedback-card {
+				margin: 3% 0;
+				border: 1px solid var(--calculated_secondary-border);
+				padding: 5px;
+				width: 30%;
+				border-radius: 10px;
+				font-weight: bold;
+				text-align: center;
+			}
+
+			.empty-feedback {
+				text-align: center;
+				font-size: 15px;
+				border: 1px solid var(--calculated_secondary-border);
+				padding: 2%;
+				border-radius: 5px;
+			}
+
+			.p2p-feedback-table {
+				border: none;
+				border-collapse: collapse;
+
+				.p2p-feedback-table-header {
+					.p2p-header-row {
+						border-bottom: 1px solid var(--calculated_secondary-border);
+						padding: 10px;
+					}
+				}
+
+				.p2p-feedback-table-body {
+					.feedback-table-body-row {
+						border-bottom: 1px solid var(--calculated_secondary-border);
+						position: relative;
+					}
+					.ant-rate-star-zero {
+						.ant-rate-star-second {
+							color: var(--labels_inactive-button) !important;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+.p2p-new-payment-pop-up,
+.additional-payment-detail-popup,
+.add-payment-method-detail-popup {
+	color: var(--labels_important-active-labels-text-graphics);
+
+	.ReactModal__Content {
+		width: 30%;
+
+		.new-payment-method-title {
+			.edit-wrapper__container {
+				font-weight: bold;
+				color: var(--labels_important-active-labels-text-graphics);
+				font-size: 2rem;
+			}
+		}
+
+		.name-detail-title {
+			.edit-wrapper__container {
+				font-size: 1.5rem;
+			}
+		}
+
+		.new-payment-field-container {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+
+			.new-payment-field {
+				width: 40%;
+
+				.ant-select-selector {
+					font-size: 12px;
+					height: 25px;
+					background-color: transparent;
+					color: var(--labels_important-active-labels-text-graphics);
+					border: 1px solid var(--labels_important-active-labels-text-graphics);
+
+					.ant-select-selection-item {
+						line-height: 25px;
+					}
+				}
+
+				.ant-select-selector:hover,
+				.ant-select-selector:focus {
+					border: 1px solid var(--labels_important-active-labels-text-graphics);
+				}
+
+				.ant-select-arrow {
+					color: var(--labels_important-active-labels-text-graphics);
+				}
+			}
+		}
+
+		.new-payment-details-input-wrapper,
+		.selected-payment-method-field-wrapper {
+			.payment-method-title,
+			.payment-detail-title {
+				font-size: 14px;
+			}
+
+			.custom-input-field {
+				border: 1px solid var(--labels_important-active-labels-text-graphics);
+				background-color: transparent;
+				color: var(--labels_important-active-labels-text-graphics);
+				height: 25px;
+				font-size: 12px;
+			}
+
+			.custom-input-field:hover,
+			.custom-input-field:focus {
+				border: 1px solid var(--labels_important-active-labels-text-graphics);
+			}
+
+			.ant-input::placeholder {
+				color: var(--labels_important-active-labels-text-graphics);
+			}
+		}
+
+		.custom-line {
+			height: 2px;
+			width: 5%;
+			background-color: var(--labels_secondary-inactive-label-text-graphics);
+		}
+
+		.new-payment-popup-button-container {
+			display: flex;
+			flex-direction: row;
+			gap: 15px;
+			justify-content: space-between;
+			margin-top: 5%;
+
+			.back-btn,
+			.add-btn,
+			.complete-btn {
+				width: 100%;
+				height: 5%;
+			}
+		}
+	}
+}
+
+.additional-payment-detail-popup {
+	.new-payment-details-input-wrapper {
+		.payment-detail-label {
+			font-weight: bold;
+			font-size: 14px;
+		}
+	}
+}
+
+.confirm-delete-popup-wrapper {
+	.ReactModal__Content {
+		width: 35%;
+		color: var(--labels_important-active-labels-text-graphics);
+
+		.confirm-delete-popup-container {
+			.confirm-popup-delete-title {
+				font-size: 18px;
+			}
+
+			.confirm-popup-button-container {
+				margin-top: 5%;
+				display: flex;
+				gap: 10px;
+
+				.back-btn,
+				.confirm-btn {
+					width: 50%;
+					background-color: var(--specials_buttons-links-and-highlights);
+					color: var(--labels_important-active-labels-text-graphics);
+					border: none;
+					text-align: center;
+				}
+			}
+		}
+	}
+}
+
+.add-payment-method-detail-popup {
+	.ReactModal__Content {
+		width: 35%;
+
+		.add-payment-title {
+			font-weight: bold;
+			font-size: 20px;
+			margin-bottom: 3%;
+		}
+
+		.selected-payment-method-field-wrapper {
+			display: flex;
+			justify-content: space-between;
+			margin-bottom: 2%;
+
+			.payment-method-title {
+				margin-bottom: 2%;
+			}
+
+			.custom-input-field {
+				width: 60%;
+			}
+		}
+	}
+}
+
+.transaction-appeal-popup-wrapper {
+	.ReactModal__Content {
+		width: 30% !important;
+
+		.transaction-appeal-popup-container {
+			display: flex;
+			flex-direction: column;
+			gap: 30px;
+
+			.transaction-appeal-title {
+				.edit-wrapper__container {
+					color: var(--labels_important-active-labels-text-graphics);
+					font-size: 22px;
+					font-family: 'Open Sans';
+				}
+			}
+
+			.appeal-reason-container {
+				.appeal-reason-title {
+					margin-bottom: 2%;
+				}
+
+				.appeal-input-field {
+					background-color: transparent;
+					height: 25px;
+				}
+
+				.appeal-input-field:hover,
+				.appeal-input-field:focus {
+					border: 1px solid var(--labels_important-active-labels-text-graphics);
+					box-shadow: none;
+				}
+			}
+		}
+
+		.appeal-reason-button-container {
+			display: flex;
+			gap: 15px;
+			justify-content: space-between;
+			margin-top: 5%;
+
+			.cancel-btn,
+			.okay-btn {
+				height: 10%;
+				width: 100%;
+			}
+		}
+	}
+}
+
+.display-user-feedback-popup-wrapper {
+	.ReactModal__Content {
+		width: 45%;
+
+		.display-user-feedback-popup-container {
+			display: flex;
+			flex-direction: column;
+			gap: 15px;
+
+			.user-feedback {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+
+				.profile-title {
+					font-size: 22px;
+					margin-bottom: 3%;
+				}
+
+				.user-feedback-details-container {
+					.user-feedback-card-container {
+						display: flex;
+						justify-content: center;
+						align-items: center;
+
+						.user-feedback-card-list {
+							display: flex;
+							justify-content: space-between;
+							gap: 10px;
+							margin-bottom: 3%;
+
+							.user-feedback-card {
+								padding: 20px;
+								display: flex;
+								flex-direction: column;
+								align-items: center;
+								justify-content: center;
+								border-radius: 5px;
+								border: 1px solid var(--calculated_secondary-border);
+
+								.order-times-text {
+									font-size: 17px;
+								}
+
+								.feedback-count {
+									display: flex;
+									gap: 5px;
+								}
+							}
+						}
+					}
+
+					.total-feedback-count {
+						margin: 3% 0;
+						border: 1px solid var(--calculated_secondary-border);
+						padding: 5px;
+						width: 30%;
+						border-radius: 10px;
+						cursor: default;
+						text-align: center;
+					}
+
+					.no-feedback-container {
+						text-align: center;
+						font-size: 15px;
+						border: 1px solid var(--calculated_secondary-border);
+						padding: 3%;
+						border-radius: 5px;
+					}
+
+					.feedback-table-container {
+						border: none;
+						border-collapse: collapse;
+
+						thead,
+						tbody {
+							tr {
+								border-bottom: 1px solid var(--calculated_secondary-border);
+								padding: 3%;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+.feedback-submit-popup-wrapper {
+	.ReactModal__Content {
+		width: 40%;
+
+		.feedback-submit-popup-container {
+			display: flex;
+			flex-direction: column;
+			gap: 15px;
+
+			.submit-feedback-title {
+				font-size: 22px;
+			}
+
+			.feedback-field-container {
+				.feedback-label {
+					text-transform: capitalize;
+					margin-bottom: 1%;
+				}
+
+				.feedback-input-field {
+					background-color: transparent;
+					height: 25px;
+				}
+
+				.feedback-input-field:hover,
+				.feedback-input-field:focus {
+					border: 1px solid var(--labels_important-active-labels-text-graphics);
+					box-shadow: none;
+				}
+			}
+
+			.select-rating-container {
+				.ant-rate-star-zero {
+					.ant-rate-star-second {
+						color: var(--labels_inactive-button) !important;
+					}
+				}
+				.select-rating-title {
+					font-size: 14px;
+				}
+			}
+		}
+
+		.submit-transaction-button-container {
+			margin-top: 3%;
+			display: flex;
+			gap: 15px;
+
+			.cancel-btn,
+			.proceed-btn {
+				width: 100%;
+				background-color: var(--specials_buttons-links-and-highlights);
+				border: none;
+			}
+			.cancel-btn:hover,
+			.proceed-btn:hover,
+			.proceed-btn:active,
+			.cancel-btn:active {
+				color: var(--labels_important-active-labels-text-graphics);
+			}
+		}
+	}
+}
+
+.cancel-popup-wrapper,
+.confirm-popup-wrapper {
+	.ReactModal__Content {
+		width: 35%;
+
+		.feedback-submit-popup-container {
+			.submit-feedback-title {
+				font-size: 18px !important;
+			}
+		}
+
+		.user-receive-amount-detail {
+			margin-top: 3%;
+			font-size: 14px;
+		}
+
+		.submit-transaction-button-container {
+			margin-top: 10% !important;
+		}
+	}
+}
+
+@media (min-width: 1920px) {
+	.p2p-summary-container {
+		.p2p-post-deal-container {
+			.p2p-post-deal-content-container {
+				.p2p-post-deal-content {
+					.p2p-deal-terms-container {
+						.terms-and-condition-field {
+							margin-top: 0% !important;
+						}
+					}
+				}
+			}
+		}
+
+		.p2p-tab-container {
+			.p2p-table-container {
+				.p2p-stake-table {
+					.p2p-expendable-row {
+						.payment-method,
+						.p2p-amount-spent,
+						.p2p-amount-receive,
+						.trade-button-container {
+							width: 60% !important;
+						}
+					}
+				}
+			}
+		}
+
+		.p2p-order-tab-container {
+			.trade-filter-container {
+				flex-direction: row;
+
+				.custom-date-picker-container {
+					margin: 0 0 0 auto;
+				}
+			}
+		}
+
+		.custom-stepper-container {
+			.trade-custom-line {
+				width: 15%;
+			}
+		}
+	}
+
+	.add-payment-method-detail-popup,
+	.transaction-appeal-popup-wrapper,
+	.feedback-submit-popup-wrapper,
+	.cancel-popup-wrapper,
+	.confirm-popup-wrapper,
+	.confirm-delete-popup-wrapper {
+		.ReactModal__Content {
+			width: 25% !important;
+		}
+	}
+
+	.display-user-feedback-popup-wrapper {
+		.ReactModal__Content {
+			width: auto;
+		}
+	}
 }

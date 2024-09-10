@@ -140,7 +140,7 @@ const getSourceAccountBalance = async (account_id, coin) => {
 	let symbols = {};
 
 	for (const key of Object.keys(balance)) {
-		if (key.includes('available') && balance[key]) {
+		if (key.includes('available') && balance[key] != null) {
 			let symbol = key?.split('_')?.[0];
 			symbols[symbol] = balance[key];
 		}
@@ -561,20 +561,36 @@ const createExchangeStaker = async (stake_id, amount, user_id) => {
 	await transferAssetByKitIds(user_id, stakePool.account_id, stakePool.currency, amount, 'User transfer stake', false, { category: 'stake' });
 
 
-	const stakerData = await getModel('staker').create(staker, {
-		fields: [
-			'user_id',
-			'stake_id',
-			'amount',
-			'currency',
-			'reward_currency',
-			'status',
-			'closing',
-			'unstaked_date'
-		]
-	});
+	try {
+		const stakerData = await getModel('staker').create(staker, {
+			fields: [
+				'user_id',
+				'stake_id',
+				'amount',
+				'currency',
+				'reward_currency',
+				'status',
+				'closing',
+				'unstaked_date'
+			]
+		});
+	
+		return stakerData;
+	} catch (error) {
+		const adminAccount = await getUserByKitId(1);
+		sendEmail(
+			MAILTYPE.ALERT,
+			adminAccount.email,
+			{
+				type: 'Urgent! Staker Creation Failed!',
+				data: `User id ${user.id} failed to stake in the pool id ${stake_id} after funds were transferred. Please check with the exchange user. Error message :${error.message}`
+			},
+			adminAccount.settings
+		);
 
-	return stakerData;
+		throw new Error(error.message);
+	}
+	
 };
 
 const deleteExchangeStaker = async (staker_id, user_id) => {

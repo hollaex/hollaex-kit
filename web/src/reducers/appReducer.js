@@ -74,6 +74,8 @@ import {
 	SET_SELECTED_METHOD,
 	SET_RECEIVER_EMAIL,
 	SET_WITHDRAW_OTIONAL_TAG,
+	SET_CHART_DATA,
+	SET_COINS_DATA,
 } from 'actions/appActions';
 import { THEME_DEFAULT } from 'config/constants';
 import { getLanguage } from 'utils/string';
@@ -140,6 +142,7 @@ const INITIAL_STATE = {
 	snackNotification: EMPTY_SNACK_NOTIFICATION,
 	theme: THEME_DEFAULT,
 	language: getLanguage(),
+	sparkLineChartData: {},
 	pairs: {},
 	pair: '',
 	activeOrdersMarket: '',
@@ -201,6 +204,7 @@ const INITIAL_STATE = {
 	isValidAddress: '',
 	selectedWithdrawMethod: 'Address',
 	receiverWithdrawalEmail: null,
+	coinsData: [],
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -221,6 +225,11 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 				pair: payload.pair,
 				activeOrdersMarket: payload.pair,
 				recentTradesMarket: payload.pair,
+			};
+		case SET_CHART_DATA:
+			return {
+				...state,
+				sparkLineChartData: payload.sparkLineChartData,
 			};
 		case SET_ACTIVE_ORDERS_MARKET:
 			return {
@@ -833,6 +842,12 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				receiverWithdrawalEmail: payload,
+			};
+		}
+		case SET_COINS_DATA: {
+			return {
+				...state,
+				coinsData: payload,
 			};
 		}
 		default:

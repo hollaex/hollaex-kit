@@ -35,6 +35,13 @@ const HeaderSection = ({ icons: ICONS, setDepositAndWithdraw }) => {
 						</EditWrapper>
 					</Link>
 				</div>
+				<div className="sub-header link text-uppercase">
+					<Link to="wallet/address-book">
+						<EditWrapper stringId="ADDRESS_BOOK.ADDRESSES">
+							{STRINGS['ADDRESS_BOOK.ADDRESSES']}
+						</EditWrapper>
+					</Link>
+				</div>
 				<div className="sub-header">
 					<Link to="/transactions">
 						<EditWrapper stringId="ACCORDIAN.ACCORDIAN_HISTORY">

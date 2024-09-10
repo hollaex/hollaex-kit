@@ -24,8 +24,6 @@ RUN npm install --loglevel=error && \
     pm2 update && \
     cd /app/mail && npm install --loglevel=error
 
-EXPOSE 10010
-
-EXPOSE 10080
+EXPOSE 10010 10080 10011
 
 ENTRYPOINT ["/entrypoint.sh"]

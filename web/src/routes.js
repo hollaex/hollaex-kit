@@ -70,6 +70,7 @@ import {
 	WhiteLabel,
 	FeesAndLimits,
 	ReferralList,
+	AddressBook,
 } from './containers';
 import chat from './containers/Admin/Chat';
 import { Billing } from 'containers/Admin';
@@ -255,8 +256,7 @@ function withAdminProps(Component, key) {
 		'plugins',
 		'tiers',
 		'roles',
-		'billing',
-		'fiat',
+		'billing'
 	];
 
 	PATHS.map((data) => {
@@ -402,6 +402,11 @@ export const generateRoutes = (routes = []) => {
 				<Route path="white-label" name="WhiteLabel" component={WhiteLabel} />
 				<Route path="verification" name="Verification" component={Account} />
 				<Route path="wallet" name="Wallet" component={MainWallet} />
+				<Route
+					path="wallet/address-book"
+					name="wallet/address-book"
+					component={AddressBook}
+				/>
 				<Route
 					path="wallet/deposit"
 					name="Withdraw Deposit"

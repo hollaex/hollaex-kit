@@ -13,12 +13,15 @@ const TradeInputGroup = ({
 	icons: ICONS,
 	pairs,
 	tradeClassName,
-	text,
 }) => {
 	return (
 		<Dropdown
 			size="small"
-			overlayClassName="custom-dropdown-style"
+			overlayClassName={
+				tradeClassName === 'market-asset-row'
+					? 'custom-dropdown-style market-dropdown-style'
+					: 'custom-dropdown-style'
+			}
 			style={{
 				width: 130,
 			}}
@@ -44,9 +47,23 @@ const TradeInputGroup = ({
 			<Space>
 				<ActionNotification
 					stringId="TRADE_TAB_TRADE"
-					text={text ? text : STRINGS['TRADE_TAB_TRADE']}
-					iconId="BLUE_TRADE_ICON"
-					iconPath={ICONS['BLUE_TRADE_ICON']}
+					text={
+						tradeClassName !== 'market-asset-row'
+							? STRINGS['TRADE_TAB_TRADE']
+							: STRINGS.formatString(
+									STRINGS['MARKETS_TABLE.BUY'],
+									<span>/</span>,
+									<span>{STRINGS['SIDES.SELL']}</span>
+							  )
+					}
+					iconId={
+						tradeClassName !== 'market-asset-row' ? 'BLUE_TRADE_ICON' : ''
+					}
+					iconPath={
+						tradeClassName !== 'market-asset-row'
+							? ICONS['BLUE_TRADE_ICON']
+							: ''
+					}
 					className="csv-action"
 					showActionText={isMobile}
 					disable={markets.length === 0}

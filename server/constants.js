@@ -157,7 +157,7 @@ const overrideNetworkFields = () => {
 			configuration.coins[coin.symbol] = {
 				...coin,
 				...configuration?.kit?.fiat_fees?.[coin.symbol]
-			}
+			};
 		}
 	}
 };
@@ -172,6 +172,7 @@ exports.GET_FROZEN_USERS = () => cloneDeep(frozenUsers);
 exports.GET_EMAIL = () => cloneDeep(configuration.email);
 exports.GET_BROKER = () => cloneDeep(configuration.broker);
 exports.GET_QUICKTRADE = () => cloneDeep(configuration.quicktrade);
+exports.GET_TRADEPATHS = () => cloneDeep(configuration.tradePaths);
 exports.GET_NETWORK_QUICKTRADE = () => cloneDeep(configuration.networkQuickTrades);
 
 exports.USER_META_KEYS = [
@@ -219,7 +220,8 @@ exports.KIT_CONFIG_KEYS = [
 	'balance_history_config',
 	'transaction_limits',
 	'p2p_config',
-	'referral_history_config'
+	'referral_history_config',
+	'chain_trade_config'
 ];
 
 exports.KIT_SECRETS_KEYS = [
@@ -632,6 +634,7 @@ exports.USER_FIELD_ADMIN_LOG = [
 ];
 
 exports.ADDRESS_FIELDS = ['city', 'address', 'country', 'postal_code'];
+exports.CRYPTO_ADDRESS_FIELDS = ['address', 'network', 'label', 'currency'];
 
 exports.VERIFY_STATUS = {
 	EMPTY: 0,

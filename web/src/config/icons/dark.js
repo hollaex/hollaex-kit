@@ -292,6 +292,9 @@ const nestedIcons = {
 	CONNECT_DESKTOP: '/assets/stake/connect-via-desktop.svg',
 	SEARCH_BLOCKCHAIN: '/assets/images/search-blockchain.svg',
 	ASSET_INFO_COIN: '/assets/images/digital-assets-coins.svg',
+	GAINER_CARD_ICON: '/assets/images/gainer-arrow-up.svg',
+	LOSER_CARD_ICON: '/assets/images/arrow-down-loser.svg',
+	NEW_ASSET_CARD_ICON: '/assets/images/new-coin-bolt.svg',
 	CLOCK: '/assets/images/clock.svg',
 	REVOKE_SESSION: '/assets/images/signout.svg',
 
@@ -309,6 +312,9 @@ const nestedIcons = {
 
 	WITHDRAW_TITLE: '/assets/images/withdraw-out-box.svg',
 	DEPOSIT_TITLE: '/assets/images/deposit-box.svg',
+
+	ADDRESS_BOOK: '/assets/images/global-address-book.svg',
+	CHAT_P2P_ICON: '/assets/images/chat-icon-p2p-02.svg',
 };
 
 const icons = flatten(nestedIcons, options);

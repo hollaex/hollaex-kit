@@ -93,7 +93,7 @@ const connect = () => {
 			loggerWebsocket.error('ws/hub/connect/checkStatus Error ', message);
 			setTimeout(() => {
 				process.exit(1);
-			}, 5000);
+			}, 60000);
 		});
 
 	// check after 10 seconds to make sure stream is connected
@@ -102,7 +102,7 @@ const connect = () => {
 			loggerWebsocket.error('ws/hub/connect hub not connected');
 			process.exit(1);
 		}
-	}, 10000);
+	}, 60000);
 };
 
 const sendNetworkWsMessage = (op, topic, networkId) => {

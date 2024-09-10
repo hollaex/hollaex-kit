@@ -3073,8 +3073,7 @@ paths:
       operationId: createUserWalletByAdmin
       description: Create a crypto address for the user by admin
       tags:
-        - User
-        - Wallet
+        - Admin
       parameters:
         - name: data
           in: body
@@ -3231,6 +3230,48 @@ paths:
         - admin
       x-token-permissions:
         - can_withdraw
+  /admin/user/disable-withdrawal:
+    x-swagger-router-controller: admin
+    post:
+      description: Block user withdrawal ability by admin
+      operationId: disableUserWithdrawal
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - user_id
+            properties:
+              user_id:
+                type: number
+                format: int32
+              expiry_date:
+                type: ['string', 'null']
+                format: date-time
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
   /admin/user/sessions:
     x-swagger-router-controller: admin
     get:
@@ -3407,7 +3448,7 @@ paths:
       description: Get user referral codes for admin
       operationId: getUserReferralCodesByAdmin
       tags:
-        - User
+        - Admin
       parameters:
         - name: user_id
           in: query
@@ -3473,7 +3514,7 @@ paths:
       operationId: createUserReferralCodeByAdmin
       description: create referral code config for user by admin
       tags:
-        - User
+        - Admin
       parameters:
       - name: data
         in: body
@@ -3999,7 +4040,7 @@ paths:
       description: Get p2p disputes
       operationId: fetchP2PDisputes
       tags:
-        - User
+        - Admin
       parameters:
         - in: query
           name: user_id
@@ -4174,7 +4215,7 @@ paths:
       operationId: performDirectWithdrawalByAdmin
       description: Make a withdrawal without email confirmation for admin
       tags:
-        - User
+        - Admin
       parameters:
         - name: data
           in: body
@@ -4225,3 +4266,214 @@ paths:
         - admin
       x-token-permissions:
         - can_withdraw
+  /admin/user/payment-details:
+    x-swagger-router-controller: admin
+    get:
+      description: Get payment details by admin
+      operationId: getPaymentDetailsByAdmin
+      tags:
+        - PaymentDetails
+      parameters:
+        - in: query
+          name: user_id
+          description: Unique identifier of user
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: id
+          description: Unique identifier
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: is_p2p
+          description: is_p2p
+          required: false
+          type: boolean
+        - in: query
+          name: is_fiat_control
+          description: is_fiat_control
+          required: false
+          type: boolean
+        - in: query
+          name: status
+          description: status
+          required: false
+          type: boolean
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
+    post:
+      description: Create a new payment detail by admin
+      operationId: createPaymentDetailByAdmin
+      tags:
+        - PaymentDetails
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              user_id:
+                type: number
+                format: int32
+              name:
+                type: string
+              label:
+                type: string
+              details:
+                type: object
+              is_p2p:
+                type: boolean
+              is_fiat_control:
+                type: boolean
+              status:
+                type: integer
+                format: int32
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
+    put:
+      description: Update a payment detail by admin
+      operationId: updatePaymentDetailByAdmin
+      tags:
+        - PaymentDetails
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              user_id:
+                type: number
+                format: int32
+              id:
+                type: integer
+                format: int32
+              name:
+                type: string
+              label:
+                type: string
+              details:
+                type: object
+              is_p2p:
+                type: boolean
+              is_fiat_control:
+                type: boolean
+              status:
+                type: integer
+                format: int32
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
+    delete:
+      description: Delete a payment detail
+      operationId: deletePaymentDetailByAdmin
+      tags:
+        - PaymentDetails
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              user_id:
+                type: integer
+                format: int32
+              id:
+                type: integer
+                format: int32
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
