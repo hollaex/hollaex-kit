@@ -2268,6 +2268,7 @@
 		"CONVERT": "CONVERT",
 		"HISTORY": "HISTORY",
 		"TRADING_VOLUME": "Trading Volume",
-		"VOLUME_DECS": "Traded amounts on your account across different time periods, along with the top 3 assets traded in each period"
+		"VOLUME_DECS": "Traded amounts on your account across different time periods, along with the top 3 assets traded in each period",
+		"ALL_ASSETS": "all assets"
 	}
 }

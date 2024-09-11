@@ -165,7 +165,13 @@ const Volume = ({ coins, icons: ICONS, router }) => {
 											)}{' '}
 											{BASE_CURRENCY?.toUpperCase()}
 										</div>
-										<div style={{ color: '#ccc' }}>(all assets)</div>
+										<div style={{ color: '#ccc' }}>
+											(
+											<EditWrapper stringId="VOLUME.ALL_ASSETS">
+												{STRINGS['VOLUME.ALL_ASSETS']}
+											</EditWrapper>
+											)
+										</div>
 									</div>
 									<div style={{ padding: 10, marginBottom: 10 }}>
 										<div
