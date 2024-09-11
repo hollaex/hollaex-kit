@@ -1487,13 +1487,11 @@ const fetchUserTradingVolume = (req, res) => {
 		from.value
 	);
 
-	const currentTime = moment().seconds(0).milliseconds(0).toISOString();
-
 	toolsLib.user.fetchUserTradingVolume(
 		{
 			user_id: req.auth.sub.id,
-			to: moment(currentTime).toISOString(),
-			from: moment(currentTime).subtract(30, 'days').toISOString()
+			to: to.value,
+			from: from.value
 		}
 	)
 		.then((data) => {

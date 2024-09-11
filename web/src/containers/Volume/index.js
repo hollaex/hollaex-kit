@@ -7,7 +7,7 @@ import { Spin } from 'antd';
 import { fetchUserVolume } from './actions/volumeActions';
 import BigNumber from 'bignumber.js';
 import STRINGS from 'config/localizedStrings';
-
+import { BASE_CURRENCY } from 'config/constants';
 import './_Volume.scss';
 const Volume = ({ coins, icons: ICONS, router }) => {
 	const [isLoading, setIsLoading] = useState(false);
@@ -160,10 +160,10 @@ const Volume = ({ coins, icons: ICONS, router }) => {
 										<div style={{ fontSize: 16 }}>{key}-DAY VOLUME:</div>
 										<div style={{ fontSize: 25 }}>
 											{formatVolumeCurrency(
-												'usdt',
+												BASE_CURRENCY,
 												volumeData[key].find((x) => x.total).total
 											)}{' '}
-											USDT
+											{BASE_CURRENCY?.toUpperCase()}
 										</div>
 										<div style={{ color: '#ccc' }}>(all assets)</div>
 									</div>
@@ -215,10 +215,10 @@ const Volume = ({ coins, icons: ICONS, router }) => {
 																		}}
 																	>
 																		{formatVolumeCurrency(
-																			'usdt',
+																			BASE_CURRENCY,
 																			data[iconKey]
 																		)}{' '}
-																		USDT
+																		{BASE_CURRENCY?.toUpperCase()}
 																	</div>
 																	<div
 																		style={{

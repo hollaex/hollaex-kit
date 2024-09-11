@@ -3498,7 +3498,7 @@ const fetchUserTradingVolume = async (opts = {
 
 	const { getAllUserTradesByKitId } = require('./order');
 
-	if(!from && !to) {
+	if(from && to) {
 		let volume = {};
 
 		const oracleIndex = await getOracleIndex();
