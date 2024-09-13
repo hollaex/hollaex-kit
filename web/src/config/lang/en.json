@@ -2258,6 +2258,11 @@
 		"NO_ORDERS_DESC": "Looks like there are no orders here.",
 		"NO_DEALS_DESC": "Looks like there are no deals here.",
 		"ONLINE": "ONLINE",
-		"OFFLINE": "OFFLINE"
+		"OFFLINE": "OFFLINE",
+		"SELECT_CRYPTO": "Select crypto",
+		"REMOVE_WARNING": "Are you sure you want to remove this deal?",
+		"SHOW_FILTERS": "SHOW FILTERS",
+		"HIDE_FILTERS": "HIDE FILTERS",
+		"ORDERS_COMPLETED": "Orders completed:"
 	}
 }
