@@ -55,7 +55,7 @@ const DEFAULT_CHART_OPTIONS = {
 	},
 };
 
-export const MiniSparkLine = ({ chartData, isArea }) => {
+export const MiniSparkLine = ({ chartData, isArea, isNewAssets }) => {
 	const [finalChartData, setFinalChartData] = useState([]);
 
 	useEffect(() => {
@@ -85,7 +85,10 @@ export const MiniSparkLine = ({ chartData, isArea }) => {
 				],
 			}}
 			containerProps={{
-				style: { height: isMobile ? '6rem' : '2.5rem', width: '10rem' },
+				style: {
+					height: isNewAssets ? (isMobile ? '6rem' : '2.5rem') : '100%',
+					width: isNewAssets ? '10rem' : '100%',
+				},
 			}}
 		/>
 	);

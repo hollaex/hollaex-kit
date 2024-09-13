@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
+import { isMobile } from 'react-device-detect';
 import { Tabs, message } from 'antd';
 
 import STRINGS from 'config/localizedStrings';
@@ -10,7 +11,7 @@ import P2PMyDeals from './P2PMyDeals';
 import P2POrders from './P2POrders';
 import P2PPostDeal from './P2PPostDeal';
 import P2PProfile from './P2PProfile';
-import P2POrder from './P2POrder';
+import P2POrder from './P2POrder/P2POrder';
 import { EditWrapper } from 'components';
 import { fetchTransactions } from './actions/p2pActions';
 const TabPane = Tabs.TabPane;
@@ -80,7 +81,7 @@ const P2P = ({
 	};
 	return (
 		<div className="p2p-summary-container">
-			{!displayOrder && (
+			{!displayOrder && !isMobile && (
 				<>
 					<div className="p2p-title">
 						<EditWrapper stringId="P2P.TITLE">
@@ -150,6 +151,7 @@ const P2P = ({
 										setSelectedTransaction={setSelectedTransaction}
 										refresh={refresh}
 										changeProfileTab={changeProfileTab}
+										tab={tab}
 									/>
 								</TabPane>
 							</>
@@ -170,6 +172,7 @@ const P2P = ({
 							<>
 								<TabPane tab={STRINGS['P2P.TAB_POST_DEAL']} key="3">
 									<P2PPostDeal
+										tab={tab}
 										setTab={setTab}
 										setRefresh={setRefresh}
 										refresh={refresh}

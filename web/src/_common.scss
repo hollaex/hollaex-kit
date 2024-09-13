@@ -312,7 +312,7 @@ table th {
 }
 
 .important-text {
-	color: $colors-main-black;
+	color: $colors-main-black !important;
 }
 
 .secondary-text {
@@ -379,6 +379,10 @@ table th {
 
 .fs-16 {
 	font-size: 16px;
+}
+
+.fs-24 {
+	font-size: 24px;
 }
 
 .text-decoration-underline {

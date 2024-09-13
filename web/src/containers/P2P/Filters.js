@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { DatePicker, Form, Radio, Select } from 'antd';
 
@@ -12,6 +12,8 @@ const Filter = ({
 	transactionDetails,
 	coins,
 	user,
+	selectedCurrencies,
+	tab,
 }) => {
 	const [isRangePicker, setIsRangePicker] = useState(false);
 	const [date, setDate] = useState('All');
@@ -19,6 +21,10 @@ const Filter = ({
 		asset: null,
 		side: null,
 		status: null,
+	});
+	const [customDateRange, setCustomDateRange] = useState({
+		startDates: null,
+		endDates: null,
 	});
 
 	const trades = ['P2P.ALL', 'P2P.BUY_UPPER', 'P2P.SELL_UPPER'];
@@ -29,9 +35,24 @@ const Filter = ({
 		'P2P.CANCELLED',
 		'P2P.EXPIRED',
 		'DEVELOPER_SECTION.ACTIVE',
+		'ORDER_HISTORY_CLOSED',
 	];
 
 	const { RangePicker } = DatePicker;
+
+	useEffect(() => {
+		setDate('All');
+		setTradeDetail({
+			asset: null,
+			side: null,
+			status: null,
+		});
+		setCustomDateRange({ startDates: null, endDates: null });
+		setIsRangePicker(false);
+
+		applyFilters(transactionDetails, tradeDetail, 'All');
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [tab]);
 
 	const handleDateRange = (dates) => {
 		if (dates && dates.length === 2) {
@@ -40,26 +61,40 @@ const Filter = ({
 			const startDates = new Date(startDate?.toISOString());
 			const endDates = new Date(endDate?.toISOString());
 
+			setCustomDateRange({ startDates, endDates });
+
 			const customTransaction = transactionDetails
-				.filter((x) =>
+				?.filter((x) =>
 					transactionFilter
 						? ['active', 'appealed'].includes(x.transaction_status)
 						: true
 				)
-				.filter((data) => {
+				?.filter((data) => {
 					const createdAt = new Date(data.created_at);
 					return createdAt >= startDates && createdAt <= endDates;
 				});
-			applyFilters(customTransaction);
+			applyFilters(
+				customTransaction,
+				tradeDetail,
+				'custom',
+				startDates,
+				endDates
+			);
 		}
 	};
 
-	const handleDateFilter = (date) => {
-		setDate(date);
+	const handleDateFilter = (selectedDate) => {
+		setDate(selectedDate);
+		if (selectedDate === 'custom') {
+			setIsRangePicker(true);
+			return;
+		} else {
+			setIsRangePicker(false);
+		}
 
-		let transactionList = transactionDetails.filter((x) =>
+		let transactionList = transactionDetails?.filter((x) =>
 			transactionFilter
-				? ['active', 'appealed'].includes(x.transaction_status)
+				? ['active', 'appealed']?.includes(x?.transaction_status)
 				: true
 		);
 
@@ -67,7 +102,7 @@ const Filter = ({
 			const targetDate = new Date();
 			targetDate.setDate(targetDate.getDate() - daysAgo);
 			return transactionList.filter(
-				(data) => new Date(data.created_at) >= targetDate
+				(data) => new Date(data?.created_at) >= targetDate
 			);
 		};
 
@@ -75,44 +110,47 @@ const Filter = ({
 			const targetDate = new Date();
 			targetDate.setMonth(targetDate.getMonth() - monthsAgo);
 			return transactionList.filter(
-				(data) => new Date(data.created_at) >= targetDate
+				(data) => new Date(data?.created_at) >= targetDate
 			);
 		};
 
-		switch (date) {
+		let filteredTransactions;
+		switch (selectedDate) {
 			case '1 day':
-				transactionList = filterByDate(1);
+				filteredTransactions = filterByDate(1);
 				break;
 			case '1 week':
-				transactionList = filterByDate(7);
+				filteredTransactions = filterByDate(7);
 				break;
 			case 'All':
+				filteredTransactions = transactionList;
 				break;
-			case 'custom':
-				setIsRangePicker(!isRangePicker);
-				return;
 			default:
-				if (Array.isArray(date)) {
-					const dateString = date.join('');
+				if (Array.isArray(selectedDate)) {
+					const dateString = selectedDate.join('');
 					if (dateString === '1 month') {
-						transactionList = filterByMonth(1);
+						filteredTransactions = filterByMonth(1);
 					} else if (dateString === '3 month') {
-						transactionList = filterByMonth(3);
+						filteredTransactions = filterByMonth(3);
 					}
 				}
 				break;
 		}
-		if (date !== 'custom') {
-			setIsRangePicker(false);
+
+		if (selectedDate !== 'custom') {
+			applyFilters(filteredTransactions, tradeDetail, selectedDate);
 		}
-		applyFilters(transactionList);
 	};
 
 	const handleTransaction = (type, status) => {
 		setTradeDetail((prev) => {
 			const updatedTradeDetail = {
 				...prev,
-				[type === 'status' ? 'status' : 'side']: status,
+				[type === 'status'
+					? 'status'
+					: type === 'asset'
+					? 'asset'
+					: 'side']: status,
 			};
 			applyFilters(transactionDetails, updatedTradeDetail);
 			return updatedTradeDetail;
@@ -121,27 +159,65 @@ const Filter = ({
 
 	const applyFilters = (
 		transactions = transactionDetails,
-		filters = tradeDetail
+		filters = tradeDetail,
+		dateFilter = date,
+		startDates = customDateRange.startDates,
+		endDates = customDateRange.endDates
 	) => {
 		const filteredTransactions = transactions.filter((data) => {
 			const statusMatch =
-				filters.status === null ||
-				filters.status === 'ALL' ||
-				(filters.status === 'Completed'
+				filters?.status === null ||
+				filters?.status === 'ALL' ||
+				(filters?.status === 'Completed'
 					? data.transaction_status === 'complete'
 					: data.transaction_status?.toLowerCase() ===
-					  filters.status?.toLowerCase());
+					  filters?.status?.toLowerCase());
 
 			const sideMatch =
-				filters.side === null ||
-				filters.side === 'ALL' ||
-				(filters.side === 'BUY'
-					? data.user_id === user.id
-					: data.user_id !== user.id);
+				filters?.side === null ||
+				filters?.side === 'ALL' ||
+				(filters?.side === 'BUY'
+					? data?.user_id === user?.id
+					: data?.user_id !== user?.id);
 
-			return statusMatch && sideMatch;
+			const assetMatch =
+				filters?.asset === null ||
+				filters?.asset === 'ALL' ||
+				data?.deal?.buying_asset === filters?.asset;
+
+			const dateString =
+				Array.isArray(dateFilter) && dateFilter.length > 1
+					? dateFilter.join('')
+					: dateFilter;
+
+			const dateMatch =
+				dateFilter === 'All' ||
+				dateFilter === null ||
+				(dateFilter === '1 day' &&
+					new Date(data?.created_at) >=
+						new Date(new Date().setDate(new Date().getDate() - 1))) ||
+				(dateFilter === '1 week' &&
+					new Date(data?.created_at) >=
+						new Date(new Date().setDate(new Date().getDate() - 7))) ||
+				(dateString === '1 month' &&
+					new Date(data?.created_at) >=
+						new Date(new Date().setMonth(new Date().getMonth() - 1))) ||
+				(dateString === '3 month' &&
+					new Date(data?.created_at) >=
+						new Date(new Date().setMonth(new Date().getMonth() - 3))) ||
+				(startDates &&
+					endDates &&
+					new Date(data?.created_at) >= startDates &&
+					new Date(data?.created_at) <= endDates);
+
+			return statusMatch && sideMatch && assetMatch && dateMatch;
 		});
 		setTransactions(filteredTransactions);
+	};
+
+	const handleClearDate = () => {
+		setTransactions(transactionDetails);
+		applyFilters(transactionDetails, tradeDetail, 'All');
 	};
 
 	return (
@@ -154,21 +230,23 @@ const Filter = ({
 						</div>
 						<Select
 							className="crypto-field"
-							dropdownClassName="p2p-custom-style-dropdown"
-							defaultValue={STRINGS['ALL']}
+							dropdownClassName="p2p-custom-style-dropdown filter-asset-dropdown"
+							value={tradeDetail.asset || STRINGS['P2P.ALL']}
 							onChange={(e) => handleTransaction('asset', e)}
 						>
-							<Select.Option value={null}>{STRINGS['ALL']}</Select.Option>
-							{Object.entries(coins).map(
-								([_, { symbol, fullname, icon_id }]) => (
-									<Select.Option key={symbol} value={symbol}>
+							<Select.Option value={null}>{STRINGS['P2P.ALL']}</Select.Option>
+							{Object?.entries(coins)
+								?.filter(([_, { symbol }]) =>
+									selectedCurrencies?.includes(symbol)
+								)
+								?.map(([_, { symbol, fullname, icon_id }]) => (
+									<Select.Option key={`${symbol}-${icon_id}`} value={symbol}>
 										<div className="d-flex gap-1">
 											<Coin iconId={icon_id} type="CS1" />
 											<div>{fullname}</div>
 										</div>
 									</Select.Option>
-								)
-							)}
+								))}
 						</Select>
 					</div>
 					<div className="side-filter">
@@ -178,7 +256,7 @@ const Filter = ({
 						<Select
 							className="crypto-field"
 							dropdownClassName="p2p-custom-style-dropdown"
-							defaultValue={STRINGS['ALL']}
+							value={tradeDetail?.side || STRINGS['P2P.ALL']}
 							onChange={(e) => handleTransaction('trade type', e)}
 						>
 							{trades.map((trade) => (
@@ -195,7 +273,7 @@ const Filter = ({
 						<Select
 							className="crypto-field"
 							dropdownClassName="p2p-custom-style-dropdown"
-							defaultValue={STRINGS['ALL']}
+							value={tradeDetail?.status || STRINGS['P2P.ALL']}
 							onChange={(e) => handleTransaction('status', e)}
 						>
 							{orderStatus.map((status) => (
@@ -248,7 +326,13 @@ const Filter = ({
 							size="small"
 							suffixIcon={false}
 							placeholder={[STRINGS['START_DATE'], STRINGS['END_DATE']]}
-							onChange={handleDateRange}
+							onChange={(dates, dateStrings) => {
+								if (!dates || (dates[0] === null && dates[1] === null)) {
+									handleClearDate();
+								} else {
+									handleDateRange(dates, dateStrings);
+								}
+							}}
 						/>
 					</Form.Item>
 				)}

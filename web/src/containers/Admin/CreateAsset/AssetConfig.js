@@ -22,7 +22,7 @@ import {
 } from '../AdminFinancials/action';
 
 const CONTACT_DESCRIPTION_LINK =
-	'https://metamask.zendesk.com/hc/en-us/articles/360015488811-What-is-a-Token-Contract-Address-';
+	'https://support.metamask.io/managing-my-tokens/custom-tokens/how-to-find-a-token-contract-address/';
 
 const { Search, TextArea } = Input;
 
