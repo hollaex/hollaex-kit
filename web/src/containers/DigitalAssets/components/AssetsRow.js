@@ -1,13 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { browserHistory } from 'react-router';
+import { isMobile } from 'react-device-detect';
 
 import TradeInputGroup from 'containers/Wallet/components/TradeInputGroup';
 import STRINGS from 'config/localizedStrings';
 import { PriceChange, Coin, ActionNotification } from 'components';
 import { MiniSparkLine } from 'containers/TradeTabs/components/MiniSparkLine';
 import { getLastValuesFromParts } from 'utils/array';
-import { isMobile } from 'react-device-detect';
-import { browserHistory } from 'react-router';
 import { unique } from 'utils/data';
 import { Loading } from './utils';
 
@@ -180,6 +180,7 @@ const AssetsRow = ({
 								<MiniSparkLine
 									chartData={getLastValuesFromParts(chartData?.price || [])}
 									isArea
+									isNewAssets={true}
 								/>
 							) : (
 								<span> {'- '}</span>
@@ -253,6 +254,7 @@ const AssetsRow = ({
 							<MiniSparkLine
 								chartData={getLastValuesFromParts(chartData?.price || [])}
 								isArea
+								isNewAssets={true}
 							/>
 						) : (
 							'-'

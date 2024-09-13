@@ -35,6 +35,7 @@ const Filter = ({
 		'P2P.CANCELLED',
 		'P2P.EXPIRED',
 		'DEVELOPER_SECTION.ACTIVE',
+		'ORDER_HISTORY_CLOSED',
 	];
 
 	const { RangePicker } = DatePicker;

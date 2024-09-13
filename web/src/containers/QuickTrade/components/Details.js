@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router';
-import { Coin, EditWrapper, PriceChange } from 'components';
-import STRINGS from 'config/localizedStrings';
 import { Radio } from 'antd';
+
+import classNames from 'classnames';
+import STRINGS from 'config/localizedStrings';
+import { Coin, EditWrapper, PriceChange } from 'components';
 import {
 	formatPercentage,
 	formatToCurrency,
 	countDecimals,
 } from 'utils/currency';
 import { MiniSparkLine } from 'containers/TradeTabs/components/MiniSparkLine';
-import classNames from 'classnames';
 import { getLastValuesFromParts } from 'utils/array';
 
 const Details = ({
