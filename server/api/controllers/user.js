@@ -1488,8 +1488,8 @@ const fetchUserTradingVolume = (req, res) => {
 	);
 
 	toolsLib.user.fetchUserTradingVolume(
+		req.auth.sub.id,
 		{
-			user_id: req.auth.sub.id,
 			to: to.value,
 			from: from.value
 		}

@@ -3487,13 +3487,12 @@ const getOracleIndex = async () => {
   };
 
 
-const fetchUserTradingVolume = async (opts = {
-	user_id: null,
+const fetchUserTradingVolume = async (user_id, opts = {
 	to: null,
 	from: null
 	}) => {
 
-	let { user_id, to, from } = opts;
+	let { to, from } = opts;
 	const currentTime = moment().seconds(0).milliseconds(0).toISOString();
 
 	const { getAllUserTradesByKitId } = require('./order');

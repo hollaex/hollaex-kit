@@ -3012,8 +3012,8 @@ const fetchUserTradingVolumeByAdmin = (req, res) => {
 	);
 
 	toolsLib.user.fetchUserTradingVolume(
+		user_id.value,
 		{
-			user_id: user_id.value,
 			to: to.value,
 			from: from.value
 		}
