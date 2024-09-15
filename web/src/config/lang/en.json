@@ -1824,6 +1824,7 @@
 		"ACCORDIAN_INFO": "ASSET INFO PAGE",
 		"ACCORDIAN_HISTORY": "HISTORY",
 		"DEPOSIT": "DEPOSIT",
+		"VOLUME": "VOLUME",
 		"WITHDRAW": "WITHDRAW",
 		"SELECT_ASSET": "Select asset:",
 		"SELECT_NETWORK": "Select network:",
@@ -2264,5 +2265,15 @@
 		"SHOW_FILTERS": "SHOW FILTERS",
 		"HIDE_FILTERS": "HIDE FILTERS",
 		"ORDERS_COMPLETED": "Orders completed:"
+	},
+	"VOLUME": {
+		"VOLUME": "VOLUME",
+		"BACK": "Back",
+		"MARKETS": "MARKETS",
+		"CONVERT": "CONVERT",
+		"HISTORY": "HISTORY",
+		"TRADING_VOLUME": "Trading Volume",
+		"VOLUME_DECS": "Traded amounts on your account across different time periods, along with the top 3 assets traded in each period",
+		"ALL_ASSETS": "all assets"
 	}
 }
