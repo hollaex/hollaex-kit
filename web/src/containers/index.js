@@ -39,6 +39,7 @@ export { default as WhiteLabel } from './WhiteLabel';
 export { default as FeesAndLimits } from './FeesAndLimits';
 export { default as ReferralList } from './Summary/components/ReferralList';
 export { default as P2P } from './P2P';
+export { default as Volume } from './Volume';
 export { default as AddressBook } from './Wallet/AddressBook';
 
 // ADMIN PAGE

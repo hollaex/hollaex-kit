@@ -3001,6 +3001,35 @@ const createUserReferralCodeByAdmin = (req, res) => {
 		});
 };
 
+const fetchUserTradingVolumeByAdmin = (req, res) => {
+	const { user_id, to, from } = req.swagger.params;
+
+	loggerAdmin.info(
+		user_id.value,
+		'controllers/user/fetchUserTradingVolumeByAdmin',
+		to.value,
+		from.value
+	);
+
+	toolsLib.user.fetchUserTradingVolume(
+		user_id.value,
+		{
+			to: to.value,
+			from: from.value
+		}
+	)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/user/fetchUserTradingVolumeByAdmin err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
 
 const getPaymentDetailsByAdmin = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getPaymentDetailsByAdmin/auth', req.auth);
@@ -3165,6 +3194,7 @@ module.exports = {
 	performDirectWithdrawalByAdmin,
 	getUserReferralCodesByAdmin,
 	createUserReferralCodeByAdmin,
+	fetchUserTradingVolumeByAdmin,
 	getPaymentDetailsByAdmin,
 	createPaymentDetailByAdmin,
 	updatePaymentDetailByAdmin,
