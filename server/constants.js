@@ -586,6 +586,13 @@ exports.EXPLORERS = {
 			txPath: '/tx'
 		}
 	],
+	pol: [
+		{
+			name: 'PolygonScan',
+			baseUrl: 'https://polygonscan.com',
+			txPath: '/tx'
+		}
+	],
 	etc: [
 		{
 			name: 'Ethereum Classic Explorer',
