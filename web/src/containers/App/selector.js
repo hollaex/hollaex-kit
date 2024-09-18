@@ -73,20 +73,12 @@ export const menuItemsSelector = createSelector(
 			);
 
 		const menuItems = isMobile
-			? remoteRoutes && remoteRoutes.length
-				? [
-						...MENU_ITEMS.top,
-						...featureItems,
-						MENU_ITEMS.middle[0],
-						remoteRoutes[0],
-						...(token ? MENU_ITEMS.bottom : []),
-				  ]
-				: [
-						...MENU_ITEMS.top,
-						...featureItems,
-						...MENU_ITEMS.middle,
-						...(token ? MENU_ITEMS.bottom : []),
-				  ]
+			? [
+					...MENU_ITEMS.top,
+					...featureItems,
+					...MENU_ITEMS.middle,
+					...(token ? MENU_ITEMS.bottom : []),
+			  ]
 			: [
 					...MENU_ITEMS.top,
 					...MENU_ITEMS.middle,
