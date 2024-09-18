@@ -2300,7 +2300,7 @@ const getUserReferer = (req, res) => {
 };
 
 const createUserByAdmin = (req, res) => {
-	const { email, password } = req.swagger.params.data.value;
+	const { email, password, referral } = req.swagger.params.data.value;
 
 	loggerAdmin.info(req.uuid, 'controllers/admin/createUserByAdmin email', email);
 
@@ -2325,6 +2325,7 @@ const createUserByAdmin = (req, res) => {
 				role: 'user',
 				id: null,
 				email_verified: true,
+				referral,
 				additionalHeaders: {
 					'x-forwarded-for': req.headers['x-forwarded-for']
 				}
