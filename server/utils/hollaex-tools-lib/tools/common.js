@@ -479,6 +479,20 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 		
 	}
 
+	if (newKitConfig.selectable_native_currencies) {
+		const exchangeInfo = getKitConfig().info;
+
+		if (!REFERRAL_HISTORY_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
+			throw new Error('Exchange plan does not support this feature');
+		}
+
+		for (let coin of newKitConfig.selectable_native_currencies) {
+			if (!subscribedToCoin(coin)) {
+				throw new Error('Invalid coin ' + coin);
+			}
+		}
+	}
+	
 	const joinedKitConfig = {};
 
 	KIT_CONFIG_KEYS.forEach((key) => {

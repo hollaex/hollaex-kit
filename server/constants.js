@@ -221,7 +221,8 @@ exports.KIT_CONFIG_KEYS = [
 	'transaction_limits',
 	'p2p_config',
 	'referral_history_config',
-	'chain_trade_config'
+	'chain_trade_config',
+	'selectable_native_currencies'
 ];
 
 exports.KIT_SECRETS_KEYS = [

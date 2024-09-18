@@ -30,6 +30,7 @@ const SETTINGS_DATA_DEFAULT = {
 		order_partially_completed: true,
 		public_trade: false
 	},
+	native_currency: process.env.NATIVE_CURRENCY || 'usdt', 
 	risk: {
 		order_portfolio_percentage: DEFAULT_ORDER_RISK_PERCENTAGE
 	},
