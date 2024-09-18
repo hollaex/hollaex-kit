@@ -83,7 +83,9 @@ const P2POrderDetails = ({
 			<div className="release-amount-container">
 				<div
 					className={
-						user?.id === selectedOrder?.user_id && 'release-amount-title'
+						user?.id === selectedOrder?.user_id
+							? 'release-amount-title'
+							: 'spend-amount-title'
 					}
 				>
 					<EditWrapper stringId="P2P.AMOUNT_TO">

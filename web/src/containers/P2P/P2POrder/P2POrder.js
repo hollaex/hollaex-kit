@@ -753,26 +753,6 @@ const P2POrder = ({
 					</span>
 				</div>
 			)}
-			{isChat && (
-				<div
-					className={
-						isMobile ? 'back-to-orders-link my-4' : 'back-to-orders-link'
-					}
-					onClick={() => {
-						setIsChat(false);
-					}}
-				>
-					{'<'}
-					<EditWrapper stringId="REFERRAL_LINK.BACK_LOWER">
-						{STRINGS['REFERRAL_LINK.BACK_LOWER']}
-					</EditWrapper>
-					<span className="ml-2 back-to-order-text">
-						<EditWrapper stringId="P2P.BACK_TO_ORDERS">
-							{STRINGS['P2P.BACK_TO_ORDERS']}
-						</EditWrapper>
-					</span>
-				</div>
-			)}
 			{(isOrderCreated || isOrderVerified || isOrderConfirmed) && !isChat && (
 				<div className="custom-stepper-container">
 					<div
@@ -907,6 +887,8 @@ const P2POrder = ({
 							setSelectedProfile={setSelectedProfile}
 							setUserFeedback={setUserFeedback}
 							setDisplayUserFeedback={setDisplayUserFeedback}
+							isChat={isChat}
+							setIsChat={setIsChat}
 						/>
 					)}
 					{isMobile &&

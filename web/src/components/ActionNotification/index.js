@@ -81,7 +81,7 @@ const ActionNotification = ({
 					{text}
 				</div>
 			)}
-			{isMobile && text === 'Check deposit status' && (
+			{isMobile && text !== 'Refresh' && (
 				<div
 					className={classnames(
 						'action_notification-text',
