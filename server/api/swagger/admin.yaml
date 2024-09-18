@@ -1240,6 +1240,9 @@ paths:
                 type: string
                 format: password
                 maxLength: 128
+              referral:
+                type: string
+                maxLength: 256
       responses:
         201:
           description: Created

@@ -253,6 +253,7 @@ const createUser = (
 		role: 'user',
 		id: null,
 		email_verified: false,
+		referral: null,
 		additionalHeaders: null
 	}
 ) => {
@@ -312,6 +313,10 @@ const createUser = (
 			});
 	})
 		.then((user) => {
+			if (opts.referral && isString(opts.referral)) {
+				checkAffiliation(opts.referral, user.id);
+			}
+
 			return all([
 				user
 			]);
