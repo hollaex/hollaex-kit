@@ -204,7 +204,7 @@ definitions:
           theme:
             type: string
             maxLength: 256
-          native_currency:
+          display_currency:
             type: string
             maxLength: 32
             minLength: 1

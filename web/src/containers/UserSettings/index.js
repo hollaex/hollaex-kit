@@ -386,11 +386,11 @@ class UserSettings extends Component {
 					}
 					if (
 						data.settings.interface &&
-						data.settings.interface.native_currency
+						data.settings.interface.display_currency
 					) {
 						localStorage.setItem(
 							'base_currnecy',
-							data.settings.interface.native_currency
+							data.settings.interface.display_currency
 						);
 					}
 				}

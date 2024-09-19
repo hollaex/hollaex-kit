@@ -24,7 +24,7 @@ export const generateFormValues = ({ options = [], currencyOptions = [] }) => ({
 		options,
 		ishorizontalfield: true,
 	},
-	native_currency: {
+	display_currency: {
 		type: 'select',
 		stringId: 'CUSTOM_NATIVE_CURRENCY',
 		label: STRINGS['CUSTOM_NATIVE_CURRENCY'],
