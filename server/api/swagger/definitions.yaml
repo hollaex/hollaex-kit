@@ -179,10 +179,6 @@ definitions:
         default: 'en'
         maxLength: 3
         minLength: 2
-      native_currency:
-        type: string
-        maxLength: 32
-        minLength: 1
       risk:
         type: object
         properties:
@@ -208,6 +204,10 @@ definitions:
           theme:
             type: string
             maxLength: 256
+          native_currency:
+            type: string
+            maxLength: 32
+            minLength: 1
           order_book_levels:
             type: number
             format: int32

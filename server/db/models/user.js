@@ -22,7 +22,8 @@ const SETTINGS_DATA_DEFAULT = {
 	},
 	interface: {
 		order_book_levels: 10,
-		theme: process.env.DEFAULT_THEME || 'white'
+		theme: process.env.DEFAULT_THEME || 'white',
+		native_currency: process.env.NATIVE_CURRENCY || 'usdt', 
 	},
 	language: process.env.DEFAULT_LANGUAGE || 'en',
 	audio: {
@@ -30,7 +31,6 @@ const SETTINGS_DATA_DEFAULT = {
 		order_partially_completed: true,
 		public_trade: false
 	},
-	native_currency: process.env.NATIVE_CURRENCY || 'usdt', 
 	risk: {
 		order_portfolio_percentage: DEFAULT_ORDER_RISK_PERCENTAGE
 	},

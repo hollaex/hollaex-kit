@@ -16,13 +16,21 @@ const orderbook_level_step = 1;
 const orderbook_level_min = 1;
 const orderbook_level_max = 20;
 
-export const generateFormValues = ({ options = [] }) => ({
+export const generateFormValues = ({ options = [], currencyOptions = [] }) => ({
 	theme: {
 		type: 'select',
 		stringId: 'SETTINGS_THEME_LABEL',
 		label: STRINGS['SETTINGS_THEME_LABEL'],
 		options,
 		ishorizontalfield: true,
+	},
+	native_currency: {
+		type: 'select',
+		stringId: 'CUSTOM_NATIVE_CURRENCY',
+		label: STRINGS['CUSTOM_NATIVE_CURRENCY'],
+		options: currencyOptions,
+		ishorizontalfield: true,
+		placeholder: STRINGS['CUSTOM_NATIVE_CURRENCY'],
 	},
 	order_book_levels: {
 		type: 'number',

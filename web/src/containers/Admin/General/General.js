@@ -40,6 +40,7 @@ import { checkFileSize, fileSizeError } from 'utils/icon';
 import PublishSection from './PublishSection';
 import { CloseCircleOutlined } from '@ant-design/icons';
 import Coins from '../Coins';
+import { BASE_CURRENCY } from 'config/constants';
 const { Option } = Select;
 
 const NameForm = AdminHocForm('NameForm');
@@ -89,11 +90,15 @@ class GeneralContent extends Component {
 	}
 
 	componentDidMount() {
+		let customCurrencies = this.props.selectable_native_currencies || [];
+		if (customCurrencies.length === 0) {
+			customCurrencies = [BASE_CURRENCY];
+		}
 		this.requestInitial();
 		this.props.requestTokens();
 		this.setState({
 			isDisable: true,
-			nativeCurrencies: this.props.selectable_native_currencies || [],
+			nativeCurrencies: customCurrencies,
 		});
 	}
 
@@ -922,7 +927,7 @@ class GeneralContent extends Component {
 													onClick={() => {
 														this.setState({
 															nativeCurrencies: this.state.nativeCurrencies.filter(
-																(c) => c != coin
+																(c) => c !== coin
 															),
 														});
 													}}

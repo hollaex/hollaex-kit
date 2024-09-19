@@ -294,6 +294,15 @@ class AppWrapper extends React.Component {
 						this.props.changeTheme(data.settings.interface.theme);
 						localStorage.setItem('theme', data.settings.interface.theme);
 					}
+					if (
+						data.settings.interface &&
+						data.settings.interface.native_currency
+					) {
+						localStorage.setItem(
+							'base_currnecy',
+							data.settings.interface.native_currency
+						);
+					}
 				}
 			})
 			.catch((err) => {

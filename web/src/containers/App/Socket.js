@@ -145,6 +145,15 @@ class Container extends Component {
 					let userData = { ...data };
 					if (data.settings) {
 						if (
+							data.settings.interface &&
+							data.settings.interface.native_currency
+						) {
+							localStorage.setItem(
+								'base_currnecy',
+								data.settings.interface.native_currency
+							);
+						}
+						if (
 							!data.settings.language &&
 							!this.props.activeLanguage &&
 							defaults.language
