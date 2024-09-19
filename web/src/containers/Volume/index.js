@@ -7,9 +7,8 @@ import { Spin } from 'antd';
 import { fetchUserVolume } from './actions/volumeActions';
 import BigNumber from 'bignumber.js';
 import STRINGS from 'config/localizedStrings';
-import { BASE_CURRENCY } from 'config/constants';
 import './_Volume.scss';
-const Volume = ({ coins, icons: ICONS, router }) => {
+const Volume = ({ coins, icons: ICONS, router, nativeCurrency }) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [volumeData, setVolumeData] = useState([]);
 	const [volumeNativeData, setVolumeNativeData] = useState([]);
@@ -160,10 +159,10 @@ const Volume = ({ coins, icons: ICONS, router }) => {
 										<div style={{ fontSize: 16 }}>{key}-DAY VOLUME:</div>
 										<div style={{ fontSize: 25 }}>
 											{formatVolumeCurrency(
-												BASE_CURRENCY,
+												nativeCurrency,
 												volumeData[key].find((x) => x.total).total
 											)}{' '}
-											{BASE_CURRENCY?.toUpperCase()}
+											{nativeCurrency?.toUpperCase()}
 										</div>
 										<div style={{ color: '#ccc' }}>
 											(
@@ -221,10 +220,10 @@ const Volume = ({ coins, icons: ICONS, router }) => {
 																		}}
 																	>
 																		{formatVolumeCurrency(
-																			BASE_CURRENCY,
+																			nativeCurrency,
 																			data[iconKey]
 																		)}{' '}
-																		{BASE_CURRENCY?.toUpperCase()}
+																		{nativeCurrency?.toUpperCase()}
 																	</div>
 																	<div
 																		style={{
@@ -265,6 +264,7 @@ const mapStateToProps = (state) => ({
 	balances: state.user.balance,
 	pricesInNative: state.asset.oraclePrices,
 	quickTrade: state.app.quickTrade,
+	nativeCurrency: state.app.constants.native_currency,
 });
 
 const mapDispatchToProps = (dispatch) => ({});
