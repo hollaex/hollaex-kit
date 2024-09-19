@@ -139,7 +139,7 @@ export const getBrokerConnect = (
 	)}`;
 
 	if (exchange_id === 'okx') {
-		urlString += `&password=${password}`;
+		urlString += `&password=${encodeURIComponent(password)}`;
 	}
 
 	return requestAuthenticated(urlString);
