@@ -918,7 +918,10 @@ class GeneralContent extends Component {
 								<div className="coins-list">
 									{this.state.nativeCurrencies?.map((coin) => {
 										return (
-											<div className="d-flex" style={{ fontSize: '1rem' }}>
+											<div
+												className="d-flex"
+												style={{ fontSize: '1rem', marginBottom: 5 }}
+											>
 												<Coins type={coin} />
 												<span style={{ position: 'relative', left: 5, top: 8 }}>
 													{coins?.[coin]?.fullname}
