@@ -688,6 +688,12 @@ exports.BALANCE_HISTORY_SUPPORTED_PLANS = ['fiat', 'boost', 'enterprise'];
 exports.REFERRAL_HISTORY_SUPPORTED_PLANS = ['fiat', 'boost', 'enterprise'];
 //REFERRAL HISTORY CONSTANTS END
 
+
+//DISPLAY CURRENCY CONSTANTS START
+
+exports.DISPLAY_CURRENCY_SUPPORTED_PLANS = ['fiat', 'boost', 'enterprise'];
+//DISPLAY CURRENCY CONSTANTS END
+
 exports.CUSTOM_CSS = `
 	.topbar-wrapper img {
 		content:url('${exports.GET_KIT_CONFIG().logo_image}}');
