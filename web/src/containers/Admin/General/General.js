@@ -909,89 +909,80 @@ class GeneralContent extends Component {
 								</div>
 							</div>
 							<div className="divider"></div>
-							{!isUpgrade && (
-								<div className="mb-5">
-									<div className="sub-title">
-										Other currency display options
-									</div>
-									<div className="description">
-										The user can select these other currencies as alternative
-										valuation options to the 'default' above.
-									</div>
-									<div className="coins-list">
-										{this.state.nativeCurrencies?.map((coin) => {
-											return (
-												<div
-													className="d-flex"
-													style={{ fontSize: '1rem', marginBottom: 5 }}
-												>
-													<Coins type={coin} />
-													<span
-														style={{ position: 'relative', left: 5, top: 8 }}
-													>
-														{coins?.[coin]?.fullname}
-													</span>
-													<span
-														onClick={() => {
-															this.setState({
-																nativeCurrencies: this.state.nativeCurrencies.filter(
-																	(c) => c !== coin
-																),
-															});
-														}}
-														style={{
-															cursor: 'pointer',
-															position: 'relative',
-															top: 10,
-															left: 12,
-														}}
-													>
-														<CloseCircleOutlined style={{ fontSize: 16 }} />
-													</span>
-												</div>
-											);
-										})}
-
-										<div>
-											<Select
-												placeholder="Add alternative currency"
-												style={{ marginTop: 20 }}
-												onChange={(e) => {
-													if (this.state.nativeCurrencies.includes(e)) return;
-													this.setState({
-														nativeCurrencies: [
-															...this.state.nativeCurrencies,
-															e,
-														],
-													});
-												}}
+							<div className="mb-5">
+								<div className="sub-title">Other currency display options</div>
+								<div className="description">
+									The user can select these other currencies as alternative
+									valuation options to the 'default' above.
+								</div>
+								<div className="coins-list">
+									{this.state.nativeCurrencies?.map((coin) => {
+										return (
+											<div
+												className="d-flex"
+												style={{ fontSize: '1rem', marginBottom: 5 }}
 											>
-												{Object.keys(coins)
-													.filter((coin) => coins[coin].type !== 'fiat')
-													.map((key) => (
-														<Option value={key}>{coins[key].fullname}</Option>
-													))}
-											</Select>
-										</div>
+												<Coins type={coin} />
+												<span style={{ position: 'relative', left: 5, top: 8 }}>
+													{coins?.[coin]?.fullname}
+												</span>
+												<span
+													onClick={() => {
+														this.setState({
+															nativeCurrencies: this.state.nativeCurrencies.filter(
+																(c) => c !== coin
+															),
+														});
+													}}
+													style={{
+														cursor: 'pointer',
+														position: 'relative',
+														top: 10,
+														left: 12,
+													}}
+												>
+													<CloseCircleOutlined style={{ fontSize: 16 }} />
+												</span>
+											</div>
+										);
+									})}
 
-										<Button
-											style={{ width: 120, marginTop: 10 }}
-											type="primary"
-											className={`green-btn btn-48`}
-											onClick={async () => {
-												this.handleSubmitGeneral({
-													kit: {
-														selectable_native_currencies: this.state
-															.nativeCurrencies,
-													},
+									<div>
+										<Select
+											placeholder="Add alternative currency"
+											style={{ marginTop: 20 }}
+											onChange={(e) => {
+												if (this.state.nativeCurrencies.includes(e)) return;
+												this.setState({
+													nativeCurrencies: [...this.state.nativeCurrencies, e],
 												});
 											}}
 										>
-											SAVE
-										</Button>
+											{Object.keys(coins)
+												.filter((coin) => coins[coin].type !== 'fiat')
+												.map((key) => (
+													<Option value={key}>{coins[key].fullname}</Option>
+												))}
+										</Select>
 									</div>
+
+									<Button
+										style={{ width: 120, marginTop: 10 }}
+										type="primary"
+										className={`green-btn btn-48`}
+										onClick={async () => {
+											this.handleSubmitGeneral({
+												kit: {
+													selectable_native_currencies: this.state
+														.nativeCurrencies,
+												},
+											});
+										}}
+									>
+										SAVE
+									</Button>
 								</div>
-							)}
+							</div>
 						</div>
 					) : null}
 					{activeTab === 'branding' ? (

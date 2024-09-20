@@ -26,8 +26,7 @@ const {
 	DOMAIN,
 	DEFAULT_FEES,
 	BALANCE_HISTORY_SUPPORTED_PLANS,
-	REFERRAL_HISTORY_SUPPORTED_PLANS,
-	DISPLAY_CURRENCY_SUPPORTED_PLANS
+	REFERRAL_HISTORY_SUPPORTED_PLANS
 } = require(`${SERVER_PATH}/constants`);
 const {
 	COMMUNICATOR_CANNOT_UPDATE,
@@ -481,11 +480,6 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 	}
 
 	if (newKitConfig.selectable_native_currencies) {
-		const exchangeInfo = getKitConfig().info;
-
-		if (!DISPLAY_CURRENCY_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
-			throw new Error('Exchange plan does not support this feature');
-		}
 
 		for (let coin of newKitConfig.selectable_native_currencies) {
 			if (!subscribedToCoin(coin)) {
