@@ -618,7 +618,16 @@ const MobileBarMoreOptions = ({
 					</div>
 				) : (
 					<div className="text-align-center my-5">
-						<EditWrapper>{STRINGS['NO_DATA']}</EditWrapper>
+						<EditWrapper>
+							<span className="secondary-text">
+								{STRINGS['MORE_OPTIONS_LABEL.NO_RESULT_DESC_1']}
+							</span>
+						</EditWrapper>
+						<EditWrapper>
+							<span className="secondary-text">
+								{STRINGS['MORE_OPTIONS_LABEL.NO_RESULT_DESC_2']}
+							</span>
+						</EditWrapper>
 					</div>
 				)}
 			</div>

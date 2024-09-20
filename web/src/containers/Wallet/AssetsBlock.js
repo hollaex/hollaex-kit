@@ -41,7 +41,7 @@ import {
 	CURRENCY_PRICE_FORMAT,
 	DEFAULT_COIN_DATA,
 } from 'config/constants';
-import { unique } from 'utils/data';
+import { getAllAvailableMarkets, goToTrade } from './utils';
 import withConfig from 'components/ConfigProvider/withConfig';
 import TradeInputGroup from './components/TradeInputGroup';
 import DustSection from './DustSection';
@@ -233,62 +233,6 @@ const AssetsBlock = ({
 			/>
 		</div>
 	);
-
-	const isMarketAvailable = (pair) => {
-		return pair && pairs[pair] && pairs[pair].active;
-	};
-
-	const findPair = (key, field) => {
-		const availableMarketsArray = [];
-
-		Object.entries(pairs).map(([pairKey, pairObject]) => {
-			if (
-				pairObject &&
-				pairObject[field] === key &&
-				isMarketAvailable(pairKey)
-			) {
-				availableMarketsArray.push(pairKey);
-			}
-
-			return pairKey;
-		});
-
-		return availableMarketsArray;
-	};
-
-	const goToTrade = (pair) => {
-		const flippedPair = getFlippedPair(pair);
-		const isQuickTrade = !!quicktrade.filter(
-			({ symbol, active, type }) =>
-				!!active &&
-				type !== 'pro' &&
-				(symbol === pair || symbol === flippedPair)
-		).length;
-		if (pair && isQuickTrade) {
-			return navigate(`/quick-trade/${pair}`);
-		} else if (pair && !isQuickTrade) {
-			return navigate(`/trade/${pair}`);
-		}
-	};
-
-	const getFlippedPair = (pair) => {
-		let flippedPair = pair.split('-');
-		flippedPair.reverse().join('-');
-		return flippedPair;
-	};
-
-	const getAllAvailableMarkets = (key) => {
-		const quickTrade = quicktrade
-			.filter(({ symbol = '', active }) => {
-				const [base, to] = symbol.split('-');
-				return active && (base === key || to === key);
-			})
-			.map(({ symbol }) => symbol);
-
-		const trade = [...findPair(key, 'pair_base'), ...findPair(key, 'pair_2')];
-
-		return unique([...quickTrade, ...trade]);
-	};
 
 	const onHandleClose = () => {
 		setIsSearchActive(false);
@@ -662,7 +606,7 @@ const AssetsBlock = ({
 								],
 								index
 							) => {
-								const markets = getAllAvailableMarkets(key);
+								const markets = getAllAvailableMarkets(key, quicktrade);
 								const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 								const balanceText =
 									key === BASE_CURRENCY
@@ -737,7 +681,11 @@ const AssetsBlock = ({
 																width: 130,
 															}}
 															overlay={
-																<Menu onClick={({ key }) => goToTrade(key)}>
+																<Menu
+																	onClick={({ key }) =>
+																		goToTrade(key, quicktrade)
+																	}
+																>
 																	{markets.map((market) => {
 																		const { display_name, icon_id } =
 																			pairs[market] ||
@@ -860,7 +808,7 @@ const AssetsBlock = ({
 														text={STRINGS['TRADE_TAB_TRADE']}
 														iconId="BLUE_TRADE_ICON"
 														iconPath={ICONS['BLUE_TRADE_ICON']}
-														onClick={() => goToTrade(markets[0])}
+														onClick={() => goToTrade(markets[0], quicktrade)}
 														className="csv-action"
 														showActionText={isMobile}
 														disable={markets.length === 0}
