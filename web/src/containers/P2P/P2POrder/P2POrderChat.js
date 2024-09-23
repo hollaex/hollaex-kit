@@ -20,6 +20,8 @@ const P2POrderChat = ({
 	setUserFeedback,
 	setDisplayUserFeedback,
 	setUserProfile,
+	isChat,
+	setIsChat,
 }) => {
 	const ref = useRef(null);
 	const buttonRef = useRef(null);
@@ -52,22 +54,42 @@ const P2POrderChat = ({
 				isMobile ? 'user-chat-container w-100' : 'user-chat-container w-50'
 			}
 		>
-			<div className="chat-title">
-				<Image
-					iconId={'CHAT_P2P_ICON'}
-					icon={ICONS['CHAT_P2P_ICON']}
-					alt={'text'}
-					wrapperClassName="margin-aligner"
-				/>
-				{user?.id === selectedOrder?.merchant_id ? (
-					<EditWrapper stringId="P2P.CHAT_WITH_USER">
-						{STRINGS['P2P.CHAT_WITH_USER']}
-					</EditWrapper>
-				) : (
-					<EditWrapper stringId="P2P.CHAT_WITH_VENDOR">
-						{STRINGS['P2P.CHAT_WITH_VENDOR']}
-					</EditWrapper>
+			<div className="p2p-chat-container">
+				{isChat && (
+					<div
+						className="back-to-orders-link"
+						onClick={() => {
+							setIsChat(false);
+						}}
+					>
+						{'<'}
+						<EditWrapper stringId="REFERRAL_LINK.BACK_LOWER">
+							{STRINGS['REFERRAL_LINK.BACK_LOWER']}
+						</EditWrapper>
+						<span className="ml-2 back-to-order-text">
+							<EditWrapper stringId="P2P.BACK_TO_ORDERS">
+								{STRINGS['P2P.BACK_TO_ORDERS']}
+							</EditWrapper>
+						</span>
+					</div>
 				)}
+				<div className="chat-title">
+					<Image
+						iconId={'CHAT_P2P_ICON'}
+						icon={ICONS['CHAT_P2P_ICON']}
+						alt={'text'}
+						wrapperClassName="margin-aligner"
+					/>
+					{user?.id === selectedOrder?.merchant_id ? (
+						<EditWrapper stringId="P2P.CHAT_WITH_USER">
+							{STRINGS['P2P.CHAT_WITH_USER']}
+						</EditWrapper>
+					) : (
+						<EditWrapper stringId="P2P.CHAT_WITH_VENDOR">
+							{STRINGS['P2P.CHAT_WITH_VENDOR']}
+						</EditWrapper>
+					)}
+				</div>
 			</div>
 			<div className="chat-field">
 				<div

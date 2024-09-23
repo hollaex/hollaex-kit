@@ -81,16 +81,17 @@ const ActionNotification = ({
 					{text}
 				</div>
 			)}
-			{isMobile && text === 'Check deposit status' && (
-				<div
-					className={classnames(
-						'action_notification-text',
-						getClassNames(status)
-					)}
-				>
-					{text}
-				</div>
-			)}
+			{isMobile &&
+				(text === 'Check deposit status' || text === 'Need help?') && (
+					<div
+						className={classnames(
+							'action_notification-text',
+							getClassNames(status)
+						)}
+					>
+						{text}
+					</div>
+				)}
 			<Image
 				iconId={iconId}
 				stringId={stringId}

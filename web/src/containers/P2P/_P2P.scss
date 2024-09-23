@@ -215,6 +215,7 @@
 		.p2p-table-container {
 			display: flex;
 			font-weight: normal !important;
+
 			.p2p-stake-table {
 				.p2p-stake-table-header {
 					font-family: 'Raleway Extrabold';
@@ -295,6 +296,7 @@
 						display: flex;
 						flex-direction: column;
 						margin-top: 5%;
+
 						.vendor-profile-description {
 							.edit-wrapper__container {
 								color: var(--specials_buttons-links-and-highlights);
@@ -378,12 +380,15 @@
 									width: 58%;
 								}
 							}
+
 							.error-field-container {
 								height: 20px;
+
 								.error-message {
 									color: var(--specials_notifications-alerts-warnings);
 								}
 							}
+
 							.trade-button-container {
 								justify-content: flex-end;
 								margin-top: 15px;
@@ -631,6 +636,7 @@
 						.ant-picker {
 							border: 1px solid
 								var(--labels_important-active-labels-text-graphics) !important;
+
 							.ant-picker-clear {
 								background-color: transparent;
 								color: var(--labels_important-active-labels-text-graphics);
@@ -693,6 +699,7 @@
 						opacity: 0.5;
 					}
 				}
+
 				tbody {
 					tr {
 						.trade-button,
@@ -705,6 +712,7 @@
 							padding: 0.5% 0;
 							width: 15%;
 							font-weight: normal;
+
 							.active-green {
 								color: var(--specials_checks-okay-done);
 							}
@@ -899,6 +907,7 @@
 						align-items: center;
 						gap: 5px;
 					}
+
 					.custom-circle {
 						margin-top: 2%;
 						width: 12px;
@@ -1072,6 +1081,7 @@
 
 	.p2p-post-deal-container {
 		padding: unset !important;
+
 		.update-deal-container {
 			display: flex;
 			align-items: center;
@@ -1080,6 +1090,7 @@
 			background-color: rgba(67, 112, 235, 0.2);
 			font-size: 17px;
 			padding: 5px;
+
 			.p2p-update-deal {
 				text-transform: uppercase;
 			}
@@ -1088,6 +1099,7 @@
 		.p2p-post-deal-details-container {
 			padding: 20px;
 		}
+
 		.post-deal-description,
 		.custom-step-container {
 			padding: 0 4%;
@@ -1117,6 +1129,7 @@
 			.step-active {
 				border-color: var(--labels_important-active-labels-text-graphics);
 			}
+
 			.step-one {
 				margin-left: 7%;
 			}
@@ -1531,6 +1544,7 @@
 			}
 		}
 	}
+
 	.p2p-order-tab-container {
 		.active-icon {
 			.anticon-play-square {
@@ -1555,6 +1569,7 @@
 			}
 		}
 	}
+
 	.order-verification-container {
 		.anticon-check-circle {
 			svg {
@@ -1863,10 +1878,12 @@
 					.notification-message {
 						padding: 2% 5%;
 					}
+
 					.user-message-wrapper {
 						padding: 2% 5%;
 						display: flex;
 						flex-direction: row-reverse;
+
 						.user-message-container {
 							width: 60%;
 							display: flex;
@@ -1877,6 +1894,7 @@
 
 					.merchant-message-wrapper {
 						padding: 2% 5%;
+
 						.merchant-message-container {
 							width: 60%;
 							display: flex;
@@ -1911,6 +1929,7 @@
 
 					.message-input-field {
 						padding: 0 5%;
+
 						.ant-input-affix-wrapper,
 						.ant-input {
 							background-color: transparent;
@@ -2218,6 +2237,7 @@
 						border-bottom: 1px solid var(--calculated_secondary-border);
 						position: relative;
 					}
+
 					.ant-rate-star-zero {
 						.ant-rate-star-second {
 							color: var(--labels_inactive-button) !important;
@@ -2578,6 +2598,7 @@
 						color: var(--labels_inactive-button) !important;
 					}
 				}
+
 				.select-rating-title {
 					font-size: 14px;
 				}
@@ -2595,6 +2616,7 @@
 				background-color: var(--specials_buttons-links-and-highlights);
 				border: none;
 			}
+
 			.cancel-btn:hover,
 			.proceed-btn:hover,
 			.proceed-btn:active,
@@ -2742,9 +2764,11 @@
 
 			.ant-tabs-nav {
 				margin: 0 0 5px 0;
+
 				.ant-tabs-nav-list {
 					overflow-x: hidden;
 					padding: 0 1%;
+
 					.ant-tabs-tab {
 						padding: 5px 0;
 					}
@@ -2827,6 +2851,7 @@
 						.p2p-select-field,
 						.ant-input-affix-wrapper {
 							height: 100%;
+
 							.ant-select-selector,
 							.ant-input,
 							.ant-input-suffix {
@@ -2904,6 +2929,7 @@
 				min-height: unset !important;
 				overflow-y: auto;
 				padding: unset;
+
 				.p2p-post-deal-mobile-container {
 					font-size: 24px;
 
@@ -2970,9 +2996,9 @@
 
 						.ant-select-arrow {
 							position: absolute;
-							top: 50%;
+							top: 45%;
 							font-size: 20px;
-							margin-right: 3%;
+							margin-right: 4%;
 						}
 
 						.ant-select-selection-item {
@@ -3071,6 +3097,7 @@
 										}
 									}
 								}
+
 								.custom-border-line {
 									margin: 5% 0;
 									width: 75%;
@@ -3082,6 +3109,7 @@
 									display: flex;
 									align-items: center;
 									gap: 5%;
+
 									.ant-select-selection-item {
 										font-weight: normal;
 										line-height: 50px;
@@ -3089,6 +3117,7 @@
 
 									.currency-field {
 										width: 90%;
+
 										.ant-input-number {
 											border-radius: 5px;
 											background-color: transparent;
@@ -3123,6 +3152,7 @@
 									display: flex;
 									flex-direction: column;
 									gap: 10px;
+
 									.p2p-assets-rate {
 										font-size: 6rem;
 									}
@@ -3196,6 +3226,7 @@
 												) !important;
 												font-weight: normal !important;
 											}
+
 											.tilt-symbol {
 												position: relative;
 												bottom: 23px;
@@ -3263,6 +3294,7 @@
 						height: 30px;
 						text-align: center;
 					}
+
 					.ant-checkbox-inner::after {
 						width: 7px;
 						height: 14px;
@@ -3307,6 +3339,7 @@
 							padding: 0 20px;
 						}
 					}
+
 					.edit-deal-btn {
 						font-size: 24px;
 					}
@@ -3352,6 +3385,7 @@
 
 				.feedback-wrapper {
 					overflow-x: auto;
+
 					.table-header-wrapper {
 						th {
 							padding: 0 15px;
@@ -3393,6 +3427,7 @@
 								gap: 20px;
 								margin: 3% 3% 0 0;
 							}
+
 							.ant-select,
 							.ant-select-selector {
 								height: 100%;
@@ -3408,6 +3443,7 @@
 					.custom-date-picker-container {
 						margin: unset;
 						margin-top: 2%;
+
 						.range-picker {
 							.ant-form-item-control-input {
 								.ant-picker-input input {
@@ -3416,6 +3452,7 @@
 							}
 						}
 					}
+
 					.custom-text {
 						width: fit-content;
 						padding: 0 1%;
@@ -3513,6 +3550,15 @@
 				flex-direction: column;
 				justify-content: space-between;
 
+				.trading-amount-container {
+					text-align: end;
+				}
+
+				.release-amount-title,
+				.spend-amount-title {
+					width: 50%;
+				}
+
 				.p2p-order-details-container {
 					.trade-assets-container,
 					.release-amount-container,
@@ -3524,6 +3570,11 @@
 					.order-verification-container,
 					.confirm-notify-button-container {
 						font-size: 24px;
+
+						.selected-asset-icon {
+							position: relative;
+							top: 4px;
+						}
 
 						.order-title,
 						.asset-name {
@@ -3561,6 +3612,7 @@
 							.go-to-withdraw-link {
 								font-size: 24px;
 							}
+
 							.ant-btn-background-ghost {
 								color: var(--labels_important-active-labels-text-graphics);
 								border-color: var(
@@ -3570,9 +3622,9 @@
 								height: 100%;
 							}
 						}
-					}
-					.order-cancel-container {
-						.purpleButtonP2P {
+
+						.order-cancel-container {
+							.purpleButtonP2P,
 							.ant-btn {
 								font-size: 20px;
 								height: 100%;
@@ -3585,6 +3637,16 @@
 					font-size: 24px;
 					height: 100%;
 
+					.p2p-chat-container {
+						display: flex;
+						justify-content: space-between;
+						text-wrap: nowrap;
+
+						.back-to-orders-link {
+							font-size: 24px;
+						}
+					}
+
 					.chat-field {
 						height: 95%;
 
@@ -3595,25 +3657,34 @@
 						.chat-area {
 							height: 65%;
 						}
+
 						.message-input-field {
 							.ant-input {
 								font-size: 24px;
 								padding: 1%;
 							}
+
 							.ant-input-suffix {
 								font-size: 24px;
 							}
 						}
+
+						.send-btn {
+							gap: 5px;
+						}
 					}
 				}
+
 				.confirm-notify-button-container {
 					width: 100% !important;
+
 					.cancel-btn {
 						width: 30% !important;
 					}
 				}
 			}
 		}
+
 		@media (min-width: 550px) and (max-width: 768px) {
 			.ant-tabs-mobile {
 				.p2p-post-deal-container {

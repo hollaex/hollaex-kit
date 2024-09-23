@@ -601,6 +601,53 @@ table th {
 .background-color-layer {
   box-shadow: inset 0 0 0 1000px var(--calculated_background-overlay); }
 
+.layout-mobile .footer-bar-more-options-container {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--base_wallet-sidebar-and-popup); }
+  .layout-mobile .footer-bar-more-options-container .field-wrapper {
+    flex-direction: column;
+    align-items: center !important;
+    margin: unset !important;
+    background-color: var(--base_wallet-sidebar-and-popup);
+    padding: 2%; }
+    .layout-mobile .footer-bar-more-options-container .field-wrapper .search-field,
+    .layout-mobile .footer-bar-more-options-container .field-wrapper .input_icon {
+      width: 100%;
+      color: var(--labels_important-active-labels-text-graphics) !important; }
+    .layout-mobile .footer-bar-more-options-container .field-wrapper .input_icon {
+      width: 2rem !important; }
+    .layout-mobile .footer-bar-more-options-container .field-wrapper .field-content-outline:after,
+    .layout-mobile .footer-bar-more-options-container .field-wrapper .field-content-outline:before {
+      background-color: transparent !important; }
+    .layout-mobile .footer-bar-more-options-container .field-wrapper .field-error-content {
+      display: none; }
+  .layout-mobile .footer-bar-more-options-container .field-wrapper > div:nth-child(1) {
+    width: 90%;
+    background-color: var(--base_background);
+    padding: 1%;
+    border: 1px solid var(--labels_important-active-labels-text-graphics);
+    border-radius: 5px; }
+  .layout-mobile .footer-bar-more-options-container .options-container {
+    padding: 4%;
+    font-size: 14px; }
+    .layout-mobile .footer-bar-more-options-container .options-container .hot-options-container {
+      height: max-content; }
+      .layout-mobile .footer-bar-more-options-container .options-container .hot-options-container .hot-function-title {
+        font-size: 18px; }
+      .layout-mobile .footer-bar-more-options-container .options-container .hot-options-container .options-field {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+        padding: 5% 2%; }
+        .layout-mobile .footer-bar-more-options-container .options-container .hot-options-container .options-field .icon-field {
+          padding: 5%;
+          text-align: center; }
+        .layout-mobile .footer-bar-more-options-container .options-container .hot-options-container .options-field .option-title .edit-wrapper__container {
+          font-size: 12px; }
+      .layout-mobile .footer-bar-more-options-container .options-container .hot-options-container .secondary-text {
+        font-size: 12px; }
+
 .light-auth-body {
   background-repeat: no-repeat;
   background-size: cover;
@@ -5669,9 +5716,7 @@ table th {
   .digital-market-wrapper .market-list__block-table tbody tr td .asset-text,
   .digital-market-wrapper .market-list__block-table tbody tr td .last-price-label {
     font-weight: bold;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont,
- 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans',
- 'Helvetica Neue', sans-serif; }
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; }
   .digital-market-wrapper .market-list__block-table tbody tr td .asset-text {
     text-wrap: nowrap; }
   .digital-market-wrapper .market-list__block-table tbody tr td .price-change,
@@ -12561,9 +12606,9 @@ table th {
             font-size: 26px; }
           .layout-mobile .p2p-summary-container .ant-tabs-mobile .p2p-post-deal-container .p2p-post-deal-mobile-container .p2p-custom-input-field .ant-select-arrow {
             position: absolute;
-            top: 50%;
+            top: 45%;
             font-size: 20px;
-            margin-right: 3%; }
+            margin-right: 4%; }
           .layout-mobile .p2p-summary-container .ant-tabs-mobile .p2p-post-deal-container .p2p-post-deal-mobile-container .p2p-custom-input-field .ant-select-selection-item {
             font-weight: normal !important;
             line-height: 50px; }
@@ -12816,11 +12861,13 @@ table th {
           font-size: 26px;
           border-radius: 5px;
           border: 2px solid var(--labels_secondary-inactive-label-text-graphics); }
-    .layout-mobile .p2p-summary-container .ant-tabs-mobile .p2p-mydeals-wrapper .ant-checkbox .ant-checkbox-inner, .layout-mobile .p2p-summary-container .ant-tabs-mobile .p2p-mydeals-wrapper .ant-checkbox-checked .ant-checkbox-inner {
+    .layout-mobile .p2p-summary-container .ant-tabs-mobile .p2p-mydeals-wrapper .ant-checkbox .ant-checkbox-inner,
+    .layout-mobile .p2p-summary-container .ant-tabs-mobile .p2p-mydeals-wrapper .ant-checkbox-checked .ant-checkbox-inner {
       width: 30px;
       height: 30px;
       text-align: center; }
-    .layout-mobile .p2p-summary-container .ant-tabs-mobile .p2p-mydeals-wrapper .ant-checkbox .ant-checkbox-inner::after, .layout-mobile .p2p-summary-container .ant-tabs-mobile .p2p-mydeals-wrapper .ant-checkbox-checked .ant-checkbox-inner::after {
+    .layout-mobile .p2p-summary-container .ant-tabs-mobile .p2p-mydeals-wrapper .ant-checkbox .ant-checkbox-inner::after,
+    .layout-mobile .p2p-summary-container .ant-tabs-mobile .p2p-mydeals-wrapper .ant-checkbox-checked .ant-checkbox-inner::after {
       width: 7px;
       height: 14px; }
     .layout-mobile .p2p-summary-container .ant-tabs-mobile .p2p-mydeals-wrapper .p2p-mydeals-table-wrapper {
@@ -12885,7 +12932,9 @@ table th {
         width: 100%; }
         .layout-mobile .p2p-summary-container .ant-tabs-mobile .p2p-order-tab-container .trade-filter-container .p2p-trade-select-field .filters {
           border-right: unset; }
-          .layout-mobile .p2p-summary-container .ant-tabs-mobile .p2p-order-tab-container .trade-filter-container .p2p-trade-select-field .filters .asset-filter, .layout-mobile .p2p-summary-container .ant-tabs-mobile .p2p-order-tab-container .trade-filter-container .p2p-trade-select-field .filters .status-filter, .layout-mobile .p2p-summary-container .ant-tabs-mobile .p2p-order-tab-container .trade-filter-container .p2p-trade-select-field .filters .side-filter {
+          .layout-mobile .p2p-summary-container .ant-tabs-mobile .p2p-order-tab-container .trade-filter-container .p2p-trade-select-field .filters .asset-filter,
+          .layout-mobile .p2p-summary-container .ant-tabs-mobile .p2p-order-tab-container .trade-filter-container .p2p-trade-select-field .filters .status-filter,
+          .layout-mobile .p2p-summary-container .ant-tabs-mobile .p2p-order-tab-container .trade-filter-container .p2p-trade-select-field .filters .side-filter {
             gap: 20px;
             margin: 3% 3% 0 0; }
           .layout-mobile .p2p-summary-container .ant-tabs-mobile .p2p-order-tab-container .trade-filter-container .p2p-trade-select-field .filters .ant-select,
@@ -12954,6 +13003,11 @@ table th {
       height: 100%;
       flex-direction: column;
       justify-content: space-between; }
+      .layout-mobile .p2p-summary-container .p2p-order-wrapper .p2p-order-container .trading-amount-container {
+        text-align: end; }
+      .layout-mobile .p2p-summary-container .p2p-order-wrapper .p2p-order-container .release-amount-title,
+      .layout-mobile .p2p-summary-container .p2p-order-wrapper .p2p-order-container .spend-amount-title {
+        width: 50%; }
       .layout-mobile .p2p-summary-container .p2p-order-wrapper .p2p-order-container .p2p-order-details-container .trade-assets-container,
       .layout-mobile .p2p-summary-container .p2p-order-wrapper .p2p-order-container .p2p-order-details-container .release-amount-container,
       .layout-mobile .p2p-summary-container .p2p-order-wrapper .p2p-order-container .p2p-order-details-container .asset-price-container,
@@ -12964,6 +13018,17 @@ table th {
       .layout-mobile .p2p-summary-container .p2p-order-wrapper .p2p-order-container .p2p-order-details-container .order-verification-container,
       .layout-mobile .p2p-summary-container .p2p-order-wrapper .p2p-order-container .p2p-order-details-container .confirm-notify-button-container {
         font-size: 24px; }
+        .layout-mobile .p2p-summary-container .p2p-order-wrapper .p2p-order-container .p2p-order-details-container .trade-assets-container .selected-asset-icon,
+        .layout-mobile .p2p-summary-container .p2p-order-wrapper .p2p-order-container .p2p-order-details-container .release-amount-container .selected-asset-icon,
+        .layout-mobile .p2p-summary-container .p2p-order-wrapper .p2p-order-container .p2p-order-details-container .asset-price-container .selected-asset-icon,
+        .layout-mobile .p2p-summary-container .p2p-order-wrapper .p2p-order-container .p2p-order-details-container .trading-amount-container .selected-asset-icon,
+        .layout-mobile .p2p-summary-container .p2p-order-wrapper .p2p-order-container .p2p-order-details-container .receive-amount-container .selected-asset-icon,
+        .layout-mobile .p2p-summary-container .p2p-order-wrapper .p2p-order-container .p2p-order-details-container .trading-fee-container .selected-asset-icon,
+        .layout-mobile .p2p-summary-container .p2p-order-wrapper .p2p-order-container .p2p-order-details-container .amount-transfer-container .selected-asset-icon,
+        .layout-mobile .p2p-summary-container .p2p-order-wrapper .p2p-order-container .p2p-order-details-container .order-verification-container .selected-asset-icon,
+        .layout-mobile .p2p-summary-container .p2p-order-wrapper .p2p-order-container .p2p-order-details-container .confirm-notify-button-container .selected-asset-icon {
+          position: relative;
+          top: 4px; }
         .layout-mobile .p2p-summary-container .p2p-order-wrapper .p2p-order-container .p2p-order-details-container .trade-assets-container .order-title .edit-wrapper__container,
         .layout-mobile .p2p-summary-container .p2p-order-wrapper .p2p-order-container .p2p-order-details-container .trade-assets-container .asset-name .edit-wrapper__container,
         .layout-mobile .p2p-summary-container .p2p-order-wrapper .p2p-order-container .p2p-order-details-container .release-amount-container .order-title .edit-wrapper__container,
@@ -13027,12 +13092,19 @@ table th {
         border-color: var(--labels_important-active-labels-text-graphics);
         font-size: 24px;
         height: 100%; }
-      .layout-mobile .p2p-summary-container .p2p-order-wrapper .p2p-order-container .p2p-order-details-container .order-cancel-container .purpleButtonP2P .ant-btn {
+      .layout-mobile .p2p-summary-container .p2p-order-wrapper .p2p-order-container .p2p-order-details-container .order-verification-container .order-cancel-container .purpleButtonP2P,
+      .layout-mobile .p2p-summary-container .p2p-order-wrapper .p2p-order-container .p2p-order-details-container .order-verification-container .order-cancel-container .ant-btn {
         font-size: 20px;
         height: 100%; }
       .layout-mobile .p2p-summary-container .p2p-order-wrapper .p2p-order-container .user-chat-container {
         font-size: 24px;
         height: 100%; }
+        .layout-mobile .p2p-summary-container .p2p-order-wrapper .p2p-order-container .user-chat-container .p2p-chat-container {
+          display: flex;
+          justify-content: space-between;
+          text-wrap: nowrap; }
+          .layout-mobile .p2p-summary-container .p2p-order-wrapper .p2p-order-container .user-chat-container .p2p-chat-container .back-to-orders-link {
+            font-size: 24px; }
         .layout-mobile .p2p-summary-container .p2p-order-wrapper .p2p-order-container .user-chat-container .chat-field {
           height: 95%; }
           .layout-mobile .p2p-summary-container .p2p-order-wrapper .p2p-order-container .user-chat-container .chat-field .message-time {
@@ -13044,6 +13116,8 @@ table th {
             padding: 1%; }
           .layout-mobile .p2p-summary-container .p2p-order-wrapper .p2p-order-container .user-chat-container .chat-field .message-input-field .ant-input-suffix {
             font-size: 24px; }
+          .layout-mobile .p2p-summary-container .p2p-order-wrapper .p2p-order-container .user-chat-container .chat-field .send-btn {
+            gap: 5px; }
       .layout-mobile .p2p-summary-container .p2p-order-wrapper .p2p-order-container .confirm-notify-button-container {
         width: 100% !important; }
         .layout-mobile .p2p-summary-container .p2p-order-wrapper .p2p-order-container .confirm-notify-button-container .cancel-btn {
@@ -13161,7 +13235,8 @@ table th {
           background-color: var(--base_secondary-navigation-bar) !important;
           border-radius: 5px;
           border-bottom: 1px solid var(--labels_important-active-labels-text-graphics); }
-      .trading-popup-wrapper .trading-popup-container .trading-payment-detail .p2p-amount-spent .amount-spent-field-container .ant-input::placeholder, .trading-popup-wrapper .trading-popup-container .trading-payment-detail .p2p-amount-spent .amount-spent-field-container .ant-input-number-input::placeholder,
+      .trading-popup-wrapper .trading-popup-container .trading-payment-detail .p2p-amount-spent .amount-spent-field-container .ant-input::placeholder,
+      .trading-popup-wrapper .trading-popup-container .trading-payment-detail .p2p-amount-spent .amount-spent-field-container .ant-input-number-input::placeholder,
       .trading-popup-wrapper .trading-popup-container .trading-payment-detail .p2p-amount-spent .amount-receive-field-container .ant-input::placeholder,
       .trading-popup-wrapper .trading-popup-container .trading-payment-detail .p2p-amount-spent .amount-receive-field-container .ant-input-number-input::placeholder,
       .trading-popup-wrapper .trading-popup-container .trading-payment-detail .p2p-amount-receive .amount-spent-field-container .ant-input::placeholder,
@@ -13221,6 +13296,98 @@ table th {
   .trading-popup-wrapper .trading-popup-container .error-field-container .error-message {
     color: var(--specials_notifications-alerts-warnings); }
 
+.volume-wrapper {
+  margin: 1rem auto 5rem auto !important; }
+  .volume-wrapper .title-wrapper {
+    display: flex;
+    margin-top: 5%;
+    gap: 1%;
+    text-transform: capitalize; }
+    .volume-wrapper .title-wrapper .volume-label {
+      font-size: 2.25rem;
+      position: relative;
+      top: 25px; }
+  .volume-wrapper .custom-line {
+    border-bottom: 1px solid var(--labels_important-active-labels-text-graphics); }
+  .volume-wrapper .header-wrapper {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1%;
+    margin-bottom: 2%; }
+    .volume-wrapper .header-wrapper .link-label {
+      display: flex;
+      gap: 5px; }
+  .volume-wrapper .volume-cards-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2%;
+    gap: 1%; }
+    .volume-wrapper .volume-cards-wrapper .custom-line-inactive-one, .volume-wrapper .volume-cards-wrapper .custom-line-inactive-two, .volume-wrapper .volume-cards-wrapper .custom-line-inactive-three, .volume-wrapper .volume-cards-wrapper .custom-line-inactive-active {
+      height: 2px;
+      background-color: var(--labels_important-active-labels-text-graphics) !important;
+      opacity: 0.25; }
+    .volume-wrapper .volume-cards-wrapper .custom-line-inactive-two {
+      opacity: 0.5; }
+    .volume-wrapper .volume-cards-wrapper .custom-line-inactive-three {
+      opacity: 0.75; }
+    .volume-wrapper .volume-cards-wrapper .custom-line-inactive-active {
+      opacity: 1; }
+    .volume-wrapper .volume-cards-wrapper .card-content-wrapper {
+      width: 25%;
+      background-color: var(--base_wallet-sidebar-and-popup);
+      border-radius: 5px; }
+      .volume-wrapper .volume-cards-wrapper .card-content-wrapper .card-wrapper {
+        text-align: center;
+        padding: 15%;
+        background-color: var(--base_secondary-navigation-bar); }
+        .volume-wrapper .volume-cards-wrapper .card-content-wrapper .card-wrapper .assets-price {
+          text-wrap: nowrap;
+          font-family: 'Raleway'; }
+      .volume-wrapper .volume-cards-wrapper .card-content-wrapper .card-content {
+        padding: 5%;
+        min-height: 16rem; }
+        .volume-wrapper .volume-cards-wrapper .card-content-wrapper .card-content .assets-content-wrapper {
+          display: flex;
+          justify-content: space-between; }
+          .volume-wrapper .volume-cards-wrapper .card-content-wrapper .card-content .assets-content-wrapper .asset-name,
+          .volume-wrapper .volume-cards-wrapper .card-content-wrapper .card-content .assets-content-wrapper .asset-price-container {
+            display: flex;
+            align-items: center;
+            gap: 5px; }
+            .volume-wrapper .volume-cards-wrapper .card-content-wrapper .card-content .assets-content-wrapper .asset-name .currency-price,
+            .volume-wrapper .volume-cards-wrapper .card-content-wrapper .card-content .assets-content-wrapper .asset-price-container .currency-price {
+              display: flex;
+              justify-content: flex-end;
+              gap: 3px; }
+          .volume-wrapper .volume-cards-wrapper .card-content-wrapper .card-content .assets-content-wrapper .more-icon svg {
+            width: 2rem;
+            height: 2rem;
+            fill: var(--labels_secondary-inactive-label-text-graphics); }
+
+.layout-mobile .volume-wrapper {
+  padding: 5%;
+  overflow-x: hidden;
+  font-size: 12px;
+  margin: 0 auto !important; }
+  .layout-mobile .volume-wrapper .title-wrapper {
+    margin-top: unset;
+    align-items: center;
+    justify-content: center; }
+    .layout-mobile .volume-wrapper .title-wrapper .volume-label {
+      top: 8px; }
+  .layout-mobile .volume-wrapper .volume-cards-wrapper {
+    margin: 5% 0;
+    flex-direction: column;
+    gap: 10px; }
+    .layout-mobile .volume-wrapper .volume-cards-wrapper .card-wrapper {
+      padding: 10%; }
+    .layout-mobile .volume-wrapper .volume-cards-wrapper .card-content-wrapper {
+      width: 80%; }
+    .layout-mobile .volume-wrapper .volume-cards-wrapper .assets-content-wrapper .more-icon svg {
+      width: 3rem !important;
+      height: 3rem !important; }
+
 .sidebar-row {
   min-height: 3rem;
   min-width: 10rem; }
@@ -13252,13 +13419,15 @@ table th {
     .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .account-svg-1,
     .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .quick-trade-tab-active,
     .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .assets-icon-tab,
-    .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .onramp-icon {
+    .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .onramp-icon,
+    .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .item-options {
       fill: var(--labels_secondary-inactive-label-text-graphics); }
     .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .tab-wallet0,
     .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .trade-active-2,
     .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .chat-0,
     .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .quick-trade-tab-active,
-    .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .assets-icon-tab {
+    .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .assets-icon-tab,
+    .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .item-options {
       stroke: var(--labels_secondary-inactive-label-text-graphics); }
     .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .tab-wallet0,
     .sidebar-bottom-wrapper .sidebar-bottom-button .sidebar-bottom-icon svg .quick-trade-tab-active {
@@ -13267,13 +13436,15 @@ table th {
     .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .chat-0,
     .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .account-svg-1,
     .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .assets-icon-tab,
-    .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .onramp-icon {
+    .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .onramp-icon,
+    .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .item-options {
       fill: var(--calculated_base_top-bar-navigation_text); }
     .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .tab-wallet0,
     .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .trade-active-2,
     .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .chat-0,
     .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .quick-trade-tab-active,
-    .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .assets-icon-tab {
+    .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .assets-icon-tab,
+    .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .item-options {
       stroke: var(--calculated_base_top-bar-navigation_text); }
     .sidebar-bottom-wrapper .sidebar-bottom-button .bottom-bar-text {
       font-size: 9px;
@@ -18113,12 +18284,6 @@ table th {
     height: 24px;
     margin: 0 0 0 14px;
     font-size: 1.2rem; }
-    .app-side-bar .app-menu-bar-side_list .side-bar-txt .sup-text {
-      border-radius: 100%;
-      padding: 0px 5px;
-      margin-left: 2px;
-      background-color: var(--specials_notifications-alerts-warnings);
-      color: var(--labels_important-active-labels-text-graphics); }
 
 .app-side-bar .list_active,
 .app-side-bar .app-menu-bar-side_list:hover {

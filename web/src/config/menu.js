@@ -117,7 +117,7 @@ export const MENU_ITEMS = {
 			hide_from_sidebar: true,
 			hide_from_appbar: false,
 			hide_from_menulist: true,
-			hide_from_bottom_nav: false,
+			hide_from_bottom_nav: true,
 		},
 	],
 	bottom: [
@@ -134,6 +134,16 @@ export const MENU_ITEMS = {
 			string_id: 'LOGIN.HELP',
 			hide_from_appbar: true,
 			hide_from_bottom_nav: true,
+		},
+		{
+			id: 'More',
+			path: '/more',
+			icon_id: 'ITEM_OPTIONS',
+			string_id: 'HOLLAEX_TOKEN.MORE',
+			hide_from_sidebar: true,
+			hide_from_appbar: true,
+			hide_from_menulist: true,
+			hide_from_bottom_nav: false,
 		},
 		{
 			path: 'logout',

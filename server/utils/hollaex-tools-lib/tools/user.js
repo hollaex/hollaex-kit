@@ -253,6 +253,7 @@ const createUser = (
 		role: 'user',
 		id: null,
 		email_verified: false,
+		referral: null,
 		additionalHeaders: null
 	}
 ) => {
@@ -312,6 +313,10 @@ const createUser = (
 			});
 	})
 		.then((user) => {
+			if (opts.referral && isString(opts.referral)) {
+				checkAffiliation(opts.referral, user.id);
+			}
+
 			return all([
 				user
 			]);
@@ -2419,27 +2424,27 @@ const addAmounts = (amount1, amount2) => {
 	);
 };
 const sortTopVolumes = (volumeData, topN = 4) => {
-    const topSortedVolumes = {};
+	const topSortedVolumes = {};
 
-    for (const period in volumeData) {
-        const periodData = volumeData[period];
+	for (const period in volumeData) {
+		const periodData = volumeData[period];
         
-        if (Object.keys(periodData).length > 0) {
-            topSortedVolumes[period] = Object.entries(periodData)
-                .sort(([, valueA], [, valueB]) => valueB - valueA)
-                .slice(0, topN) 
-                .map(([key, value]) => ({ [key]: value })); 
-        }
-    }
+		if (Object.keys(periodData).length > 0) {
+			topSortedVolumes[period] = Object.entries(periodData)
+				.sort(([, valueA], [, valueB]) => valueB - valueA)
+				.slice(0, topN) 
+				.map(([key, value]) => ({ [key]: value })); 
+		}
+	}
     
-    return topSortedVolumes;
+	return topSortedVolumes;
 };
 
 const multiplyAmounts = (x, y) => {
 	return mathjs.number(
 	  mathjs.multiply(mathjs.bignumber(x), mathjs.bignumber(y))
 	);
-  };
+};
 
 const getUserReferralCodes = async (
 	opts = {
@@ -3484,13 +3489,13 @@ const getOracleIndex = async () => {
 	);
   
 	return data;
-  };
+};
 
 
 const fetchUserTradingVolume = async (user_id, opts = {
 	to: null,
 	from: null
-	}) => {
+}) => {
 
 	let { to, from } = opts;
 	const currentTime = moment().seconds(0).milliseconds(0).toISOString();
