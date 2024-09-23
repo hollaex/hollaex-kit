@@ -8,12 +8,18 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import STRINGS from 'config/localizedStrings';
 import { EditWrapper, CheckTitle, Coin } from 'components';
 import { fetchUserVolume } from './actions/volumeActions';
-import { BASE_CURRENCY } from 'config/constants';
 import { MoreOutlined } from '@ant-design/icons';
 import { isMobile } from 'react-device-detect';
 import { getAllAvailableMarkets, goToTrade } from 'containers/Wallet/utils';
 
-const Volume = ({ coins, icons: ICONS, router, pairs, quicktrade }) => {
+const Volume = ({
+	coins,
+	icons: ICONS,
+	router,
+	pairs,
+	quicktrade,
+	nativeCurrency,
+}) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [volumeData, setVolumeData] = useState([]);
 	const [volumeNativeData, setVolumeNativeData] = useState([]);
@@ -156,10 +162,10 @@ const Volume = ({ coins, icons: ICONS, router, pairs, quicktrade }) => {
 										</EditWrapper>
 										<div className="fs-24 assets-price">
 											{formatVolumeCurrency(
-												BASE_CURRENCY,
+												nativeCurrency,
 												volumeData[key].find((x) => x.total).total
 											)}{' '}
-											{BASE_CURRENCY?.toUpperCase()}
+											{nativeCurrency?.toUpperCase()}
 										</div>
 										<div className="secondary-text">
 											(
@@ -208,11 +214,11 @@ const Volume = ({ coins, icons: ICONS, router, pairs, quicktrade }) => {
 																<div className="currency-price font-weight-bold">
 																	<span>
 																		{formatVolumeCurrency(
-																			BASE_CURRENCY,
+																			nativeCurrency,
 																			data[iconKey]
 																		)}
 																	</span>
-																	<span>{BASE_CURRENCY?.toUpperCase()}</span>
+																	<span>{nativeCurrency?.toUpperCase()}</span>
 																</div>
 																<div className="currency-price secondary-text">
 																	<span>
@@ -289,6 +295,7 @@ const mapStateToProps = (state) => ({
 	pricesInNative: state.asset.oraclePrices,
 	quicktrade: state.app.quicktrade,
 	pairs: state.app.pairs,
+	nativeCurrency: state.app.constants.native_currency,
 });
 
 const mapDispatchToProps = (dispatch) => ({});

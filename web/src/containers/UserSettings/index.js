@@ -156,9 +156,18 @@ class UserSettings extends Component {
 		{ activeLanguage = '', username = '', settings = {}, coins = {} },
 		activeTab
 	) => {
-		const { constants = {}, icons: ICONS, themeOptions } = this.props;
+		const {
+			constants = {},
+			icons: ICONS,
+			themeOptions,
+			selectable_native_currencies,
+		} = this.props;
 		const formValues = generateFormValues({
 			options: themeOptions.map(({ value }) => ({ value, label: value })),
+			currencyOptions: selectable_native_currencies.map((value) => ({
+				value,
+				label: value,
+			})),
 		});
 		const usernameFormValues = generateUsernameFormValues(
 			settings.chat.set_username
@@ -375,6 +384,15 @@ class UserSettings extends Component {
 						this.props.changeTheme(data.settings.interface.theme);
 						localStorage.setItem('theme', data.settings.interface.theme);
 					}
+					if (
+						data.settings.interface &&
+						data.settings.interface.display_currency
+					) {
+						localStorage.setItem(
+							'base_currnecy',
+							data.settings.interface.display_currency
+						);
+					}
 				}
 				this.props.closeNotification();
 			})
@@ -499,6 +517,8 @@ const mapStateToProps = (state) => ({
 	//orders: state.order.activeOrders,
 	constants: state.app.constants,
 	features: state.app.features,
+	selectable_native_currencies:
+		state.app.constants.selectable_native_currencies,
 });
 
 const mapDispatchToProps = (dispatch) => ({

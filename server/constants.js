@@ -221,7 +221,8 @@ exports.KIT_CONFIG_KEYS = [
 	'transaction_limits',
 	'p2p_config',
 	'referral_history_config',
-	'chain_trade_config'
+	'chain_trade_config',
+	'selectable_native_currencies'
 ];
 
 exports.KIT_SECRETS_KEYS = [
@@ -693,6 +694,7 @@ exports.BALANCE_HISTORY_SUPPORTED_PLANS = ['fiat', 'boost', 'enterprise'];
 
 exports.REFERRAL_HISTORY_SUPPORTED_PLANS = ['fiat', 'boost', 'enterprise'];
 //REFERRAL HISTORY CONSTANTS END
+
 
 exports.CUSTOM_CSS = `
 	.topbar-wrapper img {
