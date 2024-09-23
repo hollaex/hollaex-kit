@@ -1216,6 +1216,7 @@
 	"NO_FEE": "N/A",
 	"SETTINGS_LANGUAGE_LABEL": "Language preferences (Includes Emails)",
 	"SETTINGS_THEME_LABEL": "User Interface Theme",
+	"CUSTOM_NATIVE_CURRENCY": "Currency (Pricing & asset value estimates)",
 	"SETTING_BUTTON": "save",
 	"VERIFICATION_NO_WITHDRAW_TITLE": "Withdrawals disabled",
 	"VERIFICATION_NO_WITHDRAW_MESSAGE": "Your account is disabled for withdrawals",
@@ -2274,10 +2275,16 @@
 		"HISTORY": "HISTORY",
 		"TRADING_VOLUME": "Trading Volume",
 		"VOLUME_DECS": "Traded amounts on your account across different time periods, along with the top 3 assets traded in each period",
-		"ALL_ASSETS": "all assets"
+		"ALL_ASSETS": "all assets",
+		"DAY_VOLUME": "DAY VOLUME",
+		"HOUR_VOLUME": "24 HOUR VOLUME",
+		"TOP": "TOP {0} {1}",
+		"VOL_ASSET": "D VOL. ASSET"
 	},
 	"MORE_OPTIONS_LABEL": {
 		"MORE_OPTION_SEARCH_TXT": "Search feature or pages",
+		"NO_RESULT_DESC_1": "Looks there is isn't any results for this.",
+		"NO_RESULT_DESC_2": "Try searching another keyword.",
 		"ICONS": {
 			"REFERRALS": "Referrals",
 			"BUY_CRYPTO": "Buy crypto",
@@ -2452,5 +2459,20 @@
 			"ADDRESS_BOOK": "Address Book",
 			"WHITE_LISTED": "white listed"
 		}
+	},
+	"CONNECTIONS": {
+		"CHECK_CONNECTION": "Check Connection",
+		"IP": "IP",
+		"NORMAL_TEXT": "Normal",
+		"SESSION": "Session",
+		"SERVER_TIME": "Server time",
+		"PING": "Ping",
+		"CHECK_PING": "CHECK PING",
+		"RECONNECT": "Reconnect",
+		"TOOLTIP_DESC_1": "Check your ping to the exchange server {0}",
+		"TOOLTIP_DESC_2": "Lower 'ms' is better",
+		"LOGGED_IN_AT": "Logged in at",
+		"RECONNECT_DESC": "Reconnect might resolve unknown issues you're experiencing.",
+		"CONFIRM_RECONNECT_MESSAGE": "Do you want to reconnect?"
 	}
 }

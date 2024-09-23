@@ -14,6 +14,7 @@ import CeFiUserStake from './components/CeFiUserStake';
 import { openConnectViaDesktop, setStake } from 'actions/appActions';
 import { HeaderSection, EditWrapper, Button, Coin, Image } from 'components';
 import { STAKING_INDEX_COIN } from 'config/contracts';
+import { browserHistory } from 'react-router';
 
 class Stake extends Component {
 	constructor(prop) {
@@ -31,9 +32,32 @@ class Stake extends Component {
 		};
 	}
 
+	componentDidMount() {
+		this.openCurrentTab();
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		if (
+			JSON.stringify(prevState.selectedStaking) !==
+			JSON.stringify(this.state.selectedStaking)
+		) {
+			this.openCurrentTab();
+		}
+	}
+
 	componentWillUnmount() {
 		setStake('defi');
 	}
+
+	openCurrentTab = () => {
+		let currentTab = '';
+		if (this.state.selectedStaking === 'cefi') {
+			currentTab = 'cefi';
+		} else {
+			currentTab = 'defi';
+		}
+		browserHistory.push(`/stake?${currentTab}`);
+	};
 
 	render() {
 		const {

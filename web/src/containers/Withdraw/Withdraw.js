@@ -45,6 +45,7 @@ import { email, validAddress } from 'components/Form/validations';
 import { getAddressBookDetails } from 'containers/Wallet/actions';
 import { getDecimals } from 'utils/utils';
 import { roundNumber, toFixed } from 'utils/currency';
+import { BASE_CURRENCY } from 'config/constants';
 
 const RenderWithdraw = ({
 	coins,
@@ -647,7 +648,7 @@ const RenderWithdraw = ({
 			  }`;
 	const estimatedFormat = `≈ ${Math.round(
 		estimatedWithdrawValue
-	)} ${getNativeCurrency?.toUpperCase()}`;
+	)} ${BASE_CURRENCY?.toUpperCase()}`;
 	const isCondition =
 		(['xrp', 'xlm'].includes(selectedAsset?.selectedCurrency) ||
 			['xlm', 'ton'].includes(network)) &&

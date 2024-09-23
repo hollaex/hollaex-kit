@@ -386,8 +386,7 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 			padding: 4%;
 			font-size: 14px;
 
-			.hot-options-container,
-			.other-options-container {
+			.hot-options-container {
 				height: max-content;
 
 				.hot-function-title {
@@ -410,6 +409,9 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 							font-size: 12px;
 						}
 					}
+				}
+				.secondary-text {
+					font-size: 12px;
 				}
 			}
 		}

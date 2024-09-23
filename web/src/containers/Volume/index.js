@@ -1,15 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import withConfig from 'components/ConfigProvider/withConfig';
-
-import { EditWrapper, CheckTitle } from 'components';
-import { Spin } from 'antd';
-import { fetchUserVolume } from './actions/volumeActions';
+import { Dropdown, Menu, Spin } from 'antd';
 import BigNumber from 'bignumber.js';
-import STRINGS from 'config/localizedStrings';
-import { BASE_CURRENCY } from 'config/constants';
+
 import './_Volume.scss';
-const Volume = ({ coins, icons: ICONS, router }) => {
+import withConfig from 'components/ConfigProvider/withConfig';
+import STRINGS from 'config/localizedStrings';
+import { EditWrapper, CheckTitle, Coin } from 'components';
+import { fetchUserVolume } from './actions/volumeActions';
+import { MoreOutlined } from '@ant-design/icons';
+import { isMobile } from 'react-device-detect';
+import { getAllAvailableMarkets, goToTrade } from 'containers/Wallet/utils';
+
+const Volume = ({
+	coins,
+	icons: ICONS,
+	router,
+	pairs,
+	quicktrade,
+	nativeCurrency,
+}) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [volumeData, setVolumeData] = useState([]);
 	const [volumeNativeData, setVolumeNativeData] = useState([]);
@@ -43,129 +53,121 @@ const Volume = ({ coins, icons: ICONS, router }) => {
 
 	return (
 		<Spin spinning={isLoading}>
-			<div className="summary-container">
-				<div style={{ display: 'flex', marginTop: 80, gap: 10 }}>
+			<div className="summary-container volume-wrapper">
+				<div className="title-wrapper">
 					<div>
 						{' '}
 						<CheckTitle icon={ICONS['TAB_SUMMARY']} />
 					</div>
-					<div style={{ fontSize: 25, position: 'relative', top: 22 }}>
+					<div className="volume-label">
 						<EditWrapper stringId="VOLUME.VOLUME">
 							{STRINGS['VOLUME.VOLUME']}
 						</EditWrapper>
 					</div>
 				</div>
-				<div style={{ borderBottom: '1px solid white' }}></div>
-				<div
-					style={{
-						display: 'flex',
-						justifyContent: 'space-between',
-						marginTop: 10,
-						marginBottom: 30,
-					}}
-				>
+				<div className="custom-line"></div>
+				<div className="header-wrapper">
 					<div
 						onClick={() => {
 							router.push('/transactions?tab=trades');
 						}}
-						style={{
-							textDecoration: 'underline',
-							color: '#4C51C7',
-							cursor: 'pointer',
-						}}
+						className="blue-link pointer"
 					>
 						{`<`}
 						<EditWrapper stringId="VOLUME.BACK">
-							{STRINGS['VOLUME.BACK']}
+							<span className="text-decoration-underline">
+								{STRINGS['VOLUME.BACK']}
+							</span>
 						</EditWrapper>
 					</div>
-					<div style={{ display: 'flex', gap: 5 }}>
+					<div className="link-label">
 						<div
 							onClick={() => {
 								router.push('/trade');
 							}}
-							style={{
-								textDecoration: 'underline',
-								color: '#4C51C7',
-								cursor: 'pointer',
-							}}
+							className="blue-link pointer"
 						>
 							<EditWrapper stringId="VOLUME.MARKETS">
-								{STRINGS['VOLUME.MARKETS']}
+								<span className="text-decoration-underline">
+									{STRINGS['VOLUME.MARKETS']}
+								</span>
 							</EditWrapper>
 						</div>
-						<div style={{}}>|</div>
+						<div>|</div>
 						<div
 							onClick={() => {
 								router.push('/quick-trade');
 							}}
-							style={{
-								textDecoration: 'underline',
-								color: '#4C51C7',
-								cursor: 'pointer',
-							}}
+							className="blue-link pointer"
 						>
 							<EditWrapper stringId="VOLUME.CONVERT">
-								{STRINGS['VOLUME.CONVERT']}
+								<span className="text-decoration-underline">
+									{STRINGS['VOLUME.CONVERT']}
+								</span>
 							</EditWrapper>
 						</div>
-						<div style={{}}>|</div>
+						<div>|</div>
 						<div
 							onClick={() => {
 								router.push('/transactions?tab=trades');
 							}}
-							style={{
-								textDecoration: 'underline',
-								color: '#4C51C7',
-								cursor: 'pointer',
-							}}
+							className="blue-link pointer"
 						>
 							<EditWrapper stringId="VOLUME.HISTORY">
-								{STRINGS['VOLUME.HISTORY']}
+								<span className="text-decoration-underline">
+									{STRINGS['VOLUME.HISTORY']}
+								</span>
 							</EditWrapper>
 						</div>
 					</div>
 				</div>
-				<div>
+				<div className="fs-16">
 					<EditWrapper stringId="VOLUME.TRADING_VOLUME">
 						{STRINGS['VOLUME.TRADING_VOLUME']}
 					</EditWrapper>
 				</div>
-				<div style={{ color: 'grey', fontSize: 12 }}>
+				<div className="fs-14 secondary-text">
 					<EditWrapper stringId="VOLUME.VOLUME_DECS">
 						{STRINGS['VOLUME.VOLUME_DECS']}
 					</EditWrapper>
 				</div>
 
-				<div
-					style={{
-						display: 'flex',
-						justifyContent: 'center',
-						alignItems: 'center',
-						marginTop: 30,
-						gap: 15,
-					}}
-				>
+				<div className="volume-cards-wrapper">
 					{Object.keys(volumeData).map((key) => {
 						if (volumeData[key]?.length > 1) {
 							return (
-								<div
-									className="volumeBottomCardColor"
-									style={{ width: 300, borderTop: '1px solid white' }}
-								>
+								<div className="card-content-wrapper">
 									<div
-										className="volumeTopCardColor"
-										style={{ textAlign: 'center', padding: 60 }}
-									>
-										<div style={{ fontSize: 16 }}>{key}-DAY VOLUME:</div>
-										<div style={{ fontSize: 25 }}>
+										className={
+											key === '1'
+												? 'custom-line-inactive-one'
+												: key === '7'
+												? 'custom-line-inactive-two'
+												: key === '30'
+												? 'custom-line-inactive-three'
+												: 'custom-line-inactive-active'
+										}
+									></div>
+									<div className="card-wrapper">
+										<EditWrapper stringId="VOLUME.DAY_VOLUME">
+											{key === '1' ? (
+												<span className="card-day-volume-title fs-12 font-weight-bold">
+													{STRINGS['VOLUME.HOUR_VOLUME']}
+												</span>
+											) : (
+												<span className="card-day-volume-title fs-12 font-weight-bold">
+													{key}-{STRINGS['VOLUME.DAY_VOLUME']}
+												</span>
+											)}
+										</EditWrapper>
+										<div className="fs-24 assets-price">
 											{formatVolumeCurrency(
-												BASE_CURRENCY,
+												nativeCurrency,
 												volumeData[key].find((x) => x.total).total
 											)}{' '}
-											{BASE_CURRENCY?.toUpperCase()}
+											{nativeCurrency?.toUpperCase()}
 										</div>
-										<div style={{ color: '#ccc' }}>
+										<div className="secondary-text">
 											(
 											<EditWrapper stringId="VOLUME.ALL_ASSETS">
 												{STRINGS['VOLUME.ALL_ASSETS']}
@@ -173,75 +175,102 @@ const Volume = ({ coins, icons: ICONS, router }) => {
 											)
 										</div>
 									</div>
-									<div style={{ padding: 10, marginBottom: 10 }}>
-										<div
-											style={{
-												textAlign: 'center',
-												fontWeight: 'bold',
-												fontSize: 16,
-												marginBottom: 20,
-											}}
-										>
-											TOP {key}D VOL. ASSET
+									<div className="card-content fs-12">
+										<div className="text-align-center font-weight-bold my-3">
+											<EditWrapper>
+												{STRINGS.formatString(
+													STRINGS['VOLUME.TOP'],
+													key,
+													STRINGS['VOLUME.VOL_ASSET']
+												)}
+											</EditWrapper>
 										</div>
 
 										{volumeData[key].map((data) => {
 											const iconKey = Object.keys(data);
+											const market = getAllAvailableMarkets(
+												iconKey[0],
+												quicktrade
+											);
 											if (!data.total) {
 												return (
-													<div>
-														<div
-															style={{
-																display: 'flex',
-																justifyContent: 'space-between',
-															}}
-														>
-															<div style={{ display: 'flex', gap: 5 }}>
-																<span>
-																	<img
-																		src={coins?.[iconKey]?.logo}
-																		width={25}
-																		height={25}
-																		alt=""
-																	/>
-																</span>
-																<div>
-																	<div>{coins?.[iconKey].fullname}</div>
-																	<div>
-																		{coins?.[iconKey].symbol?.toUpperCase()}
-																	</div>
+													<div className="assets-content-wrapper mt-2">
+														<div className="asset-name">
+															<Coin
+																iconId={coins?.[iconKey]?.icon_id}
+																type={isMobile ? 'CS9' : 'CS7'}
+															/>
+															<div>
+																<div className="font-weight-bold">
+																	{coins?.[iconKey].fullname}
+																</div>
+																<div className="secondary-text">
+																	{coins?.[iconKey].symbol?.toUpperCase()}
 																</div>
 															</div>
-															<div style={{ display: 'flex', gap: 5 }}>
-																<div>
-																	<div
-																		style={{
-																			display: 'flex',
-																			justifyContent: 'flex-end',
-																		}}
-																	>
+														</div>
+														<div className="asset-price-container">
+															<div>
+																<div className="currency-price font-weight-bold">
+																	<span>
 																		{formatVolumeCurrency(
-																			BASE_CURRENCY,
+																			nativeCurrency,
 																			data[iconKey]
-																		)}{' '}
-																		{BASE_CURRENCY?.toUpperCase()}
-																	</div>
-																	<div
-																		style={{
-																			display: 'flex',
-																			justifyContent: 'flex-end',
-																		}}
-																	>
+																		)}
+																	</span>
+																	<span>{nativeCurrency?.toUpperCase()}</span>
+																</div>
+																<div className="currency-price secondary-text">
+																	<span>
 																		(
 																		{formatVolumeCurrency(
 																			iconKey[0],
 																			volumeNativeData?.[key]?.[iconKey]
-																		)}{' '}
+																		)}
+																	</span>
+																	<span>
 																		{coins?.[iconKey].symbol?.toUpperCase()})
-																	</div>
+																	</span>
 																</div>
-																{/* <span>3</span> */}
 															</div>
+															<Dropdown
+																size="small"
+																overlayClassName="custom-dropdown-style"
+																overlay={
+																	<Menu
+																		onClick={({ key }) =>
+																			goToTrade(key, quicktrade)
+																		}
+																	>
+																		{market.map((market) => {
+																			const { display_name, icon_id } =
+																				pairs[market] ||
+																				quicktrade.find(
+																					({ symbol }) => symbol === market
+																				) ||
+																				{};
+																			return (
+																				<Menu.Item
+																					className="caps"
+																					key={market}
+																				>
+																					<div className="d-flex align-items-center">
+																						<Coin
+																							iconId={icon_id}
+																							type={isMobile ? 'CS5' : 'CS2'}
+																						/>
+																						<div className="app_bar-pair-font">
+																							{display_name}
+																						</div>
+																					</div>
+																				</Menu.Item>
+																			);
+																		})}
+																	</Menu>
+																}
+															>
+																<MoreOutlined className="more-icon" />
+															</Dropdown>
 														</div>
 													</div>
 												);
@@ -264,7 +293,9 @@ const mapStateToProps = (state) => ({
 	coins: state.app.coins,
 	balances: state.user.balance,
 	pricesInNative: state.asset.oraclePrices,
-	quickTrade: state.app.quickTrade,
+	quicktrade: state.app.quicktrade,
+	pairs: state.app.pairs,
+	nativeCurrency: state.app.constants.native_currency,
 });
 
 const mapDispatchToProps = (dispatch) => ({});
