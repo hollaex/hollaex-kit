@@ -718,7 +718,7 @@ const AssetsBlock = ({
 																	{key !== BASE_CURRENCY &&
 																		parseFloat(balanceText || 0) > 0 && (
 																			<div className="fill_secondary-color">
-																				{`(≈  $${balanceText})`}
+																				{`(≈  ${balanceText})`}
 																			</div>
 																		)}
 																</div>
