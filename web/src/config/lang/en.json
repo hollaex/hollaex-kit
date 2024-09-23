@@ -2463,6 +2463,7 @@
 		"CHECK_CONNECTION": "Check Connection",
 		"IP": "IP",
 		"NORMAL_TEXT": "Normal",
+		"CONNECTION_ISSUE": "Connection issue",
 		"SESSION": "Session",
 		"SERVER_TIME": "Server time",
 		"PING": "Ping",
@@ -2472,6 +2473,13 @@
 		"TOOLTIP_DESC_2": "Lower 'ms' is better",
 		"LOGGED_IN_AT": "Logged in at",
 		"RECONNECT_DESC": "Reconnect might resolve unknown issues you're experiencing.",
-		"CONFIRM_RECONNECT_MESSAGE": "Do you want to reconnect?"
+		"CONFIRM_RECONNECT_MESSAGE": "Do you want to reconnect?",
+		"PING_CHECK_TEXT": "Pinging the server. Please wait...",
+		"RECHECK_PING": "RECHECK PING",
+		"FAST": "Fast",
+		"SLOW": "Slow",
+		"VERY_SLOW": "Very slow",
+		"MS": "{0} ms",
+		"STATUS_NORMAL": "Connection Normal"
 	}
 }

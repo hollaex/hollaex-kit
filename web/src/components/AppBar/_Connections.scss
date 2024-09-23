@@ -1,0 +1,169 @@
+.check-connection-tab {
+	.network-connection-icon,
+	.network-connection-icon-danger {
+		height: 12px;
+		width: 12px;
+		border-radius: 12px;
+		background-color: var(--trading_buying-related-elements);
+	}
+
+	.network-connection-icon-danger {
+		background-color: var(--trading_selling-related-elements) !important;
+	}
+}
+
+.check-connection-popup-wrapper,
+.reconnect-popup-wrapper {
+	.ReactModal__Content {
+		width: 35rem;
+
+		.check-connection-popup-container {
+			.connection-title-wrapper {
+				display: flex;
+				gap: 5px;
+				align-items: center;
+				margin-bottom: 3%;
+
+				.check-connection-text {
+					font-size: 20px;
+				}
+			}
+
+			.connection-details-container {
+				margin-top: 1%;
+				display: flex;
+				font-size: 14px;
+
+				.status-title {
+					width: 25%;
+
+					.connection-icon {
+						position: relative;
+						bottom: 5px;
+					}
+				}
+
+				.connection-status {
+					display: flex;
+					align-items: center;
+					gap: 5px;
+
+					.success-icon {
+						width: 12px;
+						height: 12px;
+						background-color: var(--trading_buying-related-elements);
+						border-radius: 25px;
+					}
+
+					.danger-icon {
+						background-color: var(
+							--trading_selling-related-elements
+						) !important;
+					}
+
+					.ping-details {
+						display: flex;
+						align-items: center;
+						gap: 5px;
+
+						.ping-status-bar {
+							display: flex;
+							align-items: center;
+							gap: 5px;
+
+							.fast-ping,
+							.slow-ping,
+							.very-slow-ping {
+								height: 15px;
+								width: 2px;
+								background-color: var(--trading_buying-related-elements);
+							}
+
+							.slow-ping {
+								background-color: var(
+									--specials_my-username-in-chat
+								) !important;
+							}
+
+							.very-slow-ping {
+								background-color: var(
+									--specials_notifications-alerts-warnings
+								) !important;
+							}
+						}
+					}
+				}
+
+				.blue-link:hover {
+					cursor: pointer;
+				}
+			}
+
+			.custom-line {
+				margin: 3% 0;
+				width: 7%;
+				height: 1.5px;
+				background-color: var(--labels_secondary-inactive-label-text-graphics);
+			}
+
+			.connection-button-container {
+				margin-top: 5%;
+				display: flex;
+				gap: 10px;
+			}
+		}
+	}
+}
+
+.connection-tool-tip {
+	background-color: var(--base_background);
+}
+
+.reconnect-popup-wrapper {
+	.reconnect-title-wrapper {
+		display: flex;
+		align-items: center;
+		font-size: 20px;
+		gap: 5px;
+
+		.reconnect-title {
+			text-transform: capitalize !important;
+		}
+	}
+
+	.reconnect-details-container {
+		margin-top: 2%;
+		font-size: 14px;
+
+		.reconnect-confirmation-message {
+			margin-top: 3%;
+		}
+	}
+
+	.connection-button-container {
+		margin-top: 5%;
+		display: flex;
+		gap: 10px;
+	}
+}
+
+.connection-tool-tip,
+.connection-status-details {
+	max-width: fit-content !important;
+	.ant-tooltip-inner,
+	.ant-tooltip-arrow-content {
+		color: var(--labels_important-active-labels-text-graphics);
+		background-color: var(--base_background);
+	}
+}
+
+.connection-status-details {
+	.ant-tooltip-inner,
+	.ant-tooltip-arrow-content {
+		background-color: var(--trading_buying-related-elements) !important;
+	}
+}
+
+.connection-status-details:hover {
+	cursor: pointer;
+}

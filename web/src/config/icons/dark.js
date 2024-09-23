@@ -347,6 +347,8 @@ const nestedIcons = {
 	TRADE_OPTION_ICON: '/assets/images/trade-hot.svg',
 	CONVERT_OPTION_ICON: '/assets/images/convert.svg',
 	REFERRAL_OPTION_ICON: '/assets/images/referral-gift.svg',
+
+	PING_CONNECTION: '/assets/images/ping-connection-check.svg',
 };
 
 const icons = flatten(nestedIcons, options);

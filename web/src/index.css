@@ -13323,7 +13323,10 @@ table th {
     align-items: center;
     margin-top: 2%;
     gap: 1%; }
-    .volume-wrapper .volume-cards-wrapper .custom-line-inactive-one, .volume-wrapper .volume-cards-wrapper .custom-line-inactive-two, .volume-wrapper .volume-cards-wrapper .custom-line-inactive-three, .volume-wrapper .volume-cards-wrapper .custom-line-inactive-active {
+    .volume-wrapper .volume-cards-wrapper .custom-line-inactive-one,
+    .volume-wrapper .volume-cards-wrapper .custom-line-inactive-two,
+    .volume-wrapper .volume-cards-wrapper .custom-line-inactive-three,
+    .volume-wrapper .volume-cards-wrapper .custom-line-inactive-active {
       height: 2px;
       background-color: var(--labels_important-active-labels-text-graphics) !important;
       opacity: 0.25; }
@@ -18523,6 +18526,128 @@ table th {
 
 .extreme-intensity {
   border-color: var(--specials_notifications-alerts-warnings); }
+
+.check-connection-tab .network-connection-icon,
+.check-connection-tab .network-connection-icon-danger {
+  height: 12px;
+  width: 12px;
+  border-radius: 12px;
+  background-color: var(--trading_buying-related-elements); }
+
+.check-connection-tab .network-connection-icon-danger {
+  background-color: var(--trading_selling-related-elements) !important; }
+
+.check-connection-popup-wrapper .ReactModal__Content,
+.reconnect-popup-wrapper .ReactModal__Content {
+  width: 35rem; }
+  .check-connection-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-title-wrapper,
+  .reconnect-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-title-wrapper {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    margin-bottom: 3%; }
+    .check-connection-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-title-wrapper .check-connection-text,
+    .reconnect-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-title-wrapper .check-connection-text {
+      font-size: 20px; }
+  .check-connection-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-details-container,
+  .reconnect-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-details-container {
+    margin-top: 1%;
+    display: flex;
+    font-size: 14px; }
+    .check-connection-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-details-container .status-title,
+    .reconnect-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-details-container .status-title {
+      width: 25%; }
+      .check-connection-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-details-container .status-title .connection-icon,
+      .reconnect-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-details-container .status-title .connection-icon {
+        position: relative;
+        bottom: 5px; }
+    .check-connection-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-details-container .connection-status,
+    .reconnect-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-details-container .connection-status {
+      display: flex;
+      align-items: center;
+      gap: 5px; }
+      .check-connection-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-details-container .connection-status .success-icon,
+      .reconnect-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-details-container .connection-status .success-icon {
+        width: 12px;
+        height: 12px;
+        background-color: var(--trading_buying-related-elements);
+        border-radius: 25px; }
+      .check-connection-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-details-container .connection-status .danger-icon,
+      .reconnect-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-details-container .connection-status .danger-icon {
+        background-color: var(--trading_selling-related-elements) !important; }
+      .check-connection-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-details-container .connection-status .ping-details,
+      .reconnect-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-details-container .connection-status .ping-details {
+        display: flex;
+        align-items: center;
+        gap: 5px; }
+        .check-connection-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-details-container .connection-status .ping-details .ping-status-bar,
+        .reconnect-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-details-container .connection-status .ping-details .ping-status-bar {
+          display: flex;
+          align-items: center;
+          gap: 5px; }
+          .check-connection-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-details-container .connection-status .ping-details .ping-status-bar .fast-ping,
+          .check-connection-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-details-container .connection-status .ping-details .ping-status-bar .slow-ping,
+          .check-connection-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-details-container .connection-status .ping-details .ping-status-bar .very-slow-ping,
+          .reconnect-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-details-container .connection-status .ping-details .ping-status-bar .fast-ping,
+          .reconnect-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-details-container .connection-status .ping-details .ping-status-bar .slow-ping,
+          .reconnect-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-details-container .connection-status .ping-details .ping-status-bar .very-slow-ping {
+            height: 15px;
+            width: 2px;
+            background-color: var(--trading_buying-related-elements); }
+          .check-connection-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-details-container .connection-status .ping-details .ping-status-bar .slow-ping,
+          .reconnect-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-details-container .connection-status .ping-details .ping-status-bar .slow-ping {
+            background-color: var(--specials_my-username-in-chat) !important; }
+          .check-connection-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-details-container .connection-status .ping-details .ping-status-bar .very-slow-ping,
+          .reconnect-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-details-container .connection-status .ping-details .ping-status-bar .very-slow-ping {
+            background-color: var(--specials_notifications-alerts-warnings) !important; }
+    .check-connection-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-details-container .blue-link:hover,
+    .reconnect-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-details-container .blue-link:hover {
+      cursor: pointer; }
+  .check-connection-popup-wrapper .ReactModal__Content .check-connection-popup-container .custom-line,
+  .reconnect-popup-wrapper .ReactModal__Content .check-connection-popup-container .custom-line {
+    margin: 3% 0;
+    width: 7%;
+    height: 1.5px;
+    background-color: var(--labels_secondary-inactive-label-text-graphics); }
+  .check-connection-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-button-container,
+  .reconnect-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-button-container {
+    margin-top: 5%;
+    display: flex;
+    gap: 10px; }
+
+.connection-tool-tip {
+  background-color: var(--base_background); }
+
+.reconnect-popup-wrapper .reconnect-title-wrapper {
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+  gap: 5px; }
+  .reconnect-popup-wrapper .reconnect-title-wrapper .reconnect-title {
+    text-transform: capitalize !important; }
+
+.reconnect-popup-wrapper .reconnect-details-container {
+  margin-top: 2%;
+  font-size: 14px; }
+  .reconnect-popup-wrapper .reconnect-details-container .reconnect-confirmation-message {
+    margin-top: 3%; }
+
+.reconnect-popup-wrapper .connection-button-container {
+  margin-top: 5%;
+  display: flex;
+  gap: 10px; }
+
+.connection-tool-tip, .connection-status-details {
+  max-width: fit-content !important; }
+  .connection-tool-tip .ant-tooltip-inner, .connection-tool-tip .ant-tooltip-arrow-content, .connection-status-details .ant-tooltip-inner, .connection-status-details .ant-tooltip-arrow-content {
+    color: var(--labels_important-active-labels-text-graphics);
+    background-color: var(--base_background); }
+
+.connection-status-details .ant-tooltip-inner, .connection-status-details .ant-tooltip-arrow-content {
+  background-color: var(--trading_buying-related-elements) !important; }
+
+.connection-status-details:hover {
+  cursor: pointer; }
 
 html {
   font-size: 12px !important;
