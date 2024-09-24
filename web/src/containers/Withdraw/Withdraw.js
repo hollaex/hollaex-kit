@@ -107,7 +107,6 @@ const RenderWithdraw = ({
 		coin_customizations,
 		setIsValidAdress,
 		isValidAddress,
-		getNativeCurrency,
 		selectedMethod,
 		setSelectedMethod,
 		setReceiverEmail,

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -15,6 +15,14 @@ import {
 	setStake,
 	setVerificationTab,
 } from 'actions/appActions';
+import { getLogins } from 'actions/userAction';
+import { requestAuthenticated } from 'utils';
+import { ConnectionPopup, ReconnectPopup } from 'components/AppBar/Utils';
+
+const INITIAL_LOGINS_STATE = {
+	count: 0,
+	data: [],
+};
 
 const MobileBarMoreOptions = ({
 	setVerificationTab,
@@ -25,13 +33,68 @@ const MobileBarMoreOptions = ({
 }) => {
 	const [search, setSearch] = useState('');
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
+	const [isDisplayPopup, setIsDisplayPopup] = useState({
+		isDisplayConnection: false,
+		isDisplayReconnect: false,
+	});
+	const [loginDetail, setLoginDetail] = useState(INITIAL_LOGINS_STATE);
+	const [hasResponseData, setHasResponseData] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
+	const [pingDetails, setPingDetails] = useState({
+		isDisplayPingText: true,
+		pingValue: null,
+		isDisplayPing: false,
+	});
 
 	useEffect(() => {
 		setSecurityTab(null);
 		setLimitTab(null);
 		setVerificationTab(null);
+		const fetchData = async () => {
+			try {
+				await requestLogins();
+				await fetchHealthData();
+			} catch (error) {
+				setHasResponseData(false);
+				console.error('Error fetching data:', error);
+			}
+		};
+
+		fetchData();
 		//eslint-disable-next-line
+	}, [fetchHealthData]);
+
+	const requestLogins = useCallback((page = 1) => {
+		getLogins({ page })
+			.then(({ data: { count, data } }) => {
+				setLoginDetail((prevLogins) => ({
+					count,
+					data: prevLogins.data.concat(data),
+				}));
+			})
+			.catch((error) => {
+				console.error(error);
+			});
 	}, []);
+
+	const fetchHealthData = async () => {
+		setIsLoading(true);
+		const startTime = Date.now();
+		try {
+			await requestAuthenticated('/health');
+			setHasResponseData(true);
+			const duration = Date.now() - startTime;
+			setPingDetails((prev) => ({
+				...prev,
+				pingValue: duration,
+			}));
+		} catch (error) {
+			setHasResponseData(false);
+			console.error('Error fetching health data:', error);
+		} finally {
+			setIsLoading(false);
+		}
+	};
 
 	const hotFunctionOptions = [
 		{
@@ -651,6 +714,40 @@ const MobileBarMoreOptions = ({
 		);
 	};
 
+	const onHandleConnection = () => {
+		if (hasResponseData) {
+			setIsDisplayPopup((prev) => ({
+				...prev,
+				isDisplayConnection: true,
+			}));
+			fetchHealthData();
+		} else {
+			setIsDisplayPopup((prev) => ({
+				...prev,
+				isDisplayReconnect: true,
+			}));
+		}
+	};
+
+	const onHandleClose = (value) => {
+		if (value === 'connection') {
+			setIsDisplayPopup((prev) => ({
+				...prev,
+				isDisplayConnection: false,
+			}));
+		} else {
+			setIsDisplayPopup((prev) => ({
+				...prev,
+				isDisplayReconnect: false,
+			}));
+		}
+		setPingDetails((prev) => ({
+			...prev,
+			isDisplayPing: false,
+			isDisplayPingText: true,
+		}));
+	};
+
 	return (
 		<div className="footer-bar-more-options-container">
 			{isDialogOpen && renderHelpDialog()}
@@ -668,6 +765,47 @@ const MobileBarMoreOptions = ({
 					STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.OTHER_FUNCTIONS_LABEL']
 				)}
 			</div>
+			<div className="bottom-bar-button">
+				<span className="d-flex w-100 justify-content-end">
+					<span
+						className={
+							hasResponseData
+								? 'custom-connection-circle mt-2 mr-2'
+								: 'custom-connection-error-circle custom-connection-circle mt-2 mr-2'
+						}
+					></span>
+					<EditWrapper>
+						<span
+							className="fs-16 blue-link text pointer text-decoration-underline"
+							onClick={() => onHandleConnection()}
+						>
+							{`(${STRINGS['CONNECTIONS.CONNECTION_LABEL']})`}
+						</span>
+					</EditWrapper>
+				</span>
+			</div>
+			{isDisplayPopup?.isDisplayConnection && (
+				<ConnectionPopup
+					isDisplayPopup={isDisplayPopup}
+					setIsDisplayPopup={setIsDisplayPopup}
+					pingDetails={pingDetails}
+					setPingDetails={setPingDetails}
+					onHandleClose={onHandleClose}
+					isLoading={isLoading}
+					hasResponseData={hasResponseData}
+					loginDetail={loginDetail}
+					fetchHealthData={fetchHealthData}
+				/>
+			)}
+			{isDisplayPopup?.isDisplayReconnect && (
+				<ReconnectPopup
+					isDisplayPopup={isDisplayPopup}
+					setIsDisplayPopup={setIsDisplayPopup}
+					setPingDetails={setPingDetails}
+					onHandleClose={onHandleClose}
+					fetchHealthData={fetchHealthData}
+				/>
+			)}
 		</div>
 	);
 };
