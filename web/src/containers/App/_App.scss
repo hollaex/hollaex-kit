@@ -382,6 +382,17 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 			border-radius: 5px;
 		}
 
+		.custom-connection-circle,
+		.custom-connection-error-circle {
+			height: 15px;
+			width: 15px;
+			border-radius: 12px;
+			background-color: var(--trading_buying-related-elements);
+		}
+		.custom-connection-error-circle {
+			background-color: var(--trading_selling-related-elements) !important;
+		}
+
 		.options-container {
 			padding: 4%;
 			font-size: 14px;

@@ -2481,6 +2481,8 @@
 		"SLOW": "Slow",
 		"VERY_SLOW": "Very slow",
 		"MS": "{0} ms",
-		"STATUS_NORMAL": "Connection Normal"
+		"STATUS_NORMAL": "Connection Normal",
+		"CONNECTION_LABEL": "Connection",
+		"CONNECTION_ISSUE_DETECTED": "Connection issue detected"
 	}
 }

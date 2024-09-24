@@ -18,6 +18,13 @@
 		width: 35rem;
 
 		.check-connection-popup-container {
+			.loading-anime {
+				height: 20px;
+				width: 100px;
+				border-radius: 7px;
+				animation: mymove 3s infinite;
+			}
+
 			.connection-title-wrapper {
 				display: flex;
 				gap: 5px;
@@ -43,10 +50,15 @@
 					}
 				}
 
+				.connection-status-details {
+					overflow-x: scroll;
+				}
+
 				.connection-status {
 					display: flex;
 					align-items: center;
 					gap: 5px;
+					flex-wrap: wrap;
 
 					.success-icon {
 						width: 12px;
@@ -150,6 +162,19 @@
 .connection-tool-tip,
 .connection-status-details {
 	max-width: fit-content !important;
+
+	.ant-tooltip-inner,
+	.ant-tooltip-arrow-content {
+		color: var(--labels_important-active-labels-text-graphics);
+		background-color: var(--base_background);
+	}
+}
+
+.connection-tool-tip,
+.connection-status-details,
+.connection-status-error-details {
+	max-width: fit-content !important;
+
 	.ant-tooltip-inner,
 	.ant-tooltip-arrow-content {
 		color: var(--labels_important-active-labels-text-graphics);
@@ -161,6 +186,13 @@
 	.ant-tooltip-inner,
 	.ant-tooltip-arrow-content {
 		background-color: var(--trading_buying-related-elements) !important;
+	}
+}
+
+.connection-status-error-details {
+	.ant-tooltip-inner,
+	.ant-tooltip-arrow-content {
+		background-color: var(--trading_selling-related-elements) !important;
 	}
 }
 

@@ -389,8 +389,8 @@ table th {
     height: auto;
     flex: 1; }
   .app_container.layout-mobile .app_container-content {
-    min-height: calc( 100vh - 10rem);
-    max-height: calc( 100vh - 10rem);
+    min-height: calc( 100vh - 10rem);
+    max-height: calc( 100vh - 10rem);
     max-width: 100vw;
     overflow-y: scroll; }
     .app_container.layout-mobile .app_container-content.chart-embed {
@@ -408,8 +408,8 @@ table th {
       .app_container.layout-mobile .app_container-content .app_container-main.no_bottom_navigation {
         height: 100%; }
   .app_container.layout-mobile .content-with-bar {
-    min-height: calc( 100vh - 17rem);
-    max-height: calc( 100vh - 17rem);
+    min-height: calc( 100vh - 17rem);
+    max-height: calc( 100vh - 17rem);
     max-width: 100vw;
     padding: 1rem;
     margin: 0;
@@ -628,6 +628,13 @@ table th {
     padding: 1%;
     border: 1px solid var(--labels_important-active-labels-text-graphics);
     border-radius: 5px; }
+  .layout-mobile .footer-bar-more-options-container .custom-connection-circle, .layout-mobile .footer-bar-more-options-container .custom-connection-error-circle {
+    height: 15px;
+    width: 15px;
+    border-radius: 12px;
+    background-color: var(--trading_buying-related-elements); }
+  .layout-mobile .footer-bar-more-options-container .custom-connection-error-circle {
+    background-color: var(--trading_selling-related-elements) !important; }
   .layout-mobile .footer-bar-more-options-container .options-container {
     padding: 4%;
     font-size: 14px; }
@@ -4478,8 +4485,8 @@ table th {
 .layout-mobile .quote-container {
   background-color: transparent;
   overflow-y: scroll;
-  min-height: calc( 100vh - 17rem);
-  max-height: calc( 100vh - 17rem); }
+  min-height: calc( 100vh - 17rem);
+  max-height: calc( 100vh - 17rem); }
   .layout-mobile .quote-container .quick_trade-wrapper {
     flex: 1 1;
     flex-direction: column;
@@ -4652,7 +4659,7 @@ table th {
 
 .layout-mobile .presentation_container.verification_container {
   padding-top: 0 !important;
-  max-height: calc( 100vh - 10rem); }
+  max-height: calc( 100vh - 10rem); }
   .layout-mobile .presentation_container.verification_container .header-content {
     font-size: 13px !important; }
 
@@ -13600,7 +13607,7 @@ table th {
     padding: 0.3rem 0; }
     .modal-market-menu .app-bar-add-tab-content .scroll-view {
       overflow-y: auto;
-      height: calc( 100vh - 19rem - 8rem); }
+      height: calc( 100vh - 19rem - 8rem); }
   .modal-market-menu .app-bar-tab-overflow-content {
     background-color: var(--base_background);
     color: var(--labels_secondary-inactive-label-text-graphics);
@@ -16112,14 +16119,14 @@ table th {
   right: 0 !important;
   min-width: 100vw;
   max-width: 100vw;
-  min-height: calc( 100vh - 4rem);
-  max-height: calc( 100vh - 4rem);
+  min-height: calc( 100vh - 4rem);
+  max-height: calc( 100vh - 4rem);
   border-radius: 0 !important;
   padding: 0 !important; }
   .layout-mobile .ReactModal__Content .dialog-mobile-content {
     padding: 2.5rem !important;
-    min-height: calc( 100vh - 8rem);
-    max-height: calc( 100vh - 8rem);
+    min-height: calc( 100vh - 8rem);
+    max-height: calc( 100vh - 8rem);
     display: flex; }
 
 .layout-mobile.LogoutModal .ReactModal__Content {
@@ -18540,6 +18547,12 @@ table th {
 .check-connection-popup-wrapper .ReactModal__Content,
 .reconnect-popup-wrapper .ReactModal__Content {
   width: 35rem; }
+  .check-connection-popup-wrapper .ReactModal__Content .check-connection-popup-container .loading-anime,
+  .reconnect-popup-wrapper .ReactModal__Content .check-connection-popup-container .loading-anime {
+    height: 20px;
+    width: 100px;
+    border-radius: 7px;
+    animation: mymove 3s infinite; }
   .check-connection-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-title-wrapper,
   .reconnect-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-title-wrapper {
     display: flex;
@@ -18561,11 +18574,15 @@ table th {
       .reconnect-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-details-container .status-title .connection-icon {
         position: relative;
         bottom: 5px; }
+    .check-connection-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-details-container .connection-status-details,
+    .reconnect-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-details-container .connection-status-details {
+      overflow-x: scroll; }
     .check-connection-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-details-container .connection-status,
     .reconnect-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-details-container .connection-status {
       display: flex;
       align-items: center;
-      gap: 5px; }
+      gap: 5px;
+      flex-wrap: wrap; }
       .check-connection-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-details-container .connection-status .success-icon,
       .reconnect-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-details-container .connection-status .success-icon {
         width: 12px;
@@ -18637,14 +18654,36 @@ table th {
   display: flex;
   gap: 10px; }
 
-.connection-tool-tip, .connection-status-details {
+.connection-tool-tip,
+.connection-status-details {
   max-width: fit-content !important; }
-  .connection-tool-tip .ant-tooltip-inner, .connection-tool-tip .ant-tooltip-arrow-content, .connection-status-details .ant-tooltip-inner, .connection-status-details .ant-tooltip-arrow-content {
+  .connection-tool-tip .ant-tooltip-inner,
+  .connection-tool-tip .ant-tooltip-arrow-content,
+  .connection-status-details .ant-tooltip-inner,
+  .connection-status-details .ant-tooltip-arrow-content {
     color: var(--labels_important-active-labels-text-graphics);
     background-color: var(--base_background); }
 
-.connection-status-details .ant-tooltip-inner, .connection-status-details .ant-tooltip-arrow-content {
+.connection-tool-tip,
+.connection-status-details,
+.connection-status-error-details {
+  max-width: fit-content !important; }
+  .connection-tool-tip .ant-tooltip-inner,
+  .connection-tool-tip .ant-tooltip-arrow-content,
+  .connection-status-details .ant-tooltip-inner,
+  .connection-status-details .ant-tooltip-arrow-content,
+  .connection-status-error-details .ant-tooltip-inner,
+  .connection-status-error-details .ant-tooltip-arrow-content {
+    color: var(--labels_important-active-labels-text-graphics);
+    background-color: var(--base_background); }
+
+.connection-status-details .ant-tooltip-inner,
+.connection-status-details .ant-tooltip-arrow-content {
   background-color: var(--trading_buying-related-elements) !important; }
+
+.connection-status-error-details .ant-tooltip-inner,
+.connection-status-error-details .ant-tooltip-arrow-content {
+  background-color: var(--trading_selling-related-elements) !important; }
 
 .connection-status-details:hover {
   cursor: pointer; }
