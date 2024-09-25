@@ -8,6 +8,7 @@ import {
 	Account,
 	MainWallet,
 	P2P,
+	Volume,
 	CurrencyWallet,
 	Login,
 	Signup,
@@ -71,14 +72,10 @@ import {
 	ReferralList,
 	AddressBook,
 } from './containers';
-import chat from './containers/Admin/Chat';
 import { Billing } from 'containers/Admin';
-
-import store from './store';
 import { verifyToken } from './actions/authAction';
 import { setLanguage } from './actions/appActions';
 import { SmartTarget, NotLoggedIn } from 'components';
-
 import {
 	isLoggedIn,
 	getToken,
@@ -92,9 +89,13 @@ import {
 	getLanguageFromLocal,
 } from './utils/string';
 import { getExchangeInitialized, getSetupCompleted } from './utils/initialize';
+import { STAKING_INDEX_COIN, isStakingAvailable } from 'config/contracts';
+
+import chat from './containers/Admin/Chat';
+import store from './store';
 import PluginConfig from 'containers/Admin/PluginConfig';
 import ConfirmChangePassword from 'containers/ConfirmChangePassword';
-import { STAKING_INDEX_COIN, isStakingAvailable } from 'config/contracts';
+import MobileBarMoreOptions from 'containers/App/MobileBarMoreOptions';
 
 ReactGA.initialize('UA-154626247-1'); // Google analytics. Set your own Google Analytics values
 browserHistory.listen((location) => {
@@ -255,7 +256,7 @@ function withAdminProps(Component, key) {
 		'plugins',
 		'tiers',
 		'roles',
-		'billing'
+		'billing',
 	];
 
 	PATHS.map((data) => {
@@ -401,6 +402,9 @@ export const generateRoutes = (routes = []) => {
 				<Route path="white-label" name="WhiteLabel" component={WhiteLabel} />
 				<Route path="verification" name="Verification" component={Account} />
 				<Route path="wallet" name="Wallet" component={MainWallet} />
+				{isMobile && (
+					<Route path="more" name="More" component={MobileBarMoreOptions} />
+				)}
 				<Route
 					path="wallet/address-book"
 					name="wallet/address-book"
@@ -422,6 +426,12 @@ export const generateRoutes = (routes = []) => {
 					path="wallet/history"
 					name="Wallet History"
 					component={MainWallet}
+					onEnter={requireAuth}
+				/>
+				<Route
+					path="wallet/volume"
+					name="Volume"
+					component={Volume}
 					onEnter={requireAuth}
 				/>
 				<Route path="p2p" name="P2P" component={P2P} />

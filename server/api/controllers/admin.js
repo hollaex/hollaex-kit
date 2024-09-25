@@ -2300,7 +2300,7 @@ const getUserReferer = (req, res) => {
 };
 
 const createUserByAdmin = (req, res) => {
-	const { email, password } = req.swagger.params.data.value;
+	const { email, password, referral } = req.swagger.params.data.value;
 
 	loggerAdmin.info(req.uuid, 'controllers/admin/createUserByAdmin email', email);
 
@@ -2325,6 +2325,7 @@ const createUserByAdmin = (req, res) => {
 				role: 'user',
 				id: null,
 				email_verified: true,
+				referral,
 				additionalHeaders: {
 					'x-forwarded-for': req.headers['x-forwarded-for']
 				}
@@ -3001,6 +3002,35 @@ const createUserReferralCodeByAdmin = (req, res) => {
 		});
 };
 
+const fetchUserTradingVolumeByAdmin = (req, res) => {
+	const { user_id, to, from } = req.swagger.params;
+
+	loggerAdmin.info(
+		user_id.value,
+		'controllers/user/fetchUserTradingVolumeByAdmin',
+		to.value,
+		from.value
+	);
+
+	toolsLib.user.fetchUserTradingVolume(
+		user_id.value,
+		{
+			to: to.value,
+			from: from.value
+		}
+	)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/user/fetchUserTradingVolumeByAdmin err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
 
 const getPaymentDetailsByAdmin = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getPaymentDetailsByAdmin/auth', req.auth);
@@ -3165,6 +3195,7 @@ module.exports = {
 	performDirectWithdrawalByAdmin,
 	getUserReferralCodesByAdmin,
 	createUserReferralCodeByAdmin,
+	fetchUserTradingVolumeByAdmin,
 	getPaymentDetailsByAdmin,
 	createPaymentDetailByAdmin,
 	updatePaymentDetailByAdmin,

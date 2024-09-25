@@ -9,7 +9,7 @@ import classnames from 'classnames';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import NoDealsData from './Utilis';
-import { Coin, EditWrapper } from 'components';
+import { Coin, Dialog, EditWrapper } from 'components';
 import { fetchDeals, editDeal, removeDeal } from './actions/p2pActions';
 import { formatToCurrency } from 'utils/currency';
 
@@ -29,6 +29,8 @@ const P2PMyDeals = ({
 }) => {
 	const [myDeals, setMyDeals] = useState([]);
 	const [checks, setCheks] = useState([]);
+	const [dealRemoveConfirmation, setDealRemoveConfirmation] = useState(false);
+
 	useEffect(() => {
 		fetchDeals({ user_id: user.id })
 			.then((res) => {
@@ -64,8 +66,51 @@ const P2PMyDeals = ({
 				]
 			)}
 		>
+			<Dialog
+				isOpen={dealRemoveConfirmation}
+				onCloseDialog={() => setDealRemoveConfirmation(false)}
+				className="confirmation-remove-deal-popup-wrapper"
+			>
+				<div className="remove-deal-popup-container">
+					<span className="remove-description fs-16">
+						<EditWrapper stringId="P2P.REMOVE_WARNING">
+							{STRINGS['P2P.REMOVE_WARNING']}
+						</EditWrapper>
+					</span>
+					<div className="remove-deal-button-container w-100">
+						<Button
+							className="cancel-btn w-50"
+							onClick={() => setDealRemoveConfirmation(false)}
+						>
+							{STRINGS['CANCEL_WITHDRAWAL']?.toUpperCase()}
+						</Button>
+						<Button
+							className="confirm-btn w-50"
+							onClick={async () => {
+								try {
+									await removeDeal({
+										removed_ids: checks,
+										status: false,
+									});
+									setMyDeals(
+										myDeals?.filter((deal) => !checks?.includes(deal?.id))
+									);
+									setCheks([]);
+									message.success(STRINGS['P2P.CHANGES_SAVED']);
+								} catch (error) {
+									message.error(error.message);
+								}
+								setDealRemoveConfirmation(false);
+							}}
+						>
+							{STRINGS['CONFIRM_TEXT']?.toUpperCase()}
+						</Button>
+					</div>
+				</div>
+			</Dialog>
+
 			<div className="p2p-mydeals-content-wrapper">
-				<span>
+				<span className={isMobile ? 'ml-5' : ''}>
 					<Checkbox
 						onChange={(e) => {
 							if (e.target.checked) {
@@ -74,7 +119,7 @@ const P2PMyDeals = ({
 								setCheks([]);
 							}
 						}}
-						className="whiteTextP2P"
+						className={isMobile ? 'fs-24 whiteTextP2P' : 'whiteTextP2P'}
 					>
 						{myDeals.length === 0 ? (
 							<EditWrapper stringId="P2P.NO_DEALS">
@@ -89,7 +134,9 @@ const P2PMyDeals = ({
 				</span>
 				<span>
 					<Button
-						className="purpleButtonP2P"
+						className={
+							isMobile ? 'fs-24 purpleButtonP2P h-100' : 'purpleButtonP2P'
+						}
 						onClick={async () => {
 							try {
 								await editDeal({
@@ -112,7 +159,9 @@ const P2PMyDeals = ({
 				</span>
 				<span>
 					<Button
-						className="purpleButtonP2P"
+						className={
+							isMobile ? 'fs-24 purpleButtonP2P h-100' : 'purpleButtonP2P'
+						}
 						onClick={async () => {
 							try {
 								await editDeal({
@@ -135,20 +184,10 @@ const P2PMyDeals = ({
 				</span>
 				<span>
 					<Button
-						className="purpleButtonP2P"
-						onClick={async () => {
-							try {
-								await removeDeal({
-									removed_ids: checks,
-									status: false,
-								});
-								setMyDeals(myDeals.filter((deal) => !checks.includes(deal.id)));
-								setCheks([]);
-								message.success(STRINGS['P2P.CHANGES_SAVED']);
-							} catch (error) {
-								message.error(error.message);
-							}
-						}}
+						className={
+							isMobile ? 'fs-24 purpleButtonP2P h-100' : 'purpleButtonP2P'
+						}
+						onClick={() => setDealRemoveConfirmation(true)}
 					>
 						<EditWrapper stringId="P2P.REMOVE">
 							{STRINGS['P2P.REMOVE']}
@@ -216,21 +255,38 @@ const P2PMyDeals = ({
 												deal.side === 'sell' ? 'sellSideP2P' : 'buySideP2P'
 											}`}
 										>
-											<Button className="text-capitalize">{deal.side} </Button>
+											<Button className="text-capitalize my-deals-btn">
+												{deal.side}{' '}
+											</Button>
 										</td>
 										<td className="td-fit w-fit-content">
 											{deal.status ? (
-												<EditWrapper stringId="P2P.ACTIVE">
-													{STRINGS['P2P.ACTIVE']}
-												</EditWrapper>
+												<span
+													className={
+														isMobile ? 'd-flex align-items-center' : 'd-flex'
+													}
+												>
+													<span className="custom-circle"></span>
+													<EditWrapper stringId="P2P.ONLINE">
+														<span className="ml-2">
+															{STRINGS['P2P.ONLINE']}
+														</span>
+													</EditWrapper>
+												</span>
 											) : (
-												<EditWrapper stringId="P2P.INACTIVE">
-													{STRINGS['P2P.INACTIVE']}
+												<EditWrapper stringId="P2P.OFFLINE">
+													{STRINGS['P2P.OFFLINE']}
 												</EditWrapper>
 											)}
 										</td>
 										<td className="td-fit w-fit-content fs-">
-											<span className="font-weight-bold fs-16">{` ${formatRate(
+											<span
+												className={
+													isMobile
+														? 'font-weight-bold display-6'
+														: 'font-weight-bold fs-16'
+												}
+											>{` ${formatRate(
 												deal.exchange_rate,
 												deal.spread,
 												deal.spending_asset,
@@ -250,7 +306,7 @@ const P2PMyDeals = ({
 												<span>{deal.buying_asset.toUpperCase()}</span>
 												<Coin
 													iconId={coins[deal?.buying_asset]?.icon_id}
-													type="CS4"
+													type={isMobile ? 'CS10' : 'CS4'}
 												/>
 											</div>
 											<div>
@@ -290,7 +346,7 @@ const P2PMyDeals = ({
 						</tbody>
 					</table>
 				) : (
-					<NoDealsData />
+					<NoDealsData trade="deals" />
 				)}
 			</div>
 		</div>

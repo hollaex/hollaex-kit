@@ -1,4 +1,5 @@
 import React from 'react';
+import { browserHistory } from 'react-router';
 import { Button } from 'antd';
 import { ExclamationCircleFilled } from '@ant-design/icons';
 import { createSelector } from 'reselect';
@@ -11,13 +12,65 @@ import { calculateOraclePrice } from 'utils/currency';
 import { WALLET_SORT } from 'actions/appActions';
 import { Image } from 'hollaex-web-lib';
 import { networkList, renderNetworkWithLabel } from 'containers/Withdraw/utils';
+import { unique } from 'utils/data';
 
 const getCoins = (state) => state.app.coins;
 const getBalances = (state) => state.user.balance;
 const getOraclePrices = (state) => state.asset.oraclePrices;
 const getSortMode = (state) => state.app.wallet_sort.mode;
 const getSortDir = (state) => state.app.wallet_sort.is_descending;
+const pairs = (state) => state.app.pairs;
 export const getPinnedAssets = (state) => state.app.pinned_assets;
+
+export const goToTrade = (pair, quicktrade) => {
+	const flippedPair = getFlippedPair(pair);
+	const isQuickTrade = !!quicktrade.filter(
+		({ symbol, active, type }) =>
+			!!active && type !== 'pro' && (symbol === pair || symbol === flippedPair)
+	).length;
+	if (pair && isQuickTrade) {
+		return browserHistory.push(`/quick-trade/${pair}`);
+	} else if (pair && !isQuickTrade) {
+		return browserHistory.push(`/trade/${pair}`);
+	}
+};
+
+const getFlippedPair = (pair) => {
+	let flippedPair = pair.split('-');
+	flippedPair.reverse().join('-');
+	return flippedPair;
+};
+
+const isMarketAvailable = (pair) => {
+	return pair && pairs[pair] && pairs[pair].active;
+};
+
+const findPair = (key, field) => {
+	const availableMarketsArray = [];
+
+	Object.entries(pairs).map(([pairKey, pairObject]) => {
+		if (pairObject && pairObject[field] === key && isMarketAvailable(pairKey)) {
+			availableMarketsArray.push(pairKey);
+		}
+
+		return pairKey;
+	});
+
+	return availableMarketsArray;
+};
+
+export const getAllAvailableMarkets = (key, quicktrade) => {
+	const quickTrade = quicktrade
+		?.filter(({ symbol = '', active }) => {
+			const [base, to] = symbol.split('-');
+			return active && (base === key || to === key);
+		})
+		?.map(({ symbol }) => symbol);
+
+	const trade = [...findPair(key, 'pair_base'), ...findPair(key, 'pair_2')];
+
+	return unique([...quickTrade, ...trade]);
+};
 
 export const selectAssetOptions = createSelector([getCoins], (coins) => {
 	const assets = Object.entries(coins).map(([key, { symbol, fullname }]) => {

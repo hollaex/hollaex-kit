@@ -26,7 +26,7 @@ const TradeInputGroup = ({
 				width: 130,
 			}}
 			overlay={
-				<Menu onClick={({ key }) => goToTrade(key)}>
+				<Menu onClick={({ key }) => goToTrade(key, quicktrade)}>
 					{markets.map((market) => {
 						const { display_name, icon_id } =
 							pairs[market] ||

@@ -91,7 +91,7 @@ const {
 } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
-const { getKitConfig, isValidTierLevel, getKitTier, isDatetime, getKitSecrets, sendCustomEmail, emailHtmlBoilerplate, getDomain, updateKitConfigSecrets, sleep, getKitCoins } = require('./common');
+const { getKitConfig, isValidTierLevel, getKitTier, isDatetime, getAssetsPrices, getKitSecrets, sendCustomEmail, emailHtmlBoilerplate, getDomain, updateKitConfigSecrets, sleep, getKitCoins } = require('./common');
 const { isValidPassword, createSession } = require('./security');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { all, reject } = require('bluebird');
@@ -253,6 +253,7 @@ const createUser = (
 		role: 'user',
 		id: null,
 		email_verified: false,
+		referral: null,
 		additionalHeaders: null
 	}
 ) => {
@@ -312,6 +313,10 @@ const createUser = (
 			});
 	})
 		.then((user) => {
+			if (opts.referral && isString(opts.referral)) {
+				checkAffiliation(opts.referral, user.id);
+			}
+
 			return all([
 				user
 			]);
@@ -2418,7 +2423,28 @@ const addAmounts = (amount1, amount2) => {
 		)
 	);
 };
+const sortTopVolumes = (volumeData, topN = 4) => {
+	const topSortedVolumes = {};
 
+	for (const period in volumeData) {
+		const periodData = volumeData[period];
+        
+		if (Object.keys(periodData).length > 0) {
+			topSortedVolumes[period] = Object.entries(periodData)
+				.sort(([, valueA], [, valueB]) => valueB - valueA)
+				.slice(0, topN) 
+				.map(([key, value]) => ({ [key]: value })); 
+		}
+	}
+    
+	return topSortedVolumes;
+};
+
+const multiplyAmounts = (x, y) => {
+	return mathjs.number(
+	  mathjs.multiply(mathjs.bignumber(x), mathjs.bignumber(y))
+	);
+};
 
 const getUserReferralCodes = async (
 	opts = {
@@ -3455,6 +3481,150 @@ const deletePaymentDetail = async (id, user_id) => {
 };
 
 
+const getOracleIndex = async () => {
+	const coins = getKitCoins();
+	const data = await getAssetsPrices(
+	  coins,
+	  getKitConfig().native_currency
+	);
+  
+	return data;
+};
+
+
+const fetchUserTradingVolume = async (user_id, opts = {
+	to: null,
+	from: null
+}) => {
+
+	let { to, from } = opts;
+	const currentTime = moment().seconds(0).milliseconds(0).toISOString();
+
+	const { getAllUserTradesByKitId } = require('./order');
+
+	if(from && to) {
+		let volume = {};
+
+		const oracleIndex = await getOracleIndex();
+	
+		const trades = await getAllUserTradesByKitId(
+			user_id,
+			null,
+			null,
+			null,
+			null,
+			null,
+			from,
+			to,
+			'all'
+		);
+	
+		if (trades.data && trades.data.length > 0) {
+			for (const trade of trades.data) {
+				const { symbol } = trade;
+				let size = trade.size;
+	
+				const basePair = symbol.split('-')[0];
+	
+				if (basePair !== getKitConfig().native_currency) {
+					if (!isNumber(oracleIndex[basePair]) || oracleIndex[basePair] <= 0) {
+						continue;
+					}
+					size = multiplyAmounts(oracleIndex[basePair], size);
+				}
+				volume[basePair] = addAmounts(volume[basePair] || 0, size);
+			}
+		}
+	
+		return { user_id, volume };
+	} else {
+		const data = await client.getAsync(`${user_id}-asset-volumes`);
+		if(data) return JSON.parse(data);
+		let volume = {
+			1: {},
+			7: {},
+			30: {},
+			90: {},
+		};
+
+		let volumeNative = {
+			1: {},
+			7: {},
+			30: {},
+			90: {},
+		};
+		
+		const to = moment(currentTime).toISOString();
+		const from90Days = moment(currentTime).subtract(90, 'days').toISOString();
+		
+		const oracleIndex = await getOracleIndex();
+		const trades = await getAllUserTradesByKitId(
+			user_id,
+			null,
+			null,
+			null,
+			null,
+			null,
+			from90Days,
+			to,
+			'all'
+		);
+		
+		if (trades.data && trades.data.length > 0) {
+			for (const trade of trades.data) {
+				const { symbol, timestamp } = trade;
+				let size = trade.size;
+				let nativeSize = trade.size;
+				const basePair = symbol.split('-')[0];
+		
+				if (basePair !== getKitConfig().native_currency) {
+					if (!isNumber(oracleIndex[basePair]) || oracleIndex[basePair] <= 0) {
+						continue;
+					}
+					size = multiplyAmounts(oracleIndex[basePair], size);
+				}
+		
+				const tradeDate = moment(timestamp);
+				const daysDiff = moment(currentTime).diff(tradeDate, 'days');
+		
+				if (daysDiff <= 1) {
+					volume[1][basePair] = addAmounts(volume[1][basePair] || 0, size);
+					volumeNative[1][basePair] = addAmounts(volumeNative[1][basePair] || 0, nativeSize);
+				}
+				if (daysDiff <= 7) {
+					volume[7][basePair] = addAmounts(volume[7][basePair] || 0, size);
+					volumeNative[7][basePair] = addAmounts(volumeNative[7][basePair] || 0, nativeSize);
+				}
+				if (daysDiff <= 30) {
+					volume[30][basePair] = addAmounts(volume[30][basePair] || 0, size);
+					volumeNative[30][basePair] = addAmounts(volumeNative[30][basePair] || 0, nativeSize);
+				}
+				volume[90][basePair] = addAmounts(volume[90][basePair] || 0, size);
+				volumeNative[90][basePair] = addAmounts(volumeNative[90][basePair] || 0, nativeSize);
+			}
+		}
+
+		for (const period in volume) {
+			const periodData = volume[period];
+			let totalGain = 0;
+
+			for(const coin in periodData) {
+				totalGain += periodData[coin];
+			}
+			
+			volume[period].total = totalGain;
+		}
+		
+		const sortedVolumes = sortTopVolumes(volume);
+
+		await client.setexAsync(`${user_id}-asset-volumes`, 60 * 60 * 2, JSON.stringify({ user_id, volume: sortedVolumes, volumeNative }));
+
+		return { user_id, volume: sortedVolumes, volumeNative };
+
+	}
+
+	
+};
 module.exports = {
 	loginUser,
 	getUserTier,
@@ -3529,6 +3699,7 @@ module.exports = {
 	createUnrealizedReferralFees,
 	getUserReferralCodes,
 	createUserReferralCode,
+	fetchUserTradingVolume,
 	updateUserAddresses,
 	fetchUserAddressBook,
 	getPaymentDetails,

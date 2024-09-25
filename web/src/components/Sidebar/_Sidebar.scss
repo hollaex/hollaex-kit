@@ -54,7 +54,8 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 				.account-svg-1,
 				.quick-trade-tab-active,
 				.assets-icon-tab,
-				.onramp-icon {
+				.onramp-icon,
+				.item-options {
 					fill: $colors-black;
 				}
 
@@ -64,7 +65,8 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 				.trade-active-2,
 				.chat-0,
 				.quick-trade-tab-active,
-				.assets-icon-tab {
+				.assets-icon-tab,
+				.item-options {
 					stroke: $colors-black;
 				}
 
@@ -82,7 +84,8 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 					.chat-0,
 					.account-svg-1,
 					.assets-icon-tab,
-					.onramp-icon {
+					.onramp-icon,
+					.item-options {
 						fill: $base_top-bar-navigation_text;
 					}
 
@@ -90,7 +93,8 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 					.trade-active-2,
 					.chat-0,
 					.quick-trade-tab-active,
-					.assets-icon-tab {
+					.assets-icon-tab,
+					.item-options {
 						stroke: $base-top-bar-navigation_text;
 					}
 				}

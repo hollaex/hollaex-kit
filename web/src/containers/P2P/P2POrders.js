@@ -30,14 +30,18 @@ const P2POrders = ({
 	user,
 	router,
 	changeProfileTab,
+	tab,
 }) => {
 	const [transactions, setTransactions] = useState([]);
 	const [filter, setFilter] = useState();
 	const [transactionDetails, setTransactionDetails] = useState([]);
 	// const [option, setOption] = useState('2');
 	const [transactionStatus, setTransactionStatus] = useState('P2P.ALL_ORDERS');
+	const [isFilter, setIsFilter] = useState(false);
 
 	const orderStatus = ['P2P.PROCESSING', 'P2P.ALL_ORDERS'];
+	const digitalCurrencies = localStorage?.getItem('digitalCurrencies');
+	const selectedCurrencies = JSON.parse(digitalCurrencies);
 
 	useEffect(() => {
 		fetchTransactions()
@@ -90,14 +94,38 @@ const P2POrders = ({
 						</div>
 					);
 				})}
+				{isMobile && (
+					<span
+						className="d-flex justify-content-end w-100 blue-link"
+						onClick={() => setIsFilter(!isFilter)}
+					>
+						{
+							<EditWrapper
+								stringId={
+									isFilter
+										? STRINGS['P2P.HIDE_FILTERS']
+										: STRINGS['P2P.SHOW_FILTERS']
+								}
+							>
+								<span className="text-decoration-underline blue-link">
+									{isFilter
+										? STRINGS['P2P.HIDE_FILTERS']
+										: STRINGS['P2P.SHOW_FILTERS']}
+								</span>
+							</EditWrapper>
+						}
+					</span>
+				)}
 			</div>
-			{transactionStatus === 'P2P.ALL_ORDERS' && (
+			{((transactionStatus === 'P2P.ALL_ORDERS' && !isMobile) || isFilter) && (
 				<Filter
 					transaction={transactions}
 					transactionFilter={filter}
 					setTransactions={setTransactions}
 					transactionDetails={transactionDetails}
 					setTransactionDetails={setTransactionDetails}
+					selectedCurrencies={selectedCurrencies}
+					tab={tab}
 				/>
 			)}
 			<div className="stake_theme p2p-order-table-wrapper">
@@ -159,9 +187,11 @@ const P2POrders = ({
 									const transactionStatusClass =
 										statusClassMap[transaction?.transaction_status] ||
 										'inactive-text';
-									const isDisabled = ['expired', 'cancelled'].includes(
-										transaction?.transaction_status
-									);
+									const isDisabled = [
+										'expired',
+										'cancelled',
+										'closed',
+									].includes(transaction?.transaction_status);
 									return (
 										<tr
 											className={
@@ -193,14 +223,13 @@ const P2POrders = ({
 											</td>
 
 											<td className="transaction-fiat-amount">
-												<span>${transaction?.amount_fiat}</span>
+												<span>{transaction?.amount_fiat}</span>
 												<span className="ml-2">
 													{transaction?.deal?.spending_asset?.toUpperCase()}
 												</span>
 											</td>
 											<td className="transaction-currency-amount">
 												<span>
-													$
 													{formatAmount(
 														transaction?.deal?.buying_asset,
 														transaction?.price
@@ -225,7 +254,7 @@ const P2POrders = ({
 														iconId={
 															coins[transaction?.deal?.buying_asset]?.icon_id
 														}
-														type="CS4"
+														type={isMobile ? 'CS10' : 'CS4'}
 													/>
 												</div>
 											</td>

@@ -34,6 +34,8 @@ export const getNetworkNameByKey = (network) => {
 				return 'Klaytn';
 			case 'matic':
 				return 'Polygon';
+			case 'pol':
+				return 'Polygon';
 			case 'sol':
 				return 'Solana';
 			case 'xlm':

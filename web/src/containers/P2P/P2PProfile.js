@@ -114,12 +114,18 @@ const P2PProfile = ({
 			className={classnames(
 				...[
 					'P2pOrder p2p-profile-wrapper w-100',
-					isMobile ? 'mobile-view-p2p' : '',
+					isMobile ? 'mobile-view-p2p p2p-mobile-profile' : '',
 				]
 			)}
 		>
 			<div className="p2p-profile-content-wrapper">
-				<div className="display-label fs-16 important-text">
+				<div
+					className={
+						isMobile
+							? 'display-label fs-24 important-text'
+							: 'display-label fs-16 important-text'
+					}
+				>
 					<EditWrapper stringId="P2P.DISPLAY_NAME">
 						{STRINGS['P2P.DISPLAY_NAME']}
 					</EditWrapper>
@@ -139,32 +145,44 @@ const P2PProfile = ({
 				<div className="profile-card-wrapper">
 					<div className="profile-card-content-wrapper important-text">
 						<div className="profile-cards">
-							<div className="fs-14 text-uppercase">
+							<div
+								className={
+									isMobile ? 'fs-24 text-uppercase' : 'fs-14 text-uppercase'
+								}
+							>
 								<EditWrapper stringId="P2P.TOTAL_ORDERS">
 									{STRINGS['P2P.TOTAL_ORDERS']}
 								</EditWrapper>
 							</div>
-							<div className="fs-18">
+							<div className={isMobile ? 'fs-24' : 'fs-18'}>
 								{myProfile?.totalTransactions} {STRINGS['P2P.TIMES']}
 							</div>
 						</div>
 						<div className="profile-cards">
-							<div className="fs-14 text-uppercase">
+							<div
+								className={
+									isMobile ? 'fs-24 text-uppercase' : 'fs-14 text-uppercase'
+								}
+							>
 								<EditWrapper stringId="P2P.COMPLETION_RATE">
 									{STRINGS['P2P.COMPLETION_RATE']}
 								</EditWrapper>
 							</div>
-							<div className="fs-18">
+							<div className={isMobile ? 'fs-24' : 'fs-18'}>
 								{(myProfile?.completionRate || 0).toFixed(2)}%
 							</div>
 						</div>
 						<div className="profile-cards">
-							<div className="fs-14 text-uppercase">
+							<div
+								className={
+									isMobile ? 'fs-24 text-uppercase' : 'fs-14 text-uppercase'
+								}
+							>
 								<EditWrapper stringId="P2P.POSITIVE_FEEDBACK">
 									{STRINGS['P2P.POSITIVE_FEEDBACK']}
 								</EditWrapper>
 							</div>
-							<div className="fs-18">
+							<div className={isMobile ? 'fs-24' : 'fs-18'}>
 								{(myProfile?.positiveFeedbackRate || 0).toFixed(2)}%
 							</div>
 							<div>
@@ -215,12 +233,20 @@ const P2PProfile = ({
 				</div>
 				{selectedTab === '0' && (
 					<div className="payment-method-wrapper">
-						<div className="d-flex justify-content-between">
-							<div className="flex-1">
+						<div
+							className={
+								isMobile
+									? 'd-flex justify-content-between flex-column-reverse'
+									: 'd-flex justify-content-between'
+							}
+						>
+							<div className={isMobile ? 'flex-1 mt-5' : 'flex-1'}>
 								<div className="pay-method-desc-wrapper">
 									<div className="pay-method-label important-text">
 										<EditWrapper stringId="P2P.PAYMENT_METHODS">
-											{STRINGS['P2P.PAYMENT_METHODS']}
+											<span className={isMobile ? 'fs-24' : ''}>
+												{STRINGS['P2P.PAYMENT_METHODS']}
+											</span>
 										</EditWrapper>
 									</div>
 									<div className="secondary-text">
@@ -237,7 +263,7 @@ const P2PProfile = ({
 											{STRINGS['P2P.PAYMENT_METHODS_SEND_FIAT']}
 										</EditWrapper>
 									</div>
-									<div className="mt-2 mb-3">
+									<div className="mt-2 mb-3 add-payment-wrapper">
 										<Button
 											className="purpleButtonP2P"
 											onClick={() => {
@@ -374,7 +400,11 @@ const P2PProfile = ({
 										</th>
 									</tr>
 								</thead>
-								<tbody className="important-text">
+								<tbody
+									className={
+										isMobile ? 'fs-16 important-text' : 'important-text'
+									}
+								>
 									{myDeals.map((deal) => {
 										return (
 											<tr className="table-row">

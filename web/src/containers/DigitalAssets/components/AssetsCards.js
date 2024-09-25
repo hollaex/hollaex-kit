@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import { isMobile } from 'react-device-detect';
+import { browserHistory } from 'react-router';
 import { Card, Switch } from 'antd';
 import {
 	CaretDownOutlined,
@@ -62,6 +63,10 @@ const renderPercentage = (percentage, type) => (
 	</span>
 );
 
+const goToCoinInfo = (symbol) => {
+	browserHistory.push(`/prices/coin/${symbol}`);
+};
+
 const renderCards = (data, coins, type, loading) =>
 	data.map(
 		(
@@ -76,7 +81,11 @@ const renderCards = (data, coins, type, loading) =>
 			loading ? (
 				<Loading index={index} />
 			) : (
-				<div className="assets-wrapper mb-2" key={symbol}>
+				<div
+					className="assets-wrapper mb-2"
+					key={symbol}
+					onClick={() => goToCoinInfo(symbol)}
+				>
 					<div className="asset-container">
 						<Coin
 							iconId={coins[symbol].icon_id}

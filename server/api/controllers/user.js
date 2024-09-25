@@ -35,6 +35,7 @@ const { all } = require('bluebird');
 const { each, isInteger } = require('lodash');
 const { publisher } = require('../../db/pubsub');
 const { isDate } = require('moment');
+const moment = require('moment');
 const DeviceDetector = require('node-device-detector');
 const uuid = require('uuid/v4');
 
@@ -1476,6 +1477,36 @@ const fetchUserReferrals = (req, res) => {
 		});
 };
 
+const fetchUserTradingVolume = (req, res) => {
+	const { to, from } = req.swagger.params;
+
+	loggerUser.info(
+		req.uuid,
+		'controllers/user/fetchUserTradingVolume',
+		to.value,
+		from.value
+	);
+
+	toolsLib.user.fetchUserTradingVolume(
+		req.auth.sub.id,
+		{
+			to: to.value,
+			from: from.value
+		}
+	)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerUser.error(
+				req.uuid,
+				'controllers/user/fetchUserTradingVolume err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
 const fetchUserAddressBook = (req, res) => {
 	loggerUser.verbose(req.uuid, 'controllers/user/fetchUserAddressBook/auth', req.auth);
 
@@ -1638,6 +1669,7 @@ module.exports = {
 	fetchUserReferrals,
 	createUserReferralCode,
 	getUserReferralCodes,
+	fetchUserTradingVolume,
 	updateUserAddresses,
 	fetchUserAddressBook,
 	getPaymentDetails,
