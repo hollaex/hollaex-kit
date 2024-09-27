@@ -22,7 +22,7 @@ export const ConnectionPopup = ({
 	loginDetail,
 	fetchHealthData,
 }) => {
-	const { name } = getCountry(loginDetail?.data[0]?.country);
+	const { name, flag } = getCountry(loginDetail?.data[0]?.country);
 	const time = getFormatTimestamp(loginDetail?.data[0]?.created_at);
 
 	const connectionDetails = [
@@ -37,6 +37,7 @@ export const ConnectionPopup = ({
 			stringId: 'CONNECTIONS.IP',
 			value: loginDetail?.data[0]?.ip,
 			country: name,
+			countryFlag: flag,
 		},
 		{
 			stringId: 'CONNECTIONS.SESSION',
@@ -44,6 +45,7 @@ export const ConnectionPopup = ({
 			time: time,
 		},
 	];
+
 	return (
 		<Dialog
 			isOpen={isDisplayPopup?.isDisplayConnection}
@@ -97,7 +99,10 @@ export const ConnectionPopup = ({
 								{(detail?.country || detail?.time) && (
 									<span className="secondary-text">
 										{detail?.country ? (
-											<span>({detail?.country})</span>
+											<div>
+												<span>{detail?.countryFlag}</span>
+												<span className="ml-2">({detail?.country})</span>
+											</div>
 										) : (
 											detail?.time
 										)}
@@ -234,9 +239,9 @@ export const ConnectionPopup = ({
 														? STRINGS['CONNECTIONS.FAST']
 														: pingDetails?.pingValue > 100 &&
 														  pingDetails?.pingValue <= 200
-														? STRINGS['CONNECTIONS.SLOW']
+														? STRINGS['CONNECTIONS.NORMAL_TEXT']
 														: pingDetails?.pingValue > 200 &&
-														  STRINGS['CONNECTIONS.VERY_SLOW']
+														  STRINGS['CONNECTIONS.SLOW']
 												}
 											>
 												(
@@ -245,9 +250,9 @@ export const ConnectionPopup = ({
 														? STRINGS['CONNECTIONS.FAST']
 														: pingDetails?.pingValue > 100 &&
 														  pingDetails?.pingValue <= 200
-														? STRINGS['CONNECTIONS.SLOW']
+														? STRINGS['CONNECTIONS.NORMAL_TEXT']
 														: pingDetails?.pingValue > 200 &&
-														  STRINGS['CONNECTIONS.VERY_SLOW']}
+														  STRINGS['CONNECTIONS.SLOW']}
 												</span>
 												)
 											</EditWrapper>

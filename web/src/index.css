@@ -9840,6 +9840,9 @@ table th {
   .address-book-form .address-book-content-wrapper .address-book-table-wrapper .table-content .table-wrapper .table_body-wrapper .table_body-row .address-field-wrapper .address-content span {
     width: 80%; } }
 
+.P2pOrder {
+  background-color: var(--base_wallet-sidebar-and-popup); }
+
 .greenButtonP2P {
   background-color: var(--specials_checks-okay-done) !important;
   color: var(--calculated_base_top-bar-navigation_text) !important;
@@ -13325,6 +13328,14 @@ table th {
     .volume-wrapper .header-wrapper .link-label {
       display: flex;
       gap: 5px; }
+  .volume-wrapper .volume-cards-empty-wrapper {
+    margin-top: 5% !important;
+    font-size: 14px; }
+    .volume-wrapper .volume-cards-empty-wrapper .volume-option-icon svg {
+      width: 2.5rem;
+      height: 5%; }
+      .volume-wrapper .volume-cards-empty-wrapper .volume-option-icon svg path {
+        fill: var(--labels_secondary-inactive-label-text-graphics); }
   .volume-wrapper .volume-cards-wrapper {
     display: flex;
     justify-content: center;
@@ -13387,6 +13398,10 @@ table th {
     justify-content: center; }
     .layout-mobile .volume-wrapper .title-wrapper .volume-label {
       top: 8px; }
+  .layout-mobile .volume-wrapper .volume-cards-empty-wrapper {
+    margin-top: 10% !important; }
+    .layout-mobile .volume-wrapper .volume-cards-empty-wrapper .volume-option-icon svg {
+      width: 3.5rem; }
   .layout-mobile .volume-wrapper .volume-cards-wrapper {
     margin: 5% 0;
     flex-direction: column;

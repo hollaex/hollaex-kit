@@ -2279,7 +2279,10 @@
 		"DAY_VOLUME": "DAY VOLUME",
 		"HOUR_VOLUME": "24 HOUR VOLUME",
 		"TOP": "TOP {0} {1}",
-		"VOL_ASSET": "D VOL. ASSET"
+		"VOL_ASSET": "D VOL. ASSET",
+		"NO_DATA_DESC_1": "Looks like you haven't made any trades yet. Start trading now to see your activity here!",
+		"NO_DATA_DESC_2": "Start trading ",
+		"NO_DATA_DESC_3": "now to see your activity here!"
 	},
 	"MORE_OPTIONS_LABEL": {
 		"MORE_OPTION_SEARCH_TXT": "Search feature or pages",
@@ -2479,7 +2482,6 @@
 		"RECHECK_PING": "RECHECK PING",
 		"FAST": "Fast",
 		"SLOW": "Slow",
-		"VERY_SLOW": "Very slow",
 		"MS": "{0} ms",
 		"STATUS_NORMAL": "Connection Normal",
 		"CONNECTION_LABEL": "Connection",
