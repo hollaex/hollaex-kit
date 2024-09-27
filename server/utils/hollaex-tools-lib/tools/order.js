@@ -1489,7 +1489,7 @@ const executeUserChainTrade = async (user_id, userToken) => {
 
 	let result;
 	try {
-		result= await getNodeLib().createBrokerTrade(
+		result = await getNodeLib().createBrokerTrade(
 			tradeInfo.symbol,
 			'sell',
 			parseNumber(brokerPrice, 10),
@@ -1505,10 +1505,11 @@ const executeUserChainTrade = async (user_id, userToken) => {
 			admin.email,
 			{
 				type: 'Error in chain trades!',
-				data: `Error encountered while making the final trade between the user and the middleman account id: ${sourceUser.id}. Error message: ${error.message}`
+				data: `Error encountered while making the final trade between the user and the middleman account id: ${sourceUser.id}, user id: ${user.id}. Error message: ${error.message}`
 			},
 			admin.settings
 		);
+		throw new Error(error.message);
 	}
 	
 	// send the fee amount to the middle man account
@@ -1522,7 +1523,7 @@ const executeUserChainTrade = async (user_id, userToken) => {
 			admin.email,
 			{
 				type: 'Error in chain trades!',
-				data: `Error encountered while sending the fee amount from user transaction to middleman account id: ${sourceUser.id}. Error message: ${error.message}`
+				data: `Error encountered while sending the fee amount from user transaction to middleman account id: ${sourceUser.id}, user id: ${user.id}. Error message: ${error.message}`
 			},
 			admin.settings
 		);
