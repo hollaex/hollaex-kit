@@ -1353,6 +1353,7 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, id = nu
 	const to = assets[1];
 	//Check min values
 	const baseCoinInfo  = getKitCoin(from);
+	const quoteCoinInfo  = getKitCoin(to);
 	if (size < baseCoinInfo.min) {
 		throw new Error('Size too small for the rate');
 	};
@@ -1391,6 +1392,10 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, id = nu
 
 	const result = findConversionRate(from, to, prices, new Set(), size);
 	let token;
+
+	if (result?.totalRate && result.totalRate < quoteCoinInfo.min) {
+		throw new Error('Size too small for the rate');
+	};
 
 	if (result?.totalRate && user_id) {
 		try {
