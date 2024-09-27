@@ -14,7 +14,7 @@ const { loggerOrders } = require(`${SERVER_PATH}/config/logger`);
 const math = require('mathjs');
 const { has } = require('lodash');
 const { setPriceEssentials } = require('../../orderbook');
-const { getUserBalanceByKitId } = require('./wallet');
+const { getUserBalanceByKitId, transferAssetByKitIds } = require('./wallet');
 const { verifyBearerTokenPromise, verifyHmacTokenPromise} = require('./security');
 const { client } = require('./database/redis');
 const { parseNumber, getTickers } = require('./common');
@@ -1484,17 +1484,49 @@ const executeUserChainTrade = async (user_id, userToken) => {
 	
 	const brokerPrice = to === tradeInfo.quote_asset ? (lastTrade.size / tradeInfo.size) : ((lastTrade.size * lastTrade.price ) /  tradeInfo.size);
 	// trade between end user and middle man account
-	const spreadSize = parseNumber(tradeInfo.size - (tradeInfo.size * ((spread || 0) / 100)), 10);
-	const result = await getNodeLib().createBrokerTrade(
-		tradeInfo.symbol,
-		'sell',
-		parseNumber(brokerPrice, 10),
-		spreadSize,
-		sourceUser.network_id,
-		user.network_id,
-		{ maker: 0, taker: 0 }
-	);
+	const feeAmount = parseNumber(tradeInfo.size * ((spread || 0) / 100), 10);
+	const spreadSize = parseNumber(tradeInfo.size - feeAmount, 10);
 
+	let result;
+	try {
+		result= await getNodeLib().createBrokerTrade(
+			tradeInfo.symbol,
+			'sell',
+			parseNumber(brokerPrice, 10),
+			spreadSize,
+			sourceUser.network_id,
+			user.network_id,
+			{ maker: 0, taker: 0 }
+		);
+	} catch (error) {
+		const admin = await getUserByKitId(1);
+		sendEmail(
+			MAILTYPE.ALERT,
+			admin.email,
+			{
+				type: 'Error in chain trades!',
+				data: `Error encountered while making the final trade between the user and the middleman account id: ${sourceUser.id}. Error message: ${error.message}`
+			},
+			admin.settings
+		);
+	}
+	
+	// send the fee amount to the middle man account
+	try {
+		const baseSymbol = tradeInfo.symbol.split('-')[0];
+		await transferAssetByKitIds(user.id, sourceUser.id, baseSymbol, feeAmount, 'Chain trade transaction', false, { category: 'chain_trade' });
+	} catch (error) {
+		const admin = await getUserByKitId(1);
+		sendEmail(
+			MAILTYPE.ALERT,
+			admin.email,
+			{
+				type: 'Error in chain trades!',
+				data: `Error encountered while sending the fee amount from user transaction to middleman account id: ${sourceUser.id}. Error message: ${error.message}`
+			},
+			admin.settings
+		);
+	}
 	try {
 		// get the currency amount back for the middle man account
 		const { token } = await getUserChainTradeQuote(null, `${tradeInfo.base_asset}-${currency}`, tradeInfo.size, null, sourceUser.id, sourceUser.network_id);
@@ -1506,7 +1538,6 @@ const executeUserChainTrade = async (user_id, userToken) => {
 		await executeTrades(sourceTradeInfo, sourceUser);
 
 	} catch (error) {
-		//send email to admin about this error.
 		const admin = await getUserByKitId(1);
 		sendEmail(
 			MAILTYPE.ALERT,
