@@ -1397,6 +1397,10 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, id = nu
 		throw new Error('Size too small for the rate');
 	};
 
+	if (result?.trades && result?.trades?.length > 3) {
+		throw new Error('Rate not found');
+	}
+
 	if (result?.totalRate && user_id) {
 		try {
 			for(const trade of result?.trades) {
