@@ -8,7 +8,7 @@ const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { INVALID_SYMBOL, NO_DATA_FOR_CSV, USER_NOT_FOUND, USER_NOT_REGISTERED_ON_NETWORK, TOKEN_EXPIRED, BROKER_NOT_FOUND, BROKER_PAUSED, BROKER_SIZE_EXCEED, QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED, QUICK_TRADE_ORDER_CURRENT_PRICE_ERROR, QUICK_TRADE_VALUE_IS_TOO_SMALL, FAIR_PRICE_BROKER_ERROR, AMOUNT_NEGATIVE_ERROR, QUICK_TRADE_CONFIG_NOT_FOUND, QUICK_TRADE_TYPE_NOT_SUPPORTED, PRICE_NOT_FOUND, INVALID_PRICE, INVALID_SIZE, BALANCE_NOT_AVAILABLE, FEATURE_NOT_ACTIVE } = require(`${SERVER_PATH}/messages`);
 const { parse } = require('json2csv');
 const { BASE_SCOPES } = require(`${SERVER_PATH}/constants`);
-const { subscribedToPair, getKitTier, getDefaultFees, getAssetsPrices, getPublicTrades, getQuickTrades, getKitPairsConfig, getTradePaths, getKitConfig } = require('./common');
+const { subscribedToPair, getKitTier, getDefaultFees, getAssetsPrices, getPublicTrades, getQuickTrades, getKitPairsConfig, getTradePaths, getKitConfig, getKitCoin } = require('./common');
 const { reject } = require('bluebird');
 const { loggerOrders } = require(`${SERVER_PATH}/config/logger`);
 const math = require('mathjs');
@@ -1351,7 +1351,11 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, id = nu
 	const assets = symbol.split('-');
 	const from = assets[0];
 	const to = assets[1];
-	
+	//Check min values
+	const baseCoinInfo  = getKitCoin(from);
+	if (size < baseCoinInfo.min) {
+		throw new Error('Size too small for the rate');
+	};
 
 	let rates = getTradePaths()[symbol] || [];
 	if (!rates || rates?.length < 1) {
@@ -1396,7 +1400,6 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, id = nu
 					const assets = trade.symbol.split('-');
 					const quotePrice = await getUserQuickTrade(assets[0], 1, null, assets[1],  bearerToken, ip, { additionalHeaders: null }, { headers: { 'api-key': null } }, { user_id: id, network_id });
 					trade.token = quotePrice?.token || null;
-					console.log({GG: trade.token})
 				}
 			}
 	
@@ -1430,7 +1433,7 @@ const executeUserChainTrade = async (user_id, userToken) => {
 	if (!storedToken) {
 		throw new Error(TOKEN_EXPIRED);
 	}
-	const { source_account, currency} = getKitConfig()?.chain_trade_config || {};
+	const { source_account, currency, spread } = getKitConfig()?.chain_trade_config || {};
 	
 	const tradeInfo = JSON.parse(storedToken);
 
@@ -1479,13 +1482,14 @@ const executeUserChainTrade = async (user_id, userToken) => {
 	const assets = lastTrade.symbol.split('-');
 	const to = assets[0];
 	
-	
+	const brokerPrice = to === tradeInfo.quote_asset ? (lastTrade.size / tradeInfo.size) : ((lastTrade.size * lastTrade.price ) /  tradeInfo.size);
 	// trade between end user and middle man account
+	const spreadSize = parseNumber(tradeInfo.size - (tradeInfo.size * ((spread || 0) / 100)), 10);
 	const result = await getNodeLib().createBrokerTrade(
 		tradeInfo.symbol,
-		'buy',
-		to === tradeInfo.quote_asset ? (lastTrade.size / tradeInfo.size) : ((lastTrade.size * lastTrade.price ) /  tradeInfo.size),
-		tradeInfo.size,
+		'sell',
+		parseNumber(brokerPrice, 10),
+		spreadSize,
 		sourceUser.network_id,
 		user.network_id,
 		{ maker: 0, taker: 0 }
