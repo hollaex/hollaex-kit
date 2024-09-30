@@ -245,6 +245,70 @@ paths:
         - bearer
       x-security-scopes:
         - user
+  /user/addressbook:
+    x-swagger-router-controller: user
+    get:
+      description: Fetch address book for user
+      operationId: fetchUserAddressBook
+      tags:
+        - User
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - user
+    post:
+      description: Update addresses for user address book
+      operationId: updateUserAddresses
+      tags:
+        - User
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              addresses:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    address:
+                      type: string
+                    label:
+                      type: string
+                    network:
+                      type: string
+                    currency:
+                      type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - user
   /user/affiliation:
     x-swagger-router-controller: user
     get:
@@ -1496,6 +1560,47 @@ paths:
         - bearer
       x-security-scopes:
         - user
+  /user/trading-volume:
+    x-swagger-router-controller: user
+    get:
+      description:  Get user's trading volume of last 30 days
+      operationId: fetchUserTradingVolume
+      tags:
+        - User
+      parameters:
+        - in: query
+          name: to
+          description: starting date
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: from
+          description: ending date
+          required: false
+          type: string
+          format: date-time
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+      x-security-scopes:
+        - user
+      x-token-permissions:
+        - can_read
   /user/referral/code:
     x-swagger-router-controller: user
     get:
@@ -1749,6 +1854,200 @@ paths:
         - user
       x-token-permissions:
         - can_read
+  /user/payment-details:
+    x-swagger-router-controller: user
+    get:
+      description: Get payment details for user
+      operationId: getPaymentDetails
+      tags:
+        - PaymentDetails
+      parameters:
+        - in: query
+          name: id
+          description: Unique identifier
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: is_p2p
+          description: is_p2p
+          required: false
+          type: boolean
+        - in: query
+          name: is_fiat_control
+          description: is_fiat_control
+          required: false
+          type: boolean
+        - in: query
+          name: status
+          description: status
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - user
+    post:
+      description: Create a new payment detail
+      operationId: createPaymentDetail
+      tags:
+        - PaymentDetails
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              label:
+                type: string
+              details:
+                type: object
+              is_p2p:
+                type: boolean
+              is_fiat_control:
+                type: boolean
+              status:
+                type: integer
+                format: int32
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - user
+    put:
+      description: Update a payment detail
+      operationId: updatePaymentDetail
+      tags:
+        - PaymentDetails
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                format: int32
+              name:
+                type: string
+              label:
+                type: string
+              details:
+                type: object
+              is_p2p:
+                type: boolean
+              is_fiat_control:
+                type: boolean
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - user
+    delete:
+      description: Delete a payment detail
+      operationId: deletePaymentDetail
+      tags:
+        - PaymentDetails
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                format: int32
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - user
   /logout:
     x-swagger-router-controller: user
     get:

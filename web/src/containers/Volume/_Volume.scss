@@ -1,0 +1,149 @@
+.volume-wrapper {
+	margin: 1rem auto 5rem auto !important;
+	.title-wrapper {
+		display: flex;
+		margin-top: 5%;
+		gap: 1%;
+		text-transform: capitalize;
+
+		.volume-label {
+			font-size: 2.25rem;
+			position: relative;
+			top: 25px;
+		}
+	}
+
+	.custom-line {
+		border-bottom: 1px solid var(--labels_important-active-labels-text-graphics);
+	}
+
+	.header-wrapper {
+		display: flex;
+		justify-content: space-between;
+		margin-top: 1%;
+		margin-bottom: 2%;
+
+		.link-label {
+			display: flex;
+			gap: 5px;
+		}
+	}
+
+	.volume-cards-wrapper {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin-top: 2%;
+		gap: 1%;
+
+		.custom-line-inactive-one,
+		.custom-line-inactive-two,
+		.custom-line-inactive-three,
+		.custom-line-inactive-active {
+			height: 2px;
+			background-color: var(
+				--labels_important-active-labels-text-graphics
+			) !important;
+			opacity: 0.25;
+		}
+
+		.custom-line-inactive-two {
+			opacity: 0.5;
+		}
+
+		.custom-line-inactive-three {
+			opacity: 0.75;
+		}
+		.custom-line-inactive-active {
+			opacity: 1;
+		}
+
+		.card-content-wrapper {
+			width: 25%;
+			// border-top: 2px solid var(--labels_important-active-labels-text-graphics);
+			background-color: var(--base_wallet-sidebar-and-popup);
+			border-radius: 5px;
+
+			.card-wrapper {
+				text-align: center;
+				padding: 15%;
+				background-color: var(--base_secondary-navigation-bar);
+
+				.assets-price {
+					text-wrap: nowrap;
+					font-family: 'Raleway';
+				}
+			}
+
+			.card-content {
+				padding: 5%;
+				min-height: 16rem;
+
+				.assets-content-wrapper {
+					display: flex;
+					justify-content: space-between;
+
+					.asset-name,
+					.asset-price-container {
+						display: flex;
+						align-items: center;
+						gap: 5px;
+
+						.currency-price {
+							display: flex;
+							justify-content: flex-end;
+							gap: 3px;
+						}
+					}
+
+					.more-icon {
+						svg {
+							width: 2rem;
+							height: 2rem;
+							fill: var(--labels_secondary-inactive-label-text-graphics);
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+.layout-mobile {
+	.volume-wrapper {
+		padding: 5%;
+		overflow-x: hidden;
+		font-size: 12px;
+		margin: 0 auto !important;
+
+		.title-wrapper {
+			margin-top: unset;
+			align-items: center;
+			justify-content: center;
+
+			.volume-label {
+				top: 8px;
+			}
+		}
+
+		.volume-cards-wrapper {
+			margin: 5% 0;
+			flex-direction: column;
+			gap: 10px;
+			.card-wrapper {
+				padding: 10%;
+			}
+			.card-content-wrapper {
+				width: 80%;
+			}
+			.assets-content-wrapper {
+				.more-icon {
+					svg {
+						width: 3rem !important;
+						height: 3rem !important;
+					}
+				}
+			}
+		}
+	}
+}

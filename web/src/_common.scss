@@ -312,7 +312,7 @@ table th {
 }
 
 .important-text {
-	color: $colors-main-black;
+	color: $colors-main-black !important;
 }
 
 .secondary-text {
@@ -371,4 +371,20 @@ table th {
 .danger-zone {
 	border-top: $colors-notifications-red 4px solid;
 	background-color: $calculated_specials_notifications-alerts-pale;
+}
+
+.fs-12 {
+	font-size: 12px;
+}
+
+.fs-16 {
+	font-size: 16px;
+}
+
+.fs-24 {
+	font-size: 24px;
+}
+
+.text-decoration-underline {
+	text-decoration: underline;
 }

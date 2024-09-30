@@ -86,7 +86,7 @@ const HistoryDisplay = (props) => {
 		<div className="history_block-wrapper">
 			{!loading && (
 				<div className="d-flex justify-content-between title text-capitalize">
-					<div>
+					<div className="history-title">
 						<EditWrapper stringId={stringId}>{title}</EditWrapper>
 					</div>
 					<div className="action_notification-container">
@@ -106,6 +106,14 @@ const HistoryDisplay = (props) => {
 								onClick={() => browserHistory.push('wallet/deposit')}
 							/>
 						)}
+						{!isMobile && activeTab !== 3 && !isDepositFromWallet && (
+							<ActionNotification
+								stringId="ACCORDIAN.VOLUME"
+								text={STRINGS['ACCORDIAN.VOLUME']}
+								className="blue-icon"
+								onClick={() => browserHistory.push('wallet/volume')}
+							/>
+						)}
 						{!isMobile && count > 0 && !isFromWallet && (
 							<ActionNotification
 								stringId="TRANSACTION_HISTORY.TEXT_DOWNLOAD"
@@ -116,7 +124,7 @@ const HistoryDisplay = (props) => {
 								onClick={handleDownload}
 							/>
 						)}
-						{!isMobile && activeTab === 2 && !isDepositFromWallet && (
+						{activeTab === 2 && !isDepositFromWallet && (
 							<ActionNotification
 								stringId="DEPOSIT_STATUS.CHECK_DEPOSIT_STATUS"
 								text={STRINGS['DEPOSIT_STATUS.CHECK_DEPOSIT_STATUS']}
@@ -126,7 +134,7 @@ const HistoryDisplay = (props) => {
 								onClick={openDialog}
 							/>
 						)}
-						{!isMobile && !isFromWallet && (
+						{!isFromWallet && (!isMobile || activeTab === 2) && (
 							<ActionNotification
 								stringId="REFRESH"
 								text={STRINGS['REFRESH']}

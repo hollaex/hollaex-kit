@@ -1,19 +1,24 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { reset } from 'redux-form';
 import { withRouter } from 'react-router';
 import { isMobile } from 'react-device-detect';
+import { CloseOutlined, SearchOutlined } from '@ant-design/icons';
+
+import AssetsCards from './AssetsCards';
+import STRINGS from 'config/localizedStrings';
+import withConfig from 'components/ConfigProvider/withConfig';
+import AssetsList from 'containers/DigitalAssets/components/AssetsList';
 import {
 	formatPercentage,
 	formatToCurrency,
 	countDecimals,
 } from 'utils/currency';
 import { SearchBox } from 'components';
-import STRINGS from 'config/localizedStrings';
+import { setCoinsData } from 'actions/appActions';
 import { quicktradePairSelector } from 'containers/QuickTrade/components/utils';
-import withConfig from 'components/ConfigProvider/withConfig';
 import { getMiniCharts } from 'actions/chartAction';
-import AssetsList from 'containers/DigitalAssets/components/AssetsList';
-import { RenderLoading } from './utils';
 
 function onHandleInitialLoading(ms) {
 	return new Promise((resolve) => setTimeout(resolve, ms));
@@ -26,11 +31,15 @@ class AssetsWrapper extends Component {
 			data: [],
 			chartData: {},
 			coinsData: [],
-			pageSize: 10,
+			pageSize: 100,
 			page: 0,
 			count: 0,
 			searchValue: '',
 			isLoading: true,
+			isSearchActive: false,
+			selectedButton: '',
+			isSelectedSort: false,
+			isInputFocus: false,
 		};
 	}
 
@@ -103,10 +112,14 @@ class AssetsWrapper extends Component {
 	};
 
 	getCoinsData = (coinsList, chartValues) => {
-		const { coins, quicktradePairs } = this.props;
+		const { coins, quicktradePairs, setCoinsData, pinned_assets } = this.props;
+		const topAssets = [];
+		const remainingAssets = [];
 		const coinsData = coinsList
 			.map((name) => {
-				const { code, icon_id, symbol, fullname, type } = coins[name];
+				const { code, icon_id, symbol, fullname, type, created_at } = coins[
+					name
+				];
 
 				const key = `${code}-usdt`;
 				const pricingData = this.getPricingData(chartValues[key]);
@@ -121,12 +134,27 @@ class AssetsWrapper extends Component {
 					type,
 					key,
 					networkType: quicktradePairs[key]?.type,
+					created_at,
 				};
 			})
-			.filter(({ type }) => type === 'blockchain');
+			?.filter(({ type }) => type === 'blockchain');
+		pinned_assets.forEach((pin) => {
+			const asset = coinsData.find(({ symbol }) => symbol === pin);
+			if (asset) {
+				topAssets.push(asset);
+			}
+		});
+		coinsData.filter((item) => {
+			if (!pinned_assets.includes(item.symbol)) {
+				remainingAssets.push(item);
+				return true;
+			}
+			return false;
+		});
 
-		this.setState({ coinsData });
+		this.setState({ coinsData: [...topAssets, ...remainingAssets] });
 		this.constructData(this.state.page);
+		setCoinsData([...topAssets, ...remainingAssets]);
 	};
 
 	async componentDidMount() {
@@ -142,6 +170,7 @@ class AssetsWrapper extends Component {
 		});
 		await onHandleInitialLoading(15 * 100);
 		this.setState({ isLoading: false });
+		window.addEventListener('keydown', this.handleKeyPress);
 	}
 
 	componentDidUpdate(prevProps) {
@@ -151,6 +180,10 @@ class AssetsWrapper extends Component {
 		if (JSON.stringify(data) !== JSON.stringify(prevProps.data)) {
 			this.constructData(page, searchValue);
 		}
+	}
+
+	componentWillUnmount() {
+		window.removeEventListener('keydown', this.handleKeyPress);
 	}
 
 	goToPreviousPage = () => {
@@ -179,7 +212,6 @@ class AssetsWrapper extends Component {
 		const count = coinsData.length;
 
 		const initItem = page * pageSize;
-
 		if (initItem < count) {
 			const data = searchResults.slice(0, initItem + pageSize);
 			this.setState({ data, page, count });
@@ -226,25 +258,231 @@ class AssetsWrapper extends Component {
 		}
 	};
 
+	handleMarket = (value) => {
+		const { page, searchValue } = this.state;
+		const { coinsData, coins } = this.props;
+
+		const sortFunctions = {
+			'Market Cap': (data) =>
+				data.sort(
+					(a, b) =>
+						(coins[b?.symbol]?.market_cap || 0) -
+						(coins[a?.symbol]?.market_cap || 0)
+				),
+			Gainers: (data) =>
+				data
+					?.filter(
+						({ oneDayPriceDifferencePercenVal }) =>
+							(oneDayPriceDifferencePercenVal || 0) >= 0
+					)
+					?.sort(
+						(a, b) =>
+							(b.oneDayPriceDifferencePercenVal || 0) -
+							(a.oneDayPriceDifferencePercenVal || 0)
+					),
+			Losers: (data) =>
+				data
+					?.filter(
+						({ oneDayPriceDifferencePercenVal }) =>
+							(oneDayPriceDifferencePercenVal || 0) <= 0
+					)
+					?.sort(
+						(a, b) =>
+							(a.oneDayPriceDifferencePercenVal || 0) -
+							(b.oneDayPriceDifferencePercenVal || 0)
+					),
+			New: (data) =>
+				data?.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)),
+		};
+
+		const updatedCoinsData = sortFunctions[value]
+			? sortFunctions[value](coinsData)
+			: coinsData;
+
+		this.setState(
+			{
+				selectedButton: value,
+				coinsData: updatedCoinsData,
+				isSelectedSort: false,
+			},
+			() => {
+				this.constructData(page, searchValue);
+			}
+		);
+	};
+
+	handleClose = () => {
+		const FORM_NAME = 'SearchForm';
+		this.handleTabSearch('');
+		this.props.dispatch(reset(FORM_NAME));
+		this.setState({ isSearchActive: false, isInputFocus: false }, () => {
+			const inputElement = document.querySelector(
+				'.trade_tabs-search-field input'
+			);
+			if (inputElement) {
+				inputElement.blur();
+			}
+		});
+	};
+
+	handleSelectedSort = (value) => {
+		this.setState({ isSelectedSort: value });
+	};
+
+	handleInput = () => {
+		this.setState({ isSearchActive: true, isInputFocus: true }, () => {
+			const inputElement = document.querySelector(
+				'.trade_tabs-search-field input'
+			);
+			if (inputElement) {
+				inputElement.focus();
+			}
+		});
+	};
+
+	handleKeyPress = (event) => {
+		const { isSearchActive } = this.state;
+		const key = event.key;
+		if (!isSearchActive && key === '/') {
+			event.preventDefault();
+			this.handleInput();
+		}
+		if (isSearchActive && key === 'Escape') {
+			this.handleClose();
+		}
+	};
+
 	render() {
 		const { data, page, pageSize, count, isLoading } = this.state;
-
+		const listButton = [
+			STRINGS['DIGITAL_ASSETS.CARDS.MARKET_CAP'],
+			STRINGS['DIGITAL_ASSETS.CARDS.GAINERS'],
+			STRINGS['DIGITAL_ASSETS.CARDS.LOSERS'],
+			STRINGS['DEPOSIT_STATUS.NEW'],
+		];
+		const filteredButtons = isMobile
+			? listButton.filter(
+					(button) => button !== STRINGS['DIGITAL_ASSETS.CARDS.MARKET_CAP']
+			  )
+			: listButton;
 		return (
 			<div>
-				<div className="d-flex justify-content-start">
-					<div className={isMobile ? '' : 'w-25 pb-4'}>
-						<SearchBox
-							name={STRINGS['SEARCH_ASSETS']}
-							className="trade_tabs-search-field"
-							outlineClassName="trade_tabs-search-outline"
-							placeHolder={`${STRINGS['SEARCH_ASSETS']}...`}
-							handleSearch={this.handleTabSearch}
-							showCross
-							isFocus={true}
-						/>
+				<AssetsCards loading={isLoading} />
+				<div>
+					<div className="custom-carousel"></div>
+					<div className="d-flex justify-content-start">
+						<div
+							className={
+								isMobile
+									? 'market-button-container'
+									: 'market-button-container pb-4'
+							}
+						>
+							{!this.state.isSearchActive && isMobile && (
+								<div className="market-buttons">
+									{filteredButtons.map((button, index) => {
+										return (
+											<div
+												className={
+													this.state.selectedButton === button
+														? 'market-btn opacity-full'
+														: 'market-btn opacity-half'
+												}
+												key={index}
+												onClick={() => this.handleMarket(button)}
+											>
+												{button}
+											</div>
+										);
+									})}
+								</div>
+							)}
+							{!isMobile && (
+								<div className="market-buttons">
+									{filteredButtons.map((button, index) => {
+										return (
+											<div
+												className={
+													this.state.selectedButton === button
+														? 'market-btn opacity-full'
+														: 'market-btn opacity-half'
+												}
+												key={index}
+												onClick={() => this.handleMarket(button)}
+											>
+												{button}
+											</div>
+										);
+									})}
+								</div>
+							)}
+							{!this.state.isSearchActive ? (
+								!isMobile ? (
+									<div
+										className="search-field-container search"
+										onClick={() => this.handleInput()}
+									>
+										<SearchBox
+											name={STRINGS['SEARCH_ASSETS']}
+											className="trade_tabs-search-field"
+											outlineClassName="trade_tabs-search-outline"
+											placeHolder={`${STRINGS['SEARCH_ASSETS']}...`}
+											showCross={false}
+											isFocus={this.state.isInputFocus}
+										/>
+										<span
+											className="open-icon"
+											onClick={() => this.handleInput()}
+										>
+											/
+										</span>
+									</div>
+								) : (
+									<span
+										className="trade-tab-search-icon"
+										onClick={() => this.handleInput()}
+									>
+										<SearchOutlined rotate={90} />
+									</span>
+								)
+							) : !isMobile ? (
+								<div className="search-field-container">
+									<SearchBox
+										name={STRINGS['DIGITAL_ASSETS.INPUT_LABEL']}
+										className="trade_tabs-search-field"
+										outlineClassName="trade_tabs-search-outline"
+										placeHolder={`${STRINGS['DIGITAL_ASSETS.INPUT_LABEL']}...`}
+										handleSearch={this.handleTabSearch}
+										showCross={false}
+										isFocus={this.state.isInputFocus}
+									/>
+									<span
+										className="close-icon"
+										onClick={() => this.handleClose()}
+									>
+										<CloseOutlined />
+									</span>
+								</div>
+							) : (
+								<div className="search-field-mobile-container">
+									<div className="search-field-container">
+										<SearchBox
+											name={STRINGS['DIGITAL_ASSETS.INPUT_LABEL']}
+											className="trade_tabs-search-field"
+											outlineClassName="trade_tabs-search-outline"
+											placeHolder={`${STRINGS['DIGITAL_ASSETS.INPUT_LABEL']}...`}
+											handleSearch={this.handleTabSearch}
+											showCross
+											isFocus={this.state.isInputFocus}
+										/>
+									</div>
+									<div onClick={() => this.handleClose()}>
+										<span className="blue-link">{STRINGS['CLOSE_TEXT']}</span>
+									</div>
+								</div>
+							)}
+						</div>
 					</div>
-				</div>
-				{data.length ? (
 					<AssetsList
 						loading={isLoading}
 						coinsListData={data}
@@ -254,10 +492,10 @@ class AssetsWrapper extends Component {
 						goToNextPage={this.goToNextPage}
 						goToPreviousPage={this.goToPreviousPage}
 						showPaginator={count > pageSize}
+						isSelectedSort={this.state.isSelectedSort}
+						handleSelectedSort={this.handleSelectedSort}
 					/>
-				) : (
-					<RenderLoading />
-				)}
+				</div>
 			</div>
 		);
 	}
@@ -268,6 +506,16 @@ const mapStateToProps = (state, props) => ({
 	constants: state.app.constants,
 	coins: state.app.coins,
 	quicktradePairs: quicktradePairSelector(state),
+	coinsData: state.app.coinsData,
+	pinned_assets: state.app.pinned_assets,
 });
 
-export default connect(mapStateToProps)(withRouter(withConfig(AssetsWrapper)));
+const mapDispatchToProps = (dispatch) => ({
+	setCoinsData: bindActionCreators(setCoinsData, dispatch),
+	dispatch,
+});
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withRouter(withConfig(AssetsWrapper)));

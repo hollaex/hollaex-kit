@@ -21,6 +21,7 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import AnnouncementList from './AnnouncementList';
 import STRINGS from 'config/localizedStrings';
 import LanguageSwitcher from './LanguageSwitcher';
+// import Connections from './Connections';
 
 class AppBar extends Component {
 	state = {
@@ -110,6 +111,7 @@ class AppBar extends Component {
 
 	handleTheme = (selected) => {
 		const { isEditMode, themeOptions } = this.props;
+		const params = new URLSearchParams(window.location.search);
 		if (!isLoggedIn() || isEditMode) {
 			this.props.changeTheme(selected);
 			localStorage.setItem('theme', selected);
@@ -124,6 +126,10 @@ class AppBar extends Component {
 				.then(({ data }) => {
 					this.props.setUserData(data);
 					if (data.settings && data.settings.interface) {
+						params.set('theme', data.settings.interface.theme);
+						const currentUrl = window.location.href.split('?')[0];
+						const newUrl = `${currentUrl}?${params.toString()}`;
+						this.props.router.replace(newUrl);
 						this.props.changeTheme(data.settings.interface.theme);
 						localStorage.setItem('theme', data.settings.interface.theme);
 					}
@@ -241,11 +247,14 @@ class AppBar extends Component {
 			activeLanguage,
 			changeLanguage,
 			icons,
+			themeOptions,
 		} = this.props;
-		const { securityPending, verificationPending, walletPending } = this.state;
-
-		const { selected } = this.state;
-		const { themeOptions } = this.props;
+		const {
+			securityPending,
+			verificationPending,
+			walletPending,
+			selected,
+		} = this.state;
 		return isHome ? (
 			<div className="home_app_bar d-flex justify-content-between align-items-center">
 				<div className="d-flex align-items-center justify-content-center h-100 ml-2">
@@ -351,6 +360,9 @@ class AppBar extends Component {
 							activePath={activePath}
 							onMenuChange={onMenuChange}
 						/>
+						{/*<div className="ml-1">
+							<Connections />
+						</div> */}
 					</div>
 				)}
 			</div>

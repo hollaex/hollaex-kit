@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Switch, Button, Modal, message, Spin, Input } from 'antd';
+import { Switch, Button, Modal, message, Spin, Input, Select } from 'antd';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import { bindActionCreators } from 'redux';
@@ -38,6 +38,10 @@ import './index.css';
 import { handleFiatUpgrade, handleUpgrade } from 'utils/utils';
 import { checkFileSize, fileSizeError } from 'utils/icon';
 import PublishSection from './PublishSection';
+import { CloseCircleOutlined } from '@ant-design/icons';
+import Coins from '../Coins';
+import { BASE_CURRENCY } from 'config/constants';
+const { Option } = Select;
 
 const NameForm = AdminHocForm('NameForm');
 const LanguageForm = AdminHocForm('LanguageForm');
@@ -81,13 +85,21 @@ class GeneralContent extends Component {
 			updatedKey: '',
 			isDisable: false,
 			defaultEmailData: {},
+			nativeCurrencies: [],
 		};
 	}
 
 	componentDidMount() {
+		let customCurrencies = this.props.selectable_native_currencies || [];
+		if (customCurrencies.length === 0) {
+			customCurrencies = [BASE_CURRENCY];
+		}
 		this.requestInitial();
 		this.props.requestTokens();
-		this.setState({ isDisable: true });
+		this.setState({
+			isDisable: true,
+			nativeCurrencies: customCurrencies,
+		});
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -503,13 +515,17 @@ class GeneralContent extends Component {
 	handleSaveInterface = (
 		features,
 		balance_history_config = null,
-		referral_history_config = null
+		referral_history_config = null,
+		chain_trade_config = null,
+		selectable_native_currencies = null
 	) => {
 		this.handleSubmitGeneral({
 			kit: {
 				features,
 				balance_history_config,
 				referral_history_config,
+				chain_trade_config,
+				selectable_native_currencies,
 			},
 		});
 	};
@@ -892,6 +908,81 @@ class GeneralContent extends Component {
 									/>
 								</div>
 							</div>
+							<div className="divider"></div>
+							<div className="mb-5">
+								<div className="sub-title">Other currency display options</div>
+								<div className="description">
+									The user can select these other currencies as alternative
+									valuation options to the 'default' above.
+								</div>
+								<div className="coins-list">
+									{this.state.nativeCurrencies?.map((coin) => {
+										return (
+											<div
+												className="d-flex"
+												style={{ fontSize: '1rem', marginBottom: 5 }}
+											>
+												<Coins type={coin} />
+												<span style={{ position: 'relative', left: 5, top: 8 }}>
+													{coins?.[coin]?.fullname}
+												</span>
+												<span
+													onClick={() => {
+														this.setState({
+															nativeCurrencies: this.state.nativeCurrencies.filter(
+																(c) => c !== coin
+															),
+														});
+													}}
+													style={{
+														cursor: 'pointer',
+														position: 'relative',
+														top: 10,
+														left: 12,
+													}}
+												>
+													<CloseCircleOutlined style={{ fontSize: 16 }} />
+												</span>
+											</div>
+										);
+									})}
+
+									<div>
+										<Select
+											placeholder="Add alternative currency"
+											style={{ marginTop: 20 }}
+											onChange={(e) => {
+												if (this.state.nativeCurrencies.includes(e)) return;
+												this.setState({
+													nativeCurrencies: [...this.state.nativeCurrencies, e],
+												});
+											}}
+										>
+											{Object.keys(coins)
+												.filter((coin) => coins[coin].type !== 'fiat')
+												.map((key) => (
+													<Option value={key}>{coins[key].fullname}</Option>
+												))}
+										</Select>
+									</div>
+
+									<Button
+										style={{ width: 120, marginTop: 10 }}
+										type="primary"
+										className={`green-btn btn-48`}
+										onClick={async () => {
+											this.handleSubmitGeneral({
+												kit: {
+													selectable_native_currencies: this.state
+														.nativeCurrencies,
+												},
+											});
+										}}
+									>
+										SAVE
+									</Button>
+								</div>
+							</div>
 						</div>
 					) : null}
 					{activeTab === 'branding' ? (
@@ -1239,6 +1330,8 @@ const mapStateToProps = (state) => ({
 	user: state.user,
 	constants: state.app.constants,
 	enabledPlugins: state.app.enabledPlugins,
+	selectable_native_currencies:
+		state.app.constants.selectable_native_currencies,
 });
 
 const mapDispatchToProps = (dispatch) => ({

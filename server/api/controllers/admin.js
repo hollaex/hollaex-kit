@@ -2300,7 +2300,7 @@ const getUserReferer = (req, res) => {
 };
 
 const createUserByAdmin = (req, res) => {
-	const { email, password } = req.swagger.params.data.value;
+	const { email, password, referral } = req.swagger.params.data.value;
 
 	loggerAdmin.info(req.uuid, 'controllers/admin/createUserByAdmin email', email);
 
@@ -2325,6 +2325,7 @@ const createUserByAdmin = (req, res) => {
 				role: 'user',
 				id: null,
 				email_verified: true,
+				referral,
 				additionalHeaders: {
 					'x-forwarded-for': req.headers['x-forwarded-for']
 				}
@@ -3001,6 +3002,125 @@ const createUserReferralCodeByAdmin = (req, res) => {
 		});
 };
 
+const fetchUserTradingVolumeByAdmin = (req, res) => {
+	const { user_id, to, from } = req.swagger.params;
+
+	loggerAdmin.info(
+		user_id.value,
+		'controllers/user/fetchUserTradingVolumeByAdmin',
+		to.value,
+		from.value
+	);
+
+	toolsLib.user.fetchUserTradingVolume(
+		user_id.value,
+		{
+			to: to.value,
+			from: from.value
+		}
+	)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/user/fetchUserTradingVolumeByAdmin err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const getPaymentDetailsByAdmin = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/getPaymentDetailsByAdmin/auth', req.auth);
+
+	const { user_id, is_p2p, is_fiat_control, status, limit, page, order_by, order, start_date, end_date } = req.swagger.params;
+
+	toolsLib.user.getPaymentDetails(user_id.value,
+		{
+			limit: limit.value,
+			page: page.value,
+			order_by: order_by.value,
+			order: order.value,
+			start_date: start_date.value,
+			end_date: end_date.value,
+			is_p2p: is_p2p.value,
+			is_fiat_control: is_fiat_control.value,
+			status: status.value,
+		})
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/getPaymentDetailsByAdmin', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const createPaymentDetailByAdmin = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/createPaymentDetailByAdmin/auth', req.auth);
+
+	const { user_id, name, label, details, is_p2p, is_fiat_control, status } = req.swagger.params.data.value;
+
+	toolsLib.user.createPaymentDetail({
+		user_id,
+		name,
+		label,
+		details,
+		is_p2p,
+		is_fiat_control,
+		status
+	})
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/createPaymentDetailByAdmin', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const updatePaymentDetailByAdmin = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/updatePaymentDetailByAdmin/auth', req.auth);
+
+	const { user_id, id, name, label, details, is_p2p, is_fiat_control, status } = req.swagger.params.data.value;
+
+	toolsLib.user.updatePaymentDetail(id, {
+		user_id,
+		name,
+		label,
+		details,
+		is_p2p,
+		is_fiat_control,
+		status
+	}, true)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/updatePaymentDetailByAdmin', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const deletePaymentDetailByAdmin = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/deletePaymentDetailByAdmin/auth', req.auth);
+
+	const { id, user_id } = req.swagger.params.data.value;
+
+	toolsLib.user.deletePaymentDetail(id, user_id)
+		.then(() => {
+			return res.json({
+				message: "Success"
+			});
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/deletePaymentDetailByAdmin', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
 module.exports = {
 	createInitialAdmin,
 	getAdminKit,
@@ -3074,5 +3194,10 @@ module.exports = {
 	disableUserWithdrawal,
 	performDirectWithdrawalByAdmin,
 	getUserReferralCodesByAdmin,
-	createUserReferralCodeByAdmin
+	createUserReferralCodeByAdmin,
+	fetchUserTradingVolumeByAdmin,
+	getPaymentDetailsByAdmin,
+	createPaymentDetailByAdmin,
+	updatePaymentDetailByAdmin,
+	deletePaymentDetailByAdmin
 };

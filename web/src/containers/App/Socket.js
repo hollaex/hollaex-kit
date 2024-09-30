@@ -6,7 +6,15 @@ import { WS_URL, SESSION_TIME, BASE_CURRENCY } from 'config/constants';
 import { isMobile } from 'react-device-detect';
 import { setWsHeartbeat } from 'ws-heartbeat/client';
 
-import { getMe, setMe, setBalance, updateUser } from 'actions/userAction';
+import withConfig from 'components/ConfigProvider/withConfig';
+import {
+	getMe,
+	setMe,
+	setBalance,
+	updateUser,
+	updateUserSettings,
+	setUserData,
+} from 'actions/userAction';
 import { addUserTrades } from 'actions/walletActions';
 import {
 	setUserOrders,
@@ -34,10 +42,13 @@ import {
 	setSnackDialog,
 	requestTiers,
 } from 'actions/appActions';
+import { p2pAddMessage, p2pGetStatus } from 'actions/p2pAction';
 import { playBackgroundAudioNotification } from 'utils/utils';
 import { getToken, isLoggedIn } from 'utils/token';
 import { NORMAL_CLOSURE_CODE, isIntentionalClosure } from 'utils/webSocket';
 import { ERROR_TOKEN_EXPIRED } from 'components/Notification/Logout';
+import { notification } from 'antd';
+import STRINGS from 'config/localizedStrings';
 
 class Container extends Component {
 	constructor(props) {
@@ -120,14 +131,28 @@ class Container extends Component {
 	};
 
 	getUserDetails = () => {
+		const { themeOptions } = this.props;
+		const isValidTheme = themeOptions.some(
+			(option) => option.value === this.props?.router?.location?.query?.theme
+		);
 		return this.props
 			.getMe()
 			.then(({ value }) => {
 				if (value && value.data && value.data.id) {
 					const data = value.data;
 					const { defaults = {} } = this.props.constants;
+					const params = new URLSearchParams(window.location.search);
 					let userData = { ...data };
 					if (data.settings) {
+						if (
+							data.settings.interface &&
+							data.settings.interface.display_currency
+						) {
+							localStorage.setItem(
+								'base_currnecy',
+								data.settings.interface.display_currency
+							);
+						}
 						if (
 							!data.settings.language &&
 							!this.props.activeLanguage &&
@@ -162,11 +187,52 @@ class Container extends Component {
 										},
 									},
 								};
-							} else if (
-								data.settings.interface.theme !== this.props.activeTheme
+							}
+							if (
+								data.settings.interface.theme !== this.props.activeTheme &&
+								this.props?.router?.location?.query?.theme &&
+								isValidTheme
 							) {
+								params.set('theme', data.settings.interface.theme);
+								const currentUrl = window.location.href.split('?')[0];
+								const newUrl = `${currentUrl}?${params.toString()}`;
+								this.props.router.replace(newUrl);
 								this.props.changeTheme(data.settings.interface.theme);
 								localStorage.setItem('theme', data.settings.interface.theme);
+							} else if (
+								this.props?.router?.location?.query?.theme !==
+									data.settings.interface.theme &&
+								isValidTheme
+							) {
+								const { settings = { interface: {} } } = this.props.user;
+								const settingsObj = { interface: { ...settings.interface } };
+								const theme = (
+									themeOptions.find(
+										({ value }) =>
+											value === this.props?.router?.location?.query?.theme
+									) || themeOptions[0]
+								).value;
+								settingsObj.interface.theme = theme;
+								return updateUserSettings(settingsObj)
+									.then(({ data }) => {
+										this.props.setUserData(data);
+										this.props.setMe(data);
+										if (data.settings && data.settings.interface) {
+											this.props.changeTheme(
+												this.props?.router?.location?.query?.theme
+											);
+											localStorage.setItem(
+												'theme',
+												this.props?.router?.location?.query?.theme
+											);
+										}
+									})
+									.catch((err) => {
+										const error = { _error: err.message };
+										if (err.response && err.response.data) {
+											error._error = err.response.data.message;
+										}
+									});
 							}
 						}
 					}
@@ -206,7 +272,7 @@ class Container extends Component {
 			privateSocket.send(
 				JSON.stringify({
 					op: 'subscribe',
-					args: ['trade', 'wallet', 'order', 'deposit', 'usertrade'],
+					args: ['trade', 'wallet', 'order', 'deposit', 'usertrade', `p2pChat`],
 				})
 			);
 			// this.wsInterval = setInterval(() => {
@@ -366,6 +432,38 @@ class Container extends Component {
 						data.data.coins = this.props.coins;
 						this.props.setNotification(NOTIFICATIONS.DEPOSIT, data.data, show);
 					}
+					break;
+				case 'p2pChat':
+					if (data.action === 'getStatus') {
+						this.props.p2pGetStatus(data.data);
+					} else {
+						this.props.p2pAddMessage(data.data);
+					}
+
+					notification.open({
+						message: (data.action = 'getStatus'
+							? STRINGS['P2P.STATUS_UPDATE']
+							: STRINGS['P2P.NEW_MESSAGE']),
+						description: (
+							<div>
+								<div
+									style={{
+										textDecoration: 'underline',
+										fontWeight: 'bold',
+										cursor: 'pointer',
+									}}
+									onClick={() => {
+										window.location.href = `${window.location.origin}/p2p/order/${data.data.id}`;
+									}}
+								>
+									{STRINGS['P2P.CLICK_TO_VIEW']}
+								</div>
+							</div>
+						),
+
+						placement: 'bottomRight',
+						type: 'info',
+					});
 					break;
 				default:
 					break;
@@ -646,6 +744,8 @@ const mapDispatchToProps = (dispatch) => ({
 	setMe: bindActionCreators(setMe, dispatch),
 	setBalance: bindActionCreators(setBalance, dispatch),
 	setUserOrders: bindActionCreators(setUserOrders, dispatch),
+	p2pAddMessage: bindActionCreators(p2pAddMessage, dispatch),
+	p2pGetStatus: bindActionCreators(p2pGetStatus, dispatch),
 	addOrder: bindActionCreators(addOrder, dispatch),
 	updateOrder: bindActionCreators(updateOrder, dispatch),
 	removeOrder: bindActionCreators(removeOrder, dispatch),
@@ -668,6 +768,10 @@ const mapDispatchToProps = (dispatch) => ({
 	getMe: bindActionCreators(getMe, dispatch),
 	requestTiers: bindActionCreators(requestTiers, dispatch),
 	setPairsTradesFetched: bindActionCreators(setPairsTradesFetched, dispatch),
+	setUserData: bindActionCreators(setUserData, dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Container);
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withConfig(Container));

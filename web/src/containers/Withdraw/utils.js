@@ -1,4 +1,5 @@
 import React from 'react';
+import { isMobile } from 'react-device-detect';
 import mathjs from 'mathjs';
 import { Accordion, Coin, EditWrapper } from 'components';
 import {
@@ -11,7 +12,8 @@ import {
 import STRINGS from 'config/localizedStrings';
 
 import { renderBankInformation } from '../Wallet/components';
-import { getNetworkNameByKey } from 'utils/wallet';
+import { getNetworkName, getNetworkNameByKey } from 'utils/wallet';
+import { STATIC_ICONS } from 'config/icons';
 
 export const generateBaseInformation = (currency, limits = {}) => {
 	const { minAmount = 2, maxAmount = 10000 } = limits;
@@ -151,9 +153,37 @@ export const renderNetworkWithLabel = (iconId, network) => {
 	return network && iconId ? (
 		<div className="d-flex">
 			<span>{getNetworkNameByKey(network)}</span>
-			<div className="network-icon mt-1 ml-2">
+			<div
+				className={isMobile ? 'network-icon ml-2' : 'network-icon mt-1 ml-2'}
+			>
 				<Coin iconId={iconId} type="CS2" className="withdraw-network-icon" />
 			</div>
 		</div>
 	) : null;
+};
+
+export const renderNetworkField = (network) => {
+	return network ? getNetworkName(network) : null;
+};
+
+export const networkList = [
+	{ network: 'ERC20', iconId: 'ETH_ICON' },
+	{ network: 'BEP20', iconId: 'BNB_ICON' },
+	{ network: 'TRC20', iconId: 'TRX_ICON' },
+	{ network: 'klaytn', iconId: 'KLAY_ICON' },
+	{ network: 'Polygon', iconId: 'MATIC_ICON' },
+	{ network: 'Solana', iconId: 'SOL_ICON' },
+	{ network: 'Stellar', iconId: 'XLM_ICON' },
+	{ network: 'Fantom', iconId: 'FTM_ICON' },
+];
+
+export const renderScanIcon = (onHandleScan) => {
+	return (
+		<div className="render-scan-wrapper d-flex" onClick={() => onHandleScan()}>
+			<span className="suffix-text">{renderLabel('ACCORDIAN.SCAN')}</span>
+			<div className="img-wrapper">
+				<img alt="scan-icon" src={STATIC_ICONS['QR_CODE_SCAN']}></img>
+			</div>
+		</div>
+	);
 };

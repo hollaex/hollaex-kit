@@ -1,5 +1,19 @@
 #!/bin/bash
 
+# Prevent to proceed if there are git conflicts on the settings files
+function check_git_conflict() {
+    local file=$1
+
+    if grep -q '<< HEAD' "$file" && grep -q '==' "$file" && grep -q '>>' "$file"; then
+        echo -e "\nError: Git conflict detected in file: $file"
+        echo "Please check the file and fix the Git conflict to proceed."
+        exit 1;
+    fi
+}
+
+check_git_conflict settings/configmap;
+check_git_conflict settings/secret;
+
 export ARCH=$(uname -m | sed s/aarch64/arm64/ | sed s/x86_64/amd64/ | sed s/s390x/s390x/)
 
 # Dependencies installer for Debian (Ubuntu) based Linux.
@@ -60,26 +74,46 @@ if command apt -v > /dev/null 2>&1; then
 
     fi
 
-    if ! command docker compose version > /dev/null 2>&1; then
+  
+    if command docker-compose --version | grep -q '^docker-compose version 1'; then
 
-        printf "\n\033[93mHollaEx CLI requires docker compose v2 to operate. Installing it now...\033[39m\n"
+        echo -e "\n\033[91mWarning: Detected Docker Compose v1 instead of v2.\033[39m"
+        echo "HollaEx CLI v3+ requires Docker Compose v2."
 
-        if [[ ! $IS_APT_UPDATED ]]; then
+        if command sudo apt list --installed docker-compose; then
 
-            echo "Updating APT list"
-            sudo apt update
+            echo "Removing Docker-Compose v1 through the APT..."
+
+            sudo apt remove -y docker-compose
+
+        else
+            
+            echo "To proceed, please uninstall the current Docker Compose v1 and then run the install.sh script."
+            echo -e "The install.sh script will automatically install Docker Compose v2 for you.\n"
+
+            exit 1;
+        
         fi
 
-        if command sudo apt install -y docker-compose-v2; then
+    fi
 
-            printf "\n\033[92mdocker compose v2 has been successfully installed!\033[39m\n"
+    if ! command -v docker-compose > /dev/null 2>&1; then
 
-            echo "Info: $(docker compose version)"
+        printf "\n\033[93mHollaEx CLI requires docker-compose v2 to operate. Installing it now...\033[39m\n"
+
+        if command sudo curl -SL https://github.com/docker/compose/releases/download/v2.29.1/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose; then
+
+            chmod +x /usr/local/bin/docker-compose
+
+            printf "\n\033[92mdocker compose v2has been successfully installed!\033[39m\n"
+
+            echo "Info: $(docker-compose version)"
+            
 
         else
 
             printf "\n\033[91mFailed to install docker compose v2.\033[39m\n"
-            echo "Please review the logs and try to manually install it. - 'sudo apt install -y docker compose'."
+            echo "Please review the logs and try to manually install it. - 'https://github.com/docker/compose/releases'."
             exit 1;
 
         fi
@@ -101,6 +135,8 @@ if command apt -v > /dev/null 2>&1; then
             printf "\n\033[92mjq has been successfully installed!\033[39m\n"
 
             echo "Info: $(jq --version)"
+
+            
 
         else
 
@@ -251,26 +287,34 @@ elif command brew -v > /dev/null 2>&1; then
 
     fi
 
-    if ! command docker compose version > /dev/null 2>&1; then
+    if command docker-compose --version | grep -q '^docker-compose version 1'; then
 
-        printf "\n\033[93mHollaEx CLI requires docker compose to operate. Installing it now...\033[39m\n"
+        echo -e "\n\033[91mError: Detected Docker Compose v1 instead of v2.\033[39m"
+        echo "HollaEx CLI v3+ requires Docker Compose v2."
+        echo "To proceed, please uninstall the current Docker Compose v1 and then run the install.sh script."
+        echo -e "The install.sh script will automatically install Docker Compose v2 for you.\n"
 
-        if [[ ! $IS_BREW_UPDATED ]]; then
+        exit 1;
 
-            echo "Updating Homebrew list"
-            brew update
-        fi
+    fi
 
-        if command brew install docker compose; then
+    if ! command -v docker-compose > /dev/null 2>&1; then
 
-            printf "\n\033[92mdocker compose has been successfully installed!\033[39m\n"
+        printf "\n\033[93mHollaEx CLI requires docker-compose v2 to operate. Installing it now...\033[39m\n"
 
-            echo "Info: $(docker compose version)"
+        if command sudo curl -SL https://github.com/docker/compose/releases/download/v2.29.1/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose; then
+
+            chmod +x /usr/local/bin/docker-compose
+
+            printf "\n\033[92mdocker compose v2has been successfully installed!\033[39m\n"
+
+            echo "Info: $(docker-compose version)"
+            
 
         else
 
-            printf "\n\033[91mFailed to install docker compose.\033[39m\n"
-            echo "Please review the logs and try to manually install it. - 'brew install docker compose'."
+            printf "\n\033[91mFailed to install docker compose v2.\033[39m\n"
+            echo "Please review the logs and try to manually install it. - 'https://github.com/docker/compose/releases'."
             exit 1;
 
         fi
@@ -414,21 +458,33 @@ elif command yum --version > /dev/null 2>&1; then
 
     fi
 
-    if ! command docker compose version > /dev/null 2>&1; then
+    if command docker-compose --version | grep -q '^docker-compose version 1'; then
 
-        printf "\n\033[93mHollaEx CLI requires docker compose to operate. Installing it now...\033[39m\n"
+        echo -e "\n\033[91mError: Detected Docker Compose v1 instead of v2.\033[39m"
+        echo "HollaEx CLI v3+ requires Docker Compose v2."
+        echo "To proceed, please uninstall the current Docker Compose v1 and then run the install.sh script."
+        echo -e "The install.sh script will automatically install Docker Compose v2 for you.\n"
 
-        if command sudo curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker compose; then
+        exit 1;
 
-            sudo chmod +x /usr/local/bin/docker compose
+    fi
 
-            printf "\n\033[92mdocker compose has been successfully installed!\033[39m\n"
+    if ! command -v docker-compose > /dev/null 2>&1; then
 
-            echo "Info: $(docker compose version)"
+        printf "\n\033[93mHollaEx CLI requires docker-compose v2 to operate. Installing it now...\033[39m\n"
+
+        if command sudo curl -SL https://github.com/docker/compose/releases/download/v2.29.1/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose; then
+
+            chmod +x /usr/local/bin/docker-compose
+
+            printf "\n\033[92mdocker compose v2has been successfully installed!\033[39m\n"
+
+            echo "Info: $(docker-compose version)"
+            
 
         else
 
-            printf "\n\033[91mFailed to install docker compose.\033[39m\n"
+            printf "\n\033[91mFailed to install docker compose v2.\033[39m\n"
             echo "Please review the logs and try to manually install it. - 'https://github.com/docker/compose/releases'."
             exit 1;
 
@@ -518,7 +574,7 @@ elif command yum --version > /dev/null 2>&1; then
 
 fi
 
-if ! command docker -v > /dev/null 2>&1 || ! command docker compose version > /dev/null 2>&1 || ! command curl --version > /dev/null 2>&1 || ! command jq --version > /dev/null 2>&1 || ! command nslookup -version > /dev/null 2>&1 || ! command psql --version > /dev/null 2>&1; then
+if ! command docker -v > /dev/null 2>&1 || ! command docker-compose version > /dev/null 2>&1 || ! command curl --version > /dev/null 2>&1 || ! command jq --version > /dev/null 2>&1 || ! command nslookup -version > /dev/null 2>&1 || ! command psql --version > /dev/null 2>&1; then
 
     if command docker -v > /dev/null 2>&1; then
 
@@ -526,7 +582,7 @@ if ! command docker -v > /dev/null 2>&1 || ! command docker compose version > /d
     
     fi
 
-    if command docker compose version > /dev/null 2>&1; then
+    if command docker-compose version > /dev/null 2>&1; then
 
         IS_DOCKER_COMPOSE_INSTALLED=true
     
@@ -575,7 +631,7 @@ if ! command docker -v > /dev/null 2>&1 || ! command docker compose version > /d
     
     fi  
 
-    # docker compose installation status check
+    # docker compose v2installation status check
     if [[ "$IS_DOCKER_COMPOSE_INSTALLED" ]]; then
 
         printf "\033[92mdocker compose: Installed\033[39m\n"
@@ -669,7 +725,6 @@ if [[ "$DOCKER_USERGROUP_ADDED" ]]; then
 
 fi
 
-
 function kit_cross_compatibility_converter() {
 
   CONFIG_FILE_PATH=$(pwd)/settings/*
@@ -714,11 +769,12 @@ function kit_cross_compatibility_converter() {
     echo "Updating the Nginx file to have an existing docker network bind..."
     yq e -i ".services |= with_entries(select(.key == \"hollaex-kit-prod-nginx\") | .key = \"$ENVIRONMENT_EXCHANGE_NAME-nginx\")" $(pwd)/nginx/docker-compose.yaml
     yq e -i ".services.*.networks[] = \"local_$ENVIRONMENT_EXCHANGE_NAME-network\"" $(pwd)/nginx/docker-compose.yaml
-    yq e -i ".networks |= with_entries(select(.key == \"local_hollaex-kit\") | .key = \"local_$ENVIRONMENT_EXCHANGE_NAME-network\")" $(pwd)/nginx/docker-compose.yaml
+    yq e -i ".networks |= with_entries(select(.key == \"local_hollaex-kit-network\") | .key = \"local_$ENVIRONMENT_EXCHANGE_NAME-network\")" $(pwd)/nginx/docker-compose.yaml
 
     if command docker ps | grep local.*-nginx > /dev/null ; then
 
-        docker compose -f $(pwd)/nginx/docker-compose.yaml up -d
+        docker-compose -f $(pwd)/nginx/docker-compose.yaml down
+        docker-compose -f $(pwd)/nginx/docker-compose.yaml up -d
 
     fi
     
@@ -748,7 +804,7 @@ function kit_cross_compatibility_converter() {
 
   if [[ -f "$(pwd)/templates/kubernetes/config/${ENVIRONMENT_EXCHANGE_NAME}-secret.yaml" ]]; then
 
-    echo "Kubernetes configmap generated with HollaEx CLI v2 has been detected."
+    echo "Kubernetes secret generated with HollaEx CLI v2 has been detected."
     echo "Converting it..."
     mv $(pwd)/templates/kubernetes/config/${ENVIRONMENT_EXCHANGE_NAME}-secret.yaml $(pwd)/server/tools/kubernetes/env/secret.yaml
 
@@ -756,7 +812,7 @@ function kit_cross_compatibility_converter() {
 
   if [[ -f "$(pwd)/templates/kubernetes/config/${ENVIRONMENT_EXCHANGE_NAME}-ingress.yaml" ]]; then
 
-    echo "Kubernetes configmap generated with HollaEx CLI v2 has been detected."
+    echo "Kubernetes ingress yamls generated with HollaEx CLI v2 has been detected."
     echo "Converting it..."
     mv $(pwd)/templates/kubernetes/config/${ENVIRONMENT_EXCHANGE_NAME}-ingress.yaml $(pwd)/server/tools/kubernetes/ingress/hollaex-kit-ingress.yaml
 

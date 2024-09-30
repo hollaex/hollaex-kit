@@ -160,9 +160,14 @@ class UserSettings extends Component {
 			constants = {},
 			icons: ICONS,
 			themeOptions,
+			selectable_native_currencies,
 		} = this.props;
 		const formValues = generateFormValues({
 			options: themeOptions.map(({ value }) => ({ value, label: value })),
+			currencyOptions: selectable_native_currencies.map((value) => ({
+				value,
+				label: value,
+			})),
 		});
 		const usernameFormValues = generateUsernameFormValues(
 			settings.chat.set_username
@@ -379,6 +384,15 @@ class UserSettings extends Component {
 						this.props.changeTheme(data.settings.interface.theme);
 						localStorage.setItem('theme', data.settings.interface.theme);
 					}
+					if (
+						data.settings.interface &&
+						data.settings.interface.display_currency
+					) {
+						localStorage.setItem(
+							'base_currnecy',
+							data.settings.interface.display_currency
+						);
+					}
 				}
 				this.props.closeNotification();
 			})
@@ -451,13 +465,13 @@ class UserSettings extends Component {
 				>
 					<div className="header-content">
 						<div>
-							<EditWrapper stringId="USER_SETTINGS.TITLE_TEXT_1">
-								{STRINGS['USER_SETTINGS.TITLE_TEXT_1']}
+							<EditWrapper stringId="USER_SETTINGS.TITLE_TEXT">
+								{STRINGS['USER_SETTINGS.TITLE_TEXT']}
 							</EditWrapper>
 						</div>
 						<div className="mb-3">
-							<EditWrapper stringId="USER_SETTINGS.TITLE_TEXT_2">
-								{STRINGS['USER_SETTINGS.TITLE_TEXT_2']}
+							<EditWrapper stringId="USER_SETTINGS.TITLE_TEXT_1">
+								{STRINGS['USER_SETTINGS.TITLE_TEXT_1']}
 							</EditWrapper>
 						</div>
 					</div>
@@ -503,6 +517,8 @@ const mapStateToProps = (state) => ({
 	//orders: state.order.activeOrders,
 	constants: state.app.constants,
 	features: state.app.features,
+	selectable_native_currencies:
+		state.app.constants.selectable_native_currencies,
 });
 
 const mapDispatchToProps = (dispatch) => ({

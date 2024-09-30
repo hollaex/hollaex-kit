@@ -74,15 +74,24 @@ class UserSecurity extends Component {
 
 		this.props.getUserLogins(RECORD_LIMIT);
 		this.openLogins();
-		if (window.location.search && window.location.search.includes('password')) {
-			this.setState({ activeTab: 1 });
-		} else if (
-			window.location.search &&
-			window.location.search.includes('apiKeys')
-		) {
-			this.setState({ activeTab: 2 });
+		if (this.props.getSecurityTab) {
+			this.setState({
+				activeTab: this.props.getSecurityTab,
+			});
 		} else {
-			this.setState({ activeTab: 0 });
+			if (
+				window.location.search &&
+				window.location.search.includes('password')
+			) {
+				this.setState({ activeTab: 1 });
+			} else if (
+				window.location.search &&
+				window.location.search.includes('apiKeys')
+			) {
+				this.setState({ activeTab: 2 });
+			} else {
+				this.setState({ activeTab: 0 });
+			}
 		}
 		this.openCurrentTab();
 	}
@@ -771,6 +780,7 @@ const mapStateToProps = (state) => ({
 		...Object.keys(generateFormValues())
 	),
 	selectedStep: state.app.selectedStep,
+	getSecurityTab: state.app.selectedSecurityTab,
 });
 
 const mapDispatchToProps = (dispatch) => ({

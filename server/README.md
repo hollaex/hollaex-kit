@@ -47,7 +47,7 @@ This folder holds the `swagger.yaml` file that contains all the endpoints for th
   - Database used is `postgreSQL`
 - mail
   - This directory holds everything relevant to emails.
-  - The `strings` directory holds all the strings that contain email messages. They are separated by langauge e.g. `en.js`, `fa.js`, etc.
+  - The `strings` directory holds all the strings that contain email messages. They are separated by language e.g. `en.js`, `fa.js`, etc.
   - The `templates` directory holds all the email templates. They are separated by the emails being send e.g. `welcome.js`, `deposit.js`, etc.
   - The library used for emails is `Nodemailer`.
 - config

@@ -3,33 +3,61 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import classnames from 'classnames';
 import { Button as AntBtn } from 'antd';
-import { openConnectViaDesktop } from 'actions/appActions';
 
+import './CeFiStake.scss';
 import STRINGS from 'config/localizedStrings';
-import { HeaderSection, EditWrapper, Button, Coin, Image } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
-
 import Account from './components/Account';
 import ConnectWrapper from './components/ConnectWrapper';
 import StakesAndEarnings from './components/StakesAndEarnings';
-import { STAKING_INDEX_COIN } from 'config/contracts';
 import CeFiUserStake from './components/CeFiUserStake';
-import './CeFiStake.scss';
+import { openConnectViaDesktop, setStake } from 'actions/appActions';
+import { HeaderSection, EditWrapper, Button, Coin, Image } from 'components';
+import { STAKING_INDEX_COIN } from 'config/contracts';
+import { browserHistory } from 'react-router';
 
 class Stake extends Component {
 	constructor(prop) {
 		super(prop);
 		this.state = {
 			activeTab: '1',
-			selectedStaking:
-				this.props?.constants?.features?.cefi_stake &&
-				this.props?.constants?.features?.stake_page
-					? 'defi'
-					: this.props?.constants?.features?.cefi_stake
-					? 'cefi'
-					: 'defi',
+			selectedStaking: this.props.getStake
+				? this.props.getStake
+				: this.props?.constants?.features?.cefi_stake &&
+				  this.props?.constants?.features?.stake_page
+				? 'defi'
+				: this.props?.constants?.features?.cefi_stake
+				? 'cefi'
+				: 'defi',
 		};
 	}
+
+	componentDidMount() {
+		this.openCurrentTab();
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		if (
+			JSON.stringify(prevState.selectedStaking) !==
+			JSON.stringify(this.state.selectedStaking)
+		) {
+			this.openCurrentTab();
+		}
+	}
+
+	componentWillUnmount() {
+		setStake('defi');
+	}
+
+	openCurrentTab = () => {
+		let currentTab = '';
+		if (this.state.selectedStaking === 'cefi') {
+			currentTab = 'cefi';
+		} else {
+			currentTab = 'defi';
+		}
+		browserHistory.push(`/stake?${currentTab}`);
+	};
 
 	render() {
 		const {
@@ -249,9 +277,11 @@ const mapStateToProps = (store) => ({
 	constants: store.app.constants,
 	balance: store.user.balance,
 	theme: store.app.theme,
+	getStake: store.app.selectedStake,
 });
 
 const mapDispatchToProps = (dispatch) => ({
+	setSelectedStake: bindActionCreators(setStake, dispatch),
 	openConnectViaDesktop: bindActionCreators(openConnectViaDesktop, dispatch),
 });
 

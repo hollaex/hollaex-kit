@@ -125,7 +125,7 @@ const checkStatus = () => {
 						status.constants
 					),
 					Tier.findAll(),
-					Broker.findAll({ attributes: ['id', 'symbol', 'buy_price', 'sell_price', 'paused', 'min_size', 'max_size']}),
+					Broker.findAll({ attributes: ['id', 'symbol', 'buy_price', 'sell_price', 'paused', 'min_size', 'max_size', 'type', 'formula' ]}),
 					QuickTrade.findAll(),
 					TransactionLimit.findAll(),
 					status.dataValues
@@ -223,6 +223,54 @@ const checkStatus = () => {
 				configuration.quicktrade.push(item);
 			});
 
+			let rates = {}
+			configuration.quicktrade.forEach(quicktrade => {
+				rates[quicktrade.symbol] = { type: quicktrade.type, active: quicktrade.active };
+			});
+			
+			const generatePossibleSymbols = (rates) => {
+				const symbols = Object.keys(rates);
+				const currencies = symbols.flatMap(symbol => symbol.split('-'));
+				const uniqueCurrencies = [...new Set(currencies)];
+			  
+				const possibleSymbols = [];
+			  
+				for (let i = 0; i < uniqueCurrencies.length; i++) {
+				  for (let j = i + 1; j < uniqueCurrencies.length; j++) {
+					const pair1 = `${uniqueCurrencies[i]}-${uniqueCurrencies[j]}`;
+					const pair2 = `${uniqueCurrencies[j]}-${uniqueCurrencies[i]}`;
+					
+					if (!rates[pair1]) {
+					  possibleSymbols.push(pair1);
+					}
+					
+					if (!rates[pair2]) {
+					  possibleSymbols.push(pair2);
+					}
+				  }
+				}
+			  
+				return possibleSymbols;
+			}
+			const newSymbols = generatePossibleSymbols(rates);
+			const toolsLib = require('hollaex-tools-lib');
+
+			const tradePaths = {};
+			// create trade paths
+			for(const symbol of newSymbols) {
+				const assets = symbol.split('-');
+				const from = assets[0];
+				const to = assets[1];
+				const rate = toolsLib.order.findConversionRate(from, to, rates, new Set(), 1);
+				rate.trades.forEach(trade => {
+					delete trade.price;
+					delete trade.token;
+					delete trade.size;
+				})
+				tradePaths[symbol] = rate.trades;
+			}
+
+			configuration.tradePaths = tradePaths;
 			
 			for (let tier of tiers) {
 				if (!('maker' in tier.fees)) {
@@ -330,10 +378,10 @@ const checkStatus = () => {
 			return networkNodeLib;
 		})
 		.catch((err) => {
-			loggerInit.info('init/checkStatus/catch error', err.message);
+			loggerInit.error('init/checkStatus/catch error', err.message);
 			setTimeout(() => {
-				process.exit(0);
-			}, 5000);
+				process.exit(1);
+			}, 60000);
 		});
 };
 

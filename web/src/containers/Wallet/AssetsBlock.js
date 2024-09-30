@@ -3,12 +3,15 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
-import { Checkbox, Switch } from 'antd';
+import { Checkbox, Dropdown, Menu, Switch } from 'antd';
 import {
 	CaretUpOutlined,
 	CaretDownOutlined,
 	SearchOutlined,
+	CloseCircleOutlined,
+	MoreOutlined,
 } from '@ant-design/icons';
+
 import { fetchBalanceHistory, fetchPlHistory } from './actions';
 import classnames from 'classnames';
 import Highcharts from 'highcharts';
@@ -38,9 +41,9 @@ import {
 	CURRENCY_PRICE_FORMAT,
 	DEFAULT_COIN_DATA,
 } from 'config/constants';
+import { getAllAvailableMarkets, goToTrade } from './utils';
 import withConfig from 'components/ConfigProvider/withConfig';
 import TradeInputGroup from './components/TradeInputGroup';
-import { unique } from 'utils/data';
 import DustSection from './DustSection';
 import moment from 'moment';
 import _toLower from 'lodash/toLower';
@@ -231,60 +234,9 @@ const AssetsBlock = ({
 		</div>
 	);
 
-	const isMarketAvailable = (pair) => {
-		return pair && pairs[pair] && pairs[pair].active;
-	};
-
-	const findPair = (key, field) => {
-		const availableMarketsArray = [];
-
-		Object.entries(pairs).map(([pairKey, pairObject]) => {
-			if (
-				pairObject &&
-				pairObject[field] === key &&
-				isMarketAvailable(pairKey)
-			) {
-				availableMarketsArray.push(pairKey);
-			}
-
-			return pairKey;
-		});
-
-		return availableMarketsArray;
-	};
-
-	const goToTrade = (pair) => {
-		const flippedPair = getFlippedPair(pair);
-		const isQuickTrade = !!quicktrade.filter(
-			({ symbol, active, type }) =>
-				!!active &&
-				type !== 'pro' &&
-				(symbol === pair || symbol === flippedPair)
-		).length;
-		if (pair && isQuickTrade) {
-			return navigate(`/quick-trade/${pair}`);
-		} else if (pair && !isQuickTrade) {
-			return navigate(`/trade/${pair}`);
-		}
-	};
-
-	const getFlippedPair = (pair) => {
-		let flippedPair = pair.split('-');
-		flippedPair.reverse().join('-');
-		return flippedPair;
-	};
-
-	const getAllAvailableMarkets = (key) => {
-		const quickTrade = quicktrade
-			.filter(({ symbol = '', active }) => {
-				const [base, to] = symbol.split('-');
-				return active && (base === key || to === key);
-			})
-			.map(({ symbol }) => symbol);
-
-		const trade = [...findPair(key, 'pair_base'), ...findPair(key, 'pair_2')];
-
-		return unique([...quickTrade, ...trade]);
+	const onHandleClose = () => {
+		setIsSearchActive(false);
+		handleSearch();
 	};
 
 	return showDustSection ? (
@@ -324,8 +276,17 @@ const AssetsBlock = ({
 												placeHolder={`${STRINGS['WALLET_ASSETS_SEARCH_TXT']}...`}
 												handleSearch={handleSearch}
 												showCross
+												isFocus={true}
 											/>
 										</EditWrapper>
+										<div onClick={() => onHandleClose()}>
+											<EditWrapper stringId="CLOSE_TEXT">
+												<span className="blue-link close-text-link">
+													{STRINGS['CLOSE_TEXT']}
+													<CloseCircleOutlined />
+												</span>
+											</EditWrapper>
+										</div>
 									</div>
 								)}
 							</div>
@@ -645,7 +606,7 @@ const AssetsBlock = ({
 								],
 								index
 							) => {
-								const markets = getAllAvailableMarkets(key);
+								const markets = getAllAvailableMarkets(key, quicktrade);
 								const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 								const balanceText =
 									key === BASE_CURRENCY
@@ -713,24 +674,57 @@ const AssetsBlock = ({
 											<td className="td-amount">
 												{assets && baseCoin && !loading && increment_unit ? (
 													<div className="d-flex justify-content-end">
-														<div className="d-flex flex-column align-items-end">
-															<div className="font-weight-bold">{balance}</div>
-															{key !== BASE_CURRENCY &&
-																parseFloat(balanceText || 0) > 0 && (
-																	<div className="fill_secondary-color">
-																		{`(≈  $${balanceText})`}
+														<Dropdown
+															size="small"
+															overlayClassName="custom-dropdown-style"
+															style={{
+																width: 130,
+															}}
+															overlay={
+																<Menu
+																	onClick={({ key }) =>
+																		goToTrade(key, quicktrade)
+																	}
+																>
+																	{markets.map((market) => {
+																		const { display_name, icon_id } =
+																			pairs[market] ||
+																			quicktrade.find(
+																				({ symbol }) => symbol === market
+																			) ||
+																			{};
+																		return (
+																			<Menu.Item className="caps" key={market}>
+																				<div className="d-flex align-items-center">
+																					<Coin
+																						iconId={icon_id}
+																						type={isMobile ? 'CS5' : 'CS2'}
+																					/>
+																					<div className="app_bar-pair-font">
+																						{display_name}
+																					</div>
+																				</div>
+																			</Menu.Item>
+																		);
+																	})}
+																</Menu>
+															}
+														>
+															<div className="amount-field">
+																<div className="d-flex flex-column align-items-end">
+																	<div className="font-weight-bold">
+																		{balance}
 																	</div>
-																)}
-														</div>
-														<div className="more-icon-wrapper">
-															<TradeInputGroup
-																quicktrade={quicktrade}
-																markets={markets}
-																goToTrade={goToTrade}
-																pairs={pairs}
-																text="mobile-trade"
-															/>
-														</div>
+																	{key !== BASE_CURRENCY &&
+																		parseFloat(balanceText || 0) > 0 && (
+																			<div className="fill_secondary-color">
+																				{`(≈  ${balanceText})`}
+																			</div>
+																		)}
+																</div>
+																<MoreOutlined className="more-icon" />
+															</div>
+														</Dropdown>
 													</div>
 												) : (
 													<div
@@ -814,7 +808,7 @@ const AssetsBlock = ({
 														text={STRINGS['TRADE_TAB_TRADE']}
 														iconId="BLUE_TRADE_ICON"
 														iconPath={ICONS['BLUE_TRADE_ICON']}
-														onClick={() => goToTrade(markets[0])}
+														onClick={() => goToTrade(markets[0], quicktrade)}
 														className="csv-action"
 														showActionText={isMobile}
 														disable={markets.length === 0}
@@ -845,7 +839,7 @@ const AssetsBlock = ({
 
 				{isMobile && (
 					<div className="profit-loss-link mb-5">
-						<div onClick={() => navigate('/wallet/history')}>
+						<div onClick={() => handleBalanceHistory(true)}>
 							<EditWrapper stringId="WALLET.VIEW_MORE_WALLET_INFO">
 								<span className="profit-loss-tab-label">
 									{STRINGS['WALLET.VIEW_MORE_WALLET_INFO']}

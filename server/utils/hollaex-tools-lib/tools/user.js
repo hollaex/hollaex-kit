@@ -17,7 +17,8 @@ const {
 	isArray,
 	isInteger,
 	isEmpty,
-	uniq
+	uniq,
+	uniqWith
 } = require('lodash');
 const { isEmail } = require('validator');
 const randomString = require('random-string');
@@ -61,7 +62,12 @@ const {
 	REFERRAL_UNSUPPORTED_EXCHANGE_PLAN,
 	CANNOT_CHANGE_DELETED_EMAIL,
 	SERVICE_NOT_SUPPORTED,
-	BALANCE_HISTORY_NOT_ACTIVE
+	BALANCE_HISTORY_NOT_ACTIVE,
+	ADDRESSBOOK_MISSING_FIELDS,
+	PAYMENT_DETAIL_NOT_FOUND,
+	ADDRESSBOOK_ALREADY_EXISTS,
+	UNAUTHORIZED_UPDATE_METHOD,
+	ADDRESSBOOK_NOT_FOUND
 } = require(`${SERVER_PATH}/messages`);
 const { publisher, client } = require('./database/redis');
 const {
@@ -69,6 +75,7 @@ const {
 	AUDIT_KEYS,
 	USER_FIELD_ADMIN_LOG,
 	ADDRESS_FIELDS,
+	CRYPTO_ADDRESS_FIELDS,
 	ID_FIELDS,
 	SETTING_KEYS,
 	OMITTED_USER_FIELDS,
@@ -84,7 +91,7 @@ const {
 } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
-const { getKitConfig, isValidTierLevel, getKitTier, isDatetime, getKitSecrets, sendCustomEmail, emailHtmlBoilerplate, getDomain, updateKitConfigSecrets, sleep, getKitCoins } = require('./common');
+const { getKitConfig, isValidTierLevel, getKitTier, isDatetime, getAssetsPrices, getKitSecrets, sendCustomEmail, emailHtmlBoilerplate, getDomain, updateKitConfigSecrets, sleep, getKitCoins } = require('./common');
 const { isValidPassword, createSession } = require('./security');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { all, reject } = require('bluebird');
@@ -246,6 +253,7 @@ const createUser = (
 		role: 'user',
 		id: null,
 		email_verified: false,
+		referral: null,
 		additionalHeaders: null
 	}
 ) => {
@@ -305,6 +313,10 @@ const createUser = (
 			});
 	})
 		.then((user) => {
+			if (opts.referral && isString(opts.referral)) {
+				checkAffiliation(opts.referral, user.id);
+			}
+
 			return all([
 				user
 			]);
@@ -1634,13 +1646,13 @@ const disableUserWithdrawal = async (user_id, opts = { expiry_date : null }) => 
 
 	if (!user) {
 		throw new Error(USER_NOT_FOUND);
-	};
+	}
 
 	let withdrawal_blocked = null;
 
 	if (expiry_date) {
 		withdrawal_blocked = moment(expiry_date).toISOString();
-	};
+	}
 
 	return user.update(
 		{ withdrawal_blocked },
@@ -2411,7 +2423,28 @@ const addAmounts = (amount1, amount2) => {
 		)
 	);
 };
+const sortTopVolumes = (volumeData, topN = 4) => {
+	const topSortedVolumes = {};
 
+	for (const period in volumeData) {
+		const periodData = volumeData[period];
+        
+		if (Object.keys(periodData).length > 0) {
+			topSortedVolumes[period] = Object.entries(periodData)
+				.sort(([, valueA], [, valueB]) => valueB - valueA)
+				.slice(0, topN) 
+				.map(([key, value]) => ({ [key]: value })); 
+		}
+	}
+    
+	return topSortedVolumes;
+};
+
+const multiplyAmounts = (x, y) => {
+	return mathjs.number(
+	  mathjs.multiply(mathjs.bignumber(x), mathjs.bignumber(y))
+	);
+};
 
 const getUserReferralCodes = async (
 	opts = {
@@ -2465,31 +2498,31 @@ const createUserReferralCode = async (data) => {
 
 	if (discount < 0) {
 		throw new Error('discount cannot be negative');	
-	};
+	}
 
 	if (discount > 100) {
 		throw new Error('discount cannot be more than 100');	
-	};
+	}
 
 	if (discount % 10 !== 0) {
 		throw new Error('discount must be in increments of 10');
-	};
+	}
 
 	if (earning_rate < 1) {
 		throw new Error('earning rate cannot be less than 1');	
-	};
+	}
 
 	if (earning_rate > 100) {
 		throw new Error('earning rate cannot be more than 100');	
-	};
+	}
 
 	if (earning_rate % 10 !== 0) {
 		throw new Error('earning rate must be in increments of 10');
-	};
+	}
 
 	if (!is_admin && (earning_rate + discount > EARNING_RATE)) {
 		throw new Error('discount and earning rate combined cannot exceed exchange earning rate');
-	};
+	}
 
 	if (!is_admin && code.length !== 6) {
 		throw new Error('invalid referral code');	
@@ -2499,18 +2532,18 @@ const createUserReferralCode = async (data) => {
    
 	if (!user) {
 		throw new Error(USER_NOT_FOUND);
-	};
+	}
 
 	if (!is_admin) {
 		const userReferralCodes = await getModel('referralCode').findAll({
 			where: {
 				user_id
 			}
-		})
+		});
 		if (userReferralCodes.length > 3) {
 			throw new Error('you cannot create more than 3 referral codes');
 		}
-	};
+	}
 
 	const referralCode = await getModel('referralCode').create(data, {
 		fields: [
@@ -3265,7 +3298,333 @@ const fetchUserProfitLossInfo = async (user_id, opts = { period: 7 }) => {
 	return results;
 };
 
+const fetchUserAddressBook = async (user_id) => {
+	const user = await getUserByKitId(user_id);
 
+	if (!user) {
+		throw new Error(USER_NOT_FOUND);
+	}
+
+	const userAddressBook = await getModel('userAddressBook').findOne({ where: { user_id } });
+
+	if (!userAddressBook) {
+		return {
+			user_id: user.id,
+			addresses: []
+		};
+	}
+
+	return userAddressBook;
+};
+
+
+
+
+const updateUserAddresses = async (user_id, data) => {
+	const { addresses } = data;
+
+	let userAddressBook = await getModel('userAddressBook').findOne({ where: { user_id } });
+
+	addresses.forEach((addressObj) => {
+		if (!addressObj.address || !addressObj.network || !addressObj.label || !addressObj.currency) {
+			throw new Error(ADDRESSBOOK_MISSING_FIELDS);
+		}
+
+		Object.keys(addressObj).forEach((key) => {
+			if (!CRYPTO_ADDRESS_FIELDS.includes(key)) {
+				throw new Error(ADDRESSBOOK_MISSING_FIELDS);
+			}
+		});
+
+		const hasCreatedAt = userAddressBook?.addresses?.find?.(address => address.label === addressObj.label)?.created_at;
+		if (!hasCreatedAt) {
+			addressObj.created_at = moment().toISOString();
+		} else {
+			addressObj.created_at = hasCreatedAt;
+		}
+	});
+
+	// Check for duplicate labels in the payload
+	const labels = addresses.map(a => a.label);
+	const uniqueLabels = new Set(labels);
+	if (uniqueLabels.size !== labels.length) {
+		throw new Error(ADDRESSBOOK_ALREADY_EXISTS);
+	}
+
+	// Check for duplicate address in the payload
+	const uniqueAddresses = uniqWith(addresses, (addresssA, addressB) => addresssA.address === addressB.address && addresssA.network === addressB.network && addresssA.currency === addressB.currency);
+	if (uniqueAddresses.length != addresses.length) {
+		throw new Error(ADDRESSBOOK_ALREADY_EXISTS);
+	}
+
+	const user = await getUserByKitId(user_id);
+
+	if (!user) {
+		throw new Error(USER_NOT_FOUND);
+	}
+
+	if (!userAddressBook) {
+		userAddressBook = await getModel('userAddressBook').create({
+			user_id,
+			addresses
+		});
+	} else {
+		// Update the addresses
+		userAddressBook = await userAddressBook.update({ addresses }, {
+			fields: ['addresses']
+		});
+	}
+
+	return userAddressBook;
+};
+
+const getPaymentDetails = async (user_id, opts = {
+	limit: null,
+	page: null,
+	order_by: null,
+	order: null,
+	start_date: null,
+	end_date: null,
+	is_p2p: null,
+	is_fiat_control: null,
+	status: null,
+}) => {
+	const pagination = paginationQuery(opts.limit, opts.page);
+	const ordering = orderingQuery(opts.order_by, opts.order);
+	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
+
+	const query = {
+		where: {
+			created_at: timeframe,
+			user_id,
+			...(opts.is_p2p && { is_p2p: opts.is_p2p }),
+			...(opts.is_fiat_control && { is_fiat_control: opts.is_fiat_control }),
+			...(opts.status && { status: opts.status })
+		},
+		order: [ordering],
+		...(!opts.format && pagination),
+	};
+
+
+	return dbQuery.findAndCountAllWithRows('paymentDetail', query);
+};
+
+const createPaymentDetail = async (data) => {
+	const { user_id, name, label, details, is_p2p, is_fiat_control, status } = data;
+
+	const user = await getUserByKitId(user_id);
+   
+	if (!user) {
+		throw new Error(USER_NOT_FOUND);
+	}
+	
+	const adminAccount = await getUserByKitId(1);
+
+	sendEmail(
+		MAILTYPE.ALERT,
+		adminAccount.email,
+		{
+			type: 'An exchange user added a new payment method, Awaiting your approval',
+			data: `User ID: ${user_id} added a new payment method. Account details: <ul>${details.fields.map(field => (`<li key=${field.id}>${field.name}: ${field.value}</li>`))}</ul>`
+		},
+		adminAccount.settings
+	);
+
+	const paymentDetail = await getModel('paymentDetail').create({
+		user_id,
+		name,
+		label,
+		details,
+		is_p2p,
+		is_fiat_control,
+		status
+	});
+	return paymentDetail;
+};
+
+const updatePaymentDetail = async (id, data, isAdmin = false) => {
+	const paymentDetail = await getModel('paymentDetail').findOne({ where: { id, user_id: data.user_id } });
+	if (!paymentDetail) {
+		throw new Error(PAYMENT_DETAIL_NOT_FOUND);
+	}
+
+	if (!isAdmin) { delete data.status; }
+
+	if (data.status === 3) {
+		const user = await getUserByKitId(data.user_id);
+		sendEmail(MAILTYPE.BANK_VERIFIED, user.email, { bankAccounts: paymentDetail?.details?.fields }, user.settings);
+	}
+
+	if (!isAdmin && paymentDetail.status === 3) {
+		throw new Error(UNAUTHORIZED_UPDATE_METHOD);
+	}
+
+	await paymentDetail.update(data, {
+		fields: [
+			'name',
+			'label',
+			'details',
+			'is_p2p',
+			'is_fiat_control',
+			'status'
+		]
+	});
+	return paymentDetail;
+};
+
+const deletePaymentDetail = async (id, user_id) => {
+	const paymentDetail = await getModel('paymentDetail').findOne({ where: { id, user_id } });
+	if (!paymentDetail) {
+		throw new Error(PAYMENT_DETAIL_NOT_FOUND);
+	}
+	await paymentDetail.destroy();
+};
+
+
+const getOracleIndex = async () => {
+	const coins = getKitCoins();
+	const data = await getAssetsPrices(
+	  coins,
+	  getKitConfig().native_currency
+	);
+  
+	return data;
+};
+
+
+const fetchUserTradingVolume = async (user_id, opts = {
+	to: null,
+	from: null
+}) => {
+
+	let { to, from } = opts;
+	const currentTime = moment().seconds(0).milliseconds(0).toISOString();
+
+	const { getAllUserTradesByKitId } = require('./order');
+
+	if(from && to) {
+		let volume = {};
+
+		const oracleIndex = await getOracleIndex();
+	
+		const trades = await getAllUserTradesByKitId(
+			user_id,
+			null,
+			null,
+			null,
+			null,
+			null,
+			from,
+			to,
+			'all'
+		);
+	
+		if (trades.data && trades.data.length > 0) {
+			for (const trade of trades.data) {
+				const { symbol } = trade;
+				let size = trade.size;
+	
+				const basePair = symbol.split('-')[0];
+	
+				if (basePair !== getKitConfig().native_currency) {
+					if (!isNumber(oracleIndex[basePair]) || oracleIndex[basePair] <= 0) {
+						continue;
+					}
+					size = multiplyAmounts(oracleIndex[basePair], size);
+				}
+				volume[basePair] = addAmounts(volume[basePair] || 0, size);
+			}
+		}
+	
+		return { user_id, volume };
+	} else {
+		const data = await client.getAsync(`${user_id}-asset-volumes`);
+		if(data) return JSON.parse(data);
+		let volume = {
+			1: {},
+			7: {},
+			30: {},
+			90: {},
+		};
+
+		let volumeNative = {
+			1: {},
+			7: {},
+			30: {},
+			90: {},
+		};
+		
+		const to = moment(currentTime).toISOString();
+		const from90Days = moment(currentTime).subtract(90, 'days').toISOString();
+		
+		const oracleIndex = await getOracleIndex();
+		const trades = await getAllUserTradesByKitId(
+			user_id,
+			null,
+			null,
+			null,
+			null,
+			null,
+			from90Days,
+			to,
+			'all'
+		);
+		
+		if (trades.data && trades.data.length > 0) {
+			for (const trade of trades.data) {
+				const { symbol, timestamp } = trade;
+				let size = trade.size;
+				let nativeSize = trade.size;
+				const basePair = symbol.split('-')[0];
+		
+				if (basePair !== getKitConfig().native_currency) {
+					if (!isNumber(oracleIndex[basePair]) || oracleIndex[basePair] <= 0) {
+						continue;
+					}
+					size = multiplyAmounts(oracleIndex[basePair], size);
+				}
+		
+				const tradeDate = moment(timestamp);
+				const daysDiff = moment(currentTime).diff(tradeDate, 'days');
+		
+				if (daysDiff <= 1) {
+					volume[1][basePair] = addAmounts(volume[1][basePair] || 0, size);
+					volumeNative[1][basePair] = addAmounts(volumeNative[1][basePair] || 0, nativeSize);
+				}
+				if (daysDiff <= 7) {
+					volume[7][basePair] = addAmounts(volume[7][basePair] || 0, size);
+					volumeNative[7][basePair] = addAmounts(volumeNative[7][basePair] || 0, nativeSize);
+				}
+				if (daysDiff <= 30) {
+					volume[30][basePair] = addAmounts(volume[30][basePair] || 0, size);
+					volumeNative[30][basePair] = addAmounts(volumeNative[30][basePair] || 0, nativeSize);
+				}
+				volume[90][basePair] = addAmounts(volume[90][basePair] || 0, size);
+				volumeNative[90][basePair] = addAmounts(volumeNative[90][basePair] || 0, nativeSize);
+			}
+		}
+
+		for (const period in volume) {
+			const periodData = volume[period];
+			let totalGain = 0;
+
+			for(const coin in periodData) {
+				totalGain += periodData[coin];
+			}
+			
+			volume[period].total = totalGain;
+		}
+		
+		const sortedVolumes = sortTopVolumes(volume);
+
+		await client.setexAsync(`${user_id}-asset-volumes`, 60 * 60 * 2, JSON.stringify({ user_id, volume: sortedVolumes, volumeNative }));
+
+		return { user_id, volume: sortedVolumes, volumeNative };
+
+	}
+
+	
+};
 module.exports = {
 	loginUser,
 	getUserTier,
@@ -3339,5 +3698,12 @@ module.exports = {
 	fetchUserReferrals,
 	createUnrealizedReferralFees,
 	getUserReferralCodes,
-	createUserReferralCode
+	createUserReferralCode,
+	fetchUserTradingVolume,
+	updateUserAddresses,
+	fetchUserAddressBook,
+	getPaymentDetails,
+	createPaymentDetail,
+	updatePaymentDetail,
+	deletePaymentDetail
 };
