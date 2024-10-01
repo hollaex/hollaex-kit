@@ -21,7 +21,7 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import AnnouncementList from './AnnouncementList';
 import STRINGS from 'config/localizedStrings';
 import LanguageSwitcher from './LanguageSwitcher';
-// import Connections from './Connections';
+import Connections from './Connections';
 
 class AppBar extends Component {
 	state = {
@@ -360,9 +360,9 @@ class AppBar extends Component {
 							activePath={activePath}
 							onMenuChange={onMenuChange}
 						/>
-						{/*<div className="ml-1">
+						<div className="ml-1">
 							<Connections />
-						</div> */}
+						</div>
 					</div>
 				)}
 			</div>
