@@ -27,6 +27,21 @@ const Connections = () => {
 		isDisplayPing: false,
 	});
 
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				await requestLogins();
+				await fetchHealthData();
+			} catch (error) {
+				setHasResponseData(false);
+				console.error('Error fetching data:', error);
+			}
+		};
+
+		fetchData();
+		//eslint-disable-next-line
+	}, []);
+
 	const requestLogins = useCallback((page = 1) => {
 		getLogins({ page })
 			.then(({ data: { count, data } }) => {
@@ -58,21 +73,6 @@ const Connections = () => {
 			setIsLoading(false);
 		}
 	};
-
-	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				await requestLogins();
-				await fetchHealthData();
-			} catch (error) {
-				setHasResponseData(false);
-				console.error('Error fetching data:', error);
-			}
-		};
-
-		fetchData();
-		//eslint-disable-next-line
-	}, [fetchHealthData]);
 
 	const onHandleClose = (value) => {
 		if (value === 'connection') {
