@@ -1072,6 +1072,7 @@ const P2pPostDealMobile = ({
 							<Button
 								className="purpleButtonP2P next-btn"
 								onClick={() => handleNextStep()}
+								disabled={step === 3 && (!terms || !autoResponse)}
 							>
 								<EditWrapper stringId="CONFIRM_TEXT">
 									{STRINGS['CONFIRM_TEXT']?.toUpperCase()}

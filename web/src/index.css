@@ -12002,7 +12002,8 @@ table th {
     justify-content: space-between;
     margin-bottom: 3%;
     align-items: center;
-    gap: 10px; }
+    gap: 10px;
+    font-size: 14px; }
     .payment-method-details-popup-wrapper .ReactModal__Content .payment-method-field .ant-input {
       width: 70%;
       height: 25px;
