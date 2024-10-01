@@ -40,7 +40,7 @@ const Connections = () => {
 
 		fetchData();
 		//eslint-disable-next-line
-	}, [fetchHealthData]);
+	}, []);
 
 	const requestLogins = useCallback((page = 1) => {
 		getLogins({ page })

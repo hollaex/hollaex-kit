@@ -476,6 +476,10 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 		if (!newKitConfig.chain_trade_config.hasOwnProperty('currency')) {
 			throw new Error('currency does not exist');
 		}
+
+		if (!newKitConfig.chain_trade_config.hasOwnProperty('spread')) {
+			throw new Error('spread does not exist');
+		}
 		
 	}
 

@@ -645,7 +645,7 @@ const MobileBarMoreOptions = ({
 				?.toLowerCase()
 				.includes(search?.toLowerCase());
 			const searchContentMatch = option?.searchContent?.some((content) =>
-				content?.toLowerCase().includes(search?.toLowerCase())
+				content?.toLowerCase()?.includes(search?.toLowerCase())
 			);
 			return iconTextMatch || searchContentMatch;
 		});

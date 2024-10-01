@@ -49,6 +49,7 @@ const InterfaceForm = ({
 	const [chainTradeData, setChainTradeData] = useState({
 		currency: constants?.kit?.chain_trade_config?.currency,
 		source_account: constants?.kit?.chain_trade_config?.source_account,
+		spread: constants?.kit?.chain_trade_config?.spread,
 		date_enabled:
 			constants?.kit?.chain_trade_config?.date_enabled || new Date(),
 		active: constants?.kit?.chain_trade_config?.active,
@@ -94,13 +95,14 @@ const InterfaceForm = ({
 			const chain_trade_config = {
 				active: !!values.chain_trade_config,
 				currency: chainTradeData.currency,
+				spread: Number(chainTradeData.spread),
 				source_account: Number(chainTradeData.source_account),
 			};
 			handleSaveInterface(
 				formValues,
 				values.balance_history_config ? balance_history_config : null,
 				values.referral_history_config ? referral_history_config : null,
-				values.chain_trade_config ? chain_trade_config : null,
+				values.chain_trade_config ? chain_trade_config : null
 			);
 		}
 	};
@@ -489,6 +491,25 @@ const InterfaceForm = ({
 						/>
 					</div>
 
+					<div className="mb-4">
+						<div style={{ fontSize: 16 }} className="mb-2">
+							Spread
+							<div style={{ fontSize: 13 }}>
+								Spread to apply to the final amount
+							</div>
+						</div>
+
+						<Input
+							value={chainTradeData.spread}
+							onChange={(e) => {
+								setChainTradeData({
+									...chainTradeData,
+									spread: Number(e.target.value),
+								});
+							}}
+						/>
+					</div>
+
 					<div
 						style={{
 							display: 'flex',
@@ -516,7 +537,8 @@ const InterfaceForm = ({
 							onClick={async () => {
 								if (
 									chainTradeData.currency == null ||
-									chainTradeData.source_account == null
+									chainTradeData.source_account == null ||
+									chainTradeData.spread == null
 								) {
 									message.error('Please input all the fields');
 									return;
