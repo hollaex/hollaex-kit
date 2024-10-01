@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import debounce from 'lodash.debounce';
-import { WS_URL, SESSION_TIME, BASE_CURRENCY } from 'config/constants';
 import { isMobile } from 'react-device-detect';
-import { setWsHeartbeat } from 'ws-heartbeat/client';
+import { notification } from 'antd';
+import { BellOutlined } from '@ant-design/icons';
+import debounce from 'lodash.debounce';
 
 import withConfig from 'components/ConfigProvider/withConfig';
+import STRINGS from 'config/localizedStrings';
+import { WS_URL, SESSION_TIME, BASE_CURRENCY } from 'config/constants';
+import { setWsHeartbeat } from 'ws-heartbeat/client';
 import {
 	getMe,
 	setMe,
@@ -47,8 +50,6 @@ import { playBackgroundAudioNotification } from 'utils/utils';
 import { getToken, isLoggedIn } from 'utils/token';
 import { NORMAL_CLOSURE_CODE, isIntentionalClosure } from 'utils/webSocket';
 import { ERROR_TOKEN_EXPIRED } from 'components/Notification/Logout';
-import { notification } from 'antd';
-import STRINGS from 'config/localizedStrings';
 
 class Container extends Component {
 	constructor(props) {
@@ -439,31 +440,45 @@ class Container extends Component {
 					} else {
 						this.props.p2pAddMessage(data.data);
 					}
-
-					notification.open({
-						message: (data.action = 'getStatus'
-							? STRINGS['P2P.STATUS_UPDATE']
-							: STRINGS['P2P.NEW_MESSAGE']),
-						description: (
-							<div>
-								<div
-									style={{
-										textDecoration: 'underline',
-										fontWeight: 'bold',
-										cursor: 'pointer',
-									}}
-									onClick={() => {
-										window.location.href = `${window.location.origin}/p2p/order/${data.data.id}`;
-									}}
-								>
-									{STRINGS['P2P.CLICK_TO_VIEW']}
+					if (window?.location?.pathname !== `/p2p/order/${data?.data?.id}`) {
+						notification.open({
+							message:
+								data.action === 'getStatus' && data?.data?.status === 'appeal'
+									? STRINGS['P2P.APPEAL_STATUS_MESSAGE']
+									: data?.action === 'getStatus' &&
+									  data?.data?.status === 'cancelled'
+									? STRINGS['P2P.CANCEL_STATUS_MESSAGE']
+									: data?.action === 'getStatus' &&
+									  data?.data?.status === 'confirmed' &&
+									  data?.data?.title === 'crypto'
+									? STRINGS['P2P.CRYPTO_RELEASE_STATUS_MESSAGE']
+									: data?.data?.status === 'confirmed'
+									? STRINGS['P2P.CONFIRM_STATUS_MESSAGE']
+									: data?.action === 'getStatus'
+									? STRINGS['P2P.STATUS_UPDATE']
+									: STRINGS['P2P.NEW_MESSAGE'],
+							description: (
+								<div>
+									<div
+										style={{
+											textDecoration: 'underline',
+											fontWeight: 'bold',
+											cursor: 'pointer',
+										}}
+										onClick={() => {
+											window.location.href = `${window.location.origin}/p2p/order/${data.data.id}`;
+										}}
+									>
+										{STRINGS['P2P.CLICK_TO_VIEW']}
+									</div>
 								</div>
-							</div>
-						),
-
-						placement: 'bottomRight',
-						type: 'info',
-					});
+							),
+							className: 'p2p-chat-notification-wrapper',
+							placement: 'bottomRight',
+							type: 'info',
+							icon: <BellOutlined />,
+						});
+					}
 					break;
 				default:
 					break;

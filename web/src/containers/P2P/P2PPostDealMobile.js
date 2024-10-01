@@ -1,7 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Button, Input, InputNumber, Select, Switch } from 'antd';
-import { ArrowRightOutlined, SyncOutlined } from '@ant-design/icons';
+import {
+	ArrowRightOutlined,
+	ExclamationCircleFilled,
+	SyncOutlined,
+} from '@ant-design/icons';
 
 import withConfig from 'components/ConfigProvider/withConfig';
 import STRINGS from 'config/localizedStrings';
@@ -52,6 +56,7 @@ const P2pPostDealMobile = ({
 	setTerms,
 	autoResponse,
 	setAutoResponse,
+	setIsEditMode,
 }) => {
 	return (
 		<div className="p2p-post-deal-mobile-container">
@@ -308,6 +313,7 @@ const P2pPostDealMobile = ({
 												</div>
 												<div className="currency-field mt-2">
 													<InputNumber
+														type="number"
 														value={exchangeRate}
 														onChange={(e) => {
 															if (!buyingAsset) return;
@@ -374,6 +380,7 @@ const P2pPostDealMobile = ({
 											</div>
 											<div className="currency-field mt-2">
 												<InputNumber
+													type="number"
 													value={spread}
 													onChange={(e) => {
 														if (isNaN(e)) return;
@@ -591,6 +598,7 @@ const P2pPostDealMobile = ({
 											)}
 											<div className="total-amount-input-field">
 												<Input
+													type="number"
 													value={totalOrderAmount}
 													onChange={(e) => {
 														setTotalOrderAmount(e.target.value);
@@ -684,6 +692,7 @@ const P2pPostDealMobile = ({
 																	onClick={() => {
 																		setSelectedMethod(method);
 																		setAddMethodDetails(true);
+																		setIsEditMode(true);
 																	}}
 																	className="edit-link"
 																>
@@ -815,6 +824,7 @@ const P2pPostDealMobile = ({
 											<div className="w-50">
 												<div className="total-amount-input-field min-input-field">
 													<Input
+														type="number"
 														value={minOrderValue}
 														placeholder="MIN"
 														onChange={(e) => {
@@ -848,6 +858,7 @@ const P2pPostDealMobile = ({
 											<div className="w-50">
 												<div className="total-amount-input-field max-input-field">
 													<Input
+														type="number"
 														value={maxOrderValue}
 														placeholder="MAX"
 														onChange={(e) => {
@@ -981,17 +992,34 @@ const P2pPostDealMobile = ({
 									</EditWrapper>
 								</div>
 								<Input.TextArea
-									className="terms-and-condition-field important-text"
+									className={
+										!terms
+											? 'terms-and-condition-field important-text terms-and-condition-error-field'
+											: 'terms-and-condition-field important-text'
+									}
 									rows={4}
 									value={terms}
 									onChange={(e) => {
 										setTerms(e.target.value);
 									}}
 									placeholder={STRINGS['P2P.TERMS_AND_CONDITION_DESCRIPTION']}
+									autoFocus={true}
 								/>
 							</div>
+							<div className="my-1 error-text">
+								{!terms && (
+									<div>
+										<ExclamationCircleFilled />
+										<span className="ml-1">
+											<EditWrapper stringId="P2P.TERMS_ERROR_TEXT">
+												{STRINGS['P2P.TERMS_ERROR_TEXT']}
+											</EditWrapper>
+										</span>
+									</div>
+								)}
+							</div>
 						</div>
-						<div className="response-field-wrapper terms-conditions-wrapper w-100">
+						<div className="response-field-wrapper terms-conditions-wrapper w-100 mt-3">
 							<div className="terms-input-field w-100">
 								<div className="whiteTextP2P terms-title">
 									<EditWrapper stringId="P2P.FIRST_RESPONSE">
@@ -1006,7 +1034,11 @@ const P2pPostDealMobile = ({
 									</EditWrapper>
 								</div>
 								<Input.TextArea
-									className="terms-and-condition-field important-text"
+									className={
+										!autoResponse && terms
+											? 'terms-and-condition-field important-text terms-and-condition-error-field'
+											: 'terms-and-condition-field important-text'
+									}
 									rows={4}
 									value={autoResponse}
 									onChange={(e) => {
@@ -1014,6 +1046,18 @@ const P2pPostDealMobile = ({
 									}}
 									placeholder={STRINGS['P2P.VISIT_OUR_WEBSITE']}
 								/>
+							</div>
+							<div className="my-1 error-text">
+								{!autoResponse && terms && (
+									<div>
+										<ExclamationCircleFilled />
+										<span className="ml-1">
+											<EditWrapper stringId="P2P.RESPONSE_ERROR_TEXT">
+												{STRINGS['P2P.RESPONSE_ERROR_TEXT']}
+											</EditWrapper>
+										</span>
+									</div>
+								)}
 							</div>
 						</div>
 						<div className="p2p-trade-button-container">

@@ -3,7 +3,11 @@ import { connect } from 'react-redux';
 import { isMobile } from 'react-device-detect';
 import { Button, message } from 'antd';
 import { Switch, Select, Input, InputNumber } from 'antd';
-import { ArrowRightOutlined, SyncOutlined } from '@ant-design/icons';
+import {
+	ArrowRightOutlined,
+	ExclamationCircleFilled,
+	SyncOutlined,
+} from '@ant-design/icons';
 
 import './_P2P.scss';
 import classnames from 'classnames';
@@ -51,6 +55,7 @@ const P2PPostDeal = ({
 	const [paymentMethods, setPaymentMethods] = useState([]);
 	const [selectedMethod, setSelectedMethod] = useState({});
 	const [addMethodDetails, setAddMethodDetails] = useState();
+	const [isEditMode, setIsEditMode] = useState(false);
 	const [region, setRegion] = useState();
 	const [brokerData, setBrokerData] = useState([]);
 	const [dynamicPair, setDynamicPair] = useState();
@@ -636,6 +641,7 @@ const P2PPostDeal = ({
 														</div>
 														<div className="currency-field">
 															<InputNumber
+																type="number"
 																value={exchangeRate}
 																onChange={(e) => {
 																	if (!buyingAsset) return;
@@ -703,6 +709,7 @@ const P2PPostDeal = ({
 													</div>
 													<div className="currency-field">
 														<InputNumber
+															type="number"
 															value={spread}
 															onChange={(e) => {
 																if (isNaN(e)) return;
@@ -874,6 +881,7 @@ const P2PPostDeal = ({
 
 													<div className="total-amount-input-field">
 														<Input
+															type="number"
 															value={totalOrderAmount}
 															onChange={(e) => {
 																setTotalOrderAmount(e.target.value);
@@ -953,6 +961,7 @@ const P2PPostDeal = ({
 														<div>
 															<div className="total-amount-input-field min-input-field">
 																<Input
+																	type="number"
 																	value={minOrderValue}
 																	placeholder="MIN"
 																	onChange={(e) => {
@@ -986,6 +995,7 @@ const P2PPostDeal = ({
 														<div>
 															<div className="total-amount-input-field max-input-field">
 																<Input
+																	type="number"
 																	value={maxOrderValue}
 																	placeholder="MAX"
 																	onChange={(e) => {
@@ -1085,6 +1095,7 @@ const P2PPostDeal = ({
 																		onClick={() => {
 																			setSelectedMethod(method);
 																			setAddMethodDetails(true);
+																			setIsEditMode(true);
 																		}}
 																		className="edit-link"
 																	>
@@ -1217,7 +1228,11 @@ const P2PPostDeal = ({
 												</div>
 
 												<Input.TextArea
-													className="terms-and-condition-field important-text"
+													className={
+														!terms
+															? 'terms-and-condition-field important-text terms-and-condition-error-field'
+															: 'terms-and-condition-field important-text'
+													}
 													rows={4}
 													value={terms}
 													onChange={(e) => {
@@ -1226,7 +1241,20 @@ const P2PPostDeal = ({
 													placeholder={
 														STRINGS['P2P.TERMS_AND_CONDITION_DESCRIPTION']
 													}
+													autoFocus={true}
 												/>
+											</div>
+											<div className="my-2 error-text">
+												{!terms && (
+													<div>
+														<ExclamationCircleFilled />
+														<span className="ml-1">
+															<EditWrapper stringId="P2P.TERMS_ERROR_TEXT">
+																{STRINGS['P2P.TERMS_ERROR_TEXT']}
+															</EditWrapper>
+														</span>
+													</div>
+												)}
 											</div>
 										</div>
 										<div className="response-field-wrapper terms-conditions-wrapper w-50">
@@ -1242,7 +1270,11 @@ const P2PPostDeal = ({
 													</EditWrapper>
 												</div>
 												<Input.TextArea
-													className="terms-and-condition-field important-text"
+													className={
+														!autoResponse && terms
+															? 'terms-and-condition-field important-text terms-and-condition-error-field'
+															: 'terms-and-condition-field important-text'
+													}
 													rows={4}
 													value={autoResponse}
 													onChange={(e) => {
@@ -1250,6 +1282,18 @@ const P2PPostDeal = ({
 													}}
 													placeholder={STRINGS['P2P.VISIT_OUR_WEBSITE']}
 												/>
+											</div>
+											<div className="my-2 error-text">
+												{!autoResponse && terms && (
+													<div>
+														<ExclamationCircleFilled />
+														<span className="ml-1">
+															<EditWrapper stringId="P2P.RESPONSE_ERROR_TEXT">
+																{STRINGS['P2P.RESPONSE_ERROR_TEXT']}
+															</EditWrapper>
+														</span>
+													</div>
+												)}
 											</div>
 										</div>
 									</div>
@@ -1301,6 +1345,7 @@ const P2PPostDeal = ({
 						setTerms={setTerms}
 						autoResponse={autoResponse}
 						setAutoResponse={setAutoResponse}
+						setIsEditMode={setIsEditMode}
 					/>
 				)}
 				<Dialog
@@ -1308,11 +1353,17 @@ const P2PPostDeal = ({
 					isOpen={addMethodDetails}
 					onCloseDialog={() => {
 						setAddMethodDetails(false);
+						setIsEditMode(false);
 					}}
 				>
 					<div className="whiteTextP2P add-payment-method-title">
 						<EditWrapper stringId="P2P.ADD_PAYMENT_METHOD_DETAILS">
-							{STRINGS['P2P.ADD_PAYMENT_METHOD_DETAILS']}
+							{STRINGS.formatString(
+								STRINGS['P2P.ADD_PAYMENT_METHOD_DETAILS'],
+								isEditMode
+									? STRINGS['EDIT_TEXT']
+									: STRINGS['DEVELOPERS_TOKEN.ADD_IP']
+							)}
 						</EditWrapper>
 					</div>
 					{selectedMethod?.fields?.map((x, index) => {
@@ -1343,6 +1394,7 @@ const P2PPostDeal = ({
 						<Button
 							onClick={() => {
 								setAddMethodDetails(false);
+								setIsEditMode(false);
 							}}
 							className="purpleButtonP2P back-btn"
 							type="default"
@@ -1354,12 +1406,15 @@ const P2PPostDeal = ({
 						<Button
 							onClick={async () => {
 								setAddMethodDetails(false);
+								setIsEditMode(false);
 							}}
 							className="purpleButtonP2P complete-btn"
 							type="default"
 						>
 							<EditWrapper stringId="P2P.COMPLETE">
-								{STRINGS['P2P.COMPLETE']}
+								{isEditMode
+									? STRINGS['P2P.UPDATE'].toUpperCase()
+									: STRINGS['P2P.COMPLETE'].toUpperCase()}
 							</EditWrapper>
 						</Button>
 					</div>
@@ -1382,6 +1437,7 @@ const P2PPostDeal = ({
 					<Button
 						className="purpleButtonP2P next-btn"
 						onClick={() => handleNextStep()}
+						disabled={step === 3 && (!terms || !autoResponse)}
 					>
 						<EditWrapper stringId="P2P.NEXT">{STRINGS['P2P.NEXT']}</EditWrapper>
 					</Button>

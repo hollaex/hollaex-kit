@@ -27,7 +27,7 @@ const P2POrderChat = ({
 	const buttonRef = useRef(null);
 
 	const handleKeyDown = (event) => {
-		if (event.key === 'Enter') {
+		if (event?.key === 'Enter') {
 			buttonRef.current.click();
 		}
 	};

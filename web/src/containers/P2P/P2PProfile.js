@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { isMobile } from 'react-device-detect';
 import { Button, message, Rate, Modal, Input, Select } from 'antd';
+import { ClockCircleOutlined } from '@ant-design/icons';
 import moment from 'moment';
 
 import './_P2P.scss';
@@ -335,9 +336,14 @@ const P2PProfile = ({
 													</div>
 													<div>
 														{info?.status === 0 && (
-															<span className="unverified-label">
-																({STRINGS['P2P.UNVERIFIED']})
-															</span>
+															<div className="d-flex align-items-end">
+																<span className="unverified-label">
+																	({STRINGS['P2P.UNVERIFIED']})
+																</span>
+																<span className="secondary-text ml-2">
+																	<ClockCircleOutlined />
+																</span>
+															</div>
 														)}
 														{info?.status === 1 && (
 															<span className="pending-label">
@@ -448,7 +454,10 @@ const P2PProfile = ({
 				>
 					<div className="whiteTextP2P add-payment-title">
 						<EditWrapper stringId="P2P.ADD_PAYMENT_METHOD_DETAILS">
-							{STRINGS['P2P.ADD_PAYMENT_METHOD_DETAILS']}
+							{STRINGS.formatString(
+								STRINGS['P2P.ADD_PAYMENT_METHOD_DETAILS'],
+								STRINGS['EDIT_TEXT']
+							)}
 						</EditWrapper>
 					</div>
 
@@ -536,7 +545,7 @@ const P2PProfile = ({
 							type="default"
 						>
 							<EditWrapper stringId="P2P.COMPLETE">
-								{STRINGS['P2P.COMPLETE'].toUpperCase()}
+								{STRINGS['P2P.UPDATE'].toUpperCase()}
 							</EditWrapper>
 						</Button>
 					</div>
