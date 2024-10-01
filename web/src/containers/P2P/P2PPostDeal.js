@@ -1158,6 +1158,8 @@ const P2PPostDeal = ({
 																		} else {
 																			newSelected.push(method);
 																			setPaymentMethods(newSelected);
+																			setSelectedMethod(method);
+																			setAddMethodDetails(true);
 																		}
 																	}}
 																>

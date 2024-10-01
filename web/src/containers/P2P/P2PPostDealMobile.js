@@ -754,6 +754,8 @@ const P2pPostDealMobile = ({
 																	} else {
 																		newSelected.push(method);
 																		setPaymentMethods(newSelected);
+																		setSelectedMethod(method);
+																		setAddMethodDetails(true);
 																	}
 																}}
 															>
