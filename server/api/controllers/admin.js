@@ -71,6 +71,14 @@ const createInitialAdmin = (req, res) => {
 			if (user) {
 				throw new Error('Admin already exists');
 			}
+
+			if (!email || !isEmail(email)) {
+				throw new Error(PROVIDE_VALID_EMAIL);
+			}
+			if (!toolsLib.security.isValidPassword(password)) {
+				throw new Error(INVALID_PASSWORD);
+			}
+
 			return toolsLib.user.createUser(email, password, {
 				role: 'admin',
 				id: 1,
@@ -2096,7 +2104,7 @@ const setUserBank = (req, res) => {
 				if (!foundBank) {
 					deletedBankInfoLog.push(existingBank);
 				}
-			})
+			});
 			
 			const newBankAccounts = bank_account.map((bank) => {
 				let existingBank = existingBankAccounts.filter((b) => b.id === bank.id);
@@ -2126,8 +2134,8 @@ const setUserBank = (req, res) => {
 				}
 			}
 
-			newBankInfoLog.map(bank => toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], bank))
-			deletedBankInfoLog.map(bank => toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, 'delete', bank))
+			newBankInfoLog.map(bank => toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], bank));
+			deletedBankInfoLog.map(bank => toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, 'delete', bank));
 			return res.json(updatedUser.bank_account);
 		})
 		.catch((err) => {
@@ -2859,7 +2867,7 @@ const disableUserWithdrawal = (req, res) => {
 		expiry_date
 	);
 
-		toolsLib.user.disableUserWithdrawal(user_id, { expiry_date })
+	toolsLib.user.disableUserWithdrawal(user_id, { expiry_date })
 		.then((data) => {
 			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
 			loggerAdmin.info(
@@ -2909,10 +2917,10 @@ const createTradeByAdmin = (req, res) => {
 		taker_fee 
 	);
 
-		toolsLib.order.createTrade({symbol, side, price, size, maker_id, taker_id, maker_fee, taker_fee },
-			{
-				'x-forwarded-for': req.headers['x-forwarded-for']
-			})
+	toolsLib.order.createTrade({symbol, side, price, size, maker_id, taker_id, maker_fee, taker_fee },
+		{
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		})
 		.then((data) => {
 			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
 			loggerAdmin.info(
@@ -3112,7 +3120,7 @@ const deletePaymentDetailByAdmin = (req, res) => {
 	toolsLib.user.deletePaymentDetail(id, user_id)
 		.then(() => {
 			return res.json({
-				message: "Success"
+				message: 'Success'
 			});
 		})
 		.catch((err) => {
