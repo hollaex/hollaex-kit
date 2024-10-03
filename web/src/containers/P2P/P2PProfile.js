@@ -19,6 +19,7 @@ import {
 	updateP2PPaymentMethod,
 	deleteP2PPaymentMethod,
 } from './actions/p2pActions';
+import { Loading } from 'containers/DigitalAssets/components/utils';
 
 const P2PProfile = ({
 	data,
@@ -55,6 +56,7 @@ const P2PProfile = ({
 	const [displayNewPayment, setDisplayNewPayment] = useState(false);
 	const [paymentFieldAdd, setPaymentFieldAdd] = useState(false);
 	const [displayConfirmation, setDisplayConfirmation] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
 	const [paymentMethod, setPaymentMethod] = useState({
 		system_name: null,
 		fields: {},
@@ -73,11 +75,13 @@ const P2PProfile = ({
 	});
 
 	useEffect(() => {
+		setIsLoading(true);
 		fetchFeedback({ merchant_id: (selectedProfile || selectedUser).id })
 			.then((res) => {
 				setMyDeals(res.data);
 			})
 			.catch((err) => err);
+		setIsLoading(false);
 
 		fetchP2PProfile({ user_id: (selectedProfile || selectedUser).id })
 			.then((res) => {
@@ -411,30 +415,44 @@ const P2PProfile = ({
 										isMobile ? 'fs-16 important-text' : 'important-text'
 									}
 								>
-									{myDeals.map((deal) => {
+									{myDeals.map((deal, index) => {
 										return (
 											<tr className="table-row">
+												{isLoading ? (
+													<Loading index={index} />
+												) : (
+													<td className="w-25 td-fit">
+														{moment(deal.created_at).format(
+															'DD/MMM/YYYY, hh:mmA'
+														)}
+													</td>
+												)}
 												<td className="w-25 td-fit">
-													{moment(deal.created_at).format(
-														'DD/MMM/YYYY, hh:mmA'
+													{isLoading ? (
+														<Loading index={index} />
+													) : (
+														deal.user.full_name || (
+															<EditWrapper stringId="P2P.ANONYMOUS">
+																{STRINGS['P2P.ANONYMOUS']}
+															</EditWrapper>
+														)
 													)}
 												</td>
 												<td className="w-25 td-fit">
-													{deal.user.full_name || (
-														<EditWrapper stringId="P2P.ANONYMOUS">
-															{STRINGS['P2P.ANONYMOUS']}
-														</EditWrapper>
-													)}
+													{isLoading ? <Loading index={index} /> : deal.comment}
 												</td>
-												<td className="w-25 td-fit">{deal.comment}</td>
 												<td className="w-25 td-fit">
-													<Rate
-														disabled
-														allowHalf={false}
-														autoFocus={false}
-														allowClear={false}
-														value={deal.rating}
-													/>
+													{isLoading ? (
+														<Loading index={index} />
+													) : (
+														<Rate
+															disabled
+															allowHalf={false}
+															autoFocus={false}
+															allowClear={false}
+															value={deal.rating}
+														/>
+													)}
 												</td>
 											</tr>
 										);

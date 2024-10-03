@@ -3,7 +3,11 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
 import { notification } from 'antd';
-import { BellOutlined } from '@ant-design/icons';
+import {
+	BellOutlined,
+	ExclamationCircleOutlined,
+	MailOutlined,
+} from '@ant-design/icons';
 import debounce from 'lodash.debounce';
 
 import withConfig from 'components/ConfigProvider/withConfig';
@@ -440,7 +444,9 @@ class Container extends Component {
 					} else {
 						this.props.p2pAddMessage(data.data);
 					}
-					if (window?.location?.pathname !== `/p2p/order/${data?.data?.id}`) {
+					if (
+						!this.props?.router?.location?.pathname?.includes('/p2p/order/')
+					) {
 						notification.open({
 							message:
 								data.action === 'getStatus' && data?.data?.status === 'appeal'
@@ -460,6 +466,7 @@ class Container extends Component {
 							description: (
 								<div>
 									<div
+										className="blue-link"
 										style={{
 											textDecoration: 'underline',
 											fontWeight: 'bold',
@@ -476,7 +483,16 @@ class Container extends Component {
 							className: 'p2p-chat-notification-wrapper',
 							placement: 'bottomRight',
 							type: 'info',
-							icon: <BellOutlined />,
+							icon:
+								data?.action === 'getStatus' &&
+								(data?.data?.status === 'appeal' ||
+									data?.data?.status === 'cancelled') ? (
+									<ExclamationCircleOutlined />
+								) : data?.action === 'getStatus' ? (
+									<BellOutlined />
+								) : (
+									<MailOutlined />
+								),
 						});
 					}
 					break;
