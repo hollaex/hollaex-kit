@@ -1631,6 +1631,116 @@ const deletePaymentDetail = (req, res) => {
 };
 
 
+const fetchUserAutoTrades = (req, res) => {
+    loggerUser.verbose(req.uuid, 'controllers/user/fetchUserAutoTrades/auth', req.auth);
+
+    const { limit, page, order_by, order, start_date, end_date, active } = req.swagger.params;
+
+    if (order_by.value && typeof order_by.value !== 'string') {
+        loggerUser.error(
+            req.uuid,
+            'controllers/user/fetchUserAutoTrades invalid order_by',
+            order_by.value
+        );
+        return res.status(400).json({ message: 'Invalid order by' });
+    }
+
+    toolsLib.user.fetchUserAutoTrades({
+        user_id: req.auth.sub.id,
+        limit: limit.value,
+        page: page.value,
+        order_by: order_by.value,
+        order: order.value,
+        start_date: start_date.value,
+        end_date: end_date.value,
+        active: active.value
+    })
+        .then((data) => res.json(data))
+        .catch((err) => {
+            loggerUser.error(req.uuid, 'controllers/user/fetchUserAutoTrades', err.message);
+            return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+        });
+};
+
+const createUserAutoTrade = (req, res) => {
+    loggerUser.verbose(req.uuid, 'controllers/user/createUserAutoTrade/auth', req.auth);
+
+    const { user_id, spend_coin, buy_coin, spend_amount, frequency, week_days, day_of_month, trade_hour, active, description } = req.swagger.params.data.value;
+
+    loggerUser.verbose(
+        req.uuid,
+        'controllers/user/createUserAutoTrade data',
+        user_id, spend_coin, buy_coin, spend_amount, frequency, week_days, day_of_month, trade_hour, active, description
+    );
+
+    toolsLib.user.createUserAutoTrade({
+        user_id,
+        spend_coin,
+        buy_coin,
+        spend_amount,
+        frequency,
+        week_days,
+        day_of_month,
+        trade_hour,
+        active,
+        description
+    })
+        .then((data) => res.json(data))
+        .catch((err) => {
+            loggerUser.error(req.uuid, 'controllers/user/createUserAutoTrade', err.message);
+            return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+        });
+};
+
+const updateUserAutoTrade = (req, res) => {
+    loggerUser.verbose(req.uuid, 'controllers/user/updateUserAutoTrade/auth', req.auth);
+
+    const { id, spend_coin, buy_coin, spend_amount, frequency, week_days, day_of_month, trade_hour, active, description } = req.swagger.params.data.value;
+
+    loggerUser.verbose(
+        req.uuid,
+        'controllers/user/updateUserAutoTrade data',
+        id, spend_coin, buy_coin, spend_amount, frequency, week_days, day_of_month, trade_hour, active, description
+    );
+
+    toolsLib.user.updateUserAutoTrade({
+        id,
+        user_id: req.auth.sub.id,
+        spend_coin,
+        buy_coin,
+        spend_amount,
+        frequency,
+        week_days,
+        day_of_month,
+        trade_hour,
+        active,
+        description
+    })
+        .then((data) => res.json(data))
+        .catch((err) => {
+            loggerUser.error(req.uuid, 'controllers/user/updateUserAutoTrade', err.message);
+            return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+        });
+};
+
+const deleteUserAutoTrade = (req, res) => {
+    loggerUser.verbose(req.uuid, 'controllers/user/deleteUserAutoTrade/auth', req.auth);
+
+    const { removed_ids } = req.swagger.params.data.value;
+
+    loggerUser.verbose(req.uuid, 'controllers/user/deleteUserAutoTrade data', removed_ids);
+
+    toolsLib.user.deleteUserAutoTrade({
+        user_id: req.auth.sub.id,
+        removed_ids
+    })
+        .then((data) => res.json(data))
+        .catch((err) => {
+            loggerUser.error(req.uuid, 'controllers/user/deleteUserAutoTrade', err.message);
+            return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+        });
+};
+
 module.exports = {
 	signUpUser,
 	getVerifyUser,
@@ -1675,5 +1785,9 @@ module.exports = {
 	getPaymentDetails,
 	createPaymentDetail,
 	updatePaymentDetail,
-	deletePaymentDetail
+	deletePaymentDetail,
+	fetchUserAutoTrades,
+	createUserAutoTrade,
+	updateUserAutoTrade,
+	deleteUserAutoTrade
 };
