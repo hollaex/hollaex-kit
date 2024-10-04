@@ -77,13 +77,13 @@ const Volume = ({
 	};
 
 	const onHandleVolume = () => {
-		if (features.pro_trade) {
+		if (features?.pro_trade) {
 			browserHistory.push(
-				favourites && favourites.length
+				favourites && favourites?.length
 					? `/trade/${favourites[0]}`
 					: `/trade/${getMarkets[0]?.key}`
 			);
-		} else if (features.quick_trade) {
+		} else if (features?.quick_trade) {
 			browserHistory.push(`/quick-trade/${pair}`);
 		} else {
 			browserHistory.push('/prices');

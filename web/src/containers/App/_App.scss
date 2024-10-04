@@ -343,6 +343,8 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 
 .p2p-chat-notification-wrapper {
 	background-color: $app-light-background;
+	border-top: 2px solid $colors-notifications-blue;
+
 	.ant-notification-notice-description,
 	.ant-notification-notice-message,
 	.ant-notification-notice-content,
