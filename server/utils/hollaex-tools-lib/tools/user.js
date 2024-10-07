@@ -3625,8 +3625,7 @@ const fetchUserTradingVolume = async (user_id, opts = {
 
 	
 };
-const fetchUserAutoTrades = async (opts = {
-    user_id: null,
+const fetchUserAutoTrades = async (user_id, opts = {
     limit: null,
     page: null,
     order_by: null,
@@ -3643,7 +3642,7 @@ const fetchUserAutoTrades = async (opts = {
     const query = {
         where: {
             created_at: timeframe,
-            ...(opts.user_id && { user_id: opts.user_id }),
+			user_id,
             ...(opts.active !== null && { active: opts.active })
         },
         order: [ordering],
@@ -3653,8 +3652,7 @@ const fetchUserAutoTrades = async (opts = {
     return dbQuery.findAndCountAllWithRows('AutoTradeConfig', query);
 };
 
-const createUserAutoTrade = async ({
-    user_id,
+const createUserAutoTrade = async (user_id, {
     spend_coin,
     buy_coin,
     spend_amount,
@@ -3686,6 +3684,12 @@ const createUserAutoTrade = async ({
     if (trade_hour < 0 || trade_hour > 23) {
         throw new Error('invalid trade_hour');
     }
+	const autoTradeModel = getModel('AutoTradeConfig');
+
+	const userAutoTrades = await autoTradeModel.findAll({ where: { user_id } });
+	if (userAutoTrades?.length > 20) {
+		throw new Error("You can't have more than 20 auto trades");
+	}
 
 	const { getUserBalanceByKitId } = require('./wallet');
 	const balance = await getUserBalanceByKitId(user_id);
@@ -3693,7 +3697,7 @@ const createUserAutoTrade = async ({
 		throw new Error(`Balance insufficient for auto trade: ${buy_coin} size: ${size}`);
 	};
 
-    return await getModel('AutoTradeConfig').create({
+    return autoTradeModel.create({
         user_id,
         spend_coin,
         buy_coin,
@@ -3707,9 +3711,8 @@ const createUserAutoTrade = async ({
     });
 };
 
-const updateUserAutoTrade = async ({
+const updateUserAutoTrade = async (user_id, {
     id,
-    user_id,
     spend_coin,
     buy_coin,
     spend_amount,

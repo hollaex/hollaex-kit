@@ -1645,8 +1645,7 @@ const fetchUserAutoTrades = (req, res) => {
         return res.status(400).json({ message: 'Invalid order by' });
     }
 
-    toolsLib.user.fetchUserAutoTrades({
-        user_id: req.auth.sub.id,
+    toolsLib.user.fetchUserAutoTrades(req.auth.sub.id, {
         limit: limit.value,
         page: page.value,
         order_by: order_by.value,
@@ -1665,16 +1664,15 @@ const fetchUserAutoTrades = (req, res) => {
 const createUserAutoTrade = (req, res) => {
     loggerUser.verbose(req.uuid, 'controllers/user/createUserAutoTrade/auth', req.auth);
 
-    const { user_id, spend_coin, buy_coin, spend_amount, frequency, week_days, day_of_month, trade_hour, active, description } = req.swagger.params.data.value;
+    const { spend_coin, buy_coin, spend_amount, frequency, week_days, day_of_month, trade_hour, active, description } = req.swagger.params.data.value;
 
     loggerUser.verbose(
         req.uuid,
         'controllers/user/createUserAutoTrade data',
-        user_id, spend_coin, buy_coin, spend_amount, frequency, week_days, day_of_month, trade_hour, active, description
+       spend_coin, buy_coin, spend_amount, frequency, week_days, day_of_month, trade_hour, active, description
     );
 
-    toolsLib.user.createUserAutoTrade({
-        user_id,
+    toolsLib.user.createUserAutoTrade(req.auth.sub.id, {
         spend_coin,
         buy_coin,
         spend_amount,
@@ -1703,9 +1701,8 @@ const updateUserAutoTrade = (req, res) => {
         id, spend_coin, buy_coin, spend_amount, frequency, week_days, day_of_month, trade_hour, active, description
     );
 
-    toolsLib.user.updateUserAutoTrade({
+    toolsLib.user.updateUserAutoTrade(req.auth.sub.id, {
         id,
-        user_id: req.auth.sub.id,
         spend_coin,
         buy_coin,
         spend_amount,

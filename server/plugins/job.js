@@ -288,7 +288,7 @@ const referralTradesRunner = () =>{
 }
 
 const scheduleAutoTrade = () => {
-    cron.schedule('0 * * * * *', async () => {
+    cron.schedule('0 0 * * * *', async () => {
         loggerPlugin.verbose('Auto trade job start');
 
         try {

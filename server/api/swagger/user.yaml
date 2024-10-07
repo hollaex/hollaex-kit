@@ -2057,12 +2057,6 @@ paths:
         - User
       parameters:
         - in: query
-          name: user_id
-          description: "user_id"
-          required: false
-          type: number
-          format: int32
-        - in: query
           name: active
           description: filter by active status
           required: false
@@ -2130,9 +2124,6 @@ paths:
           schema:
             type: object
             properties:
-              user_id:
-                type: number
-                format: int32
               spend_coin:
                 type: string
               buy_coin:
@@ -2186,9 +2177,6 @@ paths:
           schema:
             type: object
             properties:
-              user_id:
-                type: number
-                format: int32
               spend_coin:
                 type: string
               buy_coin:
