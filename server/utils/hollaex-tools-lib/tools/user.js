@@ -91,7 +91,7 @@ const {
 } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
-const { getKitConfig, isValidTierLevel, getKitTier, isDatetime, getAssetsPrices, getKitSecrets, sendCustomEmail, emailHtmlBoilerplate, getDomain, updateKitConfigSecrets, sleep, getKitCoins } = require('./common');
+const { getKitConfig, isValidTierLevel, getKitTier, isDatetime, getAssetsPrices, getKitSecrets, sendCustomEmail, emailHtmlBoilerplate, getDomain, updateKitConfigSecrets, sleep, getKitCoins, getKitCoin } = require('./common');
 const { isValidPassword, createSession } = require('./security');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { all, reject } = require('bluebird');
@@ -2867,6 +2867,11 @@ const settleFees = async (user_id) => {
 	if (totalValue < minimum_amount) {
 		throw new Error('Total unrealized earned fees are too small to be converted to realized earnings');
 	}
+
+	const coinConfiguration = getKitCoin(nativeCurrency);
+	const { increment_unit } = coinConfiguration;
+	const decimalPoint = new BigNumber(increment_unit).dp();
+	totalValue = new BigNumber(totalValue).decimalPlaces(decimalPoint, BigNumber.ROUND_DOWN).toNumber();
 
 	if (distributor.balance[`${nativeCurrency}_available`] < totalValue) {
 		// send email to admin for insufficient balance
