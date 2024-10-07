@@ -24,7 +24,7 @@ module.exports = function (sequelize, DataTypes) {
                 allowNull: false
             },
             frequency: {
-                type: DataTypes.ENUM('daily', 'weekly', 'bi-weekly', 'monthly'),
+                type: DataTypes.ENUM('daily', 'weekly', 'monthly'),
                 allowNull: false
             },
             week_days: {

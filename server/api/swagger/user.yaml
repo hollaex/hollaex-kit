@@ -2051,8 +2051,8 @@ paths:
   /user/autotrade:
     x-swagger-router-controller: user
     get:
-      description: Get user auto trades
       operationId: fetchUserAutoTrades
+      description: Get user auto trades
       tags:
         - User
       parameters:
@@ -2102,18 +2102,25 @@ paths:
           required: false
           type: string
           format: date-time
-        responses:
-          200:
-            description: Success
-            schema:
-              $ref: "#/definitions/ObjectResponse"
-          default:
-            description: Error
-            schema:
-              $ref: "#/definitions/MessageResponse"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - user
     post:
-      description: Create auto trade
       operationId: createUserAutoTrade
+      description: Create auto trade
       tags:
         - user
       parameters:
@@ -2168,8 +2175,8 @@ paths:
       x-security-scopes:
         - user
     put:
-      description: Update auto trade
       operationId: updateUserAutoTrade
+      description: Update auto trade
       tags:
         - User
       parameters:
@@ -2227,8 +2234,8 @@ paths:
       x-security-scopes:
         - user
     delete:
-      description: Delete auto trade
       operationId: deleteUserAutoTrade
+      description: Delete auto trade
       tags:
         - User
       parameters:

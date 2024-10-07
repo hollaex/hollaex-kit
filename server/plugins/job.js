@@ -288,10 +288,11 @@ const referralTradesRunner = () =>{
 }
 
 const scheduleAutoTrade = () => {
-    cron.schedule('0 0 0 * * *', async () => {
+    cron.schedule('0 * * * * *', async () => {
         loggerPlugin.verbose('Auto trade job start');
 
         try {
+			const statusModel = toolsLib.database.getModel('status');
 			const status = await statusModel.findOne({ });
 			if (!status?.kit?.auto_trade_config?.active) return;
 
@@ -340,10 +341,11 @@ const shouldExecuteTrade = (frequency, weekDays, currentDay, currentDate, dayOfM
 
 const executeTrade = async (autoTradeConfig) => {
     const { spend_coin, buy_coin, spend_amount, user_id } = autoTradeConfig;
-	const symbol = `${buy_coin}/${spend_coin}`;
+	const symbol = `${buy_coin}-${spend_coin}`;
 	const side = "buy";
 	const size = spend_amount;  
 
+	let hasError = false;
     try {
         const exchangeCoins = toolsLib.getKitCoins();
 
@@ -352,13 +354,14 @@ const executeTrade = async (autoTradeConfig) => {
         }
 		//Balance check
 		const balance = await toolsLib.wallet.getUserBalanceByKitId(user_id);
-		if (balance[`${buy_coin}_available`] < size) {
-			throw new Error(`Balance insufficient for auto trade: ${buy_coin} size: ${size}`);
+		if (balance[`${spend_coin}_available`] < size) {
+			throw new Error(`Balance insufficient for auto trade: ${symbol} size: ${size}`);
 		};
 
 	} catch (error) {
+		hasError = true;
         loggerPlugin.error(`Auto trade execution error for user ${user_id}:`, error.message);
-        const user = await getUserByKitId(user_id); 
+        const user = await toolsLib.user.getUserByKitId(user_id); 
             sendEmail(
                 MAILTYPE.AUTO_TRADE_ERROR,
                 user.email,
@@ -370,15 +373,22 @@ const executeTrade = async (autoTradeConfig) => {
     }
 
 	try {
-		await toolsLib.order.createUserOrderByKitId(
-            user_id,  
-            symbol,  
-            side,   
-            size,    
-            "market",  
-        );
+		const conversions = await toolsLib.getAssetsPrices([spend_coin], buy_coin, spend_amount);
 
-        loggerPlugin.verbose(`Auto trade completed for user ${user_id}: ${spend_coin} -> ${buy_coin} for ${size} ${spend_coin}`);
+		const pairInfo  = toolsLib.getKitPairsConfig()[symbol];
+		const decimalPoint = new BigNumber(pairInfo.increment_size).dp();
+		let roundedAmount = new BigNumber(conversions[spend_coin]).decimalPlaces(decimalPoint, BigNumber.ROUND_DOWN).toNumber();
+
+		if (!hasError) {
+			await toolsLib.order.createUserOrderByKitId(
+				user_id,  
+				symbol,  
+				side,   
+				roundedAmount,    
+				"market",  
+			);
+		}
+        loggerPlugin.verbose(`Auto trade completed for user ${user_id}: ${buy_coin} -> ${spend_coin} for ${roundedAmount} ${spend_coin}`);
 	} catch (error) {
 		const adminAccount = await toolsLib.user.getUserByKitId(1);
 		sendEmail(
@@ -386,7 +396,7 @@ const executeTrade = async (autoTradeConfig) => {
 			adminAccount.email,
 			{
 				type: 'Auto trade execution failed',
-				data: `Trade execution for user id ${user_id} failed, symbol: ${symbol}, size: ${size}, side: ${side} error message ${error.message}`
+				data: `Trade execution for user id ${user_id} failed, symbol: ${symbol}, side: ${side} error message ${error.message}`
 			},
 			adminAccount.settings
 		);
