@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Button, Input, InputNumber, message, Select } from 'antd';
-import { ExclamationCircleFilled } from '@ant-design/icons';
+import { CloseOutlined, ExclamationCircleFilled } from '@ant-design/icons';
 
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
@@ -64,42 +64,50 @@ const P2PDashMobile = ({
 									className="trading-popup-wrapper fs-16"
 								>
 									<div className="trading-popup-container">
-										<div className="trading-side-container">
-											<span className="trade-text font-weight-bold">
-												{selectedDeal.side === 'sell'
-													? STRINGS['P2P.BUY_COIN']
-													: STRINGS['P2P.SELL_COIN']}
-											</span>
-											<span className="font-weight-bold">
-												{selectedDeal?.buying_asset.toUpperCase()}{' '}
-											</span>
-											<EditWrapper stringId="P2P.PRICE">
-												<span className="secondary-text">
-													@{STRINGS['P2P.PRICE']}
+										<div className="d-flex justify-content-between">
+											<div className="trading-side-container">
+												<span className="trade-text font-weight-bold">
+													{selectedDeal.side === 'sell'
+														? STRINGS['P2P.BUY_COIN']
+														: STRINGS['P2P.SELL_COIN']}
 												</span>
-											</EditWrapper>
+												<span className="font-weight-bold">
+													{selectedDeal?.buying_asset.toUpperCase()}{' '}
+												</span>
+												<EditWrapper stringId="P2P.PRICE">
+													<span className="secondary-text">
+														@{STRINGS['P2P.PRICE']}
+													</span>
+												</EditWrapper>
+												<span
+													className={
+														selectedDeal?.side === 'sell'
+															? 'asset-buy-field'
+															: 'asset-sell-field'
+													}
+												>
+													{formatRate(
+														selectedDeal?.exchange_rate,
+														selectedDeal?.spread,
+														selectedDeal?.spending_asset,
+														selectedDeal?.side
+													)}
+												</span>
+												<span
+													className={
+														selectedDeal?.side === 'sell'
+															? 'asset-buy-field'
+															: 'asset-sell-field'
+													}
+												>
+													{selectedDeal?.spending_asset.toUpperCase()}
+												</span>
+											</div>
 											<span
-												className={
-													selectedDeal?.side === 'sell'
-														? 'asset-buy-field'
-														: 'asset-sell-field'
-												}
+												className="secondary-text close-icon"
+												onClick={() => handleCloseTrading()}
 											>
-												{formatRate(
-													selectedDeal?.exchange_rate,
-													selectedDeal?.spread,
-													selectedDeal?.spending_asset,
-													selectedDeal?.side
-												)}
-											</span>
-											<span
-												className={
-													selectedDeal?.side === 'sell'
-														? 'asset-buy-field'
-														: 'asset-sell-field'
-												}
-											>
-												{selectedDeal?.spending_asset.toUpperCase()}
+												<CloseOutlined />
 											</span>
 										</div>
 										<div className="trading-payment-detail">
@@ -225,7 +233,13 @@ const P2PDashMobile = ({
 													>
 														<Select
 															showSearch
-															className="payment-method-field w-100"
+															className={
+																selectedDeal?.min_order_value <= amountFiat &&
+																selectedDeal?.max_order_value >= amountFiat &&
+																!selectedMethod?.system_name
+																	? 'payment-method-field payment-method-error-field w-100'
+																	: 'payment-method-field w-100'
+															}
 															dropdownClassName="p2p-custom-style-dropdown"
 															placeholder="Payment Method"
 															value={selectedMethod?.system_name}
@@ -282,7 +296,13 @@ const P2PDashMobile = ({
 															}
 														>
 															<Select
-																className="payment-method-field w-100"
+																className={
+																	selectedDeal?.min_order_value <= amountFiat &&
+																	selectedDeal?.max_order_value >= amountFiat &&
+																	!selectedMethod?.system_name
+																		? 'payment-method-field payment-method-error-field w-100'
+																		: 'payment-method-field w-100'
+																}
 																dropdownClassName="p2p-custom-style-dropdown"
 																showSearch
 																placeholder="Payment Method"
@@ -483,7 +503,12 @@ const P2PDashMobile = ({
 									<span className="deal-amount important-text">
 										{deal.buying_asset.toUpperCase()}
 									</span>
-									<Coin iconId={coins[deal?.buying_asset].icon_id} type="CS9" />
+									<span className="asset-icon">
+										<Coin
+											iconId={coins[deal?.buying_asset].icon_id}
+											type="CS11"
+										/>
+									</span>
 								</div>
 								<div className="p2p-limit-price mt-3">
 									<div className="p2p-avaliable-price">

@@ -185,7 +185,7 @@
 			}
 
 			.p2p-amount {
-				.ant-input-affix-wrapper {
+				.ant-input {
 					display: flex;
 					align-items: center;
 					border: unset !important;
@@ -201,17 +201,6 @@
 						color: var(--labels_important-active-labels-text-graphics);
 						font-size: 12px !important;
 					}
-
-					.ant-input-suffix {
-						text-transform: uppercase;
-						text-decoration: underline;
-						color: var(--specials_buttons-links-and-highlights);
-					}
-				}
-
-				.ant-input-affix-wrapper-focused {
-					border: transparent !important;
-					border-bottom: 1px solid var(--calculated_important-border) !important;
 				}
 			}
 		}
@@ -1042,6 +1031,12 @@
 						top: 5px;
 						margin-left: 5px;
 					}
+					.anticon-clock-circle {
+						svg {
+							position: relative;
+							top: 5px;
+						}
+					}
 				}
 			}
 
@@ -1061,6 +1056,14 @@
 					.table-header-wrapper {
 						border-bottom: 1px solid var(--calculated_secondary-border);
 						padding: 10px;
+					}
+
+					.loading-anime {
+						height: 20px;
+						width: 75%;
+						margin: 2%;
+						border-radius: 7px;
+						animation: mymove 3s infinite;
 					}
 
 					.table-row {
@@ -1326,7 +1329,7 @@
 								.total-amount-field {
 									display: flex;
 									flex-direction: column;
-									padding: 5% 5% 0;
+									padding: 3% 0;
 								}
 
 								.total-amount-input-field {
@@ -1344,8 +1347,6 @@
 							}
 
 							.total-amount-input-field {
-								padding: 0 15% 0 5%;
-
 								.ant-input-affix-wrapper {
 									background-color: transparent;
 									height: 25px;
@@ -1366,18 +1367,21 @@
 							}
 
 							.order-limit-container {
-								padding: 5% 5% 0;
+								padding: 5% 0;
 
 								.max-min-field-wrapper {
-									width: 75%;
+									width: 100%;
 									display: flex;
-									gap: 20px;
+									gap: 3%;
 									align-items: flex-start;
 
 									.min-input-field,
 									.max-input-field {
 										padding: unset !important;
 										margin-top: 5%;
+										.ant-input-affix-wrapper {
+											padding: 3%;
+										}
 									}
 
 									.value-description {
@@ -1444,6 +1448,7 @@
 				.p2p-deal-terms-container {
 					.terms-conditions-wrapper {
 						display: flex;
+						flex-direction: column;
 						padding: 3%;
 						border-right: 2px dotted var(--calculated_secondary-border);
 
@@ -1457,13 +1462,24 @@
 								margin-top: 5%;
 								font-size: 12px;
 								background-color: transparent;
+								box-shadow: none;
 							}
 
 							.terms-and-condition-field:hover,
 							.terms-and-condition-field:focus {
 								border: 1px solid
 									var(--labels_important-active-labels-text-graphics);
+								box-shadow: none;
 							}
+							.terms-and-condition-error-field {
+								border-color: var(
+									--specials_notifications-alerts-warnings
+								) !important;
+							}
+						}
+						.error-text {
+							color: var(--specials_notifications-alerts-warnings);
+							height: 10px;
 						}
 					}
 
@@ -1516,7 +1532,7 @@
 		}
 	}
 
-	.back-to-orders-link:hover {
+	.back-text:hover {
 		cursor: pointer;
 	}
 
@@ -1775,6 +1791,12 @@
 						.go-to-withdraw-link:hover {
 							cursor: pointer;
 						}
+
+						.feedback-submit-btn,
+						.feedback-submit-btn:hover {
+							color: var(--labels_important-active-labels-text-graphics);
+							border-color: var(--labels_important-active-labels-text-graphics);
+						}
 					}
 
 					.user-appealed-text,
@@ -1793,6 +1815,7 @@
 
 						.appeal-confirm-button-container-active {
 							display: flex;
+							align-items: center;
 							gap: 10px;
 							pointer-events: all;
 							opacity: 1;
@@ -1844,6 +1867,7 @@
 					display: flex;
 					justify-content: center;
 					align-items: center;
+					gap: 5px;
 					border-bottom: 1px solid var(--calculated_secondary-border);
 				}
 
@@ -1988,11 +2012,17 @@
 			height: 45px;
 			background-color: var(--labels_inactive-button);
 			border: none;
+			color: var(--calculated_base_top-bar-navigation_text);
 		}
 
 		.confirm-btn {
 			width: 70%;
 			background-color: var(--specials_buttons-links-and-highlights);
+		}
+
+		.cancel-bth:hover,
+		.confirm-btn:hover {
+			color: var(--calculated_base_top-bar-navigation_text);
 		}
 	}
 }
@@ -2098,6 +2128,7 @@
 			margin-bottom: 3%;
 			align-items: center;
 			gap: 10px;
+			font-size: 14px;
 
 			.ant-input {
 				width: 70%;
@@ -2167,6 +2198,11 @@
 		flex-direction: column;
 		gap: 15px;
 		margin-top: 10px;
+		.vendor-close-icon {
+			display: flex;
+			justify-content: flex-end;
+			font-size: 20px;
+		}
 
 		.vendor-details {
 			display: flex;
@@ -2222,6 +2258,7 @@
 				border: none;
 				border-collapse: collapse;
 				font-size: 12px;
+				width: 100%;
 
 				.p2p-feedback-table-header {
 					.p2p-header-row {
@@ -2240,6 +2277,13 @@
 					.feedback-table-body-row {
 						border-bottom: 1px solid var(--calculated_secondary-border);
 						position: relative;
+					}
+					.loading-anime {
+						height: 20px;
+						width: 75%;
+						margin: 2%;
+						border-radius: 7px;
+						animation: mymove 3s infinite;
 					}
 
 					.ant-rate-star-zero {
@@ -2558,6 +2602,12 @@
 								padding: 3%;
 							}
 						}
+
+						.ant-rate-star-zero {
+							.ant-rate-star-second {
+								color: var(--labels_inactive-button) !important;
+							}
+						}
 					}
 				}
 			}
@@ -2619,13 +2669,14 @@
 				width: 100%;
 				background-color: var(--specials_buttons-links-and-highlights);
 				border: none;
+				color: var(--calculated_base_top-bar-navigation_text);
 			}
 
 			.cancel-btn:hover,
 			.proceed-btn:hover,
 			.proceed-btn:active,
 			.cancel-btn:active {
-				color: var(--labels_important-active-labels-text-graphics);
+				color: var(--calculated_base_top-bar-navigation_text);
 			}
 		}
 	}
@@ -2641,6 +2692,23 @@
 			.submit-feedback-title {
 				font-size: 18px !important;
 			}
+
+			.cancel-warning-text {
+				padding: 3%;
+				background-color: var(--base_secondary-navigation-bar);
+				border: 1px solid var(--calculated_secondary-border);
+
+				.warning-title {
+					.edit-wrapper__container {
+						text-decoration: underline;
+						color: var(--specials_pending-waiting-caution);
+					}
+				}
+				.edit-wrapper__container {
+					font-size: 12px;
+					color: var(--labels_secondary-inactive-label-text-graphics);
+				}
+			}
 		}
 
 		.user-receive-amount-detail {
@@ -2649,7 +2717,7 @@
 		}
 
 		.submit-transaction-button-container {
-			margin-top: 10% !important;
+			margin-top: 5% !important;
 		}
 	}
 }
@@ -2665,7 +2733,7 @@
 			.cancel-btn,
 			.confirm-btn {
 				background-color: var(--specials_buttons-links-and-highlights);
-				color: var(--labels_important-active-labels-text-graphics);
+				color: var(--calculated_base_top-bar-navigation_text);
 				border: unset;
 			}
 
@@ -2673,7 +2741,7 @@
 			.cancel-btn:hover,
 			.confirm-btn:hover,
 			.confirm-btn:active {
-				color: var(--labels_important-active-labels-text-graphics);
+				color: var(--calculated_base_top-bar-navigation_text);
 			}
 		}
 	}
@@ -2853,9 +2921,9 @@
 						}
 
 						.p2p-select-field,
-						.ant-input-affix-wrapper {
+						.ant-input {
 							height: 100%;
-
+							font-size: 22px !important;
 							.ant-select-selector,
 							.ant-input,
 							.ant-input-suffix {
@@ -2897,13 +2965,19 @@
 							color: var(--labels_secondary-inactive-label-text-graphics);
 						}
 
+						.vendor-name {
+							color: var(--labels_important-active-labels-text-graphics);
+							.edit-wrapper__container {
+								color: var(--labels_important-active-labels-text-graphics);
+							}
+						}
 						.amount-detail {
 							display: flex;
 							gap: 5px;
 
 							.amount-field,
 							.spend-asset {
-								font-size: 32px !important;
+								font-size: 5.5rem !important;
 							}
 						}
 
@@ -2919,9 +2993,9 @@
 							justify-content: space-between;
 
 							.trade-btn {
-								font-size: 18px;
-								height: 6rem;
-								width: 18rem;
+								font-size: 24px;
+								height: 7rem;
+								width: 21rem;
 							}
 						}
 					}
@@ -3279,12 +3353,21 @@
 						}
 
 						.terms-and-condition-field {
-							margin: 2% 0 3%;
+							margin: 2% 0;
 							background-color: transparent;
 							font-size: 26px;
 							border-radius: 5px;
 							border: 2px solid
 								var(--labels_secondary-inactive-label-text-graphics);
+						}
+						.error-text {
+							color: var(--specials_notifications-alerts-warnings);
+						}
+
+						.terms-and-condition-error-field {
+							border-color: var(
+								--specials_notifications-alerts-warnings
+							) !important;
 						}
 					}
 				}
@@ -3725,6 +3808,9 @@
 
 .trading-popup-wrapper {
 	.trading-popup-container {
+		.close-icon {
+			font-size: 20px;
+		}
 		.trading-side-container {
 			display: flex;
 			align-items: center;
@@ -3742,7 +3828,7 @@
 		.trading-payment-detail {
 			display: flex;
 			flex-direction: column;
-			gap: 15px;
+			gap: 10px;
 			padding: 5% 0;
 
 			.p2p-amount-spent,
@@ -3790,12 +3876,15 @@
 
 					.amount-spent-field,
 					.amount-receive-field {
-						background-color: transparent !important;
-						border: transparent;
-						box-shadow: none;
+						background-color: var(--base_background) !important;
+						border: none;
+						box-shadow: inset 1px 1px 3px #00000029;
+						border-radius: 5px;
 						color: var(
 							--labels_important-active-labels-text-graphics
 						) !important;
+						border-bottom: 1px solid
+							var(--labels_important-active-labels-text-graphics);
 
 						.ant-input-number-input {
 							text-align: right;
@@ -3829,6 +3918,13 @@
 				}
 			}
 
+			.payment-method-error-field {
+				.ant-select-selector {
+					border-color: var(
+						--specials_notifications-alerts-warnings
+					) !important;
+				}
+			}
 			.payment-method-field {
 				display: flex;
 				justify-content: space-between;
@@ -3872,7 +3968,6 @@
 		}
 
 		.error-field-container {
-			height: 10px;
 			display: flex;
 			font-size: 12px;
 			justify-content: flex-start;
