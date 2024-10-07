@@ -19,7 +19,7 @@ const { verifyBearerTokenPromise, verifyHmacTokenPromise} = require('./security'
 const { client } = require('./database/redis');
 const { parseNumber, getTickers } = require('./common');
 const BigNumber = require('bignumber.js');
-const uuid = require('uuid/v4');
+const randomString = require('random-string');
 const { sendEmail } = require('../../../mail');
 const { MAILTYPE } = require('../../../mail/strings');
 
@@ -1427,7 +1427,12 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, id = nu
 		result.base_asset = from;
 		result.chain = true;
 		result.user_id = user_id;
-		token = uuid();
+		token = randomString({
+			length: 32,
+			numeric: true,
+			letters: true
+		});
+
 		client.setexAsync(token, 30, JSON.stringify(result));
 	}
 
