@@ -1065,6 +1065,16 @@ const getNetworkQuickTrades = () => {
 const parseNumber = (number, precisionValue) => {
 	return BigNumber(number).precision(precisionValue, BigNumber.ROUND_DOWN).toNumber();
 }
+const removeRepeatingDecimals = (num) => {
+	let numStr = num.toString();
+	if (numStr.includes('.') && numStr?.length > 8) {
+		let [integerPart, decimalPart] = numStr.split('.');
+		decimalPart = decimalPart.replace(/(\d)\1{2,}$/, '$1');
+		return parseFloat(`${integerPart}.${decimalPart}`);
+	}
+	
+	return parseFloat(num); 
+}
 
 module.exports = {
 	getKitVersion,
@@ -1135,5 +1145,6 @@ module.exports = {
 	parseNumber,
 	getQuickTradePairs,
 	getTransactionLimits,
-	getTradePaths
+	getTradePaths,
+	removeRepeatingDecimals
 };
