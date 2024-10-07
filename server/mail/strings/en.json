@@ -161,7 +161,7 @@
 			"title": "Activity Detected on Your P2P Order"
 		},
 		"AUTO_TRADE_ERROR": {
-			"html": "<div><p>Dear ${name},</p><p>We have detected your auto trade config failed due to insufficient balance for the following trade. Please check and update your balance. Spend Amount: ${spend_amount}, Spend Coin: ${spend_coin}, Buy Coin: ${buy_coin},</p><p>Thank you for using our platform.</p><p>Regards,<br />${api_name} team</p></div>",
+			"html": "<div><p>Dear ${name},</p><p>We have detected your auto trade config failed due to insufficient balance for the following trade. Please check and update your balance. Spend Amount: ${spend_amount}, Spend Coin: ${spend_coin}, Buy Coin: ${buy_coin}</p><p>Thank you for using our platform.</p><p>Regards,<br />${api_name} team</p></div>",
 			"title": "Error on your Auto Trade Config"
 		}
 	}
