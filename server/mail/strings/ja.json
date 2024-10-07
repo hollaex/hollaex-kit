@@ -159,6 +159,11 @@
         "P2P_VENDOR_APPEALED_ORDER": {
             "html": "<div><p> 親愛なる${name}様 </p><p>お客様は注文に対して異議を申し立てました。問題を解決するためにサポートに連絡してください。<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">注文ページへ</Button></a></div><p>私たちのプラットフォームをご利用いただきありがとうございます。</p><p>リクエスト発行元: ${ip}</p><p>敬具<br> ${api_name}チーム </p></div>",
             "title": "P2P注文にアクティビティが検出されました"
-        }
+        },
+        "AUTO_TRADE_ERROR": {
+            "html": "<div><p>親愛なる${name}様、</p><p>お客様の自動取引設定が、残高不足のため次の取引で失敗しました。残高を確認して更新してください。支出額: ${spend_amount}、支出通貨: ${spend_coin}、購入通貨: ${buy_coin}。</p><p>当プラットフォームをご利用いただきありがとうございます。</p><p>敬具、${api_name}チーム</p></div>",
+            "title": "自動取引設定のエラー"
+          }
+          
     }
 }

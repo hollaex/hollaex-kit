@@ -159,6 +159,11 @@
         "P2P_VENDOR_APPEALED_ORDER": {
             "html": "<div><p> 친애하는 ${name} 님 </p><p>귀하는 주문에 대해 이의를 제기했습니다. 문제를 해결하려면 지원팀에 문의하십시오.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">주문 확인하기</Button></a></div><p>저희 플랫폼을 이용해 주셔서 감사합니다.</p><p>요청이 발생한 위치: ${ip}</p><p>감사합니다<br> ${api_name} 팀 </p></div>",
             "title": "귀하의 P2P 주문에서 감지된 활동"
-        }
+        },
+        "AUTO_TRADE_ERROR": {
+            "html": "<div><p>${name}님,</p><p>다음 거래에 대해 잔액 부족으로 인해 자동 거래 설정이 실패한 것을 감지했습니다. 잔액을 확인하고 업데이트하세요. 지출 금액: ${spend_amount}, 지출 화폐: ${spend_coin}, 구매 화폐: ${buy_coin}.</p><p>당사 플랫폼을 이용해 주셔서 감사합니다.</p><p>감사합니다, ${api_name} 팀</p></div>",
+            "title": "자동 거래 설정 오류"
+          }
+          
     }
 }
