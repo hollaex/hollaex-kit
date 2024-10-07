@@ -366,7 +366,9 @@ const executeTrade = async (autoTradeConfig) => {
                 MAILTYPE.AUTO_TRADE_ERROR,
                 user.email,
                 {
-                    message: error.message, 
+                    spend_amount, 
+                    spend_coin, 
+                    buy_coin, 
                 },
                 user.settings
             );
