@@ -1785,7 +1785,7 @@
 		"LOADING_PRICES": "Loading Prices...",
 		"INPUT_LABEL": "Input asset name or symbol",
 		"HIGHLIGHTS": "Highlights",
-		"MOBILE_DESC": "Select a market below to start trading its orderbook.",
+		"MOBILE_DESC": "Select a market below to start trading.",
 		"PRICE_24H": "Price/24H %",
 		"CARDS": {
 			"GAINERS": "Gainers",

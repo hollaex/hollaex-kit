@@ -13,15 +13,19 @@ const TradeInputGroup = ({
 	icons: ICONS,
 	pairs,
 	tradeClassName,
+	hasTrigger,
 }) => {
 	return (
 		<Dropdown
 			size="small"
 			overlayClassName={
 				tradeClassName === 'market-asset-row'
-					? 'custom-dropdown-style market-dropdown-style'
+					? `custom-dropdown-style market-dropdown-style ${
+							isMobile && 'market-dropdown-mobile'
+					  }`
 					: 'custom-dropdown-style'
 			}
+			trigger={hasTrigger && (isMobile ? ['click'] : ['hover'])}
 			style={{
 				width: 130,
 			}}

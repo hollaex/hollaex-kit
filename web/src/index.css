@@ -2795,8 +2795,8 @@ table th {
   .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdraw-btn-wrapper {
     margin-top: 20%; } }
 
-.layout-mobile .withdraw-dropdown-address .asset-address-field {
-  margin-bottom: 5%; }
+.layout-mobile .withdraw-dropdown-address-options .asset-address-field .address-text {
+  width: 0; }
 
 .review_email-wrapper {
   margin: auto; }
@@ -2810,8 +2810,13 @@ table th {
 
 .withdraw-dropdown-address {
   width: 100%;
-  border-bottom: 1px solid var(--labels_secondary-inactive-label-text-graphics) !important;
-  overflow: hidden; }
+  border-top: 1px solid var(--labels_secondary-inactive-label-text-graphics) !important;
+  overflow: hidden;
+  padding-top: 3%; }
+
+.withdraw-dropdown-address-options {
+  overflow: hidden;
+  width: 100%; }
 
 .extra_information-wrapper {
   margin-top: 1rem;
@@ -5663,6 +5668,11 @@ table th {
   .layout-mobile .digital-market-wrapper .market-wrapper-mobile-view .mobile-header-content .desc-content {
     font-size: 12px; }
 
+.layout-mobile .digital-market-wrapper .market-wrapper .market-button-container {
+  padding: 4% 2%; }
+  .layout-mobile .digital-market-wrapper .market-wrapper .market-button-container .trade-tab-search-icon {
+    font-size: 12px; }
+
 .layout-mobile .custom-card-field {
   width: 8px;
   height: 8px;
@@ -5688,8 +5698,14 @@ table th {
   .layout-mobile .assets-card-container .right-nav {
     right: 0; }
 
+.market-dropdown-style .app_bar-pair-font {
+  margin-left: 5%; }
+
 .market-dropdown-style .ant-dropdown-menu-item-active:hover {
   background-color: var(--calculated_super-pale_label-text-graphics) !important; }
+
+.market-dropdown-mobile .app_bar-pair-font {
+  font-size: 12px; }
 
 .digital-market-wrapper .market-list__block-table {
   margin-bottom: 1rem; }
@@ -5774,6 +5790,12 @@ table th {
         background-color: var(--specials_buttons-links-and-highlights);
         color: var(--labels_important-active-labels-text-graphics);
         cursor: pointer; }
+    .digital-market-wrapper .market-list__block-table .table-row .td-trade .market-asset-row-disable .action_notification-text, .digital-market-wrapper .market-list__block-table .table-row .td-trade .market-asset-row-disable:hover .action_notification-text {
+      opacity: 0.3; }
+    .digital-market-wrapper .market-list__block-table .table-row .td-trade .market-asset-row-disable .action_notification-text:hover, .digital-market-wrapper .market-list__block-table .table-row .td-trade .market-asset-row-disable:hover .action_notification-text:hover {
+      background-color: transparent !important;
+      cursor: text;
+      color: var(--specials_buttons-links-and-highlights) !important; }
     .digital-market-wrapper .market-list__block-table .table-row .td-trade .ant-dropdown-open {
       border-radius: 8px; }
       .digital-market-wrapper .market-list__block-table .table-row .td-trade .ant-dropdown-open .action_notification-text {
@@ -5830,6 +5852,7 @@ table th {
     width: 32%;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     border-radius: 2px;
     padding: 0.5% 1% 0.5% 0;
     border: 1px solid var(--labels_secondary-inactive-label-text-graphics); }
@@ -5860,7 +5883,21 @@ table th {
     color: var(--labels_important-active-labels-text-graphics); }
   .digital-market-wrapper .highlight-toggle-button .ant-switch-checked,
   .digital-market-wrapper .highlight-toggle-button .ant-switch {
+    border: 2px solid var(--labels_inactive-button);
     background-color: var(--base_secondary-navigation-bar); }
+    .digital-market-wrapper .highlight-toggle-button .ant-switch-checked .ant-switch-handle,
+    .digital-market-wrapper .highlight-toggle-button .ant-switch .ant-switch-handle {
+      width: 10px; }
+  .digital-market-wrapper .highlight-toggle-button .ant-switch-checked {
+    border: 2px solid var(--labels_important-active-labels-text-graphics) !important; }
+    .digital-market-wrapper .highlight-toggle-button .ant-switch-checked .ant-switch-handle {
+      left: calc(100% - 12px) !important; }
+  .digital-market-wrapper .highlight-toggle-button .toggle-inactive .ant-switch-handle::before {
+    background-color: var(--labels_inactive-button);
+    bottom: 3px; }
+  .digital-market-wrapper .highlight-toggle-button .toggle-active .ant-switch-handle::before {
+    background-color: var(--labels_important-active-labels-text-graphics);
+    bottom: 3px; }
 
 .assets-card-container {
   display: flex;

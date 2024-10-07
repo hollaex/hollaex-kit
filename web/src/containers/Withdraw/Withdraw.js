@@ -620,10 +620,11 @@ const RenderWithdraw = ({
 				setIsValidAdress(false);
 			}
 			if (val !== STRINGS['WITHDRAW_PAGE.NEW_ADDRESS']) {
+				const optionValue = val.split(',');
 				setIsValidField((prev) => ({ ...prev, isSelected: true }));
-				onHandleAddress(val, 'address');
-				if (isCondition && address?.length > 1) {
-					setWithdrawOptionaltag(address[1]);
+				onHandleAddress(optionValue[0], 'address');
+				if (isCondition && optionValue?.length > 1) {
+					setWithdrawOptionaltag(optionValue[1]);
 				}
 			}
 			if (val === STRINGS['ADDRESS_BOOK.VIEW_ADDRESS_BOOK_LABEL']) {
@@ -697,37 +698,38 @@ const RenderWithdraw = ({
 		);
 	})();
 
-	const address = getAddress[0]?.address?.split(':');
-
 	const selectAddressField = [
 		{
 			value: STRINGS['WITHDRAW_PAGE.NEW_ADDRESS'],
 			label: STRINGS['WITHDRAW_PAGE.NEW_ADDRESS'],
 		},
-		{
-			value: address && address[0],
-			label: (
-				<div className="d-flex asset-address-field">
-					<span>{getAddress[0]?.label}</span>
-					<div className="d-flex flex-direction-column">
-						<span>: {address && address[0]}</span>
-						{address &&
-							address.length > 1 &&
-							isCondition &&
-							(!isValidField?.isSelected || isValidField?.dropdownOpen) && (
-								<div className="assets-field">
-									<div className="ml-2">
-										<EditWrapper stringId="ACCORDIAN.TAG">
-											{STRINGS['ACCORDIAN.TAG']}
-										</EditWrapper>
-										<span className="ml-1"> {address && address[1]}</span>
+		...(getAddress?.map((addressObj) => {
+			const splitAddress = addressObj?.address?.split(':');
+			return {
+				value: splitAddress && splitAddress,
+				label: (
+					<div className="d-flex asset-address-field">
+						<span>{addressObj?.label}</span>
+						<div className="d-flex flex-direction-column address-text">
+							<span>: {splitAddress && splitAddress[0]}</span>
+							{splitAddress &&
+								splitAddress.length > 1 &&
+								isCondition &&
+								(!isValidField?.isSelected || isValidField?.dropdownOpen) && (
+									<div className="assets-field">
+										<div className="ml-2">
+											<EditWrapper stringId="ACCORDIAN.TAG">
+												{STRINGS['ACCORDIAN.TAG']}
+											</EditWrapper>
+											<span className="ml-1">{splitAddress[1]}</span>
+										</div>
 									</div>
-								</div>
-							)}
+								)}
+						</div>
 					</div>
-				</div>
-			),
-		},
+				),
+			};
+		}) || []),
 		{
 			value: STRINGS['ADDRESS_BOOK.VIEW_ADDRESS_BOOK_LABEL'],
 			label: STRINGS['ADDRESS_BOOK.VIEW_ADDRESS_BOOK_LABEL'],
@@ -1142,16 +1144,19 @@ const RenderWithdraw = ({
 													onDropdownVisibleChange={handleDropdownVisibleChange}
 													onClear={() => onHandleClear('address')}
 												>
-													{selectAddressField.map((data) => {
+													{selectAddressField?.map((data) => {
 														return (
-															<Option key={data.value}>
+															<Option key={data?.value}>
 																<div
 																	className={
-																		data.value === `${address && address[0]}` &&
-																		'withdraw-dropdown-address'
+																		data?.value === 'View address book'
+																			? 'withdraw-dropdown-address'
+																			: data?.value !== 'New Address' &&
+																			  data?.value !== 'View address book' &&
+																			  'withdraw-dropdown-address-options'
 																	}
 																>
-																	{data.label}
+																	{data?.label}
 																</div>
 															</Option>
 														);

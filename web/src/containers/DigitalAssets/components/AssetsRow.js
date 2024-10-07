@@ -19,6 +19,7 @@ const AssetsRow = ({
 	pairs,
 	icons,
 	coins,
+	selectedButton,
 }) => {
 	const {
 		icon_id,
@@ -159,7 +160,7 @@ const AssetsRow = ({
 					)}
 				</td>
 			)}
-			{isMobile && (
+			{isMobile && selectedButton !== 'Market Cap' && (
 				<td>
 					{!loading ? (
 						<div className="d-flex flex-column justify-content-end">
@@ -184,6 +185,24 @@ const AssetsRow = ({
 								/>
 							) : (
 								<span> {'- '}</span>
+							)}
+						</div>
+					) : (
+						<Loading index={index} />
+					)}
+				</td>
+			)}
+			{isMobile && selectedButton === 'Market Cap' && (
+				<td>
+					{!loading ? (
+						<div className="ml-1 market-capital mr-3">
+							{coins[symbol]?.market_cap ? (
+								coins[symbol].market_cap.toLocaleString('en-US', {
+									style: 'currency',
+									currency: 'USD',
+								})
+							) : (
+								<span className="font-raleway">0</span>
 							)}
 						</div>
 					) : (
@@ -291,6 +310,7 @@ const AssetsRow = ({
 							goToTrade={goToTrade}
 							pairs={pairs}
 							tradeClassName="market-asset-row"
+							hasTrigger={true}
 						/>
 					) : (
 						<ActionNotification
@@ -308,7 +328,11 @@ const AssetsRow = ({
 							className="csv-action"
 							showActionText={isMobile}
 							disable={markets.length === 0}
-							tradeClassName="market-asset-row"
+							tradeClassName={
+								markets.length === 0
+									? 'market-asset-row market-asset-row-disable'
+									: 'market-asset-row'
+							}
 						/>
 					)
 				) : (
