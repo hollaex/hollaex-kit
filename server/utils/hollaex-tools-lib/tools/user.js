@@ -3643,7 +3643,7 @@ const fetchUserAutoTrades = async (user_id, opts = {
         where: {
             created_at: timeframe,
 			user_id,
-            ...(opts.active !== null && { active: opts.active })
+            ...(opts.active != null && { active: opts.active })
         },
         order: [ordering],
         ...pagination
