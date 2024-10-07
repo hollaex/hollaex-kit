@@ -1067,7 +1067,7 @@ const parseNumber = (number, precisionValue) => {
 }
 const removeRepeatingDecimals = (num) => {
 	let numStr = num.toString();
-	if (numStr.includes('.')) {
+	if (numStr.includes('.') && numStr?.length > 8) {
 		let [integerPart, decimalPart] = numStr.split('.');
 		decimalPart = decimalPart.replace(/(\d)\1{2,}$/, '$1');
 		return parseFloat(`${integerPart}.${decimalPart}`);
