@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { isMobile } from 'react-device-detect';
 import { Button, message, Rate, Modal, Input, Select } from 'antd';
+import { ClockCircleOutlined } from '@ant-design/icons';
 import moment from 'moment';
 
 import './_P2P.scss';
@@ -18,6 +19,7 @@ import {
 	updateP2PPaymentMethod,
 	deleteP2PPaymentMethod,
 } from './actions/p2pActions';
+import { Loading } from 'containers/DigitalAssets/components/utils';
 
 const P2PProfile = ({
 	data,
@@ -54,6 +56,7 @@ const P2PProfile = ({
 	const [displayNewPayment, setDisplayNewPayment] = useState(false);
 	const [paymentFieldAdd, setPaymentFieldAdd] = useState(false);
 	const [displayConfirmation, setDisplayConfirmation] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
 	const [paymentMethod, setPaymentMethod] = useState({
 		system_name: null,
 		fields: {},
@@ -72,11 +75,13 @@ const P2PProfile = ({
 	});
 
 	useEffect(() => {
+		setIsLoading(true);
 		fetchFeedback({ merchant_id: (selectedProfile || selectedUser).id })
 			.then((res) => {
 				setMyDeals(res.data);
 			})
 			.catch((err) => err);
+		setIsLoading(false);
 
 		fetchP2PProfile({ user_id: (selectedProfile || selectedUser).id })
 			.then((res) => {
@@ -335,9 +340,14 @@ const P2PProfile = ({
 													</div>
 													<div>
 														{info?.status === 0 && (
-															<span className="unverified-label">
-																({STRINGS['P2P.UNVERIFIED']})
-															</span>
+															<div className="d-flex align-items-end">
+																<span className="unverified-label">
+																	({STRINGS['P2P.UNVERIFIED']})
+																</span>
+																<span className="secondary-text ml-2">
+																	<ClockCircleOutlined />
+																</span>
+															</div>
 														)}
 														{info?.status === 1 && (
 															<span className="pending-label">
@@ -405,30 +415,44 @@ const P2PProfile = ({
 										isMobile ? 'fs-16 important-text' : 'important-text'
 									}
 								>
-									{myDeals.map((deal) => {
+									{myDeals.map((deal, index) => {
 										return (
 											<tr className="table-row">
+												{isLoading ? (
+													<Loading index={index} />
+												) : (
+													<td className="w-25 td-fit">
+														{moment(deal.created_at).format(
+															'DD/MMM/YYYY, hh:mmA'
+														)}
+													</td>
+												)}
 												<td className="w-25 td-fit">
-													{moment(deal.created_at).format(
-														'DD/MMM/YYYY, hh:mmA'
+													{isLoading ? (
+														<Loading index={index} />
+													) : (
+														deal.user.full_name || (
+															<EditWrapper stringId="P2P.ANONYMOUS">
+																{STRINGS['P2P.ANONYMOUS']}
+															</EditWrapper>
+														)
 													)}
 												</td>
 												<td className="w-25 td-fit">
-													{deal.user.full_name || (
-														<EditWrapper stringId="P2P.ANONYMOUS">
-															{STRINGS['P2P.ANONYMOUS']}
-														</EditWrapper>
-													)}
+													{isLoading ? <Loading index={index} /> : deal.comment}
 												</td>
-												<td className="w-25 td-fit">{deal.comment}</td>
 												<td className="w-25 td-fit">
-													<Rate
-														disabled
-														allowHalf={false}
-														autoFocus={false}
-														allowClear={false}
-														value={deal.rating}
-													/>
+													{isLoading ? (
+														<Loading index={index} />
+													) : (
+														<Rate
+															disabled
+															allowHalf={false}
+															autoFocus={false}
+															allowClear={false}
+															value={deal.rating}
+														/>
+													)}
 												</td>
 											</tr>
 										);
@@ -448,7 +472,10 @@ const P2PProfile = ({
 				>
 					<div className="whiteTextP2P add-payment-title">
 						<EditWrapper stringId="P2P.ADD_PAYMENT_METHOD_DETAILS">
-							{STRINGS['P2P.ADD_PAYMENT_METHOD_DETAILS']}
+							{STRINGS.formatString(
+								STRINGS['P2P.ADD_PAYMENT_METHOD_DETAILS'],
+								STRINGS['EDIT_TEXT']
+							)}
 						</EditWrapper>
 					</div>
 
@@ -536,7 +563,7 @@ const P2PProfile = ({
 							type="default"
 						>
 							<EditWrapper stringId="P2P.COMPLETE">
-								{STRINGS['P2P.COMPLETE'].toUpperCase()}
+								{STRINGS['P2P.UPDATE'].toUpperCase()}
 							</EditWrapper>
 						</Button>
 					</div>
