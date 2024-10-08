@@ -38,9 +38,12 @@ const P2POrderDetails = ({
 				<div>
 					<div className="order-title">
 						<EditWrapper stringId="P2P.ORDER">
-							{STRINGS['P2P.ORDER']}
+							{STRINGS['P2P.ORDER']}:
 						</EditWrapper>
 					</div>
+					<span className="secondary-text">
+						{selectedOrder?.transaction_id}
+					</span>
 					<div className="asset-name">
 						{user?.id === selectedOrder?.merchant_id ? (
 							<EditWrapper stringId="P2P.SELL_COIN">

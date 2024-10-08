@@ -14,6 +14,7 @@ import {
 	MinusSquareOutlined,
 	ExclamationOutlined,
 	ExclamationCircleFilled,
+	CloseOutlined,
 } from '@ant-design/icons';
 
 import './_P2P.scss';
@@ -33,6 +34,7 @@ import { COUNTRIES_OPTIONS } from 'utils/countries';
 import { formatToCurrency } from 'utils/currency';
 import { isMobile } from 'react-device-detect';
 import { fetchFeedback, fetchP2PProfile } from './actions/p2pActions';
+import { Loading } from 'containers/DigitalAssets/components/utils';
 
 const P2PDash = ({
 	data,
@@ -67,6 +69,7 @@ const P2PDash = ({
 	const [displayUserFeedback, setDisplayUserFeedback] = useState(false);
 	const [displayOrderCreation, setDisplayOrderCreation] = useState(false);
 	const [userFeedback, setUserFeedback] = useState([]);
+	const [isLoading, setIsLoading] = useState(false);
 	const [userProfile, setUserProfile] = useState();
 	const [selectedProfile, setSelectedProfile] = useState();
 	const [myMethods, setMyMethods] = useState([]);
@@ -142,6 +145,7 @@ const P2PDash = ({
 	const handleVendorFeedback = async (deal) => {
 		// changeProfileTab(deal.merchant);
 		try {
+			setIsLoading(true);
 			setSelectedProfile(deal.merchant);
 			const feedbacks = await fetchFeedback({
 				merchant_id: deal.merchant.id,
@@ -150,6 +154,7 @@ const P2PDash = ({
 				user_id: deal.merchant.id,
 			});
 			setUserFeedback(feedbacks.data);
+			setIsLoading(false);
 			setUserProfile(profile);
 			setDisplayUserFeedback(true);
 		} catch (error) {
@@ -177,6 +182,16 @@ const P2PDash = ({
 					}}
 				>
 					<div className="vender-profile-popup-container">
+						{isMobile && (
+							<span
+								className="vendor-close-icon secondary-text"
+								onClick={() => {
+									setDisplayUserFeedback(false);
+								}}
+							>
+								<CloseOutlined />
+							</span>
+						)}
 						<div className="vendor-details">
 							<h3 className="stake_theme">
 								{selectedProfile?.full_name || (
@@ -264,20 +279,28 @@ const P2PDash = ({
 											</tr>
 										</thead>
 										<tbody className="p2p-feedback-table-body">
-											{userFeedback.map((deal) => {
+											{userFeedback.map((deal, index) => {
 												return (
 													<tr className="table-row feedback-table-body-row">
 														<td className="td-fit feedback-comment w-25">
-															{deal.comment}
+															{isLoading ? (
+																<Loading index={index} />
+															) : (
+																<span>{deal.comment}</span>
+															)}
 														</td>
 														<td className="td-fit feedback-rating w-25">
-															<Rate
-																disabled
-																allowHalf={false}
-																autoFocus={false}
-																allowClear={false}
-																value={deal.rating}
-															/>
+															{isLoading ? (
+																<Loading index={index} />
+															) : (
+																<Rate
+																	disabled
+																	allowHalf={false}
+																	autoFocus={false}
+																	allowClear={false}
+																	value={deal.rating}
+																/>
+															)}
 														</td>
 													</tr>
 												);
@@ -580,7 +603,7 @@ const P2PDash = ({
 										? STRINGS['P2P.INPUT_SPEND_AMOUNT']
 										: STRINGS['P2P.INPUT_SELL_AMOUNT']
 								}
-								suffix={STRINGS['WALLET_ASSETS_SEARCH_TXT']}
+								// suffix={STRINGS['WALLET_ASSETS_SEARCH_TXT']}
 							/>
 						</span>
 					</div>
@@ -675,7 +698,7 @@ const P2PDash = ({
 										? STRINGS['P2P.INPUT_SPEND_AMOUNT']
 										: STRINGS['P2P.INPUT_SELL_AMOUNT']
 								}
-								suffix={STRINGS['WALLET_ASSETS_SEARCH_TXT']}
+								// suffix={STRINGS['WALLET_ASSETS_SEARCH_TXT']}
 							/>
 						</span>
 					</div>

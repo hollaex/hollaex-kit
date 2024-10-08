@@ -218,7 +218,8 @@ const PaymentMethods = ({ user }) => {
 	return (
 		<div className="admin-user-container">
 			<div style={{ color: '#ccc' }}>
-				Below are details of payment methods belonging to this user
+				Below are details of payment methods belonging to this user. These
+				accounts can be used for P2P trading.
 			</div>
 			<div>
 				<div style={{ marginTop: 20 }}></div>

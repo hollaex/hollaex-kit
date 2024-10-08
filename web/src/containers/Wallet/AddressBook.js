@@ -284,18 +284,27 @@ const AddressBook = ({
 				network: selectedNetwork,
 				currency: selectedAsset?.selectedCurrency,
 			};
-			const restGetUserData = removeCreatedAt(getUserData);
-			setGetUserData([
-				{ ...currValue, created_at: new Date().toISOString() },
-				...getUserData,
-			]);
+			const hasAddress = getUserData?.some(
+				(val) =>
+					val?.currency === selectedAsset?.selectedCurrency &&
+					val?.network === selectedNetwork &&
+					val?.address === address
+			);
 
-			try {
-				await setUserLabelAndAddress({
-					addresses: [currValue, ...restGetUserData],
-				});
-			} catch (error) {
-				console.error(error);
+			const restGetUserData = removeCreatedAt(getUserData);
+			if (!hasAddress) {
+				setGetUserData([
+					{ ...currValue, created_at: new Date().toISOString() },
+					...getUserData,
+				]);
+
+				try {
+					await setUserLabelAndAddress({
+						addresses: [currValue, ...restGetUserData],
+					});
+				} catch (error) {
+					console.error(error);
+				}
 			}
 		}
 

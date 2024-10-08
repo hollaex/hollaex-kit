@@ -19,7 +19,7 @@ const { verifyBearerTokenPromise, verifyHmacTokenPromise} = require('./security'
 const { client } = require('./database/redis');
 const { parseNumber, getTickers } = require('./common');
 const BigNumber = require('bignumber.js');
-const uuid = require('uuid/v4');
+const randomString = require('random-string');
 const { sendEmail } = require('../../../mail');
 const { MAILTYPE } = require('../../../mail/strings');
 
@@ -1427,7 +1427,12 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, id = nu
 		result.base_asset = from;
 		result.chain = true;
 		result.user_id = user_id;
-		token = uuid();
+		token = randomString({
+			length: 32,
+			numeric: true,
+			letters: true
+		});
+
 		client.setexAsync(token, 30, JSON.stringify(result));
 	}
 
@@ -1497,7 +1502,7 @@ const executeUserChainTrade = async (user_id, userToken) => {
 	
 	const brokerPrice = to === tradeInfo.quote_asset ? (lastTrade.size / tradeInfo.size) : ((lastTrade.size * lastTrade.price ) /  tradeInfo.size);
 	// trade between end user and middle man account
-	const feeAmount = parseNumber(tradeInfo.size * ((spread || 0) / 100), 10);
+	const feeAmount = parseNumber(removeRepeatingDecimals(tradeInfo.size * ((spread || 0) / 100)), 10);
 	const spreadSize = parseNumber(removeRepeatingDecimals(tradeInfo.size - feeAmount), 10);
 
 	let result;
@@ -1528,7 +1533,7 @@ const executeUserChainTrade = async (user_id, userToken) => {
 	// send the fee amount to the middle man account
 	try {
 		const baseSymbol = tradeInfo.symbol.split('-')[0];
-		await transferAssetByKitIds(user.id, sourceUser.id, baseSymbol, feeAmount, 'Chain trade transaction', false, { category: 'chain_trade' });
+		if (feeAmount > 0) await transferAssetByKitIds(user.id, sourceUser.id, baseSymbol, feeAmount, 'Chain trade transaction', false, { category: 'chain_trade' });
 	} catch (error) {
 		const admin = await getUserByKitId(1);
 		sendEmail(

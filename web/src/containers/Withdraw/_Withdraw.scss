@@ -846,9 +846,11 @@ $content--margin: 2rem;
 		}
 	}
 
-	.withdraw-dropdown-address {
+	.withdraw-dropdown-address-options {
 		.asset-address-field {
-			margin-bottom: 5%;
+			.address-text {
+				width: 0;
+			}
 		}
 	}
 }
@@ -869,6 +871,12 @@ $content--margin: 2rem;
 
 .withdraw-dropdown-address {
 	width: 100%;
-	border-bottom: 1px solid $colors-black !important;
+	border-top: 1px solid $colors-black !important;
 	overflow: hidden;
+	padding-top: 3%;
+}
+
+.withdraw-dropdown-address-options {
+	overflow: hidden;
+	width: 100%;
 }
