@@ -2048,6 +2048,212 @@ paths:
         - hmac
       x-security-scopes:
         - user
+  /user/autotrade:
+    x-swagger-router-controller: user
+    get:
+      operationId: fetchUserAutoTrades
+      description: Get user auto trades
+      tags:
+        - User
+      parameters:
+        - in: query
+          name: active
+          description: filter by active status
+          required: false
+          type: boolean
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximum: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: order_by
+          description: Field to order data by
+          required: false
+          type: string
+        - in: query
+          name: order
+          description: order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: ending date of queried data
+          required: false
+          type: string
+          format: date-time
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - user
+    post:
+      operationId: createUserAutoTrade
+      description: Create auto trade
+      tags:
+        - user
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              spend_coin:
+                type: string
+              buy_coin:
+                type: string
+              spend_amount:
+                type: number
+                format: double
+              frequency:
+                type: string
+                enum: ['daily', 'weekly', 'monthly']
+              week_days:
+                type: array
+                items:
+                  type: integer
+                  format: int32
+              day_of_month:
+                type: number
+                format: int32
+              trade_hour:
+                type: number
+                format: int32
+              active:
+                type: boolean
+              description:
+                type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - user
+    put:
+      operationId: updateUserAutoTrade
+      description: Update auto trade
+      tags:
+        - User
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              spend_coin:
+                type: string
+              buy_coin:
+                type: string
+              spend_amount:
+                type: number
+                format: double
+              frequency:
+                type: string
+                enum: ['daily', 'weekly', 'monthly']
+              week_days:
+                type: array
+                items:
+                  type: integer
+                  format: int32
+              day_of_month:
+                type: number
+                format: int32
+              trade_hour:
+                type: number
+                format: int32
+              active:
+                type: boolean
+              description:
+                type: string
+              id:
+                type: integer
+                format: int32
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - user
+    delete:
+      operationId: deleteUserAutoTrade
+      description: Delete auto trade
+      tags:
+        - User
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              removed_ids:
+                type: array
+                items:
+                  type: integer
+                  format: int32
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - user
   /logout:
     x-swagger-router-controller: user
     get:
