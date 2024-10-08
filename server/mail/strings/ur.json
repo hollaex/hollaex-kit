@@ -159,6 +159,11 @@
 		"P2P_VENDOR_APPEALED_ORDER": {
 			"html": "<div><p> محترم ${name} </p><p>آپ نے اپنے آرڈر پر اپیل کی ہے۔ مسئلہ حل کرنے کے لئے برائے مہربانی سپورٹ سے رابطہ کریں۔<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">اپنے آرڈر پر جائیں</Button></a></div><p>ہمارا پلیٹ فارم استعمال کرنے کا شکریہ۔</p><p>درخواست شروع کی گئی IP: ${ip}</p><p>نیک تمنائیں<br> ${api_name} ٹیم </p></div>",
 			"title": "آپ کے P2P آرڈر میں سرگرمی کا پتہ چلا ہے"
-		}
+		},
+        "AUTO_TRADE_ERROR":{
+			"html": "<div><p>محترم ${name},</p><p>ہم نے دیکھا کہ آپ کی خودکار تجارتی ترتیب درج ذیل تجارت کے لیے ناکافی بیلنس کی وجہ سے ناکام ہوگئی ہے۔ براہ کرم اپنے بیلنس کو چیک کریں اور اپ ڈیٹ کریں۔ خرچ کی رقم: ${spend_amount}, خرچ کی گئی کرنسی: ${spend_coin}, خریدی گئی کرنسی: ${buy_coin}۔</p><p>ہمارا پلیٹ فارم استعمال کرنے کے لئے آپ کا شکریہ۔</p><p>نیک تمنائیں،<br /> ${api_name} ٹیم</p></div>",
+			"title": "آپ کی خودکار تجارتی ترتیب میں خرابی"
+		  }
+		  
 	}
 }

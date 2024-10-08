@@ -450,6 +450,13 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		html = html.replace(/\$\{ip\}/g, data.ip || '');
 		html = html.replace(/\$\{link\}/g, `${domain}/p2p/order/${data.order_id}`);
 	}
+	else if (type === MAILTYPE.AUTO_TRADE_ERROR) {
+		html = html.replace(/\$\{name\}/g, email || '');
+		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
+		html = html.replace(/\$\{spend_amount\}/g, data.spend_amount || '');
+		html = html.replace(/\$\{spend_coin\}/g, data.spend_coin || '');
+		html = html.replace(/\$\{buy_coin\}/g, data.buy_coin || '');
+	}
 
 	return html;
 };
