@@ -107,7 +107,7 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 											((data?.stake?.duration -
 												calculateRemainingDays(
 													data?.stake?.duration,
-													data?.created_at
+													data?.unstaked_date || data?.created_at
 												)) *
 												100) /
 											data?.stake?.duration
@@ -414,7 +414,10 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 									}}
 									prefix={stakePools
 										.filter(
-											(pool) => pool.status === 'active' && pool.onboarding
+											(pool) =>
+												pool.status === 'active' &&
+												pool.onboarding &&
+												pool.id == selectedPool?.id
 										)
 										.map((pool) => {
 											return (
