@@ -1497,7 +1497,7 @@ const executeUserChainTrade = async (user_id, userToken) => {
 	
 	const brokerPrice = to === tradeInfo.quote_asset ? (lastTrade.size / tradeInfo.size) : ((lastTrade.size * lastTrade.price ) /  tradeInfo.size);
 	// trade between end user and middle man account
-	const feeAmount = parseNumber(tradeInfo.size * ((spread || 0) / 100), 10);
+	const feeAmount = parseNumber(removeRepeatingDecimals(tradeInfo.size * ((spread || 0) / 100)), 10);
 	const spreadSize = parseNumber(removeRepeatingDecimals(tradeInfo.size - feeAmount), 10);
 
 	let result;
@@ -1528,7 +1528,7 @@ const executeUserChainTrade = async (user_id, userToken) => {
 	// send the fee amount to the middle man account
 	try {
 		const baseSymbol = tradeInfo.symbol.split('-')[0];
-		await transferAssetByKitIds(user.id, sourceUser.id, baseSymbol, feeAmount, 'Chain trade transaction', false, { category: 'chain_trade' });
+		if (feeAmount > 0) await transferAssetByKitIds(user.id, sourceUser.id, baseSymbol, feeAmount, 'Chain trade transaction', false, { category: 'chain_trade' });
 	} catch (error) {
 		const admin = await getUserByKitId(1);
 		sendEmail(
