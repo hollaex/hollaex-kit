@@ -3630,6 +3630,176 @@ const fetchUserTradingVolume = async (user_id, opts = {
 
 	
 };
+const fetchUserAutoTrades = async (user_id, opts = {
+    limit: null,
+    page: null,
+    order_by: null,
+    order: null,
+    start_date: null,
+    end_date: null,
+    active: null
+}) => {
+
+    const pagination = paginationQuery(opts.limit, opts.page);
+    const ordering = orderingQuery(opts.order_by, opts.order);
+    const timeframe = timeframeQuery(opts.start_date, opts.end_date);
+
+    const query = {
+        where: {
+            created_at: timeframe,
+			user_id,
+            ...(opts.active != null && { active: opts.active })
+        },
+        order: [ordering],
+        ...pagination
+    };
+
+    return dbQuery.findAndCountAllWithRows('AutoTradeConfig', query);
+};
+
+const createUserAutoTrade = async (user_id, {
+    spend_coin,
+    buy_coin,
+    spend_amount,
+    frequency,
+    week_days,
+    day_of_month,
+    trade_hour,
+    active,
+    description
+}) => {
+
+	if (!subscribedToCoin(buy_coin)) {
+		throw new Error('Invalid coin ' + buy_coin);
+	}
+
+	if (!subscribedToCoin(spend_coin)) {
+		throw new Error('Invalid coin ' + spend_coin);
+	}
+
+    if (week_days && !week_days.every(day => day >= 0 && day <= 6)) {
+        throw new Error('invalid week_days');
+    }
+
+    const daysInMonth = moment().daysInMonth();
+    if (day_of_month && (day_of_month < 1 || day_of_month > daysInMonth)) {
+        throw new Error(`Iinvalid day_of_month`);
+    }
+
+    if (trade_hour < 0 || trade_hour > 23) {
+        throw new Error('invalid trade_hour');
+    }
+	const autoTradeModel = getModel('AutoTradeConfig');
+
+	const userAutoTrades = await autoTradeModel.findAll({ where: { user_id } });
+	if (userAutoTrades?.length > 20) {
+		throw new Error("You can't have more than 20 auto trades");
+	}
+
+	const { getUserBalanceByKitId } = require('./wallet');
+	const balance = await getUserBalanceByKitId(user_id);
+	if (balance[`${buy_coin}_available`] < spend_amount) {
+		throw new Error(`Balance insufficient for auto trade: ${buy_coin} size: ${size}`);
+	};
+
+    return autoTradeModel.create({
+        user_id,
+        spend_coin,
+        buy_coin,
+        spend_amount,
+        frequency,
+        week_days,
+        day_of_month,
+        trade_hour,
+        active,
+        description
+    });
+};
+
+const updateUserAutoTrade = async (user_id, {
+    id,
+    spend_coin,
+    buy_coin,
+    spend_amount,
+    frequency,
+    week_days,
+    day_of_month,
+    trade_hour,
+    active,
+    description
+}) => {
+	
+	if (!subscribedToCoin(buy_coin)) {
+		throw new Error('Invalid coin ' + buy_coin);
+	}
+
+	if (!subscribedToCoin(spend_coin)) {
+		throw new Error('Invalid coin ' + spend_coin);
+	}
+
+    if (week_days && !week_days.every(day => day >= 0 && day <= 6)) {
+        throw new Error('invalid week_days');
+    }
+
+    const daysInMonth = moment().daysInMonth();
+    if (day_of_month && (day_of_month < 1 || day_of_month > daysInMonth)) {
+        throw new Error(`invalid day_of_month`);
+    }
+
+    if (trade_hour < 0 || trade_hour > 23) {
+        throw new Error('invalid trade_hour');
+    }
+
+    const trade = await getModel('AutoTradeConfig').findOne({
+        where: {
+            id,
+            user_id  
+        }
+    });
+
+    if (!trade) {
+        throw new Error('Auto trade not found');
+    }
+
+	const { getUserBalanceByKitId } = require('./wallet');
+	const balance = await getUserBalanceByKitId(user_id);
+	if (balance[`${buy_coin}_available`] < spend_amount) {
+		throw new Error(`Balance insufficient for auto trade: ${buy_coin} size: ${size}`);
+	};
+	
+    return await trade.update({
+        spend_coin,
+        buy_coin,
+        spend_amount,
+        frequency,
+        week_days,
+        day_of_month,
+        trade_hour,
+        active,
+        description
+    });
+};
+
+const deleteUserAutoTrade = async (removed_ids, user_id) => {
+    const trades = await getModel('AutoTradeConfig').findAll({
+        where: {
+            id: removed_ids,
+            user_id  
+        }
+    });
+
+    if (trades?.length === 0) {
+        throw new Error('Auto trade not found');
+    }
+
+    const promises = trades.map(async (trade) => {
+        return await trade.destroy();
+    });
+
+    const results = await Promise.all(promises);
+    return results;
+};
+
 module.exports = {
 	loginUser,
 	getUserTier,
@@ -3710,5 +3880,9 @@ module.exports = {
 	getPaymentDetails,
 	createPaymentDetail,
 	updatePaymentDetail,
-	deletePaymentDetail
+	deletePaymentDetail,
+	fetchUserAutoTrades,
+	createUserAutoTrade,
+	updateUserAutoTrade,
+	deleteUserAutoTrade
 };
