@@ -164,7 +164,7 @@ class UserSettings extends Component {
 		} = this.props;
 		const formValues = generateFormValues({
 			options: themeOptions.map(({ value }) => ({ value, label: value })),
-			currencyOptions: selectable_native_currencies.map((value) => ({
+			currencyOptions: selectable_native_currencies?.map((value) => ({
 				value,
 				label: value,
 			})),
