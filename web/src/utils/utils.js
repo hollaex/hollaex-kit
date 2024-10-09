@@ -316,3 +316,7 @@ export const constractPaymentOption = (paymentsData) => {
 	});
 	return _orderBy(tempData, ['orderBy'], ['asc']);
 };
+
+export const handlePopupContainer = (triggerNode) => {
+	return triggerNode.parentNode;
+};

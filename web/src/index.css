@@ -2377,6 +2377,10 @@ table th {
 
 .withdrawal-container {
   width: 75rem !important; }
+  .withdrawal-container .select-wrapper .custom-select-input-style.elevated {
+    z-index: unset; }
+  .withdrawal-container .select-wrapper .custom-select-input-style .ant-select-arrow {
+    z-index: unset; }
   .withdrawal-container .transaction-history-wrapper {
     max-width: 100% !important; }
   .withdrawal-container .icon_title-wrapper {
@@ -2657,6 +2661,12 @@ table th {
 .layout-mobile .presentation_container .action_notification-svg svg {
   width: 1.5rem !important;
   height: 1.5rem !important; }
+
+.layout-mobile .presentation_container .select-wrapper .custom-select-input-style.elevated {
+  z-index: unset; }
+
+.layout-mobile .presentation_container .select-wrapper .custom-select-input-style .ant-select-arrow {
+  z-index: unset; }
 
 .layout-mobile .presentation_container .inner_container .result-message {
   font-size: 1.2rem; }
@@ -2989,6 +2999,25 @@ table th {
 .generate-deposit-label {
   color: var(--labels_secondary-inactive-label-text-graphics);
   margin: 1% 3%; }
+
+.layout-mobile .deposit_info-qr-wrapper .qr_code-wrapper {
+  width: 20rem;
+  max-width: 20rem; }
+  .layout-mobile .deposit_info-qr-wrapper .qr_code-wrapper .qr-code-bg > *:first-child {
+    width: 19rem !important;
+    height: 19rem !important; }
+
+.layout-mobile .deposit_info-qr-wrapper .qr-title {
+  font-size: 2rem; }
+
+.layout-mobile .deposit_info-qr-wrapper .blue-link {
+  font-size: 1.4rem !important; }
+
+.layout-mobile .deposit_info-qr-wrapper .qr-text {
+  max-width: 30rem;
+  padding: 1.5rem 0 5rem 0; }
+  .layout-mobile .deposit_info-qr-wrapper .qr-text .edit-wrapper__container {
+    font-size: 1.5rem; }
 
 .layout-mobile .withdrawal-container .withdraw-form-wrapper .withdraw-form .deposit-wrapper-fields .custom-field .custom-line-large {
   height: 11rem;
@@ -5790,9 +5819,11 @@ table th {
         background-color: var(--specials_buttons-links-and-highlights);
         color: var(--labels_important-active-labels-text-graphics);
         cursor: pointer; }
-    .digital-market-wrapper .market-list__block-table .table-row .td-trade .market-asset-row-disable .action_notification-text, .digital-market-wrapper .market-list__block-table .table-row .td-trade .market-asset-row-disable:hover .action_notification-text {
+    .digital-market-wrapper .market-list__block-table .table-row .td-trade .market-asset-row-disable .action_notification-text,
+    .digital-market-wrapper .market-list__block-table .table-row .td-trade .market-asset-row-disable:hover .action_notification-text {
       opacity: 0.3; }
-    .digital-market-wrapper .market-list__block-table .table-row .td-trade .market-asset-row-disable .action_notification-text:hover, .digital-market-wrapper .market-list__block-table .table-row .td-trade .market-asset-row-disable:hover .action_notification-text:hover {
+    .digital-market-wrapper .market-list__block-table .table-row .td-trade .market-asset-row-disable .action_notification-text:hover,
+    .digital-market-wrapper .market-list__block-table .table-row .td-trade .market-asset-row-disable:hover .action_notification-text:hover {
       background-color: transparent !important;
       cursor: text;
       color: var(--specials_buttons-links-and-highlights) !important; }

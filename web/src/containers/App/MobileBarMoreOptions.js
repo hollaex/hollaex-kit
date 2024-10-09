@@ -657,10 +657,11 @@ const MobileBarMoreOptions = ({
 				<span className="hot-function-title">{title?.toUpperCase()}</span>
 				{filteredOption.length > 0 ? (
 					<div className="options-field">
-						{filteredOption?.map((data) => {
+						{filteredOption?.map((data, inx) => {
 							return (
 								data.isDisplay && (
 									<div
+										key={inx}
 										className="icon-field"
 										onClick={() => onHandleRoute(data?.iconText, data?.path)}
 									>
