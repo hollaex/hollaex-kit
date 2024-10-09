@@ -85,7 +85,11 @@ const P2PDash = ({
 		fetchDeals({ status: true })
 			.then((res) => {
 				setDeals(res.data);
-				setBuyValue(res.data.filter((deal) => deal.side === 'sell'));
+				const buyDeals = res.data?.filter((deal) => deal?.side === 'sell');
+				const filteredDeals = buyDeals?.filter((deal) =>
+					selectedCoin?.includes(deal?.buying_asset?.toUpperCase())
+				);
+				setBuyValue(filteredDeals);
 				const newMethods = [];
 
 				res.data.forEach((deal) => {
@@ -105,6 +109,7 @@ const P2PDash = ({
 				setMyMethods(res.data);
 			})
 			.catch((err) => err);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [refresh]);
 
 	const formatAmount = (currency, amount) => {
@@ -123,20 +128,23 @@ const P2PDash = ({
 
 	const handleToggle = () => {
 		const newIsBuySelected = !isBuySelected;
-		const filteredDeals = deals.filter((deal) =>
-			!newIsBuySelected ? deal.side === 'buy' : deal.side === 'sell'
+		const filteredDeals = deals?.filter((deal) =>
+			!newIsBuySelected ? deal?.side === 'buy' : deal?.side === 'sell'
+		);
+		const cryptoAsset = filteredDeals?.filter((deal) =>
+			selectedCoin?.includes(deal?.buying_asset?.toUpperCase())
 		);
 		setIsBuySelected(newIsBuySelected);
-		setBuyValue(filteredDeals);
+		setBuyValue(cryptoAsset);
 	};
 
 	const handleCryptoAsset = (asset) => {
 		setSelectedCoin(asset);
 
-		const filteredDeals = deals.filter((deal) =>
-			!isBuySelected ? deal.side === 'buy' : deal.side === 'sell'
+		const filteredDeals = deals?.filter((deal) =>
+			!isBuySelected ? deal?.side === 'buy' : deal?.side === 'sell'
 		);
-		const cryptoAsset = filteredDeals.filter((deal) =>
+		const cryptoAsset = filteredDeals?.filter((deal) =>
 			asset?.includes(deal?.buying_asset?.toUpperCase())
 		);
 		setBuyValue(cryptoAsset);

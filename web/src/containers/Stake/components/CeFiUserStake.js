@@ -417,7 +417,7 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 											(pool) =>
 												pool.status === 'active' &&
 												pool.onboarding &&
-												pool.id == selectedPool?.id
+												pool.id === selectedPool?.id
 										)
 										.map((pool) => {
 											return (

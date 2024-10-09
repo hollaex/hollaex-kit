@@ -476,3 +476,8 @@ export const setActiveBalanceHistory = (activeBalanceHistory) => ({
 		activeBalanceHistory,
 	},
 });
+
+export const setScannedAddress = (address) => ({
+	type: 'SETSCANNEDADDRESS',
+	payload: address,
+});
