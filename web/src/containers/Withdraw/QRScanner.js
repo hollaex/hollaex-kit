@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
 import BarcodeScannerComponent from 'react-qr-barcode-scanner';
-import { Button, EditWrapper } from 'components';
-import STRINGS from 'config/localizedStrings';
 
-const QRScanner = ({ closeQRScanner, getQRData }) => {
+import STRINGS from 'config/localizedStrings';
+import { Button, EditWrapper } from 'components';
+import { setScannedAddress } from 'actions/walletActions';
+
+const QRScanner = ({ closeQRScanner, getQRData, setScannedAddress }) => {
 	const [result, setResult] = useState(STRINGS['QR_CODE.NO_RESULT']);
 	const [error, setError] = useState();
 	const [stopStream, setStopStream] = useState(false);
@@ -14,10 +18,12 @@ const QRScanner = ({ closeQRScanner, getQRData }) => {
 			const { text } = data;
 			setStopStream(true);
 			setResult(text);
+			setScannedAddress(text);
 			getQRData(text);
 			setTimeout(closeQRScanner, 2000);
 		} else {
 			setResult(STRINGS['QR_CODE.NOT_FOUND']);
+			setScannedAddress(STRINGS['QR_CODE.NOT_FOUND']);
 		}
 	};
 
@@ -58,4 +64,8 @@ const QRScanner = ({ closeQRScanner, getQRData }) => {
 	);
 };
 
-export default QRScanner;
+const mapDispatchToProps = (dispatch) => ({
+	setScannedAddress: bindActionCreators(setScannedAddress, dispatch),
+});
+
+export default connect('', mapDispatchToProps)(QRScanner);

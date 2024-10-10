@@ -27,6 +27,7 @@ import {
 } from 'containers/Withdraw/utils';
 import STRINGS from 'config/localizedStrings';
 import { onHandleSymbol } from './utils';
+import { handlePopupContainer } from 'utils/utils';
 
 const DepositComponent = ({
 	coins,
@@ -413,6 +414,7 @@ const DepositComponent = ({
 										}
 									}}
 									onSelect={(e) => onHandleSelect(e)}
+									getPopupContainer={handlePopupContainer}
 								>
 									{Object.entries(coins).map(
 										([_, { symbol, fullname, icon_id }]) => (
@@ -516,6 +518,7 @@ const DepositComponent = ({
 										}
 										placeholder={STRINGS['WITHDRAW_PAGE.SELECT']}
 										onClear={() => onHandleClear('network')}
+										getPopupContainer={handlePopupContainer}
 									>
 										{coinLength &&
 											coinLength?.length === 1 &&

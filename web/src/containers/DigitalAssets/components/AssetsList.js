@@ -159,12 +159,7 @@ const AssetsList = ({
 										onClick={handleOneDaySort}
 										className="d-flex justify-content-end pointer"
 									>
-										<EditWrapper
-											stringId={STRINGS.formatString(
-												STRINGS['MARKETS_TABLE.PERCENTAGE'],
-												STRINGS['MARKETS_TABLE.24H']
-											)}
-										>
+										<EditWrapper stringId={STRINGS['MARKETS_TABLE.24H']}>
 											{STRINGS.formatString(
 												STRINGS['MARKETS_TABLE.PERCENTAGE'],
 												STRINGS['MARKETS_TABLE.24H']
@@ -180,12 +175,7 @@ const AssetsList = ({
 										onClick={handleClickChange}
 										className="d-flex justify-content-end pointer"
 									>
-										<EditWrapper
-											stringId={STRINGS.formatString(
-												STRINGS['MARKETS_TABLE.PERCENTAGE'],
-												STRINGS['QUICK_TRADE_COMPONENT.7D']
-											)}
-										>
+										<EditWrapper stringId={STRINGS['QUICK_TRADE_COMPONENT.7D']}>
 											{STRINGS.formatString(
 												STRINGS['MARKETS_TABLE.PERCENTAGE'],
 												STRINGS['QUICK_TRADE_COMPONENT.7D']
