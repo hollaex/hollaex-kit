@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import { isMobile } from 'react-device-detect';
 import { browserHistory } from 'react-router';
@@ -106,7 +106,7 @@ const renderCards = (data, coins, type, loading, features, quicktradePairs) =>
 			index
 		) =>
 			loading ? (
-				<Loading index={index} />
+				<Loading key={index} index={index} />
 			) : (
 				<div
 					className="assets-wrapper mb-2"
@@ -182,6 +182,14 @@ const AssetsCards = ({
 			}
 		}
 	};
+
+	useEffect(() => {
+		const interval = setInterval(() => {
+			handleNavigation('right');
+		}, 4000);
+
+		return () => clearInterval(interval);
+	}, []);
 
 	return (
 		<>
