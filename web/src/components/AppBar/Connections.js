@@ -1,9 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Tooltip } from 'antd';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 import './_Connections.scss';
 import STRINGS from 'config/localizedStrings';
+import icons from 'config/icons/dark';
+import EditWrapper from 'components/EditWrapper';
+import Image from 'components/Image';
 import { getLogins } from 'actions/userAction';
 import { requestAuthenticated } from 'utils';
 import { ConnectionPopup, ReconnectPopup } from './Utils';
@@ -21,6 +23,7 @@ const Connections = () => {
 	const [loginDetail, setLoginDetail] = useState(INITIAL_LOGINS_STATE);
 	const [hasResponseData, setHasResponseData] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
+	const [toolTipKey, setToolTipKey] = useState(0);
 	const [pingDetails, setPingDetails] = useState({
 		isDisplayPingText: true,
 		pingValue: null,
@@ -91,16 +94,19 @@ const Connections = () => {
 			isDisplayPing: false,
 			isDisplayPingText: true,
 		}));
+		setToolTipKey(0);
 	};
 
 	const onHandleConnection = () => {
 		if (hasResponseData) {
+			setToolTipKey(toolTipKey + 1);
 			setIsDisplayPopup((prev) => ({
 				...prev,
 				isDisplayConnection: true,
 			}));
 			fetchHealthData();
 		} else {
+			setToolTipKey(toolTipKey + 1);
 			setIsDisplayPopup((prev) => ({
 				...prev,
 				isDisplayReconnect: true,
@@ -111,34 +117,53 @@ const Connections = () => {
 	return (
 		<div className="check-connection-tab">
 			<Tooltip
+				key={toolTipKey}
 				title={
 					<div
 						className="text-align-center"
 						onClick={() => onHandleConnection()}
 					>
 						{hasResponseData ? (
-							<div>
-								<div>
-									<span className="tick-icon">✔</span>
-									<span className="ml-1">
+							<div className="connection-normal">
+								<div className="conncetion-detail d-flex align-items-center">
+									<div className="circle-icon"></div>
+									<span className="ml-2">
 										{STRINGS['CONNECTIONS.STATUS_NORMAL']}
 									</span>
 								</div>
-								<span className="text-decoration-underline">
-									{STRINGS['STAKE_DETAILS.VIEW_MORE']}
-								</span>
+								<div className="connection-title-wrapper">
+									<Image
+										iconId="PING_CONNECTION"
+										icon={icons['PING_CONNECTION']}
+										wrapperClassName="connection-logo"
+									/>
+									<EditWrapper stringId="CONNECTIONS.CHECK_CONNECTION">
+										<span className="check-connection-text">
+											{STRINGS['CONNECTIONS.CHECK_CONNECTION']}
+										</span>
+									</EditWrapper>
+								</div>
 							</div>
 						) : (
-							<span className="d-flex flex-direction-column align-items-center">
-								<span>
-									<ExclamationCircleOutlined />
+							<span className="d-flex flex-direction-column align-items-center connection-error">
+								<span className="d-flex align-items-center conncetion-detail">
+									<div className="circle-icon"></div>
 									<span className="ml-1">
 										{STRINGS['CONNECTIONS.CONNECTION_ISSUE_DETECTED']}
 									</span>
 								</span>
-								<span className="text-decoration-underline">
-									{STRINGS['CONNECTIONS.RECONNECT']?.toUpperCase()}
-								</span>
+								<div className="connection-title-wrapper">
+									<Image
+										iconId="PING_CONNECTION"
+										icon={icons['PING_CONNECTION']}
+										wrapperClassName="connection-logo"
+									/>
+									<EditWrapper stringId="CONNECTIONS.CHECK_CONNECTION">
+										<span className="check-connection-text">
+											{STRINGS['CONNECTIONS.CHECK_CONNECTION']}
+										</span>
+									</EditWrapper>
+								</div>
 							</span>
 						)}
 					</div>
@@ -151,13 +176,17 @@ const Connections = () => {
 				placement="bottomRight"
 			>
 				<div
-					className={
-						hasResponseData
-							? 'network-connection-icon'
-							: 'network-connection-icon-danger'
-					}
+					className="connection-icon-wrapper"
 					onClick={() => onHandleConnection()}
-				></div>
+				>
+					<div
+						className={
+							hasResponseData
+								? 'network-connection-icon'
+								: 'network-connection-icon-danger'
+						}
+					></div>
+				</div>
 			</Tooltip>
 			{isDisplayPopup?.isDisplayConnection && (
 				<ConnectionPopup
