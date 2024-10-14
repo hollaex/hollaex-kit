@@ -642,9 +642,9 @@ table th {
     height: 15px;
     width: 15px;
     border-radius: 12px;
-    background-color: var(--trading_buying-related-elements); }
+    background-color: var(--specials_checks-okay-done); }
   .layout-mobile .footer-bar-more-options-container .custom-connection-error-circle {
-    background-color: var(--trading_selling-related-elements) !important; }
+    background-color: var(--specials_notifications-alerts-warnings) !important; }
   .layout-mobile .footer-bar-more-options-container .options-container {
     padding: 4%;
     font-size: 14px; }
@@ -18688,15 +18688,19 @@ table th {
 .extreme-intensity {
   border-color: var(--specials_notifications-alerts-warnings); }
 
-.check-connection-tab .network-connection-icon,
-.check-connection-tab .network-connection-icon-danger {
-  height: 12px;
-  width: 12px;
-  border-radius: 12px;
-  background-color: var(--trading_buying-related-elements); }
+.check-connection-tab .connection-icon-wrapper {
+  padding: 1rem; }
+  .check-connection-tab .connection-icon-wrapper .network-connection-icon,
+  .check-connection-tab .connection-icon-wrapper .network-connection-icon-danger {
+    height: 12px;
+    width: 12px;
+    border-radius: 12px;
+    background-color: var(--specials_checks-okay-done); }
+  .check-connection-tab .connection-icon-wrapper .network-connection-icon-danger {
+    background-color: var(--specials_notifications-alerts-warnings) !important; }
 
-.check-connection-tab .network-connection-icon-danger {
-  background-color: var(--trading_selling-related-elements) !important; }
+.check-connection-tab:hover {
+  opacity: 0.5; }
 
 .check-connection-popup-wrapper .ReactModal__Content,
 .reconnect-popup-wrapper .ReactModal__Content {
@@ -18741,11 +18745,11 @@ table th {
       .reconnect-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-details-container .connection-status .success-icon {
         width: 12px;
         height: 12px;
-        background-color: var(--trading_buying-related-elements);
+        background-color: var(--specials_checks-okay-done);
         border-radius: 25px; }
       .check-connection-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-details-container .connection-status .danger-icon,
       .reconnect-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-details-container .connection-status .danger-icon {
-        background-color: var(--trading_selling-related-elements) !important; }
+        background-color: var(--specials_notifications-alerts-warnings) !important; }
       .check-connection-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-details-container .connection-status .ping-details,
       .reconnect-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-details-container .connection-status .ping-details {
         display: flex;
@@ -18764,7 +18768,7 @@ table th {
           .reconnect-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-details-container .connection-status .ping-details .ping-status-bar .very-slow-ping {
             height: 15px;
             width: 2px;
-            background-color: var(--trading_buying-related-elements); }
+            background-color: var(--specials_checks-okay-done); }
           .check-connection-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-details-container .connection-status .ping-details .ping-status-bar .slow-ping,
           .reconnect-popup-wrapper .ReactModal__Content .check-connection-popup-container .connection-details-container .connection-status .ping-details .ping-status-bar .slow-ping {
             background-color: var(--specials_my-username-in-chat) !important; }
@@ -18832,12 +18836,41 @@ table th {
     background-color: var(--base_background); }
 
 .connection-status-details .ant-tooltip-inner,
-.connection-status-details .ant-tooltip-arrow-content {
-  background-color: var(--trading_buying-related-elements) !important; }
-
+.connection-status-details .ant-tooltip-arrow-content,
 .connection-status-error-details .ant-tooltip-inner,
 .connection-status-error-details .ant-tooltip-arrow-content {
-  background-color: var(--trading_selling-related-elements) !important; }
+  background-color: var(--base_background) !important; }
+
+.connection-status-details .ant-tooltip-inner,
+.connection-status-error-details .ant-tooltip-inner {
+  border-top: 2px solid var(--specials_checks-okay-done);
+  font-size: 13px; }
+  .connection-status-details .ant-tooltip-inner .conncetion-detail,
+  .connection-status-error-details .ant-tooltip-inner .conncetion-detail {
+    padding: 3% 0;
+    border-bottom: 1px solid var(--labels_secondary-inactive-label-text-graphics); }
+  .connection-status-details .ant-tooltip-inner .circle-icon,
+  .connection-status-error-details .ant-tooltip-inner .circle-icon {
+    padding: 5px;
+    background-color: var(--specials_checks-okay-done);
+    border-radius: 25px;
+    height: 2px;
+    width: 2px; }
+  .connection-status-details .ant-tooltip-inner .connection-title-wrapper,
+  .connection-status-error-details .ant-tooltip-inner .connection-title-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 3%;
+    text-wrap: nowrap;
+    padding: 4% 0; }
+    .connection-status-details .ant-tooltip-inner .connection-title-wrapper .connection-logo svg,
+    .connection-status-error-details .ant-tooltip-inner .connection-title-wrapper .connection-logo svg {
+      width: 1.5rem; }
+
+.connection-status-error-details .ant-tooltip-inner {
+  border-top: 2px solid var(--specials_notifications-alerts-warnings) !important; }
+  .connection-status-error-details .ant-tooltip-inner .circle-icon {
+    background-color: var(--specials_notifications-alerts-warnings) !important; }
 
 .connection-status-details:hover {
   cursor: pointer; }
