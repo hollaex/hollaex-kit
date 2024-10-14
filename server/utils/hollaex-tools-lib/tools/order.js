@@ -365,6 +365,20 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 			result.token = spendingAmount?.token;
 		}
 		if (result?.quote_amount) {
+			result.spending_amount = spending_amount ||  result?.quote_amount;
+			result.receiving_amount = receiving_amount || result?.quote_amount;
+			result.spending_currency = spending_currency;
+			result.receiving_currency = receiving_currency;
+
+			const baseCoin = getKitCoin(result.spending_currency);
+			const decimalPointBase = new BigNumber(baseCoin.increment_unit).dp();
+			result.spending_amount = new BigNumber(result.spending_amount).decimalPlaces(decimalPointBase, BigNumber.ROUND_DOWN).toNumber();
+			const quoteCoin = getKitCoin(result.receiving_currency);
+			const decimalPointQuote = new BigNumber(quoteCoin.increment_unit).dp();
+			result.receiving_amount = new BigNumber(result.receiving_amount).decimalPlaces(decimalPointQuote, BigNumber.ROUND_DOWN).toNumber();
+			const expiryDate = new Date();
+			expiryDate.setSeconds(30);
+			result.expiry = expiryDate;
 			return result;
 		} 
 		throw new Error(QUICK_TRADE_TYPE_NOT_SUPPORTED);
