@@ -81,6 +81,17 @@ $content--margin: 2rem;
 .withdrawal-container {
 	width: 75rem !important;
 
+	.select-wrapper {
+		.custom-select-input-style {
+			&.elevated {
+				z-index: unset;
+			}
+			.ant-select-arrow {
+				z-index: unset;
+			}
+		}
+	}
+
 	.transaction-history-wrapper {
 		max-width: 100% !important;
 	}
@@ -559,6 +570,16 @@ $content--margin: 2rem;
 			}
 		}
 
+		.select-wrapper {
+			.custom-select-input-style {
+				&.elevated {
+					z-index: unset;
+				}
+				.ant-select-arrow {
+					z-index: unset;
+				}
+			}
+		}
 		.inner_container {
 			.result-message {
 				font-size: $regular--font-size;
