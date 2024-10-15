@@ -399,10 +399,12 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 			height: 15px;
 			width: 15px;
 			border-radius: 12px;
-			background-color: var(--trading_buying-related-elements);
+			background-color: var(--specials_checks-okay-done);
 		}
 		.custom-connection-error-circle {
-			background-color: var(--trading_selling-related-elements) !important;
+			background-color: var(
+				--specials_notifications-alerts-warnings
+			) !important;
 		}
 
 		.options-container {
