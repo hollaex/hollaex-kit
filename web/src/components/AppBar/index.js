@@ -360,9 +360,7 @@ class AppBar extends Component {
 							activePath={activePath}
 							onMenuChange={onMenuChange}
 						/>
-						<div className="ml-1">
-							<Connections />
-						</div>
+						<Connections />
 					</div>
 				)}
 			</div>
