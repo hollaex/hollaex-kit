@@ -59,10 +59,9 @@ module.exports = function () {
 					...webpackConfig.optimization.splitChunks,
 					chunks: 'all',
 					cacheGroups,
-
-					minSize: 20000, // Minimum size of a chunk
-					maxSize: 100000, // Max size of a chunk
-					automaticNameDelimiter: '_', // Naming convention for chunks
+					minSize: 20000,
+					maxSize: 100000,
+					automaticNameDelimiter: '_',
 					cacheGroups: {
 						vendors: {
 							test: /[\\/]node_modules[\\/]/,
