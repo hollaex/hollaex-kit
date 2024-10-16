@@ -159,6 +159,11 @@
         "P2P_VENDOR_APPEALED_ORDER": {
             "html": "<div><p> Kính gửi ${name} </p><p>Bạn đã khiếu nại đơn hàng của mình. Vui lòng liên hệ với bộ phận hỗ trợ để giải quyết vấn đề.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Đi đến đơn hàng của bạn</Button></a></div><p>Cảm ơn bạn đã sử dụng nền tảng của chúng tôi.</p><p>Yêu cầu được thực hiện từ: ${ip}</p><p>Trân trọng<br> đội ngũ ${api_name} </p></div>",
             "title": "Hoạt động được phát hiện trên Đơn hàng P2P của bạn"
-        }
+        },
+        "AUTO_TRADE_ERROR":{
+            "html": "<div><p>Xin chào ${name},</p><p>Chúng tôi đã phát hiện cấu hình giao dịch tự động của bạn đã thất bại do số dư không đủ cho giao dịch sau. Vui lòng kiểm tra và cập nhật số dư của bạn. Số tiền chi tiêu: ${spend_amount}, Đồng tiền chi tiêu: ${spend_coin}, Đồng tiền mua: ${buy_coin}.</p><p>Cảm ơn bạn đã sử dụng nền tảng của chúng tôi.</p><p>Trân trọng, đội ngũ ${api_name}</p></div>",
+            "title": "Lỗi trong cấu hình giao dịch tự động của bạn"
+          }
+          
     }
 }

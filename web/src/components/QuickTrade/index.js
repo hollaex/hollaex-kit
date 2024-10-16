@@ -60,6 +60,7 @@ const QuickTrade = ({
 	router: { params },
 	changePair,
 	icons: ICONS,
+	chain_trade_config,
 }) => {
 	const getTargetOptions = (source) =>
 		sourceOptions.filter((key) => {
@@ -84,7 +85,9 @@ const QuickTrade = ({
 	const [targetAmount, setTargetAmount] = useState();
 	const [selectedSource, setSelectedSource] = useState(initialSelectedSource);
 	const [selectedTarget, setSelectedTarget] = useState(initialSelectedTarget);
-	const [targetOptions, setTargetOptions] = useState(initialTargetOptions);
+	const [targetOptions, setTargetOptions] = useState(
+		chain_trade_config?.active ? sourceOptions : initialTargetOptions
+	);
 	const [showModal, setShowModal] = useState(false);
 	const [isReview, setIsReview] = useState(true);
 	const [loading, setLoading] = useState(false);
@@ -327,17 +330,22 @@ const QuickTrade = ({
 	useEffect(() => {
 		if (mounted) {
 			const options = getTargetOptions(selectedSource);
-			setTargetOptions(options);
-			setSelectedTarget(options[0]);
+			if (chain_trade_config?.active) {
+				setSelectedTarget(sourceOptions[0]);
+			} else {
+				setTargetOptions(options);
+				setSelectedTarget(options[0]);
+			}
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedSource]);
 
 	useEffect(() => {
+		if (selectedSource === selectedTarget) return;
 		const symbol = `${selectedSource}-${selectedTarget}`;
 		const flippedSymbol = flipPair(symbol);
 
-		if (quicktradePairs[symbol]) {
+		if (quicktradePairs[symbol] || chain_trade_config?.active) {
 			setSymbol(symbol);
 			goToPair(symbol);
 		} else if (quicktradePairs[flippedSymbol]) {
@@ -518,7 +526,9 @@ const QuickTrade = ({
 									/>
 								</div>
 								<InputGroup
-									options={sourceOptions}
+									options={sourceOptions.filter(
+										(coin) => coin !== selectedTarget
+									)}
 									inputValue={sourceAmount}
 									selectValue={selectedSource}
 									onSelect={onSelectSource}
@@ -571,7 +581,9 @@ const QuickTrade = ({
 									/>
 								</div>
 								<InputGroup
-									options={targetOptions}
+									options={targetOptions.filter(
+										(coin) => coin !== selectedSource
+									)}
 									inputValue={targetAmount}
 									selectValue={selectedTarget}
 									onSelect={onSelectTarget}
@@ -705,6 +717,7 @@ const mapStateToProps = (store) => {
 		constants: store.app.constants,
 		markets: MarketsSelector(store),
 		user: store.user,
+		chain_trade_config: store.app.constants.chain_trade_config,
 	};
 };
 

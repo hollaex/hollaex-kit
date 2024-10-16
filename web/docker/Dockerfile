@@ -1,7 +1,7 @@
 # build environment
 FROM node:14.21.1-buster as build
 ENV NODE_OPTIONS=--max_old_space_size=4096
-ENV GENERATE_SOURCEMAP=true
+ENV GENERATE_SOURCEMAP=false
 WORKDIR /app
 COPY package.json /app/package.json
 RUN npm install -g node-gyp && \

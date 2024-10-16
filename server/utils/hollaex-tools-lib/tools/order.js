@@ -8,18 +8,18 @@ const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { INVALID_SYMBOL, NO_DATA_FOR_CSV, USER_NOT_FOUND, USER_NOT_REGISTERED_ON_NETWORK, TOKEN_EXPIRED, BROKER_NOT_FOUND, BROKER_PAUSED, BROKER_SIZE_EXCEED, QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED, QUICK_TRADE_ORDER_CURRENT_PRICE_ERROR, QUICK_TRADE_VALUE_IS_TOO_SMALL, FAIR_PRICE_BROKER_ERROR, AMOUNT_NEGATIVE_ERROR, QUICK_TRADE_CONFIG_NOT_FOUND, QUICK_TRADE_TYPE_NOT_SUPPORTED, PRICE_NOT_FOUND, INVALID_PRICE, INVALID_SIZE, BALANCE_NOT_AVAILABLE, FEATURE_NOT_ACTIVE } = require(`${SERVER_PATH}/messages`);
 const { parse } = require('json2csv');
 const { BASE_SCOPES } = require(`${SERVER_PATH}/constants`);
-const { subscribedToPair, getKitTier, getDefaultFees, getAssetsPrices, getPublicTrades, getQuickTrades, getKitPairsConfig, getTradePaths, getKitConfig } = require('./common');
+const { subscribedToPair, getKitTier, getDefaultFees, getAssetsPrices, getPublicTrades, getQuickTrades, getKitPairsConfig, getTradePaths, getKitConfig, getKitCoin, removeRepeatingDecimals } = require('./common');
 const { reject } = require('bluebird');
 const { loggerOrders } = require(`${SERVER_PATH}/config/logger`);
 const math = require('mathjs');
 const { has } = require('lodash');
 const { setPriceEssentials } = require('../../orderbook');
-const { getUserBalanceByKitId } = require('./wallet');
+const { getUserBalanceByKitId, transferAssetByKitIds } = require('./wallet');
 const { verifyBearerTokenPromise, verifyHmacTokenPromise} = require('./security');
 const { client } = require('./database/redis');
 const { parseNumber, getTickers } = require('./common');
 const BigNumber = require('bignumber.js');
-const uuid = require('uuid/v4');
+const randomString = require('random-string');
 const { sendEmail } = require('../../../mail');
 const { MAILTYPE } = require('../../../mail/strings');
 
@@ -358,9 +358,27 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 	else {
 		let symbol = spending_amount ? `${spending_currency}-${receiving_currency}` : `${receiving_currency}-${spending_currency}`;
 		let size = spending_amount || receiving_amount;
-		const result = await getUserChainTradeQuote(bearerToken, symbol, size, ip);
+		let result = await getUserChainTradeQuote(bearerToken, symbol, size, ip);
 
+		if (spending_amount == null && result?.quote_amount) {
+			const spendingAmount = await getUserChainTradeQuote(bearerToken, `${spending_currency}-${receiving_currency}`, result.quote_amount, ip);
+			result.token = spendingAmount?.token;
+		}
 		if (result?.quote_amount) {
+			result.spending_amount = spending_amount ||  result?.quote_amount;
+			result.receiving_amount = receiving_amount || result?.quote_amount;
+			result.spending_currency = spending_currency;
+			result.receiving_currency = receiving_currency;
+
+			const baseCoin = getKitCoin(result.spending_currency);
+			const decimalPointBase = new BigNumber(baseCoin.increment_unit).dp();
+			result.spending_amount = new BigNumber(result.spending_amount).decimalPlaces(decimalPointBase, BigNumber.ROUND_DOWN).toNumber();
+			const quoteCoin = getKitCoin(result.receiving_currency);
+			const decimalPointQuote = new BigNumber(quoteCoin.increment_unit).dp();
+			result.receiving_amount = new BigNumber(result.receiving_amount).decimalPlaces(decimalPointQuote, BigNumber.ROUND_DOWN).toNumber();
+			const expiryDate = new Date();
+			expiryDate.setSeconds(30);
+			result.expiry = expiryDate;
 			return result;
 		} 
 		throw new Error(QUICK_TRADE_TYPE_NOT_SUPPORTED);
@@ -1351,7 +1369,12 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, id = nu
 	const assets = symbol.split('-');
 	const from = assets[0];
 	const to = assets[1];
-	
+	//Check min values
+	const baseCoinInfo  = getKitCoin(from);
+	const quoteCoinInfo  = getKitCoin(to);
+	if (size < baseCoinInfo.min) {
+		throw new Error('Size too small for the rate');
+	};
 
 	let rates = getTradePaths()[symbol] || [];
 	if (!rates || rates?.length < 1) {
@@ -1388,6 +1411,14 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, id = nu
 	const result = findConversionRate(from, to, prices, new Set(), size);
 	let token;
 
+	if (result?.totalRate && result.totalRate < quoteCoinInfo.min) {
+		throw new Error('Size too small for the rate');
+	};
+
+	if (result?.trades && result?.trades?.length > 3) {
+		throw new Error('Rate not found');
+	}
+
 	if (result?.totalRate && user_id) {
 		try {
 			for(const trade of result?.trades) {
@@ -1396,7 +1427,6 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, id = nu
 					const assets = trade.symbol.split('-');
 					const quotePrice = await getUserQuickTrade(assets[0], 1, null, assets[1],  bearerToken, ip, { additionalHeaders: null }, { headers: { 'api-key': null } }, { user_id: id, network_id });
 					trade.token = quotePrice?.token || null;
-					console.log({GG: trade.token})
 				}
 			}
 	
@@ -1411,7 +1441,12 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, id = nu
 		result.base_asset = from;
 		result.chain = true;
 		result.user_id = user_id;
-		token = uuid();
+		token = randomString({
+			length: 32,
+			numeric: true,
+			letters: true
+		});
+
 		client.setexAsync(token, 30, JSON.stringify(result));
 	}
 
@@ -1430,7 +1465,7 @@ const executeUserChainTrade = async (user_id, userToken) => {
 	if (!storedToken) {
 		throw new Error(TOKEN_EXPIRED);
 	}
-	const { source_account, currency} = getKitConfig()?.chain_trade_config || {};
+	const { source_account, currency, spread } = getKitConfig()?.chain_trade_config || {};
 	
 	const tradeInfo = JSON.parse(storedToken);
 
@@ -1479,18 +1514,52 @@ const executeUserChainTrade = async (user_id, userToken) => {
 	const assets = lastTrade.symbol.split('-');
 	const to = assets[0];
 	
-	
+	const brokerPrice = to === tradeInfo.quote_asset ? (lastTrade.size / tradeInfo.size) : ((lastTrade.size * lastTrade.price ) /  tradeInfo.size);
 	// trade between end user and middle man account
-	const result = await getNodeLib().createBrokerTrade(
-		tradeInfo.symbol,
-		'buy',
-		to === tradeInfo.quote_asset ? (lastTrade.size / tradeInfo.size) : ((lastTrade.size * lastTrade.price ) /  tradeInfo.size),
-		tradeInfo.size,
-		sourceUser.network_id,
-		user.network_id,
-		{ maker: 0, taker: 0 }
-	);
+	const feeAmount = parseNumber(removeRepeatingDecimals(tradeInfo.size * ((spread || 0) / 100)), 10);
+	const spreadSize = parseNumber(removeRepeatingDecimals(tradeInfo.size - feeAmount), 10);
 
+	let result;
+	try {
+		result = await getNodeLib().createBrokerTrade(
+			tradeInfo.symbol,
+			'sell',
+			parseNumber(removeRepeatingDecimals(brokerPrice), 10),
+			spreadSize,
+			sourceUser.network_id,
+			user.network_id,
+			{ maker: 0, taker: 0 }
+		);
+	} catch (error) {
+		const admin = await getUserByKitId(1);
+		sendEmail(
+			MAILTYPE.ALERT,
+			admin.email,
+			{
+				type: 'Error in chain trades!',
+				data: `Error encountered while making the final trade between the user and the middleman account id: ${sourceUser.id}, user id: ${user.id}. Error message: ${error.message}`
+			},
+			admin.settings
+		);
+		throw new Error(error.message);
+	}
+	
+	// send the fee amount to the middle man account
+	try {
+		const baseSymbol = tradeInfo.symbol.split('-')[0];
+		if (feeAmount > 0) await transferAssetByKitIds(user.id, sourceUser.id, baseSymbol, feeAmount, 'Chain trade transaction', false, { category: 'chain_trade' });
+	} catch (error) {
+		const admin = await getUserByKitId(1);
+		sendEmail(
+			MAILTYPE.ALERT,
+			admin.email,
+			{
+				type: 'Error in chain trades!',
+				data: `Error encountered while sending the fee amount from user transaction to middleman account id: ${sourceUser.id}, user id: ${user.id}. Error message: ${error.message}`
+			},
+			admin.settings
+		);
+	}
 	try {
 		// get the currency amount back for the middle man account
 		const { token } = await getUserChainTradeQuote(null, `${tradeInfo.base_asset}-${currency}`, tradeInfo.size, null, sourceUser.id, sourceUser.network_id);
@@ -1502,7 +1571,6 @@ const executeUserChainTrade = async (user_id, userToken) => {
 		await executeTrades(sourceTradeInfo, sourceUser);
 
 	} catch (error) {
-		//send email to admin about this error.
 		const admin = await getUserByKitId(1);
 		sendEmail(
 			MAILTYPE.ALERT,

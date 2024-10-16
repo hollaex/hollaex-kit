@@ -81,6 +81,17 @@ $content--margin: 2rem;
 .withdrawal-container {
 	width: 75rem !important;
 
+	.select-wrapper {
+		.custom-select-input-style {
+			&.elevated {
+				z-index: unset;
+			}
+			.ant-select-arrow {
+				z-index: unset;
+			}
+		}
+	}
+
 	.transaction-history-wrapper {
 		max-width: 100% !important;
 	}
@@ -559,6 +570,16 @@ $content--margin: 2rem;
 			}
 		}
 
+		.select-wrapper {
+			.custom-select-input-style {
+				&.elevated {
+					z-index: unset;
+				}
+				.ant-select-arrow {
+					z-index: unset;
+				}
+			}
+		}
 		.inner_container {
 			.result-message {
 				font-size: $regular--font-size;
@@ -846,9 +867,11 @@ $content--margin: 2rem;
 		}
 	}
 
-	.withdraw-dropdown-address {
+	.withdraw-dropdown-address-options {
 		.asset-address-field {
-			margin-bottom: 5%;
+			.address-text {
+				width: 0;
+			}
 		}
 	}
 }
@@ -869,6 +892,12 @@ $content--margin: 2rem;
 
 .withdraw-dropdown-address {
 	width: 100%;
-	border-bottom: 1px solid $colors-black !important;
+	border-top: 1px solid $colors-black !important;
 	overflow: hidden;
+	padding-top: 3%;
+}
+
+.withdraw-dropdown-address-options {
+	overflow: hidden;
+	width: 100%;
 }

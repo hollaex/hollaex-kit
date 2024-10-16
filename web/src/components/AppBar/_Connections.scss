@@ -1,15 +1,24 @@
 .check-connection-tab {
-	.network-connection-icon,
-	.network-connection-icon-danger {
-		height: 12px;
-		width: 12px;
-		border-radius: 12px;
-		background-color: var(--trading_buying-related-elements);
-	}
+	.connection-icon-wrapper {
+		padding: 1rem;
+		.network-connection-icon,
+		.network-connection-icon-danger {
+			height: 12px;
+			width: 12px;
+			border-radius: 12px;
+			background-color: var(--specials_checks-okay-done);
+		}
 
-	.network-connection-icon-danger {
-		background-color: var(--trading_selling-related-elements) !important;
+		.network-connection-icon-danger {
+			background-color: var(
+				--specials_notifications-alerts-warnings
+			) !important;
+		}
 	}
+}
+
+.check-connection-tab:hover {
+	opacity: 0.5;
 }
 
 .check-connection-popup-wrapper,
@@ -63,13 +72,13 @@
 					.success-icon {
 						width: 12px;
 						height: 12px;
-						background-color: var(--trading_buying-related-elements);
+						background-color: var(--specials_checks-okay-done);
 						border-radius: 25px;
 					}
 
 					.danger-icon {
 						background-color: var(
-							--trading_selling-related-elements
+							--specials_notifications-alerts-warnings
 						) !important;
 					}
 
@@ -88,7 +97,7 @@
 							.very-slow-ping {
 								height: 15px;
 								width: 2px;
-								background-color: var(--trading_buying-related-elements);
+								background-color: var(--specials_checks-okay-done);
 							}
 
 							.slow-ping {
@@ -182,17 +191,56 @@
 	}
 }
 
-.connection-status-details {
+.connection-status-details,
+.connection-status-error-details {
 	.ant-tooltip-inner,
 	.ant-tooltip-arrow-content {
-		background-color: var(--trading_buying-related-elements) !important;
+		background-color: var(--base_background) !important;
+	}
+
+	.ant-tooltip-inner {
+		border-top: 2px solid var(--specials_checks-okay-done);
+		font-size: 13px;
+
+		.conncetion-detail {
+			padding: 3% 0;
+			border-bottom: 1px solid
+				var(--labels_secondary-inactive-label-text-graphics);
+		}
+
+		.circle-icon {
+			padding: 5px;
+			background-color: var(--specials_checks-okay-done);
+			border-radius: 25px;
+			height: 2px;
+			width: 2px;
+		}
+
+		.connection-title-wrapper {
+			display: flex;
+			align-items: center;
+			gap: 3%;
+			text-wrap: nowrap;
+			padding: 4% 0;
+
+			.connection-logo {
+				svg {
+					width: 1.5rem;
+				}
+			}
+		}
 	}
 }
 
 .connection-status-error-details {
-	.ant-tooltip-inner,
-	.ant-tooltip-arrow-content {
-		background-color: var(--trading_selling-related-elements) !important;
+	.ant-tooltip-inner {
+		border-top: 2px solid var(--specials_notifications-alerts-warnings) !important;
+
+		.circle-icon {
+			background-color: var(
+				--specials_notifications-alerts-warnings
+			) !important;
+		}
 	}
 }
 
