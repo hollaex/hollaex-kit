@@ -61,6 +61,7 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 			width: 100%;
 			height: auto;
 			position: relative;
+			background-color: var(--base_background);
 			.presentation_container {
 				width: $app-content-display-width;
 				height: inherit;
