@@ -95,7 +95,13 @@ class Wallet extends Component {
 	}
 
 	componentDidUpdate(_, prevState) {
-		const { searchValue, isZeroBalanceHidden, showDustSection } = this.state;
+		const {
+			searchValue,
+			isZeroBalanceHidden,
+			showDustSection,
+			activeBalanceHistory,
+		} = this.state;
+		const { getActiveBalanceHistory } = this.props;
 		if (
 			searchValue !== prevState.searchValue ||
 			isZeroBalanceHidden !== prevState.isZeroBalanceHidden ||
@@ -116,6 +122,9 @@ class Wallet extends Component {
 				this.props.isFetching,
 				this.props.assets
 			);
+		}
+		if (getActiveBalanceHistory !== activeBalanceHistory) {
+			this.setState({ activeBalanceHistory: getActiveBalanceHistory });
 		}
 	}
 
@@ -386,6 +395,7 @@ const mapStateToProps = (store) => ({
 	isFetching: store.asset.isFetching,
 	contracts: store.app.contracts,
 	assets: assetsSelector(store),
+	getActiveBalanceHistory: store.wallet.activeBalanceHistory,
 });
 
 const mapDispatchToProps = (dispatch) => ({

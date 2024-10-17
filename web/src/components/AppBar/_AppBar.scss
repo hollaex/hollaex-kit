@@ -63,8 +63,31 @@ $app-menu-width: calc(100vw - 40rem);
 		min-height: $navigation_bar-height;
 	}
 
+	.app-bar-dropdown-icon {
+		transform: scale(4, 4);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		.anticon {
+			svg {
+				position: relative;
+				height: 0.3rem;
+			}
+		}
+	}
+	.trade-navbar-wrapper {
+		gap: 2%;
+		.custom-select-input-style {
+			&.appbar {
+				&.ant-select {
+					margin: 0 !important;
+				}
+			}
+		}
+	}
+
 	.app_bar-quicktrade-container {
-		margin: 0 0.25rem;
+		// margin: 0 0.25rem;
 		.toggle_button-wrapper {
 			.toggle-content {
 				.toggle-action_button {
@@ -126,7 +149,7 @@ $app-menu-width: calc(100vw - 40rem);
 	.app-bar-account {
 		color: $base_top-bar-navigation_text;
 		cursor: pointer;
-		margin-right: 0.8rem;
+		margin-right: 5px;
 		// width: 15rem;
 
 		svg {
@@ -177,6 +200,11 @@ $app-menu-width: calc(100vw - 40rem);
 				stroke: $colors-main-black;
 			}
 		}
+	}
+
+	.active-text {
+		color: $base_top-bar-navigation_text !important;
+		opacity: 1 !important;
 	}
 
 	.app-bar-currency-icon {
@@ -309,6 +337,7 @@ $app-menu-width: calc(100vw - 40rem);
 		position: relative;
 		color: $app-bar-icon-inactive;
 	}
+
 	.app-announcement-list {
 		height: 335px;
 		width: 280px;
@@ -606,14 +635,18 @@ $app-menu-width: calc(100vw - 40rem);
 		display: flex;
 		align-items: center;
 		border-top: 3px solid transparent;
+
+		.arrow-icon {
+			font-size: 10px;
+		}
 	}
 
 	.app-menu-bar-content-item {
 		margin: auto;
 		position: relative;
-		&:hover {
-			opacity: 0.5;
-		}
+		// &:hover {
+		// 	opacity: 0.5;
+		// }
 	}
 
 	.app-menu-bar-icon {
@@ -631,6 +664,11 @@ $app-menu-width: calc(100vw - 40rem);
 				fill: $base_top-bar-navigation_text-inactive;
 			}
 		}
+	}
+
+	.active-text {
+		color: $base_top-bar-navigation_text !important;
+		opacity: 1 !important;
 	}
 
 	.active-menu {
@@ -1098,6 +1136,138 @@ $app-menu-width: calc(100vw - 40rem);
 	color: $colors-main-black;
 }
 
+.account-tab-dropdown {
+	.ant-tooltip-inner {
+		padding: unset;
+		.navigation-dropdown-container {
+			padding: unset;
+			.options-container {
+				margin: 0% 4%;
+				padding: 2% 4%;
+			}
+		}
+	}
+}
+.account-tab-options-tooltip {
+	font-size: 12px;
+}
+.navigation-bar-wrapper {
+	max-width: 100% !important;
+	background-color: transparent;
+	top: 35px !important;
+	bottom: 25px;
+	.app-bar-account-notification {
+		height: $app-menu-notification-size;
+		width: $app-menu-notification-size;
+		border-radius: $app-menu-notification-size;
+		background-color: $colors-notifications-red;
+		color: $colors-notification-alert-text;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size: 0.8rem;
+		line-height: 1;
+		font-weight: bold;
+	}
+	.ant-tooltip-inner {
+		width: 30rem;
+		background-color: $app-background-color;
+		color: $colors-main-black;
+		border-radius: 10px;
+	}
+	.navigation-dropdown-container {
+		padding: 2%;
+		.main-active {
+			background-color: var(--base_wallet-sidebar-and-popup);
+		}
+		.options-container {
+			border-radius: 5px;
+			padding: 2% 2% 2% 5%;
+			display: flex;
+			gap: 15px;
+			align-items: center;
+			.option-details {
+				font-size: 12px;
+				display: flex;
+				flex-direction: column;
+				align-items: flex-start;
+			}
+			.filtered-option-icon {
+				svg {
+					width: 1.8rem;
+					path {
+						fill: var(
+							--labels_important-active-labels-text-graphics
+						) !important;
+					}
+				}
+			}
+		}
+		.options-container:hover,
+		.icon-option-container:hover {
+			background-color: $app-sidebar-background;
+			cursor: pointer;
+		}
+		.options-route-wrapper {
+			margin-top: 2%;
+			border-top: 1px solid $colors-black;
+			padding: 3%;
+			display: flex;
+			gap: 3%;
+			justify-content: space-around;
+			font-size: 12px;
+
+			.icon-option-container {
+				display: flex;
+				flex-direction: column;
+				gap: 3%;
+				align-items: center;
+				padding: 2%;
+				min-width: 5rem;
+				svg {
+					width: 1.5rem;
+					path {
+						fill: $colors-main-black;
+					}
+				}
+			}
+			.icon-option-container:hover {
+				cursor: pointer;
+				border-radius: 3px;
+			}
+		}
+		.tier-wrapper {
+			padding: 3% 7%;
+			margin-bottom: 2%;
+			display: flex;
+			gap: 3%;
+			font-size: 12px;
+			align-items: center;
+			background-color: $app-sidebar-background;
+			.blue-link:hover {
+				cursor: pointer;
+			}
+			.trader-wrapper-icon {
+				width: 2.5rem;
+				margin-right: unset;
+				position: relative;
+				top: 3px;
+			}
+		}
+		.summary-page-link {
+			text-transform: uppercase;
+			text-align: center;
+			padding: 2% 0 6% 0;
+			.blue-link {
+				font-size: 11px;
+			}
+			.blue-link:hover {
+				cursor: pointer;
+			}
+		}
+	}
+}
+
 @media (min-width: 1920px) {
 	.app_bar {
 		font-size: 1rem;
@@ -1143,7 +1313,7 @@ $app-menu-width: calc(100vw - 40rem);
 		// }
 
 		.app-menu-bar-content {
-			width: 8rem;
+			width: unset;
 		}
 	}
 	.app-bar-add-tab-menu {
