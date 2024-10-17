@@ -349,6 +349,8 @@ const nestedIcons = {
 	REFERRAL_OPTION_ICON: '/assets/images/referral-gift.svg',
 
 	PING_CONNECTION: '/assets/images/ping-connection-check.svg',
+	NO_ICON: '/assets/images/no-icon-drop-down-icon.svg',
+	ONRAMPER_ICON: '/assets/images/onramper.svg',
 };
 
 const icons = flatten(nestedIcons, options);

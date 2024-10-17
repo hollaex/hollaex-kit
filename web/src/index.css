@@ -13861,10 +13861,20 @@ table th {
   .app_bar .bar-logout {
     max-height: 4rem;
     min-height: 4rem; }
-  .app_bar .app_bar-quicktrade-container {
-    margin: 0 0.25rem; }
-    .app_bar .app_bar-quicktrade-container .toggle_button-wrapper .toggle-content .toggle-action_button.left {
-      opacity: 1 !important; }
+  .app_bar .app-bar-dropdown-icon {
+    transform: scale(4, 4);
+    display: flex;
+    align-items: center;
+    justify-content: center; }
+    .app_bar .app-bar-dropdown-icon .anticon svg {
+      position: relative;
+      height: 0.3rem; }
+  .app_bar .trade-navbar-wrapper {
+    gap: 2%; }
+    .app_bar .trade-navbar-wrapper .custom-select-input-style.appbar.ant-select {
+      margin: 0 !important; }
+  .app_bar .app_bar-quicktrade-container .toggle_button-wrapper .toggle-content .toggle-action_button.left {
+    opacity: 1 !important; }
   .app_bar .app_bar-quicktrade {
     border: 1px solid var(--calculated_base_top-bar-navigation_text-inactive);
     border-radius: 0.35rem;
@@ -13899,7 +13909,7 @@ table th {
   .app_bar .app-bar-account {
     color: var(--calculated_base_top-bar-navigation_text);
     cursor: pointer;
-    margin-right: 0.8rem; }
+    margin-right: 5px; }
     .app_bar .app-bar-account svg .account-inactive {
       fill: var(--calculated_base_top-bar-navigation_text-inactive);
       stroke: var(--calculated_base_top-bar-navigation_text-inactive); }
@@ -13933,6 +13943,9 @@ table th {
     top: 1px; }
     .app_bar .active-tab-overflow svg .double-arrow {
       stroke: var(--labels_important-active-labels-text-graphics); }
+  .app_bar .active-text {
+    color: var(--calculated_base_top-bar-navigation_text) !important;
+    opacity: 1 !important; }
   .app_bar .app-bar-currency-icon {
     margin: 0.5rem 0.3rem 0 0.3rem;
     width: 1.5rem; }
@@ -14255,11 +14268,11 @@ table th {
     display: flex;
     align-items: center;
     border-top: 3px solid transparent; }
+    .app-menu-bar .app-menu-bar-content .arrow-icon {
+      font-size: 10px; }
   .app-menu-bar .app-menu-bar-content-item {
     margin: auto;
     position: relative; }
-    .app-menu-bar .app-menu-bar-content-item:hover {
-      opacity: 0.5; }
   .app-menu-bar .app-menu-bar-icon {
     margin-right: 0.4rem;
     width: 1rem; }
@@ -14270,6 +14283,9 @@ table th {
     .app-menu-bar .app-menu-bar-icon svg .tab-api0,
     .app-menu-bar .app-menu-bar-icon svg .fill_secondary-color {
       fill: var(--calculated_base_top-bar-navigation_text-inactive); }
+  .app-menu-bar .active-text {
+    color: var(--calculated_base_top-bar-navigation_text) !important;
+    opacity: 1 !important; }
   .app-menu-bar .active-menu {
     color: var(--calculated_base_top-bar-navigation_text);
     border-top: 4px solid var(--specials_buttons-links-and-highlights);
@@ -14597,6 +14613,107 @@ table th {
 .app-bar_add-tab-price {
   color: var(--labels_important-active-labels-text-graphics); }
 
+.account-tab-dropdown .ant-tooltip-inner {
+  padding: unset; }
+  .account-tab-dropdown .ant-tooltip-inner .navigation-dropdown-container {
+    padding: unset; }
+    .account-tab-dropdown .ant-tooltip-inner .navigation-dropdown-container .options-container {
+      margin: 0% 4%;
+      padding: 2% 4%; }
+
+.account-tab-options-tooltip {
+  font-size: 12px; }
+
+.navigation-bar-wrapper {
+  max-width: 100% !important;
+  background-color: transparent;
+  top: 35px !important;
+  bottom: 25px; }
+  .navigation-bar-wrapper .app-bar-account-notification {
+    height: 1.2rem;
+    width: 1.2rem;
+    border-radius: 1.2rem;
+    background-color: var(--specials_notifications-alerts-warnings);
+    color: var(--calculated_specials_notifications-alerts-text);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8rem;
+    line-height: 1;
+    font-weight: bold; }
+  .navigation-bar-wrapper .ant-tooltip-inner {
+    width: 30rem;
+    background-color: var(--base_background);
+    color: var(--labels_important-active-labels-text-graphics);
+    border-radius: 10px; }
+  .navigation-bar-wrapper .navigation-dropdown-container {
+    padding: 2%; }
+    .navigation-bar-wrapper .navigation-dropdown-container .main-active {
+      background-color: var(--base_wallet-sidebar-and-popup); }
+    .navigation-bar-wrapper .navigation-dropdown-container .options-container {
+      border-radius: 5px;
+      padding: 2% 2% 2% 5%;
+      display: flex;
+      gap: 15px;
+      align-items: center; }
+      .navigation-bar-wrapper .navigation-dropdown-container .options-container .option-details {
+        font-size: 12px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start; }
+      .navigation-bar-wrapper .navigation-dropdown-container .options-container .filtered-option-icon svg {
+        width: 1.8rem; }
+        .navigation-bar-wrapper .navigation-dropdown-container .options-container .filtered-option-icon svg path {
+          fill: var(--labels_important-active-labels-text-graphics) !important; }
+    .navigation-bar-wrapper .navigation-dropdown-container .options-container:hover, .navigation-bar-wrapper .navigation-dropdown-container .icon-option-container:hover {
+      background-color: var(--base_wallet-sidebar-and-popup);
+      cursor: pointer; }
+    .navigation-bar-wrapper .navigation-dropdown-container .options-route-wrapper {
+      margin-top: 2%;
+      border-top: 1px solid var(--labels_secondary-inactive-label-text-graphics);
+      padding: 3%;
+      display: flex;
+      gap: 3%;
+      justify-content: space-around;
+      font-size: 12px; }
+      .navigation-bar-wrapper .navigation-dropdown-container .options-route-wrapper .icon-option-container {
+        display: flex;
+        flex-direction: column;
+        gap: 3%;
+        align-items: center;
+        padding: 2%;
+        min-width: 5rem; }
+        .navigation-bar-wrapper .navigation-dropdown-container .options-route-wrapper .icon-option-container svg {
+          width: 1.5rem; }
+          .navigation-bar-wrapper .navigation-dropdown-container .options-route-wrapper .icon-option-container svg path {
+            fill: var(--labels_important-active-labels-text-graphics); }
+      .navigation-bar-wrapper .navigation-dropdown-container .options-route-wrapper .icon-option-container:hover {
+        cursor: pointer;
+        border-radius: 3px; }
+    .navigation-bar-wrapper .navigation-dropdown-container .tier-wrapper {
+      padding: 3% 7%;
+      margin-bottom: 2%;
+      display: flex;
+      gap: 3%;
+      font-size: 12px;
+      align-items: center;
+      background-color: var(--base_wallet-sidebar-and-popup); }
+      .navigation-bar-wrapper .navigation-dropdown-container .tier-wrapper .blue-link:hover {
+        cursor: pointer; }
+      .navigation-bar-wrapper .navigation-dropdown-container .tier-wrapper .trader-wrapper-icon {
+        width: 2.5rem;
+        margin-right: unset;
+        position: relative;
+        top: 3px; }
+    .navigation-bar-wrapper .navigation-dropdown-container .summary-page-link {
+      text-transform: uppercase;
+      text-align: center;
+      padding: 2% 0 6% 0; }
+      .navigation-bar-wrapper .navigation-dropdown-container .summary-page-link .blue-link {
+        font-size: 11px; }
+      .navigation-bar-wrapper .navigation-dropdown-container .summary-page-link .blue-link:hover {
+        cursor: pointer; }
+
 @media (min-width: 1920px) {
   .app_bar {
     font-size: 1rem;
@@ -14623,7 +14740,7 @@ table th {
     height: 5rem;
     min-height: 5rem; }
     .app-menu-bar .app-menu-bar-content {
-      width: 8rem; }
+      width: unset; }
   .app-bar-add-tab-menu {
     width: 24rem; }
     .app-bar-add-tab-menu.narrow {
