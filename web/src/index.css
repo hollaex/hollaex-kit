@@ -417,7 +417,9 @@ table th {
   .app_container .app_container-content .app_container-main {
     width: 100%;
     height: auto;
-    position: relative; }
+    position: relative;
+    background-color: var(--base_background);
+ }
     .app_container .app_container-content .app_container-main .presentation_container {
       width: 75rem;
       height: inherit; }
