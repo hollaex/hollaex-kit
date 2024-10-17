@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { browserHistory, Link, withRouter } from 'react-router';
 import mathjs from 'mathjs';
 import classnames from 'classnames';
 import { ClockCircleOutlined } from '@ant-design/icons';
@@ -16,8 +17,7 @@ import {
 	getAllPenalties,
 	getAllPots,
 } from 'actions/stakingActions';
-import { setNotification, NOTIFICATIONS } from 'actions/appActions';
-import { Link, withRouter } from 'react-router';
+import { setNotification, NOTIFICATIONS, setStake } from 'actions/appActions';
 import { web3 } from 'config/contracts';
 import STRINGS from 'config/localizedStrings';
 import { DEFAULT_COIN_DATA } from 'config/constants';
@@ -54,13 +54,14 @@ class Stake extends Component {
 		super(prop);
 		this.state = {
 			activeTab: '1',
-			selectedStaking:
-				this.props?.constants?.features?.cefi_stake &&
-				this.props?.constants?.features?.stake_page
-					? 'defi'
-					: this.props?.constants?.features?.cefi_stake
-					? 'cefi'
-					: 'defi',
+			selectedStaking: this.props?.getStake
+				? this.props?.getStake
+				: this.props?.constants?.features?.cefi_stake &&
+				  this.props?.constants?.features?.stake_page
+				? 'defi'
+				: this.props?.constants?.features?.cefi_stake
+				? 'cefi'
+				: 'defi',
 			readBeforeAction: false,
 			stakeAmount: false,
 			duration: false,
@@ -87,7 +88,7 @@ class Stake extends Component {
 		getAllPots();
 	}
 
-	componentDidUpdate(prevProps) {
+	componentDidUpdate(prevProps, prevState) {
 		const {
 			account,
 			network,
@@ -103,14 +104,32 @@ class Stake extends Component {
 			getAllUserStakes(account);
 			getPendingTransactions(account);
 		}
+
+		if (
+			this.props?.getStake &&
+			this.props?.getStake !== this.state?.selectedStaking
+		) {
+			this.setState({
+				selectedStaking: this.props?.getStake,
+			});
+		}
+
+		if (
+			JSON.stringify(prevState?.selectedStaking) !==
+			JSON.stringify(this.state?.selectedStaking)
+		) {
+			this.openCurrentTab();
+		}
 	}
 
 	componentDidMount() {
 		this.setBlockNumberInterval();
+		this.openCurrentTab();
 	}
 
 	componentWillUnmount() {
 		this.clearBlockNumberInterval();
+		this.props.setSelectedStake('defi');
 	}
 
 	setBlockNumberInterval = () => {
@@ -195,6 +214,16 @@ class Stake extends Component {
 		this.setState({ activeTab: key });
 	};
 
+	openCurrentTab = () => {
+		let currentTab = '';
+		if (this.state?.selectedStaking === 'cefi') {
+			currentTab = 'cefi';
+		} else {
+			currentTab = 'defi';
+		}
+		browserHistory.push(`/stake?${currentTab}`);
+	};
+
 	render() {
 		const {
 			icons: ICONS,
@@ -209,6 +238,7 @@ class Stake extends Component {
 			totalUserEarnings,
 			pending,
 			networksMismatch,
+			setSelectedStake,
 		} = this.props;
 
 		const index_display_name = coins?.[STAKING_INDEX_COIN]?.display_name;
@@ -313,6 +343,7 @@ class Stake extends Component {
 										this.setState({
 											selectedStaking: 'defi',
 										});
+										setSelectedStake('defi');
 									}}
 								>
 									{STRINGS['STAKE.DEFI_STAKING']}
@@ -327,6 +358,7 @@ class Stake extends Component {
 										this.setState({
 											selectedStaking: 'cefi',
 										});
+										setSelectedStake('cefi');
 									}}
 								>
 									{STRINGS['STAKE.CEFI_STAKING']}
@@ -755,6 +787,7 @@ const mapStateToProps = (store) => ({
 	contracts: store.app.contracts,
 	constants: store.app.constants,
 	theme: store.app.theme,
+	getStake: store.app.selectedStake,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -768,6 +801,7 @@ const mapDispatchToProps = (dispatch) => ({
 	setNotification: bindActionCreators(setNotification, dispatch),
 	getAllPenalties: bindActionCreators(getAllPenalties, dispatch),
 	getAllPots: bindActionCreators(getAllPots, dispatch),
+	setSelectedStake: bindActionCreators(setStake, dispatch),
 });
 
 export default connect(
