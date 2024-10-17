@@ -1,33 +1,172 @@
-export { default as User } from './User';
-export { default as TradeHistory } from './TradeHistory';
-export { default as UserBalance } from './UserBalance';
-export { default as Logins } from './Logins';
-export { default as Audits } from './Audits';
-export { default as AppWrapper } from './AppWrapper';
-export { default as Main } from './Main';
-export { default as Balance } from './Balance';
-export { default as Verification } from './Verification';
-export { default as UploadIds } from './UploadIds';
-export { default as Otp } from './Otp';
-export { default as Activate } from './Activate';
-export { ListUsers, FullListUsers } from './ListUsers';
-export { default as Stakes } from './Stakes';
-export { default as Sessions } from './Sessions';
-export { default as Deposits } from './Deposits';
-export { default as Limits } from './Limits';
-export { default as DepositsPage } from './DepositsPage';
-export { default as BlockchainTransaction } from './BlockchainTransaction';
-export { default as Fees } from './Fees';
-export { default as Chat } from './Chat';
-export { default as Wallets } from './Wallets';
-export { default as Transactions } from './Transactions';
-export { default as UserFees } from './UserFees';
-export { default as Trades } from './Trades';
+import Loadable from 'react-loadable';
+
 export { PATHS } from './paths';
-export { default as ActiveOrders } from './ActiveOrders';
-export { default as Broker } from './Broker';
-export { default as Plugins } from './Plugins';
-export { default as PluginServices } from './Plugins/PluginServices';
-export { default as Settings } from './Settings';
-export { default as Transfer } from './Transfers';
-export { default as Billing } from './Billing';
+
+const LoadingComponent = ({ isLoading, error }) => {
+	return null;
+};
+
+export const User = Loadable({
+	loader: () => import('./User'),
+	loading: LoadingComponent,
+});
+
+export const TradeHistory = Loadable({
+	loader: () => import('./TradeHistory'),
+	loading: LoadingComponent,
+});
+
+export const UserBalance = Loadable({
+	loader: () => import('./UserBalance'),
+	loading: LoadingComponent,
+});
+
+export const Logins = Loadable({
+	loader: () => import('./Logins'),
+	loading: LoadingComponent,
+});
+
+export const Audits = Loadable({
+	loader: () => import('./Audits'),
+	loading: LoadingComponent,
+});
+
+export const AppWrapper = Loadable({
+	loader: () => import('./AppWrapper'),
+	loading: LoadingComponent,
+});
+
+export const Main = Loadable({
+	loader: () => import('./Main'),
+	loading: LoadingComponent,
+});
+
+export const Balance = Loadable({
+	loader: () => import('./Balance'),
+	loading: LoadingComponent,
+});
+
+export const Verification = Loadable({
+	loader: () => import('./Verification'),
+	loading: LoadingComponent,
+});
+
+export const UploadIds = Loadable({
+	loader: () => import('./UploadIds'),
+	loading: LoadingComponent,
+});
+
+export const Otp = Loadable({
+	loader: () => import('./Otp'),
+	loading: LoadingComponent,
+});
+
+export const Activate = Loadable({
+	loader: () => import('./Activate'),
+	loading: LoadingComponent,
+});
+
+export const ListUsers = Loadable({
+	loader: () => import('./ListUsers/ListUser'),
+	loading: LoadingComponent,
+});
+
+export const FullListUsers = Loadable({
+	loader: () => import('./ListUsers/FullList'),
+	loading: LoadingComponent,
+});
+
+export const Stakes = Loadable({
+	loader: () => import('./Stakes'),
+	loading: LoadingComponent,
+});
+
+export const Sessions = Loadable({
+	loader: () => import('./Sessions'),
+	loading: LoadingComponent,
+});
+
+export const Deposits = Loadable({
+	loader: () => import('./Deposits'),
+	loading: LoadingComponent,
+});
+
+export const Limits = Loadable({
+	loader: () => import('./Limits'),
+	loading: LoadingComponent,
+});
+
+export const DepositsPage = Loadable({
+	loader: () => import('./DepositsPage'),
+	loading: LoadingComponent,
+});
+
+export const BlockchainTransaction = Loadable({
+	loader: () => import('./BlockchainTransaction'),
+	loading: LoadingComponent,
+});
+
+export const Fees = Loadable({
+	loader: () => import('./Fees'),
+	loading: LoadingComponent,
+});
+
+export const Chat = Loadable({
+	loader: () => import('./Chat'),
+	loading: LoadingComponent,
+});
+
+export const Wallets = Loadable({
+	loader: () => import('./Wallets'),
+	loading: LoadingComponent,
+});
+
+export const Transactions = Loadable({
+	loader: () => import('./Transactions'),
+	loading: LoadingComponent,
+});
+
+export const UserFees = Loadable({
+	loader: () => import('./UserFees'),
+	loading: LoadingComponent,
+});
+
+export const Trades = Loadable({
+	loader: () => import('./Trades'),
+	loading: LoadingComponent,
+});
+
+export const ActiveOrders = Loadable({
+	loader: () => import('./ActiveOrders'),
+	loading: LoadingComponent,
+});
+
+export const Broker = Loadable({
+	loader: () => import('./Broker'),
+	loading: LoadingComponent,
+});
+
+export const Plugins = Loadable({
+	loader: () => import('./Plugins'),
+	loading: LoadingComponent,
+});
+
+export const PluginServices = Loadable({
+	loader: () => import('./Plugins/PluginServices'),
+	loading: LoadingComponent,
+});
+
+export const Settings = Loadable({
+	loader: () => import('./Settings'),
+	loading: LoadingComponent,
+});
+
+export const Transfer = Loadable({
+	loader: () => import('./Transfers'),
+	loading: LoadingComponent,
+});
+
+export const Billing = Loadable({
+	loader: () => import('./Billing'),
+	loading: LoadingComponent,
+});

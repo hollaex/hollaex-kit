@@ -59,6 +59,21 @@ module.exports = function () {
 					...webpackConfig.optimization.splitChunks,
 					chunks: 'all',
 					cacheGroups,
+					// minSize: 20000,
+					// maxSize: 100000,
+					// automaticNameDelimiter: '_',
+					// cacheGroups: {
+					// 	vendors: {
+					// 		test: /[\\/]node_modules[\\/]/,
+					// 		name: 'vendors',
+					// 		chunks: 'all',
+					// 	},
+					// 	default: {
+					// 		minChunks: 2,
+					// 		priority: -20,
+					// 		reuseExistingChunk: true,
+					// 	},
+					// },
 				};
 				return webpackConfig;
 			},
