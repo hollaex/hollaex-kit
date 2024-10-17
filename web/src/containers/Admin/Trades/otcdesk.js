@@ -107,6 +107,7 @@ const OtcDeskContainer = ({
 		if (isOpen) {
 			getAllUserData();
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isOpen]);
 
 	useEffect(() => {
@@ -145,8 +146,21 @@ const OtcDeskContainer = ({
 			if (editData && editData.type && editData.type === 'dynamic') {
 				setIsManual(false);
 			}
+
+			if (previewData.user_id) {
+				getAllUserData({ id: previewData.user_id }, true);
+			}
 		}
-	}, [exchange.coins, editData, isOpen, isEdit, exchange, brokerData]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [
+		exchange.coins,
+		editData,
+		isOpen,
+		isEdit,
+		exchange,
+		brokerData,
+		previewData.user_id,
+	]);
 
 	useEffect(() => {
 		let pairBase = balanceData[`${previewData.pair_base}_available`] || 0;
@@ -195,7 +209,7 @@ const OtcDeskContainer = ({
 		handleClose();
 	};
 
-	const getAllUserData = async (params = {}) => {
+	const getAllUserData = async (params = {}, emailChange = false) => {
 		try {
 			const res = await requestUsers(params);
 			if (res && res.data) {
@@ -205,6 +219,19 @@ const OtcDeskContainer = ({
 				}));
 				setEmailOptions(userData);
 				setUserData(res.data);
+				if (emailChange && userData?.[0]?.value) {
+					let emailId = parseInt(userData?.[0]?.value);
+					let emailData = {};
+					userData &&
+						userData.forEach((item) => {
+							if (item.value === emailId) {
+								emailData = item;
+							}
+						});
+					setSelectedEmailData(emailData);
+					handlePreviewChange(emailId, 'user_id');
+					handleSearch(emailData.label);
+				}
 			}
 		} catch (error) {
 			console.log('error', error);
