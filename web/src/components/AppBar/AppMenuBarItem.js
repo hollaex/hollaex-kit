@@ -26,6 +26,7 @@ const AppMenuBarItem = ({
 	getRemoteRoutes,
 	icons,
 	setActiveBalanceHistory,
+	getStake,
 }) => {
 	const summaryOptions = [
 		{
@@ -201,6 +202,7 @@ const AppMenuBarItem = ({
 					setIsToolTipVisible={setIsToolTipVisible}
 					setActiveBalanceHistory={setActiveBalanceHistory}
 					getTabOptions={getTabOptions}
+					getStake={getStake}
 				/>
 			}
 			overlayClassName="navigation-bar-wrapper"
@@ -249,6 +251,7 @@ const DesktopDropdown = ({
 	setIsToolTipVisible,
 	setActiveBalanceHistory,
 	getTabOptions,
+	getStake,
 }) => {
 	const [currPath, setCurrpath] = useState('/summary');
 	const [isSelectedStake, setIsSelectedStake] = useState();
@@ -259,18 +262,30 @@ const DesktopDropdown = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [window.location.pathname]);
 
-	const onHandleRoutes = (text, value) => {
+	useEffect(() => {
+		setIsSelectedStake(
+			getStake === 'cefi' ? 'STAKE.CEFI_STAKING' : 'STAKE.DEFI_STAKING'
+		);
+	}, [getStake]);
+
+	const onHandleRoutes = (text = '', value = '/') => {
 		setActiveBalanceHistory(false);
-		if (text === 'STAKE.CEFI_STAKING') {
-			setSelectedStake('cefi');
-			setIsSelectedStake(text);
-		}
-		if (text === 'STAKE.DEFI_STAKING') {
-			setSelectedStake('defi');
-			setIsSelectedStake(text);
-		}
-		if (text === 'MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.PERFORMANCE') {
-			setActiveBalanceHistory(true);
+
+		const selectedTab = {
+			'STAKE.CEFI_STAKING': () => {
+				setSelectedStake('cefi');
+				setIsSelectedStake(text);
+			},
+			'STAKE.DEFI_STAKING': () => {
+				setSelectedStake('defi');
+				setIsSelectedStake(text);
+			},
+			'MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.PERFORMANCE': () =>
+				setActiveBalanceHistory(true),
+		};
+
+		if (selectedTab[text]) {
+			selectedTab[text]();
 		}
 
 		setIsToolTipVisible(false);
@@ -320,6 +335,12 @@ const DesktopDropdown = ({
 											]
 										}
 									</span>
+									{options?.title === 'SUMMARY.EARN_COMMISSION' && (
+										<Image
+											icon={icons['HOT_ICON']}
+											wrapperClassName="hot-icon"
+										/>
+									)}
 									{options?.title_2 && (
 										<span className="ml-1">{STRINGS[options?.title_2]}</span>
 									)}
@@ -360,6 +381,7 @@ const mapStateToProps = (state) => ({
 	getMarkets: MarketsSelector(state),
 	pair: state.app.pair,
 	getRemoteRoutes: state.app.remoteRoutes,
+	getStake: state.app.selectedStake,
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -4,7 +4,11 @@ import { bindActionCreators } from 'redux';
 import { SubmissionError } from 'redux-form';
 import { isMobile } from 'react-device-detect';
 import { message } from 'antd';
-import { openContactForm, setSelectedStep } from 'actions/appActions';
+import {
+	openContactForm,
+	setSecurityTab,
+	setSelectedStep,
+} from 'actions/appActions';
 import {
 	resetPassword,
 	otpRequest,
@@ -116,6 +120,11 @@ class UserSecurity extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
+		if (this.props.getSecurityTab !== this.state.activeTab) {
+			this.setState({
+				activeTab: this.props.getSecurityTab,
+			});
+		}
 		if (
 			prevProps.user.otp.requested !== this.props.user.otp.requested ||
 			prevProps.user.otp.requesting !== this.props.user.otp.requesting ||
@@ -142,6 +151,10 @@ class UserSecurity extends Component {
 		) {
 			this.openCurrentTab();
 		}
+	}
+
+	componentWillUnmount() {
+		setSecurityTab(0);
 	}
 
 	openCurrentTab = () => {
@@ -407,6 +420,7 @@ class UserSecurity extends Component {
 
 	setActiveTab = (activeTab) => {
 		this.setState({ activeTab });
+		this.props.setSecurityTab(activeTab);
 	};
 
 	/*logout = (message = '') => {
@@ -789,6 +803,7 @@ const mapDispatchToProps = (dispatch) => ({
 	otpSetActivated: (active) => dispatch(otpSetActivated(active)),
 	openContactForm: bindActionCreators(openContactForm, dispatch),
 	setSelectedStep: bindActionCreators(setSelectedStep, dispatch),
+	setSecurityTab: bindActionCreators(setSecurityTab, dispatch),
 });
 
 export default connect(

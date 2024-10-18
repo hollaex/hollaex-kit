@@ -1191,6 +1191,15 @@ $app-menu-width: calc(100vw - 40rem);
 				display: flex;
 				flex-direction: column;
 				align-items: flex-start;
+				.hot-icon {
+					margin-left: 0.3rem;
+					svg {
+						width: 1.2rem;
+						path {
+							fill: var(--specials_pending-waiting-caution) !important;
+						}
+					}
+				}
 			}
 			.filtered-option-icon {
 				svg {
@@ -1259,7 +1268,7 @@ $app-menu-width: calc(100vw - 40rem);
 			text-align: center;
 			padding: 2% 0 6% 0;
 			.blue-link {
-				font-size: 11px;
+				font-size: 13px;
 			}
 			.blue-link:hover {
 				cursor: pointer;

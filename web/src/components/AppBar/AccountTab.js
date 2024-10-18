@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router';
 import { Tooltip } from 'antd';
 import { DownOutlined, UpOutlined } from '@ant-design/icons';
@@ -11,6 +12,7 @@ import HelpfulResourcesForm from 'containers/HelpfulResourcesForm';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { Image, EditWrapper } from 'components';
 import { isLoggedIn, removeToken } from 'utils/token';
+import { setSecurityTab, setSettingsTab } from 'actions/appActions';
 
 const AccountTab = ({
 	config_level,
@@ -19,11 +21,19 @@ const AccountTab = ({
 	icons: Icons,
 	securityPending,
 	verificationPending,
+	setSecurityTab,
+	setSettingsTab,
 }) => {
 	const [isIconActive, setIsIconActive] = useState(false);
 	const [isToolTipVisible, setIsToolTipVisible] = useState(false);
 
 	const totalPending = securityPending + verificationPending;
+
+	const onHandleRedirect = (path = '/') => {
+		setIsToolTipVisible(false);
+		setIsIconActive(false);
+		browserHistory.push(path);
+	};
 
 	return (
 		<Tooltip
@@ -38,6 +48,9 @@ const AccountTab = ({
 					verificationPending={verificationPending}
 					setIsToolTipVisible={setIsToolTipVisible}
 					setIsIconActive={setIsIconActive}
+					setSecurityTab={setSecurityTab}
+					setSettingsTab={setSettingsTab}
+					onHandleRedirect={onHandleRedirect}
 				/>
 			}
 			placement="bottomRight"
@@ -53,11 +66,7 @@ const AccountTab = ({
 						? 'd-flex app-bar-account-content active-text'
 						: 'd-flex app-bar-account-content'
 				}
-				onClick={() => {
-					setIsToolTipVisible(false);
-					setIsIconActive(false);
-					browserHistory.push('/summary');
-				}}
+				onClick={() => onHandleRedirect('/summary')}
 			>
 				<div className="mr-4">
 					<Image
@@ -89,6 +98,9 @@ const AccountList = ({
 	verificationPending,
 	setIsIconActive,
 	setIsToolTipVisible,
+	setSecurityTab,
+	setSettingsTab,
+	onHandleRedirect,
 }) => {
 	const [isHelpResources, setIsHelpResources] = useState(false);
 	const [currPath, setCurrpath] = useState('/summary');
@@ -133,13 +145,13 @@ const AccountList = ({
 		{
 			icon: 'API_OPTION_ICON',
 			title: 'MORE_OPTIONS_LABEL.ICONS.API',
-			toolTipText: 'DESKTOP_NAVIGATION.LANGUAGE_DESC',
+			toolTipText: 'DESKTOP_NAVIGATION.API_DESC',
 			path: '/security?apiKeys',
 		},
 		{
 			icon: 'LANGUAGE_OPTION_ICON',
 			title: 'USER_SETTINGS.TITLE_LANGUAGE',
-			toolTipText: 'DESKTOP_NAVIGATION.API_DESC',
+			toolTipText: 'DESKTOP_NAVIGATION.LANGUAGE_DESC',
 			path: '/settings?language',
 		},
 		{
@@ -170,11 +182,18 @@ const AccountList = ({
 		);
 	};
 
-	const onHandleRoutes = (value, title = '') => {
-		if (title === 'LOGIN.HELP') {
-			setIsHelpResources(true);
-		} else if (title === 'ACCOUNTS.TAB_SIGNOUT') {
-			removeToken();
+	const onHandleRoutes = (value = '/', title = '') => {
+		const selectedTab = {
+			'LOGIN.HELP': () => setIsHelpResources(true),
+			'ACCOUNTS.TAB_SIGNOUT': () => removeToken(),
+			'ACCOUNTS.TAB_SECURITY': () => setSecurityTab(0),
+			'MORE_OPTIONS_LABEL.ICONS.API': () => setSecurityTab(2),
+			'USER_SETTINGS.TITLE_LANGUAGE': () => setSettingsTab(2),
+			'ACCOUNTS.TAB_SETTINGS': () => setSettingsTab(0),
+		};
+
+		if (selectedTab[title]) {
+			selectedTab[title]();
 		}
 
 		setIsToolTipVisible(false);
@@ -212,11 +231,7 @@ const AccountList = ({
 				/>
 				<span
 					className="blue-link text-decoration-underline"
-					onClick={() => {
-						setIsToolTipVisible(false);
-						setIsIconActive(false);
-						browserHistory.push('/fees-and-limits');
-					}}
+					onClick={() => onHandleRedirect('/fees-and-limits')}
 				>
 					{userAccountTitle}
 				</span>
@@ -231,7 +246,7 @@ const AccountList = ({
 									? 'options-container account-active main-active'
 									: 'options-container account-active'
 							}
-							onClick={() => onHandleRoutes(options?.path)}
+							onClick={() => onHandleRoutes(options?.path, options?.title)}
 						>
 							<Image
 								icon={ICONS[options?.icon ? options?.icon : 'NO_ICON']}
@@ -274,11 +289,7 @@ const AccountList = ({
 							overlayClassName="account-tab-options-tooltip"
 						>
 							<div
-								className={
-									currPath === option?.path
-										? 'icon-option-container main-active'
-										: 'icon-option-container'
-								}
+								className="icon-option-container"
 								onClick={() => onHandleRoutes(option?.path, option?.title)}
 							>
 								<Image icon={ICONS[option?.icon ? option?.icon : 'NO_ICON']} />
@@ -292,11 +303,7 @@ const AccountList = ({
 			</div>
 			<div
 				className="summary-page-link"
-				onClick={() => {
-					setIsToolTipVisible(false);
-					setIsIconActive(false);
-					return browserHistory?.push('/summary');
-				}}
+				onClick={() => onHandleRedirect('/summary')}
 			>
 				<EditWrapper stringId="DESKTOP_NAVIGATION.SUMMARY_PAGE">
 					<span className="blue-link text-decoration-underline">
@@ -313,4 +320,12 @@ const mapStateToProps = (state) => ({
 	verification_level: state.user.verification_level,
 });
 
-export default connect(mapStateToProps)(withConfig(AccountTab));
+const mapDispatchToProps = (dispatch) => ({
+	setSecurityTab: bindActionCreators(setSecurityTab, dispatch),
+	setSettingsTab: bindActionCreators(setSettingsTab, dispatch),
+});
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withConfig(AccountTab));

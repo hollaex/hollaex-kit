@@ -351,6 +351,7 @@ const nestedIcons = {
 	PING_CONNECTION: '/assets/images/ping-connection-check.svg',
 	NO_ICON: '/assets/images/no-icon-drop-down-icon.svg',
 	ONRAMPER_ICON: '/assets/images/onramper.svg',
+	HOT_ICON: '/assets/images/fire-emoji.svg',
 };
 
 const icons = flatten(nestedIcons, options);
