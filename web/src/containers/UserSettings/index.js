@@ -63,26 +63,31 @@ class UserSettings extends Component {
 		}
 		if (window.location.search && window.location.search.includes('signals')) {
 			this.setState({ activeTab: 0 });
+			this.props.setSettingsTab(0);
 		} else if (
 			window.location.search &&
 			window.location.search.includes('interface')
 		) {
 			this.setState({ activeTab: 1 });
+			this.props.setSettingsTab(1);
 		} else if (
 			window.location.search &&
 			window.location.search.includes('language')
 		) {
 			this.setState({ activeTab: 2 });
+			this.props.setSettingsTab(2);
 		} else if (
 			window.location.search &&
 			window.location.search.includes('audioCue')
 		) {
 			this.setState({ activeTab: 3 });
+			this.props.setSettingsTab(3);
 		} else if (
 			window.location.search &&
 			window.location.search.includes('account')
 		) {
 			this.setState({ activeTab: 4 });
+			this.props.setSettingsTab(4);
 		}
 		this.openCurrentTab();
 	}
@@ -135,7 +140,7 @@ class UserSettings extends Component {
 	}
 
 	componentWillUnmount() {
-		setSettingsTab(0);
+		setSettingsTab(null);
 	}
 
 	openCurrentTab = () => {
