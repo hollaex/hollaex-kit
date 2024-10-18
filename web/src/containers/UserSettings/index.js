@@ -11,6 +11,7 @@ import {
 	openContactForm,
 	openRiskPortfolioOrderWarning,
 	closeNotification,
+	setSettingsTab,
 } from 'actions/appActions';
 import { logout } from 'actions/authAction';
 import {
@@ -62,26 +63,31 @@ class UserSettings extends Component {
 		}
 		if (window.location.search && window.location.search.includes('signals')) {
 			this.setState({ activeTab: 0 });
+			this.props.setSettingsTab(0);
 		} else if (
 			window.location.search &&
 			window.location.search.includes('interface')
 		) {
 			this.setState({ activeTab: 1 });
+			this.props.setSettingsTab(1);
 		} else if (
 			window.location.search &&
 			window.location.search.includes('language')
 		) {
 			this.setState({ activeTab: 2 });
+			this.props.setSettingsTab(2);
 		} else if (
 			window.location.search &&
 			window.location.search.includes('audioCue')
 		) {
 			this.setState({ activeTab: 3 });
+			this.props.setSettingsTab(3);
 		} else if (
 			window.location.search &&
 			window.location.search.includes('account')
 		) {
 			this.setState({ activeTab: 4 });
+			this.props.setSettingsTab(4);
 		}
 		this.openCurrentTab();
 	}
@@ -120,12 +126,21 @@ class UserSettings extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
+		if (this.props.getSettingsTab !== this.state.activeTab) {
+			this.setState({
+				activeTab: this.props.getSettingsTab,
+			});
+		}
 		if (
 			JSON.stringify(prevState.activeTab) !==
 			JSON.stringify(this.state.activeTab)
 		) {
 			this.openCurrentTab();
 		}
+	}
+
+	componentWillUnmount() {
+		setSettingsTab(null);
 	}
 
 	openCurrentTab = () => {
@@ -163,7 +178,7 @@ class UserSettings extends Component {
 			selectable_native_currencies,
 		} = this.props;
 		const formValues = generateFormValues({
-			options: themeOptions.map(({ value }) => ({ value, label: value })),
+			options: themeOptions?.map(({ value }) => ({ value, label: value })),
 			currencyOptions: selectable_native_currencies?.map((value) => ({
 				value,
 				label: value,
@@ -426,6 +441,7 @@ class UserSettings extends Component {
 
 	setActiveTab = (activeTab) => {
 		this.setState({ activeTab });
+		this.props.setSettingsTab(activeTab);
 		if (this.props.location.query && this.props.location.query.tab) {
 			this.removeQueryString();
 		}
@@ -519,6 +535,7 @@ const mapStateToProps = (state) => ({
 	features: state.app.features,
 	selectable_native_currencies:
 		state.app.constants.selectable_native_currencies,
+	getSettingsTab: state.app.selectedSettingsTab,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -533,6 +550,7 @@ const mapDispatchToProps = (dispatch) => ({
 	),
 	closeNotification: bindActionCreators(closeNotification, dispatch),
 	logout: bindActionCreators(logout, dispatch),
+	setSettingsTab: bindActionCreators(setSettingsTab, dispatch),
 });
 
 export default connect(

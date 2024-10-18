@@ -5,7 +5,6 @@ import classnames from 'classnames';
 import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
 import { DEFAULT_URL } from 'config/constants';
-import MenuList from './MenuList';
 import { MobileBarWrapper, EditWrapper, ButtonLink, Image } from 'components';
 import { isLoggedIn } from 'utils/token';
 import {
@@ -18,10 +17,10 @@ import { updateUserSettings, setUserData } from 'actions/userAction';
 import ThemeSwitcher from './ThemeSwitcher';
 import withEdit from 'components/EditProvider/withEdit';
 import withConfig from 'components/ConfigProvider/withConfig';
-import AnnouncementList from './AnnouncementList';
 import STRINGS from 'config/localizedStrings';
 import LanguageSwitcher from './LanguageSwitcher';
 import Connections from './Connections';
+import AccountTab from './AccountTab';
 
 class AppBar extends Component {
 	state = {
@@ -239,9 +238,9 @@ class AppBar extends Component {
 			constants: { valid_languages } = {},
 			constants = {},
 			children,
-			activePath,
-			onMenuChange,
-			menuItems,
+			// activePath,
+			// onMenuChange,
+			// menuItems,
 			router,
 			isHome,
 			activeLanguage,
@@ -252,7 +251,7 @@ class AppBar extends Component {
 		const {
 			securityPending,
 			verificationPending,
-			walletPending,
+			// walletPending,
 			selected,
 		} = this.state;
 		return isHome ? (
@@ -323,7 +322,7 @@ class AppBar extends Component {
 				{isLoggedIn() && (
 					<div
 						id="trade-nav-container"
-						className="d-flex app-bar-account justify-content-end"
+						className="d-flex app-bar-account justify-content-end trade-navbar-wrapper"
 					>
 						<div
 							className="app-bar-deposit-btn d-flex"
@@ -350,8 +349,8 @@ class AppBar extends Component {
 								toggle={this.onToggle}
 							/>
 						</div>
-						<AnnouncementList user={user.email} />
-						<MenuList
+						{/* <AnnouncementList user={user.email} /> */}
+						{/* <MenuList
 							menuItems={menuItems}
 							securityPending={securityPending}
 							verificationPending={verificationPending}
@@ -359,6 +358,11 @@ class AppBar extends Component {
 							user={user}
 							activePath={activePath}
 							onMenuChange={onMenuChange}
+						/> */}
+						<AccountTab
+							user={user}
+							securityPending={securityPending}
+							verificationPending={verificationPending}
 						/>
 						<Connections />
 					</div>

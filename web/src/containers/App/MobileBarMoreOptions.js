@@ -12,6 +12,7 @@ import { EditWrapper, Image, SearchBox } from 'components';
 import {
 	setLimitTab,
 	setSecurityTab,
+	setSettingsTab,
 	setStake,
 	setVerificationTab,
 } from 'actions/appActions';
@@ -30,6 +31,7 @@ const MobileBarMoreOptions = ({
 	setLimitTab,
 	setSelectedStake,
 	features,
+	setSettingsTab,
 }) => {
 	const [search, setSearch] = useState('');
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -625,10 +627,16 @@ const MobileBarMoreOptions = ({
 			Fees: () => setLimitTab(0),
 			Limits: () => setLimitTab(2),
 			Password: () => setSecurityTab(1),
+			API: () => setSecurityTab(2),
 			Logins: () => setSecurityTab(4),
 			Sessions: () => setSecurityTab(3),
 			Banks: () => setVerificationTab(3),
 			Help: () => setIsDialogOpen(true),
+			Audio: () => setSettingsTab(3),
+			Language: () => setSettingsTab(2),
+			Interface: () => setSettingsTab(1),
+			Notification: () => setSettingsTab(0),
+			Chat: () => setSettingsTab(4),
 		};
 
 		const action = actions[STRINGS[text]];
@@ -820,6 +828,7 @@ const mapDispatchToProps = (dispatch) => ({
 	setLimitTab: bindActionCreators(setLimitTab, dispatch),
 	setSecurityTab: bindActionCreators(setSecurityTab, dispatch),
 	setVerificationTab: bindActionCreators(setVerificationTab, dispatch),
+	setSettingsTab: bindActionCreators(setSettingsTab, dispatch),
 });
 
 export default connect(

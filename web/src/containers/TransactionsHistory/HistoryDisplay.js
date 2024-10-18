@@ -106,7 +106,7 @@ const HistoryDisplay = (props) => {
 								onClick={() => browserHistory.push('wallet/deposit')}
 							/>
 						)}
-						{!isMobile && activeTab !== 3 && !isDepositFromWallet && (
+						{!isMobile && !isDepositFromWallet && (
 							<ActionNotification
 								stringId="ACCORDIAN.VOLUME"
 								text={STRINGS['ACCORDIAN.VOLUME']}
