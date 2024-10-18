@@ -88,13 +88,16 @@ class UserSecurity extends Component {
 				window.location.search.includes('password')
 			) {
 				this.setState({ activeTab: 1 });
+				this.props.setSecurityTab(1);
 			} else if (
 				window.location.search &&
 				window.location.search.includes('apiKeys')
 			) {
 				this.setState({ activeTab: 2 });
+				this.props.setSecurityTab(2);
 			} else {
 				this.setState({ activeTab: 0 });
+				this.props.setSecurityTab(0);
 			}
 		}
 		this.openCurrentTab();
