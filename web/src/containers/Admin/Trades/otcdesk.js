@@ -146,21 +146,8 @@ const OtcDeskContainer = ({
 			if (editData && editData.type && editData.type === 'dynamic') {
 				setIsManual(false);
 			}
-
-			if (previewData.user_id) {
-				getAllUserData({ id: previewData.user_id }, true);
-			}
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [
-		exchange.coins,
-		editData,
-		isOpen,
-		isEdit,
-		exchange,
-		brokerData,
-		previewData.user_id,
-	]);
+	}, [exchange.coins, editData, isOpen, isEdit, exchange, brokerData]);
 
 	useEffect(() => {
 		let pairBase = balanceData[`${previewData.pair_base}_available`] || 0;
@@ -229,7 +216,6 @@ const OtcDeskContainer = ({
 							}
 						});
 					setSelectedEmailData(emailData);
-					handlePreviewChange(emailId, 'user_id');
 					handleSearch(emailData.label);
 				}
 			}
@@ -377,6 +363,9 @@ const OtcDeskContainer = ({
 	const handlePaused = async (status, model, isEdit = false, data) => {
 		if (!isOpen) {
 			setdeskStateData({});
+		}
+		if (isEdit) {
+			await getAllUserData({ id: data.user_id }, true);
 		}
 		if (status === 'paused') {
 			if (model === 'desk') {
