@@ -26,10 +26,26 @@ class QuickTradeContainer extends PureComponent {
 		}
 	}
 
-	onGoBack = () => {
-		const { router, pair } = this.props;
+	getFlippedPair = (pair) => {
+		let flippedPair = pair.split('-');
+		flippedPair.reverse();
+		return flippedPair.join('-');
+	};
 
-		router.push(`/trade/${pair}`);
+	onGoBack = () => {
+		const { router, pair, quicktrade } = this.props;
+		const flippedPair = this.getFlippedPair(pair);
+		const isQuickTrade = !!quicktrade?.filter(
+			({ symbol, active, type }) =>
+				!!active &&
+				type !== 'pro' &&
+				(symbol === pair || symbol === flippedPair)
+		)?.length;
+		if (pair && isQuickTrade) {
+			return router.push('/wallet');
+		} else if (pair && !isQuickTrade) {
+			return router.push(`/trade/${pair}`);
+		}
 	};
 
 	render() {
@@ -72,6 +88,7 @@ const mapStateToProps = (store) => {
 		constants: store.app.constants,
 		fetchingAuth: store.auth.fetching,
 		isReady: store.app.isReady,
+		quicktrade: store.app.quicktrade,
 	};
 };
 
