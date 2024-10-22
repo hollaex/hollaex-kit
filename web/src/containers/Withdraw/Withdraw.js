@@ -675,7 +675,14 @@ const RenderWithdraw = ({
 	)} ${BASE_CURRENCY?.toUpperCase()}`;
 	const isCondition =
 		(['xrp', 'xlm'].includes(selectedAsset?.selectedCurrency) ||
-			['xlm', 'ton'].includes(network)) &&
+			['xlm', 'ton'].includes(
+				coinLength &&
+					coinLength.length > 1 &&
+					getWithdrawNetworkOptions &&
+					getWithdrawNetworkOptions
+					? renderNetworkField(selectedAsset?.networkData)
+					: network
+			)) &&
 		selectedMethod !== STRINGS['FORM_FIELDS.EMAIL_LABEL'];
 	const isEmailAndAddress =
 		coinLength &&
@@ -1087,7 +1094,7 @@ const RenderWithdraw = ({
 			)}
 			<div
 				className={`${
-					['xrp', 'xlm', 'ton', 'pmn'].includes(getWithdrawCurrency) &&
+					['xrp', 'xlm', 'ton', 'pmn', 'usdc'].includes(getWithdrawCurrency) &&
 					selectedMethod &&
 					selectedMethod !== STRINGS['FORM_FIELDS.EMAIL_LABEL'] &&
 					'destination-field'
@@ -1096,7 +1103,9 @@ const RenderWithdraw = ({
 				<div className="d-flex h-25 ">
 					<div
 						className={`custom-field d-flex flex-column align-items-center ${
-							['xrp', 'xlm', 'ton', 'pmn'].includes(getWithdrawCurrency) &&
+							['xrp', 'xlm', 'ton', 'pmn', 'usdc'].includes(
+								getWithdrawCurrency
+							) &&
 							selectedMethod &&
 							selectedMethod !== STRINGS['FORM_FIELDS.EMAIL_LABEL'] &&
 							'destination-field'

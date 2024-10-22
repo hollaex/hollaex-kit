@@ -107,13 +107,20 @@ const DepositComponent = ({
 			setTopAssets(topWallet);
 		}
 		if (defaultCurrency) {
-			if (['xrp', 'xlm', 'ton'].includes(defaultCurrency)) {
-				setCurrStep({
-					...currStep,
-					stepTwo: true,
-					stepThree: true,
-					stepFour: true,
-				});
+			if (['xrp', 'xlm', 'ton', 'usdc'].includes(defaultCurrency)) {
+				coinLength?.length === 1
+					? setCurrStep({
+							...currStep,
+							stepTwo: true,
+							stepThree: true,
+							stepFour: true,
+					  })
+					: setCurrStep({
+							...currStep,
+							stepTwo: true,
+							stepThree: false,
+							stepFour: false,
+					  });
 			} else {
 				setCurrStep({ ...currStep, stepTwo: true });
 			}
@@ -154,8 +161,8 @@ const DepositComponent = ({
 	useEffect(() => {
 		if (selectedAsset) {
 			if (
-				['xrp', 'xlm', 'ton', 'pmn'].includes(defaultCurrency) ||
-				['xrp', 'xlm', 'ton', 'pmn'].includes(defaultNetwork)
+				['xrp', 'xlm', 'ton', 'pmn', 'usdc'].includes(defaultCurrency) ||
+				['xrp', 'xlm', 'ton', 'pmn', 'usdc'].includes(defaultNetwork)
 			) {
 				setIsVisible(true);
 			}
@@ -169,7 +176,7 @@ const DepositComponent = ({
 		}
 		if (val) {
 			if (currStep.stepTwo || currStep.stepThree || currStep.stepFour) {
-				if (['xrp', 'xlm', 'ton'].includes(val)) {
+				if (['xrp', 'xlm', 'ton', 'usdc'].includes(val)) {
 					setCurrStep((prev) => ({
 						...prev,
 						stepTwo: true,
@@ -282,10 +289,10 @@ const DepositComponent = ({
 
 	const onHandleSelect = (symbol) => {
 		const curr = onHandleSymbol(symbol);
-		if (curr !== symbol && ['xrp', 'xlm', 'ton'].includes(curr)) {
+		if (curr !== symbol && ['xrp', 'xlm', 'ton', 'usdc'].includes(curr)) {
 			if (
-				['xrp', 'xlm', 'ton'].includes(defaultCurrency) ||
-				['xrp', 'xlm', 'ton'].includes(defaultNetwork)
+				['xrp', 'xlm', 'ton', 'usdc'].includes(defaultCurrency) ||
+				['xrp', 'xlm', 'ton', 'usdc'].includes(defaultNetwork)
 			) {
 				setIsVisible(true);
 			} else {
@@ -320,7 +327,14 @@ const DepositComponent = ({
 
 	const renderOptionalField =
 		(['xrp', 'xlm'].includes(selectedAsset) ||
-			['xlm', 'ton'].includes(network)) &&
+			['xlm', 'ton'].includes(
+				coinLength &&
+					coinLength.length > 1 &&
+					getDepositNetworkOptions &&
+					getDepositNetworkOptions
+					? renderNetworkField(networkData)
+					: network
+			)) &&
 		depositAddress;
 	const networkIcon = selectedNetwork
 		? coins[selectedNetwork]?.icon_id
@@ -660,12 +674,12 @@ const DepositComponent = ({
 									<div className="d-flex flex-row deposit-address-field">
 										<Input
 											className={`${
-												['xrp', 'xlm', 'ton'].includes(selectedAsset)
+												['xrp', 'xlm', 'ton', 'usdc'].includes(selectedAsset)
 													? 'destination-input-field tag-field'
 													: 'destination-input-field'
 											}`}
 											suffix={renderScanIcon(
-												['xrp', 'xlm', 'ton'].includes(selectedAsset),
+												['xrp', 'xlm', 'ton', 'usdc'].includes(selectedAsset),
 												'address'
 											)}
 											value={address && address[0]}

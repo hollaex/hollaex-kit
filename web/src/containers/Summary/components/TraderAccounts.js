@@ -180,6 +180,26 @@ const TraderAccounts = ({
 								</Link>
 							</Fragment>
 						)}
+
+						{isLoggedIn() && (
+							<Fragment>
+								<div className="d-flex align-items-center">
+									<div className="deposit-icon mr-2">
+										<Image iconId="TAB_SUMMARY" icon={ICONS['TAB_SUMMARY']} />
+									</div>
+									<EditWrapper stringId="VOLUME.TRADE_VOLUME">
+										{STRINGS['VOLUME.TRADE_VOLUME']}
+									</EditWrapper>
+								</div>
+								<Link to="/wallet/volume">
+									<div className="trade-account-link mb-2 text-uppercase">
+										<EditWrapper stringId="VOLUME.VIEW_VOLUME">
+											{STRINGS['VOLUME.VIEW_VOLUME']}
+										</EditWrapper>
+									</div>
+								</Link>
+							</Fragment>
+						)}
 					</Fragment>
 				)}
 				{isAccountDetails && (
