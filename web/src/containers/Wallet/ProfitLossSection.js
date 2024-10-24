@@ -15,7 +15,7 @@ import { CloseOutlined } from '@ant-design/icons';
 import './_ProfitLoss.scss';
 import { isMobile } from 'react-device-detect';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
-import { assetsSelector } from './utils';
+import { sortedAssetsSelector } from './utils';
 import {
 	calculateOraclePrice,
 	formatCurrencyByIncrementalUnit,
@@ -1261,7 +1261,7 @@ const mapStateToProps = (state) => ({
 	dust: state.app.constants.dust,
 	balance_history_config: state.app.constants.balance_history_config,
 	chartData: state.asset.chartData,
-	assets: assetsSelector(state),
+	assets: sortedAssetsSelector(state),
 	quickTrade: state.app.quickTrade,
 });
 

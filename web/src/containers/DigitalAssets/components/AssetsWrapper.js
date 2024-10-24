@@ -37,7 +37,7 @@ class AssetsWrapper extends Component {
 			searchValue: '',
 			isLoading: true,
 			isSearchActive: false,
-			selectedButton: '',
+			selectedButton: !isMobile ? 'Market Cap' : '',
 			isSelectedSort: false,
 			isInputFocus: false,
 		};
