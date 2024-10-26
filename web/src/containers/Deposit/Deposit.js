@@ -92,6 +92,8 @@ const DepositComponent = ({
 	const currentCurrency = getDepositCurrency ? getDepositCurrency : currency;
 	const min = coins[currentCurrency];
 	const isDeposit = coins[getDepositCurrency]?.allow_deposit;
+	const networkHasTag = ['xrp', 'xlm', 'ton'];
+	const hasTag = ['xrp', 'xlm', 'ton', 'pmn'];
 
 	useEffect(() => {
 		const topWallet = assets
@@ -107,7 +109,7 @@ const DepositComponent = ({
 			setTopAssets(topWallet);
 		}
 		if (defaultCurrency) {
-			if (['xrp', 'xlm', 'ton', 'usdc'].includes(defaultCurrency)) {
+			if (networkHasTag.includes(defaultCurrency)) {
 				coinLength?.length === 1
 					? setCurrStep({
 							...currStep,
@@ -160,10 +162,7 @@ const DepositComponent = ({
 
 	useEffect(() => {
 		if (selectedAsset) {
-			if (
-				['xrp', 'xlm', 'ton', 'pmn', 'usdc'].includes(defaultCurrency) ||
-				['xrp', 'xlm', 'ton', 'pmn', 'usdc'].includes(defaultNetwork)
-			) {
+			if (hasTag.includes(defaultCurrency) || hasTag.includes(defaultNetwork)) {
 				setIsVisible(true);
 			}
 		}
@@ -176,7 +175,7 @@ const DepositComponent = ({
 		}
 		if (val) {
 			if (currStep.stepTwo || currStep.stepThree || currStep.stepFour) {
-				if (['xrp', 'xlm', 'ton', 'usdc'].includes(val)) {
+				if (networkHasTag.includes(val)) {
 					setCurrStep((prev) => ({
 						...prev,
 						stepTwo: true,
@@ -233,6 +232,12 @@ const DepositComponent = ({
 
 	const onHandleChangeNetwork = (val) => {
 		if (val) {
+			if (
+				coinLength?.length > 1 &&
+				networkHasTag.includes(renderNetworkField(val))
+			) {
+				setIsVisible(true);
+			}
 			setCurrStep((prev) => ({ ...prev, stepThree: true }));
 			setDepositNetworkOptions(val);
 			updateAddress(renderNetworkField(val), true);
@@ -289,10 +294,10 @@ const DepositComponent = ({
 
 	const onHandleSelect = (symbol) => {
 		const curr = onHandleSymbol(symbol);
-		if (curr !== symbol && ['xrp', 'xlm', 'ton', 'usdc'].includes(curr)) {
+		if (curr !== symbol && networkHasTag.includes(curr)) {
 			if (
-				['xrp', 'xlm', 'ton', 'usdc'].includes(defaultCurrency) ||
-				['xrp', 'xlm', 'ton', 'usdc'].includes(defaultNetwork)
+				networkHasTag.includes(defaultCurrency) ||
+				networkHasTag.includes(defaultNetwork)
 			) {
 				setIsVisible(true);
 			} else {
@@ -674,12 +679,12 @@ const DepositComponent = ({
 									<div className="d-flex flex-row deposit-address-field">
 										<Input
 											className={`${
-												['xrp', 'xlm', 'ton', 'usdc'].includes(selectedAsset)
+												networkHasTag.includes(selectedAsset)
 													? 'destination-input-field tag-field'
 													: 'destination-input-field'
 											}`}
 											suffix={renderScanIcon(
-												['xrp', 'xlm', 'ton', 'usdc'].includes(selectedAsset),
+												networkHasTag.includes(selectedAsset),
 												'address'
 											)}
 											value={address && address[0]}

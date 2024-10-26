@@ -89,6 +89,7 @@ const RenderWithdraw = ({
 		dropdownOpen: false,
 		isOptionalTag: false,
 	});
+	const hasTag = ['xrp', 'xlm', 'ton', 'pmn'];
 	// const [isCheck, setIsCheck] = useState(false);
 	// const [isVisible, setIsVisible] = useState(false);
 	// const [isWarning, setIsWarning] = useState(false);
@@ -1094,7 +1095,7 @@ const RenderWithdraw = ({
 			)}
 			<div
 				className={`${
-					['xrp', 'xlm', 'ton', 'pmn', 'usdc'].includes(getWithdrawCurrency) &&
+					hasTag.includes(getWithdrawCurrency) &&
 					selectedMethod &&
 					selectedMethod !== STRINGS['FORM_FIELDS.EMAIL_LABEL'] &&
 					'destination-field'
@@ -1103,9 +1104,7 @@ const RenderWithdraw = ({
 				<div className="d-flex h-25 ">
 					<div
 						className={`custom-field d-flex flex-column align-items-center ${
-							['xrp', 'xlm', 'ton', 'pmn', 'usdc'].includes(
-								getWithdrawCurrency
-							) &&
+							hasTag.includes(getWithdrawCurrency) &&
 							selectedMethod &&
 							selectedMethod !== STRINGS['FORM_FIELDS.EMAIL_LABEL'] &&
 							'destination-field'

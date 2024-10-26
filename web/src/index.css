@@ -604,12 +604,45 @@ table th {
 
 .p2p-chat-notification-wrapper {
   background-color: var(--base_secondary-navigation-bar);
-  border-top: 2px solid var(--specials_buttons-links-and-highlights); }
+  border-top: 2px solid var(--specials_buttons-links-and-highlights);
+  filter: drop-shadow(1.5px 1.5px 1.5px var(--labels_secondary-inactive-label-text-graphics)); }
   .p2p-chat-notification-wrapper .ant-notification-notice-description,
   .p2p-chat-notification-wrapper .ant-notification-notice-message,
   .p2p-chat-notification-wrapper .ant-notification-notice-content,
   .p2p-chat-notification-wrapper .ant-notification-notice-close {
     color: var(--labels_important-active-labels-text-graphics) !important; }
+
+.p2p-chat-notification {
+  padding: 2px 10px !important; }
+  .p2p-chat-notification .ant-notification-notice-description,
+  .p2p-chat-notification .ant-notification-notice-message,
+  .p2p-chat-notification .ant-notification-notice-content,
+  .p2p-chat-notification .ant-notification-notice-close {
+    font-size: 12px !important;
+    padding: 2px 10px !important; }
+  .p2p-chat-notification .ant-notification-notice-icon {
+    margin-left: unset; }
+    .p2p-chat-notification .ant-notification-notice-icon svg {
+      width: 20px; }
+  .p2p-chat-notification .ant-notification-notice-message {
+    padding: unset !important;
+    margin-left: 35px;
+    width: 85%;
+    line-height: 20px;
+    margin-bottom: unset !important; }
+  .p2p-chat-notification .ant-notification-notice-description {
+    margin-left: 25px; }
+    .p2p-chat-notification .ant-notification-notice-description .blue-link {
+      font-size: 10px !important; }
+  .p2p-chat-notification .ant-notification-notice {
+    height: 60px; }
+  .p2p-chat-notification .ant-notification-notice-close {
+    top: 10px;
+    right: 12px; }
+  .p2p-chat-notification .ant-notification-notice-content {
+    padding: 2px 15px !important; }
+    .p2p-chat-notification .ant-notification-notice-content .ant-notification-notice-close {
+      margin-bottom: unset; }
 
 .layout-mobile .footer-bar-more-options-container {
   display: flex;
