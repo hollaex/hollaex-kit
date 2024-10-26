@@ -61,6 +61,7 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 			width: 100%;
 			height: auto;
 			position: relative;
+			background-color: var(--base_background);
 			.presentation_container {
 				width: $app-content-display-width;
 				height: inherit;
@@ -344,12 +345,57 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 .p2p-chat-notification-wrapper {
 	background-color: $app-light-background;
 	border-top: 2px solid $colors-notifications-blue;
+	filter: drop-shadow(1.5px 1.5px 1.5px $colors-black);
 
 	.ant-notification-notice-description,
 	.ant-notification-notice-message,
 	.ant-notification-notice-content,
 	.ant-notification-notice-close {
 		color: $colors-main-black !important;
+	}
+}
+
+.p2p-chat-notification {
+	padding: 2px 10px !important;
+	.ant-notification-notice-description,
+	.ant-notification-notice-message,
+	.ant-notification-notice-content,
+	.ant-notification-notice-close {
+		font-size: 12px !important;
+		padding: 2px 10px !important;
+	}
+	.ant-notification-notice-icon {
+		margin-left: unset;
+		svg {
+			width: 20px;
+		}
+	}
+	.ant-notification-notice-message {
+		padding: unset !important;
+		margin-left: 35px;
+		width: 85%;
+		line-height: 20px;
+		margin-bottom: unset !important;
+	}
+	.ant-notification-notice-description {
+		margin-left: 25px;
+		.blue-link {
+			font-size: 10px !important;
+		}
+	}
+
+	.ant-notification-notice {
+		height: 60px;
+	}
+	.ant-notification-notice-close {
+		top: 10px;
+		right: 12px;
+	}
+	.ant-notification-notice-content {
+		padding: 2px 15px !important;
+		.ant-notification-notice-close {
+			margin-bottom: unset;
+		}
 	}
 }
 

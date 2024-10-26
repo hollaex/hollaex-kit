@@ -107,6 +107,7 @@ const OtcDeskContainer = ({
 		if (isOpen) {
 			getAllUserData();
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isOpen]);
 
 	useEffect(() => {
@@ -195,7 +196,7 @@ const OtcDeskContainer = ({
 		handleClose();
 	};
 
-	const getAllUserData = async (params = {}) => {
+	const getAllUserData = async (params = {}, emailChange = false) => {
 		try {
 			const res = await requestUsers(params);
 			if (res && res.data) {
@@ -205,6 +206,18 @@ const OtcDeskContainer = ({
 				}));
 				setEmailOptions(userData);
 				setUserData(res.data);
+				if (emailChange && userData?.[0]?.value) {
+					let emailId = parseInt(userData?.[0]?.value);
+					let emailData = {};
+					userData &&
+						userData.forEach((item) => {
+							if (item.value === emailId) {
+								emailData = item;
+							}
+						});
+					setSelectedEmailData(emailData);
+					handleSearch(emailData.label);
+				}
 			}
 		} catch (error) {
 			console.log('error', error);
@@ -350,6 +363,9 @@ const OtcDeskContainer = ({
 	const handlePaused = async (status, model, isEdit = false, data) => {
 		if (!isOpen) {
 			setdeskStateData({});
+		}
+		if (isEdit) {
+			await getAllUserData({ id: data.user_id }, true);
 		}
 		if (status === 'paused') {
 			if (model === 'desk') {
