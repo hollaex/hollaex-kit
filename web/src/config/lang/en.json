@@ -2290,7 +2290,11 @@
 		"VOL_ASSET": "D VOL. ASSET",
 		"NO_DATA_DESC_1": "Looks like you haven't made any trades yet. Start trading now to see your activity here!",
 		"NO_DATA_DESC_2": "Start trading ",
-		"NO_DATA_DESC_3": "now to see your activity here!"
+		"NO_DATA_DESC_3": "now to see your activity here!",
+		"TRADE_VOLUME": "Trade Volume",
+		"VIEW_VOLUME": "VIEW VOLUME",
+		"TRADE_DESCRIPTION": "View your top traded asset",
+		"MARKET_TABLE_DESC": "Visit your trading volume page {0}"
 	},
 	"MORE_OPTIONS_LABEL": {
 		"MORE_OPTION_SEARCH_TXT": "Search feature or pages",

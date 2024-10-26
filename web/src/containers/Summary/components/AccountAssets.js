@@ -55,7 +55,7 @@ const AccountAssets = ({ chartData = [], totalAssets, balance, coins }) => {
 	return (
 		<div>
 			<div className="summary-content-txt assets-description">
-				<div className={isMobile ? '' : 'd-flex mb-3'}>
+				<div className={isMobile ? '' : 'd-flex mb-2'}>
 					<EditWrapper stringId="SUMMARY.ACCOUNT_ASSETS_TXT_1">
 						{STRINGS['SUMMARY.ACCOUNT_ASSETS_TXT_1']}
 					</EditWrapper>
@@ -63,6 +63,15 @@ const AccountAssets = ({ chartData = [], totalAssets, balance, coins }) => {
 						<div className="trade-account-link ml-1">
 							<EditWrapper stringId="SUMMARY.MAKE_A_DEPOSIT">
 								{STRINGS['SUMMARY.MAKE_A_DEPOSIT']}
+							</EditWrapper>
+						</div>
+					</Link>
+				</div>
+				<div className={isMobile ? '' : 'd-flex mb-3'}>
+					<Link to="/wallet/volume">
+						<div className="trade-account-link ml-1">
+							<EditWrapper stringId="VOLUME.TRADE_DESCRIPTION">
+								{STRINGS['VOLUME.TRADE_DESCRIPTION']}
 							</EditWrapper>
 						</div>
 					</Link>
