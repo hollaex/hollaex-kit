@@ -840,14 +840,14 @@ paths:
           in: query
           required: true
           type: string
-          minLength: 2
+          minLength: 1
           maxLength: 15
         - name: network
           in: query
           required: false
           type: string
           description: Blockchain network
-          minLength: 2
+          minLength: 1
           maxLength: 10
       responses:
         201:
