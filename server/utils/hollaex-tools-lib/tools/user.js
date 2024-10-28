@@ -2272,7 +2272,7 @@ const revokeAllUserSessions = async (userId) => {
 	return true;
 };
 
-const deleteKitUser = async (userId) => {
+const deleteKitUser = async (userId, sendEmail = true) => {
 	const user = await dbQuery.findOne('user', {
 		where: {
 			id: userId
@@ -2295,12 +2295,14 @@ const deleteKitUser = async (userId) => {
 		{ fields: ['email', 'activated'], returning: true }
 	);
 
-	sendEmail(
-		MAILTYPE.USER_DELETED,
-		userEmail,
-		{},
-		user.settings
-	);
+	if (sendEmail) {
+		sendEmail(
+			MAILTYPE.USER_DELETED,
+			userEmail,
+			{},
+			user.settings
+		);
+	}
 	
 	return updatedUser;
 };

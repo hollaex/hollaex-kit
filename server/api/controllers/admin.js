@@ -3140,7 +3140,7 @@ const deleteUserByAdmin = (req, res) => {
 		'user_id',
 		user_id,
 	);
-	toolsLib.user.deleteKitUser(user_id)
+	toolsLib.user.deleteKitUser(user_id, false)
 		.then(() => {
 			return res.json({ message: 'Success' });
 		})
