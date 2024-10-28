@@ -117,7 +117,7 @@ const fetchP2PDeals = async (opts = {
 				}
 			});
 	} else {
-		const p2pDeals = await client.getAsync(`p2p-deals`);
+		const p2pDeals = await client.getAsync(`p2p-deals${opts.user_id}`);
 
 		if (p2pDeals) return JSON.parse(p2pDeals);
 		else {
@@ -138,7 +138,8 @@ const fetchP2PDeals = async (opts = {
 				}
 			}
 
-			await client.setexAsync(`p2p-deals`, 30, JSON.stringify(deals));
+			await client.setexAsync(`p2p-deals${opts.user_id}`, 30, JSON.stringify(deals));
+			
 			return deals;
 		}
 	}
