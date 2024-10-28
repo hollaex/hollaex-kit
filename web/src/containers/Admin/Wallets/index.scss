@@ -12,7 +12,13 @@
 .list_users {
 	padding-top: 30px;
 }
-
+.green-btn {
+	background-color: #288500 !important;
+	color: #ffffff !important;
+}
+.ant-checkbox-wrapper {
+	color: #ffffff !important;
+}
 .admin-tiers-wrapper .ant-tabs-nav .ant-tabs-ink-bar,
 .admin-user-content .ant-tabs-nav .ant-tabs-ink-bar,
 .user-container .ant-tabs-nav .ant-tabs-ink-bar {
@@ -321,7 +327,7 @@
 	height: 50px;
 }
 .header-section {
-	border-bottom: 1px solid rgb(211, 211, 211, 0.3);
+	// border-bottom: 1px solid rgb(211, 211, 211, 0.3);
 	background-color: var(--admin_panel_header_section);
 }
 .modal-confirm-title {

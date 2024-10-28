@@ -68,6 +68,7 @@ class Container extends Component {
 		};
 		this.orderCache = {};
 		this.wsInterval = null;
+		this.openNotifications = [];
 	}
 
 	limitTimeOut = null;
@@ -447,7 +448,9 @@ class Container extends Component {
 					if (
 						!this.props?.router?.location?.pathname?.includes('/p2p/order/')
 					) {
-						notification.open({
+						const key = `notification_${Date.now()}`;
+						const notificationDetails = {
+							key,
 							message:
 								data.action === 'getStatus' && data?.data?.status === 'appeal'
 									? STRINGS['P2P.APPEAL_STATUS_MESSAGE']
@@ -483,6 +486,7 @@ class Container extends Component {
 							className: 'p2p-chat-notification-wrapper',
 							placement: 'bottomRight',
 							type: 'info',
+							duration: 0,
 							icon:
 								data?.action === 'getStatus' &&
 								(data?.data?.status === 'appeal' ||
@@ -493,7 +497,52 @@ class Container extends Component {
 								) : (
 									<MailOutlined />
 								),
-						});
+							onClose: () => {
+								this.openNotifications = this.openNotifications?.filter(
+									(notification) => notification?.key !== key
+								);
+
+								if (
+									this.openNotifications?.length > 0 &&
+									this.openNotifications[this.openNotifications?.length - 1]
+										?.key !== key
+								) {
+									const newLastNotification = this.openNotifications[
+										this.openNotifications?.length - 1
+									];
+									notification.close(newLastNotification?.key);
+									notification.open({
+										...newLastNotification,
+										className: 'p2p-chat-notification-wrapper',
+									});
+								}
+							},
+						};
+
+						this.openNotifications = [
+							...this.openNotifications,
+							notificationDetails,
+						];
+
+						if (this.openNotifications?.length > 1) {
+							const previousNotification = this.openNotifications[
+								this.openNotifications?.length - 2
+							];
+
+							notification.close(previousNotification?.key);
+							notification.open({
+								...previousNotification,
+								className:
+									'p2p-chat-notification-wrapper p2p-chat-notification',
+							});
+						}
+
+						notification.open(notificationDetails);
+
+						if (this.openNotifications?.length > 3) {
+							const oldestNotification = this.openNotifications?.shift();
+							notification.close(oldestNotification?.key);
+						}
 					}
 					break;
 				default:

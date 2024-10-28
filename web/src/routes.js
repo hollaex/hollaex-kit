@@ -3,76 +3,7 @@ import { Router, Route, browserHistory } from 'react-router';
 import ReactGA from 'react-ga';
 import { isMobile } from 'react-device-detect';
 
-import {
-	App as Container,
-	Account,
-	MainWallet,
-	P2P,
-	Volume,
-	CurrencyWallet,
-	Login,
-	Signup,
-	VerificationEmailRequest,
-	VerificationEmailCode,
-	Home,
-	Deposit,
-	Withdraw,
-	TransactionsHistory,
-	Trade,
-	ChartEmbed,
-	Legal,
-	AuthContainer,
-	RequestResetPassword,
-	ResetPassword,
-	QuickTrade,
-	Chat,
-	WithdrawConfirmation,
-	AddTradeTabs,
-	Stake,
-	StakeDetails,
-	Apps,
-	AppDetails,
-	// ADMIN
-	User,
-	AdminStake,
-	Audits,
-	Session,
-	AppWrapper as AdminContainer,
-	// Main,
-	// DepositsPage,
-	Limits,
-	// Wallets,
-	UserFees,
-	PATHS,
-	AdminOrders,
-	MobileHome,
-	Broker,
-	Plugins,
-	PluginStore,
-	// PluginServices,
-	Settings,
-	// Transfer,
-	AdminFees,
-	Init,
-	AdminLogin,
-	AdminDashboard,
-	AdminFinancials,
-	MoveToDash,
-	General,
-	Tiers,
-	Roles,
-	Resources,
-	Pairs,
-	Fiatmarkets,
-	AdminApps,
-	DigitalAssets,
-	CoinPage,
-	WhiteLabel,
-	FeesAndLimits,
-	ReferralList,
-	AddressBook,
-} from './containers';
-import { Billing } from 'containers/Admin';
+import { PATHS } from './containers';
 import { verifyToken } from './actions/authAction';
 import { setLanguage } from './actions/appActions';
 import { SmartTarget, NotLoggedIn } from 'components';
@@ -94,8 +25,282 @@ import { STAKING_INDEX_COIN, isStakingAvailable } from 'config/contracts';
 import chat from './containers/Admin/Chat';
 import store from './store';
 import PluginConfig from 'containers/Admin/PluginConfig';
-import ConfirmChangePassword from 'containers/ConfirmChangePassword';
-import MobileBarMoreOptions from 'containers/App/MobileBarMoreOptions';
+import Loadable from 'react-loadable';
+
+const LoadingComponent = ({ isLoading, error }) => {
+	return null;
+};
+
+const Container = Loadable({
+	loader: () => import('./containers/App'),
+	loading: LoadingComponent,
+});
+
+const Account = Loadable({
+	loader: () => import('./containers/Account'),
+	loading: LoadingComponent,
+});
+
+const P2P = Loadable({
+	loader: () => import('./containers/P2P'),
+	loading: LoadingComponent,
+});
+
+const MainWallet = Loadable({
+	loader: () => import('./containers/Wallet/MainWallet'),
+	loading: LoadingComponent,
+});
+
+const Volume = Loadable({
+	loader: () => import('./containers/Volume'),
+	loading: LoadingComponent,
+});
+
+const CurrencyWallet = Loadable({
+	loader: () => import('./containers/Wallet/CurrencyWallet'),
+	loading: LoadingComponent,
+});
+
+const Login = Loadable({
+	loader: () => import('./containers/Login'),
+	loading: LoadingComponent,
+});
+
+const Signup = Loadable({
+	loader: () => import('./containers/Signup'),
+	loading: LoadingComponent,
+});
+const VerificationEmailRequest = Loadable({
+	loader: () => import('./containers/VerificationEmailRequest'),
+	loading: LoadingComponent,
+});
+const VerificationEmailCode = Loadable({
+	loader: () => import('./containers/VerificationEmailCode'),
+	loading: LoadingComponent,
+});
+const Home = Loadable({
+	loader: () => import('./containers/Home'),
+	loading: LoadingComponent,
+});
+const Deposit = Loadable({
+	loader: () => import('./containers/Deposit'),
+	loading: LoadingComponent,
+});
+const Withdraw = Loadable({
+	loader: () => import('./containers/Withdraw'),
+	loading: LoadingComponent,
+});
+const TransactionsHistory = Loadable({
+	loader: () => import('./containers/TransactionsHistory'),
+	loading: LoadingComponent,
+});
+const Trade = Loadable({
+	loader: () => import('./containers/Trade'),
+	loading: LoadingComponent,
+});
+const ChartEmbed = Loadable({
+	loader: () => import('./containers/ChartEmbed'),
+	loading: LoadingComponent,
+});
+const Legal = Loadable({
+	loader: () => import('./containers/Legal'),
+	loading: LoadingComponent,
+});
+const AuthContainer = Loadable({
+	loader: () => import('./containers/AuthContainer'),
+	loading: LoadingComponent,
+});
+const RequestResetPassword = Loadable({
+	loader: () => import('./containers/RequestResetPassword'),
+	loading: LoadingComponent,
+});
+const ResetPassword = Loadable({
+	loader: () => import('./containers/ResetPassword'),
+	loading: LoadingComponent,
+});
+const QuickTrade = Loadable({
+	loader: () => import('./containers/QuickTrade'),
+	loading: LoadingComponent,
+});
+const Chat = Loadable({
+	loader: () => import('./containers/Chat'),
+	loading: LoadingComponent,
+});
+const WithdrawConfirmation = Loadable({
+	loader: () => import('./containers/WithdrawConfirmation'),
+	loading: LoadingComponent,
+});
+const AddTradeTabs = Loadable({
+	loader: () => import('./containers/TradeTabs'),
+	loading: LoadingComponent,
+});
+const Stake = Loadable({
+	loader: () => import('./containers/Stake'),
+	loading: LoadingComponent,
+});
+const StakeDetails = Loadable({
+	loader: () => import('./containers/StakeDetails'),
+	loading: LoadingComponent,
+});
+const Apps = Loadable({
+	loader: () => import('./containers/Apps'),
+	loading: LoadingComponent,
+});
+const AppDetails = Loadable({
+	loader: () => import('./containers/AppDetails'),
+	loading: LoadingComponent,
+});
+
+// ADMIN
+const User = Loadable({
+	loader: () => import('./containers/Admin/User'),
+	loading: LoadingComponent,
+});
+
+const AdminStake = Loadable({
+	loader: () => import('./containers/Admin/Stakes'),
+	loading: LoadingComponent,
+});
+
+const Audits = Loadable({
+	loader: () => import('./containers/Admin/Audits'),
+	loading: LoadingComponent,
+});
+const Session = Loadable({
+	loader: () => import('./containers/Admin/Sessions'),
+	loading: LoadingComponent,
+});
+const AdminContainer = Loadable({
+	loader: () => import('./containers/Admin/AppWrapper'),
+	loading: LoadingComponent,
+});
+const Limits = Loadable({
+	loader: () => import('./containers/Admin/Limits'),
+	loading: LoadingComponent,
+});
+const UserFees = Loadable({
+	loader: () => import('./containers/Admin/UserFees'),
+	loading: LoadingComponent,
+});
+const AdminOrders = Loadable({
+	loader: () => import('./containers/Admin/ActiveOrders'),
+	loading: LoadingComponent,
+});
+const MobileHome = Loadable({
+	loader: () => import('./containers/MobileHome'),
+	loading: LoadingComponent,
+});
+const Broker = Loadable({
+	loader: () => import('./containers/Admin/Broker'),
+	loading: LoadingComponent,
+});
+const Plugins = Loadable({
+	loader: () => import('./containers/Admin/Plugins'),
+	loading: LoadingComponent,
+});
+const PluginStore = Loadable({
+	loader: () => import('./containers/Admin/Plugins/PluginStore'),
+	loading: LoadingComponent,
+});
+const Settings = Loadable({
+	loader: () => import('./containers/Admin/Settings'),
+	loading: LoadingComponent,
+});
+const AdminFees = Loadable({
+	loader: () => import('./containers/Admin/AdminFees'),
+	loading: LoadingComponent,
+});
+const Init = Loadable({
+	loader: () => import('./containers/Init'),
+	loading: LoadingComponent,
+});
+const AdminLogin = Loadable({
+	loader: () => import('./containers/Init/Login'),
+	loading: LoadingComponent,
+});
+const AdminDashboard = Loadable({
+	loader: () => import('./containers/Admin/Dashboard'),
+	loading: LoadingComponent,
+});
+const AdminFinancials = Loadable({
+	loader: () => import('./containers/Admin/AdminFinancials'),
+	loading: LoadingComponent,
+});
+const MoveToDash = Loadable({
+	loader: () => import('./containers/Admin/MoveToDash'),
+	loading: LoadingComponent,
+});
+
+const General = Loadable({
+	loader: () => import('./containers/Admin/General'),
+	loading: LoadingComponent,
+});
+
+const Tiers = Loadable({
+	loader: () => import('./containers/Admin/Tiers'),
+	loading: LoadingComponent,
+});
+const Roles = Loadable({
+	loader: () => import('./containers/Admin/Roles'),
+	loading: LoadingComponent,
+});
+const Resources = Loadable({
+	loader: () => import('./containers/Admin/Resources'),
+	loading: LoadingComponent,
+});
+const Pairs = Loadable({
+	loader: () => import('./containers/Admin/Trades'),
+	loading: LoadingComponent,
+});
+const Fiatmarkets = Loadable({
+	loader: () => import('./containers/Admin/Fiat'),
+	loading: LoadingComponent,
+});
+const AdminApps = Loadable({
+	loader: () => import('./containers/Admin/Apps'),
+	loading: LoadingComponent,
+});
+
+const Billing = Loadable({
+	loader: () => import('./containers/Admin/Billing'),
+	loading: LoadingComponent,
+});
+
+const DigitalAssets = Loadable({
+	loader: () => import('./containers/DigitalAssets'),
+	loading: LoadingComponent,
+});
+const CoinPage = Loadable({
+	loader: () => import('./containers/CoinPage'),
+	loading: LoadingComponent,
+});
+const WhiteLabel = Loadable({
+	loader: () => import('./containers/WhiteLabel'),
+	loading: LoadingComponent,
+});
+const FeesAndLimits = Loadable({
+	loader: () => import('./containers/FeesAndLimits'),
+	loading: LoadingComponent,
+});
+const ReferralList = Loadable({
+	loader: () => import('./containers/Summary/components/ReferralList'),
+	loading: LoadingComponent,
+});
+
+const AddressBook = Loadable({
+	loader: () => import('./containers/Wallet/AddressBook'),
+	loading: LoadingComponent,
+});
+
+const MobileBarMoreOptions = Loadable({
+	loader: () => import('./containers/App/MobileBarMoreOptions'),
+	loading: LoadingComponent,
+});
+
+const ConfirmChangePassword = Loadable({
+	loader: () => import('./containers/ConfirmChangePassword'),
+	loading: LoadingComponent,
+});
 
 ReactGA.initialize('UA-154626247-1'); // Google analytics. Set your own Google Analytics values
 browserHistory.listen((location) => {
