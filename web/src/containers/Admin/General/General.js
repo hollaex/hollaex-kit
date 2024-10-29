@@ -958,11 +958,9 @@ class GeneralContent extends Component {
 												});
 											}}
 										>
-											{Object.keys(coins)
-												.filter((coin) => coins[coin].type !== 'fiat')
-												.map((key) => (
-													<Option value={key}>{coins[key].fullname}</Option>
-												))}
+											{Object.keys(coins).map((key) => (
+												<Option value={key}>{coins[key].fullname}</Option>
+											))}
 										</Select>
 									</div>
 
