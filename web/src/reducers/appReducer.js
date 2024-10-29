@@ -212,9 +212,9 @@ const INITIAL_STATE = {
 	coinsData: [],
 	selectedStake: null,
 	selectedTab: null,
-	selectedSecurityTab: null,
-	selectedVerificationTab: null,
-	selectedSettingsTab: null,
+	selectedSecurityTab: 0,
+	selectedVerificationTab: 0,
+	selectedSettingsTab: 0,
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
