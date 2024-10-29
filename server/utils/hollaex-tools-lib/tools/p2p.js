@@ -351,6 +351,7 @@ const updateP2PDeal = async (data) => {
 				throw new Error('Merchant id is not the same');
 			}
 		});
+		await client.delAsync(`p2p-deals${merchant_id}`);
 		await getModel('p2pDeal').update({ status }, { where : { id : edited_ids }}); 
 		return { message : 'success' };
 	}
@@ -408,6 +409,8 @@ const updateP2PDeal = async (data) => {
 		data.status = true;
 	};
 
+	await client.delAsync(`p2p-deals${merchant_id}`);
+
 	return p2pDeal.update(data, {
 		fields: [
 			'merchant_id',
@@ -442,7 +445,7 @@ const deleteP2PDeal = async (removed_ids, user_id) => {
 		throw new Error(P2P_DEAL_NOT_FOUND);
 	};
 
-
+	await client.delAsync(`p2p-deals${user_id}`);
 	const promises = deals.map(async (deal) => {
 		return await deal.destroy();
 	  });
