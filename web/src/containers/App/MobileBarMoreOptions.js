@@ -63,18 +63,21 @@ const MobileBarMoreOptions = ({
 	];
 	const searchByName = Object.entries(
 		coins
-	).map(([_, { symbol, fullname }]) => ({ symbol, fullname }));
+	)?.map(([_, { symbol, fullname, type }]) =>
+		type !== 'fiat' ? { symbol, fullname } : {}
+	);
 
 	const getSymbol = searchByName
 		?.filter((data) => {
 			return (
-				search &&
-				data?.fullname?.toLowerCase()?.startsWith(search?.toLowerCase())
+				search?.length > 1 &&
+				(data?.fullname?.toLowerCase()?.startsWith(search?.toLowerCase()) ||
+					data?.symbol?.toLowerCase()?.startsWith(search?.toLowerCase()))
 			);
 		})
-		.sort((a, b) => {
-			const indexA = pinnedAsset.indexOf(a.symbol.toLowerCase());
-			const indexB = pinnedAsset.indexOf(b.symbol.toLowerCase());
+		?.sort((a, b) => {
+			const indexA = pinnedAsset?.indexOf(a?.symbol?.toLowerCase());
+			const indexB = pinnedAsset?.indexOf(b?.symbol?.toLowerCase());
 
 			if (indexA === -1 && indexB === -1) return 0;
 			if (indexA === -1) return 1;
@@ -82,12 +85,17 @@ const MobileBarMoreOptions = ({
 			return indexA - indexB;
 		});
 
-	const getAsset = getSymbol?.length >= 1 ? getSymbol[0]?.symbol : search;
+	const getAsset =
+		getSymbol?.length >= 1
+			? getSymbol[0]?.symbol
+			: search?.length > 1 && search;
 	const isValidCoin = coins[getAsset]?.symbol;
 
 	const assetDetails = Object.entries(
 		coins
-	)?.flatMap(([_, { symbol, fullname }]) => [symbol, fullname]);
+	)?.flatMap(([_, { symbol, fullname, type }]) =>
+		type !== 'fiat' ? [symbol, fullname] : []
+	);
 
 	const getPairs = getMarkets?.filter((market) => {
 		return market?.key?.split('-')?.includes(getAsset);
@@ -224,7 +232,10 @@ const MobileBarMoreOptions = ({
 				STRINGS['MORE_OPTIONS_LABEL.HOT_FUNCTION.XHT'],
 				STRINGS['MORE_OPTIONS_LABEL.HOT_FUNCTION.BTC'],
 				STRINGS['MORE_OPTIONS_LABEL.HOT_FUNCTION.USTD'],
-				...assetDetails,
+				...getQuickTradePair?.flatMap((item) => {
+					const [firstPair] = item?.symbol?.split('-');
+					return [firstPair, item?.fullname];
+				}),
 			],
 		},
 		{
@@ -695,19 +706,19 @@ const MobileBarMoreOptions = ({
 			'MORE_OPTIONS_LABEL.ICONS.CEFI_STAKE': () => setSelectedStake('cefi'),
 			'MORE_OPTIONS_LABEL.ICONS.DEFI_STAKE': () => setSelectedStake('defi'),
 			'ACCOUNTS.TAB_SIGNOUT': () => removeToken(),
-			Fees: () => setLimitTab(0),
-			Limits: () => setLimitTab(2),
-			Password: () => setSecurityTab(1),
-			API: () => setSecurityTab(2),
-			Logins: () => setSecurityTab(4),
-			Sessions: () => setSecurityTab(3),
-			Banks: () => setVerificationTab(3),
-			Help: () => setIsDialogOpen(true),
-			Audio: () => setSettingsTab(3),
-			Language: () => setSettingsTab(2),
-			Interface: () => setSettingsTab(1),
-			Notification: () => setSettingsTab(0),
-			Chat: () => setSettingsTab(4),
+			FEES: () => setLimitTab(0),
+			'MORE_OPTIONS_LABEL.ICONS.LIMITS': () => setLimitTab(2),
+			'ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE': () => setSecurityTab(1),
+			'MORE_OPTIONS_LABEL.ICONS.API': () => setSecurityTab(2),
+			'MORE_OPTIONS_LABEL.ICONS.LOGINS': () => setSecurityTab(4),
+			'SESSIONS.TAB': () => setSecurityTab(3),
+			'USER_VERIFICATION.TITLE_BANK': () => setVerificationTab(3),
+			'LOGIN.HELP': () => setIsDialogOpen(true),
+			'MORE_OPTIONS_LABEL.ICONS.AUDIO': () => setSettingsTab(3),
+			'USER_SETTINGS.TITLE_LANGUAGE': () => setSettingsTab(2),
+			'USER_SETTINGS.TITLE_INTERFACE': () => setSettingsTab(1),
+			'USER_SETTINGS.TITLE_NOTIFICATION': () => setSettingsTab(0),
+			'USER_SETTINGS.TITLE_CHAT': () => setSettingsTab(4),
 		};
 
 		const action = actions[text];

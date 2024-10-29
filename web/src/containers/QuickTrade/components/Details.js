@@ -271,7 +271,7 @@ const Details = ({
 							{showTradeFees ? (
 								<div>
 									{getLink(
-										`fees-and-limits`,
+										`/fees-and-limits`,
 										STRINGS['FEES_AND_LIMITS.COIN_PAGE_LINK'],
 										true
 									)}
