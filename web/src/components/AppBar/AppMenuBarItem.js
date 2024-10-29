@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router';
 import { Tooltip } from 'antd';
-import { DownOutlined, UpOutlined } from '@ant-design/icons';
+import { CaretDownFilled, CaretUpFilled } from '@ant-design/icons';
 
 import classnames from 'classnames';
 import STRINGS from 'config/localizedStrings';
@@ -229,12 +229,12 @@ const AppMenuBarItem = ({
 					</EditWrapper>
 					{STRINGS[stringId] === 'Others' && getRemoteRoutes?.length > 0 ? (
 						<span className="ml-1 app-bar-dropdown-icon">
-							{!isIconActive ? <DownOutlined /> : <UpOutlined />}
+							{!isIconActive ? <CaretDownFilled /> : <CaretUpFilled />}
 						</span>
 					) : (
 						STRINGS[stringId] !== 'Others' && (
 							<span className="ml-1 app-bar-dropdown-icon">
-								{!isIconActive ? <DownOutlined /> : <UpOutlined />}
+								{!isIconActive ? <CaretDownFilled /> : <CaretUpFilled />}
 							</span>
 						)
 					)}
