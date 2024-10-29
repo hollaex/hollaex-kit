@@ -1331,6 +1331,42 @@ paths:
         - kyc
       x-token-permissions:
         - can_withdraw
+    delete:
+      operationId: deleteUserByAdmin
+      description: delete user by admin
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - user_id
+            properties:
+              user_id:
+                type: number
+                format: int32
+              
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/UserResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
+      x-token-permissions:
+        - can_withdraw
   /admin/user/role:
     x-swagger-router-controller: admin
     put:

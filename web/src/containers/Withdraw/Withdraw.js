@@ -671,9 +671,13 @@ const RenderWithdraw = ({
 			: `+ ${fee} ${
 					(getWithdrawCurrency || currency) && feeCoin?.toUpperCase()
 			  }`;
-	const estimatedFormat = `≈ ${Math.round(
-		estimatedWithdrawValue
-	)} ${BASE_CURRENCY?.toUpperCase()}`;
+
+	const incrementUnit = coins[BASE_CURRENCY].increment_unit;
+	const decimalPoint = new BigNumber(incrementUnit).dp();
+	const estimatedFormat = `≈ ${new BigNumber(estimatedWithdrawValue)
+		.decimalPlaces(decimalPoint)
+		.toNumber()} ${BASE_CURRENCY?.toUpperCase()}`;
+
 	const isCondition =
 		(['xrp', 'xlm'].includes(selectedAsset?.selectedCurrency) ||
 			['xlm', 'ton'].includes(

@@ -117,7 +117,7 @@ const fetchP2PDeals = async (opts = {
 				}
 			});
 	} else {
-		const p2pDeals = await client.getAsync(`p2p-deals`);
+		const p2pDeals = await client.getAsync(`p2p-deals${opts.user_id}`);
 
 		if (p2pDeals) return JSON.parse(p2pDeals);
 		else {
@@ -138,7 +138,8 @@ const fetchP2PDeals = async (opts = {
 				}
 			}
 
-			await client.setexAsync(`p2p-deals`, 30, JSON.stringify(deals));
+			await client.setexAsync(`p2p-deals${opts.user_id}`, 30, JSON.stringify(deals));
+			
 			return deals;
 		}
 	}
@@ -350,6 +351,7 @@ const updateP2PDeal = async (data) => {
 				throw new Error('Merchant id is not the same');
 			}
 		});
+		await client.delAsync(`p2p-deals${merchant_id}`);
 		await getModel('p2pDeal').update({ status }, { where : { id : edited_ids }}); 
 		return { message : 'success' };
 	}
@@ -407,6 +409,8 @@ const updateP2PDeal = async (data) => {
 		data.status = true;
 	};
 
+	await client.delAsync(`p2p-deals${merchant_id}`);
+
 	return p2pDeal.update(data, {
 		fields: [
 			'merchant_id',
@@ -441,7 +445,7 @@ const deleteP2PDeal = async (removed_ids, user_id) => {
 		throw new Error(P2P_DEAL_NOT_FOUND);
 	};
 
-
+	await client.delAsync(`p2p-deals${user_id}`);
 	const promises = deals.map(async (deal) => {
 		return await deal.destroy();
 	  });

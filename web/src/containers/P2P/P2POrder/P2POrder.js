@@ -1196,9 +1196,15 @@ const P2POrder = ({
 													</div>
 												</div>
 												<div className="mt-2">
-													<EditWrapper stringId="P2P.FUNDS_TRANSFERRED">
-														{STRINGS['P2P.FUNDS_TRANSFERRED']}
-													</EditWrapper>
+													{selectedOrder?.deal?.side === 'sell' ? (
+														<EditWrapper stringId="P2P.FUNDS_TRANSFERRED">
+															{STRINGS['P2P.FUNDS_TRANSFERRED']}
+														</EditWrapper>
+													) : (
+														<EditWrapper stringId="P2P.FUNDS_TRANSFERRED_USER">
+															{STRINGS['P2P.FUNDS_TRANSFERRED_USER']}
+														</EditWrapper>
+													)}
 												</div>
 												<div
 													className="go-to-deposit-link blue-link"
@@ -1463,12 +1469,22 @@ const P2POrder = ({
 									wrapperClassName="margin-aligner"
 								/>
 								{user.id === selectedOrder?.merchant_id ? (
-									<EditWrapper stringId="P2P.CHAT_WITH_USER">
-										{STRINGS['P2P.CHAT_WITH_USER']}
-									</EditWrapper>
-								) : (
+									selectedOrder?.deal?.side === 'sell' ? (
+										<EditWrapper stringId="P2P.CHAT_WITH_USER">
+											{STRINGS['P2P.CHAT_WITH_USER']}
+										</EditWrapper>
+									) : (
+										<EditWrapper stringId="P2P.CHAT_WITH_VENDOR">
+											{STRINGS['P2P.CHAT_WITH_VENDOR']}
+										</EditWrapper>
+									)
+								) : selectedOrder?.deal?.side === 'sell' ? (
 									<EditWrapper stringId="P2P.CHAT_WITH_VENDOR">
 										{STRINGS['P2P.CHAT_WITH_VENDOR']}
+									</EditWrapper>
+								) : (
+									<EditWrapper stringId="P2P.CHAT_WITH_USER">
+										{STRINGS['P2P.CHAT_WITH_USER']}
 									</EditWrapper>
 								)}
 							</div>
@@ -1494,15 +1510,29 @@ const P2POrder = ({
 									}}
 								>
 									{user.id === selectedOrder?.merchant_id ? (
+										selectedOrder?.deal?.side === 'sell' ? (
+											<div className="font-weight-bold">
+												<EditWrapper stringId="P2P.USER_NAME">
+													{STRINGS['P2P.USER_NAME']}
+												</EditWrapper>
+											</div>
+										) : (
+											<div className="font-weight-bold">
+												<EditWrapper stringId="P2P.VENDOR_NAME">
+													{STRINGS['P2P.VENDOR_NAME']}
+												</EditWrapper>
+											</div>
+										)
+									) : selectedOrder?.deal?.side === 'sell' ? (
 										<div className="font-weight-bold">
-											<EditWrapper stringId="P2P.USER_NAME">
-												{STRINGS['P2P.USER_NAME']}
+											<EditWrapper stringId="P2P.VENDOR_NAME">
+												{STRINGS['P2P.VENDOR_NAME']}
 											</EditWrapper>
 										</div>
 									) : (
 										<div className="font-weight-bold">
-											<EditWrapper stringId="P2P.VENDOR_NAME">
-												{STRINGS['P2P.VENDOR_NAME']}
+											<EditWrapper stringId="P2P.USER_NAME">
+												{STRINGS['P2P.USER_NAME']}
 											</EditWrapper>
 										</div>
 									)}
@@ -1609,8 +1639,26 @@ const P2POrder = ({
 														<div className="notification-message d-flex flex-column text-center secondary-text my-3">
 															{message.message === 'BUYER_PAID_ORDER' &&
 															user.id === selectedOrder.user_id ? (
-																<EditWrapper stringId={`P2P.BUYER_SENT_FUNDS`}>
-																	{STRINGS[`P2P.BUYER_SENT_FUNDS`]}
+																selectedOrder?.deal?.side === 'sell' ? (
+																	<EditWrapper
+																		stringId={`P2P.BUYER_SENT_FUNDS`}
+																	>
+																		{STRINGS[`P2P.BUYER_SENT_FUNDS`]}
+																	</EditWrapper>
+																) : (
+																	<EditWrapper
+																		stringId={`P2P.BUYER_SENT_FUNDS_USER`}
+																	>
+																		{STRINGS[`P2P.BUYER_SENT_FUNDS_USER`]}
+																	</EditWrapper>
+																)
+															) : message.message ===
+																	'VENDOR_CONFIRMED_ORDER' &&
+															  selectedOrder?.deal?.side === 'buy' ? (
+																<EditWrapper
+																	stringId={`P2P.VENDOR_CONFIRMED_ORDER_USER`}
+																>
+																	{STRINGS[`P2P.VENDOR_CONFIRMED_ORDER_USER`]}
 																</EditWrapper>
 															) : (
 																<EditWrapper
@@ -1658,7 +1706,8 @@ const P2POrder = ({
 																			{message?.receiver_id ===
 																			selectedOrder?.merchant_id
 																				? STRINGS['P2P.BUYER']
-																				: selectedOrder?.merchant?.full_name}
+																				: selectedOrder?.merchant?.full_name ||
+																				  STRINGS['P2P.ANONYMOUS']}
 																			:
 																		</div>
 																		<div className="merchant-message">
@@ -1800,9 +1849,15 @@ const P2POrder = ({
 								}
 							}}
 						>
-							<EditWrapper stringId="P2P.CONFIRM_TRANSFER">
-								{STRINGS['P2P.CONFIRM_TRANSFER']}
-							</EditWrapper>
+							{selectedOrder?.deal?.side === 'sell' ? (
+								<EditWrapper stringId="P2P.CONFIRM_TRANSFER">
+									{STRINGS['P2P.CONFIRM_TRANSFER']}
+								</EditWrapper>
+							) : (
+								<EditWrapper stringId="P2P.CONFIRM_TRANSFER_USER">
+									{STRINGS['P2P.CONFIRM_TRANSFER_USER']}
+								</EditWrapper>
+							)}
 						</Button>
 					</div>
 				)}
