@@ -114,15 +114,17 @@ const publishChatMessage = (event, data) => {
 };
 
 const publishP2PChatMessage = (event, data) => {
-	each(getChannels()[WEBSOCKET_CHANNEL('p2pChat', data.receiver_id)], (ws) => {
-		if (ws.readyState === WebSocket.OPEN) {
-			ws.send(JSON.stringify({
-				topic: `p2pChat`,
-				action: event,
-				data
-			}));
-		}
-	});
+	if (data.receiver_id) {
+		each(getChannels()[WEBSOCKET_CHANNEL('p2pChat', data.receiver_id)], (ws) => {
+			if (ws.readyState === WebSocket.OPEN) {
+				ws.send(JSON.stringify({
+					topic: `p2pChat`,
+					action: event,
+					data
+				}));
+			}
+		});
+	};
 };
 
 const maintenanceMessageList = debounce(() => {
