@@ -2,6 +2,7 @@ import React, { useEffect, useState, Fragment } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { isMobile } from 'react-device-detect';
 import classnames from 'classnames';
 
 import { quicktradePairSelector } from 'containers/QuickTrade/components/utils';
@@ -136,8 +137,8 @@ const CoinPage = ({
 	return (
 		<div className="hollaex-token-wrapper">
 			<div className="token-wrapper mt-8">
-				<div className="d-flex pb-30">
-					<div>
+				<div className={isMobile ? 'd-flex pb-30 ml-4' : 'd-flex pb-30'}>
+					<div className={isMobile ? 'asset-icon' : ''}>
 						<Coin iconId={icon_id} type="CS11" />
 					</div>
 					<div className="pl-2 header-container">

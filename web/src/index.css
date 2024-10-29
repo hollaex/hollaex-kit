@@ -691,9 +691,19 @@ table th {
         grid-template-columns: repeat(4, 1fr);
         gap: 15px;
         padding: 5% 2%; }
+        .layout-mobile .footer-bar-more-options-container .options-container .hot-options-container .options-field .icon-logo {
+          width: 25px; }
+          .layout-mobile .footer-bar-more-options-container .options-container .hot-options-container .options-field .icon-logo path {
+            fill: var(--labels_important-active-labels-text-graphics); }
+        .layout-mobile .footer-bar-more-options-container .options-container .hot-options-container .options-field .image-wrapper {
+          margin-left: 15%; }
         .layout-mobile .footer-bar-more-options-container .options-container .hot-options-container .options-field .icon-field {
           padding: 5%;
           text-align: center; }
+          .layout-mobile .footer-bar-more-options-container .options-container .hot-options-container .options-field .icon-field .assets-icon {
+            position: relative;
+            bottom: 10px;
+            margin-left: 5%; }
         .layout-mobile .footer-bar-more-options-container .options-container .hot-options-container .options-field .option-title .edit-wrapper__container {
           font-size: 12px; }
       .layout-mobile .footer-bar-more-options-container .options-container .hot-options-container .secondary-text {
@@ -7984,6 +7994,9 @@ table th {
   .hollaex-token-wrapper .token-wrapper {
     width: 65%;
     height: 100%; }
+    .hollaex-token-wrapper .token-wrapper .asset-icon {
+      position: relative;
+      top: 5px; }
     .hollaex-token-wrapper .token-wrapper .link {
       color: var(--specials_buttons-links-and-highlights);
       text-decoration: underline;
@@ -13899,10 +13912,13 @@ table th {
     transform: scale(4, 4);
     display: flex;
     align-items: center;
-    justify-content: center; }
+    justify-content: center;
+    position: relative;
+    top: 1.5px; }
     .app_bar .app-bar-dropdown-icon .anticon svg {
       position: relative;
-      height: 0.3rem; }
+      height: 3px;
+      margin-bottom: 1px; }
   .app_bar .trade-navbar-wrapper {
     gap: 2%; }
     .app_bar .trade-navbar-wrapper .custom-select-input-style.appbar.ant-select {
@@ -14679,7 +14695,9 @@ table th {
     width: 30rem;
     background-color: var(--base_background);
     color: var(--labels_important-active-labels-text-graphics);
-    border-radius: 10px; }
+    border-radius: 5px;
+    border: 2px solid var(--calculated_secondary-border-1);
+    box-shadow: 4px 4px 15px var(--base_top-bar-navigation); }
   .navigation-bar-wrapper .navigation-dropdown-container {
     padding: 2%; }
     .navigation-bar-wrapper .navigation-dropdown-container .main-active {
