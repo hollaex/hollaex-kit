@@ -470,9 +470,23 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 					gap: 15px;
 					padding: 5% 2%;
 
+					.icon-logo {
+						width: 25px;
+						path {
+							fill: $colors-main-black;
+						}
+					}
+					.image-wrapper {
+						margin-left: 15%;
+					}
 					.icon-field {
 						padding: 5%;
 						text-align: center;
+						.assets-icon {
+							position: relative;
+							bottom: 10px;
+							margin-left: 5%;
+						}
 					}
 
 					.option-title {
