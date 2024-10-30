@@ -1058,15 +1058,20 @@ const updateMerchantProfile = async (data) => {
 const createMerchantFeedback = async (data) => {
 	const transaction = await getModel('p2pTransaction').findOne({ where: { id: data.transaction_id } });
 	
+	const deal = await getModel('p2pDeal').findOne({ where : { id: transaction.deal_id }});
 	if (!transaction) {
 		throw new Error ('no transaction found');
 	}
 
-	if (transaction.user_id !== data.user_id) {
+	if (deal.side === 'sell' && (transaction.user_id !== data.user_id && transaction.merchant_id !== data.user_id)) {
 		throw new Error ('unauthorized');
-	}	
+	};	
 
-	const foundFeedback = await getModel('P2pMerchantsFeedback').findOne({ where: { transaction_id: data.transaction_id } });
+	if (deal.side === 'buy' && (transaction.merchant_id !== data.user_id && transaction.user_id !== data.user_id)) {
+		throw new Error ('unauthorized');
+	};
+
+	const foundFeedback = await getModel('P2pMerchantsFeedback').findOne({ where: { transaction_id: data.transaction_id, user_id: data.user_id } });
 
 	if (foundFeedback) {
 		throw new Error ('you already made a feedback');
@@ -1080,7 +1085,7 @@ const createMerchantFeedback = async (data) => {
 		throw new Error ('undefined rating');
 	}
 
-	data.merchant_id = transaction.merchant_id;
+	data.merchant_id = data.user_id ===  transaction.merchant_id ? transaction?.user_id : transaction.merchant_id;
 	return getModel('P2pMerchantsFeedback').create(data, {
 		fields: [
 			'merchant_id',
@@ -1095,6 +1100,7 @@ const createMerchantFeedback = async (data) => {
 const fetchP2PFeedbacks = async (opts = {
 	transaction_id: null,
 	merchant_id: null,
+	user_id: null,
     limit: null,
     page: null,
     order_by: null,
@@ -1112,6 +1118,7 @@ const fetchP2PFeedbacks = async (opts = {
 			created_at: timeframe,
 		...(opts.transaction_id && { transaction_id: opts.transaction_id }),
 		...(opts.merchant_id && { merchant_id: opts.merchant_id }),
+		...(opts.user_id && { user_id: opts.user_id }),
 		},
 		order: [ordering],
 		...(!opts.format && pagination),

@@ -125,7 +125,7 @@ const P2POrder = ({
 	}, [p2p_status]);
 
 	useEffect(() => {
-		fetchFeedback({ transaction_id: selectedOrder.id })
+		fetchFeedback({ transaction_id: selectedOrder.id, user_id: user.id })
 			.then((res) => {
 				if (res?.data?.length > 0) {
 					setHasFeedback(true);
@@ -166,6 +166,27 @@ const P2POrder = ({
 			setWs(p2pWs);
 			// setReady(true);
 
+			if (selectedTransaction.first_created) {
+				p2pWs.send(
+					JSON.stringify({
+						op: 'p2pChat',
+						args: [
+							{
+								action: 'getStatus',
+								data: {
+									id: selectedTransaction.id,
+									status: 'created',
+									title: 'p2p',
+									receiver_id:
+										user.id === selectedTransaction?.merchant_id
+											? selectedTransaction?.user_id
+											: selectedTransaction?.merchant_id,
+								},
+							},
+						],
+					})
+				);
+			}
 			setInterval(() => {
 				p2pWs.send(
 					JSON.stringify({
@@ -554,7 +575,7 @@ const P2POrder = ({
 								</EditWrapper>
 							</div>
 							<Rate
-								defaultValue={5}
+								defaultValue={0}
 								onChange={(e) => {
 									if (e > 0) setRating(e);
 								}}
@@ -582,9 +603,11 @@ const P2POrder = ({
 								try {
 									if (!rating || rating === 0) {
 										message.error(STRINGS['P2P.SELECT_RATING']);
+										return;
 									}
 									if (!feedback) {
 										message.error(STRINGS['P2P.INPUT_FEEDBACK']);
+										return;
 									}
 									await createFeedback({
 										transaction_id: selectedOrder?.id,
@@ -1291,6 +1314,19 @@ const P2POrder = ({
 														</span>
 													</EditWrapper>
 												</div>
+												{!hasFeedback && (
+													<Button
+														className="feedback-submit-btn mt-3"
+														onClick={() => {
+															setDisplayFeedbackModel(true);
+														}}
+														ghost
+													>
+														<EditWrapper stringId="P2P.SUBMIT_FEEDBACK">
+															{STRINGS['P2P.SUBMIT_FEEDBACK']}
+														</EditWrapper>
+													</Button>
+												)}
 											</div>
 										)}
 
@@ -1469,22 +1505,12 @@ const P2POrder = ({
 									wrapperClassName="margin-aligner"
 								/>
 								{user.id === selectedOrder?.merchant_id ? (
-									selectedOrder?.deal?.side === 'sell' ? (
-										<EditWrapper stringId="P2P.CHAT_WITH_USER">
-											{STRINGS['P2P.CHAT_WITH_USER']}
-										</EditWrapper>
-									) : (
-										<EditWrapper stringId="P2P.CHAT_WITH_VENDOR">
-											{STRINGS['P2P.CHAT_WITH_VENDOR']}
-										</EditWrapper>
-									)
-								) : selectedOrder?.deal?.side === 'sell' ? (
-									<EditWrapper stringId="P2P.CHAT_WITH_VENDOR">
-										{STRINGS['P2P.CHAT_WITH_VENDOR']}
-									</EditWrapper>
-								) : (
 									<EditWrapper stringId="P2P.CHAT_WITH_USER">
 										{STRINGS['P2P.CHAT_WITH_USER']}
+									</EditWrapper>
+								) : (
+									<EditWrapper stringId="P2P.CHAT_WITH_VENDOR">
+										{STRINGS['P2P.CHAT_WITH_VENDOR']}
 									</EditWrapper>
 								)}
 							</div>
@@ -1510,29 +1536,15 @@ const P2POrder = ({
 									}}
 								>
 									{user.id === selectedOrder?.merchant_id ? (
-										selectedOrder?.deal?.side === 'sell' ? (
-											<div className="font-weight-bold">
-												<EditWrapper stringId="P2P.USER_NAME">
-													{STRINGS['P2P.USER_NAME']}
-												</EditWrapper>
-											</div>
-										) : (
-											<div className="font-weight-bold">
-												<EditWrapper stringId="P2P.VENDOR_NAME">
-													{STRINGS['P2P.VENDOR_NAME']}
-												</EditWrapper>
-											</div>
-										)
-									) : selectedOrder?.deal?.side === 'sell' ? (
 										<div className="font-weight-bold">
-											<EditWrapper stringId="P2P.VENDOR_NAME">
-												{STRINGS['P2P.VENDOR_NAME']}
+											<EditWrapper stringId="P2P.USER_NAME">
+												{STRINGS['P2P.USER_NAME']}
 											</EditWrapper>
 										</div>
 									) : (
 										<div className="font-weight-bold">
-											<EditWrapper stringId="P2P.USER_NAME">
-												{STRINGS['P2P.USER_NAME']}
+											<EditWrapper stringId="P2P.VENDOR_NAME">
+												{STRINGS['P2P.VENDOR_NAME']}
 											</EditWrapper>
 										</div>
 									)}
@@ -1552,9 +1564,16 @@ const P2POrder = ({
 									{user.id === selectedOrder?.user_id && (
 										<div className="d-flex flex-column">
 											<div>
-												<EditWrapper stringId="P2P.ORDER_INITIATED">
-													{STRINGS['P2P.ORDER_INITIATED']}
-												</EditWrapper>
+												{selectedOrder?.deal?.side === 'sell' ? (
+													<EditWrapper stringId="P2P.ORDER_INITIATED">
+														{STRINGS['P2P.ORDER_INITIATED']}
+													</EditWrapper>
+												) : (
+													<EditWrapper stringId="P2P.ORDER_INITIATED_VENDOR">
+														{STRINGS['P2P.ORDER_INITIATED_VENDOR']}
+													</EditWrapper>
+												)}
+
 												<span className="ml-1">
 													{selectedOrder?.merchant?.full_name || (
 														<EditWrapper stringId="P2P.ANONYMOUS">
@@ -1652,14 +1671,6 @@ const P2POrder = ({
 																		{STRINGS[`P2P.BUYER_SENT_FUNDS_USER`]}
 																	</EditWrapper>
 																)
-															) : message.message ===
-																	'VENDOR_CONFIRMED_ORDER' &&
-															  selectedOrder?.deal?.side === 'buy' ? (
-																<EditWrapper
-																	stringId={`P2P.VENDOR_CONFIRMED_ORDER_USER`}
-																>
-																	{STRINGS[`P2P.VENDOR_CONFIRMED_ORDER_USER`]}
-																</EditWrapper>
 															) : (
 																<EditWrapper
 																	stringId={`P2P.${message.message}`}
@@ -1849,15 +1860,9 @@ const P2POrder = ({
 								}
 							}}
 						>
-							{selectedOrder?.deal?.side === 'sell' ? (
-								<EditWrapper stringId="P2P.CONFIRM_TRANSFER">
-									{STRINGS['P2P.CONFIRM_TRANSFER']}
-								</EditWrapper>
-							) : (
-								<EditWrapper stringId="P2P.CONFIRM_TRANSFER_USER">
-									{STRINGS['P2P.CONFIRM_TRANSFER_USER']}
-								</EditWrapper>
-							)}
+							<EditWrapper stringId="P2P.CONFIRM_TRANSFER">
+								{STRINGS['P2P.CONFIRM_TRANSFER']}
+							</EditWrapper>
 						</Button>
 					</div>
 				)}

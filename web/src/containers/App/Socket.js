@@ -463,6 +463,8 @@ class Container extends Component {
 									? STRINGS['P2P.CRYPTO_RELEASE_STATUS_MESSAGE']
 									: data?.data?.status === 'confirmed'
 									? STRINGS['P2P.CONFIRM_STATUS_MESSAGE']
+									: data?.data?.status === 'created'
+									? STRINGS['P2P.NEW_ORDER_CREATED']
 									: data?.action === 'getStatus'
 									? STRINGS['P2P.STATUS_UPDATE']
 									: STRINGS['P2P.NEW_MESSAGE'],
