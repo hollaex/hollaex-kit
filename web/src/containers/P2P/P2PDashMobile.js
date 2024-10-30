@@ -122,6 +122,14 @@ const P2PDashMobile = ({
 													<span className="spent-asset-name ">
 														{' '}
 														{selectedDeal?.spending_asset.toUpperCase()}
+														<span className="spent-asset-icon">
+															<Coin
+																iconId={
+																	coins[selectedDeal?.spending_asset]?.icon_id
+																}
+																type="CS9"
+															/>
+														</span>
 													</span>
 													<InputNumber
 														className={
@@ -204,15 +212,19 @@ const P2PDashMobile = ({
 															{STRINGS['P2P.AMOUNT_TO_RECEIVE']}
 														</EditWrapper>
 													</span>
-													<Coin
-														iconId={coins[selectedDeal?.buying_asset].icon_id}
-														type="CS10"
-													/>
 												</div>
 												<div className="amount-receive-field-container">
 													<span className="spent-asset-name ">
 														{' '}
 														{selectedDeal?.buying_asset.toUpperCase()}
+														<span className="spent-asset-icon">
+															<Coin
+																iconId={
+																	coins[selectedDeal?.buying_asset]?.icon_id
+																}
+																type="CS9"
+															/>
+														</span>
 													</span>
 													<Input
 														className="greyButtonP2P amount-receive-field w-50"
