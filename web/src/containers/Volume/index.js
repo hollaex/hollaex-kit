@@ -114,7 +114,7 @@ const Volume = ({
 				<div className="header-wrapper">
 					<div
 						onClick={() => {
-							router.push('/transactions?tab=trades');
+							router.goBack();
 						}}
 						className="blue-link pointer"
 					>
