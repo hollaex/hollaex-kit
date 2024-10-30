@@ -415,6 +415,7 @@ const P2PDash = ({
 							</Button>
 							<Button
 								className="w-50 create-order-btn important-text"
+								disabled={loading}
 								onClick={async () => {
 									try {
 										if (amountFiat && selectedMethod) {
@@ -433,6 +434,8 @@ const P2PDash = ({
 												id: transaction.id,
 											});
 
+											if (transData.data[0])
+												transData.data[0].first_created = true;
 											setSelectedTransaction(transData.data[0]);
 											setDisplayOrder(true);
 											setLoading(false);
