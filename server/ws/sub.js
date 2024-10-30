@@ -175,8 +175,8 @@ const terminateTopic = (topic, ws, symbol) => {
 			ws.send(JSON.stringify({ message: `Unsubscribed from channel ${topic}:${ws.auth.sub.id}` }));
 			break;
 		case 'p2pChat':
-			removeSubscriber(WEBSOCKET_CHANNEL(topic, symbol), ws);
 			removeSubscriber(WEBSOCKET_CHANNEL(topic, ws.auth.sub.id), ws);
+			console.log( `Unsubscribed from channel ${topic}:${ws.auth.sub.id}`)
 			ws.send(JSON.stringify({ message: `Unsubscribed from channel ${topic}:${ws.auth.sub.id}` }));
 			break;
 		case 'admin':
