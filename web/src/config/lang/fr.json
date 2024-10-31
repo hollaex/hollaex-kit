@@ -139,7 +139,7 @@
             "OPTION_BUG": "Rapporter une erreur",
             "OPTION_PERSONAL_INFO": "Changer vos informations personnelles",
             "OPTION_BANK_TRANSFER": "Virement bancaire",
-            "OPTION_REQUEST": "Demander une invitation pour HollaEx Exchange"
+            "OPTION_REQUEST": "Demander une invitation pour Exchange"
         },
         "SUBJECT_LABEL": "Sujet",
         "SUBJECT_PLACEHOLDER": "Indiquez le sujet de votre problème",
@@ -1720,7 +1720,7 @@
         "BUY": "Acheter {0} {1}"
     },
     "SUMMARY_MARKETS": {
-        "HOLLAEX": "Vous souhaitez lister vos actifs numériques ? Démarrez votre propre marché avec votre HollaEx {0} {1}",
+        "HOLLAEX": "Vous souhaitez lister vos actifs numériques ? Démarrez votre propre marché avec votre {0} {1}",
         "WHITE_LABEL": "marque blanche",
         "SOLUTION": "solution",
         "VISIT_COIN_INFO_PAGE": "Consultez la page d'informations sur les pièces {0}",

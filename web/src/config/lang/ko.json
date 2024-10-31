@@ -129,7 +129,7 @@
             "OPTION_BUG": "오류 보고",
             "OPTION_PERSONAL_INFO": "개인정보 변경",
             "OPTION_BANK_TRANSFER": "은행송금",
-            "OPTION_REQUEST": "HollaEx Exchange 초대요청"
+            "OPTION_REQUEST": "Exchange 초대요청"
         },
         "SUBJECT_LABEL": "문의 제목",
         "SUBJECT_PLACEHOLDER": "문의 제목을 작성하여 주시기바랍니다.",

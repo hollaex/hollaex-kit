@@ -86,7 +86,7 @@
             "OPTION_BUG": "Сообщить об ошибке",
             "OPTION_PERSONAL_INFO": "Изменить личную информацию",
             "OPTION_BANK_TRANSFER": "Банковский перевод",
-            "OPTION_REQUEST": "Запросить приглашение на биржу HollaEx"
+            "OPTION_REQUEST": "Запросить приглашение на биржу"
         },
         "SUBJECT_LABEL": "Предмет",
         "SUBJECT_PLACEHOLDER": "Введите тему вашего вопроса",

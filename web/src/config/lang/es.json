@@ -143,7 +143,7 @@
             "OPTION_BUG": "Reportar error",
             "OPTION_PERSONAL_INFO": "Cambiar información personal",
             "OPTION_BANK_TRANSFER": "Transferencia bancaria",
-            "OPTION_REQUEST": "Solicitar invitación para HollaEx Exchange"
+            "OPTION_REQUEST": "Solicitar invitación para Exchange"
         },
         "SUBJECT_LABEL": "Tema",
         "SUBJECT_PLACEHOLDER": "Escribir el tema de su problema",
@@ -1724,7 +1724,7 @@
     },
     "AMOUNT_IN": "Cantidad en",
     "SUMMARY_MARKETS": {
-        "HOLLAEX": "¿Quiere enumerar sus activos digitales? Inicie su propio mercado con su HollaEx {0} {1}",
+        "HOLLAEX": "¿Quiere enumerar sus activos digitales? Inicie su propio mercado con su {0} {1}",
         "WHITE_LABEL": "etiqueta blanca",
         "SOLUTION": "solución",
         "VISIT_COIN_INFO_PAGE": "Visita la página de información de monedas {0}",
@@ -1815,7 +1815,7 @@
     "WITHDRAWALS_FORM_METHOD": "Método",
     "WITHDRAWALS_FORM_ADDRESS_EXCHANGE": "Correo electrónico de usuario de Exchange",
     "WITHDRAWALS_FORM_EXCHANGE_PLACEHOLDER": "Ingrese el correo electrónico del usuario en este intercambio",
-    "WITHDRAWALS_FORM_MAIL_INFO": "Ingrese el correo electrónico de la cuenta HollaEx de un usuario que esté en este intercambio y transfiera de forma gratuita.",
+    "WITHDRAWALS_FORM_MAIL_INFO": "Ingrese el correo electrónico de la cuenta de un usuario que esté en este intercambio y transfiera de forma gratuita.",
     "RISKY_TRADE_DISCLAIMER": {
         "MSG_1": "Compruebe que realmente desea intercambiar {0} ({1}), ya que este activo puede conllevar un alto riesgo de",
         "MSG_2": "volatilidad extrema",

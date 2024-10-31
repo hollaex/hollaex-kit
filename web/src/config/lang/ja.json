@@ -139,7 +139,7 @@
             "OPTION_BUG": "エラー報告",
             "OPTION_PERSONAL_INFO": "個人情報の変更",
             "OPTION_BANK_TRANSFER": "銀行送金",
-            "OPTION_REQUEST": "HollaEx招待リクエスト"
+            "OPTION_REQUEST": "招待リクエスト"
         },
         "SUBJECT_LABEL": "件名",
         "SUBJECT_PLACEHOLDER": "お問い合わせの件名を入力してください。",

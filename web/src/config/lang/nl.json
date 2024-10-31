@@ -86,7 +86,7 @@
             "OPTION_BUG": "Fout melden",
             "OPTION_PERSONAL_INFO": "Persoonlijke gegevens wijzigen",
             "OPTION_BANK_TRANSFER": "bank overschrijving",
-            "OPTION_REQUEST": "Vraag een uitnodiging aan voor de HollaEx Exchange"
+            "OPTION_REQUEST": "Vraag een uitnodiging aan voor de Exchange"
         },
         "SUBJECT_LABEL": "Onderwerp",
         "SUBJECT_PLACEHOLDER": "Typ het onderwerp van uw probleem",

@@ -142,7 +142,7 @@
             "OPTION_BUG": "Báo cáo lỗi",
             "OPTION_PERSONAL_INFO": "Thay đổi thông tin cá nhân",
             "OPTION_BANK_TRANSFER": "Chuyển khoản điện tử liên ngân hàng",
-            "OPTION_REQUEST": "Yêu cầu mời tham gia HollaEx Exchange"
+            "OPTION_REQUEST": "Yêu cầu mời tham gia Exchange"
         },
         "SUBJECT_LABEL": "Tiêu đề",
         "SUBJECT_PLACEHOLDER": "Nhập tiêu đề cho vấn đề của quý khách",

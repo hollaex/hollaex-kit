@@ -86,7 +86,7 @@
             "OPTION_BUG": "Segnala un errore",
             "OPTION_PERSONAL_INFO": "Modificare le informazioni personali",
             "OPTION_BANK_TRANSFER": "Bonifico bancario",
-            "OPTION_REQUEST": "Richiedi un invito per lo scambio HollaEx"
+            "OPTION_REQUEST": "Richiedi un invito per lo scambio"
         },
         "SUBJECT_LABEL": "Soggetto",
         "SUBJECT_PLACEHOLDER": "Digita l'oggetto del tuo problema",

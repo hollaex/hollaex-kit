@@ -138,7 +138,7 @@
             "OPTION_BUG": "Relatar bug",
             "OPTION_PERSONAL_INFO": "Alterar informações pessoais",
             "OPTION_BANK_TRANSFER": "Transferência Bancária",
-            "OPTION_REQUEST": "Solicitar convite para a HollaEx Exchange"
+            "OPTION_REQUEST": "Solicitar convite para a Exchange"
         },
         "SUBJECT_LABEL": "Assunto",
         "SUBJECT_PLACEHOLDER": "De que se trata o seu problema?",

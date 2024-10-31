@@ -107,7 +107,7 @@
             "OPTION_BUG": "Bug raporla",
             "OPTION_PERSONAL_INFO": "Kişisel bilgiyi değiştir",
             "OPTION_BANK_TRANSFER": "Banka EFT transferi",
-            "OPTION_REQUEST": "HollaEx Borsası için davet oluşturun"
+            "OPTION_REQUEST": "Borsası için davet oluşturun"
         },
         "SUBJECT_LABEL": "Konu",
         "SUBJECT_PLACEHOLDER": "Sorunun konusunu yazınız",
