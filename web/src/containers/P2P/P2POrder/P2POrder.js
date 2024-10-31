@@ -159,44 +159,61 @@ const P2POrder = ({
 	}, []);
 
 	useEffect(() => {
-		const url = `${WS_URL}/stream?authorization=Bearer ${getToken()}`;
-		const p2pWs = new WebSocket(url);
+		let pingInterval;
 
-		p2pWs.onopen = (evt) => {
-			setWs(p2pWs);
-			// setReady(true);
+		const connectWebSocket = () => {
+			const url = `${WS_URL}/stream?authorization=Bearer ${getToken()}`;
+			const p2pWs = new WebSocket(url);
 
-			if (selectedTransaction.first_created) {
-				p2pWs.send(
-					JSON.stringify({
-						op: 'p2pChat',
-						args: [
-							{
-								action: 'getStatus',
-								data: {
-									id: selectedTransaction.id,
-									status: 'created',
-									title: 'p2p',
-									receiver_id:
-										user.id === selectedTransaction?.merchant_id
-											? selectedTransaction?.user_id
-											: selectedTransaction?.merchant_id,
+			p2pWs.onopen = () => {
+				setWs(p2pWs);
+
+				if (selectedTransaction.first_created) {
+					p2pWs.send(
+						JSON.stringify({
+							op: 'p2pChat',
+							args: [
+								{
+									action: 'getStatus',
+									data: {
+										id: selectedTransaction.id,
+										status: 'created',
+										title: 'p2p',
+										receiver_id:
+											user.id === selectedTransaction?.merchant_id
+												? selectedTransaction?.user_id
+												: selectedTransaction?.merchant_id,
+									},
 								},
-							},
-						],
-					})
-				);
-			}
-			setInterval(() => {
-				p2pWs.send(
-					JSON.stringify({
-						op: 'ping',
-					})
-				);
-			}, 55000);
+							],
+						})
+					);
+				}
+
+				pingInterval = setInterval(() => {
+					if (p2pWs.readyState === WebSocket.OPEN) {
+						p2pWs.send(JSON.stringify({ op: 'ping' }));
+					}
+				}, 55000);
+			};
+
+			p2pWs.onclose = (event) => {
+				clearInterval(pingInterval);
+				setTimeout(connectWebSocket, 3000);
+			};
+
+			p2pWs.onerror = (error) => {
+				clearInterval(pingInterval);
+				p2pWs.close();
+			};
+
+			return p2pWs;
 		};
 
+		const p2pWs = connectWebSocket();
+
 		return () => {
+			clearInterval(pingInterval);
 			p2pWs.close();
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps

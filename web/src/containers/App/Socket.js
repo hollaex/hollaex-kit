@@ -6,6 +6,7 @@ import { notification } from 'antd';
 import {
 	BellOutlined,
 	ExclamationCircleOutlined,
+	FireOutlined,
 	MailOutlined,
 } from '@ant-design/icons';
 import debounce from 'lodash.debounce';
@@ -449,6 +450,17 @@ class Container extends Component {
 						!this.props?.router?.location?.pathname?.includes('/p2p/order/')
 					) {
 						const key = `notification_${Date.now()}`;
+						const displayIcon =
+							data?.action === 'getStatus' &&
+							(data?.data?.status === 'appeal' ||
+								data?.data?.status === 'cancelled') ? (
+								<ExclamationCircleOutlined />
+							) : data?.action === 'getStatus' ? (
+								<BellOutlined />
+							) : (
+								<MailOutlined />
+							);
+
 						const notificationDetails = {
 							key,
 							message:
@@ -485,20 +497,13 @@ class Container extends Component {
 									</div>
 								</div>
 							),
-							className: 'p2p-chat-notification-wrapper',
-							placement: 'bottomRight',
+							className: isMobile
+								? 'p2p-chat-notification-wrapper p2p-chat-notification-wrapper-mobile'
+								: 'p2p-chat-notification-wrapper',
+							placement: isMobile ? 'bottomLeft' : 'bottomRight',
 							type: 'info',
 							duration: 0,
-							icon:
-								data?.action === 'getStatus' &&
-								(data?.data?.status === 'appeal' ||
-									data?.data?.status === 'cancelled') ? (
-									<ExclamationCircleOutlined />
-								) : data?.action === 'getStatus' ? (
-									<BellOutlined />
-								) : (
-									<MailOutlined />
-								),
+							icon: <FireOutlined className="p2p-fire-icon" />,
 							onClose: () => {
 								this.openNotifications = this.openNotifications?.filter(
 									(notification) => notification?.key !== key
@@ -515,7 +520,10 @@ class Container extends Component {
 									notification.close(newLastNotification?.key);
 									notification.open({
 										...newLastNotification,
-										className: 'p2p-chat-notification-wrapper',
+										icon: displayIcon,
+										className: isMobile
+											? 'p2p-chat-notification-wrapper p2p-chat-notification-wrapper-mobile'
+											: 'p2p-chat-notification-wrapper',
 									});
 								}
 							},
@@ -534,8 +542,10 @@ class Container extends Component {
 							notification.close(previousNotification?.key);
 							notification.open({
 								...previousNotification,
-								className:
-									'p2p-chat-notification-wrapper p2p-chat-notification',
+								icon: displayIcon,
+								className: isMobile
+									? 'p2p-chat-notification-wrapper p2p-chat-notification-wrapper-mobile p2p-chat-notification'
+									: 'p2p-chat-notification-wrapper p2p-chat-notification',
 							});
 						}
 
