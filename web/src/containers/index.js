@@ -1,9 +1,6 @@
 import Loadable from 'react-loadable';
+import { Loader as LoadingComponent } from 'components';
 export { PATHS } from './Admin/paths';
-
-const LoadingComponent = ({ isLoading, error }) => {
-	return null;
-};
 
 export const App = Loadable({
 	loader: () => import('./App'),
