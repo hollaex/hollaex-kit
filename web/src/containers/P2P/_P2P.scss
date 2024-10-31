@@ -2008,7 +2008,9 @@
 
 		.cancel-btn,
 		.confirm-btn {
-			width: 13%;
+			word-break: break-word;
+			white-space: normal;
+			width: 35%;
 			height: 45px;
 			background-color: var(--labels_inactive-button);
 			border: none;
@@ -2016,6 +2018,8 @@
 		}
 
 		.confirm-btn {
+			word-break: break-word;
+			white-space: normal;
 			width: 70%;
 			background-color: var(--specials_buttons-links-and-highlights);
 		}
