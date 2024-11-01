@@ -4,7 +4,11 @@ import { bindActionCreators } from 'redux';
 import { SubmissionError } from 'redux-form';
 import { isMobile } from 'react-device-detect';
 import { message } from 'antd';
-import { openContactForm, setSelectedStep } from 'actions/appActions';
+import {
+	openContactForm,
+	setSecurityTab,
+	setSelectedStep,
+} from 'actions/appActions';
 import {
 	resetPassword,
 	otpRequest,
@@ -74,15 +78,27 @@ class UserSecurity extends Component {
 
 		this.props.getUserLogins(RECORD_LIMIT);
 		this.openLogins();
-		if (window.location.search && window.location.search.includes('password')) {
-			this.setState({ activeTab: 1 });
-		} else if (
-			window.location.search &&
-			window.location.search.includes('apiKeys')
-		) {
-			this.setState({ activeTab: 2 });
+		if (this.props.getSecurityTab) {
+			this.setState({
+				activeTab: this.props.getSecurityTab,
+			});
 		} else {
-			this.setState({ activeTab: 0 });
+			if (
+				window.location.search &&
+				window.location.search.includes('password')
+			) {
+				this.setState({ activeTab: 1 });
+				this.props.setSecurityTab(1);
+			} else if (
+				window.location.search &&
+				window.location.search.includes('apiKeys')
+			) {
+				this.setState({ activeTab: 2 });
+				this.props.setSecurityTab(2);
+			} else {
+				this.setState({ activeTab: 0 });
+				this.props.setSecurityTab(0);
+			}
 		}
 		this.openCurrentTab();
 	}
@@ -107,6 +123,11 @@ class UserSecurity extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
+		if (this.props.getSecurityTab !== this.state.activeTab) {
+			this.setState({
+				activeTab: this.props.getSecurityTab,
+			});
+		}
 		if (
 			prevProps.user.otp.requested !== this.props.user.otp.requested ||
 			prevProps.user.otp.requesting !== this.props.user.otp.requesting ||
@@ -133,6 +154,10 @@ class UserSecurity extends Component {
 		) {
 			this.openCurrentTab();
 		}
+	}
+
+	componentWillUnmount() {
+		setSecurityTab(0);
 	}
 
 	openCurrentTab = () => {
@@ -398,6 +423,7 @@ class UserSecurity extends Component {
 
 	setActiveTab = (activeTab) => {
 		this.setState({ activeTab });
+		this.props.setSecurityTab(activeTab);
 	};
 
 	/*logout = (message = '') => {
@@ -771,6 +797,7 @@ const mapStateToProps = (state) => ({
 		...Object.keys(generateFormValues())
 	),
 	selectedStep: state.app.selectedStep,
+	getSecurityTab: state.app.selectedSecurityTab,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -779,6 +806,7 @@ const mapDispatchToProps = (dispatch) => ({
 	otpSetActivated: (active) => dispatch(otpSetActivated(active)),
 	openContactForm: bindActionCreators(openContactForm, dispatch),
 	setSelectedStep: bindActionCreators(setSelectedStep, dispatch),
+	setSecurityTab: bindActionCreators(setSecurityTab, dispatch),
 });
 
 export default connect(

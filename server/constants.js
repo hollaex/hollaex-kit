@@ -172,6 +172,7 @@ exports.GET_FROZEN_USERS = () => cloneDeep(frozenUsers);
 exports.GET_EMAIL = () => cloneDeep(configuration.email);
 exports.GET_BROKER = () => cloneDeep(configuration.broker);
 exports.GET_QUICKTRADE = () => cloneDeep(configuration.quicktrade);
+exports.GET_TRADEPATHS = () => cloneDeep(configuration.tradePaths);
 exports.GET_NETWORK_QUICKTRADE = () => cloneDeep(configuration.networkQuickTrades);
 
 exports.USER_META_KEYS = [
@@ -219,7 +220,10 @@ exports.KIT_CONFIG_KEYS = [
 	'balance_history_config',
 	'transaction_limits',
 	'p2p_config',
-	'referral_history_config'
+	'referral_history_config',
+	'chain_trade_config',
+	'selectable_native_currencies',
+	'auto_trade_config'
 ];
 
 exports.KIT_SECRETS_KEYS = [
@@ -584,6 +588,13 @@ exports.EXPLORERS = {
 			txPath: '/tx'
 		}
 	],
+	pol: [
+		{
+			name: 'PolygonScan',
+			baseUrl: 'https://polygonscan.com',
+			txPath: '/tx'
+		}
+	],
 	etc: [
 		{
 			name: 'Ethereum Classic Explorer',
@@ -684,6 +695,12 @@ exports.BALANCE_HISTORY_SUPPORTED_PLANS = ['fiat', 'boost', 'enterprise'];
 
 exports.REFERRAL_HISTORY_SUPPORTED_PLANS = ['fiat', 'boost', 'enterprise'];
 //REFERRAL HISTORY CONSTANTS END
+
+//AUTO_TRADE CONSTANTS START
+
+exports.AUTO_TRADE_SUPPORTED_PLANS = ['boost', 'enterprise'];
+//AUTO_TRADE CONSTANTS END
+
 
 exports.CUSTOM_CSS = `
 	.topbar-wrapper img {

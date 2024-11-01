@@ -75,6 +75,12 @@ import {
 	SET_RECEIVER_EMAIL,
 	SET_WITHDRAW_OTIONAL_TAG,
 	SET_CHART_DATA,
+	SET_COINS_DATA,
+	SET_VERIFICATION_TAB,
+	SET_SECURITY_TAB,
+	SET_LIMITS_TAB,
+	SET_STAKE,
+	SET_SETTINGS_TAB,
 } from 'actions/appActions';
 import { THEME_DEFAULT } from 'config/constants';
 import { getLanguage } from 'utils/string';
@@ -203,6 +209,12 @@ const INITIAL_STATE = {
 	isValidAddress: '',
 	selectedWithdrawMethod: 'Address',
 	receiverWithdrawalEmail: null,
+	coinsData: [],
+	selectedStake: null,
+	selectedTab: null,
+	selectedSecurityTab: 0,
+	selectedVerificationTab: 0,
+	selectedSettingsTab: 0,
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -840,6 +852,42 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				receiverWithdrawalEmail: payload,
+			};
+		}
+		case SET_COINS_DATA: {
+			return {
+				...state,
+				coinsData: payload,
+			};
+		}
+		case SET_STAKE: {
+			return {
+				...state,
+				selectedStake: payload,
+			};
+		}
+		case SET_LIMITS_TAB: {
+			return {
+				...state,
+				selectedTab: payload,
+			};
+		}
+		case SET_SECURITY_TAB: {
+			return {
+				...state,
+				selectedSecurityTab: payload,
+			};
+		}
+		case SET_VERIFICATION_TAB: {
+			return {
+				...state,
+				selectedVerificationTab: payload,
+			};
+		}
+		case SET_SETTINGS_TAB: {
+			return {
+				...state,
+				selectedSettingsTab: payload,
 			};
 		}
 		default:

@@ -159,6 +159,11 @@
         "P2P_VENDOR_APPEALED_ORDER": {
             "html": "<div><p> Caro(a) ${name} </p><p>Você recorreu do seu pedido. Por favor, entre em contato com o suporte para resolver o problema.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Ir para seu pedido</Button></a></div><p>Obrigado por usar nossa plataforma.</p><p>Solicitação iniciada de: ${ip}</p><p>Atenciosamente<br> equipe ${api_name} </p></div>",
             "title": "Atividade Detectada em seu Pedido P2P"
-        }
+        },
+        "AUTO_TRADE_ERROR":{
+            "html": "<div><p>Caro(a) ${name},</p><p>Detectamos que sua configuração de negociação automática falhou devido a saldo insuficiente para a seguinte transação. Por favor, verifique e atualize seu saldo. Valor gasto: ${spend_amount}, Moeda gasta: ${spend_coin}, Moeda comprada: ${buy_coin}.</p><p>Obrigado por usar nossa plataforma.</p><p>Atenciosamente, equipe ${api_name}</p></div>",
+            "title": "Erro na sua configuração de negociação automática"
+          }
+          
     }
 }

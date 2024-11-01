@@ -63,6 +63,7 @@ class Verification extends Component {
 			router: {
 				location: { search, query },
 			},
+			getVerificationTab,
 		} = this.props;
 
 		if (user) {
@@ -84,6 +85,9 @@ class Verification extends Component {
 
 				if (initial_tab !== -1) {
 					this.setState({ activeTab: initial_tab }, this.openCurrentTab);
+				}
+				if (getVerificationTab) {
+					this.setState({ activeTab: getVerificationTab });
 				}
 			});
 		}
@@ -776,6 +780,7 @@ const mapStateToProps = (state) => {
 		constants: state.app.constants,
 		remoteTabs,
 		availableRemotePlugins,
+		getVerificationTab: state.app.selectedVerificationTab,
 	};
 };
 

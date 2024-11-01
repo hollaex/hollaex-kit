@@ -61,6 +61,7 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 			width: 100%;
 			height: auto;
 			position: relative;
+			background-color: var(--base_background);
 			.presentation_container {
 				width: $app-content-display-width;
 				height: inherit;
@@ -339,4 +340,152 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 
 .background-color-layer {
 	box-shadow: inset 0 0 0 1000px $app-background-overlay;
+}
+
+.p2p-chat-notification-wrapper-mobile {
+	.ant-notification-notice-message,
+	.ant-notification-notice-description {
+		font-size: 11px !important;
+	}
+}
+
+.p2p-chat-notification-wrapper {
+	background-color: $app-light-background;
+	border-top: 2px solid $colors-notifications-blue;
+	box-shadow: 4px 4px 15px $app-bar-background-color;
+	padding: 10px 10px !important;
+	width: 100%;
+
+	.ant-notification-notice-description,
+	.ant-notification-notice-message,
+	.ant-notification-notice-content,
+	.ant-notification-notice-close {
+		color: $colors-main-black !important;
+	}
+	.ant-notification-notice-message,
+	.ant-notification-notice-description {
+		margin-left: 40px;
+		font-size: 13px;
+	}
+	.ant-notification-notice-close {
+		top: 10px;
+		right: 12px;
+	}
+	.p2p-fire-icon {
+		svg {
+			path {
+				fill: var(--specials_pending-waiting-caution);
+			}
+		}
+	}
+}
+
+.ant-notification-bottomLeft {
+	margin-left: 0px !important;
+	width: 100% !important;
+	max-width: unset !important;
+}
+
+.layout-mobile {
+	.footer-bar-more-options-container {
+		display: flex;
+		flex-direction: column;
+		background-color: $app-sidebar-background;
+
+		.field-wrapper {
+			flex-direction: column;
+			align-items: center !important;
+			margin: unset !important;
+			background-color: $app-sidebar-background;
+			padding: 2%;
+
+			.search-field,
+			.input_icon {
+				width: 100%;
+				color: $colors-main-black !important;
+			}
+
+			.input_icon {
+				width: 2rem !important;
+			}
+
+			.field-content-outline:after,
+			.field-content-outline:before {
+				background-color: transparent !important;
+			}
+
+			.field-error-content {
+				display: none;
+			}
+		}
+
+		.field-wrapper > div:nth-child(1) {
+			width: 90%;
+			background-color: $app-background-color;
+			padding: 1%;
+			border: 1px solid $colors-main-black;
+			border-radius: 5px;
+		}
+
+		.custom-connection-circle,
+		.custom-connection-error-circle {
+			height: 15px;
+			width: 15px;
+			border-radius: 12px;
+			background-color: var(--specials_checks-okay-done);
+		}
+		.custom-connection-error-circle {
+			background-color: var(
+				--specials_notifications-alerts-warnings
+			) !important;
+		}
+
+		.options-container {
+			padding: 4%;
+			font-size: 14px;
+
+			.hot-options-container {
+				height: max-content;
+
+				.hot-function-title {
+					font-size: 18px;
+				}
+
+				.options-field {
+					display: grid;
+					grid-template-columns: repeat(4, 1fr);
+					gap: 15px;
+					padding: 5% 2%;
+
+					.icon-logo {
+						width: 25px;
+						path {
+							fill: $colors-main-black;
+						}
+					}
+					.image-wrapper {
+						margin-left: 15%;
+					}
+					.icon-field {
+						padding: 5%;
+						text-align: center;
+						.assets-icon {
+							position: relative;
+							bottom: 10px;
+							margin-left: 5%;
+						}
+					}
+
+					.option-title {
+						.edit-wrapper__container {
+							font-size: 12px;
+						}
+					}
+				}
+				.secondary-text {
+					font-size: 12px;
+				}
+			}
+		}
+	}
 }

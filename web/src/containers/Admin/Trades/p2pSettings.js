@@ -1,5 +1,7 @@
 /* eslint-disable */
 import React, { useEffect, useState, useRef } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import {
 	Tabs,
 	message,
@@ -9,15 +11,15 @@ import {
 	Checkbox,
 	Input,
 	Switch,
+	Radio,
+	Space,
 } from 'antd';
-import { Radio, Space } from 'antd';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { CloseOutlined } from '@ant-design/icons';
 import { setExchange } from 'actions/assetActions';
 import { requestTiers } from '../Tiers/action';
 import { updateConstants, requestUsers } from './actions';
 import { requestAdminData } from 'actions/appActions';
+import { Coin } from 'components';
 import _debounce from 'lodash/debounce';
 import Coins from '../Coins';
 import _toLower from 'lodash/toLower';
@@ -394,15 +396,15 @@ const P2PSettings = ({ coins, pairs, p2p_config, features, constants }) => {
 
 					{step === 0 && (
 						<div>
-							<div>Trade direction (side)</div>
-							<div>
+							<div style={{ color: 'white' }}>Trade direction (side)</div>
+							<div style={{ color: 'white' }}>
 								Select what kind of deals that the vendors (market makers) can
 								advertise.
 							</div>
 
 							<Select
 								showSearch
-								className="select-box"
+								className="select-box mt-3"
 								placeholder="Vendor sells crypto only"
 								value={side}
 								onChange={(e) => {
@@ -414,44 +416,84 @@ const P2PSettings = ({ coins, pairs, p2p_config, features, constants }) => {
 								<Select.Option value={'all'}>All</Select.Option>
 							</Select>
 
-							<div style={{ fontSize: 13, marginTop: 10, marginBottom: 10 }}>
+							<div
+								style={{
+									fontSize: 13,
+									marginTop: 10,
+									marginBottom: 10,
+									color: 'white',
+								}}
+							>
 								Vendors (makers) can only offer to sell crypto to users (takers)
 							</div>
 							<div
 								style={{ borderBottom: '1px solid grey', marginBottom: 30 }}
 							></div>
-							<div>Crypto assets</div>
-							<div>Select the crypto assets that vendors can transact with</div>
-							{Object.values(coins || {}).map((coin) => {
-								return (
-									<div>
-										<Checkbox
-											style={{ color: 'white' }}
-											checked={digitalCurrencies.includes(coin.symbol)}
-											onChange={(e) => {
-												if (e.target.checked) {
-													if (!digitalCurrencies.includes(coin.symbol)) {
-														setDigitalCurrencies([
-															...digitalCurrencies,
-															coin.symbol,
-														]);
-													}
-												} else {
-													if (digitalCurrencies.includes(coin.symbol)) {
-														setDigitalCurrencies(
-															[...digitalCurrencies].filter(
-																(symbol) => symbol !== coin.symbol
-															)
-														);
-													}
-												}
-											}}
+							<div style={{ color: 'white' }}>Crypto assets</div>
+							<div style={{ color: 'white' }}>
+								Select the crypto assets that vendors can transact with
+							</div>
+							<Select
+								showSearch={true}
+								className="w-100 select-box mt-3"
+								dropdownClassName="p2p-admin-select-asset"
+								placeholder="Select the assets"
+								mode="multiple"
+								tagRender={() => null}
+							>
+								{Object.values(coins || {}).map((coin) => {
+									return (
+										<Select.Option
+											key={coin.fullname}
+											value={coin.fullname}
+											disabled={true}
 										>
-											{coin.fullname} ({coin?.symbol?.toUpperCase()})
-										</Checkbox>
-									</div>
-								);
-							})}
+											<div>
+												<Checkbox
+													style={{ color: '#000' }}
+													checked={digitalCurrencies.includes(coin.symbol)}
+													onChange={(e) => {
+														if (e.target.checked) {
+															if (!digitalCurrencies.includes(coin.symbol)) {
+																const updatedCurrencies = [
+																	...digitalCurrencies,
+																	coin.symbol,
+																];
+																setDigitalCurrencies(updatedCurrencies);
+																localStorage.setItem(
+																	'digitalCurrencies',
+																	JSON.stringify(updatedCurrencies)
+																);
+															}
+														} else {
+															if (digitalCurrencies.includes(coin.symbol)) {
+																const updatedCurrencies = [
+																	...digitalCurrencies,
+																].filter((symbol) => symbol !== coin.symbol);
+																setDigitalCurrencies(updatedCurrencies);
+																localStorage.setItem(
+																	'digitalCurrencies',
+																	JSON.stringify(updatedCurrencies)
+																);
+															}
+														}
+													}}
+												>
+													<span className="mr-2">
+														<Coin
+															type="CS5"
+															iconId={coins[coin?.symbol].icon_id}
+														></Coin>
+													</span>
+													<span>
+														{coin.fullname}({coin?.symbol?.toUpperCase()})
+													</span>
+												</Checkbox>
+											</div>
+										</Select.Option>
+									);
+								})}
+							</Select>
 						</div>
 					)}
 

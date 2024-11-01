@@ -185,6 +185,9 @@ export const EXPLORERS_ENDPOINT = (currency) => {
 		case 'matic':
 			endpoint = 'https://polygonscan.com/tx/';
 			break;
+		case 'pol':
+			endpoint = 'https://polygonscan.com/tx/';
+			break;
 		case 'etc':
 			endpoint = 'https://etc.blockscout.com/tx/';
 			break;

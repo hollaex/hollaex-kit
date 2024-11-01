@@ -72,29 +72,31 @@ export const menuItemsSelector = createSelector(
 				}
 			);
 
+		const getRemoteMenuPath = remoteRoutes[0]?.path;
+		const otherTab = MENU_ITEMS?.others?.map((data) => {
+			if (data?.id === 'others') {
+				return {
+					...data,
+					path: getRemoteMenuPath ? getRemoteMenuPath : '/summary',
+				};
+			}
+			return data;
+		});
+
 		const menuItems = isMobile
-			? remoteRoutes && remoteRoutes.length
-				? [
-						...MENU_ITEMS.top,
-						...featureItems,
-						MENU_ITEMS.middle[0],
-						remoteRoutes[0],
-						...(token ? MENU_ITEMS.bottom : []),
-				  ]
-				: [
-						...MENU_ITEMS.top,
-						...featureItems,
-						...MENU_ITEMS.middle,
-						...(token ? MENU_ITEMS.bottom : []),
-				  ]
+			? [
+					...MENU_ITEMS.top,
+					...featureItems,
+					...MENU_ITEMS.middle,
+					...(token ? MENU_ITEMS.bottom : []),
+			  ]
 			: [
 					...MENU_ITEMS.top,
 					...MENU_ITEMS.middle,
 					...featureItems,
-					...remoteRoutes,
+					...otherTab,
 					...(token ? MENU_ITEMS.bottom : []),
 			  ];
-
 		return menuItems;
 	}
 );
