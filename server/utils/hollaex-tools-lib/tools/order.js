@@ -141,7 +141,6 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 	let side = 'sell';
 
 	const quickTrades = getQuickTrades();
-	const tradePaths = getTradePaths();
 	let quickTradeConfig = quickTrades.find(quickTrade => quickTrade.symbol === originalPair);
 
 	if (!quickTradeConfig) {
@@ -149,7 +148,7 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 		symbol = flippedPair;
 		side = 'buy';
 	}
-	if (!quickTradeConfig && !tradePaths[originalPair] && !tradePaths[flippedPair]) throw new Error(QUICK_TRADE_CONFIG_NOT_FOUND);
+	// if (!quickTradeConfig) throw new Error(QUICK_TRADE_CONFIG_NOT_FOUND);
 
 	let userInfo = user || null;
 
@@ -1290,9 +1289,8 @@ const createTrade = async (order, opts = { additionalHeaders: null }) => {
 	);
 };
 
-const findConversionRate = (startCurrency, endCurrency, rates, visited = new Set(), initialAmount, depth = 0, maxDepth = 10) => {
+const findConversionRate = (startCurrency, endCurrency, rates, visited = new Set(), initialAmount) => {
 	if (startCurrency === endCurrency) return { path: [startCurrency], totalRate: initialAmount, trades: [] };
-	if (depth > maxDepth) return null;
 
 	visited.add(startCurrency);
 	let shortestPath = null;
@@ -1300,7 +1298,7 @@ const findConversionRate = (startCurrency, endCurrency, rates, visited = new Set
 	for (let [pair, { type, active, price, token }] of Object.entries(rates)) {
 		const [from, to] = pair.split('-');
 		if (from === startCurrency && !visited.has(to)) {
-			const result = findConversionRate(to, endCurrency, rates, visited, initialAmount * price, depth + 1, maxDepth);
+			const result = findConversionRate(to, endCurrency, rates, visited, initialAmount * price);
 			if (result) {
 				const currentPath = {
 					path: [startCurrency, ...result.path],
@@ -1323,7 +1321,7 @@ const findConversionRate = (startCurrency, endCurrency, rates, visited = new Set
 				}
 			}
 		} else if (to === startCurrency && !visited.has(from)) {
-			const result = findConversionRate(from, endCurrency, rates, visited, initialAmount / price, depth + 1, maxDepth);
+			const result = findConversionRate(from, endCurrency, rates, visited, initialAmount / price);
 			if (result) {
 				const currentPath = {
 					path: [startCurrency, ...result.path],
@@ -1377,10 +1375,9 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, id = nu
 		throw new Error('Size too small for the rate');
 	};
 
-	let rates = getTradePaths()[symbol] || [];
-	if (!rates || rates?.length < 1) {
-		throw new Error('Rate not found!');
-	};
+	
+	const quickTrades = getQuickTrades();
+
 	let data = null;
 	const tickers = await getTickers();
 	let prices = {};
@@ -1391,7 +1388,7 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, id = nu
 
 	//Find all the available prices with their types on the exchange.
 	if(!data) {
-		for (const rate of rates) {
+		for (const rate of quickTrades) {
 			try {
 				if (rate.type === 'pro' && rate.active) {
 					prices[rate.symbol] = { type: rate.type, price: tickers[rate.symbol].open };
