@@ -262,12 +262,14 @@ const checkStatus = () => {
 				const from = assets[0];
 				const to = assets[1];
 				const rate = toolsLib.order.findConversionRate(from, to, rates, new Set(), 1);
-				rate.trades.forEach(trade => {
-					delete trade.price;
-					delete trade.token;
-					delete trade.size;
-				})
-				tradePaths[symbol] = rate.trades;
+				if (rate) {
+					rate.trades.forEach(trade => {
+						delete trade.price;
+						delete trade.token;
+						delete trade.size;
+					})
+					tradePaths[symbol] = rate.trades;
+				}
 			}
 
 			configuration.tradePaths = tradePaths;

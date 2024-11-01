@@ -1290,8 +1290,9 @@ const createTrade = async (order, opts = { additionalHeaders: null }) => {
 	);
 };
 
-const findConversionRate = (startCurrency, endCurrency, rates, visited = new Set(), initialAmount) => {
+const findConversionRate = (startCurrency, endCurrency, rates, visited = new Set(), initialAmount, depth = 0, maxDepth = 10) => {
 	if (startCurrency === endCurrency) return { path: [startCurrency], totalRate: initialAmount, trades: [] };
+	if (depth > maxDepth) return null;
 
 	visited.add(startCurrency);
 	let shortestPath = null;
@@ -1299,7 +1300,7 @@ const findConversionRate = (startCurrency, endCurrency, rates, visited = new Set
 	for (let [pair, { type, active, price, token }] of Object.entries(rates)) {
 		const [from, to] = pair.split('-');
 		if (from === startCurrency && !visited.has(to)) {
-			const result = findConversionRate(to, endCurrency, rates, visited, initialAmount * price);
+			const result = findConversionRate(to, endCurrency, rates, visited, initialAmount * price, depth + 1, maxDepth);
 			if (result) {
 				const currentPath = {
 					path: [startCurrency, ...result.path],
@@ -1322,7 +1323,7 @@ const findConversionRate = (startCurrency, endCurrency, rates, visited = new Set
 				}
 			}
 		} else if (to === startCurrency && !visited.has(from)) {
-			const result = findConversionRate(from, endCurrency, rates, visited, initialAmount / price);
+			const result = findConversionRate(from, endCurrency, rates, visited, initialAmount / price, depth + 1, maxDepth);
 			if (result) {
 				const currentPath = {
 					path: [startCurrency, ...result.path],
