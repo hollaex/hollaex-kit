@@ -52,6 +52,12 @@ const P2POrders = ({
 			.catch((err) => err);
 	}, [refresh]);
 
+	useEffect(() => {
+		if (tab !== 1 && isMobile) {
+			setIsFilter(false);
+		}
+	}, [tab]);
+
 	const formatAmount = (currency, amount) => {
 		const min = coins[currency].min;
 		const formattedAmount = formatToCurrency(amount, min);

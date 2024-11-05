@@ -95,7 +95,7 @@
 			"OPTION_BUG": "Report bug",
 			"OPTION_PERSONAL_INFO": "Change personal information",
 			"OPTION_BANK_TRANSFER": "Bank wire transfer",
-			"OPTION_REQUEST": "Request Invite for the HollaEx Exchange"
+			"OPTION_REQUEST": "Request Invite for the Exchange"
 		},
 		"SUBJECT_LABEL": "Subject",
 		"SUBJECT_PLACEHOLDER": "Type the subject of your issue",
@@ -1660,7 +1660,7 @@
 	"WITHDRAWALS_FORM_METHOD": "Method",
 	"WITHDRAWALS_FORM_ADDRESS_EXCHANGE": "Exchange user email",
 	"WITHDRAWALS_FORM_EXCHANGE_PLACEHOLDER": "Input user's email on this exchange",
-	"WITHDRAWALS_FORM_MAIL_INFO": "Input a user's HollaEx account email that is on this exchange and transfer for free.",
+	"WITHDRAWALS_FORM_MAIL_INFO": "Input a user's account email that is on this exchange and transfer for free.",
 	"RISKY_TRADE_DISCLAIMER": {
 		"MSG_1": "Please check that you indeed want to trade {0} ({1}) as this asset may carry a high risk of",
 		"MSG_2": "extreme volatility",
@@ -2201,7 +2201,7 @@
 		"CANCEL_STATUS_MESSAGE": "Your P2P order has been cancelled",
 		"CONFIRM_STATUS_MESSAGE": "Your P2P order has been confirmed",
 		"NEW_ORDER_CREATED": "New P2P Order has been created",
-		"CRYPTO_RELEASE_STATUS_MESSAGE": "Crypto amount has been released for your P2P order",
+		"CRYPTO_RELEASE_STATUS_MESSAGE": "Crypto has been released from order",
 		"ADDITIONAL_PAYMENT_DETAILS": "Add an additional payment details",
 		"PAYMENT_FIELD_INFO": "This new payment field is additional and should assist P2P participants in their fiat currency transfers. This should be account details related to payment method. This may including phone numbers, usernames, unique account numbers, and other necessary information for transactions depending on the payment methods system.",
 		"PAYMENT_DETAIL_NAME": "Payment detail name",

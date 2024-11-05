@@ -139,6 +139,7 @@ const P2P = ({
 							setSelectedTransaction={setSelectedTransaction}
 							changeProfileTab={changeProfileTab}
 							setTab={setTab}
+							tab={tab}
 						/>
 					</TabPane>
 
