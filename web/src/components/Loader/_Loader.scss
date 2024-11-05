@@ -6,7 +6,7 @@ $loader-full--height: 5rem;
 	position: absolute;
 	width: 100%;
 	height: $loader-absolute--height;
-	z-index: 99999;
+	z-index: 1;
 	.loader_background {
 		height: $loader-absolute--height;
 	}
