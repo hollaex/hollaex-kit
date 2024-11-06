@@ -1,6 +1,11 @@
+import React from 'react';
 import Loadable from 'react-loadable';
-import { Loader as LoadingComponent } from 'components';
+import { Loader } from 'components';
 export { PATHS } from './Admin/paths';
+
+const LoadingComponent = ({ isLoading, error }) => {
+	return <Loader relative={true} background={false} />;
+};
 
 export const App = Loadable({
 	loader: () => import('./App'),
