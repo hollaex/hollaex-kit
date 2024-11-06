@@ -48,6 +48,7 @@ const P2POrder = ({
 	p2p_message,
 	p2p_status,
 	p2p_transaction_id,
+	isChat,
 }) => {
 	const coin = coins[selectedTransaction.deal.buying_asset];
 	const [selectedOrder, setSelectedOrder] = useState(selectedTransaction);
@@ -68,7 +69,6 @@ const P2POrder = ({
 	const [userFeedback, setUserFeedback] = useState([]);
 	const [userProfile, setUserProfile] = useState();
 	const [selectedProfile, setSelectedProfile] = useState();
-	const [isChat, setIsChat] = useState(false);
 	const ref = useRef(null);
 	const buttonRef = useRef(null);
 
@@ -875,7 +875,11 @@ const P2POrder = ({
 			)}
 			<div
 				className={classnames(
-					...['P2pOrder p2p-order-wrapper', isMobile ? 'mobile-view-p2p' : '']
+					...[
+						'P2pOrder p2p-order-wrapper',
+						isMobile ? 'mobile-view-p2p' : '',
+						isChat ? 'p2p-order-chat-wrapper' : '',
+					]
 				)}
 			>
 				{!isMobile && (
@@ -1819,8 +1823,10 @@ const P2POrder = ({
 								setDisplayAppealModel={setDisplayAppealModel}
 								setAppealSide={setAppealSide}
 								setDisplayFeedbackModel={setDisplayFeedbackModel}
-								setIsChat={setIsChat}
 								ICONS={ICONS}
+								updateTransaction={updateTransaction}
+								updateStatus={updateStatus}
+								updateP2PStatus={updateP2PStatus}
 							/>
 						)}
 						{isChat && (
@@ -1836,14 +1842,14 @@ const P2POrder = ({
 								setDisplayUserFeedback={setDisplayUserFeedback}
 								setUserProfile={setUserProfile}
 								isChat={isChat}
-								setIsChat={setIsChat}
 							/>
 						)}
 					</div>
 				)}
 			</div>
 
-			{user.id === selectedOrder?.user_id &&
+			{!isMobile &&
+				user.id === selectedOrder?.user_id &&
 				selectedOrder?.transaction_status === 'active' &&
 				selectedOrder.user_status === 'pending' && (
 					<div className="confirm-notify-button-container">
@@ -1897,6 +1903,7 @@ const mapStateToProps = (state) => ({
 	p2p_transaction_id: state.p2p.transaction_id,
 	user: state.user,
 	p2p_config: state.app.constants.p2p_config,
+	isChat: state.app.isChat,
 });
 
 export default connect(mapStateToProps)(withRouter(withConfig(P2POrder)));
