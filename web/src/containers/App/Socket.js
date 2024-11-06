@@ -6,7 +6,7 @@ import { notification } from 'antd';
 import {
 	BellOutlined,
 	ExclamationCircleOutlined,
-	FireOutlined,
+	FireFilled,
 	MailOutlined,
 } from '@ant-design/icons';
 import debounce from 'lodash.debounce';
@@ -447,19 +447,11 @@ class Container extends Component {
 						this.props.p2pAddMessage(data.data);
 					}
 					if (
-						!this.props?.router?.location?.pathname?.includes('/p2p/order/')
+						!isMobile
+							? !this.props?.router?.location?.pathname?.includes('/p2p/order/')
+							: !this.props?.isChat
 					) {
 						const key = `notification_${Date.now()}`;
-						const displayIcon =
-							data?.action === 'getStatus' &&
-							(data?.data?.status === 'appeal' ||
-								data?.data?.status === 'cancelled') ? (
-								<ExclamationCircleOutlined />
-							) : data?.action === 'getStatus' ? (
-								<BellOutlined />
-							) : (
-								<MailOutlined />
-							);
 
 						const notificationDetails = {
 							key,
@@ -491,6 +483,8 @@ class Container extends Component {
 										}}
 										onClick={() => {
 											window.location.href = `${window.location.origin}/p2p/order/${data.data.id}`;
+											data?.data?.type === 'message' &&
+												localStorage.setItem('isChat', true);
 										}}
 									>
 										{STRINGS['P2P.CLICK_TO_VIEW']}
@@ -503,7 +497,7 @@ class Container extends Component {
 							placement: isMobile ? 'bottomLeft' : 'bottomRight',
 							type: 'info',
 							duration: 0,
-							icon: <FireOutlined className="p2p-fire-icon" />,
+							icon: <FireFilled className="p2p-fire-icon" />,
 							onClose: () => {
 								this.openNotifications = this.openNotifications?.filter(
 									(notification) => notification?.key !== key
@@ -517,10 +511,23 @@ class Container extends Component {
 									const newLastNotification = this.openNotifications[
 										this.openNotifications?.length - 1
 									];
+
+									const newLastNotificationMessage =
+										newLastNotification?.message;
 									notification.close(newLastNotification?.key);
 									notification.open({
 										...newLastNotification,
-										icon: displayIcon,
+										icon:
+											newLastNotificationMessage ===
+											(STRINGS['P2P.CANCEL_STATUS_MESSAGE'] ||
+												STRINGS['P2P.APPEAL_STATUS_MESSAGE']) ? (
+												<ExclamationCircleOutlined />
+											) : newLastNotificationMessage ===
+											  STRINGS['P2P.NEW_MESSAGE'] ? (
+												<MailOutlined />
+											) : (
+												<BellOutlined />
+											),
 										className: isMobile
 											? 'p2p-chat-notification-wrapper p2p-chat-notification-wrapper-mobile'
 											: 'p2p-chat-notification-wrapper',
@@ -538,11 +545,20 @@ class Container extends Component {
 							const previousNotification = this.openNotifications[
 								this.openNotifications?.length - 2
 							];
-
+							const previousMessage = previousNotification?.message;
 							notification.close(previousNotification?.key);
 							notification.open({
 								...previousNotification,
-								icon: displayIcon,
+								icon:
+									previousMessage ===
+									(STRINGS['P2P.CANCEL_STATUS_MESSAGE'] ||
+										STRINGS['P2P.APPEAL_STATUS_MESSAGE']) ? (
+										<ExclamationCircleOutlined />
+									) : previousMessage === STRINGS['P2P.NEW_MESSAGE'] ? (
+										<MailOutlined />
+									) : (
+										<BellOutlined />
+									),
 								className: isMobile
 									? 'p2p-chat-notification-wrapper p2p-chat-notification-wrapper-mobile p2p-chat-notification'
 									: 'p2p-chat-notification-wrapper p2p-chat-notification',
@@ -556,6 +572,7 @@ class Container extends Component {
 							notification.close(oldestNotification?.key);
 						}
 					}
+
 					break;
 				default:
 					break;
@@ -828,6 +845,7 @@ const mapStateToProps = (store) => ({
 	info: store.app.info,
 	token: store.auth.token,
 	verifyToken: store.auth.verifyToken,
+	isChat: store.app.isChat,
 });
 
 const mapDispatchToProps = (dispatch) => ({
