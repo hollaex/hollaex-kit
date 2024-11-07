@@ -13591,6 +13591,9 @@ table th {
       width: 3rem !important;
       height: 3rem !important; }
 
+.custom-email-wrapper .ant-select-selector {
+  color: rgba(0, 0, 0, 0.85); }
+
 .sidebar-row {
   min-height: 3rem;
   min-width: 10rem; }
