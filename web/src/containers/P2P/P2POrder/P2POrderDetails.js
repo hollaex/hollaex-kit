@@ -1,11 +1,14 @@
 import React from 'react';
 import { withRouter } from 'react-router';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import { isMobile } from 'react-device-detect';
 import { Button, message, Tooltip } from 'antd';
 import { CheckCircleTwoTone } from '@ant-design/icons';
 
 import STRINGS from 'config/localizedStrings';
 import { Coin, EditWrapper, Image } from 'components';
+import { setIsChat } from 'actions/appActions';
 
 const P2POrderDetails = ({
 	user,
@@ -24,7 +27,15 @@ const P2POrderDetails = ({
 	setDisplayFeedbackModel,
 	setIsChat,
 	ICONS,
+	updateP2PStatus,
+	updateStatus,
+	updateTransaction,
 }) => {
+	const onHandleChat = () => {
+		setIsChat(true);
+		localStorage.setItem('isChat', true);
+	};
+
 	return (
 		<div
 			className={
@@ -59,7 +70,7 @@ const P2POrderDetails = ({
 				</div>
 				{isMobile && (
 					<div className="chat-link-container">
-						<span onClick={() => setIsChat(true)}>
+						<span onClick={() => onHandleChat()}>
 							<EditWrapper stringId="USER_SETTINGS.TITLE_CHAT">
 								<span className="chat-link text-decoration-underline">
 									{STRINGS['USER_SETTINGS.TITLE_CHAT']?.toUpperCase()}
@@ -613,8 +624,52 @@ const P2POrderDetails = ({
 						)}
 				</div>
 			</div>
+			{user.id === selectedOrder?.user_id &&
+				selectedOrder?.transaction_status === 'active' &&
+				selectedOrder.user_status === 'pending' && (
+					<div className="confirm-notify-button-container">
+						<Button
+							className="cancel-btn"
+							onClick={async () => {
+								try {
+									setDisplayCancelWarning(true);
+								} catch (error) {
+									message.error(error.data.message);
+								}
+							}}
+						>
+							<EditWrapper stringId="P2P.CANCEL">
+								{STRINGS['P2P.CANCEL']}
+							</EditWrapper>
+						</Button>
+						<Button
+							className="confirm-btn"
+							onClick={async () => {
+								try {
+									await updateTransaction({
+										id: selectedOrder.id,
+										user_status: 'confirmed',
+									});
+									updateP2PStatus();
+									updateStatus('confirmed');
+									message.success(STRINGS['P2P.CONFIRMED_TRANSACTION']);
+								} catch (error) {
+									message.error(error.data.message);
+								}
+							}}
+						>
+							<EditWrapper stringId="P2P.CONFIRM_TRANSFER">
+								{STRINGS['P2P.CONFIRM_TRANSFER']}
+							</EditWrapper>
+						</Button>
+					</div>
+				)}
 		</div>
 	);
 };
 
-export default withRouter(P2POrderDetails);
+const mapDispatchToProps = (dispatch) => ({
+	setIsChat: bindActionCreators(setIsChat, dispatch),
+});
+
+export default connect('', mapDispatchToProps)(withRouter(P2POrderDetails));
