@@ -26,7 +26,11 @@ import chat from './containers/Admin/Chat';
 import store from './store';
 import PluginConfig from 'containers/Admin/PluginConfig';
 import Loadable from 'react-loadable';
-import { Loader as LoadingComponent } from 'components';
+import { Loader } from 'components';
+
+const LoadingComponent = ({ isLoading, error }) => {
+	return <Loader relative={true} background={false} />;
+};
 
 const Container = Loadable({
 	loader: () => import('./containers/App'),
