@@ -29,7 +29,7 @@ import Loadable from 'react-loadable';
 import { Loader } from 'components';
 
 const LoadingComponent = ({ isLoading, error }) => {
-	return <Loader relative={true} background={false} />;
+	return <Loader background={false} />;
 };
 
 const Container = Loadable({
