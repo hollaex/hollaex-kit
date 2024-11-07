@@ -103,7 +103,6 @@ const initializeTopic = (topic, ws, symbol) => {
 			break;
 
 		case 'p2pChat':
-			addSubscriber(WEBSOCKET_CHANNEL(topic, symbol), ws);
 			addSubscriber(WEBSOCKET_CHANNEL(topic, ws.auth.sub.id), ws);
 			break;
 		case 'admin':
@@ -176,7 +175,6 @@ const terminateTopic = (topic, ws, symbol) => {
 			ws.send(JSON.stringify({ message: `Unsubscribed from channel ${topic}:${ws.auth.sub.id}` }));
 			break;
 		case 'p2pChat':
-			removeSubscriber(WEBSOCKET_CHANNEL(topic, symbol), ws);
 			removeSubscriber(WEBSOCKET_CHANNEL(topic, ws.auth.sub.id), ws);
 			ws.send(JSON.stringify({ message: `Unsubscribed from channel ${topic}:${ws.auth.sub.id}` }));
 			break;

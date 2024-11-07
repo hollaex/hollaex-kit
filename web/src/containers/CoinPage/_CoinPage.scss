@@ -43,6 +43,11 @@
 		width: 65%;
 		height: 100%;
 
+		.asset-icon {
+			position: relative;
+			top: 5px;
+		}
+
 		.link {
 			color: $colors-notifications-blue;
 			text-decoration: underline;

@@ -5,8 +5,9 @@ const { SERVER_PATH } = require('../constants');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { P2P_SUPPORTED_PLANS } = require(`${SERVER_PATH}/constants`);
 const { getUserByKitId } = require('./user');
-const { subscribedToCoin, getKitConfig } = require('./common');
+const { subscribedToCoin, getKitConfig, subscribedToPair } = require('./common');
 const { transferAssetByKitIds, getUserBalanceByKitId } = require('./wallet');
+const { testBroker } = require('./broker');
 const { Op } = require('sequelize');
 const BigNumber = require('bignumber.js');
 const { getKitCoin } = require('./common');
@@ -15,6 +16,7 @@ const dbQuery = require('./database/query');
 const uuid = require('uuid/v4');
 const { parse } = require('json2csv');
 const moment = require('moment');
+const { client } = require('./database/redis');
 const { sendEmail } = require('../../../mail');
 const { MAILTYPE } = require('../../../mail/strings');
 
@@ -22,6 +24,7 @@ const {
 	NO_DATA_FOR_CSV,
     FUNDING_ACCOUNT_INSUFFICIENT_BALANCE,
     USER_NOT_FOUND,
+	P2P_DEAL_NOT_FOUND
 } = require(`${SERVER_PATH}/messages`);
 
 
@@ -114,7 +117,31 @@ const fetchP2PDeals = async (opts = {
 				}
 			});
 	} else {
-        return dbQuery.findAndCountAllWithRows('p2pDeal', query);
+		const p2pDeals = await client.getAsync(`p2p-deals${opts.user_id}`);
+
+		if (p2pDeals) return JSON.parse(p2pDeals);
+		else {
+			const deals = await dbQuery.findAndCountAllWithRows('p2pDeal', query);
+			const brokers = await getModel('broker').findAll({ type: 'dynamic' });
+			for (let deal of (deals?.data || [])) {
+				if (deal.dynamic_pair) {
+					const broker = brokers.find(broker => broker.symbol === deal.dynamic_pair);
+					const { formula, increment_size } = broker;
+		
+					const result = await testBroker({
+						formula,
+						increment_size,
+						spread: 1
+					});
+
+					deal.exchange_rate = result.buy_price;
+				}
+			}
+
+			await client.setexAsync(`p2p-deals${opts.user_id}`, 30, JSON.stringify(deals));
+			
+			return deals;
+		}
 	}
 };
 
@@ -206,6 +233,8 @@ const createP2PDeal = async (data) => {
 		total_order_amount,
 		min_order_value,
 		max_order_value,
+		price_type,
+		dynamic_pair,
     } = data;
         
     const exchangeInfo = getKitConfig().info;
@@ -231,6 +260,10 @@ const createP2PDeal = async (data) => {
         throw new Error('Invalid coin ' + buying_asset);
     };
 
+	if (price_type === 'dynamic' && !subscribedToPair(dynamic_pair)) {
+        throw new Error('Invalid pair ' + dynamic_pair);
+    };
+
 	const balance = await getP2PAccountBalance(merchant_id, buying_asset);
 
 	if (new BigNumber(balance).comparedTo(new BigNumber(total_order_amount)) !== 1) {
@@ -253,11 +286,12 @@ const createP2PDeal = async (data) => {
 		throw new Error('spread cannot be less than 0');
 	};
 
-	if (exchange_rate < 0) {
+	if (price_type === 'static' && exchange_rate < 0) {
 		throw new Error('exchange rate cannot be less than 0');
 	};
 
 	data.status = true;
+
 
 	return getModel('p2pDeal').create(data, {
 		fields: [
@@ -267,6 +301,7 @@ const createP2PDeal = async (data) => {
 			'buying_asset',
 			'spending_asset',
 			'exchange_rate',
+			'dynamic_pair',
 			'spread',
 			'total_order_amount',
 			'min_order_value',
@@ -292,6 +327,8 @@ const updateP2PDeal = async (data) => {
 		total_order_amount,
 		min_order_value,
 		max_order_value,
+		price_type,
+		dynamic_pair,
 		payment_method_used,
 		status,
     } = data;
@@ -314,6 +351,7 @@ const updateP2PDeal = async (data) => {
 				throw new Error('Merchant id is not the same');
 			}
 		});
+		await client.delAsync(`p2p-deals${merchant_id}`);
 		await getModel('p2pDeal').update({ status }, { where : { id : edited_ids }}); 
 		return { message : 'success' };
 	}
@@ -337,6 +375,10 @@ const updateP2PDeal = async (data) => {
         throw new Error('Invalid coin ' + buying_asset);
     };
 
+	if (price_type === 'dynamic' && !subscribedToPair(dynamic_pair)) {
+        throw new Error('Invalid pair ' + dynamic_pair);
+    };
+
 	const balance = await getP2PAccountBalance(merchant_id, buying_asset);
 
 	if (new BigNumber(balance).comparedTo(new BigNumber(total_order_amount)) !== 1) {
@@ -358,7 +400,7 @@ const updateP2PDeal = async (data) => {
 		throw new Error('spread cannot be less than 0');
 	};
 
-	if (exchange_rate < 0) {
+	if (price_type === 'static' && exchange_rate < 0) {
 		throw new Error('exchange rate cannot be less than 0');
 	};
 
@@ -366,6 +408,8 @@ const updateP2PDeal = async (data) => {
 	if (data.status == null) {
 		data.status = true;
 	};
+
+	await client.delAsync(`p2p-deals${merchant_id}`);
 
 	return p2pDeal.update(data, {
 		fields: [
@@ -375,6 +419,7 @@ const updateP2PDeal = async (data) => {
 			'buying_asset',
 			'spending_asset',
 			'exchange_rate',
+			'dynamic_pair',
 			'spread',
 			'total_order_amount',
 			'min_order_value',
@@ -387,6 +432,28 @@ const updateP2PDeal = async (data) => {
 		]
 	});
 };
+
+const deleteP2PDeal = async (removed_ids, user_id) => {
+	const deals = await getModel('p2pDeal').findAll({
+		where: {
+			id: removed_ids,
+			merchant_id: user_id 
+		}
+	});
+
+	if (deals?.length === 0) {
+		throw new Error(P2P_DEAL_NOT_FOUND);
+	};
+
+	await client.delAsync(`p2p-deals${user_id}`);
+	const promises = deals.map(async (deal) => {
+		return await deal.destroy();
+	  });
+	
+	  const results = await Promise.all(promises);
+	  return results;
+};
+
 
 const createP2PTransaction = async (data) => {
 	let {
@@ -409,7 +476,8 @@ const createP2PTransaction = async (data) => {
 
 	const p2pDeal = await getModel('p2pDeal').findOne({ where: { id: deal_id } });
 
-	const { max_order_value, min_order_value, exchange_rate, spread } = p2pDeal;
+	const { max_order_value, min_order_value, spread, price_type } = p2pDeal;
+	let { exchange_rate } = p2pDeal;
 	const { merchant_id } = p2pDeal;
 
     if (!p2pDeal) {
@@ -449,6 +517,19 @@ const createP2PTransaction = async (data) => {
 
 	const merchantBalance = await getP2PAccountBalance(side === 'buy' ? user_id : merchant_id, p2pDeal.buying_asset);
 
+	if (price_type === 'dynamic') {
+		const broker = await getModel('broker').findOne({ type: 'dynamic', symbol:  p2pDeal.dynamic_pair });
+		const { formula, increment_size } = broker;
+
+		const result = await testBroker({
+			formula,
+			increment_size,
+			spread: 1
+		});
+
+		exchange_rate = result.buy_price;
+		
+	}
 	const price = new BigNumber(exchange_rate).multipliedBy(p2pDeal.side === 'sell' ? (1 + (spread / 100)) : (1 - (spread / 100)));
 	const amount_digital_currency = new BigNumber(amount_fiat).dividedBy(price).toNumber();
 
@@ -977,15 +1058,20 @@ const updateMerchantProfile = async (data) => {
 const createMerchantFeedback = async (data) => {
 	const transaction = await getModel('p2pTransaction').findOne({ where: { id: data.transaction_id } });
 	
+	const deal = await getModel('p2pDeal').findOne({ where : { id: transaction.deal_id }});
 	if (!transaction) {
 		throw new Error ('no transaction found');
 	}
 
-	if (transaction.user_id !== data.user_id) {
+	if (deal.side === 'sell' && (transaction.user_id !== data.user_id && transaction.merchant_id !== data.user_id)) {
 		throw new Error ('unauthorized');
-	}	
+	};	
 
-	const foundFeedback = await getModel('P2pMerchantsFeedback').findOne({ where: { transaction_id: data.transaction_id } });
+	if (deal.side === 'buy' && (transaction.merchant_id !== data.user_id && transaction.user_id !== data.user_id)) {
+		throw new Error ('unauthorized');
+	};
+
+	const foundFeedback = await getModel('P2pMerchantsFeedback').findOne({ where: { transaction_id: data.transaction_id, user_id: data.user_id } });
 
 	if (foundFeedback) {
 		throw new Error ('you already made a feedback');
@@ -999,7 +1085,7 @@ const createMerchantFeedback = async (data) => {
 		throw new Error ('undefined rating');
 	}
 
-	data.merchant_id = transaction.merchant_id;
+	data.merchant_id = data.user_id ===  transaction.merchant_id ? transaction?.user_id : transaction.merchant_id;
 	return getModel('P2pMerchantsFeedback').create(data, {
 		fields: [
 			'merchant_id',
@@ -1014,6 +1100,7 @@ const createMerchantFeedback = async (data) => {
 const fetchP2PFeedbacks = async (opts = {
 	transaction_id: null,
 	merchant_id: null,
+	user_id: null,
     limit: null,
     page: null,
     order_by: null,
@@ -1031,6 +1118,7 @@ const fetchP2PFeedbacks = async (opts = {
 			created_at: timeframe,
 		...(opts.transaction_id && { transaction_id: opts.transaction_id }),
 		...(opts.merchant_id && { merchant_id: opts.merchant_id }),
+		...(opts.user_id && { user_id: opts.user_id }),
 		},
 		order: [ordering],
 		...(!opts.format && pagination),
@@ -1127,6 +1215,7 @@ module.exports = {
 	fetchP2PTransactions,
 	fetchP2PDisputes,
 	updateP2PDeal,
+	deleteP2PDeal,
 	fetchP2PFeedbacks,
 	fetchP2PProfile
 };

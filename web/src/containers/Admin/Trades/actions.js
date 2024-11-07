@@ -132,10 +132,14 @@ export const getBrokerConnect = (
 	api_secret,
 	password
 ) => {
-	let urlString = `/broker/connect?exchange_id=${exchange_id}&api_key=${api_key}&api_secret=${api_secret}`;
+	let urlString = `/broker/connect?exchange_id=${encodeURIComponent(
+		exchange_id
+	)}&api_key=${encodeURIComponent(api_key)}&api_secret=${encodeURIComponent(
+		api_secret
+	)}`;
 
 	if (exchange_id === 'okx') {
-		urlString += `&password=${password}`;
+		urlString += `&password=${encodeURIComponent(password)}`;
 	}
 
 	return requestAuthenticated(urlString);

@@ -202,6 +202,25 @@
 		top: 0;
 		left: 0;
 	}
+	.transactions-history-table {
+		.table_body-wrapper {
+			.expandable-container {
+				.custom-row-line {
+					width: 5px;
+					height: 1px;
+					background-color: $colors-main-black;
+				}
+				.blue-link {
+					.edit-wrapper__container {
+						text-decoration: underline !important;
+					}
+				}
+				.blue-link:hover {
+					cursor: pointer;
+				}
+			}
+		}
+	}
 	.table-wrapper {
 		.table_body-wrapper.with_icon {
 			tr td:first-child {
@@ -297,7 +316,7 @@
 	}
 
 	p {
-		margin-right: 1rem;
+		margin-right: 5px;
 		font-weight: thin;
 		margin-bottom: 0px;
 	}

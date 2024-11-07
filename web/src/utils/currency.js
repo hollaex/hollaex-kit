@@ -63,24 +63,27 @@ export const getFormat = (min = 0, fullFormat, amount) => {
 			.join('');
 		return { digit: point.length, format: `0,0.[${res}]` };
 	} else {
-		if(amount) {
+		if (amount) {
 			const [digitsBeforeDecimal] = amount?.toString().split('.');
-			return digitsBeforeDecimal.length > 4 ?{ digit:  0, format: `0,0` } : { digit:  4, format: `0,0.[0000]` };
-		} 
+			return digitsBeforeDecimal.length > 4
+				? { digit: 0, format: `0,0` }
+				: { digit: 4, format: `0,0.[0000]` };
+		}
 
-		return  { digit:  4, format: `0,0.[0000]` };
+		return { digit: 4, format: `0,0.[0000]` };
 	}
 };
 
-export const countDecimals =  (val) => {
-	if(Math.floor(val) === val) return 0;
-	return val.toString().split(".")[1].length || 0; 
-  }
-  
+export const countDecimals = (val) => {
+	if (Math.floor(val) === val) return 0;
+	return val.toString().split('.')[1].length || 0;
+};
 
 export const formatToCurrency = (amount = 0, min = 0, fullFormat = false) => {
 	let formatObj = getFormat(min, fullFormat, amount);
-	return numbro(roundNumber(amount, formatObj.digit)).format(formatObj.format);
+	return numbro(roundNumber(amount, formatObj.digit))?.format(
+		formatObj?.format
+	);
 };
 
 export const formatCurrencyByIncrementalUnit = (

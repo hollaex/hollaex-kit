@@ -1,13 +1,13 @@
 /* eslint-disable */
 import React, { useState, useEffect } from 'react';
+import { browserHistory } from 'react-router';
+import { connect } from 'react-redux';
 import { Table, Button, Spin, Input } from 'antd';
 import { requestDeals } from './actions';
-import moment from 'moment';
 import BigNumber from 'bignumber.js';
-import { ExclamationCircleFilled } from '@ant-design/icons';
-import { connect } from 'react-redux';
-import { CloseOutlined } from '@ant-design/icons';
-const P2PDeals = ({ coins }) => {
+import moment from 'moment';
+
+const P2PDeals = ({ coins, coinSymbols }) => {
 	const [userData, setUserData] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [queryValues, setQueryValues] = useState();
@@ -35,10 +35,36 @@ const P2PDeals = ({ coins }) => {
 			key: 'merchant_id',
 			render: (user_id, data) => {
 				return (
-					<div className="d-flex">
+					<div
+						className="d-flex"
+						onClick={() =>
+							browserHistory?.push(`admin/user?id=${data?.merchant_id}`)
+						}
+					>
 						<Button className="ant-btn green-btn ant-tooltip-open ant-btn-primary">
 							{data?.merchant_id}
 						</Button>
+					</div>
+				);
+			},
+		},
+		{
+			title: 'Side',
+			dataIndex: 'side',
+			key: 'side',
+			render: (user_id, data) => {
+				return (
+					<div
+						className="d-flex justify-content-center"
+						style={{
+							padding: '2% 10%',
+							backgroundColor:
+								data?.side === 'sell'
+									? 'var(--trading_selling-related-elements)'
+									: 'var(--specials_checks-okay-done)',
+						}}
+					>
+						{data?.side?.toUpperCase()}
 					</div>
 				);
 			},
@@ -48,10 +74,18 @@ const P2PDeals = ({ coins }) => {
 			dataIndex: 'price',
 			key: 'price',
 			render: (user_id, data) => {
+				const incrementUnit =
+					coinSymbols?.[data.spending_asset]?.increment_unit;
+				const decimalPoint = new BigNumber(incrementUnit).dp();
+				const sourceAmount = new BigNumber(
+					data.exchange_rate * (1 + Number(data.spread || 0))
+				)
+					.decimalPlaces(decimalPoint)
+					.toNumber();
+
 				return (
 					<div className="d-flex">
-						{data.exchange_rate * (1 + Number(data.spread || 0))}{' '}
-						{data.spending_asset.toUpperCase()}
+						{sourceAmount} {data.spending_asset.toUpperCase()}
 					</div>
 				);
 			},
@@ -108,6 +142,28 @@ const P2PDeals = ({ coins }) => {
 				return <div className="d-flex">{formatDate(data?.created_at)}</div>;
 			},
 		},
+		// {
+		// 	title: 'Edit',
+		// 	dataIndex: 'edit',
+		// 	key: 'edit',
+		// 	render: (user_id, data) => {
+		// 		return (
+		// 			<div className="d-flex">
+		// 				<Button
+		// 					onClick={(e) => {
+		// 						e.stopPropagation();
+		// 						// setEditMode(true);
+		// 						// setSelectedCoin(data);
+		// 						// setDisplayCostumizationModal(true);
+		// 					}}
+		// 					style={{ backgroundColor: '#CB7300', color: 'white' }}
+		// 				>
+		// 					Edit
+		// 				</Button>
+		// 			</div>
+		// 		);
+		// 	},
+		// },
 
 		// {
 		// 	title: 'Action',
@@ -144,6 +200,17 @@ const P2PDeals = ({ coins }) => {
 		setIsLoading(true);
 		requestDeals({ page, limit, ...queryValues })
 			.then((response) => {
+				let buyCount = 0;
+				let sellCount = 0;
+
+				response?.data?.map((item) => {
+					if (item.side === 'buy') {
+						buyCount++;
+					} else if (item.side === 'sell') {
+						sellCount++;
+					}
+				});
+
 				setUserData(
 					page === 1 ? response.data : [...userData, ...response.data]
 				);
@@ -154,6 +221,8 @@ const P2PDeals = ({ coins }) => {
 					page,
 					currentTablePage: page === 1 ? 1 : queryFilters.currentTablePage,
 					isRemaining: response.count > page * limit,
+					buyCount,
+					sellCount,
 				});
 
 				setIsLoading(false);
@@ -254,8 +323,27 @@ const P2PDeals = ({ coins }) => {
 							</span> */}
 							{/* <span>Total: {queryFilters.total || '-'}</span> */}
 							<div>
-								<span style={{ fontWeight: 'bold' }}>Total disputes:</span>{' '}
+								<span className="font-weight-bold">Total Public Deals:</span>{' '}
 								{queryFilters.total}
+								<div className="d-flex font-weight-bold justify-content-end">
+									<div
+										style={{
+											color: 'var(--specials_checks-okay-done)',
+										}}
+									>
+										<span>Buy:</span>
+										<span className="ml-1">{queryFilters?.buyCount}</span>
+									</div>
+									<div
+										className="ml-2"
+										style={{
+											color: 'var(--trading_selling-related-elements)',
+										}}
+									>
+										<span>Sell:</span>
+										<span className="ml-1">{queryFilters?.sellCount}</span>
+									</div>
+								</div>
 							</div>
 
 							<div>-</div>
@@ -334,6 +422,7 @@ const mapStateToProps = (state) => ({
 	coinObjects: state.app.allContracts.coins,
 	broker: state.app.broker,
 	features: state.app.constants.features,
+	coinSymbols: state.app.coins,
 });
 
 const mapDispatchToProps = (dispatch) => ({});

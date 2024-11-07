@@ -106,6 +106,14 @@ const HistoryDisplay = (props) => {
 								onClick={() => browserHistory.push('wallet/deposit')}
 							/>
 						)}
+						{!isMobile && !isDepositFromWallet && (
+							<ActionNotification
+								stringId="ACCORDIAN.VOLUME"
+								text={STRINGS['ACCORDIAN.VOLUME']}
+								className="blue-icon"
+								onClick={() => browserHistory.push('wallet/volume')}
+							/>
+						)}
 						{!isMobile && count > 0 && !isFromWallet && (
 							<ActionNotification
 								stringId="TRANSACTION_HISTORY.TEXT_DOWNLOAD"

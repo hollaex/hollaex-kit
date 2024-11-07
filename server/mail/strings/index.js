@@ -65,6 +65,9 @@ const MAILTYPE = {
 	P2P_VENDOR_CONFIRMED_ORDER: 'p2p_vendor_confirmed_order',
 	P2P_VENDOR_CANCELLED_ORDER: 'p2p_vendor_cancelled_order',
 	P2P_VENDOR_APPEALED_ORDER: 'p2p_vendor_appealed_order',
+
+	//AUTO TRADE
+	AUTO_TRADE_ERROR: 'auto_trade_error'
 };
 
 const languageFile = (lang) => {

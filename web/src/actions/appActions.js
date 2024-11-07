@@ -113,6 +113,13 @@ export const SET_SELECTED_METHOD = 'SET_SELECTED_METHOD';
 export const SET_RECEIVER_EMAIL = 'SET_RECEIVER_EMAIL';
 export const SET_WITHDRAW_OTIONAL_TAG = 'SET_WITHDRAW_OTIONAL_TAG';
 export const SET_CHART_DATA = 'SET_CHART_DATA';
+export const SET_COINS_DATA = 'SET_COINS_DATA';
+export const SET_STAKE = 'SET_STAKE';
+export const SET_LIMITS_TAB = 'SET_LIMITS_TAB';
+export const SET_SECURITY_TAB = 'SET_SECURITY_TAB';
+export const SET_VERIFICATION_TAB = 'SET_VERIFICATION_TAB';
+export const SET_SETTINGS_TAB = 'SET_SETTINGS_TAB';
+export const SET_ACTIVE_CHAT = 'SET_ACTIVE_CHAT';
 
 export const SORT = {
 	VOL: 'volume',
@@ -766,4 +773,39 @@ export const setReceiverEmail = (email) => ({
 export const setWithdrawOptionaltag = (tag) => ({
 	type: SET_WITHDRAW_OTIONAL_TAG,
 	payload: tag,
+});
+
+export const setCoinsData = (coinsData) => ({
+	type: SET_COINS_DATA,
+	payload: coinsData,
+});
+
+export const setStake = (selectedStake) => ({
+	type: SET_STAKE,
+	payload: selectedStake,
+});
+
+export const setLimitTab = (selectedTab) => ({
+	type: SET_LIMITS_TAB,
+	payload: selectedTab,
+});
+
+export const setSecurityTab = (selectedSecurityTab) => ({
+	type: SET_SECURITY_TAB,
+	payload: selectedSecurityTab,
+});
+
+export const setVerificationTab = (selectedVerificationTab) => ({
+	type: SET_VERIFICATION_TAB,
+	payload: selectedVerificationTab,
+});
+
+export const setSettingsTab = (selectedSettingsTab) => ({
+	type: SET_SETTINGS_TAB,
+	payload: selectedSettingsTab,
+});
+
+export const setIsChat = (setIsChat) => ({
+	type: SET_ACTIVE_CHAT,
+	payload: setIsChat,
 });

@@ -173,7 +173,7 @@ paths:
       x-security-types:
         - bearer
       x-security-scopes:
-        - admin
+        - user
   /broker/connect:
     x-swagger-router-controller: broker
     get:

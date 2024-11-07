@@ -1240,6 +1240,9 @@ paths:
                 type: string
                 format: password
                 maxLength: 128
+              referral:
+                type: string
+                maxLength: 256
       responses:
         201:
           description: Created
@@ -1326,6 +1329,42 @@ paths:
         - admin
         - supervisor
         - kyc
+      x-token-permissions:
+        - can_withdraw
+    delete:
+      operationId: deleteUserByAdmin
+      description: delete user by admin
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - user_id
+            properties:
+              user_id:
+                type: number
+                format: int32
+              
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/UserResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
       x-token-permissions:
         - can_withdraw
   /admin/user/role:
@@ -3073,8 +3112,7 @@ paths:
       operationId: createUserWalletByAdmin
       description: Create a crypto address for the user by admin
       tags:
-        - User
-        - Wallet
+        - Admin
       parameters:
         - name: data
           in: body
@@ -3396,13 +3434,60 @@ paths:
       x-security-scopes:
         - admin
         - supervisor
+  /admin/user/trading-volume:
+    x-swagger-router-controller: admin
+    get:
+      description:  Get user trading volume of last 30 days by admin
+      operationId: fetchUserTradingVolumeByAdmin
+      tags:
+        - User
+      parameters:
+        - in: query
+          name: user_id
+          description: user_id
+          required: true
+          type: number
+          format: int32
+        - in: query
+          name: to
+          description: starting date
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: from
+          description: ending date
+          required: false
+          type: string
+          format: date-time
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+      x-security-scopes:
+        - admin
+      x-token-permissions:
+        - can_read
   /admin/user/referral/code:
     x-swagger-router-controller: admin
     get:
       description: Get user referral codes for admin
       operationId: getUserReferralCodesByAdmin
       tags:
-        - User
+        - Admin
       parameters:
         - name: user_id
           in: query
@@ -3468,7 +3553,7 @@ paths:
       operationId: createUserReferralCodeByAdmin
       description: create referral code config for user by admin
       tags:
-        - User
+        - Admin
       parameters:
       - name: data
         in: body
@@ -3994,7 +4079,7 @@ paths:
       description: Get p2p disputes
       operationId: fetchP2PDisputes
       tags:
-        - User
+        - Admin
       parameters:
         - in: query
           name: user_id
@@ -4169,7 +4254,7 @@ paths:
       operationId: performDirectWithdrawalByAdmin
       description: Make a withdrawal without email confirmation for admin
       tags:
-        - User
+        - Admin
       parameters:
         - name: data
           in: body

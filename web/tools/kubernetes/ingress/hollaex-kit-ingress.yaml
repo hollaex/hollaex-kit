@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hollaex-kit-ingress-web
+  namespace: hollaex-kit
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    kubernetes.io/tls-acme: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/proxy-body-size: "6m"
+
+
+spec:
+  rules:
+  - host: yourdomain.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: hollaex-kit-web
+            port:
+              number: 80
+  
+  tls:
+  - secretName: hollaex-kit-tls-cert
+    hosts:
+    - yourdomain.com

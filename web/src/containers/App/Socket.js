@@ -1,12 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import debounce from 'lodash.debounce';
-import { WS_URL, SESSION_TIME, BASE_CURRENCY } from 'config/constants';
 import { isMobile } from 'react-device-detect';
-import { setWsHeartbeat } from 'ws-heartbeat/client';
+import { notification } from 'antd';
+import {
+	BellOutlined,
+	ExclamationCircleOutlined,
+	FireFilled,
+	MailOutlined,
+} from '@ant-design/icons';
+import debounce from 'lodash.debounce';
 
 import withConfig from 'components/ConfigProvider/withConfig';
+import STRINGS from 'config/localizedStrings';
+import { WS_URL, SESSION_TIME, BASE_CURRENCY } from 'config/constants';
+import { setWsHeartbeat } from 'ws-heartbeat/client';
 import {
 	getMe,
 	setMe,
@@ -42,12 +50,11 @@ import {
 	setSnackDialog,
 	requestTiers,
 } from 'actions/appActions';
+import { p2pAddMessage, p2pGetStatus } from 'actions/p2pAction';
 import { playBackgroundAudioNotification } from 'utils/utils';
 import { getToken, isLoggedIn } from 'utils/token';
 import { NORMAL_CLOSURE_CODE, isIntentionalClosure } from 'utils/webSocket';
 import { ERROR_TOKEN_EXPIRED } from 'components/Notification/Logout';
-import { notification } from 'antd';
-import STRINGS from 'config/localizedStrings';
 
 class Container extends Component {
 	constructor(props) {
@@ -62,6 +69,7 @@ class Container extends Component {
 		};
 		this.orderCache = {};
 		this.wsInterval = null;
+		this.openNotifications = [];
 	}
 
 	limitTimeOut = null;
@@ -143,6 +151,15 @@ class Container extends Component {
 					const params = new URLSearchParams(window.location.search);
 					let userData = { ...data };
 					if (data.settings) {
+						if (
+							data.settings.interface &&
+							data.settings.interface.display_currency
+						) {
+							localStorage.setItem(
+								'base_currnecy',
+								data.settings.interface.display_currency
+							);
+						}
 						if (
 							!data.settings.language &&
 							!this.props.activeLanguage &&
@@ -262,14 +279,7 @@ class Container extends Component {
 			privateSocket.send(
 				JSON.stringify({
 					op: 'subscribe',
-					args: [
-						'trade',
-						'wallet',
-						'order',
-						'deposit',
-						'usertrade',
-						`p2pChat:${this.props.user.id}`,
-					],
+					args: ['trade', 'wallet', 'order', 'deposit', 'usertrade', `p2pChat`],
 				})
 			);
 			// this.wsInterval = setInterval(() => {
@@ -431,30 +441,138 @@ class Container extends Component {
 					}
 					break;
 				case 'p2pChat':
-					notification.open({
-						message: (data.action = 'getStatus'
-							? STRINGS['P2P.STATUS_UPDATE']
-							: STRINGS['P2P.NEW_MESSAGE']),
-						description: (
-							<div>
-								<div
-									style={{
-										textDecoration: 'underline',
-										fontWeight: 'bold',
-										cursor: 'pointer',
-									}}
-									onClick={() => {
-										window.location.href = `${window.location.origin}/p2p/order/${data.data.id}`;
-									}}
-								>
-									{STRINGS['P2P.CLICK_TO_VIEW']}
-								</div>
-							</div>
-						),
+					if (data.action === 'getStatus') {
+						this.props.p2pGetStatus(data.data);
+					} else {
+						this.props.p2pAddMessage(data.data);
+					}
+					if (
+						!isMobile
+							? !this.props?.router?.location?.pathname?.includes('/p2p/order/')
+							: !this.props?.isChat
+					) {
+						const key = `notification_${Date.now()}`;
 
-						placement: 'bottomRight',
-						type: 'info',
-					});
+						const notificationDetails = {
+							key,
+							message:
+								data.action === 'getStatus' && data?.data?.status === 'appeal'
+									? STRINGS['P2P.APPEAL_STATUS_MESSAGE']
+									: data?.action === 'getStatus' &&
+									  data?.data?.status === 'cancelled'
+									? STRINGS['P2P.CANCEL_STATUS_MESSAGE']
+									: data?.action === 'getStatus' &&
+									  data?.data?.status === 'confirmed' &&
+									  data?.data?.title === 'crypto'
+									? STRINGS['P2P.CRYPTO_RELEASE_STATUS_MESSAGE']
+									: data?.data?.status === 'confirmed'
+									? STRINGS['P2P.CONFIRM_STATUS_MESSAGE']
+									: data?.data?.status === 'created'
+									? STRINGS['P2P.NEW_ORDER_CREATED']
+									: data?.action === 'getStatus'
+									? STRINGS['P2P.STATUS_UPDATE']
+									: STRINGS['P2P.NEW_MESSAGE'],
+							description: (
+								<div>
+									<div
+										className="blue-link"
+										style={{
+											textDecoration: 'underline',
+											fontWeight: 'bold',
+											cursor: 'pointer',
+										}}
+										onClick={() => {
+											window.location.href = `${window.location.origin}/p2p/order/${data.data.id}`;
+											data?.data?.type === 'message' &&
+												localStorage.setItem('isChat', true);
+										}}
+									>
+										{STRINGS['P2P.CLICK_TO_VIEW']}
+									</div>
+								</div>
+							),
+							className: isMobile
+								? 'p2p-chat-notification-wrapper p2p-chat-notification-wrapper-mobile'
+								: 'p2p-chat-notification-wrapper',
+							placement: isMobile ? 'bottomLeft' : 'bottomRight',
+							type: 'info',
+							duration: 0,
+							icon: <FireFilled className="p2p-fire-icon" />,
+							onClose: () => {
+								this.openNotifications = this.openNotifications?.filter(
+									(notification) => notification?.key !== key
+								);
+
+								if (
+									this.openNotifications?.length > 0 &&
+									this.openNotifications[this.openNotifications?.length - 1]
+										?.key !== key
+								) {
+									const newLastNotification = this.openNotifications[
+										this.openNotifications?.length - 1
+									];
+
+									const newLastNotificationMessage =
+										newLastNotification?.message;
+									notification.close(newLastNotification?.key);
+									notification.open({
+										...newLastNotification,
+										icon:
+											newLastNotificationMessage ===
+											(STRINGS['P2P.CANCEL_STATUS_MESSAGE'] ||
+												STRINGS['P2P.APPEAL_STATUS_MESSAGE']) ? (
+												<ExclamationCircleOutlined />
+											) : newLastNotificationMessage ===
+											  STRINGS['P2P.NEW_MESSAGE'] ? (
+												<MailOutlined />
+											) : (
+												<BellOutlined />
+											),
+										className: isMobile
+											? 'p2p-chat-notification-wrapper p2p-chat-notification-wrapper-mobile'
+											: 'p2p-chat-notification-wrapper',
+									});
+								}
+							},
+						};
+
+						this.openNotifications = [
+							...this.openNotifications,
+							notificationDetails,
+						];
+
+						if (this.openNotifications?.length > 1) {
+							const previousNotification = this.openNotifications[
+								this.openNotifications?.length - 2
+							];
+							const previousMessage = previousNotification?.message;
+							notification.close(previousNotification?.key);
+							notification.open({
+								...previousNotification,
+								icon:
+									previousMessage ===
+									(STRINGS['P2P.CANCEL_STATUS_MESSAGE'] ||
+										STRINGS['P2P.APPEAL_STATUS_MESSAGE']) ? (
+										<ExclamationCircleOutlined />
+									) : previousMessage === STRINGS['P2P.NEW_MESSAGE'] ? (
+										<MailOutlined />
+									) : (
+										<BellOutlined />
+									),
+								className: isMobile
+									? 'p2p-chat-notification-wrapper p2p-chat-notification-wrapper-mobile p2p-chat-notification'
+									: 'p2p-chat-notification-wrapper p2p-chat-notification',
+							});
+						}
+
+						notification.open(notificationDetails);
+
+						if (this.openNotifications?.length > 3) {
+							const oldestNotification = this.openNotifications?.shift();
+							notification.close(oldestNotification?.key);
+						}
+					}
+
 					break;
 				default:
 					break;
@@ -727,6 +845,7 @@ const mapStateToProps = (store) => ({
 	info: store.app.info,
 	token: store.auth.token,
 	verifyToken: store.auth.verifyToken,
+	isChat: store.app.isChat,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -735,6 +854,8 @@ const mapDispatchToProps = (dispatch) => ({
 	setMe: bindActionCreators(setMe, dispatch),
 	setBalance: bindActionCreators(setBalance, dispatch),
 	setUserOrders: bindActionCreators(setUserOrders, dispatch),
+	p2pAddMessage: bindActionCreators(p2pAddMessage, dispatch),
+	p2pGetStatus: bindActionCreators(p2pGetStatus, dispatch),
 	addOrder: bindActionCreators(addOrder, dispatch),
 	updateOrder: bindActionCreators(updateOrder, dispatch),
 	removeOrder: bindActionCreators(removeOrder, dispatch),

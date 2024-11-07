@@ -159,7 +159,7 @@ class PairsSection extends Component {
 		const { pair, userId, open } = this.props;
 		requestActiveOrders({
 			user_id: userId,
-			symbol: pair,
+			symbol: pair ? (/^[a-z0-9]+-[a-z0-9]+$/i.test(pair) ? pair : null) : null,
 			page,
 			limit,
 			open,
@@ -179,17 +179,12 @@ class PairsSection extends Component {
 				}
 			})
 			.catch((err) => {
-				if (err.status === 403) {
-					this.setState({
-						buyOrders: {
-							...this.state.buyOrders,
-							loading: true,
-						},
-					});
-				}
-				// let errorMsg = err.data && err.data.message
-				//     ? err.data.message
-				//     : err.message;
+				this.setState({
+					buyOrders: {
+						...this.state.buyOrders,
+						loading: false,
+					},
+				});
 			});
 	};
 

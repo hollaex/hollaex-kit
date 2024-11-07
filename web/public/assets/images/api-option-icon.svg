@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 18.197 18.198">
+  <g id="Group_1080" data-name="Group 1080" transform="translate(-3115 -8236)">
+    <circle class="fill_main-color" id="Ellipse_392" data-name="Ellipse 392" cx="0.881" cy="0.881" r="0.881" transform="translate(3115 8252.436)" fill="#fff"/>
+    <circle class="fill_main-color" id="Ellipse_393" data-name="Ellipse 393" cx="0.881" cy="0.881" r="0.881" transform="translate(3119.694 8252.436)" fill="#fff"/>
+    <circle class="fill_main-color" id="Ellipse_394" data-name="Ellipse 394" cx="0.881" cy="0.881" r="0.881" transform="translate(3124.393 8252.436)" fill="#fff"/>
+    <path class="fill_main-color" id="Path_541" data-name="Path 541" d="M25.751,30.74H21.642a.881.881,0,0,1-.881-.881V21.642a.881.881,0,0,1,.881-.881H32.5a.881.881,0,0,1,.881.881v1.174a.881.881,0,1,0,1.761,0V21.642A2.642,2.642,0,0,0,32.5,19H21.642A2.642,2.642,0,0,0,19,21.642V29.86A2.642,2.642,0,0,0,21.642,32.5h4.109a.881.881,0,0,0,0-1.761Z" transform="translate(3096 8217)" fill="#fff"/>
+    <path class="fill_main-color" id="Path_542" data-name="Path 542" d="M59.283,43H56.642A2.642,2.642,0,0,0,54,45.642v2.935a.881.881,0,1,0,1.761,0V45.642a.881.881,0,0,1,.881-.881h2.642a.881.881,0,0,1,.881.881v5.87a.881.881,0,0,1-.881.881H58.7a.881.881,0,1,0,0,1.761h.587a2.642,2.642,0,0,0,2.642-2.642v-5.87A2.642,2.642,0,0,0,59.283,43Z" transform="translate(3071.272 8200.045)" fill="#fff"/>
+  </g>
+</svg>

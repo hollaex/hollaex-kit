@@ -257,11 +257,6 @@ const AddressBook = ({
 		const selectedNetwork = selectedAsset?.networkOptions
 			? renderNetworkField(selectedAsset?.networkOptions)
 			: network;
-		const hasAsset = getUserData.some(
-			(val) =>
-				val?.currency === selectedAsset?.selectedCurrency &&
-				val?.network === selectedNetwork
-		);
 
 		const filterData = () =>
 			getUserData.filter((val) => val.label !== data.label);
@@ -278,7 +273,7 @@ const AddressBook = ({
 			} catch (error) {
 				console.error(error);
 			}
-		} else if (!hasAsset) {
+		} else {
 			const address =
 				hasOptionalTag && selectedAsset?.optionalTag
 					? `${selectedAsset?.address}:${selectedAsset?.optionalTag}`
@@ -289,21 +284,28 @@ const AddressBook = ({
 				network: selectedNetwork,
 				currency: selectedAsset?.selectedCurrency,
 			};
-			const restGetUserData = removeCreatedAt(getUserData);
-			setGetUserData([
-				{ ...currValue, created_at: new Date().toISOString() },
-				...getUserData,
-			]);
+			const hasAddress = getUserData?.some(
+				(val) =>
+					val?.currency === selectedAsset?.selectedCurrency &&
+					val?.network === selectedNetwork &&
+					val?.address === address
+			);
 
-			try {
-				await setUserLabelAndAddress({
-					addresses: [currValue, ...restGetUserData],
-				});
-			} catch (error) {
-				console.error(error);
+			const restGetUserData = removeCreatedAt(getUserData);
+			if (!hasAddress) {
+				setGetUserData([
+					{ ...currValue, created_at: new Date().toISOString() },
+					...getUserData,
+				]);
+
+				try {
+					await setUserLabelAndAddress({
+						addresses: [currValue, ...restGetUserData],
+					});
+				} catch (error) {
+					console.error(error);
+				}
 			}
-		} else {
-			message.error(STRINGS['ADDRESS_BOOK.ASSET_ALREADY_HAVE_ADDRESS']);
 		}
 
 		onHandleClose('step3');
