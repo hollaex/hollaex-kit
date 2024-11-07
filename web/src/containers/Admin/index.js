@@ -5,7 +5,7 @@ import { Loader } from 'components';
 export { PATHS } from './paths';
 
 const LoadingComponent = ({ isLoading, error }) => {
-	return <Loader relative={true} background={false} />;
+	return <Loader background={false} />;
 };
 
 export const User = Loadable({
