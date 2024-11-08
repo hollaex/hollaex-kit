@@ -31,7 +31,7 @@ class AssetsWrapper extends Component {
 			data: [],
 			chartData: {},
 			coinsData: [],
-			pageSize: 100,
+			pageSize: 50,
 			page: 0,
 			count: 0,
 			searchValue: '',
