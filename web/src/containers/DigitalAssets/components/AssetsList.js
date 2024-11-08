@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { isMobile } from 'react-device-detect';
 import classnames from 'classnames';
 import { CaretUpOutlined, CaretDownOutlined } from '@ant-design/icons';
 
@@ -33,11 +34,16 @@ const AssetsList = ({
 	pairs,
 	pinned_assets,
 	icons,
+	coinsData,
+	isSelectedSort,
+	handleSelectedSort,
+	selectedButton,
 }) => {
 	const [isOndDaySort, setIsOneDaySort] = useState(false);
-	let listData = [];
+	// let listData = [];
 	const handleClickChange = () => {
 		setIsOneDaySort(false);
+		handleSelectedSort(true);
 		if (mode === SORT.CHANGESEVENDAY) {
 			toggleSort();
 		} else {
@@ -47,6 +53,7 @@ const AssetsList = ({
 
 	const handleOneDaySort = () => {
 		setIsOneDaySort(true);
+		handleSelectedSort(true);
 		if (mode === SORT.CHANGE) {
 			toggleSort();
 		} else {
@@ -72,49 +79,47 @@ const AssetsList = ({
 		</div>
 	);
 
-	const movePinnedItems = (array) => {
-		const pinnedItems = pinned_assets;
-		const sortedArray = array.sort((a, b) => {
-			// Find the first ID that differs between the two objects
-			const id = pinnedItems.find((i) => a.symbol !== b.symbol);
+	// const movePinnedItems = (array) => {
+	// 	const pinnedItems = pinned_assets;
+	// 	const sortedArray = array.sort((a, b) => {
+	// 		// Find the first ID that differs between the two objects
+	// 		const id = pinnedItems.find((i) => a.symbol !== b.symbol);
 
-			if (id) {
-				// If a has the ID, move it to the top
-				return a.symbol === id ? -1 : 1;
-			}
+	// 		if (id) {
+	// 			// If a has the ID, move it to the top
+	// 			return a.symbol === id ? -1 : 1;
+	// 		}
 
-			return 0;
-		});
-		return sortedArray;
-	};
+	// 		return 0;
+	// 	});
+	// 	return sortedArray;
+	// };
 
 	const getSortedList = () => {
-		const topAssets = [];
-
-		pinned_assets.forEach((pin) => {
-			const asset = coinsListData.find(({ symbol }) => symbol === pin);
-			if (asset) {
-				topAssets.push(asset);
-			}
-		});
-		const restAssets = coinsListData.filter(
-			(item) => !pinned_assets.includes(item.symbol)
-		);
-		const sortedValues = restAssets.sort((a, b) => {
-			const aVal = parseFloat(
-				isOndDaySort
-					? a.oneDayPriceDifferencePercenVal
-					: a.priceDifferencePercentVal
-			);
-			const bVal = parseFloat(
-				isOndDaySort
-					? b.oneDayPriceDifferencePercenVal
-					: b.priceDifferencePercentVal
-			);
-			return is_descending ? bVal - aVal : aVal - bVal;
-		});
-		listData = [...topAssets, ...sortedValues];
-		return movePinnedItems(listData);
+		if (isSelectedSort) {
+			coinsListData.sort((a, b) => {
+				const aVal = parseFloat(
+					isOndDaySort
+						? a.oneDayPriceDifferencePercenVal
+							? a.oneDayPriceDifferencePercenVal
+							: 0
+						: a.priceDifferencePercentVal
+						? a.priceDifferencePercentVal
+						: 0
+				);
+				const bVal = parseFloat(
+					isOndDaySort
+						? b.oneDayPriceDifferencePercenVal
+							? b.oneDayPriceDifferencePercenVal
+							: 0
+						: b.priceDifferencePercentVal
+						? b.priceDifferencePercentVal
+						: 0
+				);
+				return is_descending ? bVal - aVal : aVal - bVal;
+			});
+		}
+		return coinsListData;
 	};
 
 	const totalPages = Math.ceil(count / pageSize);
@@ -133,50 +138,107 @@ const AssetsList = ({
 					<thead>
 						<tr className="table-bottom-border">
 							<th className="sticky-col">
-								<div>
+								<div className={isMobile && 'ml-2'}>
 									<EditWrapper stringId="MARKETS_TABLE.ASSET">
 										{STRINGS['MARKETS_TABLE.ASSET']}
 									</EditWrapper>
 								</div>
 							</th>
-							<th>
-								<div className="d-flex">
-									<EditWrapper stringId="MARKETS_TABLE.TRADING_SYMBOL">
-										{STRINGS['MARKETS_TABLE.TRADING_SYMBOL']}
-									</EditWrapper>
-								</div>
-							</th>
-							<th>
-								<div>
-									<EditWrapper stringId="MARKETS_TABLE.LAST_PRICE">
-										{STRINGS['MARKETS_TABLE.LAST_PRICE']}
-									</EditWrapper>
-								</div>
-							</th>
-							<th>
-								<div onClick={handleOneDaySort} className="d-flex pointer">
-									<EditWrapper stringId="MARKETS_TABLE.CHANGE_1D">
-										{STRINGS['MARKETS_TABLE.CHANGE_1D']}
-									</EditWrapper>
-									{renderCaret(SORT.CHANGE, true)}
-								</div>
-							</th>
-							<th>
-								<div onClick={handleClickChange} className="d-flex pointer">
-									<EditWrapper stringId="MARKETS_TABLE.CHANGE_7D">
-										{STRINGS['MARKETS_TABLE.CHANGE_7D']}
-									</EditWrapper>
-									{renderCaret(SORT.CHANGESEVENDAY)}
-								</div>
-							</th>
-							<th>
-								<div>
-									<EditWrapper stringId="MARKETS_TABLE.CHART_7D">
-										{STRINGS['MARKETS_TABLE.CHART_7D']}
-									</EditWrapper>
-								</div>
-							</th>
-							<th>
+							{!isMobile && (
+								<th className="asset-price-header">
+									<div className="d-flex justify-content-end">
+										<EditWrapper stringId="PRICE">
+											{STRINGS['PRICE']}
+										</EditWrapper>
+									</div>
+								</th>
+							)}
+							{!isMobile && (
+								<th className="asset-percentage">
+									<div
+										onClick={handleOneDaySort}
+										className="d-flex justify-content-end pointer"
+									>
+										<EditWrapper stringId={STRINGS['MARKETS_TABLE.24H']}>
+											{STRINGS.formatString(
+												STRINGS['MARKETS_TABLE.PERCENTAGE'],
+												STRINGS['MARKETS_TABLE.24H']
+											)}
+										</EditWrapper>
+										{renderCaret(SORT.CHANGE, true)}
+									</div>
+								</th>
+							)}
+							{!isMobile && (
+								<th className="asset-percentage">
+									<div
+										onClick={handleClickChange}
+										className="d-flex justify-content-end pointer"
+									>
+										<EditWrapper stringId={STRINGS['QUICK_TRADE_COMPONENT.7D']}>
+											{STRINGS.formatString(
+												STRINGS['MARKETS_TABLE.PERCENTAGE'],
+												STRINGS['QUICK_TRADE_COMPONENT.7D']
+											)}
+										</EditWrapper>
+										{renderCaret(SORT.CHANGESEVENDAY)}
+									</div>
+								</th>
+							)}
+							{isMobile && (
+								<th className="market-chart-header">
+									<div
+										onClick={handleOneDaySort}
+										className="d-flex justify-content-center"
+									>
+										<EditWrapper stringId="DIGITAL_ASSETS.PRICE_24H">
+											{STRINGS['DIGITAL_ASSETS.PRICE_24H']}
+										</EditWrapper>
+										{renderCaret(SORT.CHANGE, true)}
+									</div>
+								</th>
+							)}
+							{!isMobile && (
+								<th className="market-chart-header">
+									<div className="d-flex justify-content-center">
+										<EditWrapper stringId="MARKETS_TABLE.TREND_7D">
+											{STRINGS['MARKETS_TABLE.TREND_7D']}
+										</EditWrapper>
+									</div>
+								</th>
+							)}
+							{isMobile && selectedButton !== 'Market Cap' && (
+								<th className="market-chart-header">
+									<div
+										className="d-flex justify-content-center"
+										onClick={handleClickChange}
+									>
+										<EditWrapper stringId="MARKETS_TABLE.TREND_7D">
+											{STRINGS['MARKETS_TABLE.TREND_7D']}
+										</EditWrapper>
+										{renderCaret(SORT.CHANGESEVENDAY)}
+									</div>
+								</th>
+							)}
+							{!isMobile && (
+								<th className="market-captial-header mr-3">
+									<div className="d-flex justify-content-end">
+										<EditWrapper stringId="DIGITAL_ASSETS.CARDS.MARKET_CAP">
+											{STRINGS['DIGITAL_ASSETS.CARDS.MARKET_CAP']}
+										</EditWrapper>
+									</div>
+								</th>
+							)}
+							{isMobile && selectedButton === 'Market Cap' && (
+								<th className="market-captial-header mr-3">
+									<div className="d-flex justify-content-end">
+										<EditWrapper stringId="DIGITAL_ASSETS.CARDS.MARKET_CAP">
+											{STRINGS['DIGITAL_ASSETS.CARDS.MARKET_CAP']}
+										</EditWrapper>
+									</div>
+								</th>
+							)}
+							<th className="trade-header">
 								<EditWrapper stringId="TRADE_TAB_TRADE">
 									{STRINGS['TRADE_TAB_TRADE']}
 								</EditWrapper>
@@ -193,12 +255,13 @@ const AssetsList = ({
 								quicktrade={quicktrade}
 								pairs={pairs}
 								icons={icons}
+								selectedButton={selectedButton}
 							/>
 						))}
 					</tbody>
 				</table>
 			</div>
-			{!hideViewMore && (
+			{!hideViewMore && coinsListData?.length >= pageSize && (
 				<div className="d-flex content-center view-more-btn">
 					<div
 						className="blue-link underline-text pointer"
@@ -215,18 +278,20 @@ const AssetsList = ({
 const mapStateToProps = ({
 	app: {
 		digital_assets_sort: { mode, is_descending },
-		coins: coinsData,
+		// coins: coinsData,
 		quicktrade,
 		pairs,
 		pinned_assets,
+		coinsData,
 	},
 }) => ({
 	mode,
 	is_descending,
-	coinsData,
+	// coinsData,
 	quicktrade,
 	pairs,
 	pinned_assets,
+	coinsData,
 });
 
 const mapDispatchToProps = (dispatch) => ({

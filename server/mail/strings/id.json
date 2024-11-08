@@ -159,6 +159,11 @@
         "P2P_VENDOR_APPEALED_ORDER": {
             "html": "<div><p> Dear ${name} </p><p>Anda telah mengajukan banding untuk pesanan Anda. Silakan hubungi dukungan untuk menyelesaikan masalah ini.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Pergi ke pesanan Anda</Button></a></div><p>Terima kasih telah menggunakan platform kami.</p><p>Permintaan diajukan dari: ${ip}</p><p>Salam Hormat<br> tim ${api_name} </p></div>",
             "title": "Aktivitas Terdeteksi pada Pesanan P2P Anda"
-        }
+        },
+        "AUTO_TRADE_ERROR":{
+            "html": "<div><p>Dear ${name},</p><p>Kami telah mendeteksi bahwa konfigurasi perdagangan otomatis Anda gagal karena saldo yang tidak mencukupi untuk perdagangan berikutnya. Harap periksa dan perbarui saldo Anda. Jumlah Pengeluaran: ${spend_amount}, Mata Uang yang Dibelanjakan: ${spend_coin}, Mata Uang yang Dibeli: ${buy_coin}.</p><p>Terima kasih telah menggunakan platform kami.</p><p>Salam hormat, tim ${api_name}</p></div>",
+            "title": "Kesalahan pada konfigurasi perdagangan otomatis Anda"
+          }
+          
     }
 }

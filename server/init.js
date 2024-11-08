@@ -223,6 +223,7 @@ const checkStatus = () => {
 				configuration.quicktrade.push(item);
 			});
 
+			configuration.tradePaths = {};
 			
 			for (let tier of tiers) {
 				if (!('maker' in tier.fees)) {

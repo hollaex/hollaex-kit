@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { isMobile } from 'react-device-detect';
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts';
 
@@ -54,7 +55,7 @@ const DEFAULT_CHART_OPTIONS = {
 	},
 };
 
-export const MiniSparkLine = ({ chartData, isArea }) => {
+export const MiniSparkLine = ({ chartData, isArea, isNewAssets }) => {
 	const [finalChartData, setFinalChartData] = useState([]);
 
 	useEffect(() => {
@@ -84,7 +85,10 @@ export const MiniSparkLine = ({ chartData, isArea }) => {
 				],
 			}}
 			containerProps={{
-				style: { height: '100%', width: '100%' },
+				style: {
+					height: isNewAssets ? (isMobile ? '6rem' : '2.5rem') : '100%',
+					width: isNewAssets ? '10rem' : '100%',
+				},
 			}}
 		/>
 	);

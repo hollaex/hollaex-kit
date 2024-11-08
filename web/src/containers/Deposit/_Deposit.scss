@@ -274,6 +274,31 @@ $qr-code--size: 12rem;
 }
 
 .layout-mobile {
+	.deposit_info-qr-wrapper {
+		.qr_code-wrapper {
+			width: 20rem;
+			max-width: 20rem;
+			.qr-code-bg {
+				> *:first-child {
+					@include size-important(20rem-1rem);
+				}
+			}
+		}
+		.qr-title {
+			font-size: 2rem;
+		}
+		.blue-link {
+			font-size: 1.4rem !important;
+		}
+		.qr-text {
+			max-width: 30rem;
+			padding: 1.5rem 0 5rem 0;
+			.edit-wrapper__container {
+				font-size: 1.5rem;
+			}
+		}
+	}
+
 	.withdrawal-container {
 		.withdraw-form-wrapper {
 			.withdraw-form {

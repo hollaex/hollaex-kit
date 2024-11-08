@@ -159,7 +159,10 @@
         "P2P_VENDOR_APPEALED_ORDER": {
             "html": "<div><p> عزیز ${name} </p><p>شما به سفارش خود اعتراض کرده‌اید. لطفاً با پشتیبانی تماس بگیرید تا مشکل حل شود.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">رفتن به سفارش شما</Button></a></div><p>از اینکه از پلتفرم ما استفاده می‌کنید سپاسگزاریم.</p><p>درخواست از: ${ip}</p><p>با احترام<br> تیم ${api_name} </p></div>",
             "title": "فعالیت شناسایی شده در سفارش P2P شما"
-        }
-        
+        },
+        "AUTO_TRADE_ERROR": {
+            "html": "<div><p>کاربر گرامی ${name}،</p><p>ما متوجه شدیم که تنظیمات تجارت خودکار شما به دلیل موجودی ناکافی برای معامله زیر انجام نشد. لطفاً موجودی خود را بررسی و به‌روزرسانی کنید. مقدار هزینه: ${spend_amount}، ارز هزینه شده: ${spend_coin}، ارز خریداری شده: ${buy_coin}.</p><p>از استفاده شما از پلتفرم ما متشکریم.</p><p>با احترام، تیم ${api_name}</p></div>",
+            "title": "خطا در تنظیم تجارت خودکار شما"
+          }
     }
 }

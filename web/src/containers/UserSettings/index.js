@@ -11,6 +11,7 @@ import {
 	openContactForm,
 	openRiskPortfolioOrderWarning,
 	closeNotification,
+	setSettingsTab,
 } from 'actions/appActions';
 import { logout } from 'actions/authAction';
 import {
@@ -62,26 +63,31 @@ class UserSettings extends Component {
 		}
 		if (window.location.search && window.location.search.includes('signals')) {
 			this.setState({ activeTab: 0 });
+			this.props.setSettingsTab(0);
 		} else if (
 			window.location.search &&
 			window.location.search.includes('interface')
 		) {
 			this.setState({ activeTab: 1 });
+			this.props.setSettingsTab(1);
 		} else if (
 			window.location.search &&
 			window.location.search.includes('language')
 		) {
 			this.setState({ activeTab: 2 });
+			this.props.setSettingsTab(2);
 		} else if (
 			window.location.search &&
 			window.location.search.includes('audioCue')
 		) {
 			this.setState({ activeTab: 3 });
+			this.props.setSettingsTab(3);
 		} else if (
 			window.location.search &&
 			window.location.search.includes('account')
 		) {
 			this.setState({ activeTab: 4 });
+			this.props.setSettingsTab(4);
 		}
 		this.openCurrentTab();
 	}
@@ -120,12 +126,21 @@ class UserSettings extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
+		if (this.props.getSettingsTab !== this.state.activeTab) {
+			this.setState({
+				activeTab: this.props.getSettingsTab,
+			});
+		}
 		if (
 			JSON.stringify(prevState.activeTab) !==
 			JSON.stringify(this.state.activeTab)
 		) {
 			this.openCurrentTab();
 		}
+	}
+
+	componentWillUnmount() {
+		setSettingsTab(0);
 	}
 
 	openCurrentTab = () => {
@@ -156,9 +171,18 @@ class UserSettings extends Component {
 		{ activeLanguage = '', username = '', settings = {}, coins = {} },
 		activeTab
 	) => {
-		const { constants = {}, icons: ICONS, themeOptions } = this.props;
+		const {
+			constants = {},
+			icons: ICONS,
+			themeOptions,
+			selectable_native_currencies,
+		} = this.props;
 		const formValues = generateFormValues({
-			options: themeOptions.map(({ value }) => ({ value, label: value })),
+			options: themeOptions?.map(({ value }) => ({ value, label: value })),
+			currencyOptions: selectable_native_currencies?.map((value) => ({
+				value,
+				label: value,
+			})),
 		});
 		const usernameFormValues = generateUsernameFormValues(
 			settings.chat.set_username
@@ -375,6 +399,15 @@ class UserSettings extends Component {
 						this.props.changeTheme(data.settings.interface.theme);
 						localStorage.setItem('theme', data.settings.interface.theme);
 					}
+					if (
+						data.settings.interface &&
+						data.settings.interface.display_currency
+					) {
+						localStorage.setItem(
+							'base_currnecy',
+							data.settings.interface.display_currency
+						);
+					}
 				}
 				this.props.closeNotification();
 			})
@@ -408,6 +441,7 @@ class UserSettings extends Component {
 
 	setActiveTab = (activeTab) => {
 		this.setState({ activeTab });
+		this.props.setSettingsTab(activeTab);
 		if (this.props.location.query && this.props.location.query.tab) {
 			this.removeQueryString();
 		}
@@ -499,6 +533,9 @@ const mapStateToProps = (state) => ({
 	//orders: state.order.activeOrders,
 	constants: state.app.constants,
 	features: state.app.features,
+	selectable_native_currencies:
+		state.app.constants.selectable_native_currencies,
+	getSettingsTab: state.app.selectedSettingsTab,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -513,6 +550,7 @@ const mapDispatchToProps = (dispatch) => ({
 	),
 	closeNotification: bindActionCreators(closeNotification, dispatch),
 	logout: bindActionCreators(logout, dispatch),
+	setSettingsTab: bindActionCreators(setSettingsTab, dispatch),
 });
 
 export default connect(

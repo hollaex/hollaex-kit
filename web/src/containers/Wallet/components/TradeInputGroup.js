@@ -13,16 +13,24 @@ const TradeInputGroup = ({
 	icons: ICONS,
 	pairs,
 	tradeClassName,
+	hasTrigger,
 }) => {
 	return (
 		<Dropdown
 			size="small"
-			overlayClassName="custom-dropdown-style"
+			overlayClassName={
+				tradeClassName === 'market-asset-row'
+					? `custom-dropdown-style market-dropdown-style ${
+							isMobile && 'market-dropdown-mobile'
+					  }`
+					: 'custom-dropdown-style'
+			}
+			trigger={hasTrigger && (isMobile ? ['click'] : ['hover'])}
 			style={{
 				width: 130,
 			}}
 			overlay={
-				<Menu onClick={({ key }) => goToTrade(key)}>
+				<Menu onClick={({ key }) => goToTrade(key, quicktrade)}>
 					{markets.map((market) => {
 						const { display_name, icon_id } =
 							pairs[market] ||
@@ -43,9 +51,23 @@ const TradeInputGroup = ({
 			<Space>
 				<ActionNotification
 					stringId="TRADE_TAB_TRADE"
-					text={STRINGS['TRADE_TAB_TRADE']}
-					iconId="BLUE_TRADE_ICON"
-					iconPath={ICONS['BLUE_TRADE_ICON']}
+					text={
+						tradeClassName !== 'market-asset-row'
+							? STRINGS['TRADE_TAB_TRADE']
+							: STRINGS.formatString(
+									STRINGS['MARKETS_TABLE.BUY'],
+									<span>/</span>,
+									<span>{STRINGS['SIDES.SELL']}</span>
+							  )
+					}
+					iconId={
+						tradeClassName !== 'market-asset-row' ? 'BLUE_TRADE_ICON' : ''
+					}
+					iconPath={
+						tradeClassName !== 'market-asset-row'
+							? ICONS['BLUE_TRADE_ICON']
+							: ''
+					}
 					className="csv-action"
 					showActionText={isMobile}
 					disable={markets.length === 0}

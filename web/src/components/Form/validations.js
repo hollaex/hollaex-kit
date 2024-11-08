@@ -43,7 +43,7 @@ export const validAddress = (symbol = '', message, network, key = '') => {
 		let valid;
 
 		try {
-			if (currency === 'bnb' || currency === 'klay' || currency === 'matic')
+			if (currency === 'bnb' || currency === 'klay' || currency === 'matic' || currency === 'pol')
 				currency = 'eth';
 
 			const supported = WAValidator.findCurrency(currency);

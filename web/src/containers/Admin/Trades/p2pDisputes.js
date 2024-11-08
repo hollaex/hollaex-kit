@@ -65,7 +65,7 @@ const P2PDisputes = ({ coins }) => {
 			},
 		},
 		{
-			title: 'User’s Reason',
+			title: 'Reason',
 			dataIndex: 'reason',
 			key: 'reason',
 			render: (user_id, data) => {
