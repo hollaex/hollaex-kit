@@ -205,6 +205,7 @@ const AppMenuBarItem = ({
 					getStake={getStake}
 				/>
 			}
+			mouseEnterDelay={0}
 			overlayClassName="navigation-bar-wrapper"
 			placement="bottomLeft"
 			onVisibleChange={() => {

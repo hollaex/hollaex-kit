@@ -1,5 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { isMobile } from 'react-device-detect';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import { Input } from 'antd';
 import { SendOutlined } from '@ant-design/icons';
 import moment from 'moment';
@@ -8,6 +10,7 @@ import '../_P2P.scss';
 import STRINGS from 'config/localizedStrings';
 import { EditWrapper, Image } from 'components';
 import { fetchFeedback, fetchP2PProfile } from '../actions/p2pActions';
+import { setIsChat } from 'actions/appActions';
 
 const P2POrderChat = ({
 	user,
@@ -37,6 +40,8 @@ const P2POrderChat = ({
 
 		return () => {
 			document.removeEventListener('keydown', handleKeyDown);
+			localStorage.setItem('isChat', false);
+			setIsChat(false);
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -48,6 +53,11 @@ const P2POrderChat = ({
 		});
 	}, [selectedOrder.messages]);
 
+	const onHandleChat = () => {
+		setIsChat(false);
+		localStorage.setItem('isChat', false);
+	};
+
 	return (
 		<div
 			className={
@@ -56,12 +66,7 @@ const P2POrderChat = ({
 		>
 			<div className="p2p-chat-container">
 				{isChat && (
-					<div
-						className="back-to-orders-link"
-						onClick={() => {
-							setIsChat(false);
-						}}
-					>
+					<div className="back-to-orders-link" onClick={() => onHandleChat()}>
 						{'<'}
 						<EditWrapper stringId="REFERRAL_LINK.BACK_LOWER">
 							{STRINGS['REFERRAL_LINK.BACK_LOWER']}
@@ -361,4 +366,8 @@ const P2POrderChat = ({
 	);
 };
 
-export default P2POrderChat;
+const mapDispatchToProps = (dispatch) => ({
+	setIsChat: bindActionCreators(setIsChat, dispatch),
+});
+
+export default connect('', mapDispatchToProps)(P2POrderChat);

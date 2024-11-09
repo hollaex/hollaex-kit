@@ -59,6 +59,7 @@ const AccountTab = ({
 				setIsIconActive(!isIconActive);
 				setIsToolTipVisible(!isToolTipVisible);
 			}}
+			mouseEnterDelay={0}
 		>
 			<div
 				className={
