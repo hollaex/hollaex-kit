@@ -91,7 +91,7 @@ const {
 } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
-const { getKitConfig, isValidTierLevel, getKitTier, isDatetime, getKitSecrets, sendCustomEmail, emailHtmlBoilerplate, getDomain, updateKitConfigSecrets, sleep, getKitCoins } = require('./common');
+const { getKitConfig, isValidTierLevel, getKitTier, isDatetime, getAssetsPrices, getKitSecrets, sendCustomEmail, emailHtmlBoilerplate, getDomain, updateKitConfigSecrets, sleep, getKitCoins, getKitCoin } = require('./common');
 const { isValidPassword, createSession } = require('./security');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { all, reject } = require('bluebird');
@@ -253,6 +253,7 @@ const createUser = (
 		role: 'user',
 		id: null,
 		email_verified: false,
+		referral: null,
 		additionalHeaders: null
 	}
 ) => {
@@ -312,6 +313,10 @@ const createUser = (
 			});
 	})
 		.then((user) => {
+			if (opts.referral && isString(opts.referral)) {
+				checkAffiliation(opts.referral, user.id);
+			}
+
 			return all([
 				user
 			]);
@@ -2267,7 +2272,7 @@ const revokeAllUserSessions = async (userId) => {
 	return true;
 };
 
-const deleteKitUser = async (userId) => {
+const deleteKitUser = async (userId, sendEmail = true) => {
 	const user = await dbQuery.findOne('user', {
 		where: {
 			id: userId
@@ -2290,12 +2295,14 @@ const deleteKitUser = async (userId) => {
 		{ fields: ['email', 'activated'], returning: true }
 	);
 
-	sendEmail(
-		MAILTYPE.USER_DELETED,
-		userEmail,
-		{},
-		user.settings
-	);
+	if (sendEmail) {
+		sendEmail(
+			MAILTYPE.USER_DELETED,
+			userEmail,
+			{},
+			user.settings
+		);
+	}
 	
 	return updatedUser;
 };
@@ -2418,7 +2425,28 @@ const addAmounts = (amount1, amount2) => {
 		)
 	);
 };
+const sortTopVolumes = (volumeData, topN = 4) => {
+	const topSortedVolumes = {};
 
+	for (const period in volumeData) {
+		const periodData = volumeData[period];
+        
+		if (Object.keys(periodData).length > 0) {
+			topSortedVolumes[period] = Object.entries(periodData)
+				.sort(([, valueA], [, valueB]) => valueB - valueA)
+				.slice(0, topN) 
+				.map(([key, value]) => ({ [key]: value })); 
+		}
+	}
+    
+	return topSortedVolumes;
+};
+
+const multiplyAmounts = (x, y) => {
+	return mathjs.number(
+	  mathjs.multiply(mathjs.bignumber(x), mathjs.bignumber(y))
+	);
+};
 
 const getUserReferralCodes = async (
 	opts = {
@@ -2841,6 +2869,11 @@ const settleFees = async (user_id) => {
 	if (totalValue < minimum_amount) {
 		throw new Error('Total unrealized earned fees are too small to be converted to realized earnings');
 	}
+
+	const coinConfiguration = getKitCoin(nativeCurrency);
+	const { increment_unit } = coinConfiguration;
+	const decimalPoint = new BigNumber(increment_unit).dp();
+	totalValue = new BigNumber(totalValue).decimalPlaces(decimalPoint, BigNumber.ROUND_DOWN).toNumber();
 
 	if (distributor.balance[`${nativeCurrency}_available`] < totalValue) {
 		// send email to admin for insufficient balance
@@ -3455,6 +3488,320 @@ const deletePaymentDetail = async (id, user_id) => {
 };
 
 
+const getOracleIndex = async () => {
+	const coins = getKitCoins();
+	const data = await getAssetsPrices(
+	  coins,
+	  getKitConfig().native_currency
+	);
+  
+	return data;
+};
+
+
+const fetchUserTradingVolume = async (user_id, opts = {
+	to: null,
+	from: null
+}) => {
+
+	let { to, from } = opts;
+	const currentTime = moment().seconds(0).milliseconds(0).toISOString();
+
+	const { getAllUserTradesByKitId } = require('./order');
+
+	if(from && to) {
+		let volume = {};
+
+		const oracleIndex = await getOracleIndex();
+	
+		const trades = await getAllUserTradesByKitId(
+			user_id,
+			null,
+			null,
+			null,
+			null,
+			null,
+			from,
+			to,
+			'all'
+		);
+	
+		if (trades.data && trades.data.length > 0) {
+			for (const trade of trades.data) {
+				const { symbol } = trade;
+				let size = trade.size;
+	
+				const basePair = symbol.split('-')[0];
+	
+				if (basePair !== getKitConfig().native_currency) {
+					if (!isNumber(oracleIndex[basePair]) || oracleIndex[basePair] <= 0) {
+						continue;
+					}
+					size = multiplyAmounts(oracleIndex[basePair], size);
+				}
+				volume[basePair] = addAmounts(volume[basePair] || 0, size);
+			}
+		}
+	
+		return { user_id, volume };
+	} else {
+		const data = await client.getAsync(`${user_id}-asset-volumes`);
+		if(data) return JSON.parse(data);
+		let volume = {
+			1: {},
+			7: {},
+			30: {},
+			90: {},
+		};
+
+		let volumeNative = {
+			1: {},
+			7: {},
+			30: {},
+			90: {},
+		};
+		
+		const to = moment(currentTime).toISOString();
+		const from90Days = moment(currentTime).subtract(90, 'days').toISOString();
+		
+		const oracleIndex = await getOracleIndex();
+		const trades = await getAllUserTradesByKitId(
+			user_id,
+			null,
+			null,
+			null,
+			null,
+			null,
+			from90Days,
+			to,
+			'all'
+		);
+		
+		if (trades.data && trades.data.length > 0) {
+			for (const trade of trades.data) {
+				const { symbol, timestamp } = trade;
+				let size = trade.size;
+				let nativeSize = trade.size;
+				const basePair = symbol.split('-')[0];
+		
+				if (basePair !== getKitConfig().native_currency) {
+					if (!isNumber(oracleIndex[basePair]) || oracleIndex[basePair] <= 0) {
+						continue;
+					}
+					size = multiplyAmounts(oracleIndex[basePair], size);
+				}
+		
+				const tradeDate = moment(timestamp);
+				const daysDiff = moment(currentTime).diff(tradeDate, 'days');
+		
+				if (daysDiff <= 1) {
+					volume[1][basePair] = addAmounts(volume[1][basePair] || 0, size);
+					volumeNative[1][basePair] = addAmounts(volumeNative[1][basePair] || 0, nativeSize);
+				}
+				if (daysDiff <= 7) {
+					volume[7][basePair] = addAmounts(volume[7][basePair] || 0, size);
+					volumeNative[7][basePair] = addAmounts(volumeNative[7][basePair] || 0, nativeSize);
+				}
+				if (daysDiff <= 30) {
+					volume[30][basePair] = addAmounts(volume[30][basePair] || 0, size);
+					volumeNative[30][basePair] = addAmounts(volumeNative[30][basePair] || 0, nativeSize);
+				}
+				volume[90][basePair] = addAmounts(volume[90][basePair] || 0, size);
+				volumeNative[90][basePair] = addAmounts(volumeNative[90][basePair] || 0, nativeSize);
+			}
+		}
+
+		for (const period in volume) {
+			const periodData = volume[period];
+			let totalGain = 0;
+
+			for(const coin in periodData) {
+				totalGain += periodData[coin];
+			}
+			
+			volume[period].total = totalGain;
+		}
+		
+		const sortedVolumes = sortTopVolumes(volume);
+
+		await client.setexAsync(`${user_id}-asset-volumes`, 60 * 60 * 2, JSON.stringify({ user_id, volume: sortedVolumes, volumeNative }));
+
+		return { user_id, volume: sortedVolumes, volumeNative };
+
+	}
+
+	
+};
+const fetchUserAutoTrades = async (user_id, opts = {
+    limit: null,
+    page: null,
+    order_by: null,
+    order: null,
+    start_date: null,
+    end_date: null,
+    active: null
+}) => {
+
+    const pagination = paginationQuery(opts.limit, opts.page);
+    const ordering = orderingQuery(opts.order_by, opts.order);
+    const timeframe = timeframeQuery(opts.start_date, opts.end_date);
+
+    const query = {
+        where: {
+            created_at: timeframe,
+			user_id,
+            ...(opts.active != null && { active: opts.active })
+        },
+        order: [ordering],
+        ...pagination
+    };
+
+    return dbQuery.findAndCountAllWithRows('AutoTradeConfig', query);
+};
+
+const createUserAutoTrade = async (user_id, {
+    spend_coin,
+    buy_coin,
+    spend_amount,
+    frequency,
+    week_days,
+    day_of_month,
+    trade_hour,
+    active,
+    description
+}) => {
+
+	if (!subscribedToCoin(buy_coin)) {
+		throw new Error('Invalid coin ' + buy_coin);
+	}
+
+	if (!subscribedToCoin(spend_coin)) {
+		throw new Error('Invalid coin ' + spend_coin);
+	}
+
+    if (week_days && !week_days.every(day => day >= 0 && day <= 6)) {
+        throw new Error('invalid week_days');
+    }
+
+    const daysInMonth = moment().daysInMonth();
+    if (day_of_month && (day_of_month < 1 || day_of_month > daysInMonth)) {
+        throw new Error(`Iinvalid day_of_month`);
+    }
+
+    if (trade_hour < 0 || trade_hour > 23) {
+        throw new Error('invalid trade_hour');
+    }
+	const autoTradeModel = getModel('AutoTradeConfig');
+
+	const userAutoTrades = await autoTradeModel.findAll({ where: { user_id } });
+	if (userAutoTrades?.length > 20) {
+		throw new Error("You can't have more than 20 auto trades");
+	}
+
+	const { getUserBalanceByKitId } = require('./wallet');
+	const balance = await getUserBalanceByKitId(user_id);
+	if (balance[`${buy_coin}_available`] < spend_amount) {
+		throw new Error(`Balance insufficient for auto trade: ${buy_coin} size: ${size}`);
+	};
+
+    return autoTradeModel.create({
+        user_id,
+        spend_coin,
+        buy_coin,
+        spend_amount,
+        frequency,
+        week_days,
+        day_of_month,
+        trade_hour,
+        active,
+        description
+    });
+};
+
+const updateUserAutoTrade = async (user_id, {
+    id,
+    spend_coin,
+    buy_coin,
+    spend_amount,
+    frequency,
+    week_days,
+    day_of_month,
+    trade_hour,
+    active,
+    description
+}) => {
+	
+	if (!subscribedToCoin(buy_coin)) {
+		throw new Error('Invalid coin ' + buy_coin);
+	}
+
+	if (!subscribedToCoin(spend_coin)) {
+		throw new Error('Invalid coin ' + spend_coin);
+	}
+
+    if (week_days && !week_days.every(day => day >= 0 && day <= 6)) {
+        throw new Error('invalid week_days');
+    }
+
+    const daysInMonth = moment().daysInMonth();
+    if (day_of_month && (day_of_month < 1 || day_of_month > daysInMonth)) {
+        throw new Error(`invalid day_of_month`);
+    }
+
+    if (trade_hour < 0 || trade_hour > 23) {
+        throw new Error('invalid trade_hour');
+    }
+
+    const trade = await getModel('AutoTradeConfig').findOne({
+        where: {
+            id,
+            user_id  
+        }
+    });
+
+    if (!trade) {
+        throw new Error('Auto trade not found');
+    }
+
+	const { getUserBalanceByKitId } = require('./wallet');
+	const balance = await getUserBalanceByKitId(user_id);
+	if (balance[`${buy_coin}_available`] < spend_amount) {
+		throw new Error(`Balance insufficient for auto trade: ${buy_coin} size: ${size}`);
+	};
+	
+    return await trade.update({
+        spend_coin,
+        buy_coin,
+        spend_amount,
+        frequency,
+        week_days,
+        day_of_month,
+        trade_hour,
+        active,
+        description
+    });
+};
+
+const deleteUserAutoTrade = async (removed_ids, user_id) => {
+    const trades = await getModel('AutoTradeConfig').findAll({
+        where: {
+            id: removed_ids,
+            user_id  
+        }
+    });
+
+    if (trades?.length === 0) {
+        throw new Error('Auto trade not found');
+    }
+
+    const promises = trades.map(async (trade) => {
+        return await trade.destroy();
+    });
+
+    const results = await Promise.all(promises);
+    return results;
+};
+
 module.exports = {
 	loginUser,
 	getUserTier,
@@ -3529,10 +3876,15 @@ module.exports = {
 	createUnrealizedReferralFees,
 	getUserReferralCodes,
 	createUserReferralCode,
+	fetchUserTradingVolume,
 	updateUserAddresses,
 	fetchUserAddressBook,
 	getPaymentDetails,
 	createPaymentDetail,
 	updatePaymentDetail,
-	deletePaymentDetail
+	deletePaymentDetail,
+	fetchUserAutoTrades,
+	createUserAutoTrade,
+	updateUserAutoTrade,
+	deleteUserAutoTrade
 };

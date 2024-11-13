@@ -15,6 +15,7 @@ import { EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import AssetsRow from './AssetsRow';
+import { Spin } from 'antd';
 
 const AssetsList = ({
 	coinsListData,
@@ -37,6 +38,7 @@ const AssetsList = ({
 	coinsData,
 	isSelectedSort,
 	handleSelectedSort,
+	selectedButton,
 }) => {
 	const [isOndDaySort, setIsOneDaySort] = useState(false);
 	// let listData = [];
@@ -158,12 +160,7 @@ const AssetsList = ({
 										onClick={handleOneDaySort}
 										className="d-flex justify-content-end pointer"
 									>
-										<EditWrapper
-											stringId={STRINGS.formatString(
-												STRINGS['MARKETS_TABLE.PERCENTAGE'],
-												STRINGS['MARKETS_TABLE.24H']
-											)}
-										>
+										<EditWrapper stringId={STRINGS['MARKETS_TABLE.24H']}>
 											{STRINGS.formatString(
 												STRINGS['MARKETS_TABLE.PERCENTAGE'],
 												STRINGS['MARKETS_TABLE.24H']
@@ -179,12 +176,7 @@ const AssetsList = ({
 										onClick={handleClickChange}
 										className="d-flex justify-content-end pointer"
 									>
-										<EditWrapper
-											stringId={STRINGS.formatString(
-												STRINGS['MARKETS_TABLE.PERCENTAGE'],
-												STRINGS['QUICK_TRADE_COMPONENT.7D']
-											)}
-										>
+										<EditWrapper stringId={STRINGS['QUICK_TRADE_COMPONENT.7D']}>
 											{STRINGS.formatString(
 												STRINGS['MARKETS_TABLE.PERCENTAGE'],
 												STRINGS['QUICK_TRADE_COMPONENT.7D']
@@ -207,14 +199,38 @@ const AssetsList = ({
 									</div>
 								</th>
 							)}
-							<th className="market-chart-header">
-								<div className="d-flex justify-content-center">
-									<EditWrapper stringId="MARKETS_TABLE.TREND_7D">
-										{STRINGS['MARKETS_TABLE.TREND_7D']}
-									</EditWrapper>
-								</div>
-							</th>
 							{!isMobile && (
+								<th className="market-chart-header">
+									<div className="d-flex justify-content-center">
+										<EditWrapper stringId="MARKETS_TABLE.TREND_7D">
+											{STRINGS['MARKETS_TABLE.TREND_7D']}
+										</EditWrapper>
+									</div>
+								</th>
+							)}
+							{isMobile && selectedButton !== 'Market Cap' && (
+								<th className="market-chart-header">
+									<div
+										className="d-flex justify-content-center"
+										onClick={handleClickChange}
+									>
+										<EditWrapper stringId="MARKETS_TABLE.TREND_7D">
+											{STRINGS['MARKETS_TABLE.TREND_7D']}
+										</EditWrapper>
+										{renderCaret(SORT.CHANGESEVENDAY)}
+									</div>
+								</th>
+							)}
+							{!isMobile && (
+								<th className="market-captial-header mr-3">
+									<div className="d-flex justify-content-end">
+										<EditWrapper stringId="DIGITAL_ASSETS.CARDS.MARKET_CAP">
+											{STRINGS['DIGITAL_ASSETS.CARDS.MARKET_CAP']}
+										</EditWrapper>
+									</div>
+								</th>
+							)}
+							{isMobile && selectedButton === 'Market Cap' && (
 								<th className="market-captial-header mr-3">
 									<div className="d-flex justify-content-end">
 										<EditWrapper stringId="DIGITAL_ASSETS.CARDS.MARKET_CAP">
@@ -231,17 +247,26 @@ const AssetsList = ({
 						</tr>
 					</thead>
 					<tbody id="market-list_tableBody">
-						{getSortedList().map((coinData, index) => (
-							<AssetsRow
-								index={index}
-								key={coinData.code}
-								coinData={coinData}
-								loading={loading}
-								quicktrade={quicktrade}
-								pairs={pairs}
-								icons={icons}
-							/>
-						))}
+						{getSortedList()?.length >= 1 ? (
+							getSortedList()?.map((coinData, index) => (
+								<AssetsRow
+									index={index}
+									key={coinData.code}
+									coinData={coinData}
+									loading={loading}
+									quicktrade={quicktrade}
+									pairs={pairs}
+									icons={icons}
+									selectedButton={selectedButton}
+								/>
+							))
+						) : (
+							<tr>
+								<td colSpan="7" className="text-center py-4">
+									<Spin size="large" />
+								</td>
+							</tr>
+						)}
 					</tbody>
 				</table>
 			</div>

@@ -31,13 +31,13 @@ class AssetsWrapper extends Component {
 			data: [],
 			chartData: {},
 			coinsData: [],
-			pageSize: 100,
+			pageSize: 50,
 			page: 0,
 			count: 0,
 			searchValue: '',
 			isLoading: true,
 			isSearchActive: false,
-			selectedButton: '',
+			selectedButton: !isMobile ? 'Market Cap' : '',
 			isSelectedSort: false,
 			isInputFocus: false,
 		};
@@ -112,9 +112,9 @@ class AssetsWrapper extends Component {
 	};
 
 	getCoinsData = (coinsList, chartValues) => {
-		const { coins, quicktradePairs, setCoinsData, pinned_assets } = this.props;
-		const topAssets = [];
-		const remainingAssets = [];
+		const { coins, quicktradePairs, setCoinsData } = this.props;
+		// const topAssets = [];
+		// const remainingAssets = [];
 		const coinsData = coinsList
 			.map((name) => {
 				const { code, icon_id, symbol, fullname, type, created_at } = coins[
@@ -137,24 +137,29 @@ class AssetsWrapper extends Component {
 					created_at,
 				};
 			})
-			?.filter(({ type }) => type === 'blockchain');
-		pinned_assets.forEach((pin) => {
-			const asset = coinsData.find(({ symbol }) => symbol === pin);
-			if (asset) {
-				topAssets.push(asset);
-			}
-		});
-		coinsData.filter((item) => {
-			if (!pinned_assets.includes(item.symbol)) {
-				remainingAssets.push(item);
-				return true;
-			}
-			return false;
-		});
+			?.filter(({ type }) => type === 'blockchain')
+			?.sort(
+				(a, b) =>
+					(coins[b?.symbol]?.market_cap || 0) -
+					(coins[a?.symbol]?.market_cap || 0)
+			);
+		// pinned_assets.forEach((pin) => {
+		// 	const asset = coinsData.find(({ symbol }) => symbol === pin);
+		// 	if (asset) {
+		// 		topAssets.push(asset);
+		// 	}
+		// });
+		// coinsData.filter((item) => {
+		// 	if (!pinned_assets.includes(item.symbol)) {
+		// 		remainingAssets.push(item);
+		// 		return true;
+		// 	}
+		// 	return false;
+		// });
 
-		this.setState({ coinsData: [...topAssets, ...remainingAssets] });
+		this.setState({ coinsData: coinsData });
 		this.constructData(this.state.page);
-		setCoinsData([...topAssets, ...remainingAssets]);
+		setCoinsData(coinsData);
 	};
 
 	async componentDidMount() {
@@ -360,11 +365,7 @@ class AssetsWrapper extends Component {
 			STRINGS['DIGITAL_ASSETS.CARDS.LOSERS'],
 			STRINGS['DEPOSIT_STATUS.NEW'],
 		];
-		const filteredButtons = isMobile
-			? listButton.filter(
-					(button) => button !== STRINGS['DIGITAL_ASSETS.CARDS.MARKET_CAP']
-			  )
-			: listButton;
+
 		return (
 			<div>
 				<AssetsCards loading={isLoading} />
@@ -380,7 +381,7 @@ class AssetsWrapper extends Component {
 						>
 							{!this.state.isSearchActive && isMobile && (
 								<div className="market-buttons">
-									{filteredButtons.map((button, index) => {
+									{listButton?.map((button, index) => {
 										return (
 											<div
 												className={
@@ -399,7 +400,7 @@ class AssetsWrapper extends Component {
 							)}
 							{!isMobile && (
 								<div className="market-buttons">
-									{filteredButtons.map((button, index) => {
+									{listButton?.map((button, index) => {
 										return (
 											<div
 												className={
@@ -494,6 +495,7 @@ class AssetsWrapper extends Component {
 						showPaginator={count > pageSize}
 						isSelectedSort={this.state.isSelectedSort}
 						handleSelectedSort={this.handleSelectedSort}
+						selectedButton={this.state.selectedButton}
 					/>
 				</div>
 			</div>

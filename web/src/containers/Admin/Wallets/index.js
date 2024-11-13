@@ -6,7 +6,7 @@ import { ReactSVG } from 'react-svg';
 import { STATIC_ICONS } from 'config/icons';
 import { requestTotalBalance, requestConstants } from './actions';
 import { formatCurrencyByIncrementalUnit } from 'utils/currency';
-
+import './index.scss';
 class Wallets extends Component {
 	state = {
 		users: [],
@@ -90,20 +90,26 @@ class Wallets extends Component {
 				key: 'available',
 				title: 'Available',
 				dataIndex: 'available',
-			}
-		]
+			},
+		];
 
 		sortedCoins.forEach((coin) => {
-			if ( balance && balance[`${coin}_balance`]) {
+			if (balance && balance[`${coin}_balance`]) {
 				const inc_unit = coins[coin]?.increment_unit;
 				let asset = {
 					name: coin.toUpperCase(),
-					total: formatCurrencyByIncrementalUnit(balance[`${coin}_balance`], inc_unit),
-					available: formatCurrencyByIncrementalUnit(balance[`${coin}_available`], inc_unit)
-				}
+					total: formatCurrencyByIncrementalUnit(
+						balance[`${coin}_balance`],
+						inc_unit
+					),
+					available: formatCurrencyByIncrementalUnit(
+						balance[`${coin}_available`],
+						inc_unit
+					),
+				};
 				data.push(asset);
 			}
-		})
+		});
 
 		return (
 			<div className="app_container-content">

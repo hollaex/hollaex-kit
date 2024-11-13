@@ -1,15 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { browserHistory } from 'react-router';
+import { isMobile } from 'react-device-detect';
 
 import TradeInputGroup from 'containers/Wallet/components/TradeInputGroup';
 import STRINGS from 'config/localizedStrings';
 import { PriceChange, Coin, ActionNotification } from 'components';
 import { MiniSparkLine } from 'containers/TradeTabs/components/MiniSparkLine';
 import { getLastValuesFromParts } from 'utils/array';
-import { isMobile } from 'react-device-detect';
-import { browserHistory } from 'react-router';
 import { unique } from 'utils/data';
 import { Loading } from './utils';
+import { formatCurrencyByIncrementalUnit } from 'utils/currency';
 
 const AssetsRow = ({
 	coinData,
@@ -19,6 +20,7 @@ const AssetsRow = ({
 	pairs,
 	icons,
 	coins,
+	selectedButton,
 }) => {
 	const {
 		icon_id,
@@ -31,6 +33,7 @@ const AssetsRow = ({
 		oneDayPriceDifferencePercent,
 		lastPrice,
 		key,
+		increment_unit,
 	} = coinData;
 
 	const getAllAvailableMarkets = (key) => {
@@ -93,6 +96,7 @@ const AssetsRow = ({
 	};
 
 	const markets = getAllAvailableMarkets(symbol);
+	const roundPrice = lastPrice?.split(',')?.join('');
 
 	return (
 		<tr id={`market-list-row-${key}`} className="table-row table-bottom-border">
@@ -136,7 +140,12 @@ const AssetsRow = ({
 									{lastPrice && '$'}
 								</span>
 								<span className="title-font last-price-label">
-									{lastPrice ? lastPrice : '-'}
+									{lastPrice
+										? formatCurrencyByIncrementalUnit(
+												roundPrice,
+												increment_unit
+										  )
+										: '-'}
 								</span>
 							</div>
 							{(oneDayPriceDifferencePercent && oneDayPriceDifference) ||
@@ -159,7 +168,7 @@ const AssetsRow = ({
 					)}
 				</td>
 			)}
-			{isMobile && (
+			{isMobile && selectedButton !== 'Market Cap' && (
 				<td>
 					{!loading ? (
 						<div className="d-flex flex-column justify-content-end">
@@ -180,9 +189,30 @@ const AssetsRow = ({
 								<MiniSparkLine
 									chartData={getLastValuesFromParts(chartData?.price || [])}
 									isArea
+									isNewAssets={true}
 								/>
 							) : (
 								<span> {'- '}</span>
+							)}
+						</div>
+					) : (
+						<Loading index={index} />
+					)}
+				</td>
+			)}
+			{isMobile && selectedButton === 'Market Cap' && (
+				<td>
+					{!loading ? (
+						<div className="ml-1 market-capital mr-3">
+							{coins[symbol]?.market_cap ? (
+								coins[symbol].market_cap.toLocaleString('en-US', {
+									style: 'currency',
+									currency: 'USD',
+									minimumFractionDigits: 0,
+									maximumFractionDigits: 0,
+								})
+							) : (
+								<span className="font-raleway">0</span>
 							)}
 						</div>
 					) : (
@@ -198,7 +228,9 @@ const AssetsRow = ({
 								{lastPrice && '$'}
 							</span>
 							<span className="title-font last-price-label">
-								{lastPrice ? lastPrice : '-'}
+								{lastPrice
+									? formatCurrencyByIncrementalUnit(roundPrice, increment_unit)
+									: '-'}
 							</span>
 						</div>
 					) : (
@@ -253,6 +285,7 @@ const AssetsRow = ({
 							<MiniSparkLine
 								chartData={getLastValuesFromParts(chartData?.price || [])}
 								isArea
+								isNewAssets={true}
 							/>
 						) : (
 							'-'
@@ -270,6 +303,8 @@ const AssetsRow = ({
 								coins[symbol].market_cap.toLocaleString('en-US', {
 									style: 'currency',
 									currency: 'USD',
+									minimumFractionDigits: 0,
+									maximumFractionDigits: 0,
 								})
 							) : (
 								<span className="font-raleway">0</span>
@@ -289,6 +324,7 @@ const AssetsRow = ({
 							goToTrade={goToTrade}
 							pairs={pairs}
 							tradeClassName="market-asset-row"
+							hasTrigger={true}
 						/>
 					) : (
 						<ActionNotification
@@ -306,7 +342,11 @@ const AssetsRow = ({
 							className="csv-action"
 							showActionText={isMobile}
 							disable={markets.length === 0}
-							tradeClassName="market-asset-row"
+							tradeClassName={
+								markets.length === 0
+									? 'market-asset-row market-asset-row-disable'
+									: 'market-asset-row'
+							}
 						/>
 					)
 				) : (

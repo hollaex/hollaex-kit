@@ -27,6 +27,7 @@ const {
 	DEFAULT_FEES,
 	BALANCE_HISTORY_SUPPORTED_PLANS,
 	REFERRAL_HISTORY_SUPPORTED_PLANS,
+	AUTO_TRADE_SUPPORTED_PLANS
 } = require(`${SERVER_PATH}/constants`);
 const {
 	COMMUNICATOR_CANNOT_UPDATE,
@@ -476,7 +477,32 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 		if (!newKitConfig.chain_trade_config.hasOwnProperty('currency')) {
 			throw new Error('currency does not exist');
 		}
+
+		if (!newKitConfig.chain_trade_config.hasOwnProperty('spread')) {
+			throw new Error('spread does not exist');
+		}
 		
+	}
+
+	if (newKitConfig.selectable_native_currencies) {
+
+		for (let coin of newKitConfig.selectable_native_currencies) {
+			if (!subscribedToCoin(coin)) {
+				throw new Error('Invalid coin ' + coin);
+			}
+		}
+	}
+	
+	if (newKitConfig.auto_trade_config) {
+		const exchangeInfo = getKitConfig().info;
+
+		if (!AUTO_TRADE_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
+			throw new Error('Exchange plan does not support this feature');
+		}
+
+		if (!newKitConfig.auto_trade_config.hasOwnProperty('active')) {
+			throw new Error('active key does not exist');
+		}
 	}
 
 	const joinedKitConfig = {};
@@ -1052,6 +1078,16 @@ const getNetworkQuickTrades = () => {
 const parseNumber = (number, precisionValue) => {
 	return BigNumber(number).precision(precisionValue, BigNumber.ROUND_DOWN).toNumber();
 }
+const removeRepeatingDecimals = (num) => {
+	let numStr = num.toString();
+	if (numStr.includes('.') && numStr?.length > 8) {
+		let [integerPart, decimalPart] = numStr.split('.');
+		decimalPart = decimalPart.replace(/(\d)\1{2,}$/, '$1');
+		return parseFloat(`${integerPart}.${decimalPart}`);
+	}
+	
+	return parseFloat(num); 
+}
 
 module.exports = {
 	getKitVersion,
@@ -1122,5 +1158,6 @@ module.exports = {
 	parseNumber,
 	getQuickTradePairs,
 	getTransactionLimits,
-	getTradePaths
+	getTradePaths,
+	removeRepeatingDecimals
 };

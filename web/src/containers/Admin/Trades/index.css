@@ -16,6 +16,25 @@
 	border: none;
 }
 
+.ant-table-thead > tr > th {
+	background-color: var(--admin_panel_table_thead);
+	color: var(--admin_panel_main_font);
+}
+.ant-table-tbody > tr > td {
+	background-color: var(--admin_panel_table_tbody);
+	color: var(--admin_panel_main_font);
+	border-bottom: 1px solid var(--admin_panel_table_tbody);
+}
+.ant-table-tbody > tr.ant-table-placeholder:hover > td {
+	background-color: var(--admin_panel_table_tbody_hover);
+}
+.ant-table-tbody > tr.ant-table-row:hover > td {
+	background-color: var(--admin_panel_table_tbody_hover);
+}
+.green-btn {
+	background-color: #288500 !important;
+	color: #ffffff !important;
+}
 .preview-container {
 	padding: 1.5rem 1rem;
 }
@@ -760,4 +779,15 @@
 }
 .otc-Container .errMsg {
 	color: red;
+}
+
+.p2p-admin-select-asset
+	.ant-select-item-option-content
+	.edit-wrapper__container {
+	position: relative;
+	top: 5px;
+}
+
+.p2p-admin-select-asset .ant-select-item {
+	cursor: text;
 }

@@ -257,6 +257,14 @@
 				}
 			}
 		}
+		.market-wrapper {
+			.market-button-container {
+				padding: 4% 2%;
+				.trade-tab-search-icon {
+					font-size: 12px;
+				}
+			}
+		}
 	}
 
 	.custom-card-field {
@@ -297,8 +305,17 @@
 }
 
 .market-dropdown-style {
+	.app_bar-pair-font {
+		margin-left: 5%;
+	}
 	.ant-dropdown-menu-item-active:hover {
 		background-color: $colors-super-pale-black !important;
+	}
+}
+
+.market-dropdown-mobile {
+	.app_bar-pair-font {
+		font-size: 12px;
 	}
 }
 
@@ -448,6 +465,18 @@
 					}
 				}
 
+				.market-asset-row-disable,
+				.market-asset-row-disable:hover {
+					.action_notification-text {
+						opacity: 0.3;
+					}
+					.action_notification-text:hover {
+						background-color: transparent !important;
+						cursor: text;
+						color: $colors-notifications-blue !important;
+					}
+				}
+
 				.ant-dropdown-open {
 					border-radius: 8px;
 
@@ -536,6 +565,7 @@
 				width: 32%;
 				display: flex;
 				align-items: center;
+				justify-content: space-between;
 				border-radius: 2px;
 				padding: 0.5% 1% 0.5% 0;
 				border: 1px solid $colors-black;
@@ -586,7 +616,29 @@
 
 		.ant-switch-checked,
 		.ant-switch {
+			border: 2px solid $colors-deactivate-color1;
 			background-color: $app-light-background;
+			.ant-switch-handle {
+				width: 10px;
+			}
+		}
+		.ant-switch-checked {
+			border: 2px solid $colors-main-black !important;
+			.ant-switch-handle {
+				left: calc(100% - 12px) !important;
+			}
+		}
+		.toggle-inactive {
+			.ant-switch-handle::before {
+				background-color: $colors-deactivate-color1;
+				bottom: 3px;
+			}
+		}
+		.toggle-active {
+			.ant-switch-handle::before {
+				background-color: $colors-main-black;
+				bottom: 3px;
+			}
 		}
 	}
 }
@@ -711,6 +763,7 @@
 		.assets-wrapper:hover {
 			background-color: $colors-super-pale-black;
 			border-radius: 5px;
+			cursor: pointer;
 
 			.right-arrow-icon {
 				display: block;

@@ -159,6 +159,11 @@
 		"P2P_VENDOR_APPEALED_ORDER": {
 			"html": "<div><p> Sevgili ${name} </p><p>Siparişinize itiraz ettiniz. Sorunu çözmek için lütfen destek ile iletişime geçin.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Siparişinize Git</Button></a></div><p>Platformumuzu kullandığınız için teşekkür ederiz.</p><p>İstek şu IP den yapıldı: ${ip}</p><p>Saygılarımızla<br> ${api_name} ekibi </p></div>",
 			"title": "P2P Siparişinizde Aktivite Tespit Edildi"
-		}
+		},
+        "AUTO_TRADE_ERROR":{
+			"html": "<div><p>Sayın ${name},</p><p>Otomatik ticaret yapılandırmanız, aşağıdaki işlem için yetersiz bakiye nedeniyle başarısız oldu. Lütfen bakiyenizi kontrol edin ve güncelleyin. Harcama Tutarı: ${spend_amount}, Harcanan Coin: ${spend_coin}, Satın Alınan Coin: ${buy_coin}.</p><p>Platformumuzu kullandığınız için teşekkür ederiz.</p><p>Saygılarımızla, ${api_name} ekibi</p></div>",
+			"title": "Otomatik Ticaret Yapılandırmanızda Hata"
+		  }
+		  
 	}
 }

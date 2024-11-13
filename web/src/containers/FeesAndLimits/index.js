@@ -2,8 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
+
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
+import TradingFees from './TradingFees';
+import WithdrawalFees from './WithdrawalFees';
+import WithdrawalLimits from './WithdrawalLimits';
 import {
 	IconTitle,
 	EditWrapper,
@@ -13,10 +17,7 @@ import {
 	HeaderSection,
 	Loader,
 } from 'components';
-import { openContactForm } from 'actions/appActions';
-import TradingFees from './TradingFees';
-import WithdrawalFees from './WithdrawalFees';
-import WithdrawalLimits from './WithdrawalLimits';
+import { openContactForm, setLimitTab } from 'actions/appActions';
 import { isLoggedIn } from 'utils/token';
 
 const Index = ({
@@ -24,6 +25,7 @@ const Index = ({
 	verification_level,
 	router,
 	selectedAccount,
+	getLimitTab,
 }) => {
 	const [selectedLevel, setSelectedLevel] = useState(
 		isLoggedIn() ? verification_level?.toString() : Object.keys(config_level)[0]
@@ -91,6 +93,13 @@ const Index = ({
 		setSelectedLevel(selectedAccount);
 	}, [selectedAccount]);
 
+	useEffect(() => {
+		if (getLimitTab) {
+			setActiveTab(getLimitTab);
+		}
+		//eslint-disable-next-line
+	}, []);
+
 	const renderContent = (tabs, activeTab) =>
 		tabs[activeTab] && tabs[activeTab].content ? (
 			tabs[activeTab].content
@@ -152,16 +161,18 @@ const Index = ({
 
 const mapStateToProps = (state) => {
 	const {
-		app: { config_level, selectedAccount },
+		app: { config_level, selectedAccount, selectedTab },
 	} = state;
 	return {
 		verification_level: state.user.verification_level,
 		config_level,
 		selectedAccount,
+		getLimitTab: selectedTab,
 	};
 };
 
 const mapDispatchToProps = (dispatch) => ({
+	setLimitTab: bindActionCreators(setLimitTab, dispatch),
 	openContactForm: bindActionCreators(openContactForm, dispatch),
 });
 

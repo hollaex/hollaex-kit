@@ -221,7 +221,9 @@ exports.KIT_CONFIG_KEYS = [
 	'transaction_limits',
 	'p2p_config',
 	'referral_history_config',
-	'chain_trade_config'
+	'chain_trade_config',
+	'selectable_native_currencies',
+	'auto_trade_config'
 ];
 
 exports.KIT_SECRETS_KEYS = [
@@ -586,6 +588,13 @@ exports.EXPLORERS = {
 			txPath: '/tx'
 		}
 	],
+	pol: [
+		{
+			name: 'PolygonScan',
+			baseUrl: 'https://polygonscan.com',
+			txPath: '/tx'
+		}
+	],
 	etc: [
 		{
 			name: 'Ethereum Classic Explorer',
@@ -686,6 +695,12 @@ exports.BALANCE_HISTORY_SUPPORTED_PLANS = ['fiat', 'boost', 'enterprise'];
 
 exports.REFERRAL_HISTORY_SUPPORTED_PLANS = ['fiat', 'boost', 'enterprise'];
 //REFERRAL HISTORY CONSTANTS END
+
+//AUTO_TRADE CONSTANTS START
+
+exports.AUTO_TRADE_SUPPORTED_PLANS = ['boost', 'enterprise'];
+//AUTO_TRADE CONSTANTS END
+
 
 exports.CUSTOM_CSS = `
 	.topbar-wrapper img {

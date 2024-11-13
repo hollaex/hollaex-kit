@@ -11,7 +11,10 @@ import './index.scss';
 // const TYPE_OPTIONS = [{ value: true, label: 'Active' }];
 
 const QuickTradesList = ({ pairs, coins, userId, getThisExchangeOrder }) => {
-	const [options, setOptions] = useState([]);
+	// const [options, setOptions] = useState([]);
+	const [coinOptions, setCoinOptions] = useState([]);
+	const [baseCoin, setBaseCoin] = useState(null);
+	const [quoteCoin, setQuoteCoin] = useState(null);
 	const [pair, setPair] = useState(null);
 	const [type] = useState(true);
 	const [displayCreateOrder, setDisplayCreateOrder] = useState(false);
@@ -20,20 +23,32 @@ const QuickTradesList = ({ pairs, coins, userId, getThisExchangeOrder }) => {
 	const [emailOptions, setEmailOptions] = useState([]);
 	const [orderPayload, setOrderPayload] = useState({});
 
-	useEffect(() => {
-		setOptions(getOptions(pairs));
-	}, [pairs]);
+	// useEffect(() => {
+	// 	setOptions(getOptions(pairs));
+	// }, [pairs]);
 
-	const getOptions = (pairs) => {
-		const options = [{ value: null, label: 'All' }];
-		Object.keys(pairs).forEach((pair) => {
+	useEffect(() => {
+		const options = [];
+		Object.keys(coins).forEach((pair) => {
 			options.push({
 				label: pair,
 				value: pair,
 			});
 		});
-		return options;
-	};
+
+		setCoinOptions(options);
+	}, [coins]);
+
+	// const getOptions = (pairs) => {
+	// 	const options = [{ value: null, label: 'All' }];
+	// 	Object.keys(pairs).forEach((pair) => {
+	// 		options.push({
+	// 			label: pair,
+	// 			value: pair,
+	// 		});
+	// 	});
+	// 	return options;
+	// };
 	const handleEmailChange = (value) => {
 		let emailId = parseInt(value);
 		let emailData = {};
@@ -413,14 +428,52 @@ const QuickTradesList = ({ pairs, coins, userId, getThisExchangeOrder }) => {
 
 			<div style={{ display: 'flex', justifyContent: 'space-between' }}>
 				<div>
-					<Select
+					{/* <Select
 						style={{
 							width: 100,
 						}}
 						options={options}
 						value={pair}
 						onChange={setPair}
+					/> */}
+					<Select
+						style={{
+							width: 100,
+							marginRight: 10,
+						}}
+						value={baseCoin}
+						placeholder="Base"
+						options={coinOptions}
+						onChange={(val) => {
+							setBaseCoin(val);
+							setPair(`${val}-${quoteCoin ? quoteCoin : ''}`);
+						}}
 					/>
+					<Select
+						style={{
+							width: 100,
+						}}
+						value={quoteCoin}
+						placeholder="Quote"
+						options={coinOptions}
+						onChange={(val) => {
+							setQuoteCoin(val);
+							setPair(`${baseCoin ? baseCoin : ''}-${val}`);
+						}}
+					/>
+					<Button
+						className="green-btn"
+						type="primary"
+						style={{ marginLeft: 15 }}
+						onClick={() => {
+							setBaseCoin(null);
+							setQuoteCoin(null);
+							setPair(null);
+						}}
+					>
+						Reset
+					</Button>
+
 					{/* <Select
 						style={{
 							width: 100,

@@ -159,6 +159,11 @@
         "P2P_VENDOR_APPEALED_ORDER": {
             "html": "<div><p> Cher ${name} </p><p>Vous avez fait appel de votre commande. Veuillez contacter le support pour résoudre le problème.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Allez à votre commande</Button></a></div><p>Merci d'utiliser notre plateforme.</p><p>Requête initiée depuis: ${ip}</p><p>Cordialement<br> L'équipe ${api_name} </p></div>",
             "title": "Activité détectée sur votre commande P2P"
-        }
+        },
+        "AUTO_TRADE_ERROR": {
+            "html": "<div><p>Cher ${name},</p><p>Nous avons détecté que votre configuration de commerce automatique a échoué en raison d'un solde insuffisant pour l'échange suivant. Veuillez vérifier et mettre à jour votre solde. Montant dépensé : ${spend_amount}, Monnaie dépensée : ${spend_coin}, Monnaie achetée : ${buy_coin}.</p><p>Merci d'utiliser notre plateforme.</p><p>Cordialement, l'équipe ${api_name}</p></div>",
+            "title": "Erreur dans votre configuration de commerce automatique"
+          }
+          
     }
 }

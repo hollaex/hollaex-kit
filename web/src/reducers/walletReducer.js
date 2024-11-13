@@ -46,6 +46,7 @@ const INITIAL_STATE = {
 	withdrawalCancelData: INITIAL_DELETE_WHITDRAWALS_MSG,
 	activeTabFromWallet: '',
 	activeBalanceHistory: false,
+	scannedAddress: '',
 };
 
 export default function reducer(state = INITIAL_STATE, { type, payload }) {
@@ -339,6 +340,11 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 			return {
 				...state,
 				activeBalanceHistory: payload.activeBalanceHistory,
+			};
+		case 'SETSCANNEDADDRESS':
+			return {
+				...state,
+				scannedAddress: payload,
 			};
 		default:
 			return state;

@@ -71,6 +71,14 @@ const createInitialAdmin = (req, res) => {
 			if (user) {
 				throw new Error('Admin already exists');
 			}
+
+			if (!email || !isEmail(email)) {
+				throw new Error(PROVIDE_VALID_EMAIL);
+			}
+			if (!toolsLib.security.isValidPassword(password)) {
+				throw new Error(INVALID_PASSWORD);
+			}
+
 			return toolsLib.user.createUser(email, password, {
 				role: 'admin',
 				id: 1,
@@ -2096,7 +2104,7 @@ const setUserBank = (req, res) => {
 				if (!foundBank) {
 					deletedBankInfoLog.push(existingBank);
 				}
-			})
+			});
 			
 			const newBankAccounts = bank_account.map((bank) => {
 				let existingBank = existingBankAccounts.filter((b) => b.id === bank.id);
@@ -2126,8 +2134,8 @@ const setUserBank = (req, res) => {
 				}
 			}
 
-			newBankInfoLog.map(bank => toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], bank))
-			deletedBankInfoLog.map(bank => toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, 'delete', bank))
+			newBankInfoLog.map(bank => toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], bank));
+			deletedBankInfoLog.map(bank => toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, 'delete', bank));
 			return res.json(updatedUser.bank_account);
 		})
 		.catch((err) => {
@@ -2300,7 +2308,7 @@ const getUserReferer = (req, res) => {
 };
 
 const createUserByAdmin = (req, res) => {
-	const { email, password } = req.swagger.params.data.value;
+	const { email, password, referral } = req.swagger.params.data.value;
 
 	loggerAdmin.info(req.uuid, 'controllers/admin/createUserByAdmin email', email);
 
@@ -2325,6 +2333,7 @@ const createUserByAdmin = (req, res) => {
 				role: 'user',
 				id: null,
 				email_verified: true,
+				referral,
 				additionalHeaders: {
 					'x-forwarded-for': req.headers['x-forwarded-for']
 				}
@@ -2858,7 +2867,7 @@ const disableUserWithdrawal = (req, res) => {
 		expiry_date
 	);
 
-		toolsLib.user.disableUserWithdrawal(user_id, { expiry_date })
+	toolsLib.user.disableUserWithdrawal(user_id, { expiry_date })
 		.then((data) => {
 			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
 			loggerAdmin.info(
@@ -2908,10 +2917,10 @@ const createTradeByAdmin = (req, res) => {
 		taker_fee 
 	);
 
-		toolsLib.order.createTrade({symbol, side, price, size, maker_id, taker_id, maker_fee, taker_fee },
-			{
-				'x-forwarded-for': req.headers['x-forwarded-for']
-			})
+	toolsLib.order.createTrade({symbol, side, price, size, maker_id, taker_id, maker_fee, taker_fee },
+		{
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		})
 		.then((data) => {
 			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
 			loggerAdmin.info(
@@ -3001,6 +3010,35 @@ const createUserReferralCodeByAdmin = (req, res) => {
 		});
 };
 
+const fetchUserTradingVolumeByAdmin = (req, res) => {
+	const { user_id, to, from } = req.swagger.params;
+
+	loggerAdmin.info(
+		user_id.value,
+		'controllers/user/fetchUserTradingVolumeByAdmin',
+		to.value,
+		from.value
+	);
+
+	toolsLib.user.fetchUserTradingVolume(
+		user_id.value,
+		{
+			to: to.value,
+			from: from.value
+		}
+	)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/user/fetchUserTradingVolumeByAdmin err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
 
 const getPaymentDetailsByAdmin = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getPaymentDetailsByAdmin/auth', req.auth);
@@ -3082,12 +3120,33 @@ const deletePaymentDetailByAdmin = (req, res) => {
 	toolsLib.user.deletePaymentDetail(id, user_id)
 		.then(() => {
 			return res.json({
-				message: "Success"
+				message: 'Success'
 			});
 		})
 		.catch((err) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/deletePaymentDetailByAdmin', err.message);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const deleteUserByAdmin = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/deleteUserByAdmin/auth', req.auth);
+
+	const { user_id } = req.swagger.params.data.value;
+
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/deleteUserByAdmin',
+		'user_id',
+		user_id,
+	);
+	toolsLib.user.deleteKitUser(user_id, false)
+		.then(() => {
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/deleteUserByAdmin', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -3165,8 +3224,10 @@ module.exports = {
 	performDirectWithdrawalByAdmin,
 	getUserReferralCodesByAdmin,
 	createUserReferralCodeByAdmin,
+	fetchUserTradingVolumeByAdmin,
 	getPaymentDetailsByAdmin,
 	createPaymentDetailByAdmin,
 	updatePaymentDetailByAdmin,
-	deletePaymentDetailByAdmin
+	deletePaymentDetailByAdmin,
+	deleteUserByAdmin
 };

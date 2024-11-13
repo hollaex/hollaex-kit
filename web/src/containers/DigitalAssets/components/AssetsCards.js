@@ -1,7 +1,8 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import { isMobile } from 'react-device-detect';
-import { Card, Switch } from 'antd';
+import { browserHistory } from 'react-router';
+import { Card, Spin, Switch } from 'antd';
 import {
 	CaretDownOutlined,
 	CaretUpOutlined,
@@ -14,6 +15,7 @@ import icons from 'config/icons/dark';
 import { Coin, EditWrapper, IconTitle } from 'components';
 import { quicktradePairSelector } from 'containers/QuickTrade/components/utils';
 import { Loading } from './utils';
+import { formatCurrencyByIncrementalUnit } from 'utils/currency';
 
 const cardTypes = ['gainers', 'losers', 'newAssets'];
 const cardTitles = [
@@ -62,72 +64,155 @@ const renderPercentage = (percentage, type) => (
 	</span>
 );
 
-const renderCards = (data, coins, type, loading) =>
-	data.map(
-		(
-			{
-				symbol,
-				lastPrice,
-				oneDayPriceDifferencePercent,
-				oneDayPriceDifferencePercenVal,
-			},
-			index
-		) =>
-			loading ? (
-				<Loading index={index} />
-			) : (
-				<div className="assets-wrapper mb-2" key={symbol}>
-					<div className="asset-container">
-						<Coin
-							iconId={coins[symbol].icon_id}
-							type={isMobile ? 'CS10' : 'CS8'}
-						/>
-						<div className="d-flex flex-column">
-							<span className={isMobile && 'font-weight-bold'}>
-								{coins[symbol].fullname}
-							</span>
-							<span className="asset-symbol">{symbol.toUpperCase()}</span>
-						</div>
-					</div>
-					<div className="asset-container align-items-center">
-						<div className="assets-value">
-							<span className="gainer-price">
-								{lastPrice ? `$${lastPrice}` : '-'}
-							</span>
-							{renderPercentage(
-								type === 'newAssets'
-									? oneDayPriceDifferencePercenVal
-									: oneDayPriceDifferencePercent,
-								type
-							)}
-						</div>
-						<div className="right-arrow-icon">
-							<RightOutlined />
-						</div>
-					</div>
-				</div>
-			)
+const TYPES = {
+	PRO: 'pro',
+	BROKER: 'broker',
+	NETWORK: 'network',
+};
+
+const goToCoinInfo = (symbol, features, quicktradePairs) => {
+	const currentQuicktradePair = Object.keys(quicktradePairs)?.find((pair) =>
+		pair?.split('-')?.includes(symbol)
 	);
 
-const AssetsCards = ({ coins, coinsData, loading }) => {
+	const isBroker =
+		currentQuicktradePair &&
+		[TYPES.NETWORK, TYPES.BROKER]?.includes(
+			quicktradePairs[currentQuicktradePair]?.type
+		);
+	if (currentQuicktradePair) {
+		const path = isBroker
+			? features?.quick_trade
+				? `/quick-trade/${currentQuicktradePair}`
+				: `/prices/coin/${symbol}`
+			: features?.pro_trade
+			? `/trade/${currentQuicktradePair}`
+			: `/prices/coin/${symbol}`;
+
+		browserHistory.push(path);
+	} else {
+		browserHistory.push(`/prices/coin/${symbol}`);
+	}
+};
+
+const renderCards = (data, coins, type, loading, features, quicktradePairs) => {
+	return data?.length >= 1 ? (
+		data?.map(
+			(
+				{
+					symbol,
+					lastPrice,
+					oneDayPriceDifferencePercent,
+					oneDayPriceDifferencePercenVal,
+					increment_unit,
+				},
+				index
+			) => {
+				const roundPrice = lastPrice?.split(',')?.join('');
+
+				return loading ? (
+					<Loading key={index} index={index} />
+				) : (
+					<div
+						className="assets-wrapper mb-2"
+						key={symbol}
+						onClick={() => goToCoinInfo(symbol, features, quicktradePairs)}
+					>
+						<div className="asset-container">
+							<Coin
+								iconId={coins[symbol]?.icon_id}
+								type={isMobile ? 'CS10' : 'CS8'}
+							/>
+							<div className="d-flex flex-column">
+								<span className={isMobile && 'font-weight-bold'}>
+									{coins[symbol]?.fullname}
+								</span>
+								<span className="asset-symbol">{symbol?.toUpperCase()}</span>
+							</div>
+						</div>
+						<div className="asset-container align-items-center">
+							<div className="assets-value">
+								<span className="gainer-price">
+									{lastPrice
+										? `$${formatCurrencyByIncrementalUnit(
+												roundPrice,
+												increment_unit
+										  )}`
+										: '-'}
+								</span>
+								{renderPercentage(
+									type === 'newAssets'
+										? oneDayPriceDifferencePercenVal
+										: oneDayPriceDifferencePercent,
+									type
+								)}
+							</div>
+							<div className="right-arrow-icon">
+								<RightOutlined />
+							</div>
+						</div>
+					</div>
+				);
+			}
+		)
+	) : (
+		<span className="my-4">
+			<Spin size="medium" />
+		</span>
+	);
+};
+
+const AssetsCards = ({
+	coins,
+	coinsData,
+	loading,
+	features,
+	quicktradePairs,
+}) => {
 	const [currentIndex, setCurrentIndex] = useState(0);
 	const [isVisible, setIsVisible] = useState(true);
+	const [swipe, setSwipe] = useState(0);
 
 	const sortedCoinsData = useMemo(() => sortCoinsData(coinsData), [coinsData]);
 
 	const handleNavigation = (direction) => {
 		setCurrentIndex(
 			(prevIndex) =>
-				(prevIndex + (direction === 'left' ? -1 : 1) + cardTypes.length) %
-				cardTypes.length
+				(prevIndex + (direction === 'left' ? -1 : 1) + cardTypes?.length) %
+				cardTypes?.length
 		);
 	};
+
+	const handleTouchStart = (e) => {
+		setSwipe(e.touches[0]?.clientX);
+	};
+
+	const handleTouchMove = (e) => {
+		const touchEndX = e.touches[0]?.clientX;
+		const diffX = touchEndX - swipe;
+
+		if (Math.abs(diffX) > 50) {
+			if (diffX > 0) {
+				handleNavigation('left');
+			} else {
+				handleNavigation('right');
+			}
+		}
+	};
+
+	useEffect(() => {
+		const interval = setInterval(() => {
+			handleNavigation('right');
+		}, 4000);
+
+		return () => clearInterval(interval);
+	}, []);
 
 	return (
 		<>
 			{!isMobile && (
 				<div className="highlight-toggle-button">
-					<div className="highlight-text">
+					<div className={isVisible ? 'highlight-text' : 'secondary-text'}>
 						<EditWrapper stringId="DIGITAL_ASSETS.HIGHLIGHTS">
 							{strings['DIGITAL_ASSETS.HIGHLIGHTS']}
 						</EditWrapper>
@@ -136,12 +221,17 @@ const AssetsCards = ({ coins, coinsData, loading }) => {
 						size="small"
 						checked={isVisible}
 						onChange={() => setIsVisible(!isVisible)}
+						className={isVisible ? 'toggle-active' : 'toggle-inactive'}
 					/>
 				</div>
 			)}
 			{isVisible &&
 				(isMobile ? (
-					<div className="d-flex flex-column align-items-center justify-content-center asset-cards-swipe-container">
+					<div
+						className="d-flex flex-column align-items-center justify-content-center asset-cards-swipe-container"
+						onTouchStart={handleTouchStart}
+						onTouchMove={handleTouchMove}
+					>
 						<div className="d-flex align-items-center justify-content-center assets-card-container">
 							<div
 								className={`digital-assets-cards nav-area left-nav ${
@@ -185,13 +275,19 @@ const AssetsCards = ({ coins, coinsData, loading }) => {
 										: cardTypes[currentIndex] === 'losers'
 										? 'losers-asset-card'
 										: 'new-asset-card'
+								} ${
+									sortedCoinsData[cardTypes[currentIndex]]?.length === 0
+										? 'text-center'
+										: ''
 								}`}
 							>
 								{renderCards(
 									sortedCoinsData[cardTypes[currentIndex]],
 									coins,
 									cardTypes[currentIndex],
-									loading
+									loading,
+									features,
+									quicktradePairs
 								)}
 							</Card>
 							<div
@@ -252,9 +348,16 @@ const AssetsCards = ({ coins, coinsData, loading }) => {
 										: type === 'losers'
 										? 'losers-asset-card'
 										: 'new-asset-card'
-								}`}
+								} ${sortedCoinsData[type]?.length === 0 ? 'text-center' : ''}`}
 							>
-								{renderCards(sortedCoinsData[type], coins, type, loading)}
+								{renderCards(
+									sortedCoinsData[type],
+									coins,
+									type,
+									loading,
+									features,
+									quicktradePairs
+								)}
 							</Card>
 						))}
 					</div>
@@ -267,6 +370,7 @@ const mapStateToProps = (state) => ({
 	coins: state.app.coins,
 	quicktradePairs: quicktradePairSelector(state),
 	coinsData: state.app.coinsData,
+	features: state.app.features,
 });
 
 export default connect(mapStateToProps)(withConfig(AssetsCards));

@@ -461,6 +461,12 @@ paths:
           type: number
           format: int32
         - in: query
+          name: user_id
+          description: "id for user"
+          required: false
+          type: number
+          format: int32
+        - in: query
           name: limit
           description: "Number of elements to return. Default: 50. Maximun: 100"
           required: false
