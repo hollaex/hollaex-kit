@@ -67,3 +67,5 @@ templates/kubernetes/config/*
 
 .token
 backups
+.vscode/settings.json
+web/public/.vscode/settings.json
