@@ -377,8 +377,8 @@ table th {
     height: auto;
     flex: 1; }
   .app_container.layout-mobile .app_container-content {
-    min-height: calc( 100vh - 10rem);
-    max-height: calc( 100vh - 10rem);
+    min-height: calc( 100vh - 10rem);
+    max-height: calc( 100vh - 10rem);
     max-width: 100vw;
     overflow-y: scroll; }
     .app_container.layout-mobile .app_container-content.chart-embed {
@@ -396,8 +396,8 @@ table th {
       .app_container.layout-mobile .app_container-content .app_container-main.no_bottom_navigation {
         height: 100%; }
   .app_container.layout-mobile .content-with-bar {
-    min-height: calc( 100vh - 17rem);
-    max-height: calc( 100vh - 17rem);
+    min-height: calc( 100vh - 17rem);
+    max-height: calc( 100vh - 17rem);
     max-width: 100vw;
     padding: 1rem;
     margin: 0;
@@ -4414,8 +4414,8 @@ table th {
 .layout-mobile .quote-container {
   background-color: transparent;
   overflow-y: scroll;
-  min-height: calc( 100vh - 17rem);
-  max-height: calc( 100vh - 17rem); }
+  min-height: calc( 100vh - 17rem);
+  max-height: calc( 100vh - 17rem); }
   .layout-mobile .quote-container .quick_trade-wrapper {
     flex: 1 1;
     flex-direction: column;
@@ -4588,7 +4588,7 @@ table th {
 
 .layout-mobile .presentation_container.verification_container {
   padding-top: 0 !important;
-  max-height: calc( 100vh - 10rem); }
+  max-height: calc( 100vh - 10rem); }
   .layout-mobile .presentation_container.verification_container .header-content {
     font-size: 13px !important; }
 
@@ -4672,6 +4672,119 @@ table th {
 
 .layout-mobile .digital-market-wrapper .link-container {
   font-size: 10px; }
+
+.layout-mobile .digital-market-wrapper .market-wrapper .header-container {
+  padding-bottom: 0;
+  border-bottom: unset; }
+  .layout-mobile .digital-market-wrapper .market-wrapper .header-container .icon_title-wrapper .icon_title-svg svg {
+    width: 2rem !important;
+    height: 2rem !important;
+    margin-top: 0 !important; }
+  .layout-mobile .digital-market-wrapper .market-wrapper .header-container .icon_title-wrapper .icon_title-svg {
+    width: 2rem !important; }
+
+.layout-mobile .digital-market-wrapper .market-wrapper .market-button-container {
+  width: 100%;
+  padding: 2%;
+  display: flex;
+  align-items: center;
+  justify-content: center; }
+  .layout-mobile .digital-market-wrapper .market-wrapper .market-button-container .market-buttons {
+    width: 100%; }
+    .layout-mobile .digital-market-wrapper .market-wrapper .market-button-container .market-buttons .market-btn {
+      padding: 1% 4%; }
+  .layout-mobile .digital-market-wrapper .market-wrapper .market-button-container .search-field-mobile-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px; }
+    .layout-mobile .digital-market-wrapper .market-wrapper .market-button-container .search-field-mobile-container .search-field-container div:first-child {
+      width: 100%; }
+    .layout-mobile .digital-market-wrapper .market-wrapper .market-button-container .search-field-mobile-container .search-field-container,
+    .layout-mobile .digital-market-wrapper .market-wrapper .market-button-container .search-field-mobile-container .search {
+      width: 90% !important; }
+      .layout-mobile .digital-market-wrapper .market-wrapper .market-button-container .search-field-mobile-container .search-field-container .trade_tabs-search-field,
+      .layout-mobile .digital-market-wrapper .market-wrapper .market-button-container .search-field-mobile-container .search .trade_tabs-search-field {
+        width: 100%;
+        display: block !important; }
+        .layout-mobile .digital-market-wrapper .market-wrapper .market-button-container .search-field-mobile-container .search-field-container .trade_tabs-search-field .field-content .field-children div div,
+        .layout-mobile .digital-market-wrapper .market-wrapper .market-button-container .search-field-mobile-container .search .trade_tabs-search-field .field-content .field-children div div {
+          width: unset !important; }
+        .layout-mobile .digital-market-wrapper .market-wrapper .market-button-container .search-field-mobile-container .search-field-container .trade_tabs-search-field .field-content .field-children input,
+        .layout-mobile .digital-market-wrapper .market-wrapper .market-button-container .search-field-mobile-container .search .trade_tabs-search-field .field-content .field-children input {
+          width: 100%; }
+        .layout-mobile .digital-market-wrapper .market-wrapper .market-button-container .search-field-mobile-container .search-field-container .trade_tabs-search-field .field-content .clear-field,
+        .layout-mobile .digital-market-wrapper .market-wrapper .market-button-container .search-field-mobile-container .search .trade_tabs-search-field .field-content .clear-field {
+          bottom: 35% !important;
+          right: 10px; }
+          .layout-mobile .digital-market-wrapper .market-wrapper .market-button-container .search-field-mobile-container .search-field-container .trade_tabs-search-field .field-content .clear-field svg,
+          .layout-mobile .digital-market-wrapper .market-wrapper .market-button-container .search-field-mobile-container .search .trade_tabs-search-field .field-content .clear-field svg {
+            width: 2rem;
+            height: unset; }
+        .layout-mobile .digital-market-wrapper .market-wrapper .market-button-container .search-field-mobile-container .search-field-container .trade_tabs-search-field .field-error-content,
+        .layout-mobile .digital-market-wrapper .market-wrapper .market-button-container .search-field-mobile-container .search .trade_tabs-search-field .field-error-content {
+          margin: unset;
+          padding-bottom: unset;
+          min-height: unset; }
+    .layout-mobile .digital-market-wrapper .market-wrapper .market-button-container .search-field-mobile-container .blue-link {
+      font-size: 12px !important;
+      text-transform: uppercase;
+      text-decoration: underline !important; }
+  .layout-mobile .digital-market-wrapper .market-wrapper .market-button-container .trade-tab-search-icon {
+    padding: 1.5%;
+    border-radius: 20px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    background-color: var(--specials_buttons-links-and-highlights); }
+
+.layout-mobile .digital-market-wrapper .market-list__container .market-list__block .market-list__block-table .sticky-col {
+  background-color: transparent; }
+  .layout-mobile .digital-market-wrapper .market-list__container .market-list__block .market-list__block-table .sticky-col .table-asset-container,
+  .layout-mobile .digital-market-wrapper .market-list__container .market-list__block .market-list__block-table .sticky-col .coin-symbol {
+    width: 100%;
+    overflow: hidden;
+    text-wrap: nowrap;
+    text-overflow: ellipsis; }
+
+.layout-mobile .digital-market-wrapper .market-list__container .market-list__block .market-list__block-table tr {
+  font-size: 12px !important; }
+
+.layout-mobile .digital-market-wrapper .market-list__container .market-list__block .market-list__block-table .market-asset-row .action_notification-text,
+.layout-mobile .digital-market-wrapper .market-list__container .market-list__block .market-list__block-table .ant-space .action_notification-text {
+  padding: 8px 10px;
+  font-size: 12px !important;
+  border-radius: 8px; }
+
+.layout-mobile .digital-market-wrapper .market-list__container .market-list__block .market-list__block-table .trade-header {
+  padding: 5% !important; }
+
+.layout-mobile .digital-market-wrapper .market-list__container .market-list__block .market-list__block-table .highcharts-container {
+  position: absolute !important;
+  top: 30% !important;
+  height: 50%; }
+  .layout-mobile .digital-market-wrapper .market-list__container .market-list__block .market-list__block-table .highcharts-container .highcharts-root {
+    height: 100%; }
+
+.layout-mobile .digital-market-wrapper .market-list__container .market-list__block .market-list__block-table td:nth-child(3) .price-change .price-diff {
+  position: absolute;
+  top: 7%; }
+
+.layout-mobile .asset-cards-swipe-container {
+  min-height: 20%; }
+  .layout-mobile .asset-cards-swipe-container .assets-card-container .gainer-icon .edit-wrapper__container:nth-child(1) {
+    margin-top: 2%; }
+  .layout-mobile .asset-cards-swipe-container .assets-card-container .gainer-icon .edit-wrapper__container:nth-child(2) .icon_title-text {
+    font-size: 12px !important; }
+  .layout-mobile .asset-cards-swipe-container .assets-card-container .digital-assets-cards .assets-wrapper .assets-value .gainer-price {
+    font-weight: bold; }
+  .layout-mobile .asset-cards-swipe-container .assets-card-container .gainer-asset-card {
+    border-top: 3px solid var(--trading_buying-related-elements) !important; }
+  .layout-mobile .asset-cards-swipe-container .assets-card-container .losers-asset-card {
+    border-top: 3px solid var(--trading_selling-related-elements) !important; }
+  .layout-mobile .asset-cards-swipe-container .assets-card-container .new-asset-card {
+    border-top: 3px solid var(--labels_secondary-inactive-label-text-graphics) !important; }
 
 .layout-mobile .fee-limits-wrapper {
   margin: 1rem auto 3rem; }
@@ -4785,7 +4898,7 @@ table th {
   justify-content: center;
   padding-top: 2rem; }
   .digital-market-wrapper .market-wrapper-mobile-view {
-    width: 90% !important; }
+    width: 100% !important; }
   .digital-market-wrapper .market-wrapper {
     width: 70%; }
     .digital-market-wrapper .market-wrapper .gray-text {
@@ -5459,21 +5572,133 @@ table th {
 .layout-mobile .trade_tabs-container .sticky-col {
   background-color: var(--base_background) !important; }
 
-.layout-mobile .digital-market-wrapper .sticky-col {
+.layout-mobile .digital-market-wrapper .market-wrapper-mobile-view .mobile-header-content {
   color: var(--labels_important-active-labels-text-graphics);
-  background-color: var(--base_secondary-navigation-bar); }
+  text-align: center;
+  font-family: 'Raleway'; }
+  .layout-mobile .digital-market-wrapper .market-wrapper-mobile-view .mobile-header-content .digital-assets-label {
+    font-size: 24px;
+    text-transform: capitalize; }
+  .layout-mobile .digital-market-wrapper .market-wrapper-mobile-view .mobile-header-content .desc-content {
+    font-size: 12px; }
+
+.layout-mobile .custom-card-field {
+  width: 8px;
+  height: 8px;
+  border: 1px solid var(--labels_important-active-labels-text-graphics);
+  border-radius: 100%; }
+
+.layout-mobile .custom-card-field-active {
+  background-color: var(--labels_important-active-labels-text-graphics); }
+
+.layout-mobile .assets-card-container {
+  width: 100%;
+  position: relative; }
+  .layout-mobile .assets-card-container .digital-assets-cards {
+    width: 70%; }
+  .layout-mobile .assets-card-container .nav-area {
+    position: absolute;
+    width: 10% !important;
+    height: 90%;
+    z-index: 1;
+    border-radius: unset !important; }
+  .layout-mobile .assets-card-container .left-nav {
+    left: 0; }
+  .layout-mobile .assets-card-container .right-nav {
+    right: 0; }
+
+.market-dropdown-style .ant-dropdown-menu-item-active:hover {
+  background-color: var(--calculated_super-pale_label-text-graphics) !important; }
 
 .digital-market-wrapper .market-list__block-table {
   margin-bottom: 1rem; }
+  .digital-market-wrapper .market-list__block-table .table-bottom-border td,
+  .digital-market-wrapper .market-list__block-table th {
+    line-height: unset; }
+  .digital-market-wrapper .market-list__block-table .font-raleway {
+    font-family: Raleway; }
+  .digital-market-wrapper .market-list__block-table thead {
+    color: var(--labels_secondary-inactive-label-text-graphics);
+    background-color: var(--base_secondary-navigation-bar); }
+    .digital-market-wrapper .market-list__block-table thead tr {
+      height: 2.5rem !important;
+      vertical-align: bottom;
+      border-bottom: 1px solid var(--calculated_secondary-border); }
+    .digital-market-wrapper .market-list__block-table thead th {
+      border-bottom: unset !important;
+      text-wrap: nowrap;
+      padding: 0 0.5rem !important;
+      height: 30px; }
+    .digital-market-wrapper .market-list__block-table thead .market-chart-header {
+      width: 15%; }
+    .digital-market-wrapper .market-list__block-table thead .market-captial-header {
+      width: 15%; }
+    .digital-market-wrapper .market-list__block-table thead .asset-price-header,
+    .digital-market-wrapper .market-list__block-table thead .asset-percentage {
+      width: 15%; }
+    .digital-market-wrapper .market-list__block-table thead .trade-header {
+      padding: 15% !important;
+      display: flex;
+      justify-content: center; }
+  .digital-market-wrapper .market-list__block-table .table-row {
+    height: 3.5rem; }
+    .digital-market-wrapper .market-list__block-table .table-row td {
+      text-align: center !important; }
+    .digital-market-wrapper .market-list__block-table .table-row td:nth-child(1) {
+      text-align: left !important; }
+    .digital-market-wrapper .market-list__block-table .table-row td:nth-child(3),
+    .digital-market-wrapper .market-list__block-table .table-row td:nth-child(4) {
+      text-align: right !important; }
+  .digital-market-wrapper .market-list__block-table tbody tr td .asset-text,
+  .digital-market-wrapper .market-list__block-table tbody tr td .last-price-label {
+    font-weight: bold;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; }
+  .digital-market-wrapper .market-list__block-table tbody tr td .asset-text {
+    text-wrap: nowrap; }
+  .digital-market-wrapper .market-list__block-table tbody tr td .price-change,
+  .digital-market-wrapper .market-list__block-table tbody tr td .market-capital {
+    display: flex;
+    justify-content: flex-end !important; }
+  .digital-market-wrapper .market-list__block-table tbody tr .market-chart .highcharts-container .highcharts-root {
+    height: 80%; }
   .digital-market-wrapper .market-list__block-table .table-row {
     cursor: text !important; }
     .digital-market-wrapper .market-list__block-table .table-row:hover {
       background-color: unset !important; }
     .digital-market-wrapper .market-list__block-table .table-row .sticky-col {
+      width: 15%;
       color: var(--labels_important-active-labels-text-graphics);
       cursor: pointer; }
       .digital-market-wrapper .market-list__block-table .table-row .sticky-col:hover {
         opacity: 0.5; }
+      .digital-market-wrapper .market-list__block-table .table-row .sticky-col .coin-symbol {
+        color: var(--labels_secondary-inactive-label-text-graphics); }
+    .digital-market-wrapper .market-list__block-table .table-row .td-trade .market-asset-row,
+    .digital-market-wrapper .market-list__block-table .table-row .td-trade .ant-space {
+      display: flex;
+      align-items: center;
+      justify-content: center; }
+      .digital-market-wrapper .market-list__block-table .table-row .td-trade .market-asset-row .action_notification-text,
+      .digital-market-wrapper .market-list__block-table .table-row .td-trade .ant-space .action_notification-text {
+        padding: 1px 5px;
+        text-decoration: none !important;
+        width: fit-content !important;
+        border: 1px solid var(--specials_buttons-links-and-highlights);
+        border-radius: 3px;
+        text-transform: capitalize;
+        color: var(--specials_buttons-links-and-highlights);
+        text-wrap: nowrap; }
+      .digital-market-wrapper .market-list__block-table .table-row .td-trade .market-asset-row .action_notification-text:hover,
+      .digital-market-wrapper .market-list__block-table .table-row .td-trade .ant-space .action_notification-text:hover {
+        background-color: var(--specials_buttons-links-and-highlights);
+        color: var(--labels_important-active-labels-text-graphics);
+        cursor: pointer; }
+    .digital-market-wrapper .market-list__block-table .table-row .td-trade .ant-dropdown-open {
+      border-radius: 8px; }
+      .digital-market-wrapper .market-list__block-table .table-row .td-trade .ant-dropdown-open .action_notification-text {
+        background-color: var(--specials_buttons-links-and-highlights);
+        color: var(--labels_important-active-labels-text-graphics) !important;
+        cursor: pointer; }
 
 .digital-market-wrapper .custom-header-wrapper {
   margin-top: 10%;
@@ -5485,12 +5710,177 @@ table th {
   border-bottom: 1px solid var(--labels_important-active-labels-text-graphics);
   margin-bottom: 10%; }
 
+.digital-market-wrapper .market-wrapper .market-button-container {
+  margin-top: 2%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; }
+  .digital-market-wrapper .market-wrapper .market-button-container .market-buttons {
+    width: 35%;
+    display: flex;
+    gap: 5px; }
+    .digital-market-wrapper .market-wrapper .market-button-container .market-buttons .opacity-full {
+      opacity: 1; }
+    .digital-market-wrapper .market-wrapper .market-button-container .market-buttons .opacity-half {
+      opacity: 0.4; }
+    .digital-market-wrapper .market-wrapper .market-button-container .market-buttons .market-btn {
+      width: max-content;
+      display: flex;
+      padding: 1% 2%;
+      border: 1px solid var(--labels_secondary-inactive-label-text-graphics);
+      border-radius: 5px;
+      align-items: center; }
+    .digital-market-wrapper .market-wrapper .market-button-container .market-buttons .market-btn:hover {
+      cursor: pointer; }
+  .digital-market-wrapper .market-wrapper .market-button-container .search {
+    width: 20% !important;
+    background-color: var(--base_secondary-navigation-bar);
+    border: 1px solid transparent !important; }
+    .digital-market-wrapper .market-wrapper .market-button-container .search .trade_tabs-search-field {
+      background-color: var(--base_secondary-navigation-bar); }
+      .digital-market-wrapper .market-wrapper .market-button-container .search .trade_tabs-search-field .field-content .field-children input {
+        width: 8rem !important; }
+    .digital-market-wrapper .market-wrapper .market-button-container .search .open-icon {
+      width: 1.5rem;
+      text-align: center;
+      background-color: var(--base_background); }
+  .digital-market-wrapper .market-wrapper .market-button-container .search-field-container {
+    width: 32%;
+    display: flex;
+    align-items: center;
+    border-radius: 2px;
+    padding: 0.5% 1% 0.5% 0;
+    border: 1px solid var(--labels_secondary-inactive-label-text-graphics); }
+    .digital-market-wrapper .market-wrapper .market-button-container .search-field-container .trade_tabs-search-field {
+      margin: unset;
+      border-radius: 2px;
+      width: 100%; }
+      .digital-market-wrapper .market-wrapper .market-button-container .search-field-container .trade_tabs-search-field .field-content {
+        width: 100%; }
+        .digital-market-wrapper .market-wrapper .market-button-container .search-field-container .trade_tabs-search-field .field-content .field-content-outline:before,
+        .digital-market-wrapper .market-wrapper .market-button-container .search-field-container .trade_tabs-search-field .field-content .field-content-outline:after {
+          background: unset !important; }
+        .digital-market-wrapper .market-wrapper .market-button-container .search-field-container .trade_tabs-search-field .field-content .field-children input {
+          width: 15rem; }
+        .digital-market-wrapper .market-wrapper .market-button-container .search-field-container .trade_tabs-search-field .field-content .clear-field {
+          right: 5px;
+          bottom: 0.6rem; }
+  .digital-market-wrapper .market-wrapper .market-button-container .search:hover {
+    border: 1px solid var(--labels_secondary-inactive-label-text-graphics) !important; }
+
+.digital-market-wrapper .highlight-toggle-button {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-bottom: 2%; }
+  .digital-market-wrapper .highlight-toggle-button .highlight-text {
+    color: var(--labels_important-active-labels-text-graphics); }
+  .digital-market-wrapper .highlight-toggle-button .ant-switch-checked,
+  .digital-market-wrapper .highlight-toggle-button .ant-switch {
+    background-color: var(--base_secondary-navigation-bar); }
+
+.assets-card-container {
+  display: flex;
+  gap: 20px;
+  min-height: 20%; }
+  .assets-card-container .loading-anime {
+    margin-top: 3%;
+    height: 35px;
+    width: 100%;
+    border-radius: 7px;
+    animation: mymove 1s infinite; }
+  .assets-card-container .ant-card-head-title {
+    padding: unset !important;
+    font-weight: bold; }
+  .assets-card-container .ant-card-body {
+    padding: 0 12px !important; }
+  .assets-card-container .gainer-asset-card {
+    border-top: 2px solid var(--trading_buying-related-elements) !important; }
+  .assets-card-container .losers-asset-card {
+    border-top: 2px solid var(--trading_selling-related-elements) !important; }
+  .assets-card-container .new-asset-card {
+    border-top: 2px solid var(--labels_secondary-inactive-label-text-graphics) !important; }
+  .assets-card-container .gainer-icon {
+    margin-top: unset;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    color: var(--labels_important-active-labels-text-graphics); }
+    .assets-card-container .gainer-icon .edit-wrapper__container:nth-child(1) {
+      margin-top: 1%; }
+      .assets-card-container .gainer-icon .edit-wrapper__container:nth-child(1) .icon_title-svg {
+        width: 100%;
+        height: 50%; }
+        .assets-card-container .gainer-icon .edit-wrapper__container:nth-child(1) .icon_title-svg svg {
+          width: 100%;
+          height: 50%; }
+    .assets-card-container .gainer-icon .edit-wrapper__container:nth-child(2) .icon_title-text {
+      margin: unset !important;
+      padding-top: unset !important; }
+  .assets-card-container .digital-assets-cards {
+    width: 35%;
+    background-color: var(--base_wallet-sidebar-and-popup);
+    color: var(--labels_important-active-labels-text-graphics);
+    border: unset;
+    padding: 1%;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px; }
+    .assets-card-container .digital-assets-cards .ant-card-head {
+      background-color: var(--base_wallet-sidebar-and-popup);
+      text-align: center;
+      border: unset; }
+    .assets-card-container .digital-assets-cards .assets-wrapper {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 1%;
+      font-size: 12px !important; }
+      .assets-card-container .digital-assets-cards .assets-wrapper .asset-container {
+        display: flex;
+        gap: 5px; }
+        .assets-card-container .digital-assets-cards .assets-wrapper .asset-container .asset-symbol {
+          color: var(--labels_secondary-inactive-label-text-graphics); }
+      .assets-card-container .digital-assets-cards .assets-wrapper .assets-value {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end; }
+        .assets-card-container .digital-assets-cards .assets-wrapper .assets-value .gainer-percentage {
+          display: flex;
+          align-items: center;
+          color: var(--trading_buying-related-elements); }
+        .assets-card-container .digital-assets-cards .assets-wrapper .assets-value .loser-percentage {
+          color: var(--trading_selling-related-elements); }
+      .assets-card-container .digital-assets-cards .assets-wrapper .right-arrow-icon {
+        display: none; }
+    .assets-card-container .digital-assets-cards .assets-wrapper:hover {
+      background-color: var(--calculated_super-pale_label-text-graphics);
+      border-radius: 5px; }
+      .assets-card-container .digital-assets-cards .assets-wrapper:hover .right-arrow-icon {
+        display: block; }
+
 .trade_tabs-container .market-pairs {
   color: var(--labels_important-active-labels-text-graphics); }
 
 @media screen and (max-width: 786px) {
   .layout-mobile .digital-market-wrapper .view-more-btn {
-    padding: 10%; } }
+    padding: 5%; } }
+
+@media (min-width: 1920px) {
+  .digital-market-wrapper .market-list__block-table .table-row .market-asset-row .action_notification-text,
+  .digital-market-wrapper .market-list__block-table .table-row .ant-space .action_notification-text {
+    padding: 5px; }
+  .digital-market-wrapper .market-wrapper .market-button-container .search {
+    width: 15% !important; }
+    .digital-market-wrapper .market-wrapper .market-button-container .search .trade_tabs-search-field .field-content .field-children input {
+      width: 8rem !important; }
+  .digital-market-wrapper .market-wrapper .market-button-container .search-field-container {
+    width: 23%; }
+    .digital-market-wrapper .market-wrapper .market-button-container .search-field-container .trade_tabs-search-field .field-content .field-children input {
+      width: 15rem; } }
 
 .trade_tabs-container {
   color: var(--labels_secondary-inactive-label-text-graphics);
@@ -8107,7 +8497,7 @@ table th {
   font-size: 13px; }
 
 .address_book_popup_wrapper .address-book-popup-wrapper {
-  width: 45rem !important; }
+  width: 55rem !important; }
 
 .address_book_popup_wrapper .address-book-popup-wrapper .address-book-header-content .address-book-title,
 .address_book_popup_wrapper .address-book-popup-wrapper .name-address-header-content .address-book-title,
@@ -8392,27 +8782,44 @@ table th {
       .address_book_popup_wrapper .remove-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field,
       .address_book_popup_wrapper .remove-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field,
       .address_book_popup_wrapper .remove-popup-wrapper .address-book-content .generate-address-form-wrapper .optional-tag-field .select-field {
-        width: 90%;
+        width: 100%;
         height: 35%;
         display: flex;
         justify-content: space-between; }
-        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .asset-input .selected-asset-btn,
-        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .asset-input .selected-asset-btn,
-        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .asset-input .selected-asset-btn,
-        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .optional-tag-field .select-field .asset-input .selected-asset-btn,
-        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .asset-input .selected-asset-btn,
-        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .asset-input .selected-asset-btn,
-        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .asset-input .selected-asset-btn,
-        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .optional-tag-field .select-field .asset-input .selected-asset-btn,
-        .address_book_popup_wrapper .confirm-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .asset-input .selected-asset-btn,
-        .address_book_popup_wrapper .confirm-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .asset-input .selected-asset-btn,
-        .address_book_popup_wrapper .confirm-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .asset-input .selected-asset-btn,
-        .address_book_popup_wrapper .confirm-popup-wrapper .address-book-content .generate-address-form-wrapper .optional-tag-field .select-field .asset-input .selected-asset-btn,
-        .address_book_popup_wrapper .remove-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .asset-input .selected-asset-btn,
-        .address_book_popup_wrapper .remove-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .asset-input .selected-asset-btn,
-        .address_book_popup_wrapper .remove-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .asset-input .selected-asset-btn,
-        .address_book_popup_wrapper .remove-popup-wrapper .address-book-content .generate-address-form-wrapper .optional-tag-field .select-field .asset-input .selected-asset-btn {
-          width: 95%; }
+        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .asset-input,
+        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .asset-input,
+        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .asset-input,
+        .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .optional-tag-field .select-field .asset-input,
+        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .asset-input,
+        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .asset-input,
+        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .asset-input,
+        .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .optional-tag-field .select-field .asset-input,
+        .address_book_popup_wrapper .confirm-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .asset-input,
+        .address_book_popup_wrapper .confirm-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .asset-input,
+        .address_book_popup_wrapper .confirm-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .asset-input,
+        .address_book_popup_wrapper .confirm-popup-wrapper .address-book-content .generate-address-form-wrapper .optional-tag-field .select-field .asset-input,
+        .address_book_popup_wrapper .remove-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .asset-input,
+        .address_book_popup_wrapper .remove-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .asset-input,
+        .address_book_popup_wrapper .remove-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .asset-input,
+        .address_book_popup_wrapper .remove-popup-wrapper .address-book-content .generate-address-form-wrapper .optional-tag-field .select-field .asset-input {
+          width: 75%; }
+          .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .asset-input .selected-asset-btn,
+          .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .asset-input .selected-asset-btn,
+          .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .asset-input .selected-asset-btn,
+          .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .optional-tag-field .select-field .asset-input .selected-asset-btn,
+          .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .asset-input .selected-asset-btn,
+          .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .asset-input .selected-asset-btn,
+          .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .asset-input .selected-asset-btn,
+          .address_book_popup_wrapper .name-address-popup-wrapper .address-book-content .generate-address-form-wrapper .optional-tag-field .select-field .asset-input .selected-asset-btn,
+          .address_book_popup_wrapper .confirm-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .asset-input .selected-asset-btn,
+          .address_book_popup_wrapper .confirm-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .asset-input .selected-asset-btn,
+          .address_book_popup_wrapper .confirm-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .asset-input .selected-asset-btn,
+          .address_book_popup_wrapper .confirm-popup-wrapper .address-book-content .generate-address-form-wrapper .optional-tag-field .select-field .asset-input .selected-asset-btn,
+          .address_book_popup_wrapper .remove-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .asset-input .selected-asset-btn,
+          .address_book_popup_wrapper .remove-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .asset-input .selected-asset-btn,
+          .address_book_popup_wrapper .remove-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .asset-input .selected-asset-btn,
+          .address_book_popup_wrapper .remove-popup-wrapper .address-book-content .generate-address-form-wrapper .optional-tag-field .select-field .asset-input .selected-asset-btn {
+            width: 95%; }
         .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .label-content,
         .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .label-content,
         .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .label-content,
@@ -8462,7 +8869,7 @@ table th {
       .address_book_popup_wrapper .remove-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .network-field .network-input,
       .address_book_popup_wrapper .remove-popup-wrapper .address-book-content .generate-address-form-wrapper .optional-tag-field .select-field .network-input,
       .address_book_popup_wrapper .remove-popup-wrapper .address-book-content .generate-address-form-wrapper .optional-tag-field .network-field .network-input {
-        width: 60%; }
+        width: 75%; }
       .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .opacity-100,
       .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .network-field .opacity-100,
       .address_book_popup_wrapper .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .opacity-100,
@@ -8565,7 +8972,7 @@ table th {
         padding: 0.5%;
         border-radius: 5px;
         margin-right: 10px;
-        width: 4.5rem;
+        width: 7.5rem;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -9113,7 +9520,7 @@ table th {
   border: 1px solid var(--labels_secondary-inactive-label-text-graphics); }
 
 .add_withdrawal_address_wrapper .ReactModal__Content {
-  width: 50rem; }
+  width: 60rem; }
 
 .layout-mobile .address-book-popup-wrapper {
   width: 100% !important;
@@ -9258,13 +9665,21 @@ table th {
       .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .optional-tag-field .select-field .currency-label {
         width: 22%; }
       .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-method-field .select-field .network-input,
+      .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-method-field .select-field .asset-input,
       .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-network-field .select-field .network-input,
+      .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-network-field .select-field .asset-input,
       .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .address-field .select-field .network-input,
+      .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .address-field .select-field .asset-input,
       .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .optional-tag-field .select-field .network-input,
+      .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .optional-tag-field .select-field .asset-input,
       .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .network-input,
+      .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-method-field .select-field .asset-input,
       .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .network-input,
+      .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .select-network-field .select-field .asset-input,
       .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .network-input,
-      .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .optional-tag-field .select-field .network-input {
+      .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .address-field .select-field .asset-input,
+      .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .optional-tag-field .select-field .network-input,
+      .layout-mobile .address-book-popup-wrapper .address-book-content .generate-address-form-wrapper .optional-tag-field .select-field .asset-input {
         width: 100%; }
     .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-method-field .input-label-field,
     .layout-mobile .address-book-popup-wrapper .address-book-popup-wrapper .generate-address-form-wrapper .select-network-field .input-label-field,
@@ -9557,7 +9972,7 @@ table th {
     padding: 0.3rem 0; }
     .modal-market-menu .app-bar-add-tab-content .scroll-view {
       overflow-y: auto;
-      height: calc( 100vh - 19rem - 8rem); }
+      height: calc( 100vh - 19rem - 8rem); }
   .modal-market-menu .app-bar-tab-overflow-content {
     background-color: var(--base_background);
     color: var(--labels_secondary-inactive-label-text-graphics);
@@ -12069,14 +12484,14 @@ table th {
   right: 0 !important;
   min-width: 100vw;
   max-width: 100vw;
-  min-height: calc( 100vh - 4rem);
-  max-height: calc( 100vh - 4rem);
+  min-height: calc( 100vh - 4rem);
+  max-height: calc( 100vh - 4rem);
   border-radius: 0 !important;
   padding: 0 !important; }
   .layout-mobile .ReactModal__Content .dialog-mobile-content {
     padding: 2.5rem !important;
-    min-height: calc( 100vh - 8rem);
-    max-height: calc( 100vh - 8rem);
+    min-height: calc( 100vh - 8rem);
+    max-height: calc( 100vh - 8rem);
     display: flex; }
 
 .layout-mobile.LogoutModal .ReactModal__Content {
