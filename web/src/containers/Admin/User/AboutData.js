@@ -461,6 +461,7 @@ const AboutData = ({
 	freezeAccount,
 	verifyEmail,
 	recoverUser,
+	deleteUser,
 	onChangeSuccess,
 	allIcons = {},
 	userTiers,
@@ -639,6 +640,14 @@ const AboutData = ({
 							<Fragment>
 								<div className="about-info-content">
 									<div>Account is active</div>
+									<div
+										className="info-link"
+										onClick={() => {
+											deleteUser();
+										}}
+									>
+										Delete user
+									</div>
 								</div>
 								<ReactSVG
 									src={STATIC_ICONS.VERIFICATION_ICON}
