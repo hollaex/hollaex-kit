@@ -3403,7 +3403,7 @@ const getPaymentDetails = async (user_id, opts = {
 	const query = {
 		where: {
 			created_at: timeframe,
-			user_id,
+			...(user_id && { user_id }),
 			...(opts.is_p2p && { is_p2p: opts.is_p2p }),
 			...(opts.is_fiat_control && { is_fiat_control: opts.is_fiat_control }),
 			...(opts.status && { status: opts.status })
