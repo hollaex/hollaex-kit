@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router';
+import { ClockCircleOutlined, CloseOutlined } from '@ant-design/icons';
 import { Table, Button, Spin, Input, Modal, message } from 'antd';
 import { requestDisputes, editDispute } from './actions';
 import moment from 'moment';
 // import BigNumber from 'bignumber.js';
 // import { ExclamationCircleFilled } from '@ant-design/icons';
-import { connect } from 'react-redux';
-import { CloseOutlined } from '@ant-design/icons';
-import { Link } from 'react-router';
 
 const P2PDisputes = ({ coins }) => {
 	const [userData, setUserData] = useState([]);
@@ -83,7 +83,12 @@ const P2PDisputes = ({ coins }) => {
 			render: (user_id, data) => {
 				return (
 					<div className="d-flex">
-						{data?.resolution?.toUpperCase() || 'Not adjudicated'}
+						{data?.resolution?.toUpperCase() || (
+							<span>
+								<span>Not adjudicated</span>
+								<ClockCircleOutlined className="important-text ml-2 mt-2" />
+							</span>
+						)}
 					</div>
 				);
 			},
