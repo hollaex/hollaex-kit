@@ -799,7 +799,7 @@ class App extends Component {
 								onClick={this.resetTimer}
 								onKeyPress={this.resetTimer}
 							/>
-							<div className="d-flex flex-column f-1">
+							<div className="d-flex flex-column f-1 w-100">
 								{!isChartEmbed && (
 									<AppBar
 										router={router}
