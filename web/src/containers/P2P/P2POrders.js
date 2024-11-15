@@ -466,6 +466,22 @@ const P2POrders = ({
 														</span>
 													</span>
 												</div>
+												<div className="transaction-fiat-amount-wrapper">
+													<span className="transaction-fiat-amount-title">
+														<EditWrapper stringId="P2P.PRICE">
+															{STRINGS['P2P.PRICE']}:
+														</EditWrapper>
+													</span>
+													<span className="transaction-fiat-amount important-text">
+														{formatAmount(
+															transaction?.deal?.buying_asset,
+															transaction?.price
+														)}
+													</span>
+													<span className="transaction-fiat-amount important-text">
+														{transaction?.deal?.buying_asset?.toUpperCase()}
+													</span>
+												</div>
 												<div className="crypto-amount important-text transaction-fiat-amount-wrapper">
 													<span>
 														<EditWrapper stringId="P2P.CRYPTO_AMOUNT">
@@ -479,7 +495,7 @@ const P2POrders = ({
 																transaction?.amount_digital_currency
 															)}
 														</span>
-														<span>
+														<span className="mx-3">
 															{transaction?.deal?.buying_asset?.toUpperCase()}
 														</span>
 														<Coin

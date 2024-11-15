@@ -1792,6 +1792,37 @@
 				}
 
 				.order-verification-container {
+					.order-timer-wrapper {
+						.timer-container {
+							display: flex;
+
+							.timer-details {
+								padding: 2% 0;
+								display: flex;
+								justify-content: center;
+								align-items: center;
+								gap: 10px;
+								border-radius: 25px;
+							}
+
+							.timer-circle {
+								width: 20px;
+								height: 20px;
+								border-radius: 50%;
+								background: conic-gradient(
+									var(--labels_important-active-labels-text-graphics) 0%,
+									var(--base_background) 0%
+								);
+								display: flex;
+								justify-content: center;
+								align-items: center;
+								position: relative;
+								border: 1px solid
+									var(--labels_important-active-labels-text-graphics);
+							}
+						}
+					}
+
 					.order-confirmed-container {
 						.order-complete-title,
 						.go-to-deposit-link,
@@ -3870,6 +3901,13 @@
 					}
 
 					.order-verification-container {
+						.order-timer-wrapper {
+							.timer-circle {
+								width: 30px;
+								height: 30px;
+							}
+						}
+
 						.order-confirmed-container {
 							.order-complete-title {
 								.edit-wrapper__container {

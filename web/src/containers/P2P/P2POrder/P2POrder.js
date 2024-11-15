@@ -26,7 +26,7 @@ import {
 import { formatToCurrency } from 'utils/currency';
 import { getToken } from 'utils/token';
 import { WS_URL } from 'config/constants';
-import { renderFeedback } from '../Utilis';
+import { renderFeedback, Timer } from '../Utilis';
 import classnames from 'classnames';
 import BigNumber from 'bignumber.js';
 import '../_P2P.scss';
@@ -1168,12 +1168,14 @@ const P2POrder = ({
 								</div>
 							</div>
 							<div className="order-verification-container secondary-text">
-								<div className="mb-3 important-text">
-									<EditWrapper stringId="P2P.EXPECTED_TIME">
-										{STRINGS['P2P.EXPECTED_TIME']}
-									</EditWrapper>
-								</div>
-
+								{selectedOrder?.user_status === 'pending' && (
+									<div className="mb-3 important-text order-timer-wrapper">
+										<EditWrapper stringId="P2P.EXPECTED_TIME">
+											{STRINGS['P2P.EXPECTED_TIME']}
+										</EditWrapper>
+										<Timer order={selectedOrder} />
+									</div>
+								)}
 								{user.id === selectedOrder?.user_id && (
 									<>
 										{selectedOrder.user_status === 'pending' && (

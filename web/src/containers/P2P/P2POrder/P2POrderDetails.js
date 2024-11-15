@@ -9,6 +9,7 @@ import { CheckCircleTwoTone } from '@ant-design/icons';
 import STRINGS from 'config/localizedStrings';
 import { Coin, EditWrapper, Image } from 'components';
 import { setIsChat } from 'actions/appActions';
+import { Timer } from '../Utilis';
 
 const P2POrderDetails = ({
 	user,
@@ -321,11 +322,14 @@ const P2POrderDetails = ({
 			</div>
 
 			<div className="order-verification-container secondary-text">
-				{/* <div className='mb-3 important-text'>
-                <EditWrapper stringId="P2P.EXPECTED_TIME">
-                {STRINGS['P2P.EXPECTED_TIME']}
-                </EditWrapper>
-                </div> */}
+				{selectedOrder?.user_status === 'pending' && (
+					<div className="mb-3 important-text order-timer-wrapper">
+						<EditWrapper stringId="P2P.EXPECTED_TIME">
+							{STRINGS['P2P.EXPECTED_TIME']}
+						</EditWrapper>
+						<Timer order={selectedOrder} />
+					</div>
+				)}
 
 				{user?.id === selectedOrder?.user_id && (
 					<>
