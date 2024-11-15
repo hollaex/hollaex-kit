@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { isMobile } from 'react-device-detect';
-import { Button } from 'antd';
+import { Button, Card } from 'antd';
 import { CheckCircleTwoTone, PlaySquareTwoTone } from '@ant-design/icons';
 
 import './_P2P.scss';
@@ -10,9 +10,13 @@ import classnames from 'classnames';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import Filter from './Filters';
-import NoDealsData from './Utilis';
+import NoDealsData, { renderFeedback } from './Utilis';
 import { Coin, EditWrapper } from 'components';
-import { fetchTransactions } from './actions/p2pActions';
+import {
+	fetchFeedback,
+	fetchP2PProfile,
+	fetchTransactions,
+} from './actions/p2pActions';
 import { formatToCurrency } from 'utils/currency';
 
 const P2POrders = ({
@@ -31,6 +35,14 @@ const P2POrders = ({
 	router,
 	changeProfileTab,
 	tab,
+	displayUserFeedback,
+	setDisplayUserFeedback,
+	selectedProfile,
+	userProfile,
+	userFeedback,
+	setSelectedProfile,
+	setUserFeedback,
+	setUserProfile,
 }) => {
 	const [transactions, setTransactions] = useState([]);
 	const [filter, setFilter] = useState();
@@ -74,6 +86,32 @@ const P2POrders = ({
 			setFilter();
 		}
 	};
+
+	const onHandleFeedback = async (transaction) => {
+		const isMerchant =
+			transaction?.user_id === user?.id
+				? transaction?.merchant
+				: transaction?.buyer;
+		const isMerchantId =
+			transaction?.user_id === user?.id
+				? transaction?.merchant_id
+				: transaction?.buyer?.id;
+		try {
+			setSelectedProfile(isMerchant);
+			const feedbacks = await fetchFeedback({
+				merchant_id: isMerchantId,
+			});
+			const profile = await fetchP2PProfile({
+				user_id: isMerchantId,
+			});
+			setUserFeedback(feedbacks?.data);
+			setUserProfile(profile);
+			setDisplayUserFeedback(true);
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
 	return (
 		<div
 			className={classnames(
@@ -85,6 +123,14 @@ const P2POrders = ({
 				]
 			)}
 		>
+			{displayUserFeedback &&
+				renderFeedback(
+					displayUserFeedback,
+					setDisplayUserFeedback,
+					selectedProfile,
+					userProfile,
+					userFeedback
+				)}
 			<div className="order-status-button-container">
 				{orderStatus?.map((status) => {
 					return (
@@ -136,47 +182,202 @@ const P2POrders = ({
 			)}
 			<div className="stake_theme p2p-order-table-wrapper">
 				{transactions?.length > 0 ? (
-					<table className="p2p-order-table w-100">
-						<thead>
-							<tr className="table-bottom-border">
-								<th className="trade-button-header">
-									<EditWrapper stringId="P2P.TYPE_COIN">
-										{STRINGS['P2P.TYPE_COIN']}
-									</EditWrapper>
-								</th>
-								<th>
-									<EditWrapper stringId="P2P.FIAT_AMOUNT">
-										{STRINGS['P2P.FIAT_AMOUNT']}
-									</EditWrapper>
-								</th>
-								<th>
-									<EditWrapper stringId="P2P.PRICE">
-										{STRINGS['P2P.PRICE']}
-									</EditWrapper>
-								</th>
-								<th>
-									<EditWrapper stringId="P2P.CRYPTO_AMOUNT">
-										{STRINGS['P2P.CRYPTO_AMOUNT']}
-									</EditWrapper>
-								</th>
-								<th>
-									<EditWrapper stringId="P2P.COUNTERPARTY">
-										{STRINGS['P2P.COUNTERPARTY']}
-									</EditWrapper>
-								</th>
-								<th>
-									<EditWrapper stringId="P2P.STATUS">
-										{STRINGS['P2P.STATUS']}
-									</EditWrapper>
-								</th>
-								<th>
-									<EditWrapper stringId="P2P.OPERATION">
-										{STRINGS['P2P.OPERATION']}
-									</EditWrapper>
-								</th>
-							</tr>
-						</thead>
-						<tbody className="p2p-order-table-body">
+					!isMobile ? (
+						<table className="p2p-order-table w-100">
+							<thead>
+								<tr className="table-bottom-border">
+									<th className="trade-button-header">
+										<EditWrapper stringId="P2P.TYPE_COIN">
+											{STRINGS['P2P.TYPE_COIN']}
+										</EditWrapper>
+									</th>
+									<th>
+										<EditWrapper stringId="P2P.FIAT_AMOUNT">
+											{STRINGS['P2P.FIAT_AMOUNT']}
+										</EditWrapper>
+									</th>
+									<th>
+										<EditWrapper stringId="P2P.PRICE">
+											{STRINGS['P2P.PRICE']}
+										</EditWrapper>
+									</th>
+									<th>
+										<EditWrapper stringId="P2P.CRYPTO_AMOUNT">
+											{STRINGS['P2P.CRYPTO_AMOUNT']}
+										</EditWrapper>
+									</th>
+									<th>
+										<EditWrapper stringId="P2P.COUNTERPARTY">
+											{STRINGS['P2P.COUNTERPARTY']}
+										</EditWrapper>
+									</th>
+									<th>
+										<EditWrapper stringId="P2P.STATUS">
+											{STRINGS['P2P.STATUS']}
+										</EditWrapper>
+									</th>
+									<th>
+										<EditWrapper stringId="P2P.OPERATION">
+											{STRINGS['P2P.OPERATION']}
+										</EditWrapper>
+									</th>
+								</tr>
+							</thead>
+							<tbody className="p2p-order-table-body">
+								{transactions
+									?.filter((x) =>
+										filter
+											? ['active', 'appealed']?.includes(x?.transaction_status)
+											: true
+									)
+									?.map((transaction) => {
+										const statusClassMap = {
+											complete: 'active-green',
+											appealed: 'active-orange',
+											active: 'active-yellow',
+										};
+
+										const transactionStatusClass =
+											statusClassMap[transaction?.transaction_status] ||
+											'inactive-text';
+										const isDisabled = [
+											'expired',
+											'cancelled',
+											'closed',
+										].includes(transaction?.transaction_status);
+										return (
+											<tr
+												className={
+													isDisabled
+														? 'table-row table-row-inactive fs-12'
+														: 'table-row fs-12'
+												}
+											>
+												<td className="trade-button important-text">
+													{transaction?.user_id === user?.id ? (
+														<Button className="p2p-buy-order-button important-text border-0">
+															<span>
+																<EditWrapper stringId="P2P.BUY_COIN">
+																	{STRINGS['P2P.BUY_COIN']}
+																</EditWrapper>
+																{` ${transaction?.deal?.buying_asset?.toUpperCase()}`}
+															</span>
+														</Button>
+													) : (
+														<Button className="p2p-sell-order-button important-text border-0">
+															<span>
+																<EditWrapper stringId="P2P.SELL_COIN">
+																	{STRINGS['P2P.SELL_COIN']}
+																</EditWrapper>
+																{` ${transaction?.deal?.buying_asset?.toUpperCase()}`}
+															</span>
+														</Button>
+													)}
+												</td>
+
+												<td className="transaction-fiat-amount">
+													<span>{transaction?.amount_fiat}</span>
+													<span className="ml-2">
+														{transaction?.deal?.spending_asset?.toUpperCase()}
+													</span>
+												</td>
+												<td className="transaction-currency-amount">
+													<span>
+														{formatAmount(
+															transaction?.deal?.buying_asset,
+															transaction?.price
+														)}
+													</span>
+													<span className="ml-2">
+														{transaction?.deal?.buying_asset?.toUpperCase()}
+													</span>
+												</td>
+												<td className="crypto-amount">
+													<div className="crypto-amount-detail">
+														<span>
+															{formatAmount(
+																transaction?.deal?.buying_asset,
+																transaction?.amount_digital_currency
+															)}
+														</span>
+														<span>
+															{transaction?.deal?.buying_asset?.toUpperCase()}
+														</span>
+														<Coin
+															iconId={
+																coins[transaction?.deal?.buying_asset]?.icon_id
+															}
+															type={isMobile ? 'CS10' : 'CS4'}
+														/>
+													</div>
+												</td>
+												<td className="transaction-user-name">
+													{transaction?.user_id === user?.id ? (
+														<span
+															onClick={() => {
+																onHandleFeedback(transaction);
+															}}
+														>
+															{transaction?.merchant?.full_name || (
+																<EditWrapper stringId="P2P.ANONYMOUS">
+																	{STRINGS['P2P.ANONYMOUS']}
+																</EditWrapper>
+															)}
+														</span>
+													) : (
+														<span
+															onClick={() => {
+																onHandleFeedback(transaction);
+															}}
+														>
+															{transaction?.buyer?.full_name || (
+																<EditWrapper stringId="P2P.ANONYMOUS">
+																	{STRINGS['P2P.ANONYMOUS']}
+																</EditWrapper>
+															)}
+														</span>
+													)}
+												</td>
+												<td className="transaction-status">
+													<div className="transaction-status-detail">
+														<span className={transactionStatusClass}>
+															{transaction?.transaction_status}
+														</span>
+														{transaction?.transaction_status === 'complete' && (
+															<span className="complete-check-icon check-icon">
+																<CheckCircleTwoTone />
+															</span>
+														)}
+														{transaction?.transaction_status === 'active' && (
+															<span className="active-icon">
+																<PlaySquareTwoTone />
+															</span>
+														)}
+													</div>
+												</td>
+
+												<td className="view-orders">
+													<div
+														onClick={() => {
+															setDisplayOrder(true);
+															setSelectedTransaction(transaction);
+															router.replace(`/p2p/order/${transaction?.id}`);
+														}}
+													>
+														<EditWrapper stringId="P2P.VIEW_ORDER">
+															<span className="purpleTextP2P">
+																{STRINGS['P2P.VIEW_ORDER']}
+															</span>
+														</EditWrapper>
+													</div>
+												</td>
+											</tr>
+										);
+									})}
+							</tbody>
+						</table>
+					) : (
+						<div className="p2p-orders-details-card-wrapper">
 							{transactions
 								?.filter((x) =>
 									filter
@@ -197,135 +398,145 @@ const P2POrders = ({
 										'expired',
 										'cancelled',
 										'closed',
-									].includes(transaction?.transaction_status);
+									]?.includes(transaction?.transaction_status);
 									return (
-										<tr
-											className={
-												isDisabled
-													? 'table-row table-row-inactive fs-12'
-													: 'table-row fs-12'
-											}
-										>
-											<td className="trade-button important-text">
-												{transaction?.user_id === user?.id ? (
-													<Button className="p2p-buy-order-button important-text border-0">
-														<span>
+										<Card className="p2p-orders-card-details">
+											<div
+												className={
+													isDisabled
+														? 'p2p-orders-details p2p-orders-details-inactive'
+														: 'p2p-orders-details'
+												}
+											>
+												<div className="transaction-user-name important-text">
+													{transaction?.user_id === user?.id ? (
+														<span
+															style={{ cursor: 'pointer' }}
+															onClick={() => {
+																onHandleFeedback(transaction);
+															}}
+														>
+															{transaction?.merchant?.full_name || (
+																<EditWrapper stringId="P2P.ANONYMOUS">
+																	{STRINGS['P2P.ANONYMOUS']}
+																</EditWrapper>
+															)}
+														</span>
+													) : (
+														<span
+															onClick={() => {
+																onHandleFeedback(transaction);
+															}}
+														>
+															{transaction?.buyer?.full_name || (
+																<EditWrapper stringId="P2P.ANONYMOUS">
+																	{STRINGS['P2P.ANONYMOUS']}
+																</EditWrapper>
+															)}
+														</span>
+													)}
+												</div>
+												<div>
+													{transaction?.user_id === user?.id ? (
+														<span className="p2p-buy-order-button important-text border-0">
 															<EditWrapper stringId="P2P.BUY_COIN">
 																{STRINGS['P2P.BUY_COIN']}
 															</EditWrapper>
 															{` ${transaction?.deal?.buying_asset?.toUpperCase()}`}
 														</span>
-													</Button>
-												) : (
-													<Button className="p2p-sell-order-button important-text border-0">
-														<span>
+													) : (
+														<span className="p2p-sell-order-button important-text border-0">
 															<EditWrapper stringId="P2P.SELL_COIN">
 																{STRINGS['P2P.SELL_COIN']}
 															</EditWrapper>
 															{` ${transaction?.deal?.buying_asset?.toUpperCase()}`}
 														</span>
-													</Button>
-												)}
-											</td>
+													)}
+												</div>
+												<div className="transaction-fiat-amount-wrapper">
+													<span className="transaction-fiat-amount-title">
+														<EditWrapper stringId="P2P.FIAT_AMOUNT">
+															{STRINGS['P2P.FIAT_AMOUNT']}:
+														</EditWrapper>
+													</span>
+													<span className="transaction-fiat-amount important-text">
+														<span>{transaction?.amount_fiat}</span>
+														<span className="ml-2">
+															{transaction?.deal?.spending_asset?.toUpperCase()}
+														</span>
+													</span>
+												</div>
+												<div className="crypto-amount important-text transaction-fiat-amount-wrapper">
+													<span>
+														<EditWrapper stringId="P2P.CRYPTO_AMOUNT">
+															{STRINGS['P2P.CRYPTO_AMOUNT']}:
+														</EditWrapper>
+													</span>
+													<div className="crypto-amount-detail">
+														<span>
+															{formatAmount(
+																transaction?.deal?.buying_asset,
+																transaction?.amount_digital_currency
+															)}
+														</span>
+														<span>
+															{transaction?.deal?.buying_asset?.toUpperCase()}
+														</span>
+														<Coin
+															iconId={
+																coins[transaction?.deal?.buying_asset]?.icon_id
+															}
+															type={isMobile ? 'CS10' : 'CS4'}
+														/>
+													</div>
+												</div>
 
-											<td className="transaction-fiat-amount">
-												<span>{transaction?.amount_fiat}</span>
-												<span className="ml-2">
-													{transaction?.deal?.spending_asset?.toUpperCase()}
-												</span>
-											</td>
-											<td className="transaction-currency-amount">
-												<span>
-													{formatAmount(
-														transaction?.deal?.buying_asset,
-														transaction?.price
-													)}
-												</span>
-												<span className="ml-2">
-													{transaction?.deal?.buying_asset?.toUpperCase()}
-												</span>
-											</td>
-											<td className="crypto-amount">
-												<div className="crypto-amount-detail">
-													<span>
-														{formatAmount(
-															transaction?.deal?.buying_asset,
-															transaction?.amount_digital_currency
-														)}
-													</span>
-													<span>
-														{transaction?.deal?.buying_asset?.toUpperCase()}
-													</span>
-													<Coin
-														iconId={
-															coins[transaction?.deal?.buying_asset]?.icon_id
-														}
-														type={isMobile ? 'CS10' : 'CS4'}
-													/>
-												</div>
-											</td>
-											<td className="transaction-user-name">
-												{transaction?.user_id === user?.id ? (
-													<span
-														style={{ cursor: 'pointer' }}
-														onClick={() => {
-															changeProfileTab(transaction?.merchant);
-														}}
-													>
-														{transaction?.merchant?.full_name || (
-															<EditWrapper stringId="P2P.ANONYMOUS">
-																{STRINGS['P2P.ANONYMOUS']}
+												<div className="transaction-status important-text transaction-fiat-amount-wrapper ">
+													<div className="transaction-fiat-amount-wrapper">
+														<span>
+															<EditWrapper stringId="P2P.STATUS">
+																{STRINGS['P2P.STATUS']}:
 															</EditWrapper>
-														)}
-													</span>
-												) : (
-													<span>
-														{transaction?.buyer?.full_name || (
-															<EditWrapper stringId="P2P.ANONYMOUS">
-																{STRINGS['P2P.ANONYMOUS']}
+														</span>
+														<div className="transaction-status-detail ml-2">
+															<span className={transactionStatusClass}>
+																{transaction?.transaction_status}
+															</span>
+															{transaction?.transaction_status ===
+																'complete' && (
+																<span className="complete-check-icon check-icon">
+																	<CheckCircleTwoTone />
+																</span>
+															)}
+															{transaction?.transaction_status === 'active' && (
+																<span className="active-icon">
+																	<PlaySquareTwoTone />
+																</span>
+															)}
+														</div>
+													</div>
+													<div className="view-orders">
+														<div
+															onClick={() => {
+																setDisplayOrder(true);
+																setSelectedTransaction(transaction);
+																router.replace(`/p2p/order/${transaction?.id}`);
+															}}
+														>
+															<EditWrapper stringId="P2P.VIEW_ORDER">
+																<span className="purpleTextP2P text-decoration-underline">
+																	{STRINGS['P2P.VIEW_ORDER']}
+																</span>
 															</EditWrapper>
-														)}
-													</span>
-												)}
-											</td>
-											<td className="transaction-status">
-												<div className="transaction-status-detail">
-													<span className={transactionStatusClass}>
-														{transaction?.transaction_status}
-													</span>
-													{transaction?.transaction_status === 'complete' && (
-														<span className="complete-check-icon check-icon">
-															<CheckCircleTwoTone />
-														</span>
-													)}
-													{transaction?.transaction_status === 'active' && (
-														<span className="active-icon">
-															<PlaySquareTwoTone />
-														</span>
-													)}
+														</div>
+													</div>
 												</div>
-											</td>
-
-											<td className="view-orders">
-												<div
-													onClick={() => {
-														setDisplayOrder(true);
-														setSelectedTransaction(transaction);
-														router.replace(`/p2p/order/${transaction?.id}`);
-													}}
-												>
-													<EditWrapper stringId="P2P.VIEW_ORDER">
-														<span className="purpleTextP2P">
-															{STRINGS['P2P.VIEW_ORDER']}
-														</span>
-													</EditWrapper>
-												</div>
-											</td>
-										</tr>
+											</div>
+										</Card>
 									);
 								})}
-						</tbody>
-					</table>
+						</div>
+					)
 				) : (
 					<NoDealsData />
 				)}

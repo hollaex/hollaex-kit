@@ -1,14 +1,16 @@
 /* eslint-disable */
 import React, { useState } from 'react';
-import { Tabs } from 'antd';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Tabs } from 'antd';
+
+import './index.css';
 import P2PDeals from './p2pDeals';
 import P2PDisputes from './p2pDisputes';
 import P2PSettings from './p2pSettings';
-
+import P2PActive from './p2pActive';
+import P2PUnverifiedPayments from './p2punverifiedPayments';
 import { setExchange } from 'actions/assetActions';
-import './index.css';
 
 const TabPane = Tabs.TabPane;
 
@@ -39,8 +41,14 @@ const P2P = () => {
 				<TabPane tab="P2P settings" key="1">
 					<P2PSettings />
 				</TabPane>
-				<TabPane tab="Disputes" key="2">
+				<TabPane tab="Active" key="2">
+					<P2PActive />
+				</TabPane>
+				<TabPane tab="Disputes" key="3">
 					<P2PDisputes />
+				</TabPane>
+				<TabPane tab="Unverified accounts" key="4">
+					<P2PUnverifiedPayments />
 				</TabPane>
 			</Tabs>
 		</div>

@@ -18,7 +18,11 @@ import P2PPostDealMobile from './P2PPostDealMobile';
 import { Coin, Dialog, EditWrapper } from 'components';
 import { COUNTRIES_OPTIONS } from 'utils/countries';
 import { createTestBroker } from 'containers/Admin/Trades/actions';
-import { editDeal, postDeal } from './actions/p2pActions';
+import {
+	editDeal,
+	fetchP2PPaymentMethods,
+	postDeal,
+} from './actions/p2pActions';
 
 const P2PPostDeal = ({
 	data,
@@ -65,6 +69,7 @@ const P2PPostDeal = ({
 		stepTwo: false,
 		stepThree: false,
 	});
+	const [myMethods, setMyMethods] = useState([]);
 
 	useEffect(() => {
 		if (selectedDealEdit) {
@@ -95,6 +100,28 @@ const P2PPostDeal = ({
 			onHandleDeals();
 		};
 	}, [tab]);
+
+	useEffect(() => {
+		try {
+			fetchP2PPaymentMethods({ is_p2p: true })
+				.then((res) => {
+					setMyMethods(res.data);
+				})
+				.catch((err) => err);
+		} catch (error) {
+			console.error(error);
+		}
+		if (!selectedDealEdit) {
+			setPaymentMethods(() =>
+				p2p_config?.bank_payment_methods?.filter((method) =>
+					myMethods?.map(
+						(payment) => method?.system_name === payment?.system_name
+					)
+				)
+			);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [step]);
 
 	const getBrokerData = async () => {
 		try {

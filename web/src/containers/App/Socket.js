@@ -455,23 +455,39 @@ class Container extends Component {
 
 						const notificationDetails = {
 							key,
-							message:
-								data.action === 'getStatus' && data?.data?.status === 'appeal'
-									? STRINGS['P2P.APPEAL_STATUS_MESSAGE']
-									: data?.action === 'getStatus' &&
-									  data?.data?.status === 'cancelled'
-									? STRINGS['P2P.CANCEL_STATUS_MESSAGE']
-									: data?.action === 'getStatus' &&
-									  data?.data?.status === 'confirmed' &&
-									  data?.data?.title === 'crypto'
-									? STRINGS['P2P.CRYPTO_RELEASE_STATUS_MESSAGE']
-									: data?.data?.status === 'confirmed'
-									? STRINGS['P2P.CONFIRM_STATUS_MESSAGE']
-									: data?.data?.status === 'created'
-									? STRINGS['P2P.NEW_ORDER_CREATED']
-									: data?.action === 'getStatus'
-									? STRINGS['P2P.STATUS_UPDATE']
-									: STRINGS['P2P.NEW_MESSAGE'],
+							message: (
+								<div className="d-flex flex-direction-column">
+									<span>
+										{data.action === 'getStatus' &&
+										data?.data?.status === 'appeal'
+											? STRINGS['P2P.APPEAL_STATUS_MESSAGE']
+											: data?.action === 'getStatus' &&
+											  data?.data?.status === 'cancelled'
+											? STRINGS['P2P.CANCEL_STATUS_MESSAGE']
+											: data?.action === 'getStatus' &&
+											  data?.data?.status === 'confirmed' &&
+											  data?.data?.title === 'crypto'
+											? STRINGS['P2P.CRYPTO_RELEASE_STATUS_MESSAGE']
+											: data?.data?.status === 'confirmed'
+											? STRINGS['P2P.CONFIRM_STATUS_MESSAGE']
+											: data?.data?.status === 'created'
+											? STRINGS['P2P.NEW_ORDER_CREATED']
+											: data?.action === 'getStatus'
+											? STRINGS['P2P.STATUS_UPDATE']
+											: STRINGS['P2P.NEW_MESSAGE']}
+									</span>
+									{data?.data?.message && (
+										<span className="d-flex align-items-center">
+											<span className="sender-name">
+												{data?.data?.sender_name}:{' '}
+											</span>
+											<span className="ml-2 chat-message">
+												{data?.data?.message}
+											</span>
+										</span>
+									)}
+								</div>
+							),
 							description: (
 								<div>
 									<div
@@ -511,9 +527,17 @@ class Container extends Component {
 									const newLastNotification = this.openNotifications[
 										this.openNotifications?.length - 1
 									];
+									const {
+										message: {
+											props: {
+												children: [firstNotificationMessage],
+											},
+										},
+									} = newLastNotification;
+									const {
+										props: { children: newLastNotificationMessage },
+									} = firstNotificationMessage;
 
-									const newLastNotificationMessage =
-										newLastNotification?.message;
 									notification.close(newLastNotification?.key);
 									notification.open({
 										...newLastNotification,
@@ -545,16 +569,27 @@ class Container extends Component {
 							const previousNotification = this.openNotifications[
 								this.openNotifications?.length - 2
 							];
-							const previousMessage = previousNotification?.message;
+							const {
+								message: {
+									props: {
+										children: [firstNotificationMessage],
+									},
+								},
+							} = previousNotification;
+							const {
+								props: { children: previousNotificationMessage },
+							} = firstNotificationMessage;
+
 							notification.close(previousNotification?.key);
 							notification.open({
 								...previousNotification,
 								icon:
-									previousMessage ===
+									previousNotificationMessage ===
 									(STRINGS['P2P.CANCEL_STATUS_MESSAGE'] ||
 										STRINGS['P2P.APPEAL_STATUS_MESSAGE']) ? (
 										<ExclamationCircleOutlined />
-									) : previousMessage === STRINGS['P2P.NEW_MESSAGE'] ? (
+									) : previousNotificationMessage ===
+									  STRINGS['P2P.NEW_MESSAGE'] ? (
 										<MailOutlined />
 									) : (
 										<BellOutlined />

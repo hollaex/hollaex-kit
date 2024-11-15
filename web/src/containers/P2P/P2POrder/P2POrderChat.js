@@ -154,7 +154,7 @@ const P2POrderChat = ({
 								</div>
 						  )}
 				</div>
-				<div className="chat-details-container secondary-text">
+				<div className="chat-details-container">
 					{user?.id === selectedOrder?.user_id && (
 						<div className="d-flex flex-column">
 							<div>
@@ -217,9 +217,27 @@ const P2POrderChat = ({
 							</EditWrapper>
 						</div>
 					)}
+					{user?.id === selectedOrder?.user_id &&
+						selectedOrder?.transaction_status === 'active' &&
+						selectedOrder?.user_status === 'pending' && (
+							<div className="secondary-text">
+								<EditWrapper stringId="P2P.CONFIRM_PAYMENT_TRANSFER">
+									{STRINGS['P2P.CONFIRM_PAYMENT_TRANSFER']}
+								</EditWrapper>
+							</div>
+						)}
 				</div>
 
-				<div ref={ref} className="chat-area">
+				<div
+					ref={ref}
+					className={
+						user?.id === selectedOrder?.user_id &&
+						selectedOrder?.transaction_status === 'active' &&
+						selectedOrder?.user_status === 'pending'
+							? 'chat-area chat-area-wrapper'
+							: 'chat-area'
+					}
+				>
 					<div className="chat-message-container">
 						{selectedOrder?.messages?.map((message, index) => {
 							if (index === 0) {
@@ -244,7 +262,7 @@ const P2POrderChat = ({
 							} else {
 								if (message.type === 'notification') {
 									return (
-										<div className="notification-message d-flex flex-column text-center secondary-text my-3">
+										<div className="notification-message d-flex flex-column text-center my-3">
 											{message.message === 'BUYER_PAID_ORDER' &&
 											user?.id === selectedOrder?.user_id ? (
 												<EditWrapper stringId={`P2P.BUYER_SENT_FUNDS`}>
@@ -262,6 +280,14 @@ const P2POrderChat = ({
 												)}
 												)
 											</span>
+											{user?.id === selectedOrder?.merchant_id &&
+												selectedOrder?.merchant_status === 'pending' && (
+													<div className="secondary-text">
+														<EditWrapper stringId="P2P.CONFIRM_PAYMENT_RELEASE">
+															{STRINGS['P2P.CONFIRM_PAYMENT_RELEASE']}
+														</EditWrapper>
+													</div>
+												)}
 										</div>
 									);
 								} else {
