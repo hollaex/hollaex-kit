@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Rate } from 'antd';
 
 import icons from 'config/icons/dark';
@@ -165,6 +165,87 @@ export const renderFeedback = (
 				</div>
 			</div>
 		</Dialog>
+	);
+};
+
+export const Timer = ({ order }) => {
+	const orderCreatedDate = new Date(order?.created_at)?.getTime();
+	const [time, setTime] = useState({ min: 30, sec: 0 });
+	const [startTime] = useState(orderCreatedDate);
+	const [timeLimitReached, setTimeLimitReached] = useState(false);
+	const frameIdRef = useRef();
+
+	const cancelTimer = () => {
+		if (frameIdRef.current) {
+			cancelAnimationFrame(frameIdRef.current);
+			frameIdRef.current = null;
+		}
+	};
+
+	useEffect(() => {
+		const update = () => {
+			const now = Date.now();
+			const elapsed = Math.floor((now - startTime) / 1000);
+			const totalSeconds = 30 * 60 - elapsed;
+
+			if (totalSeconds <= 0) {
+				setTime({ min: 0, sec: 0 });
+				setTimeLimitReached(true);
+				cancelTimer();
+			} else {
+				const min = Math.floor(totalSeconds / 60);
+				const sec = totalSeconds % 60;
+				setTime({ min, sec });
+				setTimeLimitReached(false);
+				frameIdRef.current = requestAnimationFrame(update);
+				if (
+					order?.user_status === 'confirmed' ||
+					order?.transaction_status === 'expired'
+				) {
+					setTime({ min: 0, sec: 0 });
+					setTimeLimitReached(true);
+					cancelTimer();
+				}
+			}
+		};
+
+		frameIdRef.current = requestAnimationFrame(update);
+
+		return () => cancelTimer();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [startTime, order]);
+
+	const totalSeconds = 30 * 60;
+	const elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
+	const percentage = (elapsedSeconds / totalSeconds) * 100;
+
+	return (
+		<div className="timer-container">
+			<div className="timer-details">
+				{!timeLimitReached && (
+					<div
+						className="timer-circle"
+						style={{
+							background: `conic-gradient(var(--labels_important-active-labels-text-graphics) ${percentage}%, var(--base_background) 0%)`,
+						}}
+					></div>
+				)}
+				<div>
+					{timeLimitReached ? (
+						<div>
+							<EditWrapper stringId="P2P.TIME_LIMIT_REACHED">
+								{STRINGS['P2P.TIME_LIMIT_REACHED']}
+							</EditWrapper>
+						</div>
+					) : (
+						<div>
+							{time?.min < 10 ? `0${time?.min}` : time?.min}:
+							{time?.sec < 10 ? `0${time?.sec}` : time?.sec}
+						</div>
+					)}
+				</div>
+			</div>
+		</div>
 	);
 };
 

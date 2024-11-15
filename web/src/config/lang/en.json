@@ -2286,7 +2286,9 @@
 		"CHECK_CONFIRM_PAYMENT_DESC_2": "After confirming below the crypto ({0} {1}) will be released.",
 		"CHECK_CONFIRM_DECLARATION": "I confirm that I have received the correct payment",
 		"P2P_ORDER_COMPLETE": "P2P Order Complete",
-		"EXIST_PAYMENT_METHOD_DESC": "You’ve already added a payment method for {0}"
+		"EXIST_PAYMENT_METHOD_DESC": "You’ve already added a payment method for {0}",
+		"ADMIN_ORDER_CANCELLATION_MESSAGE": "An exchange operator has cancelled this order. The transaction is closed.",
+		"TIME_LIMIT_REACHED": "0:00 (Please contact your counter-party)"
 	},
 	"VOLUME": {
 		"VOLUME": "VOLUME",

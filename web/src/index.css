@@ -11928,6 +11928,25 @@ table th {
         border-left: 5px solid var(--specials_checks-okay-done); }
       .p2p-summary-container .p2p-order-wrapper .p2p-order-container .p2p-order-details-container .amount-transfer-container .active-sell {
         border-left: 5px solid var(--trading_selling-related-elements); }
+    .p2p-summary-container .p2p-order-wrapper .p2p-order-container .p2p-order-details-container .order-verification-container .order-timer-wrapper .timer-container {
+      display: flex; }
+      .p2p-summary-container .p2p-order-wrapper .p2p-order-container .p2p-order-details-container .order-verification-container .order-timer-wrapper .timer-container .timer-details {
+        padding: 2% 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        border-radius: 25px; }
+      .p2p-summary-container .p2p-order-wrapper .p2p-order-container .p2p-order-details-container .order-verification-container .order-timer-wrapper .timer-container .timer-circle {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: conic-gradient(var(--labels_important-active-labels-text-graphics) 0%, var(--base_background) 0%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        border: 1px solid var(--labels_important-active-labels-text-graphics); }
     .p2p-summary-container .p2p-order-wrapper .p2p-order-container .p2p-order-details-container .order-verification-container .order-confirmed-container .order-complete-title,
     .p2p-summary-container .p2p-order-wrapper .p2p-order-container .p2p-order-details-container .order-verification-container .order-confirmed-container .go-to-deposit-link,
     .p2p-summary-container .p2p-order-wrapper .p2p-order-container .p2p-order-details-container .order-verification-container .order-confirmed-container .go-to-withdraw-link {
@@ -12560,7 +12579,7 @@ table th {
     .release-amount-popup-wrapper .ReactModal__Content .release-amount-details-container .check-icon svg path:nth-child(2) {
       fill: var(--specials_checks-okay-done); }
     .release-amount-popup-wrapper .ReactModal__Content .release-amount-details-container .check-icon svg path:nth-child(3) {
-      fill: #FFFFFF; }
+      fill: #ffffff; }
 
 .cancel-popup-wrapper .ReactModal__Content,
 .confirm-popup-wrapper .ReactModal__Content,
@@ -12573,7 +12592,7 @@ table th {
   .cancel-popup-wrapper .ReactModal__Content .feedback-submit-popup-container .warning-icon,
   .confirm-popup-wrapper .ReactModal__Content .feedback-submit-popup-container .warning-icon,
   .confirmation-remove-deal-popup-wrapper .ReactModal__Content .feedback-submit-popup-container .warning-icon {
-    background-color: #FFFFFF;
+    background-color: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -13398,6 +13417,9 @@ table th {
           .layout-mobile .p2p-summary-container .p2p-order-wrapper .p2p-order-container .p2p-order-details-container .confirm-notify-button-container .chat-link-container .chat-link {
             color: var(--specials_buttons-links-and-highlights);
             font-size: 24px; }
+      .layout-mobile .p2p-summary-container .p2p-order-wrapper .p2p-order-container .p2p-order-details-container .order-verification-container .order-timer-wrapper .timer-circle {
+        width: 30px;
+        height: 30px; }
       .layout-mobile .p2p-summary-container .p2p-order-wrapper .p2p-order-container .p2p-order-details-container .order-verification-container .order-confirmed-container .order-complete-title .edit-wrapper__container {
         font-size: 20px; }
       .layout-mobile .p2p-summary-container .p2p-order-wrapper .p2p-order-container .p2p-order-details-container .order-verification-container .order-confirmed-container .go-to-deposit-link,

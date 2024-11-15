@@ -819,3 +819,26 @@
 .p2p-admin-confirm-warning-popup-wrapper .ant-modal-close-x {
 	color: white;
 }
+
+.p2p-admin-order-details-popup-wrapper
+	.p2p-admin-order-details-container
+	.title {
+	font-size: 22px;
+	margin-bottom: 3%;
+}
+
+.p2p-admin-order-details-popup-wrapper
+	.p2p-admin-order-details-container
+	.order-details {
+	margin-top: 2%;
+	display: flex;
+	align-items: center;
+}
+
+.p2p-admin-order-details-popup-wrapper
+	.p2p-admin-order-details-container
+	.order-details
+	.asset-icon {
+	position: relative;
+	top: 3px;
+}

@@ -9,8 +9,9 @@ import {
 } from 'containers/P2P/actions/p2pActions';
 import { getToken } from 'utils/token';
 import { WS_URL } from 'config/constants';
+import { Coin } from 'components';
 
-const dataSource = (setIsConfirmWarning, setUserData) => {
+const dataSource = (setIsConfirmWarning, setUserData, setIsOrderDetails) => {
 	return [
 		{ title: 'Order Id', dataIndex: 'id', key: 'id' },
 		{
@@ -51,15 +52,32 @@ const dataSource = (setIsConfirmWarning, setUserData) => {
 				);
 			},
 		},
+		{
+			title: 'View More',
+			render: (data) => {
+				return (
+					<Button
+						onClick={() => {
+							setIsOrderDetails(true);
+							setUserData(data);
+						}}
+						className="green-btn"
+					>
+						View More
+					</Button>
+				);
+			},
+		},
 	];
 };
 
-const P2PActive = ({ user }) => {
+const P2PActive = ({ user, coins }) => {
 	const [getOrders, setGetOrders] = useState();
 	const [selectedTransaction, setSelectedTransaction] = useState();
 	const [webSocket, setWebSocket] = useState();
 	const [isConfirmWarning, setIsConfirmWarning] = useState(false);
 	const [userData, setUserData] = useState();
+	const [isOrderDetails, setIsOrderDetails] = useState(false);
 
 	const fetchData = async () => {
 		try {
@@ -162,7 +180,7 @@ const P2PActive = ({ user }) => {
 				user_status: 'cancelled',
 			});
 			fetchData();
-			notificationStatus('cancelled');
+			notificationStatus('cancelled', 'admin cancel');
 			setSelectedTransaction(data);
 		} catch (error) {
 			console.error(error);
@@ -210,8 +228,91 @@ const P2PActive = ({ user }) => {
 					</div>
 				</div>
 			</Modal>
+			<Modal
+				maskClosable={false}
+				closeIcon={<CloseOutlined />}
+				visible={isOrderDetails}
+				footer={null}
+				onCancel={() => {
+					setIsOrderDetails(false);
+				}}
+				width={450}
+				className="p2p-admin-order-details-popup-wrapper p2p-admin-confirm-warning-popup-wrapper"
+			>
+				<div className="p2p-admin-order-details-container">
+					<div className="title">Order Details</div>
+					<div className="order-details">
+						<span className="font-weight-bold order-title">
+							Transaction Id :
+						</span>
+						<span className="ml-2">{userData?.transaction_id}</span>
+					</div>
+					<div className="order-details">
+						<span className="font-weight-bold order-title">Fiat Amount:</span>
+						<span className="ml-2">{userData?.amount_fiat}</span>
+						<span className="ml-1">
+							{userData?.deal?.spending_asset?.toUpperCase()}
+						</span>
+						<span className="asset-icon ml-1">
+							<Coin
+								iconId={coins[userData?.deal?.spending_asset]?.icon_id}
+								type="CS4"
+							/>
+						</span>
+					</div>
+
+					<div className="order-details">
+						<span className="font-weight-bold order-title">Price:</span>
+						<span className="ml-2">{userData?.price}</span>
+						<span className="ml-1">
+							{userData?.deal?.spending_asset?.toUpperCase()}
+						</span>
+						<span className="asset-icon ml-1">
+							<Coin
+								iconId={coins[userData?.deal?.spending_asset]?.icon_id}
+								type="CS4"
+							/>
+						</span>
+						<span className="ml-2">(per coin)</span>
+						<span className="ml-2">
+							{userData?.deal?.buying_asset?.toUpperCase()}
+						</span>
+						<span className="asset-icon ml-1">
+							<Coin
+								iconId={coins[userData?.deal?.buying_asset]?.icon_id}
+								type="CS4"
+							/>
+						</span>
+					</div>
+					<div className="order-details">
+						<span className="font-weight-bold order-title">Crypto Amount:</span>
+						<span className="ml-2">{userData?.amount_digital_currency}</span>
+						<span className="ml-1">
+							{userData?.deal?.buying_asset?.toUpperCase()}
+						</span>
+						<span className="asset-icon ml-1">
+							<Coin
+								iconId={coins[userData?.deal?.buying_asset]?.icon_id}
+								type="CS4"
+							/>
+						</span>
+					</div>
+					<div className="order-details">
+						<span className="font-weight-bold order-title">
+							Payment Method:
+						</span>
+						<span className="ml-2">
+							{userData?.payment_method_used?.system_name}
+						</span>
+					</div>
+				</div>
+			</Modal>
 			<Table
-				columns={dataSource(setIsConfirmWarning, setUserData)}
+				columns={dataSource(
+					setIsConfirmWarning,
+					setUserData,
+					setIsOrderDetails
+				)}
 				dataSource={filteredOrders}
 				pagination={{ pageSize: 10 }}
 			/>
@@ -221,6 +322,7 @@ const P2PActive = ({ user }) => {
 
 const mapStateToProps = (state) => ({
 	user: state.user,
+	coins: state.app.coins,
 });
 
 export default connect(mapStateToProps)(P2PActive);
