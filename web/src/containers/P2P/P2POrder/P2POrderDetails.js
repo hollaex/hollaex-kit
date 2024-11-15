@@ -46,7 +46,7 @@ const P2POrderDetails = ({
 		>
 			<div className="trade-assets-container">
 				<Coin iconId={coin?.icon_id} type={isMobile ? 'CS12' : 'CS10'} />
-				<div>
+				<div className="d-flex flex-direction-column">
 					<div className="order-title">
 						<EditWrapper stringId="P2P.ORDER">
 							{STRINGS['P2P.ORDER']}:
@@ -55,7 +55,13 @@ const P2POrderDetails = ({
 					<span className="secondary-text">
 						{selectedOrder?.transaction_id}
 					</span>
-					<div className="asset-name">
+					<span
+						className={
+							user?.id === selectedOrder?.merchant_id
+								? 'asset-name asset-sell'
+								: 'asset-name asset-buy'
+						}
+					>
 						{user?.id === selectedOrder?.merchant_id ? (
 							<EditWrapper stringId="P2P.SELL_COIN">
 								{STRINGS['P2P.SELL_COIN']}
@@ -66,7 +72,7 @@ const P2POrderDetails = ({
 							</EditWrapper>
 						)}{' '}
 						{coin?.fullname} ({coin?.symbol?.toUpperCase()})
-					</div>
+					</span>
 				</div>
 				{isMobile && (
 					<div className="chat-link-container">
@@ -574,14 +580,20 @@ const P2POrderDetails = ({
 							>
 								<div
 									onClick={async () => {
-										try {
-											setDisplayAppealModel(true);
-											setAppealSide('merchant');
-										} catch (error) {
-											message.error(error.data.message);
+										if (selectedOrder?.user_status === 'confirmed') {
+											try {
+												setDisplayAppealModel(true);
+												setAppealSide('merchant');
+											} catch (error) {
+												message.error(error.data.message);
+											}
 										}
 									}}
-									className="appeal-link blue-link"
+									className={
+										selectedOrder?.user_status !== 'confirmed'
+											? 'appeal-link blue-link disable-link'
+											: 'appeal-link blue-link'
+									}
 								>
 									<EditWrapper stringId="P2P.APPEAL">
 										{STRINGS['P2P.APPEAL']}
