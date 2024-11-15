@@ -133,6 +133,28 @@ const P2PActive = ({ user }) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
+	const notificationStatus = (status, title = '') => {
+		webSocket.send(
+			JSON.stringify({
+				op: 'p2pChat',
+				args: [
+					{
+						action: 'getStatus',
+						data: {
+							id: userData?.id,
+							status,
+							title,
+							receiver_id:
+								user?.id === userData?.merchant_id
+									? userData?.user_id
+									: userData?.merchant_id,
+						},
+					},
+				],
+			})
+		);
+	};
+
 	const onHandleCancel = async (data) => {
 		try {
 			await updateTransaction({
@@ -145,28 +167,6 @@ const P2PActive = ({ user }) => {
 		} catch (error) {
 			console.error(error);
 		}
-	};
-
-	const notificationStatus = (status, title = '') => {
-		webSocket.send(
-			JSON.stringify({
-				op: 'p2pChat',
-				args: [
-					{
-						action: 'getStatus',
-						data: {
-							id: selectedTransaction?.id,
-							status,
-							title,
-							receiver_id:
-								user?.id === selectedTransaction?.merchant_id
-									? selectedTransaction?.user_id
-									: selectedTransaction?.merchant_id,
-						},
-					},
-				],
-			})
-		);
 	};
 
 	const filteredOrders = getOrders?.data?.filter(
