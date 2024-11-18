@@ -103,7 +103,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features, constants }) => {
 			getAllUserData({ id: p2p_config?.source_account }).then((res) => {
 				let emailData = {};
 				res &&
-					res.forEach((item) => {
+					res?.forEach((item) => {
 						if (item.value === p2p_config?.source_account) {
 							emailData = item;
 						}
@@ -396,8 +396,8 @@ const P2PSettings = ({ coins, pairs, p2p_config, features, constants }) => {
 
 					{step === 0 && (
 						<div>
-							<div>Trade direction (side)</div>
-							<div>
+							<div style={{ color: 'white' }}>Trade direction (side)</div>
+							<div style={{ color: 'white' }}>
 								Select what kind of deals that the vendors (market makers) can
 								advertise.
 							</div>
@@ -416,14 +416,23 @@ const P2PSettings = ({ coins, pairs, p2p_config, features, constants }) => {
 								<Select.Option value={'all'}>All</Select.Option>
 							</Select>
 
-							<div style={{ fontSize: 13, marginTop: 10, marginBottom: 10 }}>
+							<div
+								style={{
+									fontSize: 13,
+									marginTop: 10,
+									marginBottom: 10,
+									color: 'white',
+								}}
+							>
 								Vendors (makers) can only offer to sell crypto to users (takers)
 							</div>
 							<div
 								style={{ borderBottom: '1px solid grey', marginBottom: 30 }}
 							></div>
-							<div>Crypto assets</div>
-							<div>Select the crypto assets that vendors can transact with</div>
+							<div style={{ color: 'white' }}>Crypto assets</div>
+							<div style={{ color: 'white' }}>
+								Select the crypto assets that vendors can transact with
+							</div>
 							<Select
 								showSearch={true}
 								className="w-100 select-box mt-3"

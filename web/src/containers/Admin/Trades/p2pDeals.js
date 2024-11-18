@@ -4,9 +4,10 @@ import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { Table, Button, Spin, Input } from 'antd';
 import { requestDeals } from './actions';
+import BigNumber from 'bignumber.js';
 import moment from 'moment';
 
-const P2PDeals = ({ coins }) => {
+const P2PDeals = ({ coins, coinSymbols }) => {
 	const [userData, setUserData] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [queryValues, setQueryValues] = useState();
@@ -73,10 +74,18 @@ const P2PDeals = ({ coins }) => {
 			dataIndex: 'price',
 			key: 'price',
 			render: (user_id, data) => {
+				const incrementUnit =
+					coinSymbols?.[data.spending_asset]?.increment_unit;
+				const decimalPoint = new BigNumber(incrementUnit).dp();
+				const sourceAmount = new BigNumber(
+					data.exchange_rate * (1 + Number(data.spread || 0))
+				)
+					.decimalPlaces(decimalPoint)
+					.toNumber();
+
 				return (
 					<div className="d-flex">
-						{data.exchange_rate * (1 + Number(data.spread || 0))}{' '}
-						{data.spending_asset.toUpperCase()}
+						{sourceAmount} {data.spending_asset.toUpperCase()}
 					</div>
 				);
 			},
@@ -413,6 +422,7 @@ const mapStateToProps = (state) => ({
 	coinObjects: state.app.allContracts.coins,
 	broker: state.app.broker,
 	features: state.app.constants.features,
+	coinSymbols: state.app.coins,
 });
 
 const mapDispatchToProps = (dispatch) => ({});

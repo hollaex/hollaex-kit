@@ -141,7 +141,6 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 	let side = 'sell';
 
 	const quickTrades = getQuickTrades();
-	const tradePaths = getTradePaths();
 	let quickTradeConfig = quickTrades.find(quickTrade => quickTrade.symbol === originalPair);
 
 	if (!quickTradeConfig) {
@@ -149,7 +148,7 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 		symbol = flippedPair;
 		side = 'buy';
 	}
-	if (!quickTradeConfig && !tradePaths[originalPair] && !tradePaths[flippedPair]) throw new Error(QUICK_TRADE_CONFIG_NOT_FOUND);
+	// if (!quickTradeConfig) throw new Error(QUICK_TRADE_CONFIG_NOT_FOUND);
 
 	let userInfo = user || null;
 
@@ -1376,10 +1375,9 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, id = nu
 		throw new Error('Size too small for the rate');
 	};
 
-	let rates = getTradePaths()[symbol] || [];
-	if (!rates || rates?.length < 1) {
-		throw new Error('Rate not found!');
-	};
+	
+	const quickTrades = getQuickTrades();
+
 	let data = null;
 	const tickers = await getTickers();
 	let prices = {};
@@ -1390,7 +1388,7 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, id = nu
 
 	//Find all the available prices with their types on the exchange.
 	if(!data) {
-		for (const rate of rates) {
+		for (const rate of quickTrades) {
 			try {
 				if (rate.type === 'pro' && rate.active) {
 					prices[rate.symbol] = { type: rate.type, price: tickers[rate.symbol].open };

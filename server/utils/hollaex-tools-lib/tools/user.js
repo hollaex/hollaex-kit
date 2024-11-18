@@ -2272,7 +2272,7 @@ const revokeAllUserSessions = async (userId) => {
 	return true;
 };
 
-const deleteKitUser = async (userId) => {
+const deleteKitUser = async (userId, sendEmail = true) => {
 	const user = await dbQuery.findOne('user', {
 		where: {
 			id: userId
@@ -2295,12 +2295,14 @@ const deleteKitUser = async (userId) => {
 		{ fields: ['email', 'activated'], returning: true }
 	);
 
-	sendEmail(
-		MAILTYPE.USER_DELETED,
-		userEmail,
-		{},
-		user.settings
-	);
+	if (sendEmail) {
+		sendEmail(
+			MAILTYPE.USER_DELETED,
+			userEmail,
+			{},
+			user.settings
+		);
+	}
 	
 	return updatedUser;
 };
@@ -3401,7 +3403,7 @@ const getPaymentDetails = async (user_id, opts = {
 	const query = {
 		where: {
 			created_at: timeframe,
-			user_id,
+			...(user_id && { user_id }),
 			...(opts.is_p2p && { is_p2p: opts.is_p2p }),
 			...(opts.is_fiat_control && { is_fiat_control: opts.is_fiat_control }),
 			...(opts.status && { status: opts.status })

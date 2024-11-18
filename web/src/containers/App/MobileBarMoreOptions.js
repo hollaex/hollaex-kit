@@ -8,7 +8,7 @@ import STRINGS from 'config/localizedStrings';
 import Dialog from 'components/Dialog/MobileDialog';
 import withConfig from 'components/ConfigProvider/withConfig';
 import HelpfulResourcesForm from 'containers/HelpfulResourcesForm';
-import { EditWrapper, Image, SearchBox } from 'components';
+import { Coin, EditWrapper, Image, SearchBox } from 'components';
 import {
 	setLimitTab,
 	setSecurityTab,
@@ -19,6 +19,8 @@ import {
 import { getLogins } from 'actions/userAction';
 import { requestAuthenticated } from 'utils';
 import { ConnectionPopup, ReconnectPopup } from 'components/AppBar/Utils';
+import { removeToken } from 'utils/token';
+import { MarketsSelector } from 'containers/Trade/utils';
 
 const INITIAL_LOGINS_STATE = {
 	count: 0,
@@ -32,6 +34,11 @@ const MobileBarMoreOptions = ({
 	setSelectedStake,
 	features,
 	setSettingsTab,
+	coins,
+	pinnedAsset,
+	getMarkets,
+	quickTrade,
+	getRemoteRoutes,
 }) => {
 	const [search, setSearch] = useState('');
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -46,6 +53,57 @@ const MobileBarMoreOptions = ({
 		isDisplayPingText: true,
 		pingValue: null,
 		isDisplayPing: false,
+	});
+
+	const fieldHasCoinIcon = [
+		'SUMMARY.DEPOSIT',
+		'TRADE_TAB_TRADE',
+		'CONVERT',
+		'ASSET_TXT',
+		'WITHDRAW_PAGE.WITHDRAW',
+	];
+	const searchByName = Object.entries(
+		coins
+	)?.map(([_, { symbol, fullname, type }]) =>
+		type !== 'fiat' ? { symbol, fullname } : {}
+	);
+
+	const getSymbol = searchByName
+		?.filter((data) => {
+			return (
+				search?.length > 1 &&
+				(data?.fullname?.toLowerCase()?.startsWith(search?.toLowerCase()) ||
+					data?.symbol?.toLowerCase()?.startsWith(search?.toLowerCase()))
+			);
+		})
+		?.sort((a, b) => {
+			const indexA = pinnedAsset?.indexOf(a?.symbol?.toLowerCase());
+			const indexB = pinnedAsset?.indexOf(b?.symbol?.toLowerCase());
+
+			if (indexA === -1 && indexB === -1) return 0;
+			if (indexA === -1) return 1;
+			if (indexB === -1) return -1;
+			return indexA - indexB;
+		});
+
+	const getAsset =
+		getSymbol?.length >= 1
+			? getSymbol[0]?.symbol
+			: search?.length > 1 && search;
+	const isValidCoin = coins[getAsset]?.symbol;
+
+	const assetDetails = Object.entries(
+		coins
+	)?.flatMap(([_, { symbol, fullname, type }]) =>
+		type !== 'fiat' ? [symbol, fullname] : []
+	);
+
+	const getPairs = getMarkets?.filter((market) => {
+		return market?.key?.split('-')?.includes(getAsset);
+	});
+
+	const getQuickTradePair = quickTrade?.filter((quicktrade) => {
+		return quicktrade?.symbol?.split('-')?.includes(getAsset);
 	});
 
 	useEffect(() => {
@@ -102,7 +160,7 @@ const MobileBarMoreOptions = ({
 		{
 			icon_id: 'DEPOSIT_OPTION_ICON',
 			iconText: 'SUMMARY.DEPOSIT',
-			path: '/wallet/deposit',
+			path: isValidCoin ? `/wallet/${getAsset}/deposit` : '/wallet/deposit',
 			isDisplay: true,
 			searchContent: [
 				STRINGS['MORE_OPTIONS_LABEL.HOT_FUNCTION.ADD_FUNDS'],
@@ -123,12 +181,16 @@ const MobileBarMoreOptions = ({
 				STRINGS['MORE_OPTIONS_LABEL.HOT_FUNCTION.REFILL'],
 				STRINGS['MORE_OPTIONS_LABEL.HOT_FUNCTION.CASH_IN'],
 				STRINGS['MORE_OPTIONS_LABEL.HOT_FUNCTION.ADD_MONEY'],
+				...assetDetails,
 			],
 		},
 		{
 			icon_id: 'TRADE_OPTION_ICON',
 			iconText: 'TRADE_TAB_TRADE',
-			path: '/trade',
+			path:
+				isValidCoin && getPairs?.length >= 1
+					? `/trade/${getPairs[0]?.key}`
+					: '/trade',
 			isDisplay: features?.pro_trade,
 			searchContent: [
 				STRINGS['MORE_OPTIONS_LABEL.HOT_FUNCTION.EXCHANGE'],
@@ -143,12 +205,19 @@ const MobileBarMoreOptions = ({
 				STRINGS['MORE_OPTIONS_LABEL.HOT_FUNCTION.XHT'],
 				STRINGS['MORE_OPTIONS_LABEL.HOT_FUNCTION.BTC'],
 				STRINGS['MORE_OPTIONS_LABEL.HOT_FUNCTION.USTD'],
+				...getPairs?.flatMap((item) => [
+					...item?.key?.split('-'),
+					item?.fullname,
+				]),
 			],
 		},
 		{
 			icon_id: 'CONVERT_OPTION_ICON',
 			iconText: 'CONVERT',
-			path: '/quick-trade',
+			path:
+				getQuickTradePair?.length >= 1
+					? `/quick-trade/${getQuickTradePair[0]?.symbol}`
+					: '/quick-trade',
 			isDisplay: features?.quick_trade,
 			searchContent: [
 				STRINGS['MORE_OPTIONS_LABEL.HOT_FUNCTION.EXCHANGE'],
@@ -164,6 +233,10 @@ const MobileBarMoreOptions = ({
 				STRINGS['MORE_OPTIONS_LABEL.HOT_FUNCTION.XHT'],
 				STRINGS['MORE_OPTIONS_LABEL.HOT_FUNCTION.BTC'],
 				STRINGS['MORE_OPTIONS_LABEL.HOT_FUNCTION.USTD'],
+				...getQuickTradePair?.flatMap((item) => {
+					const [firstPair] = item?.symbol?.split('-');
+					return [firstPair, item?.fullname];
+				}),
 			],
 		},
 		{
@@ -202,10 +275,8 @@ const MobileBarMoreOptions = ({
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.SECURITY'],
 			],
 		},
-		{
-			icon_id: 'BUY_CRYPTO_OPTION',
-			iconText: 'MORE_OPTIONS_LABEL.ICONS.BUY_CRYPTO',
-			path: '/buy-crypto',
+		...getRemoteRoutes?.map((route, index) => ({
+			...route,
 			isDisplay: true,
 			searchContent: [
 				STRINGS['MARKET_OPTIONS.CARD'],
@@ -221,7 +292,7 @@ const MobileBarMoreOptions = ({
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.BUY_COIN'],
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.BUY_TOKEN'],
 			],
-		},
+		})),
 		{
 			icon_id: 'DEFI_STAKE_OPTION_ICON',
 			iconText: 'MORE_OPTIONS_LABEL.ICONS.DEFI_STAKE',
@@ -375,7 +446,7 @@ const MobileBarMoreOptions = ({
 		{
 			icon_id: 'ASSET_OPTION_ICON',
 			iconText: 'ASSET_TXT',
-			path: '/prices',
+			path: isValidCoin ? `/prices/coin/${getAsset}` : '/prices',
 			isDisplay: true,
 			searchContent: [
 				STRINGS['COINS'],
@@ -388,6 +459,7 @@ const MobileBarMoreOptions = ({
 				STRINGS['MORE_OPTIONS_LABEL.HOT_FUNCTION.USTD'],
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.MARKETS'],
 				STRINGS['MORE_OPTIONS_LABEL.HOT_FUNCTION.MONEY'],
+				...assetDetails,
 			],
 		},
 		{
@@ -557,7 +629,7 @@ const MobileBarMoreOptions = ({
 		{
 			icon_id: 'WITHDRAW_OPTION_ICON',
 			iconText: 'WITHDRAW_PAGE.WITHDRAW',
-			path: '/wallet/withdraw',
+			path: isValidCoin ? `/wallet/${getAsset}/withdraw` : '/wallet/withdraw',
 			isDisplay: true,
 			searchContent: [
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.PAYOUT'],
@@ -566,6 +638,7 @@ const MobileBarMoreOptions = ({
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.OUT'],
 				STRINGS['SUMMARY.WITHDRAWAL'],
 				STRINGS['MORE_OPTIONS_LABEL.HOT_FUNCTION.TRANSFER'],
+				...assetDetails,
 			],
 		},
 		{
@@ -617,29 +690,37 @@ const MobileBarMoreOptions = ({
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.MY'],
 			],
 		},
+		{
+			icon_id: 'REVOKE_SESSION',
+			iconText: 'ACCOUNTS.TAB_SIGNOUT',
+			path: `/`,
+			isDisplay: true,
+			searchContent: [STRINGS['LOGOUT']],
+		},
 	];
 
 	const onHandleRoute = (text, path) => {
 		browserHistory.push(path);
 		const actions = {
-			'Cefi Stake': () => setSelectedStake('cefi'),
-			'Defi Stake': () => setSelectedStake('defi'),
-			Fees: () => setLimitTab(0),
-			Limits: () => setLimitTab(2),
-			Password: () => setSecurityTab(1),
-			API: () => setSecurityTab(2),
-			Logins: () => setSecurityTab(4),
-			Sessions: () => setSecurityTab(3),
-			Banks: () => setVerificationTab(3),
-			Help: () => setIsDialogOpen(true),
-			Audio: () => setSettingsTab(3),
-			Language: () => setSettingsTab(2),
-			Interface: () => setSettingsTab(1),
-			Notification: () => setSettingsTab(0),
-			Chat: () => setSettingsTab(4),
+			'MORE_OPTIONS_LABEL.ICONS.CEFI_STAKE': () => setSelectedStake('cefi'),
+			'MORE_OPTIONS_LABEL.ICONS.DEFI_STAKE': () => setSelectedStake('defi'),
+			'ACCOUNTS.TAB_SIGNOUT': () => removeToken(),
+			FEES: () => setLimitTab(0),
+			'MORE_OPTIONS_LABEL.ICONS.LIMITS': () => setLimitTab(2),
+			'ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE': () => setSecurityTab(1),
+			'MORE_OPTIONS_LABEL.ICONS.API': () => setSecurityTab(2),
+			'MORE_OPTIONS_LABEL.ICONS.LOGINS': () => setSecurityTab(4),
+			'SESSIONS.TAB': () => setSecurityTab(3),
+			'USER_VERIFICATION.TITLE_BANK': () => setVerificationTab(3),
+			'LOGIN.HELP': () => setIsDialogOpen(true),
+			'MORE_OPTIONS_LABEL.ICONS.AUDIO': () => setSettingsTab(3),
+			'USER_SETTINGS.TITLE_LANGUAGE': () => setSettingsTab(2),
+			'USER_SETTINGS.TITLE_INTERFACE': () => setSettingsTab(1),
+			'USER_SETTINGS.TITLE_NOTIFICATION': () => setSettingsTab(0),
+			'USER_SETTINGS.TITLE_CHAT': () => setSettingsTab(4),
 		};
 
-		const action = actions[STRINGS[text]];
+		const action = actions[text];
 		if (action) action();
 	};
 
@@ -649,7 +730,9 @@ const MobileBarMoreOptions = ({
 
 	const filterOptions = (options) => {
 		return options?.filter((option) => {
-			const iconTextMatch = (STRINGS[option?.iconText] || '')
+			const iconTextMatch = (
+				STRINGS[option?.iconText ? option?.iconText : option?.string_id] || ''
+			)
 				?.toLowerCase()
 				.includes(search?.toLowerCase());
 			const searchContentMatch = option?.searchContent?.some((content) =>
@@ -665,28 +748,61 @@ const MobileBarMoreOptions = ({
 				<span className="hot-function-title">{title?.toUpperCase()}</span>
 				{filteredOption.length > 0 ? (
 					<div className="options-field">
-						{filteredOption?.map((data, inx) => {
-							return (
+						{filteredOption?.map(
+							(data, inx) =>
 								data.isDisplay && (
 									<div
 										key={inx}
 										className="icon-field"
-										onClick={() => onHandleRoute(data?.iconText, data?.path)}
+										onClick={() =>
+											onHandleRoute(
+												data?.iconText ? data?.iconText : data?.string_id,
+												data?.path
+											)
+										}
 									>
-										<Image
-											iconId={data?.icon_id}
-											icon={icons[data?.icon_id]}
-											wrapperClassName="icon-logo"
-										/>
+										{fieldHasCoinIcon?.includes(data?.iconText) ? (
+											<div className={isValidCoin ? 'image-wrapper' : ''}>
+												<Image
+													iconId={data?.icon_id}
+													icon={icons[data?.icon_id]}
+													wrapperClassName="icon-logo"
+												/>
+												<span className="assets-icon">
+													<Coin type="CS5" iconId={coins[getAsset]?.icon_id} />
+												</span>
+											</div>
+										) : (
+											<Image
+												iconId={data?.icon_id}
+												icon={
+													icons[
+														data?.string_id === 'RC_BANXA_ACCESS'
+															? 'BUY_CRYPTO_OPTION'
+															: data?.string_id === 'RC_ONRAMPER_MENU_ITEM'
+															? 'ONRAMPER_ICON'
+															: data?.icon_id
+													]
+												}
+												wrapperClassName="icon-logo"
+											/>
+										)}
 										<div className="option-title">
-											<EditWrapper stringId={data?.iconText}>
-												{STRINGS[data?.iconText]}
+											<EditWrapper
+												stringId={
+													data?.iconText ? data?.iconText : data?.string_id
+												}
+											>
+												{
+													STRINGS[
+														data?.iconText ? data?.iconText : data?.string_id
+													]
+												}
 											</EditWrapper>
 										</div>
 									</div>
 								)
-							);
-						})}
+						)}
 					</div>
 				) : (
 					<div className="text-align-center my-5">
@@ -821,6 +937,11 @@ const MobileBarMoreOptions = ({
 
 const mapStateToProps = (store) => ({
 	features: store.app.features,
+	coins: store.app.coins,
+	pinnedAsset: store.app.pinned_assets,
+	getMarkets: MarketsSelector(store),
+	quickTrade: store.app.quicktrade,
+	getRemoteRoutes: store.app.remoteRoutes,
 });
 
 const mapDispatchToProps = (dispatch) => ({

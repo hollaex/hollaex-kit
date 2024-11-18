@@ -2,9 +2,11 @@ import React, { useEffect, useState, useRef } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { isMobile } from 'react-device-detect';
-import { Button, Input, message, Rate, Tooltip } from 'antd';
+import { Button, Checkbox, Input, message, Rate, Tooltip } from 'antd';
 import {
 	CheckCircleTwoTone,
+	CheckSquareTwoTone,
+	ExclamationCircleFilled,
 	ExclamationOutlined,
 	SendOutlined,
 } from '@ant-design/icons';
@@ -24,6 +26,7 @@ import {
 import { formatToCurrency } from 'utils/currency';
 import { getToken } from 'utils/token';
 import { WS_URL } from 'config/constants';
+import { renderFeedback, Timer } from '../Utilis';
 import classnames from 'classnames';
 import BigNumber from 'bignumber.js';
 import '../_P2P.scss';
@@ -48,6 +51,15 @@ const P2POrder = ({
 	p2p_message,
 	p2p_status,
 	p2p_transaction_id,
+	isChat,
+	selectedProfile,
+	setSelectedProfile,
+	displayUserFeedback,
+	setDisplayUserFeedback,
+	userFeedback,
+	setUserFeedback,
+	userProfile,
+	setUserProfile,
 }) => {
 	const coin = coins[selectedTransaction.deal.buying_asset];
 	const [selectedOrder, setSelectedOrder] = useState(selectedTransaction);
@@ -64,11 +76,11 @@ const P2POrder = ({
 	const [displayCancelWarning, setDisplayCancelWarning] = useState();
 	const [displayConfirmWarning, setDisplayConfirmWarning] = useState();
 	const [lastClickTime, setLastClickTime] = useState(0);
-	const [displayUserFeedback, setDisplayUserFeedback] = useState(false);
-	const [userFeedback, setUserFeedback] = useState([]);
-	const [userProfile, setUserProfile] = useState();
-	const [selectedProfile, setSelectedProfile] = useState();
-	const [isChat, setIsChat] = useState(false);
+	const [isDecalred, setIsDecalred] = useState(false);
+	const [displayReleasedAmountPopup, setDisplayReleasedAmountPopup] = useState(
+		false
+	);
+
 	const ref = useRef(null);
 	const buttonRef = useRef(null);
 
@@ -125,7 +137,7 @@ const P2POrder = ({
 	}, [p2p_status]);
 
 	useEffect(() => {
-		fetchFeedback({ transaction_id: selectedOrder.id })
+		fetchFeedback({ transaction_id: selectedOrder.id, user_id: user.id })
 			.then((res) => {
 				if (res?.data?.length > 0) {
 					setHasFeedback(true);
@@ -159,23 +171,61 @@ const P2POrder = ({
 	}, []);
 
 	useEffect(() => {
-		const url = `${WS_URL}/stream?authorization=Bearer ${getToken()}`;
-		const p2pWs = new WebSocket(url);
+		let pingInterval;
 
-		p2pWs.onopen = (evt) => {
-			setWs(p2pWs);
-			// setReady(true);
+		const connectWebSocket = () => {
+			const url = `${WS_URL}/stream?authorization=Bearer ${getToken()}`;
+			const p2pWs = new WebSocket(url);
 
-			setInterval(() => {
-				p2pWs.send(
-					JSON.stringify({
-						op: 'ping',
-					})
-				);
-			}, 55000);
+			p2pWs.onopen = () => {
+				setWs(p2pWs);
+
+				if (selectedTransaction.first_created) {
+					p2pWs.send(
+						JSON.stringify({
+							op: 'p2pChat',
+							args: [
+								{
+									action: 'getStatus',
+									data: {
+										id: selectedTransaction.id,
+										status: 'created',
+										title: 'p2p',
+										receiver_id:
+											user.id === selectedTransaction?.merchant_id
+												? selectedTransaction?.user_id
+												: selectedTransaction?.merchant_id,
+									},
+								},
+							],
+						})
+					);
+				}
+
+				pingInterval = setInterval(() => {
+					if (p2pWs.readyState === WebSocket.OPEN) {
+						p2pWs.send(JSON.stringify({ op: 'ping' }));
+					}
+				}, 55000);
+			};
+
+			p2pWs.onclose = (event) => {
+				clearInterval(pingInterval);
+				setTimeout(connectWebSocket, 3000);
+			};
+
+			p2pWs.onerror = (error) => {
+				clearInterval(pingInterval);
+				p2pWs.close();
+			};
+
+			return p2pWs;
 		};
 
+		const p2pWs = connectWebSocket();
+
 		return () => {
+			clearInterval(pingInterval);
 			p2pWs.close();
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -277,11 +327,16 @@ const P2POrder = ({
 
 				addMessage({
 					sender_id: user.id,
+					sender_name: user?.full_name,
 					type: 'message',
 					receiver_id:
 						user.id === selectedOrder?.merchant_id
 							? selectedOrder?.user_id
 							: selectedOrder?.merchant_id,
+					receiver_name:
+						user.id === selectedOrder?.merchant_id
+							? selectedOrder?.buyer?.full_name
+							: selectedOrder?.merchant?.full_name,
 					message: chatMessage,
 					id: selectedOrder.id,
 				});
@@ -387,137 +442,14 @@ const P2POrder = ({
 				</div>
 			</Dialog>
 
-			{displayUserFeedback && (
-				<Dialog
-					className="display-user-feedback-popup-wrapper"
-					isOpen={displayUserFeedback}
-					onCloseDialog={() => {
-						setDisplayUserFeedback(false);
-					}}
-				>
-					<div className="display-user-feedback-popup-container">
-						<div className="user-feedback">
-							<div className="profile-title">
-								{selectedProfile?.full_name || (
-									<EditWrapper stringId="P2P.ANONYMOUS">
-										{STRINGS['P2P.ANONYMOUS']}
-									</EditWrapper>
-								)}
-								<span className="ml-2">
-									(
-									<EditWrapper stringId="P2P.TAB_PROFILE">
-										{STRINGS['P2P.TAB_PROFILE']}
-									</EditWrapper>
-									)
-								</span>
-							</div>
-
-							<div className="user-feedback-details-container">
-								<div className="user-feedback-card-container">
-									<div className="user-feedback-card-list">
-										<div className="user-feedback-card">
-											<div className="total-order-text fs-16">
-												<EditWrapper stringId="P2P.TOTAL_ORDERS">
-													{STRINGS['P2P.TOTAL_ORDERS']}
-												</EditWrapper>
-											</div>
-											<div className="order-times-text">
-												<span>{userProfile?.totalTransactions} </span>
-												<span>
-													<EditWrapper stringId="P2P.TIMES">
-														{STRINGS['P2P.TIMES']}
-													</EditWrapper>
-												</span>
-											</div>
-										</div>
-										<div className="user-feedback-card">
-											<div className="total-order-text fs-16">
-												<EditWrapper stringId="P2P.COMPLETION_RATE">
-													{STRINGS['P2P.COMPLETION_RATE']}
-												</EditWrapper>
-											</div>
-											<div className="order-times-text">
-												{(userProfile?.completionRate || 0).toFixed(2)}%
-											</div>
-										</div>
-										<div className="user-feedback-card">
-											<div className="total-order-text fs-16">
-												<EditWrapper stringId="P2P.POSITIVE_FEEDBACK">
-													{STRINGS['P2P.POSITIVE_FEEDBACK']}
-												</EditWrapper>
-											</div>
-											<div className="order-times-text">
-												{(userProfile?.positiveFeedbackRate || 0).toFixed(2)}%
-											</div>
-											<div className="feedback-count">
-												<EditWrapper stringId="P2P.POSITIVE">
-													{STRINGS['P2P.POSITIVE']}
-												</EditWrapper>
-												{userProfile?.positiveFeedbackCount} /
-												<EditWrapper stringId="P2P.NEGATIVE">
-													{STRINGS['P2P.NEGATIVE']}
-												</EditWrapper>
-												{userProfile?.negativeFeedbackCount}
-											</div>
-										</div>
-									</div>
-								</div>
-
-								<div className="total-feedback-count">
-									<span>
-										<EditWrapper stringId="P2P.FEEDBACK">
-											{STRINGS['P2P.FEEDBACK']}
-										</EditWrapper>
-									</span>
-									<span className="ml-2">({userFeedback?.length || 0})</span>
-								</div>
-								{userFeedback?.length === 0 ? (
-									<div className="no-feedback-container">
-										<EditWrapper stringId="P2P.NO_FEEDBACK">
-											{STRINGS['P2P.NO_FEEDBACK']}
-										</EditWrapper>
-									</div>
-								) : (
-									<table className="feedback-table-container w-100">
-										<thead>
-											<tr className="table-header-row">
-												<th>
-													<EditWrapper stringId="P2P.COMMENT">
-														{STRINGS['P2P.COMMENT']}
-													</EditWrapper>
-												</th>
-												<th>
-													<EditWrapper stringId="P2P.RATING">
-														{STRINGS['P2P.RATING']}
-													</EditWrapper>
-												</th>
-											</tr>
-										</thead>
-										<tbody>
-											{userFeedback.map((deal) => {
-												return (
-													<tr className="table-bottom-row">
-														<td className="td-fit">{deal.comment}</td>
-														<td className="td-fit">
-															<Rate
-																disabled
-																allowHalf={false}
-																autoFocus={false}
-																allowClear={false}
-																value={deal.rating}
-															/>
-														</td>
-													</tr>
-												);
-											})}
-										</tbody>
-									</table>
-								)}
-							</div>
-						</div>
-					</div>
-				</Dialog>
-			)}
+			{displayUserFeedback &&
+				renderFeedback(
+					displayUserFeedback,
+					setDisplayUserFeedback,
+					selectedProfile,
+					userProfile,
+					userFeedback
+				)}
 
 			{displayFeedbackModal && (
 				<Dialog
@@ -554,7 +486,7 @@ const P2POrder = ({
 								</EditWrapper>
 							</div>
 							<Rate
-								defaultValue={5}
+								defaultValue={0}
 								onChange={(e) => {
 									if (e > 0) setRating(e);
 								}}
@@ -582,9 +514,11 @@ const P2POrder = ({
 								try {
 									if (!rating || rating === 0) {
 										message.error(STRINGS['P2P.SELECT_RATING']);
+										return;
 									}
 									if (!feedback) {
 										message.error(STRINGS['P2P.INPUT_FEEDBACK']);
+										return;
 									}
 									await createFeedback({
 										transaction_id: selectedOrder?.id,
@@ -680,27 +614,60 @@ const P2POrder = ({
 					isOpen={displayConfirmWarning}
 					onCloseDialog={() => {
 						setDisplayConfirmWarning(false);
+						setIsDecalred(false);
 					}}
 				>
 					<div className="feedback-submit-popup-container">
-						<div className="confirm-title submit-feedback-title">
-							<EditWrapper stringId="P2P.CONFIRM_WARNING">
-								{STRINGS['P2P.CONFIRM_WARNING']}
+						<div className="d-flex justify-content-center">
+							<span className="warning-icon">
+								<ExclamationCircleFilled />
+							</span>
+						</div>
+						<div className="confirm-title submit-feedback-title font-weight-bold">
+							<EditWrapper stringId="P2P.CHECK_CONFIRM_TITLE">
+								{STRINGS['P2P.CHECK_CONFIRM_TITLE']}
 							</EditWrapper>
 						</div>
+						<div className="confirm-payment-description">
+							<span className="payment-description secondary-text">
+								<EditWrapper stringId="P2P.CHECK_CONFIRM_PAYMENT_DESC_1">
+									{STRINGS.formatString(
+										STRINGS['P2P.CHECK_CONFIRM_PAYMENT_DESC_1'],
+										<span className="important-text font-weight-bold">
+											{selectedOrder?.amount_fiat}
+										</span>,
+										<span className="important-text font-weight-bold">
+											{selectedOrder?.deal?.spending_asset?.toUpperCase()}
+										</span>
+									)}
+								</EditWrapper>
+							</span>
+							<span className="payment-description secondary-text">
+								<EditWrapper stringId="P2P.CHECK_CONFIRM_PAYMENT_DESC_2">
+									{STRINGS.formatString(
+										STRINGS['P2P.CHECK_CONFIRM_PAYMENT_DESC_2'],
+										<span className="important-text font-weight-bold">
+											{userReceiveAmount()}
+										</span>,
+										<span className="important-text font-weight-bold">
+											{selectedOrder?.deal?.buying_asset?.toUpperCase()}
+										</span>
+									)}
+								</EditWrapper>
+							</span>
+							<div className="payment-declaration-text">
+								<Checkbox
+									id="declaration"
+									onChange={() => setIsDecalred(!isDecalred)}
+								/>
+								<label htmlFor="declaration" className="ml-2">
+									<EditWrapper stringId="P2P.CHECK_CONFIRM_DECLARATION">
+										{STRINGS['P2P.CHECK_CONFIRM_DECLARATION']}
+									</EditWrapper>
+								</label>
+							</div>
+						</div>
 					</div>
-					<div className="user-receive-amount-detail">
-						<span className="font-weight-bold">{userReceiveAmount()}</span>
-						<span className="ml-1 font-weight-bold">
-							{selectedOrder?.deal?.buying_asset?.toUpperCase()}{' '}
-						</span>
-						<span>
-							<EditWrapper stringId="P2P.AMOUNT_RECEIVE">
-								{STRINGS['P2P.AMOUNT_RECEIVE']}
-							</EditWrapper>
-						</span>
-					</div>
-
 					<div className="submit-transaction-button-container">
 						<Button
 							onClick={() => {
@@ -709,7 +676,9 @@ const P2POrder = ({
 							className="cancel-btn"
 							type="default"
 						>
-							<EditWrapper stringId="P2P.NO">{STRINGS['P2P.NO']}</EditWrapper>
+							<EditWrapper stringId="BACK_TEXT">
+								{STRINGS['BACK_TEXT']?.toUpperCase()}
+							</EditWrapper>
 						</Button>
 						<Button
 							onClick={async () => {
@@ -722,22 +691,70 @@ const P2POrder = ({
 									updateStatus('confirmed', 'crypto');
 									message.success(STRINGS['P2P.CONFIRMED_TRANSACTION']);
 									setDisplayConfirmWarning(false);
+									setIsDecalred(false);
+									setDisplayReleasedAmountPopup(true);
 								} catch (error) {
 									message.error(error.data.message);
 								}
 							}}
-							className="proceed-btn"
+							className={
+								!isDecalred ? 'proceed-btn inactive-btn' : 'proceed-btn'
+							}
 							type="default"
+							disabled={!isDecalred}
 						>
-							<EditWrapper stringId="P2P.PROCEED">
-								{STRINGS['P2P.PROCEED']}
+							<EditWrapper stringId="CONFIRM_TEXT">
+								{STRINGS['CONFIRM_TEXT']?.toUpperCase()}
 							</EditWrapper>
 						</Button>
 					</div>
 				</Dialog>
 			)}
 
-			{!isChat && (
+			<Dialog
+				isOpen={displayReleasedAmountPopup}
+				onCloseDialog={() => setDisplayReleasedAmountPopup(false)}
+				className="release-amount-popup-wrapper feedback-submit-popup-wrapper"
+			>
+				<div className="release-amount-details-container">
+					<div className="order-complete-title important-text">
+						<EditWrapper stringId="P2P.P2P_ORDER_COMPLETE">
+							{STRINGS['P2P.P2P_ORDER_COMPLETE']}
+						</EditWrapper>
+					</div>
+					<div className="user-receive-amount-detail mt-3">
+						<CheckSquareTwoTone className="check-icon" />
+						<span className="ml-2">
+							<EditWrapper stringId="P2P.AMOUNT_RECEIVE">
+								{STRINGS.formatString(
+									STRINGS['P2P.AMOUNT_RECEIVE'],
+									<span className="font-weight-bold">
+										{userReceiveAmount()}
+									</span>,
+									<span className="font-weight-bold">
+										{selectedOrder?.deal?.buying_asset?.toUpperCase()}
+									</span>
+								)}
+							</EditWrapper>
+						</span>
+					</div>
+					<div className="submit-transaction-button-container">
+						<Button
+							onClick={() => {
+								setDisplayReleasedAmountPopup(false);
+							}}
+							className="cancel-btn"
+							type="default"
+						>
+							<EditWrapper stringId="P2P.OKAY">
+								{STRINGS['P2P.OKAY']}
+							</EditWrapper>
+						</Button>
+					</div>
+				</div>
+			</Dialog>
+
+			{((isMobile && !isChat) || !isMobile) && (
 				<div className="back-to-orders-link">
 					<span
 						onClick={() => {
@@ -755,87 +772,94 @@ const P2POrder = ({
 					</span>
 				</div>
 			)}
-			{(isOrderCreated || isOrderVerified || isOrderConfirmed) && !isChat && (
-				<div className="custom-stepper-container">
-					<div
-						className={
-							isOrderCreated
-								? 'trade-step-active trade-step-one'
-								: 'trade-step-one'
-						}
-					>
-						<div className="check-icon">
-							{(isOrderCreated || isOrderVerified || isOrderConfirmed) && (
-								<CheckCircleTwoTone />
-							)}
-						</div>
-						<div className="trade-step-container">
-							<div className={isOrderCreated && 'important-text'}>
-								<EditWrapper stringId="P2P.STEP_1">
-									{STRINGS['P2P.STEP_1']}:
-								</EditWrapper>
+			{(isOrderCreated || isOrderVerified || isOrderConfirmed) &&
+				((isMobile && !isChat) || !isMobile) && (
+					<div className="custom-stepper-container">
+						<div
+							className={
+								isOrderCreated
+									? 'trade-step-active trade-step-one'
+									: 'trade-step-one'
+							}
+						>
+							<div className="check-icon">
+								{(isOrderCreated || isOrderVerified || isOrderConfirmed) && (
+									<CheckCircleTwoTone />
+								)}
 							</div>
-							<div className="ml-1">
-								<EditWrapper stringId="P2P.P2P_ORDER_CREATED">
-									{STRINGS['P2P.P2P_ORDER_CREATED']}
-								</EditWrapper>
-							</div>
-						</div>
-					</div>
-					<div className="trade-custom-line"></div>
-					<div
-						className={
-							isOrderVerified
-								? 'trade-step-active trade-step-two'
-								: 'trade-step-two'
-						}
-					>
-						<div className="check-icon">
-							{(isOrderVerified || isOrderConfirmed) && <CheckCircleTwoTone />}
-						</div>
-						<div className="trade-step-container">
-							<div className={isOrderVerified && 'important-text'}>
-								<EditWrapper stringId="P2P.STEP_2">
-									{STRINGS['P2P.STEP_2']}:
-								</EditWrapper>
-							</div>
-							<div className="ml-1">
-								<EditWrapper stringId="P2P.VENDOR_CHECKS_TITLE">
-									{STRINGS['P2P.VENDOR_CHECKS_TITLE']}
-								</EditWrapper>
+							<div className="trade-step-container">
+								<div className={isOrderCreated && 'important-text'}>
+									<EditWrapper stringId="P2P.STEP_1">
+										{STRINGS['P2P.STEP_1']}:
+									</EditWrapper>
+								</div>
+								<div className="ml-1">
+									<EditWrapper stringId="P2P.P2P_ORDER_CREATED">
+										{STRINGS['P2P.P2P_ORDER_CREATED']}
+									</EditWrapper>
+								</div>
 							</div>
 						</div>
-					</div>
+						<div className="trade-custom-line"></div>
+						<div
+							className={
+								isOrderVerified
+									? 'trade-step-active trade-step-two'
+									: 'trade-step-two'
+							}
+						>
+							<div className="check-icon">
+								{(isOrderVerified || isOrderConfirmed) && (
+									<CheckCircleTwoTone />
+								)}
+							</div>
+							<div className="trade-step-container">
+								<div className={isOrderVerified && 'important-text'}>
+									<EditWrapper stringId="P2P.STEP_2">
+										{STRINGS['P2P.STEP_2']}:
+									</EditWrapper>
+								</div>
+								<div className="ml-1">
+									<EditWrapper stringId="P2P.VENDOR_CHECKS_TITLE">
+										{STRINGS['P2P.VENDOR_CHECKS_TITLE']}
+									</EditWrapper>
+								</div>
+							</div>
+						</div>
 
-					<div className="trade-custom-line"></div>
-					<div
-						className={
-							isOrderConfirmed
-								? 'trade-step-active trade-step-three'
-								: 'trade-step-three'
-						}
-					>
-						<div className="check-icon">
-							{isOrderConfirmed && <CheckCircleTwoTone />}
-						</div>
-						<div className="trade-step-container">
-							<div className={isOrderConfirmed && 'important-text'}>
-								<EditWrapper stringId="P2P.STEP_3">
-									{STRINGS['P2P.STEP_3']}:
-								</EditWrapper>
+						<div className="trade-custom-line"></div>
+						<div
+							className={
+								isOrderConfirmed
+									? 'trade-step-active trade-step-three'
+									: 'trade-step-three'
+							}
+						>
+							<div className="check-icon">
+								{isOrderConfirmed && <CheckCircleTwoTone />}
 							</div>
-							<div className="ml-1">
-								<EditWrapper stringId="P2P.FUND_RELEASED">
-									{STRINGS['P2P.FUND_RELEASED']}
-								</EditWrapper>
+							<div className="trade-step-container">
+								<div className={isOrderConfirmed && 'important-text'}>
+									<EditWrapper stringId="P2P.STEP_3">
+										{STRINGS['P2P.STEP_3']}:
+									</EditWrapper>
+								</div>
+								<div className="ml-1">
+									<EditWrapper stringId="P2P.FUND_RELEASED">
+										{STRINGS['P2P.FUND_RELEASED']}
+									</EditWrapper>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-			)}
+				)}
 			<div
 				className={classnames(
-					...['P2pOrder p2p-order-wrapper', isMobile ? 'mobile-view-p2p' : '']
+					...[
+						'P2pOrder p2p-order-wrapper',
+						isMobile ? 'mobile-view-p2p' : '',
+						isChat ? 'p2p-order-chat-wrapper' : '',
+					]
 				)}
 			>
 				{!isMobile && (
@@ -846,7 +870,7 @@ const P2POrder = ({
 									iconId={coin?.icon_id}
 									type={isMobile ? 'CS12' : 'CS10'}
 								/>
-								<div>
+								<div className="d-flex flex-direction-column">
 									<div className="d-flex">
 										<div className="order-title">
 											<EditWrapper stringId="P2P.ORDER">
@@ -857,7 +881,13 @@ const P2POrder = ({
 											{selectedOrder.transaction_id}
 										</span>
 									</div>
-									<div className="asset-name">
+									<span
+										className={
+											user?.id === selectedOrder?.merchant_id
+												? 'asset-name asset-sell'
+												: 'asset-name asset-buy'
+										}
+									>
 										{user.id === selectedOrder.merchant_id ? (
 											<EditWrapper stringId="P2P.SELL_COIN">
 												{STRINGS['P2P.SELL_COIN']}
@@ -868,7 +898,7 @@ const P2POrder = ({
 											</EditWrapper>
 										)}{' '}
 										{coin?.fullname} ({coin?.symbol?.toUpperCase()})
-									</div>
+									</span>
 								</div>
 							</div>
 							{/* <div
@@ -1138,12 +1168,14 @@ const P2POrder = ({
 								</div>
 							</div>
 							<div className="order-verification-container secondary-text">
-								<div className="mb-3 important-text">
-									<EditWrapper stringId="P2P.EXPECTED_TIME">
-										{STRINGS['P2P.EXPECTED_TIME']}
-									</EditWrapper>
-								</div>
-
+								{selectedOrder?.user_status === 'pending' && (
+									<div className="mb-3 important-text order-timer-wrapper">
+										<EditWrapper stringId="P2P.EXPECTED_TIME">
+											{STRINGS['P2P.EXPECTED_TIME']}
+										</EditWrapper>
+										<Timer order={selectedOrder} />
+									</div>
+								)}
 								{user.id === selectedOrder?.user_id && (
 									<>
 										{selectedOrder.user_status === 'pending' && (
@@ -1196,9 +1228,15 @@ const P2POrder = ({
 													</div>
 												</div>
 												<div className="mt-2">
-													<EditWrapper stringId="P2P.FUNDS_TRANSFERRED">
-														{STRINGS['P2P.FUNDS_TRANSFERRED']}
-													</EditWrapper>
+													{selectedOrder?.deal?.side === 'sell' ? (
+														<EditWrapper stringId="P2P.FUNDS_TRANSFERRED">
+															{STRINGS['P2P.FUNDS_TRANSFERRED']}
+														</EditWrapper>
+													) : (
+														<EditWrapper stringId="P2P.FUNDS_TRANSFERRED_USER">
+															{STRINGS['P2P.FUNDS_TRANSFERRED_USER']}
+														</EditWrapper>
+													)}
 												</div>
 												<div
 													className="go-to-deposit-link blue-link"
@@ -1285,6 +1323,19 @@ const P2POrder = ({
 														</span>
 													</EditWrapper>
 												</div>
+												{!hasFeedback && (
+													<Button
+														className="feedback-submit-btn mt-3"
+														onClick={() => {
+															setDisplayFeedbackModel(true);
+														}}
+														ghost
+													>
+														<EditWrapper stringId="P2P.SUBMIT_FEEDBACK">
+															{STRINGS['P2P.SUBMIT_FEEDBACK']}
+														</EditWrapper>
+													</Button>
+												)}
 											</div>
 										)}
 
@@ -1402,13 +1453,19 @@ const P2POrder = ({
 												}
 											>
 												<div
-													className="appeal-link blue-link"
+													className={
+														selectedOrder?.user_status !== 'confirmed'
+															? 'appeal-link blue-link disable-link'
+															: 'appeal-link blue-link'
+													}
 													onClick={async () => {
-														try {
-															setDisplayAppealModel(true);
-															setAppealSide('merchant');
-														} catch (error) {
-															message.error(error.data.message);
+														if (selectedOrder?.user_status === 'confirmed') {
+															try {
+																setDisplayAppealModel(true);
+																setAppealSide('merchant');
+															} catch (error) {
+																message.error(error.data.message);
+															}
 														}
 													}}
 												>
@@ -1518,13 +1575,20 @@ const P2POrder = ({
 												</EditWrapper>
 										  )}
 								</div>
-								<div className="chat-details-container secondary-text">
+								<div className="chat-details-container">
 									{user.id === selectedOrder?.user_id && (
 										<div className="d-flex flex-column">
 											<div>
-												<EditWrapper stringId="P2P.ORDER_INITIATED">
-													{STRINGS['P2P.ORDER_INITIATED']}
-												</EditWrapper>
+												{selectedOrder?.deal?.side === 'sell' ? (
+													<EditWrapper stringId="P2P.ORDER_INITIATED">
+														{STRINGS['P2P.ORDER_INITIATED']}
+													</EditWrapper>
+												) : (
+													<EditWrapper stringId="P2P.ORDER_INITIATED_VENDOR">
+														{STRINGS['P2P.ORDER_INITIATED_VENDOR']}
+													</EditWrapper>
+												)}
+
 												<span className="ml-1">
 													{selectedOrder?.merchant?.full_name || (
 														<EditWrapper stringId="P2P.ANONYMOUS">
@@ -1581,6 +1645,15 @@ const P2POrder = ({
 											</EditWrapper>
 										</div>
 									)}
+									{user?.id === selectedOrder?.user_id &&
+										selectedOrder?.transaction_status === 'active' &&
+										selectedOrder?.user_status === 'pending' && (
+											<div className="secondary-text">
+												<EditWrapper stringId="P2P.CONFIRM_PAYMENT_TRANSFER">
+													{STRINGS['P2P.CONFIRM_PAYMENT_TRANSFER']}
+												</EditWrapper>
+											</div>
+										)}
 								</div>
 
 								<div ref={ref} className="chat-area">
@@ -1606,12 +1679,22 @@ const P2POrder = ({
 											} else {
 												if (message.type === 'notification') {
 													return (
-														<div className="notification-message d-flex flex-column text-center secondary-text my-3">
+														<div className="notification-message d-flex flex-column text-center my-3">
 															{message.message === 'BUYER_PAID_ORDER' &&
 															user.id === selectedOrder.user_id ? (
-																<EditWrapper stringId={`P2P.BUYER_SENT_FUNDS`}>
-																	{STRINGS[`P2P.BUYER_SENT_FUNDS`]}
-																</EditWrapper>
+																selectedOrder?.deal?.side === 'sell' ? (
+																	<EditWrapper
+																		stringId={`P2P.BUYER_SENT_FUNDS`}
+																	>
+																		{STRINGS[`P2P.BUYER_SENT_FUNDS`]}
+																	</EditWrapper>
+																) : (
+																	<EditWrapper
+																		stringId={`P2P.BUYER_SENT_FUNDS_USER`}
+																	>
+																		{STRINGS[`P2P.BUYER_SENT_FUNDS_USER`]}
+																	</EditWrapper>
+																)
 															) : (
 																<EditWrapper
 																	stringId={`P2P.${message.message}`}
@@ -1626,6 +1709,15 @@ const P2POrder = ({
 																).format('DD/MMM/YYYY, hh:mmA')}
 																)
 															</span>
+															{user?.id === selectedOrder?.merchant_id &&
+																selectedOrder?.merchant_status ===
+																	'pending' && (
+																	<div className="secondary-text">
+																		<EditWrapper stringId="P2P.CONFIRM_PAYMENT_RELEASE">
+																			{STRINGS['P2P.CONFIRM_PAYMENT_RELEASE']}
+																		</EditWrapper>
+																	</div>
+																)}
 														</div>
 													);
 												} else {
@@ -1658,7 +1750,8 @@ const P2POrder = ({
 																			{message?.receiver_id ===
 																			selectedOrder?.merchant_id
 																				? STRINGS['P2P.BUYER']
-																				: selectedOrder?.merchant?.full_name}
+																				: selectedOrder?.merchant?.full_name ||
+																				  STRINGS['P2P.ANONYMOUS']}
 																			:
 																		</div>
 																		<div className="merchant-message">
@@ -1742,8 +1835,10 @@ const P2POrder = ({
 								setDisplayAppealModel={setDisplayAppealModel}
 								setAppealSide={setAppealSide}
 								setDisplayFeedbackModel={setDisplayFeedbackModel}
-								setIsChat={setIsChat}
 								ICONS={ICONS}
+								updateTransaction={updateTransaction}
+								updateStatus={updateStatus}
+								updateP2PStatus={updateP2PStatus}
 							/>
 						)}
 						{isChat && (
@@ -1759,14 +1854,14 @@ const P2POrder = ({
 								setDisplayUserFeedback={setDisplayUserFeedback}
 								setUserProfile={setUserProfile}
 								isChat={isChat}
-								setIsChat={setIsChat}
 							/>
 						)}
 					</div>
 				)}
 			</div>
 
-			{user.id === selectedOrder?.user_id &&
+			{!isMobile &&
+				user.id === selectedOrder?.user_id &&
 				selectedOrder?.transaction_status === 'active' &&
 				selectedOrder.user_status === 'pending' && (
 					<div className="confirm-notify-button-container">
@@ -1820,6 +1915,7 @@ const mapStateToProps = (state) => ({
 	p2p_transaction_id: state.p2p.transaction_id,
 	user: state.user,
 	p2p_config: state.app.constants.p2p_config,
+	isChat: state.app.isChat,
 });
 
 export default connect(mapStateToProps)(withRouter(withConfig(P2POrder)));

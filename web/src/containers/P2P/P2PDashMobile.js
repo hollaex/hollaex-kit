@@ -32,6 +32,16 @@ const P2PDashMobile = ({
 	setTab,
 }) => {
 	const [displayTrading, setDisplayTrading] = useState(false);
+	const [spentAmountInput, setSpentAmountInput] = useState(false);
+	const [receiveAmountInput, setReceiveAmountInput] = useState(false);
+
+	const onHandleFocus = (text) => {
+		if (text === 'spent amount') {
+			setSpentAmountInput(true);
+		} else {
+			setReceiveAmountInput(true);
+		}
+	};
 
 	const handleCloseTrading = () => {
 		setDisplayTrading(false);
@@ -40,6 +50,14 @@ const P2PDashMobile = ({
 		setAmountFiat();
 		setSelectedDeal();
 	};
+
+	const isDisabled =
+		!selectedDeal?.id ||
+		amountFiat <= 0 ||
+		!amountFiat ||
+		!selectedMethod?.system_name ||
+		selectedDeal?.min_order_value > amountFiat ||
+		selectedDeal?.max_order_value < amountFiat;
 
 	return (
 		<div className="stake_theme p2p-trade-details">
@@ -111,7 +129,13 @@ const P2PDashMobile = ({
 											</span>
 										</div>
 										<div className="trading-payment-detail">
-											<div className="p2p-amount-spent">
+											<div
+												className={
+													spentAmountInput
+														? 'p2p-amount-spent active-focus'
+														: 'p2p-amount-spent'
+												}
+											>
 												<span className="amount-spent-title">
 													<EditWrapper stringId="P2P.SPEND_AMOUNT">
 														{STRINGS['P2P.SPEND_AMOUNT']}
@@ -120,8 +144,15 @@ const P2PDashMobile = ({
 												</span>
 												<div className="amount-spent-field-container">
 													<span className="spent-asset-name ">
-														{' '}
-														{selectedDeal?.spending_asset.toUpperCase()}
+														<span className="spent-asset-icon">
+															<Coin
+																iconId={
+																	coins[selectedDeal?.spending_asset]?.icon_id
+																}
+																type="CS9"
+															/>
+														</span>
+														{selectedDeal?.spending_asset?.toUpperCase()}
 													</span>
 													<InputNumber
 														className={
@@ -129,8 +160,8 @@ const P2PDashMobile = ({
 															!amountFiat ||
 															selectedDeal?.min_order_value > amountFiat ||
 															selectedDeal?.max_order_value < amountFiat
-																? 'error-field amount-spent-field w-50'
-																: 'amount-spent-field w-50'
+																? 'error-field amount-spent-field w-75'
+																: 'amount-spent-field w-75'
 														}
 														value={amountFiat}
 														onChange={(e) => {
@@ -152,6 +183,8 @@ const P2PDashMobile = ({
 														}}
 														placeholder="0"
 														autoFocus={true}
+														onFocus={() => onHandleFocus('spent amount')}
+														onBlur={() => setSpentAmountInput(false)}
 													/>
 												</div>
 											</div>
@@ -197,28 +230,39 @@ const P2PDashMobile = ({
 													</div>
 												)}
 											</div>
-											<div className="p2p-amount-receive">
+											<div
+												className={
+													receiveAmountInput
+														? 'active-focus p2p-amount-receive'
+														: 'p2p-amount-receive'
+												}
+											>
 												<div className="amount-receive-title">
 													<span>
 														<EditWrapper stringId="P2P.AMOUNT_TO_RECEIVE">
-															{STRINGS['P2P.AMOUNT_TO_RECEIVE']}
+															{STRINGS['P2P.AMOUNT_TO_RECEIVE']}:
 														</EditWrapper>
 													</span>
-													<Coin
-														iconId={coins[selectedDeal?.buying_asset].icon_id}
-														type="CS10"
-													/>
 												</div>
 												<div className="amount-receive-field-container">
 													<span className="spent-asset-name ">
-														{' '}
-														{selectedDeal?.buying_asset.toUpperCase()}
+														<span className="spent-asset-icon">
+															<Coin
+																iconId={
+																	coins[selectedDeal?.buying_asset]?.icon_id
+																}
+																type="CS9"
+															/>
+														</span>
+														{selectedDeal?.buying_asset?.toUpperCase()}
 													</span>
 													<Input
-														className="greyButtonP2P amount-receive-field w-50"
+														className="amount-receive-field w-75"
 														readOnly
 														value={amountCurrency}
 														placeholder="0"
+														onFocus={() => onHandleFocus('receive amount')}
+														onBlur={() => setReceiveAmountInput(false)}
 													/>
 												</div>
 											</div>
@@ -333,18 +377,10 @@ const P2PDashMobile = ({
 													)
 												)}
 												<Button
-													className={
-														selectedDeal?.side === 'sell'
-															? 'greenButtonP2P'
-															: 'redButtonP2P'
-													}
-													disabled={
-														!selectedDeal?.id ||
-														amountFiat <= 0 ||
-														!selectedMethod?.system_name ||
-														selectedDeal?.min_order_value > amountFiat ||
-														selectedDeal?.max_order_value < amountFiat
-													}
+													className={`
+														${isDisabled ? 'inactive-btn' : ''}
+														${selectedDeal?.side === 'sell' ? 'greenButtonP2P' : 'redButtonP2P'}`}
+													disabled={isDisabled}
 													onClick={async () => {
 														try {
 															setDisplayOrderCreation(true);

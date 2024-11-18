@@ -26,9 +26,10 @@ import chat from './containers/Admin/Chat';
 import store from './store';
 import PluginConfig from 'containers/Admin/PluginConfig';
 import Loadable from 'react-loadable';
+import { Loader } from 'components';
 
 const LoadingComponent = ({ isLoading, error }) => {
-	return null;
+	return <Loader background={false} />;
 };
 
 const Container = Loadable({
