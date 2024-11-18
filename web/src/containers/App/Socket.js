@@ -462,6 +462,10 @@ class Container extends Component {
 										data?.data?.status === 'appeal'
 											? STRINGS['P2P.APPEAL_STATUS_MESSAGE']
 											: data?.action === 'getStatus' &&
+											  data?.data?.status === 'cancelled' &&
+											  data?.data?.title === 'admin cancel'
+											? STRINGS['P2P.ADMIN_ORDER_CANCELLATION_MESSAGE']
+											: data?.action === 'getStatus' &&
 											  data?.data?.status === 'cancelled'
 											? STRINGS['P2P.CANCEL_STATUS_MESSAGE']
 											: data?.action === 'getStatus' &&
@@ -541,17 +545,18 @@ class Container extends Component {
 									notification.close(newLastNotification?.key);
 									notification.open({
 										...newLastNotification,
-										icon:
-											newLastNotificationMessage ===
-											(STRINGS['P2P.CANCEL_STATUS_MESSAGE'] ||
-												STRINGS['P2P.APPEAL_STATUS_MESSAGE']) ? (
-												<ExclamationCircleOutlined />
-											) : newLastNotificationMessage ===
-											  STRINGS['P2P.NEW_MESSAGE'] ? (
-												<MailOutlined />
-											) : (
-												<BellOutlined />
-											),
+										icon: [
+											STRINGS['P2P.CANCEL_STATUS_MESSAGE'],
+											STRINGS['P2P.ADMIN_ORDER_CANCELLATION_MESSAGE'],
+											STRINGS['P2P.APPEAL_STATUS_MESSAGE'],
+										]?.includes(newLastNotificationMessage) ? (
+											<ExclamationCircleOutlined />
+										) : newLastNotificationMessage ===
+										  STRINGS['P2P.NEW_MESSAGE'] ? (
+											<MailOutlined />
+										) : (
+											<BellOutlined />
+										),
 										className: isMobile
 											? 'p2p-chat-notification-wrapper p2p-chat-notification-wrapper-mobile'
 											: 'p2p-chat-notification-wrapper',
@@ -583,17 +588,18 @@ class Container extends Component {
 							notification.close(previousNotification?.key);
 							notification.open({
 								...previousNotification,
-								icon:
-									previousNotificationMessage ===
-									(STRINGS['P2P.CANCEL_STATUS_MESSAGE'] ||
-										STRINGS['P2P.APPEAL_STATUS_MESSAGE']) ? (
-										<ExclamationCircleOutlined />
-									) : previousNotificationMessage ===
-									  STRINGS['P2P.NEW_MESSAGE'] ? (
-										<MailOutlined />
-									) : (
-										<BellOutlined />
-									),
+								icon: [
+									STRINGS['P2P.CANCEL_STATUS_MESSAGE'],
+									STRINGS['P2P.ADMIN_ORDER_CANCELLATION_MESSAGE'],
+									STRINGS['P2P.APPEAL_STATUS_MESSAGE'],
+								]?.includes(previousNotificationMessage) ? (
+									<ExclamationCircleOutlined />
+								) : previousNotificationMessage ===
+								  STRINGS['P2P.NEW_MESSAGE'] ? (
+									<MailOutlined />
+								) : (
+									<BellOutlined />
+								),
 								className: isMobile
 									? 'p2p-chat-notification-wrapper p2p-chat-notification-wrapper-mobile p2p-chat-notification'
 									: 'p2p-chat-notification-wrapper p2p-chat-notification',
