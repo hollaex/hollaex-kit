@@ -10,6 +10,7 @@ import { MiniSparkLine } from 'containers/TradeTabs/components/MiniSparkLine';
 import { getLastValuesFromParts } from 'utils/array';
 import { unique } from 'utils/data';
 import { Loading } from './utils';
+import { formatCurrencyByIncrementalUnit } from 'utils/currency';
 
 const AssetsRow = ({
 	coinData,
@@ -32,6 +33,7 @@ const AssetsRow = ({
 		oneDayPriceDifferencePercent,
 		lastPrice,
 		key,
+		increment_unit,
 	} = coinData;
 
 	const getAllAvailableMarkets = (key) => {
@@ -94,6 +96,7 @@ const AssetsRow = ({
 	};
 
 	const markets = getAllAvailableMarkets(symbol);
+	const roundPrice = lastPrice?.split(',')?.join('');
 
 	return (
 		<tr id={`market-list-row-${key}`} className="table-row table-bottom-border">
@@ -137,7 +140,12 @@ const AssetsRow = ({
 									{lastPrice && '$'}
 								</span>
 								<span className="title-font last-price-label">
-									{lastPrice ? lastPrice : '-'}
+									{lastPrice
+										? formatCurrencyByIncrementalUnit(
+												roundPrice,
+												increment_unit
+										  )
+										: '-'}
 								</span>
 							</div>
 							{(oneDayPriceDifferencePercent && oneDayPriceDifference) ||
@@ -200,6 +208,8 @@ const AssetsRow = ({
 								coins[symbol].market_cap.toLocaleString('en-US', {
 									style: 'currency',
 									currency: 'USD',
+									minimumFractionDigits: 0,
+									maximumFractionDigits: 0,
 								})
 							) : (
 								<span className="font-raleway">0</span>
@@ -218,7 +228,9 @@ const AssetsRow = ({
 								{lastPrice && '$'}
 							</span>
 							<span className="title-font last-price-label">
-								{lastPrice ? lastPrice : '-'}
+								{lastPrice
+									? formatCurrencyByIncrementalUnit(roundPrice, increment_unit)
+									: '-'}
 							</span>
 						</div>
 					) : (
@@ -291,6 +303,8 @@ const AssetsRow = ({
 								coins[symbol].market_cap.toLocaleString('en-US', {
 									style: 'currency',
 									currency: 'USD',
+									minimumFractionDigits: 0,
+									maximumFractionDigits: 0,
 								})
 							) : (
 								<span className="font-raleway">0</span>

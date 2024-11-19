@@ -54,6 +54,7 @@ const P2PDash = ({
 	changeProfileTab,
 	tab,
 }) => {
+	const isBuySell = JSON.parse(localStorage.getItem('isBuySelected'));
 	const [expandRow, setExpandRow] = useState(false);
 	const [selectedDeal, setSelectedDeal] = useState();
 	const [selectedMethod, setSelectedMethod] = useState();
@@ -75,7 +76,7 @@ const P2PDash = ({
 	const [selectedProfile, setSelectedProfile] = useState();
 	const [myMethods, setMyMethods] = useState([]);
 	// const inputRef = useRef(null);
-	const [isBuySelected, setIsBuySelected] = useState(true);
+	const [isBuySelected, setIsBuySelected] = useState(isBuySell);
 	const [buyValue, setBuyValue] = useState([]);
 	const [selectedCoin, setSelectedCoin] = useState('USDT');
 	const [isFilter, setIsFilter] = useState(false);
@@ -86,7 +87,9 @@ const P2PDash = ({
 		fetchDeals({ status: true })
 			.then((res) => {
 				setDeals(res.data);
-				const buyDeals = res.data?.filter((deal) => deal?.side === 'sell');
+				const buyDeals = res.data?.filter((deal) =>
+					!isBuySelected ? deal?.side === 'buy' : deal?.side === 'sell'
+				);
 				const filteredDeals = buyDeals?.filter((deal) =>
 					selectedCoin?.includes(deal?.buying_asset?.toUpperCase())
 				);
@@ -141,6 +144,7 @@ const P2PDash = ({
 		const cryptoAsset = filteredDeals?.filter((deal) =>
 			selectedCoin?.includes(deal?.buying_asset?.toUpperCase())
 		);
+		localStorage.setItem('isBuySelected', newIsBuySelected);
 		setIsBuySelected(newIsBuySelected);
 		setBuyValue(cryptoAsset);
 	};
@@ -816,6 +820,14 @@ const P2PDash = ({
 							</thead>
 							<tbody className="p2p-table-body-container">
 								{filteredDeals?.map((deal) => {
+									const isDisabled =
+										loading ||
+										!user?.id ||
+										!amountFiat ||
+										amountFiat <= 0 ||
+										!selectedMethod?.system_name ||
+										deal?.min_order_value > amountFiat ||
+										deal?.max_order_value < amountFiat;
 									return (
 										<>
 											<tr
@@ -1223,19 +1235,11 @@ const P2PDash = ({
 																		</EditWrapper>
 																	</Button>
 																	<Button
-																		className={
-																			selectedDeal.side === 'sell'
-																				? 'greenButtonP2P'
-																				: 'redButtonP2P'
-																		}
-																		disabled={
-																			loading ||
-																			!user?.id ||
-																			amountFiat <= 0 ||
-																			!selectedMethod?.system_name ||
-																			deal.min_order_value > amountFiat ||
-																			deal.max_order_value < amountFiat
-																		}
+																		className={`
+																			${deal.side === 'sell' ? 'greenButtonP2P' : 'redButtonP2P'}
+																			${isDisabled ? 'inactive-btn' : ''}
+																		`}
+																		disabled={isDisabled}
 																		onClick={async () => {
 																			try {
 																				if (
@@ -1487,19 +1491,11 @@ const P2PDash = ({
 																	</Button>
 
 																	<Button
-																		className={
-																			selectedDeal.side === 'sell'
-																				? 'greenButtonP2P'
-																				: 'redButtonP2P'
-																		}
-																		disabled={
-																			loading ||
-																			!user?.id ||
-																			amountFiat <= 0 ||
-																			!selectedMethod?.system_name ||
-																			deal.min_order_value > amountFiat ||
-																			deal.max_order_value < amountFiat
-																		}
+																		className={`
+																			${deal.side === 'sell' ? 'greenButtonP2P' : 'redButtonP2P'}
+																			${isDisabled ? 'inactive-btn' : ''}
+																		`}
+																		disabled={isDisabled}
 																		onClick={async () => {
 																			try {
 																				if (

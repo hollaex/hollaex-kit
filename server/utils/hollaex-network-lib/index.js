@@ -1754,7 +1754,7 @@ class HollaExNetwork {
 			data.email = true;
 		}
 
-		if (opts.category && ['stake', 'referral', 'internal'].includes(opts.category)) {
+		if (opts.category) {
 			data.category = opts.category;
 		}
 

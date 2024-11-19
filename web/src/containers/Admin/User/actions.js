@@ -214,6 +214,15 @@ export const recoverUser = (values) => {
 	return requestAuthenticated('/admin/user/restore', options);
 };
 
+export const deleteUser = (values) => {
+	const options = {
+		method: 'DELETE',
+		body: JSON.stringify(values),
+	};
+
+	return requestAuthenticated('/admin/user', options);
+};
+
 export const performVerificationLevelUpdate = (values) => {
 	const options = {
 		method: 'POST',
