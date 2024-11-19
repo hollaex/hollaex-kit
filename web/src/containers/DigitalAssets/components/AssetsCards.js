@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import { isMobile } from 'react-device-detect';
 import { browserHistory } from 'react-router';
-import { Card, Switch } from 'antd';
+import { Card, Spin, Switch } from 'antd';
 import {
 	CaretDownOutlined,
 	CaretUpOutlined,
@@ -15,6 +15,7 @@ import icons from 'config/icons/dark';
 import { Coin, EditWrapper, IconTitle } from 'components';
 import { quicktradePairSelector } from 'containers/QuickTrade/components/utils';
 import { Loading } from './utils';
+import { formatCurrencyByIncrementalUnit } from 'utils/currency';
 
 const cardTypes = ['gainers', 'losers', 'newAssets'];
 const cardTitles = [
@@ -94,56 +95,72 @@ const goToCoinInfo = (symbol, features, quicktradePairs) => {
 	}
 };
 
-const renderCards = (data, coins, type, loading, features, quicktradePairs) =>
-	data.map(
-		(
-			{
-				symbol,
-				lastPrice,
-				oneDayPriceDifferencePercent,
-				oneDayPriceDifferencePercenVal,
-			},
-			index
-		) =>
-			loading ? (
-				<Loading key={index} index={index} />
-			) : (
-				<div
-					className="assets-wrapper mb-2"
-					key={symbol}
-					onClick={() => goToCoinInfo(symbol, features, quicktradePairs)}
-				>
-					<div className="asset-container">
-						<Coin
-							iconId={coins[symbol].icon_id}
-							type={isMobile ? 'CS10' : 'CS8'}
-						/>
-						<div className="d-flex flex-column">
-							<span className={isMobile && 'font-weight-bold'}>
-								{coins[symbol].fullname}
-							</span>
-							<span className="asset-symbol">{symbol.toUpperCase()}</span>
+const renderCards = (data, coins, type, loading, features, quicktradePairs) => {
+	return data?.length >= 1 ? (
+		data?.map(
+			(
+				{
+					symbol,
+					lastPrice,
+					oneDayPriceDifferencePercent,
+					oneDayPriceDifferencePercenVal,
+					increment_unit,
+				},
+				index
+			) => {
+				const roundPrice = lastPrice?.split(',')?.join('');
+
+				return loading ? (
+					<Loading key={index} index={index} />
+				) : (
+					<div
+						className="assets-wrapper mb-2"
+						key={symbol}
+						onClick={() => goToCoinInfo(symbol, features, quicktradePairs)}
+					>
+						<div className="asset-container">
+							<Coin
+								iconId={coins[symbol]?.icon_id}
+								type={isMobile ? 'CS10' : 'CS8'}
+							/>
+							<div className="d-flex flex-column">
+								<span className={isMobile && 'font-weight-bold'}>
+									{coins[symbol]?.fullname}
+								</span>
+								<span className="asset-symbol">{symbol?.toUpperCase()}</span>
+							</div>
+						</div>
+						<div className="asset-container align-items-center">
+							<div className="assets-value">
+								<span className="gainer-price">
+									{lastPrice
+										? `$${formatCurrencyByIncrementalUnit(
+												roundPrice,
+												increment_unit
+										  )}`
+										: '-'}
+								</span>
+								{renderPercentage(
+									type === 'newAssets'
+										? oneDayPriceDifferencePercenVal
+										: oneDayPriceDifferencePercent,
+									type
+								)}
+							</div>
+							<div className="right-arrow-icon">
+								<RightOutlined />
+							</div>
 						</div>
 					</div>
-					<div className="asset-container align-items-center">
-						<div className="assets-value">
-							<span className="gainer-price">
-								{lastPrice ? `$${lastPrice}` : '-'}
-							</span>
-							{renderPercentage(
-								type === 'newAssets'
-									? oneDayPriceDifferencePercenVal
-									: oneDayPriceDifferencePercent,
-								type
-							)}
-						</div>
-						<div className="right-arrow-icon">
-							<RightOutlined />
-						</div>
-					</div>
-				</div>
-			)
+				);
+			}
+		)
+	) : (
+		<span className="my-4">
+			<Spin size="medium" />
+		</span>
 	);
+};
 
 const AssetsCards = ({
 	coins,
@@ -258,6 +275,10 @@ const AssetsCards = ({
 										: cardTypes[currentIndex] === 'losers'
 										? 'losers-asset-card'
 										: 'new-asset-card'
+								} ${
+									sortedCoinsData[cardTypes[currentIndex]]?.length === 0
+										? 'text-center'
+										: ''
 								}`}
 							>
 								{renderCards(
@@ -327,7 +348,7 @@ const AssetsCards = ({
 										: type === 'losers'
 										? 'losers-asset-card'
 										: 'new-asset-card'
-								}`}
+								} ${sortedCoinsData[type]?.length === 0 ? 'text-center' : ''}`}
 							>
 								{renderCards(
 									sortedCoinsData[type],
