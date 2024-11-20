@@ -16,6 +16,13 @@
 	border: none;
 }
 
+.ant-modal-header,
+.ant-modal-content,
+.ant-modal-confirm-body .ant-modal-confirm-content {
+	background-color: var(--admin_panel_modal_background);
+	color: #ffffff;
+}
+
 .ant-table-thead > tr > th {
 	background-color: var(--admin_panel_table_thead);
 	color: var(--admin_panel_main_font);
