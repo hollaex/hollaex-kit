@@ -22,6 +22,9 @@
 	background-color: var(--admin_panel_modal_background);
 	color: #ffffff;
 }
+.ant-modal-body h2 {
+	color: #ffffff;
+}
 
 .ant-table-thead > tr > th {
 	background-color: var(--admin_panel_table_thead);
