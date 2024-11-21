@@ -731,6 +731,7 @@
 	overflow-y: scroll;
 }
 .otc-Container .ant-input-affix-wrapper .ant-input,
+.otc-Container .ant-input-affix-wrapper,
 .otc-Container .expiry-time-field {
 	background-color: var(--admin_panel_input);
 	color: #ffffff;
@@ -792,7 +793,8 @@
 	cursor: text;
 }
 
-.p2p-admin-confirm-warning-popup-wrapper .ant-modal-body {
+.p2p-admin-confirm-warning-popup-wrapper .ant-modal-body,
+.otc-broker-popup-wrapper .ant-modal-body {
 	background-color: #27339d;
 	color: white;
 }
@@ -816,7 +818,8 @@
 	border: none;
 }
 
-.p2p-admin-confirm-warning-popup-wrapper .ant-modal-close-x {
+.p2p-admin-confirm-warning-popup-wrapper .ant-modal-close-x,
+.otc-broker-popup-wrapper .ant-modal-close-x {
 	color: white;
 }
 

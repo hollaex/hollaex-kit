@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { ReactSVG } from 'react-svg';
@@ -25,6 +25,7 @@ import {
 	CopyOutlined,
 	CheckCircleFilled,
 	ExclamationCircleFilled,
+	ExclamationCircleOutlined,
 } from '@ant-design/icons';
 import isEmpty from 'lodash.isempty';
 
@@ -70,6 +71,12 @@ import {
 	pendingPayOption,
 } from './utils';
 import './Billing.scss';
+import { getFormattedDate } from 'utils/string';
+import {
+	removeAutoPayment,
+	setAutoPaymentDetail,
+} from '../AdminFinancials/action';
+import { requestUsers } from '../Trades/actions';
 
 const { Option } = Select;
 const TabPane = Tabs.TabPane;
@@ -105,13 +112,12 @@ const GeneralContent = ({
 	const balance = user?.balance;
 	const dashToken = localStorage.getItem(DASH_TOKEN_KEY);
 	const isPluginDataAvail = !isEmpty(pluginData);
+	const month = dashExchange.period !== 'year';
 
 	const [modalWidth, setModalWidth] = useState('85rem');
 	const [OpenPlanModal, setOpenPlanModal] = useState(isPluginDataAvail);
 	const [isLoading, setIsLoading] = useState(false);
-	const [isMonthly, setIsMonthly] = useState(
-		dashExchange.period !== 'year' ? true : false
-	);
+	const [isMonthly, setIsMonthly] = useState(month);
 	const [invoiceData, setinvoiceData] = useState([]);
 	const [currentInvoice, setCurrentInvoice] = useState({});
 	const [activateInvoiceData, setActivateInvoiceData] = useState({});
@@ -127,6 +133,18 @@ const GeneralContent = ({
 	const [selectedPendingItem, setSelectedPendingItem] = useState({});
 	const [cryptoPayType, setCryptoPay] = useState('');
 	const [activeKey, setActiveKey] = useState('1');
+	const [isAutoPayment, setIsAutoPayment] = useState(false);
+	const [isConfirmAutoPayment, setIsConfirmAutoPayment] = useState(false);
+	const [isEditAutoPayment, setIsEditAutoPayment] = useState(false);
+	const [isEditDetail, setIsEditDetail] = useState(true);
+	const [isRemovePayment, setIsRemovePayment] = useState(false);
+	const [isConfirmRemovePayment, setIsConfirmRemovePayment] = useState(false);
+	const [userData, setUserData] = useState([]);
+	const [selectedEmailData, setSelectedEmailData] = useState(
+		userData[0]?.email || ''
+	);
+
+	const selectRef = useRef(null);
 
 	const planPriceData = priceData[selectedType];
 
@@ -206,6 +224,30 @@ const GeneralContent = ({
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedType]);
+
+	const getAllUserData = async (params = {}, emailChange = false) => {
+		try {
+			const res = await requestUsers(params);
+			if (res && res.data) {
+				const userData = res.data.map((user) => ({
+					label: user.email,
+					value: user.id,
+				}));
+				setSelectedEmailData(userData);
+				setUserData(res.data);
+			}
+		} catch (error) {
+			console.error('error', error);
+		}
+	};
+
+	const searchUser = (searchText) => {
+		getAllUserData({ search: searchText });
+	};
+
+	const searchUserById = (userId) => {
+		getAllUserData({ id: userId });
+	};
 
 	const getExplorePlugin = async () => {
 		try {
@@ -598,6 +640,81 @@ const GeneralContent = ({
 		setHideBreadcrumb(false);
 	};
 
+	const renderCardDetails = () => {
+		return (
+			<div
+				className="card-wrapper"
+				style={{
+					backgroundImage: `url(${
+						selectedType === 'basic'
+							? STATIC_ICONS['CLOUD_BASIC_BACKGROUND']
+							: selectedType === 'crypto'
+							? STATIC_ICONS['CLOUD_CRYPTO_BACKGROUND']
+							: selectedType === 'fiat'
+							? STATIC_ICONS['CLOUD_FIAT_BACKGROUND']
+							: ''
+					})`,
+				}}
+			>
+				<div
+					className={`d-flex ${selectedType}-content-wrapper cloud-card-details w-100`}
+				>
+					<ReactSVG
+						src={`${
+							selectedType === 'basic'
+								? STATIC_ICONS['CLOUD_PLAN_BASIC']
+								: selectedType === 'crypto'
+								? STATIC_ICONS['CLOUD_PLAN_CRYPTO_PRO']
+								: selectedType === 'fiat'
+								? STATIC_ICONS['CLOUD_PLAN_FIAT_RAMP']
+								: selectedType === 'diy'
+								? STATIC_ICONS['DIY_ICON']
+								: STATIC_ICONS['DIY_FIRE_MAN_ICON']
+						}`}
+						className={
+							selectedType === 'diy' || selectedType === 'boost'
+								? 'diy-background'
+								: 'cloud-background'
+						}
+					/>
+
+					<div className="payment-text">
+						<div className="justify-between">
+							<div className="d-flex">
+								{exchangeCardKey !== 'diy' && (
+									<p className="white-text">Cloud: </p>
+								)}
+								<p
+									className={
+										exchangeCardKey === 'diy' ? 'diy-type' : 'cloud-type'
+									}
+								>
+									{selectedType === 'diy'
+										? 'Do-It-Yourself'
+										: selectedType === 'fiat'
+										? 'Enterprise'
+										: selectedType}
+								</p>
+							</div>
+						</div>
+						<p className={selectedType ? 'basic-plan' : 'crypto-fiat-plan'}>
+							{selectedPlanData[selectedType]?.description}
+						</p>
+					</div>
+				</div>
+			</div>
+		);
+	};
+
+	const onHandleAutoPayment = () => {
+		if (dashExchange?.auto_payment_id) {
+			setIsEditAutoPayment(true);
+		} else {
+			setIsAutoPayment(true);
+		}
+		searchUserById(1);
+	};
+
 	const renderCard = () => {
 		const isPaid =
 			dashExchange.is_paid && moment().isBefore(moment(dashExchange.expiry));
@@ -611,74 +728,34 @@ const GeneralContent = ({
 				) : (
 					<>
 						<div className={`card-design-${selectedType}`} />
+						{renderCardDetails()}
 						<div
-							className="card-wrapper"
-							style={{
-								backgroundImage: `url(${
-									selectedType === 'basic'
-										? STATIC_ICONS['CLOUD_BASIC_BACKGROUND']
-										: selectedType === 'crypto'
-										? STATIC_ICONS['CLOUD_CRYPTO_BACKGROUND']
-										: selectedType === 'fiat'
-										? STATIC_ICONS['CLOUD_FIAT_BACKGROUND']
-										: ''
-								})`,
-							}}
+							className={`button-container billing-button-container ${
+								!isPaid ? 'pay-button' : ''
+							}`}
 						>
-							<div className={`d-flex ${selectedType}-content-wrapper w-100`}>
-								<ReactSVG
-									src={`${
-										selectedType === 'basic'
-											? STATIC_ICONS['CLOUD_PLAN_BASIC']
-											: selectedType === 'crypto'
-											? STATIC_ICONS['CLOUD_PLAN_CRYPTO_PRO']
-											: selectedType === 'fiat'
-											? STATIC_ICONS['CLOUD_PLAN_FIAT_RAMP']
-											: selectedType === 'diy'
-											? STATIC_ICONS['DIY_ICON']
-											: STATIC_ICONS['DIY_FIRE_MAN_ICON']
-									}`}
-									className={
-										selectedType === 'diy' || selectedType === 'boost'
-											? 'diy-background'
-											: 'cloud-background'
-									}
-								/>
-
-								<div className="payment-text">
-									<div className="justify-between">
-										<div className="d-flex">
-											{exchangeCardKey !== 'diy' && (
-												<p className="white-text">Cloud: </p>
-											)}
-											<p
-												className={
-													exchangeCardKey === 'diy' ? 'diy-type' : 'cloud-type'
-												}
-											>
-												{selectedType === 'diy'
-													? 'Do-It-Yourself'
-													: selectedType === 'fiat'
-													? 'Enterprise'
-													: selectedType}
-											</p>
-										</div>
-									</div>
-									<p
-										className={selectedType ? 'basic-plan' : 'crypto-fiat-plan'}
-									>
-										{selectedPlanData[selectedType]?.description}
-									</p>
-								</div>
-							</div>
-						</div>
-						<div className={`button-container ${!isPaid ? 'pay-button' : ''}`}>
 							<Fragment>
-								{isPaid && (
-									<div className="anchor" onClick={handleClickScroll}>
-										View last bill
-									</div>
-								)}
+								<div className="button-wrapper">
+									{isPaid && (
+										<div className="anchor" onClick={handleClickScroll}>
+											View last bill
+										</div>
+									)}
+									<div className="custom-line"></div>
+									{dashExchange?.auto_payment_id ? (
+										<div onClick={() => onHandleAutoPayment()}>
+											<CheckCircleFilled className="check-icon" />{' '}
+											<span className="anchor">Auto Payment Set</span>
+										</div>
+									) : (
+										<div
+											className="anchor"
+											onClick={() => onHandleAutoPayment()}
+										>
+											Auto Payment Bill
+										</div>
+									)}
+								</div>
 								<Button
 									type="primary"
 									onClick={() => handleOpenModal()}
@@ -1234,6 +1311,106 @@ const GeneralContent = ({
 		setSelectedPlugin({});
 	};
 
+	const onAutoPaymentClose = () => {
+		setIsAutoPayment(false);
+		setUserData([]);
+	};
+
+	const onHandleBack = (title) => {
+		if (title === 'auto payment') {
+			setIsAutoPayment(false);
+		} else if (title === 'confirm') {
+			setIsConfirmAutoPayment(false);
+			setIsAutoPayment(true);
+		} else if (title === 'confirm remove') {
+			setIsConfirmRemovePayment(false);
+			setIsEditAutoPayment(true);
+		} else if (title === 'edit') {
+			setIsEditAutoPayment(false);
+		}
+	};
+
+	const onHandleNext = (title) => {
+		if (title === 'auto payment') {
+			setIsConfirmAutoPayment(true);
+			setIsAutoPayment(false);
+		} else if (title === 'edit') {
+			setIsEditAutoPayment(false);
+			if (isEditDetail) {
+				setIsAutoPayment(true);
+			} else {
+				setIsConfirmRemovePayment(true);
+			}
+		} else if (title === 'confirm remove') {
+			setIsConfirmRemovePayment(false);
+			onHandleRemoveAutoPayment();
+		}
+	};
+
+	const onHandleConfirmClose = () => {
+		setIsConfirmAutoPayment(false);
+	};
+
+	const onHandleEditClose = () => {
+		setIsEditAutoPayment(false);
+		setIsEditDetail(true);
+		setIsRemovePayment(false);
+	};
+
+	const onHandleConfirmPayment = async () => {
+		try {
+			const userValue = userData?.length > 0 ? userData[0] : user;
+			await setAutoPaymentDetail({
+				auto_payment_id: userValue?.network_id,
+				exchange_id: dashExchange?.id,
+			});
+			getExchange();
+			message.success(
+				`you've successfully activated the auto payment for your exchange billing`
+			);
+		} catch (error) {
+			console.error('error', error);
+		}
+		setIsConfirmAutoPayment(false);
+		setUserData([]);
+	};
+
+	const onHandleRemoveAutoPayment = async () => {
+		try {
+			await removeAutoPayment({ exchange_id: dashExchange?.id });
+			getExchange();
+			message.success(`You've successfylly removed the automatic bill payment`);
+		} catch (error) {
+			console.error(error);
+		}
+		setIsEditDetail(true);
+		setIsRemovePayment(false);
+	};
+
+	const handleChange = (value) => {
+		if (selectedEmailData) {
+			const filteredEmail = userData?.filter((email) => email?.email === value);
+			searchUserById(filteredEmail[0]?.id);
+		}
+	};
+
+	const usdtPrice =
+		userData?.length > 0
+			? userData[0]?.balance?.usdt_available
+			: user?.balance?.usdt_available;
+
+	const handleEditClick = () => {
+		if (selectRef && selectRef.current && selectRef.current.focus) {
+			selectRef.current.focus();
+		}
+	};
+
+	const onHandleCloseRemovePayment = () => {
+		setIsConfirmRemovePayment(false);
+		setIsEditDetail(true);
+		setIsRemovePayment(false);
+	};
+
 	return (
 		<div className="general-content-wrapper">
 			<div className="d-flex mt-1 ml-3">
@@ -1250,8 +1427,7 @@ const GeneralContent = ({
 						) : (
 							<>
 								<div>
-									Below is current your plan. Get more view details on the
-									available{' '}
+									Below is your current plan. Learn more about
 									{dashExchange.type.toUpperCase() !== 'CLOUD'
 										? `cloud plans.`
 										: null}
@@ -1261,7 +1437,7 @@ const GeneralContent = ({
 										className={`cloud-plans mx-1 }`}
 										onClick={() => onHandleCloudPlans()}
 									>
-										cloud plans.
+										plans here.
 									</div>
 								) : null}
 							</>
@@ -1281,6 +1457,245 @@ const GeneralContent = ({
 			>
 				{hideBreadcrumb === false && renderModelContent()}
 				<Spin spinning={isLoading}>{renderContent()}</Spin>
+			</Modal>
+			<Modal
+				visible={isAutoPayment}
+				className="auto-payment-billing-popup-wrapper"
+				width={450}
+				zIndex={1000}
+				onCancel={() => onAutoPaymentClose()}
+				footer={null}
+			>
+				<div className="auto-payment-billing-popup-container">
+					<div className="title">Automatic Bill Payment</div>
+					<div className="payment-description">
+						Select an account with avaliable USDT balance from which funds will
+						be automatically deducted to cover an exchange-related bills,
+					</div>
+					<div className="account-details">
+						<div>Account to source bill payments from</div>
+						<div className="payment-email-input-wrapper mt-1">
+							<Select
+								ref={(inp) => {
+									selectRef.current = inp;
+								}}
+								className="payment-email-address"
+								value={
+									(userData?.length > 0 && userData[0]?.email) ||
+									(user && user.email)
+								}
+								showSearch
+								placeholder="admin@exchange.com"
+								onSearch={(text) => searchUser(text)}
+								onChange={handleChange}
+								filterOption={(input, option) =>
+									option?.value.toLowerCase().includes(input.toLowerCase())
+								}
+								showAction={['focus', 'click']}
+								getPopupContainer={(trigger) => trigger.parentNode}
+							>
+								{userData?.map((data) => (
+									<Option key={data.id || data.email} value={data.email}>
+										{data?.email}
+									</Option>
+								))}
+							</Select>
+							<span
+								className="ml-2 text-decoration-underline edit-btn"
+								onClick={() => handleEditClick()}
+							>
+								Edit
+							</span>
+						</div>
+					</div>
+					<div className="my-3">
+						Avaliable balance on {userData[0]?.email || userEmail}:
+					</div>
+					<div className="asset-wrapper">
+						<div className="asset-icon">USDT</div>
+						<div className="avaliable-amount">
+							Tether USD: <span className="asset-amount">{usdtPrice}</span>
+						</div>
+					</div>
+					{!usdtPrice > 0 && (
+						<div className="error-field">
+							<ExclamationCircleFilled />
+							<span>
+								There doesn't seem to be any avaliable balance for this coins.
+							</span>
+						</div>
+					)}
+					<div className="warning-description">
+						<ExclamationCircleOutlined className="warning-icon" />
+						<span className="message">
+							Please check if the amount are sufficiently sustainable before
+							proceeding.
+						</span>
+					</div>
+					<div className="auto-payment-popup-button-wrapper">
+						<Button
+							onClick={() => onHandleBack('auto payment')}
+							className="green-btn"
+						>
+							Back
+						</Button>
+						<Button
+							onClick={() => onHandleNext('auto payment')}
+							className={!usdtPrice ? 'green-btn inactive-btn' : 'green-btn'}
+							disabled={!usdtPrice}
+						>
+							Next
+						</Button>
+					</div>
+				</div>
+			</Modal>
+			<Modal
+				visible={isConfirmAutoPayment}
+				className="auto-payment-billing-popup-wrapper confirm-payment-billing-popup-wrapper"
+				width={400}
+				zIndex={1000}
+				onCancel={() => onHandleConfirmClose()}
+				footer={null}
+			>
+				<div className="auto-payment-billing-popup-container confirm-payment-billing-popup-container">
+					<div className="title">Review & confirm auto payment</div>
+					<div className="details-description">
+						Please check the automatic billing payment details below:
+					</div>
+					<div className="cloud-card">
+						<div>Item</div>
+						{renderCardDetails()}
+					</div>
+					<div className="fund-source-details">
+						<div className="payment-title">Fund Source</div>
+						<div className="description-text">Account</div>
+						<div className="description-text">
+							{userData[0]?.email || userEmail}
+						</div>
+						<div className="custom-line"></div>
+						<div className="description-text">usdt: {usdtPrice}</div>
+					</div>
+					<div className="payment-interval">
+						<div className="payment-title">Interval</div>
+						<div className="description-text">
+							{month ? 'Monthly' : 'Yearly'}
+						</div>
+					</div>
+					<div className="next-payment-date">
+						<div className="payment-title">Date of next payment</div>
+						<div className="description-text">
+							{getFormattedDate(dashExchange.expiry)}
+						</div>
+					</div>
+					<div className="payment-amount">
+						<div className="payment-title">Amount to pay</div>
+						<div className="description-text">
+							{planPriceData && planPriceData[month ? 'month' : 'year']?.price}{' '}
+							USDT
+						</div>
+					</div>
+					<div className="auto-payment-popup-button-wrapper">
+						<Button
+							onClick={() => onHandleBack('confirm')}
+							className="green-btn"
+						>
+							Back
+						</Button>
+						<Button
+							onClick={() => onHandleConfirmPayment()}
+							className="green-btn"
+						>
+							Confirm
+						</Button>
+					</div>
+				</div>
+			</Modal>
+			<Modal
+				visible={isEditAutoPayment}
+				className="auto-payment-billing-popup-wrapper edit-payment-billing-popup-wrapper"
+				width={450}
+				zIndex={1000}
+				onCancel={() => onHandleEditClose()}
+				footer={null}
+			>
+				<div className="auto-payment-billing-popup-container edit-payment-popup-container">
+					<div className="title">Edit Automatic bill payment</div>
+					<div className="mt-3">
+						<div className="input-field">
+							<Input
+								type="radio"
+								id="change source"
+								name="automatic billing"
+								checked={isEditDetail}
+								onChange={() => {
+									setIsEditDetail(!isEditDetail);
+									setIsRemovePayment(false);
+								}}
+							/>
+							<label htmlFor="change source">Change source of funds</label>
+						</div>
+						<div className="input-field">
+							<Input
+								type="radio"
+								id="remove billing"
+								name="automatic billing"
+								checked={isRemovePayment}
+								onChange={() => {
+									setIsRemovePayment(!isRemovePayment);
+									setIsEditDetail(false);
+								}}
+							/>
+							<label htmlFor="remove billing">
+								Stop and remove automated billing
+							</label>
+						</div>
+					</div>
+					<div className="auto-payment-popup-button-wrapper">
+						<Button
+							onClick={() => onHandleBack('edit')}
+							className="green-btn"
+							disabled={!isEditDetail}
+						>
+							Back
+						</Button>
+						<Button onClick={() => onHandleNext('edit')} className="green-btn">
+							Next
+						</Button>
+					</div>
+				</div>
+			</Modal>
+			<Modal
+				visible={isConfirmRemovePayment}
+				className="auto-payment-billing-popup-wrapper confirm-remove-payment-popup-wrapper"
+				width={450}
+				zIndex={1000}
+				onCancel={() => onHandleCloseRemovePayment()}
+				footer={null}
+			>
+				<div className="auto-payment-billing-popup-container">
+					<div className="title">Stop and remove Auto pay</div>
+					<div className="description-text mt-3">
+						You can resume auto payment later at anytime.
+					</div>
+					<div className="description-text mt-2">
+						Are you sure you want to stop and remove automatic payments now for
+						billing?
+					</div>
+					<div className="auto-payment-popup-button-wrapper">
+						<Button
+							onClick={() => onHandleBack('confirm remove')}
+							className="green-btn"
+						>
+							Back
+						</Button>
+						<Button
+							onClick={() => onHandleNext('confirm remove')}
+							className="green-btn"
+						>
+							Confirm
+						</Button>
+					</div>
+				</div>
 			</Modal>
 
 			<Tabs
