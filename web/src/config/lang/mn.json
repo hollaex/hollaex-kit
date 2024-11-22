@@ -1619,6 +1619,33 @@
         "HERE": "энд"
     },
     "RESET_LAYOUT": "Байршлыг дахин тохируулах",
+    "WALLET_BALANCE_LOADING": "Balance loading...",
+	"LOADING": "Loading...",
+	"CONNECT_VIA_DESKTOP": {
+		"TITLE": "Connect via desktop",
+		"SUBTITLE": "DeFi staking through your mobile devices aren't supported at this time.",
+		"TEXT": "To connect your wallet please use a desktop/laptop computer."
+	},
+	"ORDER_HISTORY_CLOSED": "Closed",
+	"FIAT": {
+		"UNVERIFIED": {
+			"TITLE": "Complete verification",
+			"TEXT": "In order to make a {0} you are required to complete your verification which includes verification of your bank details. Please click the proceed button below.",
+			"DEPOSIT": "deposit",
+			"WITHDRAWAL": "withdrawal"
+		},
+		"REVIEW_DEPOSIT": {
+			"TITLE": "Check and confirm deposit details",
+			"SUBTITLE": "Please check the deposit details below to make sure everything is correct.",
+			"FORMAT": "{0} {1}",
+			"AMOUNT": "Amount to deposit",
+			"FEE": "Deposit fee",
+			"TRANSACTION_ID": "Transaction ID",
+			"NOTE": "To avoid delays make sure that your deposit's amount, note and the transaction ID match with the details above. If issues shall arise please contact support.",
+			"BACK": "Back",
+			"PROCEED": "Proceed"
+		}
+	},
     "QUOTE_CONFIRMATION_EXPIRY_MSG": "Үнийн санал {0} {1}-д дуусна",
     "QUOTE_CONFIRMATION_EXPIRED_MSG_TEXT_1": "Үнийн хугацаа дууссан.",
     "QUOTE_CONFIRMATION_EXPIRED_MSG_TEXT_2": "Шинэ үнийн санал авахын тулд буцаж очно уу.",
@@ -1628,6 +1655,7 @@
         "MSG_3": "Энэ хөрөнгийн үнэ тодорхойгүй, баталгаагүй гэдгийг ойлгож байгаагаа баталгаажуулахын тулд доорх нүдийг шалгана уу.",
         "UNDERSTAND_RISK_MSG": "Тийм ээ, би эрсдэлийг ойлгож байна"
     },
+    
     "DUST": {
         "TITLE": "Бага дүн хөрвүүлэгч",
         "LINK": "Бага дүн хөрвүүлэгч",
