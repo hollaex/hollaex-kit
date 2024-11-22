@@ -35,6 +35,9 @@ const P2P = ({
 	const [refresh, setRefresh] = useState(false);
 	const [selectedDealEdit, setSelectedDealEdit] = useState();
 	const [selectedProfile, setSelectedProfile] = useState();
+	const [displayUserFeedback, setDisplayUserFeedback] = useState(false);
+	const [userFeedback, setUserFeedback] = useState([]);
+	const [userProfile, setUserProfile] = useState();
 
 	useEffect(() => {
 		const arr = window.location.pathname.split('/');
@@ -102,6 +105,14 @@ const P2P = ({
 					setSelectedTransaction={setSelectedTransaction}
 					selectedTransaction={selectedTransaction}
 					changeProfileTab={changeProfileTab}
+					displayUserFeedback={displayUserFeedback}
+					setDisplayUserFeedback={setDisplayUserFeedback}
+					userProfile={userProfile}
+					setUserProfile={setUserProfile}
+					userFeedback={userFeedback}
+					setUserFeedback={setUserFeedback}
+					selectedProfile={selectedProfile}
+					setSelectedProfile={setSelectedProfile}
 				/>
 			)}
 			{!displayOrder && (
@@ -151,7 +162,15 @@ const P2P = ({
 										setDisplayOrder={setDisplayOrder}
 										setSelectedTransaction={setSelectedTransaction}
 										refresh={refresh}
-										changeProfileTab={changeProfileTab}
+										// changeProfileTab={changeProfileTab}
+										displayUserFeedback={displayUserFeedback}
+										setDisplayUserFeedback={setDisplayUserFeedback}
+										userFeedback={userFeedback}
+										setUserFeedback={setUserFeedback}
+										selectedProfile={selectedProfile}
+										setSelectedProfile={setSelectedProfile}
+										userProfile={userProfile}
+										setUserProfile={setUserProfile}
 										tab={tab}
 									/>
 								</TabPane>
