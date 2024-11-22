@@ -38,6 +38,7 @@ const MobileBarMoreOptions = ({
 	pinnedAsset,
 	getMarkets,
 	quickTrade,
+	getRemoteRoutes,
 }) => {
 	const [search, setSearch] = useState('');
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -274,10 +275,8 @@ const MobileBarMoreOptions = ({
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.SECURITY'],
 			],
 		},
-		{
-			icon_id: 'BUY_CRYPTO_OPTION',
-			iconText: 'MORE_OPTIONS_LABEL.ICONS.BUY_CRYPTO',
-			path: '/buy-crypto',
+		...getRemoteRoutes?.map((route, index) => ({
+			...route,
 			isDisplay: true,
 			searchContent: [
 				STRINGS['MARKET_OPTIONS.CARD'],
@@ -293,7 +292,7 @@ const MobileBarMoreOptions = ({
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.BUY_COIN'],
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.BUY_TOKEN'],
 			],
-		},
+		})),
 		{
 			icon_id: 'DEFI_STAKE_OPTION_ICON',
 			iconText: 'MORE_OPTIONS_LABEL.ICONS.DEFI_STAKE',
@@ -731,7 +730,9 @@ const MobileBarMoreOptions = ({
 
 	const filterOptions = (options) => {
 		return options?.filter((option) => {
-			const iconTextMatch = (STRINGS[option?.iconText] || '')
+			const iconTextMatch = (
+				STRINGS[option?.iconText ? option?.iconText : option?.string_id] || ''
+			)
 				?.toLowerCase()
 				.includes(search?.toLowerCase());
 			const searchContentMatch = option?.searchContent?.some((content) =>
@@ -753,7 +754,12 @@ const MobileBarMoreOptions = ({
 									<div
 										key={inx}
 										className="icon-field"
-										onClick={() => onHandleRoute(data?.iconText, data?.path)}
+										onClick={() =>
+											onHandleRoute(
+												data?.iconText ? data?.iconText : data?.string_id,
+												data?.path
+											)
+										}
 									>
 										{fieldHasCoinIcon?.includes(data?.iconText) ? (
 											<div className={isValidCoin ? 'image-wrapper' : ''}>
@@ -769,13 +775,29 @@ const MobileBarMoreOptions = ({
 										) : (
 											<Image
 												iconId={data?.icon_id}
-												icon={icons[data?.icon_id]}
+												icon={
+													icons[
+														data?.string_id === 'RC_BANXA_ACCESS'
+															? 'BUY_CRYPTO_OPTION'
+															: data?.string_id === 'RC_ONRAMPER_MENU_ITEM'
+															? 'ONRAMPER_ICON'
+															: data?.icon_id
+													]
+												}
 												wrapperClassName="icon-logo"
 											/>
 										)}
 										<div className="option-title">
-											<EditWrapper stringId={data?.iconText}>
-												{STRINGS[data?.iconText]}
+											<EditWrapper
+												stringId={
+													data?.iconText ? data?.iconText : data?.string_id
+												}
+											>
+												{
+													STRINGS[
+														data?.iconText ? data?.iconText : data?.string_id
+													]
+												}
 											</EditWrapper>
 										</div>
 									</div>
@@ -919,6 +941,7 @@ const mapStateToProps = (store) => ({
 	pinnedAsset: store.app.pinned_assets,
 	getMarkets: MarketsSelector(store),
 	quickTrade: store.app.quicktrade,
+	getRemoteRoutes: store.app.remoteRoutes,
 });
 
 const mapDispatchToProps = (dispatch) => ({
