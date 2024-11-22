@@ -185,3 +185,21 @@ export const deleteTransactionLimit = (values) => {
 		data: values,
 	});
 };
+
+export const setAutoPaymentDetail = (values) => {
+	const options = {
+		method: 'POST',
+		body: JSON.stringify(values),
+	};
+
+	return requestDashAuthenticated('/dash/user/auto-payment', options);
+};
+
+export const removeAutoPayment = (values) => {
+	const options = {
+		method: 'DELETE',
+		body: JSON.stringify(values),
+	};
+
+	return requestDashAuthenticated('/dash/user/auto-payment', options);
+};

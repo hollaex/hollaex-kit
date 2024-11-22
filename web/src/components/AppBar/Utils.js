@@ -351,3 +351,37 @@ export const ReconnectPopup = ({ isDisplayPopup, onHandleClose }) => {
 		</Dialog>
 	);
 };
+
+export const renderConfirmSignout = (
+	isVisible,
+	onHandleclose,
+	onHandlelogout
+) => {
+	return (
+		<Dialog
+			isOpen={isVisible}
+			className="signout-confirmation-popup-wrapper"
+			onCloseDialog={() => onHandleclose()}
+		>
+			<div className="signout-confirmation-popup-description">
+				<span className="signout-title">
+					<EditWrapper stringId="LOGOUT_CONFIRM_TEXT">
+						{STRINGS['LOGOUT_CONFIRM_TEXT']}
+					</EditWrapper>
+				</span>
+				<div className="signout-confirmation-button-wrapper">
+					<Button
+						className="cancel-btn"
+						label={STRINGS['CANCEL']}
+						onClick={() => onHandleclose()}
+					></Button>
+					<Button
+						className="confirm-btn"
+						label={STRINGS['CONFIRM_TEXT']}
+						onClick={() => onHandlelogout()}
+					></Button>
+				</div>
+			</div>
+		</Dialog>
+	);
+};
