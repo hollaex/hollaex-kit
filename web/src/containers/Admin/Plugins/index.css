@@ -310,6 +310,7 @@
 }
 .admin-plugin-modal-wrapper h2 {
 	font-size: 19px;
+	color: #ffffff;
 }
 .admin-plugin-modal-wrapper .add-btn {
 	background-color: #00781b;
@@ -379,6 +380,12 @@
 }
 .admin-plugin-modal-wrapper .url-path {
 	font-size: 13px;
+}
+.ant-modal-header,
+.ant-modal-content,
+.ant-modal-confirm-body .ant-modal-confirm-content {
+	background-color: var(--admin_panel_modal_background);
+	color: #ffffff;
 }
 .admin-plugin-modal-wrapper .plugins-icon,
 .config-wrapper .plugins-icon {
