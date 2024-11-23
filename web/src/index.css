@@ -645,6 +645,16 @@ table th {
   .ant-notification-bottomLeft .p2p-chat-notification-wrapper {
     width: 100% !important; }
 
+.signout-confirmation-popup-wrapper .ReactModal__Content {
+  width: 30rem; }
+  .signout-confirmation-popup-wrapper .ReactModal__Content .signout-confirmation-popup-description .signout-title .edit-wrapper__container {
+    font-size: 16px; }
+  .signout-confirmation-popup-wrapper .ReactModal__Content .signout-confirmation-popup-description .signout-confirmation-button-wrapper {
+    margin-top: 5%;
+    display: flex;
+    justify-content: space-between;
+    gap: 10%; }
+
 .layout-mobile .footer-bar-more-options-container {
   display: flex;
   flex-direction: column;
