@@ -230,13 +230,13 @@ class UserContent extends Component {
 		deleteUser(postValues)
 			.then((res) => {
 				refreshData({ ...postValues, activated: false });
-				this.setState({ showDeleteModal: false });
 			})
 			.catch((err) => {
 				const _error =
 					err.data && err.data.message ? err.data.message : err.message;
 				message.error(_error);
 			});
+		this.setState({ showDeleteModal: false });
 	};
 
 	openVerifyEmailModal = () => {
@@ -505,7 +505,7 @@ class UserContent extends Component {
 				/>
 				<DeletionConfirmation
 					visible={showDeleteModal}
-					onCancel={() => this.setState({ showRecoverModal: false })}
+					onCancel={() => this.setState({ showDeleteModal: false })}
 					onConfirm={this.handleDeleteUser}
 					userData={userInformation}
 				/>

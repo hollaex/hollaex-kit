@@ -400,6 +400,27 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 	}
 }
 
+.signout-confirmation-popup-wrapper {
+	.ReactModal__Content {
+		width: 30rem;
+
+		.signout-confirmation-popup-description {
+			.signout-title {
+				.edit-wrapper__container {
+					font-size: 16px;
+				}
+			}
+
+			.signout-confirmation-button-wrapper {
+				margin-top: 5%;
+				display: flex;
+				justify-content: space-between;
+				gap: 10%;
+			}
+		}
+	}
+}
+
 .layout-mobile {
 	.footer-bar-more-options-container {
 		display: flex;
