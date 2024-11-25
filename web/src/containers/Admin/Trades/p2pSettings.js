@@ -42,6 +42,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features, constants }) => {
 	const [tiers, setTiers] = useState();
 	const [merchantTier, setMerchantTier] = useState();
 	const [userTier, setUserTier] = useState();
+	const [transactionDuration, setTransactionDuration] = useState(30);
 	const [paymentMethod, setPaymentMethod] = useState({
 		system_name: null,
 		fields: {},
@@ -91,6 +92,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features, constants }) => {
 	useEffect(() => {
 		setEnable(p2p_config?.enable);
 		setSide(p2p_config?.side);
+		setTransactionDuration(p2p_config?.transaction_duration || 30);
 		setDigitalCurrencies(p2p_config?.digital_currencies || []);
 		setFiatCurrencies(p2p_config?.fiat_currencies || []);
 		setMerchantTier(p2p_config?.starting_merchant_tier);
@@ -257,6 +259,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features, constants }) => {
 													merchant_fee: merchantFee,
 													user_fee: userFee,
 													source_account: sourceAccount,
+													transaction_duration: transactionDuration,
 												},
 											},
 										});
@@ -271,6 +274,9 @@ const P2PSettings = ({ coins, pairs, p2p_config, features, constants }) => {
 											setSelectedPaymentMethods(result?.bank_payment_methods);
 											setMerchantFee(result?.merchant_fee);
 											setUserFee(result?.user_fee);
+											setTransactionDuration(
+												result?.transaction_duration || 30
+											);
 											setSourceAccount(result?.source_account);
 											setP2pConfig(result);
 										});
@@ -371,6 +377,16 @@ const P2PSettings = ({ coins, pairs, p2p_config, features, constants }) => {
 					</div>
 					<div style={{ marginBottom: 10 }}>
 						{selectedEmailData?.label || '-'}
+					</div>
+					<div style={{ borderBottom: '1px solid grey', width: 600 }}></div>
+				</div>
+				<div style={{ marginBottom: 10, marginTop: 10 }}>
+					<div style={{ fontSize: 20, marginBottom: 10, marginTop: 10 }}>
+						Transaction Duration:
+					</div>
+					<div style={{ marginBottom: 10 }}>
+						Duration for transaction expiration:{' '}
+						{p2pConfig?.transaction_duration || 30} Minutes
 					</div>
 					<div style={{ borderBottom: '1px solid grey', width: 600 }}></div>
 				</div>
@@ -491,6 +507,28 @@ const P2PSettings = ({ coins, pairs, p2p_config, features, constants }) => {
 												</Checkbox>
 											</div>
 										</Select.Option>
+									);
+								})}
+							</Select>
+
+							<div style={{ color: 'white', marginTop: 15 }}>
+								Transaction Duration
+							</div>
+							<div style={{ color: 'white' }}>
+								Select the max duration for transaction expiration(in minutes)
+							</div>
+							<Select
+								showSearch={true}
+								placeholder="Select duration"
+								style={{ width: 100 }}
+								value={transactionDuration}
+								onChange={(e) => {
+									setTransactionDuration(e);
+								}}
+							>
+								{[10, 20, 30, 40, 50, 60].map((duration) => {
+									return (
+										<Select.Option value={duration}>{duration}</Select.Option>
 									);
 								})}
 							</Select>
@@ -913,6 +951,32 @@ const P2PSettings = ({ coins, pairs, p2p_config, features, constants }) => {
 									style={{ display: 'flex', justifyContent: 'space-between' }}
 								>
 									<div>
+										<div>Duration for transaction expiration </div>
+										<div>{transactionDuration} Minutes</div>
+									</div>
+									<div
+										onClick={() => {
+											setStep(0);
+										}}
+										style={{ cursor: 'pointer' }}
+									>
+										EDIT
+									</div>
+								</div>
+							</div>
+
+							<div
+								style={{
+									width: '90%',
+									border: '1px solid white',
+									marginBottom: 20,
+									padding: 20,
+								}}
+							>
+								<div
+									style={{ display: 'flex', justifyContent: 'space-between' }}
+								>
+									<div>
 										<div>Fiat currencies allowed for trading: </div>
 										<div>{fiatCurrencies.join(', ')}</div>
 									</div>
@@ -1149,6 +1213,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features, constants }) => {
 													merchant_fee: merchantFee,
 													user_fee: userFee,
 													source_account: sourceAccount,
+													transaction_duration: transactionDuration,
 												},
 											},
 										});
@@ -1163,6 +1228,9 @@ const P2PSettings = ({ coins, pairs, p2p_config, features, constants }) => {
 											setSelectedPaymentMethods(result?.bank_payment_methods);
 											setMerchantFee(result?.merchant_fee);
 											setUserFee(result?.user_fee);
+											setTransactionDuration(
+												result?.transaction_duration || 30
+											);
 											setSourceAccount(result?.source_account);
 											setP2pConfig(result);
 										});
