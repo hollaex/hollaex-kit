@@ -138,6 +138,7 @@ const INITIAL_STATE = {
 	affiliation: {},
 	is_hap: false,
 	meta: {},
+	network_id: null,
 	...USER_DATA,
 };
 
@@ -169,6 +170,7 @@ export default function reducer(state = INITIAL_STATE, action) {
 				dob,
 				nationality,
 				meta,
+				network_id,
 			} = action.payload;
 			const userData = extractuserData(action.payload);
 			const fees = action.payload.fees || state.fees;
@@ -207,6 +209,7 @@ export default function reducer(state = INITIAL_STATE, action) {
 				dob,
 				gender,
 				meta,
+				network_id,
 				nationality,
 			};
 		}

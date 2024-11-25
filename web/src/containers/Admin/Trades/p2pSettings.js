@@ -105,7 +105,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features, constants }) => {
 			getAllUserData({ id: p2p_config?.source_account }).then((res) => {
 				let emailData = {};
 				res &&
-					res.forEach((item) => {
+					res?.forEach((item) => {
 						if (item.value === p2p_config?.source_account) {
 							emailData = item;
 						}

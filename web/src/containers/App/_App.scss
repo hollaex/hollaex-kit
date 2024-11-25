@@ -354,7 +354,7 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 	border-top: 2px solid $colors-notifications-blue;
 	box-shadow: 4px 4px 15px $app-bar-background-color;
 	padding: 10px 10px !important;
-	width: 100%;
+	width: 27rem;
 
 	.ant-notification-notice-description,
 	.ant-notification-notice-message,
@@ -366,6 +366,17 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 	.ant-notification-notice-description {
 		margin-left: 40px;
 		font-size: 13px;
+		max-width: 85%;
+		.sender-name {
+			color: $chat-own-message--color;
+		}
+		.chat-message {
+			color: $chat-message-color;
+			display: inline-block;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
 	}
 	.ant-notification-notice-close {
 		top: 10px;
@@ -384,6 +395,30 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 	margin-left: 0px !important;
 	width: 100% !important;
 	max-width: unset !important;
+	.p2p-chat-notification-wrapper {
+		width: 100% !important;
+	}
+}
+
+.signout-confirmation-popup-wrapper {
+	.ReactModal__Content {
+		width: 30rem;
+
+		.signout-confirmation-popup-description {
+			.signout-title {
+				.edit-wrapper__container {
+					font-size: 16px;
+				}
+			}
+
+			.signout-confirmation-button-wrapper {
+				margin-top: 5%;
+				display: flex;
+				justify-content: space-between;
+				gap: 10%;
+			}
+		}
+	}
 }
 
 .layout-mobile {

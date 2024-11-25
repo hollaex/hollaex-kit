@@ -13,6 +13,7 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import { Image, EditWrapper } from 'components';
 import { isLoggedIn, removeToken } from 'utils/token';
 import { setSecurityTab, setSettingsTab } from 'actions/appActions';
+import { renderConfirmSignout } from './Utils';
 
 const AccountTab = ({
 	config_level,
@@ -59,6 +60,7 @@ const AccountTab = ({
 				setIsIconActive(!isIconActive);
 				setIsToolTipVisible(!isToolTipVisible);
 			}}
+			mouseEnterDelay={0}
 		>
 			<div
 				className={
@@ -104,6 +106,7 @@ const AccountList = ({
 }) => {
 	const [isHelpResources, setIsHelpResources] = useState(false);
 	const [currPath, setCurrpath] = useState('/summary');
+	const [isLogout, setIsLogout] = useState(false);
 
 	useEffect(() => {
 		const getCurrPage = window.location.pathname;
@@ -185,7 +188,7 @@ const AccountList = ({
 	const onHandleRoutes = (value = '/', title = '') => {
 		const selectedTab = {
 			'LOGIN.HELP': () => setIsHelpResources(true),
-			'ACCOUNTS.TAB_SIGNOUT': () => removeToken(),
+			'ACCOUNTS.TAB_SIGNOUT': () => setIsLogout(true),
 			'ACCOUNTS.TAB_SECURITY': () => setSecurityTab(0),
 			'MORE_OPTIONS_LABEL.ICONS.API': () => setSecurityTab(2),
 			'USER_SETTINGS.TITLE_LANGUAGE': () => setSettingsTab(2),
@@ -216,6 +219,16 @@ const AccountList = ({
 		? Icons[`LEVEL_ACCOUNT_ICON_${verification_level}`]
 		: Icons['LEVEL_ACCOUNT_ICON_4'];
 
+	const onHandlelogout = () => {
+		setIsLogout(false);
+		removeToken();
+		return browserHistory?.push('/login');
+	};
+
+	const onHandleclose = () => {
+		setIsLogout(false);
+	};
+
 	return (
 		<div className="navigation-dropdown-container">
 			{isHelpResources && renderHelpResource()}
@@ -237,6 +250,8 @@ const AccountList = ({
 				</span>
 				<span className="secondary-text">({user?.email})</span>
 			</div>
+			{isLogout &&
+				renderConfirmSignout(isLogout, onHandleclose, onHandlelogout)}
 			{accountOptions?.map((options) => {
 				return (
 					options?.isDisplay && (

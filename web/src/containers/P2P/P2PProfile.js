@@ -114,6 +114,11 @@ const P2PProfile = ({
 			});
 		}
 	};
+
+	const isPaymentMethod = myMethods?.filter((method) => {
+		return method?.name === paymentMethod?.system_name;
+	});
+
 	return (
 		<div
 			className={classnames(
@@ -726,50 +731,60 @@ const P2PProfile = ({
 
 							<Button
 								onClick={async () => {
-									const payload = {
-										system_name: paymentMethod.system_name,
-										fields: customFields,
-									};
-									paymentMethods.push(payload);
+									if (isPaymentMethod?.length === 0) {
+										const payload = {
+											system_name: paymentMethod.system_name,
+											fields: customFields,
+										};
+										paymentMethods.push(payload);
 
-									if (!payload.system_name) {
-										message.error(STRINGS['P2P.INPUT_METHOD_NAME_TEXT']);
-										return;
-									}
-
-									let hasValidation = true;
-									payload.fields?.forEach((field) => {
-										if (!field.name || !field.value) {
-											message.error(STRINGS['P2P.FIELD_VALIDATION_TEXT']);
-											hasValidation = false;
+										if (!payload.system_name) {
+											message.error(STRINGS['P2P.INPUT_METHOD_NAME_TEXT']);
+											return;
 										}
-									});
-									if (!hasValidation) return;
-									await createP2PPaymentMethod({
-										name: payload.system_name,
-										details: payload,
-										is_p2p: true,
-									});
 
-									message.success(STRINGS['P2P.PAYMENT_METHOD_CREATED']);
+										let hasValidation = true;
+										payload.fields?.forEach((field) => {
+											if (!field.name || !field.value) {
+												message.error(STRINGS['P2P.FIELD_VALIDATION_TEXT']);
+												hasValidation = false;
+											}
+										});
+										if (!hasValidation) return;
+										await createP2PPaymentMethod({
+											name: payload.system_name,
+											details: payload,
+											is_p2p: true,
+										});
 
-									fetchP2PPaymentMethods({ is_p2p: true })
-										.then((res) => {
-											setMyMethods(res.data);
-										})
-										.catch((err) => err);
+										message.success(STRINGS['P2P.PAYMENT_METHOD_CREATED']);
 
-									setPaymentMethods(paymentMethods);
-									setDisplayNewPayment(false);
-									setDefaultPaymentMethod();
-									setCustomFields([
-										{
-											id: 1,
-											name: null,
-											required: true,
-										},
-									]);
-									setRefresh(!refresh);
+										fetchP2PPaymentMethods({ is_p2p: true })
+											.then((res) => {
+												setMyMethods(res.data);
+											})
+											.catch((err) => err);
+
+										setPaymentMethods(paymentMethods);
+										setDisplayNewPayment(false);
+										setDefaultPaymentMethod();
+										setCustomFields([
+											{
+												id: 1,
+												name: null,
+												required: true,
+											},
+										]);
+										setRefresh(!refresh);
+									} else {
+										message.error(
+											STRINGS.formatString(
+												STRINGS['P2P.EXIST_PAYMENT_METHOD_DESC'],
+												paymentMethod?.system_name
+											)
+										);
+										setDisplayNewPayment(false);
+									}
 								}}
 								className="purpleButtonP2P add-btn"
 								type="default"

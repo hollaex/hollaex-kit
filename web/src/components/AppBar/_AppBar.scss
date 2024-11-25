@@ -1153,12 +1153,14 @@ $app-menu-width: calc(100vw - 40rem);
 }
 .account-tab-options-tooltip {
 	font-size: 12px;
+	z-index: 2;
 }
 .navigation-bar-wrapper {
 	max-width: 100% !important;
 	background-color: transparent;
 	top: 35px !important;
 	bottom: 25px;
+	z-index: 2;
 	.app-bar-account-notification {
 		height: $app-menu-notification-size;
 		width: $app-menu-notification-size;

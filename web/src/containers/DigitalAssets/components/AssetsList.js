@@ -15,6 +15,7 @@ import { EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import AssetsRow from './AssetsRow';
+import { Spin } from 'antd';
 
 const AssetsList = ({
 	coinsListData,
@@ -246,18 +247,26 @@ const AssetsList = ({
 						</tr>
 					</thead>
 					<tbody id="market-list_tableBody">
-						{getSortedList().map((coinData, index) => (
-							<AssetsRow
-								index={index}
-								key={coinData.code}
-								coinData={coinData}
-								loading={loading}
-								quicktrade={quicktrade}
-								pairs={pairs}
-								icons={icons}
-								selectedButton={selectedButton}
-							/>
-						))}
+						{getSortedList()?.length >= 1 ? (
+							getSortedList()?.map((coinData, index) => (
+								<AssetsRow
+									index={index}
+									key={coinData.code}
+									coinData={coinData}
+									loading={loading}
+									quicktrade={quicktrade}
+									pairs={pairs}
+									icons={icons}
+									selectedButton={selectedButton}
+								/>
+							))
+						) : (
+							<tr>
+								<td colSpan="7" className="text-center py-4">
+									<Spin size="large" />
+								</td>
+							</tr>
+						)}
 					</tbody>
 				</table>
 			</div>

@@ -8,6 +8,7 @@ import debounce from 'lodash.debounce';
 import { updateEmailStrings } from '../General/action';
 import { STATIC_ICONS } from 'config/icons';
 import FormButton from 'components/FormButton/Button';
+import './CustomizeEmailForm.scss';
 
 const { TextArea } = Input;
 const { Option } = Select;
