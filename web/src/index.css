@@ -708,6 +708,8 @@ table th {
             fill: var(--labels_important-active-labels-text-graphics); }
         .layout-mobile .footer-bar-more-options-container .options-container .hot-options-container .options-field .image-wrapper {
           margin-left: 15%; }
+        .layout-mobile .footer-bar-more-options-container .options-container .hot-options-container .options-field .plugins-icon svg path {
+          fill: var(--labels_important-active-labels-text-graphics); }
         .layout-mobile .footer-bar-more-options-container .options-container .hot-options-container .options-field .icon-field {
           padding: 5%;
           text-align: center; }
@@ -14110,6 +14112,11 @@ table th {
     gap: 2%; }
     .app_bar .trade-navbar-wrapper .custom-select-input-style.appbar.ant-select {
       margin: 0 !important; }
+    .app_bar .trade-navbar-wrapper .active-menu {
+      color: var(--calculated_base_top-bar-navigation_text);
+      border-top: 4px solid var(--specials_buttons-links-and-highlights);
+      height: 100%;
+      opacity: 1; }
   .app_bar .app_bar-quicktrade-container .toggle_button-wrapper .toggle-content .toggle-action_button.left {
     opacity: 1 !important; }
   .app_bar .app_bar-quicktrade {
@@ -14409,6 +14416,9 @@ table th {
     border-radius: 3px;
     cursor: pointer;
     font-size: 11px; }
+  .app_bar .app-bar-search-icon {
+    padding: 2%;
+    font-size: 16px; }
 
 .capitalize {
   text-transform: capitalize; }
@@ -15109,6 +15119,123 @@ table th {
 .tools-button .selector-trigger.app_bar-pair-tab.tools {
   min-width: 10rem !important;
   max-width: 10rem !important; }
+
+.dynamic-search-description {
+  font-size: 12px; }
+
+.desktop-search-wrapper .search-description-container {
+  margin: 3% 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center; }
+  .desktop-search-wrapper .search-description-container .search-description .edit-wrapper__container {
+    font-size: 24px; }
+  .desktop-search-wrapper .search-description-container .dynamic-search-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column; }
+    .desktop-search-wrapper .search-description-container .dynamic-search-container .desktop-search-more-option {
+      width: 90%;
+      display: flex;
+      flex-direction: column;
+      align-items: center; }
+      .desktop-search-wrapper .search-description-container .dynamic-search-container .desktop-search-more-option .search-field {
+        width: 90%;
+        margin-top: 2%;
+        display: flex;
+        align-items: center;
+        justify-content: center; }
+        .desktop-search-wrapper .search-description-container .dynamic-search-container .desktop-search-more-option .search-field .ant-input-affix-wrapper {
+          width: 80%;
+          height: 4rem;
+          background-color: transparent;
+          border: 1px solid var(--specials_buttons-links-and-highlights); }
+        .desktop-search-wrapper .search-description-container .dynamic-search-container .desktop-search-more-option .search-field .ant-input {
+          border: none;
+          color: var(--labels_important-active-labels-text-graphics);
+          background-color: transparent;
+          padding: 3%; }
+        .desktop-search-wrapper .search-description-container .dynamic-search-container .desktop-search-more-option .search-field .ant-input:hover {
+          border: none; }
+        .desktop-search-wrapper .search-description-container .dynamic-search-container .desktop-search-more-option .search-field .ant-input-affix-wrapper:hover {
+          border: 2px solid var(--specials_buttons-links-and-highlights);
+          box-shadow: none; }
+        .desktop-search-wrapper .search-description-container .dynamic-search-container .desktop-search-more-option .search-field .ant-input-suffix svg {
+          font-size: 20px; }
+          .desktop-search-wrapper .search-description-container .dynamic-search-container .desktop-search-more-option .search-field .ant-input-suffix svg path {
+            fill: var(--labels_secondary-inactive-label-text-graphics); }
+        .desktop-search-wrapper .search-description-container .dynamic-search-container .desktop-search-more-option .search-field .search-icon-container {
+          margin-left: 1%;
+          background-color: var(--specials_buttons-links-and-highlights);
+          padding: 1.5%;
+          border-radius: 5px; }
+          .desktop-search-wrapper .search-description-container .dynamic-search-container .desktop-search-more-option .search-field .search-icon-container .search-icon {
+            font-size: 30px; }
+            .desktop-search-wrapper .search-description-container .dynamic-search-container .desktop-search-more-option .search-field .search-icon-container .search-icon svg path {
+              fill: #ffffff; }
+    .desktop-search-wrapper .search-description-container .dynamic-search-container .options-container {
+      margin: 3% 0;
+      width: 100%; }
+      .desktop-search-wrapper .search-description-container .dynamic-search-container .options-container .popular-option-container .options-field {
+        width: 60% !important; }
+      .desktop-search-wrapper .search-description-container .dynamic-search-container .options-container .other-option-container {
+        margin-top: 5%; }
+      .desktop-search-wrapper .search-description-container .dynamic-search-container .options-container .hot-options-container {
+        display: flex;
+        align-items: center;
+        flex-direction: column; }
+        .desktop-search-wrapper .search-description-container .dynamic-search-container .options-container .hot-options-container .hot-function-title {
+          font-size: 16px; }
+        .desktop-search-wrapper .search-description-container .dynamic-search-container .options-container .hot-options-container .search-result {
+          font-family: 'Open Sans'; }
+        .desktop-search-wrapper .search-description-container .dynamic-search-container .options-container .hot-options-container .options-field {
+          width: 90%;
+          margin-top: 3%;
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          justify-content: center;
+          gap: 2%; }
+          .desktop-search-wrapper .search-description-container .dynamic-search-container .options-container .hot-options-container .options-field .plugins-icon svg path {
+            fill: var(--labels_important-active-labels-text-graphics); }
+          .desktop-search-wrapper .search-description-container .dynamic-search-container .options-container .hot-options-container .options-field .icon-field {
+            min-width: 14%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2%; }
+            .desktop-search-wrapper .search-description-container .dynamic-search-container .options-container .hot-options-container .options-field .icon-field .hot-icon {
+              position: relative;
+              bottom: 15px; }
+              .desktop-search-wrapper .search-description-container .dynamic-search-container .options-container .hot-options-container .options-field .icon-field .hot-icon svg {
+                width: 1.2rem; }
+                .desktop-search-wrapper .search-description-container .dynamic-search-container .options-container .hot-options-container .options-field .icon-field .hot-icon svg path {
+                  fill: var(--specials_pending-waiting-caution) !important; }
+            .desktop-search-wrapper .search-description-container .dynamic-search-container .options-container .hot-options-container .options-field .icon-field .icon-logo {
+              width: 25px; }
+              .desktop-search-wrapper .search-description-container .dynamic-search-container .options-container .hot-options-container .options-field .icon-field .icon-logo path {
+                fill: var(--labels_important-active-labels-text-graphics); }
+          .desktop-search-wrapper .search-description-container .dynamic-search-container .options-container .hot-options-container .options-field .image-wrapper .icon-logo {
+            position: relative;
+            left: 10px; }
+          .desktop-search-wrapper .search-description-container .dynamic-search-container .options-container .hot-options-container .options-field .image-wrapper .assets-icon {
+            position: relative;
+            bottom: 15px; }
+          .desktop-search-wrapper .search-description-container .dynamic-search-container .options-container .hot-options-container .options-field .icon-field:hover {
+            cursor: pointer;
+            background-color: var(--base_wallet-sidebar-and-popup);
+            border-radius: 5px; }
+
+.desktop-search-wrapper .crypto-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px; }
+  .desktop-search-wrapper .crypto-link .blue-link:hover {
+    cursor: pointer; }
 
 .check_title-container {
   transition: 0.3s;

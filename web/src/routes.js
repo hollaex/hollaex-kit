@@ -21,12 +21,13 @@ import {
 } from './utils/string';
 import { getExchangeInitialized, getSetupCompleted } from './utils/initialize';
 import { STAKING_INDEX_COIN, isStakingAvailable } from 'config/contracts';
+import { Loader } from 'components';
 
 import chat from './containers/Admin/Chat';
 import store from './store';
 import PluginConfig from 'containers/Admin/PluginConfig';
 import Loadable from 'react-loadable';
-import { Loader } from 'components';
+import DesktopSearch from 'components/AppBar/DesktopSearch';
 
 const LoadingComponent = ({ isLoading, error }) => {
 	return <Loader background={false} />;
@@ -610,6 +611,9 @@ export const generateRoutes = (routes = []) => {
 				<Route path="wallet" name="Wallet" component={MainWallet} />
 				{isMobile && (
 					<Route path="more" name="More" component={MobileBarMoreOptions} />
+				)}
+				{!isMobile && (
+					<Route path="details" name="Details" component={DesktopSearch} />
 				)}
 				<Route
 					path="wallet/address-book"

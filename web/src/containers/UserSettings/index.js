@@ -140,7 +140,9 @@ class UserSettings extends Component {
 	}
 
 	componentWillUnmount() {
-		setSettingsTab(0);
+		if (this.props.getSettingsTab) {
+			this.props.setSettingsTab(0);
+		}
 	}
 
 	openCurrentTab = () => {
