@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import classnames from 'classnames';
 import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
+import { SearchOutlined } from '@ant-design/icons';
 import { DEFAULT_URL } from 'config/constants';
 import { MobileBarWrapper, EditWrapper, ButtonLink, Image } from 'components';
 import { isLoggedIn } from 'utils/token';
@@ -238,8 +239,8 @@ class AppBar extends Component {
 			constants: { valid_languages } = {},
 			constants = {},
 			children,
-			// activePath,
-			// onMenuChange,
+			activePath,
+			onMenuChange,
 			// menuItems,
 			router,
 			isHome,
@@ -365,6 +366,16 @@ class AppBar extends Component {
 							verificationPending={verificationPending}
 						/>
 						<Connections />
+						<div
+							className={
+								activePath === '/details'
+									? 'active-menu app-bar-search-icon'
+									: 'app-bar-search-icon'
+							}
+							onClick={() => onMenuChange('/details')}
+						>
+							<SearchOutlined />
+						</div>
 					</div>
 				)}
 			</div>
