@@ -59,7 +59,7 @@ const setPriceEssentials = async (priceEssentials, opts) => {
 
     if (!pairsOrders) {
         pairsOrders = await getOrderbooks(opts);   
-        await client.setexAsync(`orderbooks`, 60 * 5, JSON.stringify(pairsOrders));
+        await client.setexAsync(`orderbooks`, 30, JSON.stringify(pairsOrders));
     } else {
         pairsOrders = JSON.parse(pairsOrders);
 
