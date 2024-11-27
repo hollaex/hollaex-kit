@@ -259,16 +259,6 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 			if (spending_amount != null) responseObj.receiving_amount = priceValues.targetAmount;
 			else if (receiving_amount != null) responseObj.spending_amount = priceValues.sourceAmount;
 
-			//Check if the estimated price is 50% greater than the last trade
-			const lastTrades = await getPublicTrades(symbol);
-			if (Array.isArray(lastTrades[symbol]) && lastTrades[symbol].length > 0) {
-				const lastPrice = new BigNumber(lastTrades[symbol][0].price).multipliedBy(1.50).toNumber();
-
-				if (priceValues.estimatedPrice > lastPrice) {
-					throw new Error(QUICK_TRADE_ORDER_CURRENT_PRICE_ERROR);
-				}
-			}
-
 			let user_id = null;
 			if (bearerToken) {
 				const auth = await verifyBearerTokenPromise(bearerToken, ip);
