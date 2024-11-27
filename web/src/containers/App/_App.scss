@@ -501,6 +501,13 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 					.image-wrapper {
 						margin-left: 15%;
 					}
+					.plugins-icon {
+						svg {
+							path {
+								fill: $colors-main-black;
+							}
+						}
+					}
 					.icon-field {
 						padding: 5%;
 						text-align: center;

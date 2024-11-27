@@ -30,7 +30,11 @@ import {
 } from './utils';
 import { getClasesForLanguage, getFontClassForLanguage } from 'utils/string';
 import { ContactForm } from 'containers';
-import { NOTIFICATIONS, openContactForm } from 'actions/appActions';
+import {
+	NOTIFICATIONS,
+	openContactForm,
+	setVerificationTab,
+} from 'actions/appActions';
 import { setMe, updateDocuments, updateUser } from 'actions/userAction';
 import MobileVerificationHome from './MobileVerificationHome';
 // import MobileTabs from './MobileTabs';
@@ -126,6 +130,12 @@ class Verification extends Component {
 		const { activeTab } = this.state;
 		if (prevState.activeTab !== activeTab) {
 			this.openCurrentTab();
+		}
+	}
+
+	componentWillUnmount() {
+		if (this.props.getVerificationTab) {
+			this.props.setVerificationTab(0);
 		}
 	}
 
@@ -788,6 +798,7 @@ const mapDispatchToProps = (dispatch) => ({
 	setMe: bindActionCreators(setMe, dispatch),
 	logout: bindActionCreators(logout, dispatch),
 	openContactForm: bindActionCreators(openContactForm, dispatch),
+	setVerificationTab: bindActionCreators(setVerificationTab, dispatch),
 });
 
 export default connect(
