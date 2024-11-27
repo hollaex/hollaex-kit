@@ -157,7 +157,9 @@ class UserSecurity extends Component {
 	}
 
 	componentWillUnmount() {
-		setSecurityTab(0);
+		if (this.props.getSecurityTab) {
+			this.props.setSecurityTab(0);
+		}
 	}
 
 	openCurrentTab = () => {

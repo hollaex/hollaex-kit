@@ -571,7 +571,7 @@ const createP2PTransaction = async (data) => {
 	data.user_status = 'pending';
 	data.merchant_status = 'pending';
 	data.transaction_status = 'active';
-	data.transaction_duration = 30;
+	data.transaction_duration = Number(p2pConfig?.transaction_duration || 30);
 	data.transaction_id = uuid();
 	data.merchant_id = side === 'buy' ? user_id : merchant_id;
 	data.user_id = side === 'buy' ? merchant_id :  user_id;
