@@ -30,6 +30,7 @@ const P2PDashMobile = ({
 	userProfile,
 	myMethods,
 	setTab,
+	p2p_config,
 }) => {
 	const [displayTrading, setDisplayTrading] = useState(false);
 	const [spentAmountInput, setSpentAmountInput] = useState(false);
@@ -493,7 +494,10 @@ const P2PDashMobile = ({
 													{STRINGS.formatString(
 														STRINGS['P2P.PAYMENT_TIME_LIMIT_LABEL'],
 														<span className="payment-time-limit secondary-text">
-															{STRINGS['P2P.30_MINUTES']}
+															{STRINGS.formatString(
+																STRINGS['P2P.MINUTES_TEXT'],
+																p2p_config?.transaction_duration
+															)}
 														</span>
 													)}
 												</EditWrapper>

@@ -325,7 +325,10 @@ const P2POrderDetails = ({
 				{selectedOrder?.user_status === 'pending' && (
 					<div className="mb-3 important-text order-timer-wrapper">
 						<EditWrapper stringId="P2P.EXPECTED_TIME">
-							{STRINGS['P2P.EXPECTED_TIME']}
+							{STRINGS.formatString(
+								STRINGS['P2P.EXPECTED_TIME'],
+								selectedOrder?.transaction_duration
+							)}
 						</EditWrapper>
 						<Timer order={selectedOrder} />
 					</div>

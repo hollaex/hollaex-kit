@@ -381,7 +381,10 @@ const P2PDash = ({
 									STRINGS['P2P.ORDER_CREATION_DESC_2'],
 									STRINGS['P2P.YOU_HAVE_TEXT'],
 									<span className="important-text text-decoration-underline">
-										15 {STRINGS['P2P.MINUTES']}
+										{STRINGS.formatString(
+											STRINGS['P2P.MINUTES_TEXT'],
+											p2p_config?.transaction_duration
+										)}
 									</span>,
 									STRINGS['P2P.COMPLETE_PAYMENT_PROCESS']
 								)}
@@ -1025,7 +1028,10 @@ const P2PDash = ({
 																{STRINGS.formatString(
 																	STRINGS['P2P.PAYMENT_TIME_LIMIT_LABEL'],
 																	<span className="payment-time-limit">
-																		{STRINGS['P2P.30_MINUTES']}
+																		{STRINGS.formatString(
+																			STRINGS['P2P.MINUTES_TEXT'],
+																			p2p_config?.transaction_duration
+																		)}
 																	</span>
 																)}
 															</EditWrapper>
@@ -1552,6 +1558,7 @@ const P2PDash = ({
 						userProfile={userProfile}
 						setTab={setTab}
 						myMethods={myMethods}
+						p2p_config={p2p_config}
 					/>
 				)
 			) : (
