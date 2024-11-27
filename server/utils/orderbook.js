@@ -1,7 +1,10 @@
 'use strict';
-const { getOrderbook, getKitPairsConfig } = require('./hollaex-tools-lib/tools/common');
+const { getOrderbook, getOrderbooks, getKitPairsConfig } = require('./hollaex-tools-lib/tools/common');
 const math = require('mathjs');
 const BigNumber = require('bignumber.js');
+const { client } = require('./hollaex-tools-lib/tools/database/redis')
+
+
 const sumQuantities = (orders) =>
     orders.reduce((total, [, size]) => math.add(total, size), 0);
 
@@ -52,8 +55,15 @@ const estimatedQuickTradePriceSelector = ({ pairsOrders, pair, side, size, isFir
 }
 
 const setPriceEssentials = async (priceEssentials, opts) => {
-    const pairsOrders = await getOrderbook(priceEssentials.pair, opts);
+    let pairsOrders = await client.getAsync(`orderbooks`);
 
+    if (!pairsOrders) {
+        pairsOrders = await getOrderbooks(opts);   
+        await client.setexAsync(`orderbooks`, 60 * 5, JSON.stringify(pairsOrders));
+    } else {
+        pairsOrders = JSON.parse(pairsOrders);
+
+    };
     const pair = priceEssentials.pair;
     const side = priceEssentials.side;
     const isSourceChanged = priceEssentials.isSourceChanged;
