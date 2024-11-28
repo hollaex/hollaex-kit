@@ -3794,12 +3794,25 @@ table th {
       color: var(--calculated_trading_selling-related-text);
       font-weight: bold; }
   .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-review {
+    padding-top: 3%;
     border-top: 1px solid var(--calculated_secondary-border);
     line-height: 1.5rem; }
     .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-review .text-price {
       color: var(--labels_important-active-labels-text-graphics); }
     .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-review .blue-link {
       color: var(--specials_buttons-links-and-highlights); }
+    .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-review .trade-order-price-text {
+      text-wrap: nowrap; }
+      .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-review .trade-order-price-text .market-buy-side, .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-review .trade-order-price-text .market-sell-side {
+        background-color: var(--trading_buying-related-elements);
+        padding: 1% 5%;
+        color: var(--calculated_trading_buying-related-text);
+        border-radius: 5px;
+        margin-right: 2%;
+        text-align: center; }
+    .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-review .market-sell-side {
+      background-color: var(--trading_selling-related-elements) !important;
+      color: var(--calculated_trading_selling-related-text) !important; }
   .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-action_selector,
   .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-form-action {
     height: 2.5rem; }
@@ -3809,6 +3822,8 @@ table th {
     flex: 1; }
   .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-form_inputs-wrapper .trade_order_entry-form_fields-wrapper > div:not(:last-child) {
     margin-bottom: 0.5rem; }
+  .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-form_inputs-wrapper .advacnce-text:hover {
+    opacity: 0.6; }
   .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-form_inputs-wrapper .trade_order_entry-form-action {
     margin-top: 0.5rem;
     background-color: var(--trading_selling-related-elements) !important;
@@ -3869,12 +3884,25 @@ table th {
       color: var(--calculated_trading_buying-related-text);
       font-weight: bold; }
   .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-review {
+    padding-top: 3%;
     border-top: 1px solid var(--calculated_secondary-border);
     line-height: 1.5rem; }
     .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-review .text-price {
       color: var(--labels_important-active-labels-text-graphics); }
     .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-review .blue-link {
       color: var(--specials_buttons-links-and-highlights); }
+    .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-review .trade-order-price-text {
+      text-wrap: nowrap; }
+      .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-review .trade-order-price-text .market-buy-side, .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-review .trade-order-price-text .market-sell-side {
+        background-color: var(--trading_buying-related-elements);
+        padding: 1% 5%;
+        color: var(--calculated_trading_buying-related-text);
+        border-radius: 5px;
+        margin-right: 2%;
+        text-align: center; }
+    .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-review .market-sell-side {
+      background-color: var(--trading_selling-related-elements) !important;
+      color: var(--calculated_trading_selling-related-text) !important; }
   .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-action_selector,
   .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-form-action {
     height: 2.5rem; }
@@ -3884,6 +3912,8 @@ table th {
     flex: 1; }
   .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-form_inputs-wrapper .trade_order_entry-form_fields-wrapper > div:not(:last-child) {
     margin-bottom: 0.5rem; }
+  .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-form_inputs-wrapper .advacnce-text:hover {
+    opacity: 0.6; }
   .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-form_inputs-wrapper .trade_order_entry-form-action {
     margin-top: 0.5rem;
     background-color: var(--trading_buying-related-elements) !important;
@@ -3912,6 +3942,13 @@ table th {
   font-size: 1rem;
   color: var(--labels_secondary-inactive-label-text-graphics);
   cursor: pointer; }
+
+.trade_order_entry-wrapper .add-icon {
+  border: 1px solid var(--specials_buttons-links-and-highlights);
+  border-radius: 100%;
+  text-align: center;
+  padding: 0 4px 0 2px;
+  font-size: 10px; }
 
 .risky-trade-wrapper {
   width: 32rem; }
@@ -15907,6 +15944,16 @@ table th {
     fill: var(--labels_important-active-labels-text-graphics); }
     .notification-wrapper .new-order-notification svg .generate_api {
       fill: var(--labels_important-active-labels-text-graphics); }
+  .notification-wrapper .new-order-notification .market-buy-side,
+  .notification-wrapper .new-order-notification .market-sell-side {
+    background-color: var(--trading_buying-related-elements);
+    padding: 0% 5%;
+    color: var(--calculated_trading_buying-related-text);
+    border-radius: 5px;
+    margin-right: 2%; }
+  .notification-wrapper .new-order-notification .market-sell-side {
+    background-color: var(--trading_selling-related-elements) !important;
+    color: var(--calculated_trading_selling-related-text) !important; }
   .notification-wrapper .notification-wrapper {
     color: var(--labels_secondary-inactive-label-text-graphics); }
     .notification-wrapper .notification-wrapper .notification-title-wrapper {

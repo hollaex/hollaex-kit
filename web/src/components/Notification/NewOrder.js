@@ -19,13 +19,19 @@ const generateRows = ({ order, pairData }) => {
 		stringId: `TYPE,CHECK_ORDER_TYPE,TYPES_VALUES.${type},SIDES_VALUES.${side}`,
 		label: STRINGS['TYPE'],
 		value: (
-			<div className="text-capitalize">
+			<span
+				className={
+					side === 'buy'
+						? 'text-capitalize  market-buy-side'
+						: ' text-capitalize market-sell-side'
+				}
+			>
 				{STRINGS.formatString(
 					STRINGS['CHECK_ORDER_TYPE'],
 					STRINGS[`TYPES_VALUES.${type}`],
 					STRINGS[`SIDES_VALUES.${side}`]
 				)}
-			</div>
+			</span>
 		),
 	});
 
