@@ -170,7 +170,9 @@ export const renderFeedback = (
 
 export const Timer = ({ order }) => {
 	const orderCreatedDate = new Date(order?.created_at)?.getTime();
-	const [time, setTime] = useState({ min: 30, sec: 0 });
+	const transactionTime = Number(order?.transaction_duration);
+
+	const [time, setTime] = useState({ min: transactionTime, sec: 0 });
 	const [startTime] = useState(orderCreatedDate);
 	const [timeLimitReached, setTimeLimitReached] = useState(false);
 	const frameIdRef = useRef();
@@ -186,7 +188,7 @@ export const Timer = ({ order }) => {
 		const update = () => {
 			const now = Date.now();
 			const elapsed = Math.floor((now - startTime) / 1000);
-			const totalSeconds = 30 * 60 - elapsed;
+			const totalSeconds = transactionTime * 60 - elapsed;
 
 			if (totalSeconds <= 0) {
 				setTime({ min: 0, sec: 0 });
@@ -215,7 +217,7 @@ export const Timer = ({ order }) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [startTime, order]);
 
-	const totalSeconds = 30 * 60;
+	const totalSeconds = transactionTime * 60;
 	const elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
 	const percentage = (elapsedSeconds / totalSeconds) * 100;
 
