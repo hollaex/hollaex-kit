@@ -16,6 +16,16 @@
 	border: none;
 }
 
+.ant-modal-header,
+.ant-modal-content,
+.ant-modal-confirm-body .ant-modal-confirm-content {
+	background-color: var(--admin_panel_modal_background);
+	color: #ffffff;
+}
+.ant-modal-body h2 {
+	color: #ffffff;
+}
+
 .ant-table-thead > tr > th {
 	background-color: var(--admin_panel_table_thead);
 	color: var(--admin_panel_main_font);
@@ -731,6 +741,7 @@
 	overflow-y: scroll;
 }
 .otc-Container .ant-input-affix-wrapper .ant-input,
+.otc-Container .ant-input-affix-wrapper,
 .otc-Container .expiry-time-field {
 	background-color: var(--admin_panel_input);
 	color: #ffffff;
@@ -792,7 +803,8 @@
 	cursor: text;
 }
 
-.p2p-admin-confirm-warning-popup-wrapper .ant-modal-body {
+.p2p-admin-confirm-warning-popup-wrapper .ant-modal-body,
+.otc-broker-popup-wrapper .ant-modal-body {
 	background-color: #27339d;
 	color: white;
 }
@@ -816,7 +828,8 @@
 	border: none;
 }
 
-.p2p-admin-confirm-warning-popup-wrapper .ant-modal-close-x {
+.p2p-admin-confirm-warning-popup-wrapper .ant-modal-close-x,
+.otc-broker-popup-wrapper .ant-modal-close-x {
 	color: white;
 }
 
