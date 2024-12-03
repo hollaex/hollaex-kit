@@ -24,6 +24,7 @@ const Review = ({
 	onFeeStructureAndLimits,
 	estimatedPrice,
 	symbol,
+	side,
 }) => {
 	// const orderAmountReceived = math.add(
 	// 	math.fraction(orderPrice),
@@ -33,15 +34,23 @@ const Review = ({
 	return (
 		<div className="trade_order_entry-review d-flex flex-column">
 			<div className={classnames(...ROW_CLASSNAMES)}>
-				<div>
+				<div className="trade-order-price-text font-weight-bold important-text">
 					<EditWrapper stringId="ESTIMATED_PRICE,ORDER_PRICE">
-						{type === 'market'
-							? STRINGS['ESTIMATED_PRICE']
-							: STRINGS['ORDER_PRICE']}
+						<span
+							className={
+								side === 'buy' ? 'market-buy-side' : 'market-sell-side'
+							}
+						>
+							{side?.charAt(0)?.toUpperCase() + side?.slice(1)}
+						</span>
+						{type === 'market' ? (
+							<span>{STRINGS['ESTIMATED_PRICE']}:</span>
+						) : (
+							<span>{STRINGS['ORDER_PRICE']}:</span>
+						)}
 					</EditWrapper>
-					:
 				</div>
-				<div className="text-price">
+				<div className="text-price font-weight-bold">
 					{type !== 'market' && (
 						<Fragment>
 							{upToMarket

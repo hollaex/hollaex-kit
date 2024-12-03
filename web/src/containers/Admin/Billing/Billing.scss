@@ -190,9 +190,34 @@
 		padding: 0rem 3rem 0rem 2.5rem !important;
 	}
 
+	.billing-button-container {
+		justify-content: space-between !important;
+		align-items: center;
+		padding: 0 3%;
+		.button-wrapper {
+			min-width: 65%;
+			display: flex;
+			align-items: center;
+			justify-content: flex-start;
+			gap: 4%;
+			.custom-line {
+				width: 2px;
+				height: 20px;
+				background-color: #ffffff;
+			}
+			.check-icon {
+				svg {
+					path {
+						fill: var(--specials_checks-okay-done);
+					}
+				}
+			}
+		}
+	}
+
 	.button-container {
 		display: flex;
-		justify-content: flex-end;
+		// justify-content: flex-end;
 		background-color: #040e6d;
 		border-bottom-left-radius: 1rem;
 		border-bottom-right-radius: 1rem;
@@ -201,7 +226,8 @@
 			color: #ffffff;
 			text-decoration: underline;
 			cursor: pointer;
-			margin: 1rem 16rem 0rem 0rem;
+			// margin: 1rem 16rem 0rem 0rem;
+			width: max-content;
 		}
 
 		.paid-btn {
@@ -1130,5 +1156,179 @@
 	.pointer-none {
 		pointer-events: none;
 		cursor: not-allowed;
+	}
+}
+
+.auto-payment-billing-popup-wrapper {
+	.ant-modal-body {
+		background-color: #27339d;
+		color: #ffffff;
+		font-size: 12px;
+		.auto-payment-billing-popup-container {
+			.title {
+				font-size: 20px !important;
+			}
+
+			.payment-description {
+				margin-top: 2%;
+			}
+
+			.account-details {
+				margin-top: 3%;
+				display: flex;
+				flex-direction: column;
+				.payment-email-input-wrapper {
+					.payment-email-address {
+						width: 60%;
+						font-size: 12px;
+					}
+					.edit-btn:hover {
+						cursor: pointer;
+					}
+				}
+			}
+			.asset-wrapper {
+				display: flex;
+				gap: 2%;
+				align-items: center;
+				.asset-icon {
+					width: 32px;
+					height: 32px;
+					border-radius: 25px;
+					font-size: 10px;
+					color: #cccccc;
+					background-color: #178700;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+				}
+			}
+			.error-field {
+				color: #ffff00;
+				padding: 2% 0;
+				display: flex;
+				gap: 1%;
+				align-items: center;
+				font-weight: bold;
+				margin-left: 8%;
+			}
+			.warning-description {
+				width: 85%;
+				margin-top: 2%;
+				background-color: var(--admin_panel_content_background);
+				padding: 2%;
+				display: flex;
+				align-items: center;
+				.message {
+					font-size: 10px;
+				}
+				.warning-icon {
+					svg {
+						width: 2rem;
+						height: 1.5rem;
+						path {
+							fill: #ffffff;
+						}
+					}
+				}
+			}
+			.auto-payment-popup-button-wrapper {
+				margin-top: 5%;
+				display: flex;
+				gap: 5%;
+				.green-btn {
+					width: 50%;
+					background-color: #288500 !important;
+					color: #ffffff !important;
+					border: none;
+				}
+				.inactive-btn {
+					opacity: 0.5;
+				}
+			}
+		}
+	}
+	.ant-modal-close {
+		color: #ffffff;
+	}
+}
+
+.confirm-payment-billing-popup-wrapper {
+	top: 5%;
+	.confirm-payment-billing-popup-container {
+		.details-description {
+			color: #cccccc;
+		}
+		.cloud-card {
+			font-size: 14px;
+			padding: 2% 0 4% 0;
+			border-bottom: 2px solid #a8a8b1;
+			.card-wrapper {
+				margin-top: 2%;
+				background-size: contain;
+				background-position: right;
+				background-repeat: no-repeat;
+				padding: 5% 0;
+				background-color: var(--admin_panel_content_background);
+				border-radius: 5px;
+				.diy-background,
+				.cloud-background {
+					padding: 0 0 0 2%;
+					width: 18%;
+				}
+				.cloud-card-details {
+					align-items: center;
+					gap: 3%;
+					.cloud-type,
+					.white-text,
+					.basic-plan {
+						margin-bottom: unset !important;
+						font-size: 13px !important;
+					}
+					.white-text,
+					.cloud-type {
+						font-weight: bold;
+					}
+					.cloud-type {
+						margin-left: 3%;
+					}
+					.cloud-type,
+					.basic-plan {
+						color: #a8a8b1 !important;
+					}
+				}
+			}
+		}
+		.fund-source-details,
+		.payment-interval,
+		.next-payment-date,
+		.payment-amount {
+			padding: 1% 0;
+			.payment-title {
+				font-size: 14px !important;
+			}
+			.description-text {
+				font-size: 12px;
+				color: #cccccc;
+			}
+		}
+	}
+}
+
+.edit-payment-billing-popup-wrapper {
+	.edit-payment-popup-container {
+		.input-field {
+			display: flex;
+			align-items: flex-start;
+			gap: 2%;
+			.ant-input {
+				width: 3%;
+				position: relative;
+				top: 2px;
+			}
+		}
+		.auto-payment-popup-button-wrapper {
+			margin-top: 20% !important;
+		}
 	}
 }
