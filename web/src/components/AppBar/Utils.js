@@ -1,15 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { isMobile } from 'react-device-detect';
-import { Tooltip } from 'antd';
-import { ExclamationCircleOutlined, ReloadOutlined } from '@ant-design/icons';
+import { browserHistory } from 'react-router';
+import { Select, Tooltip } from 'antd';
+import { Option } from 'antd/lib/mentions';
+import {
+	CaretDownOutlined,
+	CaretUpOutlined,
+	ExclamationCircleOutlined,
+	ReloadOutlined,
+} from '@ant-design/icons';
 
 import Dialog from 'components/Dialog';
 import icons from 'config/icons/dark';
 import STRINGS from 'config/localizedStrings';
-import { Button, EditWrapper, Image } from 'components';
+import { Button, Coin, EditWrapper, Image } from 'components';
 import { getCountry } from 'containers/Verification/utils';
 import { getFormatTimestamp } from 'utils/utils';
 import { Loading } from 'containers/DigitalAssets/components/utils';
+import { updateUserSettings } from 'actions/userAction';
+import { isLoggedIn } from 'utils/token';
+import { generateLanguageFormValues } from 'containers/UserSettings/LanguageForm';
 
 export const ConnectionPopup = ({
 	isDisplayPopup,
@@ -379,6 +389,218 @@ export const renderConfirmSignout = (
 						className="confirm-btn"
 						label={STRINGS['CONFIRM_TEXT']}
 						onClick={() => onHandlelogout()}
+					></Button>
+				</div>
+			</div>
+		</Dialog>
+	);
+};
+
+export const LanguageDisplayPopup = ({
+	selected,
+	valid_languages,
+	changeLanguage,
+	isVisible,
+	onHandleClose,
+	selectable_native_currencies,
+	setUserData,
+	user,
+	isCurrency = false,
+	setBaseCurrency = () => {},
+	coins,
+}) => {
+	const currency =
+		selectable_native_currencies?.length > 0
+			? user?.settings?.interface?.display_currency
+			: selectable_native_currencies[0];
+
+	const [isOpen, setIsOpen] = useState(false);
+	const [isDisplayCurrencyOpen, setIsDisplayCurrencyOpen] = useState(false);
+	const [selectedLanguage, setSelectedLanguage] = useState(selected);
+	const [selectedCurrency, setSelectedCurrency] = useState(currency);
+	const languageFormValue = generateLanguageFormValues(valid_languages)
+		?.language?.options;
+
+	const onHandleCurrency = async () => {
+		const interfaceData = {
+			...user?.settings?.interface,
+			...(selectedCurrency && { display_currency: selectedCurrency }),
+		};
+
+		try {
+			if (isLoggedIn()) {
+				const { data } = await updateUserSettings({
+					language: selectedLanguage,
+					interface: interfaceData,
+				});
+
+				if (data?.settings) {
+					if (!isCurrency && data?.settings?.language) {
+						changeLanguage(data?.settings?.language);
+					}
+					if (selectedCurrency && data?.settings?.interface?.display_currency) {
+						setUserData(data);
+						localStorage.setItem('base_currnecy', selectedCurrency);
+					}
+				}
+			} else {
+				changeLanguage(selectedLanguage);
+				setUserData(user);
+				if (selectedCurrency) {
+					localStorage.setItem('base_currnecy', selectedCurrency);
+				}
+			}
+		} catch (err) {
+			const _error = err.response?.data?.message || err.message;
+			console.error('error', _error);
+		}
+	};
+
+	const onHandleNavigate = () => {
+		onHandleClose();
+		return browserHistory?.push('/settings');
+	};
+
+	const onHandleConfirm = () => {
+		if (isCurrency) {
+			if (selectedCurrency) {
+				onHandleCurrency();
+				setBaseCurrency(selectedCurrency);
+			}
+		} else {
+			onHandleCurrency();
+			if (selectedCurrency) {
+				setBaseCurrency(selectedCurrency);
+			}
+		}
+		onHandleClose();
+	};
+
+	return (
+		<Dialog
+			isOpen={isVisible}
+			onCloseDialog={() => onHandleClose()}
+			className="language-popup-wrapper"
+		>
+			<div className="language-popup-container">
+				<div className="title-container">
+					<Image
+						iconId={'LANGUAGE_OPTION_ICON'}
+						icon={icons['LANGUAGE_OPTION_ICON']}
+						wrapperClassName="icon-logo"
+					/>
+					<EditWrapper stringId="LANGUAGE_SWITCHER.LANGUAGE_TITLE">
+						<span>
+							{isCurrency
+								? STRINGS['LANGUAGE_SWITCHER.DISPLAY_CURRENCY']
+								: STRINGS['LANGUAGE_SWITCHER.LANGUAGE_TITLE']}
+						</span>
+					</EditWrapper>
+				</div>
+				{!isCurrency && (
+					<div className="language-field w-100">
+						<EditWrapper stringId="USER_SETTINGS.TITLE_LANGUAGE">
+							<span className="font-weight-bold">
+								{STRINGS['USER_SETTINGS.TITLE_LANGUAGE']}
+							</span>
+						</EditWrapper>
+						<EditWrapper stringId="SETTINGS_LANGUAGE_LABEL">
+							<span className="secondary-text">
+								{STRINGS['SETTINGS_LANGUAGE_LABEL']}
+							</span>
+						</EditWrapper>
+						<Select
+							value={selectedLanguage}
+							size="small"
+							onChange={(value) => setSelectedLanguage(value)}
+							bordered={false}
+							onClick={() => setIsOpen((prev) => !prev)}
+							onBlur={() => {
+								if (isOpen) setIsOpen(false);
+							}}
+							suffixIcon={isOpen ? <CaretUpOutlined /> : <CaretDownOutlined />}
+							className="custom-select-input-style appbar elevated"
+							dropdownClassName="custom-select-style select-option-wrapper"
+						>
+							{languageFormValue?.map(({ value, icon, label }) => (
+								<Option value={value} key={value} className="capitalize">
+									<div className="language_option">
+										<Image
+											icon={icon}
+											alt={label}
+											wrapperClassName="flag-icon mr-2"
+										/>
+										<span className="caps important-text">{label}</span>
+									</div>
+								</Option>
+							))}
+						</Select>
+					</div>
+				)}
+				<div className="language-field w-100">
+					<EditWrapper stringId="LANGUAGE_SWITCHER.DISPLAY_CURRENCY">
+						<span className="font-weight-bold">
+							{isCurrency
+								? STRINGS['CURRENCY']
+								: STRINGS['LANGUAGE_SWITCHER.DISPLAY_CURRENCY']}
+						</span>
+					</EditWrapper>
+					<EditWrapper stringId="LANGUAGE_SWITCHER.DISPLAY_CURRENCY_DESC">
+						<span className="secondary-text">
+							{STRINGS['LANGUAGE_SWITCHER.DISPLAY_CURRENCY_DESC']}
+						</span>
+					</EditWrapper>
+					<Select
+						value={selectedCurrency}
+						className="custom-select-input-style appbar elevated"
+						dropdownClassName="custom-select-style select-currency-wrapper"
+						onChange={(value) => setSelectedCurrency(value)}
+						placeholder={STRINGS['CURRENCY']}
+						onClick={() => setIsDisplayCurrencyOpen((prev) => !prev)}
+						onBlur={() => {
+							if (isOpen) setIsDisplayCurrencyOpen(false);
+						}}
+						suffixIcon={
+							isDisplayCurrencyOpen ? (
+								<CaretUpOutlined />
+							) : (
+								<CaretDownOutlined />
+							)
+						}
+					>
+						{selectable_native_currencies?.map((data) => {
+							return (
+								<Option key={data} value={data}>
+									<Coin type="CS4" iconId={coins[data]?.icon_id} />
+									<span>{coins[data]?.fullname}</span>({data?.toUpperCase()})
+								</Option>
+							);
+						})}
+					</Select>
+				</div>
+				<div className="mt-4">
+					<EditWrapper stringId="PROFIT_LOSS.VIEW_MORE">
+						{STRINGS.formatString(
+							STRINGS['PROFIT_LOSS.VIEW_MORE'],
+							<span
+								className="blue-link text-decoration-underline"
+								onClick={() => onHandleNavigate()}
+							>
+								{STRINGS['LANGUAGE_SWITCHER.SETTINGS']}
+							</span>
+						)}
+					</EditWrapper>
+				</div>
+				<div className="button-container">
+					<Button
+						className="back-btn"
+						label={STRINGS['BACK_TEXT']}
+						onClick={() => onHandleClose()}
+					></Button>
+					<Button
+						className="confirm-btn"
+						label={STRINGS['SETTING_BUTTON']}
+						onClick={() => onHandleConfirm()}
 					></Button>
 				</div>
 			</div>
