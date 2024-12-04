@@ -48,6 +48,7 @@ const MobileBarMoreOptions = ({
 	quickTrade,
 	getRemoteRoutes,
 	assets,
+	user,
 }) => {
 	const [search, setSearch] = useState('');
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -80,23 +81,35 @@ const MobileBarMoreOptions = ({
 
 	const getSymbol = searchByName
 		?.filter((data) => {
-			return (
-				search?.length > 1 &&
-				(search
-					?.toLowerCase()
-					?.split(' ')
-					?.some((content) =>
-						content?.startsWith(data?.fullname?.toLowerCase())
-					) ||
-					search
-						?.toLowerCase()
-						?.split(' ')
-						?.some((content) =>
-							content?.startsWith(data?.symbol?.toLowerCase())
-						))
-			);
+			const searchTerms = search?.toLowerCase()?.trim()?.split(' ');
+			const fullname = data?.fullname?.toLowerCase() || '';
+			const symbol = data?.symbol?.toLowerCase() || '';
+
+			if (search?.length > 1) {
+				const lastSearchTerm = searchTerms[searchTerms?.length - 1];
+				const matches = searchTerms?.some(
+					(term) => fullname?.startsWith(term) || symbol?.startsWith(term)
+				);
+				const lastMatch =
+					fullname?.startsWith(lastSearchTerm) ||
+					symbol?.startsWith(lastSearchTerm);
+
+				return matches || lastMatch;
+			}
+			return false;
 		})
 		?.sort((a, b) => {
+			const lastSearchTerm = search?.toLowerCase()?.split(' ')?.pop();
+			const isLastTermMatchA =
+				a?.fullname?.toLowerCase()?.startsWith(lastSearchTerm) ||
+				a?.symbol?.toLowerCase()?.startsWith(lastSearchTerm);
+			const isLastTermMatchB =
+				b?.fullname?.toLowerCase()?.startsWith(lastSearchTerm) ||
+				b?.symbol?.toLowerCase()?.startsWith(lastSearchTerm);
+
+			if (isLastTermMatchA && !isLastTermMatchB) return -1;
+			if (!isLastTermMatchA && isLastTermMatchB) return 1;
+
 			const indexA = pinnedAsset?.indexOf(a?.symbol?.toLowerCase());
 			const indexB = pinnedAsset?.indexOf(b?.symbol?.toLowerCase());
 
@@ -819,15 +832,21 @@ const MobileBarMoreOptions = ({
 					STRINGS[option?.iconText ? option?.iconText : option?.string_id] ||
 					'';
 				const isContent = option?.searchContent?.some((content) =>
-					searchText?.some((searchValue) =>
-						content?.toLowerCase()?.includes(searchValue)
+					searchText?.some(
+						(searchValue) =>
+							content?.toLowerCase()?.startsWith(searchValue) &&
+							option?.isDisplay
 					)
 				);
-				const isIconText = searchText?.some((content) =>
-					iconTextMatch?.toLowerCase()?.includes(content)
+				const isIconText = searchText?.some(
+					(content) =>
+						iconTextMatch?.toLowerCase()?.startsWith(content) &&
+						option?.isDisplay
 				);
-				const isIconId = searchText?.some((content) =>
-					option?.icon_id?.toLowerCase()?.includes(content)
+				const isIconId = searchText?.some(
+					(content) =>
+						option?.icon_id?.toLowerCase()?.startsWith(content) &&
+						option?.isDisplay
 				);
 
 				return (isIconId && isIconText) || isContent || isIconId || isIconText;
@@ -1276,6 +1295,7 @@ const MobileBarMoreOptions = ({
 };
 
 const mapStateToProps = (store) => ({
+	user: store.user,
 	features: store.app.features,
 	coins: store.app.coins,
 	pinnedAsset: store.app.pinned_assets,
