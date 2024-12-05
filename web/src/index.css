@@ -389,8 +389,10 @@ table th {
     height: auto;
     flex: 1; }
   .app_container.layout-mobile .app_container-content {
-    min-height: calc( 100vh - 10rem);
-    max-height: calc( 100vh - 10rem);
+    min-height: calc(
+ 100vh - 10rem);
+    max-height: calc(
+ 100vh - 10rem);
     max-width: 100vw;
     overflow-y: scroll; }
     .app_container.layout-mobile .app_container-content.chart-embed {
@@ -408,8 +410,10 @@ table th {
       .app_container.layout-mobile .app_container-content .app_container-main.no_bottom_navigation {
         height: 100%; }
   .app_container.layout-mobile .content-with-bar {
-    min-height: calc( 100vh - 17rem);
-    max-height: calc( 100vh - 17rem);
+    min-height: calc(
+ 100vh - 17rem);
+    max-height: calc(
+ 100vh - 17rem);
     max-width: 100vw;
     padding: 1rem;
     margin: 0;
@@ -4623,8 +4627,10 @@ table th {
 .layout-mobile .quote-container {
   background-color: transparent;
   overflow-y: scroll;
-  min-height: calc( 100vh - 17rem);
-  max-height: calc( 100vh - 17rem); }
+  min-height: calc(
+ 100vh - 17rem);
+  max-height: calc(
+ 100vh - 17rem); }
   .layout-mobile .quote-container .quick_trade-wrapper {
     flex: 1 1;
     flex-direction: column;
@@ -4797,7 +4803,8 @@ table th {
 
 .layout-mobile .presentation_container.verification_container {
   padding-top: 0 !important;
-  max-height: calc( 100vh - 10rem); }
+  max-height: calc(
+ 100vh - 10rem); }
   .layout-mobile .presentation_container.verification_container .header-content {
     font-size: 13px !important; }
 
@@ -5872,7 +5879,9 @@ table th {
   .digital-market-wrapper .market-list__block-table tbody tr td .asset-text,
   .digital-market-wrapper .market-list__block-table tbody tr td .last-price-label {
     font-weight: bold;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; }
+    font-family: system-ui, -apple-system, BlinkMacSystemFont,
+ 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans',
+ 'Helvetica Neue', sans-serif; }
   .digital-market-wrapper .market-list__block-table tbody tr td .asset-text {
     text-wrap: nowrap; }
   .digital-market-wrapper .market-list__block-table tbody tr td .price-change,
@@ -14034,7 +14043,8 @@ table th {
     padding: 0.3rem 0; }
     .modal-market-menu .app-bar-add-tab-content .scroll-view {
       overflow-y: auto;
-      height: calc( 100vh - 19rem - 8rem); }
+      height: calc(
+ 100vh - 19rem - 8rem); }
   .modal-market-menu .app-bar-tab-overflow-content {
     background-color: var(--base_background);
     color: var(--labels_secondary-inactive-label-text-graphics);
@@ -14154,8 +14164,18 @@ table th {
       border-top: 4px solid var(--specials_buttons-links-and-highlights);
       height: 100%;
       opacity: 1; }
+  .app_bar .language-content {
+    text-wrap: nowrap;
+    color: var(--calculated_base_top-bar-navigation_text-inactive); }
+  .app_bar .language-content:hover {
+    color: var(--calculated_base_top-bar-navigation_text); }
   .app_bar .app_bar-quicktrade-container .toggle_button-wrapper .toggle-content .toggle-action_button.left {
     opacity: 1 !important; }
+  .app_bar .language_option .flag-icon {
+    width: 1.5rem;
+    height: 1rem; }
+  .app_bar .language_option:hover {
+    cursor: pointer; }
   .app_bar .app_bar-quicktrade {
     border: 1px solid var(--calculated_base_top-bar-navigation_text-inactive);
     border-radius: 0.35rem;
@@ -15279,6 +15299,55 @@ table th {
   gap: 10px; }
   .desktop-search-wrapper .crypto-link .blue-link:hover {
     cursor: pointer; }
+
+.language-popup-wrapper .ReactModal__Content {
+  width: 35rem;
+  font-size: 12px; }
+
+.language-popup-wrapper .language-popup-container .title-container {
+  display: flex;
+  align-items: center;
+  gap: 2%;
+  font-size: 16px; }
+  .language-popup-wrapper .language-popup-container .title-container .icon-logo svg {
+    position: relative;
+    top: 2px; }
+
+.language-popup-wrapper .language-popup-container .language-field {
+  margin-top: 7%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px; }
+  .language-popup-wrapper .language-popup-container .language-field .custom-select-input-style {
+    margin: unset !important;
+    max-width: 100% !important;
+    width: 100% !important; }
+    .language-popup-wrapper .language-popup-container .language-field .custom-select-input-style .ant-select-selector {
+      border-color: var(--labels_important-active-labels-text-graphics) !important;
+      height: 25px !important; }
+    .language-popup-wrapper .language-popup-container .language-field .custom-select-input-style .ant-select-selection-item {
+      color: var(--labels_important-active-labels-text-graphics) !important;
+      display: flex;
+      align-items: center;
+      gap: 1%; }
+    .language-popup-wrapper .language-popup-container .language-field .custom-select-input-style .ant-select-selection-placeholder {
+      line-height: 22px; }
+    .language-popup-wrapper .language-popup-container .language-field .custom-select-input-style .ant-select-arrow svg {
+      color: var(--labels_important-active-labels-text-graphics) !important; }
+
+.language-popup-wrapper .language-popup-container .blue-link:hover {
+  cursor: pointer; }
+
+.language-popup-wrapper .language-popup-container .button-container {
+  margin-top: 5%;
+  display: flex;
+  gap: 5%; }
+
+.select-currency-wrapper .ant-select-item-option-content {
+  display: flex;
+  align-items: center;
+  gap: 1%; }
 
 .check_title-container {
   transition: 0.3s;
@@ -16818,14 +16887,18 @@ table th {
   right: 0 !important;
   min-width: 100vw;
   max-width: 100vw;
-  min-height: calc( 100vh - 4rem);
-  max-height: calc( 100vh - 4rem);
+  min-height: calc(
+ 100vh - 4rem);
+  max-height: calc(
+ 100vh - 4rem);
   border-radius: 0 !important;
   padding: 0 !important; }
   .layout-mobile .ReactModal__Content .dialog-mobile-content {
     padding: 2.5rem !important;
-    min-height: calc( 100vh - 8rem);
-    max-height: calc( 100vh - 8rem);
+    min-height: calc(
+ 100vh - 8rem);
+    max-height: calc(
+ 100vh - 8rem);
     display: flex; }
 
 .layout-mobile.LogoutModal .ReactModal__Content {

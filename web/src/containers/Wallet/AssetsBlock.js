@@ -42,6 +42,9 @@ import {
 	DEFAULT_COIN_DATA,
 } from 'config/constants';
 import { getAllAvailableMarkets, goToTrade } from './utils';
+import { LanguageDisplayPopup } from 'components/AppBar/Utils';
+import { setLanguage } from 'utils/string';
+import { setUserData } from 'actions/userAction';
 import withConfig from 'components/ConfigProvider/withConfig';
 import TradeInputGroup from './components/TradeInputGroup';
 import DustSection from './DustSection';
@@ -74,6 +77,13 @@ const AssetsBlock = ({
 	balance_history_config,
 	info,
 	setActiveTab,
+	language: activeLanguage,
+	valid_languages,
+	changeLanguage,
+	selectable_native_currencies,
+	user,
+	setUserData,
+	setBaseCurrency,
 }) => {
 	const emptyDonut = useMemo(() => {
 		return chartData && !!chartData.length;
@@ -84,6 +94,7 @@ const AssetsBlock = ({
 	const [userPL, setUserPL] = useState();
 	const [plLoading, setPlLoading] = useState(false);
 	const [isSearchActive, setIsSearchActive] = useState(false);
+	const [isDisplayCurrency, setIsDisplayCurrency] = useState(false);
 
 	const handleUpgrade = (info = {}) => {
 		if (
@@ -239,6 +250,10 @@ const AssetsBlock = ({
 		handleSearch();
 	};
 
+	const onHandlePopupClose = () => {
+		setIsDisplayCurrency(false);
+	};
+
 	return showDustSection ? (
 		<DustSection goToWallet={goToWallet} />
 	) : (
@@ -359,6 +374,21 @@ const AssetsBlock = ({
 										</div>
 									)}
 								</div>
+								{isDisplayCurrency && (
+									<LanguageDisplayPopup
+										selected={activeLanguage}
+										valid_languages={valid_languages}
+										changeLanguage={changeLanguage}
+										isVisible={isDisplayCurrency}
+										onHandleClose={onHandlePopupClose}
+										selectable_native_currencies={selectable_native_currencies}
+										setUserData={setUserData}
+										user={user}
+										isCurrency={isDisplayCurrency}
+										setBaseCurrency={setBaseCurrency}
+										coins={coins}
+									/>
+								)}
 								{totalAssets.length && !loading ? (
 									<div className="mb-3">
 										<EditWrapper
@@ -370,7 +400,10 @@ const AssetsBlock = ({
 															<div>
 																{STRINGS['WALLET_ESTIMATED_TOTAL_BALANCE']}
 															</div>
-															<div className="header-title plButton">
+															<div
+																className="header-title plButton asset-price"
+																onClick={() => setIsDisplayCurrency(true)}
+															>
 																{totalAssets}
 															</div>
 														</div>
@@ -865,8 +898,15 @@ const mapStateToProps = ({
 	app: {
 		wallet_sort: { mode, is_descending },
 		quicktrade,
-		constants: { balance_history_config, info },
+		constants: {
+			balance_history_config,
+			info,
+			valid_languages,
+			selectable_native_currencies,
+		},
+		language,
 	},
+	user,
 	asset: { chartData },
 }) => ({
 	mode,
@@ -875,11 +915,17 @@ const mapStateToProps = ({
 	chartData,
 	balance_history_config,
 	info,
+	valid_languages,
+	language,
+	selectable_native_currencies,
+	user,
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	toggleSort: bindActionCreators(toggleWalletSort, dispatch),
 	setSortModeAmount: bindActionCreators(setSortModeAmount, dispatch),
+	changeLanguage: bindActionCreators(setLanguage, dispatch),
+	setUserData: bindActionCreators(setUserData, dispatch),
 });
 
 export default connect(

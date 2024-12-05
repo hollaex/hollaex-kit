@@ -15,11 +15,12 @@ import {
 	setDepositAndWithdraw,
 } from 'actions/appActions';
 import { updateUserSettings, setUserData } from 'actions/userAction';
+import { generateLanguageFormValues } from 'containers/UserSettings/LanguageForm';
+import { LanguageDisplayPopup } from './Utils';
 import ThemeSwitcher from './ThemeSwitcher';
 import withEdit from 'components/EditProvider/withEdit';
 import withConfig from 'components/ConfigProvider/withConfig';
 import STRINGS from 'config/localizedStrings';
-import LanguageSwitcher from './LanguageSwitcher';
 import Connections from './Connections';
 import AccountTab from './AccountTab';
 
@@ -29,6 +30,7 @@ class AppBar extends Component {
 		verificationPending: 0,
 		walletPending: 0,
 		selected: '',
+		isDisplayLanguagePopup: false,
 	};
 
 	componentDidMount() {
@@ -233,6 +235,16 @@ class AppBar extends Component {
 		router.push('/wallet/deposit');
 	};
 
+	onHandleClose = () => {
+		this.setState({
+			isDisplayLanguagePopup: false,
+		});
+	};
+
+	onHandleOpenPopup = () => {
+		this.setState({ isDisplayLanguagePopup: true });
+	};
+
 	render() {
 		const {
 			user,
@@ -248,6 +260,9 @@ class AppBar extends Component {
 			changeLanguage,
 			icons,
 			themeOptions,
+			selectable_native_currencies,
+			setUserData,
+			coins,
 		} = this.props;
 		const {
 			securityPending,
@@ -255,6 +270,8 @@ class AppBar extends Component {
 			// walletPending,
 			selected,
 		} = this.state;
+		const languageFormValue = generateLanguageFormValues(valid_languages)
+			?.language?.options;
 		return isHome ? (
 			<div className="home_app_bar d-flex justify-content-between align-items-center">
 				<div className="d-flex align-items-center justify-content-center h-100 ml-2">
@@ -302,11 +319,42 @@ class AppBar extends Component {
 				</div>
 				{!isLoggedIn() && (
 					<div id="trade-nav-container" className="mx-2">
-						<LanguageSwitcher
-							selected={activeLanguage}
-							valid_languages={valid_languages}
-							toggle={changeLanguage}
-						/>
+						{languageFormValue
+							?.filter(({ value }) => value === activeLanguage)
+							?.map(({ value, icon, label }) => (
+								<div
+									className="language_option"
+									onClick={() => this.onHandleOpenPopup()}
+								>
+									<Image
+										icon={icon}
+										alt={label}
+										wrapperClassName="flag-icon mr-2"
+									/>
+									<span className="caps">
+										{value}
+										{user?.settings?.interface?.display_currency && (
+											<span>
+												{' '}
+												/ {user?.settings?.interface?.display_currency}
+											</span>
+										)}
+									</span>
+								</div>
+							))}
+						{this.state?.isDisplayLanguagePopup && (
+							<LanguageDisplayPopup
+								selected={activeLanguage}
+								valid_languages={valid_languages}
+								changeLanguage={changeLanguage}
+								isVisible={this.state?.isDisplayLanguagePopup}
+								onHandleClose={this.onHandleClose}
+								selectable_native_currencies={selectable_native_currencies}
+								setUserData={setUserData}
+								user={user}
+								coins={coins}
+							/>
+						)}
 						<ThemeSwitcher
 							selected={selected}
 							options={themeOptions}
@@ -336,12 +384,42 @@ class AppBar extends Component {
 							/>
 							<span className="ml-2">{STRINGS['ACCORDIAN.DEPOSIT_LABEL']}</span>
 						</div>
-						<div className="d-flex app_bar-quicktrade-container">
-							<LanguageSwitcher
-								selected={activeLanguage}
-								valid_languages={valid_languages}
-								toggle={changeLanguage}
-							/>
+						<div className="d-flex app_bar-quicktrade-container language-content">
+							{languageFormValue
+								?.filter(({ value }) => value === activeLanguage)
+								?.map(({ value, icon, label }) => (
+									<div
+										className="language_option"
+										onClick={() => this.onHandleOpenPopup()}
+									>
+										<Image
+											icon={icon}
+											alt={label}
+											wrapperClassName="flag-icon mr-2"
+										/>
+										<span className="caps">
+											{value}
+											{user?.settings?.interface?.display_currency && (
+												<span>
+													/{user?.settings?.interface?.display_currency}
+												</span>
+											)}
+										</span>
+									</div>
+								))}
+							{this.state.isDisplayLanguagePopup && (
+								<LanguageDisplayPopup
+									selected={activeLanguage}
+									valid_languages={valid_languages}
+									changeLanguage={changeLanguage}
+									isVisible={this.state.isDisplayLanguagePopup}
+									onHandleClose={this.onHandleClose}
+									selectable_native_currencies={selectable_native_currencies}
+									setUserData={setUserData}
+									user={user}
+									coins={coins}
+								/>
+							)}
 						</div>
 						<div className="d-flex app_bar-quicktrade-container">
 							<ThemeSwitcher
@@ -392,6 +470,8 @@ const mapStateToProps = (state) => {
 		enabledPlugins: state.app.enabledPlugins,
 		constants: state.app.constants,
 		activeLanguage: state.app.language,
+		selectable_native_currencies:
+			state.app.constants.selectable_native_currencies,
 	};
 };
 
