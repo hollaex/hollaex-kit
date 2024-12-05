@@ -1339,6 +1339,42 @@ const findConversionRate = (startCurrency, endCurrency, rates, visited = new Set
 	visited.delete(startCurrency);
 	return shortestPath;
 }
+const findTradeAmount = (trades, initialFunds) => {
+    const availableFunds = { ...initialFunds }; 
+    const results = []; 
+
+    for (const trade of trades) {
+        const [baseCurrency, quoteCurrency] = trade.symbol.split('-');
+        const { side, size, price } = trade;
+
+        let spendingCurrency, spendingAmount, receivingCurrency, receivingAmount;
+
+        if (side === 'sell') {
+            spendingCurrency = baseCurrency;
+            spendingAmount = size
+            receivingCurrency = quoteCurrency;
+            receivingAmount = size * price; 
+        } else if (side === 'buy') {
+            spendingCurrency = quoteCurrency;
+            spendingAmount = availableFunds[quoteCurrency] || 0;
+            receivingCurrency = baseCurrency;
+            receivingAmount = spendingAmount / price;
+        }
+
+        availableFunds[spendingCurrency] = (availableFunds[spendingCurrency] || 0) - spendingAmount;
+        availableFunds[receivingCurrency] = (availableFunds[receivingCurrency] || 0) + receivingAmount;
+
+        results.push({
+            trade,
+            spending_currency: spendingCurrency,
+            spending_amount: spendingAmount,
+            receiving_currency: receivingCurrency,
+            receiving_amount: receivingAmount
+        });
+    }
+
+    return results;
+}
 const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, opts, req = null, id = null, network_id = null) => {
 	if (
 		!getKitConfig().chain_trade_config ||
@@ -1369,7 +1405,6 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, opts, r
 	const quickTrades = getQuickTrades();
 
 	let data = null;
-	const tickers = await getTickers();
 	let prices = {};
 	if (user_id) {
 		data = await client.getAsync(`${user_id}-${symbol}-rates`);
@@ -1379,24 +1414,29 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, opts, r
 	//Find Trade Paths
 	if(!data) {
 		for (const rate of quickTrades) { 
-			prices[rate.symbol] = { type: rate.type, price: null, active: rate.active };
+			prices[rate.symbol] = { type: rate.type, price: NaN, active: rate.active };
 		}
 		const result = findConversionRate(from, to, prices, new Set(), size);
+		let index = 0;
 		for(const rate of result?.trades) {
-			if(!rate.active) continue;
+			if(!rate.active) { index++; continue};
+
 			try {
-				if (rate.type === 'pro') {
-					prices[rate.symbol] = { type: rate.type, price: tickers[rate.symbol].open };
-				} 
-				else {
-					const assets = rate.symbol.split('-');
-					const quotePrice = await getUserQuickTrade(assets[0], 1, null, assets[1],  bearerToken, ip, opts, req, { user_id: id, network_id });
-					prices[rate.symbol] = { type: rate.type, price: quotePrice.receiving_amount, token: quotePrice?.token || null}
-				}
+		
+				const trades = findTradeAmount(result.trades, { [from]: size });
+				
+				const quotePrice = await getUserQuickTrade(trades[index].spending_currency, trades[index].spending_amount, trades[index].receiving_amount, trades[index].receiving_currency,  bearerToken, ip, opts, req, { user_id: id, network_id });
+				
+				const calculatedPrice = rate.side === 'sell' ? quotePrice.receiving_amount / quotePrice.spending_amount  : quotePrice.spending_amount / quotePrice.receiving_amount;
+				result.trades[index].price = calculatedPrice;
+				prices[rate.symbol] = { type: rate.type, price: calculatedPrice, token: quotePrice?.token || null}
+
+				index++;
 			} catch (error) {
 				throw new Error(error.message + ` symbol: ${rate.symbol}`)
 			}
 		}
+
 	}
 
 	let hasNetworkBroker = Object.values(prices || {}).find(price => price.type === 'network');
