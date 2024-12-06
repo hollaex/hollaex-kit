@@ -47,13 +47,13 @@ const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, 
 		});
 };
 
-const executeUserOrder = async (user_id, opts, token) => {
+const executeUserOrder = async (user_id, opts, token, req) => {
 	const storedToken = await client.getAsync(token);
 	if (!storedToken) {
 		throw new Error(TOKEN_EXPIRED);
 	}
 	const { symbol, price, side, size, type, chain } = JSON.parse(storedToken);
-	if (chain) { return executeUserChainTrade(user_id, token) };
+	if (chain) { return executeUserChainTrade(user_id, token, opts, req) };
 
 	if (size < 0) {
 		throw new Error(INVALID_SIZE);
@@ -347,10 +347,10 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 	else {
 		let symbol = spending_amount ? `${spending_currency}-${receiving_currency}` : `${receiving_currency}-${spending_currency}`;
 		let size = spending_amount || receiving_amount;
-		let result = await getUserChainTradeQuote(bearerToken, symbol, size, ip);
+		let result = await getUserChainTradeQuote(bearerToken, symbol, size, ip, opts, req);
 
 		if (spending_amount == null && result?.quote_amount) {
-			const spendingAmount = await getUserChainTradeQuote(bearerToken, `${spending_currency}-${receiving_currency}`, result.quote_amount, ip);
+			const spendingAmount = await getUserChainTradeQuote(bearerToken, `${spending_currency}-${receiving_currency}`, result.quote_amount, ip, opts, req);
 			result.token = spendingAmount?.token;
 		}
 		if (result?.quote_amount) {
@@ -1339,7 +1339,43 @@ const findConversionRate = (startCurrency, endCurrency, rates, visited = new Set
 	visited.delete(startCurrency);
 	return shortestPath;
 }
-const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, id = null, network_id = null) => {
+const findTradeAmount = (trades, initialFunds) => {
+    const availableFunds = { ...initialFunds }; 
+    const results = []; 
+
+    for (const trade of trades) {
+        const [baseCurrency, quoteCurrency] = trade.symbol.split('-');
+        const { side, size, price } = trade;
+
+        let spendingCurrency, spendingAmount, receivingCurrency, receivingAmount;
+
+        if (side === 'sell') {
+            spendingCurrency = baseCurrency;
+            spendingAmount = size
+            receivingCurrency = quoteCurrency;
+            receivingAmount = size * price; 
+        } else if (side === 'buy') {
+            spendingCurrency = quoteCurrency;
+            spendingAmount = availableFunds[quoteCurrency] || 0;
+            receivingCurrency = baseCurrency;
+            receivingAmount = spendingAmount / price;
+        }
+
+        availableFunds[spendingCurrency] = (availableFunds[spendingCurrency] || 0) - spendingAmount;
+        availableFunds[receivingCurrency] = (availableFunds[receivingCurrency] || 0) + receivingAmount;
+
+        results.push({
+            trade,
+            spending_currency: spendingCurrency,
+            spending_amount: spendingAmount,
+            receiving_currency: receivingCurrency,
+            receiving_amount: receivingAmount
+        });
+    }
+
+    return results;
+}
+const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, opts, req = null, id = null, network_id = null) => {
 	if (
 		!getKitConfig().chain_trade_config ||
 		!getKitConfig().chain_trade_config.active
@@ -1369,29 +1405,40 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, id = nu
 	const quickTrades = getQuickTrades();
 
 	let data = null;
-	const tickers = await getTickers();
 	let prices = {};
 	if (user_id) {
 		data = await client.getAsync(`${user_id}-${symbol}-rates`);
 		prices = data ? JSON.parse(data) : {};
 	}
 
-	//Find all the available prices with their types on the exchange.
+	//Find Trade Paths
 	if(!data) {
-		for (const rate of quickTrades) {
+		for (const rate of quickTrades) { 
+			prices[rate.symbol] = { type: rate.type, price: NaN, active: rate.active };
+		}
+		const result = findConversionRate(from, to, prices, new Set(), size);
+		let index = 0;
+		for(const rate of result?.trades) {
+			if(!rate.active) { index++; continue};
+
 			try {
-				if (rate.type === 'pro' && rate.active) {
-					prices[rate.symbol] = { type: rate.type, price: tickers[rate.symbol].open };
-				} else {
-					const assets = rate.symbol.split('-');
-					const quotePrice = await getUserQuickTrade(assets[0], 1, null, assets[1],  bearerToken, ip, { additionalHeaders: null }, { headers: { 'api-key': null } }, { user_id: id, network_id });
-					prices[rate.symbol] = { type: rate.type, price: quotePrice.receiving_amount, token: quotePrice?.token || null }
-				}
+		
+				const trades = findTradeAmount(result.trades, { [from]: size });
+				
+				const quotePrice = await getUserQuickTrade(trades[index].spending_currency, trades[index].spending_amount, trades[index].receiving_amount, trades[index].receiving_currency,  bearerToken, ip, opts, req, { user_id: id, network_id });
+				
+				const calculatedPrice = rate.side === 'sell' ? quotePrice.receiving_amount / quotePrice.spending_amount  : quotePrice.spending_amount / quotePrice.receiving_amount;
+				result.trades[index].price = calculatedPrice;
+				prices[rate.symbol] = { type: rate.type, price: calculatedPrice, token: quotePrice?.token || null}
+
+				index++;
 			} catch (error) {
-				continue;
+				throw new Error(error.message + ` symbol: ${rate.symbol}`)
 			}
 		}
+
 	}
+
 	let hasNetworkBroker = Object.values(prices || {}).find(price => price.type === 'network');
 	if (!hasNetworkBroker)
 		await client.setexAsync(`${user_id}-${symbol}-rates`, 25, JSON.stringify(prices));
@@ -1408,20 +1455,6 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, id = nu
 	}
 
 	if (result?.totalRate && user_id) {
-		try {
-			for(const trade of result?.trades) {
-				// This is for getting the right token for network brokers, because we obtained the size for the trade so we need to get a new token with the updated size
-				if (trade.type === 'network') {
-					const assets = trade.symbol.split('-');
-					const quotePrice = await getUserQuickTrade(assets[0], 1, null, assets[1],  bearerToken, ip, { additionalHeaders: null }, { headers: { 'api-key': null } }, { user_id: id, network_id });
-					trade.token = quotePrice?.token || null;
-				}
-			}
-	
-		} catch (error) {
-			throw new Error('Rate not found!');
-		}
-
 		result.symbol = symbol;
 		result.size = size;
 		result.price = result?.totalRate / size;
@@ -1441,7 +1474,7 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, id = nu
 	return { token, quote_amount: result?.totalRate };
 }
 
-const executeUserChainTrade = async (user_id, userToken) => {
+const executeUserChainTrade = async (user_id, userToken, opts, req) => {
 	if (
 		!getKitConfig().chain_trade_config ||
 		!getKitConfig().chain_trade_config.active
@@ -1476,14 +1509,14 @@ const executeUserChainTrade = async (user_id, userToken) => {
 	let lastRate;
 
 	if (tradeInfo.quote_asset !== currency) {
-		const initialRate = await getUserChainTradeQuote(null, `${tradeInfo.base_asset}-${currency}`, tradeInfo.size, null, sourceUser.id, sourceUser.network_id);
+		const initialRate = await getUserChainTradeQuote(null, `${tradeInfo.base_asset}-${currency}`, tradeInfo.size, null, opts, req, sourceUser.id, sourceUser.network_id);
 		if (!initialRate?.token) {
 			throw new Error('Rate not found!');
 		};
 
-		lastRate = await getUserChainTradeQuote(null, `${currency}-${tradeInfo.quote_asset}`,  JSON.parse(await client.getAsync(initialRate.token)).totalRate, null, sourceUser.id, sourceUser.network_id);
+		lastRate = await getUserChainTradeQuote(null, `${currency}-${tradeInfo.quote_asset}`,  JSON.parse(await client.getAsync(initialRate.token)).totalRate, null, opts, req, sourceUser.id, sourceUser.network_id);
 	} else {
-		lastRate = await getUserChainTradeQuote(null, `${tradeInfo.base_asset}-${currency}`, tradeInfo.size, null, sourceUser.id, sourceUser.network_id);
+		lastRate = await getUserChainTradeQuote(null, `${tradeInfo.base_asset}-${currency}`, tradeInfo.size, null, opts, req, sourceUser.id, sourceUser.network_id);
 	}
 	
 	if (!lastRate?.token) {
@@ -1493,7 +1526,7 @@ const executeUserChainTrade = async (user_id, userToken) => {
 	const token = JSON.parse(await client.getAsync(lastRate.token));
 	let successfulTrades = [];
 	try {
-		successfulTrades = await executeTrades(token, sourceUser);
+		successfulTrades = await executeTrades(token, sourceUser, opts);
 	} catch (error) {
 		throw new Error(error.message);
 	}
@@ -1550,13 +1583,13 @@ const executeUserChainTrade = async (user_id, userToken) => {
 	}
 	try {
 		// get the currency amount back for the middle man account
-		const { token } = await getUserChainTradeQuote(null, `${tradeInfo.base_asset}-${currency}`, tradeInfo.size, null, sourceUser.id, sourceUser.network_id);
+		const { token } = await getUserChainTradeQuote(null, `${tradeInfo.base_asset}-${currency}`, tradeInfo.size, null, opts, req, sourceUser.id, sourceUser.network_id);
 		if (!token) {
 			throw new Error('Rate not found!');
 		};
 
 		const sourceTradeInfo = JSON.parse(await client.getAsync(token));
-		await executeTrades(sourceTradeInfo, sourceUser);
+		await executeTrades(sourceTradeInfo, sourceUser, opts);
 
 	} catch (error) {
 		const admin = await getUserByKitId(1);
@@ -1574,7 +1607,7 @@ const executeUserChainTrade = async (user_id, userToken) => {
 	return result;
 }
 
-const executeTrades = async (tradeInfo, sourceUser) => {
+const executeTrades = async (tradeInfo, sourceUser, opts) => {
 	const successfulTrades = [];
 
 	for (const trade of tradeInfo?.trades) {
@@ -1636,12 +1669,26 @@ const executeTrades = async (tradeInfo, sourceUser) => {
 			else if (type === 'network') {
 				const tierUser = getKitTier(sourceUser.verification_level);
 				const fee = tierUser.fees.taker[symbol];
-				res = await getNodeLib().executeQuote(trade?.token, sourceUser.network_id, fee);
+				const coins = trade.symbol.split('-');
+				let spending_currency = trade.side === 'sell' ? coins[0] : coins[1];
+				let receiving_currency = trade.side === 'sell' ? coins[1] : coins[0];
+				let spending_amount = trade.side === 'sell' ? size : new BigNumber(price).multipliedBy(size).toNumber();
+
+				const priceValues = await getNodeLib().getQuote(
+					sourceUser.network_id,
+					spending_currency,
+					spending_amount,
+					receiving_currency,
+					null,
+					opts
+				);
+
+				res = await getNodeLib().executeQuote(priceValues?.token, sourceUser.network_id, fee);
 			}
 
 			successfulTrades.push(res);
 		} catch (error) {
-			throw new Error(`Error occured during trade executions. Error: ${error.message} Failed trade ${trade.symbol}, successful trades: ${successfulTrades.map(trade => trade.symbol).join(', ')}`);
+			throw new Error(`There has been a failure processing your request please try again`);
 		}
 	}
 

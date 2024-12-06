@@ -419,6 +419,15 @@ class OrderEntry extends Component {
 		event.preventDefault();
 	};
 
+	onHandleNavigate = () => {
+		const { side, router, pair_base_display, pair_2_display } = this.props;
+		const viewAsset =
+			side === 'buy'
+				? pair_2_display?.toLowerCase()
+				: pair_base_display?.toLowerCase();
+		return router.push(`/wallet/${viewAsset}/deposit`);
+	};
+
 	generateFormValues = (props, buyingPair = '') => {
 		const {
 			min_size,
@@ -538,6 +547,13 @@ class OrderEntry extends Component {
 											increment_size
 									  )}{' '}
 								{side === 'buy' ? pair_2_display : pair_base_display}
+								<span
+									className="ml-1 add-icon"
+									onClick={() => this.onHandleNavigate()}
+								>
+									{' '}
+									+{' '}
+								</span>
 							</span>
 						</div>
 					</div>

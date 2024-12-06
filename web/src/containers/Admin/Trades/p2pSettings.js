@@ -18,7 +18,7 @@ import { CloseOutlined } from '@ant-design/icons';
 import { setExchange } from 'actions/assetActions';
 import { requestTiers } from '../Tiers/action';
 import { updateConstants, requestUsers } from './actions';
-import { requestAdminData } from 'actions/appActions';
+import { requestAdminData, setConfig } from 'actions/appActions';
 import { Coin } from 'components';
 import _debounce from 'lodash/debounce';
 import Coins from '../Coins';
@@ -28,7 +28,14 @@ import './index.css';
 
 const TabPane = Tabs.TabPane;
 
-const P2PSettings = ({ coins, pairs, p2p_config, features, constants }) => {
+const P2PSettings = ({
+	coins,
+	pairs,
+	p2p_config,
+	features,
+	constants,
+	setConfig,
+}) => {
 	const [displayP2pModel, setDisplayP2pModel] = useState(false);
 	const [displayFiatAdd, setDisplayFiatAdd] = useState(false);
 	const [displayPaymentAdd, setDisplayPaymentAdd] = useState(false);
@@ -1233,6 +1240,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features, constants }) => {
 											);
 											setSourceAccount(result?.source_account);
 											setP2pConfig(result);
+											setConfig(res?.data?.kit);
 										});
 										setEditMode(false);
 										setStep(0);
@@ -1808,6 +1816,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 	setExchange: bindActionCreators(setExchange, dispatch),
+	setConfig: bindActionCreators(setConfig, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(P2PSettings);
