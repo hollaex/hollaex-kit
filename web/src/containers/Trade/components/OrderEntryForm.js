@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Collapse } from 'antd';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
@@ -50,10 +50,17 @@ const Form = ({
 	onReview,
 	formKeyDown,
 }) => {
+	const [activeKey, setActiveKey] = useState([]);
+
 	const fields = getFields(formValues, type, orderType);
 	const errorText = error || outsideFormError;
 	const hasPostOnly =
 		Object.entries(fields).filter(([key]) => key === 'postOnly').length !== 0;
+
+	const handleChange = (key) => {
+		setActiveKey(key);
+	};
+
 	return (
 		<div className="trade_order_entry-form d-flex">
 			<form
@@ -70,13 +77,21 @@ const Form = ({
 						.filter(([key]) => key !== 'postOnly')
 						.map(renderFields)}
 					{hasPostOnly && (
-						<Collapse defaultActiveKey={[]} bordered={false} ghost>
+						<Collapse
+							defaultActiveKey={activeKey}
+							bordered={false}
+							activeKey={activeKey}
+							onChange={handleChange}
+							ghost
+						>
 							<Collapse.Panel
 								showArrow={false}
 								header={
-									<span className="underline-text">
+									<span className="advacnce-text underline-text">
 										<EditWrapper stringId="ORDER_ENTRY_ADVANCED">
-											{STRINGS['ORDER_ENTRY_ADVANCED']}
+											{activeKey.includes('1')
+												? STRINGS['ORDER_ENTRY_HIDE_ADVANCE']
+												: STRINGS['ORDER_ENTRY_SHOW_ADVANCE']}
 										</EditWrapper>
 									</span>
 								}

@@ -1179,6 +1179,8 @@
 	"LOGOUT_ERROR_INACTIVE": "You have been logged out because you have been inactive",
 	"ORDER_ENTRY_BUTTON": "{0} {1}",
 	"ORDER_ENTRY_ADVANCED": "Advanced",
+	"ORDER_ENTRY_SHOW_ADVANCE": "Show Advanced",
+	"ORDER_ENTRY_HIDE_ADVANCE": "Hide Advacned",
 	"QUICK_TRADE_OUT_OF_LIMITS": "Order size is out of the limits",
 	"QUICK_TRADE_TOKEN_USED": "Token has been used",
 	"QUICK_TRADE_QUOTE_EXPIRED_FIRST_LINE": "Price quote has expired.",
