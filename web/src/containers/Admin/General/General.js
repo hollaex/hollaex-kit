@@ -547,8 +547,7 @@ class GeneralContent extends Component {
 		features,
 		balance_history_config = null,
 		referral_history_config = null,
-		chain_trade_config = null,
-		selectable_native_currencies = null
+		chain_trade_config = null
 	) => {
 		this.handleSubmitGeneral({
 			kit: {
@@ -556,7 +555,6 @@ class GeneralContent extends Component {
 				balance_history_config,
 				referral_history_config,
 				chain_trade_config,
-				selectable_native_currencies,
 			},
 		});
 	};
