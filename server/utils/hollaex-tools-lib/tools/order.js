@@ -1688,7 +1688,7 @@ const executeTrades = async (tradeInfo, sourceUser, opts) => {
 
 			successfulTrades.push(res);
 		} catch (error) {
-			throw new Error(`Error occured during trade executions. Error: ${error.message} Failed trade ${trade.symbol}, successful trades: ${successfulTrades.map(trade => trade.symbol).join(', ')}`);
+			throw new Error(`There has been a failure processing your request please try again`);
 		}
 	}
 
