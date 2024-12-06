@@ -72,7 +72,6 @@
 			color: $link;
 		}
 		.trade-order-price-text {
-			text-wrap: nowrap;
 			.market-buy-side,
 			.market-sell-side {
 				background-color: $buy;
@@ -81,6 +80,14 @@
 				border-radius: 5px;
 				margin-right: 2%;
 				text-align: center;
+			}
+			.edit-wrapper__container {
+				div {
+					display: flex;
+					gap: 2%;
+					align-items: center;
+					min-width: 10rem;
+				}
 			}
 		}
 		.market-sell-side {
