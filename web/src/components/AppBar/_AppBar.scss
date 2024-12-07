@@ -95,6 +95,15 @@ $app-menu-width: calc(100vw - 40rem);
 		}
 	}
 
+	.language-content {
+		text-wrap: nowrap;
+		color: $app-bar-icon-inactive;
+	}
+
+	.language-content:hover {
+		color: $base_top-bar-navigation_text;
+	}
+
 	.app_bar-quicktrade-container {
 		// margin: 0 0.25rem;
 		.toggle_button-wrapper {
@@ -106,6 +115,17 @@ $app-menu-width: calc(100vw - 40rem);
 				}
 			}
 		}
+	}
+
+	.language_option {
+		.flag-icon {
+			width: 1.5rem;
+			height: 1rem;
+		}
+	}
+
+	.language_option:hover {
+		cursor: pointer;
 	}
 
 	.app_bar-quicktrade {
@@ -1716,5 +1736,79 @@ $app-menu-width: calc(100vw - 40rem);
 		.blue-link:hover {
 			cursor: pointer;
 		}
+	}
+}
+
+.language-popup-wrapper {
+	.ReactModal__Content {
+		width: 35rem;
+		font-size: 12px;
+	}
+
+	.language-popup-container {
+		.title-container {
+			display: flex;
+			align-items: center;
+			gap: 2%;
+			font-size: 16px;
+
+			.icon-logo {
+				svg {
+					position: relative;
+					top: 2px;
+				}
+			}
+		}
+
+		.language-field {
+			margin-top: 7%;
+			display: flex;
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 5px;
+
+			.custom-select-input-style {
+				margin: unset !important;
+				max-width: 100% !important;
+				width: 100% !important;
+
+				.ant-select-selector {
+					border-color: $colors-main-black !important;
+					height: 25px !important;
+				}
+				.ant-select-selection-item {
+					color: $colors-main-black !important;
+					display: flex;
+					align-items: center;
+					gap: 1%;
+				}
+				.ant-select-selection-placeholder {
+					line-height: 22px;
+				}
+				.ant-select-arrow {
+					svg {
+						color: $colors-main-black !important;
+					}
+				}
+			}
+		}
+
+		.blue-link:hover {
+			cursor: pointer;
+		}
+
+		.button-container {
+			margin-top: 5%;
+			display: flex;
+			gap: 5%;
+		}
+	}
+}
+
+.select-currency-wrapper {
+	.ant-select-item-option-content {
+		display: flex;
+		align-items: center;
+		gap: 1%;
 	}
 }

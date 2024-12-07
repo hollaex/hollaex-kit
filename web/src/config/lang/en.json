@@ -2573,5 +2573,11 @@
 		"PRICE_LINK": "Visit price link here.",
 		"BUY_TEXT": "BUY {0}",
 		"DEPOSIT_TEXT": "Deposit {0}"
+	},
+	"LANGUAGE_SWITCHER": {
+		"LANGUAGE_TITLE": "Regional Settings",
+		"DISPLAY_CURRENCY": "Display currency",
+		"DISPLAY_CURRENCY_DESC": "Used for valuating wallet balances and estimating prices.",
+		"SETTINGS": "settings here."
 	}
 }

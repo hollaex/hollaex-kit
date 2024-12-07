@@ -50,6 +50,7 @@ class Wallet extends Component {
 			isZeroBalanceHidden,
 			showDustSection: false,
 			activeBalanceHistory: false,
+			baseCurrency: BASE_CURRENCY,
 		};
 	}
 
@@ -126,6 +127,19 @@ class Wallet extends Component {
 		if (getActiveBalanceHistory !== activeBalanceHistory) {
 			this.setState({ activeBalanceHistory: getActiveBalanceHistory });
 		}
+		if (
+			this.props.user?.settings?.interface?.display_currency &&
+			this.props.user?.settings?.interface?.display_currency !==
+				this.state?.baseCurrency
+		) {
+			this.setState({
+				baseCurrency: this.props.user?.settings?.interface?.display_currency,
+			});
+
+			setTimeout(() => {
+				this.props.setPricesAndAsset(this.props.balance, this.props.coins);
+			}, [1000]);
+		}
 	}
 
 	getMobileSlider = (coins, oraclePrices) => {
@@ -157,6 +171,10 @@ class Wallet extends Component {
 		});
 	};
 
+	setBaseCurrency = (baseCurrency) => {
+		this.setState({ baseCurrency });
+	};
+
 	generateSections = (
 		changeSymbol,
 		balance,
@@ -172,10 +190,15 @@ class Wallet extends Component {
 		isFetching,
 		assets
 	) => {
-		const { showDustSection, isZeroBalanceHidden, searchValue } = this.state;
+		const {
+			showDustSection,
+			isZeroBalanceHidden,
+			searchValue,
+			baseCurrency,
+		} = this.state;
 		const { router } = this.props;
 		const { increment_unit, display_name } =
-			coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+			coins[baseCurrency] || DEFAULT_COIN_DATA;
 		const totalAssets = STRINGS.formatString(
 			CURRENCY_PRICE_FORMAT,
 			display_name,
@@ -209,6 +232,7 @@ class Wallet extends Component {
 						isZeroBalanceHidden={isZeroBalanceHidden}
 						handleBalanceHistory={this.handleBalanceHistory}
 						setActiveTab={this.setActiveTab}
+						setBaseCurrency={this.setBaseCurrency}
 					/>
 				),
 				isOpen: true,
@@ -383,6 +407,7 @@ class Wallet extends Component {
 }
 
 const mapStateToProps = (store) => ({
+	user: store.user,
 	coins: store.app.coins,
 	constants: store.app.constants,
 	pairs: store.app.pairs,
