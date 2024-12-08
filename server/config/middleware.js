@@ -31,7 +31,21 @@ const domainMiddleware = (req, res, next) => {
 		req.headers['x-real-origin'] = DOMAIN;
 	}
 	if (APM_ENABLED) {
-		apm.setTransactionName(req.method + ' ' + req.url);
+
+		let transactionName = req.method + ' ' + req.path;
+
+		if (req.path.indexOf('/v2/') > -1) {
+			apm.setLabel('endpointType', 'v2');
+		}
+
+		if (req.path.indexOf('/order/') > -1) {
+			apm.setLabel('endpointType', 'order');
+			let orderId = req.path.split('?order_id=')[3];
+			if (!isNaN(orderId)) {
+				transactionName = req.method + ' ' + req.path.replace(`?order_id=${orderId}`, '');
+			}
+		}
+		apm.setTransactionName(transactionName);
 	}
 	return next();
 };
