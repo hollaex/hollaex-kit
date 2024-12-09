@@ -21,6 +21,7 @@ const Fiatmarkets = ({
 	coins = [],
 	constants = {},
 	setConfig,
+	ultimate_fiat,
 }) => {
 	const [activeTab, setActiveTab] = useState('0');
 	const [isUpgrade, setIsUpgrade] = useState(false);
@@ -30,6 +31,7 @@ const Fiatmarkets = ({
 	const [offRampData, setOffRamp] = useState(offramp);
 	const [onrampData, setOnRamp] = useState(onramp);
 	const [userPaymentsData, setOnuserPaymentsData] = useState([]);
+	const [featureEnable, setFeatureEnable] = useState(ultimate_fiat);
 
 	useEffect(() => {
 		if (exchange && Object.keys(exchange).length) {
@@ -85,56 +87,63 @@ const Fiatmarkets = ({
 						onramp={onrampData}
 						offramp={offRampData}
 						isGetExchange={isGetExchange}
+						ultimateFiat={ultimate_fiat}
+						constants={constants}
+						setFeatureEnable={setFeatureEnable}
 					/>
 				</TabPane>
-				<TabPane tab="Payment accounts" key="1">
-					<PaymentAccounts
-						router={router}
-						isUpgrade={isUpgrade}
-						activeTab={activeTab}
-						user_payments={user_payments}
-						paymentsMethodsData={userPaymentsData}
-						onramp={onrampData}
-						offramp={offRampData}
-						setConfig={setConfig}
-					/>
-				</TabPane>
-				<TabPane tab="On-ramp" key="2">
-					<Onramp
-						activeTab={'onRamp'}
-						handleTabChange={handleTabChange}
-						coins={coins[0]}
-						isUpgrade={isUpgrade}
-						onramp={onrampData}
-						user_payments={user_payments}
-						paymentsMethodsData={userPaymentsData}
-						setConfig={setConfig}
-						getUpdatedKitData={getUpdatedKitData}
-						isLoading={isLoading}
-						setIsLoading={setIsLoading}
-					/>
-				</TabPane>
-				<TabPane tab="Off-ramp" key="3">
-					<Offramp
-						activeTab={'offRamp'}
-						handleTabChange={handleTabChange}
-						coins={coins[0]}
-						isUpgrade={isUpgrade}
-						offramp={offRampData}
-						user_payments={user_payments}
-						paymentsMethodsData={userPaymentsData}
-						setConfig={setConfig}
-						getUpdatedKitData={getUpdatedKitData}
-						isLoading={isLoading}
-						setIsLoading={setIsLoading}
-					/>
-				</TabPane>
-				<TabPane tab="Fiat Fees & Customization" key="4">
-					<FiatFees />
-				</TabPane>
-				{/* <TabPane tab="KYC" key="4">
+				{featureEnable && (
+					<>
+						<TabPane tab="Payment accounts" key="1">
+							<PaymentAccounts
+								router={router}
+								isUpgrade={isUpgrade}
+								activeTab={activeTab}
+								user_payments={user_payments}
+								paymentsMethodsData={userPaymentsData}
+								onramp={onrampData}
+								offramp={offRampData}
+								setConfig={setConfig}
+							/>
+						</TabPane>
+						<TabPane tab="On-ramp" key="2">
+							<Onramp
+								activeTab={'onRamp'}
+								handleTabChange={handleTabChange}
+								coins={coins[0]}
+								isUpgrade={isUpgrade}
+								onramp={onrampData}
+								user_payments={user_payments}
+								paymentsMethodsData={userPaymentsData}
+								setConfig={setConfig}
+								getUpdatedKitData={getUpdatedKitData}
+								isLoading={isLoading}
+								setIsLoading={setIsLoading}
+							/>
+						</TabPane>
+						<TabPane tab="Off-ramp" key="3">
+							<Offramp
+								activeTab={'offRamp'}
+								handleTabChange={handleTabChange}
+								coins={coins[0]}
+								isUpgrade={isUpgrade}
+								offramp={offRampData}
+								user_payments={user_payments}
+								paymentsMethodsData={userPaymentsData}
+								setConfig={setConfig}
+								getUpdatedKitData={getUpdatedKitData}
+								isLoading={isLoading}
+								setIsLoading={setIsLoading}
+							/>
+						</TabPane>
+						<TabPane tab="Fiat Fees & Customization" key="4">
+							<FiatFees />
+						</TabPane>
+						{/* <TabPane tab="KYC" key="4">
 					<Kyc />
 				</TabPane> */}
+					</>
+				)}
 			</Tabs>
 		</div>
 	);
@@ -149,6 +158,7 @@ const mapStateToProps = (state) => {
 		exchange: state.asset && state.asset.exchange ? state.asset.exchange : {},
 		coins: state.asset.allCoins,
 		constants: state.app.constants,
+		ultimate_fiat: state.app.constants.features.ultimate_fiat,
 	};
 };
 
