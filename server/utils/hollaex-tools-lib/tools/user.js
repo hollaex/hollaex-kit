@@ -3269,12 +3269,15 @@ const fetchUserProfitLossInfo = async (user_id, opts = { period: 7 }) => {
 		let totalFinalValue = 0;
 		Object.keys(finalBalances).forEach(async (asset) => {
 
-
- 			const depositsUsedForTrades = filteredTrades
- 			.filter((trade) => trade.symbol.split('-')[1].toLowerCase() === asset && trade.side === 'buy')
- 			.reduce((sum, trade) => sum + trade.size * trade.price, 0);
-
- 			const adjustedDepositInflow = (netInflowFromDepositsPerAsset[asset] || 0) - depositsUsedForTrades;
+			const totalDeposit = netInflowFromDepositsPerAsset[asset] || 0;
+						
+			const depositsUsedForTrades = filteredTrades
+				.filter((trade) => trade.symbol.split('-')[1].toLowerCase() === asset && trade.side === 'buy')
+				.reduce((sum, trade) => sum + trade.size * trade.price, 0);
+						
+			const cappedDepositsUsedForTrades = Math.min(depositsUsedForTrades, totalDeposit);
+						
+			const adjustedDepositInflow = totalDeposit - cappedDepositsUsedForTrades;
  			
 
 			if (initialBalances?.[asset] && initialBalances?.[asset]?.native_currency_value) {
