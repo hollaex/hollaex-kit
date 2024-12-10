@@ -163,7 +163,15 @@
         "AUTO_TRADE_ERROR": {
             "html": "<div><p>親愛なる${name}様、</p><p>お客様の自動取引設定が、残高不足のため次の取引で失敗しました。残高を確認して更新してください。支出額: ${spend_amount}、支出通貨: ${spend_coin}、購入通貨: ${buy_coin}。</p><p>当プラットフォームをご利用いただきありがとうございます。</p><p>敬具、${api_name}チーム</p></div>",
             "title": "自動取引設定のエラー"
-          }
+          },
+        "AUTO_TRADE_REMINDER": {
+			"html": "<div><p>親愛なる${name}様、</p><p>こちらは、あなたの定期取引である<b>${spend_amount} ${spend_coin} for ${buy_coin}</b>が12時間後に実行されることをお知らせするリマインダーです。成功裏に実行するために、ウォレットに十分な残高があることを確認してください：</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">ウォレットを見る</Button></a></div><p>当社のプラットフォームをご利用いただきありがとうございます。</p><p>よろしくお願い申し上げます,<br />${api_name} チーム</p></div>",
+			"title": "定期注文がもうすぐ有効になります"
+		},
+		"AUTO_TRADE_FILLED": {
+			"html":  "<div><p>親愛なる ${name} 様、</p><p>自動注文「<b>${spend_amount} ${spend_coin} を ${buy_coin} と交換</b>」が正常に処理されました。</p><div>取引履歴をご確認ください：</div><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">取引履歴を表示</Button></a></div><p>私たちのプラットフォームをご利用いただきありがとうございます。</p><p>よろしくお願いいたします。<br />${api_name} チーム</p></div>",
+			"title":  "自動取引注文が正常に処理されました"
+		}
           
     }
 }
