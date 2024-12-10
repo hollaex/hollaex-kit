@@ -3268,11 +3268,23 @@ const fetchUserProfitLossInfo = async (user_id, opts = { period: 7 }) => {
 		let totalInitialValue = 0;
 		let totalFinalValue = 0;
 		Object.keys(finalBalances).forEach(async (asset) => {
+
+			const totalDeposit = netInflowFromDepositsPerAsset[asset] || 0;
+						
+			const depositsUsedForTrades = filteredTrades
+				.filter((trade) => trade.symbol.split('-')[1].toLowerCase() === asset && trade.side === 'buy')
+				.reduce((sum, trade) => sum + trade.size * trade.price, 0);
+						
+			const cappedDepositsUsedForTrades = Math.min(depositsUsedForTrades, totalDeposit);
+						
+			const adjustedDepositInflow = totalDeposit - cappedDepositsUsedForTrades;
+ 			
+
 			if (initialBalances?.[asset] && initialBalances?.[asset]?.native_currency_value) {
 				const cumulativePNL =
 				finalBalances[asset].native_currency_value -
 				initialBalances[asset].native_currency_value -
-				(netInflowFromDepositsPerAsset[asset] || 0) -
+				adjustedDepositInflow -
 				(netInflowFromTradesPerAsset[asset] || 0) -
 				(netOutflowFromWithdrawalsPerAsset[asset] || 0);
 			
