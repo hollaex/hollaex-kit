@@ -33,7 +33,7 @@ const Review = ({
 	const upToMarket = !math.smaller(orderPrice, 0);
 	return (
 		<div className="trade_order_entry-review d-flex flex-column">
-			<div className={classnames(...ROW_CLASSNAMES)}>
+			<div className={classnames(...ROW_CLASSNAMES, 'align-items-center')}>
 				<div className="trade-order-price-text font-weight-bold important-text">
 					<EditWrapper stringId="ESTIMATED_PRICE,ORDER_PRICE">
 						<span
@@ -41,7 +41,9 @@ const Review = ({
 								side === 'buy' ? 'market-buy-side' : 'market-sell-side'
 							}
 						>
-							{side?.charAt(0)?.toUpperCase() + side?.slice(1)}
+							{STRINGS[
+								side === 'buy' ? 'SIDES_VALUES.buy' : 'SIDES_VALUES.sell'
+							]?.toUpperCase()}
 						</span>
 						{type === 'market' ? (
 							<span>{STRINGS['ESTIMATED_PRICE']}:</span>
