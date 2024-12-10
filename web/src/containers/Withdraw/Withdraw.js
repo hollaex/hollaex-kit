@@ -772,6 +772,18 @@ const RenderWithdraw = ({
 		},
 	];
 
+	const currencyNetwork = (network) => {
+		return (
+			coins[selectedAsset?.selectedCurrency]?.withdrawal_fees &&
+			coins[selectedAsset?.selectedCurrency]?.withdrawal_fees[network]
+		);
+	};
+
+	const selectedAssetNetwork =
+		coinLength?.length > 1
+			? renderNetworkField(selectedAsset?.networkData)
+			: network;
+	const isActiveWithdrawNetwork = currencyNetwork(selectedAssetNetwork);
 	return (
 		<div
 			className={
@@ -993,7 +1005,14 @@ const RenderWithdraw = ({
 										isMobile ? 'select-wrapper mobile-view' : 'select-wrapper'
 									}
 								>
-									<div className="d-flex withdraw-network-field">
+									<div
+										className={
+											coinLength?.length === 1 &&
+											isActiveWithdrawNetwork?.active === false
+												? 'd-flex withdraw-network-field select-field-disabled'
+												: 'd-flex withdraw-network-field'
+										}
+									>
 										<Select
 											showSearch={true}
 											placeholder={STRINGS['WITHDRAW_PAGE.SELECT']}
@@ -1002,29 +1021,94 @@ const RenderWithdraw = ({
 													? 'select-field'
 													: 'disabled'
 											}`}
-											dropdownClassName="custom-select-style"
+											dropdownClassName="custom-select-style withdraw-selected-network"
 											suffixIcon={<CaretDownOutlined />}
 											allowClear={true}
 											onChange={onHandleChangeNetwork}
 											value={
 												defaultCurrency &&
 												!isValidField?.isPinnedAssets &&
-												coinLength?.length < 1
-													? defaultNetwork
-													: coinLength && coinLength.length <= 1
-													? getWithdrawNetworkOptions &&
-													  getWithdrawNetworkOptions
-														? selectedAsset?.networkData
-														: renderNetworkWithLabel(networkIcon, network)
-													: coinLength && coinLength.length > 1
-													? getWithdrawNetworkOptions &&
-													  getWithdrawNetworkOptions
-														? selectedAsset?.networkData
-														: renderNetworkWithLabel(
-																networkOptionsIcon,
-																getWithdrawNetworkOptions
-														  )
-													: coins[getWithdrawCurrency]?.symbol.toUpperCase()
+												coinLength?.length < 1 ? (
+													defaultNetwork
+												) : coinLength && coinLength.length <= 1 ? (
+													getWithdrawNetworkOptions &&
+													getWithdrawNetworkOptions ? (
+														<span className="d-flex">
+															{selectedAsset?.networkData}
+															{coins[network] &&
+															currencyNetwork(selectedAsset?.networkData)
+																?.active !== false ? (
+																<span className="ml-1 secondary-text">
+																	(
+																	<span>
+																		{calculateFee(
+																			selectedAsset?.selectedCurrency,
+																			selectedAsset?.networkData,
+																			coins
+																		)}
+																	</span>
+																	<span className="ml-1">
+																		{calculateFeeCoin(
+																			selectedAsset?.selectedCurrency,
+																			selectedAsset?.networkData,
+																			coins
+																		)?.toUpperCase()}
+																	</span>
+																	)
+																</span>
+															) : (
+																<EditWrapper stringId="LEVELS.BLOCKED">
+																	<span className="ml-1 secondary-text">
+																		({STRINGS['LEVELS.BLOCKED']})
+																	</span>
+																</EditWrapper>
+															)}
+														</span>
+													) : (
+														<span className="d-flex">
+															{renderNetworkWithLabel(networkIcon, network)}
+															{coins[network] &&
+															currencyNetwork(network)?.active !== false ? (
+																<span className="ml-1 secondary-text">
+																	(
+																	<span>
+																		{calculateFee(
+																			selectedAsset?.selectedCurrency,
+																			network,
+																			coins
+																		)}
+																	</span>
+																	<span className="ml-1">
+																		{calculateFeeCoin(
+																			selectedAsset?.selectedCurrency,
+																			network,
+																			coins
+																		)?.toUpperCase()}
+																	</span>
+																	)
+																</span>
+															) : (
+																<EditWrapper stringId="LEVELS.BLOCKED">
+																	<span className="ml-1 secondary-text">
+																		({STRINGS['LEVELS.BLOCKED']})
+																	</span>
+																</EditWrapper>
+															)}
+														</span>
+													)
+												) : coinLength && coinLength.length > 1 ? (
+													getWithdrawNetworkOptions &&
+													getWithdrawNetworkOptions ? (
+														selectedAsset?.networkData
+													) : (
+														renderNetworkWithLabel(
+															networkOptionsIcon,
+															getWithdrawNetworkOptions
+														)
+													)
+												) : (
+													coins[getWithdrawCurrency]?.symbol.toUpperCase()
+												)
 											}
 											disabled={
 												(coinLength && coinLength.length === 1) ||
@@ -1035,31 +1119,79 @@ const RenderWithdraw = ({
 										>
 											{coinLength?.length === 1 &&
 												coinLength &&
-												coinLength.map((data, inx) => (
-													<Option key={inx} value={data}>
-														<div className="d-flex gap-1">
-															<div>
-																{renderNetworkWithLabel(
-																	coins[data]?.icon_id,
-																	data
+												coinLength.map((data, inx) => {
+													const getSelectedSymbol = renderNetworkField(
+														data?.network
+													);
+													const isActiveNetwork =
+														currencyNetwork(getSelectedSymbol)?.active !==
+														false;
+													return (
+														<Option
+															key={inx}
+															value={data}
+															disabled={!isActiveNetwork}
+														>
+															<div className="d-flex withdraw-network-options">
+																<div>
+																	{renderNetworkWithLabel(
+																		coins[data]?.icon_id,
+																		data
+																	)}
+																</div>
+																{isActiveNetwork ? (
+																	<span className="secondary-text">
+																		{calculateFee(
+																			selectedAsset?.selectedCurrency,
+																			data,
+																			coins
+																		)}
+																		<span className="ml-1">
+																			{calculateFeeCoin(
+																				selectedAsset?.selectedCurrency,
+																				data,
+																				coins
+																			)?.toUpperCase()}
+																		</span>
+																	</span>
+																) : (
+																	<EditWrapper stringId="LEVELS.BLOCKED">
+																		<span className="ml-1 secondary-text">
+																			({STRINGS['LEVELS.BLOCKED']})
+																		</span>
+																	</EditWrapper>
 																)}
 															</div>
-														</div>
-													</Option>
-												))}
+														</Option>
+													);
+												})}
 											{coinLength &&
 												coinLength?.length > 1 &&
 												networkList.map((data, inx) => {
 													const coin = data.iconId.split('_');
+													const getSelectedSymbol = renderNetworkField(
+														data?.network
+													);
+													const isActiveNetwork =
+														currencyNetwork(getSelectedSymbol)?.active !==
+														false;
+
 													return coinLength.map((coinData, coinInx) => {
 														if (coinData === coin[0]?.toLowerCase()) {
 															return (
 																<Option
 																	key={`${inx}-${coinInx}`}
 																	value={data?.network}
+																	disabled={!isActiveNetwork}
 																>
-																	<div className="d-flex gap-1">
-																		<div className="d-flex">
+																	<div className="d-flex withdraw-network-options w-100">
+																		<div
+																			className={
+																				isActiveNetwork
+																					? 'd-flex important-text'
+																					: 'd-flex secondary-text'
+																			}
+																		>
 																			{data?.network}
 																			<div className="ml-2 mt-1">
 																				<Coin
@@ -1069,6 +1201,28 @@ const RenderWithdraw = ({
 																				/>
 																			</div>
 																		</div>
+																		{isActiveNetwork ? (
+																			<span className="secondary-text">
+																				{calculateFee(
+																					selectedAsset?.selectedCurrency,
+																					getSelectedSymbol,
+																					coins
+																				)}
+																				<span className="ml-1">
+																					{calculateFeeCoin(
+																						selectedAsset?.selectedCurrency,
+																						getSelectedSymbol,
+																						coins
+																					)?.toUpperCase()}
+																				</span>
+																			</span>
+																		) : (
+																			<EditWrapper stringId="LEVELS.BLOCKED">
+																				<span className="ml-1 secondary-text">
+																					({STRINGS['LEVELS.BLOCKED']})
+																				</span>
+																			</EditWrapper>
+																		)}
 																	</div>
 																</Option>
 															);
@@ -1146,65 +1300,22 @@ const RenderWithdraw = ({
 							)}
 						</div>
 						<div className="destination-field-wrapper">
-							{isEmailAndAddress && renderNetwork && (
-								<div
-									className={
-										isMobile
-											? 'd-flex flex-row select-wrapper mobile-view'
-											: 'd-flex flex-row select-wrapper'
-									}
-								>
-									{selectedMethod ===
-										STRINGS['WITHDRAW_PAGE.WITHDRAWAL_CONFIRM_ADDRESS'] ||
-									selectedMethod === 'Address' ? (
-										<div className="destination-input-wrapper">
-											{getAddress && getAddress?.length === 0 && (
-												<Input
-													className="destination-input-field destination-input-address-field"
-													onChange={(e) =>
-														onHandleAddress(e.target.value, 'address')
-													}
-													value={getWithdrawAddress}
-													placeholder={
-														STRINGS['WITHDRAW_PAGE.WITHDRAW_ADDRESS']
-													}
-													suffix={renderScanIcon(onHandleScan)}
-												></Input>
-											)}
-											{getAddress && getAddress?.length > 0 && (
-												<Select
-													placeholder={STRINGS['WITHDRAW_PAGE.SELECT']}
-													className="custom-select-input-style elevated select-field destination-select-field"
-													dropdownClassName="custom-select-style"
-													suffixIcon={<CaretDownOutlined />}
-													allowClear={true}
-													value={selectedAsset?.addressField}
-													onChange={onchangeAddressField}
-													onDropdownVisibleChange={handleDropdownVisibleChange}
-													onClear={() => onHandleClear('address')}
-													getPopupContainer={handlePopupContainer}
-												>
-													{selectAddressField?.map((data) => {
-														return (
-															<Option key={data?.value}>
-																<div
-																	className={
-																		data?.value === 'View address book'
-																			? 'withdraw-dropdown-address'
-																			: data?.value !== 'New Address' &&
-																			  data?.value !== 'View address book' &&
-																			  'withdraw-dropdown-address-options'
-																	}
-																>
-																	{data?.label}
-																</div>
-															</Option>
-														);
-													})}
-												</Select>
-											)}
-											{selectedAsset.addressField === 'New Address' && (
-												<div className="d-flex">
+							{isEmailAndAddress &&
+								renderNetwork &&
+								isActiveWithdrawNetwork &&
+								isActiveWithdrawNetwork?.active !== false && (
+									<div
+										className={
+											isMobile
+												? 'd-flex flex-row select-wrapper mobile-view'
+												: 'd-flex flex-row select-wrapper'
+										}
+									>
+										{selectedMethod ===
+											STRINGS['WITHDRAW_PAGE.WITHDRAWAL_CONFIRM_ADDRESS'] ||
+										selectedMethod === 'Address' ? (
+											<div className="destination-input-wrapper">
+												{getAddress && getAddress?.length === 0 && (
 													<Input
 														className="destination-input-field destination-input-address-field"
 														onChange={(e) =>
@@ -1216,42 +1327,92 @@ const RenderWithdraw = ({
 														}
 														suffix={renderScanIcon(onHandleScan)}
 													></Input>
-												</div>
-											)}
-											{!selectedAsset.addressField &&
-												!selectedAsset.addressField && (
-													<div className="blue-link address-link">
-														<Link to="/wallet/address-book">
-															<EditWrapper stringId="ADDRESS_BOOK.MANAGE_ADDRESS_BOOK">
-																{STRINGS['ADDRESS_BOOK.MANAGE_ADDRESS_BOOK']}
-															</EditWrapper>
-														</Link>
+												)}
+												{getAddress && getAddress?.length > 0 && (
+													<Select
+														placeholder={STRINGS['WITHDRAW_PAGE.SELECT']}
+														className="custom-select-input-style elevated select-field destination-select-field"
+														dropdownClassName="custom-select-style"
+														suffixIcon={<CaretDownOutlined />}
+														allowClear={true}
+														value={selectedAsset?.addressField}
+														onChange={onchangeAddressField}
+														onDropdownVisibleChange={
+															handleDropdownVisibleChange
+														}
+														onClear={() => onHandleClear('address')}
+														getPopupContainer={handlePopupContainer}
+													>
+														{selectAddressField?.map((data) => {
+															return (
+																<Option key={data?.value}>
+																	<div
+																		className={
+																			data?.value === 'View address book'
+																				? 'withdraw-dropdown-address'
+																				: data?.value !== 'New Address' &&
+																				  data?.value !== 'View address book' &&
+																				  'withdraw-dropdown-address-options'
+																		}
+																	>
+																		{data?.label}
+																	</div>
+																</Option>
+															);
+														})}
+													</Select>
+												)}
+												{selectedAsset.addressField === 'New Address' && (
+													<div className="d-flex">
+														<Input
+															className="destination-input-field destination-input-address-field"
+															onChange={(e) =>
+																onHandleAddress(e.target.value, 'address')
+															}
+															value={getWithdrawAddress}
+															placeholder={
+																STRINGS['WITHDRAW_PAGE.WITHDRAW_ADDRESS']
+															}
+															suffix={renderScanIcon(onHandleScan)}
+														></Input>
 													</div>
 												)}
-										</div>
-									) : (
-										<Input
-											className="destination-input-field"
-											onChange={(e) => onHandleAddress(e.target.value, 'email')}
-											value={receiverWithdrawalEmail}
-											placeholder={
-												STRINGS['WITHDRAW_PAGE.WITHDRAW_EMAIL_ADDRESS']
-											}
-										></Input>
-									)}
-									{selectedMethod === STRINGS['FORM_FIELDS.EMAIL_LABEL'] ? (
-										isValidField?.isValidEmail ? (
+												{!selectedAsset.addressField &&
+													!selectedAsset.addressField && (
+														<div className="blue-link address-link">
+															<Link to="/wallet/address-book">
+																<EditWrapper stringId="ADDRESS_BOOK.MANAGE_ADDRESS_BOOK">
+																	{STRINGS['ADDRESS_BOOK.MANAGE_ADDRESS_BOOK']}
+																</EditWrapper>
+															</Link>
+														</div>
+													)}
+											</div>
+										) : (
+											<Input
+												className="destination-input-field"
+												onChange={(e) =>
+													onHandleAddress(e.target.value, 'email')
+												}
+												value={receiverWithdrawalEmail}
+												placeholder={
+													STRINGS['WITHDRAW_PAGE.WITHDRAW_EMAIL_ADDRESS']
+												}
+											></Input>
+										)}
+										{selectedMethod === STRINGS['FORM_FIELDS.EMAIL_LABEL'] ? (
+											isValidField?.isValidEmail ? (
+												<CheckOutlined className="mt-3 ml-3" />
+											) : (
+												<CloseOutlined className="mt-3 ml-3" />
+											)
+										) : isValidAddress ? (
 											<CheckOutlined className="mt-3 ml-3" />
 										) : (
 											<CloseOutlined className="mt-3 ml-3" />
-										)
-									) : isValidAddress ? (
-										<CheckOutlined className="mt-3 ml-3" />
-									) : (
-										<CloseOutlined className="mt-3 ml-3" />
-									)}
-								</div>
-							)}
+										)}
+									</div>
+								)}
 						</div>
 					</div>
 				</div>
