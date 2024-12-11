@@ -1405,6 +1405,8 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, opts, r
 	const quickTrades = getQuickTrades();
 
 	let data = null;
+	let nonspreadedPrice = null;
+
 	let prices = {};
 	if (user_id) {
 		data = await client.getAsync(`${user_id}-${symbol}-rates`);
@@ -1427,8 +1429,10 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, opts, r
 				const quotePrice = await getUserQuickTrade(trades[index].spending_currency, trades[index].spending_amount, trades[index].receiving_amount, trades[index].receiving_currency,  bearerToken, ip, opts, req, { user_id: id, network_id });
 				
 				let calculatedPrice = rate.side === 'sell' ? quotePrice.receiving_amount / quotePrice.spending_amount  : quotePrice.spending_amount / quotePrice.receiving_amount;
+				
 				if (result.trades.length - 1 === index && !noSpread) {
-					calculatedPrice =  rate.side === 'sell' ? calculatedPrice * (1 - ((sliceSpread  ? spread / 2 : spread) / 100)) : calculatedPrice * (1 + (spread / 100))
+					nonspreadedPrice = calculatedPrice;
+					calculatedPrice =  rate.side === 'sell' ? calculatedPrice * (1 - ((spread) / 100)) : calculatedPrice * (1 + (spread / 100))
 				}
 				result.trades[index].price = calculatedPrice;
 				prices[rate.symbol] = { type: rate.type, price: calculatedPrice, token: quotePrice?.token || null}
@@ -1446,6 +1450,7 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, opts, r
 		await client.setexAsync(`${user_id}-${symbol}-rates`, 25, JSON.stringify(prices));
 
 	const result = findConversionRate(from, to, prices, new Set(), size);
+	if (result?.trades && !noSpread) result.trades[result.trades.length -1].price = nonspreadedPrice;
 	let token;
 
 	if (result?.totalRate && result.totalRate < quoteCoinInfo.min) {
