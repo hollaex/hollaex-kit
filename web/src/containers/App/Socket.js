@@ -198,6 +198,8 @@ class Container extends Component {
 							if (
 								data.settings.interface.theme !== this.props.activeTheme &&
 								this.props?.router?.location?.query?.theme &&
+								this.props?.router?.location?.query?.theme ===
+									data.settings.interface.theme &&
 								isValidTheme
 							) {
 								params.set('theme', data.settings.interface.theme);
