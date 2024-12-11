@@ -163,6 +163,14 @@
 		"AUTO_TRADE_ERROR": {
 			"html": "<div><p>Dear ${name},</p><p>We have detected your auto trade config failed due to insufficient balance for the following trade. Please check and update your balance. Spend Amount: ${spend_amount}, Spend Coin: ${spend_coin}, Buy Coin: ${buy_coin}</p><p>Thank you for using our platform.</p><p>Regards,<br />${api_name} team</p></div>",
 			"title": "Error on your Auto Trade Config"
+		},
+		"AUTO_TRADE_REMINDER": {
+			"html": "<div><p>Dear ${name},</p><p>This is a reminder that your recurring trade of <b>${spend_amount} ${spend_coin} for ${buy_coin}</b> will activate in 12 hours. Ensure your wallet has sufficient funds for successful execution below:</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">VIEW WALLET</Button></a></div><p>Thank you for using our platform.</p><p>Regards,<br />${api_name} team</p></div>",
+			"title": "Recurring Order Scheduled Soon"
+		},
+		"AUTO_TRADE_FILLED": {
+			"html": "<div><p>Dear ${name},</p><p>Your automatic trade order to spend <b>${spend_amount} ${spend_coin} for ${buy_coin}</b> has been successfully processed.</p><div>You can review your trade history below:</div><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">VIEW TRADE HISTORY</Button></a></div><p>Thank you for using our platform.</p><p>Regards,<br />${api_name} team</p></div>",
+			"title": "Your Recurring Order was Successfully Filled"
 		}
 	}
 }
