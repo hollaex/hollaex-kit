@@ -1450,7 +1450,7 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, opts, r
 		await client.setexAsync(`${user_id}-${symbol}-rates`, 25, JSON.stringify(prices));
 
 	const result = findConversionRate(from, to, prices, new Set(), size);
-	if (result?.trades && !noSpread) result.trades[result.trades.length -1].price = nonspreadedPrice;
+	if (result?.trades?.length && !noSpread) result.trades[result.trades.length -1].price = nonspreadedPrice;
 	let token;
 
 	if (result?.totalRate && result.totalRate < quoteCoinInfo.min) {
