@@ -24,6 +24,7 @@ const Details = ({
 	coinChartData,
 	showTradeFees,
 	showOnlyTitle,
+	constants,
 }) => {
 	const [sevenDayData, setSevenDayData] = useState({});
 	const [oneDayData, setOneDayData] = useState({});
@@ -203,7 +204,9 @@ const Details = ({
 								<div className="d-flex">
 									<div className="f-size-22 pr-2">{coinStats.lastPrice}</div>
 									<div className="fullname white-txt">
-										{coins[pair_2] && coins[pair_2].display_name}
+										{constants?.native_currency === pairBase
+											? coins[pair_2]?.display_name
+											: coins[pairBase]?.display_name}
 									</div>
 								</div>
 							</div>
