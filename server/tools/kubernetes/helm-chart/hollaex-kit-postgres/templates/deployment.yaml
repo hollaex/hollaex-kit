@@ -6,7 +6,7 @@ metadata:
   name: {{.Release.Name}}
   namespace: {{.Release.namespace}}
 spec:
-  replicas: 1
+  replicas: {{.Values.stable.replicaCount}}
   
   strategy:
     type: Recreate
