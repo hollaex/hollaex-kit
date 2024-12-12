@@ -14,6 +14,7 @@ import Coins from '../Coins';
 import { constractPaymentOption } from 'utils/utils';
 
 import './index.css';
+import '../Trades/index.css';
 
 const { Option } = Select;
 

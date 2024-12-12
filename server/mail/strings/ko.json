@@ -163,7 +163,15 @@
         "AUTO_TRADE_ERROR": {
             "html": "<div><p>${name}님,</p><p>다음 거래에 대해 잔액 부족으로 인해 자동 거래 설정이 실패한 것을 감지했습니다. 잔액을 확인하고 업데이트하세요. 지출 금액: ${spend_amount}, 지출 화폐: ${spend_coin}, 구매 화폐: ${buy_coin}.</p><p>당사 플랫폼을 이용해 주셔서 감사합니다.</p><p>감사합니다, ${api_name} 팀</p></div>",
             "title": "자동 거래 설정 오류"
-          }
+          },
+        "AUTO_TRADE_REMINDER": {
+			"html": "<div><p>Dear ${name},</p><p>귀하의 자동 거래가 12시간 후에 활성화된다는 알림입니다. <b>${spend_amount} ${spend_coin}를 ${buy_coin}로 교환</b>하려면 충분한 자금이 있어야 성공적으로 실행됩니다:</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">지갑 보기</Button></a></div><p>저희 플랫폼을 이용해 주셔서 감사합니다.</p><p>감사합니다,<br />${api_name} 팀</p></div>",
+			"title": "귀하의 반복 주문이 곧 활성화됩니다"
+		},
+		"AUTO_TRADE_FILLED": {
+			"html":  "<div><p>${name}님,</p><p>자동 주문 <b>${spend_amount} ${spend_coin}를 ${buy_coin}로 교환</b>이 성공적으로 처리되었습니다.</p><div>거래 내역을 아래에서 확인하실 수 있습니다:</div><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">거래 내역 보기</Button></a></div><p>저희 플랫폼을 이용해 주셔서 감사합니다.</p><p>감사합니다,<br />${api_name} 팀</p></div>",
+			"title": "자동 주문이 성공적으로 처리되었습니다"
+		}
           
     }
 }

@@ -457,6 +457,22 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		html = html.replace(/\$\{spend_coin\}/g, data.spend_coin || '');
 		html = html.replace(/\$\{buy_coin\}/g, data.buy_coin || '');
 	}
+	else if (type === MAILTYPE.AUTO_TRADE_REMINDER) {
+		html = html.replace(/\$\{name\}/g, email || '');
+		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
+		html = html.replace(/\$\{spend_amount\}/g, data.spend_amount || '');
+		html = html.replace(/\$\{spend_coin\}/g, data.spend_coin || '');
+		html = html.replace(/\$\{buy_coin\}/g, data.buy_coin || '');
+		html = html.replace(/\$\{link\}/g, `${domain}/wallet`);
+	}
+	else if (type === MAILTYPE.AUTO_TRADE_FILLED) {
+		html = html.replace(/\$\{name\}/g, email || '');
+		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
+		html = html.replace(/\$\{spend_amount\}/g, data.spend_amount || '');
+		html = html.replace(/\$\{spend_coin\}/g, data.spend_coin || '');
+		html = html.replace(/\$\{buy_coin\}/g, data.buy_coin || '');
+		html = html.replace(/\$\{link\}/g, `${domain}/transactions`);
+	}
 
 	return html;
 };

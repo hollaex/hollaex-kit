@@ -113,7 +113,7 @@ class Withdraw extends Component {
 		if (currency || getWithdrawCurrency) {
 			const { coins } = this.props;
 			const coin = coins[currency];
-			const networks = coin.network && coin?.network?.split(',');
+			const networks = coin?.network && coin?.network?.split(',');
 			let initialNetwork;
 			if (networks && networks.length === 1) {
 				initialNetwork = networks[0];

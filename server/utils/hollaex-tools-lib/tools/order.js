@@ -1375,7 +1375,7 @@ const findTradeAmount = (trades, initialFunds) => {
 
     return results;
 }
-const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, opts, req = null, id = null, network_id = null) => {
+const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, opts, req = null, id = null, network_id = null, noSpread = false) => {
 	if (
 		!getKitConfig().chain_trade_config ||
 		!getKitConfig().chain_trade_config.active
@@ -1401,10 +1401,12 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, opts, r
 		throw new Error('Size too small for the rate');
 	};
 
-	
+	const { spread } = getKitConfig()?.chain_trade_config || {};
 	const quickTrades = getQuickTrades();
 
 	let data = null;
+	let nonspreadedPrice = null;
+
 	let prices = {};
 	if (user_id) {
 		data = await client.getAsync(`${user_id}-${symbol}-rates`);
@@ -1422,14 +1424,18 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, opts, r
 			if(!rate.active) { index++; continue};
 
 			try {
-		
 				const trades = findTradeAmount(result.trades, { [from]: size });
 				
 				const quotePrice = await getUserQuickTrade(trades[index].spending_currency, trades[index].spending_amount, trades[index].receiving_amount, trades[index].receiving_currency,  bearerToken, ip, opts, req, { user_id: id, network_id });
 				
-				const calculatedPrice = rate.side === 'sell' ? quotePrice.receiving_amount / quotePrice.spending_amount  : quotePrice.spending_amount / quotePrice.receiving_amount;
+				let calculatedPrice = rate.side === 'sell' ? quotePrice.receiving_amount / quotePrice.spending_amount  : quotePrice.spending_amount / quotePrice.receiving_amount;
+				
+				if (result.trades.length - 1 === index && !noSpread) {
+					nonspreadedPrice = calculatedPrice;
+					calculatedPrice = rate.side === 'sell' ? calculatedPrice * (1 - ((spread) / 100)) : calculatedPrice * (1 + (spread / 100));
+				}
 				result.trades[index].price = calculatedPrice;
-				prices[rate.symbol] = { type: rate.type, price: calculatedPrice, token: quotePrice?.token || null}
+				prices[rate.symbol] = { type: rate.type, price: calculatedPrice, token: quotePrice?.token || null};
 
 				index++;
 			} catch (error) {
@@ -1444,6 +1450,7 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, opts, r
 		await client.setexAsync(`${user_id}-${symbol}-rates`, 25, JSON.stringify(prices));
 
 	const result = findConversionRate(from, to, prices, new Set(), size);
+	if (result?.trades?.length && !noSpread && nonspreadedPrice) result.trades[result.trades.length -1].price = nonspreadedPrice;
 	let token;
 
 	if (result?.totalRate && result.totalRate < quoteCoinInfo.min) {
@@ -1486,7 +1493,7 @@ const executeUserChainTrade = async (user_id, userToken, opts, req) => {
 	if (!storedToken) {
 		throw new Error(TOKEN_EXPIRED);
 	}
-	const { source_account, currency, spread } = getKitConfig()?.chain_trade_config || {};
+	const { source_account, currency } = getKitConfig()?.chain_trade_config || {};
 	
 	const tradeInfo = JSON.parse(storedToken);
 
@@ -1509,7 +1516,7 @@ const executeUserChainTrade = async (user_id, userToken, opts, req) => {
 	let lastRate;
 
 	if (tradeInfo.quote_asset !== currency) {
-		const initialRate = await getUserChainTradeQuote(null, `${tradeInfo.base_asset}-${currency}`, tradeInfo.size, null, opts, req, sourceUser.id, sourceUser.network_id);
+		const initialRate = await getUserChainTradeQuote(null, `${tradeInfo.base_asset}-${currency}`, tradeInfo.size, null, opts, req, sourceUser.id, sourceUser.network_id, true);
 		if (!initialRate?.token) {
 			throw new Error('Rate not found!');
 		};
@@ -1537,8 +1544,6 @@ const executeUserChainTrade = async (user_id, userToken, opts, req) => {
 	
 	const brokerPrice = to === tradeInfo.quote_asset ? (lastTrade.size / tradeInfo.size) : ((lastTrade.size * lastTrade.price ) /  tradeInfo.size);
 	// trade between end user and middle man account
-	const feeAmount = parseNumber(removeRepeatingDecimals(tradeInfo.size * ((spread || 0) / 100)), 10);
-	const spreadSize = parseNumber(removeRepeatingDecimals(tradeInfo.size - feeAmount), 10);
 
 	let result;
 	try {
@@ -1546,7 +1551,7 @@ const executeUserChainTrade = async (user_id, userToken, opts, req) => {
 			tradeInfo.symbol,
 			'sell',
 			parseNumber(removeRepeatingDecimals(brokerPrice), 10),
-			spreadSize,
+			parseNumber(removeRepeatingDecimals(tradeInfo.size), 10),
 			sourceUser.network_id,
 			user.network_id,
 			{ maker: 0, taker: 0 }
@@ -1565,25 +1570,10 @@ const executeUserChainTrade = async (user_id, userToken, opts, req) => {
 		throw new Error(error.message);
 	}
 	
-	// send the fee amount to the middle man account
-	try {
-		const baseSymbol = tradeInfo.symbol.split('-')[0];
-		if (feeAmount > 0) await transferAssetByKitIds(user.id, sourceUser.id, baseSymbol, feeAmount, 'Chain trade transaction', false, { category: 'chain_trade' });
-	} catch (error) {
-		const admin = await getUserByKitId(1);
-		sendEmail(
-			MAILTYPE.ALERT,
-			admin.email,
-			{
-				type: 'Error in chain trades!',
-				data: `Error encountered while sending the fee amount from user transaction to middleman account id: ${sourceUser.id}, user id: ${user.id}. Error message: ${error.message}`
-			},
-			admin.settings
-		);
-	}
+	
 	try {
 		// get the currency amount back for the middle man account
-		const { token } = await getUserChainTradeQuote(null, `${tradeInfo.base_asset}-${currency}`, tradeInfo.size, null, opts, req, sourceUser.id, sourceUser.network_id);
+		const { token } = await getUserChainTradeQuote(null, `${tradeInfo.base_asset}-${currency}`, tradeInfo.size, null, opts, req, sourceUser.id, sourceUser.network_id, true);
 		if (!token) {
 			throw new Error('Rate not found!');
 		};

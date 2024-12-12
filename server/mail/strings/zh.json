@@ -159,7 +159,15 @@
         "AUTO_TRADE_ERROR":{
             "html": "<div><p>亲爱的${name},</p><p>我们检测到您的自动交易配置因余额不足而失败，无法进行以下交易。请检查并更新您的余额。支出金额：${spend_amount}，支出货币：${spend_coin}，购买货币：${buy_coin}。</p><p>感谢您使用我们的平台。</p><p>此致，${api_name}团队</p></div>",
             "title": "您的自动交易配置出错"
-          }
+          },
+        "AUTO_TRADE_REMINDER": {
+			"html":"<div><p>亲爱的 ${name},</p><p>这是一个提醒，您的定期交易 <b>${spend_amount} ${spend_coin} 兑换 ${buy_coin}</b> 将在12小时后激活。请确保您的钱包有足够的资金以便成功执行：</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">查看钱包</Button></a></div><p>感谢您使用我们的平台。</p><p>此致敬礼,<br />${api_name} 团队</p></div>",
+			"title": "您的定期订单即将激活"
+		},
+		"AUTO_TRADE_FILLED": {
+			"html": "<div><p>亲爱的 ${name},</p><p>您的自动交易订单，花费 <b>${spend_amount} ${spend_coin} 购买 ${buy_coin}</b> 已成功处理。</p><div>您可以查看您的交易历史记录：</div><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">查看交易历史</Button></a></div><p>感谢您使用我们的平台。</p><p>此致，<br />${api_name} 团队</p></div>",
+			"title": "您的自动交易订单已成功处理"
+		}
           
     }
 }
