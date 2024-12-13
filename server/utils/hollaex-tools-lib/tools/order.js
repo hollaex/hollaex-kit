@@ -1418,7 +1418,7 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, opts, r
 		for (const rate of quickTrades) { 
 			prices[rate.symbol] = { type: rate.type, price: NaN, active: rate.active };
 		}
-		const result = findConversionRate(from, to, prices, new Set(), size);
+		let result = findConversionRate(from, to, prices, new Set(), size);
 		let index = 0;
 		for(const rate of result?.trades) {
 			if(!rate.active) { index++; continue};
@@ -1436,7 +1436,7 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, opts, r
 				}
 				result.trades[index].price = calculatedPrice;
 				prices[rate.symbol] = { type: rate.type, price: calculatedPrice, token: quotePrice?.token || null};
-
+				result = findConversionRate(from, to, prices, new Set(), size);
 				index++;
 			} catch (error) {
 				throw new Error(error.message + ` symbol: ${rate.symbol}`)

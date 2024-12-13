@@ -61,6 +61,7 @@ const QuickTrade = ({
 	changePair,
 	icons: ICONS,
 	chain_trade_config,
+	constants,
 }) => {
 	const getTargetOptions = (source) =>
 		sourceOptions.filter((key) => {
@@ -306,12 +307,17 @@ const QuickTrade = ({
 	useEffect(() => {
 		setTimeout(() => {
 			const pairBase = pair.split('-')[1];
+			const pair_2 = pair.split('-')[0];
 			const assetValues = Object.keys(coins)
 				.map((val) => coins[val].code)
 				.toLocaleString();
 
-			if (allChartsData[pairBase]) {
-				setChartData(allChartsData[pairBase]);
+			const chartValue =
+				constants?.native_currency === pairBase
+					? allChartsData[pair_2]
+					: allChartsData[pairBase];
+			if (chartValue) {
+				setChartData(chartValue);
 			} else {
 				getMiniCharts(assetValues, pairBase).then((chartValues) => {
 					setChartData(chartValues);
