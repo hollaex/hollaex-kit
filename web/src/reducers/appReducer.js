@@ -80,6 +80,8 @@ import {
 	SET_SECURITY_TAB,
 	SET_LIMITS_TAB,
 	SET_STAKE,
+	SET_SETTINGS_TAB,
+	SET_ACTIVE_CHAT,
 } from 'actions/appActions';
 import { THEME_DEFAULT } from 'config/constants';
 import { getLanguage } from 'utils/string';
@@ -211,8 +213,10 @@ const INITIAL_STATE = {
 	coinsData: [],
 	selectedStake: null,
 	selectedTab: null,
-	selectedSecurityTab: null,
-	selectedVerificationTab: null,
+	selectedSecurityTab: 0,
+	selectedVerificationTab: 0,
+	selectedSettingsTab: 0,
+	isChat: JSON.parse(localStorage.getItem('isChat')),
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -880,6 +884,18 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				selectedVerificationTab: payload,
+			};
+		}
+		case SET_SETTINGS_TAB: {
+			return {
+				...state,
+				selectedSettingsTab: payload,
+			};
+		}
+		case SET_ACTIVE_CHAT: {
+			return {
+				...state,
+				isChat: payload,
 			};
 		}
 		default:

@@ -159,7 +159,7 @@ const orderExecute = (req, res) => {
 		}
 	};
 
-	toolsLib.order.executeUserOrder(user_id, opts, token)
+	toolsLib.order.executeUserOrder(user_id, opts, token, req)
 		.then((result) => {
 			const { symbol, side, size, price } = result;
 			executeHedging(symbol, side, size, price);

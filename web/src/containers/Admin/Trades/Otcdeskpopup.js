@@ -2209,6 +2209,7 @@ const Otcdeskpopup = ({
 				width={type === 'remove-otcdesk' ? '480px' : '520px'}
 				onCancel={handleCloseOtcChild}
 				footer={null}
+				className="otc-broker-popup-wrapper"
 			>
 				{renderModalContent()}
 			</Modal>

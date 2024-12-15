@@ -18,7 +18,7 @@ import { CloseOutlined } from '@ant-design/icons';
 import { setExchange } from 'actions/assetActions';
 import { requestTiers } from '../Tiers/action';
 import { updateConstants, requestUsers } from './actions';
-import { requestAdminData } from 'actions/appActions';
+import { requestAdminData, setConfig } from 'actions/appActions';
 import { Coin } from 'components';
 import _debounce from 'lodash/debounce';
 import Coins from '../Coins';
@@ -28,7 +28,14 @@ import './index.css';
 
 const TabPane = Tabs.TabPane;
 
-const P2PSettings = ({ coins, pairs, p2p_config, features, constants }) => {
+const P2PSettings = ({
+	coins,
+	pairs,
+	p2p_config,
+	features,
+	constants,
+	setConfig,
+}) => {
 	const [displayP2pModel, setDisplayP2pModel] = useState(false);
 	const [displayFiatAdd, setDisplayFiatAdd] = useState(false);
 	const [displayPaymentAdd, setDisplayPaymentAdd] = useState(false);
@@ -42,6 +49,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features, constants }) => {
 	const [tiers, setTiers] = useState();
 	const [merchantTier, setMerchantTier] = useState();
 	const [userTier, setUserTier] = useState();
+	const [transactionDuration, setTransactionDuration] = useState(30);
 	const [paymentMethod, setPaymentMethod] = useState({
 		system_name: null,
 		fields: {},
@@ -91,6 +99,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features, constants }) => {
 	useEffect(() => {
 		setEnable(p2p_config?.enable);
 		setSide(p2p_config?.side);
+		setTransactionDuration(p2p_config?.transaction_duration || 30);
 		setDigitalCurrencies(p2p_config?.digital_currencies || []);
 		setFiatCurrencies(p2p_config?.fiat_currencies || []);
 		setMerchantTier(p2p_config?.starting_merchant_tier);
@@ -103,7 +112,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features, constants }) => {
 			getAllUserData({ id: p2p_config?.source_account }).then((res) => {
 				let emailData = {};
 				res &&
-					res.forEach((item) => {
+					res?.forEach((item) => {
 						if (item.value === p2p_config?.source_account) {
 							emailData = item;
 						}
@@ -257,6 +266,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features, constants }) => {
 													merchant_fee: merchantFee,
 													user_fee: userFee,
 													source_account: sourceAccount,
+													transaction_duration: transactionDuration,
 												},
 											},
 										});
@@ -271,6 +281,9 @@ const P2PSettings = ({ coins, pairs, p2p_config, features, constants }) => {
 											setSelectedPaymentMethods(result?.bank_payment_methods);
 											setMerchantFee(result?.merchant_fee);
 											setUserFee(result?.user_fee);
+											setTransactionDuration(
+												result?.transaction_duration || 30
+											);
 											setSourceAccount(result?.source_account);
 											setP2pConfig(result);
 										});
@@ -374,6 +387,16 @@ const P2PSettings = ({ coins, pairs, p2p_config, features, constants }) => {
 					</div>
 					<div style={{ borderBottom: '1px solid grey', width: 600 }}></div>
 				</div>
+				<div style={{ marginBottom: 10, marginTop: 10 }}>
+					<div style={{ fontSize: 20, marginBottom: 10, marginTop: 10 }}>
+						Transaction Duration:
+					</div>
+					<div style={{ marginBottom: 10 }}>
+						Duration for transaction expiration:{' '}
+						{p2pConfig?.transaction_duration || 30} Minutes
+					</div>
+					<div style={{ borderBottom: '1px solid grey', width: 600 }}></div>
+				</div>
 			</div>
 
 			{displayP2pModel && (
@@ -396,8 +419,8 @@ const P2PSettings = ({ coins, pairs, p2p_config, features, constants }) => {
 
 					{step === 0 && (
 						<div>
-							<div>Trade direction (side)</div>
-							<div>
+							<div style={{ color: 'white' }}>Trade direction (side)</div>
+							<div style={{ color: 'white' }}>
 								Select what kind of deals that the vendors (market makers) can
 								advertise.
 							</div>
@@ -416,14 +439,23 @@ const P2PSettings = ({ coins, pairs, p2p_config, features, constants }) => {
 								<Select.Option value={'all'}>All</Select.Option>
 							</Select>
 
-							<div style={{ fontSize: 13, marginTop: 10, marginBottom: 10 }}>
+							<div
+								style={{
+									fontSize: 13,
+									marginTop: 10,
+									marginBottom: 10,
+									color: 'white',
+								}}
+							>
 								Vendors (makers) can only offer to sell crypto to users (takers)
 							</div>
 							<div
 								style={{ borderBottom: '1px solid grey', marginBottom: 30 }}
 							></div>
-							<div>Crypto assets</div>
-							<div>Select the crypto assets that vendors can transact with</div>
+							<div style={{ color: 'white' }}>Crypto assets</div>
+							<div style={{ color: 'white' }}>
+								Select the crypto assets that vendors can transact with
+							</div>
 							<Select
 								showSearch={true}
 								className="w-100 select-box mt-3"
@@ -482,6 +514,28 @@ const P2PSettings = ({ coins, pairs, p2p_config, features, constants }) => {
 												</Checkbox>
 											</div>
 										</Select.Option>
+									);
+								})}
+							</Select>
+
+							<div style={{ color: 'white', marginTop: 15 }}>
+								Transaction Duration
+							</div>
+							<div style={{ color: 'white' }}>
+								Select the max duration for transaction expiration(in minutes)
+							</div>
+							<Select
+								showSearch={true}
+								placeholder="Select duration"
+								style={{ width: 100 }}
+								value={transactionDuration}
+								onChange={(e) => {
+									setTransactionDuration(e);
+								}}
+							>
+								{[10, 20, 30, 40, 50, 60].map((duration) => {
+									return (
+										<Select.Option value={duration}>{duration}</Select.Option>
 									);
 								})}
 							</Select>
@@ -904,6 +958,32 @@ const P2PSettings = ({ coins, pairs, p2p_config, features, constants }) => {
 									style={{ display: 'flex', justifyContent: 'space-between' }}
 								>
 									<div>
+										<div>Duration for transaction expiration </div>
+										<div>{transactionDuration} Minutes</div>
+									</div>
+									<div
+										onClick={() => {
+											setStep(0);
+										}}
+										style={{ cursor: 'pointer' }}
+									>
+										EDIT
+									</div>
+								</div>
+							</div>
+
+							<div
+								style={{
+									width: '90%',
+									border: '1px solid white',
+									marginBottom: 20,
+									padding: 20,
+								}}
+							>
+								<div
+									style={{ display: 'flex', justifyContent: 'space-between' }}
+								>
+									<div>
 										<div>Fiat currencies allowed for trading: </div>
 										<div>{fiatCurrencies.join(', ')}</div>
 									</div>
@@ -1140,6 +1220,7 @@ const P2PSettings = ({ coins, pairs, p2p_config, features, constants }) => {
 													merchant_fee: merchantFee,
 													user_fee: userFee,
 													source_account: sourceAccount,
+													transaction_duration: transactionDuration,
 												},
 											},
 										});
@@ -1154,8 +1235,12 @@ const P2PSettings = ({ coins, pairs, p2p_config, features, constants }) => {
 											setSelectedPaymentMethods(result?.bank_payment_methods);
 											setMerchantFee(result?.merchant_fee);
 											setUserFee(result?.user_fee);
+											setTransactionDuration(
+												result?.transaction_duration || 30
+											);
 											setSourceAccount(result?.source_account);
 											setP2pConfig(result);
+											setConfig(res?.data?.kit);
 										});
 										setEditMode(false);
 										setStep(0);
@@ -1731,6 +1816,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 	setExchange: bindActionCreators(setExchange, dispatch),
+	setConfig: bindActionCreators(setConfig, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(P2PSettings);

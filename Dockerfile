@@ -1,4 +1,4 @@
-FROM node:18.15.0-buster-slim
+FROM node:20.18.1-bullseye-slim
 
 RUN apt-get update && \
     apt-get install -y curl openssl ca-certificates git python build-essential && \

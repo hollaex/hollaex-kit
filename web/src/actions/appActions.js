@@ -118,6 +118,8 @@ export const SET_STAKE = 'SET_STAKE';
 export const SET_LIMITS_TAB = 'SET_LIMITS_TAB';
 export const SET_SECURITY_TAB = 'SET_SECURITY_TAB';
 export const SET_VERIFICATION_TAB = 'SET_VERIFICATION_TAB';
+export const SET_SETTINGS_TAB = 'SET_SETTINGS_TAB';
+export const SET_ACTIVE_CHAT = 'SET_ACTIVE_CHAT';
 
 export const SORT = {
 	VOL: 'volume',
@@ -796,4 +798,14 @@ export const setSecurityTab = (selectedSecurityTab) => ({
 export const setVerificationTab = (selectedVerificationTab) => ({
 	type: SET_VERIFICATION_TAB,
 	payload: selectedVerificationTab,
+});
+
+export const setSettingsTab = (selectedSettingsTab) => ({
+	type: SET_SETTINGS_TAB,
+	payload: selectedSettingsTab,
+});
+
+export const setIsChat = (setIsChat) => ({
+	type: SET_ACTIVE_CHAT,
+	payload: setIsChat,
 });

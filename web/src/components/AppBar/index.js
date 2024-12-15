@@ -4,8 +4,8 @@ import { bindActionCreators } from 'redux';
 import classnames from 'classnames';
 import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
+import { SearchOutlined } from '@ant-design/icons';
 import { DEFAULT_URL } from 'config/constants';
-import MenuList from './MenuList';
 import { MobileBarWrapper, EditWrapper, ButtonLink, Image } from 'components';
 import { isLoggedIn } from 'utils/token';
 import {
@@ -15,13 +15,14 @@ import {
 	setDepositAndWithdraw,
 } from 'actions/appActions';
 import { updateUserSettings, setUserData } from 'actions/userAction';
+import { generateLanguageFormValues } from 'containers/UserSettings/LanguageForm';
+import { LanguageDisplayPopup } from './Utils';
 import ThemeSwitcher from './ThemeSwitcher';
 import withEdit from 'components/EditProvider/withEdit';
 import withConfig from 'components/ConfigProvider/withConfig';
-import AnnouncementList from './AnnouncementList';
 import STRINGS from 'config/localizedStrings';
-import LanguageSwitcher from './LanguageSwitcher';
 import Connections from './Connections';
+import AccountTab from './AccountTab';
 
 class AppBar extends Component {
 	state = {
@@ -29,6 +30,7 @@ class AppBar extends Component {
 		verificationPending: 0,
 		walletPending: 0,
 		selected: '',
+		isDisplayLanguagePopup: false,
 	};
 
 	componentDidMount() {
@@ -233,6 +235,16 @@ class AppBar extends Component {
 		router.push('/wallet/deposit');
 	};
 
+	onHandleClose = () => {
+		this.setState({
+			isDisplayLanguagePopup: false,
+		});
+	};
+
+	onHandleOpenPopup = () => {
+		this.setState({ isDisplayLanguagePopup: true });
+	};
+
 	render() {
 		const {
 			user,
@@ -241,20 +253,25 @@ class AppBar extends Component {
 			children,
 			activePath,
 			onMenuChange,
-			menuItems,
+			// menuItems,
 			router,
 			isHome,
 			activeLanguage,
 			changeLanguage,
 			icons,
 			themeOptions,
+			selectable_native_currencies,
+			setUserData,
+			coins,
 		} = this.props;
 		const {
 			securityPending,
 			verificationPending,
-			walletPending,
+			// walletPending,
 			selected,
 		} = this.state;
+		const languageFormValue = generateLanguageFormValues(valid_languages)
+			?.language?.options;
 		return isHome ? (
 			<div className="home_app_bar d-flex justify-content-between align-items-center">
 				<div className="d-flex align-items-center justify-content-center h-100 ml-2">
@@ -302,11 +319,42 @@ class AppBar extends Component {
 				</div>
 				{!isLoggedIn() && (
 					<div id="trade-nav-container" className="mx-2">
-						<LanguageSwitcher
-							selected={activeLanguage}
-							valid_languages={valid_languages}
-							toggle={changeLanguage}
-						/>
+						{languageFormValue
+							?.filter(({ value }) => value === activeLanguage)
+							?.map(({ value, icon, label }) => (
+								<div
+									className="language_option"
+									onClick={() => this.onHandleOpenPopup()}
+								>
+									<Image
+										icon={icon}
+										alt={label}
+										wrapperClassName="flag-icon mr-2"
+									/>
+									<span className="caps">
+										{value}
+										{user?.settings?.interface?.display_currency && (
+											<span>
+												{' '}
+												/ {user?.settings?.interface?.display_currency}
+											</span>
+										)}
+									</span>
+								</div>
+							))}
+						{this.state?.isDisplayLanguagePopup && (
+							<LanguageDisplayPopup
+								selected={activeLanguage}
+								valid_languages={valid_languages}
+								changeLanguage={changeLanguage}
+								isVisible={this.state?.isDisplayLanguagePopup}
+								onHandleClose={this.onHandleClose}
+								selectable_native_currencies={selectable_native_currencies}
+								setUserData={setUserData}
+								user={user}
+								coins={coins}
+							/>
+						)}
 						<ThemeSwitcher
 							selected={selected}
 							options={themeOptions}
@@ -323,7 +371,7 @@ class AppBar extends Component {
 				{isLoggedIn() && (
 					<div
 						id="trade-nav-container"
-						className="d-flex app-bar-account justify-content-end"
+						className="d-flex app-bar-account justify-content-end trade-navbar-wrapper"
 					>
 						<div
 							className="app-bar-deposit-btn d-flex"
@@ -336,12 +384,42 @@ class AppBar extends Component {
 							/>
 							<span className="ml-2">{STRINGS['ACCORDIAN.DEPOSIT_LABEL']}</span>
 						</div>
-						<div className="d-flex app_bar-quicktrade-container">
-							<LanguageSwitcher
-								selected={activeLanguage}
-								valid_languages={valid_languages}
-								toggle={changeLanguage}
-							/>
+						<div className="d-flex app_bar-quicktrade-container language-content">
+							{languageFormValue
+								?.filter(({ value }) => value === activeLanguage)
+								?.map(({ value, icon, label }) => (
+									<div
+										className="language_option"
+										onClick={() => this.onHandleOpenPopup()}
+									>
+										<Image
+											icon={icon}
+											alt={label}
+											wrapperClassName="flag-icon mr-2"
+										/>
+										<span className="caps">
+											{value}
+											{user?.settings?.interface?.display_currency && (
+												<span>
+													/{user?.settings?.interface?.display_currency}
+												</span>
+											)}
+										</span>
+									</div>
+								))}
+							{this.state.isDisplayLanguagePopup && (
+								<LanguageDisplayPopup
+									selected={activeLanguage}
+									valid_languages={valid_languages}
+									changeLanguage={changeLanguage}
+									isVisible={this.state.isDisplayLanguagePopup}
+									onHandleClose={this.onHandleClose}
+									selectable_native_currencies={selectable_native_currencies}
+									setUserData={setUserData}
+									user={user}
+									coins={coins}
+								/>
+							)}
 						</div>
 						<div className="d-flex app_bar-quicktrade-container">
 							<ThemeSwitcher
@@ -350,8 +428,8 @@ class AppBar extends Component {
 								toggle={this.onToggle}
 							/>
 						</div>
-						<AnnouncementList user={user.email} />
-						<MenuList
+						{/* <AnnouncementList user={user.email} /> */}
+						{/* <MenuList
 							menuItems={menuItems}
 							securityPending={securityPending}
 							verificationPending={verificationPending}
@@ -359,8 +437,23 @@ class AppBar extends Component {
 							user={user}
 							activePath={activePath}
 							onMenuChange={onMenuChange}
+						/> */}
+						<AccountTab
+							user={user}
+							securityPending={securityPending}
+							verificationPending={verificationPending}
 						/>
 						<Connections />
+						<div
+							className={
+								activePath === '/details'
+									? 'active-menu app-bar-search-icon'
+									: 'app-bar-search-icon'
+							}
+							onClick={() => onMenuChange('/details')}
+						>
+							<SearchOutlined />
+						</div>
 					</div>
 				)}
 			</div>
@@ -377,6 +470,8 @@ const mapStateToProps = (state) => {
 		enabledPlugins: state.app.enabledPlugins,
 		constants: state.app.constants,
 		activeLanguage: state.app.language,
+		selectable_native_currencies:
+			state.app.constants.selectable_native_currencies,
 	};
 };
 

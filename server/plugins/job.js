@@ -307,10 +307,25 @@ const scheduleAutoTrade = () => {
             const currentDate = today.date(); 
 			
             for (const autoTradeConfig of autoTradeConfigs) {
-                const { frequency, week_days, day_of_month, trade_hour } = autoTradeConfig;
+                const { frequency, week_days, day_of_month, trade_hour, user_id, spend_coin, buy_coin, spend_amount } = autoTradeConfig;
 
 				if (shouldExecuteTrade(frequency, week_days, currentDay, currentDate, day_of_month, trade_hour, currentHour)) {
                     await executeTrade(autoTradeConfig);
+                }
+
+				const reminderHour = (trade_hour - 12 + 24) % 24;
+                if (currentHour === reminderHour && shouldExecuteTrade(frequency, week_days, currentDay, currentDate, day_of_month, trade_hour, reminderHour)) {
+					const user = await toolsLib.user.getUserByKitId(user_id); 
+					sendEmail(
+						MAILTYPE.AUTO_TRADE_REMINDER,
+						user.email,
+						{
+							spend_amount, 
+							spend_coin, 
+							buy_coin, 
+						},
+						user.settings
+					);
                 }
             }
 
@@ -389,6 +404,17 @@ const executeTrade = async (autoTradeConfig) => {
 				roundedAmount,    
 				"market",  
 			);
+			const user = await toolsLib.user.getUserByKitId(user_id); 
+			sendEmail(
+                MAILTYPE.AUTO_TRADE_FILLED,
+                user.email,
+                {
+                    spend_amount, 
+                    spend_coin, 
+                    buy_coin, 
+                },
+                user.settings
+            );
 		}
         loggerPlugin.verbose(`Auto trade completed for user ${user_id}: ${buy_coin} -> ${spend_coin} for ${roundedAmount} ${spend_coin}`);
 	} catch (error) {

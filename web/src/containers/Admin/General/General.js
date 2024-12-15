@@ -20,6 +20,7 @@ import {
 	tokenGenerated,
 	requestTokens,
 	tokenRevoked,
+	updateUserSettings,
 } from 'actions/userAction';
 import {
 	upload,
@@ -41,6 +42,8 @@ import PublishSection from './PublishSection';
 import { CloseCircleOutlined } from '@ant-design/icons';
 import Coins from '../Coins';
 import { BASE_CURRENCY } from 'config/constants';
+import { isLoggedIn } from 'utils/token';
+import { setPricesAndAsset } from 'actions/assetActions';
 const { Option } = Select;
 
 const NameForm = AdminHocForm('NameForm');
@@ -111,6 +114,34 @@ class GeneralContent extends Component {
 		}
 	}
 
+	onHandleCurrency = async () => {
+		const { user, setUserData } = this.props;
+		const { nativeCurrencies } = this.state;
+		const interfaceData = {
+			...user?.settings?.interface,
+			...(nativeCurrencies && { display_currency: nativeCurrencies[0] }),
+		};
+		if (this.state?.nativeCurrencies?.length === 1) {
+			try {
+				if (isLoggedIn()) {
+					const { data } = await updateUserSettings({
+						interface: interfaceData,
+					});
+
+					if (data?.settings) {
+						if (data?.settings?.interface?.display_currency) {
+							setUserData(data);
+						}
+					}
+				} else {
+					setUserData(user);
+				}
+			} catch (err) {
+				const _error = err.response?.data?.message || err.message;
+				console.error('error', _error);
+			}
+		}
+	};
 	handleDisable = (isDisable) => {
 		this.setState({ isDisable });
 	};
@@ -516,8 +547,7 @@ class GeneralContent extends Component {
 		features,
 		balance_history_config = null,
 		referral_history_config = null,
-		chain_trade_config = null,
-		selectable_native_currencies = null
+		chain_trade_config = null
 	) => {
 		this.handleSubmitGeneral({
 			kit: {
@@ -525,7 +555,6 @@ class GeneralContent extends Component {
 				balance_history_config,
 				referral_history_config,
 				chain_trade_config,
-				selectable_native_currencies,
 			},
 		});
 	};
@@ -751,6 +780,29 @@ class GeneralContent extends Component {
 		}
 	};
 
+	onHandleSubmit = async () => {
+		this.handleSubmitGeneral({
+			kit: {
+				selectable_native_currencies: this.state?.nativeCurrencies,
+			},
+		});
+		if (
+			this.props?.user?.settings?.interface?.display_currency !==
+			this.state?.nativeCurrencies[0]
+		) {
+			this.onHandleCurrency();
+			localStorage.setItem('base_currnecy', this.state?.nativeCurrencies[0]);
+			setTimeout(() => {
+				if (
+					this.props?.user?.settings?.interface?.display_currency !==
+					this.state?.nativeCurrencies[0]
+				) {
+					this.props.setPricesAndAsset(this.props.balance, this.props.coins);
+				}
+			}, [1000]);
+		}
+	};
+
 	render() {
 		const {
 			initialEmailValues,
@@ -958,11 +1010,9 @@ class GeneralContent extends Component {
 												});
 											}}
 										>
-											{Object.keys(coins)
-												.filter((coin) => coins[coin].type !== 'fiat')
-												.map((key) => (
-													<Option value={key}>{coins[key].fullname}</Option>
-												))}
+											{Object.keys(coins).map((key) => (
+												<Option value={key}>{coins[key].fullname}</Option>
+											))}
 										</Select>
 									</div>
 
@@ -970,14 +1020,7 @@ class GeneralContent extends Component {
 										style={{ width: 120, marginTop: 10 }}
 										type="primary"
 										className={`green-btn btn-48`}
-										onClick={async () => {
-											this.handleSubmitGeneral({
-												kit: {
-													selectable_native_currencies: this.state
-														.nativeCurrencies,
-												},
-											});
-										}}
+										onClick={() => this.onHandleSubmit()}
 									>
 										SAVE
 									</Button>
@@ -1332,6 +1375,7 @@ const mapStateToProps = (state) => ({
 	enabledPlugins: state.app.enabledPlugins,
 	selectable_native_currencies:
 		state.app.constants.selectable_native_currencies,
+	balance: state.user.balance,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -1339,6 +1383,7 @@ const mapDispatchToProps = (dispatch) => ({
 	tokenGenerated: bindActionCreators(tokenGenerated, dispatch),
 	requestTokens: bindActionCreators(requestTokens, dispatch),
 	tokenRevoked: bindActionCreators(tokenRevoked, dispatch),
+	setPricesAndAsset: bindActionCreators(setPricesAndAsset, dispatch),
 });
 
 export default connect(

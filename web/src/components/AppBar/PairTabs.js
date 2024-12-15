@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import classnames from 'classnames';
 import { browserHistory } from 'react-router';
 import { Dropdown } from 'antd';
@@ -14,7 +15,10 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import { formatToCurrency } from 'utils/currency';
 import { MarketsSelector } from 'containers/Trade/utils';
 import SparkLine from 'containers/TradeTabs/components/SparkLine';
+import { getSparklines } from 'actions/chartAction';
+import { changeSparkLineChartData } from 'actions/appActions';
 
+let isMounted = false;
 class PairTabs extends Component {
 	state = {
 		activePairTab: '',
@@ -29,9 +33,6 @@ class PairTabs extends Component {
 		}
 		this.setState({ activePairTab: active });
 		this.initTabs(pairs, active);
-		// getSparklines(Object.keys(pairs)).then((chartData) =>
-		//     this.props.changeSparkLineChartData(chartData)
-		// );
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -98,6 +99,7 @@ class PairTabs extends Component {
 			markets,
 			quicktrade,
 			sparkLineChartData,
+			pairs,
 		} = this.props;
 		const market = markets.find(({ key }) => key === activePairTab) || {};
 		const {
@@ -106,6 +108,13 @@ class PairTabs extends Component {
 			ticker: { close } = {},
 			display_name,
 		} = market;
+
+		if (activePairTab && !isMounted) {
+			isMounted = true;
+			getSparklines(Object.keys(pairs)).then((chartData) =>
+				this.props.changeSparkLineChartData(chartData)
+			);
+		}
 
 		const filterQuickTrade = quicktrade.filter(({ type }) => type !== 'pro');
 		return (
@@ -278,4 +287,14 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps)(withConfig(PairTabs));
+const mapDispatchToProps = (dispatch) => ({
+	changeSparkLineChartData: bindActionCreators(
+		changeSparkLineChartData,
+		dispatch
+	),
+});
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withConfig(PairTabs));

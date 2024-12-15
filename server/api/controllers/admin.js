@@ -3129,6 +3129,27 @@ const deletePaymentDetailByAdmin = (req, res) => {
 		});
 };
 
+const deleteUserByAdmin = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/deleteUserByAdmin/auth', req.auth);
+
+	const { user_id } = req.swagger.params.data.value;
+
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/deleteUserByAdmin',
+		'user_id',
+		user_id,
+	);
+	toolsLib.user.deleteKitUser(user_id, false)
+		.then(() => {
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/deleteUserByAdmin', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+		});
+};
+
 module.exports = {
 	createInitialAdmin,
 	getAdminKit,
@@ -3207,5 +3228,6 @@ module.exports = {
 	getPaymentDetailsByAdmin,
 	createPaymentDetailByAdmin,
 	updatePaymentDetailByAdmin,
-	deletePaymentDetailByAdmin
+	deletePaymentDetailByAdmin,
+	deleteUserByAdmin
 };

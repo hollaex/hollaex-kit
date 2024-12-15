@@ -387,6 +387,10 @@
 								margin-top: 15px;
 								gap: 10px;
 
+								.inactive-btn {
+									background-color: var(--labels_inactive-button) !important;
+								}
+
 								.greyButtonP2P {
 									color: var(
 										--labels_important-active-labels-text-graphics
@@ -695,6 +699,9 @@
 
 				tbody {
 					tr {
+						.transaction-user-name:hover {
+							cursor: pointer;
+						}
 						.trade-button,
 						.transaction-fiat-amount,
 						.transaction-currency-amount,
@@ -1686,6 +1693,19 @@
 					.asset-name {
 						font-weight: bold;
 					}
+
+					.asset-buy,
+					.asset-sell {
+						padding: 0.5% 2%;
+						background-color: var(--specials_checks-okay-done);
+						width: max-content;
+					}
+
+					.asset-sell {
+						background-color: var(
+							--trading_selling-related-elements
+						) !important;
+					}
 				}
 
 				.transaction-container,
@@ -1772,6 +1792,37 @@
 				}
 
 				.order-verification-container {
+					.order-timer-wrapper {
+						.timer-container {
+							display: flex;
+
+							.timer-details {
+								padding: 2% 0;
+								display: flex;
+								justify-content: center;
+								align-items: center;
+								gap: 10px;
+								border-radius: 25px;
+							}
+
+							.timer-circle {
+								width: 20px;
+								height: 20px;
+								border-radius: 50%;
+								background: conic-gradient(
+									var(--labels_important-active-labels-text-graphics) 0%,
+									var(--base_background) 0%
+								);
+								display: flex;
+								justify-content: center;
+								align-items: center;
+								position: relative;
+								border: 1px solid
+									var(--labels_important-active-labels-text-graphics);
+							}
+						}
+					}
+
 					.order-confirmed-container {
 						.order-complete-title,
 						.go-to-deposit-link,
@@ -1813,6 +1864,10 @@
 							cursor: pointer;
 						}
 
+						.disable-link {
+							cursor: not-allowed !important;
+						}
+
 						.appeal-confirm-button-container-active {
 							display: flex;
 							align-items: center;
@@ -1822,7 +1877,6 @@
 						}
 
 						.appeal-confirm-button-container {
-							pointer-events: none;
 							opacity: 0.5;
 						}
 					}
@@ -2008,7 +2062,9 @@
 
 		.cancel-btn,
 		.confirm-btn {
-			width: 13%;
+			word-break: break-word;
+			white-space: normal;
+			width: 35%;
 			height: 45px;
 			background-color: var(--labels_inactive-button);
 			border: none;
@@ -2016,6 +2072,8 @@
 		}
 
 		.confirm-btn {
+			word-break: break-word;
+			white-space: normal;
 			width: 70%;
 			background-color: var(--specials_buttons-links-and-highlights);
 		}
@@ -2682,6 +2740,51 @@
 	}
 }
 
+.confirm-popup-wrapper {
+	.feedback-submit-popup-container {
+		align-items: center;
+	}
+	.submit-transaction-button-container {
+		.inactive-btn {
+			background-color: var(--labels_inactive-button) !important;
+		}
+	}
+}
+
+.release-amount-popup-wrapper {
+	.ReactModal__Content {
+		width: 30%;
+		.release-amount-details-container {
+			.user-receive-amount-detail {
+				font-size: 14px;
+				display: flex;
+				align-items: flex-start;
+			}
+			.order-complete-title {
+				font-size: 22px;
+			}
+			.check-icon {
+				svg {
+					height: 2rem;
+					width: 2rem;
+
+					path:nth-child(1) {
+						fill: transparent;
+					}
+
+					path:nth-child(2) {
+						fill: var(--specials_checks-okay-done);
+					}
+
+					path:nth-child(3) {
+						fill: #ffffff;
+					}
+				}
+			}
+		}
+	}
+}
+
 .cancel-popup-wrapper,
 .confirm-popup-wrapper,
 .confirmation-remove-deal-popup-wrapper {
@@ -2691,6 +2794,43 @@
 		.feedback-submit-popup-container {
 			.submit-feedback-title {
 				font-size: 18px !important;
+			}
+
+			.warning-icon {
+				background-color: #ffffff;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				border-radius: 25px;
+
+				svg {
+					width: 6rem;
+					height: 6rem;
+					path {
+						fill: var(--specials_pending-waiting-caution);
+					}
+				}
+			}
+
+			.confirm-payment-description {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				gap: 5px;
+				.payment-declaration-text {
+					margin-top: 5%;
+					display: flex;
+					.ant-checkbox-inner {
+						background-color: var(--base_wallet-sidebar-and-popup);
+					}
+
+					.ant-checkbox-checked {
+						.ant-checkbox-inner::after {
+							border-color: var(--labels_important-active-labels-text-graphics);
+						}
+					}
+				}
 			}
 
 			.cancel-warning-text {
@@ -2709,11 +2849,6 @@
 					color: var(--labels_secondary-inactive-label-text-graphics);
 				}
 			}
-		}
-
-		.user-receive-amount-detail {
-			margin-top: 3%;
-			font-size: 14px;
 		}
 
 		.submit-transaction-button-container {
@@ -3575,6 +3710,82 @@
 					overflow-x: scroll;
 					text-wrap: nowrap;
 
+					.p2p-orders-details-card-wrapper {
+						display: flex;
+						flex-direction: column;
+						gap: 15px;
+
+						.active-green {
+							color: var(--specials_checks-okay-done);
+						}
+
+						.active-orange {
+							color: var(--specials_pending-waiting-caution);
+						}
+
+						.active-yellow {
+							color: var(--specials_my-username-in-chat);
+						}
+
+						.inactive-text {
+							color: var(--labels_secondary-inactive-label-text-graphics);
+						}
+
+						.p2p-orders-card-details {
+							background-color: var(--base_wallet-sidebar-and-popup) !important;
+							border: none;
+							font-size: 24px;
+							border-bottom: 5px solid var(--base_background);
+							.p2p-orders-details-inactive {
+								opacity: 0.5;
+							}
+							.p2p-orders-details {
+								display: flex;
+								flex-direction: column;
+								gap: 10px;
+
+								.p2p-sell-order-button,
+								.p2p-buy-order-button {
+									background-color: var(--trading_selling-related-elements);
+									padding: 1% 2%;
+									font-size: 24px;
+								}
+
+								.p2p-buy-order-button {
+									background-color: var(--specials_checks-okay-done) !important;
+								}
+
+								.transaction-user-name {
+									font-size: 26px;
+								}
+
+								.transaction-fiat-amount-wrapper {
+									display: flex;
+									gap: 2%;
+									align-items: center;
+
+									.edit-wrapper__container {
+										color: var(--labels_important-active-labels-text-graphics);
+									}
+								}
+
+								.transaction-status {
+									display: flex;
+									justify-content: space-between;
+									gap: 4%;
+									font-weight: normal;
+
+									.transaction-status-detail {
+										display: flex;
+										gap: 4%;
+										font-weight: bold;
+										text-transform: capitalize;
+									}
+								}
+							}
+						}
+					}
+
 					.p2p-order-table {
 						thead {
 							tr {
@@ -3628,9 +3839,11 @@
 			}
 		}
 
+		.p2p-order-chat-wrapper {
+			height: 100%;
+		}
 		.p2p-order-wrapper {
 			font-size: 24px;
-			height: 100%;
 
 			.p2p-order-container {
 				height: 100%;
@@ -3666,7 +3879,7 @@
 						.order-title,
 						.asset-name {
 							.edit-wrapper__container {
-								font-size: 18px;
+								font-size: 24px;
 							}
 						}
 
@@ -3688,6 +3901,13 @@
 					}
 
 					.order-verification-container {
+						.order-timer-wrapper {
+							.timer-circle {
+								width: 30px;
+								height: 30px;
+							}
+						}
+
 						.order-confirmed-container {
 							.order-complete-title {
 								.edit-wrapper__container {
@@ -3743,6 +3963,10 @@
 
 						.chat-area {
 							height: 65%;
+						}
+
+						.chat-area-wrapper {
+							height: 60% !important;
 						}
 
 						.message-input-field {
@@ -3831,11 +4055,34 @@
 			gap: 10px;
 			padding: 5% 0;
 
+			.active-payment-field {
+				border-color: var(--specials_buttons-links-and-highlights) !important;
+			}
+
+			.active-focus {
+				border: 2px solid #5d63ff !important;
+
+				.amount-spent-field,
+				.amount-receive-field {
+					background-color: var(--base_background) !important;
+					border: none;
+					box-shadow: inset 1px 1px 3px #00000029;
+					border-radius: 5px;
+					border-bottom: 1px solid
+						var(--labels_important-active-labels-text-graphics) !important;
+				}
+			}
+
+			.p2p-amount-spent:hover,
+			.p2p-amount-receive:hover {
+				border: 2px solid var(--labels_important-active-labels-text-graphics);
+			}
+
 			.p2p-amount-spent,
 			.p2p-amount-receive {
-				border: 1px solid var(--calculated_secondary-border);
+				border: 2px solid var(--calculated_secondary-border);
 				border-radius: 10px;
-				padding: 8% 6%;
+				padding: 6%;
 				display: flex;
 				flex-direction: column;
 				gap: 10px;
@@ -3864,38 +4111,41 @@
 					margin-top: 3%;
 					display: flex;
 					width: 100%;
+					gap: 5%;
 					justify-content: space-between;
+					align-items: center;
+
+					.ant-input-number-input-wrap,
+					.ant-input {
+						padding: 2%;
+						font-size: 18px;
+					}
 
 					.spent-asset-name {
 						border: 1px solid var(--calculated_secondary-border);
 						border-radius: 30px;
 						display: flex;
 						align-items: center;
-						padding: 0 10% 0 5%;
+						padding: 2% 10% 2% 5%;
+						gap: 15%;
+						.spent-asset-icon {
+							position: relative;
+							top: 3px;
+						}
 					}
 
 					.amount-spent-field,
 					.amount-receive-field {
-						background-color: var(--base_background) !important;
+						background-color: transparent;
 						border: none;
-						box-shadow: inset 1px 1px 3px #00000029;
+						box-shadow: none;
 						border-radius: 5px;
 						color: var(
 							--labels_important-active-labels-text-graphics
 						) !important;
-						border-bottom: 1px solid
-							var(--labels_important-active-labels-text-graphics);
 
 						.ant-input-number-input {
 							text-align: right;
-						}
-
-						.ant-input-number-input:hover,
-						.ant-input-number-input:active {
-							background-color: var(--base_secondary-navigation-bar) !important;
-							border-radius: 5px;
-							border-bottom: 1px solid
-								var(--labels_important-active-labels-text-graphics);
 						}
 					}
 
@@ -3915,6 +4165,14 @@
 						border-bottom: 1px solid
 							var(--labels_important-active-labels-text-graphics);
 					}
+					.amount-receive-field:focus {
+						background-color: var(--base_background) !important;
+						border: none;
+						box-shadow: inset 1px 1px 3px #00000029;
+						border-radius: 5px;
+						border-bottom: 1px solid
+							var(--labels_important-active-labels-text-graphics) !important;
+					}
 				}
 			}
 
@@ -3929,6 +4187,10 @@
 				display: flex;
 				justify-content: space-between;
 				width: 100%;
+
+				.inactive-btn {
+					background-color: var(--labels_inactive-button) !important;
+				}
 
 				.payment-method-field {
 					.ant-select-selector {

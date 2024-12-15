@@ -30,10 +30,12 @@ import {
 	activateUser,
 	verifyUser,
 	recoverUser,
+	deleteUser,
 	requestTiers,
 } from './actions';
 import UserMetaForm from './UserMetaForm';
 import PaymentMethods from './PaymentMethods';
+import DeletionConfirmation from './DeleteConfirmation';
 
 // import Flagger from '../Flaguser';
 // import Notes from './Notes';
@@ -45,6 +47,7 @@ class UserContent extends Component {
 	state = {
 		showVerifyEmailModal: false,
 		showRecoverModal: false,
+		showDeleteModal: false,
 		userTiers: {},
 	};
 
@@ -218,6 +221,24 @@ class UserContent extends Component {
 			});
 	};
 
+	handleDeleteUser = () => {
+		const { userInformation = {}, refreshData } = this.props;
+		const postValues = {
+			user_id: parseInt(userInformation.id, 10),
+		};
+
+		deleteUser(postValues)
+			.then((res) => {
+				refreshData({ ...postValues, activated: false });
+			})
+			.catch((err) => {
+				const _error =
+					err.data && err.data.message ? err.data.message : err.message;
+				message.error(_error);
+			});
+		this.setState({ showDeleteModal: false });
+	};
+
 	openVerifyEmailModal = () => {
 		this.setState({
 			showVerifyEmailModal: true,
@@ -227,6 +248,12 @@ class UserContent extends Component {
 	openRecoverUserModel = () => {
 		this.setState({
 			showRecoverModal: true,
+		});
+	};
+
+	openDeleteUserModel = () => {
+		this.setState({
+			showDeleteModal: true,
 		});
 	};
 
@@ -252,7 +279,12 @@ class UserContent extends Component {
 			referral_history_config,
 		} = this.props;
 
-		const { showVerifyEmailModal, showRecoverModal, userTiers } = this.state;
+		const {
+			showVerifyEmailModal,
+			showRecoverModal,
+			showDeleteModal,
+			userTiers,
+		} = this.state;
 
 		const {
 			id,
@@ -354,6 +386,7 @@ class UserContent extends Component {
 								freezeAccount={this.freezeAccount}
 								verifyEmail={this.openVerifyEmailModal}
 								recoverUser={this.openRecoverUserModel}
+								deleteUser={this.openDeleteUserModel}
 								kycPluginName={kycPluginName}
 								requestUserData={requestUserData}
 								refreshAllData={refreshAllData}
@@ -468,6 +501,12 @@ class UserContent extends Component {
 					visible={showRecoverModal}
 					onCancel={() => this.setState({ showRecoverModal: false })}
 					onConfirm={this.handleRecoverUser}
+					userData={userInformation}
+				/>
+				<DeletionConfirmation
+					visible={showDeleteModal}
+					onCancel={() => this.setState({ showDeleteModal: false })}
+					onConfirm={this.handleDeleteUser}
 					userData={userInformation}
 				/>
 			</div>

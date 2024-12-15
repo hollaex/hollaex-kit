@@ -1,23 +1,34 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { isMobile } from 'react-device-detect';
+import { Input, Tooltip } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
 
 import icons from 'config/icons/dark';
 import STRINGS from 'config/localizedStrings';
-import Dialog from 'components/Dialog/MobileDialog';
+import Dialog from 'components/Dialog';
 import withConfig from 'components/ConfigProvider/withConfig';
 import HelpfulResourcesForm from 'containers/HelpfulResourcesForm';
-import { EditWrapper, Image, SearchBox } from 'components';
+import { Coin, EditWrapper, Image, SearchBox } from 'components';
 import {
 	setLimitTab,
 	setSecurityTab,
+	setSettingsTab,
 	setStake,
 	setVerificationTab,
 } from 'actions/appActions';
 import { getLogins } from 'actions/userAction';
 import { requestAuthenticated } from 'utils';
-import { ConnectionPopup, ReconnectPopup } from 'components/AppBar/Utils';
+import {
+	ConnectionPopup,
+	ReconnectPopup,
+	renderConfirmSignout,
+} from 'components/AppBar/Utils';
+import { removeToken } from 'utils/token';
+import { MarketsSelector } from 'containers/Trade/utils';
+import { assetsSelector } from 'containers/Wallet/utils';
 
 const INITIAL_LOGINS_STATE = {
 	count: 0,
@@ -30,6 +41,14 @@ const MobileBarMoreOptions = ({
 	setLimitTab,
 	setSelectedStake,
 	features,
+	setSettingsTab,
+	coins,
+	pinnedAsset,
+	getMarkets,
+	quickTrade,
+	getRemoteRoutes,
+	assets,
+	user,
 }) => {
 	const [search, setSearch] = useState('');
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -45,6 +64,90 @@ const MobileBarMoreOptions = ({
 		pingValue: null,
 		isDisplayPing: false,
 	});
+	const [isLogout, setIsLogout] = useState(false);
+
+	const fieldHasCoinIcon = [
+		'SUMMARY.DEPOSIT',
+		'TRADE_TAB_TRADE',
+		'CONVERT',
+		'ASSET_TXT',
+		'WITHDRAW_PAGE.WITHDRAW',
+	];
+	const searchByName = Object.entries(
+		coins
+	)?.map(([_, { symbol, fullname, type }]) =>
+		type !== 'fiat' ? { symbol, fullname } : {}
+	);
+
+	const getSymbol = searchByName
+		?.filter((data) => {
+			const searchTerms = search?.toLowerCase()?.trim()?.split(' ');
+			const fullname = data?.fullname?.toLowerCase() || '';
+			const symbol = data?.symbol?.toLowerCase() || '';
+
+			if (search?.length > 1) {
+				const lastSearchTerm = searchTerms[searchTerms?.length - 1];
+				const matches = searchTerms?.some(
+					(term) => fullname?.startsWith(term) || symbol?.startsWith(term)
+				);
+				const lastMatch =
+					fullname?.startsWith(lastSearchTerm) ||
+					symbol?.startsWith(lastSearchTerm);
+
+				return matches || lastMatch;
+			}
+			return false;
+		})
+		?.sort((a, b) => {
+			const lastSearchTerm = search?.toLowerCase()?.split(' ')?.pop();
+			const isLastTermMatchA =
+				a?.fullname?.toLowerCase()?.startsWith(lastSearchTerm) ||
+				a?.symbol?.toLowerCase()?.startsWith(lastSearchTerm);
+			const isLastTermMatchB =
+				b?.fullname?.toLowerCase()?.startsWith(lastSearchTerm) ||
+				b?.symbol?.toLowerCase()?.startsWith(lastSearchTerm);
+
+			if (isLastTermMatchA && !isLastTermMatchB) return -1;
+			if (!isLastTermMatchA && isLastTermMatchB) return 1;
+
+			const indexA = pinnedAsset?.indexOf(a?.symbol?.toLowerCase());
+			const indexB = pinnedAsset?.indexOf(b?.symbol?.toLowerCase());
+
+			if (indexA === -1 && indexB === -1) return 0;
+			if (indexA === -1) return 1;
+			if (indexB === -1) return -1;
+			return indexA - indexB;
+		});
+
+	const getAsset =
+		getSymbol?.length >= 1
+			? getSymbol[0]?.symbol
+			: search?.length > 1 && search;
+	const isValidCoin = coins[getAsset]?.symbol;
+
+	const assetDetails = Object.entries(
+		coins
+	)?.flatMap(([_, { symbol, fullname, type }]) =>
+		type !== 'fiat' ? [symbol, fullname] : []
+	);
+
+	const getPairs = (symbol) =>
+		getMarkets?.filter((market) => {
+			return market?.key?.split('-')?.includes(symbol);
+		});
+
+	const getQuickTradePair = (symbol) =>
+		quickTrade?.filter((quicktrade) => {
+			return quicktrade?.symbol?.split('-')?.includes(symbol);
+		});
+
+	const topAsset = assets
+		?.filter((item, index) => {
+			return index <= 3;
+		})
+		?.map((data) => {
+			return data[0];
+		});
 
 	useEffect(() => {
 		setSecurityTab(null);
@@ -60,7 +163,9 @@ const MobileBarMoreOptions = ({
 			}
 		};
 
-		fetchData();
+		if (isMobile) {
+			fetchData();
+		}
 		//eslint-disable-next-line
 	}, []);
 
@@ -100,8 +205,9 @@ const MobileBarMoreOptions = ({
 		{
 			icon_id: 'DEPOSIT_OPTION_ICON',
 			iconText: 'SUMMARY.DEPOSIT',
-			path: '/wallet/deposit',
+			path: isValidCoin ? `/wallet/${getAsset}/deposit` : '/wallet/deposit',
 			isDisplay: true,
+			toolTipText: 'DESKTOP_NAVIGATION.DEPOSIT_DESC',
 			searchContent: [
 				STRINGS['MORE_OPTIONS_LABEL.HOT_FUNCTION.ADD_FUNDS'],
 				STRINGS['MORE_OPTIONS_LABEL.HOT_FUNCTION.TOP_UP'],
@@ -121,13 +227,18 @@ const MobileBarMoreOptions = ({
 				STRINGS['MORE_OPTIONS_LABEL.HOT_FUNCTION.REFILL'],
 				STRINGS['MORE_OPTIONS_LABEL.HOT_FUNCTION.CASH_IN'],
 				STRINGS['MORE_OPTIONS_LABEL.HOT_FUNCTION.ADD_MONEY'],
+				...assetDetails,
 			],
 		},
 		{
 			icon_id: 'TRADE_OPTION_ICON',
 			iconText: 'TRADE_TAB_TRADE',
-			path: '/trade',
+			path:
+				isValidCoin && getPairs(getAsset)?.length >= 1
+					? `/trade/${getPairs(getAsset)[0]?.key}`
+					: '/trade',
 			isDisplay: features?.pro_trade,
+			toolTipText: 'DESKTOP_NAVIGATION.MARKET_DESC',
 			searchContent: [
 				STRINGS['MORE_OPTIONS_LABEL.HOT_FUNCTION.EXCHANGE'],
 				STRINGS['MORE_OPTIONS_LABEL.HOT_FUNCTION.SWAP'],
@@ -141,13 +252,21 @@ const MobileBarMoreOptions = ({
 				STRINGS['MORE_OPTIONS_LABEL.HOT_FUNCTION.XHT'],
 				STRINGS['MORE_OPTIONS_LABEL.HOT_FUNCTION.BTC'],
 				STRINGS['MORE_OPTIONS_LABEL.HOT_FUNCTION.USTD'],
+				...getPairs(getAsset)?.flatMap((item) => [
+					...item?.key?.split('-'),
+					item?.fullname,
+				]),
 			],
 		},
 		{
 			icon_id: 'CONVERT_OPTION_ICON',
 			iconText: 'CONVERT',
-			path: '/quick-trade',
+			path:
+				getQuickTradePair(getAsset)?.length >= 1
+					? `/quick-trade/${getQuickTradePair(getAsset)[0]?.symbol}`
+					: '/quick-trade',
 			isDisplay: features?.quick_trade,
+			toolTipText: 'DESKTOP_NAVIGATION.CONVERT_DESC',
 			searchContent: [
 				STRINGS['MORE_OPTIONS_LABEL.HOT_FUNCTION.EXCHANGE'],
 				STRINGS['MORE_OPTIONS_LABEL.HOT_FUNCTION.SWAP'],
@@ -162,6 +281,10 @@ const MobileBarMoreOptions = ({
 				STRINGS['MORE_OPTIONS_LABEL.HOT_FUNCTION.XHT'],
 				STRINGS['MORE_OPTIONS_LABEL.HOT_FUNCTION.BTC'],
 				STRINGS['MORE_OPTIONS_LABEL.HOT_FUNCTION.USTD'],
+				...getQuickTradePair(getAsset)?.flatMap((item) => {
+					const [firstPair] = item?.symbol?.split('-');
+					return [firstPair, item?.fullname];
+				}),
 			],
 		},
 		{
@@ -169,6 +292,7 @@ const MobileBarMoreOptions = ({
 			iconText: 'MORE_OPTIONS_LABEL.ICONS.REFERRALS',
 			path: '/referral',
 			isDisplay: features?.referral_history_config,
+			toolTipText: 'DESKTOP_NAVIGATION.REFERRAL_DESC',
 			searchContent: [
 				STRINGS['MORE_OPTIONS_LABEL.HOT_FUNCTION.INVITE'],
 				STRINGS['MORE_OPTIONS_LABEL.HOT_FUNCTION.REFER'],
@@ -183,12 +307,28 @@ const MobileBarMoreOptions = ({
 		},
 	];
 
+	const pinnedOptions = () => {
+		return topAsset?.map((data) => {
+			return {
+				icon_id: coins[data]?.icon_id,
+				iconText: data?.toUpperCase(),
+				path: `/prices/coin/${data}`,
+				isDisplay: true,
+				toolTipText: 'COINS',
+				isTopAsset: true,
+				searchContent: [STRINGS['COINS']],
+				coin: data?.toUpperCase(),
+			};
+		});
+	};
+
 	const otherFunctionOptions = [
 		{
 			icon_id: 'API_OPTION_ICON',
 			iconText: 'MORE_OPTIONS_LABEL.ICONS.API',
 			path: '/security?apiKeys',
 			isDisplay: true,
+			toolTipText: 'DESKTOP_NAVIGATION.API_DESC',
 			searchContent: [
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.INTEGRATION'],
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.PROGRAMMATIC_ACCESS'],
@@ -200,10 +340,8 @@ const MobileBarMoreOptions = ({
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.SECURITY'],
 			],
 		},
-		{
-			icon_id: 'BUY_CRYPTO_OPTION',
-			iconText: 'MORE_OPTIONS_LABEL.ICONS.BUY_CRYPTO',
-			path: '/buy-crypto',
+		...getRemoteRoutes?.map((route, index) => ({
+			...route,
 			isDisplay: true,
 			searchContent: [
 				STRINGS['MARKET_OPTIONS.CARD'],
@@ -219,12 +357,13 @@ const MobileBarMoreOptions = ({
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.BUY_COIN'],
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.BUY_TOKEN'],
 			],
-		},
+		})),
 		{
 			icon_id: 'DEFI_STAKE_OPTION_ICON',
 			iconText: 'MORE_OPTIONS_LABEL.ICONS.DEFI_STAKE',
 			path: '/stake',
 			isDisplay: features?.stake_page,
+			toolTipText: 'DESKTOP_NAVIGATION.DEFI_STAKE_DESC',
 			searchContent: [
 				STRINGS['STAKE.EARN'],
 				STRINGS['MORE_OPTIONS_LABEL.HOT_FUNCTION.PASSIVE_INCOME'],
@@ -241,6 +380,7 @@ const MobileBarMoreOptions = ({
 			iconText: 'MORE_OPTIONS_LABEL.ICONS.CEFI_STAKE',
 			path: '/stake',
 			isDisplay: features?.cefi_stake,
+			toolTipText: 'DESKTOP_NAVIGATION.CONVERT_DESC',
 			searchContent: [
 				STRINGS['STAKE.EARN'],
 				STRINGS['MORE_OPTIONS_LABEL.HOT_FUNCTION.PASSIVE_INCOME'],
@@ -257,6 +397,7 @@ const MobileBarMoreOptions = ({
 			iconText: 'MORE_OPTIONS_LABEL.ICONS.PROFIT_LOSS',
 			path: '/wallet/history',
 			isDisplay: true,
+			toolTipText: 'DESKTOP_ULTIMATE_SEARCH.PROFIT_LOSS_INFO_TEXT',
 			searchContent: [
 				STRINGS['REFERRAL_LINK.EARNING'],
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.PERFORMANCE'],
@@ -272,6 +413,7 @@ const MobileBarMoreOptions = ({
 			iconText: 'FEES',
 			path: '/fees-and-limits',
 			isDisplay: true,
+			toolTipText: 'DESKTOP_ULTIMATE_SEARCH.FEES_INFO_TEXT',
 			searchContent: [
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.CHARGES'],
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.COSTS'],
@@ -285,6 +427,7 @@ const MobileBarMoreOptions = ({
 			iconText: 'MORE_OPTIONS_LABEL.ICONS.LIMITS',
 			path: '/fees-and-limits',
 			isDisplay: true,
+			toolTipText: 'DESKTOP_ULTIMATE_SEARCH.WITHDRAWAL_INFO_TEXT',
 			searchContent: [
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.RESTRICTIONS'],
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.BOUNDARIES'],
@@ -299,6 +442,7 @@ const MobileBarMoreOptions = ({
 			iconText: 'ACCOUNTS.TAB_WALLET',
 			path: '/wallet',
 			isDisplay: true,
+			toolTipText: 'DESKTOP_ULTIMATE_SEARCH.WALLET_INFO_TEXT',
 			searchContent: [
 				STRINGS['ACCOUNT_TEXT'],
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.STORAGE'],
@@ -316,6 +460,7 @@ const MobileBarMoreOptions = ({
 			iconText: 'USER_SETTINGS.TITLE_LANGUAGE',
 			path: '/settings?language',
 			isDisplay: true,
+			toolTipText: 'DESKTOP_NAVIGATION.LANGUAGE_DESC',
 			searchContent: [
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.ENGLISH'],
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.LOCALIZATION'],
@@ -333,6 +478,7 @@ const MobileBarMoreOptions = ({
 			iconText: 'P2P.TAB_P2P',
 			path: '/p2p',
 			isDisplay: features?.p2p,
+			toolTipText: 'DESKTOP_ULTIMATE_SEARCH.P2P_INFO_TEXT',
 			searchContent: [
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.PEER_TO_PEER'],
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.DIRECT_TRADE'],
@@ -348,6 +494,7 @@ const MobileBarMoreOptions = ({
 			iconText: 'ACCOUNTS.TAB_HISTORY',
 			path: '/transactions',
 			isDisplay: true,
+			toolTipText: 'DESKTOP_NAVIGATION.TRANSACTION_DESC',
 			searchContent: [
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.TRANSACTIONS'],
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.ACTIVITY'],
@@ -361,6 +508,7 @@ const MobileBarMoreOptions = ({
 			iconText: 'CHART_TEXTS.v',
 			path: 'wallet/volume',
 			isDisplay: true,
+			toolTipText: 'DESKTOP_ULTIMATE_SEARCH.ACCOUNT_INFO_TEXT',
 			searchContent: [
 				STRINGS['SUMMARY.TRADING_VOLUME'],
 				STRINGS['ACTIVITY'],
@@ -373,8 +521,9 @@ const MobileBarMoreOptions = ({
 		{
 			icon_id: 'ASSET_OPTION_ICON',
 			iconText: 'ASSET_TXT',
-			path: '/prices',
+			path: isValidCoin ? `/prices/coin/${getAsset}` : '/prices',
 			isDisplay: true,
+			toolTipText: 'DESKTOP_ULTIMATE_SEARCH.ASSET_INFO_TEXT',
 			searchContent: [
 				STRINGS['COINS'],
 				STRINGS['WALLET_ASSETS_SEARCH_TXT'],
@@ -386,6 +535,7 @@ const MobileBarMoreOptions = ({
 				STRINGS['MORE_OPTIONS_LABEL.HOT_FUNCTION.USTD'],
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.MARKETS'],
 				STRINGS['MORE_OPTIONS_LABEL.HOT_FUNCTION.MONEY'],
+				...assetDetails,
 			],
 		},
 		{
@@ -393,6 +543,7 @@ const MobileBarMoreOptions = ({
 			iconText: 'ACCOUNT_SECURITY.OTP.TITLE',
 			path: '/security?2fa',
 			isDisplay: true,
+			toolTipText: 'DESKTOP_ULTIMATE_SEARCH.SECURITY_2FA_INFO_TEXT',
 			searchContent: [
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.TWO_FACTOR_AUTHENTICATION'],
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.MFA'],
@@ -407,6 +558,7 @@ const MobileBarMoreOptions = ({
 			iconText: 'ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE',
 			path: '/security?password',
 			isDisplay: true,
+			toolTipText: 'ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.BUTTON',
 			searchContent: [
 				STRINGS['ACCOUNTS.TAB_SECURITY'],
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.CREDENTIALS'],
@@ -421,6 +573,7 @@ const MobileBarMoreOptions = ({
 			iconText: 'MORE_OPTIONS_LABEL.ICONS.LOGINS',
 			path: '/security',
 			isDisplay: true,
+			toolTipText: 'DESKTOP_ULTIMATE_SEARCH.LOGIN_INFO_TEXT',
 			searchContent: [
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.SECURITY'],
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.SIGN_INS'],
@@ -435,6 +588,7 @@ const MobileBarMoreOptions = ({
 			iconText: 'SESSIONS.TAB',
 			path: '/security',
 			isDisplay: true,
+			toolTipText: 'DESKTOP_ULTIMATE_SEARCH.SESSIONS_INFO_TEXT',
 			searchContent: [
 				STRINGS['SESSIONS.CONTENT.TITLE'],
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.LOGGED_IN'],
@@ -449,6 +603,7 @@ const MobileBarMoreOptions = ({
 			iconText: 'USER_VERIFICATION.TITLE_BANK',
 			path: '/verification',
 			isDisplay: true,
+			toolTipText: 'DESKTOP_ULTIMATE_SEARCH.BANK_INFO_TEXT',
 			searchContent: [
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.BANKING_DETAILS'],
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.BANK_ACCOUNT'],
@@ -467,6 +622,7 @@ const MobileBarMoreOptions = ({
 			iconText: 'MORE_OPTIONS_LABEL.ICONS.AUDIO',
 			path: '/settings?audioCue',
 			isDisplay: true,
+			toolTipText: 'DESKTOP_ULTIMATE_SEARCH.AUDIO_INFO_TEXT',
 			searchContent: [
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.SOUND'],
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.AUDIO_SETTINGS'],
@@ -481,6 +637,7 @@ const MobileBarMoreOptions = ({
 			iconText: 'ADDRESS_BOOK.ADDRESSES',
 			path: '/wallet/address-book',
 			isDisplay: true,
+			toolTipText: 'DESKTOP_NAVIGATION.ADDRESS_BOOK_DESC',
 			searchContent: [
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.WITHDRAWAL_ADDRESSES'],
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.CRYPTO_ADDRESSES'],
@@ -496,6 +653,7 @@ const MobileBarMoreOptions = ({
 			iconText: 'USER_SETTINGS.TITLE_INTERFACE',
 			path: '/settings?interface',
 			isDisplay: true,
+			toolTipText: 'DESKTOP_ULTIMATE_SEARCH.INTERFACE_INFO_TEXT',
 			searchContent: [
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.UI'],
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.USER_INTERFACE'],
@@ -514,6 +672,7 @@ const MobileBarMoreOptions = ({
 			iconText: 'USER_SETTINGS.TITLE_NOTIFICATION',
 			path: '/settings?signals',
 			isDisplay: true,
+			toolTipText: 'DESKTOP_ULTIMATE_SEARCH.NOTIFICATION_INFO_TEXT',
 			searchContent: [
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.ALERT'],
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.UPDATES'],
@@ -528,6 +687,7 @@ const MobileBarMoreOptions = ({
 			iconText: 'USER_SETTINGS.TITLE_CHAT',
 			path: '/settings?account',
 			isDisplay: true,
+			toolTipText: 'DESKTOP_ULTIMATE_SEARCH.CHAT_INFO_TEXT',
 			searchContent: [
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.MESSAGE'],
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.LIVE_CHAT'],
@@ -537,8 +697,9 @@ const MobileBarMoreOptions = ({
 		{
 			icon_id: 'HELP_OPTION_ICON',
 			iconText: 'LOGIN.HELP',
-			path: '/more',
+			path: browserHistory.getCurrentLocation(),
 			isDisplay: true,
+			toolTipText: 'DESKTOP_NAVIGATION.HELP_DESC',
 			searchContent: [
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.SUPPORT'],
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.CONTACT_LOWER'],
@@ -555,8 +716,9 @@ const MobileBarMoreOptions = ({
 		{
 			icon_id: 'WITHDRAW_OPTION_ICON',
 			iconText: 'WITHDRAW_PAGE.WITHDRAW',
-			path: '/wallet/withdraw',
+			path: isValidCoin ? `/wallet/${getAsset}/withdraw` : '/wallet/withdraw',
 			isDisplay: true,
+			toolTipText: 'DESKTOP_NAVIGATION.WITHDRAW_DESC',
 			searchContent: [
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.PAYOUT'],
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.CASH_OUT'],
@@ -564,6 +726,7 @@ const MobileBarMoreOptions = ({
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.OUT'],
 				STRINGS['SUMMARY.WITHDRAWAL'],
 				STRINGS['MORE_OPTIONS_LABEL.HOT_FUNCTION.TRANSFER'],
+				...assetDetails,
 			],
 		},
 		{
@@ -571,6 +734,7 @@ const MobileBarMoreOptions = ({
 			iconText: 'USER_VERIFICATION.TITLE_IDENTITY',
 			path: '/verification?identity',
 			isDisplay: true,
+			toolTipText: 'DESKTOP_NAVIGATION.VERIFICATION_DESC',
 			searchContent: [
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.PERSONAL_INFO'],
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.IDENTITY_CHECK'],
@@ -586,6 +750,7 @@ const MobileBarMoreOptions = ({
 				'USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.TITLE_PHONE',
 			path: '/verification?phone',
 			isDisplay: true,
+			toolTipText: 'DESKTOP_ULTIMATE_SEARCH.PHONE_INFO_TEXT',
 			searchContent: [
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.CONTACT'],
 				STRINGS['USER_VERIFICATION.TITLE_MOBILE'],
@@ -604,6 +769,7 @@ const MobileBarMoreOptions = ({
 			iconText: 'USER_VERIFICATION.TITLE_EMAIL',
 			path: '/verification?email',
 			isDisplay: true,
+			toolTipText: 'DESKTOP_ULTIMATE_SEARCH.EMAIL_INFO_TEXT',
 			searchContent: [
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.CONTACT'],
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.EMAIL_ADDRESS'],
@@ -615,23 +781,38 @@ const MobileBarMoreOptions = ({
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.MY'],
 			],
 		},
+		{
+			icon_id: 'REVOKE_SESSION',
+			iconText: 'ACCOUNTS.TAB_SIGNOUT',
+			path: browserHistory?.getCurrentLocation(),
+			isDisplay: true,
+			searchContent: [STRINGS['LOGOUT']],
+			toolTipText: 'DESKTOP_NAVIGATION.SIGNOUT_DESC',
+		},
 	];
 
 	const onHandleRoute = (text, path) => {
 		browserHistory.push(path);
 		const actions = {
-			'Cefi Stake': () => setSelectedStake('cefi'),
-			'Defi Stake': () => setSelectedStake('defi'),
-			Fees: () => setLimitTab(0),
-			Limits: () => setLimitTab(2),
-			Password: () => setSecurityTab(1),
-			Logins: () => setSecurityTab(4),
-			Sessions: () => setSecurityTab(3),
-			Banks: () => setVerificationTab(3),
-			Help: () => setIsDialogOpen(true),
+			'MORE_OPTIONS_LABEL.ICONS.CEFI_STAKE': () => setSelectedStake('cefi'),
+			'MORE_OPTIONS_LABEL.ICONS.DEFI_STAKE': () => setSelectedStake('defi'),
+			'ACCOUNTS.TAB_SIGNOUT': () => setIsLogout(true),
+			FEES: () => setLimitTab(0),
+			'MORE_OPTIONS_LABEL.ICONS.LIMITS': () => setLimitTab(2),
+			'ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE': () => setSecurityTab(1),
+			'MORE_OPTIONS_LABEL.ICONS.API': () => setSecurityTab(2),
+			'MORE_OPTIONS_LABEL.ICONS.LOGINS': () => setSecurityTab(4),
+			'SESSIONS.TAB': () => setSecurityTab(3),
+			'USER_VERIFICATION.TITLE_BANK': () => setVerificationTab(3),
+			'LOGIN.HELP': () => setIsDialogOpen(true),
+			'MORE_OPTIONS_LABEL.ICONS.AUDIO': () => setSettingsTab(3),
+			'USER_SETTINGS.TITLE_LANGUAGE': () => setSettingsTab(2),
+			'USER_SETTINGS.TITLE_INTERFACE': () => setSettingsTab(1),
+			'USER_SETTINGS.TITLE_NOTIFICATION': () => setSettingsTab(0),
+			'USER_SETTINGS.TITLE_CHAT': () => setSettingsTab(4),
 		};
 
-		const action = actions[STRINGS[text]];
+		const action = actions[text];
 		if (action) action();
 	};
 
@@ -640,66 +821,297 @@ const MobileBarMoreOptions = ({
 	};
 
 	const filterOptions = (options) => {
-		return options?.filter((option) => {
-			const iconTextMatch = (STRINGS[option?.iconText] || '')
-				?.toLowerCase()
-				.includes(search?.toLowerCase());
-			const searchContentMatch = option?.searchContent?.some((content) =>
-				content?.toLowerCase()?.includes(search?.toLowerCase())
-			);
-			return iconTextMatch || searchContentMatch;
-		});
+		const normalizedSearch = search
+			?.replace(/\s+/g, ' ')
+			?.trim()
+			?.toLowerCase();
+		if (!isMobile) {
+			const searchText = normalizedSearch?.split(' ');
+			const filter = options?.filter((option) => {
+				const iconTextMatch =
+					STRINGS[option?.iconText ? option?.iconText : option?.string_id] ||
+					'';
+				const isContent = option?.searchContent?.some((content) =>
+					searchText?.some(
+						(searchValue) =>
+							content?.toLowerCase()?.startsWith(searchValue) &&
+							option?.isDisplay
+					)
+				);
+				const isIconText = searchText?.some(
+					(content) =>
+						iconTextMatch?.toLowerCase()?.startsWith(content) &&
+						option?.isDisplay
+				);
+				const isIconId = searchText?.some(
+					(content) =>
+						option?.icon_id?.toLowerCase()?.startsWith(content) &&
+						option?.isDisplay
+				);
+
+				return (isIconId && isIconText) || isContent || isIconId || isIconText;
+			});
+			return filter;
+		} else {
+			return options?.filter((option) => {
+				const iconTextMatch = (
+					STRINGS[option?.iconText ? option?.iconText : option?.string_id] || ''
+				)
+					?.toLowerCase()
+					?.includes(search?.toLowerCase());
+				const searchContentMatch = option?.searchContent?.some((content) =>
+					content?.toLowerCase()?.includes(search?.toLowerCase())
+				);
+				return iconTextMatch || searchContentMatch;
+			});
+		}
 	};
+
+	const filteredHotFunctionOptions = useMemo(() => {
+		if (search) {
+			return filterOptions(hotFunctionOptions);
+		}
+		return hotFunctionOptions;
+		//eslint-disable-next-line
+	}, [search]);
+
+	const filteredOtherFunctionOptions = useMemo(() => {
+		if (search) {
+			return filterOptions(otherFunctionOptions);
+		}
+		return otherFunctionOptions;
+		//eslint-disable-next-line
+	}, [search]);
+
+	const filteredDefaultFunctionOptions = useMemo(() => {
+		if (search) {
+			return filterOptions(pinnedOptions());
+		}
+		return pinnedOptions();
+		//eslint-disable-next-line
+	}, [search]);
+
+	const searchresult =
+		filteredHotFunctionOptions?.length +
+		filteredOtherFunctionOptions?.length +
+		filteredDefaultFunctionOptions?.length;
 
 	const renderOptions = (filteredOption, title) => {
 		return (
-			<div className="hot-options-container">
-				<span className="hot-function-title">{title?.toUpperCase()}</span>
-				{filteredOption.length > 0 ? (
+			<div
+				className={
+					title === STRINGS['DESKTOP_ULTIMATE_SEARCH.POPULAR_FUNCTION']
+						? 'hot-options-container popular-option-container'
+						: title ===
+						  STRINGS[
+								'MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.OTHER_FUNCTIONS_LABEL'
+						  ]
+						? 'hot-options-container other-option-container'
+						: 'hot-options-container popular-option-container'
+				}
+			>
+				{!isMobile ? (
+					!search && (
+						<span className="hot-function-title">{title?.toUpperCase()}</span>
+					)
+				) : (
+					<span className="hot-function-title">{title?.toUpperCase()}</span>
+				)}
+				{search &&
+					!isMobile &&
+					((filteredHotFunctionOptions?.length > 0 &&
+						title === STRINGS['DESKTOP_ULTIMATE_SEARCH.POPULAR_FUNCTION']) ||
+						(filteredHotFunctionOptions?.length === 0 &&
+							filteredOtherFunctionOptions?.length > 0 &&
+							title ===
+								STRINGS[
+									'MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.OTHER_FUNCTIONS_LABEL'
+								])) && (
+						<span className="hot-function-title search-result">
+							<EditWrapper>
+								{STRINGS.formatString(
+									STRINGS[
+										'DESKTOP_ULTIMATE_SEARCH.SEARCH_RESULT'
+									].toUpperCase(),
+									searchresult
+								)}
+							</EditWrapper>
+						</span>
+					)}
+				{filteredOption?.length > 0 ? (
 					<div className="options-field">
-						{filteredOption?.map((data, inx) => {
-							return (
-								data.isDisplay && (
+						{filteredOption?.map(
+							(data, inx) =>
+								data?.isDisplay &&
+								(!isMobile ? (
+									<Tooltip
+										overlayClassName="dynamic-search-description"
+										title={
+											STRINGS[
+												data?.string_id ? data?.string_id : data?.toolTipText
+											]
+										}
+									>
+										<div
+											key={inx}
+											className={
+												data?.string_id
+													? 'icon-field plugins-icon'
+													: 'icon-field'
+											}
+											onClick={() =>
+												onHandleRoute(
+													data?.iconText ? data?.iconText : data?.string_id,
+													data?.path
+												)
+											}
+										>
+											{fieldHasCoinIcon?.includes(data?.iconText) ? (
+												<div className={isValidCoin ? 'image-wrapper' : ''}>
+													<Coin
+														iconId={data?.icon_id}
+														icon={icons[data?.icon_id]}
+														wrapperClassName="icon-logo"
+														type="CS8"
+													/>
+													<span className="assets-icon">
+														<Coin
+															type="CS5"
+															iconId={coins[getAsset]?.icon_id}
+														/>
+													</span>
+												</div>
+											) : (
+												<span>
+													<Coin
+														iconId={data?.icon_id}
+														icon={
+															icons[
+																data?.string_id === 'RC_BANXA_ACCESS'
+																	? 'BUY_CRYPTO_OPTION'
+																	: data?.string_id === 'RC_ONRAMPER_MENU_ITEM'
+																	? 'ONRAMPER_ICON'
+																	: data?.icon_id
+															]
+														}
+														wrapperClassName="icon-logo"
+														type="CS8"
+													/>
+													{data?.icon_id === 'REFERRAL_OPTION_ICON' && (
+														<span>
+															<Image
+																icon={icons['HOT_ICON']}
+																wrapperClassName="hot-icon"
+															/>
+														</span>
+													)}
+												</span>
+											)}
+											<div className="option-title">
+												<EditWrapper
+													stringId={
+														data?.iconText ? data?.iconText : data?.string_id
+													}
+												>
+													{data?.isTopAsset
+														? data?.iconText
+														: STRINGS[
+																data?.iconText
+																	? data?.iconText
+																	: data?.string_id
+														  ]}
+												</EditWrapper>
+											</div>
+										</div>
+									</Tooltip>
+								) : (
 									<div
 										key={inx}
-										className="icon-field"
-										onClick={() => onHandleRoute(data?.iconText, data?.path)}
+										className={
+											data?.string_id ? 'icon-field plugins-icon' : 'icon-field'
+										}
+										onClick={() =>
+											onHandleRoute(
+												data?.iconText ? data?.iconText : data?.string_id,
+												data?.path
+											)
+										}
 									>
-										<Image
-											iconId={data?.icon_id}
-											icon={icons[data?.icon_id]}
-											wrapperClassName="icon-logo"
-										/>
+										{fieldHasCoinIcon?.includes(data?.iconText) ? (
+											<div className={isValidCoin ? 'image-wrapper' : ''}>
+												<Coin
+													iconId={data?.icon_id}
+													icon={icons[data?.icon_id]}
+													wrapperClassName="icon-logo"
+												/>
+												<span className="assets-icon">
+													<Coin type="CS5" iconId={coins[getAsset]?.icon_id} />
+												</span>
+											</div>
+										) : (
+											<Coin
+												iconId={data?.icon_id}
+												icon={
+													icons[
+														data?.string_id === 'RC_BANXA_ACCESS'
+															? 'BUY_CRYPTO_OPTION'
+															: data?.string_id === 'RC_ONRAMPER_MENU_ITEM'
+															? 'ONRAMPER_ICON'
+															: data?.icon_id
+													]
+												}
+												type="CS9"
+												wrapperClassName="icon-logo"
+											/>
+										)}
 										<div className="option-title">
-											<EditWrapper stringId={data?.iconText}>
-												{STRINGS[data?.iconText]}
+											<EditWrapper
+												stringId={
+													data?.iconText ? data?.iconText : data?.string_id
+												}
+											>
+												{
+													STRINGS[
+														data?.iconText ? data?.iconText : data?.string_id
+													]
+												}
 											</EditWrapper>
 										</div>
 									</div>
-								)
-							);
-						})}
+								))
+						)}
 					</div>
 				) : (
-					<div className="text-align-center my-5">
-						<EditWrapper>
-							<span className="secondary-text">
-								{STRINGS['MORE_OPTIONS_LABEL.NO_RESULT_DESC_1']}
+					<div className="text-align-center d-flex flex-direction-column align-items-center my-5">
+						{!isMobile && (
+							<span className="hot-function-title search-result mb-3">
+								<EditWrapper>
+									{STRINGS.formatString(
+										STRINGS[
+											'DESKTOP_ULTIMATE_SEARCH.SEARCH_RESULT'
+										].toUpperCase(),
+										searchresult
+									)}
+								</EditWrapper>
 							</span>
-						</EditWrapper>
-						<EditWrapper>
-							<span className="secondary-text">
-								{STRINGS['MORE_OPTIONS_LABEL.NO_RESULT_DESC_2']}
-							</span>
-						</EditWrapper>
+						)}
+						<span>
+							<EditWrapper>
+								<span className="secondary-text">
+									{STRINGS['MORE_OPTIONS_LABEL.NO_RESULT_DESC_1']}
+								</span>
+							</EditWrapper>
+							<EditWrapper>
+								<span className="secondary-text">
+									{STRINGS['MORE_OPTIONS_LABEL.NO_RESULT_DESC_2']}
+								</span>
+							</EditWrapper>
+						</span>
 					</div>
 				)}
 			</div>
 		);
 	};
-
-	const filteredHotFunctionOptions = filterOptions(hotFunctionOptions);
-	const filteredOtherFunctionOptions = filterOptions(otherFunctionOptions);
 
 	const renderHelpDialog = () => {
 		return (
@@ -749,42 +1161,113 @@ const MobileBarMoreOptions = ({
 		}));
 	};
 
+	const onHandleLogout = () => {
+		removeToken();
+		setIsLogout(false);
+		return browserHistory?.push('/login');
+	};
+
+	const onHandleClosePopup = () => {
+		setIsLogout(false);
+	};
+
 	return (
-		<div className="footer-bar-more-options-container">
+		<div
+			className={
+				isMobile
+					? 'footer-bar-more-options-container'
+					: 'desktop-search-more-option'
+			}
+		>
 			{isDialogOpen && renderHelpDialog()}
-			<SearchBox
-				placeHolder={STRINGS['MORE_OPTIONS_LABEL.MORE_OPTION_SEARCH_TXT']}
-				handleSearch={(e) => onHandleSearch(e)}
-			/>
-			<div className="options-container">
-				{renderOptions(
-					filteredHotFunctionOptions,
-					STRINGS['MORE_OPTIONS_LABEL.HOT_FUNCTION.HOT_FUNCTION_LABEL']
-				)}
-				{renderOptions(
-					filteredOtherFunctionOptions,
-					STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.OTHER_FUNCTIONS_LABEL']
-				)}
-			</div>
-			<div className="bottom-bar-button">
-				<span className="d-flex w-100 justify-content-end">
-					<span
-						className={
-							hasResponseData
-								? 'custom-connection-circle mt-2 mr-2'
-								: 'custom-connection-error-circle custom-connection-circle mt-2 mr-2'
-						}
-					></span>
+			{isLogout &&
+				renderConfirmSignout(isLogout, onHandleClosePopup, onHandleLogout)}
+			{isMobile ? (
+				<SearchBox
+					placeHolder={STRINGS['MORE_OPTIONS_LABEL.MORE_OPTION_SEARCH_TXT']}
+					handleSearch={(e) => onHandleSearch(e)}
+				/>
+			) : (
+				<div className="search-field">
+					<Input
+						onChange={(e) => onHandleSearch(e)}
+						placeholder={STRINGS['DESKTOP_ULTIMATE_SEARCH.SEARCH_PLACEHOILDER']}
+						allowClear
+					/>
+					<span className="search-icon-container">
+						<SearchOutlined className="search-icon" />
+					</span>
+				</div>
+			)}
+			{isMobile ? (
+				<div className="options-container">
+					{renderOptions(
+						filteredHotFunctionOptions,
+						STRINGS['MORE_OPTIONS_LABEL.HOT_FUNCTION.HOT_FUNCTION_LABEL']
+					)}
+					{renderOptions(
+						filteredOtherFunctionOptions,
+						STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.OTHER_FUNCTIONS_LABEL']
+					)}
+				</div>
+			) : (
+				<div className="options-container">
+					{filteredHotFunctionOptions?.length > 0 &&
+						renderOptions(
+							filteredHotFunctionOptions,
+							STRINGS['DESKTOP_ULTIMATE_SEARCH.POPULAR_FUNCTION']
+						)}
+					{filteredDefaultFunctionOptions?.length > 0 &&
+						renderOptions(filteredDefaultFunctionOptions)}
+					{filteredOtherFunctionOptions?.length > 0 &&
+						renderOptions(
+							filteredOtherFunctionOptions,
+							STRINGS[
+								'MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.OTHER_FUNCTIONS_LABEL'
+							]
+						)}
+					{filteredOtherFunctionOptions?.length === 0 &&
+						filteredHotFunctionOptions?.length === 0 &&
+						renderOptions(
+							filteredHotFunctionOptions,
+							STRINGS['DESKTOP_ULTIMATE_SEARCH.POPULAR_FUNCTION']
+						)}
+				</div>
+			)}
+			{!isMobile && (
+				<span className="crypto-link secondary-text">
 					<EditWrapper>
-						<span
-							className="fs-16 blue-link text pointer text-decoration-underline"
-							onClick={() => onHandleConnection()}
-						>
-							{`(${STRINGS['CONNECTIONS.CONNECTION_LABEL']})`}
-						</span>
+						{STRINGS['DESKTOP_ULTIMATE_SEARCH.CRYPTO_PRICES']}
 					</EditWrapper>
+					<span
+						className="blue-link text-decoration-underline"
+						onClick={() => browserHistory.push('/prices')}
+					>
+						{STRINGS['DESKTOP_ULTIMATE_SEARCH.PRICE_LINK']}
+					</span>
 				</span>
-			</div>
+			)}
+			{isMobile && (
+				<div className="bottom-bar-button">
+					<span className="d-flex w-100 justify-content-end">
+						<span
+							className={
+								hasResponseData
+									? 'custom-connection-circle mt-2 mr-2'
+									: 'custom-connection-error-circle custom-connection-circle mt-2 mr-2'
+							}
+						></span>
+						<EditWrapper>
+							<span
+								className="fs-16 blue-link text pointer text-decoration-underline"
+								onClick={() => onHandleConnection()}
+							>
+								{`(${STRINGS['CONNECTIONS.CONNECTION_LABEL']})`}
+							</span>
+						</EditWrapper>
+					</span>
+				</div>
+			)}
 			{isDisplayPopup?.isDisplayConnection && (
 				<ConnectionPopup
 					isDisplayPopup={isDisplayPopup}
@@ -812,7 +1295,14 @@ const MobileBarMoreOptions = ({
 };
 
 const mapStateToProps = (store) => ({
+	user: store.user,
 	features: store.app.features,
+	coins: store.app.coins,
+	pinnedAsset: store.app.pinned_assets,
+	getMarkets: MarketsSelector(store),
+	quickTrade: store.app.quicktrade,
+	getRemoteRoutes: store.app.remoteRoutes,
+	assets: assetsSelector(store),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -820,6 +1310,7 @@ const mapDispatchToProps = (dispatch) => ({
 	setLimitTab: bindActionCreators(setLimitTab, dispatch),
 	setSecurityTab: bindActionCreators(setSecurityTab, dispatch),
 	setVerificationTab: bindActionCreators(setVerificationTab, dispatch),
+	setSettingsTab: bindActionCreators(setSettingsTab, dispatch),
 });
 
 export default connect(

@@ -72,6 +72,7 @@ import GetSocketState from './GetSocketState';
 import withEdit from 'components/EditProvider/withEdit';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { ETHEREUM_EVENTS } from 'actions/stakingActions';
+import { renderConfirmSignout } from 'components/AppBar/Utils';
 
 class App extends Component {
 	state = {
@@ -91,6 +92,7 @@ class App extends Component {
 		isTradeTab: false,
 		isProTrade: false,
 		isQuickTrade: false,
+		isLogout: false,
 	};
 	ordersQueued = [];
 	limitTimeOut = null;
@@ -223,16 +225,18 @@ class App extends Component {
 		if (JSON.stringify(prevProps.tools) !== JSON.stringify(tools)) {
 			storeTools(tools);
 		}
-		const { themeOptions } = this.props;
+		const { themeOptions, router } = this.props;
 		const isValidTheme = themeOptions.some(
 			(option) => option.value === this.props?.router?.location?.query?.theme
 		);
-		if (!params.has('theme')) {
-			params.set('theme', activeTheme);
-			const currentUrl = window.location.href.split('?')[0];
-			const newUrl = `${currentUrl}?${params.toString()}`;
-			this.props.router.replace(newUrl);
-		} else if (!isValidTheme) {
+		if (prevProps?.activeTheme !== activeTheme) {
+			if (!params.has('theme')) {
+				params.set('theme', activeTheme);
+				const currentUrl = window.location.href.split('?')[0];
+				const newUrl = `${currentUrl}?${params.toString()}`;
+				router.replace(newUrl);
+			}
+		} else if (params.has('theme') && !isValidTheme) {
 			params.set('theme', 'dark');
 			const currentUrl = window.location.href.split('?')[0];
 			const newUrl = `${currentUrl}?${params.toString()}`;
@@ -319,7 +323,7 @@ class App extends Component {
 
 			switch (path) {
 				case 'logout':
-					this.logout();
+					this.setState({ isLogout: true });
 					break;
 				case 'help':
 					this.props.openHelpfulResourcesForm();
@@ -677,6 +681,15 @@ class App extends Component {
 		browserHistory.push(path);
 	};
 
+	onHandleClose = () => {
+		this.setState({ isLogout: false });
+	};
+
+	onHandleLogout = () => {
+		this.onHandleClose();
+		this.logout();
+	};
+
 	render() {
 		const {
 			symbol,
@@ -799,7 +812,7 @@ class App extends Component {
 								onClick={this.resetTimer}
 								onKeyPress={this.resetTimer}
 							/>
-							<div className="d-flex flex-column f-1">
+							<div className="d-flex flex-column f-1 w-100">
 								{!isChartEmbed && (
 									<AppBar
 										router={router}
@@ -887,6 +900,12 @@ class App extends Component {
 											</div>
 										</div>
 									)} */}
+									{this.state.isLogout &&
+										renderConfirmSignout(
+											this.state.isLogout,
+											this.onHandleClose,
+											this.onHandleLogout
+										)}
 									<Dialog
 										isOpen={dialogIsOpen && !isHome}
 										label="hollaex-modal"

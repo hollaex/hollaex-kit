@@ -35,6 +35,7 @@ import BigNumber from 'bignumber.js';
 import { updateConstants } from '../General/action';
 import _toLower from 'lodash/toLower';
 import './CeFi.scss';
+import '../Trades/index.css';
 const { Option } = Select;
 
 const CeFi = ({ coins, features, kit }) => {

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
+import { DEFAULT_COIN_DATA } from 'config/constants';
 import {
 	calculateBalancePrice,
 	calculateOraclePrice,
@@ -94,7 +94,9 @@ const ENDPOINTS = {
 
 export const getPrices = async ({
 	amount = 1,
-	quote = BASE_CURRENCY,
+	quote = localStorage?.getItem('base_currnecy')
+		? localStorage?.getItem('base_currnecy')
+		: 'usdt',
 	coins = {},
 }) => {
 	const assets = Object.keys(coins).join();

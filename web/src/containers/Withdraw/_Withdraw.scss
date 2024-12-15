@@ -89,7 +89,23 @@ $content--margin: 2rem;
 			.ant-select-arrow {
 				z-index: unset;
 			}
+			.ant-select-selection-item {
+				.withdraw-network-options {
+					justify-content: flex-start !important;
+					gap: 2%;
+					.secondary-text::before {
+						content: '(';
+					}
+					.secondary-text::after {
+						content: ')';
+					}
+				}
+			}
 		}
+	}
+
+	.select-field-disabled {
+		opacity: 0.6;
 	}
 
 	.transaction-history-wrapper {
@@ -552,6 +568,15 @@ $content--margin: 2rem;
 			Button {
 				width: 100%;
 			}
+		}
+	}
+}
+
+.custom-select-input-style {
+	.withdraw-network-options {
+		justify-content: space-between;
+		.secondary-text {
+			opacity: 0.6;
 		}
 	}
 }

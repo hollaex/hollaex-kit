@@ -4,7 +4,11 @@ import { bindActionCreators } from 'redux';
 import { SubmissionError } from 'redux-form';
 import { isMobile } from 'react-device-detect';
 import { message } from 'antd';
-import { openContactForm, setSelectedStep } from 'actions/appActions';
+import {
+	openContactForm,
+	setSecurityTab,
+	setSelectedStep,
+} from 'actions/appActions';
 import {
 	resetPassword,
 	otpRequest,
@@ -84,13 +88,16 @@ class UserSecurity extends Component {
 				window.location.search.includes('password')
 			) {
 				this.setState({ activeTab: 1 });
+				this.props.setSecurityTab(1);
 			} else if (
 				window.location.search &&
 				window.location.search.includes('apiKeys')
 			) {
 				this.setState({ activeTab: 2 });
+				this.props.setSecurityTab(2);
 			} else {
 				this.setState({ activeTab: 0 });
+				this.props.setSecurityTab(0);
 			}
 		}
 		this.openCurrentTab();
@@ -116,6 +123,11 @@ class UserSecurity extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
+		if (this.props.getSecurityTab !== this.state.activeTab) {
+			this.setState({
+				activeTab: this.props.getSecurityTab,
+			});
+		}
 		if (
 			prevProps.user.otp.requested !== this.props.user.otp.requested ||
 			prevProps.user.otp.requesting !== this.props.user.otp.requesting ||
@@ -141,6 +153,12 @@ class UserSecurity extends Component {
 			JSON.stringify(this.state.activeTab)
 		) {
 			this.openCurrentTab();
+		}
+	}
+
+	componentWillUnmount() {
+		if (this.props.getSecurityTab) {
+			this.props.setSecurityTab(0);
 		}
 	}
 
@@ -407,6 +425,7 @@ class UserSecurity extends Component {
 
 	setActiveTab = (activeTab) => {
 		this.setState({ activeTab });
+		this.props.setSecurityTab(activeTab);
 	};
 
 	/*logout = (message = '') => {
@@ -789,6 +808,7 @@ const mapDispatchToProps = (dispatch) => ({
 	otpSetActivated: (active) => dispatch(otpSetActivated(active)),
 	openContactForm: bindActionCreators(openContactForm, dispatch),
 	setSelectedStep: bindActionCreators(setSelectedStep, dispatch),
+	setSecurityTab: bindActionCreators(setSecurityTab, dispatch),
 });
 
 export default connect(

@@ -16,6 +16,35 @@
 	border: none;
 }
 
+.ant-modal-header,
+.ant-modal-content,
+.ant-modal-confirm-body .ant-modal-confirm-content {
+	background-color: var(--admin_panel_modal_background);
+	color: #ffffff;
+}
+.ant-modal-body h2 {
+	color: #ffffff;
+}
+
+.ant-table-thead > tr > th {
+	background-color: var(--admin_panel_table_thead);
+	color: var(--admin_panel_main_font);
+}
+.ant-table-tbody > tr > td {
+	background-color: var(--admin_panel_table_tbody);
+	color: var(--admin_panel_main_font);
+	border-bottom: 1px solid var(--admin_panel_table_tbody);
+}
+.ant-table-tbody > tr.ant-table-placeholder:hover > td {
+	background-color: var(--admin_panel_table_tbody_hover);
+}
+.ant-table-tbody > tr.ant-table-row:hover > td {
+	background-color: var(--admin_panel_table_tbody_hover);
+}
+.green-btn {
+	background-color: #288500 !important;
+	color: #ffffff !important;
+}
 .preview-container {
 	padding: 1.5rem 1rem;
 }
@@ -712,6 +741,7 @@
 	overflow-y: scroll;
 }
 .otc-Container .ant-input-affix-wrapper .ant-input,
+.otc-Container .ant-input-affix-wrapper,
 .otc-Container .expiry-time-field {
 	background-color: var(--admin_panel_input);
 	color: #ffffff;
@@ -771,4 +801,57 @@
 
 .p2p-admin-select-asset .ant-select-item {
 	cursor: text;
+}
+
+.p2p-admin-confirm-warning-popup-wrapper .ant-modal-body,
+.otc-broker-popup-wrapper .ant-modal-body {
+	background-color: #27339d;
+	color: white;
+}
+
+.p2p-admin-confirm-warning-popup-wrapper .p2p-admin-confirm-popup .title {
+	font-size: 18px;
+}
+
+.p2p-admin-confirm-warning-popup-wrapper
+	.p2p-admin-confirm-popup
+	.confirm-button-container {
+	margin-top: 5%;
+	display: flex;
+	gap: 5%;
+}
+
+.p2p-admin-confirm-warning-popup-wrapper
+	.p2p-admin-confirm-popup
+	.confirm-button-container
+	.green-btn {
+	border: none;
+}
+
+.p2p-admin-confirm-warning-popup-wrapper .ant-modal-close-x,
+.otc-broker-popup-wrapper .ant-modal-close-x {
+	color: white;
+}
+
+.p2p-admin-order-details-popup-wrapper
+	.p2p-admin-order-details-container
+	.title {
+	font-size: 22px;
+	margin-bottom: 3%;
+}
+
+.p2p-admin-order-details-popup-wrapper
+	.p2p-admin-order-details-container
+	.order-details {
+	margin-top: 2%;
+	display: flex;
+	align-items: center;
+}
+
+.p2p-admin-order-details-popup-wrapper
+	.p2p-admin-order-details-container
+	.order-details
+	.asset-icon {
+	position: relative;
+	top: 3px;
 }

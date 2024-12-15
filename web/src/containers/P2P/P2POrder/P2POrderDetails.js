@@ -1,11 +1,15 @@
 import React from 'react';
 import { withRouter } from 'react-router';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import { isMobile } from 'react-device-detect';
 import { Button, message, Tooltip } from 'antd';
 import { CheckCircleTwoTone } from '@ant-design/icons';
 
 import STRINGS from 'config/localizedStrings';
 import { Coin, EditWrapper, Image } from 'components';
+import { setIsChat } from 'actions/appActions';
+import { Timer } from '../Utilis';
 
 const P2POrderDetails = ({
 	user,
@@ -24,7 +28,15 @@ const P2POrderDetails = ({
 	setDisplayFeedbackModel,
 	setIsChat,
 	ICONS,
+	updateP2PStatus,
+	updateStatus,
+	updateTransaction,
 }) => {
+	const onHandleChat = () => {
+		setIsChat(true);
+		localStorage.setItem('isChat', true);
+	};
+
 	return (
 		<div
 			className={
@@ -35,7 +47,7 @@ const P2POrderDetails = ({
 		>
 			<div className="trade-assets-container">
 				<Coin iconId={coin?.icon_id} type={isMobile ? 'CS12' : 'CS10'} />
-				<div>
+				<div className="d-flex flex-direction-column">
 					<div className="order-title">
 						<EditWrapper stringId="P2P.ORDER">
 							{STRINGS['P2P.ORDER']}:
@@ -44,7 +56,13 @@ const P2POrderDetails = ({
 					<span className="secondary-text">
 						{selectedOrder?.transaction_id}
 					</span>
-					<div className="asset-name">
+					<span
+						className={
+							user?.id === selectedOrder?.merchant_id
+								? 'asset-name asset-sell'
+								: 'asset-name asset-buy'
+						}
+					>
 						{user?.id === selectedOrder?.merchant_id ? (
 							<EditWrapper stringId="P2P.SELL_COIN">
 								{STRINGS['P2P.SELL_COIN']}
@@ -55,11 +73,11 @@ const P2POrderDetails = ({
 							</EditWrapper>
 						)}{' '}
 						{coin?.fullname} ({coin?.symbol?.toUpperCase()})
-					</div>
+					</span>
 				</div>
 				{isMobile && (
 					<div className="chat-link-container">
-						<span onClick={() => setIsChat(true)}>
+						<span onClick={() => onHandleChat()}>
 							<EditWrapper stringId="USER_SETTINGS.TITLE_CHAT">
 								<span className="chat-link text-decoration-underline">
 									{STRINGS['USER_SETTINGS.TITLE_CHAT']?.toUpperCase()}
@@ -304,11 +322,17 @@ const P2POrderDetails = ({
 			</div>
 
 			<div className="order-verification-container secondary-text">
-				{/* <div className='mb-3 important-text'>
-                <EditWrapper stringId="P2P.EXPECTED_TIME">
-                {STRINGS['P2P.EXPECTED_TIME']}
-                </EditWrapper>
-                </div> */}
+				{selectedOrder?.user_status === 'pending' && (
+					<div className="mb-3 important-text order-timer-wrapper">
+						<EditWrapper stringId="P2P.EXPECTED_TIME">
+							{STRINGS.formatString(
+								STRINGS['P2P.EXPECTED_TIME'],
+								selectedOrder?.transaction_duration
+							)}
+						</EditWrapper>
+						<Timer order={selectedOrder} />
+					</div>
+				)}
 
 				{user?.id === selectedOrder?.user_id && (
 					<>
@@ -563,14 +587,20 @@ const P2POrderDetails = ({
 							>
 								<div
 									onClick={async () => {
-										try {
-											setDisplayAppealModel(true);
-											setAppealSide('merchant');
-										} catch (error) {
-											message.error(error.data.message);
+										if (selectedOrder?.user_status === 'confirmed') {
+											try {
+												setDisplayAppealModel(true);
+												setAppealSide('merchant');
+											} catch (error) {
+												message.error(error.data.message);
+											}
 										}
 									}}
-									className="appeal-link blue-link"
+									className={
+										selectedOrder?.user_status !== 'confirmed'
+											? 'appeal-link blue-link disable-link'
+											: 'appeal-link blue-link'
+									}
 								>
 									<EditWrapper stringId="P2P.APPEAL">
 										{STRINGS['P2P.APPEAL']}
@@ -613,8 +643,52 @@ const P2POrderDetails = ({
 						)}
 				</div>
 			</div>
+			{user.id === selectedOrder?.user_id &&
+				selectedOrder?.transaction_status === 'active' &&
+				selectedOrder.user_status === 'pending' && (
+					<div className="confirm-notify-button-container">
+						<Button
+							className="cancel-btn"
+							onClick={async () => {
+								try {
+									setDisplayCancelWarning(true);
+								} catch (error) {
+									message.error(error.data.message);
+								}
+							}}
+						>
+							<EditWrapper stringId="P2P.CANCEL">
+								{STRINGS['P2P.CANCEL']}
+							</EditWrapper>
+						</Button>
+						<Button
+							className="confirm-btn"
+							onClick={async () => {
+								try {
+									await updateTransaction({
+										id: selectedOrder.id,
+										user_status: 'confirmed',
+									});
+									updateP2PStatus();
+									updateStatus('confirmed');
+									message.success(STRINGS['P2P.CONFIRMED_TRANSACTION']);
+								} catch (error) {
+									message.error(error.data.message);
+								}
+							}}
+						>
+							<EditWrapper stringId="P2P.CONFIRM_TRANSFER">
+								{STRINGS['P2P.CONFIRM_TRANSFER']}
+							</EditWrapper>
+						</Button>
+					</div>
+				)}
 		</div>
 	);
 };
 
-export default withRouter(P2POrderDetails);
+const mapDispatchToProps = (dispatch) => ({
+	setIsChat: bindActionCreators(setIsChat, dispatch),
+});
+
+export default connect('', mapDispatchToProps)(withRouter(P2POrderDetails));
