@@ -1309,56 +1309,30 @@ class GeneralContent extends Component {
 						<div className="divider"></div>
 						<div className="general-wrapper mb-5">
 							<div className="sub-title">API keys</div>
-							{isUpgrade ? (
-								<div className="d-flex">
-									<div className="d-flex align-items-center justify-content-between upgrade-section my-4">
-										<div>
-											<div className="font-weight-bold">
-												Gnerate your API keys
-											</div>
-											<div>Allow your users to create API keys</div>
-										</div>
-										<div className="ml-5 button-wrapper">
-											<a
-												href="https://dash.hollaex.com/billing"
-												target="_blank"
-												rel="noopener noreferrer"
-											>
-												<Button type="primary" className="w-100">
-													Upgrade Now
-												</Button>
-											</a>
-										</div>
-									</div>
-								</div>
-							) : (
-								<>
-									<div className="description d-flex flex-column">
-										<span>
-											Generate API keys for programmatic access to your
-											exchange.
-										</span>
-										<span>
-											Note, in order to generate API keys it is required to add
-											a{' '}
-											<a
-												href="https://www.techtarget.com/whatis/definition/whitelist"
-												target={'_blank'}
-												rel="noopener noreferrer"
-											>
-												white listed IP address.
-											</a>
-										</span>
-									</div>
-									<GenerateAPiKeys
-										tokenRevoked={this.props.tokenRevoked}
-										tokenGenerated={tokenGenerated}
-										tokens={this.props.tokens}
-										requestTokens={this.props.requestTokens}
-										user={this.props.user}
-									/>
-								</>
-							)}
+							<div className="description d-flex flex-column">
+								<span>
+									Generate API keys for programmatic access to your
+									exchange.
+								</span>
+								<span>
+									Note, in order to generate API keys it is required to add
+									a{' '}
+									<a
+										href="https://www.techtarget.com/whatis/definition/whitelist"
+										target={'_blank'}
+										rel="noopener noreferrer"
+									>
+										white listed IP address.
+									</a>
+								</span>
+							</div>
+							<GenerateAPiKeys
+								tokenRevoked={this.props.tokenRevoked}
+								tokenGenerated={tokenGenerated}
+								tokens={this.props.tokens}
+								requestTokens={this.props.requestTokens}
+								user={this.props.user}
+							/>
 						</div>
 					</div>
 				) : null}
