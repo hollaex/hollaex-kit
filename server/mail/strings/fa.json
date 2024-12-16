@@ -163,6 +163,14 @@
         "AUTO_TRADE_ERROR": {
             "html": "<div><p>کاربر گرامی ${name}،</p><p>ما متوجه شدیم که تنظیمات تجارت خودکار شما به دلیل موجودی ناکافی برای معامله زیر انجام نشد. لطفاً موجودی خود را بررسی و به‌روزرسانی کنید. مقدار هزینه: ${spend_amount}، ارز هزینه شده: ${spend_coin}، ارز خریداری شده: ${buy_coin}.</p><p>از استفاده شما از پلتفرم ما متشکریم.</p><p>با احترام، تیم ${api_name}</p></div>",
             "title": "خطا در تنظیم تجارت خودکار شما"
-          }
+          },
+        "AUTO_TRADE_REMINDER": {
+			"html": "<div><p>عزیز ${name}،</p><p>این یک یادآوری است که معامله‌ی تکراری شما از <b>${spend_amount} ${spend_coin} برای ${buy_coin}</b> در ۱۲ ساعت آینده فعال خواهد شد. لطفاً اطمینان حاصل کنید که کیف پول شما دارای موجودی کافی برای انجام موفقیت‌آمیز معامله است:</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">مشاهده کیف پول</Button></a></div><p>از اینکه از پلتفرم ما استفاده می‌کنید سپاسگزاریم.</p><p>با احترام,<br />تیم ${api_name}</p></div>",
+			"title": "سفارش تکراری شما به زودی فعال می‌شود"
+		},
+		"AUTO_TRADE_FILLED": {
+			"html": "<div><p>عزیز ${name}،</p><p>سفارش خودکار شما برای خرج کردن <b>${spend_amount} ${spend_coin} به ${buy_coin}</b> با موفقیت پردازش شد.</p><div>برای مشاهده تاریخچه تجارت خود، لطفاً از لینک زیر استفاده کنید:</div><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">مشاهده تاریخچه تجارت</Button></a></div><p>از استفاده از پلتفرم ما متشکریم.</p><p>با احترام،<br />تیم ${api_name}</p></div>",
+			"title": "سفارش خودکار شما با موفقیت پردازش شد"
+		}
     }
 }

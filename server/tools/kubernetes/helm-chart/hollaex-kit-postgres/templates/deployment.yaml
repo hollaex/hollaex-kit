@@ -6,7 +6,7 @@ metadata:
   name: {{.Release.Name}}
   namespace: {{.Release.namespace}}
 spec:
-  replicas: 1
+  replicas: {{.Values.stable.replicaCount}}
   
   strategy:
     type: Recreate
@@ -67,6 +67,8 @@ spec:
 {{ toYaml .Values.nodeSelector | indent 8 }}
 {{- end }}
 
+      terminationGracePeriodSeconds: 120
+
       containers:
       - name: {{.Release.Name}}
         image: {{.Values.imageRegistry}}:{{.Values.dockerTag}}
@@ -95,20 +97,20 @@ spec:
                   key: DB_USERNAME
         imagePullPolicy: IfNotPresent
 
-        {{- if .Values.filebeat }}
-        {{- if .Values.filebeat.create }}
-
-        args: ["-c", "config_file=/etc/postgresql.conf"]
-
-        securityContext:
-          runAsUser: 999
-
-        {{- end }}
-        {{- end }}
-
         ports:
         - name: port
           containerPort: 5432
+
+        # DB graceful shutdown
+        lifecycle:
+          preStop:
+            exec:
+              command: ["/usr/local/bin/pg_ctl stop -D /var/lib/postgresql/data -w -t 110 -m fast"]
+        
+        # UID postgres
+        securityContext:
+          runAsUser: 70
+
         volumeMounts:
           - name: postgres-mount
             mountPath: /var/lib/postgresql/data

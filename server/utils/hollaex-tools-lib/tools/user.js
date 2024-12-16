@@ -3264,40 +3264,45 @@ const fetchUserProfitLossInfo = async (user_id, opts = { period: 7 }) => {
 		const finalBalances = filteredBalanceHistory[filteredBalanceHistory.length - 1].balance;
  
 		results[interval] = {};
-		let totalCumulativePNL = 0;
-		let totalInitialValue = 0;
-		let totalFinalValue = 0;
-		Object.keys(finalBalances).forEach(async (asset) => {
-			if (initialBalances?.[asset] && initialBalances?.[asset]?.native_currency_value) {
-				const cumulativePNL =
-				finalBalances[asset].native_currency_value -
-				initialBalances[asset].native_currency_value -
-				(netInflowFromDepositsPerAsset[asset] || 0) -
-				(netInflowFromTradesPerAsset[asset] || 0) -
-				(netOutflowFromWithdrawalsPerAsset[asset] || 0);
-			
-				
-				const day1Assets = initialBalances[asset].native_currency_value;
-				const inflow = netInflowFromDepositsPerAsset[asset] || 0;
-				const cumulativePNLPercentage =
-				cumulativePNL / (day1Assets + inflow) * 100; 
-			
-				results[interval][asset] = {
-					cumulativePNL,
-					cumulativePNLPercentage,
-				};
+		let initalTotalBalance = 0
+        let finalTotalBalance = 0
+        let totalDeposits = 0
+        let totalWithdrawals = 0
 
-				totalCumulativePNL += cumulativePNL;
-				totalInitialValue += day1Assets + inflow;
-				totalFinalValue += finalBalances[asset].native_currency_value;
-			}
-		});
-		results[interval].total = totalCumulativePNL;
-	
-		if (totalInitialValue !== 0) {
-			const totalCumulativePNLPercentage = (totalCumulativePNL / totalInitialValue) * 100;
-			results[interval].totalPercentage = totalCumulativePNLPercentage ? totalCumulativePNLPercentage.toFixed(2) : null;
-		}
+        let totalDay1Assets = 0;
+        let totalInflow = 0;
+        Object.keys(finalBalances).forEach(async (asset) => {
+   
+            if(!initialBalances?.[asset]?.native_currency_value) {
+                initialBalances[asset] = {};
+                initialBalances[asset].native_currency_value = 0;
+                initialBalances[asset].original_value = 0;
+            }
+        
+            initalTotalBalance += initialBalances?.[asset]?.native_currency_value || 0;
+            finalTotalBalance += finalBalances[asset].native_currency_value || 0;
+            totalDeposits += netInflowFromDepositsPerAsset[asset] || 0;
+            totalWithdrawals += netOutflowFromWithdrawalsPerAsset[asset] || 0
+             
+
+            totalDay1Assets += initialBalances[asset].native_currency_value;
+            totalInflow += netInflowFromDepositsPerAsset[asset] || 0;
+
+        });
+
+     
+        let cumulativePNL =
+            finalTotalBalance -
+            initalTotalBalance - 
+            totalDeposits - 
+            totalWithdrawals
+
+        const cumulativePNLPercentage =
+        cumulativePNL / (totalDay1Assets + totalInflow) * 100; 
+
+
+        results[interval].total = cumulativePNL?.toFixed(2) || 0;
+        results[interval].totalPercentage = cumulativePNLPercentage?.toFixed(2) || 0;
 	}
 
 	client.setexAsync(`${user_id}-${opts.period}user-pl-info`, 3600, JSON.stringify(results));

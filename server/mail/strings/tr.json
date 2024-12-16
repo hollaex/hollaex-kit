@@ -163,7 +163,15 @@
         "AUTO_TRADE_ERROR":{
 			"html": "<div><p>Sayın ${name},</p><p>Otomatik ticaret yapılandırmanız, aşağıdaki işlem için yetersiz bakiye nedeniyle başarısız oldu. Lütfen bakiyenizi kontrol edin ve güncelleyin. Harcama Tutarı: ${spend_amount}, Harcanan Coin: ${spend_coin}, Satın Alınan Coin: ${buy_coin}.</p><p>Platformumuzu kullandığınız için teşekkür ederiz.</p><p>Saygılarımızla, ${api_name} ekibi</p></div>",
 			"title": "Otomatik Ticaret Yapılandırmanızda Hata"
-		  }
+		  },
+		"AUTO_TRADE_REMINDER": {
+			"html": "<div><p>Sayın ${name},</p><p>Bu, <b>${spend_amount} ${spend_coin} karşılığında ${buy_coin}</b> olan tekrarlanan işleminizin 12 saat içinde aktive olacağına dair bir hatırlatmadır. Başarılı bir işlem için cüzdanınızda yeterli bakiye olduğundan emin olun:</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">CÜZDANIMI GÖRÜNTÜLE</Button></a></div><p>Platformumuzu kullandığınız için teşekkür ederiz.</p><p>Saygılarla,<br />${api_name} ekibi</p></div>",
+			"title": "Tekrarlanan Siparişiniz Yakında Aktiviteye Geçiyor"
+		},
+		"AUTO_TRADE_FILLED": {
+			"html": "<div><p>Sayın ${name},</p><p>Otomatik siparişiniz olan <b>${spend_amount} ${spend_coin} karşılığında ${buy_coin}</b> başarıyla işlendi.</p><div>İşlem geçmişinizi aşağıda inceleyebilirsiniz:</div><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">TİCARET GEÇMİŞİNİ GÖRÜNTÜLE</Button></a></div><p>Platformumuzu kullandığınız için teşekkür ederiz.</p><p>Saygılarımla,<br />${api_name} ekibi</p></div>",
+			"title": "Otomatik siparişiniz başarıyla işlendi"
+		}
 		  
 	}
 }

@@ -163,6 +163,14 @@
         "AUTO_TRADE_ERROR": {
             "html": "<div><p>Estimado ${name},</p><p>Hemos detectado que su configuración de comercio automático falló debido a un saldo insuficiente para la siguiente operación. Por favor, revise y actualice su saldo. Monto gastado: ${spend_amount}, Moneda gastada: ${spend_coin}, Moneda comprada: ${buy_coin}.</p><p>Gracias por usar nuestra plataforma.</p><p>Saludos,<br />El equipo de ${api_name}</p></div>",
             "title": "Error en su configuración de comercio automático"
-          }
+          },
+        "AUTO_TRADE_REMINDER": {
+			"html": "<div><p>Estimado ${name},</p><p>Este es un recordatorio de que su operación recurrente de <b>${spend_amount} ${spend_coin} por ${buy_coin}</b> se activará en 12 horas. Asegúrese de que su billetera tenga fondos suficientes para una ejecución exitosa:</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">VER BILLETERA</Button></a></div><p>Gracias por usar nuestra plataforma.</p><p>Saludos,<br />El equipo de ${api_name}</p></div>",
+			"title":  "Su pedido recurrente se activará pronto"
+		},
+		"AUTO_TRADE_FILLED": {
+			"html": "<div><p>Estimado/a ${name},</p><p>Su orden automática para gastar <b>${spend_amount} ${spend_coin} por ${buy_coin}</b> ha sido procesada con éxito.</p><div>Puede revisar su historial de transacciones a continuación:</div><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">VER HISTORIAL DE COMERCIO</Button></a></div><p>Gracias por usar nuestra plataforma.</p><p>Saludos,<br />El equipo de ${api_name}</p></div>",
+			"title": "Su pedido automático se ha procesado con éxito"
+		}
     }
 }
