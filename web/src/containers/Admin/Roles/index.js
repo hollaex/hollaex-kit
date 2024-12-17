@@ -12,6 +12,8 @@ import {
 } from './ModalForm';
 import { requestRole, inviteOperator, updateRole } from './action';
 import './index.css';
+import '../Trades/index.css';
+import '../../Admin/General/index.css';
 import { handleUpgrade } from 'utils/utils';
 
 const getColumns = (handleEdit = () => {}) => [
@@ -101,7 +103,7 @@ const renderItems = () => {
 				</div>
 			);
 		default:
-			return <div></div>
+			return <div></div>;
 	}
 };
 

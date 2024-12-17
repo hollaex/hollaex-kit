@@ -12,7 +12,8 @@ import { getTabParams } from '../AdminFinancials/Assets';
 import { setConfig } from 'actions/appActions';
 import { constractPaymentOption } from 'utils/utils';
 import FiatFees from './FiatFees';
-
+import '../Trades/index.css';
+import '../../Admin/General/index.css';
 const TabPane = Tabs.TabPane;
 
 const Fiatmarkets = ({
