@@ -366,20 +366,20 @@ const ROLES = {
 
 exports.DEFAULT_FEES = {
 	fiat: {
-		maker: 0,
-		taker: 0
+		maker: 0.5,
+		taker: 0.5
 	},
 	boost: {
-		maker: 0,
-		taker: 0
+		maker: 0.5,
+		taker: 0.5
 	},
 	crypto: {
-		maker: 0.05,
-		taker: 0.1
+		maker: 0.5,
+		taker: 0.5
 	},
 	basic: {
-		maker: 0.2,
-		taker: 0.2
+		maker: 0.5,
+		taker: 0.5
 	}
 };
 
@@ -698,7 +698,7 @@ exports.REFERRAL_HISTORY_SUPPORTED_PLANS = ['fiat', 'boost', 'enterprise'];
 
 //AUTO_TRADE CONSTANTS START
 
-exports.AUTO_TRADE_SUPPORTED_PLANS = ['boost', 'enterprise'];
+exports.AUTO_TRADE_SUPPORTED_PLANS = ['enterprise'];
 //AUTO_TRADE CONSTANTS END
 
 
