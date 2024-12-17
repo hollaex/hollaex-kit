@@ -366,20 +366,20 @@ const ROLES = {
 
 exports.DEFAULT_FEES = {
 	fiat: {
-		maker: 0,
-		taker: 0
+		maker: 0.5,
+		taker: 0.5
 	},
 	boost: {
-		maker: 0,
-		taker: 0
+		maker: 0.5,
+		taker: 0.5
 	},
 	crypto: {
-		maker: 0.05,
-		taker: 0.1
+		maker: 0.5,
+		taker: 0.5
 	},
 	basic: {
-		maker: 0.2,
-		taker: 0.2
+		maker: 0.5,
+		taker: 0.5
 	}
 };
 
