@@ -698,7 +698,7 @@ exports.REFERRAL_HISTORY_SUPPORTED_PLANS = ['fiat', 'boost', 'enterprise'];
 
 //AUTO_TRADE CONSTANTS START
 
-exports.AUTO_TRADE_SUPPORTED_PLANS = ['boost', 'enterprise'];
+exports.AUTO_TRADE_SUPPORTED_PLANS = ['enterprise'];
 //AUTO_TRADE CONSTANTS END
 
 
