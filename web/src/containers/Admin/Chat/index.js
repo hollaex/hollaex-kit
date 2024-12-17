@@ -9,6 +9,8 @@ import { Messages } from './messages';
 import { updateConstants } from '../General/action';
 
 import './index.css';
+import '../Trades/index.css';
+import '../../Admin/General/index.css';
 import { handleUpgrade } from 'utils/utils';
 
 const TabPane = Tabs.TabPane;
