@@ -1643,7 +1643,7 @@
         "VISIT_COIN_INFO_PAGE": "ВХөрөнгийн мэдээллийн хуудсанд зочилно уу {0}",
         "HERE": "энд"
     },
-    "RESET_LAYOUT": "Байршлыг дахин тохируулах",
+    "RESET_LAYOUT": "Байрлалыг дахин тохируулах",
     "WALLET_BALANCE_LOADING": "Balance loading...",
 	"LOADING": "Loading...",
 	"CONNECT_VIA_DESKTOP": {
@@ -1651,33 +1651,33 @@
 		"SUBTITLE": "DeFi staking through your mobile devices aren't supported at this time.",
 		"TEXT": "To connect your wallet please use a desktop/laptop computer."
 	},
-	"ORDER_HISTORY_CLOSED": "Closed",
+	"ORDER_HISTORY_CLOSED": "Хаагдсан",
 	"FIAT": {
 		"UNVERIFIED": {
-			"TITLE": "Complete verification",
-			"TEXT": "In order to make a {0} you are required to complete your verification which includes verification of your bank details. Please click the proceed button below.",
-			"DEPOSIT": "deposit",
-			"WITHDRAWAL": "withdrawal"
+			"TITLE": "Баталгаажуулалт дуусгах",
+			"TEXT": "{0}-г хийхийн тулд та өөрийн банкны дэлгэрэнгүй мэдээллийг баталгаажуулсан байх шаардлагатай. Доорх үргэлжлүүлэх товчийг дарна уу.",
+			"DEPOSIT": "орлого",
+			"WITHDRAWAL": "зарлага"
 		},
 		"REVIEW_DEPOSIT": {
-			"TITLE": "Check and confirm deposit details",
-			"SUBTITLE": "Please check the deposit details below to make sure everything is correct.",
-			"FORMAT": "{0} {1}",
-			"AMOUNT": "Amount to deposit",
-			"FEE": "Deposit fee",
-			"TRANSACTION_ID": "Transaction ID",
-			"NOTE": "To avoid delays make sure that your deposit's amount, note and the transaction ID match with the details above. If issues shall arise please contact support.",
-			"BACK": "Back",
-			"PROCEED": "Proceed"
+			"TITLE": "Орлого шалгаж баталгаажуулах",
+            "SUBTITLE": "Доорх орлогын мэдээллийг шалгаж баталгаажуулна уу.",
+    "FORMAT": "{0} {1}",
+    "AMOUNT": "дүн",
+    "FEE": "Орлогын шимтгэл",
+    "TRANSACTION_ID": "Гүйлгээний дугаар",
+    "NOTE": "Саатал гаргахаас зайлсхийхийн тулд орлогын дүн, тэмдэглэл, гүйлгээний дугаар таарч байгаа эсэхийг баталгаажуулна уу. Хэрэв асуудал гарвал хэрэглэгчийн тусламжтай холбоо барина уу.",
+    "BACK": "Буцах",
+    "PROCEED": "Үргэлжлүүлэх"
 		}
 	},
     "QUOTE_CONFIRMATION_EXPIRY_MSG": "Үнийн санал {0} {1}-д дуусна",
     "QUOTE_CONFIRMATION_EXPIRED_MSG_TEXT_1": "Үнийн хугацаа дууссан.",
-    "QUOTE_CONFIRMATION_EXPIRED_MSG_TEXT_2": "Шинэ үнийн санал авахын тулд буцаж очно уу.",
+    "QUOTE_CONFIRMATION_EXPIRED_MSG_TEXT_2": "Шинэ үнийн санал авахын тулд буцаж дахиж эхлэнэ үү.",
     "RISKY_TRADE_DISCLAIMER": {
-        "MSG_1": "Та {0} ({1})-г арилжаалахыг хүсэж байгаа эсэхээ шалгана уу, учир нь энэ хөрөнгө нь",
-        "MSG_2": "хэт тогтворгүй байдал",
-        "MSG_3": "Энэ хөрөнгийн үнэ тодорхойгүй, баталгаагүй гэдгийг ойлгож байгаагаа баталгаажуулахын тулд доорх нүдийг шалгана уу.",
+        "MSG_1": "Та {0} ({1}) арилжааг хийх эсэхээ баталгаажуулна уу. Учир нь энэ хөрөнгө нь",
+        "MSG_2": "хэт тогтворгүй",
+        "MSG_3": "Энэ хөрөнгийн үнэ тодорхойгүй, баталгаагүй гэдгийг ойлгож байгаагаа баталгаажуулахын тулд доорх нүдийг бөглөнө үү.",
         "UNDERSTAND_RISK_MSG": "Тийм ээ, би эрсдэлийг ойлгож байна"
     },
     
