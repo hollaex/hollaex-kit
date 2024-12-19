@@ -32,9 +32,11 @@ const AnnouncementList = ({
 			? true
 			: false;
 		setisAnnouncementInstalled(announceMentPlugin);
-		document.addEventListener('click', onOutsideClick);
+		document.addEventListener('mouseenter', onOutsideClick, true);
+		document.addEventListener('mouseleave', onOutsideClick, true);
 		return () => {
-			document.removeEventListener('click', onOutsideClick);
+			document.removeEventListener('mouseenter', onOutsideClick, true);
+			document.removeEventListener('mouseleave', onOutsideClick, true);
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -71,26 +73,22 @@ const AnnouncementList = ({
 	}, [isOpen, announcements]);
 
 	const onOutsideClick = (event) => {
-		if (
-			elementRef.current &&
-			event.target !== elementRef.current &&
-			!elementRef.current.contains(event.target)
-		) {
-			setOpen(false);
-		}
-		if (
-			elementRef.current &&
-			event.target !== elementRef.current &&
-			elementRef.current.contains(event.target)
-		) {
-			setOpen((val) => !val);
+		if (elementRef.current) {
+			if (
+				event.target !== elementRef.current &&
+				!elementRef.current.contains(event.target)
+			) {
+				setOpen(false);
+			} else {
+				setOpen(true);
+			}
 		}
 	};
 
 	return (
 		<div className="d-flex app-bar-account-content mx-3" ref={elementRef}>
 			{isAnnouncementInstalled && (
-				<div className="d-flex">
+				<div className="d-flex announcement-tab">
 					<div>
 						<Image
 							icon={ICONS['TOP_BAR_ANNOUNCEMENT']}
