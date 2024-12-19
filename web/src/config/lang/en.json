@@ -1033,6 +1033,7 @@
 	"ESTIMATED_PRICE": "Estimated Price",
 	"ORDER_PRICE": "Order Price",
 	"NO_DATA": "No Data",
+	"VIEW_ALL_PRICES": "View all prices",
 	"CHART_TEXTS": {
 		"d": "Date",
 		"o": "Open",
