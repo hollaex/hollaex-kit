@@ -14360,6 +14360,10 @@ table th {
     justify-content: center;
     position: relative;
     color: var(--calculated_base_top-bar-navigation_text-inactive); }
+    .app_bar .app-bar-account-content .announcement-tab .app-bar-account-notification {
+      left: 100%; }
+    .app_bar .app-bar-account-content .announcement-tab:hover {
+      color: var(--labels_important-active-labels-text-graphics) !important; }
   .app_bar .app-announcement-list {
     height: 335px;
     width: 280px; }

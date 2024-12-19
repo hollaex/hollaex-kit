@@ -23,6 +23,7 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import STRINGS from 'config/localizedStrings';
 import Connections from './Connections';
 import AccountTab from './AccountTab';
+import AnnouncementList from './AnnouncementList';
 
 class AppBar extends Component {
 	state = {
@@ -428,7 +429,7 @@ class AppBar extends Component {
 								toggle={this.onToggle}
 							/>
 						</div>
-						{/* <AnnouncementList user={user.email} /> */}
+						<AnnouncementList user={user.email} />
 						{/* <MenuList
 							menuItems={menuItems}
 							securityPending={securityPending}
