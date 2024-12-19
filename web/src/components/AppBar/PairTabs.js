@@ -10,13 +10,14 @@ import TabList from './TabList';
 import MarketSelector from './MarketSelector';
 import ToolsSelector from './ToolsSelector';
 import STRINGS from 'config/localizedStrings';
-import { Slider, EditWrapper, PriceChange } from 'components';
+import { Slider, EditWrapper, PriceChange, Image, Coin } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { formatToCurrency } from 'utils/currency';
 import { MarketsSelector } from 'containers/Trade/utils';
 import SparkLine from 'containers/TradeTabs/components/SparkLine';
 import { getSparklines } from 'actions/chartAction';
 import { changeSparkLineChartData } from 'actions/appActions';
+import icons from 'config/icons/dark';
 
 let isMounted = false;
 class PairTabs extends Component {
@@ -107,6 +108,7 @@ class PairTabs extends Component {
 			pair: { increment_price } = {},
 			ticker: { close } = {},
 			display_name,
+			icon_id,
 		} = market;
 
 		if (activePairTab && !isMounted) {
@@ -138,6 +140,7 @@ class PairTabs extends Component {
 							<Dropdown
 								id="selector-nav-container"
 								className="market-selector-dropdown"
+								overlayClassName="market-selector-dropdown-wrapper"
 								overlay={
 									<MarketSelector
 										onViewMarketsClick={() => browserHistory.push('/markets')}
@@ -161,10 +164,17 @@ class PairTabs extends Component {
 									this.setState({ isMarketSelectorVisible: visible });
 								}}
 							>
-								<div className="selector-trigger app_bar-pair-tab d-flex align-items-center justify-content-between w-100 h-100">
+								<div
+									className={
+										activePairTab
+											? 'selected-market-tab selector-trigger market-dropdown-selector app_bar-pair-tab'
+											: 'selector-trigger market-dropdown-selector app_bar-pair-tab'
+									}
+								>
 									{activePairTab ? (
 										<div className="app_bar-pair-font d-flex align-items-center justify-content-between">
-											<div className="app_bar-currency-txt">
+											<Coin iconId={icon_id} type="CS4" />
+											<div className="app_bar-currency-txt ml-1">
 												{display_name}:
 											</div>
 											<div className="title-font ml-1">
@@ -191,9 +201,15 @@ class PairTabs extends Component {
 										</div>
 									) : (
 										<div className="d-flex align-items-center">
-											<EditWrapper stringId="ADD_TRADING_PAIR">
-												{STRINGS['ADD_TRADING_PAIR']}
-											</EditWrapper>
+											<Image
+												icon={icons['FOOTER_TRADING_ACTIVE']}
+												wrapperClassName="trading-icon"
+											/>
+											<span className="ml-1">
+												<EditWrapper stringId="ADD_TRADING_PAIR">
+													{STRINGS['ADD_TRADING_PAIR']}
+												</EditWrapper>
+											</span>
 										</div>
 									)}
 									{isMarketSelectorVisible ? (
@@ -242,10 +258,11 @@ class PairTabs extends Component {
 										this.setState({ isToolsSelectorVisible: visible });
 									}}
 								>
-									<div className="selector-trigger narrow app_bar-pair-tab tools d-flex align-items-center justify-content-between w-100 h-100">
-										<div className="text_overflow">
-											{STRINGS['TRADE_TOOLS']}
-										</div>
+									<div className="selector-trigger narrow app_bar-pair-tab tools w-100 h-100">
+										<Image
+											icon={icons['INTERFACE_OPTION_ICON']}
+											wrapperClassName="trading-icon"
+										/>
 										{isToolsSelectorVisible ? (
 											<CaretUpOutlined style={{ fontSize: '14px' }} />
 										) : (
