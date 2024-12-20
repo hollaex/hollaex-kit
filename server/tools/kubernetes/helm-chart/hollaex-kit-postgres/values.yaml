@@ -34,6 +34,3 @@ filebeat:
   kibana_host: es-kibana.elasticsearch
   elasticsearch_host: es-elasticsearch-client.elasticsearch
   elasticsearch_port: 9200
-
-stable:
-  replicaCount: 1
