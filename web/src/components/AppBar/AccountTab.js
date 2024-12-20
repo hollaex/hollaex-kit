@@ -12,7 +12,12 @@ import HelpfulResourcesForm from 'containers/HelpfulResourcesForm';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { Image, EditWrapper } from 'components';
 import { isLoggedIn, removeToken } from 'utils/token';
-import { setSecurityTab, setSettingsTab } from 'actions/appActions';
+import {
+	setIsMarketDropdownVisible,
+	setIsToolsVisible,
+	setSecurityTab,
+	setSettingsTab,
+} from 'actions/appActions';
 import { renderConfirmSignout } from './Utils';
 
 const AccountTab = ({
@@ -24,6 +29,8 @@ const AccountTab = ({
 	verificationPending,
 	setSecurityTab,
 	setSettingsTab,
+	setIsMarketDropdownVisible,
+	setIsToolsVisible,
 }) => {
 	const [isIconActive, setIsIconActive] = useState(false);
 	const [isToolTipVisible, setIsToolTipVisible] = useState(false);
@@ -34,6 +41,13 @@ const AccountTab = ({
 		setIsToolTipVisible(false);
 		setIsIconActive(false);
 		browserHistory.push(path);
+	};
+
+	const onHandleVisible = () => {
+		setIsIconActive(!isIconActive);
+		setIsToolTipVisible(!isToolTipVisible);
+		setIsMarketDropdownVisible(false);
+		setIsToolsVisible(false);
 	};
 
 	return (
@@ -56,10 +70,7 @@ const AccountTab = ({
 			}
 			placement="bottomRight"
 			overlayClassName="navigation-bar-wrapper account-tab-dropdown"
-			onVisibleChange={() => {
-				setIsIconActive(!isIconActive);
-				setIsToolTipVisible(!isToolTipVisible);
-			}}
+			onVisibleChange={() => onHandleVisible()}
 			mouseEnterDelay={0}
 		>
 			<div
@@ -338,6 +349,11 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
 	setSecurityTab: bindActionCreators(setSecurityTab, dispatch),
 	setSettingsTab: bindActionCreators(setSettingsTab, dispatch),
+	setIsMarketDropdownVisible: bindActionCreators(
+		setIsMarketDropdownVisible,
+		dispatch
+	),
+	setIsToolsVisible: bindActionCreators(setIsToolsVisible, dispatch),
 });
 
 export default connect(
