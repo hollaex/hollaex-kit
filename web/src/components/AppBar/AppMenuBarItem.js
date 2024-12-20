@@ -9,7 +9,11 @@ import classnames from 'classnames';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { EditWrapper, Image } from 'components';
-import { setStake } from 'actions/appActions';
+import {
+	setIsMarketDropdownVisible,
+	setIsToolsVisible,
+	setStake,
+} from 'actions/appActions';
 import { MarketsSelector } from 'containers/Trade/utils';
 import { setActiveBalanceHistory } from 'actions/walletActions';
 
@@ -27,6 +31,8 @@ const AppMenuBarItem = ({
 	icons,
 	setActiveBalanceHistory,
 	getStake,
+	setIsMarketDropdownVisible,
+	setIsToolsVisible,
 }) => {
 	const summaryOptions = [
 		{
@@ -191,6 +197,13 @@ const AppMenuBarItem = ({
 		}
 	};
 
+	const onHandleVisible = () => {
+		setIsIconActive(!isIconActive);
+		setIsToolTipVisible(!isToolTipVisible);
+		setIsMarketDropdownVisible(false);
+		setIsToolsVisible(false);
+	};
+
 	return (
 		<Tooltip
 			visible={isToolTipVisible}
@@ -208,10 +221,7 @@ const AppMenuBarItem = ({
 			mouseEnterDelay={0}
 			overlayClassName="navigation-bar-wrapper"
 			placement="bottomLeft"
-			onVisibleChange={() => {
-				setIsIconActive(!isIconActive);
-				setIsToolTipVisible(!isToolTipVisible);
-			}}
+			onVisibleChange={() => onHandleVisible()}
 		>
 			<div
 				className={classnames('app-menu-bar-content d-flex text_overflow', {
@@ -391,6 +401,11 @@ const mapDispatchToProps = (dispatch) => ({
 		setActiveBalanceHistory,
 		dispatch
 	),
+	setIsMarketDropdownVisible: bindActionCreators(
+		setIsMarketDropdownVisible,
+		dispatch
+	),
+	setIsToolsVisible: bindActionCreators(setIsToolsVisible, dispatch),
 });
 
 export default connect(

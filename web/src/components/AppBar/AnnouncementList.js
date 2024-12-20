@@ -6,7 +6,11 @@ import Scrollbars from 'react-custom-scrollbars';
 import { EditWrapper, NotificationsList, Image } from 'components';
 import STRINGS from '../../config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { getAnnouncement } from 'actions/appActions';
+import {
+	getAnnouncement,
+	setIsMarketDropdownVisible,
+	setIsToolsVisible,
+} from 'actions/appActions';
 import { LAST_UPDATED_NOTIFICATION_KEY } from '../../config/constants';
 
 const AnnouncementList = ({
@@ -15,6 +19,8 @@ const AnnouncementList = ({
 	announcements,
 	getAnnouncement,
 	plugins,
+	setIsMarketDropdownVisible,
+	setIsToolsVisible,
 }) => {
 	const [isOpen, setOpen] = useState(false);
 	const [unreadCount, setUnreadCount] = useState(0);
@@ -81,12 +87,21 @@ const AnnouncementList = ({
 				setOpen(false);
 			} else {
 				setOpen(true);
+				setIsMarketDropdownVisible(false);
+				setIsToolsVisible(false);
 			}
 		}
 	};
 
 	return (
-		<div className="d-flex app-bar-account-content mx-3" ref={elementRef}>
+		<div
+			className={
+				isAnnouncementInstalled
+					? 'd-flex app-bar-account-content mx-3'
+					: 'd-flex app-bar-account-content'
+			}
+			ref={elementRef}
+		>
 			{isAnnouncementInstalled && (
 				<div className="d-flex announcement-tab">
 					<div>
@@ -127,6 +142,11 @@ const mapStateToProps = (state) => ({
 });
 const mapDispatchToProps = (dispatch) => ({
 	getAnnouncement: bindActionCreators(getAnnouncement, dispatch),
+	setIsMarketDropdownVisible: bindActionCreators(
+		setIsMarketDropdownVisible,
+		dispatch
+	),
+	setIsToolsVisible: bindActionCreators(setIsToolsVisible, dispatch),
 });
 
 export default connect(

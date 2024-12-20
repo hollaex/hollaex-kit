@@ -82,6 +82,8 @@ import {
 	SET_STAKE,
 	SET_SETTINGS_TAB,
 	SET_ACTIVE_CHAT,
+	SET_ACTIVE_MARKET_SELECTOR,
+	SET_TOOLS_VISIBLE,
 } from 'actions/appActions';
 import { THEME_DEFAULT } from 'config/constants';
 import { getLanguage } from 'utils/string';
@@ -217,6 +219,8 @@ const INITIAL_STATE = {
 	selectedVerificationTab: 0,
 	selectedSettingsTab: 0,
 	isChat: JSON.parse(localStorage.getItem('isChat')),
+	isMarketDropdownVisible: false,
+	isToolsVisible: false,
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -896,6 +900,18 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				isChat: payload,
+			};
+		}
+		case SET_ACTIVE_MARKET_SELECTOR: {
+			return {
+				...state,
+				isMarketDropdownVisible: payload,
+			};
+		}
+		case SET_TOOLS_VISIBLE: {
+			return {
+				...state,
+				isToolsVisible: payload,
 			};
 		}
 		default:

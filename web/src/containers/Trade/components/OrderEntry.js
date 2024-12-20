@@ -547,14 +547,22 @@ class OrderEntry extends Component {
 											increment_size
 									  )}{' '}
 								{side === 'buy' ? pair_2_display : pair_base_display}
+							</span>
+							<Tooltip
+								text={STRINGS.formatString(
+									STRINGS['RECEIVE_CURRENCY'],
+									side === 'buy' ? pair_2_display : pair_base_display
+								)}
+								className="light-theme"
+							>
 								<span
-									className="ml-1 add-icon"
+									className="ml-1 add-icon pointer text-uppercase blue-link"
 									onClick={() => this.onHandleNavigate()}
 								>
 									{' '}
 									+{' '}
 								</span>
-							</span>
+							</Tooltip>
 						</div>
 					</div>
 				),

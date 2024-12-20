@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux';
 import classnames from 'classnames';
 import { browserHistory } from 'react-router';
 import { Dropdown } from 'antd';
-import { CaretDownOutlined, CaretUpOutlined } from '@ant-design/icons';
 
 import TabList from './TabList';
 import MarketSelector from './MarketSelector';
@@ -16,7 +15,11 @@ import { formatToCurrency } from 'utils/currency';
 import { MarketsSelector } from 'containers/Trade/utils';
 import SparkLine from 'containers/TradeTabs/components/SparkLine';
 import { getSparklines } from 'actions/chartAction';
-import { changeSparkLineChartData } from 'actions/appActions';
+import {
+	changeSparkLineChartData,
+	setIsMarketDropdownVisible,
+	setIsToolsVisible,
+} from 'actions/appActions';
 import icons from 'config/icons/dark';
 
 let isMounted = false;
@@ -86,11 +89,23 @@ class PairTabs extends Component {
 		}
 	};
 
+	onHandleMarketSelector = (visible) => {
+		const { setIsToolsVisible, setIsMarketDropdownVisible } = this.props;
+		setIsMarketDropdownVisible(visible);
+		setIsToolsVisible(false);
+	};
+
+	onHandleToolsVisible = (visible) => {
+		const { setIsToolsVisible, setIsMarketDropdownVisible } = this.props;
+		setIsToolsVisible(visible);
+		setIsMarketDropdownVisible(false);
+	};
+
 	render() {
 		const {
 			activePairTab,
-			isMarketSelectorVisible,
-			isToolsSelectorVisible,
+			// isMarketSelectorVisible,
+			// isToolsSelectorVisible,
 			// sparkLine,
 		} = this.state;
 
@@ -101,6 +116,9 @@ class PairTabs extends Component {
 			quicktrade,
 			sparkLineChartData,
 			pairs,
+			isMarketDropdownVisible,
+			setIsMarketDropdownVisible,
+			isToolsVisible,
 		} = this.props;
 		const market = markets.find(({ key }) => key === activePairTab) || {};
 		const {
@@ -145,13 +163,9 @@ class PairTabs extends Component {
 									<MarketSelector
 										onViewMarketsClick={() => browserHistory.push('/markets')}
 										addTradePairTab={this.onTabClick}
-										closeAddTabMenu={() =>
-											this.setState((prevState) =>
-												this.setState({
-													isMarketSelectorVisible: !prevState.isMarketSelectorVisible,
-												})
-											)
-										}
+										closeAddTabMenu={() => {
+											setIsMarketDropdownVisible(!isMarketDropdownVisible);
+										}}
 										wrapperClassName="app-bar-add-tab-menu"
 									/>
 								}
@@ -159,10 +173,10 @@ class PairTabs extends Component {
 								mouseEnterDelay={0}
 								mouseLeaveDelay={0.05}
 								trigger={['click']}
-								visible={isMarketSelectorVisible}
-								onVisibleChange={(visible) => {
-									this.setState({ isMarketSelectorVisible: visible });
-								}}
+								visible={isMarketDropdownVisible}
+								onVisibleChange={(visible) =>
+									this.onHandleMarketSelector(visible)
+								}
 							>
 								<div
 									className={
@@ -212,11 +226,6 @@ class PairTabs extends Component {
 											</span>
 										</div>
 									)}
-									{isMarketSelectorVisible ? (
-										<CaretUpOutlined style={{ fontSize: '14px' }} />
-									) : (
-										<CaretDownOutlined style={{ fontSize: '14px' }} />
-									)}
 								</div>
 							</Dropdown>
 						</div>
@@ -253,21 +262,16 @@ class PairTabs extends Component {
 									mouseEnterDelay={0}
 									mouseLeaveDelay={0.05}
 									trigger={['click']}
-									visible={isToolsSelectorVisible}
-									onVisibleChange={(visible) => {
-										this.setState({ isToolsSelectorVisible: visible });
-									}}
+									visible={isToolsVisible}
+									onVisibleChange={(visible) =>
+										this.onHandleToolsVisible(visible)
+									}
 								>
 									<div className="selector-trigger narrow app_bar-pair-tab tools w-100 h-100">
 										<Image
 											icon={icons['INTERFACE_OPTION_ICON']}
 											wrapperClassName="trading-icon"
 										/>
-										{isToolsSelectorVisible ? (
-											<CaretUpOutlined style={{ fontSize: '14px' }} />
-										) : (
-											<CaretDownOutlined style={{ fontSize: '14px' }} />
-										)}
 									</div>
 								</Dropdown>
 							</div>
@@ -288,6 +292,8 @@ const mapStateToProps = (state) => {
 			constants,
 			quicktrade,
 			sparkLineChartData,
+			isMarketDropdownVisible,
+			isToolsVisible,
 		},
 		orderbook: { prices },
 	} = state;
@@ -301,6 +307,8 @@ const mapStateToProps = (state) => {
 		markets: MarketsSelector(state),
 		quicktrade,
 		sparkLineChartData,
+		isMarketDropdownVisible,
+		isToolsVisible,
 	};
 };
 
@@ -309,6 +317,11 @@ const mapDispatchToProps = (dispatch) => ({
 		changeSparkLineChartData,
 		dispatch
 	),
+	setIsMarketDropdownVisible: bindActionCreators(
+		setIsMarketDropdownVisible,
+		dispatch
+	),
+	setIsToolsVisible: bindActionCreators(setIsToolsVisible, dispatch),
 });
 
 export default connect(
