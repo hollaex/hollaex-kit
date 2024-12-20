@@ -365,6 +365,14 @@ $app-menu-width: calc(100vw - 40rem);
 		justify-content: center;
 		position: relative;
 		color: $app-bar-icon-inactive;
+		.announcement-tab {
+			.app-bar-account-notification {
+				left: 100%;
+			}
+		}
+		.announcement-tab:hover {
+			color: $colors-main-black !important;
+		}
 	}
 
 	.app-announcement-list {
