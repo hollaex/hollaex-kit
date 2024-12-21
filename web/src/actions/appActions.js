@@ -120,6 +120,8 @@ export const SET_SECURITY_TAB = 'SET_SECURITY_TAB';
 export const SET_VERIFICATION_TAB = 'SET_VERIFICATION_TAB';
 export const SET_SETTINGS_TAB = 'SET_SETTINGS_TAB';
 export const SET_ACTIVE_CHAT = 'SET_ACTIVE_CHAT';
+export const SET_ACTIVE_MARKET_SELECTOR = 'SET_ACTIVE_MARKET_SELECTOR';
+export const SET_TOOLS_VISIBLE = 'SET_TOOLS_VISIBLE';
 
 export const SORT = {
 	VOL: 'volume',
@@ -808,4 +810,14 @@ export const setSettingsTab = (selectedSettingsTab) => ({
 export const setIsChat = (setIsChat) => ({
 	type: SET_ACTIVE_CHAT,
 	payload: setIsChat,
+});
+
+export const setIsMarketDropdownVisible = (setIsMarketDropdownVisible) => ({
+	type: SET_ACTIVE_MARKET_SELECTOR,
+	payload: setIsMarketDropdownVisible,
+});
+
+export const setIsToolsVisible = (setIsToolsVisible) => ({
+	type: SET_TOOLS_VISIBLE,
+	payload: setIsToolsVisible,
 });

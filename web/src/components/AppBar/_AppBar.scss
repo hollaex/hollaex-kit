@@ -846,8 +846,8 @@ $app-menu-width: calc(100vw - 40rem);
 	}
 
 	.selected-market-tab {
-		min-width: 22rem !important;
-		max-width: 22rem !important;
+		min-width: 24rem !important;
+		max-width: max-content !important;
 	}
 
 	.selector-trigger {
@@ -876,6 +876,10 @@ $app-menu-width: calc(100vw - 40rem);
 			svg {
 				width: 1.5rem;
 			}
+		}
+
+		.highcharts-container {
+			min-width: 8rem;
 		}
 	}
 
@@ -1066,7 +1070,7 @@ $app-menu-width: calc(100vw - 40rem);
 	background-color: $app-background-color;
 	border: 1px solid $colors-border;
 	color: $app-bar-menu-list-color;
-	width: 22rem;
+	// width: 22rem;
 	min-height: 8rem;
 	z-index: 20;
 	-webkit-box-shadow: 0px 4px 6px 1px rgba(0, 0, 0, 0.4);
@@ -1132,7 +1136,7 @@ $app-menu-width: calc(100vw - 40rem);
 		padding: 0.3rem 0;
 		.scroll-view {
 			overflow-y: auto;
-			height: 27rem;
+			height: 30rem;
 			position: relative;
 			overflow-x: hidden;
 			.blue-link:hover {
@@ -1404,7 +1408,12 @@ $app-menu-width: calc(100vw - 40rem);
 				max-width: 14rem !important;
 			}
 		}
+		.selected-market-tab {
+			min-width: 25rem !important;
+			max-width: max-content !important;
+		}
 	}
+
 	.app-menu-bar {
 		font-size: 1rem !important;
 		height: $navigation_bar-height-lg;
@@ -1420,15 +1429,15 @@ $app-menu-width: calc(100vw - 40rem);
 		}
 	}
 	.app-bar-add-tab-menu {
-		width: 24rem;
+		// width: 24rem;
 
 		&.narrow {
 			width: 15rem;
 		}
 
 		.app-bar-tab-menu-list {
-			width: 3.6rem;
-			max-width: 3.6rem;
+			width: auto;
+			max-width: 5.6rem;
 			/* (24 -6) / 5 */
 		}
 
@@ -1521,7 +1530,8 @@ $app-menu-width: calc(100vw - 40rem);
 
 .market-selector-dropdown-wrapper {
 	.app-bar-add-tab-menu {
-		width: 23rem !important;
+		min-width: max-content;
+		// width: 25rem;
 		border-radius: 5px;
 		.app-bar-tab-menu {
 			border-top-left-radius: 5px;
@@ -1652,8 +1662,22 @@ $app-menu-width: calc(100vw - 40rem);
 	.selector-trigger {
 		&.app_bar-pair-tab {
 			&.tools {
-				min-width: 4rem !important;
+				min-width: 2rem !important;
 				max-width: 10rem !important;
+				.trading-icon {
+					svg {
+						path {
+							fill: $colors-black !important;
+						}
+					}
+				}
+				.trading-icon:hover {
+					svg {
+						path {
+							fill: $colors-main-black !important;
+						}
+					}
+				}
 			}
 		}
 	}
