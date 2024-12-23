@@ -48,6 +48,9 @@
 		.scroll-view {
 			overflow-y: auto;
 			height: $market-menu-height-dialog-mobile;
+			.app-bar-add-tab-content-list {
+				font-size: 12px;
+			}
 		}
 	}
 

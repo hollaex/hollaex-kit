@@ -6,7 +6,11 @@ import Scrollbars from 'react-custom-scrollbars';
 import { EditWrapper, NotificationsList, Image } from 'components';
 import STRINGS from '../../config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { getAnnouncement } from 'actions/appActions';
+import {
+	getAnnouncement,
+	setIsMarketDropdownVisible,
+	setIsToolsVisible,
+} from 'actions/appActions';
 import { LAST_UPDATED_NOTIFICATION_KEY } from '../../config/constants';
 
 const AnnouncementList = ({
@@ -15,6 +19,8 @@ const AnnouncementList = ({
 	announcements,
 	getAnnouncement,
 	plugins,
+	setIsMarketDropdownVisible,
+	setIsToolsVisible,
 }) => {
 	const [isOpen, setOpen] = useState(false);
 	const [unreadCount, setUnreadCount] = useState(0);
@@ -32,9 +38,11 @@ const AnnouncementList = ({
 			? true
 			: false;
 		setisAnnouncementInstalled(announceMentPlugin);
-		document.addEventListener('click', onOutsideClick);
+		document.addEventListener('mouseenter', onOutsideClick, true);
+		document.addEventListener('mouseleave', onOutsideClick, true);
 		return () => {
-			document.removeEventListener('click', onOutsideClick);
+			document.removeEventListener('mouseenter', onOutsideClick, true);
+			document.removeEventListener('mouseleave', onOutsideClick, true);
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -71,26 +79,31 @@ const AnnouncementList = ({
 	}, [isOpen, announcements]);
 
 	const onOutsideClick = (event) => {
-		if (
-			elementRef.current &&
-			event.target !== elementRef.current &&
-			!elementRef.current.contains(event.target)
-		) {
-			setOpen(false);
-		}
-		if (
-			elementRef.current &&
-			event.target !== elementRef.current &&
-			elementRef.current.contains(event.target)
-		) {
-			setOpen((val) => !val);
+		if (elementRef.current) {
+			if (
+				event.target !== elementRef.current &&
+				!elementRef.current.contains(event.target)
+			) {
+				setOpen(false);
+			} else {
+				setOpen(true);
+				setIsMarketDropdownVisible(false);
+				setIsToolsVisible(false);
+			}
 		}
 	};
 
 	return (
-		<div className="d-flex app-bar-account-content mx-3" ref={elementRef}>
+		<div
+			className={
+				isAnnouncementInstalled
+					? 'd-flex app-bar-account-content mx-3'
+					: 'd-flex app-bar-account-content'
+			}
+			ref={elementRef}
+		>
 			{isAnnouncementInstalled && (
-				<div className="d-flex">
+				<div className="d-flex announcement-tab">
 					<div>
 						<Image
 							icon={ICONS['TOP_BAR_ANNOUNCEMENT']}
@@ -129,6 +142,11 @@ const mapStateToProps = (state) => ({
 });
 const mapDispatchToProps = (dispatch) => ({
 	getAnnouncement: bindActionCreators(getAnnouncement, dispatch),
+	setIsMarketDropdownVisible: bindActionCreators(
+		setIsMarketDropdownVisible,
+		dispatch
+	),
+	setIsToolsVisible: bindActionCreators(setIsToolsVisible, dispatch),
 });
 
 export default connect(

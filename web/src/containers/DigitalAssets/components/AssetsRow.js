@@ -168,58 +168,60 @@ const AssetsRow = ({
 					)}
 				</td>
 			)}
-			{isMobile && selectedButton !== 'Market Cap' && (
-				<td>
-					{!loading ? (
-						<div className="d-flex flex-column justify-content-end">
-							{(priceDifference && priceDifferencePercent) ||
-							priceDifference === 0 ? (
-								<PriceChange
-									market={{
-										priceDifference: priceDifference,
-										priceDifferencePercent: priceDifferencePercent,
-									}}
-									key={key}
-									isMobileMarket={true}
-								/>
-							) : (
-								<span className="font-raleway">0%</span>
-							)}
-							{chartData?.price ? (
-								<MiniSparkLine
-									chartData={getLastValuesFromParts(chartData?.price || [])}
-									isArea
-									isNewAssets={true}
-								/>
-							) : (
-								<span> {'- '}</span>
-							)}
-						</div>
-					) : (
-						<Loading index={index} />
-					)}
-				</td>
-			)}
-			{isMobile && selectedButton === 'Market Cap' && (
-				<td>
-					{!loading ? (
-						<div className="ml-1 market-capital mr-3">
-							{coins[symbol]?.market_cap ? (
-								coins[symbol].market_cap.toLocaleString('en-US', {
-									style: 'currency',
-									currency: 'USD',
-									minimumFractionDigits: 0,
-									maximumFractionDigits: 0,
-								})
-							) : (
-								<span className="font-raleway">0</span>
-							)}
-						</div>
-					) : (
-						<Loading index={index} />
-					)}
-				</td>
-			)}
+			{isMobile &&
+				selectedButton !== STRINGS['DIGITAL_ASSETS.CARDS.MARKET_CAP'] && (
+					<td>
+						{!loading ? (
+							<div className="d-flex flex-column justify-content-end">
+								{(priceDifference && priceDifferencePercent) ||
+								priceDifference === 0 ? (
+									<PriceChange
+										market={{
+											priceDifference: priceDifference,
+											priceDifferencePercent: priceDifferencePercent,
+										}}
+										key={key}
+										isMobileMarket={true}
+									/>
+								) : (
+									<span className="font-raleway">0%</span>
+								)}
+								{chartData?.price ? (
+									<MiniSparkLine
+										chartData={getLastValuesFromParts(chartData?.price || [])}
+										isArea
+										isNewAssets={true}
+									/>
+								) : (
+									<span> {'- '}</span>
+								)}
+							</div>
+						) : (
+							<Loading index={index} />
+						)}
+					</td>
+				)}
+			{isMobile &&
+				selectedButton === STRINGS['DIGITAL_ASSETS.CARDS.MARKET_CAP'] && (
+					<td>
+						{!loading ? (
+							<div className="ml-1 market-capital mr-3">
+								{coins[symbol]?.market_cap ? (
+									coins[symbol].market_cap.toLocaleString('en-US', {
+										style: 'currency',
+										currency: 'USD',
+										minimumFractionDigits: 0,
+										maximumFractionDigits: 0,
+									})
+								) : (
+									<span className="font-raleway">0</span>
+								)}
+							</div>
+						) : (
+							<Loading index={index} />
+						)}
+					</td>
+				)}
 			{!isMobile && (
 				<td>
 					{!loading ? (

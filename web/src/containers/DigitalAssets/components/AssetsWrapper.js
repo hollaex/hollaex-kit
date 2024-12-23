@@ -37,7 +37,9 @@ class AssetsWrapper extends Component {
 			searchValue: '',
 			isLoading: true,
 			isSearchActive: false,
-			selectedButton: !isMobile ? 'Market Cap' : '',
+			selectedButton: !isMobile
+				? STRINGS['DIGITAL_ASSETS.CARDS.MARKET_CAP']
+				: '',
 			isSelectedSort: false,
 			isInputFocus: false,
 		};
@@ -268,13 +270,13 @@ class AssetsWrapper extends Component {
 		const { coinsData, coins } = this.props;
 
 		const sortFunctions = {
-			'Market Cap': (data) =>
+			[STRINGS['DIGITAL_ASSETS.CARDS.MARKET_CAP']]: (data) =>
 				data.sort(
 					(a, b) =>
 						(coins[b?.symbol]?.market_cap || 0) -
 						(coins[a?.symbol]?.market_cap || 0)
 				),
-			Gainers: (data) =>
+			[STRINGS['DIGITAL_ASSETS.CARDS.GAINERS']]: (data) =>
 				data
 					?.filter(
 						({ oneDayPriceDifferencePercenVal }) =>
@@ -285,7 +287,7 @@ class AssetsWrapper extends Component {
 							(b.oneDayPriceDifferencePercenVal || 0) -
 							(a.oneDayPriceDifferencePercenVal || 0)
 					),
-			Losers: (data) =>
+			[STRINGS['DIGITAL_ASSETS.CARDS.LOSERS']]: (data) =>
 				data
 					?.filter(
 						({ oneDayPriceDifferencePercenVal }) =>
@@ -296,7 +298,7 @@ class AssetsWrapper extends Component {
 							(a.oneDayPriceDifferencePercenVal || 0) -
 							(b.oneDayPriceDifferencePercenVal || 0)
 					),
-			New: (data) =>
+			[STRINGS['DEPOSIT_STATUS.NEW']]: (data) =>
 				data?.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)),
 		};
 

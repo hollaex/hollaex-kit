@@ -208,19 +208,21 @@ const AssetsList = ({
 									</div>
 								</th>
 							)}
-							{isMobile && selectedButton !== 'Market Cap' && (
-								<th className="market-chart-header">
-									<div
-										className="d-flex justify-content-center"
-										onClick={handleClickChange}
-									>
-										<EditWrapper stringId="MARKETS_TABLE.TREND_7D">
-											{STRINGS['MARKETS_TABLE.TREND_7D']}
-										</EditWrapper>
-										{renderCaret(SORT.CHANGESEVENDAY)}
-									</div>
-								</th>
-							)}
+							{isMobile &&
+								selectedButton !==
+									STRINGS['DIGITAL_ASSETS.CARDS.MARKET_CAP'] && (
+									<th className="market-chart-header">
+										<div
+											className="d-flex justify-content-center"
+											onClick={handleClickChange}
+										>
+											<EditWrapper stringId="MARKETS_TABLE.TREND_7D">
+												{STRINGS['MARKETS_TABLE.TREND_7D']}
+											</EditWrapper>
+											{renderCaret(SORT.CHANGESEVENDAY)}
+										</div>
+									</th>
+								)}
 							{!isMobile && (
 								<th className="market-captial-header mr-3">
 									<div className="d-flex justify-content-end">
@@ -230,15 +232,17 @@ const AssetsList = ({
 									</div>
 								</th>
 							)}
-							{isMobile && selectedButton === 'Market Cap' && (
-								<th className="market-captial-header mr-3">
-									<div className="d-flex justify-content-end">
-										<EditWrapper stringId="DIGITAL_ASSETS.CARDS.MARKET_CAP">
-											{STRINGS['DIGITAL_ASSETS.CARDS.MARKET_CAP']}
-										</EditWrapper>
-									</div>
-								</th>
-							)}
+							{isMobile &&
+								selectedButton ===
+									STRINGS['DIGITAL_ASSETS.CARDS.MARKET_CAP'] && (
+									<th className="market-captial-header mr-3">
+										<div className="d-flex justify-content-end">
+											<EditWrapper stringId="DIGITAL_ASSETS.CARDS.MARKET_CAP">
+												{STRINGS['DIGITAL_ASSETS.CARDS.MARKET_CAP']}
+											</EditWrapper>
+										</div>
+									</th>
+								)}
 							<th className="trade-header">
 								<EditWrapper stringId="TRADE_TAB_TRADE">
 									{STRINGS['TRADE_TAB_TRADE']}

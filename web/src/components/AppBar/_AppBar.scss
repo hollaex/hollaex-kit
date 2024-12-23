@@ -365,6 +365,14 @@ $app-menu-width: calc(100vw - 40rem);
 		justify-content: center;
 		position: relative;
 		color: $app-bar-icon-inactive;
+		.announcement-tab {
+			.app-bar-account-notification {
+				left: 100%;
+			}
+		}
+		.announcement-tab:hover {
+			color: $colors-main-black !important;
+		}
 	}
 
 	.app-announcement-list {
@@ -833,7 +841,21 @@ $app-menu-width: calc(100vw - 40rem);
 		}
 	}
 
+	.market-dropdown-selector {
+		border-top: 1px solid $base_top-bar-navigation_text !important;
+	}
+
+	.selected-market-tab {
+		min-width: 24rem !important;
+		max-width: max-content !important;
+	}
+
 	.selector-trigger {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		width: 100%;
+		height: 100%;
 		.active-tab-pair {
 			background-color: $app-background-color;
 		}
@@ -848,6 +870,16 @@ $app-menu-width: calc(100vw - 40rem);
 		&.narrow {
 			min-width: 14rem;
 			max-width: 14rem;
+		}
+		.trading-icon {
+			margin-top: 5%;
+			svg {
+				width: 1.5rem;
+			}
+		}
+
+		.highcharts-container {
+			min-width: 8rem;
 		}
 	}
 
@@ -1038,7 +1070,7 @@ $app-menu-width: calc(100vw - 40rem);
 	background-color: $app-background-color;
 	border: 1px solid $colors-border;
 	color: $app-bar-menu-list-color;
-	width: 22rem;
+	// width: 22rem;
 	min-height: 8rem;
 	z-index: 20;
 	-webkit-box-shadow: 0px 4px 6px 1px rgba(0, 0, 0, 0.4);
@@ -1085,8 +1117,8 @@ $app-menu-width: calc(100vw - 40rem);
 		font-size: 1rem;
 		height: 2.5rem;
 		padding: 0.5rem 0.8rem;
-		width: 4.2rem;
-		max-width: 4.2rem;
+		width: auto;
+		min-width: 4.2rem;
 		/* (22 -6) / 5 */
 	}
 
@@ -1104,7 +1136,26 @@ $app-menu-width: calc(100vw - 40rem);
 		padding: 0.3rem 0;
 		.scroll-view {
 			overflow-y: auto;
-			height: 22rem;
+			height: 30rem;
+			position: relative;
+			overflow-x: hidden;
+			.blue-link:hover {
+				cursor: pointer;
+			}
+			.view-market-btn {
+				position: sticky;
+				bottom: 0;
+				z-index: 10;
+				padding: 5px;
+				text-align: center;
+				background-color: $app-background-color;
+			}
+			.view-market-btn:hover {
+				opacity: 1;
+				.edit-wrapper__container {
+					opacity: 0.6;
+				}
+			}
 		}
 	}
 
@@ -1357,7 +1408,12 @@ $app-menu-width: calc(100vw - 40rem);
 				max-width: 14rem !important;
 			}
 		}
+		.selected-market-tab {
+			min-width: 25rem !important;
+			max-width: max-content !important;
+		}
 	}
+
 	.app-menu-bar {
 		font-size: 1rem !important;
 		height: $navigation_bar-height-lg;
@@ -1373,15 +1429,15 @@ $app-menu-width: calc(100vw - 40rem);
 		}
 	}
 	.app-bar-add-tab-menu {
-		width: 24rem;
+		// width: 24rem;
 
 		&.narrow {
 			width: 15rem;
 		}
 
 		.app-bar-tab-menu-list {
-			width: 3.6rem;
-			max-width: 3.6rem;
+			width: auto;
+			max-width: 5.6rem;
 			/* (24 -6) / 5 */
 		}
 
@@ -1467,6 +1523,48 @@ $app-menu-width: calc(100vw - 40rem);
 			.app-bar-account-list-icon {
 				margin-right: 0;
 				margin-left: 0.4rem;
+			}
+		}
+	}
+}
+
+.market-selector-dropdown-wrapper {
+	.app-bar-add-tab-menu {
+		min-width: max-content;
+		// width: 25rem;
+		border-radius: 5px;
+		.app-bar-tab-menu {
+			border-top-left-radius: 5px;
+			border-top-right-radius: 5px;
+		}
+		.loading-anime {
+			height: 20px;
+			width: 100%;
+			margin: 2%;
+			border-radius: 7px;
+			animation: mymove 3s infinite;
+		}
+	}
+	.app-bar-add-tab-content {
+		.app-bar-add-tab-search {
+			margin-left: 3%;
+			.app-bar-search-field {
+				align-items: start !important;
+				flex-direction: row !important;
+
+				.field-children {
+					border: 1px solid $colors-black;
+					border-radius: 5px;
+				}
+
+				.app-bar-search-field-outline::after,
+				.app-bar-search-field-outline::before {
+					background-color: unset !important;
+				}
+
+				.clear-field {
+					right: 5px;
+				}
 			}
 		}
 	}
@@ -1564,8 +1662,22 @@ $app-menu-width: calc(100vw - 40rem);
 	.selector-trigger {
 		&.app_bar-pair-tab {
 			&.tools {
-				min-width: 10rem !important;
+				min-width: 2rem !important;
 				max-width: 10rem !important;
+				.trading-icon {
+					svg {
+						path {
+							fill: $colors-black !important;
+						}
+					}
+				}
+				.trading-icon:hover {
+					svg {
+						path {
+							fill: $colors-main-black !important;
+						}
+					}
+				}
 			}
 		}
 	}
