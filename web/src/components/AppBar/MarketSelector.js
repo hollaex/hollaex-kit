@@ -331,7 +331,7 @@ class MarketSelector extends Component {
 													{ticker && (
 														<>
 															<span className="app_bar-pair-font">:</span>
-															<div className="title-font ml-1 app-bar_add-tab-price">
+															<div className="title-font ml-1 mr-5 app-bar_add-tab-price">
 																{formatToCurrency(
 																	ticker?.close,
 																	increment_price
