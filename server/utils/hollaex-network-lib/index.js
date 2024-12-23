@@ -512,7 +512,7 @@ class HollaExNetwork {
 			data.network = opts.network;
 		}
 		if (opts.fee_markup) {
-			data.fee_markup = opts.fee_markup
+			data.fee_markup = opts.fee_markup;
 		}
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
@@ -2033,6 +2033,7 @@ class HollaExNetwork {
 		from: null,
 		to: null,
 		quote: null,
+		period: null,
 		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
@@ -2056,6 +2057,10 @@ class HollaExNetwork {
 
 		if (opts.quote) {
 			path += `&quote=${opts.quote}`;
+		}
+
+		if (opts.period) {
+			path += `&period=${opts.period}`;
 		}
 
 		const headers = generateHeaders(

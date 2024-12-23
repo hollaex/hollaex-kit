@@ -109,10 +109,16 @@ paths:
           maxLength: 256
         - in: query
           name: quote
-          description: tQuote asset to receive prices based on
+          description: Quote asset to receive prices based on
           required: false
           type: string
           maxLength: 256
+        - in: query
+          name: period
+          description: The period to get data (1d, 7d)
+          required: false
+          type: string
+          maxLength: 2
       responses:
         200:
           description: Success
