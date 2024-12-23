@@ -395,7 +395,7 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 		const percentagePattern = /^(100(\.00?)?|(\d{1,2})(\.\d{1,2})?)$/;
 
 		if (!percentagePattern.test(newKitConfig.p2p_config.merchant_fee)) {
-				throw new Error('merchant_fee must be in percentage format');
+			throw new Error('merchant_fee must be in percentage format');
 		}
 		if (!percentagePattern.test(newKitConfig.p2p_config.user_fee)) {
 			throw new Error('buyer_fee must be in percentage format');
@@ -711,6 +711,7 @@ const getMiniCharts = (assets, opts = {
 	from: null, 
 	to: null, 
 	quote: null,
+	period: null,
 	additionalHeaders: null
 }) => {
 	return getNodeLib().getMiniCharts(assets, opts);
@@ -1073,11 +1074,11 @@ const getTransactionLimits = () => {
 
 const getNetworkQuickTrades = () => {
 	return GET_NETWORK_QUICKTRADE();
-}
+};
 
 const parseNumber = (number, precisionValue) => {
 	return BigNumber(number).precision(precisionValue, BigNumber.ROUND_DOWN).toNumber();
-}
+};
 const removeRepeatingDecimals = (num) => {
 	let numStr = num.toString();
 	if (numStr.includes('.') && numStr?.length > 8) {
@@ -1087,7 +1088,7 @@ const removeRepeatingDecimals = (num) => {
 	}
 	
 	return parseFloat(num); 
-}
+};
 
 module.exports = {
 	getKitVersion,
