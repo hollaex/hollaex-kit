@@ -1546,8 +1546,19 @@ $app-menu-width: calc(100vw - 40rem);
 		}
 	}
 	.app-bar-add-tab-content {
+		.market-selector-search-wrapper {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			.blue-link {
+				text-wrap: nowrap;
+			}
+			.blue-link:hover {
+				cursor: pointer;
+			}
+		}
 		.app-bar-add-tab-search {
-			margin-left: 3%;
+			margin: 3%;
 			.app-bar-search-field {
 				align-items: start !important;
 				flex-direction: row !important;
