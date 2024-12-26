@@ -845,6 +845,10 @@ $app-menu-width: calc(100vw - 40rem);
 		border-top: 1px solid $base_top-bar-navigation_text !important;
 	}
 
+	.market-dropdown-selector-inactive {
+		border-top: 2px solid $colors-border !important;
+	}
+
 	.selected-market-tab {
 		min-width: 24rem !important;
 		max-width: max-content !important;
@@ -872,10 +876,14 @@ $app-menu-width: calc(100vw - 40rem);
 			max-width: 14rem;
 		}
 		.trading-icon {
-			margin-top: 5%;
+			position: relative;
+			top: 3px;
 			svg {
-				width: 1.5rem;
+				width: 1.3rem;
 			}
+		}
+		.market-select-text {
+			font-size: 14px;
 		}
 
 		.highcharts-container {
@@ -1558,10 +1566,19 @@ $app-menu-width: calc(100vw - 40rem);
 			}
 		}
 		.app-bar-add-tab-search {
+			width: 90%;
 			margin: 3%;
 			.app-bar-search-field {
 				align-items: start !important;
 				flex-direction: row !important;
+
+				.field-content {
+					width: 14rem;
+					.app-bar-search-field {
+						width: 100%;
+						display: flex;
+					}
+				}
 
 				.field-children {
 					border: 1px solid $colors-black;

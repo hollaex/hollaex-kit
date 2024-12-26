@@ -14697,6 +14697,8 @@ table th {
     stroke: var(--labels_secondary-inactive-label-text-graphics) !important; }
   .market-bar .market-dropdown-selector {
     border-top: 1px solid var(--calculated_base_top-bar-navigation_text) !important; }
+  .market-bar .market-dropdown-selector-inactive {
+    border-top: 2px solid var(--calculated_secondary-border) !important; }
   .market-bar .selected-market-tab {
     min-width: 24rem !important;
     max-width: max-content !important; }
@@ -14718,9 +14720,12 @@ table th {
       min-width: 14rem;
       max-width: 14rem; }
     .market-bar .selector-trigger .trading-icon {
-      margin-top: 5%; }
+      position: relative;
+      top: 3px; }
       .market-bar .selector-trigger .trading-icon svg {
-        width: 1.5rem; }
+        width: 1.3rem; }
+    .market-bar .selector-trigger .market-select-text {
+      font-size: 14px; }
     .market-bar .selector-trigger .highcharts-container {
       min-width: 8rem; }
   .market-bar .fav-price-label {
@@ -15198,10 +15203,16 @@ table th {
     cursor: pointer; }
 
 .market-selector-dropdown-wrapper .app-bar-add-tab-content .app-bar-add-tab-search {
+  width: 90%;
   margin: 3%; }
   .market-selector-dropdown-wrapper .app-bar-add-tab-content .app-bar-add-tab-search .app-bar-search-field {
     align-items: start !important;
     flex-direction: row !important; }
+    .market-selector-dropdown-wrapper .app-bar-add-tab-content .app-bar-add-tab-search .app-bar-search-field .field-content {
+      width: 14rem; }
+      .market-selector-dropdown-wrapper .app-bar-add-tab-content .app-bar-add-tab-search .app-bar-search-field .field-content .app-bar-search-field {
+        width: 100%;
+        display: flex; }
     .market-selector-dropdown-wrapper .app-bar-add-tab-content .app-bar-add-tab-search .app-bar-search-field .field-children {
       border: 1px solid var(--labels_secondary-inactive-label-text-graphics);
       border-radius: 5px; }
