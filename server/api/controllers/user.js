@@ -1728,8 +1728,8 @@ const deleteUserAutoTrade = (req, res) => {
     loggerUser.verbose(req.uuid, 'controllers/user/deleteUserAutoTrade data', removed_ids);
 
     toolsLib.user.deleteUserAutoTrade({
-        user_id: req.auth.sub.id,
-        removed_ids
+        removed_ids,
+        user_id: req.auth.sub.id
     })
         .then((data) => res.json(data))
         .catch((err) => {
