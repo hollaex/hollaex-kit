@@ -258,7 +258,7 @@ class MarketSelector extends Component {
 					<Slider small>{this.tabListMenuItems()}</Slider>
 				</div>
 				<div className="app-bar-add-tab-content">
-					<div className="app-bar-add-tab-search">
+					<div className="app-bar-add-tab-search market-selector-search-wrapper">
 						<SearchBox
 							name={STRINGS['SEARCH_TXT']}
 							placeHolder={STRINGS['SEARCH_TXT']}
@@ -269,6 +269,18 @@ class MarketSelector extends Component {
 							showCross
 							isFocus={true}
 						/>
+						{coinsData?.length > 0 && (
+							<div
+								className="blue-link text-underline text-align-center"
+								onClick={() => this.onHandleNavigate()}
+							>
+								<EditWrapper stringId="VIEW_ALL_PRICES">
+									<span className="text-decoration-underline">
+										{STRINGS['VIEW_ALL_PRICES']}
+									</span>
+								</EditWrapper>
+							</div>
+						)}
 					</div>
 					<div className="scroll-view">
 						{hasTabMenu && coinsData.length > 0 ? (
@@ -374,16 +386,6 @@ class MarketSelector extends Component {
 								)}
 							</div>
 						)}
-						<div
-							className="blue-link text-underline text-align-center"
-							onClick={() => this.onHandleNavigate()}
-						>
-							<EditWrapper stringId="VIEW_ALL_PRICES">
-								<span className="text-decoration-underline">
-									{STRINGS['VIEW_ALL_PRICES']}
-								</span>
-							</EditWrapper>
-						</div>
 						<div className="d-flex justify-content-center app_bar-link blue-link pointer view-market-btn">
 							{constants && constants.features && constants.features.pro_trade && (
 								<div onClick={this.onViewMarketsClick}>
