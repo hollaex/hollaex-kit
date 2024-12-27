@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import classnames from 'classnames';
 import { browserHistory } from 'react-router';
 import { Dropdown } from 'antd';
+import { CaretDownOutlined, CaretUpOutlined } from '@ant-design/icons';
 
 import TabList from './TabList';
 import MarketSelector from './MarketSelector';
@@ -182,7 +183,7 @@ class PairTabs extends Component {
 									className={
 										activePairTab
 											? 'selected-market-tab selector-trigger market-dropdown-selector app_bar-pair-tab'
-											: 'selector-trigger market-dropdown-selector app_bar-pair-tab'
+											: 'selector-trigger market-dropdown-selector market-dropdown-selector-inactive app_bar-pair-tab'
 									}
 								>
 									{activePairTab ? (
@@ -221,10 +222,17 @@ class PairTabs extends Component {
 											/>
 											<span className="ml-1">
 												<EditWrapper stringId="ADD_TRADING_PAIR">
-													{STRINGS['ADD_TRADING_PAIR']}
+													<span className="market-select-text">
+														{STRINGS['ADD_TRADING_PAIR']}
+													</span>
 												</EditWrapper>
 											</span>
 										</div>
+									)}
+									{!this.state.activePairTab && isMarketDropdownVisible ? (
+										<CaretUpOutlined />
+									) : (
+										!this.state.activePairTab && <CaretDownOutlined />
 									)}
 								</div>
 							</Dropdown>
