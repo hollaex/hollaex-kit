@@ -1731,7 +1731,7 @@ const deleteUserAutoTrade = (req, res) => {
         removed_ids,
 		req.auth.sub.id
     )
-        .then((data) => res.json(data))
+        .then(() => res.json({ message: 'Success' }))
         .catch((err) => {
             loggerUser.error(req.uuid, 'controllers/user/deleteUserAutoTrade', err.message);
             return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
