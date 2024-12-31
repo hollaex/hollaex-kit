@@ -713,6 +713,9 @@ table th {
         .layout-mobile .footer-bar-more-options-container .options-container .hot-options-container .options-field .icon-field {
           padding: 5%;
           text-align: center; }
+          .layout-mobile .footer-bar-more-options-container .options-container .hot-options-container .options-field .icon-field svg {
+            width: 100%;
+            height: 100%; }
           .layout-mobile .footer-bar-more-options-container .options-container .hot-options-container .options-field .icon-field .assets-icon {
             position: relative;
             bottom: 10px;
@@ -13847,6 +13850,381 @@ table th {
 .custom-email-wrapper .ant-select-selector {
   color: rgba(0, 0, 0, 0.85); }
 
+.auto-trader-container {
+  margin-top: 3%; }
+  .auto-trader-container .title-wrapper {
+    padding: 1% 0;
+    border-bottom: 1.5px solid var(--labels_important-active-labels-text-graphics); }
+    .auto-trader-container .title-wrapper .auto-trader-icon svg {
+      width: 2.5rem;
+      position: relative;
+      top: 10px; }
+    .auto-trader-container .title-wrapper .auto-trader-title {
+      font-size: 2.5rem; }
+  .auto-trader-container .auto-trader-description-wrapper {
+    padding: 1%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px; }
+    .auto-trader-container .auto-trader-description-wrapper .edit-wrapper__container {
+      color: var(--labels_secondary-inactive-label-text-graphics); }
+  .auto-trader-container .blue-link:hover {
+    cursor: pointer; }
+  .auto-trader-container .link-wrapper {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4%; }
+    .auto-trader-container .link-wrapper .blue-link {
+      padding: 0 12% 0 0; }
+    .auto-trader-container .link-wrapper .deposit-link,
+    .auto-trader-container .link-wrapper .withdraw-link {
+      border-right: 1.5px solid var(--base_wallet-sidebar-and-popup); }
+    .auto-trader-container .link-wrapper .blue-link:hover {
+      cursor: pointer; }
+  .auto-trader-container .auto-trader-content-wrapper {
+    padding: 2%;
+    min-height: 30rem;
+    background-color: var(--base_wallet-sidebar-and-popup); }
+    .auto-trader-container .auto-trader-content-wrapper .auto-trader-content-description {
+      display: flex;
+      flex-direction: column;
+      gap: 3%;
+      align-items: flex-start; }
+    .auto-trader-container .auto-trader-content-wrapper .no-data > .edit-wrapper__container {
+      width: 50%;
+      text-align: center; }
+    .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper th,
+    .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper td {
+      padding: 5px; }
+    .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper .table-active {
+      opacity: 1; }
+    .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper .trade-inactive {
+      opacity: 0.6; }
+    .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper .description-content {
+      max-width: 20%; }
+    .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper .active-link {
+      display: flex;
+      gap: 4%;
+      align-items: center; }
+      .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper .active-link .active-play-icon {
+        font-size: 13px; }
+        .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper .active-link .active-play-icon svg path {
+          fill: var(--labels_important-active-labels-text-graphics); }
+    .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper .spend-asset-detail {
+      gap: 3%;
+      flex-direction: column; }
+      .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper .spend-asset-detail .selected-asset {
+        display: flex;
+        gap: 3%;
+        align-items: center; }
+      .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper .spend-asset-detail .asset-icon {
+        position: relative;
+        top: 2px; }
+    .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper .frequency-trade {
+      gap: 1% !important; }
+
+.auto-trade-tool-tip {
+  font-size: 12px; }
+
+.auto-trader-select-option-dropdown .ant-select-item-option-content .options-wrapper {
+  display: flex;
+  align-items: center; }
+  .auto-trader-select-option-dropdown .ant-select-item-option-content .options-wrapper .asset-icon {
+    position: relative;
+    top: 3px; }
+
+.auto-trader-popup-wrapper .auto-trader-input-field,
+.auto-trader-popup-wrapper .ant-input {
+  box-shadow: var(--labels_important-active-labels-text-graphics);
+  border: 1px solid var(--labels_important-active-labels-text-graphics) !important;
+  background-color: transparent;
+  color: var(--labels_important-active-labels-text-graphics);
+  font-size: 12px; }
+  .auto-trader-popup-wrapper .auto-trader-input-field .ant-input,
+  .auto-trader-popup-wrapper .ant-input .ant-input {
+    border: none !important; }
+
+.auto-trader-popup-wrapper .auto-trader-select-dropdown {
+  width: 100%; }
+  .auto-trader-popup-wrapper .auto-trader-select-dropdown .ant-select-selector,
+  .auto-trader-popup-wrapper .auto-trader-select-dropdown .ant-select-arrow {
+    background-color: transparent !important;
+    color: var(--labels_important-active-labels-text-graphics);
+    font-size: 12px;
+    border-color: var(--labels_important-active-labels-text-graphics) !important;
+    box-shadow: none !important; }
+    .auto-trader-popup-wrapper .auto-trader-select-dropdown .ant-select-selector .ant-select-selection-item,
+    .auto-trader-popup-wrapper .auto-trader-select-dropdown .ant-select-arrow .ant-select-selection-item {
+      text-transform: capitalize; }
+      .auto-trader-popup-wrapper .auto-trader-select-dropdown .ant-select-selector .ant-select-selection-item .asset-icon,
+      .auto-trader-popup-wrapper .auto-trader-select-dropdown .ant-select-arrow .ant-select-selection-item .asset-icon {
+        position: relative;
+        top: 3px; }
+  .auto-trader-popup-wrapper .auto-trader-select-dropdown .ant-select-selector:hover {
+    border-color: var(--labels_important-active-labels-text-graphics) !important; }
+  .auto-trader-popup-wrapper .auto-trader-select-dropdown .ant-select-clear {
+    background-color: transparent !important; }
+    .auto-trader-popup-wrapper .auto-trader-select-dropdown .ant-select-clear svg path {
+      fill: var(--labels_important-active-labels-text-graphics); }
+
+.auto-trader-popup-wrapper .blue-link:hover {
+  cursor: pointer; }
+
+.auto-trader-popup-wrapper .exclamation-icon {
+  position: relative;
+  bottom: 5px;
+  color: var(--labels_secondary-inactive-label-text-graphics); }
+
+.auto-trader-popup-wrapper .exclamation-icon:hover {
+  color: var(--labels_important-active-labels-text-graphics); }
+
+.auto-trader-popup-wrapper .ReactModal__Content {
+  width: 35rem; }
+  .auto-trader-popup-wrapper .ReactModal__Content .auto-trader-popup-container {
+    font-size: 12px; }
+    .auto-trader-popup-wrapper .ReactModal__Content .auto-trader-popup-container .auto-trader-title {
+      font-size: 22px; }
+    .auto-trader-popup-wrapper .ReactModal__Content .auto-trader-popup-container .auto-trader-popup-content {
+      font-size: 12px; }
+      .auto-trader-popup-wrapper .ReactModal__Content .auto-trader-popup-container .auto-trader-popup-content .asset-spend-field {
+        margin-top: 3%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%; }
+        .auto-trader-popup-wrapper .ReactModal__Content .auto-trader-popup-container .auto-trader-popup-content .asset-spend-field .spend-title {
+          font-size: 13px; }
+        .auto-trader-popup-wrapper .ReactModal__Content .auto-trader-popup-container .auto-trader-popup-content .asset-spend-field .options-wrapper {
+          display: flex;
+          align-items: center; }
+        .auto-trader-popup-wrapper .ReactModal__Content .auto-trader-popup-container .auto-trader-popup-content .asset-spend-field .error-text {
+          color: var(--specials_notifications-alerts-warnings); }
+        .auto-trader-popup-wrapper .ReactModal__Content .auto-trader-popup-container .auto-trader-popup-content .asset-spend-field .warning-text {
+          color: var(--specials_pending-waiting-caution); }
+    .auto-trader-popup-wrapper .ReactModal__Content .auto-trader-popup-container .button-container {
+      margin-top: 5%;
+      display: flex;
+      align-items: center;
+      gap: 3%; }
+
+.auto-trader-frequency-trade-popup-wrapper .auto-trader-frequency-trade-popup-container .auto-trader-popup-content .frequency-trade-description {
+  display: flex;
+  align-items: flex-end;
+  gap: 2%; }
+  .auto-trader-frequency-trade-popup-wrapper .auto-trader-frequency-trade-popup-container .auto-trader-popup-content .frequency-trade-description .repeating-amount .spending-asset {
+    position: relative;
+    top: 5px; }
+
+.auto-trader-frequency-trade-popup-wrapper .auto-trader-frequency-trade-popup-container .auto-trader-popup-content .frequency-trade-field {
+  margin-top: 5%;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  gap: 2%; }
+
+.auto-trader-frequency-trade-popup-wrapper .auto-trader-frequency-trade-popup-container .auto-trader-popup-content .ant-picker {
+  width: 100%;
+  background-color: transparent !important;
+  color: var(--labels_important-active-labels-text-graphics); }
+  .auto-trader-frequency-trade-popup-wrapper .auto-trader-frequency-trade-popup-container .auto-trader-popup-content .ant-picker input,
+  .auto-trader-frequency-trade-popup-wrapper .auto-trader-frequency-trade-popup-container .auto-trader-popup-content .ant-picker .ant-picker-suffix {
+    color: var(--labels_important-active-labels-text-graphics); }
+
+.auto-trader-frequency-trade-popup-wrapper .auto-trader-frequency-trade-popup-container .auto-trader-popup-content .ant-picker:hover,
+.auto-trader-frequency-trade-popup-wrapper .auto-trader-frequency-trade-popup-container .auto-trader-popup-content .ant-picker {
+  border-color: var(--labels_important-active-labels-text-graphics) !important; }
+
+.auto-trader-frequency-trade-popup-wrapper .auto-trader-frequency-trade-popup-container .auto-trader-popup-content .weekly-trade-wrapper .weekly-trade-options {
+  margin-top: 3%;
+  display: flex;
+  align-items: center;
+  gap: 5%; }
+  .auto-trader-frequency-trade-popup-wrapper .auto-trader-frequency-trade-popup-container .auto-trader-popup-content .weekly-trade-wrapper .weekly-trade-options .days-option {
+    padding: 1% 1.5%;
+    border: 1px solid var(--labels_important-active-labels-text-graphics);
+    color: var(--labels_important-active-labels-text-graphics);
+    border-radius: 3px; }
+  .auto-trader-frequency-trade-popup-wrapper .auto-trader-frequency-trade-popup-container .auto-trader-popup-content .weekly-trade-wrapper .weekly-trade-options .days-option:hover {
+    cursor: pointer; }
+  .auto-trader-frequency-trade-popup-wrapper .auto-trader-frequency-trade-popup-container .auto-trader-popup-content .weekly-trade-wrapper .weekly-trade-options .selected-days {
+    border-color: var(--specials_buttons-links-and-highlights) !important;
+    color: var(--specials_buttons-links-and-highlights) !important; }
+
+.auto-trader-frequency-trade-popup-wrapper .auto-trader-frequency-trade-popup-container .auto-trader-popup-content .daily-trade-wrapper .montly-trade-field {
+  background-color: transparent !important;
+  color: var(--labels_important-active-labels-text-graphics);
+  border-color: var(--labels_important-active-labels-text-graphics) !important; }
+  .auto-trader-frequency-trade-popup-wrapper .auto-trader-frequency-trade-popup-container .auto-trader-popup-content .daily-trade-wrapper .montly-trade-field .ant-input-number-handler-wrap:active {
+    background-color: var(--calculated_footer_border) !important; }
+  .auto-trader-frequency-trade-popup-wrapper .auto-trader-frequency-trade-popup-container .auto-trader-popup-content .daily-trade-wrapper .montly-trade-field .ant-input-number-handler-wrap,
+  .auto-trader-frequency-trade-popup-wrapper .auto-trader-frequency-trade-popup-container .auto-trader-popup-content .daily-trade-wrapper .montly-trade-field .ant-input-number-handler-wrap:hover {
+    opacity: unset !important;
+    background-color: transparent !important; }
+    .auto-trader-frequency-trade-popup-wrapper .auto-trader-frequency-trade-popup-container .auto-trader-popup-content .daily-trade-wrapper .montly-trade-field .ant-input-number-handler-wrap svg path,
+    .auto-trader-frequency-trade-popup-wrapper .auto-trader-frequency-trade-popup-container .auto-trader-popup-content .daily-trade-wrapper .montly-trade-field .ant-input-number-handler-wrap:hover svg path {
+      fill: var(--labels_important-active-labels-text-graphics); }
+
+.auto-trader-description-popup-wrapper .auto-trader-description-popup-container .auto-trader-popup-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; }
+  .auto-trader-description-popup-wrapper .auto-trader-description-popup-container .auto-trader-popup-content .description-title {
+    margin-top: 2%;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 1%;
+    width: 100%;
+    font-size: 13px; }
+
+.auto-trader-description-popup-wrapper .auto-trader-description-popup-container .description-input-field {
+  margin-top: 7%;
+  width: 100%; }
+  .auto-trader-description-popup-wrapper .auto-trader-description-popup-container .description-input-field .important-text {
+    font-size: 14px; }
+
+.auto-trader-confirm-popup-wrapper .ReactModal__Content {
+  width: 37rem !important; }
+  .auto-trader-confirm-popup-wrapper .ReactModal__Content .auto-trader-confirm-popup-container .auto-trade-content-wrapper {
+    font-size: 12px; }
+    .auto-trader-confirm-popup-wrapper .ReactModal__Content .auto-trader-confirm-popup-container .auto-trade-content-wrapper .selected-asset-details {
+      margin-top: 5%;
+      border: 1px solid var(--labels_secondary-inactive-label-text-graphics);
+      border-top-right-radius: 3px;
+      border-top-left-radius: 3px;
+      padding: 3%; }
+      .auto-trader-confirm-popup-wrapper .ReactModal__Content .auto-trader-confirm-popup-container .auto-trade-content-wrapper .selected-asset-details .buy-asset-details-wrapper {
+        flex-direction: column;
+        align-items: flex-start !important; }
+      .auto-trader-confirm-popup-wrapper .ReactModal__Content .auto-trader-confirm-popup-container .auto-trade-content-wrapper .selected-asset-details .asset-details {
+        padding: 2%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center; }
+        .auto-trader-confirm-popup-wrapper .ReactModal__Content .auto-trader-confirm-popup-container .auto-trade-content-wrapper .selected-asset-details .asset-details .spend-asset-details {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          gap: 1%; }
+          .auto-trader-confirm-popup-wrapper .ReactModal__Content .auto-trader-confirm-popup-container .auto-trade-content-wrapper .selected-asset-details .asset-details .spend-asset-details .asset-icon {
+            margin-left: 2%;
+            position: relative;
+            top: 2px; }
+    .auto-trader-confirm-popup-wrapper .ReactModal__Content .auto-trader-confirm-popup-container .auto-trade-content-wrapper .spend-amount-details-wrapper {
+      width: 100%;
+      border: 1.5px solid var(--labels_secondary-inactive-label-text-graphics);
+      border-bottom-right-radius: 3px;
+      border-bottom-left-radius: 3px;
+      display: flex;
+      justify-content: space-between;
+      padding: 5%; }
+      .auto-trader-confirm-popup-wrapper .ReactModal__Content .auto-trader-confirm-popup-container .auto-trade-content-wrapper .spend-amount-details-wrapper .spend-amount-details {
+        width: 100%;
+        display: flex;
+        gap: 1%;
+        align-items: center; }
+        .auto-trader-confirm-popup-wrapper .ReactModal__Content .auto-trader-confirm-popup-container .auto-trade-content-wrapper .spend-amount-details-wrapper .spend-amount-details .spend-asset-amount,
+        .auto-trader-confirm-popup-wrapper .ReactModal__Content .auto-trader-confirm-popup-container .auto-trade-content-wrapper .spend-amount-details-wrapper .spend-amount-details .spend-asset {
+          font-size: 16px; }
+    .auto-trader-confirm-popup-wrapper .ReactModal__Content .auto-trader-confirm-popup-container .auto-trade-content-wrapper .warning-message-content-wrapper {
+      padding: 2% 5%;
+      display: flex;
+      gap: 2%;
+      align-items: center;
+      color: var(--specials_pending-waiting-caution);
+      font-size: 11px; }
+      .auto-trader-confirm-popup-wrapper .ReactModal__Content .auto-trader-confirm-popup-container .auto-trade-content-wrapper .warning-message-content-wrapper .warning-message {
+        font-weight: normal !important; }
+      .auto-trader-confirm-popup-wrapper .ReactModal__Content .auto-trader-confirm-popup-container .auto-trade-content-wrapper .warning-message-content-wrapper .arrow-up-icon {
+        font-size: 20px; }
+    .auto-trader-confirm-popup-wrapper .ReactModal__Content .auto-trader-confirm-popup-container .auto-trade-content-wrapper .description-content-wrapper {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between; }
+      .auto-trader-confirm-popup-wrapper .ReactModal__Content .auto-trader-confirm-popup-container .auto-trade-content-wrapper .description-content-wrapper .description-content {
+        width: 100%;
+        display: flex;
+        align-items: flex-start;
+        overflow: hidden; }
+        .auto-trader-confirm-popup-wrapper .ReactModal__Content .auto-trader-confirm-popup-container .auto-trade-content-wrapper .description-content-wrapper .description-content .important-text {
+          overflow: hidden;
+          text-overflow: ellipsis; }
+    .auto-trader-confirm-popup-wrapper .ReactModal__Content .auto-trader-confirm-popup-container .auto-trade-content-wrapper .selected-trade-details {
+      width: 100%;
+      padding: 2% 5%;
+      border: 1.5px solid var(--labels_secondary-inactive-label-text-graphics);
+      border-radius: 3px; }
+      .auto-trader-confirm-popup-wrapper .ReactModal__Content .auto-trader-confirm-popup-container .auto-trade-content-wrapper .selected-trade-details .trade-details {
+        width: 100%;
+        margin-top: 2%;
+        display: flex;
+        align-items: center;
+        gap: 1%; }
+        .auto-trader-confirm-popup-wrapper .ReactModal__Content .auto-trader-confirm-popup-container .auto-trade-content-wrapper .selected-trade-details .trade-details .trade-days-container {
+          display: flex;
+          align-items: center;
+          gap: 5%; }
+          .auto-trader-confirm-popup-wrapper .ReactModal__Content .auto-trader-confirm-popup-container .auto-trade-content-wrapper .selected-trade-details .trade-details .trade-days-container .trade-days {
+            padding: 2.5% 5%;
+            border: 1px solid var(--labels_important-active-labels-text-graphics);
+            border-radius: 3px; }
+        .auto-trader-confirm-popup-wrapper .ReactModal__Content .auto-trader-confirm-popup-container .auto-trade-content-wrapper .selected-trade-details .trade-details .frequency-trade-details {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          gap: 1%; }
+
+.auto-trader-pause-popup-wrapper .ReactModal__Content {
+  width: 30rem !important; }
+  .auto-trader-pause-popup-wrapper .ReactModal__Content .auto-trader-pause-popup-container .auto-trade-content-wrapper .description-title .spending-asset {
+    position: relative;
+    top: 2px; }
+  .auto-trader-pause-popup-wrapper .ReactModal__Content .auto-trader-pause-popup-container .auto-trade-content-wrapper .description-title .selected-asset,
+  .auto-trader-pause-popup-wrapper .ReactModal__Content .auto-trader-pause-popup-container .auto-trade-content-wrapper .description-title .asset-price {
+    font-size: 18px; }
+
+.auto-trader-remove-popup-wrapper .auto-trader-remove-popup-container .auto-trade-content-wrapper .description-title .asset-price,
+.auto-trader-remove-popup-wrapper .auto-trader-remove-popup-container .auto-trade-content-wrapper .description-title .selected-asset {
+  font-size: 18px; }
+
+.auto-trader-remove-popup-wrapper .auto-trader-remove-popup-container .button-container .delete-btn {
+  background-color: var(--trading_selling-related-elements) !important; }
+
+.auto-trader-maximum-limit-popup-wrapper .auto-trader-maximum-limit-popup-container .auto-trader-title {
+  font-size: 18px !important; }
+
+.layout-mobile .auto-trader-container {
+  padding: 2% 4%; }
+  .layout-mobile .auto-trader-container .title-wrapper {
+    display: flex;
+    align-items: flex-end; }
+  .layout-mobile .auto-trader-container .auto-trader-description-wrapper {
+    flex-direction: column;
+    align-items: flex-end; }
+    .layout-mobile .auto-trader-container .auto-trader-description-wrapper .link-wrapper {
+      width: 100%; }
+  .layout-mobile .auto-trader-container .auto-trader-content-wrapper {
+    font-size: 10px;
+    overflow: hidden !important; }
+    .layout-mobile .auto-trader-container .auto-trader-content-wrapper .no-data .auto-trader-icon svg {
+      width: 3rem; }
+    .layout-mobile .auto-trader-container .auto-trader-content-wrapper .auto-trader-table {
+      overflow: scroll; }
+      .layout-mobile .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper th {
+        text-wrap: nowrap;
+        width: max-content; }
+      .layout-mobile .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper th,
+      .layout-mobile .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper td {
+        padding: 2px 5px;
+        font-size: 10px !important; }
+      .layout-mobile .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper .description-header .edit-wrapper__container {
+        display: flex;
+        justify-content: flex-start;
+        width: 20rem; }
+
 .sidebar-row {
   min-height: 3rem;
   min-width: 10rem; }
@@ -15370,6 +15748,9 @@ table th {
             flex-direction: column;
             align-items: center;
             padding: 2%; }
+            .desktop-search-wrapper .search-description-container .dynamic-search-container .options-container .hot-options-container .options-field .icon-field svg {
+              width: 80%;
+              height: 100%; }
             .desktop-search-wrapper .search-description-container .dynamic-search-container .options-container .hot-options-container .options-field .icon-field .hot-icon {
               position: relative;
               bottom: 15px; }

@@ -1,0 +1,643 @@
+.auto-trader-container {
+	margin-top: 3%;
+
+	.title-wrapper {
+		padding: 1% 0;
+		border-bottom: 1.5px solid
+			var(--labels_important-active-labels-text-graphics);
+
+		.auto-trader-icon {
+			svg {
+				width: 2.5rem;
+				position: relative;
+				top: 10px;
+			}
+		}
+
+		.auto-trader-title {
+			font-size: 2.5rem;
+		}
+	}
+
+	.auto-trader-description-wrapper {
+		padding: 1%;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		font-size: 13px;
+
+		.edit-wrapper__container {
+			color: var(--labels_secondary-inactive-label-text-graphics);
+		}
+	}
+
+	.blue-link:hover {
+		cursor: pointer;
+	}
+
+	.link-wrapper {
+		width: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+		gap: 4%;
+
+		.blue-link {
+			padding: 0 12% 0 0;
+		}
+
+		.deposit-link,
+		.withdraw-link {
+			border-right: 1.5px solid var(--base_wallet-sidebar-and-popup);
+		}
+
+		.blue-link:hover {
+			cursor: pointer;
+		}
+	}
+
+	.auto-trader-content-wrapper {
+		padding: 2%;
+		min-height: 30rem;
+		background-color: var(--base_wallet-sidebar-and-popup);
+
+		.auto-trader-content-description {
+			display: flex;
+			flex-direction: column;
+			gap: 3%;
+			align-items: flex-start;
+		}
+
+		.no-data {
+			> .edit-wrapper__container {
+				width: 50%;
+				text-align: center;
+			}
+		}
+
+		.auto-trader-table {
+			.table-wrapper {
+				th,
+				td {
+					padding: 5px;
+				}
+
+				.table-active {
+					opacity: 1;
+				}
+
+				.trade-inactive {
+					opacity: 0.6;
+				}
+
+				.description-content {
+					max-width: 20%;
+				}
+
+				.active-link {
+					display: flex;
+					gap: 4%;
+					align-items: center;
+
+					.active-play-icon {
+						font-size: 13px;
+
+						svg {
+							path {
+								fill: var(--labels_important-active-labels-text-graphics);
+							}
+						}
+					}
+				}
+
+				.spend-asset-detail {
+					gap: 3%;
+					flex-direction: column;
+
+					.selected-asset {
+						display: flex;
+						gap: 3%;
+						align-items: center;
+					}
+
+					.asset-icon {
+						position: relative;
+						top: 2px;
+					}
+				}
+
+				.frequency-trade {
+					gap: 1% !important;
+				}
+			}
+		}
+	}
+}
+
+.auto-trade-tool-tip {
+	font-size: 12px;
+}
+
+.auto-trader-select-option-dropdown {
+	.ant-select-item-option-content {
+		.options-wrapper {
+			display: flex;
+			align-items: center;
+
+			.asset-icon {
+				position: relative;
+				top: 3px;
+			}
+		}
+	}
+}
+
+.auto-trader-popup-wrapper {
+	.auto-trader-input-field,
+	.ant-input {
+		box-shadow: var(--labels_important-active-labels-text-graphics);
+		border: 1px solid var(--labels_important-active-labels-text-graphics) !important;
+		background-color: transparent;
+		color: var(--labels_important-active-labels-text-graphics);
+		font-size: 12px;
+
+		.ant-input {
+			border: none !important;
+		}
+	}
+
+	.auto-trader-select-dropdown {
+		width: 100%;
+
+		.ant-select-selector,
+		.ant-select-arrow {
+			background-color: transparent !important;
+			color: var(--labels_important-active-labels-text-graphics);
+			font-size: 12px;
+			border-color: var(
+				--labels_important-active-labels-text-graphics
+			) !important;
+			box-shadow: none !important;
+
+			.ant-select-selection-item {
+				text-transform: capitalize;
+				.asset-icon {
+					position: relative;
+					top: 3px;
+				}
+			}
+		}
+
+		.ant-select-selector:hover {
+			border-color: var(
+				--labels_important-active-labels-text-graphics
+			) !important;
+		}
+
+		.ant-select-clear {
+			background-color: transparent !important;
+
+			svg {
+				path {
+					fill: var(--labels_important-active-labels-text-graphics);
+				}
+			}
+		}
+	}
+
+	.blue-link:hover {
+		cursor: pointer;
+	}
+
+	.exclamation-icon {
+		position: relative;
+		bottom: 5px;
+		color: var(--labels_secondary-inactive-label-text-graphics);
+	}
+
+	.exclamation-icon:hover {
+		color: var(--labels_important-active-labels-text-graphics);
+	}
+
+	.ReactModal__Content {
+		width: 35rem;
+
+		.auto-trader-popup-container {
+			font-size: 12px;
+
+			.auto-trader-title {
+				font-size: 22px;
+			}
+
+			.auto-trader-popup-content {
+				font-size: 12px;
+
+				.asset-spend-field {
+					margin-top: 3%;
+					display: flex;
+					flex-direction: column;
+					align-items: flex-start;
+					width: 100%;
+
+					.spend-title {
+						font-size: 13px;
+					}
+
+					.options-wrapper {
+						display: flex;
+						align-items: center;
+					}
+
+					.error-text {
+						color: var(--specials_notifications-alerts-warnings);
+					}
+
+					.warning-text {
+						color: var(--specials_pending-waiting-caution);
+					}
+				}
+			}
+
+			.button-container {
+				margin-top: 5%;
+				display: flex;
+				align-items: center;
+				gap: 3%;
+			}
+		}
+	}
+}
+
+.auto-trader-frequency-trade-popup-wrapper {
+	.auto-trader-frequency-trade-popup-container {
+		.auto-trader-popup-content {
+			.frequency-trade-description {
+				display: flex;
+				align-items: flex-end;
+				gap: 2%;
+
+				.repeating-amount {
+					.spending-asset {
+						position: relative;
+						top: 5px;
+					}
+				}
+			}
+
+			.frequency-trade-field {
+				margin-top: 5%;
+				display: flex;
+				align-items: center;
+				font-size: 14px;
+				gap: 2%;
+			}
+
+			.ant-picker {
+				width: 100%;
+				background-color: transparent !important;
+				color: var(--labels_important-active-labels-text-graphics);
+
+				input,
+				.ant-picker-suffix {
+					color: var(--labels_important-active-labels-text-graphics);
+				}
+			}
+
+			.ant-picker:hover,
+			.ant-picker {
+				border-color: var(
+					--labels_important-active-labels-text-graphics
+				) !important;
+			}
+
+			.weekly-trade-wrapper {
+				.weekly-trade-options {
+					margin-top: 3%;
+					display: flex;
+					align-items: center;
+					gap: 5%;
+
+					.days-option {
+						padding: 1% 1.5%;
+						border: 1px solid
+							var(--labels_important-active-labels-text-graphics);
+						color: var(--labels_important-active-labels-text-graphics);
+						border-radius: 3px;
+					}
+
+					.days-option:hover {
+						cursor: pointer;
+					}
+
+					.selected-days {
+						border-color: var(
+							--specials_buttons-links-and-highlights
+						) !important;
+						color: var(--specials_buttons-links-and-highlights) !important;
+					}
+				}
+			}
+
+			.daily-trade-wrapper {
+				.montly-trade-field {
+					background-color: transparent !important;
+					color: var(--labels_important-active-labels-text-graphics);
+					border-color: var(
+						--labels_important-active-labels-text-graphics
+					) !important;
+
+					.ant-input-number-handler-wrap:active {
+						background-color: var(--calculated_footer_border) !important;
+					}
+
+					.ant-input-number-handler-wrap,
+					.ant-input-number-handler-wrap:hover {
+						opacity: unset !important;
+						background-color: transparent !important;
+
+						svg {
+							path {
+								fill: var(--labels_important-active-labels-text-graphics);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+.auto-trader-description-popup-wrapper {
+	.auto-trader-description-popup-container {
+		.auto-trader-popup-content {
+			display: flex;
+			flex-direction: column;
+			align-items: flex-start;
+
+			.description-title {
+				margin-top: 2%;
+				display: flex;
+				flex-direction: row;
+				align-items: flex-start;
+				gap: 1%;
+				width: 100%;
+				font-size: 13px;
+			}
+		}
+
+		.description-input-field {
+			margin-top: 7%;
+			width: 100%;
+
+			.important-text {
+				font-size: 14px;
+			}
+		}
+	}
+}
+
+.auto-trader-confirm-popup-wrapper {
+	.ReactModal__Content {
+		width: 37rem !important;
+
+		.auto-trader-confirm-popup-container {
+			.auto-trade-content-wrapper {
+				font-size: 12px;
+
+				.selected-asset-details {
+					margin-top: 5%;
+					border: 1px solid var(--labels_secondary-inactive-label-text-graphics);
+					border-top-right-radius: 3px;
+					border-top-left-radius: 3px;
+					padding: 3%;
+
+					.buy-asset-details-wrapper {
+						flex-direction: column;
+						align-items: flex-start !important;
+					}
+
+					.asset-details {
+						padding: 2%;
+						display: flex;
+						justify-content: space-between;
+						align-items: center;
+
+						.spend-asset-details {
+							width: 100%;
+							display: flex;
+							align-items: center;
+							gap: 1%;
+
+							.asset-icon {
+								margin-left: 2%;
+								position: relative;
+								top: 2px;
+							}
+						}
+					}
+				}
+
+				.spend-amount-details-wrapper {
+					width: 100%;
+					border: 1.5px solid
+						var(--labels_secondary-inactive-label-text-graphics);
+					border-bottom-right-radius: 3px;
+					border-bottom-left-radius: 3px;
+					display: flex;
+					justify-content: space-between;
+					padding: 5%;
+
+					.spend-amount-details {
+						width: 100%;
+						display: flex;
+						gap: 1%;
+						align-items: center;
+
+						.spend-asset-amount,
+						.spend-asset {
+							font-size: 16px;
+						}
+					}
+				}
+
+				.warning-message-content-wrapper {
+					padding: 2% 5%;
+					display: flex;
+					gap: 2%;
+					align-items: center;
+					color: var(--specials_pending-waiting-caution);
+					font-size: 11px;
+
+					.warning-message {
+						font-weight: normal !important;
+					}
+
+					.arrow-up-icon {
+						font-size: 20px;
+					}
+				}
+
+				.description-content-wrapper {
+					display: flex;
+					align-items: flex-start;
+					justify-content: space-between;
+
+					.description-content {
+						width: 100%;
+						display: flex;
+						align-items: flex-start;
+						overflow: hidden;
+
+						.important-text {
+							overflow: hidden;
+							text-overflow: ellipsis;
+						}
+					}
+				}
+
+				.selected-trade-details {
+					width: 100%;
+					padding: 2% 5%;
+					border: 1.5px solid
+						var(--labels_secondary-inactive-label-text-graphics);
+					border-radius: 3px;
+
+					.trade-details {
+						width: 100%;
+						margin-top: 2%;
+						display: flex;
+						align-items: center;
+						gap: 1%;
+
+						.trade-days-container {
+							display: flex;
+							align-items: center;
+							gap: 5%;
+
+							.trade-days {
+								padding: 2.5% 5%;
+								border: 1px solid
+									var(--labels_important-active-labels-text-graphics);
+								border-radius: 3px;
+							}
+						}
+
+						.frequency-trade-details {
+							width: 100%;
+							display: flex;
+							align-items: center;
+							gap: 1%;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+.auto-trader-pause-popup-wrapper {
+	.ReactModal__Content {
+		width: 30rem !important;
+
+		.auto-trader-pause-popup-container {
+			.auto-trade-content-wrapper {
+				.description-title {
+					.spending-asset {
+						position: relative;
+						top: 2px;
+					}
+
+					.selected-asset,
+					.asset-price {
+						font-size: 18px;
+					}
+				}
+			}
+		}
+	}
+}
+
+.auto-trader-remove-popup-wrapper {
+	.auto-trader-remove-popup-container {
+		.auto-trade-content-wrapper {
+			.description-title {
+				.asset-price,
+				.selected-asset {
+					font-size: 18px;
+				}
+			}
+		}
+
+		.button-container {
+			.delete-btn {
+				background-color: var(--trading_selling-related-elements) !important;
+			}
+		}
+	}
+}
+
+.auto-trader-maximum-limit-popup-wrapper {
+	.auto-trader-maximum-limit-popup-container {
+		.auto-trader-title {
+			font-size: 18px !important;
+		}
+	}
+}
+
+.layout-mobile {
+	.auto-trader-container {
+		padding: 2% 4%;
+
+		.title-wrapper {
+			display: flex;
+			align-items: flex-end;
+		}
+
+		.auto-trader-description-wrapper {
+			flex-direction: column;
+			align-items: flex-end;
+
+			.link-wrapper {
+				width: 100%;
+			}
+		}
+
+		.auto-trader-content-wrapper {
+			font-size: 10px;
+			overflow: hidden !important;
+
+			.no-data {
+				.auto-trader-icon {
+					svg {
+						width: 3rem;
+					}
+				}
+			}
+
+			.auto-trader-table {
+				overflow: scroll;
+
+				.table-wrapper {
+					th {
+						text-wrap: nowrap;
+						width: max-content;
+					}
+
+					th,
+					td {
+						padding: 2px 5px;
+						font-size: 10px !important;
+					}
+
+					.description-header {
+						.edit-wrapper__container {
+							display: flex;
+							justify-content: flex-start;
+							width: 20rem;
+						}
+					}
+				}
+			}
+		}
+	}
+}
