@@ -319,7 +319,7 @@ const UserStaking = ({ coins }) => {
 							</div>
 							<div>
 								<span>
-									<div>Staking Pools</div>
+									<div>Stake Pools</div>
 									<div>
 										<Select
 											showSearch
