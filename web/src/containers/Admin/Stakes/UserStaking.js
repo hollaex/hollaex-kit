@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Spin, Input, Select } from 'antd';
-import { requestStakersByAdmin, getStakingAnalytics } from './actions';
+import {
+	requestStakersByAdmin,
+	requestStakePools,
+	getStakingAnalytics,
+} from './actions';
 import moment from 'moment';
 import BigNumber from 'bignumber.js';
 import { ExclamationCircleFilled } from '@ant-design/icons';
 
 const UserStaking = ({ coins }) => {
 	const [userData, setUserData] = useState([]);
+	const [stakePools, setStakePools] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [queryValues, setQueryValues] = useState();
 	const [queryFilters, setQueryFilters] = useState({
@@ -155,7 +160,15 @@ const UserStaking = ({ coins }) => {
 
 	useEffect(() => {
 		// setIsLoading(true);
-		requestExchangeStakers(queryFilters.page, queryFilters.limit);
+		// requestExchangeStakers(queryFilters.page, queryFilters.limit);
+		requestStakePools()
+			.then((res) => {
+				setStakePools(res?.data || []);
+				if (res?.data?.length > 0) {
+					setQueryValues({ ...queryValues, stake_id: res.data[0].id });
+				}
+			})
+			.catch((err) => err);
 		getStakingAnalytics().then((res) => {
 			setStakingAnalytics(res.data);
 		});
@@ -172,6 +185,7 @@ const UserStaking = ({ coins }) => {
 	};
 
 	const requestExchangeStakers = (page = 1, limit = 50) => {
+		if (!queryValues?.user_id && !queryValues?.stake_id) return;
 		setIsLoading(true);
 		requestStakersByAdmin({ page, limit, ...queryValues })
 			.then((response) => {
@@ -305,37 +319,23 @@ const UserStaking = ({ coins }) => {
 							</div>
 							<div>
 								<span>
-									<div>Status</div>
+									<div>Staking Pools</div>
 									<div>
 										<Select
 											showSearch
 											className="select-box"
-											style={{ width: 150 }}
-											value={userQuery.status || 'all'}
-											placeholder="Select status"
+											style={{ width: 200 }}
+											value={queryValues?.stake_id}
+											placeholder="Select Staking Pool"
 											onChange={(e) => {
-												let newState;
-												if (e === 'closed') {
-													newState = {
-														...(userQuery?.user_id && {
-															user_id: userQuery.user_id,
-														}),
-														status: e,
-													};
-													setUserQuery(newState);
-												} else {
-													newState = {
-														...(userQuery?.user_id && {
-															user_id: userQuery.user_id,
-														}),
-													};
-													setUserQuery(newState);
-												}
-												setQueryValues(newState);
+												setQueryValues({ stake_id: e });
 											}}
 										>
-											<Select.Option value={'all'}>Staking</Select.Option>
-											<Select.Option value={'closed'}>Closed</Select.Option>
+											{stakePools.map((stakePool) => (
+												<Select.Option value={stakePool.id}>
+													{stakePool.name}
+												</Select.Option>
+											))}
 										</Select>
 									</div>
 								</span>
@@ -439,15 +439,16 @@ const UserStaking = ({ coins }) => {
 							<Table
 								className="blue-admin-table"
 								columns={columns}
-								dataSource={userData
-									.sort((a, b) => {
+								dataSource={
+									userData.sort((a, b) => {
 										return statuses[a.status] - statuses[b.status];
 									})
-									.filter((x) =>
-										userQuery?.status === 'closed'
-											? x.status === 'closed'
-											: x.status !== 'closed'
-									)}
+									// .filter((x) =>
+									// 	userQuery?.status === 'closed'
+									// 		? x.status === 'closed'
+									// 		: x.status !== 'closed'
+									// )
+								}
 								// expandedRowRender={renderRowContent}
 								expandRowByClick={true}
 								rowKey={(data) => {
