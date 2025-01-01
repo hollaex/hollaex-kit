@@ -43,6 +43,13 @@ const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, 
 				}
 			);
 
+			if (size) {
+				size = new BigNumber(size).toNumber();
+			};
+			if (price) {
+				price = new BigNumber(price).toNumber();
+			};
+			
 			return getNodeLib().createOrder(user.network_id, symbol, side, size, type, price, feeData, opts);
 		});
 };
