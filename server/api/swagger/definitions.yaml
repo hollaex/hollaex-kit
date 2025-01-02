@@ -343,14 +343,12 @@ definitions:
           - sell
       size:
         description: "Amount of the orders."
-        type: string
       type:
         type: string
         enum:
           - market
           - limit
       price:
-        type: string
         description: Price of the order
       stop:
         type: number
@@ -383,14 +381,12 @@ definitions:
           - sell
       size:
         description: "Amount of the orders."
-        type: string
       type:
         type: string
         enum:
           - market
           - limit
       price:
-        type: string
         description: Price of the order
   OrderResponse:
     type: object
