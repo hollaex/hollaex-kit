@@ -352,6 +352,7 @@ const nestedIcons = {
 	NO_ICON: '/assets/images/no-icon-drop-down-icon.svg',
 	ONRAMPER_ICON: '/assets/images/onramper.svg',
 	HOT_ICON: '/assets/images/fire-emoji.svg',
+	AUTO_TRADER_ICON: '/assets/images/auto-trade.svg',
 };
 
 const icons = flatten(nestedIcons, options);

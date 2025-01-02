@@ -304,6 +304,11 @@ const ConfirmChangePassword = Loadable({
 	loading: LoadingComponent,
 });
 
+const AutoTrader = Loadable({
+	loader: () => import('./containers/AutoTrader'),
+	loading: LoadingComponent,
+});
+
 ReactGA.initialize('UA-154626247-1'); // Google analytics. Set your own Google Analytics values
 browserHistory.listen((location) => {
 	if (window) {
@@ -683,7 +688,12 @@ export const generateRoutes = (routes = []) => {
 					component={P2P}
 					onEnter={requireAuth}
 				/>
-
+				<Route
+					path="auto-trader"
+					name="Auto trader"
+					component={AutoTrader}
+					onEnter={requireAuth}
+				/>
 				<Route
 					path="wallet/:currency"
 					name="Wallet"

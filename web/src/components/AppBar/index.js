@@ -390,6 +390,7 @@ class AppBar extends Component {
 								?.filter(({ value }) => value === activeLanguage)
 								?.map(({ value, icon, label }) => (
 									<div
+										key={value}
 										className="language_option"
 										onClick={() => this.onHandleOpenPopup()}
 									>
