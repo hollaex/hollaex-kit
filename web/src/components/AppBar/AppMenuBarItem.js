@@ -137,6 +137,13 @@ const AppMenuBarItem = ({
 			description_2: 'DESKTOP_NAVIGATION.P2P_DESC',
 			isDisplay: features?.p2p,
 		},
+		{
+			icon: 'AUTO_TRADER_ICON',
+			title: 'AUTO_TRADER.AUTO_TRADER_TITLE',
+			path: '/auto-trader',
+			description: 'DESKTOP_NAVIGATION.AUTO_TRADER_DESC',
+			isDisplay: true,
+		},
 	];
 
 	const earnOptions = [

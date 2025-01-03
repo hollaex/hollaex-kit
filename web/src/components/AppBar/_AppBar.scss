@@ -1830,6 +1830,10 @@ $app-menu-width: calc(100vw - 40rem);
 							flex-direction: column;
 							align-items: center;
 							padding: 2%;
+							svg {
+								width: 80%;
+								height: 100%;
+							}
 							.hot-icon {
 								position: relative;
 								bottom: 15px;
