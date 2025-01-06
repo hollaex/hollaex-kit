@@ -263,6 +263,7 @@ class OrderEntry extends Component {
 
 		const order = {
 			...values,
+			// size: formatNumber(values.size, getDecimals(increment_size)),
 			size: formatNumber(values.size, getDecimals(increment_size)),
 			symbol: this.props.pair,
 		};
