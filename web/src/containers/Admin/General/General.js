@@ -655,6 +655,32 @@ class GeneralContent extends Component {
 		}
 	};
 
+	handleInputChange = (key, value) => {
+		this.setState((prevState) => ({
+			constants: {
+				...prevState.constants,
+				kit: {
+					...prevState.constants.kit,
+					apps: {
+						...prevState.constants.kit.apps,
+						[key]: value,
+					},
+				},
+			},
+		}));
+	};
+
+	handleSave = async () => {
+		try {
+			this.handleSubmitGeneral({
+				kit: {
+					apps: this.state.constants.kit.apps,
+				},
+			});
+		} catch (error) {
+			message.error(error.message);
+		}
+	};
 	renderModalContent = () => {
 		const { screen, removeCountryLabel, selectedCountry } = this.state;
 		switch (screen) {
@@ -752,33 +778,6 @@ class GeneralContent extends Component {
 						</div>
 					</div>
 				);
-		}
-	};
-
-	handleInputChange = (key, value) => {
-		this.setState((prevState) => ({
-			constants: {
-				...prevState.constants,
-				kit: {
-					...prevState.constants.kit,
-					apps: {
-						...prevState.constants.kit.apps,
-						[key]: value,
-					},
-				},
-			},
-		}));
-	};
-
-	handleSave = async () => {
-		try {
-			this.handleSubmitGeneral({
-				kit: {
-					apps: this.state.constants.kit.apps,
-				},
-			});
-		} catch (error) {
-			message.error(error.message);
 		}
 	};
 
