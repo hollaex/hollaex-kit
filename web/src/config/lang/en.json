@@ -1652,6 +1652,8 @@
 	"BANK_NAME": "bank name",
 	"VERIFY_BANK_WITHDRAW": "In order to make a withdrawal you are required to complete your verification which includes verification of your bank details. Please click the proceed button below.",
 	"VERIFICATION_TITLE": "Complete verification",
+	"NO_VERIFIED_BANK": "No Verified Bank Account Found",
+	"NO_VERIFIED_BANK_DESC": "You don't have a verified bank account for {0}. Please contact support for further help.",
 	"WITHDRAW_NOTE": "Please note: You can only withdraw to an account in your name.",
 	"USER_PAYMENT": { "TITLE": "Payments" },
 	"QUOTE_CONFIRMATION_MSG_TEXT_1": "Please check your order and confirm it below.",
