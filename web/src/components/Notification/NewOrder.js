@@ -7,13 +7,14 @@ import {
 	NotificationContent,
 	InformationRow,
 } from './Notification';
-import { Button } from '../';
+import { Button, Coin } from '../';
 import { formatToCurrency } from 'utils/currency';
 
-const generateRows = ({ order, pairData }) => {
+const generateRows = ({ order, pairData }, coins) => {
 	const { type, side, price, size } = order;
 	const { pair_base_display, pair_2_display } = pairData;
 	const rows = [];
+	const selectedIcon = (symbol) => coins[symbol?.toLowerCase()]?.icon_id;
 
 	rows.push({
 		stringId: `TYPE,CHECK_ORDER_TYPE,TYPES_VALUES.${type},SIDES_VALUES.${side}`,
@@ -38,10 +39,19 @@ const generateRows = ({ order, pairData }) => {
 	rows.push({
 		stringId: 'SIZE',
 		label: STRINGS['SIZE'],
-		value: STRINGS.formatString(
-			CURRENCY_PRICE_FORMAT,
-			formatToCurrency(size, pairData.increment_size),
-			pair_base_display
+		value: (
+			<span>
+				<span>
+					{STRINGS.formatString(
+						CURRENCY_PRICE_FORMAT,
+						formatToCurrency(size, pairData.increment_size),
+						pair_base_display
+					)}
+				</span>
+				<span className="selected-icon">
+					<Coin iconId={selectedIcon(pair_base_display)} type="CS4" />
+				</span>
+			</span>
 		),
 	});
 
@@ -49,10 +59,19 @@ const generateRows = ({ order, pairData }) => {
 		rows.push({
 			stringId: 'PRICE',
 			label: STRINGS['PRICE'],
-			value: STRINGS.formatString(
-				CURRENCY_PRICE_FORMAT,
-				formatToCurrency(price, pairData.increment_price),
-				pair_2_display
+			value: (
+				<span>
+					<span>
+						{STRINGS.formatString(
+							CURRENCY_PRICE_FORMAT,
+							formatToCurrency(price, pairData.increment_price),
+							pair_2_display
+						)}
+					</span>
+					<span className="selected-icon">
+						<Coin iconId={selectedIcon(pair_2_display)} type="CS4" />
+					</span>
+				</span>
 			),
 		});
 	}
@@ -78,7 +97,7 @@ const NewOrderNotification = ({
 	coins,
 	icons: ICONS,
 }) => {
-	const rows = generateRows(data);
+	const rows = generateRows(data, coins);
 	const onConfirmClick = () => {
 		onConfirm();
 		onBack();

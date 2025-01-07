@@ -5,6 +5,7 @@ import EventListener from 'react-event-listener';
 import classnames from 'classnames';
 import { bindActionCreators } from 'redux';
 import { SubmissionError, change } from 'redux-form';
+import { notification } from 'antd';
 import { isMobile } from 'react-device-detect';
 import { createSelector } from 'reselect';
 import debounce from 'lodash.debounce';
@@ -38,7 +39,13 @@ import ActiveOrdersWrapper from './components/ActiveOrdersWrapper';
 import RecentTradesWrapper from './components/RecentTradesWrapper';
 import DepthChart from './components/DepthChart';
 import { AddTradeTabs } from 'containers';
-import { Loader, MobileBarTabs, SidebarHub } from 'components';
+import {
+	EditWrapper,
+	Image,
+	Loader,
+	MobileBarTabs,
+	SidebarHub,
+} from 'components';
 import STRINGS from 'config/localizedStrings';
 import { playBackgroundAudioNotification } from 'utils/utils';
 import withConfig from 'components/ConfigProvider/withConfig';
@@ -427,7 +434,6 @@ class Trade extends PureComponent {
 	};
 
 	resetSlider = () => {
-		console.log(this.sliderRef);
 		if (this.sliderRef) {
 			this.sliderRef.reset();
 		}
@@ -467,6 +473,120 @@ class Trade extends PureComponent {
 		return Object.entries(tools)
 			.filter(([, { is_visible }]) => !!is_visible)
 			.map(([key]) => this.getSectionByKey(key));
+	};
+
+	allOrderCancelNotification = (activeOrders) => {
+		const key = `order-toast-${Date.now()}`;
+		const date = new Date();
+		const currentTime = date?.toLocaleTimeString();
+		const totalOrders = activeOrders?.length;
+
+		return notification.open({
+			key,
+			message: (
+				<div className="market-order-title font-weight-bold">
+					<EditWrapper stringId="CANCEL_ORDERS.SUB_HEADING">
+						{STRINGS['CANCEL_ORDERS.SUB_HEADING']}
+					</EditWrapper>
+					<span className="secondary-text order-time">{currentTime}</span>
+				</div>
+			),
+			description: (
+				<div className="market-order-description">
+					<span>
+						{STRINGS.formatString(
+							STRINGS['LIMIT_ORDER_CANCELLED'],
+							<span>{totalOrders}</span>
+						)}
+					</span>
+					<span className="mt-2" onClick={() => notification.close(key)}>
+						<EditWrapper stringId="CLOSE_TEXT">
+							<span className="close-text text-decoration-underline">
+								{STRINGS['CLOSE_TEXT']?.toUpperCase()}
+							</span>
+						</EditWrapper>
+					</span>
+				</div>
+			),
+			placement: isMobile ? 'bottomLeft' : 'bottomRight',
+			duration: 5,
+			className: isMobile
+				? 'market-trade-notification market-trade-notification-mobile'
+				: 'market-trade-notification',
+		});
+	};
+
+	orderCancelNotification = (activeOrders, id, coins) => {
+		const key = `order-toast-${Date.now()}`;
+		const date = new Date();
+		const currentTime = date?.toLocaleTimeString();
+		const order = activeOrders?.filter((data) => {
+			return data?.id === id;
+		});
+		const selectedIcon =
+			coins[order[0]?.pair_base_display?.toLowerCase()]?.logo;
+
+		return notification.open({
+			key,
+			message: (
+				<div className="market-order-title font-weight-bold">
+					<EditWrapper stringId="ORDER_CANCELED">
+						{STRINGS.formatString(
+							STRINGS['ORDER_CANCELED'],
+							<span className="ml-1 caps-first secondary-text">
+								{order[0]?.type}
+							</span>,
+							<span
+								className={
+									order[0]?.side === 'buy'
+										? 'ml-1 caps-first order-buy-side'
+										: 'ml-1 caps-first order-sell-side'
+								}
+							>
+								{order[0]?.side}
+							</span>
+						)}
+					</EditWrapper>
+					<span className="secondary-text order-time">{currentTime}</span>
+				</div>
+			),
+			description: (
+				<div className="market-order-description">
+					<span className="size-content">
+						<EditWrapper stringId="SIZE">
+							<span className="font-weight-bold">{STRINGS['SIZE']}:</span>
+						</EditWrapper>
+						<span className="ml-1 secondary-text text-strike">
+							{order[0]?.size}
+						</span>
+						<span className="ml-1 secondary-text text-strike">
+							{order[0]?.pair_base_display}
+						</span>
+						<Image icon={selectedIcon} wrapperClassName="selected-coin" />
+					</span>
+					<span className="price-content">
+						<EditWrapper stringId="PRICE">
+							<span className="font-weight-bold">{STRINGS['PRICE']}:</span>
+						</EditWrapper>
+						<span className="ml-1 secondary-text text-strike">
+							{order[0]?.price}
+						</span>
+					</span>
+					<span className="mt-2" onClick={() => notification.close(key)}>
+						<EditWrapper stringId="CLOSE_TEXT">
+							<span className="close-text text-decoration-underline">
+								{STRINGS['CLOSE_TEXT']?.toUpperCase()}
+							</span>
+						</EditWrapper>
+					</span>
+				</div>
+			),
+			placement: isMobile ? 'bottomLeft' : 'bottomRight',
+			duration: 5,
+			className: isMobile
+				? 'market-trade-notification market-trade-cancel-notification market-trade-notification-mobile'
+				: 'market-trade-notification market-trade-cancel-notification',
+		});
 	};
 
 	getSectionByKey = (key) => {
@@ -645,6 +765,8 @@ class Trade extends PureComponent {
 							goToTransactionsHistory={this.goToTransactionsHistory}
 							goToPair={this.goToPair}
 							tool={key}
+							allOrderCancelNotification={this.allOrderCancelNotification}
+							orderCancelNotification={this.orderCancelNotification}
 						/>
 					</div>
 				);
@@ -772,6 +894,8 @@ class Trade extends PureComponent {
 						pairData={pairData}
 						pairs={pairs}
 						coins={coins}
+						allOrderCancelNotification={this.allOrderCancelNotification}
+						orderCancelNotification={this.orderCancelNotification}
 					/>
 				),
 			},

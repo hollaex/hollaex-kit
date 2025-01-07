@@ -389,8 +389,8 @@ table th {
     height: auto;
     flex: 1; }
   .app_container.layout-mobile .app_container-content {
-    min-height: calc( 100vh - 10rem);
-    max-height: calc( 100vh - 10rem);
+    min-height: calc( 100vh - 10rem);
+    max-height: calc( 100vh - 10rem);
     max-width: 100vw;
     overflow-y: scroll; }
     .app_container.layout-mobile .app_container-content.chart-embed {
@@ -408,8 +408,8 @@ table th {
       .app_container.layout-mobile .app_container-content .app_container-main.no_bottom_navigation {
         height: 100%; }
   .app_container.layout-mobile .content-with-bar {
-    min-height: calc( 100vh - 17rem);
-    max-height: calc( 100vh - 17rem);
+    min-height: calc( 100vh - 17rem);
+    max-height: calc( 100vh - 17rem);
     max-width: 100vw;
     padding: 1rem;
     margin: 0;
@@ -3992,6 +3992,75 @@ table th {
   .risky-trade-wrapper .risky_managment_percentage {
     color: var(--specials_notifications-alerts-warnings); }
 
+.market-trade-notification-mobile {
+  width: 100% !important; }
+  .market-trade-notification-mobile .market-order-description .selected-coin {
+    width: 2.2rem !important;
+    position: relative;
+    top: 2px; }
+
+.market-trade-notification {
+  padding: unset;
+  width: 28rem;
+  background-color: var(--base_background);
+  color: var(--labels_important-active-labels-text-graphics);
+  padding: 3%; }
+  .market-trade-notification .ant-notification-notice-message,
+  .market-trade-notification .ant-notification-notice-description {
+    padding: 0 2%;
+    margin-left: unset;
+    margin-bottom: unset;
+    font-size: 12px;
+    color: var(--labels_important-active-labels-text-graphics);
+    width: 100%; }
+    .market-trade-notification .ant-notification-notice-message .market-order-title,
+    .market-trade-notification .ant-notification-notice-description .market-order-title {
+      display: flex;
+      width: 87%;
+      justify-content: space-between;
+      text-wrap: nowrap; }
+      .market-trade-notification .ant-notification-notice-message .market-order-title .order-time,
+      .market-trade-notification .ant-notification-notice-description .market-order-title .order-time {
+        font-size: 11px;
+        font-weight: normal !important; }
+      .market-trade-notification .ant-notification-notice-message .market-order-title .order-buy-side,
+      .market-trade-notification .ant-notification-notice-message .market-order-title .order-sell-side,
+      .market-trade-notification .ant-notification-notice-description .market-order-title .order-buy-side,
+      .market-trade-notification .ant-notification-notice-description .market-order-title .order-sell-side {
+        padding: 1% 2%;
+        background-color: var(--trading_buying-related-elements);
+        border-radius: 5px;
+        color: #ffffff; }
+      .market-trade-notification .ant-notification-notice-message .market-order-title .order-sell-side,
+      .market-trade-notification .ant-notification-notice-description .market-order-title .order-sell-side {
+        background-color: var(--trading_selling-related-elements) !important; }
+    .market-trade-notification .ant-notification-notice-message .market-order-description,
+    .market-trade-notification .ant-notification-notice-description .market-order-description {
+      display: flex;
+      flex-direction: column;
+      gap: 2%; }
+      .market-trade-notification .ant-notification-notice-message .market-order-description .close-text:hover,
+      .market-trade-notification .ant-notification-notice-description .market-order-description .close-text:hover {
+        cursor: pointer;
+        opacity: 0.6; }
+      .market-trade-notification .ant-notification-notice-message .market-order-description .selected-coin,
+      .market-trade-notification .ant-notification-notice-description .market-order-description .selected-coin {
+        width: 1.2rem;
+        position: relative;
+        top: 2px;
+        margin-left: 3px; }
+        .market-trade-notification .ant-notification-notice-message .market-order-description .selected-coin svg,
+        .market-trade-notification .ant-notification-notice-description .market-order-description .selected-coin svg {
+          width: 100%; }
+  .market-trade-notification .ant-notification-notice-close {
+    top: 10%;
+    color: var(--labels_important-active-labels-text-graphics); }
+  .market-trade-notification .ant-notification-notice-close:hover {
+    opacity: 0.6; }
+
+.market-trade-cancel-notification .text-strike {
+  text-decoration: line-through; }
+
 .layout-mobile .trade_order_entry-selector {
   font-size: 13px !important; }
 
@@ -4648,8 +4717,8 @@ table th {
 .layout-mobile .quote-container {
   background-color: transparent;
   overflow-y: scroll;
-  min-height: calc( 100vh - 17rem);
-  max-height: calc( 100vh - 17rem); }
+  min-height: calc( 100vh - 17rem);
+  max-height: calc( 100vh - 17rem); }
   .layout-mobile .quote-container .quick_trade-wrapper {
     flex: 1 1;
     flex-direction: column;
@@ -4822,7 +4891,7 @@ table th {
 
 .layout-mobile .presentation_container.verification_container {
   padding-top: 0 !important;
-  max-height: calc( 100vh - 10rem); }
+  max-height: calc( 100vh - 10rem); }
   .layout-mobile .presentation_container.verification_container .header-content {
     font-size: 13px !important; }
 
@@ -5897,7 +5966,7 @@ table th {
   .digital-market-wrapper .market-list__block-table tbody tr td .asset-text,
   .digital-market-wrapper .market-list__block-table tbody tr td .last-price-label {
     font-weight: bold;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; }
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; }
   .digital-market-wrapper .market-list__block-table tbody tr td .asset-text {
     text-wrap: nowrap; }
   .digital-market-wrapper .market-list__block-table tbody tr td .price-change,
@@ -14434,7 +14503,7 @@ table th {
     padding: 0.3rem 0; }
     .modal-market-menu .app-bar-add-tab-content .scroll-view {
       overflow-y: auto;
-      height: calc( 100vh - 19rem - 8rem); }
+      height: calc( 100vh - 19rem - 8rem); }
       .modal-market-menu .app-bar-add-tab-content .scroll-view .app-bar-add-tab-content-list {
         font-size: 12px; }
   .modal-market-menu .app-bar-tab-overflow-content {
@@ -16491,20 +16560,29 @@ table th {
     fill: var(--labels_important-active-labels-text-graphics); }
   .notification-wrapper .limit-trade-tick {
     fill: var(--labels_secondary-inactive-label-text-graphics); }
-  .notification-wrapper .new-order-notification svg {
-    fill: var(--labels_important-active-labels-text-graphics); }
-    .notification-wrapper .new-order-notification svg .generate_api {
+  .notification-wrapper .new-order-notification {
+    color: var(--labels_important-active-labels-text-graphics); }
+    .notification-wrapper .new-order-notification svg {
       fill: var(--labels_important-active-labels-text-graphics); }
-  .notification-wrapper .new-order-notification .market-buy-side,
-  .notification-wrapper .new-order-notification .market-sell-side {
-    background-color: var(--trading_buying-related-elements);
-    padding: 0% 5%;
-    color: var(--calculated_trading_buying-related-text);
-    border-radius: 5px;
-    margin-right: 2%; }
-  .notification-wrapper .new-order-notification .market-sell-side {
-    background-color: var(--trading_selling-related-elements) !important;
-    color: var(--calculated_trading_selling-related-text) !important; }
+      .notification-wrapper .new-order-notification svg .generate_api {
+        fill: var(--labels_important-active-labels-text-graphics); }
+    .notification-wrapper .new-order-notification .selected-icon {
+      position: relative;
+      top: 3px;
+      margin-left: 2%; }
+    .notification-wrapper .new-order-notification .market-buy-side,
+    .notification-wrapper .new-order-notification .market-sell-side {
+      background-color: var(--trading_buying-related-elements);
+      padding: 0% 5%;
+      color: var(--calculated_trading_buying-related-text);
+      border-radius: 5px;
+      margin-right: 2%; }
+    .notification-wrapper .new-order-notification .market-sell-side {
+      background-color: var(--trading_selling-related-elements) !important;
+      color: var(--calculated_trading_selling-related-text) !important; }
+    .notification-wrapper .new-order-notification .notification-content-icon {
+      width: 8rem;
+      max-height: 8rem; }
   .notification-wrapper .notification-wrapper {
     color: var(--labels_secondary-inactive-label-text-graphics); }
     .notification-wrapper .notification-wrapper .notification-title-wrapper {
@@ -17369,14 +17447,14 @@ table th {
   right: 0 !important;
   min-width: 100vw;
   max-width: 100vw;
-  min-height: calc( 100vh - 4rem);
-  max-height: calc( 100vh - 4rem);
+  min-height: calc( 100vh - 4rem);
+  max-height: calc( 100vh - 4rem);
   border-radius: 0 !important;
   padding: 0 !important; }
   .layout-mobile .ReactModal__Content .dialog-mobile-content {
     padding: 2.5rem !important;
-    min-height: calc( 100vh - 8rem);
-    max-height: calc( 100vh - 8rem);
+    min-height: calc( 100vh - 8rem);
+    max-height: calc( 100vh - 8rem);
     display: flex; }
 
 .layout-mobile.LogoutModal .ReactModal__Content {
@@ -20263,5 +20341,4 @@ svg .session-timeout-0 {
   fill: var(--calculated_specials_notifications-pending-text); }
 
 svg .deposit-complete-02,
-svg .deposit-complete-btc-02 {
-  fill: var(--specials_checks-okay-done); }
+svg .deposit-co

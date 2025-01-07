@@ -10,6 +10,7 @@ import {
 	MailOutlined,
 } from '@ant-design/icons';
 import debounce from 'lodash.debounce';
+import math from 'mathjs';
 
 import withConfig from 'components/ConfigProvider/withConfig';
 import STRINGS from 'config/localizedStrings';
@@ -55,6 +56,9 @@ import { playBackgroundAudioNotification } from 'utils/utils';
 import { getToken, isLoggedIn } from 'utils/token';
 import { NORMAL_CLOSURE_CODE, isIntentionalClosure } from 'utils/webSocket';
 import { ERROR_TOKEN_EXPIRED } from 'components/Notification/Logout';
+import { EditWrapper, Image } from 'components';
+import { formatBaseAmount, formatToCurrency } from 'utils/currency';
+import { subtract } from 'containers/Trade/utils';
 
 class Container extends Component {
 	constructor(props) {
@@ -261,6 +265,103 @@ class Container extends Component {
 			.finally(() => this.setState({ isUserFetched: true }));
 	};
 
+	toastNotification = (data) => {
+		const { coins } = this.props;
+		const remaining = formatToCurrency(
+			subtract(data?.data?.size, data?.data?.filled)
+		);
+		const fullfilled = formatBaseAmount(
+			math.chain(remaining).divide(data?.data?.size).multiply(100).done()
+		);
+		const tradeSymbol = data?.data?.symbol?.split('-')[0];
+		const date = new Date();
+		const currentTime = date?.toLocaleTimeString();
+		const key = `order-toast-${Date.now()}`;
+		const selectedIcon = coins[tradeSymbol]?.logo;
+
+		return notification.open({
+			key,
+			message: (
+				<div className="market-order-title font-weight-bold">
+					<EditWrapper stringId="PARTIALLY_FILLED">
+						{STRINGS.formatString(
+							data?.data?.status === 'pfilled'
+								? STRINGS['PARTIALLY_FILLED']
+								: STRINGS['ORDER_COMPLETE_FILLED'],
+							<span className="ml-1 caps-first secondary-text">
+								{data?.data?.type}
+							</span>,
+							<span
+								className={
+									data?.data?.side === 'buy'
+										? 'ml-1 caps-first order-buy-side'
+										: 'ml-1 caps-first order-sell-side'
+								}
+							>
+								{data?.data?.side}
+							</span>
+						)}
+					</EditWrapper>
+					<span className="secondary-text order-time">{currentTime}</span>
+				</div>
+			),
+			description: (
+				<div className="market-order-description">
+					<span className="size-content">
+						<EditWrapper stringId="SIZE">
+							<span className="font-weight-bold">{STRINGS['SIZE']}:</span>
+						</EditWrapper>
+						<span className="ml-1 secondary-text">{data?.data?.size}</span>
+						<span className="ml-1 secondary-text">
+							{tradeSymbol?.toUpperCase()}
+						</span>
+						<Image icon={selectedIcon} wrapperClassName="selected-coin" />
+					</span>
+					{data?.data?.status === 'pfilled' && (
+						<span className="price-content">
+							<EditWrapper stringId="REMAINING">
+								<span className="font-weight-bold">
+									{STRINGS['REMAINING']}:
+								</span>
+							</EditWrapper>
+							<span className="ml-1 secondary-text">
+								{formatToCurrency(
+									subtract(data?.data?.size, data?.data?.filled)
+								)}
+							</span>
+							<span className="ml-1 secondary-text">
+								{tradeSymbol?.toUpperCase()}
+							</span>
+							<Image
+								icon={selectedIcon}
+								wrapperClassName="selected-coin ml-1"
+							/>
+							<span className="ml-1 secondary-text">({fullfilled}%)</span>
+						</span>
+					)}
+					<span className="price-content">
+						<EditWrapper stringId="PRICE">
+							<span className="font-weight-bold">{STRINGS['PRICE']}:</span>
+						</EditWrapper>
+						<span className="ml-1 secondary-text">{data?.data?.price}</span>
+					</span>
+					<span className="mt-2" onClick={() => notification.close(key)}>
+						<EditWrapper stringId="CLOSE_TEXT">
+							<span className="close-text text-decoration-underline">
+								{STRINGS['CLOSE_TEXT']?.toUpperCase()}
+							</span>
+						</EditWrapper>
+					</span>
+				</div>
+			),
+			placement: isMobile ? 'bottomLeft' : 'bottomRight',
+			duration: 4,
+			className: isMobile
+				? 'market-trade-notification market-trade-notification-mobile'
+				: 'market-trade-notification',
+		});
+	};
+
 	setUserSocket = () => {
 		const { isUserFetched } = this.state;
 		let url = `${WS_URL}/stream`;
@@ -347,28 +448,29 @@ class Container extends Component {
 					} else if (data.action === 'update') {
 						if (data.data.status === 'pfilled') {
 							this.props.updateOrder(data.data);
+							this.toastNotification(data);
 							if (
 								this.props.settings.notification &&
 								this.props.settings.notification.popup_order_partially_filled
 							) {
 								// data.filled = data.filled - filled;
-								if (isMobile) {
-									this.props.setSnackDialog({
-										isDialog: true,
-										type: 'order',
-										data: {
-											type: data.data.status,
-											order: data.data,
-											data: data.data,
-										},
-									});
-								} else {
-									this.props.setNotification(NOTIFICATIONS.ORDERS, {
-										type: data.data.status,
-										order: data.data,
-										data: data.data,
-									});
-								}
+								// if (isMobile) {
+								// 	this.props.setSnackDialog({
+								// 		isDialog: true,
+								// 		type: 'order',
+								// 		data: {
+								// 			type: data.data.status,
+								// 			order: data.data,
+								// 			data: data.data,
+								// 		},
+								// 	});
+								// } else {
+								this.props.setNotification(NOTIFICATIONS.ORDERS, {
+									type: data.data.status,
+									order: data.data,
+									data: data.data,
+								});
+								// }
 							}
 							if (
 								this.props.settings.audio &&
@@ -377,6 +479,7 @@ class Container extends Component {
 								playBackgroundAudioNotification('pfilled', this.props.settings);
 							}
 						} else if (data.data.status === 'filled') {
+							this.toastNotification(data);
 							const ordersDeleted = this.props.orders.filter((order, index) => {
 								return data.data.id === order.id;
 							});
@@ -386,27 +489,27 @@ class Container extends Component {
 								this.props.settings.notification.popup_order_completed
 							) {
 								ordersDeleted.forEach((orderDeleted) => {
-									if (isMobile) {
-										this.props.setSnackDialog({
-											isDialog: true,
-											type: 'order',
-											data: {
-												type: data.data.status,
-												data: {
-													...orderDeleted,
-													filled: orderDeleted.size,
-												},
-											},
-										});
-									} else {
-										this.props.setNotification(NOTIFICATIONS.ORDERS, {
-											type: data.data.status,
-											data: {
-												...orderDeleted,
-												filled: orderDeleted.size,
-											},
-										});
-									}
+									// if (isMobile) {
+									// 	this.props.setSnackDialog({
+									// 		isDialog: true,
+									// 		type: 'order',
+									// 		data: {
+									// 			type: data.data.status,
+									// 			data: {
+									// 				...orderDeleted,
+									// 				filled: orderDeleted.size,
+									// 			},
+									// 		},
+									// 	});
+									// } else {
+									this.props.setNotification(NOTIFICATIONS.ORDERS, {
+										type: data.data.status,
+										data: {
+											...orderDeleted,
+											filled: orderDeleted.size,
+										},
+									});
+									// }
 								});
 							}
 							if (
