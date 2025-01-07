@@ -223,7 +223,8 @@ exports.KIT_CONFIG_KEYS = [
 	'referral_history_config',
 	'chain_trade_config',
 	'selectable_native_currencies',
-	'auto_trade_config'
+	'auto_trade_config',
+	'apps'
 ];
 
 exports.KIT_SECRETS_KEYS = [

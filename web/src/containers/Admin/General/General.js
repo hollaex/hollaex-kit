@@ -35,7 +35,11 @@ import { COUNTRIES_OPTIONS } from '../../../utils/countries';
 import _get from 'lodash/get';
 
 import './index.css';
-import { handleFiatUpgrade, handleUpgrade } from 'utils/utils';
+import {
+	handleFiatUpgrade,
+	handleUpgrade,
+	handleEnterpriseUpgrade,
+} from 'utils/utils';
 import { checkFileSize, fileSizeError } from 'utils/icon';
 import PublishSection from './PublishSection';
 import { CloseCircleOutlined } from '@ant-design/icons';
@@ -516,7 +520,8 @@ class GeneralContent extends Component {
 		features,
 		balance_history_config = null,
 		referral_history_config = null,
-		chain_trade_config = null
+		chain_trade_config = null,
+		auto_trade_config = null
 	) => {
 		this.handleSubmitGeneral({
 			kit: {
@@ -524,6 +529,7 @@ class GeneralContent extends Component {
 				balance_history_config,
 				referral_history_config,
 				chain_trade_config,
+				auto_trade_config,
 			},
 		});
 	};
@@ -749,6 +755,33 @@ class GeneralContent extends Component {
 		}
 	};
 
+	handleInputChange = (key, value) => {
+		this.setState((prevState) => ({
+			constants: {
+				...prevState.constants,
+				kit: {
+					...prevState.constants.kit,
+					apps: {
+						...prevState.constants.kit.apps,
+						[key]: value,
+					},
+				},
+			},
+		}));
+	};
+
+	handleSave = async () => {
+		try {
+			this.handleSubmitGeneral({
+				kit: {
+					apps: this.state.constants.kit.apps,
+				},
+			});
+		} catch (error) {
+			message.error(error.message);
+		}
+	};
+
 	render() {
 		const {
 			initialEmailValues,
@@ -791,6 +824,7 @@ class GeneralContent extends Component {
 		}
 		const isUpgrade = handleUpgrade(kit.info);
 		const isFiatUpgrade = handleFiatUpgrade(kit.info);
+		const isEnterpriseUpgrade = handleEnterpriseUpgrade(kit.info);
 
 		return (
 			<div>
@@ -1181,6 +1215,120 @@ class GeneralContent extends Component {
 						/>
 					</div>
 				) : null}
+				{activeTab === 'apps' ? (
+					<div className="general-wrapper">
+						<h3>Mobile Application Configurations</h3>
+						<p>
+							You can configure below fields for you mobile application. Those
+							are publicly available for the users.
+						</p>
+
+						<div style={{}}>
+							<div style={{ marginBottom: 16 }}>
+								<label
+									htmlFor="current_version"
+									style={{ display: 'block', marginBottom: -4 }}
+								>
+									Current Version
+								</label>
+								<Input
+									id="current_version"
+									value={constants?.kit?.apps?.current_version}
+									onChange={(e) =>
+										this.handleInputChange('current_version', e.target.value)
+									}
+									placeholder="Enter the current version"
+								/>
+							</div>
+
+							<div style={{ marginBottom: 16 }}>
+								<label
+									htmlFor="min_version"
+									style={{ display: 'block', marginBottom: -4 }}
+								>
+									Min Version
+								</label>
+								<Input
+									id="min_version"
+									value={constants?.kit?.apps?.min_version}
+									onChange={(e) =>
+										this.handleInputChange('min_version', e.target.value)
+									}
+									placeholder="Enter the minimum version"
+								/>
+							</div>
+
+							<div style={{ marginBottom: 16 }}>
+								<label
+									htmlFor="android_url"
+									style={{ display: 'block', marginBottom: -4 }}
+								>
+									Android URL
+								</label>
+								<Input
+									id="android_url"
+									value={constants?.kit?.apps?.android_url}
+									onChange={(e) =>
+										this.handleInputChange('android_url', e.target.value)
+									}
+									placeholder="Enter the Android URL"
+								/>
+							</div>
+
+							<div style={{ marginBottom: 16 }}>
+								<label
+									htmlFor="ios_url"
+									style={{ display: 'block', marginBottom: -4 }}
+								>
+									iOS URL
+								</label>
+								<Input
+									id="ios_url"
+									value={constants?.kit?.apps?.ios_url}
+									onChange={(e) =>
+										this.handleInputChange('ios_url', e.target.value)
+									}
+									placeholder="Enter the iOS URL"
+								/>
+							</div>
+
+							<div style={{ marginBottom: 16 }}>
+								<label
+									htmlFor="macos_url"
+									style={{ display: 'block', marginBottom: -4 }}
+								>
+									MacOS URL
+								</label>
+								<Input
+									id="macos_url"
+									value={constants?.kit?.apps?.macos_url}
+									onChange={(e) =>
+										this.handleInputChange('macos_url', e.target.value)
+									}
+									placeholder="Enter the MacOS URL"
+								/>
+							</div>
+
+							<div style={{ marginBottom: 16 }}>
+								<label htmlFor="windows_url" style={{ display: 'block' }}>
+									Windows URL
+								</label>
+								<Input
+									id="windows_url"
+									value={constants?.kit?.apps?.windows_url}
+									onChange={(e) =>
+										this.handleInputChange('windows_url', e.target.value)
+									}
+									placeholder="Enter the Windows URL"
+								/>
+							</div>
+
+							<Button type="primary" onClick={this.handleSave}>
+								Save
+							</Button>
+						</div>
+					</div>
+				) : null}
 				{activeTab === 'features' ? (
 					<InterfaceForm
 						initialValues={kit.features}
@@ -1189,6 +1337,7 @@ class GeneralContent extends Component {
 						isUpgrade={isUpgrade}
 						buttonSubmitting={buttonSubmitting}
 						isFiatUpgrade={isFiatUpgrade}
+						isEnterpriseUpgrade={isEnterpriseUpgrade}
 						coins={coins}
 						enabledPlugins={enabledPlugins}
 					/>
