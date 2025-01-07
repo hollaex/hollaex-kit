@@ -200,12 +200,19 @@ $logout--size-difference: 3rem;
 		fill: $colors-black;
 	}
 	.new-order-notification {
+		color: $colors-main-black;
 		svg {
 			fill: $colors-main-black;
 
 			.generate_api {
 				fill: $colors-main-black;
 			}
+		}
+
+		.selected-icon {
+			position: relative;
+			top: 3px;
+			margin-left: 2%;
 		}
 
 		.market-buy-side,
@@ -220,6 +227,10 @@ $logout--size-difference: 3rem;
 		.market-sell-side {
 			background-color: $sell !important;
 			color: $sell-bids-text !important;
+		}
+		.notification-content-icon {
+			width: 8rem;
+			max-height: 8rem;
 		}
 	}
 	.notification-wrapper {

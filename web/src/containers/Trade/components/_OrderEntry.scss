@@ -202,6 +202,86 @@
 	}
 }
 
+.market-trade-notification-mobile {
+	width: 100% !important;
+	.market-order-description {
+		.selected-coin {
+			width: 2.2rem !important;
+			position: relative;
+			top: 2px;
+		}
+	}
+}
+
+.market-trade-notification {
+	padding: unset;
+	width: 28rem;
+	background-color: $app-background-color;
+	color: $colors-main-black;
+	padding: 3%;
+
+	.ant-notification-notice-message,
+	.ant-notification-notice-description {
+		padding: 0 2%;
+		margin-left: unset;
+		margin-bottom: unset;
+		font-size: 12px;
+		color: $colors-main-black;
+		width: 100%;
+		.market-order-title {
+			display: flex;
+			width: 87%;
+			justify-content: space-between;
+			text-wrap: nowrap;
+			.order-time {
+				font-size: 11px;
+				font-weight: normal !important;
+			}
+			.order-buy-side,
+			.order-sell-side {
+				padding: 1% 2%;
+				background-color: $buy;
+				border-radius: 5px;
+				color: #ffffff;
+			}
+			.order-sell-side {
+				background-color: $sell !important;
+			}
+		}
+		.market-order-description {
+			display: flex;
+			flex-direction: column;
+			gap: 2%;
+			.close-text:hover {
+				cursor: pointer;
+				opacity: 0.6;
+			}
+			.selected-coin {
+				width: 1.2rem;
+				position: relative;
+				top: 2px;
+				margin-left: 3px;
+				svg {
+					width: 100%;
+				}
+			}
+		}
+	}
+	.ant-notification-notice-close {
+		top: 10%;
+		color: $colors-main-black;
+	}
+	.ant-notification-notice-close:hover {
+		opacity: 0.6;
+	}
+}
+
+.market-trade-cancel-notification {
+	.text-strike {
+		text-decoration: line-through;
+	}
+}
+
 .layout-mobile {
 	.trade_order_entry-selector {
 		font-size: $font-size-mobile-txt !important;

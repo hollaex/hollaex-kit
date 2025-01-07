@@ -69,6 +69,7 @@ Status.findOne()
 			fiat_fees: existingKitConfigurations.fiat_fees || {},
 			selectable_native_currencies: existingKitConfigurations?.selectable_native_currencies || [existingKitConfigurations.native_currency || process.env.NATIVE_CURRENCY || 'usdt'],
 			auto_trade_config: existingKitConfigurations.auto_trade_config || {},
+			apps: existingKitConfigurations.apps || {},
 		};
 
 		const secrets = {

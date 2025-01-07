@@ -53,6 +53,9 @@ const General = () => {
 				<TabPane tab="Help info" key="7">
 					<GeneralContent activeTab={'help_info'} />
 				</TabPane>
+				<TabPane tab="Apps" key="8">
+					<GeneralContent activeTab={'apps'} />
+				</TabPane>
 			</Tabs>
 		</div>
 	);

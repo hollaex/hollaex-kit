@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { formValueSelector, submit, change } from 'redux-form';
 import { withRouter } from 'react-router';
+import { isMobile } from 'react-device-detect';
+import { notification as toast } from 'antd';
 import mathjs from 'mathjs';
 
 import Review from './OrderEntryReview';
@@ -26,7 +28,7 @@ import {
 	step,
 	normalizeFloat,
 } from 'components/Form/validations';
-import { Loader, Tooltip, EditWrapper } from 'components';
+import { Loader, Tooltip, EditWrapper, Image } from 'components';
 import { takerFee, DEFAULT_COIN_DATA } from 'config/constants';
 
 import STRINGS from 'config/localizedStrings';
@@ -339,6 +341,70 @@ class OrderEntry extends Component {
 		});
 	};
 
+	toastMessage = (order) => {
+		const { type, size, price, side, coins } = this.props;
+		const date = new Date();
+		const currentTime = date?.toLocaleTimeString();
+		const selectedIcon = coins[order?.symbol]?.logo;
+
+		const key = `order-toast-${Date.now()}`;
+		return toast.open({
+			key,
+			message: (
+				<div className="market-order-title font-weight-bold">
+					<EditWrapper stringId="NEW_ORDER_CREATED">
+						{STRINGS.formatString(
+							STRINGS['NEW_ORDER_CREATED'],
+							<span className="ml-1 caps-first secondary-text">{type}</span>,
+							<span
+								className={
+									side === 'buy'
+										? 'ml-1 caps-first order-buy-side'
+										: 'ml-1 caps-first order-sell-side'
+								}
+							>
+								{side}
+							</span>
+						)}
+					</EditWrapper>
+					<span className="secondary-text order-time">{currentTime}</span>
+				</div>
+			),
+			description: (
+				<div className="market-order-description">
+					<span className="size-content">
+						<EditWrapper stringId="SIZE">
+							<span className="font-weight-bold">{STRINGS['SIZE']}:</span>
+						</EditWrapper>
+						<span className="ml-1 secondary-text">{size}</span>
+						<span className="ml-1 secondary-text">
+							{order?.symbol?.toUpperCase()}
+						</span>
+						<Image icon={selectedIcon} wrapperClassName="selected-coin" />
+					</span>
+					<span className="price-content">
+						<EditWrapper stringId="PRICE">
+							<span className="font-weight-bold">{STRINGS['PRICE']}:</span>
+						</EditWrapper>
+						<span className="ml-1 secondary-text">{price}</span>
+					</span>
+					<span className="mt-2" onClick={() => toast.close(key)}>
+						<EditWrapper stringId="CLOSE_TEXT">
+							<span className="close-text text-decoration-underline">
+								{STRINGS['CLOSE_TEXT']?.toUpperCase()}
+							</span>
+						</EditWrapper>
+					</span>
+				</div>
+			),
+			placement: isMobile ? 'bottomLeft' : 'bottomRight',
+			duration: 5,
+			className: isMobile
+				? 'market-trade-notification market-trade-notification-mobile'
+				: 'market-trade-notification',
+		});
+	};
+
 	onReview = () => {
 		const {
 			type,
@@ -378,9 +444,11 @@ class OrderEntry extends Component {
 		if (notification.popup_order_confirmation) {
 			openCheckOrder(order, () => {
 				submit(FORM_NAME);
+				this.toastMessage(order);
 			});
 		} else {
 			submit(FORM_NAME);
+			this.toastMessage(order);
 		}
 	};
 
