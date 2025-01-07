@@ -3705,8 +3705,8 @@ const createUserAutoTrade = async (user_id, {
 
 	const { getUserBalanceByKitId } = require('./wallet');
 	const balance = await getUserBalanceByKitId(user_id);
-	if (balance[`${buy_coin}_available`] < spend_amount) {
-		throw new Error(`Balance insufficient for auto trade: ${buy_coin} size: ${spend_amount}`);
+	if (balance[`${spend_coin}_available`] < spend_amount) {
+		throw new Error(`Balance insufficient for auto trade: ${spend_coin} size: ${spend_amount}`);
 	};
 
     return autoTradeModel.create({
@@ -3770,8 +3770,8 @@ const updateUserAutoTrade = async (user_id, {
 
 	const { getUserBalanceByKitId } = require('./wallet');
 	const balance = await getUserBalanceByKitId(user_id);
-	if (balance[`${buy_coin}_available`] < spend_amount) {
-		throw new Error(`Balance insufficient for auto trade: ${buy_coin} size: ${spend_amount}`);
+	if (balance[`${spend_coin}_available`] < spend_amount) {
+		throw new Error(`Balance insufficient for auto trade: ${spend_coin} size: ${spend_amount}`);
 	};
 	
     return await trade.update({
