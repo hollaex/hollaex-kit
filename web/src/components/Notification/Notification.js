@@ -91,7 +91,7 @@ export const NotificationContent = ({ children, className = '' }) => (
 
 export const InformationRow = ({ label, value, stringId }) => (
 	<div className="d-flex">
-		<div className="f-1 text_disabled">
+		<div className="f-1 important-text font-weight-bold">
 			<EditWrapper stringId={stringId}>{label}:</EditWrapper>
 		</div>
 		<div className="f-1 text_disabled">{value}</div>

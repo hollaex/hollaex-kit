@@ -174,7 +174,10 @@ class App extends Component {
 			nextProps.activeNotification.timestamp !==
 			this.props.activeNotification.timestamp
 		) {
-			if (nextProps.activeNotification.type !== '') {
+			if (
+				nextProps.activeNotification.type !== '' &&
+				nextProps.activeNotification.type !== NOTIFICATIONS.ORDERS
+			) {
 				this.onOpenDialog();
 			} else {
 				this.onCloseDialog();
@@ -433,7 +436,7 @@ class App extends Component {
 	renderDialogContent = ({ type, data }, prices = {}) => {
 		const { icons: ICONS, config_level, openContactForm } = this.props;
 		switch (type) {
-			case NOTIFICATIONS.ORDERS:
+			// case NOTIFICATIONS.ORDERS:
 			case NOTIFICATIONS.TRADES:
 			case NOTIFICATIONS.WITHDRAWAL:
 				return (
@@ -947,15 +950,15 @@ class App extends Component {
 												activeNotification.type === NOTIFICATIONS.NEW_ORDER ||
 												(activeNotification.type === NOTIFICATIONS.TRADES &&
 													!isMobile) ||
-												(activeNotification.type === NOTIFICATIONS.ORDERS &&
-													!isMobile) ||
+												// (activeNotification.type === NOTIFICATIONS.ORDERS &&
+												// 	!isMobile) ||
 												activeNotification.type === NOTIFICATIONS.ERROR ||
 												activeNotification.type ===
 													NOTIFICATIONS.UNDEFINED_ERROR
 											)
 										}
 										compressed={
-											activeNotification.type === NOTIFICATIONS.ORDERS ||
+											// activeNotification.type === NOTIFICATIONS.ORDERS ||
 											activeNotification.type === NOTIFICATIONS.TRADES
 										}
 										style={{ 'z-index': 100 }}
