@@ -84,6 +84,8 @@ import {
 	SET_ACTIVE_CHAT,
 	SET_ACTIVE_MARKET_SELECTOR,
 	SET_TOOLS_VISIBLE,
+	SET_ACTIVE_PRO_TRADE,
+	SET_ACTIVE_QUICK_TRADE,
 } from 'actions/appActions';
 import { THEME_DEFAULT } from 'config/constants';
 import { getLanguage } from 'utils/string';
@@ -221,6 +223,8 @@ const INITIAL_STATE = {
 	isChat: JSON.parse(localStorage.getItem('isChat')),
 	isMarketDropdownVisible: false,
 	isToolsVisible: false,
+	isProTrade: false,
+	isQuickTrade: false,
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -912,6 +916,18 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				isToolsVisible: payload,
+			};
+		}
+		case SET_ACTIVE_PRO_TRADE: {
+			return {
+				...state,
+				isProTrade: payload,
+			};
+		}
+		case SET_ACTIVE_QUICK_TRADE: {
+			return {
+				...state,
+				isQuickTrade: payload,
 			};
 		}
 		default:

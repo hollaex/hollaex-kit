@@ -122,6 +122,8 @@ export const SET_SETTINGS_TAB = 'SET_SETTINGS_TAB';
 export const SET_ACTIVE_CHAT = 'SET_ACTIVE_CHAT';
 export const SET_ACTIVE_MARKET_SELECTOR = 'SET_ACTIVE_MARKET_SELECTOR';
 export const SET_TOOLS_VISIBLE = 'SET_TOOLS_VISIBLE';
+export const SET_ACTIVE_PRO_TRADE = 'SET_ACTIVE_PRO_TRADE';
+export const SET_ACTIVE_QUICK_TRADE = 'SET_ACTIVE_QUICK_TRADE';
 
 export const SORT = {
 	VOL: 'volume',
@@ -820,4 +822,13 @@ export const setIsMarketDropdownVisible = (setIsMarketDropdownVisible) => ({
 export const setIsToolsVisible = (setIsToolsVisible) => ({
 	type: SET_TOOLS_VISIBLE,
 	payload: setIsToolsVisible,
+});
+
+export const setIsProTrade = (setIsProTrade) => ({
+	type: SET_ACTIVE_PRO_TRADE,
+	payload: setIsProTrade,
+});
+export const setIsQuickTrade = (setIsQuickTrade) => ({
+	type: SET_ACTIVE_QUICK_TRADE,
+	payload: setIsQuickTrade,
 });
