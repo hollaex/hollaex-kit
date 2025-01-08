@@ -23,6 +23,7 @@ import {
 	setNotification,
 	NOTIFICATIONS,
 	setTradeTab,
+	setIsProTrade,
 } from 'actions/appActions';
 import { NORMAL_CLOSURE_CODE, isIntentionalClosure } from 'utils/webSocket';
 import { isLoggedIn } from 'utils/token';
@@ -183,12 +184,14 @@ class Trade extends PureComponent {
 			isReady,
 			router,
 			constants: { features: { pro_trade = false } = {} } = {},
+			setIsProTrade,
 		} = this.props;
 		if (!isReady || !pro_trade) {
 			router.push('/summary');
 		}
 		this.setSymbol(this.props.routeParams.pair);
 		this.initializeOrderbookWs(this.props.routeParams.pair, getToken());
+		setIsProTrade(true);
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -242,6 +245,7 @@ class Trade extends PureComponent {
 		clearTimeout(this.priceTimeOut);
 		clearTimeout(this.sizeTimeOut);
 		this.closeOrderbookSocket();
+		this.props.setIsProTrade(false);
 	}
 
 	setSymbol = (symbol = '') => {
@@ -1025,6 +1029,7 @@ const mapDispatchToProps = (dispatch) => ({
 	setOrderbooks: bindActionCreators(setOrderbooks, dispatch),
 	resetTools: bindActionCreators(resetTools, dispatch),
 	setTradeTab: bindActionCreators(setTradeTab, dispatch),
+	setIsProTrade: bindActionCreators(setIsProTrade, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withConfig(Trade));

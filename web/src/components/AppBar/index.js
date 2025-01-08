@@ -17,6 +17,8 @@ import {
 import { updateUserSettings, setUserData } from 'actions/userAction';
 import { generateLanguageFormValues } from 'containers/UserSettings/LanguageForm';
 import { LanguageDisplayPopup } from './Utils';
+import { formatToFixed } from 'utils/currency';
+import { marketPriceSelector } from 'containers/Trade/utils';
 import ThemeSwitcher from './ThemeSwitcher';
 import withEdit from 'components/EditProvider/withEdit';
 import withConfig from 'components/ConfigProvider/withConfig';
@@ -43,6 +45,9 @@ class AppBar extends Component {
 		if (this.props.theme) {
 			this.setSelectedTheme(this.props.theme);
 		}
+		this.setState({
+			title: document?.title ? document?.title : '',
+		});
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -53,8 +58,25 @@ class AppBar extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
+		const { pair, pairs, lastPrice, isProTrade, isQuickTrade } = this.props;
+		const { increment_price } = pairs[pair] || { pair_base: '', pair_2: '' };
+		const price = formatToFixed(lastPrice, increment_price);
 		if (prevProps.theme !== this.props.theme) {
 			this.setSelectedTheme(this.props.theme);
+		}
+		if (isProTrade) {
+			document.title = `${price} | ${pair?.toUpperCase()} | HollaEx Pro`;
+		} else if (isQuickTrade) {
+			const pairData = pair.split('-');
+			const firstAsset = pairData[0];
+			const secondAsset = pairData[1];
+			document.title = `${
+				STRINGS['CONVERT']
+			} ${firstAsset?.toUpperCase()} ${STRINGS[
+				'TO'
+			]?.toLowerCase()} ${secondAsset?.toUpperCase()} | HollaEx Pro`;
+		} else {
+			document.title = this.state.title;
 		}
 	}
 
@@ -468,12 +490,16 @@ const mapStateToProps = (state) => {
 		user: state.user,
 		theme: state.app.theme,
 		pair: state.app.pair,
+		pairs: state.app.pairs,
 		coins: state.app.coins,
 		enabledPlugins: state.app.enabledPlugins,
 		constants: state.app.constants,
 		activeLanguage: state.app.language,
 		selectable_native_currencies:
 			state.app.constants.selectable_native_currencies,
+		lastPrice: marketPriceSelector(state),
+		isProTrade: state.app.isProTrade,
+		isQuickTrade: state.app.isQuickTrade,
 	};
 };
 
