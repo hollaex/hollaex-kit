@@ -573,7 +573,7 @@ class Trade extends PureComponent {
 							<span className="font-weight-bold">{STRINGS['PRICE']}:</span>
 						</EditWrapper>
 						<span className="ml-1 secondary-text text-strike">
-							{order[0]?.price}
+							{formatCurrency(order[0]?.price)}
 						</span>
 					</span>
 					<span className="mt-2" onClick={() => notification.close(key)}>
