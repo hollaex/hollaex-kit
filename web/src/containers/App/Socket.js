@@ -59,6 +59,7 @@ import { ERROR_TOKEN_EXPIRED } from 'components/Notification/Logout';
 import { EditWrapper, Image } from 'components';
 import { formatBaseAmount, formatToCurrency } from 'utils/currency';
 import { subtract } from 'containers/Trade/utils';
+import { formatCurrency } from 'utils';
 
 class Container extends Component {
 	constructor(props) {
@@ -287,7 +288,9 @@ class Container extends Component {
 						{STRINGS.formatString(
 							data?.data?.status === 'pfilled'
 								? STRINGS['PARTIALLY_FILLED']
-								: STRINGS['ORDER_COMPLETE_FILLED'],
+								: data?.data?.status === 'filled'
+								? STRINGS['ORDER_COMPLETE_FILLED']
+								: STRINGS['NEW_ORDER_CREATED'],
 							<span className="ml-1 caps-first secondary-text">
 								{data?.data?.type}
 							</span>,
@@ -343,7 +346,11 @@ class Container extends Component {
 						<EditWrapper stringId="PRICE">
 							<span className="font-weight-bold">{STRINGS['PRICE']}:</span>
 						</EditWrapper>
-						<span className="ml-1 secondary-text">{data?.data?.price}</span>
+						<span className="ml-1 secondary-text">
+							{formatCurrency(
+								data?.data?.price ? data?.data?.price : data?.data?.average
+							)}
+						</span>
 					</span>
 					<span className="mt-2" onClick={() => notification.close(key)}>
 						<EditWrapper stringId="CLOSE_TEXT">
@@ -442,6 +449,7 @@ class Container extends Component {
 							}, 1000);
 						}
 						if (data.data.status !== 'filled') {
+							this.toastNotification(data);
 							this.props.addOrder(data.data);
 						}
 						break;
