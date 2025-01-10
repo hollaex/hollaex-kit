@@ -317,6 +317,7 @@ const Autotrader = ({ user, sourceOptions, coins }) => {
 	});
 
 	const [tradeDetails, setTradeDetails] = useState([]);
+	const timeZone = new Date().toString().match(/\(([A-Za-z\s].*)\)/)[1];
 
 	useEffect(() => {
 		getTradeDetails();
@@ -431,7 +432,13 @@ const Autotrader = ({ user, sourceOptions, coins }) => {
 		}
 	};
 
+	let clickLock = false;
+
 	const onHandleConfirm = async () => {
+		if (clickLock) return;
+
+		clickLock = true;
+
 		const frequencyTrade =
 			autoTradeDetails?.frequency === STRINGS['AUTO_TRADER.DAILY']
 				? 'daily'
@@ -459,6 +466,8 @@ const Autotrader = ({ user, sourceOptions, coins }) => {
 		} catch (error) {
 			message.error(error.data.message);
 			console.error('Error', error);
+		} finally {
+			clickLock = false;
 		}
 
 		setAutoTradeDetails({
@@ -1164,9 +1173,7 @@ const Autotrader = ({ user, sourceOptions, coins }) => {
 							<div className="secondary-text mt-1">
 								<EditWrapper stringId="AUTO_TRADER.TIME_ZONE">
 									<span>{STRINGS['AUTO_TRADER.TIME_ZONE']}</span>
-									<span className="ml-1">
-										{STRINGS['AUTO_TRADER.UTC_TIME']}
-									</span>
+									<span className="ml-1">{timeZone}</span>
 								</EditWrapper>
 							</div>
 						</div>
@@ -1285,6 +1292,7 @@ const Autotrader = ({ user, sourceOptions, coins }) => {
 					onHandleEdit={onHandleEdit}
 					isConfirmAutoTrade={true}
 					getDayLabel={getDayLabel}
+					timeZone={timeZone}
 				/>
 			)}
 			{isRenderPopup?.isDisplayPlayAutoTrade && (
@@ -1307,6 +1315,7 @@ const Autotrader = ({ user, sourceOptions, coins }) => {
 					onHandleEdit={onHandleEdit}
 					isConfirmAutoTrade={false}
 					getDayLabel={getDayLabel}
+					timeZone={timeZone}
 				/>
 			)}
 			<Dialog

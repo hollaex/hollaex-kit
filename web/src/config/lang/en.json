@@ -2638,7 +2638,6 @@
 		"WEEKLY": "Weekly",
 		"MONTHLY": "Monthly",
 		"TIME_ZONE": "Time zone:",
-		"UTC_TIME": "Coordinated Univerasl Time (UTC)",
 		"DAILY_TRADE_TITLE": "Start time of trading",
 		"DAILY_TRADE_TOOLTIP_DESC": "Time that your recurring transaction will start repeating",
 		"WEEKLY_TRADE_TITLE": "Trade Days",
