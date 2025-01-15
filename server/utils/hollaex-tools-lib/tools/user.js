@@ -3860,6 +3860,31 @@ const createAnnouncement = async ({ title, message, type = 'info', user_id, end_
     return announcement;
 };
 
+const updateAnnouncement = async (id, { title, message, type, user_id, end_date, start_date, is_popup, is_navbar, is_dropdown }) => {
+    const announcementModel = getModel('announcement');
+
+    const announcement = await announcementModel.findOne({ where: { id } });
+
+    if (!announcement) {
+        throw new Error('Not found');
+    }
+
+    await announcement.update({
+        title,
+        message,
+        type,
+        end_date,
+        start_date,
+        is_popup,
+        is_navbar,
+        is_dropdown,
+        updated_by: user_id
+    });
+
+    return announcement;
+};
+
+
 const deleteAnnouncement = async (id) => {
 
 	const announcementModel = getModel('announcement');
@@ -3960,5 +3985,6 @@ module.exports = {
 	deleteUserAutoTrade,
 	getAnnouncements,
 	createAnnouncement,
-	deleteAnnouncement
+	deleteAnnouncement,
+	updateAnnouncement
 };

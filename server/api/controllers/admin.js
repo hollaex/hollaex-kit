@@ -3210,6 +3210,32 @@ const createAnnouncement = (req, res) => {
         });
 };
 
+const updateAnnouncement = (req, res) => {
+    loggerAdmin.verbose(req.uuid, 'controllers/admin/updateAnnouncement/auth', req.auth.sub);
+
+    const { id, title, message, type, is_popup, end_date, start_date, is_navbar, is_dropdown } = req.swagger.params.data.value;
+
+    toolsLib.user.updateAnnouncement(id, {
+        title,
+        message,
+		type,
+		user_id: req.auth.sub.id,
+		end_date,
+		start_date,
+		is_popup,
+		is_navbar,
+		is_dropdown
+    })
+        .then((announcement) => {
+            return res.json(announcement);
+        })
+        .catch((err) => {
+            loggerAdmin.error(req.uuid, 'controllers/admin/updateAnnouncement', err.message);
+            return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+        });
+};
+
+
 const deleteAnnouncement = (req, res) => {
     loggerAdmin.verbose(req.uuid, 'controllers/admin/deleteAnnouncement/auth', req.auth.sub);
 
@@ -3307,5 +3333,6 @@ module.exports = {
 	deleteUserByAdmin,
 	fetchAnnouncements,
 	createAnnouncement,
-	deleteAnnouncement
+	deleteAnnouncement,
+	updateAnnouncement
 };
