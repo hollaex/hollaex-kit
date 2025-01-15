@@ -351,8 +351,7 @@ definitions:
       price:
         description: Price of the order
       stop:
-        type: number
-        format: double
+        description: Stop price of the order
       meta:
         type: object
         properties:

@@ -35,8 +35,35 @@ const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, 
 		return reject(new Error(INVALID_NUMBER));
 	}
 
-	size = new BigNumber(size).toNumber();
-	price = new BigNumber(price).toNumber();
+	if (opts.stop && isNaN(Number(opts.stop))) {
+		return reject(new Error(INVALID_NUMBER));
+	};
+
+	const convertScientificToDecimal = (input) => {
+		const num = parseFloat(input);
+	
+		if (!num.toString().includes('e')) {
+			return num.toString();
+		}
+	
+		const [base, exponent] = num.toExponential().split('e');
+		const exp = parseInt(exponent, 10);
+	
+		if (exp < 0) {
+			return '0.' + '0'.repeat(Math.abs(exp) - 1) + base.replace('.', '');
+		} else {
+			const decimalPart = base.replace('.', '');
+			return decimalPart + '0'.repeat(exp - (decimalPart.length - 1));
+		}
+	};
+	
+	size = convertScientificToDecimal(size);
+	price = convertScientificToDecimal(price);
+
+	if (opts.stop) {
+		opts.stop = convertScientificToDecimal(opts.stop);
+	};
+
 
 	return getUserByKitId(userKitId)
 		.then((user) => {
