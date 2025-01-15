@@ -603,7 +603,7 @@ const getUserReferer = (userId) => {
 			} else {
 				email = data.referer.email;
 			}
-			return email;
+			return !data ? email : data;
 		});
 
 };
