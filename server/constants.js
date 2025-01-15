@@ -384,6 +384,25 @@ exports.DEFAULT_FEES = {
 	}
 };
 
+exports.MIN_FEES = {
+	fiat: {
+		maker: 0,
+		taker: 0
+	},
+	boost: {
+		maker: 0,
+		taker: 0
+	},
+	crypto: {
+		maker: 0.05,
+		taker: 0.05
+	},
+	basic: {
+		maker: 0.1,
+		taker: 0.1
+	}
+};
+
 exports.ROLES = ROLES;
 exports.BASE_SCOPES = [ROLES.USER];
 exports.DEFAULT_ORDER_RISK_PERCENTAGE = 90; // used in settings in percentage to display popups on big relative big orders of user
