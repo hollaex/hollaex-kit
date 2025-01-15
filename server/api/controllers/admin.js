@@ -3151,12 +3151,12 @@ const deleteUserByAdmin = (req, res) => {
 };
 
 const fetchAnnouncements = (req, res) => {
-    loggerPlugin.verbose(req.uuid, 'controllers/admin/fetchAnnouncements/auth', req.auth.sub);
+    loggerAdmin.verbose(req.uuid, 'controllers/admin/fetchAnnouncements/auth', req.auth.sub);
 
     const { limit, page, order_by, order, start_date, end_date, is_popup, is_navbar, is_dropdown } = req.swagger.params;
 
     if (order_by.value && typeof order_by.value !== 'string') {
-        loggerPlugin.error(
+        loggerAdmin.error(
             req.uuid,
             'controllers/admin/fetchAnnouncements invalid order_by',
             order_by.value
@@ -3179,13 +3179,13 @@ const fetchAnnouncements = (req, res) => {
             return res.json(data);
         })
         .catch((err) => {
-            loggerPlugin.error(req.uuid, 'controllers/admin/fetchAnnouncements', err.message);
+            loggerAdmin.error(req.uuid, 'controllers/admin/fetchAnnouncements', err.message);
             return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
         });
 };
 
 const createAnnouncement = (req, res) => {
-    loggerPlugin.verbose(req.uuid, 'controllers/admin/createAnnouncement/auth', req.auth.sub);
+    loggerAdmin.verbose(req.uuid, 'controllers/admin/createAnnouncement/auth', req.auth.sub);
 
     const { title, message, type, is_popup, is_navbar, is_dropdown } = req.swagger.params.data.value;
 
@@ -3203,13 +3203,13 @@ const createAnnouncement = (req, res) => {
             return res.json(announcement);
         })
         .catch((err) => {
-            loggerPlugin.error(req.uuid, 'controllers/admin/createAnnouncement', err.message);
+            loggerAdmin.error(req.uuid, 'controllers/admin/createAnnouncement', err.message);
             return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
         });
 };
 
 const deleteAnnouncement = (req, res) => {
-    loggerPlugin.verbose(req.uuid, 'controllers/admin/deleteAnnouncement/auth', req.auth.sub);
+    loggerAdmin.verbose(req.uuid, 'controllers/admin/deleteAnnouncement/auth', req.auth.sub);
 
     const { id } = req.swagger.params.data.value;
 
@@ -3219,7 +3219,7 @@ const deleteAnnouncement = (req, res) => {
             return res.json({ message: 'Success' });
         })
         .catch((err) => {
-            loggerPlugin.error(req.uuid, 'controllers/admin/deleteAnnouncement', err.message);
+            loggerAdmin.error(req.uuid, 'controllers/admin/deleteAnnouncement', err.message);
             return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
         });
 };
