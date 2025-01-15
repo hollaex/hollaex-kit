@@ -4606,8 +4606,14 @@ paths:
                 type: string
               message:
                 type: string
+              end_date:
+                type: string
+                format: date-time
+              start_date:
+                type: string
+                format: date-time
               type:
-                type: object
+                type: string
               is_popup:
                 type: boolean
               is_navbar:

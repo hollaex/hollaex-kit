@@ -3843,13 +3843,15 @@ const getAnnouncements = async (opts = {
     return convertSequelizeCountAndRows(results);
 };
 
-const createAnnouncement = async ({ title, message, type = 'info', user_id, is_popup, is_navbar, is_dropdown }) => {
+const createAnnouncement = async ({ title, message, type = 'info', user_id, end_date, start_date, is_popup, is_navbar, is_dropdown }) => {
 	const announcementModel = getModel('announcement');
     const announcement = await announcementModel.create({
         created_by: user_id,
         title,
         message,
 		type,
+		end_date,
+		start_date,
 		is_popup,
 		is_navbar,
 		is_dropdown

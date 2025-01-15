@@ -3187,13 +3187,15 @@ const fetchAnnouncements = (req, res) => {
 const createAnnouncement = (req, res) => {
     loggerAdmin.verbose(req.uuid, 'controllers/admin/createAnnouncement/auth', req.auth.sub);
 
-    const { title, message, type, is_popup, is_navbar, is_dropdown } = req.swagger.params.data.value;
+    const { title, message, type, is_popup, end_date, start_date, is_navbar, is_dropdown } = req.swagger.params.data.value;
 
     toolsLib.user.createAnnouncement({
         title,
         message,
 		type,
 		user_id: req.auth.sub.id,
+		end_date,
+		start_date,
 		is_popup,
 		is_navbar,
 		is_dropdown
