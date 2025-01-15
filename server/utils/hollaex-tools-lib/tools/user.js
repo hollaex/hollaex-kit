@@ -3807,6 +3807,70 @@ const deleteUserAutoTrade = async (removed_ids, user_id) => {
     return results;
 };
 
+
+const getAnnouncements = async (opts = {
+    limit: null,
+    page: null,
+    order_by: null,
+    order: null,
+    start_date: null,
+	end_date: null,
+	is_popup: null,
+	is_navbar: null,
+	is_dropdown: null,
+}) => {
+    const pagination = paginationQuery(opts.limit, opts.page);
+    const ordering = orderingQuery(opts.order_by, opts.order);
+    const timeframe = timeframeQuery(opts.start_date, opts.end_date);
+
+    const queryOptions = {
+        where: {
+			...(opts.is_navbar != null && { is_navbar: opts.is_navbar }),
+			...(opts.is_popup != null && { is_popup: opts.is_popup }),
+			...(opts.is_dropdown != null && { is_dropdown: opts.is_dropdown }),
+		},
+        order: [ordering],
+        attributes: {
+            exclude: ['created_by']
+        },
+        ...pagination
+    };
+
+	const announcementModel = getModel('announcement');
+    if (timeframe) queryOptions.where.created_at = timeframe;
+
+    const results = await announcementModel.findAndCountAll(queryOptions);
+    return convertSequelizeCountAndRows(results);
+};
+
+const createAnnouncement = async ({ title, message, type = 'info', user_id, is_popup, is_navbar, is_dropdown }) => {
+	const announcementModel = getModel('announcement');
+    const announcement = await announcementModel.create({
+        created_by: user_id,
+        title,
+        message,
+		type,
+		is_popup,
+		is_navbar,
+		is_dropdown
+    });
+
+    return announcement;
+};
+
+const deleteAnnouncement = async (id) => {
+
+	const announcementModel = getModel('announcement');
+    const announcement = await announcementModel.findOne({ where: { id } });
+
+    if (!announcement) {
+        throw new Error('Not found');
+    }
+
+    await announcement.destroy();
+    return { message: 'Success' };
+};
+
 module.exports = {
 	loginUser,
 	getUserTier,
@@ -3891,5 +3955,8 @@ module.exports = {
 	fetchUserAutoTrades,
 	createUserAutoTrade,
 	updateUserAutoTrade,
-	deleteUserAutoTrade
+	deleteUserAutoTrade,
+	getAnnouncements,
+	createAnnouncement,
+	deleteAnnouncement
 };
