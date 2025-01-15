@@ -79,6 +79,7 @@ const InterfaceForm = ({
 				home_page: isUpgrade ? false : !!values.home_page,
 				ultimate_fiat: !!values.ultimate_fiat,
 				apps: !!values.apps,
+				announcement: !!values.announcement
 			};
 			const balance_history_config = {
 				currency: balanceHistoryCurrency.currency || 'usdt',
@@ -582,6 +583,24 @@ const InterfaceForm = ({
 				className="disable-button"
 			>
 				<div className="interface-box">
+					{!isEnterpriseUpgrade && (
+						<Item name="announcement" valuePropName="checked">
+							<Checkbox className="mt-3">
+								<div className="d-flex align-items-center">
+									<ReactSVG
+										src={STATIC_ICONS.CANDLES_LOGO}
+										className="feature-icon mr-1"
+									/>
+									<div className="ml-2 checkbox-txt">
+										Announcement
+										<div className="small-text">
+											(Announcement posts, alert popups to notify users)
+										</div>
+									</div>
+								</div>
+							</Checkbox>
+						</Item>
+					)}
 					<Item name="pro_trade" valuePropName="checked">
 						<Checkbox className="mt-3">
 							<div className="d-flex align-items-center">
