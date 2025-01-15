@@ -305,7 +305,7 @@ export const handleFiatUpgrade = (info = {}) => {
 };
 
 export const handleEnterpriseUpgrade = (info = {}) => {
-	if (_toLower(info.plan) !== 'enterprise') {
+	if (_toLower(info.plan) !== 'fiat') {
 		return true;
 	} else {
 		return false;
