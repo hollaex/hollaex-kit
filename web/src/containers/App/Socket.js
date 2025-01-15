@@ -71,6 +71,8 @@ class Container extends Component {
 			ordersQueued: [],
 			limitFilledOnOrder: '',
 			isUserFetched: false,
+			isOrderStatus: null,
+			selectedPair: null,
 		};
 		this.orderCache = {};
 		this.wsInterval = null;
@@ -437,6 +439,14 @@ class Container extends Component {
 					if (data.action === 'partial') {
 						this.props.setUserOrders(data.data);
 					} else if (data.action === 'insert') {
+						const isNotification =
+							(data?.data?.status === 'filled' &&
+								this.state.selectedPair !== data?.data?.symbol) ||
+							!this.state.isOrderStatus ||
+							data?.data?.status === 'new';
+						if (isNotification) {
+							this.toastNotification(data);
+						}
 						if (data.data.type === 'limit') {
 							playBackgroundAudioNotification(
 								'orderbook_limit_order',
@@ -449,12 +459,19 @@ class Container extends Component {
 							}, 1000);
 						}
 						if (data.data.status !== 'filled') {
-							this.toastNotification(data);
+							this.setState({
+								isOrderStatus: null,
+								selectedPair: data?.data?.symbol,
+							});
 							this.props.addOrder(data.data);
 						}
 						break;
 					} else if (data.action === 'update') {
 						if (data.data.status === 'pfilled') {
+							this.setState({
+								isOrderStatus: data?.data?.status,
+								selectedPair: data?.data?.symbol,
+							});
 							this.props.updateOrder(data.data);
 							this.toastNotification(data);
 							if (
@@ -487,6 +504,10 @@ class Container extends Component {
 								playBackgroundAudioNotification('pfilled', this.props.settings);
 							}
 						} else if (data.data.status === 'filled') {
+							this.setState({
+								isOrderStatus: data?.data?.status,
+								selectedPair: data?.data?.symbol,
+							});
 							this.toastNotification(data);
 							const ordersDeleted = this.props.orders.filter((order, index) => {
 								return data.data.id === order.id;
@@ -528,6 +549,10 @@ class Container extends Component {
 							}
 						} else if (data.data.status === 'canceled') {
 							this.props.removeOrder(data.data);
+							this.setState({
+								isOrderStatus: null,
+								selectedPair: null,
+							});
 							this.props.setNotification(
 								NOTIFICATIONS.ORDERS,
 								{ type: data.data.status, data: data.data },
