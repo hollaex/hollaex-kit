@@ -25,6 +25,7 @@ const {
 	VALID_USER_META_TYPES,
 	DOMAIN,
 	DEFAULT_FEES,
+	MIN_FEES,
 	BALANCE_HISTORY_SUPPORTED_PLANS,
 	REFERRAL_HISTORY_SUPPORTED_PLANS,
 	AUTO_TRADE_SUPPORTED_PLANS
@@ -1020,16 +1021,9 @@ const getNetworkConstants = (opts = {
 
 const getNetworkEndpoint = () => HOLLAEX_NETWORK_ENDPOINT;
 
-const getDefaultFees = () => {
-	const { info: { type, plan } } = getKitConfig();
-	if (type === 'Enterprise') {
-		return {
-			maker: 0,
-			taker: 0
-		};
-	} else {
-		return DEFAULT_FEES[plan];
-	}
+const getMinFees = () => {
+	const { info: { plan } } = getKitConfig();
+	return MIN_FEES[plan];
 };
 
 const validateIp = (ip) => {
@@ -1147,7 +1141,7 @@ module.exports = {
 	emailHtmlBoilerplate,
 	getNetworkConstants,
 	getNetworkEndpoint,
-	getDefaultFees,
+	getMinFees,
 	getEmail,
 	updateEmail,
 	checkExchangeStatus,
