@@ -3844,6 +3844,12 @@ const getAnnouncements = async (opts = {
 };
 
 const createAnnouncement = async ({ title, message, type = 'info', user_id, end_date, start_date, is_popup, is_navbar, is_dropdown }) => {
+	const exchangeInfo = getKitConfig().info;
+
+	if (exchangeInfo.plan !== 'fiat') {
+		throw new Error('Exchange plan does not support this feature');
+	}
+
 	const announcementModel = getModel('announcement');
     const announcement = await announcementModel.create({
         created_by: user_id,
