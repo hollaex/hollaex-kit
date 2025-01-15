@@ -4607,10 +4607,10 @@ paths:
               message:
                 type: string
               end_date:
-                type: string
+                type: ['string', 'null']
                 format: date-time
               start_date:
-                type: string
+                type: ['string', 'null']
                 format: date-time
               type:
                 type: string
