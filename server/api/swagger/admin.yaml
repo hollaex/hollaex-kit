@@ -4637,10 +4637,10 @@ paths:
       x-security-scopes:
         - admin
     delete:
-      description: Delete a payment detail
-      operationId: deletePaymentDetailByAdmin
+      description: Delete announcement
+      operationId: deleteAnnouncement
       tags:
-        - PaymentDetails
+        - Admin
       parameters:
         - name: data
           in: body
