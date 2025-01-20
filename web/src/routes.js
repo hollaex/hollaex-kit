@@ -32,6 +32,10 @@ const LoadingComponent = ({ isLoading, error }) => {
 	return <Loader background={false} />;
 };
 
+const EmptyLoadingComponent = ({ isLoading, error }) => {
+	return <></>;
+};
+
 const Container = Loadable({
 	loader: () => import('./containers/App'),
 	loading: LoadingComponent,
@@ -39,7 +43,7 @@ const Container = Loadable({
 
 const Account = Loadable({
 	loader: () => import('./containers/Account'),
-	loading: LoadingComponent,
+	loading: EmptyLoadingComponent,
 });
 
 const P2P = Loadable({
@@ -49,7 +53,7 @@ const P2P = Loadable({
 
 const MainWallet = Loadable({
 	loader: () => import('./containers/Wallet/MainWallet'),
-	loading: LoadingComponent,
+	loading: EmptyLoadingComponent,
 });
 
 const Volume = Loadable({
