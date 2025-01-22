@@ -1738,6 +1738,37 @@ const deleteUserAutoTrade = (req, res) => {
         });
 };
 
+const fetchAnnouncements = (req, res) => {
+    loggerUser.verbose(req.uuid, 'controllers/user/fetchAnnouncements/auth');
+
+    const { limit, page, order_by, order, start_date, end_date } = req.swagger.params;
+
+    if (order_by.value && typeof order_by.value !== 'string') {
+        loggerUser.error(
+            req.uuid,
+            'controllers/user/fetchAnnouncements invalid order_by',
+            order_by.value
+        );
+        return res.status(400).json({ message: 'Invalid order by' });
+    }
+
+    toolsLib.user.getAnnouncements({
+        limit: limit.value,
+        page: page.value,
+        order_by: order_by.value,
+        order: order.value,
+        start_date: start_date.value,
+		end_date: end_date.value,
+    })
+        .then((data) => {
+            return res.json(data);
+        })
+        .catch((err) => {
+            loggerUser.error(req.uuid, 'controllers/user/fetchAnnouncements', err.message);
+            return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+        });
+};
+
 module.exports = {
 	signUpUser,
 	getVerifyUser,
@@ -1786,5 +1817,6 @@ module.exports = {
 	fetchUserAutoTrades,
 	createUserAutoTrade,
 	updateUserAutoTrade,
-	deleteUserAutoTrade
+	deleteUserAutoTrade,
+	fetchAnnouncements
 };
