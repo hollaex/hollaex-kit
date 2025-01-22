@@ -318,7 +318,7 @@ paths:
       description: Get announcements
       operationId: fetchAnnouncements
       tags:
-        - User
+        - Public
       parameters:
         - in: query
           name: limit
