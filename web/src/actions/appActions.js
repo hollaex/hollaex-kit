@@ -124,6 +124,9 @@ export const SET_ACTIVE_MARKET_SELECTOR = 'SET_ACTIVE_MARKET_SELECTOR';
 export const SET_TOOLS_VISIBLE = 'SET_TOOLS_VISIBLE';
 export const SET_ACTIVE_PRO_TRADE = 'SET_ACTIVE_PRO_TRADE';
 export const SET_ACTIVE_QUICK_TRADE = 'SET_ACTIVE_QUICK_TRADE';
+export const SET_SELECTED_ANNOUNCEMENT = 'SET_SELECTED_ANNOUNCEMENT';
+export const SET_ACTIVE_SELECTED_ANNOUNCEMENT =
+	'SET_ACTIVE_SELECTED_ANNOUNCEMENT';
 
 export const SORT = {
 	VOL: 'volume',
@@ -356,6 +359,29 @@ export const setAnnouncements = (announcements) => ({
 	type: SET_ANNOUNCEMENT,
 	payload: {
 		announcements,
+	},
+});
+
+export const setAppAnnouncements = (announcements) => ({
+	type: SET_APP_ANNOUNCEMENT,
+	payload: {
+		announcements,
+	},
+});
+
+export const setSelectedAnnouncement = (selectedAnnouncement) => ({
+	type: SET_SELECTED_ANNOUNCEMENT,
+	payload: {
+		selectedAnnouncement,
+	},
+});
+
+export const setIsActiveSelectedAnnouncement = (
+	isActiveSelectedAnnouncement
+) => ({
+	type: SET_ACTIVE_SELECTED_ANNOUNCEMENT,
+	payload: {
+		isActiveSelectedAnnouncement,
 	},
 });
 
@@ -610,9 +636,23 @@ export const getExchangeInfo = () => {
 	};
 };
 
+// export const getAnnouncement = () => (dispatch) => {
+// 	return axios
+// 		.get(`${PLUGIN_URL}/plugins/announcements`)
+// 		.then((res) => {
+// 			if (res.data && res.data.data) {
+// 				dispatch({
+// 					type: SET_APP_ANNOUNCEMENT,
+// 					payload: { announcements: res.data.data },
+// 				});
+// 			}
+// 		})
+// 		.catch((err) => {});
+// };
+
 export const getAnnouncement = () => (dispatch) => {
 	return axios
-		.get(`${PLUGIN_URL}/plugins/announcements`)
+		.get('/announcements')
 		.then((res) => {
 			if (res.data && res.data.data) {
 				dispatch({

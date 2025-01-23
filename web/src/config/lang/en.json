@@ -2576,7 +2576,8 @@
 		"HELP_DESC": "Get help. Support contact",
 		"TRANSACTION_DESC": "Review all trades, deposits & withdrawals",
 		"ONRAMPER_DESC": "Use Onramper to buy and sell crypto",
-		"AUTO_TRADER_DESC": "Recurring automatic buy & sell transactions"
+		"AUTO_TRADER_DESC": "Recurring automatic buy & sell transactions",
+		"ANNOUNCEMENT_DESC": "Updates, listings and other news"
 	},
 	"DESKTOP_ULTIMATE_SEARCH": {
 		"SEARCH_DESCRIPTION": "Find Functions, Coins, and More",
@@ -2676,5 +2677,20 @@
 		"MAX_AMOUNT": "This amount exceeds your maximum spend amount limit",
 		"MAXIMUM_TRADE_LIMIT": "You have reached maximum limit of 20 recurring orders",
 		"SUCCESSFULLY_CREATED": "Auto trade created successfully"
+	},
+	"ANNOUNCEMENT_TAB": {
+		"ANNOUNCEMENT_TITLE": "Announcement",
+		"LISTING_TEXT": "Listing",
+		"NEWS": "News",
+		"EVENTS": "Events",
+		"ANNOUNCEMENT_LIST_HEADING": "Exchange events and messages",
+		"ANNOUNCEMENT_DESC": "Latest updates, general news, events, listings and more",
+		"VIEW_PRICE_UPDATES": "View price updates",
+		"TITLE": "Title",
+		"MESSAGE_CONTENTS": "Message/Contents",
+		"VIEW_ALL_ANNOUNCEMENT": "View all announcement",
+		"EXCHANGE_UPDATE": "Exchange update",
+		"NO_DATA_TEXT": "The announcement details have not been added yet",
+		"UPGRADES": "Upgrades"
 	}
 }

@@ -747,6 +747,22 @@ const MobileBarMoreOptions = ({
 			],
 		},
 		{
+			icon_id: 'ANNOUNCEMENT_ICON',
+			iconText: 'TRADE_TAB_POSTS',
+			path: '/announcement',
+			isDisplay: features?.announcement,
+			toolTipText: 'DESKTOP_NAVIGATION.ANNOUNCEMENT_DESC',
+			searchContent: [
+				STRINGS['ANNOUNCEMENT_TAB.EVENTS'],
+				STRINGS['ANNOUNCEMENT_TAB.LISTING_TEXT'],
+				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.UPDATES'],
+				STRINGS['ANNOUNCEMENT_TAB.NEWS'],
+				STRINGS['DEPOSIT_STATUS.NEW'],
+				STRINGS['CHAT.CHAT_MESSAGE_BOX_PLACEHOLDER'],
+				STRINGS['ANNOUNCEMENT_TAB.UPGRADES'],
+			],
+		},
+		{
 			icon_id: 'WITHDRAW_OPTION_ICON',
 			iconText: 'WITHDRAW_PAGE.WITHDRAW',
 			path: isValidCoin ? `/wallet/${getAsset}/withdraw` : '/wallet/withdraw',

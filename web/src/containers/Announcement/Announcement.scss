@@ -1,0 +1,270 @@
+.announcement-container {
+	height: 100%;
+	width: 80%;
+	margin: 5% auto;
+
+	.blue-link:hover {
+		cursor: pointer;
+	}
+
+	.annuoncement-title-container {
+		display: flex;
+		align-items: flex-end;
+		gap: 1%;
+		padding-bottom: 1%;
+		border-bottom: 1px solid var(--labels_important-active-labels-text-graphics);
+
+		.notification-icon {
+			svg {
+				width: 2.5rem;
+				height: 3rem;
+			}
+		}
+
+		.title {
+			font-size: 2.5rem;
+		}
+	}
+
+	.announcement-line-container {
+		padding: 1% 0;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+
+		.link-wrapper {
+			width: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: flex-end;
+			gap: 4%;
+
+			.blue-link {
+				padding: 0 12% 0 0;
+			}
+
+			.deposit-link,
+			.withdraw-link {
+				border-right: 1.5px solid var(--base_wallet-sidebar-and-popup);
+			}
+		}
+	}
+
+	.announcement-details-container {
+		display: flex;
+		justify-content: flex-start;
+		gap: 1%;
+
+		.announcement-filter,
+		.announcement-list {
+			background-color: var(--base_wallet-sidebar-and-popup);
+			min-height: 30rem;
+			padding: 2%;
+			border-radius: 5px;
+		}
+
+		.announcement-filter {
+			width: 12%;
+			display: flex;
+			flex-direction: column;
+			gap: 0.8rem;
+			padding: 2% 1% !important;
+
+			.selected-notification {
+				border-left: 4px solid var(--specials_buttons-links-and-highlights);
+				padding: 8% 10% !important;
+				background-color: var(--calculated_secondary-border);
+				border-top-right-radius: 4px;
+				border-bottom-right-radius: 4px;
+			}
+
+			.filter-text {
+				padding: 8% 14%;
+
+				.notification-all-icon {
+					position: relative;
+					top: 2px;
+
+					svg {
+						width: 1rem;
+						height: 1rem;
+					}
+				}
+			}
+
+			.filter-text:hover {
+				cursor: pointer;
+			}
+		}
+
+		.announcement-list {
+			width: 88%;
+
+			.announcement-table-wrapper {
+				tr {
+					td {
+						padding: 0.5rem;
+					}
+
+					.message-description {
+						width: 60%;
+
+						.message-content-wrapper {
+							width: 85%;
+							height: 1.5rem;
+							overflow: hidden;
+						}
+					}
+				}
+			}
+
+			.empty-content-display {
+				margin-top: 5%;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+
+				.form_currency-ball {
+					svg {
+						width: 3rem !important;
+						height: 3rem !important;
+					}
+				}
+			}
+
+			.selected-announcement-title {
+				font-size: 18px;
+			}
+
+			.selected-announcement-type {
+				font-size: 12px;
+				border-bottom: 1px solid var(--calculated_secondary-border);
+				padding-bottom: 1%;
+			}
+
+			.selected-announcement-message {
+				font-size: 12px;
+				padding-top: 1%;
+
+				a {
+					color: var(--specials_buttons-links-and-highlights);
+				}
+			}
+		}
+	}
+}
+
+.layout-mobile {
+	.announcement-container {
+		width: 90%;
+		margin: 10% auto;
+
+		.margin-aligner {
+			margin-bottom: 10%;
+		}
+
+		.blue-link {
+			font-size: 10px;
+		}
+
+		.annuoncement-title-container {
+			.title {
+				font-size: 24px;
+			}
+
+			.notification-icon svg {
+				width: 3.5rem;
+				height: 3.5rem;
+			}
+		}
+
+		.announcement-line-container {
+			padding: 2.5% 0;
+
+			.link-wrapper {
+				gap: 15px;
+			}
+		}
+
+		.announcement-filter {
+			min-height: 35rem;
+			width: 23%;
+			padding: 3% !important;
+
+			.selected-notification {
+				padding: 8% 10px !important;
+			}
+
+			.filter-text {
+				font-size: 10px;
+				padding: 8% 14px;
+			}
+		}
+
+		.announcement-list {
+			width: 76%;
+
+			.edit-wrapper__container {
+				.font-weight-bold {
+					font-size: 14px;
+				}
+
+				.secondary-text {
+					font-size: 1.2rem;
+				}
+			}
+
+			.table_container {
+				.blue-link {
+					text-wrap: nowrap;
+				}
+
+				.no-data {
+					.empty-description {
+						font-size: 10px;
+					}
+				}
+
+				.table-content {
+					overflow-x: scroll;
+
+					.table-wrapper {
+						.table_body-wrapper {
+							.table_body-row {
+								font-size: 1.2rem;
+							}
+
+							.message-description {
+								.message-content-wrapper {
+									width: 75%;
+								}
+							}
+						}
+					}
+				}
+			}
+
+			.selected-announcement-type {
+				font-size: 10px;
+				padding: 5px 0px;
+			}
+
+			.table_controllers-wrapper {
+				width: 100%;
+			}
+
+			.selected-announcement-title {
+				font-size: 16px;
+			}
+
+			.selected-announcement-message {
+				font-size: 10px;
+				padding: 2% 0;
+
+				img {
+					width: 100% !important;
+				}
+			}
+		}
+	}
+}

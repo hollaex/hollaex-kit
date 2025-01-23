@@ -435,6 +435,8 @@ class AppWrapper extends React.Component {
 			return 'Resources';
 		} else if (location.pathname.includes('/admin/chat')) {
 			return 'Chat';
+		} else if (location.pathname.includes('/admin/announcement')) {
+			return 'Announcements';
 		} else if (location.pathname.includes('/admin/plugin/adminView')) {
 			return this.renderCapitalize(router.params.name);
 		} else {
@@ -579,6 +581,15 @@ class AppWrapper extends React.Component {
 				},
 			];
 		}
+
+		pathNames = [
+			...pathNames,
+			{
+				path: '/admin/announcement',
+				label: 'Announcements',
+				routeKey: 'adminView',
+			},
+		];
 
 		myPlugins.forEach((data) => {
 			if (data.enabled && data.enabled_admin_view) {

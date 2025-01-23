@@ -194,6 +194,9 @@ export const EXPLORERS_ENDPOINT = (currency) => {
 		case 'ftm':
 			endpoint = 'https://ftmscan.com/tx/';
 			break;
+		case 's':
+			endpoint = 'https://sonicscan.org/tx/';
+			break;
 		default:
 			endpoint = '';
 			break;
