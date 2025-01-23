@@ -86,6 +86,8 @@ import {
 	SET_TOOLS_VISIBLE,
 	SET_ACTIVE_PRO_TRADE,
 	SET_ACTIVE_QUICK_TRADE,
+	SET_SELECTED_ANNOUNCEMENT,
+	SET_ACTIVE_SELECTED_ANNOUNCEMENT,
 } from 'actions/appActions';
 import { THEME_DEFAULT } from 'config/constants';
 import { getLanguage } from 'utils/string';
@@ -225,6 +227,8 @@ const INITIAL_STATE = {
 	isToolsVisible: false,
 	isProTrade: false,
 	isQuickTrade: false,
+	selectedAnnouncement: {},
+	isActiveSelectedAnnouncement: false,
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -413,7 +417,16 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 				...state,
 				announcements: payload.announcements,
 			};
-
+		case SET_SELECTED_ANNOUNCEMENT:
+			return {
+				...state,
+				selectedAnnouncement: payload.selectedAnnouncement,
+			};
+		case SET_ACTIVE_SELECTED_ANNOUNCEMENT:
+			return {
+				...state,
+				isActiveSelectedAnnouncement: payload.isActiveSelectedAnnouncement,
+			};
 		case CLOSE_ALL_NOTIFICATION:
 			return {
 				...state,

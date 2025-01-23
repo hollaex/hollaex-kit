@@ -31,6 +31,7 @@ const AccountTab = ({
 	setSettingsTab,
 	setIsMarketDropdownVisible,
 	setIsToolsVisible,
+	features,
 }) => {
 	const [isIconActive, setIsIconActive] = useState(false);
 	const [isToolTipVisible, setIsToolTipVisible] = useState(false);
@@ -66,6 +67,7 @@ const AccountTab = ({
 					setSecurityTab={setSecurityTab}
 					setSettingsTab={setSettingsTab}
 					onHandleRedirect={onHandleRedirect}
+					features={features}
 				/>
 			}
 			placement="bottomRight"
@@ -114,6 +116,7 @@ const AccountList = ({
 	setSecurityTab,
 	setSettingsTab,
 	onHandleRedirect,
+	features,
 }) => {
 	const [isHelpResources, setIsHelpResources] = useState(false);
 	const [currPath, setCurrpath] = useState('/summary');
@@ -146,6 +149,13 @@ const AccountList = ({
 			description: 'DESKTOP_NAVIGATION.SETTINGS_DESC',
 			path: '/settings',
 			isDisplay: true,
+		},
+		{
+			icon: 'ANNOUNCEMENT_ICON',
+			title: 'TRADE_TAB_POSTS',
+			description: 'DESKTOP_NAVIGATION.ANNOUNCEMENT_DESC',
+			path: '/announcement',
+			isDisplay: features?.announcement,
 		},
 	];
 
@@ -344,6 +354,7 @@ const AccountList = ({
 const mapStateToProps = (state) => ({
 	config_level: state.app.config_level,
 	verification_level: state.user.verification_level,
+	features: state.app.features,
 });
 
 const mapDispatchToProps = (dispatch) => ({

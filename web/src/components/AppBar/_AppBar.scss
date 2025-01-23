@@ -6,6 +6,36 @@ $app-menu-width: calc(100vw - 40rem);
 
 @import './MobileMarketSelector';
 
+.announcement-top-bar {
+	height: 10px !important;
+	min-height: 2.5rem !important;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 1%;
+	color: $base_top-bar-navigation_text_inactive;
+	.announcement-message {
+		max-width: 50%;
+		height: 70%;
+		overflow: hidden;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+	.announcement-btn {
+		width: max-content;
+		height: 2rem;
+		font-size: 0.7rem;
+	}
+	.blue-link {
+		cursor: pointer;
+	}
+	.close-icon {
+		position: absolute;
+		right: 1%;
+	}
+}
+
 .app_bar {
 	position: relative;
 	width: 100%;
@@ -1238,18 +1268,6 @@ $app-menu-width: calc(100vw - 40rem);
 	color: $colors-main-black;
 }
 
-.account-tab-dropdown {
-	.ant-tooltip-inner {
-		padding: unset;
-		.navigation-dropdown-container {
-			padding: unset;
-			.options-container {
-				margin: 0% 4%;
-				padding: 2% 4%;
-			}
-		}
-	}
-}
 .account-tab-options-tooltip {
 	font-size: 12px;
 	z-index: 2;
@@ -1257,9 +1275,14 @@ $app-menu-width: calc(100vw - 40rem);
 .navigation-bar-wrapper {
 	max-width: 100% !important;
 	background-color: transparent;
-	top: 35px !important;
+	// top: 35px !important;
 	bottom: 25px;
 	z-index: 2;
+	padding-top: unset !important;
+	.ant-tooltip-arrow {
+		bottom: 0px;
+		top: unset;
+	}
 	.app-bar-account-notification {
 		height: $app-menu-notification-size;
 		width: $app-menu-notification-size;
@@ -1378,6 +1401,20 @@ $app-menu-width: calc(100vw - 40rem);
 			}
 			.blue-link:hover {
 				cursor: pointer;
+			}
+		}
+	}
+}
+
+.account-tab-dropdown {
+	padding-top: 8px !important;
+	.ant-tooltip-inner {
+		padding: unset;
+		.navigation-dropdown-container {
+			padding: unset;
+			.options-container {
+				margin: 0% 4%;
+				padding: 2% 4%;
 			}
 		}
 	}
@@ -1954,5 +1991,39 @@ $app-menu-width: calc(100vw - 40rem);
 		display: flex;
 		align-items: center;
 		gap: 1%;
+	}
+}
+
+.announcement-popup-mobile-wrapper {
+	.announcement-popup-container {
+		.announcement-exchange-title,
+		.announcement-message-wrapper {
+			font-size: 11px;
+		}
+	}
+}
+
+.announcement-popup-wrapper {
+	.ReactModal__Content {
+		width: 35rem;
+
+		.announcement-popup-container {
+			.announcement-title {
+				font-size: 20px;
+			}
+
+			.announcement-exchange-title {
+				display: flex;
+				align-items: center;
+				gap: 2%;
+			}
+
+			.announcement-popup-buttons {
+				gap: 2%;
+				.back-btn {
+					font-size: 11px;
+				}
+			}
+		}
 	}
 }
