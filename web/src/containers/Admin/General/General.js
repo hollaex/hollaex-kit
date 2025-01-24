@@ -713,6 +713,10 @@ class GeneralContent extends Component {
 						[key]: value,
 					},
 				},
+				kit: {
+					...prevState.constants.kit,
+					timezone: value,
+				},
 			},
 		}));
 	};
@@ -733,6 +737,9 @@ class GeneralContent extends Component {
 			this.handleSubmitGeneral({
 				secrets: {
 					emails: this.state.constants.secrets.emails,
+				},
+				kit: {
+					timezone: this.state.constants.kit.timezone,
 				},
 			});
 		} catch (error) {
