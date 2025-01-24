@@ -2617,8 +2617,8 @@
 		"AUTO_TRADER_DESC": "Setup a recurring transactions to automatically buy or sell crypto",
 		"RECURRING_TRANSACTION": "Recurring transactions",
 		"SETUP_TRANSACTION": "Setup a recurring transaction",
-		"ASSET_TO_BUY": "Assets to Buy",
-		"ASSET_TO_SPEND": "Assets to Spend",
+		"ASSET_TO_BUY": "Asset to Buy",
+		"ASSET_TO_SPEND": "Asset to Spend",
 		"AMOUNT_TO_SPEND": "Amount to Spend",
 		"DATE_CREATED": "Date Created",
 		"NO_DATA_DESCRIPTION": "Recurring transaction offer an easy way to automate trading and allows you to spread your buy or sell orders out over time",
@@ -2663,7 +2663,6 @@
 		"WARNING_MESSAGE_1": "Ensure your wallet has enough funds before confirming.",
 		"SELECT_HOUR": "Select Hour (0-23Hrs)",
 		"HOUR": "(0-23Hrs)",
-		"HOUR_TEXT": "hrs",
 		"EXECUTION_INTERVAL": "Execution Interval",
 		"PAUSE": "Pause",
 		"PAUSED_TEXT": "Paused",
@@ -2690,7 +2689,7 @@
 		"MESSAGE_CONTENTS": "Message/Contents",
 		"VIEW_ALL_ANNOUNCEMENT": "View all announcement",
 		"EXCHANGE_UPDATE": "Exchange update",
-		"NO_DATA_TEXT": "The announcement details have not been added yet",
+		"NO_DATA_TEXT": "It appears that no announcements have been made yet",
 		"UPGRADES": "Upgrades"
 	}
 }

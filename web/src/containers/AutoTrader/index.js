@@ -30,9 +30,6 @@ const autoTraderData = (
 	onSetPauseData,
 	onSetPlayData
 ) => {
-	const getAssetAval = (selectedAsset) =>
-		user.balance[`${selectedAsset?.toLowerCase()}_available`];
-
 	return [
 		{
 			stringId: 'CONTACT_FORM.DESCRIPTION_LABEL',
@@ -64,26 +61,15 @@ const autoTraderData = (
 					className={data?.active ? 'trade-active' : 'trade-inactive'}
 				>
 					<div className="d-flex justify-content-start table_text spend-asset-detail">
-						<div className="selected-asset">
+						<div
+							className="selected-asset trade-asset"
+							onClick={() => browserHistory.push(`/wallet/${data?.buy_coin}`)}
+						>
 							<span className="asset-icon">
 								<Coin iconId={coins[data?.buy_coin]?.icon_id} type="CS5" />
 							</span>
 							<span>{data?.buy_coin?.toUpperCase()}</span>
 						</div>
-						<span>
-							<EditWrapper stringId="BALANCE_TEXT">
-								<span>{STRINGS['BALANCE_TEXT']}:</span>
-								<span
-									className="blue-link text-decoration-underline"
-									onClick={() =>
-										browserHistory.push(`/wallet/${data?.buy_coin}`)
-									}
-								>
-									<span className="ml-1">{getAssetAval(data?.buy_coin)}</span>
-									<span className="ml-1">{data?.buy_coin?.toUpperCase()}</span>
-								</span>
-							</EditWrapper>
-						</span>
 					</div>
 				</td>
 			),
@@ -98,28 +84,15 @@ const autoTraderData = (
 					className={data?.active ? 'trade-active' : 'trade-inactive'}
 				>
 					<div className="d-flex justify-content-start table_text spend-asset-detail">
-						<div className="selected-asset">
+						<div
+							className="selected-asset trade-asset"
+							onClick={() => browserHistory.push(`/wallet/${data?.spend_coin}`)}
+						>
 							<span className="asset-icon">
 								<Coin iconId={coins[data?.spend_coin]?.icon_id} type="CS5" />
 							</span>
 							<span>{data?.spend_coin?.toUpperCase()}</span>
 						</div>
-						<span>
-							<EditWrapper stringId="BALANCE_TEXT">
-								<span>{STRINGS['BALANCE_TEXT']}:</span>
-								<span
-									className="blue-link text-decoration-underline"
-									onClick={() =>
-										browserHistory.push(`/wallet/${data?.spend_coin}`)
-									}
-								>
-									<span className="ml-1">{getAssetAval(data?.spend_coin)}</span>
-									<span className="ml-1">
-										{data?.spend_coin?.toUpperCase()}
-									</span>
-								</span>
-							</EditWrapper>
-						</span>
 					</div>
 				</td>
 			),
@@ -135,9 +108,6 @@ const autoTraderData = (
 				>
 					<div className="d-flex justify-content-start table_text spend-asset-detail">
 						<div className="selected-asset">
-							<span className="asset-icon">
-								<Coin iconId={coins[data?.spend_coin]?.icon_id} type="CS5" />
-							</span>
 							<span>{data?.spend_amount}</span>
 							<span>{data?.spend_coin?.toUpperCase()}</span>
 						</div>
@@ -194,10 +164,7 @@ const autoTraderData = (
 								</span>
 							</div>
 							<div className="selected-asset frequency-trade">
-								<span>@ {data?.trade_hour}</span>
-								<span className="ml-1">
-									<EditWrapper>{STRINGS['AUTO_TRADER.HOUR_TEXT']}</EditWrapper>
-								</span>
+								<span>{`${data?.trade_hour}${':00'}`}</span>
 							</div>
 						</div>
 					</td>
@@ -292,7 +259,7 @@ const autoTraderData = (
 	];
 };
 
-const Autotrader = ({ user, sourceOptions, coins }) => {
+const Autotrader = ({ user, sourceOptions, coins, features }) => {
 	const [isRenderPopup, setIsRenderPopup] = useState({
 		isDisplayAutoTrader: false,
 		isDisplayFrequencyPopup: false,
@@ -320,7 +287,12 @@ const Autotrader = ({ user, sourceOptions, coins }) => {
 	const timeZone = new Date().toString().match(/\(([A-Za-z\s].*)\)/)[1];
 
 	useEffect(() => {
-		getTradeDetails();
+		if (features?.auto_trade) {
+			getTradeDetails();
+		} else {
+			browserHistory.push('/summary');
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const getTradeDetails = async () => {
@@ -707,8 +679,12 @@ const Autotrader = ({ user, sourceOptions, coins }) => {
 		}
 	};
 
+	const onHandleChange = (value) => {
+		return value?.replace(/[^0-9]/g, '');
+	};
+
 	return (
-		<div className="summary-container auto-trader-container">
+		<div className="auto-trader-container">
 			<Dialog
 				isOpen={isRenderPopup?.isDisplayAutoTrader}
 				onCloseDialog={() => {
@@ -1167,6 +1143,9 @@ const Autotrader = ({ user, sourceOptions, coins }) => {
 										controls={true}
 										placeholder={STRINGS['AUTO_TRADER.SELECT_HOUR']}
 										suffix={STRINGS['AUTO_TRADER.HOUR']}
+										step={1}
+										formatter={(value) => onHandleChange(value)}
+										parser={(value) => onHandleChange(value)}
 									/>
 								</div>
 							)}
@@ -1503,20 +1482,30 @@ const Autotrader = ({ user, sourceOptions, coins }) => {
 				<div className="link-wrapper">
 					<EditWrapper stringId="SUMMARY.DEPOSIT">
 						<span
-							className="blue-link deposit-link"
+							className="blue-link"
 							onClick={() => browserHistory.push('/wallet/deposit')}
 						>
 							{STRINGS['SUMMARY.DEPOSIT']?.toUpperCase()}
 						</span>
 					</EditWrapper>
-					<EditWrapper stringId="WITHDRAW_PAGE.WITHDRAW">
+					<span className="link-separator"></span>
+					<EditWrapper stringId="ACCORDIAN.ACCORDIAN_HISTORY">
 						<span
-							className="blue-link withdraw-link"
-							onClick={() => browserHistory.push('/wallet/withdraw')}
+							className="d-flex blue-link"
+							onClick={() => browserHistory.push('/transactions')}
 						>
-							{STRINGS['WITHDRAW_PAGE.WITHDRAW']?.toUpperCase()}
+							{STRINGS['ACCORDIAN.ACCORDIAN_HISTORY']}
+							<span className="image-wrapper px-1">
+								<Image
+									iconId={'CLOCK'}
+									icon={icons['CLOCK']}
+									alt={'text'}
+									svgWrapperClassName="action_notification-svg"
+								/>
+							</span>
 						</span>
 					</EditWrapper>
+					<span className="link-separator"></span>
 					<EditWrapper stringId="SUMMARY.MARKETS">
 						<span
 							className="blue-link market-link"
@@ -1582,6 +1571,7 @@ const mapStateToProps = (state) => ({
 	user: state.user,
 	sourceOptions: getSourceOptions(state.app.quicktrade),
 	coins: state.app.coins,
+	features: state.app.features,
 });
 
 export default connect(mapStateToProps)(Autotrader);

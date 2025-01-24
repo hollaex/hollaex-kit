@@ -46,7 +46,7 @@ const Tab = ({
 					{increment_price && (
 						<>
 							<div className="title-font fav-price-label ml-1">
-								<span className="app_bar-currency-txt">:</span>
+								<span className="app_bar-currency-txt mr-1">:</span>
 								{formatToCurrency(close, increment_price)}
 							</div>
 							<PriceChange market={market} key={key} />

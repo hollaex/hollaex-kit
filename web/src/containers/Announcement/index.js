@@ -116,7 +116,11 @@ const Announcement = ({
 	};
 
 	useEffect(() => {
-		getAnnouncement();
+		if (features?.announcement) {
+			getAnnouncement();
+		} else {
+			return browserHistory?.push('/summary');
+		}
 		return () => {
 			setIsActiveSelectedAnnouncement(false);
 		};
@@ -134,7 +138,6 @@ const Announcement = ({
 
 	const onHandleSelectAnnouncement = (announcement) => {
 		setIsActiveSelectedAnnouncement(true);
-		// setSelectedAnnouncementDetail(announcement);
 		setSelectedAnnouncement(announcement);
 	};
 
@@ -184,6 +187,14 @@ const Announcement = ({
 					<div className="empty-description">
 						<EditWrapper stringId="ANNOUNCEMENT_TAB.NO_DATA_TEXT">
 							{STRINGS['ANNOUNCEMENT_TAB.NO_DATA_TEXT']}
+						</EditWrapper>
+						<EditWrapper stringId="ANNOUNCEMENT_TAB.VIEW_PRICE_UPDATES">
+							<span
+								className="blue-link text-decoration-underline"
+								onClick={() => browserHistory.push('/prices')}
+							>
+								{STRINGS['ANNOUNCEMENT_TAB.VIEW_PRICE_UPDATES']}
+							</span>
 						</EditWrapper>
 					</div>
 				</div>
