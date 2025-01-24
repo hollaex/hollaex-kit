@@ -298,14 +298,7 @@ export const ConfirmAutoTrade = ({
 								</span>
 							</EditWrapper>
 							<span className="important-text ml-1">
-								{autoTradeDetails?.trade_hour}
-								<EditWrapper stringId="AUTO_TRADER.HOUR_TEXT">
-									(
-									<span className="important-text">
-										{STRINGS['AUTO_TRADER.HOUR_TEXT']}
-									</span>
-									)
-								</EditWrapper>
+								<span>{`${autoTradeDetails?.trade_hour}${':00'}`}</span>
 							</span>
 						</span>
 					</div>

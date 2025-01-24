@@ -652,7 +652,7 @@ const MobileBarMoreOptions = ({
 			icon_id: 'AUTO_TRADER_ICON',
 			iconText: 'AUTO_TRADER.AUTO_TRADER_TITLE',
 			path: '/auto-trader',
-			isDisplay: true,
+			isDisplay: features?.auto_trade,
 			toolTipText: 'DESKTOP_NAVIGATION.AUTO_TRADER_DESC',
 			searchContent: [
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.RECURRING_INVESTMENT'],

@@ -389,8 +389,8 @@ table th {
     height: auto;
     flex: 1; }
   .app_container.layout-mobile .app_container-content {
-    min-height: calc( 100vh - 10rem);
-    max-height: calc( 100vh - 10rem);
+    min-height: calc(100vh - 10rem);
+    max-height: calc(100vh - 10rem);
     max-width: 100vw;
     overflow-y: scroll; }
     .app_container.layout-mobile .app_container-content.chart-embed {
@@ -408,8 +408,8 @@ table th {
       .app_container.layout-mobile .app_container-content .app_container-main.no_bottom_navigation {
         height: 100%; }
   .app_container.layout-mobile .content-with-bar {
-    min-height: calc( 100vh - 17rem);
-    max-height: calc( 100vh - 17rem);
+    min-height: calc(100vh - 17rem);
+    max-height: calc(100vh - 17rem);
     max-width: 100vw;
     padding: 1rem;
     margin: 0;
@@ -4717,8 +4717,8 @@ table th {
 .layout-mobile .quote-container {
   background-color: transparent;
   overflow-y: scroll;
-  min-height: calc( 100vh - 17rem);
-  max-height: calc( 100vh - 17rem); }
+  min-height: calc(100vh - 17rem);
+  max-height: calc(100vh - 17rem); }
   .layout-mobile .quote-container .quick_trade-wrapper {
     flex: 1 1;
     flex-direction: column;
@@ -4891,7 +4891,7 @@ table th {
 
 .layout-mobile .presentation_container.verification_container {
   padding-top: 0 !important;
-  max-height: calc( 100vh - 10rem); }
+  max-height: calc(100vh - 10rem); }
   .layout-mobile .presentation_container.verification_container .header-content {
     font-size: 13px !important; }
 
@@ -5966,7 +5966,8 @@ table th {
   .digital-market-wrapper .market-list__block-table tbody tr td .asset-text,
   .digital-market-wrapper .market-list__block-table tbody tr td .last-price-label {
     font-weight: bold;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; }
+    font-family: system-ui, -apple-system, BlinkMacSystemFont,'Segoe UI', Roboto, 
+  Oxygen, Ubuntu, Cantarell, 'Open Sans','Helvetica Neue', sans-serif; }
   .digital-market-wrapper .market-list__block-table tbody tr td .asset-text {
     text-wrap: nowrap; }
   .digital-market-wrapper .market-list__block-table tbody tr td .price-change,
@@ -13920,7 +13921,8 @@ table th {
   color: rgba(0, 0, 0, 0.85); }
 
 .auto-trader-container {
-  margin-top: 3%; }
+  margin: 3% auto;
+  width: 80%; }
   .auto-trader-container .title-wrapper {
     padding: 1% 0;
     border-bottom: 1.5px solid var(--labels_important-active-labels-text-graphics); }
@@ -13945,12 +13947,17 @@ table th {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 4%; }
+    gap: 2%; }
     .auto-trader-container .link-wrapper .blue-link {
       padding: 0 12% 0 0; }
-    .auto-trader-container .link-wrapper .deposit-link,
-    .auto-trader-container .link-wrapper .withdraw-link {
-      border-right: 1.5px solid var(--base_wallet-sidebar-and-popup); }
+    .auto-trader-container .link-wrapper .image-wrapper {
+      position: relative;
+      top: 2px; }
+      .auto-trader-container .link-wrapper .image-wrapper .action_notification-svg svg {
+        width: 1.25rem;
+        height: 1.25rem;
+        background-color: var(--specials_buttons-links-and-highlights);
+        border-radius: 1rem; }
     .auto-trader-container .link-wrapper .blue-link:hover {
       cursor: pointer; }
   .auto-trader-container .auto-trader-content-wrapper {
@@ -13989,6 +13996,9 @@ table th {
         display: flex;
         gap: 3%;
         align-items: center; }
+      .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper .spend-asset-detail .trade-asset:hover {
+        opacity: 0.6;
+        cursor: pointer; }
       .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper .spend-asset-detail .asset-icon {
         position: relative;
         top: 2px; }
@@ -14275,6 +14285,8 @@ table th {
     align-items: flex-end; }
     .layout-mobile .auto-trader-container .auto-trader-description-wrapper .link-wrapper {
       width: 100%; }
+      .layout-mobile .auto-trader-container .auto-trader-description-wrapper .link-wrapper .image-wrapper {
+        top: unset; }
   .layout-mobile .auto-trader-container .auto-trader-content-wrapper {
     font-size: 10px;
     overflow: hidden !important; }
@@ -14361,6 +14373,10 @@ table th {
         cursor: pointer; }
     .announcement-container .announcement-details-container .announcement-list {
       width: 88%; }
+      .announcement-container .announcement-details-container .announcement-list .no-data .empty-description {
+        display: flex;
+        flex-direction: column;
+        gap: 2%; }
       .announcement-container .announcement-details-container .announcement-list .announcement-table-wrapper tr td {
         padding: 0.5rem; }
       .announcement-container .announcement-details-container .announcement-list .announcement-table-wrapper tr .message-description {
@@ -14719,7 +14735,7 @@ table th {
     padding: 0.3rem 0; }
     .modal-market-menu .app-bar-add-tab-content .scroll-view {
       overflow-y: auto;
-      height: calc( 100vh - 19rem - 8rem); }
+      height: calc(100vh - 19rem - 8rem); }
       .modal-market-menu .app-bar-add-tab-content .scroll-view .app-bar-add-tab-content-list {
         font-size: 12px; }
   .modal-market-menu .app-bar-tab-overflow-content {
@@ -16146,7 +16162,8 @@ table th {
   align-items: center;
   gap: 1%; }
 
-.announcement-popup-mobile-wrapper .announcement-popup-container .announcement-exchange-title, .announcement-popup-mobile-wrapper .announcement-popup-container .announcement-message-wrapper {
+.announcement-popup-mobile-wrapper .announcement-popup-container .announcement-exchange-title,
+.announcement-popup-mobile-wrapper .announcement-popup-container .announcement-message-wrapper {
   font-size: 11px; }
 
 .announcement-popup-wrapper .ReactModal__Content {
@@ -17718,14 +17735,14 @@ table th {
   right: 0 !important;
   min-width: 100vw;
   max-width: 100vw;
-  min-height: calc( 100vh - 4rem);
-  max-height: calc( 100vh - 4rem);
+  min-height: calc(100vh - 4rem);
+  max-height: calc(100vh -4rem);
   border-radius: 0 !important;
   padding: 0 !important; }
   .layout-mobile .ReactModal__Content .dialog-mobile-content {
     padding: 2.5rem !important;
-    min-height: calc( 100vh - 8rem);
-    max-height: calc( 100vh - 8rem);
+    min-height: calc(100vh - 8rem);
+    max-height: calc(100vh - 8rem);
     display: flex; }
 
 .layout-mobile.LogoutModal .ReactModal__Content {
