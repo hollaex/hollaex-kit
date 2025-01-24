@@ -374,7 +374,9 @@ const QuickTrade = ({
 
 	useEffect(() => {
 		setMounted(true);
-		setIsQuickTrade(true);
+		if (window.location.pathname.includes(`/quick-trade`)) {
+			setIsQuickTrade(true);
+		}
 		return () => {
 			setIsQuickTrade(false);
 		};

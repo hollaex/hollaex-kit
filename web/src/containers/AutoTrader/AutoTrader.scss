@@ -1,5 +1,6 @@
 .auto-trader-container {
-	margin-top: 3%;
+	margin: 3% auto;
+	width: 80%;
 
 	.title-wrapper {
 		padding: 1% 0;
@@ -40,15 +41,21 @@
 		display: flex;
 		align-items: center;
 		justify-content: flex-end;
-		gap: 4%;
+		gap: 2%;
 
 		.blue-link {
 			padding: 0 12% 0 0;
 		}
 
-		.deposit-link,
-		.withdraw-link {
-			border-right: 1.5px solid var(--base_wallet-sidebar-and-popup);
+		.image-wrapper {
+			position: relative;
+			top: 2px;
+			.action_notification-svg svg {
+				width: 1.25rem;
+				height: 1.25rem;
+				background-color: var(--specials_buttons-links-and-highlights);
+				border-radius: 1rem;
+			}
 		}
 
 		.blue-link:hover {
@@ -120,6 +127,10 @@
 						align-items: center;
 					}
 
+					.trade-asset:hover {
+						opacity: 0.6;
+						cursor: pointer;
+					}
 					.asset-icon {
 						position: relative;
 						top: 2px;
@@ -599,6 +610,9 @@
 
 			.link-wrapper {
 				width: 100%;
+				.image-wrapper {
+					top: unset;
+				}
 			}
 		}
 

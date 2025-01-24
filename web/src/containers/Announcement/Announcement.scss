@@ -100,6 +100,13 @@
 		.announcement-list {
 			width: 88%;
 
+			.no-data {
+				.empty-description {
+					display: flex;
+					flex-direction: column;
+					gap: 2%;
+				}
+			}
 			.announcement-table-wrapper {
 				tr {
 					td {
