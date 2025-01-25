@@ -142,7 +142,7 @@ const AppMenuBarItem = ({
 			title: 'AUTO_TRADER.AUTO_TRADER_TITLE',
 			path: '/auto-trader',
 			description: 'DESKTOP_NAVIGATION.AUTO_TRADER_DESC',
-			isDisplay: true,
+			isDisplay: features?.auto_trade_config,
 		},
 	];
 
