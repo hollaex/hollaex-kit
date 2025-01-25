@@ -185,13 +185,13 @@ export const generateAdminSettings = (key) => {
 					placeholder: 'Sender email',
 					validate: [validateRequired, email],
 				},
-				timezone: {
-					type: 'select',
-					label: 'Email timezone',
-					placeholder: 'Select email timezone',
-					validate: [validateRequired],
-					options: minimalTimezoneSet,
-				},
+				// timezone: {
+				// 	type: 'select',
+				// 	label: 'Email timezone',
+				// 	placeholder: 'Select email timezone',
+				// 	validate: [validateRequired],
+				// 	options: minimalTimezoneSet,
+				// },
 				server: {
 					type: 'input',
 					label: 'SMTP server',

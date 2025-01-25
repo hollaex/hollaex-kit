@@ -224,7 +224,8 @@ exports.KIT_CONFIG_KEYS = [
 	'chain_trade_config',
 	'selectable_native_currencies',
 	'auto_trade_config',
-	'apps'
+	'apps',
+	'timezone'
 ];
 
 exports.KIT_SECRETS_KEYS = [
@@ -718,7 +719,7 @@ exports.REFERRAL_HISTORY_SUPPORTED_PLANS = ['fiat', 'boost', 'enterprise'];
 
 //AUTO_TRADE CONSTANTS START
 
-exports.AUTO_TRADE_SUPPORTED_PLANS = ['enterprise'];
+exports.AUTO_TRADE_SUPPORTED_PLANS = ['enterprise', 'fiat'];
 //AUTO_TRADE CONSTANTS END
 
 

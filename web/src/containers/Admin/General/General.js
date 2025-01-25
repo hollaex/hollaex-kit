@@ -48,6 +48,7 @@ import Coins from '../Coins';
 import { BASE_CURRENCY } from 'config/constants';
 import { isLoggedIn } from 'utils/token';
 import { setPricesAndAsset } from 'actions/assetActions';
+import { minimalTimezoneSet } from '../Settings/Utils';
 const { Option } = Select;
 
 const NameForm = AdminHocForm('NameForm');
@@ -701,11 +702,44 @@ class GeneralContent extends Component {
 		}));
 	};
 
+	handleInputChangeTimezone = (key, value) => {
+		this.setState((prevState) => ({
+			constants: {
+				...prevState.constants,
+				secrets: {
+					...prevState.constants.secrets,
+					emails: {
+						...prevState.constants.secrets.emails,
+						[key]: value,
+					},
+				},
+				kit: {
+					...prevState.constants.kit,
+					timezone: value,
+				},
+			},
+		}));
+	};
+
 	handleSave = async () => {
 		try {
 			this.handleSubmitGeneral({
 				kit: {
 					apps: this.state.constants.kit.apps,
+				},
+			});
+		} catch (error) {
+			message.error(error.message);
+		}
+	};
+	handleSaveTimezone = async () => {
+		try {
+			this.handleSubmitGeneral({
+				secrets: {
+					emails: this.state.constants.secrets.emails,
+				},
+				kit: {
+					timezone: this.state.constants.kit.timezone,
 				},
 			});
 		} catch (error) {
@@ -909,6 +943,32 @@ class GeneralContent extends Component {
 									buttonSubmitting={buttonSubmitting}
 								/>
 							</div>
+							<div className="divider"></div>
+							<div>
+								<div className="sub-title">Timezone</div>
+								<Select
+									onChange={(e) => {
+										this.handleInputChangeTimezone('timezone', e);
+									}}
+									value={this?.state?.constants?.secrets?.emails?.timezone}
+									placeholder="Select email timezone"
+								>
+									{minimalTimezoneSet.map((timezone) => {
+										return (
+											<Select.Option value={timezone.value}>
+												{timezone.label}
+											</Select.Option>
+										);
+									})}
+								</Select>
+							</div>
+							<Button
+								style={{ width: 120 }}
+								type="primary"
+								onClick={this.handleSaveTimezone}
+							>
+								Save
+							</Button>
 							<div className="divider"></div>
 							<div>
 								<div className="sub-title">Language</div>
@@ -1459,12 +1519,10 @@ class GeneralContent extends Component {
 							<div className="sub-title">API keys</div>
 							<div className="description d-flex flex-column">
 								<span>
-									Generate API keys for programmatic access to your
-									exchange.
+									Generate API keys for programmatic access to your exchange.
 								</span>
 								<span>
-									Note, in order to generate API keys it is required to add
-									a{' '}
+									Note, in order to generate API keys it is required to add a{' '}
 									<a
 										href="https://www.techtarget.com/whatis/definition/whitelist"
 										target={'_blank'}
