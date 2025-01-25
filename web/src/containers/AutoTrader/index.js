@@ -287,7 +287,7 @@ const Autotrader = ({ user, sourceOptions, coins, features }) => {
 	const timeZone = new Date().toString().match(/\(([A-Za-z\s].*)\)/)[1];
 
 	useEffect(() => {
-		if (features?.auto_trade) {
+		if (features?.auto_trade_config) {
 			getTradeDetails();
 		} else {
 			browserHistory.push('/summary');
