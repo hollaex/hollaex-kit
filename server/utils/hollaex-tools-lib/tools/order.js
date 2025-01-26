@@ -81,7 +81,7 @@ const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, 
 				}
 			);
 
-			return getNodeLib().createOrder(user.network_id, symbol, side, size, type, type === 'market' ? null : price, feeData, opts);
+			return getNodeLib().createOrder(user.network_id, symbol, side, size, type, type === 'market' ? 0 : price, feeData, opts);
 		});
 };
 
