@@ -712,7 +712,6 @@ export const generateRoutes = (routes = []) => {
 					path="announcement"
 					name="Announcement"
 					component={Announcement}
-					onEnter={requireAuth}
 				/>
 				<Route
 					path="wallet/:currency"
