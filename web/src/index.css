@@ -2140,10 +2140,16 @@ table th {
     .wallet-container .wallet-assets_block .td-wallet .deposit-withdrawal-wrapper {
       margin-left: -3rem;
       width: 14rem; }
+  .wallet-container .wallet-assets_block .view-price-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    width: 100%; }
   .wallet-container .wallet-assets_block .wallet-assets_block-table {
     width: 100%;
     font-size: 1rem;
-    margin-bottom: 3rem; }
+    margin-bottom: 1rem; }
     .wallet-container .wallet-assets_block .wallet-assets_block-table thead tr,
     .wallet-container .wallet-assets_block .wallet-assets_block-table tfoot tr {
       height: 3.5rem;
@@ -2291,6 +2297,9 @@ table th {
   margin-left: auto;
   margin-right: auto;
   font-family: "Raleway"; }
+  .currency-wallet-wrapper .deposit-history-table-wrapper .presentation_container {
+    width: 100% !important;
+    max-width: none !important; }
   .currency-wallet-wrapper .title-wrapper {
     font-size: 3rem; }
     .currency-wallet-wrapper .title-wrapper .edit-wrapper__container {
@@ -2301,8 +2310,10 @@ table th {
     line-height: unset !important; }
   .currency-wallet-wrapper .link-container .trade-link-wrapper {
     margin: 1%; }
+    .currency-wallet-wrapper .link-container .trade-link-wrapper .view-price-link {
+      font-size: 1rem; }
   .currency-wallet-wrapper .wallet-content-wrapper {
-    height: 65%;
+    height: 45%;
     border: 1px solid #808080;
     border-radius: 5px;
     justify-content: space-between; }
@@ -8148,6 +8159,8 @@ table th {
     .hollaex-token-wrapper .token-wrapper .header-container {
       width: 100%;
       font-size: 16px; }
+      .hollaex-token-wrapper .token-wrapper .header-container .link-wrapper {
+        font-size: 14px; }
       .hollaex-token-wrapper .token-wrapper .header-container .title {
         font-size: 24px;
         color: var(--labels_secondary-inactive-label-text-graphics); }
@@ -8170,6 +8183,9 @@ table th {
       margin-top: 0rem !important; }
     .hollaex-token-wrapper .token-wrapper .balance-wrapper .icon_title-wrapper .icon_title-svg {
       height: 0rem !important; }
+    .hollaex-token-wrapper .token-wrapper .balance-wrapper .image-Wrapper .balance-link:hover {
+      cursor: pointer;
+      opacity: 0.6; }
     .hollaex-token-wrapper .token-wrapper .balance-wrapper .image-Wrapper .action_notification-svg {
       margin-right: 1rem; }
     .hollaex-token-wrapper .token-wrapper .ant-btn {
@@ -8197,7 +8213,10 @@ table th {
             color: var(--specials_buttons-links-and-highlights);
             cursor: pointer; }
         .hollaex-token-wrapper .token-wrapper .hollaex-container .info-container .button-container {
-          margin-top: 3rem; }
+          margin-top: 3rem;
+          display: flex;
+          align-items: center;
+          gap: 2%; }
           .hollaex-token-wrapper .token-wrapper .hollaex-container .info-container .button-container .edit-wrapper__container {
             width: 100%; }
             .hollaex-token-wrapper .token-wrapper .hollaex-container .info-container .button-container .edit-wrapper__container div {
@@ -8290,6 +8309,8 @@ table th {
   display: block !important; }
   .layout-mobile .hollaex-token-wrapper .token-wrapper .header-container .balance-wrapper .link {
     text-align: left; }
+  .layout-mobile .hollaex-token-wrapper .token-wrapper .header-container .balance-wrapper .link-wrapper {
+    margin-bottom: 2%; }
 
 @media (max-width: 1024px) {
   .token-wrapper {

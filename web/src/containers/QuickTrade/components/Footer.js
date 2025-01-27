@@ -23,7 +23,9 @@ const Footer = ({ brokerUsed, name, isNetwork, pair }) => {
 				) : !brokerUsed ? (
 					<span>
 						<Link to={`/trade/${pair}`}>
-							<span className='blue-link pointer underline-text mr-2'>{name}</span>
+							<span className="blue-link pointer underline-text mr-2">
+								{name}
+							</span>
 						</Link>
 						<span>
 							<EditWrapper stringId="TYPES_VALUES.market">
@@ -38,6 +40,15 @@ const Footer = ({ brokerUsed, name, isNetwork, pair }) => {
 						</EditWrapper>
 					</span>
 				)}
+			</div>
+			<div>
+				<EditWrapper stringId="VIEW_PRICES">
+					<Link to="/prices">
+						<span className="blue-link text-decoration-underline pointer">
+							{STRINGS['VIEW_PRICES']}
+						</span>
+					</Link>
+				</EditWrapper>
 			</div>
 		</div>
 	);
