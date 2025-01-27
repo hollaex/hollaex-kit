@@ -371,19 +371,19 @@ const Final = ({
 					<b>Status:</b> {coinFormData.active ? 'Active' : 'Not active'}
 				</div>
 				<div>
-					<b>Price:</b> {coinFormData.estimated_price}
+					<b>Estimated Price:</b> {coinFormData.estimated_price}
 				</div>
 				{/* <div>
 					<b>Fee for withdrawal:</b> {coinFormData.withdrawal_fee}
 				</div> */}
 				<div>
-					<b>Minimum withdrawal amount:</b> {coinFormData.min}
+					<b>Minimum amount:</b> {coinFormData.min}
 				</div>
 				<div>
-					<b>Maximum withdrawal amount:</b> {coinFormData.max}
+					<b>Maximum amount:</b> {coinFormData.max}
 				</div>
 				<div>
-					<b>Increment Amount:</b> {coinFormData.increment_unit}
+					<b>Increment Amount (e.g. 0.0001):</b> {coinFormData.increment_unit}
 				</div>
 				{/* <div>
 					<b>Decimal points:</b> {meta.decimal_points}
@@ -525,8 +525,8 @@ const Final = ({
 						</Button>
 						<div className="separator"></div>
 						<div className="description-small remove">
-							Removing this coin will permanently delete this coin from your
-							exchange and render any pairs using it inactive. Use with caution!
+							Removing this coin will delist this coin from your exchange. Make
+							sure you remove any associated pairs first. Use with caution!
 						</div>
 					</div>
 				</div>
