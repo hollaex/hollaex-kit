@@ -91,7 +91,7 @@ const {
 } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
-const { getKitConfig, isValidTierLevel, getKitTier, isDatetime, getAssetsPrices, getKitSecrets, sendCustomEmail, emailHtmlBoilerplate, getDomain, updateKitConfigSecrets, sleep, getKitCoins, getKitCoin, subscribedToCoin } = require('./common');
+const { getKitConfig, isValidTierLevel, getKitTier, isDatetime, getAssetsPrices, getKitSecrets, sendCustomEmail, emailHtmlBoilerplate, getDomain, updateKitConfigSecrets, sleep, getKitCoins, getKitCoin, subscribedToCoin, getQuickTrades } = require('./common');
 const { isValidPassword, createSession } = require('./security');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { all, reject } = require('bluebird');
@@ -106,6 +106,7 @@ const moment = require('moment');
 const mathjs = require('mathjs');
 const { loggerUser } = require('../../../config/logger');
 const BigNumber = require('bignumber.js');
+const { INVALID_AUTOTRADE_CONFIG } = require('../../../messages');
 
 let networkIdToKitId = {};
 let kitIdToNetworkId = {};
@@ -3684,6 +3685,20 @@ const createUserAutoTrade = async (user_id, {
 		throw new Error('Invalid coin ' + spend_coin);
 	}
 
+	const originalPair = `${spend_coin}-${buy_coin}`;
+	const flippedPair = `${buy_coin}-${spend_coin}`;
+
+	const quickTrades = getQuickTrades();
+	let quickTradeConfig = quickTrades.find(quickTrade => quickTrade.symbol === originalPair);
+
+	if (!quickTradeConfig) {
+		quickTradeConfig = quickTrades.find(quickTrade => quickTrade.symbol === flippedPair);
+	}
+
+	if (!quickTradeConfig) {
+	    throw new Error(INVALID_AUTOTRADE_CONFIG);
+	}
+
     if (week_days && !week_days.every(day => day >= 0 && day <= 6)) {
         throw new Error('invalid week_days');
     }
@@ -3743,6 +3758,24 @@ const updateUserAutoTrade = async (user_id, {
 	if (!subscribedToCoin(spend_coin)) {
 		throw new Error('Invalid coin ' + spend_coin);
 	}
+
+	const originalPair = `${spend_coin}-${buy_coin}`;
+	const flippedPair = `${buy_coin}-${spend_coin}`;
+
+	const quickTrades = getQuickTrades();
+	let quickTradeConfig = quickTrades.find(quickTrade => quickTrade.symbol === originalPair);
+
+	if (!quickTradeConfig) {
+		quickTradeConfig = quickTrades.find(quickTrade => quickTrade.symbol === flippedPair);
+	}
+
+	if (!quickTradeConfig) {
+	    throw new Error(INVALID_AUTOTRADE_CONFIG);
+	}
+
+    if (week_days && !week_days.every(day => day >= 0 && day <= 6)) {
+        throw new Error('invalid week_days');
+    }
 
     if (week_days && !week_days.every(day => day >= 0 && day <= 6)) {
         throw new Error('invalid week_days');
