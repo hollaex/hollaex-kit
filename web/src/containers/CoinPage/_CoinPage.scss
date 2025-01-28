@@ -58,6 +58,10 @@
 			width: 100%;
 			font-size: 16px;
 
+			.link-wrapper {
+				font-size: 14px;
+			}
+
 			.title {
 				font-size: 24px;
 				color: $colors-black;
@@ -99,6 +103,11 @@
 			}
 
 			.image-Wrapper {
+				.balance-link:hover {
+					cursor: pointer;
+					opacity: 0.6;
+				}
+
 				.action_notification-svg {
 					margin-right: 1rem;
 				}
@@ -141,6 +150,9 @@
 
 				.button-container {
 					margin-top: 3rem;
+					display: flex;
+					align-items: center;
+					gap: 2%;
 
 					.edit-wrapper__container {
 						width: 100%;
@@ -297,6 +309,9 @@
 				display: block !important;
 				.link {
 					text-align: left;
+				}
+				.link-wrapper {
+					margin-bottom: 2%;
 				}
 			}
 		}
