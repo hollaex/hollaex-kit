@@ -20,7 +20,6 @@ import {
 	changeTheme,
 	setLanguage,
 	setDepositAndWithdraw,
-	getAnnouncement,
 	setSelectedAnnouncement,
 	setIsActiveSelectedAnnouncement,
 } from 'actions/appActions';
@@ -62,8 +61,30 @@ class AppBar extends Component {
 		this.setState({
 			title: document?.title ? document?.title : '',
 		});
+		const announcementDetail =
+			this.props.getAnnouncementDetails && this.props.getAnnouncementDetails[0];
+
+		const topAnnouncementDetail =
+			announcementDetail && announcementDetail?.is_navbar;
+
+		const isDisplayPopup =
+			!announcementDetail?.start_date && !announcementDetail?.end_date
+				? announcementDetail?.is_popup
+				: announcementDetail?.is_popup &&
+				  this.isTodayBetweenDates(
+						announcementDetail?.start_date,
+						announcementDetail?.end_date
+				  );
+
+		const dropdownAnnouncementDetail =
+			this.props.getAnnouncementDetails &&
+			this.props.getAnnouncementDetails[0]?.is_dropdown;
 		if (isLoggedIn()) {
-			this.props.getAnnouncement();
+			this.setState({
+				isTopbarAnnouncement: topAnnouncementDetail,
+				isDropdownAnnouncement: dropdownAnnouncementDetail,
+				isPopupAnnouncement: isDisplayPopup,
+			});
 		}
 	}
 
@@ -82,50 +103,9 @@ class AppBar extends Component {
 	};
 
 	componentDidUpdate(prevProps) {
-		const {
-			pair,
-			pairs,
-			lastPrice,
-			isProTrade,
-			isQuickTrade,
-			getAnnouncementDetails,
-		} = this.props;
+		const { pair, pairs, lastPrice, isProTrade, isQuickTrade } = this.props;
 		const { increment_price } = pairs[pair] || { pair_base: '', pair_2: '' };
 		const price = formatToFixed(lastPrice, increment_price);
-
-		const topAnnouncementDetail =
-			getAnnouncementDetails && getAnnouncementDetails[0];
-		const prevTopAnnouncementDetail = prevProps.getAnnouncementDetails[0];
-		const isDisplayPopup =
-			!topAnnouncementDetail?.start_date && !topAnnouncementDetail?.end_date
-				? topAnnouncementDetail?.is_popup
-				: topAnnouncementDetail?.is_popup &&
-				  this.isTodayBetweenDates(
-						topAnnouncementDetail?.start_date,
-						topAnnouncementDetail?.end_date
-				  );
-
-		const updateAnnouncementState = (
-			announcementText,
-			stateText,
-			popupText
-		) => {
-			if (
-				isLoggedIn &&
-				prevTopAnnouncementDetail?.[announcementText] !==
-					topAnnouncementDetail?.[announcementText] &&
-				topAnnouncementDetail?.[announcementText]
-			) {
-				this.setState({
-					[stateText]: popupText ?? topAnnouncementDetail?.[announcementText],
-				});
-			}
-		};
-
-		updateAnnouncementState('is_navbar', 'isTopbarAnnouncement');
-		updateAnnouncementState('is_popup', 'isPopupAnnouncement', isDisplayPopup);
-		updateAnnouncementState('is_dropdown', 'isDropdownAnnouncement');
-
 		if (prevProps.theme !== this.props.theme) {
 			this.setSelectedTheme(this.props.theme);
 		}
@@ -357,10 +337,12 @@ class AppBar extends Component {
 	};
 
 	renderAnnouncementPopup = () => {
-		const { icons, getAnnouncementDetails, router } = this.props;
+		const { icons, getAnnouncementDetails, router, constants } = this.props;
 		return (
 			<Dialog
-				isOpen={this.state.isPopupAnnouncement}
+				isOpen={
+					this.state.isPopupAnnouncement && constants?.features?.announcement
+				}
 				onCloseDialog={() =>
 					this.setState({
 						isPopupAnnouncement: false,
@@ -492,41 +474,43 @@ class AppBar extends Component {
 			</MobileBarWrapper>
 		) : (
 			<div>
-				{isTopbarAnnouncement && isLoggedIn() && (
-					<div className="app_bar announcement-top-bar">
-						<Button
-							label={STRINGS['TRADE_TAB_POSTS']}
-							onClick={() =>
-								this.onHandleRouteAnnouncement('topbar announcements')
-							}
-							className="announcement-btn mr-1"
-						/>
-						<div
-							className="announcement-message"
-							dangerouslySetInnerHTML={{
-								__html: getAnnouncementDetails[0]?.message,
-							}}
-						></div>
-						<EditWrapper stringId="HOLLAEX_TOKEN.VIEW">
-							<span
-								className="view-more-btn blue-link text-decoration-underline"
+				{isTopbarAnnouncement &&
+					constants?.features?.announcement &&
+					isLoggedIn() && (
+						<div className="app_bar announcement-top-bar">
+							<Button
+								label={STRINGS['TRADE_TAB_POSTS']}
 								onClick={() =>
-									this.onHandleRouteAnnouncement('topbar view more')
+									this.onHandleRouteAnnouncement('topbar announcements')
 								}
-							>
-								{STRINGS['HOLLAEX_TOKEN.VIEW']}
-							</span>
-						</EditWrapper>
-						<CloseCircleOutlined
-							className="close-icon"
-							onClick={() =>
-								this.setState({
-									isTopbarAnnouncement: false,
-								})
-							}
-						/>
-					</div>
-				)}
+								className="announcement-btn mr-1"
+							/>
+							<div
+								className="announcement-message"
+								dangerouslySetInnerHTML={{
+									__html: getAnnouncementDetails[0]?.message,
+								}}
+							></div>
+							<EditWrapper stringId="HOLLAEX_TOKEN.VIEW">
+								<span
+									className="view-more-btn blue-link text-decoration-underline"
+									onClick={() =>
+										this.onHandleRouteAnnouncement('topbar view more')
+									}
+								>
+									{STRINGS['HOLLAEX_TOKEN.VIEW']}
+								</span>
+							</EditWrapper>
+							<CloseCircleOutlined
+								className="close-icon"
+								onClick={() =>
+									this.setState({
+										isTopbarAnnouncement: false,
+									})
+								}
+							/>
+						</div>
+					)}
 				<div
 					className={classnames('app_bar d-flex justify-content-between', {
 						'no-borders': false,
@@ -657,7 +641,9 @@ class AppBar extends Component {
 									toggle={this.onToggle}
 								/>
 							</div>
-							{isDropdownAnnouncement && <AnnouncementList user={user.email} />}
+							{isDropdownAnnouncement && constants?.features?.announcement && (
+								<AnnouncementList user={user.email} />
+							)}
 							{/* <MenuList
 							menuItems={menuItems}
 							securityPending={securityPending}
@@ -716,7 +702,6 @@ const mapDispatchToProps = (dispatch) => ({
 	setUserData: bindActionCreators(setUserData, dispatch),
 	changeLanguage: bindActionCreators(setLanguage, dispatch),
 	setDepositAndWithdraw: bindActionCreators(setDepositAndWithdraw, dispatch),
-	getAnnouncement: bindActionCreators(getAnnouncement, dispatch),
 	setSelectedAnnouncement: bindActionCreators(
 		setSelectedAnnouncement,
 		dispatch
