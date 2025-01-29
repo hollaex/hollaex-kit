@@ -259,7 +259,13 @@ const autoTraderData = (
 	];
 };
 
-const Autotrader = ({ user, sourceOptions, coins, features }) => {
+const Autotrader = ({
+	user,
+	sourceOptions,
+	coins,
+	features,
+	exchangeTimeZone,
+}) => {
 	const [isRenderPopup, setIsRenderPopup] = useState({
 		isDisplayAutoTrader: false,
 		isDisplayFrequencyPopup: false,
@@ -284,7 +290,6 @@ const Autotrader = ({ user, sourceOptions, coins, features }) => {
 	});
 
 	const [tradeDetails, setTradeDetails] = useState([]);
-	const timeZone = new Date().toString().match(/\(([A-Za-z\s].*)\)/)[1];
 
 	useEffect(() => {
 		if (features?.auto_trade_config) {
@@ -1152,7 +1157,7 @@ const Autotrader = ({ user, sourceOptions, coins, features }) => {
 							<div className="secondary-text mt-1">
 								<EditWrapper stringId="AUTO_TRADER.TIME_ZONE">
 									<span>{STRINGS['AUTO_TRADER.TIME_ZONE']}</span>
-									<span className="ml-1">{timeZone}</span>
+									<span className="ml-1">{exchangeTimeZone}</span>
 								</EditWrapper>
 							</div>
 						</div>
@@ -1271,7 +1276,7 @@ const Autotrader = ({ user, sourceOptions, coins, features }) => {
 					onHandleEdit={onHandleEdit}
 					isConfirmAutoTrade={true}
 					getDayLabel={getDayLabel}
-					timeZone={timeZone}
+					exchangeTimeZone={exchangeTimeZone}
 				/>
 			)}
 			{isRenderPopup?.isDisplayPlayAutoTrade && (
@@ -1294,7 +1299,7 @@ const Autotrader = ({ user, sourceOptions, coins, features }) => {
 					onHandleEdit={onHandleEdit}
 					isConfirmAutoTrade={false}
 					getDayLabel={getDayLabel}
-					timeZone={timeZone}
+					exchangeTimeZone={exchangeTimeZone}
 				/>
 			)}
 			<Dialog
@@ -1572,6 +1577,7 @@ const mapStateToProps = (state) => ({
 	sourceOptions: getSourceOptions(state.app.quicktrade),
 	coins: state.app.coins,
 	features: state.app.features,
+	exchangeTimeZone: state.app.exchangeTimeZone,
 });
 
 export default connect(mapStateToProps)(Autotrader);
