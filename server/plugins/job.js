@@ -357,7 +357,6 @@ const shouldExecuteTrade = (frequency, weekDays, currentDay, currentDate, dayOfM
 const executeTrade = async (autoTradeConfig) => {
     const { spend_coin, buy_coin, spend_amount, user_id } = autoTradeConfig;
 	const symbol = `${buy_coin}-${spend_coin}`;
-	const side = "buy";
 	const size = spend_amount;  
 
 	let hasError = false;
@@ -390,21 +389,24 @@ const executeTrade = async (autoTradeConfig) => {
     }
 
 	try {
-		const conversions = await toolsLib.getAssetsPrices([spend_coin], buy_coin, spend_amount);
-
-		const pairInfo  = toolsLib.getKitPairsConfig()[symbol];
-		const decimalPoint = new BigNumber(pairInfo.increment_size).dp();
-		let roundedAmount = new BigNumber(conversions[spend_coin]).decimalPlaces(decimalPoint, BigNumber.ROUND_DOWN).toNumber();
 
 		if (!hasError) {
-			await toolsLib.order.createUserOrderByKitId(
-				user_id,  
-				symbol,  
-				side,   
-				roundedAmount,    
-				"market",  
-			);
 			const user = await toolsLib.user.getUserByKitId(user_id); 
+
+			const ip = '1.1.1.1';
+			const opts = {
+				additionalHeaders: {
+					'x-forwarded-for': ip
+				}
+			};
+		
+			const quote = await toolsLib.order.getUserQuickTrade(
+				spend_coin, spend_amount, null, buy_coin, 
+				null, ip, opts, { headers: { 'api-key': null } }, { user_id: user_id, network_id: user.network_id }
+			);
+
+			await toolsLib.order.executeUserOrder(user_id, opts, quote.token, null);
+
 			sendEmail(
                 MAILTYPE.AUTO_TRADE_FILLED,
                 user.email,
@@ -416,7 +418,7 @@ const executeTrade = async (autoTradeConfig) => {
                 user.settings
             );
 		}
-        loggerPlugin.verbose(`Auto trade completed for user ${user_id}: ${buy_coin} -> ${spend_coin} for ${roundedAmount} ${spend_coin}`);
+        loggerPlugin.verbose(`Auto trade completed for user ${user_id}: ${buy_coin} -> ${spend_coin}`);
 	} catch (error) {
 		const adminAccount = await toolsLib.user.getUserByKitId(1);
 		sendEmail(
@@ -424,7 +426,7 @@ const executeTrade = async (autoTradeConfig) => {
 			adminAccount.email,
 			{
 				type: 'Auto trade execution failed',
-				data: `Trade execution for user id ${user_id} failed, symbol: ${symbol}, side: ${side} error message ${error.message}`
+				data: `Trade execution for user id ${user_id} failed, symbol: ${symbol}, error message ${error.message}`
 			},
 			adminAccount.settings
 		);

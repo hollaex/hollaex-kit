@@ -127,6 +127,7 @@ export const SET_ACTIVE_QUICK_TRADE = 'SET_ACTIVE_QUICK_TRADE';
 export const SET_SELECTED_ANNOUNCEMENT = 'SET_SELECTED_ANNOUNCEMENT';
 export const SET_ACTIVE_SELECTED_ANNOUNCEMENT =
 	'SET_ACTIVE_SELECTED_ANNOUNCEMENT';
+export const SET_EXCHANGE_TIMEZONE = 'SET_EXCHANGE_TIMEZONE';
 
 export const SORT = {
 	VOL: 'volume',
@@ -872,3 +873,12 @@ export const setIsQuickTrade = (setIsQuickTrade) => ({
 	type: SET_ACTIVE_QUICK_TRADE,
 	payload: setIsQuickTrade,
 });
+
+export const setExchangeTimeZone = (exchangeTimeZone) => {
+	return {
+		type: SET_EXCHANGE_TIMEZONE,
+		payload: {
+			exchangeTimeZone,
+		},
+	};
+};

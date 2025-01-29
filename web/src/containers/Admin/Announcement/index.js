@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import ReactQuill from 'react-quill';
 import { ReactSVG } from 'react-svg';
 import { Button, DatePicker, Input, message, Modal, Table } from 'antd';
@@ -18,6 +19,7 @@ import {
 	setAdminAnnouncementDetails,
 } from './action';
 import './index.scss';
+import { setAppAnnouncements } from 'actions/appActions';
 
 const announcementHeader = (removeDetail) => [
 	{
@@ -115,7 +117,7 @@ const Editor = ({ announcement, onHandleChange }) => {
 	);
 };
 
-const AdminAnnouncement = ({ constants }) => {
+const AdminAnnouncement = ({ constants, setAppAnnouncements }) => {
 	const [announcementList, setAnnouncementList] = useState([]);
 	const [isAnnouncementLifeSpan, setIsAnnouncementLifeSpan] = useState(false);
 	const [isDisplayAnnouncement, setIsDisplayAnnouncement] = useState({
@@ -189,6 +191,7 @@ const AdminAnnouncement = ({ constants }) => {
 				endDate: endDate,
 			});
 		}
+		setAppAnnouncements(announcementList);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [announcementList]);
 
@@ -301,11 +304,18 @@ const AdminAnnouncement = ({ constants }) => {
 
 	const onHandleSave = () => {
 		setIsAnnouncementLifeSpan(false);
-		editDetail({
+		const updatedDetail = {
 			...topAnnouncementDetail,
 			start_date: dateRange?.startDate,
 			end_date: dateRange?.endDate,
+		};
+
+		const filteredAnnouncement = announcementList?.filter((detail) => {
+			return detail?.id !== updatedDetail?.id;
 		});
+		const editedAnnouncementDetails = [updatedDetail, ...filteredAnnouncement];
+		setAnnouncementList(editedAnnouncementDetails);
+		editDetail(updatedDetail);
 	};
 
 	const isEnterpriseUpgrade = handleEnterpriseUpgrade(constants.info);
@@ -550,4 +560,8 @@ const mapStateToProps = (state) => ({
 	constants: state.app.constants,
 });
 
-export default connect(mapStateToProps)(AdminAnnouncement);
+const mapDispatchToProps = (dispatch) => ({
+	setAppAnnouncements: bindActionCreators(setAppAnnouncements, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AdminAnnouncement);

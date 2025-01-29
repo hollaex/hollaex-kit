@@ -270,3 +270,4 @@ exports.PAYMENT_DETAIL_NOT_FOUND = 'Payment detail not found';
 exports.UNAUTHORIZED_UPDATE_METHOD = 'You cannot update verified payment method';
 exports.P2P_DEAL_NOT_FOUND = 'P2P Deal not found!';
 exports.INVALID_NUMBER = 'Value is not a number';
+exports.INVALID_AUTOTRADE_CONFIG = 'This pair does not exist';

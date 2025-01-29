@@ -88,6 +88,7 @@ import {
 	SET_ACTIVE_QUICK_TRADE,
 	SET_SELECTED_ANNOUNCEMENT,
 	SET_ACTIVE_SELECTED_ANNOUNCEMENT,
+	SET_EXCHANGE_TIMEZONE,
 } from 'actions/appActions';
 import { THEME_DEFAULT } from 'config/constants';
 import { getLanguage } from 'utils/string';
@@ -229,6 +230,7 @@ const INITIAL_STATE = {
 	isQuickTrade: false,
 	selectedAnnouncement: {},
 	isActiveSelectedAnnouncement: false,
+	exchangeTimeZone: '',
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -941,6 +943,12 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				isQuickTrade: payload,
+			};
+		}
+		case SET_EXCHANGE_TIMEZONE: {
+			return {
+				...state,
+				exchangeTimeZone: payload.exchangeTimeZone,
 			};
 		}
 		default:

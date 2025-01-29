@@ -52,7 +52,7 @@ export const ConfirmAutoTrade = ({
 	onHandleEdit,
 	isConfirmAutoTrade,
 	getDayLabel,
-	timeZone,
+	exchangeTimeZone,
 }) => {
 	const frequencyTrade = isConfirmAutoTrade
 		? autoTradeDetails?.frequency
@@ -231,7 +231,7 @@ export const ConfirmAutoTrade = ({
 										{STRINGS['AUTO_TRADER.TIME_ZONE']}
 									</span>
 								</EditWrapper>
-								<span className="important-text">{timeZone}</span>
+								<span className="important-text">{exchangeTimeZone}</span>
 							</div>
 							{isConfirmAutoTrade && (
 								<EditWrapper stringId="EDIT_TEXT">

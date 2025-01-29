@@ -889,6 +889,15 @@ const AssetsBlock = ({
 						</div>
 					</div>
 				)}
+				<div className="view-price-link">
+					<EditWrapper stringId="VIEW_PRICES">
+						<Link to={'/prices'}>
+							<span className="blue-link pointer text-decoration-underline">
+								{STRINGS['VIEW_PRICES']?.toUpperCase()}
+							</span>
+						</Link>
+					</EditWrapper>
+				</div>
 			</div>
 		</div>
 	);
