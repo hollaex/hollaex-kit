@@ -15,13 +15,18 @@ import STRINGS from 'config/localizedStrings';
 import './AutoTrader.scss';
 import { Button, Coin, Dialog, EditWrapper, Image, Table } from 'components';
 import { AutoTraderEmptydata, ConfirmAutoTrade } from './Utils';
-import { getSourceOptions } from 'containers/QuickTrade/components/utils';
+import {
+	flipPair,
+	getSourceOptions,
+	quicktradePairSelector,
+} from 'containers/QuickTrade/components/utils';
 import {
 	editAutoTradeDeatils,
 	getAutoTradeDetails,
 	removeAutoTrade,
 	setAutoTrader,
 } from './actions';
+import { handlePopupContainer } from 'utils/utils';
 
 const autoTraderData = (
 	coins,
@@ -265,6 +270,7 @@ const Autotrader = ({
 	coins,
 	features,
 	exchangeTimeZone,
+	quicktradePairs,
 }) => {
 	const [isRenderPopup, setIsRenderPopup] = useState({
 		isDisplayAutoTrader: false,
@@ -290,6 +296,23 @@ const Autotrader = ({
 	});
 
 	const [tradeDetails, setTradeDetails] = useState([]);
+
+	const getTargetOptions = (source) =>
+		sourceOptions.filter((key) => {
+			const pairKey = `${key}-${source}`;
+			const flippedKey = flipPair(pairKey);
+			return quicktradePairs
+				? quicktradePairs[pairKey] || quicktradePairs[flippedKey]
+				: pairKey;
+		});
+
+	const pairedAsset = `${autoTradeDetails?.spend_coin}-${autoTradeDetails?.buy_coin}`;
+	const queryPair =
+		quicktradePairs &&
+		(quicktradePairs[pairedAsset] || quicktradePairs[flipPair(pairedAsset)]
+			? (quicktradePairs[pairedAsset] || quicktradePairs[flipPair(pairedAsset)])
+					?.symbol
+			: null);
 
 	useEffect(() => {
 		if (features?.auto_trade_config) {
@@ -618,9 +641,11 @@ const Autotrader = ({
 
 	const onHandleAsset = (text, asset) => {
 		if (text === 'spend') {
+			getTargetOptions(asset);
 			setAutoTradeDetails((prev) => ({
 				...prev,
 				spend_coin: asset,
+				buy_coin: getTargetOptions(asset) && getTargetOptions(asset)[0],
 			}));
 		} else if (text === 'buy') {
 			setAutoTradeDetails((prev) => ({
@@ -688,6 +713,14 @@ const Autotrader = ({
 		return value?.replace(/[^0-9]/g, '');
 	};
 
+	const isDisabledTrade =
+		!autoTradeDetails?.buy_coin ||
+		!autoTradeDetails?.spend_amount ||
+		!autoTradeDetails?.spend_coin ||
+		isMinSpendAmount ||
+		isMaxSpendAmount ||
+		(getSpendAssetAval && !queryPair);
+
 	return (
 		<div className="auto-trader-container">
 			<Dialog
@@ -751,9 +784,14 @@ const Autotrader = ({
 								placeholder={STRINGS['AUTO_TRADER.SELECT_SPEND_ASSET']}
 								showSearch
 								size="medium"
-								dropdownClassName="custom-select-style auto-trader-select-option-dropdown"
+								dropdownClassName={
+									isMobile
+										? 'custom-select-style auto-trader-select-option-dropdown auto-trader-select-option-dropdown-mobile'
+										: 'custom-select-style auto-trader-select-option-dropdown'
+								}
 								onChange={(value) => onHandleAsset('spend', value)}
 								allowClear={() => onHandleClear('spend')}
+								getPopupContainer={handlePopupContainer}
 							>
 								{filteredBuyOptions?.map((coin) => (
 									<Select.Option key={coin} value={coin}>
@@ -825,8 +863,13 @@ const Autotrader = ({
 								showSearch
 								allowClear={() => onHandleClear('buy')}
 								size="medium"
-								dropdownClassName="custom-select-style auto-trader-select-option-dropdown"
+								dropdownClassName={
+									isMobile
+										? 'custom-select-style auto-trader-select-option-dropdown auto-trader-select-option-dropdown-mobile'
+										: 'custom-select-style auto-trader-select-option-dropdown select-buy-dropdown'
+								}
 								onChange={(value) => onHandleAsset('buy', value)}
+								getPopupContainer={handlePopupContainer}
 							>
 								{filteredSpendOptions?.map((coin) => (
 									<Select.Option key={coin} value={coin}>
@@ -897,7 +940,13 @@ const Autotrader = ({
 									<span>{STRINGS['WITHDRAW_PAGE.ZERO_BALANCE']}</span>
 								</div>
 							)}
-							{isMinSpendAmount && getSpendAssetAval > 0 ? (
+							{getSpendAssetAval > 0 && !queryPair && (
+								<div className="d-flex mt-2 error-text font-weight-bold">
+									<ExclamationCircleFilled className="mt-1 mr-1" />
+									<span>{STRINGS['AUTO_TRADER.MISMATCH_PAIR']}</span>
+								</div>
+							)}
+							{isMinSpendAmount && getSpendAssetAval > 0 && queryPair ? (
 								<div className="d-flex mt-2 error-text font-weight-bold">
 									<ExclamationCircleFilled className="mt-1 mr-1" />
 									<EditWrapper>
@@ -909,7 +958,8 @@ const Autotrader = ({
 								</div>
 							) : (
 								isMaxSpendAmount &&
-								getSpendAssetAval > 0 && (
+								getSpendAssetAval > 0 &&
+								queryPair && (
 									<div className="d-flex mt-2 error-text font-weight-bold">
 										<ExclamationCircleFilled className="mt-1 mr-1" />
 										<span>{STRINGS['AUTO_TRADER.MAX_AMOUNT']}</span>
@@ -928,13 +978,7 @@ const Autotrader = ({
 							label={STRINGS['STAKE.NEXT']}
 							className="next-btn"
 							onClick={() => onHandleNext('step1')}
-							disabled={
-								!autoTradeDetails?.buy_coin ||
-								!autoTradeDetails?.spend_amount ||
-								!autoTradeDetails?.spend_coin ||
-								isMinSpendAmount ||
-								isMaxSpendAmount
-							}
+							disabled={isDisabledTrade}
 						/>
 					</div>
 				</div>
@@ -1015,7 +1059,11 @@ const Autotrader = ({
 								showSearch
 								size="medium"
 								value={autoTradeDetails?.frequency}
-								dropdownClassName="custom-select-style auto-trader-select-option-dropdown"
+								dropdownClassName={
+									isMobile
+										? 'custom-select-style auto-trader-select-option-dropdown'
+										: 'custom-select-style auto-trader-select-option-dropdown select-frequency-dropdown'
+								}
 								onChange={(value) =>
 									setAutoTradeDetails((prev) => ({
 										...prev,
@@ -1024,6 +1072,7 @@ const Autotrader = ({
 										week_days: [],
 									}))
 								}
+								getPopupContainer={handlePopupContainer}
 							>
 								{frequencyTradeOptions?.map((option) => {
 									return (
@@ -1578,6 +1627,7 @@ const mapStateToProps = (state) => ({
 	coins: state.app.coins,
 	features: state.app.features,
 	exchangeTimeZone: state.app.exchangeTimeZone,
+	quicktradePairs: quicktradePairSelector(state),
 });
 
 export default connect(mapStateToProps)(Autotrader);
