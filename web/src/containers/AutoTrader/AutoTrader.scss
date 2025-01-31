@@ -149,7 +149,15 @@
 	font-size: 12px;
 }
 
+.select-frequency-dropdown {
+	height: 8rem !important;
+	overflow-y: scroll;
+}
+.select-buy-dropdown {
+	height: 10rem !important;
+}
 .auto-trader-select-option-dropdown {
+	height: 14rem;
 	.ant-select-item-option-content {
 		.options-wrapper {
 			display: flex;
@@ -161,6 +169,10 @@
 			}
 		}
 	}
+}
+
+.auto-trader-select-option-dropdown-mobile {
+	height: unset !important;
 }
 
 .auto-trader-popup-wrapper {

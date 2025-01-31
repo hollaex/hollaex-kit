@@ -145,9 +145,13 @@
 	color: #3a4fff;
 	cursor: pointer;
 }
+.active-status-form-container {
+	margin-bottom: unset !important;
+}
 .create-asset-container .coin-limit-wrap h3,
 .create-asset-container .coin-limit-wrap .fee-wrapper,
-.create-asset-container .grey-warning .sub-title {
+.create-asset-container .grey-warning .sub-title,
+.withdrawal-fee-text {
 	color: #ffffff !important;
 }
 .create-asset-container .coin-limit-wrap .fee-wrapper .tiers-icon,

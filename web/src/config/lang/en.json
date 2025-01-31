@@ -2679,7 +2679,8 @@
 		"MIN_AMOUNT": "The minimum spend amount is {0}",
 		"MAX_AMOUNT": "This amount exceeds your maximum spend amount limit",
 		"MAXIMUM_TRADE_LIMIT": "You have reached maximum limit of 20 recurring orders",
-		"SUCCESSFULLY_CREATED": "Auto trade created successfully"
+		"SUCCESSFULLY_CREATED": "Auto trade created successfully",
+		"MISMATCH_PAIR": "This Pair is not eligible. Please try another pair to trade"
 	},
 	"ANNOUNCEMENT_TAB": {
 		"ANNOUNCEMENT_TITLE": "Announcement",

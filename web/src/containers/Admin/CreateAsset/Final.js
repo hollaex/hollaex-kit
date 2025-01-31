@@ -82,7 +82,13 @@ const Final = ({
 				<Fragment>
 					{data &&
 						Object.entries(data).map(([key, value]) => {
-							if (!['levels', 'min', 'max', 'type'].includes(key)) {
+							if (key === 'active' && withdrawal_fees) {
+								return (
+									<div key={key}>
+										<b>Status:</b> {value ? 'Active' : 'Not active'}
+									</div>
+								);
+							} else if (!['levels', 'min', 'max', 'type'].includes(key)) {
 								const valueText = value;
 								return (
 									<div key={key}>

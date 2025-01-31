@@ -635,6 +635,20 @@ $app-menu-width: calc(100vw - 40rem);
 	}
 }
 
+.select-language-wrapper {
+	.ant-select-arrow {
+		z-index: unset !important;
+	}
+}
+.language-select-dropdown-wrapper {
+	height: 14rem;
+	scrollbar-width: auto;
+	overflow-y: scroll;
+	scrollbar-color: $colors-black $app-background-color;
+	.rc-virtual-list-holder {
+		overflow-y: unset !important;
+	}
+}
 .select-option-wrapper {
 	.ant-select-item,
 	.ant-select-item-option {
@@ -1987,6 +2001,11 @@ $app-menu-width: calc(100vw - 40rem);
 }
 
 .select-currency-wrapper {
+	height: 8rem;
+	scrollbar-width: auto;
+	overflow-y: scroll;
+	scrollbar-color: $colors-black $app-background-color;
+
 	.ant-select-item-option-content {
 		display: flex;
 		align-items: center;
