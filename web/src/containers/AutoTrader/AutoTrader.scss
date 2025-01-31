@@ -151,13 +151,21 @@
 
 .select-frequency-dropdown {
 	height: 8rem !important;
-	overflow-y: scroll;
 }
 .select-buy-dropdown {
 	height: 10rem !important;
 }
-.auto-trader-select-option-dropdown {
+.auto-trader-select-option-dropdown,
+.select-frequency-dropdown,
+.select-buy-dropdown {
 	height: 14rem;
+	overflow-y: auto;
+	scrollbar-width: auto;
+	scrollbar-color: var(--labels_important-active-labels-text-graphics)
+		var(--base_wallet-sidebar-and-popup);
+	.rc-virtual-list-holder {
+		overflow-y: unset !important;
+	}
 	.ant-select-item-option-content {
 		.options-wrapper {
 			display: flex;
