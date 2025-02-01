@@ -600,8 +600,10 @@ const Autotrader = ({
 		}
 	};
 
-	const filteredSpendOptions = sourceOptions?.filter(
-		(coin) => coin !== autoTradeDetails?.spend_coin
+	const filteredSpendOptions = sourceOptions?.filter((coin) =>
+		autoTradeDetails?.spend_coin
+			? getTargetOptions(autoTradeDetails?.spend_coin).includes(coin)
+			: coin
 	);
 	const filteredBuyOptions = sourceOptions?.filter(
 		(coin) => coin !== autoTradeDetails?.buy_coin
@@ -792,6 +794,7 @@ const Autotrader = ({
 								onChange={(value) => onHandleAsset('spend', value)}
 								allowClear={() => onHandleClear('spend')}
 								getPopupContainer={handlePopupContainer}
+								virtual={false}
 							>
 								{filteredBuyOptions?.map((coin) => (
 									<Select.Option key={coin} value={coin}>
@@ -870,6 +873,7 @@ const Autotrader = ({
 								}
 								onChange={(value) => onHandleAsset('buy', value)}
 								getPopupContainer={handlePopupContainer}
+								virtual={false}
 							>
 								{filteredSpendOptions?.map((coin) => (
 									<Select.Option key={coin} value={coin}>
@@ -938,12 +942,6 @@ const Autotrader = ({
 								<div className="d-flex mt-2 warning-text font-weight-bold">
 									<ExclamationCircleFilled className="mt-1 mr-1" />
 									<span>{STRINGS['WITHDRAW_PAGE.ZERO_BALANCE']}</span>
-								</div>
-							)}
-							{getSpendAssetAval > 0 && !queryPair && (
-								<div className="d-flex mt-2 error-text font-weight-bold">
-									<ExclamationCircleFilled className="mt-1 mr-1" />
-									<span>{STRINGS['AUTO_TRADER.MISMATCH_PAIR']}</span>
 								</div>
 							)}
 							{isMinSpendAmount && getSpendAssetAval > 0 && queryPair ? (
@@ -1073,6 +1071,7 @@ const Autotrader = ({
 									}))
 								}
 								getPopupContainer={handlePopupContainer}
+								virtual={false}
 							>
 								{frequencyTradeOptions?.map((option) => {
 									return (
@@ -1543,6 +1542,15 @@ const Autotrader = ({
 						</span>
 					</EditWrapper>
 					<span className="link-separator"></span>
+					<EditWrapper stringId="SUMMARY.MARKETS">
+						<span
+							className="blue-link market-link"
+							onClick={() => browserHistory.push('/markets')}
+						>
+							{STRINGS['SUMMARY.MARKETS']?.toUpperCase()}
+						</span>
+					</EditWrapper>
+					<span className="link-separator"></span>
 					<EditWrapper stringId="ACCORDIAN.ACCORDIAN_HISTORY">
 						<span
 							className="d-flex blue-link"
@@ -1557,15 +1565,6 @@ const Autotrader = ({
 									svgWrapperClassName="action_notification-svg"
 								/>
 							</span>
-						</span>
-					</EditWrapper>
-					<span className="link-separator"></span>
-					<EditWrapper stringId="SUMMARY.MARKETS">
-						<span
-							className="blue-link market-link"
-							onClick={() => browserHistory.push('/markets')}
-						>
-							{STRINGS['SUMMARY.MARKETS']?.toUpperCase()}
 						</span>
 					</EditWrapper>
 				</div>
