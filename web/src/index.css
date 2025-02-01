@@ -14029,18 +14029,22 @@ table th {
   font-size: 12px; }
 
 .select-frequency-dropdown {
-  height: 8rem !important;
-  overflow-y: scroll; }
+  height: 8rem !important; }
 
 .select-buy-dropdown {
   height: 10rem !important; }
 
-.auto-trader-select-option-dropdown {
-  height: 14rem; }
-  .auto-trader-select-option-dropdown .ant-select-item-option-content .options-wrapper {
+.auto-trader-select-option-dropdown, .select-frequency-dropdown, .select-buy-dropdown {
+  height: 14rem;
+  overflow-y: auto;
+  scrollbar-width: auto;
+  scrollbar-color: var(--labels_important-active-labels-text-graphics) var(--base_wallet-sidebar-and-popup); }
+  .auto-trader-select-option-dropdown .rc-virtual-list-holder, .select-frequency-dropdown .rc-virtual-list-holder, .select-buy-dropdown .rc-virtual-list-holder {
+    overflow-y: unset !important; }
+  .auto-trader-select-option-dropdown .ant-select-item-option-content .options-wrapper, .select-frequency-dropdown .ant-select-item-option-content .options-wrapper, .select-buy-dropdown .ant-select-item-option-content .options-wrapper {
     display: flex;
     align-items: center; }
-    .auto-trader-select-option-dropdown .ant-select-item-option-content .options-wrapper .asset-icon {
+    .auto-trader-select-option-dropdown .ant-select-item-option-content .options-wrapper .asset-icon, .select-frequency-dropdown .ant-select-item-option-content .options-wrapper .asset-icon, .select-buy-dropdown .ant-select-item-option-content .options-wrapper .asset-icon {
       position: relative;
       top: 3px; }
 
