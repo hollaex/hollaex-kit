@@ -10,8 +10,8 @@ const moment = require('moment');
 const { loggerPlugin } = require('../config/logger');
 
 
+let kitTimezone;
 const getTimezone = () => {
-	const kitTimezone = toolsLib.getKitSecrets().emails.timezone;
 	return isNumber(validTimezones[kitTimezone]) ? kitTimezone : 'Etc/UTC';
 };
 
@@ -405,6 +405,8 @@ const executeTrade = async (autoTradeConfig) => {
 				null, ip, opts, { headers: { 'api-key': null } }, { user_id: user_id, network_id: user.network_id }
 			);
 
+			await toolsLib.sleep(1000);
+
 			await toolsLib.order.executeUserOrder(user_id, opts, quote.token, null);
 
 			sendEmail(
@@ -434,10 +436,18 @@ const executeTrade = async (autoTradeConfig) => {
        
 };
 
-scheduleAutoTrade();
-unstakingCheckRunner();
-updateRewardsCheckRunner();
-referralTradesRunner();
+const statusModel = toolsLib.database.getModel('status');
+statusModel.findOne({ })
+	.then(res => {
+		kitTimezone = res.kit.timezone;
+		scheduleAutoTrade();
+		unstakingCheckRunner();
+		updateRewardsCheckRunner();
+		referralTradesRunner();
+	})
+	.catch(err => err);
+
+
 
 module.exports = {
     unstakingCheckRunner,
