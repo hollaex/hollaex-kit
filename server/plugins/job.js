@@ -11,9 +11,26 @@ const { loggerPlugin } = require('../config/logger');
 
 
 let kitTimezone;
-const getTimezone = () => {
-	return isNumber(validTimezones[kitTimezone]) ? kitTimezone : 'Etc/UTC';
-};
+const timezoneMapping = {
+	'America/Anchorage': 'America/Juneau',
+	'Asia/Calcutta': 'Asia/Kolkata',
+	'Asia/Dubai': 'Asia/Muscat',
+	'Asia/Manila': 'Asia/Hong_Kong',
+	'Indian/Cocos': 'Asia/Rangoon',
+	'Indian/Maldives': 'Asia/Karachi',
+	'Pacific/Kiritimati': 'Pacific/Majuro',
+	'Pacific/Nauru': 'Pacific/Majuro',
+	'Pacific/Tahiti': 'Pacific/Midway',
+  };
+  
+  
+  const getTimezone = () => {
+	if (validTimezones[kitTimezone]) {
+	  return kitTimezone;
+	}
+	return timezoneMapping[kitTimezone] ? timezoneMapping[kitTimezone] : 'Etc/UTC';
+  };
+  
 
 const unstakingCheckRunner = () => {
 	cron.schedule('0 0 0 * * *', async () => {
