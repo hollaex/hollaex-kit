@@ -1682,7 +1682,7 @@ const createUserAutoTrade = (req, res) => {
         trade_hour,
         active,
         description
-    })
+    }, req.headers['x-real-ip'])
         .then((data) => res.json(data))
         .catch((err) => {
             loggerUser.error(req.uuid, 'controllers/user/createUserAutoTrade', err.message);
@@ -1712,7 +1712,7 @@ const updateUserAutoTrade = (req, res) => {
         trade_hour,
         active,
         description
-    })
+    }, req.headers['x-real-ip'])
         .then((data) => res.json(data))
         .catch((err) => {
             loggerUser.error(req.uuid, 'controllers/user/updateUserAutoTrade', err.message);
