@@ -42,6 +42,10 @@ export const getNetworkNameByKey = (network) => {
 				return 'Stellar';
 			case 'ftm':
 				return 'Fantom';
+			case 's':
+				return 'Sonic';
+			case 'arb':
+				return 'Arbitrum';
 			default:
 				return network.toUpperCase();
 		}

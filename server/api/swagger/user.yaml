@@ -2242,7 +2242,7 @@ paths:
         200:
           description: Success
           schema:
-            $ref: "#/definitions/ObjectResponse"
+            $ref: "#/definitions/MessageResponse"
         default:
           description: Error
           schema:

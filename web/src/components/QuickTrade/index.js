@@ -10,7 +10,7 @@ import { withRouter, browserHistory } from 'react-router';
 import debounce from 'lodash.debounce';
 import { SwapOutlined } from '@ant-design/icons';
 
-import { changePair } from 'actions/appActions';
+import { changePair, setIsQuickTrade } from 'actions/appActions';
 import { isLoggedIn } from 'utils/token';
 import { Button, EditWrapper, Dialog, Image } from 'components';
 import STRINGS from 'config/localizedStrings';
@@ -62,6 +62,7 @@ const QuickTrade = ({
 	icons: ICONS,
 	chain_trade_config,
 	constants,
+	setIsQuickTrade,
 }) => {
 	const getTargetOptions = (source) =>
 		sourceOptions.filter((key) => {
@@ -373,6 +374,13 @@ const QuickTrade = ({
 
 	useEffect(() => {
 		setMounted(true);
+		if (window.location.pathname.includes(`/quick-trade`)) {
+			setIsQuickTrade(true);
+		}
+		return () => {
+			setIsQuickTrade(false);
+		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	useEffect(() => {
@@ -706,6 +714,7 @@ const QuickTrade = ({
 
 const mapDispatchToProps = (dispatch) => ({
 	changePair: bindActionCreators(changePair, dispatch),
+	setIsQuickTrade: bindActionCreators(setIsQuickTrade, dispatch),
 });
 
 const mapStateToProps = (store) => {

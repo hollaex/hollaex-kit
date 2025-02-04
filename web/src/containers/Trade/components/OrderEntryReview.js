@@ -92,12 +92,20 @@ const Review = ({
 					</EditWrapper>
 				</div>
 			</div>
-			<div className={classnames(...ROW_CLASSNAMES)}>
+			<div className={classnames('d-flex', 'justify-content-end')}>
 				<div />
 				<div className="text-price blue-link pointer caps">
 					<Link to={`/prices/coin/${symbol?.toLowerCase()}`}>
 						<EditWrapper stringId="ABOUT_LINK">
 							{STRINGS.formatString(STRINGS['ABOUT_LINK'], symbol)}
+						</EditWrapper>
+					</Link>
+				</div>
+				<span className="link-separator mx-2"></span>
+				<div className="blue-link pointer caps">
+					<Link to="/prices">
+						<EditWrapper stringId="VIEW_ALL_PRICES_LINK">
+							{STRINGS['VIEW_ALL_PRICES_LINK']}
 						</EditWrapper>
 					</Link>
 				</div>

@@ -286,7 +286,7 @@ class Index extends Component {
 					<Coin iconId={icon_id} type="CS9" />
 					{withdrawInformation}
 					{titleSection}
-					{(!is_verified || !has_verified_bank_account) && (
+					{!is_verified && (
 						<Fragment>
 							<IconTitle
 								text={STRINGS['VERIFICATION_TITLE']}
@@ -298,6 +298,25 @@ class Index extends Component {
 							<div className="text-align-center py-4">
 								<EditWrapper stringId="VERIFY_BANK_WITHDRAW">
 									{STRINGS['VERIFY_BANK_WITHDRAW']}
+								</EditWrapper>
+							</div>
+						</Fragment>
+					)}
+					{!has_verified_bank_account && (
+						<Fragment>
+							<IconTitle
+								text={STRINGS['NO_VERIFIED_BANK']}
+								stringId="NO_VERIFIED_BANK"
+								iconId="FIAT_KYC"
+								iconPath={ICONS['FIAT_KYC']}
+								className="flex-direction-column"
+							/>
+							<div className="text-align-center py-4">
+								<EditWrapper stringId="NO_VERIFIED_BANK_DESC">
+									{STRINGS.formatString(
+										STRINGS['NO_VERIFIED_BANK_DESC'],
+										coins[currency].fullname
+									)}
 								</EditWrapper>
 							</div>
 						</Fragment>

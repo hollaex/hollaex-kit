@@ -1,10 +1,13 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import moment from 'moment';
+import { browserHistory } from 'react-router';
 import { bindActionCreators } from 'redux';
+import moment from 'moment';
 
-import Image from '../Image';
 import { getAnnouncement } from '../../actions/appActions';
+import Image from '../Image';
+import STRINGS from 'config/localizedStrings';
+import EditWrapper from 'components/EditWrapper';
 
 const createMarkup = (msg) => {
 	return { __html: msg };
@@ -60,7 +63,12 @@ export const NotificationItem = ({
 };
 
 // TODO create announcement item style
-const NotificationsList = ({ ICONS = {}, announcements, getAnnouncement }) => {
+const NotificationsList = ({
+	ICONS = {},
+	announcements,
+	getAnnouncement,
+	setOpen,
+}) => {
 	useEffect(() => {
 		getAnnouncement();
 		//  TODO: Fix react-hooks/exhaustive-deps
@@ -74,6 +82,19 @@ const NotificationsList = ({ ICONS = {}, announcements, getAnnouncement }) => {
 			{announcements.map(({ id, ...rest }, index) => (
 				<NotificationItem key={id} ICONS={ICONS} {...rest} />
 			))}
+			<div className="view-announcement-link">
+				<EditWrapper stringId="ANNOUNCEMENT_TAB.VIEW_ALL_ANNOUNCEMENT">
+					<span
+						className="blue-link text-decoration-underline"
+						onClick={() => {
+							browserHistory.push('/announcement');
+							setOpen(false);
+						}}
+					>
+						{STRINGS['ANNOUNCEMENT_TAB.VIEW_ALL_ANNOUNCEMENT'].toUpperCase()}
+					</span>
+				</EditWrapper>
+			</div>
 		</div>
 	);
 };

@@ -4,25 +4,38 @@ import { bindActionCreators } from 'redux';
 import classnames from 'classnames';
 import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
-import { SearchOutlined } from '@ant-design/icons';
+import { CloseCircleOutlined, SearchOutlined } from '@ant-design/icons';
 import { DEFAULT_URL } from 'config/constants';
-import { MobileBarWrapper, EditWrapper, ButtonLink, Image } from 'components';
+import {
+	MobileBarWrapper,
+	EditWrapper,
+	ButtonLink,
+	Image,
+	Dialog,
+	Button,
+} from 'components';
 import { isLoggedIn } from 'utils/token';
 import {
 	getTickers,
 	changeTheme,
 	setLanguage,
 	setDepositAndWithdraw,
+	setSelectedAnnouncement,
+	setIsActiveSelectedAnnouncement,
 } from 'actions/appActions';
 import { updateUserSettings, setUserData } from 'actions/userAction';
 import { generateLanguageFormValues } from 'containers/UserSettings/LanguageForm';
 import { LanguageDisplayPopup } from './Utils';
+import { formatToFixed } from 'utils/currency';
+import { marketPriceSelector } from 'containers/Trade/utils';
+import { getFormattedDate } from 'utils/string';
 import ThemeSwitcher from './ThemeSwitcher';
 import withEdit from 'components/EditProvider/withEdit';
 import withConfig from 'components/ConfigProvider/withConfig';
 import STRINGS from 'config/localizedStrings';
 import Connections from './Connections';
 import AccountTab from './AccountTab';
+import AnnouncementList from './AnnouncementList';
 
 class AppBar extends Component {
 	state = {
@@ -31,6 +44,9 @@ class AppBar extends Component {
 		walletPending: 0,
 		selected: '',
 		isDisplayLanguagePopup: false,
+		isTopbarAnnouncement: false,
+		isPopupAnnouncement: false,
+		isDropdownAnnouncement: false,
 	};
 
 	componentDidMount() {
@@ -42,6 +58,34 @@ class AppBar extends Component {
 		if (this.props.theme) {
 			this.setSelectedTheme(this.props.theme);
 		}
+		this.setState({
+			title: document?.title ? document?.title : '',
+		});
+		const announcementDetail =
+			this.props.getAnnouncementDetails && this.props.getAnnouncementDetails[0];
+
+		const topAnnouncementDetail =
+			announcementDetail && announcementDetail?.is_navbar;
+
+		const isDisplayPopup =
+			!announcementDetail?.start_date && !announcementDetail?.end_date
+				? announcementDetail?.is_popup
+				: announcementDetail?.is_popup &&
+				  this.isTodayBetweenDates(
+						announcementDetail?.start_date,
+						announcementDetail?.end_date
+				  );
+
+		const dropdownAnnouncementDetail =
+			this.props.getAnnouncementDetails &&
+			this.props.getAnnouncementDetails[0]?.is_dropdown;
+		if (isLoggedIn()) {
+			this.setState({
+				isTopbarAnnouncement: topAnnouncementDetail,
+				isDropdownAnnouncement: dropdownAnnouncementDetail,
+				isPopupAnnouncement: isDisplayPopup,
+			});
+		}
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -51,9 +95,33 @@ class AppBar extends Component {
 		}
 	}
 
+	isTodayBetweenDates = (startDate, endDate) => {
+		const today = new Date();
+		const start = new Date(startDate);
+		const end = new Date(endDate);
+		return today >= start && today <= end;
+	};
+
 	componentDidUpdate(prevProps) {
+		const { pair, pairs, lastPrice, isProTrade, isQuickTrade } = this.props;
+		const { increment_price } = pairs[pair] || { pair_base: '', pair_2: '' };
+		const price = formatToFixed(lastPrice, increment_price);
 		if (prevProps.theme !== this.props.theme) {
 			this.setSelectedTheme(this.props.theme);
+		}
+		if (isProTrade) {
+			document.title = `${price} | ${pair?.toUpperCase()} | HollaEx Pro`;
+		} else if (isQuickTrade) {
+			const pairData = pair.split('-');
+			const firstAsset = pairData[0];
+			const secondAsset = pairData[1];
+			document.title = `${
+				STRINGS['CONVERT']
+			} ${firstAsset?.toUpperCase()} ${STRINGS[
+				'TO'
+			]?.toLowerCase()} ${secondAsset?.toUpperCase()} | HollaEx Pro`;
+		} else {
+			document.title = this.state.title;
 		}
 	}
 
@@ -245,6 +313,105 @@ class AppBar extends Component {
 		this.setState({ isDisplayLanguagePopup: true });
 	};
 
+	onHandleRouteAnnouncement = (text) => {
+		const {
+			setSelectedAnnouncement,
+			setIsActiveSelectedAnnouncement,
+			router,
+			getAnnouncementDetails,
+		} = this.props;
+
+		if (text === 'topbar view more' || text === 'popup') {
+			setSelectedAnnouncement(getAnnouncementDetails[0]);
+			setIsActiveSelectedAnnouncement(true);
+		}
+		if (text === 'popup') {
+			this.setState({
+				isPopupAnnouncement: false,
+			});
+		}
+		if (text === 'topbar announcements') {
+			setIsActiveSelectedAnnouncement(false);
+		}
+		router.push('/announcement');
+	};
+
+	renderAnnouncementPopup = () => {
+		const { icons, getAnnouncementDetails, router, constants } = this.props;
+		return (
+			<Dialog
+				isOpen={
+					this.state.isPopupAnnouncement && constants?.features?.announcement
+				}
+				onCloseDialog={() =>
+					this.setState({
+						isPopupAnnouncement: false,
+					})
+				}
+				shouldCloseOnOverlayClick={false}
+				className={
+					isMobile
+						? 'announcement-popup-wrapper announcement-popup-mobile-wrapper'
+						: 'announcement-popup-wrapper'
+				}
+			>
+				<div className="announcement-popup-container">
+					<EditWrapper stringId="ANNOUNCEMENT_TAB.ANNOUNCEMENT_TITLE">
+						<span className="announcement-title font-weight-bold">
+							{STRINGS['ANNOUNCEMENT_TAB.ANNOUNCEMENT_TITLE']?.toUpperCase()}
+						</span>
+					</EditWrapper>
+					<div className="announcement-exchange-title">
+						<Image icon={icons['ANNOUNCEMENT_ICON']} />
+						<span className="text-white font-weight-bold exchange-update-title">
+							{STRINGS['ANNOUNCEMENT_TAB.EXCHANGE_UPDATE']}
+						</span>
+						<span className="announcement-date secondary-text">
+							({getFormattedDate(getAnnouncementDetails[0]?.created_at)})
+						</span>
+					</div>
+					<div
+						className="announcement-message-wrapper"
+						dangerouslySetInnerHTML={{
+							__html: getAnnouncementDetails[0]?.message,
+						}}
+					></div>
+					<span
+						className="blue-link text-decoration-underline pointer"
+						onClick={() => {
+							this.onHandleRouteAnnouncement('popup');
+						}}
+					>
+						{STRINGS['CHAT.READ_MORE'].toUpperCase()}
+					</span>
+					<div className="d-flex button-container announcement-popup-buttons pt-4">
+						<Button
+							label={STRINGS['CLOSE_TEXT']?.toUpperCase()}
+							className="back-btn mt-3"
+							onClick={() =>
+								this.setState({
+									isPopupAnnouncement: false,
+								})
+							}
+						/>
+						<Button
+							label={STRINGS[
+								'ANNOUNCEMENT_TAB.VIEW_ALL_ANNOUNCEMENT'
+							]?.toUpperCase()}
+							className="back-btn mt-3"
+							onClick={() => {
+								router.push('/announcement');
+								this.setState({
+									isPopupAnnouncement: false,
+								});
+							}}
+						/>
+					</div>
+				</div>
+			</Dialog>
+		);
+	};
+
 	render() {
 		const {
 			user,
@@ -263,12 +430,15 @@ class AppBar extends Component {
 			selectable_native_currencies,
 			setUserData,
 			coins,
+			getAnnouncementDetails,
 		} = this.props;
 		const {
 			securityPending,
 			verificationPending,
 			// walletPending,
 			selected,
+			isTopbarAnnouncement,
+			isDropdownAnnouncement,
 		} = this.state;
 		const languageFormValue = generateLanguageFormValues(valid_languages)
 			?.language?.options;
@@ -300,91 +470,64 @@ class AppBar extends Component {
 						className="homeicon-svg"
 					/>
 				</Link>
+				{isLoggedIn() && this.renderAnnouncementPopup()}
 			</MobileBarWrapper>
 		) : (
-			<div
-				className={classnames('app_bar d-flex justify-content-between', {
-					'no-borders': false,
-				})}
-			>
-				<div className="d-flex align-items-center">
-					<div
-						id="home-nav-container"
-						className="d-flex align-items-center justify-content-center h-100"
-					>
-						{this.renderIcon()}
-					</div>
-
-					<Fragment>{children}</Fragment>
-				</div>
-				{!isLoggedIn() && (
-					<div id="trade-nav-container" className="mx-2">
-						{languageFormValue
-							?.filter(({ value }) => value === activeLanguage)
-							?.map(({ value, icon, label }) => (
-								<div
-									className="language_option"
-									onClick={() => this.onHandleOpenPopup()}
+			<div>
+				{isTopbarAnnouncement &&
+					constants?.features?.announcement &&
+					isLoggedIn() && (
+						<div className="app_bar announcement-top-bar">
+							<Button
+								label={STRINGS['TRADE_TAB_POSTS']}
+								onClick={() =>
+									this.onHandleRouteAnnouncement('topbar announcements')
+								}
+								className="announcement-btn mr-1"
+							/>
+							<div
+								className="announcement-message"
+								dangerouslySetInnerHTML={{
+									__html: getAnnouncementDetails[0]?.message,
+								}}
+							></div>
+							<EditWrapper stringId="HOLLAEX_TOKEN.VIEW">
+								<span
+									className="view-more-btn blue-link text-decoration-underline"
+									onClick={() =>
+										this.onHandleRouteAnnouncement('topbar view more')
+									}
 								>
-									<Image
-										icon={icon}
-										alt={label}
-										wrapperClassName="flag-icon mr-2"
-									/>
-									<span className="caps">
-										{value}
-										{user?.settings?.interface?.display_currency && (
-											<span>
-												{' '}
-												/ {user?.settings?.interface?.display_currency}
-											</span>
-										)}
-									</span>
-								</div>
-							))}
-						{this.state?.isDisplayLanguagePopup && (
-							<LanguageDisplayPopup
-								selected={activeLanguage}
-								valid_languages={valid_languages}
-								changeLanguage={changeLanguage}
-								isVisible={this.state?.isDisplayLanguagePopup}
-								onHandleClose={this.onHandleClose}
-								selectable_native_currencies={selectable_native_currencies}
-								setUserData={setUserData}
-								user={user}
-								coins={coins}
+									{STRINGS['HOLLAEX_TOKEN.VIEW']}
+								</span>
+							</EditWrapper>
+							<CloseCircleOutlined
+								className="close-icon"
+								onClick={() =>
+									this.setState({
+										isTopbarAnnouncement: false,
+									})
+								}
 							/>
-						)}
-						<ThemeSwitcher
-							selected={selected}
-							options={themeOptions}
-							toggle={this.onToggle}
-						/>
-						<div
-							className="login-container"
-							onClick={() => router.push('/login')}
-						>
-							{STRINGS['LOGIN_TEXT'].toUpperCase()}
 						</div>
+					)}
+				<div
+					className={classnames('app_bar d-flex justify-content-between', {
+						'no-borders': false,
+					})}
+				>
+					<div className="d-flex align-items-center">
+						<div
+							id="home-nav-container"
+							className="d-flex align-items-center justify-content-center h-100"
+						>
+							{this.renderIcon()}
+						</div>
+
+						<Fragment>{children}</Fragment>
 					</div>
-				)}
-				{isLoggedIn() && (
-					<div
-						id="trade-nav-container"
-						className="d-flex app-bar-account justify-content-end trade-navbar-wrapper"
-					>
-						<div
-							className="app-bar-deposit-btn d-flex"
-							onClick={this.onHandleDeposit}
-						>
-							<Image
-								iconId={'DEPOSIT_TITLE'}
-								icon={icons['DEPOSIT_TITLE']}
-								wrapperClassName="form_currency-ball margin-aligner"
-							/>
-							<span className="ml-2">{STRINGS['ACCORDIAN.DEPOSIT_LABEL']}</span>
-						</div>
-						<div className="d-flex app_bar-quicktrade-container language-content">
+					{!isLoggedIn() && (
+						<div id="trade-nav-container" className="mx-2">
 							{languageFormValue
 								?.filter(({ value }) => value === activeLanguage)
 								?.map(({ value, icon, label }) => (
@@ -401,18 +544,19 @@ class AppBar extends Component {
 											{value}
 											{user?.settings?.interface?.display_currency && (
 												<span>
-													/{user?.settings?.interface?.display_currency}
+													{' '}
+													/ {user?.settings?.interface?.display_currency}
 												</span>
 											)}
 										</span>
 									</div>
 								))}
-							{this.state.isDisplayLanguagePopup && (
+							{this.state?.isDisplayLanguagePopup && (
 								<LanguageDisplayPopup
 									selected={activeLanguage}
 									valid_languages={valid_languages}
 									changeLanguage={changeLanguage}
-									isVisible={this.state.isDisplayLanguagePopup}
+									isVisible={this.state?.isDisplayLanguagePopup}
 									onHandleClose={this.onHandleClose}
 									selectable_native_currencies={selectable_native_currencies}
 									setUserData={setUserData}
@@ -420,16 +564,87 @@ class AppBar extends Component {
 									coins={coins}
 								/>
 							)}
-						</div>
-						<div className="d-flex app_bar-quicktrade-container">
 							<ThemeSwitcher
 								selected={selected}
 								options={themeOptions}
 								toggle={this.onToggle}
 							/>
+							<div
+								className="login-container"
+								onClick={() => router.push('/login')}
+							>
+								{STRINGS['LOGIN_TEXT'].toUpperCase()}
+							</div>
 						</div>
-						{/* <AnnouncementList user={user.email} /> */}
-						{/* <MenuList
+					)}
+					{isLoggedIn() && (
+						<div
+							id="trade-nav-container"
+							className="d-flex app-bar-account justify-content-end trade-navbar-wrapper"
+						>
+							{this.renderAnnouncementPopup()}
+							<div
+								className="app-bar-deposit-btn d-flex"
+								onClick={this.onHandleDeposit}
+							>
+								<Image
+									iconId={'DEPOSIT_TITLE'}
+									icon={icons['DEPOSIT_TITLE']}
+									wrapperClassName="form_currency-ball margin-aligner"
+								/>
+								<span className="ml-2">
+									{STRINGS['ACCORDIAN.DEPOSIT_LABEL']}
+								</span>
+							</div>
+							<div className="d-flex app_bar-quicktrade-container language-content">
+								{languageFormValue
+									?.filter(({ value }) => value === activeLanguage)
+									?.map(({ value, icon, label }) => (
+										<div
+											key={value}
+											className="language_option"
+											onClick={() => this.onHandleOpenPopup()}
+										>
+											<Image
+												icon={icon}
+												alt={label}
+												wrapperClassName="flag-icon mr-2"
+											/>
+											<span className="caps">
+												{value}
+												{user?.settings?.interface?.display_currency && (
+													<span>
+														/{user?.settings?.interface?.display_currency}
+													</span>
+												)}
+											</span>
+										</div>
+									))}
+								{this.state.isDisplayLanguagePopup && (
+									<LanguageDisplayPopup
+										selected={activeLanguage}
+										valid_languages={valid_languages}
+										changeLanguage={changeLanguage}
+										isVisible={this.state.isDisplayLanguagePopup}
+										onHandleClose={this.onHandleClose}
+										selectable_native_currencies={selectable_native_currencies}
+										setUserData={setUserData}
+										user={user}
+										coins={coins}
+									/>
+								)}
+							</div>
+							<div className="d-flex app_bar-quicktrade-container">
+								<ThemeSwitcher
+									selected={selected}
+									options={themeOptions}
+									toggle={this.onToggle}
+								/>
+							</div>
+							{isDropdownAnnouncement && constants?.features?.announcement && (
+								<AnnouncementList user={user.email} />
+							)}
+							{/* <MenuList
 							menuItems={menuItems}
 							securityPending={securityPending}
 							verificationPending={verificationPending}
@@ -438,24 +653,25 @@ class AppBar extends Component {
 							activePath={activePath}
 							onMenuChange={onMenuChange}
 						/> */}
-						<AccountTab
-							user={user}
-							securityPending={securityPending}
-							verificationPending={verificationPending}
-						/>
-						<Connections />
-						<div
-							className={
-								activePath === '/details'
-									? 'active-menu app-bar-search-icon'
-									: 'app-bar-search-icon'
-							}
-							onClick={() => onMenuChange('/details')}
-						>
-							<SearchOutlined />
+							<AccountTab
+								user={user}
+								securityPending={securityPending}
+								verificationPending={verificationPending}
+							/>
+							<Connections />
+							<div
+								className={
+									activePath === '/details'
+										? 'active-menu app-bar-search-icon'
+										: 'app-bar-search-icon'
+								}
+								onClick={() => onMenuChange('/details')}
+							>
+								<SearchOutlined />
+							</div>
 						</div>
-					</div>
-				)}
+					)}
+				</div>
 			</div>
 		);
 	}
@@ -466,12 +682,17 @@ const mapStateToProps = (state) => {
 		user: state.user,
 		theme: state.app.theme,
 		pair: state.app.pair,
+		pairs: state.app.pairs,
 		coins: state.app.coins,
 		enabledPlugins: state.app.enabledPlugins,
 		constants: state.app.constants,
 		activeLanguage: state.app.language,
 		selectable_native_currencies:
 			state.app.constants.selectable_native_currencies,
+		lastPrice: marketPriceSelector(state),
+		isProTrade: state.app.isProTrade,
+		isQuickTrade: state.app.isQuickTrade,
+		getAnnouncementDetails: state.app.announcements,
 	};
 };
 
@@ -481,6 +702,14 @@ const mapDispatchToProps = (dispatch) => ({
 	setUserData: bindActionCreators(setUserData, dispatch),
 	changeLanguage: bindActionCreators(setLanguage, dispatch),
 	setDepositAndWithdraw: bindActionCreators(setDepositAndWithdraw, dispatch),
+	setSelectedAnnouncement: bindActionCreators(
+		setSelectedAnnouncement,
+		dispatch
+	),
+	setIsActiveSelectedAnnouncement: bindActionCreators(
+		setIsActiveSelectedAnnouncement,
+		dispatch
+	),
 });
 
 export default connect(

@@ -510,10 +510,17 @@ $header-margin: 2rem;
 				width: 14rem;
 			}
 		}
+		.view-price-link {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			margin-bottom: 1rem;
+			width: 100%;
+		}
 		.wallet-assets_block-table {
 			width: 100%;
 			font-size: $font-size-subtext;
-			margin-bottom: 3rem;
+			margin-bottom: 1rem;
 
 			thead,
 			tfoot {
@@ -726,6 +733,12 @@ $header-margin: 2rem;
 	width: 300px !important;
 }
 .currency-wallet-wrapper {
+	.deposit-history-table-wrapper {
+		.presentation_container {
+			width: 100% !important;
+			max-width: none !important;
+		}
+	}
 	width: 80%;
 	margin-left: auto;
 	margin-right: auto;
@@ -744,10 +757,13 @@ $header-margin: 2rem;
 	.link-container {
 		.trade-link-wrapper {
 			margin: 1%;
+			.view-price-link {
+				font-size: 1rem;
+			}
 		}
 	}
 	.wallet-content-wrapper {
-		height: 65%;
+		height: 45%;
 		border: 1px solid #808080;
 		border-radius: 5px;
 		justify-content: space-between;
