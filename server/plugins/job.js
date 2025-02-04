@@ -11,8 +11,57 @@ const { loggerPlugin } = require('../config/logger');
 
 
 let kitTimezone;
+const timeZones = {
+	'UTC': 0,
+	'Pacific/Pago_Pago': 660,
+	'Pacific/Honolulu': 600,
+	'Pacific/Tahiti': 600,
+	'America/Anchorage': 540,
+	'America/Los_Angeles': 480,
+	'America/Denver': 420,
+	'America/Chicago': 360,
+	'America/New_York': 300,
+	'America/Halifax': 240,
+	'America/Argentina/Buenos_Aires': 180,
+	'America/Sao_Paulo': 120,
+	'Atlantic/Azores': 60,
+	'Europe/London': 0,
+	'Europe/Berlin': -60,
+	'Europe/Paris': -60,
+	'Europe/Rome': -60,
+	'Europe/Helsinki': -120,
+	'Europe/Moscow': -180,
+	'Europe/Istanbul': -180,
+	'Asia/Tehran': -210,
+	'Asia/Dubai': -240,
+	'Asia/Kabul': -270,
+	'Indian/Maldives': -300,
+	'Asia/Calcutta': -330,
+	'Asia/Kathmandu': -345,
+	'Asia/Dhaka': -360,
+	'Indian/Cocos': -390,
+	'Asia/Bangkok': -420,
+	'Asia/Hong_Kong': -480,
+	'Asia/Kuala_Lumpur': -480,
+	'Asia/Singapore': -480,
+	'Asia/Manila': -480,
+	'Asia/Pyongyang': -510,
+	'Asia/Seoul': -540,
+	'Asia/Tokyo': -540,
+	'Australia/Darwin': -570,
+	'Australia/Brisbane': -600,
+	'Australia/Adelaide': -630,
+	'Australia/Sydney': -660,
+	'Pacific/Nauru': -720,
+	'Pacific/Auckland': -780,
+	'Pacific/Kiritimati': -840
+  };
 const getTimezone = () => {
-	return isNumber(validTimezones[kitTimezone]) ? kitTimezone : 'Etc/UTC';
+	const allTimeZones = {
+		...validTimezones,
+		...timeZones
+	}
+	return isNumber(allTimeZones[kitTimezone]) ? kitTimezone : 'Etc/UTC';
 };
 
 const unstakingCheckRunner = () => {
