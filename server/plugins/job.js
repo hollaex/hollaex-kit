@@ -12,35 +12,18 @@ const { loggerPlugin } = require('../config/logger');
 
 let kitTimezone;
 const timezoneMapping = {
-	'Pacific/Tahiti': 'Pacific/Midway',
+	'America/Anchorage': 'America/Juneau',
 	'Asia/Calcutta': 'Asia/Kolkata',
 	'Asia/Dubai': 'Asia/Muscat',
-	'Indian/Maldives': 'Asia/Karachi',
-	'Indian/Cocos': 'Asia/Rangoon',
-	'Asia/Pyongyang': 'Asia/Seoul',
-	'Pacific/Nauru': 'Pacific/Majuro',
-	'America/Anchorage': 'America/Juneau',
-	'America/Argentina/Buenos_Aires': 'America/Sao_Paulo',
-	'America/Sao_Paulo': 'America/Godthab',
-	'America/Halifax': 'America/Puerto_Rico',
-	'Europe/Istanbul': 'Europe/Moscow',
-	'Asia/Tehran': 'Asia/Baghdad',
-	'Asia/Kabul': 'Asia/Tashkent',
-	'Asia/Dubai': 'Asia/Muscat',
-	'Asia/Kathmandu': 'Asia/Colombo',
-	'Asia/Hong_Kong': 'Asia/Shanghai',
-	'Asia/Kuala_Lumpur': 'Asia/Singapore',
-	'Australia/Darwin': 'Australia/Brisbane',
-	'Australia/Adelaide': 'Australia/Sydney',
-	'Europe/London': 'Europe/Lisbon',
-	'Europe/Berlin': 'Europe/Amsterdam',
-	'Europe/Paris': 'Europe/Brussels',
-	'Europe/Rome': 'Europe/Vienna',
-	'Europe/Helsinki': 'Europe/Bucharest',
-	'Europe/Moscow': 'Europe/Minsk',
 	'Asia/Manila': 'Asia/Hong_Kong',
-	'Pacific/Kiritimati': 'Pacific/Majuro'
+	'Asia/Pyongyang': 'Asia/Seoul',
+	'Indian/Cocos': 'Asia/Rangoon',
+	'Indian/Maldives': 'Asia/Karachi',
+	'Pacific/Kiritimati': 'Pacific/Majuro',
+	'Pacific/Nauru': 'Pacific/Majuro',
+	'Pacific/Tahiti': 'Pacific/Midway',
   };
+  
   
   const getTimezone = () => {
 	if (validTimezones[kitTimezone]) {
