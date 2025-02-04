@@ -16,7 +16,6 @@ const timezoneMapping = {
 	'Asia/Calcutta': 'Asia/Kolkata',
 	'Asia/Dubai': 'Asia/Muscat',
 	'Asia/Manila': 'Asia/Hong_Kong',
-	'Asia/Pyongyang': 'Asia/Seoul',
 	'Indian/Cocos': 'Asia/Rangoon',
 	'Indian/Maldives': 'Asia/Karachi',
 	'Pacific/Kiritimati': 'Pacific/Majuro',

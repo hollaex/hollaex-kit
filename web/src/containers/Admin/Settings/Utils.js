@@ -1877,7 +1877,6 @@ export const minimalTimezoneSet = [
 	},
 	{ offset: '+08:00', label: '(GMT+08:00) Singapore', value: 'Asia/Singapore' },
 	{ offset: '+08:00', label: '(GMT+08:00) Manila', value: 'Asia/Manila' },
-	{ offset: '+08:30', label: '(GMT+08:30) Pyongyang', value: 'Asia/Pyongyang' },
 	{ offset: '+09:00', label: '(GMT+09:00) Seoul', value: 'Asia/Seoul' },
 	{ offset: '+09:00', label: '(GMT+09:00) Tokyo', value: 'Asia/Tokyo' },
 	{
