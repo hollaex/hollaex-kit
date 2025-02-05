@@ -387,7 +387,7 @@ class AppBar extends Component {
 							({getFormattedDate(selectedAnnouncement?.created_at)})
 						</span>
 					</div>
-					{renderAnnouncementMessage(selectedAnnouncement?.message, 200)}
+					{renderAnnouncementMessage(selectedAnnouncement?.message, 120)}
 					<span
 						className="blue-link text-decoration-underline pointer"
 						onClick={() => {

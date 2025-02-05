@@ -14511,6 +14511,7 @@ table th {
     .layout-mobile .announcement-container .announcement-list .selected-announcement-title {
       font-size: 16px; }
     .layout-mobile .announcement-container .announcement-list .selected-announcement-message {
+      width: 100%;
       font-size: 10px;
       padding: 2% 0; }
       .layout-mobile .announcement-container .announcement-list .selected-announcement-message img {
@@ -14933,13 +14934,13 @@ table th {
   .announcement-top-bar .announcement-title {
     color: var(--calculated_base_top-bar-navigation_text); }
   .announcement-top-bar .announcement-message-wrapper {
-    max-width: 30%;
+    width: auto;
     text-wrap: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
     display: flex;
-    flex-direction: column;
-    align-items: center; }
+    align-items: center;
+    gap: 1%; }
   .announcement-top-bar .announcement-message-wrapper * {
     max-width: 100%;
     margin: unset; }
@@ -16328,7 +16329,6 @@ table th {
       position: relative;
       top: 3px; }
   .announcement-popup-wrapper .ReactModal__Content .announcement-popup-container .announcement-message-wrapper {
-    max-height: 10rem;
     overflow: hidden; }
   .announcement-popup-wrapper .ReactModal__Content .announcement-popup-container .announcement-message-wrapper * {
     width: 100%; }
