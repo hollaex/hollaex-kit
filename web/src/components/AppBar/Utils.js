@@ -607,3 +607,34 @@ export const LanguageDisplayPopup = ({
 		</Dialog>
 	);
 };
+
+export const renderAnnouncementMessage = (message, maxLength = 100) => {
+	const maxAnnouncementMessage =
+		message?.length > maxLength
+			? message?.substring(0, maxLength) + '...'
+			: message;
+
+	return (
+		<div
+			className="announcement-message-wrapper"
+			dangerouslySetInnerHTML={{
+				__html: maxAnnouncementMessage,
+			}}
+		></div>
+	);
+};
+
+export const renderRemoveEmptyTag = (html) => {
+	const selectedTag = document.createElement('div');
+	selectedTag.innerHTML = html;
+
+	const removeTag = selectedTag?.querySelectorAll('*:not(img)');
+	removeTag &&
+		removeTag.forEach((data) => {
+			if (data?.innerHTML.trim() === '<br>' || data?.innerHTML === '') {
+				data.remove();
+			}
+		});
+
+	return selectedTag?.innerHTML;
+};

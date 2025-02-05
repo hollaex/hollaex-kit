@@ -7,20 +7,29 @@ $app-menu-width: calc(100vw - 40rem);
 @import './MobileMarketSelector';
 
 .announcement-top-bar {
-	height: 10px !important;
-	min-height: 2.5rem !important;
+	padding: 1%;
+	border-bottom: 1px solid $colors-border !important;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	gap: 1%;
+	gap: 0.5%;
 	color: $base_top-bar-navigation_text_inactive;
-	.announcement-message {
-		max-width: 50%;
-		height: 70%;
+	.announcement-title {
+		color: $base_top-bar-navigation_text;
+	}
+	.announcement-message-wrapper {
+		width: auto;
+		text-wrap: nowrap;
+		text-overflow: ellipsis;
 		overflow: hidden;
 		display: flex;
-		flex-direction: column;
 		align-items: center;
+		gap: 1%;
+	}
+
+	.announcement-message-wrapper * {
+		max-width: 100%;
+		margin: unset;
 	}
 	.announcement-btn {
 		width: max-content;
@@ -33,6 +42,10 @@ $app-menu-width: calc(100vw - 40rem);
 	.close-icon {
 		position: absolute;
 		right: 1%;
+		svg {
+			width: 1.5rem;
+			height: 1.5rem;
+		}
 	}
 }
 
@@ -2024,17 +2037,29 @@ $app-menu-width: calc(100vw - 40rem);
 
 .announcement-popup-wrapper {
 	.ReactModal__Content {
-		width: 35rem;
+		width: 38rem;
 
 		.announcement-popup-container {
 			.announcement-title {
-				font-size: 20px;
+				font-size: 12px;
+				font-family: $raleway--font-family;
 			}
 
 			.announcement-exchange-title {
 				display: flex;
 				align-items: center;
-				gap: 2%;
+				gap: 3%;
+				.announcement-icon {
+					position: relative;
+					top: 3px;
+				}
+			}
+
+			.announcement-message-wrapper {
+				overflow: hidden;
+			}
+			.announcement-message-wrapper * {
+				width: 100%;
 			}
 
 			.announcement-popup-buttons {
