@@ -25,7 +25,7 @@ import {
 } from 'actions/appActions';
 import { updateUserSettings, setUserData } from 'actions/userAction';
 import { generateLanguageFormValues } from 'containers/UserSettings/LanguageForm';
-import { LanguageDisplayPopup } from './Utils';
+import { LanguageDisplayPopup, renderAnnouncementMessage } from './Utils';
 import { formatToFixed } from 'utils/currency';
 import { marketPriceSelector } from 'containers/Trade/utils';
 import { getFormattedDate } from 'utils/string';
@@ -47,9 +47,11 @@ class AppBar extends Component {
 		isTopbarAnnouncement: false,
 		isPopupAnnouncement: false,
 		isDropdownAnnouncement: false,
+		selectedAnnouncement: [],
 	};
 
 	componentDidMount() {
+		const { getAnnouncementDetails } = this.props;
 		if (this.props.user) {
 			this.checkVerificationStatus(this.props.user, this.props.enabledPlugins);
 			this.checkWalletStatus(this.props.user, this.props.coins);
@@ -61,8 +63,13 @@ class AppBar extends Component {
 		this.setState({
 			title: document?.title ? document?.title : '',
 		});
+
+		const filteredAnnouncementDetails = getAnnouncementDetails
+			?.filter((data) => data?.is_popup)
+			?.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
 		const announcementDetail =
-			this.props.getAnnouncementDetails && this.props.getAnnouncementDetails[0];
+			filteredAnnouncementDetails && filteredAnnouncementDetails[0];
 
 		const topAnnouncementDetail =
 			announcementDetail && announcementDetail?.is_navbar;
@@ -77,8 +84,13 @@ class AppBar extends Component {
 				  );
 
 		const dropdownAnnouncementDetail =
-			this.props.getAnnouncementDetails &&
-			this.props.getAnnouncementDetails[0]?.is_dropdown;
+			filteredAnnouncementDetails &&
+			filteredAnnouncementDetails[0]?.is_dropdown;
+
+		this.setState({
+			selectedAnnouncement: filteredAnnouncementDetails[0],
+		});
+
 		if (isLoggedIn()) {
 			this.setState({
 				isTopbarAnnouncement: topAnnouncementDetail,
@@ -318,11 +330,11 @@ class AppBar extends Component {
 			setSelectedAnnouncement,
 			setIsActiveSelectedAnnouncement,
 			router,
-			getAnnouncementDetails,
 		} = this.props;
+		const { selectedAnnouncement } = this.state;
 
 		if (text === 'topbar view more' || text === 'popup') {
-			setSelectedAnnouncement(getAnnouncementDetails[0]);
+			setSelectedAnnouncement(selectedAnnouncement);
 			setIsActiveSelectedAnnouncement(true);
 		}
 		if (text === 'popup') {
@@ -337,7 +349,9 @@ class AppBar extends Component {
 	};
 
 	renderAnnouncementPopup = () => {
-		const { icons, getAnnouncementDetails, router, constants } = this.props;
+		const { icons, router, constants } = this.props;
+		const { selectedAnnouncement } = this.state;
+
 		return (
 			<Dialog
 				isOpen={
@@ -357,25 +371,23 @@ class AppBar extends Component {
 			>
 				<div className="announcement-popup-container">
 					<EditWrapper stringId="ANNOUNCEMENT_TAB.ANNOUNCEMENT_TITLE">
-						<span className="announcement-title font-weight-bold">
+						<span className="announcement-title">
 							{STRINGS['ANNOUNCEMENT_TAB.ANNOUNCEMENT_TITLE']?.toUpperCase()}
 						</span>
 					</EditWrapper>
 					<div className="announcement-exchange-title">
-						<Image icon={icons['ANNOUNCEMENT_ICON']} />
+						<Image
+							icon={icons['ANNOUNCEMENT_ICON']}
+							wrapperClassName="announcement-icon"
+						/>
 						<span className="text-white font-weight-bold exchange-update-title">
-							{STRINGS['ANNOUNCEMENT_TAB.EXCHANGE_UPDATE']}
+							{selectedAnnouncement?.title}
 						</span>
 						<span className="announcement-date secondary-text">
-							({getFormattedDate(getAnnouncementDetails[0]?.created_at)})
+							({getFormattedDate(selectedAnnouncement?.created_at)})
 						</span>
 					</div>
-					<div
-						className="announcement-message-wrapper"
-						dangerouslySetInnerHTML={{
-							__html: getAnnouncementDetails[0]?.message,
-						}}
-					></div>
+					{renderAnnouncementMessage(selectedAnnouncement?.message, 200)}
 					<span
 						className="blue-link text-decoration-underline pointer"
 						onClick={() => {
@@ -430,7 +442,6 @@ class AppBar extends Component {
 			selectable_native_currencies,
 			setUserData,
 			coins,
-			getAnnouncementDetails,
 		} = this.props;
 		const {
 			securityPending,
@@ -439,6 +450,7 @@ class AppBar extends Component {
 			selected,
 			isTopbarAnnouncement,
 			isDropdownAnnouncement,
+			selectedAnnouncement,
 		} = this.state;
 		const languageFormValue = generateLanguageFormValues(valid_languages)
 			?.language?.options;
@@ -478,19 +490,14 @@ class AppBar extends Component {
 					constants?.features?.announcement &&
 					isLoggedIn() && (
 						<div className="app_bar announcement-top-bar">
-							<Button
-								label={STRINGS['TRADE_TAB_POSTS']}
-								onClick={() =>
-									this.onHandleRouteAnnouncement('topbar announcements')
-								}
-								className="announcement-btn mr-1"
+							<Image
+								icon={icons['ANNOUNCEMENT_ICON']}
+								wrapperClassName="h-100"
 							/>
-							<div
-								className="announcement-message"
-								dangerouslySetInnerHTML={{
-									__html: getAnnouncementDetails[0]?.message,
-								}}
-							></div>
+							<span className="announcement-title">
+								{selectedAnnouncement?.title}
+							</span>
+							{renderAnnouncementMessage(selectedAnnouncement?.message, 75)}
 							<EditWrapper stringId="HOLLAEX_TOKEN.VIEW">
 								<span
 									className="view-more-btn blue-link text-decoration-underline"
@@ -498,7 +505,7 @@ class AppBar extends Component {
 										this.onHandleRouteAnnouncement('topbar view more')
 									}
 								>
-									{STRINGS['HOLLAEX_TOKEN.VIEW']}
+									{STRINGS['REFERRAL_LINK.VIEW']}
 								</span>
 							</EditWrapper>
 							<CloseCircleOutlined

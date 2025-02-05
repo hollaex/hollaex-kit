@@ -89,6 +89,7 @@ import {
 	SET_SELECTED_ANNOUNCEMENT,
 	SET_ACTIVE_SELECTED_ANNOUNCEMENT,
 	SET_EXCHANGE_TIMEZONE,
+	SET_IS_ADMIN_ANNOUNCEMENT_FEATURE,
 } from 'actions/appActions';
 import { THEME_DEFAULT } from 'config/constants';
 import { getLanguage } from 'utils/string';
@@ -231,6 +232,7 @@ const INITIAL_STATE = {
 	selectedAnnouncement: {},
 	isActiveSelectedAnnouncement: false,
 	exchangeTimeZone: '',
+	isAdminAnnouncementFeature: false,
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -949,6 +951,12 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				exchangeTimeZone: payload.exchangeTimeZone,
+			};
+		}
+		case SET_IS_ADMIN_ANNOUNCEMENT_FEATURE: {
+			return {
+				...state,
+				isAdminAnnouncementFeature: payload.isAdminAnnouncementFeature,
 			};
 		}
 		default:
