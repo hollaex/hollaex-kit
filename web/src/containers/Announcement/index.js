@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { browserHistory } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { isMobile } from 'react-device-detect';
 import moment from 'moment';
 
 import { EditWrapper, Image, Table } from 'components';
@@ -12,6 +13,10 @@ import {
 	setIsActiveSelectedAnnouncement,
 	setSelectedAnnouncement,
 } from 'actions/appActions';
+import {
+	renderAnnouncementMessage,
+	renderRemoveEmptyTag,
+} from 'components/AppBar/Utils';
 import icons from 'config/icons/dark';
 import STRINGS from 'config/localizedStrings';
 import './Announcement.scss';
@@ -35,7 +40,7 @@ const announcementData = (formatDate, onHandleSelectAnnouncement) => {
 			stringId: 'ANNOUNCEMENT_TAB.TITLE',
 			label: STRINGS['ANNOUNCEMENT_TAB.TITLE'],
 			className: 'description-header',
-			key: 'description',
+			key: 'title',
 			renderCell: (data, key) => (
 				<td key={key}>
 					<div className="d-flex justify-content-start table_text">
@@ -48,14 +53,14 @@ const announcementData = (formatDate, onHandleSelectAnnouncement) => {
 			stringId: 'ANNOUNCEMENT_TAB.MESSAGE_CONTENTS',
 			label: <span>{STRINGS['ANNOUNCEMENT_TAB.MESSAGE_CONTENTS']}</span>,
 			className: 'description-header',
-			key: 'description',
+			key: 'message',
 			renderCell: (data, key) => (
 				<td key={key} className="message-description">
 					<div className="d-flex">
-						<div
-							className="message-content-wrapper mr-2"
-							dangerouslySetInnerHTML={{ __html: data?.message }}
-						></div>
+						{renderAnnouncementMessage(
+							renderRemoveEmptyTag(data?.message),
+							isMobile ? 60 : 80
+						)}
 						<EditWrapper stringId="HOLLAEX_TOKEN.VIEW">
 							<span
 								className="blue-link text-decoration-underline"
@@ -100,7 +105,7 @@ const Announcement = ({
 		STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.UPDATES'],
 		STRINGS['ANNOUNCEMENT_TAB.NEWS'],
 		STRINGS['ANNOUNCEMENT_TAB.EVENTS'],
-		STRINGS['MORE'],
+		STRINGS['HOLLAEX_TOKEN.MORE'],
 	];
 	const [selectedOption, setSelectedOption] = useState(STRINGS['ALL']);
 	const [announcementList, setAnnouncementList] = useState([]);
@@ -153,9 +158,30 @@ const Announcement = ({
 			),
 	];
 
+	const filteredType = updatedAnnouncementType?.filter(
+		(item, index, type) =>
+			type?.findIndex((data) => data?.toLowerCase() === item?.toLowerCase()) ===
+			index
+	);
+
+	const optionMap = {
+		[STRINGS['ALL']]: () => true,
+		[STRINGS['ANNOUNCEMENT_TAB.LISTING_TEXT']]: (data) =>
+			data?.type?.toLowerCase() === 'listing',
+		[STRINGS['ANNOUNCEMENT_TAB.EVENTS']]: (data) =>
+			data?.type?.toLowerCase() === 'events',
+		[STRINGS['ANNOUNCEMENT_TAB.NEWS']]: (data) =>
+			data?.type?.toLowerCase() === 'news',
+		[STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.UPDATES']]: (data) =>
+			data?.type?.toLowerCase() === 'updates',
+		[STRINGS['HOLLAEX_TOKEN.MORE']]: (data) =>
+			data?.type?.toLowerCase() === 'more',
+	};
+
 	const filteredAnnouncement = announcementList?.filter((data) => {
-		return selectedOption === STRINGS['ALL']
-			? data
+		const filterCondition = optionMap[selectedOption];
+		return filterCondition
+			? filterCondition(data)
 			: data?.type?.toLowerCase() === selectedOption?.toLowerCase();
 	});
 
@@ -269,7 +295,7 @@ const Announcement = ({
 			</div>
 			<div className="announcement-details-container">
 				<div className="announcement-filter">
-					{updatedAnnouncementType?.map((data, index) => {
+					{filteredType?.map((data, index) => {
 						return (
 							<div
 								key={index}
@@ -332,7 +358,7 @@ const Announcement = ({
 								}}
 								data={filteredAnnouncement}
 								count={filteredAnnouncement?.length}
-								pageSize={5}
+								pageSize={12}
 								noData={<AnnouncementEmptyTable icons={icons} />}
 							/>
 						</div>
@@ -364,7 +390,7 @@ const Announcement = ({
 						<div
 							className="selected-announcement-message"
 							dangerouslySetInnerHTML={{
-								__html: getSelectedAnnouncement?.message,
+								__html: renderRemoveEmptyTag(getSelectedAnnouncement?.message),
 							}}
 						></div>
 					</div>
