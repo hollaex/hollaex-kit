@@ -10,10 +10,27 @@ const moment = require('moment');
 const { loggerPlugin } = require('../config/logger');
 
 
-const getTimezone = () => {
-	const kitTimezone = toolsLib.getKitSecrets().emails.timezone;
-	return isNumber(validTimezones[kitTimezone]) ? kitTimezone : 'Etc/UTC';
-};
+let kitTimezone;
+const timezoneMapping = {
+	'America/Anchorage': 'America/Juneau',
+	'Asia/Calcutta': 'Asia/Kolkata',
+	'Asia/Dubai': 'Asia/Muscat',
+	'Asia/Manila': 'Asia/Hong_Kong',
+	'Indian/Cocos': 'Asia/Rangoon',
+	'Indian/Maldives': 'Asia/Karachi',
+	'Pacific/Kiritimati': 'Pacific/Majuro',
+	'Pacific/Nauru': 'Pacific/Majuro',
+	'Pacific/Tahiti': 'Pacific/Midway',
+  };
+  
+  
+  const getTimezone = () => {
+	if (validTimezones[kitTimezone]) {
+	  return kitTimezone;
+	}
+	return timezoneMapping[kitTimezone] ? timezoneMapping[kitTimezone] : 'Etc/UTC';
+  };
+  
 
 const unstakingCheckRunner = () => {
 	cron.schedule('0 0 0 * * *', async () => {
@@ -405,6 +422,8 @@ const executeTrade = async (autoTradeConfig) => {
 				null, ip, opts, { headers: { 'api-key': null } }, { user_id: user_id, network_id: user.network_id }
 			);
 
+			await toolsLib.sleep(1000);
+
 			await toolsLib.order.executeUserOrder(user_id, opts, quote.token, null);
 
 			sendEmail(
@@ -434,10 +453,18 @@ const executeTrade = async (autoTradeConfig) => {
        
 };
 
-scheduleAutoTrade();
-unstakingCheckRunner();
-updateRewardsCheckRunner();
-referralTradesRunner();
+const statusModel = toolsLib.database.getModel('status');
+statusModel.findOne({ })
+	.then(res => {
+		kitTimezone = res.kit.timezone;
+		scheduleAutoTrade();
+		unstakingCheckRunner();
+		updateRewardsCheckRunner();
+		referralTradesRunner();
+	})
+	.catch(err => err);
+
+
 
 module.exports = {
 	unstakingCheckRunner,

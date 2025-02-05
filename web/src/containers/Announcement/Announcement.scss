@@ -64,7 +64,7 @@
 		}
 
 		.announcement-filter {
-			width: 12%;
+			width: 15%;
 			display: flex;
 			flex-direction: column;
 			gap: 0.8rem;
@@ -108,18 +108,26 @@
 				}
 			}
 			.announcement-table-wrapper {
-				tr {
-					td {
-						padding: 0.5rem;
-					}
+				width: 100%;
+				.table-wrapper {
+					width: 100%;
+					tr {
+						td {
+							padding: 0.5rem;
+						}
 
-					.message-description {
-						width: 60%;
+						.message-description {
+							width: 60%;
 
-						.message-content-wrapper {
-							width: 85%;
-							height: 1.5rem;
-							overflow: hidden;
+							.announcement-message-wrapper {
+								width: 85%;
+								height: 1.5rem;
+								overflow: hidden;
+								margin-right: 2%;
+							}
+							.announcement-message-wrapper * {
+								font-size: 12px !important;
+							}
 						}
 					}
 				}
@@ -150,11 +158,15 @@
 			}
 
 			.selected-announcement-message {
+				width: 60%;
 				font-size: 12px;
 				padding-top: 1%;
 
 				a {
 					color: var(--specials_buttons-links-and-highlights);
+				}
+				img {
+					width: 90%;
 				}
 			}
 		}
@@ -209,7 +221,7 @@
 		}
 
 		.announcement-list {
-			width: 76%;
+			width: 75%;
 
 			.edit-wrapper__container {
 				.font-weight-bold {
@@ -242,8 +254,12 @@
 							}
 
 							.message-description {
-								.message-content-wrapper {
+								.announcement-message-wrapper {
 									width: 75%;
+									margin-right: 5%;
+								}
+								.announcement-message-wrapper * {
+									font-size: 10px !important;
 								}
 							}
 						}
@@ -265,6 +281,7 @@
 			}
 
 			.selected-announcement-message {
+				width: 100%;
 				font-size: 10px;
 				padding: 2% 0;
 

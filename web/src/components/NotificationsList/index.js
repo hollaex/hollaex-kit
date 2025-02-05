@@ -4,7 +4,11 @@ import { browserHistory } from 'react-router';
 import { bindActionCreators } from 'redux';
 import moment from 'moment';
 
-import { getAnnouncement } from '../../actions/appActions';
+import {
+	getAnnouncement,
+	setIsActiveSelectedAnnouncement,
+	setSelectedAnnouncement,
+} from '../../actions/appActions';
 import Image from '../Image';
 import STRINGS from 'config/localizedStrings';
 import EditWrapper from 'components/EditWrapper';
@@ -68,19 +72,38 @@ const NotificationsList = ({
 	announcements,
 	getAnnouncement,
 	setOpen,
+	setIsActiveSelectedAnnouncement,
+	setSelectedAnnouncement,
 }) => {
 	useEffect(() => {
 		getAnnouncement();
 		//  TODO: Fix react-hooks/exhaustive-deps
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+
+	const onHandleNavigate = (detail) => {
+		setSelectedAnnouncement(detail);
+		setIsActiveSelectedAnnouncement(true);
+		setOpen(false);
+		browserHistory.push('/announcement');
+	};
+
 	if (!announcements.length) {
 		return <div className="notifications_list-wrapper">No data</div>;
 	}
 	return (
 		<div className="notifications_list-wrapper">
-			{announcements.map(({ id, ...rest }, index) => (
-				<NotificationItem key={id} ICONS={ICONS} {...rest} />
+			{announcements.map((announcement, index) => (
+				<span
+					onClick={() => onHandleNavigate(announcement)}
+					className="pointer"
+				>
+					<NotificationItem
+						key={announcement?.id}
+						ICONS={ICONS}
+						{...announcement}
+					/>
+				</span>
 			))}
 			<div className="view-announcement-link">
 				<EditWrapper stringId="ANNOUNCEMENT_TAB.VIEW_ALL_ANNOUNCEMENT">
@@ -106,6 +129,14 @@ const mapStateToProps = (store) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 	getAnnouncement: bindActionCreators(getAnnouncement, dispatch),
+	setSelectedAnnouncement: bindActionCreators(
+		setSelectedAnnouncement,
+		dispatch
+	),
+	setIsActiveSelectedAnnouncement: bindActionCreators(
+		setIsActiveSelectedAnnouncement,
+		dispatch
+	),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NotificationsList);

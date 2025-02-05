@@ -3675,7 +3675,7 @@ const createUserAutoTrade = async (user_id, {
     trade_hour,
     active,
     description
-}) => {
+}, ip) => {
 
 	if (!subscribedToCoin(buy_coin)) {
 		throw new Error('Invalid coin ' + buy_coin);
@@ -3687,6 +3687,17 @@ const createUserAutoTrade = async (user_id, {
 
 	const originalPair = `${spend_coin}-${buy_coin}`;
 	const flippedPair = `${buy_coin}-${spend_coin}`;
+
+	const { getUserQuickTrade } = require('./order');
+	const opts = {
+		additionalHeaders: {
+			'x-forwarded-for': ip
+		}
+	};
+	await getUserQuickTrade(
+		spend_coin, spend_amount, null, buy_coin, 
+		null, ip, opts, { headers: { 'api-key': null } }, { user_id: user_id, network_id: null}
+	)
 
 	const quickTrades = getQuickTrades();
 	let quickTradeConfig = quickTrades.find(quickTrade => quickTrade.symbol === originalPair);
@@ -3749,7 +3760,7 @@ const updateUserAutoTrade = async (user_id, {
     trade_hour,
     active,
     description
-}) => {
+}, ip) => {
 	
 	if (!subscribedToCoin(buy_coin)) {
 		throw new Error('Invalid coin ' + buy_coin);
@@ -3771,6 +3782,19 @@ const updateUserAutoTrade = async (user_id, {
 
 	if (!quickTradeConfig) {
 	    throw new Error(INVALID_AUTOTRADE_CONFIG);
+	}
+
+	if (spend_amount) {
+		const { getUserQuickTrade } = require('./order');
+		const opts = {
+			additionalHeaders: {
+				'x-forwarded-for': ip
+			}
+		};
+		await getUserQuickTrade(
+			spend_coin, spend_amount, null, buy_coin, 
+			null, ip, opts, { headers: { 'api-key': null } }, { user_id: user_id, network_id: null}
+		)
 	}
 
     if (week_days && !week_days.every(day => day >= 0 && day <= 6)) {

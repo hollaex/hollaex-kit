@@ -8,6 +8,8 @@ import { STATIC_ICONS } from 'config/icons';
 import FormButton from 'components/FormButton/Button';
 import { CloseOutlined } from '@ant-design/icons';
 import { Link } from 'react-router';
+import icons from 'config/icons/dark';
+
 const { Item } = Form;
 
 const InterfaceForm = ({
@@ -79,7 +81,7 @@ const InterfaceForm = ({
 				home_page: isUpgrade ? false : !!values.home_page,
 				ultimate_fiat: !!values.ultimate_fiat,
 				apps: !!values.apps,
-				announcement: !!values.announcement
+				announcement: !!values.announcement,
 			};
 			const balance_history_config = {
 				currency: balanceHistoryCurrency.currency || 'usdt',
@@ -587,10 +589,12 @@ const InterfaceForm = ({
 						<Item name="announcement" valuePropName="checked">
 							<Checkbox className="mt-3">
 								<div className="d-flex align-items-center">
-									<ReactSVG
-										src={STATIC_ICONS.CANDLES_LOGO}
-										className="feature-icon mr-1"
-									/>
+									<div className="feature-trade-box">
+										<ReactSVG
+											src={icons['ANNOUNCEMENT_ICON']}
+											className="feature-icon announcement-icon mr-1"
+										/>
+									</div>
 									<div className="ml-2 checkbox-txt">
 										Announcement
 										<div className="small-text">

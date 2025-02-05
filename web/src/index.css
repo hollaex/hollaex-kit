@@ -14029,18 +14029,30 @@ table th {
   font-size: 12px; }
 
 .select-frequency-dropdown {
-  height: 8rem !important;
-  overflow-y: scroll; }
+  height: 8rem !important; }
 
 .select-buy-dropdown {
   height: 10rem !important; }
 
-.auto-trader-select-option-dropdown {
-  height: 14rem; }
-  .auto-trader-select-option-dropdown .ant-select-item-option-content .options-wrapper {
+.auto-trader-select-option-dropdown,
+.select-frequency-dropdown,
+.select-buy-dropdown {
+  height: 14rem;
+  overflow-y: auto;
+  scrollbar-width: auto;
+  scrollbar-color: var(--labels_important-active-labels-text-graphics) var(--base_wallet-sidebar-and-popup); }
+  .auto-trader-select-option-dropdown .rc-virtual-list-holder,
+  .select-frequency-dropdown .rc-virtual-list-holder,
+  .select-buy-dropdown .rc-virtual-list-holder {
+    overflow-y: unset !important; }
+  .auto-trader-select-option-dropdown .ant-select-item-option-content .options-wrapper,
+  .select-frequency-dropdown .ant-select-item-option-content .options-wrapper,
+  .select-buy-dropdown .ant-select-item-option-content .options-wrapper {
     display: flex;
     align-items: center; }
-    .auto-trader-select-option-dropdown .ant-select-item-option-content .options-wrapper .asset-icon {
+    .auto-trader-select-option-dropdown .ant-select-item-option-content .options-wrapper .asset-icon,
+    .select-frequency-dropdown .ant-select-item-option-content .options-wrapper .asset-icon,
+    .select-buy-dropdown .ant-select-item-option-content .options-wrapper .asset-icon {
       position: relative;
       top: 3px; }
 
@@ -14382,7 +14394,7 @@ table th {
       padding: 2%;
       border-radius: 5px; }
     .announcement-container .announcement-details-container .announcement-filter {
-      width: 12%;
+      width: 15%;
       display: flex;
       flex-direction: column;
       gap: 0.8rem;
@@ -14409,14 +14421,21 @@ table th {
         display: flex;
         flex-direction: column;
         gap: 2%; }
-      .announcement-container .announcement-details-container .announcement-list .announcement-table-wrapper tr td {
-        padding: 0.5rem; }
-      .announcement-container .announcement-details-container .announcement-list .announcement-table-wrapper tr .message-description {
-        width: 60%; }
-        .announcement-container .announcement-details-container .announcement-list .announcement-table-wrapper tr .message-description .message-content-wrapper {
-          width: 85%;
-          height: 1.5rem;
-          overflow: hidden; }
+      .announcement-container .announcement-details-container .announcement-list .announcement-table-wrapper {
+        width: 100%; }
+        .announcement-container .announcement-details-container .announcement-list .announcement-table-wrapper .table-wrapper {
+          width: 100%; }
+          .announcement-container .announcement-details-container .announcement-list .announcement-table-wrapper .table-wrapper tr td {
+            padding: 0.5rem; }
+          .announcement-container .announcement-details-container .announcement-list .announcement-table-wrapper .table-wrapper tr .message-description {
+            width: 60%; }
+            .announcement-container .announcement-details-container .announcement-list .announcement-table-wrapper .table-wrapper tr .message-description .announcement-message-wrapper {
+              width: 85%;
+              height: 1.5rem;
+              overflow: hidden;
+              margin-right: 2%; }
+            .announcement-container .announcement-details-container .announcement-list .announcement-table-wrapper .table-wrapper tr .message-description .announcement-message-wrapper * {
+              font-size: 12px !important; }
       .announcement-container .announcement-details-container .announcement-list .empty-content-display {
         margin-top: 5%;
         display: flex;
@@ -14432,10 +14451,13 @@ table th {
         border-bottom: 1px solid var(--calculated_secondary-border);
         padding-bottom: 1%; }
       .announcement-container .announcement-details-container .announcement-list .selected-announcement-message {
+        width: 60%;
         font-size: 12px;
         padding-top: 1%; }
         .announcement-container .announcement-details-container .announcement-list .selected-announcement-message a {
           color: var(--specials_buttons-links-and-highlights); }
+        .announcement-container .announcement-details-container .announcement-list .selected-announcement-message img {
+          width: 90%; }
 
 .layout-mobile .announcement-container {
   width: 90%;
@@ -14463,7 +14485,7 @@ table th {
       font-size: 10px;
       padding: 8% 14px; }
   .layout-mobile .announcement-container .announcement-list {
-    width: 76%; }
+    width: 75%; }
     .layout-mobile .announcement-container .announcement-list .edit-wrapper__container .font-weight-bold {
       font-size: 14px; }
     .layout-mobile .announcement-container .announcement-list .edit-wrapper__container .secondary-text {
@@ -14476,8 +14498,11 @@ table th {
       overflow-x: scroll; }
       .layout-mobile .announcement-container .announcement-list .table_container .table-content .table-wrapper .table_body-wrapper .table_body-row {
         font-size: 1.2rem; }
-      .layout-mobile .announcement-container .announcement-list .table_container .table-content .table-wrapper .table_body-wrapper .message-description .message-content-wrapper {
-        width: 75%; }
+      .layout-mobile .announcement-container .announcement-list .table_container .table-content .table-wrapper .table_body-wrapper .message-description .announcement-message-wrapper {
+        width: 75%;
+        margin-right: 5%; }
+      .layout-mobile .announcement-container .announcement-list .table_container .table-content .table-wrapper .table_body-wrapper .message-description .announcement-message-wrapper * {
+        font-size: 10px !important; }
     .layout-mobile .announcement-container .announcement-list .selected-announcement-type {
       font-size: 10px;
       padding: 5px 0px; }
@@ -14486,10 +14511,27 @@ table th {
     .layout-mobile .announcement-container .announcement-list .selected-announcement-title {
       font-size: 16px; }
     .layout-mobile .announcement-container .announcement-list .selected-announcement-message {
+      width: 100%;
       font-size: 10px;
       padding: 2% 0; }
       .layout-mobile .announcement-container .announcement-list .selected-announcement-message img {
         width: 100% !important; }
+
+.announcement-wrapper-disabled {
+  color: #808080;
+  pointer-events: none !important; }
+  .announcement-wrapper-disabled .announcement-filters .announcement-description-active {
+    color: #ffffff;
+    pointer-events: all !important; }
+    .announcement-wrapper-disabled .announcement-filters .announcement-description-active .feature-link {
+      cursor: pointer; }
+  .announcement-wrapper-disabled .ant-table-wrapper th,
+  .announcement-wrapper-disabled .ant-table-wrapper td {
+    color: #808080 !important; }
+
+.announcement-wrapper .upgrade-section .button-wrapper .upgrade-btn {
+  background-color: #f6921e !important;
+  border: unset; }
 
 .announcement-wrapper .green-btn {
   border: none; }
@@ -14501,7 +14543,9 @@ table th {
 .announcement-wrapper .announcement-filters .announcement-display-feature {
   width: 100%;
   gap: 2%;
-  align-items: center; }
+  align-items: center;
+  padding: 2% 0;
+  border-bottom: 1px solid #808080; }
   .announcement-wrapper .announcement-filters .announcement-display-feature .feature-trade-box .feature-icon svg {
     width: 100%;
     height: 100%; }
@@ -14512,6 +14556,18 @@ table th {
     display: flex;
     flex-direction: column;
     gap: 2%; }
+
+.announcement-wrapper .blue-admin-table .message-content-wrapper {
+  width: 30rem; }
+  .announcement-wrapper .blue-admin-table .message-content-wrapper img {
+    width: -webkit-fill-available; }
+
+.announcement-wrapper .blue-admin-table .message-content-wrapper * {
+  color: #FFFFFF; }
+
+.admin-announcement-popup-wrapper .ant-modal-content,
+.admin-announcement-message-popup-wrapper .ant-modal-content {
+  width: 40rem; }
 
 .admin-announcement-popup-wrapper .ant-modal-close-icon,
 .admin-announcement-message-popup-wrapper .ant-modal-close-icon {
@@ -14551,12 +14607,49 @@ table th {
     border: none;
     width: 100%; }
 
+.admin-announcement-popup-wrapper .announcement-life-span-popup-container .announcement-display-options,
+.admin-announcement-popup-wrapper .announcement-message-popup-wrapper .announcement-display-options,
+.admin-announcement-message-popup-wrapper .announcement-life-span-popup-container .announcement-display-options,
+.admin-announcement-message-popup-wrapper .announcement-message-popup-wrapper .announcement-display-options {
+  display: flex;
+  flex-direction: column; }
+  .admin-announcement-popup-wrapper .announcement-life-span-popup-container .announcement-display-options .announcement-display-feature,
+  .admin-announcement-popup-wrapper .announcement-message-popup-wrapper .announcement-display-options .announcement-display-feature,
+  .admin-announcement-message-popup-wrapper .announcement-life-span-popup-container .announcement-display-options .announcement-display-feature,
+  .admin-announcement-message-popup-wrapper .announcement-message-popup-wrapper .announcement-display-options .announcement-display-feature {
+    width: 100%;
+    gap: 2%;
+    align-items: center; }
+    .admin-announcement-popup-wrapper .announcement-life-span-popup-container .announcement-display-options .announcement-display-feature .feature-trade-box .feature-icon svg,
+    .admin-announcement-popup-wrapper .announcement-message-popup-wrapper .announcement-display-options .announcement-display-feature .feature-trade-box .feature-icon svg,
+    .admin-announcement-message-popup-wrapper .announcement-life-span-popup-container .announcement-display-options .announcement-display-feature .feature-trade-box .feature-icon svg,
+    .admin-announcement-message-popup-wrapper .announcement-message-popup-wrapper .announcement-display-options .announcement-display-feature .feature-trade-box .feature-icon svg {
+      width: 100%;
+      height: 100%; }
+    .admin-announcement-popup-wrapper .announcement-life-span-popup-container .announcement-display-options .announcement-display-feature .feature-trade-box .popup-feature-icon,
+    .admin-announcement-popup-wrapper .announcement-message-popup-wrapper .announcement-display-options .announcement-display-feature .feature-trade-box .popup-feature-icon,
+    .admin-announcement-message-popup-wrapper .announcement-life-span-popup-container .announcement-display-options .announcement-display-feature .feature-trade-box .popup-feature-icon,
+    .admin-announcement-message-popup-wrapper .announcement-message-popup-wrapper .announcement-display-options .announcement-display-feature .feature-trade-box .popup-feature-icon {
+      position: relative;
+      top: 3px; }
+    .admin-announcement-popup-wrapper .announcement-life-span-popup-container .announcement-display-options .announcement-display-feature .announcement-features,
+    .admin-announcement-popup-wrapper .announcement-message-popup-wrapper .announcement-display-options .announcement-display-feature .announcement-features,
+    .admin-announcement-message-popup-wrapper .announcement-life-span-popup-container .announcement-display-options .announcement-display-feature .announcement-features,
+    .admin-announcement-message-popup-wrapper .announcement-message-popup-wrapper .announcement-display-options .announcement-display-feature .announcement-features {
+      display: flex;
+      flex-direction: column;
+      gap: 2%; }
+
 .admin-announcement-message-popup-wrapper .announcement-message-popup-wrapper .quill {
   background-color: #ffffff; }
   .admin-announcement-message-popup-wrapper .announcement-message-popup-wrapper .quill .ql-container {
     height: 14rem; }
     .admin-announcement-message-popup-wrapper .announcement-message-popup-wrapper .quill .ql-container .ql-editor > * {
       color: #000000 !important; }
+
+@media (min-width: 1820px) {
+  .announcement-wrapper .blue-admin-table .message-content-wrapper {
+    width: 45rem; } }
 
 .sidebar-row {
   min-height: 3rem;
@@ -14831,20 +14924,26 @@ table th {
   height: 4rem; }
 
 .announcement-top-bar {
-  height: 10px !important;
-  min-height: 2.5rem !important;
+  padding: 1%;
+  border-bottom: 1px solid var(--calculated_secondary-border) !important;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1%;
+  gap: 0.5%;
   color: var(--calculated_base_top-bar-navigation_text-inactive); }
-  .announcement-top-bar .announcement-message {
-    max-width: 50%;
-    height: 70%;
+  .announcement-top-bar .announcement-title {
+    color: var(--calculated_base_top-bar-navigation_text); }
+  .announcement-top-bar .announcement-message-wrapper {
+    width: auto;
+    text-wrap: nowrap;
+    text-overflow: ellipsis;
     overflow: hidden;
     display: flex;
-    flex-direction: column;
-    align-items: center; }
+    align-items: center;
+    gap: 1%; }
+  .announcement-top-bar .announcement-message-wrapper * {
+    max-width: 100%;
+    margin: unset; }
   .announcement-top-bar .announcement-btn {
     width: max-content;
     height: 2rem;
@@ -14854,6 +14953,9 @@ table th {
   .announcement-top-bar .close-icon {
     position: absolute;
     right: 1%; }
+    .announcement-top-bar .close-icon svg {
+      width: 1.5rem;
+      height: 1.5rem; }
 
 .app_bar {
   position: relative;
@@ -16215,13 +16317,21 @@ table th {
   font-size: 11px; }
 
 .announcement-popup-wrapper .ReactModal__Content {
-  width: 35rem; }
+  width: 38rem; }
   .announcement-popup-wrapper .ReactModal__Content .announcement-popup-container .announcement-title {
-    font-size: 20px; }
+    font-size: 12px;
+    font-family: "Raleway"; }
   .announcement-popup-wrapper .ReactModal__Content .announcement-popup-container .announcement-exchange-title {
     display: flex;
     align-items: center;
-    gap: 2%; }
+    gap: 3%; }
+    .announcement-popup-wrapper .ReactModal__Content .announcement-popup-container .announcement-exchange-title .announcement-icon {
+      position: relative;
+      top: 3px; }
+  .announcement-popup-wrapper .ReactModal__Content .announcement-popup-container .announcement-message-wrapper {
+    overflow: hidden; }
+  .announcement-popup-wrapper .ReactModal__Content .announcement-popup-container .announcement-message-wrapper * {
+    width: 100%; }
   .announcement-popup-wrapper .ReactModal__Content .announcement-popup-container .announcement-popup-buttons {
     gap: 2%; }
     .announcement-popup-wrapper .ReactModal__Content .announcement-popup-container .announcement-popup-buttons .back-btn {
