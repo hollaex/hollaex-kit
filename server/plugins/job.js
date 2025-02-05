@@ -65,7 +65,7 @@ const unstakingCheckRunner = () => {
 					continue;
 				}
 
-                await staker.update({ status: 'closed' }, {
+				await staker.update({ status: 'closed' }, {
 					fields: ['status']
 				});
 		
@@ -90,7 +90,7 @@ const unstakingCheckRunner = () => {
 						},
 						adminAccount.settings
 					);
-                }
+				}
 
 			}
 
@@ -141,7 +141,7 @@ const unstakingCheckRunner = () => {
 
 				let symbols = {};
 
-				(userBalances[userId] || []).forEach(balance => { symbols[balance.symbol] = balance.balance });
+				(userBalances[userId] || []).forEach(balance => { symbols[balance.symbol] = balance.balance; });
 
 				const coins = Object.keys(symbols);
 
@@ -161,7 +161,7 @@ const unstakingCheckRunner = () => {
 					user_id: Number(userId),
 					balance: history,
 					total,
-				})
+				});
 
 			}
 		} catch (err) {
@@ -175,7 +175,7 @@ const unstakingCheckRunner = () => {
 		scheduled: true,
 		timezone: getTimezone()
 	});
-}
+};
 
 const updateRewardsCheckRunner = () => {
 	cron.schedule('0 0 0 * * *', async () => {
@@ -250,7 +250,7 @@ const updateRewardsCheckRunner = () => {
 		scheduled: true,
 		timezone: getTimezone()
 	});
-}
+};
 
 const referralTradesRunner = () =>{
 	cron.schedule('0 */4 * * *', async () => {
@@ -285,36 +285,36 @@ const referralTradesRunner = () =>{
 		scheduled: true,
 		timezone: getTimezone()
 	});
-}
+};
 
 const scheduleAutoTrade = () => {
-    cron.schedule('0 0 * * * *', async () => {
-        loggerPlugin.verbose('Auto trade job start');
+	cron.schedule('0 0 * * * *', async () => {
+		loggerPlugin.verbose('Auto trade job start');
 
-        try {
+		try {
 			const statusModel = toolsLib.database.getModel('status');
 			const status = await statusModel.findOne({ });
 			if (!status?.kit?.auto_trade_config?.active) return;
 
-            const autoTradeConfigModel = toolsLib.database.getModel('autoTradeConfig');
-            const today = moment(); 
+			const autoTradeConfigModel = toolsLib.database.getModel('autoTradeConfig');
+			const today = moment();
 			const currentHour = today.hour();
-            const autoTradeConfigs = await autoTradeConfigModel.findAll({ where: { active: true, trade_hour: currentHour } });
+			const autoTradeConfigs = await autoTradeConfigModel.findAll({ where: { active: true, trade_hour: currentHour } });
 
-            if (!autoTradeConfigs || autoTradeConfigs?.length === 0) return;
+			if (!autoTradeConfigs || autoTradeConfigs?.length === 0) return;
 
-            const currentDay = today.day(); 
-            const currentDate = today.date(); 
+			const currentDay = today.day();
+			const currentDate = today.date();
 			
-            for (const autoTradeConfig of autoTradeConfigs) {
-                const { frequency, week_days, day_of_month, trade_hour, user_id, spend_coin, buy_coin, spend_amount } = autoTradeConfig;
+			for (const autoTradeConfig of autoTradeConfigs) {
+				const { frequency, week_days, day_of_month, trade_hour, user_id, spend_coin, buy_coin, spend_amount } = autoTradeConfig;
 
 				if (shouldExecuteTrade(frequency, week_days, currentDay, currentDate, day_of_month, trade_hour, currentHour)) {
-                    await executeTrade(autoTradeConfig);
-                }
+					await executeTrade(autoTradeConfig);
+				}
 
 				const reminderHour = (trade_hour - 12 + 24) % 24;
-                if (currentHour === reminderHour && shouldExecuteTrade(frequency, week_days, currentDay, currentDate, day_of_month, trade_hour, reminderHour)) {
+				if (currentHour === reminderHour && shouldExecuteTrade(frequency, week_days, currentDay, currentDate, day_of_month, trade_hour, reminderHour)) {
 					const user = await toolsLib.user.getUserByKitId(user_id); 
 					sendEmail(
 						MAILTYPE.AUTO_TRADE_REMINDER,
@@ -326,67 +326,67 @@ const scheduleAutoTrade = () => {
 						},
 						user.settings
 					);
-                }
-            }
+				}
+			}
 
-        } catch (err) {
-            loggerPlugin.error('Auto trade job error:', err.message);
-        }
-    }, {
-        scheduled: true,
-        timezone: getTimezone() 
-    });
+		} catch (err) {
+			loggerPlugin.error('Auto trade job error:', err.message);
+		}
+	}, {
+		scheduled: true,
+		timezone: getTimezone()
+	});
 };
 
 const shouldExecuteTrade = (frequency, weekDays, currentDay, currentDate, dayOfMonth, tradeHour, currentHour) => {
-    if (currentHour !== tradeHour) {
-        return false;  
-    }
+	if (currentHour !== tradeHour) {
+		return false;
+	}
 
-    if (frequency === 'daily') {
-        return true; 
-    } else if (frequency === 'weekly') {
-        return weekDays.includes(currentDay);
-    } else if (frequency === 'monthly') {
-        return currentDate === dayOfMonth;  
-    }
+	if (frequency === 'daily') {
+		return true;
+	} else if (frequency === 'weekly') {
+		return weekDays.includes(currentDay);
+	} else if (frequency === 'monthly') {
+		return currentDate === dayOfMonth;
+	}
 
-    return false; 
+	return false;
 };
 
 const executeTrade = async (autoTradeConfig) => {
-    const { spend_coin, buy_coin, spend_amount, user_id } = autoTradeConfig;
+	const { spend_coin, buy_coin, spend_amount, user_id } = autoTradeConfig;
 	const symbol = `${buy_coin}-${spend_coin}`;
 	const size = spend_amount;  
 
 	let hasError = false;
-    try {
-        const exchangeCoins = toolsLib.getKitCoins();
+	try {
+		const exchangeCoins = toolsLib.getKitCoins();
 
-        if (!exchangeCoins.includes(spend_coin) || !exchangeCoins.includes(buy_coin)) {
-            throw new Error(`Invalid trade pair: ${spend_coin}-${buy_coin}`);
-        }
+		if (!exchangeCoins.includes(spend_coin) || !exchangeCoins.includes(buy_coin)) {
+			throw new Error(`Invalid trade pair: ${spend_coin}-${buy_coin}`);
+		}
 		//Balance check
 		const balance = await toolsLib.wallet.getUserBalanceByKitId(user_id);
 		if (balance[`${spend_coin}_available`] < size) {
 			throw new Error(`Balance insufficient for auto trade: ${symbol} size: ${size}`);
-		};
+		}
 
 	} catch (error) {
 		hasError = true;
-        loggerPlugin.error(`Auto trade execution error for user ${user_id}:`, error.message);
-        const user = await toolsLib.user.getUserByKitId(user_id); 
-            sendEmail(
-                MAILTYPE.AUTO_TRADE_ERROR,
-                user.email,
-                {
-                    spend_amount, 
-                    spend_coin, 
-                    buy_coin, 
-                },
-                user.settings
-            );
-    }
+		loggerPlugin.error(`Auto trade execution error for user ${user_id}:`, error.message);
+		const user = await toolsLib.user.getUserByKitId(user_id);
+		sendEmail(
+			MAILTYPE.AUTO_TRADE_ERROR,
+			user.email,
+			{
+				spend_amount,
+				spend_coin,
+				buy_coin,
+			},
+			user.settings
+		);
+	}
 
 	try {
 
@@ -408,17 +408,17 @@ const executeTrade = async (autoTradeConfig) => {
 			await toolsLib.order.executeUserOrder(user_id, opts, quote.token, null);
 
 			sendEmail(
-                MAILTYPE.AUTO_TRADE_FILLED,
-                user.email,
-                {
-                    spend_amount, 
-                    spend_coin, 
-                    buy_coin, 
-                },
-                user.settings
-            );
+				MAILTYPE.AUTO_TRADE_FILLED,
+				user.email,
+				{
+					spend_amount,
+					spend_coin,
+					buy_coin,
+				},
+				user.settings
+			);
 		}
-        loggerPlugin.verbose(`Auto trade completed for user ${user_id}: ${buy_coin} -> ${spend_coin}`);
+		loggerPlugin.verbose(`Auto trade completed for user ${user_id}: ${buy_coin} -> ${spend_coin}`);
 	} catch (error) {
 		const adminAccount = await toolsLib.user.getUserByKitId(1);
 		sendEmail(
@@ -440,7 +440,7 @@ updateRewardsCheckRunner();
 referralTradesRunner();
 
 module.exports = {
-    unstakingCheckRunner,
-    updateRewardsCheckRunner,
+	unstakingCheckRunner,
+	updateRewardsCheckRunner,
 	referralTradesRunner
-}
+};
