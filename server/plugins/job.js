@@ -6,6 +6,7 @@ const { sendEmail } = require('../mail');
 const { isNumber } = require('lodash');
 const BigNumber = require('bignumber.js');
 const moment = require('moment');
+const { Op } = require('sequelize');
 
 const { loggerPlugin } = require('../config/logger');
 
@@ -21,16 +22,16 @@ const timezoneMapping = {
 	'Pacific/Kiritimati': 'Pacific/Majuro',
 	'Pacific/Nauru': 'Pacific/Majuro',
 	'Pacific/Tahiti': 'Pacific/Midway',
-  };
-  
-  
-  const getTimezone = () => {
+};
+
+
+const getTimezone = () => {
 	if (validTimezones[kitTimezone]) {
-	  return kitTimezone;
+		return kitTimezone;
 	}
 	return timezoneMapping[kitTimezone] ? timezoneMapping[kitTimezone] : 'Etc/UTC';
-  };
-  
+};
+
 
 const unstakingCheckRunner = () => {
 	cron.schedule('0 0 0 * * *', async () => {
@@ -49,7 +50,7 @@ const unstakingCheckRunner = () => {
 
 				const balance = await toolsLib.wallet.getUserBalanceByKitId(stakePool.account_id);
 				let symbols = {};
-				
+
 				for (const key of Object.keys(balance)) {
 					if (key.includes('available') && balance[key] != null) {
 						let symbol = key?.split('_')?.[0];
@@ -57,7 +58,7 @@ const unstakingCheckRunner = () => {
 					}
 				}
 
-				const amountAfterSlash =  new BigNumber(staker.reward).minus(new BigNumber(staker.slashed)).toNumber();
+				const amountAfterSlash = new BigNumber(staker.reward).minus(new BigNumber(staker.slashed)).toNumber();
 				let totalAmount = staker.amount;
 
 				// Add them together since they are of same currency.
@@ -82,18 +83,18 @@ const unstakingCheckRunner = () => {
 					continue;
 				}
 
-                await staker.update({ status: 'closed' }, {
+				await staker.update({ status: 'closed' }, {
 					fields: ['status']
 				});
-		
+
 
 				try {
-					if(totalAmount > 0) {
-                    	await toolsLib.wallet.transferAssetByKitIds(stakePool.account_id, user.id, stakePool.currency, totalAmount, 'Admin transfer stake', false, { category: 'stake' });
+					if (totalAmount > 0) {
+						await toolsLib.wallet.transferAssetByKitIds(stakePool.account_id, user.id, stakePool.currency, totalAmount, 'Admin transfer stake', false, { category: 'stake' });
 					}
-					
+
 					if (stakePool.reward_currency !== stakePool.currency && amountAfterSlash > 0) {
-						 await toolsLib.wallet.transferAssetByKitIds(stakePool.account_id, user.id, stakePool.reward_currency, amountAfterSlash, 'Admin transfer stake', false, { category: 'stake' });
+						await toolsLib.wallet.transferAssetByKitIds(stakePool.account_id, user.id, stakePool.reward_currency, amountAfterSlash, 'Admin transfer stake', false, { category: 'stake' });
 					}
 
 				} catch (error) {
@@ -107,7 +108,7 @@ const unstakingCheckRunner = () => {
 						},
 						adminAccount.settings
 					);
-                }
+				}
 
 			}
 
@@ -151,7 +152,7 @@ const unstakingCheckRunner = () => {
 				group.push(item);
 				groups[item.user_id] = group;
 				return groups;
-			  }, {});
+			}, {});
 
 			for (const userId of Object.keys(userBalances)) {
 				if (userId === 'undefined') continue;
@@ -167,9 +168,9 @@ const unstakingCheckRunner = () => {
 				for (const coin of coins) {
 					if (!conversions[coin]) continue;
 					if (conversions[coin] === -1) continue;
-		
+
 					const nativeCurrencyValue = new BigNumber(symbols[coin]).multipliedBy(conversions[coin]).toNumber();
-				
+
 					history[coin] = { original_value: new BigNumber(symbols[coin]).toNumber(), native_currency_value: nativeCurrencyValue };
 					total = new BigNumber(total).plus(nativeCurrencyValue).toNumber();
 				}
@@ -207,7 +208,7 @@ const updateRewardsCheckRunner = () => {
 			for (const stakePool of stakePools) {
 				const stakers = await stakerModel.findAll({ where: { stake_id: stakePool.id, status: 'staking' } });
 
-				 for (const staker of stakers) {
+				for (const staker of stakers) {
 					const annualEarning = new BigNumber(staker.amount).multipliedBy(new BigNumber(stakePool.apy)).dividedBy(100);
 					let dailyEarningAmount = annualEarning.dividedBy(12 * 30).toNumber();
 
@@ -220,7 +221,7 @@ const updateRewardsCheckRunner = () => {
 						await staker.update({ status: 'unstaking', unstaked_date: new Date() }, {
 							fields: ['status', 'unstaked_date']
 						});
-				
+
 						continue;
 					}
 
@@ -240,11 +241,11 @@ const updateRewardsCheckRunner = () => {
 							continue;
 						}
 
-						dailyEarningAmount =  new BigNumber(conversions[stakePool.currency]).multipliedBy(dailyEarningAmount).toNumber();
+						dailyEarningAmount = new BigNumber(conversions[stakePool.currency]).multipliedBy(dailyEarningAmount).toNumber();
 					}
-					
-					await stakerModel.increment('reward', { by: dailyEarningAmount, where: { id: staker.id }});
-    			}
+
+					await stakerModel.increment('reward', { by: dailyEarningAmount, where: { id: staker.id } });
+				}
 			}
 
 		} catch (err) {
@@ -269,7 +270,7 @@ const updateRewardsCheckRunner = () => {
 	});
 }
 
-const referralTradesRunner = () =>{
+const referralTradesRunner = () => {
 	cron.schedule('0 */4 * * *', async () => {
 		loggerPlugin.verbose(
 			'/plugins referralTradesRunner start'
@@ -305,84 +306,78 @@ const referralTradesRunner = () =>{
 }
 
 const scheduleAutoTrade = () => {
-    cron.schedule('0 0 * * * *', async () => {
-        loggerPlugin.verbose('Auto trade job start');
+	cron.schedule('0 0 * * * *', async () => {
+		loggerPlugin.verbose('Auto trade job start');
 
-        try {
+		try {
 			const statusModel = toolsLib.database.getModel('status');
-			const status = await statusModel.findOne({ });
+			const status = await statusModel.findOne({});
 			if (!status?.kit?.auto_trade_config?.active) return;
 
-            const autoTradeConfigModel = toolsLib.database.getModel('autoTradeConfig');
-            const today = moment(); 
+			const autoTradeConfigModel = toolsLib.database.getModel('autoTradeConfig');
+
+			const timezone = getTimezone();
+			const today = moment().tz(timezone);
 			const currentHour = today.hour();
-            const autoTradeConfigs = await autoTradeConfigModel.findAll({ where: { active: true, trade_hour: currentHour } });
+			const currentDay = today.day();
+			const currentDate = today.date();
 
-            if (!autoTradeConfigs || autoTradeConfigs?.length === 0) return;
+			const autoTradeConfigs = await autoTradeConfigModel.findAll({
+				where: {
+					active: true,
+					trade_hour: currentHour,
+					[Op.or]: [
+						{ frequency: 'daily' },
+						{ frequency: 'weekly', week_days: { [Op.contains]: [currentDay] } },
+						{ frequency: 'monthly', day_of_month: currentDate }
+					]
+				}
+			});
 
-            const currentDay = today.day(); 
-            const currentDate = today.date(); 
-			
-            for (const autoTradeConfig of autoTradeConfigs) {
-                const { frequency, week_days, day_of_month, trade_hour, user_id, spend_coin, buy_coin, spend_amount } = autoTradeConfig;
+			if (!autoTradeConfigs || autoTradeConfigs.length === 0) return;
 
-				if (shouldExecuteTrade(frequency, week_days, currentDay, currentDate, day_of_month, trade_hour, currentHour)) {
-                    await executeTrade(autoTradeConfig);
-                }
+			for (const autoTradeConfig of autoTradeConfigs) {
+				const { trade_hour, user_id, spend_coin, buy_coin, spend_amount } = autoTradeConfig;
+				await executeTrade(autoTradeConfig);
 
 				const reminderHour = (trade_hour - 12 + 24) % 24;
-                if (currentHour === reminderHour && shouldExecuteTrade(frequency, week_days, currentDay, currentDate, day_of_month, trade_hour, reminderHour)) {
-					const user = await toolsLib.user.getUserByKitId(user_id); 
+				if (currentHour === reminderHour) {
+					const user = await toolsLib.user.getUserByKitId(user_id);
 					sendEmail(
 						MAILTYPE.AUTO_TRADE_REMINDER,
 						user.email,
 						{
-							spend_amount, 
-							spend_coin, 
-							buy_coin, 
+							spend_amount,
+							spend_coin,
+							buy_coin,
 						},
 						user.settings
 					);
-                }
-            }
+				}
+			}
 
-        } catch (err) {
-            loggerPlugin.error('Auto trade job error:', err.message);
-        }
-    }, {
-        scheduled: true,
-        timezone: getTimezone() 
-    });
+		} catch (err) {
+			loggerPlugin.error('Auto trade job error:', err.message);
+		}
+	}, {
+		scheduled: true,
+		timezone: getTimezone()
+	});
 };
 
-const shouldExecuteTrade = (frequency, weekDays, currentDay, currentDate, dayOfMonth, tradeHour, currentHour) => {
-    if (currentHour !== tradeHour) {
-        return false;  
-    }
-
-    if (frequency === 'daily') {
-        return true; 
-    } else if (frequency === 'weekly') {
-        return weekDays.includes(currentDay);
-    } else if (frequency === 'monthly') {
-        return currentDate === dayOfMonth;  
-    }
-
-    return false; 
-};
 
 const executeTrade = async (autoTradeConfig) => {
-    const { spend_coin, buy_coin, spend_amount, user_id } = autoTradeConfig;
+	const { spend_coin, buy_coin, spend_amount, user_id } = autoTradeConfig;
 	const symbol = `${buy_coin}-${spend_coin}`;
-	const size = spend_amount;  
+	const size = spend_amount;
 
 	let hasError = false;
-    try {
-        const exchangeCoins = toolsLib.getKitCoins();
+	try {
+		const exchangeCoins = toolsLib.getKitCoins();
 
-        if (!exchangeCoins.includes(spend_coin) || !exchangeCoins.includes(buy_coin)) {
-            throw new Error(`Invalid trade pair: ${spend_coin}-${buy_coin}`);
-        }
+		if (!exchangeCoins.includes(spend_coin) || !exchangeCoins.includes(buy_coin)) {
+			throw new Error(`Invalid trade pair: ${spend_coin}-${buy_coin}`);
+		}
 		//Balance check
 		const balance = await toolsLib.wallet.getUserBalanceByKitId(user_id);
 		if (balance[`${spend_coin}_available`] < size) {
@@ -391,24 +386,24 @@ const executeTrade = async (autoTradeConfig) => {
 
 	} catch (error) {
 		hasError = true;
-        loggerPlugin.error(`Auto trade execution error for user ${user_id}:`, error.message);
-        const user = await toolsLib.user.getUserByKitId(user_id); 
-            sendEmail(
-                MAILTYPE.AUTO_TRADE_ERROR,
-                user.email,
-                {
-                    spend_amount, 
-                    spend_coin, 
-                    buy_coin, 
-                },
-                user.settings
-            );
-    }
+		loggerPlugin.error(`Auto trade execution error for user ${user_id}:`, error.message);
+		const user = await toolsLib.user.getUserByKitId(user_id);
+		sendEmail(
+			MAILTYPE.AUTO_TRADE_ERROR,
+			user.email,
+			{
+				spend_amount,
+				spend_coin,
+				buy_coin,
+			},
+			user.settings
+		);
+	}
 
 	try {
 
 		if (!hasError) {
-			const user = await toolsLib.user.getUserByKitId(user_id); 
+			const user = await toolsLib.user.getUserByKitId(user_id);
 
 			const ip = '1.1.1.1';
 			const opts = {
@@ -416,9 +411,9 @@ const executeTrade = async (autoTradeConfig) => {
 					'x-forwarded-for': ip
 				}
 			};
-		
+
 			const quote = await toolsLib.order.getUserQuickTrade(
-				spend_coin, spend_amount, null, buy_coin, 
+				spend_coin, spend_amount, null, buy_coin,
 				null, ip, opts, { headers: { 'api-key': null } }, { user_id: user_id, network_id: user.network_id }
 			);
 
@@ -427,17 +422,17 @@ const executeTrade = async (autoTradeConfig) => {
 			await toolsLib.order.executeUserOrder(user_id, opts, quote.token, null);
 
 			sendEmail(
-                MAILTYPE.AUTO_TRADE_FILLED,
-                user.email,
-                {
-                    spend_amount, 
-                    spend_coin, 
-                    buy_coin, 
-                },
-                user.settings
-            );
+				MAILTYPE.AUTO_TRADE_FILLED,
+				user.email,
+				{
+					spend_amount,
+					spend_coin,
+					buy_coin,
+				},
+				user.settings
+			);
 		}
-        loggerPlugin.verbose(`Auto trade completed for user ${user_id}: ${buy_coin} -> ${spend_coin}`);
+		loggerPlugin.verbose(`Auto trade completed for user ${user_id}: ${buy_coin} -> ${spend_coin}`);
 	} catch (error) {
 		const adminAccount = await toolsLib.user.getUserByKitId(1);
 		sendEmail(
@@ -450,11 +445,11 @@ const executeTrade = async (autoTradeConfig) => {
 			adminAccount.settings
 		);
 	}
-       
+
 };
 
 const statusModel = toolsLib.database.getModel('status');
-statusModel.findOne({ })
+statusModel.findOne({})
 	.then(res => {
 		kitTimezone = res.kit.timezone;
 		scheduleAutoTrade();
@@ -467,7 +462,7 @@ statusModel.findOne({ })
 
 
 module.exports = {
-    unstakingCheckRunner,
-    updateRewardsCheckRunner,
+	unstakingCheckRunner,
+	updateRewardsCheckRunner,
 	referralTradesRunner
 }
