@@ -343,7 +343,7 @@ const scheduleAutoTrade = () => {
 			for (const autoTradeConfig of autoTradeConfigs) {
 				const { trade_hour, user_id, spend_coin, buy_coin, spend_amount, last_execution_date } = autoTradeConfig;
 
-				let lastExecDate = last_execution_date ? moment(last_execution_date).tz(timezone) : now.clone().subtract(7, 'days'); // Default: 7 days ago
+				let lastExecDate = last_execution_date ? moment(last_execution_date).tz(timezone) : now.clone().subtract(1, 'day')
 
 				while (lastExecDate.isBefore(now, 'day')) {
 					lastExecDate.add(1, 'day');
