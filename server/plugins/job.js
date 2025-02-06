@@ -3,7 +3,6 @@ const toolsLib = require('hollaex-tools-lib');
 const cron = require('node-cron');
 const { MAILTYPE } = require('../mail/strings');
 const { sendEmail } = require('../mail');
-const { isNumber } = require('lodash');
 const BigNumber = require('bignumber.js');
 const moment = require('moment');
 const { Op } = require('sequelize');
@@ -317,15 +316,20 @@ const scheduleAutoTrade = () => {
 			const autoTradeConfigModel = toolsLib.database.getModel('autoTradeConfig');
 
 			const timezone = getTimezone();
-			const today = moment().tz(timezone);
-			const currentHour = today.hour();
-			const currentDay = today.day();
-			const currentDate = today.date();
+			const now = moment().tz(timezone);
+			const currentHour = now.hour();
+			const currentDay = now.day();
+			const currentDate = now.date();
+			const lastExecutionThreshold = now.clone().subtract(1, 'day').startOf('day');
 
 			const autoTradeConfigs = await autoTradeConfigModel.findAll({
 				where: {
 					active: true,
 					trade_hour: currentHour,
+					[Op.or]: [
+						{ last_execution_date: { [Op.is]: null } },
+						{ last_execution_date: { [Op.lt]: lastExecutionThreshold.toDate() } }
+					],
 					[Op.or]: [
 						{ frequency: 'daily' },
 						{ frequency: 'weekly', week_days: { [Op.contains]: [currentDay] } },
@@ -337,8 +341,17 @@ const scheduleAutoTrade = () => {
 			if (!autoTradeConfigs || autoTradeConfigs.length === 0) return;
 
 			for (const autoTradeConfig of autoTradeConfigs) {
-				const { trade_hour, user_id, spend_coin, buy_coin, spend_amount } = autoTradeConfig;
-				await executeTrade(autoTradeConfig);
+				const { trade_hour, user_id, spend_coin, buy_coin, spend_amount, last_execution_date } = autoTradeConfig;
+
+				let lastExecDate = last_execution_date ? moment(last_execution_date).tz(timezone) : now.clone().subtract(7, 'days'); // Default: 7 days ago
+
+				while (lastExecDate.isBefore(now, 'day')) {
+					lastExecDate.add(1, 'day');
+
+					await executeTrade(autoTradeConfig);
+
+					await autoTradeConfig.update({ last_execution_date: lastExecDate.toDate() });
+				}
 
 				const reminderHour = (trade_hour - 12 + 24) % 24;
 				if (currentHour === reminderHour) {
