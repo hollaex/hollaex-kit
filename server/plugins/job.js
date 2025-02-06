@@ -328,7 +328,8 @@ const scheduleAutoTrade = () => {
 					trade_hour: currentHour,
 					[Op.or]: [
 						{ last_execution_date: { [Op.is]: null } },
-						{ last_execution_date: { [Op.lt]: lastExecutionThreshold.toDate() } }
+						{ last_execution_date: { [Op.lt]: lastExecutionThreshold.toDate() } },
+						{ frequency: 'daily' }
 					],
 					[Op.or]: [
 						{ frequency: 'daily' },
