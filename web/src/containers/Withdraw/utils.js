@@ -175,6 +175,7 @@ export const networkList = [
 	{ network: 'Solana', iconId: 'SOL_ICON' },
 	{ network: 'Stellar', iconId: 'XLM_ICON' },
 	{ network: 'Fantom', iconId: 'FTM_ICON' },
+	{ network: 'Sonic', iconId: 'S_ICON' },
 ];
 
 export const renderScanIcon = (onHandleScan) => {

@@ -313,6 +313,16 @@ const AutoTrader = Loadable({
 	loading: LoadingComponent,
 });
 
+const Announcement = Loadable({
+	loader: () => import('./containers/Announcement'),
+	loading: LoadingComponent,
+});
+
+const AdminAnnouncement = Loadable({
+	loader: () => import('./containers/Admin/Announcement'),
+	loading: LoadingComponent,
+});
+
 ReactGA.initialize('UA-154626247-1'); // Google analytics. Set your own Google Analytics values
 browserHistory.listen((location) => {
 	if (window) {
@@ -699,6 +709,11 @@ export const generateRoutes = (routes = []) => {
 					onEnter={requireAuth}
 				/>
 				<Route
+					path="announcement"
+					name="Announcement"
+					component={Announcement}
+				/>
+				<Route
 					path="wallet/:currency"
 					name="Wallet"
 					component={CurrencyWallet}
@@ -837,6 +852,11 @@ export const generateRoutes = (routes = []) => {
 					path="/admin/plugin/adminView/:name"
 					name="Admin Announcement"
 					component={withAdminProps(PluginConfig, 'adminView')}
+				/>
+				<Route
+					path="/admin/announcement"
+					name="Admin Announcement Details"
+					component={withAdminProps(AdminAnnouncement, 'adminView')}
 				/>
 				{/* <Route
 				path="/admin/wallets"

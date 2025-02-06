@@ -15,7 +15,7 @@ import icons from 'config/icons/dark';
 import STRINGS from 'config/localizedStrings';
 import { Button, Coin, EditWrapper, Image } from 'components';
 import { getCountry } from 'containers/Verification/utils';
-import { getFormatTimestamp } from 'utils/utils';
+import { getFormatTimestamp, handlePopupContainer } from 'utils/utils';
 import { Loading } from 'containers/DigitalAssets/components/utils';
 import { updateUserSettings } from 'actions/userAction';
 import { isLoggedIn } from 'utils/token';
@@ -514,13 +514,13 @@ export const LanguageDisplayPopup = ({
 							size="small"
 							onChange={(value) => setSelectedLanguage(value)}
 							bordered={false}
-							onClick={() => setIsOpen((prev) => !prev)}
-							onBlur={() => {
-								if (isOpen) setIsOpen(false);
-							}}
 							suffixIcon={isOpen ? <CaretUpOutlined /> : <CaretDownOutlined />}
-							className="custom-select-input-style appbar elevated"
-							dropdownClassName="custom-select-style select-option-wrapper"
+							className="custom-select-input-style appbar select-language-wrapper"
+							dropdownClassName="custom-select-style select-option-wrapper language-select-dropdown-wrapper"
+							getPopupContainer={handlePopupContainer}
+							virtual={false}
+							open={isOpen}
+							onDropdownVisibleChange={(open) => setIsOpen(open)}
 						>
 							{languageFormValue?.map(({ value, icon, label }) => (
 								<Option value={value} key={value} className="capitalize">
@@ -552,14 +552,10 @@ export const LanguageDisplayPopup = ({
 					</EditWrapper>
 					<Select
 						value={selectedCurrency}
-						className="custom-select-input-style appbar elevated"
+						className="custom-select-input-style appbar select-language-wrapper"
 						dropdownClassName="custom-select-style select-currency-wrapper"
 						onChange={(value) => setSelectedCurrency(value)}
 						placeholder={STRINGS['CURRENCY']}
-						onClick={() => setIsDisplayCurrencyOpen((prev) => !prev)}
-						onBlur={() => {
-							if (isOpen) setIsDisplayCurrencyOpen(false);
-						}}
 						suffixIcon={
 							isDisplayCurrencyOpen ? (
 								<CaretUpOutlined />
@@ -567,6 +563,10 @@ export const LanguageDisplayPopup = ({
 								<CaretDownOutlined />
 							)
 						}
+						getPopupContainer={handlePopupContainer}
+						virtual={false}
+						open={isDisplayCurrencyOpen}
+						onDropdownVisibleChange={(open) => setIsDisplayCurrencyOpen(open)}
 					>
 						{selectable_native_currencies?.map((data) => {
 							return (
@@ -606,4 +606,35 @@ export const LanguageDisplayPopup = ({
 			</div>
 		</Dialog>
 	);
+};
+
+export const renderAnnouncementMessage = (message, maxLength = 100) => {
+	const maxAnnouncementMessage =
+		message?.length > maxLength
+			? message?.substring(0, maxLength) + '...'
+			: message;
+
+	return (
+		<div
+			className="announcement-message-wrapper"
+			dangerouslySetInnerHTML={{
+				__html: maxAnnouncementMessage,
+			}}
+		></div>
+	);
+};
+
+export const renderRemoveEmptyTag = (html) => {
+	const selectedTag = document.createElement('div');
+	selectedTag.innerHTML = html;
+
+	const removeTag = selectedTag?.querySelectorAll('*:not(img)');
+	removeTag &&
+		removeTag.forEach((data) => {
+			if (data?.innerHTML.trim() === '<br>' || data?.innerHTML === '') {
+				data.remove();
+			}
+		});
+
+	return selectedTag?.innerHTML;
 };

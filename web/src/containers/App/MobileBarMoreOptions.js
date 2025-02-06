@@ -652,7 +652,7 @@ const MobileBarMoreOptions = ({
 			icon_id: 'AUTO_TRADER_ICON',
 			iconText: 'AUTO_TRADER.AUTO_TRADER_TITLE',
 			path: '/auto-trader',
-			isDisplay: true,
+			isDisplay: features?.auto_trade_config,
 			toolTipText: 'DESKTOP_NAVIGATION.AUTO_TRADER_DESC',
 			searchContent: [
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.RECURRING_INVESTMENT'],
@@ -744,6 +744,22 @@ const MobileBarMoreOptions = ({
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.ASSISTANCE'],
 				STRINGS['REFER_DOCS_LINK'],
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.API_LOWER'],
+			],
+		},
+		{
+			icon_id: 'ANNOUNCEMENT_ICON',
+			iconText: 'TRADE_TAB_POSTS',
+			path: '/announcement',
+			isDisplay: features?.announcement,
+			toolTipText: 'DESKTOP_NAVIGATION.ANNOUNCEMENT_DESC',
+			searchContent: [
+				STRINGS['ANNOUNCEMENT_TAB.EVENTS'],
+				STRINGS['ANNOUNCEMENT_TAB.LISTING_TEXT'],
+				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.UPDATES'],
+				STRINGS['ANNOUNCEMENT_TAB.NEWS'],
+				STRINGS['DEPOSIT_STATUS.NEW'],
+				STRINGS['CHAT.CHAT_MESSAGE_BOX_PLACEHOLDER'],
+				STRINGS['ANNOUNCEMENT_TAB.UPGRADES'],
 			],
 		},
 		{

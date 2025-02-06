@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Select, Form, Input } from 'antd';
+import { Button, Select, Form, Input, Checkbox } from 'antd';
 import { getNetworkLabelByKey } from 'utils/wallet';
 import Coins from '../Coins';
 import { STATIC_ICONS } from 'config/icons';
@@ -251,6 +251,22 @@ const WithdrawalFee = ({
 											the network
 										</div>
 									</div>
+									{assetType && assetType === 'withdraw' && (
+										<Form.Item className="active-status-form-container">
+											<span className="mr-1 withdrawal-fee-text">Active :</span>
+											<Checkbox
+												defaultChecked={withdrawal_fees[data]?.active !== false}
+												onChange={(e) =>
+													handleWithdrawalFeeChange(
+														data,
+														e.target.checked,
+														'active',
+														'withdrawal_fees'
+													)
+												}
+											/>
+										</Form.Item>
+									)}
 									<div className="field-wrap last">
 										<div className="sub-title">
 											{`Static value (withdraw fee amount in ${getNetworkLabelByKey(

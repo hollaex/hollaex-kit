@@ -158,7 +158,7 @@ const unstakingCheckRunner = () => {
 
 				let symbols = {};
 
-				(userBalances[userId] || []).forEach(balance => { symbols[balance.symbol] = balance.balance });
+				(userBalances[userId] || []).forEach(balance => { symbols[balance.symbol] = balance.balance; });
 
 				const coins = Object.keys(symbols);
 
@@ -178,7 +178,7 @@ const unstakingCheckRunner = () => {
 					user_id: Number(userId),
 					balance: history,
 					total,
-				})
+				});
 
 			}
 		} catch (err) {
@@ -192,7 +192,7 @@ const unstakingCheckRunner = () => {
 		scheduled: true,
 		timezone: getTimezone()
 	});
-}
+};
 
 const updateRewardsCheckRunner = () => {
 	cron.schedule('0 0 0 * * *', async () => {
@@ -267,7 +267,7 @@ const updateRewardsCheckRunner = () => {
 		scheduled: true,
 		timezone: getTimezone()
 	});
-}
+};
 
 const referralTradesRunner = () => {
 	cron.schedule('0 */4 * * *', async () => {
@@ -302,7 +302,7 @@ const referralTradesRunner = () => {
 		scheduled: true,
 		timezone: getTimezone()
 	});
-}
+};
 
 const scheduleAutoTrade = () => {
 	cron.schedule('0 0 * * * *', async () => {
@@ -395,7 +395,7 @@ const executeTrade = async (autoTradeConfig) => {
 		const balance = await toolsLib.wallet.getUserBalanceByKitId(user_id);
 		if (balance[`${spend_coin}_available`] < size) {
 			throw new Error(`Balance insufficient for auto trade: ${symbol} size: ${size}`);
-		};
+		}
 
 	} catch (error) {
 		hasError = true;
@@ -478,4 +478,4 @@ module.exports = {
 	unstakingCheckRunner,
 	updateRewardsCheckRunner,
 	referralTradesRunner
-}
+};
