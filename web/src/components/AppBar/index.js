@@ -46,8 +46,8 @@ class AppBar extends Component {
 		isDisplayLanguagePopup: false,
 		isTopbarAnnouncement: false,
 		isPopupAnnouncement: false,
-		isDropdownAnnouncement: false,
-		selectedAnnouncement: [],
+		selectedPopupAnnouncement: {},
+		selectedTopbarAnnouncement: {},
 	};
 
 	componentDidMount() {
@@ -64,38 +64,49 @@ class AppBar extends Component {
 			title: document?.title ? document?.title : '',
 		});
 
-		const filteredAnnouncementDetails = getAnnouncementDetails
+		const filteredPopupAnnouncementDetails = getAnnouncementDetails
 			?.filter((data) => data?.is_popup)
 			?.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
-		const announcementDetail =
-			filteredAnnouncementDetails && filteredAnnouncementDetails[0];
+		const filteredTopbarAnnouncementDetails = getAnnouncementDetails
+			?.filter((data) => data?.is_navbar)
+			?.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
-		const topAnnouncementDetail =
-			announcementDetail && announcementDetail?.is_navbar;
+		const popupAnnouncementDetail =
+			filteredPopupAnnouncementDetails && filteredPopupAnnouncementDetails[0];
+
+		const topbarAnnouncementDetail =
+			filteredTopbarAnnouncementDetails && filteredTopbarAnnouncementDetails[0];
+
+		const isPopup = JSON.parse(localStorage.getItem('announcementPopup'));
 
 		const isDisplayPopup =
-			!announcementDetail?.start_date && !announcementDetail?.end_date
-				? announcementDetail?.is_popup
-				: announcementDetail?.is_popup &&
-				  this.isTodayBetweenDates(
-						announcementDetail?.start_date,
-						announcementDetail?.end_date
-				  );
+			popupAnnouncementDetail?.is_popup &&
+			((!popupAnnouncementDetail.start_date &&
+				!popupAnnouncementDetail.end_date) ||
+				this.isTodayBetweenDates(
+					popupAnnouncementDetail.start_date,
+					popupAnnouncementDetail.end_date
+				));
 
-		const dropdownAnnouncementDetail =
-			filteredAnnouncementDetails &&
-			filteredAnnouncementDetails[0]?.is_dropdown;
+		const isDisplayTopbar =
+			topbarAnnouncementDetail?.is_navbar &&
+			((!topbarAnnouncementDetail.start_date &&
+				!topbarAnnouncementDetail.end_date) ||
+				this.isTodayBetweenDates(
+					topbarAnnouncementDetail.start_date,
+					topbarAnnouncementDetail.end_date
+				));
 
 		this.setState({
-			selectedAnnouncement: filteredAnnouncementDetails[0],
+			selectedPopupAnnouncement: filteredPopupAnnouncementDetails[0],
+			selectedTopbarAnnouncement: filteredTopbarAnnouncementDetails[0],
 		});
 
 		if (isLoggedIn()) {
 			this.setState({
-				isTopbarAnnouncement: topAnnouncementDetail,
-				isDropdownAnnouncement: dropdownAnnouncementDetail,
-				isPopupAnnouncement: isDisplayPopup,
+				isTopbarAnnouncement: isDisplayTopbar,
+				isPopupAnnouncement: isPopup && isDisplayPopup,
 			});
 		}
 	}
@@ -331,13 +342,17 @@ class AppBar extends Component {
 			setIsActiveSelectedAnnouncement,
 			router,
 		} = this.props;
-		const { selectedAnnouncement } = this.state;
+		const {
+			selectedPopupAnnouncement,
+			selectedTopbarAnnouncement,
+		} = this.state;
 
-		if (text === 'topbar view more' || text === 'popup') {
-			setSelectedAnnouncement(selectedAnnouncement);
+		if (text === 'topbar view more') {
+			setSelectedAnnouncement(selectedTopbarAnnouncement);
 			setIsActiveSelectedAnnouncement(true);
 		}
 		if (text === 'popup') {
+			setSelectedAnnouncement(selectedPopupAnnouncement);
 			this.setState({
 				isPopupAnnouncement: false,
 			});
@@ -345,23 +360,27 @@ class AppBar extends Component {
 		if (text === 'topbar announcements') {
 			setIsActiveSelectedAnnouncement(false);
 		}
+		localStorage.setItem('announcementPopup', false);
 		router.push('/announcement');
 	};
 
 	renderAnnouncementPopup = () => {
 		const { icons, router, constants } = this.props;
-		const { selectedAnnouncement } = this.state;
+		const { selectedPopupAnnouncement } = this.state;
+
+		const onHandleClose = () => {
+			this.setState({
+				isPopupAnnouncement: false,
+			});
+			localStorage.setItem('announcementPopup', false);
+		};
 
 		return (
 			<Dialog
 				isOpen={
 					this.state.isPopupAnnouncement && constants?.features?.announcement
 				}
-				onCloseDialog={() =>
-					this.setState({
-						isPopupAnnouncement: false,
-					})
-				}
+				onCloseDialog={() => onHandleClose()}
 				shouldCloseOnOverlayClick={false}
 				className={
 					isMobile
@@ -381,13 +400,13 @@ class AppBar extends Component {
 							wrapperClassName="announcement-icon"
 						/>
 						<span className="text-white font-weight-bold exchange-update-title">
-							{selectedAnnouncement?.title}
+							{selectedPopupAnnouncement?.title}
 						</span>
 						<span className="announcement-date secondary-text">
-							({getFormattedDate(selectedAnnouncement?.created_at)})
+							({getFormattedDate(selectedPopupAnnouncement?.created_at)})
 						</span>
 					</div>
-					{renderAnnouncementMessage(selectedAnnouncement?.message, 120)}
+					{renderAnnouncementMessage(selectedPopupAnnouncement?.message, 120)}
 					<span
 						className="blue-link text-decoration-underline pointer"
 						onClick={() => {
@@ -400,11 +419,7 @@ class AppBar extends Component {
 						<Button
 							label={STRINGS['CLOSE_TEXT']?.toUpperCase()}
 							className="back-btn mt-3"
-							onClick={() =>
-								this.setState({
-									isPopupAnnouncement: false,
-								})
-							}
+							onClick={() => onHandleClose()}
 						/>
 						<Button
 							label={STRINGS[
@@ -413,9 +428,7 @@ class AppBar extends Component {
 							className="back-btn mt-3"
 							onClick={() => {
 								router.push('/announcement');
-								this.setState({
-									isPopupAnnouncement: false,
-								});
+								onHandleClose();
 							}}
 						/>
 					</div>
@@ -449,8 +462,7 @@ class AppBar extends Component {
 			// walletPending,
 			selected,
 			isTopbarAnnouncement,
-			isDropdownAnnouncement,
-			selectedAnnouncement,
+			selectedTopbarAnnouncement,
 		} = this.state;
 		const languageFormValue = generateLanguageFormValues(valid_languages)
 			?.language?.options;
@@ -495,9 +507,12 @@ class AppBar extends Component {
 								wrapperClassName="h-100"
 							/>
 							<span className="announcement-title">
-								{selectedAnnouncement?.title}
+								{selectedTopbarAnnouncement?.title}
 							</span>
-							{renderAnnouncementMessage(selectedAnnouncement?.message, 75)}
+							{renderAnnouncementMessage(
+								selectedTopbarAnnouncement?.message,
+								75
+							)}
 							<EditWrapper stringId="HOLLAEX_TOKEN.VIEW">
 								<span
 									className="view-more-btn blue-link text-decoration-underline"
@@ -648,7 +663,7 @@ class AppBar extends Component {
 									toggle={this.onToggle}
 								/>
 							</div>
-							{isDropdownAnnouncement && constants?.features?.announcement && (
+							{constants?.features?.announcement && (
 								<AnnouncementList user={user.email} />
 							)}
 							{/* <MenuList

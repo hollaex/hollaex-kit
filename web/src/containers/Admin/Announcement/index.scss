@@ -15,8 +15,28 @@
 
 	.ant-table-wrapper {
 		th,
-		td {
+		td,
+		.message-content-wrapper * {
 			color: #808080 !important;
+		}
+	}
+}
+
+.announcement-tab-wrapper {
+	.announcement-tabs {
+		.ant-tabs-nav-wrap {
+			border-bottom: unset;
+		}
+
+		.ant-tabs-nav,
+		.ant-tabs-nav:before {
+			border-bottom: none !important;
+		}
+
+		.ant-tabs-ink-bar {
+			height: 3px;
+			background-color: #ffffff;
+			bottom: unset;
 		}
 	}
 }
@@ -35,18 +55,21 @@
 		border: none;
 	}
 
+	.display-title {
+		display: flex;
+		flex-direction: column;
+	}
+
 	.announcement-filters {
-		.display-title {
-			display: flex;
-			flex-direction: column;
-		}
+		display: flex;
+		flex-direction: column;
+		gap: 2%;
 
 		.announcement-display-feature {
 			width: 100%;
 			gap: 2%;
-			align-items: center;
+			align-items: flex-start;
 			padding: 2% 0;
-			border-bottom: 1px solid #808080;
 
 			.feature-trade-box {
 				.feature-icon {
@@ -66,7 +89,28 @@
 				display: flex;
 				flex-direction: column;
 				gap: 2%;
+
+				.selected-dropdown-announcement-wrapper {
+					margin-top: 3%;
+					padding: 2%;
+					height: 10rem;
+					width: 100%;
+					border: 2px solid #999999;
+					border-radius: 3px;
+					display: flex;
+					flex-direction: column;
+					align-items: flex-start;
+					overflow-y: auto;
+					scrollbar-width: thin;
+					scrollbar-color: #ffffff transparent;
+				}
 			}
+		}
+
+		.line-separator {
+			width: 15%;
+			background-color: #808080;
+			height: 2px;
 		}
 	}
 
@@ -149,6 +193,32 @@
 					display: flex;
 					flex-direction: column;
 					gap: 2%;
+				}
+			}
+		}
+
+		.select-announcement-wrapper {
+			margin-top: 3%;
+			display: flex;
+			flex-direction: column;
+			gap: 1%;
+
+			.announcement-details {
+				border: 2px solid #999999;
+				border-radius: 3px;
+				height: 15rem;
+				width: 100%;
+				padding: 2%;
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
+				gap: 1%;
+				overflow-y: auto;
+				scrollbar-width: thin;
+				scrollbar-color: #ffffff transparent;
+
+				.disabled-announcement {
+					color: #808080;
 				}
 			}
 		}
