@@ -119,6 +119,7 @@ class Login extends Component {
 			.then((res) => {
 				if (res.data.token) this.setState({ token: res.data.token });
 				this.props.setPricesAndAssetPending();
+				localStorage.setItem('announcementPopup', true);
 				// if ((!Object.keys(this.props.info).length) || (!this.props.info.active)
 				// 	|| (this.props.info.is_trial && this.props.info.active
 				// 		&& moment().diff(this.props.info.created_at, 'seconds') > EXCHANGE_EXPIRY_SECONDS))

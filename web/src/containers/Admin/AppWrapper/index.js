@@ -582,14 +582,16 @@ class AppWrapper extends React.Component {
 			];
 		}
 
-		pathNames = [
-			...pathNames,
-			{
-				path: '/admin/announcement',
-				label: 'Announcements',
-				routeKey: 'adminView',
-			},
-		];
+		if (features.announcement) {
+			pathNames = [
+				...pathNames,
+				{
+					path: '/admin/announcement',
+					label: 'Announcements',
+					routeKey: 'adminView',
+				},
+			];
+		}
 
 		myPlugins.forEach((data) => {
 			if (data.enabled && data.enabled_admin_view) {
