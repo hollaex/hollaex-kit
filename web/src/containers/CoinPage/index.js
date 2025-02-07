@@ -150,26 +150,49 @@ const CoinPage = ({
 							</div>
 						</div>
 						<div className="d-flex justify-content-between mt-3 mb-4 balance-wrapper">
-							<div></div>
+							<div className="link-wrapper">
+								<EditWrapper stringId="VIEW_MY_WALLET">
+									<span
+										className="blue-link text-decoration-underline pointer"
+										onClick={() => router.push('/wallet')}
+									>
+										{STRINGS['VIEW_MY_WALLET']}
+									</span>
+								</EditWrapper>
+								<span className="link-separator mx-2"></span>
+								<EditWrapper stringId="VIEW_ALL_PRICES_LINK">
+									<span
+										className="blue-link text-decoration-underline pointer"
+										onClick={() => router.push('/prices')}
+									>
+										{STRINGS['VIEW_ALL_PRICES_LINK']}
+									</span>
+								</EditWrapper>
+							</div>
 							<div className="d-flex image-Wrapper">
-								<Image
-									iconId={''}
-									stringId={''}
-									icon={ICONS['TAB_WALLET']}
-									alt={'text'}
-									svgWrapperClassName="action_notification-svg"
-								/>
-								<div className="gray-text">
+								<div
+									className="d-flex align-items-start balance-link"
+									onClick={() => router.push('/wallet')}
+								>
+									<Image
+										iconId={''}
+										stringId={''}
+										icon={ICONS['TAB_WALLET']}
+										alt={'text'}
+										svgWrapperClassName="action_notification-svg"
+									/>
 									<EditWrapper stringId="HOLLAEX_TOKEN.BALANCE">
 										{STRINGS['HOLLAEX_TOKEN.BALANCE']}
-									</EditWrapper>{' '}
+									</EditWrapper>
+								</div>
+								<div className="gray-text">
 									{formatCurrency(
 										available_balance[`${currentCoin}_available`]
 									)}{' '}
 									{currentCoinUpper}{' '}
-									<Link className="link" to={'/wallet'}>
-										<EditWrapper stringId="HOLLAEX_TOKEN.OPEN_WALLET">
-											{STRINGS['HOLLAEX_TOKEN.OPEN_WALLET']}
+									<Link className="link" to={`wallet/${currentCoin}/deposit`}>
+										<EditWrapper stringId="SUMMARY.DEPOSIT">
+											({STRINGS['SUMMARY.DEPOSIT']})
 										</EditWrapper>
 									</Link>
 								</div>
@@ -225,6 +248,12 @@ const CoinPage = ({
 						)}
 
 						<div className="button-container">
+							<Button
+								label={STRINGS['VIEW_FULL_PRICE_LIST'].toUpperCase()}
+								type="button"
+								onClick={() => router.push('/prices')}
+								className="w-100"
+							/>
 							<EditWrapper stringId="HOLLAEX_TOKEN.TRADE">
 								<Button
 									label={STRINGS.formatString(

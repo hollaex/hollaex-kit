@@ -15,6 +15,8 @@ import ChangeLimit from './ChangeLimit';
 import CheckAndConfirm from './CheckAndConfirm';
 import { requestTiers, addNewTier, updateTier, updateLimits } from './action';
 import './index.css';
+import '../Trades/index.css';
+import '../../Admin/General/index.css';
 
 const TabPane = Tabs.TabPane;
 

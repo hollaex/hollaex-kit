@@ -276,11 +276,11 @@ const getCharts = (req, res) => {
 };
 
 const getMiniCharts = (req, res) => {
-	const { assets, from, to, quote } = req.swagger.params;
+	const { assets, from, to, quote, period } = req.swagger.params;
 
-	toolsLib.getMiniCharts(assets.value, { from: from.value, to: to.value, quote: quote.value, additionalHeaders: {
-			'x-forwarded-for': req.headers['x-forwarded-for']
-		}})
+	toolsLib.getMiniCharts(assets.value, { from: from.value, to: to.value, quote: quote.value, period: period.value, additionalHeaders: {
+		'x-forwarded-for': req.headers['x-forwarded-for']
+	}})
 		.then((data) => {
 			return res.json(data);
 		})

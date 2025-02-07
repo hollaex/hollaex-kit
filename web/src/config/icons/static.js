@@ -196,6 +196,9 @@ const icons = {
 	GOOGLE_AUTHENTICATOR: '/assets/images/google-auth-icon.svg',
 	GOOGLE_PLAY: '/assets/images/google-play.svg',
 	APP_STORE: '/assets/images/appstore-apple_logo_black.svg',
+	NAV_BAR_ANNOUNCEMENT: '/assets/images/nav-bar-ann-feature.svg',
+	POPUP_ANNOUNCEMENT: '/assets/images/pop-up-ann-feature.svg',
+	TOP_BAR_ANNOUNCEMENT: '/assets/images/top-bar-ann-feature.svg',
 };
 
 export default icons;

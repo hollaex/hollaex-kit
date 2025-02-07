@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { browserHistory } from 'react-router';
 import { bindActionCreators } from 'redux';
 import classnames from 'classnames';
 import { Checkbox, Button } from 'antd';
@@ -37,12 +38,22 @@ class ToolsSelector extends Component {
 							</div>
 						);
 					})}
-					<div className="d-flex justify-content-center p-3">
+					<div className="d-flex justify-content-center p-2 pt-3">
 						<Button className="important-text" onClick={this.resetLayout} ghost>
 							<EditWrapper stringId="RESET_LAYOUT">
 								{STRINGS['RESET_LAYOUT']}
 							</EditWrapper>
 						</Button>
+					</div>
+					<div className="d-flex justify-content-center blue-link pointer p-1">
+						<EditWrapper stringId="HOLLAEX_TOKEN.PRICES.TITLE">
+							<span
+								className="underline-text"
+								onClick={() => browserHistory.push('/prices')}
+							>
+								{STRINGS['VIEW_PRICES']}
+							</span>
+						</EditWrapper>
 					</div>
 				</div>
 			</div>

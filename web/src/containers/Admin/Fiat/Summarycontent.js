@@ -1,7 +1,16 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { STATIC_ICONS } from 'config/icons';
 import { Link } from 'react-router';
-import { Alert, Button, Modal, Select, Spin, Table } from 'antd';
+import {
+	Alert,
+	Button,
+	Modal,
+	Select,
+	Spin,
+	Table,
+	message,
+	Switch,
+} from 'antd';
 // import { Icon as LegacyIcon } from '@ant-design/compatible';
 // import { RightOutlined } from '@ant-design/icons';
 // import moment from 'moment';
@@ -19,6 +28,8 @@ import {
 
 import './index.css';
 import ValidateDismiss from '../Deposits/ValidateDismiss';
+import { updateConstants } from '../General/action';
+import { requestAdminData } from 'actions/appActions';
 
 const Summarycontent = ({
 	handleTabChange,
@@ -29,6 +40,9 @@ const Summarycontent = ({
 	onramp = {},
 	offramp = {},
 	isGetExchange = true,
+	ultimateFiat,
+	constants,
+	setFeatureEnable,
 }) => {
 	const [page, setPage] = useState(1);
 	const [limit] = useState(50);
@@ -45,6 +59,7 @@ const Summarycontent = ({
 	const [validateData, setValidateData] = useState({});
 	const [queryType, setQueryType] = useState('');
 	const [error, setError] = useState('');
+	const [enable, setEnable] = useState(false);
 	let onRampData = Object.values(onramp).filter((d) => Object.keys(d).length);
 	let offRampData = Object.values(offramp).filter((d) => Object.keys(d).length);
 
@@ -131,6 +146,11 @@ const Summarycontent = ({
 	useEffect(() => {
 		getHistory();
 	}, [getHistory]);
+
+	useEffect(() => {
+		setEnable(ultimateFiat);
+		// eslint-disable-next-line
+	}, []);
 
 	const pageChange = (count, pageSize) => {
 		const pageCount = count % 5 === 0 ? 5 : count % 5;
@@ -428,10 +448,46 @@ const Summarycontent = ({
 					icon={STATIC_ICONS['CURRENCY_SYMBOL']}
 					wrapperClassName="fiatcurrency"
 				/>
-				<div className="centercontent">
-					Fiat currencies like USD, EUR, YEN, etc can be managed here. To allow
-					your users to make fiat deposits and withdrawals you must add payment
-					system account details.
+				<div
+					style={{
+						display: 'flex',
+						justifyContent: 'space-between',
+						width: '100%',
+					}}
+				>
+					<div className="centercontent" style={{ flex: 1 }}>
+						Fiat currencies like USD, EUR, YEN, etc can be managed here. To
+						allow your users to make fiat deposits and withdrawals you must add
+						payment system account details.
+					</div>
+					<div style={{ flex: 1 }}>
+						<div style={{ fontSize: 17, float: 'right' }}>
+							{' '}
+							<span style={{ marginRight: 5 }}>Enable</span>
+							<Switch
+								checked={enable}
+								onChange={async (e) => {
+									try {
+										await updateConstants({
+											kit: {
+												features: {
+													...constants?.features,
+													ultimate_fiat: e,
+												},
+											},
+										});
+										requestAdminData().then((res) => {
+											const result = res?.data?.kit?.features?.ultimate_fiat;
+											setEnable(result);
+											setFeatureEnable(result);
+										});
+									} catch (error) {
+										message.error(error.data.message);
+									}
+								}}
+							/>
+						</div>
+					</div>
 				</div>
 			</div>
 			{!isUpgrade ? (
@@ -457,7 +513,7 @@ const Summarycontent = ({
 					</div>
 				</div>
 			) : null}
-			<div className={!isUpgrade ? 'disableall' : ''}>
+			<div className={!isUpgrade || !enable ? 'disableall' : ''}>
 				{!user_payments ? (
 					<div>
 						<div className="payment mt-5">

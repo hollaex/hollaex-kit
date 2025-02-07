@@ -6,7 +6,8 @@ import { Table, Breadcrumb, Button } from 'antd';
 import { appsSelector } from './utils';
 import { SmartTarget } from 'components';
 import { generateDynamicTarget } from 'utils/id';
-
+import '../Trades/index.css';
+import '../../Admin/General/index.css';
 import './index.css';
 
 const { Item } = Breadcrumb;

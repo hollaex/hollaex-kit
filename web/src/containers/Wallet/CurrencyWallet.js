@@ -24,6 +24,7 @@ import { isStakingAvailable } from 'config/contracts';
 import TradeInputGroup from './components/TradeInputGroup';
 import { unique } from 'utils/data';
 import { STATIC_ICONS } from 'config/icons';
+import TransactionsHistory from 'containers/TransactionsHistory';
 
 class Wallet extends Component {
 	state = {
@@ -186,7 +187,18 @@ class Wallet extends Component {
 							)}
 						</EditWrapper>
 						{!isMobile && (
-							<div className="trade-link-wrapper">
+							<div className="trade-link-wrapper d-flex">
+								<div className="d-flex align-items-center">
+									<EditWrapper stringId="VIEW_PRICES">
+										<span
+											className="no-wrap blue-link text-decoration-underline pointer view-price-link"
+											onClick={() => this.props.router.push('/prices')}
+										>
+											{STRINGS['VIEW_PRICES'].toUpperCase()}
+										</span>
+									</EditWrapper>
+									<span className="link-separator mx-2"></span>
+								</div>
 								{markets.length > 1 ? (
 									<TradeInputGroup
 										quicktrade={quicktrade}
@@ -378,6 +390,9 @@ class Wallet extends Component {
 							</div>
 						)}
 					</div>
+				</div>
+				<div className="pt-4 pb-3 deposit-history-table-wrapper">
+					<TransactionsHistory isFromWallet={true} isDepositFromWallet={true} />
 				</div>
 			</div>
 		);

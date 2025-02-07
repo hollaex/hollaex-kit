@@ -163,6 +163,14 @@
         "AUTO_TRADE_ERROR": {
             "html": "<div><p>Lieber ${name},</p><p>Wir haben festgestellt, dass Ihre automatische Handelskonfiguration aufgrund unzureichender Mittel für den folgenden Handel fehlgeschlagen ist. Bitte überprüfen und aktualisieren Sie Ihr Guthaben. Ausgabebetrag: ${spend_amount}, Ausgabewährung: ${spend_coin}, Kaufwährung: ${buy_coin}.</p><p>Vielen Dank, dass Sie unsere Plattform nutzen.</p><p>Mit freundlichen Grüßen, das ${api_name} Team</p></div>",
             "title": "Fehler in Ihrer Auto-Handelskonfiguration"
-          }
+          },
+        "AUTO_TRADE_REMINDER": {
+			"html":"<div><p>Sehr geehrter ${name},</p><p>Dies ist eine Erinnerung, dass Ihr wiederkehrender Handel von <b>${spend_amount} ${spend_coin} für ${buy_coin}</b> in 12 Stunden aktiviert wird. Stellen Sie sicher, dass Ihr Wallet über ausreichende Mittel für eine erfolgreiche Ausführung verfügt:</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">WALLET ANSEHEN</Button></a></div><p>Vielen Dank, dass Sie unsere Plattform nutzen.</p><p>Mit freundlichen Grüßen,<br />Das ${api_name} Team</p></div>",
+			"title": "Wiederkehrende Bestellung wird bald aktiviert"
+		},
+		"AUTO_TRADE_FILLED": {
+			"html": "<div><p>Sehr geehrte/r ${name},</p><p>Ihre automatische Bestellorder von <b>${spend_amount} ${spend_coin} für ${buy_coin}</b> wurde erfolgreich verarbeitet.</p><div>Sie können Ihre Handelsgeschichte unten einsehen:</div><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">HANDELSGESCHICHTE ANZEIGEN</Button></a></div><p>Vielen Dank, dass Sie unsere Plattform nutzen.</p><p>Mit freundlichen Grüßen,<br />Das ${api_name}-Team</p></div>",
+			"title": "Ihre automatische Bestellorder wurde erfolgreich ausgeführt"
+		}
     }
 }

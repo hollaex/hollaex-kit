@@ -163,7 +163,15 @@
         "AUTO_TRADE_ERROR": {
             "html": "<div><p>Cher ${name},</p><p>Nous avons détecté que votre configuration de commerce automatique a échoué en raison d'un solde insuffisant pour l'échange suivant. Veuillez vérifier et mettre à jour votre solde. Montant dépensé : ${spend_amount}, Monnaie dépensée : ${spend_coin}, Monnaie achetée : ${buy_coin}.</p><p>Merci d'utiliser notre plateforme.</p><p>Cordialement, l'équipe ${api_name}</p></div>",
             "title": "Erreur dans votre configuration de commerce automatique"
-          }
+          },
+        "AUTO_TRADE_REMINDER": {
+			"html": "<div><p>Cher ${name},</p><p>Ceci est un rappel que votre opération récurrente de <b>${spend_amount} ${spend_coin} pour ${buy_coin}</b> sera activée dans 12 heures. Assurez-vous que votre portefeuille dispose de fonds suffisants pour une exécution réussie :</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">VOIR LE PORTEFEUILLE</Button></a></div><p>Merci d'utiliser notre plateforme.</p><p>Cordialement,<br />L'équipe ${api_name}</p></div>",
+			"title": "Votre commande récurrente sera activée bientôt"
+		},
+		"AUTO_TRADE_FILLED": {
+			"html": "<div><p>Bonjour ${name},</p><p>Votre commande automatique pour dépenser <b>${spend_amount} ${spend_coin} pour ${buy_coin}</b> a été traitée avec succès.</p><div>Vous pouvez consulter l'historique de vos transactions ci-dessous :</div><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">VOIR L'HISTORIQUE DES TRANSACTIONS</Button></a></div><p>Merci d'utiliser notre plateforme.</p><p>Cordialement,<br />L'équipe de ${api_name}</p></div>",
+			"title": "Votre commande automatique a été traitée avec succès"
+		}
           
     }
 }

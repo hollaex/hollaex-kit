@@ -1,14 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { Tabs } from 'antd';
 
 import GeneralContent from './General';
 
+import { setIsAdminAnnouncementFeature } from 'actions/appActions';
 import './index.css';
 
 const TabPane = Tabs.TabPane;
 
-const General = () => {
+const General = ({
+	isAdminAnnouncementFeature,
+	setIsAdminAnnouncementFeature,
+}) => {
 	const [activeTab, setActiveTab] = useState('0');
+
+	useEffect(() => {
+		isAdminAnnouncementFeature && setActiveTab('3');
+		return () => {
+			setIsAdminAnnouncementFeature(false);
+		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	const handleTabChange = (key) => {
 		setActiveTab(key);
@@ -53,9 +67,22 @@ const General = () => {
 				<TabPane tab="Help info" key="7">
 					<GeneralContent activeTab={'help_info'} />
 				</TabPane>
+				<TabPane tab="Apps" key="8">
+					<GeneralContent activeTab={'apps'} />
+				</TabPane>
 			</Tabs>
 		</div>
 	);
 };
 
-export default General;
+const mapStateToProps = (state) => ({
+	isAdminAnnouncementFeature: state.app.isAdminAnnouncementFeature,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	setIsAdminAnnouncementFeature: bindActionCreators(
+		setIsAdminAnnouncementFeature,
+		dispatch
+	),
+});
+export default connect(mapStateToProps, mapDispatchToProps)(General);
