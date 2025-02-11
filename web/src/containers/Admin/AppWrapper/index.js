@@ -435,6 +435,8 @@ class AppWrapper extends React.Component {
 			return 'Resources';
 		} else if (location.pathname.includes('/admin/chat')) {
 			return 'Chat';
+		} else if (location.pathname.includes('/admin/announcement')) {
+			return 'Announcements';
 		} else if (location.pathname.includes('/admin/plugin/adminView')) {
 			return this.renderCapitalize(router.params.name);
 		} else {
@@ -576,6 +578,17 @@ class AppWrapper extends React.Component {
 					path: '/admin/apps',
 					label: 'Apps',
 					routeKey: 'apps',
+				},
+			];
+		}
+
+		if (features.announcement) {
+			pathNames = [
+				...pathNames,
+				{
+					path: '/admin/announcement',
+					label: 'Announcements',
+					routeKey: 'adminView',
 				},
 			];
 		}

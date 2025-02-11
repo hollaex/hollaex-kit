@@ -82,6 +82,14 @@ import {
 	SET_STAKE,
 	SET_SETTINGS_TAB,
 	SET_ACTIVE_CHAT,
+	SET_ACTIVE_MARKET_SELECTOR,
+	SET_TOOLS_VISIBLE,
+	SET_ACTIVE_PRO_TRADE,
+	SET_ACTIVE_QUICK_TRADE,
+	SET_SELECTED_ANNOUNCEMENT,
+	SET_ACTIVE_SELECTED_ANNOUNCEMENT,
+	SET_EXCHANGE_TIMEZONE,
+	SET_IS_ADMIN_ANNOUNCEMENT_FEATURE,
 } from 'actions/appActions';
 import { THEME_DEFAULT } from 'config/constants';
 import { getLanguage } from 'utils/string';
@@ -217,6 +225,14 @@ const INITIAL_STATE = {
 	selectedVerificationTab: 0,
 	selectedSettingsTab: 0,
 	isChat: JSON.parse(localStorage.getItem('isChat')),
+	isMarketDropdownVisible: false,
+	isToolsVisible: false,
+	isProTrade: false,
+	isQuickTrade: false,
+	selectedAnnouncement: {},
+	isActiveSelectedAnnouncement: false,
+	exchangeTimeZone: '',
+	isAdminAnnouncementFeature: false,
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -405,7 +421,16 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 				...state,
 				announcements: payload.announcements,
 			};
-
+		case SET_SELECTED_ANNOUNCEMENT:
+			return {
+				...state,
+				selectedAnnouncement: payload.selectedAnnouncement,
+			};
+		case SET_ACTIVE_SELECTED_ANNOUNCEMENT:
+			return {
+				...state,
+				isActiveSelectedAnnouncement: payload.isActiveSelectedAnnouncement,
+			};
 		case CLOSE_ALL_NOTIFICATION:
 			return {
 				...state,
@@ -896,6 +921,42 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				isChat: payload,
+			};
+		}
+		case SET_ACTIVE_MARKET_SELECTOR: {
+			return {
+				...state,
+				isMarketDropdownVisible: payload,
+			};
+		}
+		case SET_TOOLS_VISIBLE: {
+			return {
+				...state,
+				isToolsVisible: payload,
+			};
+		}
+		case SET_ACTIVE_PRO_TRADE: {
+			return {
+				...state,
+				isProTrade: payload,
+			};
+		}
+		case SET_ACTIVE_QUICK_TRADE: {
+			return {
+				...state,
+				isQuickTrade: payload,
+			};
+		}
+		case SET_EXCHANGE_TIMEZONE: {
+			return {
+				...state,
+				exchangeTimeZone: payload.exchangeTimeZone,
+			};
+		}
+		case SET_IS_ADMIN_ANNOUNCEMENT_FEATURE: {
+			return {
+				...state,
+				isAdminAnnouncementFeature: payload.isAdminAnnouncementFeature,
 			};
 		}
 		default:

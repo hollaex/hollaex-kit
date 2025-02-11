@@ -458,6 +458,7 @@ const updateExchangeStakePool = async (id, data, auditInfo) => {
 const getExchangeStakers = async (
 	opts = {
 		user_id: null,
+		stake_id: null,
 		limit: null,
 		page: null,
 		order_by: null,
@@ -474,7 +475,8 @@ const getExchangeStakers = async (
 	const query = {
 		where: {
 			created_at: timeframe,
-			...(opts.user_id && { user_id: opts.user_id })
+			...(opts.user_id && { user_id: opts.user_id }),
+			...(opts.stake_id && { stake_id: opts.stake_id })
 		},
 		order: [ordering],
 		include: [

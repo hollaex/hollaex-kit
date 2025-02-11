@@ -33,7 +33,7 @@ const Review = ({
 	const upToMarket = !math.smaller(orderPrice, 0);
 	return (
 		<div className="trade_order_entry-review d-flex flex-column">
-			<div className={classnames(...ROW_CLASSNAMES)}>
+			<div className={classnames(...ROW_CLASSNAMES, 'align-items-center')}>
 				<div className="trade-order-price-text font-weight-bold important-text">
 					<EditWrapper stringId="ESTIMATED_PRICE,ORDER_PRICE">
 						<span
@@ -41,7 +41,9 @@ const Review = ({
 								side === 'buy' ? 'market-buy-side' : 'market-sell-side'
 							}
 						>
-							{side?.charAt(0)?.toUpperCase() + side?.slice(1)}
+							{STRINGS[
+								side === 'buy' ? 'SIDES_VALUES.buy' : 'SIDES_VALUES.sell'
+							]?.toUpperCase()}
 						</span>
 						{type === 'market' ? (
 							<span>{STRINGS['ESTIMATED_PRICE']}:</span>
@@ -90,12 +92,20 @@ const Review = ({
 					</EditWrapper>
 				</div>
 			</div>
-			<div className={classnames(...ROW_CLASSNAMES)}>
+			<div className={classnames('d-flex', 'justify-content-end')}>
 				<div />
 				<div className="text-price blue-link pointer caps">
 					<Link to={`/prices/coin/${symbol?.toLowerCase()}`}>
 						<EditWrapper stringId="ABOUT_LINK">
 							{STRINGS.formatString(STRINGS['ABOUT_LINK'], symbol)}
+						</EditWrapper>
+					</Link>
+				</div>
+				<span className="link-separator mx-2"></span>
+				<div className="blue-link pointer caps">
+					<Link to="/prices">
+						<EditWrapper stringId="VIEW_ALL_PRICES_LINK">
+							{STRINGS['VIEW_ALL_PRICES_LINK']}
 						</EditWrapper>
 					</Link>
 				</div>

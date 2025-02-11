@@ -4,7 +4,8 @@ import { message } from 'antd';
 import GeneralContent from './generalContent';
 import { getDashExchange, putDashExchange } from '../AdminFinancials/action';
 import { setDashExchange } from 'actions/adminBillingActions';
-
+import '../Trades/index.css';
+import '../../Admin/General/index.css';
 const Billing = (props) => {
 	const { dashExchange, user, setDashExchange } = props;
 

@@ -91,7 +91,7 @@ const {
 } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
-const { getKitConfig, isValidTierLevel, getKitTier, isDatetime, getAssetsPrices, getKitSecrets, sendCustomEmail, emailHtmlBoilerplate, getDomain, updateKitConfigSecrets, sleep, getKitCoins, getKitCoin } = require('./common');
+const { getKitConfig, isValidTierLevel, getKitTier, isDatetime, getAssetsPrices, getKitSecrets, sendCustomEmail, emailHtmlBoilerplate, getDomain, updateKitConfigSecrets, sleep, getKitCoins, getKitCoin, subscribedToCoin, getQuickTrades } = require('./common');
 const { isValidPassword, createSession } = require('./security');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { all, reject } = require('bluebird');
@@ -106,6 +106,7 @@ const moment = require('moment');
 const mathjs = require('mathjs');
 const { loggerUser } = require('../../../config/logger');
 const BigNumber = require('bignumber.js');
+const { INVALID_AUTOTRADE_CONFIG } = require('../../../messages');
 
 let networkIdToKitId = {};
 let kitIdToNetworkId = {};
@@ -603,7 +604,7 @@ const getUserReferer = (userId) => {
 			} else {
 				email = data.referer.email;
 			}
-			return email;
+			return !data ? email : data;
 		});
 
 };
@@ -3264,40 +3265,45 @@ const fetchUserProfitLossInfo = async (user_id, opts = { period: 7 }) => {
 		const finalBalances = filteredBalanceHistory[filteredBalanceHistory.length - 1].balance;
  
 		results[interval] = {};
-		let totalCumulativePNL = 0;
-		let totalInitialValue = 0;
-		let totalFinalValue = 0;
-		Object.keys(finalBalances).forEach(async (asset) => {
-			if (initialBalances?.[asset] && initialBalances?.[asset]?.native_currency_value) {
-				const cumulativePNL =
-				finalBalances[asset].native_currency_value -
-				initialBalances[asset].native_currency_value -
-				(netInflowFromDepositsPerAsset[asset] || 0) -
-				(netInflowFromTradesPerAsset[asset] || 0) -
-				(netOutflowFromWithdrawalsPerAsset[asset] || 0);
-			
-				
-				const day1Assets = initialBalances[asset].native_currency_value;
-				const inflow = netInflowFromDepositsPerAsset[asset] || 0;
-				const cumulativePNLPercentage =
-				cumulativePNL / (day1Assets + inflow) * 100; 
-			
-				results[interval][asset] = {
-					cumulativePNL,
-					cumulativePNLPercentage,
-				};
+		let initalTotalBalance = 0
+        let finalTotalBalance = 0
+        let totalDeposits = 0
+        let totalWithdrawals = 0
 
-				totalCumulativePNL += cumulativePNL;
-				totalInitialValue += day1Assets + inflow;
-				totalFinalValue += finalBalances[asset].native_currency_value;
-			}
-		});
-		results[interval].total = totalCumulativePNL;
-	
-		if (totalInitialValue !== 0) {
-			const totalCumulativePNLPercentage = (totalCumulativePNL / totalInitialValue) * 100;
-			results[interval].totalPercentage = totalCumulativePNLPercentage ? totalCumulativePNLPercentage.toFixed(2) : null;
-		}
+        let totalDay1Assets = 0;
+        let totalInflow = 0;
+        Object.keys(finalBalances).forEach(async (asset) => {
+   
+            if(!initialBalances?.[asset]?.native_currency_value) {
+                initialBalances[asset] = {};
+                initialBalances[asset].native_currency_value = 0;
+                initialBalances[asset].original_value = 0;
+            }
+        
+            initalTotalBalance += initialBalances?.[asset]?.native_currency_value || 0;
+            finalTotalBalance += finalBalances[asset].native_currency_value || 0;
+            totalDeposits += netInflowFromDepositsPerAsset[asset] || 0;
+            totalWithdrawals += netOutflowFromWithdrawalsPerAsset[asset] || 0
+             
+
+            totalDay1Assets += initialBalances[asset].native_currency_value;
+            totalInflow += netInflowFromDepositsPerAsset[asset] || 0;
+
+        });
+
+     
+        let cumulativePNL =
+            finalTotalBalance -
+            initalTotalBalance - 
+            totalDeposits - 
+            totalWithdrawals
+
+        const cumulativePNLPercentage =
+        cumulativePNL / (totalDay1Assets + totalInflow) * 100; 
+
+
+        results[interval].total = cumulativePNL?.toFixed(2) || 0;
+        results[interval].totalPercentage = cumulativePNLPercentage?.toFixed(2) || 0;
 	}
 
 	client.setexAsync(`${user_id}-${opts.period}user-pl-info`, 3600, JSON.stringify(results));
@@ -3669,7 +3675,7 @@ const createUserAutoTrade = async (user_id, {
     trade_hour,
     active,
     description
-}) => {
+}, ip) => {
 
 	if (!subscribedToCoin(buy_coin)) {
 		throw new Error('Invalid coin ' + buy_coin);
@@ -3677,6 +3683,31 @@ const createUserAutoTrade = async (user_id, {
 
 	if (!subscribedToCoin(spend_coin)) {
 		throw new Error('Invalid coin ' + spend_coin);
+	}
+
+	const originalPair = `${spend_coin}-${buy_coin}`;
+	const flippedPair = `${buy_coin}-${spend_coin}`;
+
+	const { getUserQuickTrade } = require('./order');
+	const opts = {
+		additionalHeaders: {
+			'x-forwarded-for': ip
+		}
+	};
+	await getUserQuickTrade(
+		spend_coin, spend_amount, null, buy_coin, 
+		null, ip, opts, { headers: { 'api-key': null } }, { user_id: user_id, network_id: null}
+	)
+
+	const quickTrades = getQuickTrades();
+	let quickTradeConfig = quickTrades.find(quickTrade => quickTrade.symbol === originalPair);
+
+	if (!quickTradeConfig) {
+		quickTradeConfig = quickTrades.find(quickTrade => quickTrade.symbol === flippedPair);
+	}
+
+	if (!quickTradeConfig) {
+	    throw new Error(INVALID_AUTOTRADE_CONFIG);
 	}
 
     if (week_days && !week_days.every(day => day >= 0 && day <= 6)) {
@@ -3700,8 +3731,8 @@ const createUserAutoTrade = async (user_id, {
 
 	const { getUserBalanceByKitId } = require('./wallet');
 	const balance = await getUserBalanceByKitId(user_id);
-	if (balance[`${buy_coin}_available`] < spend_amount) {
-		throw new Error(`Balance insufficient for auto trade: ${buy_coin} size: ${size}`);
+	if (balance[`${spend_coin}_available`] < spend_amount) {
+		throw new Error(`Balance insufficient for auto trade: ${spend_coin} size: ${spend_amount}`);
 	};
 
     return autoTradeModel.create({
@@ -3729,7 +3760,7 @@ const updateUserAutoTrade = async (user_id, {
     trade_hour,
     active,
     description
-}) => {
+}, ip) => {
 	
 	if (!subscribedToCoin(buy_coin)) {
 		throw new Error('Invalid coin ' + buy_coin);
@@ -3738,6 +3769,37 @@ const updateUserAutoTrade = async (user_id, {
 	if (!subscribedToCoin(spend_coin)) {
 		throw new Error('Invalid coin ' + spend_coin);
 	}
+
+	const originalPair = `${spend_coin}-${buy_coin}`;
+	const flippedPair = `${buy_coin}-${spend_coin}`;
+
+	const quickTrades = getQuickTrades();
+	let quickTradeConfig = quickTrades.find(quickTrade => quickTrade.symbol === originalPair);
+
+	if (!quickTradeConfig) {
+		quickTradeConfig = quickTrades.find(quickTrade => quickTrade.symbol === flippedPair);
+	}
+
+	if (!quickTradeConfig) {
+	    throw new Error(INVALID_AUTOTRADE_CONFIG);
+	}
+
+	if (spend_amount) {
+		const { getUserQuickTrade } = require('./order');
+		const opts = {
+			additionalHeaders: {
+				'x-forwarded-for': ip
+			}
+		};
+		await getUserQuickTrade(
+			spend_coin, spend_amount, null, buy_coin, 
+			null, ip, opts, { headers: { 'api-key': null } }, { user_id: user_id, network_id: null}
+		)
+	}
+
+    if (week_days && !week_days.every(day => day >= 0 && day <= 6)) {
+        throw new Error('invalid week_days');
+    }
 
     if (week_days && !week_days.every(day => day >= 0 && day <= 6)) {
         throw new Error('invalid week_days');
@@ -3765,8 +3827,8 @@ const updateUserAutoTrade = async (user_id, {
 
 	const { getUserBalanceByKitId } = require('./wallet');
 	const balance = await getUserBalanceByKitId(user_id);
-	if (balance[`${buy_coin}_available`] < spend_amount) {
-		throw new Error(`Balance insufficient for auto trade: ${buy_coin} size: ${size}`);
+	if (balance[`${spend_coin}_available`] < spend_amount) {
+		throw new Error(`Balance insufficient for auto trade: ${spend_coin} size: ${spend_amount}`);
 	};
 	
     return await trade.update({
@@ -3800,6 +3862,103 @@ const deleteUserAutoTrade = async (removed_ids, user_id) => {
 
     const results = await Promise.all(promises);
     return results;
+};
+
+
+const getAnnouncements = async (opts = {
+    limit: null,
+    page: null,
+    order_by: null,
+    order: null,
+    start_date: null,
+	end_date: null,
+	is_popup: null,
+	is_navbar: null,
+	is_dropdown: null,
+}) => {
+    const pagination = paginationQuery(opts.limit, opts.page);
+    const ordering = orderingQuery(opts.order_by, opts.order);
+    const timeframe = timeframeQuery(opts.start_date, opts.end_date);
+
+    const queryOptions = {
+        where: {
+			...(opts.is_navbar != null && { is_navbar: opts.is_navbar }),
+			...(opts.is_popup != null && { is_popup: opts.is_popup }),
+			...(opts.is_dropdown != null && { is_dropdown: opts.is_dropdown }),
+		},
+        order: [ordering],
+        attributes: {
+            exclude: ['created_by']
+        },
+        ...pagination
+    };
+
+	const announcementModel = getModel('announcement');
+    if (timeframe) queryOptions.where.created_at = timeframe;
+
+    const results = await announcementModel.findAndCountAll(queryOptions);
+    return convertSequelizeCountAndRows(results);
+};
+
+const createAnnouncement = async ({ title, message, type = 'info', user_id, end_date, start_date, is_popup, is_navbar, is_dropdown }) => {
+	const exchangeInfo = getKitConfig().info;
+
+	if (exchangeInfo.plan !== 'fiat') {
+		throw new Error('Exchange plan does not support this feature');
+	}
+
+	const announcementModel = getModel('announcement');
+    const announcement = await announcementModel.create({
+        created_by: user_id,
+        title,
+        message,
+		type,
+		end_date,
+		start_date,
+		is_popup,
+		is_navbar,
+		is_dropdown
+    });
+
+    return announcement;
+};
+
+const updateAnnouncement = async (id, { title, message, type, user_id, end_date, start_date, is_popup, is_navbar, is_dropdown }) => {
+    const announcementModel = getModel('announcement');
+
+    const announcement = await announcementModel.findOne({ where: { id } });
+
+    if (!announcement) {
+        throw new Error('Not found');
+    }
+
+    await announcement.update({
+        title,
+        message,
+        type,
+        end_date,
+        start_date,
+        is_popup,
+        is_navbar,
+        is_dropdown,
+        updated_by: user_id
+    });
+
+    return announcement;
+};
+
+
+const deleteAnnouncement = async (id) => {
+
+	const announcementModel = getModel('announcement');
+    const announcement = await announcementModel.findOne({ where: { id } });
+
+    if (!announcement) {
+        throw new Error('Not found');
+    }
+
+    await announcement.destroy();
+    return { message: 'Success' };
 };
 
 module.exports = {
@@ -3886,5 +4045,9 @@ module.exports = {
 	fetchUserAutoTrades,
 	createUserAutoTrade,
 	updateUserAutoTrade,
-	deleteUserAutoTrade
+	deleteUserAutoTrade,
+	getAnnouncements,
+	createAnnouncement,
+	deleteAnnouncement,
+	updateAnnouncement
 };

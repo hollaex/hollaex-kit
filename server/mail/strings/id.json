@@ -163,7 +163,15 @@
         "AUTO_TRADE_ERROR":{
             "html": "<div><p>Dear ${name},</p><p>Kami telah mendeteksi bahwa konfigurasi perdagangan otomatis Anda gagal karena saldo yang tidak mencukupi untuk perdagangan berikutnya. Harap periksa dan perbarui saldo Anda. Jumlah Pengeluaran: ${spend_amount}, Mata Uang yang Dibelanjakan: ${spend_coin}, Mata Uang yang Dibeli: ${buy_coin}.</p><p>Terima kasih telah menggunakan platform kami.</p><p>Salam hormat, tim ${api_name}</p></div>",
             "title": "Kesalahan pada konfigurasi perdagangan otomatis Anda"
-          }
+          },
+        "AUTO_TRADE_REMINDER": {
+			"html": "<div><p>Dear ${name},</p><p>Ini adalah pengingat bahwa perdagangan berulang Anda dari <b>${spend_amount} ${spend_coin} untuk ${buy_coin}</b> akan diaktifkan dalam 12 jam. Pastikan dompet Anda memiliki dana yang cukup untuk eksekusi yang berhasil:</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">LIHAT DOMPET</Button></a></div><p>Terima kasih telah menggunakan platform kami.</p><p>Salam,<br />Tim ${api_name}</p></div>",
+			"title": "Pesanan berulang Anda akan segera diaktifkan"
+		},
+		"AUTO_TRADE_FILLED": {
+			"html":  "<div><p>Dear ${name},</p><p>Pesanan otomatis Anda untuk menghabiskan <b>${spend_amount} ${spend_coin} untuk ${buy_coin}</b> telah berhasil diproses.</p><div>Anda dapat meninjau riwayat perdagangan Anda di bawah ini:</div><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">LIHAT RIWAYAT PERDAGANGAN</Button></a></div><p>Terima kasih telah menggunakan platform kami.</p><p>Salam,<br />Tim ${api_name}</p></div>",
+			"title": "Pesanan otomatis Anda telah berhasil diproses"
+		}
           
     }
 }

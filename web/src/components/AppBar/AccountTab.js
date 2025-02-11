@@ -12,7 +12,12 @@ import HelpfulResourcesForm from 'containers/HelpfulResourcesForm';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { Image, EditWrapper } from 'components';
 import { isLoggedIn, removeToken } from 'utils/token';
-import { setSecurityTab, setSettingsTab } from 'actions/appActions';
+import {
+	setIsMarketDropdownVisible,
+	setIsToolsVisible,
+	setSecurityTab,
+	setSettingsTab,
+} from 'actions/appActions';
 import { renderConfirmSignout } from './Utils';
 
 const AccountTab = ({
@@ -24,6 +29,9 @@ const AccountTab = ({
 	verificationPending,
 	setSecurityTab,
 	setSettingsTab,
+	setIsMarketDropdownVisible,
+	setIsToolsVisible,
+	features,
 }) => {
 	const [isIconActive, setIsIconActive] = useState(false);
 	const [isToolTipVisible, setIsToolTipVisible] = useState(false);
@@ -34,6 +42,13 @@ const AccountTab = ({
 		setIsToolTipVisible(false);
 		setIsIconActive(false);
 		browserHistory.push(path);
+	};
+
+	const onHandleVisible = () => {
+		setIsIconActive(!isIconActive);
+		setIsToolTipVisible(!isToolTipVisible);
+		setIsMarketDropdownVisible(false);
+		setIsToolsVisible(false);
 	};
 
 	return (
@@ -52,14 +67,12 @@ const AccountTab = ({
 					setSecurityTab={setSecurityTab}
 					setSettingsTab={setSettingsTab}
 					onHandleRedirect={onHandleRedirect}
+					features={features}
 				/>
 			}
 			placement="bottomRight"
 			overlayClassName="navigation-bar-wrapper account-tab-dropdown"
-			onVisibleChange={() => {
-				setIsIconActive(!isIconActive);
-				setIsToolTipVisible(!isToolTipVisible);
-			}}
+			onVisibleChange={() => onHandleVisible()}
 			mouseEnterDelay={0}
 		>
 			<div
@@ -103,6 +116,7 @@ const AccountList = ({
 	setSecurityTab,
 	setSettingsTab,
 	onHandleRedirect,
+	features,
 }) => {
 	const [isHelpResources, setIsHelpResources] = useState(false);
 	const [currPath, setCurrpath] = useState('/summary');
@@ -135,6 +149,13 @@ const AccountList = ({
 			description: 'DESKTOP_NAVIGATION.SETTINGS_DESC',
 			path: '/settings',
 			isDisplay: true,
+		},
+		{
+			icon: 'ANNOUNCEMENT_ICON',
+			title: 'TRADE_TAB_POSTS',
+			description: 'DESKTOP_NAVIGATION.ANNOUNCEMENT_DESC',
+			path: '/announcement',
+			isDisplay: features?.announcement,
 		},
 	];
 
@@ -333,11 +354,17 @@ const AccountList = ({
 const mapStateToProps = (state) => ({
 	config_level: state.app.config_level,
 	verification_level: state.user.verification_level,
+	features: state.app.features,
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	setSecurityTab: bindActionCreators(setSecurityTab, dispatch),
 	setSettingsTab: bindActionCreators(setSettingsTab, dispatch),
+	setIsMarketDropdownVisible: bindActionCreators(
+		setIsMarketDropdownVisible,
+		dispatch
+	),
+	setIsToolsVisible: bindActionCreators(setIsToolsVisible, dispatch),
 });
 
 export default connect(

@@ -74,6 +74,8 @@ import {
 	SORT,
 	WALLET_SORT,
 	DIGITAL_ASSETS_SORT,
+	setExchangeTimeZone,
+	setAppAnnouncements,
 } from 'actions/appActions';
 // import { setPricesAndAsset } from 'actions/assetActions';
 import { hasTheme } from 'utils/theme';
@@ -93,6 +95,8 @@ import {
 	setLoadingStyle,
 } from 'helpers/boot';
 import { filterPinnedAssets, handleUpgrade } from 'utils/utils';
+import { isLoggedIn } from 'utils/token';
+import { getAnnouncementDetails } from 'containers/Announcement/actions';
 
 consoleKitInfo();
 consolePluginDevModeInfo();
@@ -102,6 +106,11 @@ const getConfigs = async () => {
 
 	localStorage.removeItem('initialized');
 	const kitData = await getKitData();
+	if (isLoggedIn) {
+		const announcement = await getAnnouncementDetails();
+		store.dispatch(setAppAnnouncements(announcement?.data));
+	}
+
 	const {
 		meta: {
 			versions: remoteVersions = {},
@@ -121,6 +130,7 @@ const getConfigs = async () => {
 		injected_values = [],
 		injected_html = {},
 		defaults = {},
+		timezone = '',
 	} = kitData;
 
 	store.dispatch(setConfig(kitData));
@@ -191,6 +201,7 @@ const getConfigs = async () => {
 	store.dispatch(setQuickTrade(constants.quicktrade));
 	store.dispatch(setTransactionLimits(constants.transactionLimits));
 	// store.dispatch(setPricesAndAsset({}, constants.coins));
+	store.dispatch(setExchangeTimeZone(timezone));
 
 	const orderLimits = {};
 	Object.keys(constants.pairs).forEach((pair) => {

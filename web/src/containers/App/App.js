@@ -174,7 +174,10 @@ class App extends Component {
 			nextProps.activeNotification.timestamp !==
 			this.props.activeNotification.timestamp
 		) {
-			if (nextProps.activeNotification.type !== '') {
+			if (
+				nextProps.activeNotification.type !== '' &&
+				nextProps.activeNotification.type !== NOTIFICATIONS.ORDERS
+			) {
 				this.onOpenDialog();
 			} else {
 				this.onCloseDialog();
@@ -225,16 +228,18 @@ class App extends Component {
 		if (JSON.stringify(prevProps.tools) !== JSON.stringify(tools)) {
 			storeTools(tools);
 		}
-		const { themeOptions } = this.props;
+		const { themeOptions, router } = this.props;
 		const isValidTheme = themeOptions.some(
 			(option) => option.value === this.props?.router?.location?.query?.theme
 		);
-		if (!params.has('theme')) {
-			params.set('theme', activeTheme);
-			const currentUrl = window.location.href.split('?')[0];
-			const newUrl = `${currentUrl}?${params.toString()}`;
-			this.props.router.replace(newUrl);
-		} else if (!isValidTheme) {
+		if (prevProps?.activeTheme !== activeTheme) {
+			if (!params.has('theme')) {
+				params.set('theme', activeTheme);
+				const currentUrl = window.location.href.split('?')[0];
+				const newUrl = `${currentUrl}?${params.toString()}`;
+				router.replace(newUrl);
+			}
+		} else if (params.has('theme') && !isValidTheme) {
 			params.set('theme', 'dark');
 			const currentUrl = window.location.href.split('?')[0];
 			const newUrl = `${currentUrl}?${params.toString()}`;
@@ -431,7 +436,7 @@ class App extends Component {
 	renderDialogContent = ({ type, data }, prices = {}) => {
 		const { icons: ICONS, config_level, openContactForm } = this.props;
 		switch (type) {
-			case NOTIFICATIONS.ORDERS:
+			// case NOTIFICATIONS.ORDERS:
 			case NOTIFICATIONS.TRADES:
 			case NOTIFICATIONS.WITHDRAWAL:
 				return (
@@ -945,15 +950,15 @@ class App extends Component {
 												activeNotification.type === NOTIFICATIONS.NEW_ORDER ||
 												(activeNotification.type === NOTIFICATIONS.TRADES &&
 													!isMobile) ||
-												(activeNotification.type === NOTIFICATIONS.ORDERS &&
-													!isMobile) ||
+												// (activeNotification.type === NOTIFICATIONS.ORDERS &&
+												// 	!isMobile) ||
 												activeNotification.type === NOTIFICATIONS.ERROR ||
 												activeNotification.type ===
 													NOTIFICATIONS.UNDEFINED_ERROR
 											)
 										}
 										compressed={
-											activeNotification.type === NOTIFICATIONS.ORDERS ||
+											// activeNotification.type === NOTIFICATIONS.ORDERS ||
 											activeNotification.type === NOTIFICATIONS.TRADES
 										}
 										style={{ 'z-index': 100 }}

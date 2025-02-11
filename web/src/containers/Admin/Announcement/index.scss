@@ -1,0 +1,251 @@
+.announcement-wrapper-disabled {
+	color: #808080;
+	pointer-events: none !important;
+
+	.announcement-filters {
+		.announcement-description-active {
+			color: #ffffff;
+			pointer-events: all !important;
+
+			.feature-link {
+				cursor: pointer;
+			}
+		}
+	}
+
+	.ant-table-wrapper {
+		th,
+		td,
+		.message-content-wrapper * {
+			color: #808080 !important;
+		}
+	}
+}
+
+.announcement-tab-wrapper {
+	.announcement-tabs {
+		.ant-tabs-nav-wrap {
+			border-bottom: unset;
+		}
+
+		.ant-tabs-nav,
+		.ant-tabs-nav:before {
+			border-bottom: none !important;
+		}
+
+		.ant-tabs-ink-bar {
+			height: 3px;
+			background-color: #ffffff;
+			bottom: unset;
+		}
+	}
+}
+
+.announcement-wrapper {
+	.upgrade-section {
+		.button-wrapper {
+			.upgrade-btn {
+				background-color: #f6921e !important;
+				border: unset;
+			}
+		}
+	}
+
+	.green-btn {
+		border: none;
+	}
+
+	.display-title {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.announcement-filters {
+		display: flex;
+		flex-direction: column;
+		gap: 2%;
+
+		.announcement-display-feature {
+			width: 100%;
+			gap: 2%;
+			align-items: flex-start;
+			padding: 2% 0;
+
+			.feature-trade-box {
+				.feature-icon {
+					svg {
+						width: 100%;
+						height: 100%;
+					}
+				}
+
+				.popup-feature-icon {
+					position: relative;
+					top: 3px;
+				}
+			}
+
+			.announcement-features {
+				display: flex;
+				flex-direction: column;
+				gap: 2%;
+
+				.selected-dropdown-announcement-wrapper {
+					margin-top: 3%;
+					padding: 2%;
+					height: 10rem;
+					width: 100%;
+					border: 2px solid #999999;
+					border-radius: 3px;
+					display: flex;
+					flex-direction: column;
+					align-items: flex-start;
+					overflow-y: auto;
+					scrollbar-width: thin;
+					scrollbar-color: #ffffff transparent;
+				}
+			}
+		}
+
+		.line-separator {
+			width: 15%;
+			background-color: #808080;
+			height: 2px;
+		}
+	}
+
+	.blue-admin-table {
+		.message-content-wrapper {
+			width: 30rem;
+
+			img {
+				width: -webkit-fill-available;
+			}
+		}
+
+		.message-content-wrapper * {
+			color: #ffffff;
+		}
+	}
+}
+
+.admin-announcement-popup-wrapper,
+.admin-announcement-message-popup-wrapper {
+	.ant-modal-content {
+		width: 40rem;
+	}
+
+	.ant-modal-close-icon {
+		color: #ffffff !important;
+	}
+
+	.announcement-life-span-popup-container,
+	.announcement-message-popup-wrapper {
+		.title {
+			font-size: 20px;
+		}
+
+		.description-text {
+			font-size: 13px;
+		}
+
+		.announcement-display-option {
+			font-size: 13px;
+		}
+
+		.button-container {
+			margin-top: 5%;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			gap: 3%;
+
+			.green-btn {
+				border: none;
+				width: 100%;
+			}
+		}
+
+		.announcement-display-options {
+			display: flex;
+			flex-direction: column;
+
+			.announcement-display-feature {
+				width: 100%;
+				gap: 2%;
+				align-items: center;
+
+				.feature-trade-box {
+					.feature-icon {
+						svg {
+							width: 100%;
+							height: 100%;
+						}
+					}
+
+					.popup-feature-icon {
+						position: relative;
+						top: 3px;
+					}
+				}
+
+				.announcement-features {
+					display: flex;
+					flex-direction: column;
+					gap: 2%;
+				}
+			}
+		}
+
+		.select-announcement-wrapper {
+			margin-top: 3%;
+			display: flex;
+			flex-direction: column;
+			gap: 1%;
+
+			.announcement-details {
+				border: 2px solid #999999;
+				border-radius: 3px;
+				height: 15rem;
+				width: 100%;
+				padding: 2%;
+				display: flex;
+				flex-direction: column;
+				gap: 1%;
+				overflow-y: auto;
+				scrollbar-width: thin;
+				scrollbar-color: #ffffff transparent;
+
+				.disabled-announcement {
+					color: #808080;
+				}
+			}
+		}
+	}
+}
+
+.admin-announcement-message-popup-wrapper {
+	.announcement-message-popup-wrapper {
+		.quill {
+			background-color: #ffffff;
+
+			.ql-container {
+				height: 14rem;
+
+				.ql-editor > * {
+					color: #000000 !important;
+				}
+			}
+		}
+	}
+}
+
+@media (min-width: 1820px) {
+	.announcement-wrapper {
+		.blue-admin-table {
+			.message-content-wrapper {
+				width: 45rem;
+			}
+		}
+	}
+}

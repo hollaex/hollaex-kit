@@ -10,7 +10,7 @@ import { withRouter, browserHistory } from 'react-router';
 import debounce from 'lodash.debounce';
 import { SwapOutlined } from '@ant-design/icons';
 
-import { changePair } from 'actions/appActions';
+import { changePair, setIsQuickTrade } from 'actions/appActions';
 import { isLoggedIn } from 'utils/token';
 import { Button, EditWrapper, Dialog, Image } from 'components';
 import STRINGS from 'config/localizedStrings';
@@ -61,6 +61,8 @@ const QuickTrade = ({
 	changePair,
 	icons: ICONS,
 	chain_trade_config,
+	constants,
+	setIsQuickTrade,
 }) => {
 	const getTargetOptions = (source) =>
 		sourceOptions.filter((key) => {
@@ -306,12 +308,17 @@ const QuickTrade = ({
 	useEffect(() => {
 		setTimeout(() => {
 			const pairBase = pair.split('-')[1];
+			const pair_2 = pair.split('-')[0];
 			const assetValues = Object.keys(coins)
 				.map((val) => coins[val].code)
 				.toLocaleString();
 
-			if (allChartsData[pairBase]) {
-				setChartData(allChartsData[pairBase]);
+			const chartValue =
+				constants?.native_currency === pairBase
+					? allChartsData[pair_2]
+					: allChartsData[pairBase];
+			if (chartValue) {
+				setChartData(chartValue);
 			} else {
 				getMiniCharts(assetValues, pairBase).then((chartValues) => {
 					setChartData(chartValues);
@@ -367,6 +374,13 @@ const QuickTrade = ({
 
 	useEffect(() => {
 		setMounted(true);
+		if (window.location.pathname.includes(`/quick-trade`)) {
+			setIsQuickTrade(true);
+		}
+		return () => {
+			setIsQuickTrade(false);
+		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	useEffect(() => {
@@ -700,6 +714,7 @@ const QuickTrade = ({
 
 const mapDispatchToProps = (dispatch) => ({
 	changePair: bindActionCreators(changePair, dispatch),
+	setIsQuickTrade: bindActionCreators(setIsQuickTrade, dispatch),
 });
 
 const mapStateToProps = (store) => {

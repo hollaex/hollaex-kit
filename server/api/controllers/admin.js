@@ -3150,6 +3150,107 @@ const deleteUserByAdmin = (req, res) => {
 		});
 };
 
+const fetchAnnouncements = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/fetchAnnouncements/auth', req.auth.sub);
+
+	const { limit, page, order_by, order, start_date, end_date, is_popup, is_navbar, is_dropdown } = req.swagger.params;
+
+	if (order_by.value && typeof order_by.value !== 'string') {
+		loggerAdmin.error(
+			req.uuid,
+			'controllers/admin/fetchAnnouncements invalid order_by',
+			order_by.value
+		);
+		return res.status(400).json({ message: 'Invalid order by' });
+	}
+
+	toolsLib.user.getAnnouncements({
+		limit: limit.value,
+		page: page.value,
+		order_by: order_by.value,
+		order: order.value,
+		start_date: start_date.value,
+		end_date: end_date.value,
+		is_popup: is_popup.value,
+		is_navbar: is_navbar.value,
+		is_dropdown: is_dropdown.value,
+	})
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/fetchAnnouncements', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+		});
+};
+
+const createAnnouncement = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/createAnnouncement/auth', req.auth.sub);
+
+	const { title, message, type, is_popup, end_date, start_date, is_navbar, is_dropdown } = req.swagger.params.data.value;
+
+	toolsLib.user.createAnnouncement({
+		title,
+		message,
+		type,
+		user_id: req.auth.sub.id,
+		end_date,
+		start_date,
+		is_popup,
+		is_navbar,
+		is_dropdown
+	})
+		.then((announcement) => {
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id  }, '/plugins/announcement', 'post', announcement);
+			return res.json(announcement);
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/createAnnouncement', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+		});
+};
+
+const updateAnnouncement = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/updateAnnouncement/auth', req.auth.sub);
+
+	const { id, title, message, type, is_popup, end_date, start_date, is_navbar, is_dropdown } = req.swagger.params.data.value;
+
+	toolsLib.user.updateAnnouncement(id, {
+		title,
+		message,
+		type,
+		user_id: req.auth.sub.id,
+		end_date,
+		start_date,
+		is_popup,
+		is_navbar,
+		is_dropdown
+	})
+		.then((announcement) => {
+			return res.json(announcement);
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/updateAnnouncement', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+		});
+};
+
+
+const deleteAnnouncement = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/deleteAnnouncement/auth', req.auth.sub);
+
+	const { id } = req.swagger.params.data.value;
+
+	toolsLib.user.deleteAnnouncement(id)
+		.then((result) => {
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id  }, '/plugins/announcement', 'delete', result);
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/deleteAnnouncement', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+		});
+};
 module.exports = {
 	createInitialAdmin,
 	getAdminKit,
@@ -3229,5 +3330,9 @@ module.exports = {
 	createPaymentDetailByAdmin,
 	updatePaymentDetailByAdmin,
 	deletePaymentDetailByAdmin,
-	deleteUserByAdmin
+	deleteUserByAdmin,
+	fetchAnnouncements,
+	createAnnouncement,
+	deleteAnnouncement,
+	updateAnnouncement
 };

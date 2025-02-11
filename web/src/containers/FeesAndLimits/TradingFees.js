@@ -169,9 +169,30 @@ const TradingFees = ({
 };
 
 const mapStateToProps = (state) => {
+	const setQuickTradePairs = (inputArray) => {
+		const transformedData = {};
+	
+		inputArray.forEach((item, index) => {
+			const [pair_base, pair_2] = item.symbol.split("-");
+			transformedData[item.symbol] = {
+				id: index, 
+				name: item.symbol,
+				pair_base: pair_base,
+				pair_2: pair_2,
+				active: item.active,
+				code: item.symbol,
+				pair_base_display: pair_base.toUpperCase(),
+				pair_2_display: pair_2.toUpperCase(),
+				display_name: item.display_name,
+				icon_id: item.icon_id,
+			};
+		});
+	
+		return transformedData;
+	}
 	return {
 		coins: state.app.coins,
-		pairs: state.app.pairs,
+		pairs: setQuickTradePairs(state.app.quicktrade),
 		config_level: state.app.config_level,
 		options: Object.entries(state.app.config_level).map(([key, { name }]) => ({
 			value: key,

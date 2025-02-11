@@ -1682,7 +1682,7 @@ const createUserAutoTrade = (req, res) => {
         trade_hour,
         active,
         description
-    })
+    }, req.headers['x-real-ip'])
         .then((data) => res.json(data))
         .catch((err) => {
             loggerUser.error(req.uuid, 'controllers/user/createUserAutoTrade', err.message);
@@ -1712,7 +1712,7 @@ const updateUserAutoTrade = (req, res) => {
         trade_hour,
         active,
         description
-    })
+    }, req.headers['x-real-ip'])
         .then((data) => res.json(data))
         .catch((err) => {
             loggerUser.error(req.uuid, 'controllers/user/updateUserAutoTrade', err.message);
@@ -1727,14 +1727,45 @@ const deleteUserAutoTrade = (req, res) => {
 
     loggerUser.verbose(req.uuid, 'controllers/user/deleteUserAutoTrade data', removed_ids);
 
-    toolsLib.user.deleteUserAutoTrade({
-        user_id: req.auth.sub.id,
-        removed_ids
-    })
-        .then((data) => res.json(data))
+    toolsLib.user.deleteUserAutoTrade(
+        removed_ids,
+		req.auth.sub.id
+    )
+        .then(() => res.json({ message: 'Success' }))
         .catch((err) => {
             loggerUser.error(req.uuid, 'controllers/user/deleteUserAutoTrade', err.message);
             return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+        });
+};
+
+const fetchAnnouncements = (req, res) => {
+    loggerUser.verbose(req.uuid, 'controllers/user/fetchAnnouncements/auth');
+
+    const { limit, page, order_by, order, start_date, end_date } = req.swagger.params;
+
+    if (order_by.value && typeof order_by.value !== 'string') {
+        loggerUser.error(
+            req.uuid,
+            'controllers/user/fetchAnnouncements invalid order_by',
+            order_by.value
+        );
+        return res.status(400).json({ message: 'Invalid order by' });
+    }
+
+    toolsLib.user.getAnnouncements({
+        limit: limit.value,
+        page: page.value,
+        order_by: order_by.value,
+        order: order.value,
+        start_date: start_date.value,
+		end_date: end_date.value,
+    })
+        .then((data) => {
+            return res.json(data);
+        })
+        .catch((err) => {
+            loggerUser.error(req.uuid, 'controllers/user/fetchAnnouncements', err.message);
+            return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
         });
 };
 
@@ -1786,5 +1817,6 @@ module.exports = {
 	fetchUserAutoTrades,
 	createUserAutoTrade,
 	updateUserAutoTrade,
-	deleteUserAutoTrade
+	deleteUserAutoTrade,
+	fetchAnnouncements
 };

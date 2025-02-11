@@ -8,6 +8,8 @@ import { STATIC_ICONS } from 'config/icons';
 import FormButton from 'components/FormButton/Button';
 import { CloseOutlined } from '@ant-design/icons';
 import { Link } from 'react-router';
+import icons from 'config/icons/dark';
+
 const { Item } = Form;
 
 const InterfaceForm = ({
@@ -19,6 +21,7 @@ const InterfaceForm = ({
 	isFiatUpgrade,
 	coins,
 	enabledPlugins,
+	isEnterpriseUpgrade,
 }) => {
 	const [isSubmit, setIsSubmit] = useState(!buttonSubmitting);
 	const [form] = Form.useForm();
@@ -68,6 +71,7 @@ const InterfaceForm = ({
 			formValues = {
 				chat: isUpgrade ? false : !!values.chat,
 				quick_trade: !!values.quick_trade,
+				auto_trade_config: !!values.auto_trade_config,
 				pro_trade: !!values.pro_trade,
 				stake_page: !!values.stake_page,
 				cefi_stake: !!values.cefi_stake,
@@ -77,6 +81,7 @@ const InterfaceForm = ({
 				home_page: isUpgrade ? false : !!values.home_page,
 				ultimate_fiat: !!values.ultimate_fiat,
 				apps: !!values.apps,
+				announcement: !!values.announcement,
 			};
 			const balance_history_config = {
 				currency: balanceHistoryCurrency.currency || 'usdt',
@@ -98,11 +103,17 @@ const InterfaceForm = ({
 				spread: Number(chainTradeData.spread),
 				source_account: Number(chainTradeData.source_account),
 			};
+
+			const auto_trade_config = {
+				active: !!values.auto_trade_config || false,
+			};
+
 			handleSaveInterface(
 				formValues,
 				values.balance_history_config ? balance_history_config : null,
 				values.referral_history_config ? referral_history_config : null,
-				values.chain_trade_config ? chain_trade_config : null
+				values.chain_trade_config ? chain_trade_config : null,
+				values.auto_trade_config ? auto_trade_config : null
 			);
 		}
 	};
@@ -574,6 +585,26 @@ const InterfaceForm = ({
 				className="disable-button"
 			>
 				<div className="interface-box">
+					{!isEnterpriseUpgrade && (
+						<Item name="announcement" valuePropName="checked">
+							<Checkbox className="mt-3">
+								<div className="d-flex align-items-center">
+									<div className="feature-trade-box">
+										<ReactSVG
+											src={icons['ANNOUNCEMENT_ICON']}
+											className="feature-icon announcement-icon mr-1"
+										/>
+									</div>
+									<div className="ml-2 checkbox-txt">
+										Announcement
+										<div className="small-text">
+											(Announcement posts, alert popups to notify users)
+										</div>
+									</div>
+								</div>
+							</Checkbox>
+						</Item>
+					)}
 					<Item name="pro_trade" valuePropName="checked">
 						<Checkbox className="mt-3">
 							<div className="d-flex align-items-center">
@@ -614,6 +645,32 @@ const InterfaceForm = ({
 							</div>
 						</Checkbox>
 					</Item>
+					{!isEnterpriseUpgrade && (
+						<Item name="auto_trade_config" valuePropName="checked">
+							<Checkbox className="mt-3">
+								<div className="d-flex align-items-center">
+									<div className="feature-trade-box mr-1">
+										<div className="interface_container">
+											<div className="sell">
+												<span className="label">SELL</span>
+											</div>
+											<div className="buy">
+												<span className="label">BUY</span>
+											</div>
+										</div>
+									</div>
+									<div className="ml-2 checkbox-txt">
+										Auto Trade
+										<div className="d-flex justify-content-between">
+											<div className="small-text">
+												(Automate your trades based on your settings)
+											</div>
+										</div>
+									</div>
+								</div>
+							</Checkbox>
+						</Item>
+					)}
 					<Item name="stake_page" valuePropName="checked">
 						<Checkbox className="mt-3">
 							<div className="d-flex align-items-center">

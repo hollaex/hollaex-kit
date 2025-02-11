@@ -25,6 +25,7 @@ const {
 	VALID_USER_META_TYPES,
 	DOMAIN,
 	DEFAULT_FEES,
+	MIN_FEES,
 	BALANCE_HISTORY_SUPPORTED_PLANS,
 	REFERRAL_HISTORY_SUPPORTED_PLANS,
 	AUTO_TRADE_SUPPORTED_PLANS
@@ -395,7 +396,7 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 		const percentagePattern = /^(100(\.00?)?|(\d{1,2})(\.\d{1,2})?)$/;
 
 		if (!percentagePattern.test(newKitConfig.p2p_config.merchant_fee)) {
-				throw new Error('merchant_fee must be in percentage format');
+			throw new Error('merchant_fee must be in percentage format');
 		}
 		if (!percentagePattern.test(newKitConfig.p2p_config.user_fee)) {
 			throw new Error('buyer_fee must be in percentage format');
@@ -711,6 +712,7 @@ const getMiniCharts = (assets, opts = {
 	from: null, 
 	to: null, 
 	quote: null,
+	period: null,
 	additionalHeaders: null
 }) => {
 	return getNodeLib().getMiniCharts(assets, opts);
@@ -1019,16 +1021,9 @@ const getNetworkConstants = (opts = {
 
 const getNetworkEndpoint = () => HOLLAEX_NETWORK_ENDPOINT;
 
-const getDefaultFees = () => {
-	const { info: { type, plan } } = getKitConfig();
-	if (type === 'Enterprise') {
-		return {
-			maker: 0,
-			taker: 0
-		};
-	} else {
-		return DEFAULT_FEES[plan];
-	}
+const getMinFees = () => {
+	const { info: { plan } } = getKitConfig();
+	return MIN_FEES[plan];
 };
 
 const validateIp = (ip) => {
@@ -1073,11 +1068,11 @@ const getTransactionLimits = () => {
 
 const getNetworkQuickTrades = () => {
 	return GET_NETWORK_QUICKTRADE();
-}
+};
 
 const parseNumber = (number, precisionValue) => {
 	return BigNumber(number).precision(precisionValue, BigNumber.ROUND_DOWN).toNumber();
-}
+};
 const removeRepeatingDecimals = (num) => {
 	let numStr = num.toString();
 	if (numStr.includes('.') && numStr?.length > 8) {
@@ -1087,7 +1082,7 @@ const removeRepeatingDecimals = (num) => {
 	}
 	
 	return parseFloat(num); 
-}
+};
 
 module.exports = {
 	getKitVersion,
@@ -1146,7 +1141,7 @@ module.exports = {
 	emailHtmlBoilerplate,
 	getNetworkConstants,
 	getNetworkEndpoint,
-	getDefaultFees,
+	getMinFees,
 	getEmail,
 	updateEmail,
 	checkExchangeStatus,

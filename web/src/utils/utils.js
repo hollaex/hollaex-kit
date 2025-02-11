@@ -304,6 +304,14 @@ export const handleFiatUpgrade = (info = {}) => {
 	}
 };
 
+export const handleEnterpriseUpgrade = (info = {}) => {
+	if (_toLower(info.plan) !== 'fiat') {
+		return true;
+	} else {
+		return false;
+	}
+};
+
 export const filterPinnedAssets = (pinnedAssets, coins) => {
 	const coinKeys = Object.keys(coins);
 	return pinnedAssets.filter((pinnedAsset) => coinKeys.includes(pinnedAsset));
