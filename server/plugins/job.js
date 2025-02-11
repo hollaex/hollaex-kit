@@ -4,7 +4,7 @@ const cron = require('node-cron');
 const { MAILTYPE } = require('../mail/strings');
 const { sendEmail } = require('../mail');
 const BigNumber = require('bignumber.js');
-const moment = require('moment');
+const moment = require('moment-timezone');
 const { Op } = require('sequelize');
 
 const { loggerPlugin } = require('../config/logger');

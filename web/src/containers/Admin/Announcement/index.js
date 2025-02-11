@@ -36,7 +36,10 @@ import {
 
 const TabPane = Tabs.TabPane;
 
-const announcementHeader = (removeDetail, onHandleSelectedAnnouncement) => [
+const announcementHeader = (
+	onHandleRemoveAnnouncement,
+	onHandleSelectedAnnouncement
+) => [
 	{
 		title: 'Type',
 		className: 'description-header',
@@ -89,7 +92,7 @@ const announcementHeader = (removeDetail, onHandleSelectedAnnouncement) => [
 			<div className="d-flex">
 				<Button
 					type="primary"
-					onClick={() => removeDetail(data?.id)}
+					onClick={() => onHandleRemoveAnnouncement(data)}
 					className="green-btn"
 				>
 					Remove
@@ -198,6 +201,10 @@ const AnnouncementDetails = ({
 }) => {
 	const [isAnnouncementLifeSpan, setIsAnnouncementLifeSpan] = useState(false);
 	const [isDisplayAddDetailPopup, setIsDisplayAddDetailPopup] = useState(false);
+	const [isDisplayRemoveAnnouncement, setIsRemoveAnnouncement] = useState(
+		false
+	);
+
 	const [isDisplayEditAnnouncement, setIsDisplayEditAnnouncement] = useState(
 		false
 	);
@@ -236,6 +243,11 @@ const AnnouncementDetails = ({
 		isSelectRange: false,
 	});
 
+	const [selectHighlightLifeSpan, setSelectedHighlightLifeSpan] = useState({
+		isDisplayPopupIndefinitely: true,
+		isPopupSelectRange: false,
+	});
+
 	const [selectedAnnouncement, setSelectedAnnouncement] = useState({});
 	const { RangePicker } = DatePicker;
 
@@ -243,26 +255,27 @@ const AnnouncementDetails = ({
 		(data) => data?.is_dropdown
 	);
 
-	const highlightPopupDetails = renderHighlightAnnouncement?.isHighlightPopup
-		? selectedHighlightPopup?.is_popup
-		: renderHighlightAnnouncement?.isHighlightTopbar
-		? selectedHighlightTopbar?.is_navbar
-		: selectedAnnouncement?.is_popup;
+	const { start_date, end_date } = selectedAnnouncement || {};
 
-	const highlightAnnouncementDetails = renderHighlightAnnouncement?.isHighlightPopup
+	const highlightDetails = renderHighlightAnnouncement?.isHighlightPopup
 		? selectedHighlightPopup
 		: renderHighlightAnnouncement?.isHighlightTopbar
 		? selectedHighlightTopbar
-		: selectedAnnouncement;
+		: {};
 
-	const { start_date, end_date } = highlightAnnouncementDetails || {};
+	const getDate = (date) => (date ? moment(date) : null);
 
-	const isDetailIndefinitely =
-		highlightAnnouncementDetails && !start_date && !end_date;
-	const isDateSelected = highlightAnnouncementDetails && start_date && end_date;
+	const isDetailIndefinitely = !start_date && !end_date;
+	const isDateSelected = start_date && end_date;
+	const selectedStartDate = getDate(start_date);
+	const selectedEndDate = getDate(end_date);
 
-	const selectedStartDate = start_date ? moment(start_date) : null;
-	const selectedEndDate = end_date ? moment(end_date) : null;
+	const isHighlightDetailIndefinitely =
+		!highlightDetails?.start_date && !highlightDetails?.end_date;
+	const isHighlightDateSelected =
+		highlightDetails?.start_date && highlightDetails?.end_date;
+	const selectedHighlightStartDate = getDate(highlightDetails?.start_date);
+	const selectedHighlightEndDate = getDate(highlightDetails?.end_date);
 
 	const defaultAnnouncementType = [
 		'updates',
@@ -301,19 +314,19 @@ const AnnouncementDetails = ({
 	}, [getAnnouncements]);
 
 	useEffect(() => {
-		if (selectedPopup === 'edit') {
-			setSelectedOption({
-				isDisplayIndefinitely: isDetailIndefinitely ?? true,
-				isSelectRange: isDateSelected ?? false,
-			});
-		} else {
-			setSelectedOption({
-				isDisplayIndefinitely: true,
-				isSelectRange: false,
-			});
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+		setSelectedOption({
+			isDisplayIndefinitely:
+				selectedPopup === 'edit' ? isDetailIndefinitely ?? true : true,
+			isSelectRange: selectedPopup === 'edit' ? isDateSelected ?? false : false,
+		});
 	}, [selectedPopup, isDetailIndefinitely, isDateSelected]);
+
+	useEffect(() => {
+		setSelectedHighlightLifeSpan({
+			isDisplayPopupIndefinitely: isHighlightDetailIndefinitely,
+			isPopupSelectRange: isHighlightDateSelected,
+		});
+	}, [isHighlightDateSelected, isHighlightDetailIndefinitely]);
 
 	useEffect(() => {
 		const isDefaultType = defaultAnnouncementType?.filter(
@@ -331,7 +344,13 @@ const AnnouncementDetails = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedAnnouncement]);
 
-	const removeDetail = async (id) => {
+	const onHandleRemoveAnnouncement = (detail) => {
+		setIsRemoveAnnouncement(true);
+		setSelectedAnnouncement(detail);
+	};
+
+	const removeDetail = async () => {
+		const { id } = selectedAnnouncement;
 		const filteredDetail = getAnnouncements?.filter((data) => {
 			return data.id !== id;
 		});
@@ -342,6 +361,7 @@ const AnnouncementDetails = ({
 		} catch (error) {
 			console.error(error);
 		}
+		setIsRemoveAnnouncement(false);
 	};
 
 	const onHandleSubmitAnnouncement = async () => {
@@ -355,10 +375,6 @@ const AnnouncementDetails = ({
 			}
 			setIsDisplayAddDetailPopup(false);
 		} else {
-			filteredPopupAnnouncement[0]?.isPopup !==
-				selectedAnnouncement?.is_popup &&
-				selectedAnnouncement?.is_popup &&
-				localStorage.setItem('announcementPopup', true);
 			editDetail(selectedAnnouncement);
 			setIsDisplayEditAnnouncement(false);
 		}
@@ -399,60 +415,62 @@ const AnnouncementDetails = ({
 		}));
 	};
 
-	const onHandleDateSelect = (dates) => {
-		const updateDates = dates
-			? {
-					start_date: dates[0],
-					end_date: dates[1],
-			  }
-			: {
-					start_date: null,
-					end_date: null,
-			  };
+	const handleDateUpdate = (dates) => ({
+		start_date: dates?.[0] || null,
+		end_date: dates?.[1] || null,
+	});
 
+	const onHandleDateSelect = (dates) => {
+		const updateDates = handleDateUpdate(dates);
 		updateAnnouncement('start_date', updateDates?.start_date);
 		updateAnnouncement('end_date', updateDates?.end_date);
-		renderHighlightAnnouncement?.isHighlightPopup
-			? setSelectedHighlightPopup((prev) => ({
-					...prev,
-					start_date: updateDates?.start_date,
-					end_date: updateDates?.end_date,
-			  }))
-			: renderHighlightAnnouncement?.isHighlightTopbar &&
-			  setSelectedHighlightTopbar((prev) => ({
-					...prev,
-					start_date: updateDates?.start_date,
-					end_date: updateDates?.end_date,
-			  }));
+	};
+
+	const onHandleHighlightDateSelect = (dates) => {
+		const updateDates = handleDateUpdate(dates);
+
+		if (renderHighlightAnnouncement?.isHighlightPopup) {
+			setSelectedHighlightPopup((prev) => ({ ...prev, ...updateDates }));
+		} else if (renderHighlightAnnouncement?.isHighlightTopbar) {
+			setSelectedHighlightTopbar((prev) => ({ ...prev, ...updateDates }));
+		}
+	};
+
+	const handleSelection = (id, setOption, updateDates) => {
+		const isIndefinitely = id.includes('recent');
+		setOption({
+			isDisplayIndefinitely: isIndefinitely,
+			isSelectRange: !isIndefinitely,
+		});
+
+		if (updateDates && isIndefinitely) {
+			updateDates(null, null);
+		}
 	};
 
 	const onHandleSelect = (e) => {
-		const { id } = e.target;
-		if (id === 'recent') {
-			renderHighlightAnnouncement?.isHighlightPopup &&
-				setSelectedHighlightPopup((prev) => ({
-					...prev,
-					start_date: null,
-					end_date: null,
-				}));
-			renderHighlightAnnouncement?.isHighlightTopbar &&
-				setSelectedHighlightTopbar((prev) => ({
-					...prev,
-					start_date: null,
-					end_date: null,
-				}));
-			setSelectedOption({
-				isDisplayIndefinitely: true,
-				isSelectRange: false,
-			});
+		handleSelection(e.target.id, setSelectedOption, (start, end) => {
+			updateAnnouncement('start_date', start);
+			updateAnnouncement('end_date', end);
+		});
+	};
 
-			isAnnouncementLifeSpan && updateAnnouncement('start_date', null);
-			isAnnouncementLifeSpan && updateAnnouncement('end_date', null);
-		} else if (id === 'selectDate') {
-			setSelectedOption({
-				isDisplayIndefinitely: false,
-				isSelectRange: true,
-			});
+	const onHandleHighlightDetail = (e) => {
+		const { id } = e.target;
+		const isIndefinitely = id === 'recent';
+
+		setSelectedHighlightLifeSpan({
+			isDisplayPopupIndefinitely: isIndefinitely,
+			isPopupSelectRange: !isIndefinitely,
+		});
+
+		if (isIndefinitely) {
+			const updateDates = { start_date: null, end_date: null };
+			if (renderHighlightAnnouncement?.isHighlightPopup) {
+				setSelectedHighlightPopup((prev) => ({ ...prev, ...updateDates }));
+			} else {
+				setSelectedHighlightTopbar((prev) => ({ ...prev, ...updateDates }));
+			}
 		}
 	};
 
@@ -479,46 +497,25 @@ const AnnouncementDetails = ({
 	};
 
 	const onHandleCloseLifeSpanPopup = () => {
+		setIsAnnouncementLifeSpan(false);
+		selectedPopup === 'add'
+			? setIsDisplayAddDetailPopup(true)
+			: setIsDisplayEditAnnouncement(true);
+	};
+	const onHandleProceed = () => {
 		if (renderHighlightAnnouncement?.isHighlightPopup) {
+			editDetail(selectedHighlightPopup);
 			setRenderHighlightAnnouncement((prev) => ({
 				...prev,
 				isHighlightPopup: false,
 			}));
-			filteredPopupAnnouncement[0]
-				? setSelectedHighlightPopup(filteredPopupAnnouncement[0])
-				: setSelectedHighlightPopup({});
-			setSelectedOption({
-				isDisplayIndefinitely: true,
-				isSelectRange: false,
-			});
 		} else if (renderHighlightAnnouncement?.isHighlightTopbar) {
+			editDetail(selectedHighlightTopbar);
 			setRenderHighlightAnnouncement((prev) => ({
 				...prev,
 				isHighlightTopbar: false,
 			}));
-			filteredTopbarAnnouncement[0]
-				? setSelectedHighlightTopbar(filteredTopbarAnnouncement[0])
-				: setSelectedHighlightTopbar({});
-			setSelectedOption({
-				isDisplayIndefinitely: true,
-				isSelectRange: false,
-			});
-		} else {
-			setIsAnnouncementLifeSpan(false);
-			selectedPopup === 'add'
-				? setIsDisplayAddDetailPopup(true)
-				: setIsDisplayEditAnnouncement(true);
 		}
-	};
-	const onHandleProceed = () => {
-		if (renderHighlightAnnouncement?.isHighlightPopup) {
-			selectedHighlightPopup?.is_popup &&
-				localStorage.setItem('announcementPopup', true);
-			editDetail(selectedHighlightPopup);
-		} else if (renderHighlightAnnouncement?.isHighlightTopbar) {
-			editDetail(selectedHighlightTopbar);
-		}
-		onHandleCloseLifeSpanPopup();
 	};
 
 	const onHandleSelectedAnnouncement = (detail) => {
@@ -607,6 +604,22 @@ const AnnouncementDetails = ({
 			  }));
 	};
 
+	const onHandleHighlightPopupClose = () => {
+		if (renderHighlightAnnouncement?.isHighlightPopup) {
+			setRenderHighlightAnnouncement((prev) => ({
+				...prev,
+				isHighlightPopup: false,
+			}));
+			setSelectedHighlightPopup(filteredPopupAnnouncement[0]);
+		} else if (renderHighlightAnnouncement?.isHighlightTopbar) {
+			setRenderHighlightAnnouncement((prev) => ({
+				...prev,
+				isHighlightTopbar: false,
+			}));
+			setSelectedHighlightTopbar(filteredTopbarAnnouncement[0]);
+		}
+	};
+
 	const isEnterpriseUpgrade = handleEnterpriseUpgrade(constants?.info);
 
 	const selectedAnnouncementDetail =
@@ -615,6 +628,11 @@ const AnnouncementDetails = ({
 		selectedPopup === 'add'
 			? [addAnnouncement?.start_date, addAnnouncement?.end_date]
 			: [selectedStartDate, selectedEndDate];
+
+	const highlightDateRange = [
+		selectedHighlightStartDate,
+		selectedHighlightEndDate,
+	];
 
 	const selectedType =
 		selectedPopup === 'add'
@@ -630,15 +648,20 @@ const AnnouncementDetails = ({
 		!selectedAnnouncementDetail?.type;
 
 	const isDisplayLifeSpanAnnouncement =
-		isAnnouncementLifeSpan ||
 		renderHighlightAnnouncement?.isHighlightPopup ||
 		renderHighlightAnnouncement?.isHighlightTopbar;
 
 	const isDisabledProceed =
-		!highlightAnnouncementDetails?.title ||
-		(selectedOption?.isSelectRange &&
-			!highlightAnnouncementDetails?.start_date) ||
+		!selectedAnnouncement?.title ||
+		(selectedOption?.isSelectRange && !selectedAnnouncement?.start_date) ||
 		(selectedOption?.isDisplayIndefinitely && !isDetailIndefinitely);
+
+	const isDisabledHighlightProceed =
+		!highlightDetails?.title ||
+		(selectHighlightLifeSpan?.isPopupSelectRange &&
+			!highlightDetails?.start_date) ||
+		(selectHighlightLifeSpan?.isDisplayPopupIndefinitely &&
+			!isHighlightDetailIndefinitely);
 
 	return (
 		<div
@@ -648,6 +671,38 @@ const AnnouncementDetails = ({
 					: 'w-100 pb-5 announcement-wrapper announcement-wrapper-disabled'
 			}
 		>
+			<Modal
+				visible={isDisplayRemoveAnnouncement}
+				className="bg-model blue-admin-billing-model admin-announcement-popup-wrapper"
+				width={450}
+				zIndex={1000}
+				onCancel={() => setIsRemoveAnnouncement(false)}
+				footer={null}
+			>
+				<div className="announcement-life-span-popup-container">
+					<span className="title">
+						Are you sure you want to remove this announcement?
+					</span>
+					<div className="button-container">
+						<Button
+							type="primary"
+							onClick={() => setIsRemoveAnnouncement(false)}
+							className="green-btn"
+							size="medium"
+						>
+							Back
+						</Button>
+						<Button
+							type="primary"
+							onClick={() => removeDetail()}
+							className="green-btn"
+							size="medium"
+						>
+							Confirm
+						</Button>
+					</div>
+				</div>
+			</Modal>
 			<Modal
 				visible={isDropdownAnnouncementpopup}
 				className="bg-model blue-admin-billing-model admin-announcement-popup-wrapper"
@@ -682,7 +737,7 @@ const AnnouncementDetails = ({
 										<label>{data?.title}</label>
 										<input
 											type="checkbox"
-											checked={data?.is_dropdown || false}
+											checked={!!data?.is_dropdown || false}
 											onChange={() => onHandleToggle(data)}
 										/>
 									</span>
@@ -711,7 +766,7 @@ const AnnouncementDetails = ({
 				</div>
 			</Modal>
 			<Modal
-				visible={isDisplayLifeSpanAnnouncement}
+				visible={isAnnouncementLifeSpan}
 				className="bg-model blue-admin-billing-model admin-announcement-popup-wrapper"
 				width={450}
 				zIndex={1000}
@@ -719,42 +774,6 @@ const AnnouncementDetails = ({
 				footer={null}
 			>
 				<div className="announcement-life-span-popup-container">
-					{(renderHighlightAnnouncement?.isHighlightPopup ||
-						renderHighlightAnnouncement?.isHighlightTopbar) && (
-						<div className="d-flex flex-column mt-2">
-							<span className="title font-weight-bold">
-								Highlight Announcement
-							</span>
-							<span>
-								Select the announcement you'd like to highlight as a{' '}
-								<b>
-									{renderHighlightAnnouncement?.isHighlightPopup
-										? 'Popup'
-										: 'Topbar'}
-								</b>
-								.
-							</span>
-							<Select
-								className="my-2"
-								size="middle caps-first"
-								value={highlightAnnouncementDetails?.title}
-								onChange={(value) => onHandleHighlightAnnouncement(value)}
-								placeholder="Select Announcement"
-							>
-								{getAnnouncements?.map((data, index) => {
-									return (
-										<Select.Option
-											key={index}
-											value={data?.id}
-											className="caps-first"
-										>
-											{data?.title}
-										</Select.Option>
-									);
-								})}
-							</Select>
-						</div>
-					)}
 					<div
 						className={
 							isAnnouncementLifeSpan
@@ -762,7 +781,7 @@ const AnnouncementDetails = ({
 								: 'title font-weight-bold mt-3'
 						}
 					>
-						{isAnnouncementLifeSpan ? 'Pop up Life Span' : 'Life Span'}
+						Pop up Life Span
 					</div>
 					<div className="description-text mt-2">
 						The length of time the recent announcement will be displayed to the
@@ -771,24 +790,24 @@ const AnnouncementDetails = ({
 					<div className="announcement-display-option mt-2">
 						<input
 							type="radio"
-							id="recent"
-							name="announcementOption"
-							checked={selectedOption?.isDisplayIndefinitely}
+							id="recentAnnouncement"
+							name="recentAnnouncementOption"
+							checked={!!selectedOption?.isDisplayIndefinitely}
 							onChange={onHandleSelect}
 						/>
-						<label className="ml-1" htmlFor="recent">
+						<label className="ml-1" htmlFor="recentAnnouncement">
 							Show the announcement indefinitely
 						</label>
 					</div>
 					<div className="mt-2 announcement-display-option ">
 						<input
 							type="radio"
-							id="selectDate"
-							name="announcementOption"
-							checked={selectedOption?.isSelectRange}
+							id="selectDateAnnouncement"
+							name="selectedDateAannouncementOption"
+							checked={!!selectedOption?.isSelectRange}
 							onChange={onHandleSelect}
 						/>
-						<label className="ml-1" htmlFor="selectDate">
+						<label className="ml-1" htmlFor="selectDateAnnouncement">
 							Select date
 						</label>
 						<div>
@@ -800,33 +819,6 @@ const AnnouncementDetails = ({
 							/>
 						</div>
 					</div>
-					{(renderHighlightAnnouncement?.isHighlightPopup ||
-						renderHighlightAnnouncement?.isHighlightTopbar) && (
-						<div className="d-flex flex-column mt-3">
-							<span className="font-weight-bold">Display</span>
-							<span className="mt-2">
-								Set if you'd like to display the announcement
-							</span>
-							<div className="d-flex mt-2">
-								<input
-									id="announcementCheckbox"
-									type="checkbox"
-									checked={highlightPopupDetails}
-									onChange={() =>
-										isAnnouncementLifeSpan
-											? onHandleChange(
-													!selectedAnnouncement?.is_popup,
-													'select popup'
-											  )
-											: onHandleAnnouncementDetails(!highlightPopupDetails)
-									}
-								/>
-								<label htmlFor="announcementCheckbox" className="ml-2">
-									Yes, display this announcement.
-								</label>
-							</div>
-						</div>
-					)}
 					<div className="button-container">
 						<Button
 							type="primary"
@@ -838,10 +830,135 @@ const AnnouncementDetails = ({
 						</Button>
 						<Button
 							type="primary"
-							onClick={() => onHandleProceed()}
+							onClick={() => onHandleCloseLifeSpanPopup()}
 							className="green-btn"
 							size="medium"
 							disabled={isDisabledProceed}
+						>
+							Proceed
+						</Button>
+					</div>
+				</div>
+			</Modal>
+			<Modal
+				visible={isDisplayLifeSpanAnnouncement}
+				className="bg-model blue-admin-billing-model admin-announcement-popup-wrapper"
+				width={450}
+				zIndex={1000}
+				onCancel={() => onHandleHighlightPopupClose()}
+				footer={null}
+			>
+				<div className="announcement-life-span-popup-container">
+					<div className="d-flex flex-column mt-2">
+						<span className="title font-weight-bold">
+							Highlight Announcement
+						</span>
+						<span>
+							Select the announcement you'd like to highlight as a{' '}
+							<b>
+								{renderHighlightAnnouncement?.isHighlightPopup
+									? 'Popup'
+									: 'Topbar'}
+							</b>
+						</span>
+						<Select
+							className="my-2"
+							size="middle caps-first"
+							value={highlightDetails?.title}
+							onChange={(value) => onHandleHighlightAnnouncement(value)}
+							placeholder="Select Announcement"
+						>
+							{getAnnouncements?.map((data, index) => {
+								return (
+									<Select.Option
+										key={index}
+										value={data?.id}
+										className="caps-first"
+									>
+										{data?.title}
+									</Select.Option>
+								);
+							})}
+						</Select>
+					</div>
+					<div
+						className={
+							isAnnouncementLifeSpan
+								? 'title font-weight-bold'
+								: 'title font-weight-bold mt-3'
+						}
+					>
+						Life Span
+					</div>
+					<div className="description-text mt-2">
+						The length of time the recent announcement will be displayed to the
+						user
+					</div>
+					<div className="announcement-display-option mt-2">
+						<input
+							type="radio"
+							id="recent"
+							name="recentAnnouncement"
+							checked={!!selectHighlightLifeSpan?.isDisplayPopupIndefinitely}
+							onChange={onHandleHighlightDetail}
+						/>
+						<label className="ml-1" htmlFor="recent">
+							Show the announcement indefinitely
+						</label>
+					</div>
+					<div className="mt-2 announcement-display-option ">
+						<input
+							type="radio"
+							id="selectDate"
+							name="dateRangeAnnouncement"
+							checked={!!selectHighlightLifeSpan?.isPopupSelectRange}
+							onChange={onHandleHighlightDetail}
+						/>
+						<label className="ml-1" htmlFor="selectDate">
+							Select date
+						</label>
+						<div>
+							<RangePicker
+								size="small"
+								value={highlightDateRange}
+								onChange={(dates) => onHandleHighlightDateSelect(dates)}
+							/>
+						</div>
+					</div>
+					<div className="d-flex flex-column mt-3">
+						<span className="font-weight-bold">Display</span>
+						<span className="mt-2">
+							Set if you'd like to display the announcement
+						</span>
+						<div className="d-flex mt-2">
+							<input
+								id="announcementCheckbox"
+								type="checkbox"
+								checked={!!highlightDetails?.is_popup}
+								onChange={() =>
+									onHandleAnnouncementDetails(!highlightDetails?.is_popup)
+								}
+							/>
+							<label htmlFor="announcementCheckbox" className="ml-2">
+								Yes, display this announcement.
+							</label>
+						</div>
+					</div>
+					<div className="button-container">
+						<Button
+							type="primary"
+							onClick={() => onHandleHighlightPopupClose()}
+							className="green-btn"
+							size="medium"
+						>
+							Back
+						</Button>
+						<Button
+							type="primary"
+							onClick={() => onHandleProceed()}
+							className="green-btn"
+							size="medium"
+							disabled={isDisabledHighlightProceed}
 						>
 							Proceed
 						</Button>
@@ -910,7 +1027,7 @@ const AnnouncementDetails = ({
 						<div className="d-flex announcement-display-feature mt-3">
 							<input
 								type="checkbox"
-								checked={selectedAnnouncementDetail?.is_dropdown}
+								checked={!!selectedAnnouncementDetail?.is_dropdown}
 								onChange={() =>
 									onHandleChange(
 										!selectedAnnouncementDetail?.is_dropdown,
@@ -929,11 +1046,11 @@ const AnnouncementDetails = ({
 								<span>(Top main navigation bar)</span>
 							</div>
 						</div>
-						{selectedPopup === 'edit' && (
+						{selectedPopup === 'edit' && isDisplayEditAnnouncement && (
 							<div className="d-flex announcement-display-feature mt-3 mr-3">
 								<input
 									type="checkbox"
-									checked={selectedAnnouncementDetail?.is_popup}
+									checked={!!selectedAnnouncementDetail?.is_popup}
 									onChange={() =>
 										onHandleChange(
 											!selectedAnnouncementDetail?.is_popup,
@@ -979,11 +1096,11 @@ const AnnouncementDetails = ({
 								</div>
 							</div>
 						)}
-						{selectedPopup === 'edit' && (
+						{selectedPopup === 'edit' && isDisplayEditAnnouncement && (
 							<div className="d-flex announcement-display-feature mt-3 mr-3">
 								<input
 									type="checkbox"
-									checked={selectedAnnouncementDetail?.is_navbar}
+									checked={!!selectedAnnouncementDetail?.is_navbar}
 									onChange={() =>
 										onHandleChange(
 											!selectedAnnouncementDetail?.is_navbar,
@@ -1025,268 +1142,285 @@ const AnnouncementDetails = ({
 					</div>
 				</div>
 			</Modal>
-			{activeTab === 'active announcement' && (
+			{!isEnterpriseUpgrade ? (
 				<div>
-					{!isEnterpriseUpgrade ? (
+					{activeTab === 'active announcement' && (
 						<div>
-							{!constants?.features?.announcement && (
-								<div className="w-100 my-3 d-flex flex-column align-items-center justify-content-center announcement-description-active">
-									<span>Announcement feature is currently disabled</span>
-									<span>
-										Turn on the announcements:{' '}
-										<span
-											className="text-decoration-underline feature-link"
-											onClick={() => onHandleNavigate()}
-										>
-											here
+							<div>
+								{!constants?.features?.announcement && (
+									<div className="w-100 my-3 d-flex flex-column align-items-center justify-content-center announcement-description-active">
+										<span>Announcement feature is currently disabled</span>
+										<span>
+											Turn on the announcements:{' '}
+											<span
+												className="text-decoration-underline feature-link"
+												onClick={() => onHandleNavigate()}
+											>
+												here
+											</span>
 										</span>
-									</span>
-								</div>
-							)}
-							<div className="d-flex justify-content-between w-100 mt-3">
-								<div className="d-flex flex-column">
-									<span className="font-weight-bold">Active announcements</span>
-									<span>
-										Below are active announcements. You can add an announcement{' '}
-										<span
-											className="text-decoration-underline pointer"
-											onClick={() => onHandleOpenPopup()}
-										>
-											here
+									</div>
+								)}
+								<div className="d-flex justify-content-between w-100 mt-3">
+									<div className="d-flex flex-column">
+										<span className="font-weight-bold">
+											Active announcements
 										</span>
-									</span>
-								</div>
-								<Button
-									className="mt-2 green-btn"
-									onClick={() => onHandleOpenPopup()}
-									type="medium"
-								>
-									Add
-								</Button>
-							</div>
-							<div className="mt-5 h-100">
-								<Table
-									className="blue-admin-table"
-									columns={announcementHeader(
-										removeDetail,
-										onHandleSelectedAnnouncement
-									)}
-									dataSource={getAnnouncements}
-									rowKey={(data) => {
-										return data.id;
-									}}
-								/>
-							</div>
-						</div>
-					) : (
-						<div className="d-flex align-items-center w-100 justify-content-center">
-							<div className="d-flex align-items-center justify-content-between upgrade-section my-4">
-								<div>
-									<div className="font-weight-bold">Public Announcement</div>
-									<div>Display a custom public announcement.</div>
-								</div>
-								<div className="ml-5 button-wrapper">
-									<a
-										href="https://dash.hollaex.com/billing"
-										target="_blank"
-										rel="noopener noreferrer"
+										<span>
+											Below are active announcements. You can add an
+											announcement{' '}
+											<span
+												className="text-decoration-underline pointer"
+												onClick={() => onHandleOpenPopup()}
+											>
+												here
+											</span>
+										</span>
+									</div>
+									<Button
+										className="mt-2 green-btn"
+										onClick={() => onHandleOpenPopup()}
+										type="medium"
 									>
-										<Button type="primary" className="w-100 upgrade-btn">
-											Upgrade Now
-										</Button>
-									</a>
+										Add
+									</Button>
+								</div>
+								<div className="mt-5 h-100">
+									<Table
+										className="blue-admin-table"
+										columns={announcementHeader(
+											onHandleRemoveAnnouncement,
+											onHandleSelectedAnnouncement
+										)}
+										dataSource={getAnnouncements}
+										rowKey={(data) => {
+											return data.id;
+										}}
+									/>
 								</div>
 							</div>
 						</div>
 					)}
-				</div>
-			)}
-			{activeTab === 'display location' && (
-				<div className="w-100 mt-3">
-					<div className="display-title">
-						<span className="font-weight-bold ">
-							Announcement Display Options
-						</span>
-						<span>
-							Control where your announcements are displayed to the user
-						</span>
-					</div>
-					<div className="display-title mt-5">
-						<span className="font-weight-bold">Highlight Announcement</span>
-						<span>
-							Select a announcement that you'd like to highlight for a set
-							period of time.
-						</span>
-					</div>
-					<div className="announcement-filters">
-						<div className="d-flex announcement-display-feature mt-3 mr-3">
-							<div className="feature-trade-box">
-								<ReactSVG
-									src={STATIC_ICONS.POPUP_ANNOUNCEMENT}
-									className="feature-icon popup-feature-icon w-100 mr-1"
-								/>
+					{activeTab === 'display location' && (
+						<div className="w-100 mt-3">
+							<div className="display-title">
+								<span className="font-weight-bold ">
+									Announcement Display Options
+								</span>
+								<span>
+									Control where your announcements are displayed to the user
+								</span>
 							</div>
-							<div className="announcement-features">
-								<span className="font-weight-bold">Highlight as a Pop up</span>
-								<span>(As a pop-up upon login)</span>
-								{selectedHighlightPopup &&
-									selectedHighlightPopup?.is_popup &&
-									filteredPopupAnnouncement[0]?.is_popup && (
-										<div>
-											<div className="d-flex mt-2">
-												<span>Announcement: </span>
-												<span className="ml-1">
-													{selectedHighlightPopup?.title}
-												</span>
-											</div>
-											<div className="mt-1 d-flex">
-												<span>Time:</span>
-												{!selectedHighlightPopup?.start_date ? (
-													<div className="ml-1">Show ∞ indefinitely</div>
-												) : (
-													<div className="ml-1">
-														Show from{' '}
-														{getFormattedDate(
-															selectedHighlightPopup?.start_date
-														)}{' '}
-														to{' '}
-														{getFormattedDate(selectedHighlightPopup?.end_date)}
+							<div className="display-title mt-5">
+								<span className="font-weight-bold">Highlight Announcement</span>
+								<span>
+									Select a announcement that you'd like to highlight for a set
+									period of time.
+								</span>
+							</div>
+							<div className="announcement-filters">
+								<div className="d-flex announcement-display-feature mt-3 mr-3">
+									<div className="feature-trade-box">
+										<ReactSVG
+											src={STATIC_ICONS.POPUP_ANNOUNCEMENT}
+											className="feature-icon popup-feature-icon w-100 mr-1"
+										/>
+									</div>
+									<div className="announcement-features">
+										<span className="font-weight-bold">
+											Highlight as a Pop up
+										</span>
+										<span>(As a pop-up upon login)</span>
+										{selectedHighlightPopup &&
+											selectedHighlightPopup?.is_popup &&
+											filteredPopupAnnouncement[0]?.is_popup && (
+												<div>
+													<div className="d-flex mt-2">
+														<span>Announcement: </span>
+														<span className="ml-1">
+															{selectedHighlightPopup?.title}
+														</span>
 													</div>
-												)}
-											</div>
-											<div className="d-flex">
-												<span>Display: </span>
-												<span className="ml-1">ON</span>
-											</div>
-										</div>
-									)}
-								<div className="mt-3">
-									<Button
-										type="primary"
-										onClick={() => onHandleConfigure('highlight popup')}
-										className="green-btn ml-1"
-										size="small"
-									>
-										Configure
-									</Button>
-								</div>
-							</div>
-						</div>
-						<div className="d-flex announcement-display-feature mt-3 mr-3">
-							<div className="feature-trade-box">
-								<ReactSVG
-									src={STATIC_ICONS.TOP_BAR_ANNOUNCEMENT}
-									className="feature-icon w-100 mr-1"
-								/>
-							</div>
-							<div className="announcement-features">
-								<span className="font-weight-bold">Highlight Top of page</span>
-								<span>(Bar at the very top of the page, above main nav)</span>
-								{selectedHighlightTopbar &&
-									selectedHighlightTopbar?.is_navbar &&
-									filteredTopbarAnnouncement[0]?.is_navbar && (
-										<div>
-											<div className="d-flex mt-2">
-												<span>Announcement: </span>
-												<span className="ml-1">
-													{selectedHighlightTopbar?.title}
-												</span>
-											</div>
-											<div className="mt-1 d-flex">
-												<span>Time:</span>
-												{!selectedHighlightTopbar?.start_date ? (
-													<div className="ml-1">Show ∞ indefinitely</div>
-												) : (
-													<div className="ml-1">
-														Show from{' '}
-														{getFormattedDate(
-															selectedHighlightTopbar?.start_date
-														)}{' '}
-														to{' '}
-														{getFormattedDate(
-															selectedHighlightTopbar?.end_date
+													<div className="mt-1 d-flex">
+														<span>Time:</span>
+														{!selectedHighlightPopup?.start_date ? (
+															<div className="ml-1">Show ∞ indefinitely</div>
+														) : (
+															<div className="ml-1">
+																Show from{' '}
+																{getFormattedDate(
+																	selectedHighlightPopup?.start_date
+																)}{' '}
+																to{' '}
+																{getFormattedDate(
+																	selectedHighlightPopup?.end_date
+																)}
+															</div>
 														)}
 													</div>
-												)}
-											</div>
-											<div className="d-flex">
-												<span>Display: </span>
-												<span className="ml-1">ON</span>
-											</div>
+													<div className="d-flex">
+														<span>Display: </span>
+														<span className="ml-1">ON</span>
+													</div>
+												</div>
+											)}
+										<div className="mt-3">
+											<Button
+												type="primary"
+												onClick={() => onHandleConfigure('highlight popup')}
+												className="green-btn ml-1"
+												size="small"
+											>
+												Configure
+											</Button>
 										</div>
-									)}
-								<div className="mt-3">
-									<Button
-										type="primary"
-										onClick={() => onHandleConfigure('highlight topbar')}
-										className="green-btn ml-1"
-										size="small"
-									>
-										Configure
-									</Button>
-								</div>
-							</div>
-						</div>
-						<span className="line-separator"></span>
-					</div>
-					<div className="display-title mt-5">
-						<span className="font-weight-bold">Dropdown</span>
-						<span>
-							All announcements can be viewed on the top Main navigation bar
-							within a drop down.
-						</span>
-					</div>
-					<div className="announcement-filters">
-						<div className="d-flex announcement-display-feature mt-3">
-							<div className="feature-trade-box">
-								<ReactSVG
-									src={STATIC_ICONS.NAV_BAR_ANNOUNCEMENT}
-									className="feature-icon w-100 mr-1"
-								/>
-							</div>
-							<div className="d-flex flex-column">
-								<div className="announcement-features">
-									<span>
-										<span className="font-weight-bold">Main Navigation </span>
-										(On by default)
-									</span>
-									<span>(Top main navigation bar)</span>
-								</div>
-								<div className="announcement-features mt-3">
-									<span className="font-weight-bold">
-										ANNOUNCEMENT ADDED TO DROP DOWN:
-									</span>
-									<div className="selected-dropdown-announcement-wrapper">
-										{highlightDropdowndetails?.map((data) => (
-											<span className="caps-first">{data?.title}</span>
-										))}
 									</div>
 								</div>
-								<div className="mt-3">
-									<Button
-										type="primary"
-										onClick={() => onHandleDropdownConfigure()}
-										className="green-btn ml-1"
-										size="small"
-									>
-										Configure
-									</Button>
+								<div className="d-flex announcement-display-feature mt-3 mr-3">
+									<div className="feature-trade-box">
+										<ReactSVG
+											src={STATIC_ICONS.TOP_BAR_ANNOUNCEMENT}
+											className="feature-icon w-100 mr-1"
+										/>
+									</div>
+									<div className="announcement-features">
+										<span className="font-weight-bold">
+											Highlight Top of page
+										</span>
+										<span>
+											(Bar at the very top of the page, above main nav)
+										</span>
+										{selectedHighlightTopbar &&
+											selectedHighlightTopbar?.is_navbar &&
+											filteredTopbarAnnouncement[0]?.is_navbar && (
+												<div>
+													<div className="d-flex mt-2">
+														<span>Announcement: </span>
+														<span className="ml-1">
+															{selectedHighlightTopbar?.title}
+														</span>
+													</div>
+													<div className="mt-1 d-flex">
+														<span>Time:</span>
+														{!selectedHighlightTopbar?.start_date ? (
+															<div className="ml-1">Show ∞ indefinitely</div>
+														) : (
+															<div className="ml-1">
+																Show from{' '}
+																{getFormattedDate(
+																	selectedHighlightTopbar?.start_date
+																)}{' '}
+																to{' '}
+																{getFormattedDate(
+																	selectedHighlightTopbar?.end_date
+																)}
+															</div>
+														)}
+													</div>
+													<div className="d-flex">
+														<span>Display: </span>
+														<span className="ml-1">ON</span>
+													</div>
+												</div>
+											)}
+										<div className="mt-3">
+											<Button
+												type="primary"
+												onClick={() => onHandleConfigure('highlight topbar')}
+												className="green-btn ml-1"
+												size="small"
+											>
+												Configure
+											</Button>
+										</div>
+									</div>
 								</div>
+								<span className="line-separator"></span>
+							</div>
+							<div className="display-title mt-5">
+								<span className="font-weight-bold">Dropdown</span>
+								<span>
+									All announcements can be viewed on the top Main navigation bar
+									within a drop down.
+								</span>
+							</div>
+							<div className="announcement-filters">
+								<div className="d-flex announcement-display-feature mt-3">
+									<div className="feature-trade-box">
+										<ReactSVG
+											src={STATIC_ICONS.NAV_BAR_ANNOUNCEMENT}
+											className="feature-icon w-100 mr-1"
+										/>
+									</div>
+									<div className="d-flex flex-column">
+										<div className="announcement-features">
+											<span>
+												<span className="font-weight-bold">
+													Main Navigation{' '}
+												</span>
+												(On by default)
+											</span>
+											<span>(Top main navigation bar)</span>
+										</div>
+										<div className="announcement-features mt-3">
+											<span className="font-weight-bold">
+												ANNOUNCEMENT ADDED TO DROP DOWN:
+											</span>
+											<div className="selected-dropdown-announcement-wrapper">
+												{highlightDropdowndetails?.map((data) => (
+													<span className="caps-first">{data?.title}</span>
+												))}
+											</div>
+										</div>
+										<div className="mt-3">
+											<Button
+												type="primary"
+												onClick={() => onHandleDropdownConfigure()}
+												className="green-btn ml-1"
+												size="small"
+											>
+												Configure
+											</Button>
+										</div>
+									</div>
+								</div>
+								<span className="line-separator"></span>
+							</div>
+							<div className="display-title mt-5">
+								<span>
+									Want to turn the visibility off for all announcement?
+								</span>
+								<span>
+									Adjust visibility on the
+									<span
+										className="text-decoration-underline ml-2 pointer"
+										onClick={() => onHandleNavigate()}
+									>
+										Features page.
+									</span>
+								</span>
 							</div>
 						</div>
-						<span className="line-separator"></span>
-					</div>
-					<div className="display-title mt-5">
-						<span>Want to turn the visibility off for all announcement?</span>
-						<span>
-							Adjust visibility on the
-							<span
-								className="text-decoration-underline ml-2 pointer"
-								onClick={() => onHandleNavigate()}
+					)}
+				</div>
+			) : (
+				<div className="d-flex align-items-center w-100 justify-content-center">
+					<div className="d-flex align-items-center justify-content-between upgrade-section my-4">
+						<div>
+							<div className="font-weight-bold">Public Announcement</div>
+							<div>Display a custom public announcement.</div>
+						</div>
+						<div className="ml-5 button-wrapper">
+							<a
+								href="https://dash.hollaex.com/billing"
+								target="_blank"
+								rel="noopener noreferrer"
 							>
-								Features page.
-							</span>
-						</span>
+								<Button type="primary" className="w-100 upgrade-btn">
+									Upgrade Now
+								</Button>
+							</a>
+						</div>
 					</div>
 				</div>
 			)}

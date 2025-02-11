@@ -3,7 +3,6 @@ import { TOKEN_KEY, DASH_TOKEN_KEY } from '../config/constants';
 
 const TOKEN_TIME_KEY = 'time';
 const DASH_TOKEN_TIME_KEY = 'dashTime';
-const ANNOUNCEMENT_POPUP = 'announcementPopup';
 
 export const getToken = () => {
 	return localStorage.getItem(TOKEN_KEY);
@@ -19,7 +18,6 @@ export const removeToken = () => {
 	localStorage.removeItem(TOKEN_TIME_KEY);
 	localStorage.removeItem(DASH_TOKEN_KEY);
 	localStorage.removeItem(DASH_TOKEN_TIME_KEY);
-	localStorage.removeItem(ANNOUNCEMENT_POPUP);
 };
 
 export const isLoggedIn = () => {
