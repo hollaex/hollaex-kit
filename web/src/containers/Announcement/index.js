@@ -29,7 +29,7 @@ const announcementData = (formatDate, onHandleSelectAnnouncement) => {
 			className: 'description-header',
 			key: 'type',
 			renderCell: (data, key) => (
-				<td key={key}>
+				<td key={key} className="announcement-type">
 					<div className="d-flex justify-content-start table_text">
 						{data?.type || '-'}
 					</div>
@@ -39,17 +39,17 @@ const announcementData = (formatDate, onHandleSelectAnnouncement) => {
 		{
 			stringId: 'ANNOUNCEMENT_TAB.TITLE',
 			label: STRINGS['ANNOUNCEMENT_TAB.TITLE'],
-			className: 'description-header',
+			className: isMobile ? 'announcement-title-header' : 'description-header',
 			key: 'title',
 			renderCell: (data, key) => (
-				<td key={key}>
+				<td key={key} className="announcement-title">
 					<div className="d-flex justify-content-start table_text">
 						{data?.title || '-'}
 					</div>
 				</td>
 			),
 		},
-		{
+		!isMobile && {
 			stringId: 'ANNOUNCEMENT_TAB.MESSAGE_CONTENTS',
 			label: <span>{STRINGS['ANNOUNCEMENT_TAB.MESSAGE_CONTENTS']}</span>,
 			className: 'description-header',
@@ -59,7 +59,7 @@ const announcementData = (formatDate, onHandleSelectAnnouncement) => {
 					<div className="d-flex">
 						{renderAnnouncementMessage(
 							renderRemoveEmptyTag(data?.message),
-							isMobile ? 60 : 80
+							isMobile ? 60 : 75
 						)}
 						<EditWrapper stringId="HOLLAEX_TOKEN.VIEW">
 							<span
@@ -73,6 +73,24 @@ const announcementData = (formatDate, onHandleSelectAnnouncement) => {
 				</td>
 			),
 		},
+		isMobile && {
+			stringId: 'ANNOUNCEMENT_TAB.MESSAGE_CONTENTS',
+			label: STRINGS['VIEW'],
+			className: 'view-header',
+			key: 'message',
+			renderCell: (data, key) => (
+				<td key={key} className="message-description">
+					<EditWrapper stringId="HOLLAEX_TOKEN.VIEW">
+						<span
+							className="blue-link text-decoration-underline"
+							onClick={() => onHandleSelectAnnouncement(data)}
+						>
+							{STRINGS['HOLLAEX_TOKEN.VIEW']}
+						</span>
+					</EditWrapper>
+				</td>
+			),
+		},
 		{
 			stringId: 'TIME',
 			label: STRINGS['TIME'],
@@ -80,7 +98,12 @@ const announcementData = (formatDate, onHandleSelectAnnouncement) => {
 			renderCell: (data, key) => (
 				<td key={key}>
 					<div className="d-flex justify-content-start table_text">
-						{data?.created_at ? formatDate(data?.created_at) : '-'}
+						{data?.created_at
+							? new Date(data?.created_at)
+									.toISOString()
+									.slice(0, 10)
+									.replace(/-/g, '/')
+							: '-'}
 					</div>
 				</td>
 			),
@@ -131,6 +154,18 @@ const Announcement = ({
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+
+	useEffect(() => {
+		if (isActiveSelectedAnnouncement && getSelectedAnnouncement?.id) {
+			const params = new URLSearchParams(window.location.search);
+			params.set('id', getSelectedAnnouncement.id);
+			const updatedUrl = `${window.location.pathname}?${params.toString()}`;
+			window.history.pushState({}, '', updatedUrl);
+		} else {
+			const defaultUrl = `${window.location.pathname}`;
+			window.history.pushState({}, '', defaultUrl);
+		}
+	}, [isActiveSelectedAnnouncement, getSelectedAnnouncement]);
 
 	const formatDate = (date) => {
 		return moment(date).format('DD/MMM/YYYY, HH:MM:SS ').toUpperCase();
