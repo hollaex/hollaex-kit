@@ -14526,8 +14526,21 @@ table th {
     .announcement-wrapper-disabled .announcement-filters .announcement-description-active .feature-link {
       cursor: pointer; }
   .announcement-wrapper-disabled .ant-table-wrapper th,
-  .announcement-wrapper-disabled .ant-table-wrapper td {
+  .announcement-wrapper-disabled .ant-table-wrapper td,
+  .announcement-wrapper-disabled .ant-table-wrapper .message-content-wrapper * {
     color: #808080 !important; }
+
+.announcement-tab-wrapper .announcement-tabs .ant-tabs-nav-wrap {
+  border-bottom: unset; }
+
+.announcement-tab-wrapper .announcement-tabs .ant-tabs-nav,
+.announcement-tab-wrapper .announcement-tabs .ant-tabs-nav:before {
+  border-bottom: none !important; }
+
+.announcement-tab-wrapper .announcement-tabs .ant-tabs-ink-bar {
+  height: 3px;
+  background-color: #FFFFFF;
+  bottom: unset; }
 
 .announcement-wrapper .upgrade-section .button-wrapper .upgrade-btn {
   background-color: #f6921e !important;
@@ -14536,26 +14549,46 @@ table th {
 .announcement-wrapper .green-btn {
   border: none; }
 
-.announcement-wrapper .announcement-filters .display-title {
+.announcement-wrapper .display-title {
   display: flex;
   flex-direction: column; }
 
-.announcement-wrapper .announcement-filters .announcement-display-feature {
-  width: 100%;
-  gap: 2%;
-  align-items: center;
-  padding: 2% 0;
-  border-bottom: 1px solid #808080; }
-  .announcement-wrapper .announcement-filters .announcement-display-feature .feature-trade-box .feature-icon svg {
+.announcement-wrapper .announcement-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 2%; }
+  .announcement-wrapper .announcement-filters .announcement-display-feature {
     width: 100%;
-    height: 100%; }
-  .announcement-wrapper .announcement-filters .announcement-display-feature .feature-trade-box .popup-feature-icon {
-    position: relative;
-    top: 3px; }
-  .announcement-wrapper .announcement-filters .announcement-display-feature .announcement-features {
-    display: flex;
-    flex-direction: column;
-    gap: 2%; }
+    gap: 2%;
+    align-items: flex-start;
+    padding: 2% 0; }
+    .announcement-wrapper .announcement-filters .announcement-display-feature .feature-trade-box .feature-icon svg {
+      width: 100%;
+      height: 100%; }
+    .announcement-wrapper .announcement-filters .announcement-display-feature .feature-trade-box .popup-feature-icon {
+      position: relative;
+      top: 3px; }
+    .announcement-wrapper .announcement-filters .announcement-display-feature .announcement-features {
+      display: flex;
+      flex-direction: column;
+      gap: 2%; }
+      .announcement-wrapper .announcement-filters .announcement-display-feature .announcement-features .selected-dropdown-announcement-wrapper {
+        margin-top: 3%;
+        padding: 2%;
+        height: 10rem;
+        width: 100%;
+        border: 2px solid #999999;
+        border-radius: 3px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: #FFFFFF transparent; }
+  .announcement-wrapper .announcement-filters .line-separator {
+    width: 15%;
+    background-color: #808080;
+    height: 2px; }
 
 .announcement-wrapper .blue-admin-table .message-content-wrapper {
   width: 30rem; }
@@ -14639,6 +14672,36 @@ table th {
       display: flex;
       flex-direction: column;
       gap: 2%; }
+
+.admin-announcement-popup-wrapper .announcement-life-span-popup-container .select-announcement-wrapper,
+.admin-announcement-popup-wrapper .announcement-message-popup-wrapper .select-announcement-wrapper,
+.admin-announcement-message-popup-wrapper .announcement-life-span-popup-container .select-announcement-wrapper,
+.admin-announcement-message-popup-wrapper .announcement-message-popup-wrapper .select-announcement-wrapper {
+  margin-top: 3%;
+  display: flex;
+  flex-direction: column;
+  gap: 1%; }
+  .admin-announcement-popup-wrapper .announcement-life-span-popup-container .select-announcement-wrapper .announcement-details,
+  .admin-announcement-popup-wrapper .announcement-message-popup-wrapper .select-announcement-wrapper .announcement-details,
+  .admin-announcement-message-popup-wrapper .announcement-life-span-popup-container .select-announcement-wrapper .announcement-details,
+  .admin-announcement-message-popup-wrapper .announcement-message-popup-wrapper .select-announcement-wrapper .announcement-details {
+    border: 2px solid #999999;
+    border-radius: 3px;
+    height: 15rem;
+    width: 100%;
+    padding: 2%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1%;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #FFFFFF transparent; }
+    .admin-announcement-popup-wrapper .announcement-life-span-popup-container .select-announcement-wrapper .announcement-details .disabled-announcement,
+    .admin-announcement-popup-wrapper .announcement-message-popup-wrapper .select-announcement-wrapper .announcement-details .disabled-announcement,
+    .admin-announcement-message-popup-wrapper .announcement-life-span-popup-container .select-announcement-wrapper .announcement-details .disabled-announcement,
+    .admin-announcement-message-popup-wrapper .announcement-message-popup-wrapper .select-announcement-wrapper .announcement-details .disabled-announcement {
+      color: #808080; }
 
 .admin-announcement-message-popup-wrapper .announcement-message-popup-wrapper .quill {
   background-color: #ffffff; }
@@ -14942,6 +15005,7 @@ table th {
     align-items: center;
     gap: 1%; }
   .announcement-top-bar .announcement-message-wrapper * {
+    font-size: 1rem;
     max-width: 100%;
     margin: unset; }
   .announcement-top-bar .announcement-btn {
@@ -17082,14 +17146,16 @@ table th {
 .trade_announcement {
   font-size: 1.5rem; }
 
-.notifications_list-wrapper .view-announcement-link {
-  background-color: var(--base_background);
-  width: 100%;
-  text-align: center;
-  position: sticky;
-  bottom: 0;
-  padding: 2%;
-  border-top: 1px solid var(--calculated_secondary-border); }
+.notifications_list-wrapper {
+  height: 100%; }
+  .notifications_list-wrapper .view-announcement-link {
+    background-color: var(--base_background);
+    width: 100%;
+    text-align: center;
+    position: sticky;
+    bottom: 0;
+    padding: 2%;
+    border-top: 1px solid var(--calculated_secondary-border); }
 
 .announcement-notification-list-item {
   color: var(--labels_important-active-labels-text-graphics);
@@ -19710,14 +19776,16 @@ table th {
 .trade_announcement {
   font-size: 1.5rem; }
 
-.notifications_list-wrapper .view-announcement-link {
-  background-color: var(--base_background);
-  width: 100%;
-  text-align: center;
-  position: sticky;
-  bottom: 0;
-  padding: 2%;
-  border-top: 1px solid var(--calculated_secondary-border); }
+.notifications_list-wrapper {
+  height: 100%; }
+  .notifications_list-wrapper .view-announcement-link {
+    background-color: var(--base_background);
+    width: 100%;
+    text-align: center;
+    position: sticky;
+    bottom: 0;
+    padding: 2%;
+    border-top: 1px solid var(--calculated_secondary-border); }
 
 .announcement-notification-list-item {
   color: var(--labels_important-active-labels-text-graphics);

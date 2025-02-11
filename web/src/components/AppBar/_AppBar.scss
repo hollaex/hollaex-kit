@@ -28,6 +28,7 @@ $app-menu-width: calc(100vw - 40rem);
 	}
 
 	.announcement-message-wrapper * {
+		font-size: $navigation_bar-font_size;
 		max-width: 100%;
 		margin: unset;
 	}
