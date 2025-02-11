@@ -78,7 +78,11 @@ class AppBar extends Component {
 		const topbarAnnouncementDetail =
 			filteredTopbarAnnouncementDetails && filteredTopbarAnnouncementDetails[0];
 
-		const isPopup = JSON.parse(localStorage.getItem('announcementPopup'));
+		const getPopupId = JSON.parse(localStorage.getItem('announcementPopup'));
+		if (!getPopupId) {
+			localStorage.setItem('announcementPopup', JSON.stringify([]));
+		}
+		const isPopup = getPopupId || [];
 
 		const isDisplayPopup =
 			popupAnnouncementDetail?.is_popup &&
@@ -106,7 +110,9 @@ class AppBar extends Component {
 		if (isLoggedIn()) {
 			this.setState({
 				isTopbarAnnouncement: isDisplayTopbar,
-				isPopupAnnouncement: isPopup && isDisplayPopup,
+				isPopupAnnouncement:
+					!isPopup.includes(filteredPopupAnnouncementDetails[0]?.id) &&
+					isDisplayPopup,
 			});
 		}
 	}
@@ -347,32 +353,42 @@ class AppBar extends Component {
 			selectedTopbarAnnouncement,
 		} = this.state;
 
+		const storedAnnouncements =
+			JSON.parse(localStorage.getItem('announcementPopup')) || [];
+
 		if (text === 'topbar view more') {
 			setSelectedAnnouncement(selectedTopbarAnnouncement);
 			setIsActiveSelectedAnnouncement(true);
 		}
 		if (text === 'popup') {
 			setSelectedAnnouncement(selectedPopupAnnouncement);
+			setIsActiveSelectedAnnouncement(true);
 			this.setState({
 				isPopupAnnouncement: false,
 			});
+
+			if (!storedAnnouncements?.includes(selectedPopupAnnouncement?.id)) {
+				storedAnnouncements.push(selectedPopupAnnouncement?.id);
+				localStorage.setItem(
+					'announcementPopup',
+					JSON.stringify(storedAnnouncements)
+				);
+			}
 		}
 		if (text === 'topbar announcements') {
 			setIsActiveSelectedAnnouncement(false);
 		}
-		localStorage.setItem('announcementPopup', false);
 		router.push('/announcement');
 	};
 
 	renderAnnouncementPopup = () => {
-		const { icons, router, constants } = this.props;
+		const { icons, constants } = this.props;
 		const { selectedPopupAnnouncement } = this.state;
 
 		const onHandleClose = () => {
 			this.setState({
 				isPopupAnnouncement: false,
 			});
-			localStorage.setItem('announcementPopup', false);
 		};
 
 		return (
@@ -422,18 +438,49 @@ class AppBar extends Component {
 							onClick={() => onHandleClose()}
 						/>
 						<Button
-							label={STRINGS[
-								'ANNOUNCEMENT_TAB.VIEW_ALL_ANNOUNCEMENT'
-							]?.toUpperCase()}
+							label={STRINGS['VIEW']?.toUpperCase()}
 							className="back-btn mt-3"
-							onClick={() => {
-								router.push('/announcement');
-								onHandleClose();
-							}}
+							onClick={() => this.onHandleRouteAnnouncement('popup')}
 						/>
 					</div>
 				</div>
 			</Dialog>
+		);
+	};
+
+	renderAnnouncementTopbar = () => {
+		const { icons } = this.props;
+		const { selectedTopbarAnnouncement } = this.state;
+		return (
+			<div className="app_bar announcement-top-bar">
+				<Image
+					icon={icons['ANNOUNCEMENT_ICON']}
+					wrapperClassName="h-100 announcement-icon"
+				/>
+				<span className="announcement-title">
+					{selectedTopbarAnnouncement?.title}
+				</span>
+				{renderAnnouncementMessage(
+					selectedTopbarAnnouncement?.message,
+					isMobile ? 40 : 75
+				)}
+				<EditWrapper stringId="HOLLAEX_TOKEN.VIEW">
+					<span
+						className="view-more-btn blue-link text-decoration-underline"
+						onClick={() => this.onHandleRouteAnnouncement('topbar view more')}
+					>
+						{STRINGS['REFERRAL_LINK.VIEW']}
+					</span>
+				</EditWrapper>
+				<CloseCircleOutlined
+					className="close-icon"
+					onClick={() =>
+						this.setState({
+							isTopbarAnnouncement: false,
+						})
+					}
+				/>
+			</div>
 		);
 	};
 
@@ -462,7 +509,6 @@ class AppBar extends Component {
 			// walletPending,
 			selected,
 			isTopbarAnnouncement,
-			selectedTopbarAnnouncement,
 		} = this.state;
 		const languageFormValue = generateLanguageFormValues(valid_languages)
 			?.language?.options;
@@ -478,61 +524,36 @@ class AppBar extends Component {
 				</div>
 			</div>
 		) : isMobile ? (
-			<MobileBarWrapper
-				className={classnames(
-					'd-flex',
-					'app_bar-mobile',
-					'align-items-center',
-					'justify-content-center'
-				)}
-			>
-				<Link to="/">
-					<div
-						style={{
-							backgroundImage: `url(${constants.logo_image})`,
-						}}
-						className="homeicon-svg"
-					/>
-				</Link>
-				{isLoggedIn() && this.renderAnnouncementPopup()}
-			</MobileBarWrapper>
+			<div className="d-flex flex-column app-mobile-bar-wrapper">
+				{isTopbarAnnouncement &&
+					constants?.features?.announcement &&
+					isLoggedIn() &&
+					this.renderAnnouncementTopbar()}
+				<MobileBarWrapper
+					className={classnames(
+						'd-flex',
+						'app_bar-mobile',
+						'align-items-center',
+						'justify-content-center'
+					)}
+				>
+					<Link to="/">
+						<div
+							style={{
+								backgroundImage: `url(${constants.logo_image})`,
+							}}
+							className="homeicon-svg"
+						/>
+					</Link>
+					{isLoggedIn() && this.renderAnnouncementPopup()}
+				</MobileBarWrapper>
+			</div>
 		) : (
 			<div>
 				{isTopbarAnnouncement &&
 					constants?.features?.announcement &&
-					isLoggedIn() && (
-						<div className="app_bar announcement-top-bar">
-							<Image
-								icon={icons['ANNOUNCEMENT_ICON']}
-								wrapperClassName="h-100"
-							/>
-							<span className="announcement-title">
-								{selectedTopbarAnnouncement?.title}
-							</span>
-							{renderAnnouncementMessage(
-								selectedTopbarAnnouncement?.message,
-								75
-							)}
-							<EditWrapper stringId="HOLLAEX_TOKEN.VIEW">
-								<span
-									className="view-more-btn blue-link text-decoration-underline"
-									onClick={() =>
-										this.onHandleRouteAnnouncement('topbar view more')
-									}
-								>
-									{STRINGS['REFERRAL_LINK.VIEW']}
-								</span>
-							</EditWrapper>
-							<CloseCircleOutlined
-								className="close-icon"
-								onClick={() =>
-									this.setState({
-										isTopbarAnnouncement: false,
-									})
-								}
-							/>
-						</div>
-					)}
+					isLoggedIn() &&
+					this.renderAnnouncementTopbar()}
 				<div
 					className={classnames('app_bar d-flex justify-content-between', {
 						'no-borders': false,
