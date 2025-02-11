@@ -18,9 +18,8 @@ $app-menu-width: calc(100vw - 40rem);
 		color: $base_top-bar-navigation_text;
 	}
 	.announcement-message-wrapper {
-		width: auto;
+		width: 25%;
 		text-wrap: nowrap;
-		text-overflow: ellipsis;
 		overflow: hidden;
 		display: flex;
 		align-items: center;
@@ -31,6 +30,10 @@ $app-menu-width: calc(100vw - 40rem);
 		font-size: $navigation_bar-font_size;
 		max-width: 100%;
 		margin: unset;
+		flex: 1;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 	.announcement-btn {
 		width: max-content;
@@ -1576,6 +1579,29 @@ $app-menu-width: calc(100vw - 40rem);
 			height: 4rem;
 		}
 	}
+	.app-mobile-bar-wrapper {
+		.announcement-top-bar {
+			font-size: 1.2rem;
+			gap: 2%;
+			.announcement-message-wrapper * {
+				font-size: 1.2rem;
+			}
+			.announcement-icon {
+				svg {
+					width: 2.5rem;
+					height: 2.5rem;
+				}
+			}
+			.close-icon {
+				position: relative;
+				left: 5%;
+				svg {
+					width: 2.5rem;
+					height: 2rem;
+				}
+			}
+		}
+	}
 }
 
 .direction_rtl {
@@ -2057,10 +2083,12 @@ $app-menu-width: calc(100vw - 40rem);
 			}
 
 			.announcement-message-wrapper {
+				margin-top: 3%;
 				overflow: hidden;
 			}
 			.announcement-message-wrapper * {
 				width: 100%;
+				font-size: 14px;
 			}
 
 			.announcement-popup-buttons {
