@@ -306,7 +306,7 @@ const referralTradesRunner = () => {
 
 const scheduleAutoTrade = () => {
 	cron.schedule('0 0 * * * *', async () => {
-		loggerPlugin.verbose('Auto trade job start');
+		loggerPlugin.verbose('plugins/job/scheduleAutoTrade auto trade job start');
 
 		try {
 			const statusModel = toolsLib.database.getModel('status');
@@ -339,15 +339,19 @@ const scheduleAutoTrade = () => {
 				}
 			});
 
-			if (!autoTradeConfigs || autoTradeConfigs.length === 0) return;
+			if (!autoTradeConfigs || autoTradeConfigs.length === 0) {
+				loggerPlugin.verbose('plugins/job/scheduleAutoTrade no auto trade job found');
+				return;
+			}
 
 			for (const autoTradeConfig of autoTradeConfigs) {
 				const { trade_hour, user_id, spend_coin, buy_coin, spend_amount, last_execution_date } = autoTradeConfig;
 
-				let lastExecDate = last_execution_date ? moment(last_execution_date).tz(timezone) : now.clone().subtract(1, 'day')
+				let lastExecDate = last_execution_date ? moment(last_execution_date).tz(timezone) : now.clone().subtract(1, 'day');
 
 				while (lastExecDate.isBefore(now, 'day')) {
 					lastExecDate.add(1, 'day');
+					loggerPlugin.verbose('plugins/job/scheduleAutoTrade auto trade job config', autoTradeConfig);
 
 					await executeTrade(autoTradeConfig);
 
@@ -371,7 +375,7 @@ const scheduleAutoTrade = () => {
 			}
 
 		} catch (err) {
-			loggerPlugin.error('Auto trade job error:', err.message);
+			loggerPlugin.error('plugins/job/scheduleAutoTrade auto trade job error', err.message);
 		}
 	}, {
 		scheduled: true,
@@ -400,7 +404,7 @@ const executeTrade = async (autoTradeConfig) => {
 
 	} catch (error) {
 		hasError = true;
-		loggerPlugin.error(`Auto trade execution error for user ${user_id}:`, error.message);
+		loggerPlugin.error(`plugins/job/executeTrade auto trade execution error for user ${user_id}:`, error.message);
 		const user = await toolsLib.user.getUserByKitId(user_id);
 		sendEmail(
 			MAILTYPE.AUTO_TRADE_ERROR,
@@ -446,8 +450,9 @@ const executeTrade = async (autoTradeConfig) => {
 				user.settings
 			);
 		}
-		loggerPlugin.verbose(`Auto trade completed for user ${user_id}: ${buy_coin} -> ${spend_coin}`);
+		loggerPlugin.verbose(`plugins/job/executeTrade auto trade completed for user ${user_id}: ${buy_coin} -> ${spend_coin}`);
 	} catch (error) {
+		loggerPlugin.error('plugins/job/executeTrade auto trade catch', error.message);
 		const adminAccount = await toolsLib.user.getUserByKitId(1);
 		sendEmail(
 			MAILTYPE.ALERT,
