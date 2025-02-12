@@ -18,7 +18,8 @@ $app-menu-width: calc(100vw - 40rem);
 		color: $base_top-bar-navigation_text;
 	}
 	.announcement-message-wrapper {
-		width: 25%;
+		max-width: max-content;
+		width: 15%;
 		text-wrap: nowrap;
 		overflow: hidden;
 		display: flex;
@@ -1452,6 +1453,11 @@ $app-menu-width: calc(100vw - 40rem);
 }
 
 @media (min-width: 1920px) {
+	.announcement-top-bar {
+		.announcement-message-wrapper {
+			width: 10%;
+		}
+	}
 	.app_bar {
 		font-size: 1rem;
 		height: $navigation_bar-height-lg;
@@ -1552,6 +1558,11 @@ $app-menu-width: calc(100vw - 40rem);
 	}
 }
 .layout-mobile {
+	.announcement-top-bar {
+		.announcement-message-wrapper {
+			width: 25%;
+		}
+	}
 	.st0 {
 		fill: #ffffff;
 		stroke-miterlimit: 10;
@@ -1593,8 +1604,7 @@ $app-menu-width: calc(100vw - 40rem);
 				}
 			}
 			.close-icon {
-				position: relative;
-				left: 5%;
+				right: 2%;
 				svg {
 					width: 2.5rem;
 					height: 2rem;
