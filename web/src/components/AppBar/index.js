@@ -64,6 +64,12 @@ class AppBar extends Component {
 			title: document?.title ? document?.title : '',
 		});
 
+		const getPopupId = JSON.parse(localStorage.getItem('announcementPopup'));
+		if (!getPopupId) {
+			localStorage.setItem('announcementPopup', JSON.stringify([]));
+		}
+		const isPopup = getPopupId || [];
+
 		const filteredPopupAnnouncementDetails = getAnnouncementDetails
 			?.filter((data) => data?.is_popup)
 			?.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
@@ -72,17 +78,15 @@ class AppBar extends Component {
 			?.filter((data) => data?.is_navbar)
 			?.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
+		const filteredAnnouncements = filteredPopupAnnouncementDetails?.filter(
+			(data) => !isPopup?.includes(data?.id)
+		);
+
 		const popupAnnouncementDetail =
-			filteredPopupAnnouncementDetails && filteredPopupAnnouncementDetails[0];
+			filteredPopupAnnouncementDetails && filteredAnnouncements[0];
 
 		const topbarAnnouncementDetail =
 			filteredTopbarAnnouncementDetails && filteredTopbarAnnouncementDetails[0];
-
-		const getPopupId = JSON.parse(localStorage.getItem('announcementPopup'));
-		if (!getPopupId) {
-			localStorage.setItem('announcementPopup', JSON.stringify([]));
-		}
-		const isPopup = getPopupId || [];
 
 		const isDisplayPopup =
 			popupAnnouncementDetail?.is_popup &&
@@ -103,7 +107,7 @@ class AppBar extends Component {
 				));
 
 		this.setState({
-			selectedPopupAnnouncement: filteredPopupAnnouncementDetails[0],
+			selectedPopupAnnouncement: filteredAnnouncements[0],
 			selectedTopbarAnnouncement: filteredTopbarAnnouncementDetails[0],
 		});
 
@@ -111,8 +115,7 @@ class AppBar extends Component {
 			this.setState({
 				isTopbarAnnouncement: isDisplayTopbar,
 				isPopupAnnouncement:
-					!isPopup.includes(filteredPopupAnnouncementDetails[0]?.id) &&
-					isDisplayPopup,
+					!isPopup.includes(filteredAnnouncements[0]?.id) && isDisplayPopup,
 			});
 		}
 	}
@@ -359,6 +362,9 @@ class AppBar extends Component {
 		if (text === 'topbar view more') {
 			setSelectedAnnouncement(selectedTopbarAnnouncement);
 			setIsActiveSelectedAnnouncement(true);
+			this.setState({
+				isTopbarAnnouncement: false,
+			});
 		}
 		if (text === 'popup') {
 			setSelectedAnnouncement(selectedPopupAnnouncement);
@@ -469,7 +475,7 @@ class AppBar extends Component {
 						className="view-more-btn blue-link text-decoration-underline"
 						onClick={() => this.onHandleRouteAnnouncement('topbar view more')}
 					>
-						{STRINGS['REFERRAL_LINK.VIEW']}
+						{STRINGS['REFERRAL_LINK.VIEW']?.toUpperCase()}
 					</span>
 				</EditWrapper>
 				<CloseCircleOutlined

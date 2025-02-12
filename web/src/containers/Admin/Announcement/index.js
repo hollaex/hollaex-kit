@@ -199,7 +199,6 @@ const AnnouncementDetails = ({
 	activeTab,
 	getAnnouncements,
 }) => {
-	const [isAnnouncementLifeSpan, setIsAnnouncementLifeSpan] = useState(false);
 	const [isDisplayAddDetailPopup, setIsDisplayAddDetailPopup] = useState(false);
 	const [isDisplayRemoveAnnouncement, setIsRemoveAnnouncement] = useState(
 		false
@@ -220,7 +219,6 @@ const AnnouncementDetails = ({
 		isHighlightTopbar: false,
 	});
 
-	const [selectedPopup, setSelectedPopup] = useState('add');
 	const [selectedAnnouncementType, setSelectedAnnouncementType] = useState(
 		null
 	);
@@ -231,16 +229,11 @@ const AnnouncementDetails = ({
 		type: null,
 		message: null,
 		title: null,
-		is_dropdown: true,
+		is_dropdown: false,
 		is_popup: false,
 		is_navbar: false,
 		start_date: null,
 		end_date: null,
-	});
-
-	const [selectedOption, setSelectedOption] = useState({
-		isDisplayIndefinitely: true,
-		isSelectRange: false,
 	});
 
 	const [selectHighlightLifeSpan, setSelectedHighlightLifeSpan] = useState({
@@ -255,8 +248,6 @@ const AnnouncementDetails = ({
 		(data) => data?.is_dropdown
 	);
 
-	const { start_date, end_date } = selectedAnnouncement || {};
-
 	const highlightDetails = renderHighlightAnnouncement?.isHighlightPopup
 		? selectedHighlightPopup
 		: renderHighlightAnnouncement?.isHighlightTopbar
@@ -264,11 +255,6 @@ const AnnouncementDetails = ({
 		: {};
 
 	const getDate = (date) => (date ? moment(date) : null);
-
-	const isDetailIndefinitely = !start_date && !end_date;
-	const isDateSelected = start_date && end_date;
-	const selectedStartDate = getDate(start_date);
-	const selectedEndDate = getDate(end_date);
 
 	const isHighlightDetailIndefinitely =
 		!highlightDetails?.start_date && !highlightDetails?.end_date;
@@ -314,14 +300,6 @@ const AnnouncementDetails = ({
 	}, [getAnnouncements]);
 
 	useEffect(() => {
-		setSelectedOption({
-			isDisplayIndefinitely:
-				selectedPopup === 'edit' ? isDetailIndefinitely ?? true : true,
-			isSelectRange: selectedPopup === 'edit' ? isDateSelected ?? false : false,
-		});
-	}, [selectedPopup, isDetailIndefinitely, isDateSelected]);
-
-	useEffect(() => {
 		setSelectedHighlightLifeSpan({
 			isDisplayPopupIndefinitely: isHighlightDetailIndefinitely,
 			isPopupSelectRange: isHighlightDateSelected,
@@ -365,7 +343,7 @@ const AnnouncementDetails = ({
 	};
 
 	const onHandleSubmitAnnouncement = async () => {
-		if (selectedPopup === 'add') {
+		if (isDisplayAddDetailPopup) {
 			try {
 				await setAdminAnnouncementDetails(addAnnouncement);
 				await getAnnouncement();
@@ -407,8 +385,9 @@ const AnnouncementDetails = ({
 	};
 
 	const updateAnnouncement = (field, value) => {
-		const updateFunc =
-			selectedPopup === 'add' ? setAddAnnouncement : setSelectedAnnouncement;
+		const updateFunc = isDisplayAddDetailPopup
+			? setAddAnnouncement
+			: setSelectedAnnouncement;
 		updateFunc((prev) => ({
 			...prev,
 			[field]: value,
@@ -420,12 +399,6 @@ const AnnouncementDetails = ({
 		end_date: dates?.[1] || null,
 	});
 
-	const onHandleDateSelect = (dates) => {
-		const updateDates = handleDateUpdate(dates);
-		updateAnnouncement('start_date', updateDates?.start_date);
-		updateAnnouncement('end_date', updateDates?.end_date);
-	};
-
 	const onHandleHighlightDateSelect = (dates) => {
 		const updateDates = handleDateUpdate(dates);
 
@@ -434,25 +407,6 @@ const AnnouncementDetails = ({
 		} else if (renderHighlightAnnouncement?.isHighlightTopbar) {
 			setSelectedHighlightTopbar((prev) => ({ ...prev, ...updateDates }));
 		}
-	};
-
-	const handleSelection = (id, setOption, updateDates) => {
-		const isIndefinitely = id.includes('recent');
-		setOption({
-			isDisplayIndefinitely: isIndefinitely,
-			isSelectRange: !isIndefinitely,
-		});
-
-		if (updateDates && isIndefinitely) {
-			updateDates(null, null);
-		}
-	};
-
-	const onHandleSelect = (e) => {
-		handleSelection(e.target.id, setSelectedOption, (start, end) => {
-			updateAnnouncement('start_date', start);
-			updateAnnouncement('end_date', end);
-		});
 	};
 
 	const onHandleHighlightDetail = (e) => {
@@ -496,12 +450,6 @@ const AnnouncementDetails = ({
 		(handlers[text] || handlers['default'])();
 	};
 
-	const onHandleCloseLifeSpanPopup = () => {
-		setIsAnnouncementLifeSpan(false);
-		selectedPopup === 'add'
-			? setIsDisplayAddDetailPopup(true)
-			: setIsDisplayEditAnnouncement(true);
-	};
 	const onHandleProceed = () => {
 		if (renderHighlightAnnouncement?.isHighlightPopup) {
 			editDetail(selectedHighlightPopup);
@@ -521,21 +469,15 @@ const AnnouncementDetails = ({
 	const onHandleSelectedAnnouncement = (detail) => {
 		setSelectedAnnouncement(detail);
 		setIsDisplayEditAnnouncement(true);
-		setSelectedPopup('edit');
 	};
 
 	const onHandleConfigure = (text) => {
-		if (text === 'announcement') {
-			setIsAnnouncementLifeSpan(true);
-			setIsDisplayEditAnnouncement(false);
-		} else if (text === 'highlight popup') {
-			setSelectedPopup('edit');
+		if (text === 'highlight popup') {
 			setRenderHighlightAnnouncement((prev) => ({
 				...prev,
 				isHighlightPopup: true,
 			}));
 		} else if (text === 'highlight topbar') {
-			setSelectedPopup('edit');
 			setRenderHighlightAnnouncement((prev) => ({
 				...prev,
 				isHighlightTopbar: true,
@@ -544,7 +486,7 @@ const AnnouncementDetails = ({
 	};
 
 	const onHandleBack = () => {
-		if (selectedPopup === 'add') {
+		if (isDisplayAddDetailPopup) {
 			setIsDisplayAddDetailPopup(false);
 			setAddAnnouncement({
 				type: null,
@@ -560,17 +502,11 @@ const AnnouncementDetails = ({
 			setIsDisplayEditAnnouncement(false);
 			setSelectedAnnouncement({});
 		}
-		setSelectedOption({
-			isDisplayIndefinitely: true,
-			isSelectRange: false,
-		});
 		setSelectedAnnouncementType(null);
-		setSelectedPopup(isDisplayAddDetailPopup ? 'add' : 'edit');
 	};
 
 	const onHandleOpenPopup = () => {
 		setIsDisplayAddDetailPopup(true);
-		setSelectedPopup('add');
 		setSelectedAnnouncementType(null);
 	};
 
@@ -622,25 +558,21 @@ const AnnouncementDetails = ({
 
 	const isEnterpriseUpgrade = handleEnterpriseUpgrade(constants?.info);
 
-	const selectedAnnouncementDetail =
-		selectedPopup === 'add' ? addAnnouncement : selectedAnnouncement;
-	const dateRange =
-		selectedPopup === 'add'
-			? [addAnnouncement?.start_date, addAnnouncement?.end_date]
-			: [selectedStartDate, selectedEndDate];
+	const selectedAnnouncementDetail = isDisplayAddDetailPopup
+		? addAnnouncement
+		: selectedAnnouncement;
 
 	const highlightDateRange = [
 		selectedHighlightStartDate,
 		selectedHighlightEndDate,
 	];
 
-	const selectedType =
-		selectedPopup === 'add'
-			? addAnnouncement?.type
-			: defaultAnnouncementType?.filter(
-					(data) =>
-						data?.toLowerCase() === selectedAnnouncement?.type?.toLowerCase()
-			  );
+	const selectedType = isDisplayAddDetailPopup
+		? addAnnouncement?.type
+		: defaultAnnouncementType?.filter(
+				(data) =>
+					data?.toLowerCase() === selectedAnnouncement?.type?.toLowerCase()
+		  );
 
 	const isDisabled =
 		!selectedAnnouncementDetail?.title ||
@@ -650,11 +582,6 @@ const AnnouncementDetails = ({
 	const isDisplayLifeSpanAnnouncement =
 		renderHighlightAnnouncement?.isHighlightPopup ||
 		renderHighlightAnnouncement?.isHighlightTopbar;
-
-	const isDisabledProceed =
-		!selectedAnnouncement?.title ||
-		(selectedOption?.isSelectRange && !selectedAnnouncement?.start_date) ||
-		(selectedOption?.isDisplayIndefinitely && !isDetailIndefinitely);
 
 	const isDisabledHighlightProceed =
 		!highlightDetails?.title ||
@@ -766,81 +693,6 @@ const AnnouncementDetails = ({
 				</div>
 			</Modal>
 			<Modal
-				visible={isAnnouncementLifeSpan}
-				className="bg-model blue-admin-billing-model admin-announcement-popup-wrapper"
-				width={450}
-				zIndex={1000}
-				onCancel={() => onHandleCloseLifeSpanPopup()}
-				footer={null}
-			>
-				<div className="announcement-life-span-popup-container">
-					<div
-						className={
-							isAnnouncementLifeSpan
-								? 'title font-weight-bold'
-								: 'title font-weight-bold mt-3'
-						}
-					>
-						Pop up Life Span
-					</div>
-					<div className="description-text mt-2">
-						The length of time the recent announcement will be displayed to the
-						user
-					</div>
-					<div className="announcement-display-option mt-2">
-						<input
-							type="radio"
-							id="recentAnnouncement"
-							name="recentAnnouncementOption"
-							checked={!!selectedOption?.isDisplayIndefinitely}
-							onChange={onHandleSelect}
-						/>
-						<label className="ml-1" htmlFor="recentAnnouncement">
-							Show the announcement indefinitely
-						</label>
-					</div>
-					<div className="mt-2 announcement-display-option ">
-						<input
-							type="radio"
-							id="selectDateAnnouncement"
-							name="selectedDateAannouncementOption"
-							checked={!!selectedOption?.isSelectRange}
-							onChange={onHandleSelect}
-						/>
-						<label className="ml-1" htmlFor="selectDateAnnouncement">
-							Select date
-						</label>
-						<div>
-							<RangePicker
-								size="small"
-								value={dateRange}
-								onChange={(dates) => onHandleDateSelect(dates)}
-								disabled={!selectedOption?.isSelectRange}
-							/>
-						</div>
-					</div>
-					<div className="button-container">
-						<Button
-							type="primary"
-							onClick={() => onHandleCloseLifeSpanPopup()}
-							className="green-btn"
-							size="medium"
-						>
-							Back
-						</Button>
-						<Button
-							type="primary"
-							onClick={() => onHandleCloseLifeSpanPopup()}
-							className="green-btn"
-							size="medium"
-							disabled={isDisabledProceed}
-						>
-							Proceed
-						</Button>
-					</div>
-				</div>
-			</Modal>
-			<Modal
 				visible={isDisplayLifeSpanAnnouncement}
 				className="bg-model blue-admin-billing-model admin-announcement-popup-wrapper"
 				width={450}
@@ -881,15 +733,7 @@ const AnnouncementDetails = ({
 							})}
 						</Select>
 					</div>
-					<div
-						className={
-							isAnnouncementLifeSpan
-								? 'title font-weight-bold'
-								: 'title font-weight-bold mt-3'
-						}
-					>
-						Life Span
-					</div>
+					<div className="title font-weight-bold mt-3">Life Span</div>
 					<div className="description-text mt-2">
 						The length of time the recent announcement will be displayed to the
 						user
@@ -934,9 +778,17 @@ const AnnouncementDetails = ({
 							<input
 								id="announcementCheckbox"
 								type="checkbox"
-								checked={!!highlightDetails?.is_popup}
+								checked={
+									renderHighlightAnnouncement?.isHighlightPopup
+										? !!highlightDetails?.is_popup
+										: !!highlightDetails?.is_navbar
+								}
 								onChange={() =>
-									onHandleAnnouncementDetails(!highlightDetails?.is_popup)
+									onHandleAnnouncementDetails(
+										renderHighlightAnnouncement?.isHighlightPopup
+											? !highlightDetails?.is_popup
+											: !highlightDetails?.is_navbar
+									)
 								}
 							/>
 							<label htmlFor="announcementCheckbox" className="ml-2">
@@ -1046,80 +898,6 @@ const AnnouncementDetails = ({
 								<span>(Top main navigation bar)</span>
 							</div>
 						</div>
-						{selectedPopup === 'edit' && isDisplayEditAnnouncement && (
-							<div className="d-flex announcement-display-feature mt-3 mr-3">
-								<input
-									type="checkbox"
-									checked={!!selectedAnnouncementDetail?.is_popup}
-									onChange={() =>
-										onHandleChange(
-											!selectedAnnouncementDetail?.is_popup,
-											'select popup'
-										)
-									}
-								/>
-								<div className="feature-trade-box">
-									<ReactSVG
-										src={STATIC_ICONS.POPUP_ANNOUNCEMENT}
-										className="feature-icon popup-feature-icon w-100 mr-1"
-									/>
-								</div>
-								<div className="announcement-features">
-									<span className="font-weight-bold">Pop up</span>
-									<span>(As a pop-up upon login)</span>
-									<div className="mt-2 d-flex align-items-end">
-										{selectedOption?.isDisplayIndefinitely && (
-											<div className="ml-1">Show ∞ indefinitely</div>
-										)}
-										{selectedOption?.isSelectRange &&
-											selectedAnnouncementDetail?.start_date && (
-												<div className="ml-1">
-													Show from{' '}
-													{getFormattedDate(
-														selectedAnnouncementDetail?.start_date
-													)}{' '}
-													to{' '}
-													{getFormattedDate(
-														selectedAnnouncementDetail?.end_date
-													)}
-												</div>
-											)}
-										<Button
-											type="primary"
-											onClick={() => onHandleConfigure('announcement')}
-											className="green-btn ml-1"
-											size="small"
-										>
-											Configure
-										</Button>
-									</div>
-								</div>
-							</div>
-						)}
-						{selectedPopup === 'edit' && isDisplayEditAnnouncement && (
-							<div className="d-flex announcement-display-feature mt-3 mr-3">
-								<input
-									type="checkbox"
-									checked={!!selectedAnnouncementDetail?.is_navbar}
-									onChange={() =>
-										onHandleChange(
-											!selectedAnnouncementDetail?.is_navbar,
-											'select navbar'
-										)
-									}
-								/>
-								<div className="feature-trade-box">
-									<ReactSVG
-										src={STATIC_ICONS.TOP_BAR_ANNOUNCEMENT}
-										className="feature-icon w-100 mr-1"
-									/>
-								</div>
-								<div className="announcement-features">
-									<span className="font-weight-bold">Top of page</span>
-									<span>(Bar at the very top of the page, above main nav)</span>
-								</div>
-							</div>
-						)}
 					</div>
 					<div className="button-container">
 						<Button
@@ -1232,7 +1010,6 @@ const AnnouncementDetails = ({
 										</span>
 										<span>(As a pop-up upon login)</span>
 										{selectedHighlightPopup &&
-											selectedHighlightPopup?.is_popup &&
 											filteredPopupAnnouncement[0]?.is_popup && (
 												<div>
 													<div className="d-flex mt-2">
@@ -1291,7 +1068,6 @@ const AnnouncementDetails = ({
 											(Bar at the very top of the page, above main nav)
 										</span>
 										{selectedHighlightTopbar &&
-											selectedHighlightTopbar?.is_navbar &&
 											filteredTopbarAnnouncement[0]?.is_navbar && (
 												<div>
 													<div className="d-flex mt-2">
