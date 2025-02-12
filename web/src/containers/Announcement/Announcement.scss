@@ -41,6 +41,7 @@
 
 			.blue-link {
 				padding: 0 12% 0 0;
+				text-wrap: nowrap;
 			}
 
 			.deposit-link,
@@ -80,6 +81,8 @@
 
 			.filter-text {
 				padding: 8% 14%;
+				overflow: hidden;
+				text-overflow: ellipsis;
 
 				.notification-all-icon {
 					position: relative;
@@ -89,6 +92,12 @@
 						width: 1rem;
 						height: 1rem;
 					}
+				}
+				span {
+					width: 100%;
+					display: block;
+					overflow: hidden;
+					text-overflow: ellipsis;
 				}
 			}
 
