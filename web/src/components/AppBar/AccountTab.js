@@ -273,10 +273,11 @@ const AccountList = ({
 			</div>
 			{isLogout &&
 				renderConfirmSignout(isLogout, onHandleclose, onHandlelogout)}
-			{accountOptions?.map((options) => {
+			{accountOptions?.map((options, index) => {
 				return (
 					options?.isDisplay && (
 						<div
+							key={index}
 							className={
 								currPath === options?.path
 									? 'options-container account-active main-active'
@@ -317,12 +318,13 @@ const AccountList = ({
 				);
 			})}
 			<div className="options-route-wrapper">
-				{optionsRoute?.map((option) => {
+				{optionsRoute?.map((option, index) => {
 					return (
 						<Tooltip
 							title={STRINGS[option?.toolTipText]}
 							placement="topLeft"
 							overlayClassName="account-tab-options-tooltip"
+							key={index}
 						>
 							<div
 								className="icon-option-container"

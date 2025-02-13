@@ -25,7 +25,11 @@ import {
 } from 'actions/appActions';
 import { updateUserSettings, setUserData } from 'actions/userAction';
 import { generateLanguageFormValues } from 'containers/UserSettings/LanguageForm';
-import { LanguageDisplayPopup, renderAnnouncementMessage } from './Utils';
+import {
+	LanguageDisplayPopup,
+	renderAnnouncementMessage,
+	renderRemoveEmptyTag,
+} from './Utils';
 import { formatToFixed } from 'utils/currency';
 import { marketPriceSelector } from 'containers/Trade/utils';
 import { getFormattedDate } from 'utils/string';
@@ -467,8 +471,8 @@ class AppBar extends Component {
 					{selectedTopbarAnnouncement?.title}
 				</span>
 				{renderAnnouncementMessage(
-					selectedTopbarAnnouncement?.message,
-					isMobile ? 40 : 75
+					renderRemoveEmptyTag(selectedTopbarAnnouncement?.message),
+					isMobile ? 35 : 70
 				)}
 				<EditWrapper stringId="HOLLAEX_TOKEN.VIEW">
 					<span

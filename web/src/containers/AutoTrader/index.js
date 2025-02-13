@@ -631,7 +631,7 @@ const Autotrader = ({
 		STRINGS['AUTO_TRADER.WEEKLY'],
 		STRINGS['AUTO_TRADER.MONTHLY'],
 	];
-	const week_days = [1, 2, 3, 4, 5, 6, 0];
+	const totalWeekDays = [1, 2, 3, 4, 5, 6, 0];
 
 	const selectedFrequency =
 		selectedTrade?.frequency === 'daily'
@@ -723,6 +723,21 @@ const Autotrader = ({
 		isMaxSpendAmount ||
 		(getSpendAssetAval && !queryPair);
 
+	const { frequency, trade_hour, day_of_month, week_days } =
+		autoTradeDetails || {};
+
+	const isDisabledFrequencyTrade =
+		!frequency ||
+		(frequency === STRINGS['AUTO_TRADER.DAILY'] &&
+			(trade_hour === null || trade_hour === '')) ||
+		(frequency === STRINGS['AUTO_TRADER.MONTHLY'] &&
+			(!day_of_month || trade_hour === null || trade_hour === '')) ||
+		(frequency === STRINGS['AUTO_TRADER.WEEKLY'] &&
+			(!week_days ||
+				week_days.length === 0 ||
+				trade_hour === null ||
+				trade_hour === ''));
+
 	return (
 		<div className="auto-trader-container">
 			<Dialog
@@ -782,6 +797,7 @@ const Autotrader = ({
 										</div>
 									) : null
 								}
+								listHeight={165}
 								className="auto-trader-select-dropdown mt-2"
 								placeholder={STRINGS['AUTO_TRADER.SELECT_SPEND_ASSET']}
 								showSearch
@@ -845,6 +861,7 @@ const Autotrader = ({
 								</Tooltip>
 							</EditWrapper>
 							<Select
+								listHeight={115}
 								placeholder={STRINGS['AUTO_TRADER.SELECT_BUY_ASSET']}
 								value={
 									autoTradeDetails?.buy_coin ? (
@@ -1098,7 +1115,7 @@ const Autotrader = ({
 										</Tooltip>
 									</span>
 									<div className="weekly-trade-options">
-										{week_days?.map((days) => {
+										{totalWeekDays?.map((days) => {
 											return (
 												<span
 													className={
@@ -1126,9 +1143,10 @@ const Autotrader = ({
 												</span>
 											</EditWrapper>
 											<Tooltip
-												title={
-													STRINGS['AUTO_TRADER.MONTHLY_TRADE_TOOLTIP_DESC']
-												}
+												title={STRINGS.formatString(
+													STRINGS['AUTO_TRADER.MONTHLY_TRADE_TOOLTIP_DESC'],
+													daysInMonth
+												)}
 												placement="right"
 												overlayClassName="auto-trade-tool-tip"
 											>
@@ -1147,7 +1165,7 @@ const Autotrader = ({
 												}))
 											}
 											controls={true}
-											placeholder={STRINGS['PROFIT_LOSS.DATE_SELECT']}
+											placeholder={`${STRINGS['AUTO_TRADER.SELECT_DAY']} (1-${daysInMonth})`}
 										/>
 									</div>
 								)
@@ -1197,7 +1215,6 @@ const Autotrader = ({
 										placeholder={STRINGS['AUTO_TRADER.SELECT_HOUR']}
 										suffix={STRINGS['AUTO_TRADER.HOUR']}
 										step={1}
-										formatter={(value) => onHandleChange(value)}
 										parser={(value) => onHandleChange(value)}
 									/>
 								</div>
@@ -1219,6 +1236,7 @@ const Autotrader = ({
 								label={STRINGS['STAKE.NEXT']}
 								className="next-btn"
 								onClick={() => onHandleNext('step2')}
+								disabled={isDisabledFrequencyTrade}
 							/>
 						</div>
 					</div>
