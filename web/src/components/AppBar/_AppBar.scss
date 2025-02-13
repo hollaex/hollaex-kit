@@ -19,7 +19,6 @@ $app-menu-width: calc(100vw - 40rem);
 	}
 	.announcement-message-wrapper {
 		max-width: max-content;
-		width: 15%;
 		text-wrap: nowrap;
 		overflow: hidden;
 		display: flex;
@@ -31,10 +30,6 @@ $app-menu-width: calc(100vw - 40rem);
 		font-size: $navigation_bar-font_size;
 		max-width: 100%;
 		margin: unset;
-		flex: 1;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
 	}
 	.announcement-btn {
 		width: max-content;
@@ -661,11 +656,7 @@ $app-menu-width: calc(100vw - 40rem);
 .language-select-dropdown-wrapper {
 	height: 14rem;
 	scrollbar-width: auto;
-	overflow-y: scroll;
 	scrollbar-color: $colors-black $app-background-color;
-	.rc-virtual-list-holder {
-		overflow-y: unset !important;
-	}
 }
 .select-option-wrapper {
 	.ant-select-item,
@@ -1558,11 +1549,6 @@ $app-menu-width: calc(100vw - 40rem);
 	}
 }
 .layout-mobile {
-	.announcement-top-bar {
-		.announcement-message-wrapper {
-			width: 25%;
-		}
-	}
 	.st0 {
 		fill: #ffffff;
 		stroke-miterlimit: 10;
@@ -2053,7 +2039,6 @@ $app-menu-width: calc(100vw - 40rem);
 .select-currency-wrapper {
 	height: 8rem;
 	scrollbar-width: auto;
-	overflow-y: scroll;
 	scrollbar-color: $colors-black $app-background-color;
 
 	.ant-select-item-option-content {
