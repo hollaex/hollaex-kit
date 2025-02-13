@@ -175,9 +175,8 @@ const verifyUser = (req, res) => {
 
 const createAttemptMessage = (loginData, user, domain) => {
 	const currentNumberOfAttemps = NUMBER_OF_ALLOWED_ATTEMPTS - loginData.attempt;
-	if (currentNumberOfAttemps === NUMBER_OF_ALLOWED_ATTEMPTS - 1)
-	{ return ''; }
-	else if(currentNumberOfAttemps === 0) { 
+	if (currentNumberOfAttemps === NUMBER_OF_ALLOWED_ATTEMPTS - 1) { return ''; }
+	else if (currentNumberOfAttemps === 0) {
 		sendEmail(
 			MAILTYPE.LOCKED_ACCOUNT,
 			user.email,
@@ -185,7 +184,7 @@ const createAttemptMessage = (loginData, user, domain) => {
 			user.settings,
 			domain);
 
-		return ' ' + LOGIN_NOT_ALLOW; 
+		return ' ' + LOGIN_NOT_ALLOW;
 	}
 	return ` You have ${currentNumberOfAttemps} more ${currentNumberOfAttemps === 1 ? 'attempt' : 'attempts'} left`;
 };
@@ -206,15 +205,29 @@ const loginPost = (req, res) => {
 	const userAgent = req.headers['user-agent'];
 	const result = detector.detect(userAgent);
 
-	let device = [
-		result.device.brand,
-		result.device.model,
-		result.device.type,
-		result.client.name,
-		result.client.type,
-		result.os.name];
+	const truncate = (str, maxLen = 100) => {
+		if (!str || typeof str !== 'string') return '';
+		return str.substring(0, maxLen);
+	};
 
-	device = device.filter(Boolean).join(' ').trim();
+	let deviceParts = [
+		truncate(result.device.brand, 100),
+		truncate(result.device.model, 100),
+		truncate(result.device.type, 100),
+		truncate(result.client.name, 100),
+		truncate(result.client.type, 100),
+		truncate(result.os.name, 100)
+	].filter(Boolean);
+
+	let device = deviceParts.join(' ').trim();
+
+	const encoder = new TextEncoder();
+	while (encoder.encode(device).length > 1000 && deviceParts.length > 1) {
+		deviceParts.pop();
+		device = deviceParts.join(' ').trim();
+	}
+
+
 
 	const domain = req.headers['x-real-origin'];
 	const origin = req.headers.origin;
@@ -1301,8 +1314,8 @@ const getUnrealizedUserReferral = (req, res) => {
 const getRealizedUserReferral = (req, res) => {
 	loggerUser.verbose(req.uuid, 'controllers/user/getRealizedUserReferral/auth', req.auth);
 
-	const {  limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
-	
+	const { limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
+
 	if (order_by.value && typeof order_by.value !== 'string') {
 		loggerUser.error(
 			req.uuid,
@@ -1384,8 +1397,8 @@ const createUserReferralCode = (req, res) => {
 
 	toolsLib.user.createUserReferralCode({
 		user_id: req.auth.sub.id,
-		discount, 
-		earning_rate, 
+		discount,
+		earning_rate,
 		code
 	})
 		.then(() => {
@@ -1632,141 +1645,141 @@ const deletePaymentDetail = (req, res) => {
 
 
 const fetchUserAutoTrades = (req, res) => {
-    loggerUser.verbose(req.uuid, 'controllers/user/fetchUserAutoTrades/auth', req.auth);
+	loggerUser.verbose(req.uuid, 'controllers/user/fetchUserAutoTrades/auth', req.auth);
 
-    const { limit, page, order_by, order, start_date, end_date, active } = req.swagger.params;
+	const { limit, page, order_by, order, start_date, end_date, active } = req.swagger.params;
 
-    if (order_by.value && typeof order_by.value !== 'string') {
-        loggerUser.error(
-            req.uuid,
-            'controllers/user/fetchUserAutoTrades invalid order_by',
-            order_by.value
-        );
-        return res.status(400).json({ message: 'Invalid order by' });
-    }
+	if (order_by.value && typeof order_by.value !== 'string') {
+		loggerUser.error(
+			req.uuid,
+			'controllers/user/fetchUserAutoTrades invalid order_by',
+			order_by.value
+		);
+		return res.status(400).json({ message: 'Invalid order by' });
+	}
 
-    toolsLib.user.fetchUserAutoTrades(req.auth.sub.id, {
-        limit: limit.value,
-        page: page.value,
-        order_by: order_by.value,
-        order: order.value,
-        start_date: start_date.value,
-        end_date: end_date.value,
-        active: active.value
-    })
-        .then((data) => res.json(data))
-        .catch((err) => {
-            loggerUser.error(req.uuid, 'controllers/user/fetchUserAutoTrades', err.message);
-            return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
-        });
+	toolsLib.user.fetchUserAutoTrades(req.auth.sub.id, {
+		limit: limit.value,
+		page: page.value,
+		order_by: order_by.value,
+		order: order.value,
+		start_date: start_date.value,
+		end_date: end_date.value,
+		active: active.value
+	})
+		.then((data) => res.json(data))
+		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/fetchUserAutoTrades', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
 };
 
 const createUserAutoTrade = (req, res) => {
-    loggerUser.verbose(req.uuid, 'controllers/user/createUserAutoTrade/auth', req.auth);
+	loggerUser.verbose(req.uuid, 'controllers/user/createUserAutoTrade/auth', req.auth);
 
-    const { spend_coin, buy_coin, spend_amount, frequency, week_days, day_of_month, trade_hour, active, description } = req.swagger.params.data.value;
+	const { spend_coin, buy_coin, spend_amount, frequency, week_days, day_of_month, trade_hour, active, description } = req.swagger.params.data.value;
 
-    loggerUser.verbose(
-        req.uuid,
-        'controllers/user/createUserAutoTrade data',
-       spend_coin, buy_coin, spend_amount, frequency, week_days, day_of_month, trade_hour, active, description
-    );
+	loggerUser.verbose(
+		req.uuid,
+		'controllers/user/createUserAutoTrade data',
+		spend_coin, buy_coin, spend_amount, frequency, week_days, day_of_month, trade_hour, active, description
+	);
 
-    toolsLib.user.createUserAutoTrade(req.auth.sub.id, {
-        spend_coin,
-        buy_coin,
-        spend_amount,
-        frequency,
-        week_days,
-        day_of_month,
-        trade_hour,
-        active,
-        description
-    }, req.headers['x-real-ip'])
-        .then((data) => res.json(data))
-        .catch((err) => {
-            loggerUser.error(req.uuid, 'controllers/user/createUserAutoTrade', err.message);
-            return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
-        });
+	toolsLib.user.createUserAutoTrade(req.auth.sub.id, {
+		spend_coin,
+		buy_coin,
+		spend_amount,
+		frequency,
+		week_days,
+		day_of_month,
+		trade_hour,
+		active,
+		description
+	}, req.headers['x-real-ip'])
+		.then((data) => res.json(data))
+		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/createUserAutoTrade', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
 };
 
 const updateUserAutoTrade = (req, res) => {
-    loggerUser.verbose(req.uuid, 'controllers/user/updateUserAutoTrade/auth', req.auth);
+	loggerUser.verbose(req.uuid, 'controllers/user/updateUserAutoTrade/auth', req.auth);
 
-    const { id, spend_coin, buy_coin, spend_amount, frequency, week_days, day_of_month, trade_hour, active, description } = req.swagger.params.data.value;
+	const { id, spend_coin, buy_coin, spend_amount, frequency, week_days, day_of_month, trade_hour, active, description } = req.swagger.params.data.value;
 
-    loggerUser.verbose(
-        req.uuid,
-        'controllers/user/updateUserAutoTrade data',
-        id, spend_coin, buy_coin, spend_amount, frequency, week_days, day_of_month, trade_hour, active, description
-    );
+	loggerUser.verbose(
+		req.uuid,
+		'controllers/user/updateUserAutoTrade data',
+		id, spend_coin, buy_coin, spend_amount, frequency, week_days, day_of_month, trade_hour, active, description
+	);
 
-    toolsLib.user.updateUserAutoTrade(req.auth.sub.id, {
-        id,
-        spend_coin,
-        buy_coin,
-        spend_amount,
-        frequency,
-        week_days,
-        day_of_month,
-        trade_hour,
-        active,
-        description
-    }, req.headers['x-real-ip'])
-        .then((data) => res.json(data))
-        .catch((err) => {
-            loggerUser.error(req.uuid, 'controllers/user/updateUserAutoTrade', err.message);
-            return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
-        });
+	toolsLib.user.updateUserAutoTrade(req.auth.sub.id, {
+		id,
+		spend_coin,
+		buy_coin,
+		spend_amount,
+		frequency,
+		week_days,
+		day_of_month,
+		trade_hour,
+		active,
+		description
+	}, req.headers['x-real-ip'])
+		.then((data) => res.json(data))
+		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/updateUserAutoTrade', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
 };
 
 const deleteUserAutoTrade = (req, res) => {
-    loggerUser.verbose(req.uuid, 'controllers/user/deleteUserAutoTrade/auth', req.auth);
+	loggerUser.verbose(req.uuid, 'controllers/user/deleteUserAutoTrade/auth', req.auth);
 
-    const { removed_ids } = req.swagger.params.data.value;
+	const { removed_ids } = req.swagger.params.data.value;
 
-    loggerUser.verbose(req.uuid, 'controllers/user/deleteUserAutoTrade data', removed_ids);
+	loggerUser.verbose(req.uuid, 'controllers/user/deleteUserAutoTrade data', removed_ids);
 
-    toolsLib.user.deleteUserAutoTrade(
-        removed_ids,
+	toolsLib.user.deleteUserAutoTrade(
+		removed_ids,
 		req.auth.sub.id
-    )
-        .then(() => res.json({ message: 'Success' }))
-        .catch((err) => {
-            loggerUser.error(req.uuid, 'controllers/user/deleteUserAutoTrade', err.message);
-            return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
-        });
+	)
+		.then(() => res.json({ message: 'Success' }))
+		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/deleteUserAutoTrade', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
 };
 
 const fetchAnnouncements = (req, res) => {
-    loggerUser.verbose(req.uuid, 'controllers/user/fetchAnnouncements/auth');
+	loggerUser.verbose(req.uuid, 'controllers/user/fetchAnnouncements/auth');
 
-    const { limit, page, order_by, order, start_date, end_date } = req.swagger.params;
+	const { limit, page, order_by, order, start_date, end_date } = req.swagger.params;
 
-    if (order_by.value && typeof order_by.value !== 'string') {
-        loggerUser.error(
-            req.uuid,
-            'controllers/user/fetchAnnouncements invalid order_by',
-            order_by.value
-        );
-        return res.status(400).json({ message: 'Invalid order by' });
-    }
+	if (order_by.value && typeof order_by.value !== 'string') {
+		loggerUser.error(
+			req.uuid,
+			'controllers/user/fetchAnnouncements invalid order_by',
+			order_by.value
+		);
+		return res.status(400).json({ message: 'Invalid order by' });
+	}
 
-    toolsLib.user.getAnnouncements({
-        limit: limit.value,
-        page: page.value,
-        order_by: order_by.value,
-        order: order.value,
-        start_date: start_date.value,
+	toolsLib.user.getAnnouncements({
+		limit: limit.value,
+		page: page.value,
+		order_by: order_by.value,
+		order: order.value,
+		start_date: start_date.value,
 		end_date: end_date.value,
-    })
-        .then((data) => {
-            return res.json(data);
-        })
-        .catch((err) => {
-            loggerUser.error(req.uuid, 'controllers/user/fetchAnnouncements', err.message);
-            return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
-        });
+	})
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/fetchAnnouncements', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+		});
 };
 
 module.exports = {

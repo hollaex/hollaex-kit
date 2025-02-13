@@ -44,6 +44,10 @@
 .user-container .ant-tabs-nav::before {
 	border-bottom: 1px solid #ffffff;
 }
+.admin-user-container .blue-admin-table .ant-table-row-expand-icon,
+.ant-table-row-expand-icon:focus {
+	color: #000000;
+}
 .admin-user-container .ant-table-thead > tr > th {
 	background-color: var(--admin_panel_table_thead);
 	color: var(--admin_panel_main_font);

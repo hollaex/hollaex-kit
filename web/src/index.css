@@ -669,6 +669,9 @@ table th {
     .layout-mobile .footer-bar-more-options-container .field-wrapper .input_icon {
       width: 100%;
       color: var(--labels_important-active-labels-text-graphics) !important; }
+    .layout-mobile .footer-bar-more-options-container .field-wrapper .clear-field svg {
+      width: 2rem !important;
+      height: 2rem !important; }
     .layout-mobile .footer-bar-more-options-container .field-wrapper .input_icon {
       width: 2rem !important; }
     .layout-mobile .footer-bar-more-options-container .field-wrapper .field-content-outline:after,
@@ -2371,8 +2374,9 @@ table th {
 
 .layout-mobile .bottom-bar-button {
   padding: 3%;
-  position: sticky;
-  bottom: 0%;
+  position: fixed;
+  bottom: 6rem;
+  width: 100%;
   background: var(--base_background);
   display: flex;
   justify-content: space-around; }
@@ -13992,38 +13996,40 @@ table th {
     .auto-trader-container .auto-trader-content-wrapper .no-data > .edit-wrapper__container {
       width: 50%;
       text-align: center; }
-    .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper th,
-    .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper td {
-      padding: 5px; }
-    .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper .table-active {
-      opacity: 1; }
-    .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper .trade-inactive {
-      opacity: 0.6; }
-    .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper .description-content {
-      max-width: 20%; }
-    .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper .active-link {
-      display: flex;
-      gap: 4%;
-      align-items: center; }
-      .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper .active-link .active-play-icon {
-        font-size: 13px; }
-        .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper .active-link .active-play-icon svg path {
-          fill: var(--labels_important-active-labels-text-graphics); }
-    .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper .spend-asset-detail {
-      gap: 3%;
-      flex-direction: column; }
-      .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper .spend-asset-detail .selected-asset {
+    .auto-trader-container .auto-trader-content-wrapper .auto-trader-table {
+      overflow-x: auto; }
+      .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper th,
+      .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper td {
+        padding: 5px; }
+      .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper .table-active {
+        opacity: 1; }
+      .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper .trade-inactive {
+        opacity: 0.6; }
+      .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper .description-content {
+        max-width: 20%; }
+      .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper .active-link {
         display: flex;
-        gap: 3%;
+        gap: 4%;
         align-items: center; }
-      .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper .spend-asset-detail .trade-asset:hover {
-        opacity: 0.6;
-        cursor: pointer; }
-      .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper .spend-asset-detail .asset-icon {
-        position: relative;
-        top: 2px; }
-    .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper .frequency-trade {
-      gap: 1% !important; }
+        .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper .active-link .active-play-icon {
+          font-size: 13px; }
+          .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper .active-link .active-play-icon svg path {
+            fill: var(--labels_important-active-labels-text-graphics); }
+      .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper .spend-asset-detail {
+        gap: 3%;
+        flex-direction: column; }
+        .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper .spend-asset-detail .selected-asset {
+          display: flex;
+          gap: 3%;
+          align-items: center; }
+        .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper .spend-asset-detail .trade-asset:hover {
+          opacity: 0.6;
+          cursor: pointer; }
+        .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper .spend-asset-detail .asset-icon {
+          position: relative;
+          top: 2px; }
+      .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper .frequency-trade {
+        gap: 1% !important; }
 
 .auto-trade-tool-tip {
   font-size: 12px; }
@@ -14038,13 +14044,7 @@ table th {
 .select-frequency-dropdown,
 .select-buy-dropdown {
   height: 14rem;
-  overflow-y: auto;
-  scrollbar-width: auto;
   scrollbar-color: var(--labels_important-active-labels-text-graphics) var(--base_wallet-sidebar-and-popup); }
-  .auto-trader-select-option-dropdown .rc-virtual-list-holder,
-  .select-frequency-dropdown .rc-virtual-list-holder,
-  .select-buy-dropdown .rc-virtual-list-holder {
-    overflow-y: unset !important; }
   .auto-trader-select-option-dropdown .ant-select-item-option-content .options-wrapper,
   .select-frequency-dropdown .ant-select-item-option-content .options-wrapper,
   .select-buy-dropdown .ant-select-item-option-content .options-wrapper {
@@ -15044,7 +15044,6 @@ table th {
     color: var(--calculated_base_top-bar-navigation_text); }
   .announcement-top-bar .announcement-message-wrapper {
     max-width: max-content;
-    width: 15%;
     text-wrap: nowrap;
     overflow: hidden;
     display: flex;
@@ -15053,11 +15052,7 @@ table th {
   .announcement-top-bar .announcement-message-wrapper * {
     font-size: 1rem;
     max-width: 100%;
-    margin: unset;
-    flex: 1;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap; }
+    margin: unset; }
   .announcement-top-bar .announcement-btn {
     width: max-content;
     height: 2rem;
@@ -15488,10 +15483,7 @@ table th {
 .language-select-dropdown-wrapper {
   height: 14rem;
   scrollbar-width: auto;
-  overflow-y: scroll;
   scrollbar-color: var(--labels_secondary-inactive-label-text-graphics) var(--base_background); }
-  .language-select-dropdown-wrapper .rc-virtual-list-holder {
-    overflow-y: unset !important; }
 
 .select-option-wrapper .ant-select-item,
 .select-option-wrapper .ant-select-item-option {
@@ -16116,9 +16108,6 @@ table th {
   .app-bar-add-tab-menu .app-bar-tab-overflow-content {
     font-size: 0.9rem; } }
 
-.layout-mobile .announcement-top-bar .announcement-message-wrapper {
-  width: 25%; }
-
 .layout-mobile .st0 {
   fill: #ffffff;
   stroke-miterlimit: 10; }
@@ -16438,7 +16427,6 @@ table th {
 .select-currency-wrapper {
   height: 8rem;
   scrollbar-width: auto;
-  overflow-y: scroll;
   scrollbar-color: var(--labels_secondary-inactive-label-text-graphics) var(--base_background); }
   .select-currency-wrapper .ant-select-item-option-content {
     display: flex;

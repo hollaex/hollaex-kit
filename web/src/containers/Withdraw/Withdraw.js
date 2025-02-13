@@ -784,6 +784,13 @@ const RenderWithdraw = ({
 			? renderNetworkField(selectedAsset?.networkData)
 			: network;
 	const isActiveWithdrawNetwork = currencyNetwork(selectedAssetNetwork);
+
+	const getActiveWithdraw =
+		selectedMethod === STRINGS['WITHDRAW_PAGE.WITHDRAWAL_CONFIRM_ADDRESS'] ||
+		(selectedMethod && selectedMethod === 'Address')
+			? isActiveWithdrawNetwork && isActiveWithdrawNetwork?.active !== false
+			: true;
+
 	return (
 		<div
 			className={
@@ -1304,8 +1311,8 @@ const RenderWithdraw = ({
 						<div className="destination-field-wrapper">
 							{isEmailAndAddress &&
 								renderNetwork &&
-								isActiveWithdrawNetwork &&
-								isActiveWithdrawNetwork?.active !== false && (
+								getActiveWithdraw &&
+								getActiveWithdraw && (
 									<div
 										className={
 											isMobile
