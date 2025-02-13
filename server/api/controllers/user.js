@@ -350,7 +350,6 @@ const loginPost = (req, res) => {
 				sendEmail(MAILTYPE.LOGIN, email, data, user.settings, domain);
 			}
 
-			console.log(user)
 			return all([
 				user,
 				toolsLib.security.issueToken(
