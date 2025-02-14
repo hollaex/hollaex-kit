@@ -392,7 +392,11 @@ class Wallet extends Component {
 					</div>
 				</div>
 				<div className="pt-4 pb-3 deposit-history-table-wrapper">
-					<TransactionsHistory isFromWallet={true} isDepositFromWallet={true} />
+					<TransactionsHistory
+						isFromWallet={true}
+						selectedAsset={fullname}
+						isDepositFromWallet={true}
+					/>
 				</div>
 			</div>
 		);

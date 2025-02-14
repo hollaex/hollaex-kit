@@ -593,11 +593,20 @@ class TransactionsHistory extends Component {
 			downloadUserDeposit,
 			isFromWallet,
 			isDepositFromWallet,
+			selectedAsset = '',
+			params: { currency },
 		} = this.props;
 		const filterForWallet = withdrawals.data.filter((item, index) => index < 5);
-		const filterForDepositWallet = deposits.data.filter(
-			(item, index) => index < 5
-		);
+		let count = 0;
+		const filterForDepositWallet = deposits?.data?.filter((item, index) => {
+			if (selectedAsset?.length > 0) {
+				if (item?.currency === currency && count < 5) {
+					count++;
+					return item;
+				}
+			}
+			return selectedAsset === '' && index < 5;
+		});
 		const withdrawalsForWallet = {
 			...withdrawals,
 			count: 5,
