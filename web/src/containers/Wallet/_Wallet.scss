@@ -835,8 +835,9 @@ $header-margin: 2rem;
 .layout-mobile {
 	.bottom-bar-button {
 		padding: 3%;
-		position: sticky;
-		bottom: 0%;
+		position: fixed;
+		bottom: 6rem;
+		width: 100%;
 		background: $app-background-color;
 		display: flex;
 		justify-content: space-around;

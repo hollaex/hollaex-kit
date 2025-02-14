@@ -440,6 +440,12 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 				color: $colors-main-black !important;
 			}
 
+			.clear-field {
+				svg {
+					width: 2rem !important;
+					height: 2rem !important;
+				}
+			}
 			.input_icon {
 				width: 2rem !important;
 			}

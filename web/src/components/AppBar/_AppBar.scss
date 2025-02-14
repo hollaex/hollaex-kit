@@ -18,7 +18,7 @@ $app-menu-width: calc(100vw - 40rem);
 		color: $base_top-bar-navigation_text;
 	}
 	.announcement-message-wrapper {
-		width: 25%;
+		max-width: max-content;
 		text-wrap: nowrap;
 		overflow: hidden;
 		display: flex;
@@ -30,10 +30,6 @@ $app-menu-width: calc(100vw - 40rem);
 		font-size: $navigation_bar-font_size;
 		max-width: 100%;
 		margin: unset;
-		flex: 1;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
 	}
 	.announcement-btn {
 		width: max-content;
@@ -660,11 +656,7 @@ $app-menu-width: calc(100vw - 40rem);
 .language-select-dropdown-wrapper {
 	height: 14rem;
 	scrollbar-width: auto;
-	overflow-y: scroll;
 	scrollbar-color: $colors-black $app-background-color;
-	.rc-virtual-list-holder {
-		overflow-y: unset !important;
-	}
 }
 .select-option-wrapper {
 	.ant-select-item,
@@ -1452,6 +1444,11 @@ $app-menu-width: calc(100vw - 40rem);
 }
 
 @media (min-width: 1920px) {
+	.announcement-top-bar {
+		.announcement-message-wrapper {
+			width: 10%;
+		}
+	}
 	.app_bar {
 		font-size: 1rem;
 		height: $navigation_bar-height-lg;
@@ -1593,8 +1590,7 @@ $app-menu-width: calc(100vw - 40rem);
 				}
 			}
 			.close-icon {
-				position: relative;
-				left: 5%;
+				right: 2%;
 				svg {
 					width: 2.5rem;
 					height: 2rem;
@@ -2043,7 +2039,6 @@ $app-menu-width: calc(100vw - 40rem);
 .select-currency-wrapper {
 	height: 8rem;
 	scrollbar-width: auto;
-	overflow-y: scroll;
 	scrollbar-color: $colors-black $app-background-color;
 
 	.ant-select-item-option-content {
