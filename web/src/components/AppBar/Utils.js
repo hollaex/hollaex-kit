@@ -521,6 +521,7 @@ export const LanguageDisplayPopup = ({
 							virtual={false}
 							open={isOpen}
 							onDropdownVisibleChange={(open) => setIsOpen(open)}
+							listHeight={165}
 						>
 							{languageFormValue?.map(({ value, icon, label }) => (
 								<Option value={value} key={value} className="capitalize">
@@ -567,6 +568,7 @@ export const LanguageDisplayPopup = ({
 						virtual={false}
 						open={isDisplayCurrencyOpen}
 						onDropdownVisibleChange={(open) => setIsDisplayCurrencyOpen(open)}
+						listHeight={90}
 					>
 						{selectable_native_currencies?.map((data) => {
 							return (
@@ -609,10 +611,11 @@ export const LanguageDisplayPopup = ({
 };
 
 export const renderAnnouncementMessage = (message, maxLength = 100) => {
+	const announcementMessage = message?.replace(/(<([^>]+)>)/gi, ' ');
 	const maxAnnouncementMessage =
-		message?.length > maxLength
-			? message?.substring(0, maxLength) + '...'
-			: message;
+		announcementMessage?.length > maxLength
+			? announcementMessage?.substring(0, maxLength)?.trim() + '...'
+			: announcementMessage;
 
 	return (
 		<div

@@ -525,6 +525,7 @@ const MobileBarMoreOptions = ({
 			isDisplay: true,
 			toolTipText: 'DESKTOP_ULTIMATE_SEARCH.ASSET_INFO_TEXT',
 			searchContent: [
+				STRINGS['PRICE'],
 				STRINGS['COINS'],
 				STRINGS['WALLET_ASSETS_SEARCH_TXT'],
 				STRINGS['ASSETS'],
@@ -866,7 +867,7 @@ const MobileBarMoreOptions = ({
 	};
 
 	const onHandleSearch = (e) => {
-		setSearch(e.target.value);
+		setSearch(e.target?.value);
 	};
 
 	const filterOptions = (options) => {
@@ -1235,6 +1236,7 @@ const MobileBarMoreOptions = ({
 				<SearchBox
 					placeHolder={STRINGS['MORE_OPTIONS_LABEL.MORE_OPTION_SEARCH_TXT']}
 					handleSearch={(e) => onHandleSearch(e)}
+					showCross
 				/>
 			) : (
 				<div className="search-field">
