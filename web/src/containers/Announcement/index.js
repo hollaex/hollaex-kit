@@ -59,7 +59,7 @@ const announcementData = (formatDate, onHandleSelectAnnouncement) => {
 					<div className="d-flex">
 						{renderAnnouncementMessage(
 							renderRemoveEmptyTag(data?.message),
-							isMobile ? 60 : 75
+							isMobile ? 60 : 70
 						)}
 						<EditWrapper stringId="HOLLAEX_TOKEN.VIEW">
 							<span

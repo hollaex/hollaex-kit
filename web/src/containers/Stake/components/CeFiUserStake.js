@@ -38,7 +38,7 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 	const [stakeAmount, setStakeAmount] = useState(false);
 	const [duration, setDuration] = useState(false);
 	const [stakeDetails, setStakeDetails] = useState(false);
-	const [confirmStake, setConfirmStake] = useState(false);
+	// const [confirmStake, setConfirmStake] = useState(false);
 	const [confirmation, setConfirmation] = useState(false);
 	const [reviewUnstake, setReviewUnstake] = useState(false);
 	const [unstakeConfirm, setUnstakeConfirm] = useState(false);
@@ -48,7 +48,7 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 	const [userStakeData, setUserStakeData] = useState([]);
 	const [stakePools, setStakePools] = useState([]);
 	const [selectedPool, setSelectedPool] = useState();
-	const [confirmText, setConfirmText] = useState();
+	// const [confirmText, setConfirmText] = useState();
 	const [stakerAmount, setStakerAmount] = useState();
 	const [selectedStaker, setSelectedStaker] = useState();
 	const [queryValues] = useState();
@@ -299,6 +299,33 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 		const decimalPoint = new BigNumber(incrementUnit).dp();
 
 		return new BigNumber(number).decimalPlaces(decimalPoint).toNumber();
+	};
+
+	const onHandleReviewStake = async () => {
+		try {
+			await createStaker({
+				stake_id: selectedPool.id,
+				amount: Number(stakerAmount),
+			});
+			message.success(
+				`${STRINGS['CEFI_STAKE.SUCCESSFULLY_STAKED_IN']} ${selectedPool.name}`
+			);
+		} catch (error) {
+			message.error(error.response.data.message);
+			return;
+		}
+
+		const stakes = await requestUserStakePools();
+		setStakePools(stakes.data);
+
+		requestExchangeStakers();
+		setStakerAmount();
+
+		setDuration(false);
+		setStakeAmount(false);
+		setReadBeforeAction(false);
+		setStakeDetails(false);
+		setConfirmation(true);
 	};
 
 	const readBeforeActionModel = () => {
@@ -694,10 +721,11 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 						</AntBtn>
 						<AntBtn
 							className="stake_popup_button"
-							onClick={async () => {
-								setStakeDetails(false);
-								setConfirmStake(true);
-							}}
+							// onClick={async () => {
+							// setStakeDetails(false);
+							// setConfirmation(true);
+							// }}
+							onClick={() => onHandleReviewStake()}
 							type="default"
 						>
 							{STRINGS['CEFI_STAKE.PROCEED_BUTTON']}
@@ -708,127 +736,127 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 		);
 	};
 
-	const confirmStakeModel = () => {
-		return (
-			<>
-				<Dialog
-					className="stake_table_theme stake_theme confirm_stake_dialog_wrapper"
-					isOpen={confirmStake}
-					onCloseDialog={() => {
-						setConfirmStake(false);
-					}}
-				>
-					<div className="stake_theme confirm_stake_popup_wrapper">
-						<div className="stake_theme confirm_stake_theme mb-2">
-							<h3 className="stake_theme">
-								<EditWrapper stringId="STAKE_LIST.STAKE">
-									{STRINGS['CEFI_STAKE.CONFIRM_BUTTON']}{' '}
-									{selectedPool.currency.toUpperCase()}
-									<span className="text-capitalize">
-										{' '}
-										{STRINGS['STAKE_LIST.STAKE'].toLowerCase()}
-									</span>
-								</EditWrapper>
-							</h3>
-						</div>
-						{stakePools
-							.filter((pool) => pool.status === 'active' && pool.onboarding)
-							.map((pool) => {
-								return (
-									<div className="stakepool_card_icon">
-										<img
-											src={coins?.[pool?.currency]?.logo}
-											width={30}
-											height={30}
-											alt=""
-										/>
-									</div>
-								);
-							})}
-						<div className="confirm_stake_content_wrapper">
-							<div className="confirm_stake_content">
-								<div>
-									<EditWrapper stringId="CEFI_STAKE.CONFIRM_STAKE_DECS">
-										<span className="stake_theme mt-5">
-											{STRINGS['CEFI_STAKE.CONFIRM_STAKE_DECS']}{' '}
-										</span>
-									</EditWrapper>
-								</div>
-								<div className="stake_theme rules_notice_text stake_detail_text">
-									{STRINGS['CEFI_STAKE.STAKE_RULES_NOTICE']}
-								</div>
-							</div>
-							<div className="stake_theme mt-5  stake_detail_text">
-								{' '}
-								{STRINGS['CEFI_STAKE.DO_YOU_UNDERSTAND']}
-							</div>
-							<div className="stake_theme mt-2">
-								<Input
-									className="stake_theme confirm_stake_field"
-									placeholder={`${STRINGS['TYPE']} '${STRINGS['CEFI_STAKE.I_UNDERSTAND_BUTTON']}'`}
-									onChange={(e) => setConfirmText(e.target.value)}
-									value={confirmText}
-								/>
-							</div>
-						</div>
-					</div>
+	// const confirmStakeModel = () => {
+	// 	return (
+	// 		<>
+	// 			<Dialog
+	// 				className="stake_table_theme stake_theme confirm_stake_dialog_wrapper"
+	// 				isOpen={confirmStake}
+	// 				onCloseDialog={() => {
+	// 					setConfirmStake(false);
+	// 				}}
+	// 			>
+	// 				<div className="stake_theme confirm_stake_popup_wrapper">
+	// 					<div className="stake_theme confirm_stake_theme mb-2">
+	// 						<h3 className="stake_theme">
+	// 							<EditWrapper stringId="STAKE_LIST.STAKE">
+	// 								{STRINGS['CEFI_STAKE.CONFIRM_BUTTON']}{' '}
+	// 								{selectedPool.currency.toUpperCase()}
+	// 								<span className="text-capitalize">
+	// 									{' '}
+	// 									{STRINGS['STAKE_LIST.STAKE'].toLowerCase()}
+	// 								</span>
+	// 							</EditWrapper>
+	// 						</h3>
+	// 					</div>
+	// 					{stakePools
+	// 						.filter((pool) => pool.status === 'active' && pool.onboarding)
+	// 						.map((pool) => {
+	// 							return (
+	// 								<div className="stakepool_card_icon">
+	// 									<img
+	// 										src={coins?.[pool?.currency]?.logo}
+	// 										width={30}
+	// 										height={30}
+	// 										alt=""
+	// 									/>
+	// 								</div>
+	// 							);
+	// 						})}
+	// 					<div className="confirm_stake_content_wrapper">
+	// 						<div className="confirm_stake_content">
+	// 							<div>
+	// 								<EditWrapper stringId="CEFI_STAKE.CONFIRM_STAKE_DECS">
+	// 									<span className="stake_theme mt-5">
+	// 										{STRINGS['CEFI_STAKE.CONFIRM_STAKE_DECS']}{' '}
+	// 									</span>
+	// 								</EditWrapper>
+	// 							</div>
+	// 							<div className="stake_theme rules_notice_text stake_detail_text">
+	// 								{STRINGS['CEFI_STAKE.STAKE_RULES_NOTICE']}
+	// 							</div>
+	// 						</div>
+	// 						<div className="stake_theme mt-5  stake_detail_text">
+	// 							{' '}
+	// 							{STRINGS['CEFI_STAKE.DO_YOU_UNDERSTAND']}
+	// 						</div>
+	// 						<div className="stake_theme mt-2">
+	// 							<Input
+	// 								className="stake_theme confirm_stake_field"
+	// 								placeholder={`${STRINGS['TYPE']} '${STRINGS['CEFI_STAKE.I_UNDERSTAND_BUTTON']}'`}
+	// 								onChange={(e) => setConfirmText(e.target.value)}
+	// 								value={confirmText}
+	// 							/>
+	// 						</div>
+	// 					</div>
+	// 				</div>
 
-					<div className="stake_popup_button_wrapper">
-						<AntBtn
-							className="stake_popup_button"
-							onClick={() => {
-								setStakeDetails(true);
-								setConfirmStake(false);
-							}}
-							type="default"
-						>
-							{STRINGS['CEFI_STAKE.BACK_BUTTON']}
-						</AntBtn>
-						<AntBtn
-							className={`stake_popup_button ${
-								confirmText !== 'I UNDERSTAND'
-									? 'stake_half_opacity'
-									: 'stake_opacity'
-							}`}
-							onClick={async () => {
-								try {
-									await createStaker({
-										stake_id: selectedPool.id,
-										amount: Number(stakerAmount),
-									});
-									message.success(
-										`${STRINGS['CEFI_STAKE.SUCCESSFULLY_STAKED_IN']} ${selectedPool.name}`
-									);
-								} catch (error) {
-									message.error(error.response.data.message);
-									return;
-								}
+	// 				<div className="stake_popup_button_wrapper">
+	// 					<AntBtn
+	// 						className="stake_popup_button"
+	// 						onClick={() => {
+	// 							setStakeDetails(true);
+	// 							setConfirmStake(false);
+	// 						}}
+	// 						type="default"
+	// 					>
+	// 						{STRINGS['CEFI_STAKE.BACK_BUTTON']}
+	// 					</AntBtn>
+	// 					<AntBtn
+	// 						className={`stake_popup_button ${
+	// 							confirmText !== 'I UNDERSTAND'
+	// 								? 'stake_half_opacity'
+	// 								: 'stake_opacity'
+	// 						}`}
+	// 						onClick={async () => {
+	// 							try {
+	// 								await createStaker({
+	// 									stake_id: selectedPool.id,
+	// 									amount: Number(stakerAmount),
+	// 								});
+	// 								message.success(
+	// 									`${STRINGS['CEFI_STAKE.SUCCESSFULLY_STAKED_IN']} ${selectedPool.name}`
+	// 								);
+	// 							} catch (error) {
+	// 								message.error(error.response.data.message);
+	// 								return;
+	// 							}
 
-								const stakes = await requestUserStakePools();
-								setStakePools(stakes.data);
+	// 							const stakes = await requestUserStakePools();
+	// 							setStakePools(stakes.data);
 
-								requestExchangeStakers();
-								setConfirmText();
-								setStakerAmount();
-								setConfirmStake(false);
+	// 							requestExchangeStakers();
+	// 							setConfirmText();
+	// 							setStakerAmount();
+	// 							setConfirmStake(false);
 
-								setConfirmation(false);
-								setStakeDetails(false);
-								setDuration(false);
-								setStakeAmount(false);
-								setReadBeforeAction(false);
-							}}
-							disabled={confirmText !== 'I UNDERSTAND'}
-							type="default"
-						>
-							{STRINGS['CEFI_STAKE.I_UNDERSTAND_BUTTON']},{' '}
-							{STRINGS['STAKE.TITLE'].toUpperCase()}
-						</AntBtn>
-					</div>
-				</Dialog>
-			</>
-		);
-	};
+	// 							setConfirmation(false);
+	// 							setStakeDetails(false);
+	// 							setDuration(false);
+	// 							setStakeAmount(false);
+	// 							setReadBeforeAction(false);
+	// 						}}
+	// 						disabled={confirmText !== 'I UNDERSTAND'}
+	// 						type="default"
+	// 					>
+	// 						{STRINGS['CEFI_STAKE.I_UNDERSTAND_BUTTON']},{' '}
+	// 						{STRINGS['STAKE.TITLE'].toUpperCase()}
+	// 					</AntBtn>
+	// 				</div>
+	// 			</Dialog>
+	// 		</>
+	// 	);
+	// };
 
 	const confirmationModel = () => {
 		return (
@@ -1372,7 +1400,7 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 			{stakeAmount && stakeAmountModel()}
 			{duration && durationModel()}
 			{stakeDetails && stakeDetailsModel()}
-			{confirmStake && confirmStakeModel()}
+			{/* {confirmStake && confirmStakeModel()} */}
 			{confirmation && confirmationModel()}
 			{reviewUnstake && reviewUnstakeModel()}
 			{unstakeConfirm && unstakeConfirmModel()}
