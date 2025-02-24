@@ -298,7 +298,7 @@ definitions:
       network:
         type: string
         description: Blockchain network
-        minLength: 2
+        minLength: 1
         maxLength: 10
   OtpRequest:
     type: object

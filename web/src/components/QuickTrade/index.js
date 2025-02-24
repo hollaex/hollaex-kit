@@ -304,19 +304,19 @@ const QuickTrade = ({
 	};
 
 	const debouncedQuote = useRef(debounce(getQuote, 1000));
+	const activeQuickTradePair =
+		quicktradePairs[pair]?.symbol || quicktradePairs[flipPair(pair)]?.symbol;
 
 	useEffect(() => {
 		setTimeout(() => {
-			const pairBase = pair.split('-')[1];
-			const pair_2 = pair.split('-')[0];
+			const pairBase = activeQuickTradePair
+				? activeQuickTradePair?.split('-')[1]
+				: pair.split('-')[1];
 			const assetValues = Object.keys(coins)
 				.map((val) => coins[val].code)
 				.toLocaleString();
+			const chartValue = allChartsData[pairBase];
 
-			const chartValue =
-				constants?.native_currency === pairBase
-					? allChartsData[pair_2]
-					: allChartsData[pairBase];
 			if (chartValue) {
 				setChartData(chartValue);
 			} else {
@@ -337,8 +337,12 @@ const QuickTrade = ({
 	useEffect(() => {
 		if (mounted) {
 			const options = getTargetOptions(selectedSource);
+			const selectedOption =
+				selectedSource !== sourceOptions[0]
+					? sourceOptions[0]
+					: sourceOptions[1];
 			if (chain_trade_config?.active) {
-				setSelectedTarget(sourceOptions[0]);
+				setSelectedTarget(selectedOption);
 			} else {
 				setTargetOptions(options);
 				setSelectedTarget(options[0]);
@@ -399,14 +403,16 @@ const QuickTrade = ({
 
 	useEffect(() => {
 		setTimeout(() => {
-			const lineData = { ...chartData[`${pair}`] };
+			const lineData = {
+				...chartData[`${activeQuickTradePair ? activeQuickTradePair : pair}`],
+			};
 			setLineChartData({
 				...lineData,
 				name: 'Line',
 				type: 'line',
 			});
 		}, 0);
-	}, [pair, chartData]);
+	}, [pair, chartData, activeQuickTradePair]);
 
 	const isExpired = time.isAfter(moment(expiry));
 
@@ -457,7 +463,7 @@ const QuickTrade = ({
 				<div className={classnames('quick_trade-wrapper', 'd-flex')}>
 					<Details
 						coinChartData={lineChartData}
-						pair={pair}
+						pair={activeQuickTradePair ? activeQuickTradePair : pair}
 						brokerUsed={isUseBroker}
 						networkName={display_name}
 						isNetwork={isNetwork}
@@ -492,7 +498,7 @@ const QuickTrade = ({
 							</div>
 							<Details
 								coinChartData={lineChartData}
-								pair={pair}
+								pair={activeQuickTradePair ? activeQuickTradePair : pair}
 								brokerUsed={isUseBroker}
 								networkName={display_name}
 								isNetwork={isNetwork}
