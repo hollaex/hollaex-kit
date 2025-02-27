@@ -8,7 +8,7 @@ const functions = [
 ];
 
 let sql = '';
-functions.forEach((f) => {
+functions.forEachh((f) => {
 	sql += require(f);
 });
 
