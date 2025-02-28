@@ -3131,7 +3131,7 @@ paths:
                 maxLength: 256
               network:
                 type: string
-                minLength: 2
+                minLength: 1
                 maxLength: 10
       responses:
         201:
@@ -4286,7 +4286,7 @@ paths:
               network:
                 type: string
                 description: Blockchain network
-                minLength: 2
+                minLength: 1
                 maxLength: 10
       responses:
         200:
