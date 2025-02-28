@@ -8,8 +8,12 @@ import { generateCryptoAddress, requestUserBalance } from './actions';
 import { requestUserData } from '../User/actions';
 import { getPrices, generateChartData } from '../../../actions/assetActions';
 import { isSupport } from '../../../utils/token';
-import { calculateBalancePrice } from '../../../utils/currency';
+import {
+	calculateBalancePrice,
+	formatCurrencyByIncrementalUnit,
+} from '../../../utils/currency';
 import { STATIC_ICONS } from 'config/icons';
+import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 
 const INITIAL_STATE = {
 	userBalance: {},
@@ -20,6 +24,7 @@ const INITIAL_STATE = {
 	showGenerateWalletAddress: false,
 	generateWalletStep: 'step-1',
 	generateAddressParams: {},
+	totalAvaliableAsset: 0,
 };
 
 class UserBalance extends Component {
@@ -43,29 +48,32 @@ class UserBalance extends Component {
 			this.handleChartData();
 			const wallet = this.state.userInformation.wallet || [];
 
-			const tableData = Object.entries(this.props.coins).sort().map(([key, value]) => {
-				let addressData = {};
-				let networks = value.network ? value.network.split(',') : [];
-				if (networks.length) {
-					networks.map((networkKey) => {
-						let temp =
-							wallet.filter(
-								(data) =>
-									data.network === networkKey && data.currency === value.symbol
-							)[0] || {};
-						return (addressData[`${networkKey}_address`] = temp.address);
-					});
-				} else {
-					let temp = wallet.filter((data) => data.currency === key)[0] || {};
-					addressData.address = temp.address;
-				}
-				return {
-					...value,
-					...addressData,
-					balance: this.state.userBalance[`${key}_balance`],
-					balance_available: this.state.userBalance[`${key}_available`],
-				};
-			});
+			const tableData = Object.entries(this.props.coins)
+				.sort()
+				.map(([key, value]) => {
+					let addressData = {};
+					let networks = value.network ? value.network.split(',') : [];
+					if (networks.length) {
+						networks.map((networkKey) => {
+							let temp =
+								wallet.filter(
+									(data) =>
+										data.network === networkKey &&
+										data.currency === value.symbol
+								)[0] || {};
+							return (addressData[`${networkKey}_address`] = temp.address);
+						});
+					} else {
+						let temp = wallet.filter((data) => data.currency === key)[0] || {};
+						addressData.address = temp.address;
+					}
+					return {
+						...value,
+						...addressData,
+						balance: this.state.userBalance[`${key}_balance`],
+						balance_available: this.state.userBalance[`${key}_available`],
+					};
+				});
 			this.setState({ tableData });
 		}
 	}
@@ -178,7 +186,7 @@ class UserBalance extends Component {
 		const prices = await getPrices({ coins });
 		const totalAsset = calculateBalancePrice(userBalance, prices, coins);
 		const chartData = generateChartData(userBalance, prices, coins, totalAsset);
-		this.setState({ chartData });
+		this.setState({ chartData, totalAvaliableAsset: totalAsset });
 	};
 
 	handleBalance = (userData, isSupportUser) => {
@@ -313,9 +321,15 @@ class UserBalance extends Component {
 			chartData,
 			generateWalletStep,
 			showGenerateWalletAddress,
+			userInformation,
+			totalAvaliableAsset,
 		} = this.state;
 		const { coins } = this.props;
 		const BALANCE_COLUMN = this.getBalanceColumn();
+		const { increment_unit, display_name } =
+			coins[
+				userInformation?.settings?.interface?.display_currency || BASE_CURRENCY
+			] || DEFAULT_COIN_DATA;
 
 		if (loading) {
 			return (
@@ -347,6 +361,16 @@ class UserBalance extends Component {
 						<h3>User balances</h3>
 						<div>
 							Below are all the balances of the assets owned by this user
+						</div>
+						<div>
+							<span>
+								Total:{' '}
+								{formatCurrencyByIncrementalUnit(
+									totalAvaliableAsset,
+									increment_unit
+								)}{' '}
+								{display_name && display_name}
+							</span>
 						</div>
 					</div>
 				</div>

@@ -130,7 +130,9 @@ export const tradeHistorySelector = createSelector(
 	getPairsTrades,
 	getPair,
 	(pairsTrades, pair) => {
-		const data = pairsTrades[pair] || [];
+		const data = (pairsTrades[pair] || [])?.filter(
+			(record) => record && record
+		);
 		const dataWithId = data.map((record) => pushId(record));
 		const sizeArray = data.map(({ size }) => size);
 		const maxAmount = Math.max(...sizeArray);

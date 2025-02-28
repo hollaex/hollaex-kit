@@ -21,7 +21,15 @@ import {
 } from 'containers/Admin/Stakes/actions';
 import { formatToCurrency } from 'utils/currency';
 import '../CeFiStake.scss';
-import { Dialog, Help, Image, NotLoggedIn } from 'components';
+import {
+	ActionNotification,
+	Dialog,
+	Help,
+	Image,
+	Loader,
+	NotLoggedIn,
+} from 'components';
+import { STATIC_ICONS } from 'config/icons';
 import { EditWrapper } from 'components';
 import moment from 'moment';
 import BigNumber from 'bignumber.js';
@@ -228,16 +236,8 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 	];
 
 	useEffect(() => {
-		requestUserStakePools()
-			.then((res) => {
-				setStakePools(res.data);
-			})
-			.catch((err) => {
-				return err;
-			});
-
+		getUserStakeDetails();
 		requestExchangeStakers();
-
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -245,6 +245,17 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 		requestExchangeStakers(queryFilters.page, queryFilters.limit);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [queryValues]);
+
+	const getUserStakeDetails = async () => {
+		try {
+			setIsLoading(true);
+			const res = await requestUserStakePools();
+			setStakePools(res.data);
+			setIsLoading(false);
+		} catch (err) {
+			console.error(err);
+		}
+	};
 
 	const requestExchangeStakers = (page = 1, limit = 50) => {
 		setIsLoading(true);
@@ -300,6 +311,13 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 
 		return new BigNumber(number).decimalPlaces(decimalPoint).toNumber();
 	};
+
+	const selectedStakeAsset =
+		coins?.[
+			selectedStaker?.reward_currency
+				? selectedStaker?.reward_currency
+				: selectedStaker?.currency
+		]?.logo;
 
 	const onHandleReviewStake = async () => {
 		try {
@@ -870,20 +888,20 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 				>
 					<div className="confirmation_model_popup_wrapper">
 						<div className="confirmation_model_content">
-							{stakePools
+							{/* {stakePools
 								.filter((pool) => pool.status === 'active' && pool.onboarding)
 								.map((pool) => {
-									return (
-										<div className="stakepool_card_icon mb-5">
-											<img
-												src={coins?.[pool?.currency]?.logo}
-												width={50}
-												height={50}
-												alt=""
-											/>
-										</div>
-									);
-								})}
+									return ( */}
+							<div className="stakepool_card_icon mb-5">
+								<img
+									src={coins?.[selectedPool?.currency]?.logo}
+									width={50}
+									height={50}
+									alt=""
+								/>
+							</div>
+							{/* );
+								})} */}
 							<h3 className="stake_theme confirmation_amount_text">
 								{stakerAmount} {selectedPool.currency.toUpperCase()}
 							</h3>
@@ -965,20 +983,15 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 								</EditWrapper>
 							</h3>
 							<div className="review_unstack_wrapper mb-4">
-								{stakePools
+								{/* {stakePools
 									.filter((pool) => pool.status === 'active' && pool.onboarding)
 									.map((pool) => {
-										return (
-											<div className="stakepool_card_icon">
-												<img
-													src={coins?.[pool?.currency]?.logo}
-													width={30}
-													height={30}
-													alt=""
-												/>
-											</div>
-										);
-									})}
+										return ( */}
+								<div className="stakepool_card_icon">
+									<img src={selectedStakeAsset} width={30} height={30} alt="" />
+								</div>
+								{/* ); */}
+								{/* })} */}
 								<div className="review_unstack_amount_wrapper">
 									<div>
 										<span className="font-weight-normal">
@@ -1222,20 +1235,15 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 								</h2>
 							</div>
 							<div className="review_unstack_wrapper mb-4">
-								{stakePools
+								{/* {stakePools
 									.filter((pool) => pool.status === 'active' && pool.onboarding)
 									.map((pool) => {
-										return (
-											<div className="stakepool_card_icon">
-												<img
-													src={coins?.[pool?.currency]?.logo}
-													width={30}
-													height={30}
-													alt=""
-												/>
-											</div>
-										);
-									})}
+										return ( */}
+								<div className="stakepool_card_icon">
+									<img src={selectedStakeAsset} width={30} height={30} alt="" />
+								</div>
+								{/* );
+									})} */}
 								<div className="review_unstack_amount_wrapper">
 									<div>
 										<span className="font-weight-normal">
@@ -1422,13 +1430,39 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 									/>
 								</div>
 								<div>
-									<div className="stake_theme font-weight-bold">
+									<div
+										className={
+											isMobile
+												? 'stake_theme font-weight-bold d-flex justify-content-between'
+												: 'stake_theme font-weight-bold'
+										}
+									>
 										{STRINGS['CEFI_STAKE.STAKE_POOL_TITLE']}
+										{isMobile && (
+											<ActionNotification
+												stringId="REFRESH"
+												text={STRINGS['REFRESH']}
+												iconId="REFRESH"
+												iconPath={STATIC_ICONS['REFRESH']}
+												className="blue-icon refresh-link"
+												onClick={() => getUserStakeDetails()}
+												disable={isLoading}
+											/>
+										)}
 									</div>
 									<div>{STRINGS['CEFI_STAKE.INTRODUCTION_1']}</div>
 								</div>
 								{!isMobile && (
 									<div className="stake-cefi-value">
+										<ActionNotification
+											stringId="REFRESH"
+											text={STRINGS['REFRESH']}
+											iconId="REFRESH"
+											iconPath={STATIC_ICONS['REFRESH']}
+											className="blue-icon refresh-link"
+											onClick={() => getUserStakeDetails()}
+											disable={isLoading}
+										/>
 										{/* <div>
                                         {userStakeData?.length > 0 && (
                                             <div>{STRINGS['CEFI_STAKE.CURRENT_STAKING_VALUE']}:</div>
@@ -1446,92 +1480,98 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 							</div>
 
 							<div className="stakepool_card_wrapper">
-								{stakePools
-									.filter((pool) => pool.status === 'active' && pool.onboarding)
-									.map((pool) => {
-										// const alreadyStaked =
-										//  (userStakeData || [])?.filter(
-										//      (staker) =>
-										//          staker.stake_id == pool.id && staker.status !== 'closed'
-										//  )?.length > 0;
+								{!isLoading ? (
+									stakePools
+										.filter(
+											(pool) => pool.status === 'active' && pool.onboarding
+										)
+										.map((pool) => {
+											// const alreadyStaked =
+											//  (userStakeData || [])?.filter(
+											//      (staker) =>
+											//          staker.stake_id == pool.id && staker.status !== 'closed'
+											//  )?.length > 0;
 
-										const alreadyStaked = false;
+											const alreadyStaked = false;
 
-										return (
-											<div className="stakepool_card">
-												<div className="stakepool_card_icon">
-													<img
-														src={coins?.[pool?.currency]?.logo}
-														width={30}
-														height={30}
-														alt=""
-													/>
-												</div>
-												{isMobile ? (
-													<h2 className="stake_theme">{pool.name}</h2>
-												) : (
-													<h3 className="stake_theme">{pool.name}</h3>
-												)}
-												<div>
-													{pool.duration ? (
-														<>
-															<span className="stake_theme font-weight-bold">
-																{STRINGS['CEFI_STAKE.DURATION_LABEL']}:
-															</span>{' '}
-															{pool.duration}{' '}
-															{STRINGS['CEFI_STAKE.DAYS'].toLowerCase()}
-														</>
-													) : (
-														'Perpetual Staking'
-													)}
-												</div>
-												<div>
-													<span className="stake_theme font-weight-bold">
-														{STRINGS['CEFI_STAKE.APY_LABEL']}:
-													</span>{' '}
-													{pool.apy}%
-												</div>
-												<div>-</div>
-												<div>
-													<span className="stake_theme font-weight-bold">
-														{STRINGS['CEFI_STAKE.MIN']}:
-													</span>{' '}
-													{pool.min_amount} {pool.currency.toUpperCase()}
-												</div>
-												<div>
-													<span className="stake_theme font-weight-bold">
-														{STRINGS['CALCULATE_MAX']}:
-													</span>{' '}
-													{pool.max_amount} {pool.currency.toUpperCase()}
-												</div>
-												{pool?.reward_currency && (
-													<div className="stake_theme">
-														{STRINGS['CEFI_STAKE.REWARDS_IN_LABEL']}{' '}
-														<span className="font-weight-bold">
-															{pool.reward_currency.toUpperCase()}
-														</span>
+											return (
+												<div className="stakepool_card">
+													<div className="stakepool_card_icon">
+														<img
+															src={coins?.[pool?.currency]?.logo}
+															width={30}
+															height={30}
+															alt=""
+														/>
 													</div>
-												)}
-												<div>
-													<AntBtn
-														className={`stakepool_button ${
-															alreadyStaked
-																? 'stake-half-opacity'
-																: 'stake-opacity'
-														}`}
-														onClick={() => {
-															setReadBeforeAction(true);
-															setSelectedPool(pool);
-														}}
-														disabled={alreadyStaked}
-													>
-														{' '}
-														{alreadyStaked ? 'STAKED' : 'STAKE'}{' '}
-													</AntBtn>
+													{isMobile ? (
+														<h2 className="stake_theme">{pool.name}</h2>
+													) : (
+														<h3 className="stake_theme">{pool.name}</h3>
+													)}
+													<div>
+														{pool.duration ? (
+															<>
+																<span className="stake_theme font-weight-bold">
+																	{STRINGS['CEFI_STAKE.DURATION_LABEL']}:
+																</span>{' '}
+																{pool.duration}{' '}
+																{STRINGS['CEFI_STAKE.DAYS'].toLowerCase()}
+															</>
+														) : (
+															'Perpetual Staking'
+														)}
+													</div>
+													<div>
+														<span className="stake_theme font-weight-bold">
+															{STRINGS['CEFI_STAKE.APY_LABEL']}:
+														</span>{' '}
+														{pool.apy}%
+													</div>
+													<div>-</div>
+													<div>
+														<span className="stake_theme font-weight-bold">
+															{STRINGS['CEFI_STAKE.MIN']}:
+														</span>{' '}
+														{pool.min_amount} {pool.currency.toUpperCase()}
+													</div>
+													<div>
+														<span className="stake_theme font-weight-bold">
+															{STRINGS['CALCULATE_MAX']}:
+														</span>{' '}
+														{pool.max_amount} {pool.currency.toUpperCase()}
+													</div>
+													{pool?.reward_currency && (
+														<div className="stake_theme">
+															{STRINGS['CEFI_STAKE.REWARDS_IN_LABEL']}{' '}
+															<span className="font-weight-bold">
+																{pool.reward_currency.toUpperCase()}
+															</span>
+														</div>
+													)}
+													<div>
+														<AntBtn
+															className={`stakepool_button ${
+																alreadyStaked
+																	? 'stake-half-opacity'
+																	: 'stake-opacity'
+															}`}
+															onClick={() => {
+																setReadBeforeAction(true);
+																setSelectedPool(pool);
+															}}
+															disabled={alreadyStaked}
+														>
+															{' '}
+															{alreadyStaked ? 'STAKED' : 'STAKE'}{' '}
+														</AntBtn>
+													</div>
 												</div>
-											</div>
-										);
-									})}
+											);
+										})
+								) : (
+									<Loader relative={true} background={false} />
+								)}
 							</div>
 						</div>
 					</TabPane>
@@ -1539,8 +1579,25 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 						<div className="stake_table_theme mystakes-tab">
 							<div className="mystakes-content-wrapper">
 								<div className="w-100">
-									<div className="stake_theme font-weight-bold">
+									<div
+										className={
+											isMobile
+												? 'stake_theme font-weight-bold d-flex justify-content-between'
+												: 'stake_theme font-weight-bold'
+										}
+									>
 										{STRINGS['CEFI_STAKE.ALL_STAKING_EVENTS']}
+										{isMobile && (
+											<ActionNotification
+												stringId="REFRESH"
+												text={STRINGS['REFRESH']}
+												iconId="REFRESH"
+												iconPath={STATIC_ICONS['REFRESH']}
+												className="blue-icon refresh-link"
+												onClick={() => requestExchangeStakers()}
+												disable={isLoading}
+											/>
+										)}
 									</div>
 									<div>{STRINGS['CEFI_STAKE.MONITOR_ACTIVE_STAKES']}</div>
 									<div className={`mt-4 ${isMobile && 'mb-4'}`}>
@@ -1550,6 +1607,15 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 								{!isMobile && (
 									<div className="estimated-total-stake">
 										<div>
+											<ActionNotification
+												stringId="REFRESH"
+												text={STRINGS['REFRESH']}
+												iconId="REFRESH"
+												iconPath={STATIC_ICONS['REFRESH']}
+												className="blue-icon refresh-link mb-3 d-flex justify-content-end"
+												onClick={() => requestExchangeStakers()}
+												disable={isLoading}
+											/>
 											<div className="mb-4">
 												{userStakeData?.length > 0 && (
 													<div>
@@ -1646,13 +1712,18 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 											...['cefi_stake', isMobile ? 'mobileZoom' : '']
 										)}
 										columns={columns}
-										dataSource={userStakeData?.filter((staker) => {
-											if (tabOption === 'active') {
-												return ['staking', 'unstaking'].includes(staker.status);
-											} else {
-												return staker.status === 'closed';
-											}
-										})}
+										dataSource={
+											!isLoading &&
+											userStakeData?.filter((staker) => {
+												if (tabOption === 'active') {
+													return ['staking', 'unstaking'].includes(
+														staker.status
+													);
+												} else {
+													return staker.status === 'closed';
+												}
+											})
+										}
 										expandRowByClick={true}
 										rowKey={(data) => {
 											return data.id;

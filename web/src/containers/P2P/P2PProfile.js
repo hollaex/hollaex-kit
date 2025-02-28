@@ -288,12 +288,12 @@ const P2PProfile = ({
 
 									{myMethods
 										?.map((x) => x.details)
-										.map((method) => {
+										.map((method, index) => {
 											const info = myMethods.find(
 												(x) => x?.details?.system_name === method?.system_name
 											);
 											return (
-												<div className="payment-fields">
+												<div className="payment-fields" key={index}>
 													<div
 														className="whiteTextP2P field pay-field"
 														onClick={() => {
@@ -422,7 +422,7 @@ const P2PProfile = ({
 								>
 									{myDeals.map((deal, index) => {
 										return (
-											<tr className="table-row">
+											<tr className="table-row" key={index}>
 												{isLoading ? (
 													<Loading index={index} />
 												) : (
@@ -486,7 +486,10 @@ const P2PProfile = ({
 
 					{selectedMethod?.fields?.map((x, index) => {
 						return (
-							<div className="whiteTextP2P selected-payment-method-field-wrapper">
+							<div
+								className="whiteTextP2P selected-payment-method-field-wrapper"
+								key={index}
+							>
 								<div className="payment-method-title">{x?.name}:</div>
 								<Input
 									className="custom-input-field"
@@ -650,9 +653,12 @@ const P2PProfile = ({
 							</Select>
 						</div>
 
-						{customFields?.map((field) => {
+						{customFields?.map((field, index) => {
 							return (
-								<div className="new-payment-details-input-wrapper mb-3">
+								<div
+									className="new-payment-details-input-wrapper mb-3"
+									key={index}
+								>
 									<div className="font-weight-bold fs-16">
 										{STRINGS['P2P.FIELD']}
 										{field.id}#

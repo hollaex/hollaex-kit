@@ -57,8 +57,8 @@ const WithdrawalLimits = ({
 								<div>
 									<div>
 										<Select
-											defaultValue={selectedLevel}
-											value={selectedLevel}
+											defaultValue={selectedLevel?.toString()}
+											value={selectedLevel?.toString()}
 											style={{ width: '20rem' }}
 											className="coin-select custom-select-input-style elevated"
 											dropdownClassName="custom-select-style"

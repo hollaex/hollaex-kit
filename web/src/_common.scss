@@ -388,3 +388,9 @@ table th {
 .text-decoration-underline {
 	text-decoration: underline;
 }
+
+.refresh-link {
+	position: static !important;
+	top: unset;
+	right: unset;
+}

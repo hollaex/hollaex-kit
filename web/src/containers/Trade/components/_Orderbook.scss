@@ -224,6 +224,13 @@
 		}
 	}
 
+	.trade_orderbook-asks > .loader-wrapper:first-child,
+	.trade_orderbook-bids > .loader-wrapper:first-child,
+	.trade_orderbook-asks > .loader-wrapper:hover,
+	.trade_orderbook-bids > .loader-wrapper:hover {
+		background-color: transparent !important;
+	}
+
 	.trade_orderbook-bids {
 		color: $trade-bids-color-main;
 

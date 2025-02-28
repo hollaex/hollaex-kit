@@ -5,7 +5,7 @@ import { isMobile } from 'react-device-detect';
 import { withRouter } from 'react-router';
 import { bindActionCreators } from 'redux';
 
-import { SearchBox } from 'components';
+import { ActionNotification, SearchBox } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
 import STRINGS from 'config/localizedStrings';
 import { DEFAULT_COIN_DATA } from 'config/constants';
@@ -14,6 +14,7 @@ import { EditWrapper } from 'components';
 import { MarketsSelector } from 'containers/Trade/utils';
 import MarketList from 'containers/TradeTabs/components/MarketList';
 import { changeSparkLineChartData } from 'actions/appActions';
+import { STATIC_ICONS } from 'config/icons';
 
 class Markets extends Component {
 	constructor(props) {
@@ -25,17 +26,12 @@ class Markets extends Component {
 			page: 0,
 			count: 0,
 			searchValue: '',
+			isLoading: true,
 		};
 	}
 
 	componentDidMount() {
-		const { pairs } = this.props;
-		const { page, searchValue } = this.state;
-		this.constructData(page, searchValue);
-
-		getSparklines(Object.keys(pairs)).then((chartData) =>
-			this.props.changeSparkLineChartData(chartData)
-		);
+		this.getMarketsList();
 	}
 
 	componentDidUpdate(prevProps) {
@@ -46,6 +42,21 @@ class Markets extends Component {
 			this.constructData(page, searchValue);
 		}
 	}
+
+	getMarketsList = async () => {
+		const { pairs } = this.props;
+		const { page, searchValue } = this.state;
+		try {
+			this.setState({ isLoading: true });
+			this.constructData(page, searchValue);
+			await getSparklines(Object.keys(pairs)).then((chartData) =>
+				this.props.changeSparkLineChartData(chartData)
+			);
+			this.setState({ isLoading: false });
+		} catch (error) {
+			console.error(error);
+		}
+	};
 
 	constructData = (page, searchValue) => {
 		const { pageSize } = this.state;
@@ -140,7 +151,7 @@ class Markets extends Component {
 		return (
 			<div>
 				{showContent && (
-					<div>
+					<div className="d-flex justify-content-between">
 						<EditWrapper stringId="SUMMARY_MARKETS.VISIT_COIN_INFO_PAGE">
 							{STRINGS.formatString(
 								STRINGS['SUMMARY_MARKETS.VISIT_COIN_INFO_PAGE'],
@@ -149,6 +160,15 @@ class Markets extends Component {
 								</Link>
 							)}
 						</EditWrapper>
+						<ActionNotification
+							stringId="REFRESH"
+							text={STRINGS['REFRESH']}
+							iconId="REFRESH"
+							iconPath={STATIC_ICONS['REFRESH']}
+							className="blue-icon refresh-link mr-3"
+							onClick={() => this.getMarketsList()}
+							disable={this.state.isLoading}
+						/>
 					</div>
 				)}
 				{showSearch && (
@@ -167,7 +187,7 @@ class Markets extends Component {
 				)}
 
 				<MarketList
-					loading={!data.length}
+					loading={this.state.isLoading}
 					markets={data}
 					chartData={sparkLineChartData}
 					handleClick={this.handleClick}

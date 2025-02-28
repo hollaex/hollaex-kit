@@ -7,7 +7,7 @@ import { isMobile } from 'react-device-detect';
 import MarketCards from './components/MarketCards';
 import MarketList from './components/MarketList';
 import Toggle from './components/Toggle';
-import { SearchBox } from 'components';
+import { ActionNotification, SearchBox } from 'components';
 import { DEFAULT_COIN_DATA } from 'config/constants';
 import STRINGS from 'config/localizedStrings';
 import { MARKET_OPTIONS } from 'config/options';
@@ -15,6 +15,7 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import { EditWrapper } from 'components';
 import Image from 'components/Image';
 import { MarketsSelector } from 'containers/Trade/utils';
+import { STATIC_ICONS } from 'config/icons';
 
 class AddTradeTab extends Component {
 	state = {
@@ -26,16 +27,11 @@ class AddTradeTab extends Component {
 		selected: isMobile ? MARKET_OPTIONS[0].value : MARKET_OPTIONS[0].value,
 		options: MARKET_OPTIONS,
 		chartData: {},
+		isLoading: true,
 	};
 
 	componentDidMount() {
-		const { pairs } = this.props;
-		const { page, searchValue } = this.state;
-		this.goToPage(page, searchValue);
-
-		getSparklines(Object.keys(pairs)).then((chartData) =>
-			this.setState({ chartData })
-		);
+		this.getMarketDetails();
 		const value = localStorage.getItem('isMarketView');
 		if (value) {
 			this.setState({ selected: value });
@@ -50,6 +46,21 @@ class AddTradeTab extends Component {
 			this.goToPage(page, searchValue);
 		}
 	}
+
+	getMarketDetails = async () => {
+		const { pairs } = this.props;
+		const { page, searchValue } = this.state;
+		try {
+			this.setState({ isLoading: true });
+			this.goToPage(page, searchValue);
+			await getSparklines(Object.keys(pairs)).then((chartData) =>
+				this.setState({ chartData })
+			);
+			this.setState({ isLoading: false });
+		} catch (error) {
+			console.error(error);
+		}
+	};
 
 	goToPage = (page, searchValue) => {
 		const { pageSize } = this.state;
@@ -189,9 +200,18 @@ class AddTradeTab extends Component {
 								<span className="trade_tabs-link link-separator">
 									<Link to="/account">{STRINGS['ACCOUNTS.TITLE']}</Link>
 								</span>
-								<span className="trade_tabs-link">
+								<span className="trade_tabs-link link-separator">
 									<Link to="/wallet">{STRINGS['WALLET_TITLE']}</Link>
 								</span>
+								<ActionNotification
+									stringId="REFRESH"
+									text={STRINGS['REFRESH']}
+									iconId="REFRESH"
+									iconPath={STATIC_ICONS['REFRESH']}
+									className="blue-icon refresh-link trade_tabs-link"
+									onClick={() => this.getMarketDetails()}
+									disable={this.state.isLoading}
+								/>
 							</div>
 						)}
 						<div className="d-flex align-items-center justify-content-between">
@@ -216,7 +236,7 @@ class AddTradeTab extends Component {
 						<Fragment>
 							{selected === options[0].value ? (
 								<MarketList
-									loading={!data.length ? true : false}
+									loading={this.state.isLoading}
 									markets={data}
 									chartData={chartData}
 									handleClick={handleClick}

@@ -596,25 +596,28 @@ class TransactionsHistory extends Component {
 			selectedAsset = '',
 			params: { currency },
 		} = this.props;
-		const filterForWallet = withdrawals.data.filter((item, index) => index < 5);
-		let count = 0;
-		const filterForDepositWallet = deposits?.data?.filter((item, index) => {
-			if (selectedAsset?.length > 0) {
-				if (item?.currency === currency && count < 5) {
-					count++;
-					return item;
+
+		const filterTransactions = (transactions = []) => {
+			let count = 0;
+			return transactions?.data?.filter((item, index) => {
+				if (selectedAsset?.length > 0) {
+					return item?.currency === currency && count++ < 5;
 				}
-			}
-			return selectedAsset === '' && index < 5;
-		});
+				return selectedAsset === '' && index < 5;
+			});
+		};
+
+		const filterForWallet = filterTransactions(withdrawals);
+		const filterForDepositWallet = filterTransactions(deposits);
+
 		const withdrawalsForWallet = {
 			...withdrawals,
-			count: 5,
+			count: filterForWallet?.length,
 			data: filterForWallet,
 		};
 		const depositsForWallet = {
 			...deposits,
-			count: 5,
+			count: filterForDepositWallet?.length,
 			data: filterForDepositWallet,
 		};
 		const { headers, activeTab, filters, jumpToPage, params } = this.state;

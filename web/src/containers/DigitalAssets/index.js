@@ -2,13 +2,22 @@ import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { isMobile } from 'react-device-detect';
+import { bindActionCreators } from 'redux';
 
 import withConfig from 'components/ConfigProvider/withConfig';
 import AssetsWrapper from './components/AssetsWrapper';
 import STRINGS from 'config/localizedStrings';
 import { EditWrapper, IconTitle } from 'components';
+import { ActionNotification } from 'hollaex-web-lib';
+import { STATIC_ICONS } from 'config/icons';
+import { setIsRefreshAssets } from 'actions/appActions';
 
-const DigitalAssets = ({ pair, icons: ICONS, showQuickTrade }) => {
+const DigitalAssets = ({
+	pair,
+	icons: ICONS,
+	showQuickTrade,
+	setIsRefreshAssets,
+}) => {
 	return (
 		<div className="digital-market-wrapper">
 			{isMobile ? (
@@ -57,6 +66,14 @@ const DigitalAssets = ({ pair, icons: ICONS, showQuickTrade }) => {
 							</div>
 						</div>
 						<div className="link-container">
+							<ActionNotification
+								stringId="REFRESH"
+								text={STRINGS['REFRESH']}
+								iconId="REFRESH"
+								iconPath={STATIC_ICONS['REFRESH']}
+								className="blue-icon refresh-link link-1"
+								onClick={() => setIsRefreshAssets(true)}
+							/>
 							<Link className="link-1" to="/wallet/deposit">
 								<EditWrapper stringId="ACCORDIAN.DEPOSIT">
 									{STRINGS['ACCORDIAN.DEPOSIT']}
@@ -90,4 +107,11 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps)(withConfig(DigitalAssets));
+const mapDispatchToProps = (dispatch) => ({
+	setIsRefreshAssets: bindActionCreators(setIsRefreshAssets, dispatch),
+});
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withConfig(DigitalAssets));

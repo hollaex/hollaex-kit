@@ -497,7 +497,10 @@ class Form extends Component {
 							)}
 						</Dialog>
 					</form>
-					<TransactionsHistory isFromWallet={true} />
+					<TransactionsHistory
+						isFromWallet={true}
+						selectedAsset={getWithdrawCurrency}
+					/>
 				</SmartTarget>
 			);
 		} else if (coinObject && coinObject.type === 'fiat') {

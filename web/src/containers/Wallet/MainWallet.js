@@ -307,6 +307,10 @@ class Wallet extends Component {
 		this.handleBalanceHistory(false);
 	};
 
+	onHandleRefresh = () => {
+		this.props.setPricesAndAsset(this.props.balance, this.props.coins);
+	};
+
 	render() {
 		const { sections, activeTab, mobileTabs, showDustSection } = this.state;
 		const { icons: ICONS, router, assets, isFetching, pairs } = this.props;
@@ -360,7 +364,12 @@ class Wallet extends Component {
 								<DustSection goToWallet={this.goToWallet} />
 							) : (
 								<>
-									<HeaderSection icons={ICONS} />
+									<HeaderSection
+										icons={ICONS}
+										onHandleRefresh={this.onHandleRefresh}
+										isLoading={isFetching}
+										activeBalanceHistory={this.state.activeBalanceHistory}
+									/>
 									<NotLoggedIn>
 										{!this.state.activeBalanceHistory ? (
 											<Accordion sections={sections} showHeader={false} />
@@ -371,6 +380,7 @@ class Wallet extends Component {
 												loading={isFetching}
 												navigate={this.goToPage}
 												pairs={pairs}
+												onHandleRefresh={this.onHandleRefresh}
 											/>
 										)}
 									</NotLoggedIn>

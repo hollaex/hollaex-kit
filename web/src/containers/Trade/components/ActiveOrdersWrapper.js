@@ -82,12 +82,15 @@ class OrdersWrapper extends Component {
 			activeOrdersMarket,
 			setActiveOrdersMarket,
 			goToTransactionsHistory,
+			onHandleRefresh,
+			key,
 		} = this.props;
 		const { cancelDelayData, showCancelAllModal } = this.state;
 
 		return (
 			<Fragment>
 				<TradeBlock
+					key={key}
 					title={`${STRINGS['TOOLS.OPEN_ORDERS']} (${activeOrders.length})`}
 					action={
 						isLoggedIn() ? (
@@ -107,6 +110,7 @@ class OrdersWrapper extends Component {
 					stringId="TOOLS.OPEN_ORDERS"
 					tool={tool}
 					titleClassName="mb-4"
+					onHandleRefresh={onHandleRefresh}
 				>
 					<NotLoggedIn
 						placeholderKey="NOT_LOGGEDIN.TXT_1"
@@ -118,6 +122,7 @@ class OrdersWrapper extends Component {
 								onChange={setActiveOrdersMarket}
 							/>
 							<ActiveOrders
+								key={key}
 								pageSize={activeOrders.length}
 								activeOrdersMarket={activeOrdersMarket}
 								pairs={pairs}

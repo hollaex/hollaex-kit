@@ -4,7 +4,8 @@ import STRINGS from 'config/localizedStrings';
 import { FieldError } from 'components/Form/FormFields/FieldWrapper';
 import ApiKeyContainer from './ApiKey';
 import DumbField from 'components/Form/FormFields/DumbField';
-import { EditWrapper } from 'components';
+import { EditWrapper, ActionNotification } from 'components';
+import { STATIC_ICONS } from 'config/icons';
 
 const NoLevel = () => (
 	<div className="mt-4 mb-4 apply_rtl">
@@ -14,8 +15,21 @@ const NoLevel = () => (
 	</div>
 );
 
-export const NoOtpEnabled = ({ openOtp }) => (
-	<div>
+const Refresh = ({ requestTokens }) => {
+	return (
+		<ActionNotification
+			stringId="REFRESH"
+			text={STRINGS['REFRESH']}
+			iconId="REFRESH"
+			iconPath={STATIC_ICONS['REFRESH']}
+			className="blue-icon refresh-link"
+			onClick={requestTokens}
+		/>
+	);
+};
+
+export const NoOtpEnabled = ({ openOtp, requestTokens }) => (
+	<div className="no-otp-container">
 		<div className="mb-2">
 			<EditWrapper stringId="DEVELOPER_SECTION.INFORMATION_TEXT">
 				{STRINGS['DEVELOPER_SECTION.INFORMATION_TEXT']}
@@ -29,16 +43,19 @@ export const NoOtpEnabled = ({ openOtp }) => (
 				className="input_block-error-wrapper apply_rtl warning_text"
 			/>
 		</div>
-		<div className="mb-4 mt-4 blue-link pointer" onClick={openOtp}>
-			<EditWrapper stringId="DEVELOPER_SECTION.ENABLE_2FA">
-				{STRINGS['DEVELOPER_SECTION.ENABLE_2FA']}
-			</EditWrapper>
+		<div className="mb-4 mt-4 d-flex justify-content-between">
+			<span className="blue-link pointer" onClick={openOtp}>
+				<EditWrapper stringId="DEVELOPER_SECTION.ENABLE_2FA">
+					{STRINGS['DEVELOPER_SECTION.ENABLE_2FA']}
+				</EditWrapper>
+			</span>
+			<Refresh requestTokens={requestTokens} />
 		</div>
 	</div>
 );
 
-export const OtpEnabled = ({ fetching, openDialog }) => (
-	<div>
+export const OtpEnabled = ({ fetching, openDialog, requestTokens }) => (
+	<div className="otp-enabled-container">
 		<div className="mb-2">
 			<EditWrapper stringId="DEVELOPER_SECTION.INFORMATION_TEXT">
 				{STRINGS['DEVELOPER_SECTION.INFORMATION_TEXT']}
@@ -50,12 +67,13 @@ export const OtpEnabled = ({ fetching, openDialog }) => (
 			</EditWrapper>
 		</div>
 		{!fetching && (
-			<div className="my-4">
+			<div className="my-4 d-flex justify-content-between">
 				<span className="blue-link pointer" onClick={openDialog}>
 					<EditWrapper stringId="DEVELOPER_SECTION.GENERATE_KEY">
 						{STRINGS['DEVELOPER_SECTION.GENERATE_KEY']}
 					</EditWrapper>
 				</span>
+				<Refresh requestTokens={requestTokens} />
 			</div>
 		)}
 	</div>

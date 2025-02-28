@@ -583,8 +583,9 @@ class AppBar extends Component {
 						<div id="trade-nav-container" className="mx-2">
 							{languageFormValue
 								?.filter(({ value }) => value === activeLanguage)
-								?.map(({ value, icon, label }) => (
+								?.map(({ value, icon, label }, index) => (
 									<div
+										key={index}
 										className="language_option"
 										onClick={() => this.onHandleOpenPopup()}
 									>
@@ -627,6 +628,16 @@ class AppBar extends Component {
 								onClick={() => router.push('/login')}
 							>
 								{STRINGS['LOGIN_TEXT'].toUpperCase()}
+							</div>
+							<div
+								className={
+									activePath === '/details'
+										? 'active-menu app-bar-search-icon mx-3'
+										: 'app-bar-search-icon mx-3'
+								}
+								onClick={() => onMenuChange('/details')}
+							>
+								<SearchOutlined />
 							</div>
 						</div>
 					)}

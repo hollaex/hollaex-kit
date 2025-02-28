@@ -219,7 +219,7 @@ const PaymentMethods = ({ user }) => {
 		<div className="admin-user-container">
 			<div style={{ color: '#ccc' }}>
 				Below are details of payment methods belonging to this user. These
-				accounts can be used for P2P trading.
+				accounts can be used for P2P trading and other fiat related activities.
 			</div>
 			<div>
 				<div style={{ marginTop: 20 }}></div>

@@ -94,7 +94,7 @@ const AccountTab = ({
 					)}
 				</div>
 				<EditWrapper stringId="ACCOUNT_TEXT">
-					{STRINGS['ACCOUNT_TEXT']}
+					<span className="account-title">{STRINGS['ACCOUNT_TEXT']}</span>
 				</EditWrapper>
 				<span className="ml-1 app-bar-dropdown-icon">
 					{!isIconActive ? <CaretDownFilled /> : <CaretUpFilled />}
@@ -129,6 +129,13 @@ const AccountList = ({
 	}, [window.location.pathname]);
 
 	const accountOptions = [
+		{
+			icon: 'WALLET_OPTION_ICON',
+			title: 'ACCOUNTS.TAB_WALLET',
+			description: 'DESKTOP_NAVIGATION.WALLET_DESCRIPTION',
+			path: '/wallet',
+			isDisplay: true,
+		},
 		{
 			icon: 'OPTION_2FA_ICON',
 			title: 'ACCOUNTS.TAB_SECURITY',

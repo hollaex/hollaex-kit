@@ -5,6 +5,7 @@ import { reset } from 'redux-form';
 import { withRouter } from 'react-router';
 import { isMobile } from 'react-device-detect';
 import { CloseOutlined, SearchOutlined } from '@ant-design/icons';
+import { throttle } from 'lodash';
 
 import AssetsCards from './AssetsCards';
 import STRINGS from 'config/localizedStrings';
@@ -16,7 +17,7 @@ import {
 	countDecimals,
 } from 'utils/currency';
 import { SearchBox } from 'components';
-import { setCoinsData } from 'actions/appActions';
+import { setCoinsData, setIsRefreshAssets } from 'actions/appActions';
 import { quicktradePairSelector } from 'containers/QuickTrade/components/utils';
 import { getMiniCharts } from 'actions/chartAction';
 
@@ -164,17 +165,29 @@ class AssetsWrapper extends Component {
 		setCoinsData(coinsData);
 	};
 
-	async componentDidMount() {
+	getMinicharData = async () => {
 		const { coins } = this.props;
+		const coinsList = Object.keys(coins).map((val) => coins[val].code);
+		try {
+			this.setState({ isLoading: true });
+			await getMiniCharts(coinsList.toLocaleString()).then((chartValues) => {
+				this.setState({ chartData: chartValues });
+				this.getCoinsData(coinsList, chartValues);
+			});
+			this.setState({ isLoading: false });
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
+	throttledGetMinicharData = throttle(this.getMinicharData, 1000);
+
+	async componentDidMount() {
 		const { page, searchValue } = this.state;
 		this.constructData(page, searchValue);
 
-		const coinsList = Object.keys(coins).map((val) => coins[val].code);
-
-		getMiniCharts(coinsList.toLocaleString()).then((chartValues) => {
-			this.setState({ chartData: chartValues });
-			this.getCoinsData(coinsList, chartValues);
-		});
+		this.getMinicharData();
+		this.interval = setInterval(this.throttledGetMinicharData, 60000);
 		await onHandleInitialLoading(15 * 100);
 		this.setState({ isLoading: false });
 		window.addEventListener('keydown', this.handleKeyPress);
@@ -190,6 +203,7 @@ class AssetsWrapper extends Component {
 	}
 
 	componentWillUnmount() {
+		clearInterval(this.interval);
 		window.removeEventListener('keydown', this.handleKeyPress);
 	}
 
@@ -368,6 +382,16 @@ class AssetsWrapper extends Component {
 			STRINGS['DEPOSIT_STATUS.NEW'],
 		];
 
+		if (this.props.isRefreshAssets) {
+			this.getMinicharData();
+			this.props.setIsRefreshAssets(false);
+			this.setState({
+				selectedButton: !isMobile
+					? STRINGS['DIGITAL_ASSETS.CARDS.MARKET_CAP']
+					: '',
+			});
+		}
+
 		return (
 			<div>
 				<AssetsCards loading={isLoading} />
@@ -512,11 +536,13 @@ const mapStateToProps = (state, props) => ({
 	quicktradePairs: quicktradePairSelector(state),
 	coinsData: state.app.coinsData,
 	pinned_assets: state.app.pinned_assets,
+	isRefreshAssets: state.app.isRefreshAssets,
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	setCoinsData: bindActionCreators(setCoinsData, dispatch),
 	dispatch,
+	setIsRefreshAssets: bindActionCreators(setIsRefreshAssets, dispatch),
 });
 
 export default connect(

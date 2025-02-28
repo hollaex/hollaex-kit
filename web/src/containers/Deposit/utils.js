@@ -273,7 +273,11 @@ const RenderContentForm = ({
 						</div>
 					)}
 				</div>
-				<TransactionsHistory isFromWallet={true} isDepositFromWallet={true} />
+				<TransactionsHistory
+					isFromWallet={true}
+					isDepositFromWallet={true}
+					selectedAsset={depositCurrency}
+				/>
 			</SmartTarget>
 		);
 	} else if (coinObject && coinObject.type === 'fiat') {

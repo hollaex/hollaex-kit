@@ -199,6 +199,7 @@ const icons = {
 	NAV_BAR_ANNOUNCEMENT: '/assets/images/nav-bar-ann-feature.svg',
 	POPUP_ANNOUNCEMENT: '/assets/images/pop-up-ann-feature.svg',
 	TOP_BAR_ANNOUNCEMENT: '/assets/images/top-bar-ann-feature.svg',
+	CHAIN_TRADING: '/assets/images/chain-trading.svg',
 };
 
 export default icons;

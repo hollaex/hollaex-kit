@@ -1,12 +1,14 @@
 import React from 'react';
 import classnames from 'classnames';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import { Loading } from 'containers/DigitalAssets/components/utils';
 
 const DisplayTable = ({
 	headers,
 	data,
 	rowClassName,
 	cssTransitionClassName = '',
+	loading = false,
 }) => {
 	return (
 		<div
@@ -56,7 +58,11 @@ const DisplayTable = ({
 											key={`${rowIndex}-${cellIndex}`}
 											className={classnames('f-1 text_overflow', className)}
 										>
-											{renderCell(row, `${rowIndex}-${cellIndex}`)}
+											{!loading ? (
+												renderCell(row, `${rowIndex}-${cellIndex}`)
+											) : (
+												<Loading index={rowIndex} />
+											)}
 										</div>
 									))}
 								</div>

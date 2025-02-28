@@ -13,6 +13,7 @@ class MarketRow extends Component {
 			loading,
 			index,
 			isAsset = false,
+			pinned_markets = [],
 		} = this.props;
 
 		const {
@@ -35,7 +36,11 @@ class MarketRow extends Component {
 		return (
 			<tr
 				id={`market-list-row-${key}`}
-				className="table-row table-bottom-border"
+				className={
+					pinned_markets?.includes(key)
+						? 'table-row table-bottom-border highlighed-row'
+						: 'table-row table-bottom-border'
+				}
 				onClick={() => handleClick(key)}
 			>
 				<td className="sticky-col">
@@ -89,15 +94,26 @@ class MarketRow extends Component {
 						)}
 					</td>
 				)}
-				<td>
-					{isBrokerage ? (
-						<EditWrapper stringId="DIGITAL_ASSETS.BROKERAGE">
-							{STRINGS['DIGITAL_ASSETS.BROKERAGE']}
-						</EditWrapper>
-					) : (
-						<PriceChange market={market} key={key} />
-					)}
-				</td>
+				{!loading ? (
+					<td>
+						{isBrokerage ? (
+							<EditWrapper stringId="DIGITAL_ASSETS.BROKERAGE">
+								{STRINGS['DIGITAL_ASSETS.BROKERAGE']}
+							</EditWrapper>
+						) : (
+							<PriceChange market={market} key={key} />
+						)}
+					</td>
+				) : (
+					<td>
+						<div
+							className="loading-anime"
+							style={{
+								animationDelay: `.${index + 1}s`,
+							}}
+						/>
+					</td>
+				)}
 				{!isAsset && (
 					<td>
 						{!loading ? (
@@ -157,7 +173,7 @@ class MarketRow extends Component {
 						<EditWrapper stringId="DIGITAL_ASSETS.BROKERAGE">
 							{STRINGS['DIGITAL_ASSETS.BROKERAGE']}
 						</EditWrapper>
-					) : (
+					) : !loading ? (
 						<SparkLine
 							data={
 								!chartData[key] ||
@@ -168,6 +184,13 @@ class MarketRow extends Component {
 									: chartData[key]
 							}
 							containerProps={{ style: { height: '100%', width: '100%' } }}
+						/>
+					) : (
+						<div
+							className="loading-anime"
+							style={{
+								animationDelay: `.${index + 1}s`,
+							}}
 						/>
 					)}
 				</td>

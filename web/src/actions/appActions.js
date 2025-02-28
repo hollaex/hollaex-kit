@@ -130,6 +130,8 @@ export const SET_ACTIVE_SELECTED_ANNOUNCEMENT =
 export const SET_EXCHANGE_TIMEZONE = 'SET_EXCHANGE_TIMEZONE';
 export const SET_IS_ADMIN_ANNOUNCEMENT_FEATURE =
 	'SET_IS_ADMIN_ANNOUNCEMENT_FEATURE';
+export const SET_IS_REFRESH_ASSETS = 'SET_IS_REFRESH_ASSETS';
+export const SET_MARKET_REFRESH = 'SET_MARKET_REFRESH';
 
 export const SORT = {
 	VOL: 'volume',
@@ -890,6 +892,24 @@ export const setIsAdminAnnouncementFeature = (isAdminAnnouncementFeature) => {
 		type: SET_IS_ADMIN_ANNOUNCEMENT_FEATURE,
 		payload: {
 			isAdminAnnouncementFeature,
+		},
+	};
+};
+
+export const setIsRefreshAssets = (isRefreshAssets) => {
+	return {
+		type: SET_IS_REFRESH_ASSETS,
+		payload: {
+			isRefreshAssets,
+		},
+	};
+};
+
+export const setMarketRefresh = (isMarketRefresh) => {
+	return {
+		type: SET_MARKET_REFRESH,
+		payload: {
+			isMarketRefresh,
 		},
 	};
 };

@@ -37,6 +37,12 @@
 			opacity: 0.7;
 		}
 	}
+	.defi-content-wrapper {
+		display: flex;
+		align-items: center;
+		gap: 2%;
+		justify-content: flex-end;
+	}
 }
 
 .layout-mobile {

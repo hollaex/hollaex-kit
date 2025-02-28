@@ -131,9 +131,13 @@ class ApiKey extends Component {
 		return (
 			<div>
 				{otp_enabled ? (
-					<OtpEnabled fetching={fetching} openDialog={this.openDialog} />
+					<OtpEnabled
+						fetching={fetching}
+						requestTokens={this.requestTokens}
+						openDialog={this.openDialog}
+					/>
 				) : (
-					<NoOtpEnabled openOtp={openOtp} />
+					<NoOtpEnabled requestTokens={this.requestTokens} openOtp={openOtp} />
 				)}
 				<div>
 					{!fetching ? (
@@ -166,7 +170,9 @@ class ApiKey extends Component {
 							/>
 						)
 					) : (
-						otp_enabled && <Loader relative={true} background={false} />
+						(fetching || otp_enabled) && (
+							<Loader relative={true} background={false} />
+						)
 					)}
 				</div>
 				<Dialog

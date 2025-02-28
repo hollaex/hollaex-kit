@@ -1,9 +1,10 @@
 import React from 'react';
+import { browserHistory } from 'react-router';
 
-import { Coin, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
-import { formatPercentage } from 'utils/currency';
 import withConfig from 'components/ConfigProvider/withConfig';
+import { Coin, EditWrapper } from 'components';
+import { formatPercentage } from 'utils/currency';
 
 const getMakerRow = (
 	pairs,
@@ -13,7 +14,8 @@ const getMakerRow = (
 	index,
 	discount,
 	tiers,
-	ICONS
+	ICONS,
+	quicktradePairs
 ) => {
 	const { display_name, icon_id } = pairs[pair];
 	const { fees: { maker, taker } = {} } = tiers[level] || {};
@@ -26,11 +28,25 @@ const getMakerRow = (
 	const takersData = discount
 		? takersFee - (takersFee * discount) / 100
 		: takersFee;
+	const tradePair = display_name?.toLowerCase()?.split('/')?.join('-');
+
+	const onHandleNavigate = (tradePair) => {
+		const path =
+			quicktradePairs[pair]?.type === 'pro'
+				? `/trade/${tradePair}`
+				: `/quick-trade/${tradePair}`;
+
+		browserHistory.push(path);
+	};
+
 	return (
 		<tr className="table-row table-bottom-border" key={index}>
 			<td className="table-icon td-fit" />
 			<td className="td-name td-fit">
-				<div className="d-flex align-items-center wallet-hover cursor-pointer">
+				<div
+					className="d-flex align-items-center wallet-hover cursor-pointer"
+					onClick={() => onHandleNavigate(tradePair)}
+				>
 					<Coin iconId={icon_id} />
 					<div className="px-2">{display_name}</div>
 				</div>
@@ -56,20 +72,48 @@ const getMakerRow = (
 // 	);
 // };
 
-const getRows = (pairs, level, coins, discount, tiers, icons, search) => {
+const getRows = (
+	pairs,
+	level,
+	coins,
+	discount,
+	tiers,
+	icons,
+	search,
+	quicktradePairs
+) => {
 	const rowData = [];
 	Object.keys(pairs)
 		.filter((pair) => !search || (search && pair.includes(search)))
 		.map((pair, index) => {
 			rowData.push(
-				getMakerRow(pairs, coins, pair, level, index, discount, tiers, icons)
+				getMakerRow(
+					pairs,
+					coins,
+					pair,
+					level,
+					index,
+					discount,
+					tiers,
+					icons,
+					quicktradePairs
+				)
 			);
 			return '';
 		});
 	return rowData;
 };
 
-const FeesBlock = ({ pairs, coins, level, discount, tiers, icons, search }) => {
+const FeesBlock = ({
+	pairs,
+	coins,
+	level,
+	discount,
+	tiers,
+	icons,
+	search,
+	quicktradePairs,
+}) => {
 	return (
 		<div className="wallet-assets_block">
 			<table className="wallet-assets_block-table">
@@ -106,7 +150,16 @@ const FeesBlock = ({ pairs, coins, level, discount, tiers, icons, search }) => {
 					</tr>
 				</thead>
 				<tbody>
-					{getRows(pairs, level, coins, discount, tiers, icons, search)}
+					{getRows(
+						pairs,
+						level,
+						coins,
+						discount,
+						tiers,
+						icons,
+						search,
+						quicktradePairs
+					)}
 				</tbody>
 			</table>
 		</div>

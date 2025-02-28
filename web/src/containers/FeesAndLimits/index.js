@@ -17,7 +17,11 @@ import {
 	HeaderSection,
 	Loader,
 } from 'components';
-import { openContactForm, setLimitTab } from 'actions/appActions';
+import {
+	openContactForm,
+	setLimitTab,
+	setSelectedAccount,
+} from 'actions/appActions';
 import { isLoggedIn } from 'utils/token';
 
 const Index = ({
@@ -26,6 +30,7 @@ const Index = ({
 	router,
 	selectedAccount,
 	getLimitTab,
+	setSelectedAccount,
 }) => {
 	const [selectedLevel, setSelectedLevel] = useState(
 		isLoggedIn() ? verification_level?.toString() : Object.keys(config_level)[0]
@@ -33,6 +38,11 @@ const Index = ({
 	const [tabs, setTabs] = useState([]);
 	const [activeTab, setActiveTab] = useState(0);
 	const [search, setSearch] = useState();
+
+	useEffect(() => {
+		setSelectedAccount(verification_level);
+		//eslint-disable-next-line
+	}, []);
 
 	useEffect(() => {
 		const updateTabs = () => {
@@ -97,9 +107,30 @@ const Index = ({
 		if (getLimitTab) {
 			setActiveTab(getLimitTab);
 		}
+
+		if (router.location.search.includes('withdrawal-fees')) {
+			setActiveTab(1);
+		} else if (router.location.search.includes('withdrawal-limit')) {
+			setActiveTab(2);
+		} else {
+			setActiveTab(0);
+		}
+		setRenderTab();
 		//eslint-disable-next-line
 	}, []);
 
+	useEffect(() => {
+		setRenderTab();
+		//eslint-disable-next-line
+	}, [activeTab]);
+
+	const setRenderTab = () => {
+		return activeTab === 0
+			? router.push('/fees-and-limits?trading-fees')
+			: activeTab === 1
+			? router.push('/fees-and-limits?withdrawal-fees')
+			: router.push('/fees-and-limits?withdrawal-limits');
+	};
 	const renderContent = (tabs, activeTab) =>
 		tabs[activeTab] && tabs[activeTab].content ? (
 			tabs[activeTab].content
@@ -174,6 +205,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
 	setLimitTab: bindActionCreators(setLimitTab, dispatch),
 	openContactForm: bindActionCreators(openContactForm, dispatch),
+	setSelectedAccount: bindActionCreators(setSelectedAccount, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withConfig(Index));

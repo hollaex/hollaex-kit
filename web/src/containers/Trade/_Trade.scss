@@ -102,7 +102,12 @@ $order_entry-column--width-lg: 20rem;
 .trade_active_orders-wrapper {
 	overflow-y: auto;
 	flex: 1;
-
+	.loading-anime {
+		height: 20px;
+		width: 100%;
+		border-radius: 7px;
+		animation: mymove 3s infinite;
+	}
 	.cell_box-type {
 		padding: 0.1rem;
 

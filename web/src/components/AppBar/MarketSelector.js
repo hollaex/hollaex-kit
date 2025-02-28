@@ -258,7 +258,13 @@ class MarketSelector extends Component {
 					<Slider small>{this.tabListMenuItems()}</Slider>
 				</div>
 				<div className="app-bar-add-tab-content">
-					<div className="app-bar-add-tab-search market-selector-search-wrapper">
+					<div
+						className={
+							isMobile
+								? 'app-bar-add-tab-search market-selector-search-wrapper px-3'
+								: 'app-bar-add-tab-search market-selector-search-wrapper'
+						}
+					>
 						<SearchBox
 							name={STRINGS['SEARCH_TXT']}
 							placeHolder={STRINGS['SEARCH_TXT']}
@@ -343,7 +349,7 @@ class MarketSelector extends Component {
 													{ticker && (
 														<>
 															<span className="app_bar-pair-font">:</span>
-															<div className="title-font ml-1 mr-5 app-bar_add-tab-price">
+															<div className="title-font ml-1 app-bar_add-tab-price">
 																{formatToCurrency(
 																	ticker?.close,
 																	increment_price
@@ -386,8 +392,11 @@ class MarketSelector extends Component {
 								)}
 							</div>
 						)}
-						<div className="d-flex justify-content-center app_bar-link blue-link pointer view-market-btn">
-							{constants && constants.features && constants.features.pro_trade && (
+					</div>
+					<div className="d-flex justify-content-center app_bar-link blue-link pointer view-market-btn">
+						{constants &&
+							constants?.features &&
+							constants?.features?.pro_trade && (
 								<div onClick={this.onViewMarketsClick}>
 									<EditWrapper stringId="VIEW_MARKET">
 										<span className="text-decoration-underline">
@@ -396,7 +405,6 @@ class MarketSelector extends Component {
 									</EditWrapper>
 								</div>
 							)}
-						</div>
 					</div>
 				</div>
 			</div>

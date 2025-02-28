@@ -649,15 +649,11 @@ const InterfaceForm = ({
 						<Item name="auto_trade_config" valuePropName="checked">
 							<Checkbox className="mt-3">
 								<div className="d-flex align-items-center">
-									<div className="feature-trade-box mr-1">
-										<div className="interface_container">
-											<div className="sell">
-												<span className="label">SELL</span>
-											</div>
-											<div className="buy">
-												<span className="label">BUY</span>
-											</div>
-										</div>
+									<div className="feature-trade-box">
+										<ReactSVG
+											src={icons['AUTO_TRADER_ICON']}
+											className="feature-icon announcement-icon auto-trader-icon mr-1"
+										/>
 									</div>
 									<div className="ml-2 checkbox-txt">
 										Auto Trade
@@ -698,11 +694,8 @@ const InterfaceForm = ({
 							<div className="d-flex align-items-center">
 								<div className="feature-trade-box mr-1">
 									<ReactSVG
-										src={STATIC_ICONS.STAKE_FEATURE}
-										className="d-flex feature-icon justify-content-center mr-1 mt-1 ml-3 pl-1"
-										beforeInjection={(svg) => {
-											svg.setAttribute('style', 'width: 60px');
-										}}
+										src={icons['TAB_STAKE']}
+										className="feature-icon announcement-icon auto-trader-icon mr-1"
 									/>
 								</div>
 								<div className="ml-2 checkbox-txt">
@@ -821,24 +814,12 @@ const InterfaceForm = ({
 						<Item name="chain_trade_config" valuePropName="checked">
 							<Checkbox className="mt-3">
 								<div className="d-flex align-items-center">
-									<span
-										style={{
-											backgroundColor: '#050596',
-											textAlign: 'center',
-											height: 50,
-											display: 'flex',
-											justifyContent: 'center',
-											alignItems: 'center',
-										}}
-									>
+									<div className="feature-trade-box mr-1">
 										<ReactSVG
-											src={STATIC_ICONS.MPESA_ICON}
-											className="d-flex feature-icon justify-content-center mr-2 mt-3 ml-1 pl-1"
-											beforeInjection={(svg) => {
-												svg.setAttribute('style', 'width: 60px');
-											}}
+											src={STATIC_ICONS.CHAIN_TRADING}
+											className="feature-icon announcement-icon mr-1"
 										/>
-									</span>
+									</div>
 									<div className="ml-2 checkbox-txt">
 										Chain Trading{' '}
 										{chainTradeData.active && (
@@ -862,7 +843,7 @@ const InterfaceForm = ({
 											</span>
 										)}
 										<div className="small-text">
-											(Enable Chain Trading for Users)
+											(Allows users to convert any asset to another)
 										</div>
 									</div>
 								</div>

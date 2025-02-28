@@ -123,7 +123,7 @@ const P2PDash = ({
 	}, [tab]);
 
 	const formatAmount = (currency, amount) => {
-		const min = coins[currency].min;
+		const min = coins[currency]?.min;
 		const formattedAmount = formatToCurrency(amount, min);
 		return formattedAmount;
 	};
@@ -1119,7 +1119,7 @@ const P2PDash = ({
 																					);
 
 																				const formatted = formatAmount(
-																					deal.buying_asset,
+																					deal?.buying_asset,
 																					currencyAmount
 																				);
 
@@ -1380,7 +1380,7 @@ const P2PDash = ({
 																					);
 
 																				const formatted = formatAmount(
-																					deal.spending_asset,
+																					deal?.spending_asset,
 																					currencyAmount
 																				);
 
