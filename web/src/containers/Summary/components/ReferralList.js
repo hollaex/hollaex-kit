@@ -8,6 +8,7 @@ import {
 	CaretDownOutlined,
 	CheckCircleOutlined,
 	InfoCircleOutlined,
+	CheckCircleTwoTone,
 } from '@ant-design/icons';
 import { isMobile } from 'react-device-detect';
 
@@ -73,6 +74,7 @@ const ReferralList = ({
 
 	const [displayCreateLink, setDisplayCreateLink] = useState(false);
 	const [displaySettle, setDisplaySettle] = useState(false);
+	const [isSuccessfullySettled, setIsSuccessfullySettled] = useState(false);
 	const [linkStep, setLinkStep] = useState(0);
 	const [referralCode, setReferralCode] = useState();
 	const [selectedOption, setSelectedOption] = useState(0);
@@ -304,13 +306,13 @@ const ReferralList = ({
 		});
 	};
 
-	const handleSettlementNotification = () => {
-		setSnackNotification({
-			icon: ICONS.COPY_NOTIFICATION,
-			content: STRINGS['REFERRAL_LINK.SETTLEMENT_SUCCESS'],
-			timer: 2000,
-		});
-	};
+	// const handleSettlementNotification = () => {
+	// 	setSnackNotification({
+	// 		icon: ICONS.COPY_NOTIFICATION,
+	// 		content: STRINGS['REFERRAL_LINK.SETTLEMENT_SUCCESS'],
+	// 		timer: 2000,
+	// 	});
+	// };
 
 	const showErrorMessage = (message) => {
 		setSnackNotification({
@@ -414,8 +416,7 @@ const ReferralList = ({
 				.catch((err) => err);
 
 			setDisplaySettle(false);
-			handleSettlementNotification();
-			setActiveTab('1');
+			setIsSuccessfullySettled(true);
 		} catch (error) {
 			showErrorMessage(error.data.message);
 		}
@@ -598,6 +599,11 @@ const ReferralList = ({
 	const onHandleClose = () => {
 		setDisplayCreateLink(false);
 		setLinkStep(0);
+	};
+
+	const onHandleCloseSuccessfulPopup = () => {
+		setIsSuccessfullySettled(false);
+		setActiveTab('1');
 	};
 
 	const createReferralCode = () => {
@@ -1240,6 +1246,51 @@ const ReferralList = ({
 		);
 	};
 
+	const renderSuccessfulSettleReferral = () => {
+		return (
+			<Dialog
+				className="referral_table_theme"
+				isOpen={isSuccessfullySettled}
+				width={'480'}
+				onCloseDialog={() => onHandleCloseSuccessfulPopup()}
+			>
+				<div className="settle">
+					<div className="settle-popup-wrapper fs-13">
+						<div className="earning-icon-wrapper align-items-center">
+							<span className="check-icon">
+								<CheckCircleTwoTone />
+							</span>
+							<div className="earning-label ml-1">
+								<EditWrapper stringId="REFERRAL_LINK.SUCCESSFULLY_SETTLED">
+									{STRINGS['REFERRAL_LINK.SUCCESSFULLY_SETTLED']}
+								</EditWrapper>
+							</div>
+						</div>
+						<div className="mt-4">
+							{STRINGS.formatString(
+								STRINGS['REFERRAL_LINK.SETTLE_AMOUNT'],
+								<span className="font-weight-bold">{unrealizedEarnings}</span>,
+								<span className="font-weight-bold">
+									{(referral_history_config?.currency || 'usdt').toUpperCase()}
+								</span>
+							)}
+						</div>
+					</div>
+					<div className="referral-popup-btn-wrapper">
+						<AntButton
+							onClick={() => onHandleCloseSuccessfulPopup()}
+							className="okay-btn"
+							type="default"
+						>
+							<EditWrapper stringId="DUST.SUCCESSFUL.VIEW_HISTORY">
+								{STRINGS['DUST.SUCCESSFUL.VIEW_HISTORY']?.toUpperCase()}
+							</EditWrapper>
+						</AntButton>
+					</div>
+				</div>
+			</Dialog>
+		);
+	};
 	const getSourceDecimals = (symbol, value) => {
 		const incrementUnit = coins[symbol].increment_unit;
 		const decimalPoint = new BigNumber(incrementUnit).dp();
@@ -1270,6 +1321,7 @@ const ReferralList = ({
 				)}
 				{displayCreateLink && createReferralCode()}
 				{displaySettle && settleReferral()}
+				{isSuccessfullySettled && renderSuccessfulSettleReferral()}
 				{!isMobile && (
 					<div>
 						<span

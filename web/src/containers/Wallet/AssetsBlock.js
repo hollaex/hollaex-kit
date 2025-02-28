@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { browserHistory, Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
 import { Checkbox, Dropdown, Menu, Switch } from 'antd';
 import {
@@ -465,7 +465,8 @@ const AssetsBlock = ({
 							</div>
 							{!isUpgrade &&
 							balance_history_config?.active &&
-							historyData.length > 1 ? (
+							historyData.length > 1 &&
+							!loading ? (
 								<div className="profit-loss-wrapper">
 									<div
 										style={{
@@ -709,15 +710,28 @@ const AssetsBlock = ({
 													<div className="d-flex justify-content-end">
 														<Dropdown
 															size="small"
-															overlayClassName="custom-dropdown-style"
+															overlayClassName="custom-dropdown-style wallet-asset-dropdown"
 															style={{
 																width: 130,
 															}}
+															trigger={isMobile ? ['click'] : ['hover']}
 															overlay={
 																<Menu
-																	onClick={({ key }) =>
-																		goToTrade(key, quicktrade)
-																	}
+																	onClick={({ key }) => {
+																		if (key === 'SUMMARY.DEPOSIT') {
+																			return browserHistory?.push(
+																				`/wallet/${symbol?.toLowerCase()}/deposit`
+																			);
+																		} else if (
+																			key === 'WITHDRAW_PAGE.WITHDRAW'
+																		) {
+																			return browserHistory?.push(
+																				`/wallet/${symbol?.toLowerCase()}/withdraw`
+																			);
+																		} else {
+																			goToTrade(key, quicktrade);
+																		}
+																	}}
 																>
 																	{markets.map((market) => {
 																		const { display_name, icon_id } =
@@ -731,7 +745,7 @@ const AssetsBlock = ({
 																				<div className="d-flex align-items-center">
 																					<Coin
 																						iconId={icon_id}
-																						type={isMobile ? 'CS5' : 'CS2'}
+																						type={isMobile ? 'CS6' : 'CS2'}
 																					/>
 																					<div className="app_bar-pair-font">
 																						{display_name}
@@ -740,6 +754,38 @@ const AssetsBlock = ({
 																			</Menu.Item>
 																		);
 																	})}
+																	<Menu.Item
+																		key="SUMMARY.DEPOSIT"
+																		className="caps"
+																	>
+																		<div className="d-flex align-items-center">
+																			<span className="arrow-icon">
+																				<Image
+																					wrapperClassName="arrow-up-down-icon"
+																					icon={ICONS['WALLET_ARROW_DOWN']}
+																				/>
+																			</span>
+																			<EditWrapper stringId="SUMMARY.DEPOSIT">
+																				{STRINGS['SUMMARY.DEPOSIT']}
+																			</EditWrapper>
+																		</div>
+																	</Menu.Item>
+																	<Menu.Item
+																		key="WITHDRAW_PAGE.WITHDRAW"
+																		className="caps"
+																	>
+																		<div className="d-flex align-items-center">
+																			<span className="arrow-icon">
+																				<Image
+																					wrapperClassName="arrow-up-down-icon"
+																					icon={ICONS['WALLET_ARROW_UP']}
+																				/>
+																			</span>
+																			<EditWrapper stringId="WITHDRAW_PAGE.WITHDRAW">
+																				{STRINGS['WITHDRAW_PAGE.WITHDRAW']}
+																			</EditWrapper>
+																		</div>
+																	</Menu.Item>
 																</Menu>
 															}
 														>

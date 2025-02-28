@@ -26,10 +26,14 @@ const RecentTradesWrapper = ({
 	recentTradesMarket,
 	setRecentTradesMarket,
 	fetched,
+	onHandleRefresh = () => {},
+	key = '',
 }) => {
 	return (
 		<TradeBlock
+			key={key}
 			title={STRINGS['TOOLS.RECENT_TRADES']}
+			onHandleRefresh={onHandleRefresh}
 			action={
 				isLoggedIn() ? (
 					<ActionNotification
@@ -53,6 +57,7 @@ const RecentTradesWrapper = ({
 				<Fragment>
 					<Filters pair={recentTradesMarket} onChange={setRecentTradesMarket} />
 					<UserTrades
+						key={key}
 						pageSize={userTrades.length}
 						trades={userTrades}
 						pair={pair}

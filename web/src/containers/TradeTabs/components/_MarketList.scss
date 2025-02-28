@@ -6,6 +6,13 @@
 			width: 100%;
 			font-size: $font-size-subtext;
 			margin-bottom: 3rem;
+			.highlighed-row {
+				background-color: $info-panel-background !important;
+			}
+
+			.highlighed-row:hover {
+				background-color: $app-light-background !important;
+			}
 
 			.loading-anime {
 				height: 20px;
