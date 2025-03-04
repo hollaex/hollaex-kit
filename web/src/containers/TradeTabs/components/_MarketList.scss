@@ -6,12 +6,12 @@
 			width: 100%;
 			font-size: $font-size-subtext;
 			margin-bottom: 3rem;
-			.highlighed-row {
-				background-color: $info-panel-background !important;
-			}
 
-			.highlighed-row:hover {
-				background-color: $app-light-background !important;
+			.sparkle-icon {
+				svg {
+					width: 2rem;
+					height: 2rem;
+				}
 			}
 
 			.loading-anime {

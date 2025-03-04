@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { PriceChange, EditWrapper, Coin } from 'components';
+import { PriceChange, EditWrapper, Coin, Image } from 'components';
 import SparkLine from './SparkLine';
 import { formatToCurrency } from 'utils/currency';
 import STRINGS from 'config/localizedStrings';
+import icons from 'config/icons/dark';
 
 class MarketRow extends Component {
 	render() {
@@ -20,7 +21,7 @@ class MarketRow extends Component {
 			key,
 			ticker,
 			increment_price,
-			display_name,
+			// display_name,
 			pair_base_display,
 			pair_2_display,
 			icon_id,
@@ -36,11 +37,7 @@ class MarketRow extends Component {
 		return (
 			<tr
 				id={`market-list-row-${key}`}
-				className={
-					pinned_markets?.includes(key)
-						? 'table-row table-bottom-border highlighed-row'
-						: 'table-row table-bottom-border'
-				}
+				className="table-row table-bottom-border"
 				onClick={() => handleClick(key)}
 			>
 				<td className="sticky-col">
@@ -48,8 +45,24 @@ class MarketRow extends Component {
 						<div className="d-flex align-items-center">
 							<Coin iconId={icon_id} />
 							<div className="px-2 market-pairs">
-								{isAsset ? fullname : display_name}
+								{isAsset ? (
+									fullname
+								) : (
+									<>
+										<span className="important-text font-weight-bold">
+											{pair_base_display}
+										</span>
+										/<span className="secondary-text">{pair_2_display}</span>
+									</>
+								)}
 							</div>
+							{pinned_markets.includes(key) && (
+								<Image
+									iconId="SPARKLE_ICON"
+									icon={icons['SPARKLE_ICON']}
+									wrapperClassName="sparkle-icon mt-2"
+								/>
+							)}
 						</div>
 					) : (
 						<div
@@ -63,7 +76,7 @@ class MarketRow extends Component {
 				<td>
 					{!loading ? (
 						<div>
-							<span className="title-font ml-1 last-price-label">
+							<span className="title-font ml-1 last-price-label font-weight-bold">
 								{formatToCurrency(ticker.close, increment_price)}
 							</span>
 							<span className="title-font ml-2">{pair_2_display}</span>
@@ -120,7 +133,7 @@ class MarketRow extends Component {
 							<div>
 								{ticker.volume > 0 && (
 									<div>
-										<span className="title-font ml-1 important-text">
+										<span className="title-font ml-1 important-text font-weight-bold">
 											{volume_native_text.split(' ')[0]}
 										</span>
 										<span className="ml-1">

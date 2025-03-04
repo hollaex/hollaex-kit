@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
 import { ReactSVG } from 'react-svg';
@@ -21,6 +22,7 @@ const TraderAccounts = ({
 	selectedAccount,
 	referral_history_config,
 	icons: ICONS,
+	features,
 }) => {
 	const level = selectedAccount
 		? selectedAccount
@@ -109,7 +111,7 @@ const TraderAccounts = ({
 							</div>
 						</Link>
 
-						{isLoggedIn() && (
+						{isLoggedIn() && features?.referral_history_config && (
 							<Fragment>
 								<div className="d-flex align-items-center">
 									<DollarOutlined className="mr-2" />
@@ -251,4 +253,8 @@ const TraderAccounts = ({
 	);
 };
 
-export default withConfig(TraderAccounts);
+const mapStateToProps = (state) => ({
+	features: state.app.features,
+});
+
+export default connect(mapStateToProps)(withConfig(TraderAccounts));

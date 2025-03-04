@@ -38,13 +38,14 @@ const TabPane = Tabs.TabPane;
 const RECORD_LIMIT = 20;
 
 const ReferralList = ({
-	affiliation_code,
+	// affiliation_code,
 	affiliation,
 	setSnackNotification,
 	coins,
 	referral_history_config,
 	icons: ICON,
 	router,
+	features,
 }) => {
 	const [balanceHistory, setBalanceHistory] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
@@ -90,36 +91,40 @@ const ReferralList = ({
 		setActiveTab(key);
 	};
 	useEffect(() => {
-		fetchReferralCodes()
-			.then((res) => {
-				setReferralCodes(res.data);
-			})
-			.catch((err) => err);
+		if (features?.referral_history_config) {
+			fetchReferralCodes()
+				.then((res) => {
+					setReferralCodes(res.data);
+				})
+				.catch((err) => err);
 
-		fetchRealizedFeeEarnings()
-			.then((res) => {
-				setRealizedData(res);
-			})
-			.catch((err) => err);
-		fetchUnrealizedFeeEarnings()
-			.then((res) => {
-				if (res?.data?.length > 0) {
-					let earnings = 0;
+			fetchRealizedFeeEarnings()
+				.then((res) => {
+					setRealizedData(res);
+				})
+				.catch((err) => err);
+			fetchUnrealizedFeeEarnings()
+				.then((res) => {
+					if (res?.data?.length > 0) {
+						let earnings = 0;
 
-					res.data.forEach((earning) => {
-						earnings += earning.accumulated_fees;
-					});
+						res.data.forEach((earning) => {
+							earnings += earning.accumulated_fees;
+						});
 
-					setUnrealizedEarnings(
-						getSourceDecimals(
-							referral_history_config?.currency || 'usdt',
-							earnings
-						)
-					);
-				}
-			})
-			.catch((err) => err);
-		getUserReferrals();
+						setUnrealizedEarnings(
+							getSourceDecimals(
+								referral_history_config?.currency || 'usdt',
+								earnings
+							)
+						);
+					}
+				})
+				.catch((err) => err);
+			getUserReferrals();
+		} else {
+			router.push('/summary');
+		}
 		// eslint-disable-next-line
 	}, []);
 
@@ -1926,6 +1931,7 @@ const mapStateToProps = (state) => ({
 	referral_history_config: state.app.constants.referral_history_config,
 	affiliation: state.user.affiliation || {},
 	is_hap: state.user.is_hap,
+	features: state.app.features,
 });
 
 const mapDispatchToProps = (dispatch) => ({

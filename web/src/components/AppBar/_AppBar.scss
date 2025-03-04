@@ -164,6 +164,7 @@ $app-menu-width: calc(100vw - 40rem);
 	}
 
 	.language_option {
+		display: flex;
 		.flag-icon {
 			width: 1.5rem;
 			height: 1rem;

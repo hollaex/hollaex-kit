@@ -120,9 +120,15 @@ class AssetsWrapper extends Component {
 		// const remainingAssets = [];
 		const coinsData = coinsList
 			.map((name) => {
-				const { code, icon_id, symbol, fullname, type, created_at } = coins[
-					name
-				];
+				const {
+					code,
+					icon_id,
+					symbol,
+					fullname,
+					type,
+					created_at,
+					increment_unit,
+				} = coins[name];
 
 				const key = `${code}-usdt`;
 				const pricingData = this.getPricingData(chartValues[key]);
@@ -136,6 +142,7 @@ class AssetsWrapper extends Component {
 					fullname,
 					type,
 					key,
+					increment_unit,
 					networkType: quicktradePairs[key]?.type,
 					created_at,
 				};

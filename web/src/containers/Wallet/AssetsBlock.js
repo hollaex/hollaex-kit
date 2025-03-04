@@ -848,49 +848,67 @@ const AssetsBlock = ({
 										{!isMobile && <th className="td-amount" />}
 										{!isMobile && (
 											<td className="td-wallet">
-												<div className="d-flex justify-content-between deposit-withdrawal-wrapper">
-													<ActionNotification
-														stringId="WALLET_BUTTON_BASE_DEPOSIT"
-														text={STRINGS['WALLET_BUTTON_BASE_DEPOSIT']}
-														iconId="BLUE_PLUS"
-														iconPath={ICONS['BLUE_DEPOSIT_ICON']}
-														onClick={() => navigate(`wallet/${key}/deposit`)}
-														className="csv-action action-button-wrapper"
-														showActionText={isMobile}
-														disable={!allow_deposit}
+												{!loading ? (
+													<div className="d-flex justify-content-between deposit-withdrawal-wrapper">
+														<ActionNotification
+															stringId="WALLET_BUTTON_BASE_DEPOSIT"
+															text={STRINGS['WALLET_BUTTON_BASE_DEPOSIT']}
+															iconId="BLUE_PLUS"
+															iconPath={ICONS['BLUE_DEPOSIT_ICON']}
+															onClick={() => navigate(`wallet/${key}/deposit`)}
+															className="csv-action action-button-wrapper"
+															showActionText={isMobile}
+															disable={!allow_deposit}
+														/>
+														<ActionNotification
+															stringId="WALLET_BUTTON_BASE_WITHDRAW"
+															text={STRINGS['WALLET_BUTTON_BASE_WITHDRAW']}
+															iconId="BLUE_PLUS"
+															iconPath={ICONS['BLUE_WITHROW_ICON']}
+															onClick={() => navigate(`wallet/${key}/withdraw`)}
+															className="csv-action action-button-wrapper"
+															showActionText={isMobile}
+															disable={!allow_withdrawal}
+														/>
+													</div>
+												) : (
+													<div
+														className="loading-row-anime"
+														style={{
+															animationDelay: `.${index + 1}s`,
+														}}
 													/>
-													<ActionNotification
-														stringId="WALLET_BUTTON_BASE_WITHDRAW"
-														text={STRINGS['WALLET_BUTTON_BASE_WITHDRAW']}
-														iconId="BLUE_PLUS"
-														iconPath={ICONS['BLUE_WITHROW_ICON']}
-														onClick={() => navigate(`wallet/${key}/withdraw`)}
-														className="csv-action action-button-wrapper"
-														showActionText={isMobile}
-														disable={!allow_withdrawal}
-													/>
-												</div>
+												)}
 											</td>
 										)}
 										{!isMobile && (
 											<td>
-												{markets.length > 1 ? (
-													<TradeInputGroup
-														quicktrade={quicktrade}
-														markets={markets}
-														goToTrade={goToTrade}
-														pairs={pairs}
-													/>
+												{!loading ? (
+													markets.length > 1 ? (
+														<TradeInputGroup
+															quicktrade={quicktrade}
+															markets={markets}
+															goToTrade={goToTrade}
+															pairs={pairs}
+														/>
+													) : (
+														<ActionNotification
+															stringId="TRADE_TAB_TRADE"
+															text={STRINGS['TRADE_TAB_TRADE']}
+															iconId="BLUE_TRADE_ICON"
+															iconPath={ICONS['BLUE_TRADE_ICON']}
+															onClick={() => goToTrade(markets[0], quicktrade)}
+															className="csv-action"
+															showActionText={isMobile}
+															disable={markets.length === 0}
+														/>
+													)
 												) : (
-													<ActionNotification
-														stringId="TRADE_TAB_TRADE"
-														text={STRINGS['TRADE_TAB_TRADE']}
-														iconId="BLUE_TRADE_ICON"
-														iconPath={ICONS['BLUE_TRADE_ICON']}
-														onClick={() => goToTrade(markets[0], quicktrade)}
-														className="csv-action"
-														showActionText={isMobile}
-														disable={markets.length === 0}
+													<div
+														className="loading-row-anime"
+														style={{
+															animationDelay: `.${index + 1}s`,
+														}}
 													/>
 												)}
 											</td>
