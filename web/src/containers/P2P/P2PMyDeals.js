@@ -41,7 +41,7 @@ const P2PMyDeals = ({
 	}, [refresh]);
 
 	const formatAmount = (currency, amount) => {
-		const min = coins[currency].min;
+		const min = coins[currency]?.min;
 		const formattedAmount = formatToCurrency(amount, min);
 		return formattedAmount;
 	};

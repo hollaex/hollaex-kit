@@ -1,9 +1,11 @@
 import React from 'react';
-import { Coin, EditWrapper } from 'components';
+import { browserHistory } from 'react-router';
+import BigNumber from 'bignumber.js';
+
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
+import { Coin, EditWrapper } from 'components';
 import { getNetworkNameByKey } from 'utils/wallet';
-import BigNumber from 'bignumber.js';
 
 const renderRow = (
 	icon_id,
@@ -13,11 +15,18 @@ const renderRow = (
 	index,
 	ICONS
 ) => {
+	const coin = display_name?.split(' ');
+
 	return (
 		<tr className="table-row table-bottom-border" key={index}>
 			<td className="table-icon td-fit" />
 			<td className="td-name td-fit">
-				<div className="d-flex align-items-center wallet-hover cursor-pointer">
+				<div
+					className="d-flex align-items-center wallet-hover cursor-pointer"
+					onClick={() =>
+						browserHistory?.push(`/prices/coin/${coin[0]?.toLowerCase()}`)
+					}
+				>
 					<Coin iconId={icon_id} />
 					<div className="px-2">{display_name}</div>
 				</div>

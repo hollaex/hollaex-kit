@@ -354,6 +354,7 @@ const nestedIcons = {
 	HOT_ICON: '/assets/images/fire-emoji.svg',
 	AUTO_TRADER_ICON: '/assets/images/auto-trade.svg',
 	ANNOUNCEMENT_ICON: '/assets/images/feature-announce.svg',
+	SPARKLE_ICON: '/assets/images/sparkle-icon.svg',
 };
 
 const icons = flatten(nestedIcons, options);
