@@ -529,7 +529,7 @@ export const LanguageDisplayPopup = ({
 										<Image
 											icon={icon}
 											alt={label}
-											wrapperClassName="flag-icon mr-2"
+											wrapperClassName="flag-icon"
 										/>
 										<span className="caps important-text">{label}</span>
 									</div>

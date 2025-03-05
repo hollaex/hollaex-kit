@@ -589,7 +589,7 @@ class Verification extends Component {
 	};
 
 	renderContent = (tabs, activeTab) => {
-		return tabs[activeTab].content || <div>c</div>;
+		return tabs[activeTab]?.content || <div>c</div>;
 	};
 
 	renderPageContent = (tabProps) => {
@@ -599,6 +599,7 @@ class Verification extends Component {
 			icons: ICONS,
 			openContactForm,
 			constants,
+			setMe,
 		} = this.props;
 		switch (activePage) {
 			case 'email':
@@ -610,6 +611,7 @@ class Verification extends Component {
 						openContactForm={openContactForm}
 						setActiveTab={this.setActiveTab}
 						renderContent={this.renderContent}
+						setMe={setMe}
 					/>
 				);
 			case 'bank':
