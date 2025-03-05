@@ -5,6 +5,14 @@ $colors-white: white;
 	font-family: $en--font-family;
 	background-color: $quick-trade-background;
 
+	.loading-anime {
+		margin-top: 3%;
+		height: 20px;
+		width: 10rem;
+		border-radius: 7px;
+		animation: mymove 3s infinite;
+	}
+
 	.trade-details-content {
 		position: relative;
 		height: 450px;

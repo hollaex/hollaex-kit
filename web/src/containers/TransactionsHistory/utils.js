@@ -20,6 +20,7 @@ import {
 } from 'config/constants';
 import { getFormatTimestamp } from 'utils/utils';
 import { formatToCurrency, formatBaseAmount } from 'utils/currency';
+import { Loading } from 'containers/DigitalAssets/components/utils';
 
 notification.config({
 	placement: 'topLeft',
@@ -397,7 +398,8 @@ export const generateTradeHeaders = (
 	discount,
 	prices = {},
 	ICONS,
-	setActiveTab = () => {}
+	setActiveTab = () => {},
+	isLoading = false
 ) => {
 	return [
 		{
@@ -428,20 +430,24 @@ export const generateTradeHeaders = (
 			renderCell: ({ display_name, icon_id, quick }, key, index) => {
 				return (
 					<td key={index} className="text-uppercase sticky-col">
-						<div className="d-flex align-items-center">
-							<Coin iconId={icon_id} />
-							<div className="px-2">{display_name}</div>
-							<div className="quick-icon-wrapper">
-								{quick && (
-									<Tooltip
-										overlayClassName="quick-trade-tooltip"
-										title={STRINGS['TRANSACTION_HISTORY.QUICK_TRADE_TOOLTIP']}
-									>
-										<ThunderboltFilled style={{ color: '#FFF100' }} />
-									</Tooltip>
-								)}
+						{!isLoading ? (
+							<div className="d-flex align-items-center">
+								<Coin iconId={icon_id} />
+								<div className="px-2">{display_name}</div>
+								<div className="quick-icon-wrapper">
+									{quick && (
+										<Tooltip
+											overlayClassName="quick-trade-tooltip"
+											title={STRINGS['TRANSACTION_HISTORY.QUICK_TRADE_TOOLTIP']}
+										>
+											<ThunderboltFilled style={{ color: '#FFF100' }} />
+										</Tooltip>
+									)}
+								</div>
 							</div>
-						</div>
+						) : (
+							<Loading index={index} />
+						)}
 					</td>
 				);
 			},
@@ -454,9 +460,13 @@ export const generateTradeHeaders = (
 			renderCell: ({ side = '' }, key, index) => {
 				return (
 					<td key={index} className={classnames('cell_box-type recent-trades')}>
-						<div className={classnames(side)}>
-							{STRINGS[`SIDES_VALUES.${side}`]}
-						</div>
+						{!isLoading ? (
+							<div className={classnames(side)}>
+								{STRINGS[`SIDES_VALUES.${side}`]}
+							</div>
+						) : (
+							<Loading index={index} />
+						)}
 					</td>
 				);
 			},
@@ -484,15 +494,21 @@ export const generateTradeHeaders = (
 
 					return (
 						<td key={index}>
-							{STRINGS.formatString(
-								CURRENCY_PRICE_FORMAT,
-								formatToCurrency(size, increment_size),
-								pair_base_display
+							{!isLoading ? (
+								STRINGS.formatString(
+									CURRENCY_PRICE_FORMAT,
+									formatToCurrency(size, increment_size),
+									pair_base_display
+								)
+							) : (
+								<Loading index={index} />
 							)}
 						</td>
 					);
 				} else {
-					return <td key={index}>{size}</td>;
+					return (
+						<td key={index}>{!isLoading ? size : <Loading index={index} />}</td>
+					);
 				}
 			},
 		},
@@ -521,20 +537,34 @@ export const generateTradeHeaders = (
 					const { pair_2_display, increment_price } = pairs[symbol];
 					return (
 						<td key={index}>
-							{price
-								? STRINGS.formatString(
-										CURRENCY_PRICE_FORMAT,
-										formatToCurrency(
-											calculatePrice(quick, price, size),
-											increment_price
-										),
-										pair_2_display
-								  )
-								: ''}
+							{!isLoading ? (
+								<span>
+									{price
+										? STRINGS.formatString(
+												CURRENCY_PRICE_FORMAT,
+												formatToCurrency(
+													calculatePrice(quick, price, size),
+													increment_price
+												),
+												pair_2_display
+										  )
+										: ''}
+								</span>
+							) : (
+								<Loading index={index} />
+							)}
 						</td>
 					);
 				} else {
-					return <td key={index}>{calculatePrice(quick, price, size)}</td>;
+					return (
+						<td key={index}>
+							{!isLoading ? (
+								calculatePrice(quick, price, size)
+							) : (
+								<Loading index={index} />
+							)}
+						</td>
+					);
 				}
 			},
 		},
@@ -564,20 +594,28 @@ export const generateTradeHeaders = (
 
 					return (
 						<td key={index}>
-							{STRINGS.formatString(
-								CURRENCY_PRICE_FORMAT,
-								formatToCurrency(
-									calculateAmount(quick, price, size),
-									increment_price
-								),
-								pair_2_display
+							{!isLoading ? (
+								STRINGS.formatString(
+									CURRENCY_PRICE_FORMAT,
+									formatToCurrency(
+										calculateAmount(quick, price, size),
+										increment_price
+									),
+									pair_2_display
+								)
+							) : (
+								<Loading index={index} />
 							)}
 						</td>
 					);
 				} else {
 					return (
 						<td>
-							{formatToCurrency(calculateAmount(quick, price, size), 0.0001)}
+							{!isLoading ? (
+								formatToCurrency(calculateAmount(quick, price, size), 0.0001)
+							) : (
+								<Loading index={index} />
+							)}
 						</td>
 					);
 				}
@@ -636,10 +674,14 @@ export const generateTradeHeaders = (
 				`${fee} ${fee_coin_display}`,
 			renderCell: ({ fee = 0, fee_coin_display = '' }, key, index) => (
 				<td key={index}>
-					{STRINGS.formatString(
-						CURRENCY_PRICE_FORMAT,
-						formatToCurrency(fee, 0, true),
-						fee_coin_display
+					{!isLoading ? (
+						STRINGS.formatString(
+							CURRENCY_PRICE_FORMAT,
+							formatToCurrency(fee, 0, true),
+							fee_coin_display
+						)
+					) : (
+						<Loading index={index} />
 					)}
 				</td>
 			),
@@ -653,7 +695,11 @@ export const generateTradeHeaders = (
 			renderCell: ({ timestamp = '' }, key, index) => {
 				return (
 					<td key={index} className={isMobile ? 'text-center' : ''}>
-						{getFormatTimestamp(timestamp)}
+						{!isLoading ? (
+							getFormatTimestamp(timestamp)
+						) : (
+							<Loading index={index} />
+						)}
 					</td>
 				);
 			},
@@ -983,10 +1029,19 @@ export const generateRecentTradeHeaders = (
 	coins,
 	discount,
 	prices,
-	icons
+	icons,
+	isLoading
 ) => {
 	const KEYS = ['pair', 'size', 'side', 'price', 'amount', 'timestamp'];
-	return generateTradeHeaders(symbol, pairs, coins, discount, prices, icons)
+	return generateTradeHeaders(
+		symbol,
+		pairs,
+		coins,
+		discount,
+		prices,
+		icons,
+		isLoading
+	)
 		.filter(({ key }) => KEYS.indexOf(key) > -1)
 		.sort((a, b) => KEYS.indexOf(a.key) - KEYS.indexOf(b.key));
 };

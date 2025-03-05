@@ -129,6 +129,18 @@
 				background-color: $quick-trade-block-background;
 				padding: 3rem;
 
+				.info-link-wrapper {
+					gap: 1%;
+					.trade_tabs-link {
+						padding: unset;
+						padding: 0 0.5rem;
+					}
+				}
+				.info-link-wrapper > span:first-child {
+					padding: unset;
+					padding-right: 0.5rem;
+				}
+
 				.header-text {
 					font-size: 16px;
 					font-weight: bold;
@@ -292,6 +304,40 @@
 
 		.info-container {
 			width: 100%;
+			padding: 5% 10%;
+
+			.sub-text {
+				margin-bottom: 10rem;
+			}
+			.trade-link-wrapper {
+				font-size: 12px;
+				width: 100%;
+				justify-content: space-between !important;
+				.stake-variable {
+					position: relative;
+					top: 2px;
+					svg {
+						path {
+							fill: $colors-notifications-blue !important;
+						}
+					}
+				}
+			}
+		}
+		.market-button-container {
+			position: fixed;
+			width: 100%;
+			bottom: 6rem;
+			background-color: $app-background-color;
+			padding: 2% 4%;
+			div {
+				width: 100%;
+				display: flex;
+				justify-content: center;
+				.market-btn {
+					width: 100%;
+				}
+			}
 		}
 	}
 
@@ -313,6 +359,38 @@
 				.link-wrapper {
 					margin-bottom: 2%;
 				}
+				.image-Wrapper {
+					margin: 3% 0;
+				}
+			}
+		}
+	}
+}
+
+.market-chart-details-popup-wrapper {
+	.market-chart-details-popup-container {
+		padding: unset !important;
+		.trade-details-wrapper {
+			padding: 5%;
+		}
+		.price-trend-title {
+			width: 100% !important;
+			display: flex;
+			font-size: 24px !important;
+			justify-content: space-between;
+
+			.refresh-link {
+				svg {
+					width: 2.5rem;
+					height: 2.5rem;
+					path {
+						fill: $colors-main-black;
+					}
+				}
+			}
+			.close-icon {
+				font-size: 30px;
+				color: $colors-main-black;
 			}
 		}
 	}

@@ -688,6 +688,7 @@ const DepositComponent = ({
 												'address'
 											)}
 											value={address && address[0]}
+											readOnly
 										></Input>
 									</div>
 									<div className="warning-text d-flex mt-2">

@@ -26,6 +26,9 @@
 		align-items: center;
 		justify-content: space-between;
 		font-size: 13px;
+		.blue-link {
+			text-wrap: nowrap;
+		}
 
 		.edit-wrapper__container {
 			color: var(--labels_secondary-inactive-label-text-graphics);

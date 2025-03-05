@@ -492,8 +492,9 @@
 
 			.stake-cefi-value {
 				width: 100%;
-				display: 'flex';
-				justify-content: 'flex-end';
+				display: flex;
+				justify-content: flex-end;
+				align-items: flex-start;
 			}
 		}
 

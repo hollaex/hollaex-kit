@@ -152,7 +152,7 @@ const P2PPostDeal = ({
 		}
 	};
 	const formatAmount = (currency, amount) => {
-		const formattedAmount = new BigNumber(amount).decimalPlaces(4).toNumber();
+		const formattedAmount = new BigNumber(amount)?.decimalPlaces(4).toNumber();
 		return formattedAmount;
 	};
 
@@ -338,7 +338,7 @@ const P2PPostDeal = ({
 	};
 
 	return (
-		<div className={isMobile && 'h-100'}>
+		<div className={isMobile ? 'h-100' : ''}>
 			<div
 				className={classnames(
 					...[
@@ -559,11 +559,13 @@ const P2PPostDeal = ({
 															setBuyingAsset(e);
 														}}
 													>
-														{p2p_config?.digital_currencies.map((coin) => (
-															<Select.Option value={coin}>
-																{coin?.toUpperCase()}
-															</Select.Option>
-														))}
+														{p2p_config?.digital_currencies.map(
+															(coin, index) => (
+																<Select.Option value={coin} key={index}>
+																	{coin?.toUpperCase()}
+																</Select.Option>
+															)
+														)}
 													</Select>
 												</div>
 												<div className="crypto-text secondary-text">
@@ -604,8 +606,8 @@ const P2PPostDeal = ({
 															setSpendingAsset(e);
 														}}
 													>
-														{p2p_config?.fiat_currencies?.map((coin) => (
-															<Select.Option value={coin}>
+														{p2p_config?.fiat_currencies?.map((coin, index) => (
+															<Select.Option value={coin} key={index}>
 																{coin?.toUpperCase()}
 															</Select.Option>
 														))}
@@ -706,8 +708,11 @@ const P2PPostDeal = ({
 															>
 																{brokerData
 																	.filter((broker) => broker.type === 'dynamic')
-																	.map((broker) => (
-																		<Select.Option value={broker.symbol}>
+																	.map((broker, index) => (
+																		<Select.Option
+																			value={broker.symbol}
+																			key={index}
+																		>
 																			{broker.symbol}
 																		</Select.Option>
 																	))}
@@ -1075,67 +1080,71 @@ const P2PPostDeal = ({
 														{spendingAsset?.toUpperCase()}
 													</div>
 
-													{p2p_config?.bank_payment_methods?.map((method) => {
-														return (
-															<div className="payment-list">
-																<div
-																	className={
-																		paymentMethods?.find(
-																			(x) =>
-																				x.system_name === method.system_name
-																		)
-																			? 'whiteTextP2P payment-method'
-																			: 'greyTextP2P payment-method'
-																	}
-																	onClick={() => {
-																		const newSelected = [...paymentMethods];
-
-																		if (
-																			newSelected.find(
+													{p2p_config?.bank_payment_methods?.map(
+														(method, index) => {
+															return (
+																<div className="payment-list" key={index}>
+																	<div
+																		className={
+																			paymentMethods?.find(
 																				(x) =>
 																					x.system_name === method.system_name
 																			)
-																		) {
-																			setPaymentMethods(
-																				newSelected.filter(
-																					(x) =>
-																						x.system_name !== method.system_name
-																				)
-																			);
-																		} else {
-																			newSelected.push(method);
-																			setPaymentMethods(newSelected);
-																			setSelectedMethod(method);
-																			setAddMethodDetails(true);
+																				? 'whiteTextP2P payment-method'
+																				: 'greyTextP2P payment-method'
 																		}
-																	}}
-																>
-																	<div>{method.system_name}</div>
+																		onClick={() => {
+																			const newSelected = [...paymentMethods];
+
+																			if (
+																				newSelected.find(
+																					(x) =>
+																						x.system_name === method.system_name
+																				)
+																			) {
+																				setPaymentMethods(
+																					newSelected.filter(
+																						(x) =>
+																							x.system_name !==
+																							method.system_name
+																					)
+																				);
+																			} else {
+																				newSelected.push(method);
+																				setPaymentMethods(newSelected);
+																				setSelectedMethod(method);
+																				setAddMethodDetails(true);
+																			}
+																		}}
+																	>
+																		<div>{method.system_name}</div>
+																		{paymentMethods?.find(
+																			(x) =>
+																				x.system_name === method.system_name
+																		) && <div className="whiteTextP2P">✔</div>}
+																	</div>
 																	{paymentMethods?.find(
 																		(x) => x.system_name === method.system_name
-																	) && <div className="whiteTextP2P">✔</div>}
+																	) && (
+																		<div
+																			onClick={() => {
+																				setSelectedMethod(method);
+																				setAddMethodDetails(true);
+																				setIsEditMode(true);
+																			}}
+																			className="edit-link"
+																		>
+																			<EditWrapper stringId="P2P.EDIT_UPPERCASE">
+																				<span className="blue-link text-decoration-underline">
+																					{STRINGS['P2P.EDIT_UPPERCASE']}
+																				</span>
+																			</EditWrapper>
+																		</div>
+																	)}
 																</div>
-																{paymentMethods?.find(
-																	(x) => x.system_name === method.system_name
-																) && (
-																	<div
-																		onClick={() => {
-																			setSelectedMethod(method);
-																			setAddMethodDetails(true);
-																			setIsEditMode(true);
-																		}}
-																		className="edit-link"
-																	>
-																		<EditWrapper stringId="P2P.EDIT_UPPERCASE">
-																			<span className="blue-link text-decoration-underline">
-																				{STRINGS['P2P.EDIT_UPPERCASE']}
-																			</span>
-																		</EditWrapper>
-																	</div>
-																)}
-															</div>
-														);
-													})}
+															);
+														}
+													)}
 												</div>
 											) : (
 												<div className="payment-receive-container">
@@ -1155,49 +1164,53 @@ const P2PPostDeal = ({
 														{spendingAsset?.toUpperCase()}
 													</div>
 
-													{p2p_config?.bank_payment_methods?.map((method) => {
-														return (
-															<div className="payment-list">
-																<div
-																	className={
-																		paymentMethods?.find(
-																			(x) =>
-																				x.system_name === method.system_name
-																		)
-																			? 'whiteTextP2P payment-method'
-																			: 'greyTextP2P payment-method'
-																	}
-																	onClick={() => {
-																		const newSelected = [...paymentMethods];
-
-																		if (
-																			newSelected.find(
+													{p2p_config?.bank_payment_methods?.map(
+														(method, index) => {
+															return (
+																<div className="payment-list" key={index}>
+																	<div
+																		className={
+																			paymentMethods?.find(
 																				(x) =>
 																					x.system_name === method.system_name
 																			)
-																		) {
-																			setPaymentMethods(
-																				newSelected.filter(
-																					(x) =>
-																						x.system_name !== method.system_name
-																				)
-																			);
-																		} else {
-																			newSelected.push(method);
-																			setPaymentMethods(newSelected);
-																			setSelectedMethod(method);
-																			setAddMethodDetails(true);
+																				? 'whiteTextP2P payment-method'
+																				: 'greyTextP2P payment-method'
 																		}
-																	}}
-																>
-																	<div>{method.system_name}</div>
-																	{paymentMethods?.find(
-																		(x) => x.system_name === method.system_name
-																	) && <div className="whiteTextP2P">✔</div>}
+																		onClick={() => {
+																			const newSelected = [...paymentMethods];
+
+																			if (
+																				newSelected.find(
+																					(x) =>
+																						x.system_name === method.system_name
+																				)
+																			) {
+																				setPaymentMethods(
+																					newSelected.filter(
+																						(x) =>
+																							x.system_name !==
+																							method.system_name
+																					)
+																				);
+																			} else {
+																				newSelected.push(method);
+																				setPaymentMethods(newSelected);
+																				setSelectedMethod(method);
+																				setAddMethodDetails(true);
+																			}
+																		}}
+																	>
+																		<div>{method.system_name}</div>
+																		{paymentMethods?.find(
+																			(x) =>
+																				x.system_name === method.system_name
+																		) && <div className="whiteTextP2P">✔</div>}
+																	</div>
 																</div>
-															</div>
-														);
-													})}
+															);
+														}
+													)}
 												</div>
 											)}
 
@@ -1230,8 +1243,8 @@ const P2PPostDeal = ({
 														setRegion(e);
 													}}
 												>
-													{COUNTRIES_OPTIONS.map((cn) => (
-														<Select.Option value={cn.value}>
+													{COUNTRIES_OPTIONS.map((cn, index) => (
+														<Select.Option value={cn.value} key={index}>
 															{cn.label}
 														</Select.Option>
 													))}
@@ -1397,7 +1410,7 @@ const P2PPostDeal = ({
 					</div>
 					{selectedMethod?.fields?.map((x, index) => {
 						return (
-							<div className="whiteTextP2P payment-method-field">
+							<div className="whiteTextP2P payment-method-field" key={index}>
 								<div>{x?.name}:</div>
 								<Input
 									value={x.value}

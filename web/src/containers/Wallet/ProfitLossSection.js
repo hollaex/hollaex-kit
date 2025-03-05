@@ -4,7 +4,13 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 // eslint-disable-next-line
-import { Coin, DonutChart, EditWrapper, MobileBarBack } from 'components';
+import {
+	ActionNotification,
+	Coin,
+	DonutChart,
+	EditWrapper,
+	// MobileBarBack,
+} from 'components';
 import { Link } from 'react-router';
 import { Button, Spin, DatePicker, message, Modal, Tabs } from 'antd';
 import { fetchBalanceHistory, fetchPlHistory } from './actions';
@@ -20,6 +26,8 @@ import {
 	calculateOraclePrice,
 	formatCurrencyByIncrementalUnit,
 } from 'utils/currency';
+import { STATIC_ICONS } from 'config/icons';
+import { Loading } from 'containers/DigitalAssets/components/utils';
 const TabPane = Tabs.TabPane;
 const ProfitLossSection = ({
 	coins,
@@ -29,7 +37,8 @@ const ProfitLossSection = ({
 	pricesInNative,
 	chartData,
 	assets,
-	loading,
+	loading = false,
+	onHandleRefresh = () => {},
 }) => {
 	const month = Array.apply(0, Array(12)).map(function (_, i) {
 		return moment().month(i).format('MMM');
@@ -261,6 +270,15 @@ const ProfitLossSection = ({
 			});
 	};
 
+	const refreshLinkHandle = () => {
+		if (activeTab === '0') {
+			setGraphData([]);
+			requestHistory();
+		} else if (activeTab === '1') {
+			onHandleRefresh();
+		}
+	};
+
 	const getRows = (coins) => {
 		let keysSorted = Object.keys(currentBalance?.balance).sort((a, b) => {
 			return (
@@ -324,46 +342,56 @@ const ProfitLossSection = ({
 									}}
 									className="table-icon td-fit"
 								>
-									<Link
-										to={`/prices/coin/${coin.symbol}`}
-										className="underline"
-									>
-										{isMobile ? (
-											<div
-												className="d-flex align-items-center wallet-hover cursor-pointer"
-												style={{ cursor: 'pointer' }}
-											>
-												<Coin iconId={coin.icon_id} type="CS11" />
-												<div className="ml-3">
-													<div className="px-2 fill-active-color">
-														{coin.display_name}
+									{!loading ? (
+										<Link
+											to={`/prices/coin/${coin.symbol}`}
+											className="underline"
+										>
+											{isMobile ? (
+												<div
+													className="d-flex align-items-center wallet-hover cursor-pointer"
+													style={{ cursor: 'pointer' }}
+												>
+													<Coin iconId={coin.icon_id} type="CS11" />
+													<div className="ml-3">
+														<div className="px-2 fill-active-color">
+															{coin.display_name}
+														</div>
+														<div className="h4">{coin?.fullname}</div>
 													</div>
-													<div className="h4">{coin?.fullname}</div>
 												</div>
-											</div>
-										) : (
-											<div
-												className="d-flex align-items-center wallet-hover cursor-pointer"
-												style={{ cursor: 'pointer' }}
-											>
-												<Coin iconId={coin.icon_id} />
-												<div className="px-2">{coin.display_name}</div>
-											</div>
-										)}
-									</Link>
+											) : (
+												<div
+													className="d-flex align-items-center wallet-hover cursor-pointer"
+													style={{ cursor: 'pointer' }}
+												>
+													<Coin iconId={coin.icon_id} />
+													<div className="px-2">{coin.display_name}</div>
+												</div>
+											)}
+										</Link>
+									) : (
+										<Loading index={index} />
+									)}
 								</td>
 								<td
 									style={{ borderBottom: '1px solid grey', minWidth: '15.5em' }}
 									className="td-fit"
 								>
-									<div className={isMobile && 'text-end fill-active-color'}>
-										{sourceAmount}
-									</div>
-									{isMobile &&
-										selectedCoin[0] !== BASE_CURRENCY &&
-										parseFloat(balanceText || 0) > 0 && (
-											<div className="text-end">{`(≈ $${balanceText})`}</div>
-										)}
+									{!loading ? (
+										<span>
+											<div className={isMobile && 'text-end fill-active-color'}>
+												{sourceAmount}
+											</div>
+											{isMobile &&
+												selectedCoin[0] !== BASE_CURRENCY &&
+												parseFloat(balanceText || 0) > 0 && (
+													<div className="text-end">{`(≈ $${balanceText})`}</div>
+												)}
+										</span>
+									) : (
+										<Loading index={index} />
+									)}
 								</td>
 
 								{!isMobile && (
@@ -374,8 +402,15 @@ const ProfitLossSection = ({
 										}}
 										className="td-fit"
 									>
-										= {sourceAmountNative}{' '}
-										{balance_history_config?.currency?.toUpperCase() || 'USDT'}
+										{!loading ? (
+											<>
+												= {sourceAmountNative}{' '}
+												{balance_history_config?.currency?.toUpperCase() ||
+													'USDT'}
+											</>
+										) : (
+											<Loading index={index} />
+										)}
 									</td>
 								)}
 								{!isMobile && (
@@ -386,15 +421,21 @@ const ProfitLossSection = ({
 										}}
 										className="td-fit"
 									>
-										<div>{`${calculatePercentages(
-											totalValue,
-											assetValue
-										)}%`}</div>
-										{isMobile &&
-											selectedCoin[0] !== BASE_CURRENCY &&
-											parseFloat(balanceText || 0) > 0 && (
-												<div className="text-end">{`(≈ $${balanceText})`}</div>
-											)}
+										{!loading ? (
+											<>
+												<div>{`${calculatePercentages(
+													totalValue,
+													assetValue
+												)}%`}</div>
+												{isMobile &&
+													selectedCoin[0] !== BASE_CURRENCY &&
+													parseFloat(balanceText || 0) > 0 && (
+														<div className="text-end">{`(≈ $${balanceText})`}</div>
+													)}
+											</>
+										) : (
+											<Loading index={index} />
+										)}
 									</td>
 								)}
 							</tr>
@@ -1247,6 +1288,18 @@ const ProfitLossSection = ({
 								)}
 							</div>
 						</TabPane>
+					)}
+					{!isLoading && !isMobile && (
+						<div className="refresh-link">
+							<ActionNotification
+								stringId="REFRESH"
+								text={STRINGS['REFRESH']}
+								iconId="REFRESH"
+								iconPath={STATIC_ICONS['REFRESH']}
+								className="blue-icon"
+								onClick={() => refreshLinkHandle()}
+							/>
+						</div>
 					)}
 				</Tabs>
 			</div>
