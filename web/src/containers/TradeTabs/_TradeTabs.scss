@@ -30,6 +30,12 @@ $toggle-margin: 2px;
 	.trade_tabs-content {
 		border-top: 2px solid $colors-main-border;
 		font-size: 0.8rem;
+		.refresh-link {
+			.action_notification-text {
+				font-size: 0.8rem !important;
+				text-decoration: unset !important;
+			}
+		}
 		.toggle_button-wrapper {
 			.toggle-content {
 				.toggle-action_button {

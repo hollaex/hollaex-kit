@@ -7,6 +7,7 @@ import { formatDate } from 'utils';
 import { requestUsers } from './actions';
 import AddUser from './AddUser';
 import UseFilters from './UserFilters';
+import { PlusCircleOutlined, MinusCircleOutlined } from '@ant-design/icons';
 
 import './index.css';
 
@@ -215,8 +216,17 @@ class FullListUsers extends Component {
 						className="blue-admin-table"
 						columns={COLUMNS}
 						dataSource={users}
-						expandedRowRender={renderRowContent}
-						expandRowByClick={true}
+
+						expandable={{
+							expandedRowRender: renderRowContent,
+							expandRowByClick: true,
+							expandIcon: ({ expanded, onExpand, record }) =>
+								expanded ? (
+									<MinusCircleOutlined onClick={(e) => onExpand(record, e)} style={{ marginRight: 8 }} />
+								) : (
+									<PlusCircleOutlined onClick={(e) => onExpand(record, e)} style={{ marginRight: 8 }} />
+								),
+						}}
 						rowKey={(data) => {
 							return data.id;
 						}}

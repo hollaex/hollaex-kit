@@ -21,6 +21,8 @@
 	font-size: 1.5rem;
 }
 .notifications_list-wrapper {
+	height: 100%;
+	color: $colors-main-black;
 	.view-announcement-link {
 		background-color: var(--base_background);
 		width: 100%;
@@ -40,10 +42,6 @@
 	.notifications_list-item-text {
 		a {
 			color: $link;
-		}
-		span,
-		p {
-			background-color: $app-sidebar-background !important;
 		}
 	}
 	.notifications_list-item-timestamp {

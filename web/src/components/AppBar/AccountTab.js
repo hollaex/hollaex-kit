@@ -94,7 +94,7 @@ const AccountTab = ({
 					)}
 				</div>
 				<EditWrapper stringId="ACCOUNT_TEXT">
-					{STRINGS['ACCOUNT_TEXT']}
+					<span className="account-title">{STRINGS['ACCOUNT_TEXT']}</span>
 				</EditWrapper>
 				<span className="ml-1 app-bar-dropdown-icon">
 					{!isIconActive ? <CaretDownFilled /> : <CaretUpFilled />}
@@ -129,6 +129,13 @@ const AccountList = ({
 	}, [window.location.pathname]);
 
 	const accountOptions = [
+		{
+			icon: 'WALLET_OPTION_ICON',
+			title: 'ACCOUNTS.TAB_WALLET',
+			description: 'DESKTOP_NAVIGATION.WALLET_DESCRIPTION',
+			path: '/wallet',
+			isDisplay: true,
+		},
 		{
 			icon: 'OPTION_2FA_ICON',
 			title: 'ACCOUNTS.TAB_SECURITY',
@@ -273,10 +280,11 @@ const AccountList = ({
 			</div>
 			{isLogout &&
 				renderConfirmSignout(isLogout, onHandleclose, onHandlelogout)}
-			{accountOptions?.map((options) => {
+			{accountOptions?.map((options, index) => {
 				return (
 					options?.isDisplay && (
 						<div
+							key={index}
 							className={
 								currPath === options?.path
 									? 'options-container account-active main-active'
@@ -317,12 +325,13 @@ const AccountList = ({
 				);
 			})}
 			<div className="options-route-wrapper">
-				{optionsRoute?.map((option) => {
+				{optionsRoute?.map((option, index) => {
 					return (
 						<Tooltip
 							title={STRINGS[option?.toolTipText]}
 							placement="topLeft"
 							overlayClassName="account-tab-options-tooltip"
+							key={index}
 						>
 							<div
 								className="icon-option-container"

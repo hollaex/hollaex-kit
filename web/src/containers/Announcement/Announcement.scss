@@ -41,6 +41,7 @@
 
 			.blue-link {
 				padding: 0 12% 0 0;
+				text-wrap: nowrap;
 			}
 
 			.deposit-link,
@@ -64,7 +65,7 @@
 		}
 
 		.announcement-filter {
-			width: 12%;
+			width: 15%;
 			display: flex;
 			flex-direction: column;
 			gap: 0.8rem;
@@ -80,6 +81,8 @@
 
 			.filter-text {
 				padding: 8% 14%;
+				overflow: hidden;
+				text-overflow: ellipsis;
 
 				.notification-all-icon {
 					position: relative;
@@ -89,6 +92,12 @@
 						width: 1rem;
 						height: 1rem;
 					}
+				}
+				span {
+					width: 100%;
+					display: block;
+					overflow: hidden;
+					text-overflow: ellipsis;
 				}
 			}
 
@@ -108,18 +117,33 @@
 				}
 			}
 			.announcement-table-wrapper {
-				tr {
-					td {
-						padding: 0.5rem;
-					}
+				width: 100%;
+				overflow-x: scroll;
+				.table-wrapper {
+					width: 100%;
+					tr {
+						td {
+							padding: 0.5rem;
+						}
 
-					.message-description {
-						width: 60%;
+						.message-description {
+							width: 60%;
 
-						.message-content-wrapper {
-							width: 85%;
-							height: 1.5rem;
-							overflow: hidden;
+							.announcement-message-wrapper {
+								width: 85%;
+								height: 1.5rem;
+								text-wrap: nowrap;
+								overflow: hidden;
+								margin-right: 2%;
+							}
+							.announcement-message-wrapper * {
+								max-width: 100%;
+								margin: unset;
+								flex: 1;
+								overflow: hidden;
+								text-overflow: ellipsis;
+								white-space: nowrap;
+							}
 						}
 					}
 				}
@@ -150,11 +174,15 @@
 			}
 
 			.selected-announcement-message {
+				width: 60%;
 				font-size: 12px;
 				padding-top: 1%;
 
 				a {
 					color: var(--specials_buttons-links-and-highlights);
+				}
+				img {
+					width: 90%;
 				}
 			}
 		}
@@ -193,23 +221,44 @@
 			}
 		}
 
-		.announcement-filter {
-			min-height: 35rem;
-			width: 23%;
-			padding: 3% !important;
+		.announcement-details-container {
+			flex-direction: column;
 
-			.selected-notification {
-				padding: 8% 10px !important;
-			}
+			.announcement-filter {
+				min-height: unset;
+				flex-direction: row;
+				flex-wrap: wrap;
+				width: 100%;
+				padding: 3% !important;
+				background-color: transparent;
 
-			.filter-text {
-				font-size: 10px;
-				padding: 8% 14px;
+				.selected-notification {
+					opacity: 1 !important;
+					padding: 1% 4% !important;
+					background-color: transparent;
+					border: 1px solid var(--labels_important-active-labels-text-graphics) !important;
+					color: var(--labels_important-active-labels-text-graphics) !important;
+				}
+
+				.filter-text {
+					opacity: 0.6;
+					font-size: 10px;
+					padding: 1% 4% !important;
+					border: 1px solid var(--labels_secondary-inactive-label-text-graphics);
+					border-radius: 5px;
+					color: var(--labels_secondary-inactive-label-text-graphics);
+					.notification-all-icon {
+						svg {
+							width: 1.5rem;
+							height: 1.5rem;
+						}
+					}
+				}
 			}
 		}
 
 		.announcement-list {
-			width: 76%;
+			width: 100%;
 
 			.edit-wrapper__container {
 				.font-weight-bold {
@@ -235,15 +284,40 @@
 				.table-content {
 					overflow-x: scroll;
 
+					.announcement-title-header {
+						width: 75%;
+
+						div {
+							width: 100%;
+						}
+					}
+
 					.table-wrapper {
 						.table_body-wrapper {
 							.table_body-row {
 								font-size: 1.2rem;
 							}
+							.announcement-type,
+							.announcement-title {
+								max-width: 10rem;
+								overflow: hidden;
 
+								div {
+									display: inline-block !important;
+									max-width: 100%;
+									overflow: hidden;
+									text-overflow: ellipsis;
+									text-wrap: nowrap;
+									white-space: nowrap;
+								}
+							}
 							.message-description {
-								.message-content-wrapper {
+								.announcement-message-wrapper {
 									width: 75%;
+									margin-right: 5%;
+								}
+								.announcement-message-wrapper * {
+									font-size: 10px !important;
 								}
 							}
 						}
@@ -265,6 +339,7 @@
 			}
 
 			.selected-announcement-message {
+				width: 100%;
 				font-size: 10px;
 				padding: 2% 0;
 

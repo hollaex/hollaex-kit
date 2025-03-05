@@ -7,7 +7,7 @@ import { Button, Coin, Dialog, EditWrapper, Image } from 'components';
 
 export const AutoTraderEmptydata = ({ setIsRenderPopup }) => {
 	return (
-		<div className="auto-trader-empty-table">
+		<div className="auto-trader-empty-table d-flex flex-column">
 			<Image
 				icon={icons['AUTO_TRADER_ICON']}
 				wrapperClassName="auto-trader-icon"

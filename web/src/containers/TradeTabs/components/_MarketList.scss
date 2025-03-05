@@ -7,6 +7,13 @@
 			font-size: $font-size-subtext;
 			margin-bottom: 3rem;
 
+			.sparkle-icon {
+				svg {
+					width: 2rem;
+					height: 2rem;
+				}
+			}
+
 			.loading-anime {
 				height: 20px;
 				width: 100px;

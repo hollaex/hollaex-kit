@@ -167,8 +167,9 @@ const CoinConfiguration = ({ coins }) => {
 	return (
 		<div>
 			<div style={{ color: '#ccc' }}>
-				Below, You can add/edit extra fees for each coin available in your
-				exchange
+				Add a markup fee on withdrawals for each coin listed on your exchange.
+				This additional fee is charged on top of the standard withdrawal fees
+				and can serve as an extra revenue stream for your exchange operations.
 			</div>
 			<div>
 				<div style={{ marginTop: 20 }}></div>
@@ -250,7 +251,10 @@ const CoinConfiguration = ({ coins }) => {
 						>
 							Edit Coin Fee Markup
 						</div>
-						<div style={{ marginBottom: 30 }}>Congifure fee markups</div>
+						<div style={{ marginBottom: 30 }}>
+							Set an additional withdrawal fee for this coin to generate extra
+							revenue.
+						</div>
 						<div style={{ marginBottom: 20 }}>
 							<div style={{ marginBottom: 10 }}>
 								<div className="mb-1">Fee Markup</div>
@@ -273,7 +277,6 @@ const CoinConfiguration = ({ coins }) => {
 								flexDirection: 'row',
 								gap: 15,
 								justifyContent: 'space-between',
-								marginBottom: 20,
 							}}
 						>
 							<Button

@@ -399,8 +399,8 @@ exports.MIN_FEES = {
 		taker: 0.05
 	},
 	basic: {
-		maker: 0.1,
-		taker: 0.1
+		maker: 0.05,
+		taker: 0.05
 	}
 };
 

@@ -521,6 +521,7 @@ export const LanguageDisplayPopup = ({
 							virtual={false}
 							open={isOpen}
 							onDropdownVisibleChange={(open) => setIsOpen(open)}
+							listHeight={165}
 						>
 							{languageFormValue?.map(({ value, icon, label }) => (
 								<Option value={value} key={value} className="capitalize">
@@ -528,7 +529,7 @@ export const LanguageDisplayPopup = ({
 										<Image
 											icon={icon}
 											alt={label}
-											wrapperClassName="flag-icon mr-2"
+											wrapperClassName="flag-icon"
 										/>
 										<span className="caps important-text">{label}</span>
 									</div>
@@ -567,6 +568,7 @@ export const LanguageDisplayPopup = ({
 						virtual={false}
 						open={isDisplayCurrencyOpen}
 						onDropdownVisibleChange={(open) => setIsDisplayCurrencyOpen(open)}
+						listHeight={90}
 					>
 						{selectable_native_currencies?.map((data) => {
 							return (
@@ -606,4 +608,36 @@ export const LanguageDisplayPopup = ({
 			</div>
 		</Dialog>
 	);
+};
+
+export const renderAnnouncementMessage = (message, maxLength = 100) => {
+	const announcementMessage = message?.replace(/(<([^>]+)>)/gi, ' ');
+	const maxAnnouncementMessage =
+		announcementMessage?.length > maxLength
+			? announcementMessage?.substring(0, maxLength)?.trim() + '...'
+			: announcementMessage;
+
+	return (
+		<div
+			className="announcement-message-wrapper"
+			dangerouslySetInnerHTML={{
+				__html: maxAnnouncementMessage,
+			}}
+		></div>
+	);
+};
+
+export const renderRemoveEmptyTag = (html) => {
+	const selectedTag = document.createElement('div');
+	selectedTag.innerHTML = html;
+
+	const removeTag = selectedTag?.querySelectorAll('*:not(img)');
+	removeTag &&
+		removeTag.forEach((data) => {
+			if (data?.innerHTML.trim() === '<br>' || data?.innerHTML === '') {
+				data.remove();
+			}
+		});
+
+	return selectedTag?.innerHTML;
 };
