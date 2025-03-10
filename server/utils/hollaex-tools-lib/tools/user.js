@@ -1184,7 +1184,9 @@ const INITIAL_SETTINGS = () => {
 		notification: {
 			popup_order_confirmation: true,
 			popup_order_completed: true,
-			popup_order_partially_filled: true
+			popup_order_partially_filled: true,
+			popup_order_new: true,
+			popup_order_canceled: true
 		},
 		interface: {
 			order_book_levels: 10,
@@ -3265,45 +3267,45 @@ const fetchUserProfitLossInfo = async (user_id, opts = { period: 7 }) => {
 		const finalBalances = filteredBalanceHistory[filteredBalanceHistory.length - 1].balance;
  
 		results[interval] = {};
-		let initalTotalBalance = 0
-        let finalTotalBalance = 0
-        let totalDeposits = 0
-        let totalWithdrawals = 0
+		let initalTotalBalance = 0;
+		let finalTotalBalance = 0;
+		let totalDeposits = 0;
+		let totalWithdrawals = 0;
 
-        let totalDay1Assets = 0;
-        let totalInflow = 0;
-        Object.keys(finalBalances).forEach(async (asset) => {
+		let totalDay1Assets = 0;
+		let totalInflow = 0;
+		Object.keys(finalBalances).forEach(async (asset) => {
    
-            if(!initialBalances?.[asset]?.native_currency_value) {
-                initialBalances[asset] = {};
-                initialBalances[asset].native_currency_value = 0;
-                initialBalances[asset].original_value = 0;
-            }
+			if(!initialBalances?.[asset]?.native_currency_value) {
+				initialBalances[asset] = {};
+				initialBalances[asset].native_currency_value = 0;
+				initialBalances[asset].original_value = 0;
+			}
         
-            initalTotalBalance += initialBalances?.[asset]?.native_currency_value || 0;
-            finalTotalBalance += finalBalances[asset].native_currency_value || 0;
-            totalDeposits += netInflowFromDepositsPerAsset[asset] || 0;
-            totalWithdrawals += netOutflowFromWithdrawalsPerAsset[asset] || 0
+			initalTotalBalance += initialBalances?.[asset]?.native_currency_value || 0;
+			finalTotalBalance += finalBalances[asset].native_currency_value || 0;
+			totalDeposits += netInflowFromDepositsPerAsset[asset] || 0;
+			totalWithdrawals += netOutflowFromWithdrawalsPerAsset[asset] || 0;
              
 
-            totalDay1Assets += initialBalances[asset].native_currency_value;
-            totalInflow += netInflowFromDepositsPerAsset[asset] || 0;
+			totalDay1Assets += initialBalances[asset].native_currency_value;
+			totalInflow += netInflowFromDepositsPerAsset[asset] || 0;
 
-        });
+		});
 
      
-        let cumulativePNL =
+		let cumulativePNL =
             finalTotalBalance -
             initalTotalBalance - 
             totalDeposits - 
-            totalWithdrawals
+            totalWithdrawals;
 
-        const cumulativePNLPercentage =
+		const cumulativePNLPercentage =
         cumulativePNL / (totalDay1Assets + totalInflow) * 100; 
 
 
-        results[interval].total = cumulativePNL?.toFixed(2) || 0;
-        results[interval].totalPercentage = cumulativePNLPercentage?.toFixed(2) || 0;
+		results[interval].total = cumulativePNL?.toFixed(2) || 0;
+		results[interval].totalPercentage = cumulativePNLPercentage?.toFixed(2) || 0;
 	}
 
 	client.setexAsync(`${user_id}-${opts.period}user-pl-info`, 3600, JSON.stringify(results));
@@ -3639,42 +3641,42 @@ const fetchUserTradingVolume = async (user_id, opts = {
 	
 };
 const fetchUserAutoTrades = async (user_id, opts = {
-    limit: null,
-    page: null,
-    order_by: null,
-    order: null,
-    start_date: null,
-    end_date: null,
-    active: null
+	limit: null,
+	page: null,
+	order_by: null,
+	order: null,
+	start_date: null,
+	end_date: null,
+	active: null
 }) => {
 
-    const pagination = paginationQuery(opts.limit, opts.page);
-    const ordering = orderingQuery(opts.order_by, opts.order);
-    const timeframe = timeframeQuery(opts.start_date, opts.end_date);
+	const pagination = paginationQuery(opts.limit, opts.page);
+	const ordering = orderingQuery(opts.order_by, opts.order);
+	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
 
-    const query = {
-        where: {
-            created_at: timeframe,
+	const query = {
+		where: {
+			created_at: timeframe,
 			user_id,
-            ...(opts.active != null && { active: opts.active })
-        },
-        order: [ordering],
-        ...pagination
-    };
+			...(opts.active != null && { active: opts.active })
+		},
+		order: [ordering],
+		...pagination
+	};
 
-    return dbQuery.findAndCountAllWithRows('AutoTradeConfig', query);
+	return dbQuery.findAndCountAllWithRows('AutoTradeConfig', query);
 };
 
 const createUserAutoTrade = async (user_id, {
-    spend_coin,
-    buy_coin,
-    spend_amount,
-    frequency,
-    week_days,
-    day_of_month,
-    trade_hour,
-    active,
-    description
+	spend_coin,
+	buy_coin,
+	spend_amount,
+	frequency,
+	week_days,
+	day_of_month,
+	trade_hour,
+	active,
+	description
 }, ip) => {
 
 	if (!subscribedToCoin(buy_coin)) {
@@ -3697,7 +3699,7 @@ const createUserAutoTrade = async (user_id, {
 	await getUserQuickTrade(
 		spend_coin, spend_amount, null, buy_coin, 
 		null, ip, opts, { headers: { 'api-key': null } }, { user_id: user_id, network_id: null}
-	)
+	);
 
 	const quickTrades = getQuickTrades();
 	let quickTradeConfig = quickTrades.find(quickTrade => quickTrade.symbol === originalPair);
@@ -3710,56 +3712,56 @@ const createUserAutoTrade = async (user_id, {
 	    throw new Error(INVALID_AUTOTRADE_CONFIG);
 	}
 
-    if (week_days && !week_days.every(day => day >= 0 && day <= 6)) {
-        throw new Error('invalid week_days');
-    }
+	if (week_days && !week_days.every(day => day >= 0 && day <= 6)) {
+		throw new Error('invalid week_days');
+	}
 
-    const daysInMonth = moment().daysInMonth();
-    if (day_of_month && (day_of_month < 1 || day_of_month > daysInMonth)) {
-        throw new Error(`Iinvalid day_of_month`);
-    }
+	const daysInMonth = moment().daysInMonth();
+	if (day_of_month && (day_of_month < 1 || day_of_month > daysInMonth)) {
+		throw new Error('Iinvalid day_of_month');
+	}
 
-    if (trade_hour < 0 || trade_hour > 23) {
-        throw new Error('invalid trade_hour');
-    }
+	if (trade_hour < 0 || trade_hour > 23) {
+		throw new Error('invalid trade_hour');
+	}
 	const autoTradeModel = getModel('AutoTradeConfig');
 
 	const userAutoTrades = await autoTradeModel.findAll({ where: { user_id } });
 	if (userAutoTrades?.length > 20) {
-		throw new Error("You can't have more than 20 auto trades");
+		throw new Error('You can\'t have more than 20 auto trades');
 	}
 
 	const { getUserBalanceByKitId } = require('./wallet');
 	const balance = await getUserBalanceByKitId(user_id);
 	if (balance[`${spend_coin}_available`] < spend_amount) {
 		throw new Error(`Balance insufficient for auto trade: ${spend_coin} size: ${spend_amount}`);
-	};
+	}
 
-    return autoTradeModel.create({
-        user_id,
-        spend_coin,
-        buy_coin,
-        spend_amount,
-        frequency,
-        week_days,
-        day_of_month,
-        trade_hour,
-        active,
-        description
-    });
+	return autoTradeModel.create({
+		user_id,
+		spend_coin,
+		buy_coin,
+		spend_amount,
+		frequency,
+		week_days,
+		day_of_month,
+		trade_hour,
+		active,
+		description
+	});
 };
 
 const updateUserAutoTrade = async (user_id, {
-    id,
-    spend_coin,
-    buy_coin,
-    spend_amount,
-    frequency,
-    week_days,
-    day_of_month,
-    trade_hour,
-    active,
-    description
+	id,
+	spend_coin,
+	buy_coin,
+	spend_amount,
+	frequency,
+	week_days,
+	day_of_month,
+	trade_hour,
+	active,
+	description
 }, ip) => {
 	
 	if (!subscribedToCoin(buy_coin)) {
@@ -3794,110 +3796,110 @@ const updateUserAutoTrade = async (user_id, {
 		await getUserQuickTrade(
 			spend_coin, spend_amount, null, buy_coin, 
 			null, ip, opts, { headers: { 'api-key': null } }, { user_id: user_id, network_id: null}
-		)
+		);
 	}
 
-    if (week_days && !week_days.every(day => day >= 0 && day <= 6)) {
-        throw new Error('invalid week_days');
-    }
+	if (week_days && !week_days.every(day => day >= 0 && day <= 6)) {
+		throw new Error('invalid week_days');
+	}
 
-    if (week_days && !week_days.every(day => day >= 0 && day <= 6)) {
-        throw new Error('invalid week_days');
-    }
+	if (week_days && !week_days.every(day => day >= 0 && day <= 6)) {
+		throw new Error('invalid week_days');
+	}
 
-    const daysInMonth = moment().daysInMonth();
-    if (day_of_month && (day_of_month < 1 || day_of_month > daysInMonth)) {
-        throw new Error(`invalid day_of_month`);
-    }
+	const daysInMonth = moment().daysInMonth();
+	if (day_of_month && (day_of_month < 1 || day_of_month > daysInMonth)) {
+		throw new Error('invalid day_of_month');
+	}
 
-    if (trade_hour < 0 || trade_hour > 23) {
-        throw new Error('invalid trade_hour');
-    }
+	if (trade_hour < 0 || trade_hour > 23) {
+		throw new Error('invalid trade_hour');
+	}
 
-    const trade = await getModel('AutoTradeConfig').findOne({
-        where: {
-            id,
-            user_id  
-        }
-    });
+	const trade = await getModel('AutoTradeConfig').findOne({
+		where: {
+			id,
+			user_id  
+		}
+	});
 
-    if (!trade) {
-        throw new Error('Auto trade not found');
-    }
+	if (!trade) {
+		throw new Error('Auto trade not found');
+	}
 
 	const { getUserBalanceByKitId } = require('./wallet');
 	const balance = await getUserBalanceByKitId(user_id);
 	if (balance[`${spend_coin}_available`] < spend_amount) {
 		throw new Error(`Balance insufficient for auto trade: ${spend_coin} size: ${spend_amount}`);
-	};
+	}
 	
-    return await trade.update({
-        spend_coin,
-        buy_coin,
-        spend_amount,
-        frequency,
-        week_days,
-        day_of_month,
-        trade_hour,
-        active,
-        description
-    });
+	return await trade.update({
+		spend_coin,
+		buy_coin,
+		spend_amount,
+		frequency,
+		week_days,
+		day_of_month,
+		trade_hour,
+		active,
+		description
+	});
 };
 
 const deleteUserAutoTrade = async (removed_ids, user_id) => {
-    const trades = await getModel('AutoTradeConfig').findAll({
-        where: {
-            id: removed_ids,
-            user_id  
-        }
-    });
+	const trades = await getModel('AutoTradeConfig').findAll({
+		where: {
+			id: removed_ids,
+			user_id  
+		}
+	});
 
-    if (trades?.length === 0) {
-        throw new Error('Auto trade not found');
-    }
+	if (trades?.length === 0) {
+		throw new Error('Auto trade not found');
+	}
 
-    const promises = trades.map(async (trade) => {
-        return await trade.destroy();
-    });
+	const promises = trades.map(async (trade) => {
+		return await trade.destroy();
+	});
 
-    const results = await Promise.all(promises);
-    return results;
+	const results = await Promise.all(promises);
+	return results;
 };
 
 
 const getAnnouncements = async (opts = {
-    limit: null,
-    page: null,
-    order_by: null,
-    order: null,
-    start_date: null,
+	limit: null,
+	page: null,
+	order_by: null,
+	order: null,
+	start_date: null,
 	end_date: null,
 	is_popup: null,
 	is_navbar: null,
 	is_dropdown: null,
 }) => {
-    const pagination = paginationQuery(opts.limit, opts.page);
-    const ordering = orderingQuery(opts.order_by, opts.order);
-    const timeframe = timeframeQuery(opts.start_date, opts.end_date);
+	const pagination = paginationQuery(opts.limit, opts.page);
+	const ordering = orderingQuery(opts.order_by, opts.order);
+	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
 
-    const queryOptions = {
-        where: {
+	const queryOptions = {
+		where: {
 			...(opts.is_navbar != null && { is_navbar: opts.is_navbar }),
 			...(opts.is_popup != null && { is_popup: opts.is_popup }),
 			...(opts.is_dropdown != null && { is_dropdown: opts.is_dropdown }),
 		},
-        order: [ordering],
-        attributes: {
-            exclude: ['created_by']
-        },
-        ...pagination
-    };
+		order: [ordering],
+		attributes: {
+			exclude: ['created_by']
+		},
+		...pagination
+	};
 
 	const announcementModel = getModel('announcement');
-    if (timeframe) queryOptions.where.created_at = timeframe;
+	if (timeframe) queryOptions.where.created_at = timeframe;
 
-    const results = await announcementModel.findAndCountAll(queryOptions);
-    return convertSequelizeCountAndRows(results);
+	const results = await announcementModel.findAndCountAll(queryOptions);
+	return convertSequelizeCountAndRows(results);
 };
 
 const createAnnouncement = async ({ title, message, type = 'info', user_id, end_date, start_date, is_popup, is_navbar, is_dropdown }) => {
@@ -3908,57 +3910,57 @@ const createAnnouncement = async ({ title, message, type = 'info', user_id, end_
 	}
 
 	const announcementModel = getModel('announcement');
-    const announcement = await announcementModel.create({
-        created_by: user_id,
-        title,
-        message,
+	const announcement = await announcementModel.create({
+		created_by: user_id,
+		title,
+		message,
 		type,
 		end_date,
 		start_date,
 		is_popup,
 		is_navbar,
 		is_dropdown
-    });
+	});
 
-    return announcement;
+	return announcement;
 };
 
 const updateAnnouncement = async (id, { title, message, type, user_id, end_date, start_date, is_popup, is_navbar, is_dropdown }) => {
-    const announcementModel = getModel('announcement');
+	const announcementModel = getModel('announcement');
 
-    const announcement = await announcementModel.findOne({ where: { id } });
+	const announcement = await announcementModel.findOne({ where: { id } });
 
-    if (!announcement) {
-        throw new Error('Not found');
-    }
+	if (!announcement) {
+		throw new Error('Not found');
+	}
 
-    await announcement.update({
-        title,
-        message,
-        type,
-        end_date,
-        start_date,
-        is_popup,
-        is_navbar,
-        is_dropdown,
-        updated_by: user_id
-    });
+	await announcement.update({
+		title,
+		message,
+		type,
+		end_date,
+		start_date,
+		is_popup,
+		is_navbar,
+		is_dropdown,
+		updated_by: user_id
+	});
 
-    return announcement;
+	return announcement;
 };
 
 
 const deleteAnnouncement = async (id) => {
 
 	const announcementModel = getModel('announcement');
-    const announcement = await announcementModel.findOne({ where: { id } });
+	const announcement = await announcementModel.findOne({ where: { id } });
 
-    if (!announcement) {
-        throw new Error('Not found');
-    }
+	if (!announcement) {
+		throw new Error('Not found');
+	}
 
-    await announcement.destroy();
-    return { message: 'Success' };
+	await announcement.destroy();
+	return { message: 'Success' };
 };
 
 module.exports = {

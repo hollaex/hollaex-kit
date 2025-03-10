@@ -58,7 +58,9 @@ const INITIAL_SETTINGS = () => {
 		notification: {
 			popup_order_confirmation: true,
 			popup_order_completed: true,
-			popup_order_partially_filled: true
+			popup_order_partially_filled: true,
+			popup_order_new: true,
+			popup_order_canceled: true
 		},
 		interface: {
 			order_book_levels: 10,
@@ -1056,7 +1058,7 @@ const addUserBank = (req, res) => {
 				{
 					type: 'New bank added by a user',
 					data: `<div><p>User email ${email} just added a new bank.<br>Details:<br>${Object.keys(bank_account).map(key => {
-						return `${key}: ${bank_account[key]} <br>`
+						return `${key}: ${bank_account[key]} <br>`;
 					}).join('')}</div></p>`
 				},
 				{}
@@ -1634,7 +1636,7 @@ const deletePaymentDetail = (req, res) => {
 	toolsLib.user.deletePaymentDetail(id, user_id)
 		.then(() => {
 			return res.json({
-				message: "Success"
+				message: 'Success'
 			});
 		})
 		.catch((err) => {
