@@ -19,6 +19,7 @@ import {
 	setSettingsTab,
 } from 'actions/appActions';
 import { renderConfirmSignout } from './Utils';
+import { logout } from 'actions/authAction';
 
 const AccountTab = ({
 	config_level,
@@ -32,6 +33,7 @@ const AccountTab = ({
 	setIsMarketDropdownVisible,
 	setIsToolsVisible,
 	features,
+	logout,
 }) => {
 	const [isIconActive, setIsIconActive] = useState(false);
 	const [isToolTipVisible, setIsToolTipVisible] = useState(false);
@@ -68,6 +70,7 @@ const AccountTab = ({
 					setSettingsTab={setSettingsTab}
 					onHandleRedirect={onHandleRedirect}
 					features={features}
+					logout={logout}
 				/>
 			}
 			placement="bottomRight"
@@ -117,6 +120,7 @@ const AccountList = ({
 	setSettingsTab,
 	onHandleRedirect,
 	features,
+	logout,
 }) => {
 	const [isHelpResources, setIsHelpResources] = useState(false);
 	const [currPath, setCurrpath] = useState('/summary');
@@ -250,7 +254,7 @@ const AccountList = ({
 	const onHandlelogout = () => {
 		setIsLogout(false);
 		removeToken();
-		return browserHistory?.push('/login');
+		logout();
 	};
 
 	const onHandleclose = () => {
@@ -374,6 +378,7 @@ const mapDispatchToProps = (dispatch) => ({
 		dispatch
 	),
 	setIsToolsVisible: bindActionCreators(setIsToolsVisible, dispatch),
+	logout: bindActionCreators(logout, dispatch),
 });
 
 export default connect(

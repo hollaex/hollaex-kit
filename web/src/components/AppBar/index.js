@@ -139,14 +139,23 @@ class AppBar extends Component {
 	};
 
 	componentDidUpdate(prevProps) {
-		const { pair, pairs, lastPrice, isProTrade, isQuickTrade } = this.props;
+		const {
+			pair,
+			pairs,
+			lastPrice,
+			isProTrade,
+			isQuickTrade,
+			constants,
+		} = this.props;
 		const { increment_price } = pairs[pair] || { pair_base: '', pair_2: '' };
 		const price = formatToFixed(lastPrice, increment_price);
 		if (prevProps.theme !== this.props.theme) {
 			this.setSelectedTheme(this.props.theme);
 		}
 		if (isProTrade) {
-			document.title = `${price} | ${pair?.toUpperCase()} | HollaEx Pro`;
+			document.title = `${price} | ${pair?.toUpperCase()} | ${
+				constants?.api_name
+			}`;
 		} else if (isQuickTrade) {
 			const pairData = pair.split('-');
 			const firstAsset = pairData[0];
@@ -155,7 +164,7 @@ class AppBar extends Component {
 				STRINGS['CONVERT']
 			} ${firstAsset?.toUpperCase()} ${STRINGS[
 				'TO'
-			]?.toLowerCase()} ${secondAsset?.toUpperCase()} | HollaEx Pro`;
+			]?.toLowerCase()} ${secondAsset?.toUpperCase()} | ${constants?.api_name}`;
 		} else {
 			document.title = this.state.title;
 		}
