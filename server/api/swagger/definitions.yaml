@@ -222,6 +222,10 @@ definitions:
             type: boolean
           popup_order_partially_filled:
             type: boolean
+          popup_order_new:
+            type: boolean
+          popup_order_canceled:
+            type: boolean
   ChangePassword:
     type: object
     required:

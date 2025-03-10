@@ -65,20 +65,20 @@ spec:
 {{- else if eq .Values.job.mode "hollaex_setup" }}
 
         args:
-          - sequelize db:migrate;
-            node tools/dbs/runTriggers.js;
-            sequelize db:seed:all;
-            node tools/dbs/setActivationCode.js;
-            node tools/dbs/checkConfig.js;
-            node tools/dbs/setKitVersion.js;
+          - sequelize db:migrate || exit 1;
+            node tools/dbs/runTriggers.js || exit 1;
+            sequelize db:seed:all || exit 1;
+            node tools/dbs/setActivationCode.js || exit 1;
+            node tools/dbs/checkConfig.js || exit 1;
+            node tools/dbs/setKitVersion.js || exit 1;
 
 {{- else if eq .Values.job.mode "hollaex_upgrade" }}
 
         args:
-          - sequelize db:migrate;
-            node tools/dbs/runTriggers.js;
-            node tools/dbs/checkConfig.js;
-            node tools/dbs/setKitVersion.js;
+          - sequelize db:migrate || exit 1;
+            node tools/dbs/runTriggers.js || exit 1;
+            node tools/dbs/checkConfig.js || exit 1;
+            node tools/dbs/setKitVersion.js || exit 1;
 
 {{- else if eq .Values.job.mode "changeEmail" }}
 
