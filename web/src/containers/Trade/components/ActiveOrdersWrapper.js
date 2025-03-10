@@ -50,7 +50,8 @@ class OrdersWrapper extends Component {
 		setTimeout(() => {
 			cancelAllOrders(activeOrdersMarket, settings);
 			this.onCloseDialog();
-			this.props.allOrderCancelNotification(activeOrders);
+			settings.notification.popup_order_canceled &&
+				this.props.allOrderCancelNotification(activeOrders);
 		}, 700);
 	};
 
@@ -65,7 +66,8 @@ class OrdersWrapper extends Component {
 		this.setState({ cancelDelayData: this.state.cancelDelayData.concat(id) });
 		setTimeout(() => {
 			cancelOrder(id, settings);
-			orderCancelNotification(activeOrders, id, coins);
+			settings.notification.popup_order_canceled &&
+				orderCancelNotification(activeOrders, id, coins);
 		}, 700);
 	};
 

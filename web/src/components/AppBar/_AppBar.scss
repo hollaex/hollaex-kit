@@ -1471,6 +1471,11 @@ $app-menu-width: calc(100vw - 40rem);
 			.options-container {
 				margin: 0% 4%;
 				padding: 2% 4%;
+				.options-icon {
+					svg {
+						width: 2rem;
+					}
+				}
 			}
 		}
 	}

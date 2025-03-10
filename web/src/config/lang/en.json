@@ -510,7 +510,9 @@
 		"NOTIFICATION_FORM": {
 			"POPUP_ORDER_CONFIRMATION": "Ask for confirmation before submitting orders",
 			"POPUP_ORDER_COMPLETED": "Show pop up when order has been completed",
-			"POPUP_ORDER_PARTIALLY_FILLED": "Show pop up when order has partially filled"
+			"POPUP_ORDER_PARTIALLY_FILLED": "Show pop up when order has partially filled",
+			"POPUP_NEW_ORDER_CREATED": "Show pop up when a new order has been placed",
+			"POPUP_ORDER_CANCELLED": "Show pop up when canceling orders"
 		},
 		"AUDIO_CUE_FORM": {
 			"ALL_AUDIO": "All Audio cues",
