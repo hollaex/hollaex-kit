@@ -131,6 +131,16 @@ export const constructSettings = (state = {}, settings) => {
 		settingsData.notification.popup_order_partially_filled =
 			settings.popup_order_partially_filled;
 	}
+	if (settings.popup_order_new || settings.popup_order_new === false) {
+		settingsData.notification.popup_order_new = settings.popup_order_new;
+	}
+	if (
+		settings.popup_order_canceled ||
+		settings.popup_order_canceled === false
+	) {
+		settingsData.notification.popup_order_canceled =
+			settings.popup_order_canceled;
+	}
 
 	if (settings.theme) {
 		settingsData.interface.theme = settings.theme;

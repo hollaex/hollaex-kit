@@ -3734,7 +3734,7 @@ table th {
       color: var(--labels_important-active-labels-text-graphics);
       font-size: 0.9rem;
       margin-left: 0.3rem;
-      margin-top: 0.1rem; }
+      margin-top: 0.3rem; }
     .trade_block-wrapper .trade_block-title .refresh-link .action_notification-svg svg path {
       fill: var(--labels_important-active-labels-text-graphics) !important; }
   .trade_block-wrapper .trade_block-content {
@@ -16221,6 +16221,8 @@ table th {
       .account-tab-dropdown .ant-tooltip-inner .navigation-dropdown-container .options-container {
         margin: 0% 4%;
         padding: 2% 4%; }
+        .account-tab-dropdown .ant-tooltip-inner .navigation-dropdown-container .options-container .options-icon svg {
+          width: 2rem; }
 
 @media (min-width: 1920px) {
   .app_bar {

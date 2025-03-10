@@ -35,6 +35,7 @@ import {
 import { removeToken } from 'utils/token';
 import { MarketsSelector } from 'containers/Trade/utils';
 import { assetsSelector } from 'containers/Wallet/utils';
+import { logout } from 'actions/authAction';
 
 const INITIAL_LOGINS_STATE = {
 	count: 0,
@@ -55,6 +56,7 @@ const MobileBarMoreOptions = ({
 	getRemoteRoutes,
 	assets,
 	user,
+	logout,
 }) => {
 	const [search, setSearch] = useState('');
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -1232,7 +1234,7 @@ const MobileBarMoreOptions = ({
 	const onHandleLogout = () => {
 		removeToken();
 		setIsLogout(false);
-		return browserHistory?.push('/login');
+		logout();
 	};
 
 	const onHandleClosePopup = () => {
@@ -1418,6 +1420,7 @@ const mapDispatchToProps = (dispatch) => ({
 	setSecurityTab: bindActionCreators(setSecurityTab, dispatch),
 	setVerificationTab: bindActionCreators(setVerificationTab, dispatch),
 	setSettingsTab: bindActionCreators(setSettingsTab, dispatch),
+	logout: bindActionCreators(logout, dispatch),
 });
 
 export default connect(
