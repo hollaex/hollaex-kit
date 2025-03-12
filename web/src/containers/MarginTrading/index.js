@@ -251,7 +251,7 @@ const MarginTrading = ({
 										placeholder="Select a symbol"
 										style={{ width: '100%' }}
 									>
-										{Object.keys(pairs).map((key) => (
+										{Object.keys(coins).map((key) => (
 											<Select.Option value={key}>{key}</Select.Option>
 										))}
 									</Select>
