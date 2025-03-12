@@ -323,6 +323,11 @@ const AdminAnnouncement = Loadable({
 	loading: LoadingComponent,
 });
 
+const MarginTrading = Loadable({
+	loader: () => import('./containers/MarginTrading'),
+	loading: LoadingComponent,
+});
+
 ReactGA.initialize('UA-154626247-1'); // Google analytics. Set your own Google Analytics values
 browserHistory.listen((location) => {
 	if (window) {
@@ -664,6 +669,7 @@ export const generateRoutes = (routes = []) => {
 					onEnter={requireAuth}
 				/>
 				<Route path="p2p" name="P2P" component={P2P} />
+				<Route path="margin" name="Margin" component={MarginTrading} />
 
 				<Route
 					path="p2p/order/:order_id"
