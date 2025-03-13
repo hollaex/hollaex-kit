@@ -92,6 +92,7 @@ import {
 	SET_IS_ADMIN_ANNOUNCEMENT_FEATURE,
 	SET_IS_REFRESH_ASSETS,
 	SET_MARKET_REFRESH,
+	SET_ERROR,
 } from 'actions/appActions';
 import { THEME_DEFAULT } from 'config/constants';
 import { getLanguage } from 'utils/string';
@@ -237,6 +238,7 @@ const INITIAL_STATE = {
 	isAdminAnnouncementFeature: false,
 	isRefreshAssets: false,
 	isMarketRefresh: false,
+	errorMessage: null,
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -973,6 +975,12 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				isMarketRefresh: payload.isMarketRefresh,
+			};
+		}
+		case SET_ERROR: {
+			return {
+				...state,
+				errorMessage: payload.errorMessage,
 			};
 		}
 		default:

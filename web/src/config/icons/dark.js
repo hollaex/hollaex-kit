@@ -355,6 +355,10 @@ const nestedIcons = {
 	AUTO_TRADER_ICON: '/assets/images/auto-trade.svg',
 	ANNOUNCEMENT_ICON: '/assets/images/feature-announce.svg',
 	SPARKLE_ICON: '/assets/images/sparkle-icon.svg',
+	NETWORK_ERROR: '/assets/images/network-error.svg',
+	SERVER_ERROR: '/assets/images/server-error.svg',
+	SERVER_MAINTENANCE_ERROR: '/assets/images/server-maintenance-error.svg',
+	TOO_MANY_REQUEST_ERROR: '/assets/images/too-many-request-error.svg',
 };
 
 const icons = flatten(nestedIcons, options);

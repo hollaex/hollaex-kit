@@ -25,6 +25,8 @@ import '../node_modules/rc-tooltip/assets/bootstrap_white.css'; // eslint-disabl
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 
+import classnames from 'classnames';
+import ThemeProvider from 'containers/ThemeProvider';
 import {
 	setLocalVersions,
 	getLocalVersions,
@@ -37,6 +39,7 @@ import {
 	consoleKitInfo,
 	getContracts,
 	modifySections,
+	setupAxiosInterceptors,
 } from 'utils/initialize';
 
 import { getKitData } from 'actions/operatorActions';
@@ -94,10 +97,12 @@ import {
 	setLoadingImage,
 	setLoadingStyle,
 } from 'helpers/boot';
-import { filterPinnedAssets, handleUpgrade } from 'utils/utils';
+import { filterPinnedAssets, handleUpgrade, NetworkError } from 'utils/utils';
 import { isLoggedIn } from 'utils/token';
 import { getAnnouncementDetails } from 'containers/Announcement/actions';
+import { ErrorBoundary } from 'components';
 
+setupAxiosInterceptors();
 consoleKitInfo();
 consolePluginDevModeInfo();
 
@@ -319,19 +324,46 @@ const bootstrapApp = (
 
 	render(
 		<Provider store={store}>
-			<EditProvider>
-				<ConfigProvider initialConfig={appConfig}>
-					<Router
-						routes={generateRoutes(remoteRoutes)}
-						history={browserHistory}
-					/>
-				</ConfigProvider>
-			</EditProvider>
+			<ErrorBoundary>
+				<EditProvider>
+					<ConfigProvider initialConfig={appConfig}>
+						<Router
+							routes={generateRoutes(remoteRoutes)}
+							history={browserHistory}
+						/>
+					</ConfigProvider>
+				</EditProvider>
+			</ErrorBoundary>
 		</Provider>,
 		document.getElementById('root')
 	);
 };
 
+const renderInitialError = () => {
+	render(
+		<Provider store={store}>
+			<EditProvider>
+				<ThemeProvider>
+					<div
+						className={classnames(
+							'important-text',
+							'd-flex ',
+							'justify-content-between',
+							'align-center',
+							'flex-direction-column',
+							'py-5',
+							'font-title',
+							'h-100'
+						)}
+					>
+						<NetworkError />
+					</div>
+				</ThemeProvider>
+			</EditProvider>
+		</Provider>,
+		document.getElementById('root')
+	);
+};
 const initialize = async () => {
 	try {
 		const [
@@ -350,6 +382,9 @@ const initialize = async () => {
 	} catch (err) {
 		console.error('Initialization failed!\n', err);
 		setTimeout(initialize, 3000);
+		if (!navigator.onLine) {
+			renderInitialError();
+		}
 	}
 };
 
