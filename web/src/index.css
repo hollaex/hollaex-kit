@@ -20841,6 +20841,56 @@ table th {
 .connection-status-details:hover {
   cursor: pointer; }
 
+.display-error-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  padding: 2%; }
+  .display-error-container .display-error-icon svg,
+  .display-error-container .display-error-icon img {
+    width: 5rem;
+    height: 5rem; }
+    .display-error-container .display-error-icon svg path,
+    .display-error-container .display-error-icon svg circle,
+    .display-error-container .display-error-icon img path,
+    .display-error-container .display-error-icon img circle {
+      fill: var(--labels_secondary-inactive-label-text-graphics); }
+  .display-error-container .server-maintenance-icon svg g path,
+  .display-error-container .server-maintenance-icon img g path {
+    fill: none !important; }
+  .display-error-container .server-maintenance-icon svg g #noun-maintenance-server-4330410 path,
+  .display-error-container .server-maintenance-icon img g #noun-maintenance-server-4330410 path {
+    fill: var(--labels_secondary-inactive-label-text-graphics) !important; }
+  .display-error-container .edit-wrapper__container {
+    font-size: 16px; }
+  .display-error-container .error-title {
+    font-size: 24px !important; }
+  .display-error-container .error-description-wrapper {
+    text-align: center; }
+  .display-error-container .button-container {
+    margin-top: 2%; }
+    .display-error-container .button-container .holla-button {
+      min-width: 10rem; }
+      .display-error-container .button-container .holla-button .edit-wrapper__container {
+        font-size: 14px !important; }
+
+.display-error-container-mobile .display-error-icon img,
+.display-error-container-mobile .display-error-icon svg {
+  width: 6rem !important;
+  height: 6rem !important; }
+
+.display-error-container-mobile .error-title {
+  font-size: 18px !important; }
+
+.display-error-container-mobile .error-description {
+  font-size: 12px !important; }
+
+.display-error-container-mobile .button-container {
+  margin-top: 3%; }
+
 html {
   font-size: 12px !important;
   height: 100%; }
