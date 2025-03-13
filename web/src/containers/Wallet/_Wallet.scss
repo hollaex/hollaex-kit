@@ -4,6 +4,7 @@ $header-margin: 2rem;
 
 .wallet-hover:hover {
 	opacity: 0.5;
+	cursor: pointer;
 }
 
 .layout-mobile {
@@ -380,6 +381,15 @@ $header-margin: 2rem;
 
 	.header-wrapper {
 		border-top: 1px solid $colors-main-black;
+		.refresh-link {
+			.notification-info {
+				text-decoration: none !important;
+			}
+			.action_notification-svg {
+				position: relative;
+				bottom: 3px;
+			}
+		}
 		.image-Wrapper {
 			.action_notification-svg svg {
 				width: 1.25rem;
@@ -684,6 +694,14 @@ $header-margin: 2rem;
 .wallet-search-improvement {
 	border-bottom: 1px solid $dark-app-line-divider;
 	color: $dark-font-sub-text-color !important;
+	.asset-price {
+		opacity: 1;
+	}
+	.asset-price:hover {
+		opacity: 0.6;
+		cursor: pointer;
+		text-decoration: underline;
+	}
 }
 
 .dust-estimated-balance {
@@ -856,6 +874,26 @@ $header-margin: 2rem;
 				border-radius: 5px;
 				border-color: $colors-main-black !important;
 			}
+		}
+	}
+}
+
+.wallet-asset-dropdown {
+	.ant-dropdown-menu-item,
+	.app_bar-pair-font {
+		font-size: 10px !important;
+	}
+	.ant-dropdown-menu-item {
+		div:first-child {
+			gap: 4%;
+		}
+	}
+	.arrow-icon {
+		background-color: $colors-notifications-blue;
+		padding: 3% 1.5%;
+		svg {
+			width: 8px;
+			height: 8px;
 		}
 	}
 }

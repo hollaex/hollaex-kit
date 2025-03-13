@@ -41,7 +41,7 @@
 	"PROCEED": "PROCEED",
 	"EDIT_TEXT": "Edit",
 	"BACK_TEXT": "Back",
-	"NO_OPTIONS": "No options availables",
+	"NO_OPTIONS": "No options available",
 	"SECONDS": "seconds",
 	"SECOND": "second",
 	"VIEW_MARKET": "view markets",
@@ -510,7 +510,9 @@
 		"NOTIFICATION_FORM": {
 			"POPUP_ORDER_CONFIRMATION": "Ask for confirmation before submitting orders",
 			"POPUP_ORDER_COMPLETED": "Show pop up when order has been completed",
-			"POPUP_ORDER_PARTIALLY_FILLED": "Show pop up when order has partially filled"
+			"POPUP_ORDER_PARTIALLY_FILLED": "Show pop up when order has partially filled",
+			"POPUP_NEW_ORDER_CREATED": "Show pop up when a new order has been placed",
+			"POPUP_ORDER_CANCELLED": "Show pop up when canceling orders"
 		},
 		"AUDIO_CUE_FORM": {
 			"ALL_AUDIO": "All Audio cues",
@@ -734,8 +736,8 @@
 		"MODAL_TITLE": "Stake and earn {0}",
 		"REVIEW_MODAL_TITLE": "Check and confirm stake",
 		"AVAILABLE_TOKEN": "{0} ({1}) available to stake: {2}",
-		"DEFI_TITLE": "DeFi asset staking",
-		"DEFI_TEXT": "Staking DeFi style will use your own wallet outside of the exchange. To start you are required to establish a connection, once connected you can stake and start earning directly from your wallet.",
+		"DEFI_TITLE": "Defi asset staking",
+		"DEFI_TEXT": "Staking Defi style will use your own wallet outside of the exchange. To start you are required to establish a connection, once connected you can stake and start earning directly from your wallet.",
 		"GET_STAKES": "Get stakes",
 		"CURRENT_ETH_BLOCK": "Current ETH block: {0}",
 		"ON_EXCHANGE_XHT": "On exchange {0} balance: {1} {2}",
@@ -807,8 +809,8 @@
 		},
 		"INSTALL_METAMASK_TITLE": "MetaMask not detected",
 		"EARN_REWARD": "Earn rewards for staking your digital assets",
-		"DEFI_STAKING": "DeFi Staking",
-		"CEFI_STAKING": "CeFi Staking",
+		"DEFI_STAKING": "Defi Staking",
+		"CEFI_STAKING": "Cefi Staking",
 		"REWARDS": {
 			"0": { "CARD": "Earn rewards (no bonuses)", "TEXT": "regular rewards." },
 			"1": {
@@ -905,7 +907,7 @@
 		}
 	},
 	"CEFI_STAKE": {
-		"STAKE_POOL_TITLE": "Local CeFi Staking Pools",
+		"STAKE_POOL_TITLE": "Local Cefi Staking Pools",
 		"INTRODUCTION_1": "Earn rewards on assets you have stored in your local exchange wallet. Simply, click 'STAKE', input the amount you'd like to stake and start earning.",
 		"CURRENT_STAKING_VALUE": "Current staking value",
 		"DURATION_LABEL": "Duration",
@@ -1491,7 +1493,9 @@
 		"INSUFFICIENT_INFO_1": "Your earnings are currently insufficient for settlement. Please invite more members using your referral link and wait until your unsettled earnings {0} {1}",
 		"INSUFFICIENT_INFO_2": "exceed 1",
 		"GO_TO_REFERRAL": "Go To Referral",
-		"REFER_DESC": "Share a link below with friends to Start earning commissions on their trading"
+		"REFER_DESC": "Share a link below with friends to Start earning commissions on their trading",
+		"SUCCESSFULLY_SETTLED": "Successfully Settled",
+		"SETTLE_AMOUNT": "You've successfully settled the amount of {0} {1}"
 	},
 	"NOT_LOGGEDIN": {
 		"TEXT_GENERAL": "To view you must login",
@@ -1614,7 +1618,7 @@
 	"LOADING": "Loading...",
 	"CONNECT_VIA_DESKTOP": {
 		"TITLE": "Connect via desktop",
-		"SUBTITLE": "DeFi staking through your mobile devices aren't supported at this time.",
+		"SUBTITLE": "Defi staking through your mobile devices aren't supported at this time.",
 		"TEXT": "To connect your wallet please use a desktop/laptop computer."
 	},
 	"ORDER_HISTORY_CLOSED": "Closed",
@@ -2581,7 +2585,8 @@
 		"TRANSACTION_DESC": "Review all trades, deposits & withdrawals",
 		"ONRAMPER_DESC": "Use Onramper to buy and sell crypto",
 		"AUTO_TRADER_DESC": "Recurring automatic buy & sell transactions",
-		"ANNOUNCEMENT_DESC": "Updates, listings and other news"
+		"ANNOUNCEMENT_DESC": "Updates, listings and other news",
+		"WALLET_DESCRIPTION": "View your wallet asset and balances"
 	},
 	"DESKTOP_ULTIMATE_SEARCH": {
 		"SEARCH_DESCRIPTION": "Find Functions, Coins, and More",

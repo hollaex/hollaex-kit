@@ -96,11 +96,27 @@ $tabs-title--margin: 2rem;
 			color: $colors-main-black;
 			font-size: 0.9rem;
 			margin-left: 0.3rem;
-			margin-top: 0.1rem;
+			margin-top: 0.3rem;
+		}
+		.refresh-link {
+			.action_notification-svg {
+				svg {
+					path {
+						fill: $colors-main-black !important;
+					}
+				}
+			}
 		}
 	}
 
 	.trade_block-content {
+		.loading-anime {
+			height: 10px;
+			width: 100%;
+			margin: 2%;
+			border-radius: 7px;
+			animation: mymove 3s infinite;
+		}
 		flex: auto;
 		padding: 0 1.2rem 1.2rem 1.2rem;
 		font-size: $font-size-subtext;

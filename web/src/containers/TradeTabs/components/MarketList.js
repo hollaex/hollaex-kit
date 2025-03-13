@@ -42,6 +42,7 @@ const MarketList = ({
 	toggleSort,
 	setSortModeChange,
 	setSortModeVolume,
+	pinned_markets = [],
 }) => {
 	const handleClickChange = () => {
 		if (mode === SORT.CHANGE) {
@@ -132,6 +133,7 @@ const MarketList = ({
 								chartData={chartData}
 								market={market}
 								loading={loading}
+								pinned_markets={pinned_markets}
 							/>
 						))}
 					</tbody>
@@ -171,10 +173,12 @@ MarketList.propTypes = {
 const mapStateToProps = ({
 	app: {
 		sort: { mode, is_descending },
+		pinned_markets,
 	},
 }) => ({
 	mode,
 	is_descending,
+	pinned_markets,
 });
 
 const mapDispatchToProps = (dispatch) => ({

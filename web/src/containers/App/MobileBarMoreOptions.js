@@ -1,10 +1,16 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, {
+	useCallback,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+} from 'react';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
 import { Input, Tooltip } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
+import { CloseOutlined, SearchOutlined } from '@ant-design/icons';
 
 import icons from 'config/icons/dark';
 import STRINGS from 'config/localizedStrings';
@@ -29,6 +35,7 @@ import {
 import { removeToken } from 'utils/token';
 import { MarketsSelector } from 'containers/Trade/utils';
 import { assetsSelector } from 'containers/Wallet/utils';
+import { logout } from 'actions/authAction';
 
 const INITIAL_LOGINS_STATE = {
 	count: 0,
@@ -49,6 +56,7 @@ const MobileBarMoreOptions = ({
 	getRemoteRoutes,
 	assets,
 	user,
+	logout,
 }) => {
 	const [search, setSearch] = useState('');
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -65,6 +73,8 @@ const MobileBarMoreOptions = ({
 		isDisplayPing: false,
 	});
 	const [isLogout, setIsLogout] = useState(false);
+	const [isSearchActive, setIsSearchActive] = useState(false);
+	const inputRef = useRef(null);
 
 	const fieldHasCoinIcon = [
 		'SUMMARY.DEPOSIT',
@@ -88,7 +98,10 @@ const MobileBarMoreOptions = ({
 			if (search?.length > 1) {
 				const lastSearchTerm = searchTerms[searchTerms?.length - 1];
 				const matches = searchTerms?.some(
-					(term) => fullname?.startsWith(term) || symbol?.startsWith(term)
+					(term) =>
+						fullname?.startsWith(term) ||
+						fullname?.includes(term) ||
+						symbol?.startsWith(term)
 				);
 				const lastMatch =
 					fullname?.startsWith(lastSearchTerm) ||
@@ -168,6 +181,12 @@ const MobileBarMoreOptions = ({
 		}
 		//eslint-disable-next-line
 	}, []);
+
+	useEffect(() => {
+		if (isSearchActive && inputRef && inputRef.current) {
+			inputRef.current.focus();
+		}
+	}, [isSearchActive]);
 
 	const requestLogins = useCallback((page = 1) => {
 		getLogins({ page })
@@ -380,7 +399,7 @@ const MobileBarMoreOptions = ({
 			iconText: 'MORE_OPTIONS_LABEL.ICONS.CEFI_STAKE',
 			path: '/stake',
 			isDisplay: features?.cefi_stake,
-			toolTipText: 'DESKTOP_NAVIGATION.CONVERT_DESC',
+			toolTipText: 'DESKTOP_NAVIGATION.CEFI_STAKE_DESC',
 			searchContent: [
 				STRINGS['STAKE.EARN'],
 				STRINGS['MORE_OPTIONS_LABEL.HOT_FUNCTION.PASSIVE_INCOME'],
@@ -884,7 +903,8 @@ const MobileBarMoreOptions = ({
 				const isContent = option?.searchContent?.some((content) =>
 					searchText?.some(
 						(searchValue) =>
-							content?.toLowerCase()?.startsWith(searchValue) &&
+							(content?.toLowerCase()?.startsWith(searchValue) ||
+								content?.toLowerCase()?.includes(searchValue)) &&
 							option?.isDisplay
 					)
 				);
@@ -1214,11 +1234,19 @@ const MobileBarMoreOptions = ({
 	const onHandleLogout = () => {
 		removeToken();
 		setIsLogout(false);
-		return browserHistory?.push('/login');
+		logout();
 	};
 
 	const onHandleClosePopup = () => {
 		setIsLogout(false);
+	};
+
+	const onHandleInput = () => {
+		setIsSearchActive(true);
+	};
+	const onhandleCloseInput = () => {
+		setIsSearchActive(false);
+		setSearch(null);
 	};
 
 	return (
@@ -1240,11 +1268,41 @@ const MobileBarMoreOptions = ({
 				/>
 			) : (
 				<div className="search-field">
-					<Input
-						onChange={(e) => onHandleSearch(e)}
-						placeholder={STRINGS['DESKTOP_ULTIMATE_SEARCH.SEARCH_PLACEHOILDER']}
-						allowClear
-					/>
+					{!isSearchActive ? (
+						<div
+							className="search-field-container search w-100 pointer d-flex align-items-center"
+							onClick={() => onHandleInput()}
+						>
+							<Input
+								placeholder={
+									STRINGS['DESKTOP_ULTIMATE_SEARCH.SEARCH_PLACEHOILDER']
+								}
+								allowClear
+								readOnly
+							/>
+							<span
+								className="open-icon"
+								onClick={() => onHandleInput()}
+							></span>
+						</div>
+					) : (
+						<div className="search-field-container w-100 d-flex align-items-center">
+							<Input
+								ref={inputRef}
+								value={search}
+								onChange={(e) => onHandleSearch(e)}
+								placeholder={
+									STRINGS['DESKTOP_ULTIMATE_SEARCH.SEARCH_PLACEHOILDER']
+								}
+							/>
+							<span
+								className="close-icon pointer"
+								onClick={() => onhandleCloseInput()}
+							>
+								<CloseOutlined />
+							</span>
+						</div>
+					)}
 					<span className="search-icon-container">
 						<SearchOutlined className="search-icon" />
 					</span>
@@ -1362,6 +1420,7 @@ const mapDispatchToProps = (dispatch) => ({
 	setSecurityTab: bindActionCreators(setSecurityTab, dispatch),
 	setVerificationTab: bindActionCreators(setVerificationTab, dispatch),
 	setSettingsTab: bindActionCreators(setSettingsTab, dispatch),
+	logout: bindActionCreators(logout, dispatch),
 });
 
 export default connect(
