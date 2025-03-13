@@ -510,7 +510,9 @@
 		"NOTIFICATION_FORM": {
 			"POPUP_ORDER_CONFIRMATION": "Захиалга өгөхөөс өмнө баталгаажуулах.",
 			"POPUP_ORDER_COMPLETED": "Захиалга дууссан тухай цонх харуулах",
-			"POPUP_ORDER_PARTIALLY_FILLED": "Захиалга хэсэгчлэн дүүрсэн үед цонх харуулах"
+			"POPUP_ORDER_PARTIALLY_FILLED": "Захиалга хэсэгчлэн дүүрсэн үед цонх харуулах",
+			"POPUP_NEW_ORDER_CREATED": "Шинэ захиалга үүсэхэд цонх харуулах",
+			"POPUP_ORDER_CANCELLED": "Захиалга цуцлах үед цонх харуулах"
 		},
 		"AUDIO_CUE_FORM": {
 			"ALL_AUDIO": "Бүх дуун сануулга",
@@ -1491,7 +1493,9 @@
 		"INSUFFICIENT_INFO_1": "Таны орлого одоогоор тооцоо хийхэд хангалтгүй байна. Найз урих линк ашиглан илүү олон гишүүн урьж, шийдэгдээгүй орлогоо хүлээнэ үү {0} {1}",
 		"INSUFFICIENT_INFO_2": "1-ээс хэтрэх",
 		"GO_TO_REFERRAL": "Найз урих хэсэг рүү очих",
-		"REFER_DESC": "Доор холбоосыг найзууддаа хуваалцаж арилжааны шимтгэлээс урамшуулал аваарай"
+		"REFER_DESC": "Доор холбоосыг найзууддаа хуваалцаж арилжааны шимтгэлээс урамшуулал аваарай",
+		"SUCCESSFULLY_SETTLED": "Амжилттай баталгаажууллаа",
+		"SETTLE_AMOUNT": "Та {0} {1} дүнгээр амжилттай баталгаажууллаа"
 	},
 	"NOT_LOGGEDIN": {
 		"TXT_1": "Арилжаанд оролцохын тулд та нэвтрэх ёстой",
@@ -2581,7 +2585,8 @@
 		"TRANSACTION_DESC": "Бүх арилжаа, орлого ба зарлагыг хянах",
 		"ONRAMPER_DESC": "Onramper ашиглан крипто худалдан авах ба зарах",
 		"AUTO_TRADER_DESC": "Давтагдах автомат захиалгын гүйлгээнүүд",
-		"ANNOUNCEMENT_DESC": "Шинэчлэлт, листинг болон бусад мэдээ"
+		"ANNOUNCEMENT_DESC": "Шинэчлэлт, листинг болон бусад мэдээ",
+		"WALLET_DESCRIPTION": "Хэтэвчний үлдэгдэл харах"
 	},
 	"DESKTOP_ULTIMATE_SEARCH": {
 		"SEARCH_DESCRIPTION": "Хайх зүйлээ оруулна уу",
@@ -2648,13 +2653,14 @@
 		"WEEKLY_TRADE_TITLE": "Арилжааны өдрүүд",
 		"WEEKLY_TRADE_TOOLTIP_DESC": "Зарцуулах дүн",
 		"TRADE_TIME": "Арилжааны цаг",
-		"MONDAY": "Да.",
-		"TUESDAY": "Мя.",
-		"WEDNESDAY": "Лх.",
-		"THURSDAY": "Пү.",
-		"FRIDAY": "Ба.",
-		"SATURDAY": "Бя.",
-		"SUNDAY": "Ня.",
+		"MONDAY": "Дав",
+		"TUESDAY": "Мяг",
+		"WEDNESDAY": "Лха",
+		"THURSDAY": "Пүр",
+		"FRIDAY": "Баа",
+		"SATURDAY": "Бям",
+		"SUNDAY": "Ням",
+		"SELECT_DAY": "Өдөр сонгох",
 		"MONTHLY_TRADE_TITLE": "Өдөр/Огноо тохируулах",
 		"MONTHLY_TRADE_TOOLTIP_DESC": "Сар бүр арилжаа автоматаар гүйцэтгэх өдөр",
 		"DESCTIPTION_TEXT": "Энэ төлөвлөгөөт гүйлгээнд тодорхой тайлбар нэмэх.",
@@ -2686,14 +2692,14 @@
 		"LISTING_TEXT": "Жагсаалт",
 		"NEWS": "Мэдээ",
 		"EVENTS": "Үйл явдал",
-		"ANNOUNCEMENT_LIST_HEADING": "Биржийн үйл явдал ба мэдэгдлүүд",
-		"ANNOUNCEMENT_DESC": "Сүүлийн үеийн шинэчлэлтүүд, ерөнхий мэдээ, үйл явдал, жагсаалт болон бусад",
-		"VIEW_PRICE_UPDATES": "Үнийн шинэчлэлт харах",
+		"ANNOUNCEMENT_LIST_HEADING": "Биржийн шинэ мэдээ",
+		"ANNOUNCEMENT_DESC": "Сүүлийн үеийн шинэчлэлтүүд, шинэ мэдээ, үйл явдал болон бусад",
+		"VIEW_PRICE_UPDATES": "Үнийн өөрчлөлт харах",
 		"TITLE": "Гарчиг",
 		"MESSAGE_CONTENTS": "Мэдээлэл/Агуулга",
 		"VIEW_ALL_ANNOUNCEMENT": "Бүх мэдэгдэл харах",
 		"EXCHANGE_UPDATE": "Биржийн шинэчлэлт",
-		"NO_DATA_TEXT": "Одоогоор ямар нэгэн мэдэгдэл хийгдээгүй байна",
+		"NO_DATA_TEXT": "Одоогоор ямар нэгэн мэдэгдэл байхгүй байна",
 		"UPGRADES": "Сайжруулалт"
 	}
 }
