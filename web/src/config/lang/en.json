@@ -1153,6 +1153,16 @@
 		"ZERO_BALANCE": "You do not have enough available balance.",
 		"NEW_ADDRESS": "New Address"
 	},
+	"LOGIN_CONFIRMATION": {
+		"LOGIN_CONFIRM_FINAL": "Login Confirmation",
+		"LOGIN_CONFIRM_WARNING": "Please confirm that it's you who are trying to login.",
+		"LOGIN_CANCEL_BUTTON": "CLOSE",
+		"LOGIN_CONFIRM_BUTTON": "CONFIRM LOGIN",
+		"LOGIN_INPUT_CODE": "please input the code",
+		"LOGIN_CONFIRM_SUCCESS_1": "Your login saved as unsuspicious.",
+		"LOGIN_CONFIRM_SUCCESS_2": "Please login again.",
+		"GO_LOGIN_HISTORY": "Go To Login Page"
+	},
 	"WALLET_BUTTON_BASE_DEPOSIT": "deposit",
 	"WALLET_BUTTON_BASE_WITHDRAW": "withdraw",
 	"WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT": "deposit",

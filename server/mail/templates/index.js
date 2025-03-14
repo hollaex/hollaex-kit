@@ -6,7 +6,7 @@ const API_NAME = () => GET_KIT_CONFIG().api_name;
 const { TemplateEmail } = require('./helpers/common');
 const { MAILTYPE, languageFile } = require('../strings');
 
-String.prototype.format = function() {
+String.prototype.format = function () {
 	let a = this;
 	for (let k in arguments) {
 		a = a.replace('{' + k + '}', arguments[k]);
@@ -58,7 +58,9 @@ const generateMessageContent = (
 			language = 'en';
 		}
 
+
 		let MAILTYPE_CONFIGURATIONS = EMAIL_CONFIGURATIONS[language][new_type.toUpperCase()];
+
 		title = getTitle(new_type, MAILTYPE_CONFIGURATIONS['title'], data);
 		message = {
 			html: replaceHTMLContent(new_type, MAILTYPE_CONFIGURATIONS['html'].toString(), email, data, language, domain),
@@ -122,15 +124,13 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 			confirmation = CONFIRMATION[data.currency] || CONFIRMATION[data.network];
 			if (EXPLORERS[data.currency]) {
 				EXPLORERS[data.currency].forEach((explorer) => {
-					explorers += `<li><a href=${explorer.baseUrl}${explorer.txPath}/${
-						data.transaction_id
-					}>${explorer.name}</a></li>`;
+					explorers += `<li><a href=${explorer.baseUrl}${explorer.txPath}/${data.transaction_id
+						}>${explorer.name}</a></li>`;
 				});
 			} else if (EXPLORERS[data.network]) {
 				EXPLORERS[data.network].forEach((explorer) => {
-					explorers += `<li><a href=${explorer.baseUrl}${explorer.txPath}/${
-						data.transaction_id
-					}>${explorer.name}</a></li>`;
+					explorers += `<li><a href=${explorer.baseUrl}${explorer.txPath}/${data.transaction_id
+						}>${explorer.name}</a></li>`;
 				});
 			}
 		}
@@ -148,7 +148,7 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		html = html.replace(/\$\{description\}/g, data.description || '');
 		html = html.replace(/\$\{explorers\}/g, explorers || '');
 		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
-		if(data.network) {
+		if (data.network) {
 			html = html.replace(/\$\{network\}/g, data.network || '');
 		} else {
 			html = html.replace(/id="network"/g, 'style="display: none"');
@@ -164,15 +164,13 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 			confirmation = CONFIRMATION[data.currency] || CONFIRMATION[data.network];
 			if (EXPLORERS[data.currency]) {
 				EXPLORERS[data.currency].forEach((explorer) => {
-					explorers += `<li><a href=${explorer.baseUrl}${explorer.txPath}/${
-						data.transaction_id
-					}>${explorer.name}</a></li>`;
+					explorers += `<li><a href=${explorer.baseUrl}${explorer.txPath}/${data.transaction_id
+						}>${explorer.name}</a></li>`;
 				});
 			} else if (EXPLORERS[data.network]) {
 				EXPLORERS[data.network].forEach((explorer) => {
-					explorers += `<li><a href=${explorer.baseUrl}${explorer.txPath}/${
-						data.transaction_id
-					}>${explorer.name}</a></li>`;
+					explorers += `<li><a href=${explorer.baseUrl}${explorer.txPath}/${data.transaction_id
+						}>${explorer.name}</a></li>`;
 				});
 			}
 		}
@@ -191,7 +189,7 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		html = html.replace(/\$\{description\}/g, data.description || '');
 		html = html.replace(/\$\{explorers\}/g, explorers || '');
 		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
-		if(data.network) {
+		if (data.network) {
 			html = html.replace(/\$\{network\}/g, data.network || '');
 		} else {
 			html = html.replace(/id="network"/g, 'style="display: none"');
@@ -205,15 +203,13 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		if (data.transaction_id && !data.transaction_id.includes('-')) {
 			if (EXPLORERS[data.currency]) {
 				EXPLORERS[data.currency].forEach((explorer) => {
-					explorers += `<li><a href=${explorer.baseUrl}${explorer.txPath}/${
-						data.transaction_id
-					}>${explorer.name}</a></li>`;
+					explorers += `<li><a href=${explorer.baseUrl}${explorer.txPath}/${data.transaction_id
+						}>${explorer.name}</a></li>`;
 				});
 			} else if (EXPLORERS[data.network]) {
 				EXPLORERS[data.network].forEach((explorer) => {
-					explorers += `<li><a href=${explorer.baseUrl}${explorer.txPath}/${
-						data.transaction_id
-					}>${explorer.name}</a></li>`;
+					explorers += `<li><a href=${explorer.baseUrl}${explorer.txPath}/${data.transaction_id
+						}>${explorer.name}</a></li>`;
 				});
 			}
 		}
@@ -232,7 +228,7 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		html = html.replace(/\$\{description\}/g, data.description || '');
 		html = html.replace(/\$\{explorers\}/g, explorers || '');
 		html = html.replace(/\$\{transaction_id\}/g, data.transaction_id || '');
-		if(data.network) {
+		if (data.network) {
 			html = html.replace(/\$\{network\}/g, data.network || '');
 		} else {
 			html = html.replace(/id="network"/g, 'style="display: none"');
@@ -245,15 +241,13 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		if (data.transaction_id && !data.transaction_id.includes('-')) {
 			if (EXPLORERS[data.currency]) {
 				EXPLORERS[data.currency].forEach((explorer) => {
-					explorers += `<li><a href=${explorer.baseUrl}${explorer.txPath}/${
-						data.transaction_id
-					}>${explorer.name}</a></li>`;
+					explorers += `<li><a href=${explorer.baseUrl}${explorer.txPath}/${data.transaction_id
+						}>${explorer.name}</a></li>`;
 				});
 			} else if (EXPLORERS[data.network]) {
 				EXPLORERS[data.network].forEach((explorer) => {
-					explorers += `<li><a href=${explorer.baseUrl}${explorer.txPath}/${
-						data.transaction_id
-					}>${explorer.name}</a></li>`;
+					explorers += `<li><a href=${explorer.baseUrl}${explorer.txPath}/${data.transaction_id
+						}>${explorer.name}</a></li>`;
 				});
 			}
 		}
@@ -271,7 +265,7 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		html = html.replace(/\$\{description\}/g, data.description || '');
 		html = html.replace(/\$\{explorers\}/g, explorers || '');
 		html = html.replace(/\$\{transaction_id\}/g, data.transaction_id || '');
-		if(data.network) {
+		if (data.network) {
 			html = html.replace(/\$\{network\}/g, data.network || '');
 		} else {
 			html = html.replace(/id="network"/g, 'style="display: none"');
@@ -321,7 +315,7 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		html = html.replace(/\$\{address\}/g, data.address || '');
 		html = html.replace(/\$\{ip\}/g, data.ip || '');
 		html = html.replace(/\$\{link\}/g, data.confirmation_link || `${domain}/confirm-withdraw/${data.transaction_id}?currency=${data.currency}&amount=${data.amount}&address=${data.address}&fee=${data.fee}&fee_coin=${data.fee_coin}&network=${data.network}`);
-		if(data.network) {
+		if (data.network) {
 			html = html.replace(/\$\{network\}/g, data.network || '');
 		} else {
 			html = html.replace(/id="network"/g, 'style="display: none"');
@@ -414,7 +408,7 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 	else if (type === MAILTYPE.LOCKED_ACCOUNT) {
 		html = html.replace(/\$\{name\}/g, email || '');
 		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
-		html = html.replace(/\$\{login_timeout\}/g, LOGIN_TIME_OUT / (1000 * 60)  || '');
+		html = html.replace(/\$\{login_timeout\}/g, LOGIN_TIME_OUT / (1000 * 60) || '');
 	}
 	else if (type === MAILTYPE.USER_DELETED) {
 		html = html.replace(/\$\{name\}/g, email || '');
@@ -436,11 +430,11 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 	}
 	else if (type === MAILTYPE.P2P_MERCHANT_IN_PROGRESS ||
 		type === MAILTYPE.P2P_MERCHANT_IN_PROGRESS ||
-		type === MAILTYPE.P2P_BUYER_PAID_ORDER	||
-		type === MAILTYPE.P2P_ORDER_EXPIRED	||
-		type === MAILTYPE.P2P_ORDER_CLOSED	||
-		type === MAILTYPE.P2P_BUYER_CANCELLED_ORDER	||
-		type === MAILTYPE.P2P_BUYER_APPEALED_ORDER	||
+		type === MAILTYPE.P2P_BUYER_PAID_ORDER ||
+		type === MAILTYPE.P2P_ORDER_EXPIRED ||
+		type === MAILTYPE.P2P_ORDER_CLOSED ||
+		type === MAILTYPE.P2P_BUYER_CANCELLED_ORDER ||
+		type === MAILTYPE.P2P_BUYER_APPEALED_ORDER ||
 		type === MAILTYPE.P2P_VENDOR_CONFIRMED_ORDER ||
 		type === MAILTYPE.P2P_VENDOR_CANCELLED_ORDER ||
 		type === MAILTYPE.P2P_VENDOR_APPEALED_ORDER
@@ -472,6 +466,17 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		html = html.replace(/\$\{spend_coin\}/g, data.spend_coin || '');
 		html = html.replace(/\$\{buy_coin\}/g, data.buy_coin || '');
 		html = html.replace(/\$\{link\}/g, `${domain}/transactions`);
+	}
+	else if (type === MAILTYPE.SUSPICIOUS_LOGIN) {
+		html = html.replace(/\$\{name\}/g, email || '');
+		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
+		html = html.replace(/\$\{ip\}/g, data.ip || '');
+		html = html.replace(/\$\{location\}/g, data.location || 'Unknown Location');
+		html = html.replace(/\$\{device\}/g, data.device || 'Unknown Device');
+		html = html.replace(/\$\{time\}/g, data.time || 'Unknown Time');
+		html = html.replace(/\$\{verification_code\}/g, data.verification_code || '');
+		html = html.replace(/\$\{verification_link\}/g, data.verification_link || `${domain}/confirm-login?token=${data.verification_code}&prompt=true`);
+		html = html.replace(/\$\{confirmation_link\}/g, data.confirmation_link || `${domain}/confirm-login?token=${data.verification_code}&prompt=false`);
 	}
 
 	return html;

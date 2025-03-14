@@ -309,6 +309,34 @@ paths:
         - hmac
       x-security-scopes:
         - user
+  /user/confirm-login:
+    x-swagger-router-controller: user
+    post:
+      operationId: confirmLogin
+      description: confirm a login request
+      tags:
+        - User
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - token
+            properties:
+              token:
+                type: string
+                maxLength: 6
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
   /user/affiliation:
     x-swagger-router-controller: user
     get:
