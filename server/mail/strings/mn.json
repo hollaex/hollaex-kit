@@ -119,7 +119,7 @@
 		"OTP_DISABLED": {
 			"html": "<div> <p> ${name} </p> <p> Таны дансны <b>хоёр чухал хамгаалалт (2FA) идэвхигүй болсон байна</b> гэж бичлэгт орууллаа. Таны дансаа аюулгүй болгохын тулд 2FA-г дахин идэвхжүүлэхийг та нарийвчлан зөвшөөрч байна.</p> <div> <div>Цаг: ${time}</div> <div>Улс: ${country}</div> <div>IP Хаяг: ${ip}</div> </div> <p> Энэ нь та биш эсэхийг баталгаажуулж байгаа бол тухайлбарыг бидэнтэй холбогдоно уу. </p> <p> Таны нэртэй<br> ${api_name} баг </p> </div>",
 			"title": "OTP Идэвхгүй болсон"
-		  },
+		},
 		"OTP_ENABLED": {
 			"html": "<div> <p> ${name} </p> <p> Таны дансны <b>хоёр чухал хамгаалалт (2FA) идэвхлэгдсэн байна</b> гэж бичлэгт орууллаа.</p> <div> <div>Цаг: ${time}</div> <div>Улс: ${country}</div> <div>IP Хаяг: ${ip}</div> </div> <p> Таны нэртэй<br> ${api_name} баг </p> </div>",
 			"title": "OTP Идэвхлэгдсэн"
@@ -160,18 +160,21 @@
 			"html": "<div><p> Эрхэм ${name} </p><p>Та захиалгандаа гомдол гаргасан байна. Асуудлыг шийдвэрлэхийн тулд дэмжлэгтэй холбогдоно уу.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Таны захиалгад очих</Button></a></div><p>Манай платформыг ашигласанд баярлалаа.</p><p>Хүсэлт ирсэн IP: ${ip}</p><p>Хүндэтгэсэн<br> ${api_name} баг </p></div>",
 			"title": "Таны P2P захиалгад үйл ажиллагаа илэрсэн байна"
 		},
-        "AUTO_TRADE_ERROR":{
+		"AUTO_TRADE_ERROR": {
 			"html": "<div><p>Хүндэт ${name},</p><p>Таны автоматаар худалдааны тохиргоо дараах гүйлгээний үед үлдэгдэл дутагдлын улмаас амжилтгүй болсон байна. Та үлдэгдлээ шалгаж шинэчилнэ үү. Зарцуулах хэмжээ: ${spend_amount}, Зарцуулах валют: ${spend_coin}, Худалдаж авах валют: ${buy_coin}.</p><p>Манай платформыг ашигласанд баярлалаа.</p><p>Хүндэтгэсэн, ${api_name} баг</p></div>",
 			"title": "Таны автоматаар худалдааны тохиргоонд алдаа гарсан"
-		  },
+		},
 		"AUTO_TRADE_REMINDER": {
-			"html":  "<div><p>Сайн уу ${name},</p><p>Таны автомат худалдааны тохиргоо <b>${spend_amount} ${spend_coin} -г ${buy_coin}</b> руу 12 цагийн дараа идэвхжих гэж байна. Амжилттай гүйцэтгэхэд хангалттай мөнгө байгаа эсэхийг шалгаарай:</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">ҮЗЭХ ЖОГЦОО</Button></a></div><p>Манай платформыг ашигласанд баярлалаа.</p><p>Хүндэтгэсэн,<br />${api_name} баг</p></div>",
+			"html": "<div><p>Сайн уу ${name},</p><p>Таны автомат худалдааны тохиргоо <b>${spend_amount} ${spend_coin} -г ${buy_coin}</b> руу 12 цагийн дараа идэвхжих гэж байна. Амжилттай гүйцэтгэхэд хангалттай мөнгө байгаа эсэхийг шалгаарай:</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">ҮЗЭХ ЖОГЦОО</Button></a></div><p>Манай платформыг ашигласанд баярлалаа.</p><p>Хүндэтгэсэн,<br />${api_name} баг</p></div>",
 			"title": "Таны давталттай захиалга удахгүй идэвхжих болно"
 		},
 		"AUTO_TRADE_FILLED": {
 			"html": "<div><p>Сайн уу ${name},</p><p>Таны <b>${spend_amount} ${spend_coin}-г ${buy_coin}-д хөрвүүлэх</b> автомат захиалга амжилттай боловсруулагдлаа.</p><div>Таны худалдааны түүхийг доорх холбоосоор шалгана уу:</div><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">ХУДАЛДААНЫ ТҮҮХИЙГ ҮЗЭХ</Button></a></div><p>Манай платформыг ашиглаж байгаад баярлалаа.</p><p>Хүндэтгэсэн,<br />${api_name} баг</p></div>",
 			"title": "Таны автомат захиалга амжилттай биелэгдлээ"
+		},
+		"SUSPICIOUS_LOGIN": {
+			"html": "<div><p>Эрхэм ${name},</p><p>Бид таны дансанд шинэ төхөөрөмж эсвэл байршлаас нэвтрэх оролдлогыг анзаалав. Хэрэв энэ та байсан бол нэвтрэлтийг баталгаажуулж дансаа аюулгүй болгоно уу. Хэрэв та биш бол дансаа хамгаалахын тулд нэн даруй арга хэмжээ аваарай.</p><p><strong>Нэвтрэх мэдээлэл:</strong><br />IP хаяг: ${ip}<br />Байршил: ${location}<br />Төхөөрөмж: ${device}<br />Цаг: ${time}</p><p>Өөрийн хувийг баталгаажуулахын тулд дараах баталгаажуулах кодыг ашиглана уу:</p><p style=\"font-size: 18px; font-weight: bold; margin: 20px 0;\">Баталгаажуулах код: <strong>${verification_code}</strong></p><p>Үргэлжлүүлэхийн тулд дараах сонголтуудын аль нэгийг сонгоно уу:</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${verification_link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem; margin-right: 10px;\">Кодоор баталгаажуулах</Button></a><a href=\"${confirmation_link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #4CAF50; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem; margin-right: 10px;\">Нэвтрэлтийг баталгаажуулах</Button></a><a href=\"${freeze_account_link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #FF0000; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Дансыг хөлдөөх</Button></a></div><p>Хэрэв энэ нэвтрэх оролдлогыг та хийгээгүй бол зөвшөөрөлгүй нэвтрэлтээс сэргийлэхийн тулд дансаа нэн даруй хөлдөөхийг зөвлөж байна.</p><p>Хүндэтгэсэн,<br />${api_name} баг</p></div>",
+			"title": "Сэжигтэй нэвтрэх анхааруулга"
 		}
-		  
 	}
 }

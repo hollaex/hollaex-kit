@@ -1,177 +1,180 @@
 {
-    "ja": {
-        "LOGIN": {
-            "html": "<div> <p> ${name}様 </p> <p> お客様のアカウントが以下の情報からログインされました。 </p> <div> <div>時間: ${time}</div> <div>国家： ${country}</div> <div>IPアドレス： ${ip}</div> </div> <p> 本人のログインではない場合、${api_name}でパスワードの変更および二段階認証を設定し、即時にこのメールにてご返信ください。 </p> <p> 敬具<br> ${api_name} チーム </p> </div>",
-            "title": "ログイン"
-        },
-        "SIGNUP": {
-            "html": "<div> <p> ${name}様 </p> <p>下のボタンをクリックしてメールアカウントを確認する必要があります。<br> ご不明な点がございましたら、このメールに返信するだけでお気軽にお問い合わせください。</p><p>ご不明な点がございましたら、このメールに返信するだけでお気軽にお問い合わせください。</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">出金承認</Button></a></div><p> 敬具<br> ${api_name} チーム </p></div>",
-            "title": "会員登録"
-        },
-        "WELCOME": {
-            "html": "<div><p> ${name}様 </p><p>${api_name}をご利用いただき誠にありがとうございます。.</p><p>取引を始めるため、まず仮想通貨、または資金をアカウントに入金する必要があります。お客様の <a href=\"${link_account}\" target='_blank'>アカウント</a>に移動して、 <a href=\"${link_deposit}\" target='_blank'>入金</a> ページを訪問してください。`.,</p><p>お問い合わせは、このメールにてご返信ください。</p><p> 敬具<br> ${api_name} チーム </p></div>",
-            "title": "ようこそ"
-        },
-        "RESET_PASSWORD": {
-            "html": "<div><p> ${name}様 </p><p>お客様のアカウントから、パスワードの再設定がリクエストされました。<br />下のリンクをクリックして、パスワードのアップデートを続行してください。<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">パスワード再設定</Button></a></div><p>このリクエストの続行を望まない場合、このメールは無視してください。お客様のアカウントに変更は一切適用されません。</p><p>リクエスト元： ${ip}</p><p> 敬具<br> ${api_name} チーム </p></div>",
-            "title": "パスワード再設定のリクエスト"
-        },
-        "ACCOUNT_VERIFY": {
-            "html": "<div><p> ${name}様 </p><p>おめでとうございます。お客様のアカウントの認証が完了しました。</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">取引を始める</Button></a></div><p> 敬具<br> ${api_name} チーム </p></div>",
-            "title": "アカウントの認証完了"
-        },
-        "ACCOUNT_UPGRADE": {
-            "html": "<div><p> ${name}様 </p><p>おめでとうございます。お客様のアカウントのレベルが、${tier}にアップグレードされました。これから、より安い手数料や高い出金限度額など、様々なプレミアム特典をご利用になれます。</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">取引を始める</Button></a></div><p> 敬具<br> ${api_name} チーム </p></div>",
-            "title": "Account Upgraded"
-        },
-        "DEPOSIT_CANCEL": {
-            "html": "<div><p> ${name}様 </p><p>お客様が${date}に${amount} ${currency}を入金した履歴を検索または処理できませんでした。これにより、取引がシステムにより拒否されました。</p><p>お問い合わせは、このメールにてご返信ください。</p><p>取引ID： ${txid}<br />金額： ${amount}<br />取引状態：拒否</p><p> 敬具<br> ${api_name} チーム </p></div>",
-            "title": "${currency} 入金 失敗"
-        },
-        "WITHDRAWAL_CANCEL": {
-            "html": "<div><p> ${name}様 </p><p>お客様が${date}に${amount} ${currency}を出金した履歴を検索または処理できませんでした。これにより、取引がシステムにより拒否されました。お客様の保留中の出金は${api_name}ウォレットに返金されました。</p><p>お問い合わせは、このメールにてご返信ください。</p><p>取引ID： ${txid}<br />金額： ${amount}<br />取引状態：拒否</p><p> 敬具<br> ${api_name} チーム </p></div>",
-            "title": "${currency} 出金 失敗"
-        },
-        "WITHDRAWAL_REQUEST": {
-            "html": "<div><p> ${name}様 </p><p>お客様のアカウントから${address}へ${amount} ${currency}出金がリクエストされました。<br /><br />金額： ${amount}<br />手数料： ${fee} ${currency}<br />アドレス： ${address}<br /><span id='network'>ネットワーク: ${network}</span><br /><br />出金を承認するためには、下のボタンをクリックしてください。<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">出金承認</Button></a></div><p>このリクエストの続行を望まない場合、このメールは無視してください。お客様のアカウントに変更は一切適用されません。</p><p>リクエスト元： ${ip}</p><p> 敬具<br> ${api_name} チーム </p></div>",
-            "title": "${currency} 出金 リクエスト"
-        },
-        "USER_VERIFICATION": {
-            "html": "<div><h3>ユーザー本人確認要請</h3><div>ユーザー '${email}' uが本人確認書類をアップロードしました。書類の確認をお願いします。</div></div>",
-            "title": "ユーザー本人確認"
-        },
-        "SUSPICIOUS_DEPOSIT": {
-            "html": "<div><h3>不明な入金</h3><div>ユーザー${email}が不明な${currency}入金を受け取りました。<br />取引ID： ${txid}<h4>取引データ：</h4><div>${data}</div></div></div>",
-            "title": "不明な入金"
-        },
-        "INVALID_ADDRESS": {
-            "html": "<div><p> ${name}様 </p><p>お客様の${amount} ${currency}出金が、無効なアドレスにリクエストされ取引が拒否されました。</p><p>アドレス： ${address}</p><p> 敬具<br> ${api_name} チーム </p></div>",
-            "title": "無効な出金アドレス"
-        },
-        "USER_DEACTIVATED": {
-            "html": "<div><p>お客様のアカウント${email}が非活性化されました。取引所管理者から活性化されるまでアカウントはご利用できません。</p><p> 敬具<br> ${api_name} チーム </p></div>",
-            "title": "アカウント ${type}"
-        },
-        "USER_ACTIVATED": {
-            "html": "<div><p>お客様のアカウント${email}が活性化されました。これからアカウントをご利用できます。</p><p> 敬具<br> ${api_name} チーム </p></div>",
-            "title": "アカウント ${type}"
-        },
-        "DISCOUNT_UPDATE": {
-            "html": "<div><p> ${name}様</p><p>割引率が${rate}％に変更されました。この率は注文料金に適用されます。</p> <p>敬具<br>${api_name}チーム</p></ div>",
-            "title": "割引率の変更"
-        },
-        "BANK_VERIFIED": {
-            "html": "<div><p> ${name}様 </p><p>保留中の銀行口座が確認されました。 これで、有効なアカウントを銀行口座を必要とする交換操作に使用できます。</p><div><strong>確認済みの銀行口座:</strong>${list_detail_bank_account}</div><p><a href=\"${link_verification}\">現在の銀行口座を表示するには、取引所の[確認]タブにアクセスしてください</a></p><p> 敬具<br> ${api_name} チーム </p></div>",
-            "title": "銀行確認済み"
-        },
-        "USER_ID_VERIFICATION_REJECT": {
-            "html": "<div><p> ${name}様 </p><p>恐れ入りますが、お客様の本人確認に失敗しました。以下のメッセージを参考し、追加の処置を行ってください：</p><p>メッセージ： ${message}</p><p> 敬具<br> ${api_name} チーム </p></div>",
-            "title": "本人確認失敗"
-        },
-        "USER_BANK_VERIFICATION_REJECT": {
-            "html": "<div><p> ${name}様 </p><p>恐れ入りますが、お客様の新しい銀行情報の登録に失敗しました。以下のメッセージを参考し、追加の処置を行ってください：</p><p>メッセージ： ${message}</p><p> 敬具<br> ${api_name} チーム </p></div>",
-            "title": "新しい銀行情報の登録失敗"
-        },
-        "PASSWORD_CHANGED": {
-            "html": "<div><p> ${name}様 </p><p>このメールは、アカウントのパスワードを最近変更したことを確認します。これ以上の操作は必要ありません。<br />変更しなかった場合 この変更を承認するには、すぐにご連絡ください。<br /></p><p> 敬具<br> ${api_name} チーム </p></div>",
-            "title": "パスワード変更済み"
-        },
-        "CHANGE_PASSWORD": {
-            "html": "<div><p> ${name}様 </p><p>アカウントのパスワードの変更をリクエストしました。<br />パスワードが変更されたことを確認するには、以下のリンクをクリックしてください。<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">パスワードの変更を確認する</Button></a></div><p>この要求が誤って行われた場合は、無視しても問題ありません。 アカウントに変更は加えられません。</p><p>リクエストの開始元： ${ip}</p><p> 敬具<br> ${api_name} チーム </p></div>",
-            "title": "パスワードの変更の確認"
-        },
-        "DEPOSIT_PENDING": {
-            "html": "<div><div><p> ${name}様 </p><p> 現在、お客様の${api_name}ウォレットへの${amount} ${currency}入金は保留中です。取引が承認されるまでお待ちください お客様の取引には、ブロックチェーン上で${confirmation}個の承認が必要です。</p><p>金額: ${amount} ${currency}<br />取引状態: ${status}<br />アドレス: ${address}<br />取引ID: ${transaction_id}<br /><span id='network'>ネットワーク: ${network}</span><br />手数料: ${fee} ${currency}<br /><ul>${explorers}</ul></div><p> 敬具<br> ${api_name} チーム </p></div>",
-            "title": "${currency}デポジットは保留中です"
-        },
-        "DEPOSIT_COMPLETED": {
-            "html": "<div><div><p> ${name}様 </p><p> お客様の${amount} ${currency}入金が完了しました。お客様の${currency}ウォレットから確認および利用が可能です。 </p><p>金額: ${amount} ${currency}<br />取引状態: ${status}<br />アドレス: ${address}<br />取引ID: ${transaction_id}<br /><span id='network'>ネットワーク: ${network}</span><br />手数料: ${fee} ${currency}<br /><ul>${explorers}</ul></div><p> 敬具<br> ${api_name} チーム </p></div>",
-            "title": "${currency}デポジットが完了しました"
-        },
-        "WITHDRAWAL_PENDING": {
-            "html": "<div><p> ${name}様 </p><p>お客様のアドレス${address}に${amount} ${currency}出金がリクエストされました。現在の取引状態は保留中ですが、まもなく完了する予定です。</p><p>金額: ${amount} ${currency}<br />手数料: ${fee} ${currency}<br />取引状態: ${status}<br />アドレス: ${address}<br />取引ID: ${transaction_id}<br /><span id='network'>ネットワーク: ${network}</span><br /><ul>${explorers}</ul><p> 敬具<br> ${api_name} チーム </p></div>",
-            "title": "${currency}の引き出しは保留中"
-        },
-        "WITHDRAWAL_COMPLETED": {
-            "html": "<div><p> ${name}様 </p><p>お客様の${amount} ${currency}出金が完了し、アドレス${address}に振り込みされました。</p><p>金額: ${amount} ${currency}<br />手数料: ${fee} ${currency}<br />取引状態: ${status}<br />アドレス: ${address}<br />取引ID: ${transaction_id}<br /><span id='network'>ネットワーク: ${network}</span><br /><ul>${explorers}</ul><p> 敬具<br> ${api_name} チーム </p></div>",
-            "title": "${currency}の引き出しが完了しました"
-        },
-        "DOC_REJECTED": {
-            "html": "<div><p>Dear ${email} </p><p>Unfortunately, your uploaded KYC documents have been rejected.<br>The reasons for your documents being rejected are listed below.<br></p><div><ul>${doc_information}</ul></div><p>If you feel these reasons are invalid, please feel free to reply to this email.<br>Otherwise, please reupload valid documents in order to verify your identity.</p><p> Regards<br> ${api_name} team </p</div>",
-            "title": "KYC Documents Rejected"
-        },
-        "DOC_VERIFIED": {
-            "html": "<div><p>Dear ${email} </p><p>Your uploaded KYC documents have been approved.<br>You now have access to all exchange features that require identity verification.</p><ul>${doc_information}</ul><p>To view your approved documents, visit your <a href=\"${link}\" target=\"_blank\">Verification page</a></p><p> Regards<br> ${api_name} team </p></div>",
-            "title": "KYC Documents Approved"
-        },
-        "CONFIRM_EMAIL": {
-            "html": "<div><p><p>Dear ${name} </p></p><p>You have made sensitive request related to your accounts security. To verify the operation you would require to use to code below to authorize this operation.<br /><p style=\"font-size: 1.2rem; text-align: center;\">${code}</p>If you did not make this request, report this immediately and proceed to change your credentials as soon as possible.</p><p> Regards<br> ${api_name} team </p></div>",
-            "title": "Security Verification"
-        },
-        "LOCKED_ACCOUNT": {
+	"ja": {
+		"LOGIN": {
+			"html": "<div> <p> ${name}様 </p> <p> お客様のアカウントが以下の情報からログインされました。 </p> <div> <div>時間: ${time}</div> <div>国家： ${country}</div> <div>IPアドレス： ${ip}</div> </div> <p> 本人のログインではない場合、${api_name}でパスワードの変更および二段階認証を設定し、即時にこのメールにてご返信ください。 </p> <p> 敬具<br> ${api_name} チーム </p> </div>",
+			"title": "ログイン"
+		},
+		"SIGNUP": {
+			"html": "<div> <p> ${name}様 </p> <p>下のボタンをクリックしてメールアカウントを確認する必要があります。<br> ご不明な点がございましたら、このメールに返信するだけでお気軽にお問い合わせください。</p><p>ご不明な点がございましたら、このメールに返信するだけでお気軽にお問い合わせください。</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">出金承認</Button></a></div><p> 敬具<br> ${api_name} チーム </p></div>",
+			"title": "会員登録"
+		},
+		"WELCOME": {
+			"html": "<div><p> ${name}様 </p><p>${api_name}をご利用いただき誠にありがとうございます。.</p><p>取引を始めるため、まず仮想通貨、または資金をアカウントに入金する必要があります。お客様の <a href=\"${link_account}\" target='_blank'>アカウント</a>に移動して、 <a href=\"${link_deposit}\" target='_blank'>入金</a> ページを訪問してください。`.,</p><p>お問い合わせは、このメールにてご返信ください。</p><p> 敬具<br> ${api_name} チーム </p></div>",
+			"title": "ようこそ"
+		},
+		"RESET_PASSWORD": {
+			"html": "<div><p> ${name}様 </p><p>お客様のアカウントから、パスワードの再設定がリクエストされました。<br />下のリンクをクリックして、パスワードのアップデートを続行してください。<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">パスワード再設定</Button></a></div><p>このリクエストの続行を望まない場合、このメールは無視してください。お客様のアカウントに変更は一切適用されません。</p><p>リクエスト元： ${ip}</p><p> 敬具<br> ${api_name} チーム </p></div>",
+			"title": "パスワード再設定のリクエスト"
+		},
+		"ACCOUNT_VERIFY": {
+			"html": "<div><p> ${name}様 </p><p>おめでとうございます。お客様のアカウントの認証が完了しました。</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">取引を始める</Button></a></div><p> 敬具<br> ${api_name} チーム </p></div>",
+			"title": "アカウントの認証完了"
+		},
+		"ACCOUNT_UPGRADE": {
+			"html": "<div><p> ${name}様 </p><p>おめでとうございます。お客様のアカウントのレベルが、${tier}にアップグレードされました。これから、より安い手数料や高い出金限度額など、様々なプレミアム特典をご利用になれます。</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">取引を始める</Button></a></div><p> 敬具<br> ${api_name} チーム </p></div>",
+			"title": "Account Upgraded"
+		},
+		"DEPOSIT_CANCEL": {
+			"html": "<div><p> ${name}様 </p><p>お客様が${date}に${amount} ${currency}を入金した履歴を検索または処理できませんでした。これにより、取引がシステムにより拒否されました。</p><p>お問い合わせは、このメールにてご返信ください。</p><p>取引ID： ${txid}<br />金額： ${amount}<br />取引状態：拒否</p><p> 敬具<br> ${api_name} チーム </p></div>",
+			"title": "${currency} 入金 失敗"
+		},
+		"WITHDRAWAL_CANCEL": {
+			"html": "<div><p> ${name}様 </p><p>お客様が${date}に${amount} ${currency}を出金した履歴を検索または処理できませんでした。これにより、取引がシステムにより拒否されました。お客様の保留中の出金は${api_name}ウォレットに返金されました。</p><p>お問い合わせは、このメールにてご返信ください。</p><p>取引ID： ${txid}<br />金額： ${amount}<br />取引状態：拒否</p><p> 敬具<br> ${api_name} チーム </p></div>",
+			"title": "${currency} 出金 失敗"
+		},
+		"WITHDRAWAL_REQUEST": {
+			"html": "<div><p> ${name}様 </p><p>お客様のアカウントから${address}へ${amount} ${currency}出金がリクエストされました。<br /><br />金額： ${amount}<br />手数料： ${fee} ${currency}<br />アドレス： ${address}<br /><span id='network'>ネットワーク: ${network}</span><br /><br />出金を承認するためには、下のボタンをクリックしてください。<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">出金承認</Button></a></div><p>このリクエストの続行を望まない場合、このメールは無視してください。お客様のアカウントに変更は一切適用されません。</p><p>リクエスト元： ${ip}</p><p> 敬具<br> ${api_name} チーム </p></div>",
+			"title": "${currency} 出金 リクエスト"
+		},
+		"USER_VERIFICATION": {
+			"html": "<div><h3>ユーザー本人確認要請</h3><div>ユーザー '${email}' uが本人確認書類をアップロードしました。書類の確認をお願いします。</div></div>",
+			"title": "ユーザー本人確認"
+		},
+		"SUSPICIOUS_DEPOSIT": {
+			"html": "<div><h3>不明な入金</h3><div>ユーザー${email}が不明な${currency}入金を受け取りました。<br />取引ID： ${txid}<h4>取引データ：</h4><div>${data}</div></div></div>",
+			"title": "不明な入金"
+		},
+		"INVALID_ADDRESS": {
+			"html": "<div><p> ${name}様 </p><p>お客様の${amount} ${currency}出金が、無効なアドレスにリクエストされ取引が拒否されました。</p><p>アドレス： ${address}</p><p> 敬具<br> ${api_name} チーム </p></div>",
+			"title": "無効な出金アドレス"
+		},
+		"USER_DEACTIVATED": {
+			"html": "<div><p>お客様のアカウント${email}が非活性化されました。取引所管理者から活性化されるまでアカウントはご利用できません。</p><p> 敬具<br> ${api_name} チーム </p></div>",
+			"title": "アカウント ${type}"
+		},
+		"USER_ACTIVATED": {
+			"html": "<div><p>お客様のアカウント${email}が活性化されました。これからアカウントをご利用できます。</p><p> 敬具<br> ${api_name} チーム </p></div>",
+			"title": "アカウント ${type}"
+		},
+		"DISCOUNT_UPDATE": {
+			"html": "<div><p> ${name}様</p><p>割引率が${rate}％に変更されました。この率は注文料金に適用されます。</p> <p>敬具<br>${api_name}チーム</p></ div>",
+			"title": "割引率の変更"
+		},
+		"BANK_VERIFIED": {
+			"html": "<div><p> ${name}様 </p><p>保留中の銀行口座が確認されました。 これで、有効なアカウントを銀行口座を必要とする交換操作に使用できます。</p><div><strong>確認済みの銀行口座:</strong>${list_detail_bank_account}</div><p><a href=\"${link_verification}\">現在の銀行口座を表示するには、取引所の[確認]タブにアクセスしてください</a></p><p> 敬具<br> ${api_name} チーム </p></div>",
+			"title": "銀行確認済み"
+		},
+		"USER_ID_VERIFICATION_REJECT": {
+			"html": "<div><p> ${name}様 </p><p>恐れ入りますが、お客様の本人確認に失敗しました。以下のメッセージを参考し、追加の処置を行ってください：</p><p>メッセージ： ${message}</p><p> 敬具<br> ${api_name} チーム </p></div>",
+			"title": "本人確認失敗"
+		},
+		"USER_BANK_VERIFICATION_REJECT": {
+			"html": "<div><p> ${name}様 </p><p>恐れ入りますが、お客様の新しい銀行情報の登録に失敗しました。以下のメッセージを参考し、追加の処置を行ってください：</p><p>メッセージ： ${message}</p><p> 敬具<br> ${api_name} チーム </p></div>",
+			"title": "新しい銀行情報の登録失敗"
+		},
+		"PASSWORD_CHANGED": {
+			"html": "<div><p> ${name}様 </p><p>このメールは、アカウントのパスワードを最近変更したことを確認します。これ以上の操作は必要ありません。<br />変更しなかった場合 この変更を承認するには、すぐにご連絡ください。<br /></p><p> 敬具<br> ${api_name} チーム </p></div>",
+			"title": "パスワード変更済み"
+		},
+		"CHANGE_PASSWORD": {
+			"html": "<div><p> ${name}様 </p><p>アカウントのパスワードの変更をリクエストしました。<br />パスワードが変更されたことを確認するには、以下のリンクをクリックしてください。<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">パスワードの変更を確認する</Button></a></div><p>この要求が誤って行われた場合は、無視しても問題ありません。 アカウントに変更は加えられません。</p><p>リクエストの開始元： ${ip}</p><p> 敬具<br> ${api_name} チーム </p></div>",
+			"title": "パスワードの変更の確認"
+		},
+		"DEPOSIT_PENDING": {
+			"html": "<div><div><p> ${name}様 </p><p> 現在、お客様の${api_name}ウォレットへの${amount} ${currency}入金は保留中です。取引が承認されるまでお待ちください お客様の取引には、ブロックチェーン上で${confirmation}個の承認が必要です。</p><p>金額: ${amount} ${currency}<br />取引状態: ${status}<br />アドレス: ${address}<br />取引ID: ${transaction_id}<br /><span id='network'>ネットワーク: ${network}</span><br />手数料: ${fee} ${currency}<br /><ul>${explorers}</ul></div><p> 敬具<br> ${api_name} チーム </p></div>",
+			"title": "${currency}デポジットは保留中です"
+		},
+		"DEPOSIT_COMPLETED": {
+			"html": "<div><div><p> ${name}様 </p><p> お客様の${amount} ${currency}入金が完了しました。お客様の${currency}ウォレットから確認および利用が可能です。 </p><p>金額: ${amount} ${currency}<br />取引状態: ${status}<br />アドレス: ${address}<br />取引ID: ${transaction_id}<br /><span id='network'>ネットワーク: ${network}</span><br />手数料: ${fee} ${currency}<br /><ul>${explorers}</ul></div><p> 敬具<br> ${api_name} チーム </p></div>",
+			"title": "${currency}デポジットが完了しました"
+		},
+		"WITHDRAWAL_PENDING": {
+			"html": "<div><p> ${name}様 </p><p>お客様のアドレス${address}に${amount} ${currency}出金がリクエストされました。現在の取引状態は保留中ですが、まもなく完了する予定です。</p><p>金額: ${amount} ${currency}<br />手数料: ${fee} ${currency}<br />取引状態: ${status}<br />アドレス: ${address}<br />取引ID: ${transaction_id}<br /><span id='network'>ネットワーク: ${network}</span><br /><ul>${explorers}</ul><p> 敬具<br> ${api_name} チーム </p></div>",
+			"title": "${currency}の引き出しは保留中"
+		},
+		"WITHDRAWAL_COMPLETED": {
+			"html": "<div><p> ${name}様 </p><p>お客様の${amount} ${currency}出金が完了し、アドレス${address}に振り込みされました。</p><p>金額: ${amount} ${currency}<br />手数料: ${fee} ${currency}<br />取引状態: ${status}<br />アドレス: ${address}<br />取引ID: ${transaction_id}<br /><span id='network'>ネットワーク: ${network}</span><br /><ul>${explorers}</ul><p> 敬具<br> ${api_name} チーム </p></div>",
+			"title": "${currency}の引き出しが完了しました"
+		},
+		"DOC_REJECTED": {
+			"html": "<div><p>Dear ${email} </p><p>Unfortunately, your uploaded KYC documents have been rejected.<br>The reasons for your documents being rejected are listed below.<br></p><div><ul>${doc_information}</ul></div><p>If you feel these reasons are invalid, please feel free to reply to this email.<br>Otherwise, please reupload valid documents in order to verify your identity.</p><p> Regards<br> ${api_name} team </p</div>",
+			"title": "KYC Documents Rejected"
+		},
+		"DOC_VERIFIED": {
+			"html": "<div><p>Dear ${email} </p><p>Your uploaded KYC documents have been approved.<br>You now have access to all exchange features that require identity verification.</p><ul>${doc_information}</ul><p>To view your approved documents, visit your <a href=\"${link}\" target=\"_blank\">Verification page</a></p><p> Regards<br> ${api_name} team </p></div>",
+			"title": "KYC Documents Approved"
+		},
+		"CONFIRM_EMAIL": {
+			"html": "<div><p><p>Dear ${name} </p></p><p>You have made sensitive request related to your accounts security. To verify the operation you would require to use to code below to authorize this operation.<br /><p style=\"font-size: 1.2rem; text-align: center;\">${code}</p>If you did not make this request, report this immediately and proceed to change your credentials as soon as possible.</p><p> Regards<br> ${api_name} team </p></div>",
+			"title": "Security Verification"
+		},
+		"LOCKED_ACCOUNT": {
 			"html": "<div><p><p>${name} 様 </p></p><p>ログイン試行が多すぎたため、あなたのアカウントは ${login_timeout} 分間ロックされました。<br />もしそうなら このようなログイン試行を行わない場合は、直ちに報告し、できるだけ早く認証情報の変更に進んでください。</p><p> よろしく<br> ${api_name} チーム </p></div>",
 			"title": "あなたのアカウントはロックされています"
 		},
-        "USER_DELETED": {
+		"USER_DELETED": {
 			"html": "<div><p><p>${name} 様 </p></p><p>アカウント削除のリクエストが進行中です。 あなたのアカウントの情報は利用規約に従って削除されます。</p><p> よろしく<br> ${api_name} チーム </p></div>",
 			"title": "アカウント削除リクエスト"
 		},
-        "OTP_DISABLED": {
-            "html": "<div> <p> ${name} 様 </p> <p> お客様のアカウントで<b>二段階認証（2FA）が無効になったことを記録しました</b>。 アカウントを保護するために2FAを再度有効にすることを強くお勧めします。</p> <div> <div>時間: ${time}</div> <div>国: ${country}</div> <div>IPアドレス: ${ip}</div> </div> <p> もしこれがあなたでない場合、すぐにお問い合わせください。 </p> <p> 敬具<br> ${api_name} チーム </p> </div>",
-            "title": "OTP 無効化"
-          },
-        "OTP_ENABLED": {
-            "html": "<div> <p> ${name} 様 </p> <p> お客様のアカウントで<b>二段階認証（2FA）が有効になったことを記録しました</b>。</p> <div> <div>時間: ${time}</div> <div>国: ${country}</div> <div>IPアドレス: ${ip}</div> </div> <p> 敬具<br> ${api_name} チーム </p> </div>",
-            "title": "OTP 有効化"
-        },
-        "P2P_MERCHANT_IN_PROGRESS": {
-            "html": "<div><p> 親愛なる${name}様 </p><p>お客様のP2P取引にアクティビティが検出されました。これは、顧客が取引を要求している可能性があります。取引のステータスを確認するには、以下のリンクをクリックしてください:<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">取引状況を確認</Button></a></div><p>私たちのプラットフォームをご利用いただきありがとうございます。</p><p>リクエスト発行元: ${ip}</p><p>敬具<br> ${api_name}チーム </p></div>",
-            "title": "P2P取引の更新情報"
-        },
-        "P2P_BUYER_PAID_ORDER": {
-            "html": "<div><p> 親愛なる${name}様 </p><p>お客様は注文を支払い済みとマークしました。ベンダーが確認し、資金を解放するのを待っています<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">注文ページへ</Button></a></div><p>私たちのプラットフォームをご利用いただきありがとうございます。</p><p>リクエスト発行元: ${ip}</p><p>敬具<br> ${api_name}チーム </p></div>",
-            "title": "P2P注文にアクティビティが検出されました"
-        },
-        "P2P_ORDER_EXPIRED": {
-            "html": "<div><p> 親愛なる${name}様 </p><p>お客様の注文は、指定された時間内にアクティビティがなかったために期限切れとなりました。<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">注文ページへ</Button></a></div><p>私たちのプラットフォームをご利用いただきありがとうございます。</p><p>リクエスト発行元: ${ip}</p><p>敬具<br> ${api_name}チーム </p></div>",
-            "title": "P2P注文にアクティビティが検出されました"
-        },
-        "P2P_ORDER_CLOSED": {
-            "html": "<div><p> 親愛なる${name}様 </p><p>サポートチームが異議申し立てのリクエストについて判決を出した後、あなたの注文は閉じられました<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">注文ページへ</Button></a></div><p>私たちのプラットフォームをご利用いただきありがとうございます。</p><p>敬具<br> ${api_name}チーム </p></div>",
-            "title": "P2P注文に活動が検出されました"
-        },
-        "P2P_BUYER_CANCELLED_ORDER": {
-            "html": "<div><p> 親愛なる${name}様 </p><p>お客様は注文をキャンセルしました。取引は終了しました。<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">注文ページへ</Button></a></div><p>私たちのプラットフォームをご利用いただきありがとうございます。</p><p>リクエスト発行元: ${ip}</p><p>敬具<br> ${api_name}チーム </p></div>",
-            "title": "P2P注文にアクティビティが検出されました"
-        },
-        "P2P_BUYER_APPEALED_ORDER": {
-            "html": "<div><p> 親愛なる${name}様 </p><p>お客様は注文に対して異議を申し立てました。問題を解決するためにサポートに連絡してください。</p><p>リクエスト発行元: ${ip}</p><p>敬具<br> ${api_name}チーム </p></div>",
-            "title": "P2P注文にアクティビティが検出されました"
-        },
-        "P2P_VENDOR_CONFIRMED_ORDER": {
-            "html": "<div><p> 親愛なる${name}様 </p><p>お客様は取引を確認し、資金を解放しました。<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">注文ページへ</Button></a></div><p>私たちのプラットフォームをご利用いただきありがとうございます。</p><p>リクエスト発行元: ${ip}</p><p>敬具<br> ${api_name}チーム </p></div>",
-            "title": "P2P注文にアクティビティが検出されました"
-        },
-        "P2P_VENDOR_CANCELLED_ORDER": {
-            "html": "<div><p> 親愛なる${name}様 </p><p>お客様は注文をキャンセルしました。取引は終了しました。<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">注文ページへ</Button></a></div><p>私たちのプラットフォームをご利用いただきありがとうございます。</p><p>リクエスト発行元: ${ip}</p><p>敬具<br> ${api_name}チーム </p></div>",
-            "title": "P2P注文にアクティビティが検出されました"
-        },
-        "P2P_VENDOR_APPEALED_ORDER": {
-            "html": "<div><p> 親愛なる${name}様 </p><p>お客様は注文に対して異議を申し立てました。問題を解決するためにサポートに連絡してください。<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">注文ページへ</Button></a></div><p>私たちのプラットフォームをご利用いただきありがとうございます。</p><p>リクエスト発行元: ${ip}</p><p>敬具<br> ${api_name}チーム </p></div>",
-            "title": "P2P注文にアクティビティが検出されました"
-        },
-        "AUTO_TRADE_ERROR": {
-            "html": "<div><p>親愛なる${name}様、</p><p>お客様の自動取引設定が、残高不足のため次の取引で失敗しました。残高を確認して更新してください。支出額: ${spend_amount}、支出通貨: ${spend_coin}、購入通貨: ${buy_coin}。</p><p>当プラットフォームをご利用いただきありがとうございます。</p><p>敬具、${api_name}チーム</p></div>",
-            "title": "自動取引設定のエラー"
-          },
-        "AUTO_TRADE_REMINDER": {
+		"OTP_DISABLED": {
+			"html": "<div> <p> ${name} 様 </p> <p> お客様のアカウントで<b>二段階認証（2FA）が無効になったことを記録しました</b>。 アカウントを保護するために2FAを再度有効にすることを強くお勧めします。</p> <div> <div>時間: ${time}</div> <div>国: ${country}</div> <div>IPアドレス: ${ip}</div> </div> <p> もしこれがあなたでない場合、すぐにお問い合わせください。 </p> <p> 敬具<br> ${api_name} チーム </p> </div>",
+			"title": "OTP 無効化"
+		},
+		"OTP_ENABLED": {
+			"html": "<div> <p> ${name} 様 </p> <p> お客様のアカウントで<b>二段階認証（2FA）が有効になったことを記録しました</b>。</p> <div> <div>時間: ${time}</div> <div>国: ${country}</div> <div>IPアドレス: ${ip}</div> </div> <p> 敬具<br> ${api_name} チーム </p> </div>",
+			"title": "OTP 有効化"
+		},
+		"P2P_MERCHANT_IN_PROGRESS": {
+			"html": "<div><p> 親愛なる${name}様 </p><p>お客様のP2P取引にアクティビティが検出されました。これは、顧客が取引を要求している可能性があります。取引のステータスを確認するには、以下のリンクをクリックしてください:<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">取引状況を確認</Button></a></div><p>私たちのプラットフォームをご利用いただきありがとうございます。</p><p>リクエスト発行元: ${ip}</p><p>敬具<br> ${api_name}チーム </p></div>",
+			"title": "P2P取引の更新情報"
+		},
+		"P2P_BUYER_PAID_ORDER": {
+			"html": "<div><p> 親愛なる${name}様 </p><p>お客様は注文を支払い済みとマークしました。ベンダーが確認し、資金を解放するのを待っています<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">注文ページへ</Button></a></div><p>私たちのプラットフォームをご利用いただきありがとうございます。</p><p>リクエスト発行元: ${ip}</p><p>敬具<br> ${api_name}チーム </p></div>",
+			"title": "P2P注文にアクティビティが検出されました"
+		},
+		"P2P_ORDER_EXPIRED": {
+			"html": "<div><p> 親愛なる${name}様 </p><p>お客様の注文は、指定された時間内にアクティビティがなかったために期限切れとなりました。<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">注文ページへ</Button></a></div><p>私たちのプラットフォームをご利用いただきありがとうございます。</p><p>リクエスト発行元: ${ip}</p><p>敬具<br> ${api_name}チーム </p></div>",
+			"title": "P2P注文にアクティビティが検出されました"
+		},
+		"P2P_ORDER_CLOSED": {
+			"html": "<div><p> 親愛なる${name}様 </p><p>サポートチームが異議申し立てのリクエストについて判決を出した後、あなたの注文は閉じられました<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">注文ページへ</Button></a></div><p>私たちのプラットフォームをご利用いただきありがとうございます。</p><p>敬具<br> ${api_name}チーム </p></div>",
+			"title": "P2P注文に活動が検出されました"
+		},
+		"P2P_BUYER_CANCELLED_ORDER": {
+			"html": "<div><p> 親愛なる${name}様 </p><p>お客様は注文をキャンセルしました。取引は終了しました。<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">注文ページへ</Button></a></div><p>私たちのプラットフォームをご利用いただきありがとうございます。</p><p>リクエスト発行元: ${ip}</p><p>敬具<br> ${api_name}チーム </p></div>",
+			"title": "P2P注文にアクティビティが検出されました"
+		},
+		"P2P_BUYER_APPEALED_ORDER": {
+			"html": "<div><p> 親愛なる${name}様 </p><p>お客様は注文に対して異議を申し立てました。問題を解決するためにサポートに連絡してください。</p><p>リクエスト発行元: ${ip}</p><p>敬具<br> ${api_name}チーム </p></div>",
+			"title": "P2P注文にアクティビティが検出されました"
+		},
+		"P2P_VENDOR_CONFIRMED_ORDER": {
+			"html": "<div><p> 親愛なる${name}様 </p><p>お客様は取引を確認し、資金を解放しました。<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">注文ページへ</Button></a></div><p>私たちのプラットフォームをご利用いただきありがとうございます。</p><p>リクエスト発行元: ${ip}</p><p>敬具<br> ${api_name}チーム </p></div>",
+			"title": "P2P注文にアクティビティが検出されました"
+		},
+		"P2P_VENDOR_CANCELLED_ORDER": {
+			"html": "<div><p> 親愛なる${name}様 </p><p>お客様は注文をキャンセルしました。取引は終了しました。<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">注文ページへ</Button></a></div><p>私たちのプラットフォームをご利用いただきありがとうございます。</p><p>リクエスト発行元: ${ip}</p><p>敬具<br> ${api_name}チーム </p></div>",
+			"title": "P2P注文にアクティビティが検出されました"
+		},
+		"P2P_VENDOR_APPEALED_ORDER": {
+			"html": "<div><p> 親愛なる${name}様 </p><p>お客様は注文に対して異議を申し立てました。問題を解決するためにサポートに連絡してください。<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">注文ページへ</Button></a></div><p>私たちのプラットフォームをご利用いただきありがとうございます。</p><p>リクエスト発行元: ${ip}</p><p>敬具<br> ${api_name}チーム </p></div>",
+			"title": "P2P注文にアクティビティが検出されました"
+		},
+		"AUTO_TRADE_ERROR": {
+			"html": "<div><p>親愛なる${name}様、</p><p>お客様の自動取引設定が、残高不足のため次の取引で失敗しました。残高を確認して更新してください。支出額: ${spend_amount}、支出通貨: ${spend_coin}、購入通貨: ${buy_coin}。</p><p>当プラットフォームをご利用いただきありがとうございます。</p><p>敬具、${api_name}チーム</p></div>",
+			"title": "自動取引設定のエラー"
+		},
+		"AUTO_TRADE_REMINDER": {
 			"html": "<div><p>親愛なる${name}様、</p><p>こちらは、あなたの定期取引である<b>${spend_amount} ${spend_coin} for ${buy_coin}</b>が12時間後に実行されることをお知らせするリマインダーです。成功裏に実行するために、ウォレットに十分な残高があることを確認してください：</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">ウォレットを見る</Button></a></div><p>当社のプラットフォームをご利用いただきありがとうございます。</p><p>よろしくお願い申し上げます,<br />${api_name} チーム</p></div>",
 			"title": "定期注文がもうすぐ有効になります"
 		},
 		"AUTO_TRADE_FILLED": {
-			"html":  "<div><p>親愛なる ${name} 様、</p><p>自動注文「<b>${spend_amount} ${spend_coin} を ${buy_coin} と交換</b>」が正常に処理されました。</p><div>取引履歴をご確認ください：</div><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">取引履歴を表示</Button></a></div><p>私たちのプラットフォームをご利用いただきありがとうございます。</p><p>よろしくお願いいたします。<br />${api_name} チーム</p></div>",
-			"title":  "自動取引注文が正常に処理されました"
+			"html": "<div><p>親愛なる ${name} 様、</p><p>自動注文「<b>${spend_amount} ${spend_coin} を ${buy_coin} と交換</b>」が正常に処理されました。</p><div>取引履歴をご確認ください：</div><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">取引履歴を表示</Button></a></div><p>私たちのプラットフォームをご利用いただきありがとうございます。</p><p>よろしくお願いいたします。<br />${api_name} チーム</p></div>",
+			"title": "自動取引注文が正常に処理されました"
+		},
+		"SUSPICIOUS_LOGIN": {
+			"html": "<div><p>${name}様</p><p>新しいデバイスまたは場所からあなたのアカウントへのログイン試行を確認しました。もしあなたが行ったものであれば、ログインを確認してアカウントを保護してください。そうでない場合は、すぐにアカウントを保護するための措置を講じてください。</p><p><strong>ログインの詳細:</strong><br />IPアドレス: ${ip}<br />場所: ${location}<br />デバイス: ${device}<br />時間: ${time}</p><p>本人確認のために、以下の確認コードを使用してください:</p><p style=\"font-size: 18px; font-weight: bold; margin: 20px 0;\">確認コード: <strong>${verification_code}</strong></p><p>以下のいずれかのオプションを選択して続行してください:</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${verification_link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem; margin-right: 10px;\">コードで確認</Button></a><a href=\"${confirmation_link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #4CAF50; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem; margin-right: 10px;\">ログインを確認</Button></a><a href=\"${freeze_account_link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #FF0000; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">アカウントを凍結</Button></a></div><p>もしこのログイン試行があなたによるものではない場合、不正アクセスを防ぐためにすぐにアカウントを凍結することをお勧めします。</p><p>よろしくお願いいたします,<br />${api_name}チーム</p></div>",
+			"title": "不審なログインの警告"
 		}
-          
-    }
+	}
 }

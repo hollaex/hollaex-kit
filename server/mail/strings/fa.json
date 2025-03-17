@@ -1,176 +1,180 @@
 {
-    "fa": {
-        "LOGIN": {
-            "html": "<div> <p>  کاربر عزیز${name} </p> <p> شما با جزییات زیر وارد حساب کاربری خود شده ایید </p> <div> <div>زمان: ${time}</div> <div>:کشور ${country}</div> <div>آی پی آدرس: ${ip}</div> </div> <p> اگر شما وارد حساب کاربری خود نشده ایید ، اکیدا توصیه میکنیم  بی درنگ پسورد خود را عوض کنید و همچنین رمز یکبار مصرف حساب کاربری خود را فعال نمایید. </p> <p> با تشکر<br> ${api_name} تیم </p> </div>",
-            "title": "ورود"
-        },
-        "SIGNUP": {
-            "html": "<div> <p>  کاربر عزیز${name} </p> <p> شما باید ایمیل خود را با فشار دادن دکمه زیر تایید نمایید.<br> در صورت داشتن هر گونه سوال و یا ابهامی  کافیست تا آن را در پاسخ به همین ایمیل با ما درمیان بگذارید .</p><p>برای ادامه روند ثبت نام خود ، لطفا دکمه زیر را فشار دهید.</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">تایید</Button></a></div><p> با تشکر<br> ${api_name} تیم </p></div>",
-            "title": "ثبت نام"
-        },
-        "WELCOME": {
-            "html": "<div><p>  کاربر عزیز${name} </p><p>با تشکر از ثبت نام شما در  ${api_name}.</p><p>برای شروع معاملات شما ابتدا باید به حساب کاربری خود رمزارز و یا پول فیات واریز نمایید.لطفا ابتدا به حساب کاربری خود رفته وصفحه واریز ها را مشاهده فرمایید.,</p><p>در صورت داشتن سوال و یا ابهامی با ما تماس حاصل فرمایید.</p><p> با تشکر<br> ${api_name} تیم </p></div>",
-            "title": "خوش آمدید"
-        },
-        "RESET_PASSWORD": {
-            "html": "<div><p>  کاربر عزیز${name} </p><p>شما درخواست کلمه عبور جدید برای حساب کاربری خود را ارسال کرده اید.<br />برای بروز رسانی کلمه عبور خود از لینک زیر استفاده نمایید.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">کلمه عبور من را مجددا تنظیم کن</Button></a></div><p>اگر این درخواست را باشتباه صادر کرده اید می توانید براحتی آن را ملغی کنید بدون آنکه نگران تغییر در حساب کاربری خود باشید.</p><p>درخواست ارسالی از : ${ip}</p><p> با تشکر<br> ${api_name} تیم </p></div>",
-            "title": "درخواست کلمه عبور جدید"
-        },
-        "ACCOUNT_VERIFY": {
-            "html": "<div><p>  کاربر عزیز${name} </p><p>تبریک می گوییم. حساب کاربری شما تایید و ارتقا سطح داده شده است و هم اکنون می توانید براحتی فعالیت خود را آغاز نمایید.</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">هم اکنون معامله کنید</Button></a></div><p> با تشکر<br> ${api_name} تیم </p></div>",
-            "title": "حساب کاربری تایید شد"
-        },
-        "ACCOUNT_UPGRADE": {
-            "html": "<div><p>  کاربر عزیز${name} </p><p>بریک می گوییم ، سطح حساب کاربری شما به سطح ${tier}ارتقا یافت.شما می توانید از مزیت های کارمزد کمتر و سقف برداشت های بیشتر منتفع شوید.</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">هم اکنون معامله کنید</Button></a></div><p> با تشکر<br> ${api_name} تیم </p></div>",
-            "title": "حساب کاربری ارتقا یافت"
-        },
-        "DEPOSIT_CANCEL": {
-            "html": "<div><p>  کاربر عزیز${name} </p><p>ما قادر به پردازش واریز ${currency} شما در تاریخ ${date} و به مبلغ ${amount}نمی باشیم. یه همین دلیل سیستم درخواست شما رد کرده است `,</p><p>درصورت وجود هر گونه سوال بیشتر ، در پاسخ به این ایمیل آن را مطرح کنید.l</p><p>شماره پیگیری تراکنش : ${txid}<br />مبلغ: ${amount}<br />وضعیت: مردود شده</p><p> با تشکر<br> ${api_name} تیم </p></div>",
-            "title": "${currency} واریز مردود شد"
-        },
-        "WITHDRAWAL_CANCEL": {
-            "html": "<div><p>  کاربر عزیز${name} </p><p>ما قادر به پردازش برداشت ${currency} شما در تاریخ ${date} و به مبلغ ${amount}.به همین دلیل درخواست برداشت شما توسط سیستم رد شده است و مبلغ برداشت به${api_name} کیف پول شما عودت داده خواهد شد.`,.</p><p>درصورت وجود هر گونه سوال بیشتر ، در پاسخ به این ایمیل آن را مطرح کنید.l</p><p>شماره پیگیری تراکنش : ${txid}<br />مبلغ: ${amount}<br />وضعیت: مردود شده</p><p> با تشکر<br> ${api_name} تیم </p></div>",
-            "title": "${currency} برداشت مردود شد"
-        },
-        "WITHDRAWAL_REQUEST": {
-            "html": "<div><p>  کاربر عزیز${name} </p><p>شما درخواست برداشت ${currency} و به مبلغ ${amount} به آدرس ${address}نموده اید.<br /><br />مبلغ: ${amount}<br />کارمزد: ${fee} ${currency}<br />آدرس: ${address}<br /><span id='network'>شبکه: ${network}</span><br /><br />برای تایید برداشت خود ،دکمه زیر فشار دهید.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">تایید</Button></a></div><p>اگر این درخواست را باشتباه صادر کرده اید می توانید براحتی آن را ملغی کنید بدون آنکه نگران تغییر در حساب کاربری خود باشید.</p><p>درخواست ارسالی از : ${ip}</p><p> با تشکر<br> ${api_name} تیم </p></div>",
-            "title": "${currency} برداشت درخواست"
-        },
-        "USER_VERIFICATION": {
-            "html": "<div><h3تایید کاربر باید صورت پذیرد</h3><div>کاربر '${email}' مدارکش برای تایید حساب کاربری ارسال نموده ، لطفا آنها را بررسی نمایید.</div></div>",
-            "title": "تایید کاربر"
-        },
-        "SUSPICIOUS_DEPOSIT": {
-            "html": "<div><h3>واریز مشکوک</h3><div>کاربر با ایمیل کاربری ${email} واریز ${currency}  دریافت نموده که مشکوک به نظر می رسد.<br />شماره پیگیری تراکنش : ${txid}<h4>اطلاعات تراکنش:</h4><div>${data}</div></div></div>",
-            "title": "واریز مشکوک"
-        },
-        "INVALID_ADDRESS": {
-            "html": "<div><p>  کاربر عزیز${name} </p><p>برداشت ${currency} شما برای ${amount} به آدرسی نامعتبر ارسال شد و رد شد.</p><p>آدرس: ${address}</p><p> با تشکر<br> ${api_name} تیم </p></div>",
-            "title": "Invalid Withdrawal Address"
-        },
-        "USER_DEACTIVATED": {
-            "html": "<div><p>حساب ${email} شما غیرفعال شده است. تا زمانی که اکانت خود توسط ادمین صرافی فعال نشود، نمی توانید از آن استفاده کنید.</p><p> با تشکر<br> ${api_name} تیم </p></div>",
-            "title": "Account ${type}"
-        },
-        "USER_ACTIVATED": {
-            "html": "<div><p>حساب ${email} شما فعال شده است. اکنون می توانید از حساب کاربری خود استفاده کنید.</p><p> با تشکر<br> ${api_name} تیم </p></div>",
-            "title": "Account ${type}"
-        },
-        "DISCOUNT_UPDATE": {
-            "html": "<div><p>  کاربر عزیز${name} </p><p>نرخ تخفیف شما به ${rate}٪ تغییر کرده است. این نرخ برای هزینه های سفارش شما اعمال می شود.</p><p> با تشکر<br> ${api_name} تیم </p></div>",
-            "title": "Discount Rate Change"
-        },
-        "BANK_VERIFIED": {
-            "html": "<div><p>  کاربر عزیز${name} </p><p>یک حساب بانکی معلق تأیید شده است. حساب معتبر شما اکنون می تواند برای عملیات مبادله ای که نیاز به حساب بانکی دارد استفاده شود.</p><div><strong>حساب های بانکی تایید شده:</strong>${list_detail_bank_account}</div><p><a href=\"${link_verification}\">برای مشاهده حساب های بانکی فعلی خود، لطفاً به برگه تأیید صرافی مراجعه کنید</a></p><p> با تشکر<br> ${api_name} تیم </p></div>",
-            "title": "Bank Verified"
-        },
-        "USER_ID_VERIFICATION_REJECT": {
-            "html": "<div><p>  کاربر عزیز${name} </p><p>کد ملی و هویتی شما مورد پردازش قرار گرفت و متاسفانه مورد تایید نمی باشد لطفا برای جزییات بیشتر به پیام های ذیل مراجعه فرمایید:</p><p>:پیام ${message}</p><p> با تشکر<br> ${api_name} تیم </p></div>",
-            "title": "کد ملی مورد تایید نیست"
-        },
-        "USER_BANK_VERIFICATION_REJECT": {
-            "html": "<div><p>  کاربر عزیز${name} </p><p>درخواست اضافه شدن بانک جدید ، مورد تایید قرار نگرفت لطفا برای جزییات بیشتر به پیام های ذیل مراجعه فرمایید:</p><p>:پیام ${message}</p><p> با تشکر<br> ${api_name} تیم </p></div>",
-            "title": "شماره حساب بانکی مورد تایید نیست"
-        },
-        "PASSWORD_CHANGED": {
-            "html": "<div><p>  کاربر عزیز${name} </p><p>این ایمیل تأیید می کند که شما اخیراً رمز عبور حساب خود را تغییر داده اید. هیچ اقدام دیگری لازم نیست.<br />اگر شما اجازه این تغییر را نداده اید، لطفاً فوراً با ما تماس بگیرید.<br /></p><p> با تشکر<br> ${api_name} تیم </p></div>",
-            "title": "Password Changed"
-        },
-        "CHANGE_PASSWORD": {
-            "html": "<div><p> کاربر عزیز${name}} </p><p>شما درخواست تغییر رمز عبور حساب کاربری خود را داده اید<br />برای تایید تغییر رمز عبور، روی لینک زیر کلیک کنید.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">تغییر رمز عبور من را تأیید کنید</Button></a></div><p>اگر این درخواست به اشتباه انجام شده است، می توان آن را نادیده گرفت. هیچ تغییری در حساب شما ایجاد نخواهد شد.</p><p>درخواست از: ${ip}</p><p> با تشکر<br> ${api_name} تیم </p></div>",
-            "title": "Change Password Confirmation"
-        },
-        "DEPOSIT_PENDING": {
-            "html": "<div><div><p> کاربر عزیز${name} </p><p> شما یک واریز جدید به مبلغ ${amount} ${currency} دارید که در حال انتظار برای واریز به کیف پول ${api_name} می باشد. لطفا تا تایید تراکنش خود و مشاهده مبلغ در کیف پول خود تامل فرمایید. تراکنش شما حداقل به  ${confirmation} تایید بر روی شبکه بلاکچین نیاز دارد.` </p><p>مبلغ: ${amount} ${currency}<br />Status: ${status}<br />آدرس: ${address}<br />شماره پیگیری تراکنش: ${transaction_id}<br /><span id='network'>شبکه: ${network}</span><br />کارمزد: ${fee} ${currency}<br /><ul>${explorers}</ul></div><p> با تشکر<br> ${api_name} تیم </p></div>",
-            "title": "${currency} واریز pending"
-        },
-        "DEPOSIT_COMPLETED": {
-            "html": "<div><div><p> کاربر عزیز${name}} </p><p> واریز ${currency} شما به میزان ${amount} ${currency}  تکمیل و تایید شده و هم اکنون در کیف پول ${currency}  شما قابل استفاده است.</p><p>مبلغ: ${amount} ${currency}<br />Status: ${status}<br />آدرس: ${address}<br />شماره پیگیری تراکنش: ${transaction_id}<br /><span id='network'>شبکه: ${network}</span><br />کارمزد: ${fee} ${currency}<br /><ul>${explorers}</ul></div><p> با تشکر<br> ${api_name} تیم </p></div>",
-            "title": "${currency} واریز completed"
-        },
-        "WITHDRAWAL_PENDING": {
-            "html": "<div><p> کاربر عزیز${name} </p><p>شما درخواست برداشت به مبلغ ${amount} ${currency}.و به آدرس ${address} ثبت کرده اید. درخواست برداشت شما درحال انتظار بوده و به زودی مورد پردازش قرار خواهد گرفت.</p><p>مبلغ: ${amount} ${currency}<br />کارمزد: ${fee} ${currency}<br />Status: ${status}<br />آدرس: ${address}<br />شماره پیگیری تراکنش: ${transaction_id}<br /><span id='network'>شبکه: ${network}</span><br /><ul>${explorers}</ul><p> با تشکر<br> ${api_name} تیم </p></div>",
-            "title": "${currency} برداشت request"
-        },
-        "WITHDRAWAL_COMPLETED": {
-            "html": "<div><p> کاربر عزیز${name} </p><p>درخواست برداشت شما به مبلغ ${amount} ${currency} درحال انجام و ارسال به آدرس ${address} می باشد.<br />کارمزد: ${fee} ${currency}<br />Status: ${status}<br />آدرس: ${address}<br />شماره پیگیری تراکنش: ${transaction_id}<br /><span id='network'>شبکه: ${network}</span><br /><ul>${explorers}</ul><p> Regards<br> ${api_name} team </p></div>",
-            "title": "${currency} برداشت completed"
-        },
-        "DOC_REJECTED": {
-                "html": "<div><p>Dear ${email} </p><p>Unfortunately, your uploaded KYC documents have been rejected.<br>The reasons for your documents being rejected are listed below.<br></p><div><ul>${doc_information}</ul></div><p>If you feel these reasons are invalid, please feel free to reply to this email.<br>Otherwise, please reupload valid documents in order to verify your identity.</p><p> Regards<br> ${api_name} team </p</div>",
-                "title": "KYC Documents Rejected"
-        },
-        "DOC_VERIFIED": {
-            "html": "<div><p>Dear ${email} </p><p>Your uploaded KYC documents have been approved.<br>You now have access to all exchange features that require identity verification.</p><ul>${doc_information}</ul><p>To view your approved documents, visit your <a href=\"${link}\" target=\"_blank\">Verification page</a></p><p> Regards<br> ${api_name} team </p></div>",
-            "title": "KYC Documents Approved"
-        },
-        "CONFIRM_EMAIL": {
-            "html": "<div><p><p>Dear ${name} </p></p><p>You have made sensitive request related to your accounts security. To verify the operation you would require to use to code below to authorize this operation.<br /><p style=\"font-size: 1.2rem; text-align: center;\">${code}</p>If you did not make this request, report this immediately and proceed to change your credentials as soon as possible.</p><p> Regards<br> ${api_name} team </p></div>",
-            "title": "Security Verification"
-        },
-        "LOCKED_ACCOUNT": {
+	"fa": {
+		"LOGIN": {
+			"html": "<div> <p>  کاربر عزیز${name} </p> <p> شما با جزییات زیر وارد حساب کاربری خود شده ایید </p> <div> <div>زمان: ${time}</div> <div>:کشور ${country}</div> <div>آی پی آدرس: ${ip}</div> </div> <p> اگر شما وارد حساب کاربری خود نشده ایید ، اکیدا توصیه میکنیم  بی درنگ پسورد خود را عوض کنید و همچنین رمز یکبار مصرف حساب کاربری خود را فعال نمایید. </p> <p> با تشکر<br> ${api_name} تیم </p> </div>",
+			"title": "ورود"
+		},
+		"SIGNUP": {
+			"html": "<div> <p>  کاربر عزیز${name} </p> <p> شما باید ایمیل خود را با فشار دادن دکمه زیر تایید نمایید.<br> در صورت داشتن هر گونه سوال و یا ابهامی  کافیست تا آن را در پاسخ به همین ایمیل با ما درمیان بگذارید .</p><p>برای ادامه روند ثبت نام خود ، لطفا دکمه زیر را فشار دهید.</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">تایید</Button></a></div><p> با تشکر<br> ${api_name} تیم </p></div>",
+			"title": "ثبت نام"
+		},
+		"WELCOME": {
+			"html": "<div><p>  کاربر عزیز${name} </p><p>با تشکر از ثبت نام شما در  ${api_name}.</p><p>برای شروع معاملات شما ابتدا باید به حساب کاربری خود رمزارز و یا پول فیات واریز نمایید.لطفا ابتدا به حساب کاربری خود رفته وصفحه واریز ها را مشاهده فرمایید.,</p><p>در صورت داشتن سوال و یا ابهامی با ما تماس حاصل فرمایید.</p><p> با تشکر<br> ${api_name} تیم </p></div>",
+			"title": "خوش آمدید"
+		},
+		"RESET_PASSWORD": {
+			"html": "<div><p>  کاربر عزیز${name} </p><p>شما درخواست کلمه عبور جدید برای حساب کاربری خود را ارسال کرده اید.<br />برای بروز رسانی کلمه عبور خود از لینک زیر استفاده نمایید.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">کلمه عبور من را مجددا تنظیم کن</Button></a></div><p>اگر این درخواست را باشتباه صادر کرده اید می توانید براحتی آن را ملغی کنید بدون آنکه نگران تغییر در حساب کاربری خود باشید.</p><p>درخواست ارسالی از : ${ip}</p><p> با تشکر<br> ${api_name} تیم </p></div>",
+			"title": "درخواست کلمه عبور جدید"
+		},
+		"ACCOUNT_VERIFY": {
+			"html": "<div><p>  کاربر عزیز${name} </p><p>تبریک می گوییم. حساب کاربری شما تایید و ارتقا سطح داده شده است و هم اکنون می توانید براحتی فعالیت خود را آغاز نمایید.</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">هم اکنون معامله کنید</Button></a></div><p> با تشکر<br> ${api_name} تیم </p></div>",
+			"title": "حساب کاربری تایید شد"
+		},
+		"ACCOUNT_UPGRADE": {
+			"html": "<div><p>  کاربر عزیز${name} </p><p>بریک می گوییم ، سطح حساب کاربری شما به سطح ${tier}ارتقا یافت.شما می توانید از مزیت های کارمزد کمتر و سقف برداشت های بیشتر منتفع شوید.</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">هم اکنون معامله کنید</Button></a></div><p> با تشکر<br> ${api_name} تیم </p></div>",
+			"title": "حساب کاربری ارتقا یافت"
+		},
+		"DEPOSIT_CANCEL": {
+			"html": "<div><p>  کاربر عزیز${name} </p><p>ما قادر به پردازش واریز ${currency} شما در تاریخ ${date} و به مبلغ ${amount}نمی باشیم. یه همین دلیل سیستم درخواست شما رد کرده است `,</p><p>درصورت وجود هر گونه سوال بیشتر ، در پاسخ به این ایمیل آن را مطرح کنید.l</p><p>شماره پیگیری تراکنش : ${txid}<br />مبلغ: ${amount}<br />وضعیت: مردود شده</p><p> با تشکر<br> ${api_name} تیم </p></div>",
+			"title": "${currency} واریز مردود شد"
+		},
+		"WITHDRAWAL_CANCEL": {
+			"html": "<div><p>  کاربر عزیز${name} </p><p>ما قادر به پردازش برداشت ${currency} شما در تاریخ ${date} و به مبلغ ${amount}.به همین دلیل درخواست برداشت شما توسط سیستم رد شده است و مبلغ برداشت به${api_name} کیف پول شما عودت داده خواهد شد.`,.</p><p>درصورت وجود هر گونه سوال بیشتر ، در پاسخ به این ایمیل آن را مطرح کنید.l</p><p>شماره پیگیری تراکنش : ${txid}<br />مبلغ: ${amount}<br />وضعیت: مردود شده</p><p> با تشکر<br> ${api_name} تیم </p></div>",
+			"title": "${currency} برداشت مردود شد"
+		},
+		"WITHDRAWAL_REQUEST": {
+			"html": "<div><p>  کاربر عزیز${name} </p><p>شما درخواست برداشت ${currency} و به مبلغ ${amount} به آدرس ${address}نموده اید.<br /><br />مبلغ: ${amount}<br />کارمزد: ${fee} ${currency}<br />آدرس: ${address}<br /><span id='network'>شبکه: ${network}</span><br /><br />برای تایید برداشت خود ،دکمه زیر فشار دهید.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">تایید</Button></a></div><p>اگر این درخواست را باشتباه صادر کرده اید می توانید براحتی آن را ملغی کنید بدون آنکه نگران تغییر در حساب کاربری خود باشید.</p><p>درخواست ارسالی از : ${ip}</p><p> با تشکر<br> ${api_name} تیم </p></div>",
+			"title": "${currency} برداشت درخواست"
+		},
+		"USER_VERIFICATION": {
+			"html": "<div><h3تایید کاربر باید صورت پذیرد</h3><div>کاربر '${email}' مدارکش برای تایید حساب کاربری ارسال نموده ، لطفا آنها را بررسی نمایید.</div></div>",
+			"title": "تایید کاربر"
+		},
+		"SUSPICIOUS_DEPOSIT": {
+			"html": "<div><h3>واریز مشکوک</h3><div>کاربر با ایمیل کاربری ${email} واریز ${currency}  دریافت نموده که مشکوک به نظر می رسد.<br />شماره پیگیری تراکنش : ${txid}<h4>اطلاعات تراکنش:</h4><div>${data}</div></div></div>",
+			"title": "واریز مشکوک"
+		},
+		"INVALID_ADDRESS": {
+			"html": "<div><p>  کاربر عزیز${name} </p><p>برداشت ${currency} شما برای ${amount} به آدرسی نامعتبر ارسال شد و رد شد.</p><p>آدرس: ${address}</p><p> با تشکر<br> ${api_name} تیم </p></div>",
+			"title": "Invalid Withdrawal Address"
+		},
+		"USER_DEACTIVATED": {
+			"html": "<div><p>حساب ${email} شما غیرفعال شده است. تا زمانی که اکانت خود توسط ادمین صرافی فعال نشود، نمی توانید از آن استفاده کنید.</p><p> با تشکر<br> ${api_name} تیم </p></div>",
+			"title": "Account ${type}"
+		},
+		"USER_ACTIVATED": {
+			"html": "<div><p>حساب ${email} شما فعال شده است. اکنون می توانید از حساب کاربری خود استفاده کنید.</p><p> با تشکر<br> ${api_name} تیم </p></div>",
+			"title": "Account ${type}"
+		},
+		"DISCOUNT_UPDATE": {
+			"html": "<div><p>  کاربر عزیز${name} </p><p>نرخ تخفیف شما به ${rate}٪ تغییر کرده است. این نرخ برای هزینه های سفارش شما اعمال می شود.</p><p> با تشکر<br> ${api_name} تیم </p></div>",
+			"title": "Discount Rate Change"
+		},
+		"BANK_VERIFIED": {
+			"html": "<div><p>  کاربر عزیز${name} </p><p>یک حساب بانکی معلق تأیید شده است. حساب معتبر شما اکنون می تواند برای عملیات مبادله ای که نیاز به حساب بانکی دارد استفاده شود.</p><div><strong>حساب های بانکی تایید شده:</strong>${list_detail_bank_account}</div><p><a href=\"${link_verification}\">برای مشاهده حساب های بانکی فعلی خود، لطفاً به برگه تأیید صرافی مراجعه کنید</a></p><p> با تشکر<br> ${api_name} تیم </p></div>",
+			"title": "Bank Verified"
+		},
+		"USER_ID_VERIFICATION_REJECT": {
+			"html": "<div><p>  کاربر عزیز${name} </p><p>کد ملی و هویتی شما مورد پردازش قرار گرفت و متاسفانه مورد تایید نمی باشد لطفا برای جزییات بیشتر به پیام های ذیل مراجعه فرمایید:</p><p>:پیام ${message}</p><p> با تشکر<br> ${api_name} تیم </p></div>",
+			"title": "کد ملی مورد تایید نیست"
+		},
+		"USER_BANK_VERIFICATION_REJECT": {
+			"html": "<div><p>  کاربر عزیز${name} </p><p>درخواست اضافه شدن بانک جدید ، مورد تایید قرار نگرفت لطفا برای جزییات بیشتر به پیام های ذیل مراجعه فرمایید:</p><p>:پیام ${message}</p><p> با تشکر<br> ${api_name} تیم </p></div>",
+			"title": "شماره حساب بانکی مورد تایید نیست"
+		},
+		"PASSWORD_CHANGED": {
+			"html": "<div><p>  کاربر عزیز${name} </p><p>این ایمیل تأیید می کند که شما اخیراً رمز عبور حساب خود را تغییر داده اید. هیچ اقدام دیگری لازم نیست.<br />اگر شما اجازه این تغییر را نداده اید، لطفاً فوراً با ما تماس بگیرید.<br /></p><p> با تشکر<br> ${api_name} تیم </p></div>",
+			"title": "Password Changed"
+		},
+		"CHANGE_PASSWORD": {
+			"html": "<div><p> کاربر عزیز${name}} </p><p>شما درخواست تغییر رمز عبور حساب کاربری خود را داده اید<br />برای تایید تغییر رمز عبور، روی لینک زیر کلیک کنید.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">تغییر رمز عبور من را تأیید کنید</Button></a></div><p>اگر این درخواست به اشتباه انجام شده است، می توان آن را نادیده گرفت. هیچ تغییری در حساب شما ایجاد نخواهد شد.</p><p>درخواست از: ${ip}</p><p> با تشکر<br> ${api_name} تیم </p></div>",
+			"title": "Change Password Confirmation"
+		},
+		"DEPOSIT_PENDING": {
+			"html": "<div><div><p> کاربر عزیز${name} </p><p> شما یک واریز جدید به مبلغ ${amount} ${currency} دارید که در حال انتظار برای واریز به کیف پول ${api_name} می باشد. لطفا تا تایید تراکنش خود و مشاهده مبلغ در کیف پول خود تامل فرمایید. تراکنش شما حداقل به  ${confirmation} تایید بر روی شبکه بلاکچین نیاز دارد.` </p><p>مبلغ: ${amount} ${currency}<br />Status: ${status}<br />آدرس: ${address}<br />شماره پیگیری تراکنش: ${transaction_id}<br /><span id='network'>شبکه: ${network}</span><br />کارمزد: ${fee} ${currency}<br /><ul>${explorers}</ul></div><p> با تشکر<br> ${api_name} تیم </p></div>",
+			"title": "${currency} واریز pending"
+		},
+		"DEPOSIT_COMPLETED": {
+			"html": "<div><div><p> کاربر عزیز${name}} </p><p> واریز ${currency} شما به میزان ${amount} ${currency}  تکمیل و تایید شده و هم اکنون در کیف پول ${currency}  شما قابل استفاده است.</p><p>مبلغ: ${amount} ${currency}<br />Status: ${status}<br />آدرس: ${address}<br />شماره پیگیری تراکنش: ${transaction_id}<br /><span id='network'>شبکه: ${network}</span><br />کارمزد: ${fee} ${currency}<br /><ul>${explorers}</ul></div><p> با تشکر<br> ${api_name} تیم </p></div>",
+			"title": "${currency} واریز completed"
+		},
+		"WITHDRAWAL_PENDING": {
+			"html": "<div><p> کاربر عزیز${name} </p><p>شما درخواست برداشت به مبلغ ${amount} ${currency}.و به آدرس ${address} ثبت کرده اید. درخواست برداشت شما درحال انتظار بوده و به زودی مورد پردازش قرار خواهد گرفت.</p><p>مبلغ: ${amount} ${currency}<br />کارمزد: ${fee} ${currency}<br />Status: ${status}<br />آدرس: ${address}<br />شماره پیگیری تراکنش: ${transaction_id}<br /><span id='network'>شبکه: ${network}</span><br /><ul>${explorers}</ul><p> با تشکر<br> ${api_name} تیم </p></div>",
+			"title": "${currency} برداشت request"
+		},
+		"WITHDRAWAL_COMPLETED": {
+			"html": "<div><p> کاربر عزیز${name} </p><p>درخواست برداشت شما به مبلغ ${amount} ${currency} درحال انجام و ارسال به آدرس ${address} می باشد.<br />کارمزد: ${fee} ${currency}<br />Status: ${status}<br />آدرس: ${address}<br />شماره پیگیری تراکنش: ${transaction_id}<br /><span id='network'>شبکه: ${network}</span><br /><ul>${explorers}</ul><p> Regards<br> ${api_name} team </p></div>",
+			"title": "${currency} برداشت completed"
+		},
+		"DOC_REJECTED": {
+			"html": "<div><p>Dear ${email} </p><p>Unfortunately, your uploaded KYC documents have been rejected.<br>The reasons for your documents being rejected are listed below.<br></p><div><ul>${doc_information}</ul></div><p>If you feel these reasons are invalid, please feel free to reply to this email.<br>Otherwise, please reupload valid documents in order to verify your identity.</p><p> Regards<br> ${api_name} team </p</div>",
+			"title": "KYC Documents Rejected"
+		},
+		"DOC_VERIFIED": {
+			"html": "<div><p>Dear ${email} </p><p>Your uploaded KYC documents have been approved.<br>You now have access to all exchange features that require identity verification.</p><ul>${doc_information}</ul><p>To view your approved documents, visit your <a href=\"${link}\" target=\"_blank\">Verification page</a></p><p> Regards<br> ${api_name} team </p></div>",
+			"title": "KYC Documents Approved"
+		},
+		"CONFIRM_EMAIL": {
+			"html": "<div><p><p>Dear ${name} </p></p><p>You have made sensitive request related to your accounts security. To verify the operation you would require to use to code below to authorize this operation.<br /><p style=\"font-size: 1.2rem; text-align: center;\">${code}</p>If you did not make this request, report this immediately and proceed to change your credentials as soon as possible.</p><p> Regards<br> ${api_name} team </p></div>",
+			"title": "Security Verification"
+		},
+		"LOCKED_ACCOUNT": {
 			"html": "<div><p><p>${name} عزیز </p></p><p>حساب شما به دلیل تلاش های زیاد برای ورود به سیستم برای ${login_timeout} دقیقه قفل شده است.<br />اگر این تلاش‌ها را برای ورود انجام ندادید، فوراً این را گزارش دهید و در اسرع وقت نسبت به تغییر اعتبار خود اقدام کنید.</p><p> با احترام<br> تیم ${api_name} </p></div>",
 			"title": "حساب شما قفل شده است"
 		},
-        "USER_DELETED": {
+		"USER_DELETED": {
 			"html": "<div><p><p>${name} عزیز </p></p><p>درخواست حذف حساب در حال انجام است. اطلاعات حساب شما طبق شرایط خدمات حذف می شود.</p><p> با احترام<br> تیم ${api_name} </p></div>",
 			"title": "درخواست حذف اکانت"
 		},
-        "OTP_DISABLED": {
-            "html": "<div> <p> عزیز ${name} </p> <p> ما ثبت کرده‌ایم که <b>احراز هویت دو عاملی (2FA) در حساب شما غیرفعال شده است</b>. برای امن کردن حساب خود، توصیه می‌شود که دوباره 2FA را فعال کنید.</p> <div> <div>زمان: ${time}</div> <div>کشور: ${country}</div> <div>آدرس IP: ${ip}</div> </div> <p> اگر این کار شما نبوده است، لطفاً بلافاصله با ما تماس بگیرید. </p> <p> با احترام<br> تیم ${api_name} </p> </div>",
-            "title": "احراز هویت دو عاملی غیرفعال شد"
-          },
-        "OTP_ENABLED": {
-            "html": "<div> <p> عزیز ${name} </p> <p> ما ثبت کرده‌ایم که <b>احراز هویت دو عاملی (2FA) در حساب شما فعال شده است</b>.</p> <div> <div>زمان: ${time}</div> <div>کشور: ${country}</div> <div>آدرس IP: ${ip}</div> </div> <p> با احترام<br> تیم ${api_name} </p> </div>",
-            "title": "احراز هویت دو عاملی فعال شد"
-        },
-        "P2P_MERCHANT_IN_PROGRESS": {
-            "html": "<div><p> عزیز ${name} </p><p>ما فعالیتی در معامله P2P شما شناسایی کرده‌ایم که ممکن است نشان‌دهنده درخواست مشتری برای معامله با شما باشد. برای بررسی وضعیت معامله خود، لطفاً روی لینک زیر کلیک کنید:<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">بررسی وضعیت معامله</Button></a></div><p>از اینکه از پلتفرم ما استفاده می‌کنید سپاسگزاریم.</p><p>درخواست از: ${ip}</p><p>با احترام<br> تیم ${api_name} </p></div>",
-            "title": "به‌روزرسانی در مورد معامله P2P شما"
-        },
-        "P2P_BUYER_PAID_ORDER": {
-            "html": "<div><p> عزیز ${name} </p><p>شما سفارش خود را به عنوان پرداخت شده علامت‌گذاری کرده‌اید. در انتظار فروشنده برای بررسی، تأیید و آزادسازی وجوه<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">رفتن به سفارش شما</Button></a></div><p>از اینکه از پلتفرم ما استفاده می‌کنید سپاسگزاریم.</p><p>درخواست از: ${ip}</p><p>با احترام<br> تیم ${api_name} </p></div>",
-            "title": "فعالیت شناسایی شده در سفارش P2P شما"
-        },
-        "P2P_ORDER_EXPIRED": {
-            "html": "<div><p> عزیز ${name} </p><p>سفارش شما به دلیل عدم فعالیت در زمان داده شده منقضی شده است.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">رفتن به سفارش شما</Button></a></div><p>از اینکه از پلتفرم ما استفاده می‌کنید سپاسگزاریم.</p><p>درخواست از: ${ip}</p><p>با احترام<br> تیم ${api_name} </p></div>",
-            "title": "فعالیت شناسایی شده در سفارش P2P شما"
-        },
-        "P2P_ORDER_CLOSED": {
-            "html": "<div><p> عزیز ${name} </p><p>سفارش شما توسط تیم پشتیبانی ما پس از رسیدن به نتیجه در درخواست تجدیدنظر بسته شده است<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">به سفارش خود بروید</Button></a></div><p>از اینکه از پلتفرم ما استفاده می‌کنید متشکریم.</p><p>با احترام<br> تیم ${api_name} </p></div>",
-            "title": "فعالیت در سفارش P2P شما شناسایی شد"
-        },
-        "P2P_BUYER_CANCELLED_ORDER": {
-            "html": "<div><p> عزیز ${name} </p><p>شما سفارش خود را لغو کرده‌اید. معامله بسته شده است.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">رفتن به سفارش شما</Button></a></div><p>از اینکه از پلتفرم ما استفاده می‌کنید سپاسگزاریم.</p><p>درخواست از: ${ip}</p><p>با احترام<br> تیم ${api_name} </p></div>",
-            "title": "فعالیت شناسایی شده در سفارش P2P شما"
-        },
-        "P2P_BUYER_APPEALED_ORDER": {
-            "html": "<div><p> عزیز ${name} </p><p>شما به سفارش خود اعتراض کرده‌اید. لطفاً با پشتیبانی تماس بگیرید تا مشکل حل شود.</p><p>درخواست از: ${ip}</p><p>با احترام<br> تیم ${api_name} </p></div>",
-            "title": "فعالیت شناسایی شده در سفارش P2P شما"
-        },
-        "P2P_VENDOR_CONFIRMED_ORDER": {
-            "html": "<div><p> عزیز ${name} </p><p>شما معامله را تأیید کرده و وجوه را آزاد کرده‌اید.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">رفتن به سفارش شما</Button></a></div><p>از اینکه از پلتفرم ما استفاده می‌کنید سپاسگزاریم.</p><p>درخواست از: ${ip}</p><p>با احترام<br> تیم ${api_name} </p></div>",
-            "title": "فعالیت شناسایی شده در سفارش P2P شما"
-        },
-        "P2P_VENDOR_CANCELLED_ORDER": {
-            "html": "<div><p> عزیز ${name} </p><p>شما سفارش خود را لغو کرده‌اید. معامله بسته شده است.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">رفتن به سفارش شما</Button></a></div><p>از اینکه از پلتفرم ما استفاده می‌کنید سپاسگزاریم.</p><p>درخواست از: ${ip}</p><p>با احترام<br> تیم ${api_name} </p></div>",
-            "title": "فعالیت شناسایی شده در سفارش P2P شما"
-        },
-        "P2P_VENDOR_APPEALED_ORDER": {
-            "html": "<div><p> عزیز ${name} </p><p>شما به سفارش خود اعتراض کرده‌اید. لطفاً با پشتیبانی تماس بگیرید تا مشکل حل شود.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">رفتن به سفارش شما</Button></a></div><p>از اینکه از پلتفرم ما استفاده می‌کنید سپاسگزاریم.</p><p>درخواست از: ${ip}</p><p>با احترام<br> تیم ${api_name} </p></div>",
-            "title": "فعالیت شناسایی شده در سفارش P2P شما"
-        },
-        "AUTO_TRADE_ERROR": {
-            "html": "<div><p>کاربر گرامی ${name}،</p><p>ما متوجه شدیم که تنظیمات تجارت خودکار شما به دلیل موجودی ناکافی برای معامله زیر انجام نشد. لطفاً موجودی خود را بررسی و به‌روزرسانی کنید. مقدار هزینه: ${spend_amount}، ارز هزینه شده: ${spend_coin}، ارز خریداری شده: ${buy_coin}.</p><p>از استفاده شما از پلتفرم ما متشکریم.</p><p>با احترام، تیم ${api_name}</p></div>",
-            "title": "خطا در تنظیم تجارت خودکار شما"
-          },
-        "AUTO_TRADE_REMINDER": {
+		"OTP_DISABLED": {
+			"html": "<div> <p> عزیز ${name} </p> <p> ما ثبت کرده‌ایم که <b>احراز هویت دو عاملی (2FA) در حساب شما غیرفعال شده است</b>. برای امن کردن حساب خود، توصیه می‌شود که دوباره 2FA را فعال کنید.</p> <div> <div>زمان: ${time}</div> <div>کشور: ${country}</div> <div>آدرس IP: ${ip}</div> </div> <p> اگر این کار شما نبوده است، لطفاً بلافاصله با ما تماس بگیرید. </p> <p> با احترام<br> تیم ${api_name} </p> </div>",
+			"title": "احراز هویت دو عاملی غیرفعال شد"
+		},
+		"OTP_ENABLED": {
+			"html": "<div> <p> عزیز ${name} </p> <p> ما ثبت کرده‌ایم که <b>احراز هویت دو عاملی (2FA) در حساب شما فعال شده است</b>.</p> <div> <div>زمان: ${time}</div> <div>کشور: ${country}</div> <div>آدرس IP: ${ip}</div> </div> <p> با احترام<br> تیم ${api_name} </p> </div>",
+			"title": "احراز هویت دو عاملی فعال شد"
+		},
+		"P2P_MERCHANT_IN_PROGRESS": {
+			"html": "<div><p> عزیز ${name} </p><p>ما فعالیتی در معامله P2P شما شناسایی کرده‌ایم که ممکن است نشان‌دهنده درخواست مشتری برای معامله با شما باشد. برای بررسی وضعیت معامله خود، لطفاً روی لینک زیر کلیک کنید:<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">بررسی وضعیت معامله</Button></a></div><p>از اینکه از پلتفرم ما استفاده می‌کنید سپاسگزاریم.</p><p>درخواست از: ${ip}</p><p>با احترام<br> تیم ${api_name} </p></div>",
+			"title": "به‌روزرسانی در مورد معامله P2P شما"
+		},
+		"P2P_BUYER_PAID_ORDER": {
+			"html": "<div><p> عزیز ${name} </p><p>شما سفارش خود را به عنوان پرداخت شده علامت‌گذاری کرده‌اید. در انتظار فروشنده برای بررسی، تأیید و آزادسازی وجوه<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">رفتن به سفارش شما</Button></a></div><p>از اینکه از پلتفرم ما استفاده می‌کنید سپاسگزاریم.</p><p>درخواست از: ${ip}</p><p>با احترام<br> تیم ${api_name} </p></div>",
+			"title": "فعالیت شناسایی شده در سفارش P2P شما"
+		},
+		"P2P_ORDER_EXPIRED": {
+			"html": "<div><p> عزیز ${name} </p><p>سفارش شما به دلیل عدم فعالیت در زمان داده شده منقضی شده است.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">رفتن به سفارش شما</Button></a></div><p>از اینکه از پلتفرم ما استفاده می‌کنید سپاسگزاریم.</p><p>درخواست از: ${ip}</p><p>با احترام<br> تیم ${api_name} </p></div>",
+			"title": "فعالیت شناسایی شده در سفارش P2P شما"
+		},
+		"P2P_ORDER_CLOSED": {
+			"html": "<div><p> عزیز ${name} </p><p>سفارش شما توسط تیم پشتیبانی ما پس از رسیدن به نتیجه در درخواست تجدیدنظر بسته شده است<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">به سفارش خود بروید</Button></a></div><p>از اینکه از پلتفرم ما استفاده می‌کنید متشکریم.</p><p>با احترام<br> تیم ${api_name} </p></div>",
+			"title": "فعالیت در سفارش P2P شما شناسایی شد"
+		},
+		"P2P_BUYER_CANCELLED_ORDER": {
+			"html": "<div><p> عزیز ${name} </p><p>شما سفارش خود را لغو کرده‌اید. معامله بسته شده است.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">رفتن به سفارش شما</Button></a></div><p>از اینکه از پلتفرم ما استفاده می‌کنید سپاسگزاریم.</p><p>درخواست از: ${ip}</p><p>با احترام<br> تیم ${api_name} </p></div>",
+			"title": "فعالیت شناسایی شده در سفارش P2P شما"
+		},
+		"P2P_BUYER_APPEALED_ORDER": {
+			"html": "<div><p> عزیز ${name} </p><p>شما به سفارش خود اعتراض کرده‌اید. لطفاً با پشتیبانی تماس بگیرید تا مشکل حل شود.</p><p>درخواست از: ${ip}</p><p>با احترام<br> تیم ${api_name} </p></div>",
+			"title": "فعالیت شناسایی شده در سفارش P2P شما"
+		},
+		"P2P_VENDOR_CONFIRMED_ORDER": {
+			"html": "<div><p> عزیز ${name} </p><p>شما معامله را تأیید کرده و وجوه را آزاد کرده‌اید.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">رفتن به سفارش شما</Button></a></div><p>از اینکه از پلتفرم ما استفاده می‌کنید سپاسگزاریم.</p><p>درخواست از: ${ip}</p><p>با احترام<br> تیم ${api_name} </p></div>",
+			"title": "فعالیت شناسایی شده در سفارش P2P شما"
+		},
+		"P2P_VENDOR_CANCELLED_ORDER": {
+			"html": "<div><p> عزیز ${name} </p><p>شما سفارش خود را لغو کرده‌اید. معامله بسته شده است.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">رفتن به سفارش شما</Button></a></div><p>از اینکه از پلتفرم ما استفاده می‌کنید سپاسگزاریم.</p><p>درخواست از: ${ip}</p><p>با احترام<br> تیم ${api_name} </p></div>",
+			"title": "فعالیت شناسایی شده در سفارش P2P شما"
+		},
+		"P2P_VENDOR_APPEALED_ORDER": {
+			"html": "<div><p> عزیز ${name} </p><p>شما به سفارش خود اعتراض کرده‌اید. لطفاً با پشتیبانی تماس بگیرید تا مشکل حل شود.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">رفتن به سفارش شما</Button></a></div><p>از اینکه از پلتفرم ما استفاده می‌کنید سپاسگزاریم.</p><p>درخواست از: ${ip}</p><p>با احترام<br> تیم ${api_name} </p></div>",
+			"title": "فعالیت شناسایی شده در سفارش P2P شما"
+		},
+		"AUTO_TRADE_ERROR": {
+			"html": "<div><p>کاربر گرامی ${name}،</p><p>ما متوجه شدیم که تنظیمات تجارت خودکار شما به دلیل موجودی ناکافی برای معامله زیر انجام نشد. لطفاً موجودی خود را بررسی و به‌روزرسانی کنید. مقدار هزینه: ${spend_amount}، ارز هزینه شده: ${spend_coin}، ارز خریداری شده: ${buy_coin}.</p><p>از استفاده شما از پلتفرم ما متشکریم.</p><p>با احترام، تیم ${api_name}</p></div>",
+			"title": "خطا در تنظیم تجارت خودکار شما"
+		},
+		"AUTO_TRADE_REMINDER": {
 			"html": "<div><p>عزیز ${name}،</p><p>این یک یادآوری است که معامله‌ی تکراری شما از <b>${spend_amount} ${spend_coin} برای ${buy_coin}</b> در ۱۲ ساعت آینده فعال خواهد شد. لطفاً اطمینان حاصل کنید که کیف پول شما دارای موجودی کافی برای انجام موفقیت‌آمیز معامله است:</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">مشاهده کیف پول</Button></a></div><p>از اینکه از پلتفرم ما استفاده می‌کنید سپاسگزاریم.</p><p>با احترام,<br />تیم ${api_name}</p></div>",
 			"title": "سفارش تکراری شما به زودی فعال می‌شود"
 		},
 		"AUTO_TRADE_FILLED": {
 			"html": "<div><p>عزیز ${name}،</p><p>سفارش خودکار شما برای خرج کردن <b>${spend_amount} ${spend_coin} به ${buy_coin}</b> با موفقیت پردازش شد.</p><div>برای مشاهده تاریخچه تجارت خود، لطفاً از لینک زیر استفاده کنید:</div><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">مشاهده تاریخچه تجارت</Button></a></div><p>از استفاده از پلتفرم ما متشکریم.</p><p>با احترام،<br />تیم ${api_name}</p></div>",
 			"title": "سفارش خودکار شما با موفقیت پردازش شد"
+		},
+		"SUSPICIOUS_LOGIN": {
+			"html": "<div><p>${name} عزیز،</p><p>ما یک تلاش اخیر برای ورود به حساب شما از یک دستگاه یا مکان جدید مشاهده کردیم. اگر این کار شما بوده است، لطفاً ورود را تأیید کنید تا حساب خود را ایمن کنید. اگر نه، فوراً اقدامات لازم را برای محافظت از حساب خود انجام دهید.</p><p><strong>جزئیات ورود:</strong><br />آدرس IP: ${ip}<br />مکان: ${location}<br />دستگاه: ${device}<br />زمان: ${time}</p><p>برای تأیید هویت خود، لطفاً از کد تأیید زیر استفاده کنید:</p><p style=\"font-size: 18px; font-weight: bold; margin: 20px 0;\">کد تأیید: <strong>${verification_code}</strong></p><p>یکی از گزینه‌های زیر را برای ادامه انتخاب کنید:</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${verification_link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem; margin-right: 10px;\">تأیید با کد</Button></a><a href=\"${confirmation_link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #4CAF50; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem; margin-right: 10px;\">تأیید ورود</Button></a><a href=\"${freeze_account_link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #FF0000; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">مسدود کردن حساب</Button></a></div><p>اگر این تلاش برای ورود توسط شما انجام نشده است، توصیه می‌کنیم حساب خود را فوراً مسدود کنید تا از دسترسی غیرمجاز جلوگیری شود.</p><p>با احترام،<br />تیم ${api_name}</p></div>",
+			"title": "هشدار ورود مشکوک"
 		}
-    }
+	}
 }

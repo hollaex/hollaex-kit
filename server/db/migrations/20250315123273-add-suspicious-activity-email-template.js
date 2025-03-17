@@ -8,6 +8,18 @@ const templetes = [
 const languages = {
 	'SUSPICIOUS_LOGIN': {
 		'en': require('../../mail/strings/en.json').en.SUSPICIOUS_LOGIN,
+
+		'ar': require('../../mail/strings/ar.json').ar.SUSPICIOUS_LOGIN,
+		'de': require('../../mail/strings/de.json').de.SUSPICIOUS_LOGIN,
+		'es': require('../../mail/strings/es.json').es.SUSPICIOUS_LOGIN,
+		'fa': require('../../mail/strings/fa.json').fa.SUSPICIOUS_LOGIN,
+		'fr': require('../../mail/strings/fr.json').fr.SUSPICIOUS_LOGIN,
+		'id': require('../../mail/strings/id.json').id.SUSPICIOUS_LOGIN,
+		'ja': require('../../mail/strings/ja.json').ja.SUSPICIOUS_LOGIN,
+		'ko': require('../../mail/strings/ko.json').ko.SUSPICIOUS_LOGIN,
+		'pt': require('../../mail/strings/pt.json').pt.SUSPICIOUS_LOGIN,
+		'vi': require('../../mail/strings/vi.json').vi.SUSPICIOUS_LOGIN,
+		'zh': require('../../mail/strings/zh.json').zh.SUSPICIOUS_LOGIN,
 	},
 
 };
@@ -35,8 +47,6 @@ module.exports = {
 						...status.email[language],
 						[templete]: emailTemplate
 					};
-
-					console.log(status.email[language])
 
 				}
 			}
