@@ -22,17 +22,24 @@ class ConfirmLogin extends Component {
 		token: '',
 		inputToken: '',
 		prompt: false,
+		freeze_account: false,
 	};
 
 	componentDidMount() {
-		const { token, prompt } = queryString.parse(window.location.search);
-		this.setState({ token, prompt: prompt === 'true' ? true : false });
+		const { token, prompt, freeze_account } = queryString.parse(
+			window.location.search
+		);
+		this.setState({
+			token,
+			prompt: prompt === 'true' ? true : false,
+			freeze_account: freeze_account === 'true' ? true : false,
+		});
 	}
 
 	confirmLogin = () => {
 		this.setState({ loading: true });
 		const token = this.state.prompt ? this.state.inputToken : this.state.token;
-		return performConfirmLogin(token)
+		return performConfirmLogin(token, this.state.freeze_account)
 			.then((response) => {
 				this.setState({ is_success: true, error_txt: '', loading: false });
 				return response;
@@ -109,14 +116,26 @@ class ConfirmLogin extends Component {
 								marginBottom: 10,
 							}}
 						>
-							<EditWrapper stringId="LOGIN_CONFIRMATION.LOGIN_CONFIRM_SUCCESS_2">
-								{STRINGS['LOGIN_CONFIRMATION.LOGIN_CONFIRM_FINAL']}
-							</EditWrapper>
+							{this.state.freeze_account ? (
+								<EditWrapper stringId="LOGIN_CONFIRMATION.FREEZE_CONFIRM_FINAL">
+									{STRINGS['LOGIN_CONFIRMATION.FREEZE_CONFIRM_FINAL']}
+								</EditWrapper>
+							) : (
+								<EditWrapper stringId="LOGIN_CONFIRMATION.LOGIN_CONFIRM_FINAL">
+									{STRINGS['LOGIN_CONFIRMATION.LOGIN_CONFIRM_FINAL']}
+								</EditWrapper>
+							)}
 						</div>
 						<div>
-							<EditWrapper stringId="LOGIN_CONFIRMATION.LOGIN_CONFIRM_SUCCESS_2">
-								{STRINGS['LOGIN_CONFIRMATION.LOGIN_CONFIRM_WARNING']}
-							</EditWrapper>
+							{this.state.freeze_account ? (
+								<EditWrapper stringId="LOGIN_CONFIRMATION.FREEZE_CONFIRM_WARNING">
+									{STRINGS['LOGIN_CONFIRMATION.FREEZE_CONFIRM_WARNING']}
+								</EditWrapper>
+							) : (
+								<EditWrapper stringId="LOGIN_CONFIRMATION.LOGIN_CONFIRM_WARNING">
+									{STRINGS['LOGIN_CONFIRMATION.LOGIN_CONFIRM_WARNING']}
+								</EditWrapper>
+							)}
 						</div>
 
 						<div>
@@ -181,9 +200,15 @@ class ConfirmLogin extends Component {
 								}}
 								type="default"
 							>
-								<EditWrapper stringId="LOGIN_CONFIRMATION.LOGIN_CONFIRM_BUTTON">
-									{STRINGS['LOGIN_CONFIRMATION.LOGIN_CONFIRM_BUTTON']}
-								</EditWrapper>
+								{this.state.freeze_account ? (
+									<EditWrapper stringId="LOGIN_CONFIRMATION.FREEZE_CONFIRM_BUTTON">
+										{STRINGS['LOGIN_CONFIRMATION.FREEZE_CONFIRM_BUTTON']}
+									</EditWrapper>
+								) : (
+									<EditWrapper stringId="LOGIN_CONFIRMATION.LOGIN_CONFIRM_BUTTON">
+										{STRINGS['LOGIN_CONFIRMATION.LOGIN_CONFIRM_BUTTON']}
+									</EditWrapper>
+								)}
 							</AntBtn>
 						</div>
 					</div>
@@ -219,16 +244,26 @@ class ConfirmLogin extends Component {
 				useSvg: true,
 				child: (
 					<div className="text-center mb-4">
-						<div>
-							<EditWrapper stringId="LOGIN_CONFIRMATION.LOGIN_CONFIRM_SUCCESS_1">
-								{STRINGS['LOGIN_CONFIRMATION.LOGIN_CONFIRM_SUCCESS_1']}
-							</EditWrapper>
-						</div>
-						<div>
-							<EditWrapper stringId="LOGIN_CONFIRMATION.LOGIN_CONFIRM_SUCCESS_2">
-								{STRINGS['LOGIN_CONFIRMATION.LOGIN_CONFIRM_SUCCESS_2']}
-							</EditWrapper>
-						</div>
+						{this.state.freeze_account ? (
+							<div>
+								<EditWrapper stringId="LOGIN_CONFIRMATION.FREEZE_CONFIRM_SUCCESS_1">
+									{STRINGS['LOGIN_CONFIRMATION.FREEZE_CONFIRM_SUCCESS_1']}
+								</EditWrapper>
+							</div>
+						) : (
+							<>
+								<div>
+									<EditWrapper stringId="LOGIN_CONFIRMATION.LOGIN_CONFIRM_SUCCESS_1">
+										{STRINGS['LOGIN_CONFIRMATION.LOGIN_CONFIRM_SUCCESS_1']}
+									</EditWrapper>
+								</div>
+								<div>
+									<EditWrapper stringId="LOGIN_CONFIRMATION.LOGIN_CONFIRM_SUCCESS_2">
+										{STRINGS['LOGIN_CONFIRMATION.LOGIN_CONFIRM_SUCCESS_2']}
+									</EditWrapper>
+								</div>
+							</>
+						)}
 					</div>
 				),
 			};

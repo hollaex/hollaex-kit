@@ -328,6 +328,8 @@ paths:
               token:
                 type: string
                 maxLength: 6
+              freeze_account:
+                type: boolean
       responses:
         200:
           description: Success

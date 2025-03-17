@@ -311,9 +311,7 @@ const loginPost = (req, res) => {
 
 			const lastLogins = await toolsLib.user.findUserLastLogins(user, true);
 			let suspiciousLogin = false;
-			if (!referer && !domain) {
-				suspiciousLogin = true;
-			};
+
 			if (isArray(lastLogins) && !lastLogins.find(login => login.device === device)) {
 				suspiciousLogin = true;
 			};
@@ -334,7 +332,10 @@ const loginPost = (req, res) => {
 					letters: false
 				});
 
+				const loginData = await toolsLib.user.createUserLogin(user, ip, device, domain, origin, referer, null, long_term, false);
+
 				const data = {
+					id: loginData.id,
 					email,
 					verification_code,
 					ip,
@@ -344,15 +345,7 @@ const loginPost = (req, res) => {
 					user_id: user.id
 				}
 				await toolsLib.database.client.setexAsync(verification_code, 5 * 60, JSON.stringify(data));
-				await toolsLib.user.registerUserLogin(user.id, ip, {
-					device,
-					domain,
-					origin,
-					referer,
-					token: null,
-					status: false,
-					expiry: long_term ? TOKEN_TIME_LONG : TOKEN_TIME_NORMAL
-				})
+
 				sendEmail(MAILTYPE.SUSPICIOUS_LOGIN, email, data, user.settings, domain);
 				throw new Error('Suspicious login detected, please check your email.');
 			};
@@ -440,7 +433,7 @@ const confirmLogin = (req, res) => {
 		req.auth
 	);
 
-	toolsLib.user.confirmUserLogin(req.swagger.params.data.value.token)
+	toolsLib.user.confirmUserLogin(req.swagger.params.data.value.token, req.swagger.params.data.value.freeze_account)
 		.then(() => {
 			return res.json({ message: 'Success' });
 		})

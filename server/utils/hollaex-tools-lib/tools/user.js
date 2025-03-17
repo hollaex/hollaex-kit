@@ -466,6 +466,7 @@ const createUserLogin = async (user, ip, device, domain, origin, referer, token,
 	}
 	else if (loginData.status == false) {
 		await updateLoginAttempt(loginData.id);
+		return loginData;
 	}
 
 	return null;
@@ -497,26 +498,28 @@ const findUserLastLogins = (user, status) => {
 
 /* Public Endpoints*/
 
-const confirmUserLogin = async (token) => {
+const confirmUserLogin = async (token, freezeAccount = false) => {
 	let data = await client.getAsync(token);
 
 	if (!data) {
 		throw new Error('Token expired');
 	};
 
-
 	data = JSON.parse(data);
 
 	const loginData = await getModel('login').findOne({
 		order: [['id', 'DESC']],
 		where: {
+			...(data.id != null && { id: data.id }),
 			user_id: data.user_id,
 			status: false,
-			...(data.country != null && { country: data.country }),
-			...(data.device != null && { device: data.device })
 		}
 	})
 
+
+	if (loginData && freezeAccount) {
+		return freezeUserById(data.user_id);
+	}
 
 	if (loginData && new Date().getTime() - new Date(loginData.updated_at).getTime() < LOGIN_TIME_OUT) {
 		return loginData.update({

@@ -29,13 +29,15 @@ module.exports = {
 
 			let hasTemplate = true;
 			for (const [language, emailTemplate] of Object.entries(languages[templete])) {
-
 				if (status.email && status.email[language] && !status.email[language].hasOwnProperty(templete)) {
 					hasTemplate = false;
 					emailTemplates[language] = {
 						...status.email[language],
 						[templete]: emailTemplate
 					};
+
+					console.log(status.email[language])
+
 				}
 			}
 
