@@ -1153,6 +1153,20 @@
 		"ZERO_BALANCE": "You do not have enough available balance.",
 		"NEW_ADDRESS": "New Address"
 	},
+	"LOGIN_CONFIRMATION": {
+		"LOGIN_CONFIRM_FINAL": "Login Confirmation",
+		"FREEZE_CONFIRM_FINAL": "Freeze your account",
+		"LOGIN_CONFIRM_WARNING": "Please confirm that it's you who are trying to login.",
+		"FREEZE_CONFIRM_WARNING": "Please confirm that you are freezing your account",
+		"LOGIN_CANCEL_BUTTON": "CLOSE",
+		"LOGIN_CONFIRM_BUTTON": "CONFIRM LOGIN",
+		"FREEZE_CONFIRM_BUTTON": "FREEZE ACCOUNT",
+		"LOGIN_INPUT_CODE": "please input the code",
+		"LOGIN_CONFIRM_SUCCESS_1": "Your login saved as unsuspicious.",
+		"FREEZE_CONFIRM_SUCCESS_1": "Your account is successfully frozen",
+		"LOGIN_CONFIRM_SUCCESS_2": "Please login again.",
+		"GO_LOGIN_HISTORY": "Go To Login Page"
+	},
 	"WALLET_BUTTON_BASE_DEPOSIT": "deposit",
 	"WALLET_BUTTON_BASE_WITHDRAW": "withdraw",
 	"WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT": "deposit",
@@ -2550,6 +2564,7 @@
 		"RECHECK_PING": "RECHECK PING",
 		"FAST": "Fast",
 		"SLOW": "Slow",
+		"VERY_SLOW": "Very Slow",
 		"MS": "{0} ms",
 		"STATUS_NORMAL": "Connection Normal",
 		"CONNECTION_LABEL": "Connection",
@@ -2701,5 +2716,16 @@
 		"EXCHANGE_UPDATE": "Exchange update",
 		"NO_DATA_TEXT": "It appears that no announcements have been made yet",
 		"UPGRADES": "Upgrades"
+	},
+	"ERROR_TAB": {
+		"NETWORK_ERROR": "Connection Issue",
+		"NETWORK_ERROR_DESC": "Please check your internet connection.",
+		"SERVER_ERROR": "Server Error",
+		"SERVER_ERROR_DESC": "We're experiencing a temporary network or server issue. Please try again later.",
+		"SERVER_MAINTENANCE_ERROR": "Server maintenance",
+		"SERVER_MAINTENANCE_ERROR_DESC": "System maintenance is currently underway. Please try again later.",
+		"TOO_MANY_REQUEST_ERROR": "Too many requests",
+		"TOO_MANY_REQUEST_ERROR_DESC": "Wow! Slow down, you are doing too much at once",
+		"NETWORK_ERROR_MESSAGE": "Network Error"
 	}
 }

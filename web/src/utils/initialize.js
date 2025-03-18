@@ -1,6 +1,11 @@
+import axios from 'axios';
+import store from 'store';
+
+import strings from 'config/localizedStrings';
 import { overwriteLocale } from './string';
 import { API_URL, LAST_BUILD } from 'config/constants';
 import { version } from '../../package.json';
+import { setError } from 'actions/appActions';
 
 export const getLocalVersions = () => {
 	const versions = localStorage.getItem('versions') || '{}';
@@ -106,4 +111,44 @@ export const modifySections = (sections = {}) => {
 	});
 
 	return modifiedSections;
+};
+
+export const onHandleError = (error = '') => {
+	if (!navigator.onLine) {
+		store.dispatch(
+			setError({ message: strings['ERROR_TAB.NETWORK_ERROR_MESSAGE'] })
+		);
+		return;
+	}
+
+	const displayError = {
+		429: strings['ERROR_TAB.TOO_MANY_REQUEST_ERROR'],
+		503: strings['ERROR_TAB.SERVER_MAINTENANCE_ERROR'],
+		504: strings['ERROR_TAB.SERVER_ERROR'],
+	};
+
+	const errorMessage = displayError[error?.response?.status];
+	if (errorMessage) {
+		store.dispatch(setError({ message: errorMessage }));
+	}
+};
+
+export const setupAxiosInterceptors = () => {
+	axios.interceptors.request.use(
+		(config) => config,
+		(error) => {
+			console.error(error);
+			onHandleError(error);
+			return Promise.reject(error);
+		}
+	);
+
+	axios.interceptors.response.use(
+		(response) => response,
+		(error) => {
+			console.error(error);
+			onHandleError(error);
+			return Promise.reject(error);
+		}
+	);
 };

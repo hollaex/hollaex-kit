@@ -40,7 +40,7 @@ const MAILTYPE = {
 	USER_ACTIVATED: 'user_activated',
 
 	// WITHDRAWAL split
-	WITHDRAWAL_PENDING: 'withdrawal_pending' ,
+	WITHDRAWAL_PENDING: 'withdrawal_pending',
 	WITHDRAWAL_COMPLETED: 'withdrawal_completed',
 
 	// DEPOSIT split
@@ -70,6 +70,10 @@ const MAILTYPE = {
 	AUTO_TRADE_ERROR: 'auto_trade_error',
 	AUTO_TRADE_REMINDER: 'auto_trade_reminder',
 	AUTO_TRADE_FILLED: 'auto_trade_filled',
+
+
+	// SUSPICIOUS LOGIN
+	SUSPICIOUS_LOGIN: 'suspicious_login',
 };
 
 const languageFile = (lang) => {

@@ -136,6 +136,10 @@ const WithdrawConfirmation = Loadable({
 	loader: () => import('./containers/WithdrawConfirmation'),
 	loading: LoadingComponent,
 });
+const LoginConfirmation = Loadable({
+	loader: () => import('./containers/LoginConfirmation'),
+	loading: LoadingComponent,
+});
 const AddTradeTabs = Loadable({
 	loader: () => import('./containers/TradeTabs'),
 	loading: LoadingComponent,
@@ -755,6 +759,11 @@ export const generateRoutes = (routes = []) => {
 					path="confirm-withdraw/:token"
 					name="ConfirmWithdraw"
 					component={WithdrawConfirmation}
+				/>
+				<Route
+					path="confirm-login"
+					name="ConfirmLogin"
+					component={LoginConfirmation}
 				/>
 				<Route
 					path="stake"
