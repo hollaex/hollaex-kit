@@ -169,7 +169,7 @@
 			"title": "您的自动交易订单已成功处理"
 		},
 		"SUSPICIOUS_LOGIN": {
-			"html": "<div><p>尊敬的${name}，</p><p>我们注意到最近有一次从新设备或新位置登录您账户的尝试。如果是您本人操作，请确认登录以保护您的账户。如果不是，请立即采取措施保护您的账户。</p><p><strong>登录详情：</strong><br />IP地址：${ip}<br />位置：${location}<br />设备：${device}<br />时间：${time}</p><p>请选择以下选项之一继续：</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${confirmation_link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #4CAF50; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem; margin-right: 10px;\">确认登录</Button></a><a href=\"${freeze_account_link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #FF0000; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">冻结账户</Button></a></div><p>如果此次登录尝试并非您本人操作，我们建议您立即冻结账户以防止未经授权的访问。</p><p>此致，<br />${api_name}团队</p></div>",
+			"html": "<div><p>尊敬的${name}，</p><p>我们注意到最近有一次从新设备或新位置登录您账户的尝试。如果是您本人操作，请确认登录以保护您的账户。如果不是，请立即采取措施保护您的账户。</p><p><strong>登录详情：</strong><br />IP地址：${ip}<br />位置：${location}<br />设备：${device}<br />时间：${time}</p><p>请选择以下选项之一继续：</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${confirmation_link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #4CAF50; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">确认登录</Button></a></div><p>如果此次登录尝试并非您本人操作，我们建议您<a href=\"${freeze_account_link}\" style=\"color: #FF0000; text-decoration: underline;\">冻结账户</a>以防止未经授权的访问。</p><p>此致，<br />${api_name}团队</p></div>",
 			"title": "可疑登录警报"
 		}
 	}
