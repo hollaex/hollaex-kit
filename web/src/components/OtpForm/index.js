@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { isMobile } from 'react-device-detect';
 import { reduxForm } from 'redux-form';
 import renderFields from 'components/Form/factoryFields';
 import { IconTitle, ActionNotification } from 'components';
@@ -92,11 +93,16 @@ class Form extends Component {
 								iconId="BLUE_QUESTION"
 								iconPath={ICONS['BLUE_QUESTION']}
 								status="information"
+								className="my-3"
 							/>
 						)}
 					</div>
 				)}
-				<form onSubmit={handleSubmit} className="w-100" ref={this.setFormRef}>
+				<form
+					onSubmit={handleSubmit}
+					className={`w-100 ${onClickHelp ? (isMobile ? 'mt-5' : 'mt-4') : ''}`}
+					ref={this.setFormRef}
+				>
 					<div className="w-100 otp_form-fields">
 						{renderFields(formValues, {
 							isSubmitting: submitting,

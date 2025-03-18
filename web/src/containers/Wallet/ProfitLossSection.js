@@ -79,7 +79,14 @@ const ProfitLossSection = ({
 			text: '',
 		},
 		tooltip: {
-			enabled: false,
+			className: 'profit-loss-balance-tooltip',
+			enabled: true,
+			formatter: function () {
+				return `<div>${getSourceDecimals(
+					balance_history_config?.currency || 'usdt',
+					this.y
+				)}</div>`;
+			},
 		},
 		xAxis: {
 			type: 'category',
@@ -380,7 +387,9 @@ const ProfitLossSection = ({
 								>
 									{!loading ? (
 										<span>
-											<div className={isMobile && 'text-end fill-active-color'}>
+											<div
+												className={isMobile ? 'text-end fill-active-color' : ''}
+											>
 												{sourceAmount}
 											</div>
 											{isMobile &&
@@ -660,7 +669,7 @@ const ProfitLossSection = ({
 
 	return (
 		<Spin spinning={isLoading}>
-			<div className={`${!isMobile && 'mt-4'}`}>
+			<div className={`${!isMobile ? 'mt-4' : ''}`}>
 				{customDateModal()}
 				{!isMobile && (
 					<div style={{ position: 'absolute', top: -25, left: -5 }}>
@@ -689,7 +698,7 @@ const ProfitLossSection = ({
 							style={{ marginTop: -10, padding: 15, paddingTop: 20 }}
 						>
 							<div
-								className={`${isMobile && `mb-0`}`}
+								className={`${isMobile ? `mb-0` : ''}`}
 								style={{
 									display: 'flex',
 									justifyContent: 'space-between',
@@ -698,7 +707,9 @@ const ProfitLossSection = ({
 								}}
 							>
 								<div>
-									<div className={`${isMobile && 'profit-loss-preformance'}`}>
+									<div
+										className={`${isMobile ? 'profit-loss-preformance' : ''}`}
+									>
 										<EditWrapper stringId="PROFIT_LOSS.WALLET_PERFORMANCE_TITLE">
 											{STRINGS['PROFIT_LOSS.WALLET_PERFORMANCE_TITLE']}
 										</EditWrapper>
@@ -1141,8 +1152,8 @@ const ProfitLossSection = ({
 											</div>
 										</div>
 									)}
-									<div className={`${isMobile && `balance-history`}`}>
-										<div className={`${isMobile && `total-balance`}`}>
+									<div className={`${isMobile ? `balance-history` : ''}`}>
+										<div className={`${isMobile ? `total-balance` : ''}`}>
 											<div>
 												<EditWrapper stringId="PROFIT_LOSS.EST_TOTAL_BALANCE">
 													{STRINGS['PROFIT_LOSS.EST_TOTAL_BALANCE']}
@@ -1163,7 +1174,9 @@ const ProfitLossSection = ({
 											</div>
 										</div>
 										<div
-											className={`${isMobile && `balance-history-date_select`}`}
+											className={`${
+												isMobile ? `balance-history-date_select` : ''
+											}`}
 										>
 											<div>
 												<EditWrapper stringId="PROFIT_LOSS.DATE_SELECT">

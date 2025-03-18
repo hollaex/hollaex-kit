@@ -116,19 +116,21 @@ const NotificationsList = ({
 	}
 
 	return (
-		<div className="notifications_list-wrapper">
-			{filteredAnnouncement?.map((announcement, index) => (
-				<span
-					onClick={() => onHandleNavigate(announcement)}
-					className="pointer"
-				>
-					<NotificationItem
-						key={announcement?.id}
-						ICONS={ICONS}
-						{...announcement}
-					/>
-				</span>
-			))}
+		<div className="h-100">
+			<div className="notifications_list-wrapper">
+				{filteredAnnouncement?.map((announcement, index) => (
+					<span
+						onClick={() => onHandleNavigate(announcement)}
+						className="pointer"
+					>
+						<NotificationItem
+							key={announcement?.id}
+							ICONS={ICONS}
+							{...announcement}
+						/>
+					</span>
+				))}
+			</div>
 			<div className="view-announcement-link">
 				<EditWrapper stringId="ANNOUNCEMENT_TAB.VIEW_ALL_ANNOUNCEMENT">
 					<span

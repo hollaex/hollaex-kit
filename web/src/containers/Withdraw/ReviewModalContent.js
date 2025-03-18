@@ -1,4 +1,5 @@
 import React from 'react';
+import { isMobile } from 'react-device-detect';
 import math from 'mathjs';
 import Image from 'components/Image';
 import { Button } from 'components';
@@ -107,7 +108,13 @@ const ReviewModalContent = ({
 		  );
 
 	return (
-		<div className="d-flex flex-column review-wrapper">
+		<div
+			className={
+				isMobile
+					? 'd-flex flex-column review-wrapper review-withdraw-details-wrapper'
+					: 'd-flex flex-column review-wrapper'
+			}
+		>
 			<Image
 				iconId="CHECK_SENDING_BITCOIN"
 				icon={ICONS['CHECK_SENDING_BITCOIN']}
@@ -141,7 +148,11 @@ const ReviewModalContent = ({
 					</div>
 				)}
 				{data.network && !data.email && (
-					<div className="review-fee_message">
+					<div
+						className={
+							isMobile ? 'review-fee_message mt-3' : 'review-fee_message mt-2'
+						}
+					>
 						<EditWrapper stringId="WITHDRAW_PAGE_NETWORK_TYPE_MESSAGE">
 							{STRINGS.formatString(
 								STRINGS['WITHDRAW_PAGE_NETWORK_TYPE_MESSAGE'],

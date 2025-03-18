@@ -104,8 +104,8 @@ class MarketSelector extends Component {
 			const value2 = item[key3];
 
 			return (
-				value1.toLowerCase().indexOf(filterValue) !== -1 ||
-				value2?.toLowerCase()?.indexOf(filterValue) !== -1
+				(value1 && value1.toLowerCase().indexOf(filterValue) !== -1) ||
+				(value2 && value2?.toLowerCase()?.indexOf(filterValue) !== -1)
 			);
 		});
 	};
@@ -309,7 +309,10 @@ class MarketSelector extends Component {
 											'app-bar-add-tab-content-list',
 											'd-flex align-items-center justify-content-start',
 											'pointer',
-											{ 'active-market': pair?.name === activeMarket }
+											{
+												'active-market':
+													pair?.name === activeMarket && !isLoading,
+											}
 										)}
 									>
 										{isLoading ? (
@@ -393,7 +396,13 @@ class MarketSelector extends Component {
 							</div>
 						)}
 					</div>
-					<div className="d-flex justify-content-center app_bar-link blue-link pointer view-market-btn">
+					<div
+						className={
+							isLoggedIn()
+								? 'd-flex justify-content-center app_bar-link blue-link pointer view-market-btn'
+								: 'd-flex justify-content-center app_bar-link blue-link pointer view-market-btn view-market-link'
+						}
+					>
 						{constants &&
 							constants?.features &&
 							constants?.features?.pro_trade && (

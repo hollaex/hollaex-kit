@@ -49,7 +49,7 @@
 			overflow-y: auto;
 			height: $market-menu-height-dialog-mobile;
 			.app-bar-add-tab-content-list {
-				font-size: 12px;
+				font-size: 13px;
 			}
 		}
 	}
@@ -147,6 +147,16 @@
 
 		.app-bar-add-tab-content-list {
 			height: 4rem;
+		}
+		.loading-anime {
+			height: 20px;
+			width: 10rem;
+			margin: 2%;
+			border-radius: 7px;
+			animation: mymove 3s infinite;
+		}
+		.view-market-link {
+			padding: 1.5rem 0.5rem;
 		}
 	}
 }

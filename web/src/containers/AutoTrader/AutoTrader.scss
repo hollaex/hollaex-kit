@@ -73,9 +73,15 @@
 
 		.auto-trader-content-description {
 			display: flex;
-			flex-direction: column;
 			gap: 3%;
 			align-items: flex-start;
+			justify-content: space-between;
+
+			.time-zone-text {
+				opacity: 0.6;
+				font-size: 1rem;
+				text-wrap: nowrap;
+			}
 		}
 
 		.no-data {
@@ -154,15 +160,15 @@
 }
 
 .select-frequency-dropdown {
-	height: 8rem !important;
+	max-height: 8rem !important;
 }
 .select-buy-dropdown {
-	height: 10rem !important;
+	max-height: 10rem !important;
 }
 .auto-trader-select-option-dropdown,
 .select-frequency-dropdown,
 .select-buy-dropdown {
-	height: 14rem;
+	max-height: 14rem;
 	scrollbar-color: var(--labels_important-active-labels-text-graphics)
 		var(--base_wallet-sidebar-and-popup);
 	.ant-select-item-option-content {
@@ -616,8 +622,6 @@
 
 .layout-mobile {
 	.auto-trader-container {
-		padding: 2% 4%;
-
 		.title-wrapper {
 			display: flex;
 			align-items: flex-end;
@@ -625,7 +629,8 @@
 
 		.auto-trader-description-wrapper {
 			flex-direction: column;
-			align-items: flex-end;
+			align-items: flex-start;
+			gap: 1.5rem;
 
 			.link-wrapper {
 				width: 100%;
@@ -638,6 +643,12 @@
 		.auto-trader-content-wrapper {
 			font-size: 10px;
 			overflow: hidden !important;
+
+			.auto-trader-content-description {
+				.time-zone-text {
+					font-size: 10px;
+				}
+			}
 
 			.no-data {
 				.auto-trader-icon {

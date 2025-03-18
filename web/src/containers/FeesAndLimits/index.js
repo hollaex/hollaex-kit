@@ -140,12 +140,18 @@ const Index = ({
 
 	return config_level && Object.keys(config_level).length ? (
 		<div className="presentation_container apply_rtl settings_container fees_limits">
-			{!isMobile && (
+			{!isMobile ? (
 				<IconTitle
 					stringId="FEES_AND_LIMITS.TITLE"
 					text={STRINGS['FEES_AND_LIMITS.TITLE']}
 					textType="title"
 				/>
+			) : (
+				<EditWrapper stringId="FEES_AND_LIMITS.TITLE">
+					<span className="fees-and-limit-title font-weight-bold">
+						{STRINGS['FEES_AND_LIMITS.TITLE']}
+					</span>
+				</EditWrapper>
 			)}
 
 			<HeaderSection>

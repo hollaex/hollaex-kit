@@ -1,11 +1,18 @@
 import React from 'react';
+import { isMobile } from 'react-device-detect';
 import { Button, IconTitle, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 
 const ReviewEmailContent = ({ onConfirmEmail, icons: ICONS }) => {
 	return (
-		<div className="d-flex flex-column review_email-wrapper">
+		<div
+			className={
+				isMobile
+					? 'd-flex flex-column review_email-wrapper review_email-wrapper-mobile'
+					: 'd-flex flex-column review_email-wrapper'
+			}
+		>
 			<IconTitle
 				stringId="WITHDRAW_PAGE.CONFIRM_VIA_EMAIL"
 				text={STRINGS['WITHDRAW_PAGE.CONFIRM_VIA_EMAIL']}
