@@ -326,11 +326,7 @@ const loginPost = (req, res) => {
 			}
 
 			if (suspiciousLogin) {
-				const verification_code = randomString({
-					length: 6,
-					numeric: true,
-					letters: false
-				});
+				const verification_code = crypto.randomBytes(9).toString('base64').replace(/[^a-zA-Z0-9]/g, '').substring(0, 12)
 
 				const loginData = await toolsLib.user.createUserLogin(user, ip, device, domain, origin, referer, null, long_term, false);
 

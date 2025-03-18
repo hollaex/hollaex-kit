@@ -327,7 +327,7 @@ paths:
             properties:
               token:
                 type: string
-                maxLength: 6
+                maxLength: 12
               freeze_account:
                 type: boolean
       responses:
