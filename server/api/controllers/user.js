@@ -314,7 +314,7 @@ const loginPost = (req, res) => {
 
 			if (isArray(lastLogins) && !lastLogins.find(login => login.device === device)) {
 				suspiciousLogin = true;
-			};
+			}
 
 
 			const geo = geoip.lookup(ip);
@@ -326,9 +326,9 @@ const loginPost = (req, res) => {
 			}
 
 			if (suspiciousLogin) {
-				const verification_code = crypto.randomBytes(9).toString('base64').replace(/[^a-zA-Z0-9]/g, '').substring(0, 12)
+				const verification_code = crypto.randomBytes(9).toString('base64').replace(/[^a-zA-Z0-9]/g, '').substring(0, 12);
 
-				const loginData = await toolsLib.user.createSuspiciousLogin(user, ip, device, country, domain, origin, referer, null, long_term, false);
+				const loginData = await toolsLib.user.createSuspiciousLogin(user, ip, device, country, domain, origin, referer, null, long_term);
 
 				const data = {
 					id: loginData.id,
@@ -339,13 +339,13 @@ const loginPost = (req, res) => {
 					device,
 					country: geoip.lookup(ip)?.country,
 					user_id: user.id
-				}
+				};
 				await toolsLib.database.client.setexAsync(`user:confirm-login:${verification_code}`, 5 * 60, JSON.stringify(data));
 				await toolsLib.database.client.setexAsync(`user:freeze-account:${verification_code}`, 60 * 60 * 6, JSON.stringify(data));
 
 				sendEmail(MAILTYPE.SUSPICIOUS_LOGIN, email, data, user.settings, domain);
 				throw new Error('Suspicious login detected, please check your email.');
-			};
+			}
 
 			if (!user.otp_enabled) {
 				return all([user, toolsLib.security.checkCaptcha(captcha, ip)]);
@@ -442,7 +442,7 @@ const confirmLogin = (req, res) => {
 			);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
-}
+};
 
 const freezeUserByCode = (req, res) => {
 	loggerUser.verbose(
@@ -463,7 +463,7 @@ const freezeUserByCode = (req, res) => {
 			);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
-}
+};
 
 const verifyToken = (req, res) => {
 	loggerUser.debug(req.uuid, 'controllers/user/verifyToken', req.auth.sub);

@@ -472,7 +472,7 @@ const createUserLogin = async (user, ip, device, domain, origin, referer, token,
 	return null;
 };
 
-const createSuspiciousLogin = async (user, ip, device, country, domain, origin, referer, token, long_term, status) => {
+const createSuspiciousLogin = async (user, ip, device, country, domain, origin, referer, token, long_term) => {
 	const loginData = await getModel('login').findOne({
 		order: [['id', 'DESC'], ['status', 'ASC']],
 		where: {
@@ -490,16 +490,13 @@ const createSuspiciousLogin = async (user, ip, device, country, domain, origin, 
 			origin,
 			referer,
 			token,
-			status,
+			status: false,
 			expiry: long_term ? TOKEN_TIME_LONG : TOKEN_TIME_NORMAL
 		});
 	}
-	else if (loginData.status == false) {
-		await updateLoginAttempt(loginData.id);
-		return loginData;
-	}
 
-	return null;
+	await updateLoginAttempt(loginData.id);
+	return loginData;
 };
 
 
