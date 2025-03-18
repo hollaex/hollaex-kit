@@ -173,7 +173,7 @@
 			"title": "자동 주문이 성공적으로 처리되었습니다"
 		},
 		"SUSPICIOUS_LOGIN": {
-			"html": "<div><p>${name}님, 안녕하세요.</p><p>새로운 기기 또는 위치에서 귀하의 계정으로의 로그인 시도가 감지되었습니다. 만약 귀하가 시도한 것이라면, 로그인을 확인하여 계정을 보호하세요. 그렇지 않다면, 즉시 계정을 보호하기 위한 조치를 취하십시오.</p><p><strong>로그인 세부 정보:</strong><br />IP 주소: ${ip}<br />위치: ${location}<br />기기: ${device}<br />시간: ${time}</p><p>계속하려면 다음 옵션 중 하나를 선택하십시오:</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${confirmation_link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #4CAF50; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">로그인 확인</Button></a></div><p>만약 이 로그인 시도가 귀하가 아닌 경우, <a href=\"${freeze_account_link}\" style=\"color: #FF0000; text-decoration: underline;\">계정을 동결</a>하여 무단 접근을 방지하시기 바랍니다.</p><p>감사합니다,<br />${api_name} 팀</p></div>",
+			"html": "<div><p>${name}님, 안녕하세요.</p><p>새로운 기기 또는 위치에서 귀하의 계정으로의 로그인 시도가 감지되었습니다. 만약 귀하가 시도한 것이라면, 로그인을 확인하여 계정을 보호하세요. 그렇지 않다면, 즉시 계정을 보호하기 위한 조치를 취하십시오.</p><p><strong>로그인 세부 정보:</strong><br />IP 주소: ${ip}<br />위치: ${location}<br />기기: ${device}<br />시간: ${time}</p><p>계속하려면 다음 옵션 중 하나를 선택하십시오:</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${confirmation_link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">로그인 확인</Button></a></div><p>만약 이 로그인 시도가 귀하가 아닌 경우, <a href=\"${freeze_account_link}\" style=\"color: #FF0000; text-decoration: underline;\">계정을 동결</a>하여 무단 접근을 방지하시기 바랍니다.</p><p>감사합니다,<br />${api_name} 팀</p></div>",
 			"title": "의심스러운 로그인 알림"
 		}
 	}
