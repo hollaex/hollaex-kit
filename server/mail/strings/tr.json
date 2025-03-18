@@ -112,14 +112,14 @@
 			"html": "<div><p><p>Sayın ${name} </p></p><p>Hesabınız çok fazla giriş denemesi nedeniyle ${login_timeout} dakika süreyle kilitlendi.<br />Eğer bu giriş denemelerini yapmadıysanız, bunu hemen bildirin ve kimlik bilgilerinizi mümkün olan en kısa sürede değiştirmeye devam edin.</p><p> Saygılarımızla<br> ${api_name} ekibi </p></div>",
 			"title": "Hesabınız Kilitlendi"
 		},
-			"USER_DELETED": {
+		"USER_DELETED": {
 			"html": "<div><p><p>Sayın ${name} </p></p><p>Hesap silme talebi devam ediyor. Hesabınızdaki bilgiler hizmet şartlarına göre kaldırılacaktır.</p><p> Saygılarımızla<br> ${api_name} ekibi </p></div>",
 			"title": "Hesap Silme Talebi"
 		},
 		"OTP_DISABLED": {
 			"html": "<div> <p> Sayın ${name} </p> <p> Hesabınızda <b>iki faktörlü kimlik doğrulama (2FA) devre dışı bırakıldı</b> olarak kaydedilmiştir. Hesabınızı güvence altına almak için lütfen yeniden 2FA etkinleştirin.</p> <div> <div>Zaman: ${time}</div> <div>Ülke: ${country}</div> <div>IP Adresi: ${ip}</div> </div> <p> Bu siz değilseniz lütfen derhal bizimle iletişime geçin. </p> <p> Saygılarımla<br> ${api_name} Ekibi </p> </div>",
 			"title": "OTP Devre Dışı"
-		  },
+		},
 		"OTP_ENABLED": {
 			"html": "<div> <p> Sayın ${name} </p> <p> Hesabınızda <b>iki faktörlü kimlik doğrulama (2FA) etkinleştirildi</b> olarak kaydedilmiştir.</p> <div> <div>Zaman: ${time}</div> <div>Ülke: ${country}</div> <div>IP Adresi: ${ip}</div> </div> <p> Saygılarımla<br> ${api_name} Ekibi </p> </div>",
 			"title": "OTP Etkin"
@@ -160,10 +160,10 @@
 			"html": "<div><p> Sevgili ${name} </p><p>Siparişinize itiraz ettiniz. Sorunu çözmek için lütfen destek ile iletişime geçin.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Siparişinize Git</Button></a></div><p>Platformumuzu kullandığınız için teşekkür ederiz.</p><p>İstek şu IP den yapıldı: ${ip}</p><p>Saygılarımızla<br> ${api_name} ekibi </p></div>",
 			"title": "P2P Siparişinizde Aktivite Tespit Edildi"
 		},
-        "AUTO_TRADE_ERROR":{
+		"AUTO_TRADE_ERROR": {
 			"html": "<div><p>Sayın ${name},</p><p>Otomatik ticaret yapılandırmanız, aşağıdaki işlem için yetersiz bakiye nedeniyle başarısız oldu. Lütfen bakiyenizi kontrol edin ve güncelleyin. Harcama Tutarı: ${spend_amount}, Harcanan Coin: ${spend_coin}, Satın Alınan Coin: ${buy_coin}.</p><p>Platformumuzu kullandığınız için teşekkür ederiz.</p><p>Saygılarımızla, ${api_name} ekibi</p></div>",
 			"title": "Otomatik Ticaret Yapılandırmanızda Hata"
-		  },
+		},
 		"AUTO_TRADE_REMINDER": {
 			"html": "<div><p>Sayın ${name},</p><p>Bu, <b>${spend_amount} ${spend_coin} karşılığında ${buy_coin}</b> olan tekrarlanan işleminizin 12 saat içinde aktive olacağına dair bir hatırlatmadır. Başarılı bir işlem için cüzdanınızda yeterli bakiye olduğundan emin olun:</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">CÜZDANIMI GÖRÜNTÜLE</Button></a></div><p>Platformumuzu kullandığınız için teşekkür ederiz.</p><p>Saygılarla,<br />${api_name} ekibi</p></div>",
 			"title": "Tekrarlanan Siparişiniz Yakında Aktiviteye Geçiyor"
@@ -171,7 +171,10 @@
 		"AUTO_TRADE_FILLED": {
 			"html": "<div><p>Sayın ${name},</p><p>Otomatik siparişiniz olan <b>${spend_amount} ${spend_coin} karşılığında ${buy_coin}</b> başarıyla işlendi.</p><div>İşlem geçmişinizi aşağıda inceleyebilirsiniz:</div><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">TİCARET GEÇMİŞİNİ GÖRÜNTÜLE</Button></a></div><p>Platformumuzu kullandığınız için teşekkür ederiz.</p><p>Saygılarımla,<br />${api_name} ekibi</p></div>",
 			"title": "Otomatik siparişiniz başarıyla işlendi"
+		},
+		"SUSPICIOUS_LOGIN": {
+			"html": "<div><p>Sayın ${name},</p><p>Hesabınıza yeni bir cihaz veya konumdan giriş denemesi tespit ettik. Eğer bu sizseniz, lütfen girişi onaylayarak hesabınızı güvence altına alın. Değilse, hesabınızı korumak için derhal harekete geçin.</p><p><strong>Giriş Detayları:</strong><br />IP Adresi: ${ip}<br />Konum: ${location}<br />Cihaz: ${device}<br />Zaman: ${time}</p><p>Devam etmek için aşağıdaki seçeneklerden birini seçin:</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${confirmation_link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Girişi Onayla</Button></a></div><p>Eğer bu giriş denemesi sizin tarafınızdan yapılmadıysa, yetkisiz erişimi önlemek için <a href=\"${freeze_account_link}\" style=\"color: #FF0000; text-decoration: underline;\">hesabınızı dondurmanızı</a> öneririz.</p><p>Saygılarımızla,<br />${api_name} Ekibi</p></div>",
+			"title": "Şüpheli Giriş Uyarısı"
 		}
-		  
 	}
 }

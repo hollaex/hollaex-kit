@@ -7,6 +7,7 @@ const { sendEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
 const { loggerUser } = require('../../config/logger');
 const { errorMessageConverter } = require('../../utils/conversion');
+const randomString = require('random-string');
 const {
 	USER_VERIFIED,
 	PROVIDE_VALID_EMAIL_CODE,
@@ -32,12 +33,13 @@ const {
 } = require('../../messages');
 const { DEFAULT_ORDER_RISK_PERCENTAGE, EVENTS_CHANNEL, API_HOST, DOMAIN, TOKEN_TIME_NORMAL, TOKEN_TIME_LONG, HOLLAEX_NETWORK_BASE_URL, NUMBER_OF_ALLOWED_ATTEMPTS } = require('../../constants');
 const { all } = require('bluebird');
-const { each, isInteger } = require('lodash');
+const { each, isInteger, isArray } = require('lodash');
 const { publisher } = require('../../db/pubsub');
 const { isDate } = require('moment');
 const moment = require('moment');
 const DeviceDetector = require('node-device-detector');
 const uuid = require('uuid/v4');
+const geoip = require('geoip-lite');
 
 const VERIFY_STATUS = {
 	EMPTY: 0,
@@ -307,6 +309,44 @@ const loginPost = (req, res) => {
 				throw new Error(INVALID_CREDENTIALS + message);
 			}
 
+			const lastLogins = await toolsLib.user.findUserLastLogins(user, true);
+			let suspiciousLogin = false;
+
+			if (isArray(lastLogins) && !lastLogins.find(login => login.device === device)) {
+				suspiciousLogin = true;
+			};
+
+
+			const geo = geoip.lookup(ip);
+
+			const country = geo?.country || '';
+
+			if (isArray(lastLogins) && !lastLogins.find(login => login.country === country)) {
+				suspiciousLogin = true;
+			}
+
+			if (suspiciousLogin) {
+				const verification_code = crypto.randomBytes(9).toString('base64').replace(/[^a-zA-Z0-9]/g, '').substring(0, 12)
+
+				const loginData = await toolsLib.user.createSuspiciousLogin(user, ip, device, country, domain, origin, referer, null, long_term, false);
+
+				const data = {
+					id: loginData.id,
+					email,
+					verification_code,
+					ip,
+					time,
+					device,
+					country: geoip.lookup(ip)?.country,
+					user_id: user.id
+				}
+				await toolsLib.database.client.setexAsync(`user:confirm-login:${verification_code}`, 5 * 60, JSON.stringify(data));
+				await toolsLib.database.client.setexAsync(`user:freeze-account:${verification_code}`, 60 * 60 * 6, JSON.stringify(data));
+
+				sendEmail(MAILTYPE.SUSPICIOUS_LOGIN, email, data, user.settings, domain);
+				throw new Error('Suspicious login detected, please check your email.');
+			};
+
 			if (!user.otp_enabled) {
 				return all([user, toolsLib.security.checkCaptcha(captcha, ip)]);
 			} else {
@@ -381,6 +421,49 @@ const loginPost = (req, res) => {
 			return res.status(err.statusCode || 401).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
+
+
+const confirmLogin = (req, res) => {
+	loggerUser.verbose(
+		req.uuid,
+		'controllers/user/confirmLogin auth',
+		req.auth
+	);
+
+	toolsLib.user.confirmUserLogin(req.swagger.params.data.value.token)
+		.then(() => {
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerUser.error(
+				req.uuid,
+				'controllers/user/confirmLogin err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+		});
+}
+
+const freezeUserByCode = (req, res) => {
+	loggerUser.verbose(
+		req.uuid,
+		'controllers/user/freezeUserByCode auth',
+		req.auth
+	);
+
+	toolsLib.user.freezeUserByCode(req.swagger.params.data.value.token)
+		.then(() => {
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerUser.error(
+				req.uuid,
+				'controllers/user/freezeUserByCode err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+		});
+}
 
 const verifyToken = (req, res) => {
 	loggerUser.debug(req.uuid, 'controllers/user/verifyToken', req.auth.sub);
@@ -1833,5 +1916,7 @@ module.exports = {
 	createUserAutoTrade,
 	updateUserAutoTrade,
 	deleteUserAutoTrade,
-	fetchAnnouncements
+	fetchAnnouncements,
+	confirmLogin,
+	freezeUserByCode
 };

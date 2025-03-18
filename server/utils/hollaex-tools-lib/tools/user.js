@@ -178,7 +178,7 @@ const signUpUser = (email, password, opts = { referral: null }) => {
 					user_id: user.id
 				}
 			}));
-			
+
 			sendEmail(
 				MAILTYPE.SIGNUP,
 				email,
@@ -434,7 +434,7 @@ const registerUserLogin = (
 	if (geo?.country) login.country = geo.country;
 	return getModel('login').create(login)
 		.then((loginData) => {
-			if(opts.token && opts.status) {
+			if (opts.token && opts.status) {
 				return createSession(opts.token, loginData.id, userId, opts.expiry);
 			}
 			return loginData;
@@ -443,11 +443,11 @@ const registerUserLogin = (
 };
 
 const updateLoginAttempt = (loginId) => {
-	return getModel('login').increment('attempt', { by: 1, where: { id: loginId }});
+	return getModel('login').increment('attempt', { by: 1, where: { id: loginId } });
 };
 
 const updateLoginStatus = (loginId) => {
-	return getModel('login').update( { status: true }, { where: { id: loginId } });
+	return getModel('login').update({ status: true }, { where: { id: loginId } });
 };
 
 const createUserLogin = async (user, ip, device, domain, origin, referer, token, long_term, status) => {
@@ -463,9 +463,40 @@ const createUserLogin = async (user, ip, device, domain, origin, referer, token,
 			status,
 			expiry: long_term ? TOKEN_TIME_LONG : TOKEN_TIME_NORMAL
 		});
-	} 
+	}
 	else if (loginData.status == false) {
 		await updateLoginAttempt(loginData.id);
+		return loginData;
+	}
+
+	return null;
+};
+
+const createSuspiciousLogin = async (user, ip, device, country, domain, origin, referer, token, long_term, status) => {
+	const loginData = await getModel('login').findOne({
+		order: [['id', 'DESC'], ['status', 'ASC']],
+		where: {
+			user_id: user.id,
+			status: false,
+			device,
+			country
+		}
+	})
+
+	if (!loginData) {
+		return registerUserLogin(user.id, ip, {
+			device,
+			domain,
+			origin,
+			referer,
+			token,
+			status,
+			expiry: long_term ? TOKEN_TIME_LONG : TOKEN_TIME_NORMAL
+		});
+	}
+	else if (loginData.status == false) {
+		await updateLoginAttempt(loginData.id);
+		return loginData;
 	}
 
 	return null;
@@ -484,10 +515,55 @@ const findUserLatestLogin = (user, status) => {
 		return null;
 	});
 };
+const findUserLastLogins = (user, status) => {
+	return getModel('login').findAll({
+		order: [['id', 'DESC'], ['status', 'ASC']],
+		limit: 10,
+		where: {
+			user_id: user.id,
+			...(status != null && { status }),
+		}
+	})
+};
 
 /* Public Endpoints*/
 
+const confirmUserLogin = async (token) => {
+	let data = await client.getAsync(`user:confirm-login:${token}`);
+	data = data && JSON.parse(data);
 
+	if (!data || !data.id) {
+		throw new Error('Token is expired');
+	};
+
+	const loginData = await getModel('login').findOne({
+		order: [['id', 'DESC']],
+		where: {
+			id: data.id,
+			user_id: data.user_id,
+			status: false,
+		}
+	})
+
+	if (loginData && new Date().getTime() - new Date(loginData.updated_at).getTime() < LOGIN_TIME_OUT) {
+		return loginData.update({
+			status: true
+		})
+	}
+
+	throw new Error('Login record not found');
+};
+
+const freezeUserByCode = async (token) => {
+	let data = await client.getAsync(`user:freeze-account:${token}`);
+	data = data && JSON.parse(data);
+
+	if (!data || !data.id) {
+		throw new Error('Token is expired');
+	};
+
+	return freezeUserById(data.user_id);
+};
 
 const generateAffiliationCode = () => {
 	return randomString({
@@ -514,9 +590,9 @@ const checkAffiliation = (affiliationCode, user_id) => {
 					referer_id: referrer.user_id,
 					earning_rate: referrer.earning_rate,
 					code: affiliationCode,
-				}), 
-				referrer,
-				getModel('referralCode').increment('referral_count', { by: 1, where: { id: referrer.id }})
+				}),
+					referrer,
+				getModel('referralCode').increment('referral_count', { by: 1, where: { id: referrer.id } })
 				]);
 			} else {
 				return [];
@@ -742,7 +818,7 @@ const getAllUsersAdmin = (opts = {
 			);
 		}
 	});
-	
+
 	if (isNumber(opts.verification_level)) {
 		query.where[Op.and].push({ verification_level: opts.verification_level });
 	}
@@ -1471,14 +1547,14 @@ const createAudit = (adminId, event, ip, opts = {
 
 const getUpdatedKeys = (oldData, newData) => {
 	const data = uniq([...Object.keys(oldData), ...Object.keys(newData)]);
-  
+
 	let keys = [];
-	for(const key of data){
-		if(!isEqual(oldData[key], newData[key])){
+	for (const key of data) {
+		if (!isEqual(oldData[key], newData[key])) {
 			keys.push(key);
 		}
 	}
-  
+
 	return keys;
 };
 
@@ -1486,9 +1562,9 @@ const getValues = (data, prevData) => {
 	const updatedKeys = getUpdatedKeys(prevData, data);
 	const updatedValues = updatedKeys.map(key => data[key]);
 	const oldValues = updatedKeys.map(key => prevData[key]);
-	
+
 	updatedValues.forEach((value, index) => {
-		if(typeof value === 'object' && value.constructor === Object) {
+		if (typeof value === 'object' && value.constructor === Object) {
 			const values = getValues(value, oldValues[index]);
 			updatedKeys[index] = values.updatedKeys;
 			updatedValues[index] = values.updatedValues;
@@ -1518,16 +1594,16 @@ const createAuditLog = (subject, adminEndpoint, method, data = {}, prevData = nu
 		if (method === 'get') {
 			user_id = data?.user_id?.value;
 			data = Object.fromEntries(Object.entries(data).filter(([k, v]) => (v.value != null && excludedKeys.indexOf(k) === -1)));
-			const str = Object.keys(data).map((key) =>  '' + key + ':' + data[key].value).join(', ');
+			const str = Object.keys(data).map((key) => '' + key + ':' + data[key].value).join(', ');
 			description = `${action} service ${methodDescriptions[method]}${str ? ` with ${str}` : ''}`;
 		}
-		else if(method === 'put' && prevData) {
+		else if (method === 'put' && prevData) {
 			user_id = data?.user_id;
 			prevData = Object.fromEntries(Object.entries(prevData).filter(([k, v]) => (v != null && excludedKeys.indexOf(k) === -1)));
 			data = Object.fromEntries(Object.entries(data).filter(([k, v]) => (v != null && excludedKeys.indexOf(k) === -1)));
 			const { updatedKeys, oldValues, updatedValues } = getValues(data, prevData);
 			description = `${updatedKeys.join(', ')} field(s) updated to the value(s) ${updatedValues?.join(', ')?.length > 0 ? updatedValues.join(', ') : 'Null'} from ${oldValues?.join(', ')?.length > 0 ? oldValues.join(', ') : 'Null'} in ${action} service`;
-		} 
+		}
 		else {
 			user_id = data?.user_id;
 			data = Object.fromEntries(Object.entries(data).filter(([k, v]) => (v != null && excludedKeys.indexOf(k) === -1)));
@@ -1544,7 +1620,7 @@ const createAuditLog = (subject, adminEndpoint, method, data = {}, prevData = nu
 	} catch (error) {
 		return error;
 	}
-	
+
 };
 
 const getUserAudits = (opts = {
@@ -1560,7 +1636,7 @@ const getUserAudits = (opts = {
 }) => {
 	const exchangeInfo = getKitConfig().info;
 
-	if(!BALANCE_HISTORY_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
+	if (!BALANCE_HISTORY_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
 		throw new Error(SERVICE_NOT_SUPPORTED);
 	}
 
@@ -1571,9 +1647,11 @@ const getUserAudits = (opts = {
 		where: {
 			timestamp: timeframe,
 			...(opts.user_id && { user_id: opts.user_id }),
-			...(opts.subject && { subject: {
-				[Op.like]: `%${opts.subject}%`
-			}}),
+			...(opts.subject && {
+				subject: {
+					[Op.like]: `%${opts.subject}%`
+				}
+			}),
 		},
 		order: [ordering]
 	};
@@ -1643,7 +1721,7 @@ const setUsernameById = (userId, username) => {
 		});
 };
 
-const disableUserWithdrawal = async (user_id, opts = { expiry_date : null }) => {
+const disableUserWithdrawal = async (user_id, opts = { expiry_date: null }) => {
 	const user = await getUserByKitId(user_id, false);
 	let { expiry_date } = opts;
 
@@ -2018,7 +2096,7 @@ const updateUserInfo = async (userId, data = {}, auditInfo) => {
 		throw new Error('User not found');
 	}
 
-	const updateData = { user_id: userId  };
+	const updateData = { user_id: userId };
 
 	for (const field in data) {
 		const value = data[field];
@@ -2099,7 +2177,7 @@ const getExchangeUserSessions = (opts = {
 	if (opts.last_seen) {
 		lastSeenHour = opts.last_seen.split('h')[0];
 	}
-			
+
 	const query = {
 		where: {
 			...(opts.status == true && {
@@ -2167,7 +2245,7 @@ const getExchangeUserSessions = (opts = {
 };
 
 const revokeExchangeUserSession = async (sessionId, userId = null) => {
-	const session = await getModel('session').findOne({ 
+	const session = await getModel('session').findOne({
 		include: [
 			{
 				model: getModel('login'),
@@ -2176,14 +2254,15 @@ const revokeExchangeUserSession = async (sessionId, userId = null) => {
 				...(userId && { where: { user_id: userId } })
 			}
 		],
-		where: { id: sessionId } });
+		where: { id: sessionId }
+	});
 
 
-	if(!session) {
+	if (!session) {
 		throw new Error(SESSION_NOT_FOUND);
 	}
 
-	if(!session.status) {
+	if (!session.status) {
 		throw new Error(SESSION_ALREADY_REVOKED);
 	}
 
@@ -2194,7 +2273,7 @@ const revokeExchangeUserSession = async (sessionId, userId = null) => {
 	client.delAsync(session.token);
 
 	const updatedSession = await session.update({ status: false }, {
-		fields: ['status'] 
+		fields: ['status']
 	});
 
 	delete updatedSession.dataValues.token;
@@ -2222,11 +2301,11 @@ const getAllBalancesAdmin = async (opts = {
 		}
 	}
 
-	return getNodeLib().getBalances({ 
+	return getNodeLib().getBalances({
 		userId: network_id,
 		currency: opts.currency,
 		format: (opts.format && (opts.format === 'csv' || opts.format === 'all')) ? 'all' : null, // for csv get all data,
-		additionalHeaders: opts.additionalHeaders 
+		additionalHeaders: opts.additionalHeaders
 	})
 		.then(async (balances) => {
 			if (balances.data.length > 0) {
@@ -2306,7 +2385,7 @@ const deleteKitUser = async (userId, sendEmail = true) => {
 			user.settings
 		);
 	}
-	
+
 	return updatedUser;
 };
 
@@ -2360,7 +2439,7 @@ const changeKitUserEmail = async (userId, newEmail, auditInfo) => {
 	if (!isEmail(newEmail)) {
 		return reject(new Error(PROVIDE_VALID_EMAIL));
 	}
-	
+
 	const userEmail = user.email;
 	if (userEmail === newEmail) {
 		throw new Error(EMAIL_IS_SAME);
@@ -2390,7 +2469,7 @@ const changeKitUserEmail = async (userId, newEmail, auditInfo) => {
 		{ email: newEmail },
 		{ fields: ['email'], returning: true }
 	);
-	createAuditLog({ email: auditInfo.userEmail, session_id: auditInfo.sessionId }, auditInfo.apiPath, auditInfo.method, { user_id: userId, email: userEmail  }, { user_id: userId, email: newEmail });
+	createAuditLog({ email: auditInfo.userEmail, session_id: auditInfo.sessionId }, auditInfo.apiPath, auditInfo.method, { user_id: userId, email: userEmail }, { user_id: userId, email: newEmail });
 	sendEmail(
 		MAILTYPE.ALERT,
 		null,
@@ -2433,21 +2512,21 @@ const sortTopVolumes = (volumeData, topN = 4) => {
 
 	for (const period in volumeData) {
 		const periodData = volumeData[period];
-        
+
 		if (Object.keys(periodData).length > 0) {
 			topSortedVolumes[period] = Object.entries(periodData)
 				.sort(([, valueA], [, valueB]) => valueB - valueA)
-				.slice(0, topN) 
-				.map(([key, value]) => ({ [key]: value })); 
+				.slice(0, topN)
+				.map(([key, value]) => ({ [key]: value }));
 		}
 	}
-    
+
 	return topSortedVolumes;
 };
 
 const multiplyAmounts = (x, y) => {
 	return mathjs.number(
-	  mathjs.multiply(mathjs.bignumber(x), mathjs.bignumber(y))
+		mathjs.multiply(mathjs.bignumber(x), mathjs.bignumber(y))
 	);
 };
 
@@ -2497,16 +2576,16 @@ const getUserReferralCodes = async (
 const createUserReferralCode = async (data) => {
 	const { user_id, discount, earning_rate, code, is_admin } = data;
 
-	const { 
-		earning_rate: EARNING_RATE, 
+	const {
+		earning_rate: EARNING_RATE,
 	} = getKitConfig()?.referral_history_config || {};
 
 	if (discount < 0) {
-		throw new Error('discount cannot be negative');	
+		throw new Error('discount cannot be negative');
 	}
 
 	if (discount > 100) {
-		throw new Error('discount cannot be more than 100');	
+		throw new Error('discount cannot be more than 100');
 	}
 
 	if (discount % 10 !== 0) {
@@ -2514,11 +2593,11 @@ const createUserReferralCode = async (data) => {
 	}
 
 	if (earning_rate < 1) {
-		throw new Error('earning rate cannot be less than 1');	
+		throw new Error('earning rate cannot be less than 1');
 	}
 
 	if (earning_rate > 100) {
-		throw new Error('earning rate cannot be more than 100');	
+		throw new Error('earning rate cannot be more than 100');
 	}
 
 	if (earning_rate % 10 !== 0) {
@@ -2530,11 +2609,11 @@ const createUserReferralCode = async (data) => {
 	}
 
 	if (!is_admin && code.length !== 6) {
-		throw new Error('invalid referral code');	
+		throw new Error('invalid referral code');
 	}
-	 
+
 	const user = await getUserByKitId(user_id);
-   
+
 	if (!user) {
 		throw new Error(USER_NOT_FOUND);
 	}
@@ -2569,7 +2648,7 @@ const getUnrealizedReferral = async (user_id) => {
 	}
 
 	const { active } = getKitConfig()?.referral_history_config || {};
-	if  (!active) {
+	if (!active) {
 		throw new Error(REFERRAL_HISTORY_NOT_ACTIVE);
 	}
 
@@ -2579,9 +2658,9 @@ const getUnrealizedReferral = async (user_id) => {
 		attributes: [
 			'referer',
 			[fn('sum', col('accumulated_fees')), 'accumulated_fees'],
-		  ],
-		  group: ['referer'],
-	});	
+		],
+		group: ['referer'],
+	});
 
 	return unrealizedRecords;
 };
@@ -2609,7 +2688,7 @@ const getRealizedReferral = async (opts = {
 		order: [ordering],
 		...(!opts.format && pagination),
 	};
-     	
+
 	if (opts.format) {
 		return dbQuery.fetchAllRecords('ReferralHistory', query)
 			.then((file) => {
@@ -2629,8 +2708,8 @@ const getRealizedReferral = async (opts = {
 };
 
 const createUnrealizedReferralFees = async (currentTime) => {
-	const { 
-		earning_period: EARNING_PERIOD, 
+	const {
+		earning_period: EARNING_PERIOD,
 		distributor_id: DISTRIBUTOR_ID,
 		date_enabled: DATE_ENABLED
 	} = getKitConfig()?.referral_history_config || {};
@@ -2647,7 +2726,7 @@ const createUnrealizedReferralFees = async (currentTime) => {
 	let userLastSettleDate = moment(DATE_ENABLED).toISOString();
 
 	const userLastTrade = await referralHistoryModel.findOne({
-		order: [ [ 'last_settled', 'DESC' ]],
+		order: [['last_settled', 'DESC']],
 	});
 
 	if (userLastTrade) {
@@ -2831,7 +2910,7 @@ const createUnrealizedReferralFees = async (currentTime) => {
 				record.accumulated_fees = new BigNumber(record.accumulated_fees).multipliedBy(conversions[record.coin]).toNumber();
 				record.status = false;
 			}
-		
+
 			return referralHistoryModel.bulkCreate(referralHistory);
 		})
 		.catch(err => err);
@@ -2839,7 +2918,7 @@ const createUnrealizedReferralFees = async (currentTime) => {
 
 const settleFees = async (user_id) => {
 	const { active, distributor_id, minimum_amount } = getKitConfig()?.referral_history_config || {};
-	if  (!active) {
+	if (!active) {
 		throw new Error(REFERRAL_HISTORY_NOT_ACTIVE);
 	}
 
@@ -2857,12 +2936,12 @@ const settleFees = async (user_id) => {
 		throw new Error('currency in referral config not defined');
 	}
 
-	const { transferAssetByKitIds} = require('./wallet');
+	const { transferAssetByKitIds } = require('./wallet');
 	const referralHistoryModel = getModel('ReferralHistory');
 
 	const unrealizedRecords = await referralHistoryModel.findAll({
 		where: { referer: user_id, status: false },
-	});	
+	});
 
 	let totalValue = 0;
 	for (let record of unrealizedRecords) {
@@ -2895,7 +2974,7 @@ const settleFees = async (user_id) => {
 
 	try {
 		const settledIds = unrealizedRecords.map(record => record.id);
-		await referralHistoryModel.update({ status: true }, { where : { id : settledIds }}); 
+		await referralHistoryModel.update({ status: true }, { where: { id: settledIds } });
 
 		await transferAssetByKitIds(
 			distributor_id,
@@ -2947,7 +3026,7 @@ const fetchUserReferrals = async (opts = {
 		group: []
 	};
 
-	if (!opts.format) { query.where.created_at = timeframe; query = {...query };}
+	if (!opts.format) { query.where.created_at = timeframe; query = { ...query }; }
 
 	if (opts.order_by === 'referee') {
 		query.attributes.push('referee');
@@ -2955,7 +3034,7 @@ const fetchUserReferrals = async (opts = {
 
 		return referralHistoryModel.findAll(query)
 			.then(async (referrals) => {
-				return { count: referrals.length , data: referrals };
+				return { count: referrals.length, data: referrals };
 			});
 	} else {
 		query.attributes.push([dateTruc, 'date']);
@@ -2963,7 +3042,7 @@ const fetchUserReferrals = async (opts = {
 
 		let result = {};
 		let referrals = await referralHistoryModel.findAll(query);
-		result = { count: referrals.length , data: referrals };
+		result = { count: referrals.length, data: referrals };
 
 		query = {
 			where: {
@@ -2971,7 +3050,7 @@ const fetchUserReferrals = async (opts = {
 			},
 			attributes: [
 				[fn('sum', col('accumulated_fees')), 'accumulated_fees']
-			  ],
+			],
 			group: []
 		};
 
@@ -2993,13 +3072,13 @@ const getUserBalanceHistory = (opts = {
 }) => {
 
 	const exchangeInfo = getKitConfig().info;
-	
-	if(!['fiat', 'boost', 'enterprise'].includes(exchangeInfo.plan)) {
+
+	if (!['fiat', 'boost', 'enterprise'].includes(exchangeInfo.plan)) {
 		throw new Error(SERVICE_NOT_SUPPORTED);
 	}
 
 
-	if(!getKitConfig()?.balance_history_config?.active) { throw new Error(BALANCE_HISTORY_NOT_ACTIVE); }
+	if (!getKitConfig()?.balance_history_config?.active) { throw new Error(BALANCE_HISTORY_NOT_ACTIVE); }
 
 	const timeframe = timeframeQuery(opts.startDate, opts.endDate);
 	const ordering = orderingQuery(opts.orderBy, opts.order);
@@ -3029,10 +3108,10 @@ const getUserBalanceHistory = (opts = {
 	else {
 		return dbQuery.findAndCountAllWithRows('balanceHistory', options)
 			.then(async (balances) => {
-				if(opts.user_id && (moment(opts.startDate).format('LL') !== moment(opts.endDate).subtract(1, 'days').format('LL'))) {
-						
+				if (opts.user_id && (moment(opts.startDate).format('LL') !== moment(opts.endDate).subtract(1, 'days').format('LL'))) {
+
 					const nativeCurrency = getKitConfig()?.balance_history_config?.currency || 'usdt';
-							
+
 					const exchangeCoins = getKitCoins();
 					const conversions = await getNodeLib().getOraclePrices(exchangeCoins, {
 						quote: nativeCurrency,
@@ -3060,9 +3139,9 @@ const getUserBalanceHistory = (opts = {
 					for (const coin of coins) {
 						if (!conversions[coin]) continue;
 						if (conversions[coin] === -1) continue;
-					
+
 						const nativeCurrencyValue = new BigNumber(symbols[coin]).multipliedBy(conversions[coin]).toNumber();
-					
+
 						history[coin] = { original_value: new BigNumber(symbols[coin]).toNumber(), native_currency_value: nativeCurrencyValue };
 						total = new BigNumber(total).plus(nativeCurrencyValue).toNumber();
 					}
@@ -3087,14 +3166,14 @@ const fetchUserProfitLossInfo = async (user_id, opts = { period: 7 }) => {
 
 	const exchangeInfo = getKitConfig().info;
 
-	if(!BALANCE_HISTORY_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
+	if (!BALANCE_HISTORY_SUPPORTED_PLANS.includes(exchangeInfo.plan)) {
 		throw new Error(SERVICE_NOT_SUPPORTED);
 	}
 
 
-	if(!getKitConfig()?.balance_history_config?.active) { throw new Error(BALANCE_HISTORY_NOT_ACTIVE); }
+	if (!getKitConfig()?.balance_history_config?.active) { throw new Error(BALANCE_HISTORY_NOT_ACTIVE); }
 
-	const data = await  client.getAsync(`${user_id}-${opts.period}user-pl-info`);
+	const data = await client.getAsync(`${user_id}-${opts.period}user-pl-info`);
 	if (data) return JSON.parse(data);
 
 	const { getAllUserTradesByKitId } = require('./order');
@@ -3105,10 +3184,10 @@ const fetchUserProfitLossInfo = async (user_id, opts = { period: 7 }) => {
 	const endDate = moment().toDate();
 	const timeframe = timeframeQuery(startDate, endDate);
 	const userTrades = await getAllUserTradesByKitId(user_id, null, null, null, 'timestamp', 'asc', startDate, endDate, 'all');
-	
+
 	const userWithdrawals = await getUserWithdrawalsByKitId(user_id, null, null, null, null, null, null, null, null, 'created_at', 'asc', startDate, endDate, null, null, 'all');
-	const userDeposits = await getUserDepositsByKitId(user_id, null, null, null, null, null, null, null, null, 'created_at', 'asc', startDate, endDate, null, null, 'all'); 
-	const userBalanceHistory = await balanceHistoryModel.findAll({ 
+	const userDeposits = await getUserDepositsByKitId(user_id, null, null, null, null, null, null, null, null, 'created_at', 'asc', startDate, endDate, null, null, 'all');
+	const userBalanceHistory = await balanceHistoryModel.findAll({
 		where: {
 			user_id,
 			created_at: timeframe
@@ -3117,7 +3196,7 @@ const fetchUserProfitLossInfo = async (user_id, opts = { period: 7 }) => {
 
 
 	const nativeCurrency = getKitConfig()?.balance_history_config?.currency || 'usdt';
-							
+
 	const exchangeCoins = getKitCoins();
 	const conversions = await getNodeLib().getOraclePrices(exchangeCoins, {
 		quote: nativeCurrency,
@@ -3145,9 +3224,9 @@ const fetchUserProfitLossInfo = async (user_id, opts = { period: 7 }) => {
 	for (const coin of coins) {
 		if (!conversions[coin]) continue;
 		if (conversions[coin] === -1) continue;
-		
+
 		const nativeCurrencyValue = new BigNumber(symbols[coin]).multipliedBy(conversions[coin]).toNumber();
-		
+
 		history[coin] = { original_value: new BigNumber(symbols[coin]).toNumber(), native_currency_value: nativeCurrencyValue };
 		total = new BigNumber(total).plus(nativeCurrencyValue).toNumber();
 	}
@@ -3158,7 +3237,7 @@ const fetchUserProfitLossInfo = async (user_id, opts = { period: 7 }) => {
 		created_at: new Date()
 	});
 
-	
+
 
 	const findClosestBalanceRecord = (date) => {
 		return userBalanceHistory.reduce((closestRecord, entry) => {
@@ -3201,23 +3280,23 @@ const fetchUserProfitLossInfo = async (user_id, opts = { period: 7 }) => {
 
 		return data.filter((entry) => (moment(entry.created_at || entry.timestamp).isSameOrAfter(dateThreshold)) && (conditionalDate ? moment(entry.created_at || entry.timestamp).isAfter(moment(conditionalDate)) : true));
 	};
-	
+
 	const timeIntervals = ['1d', '7d', '1m', '3m', '6m', '1y'];
-	
+
 	const results = {};
-	
+
 	for (const interval of timeIntervals) {
 		const filteredBalanceHistory = filterByInterval(userBalanceHistory, interval, null);
 		if (!filteredBalanceHistory[0]) continue;
 		const initialBalances = filteredBalanceHistory[0]?.balance;
 		const initialBalanceDate = filteredBalanceHistory[0]?.created_at;
 		const filteredTrades = filterByInterval(userTrades.data, interval, initialBalanceDate);
-		
+
 		const filteredDeposits = filterByInterval(userDeposits.data, interval, initialBalanceDate);
 		const filteredWithdrawals = filterByInterval(userWithdrawals.data, interval, initialBalanceDate);
 
-		if(!initialBalances) continue;
-	
+		if (!initialBalances) continue;
+
 		const netInflowFromDepositsPerAsset = {};
 		filteredDeposits.forEach((deposit) => {
 			const asset = deposit.currency.toLowerCase();
@@ -3225,8 +3304,8 @@ const fetchUserProfitLossInfo = async (user_id, opts = { period: 7 }) => {
 				netInflowFromDepositsPerAsset[asset] = 0;
 			}
 			const closestRecord = findClosestBalanceRecord(deposit.created_at);
-	
-			if(closestRecord.balance[asset]) {
+
+			if (closestRecord.balance[asset]) {
 				const marketPrice = closestRecord.balance[asset].native_currency_value / closestRecord.balance[asset].original_value;
 				netInflowFromDepositsPerAsset[asset] += deposit.amount * marketPrice;
 			}
@@ -3257,15 +3336,15 @@ const fetchUserProfitLossInfo = async (user_id, opts = { period: 7 }) => {
 				netOutflowFromWithdrawalsPerAsset[asset] = 0;
 			}
 			const closestRecord = findClosestBalanceRecord(withdrawal.created_at);
-			if(closestRecord.balance[asset]) { 
+			if (closestRecord.balance[asset]) {
 				const marketPrice = closestRecord.balance[asset].native_currency_value / closestRecord.balance[asset].original_value;
 				netOutflowFromWithdrawalsPerAsset[asset] -= withdrawal.amount * marketPrice;
 			}
-  
+
 		});
- 
+
 		const finalBalances = filteredBalanceHistory[filteredBalanceHistory.length - 1].balance;
- 
+
 		results[interval] = {};
 		let initalTotalBalance = 0;
 		let finalTotalBalance = 0;
@@ -3275,33 +3354,33 @@ const fetchUserProfitLossInfo = async (user_id, opts = { period: 7 }) => {
 		let totalDay1Assets = 0;
 		let totalInflow = 0;
 		Object.keys(finalBalances).forEach(async (asset) => {
-   
-			if(!initialBalances?.[asset]?.native_currency_value) {
+
+			if (!initialBalances?.[asset]?.native_currency_value) {
 				initialBalances[asset] = {};
 				initialBalances[asset].native_currency_value = 0;
 				initialBalances[asset].original_value = 0;
 			}
-        
+
 			initalTotalBalance += initialBalances?.[asset]?.native_currency_value || 0;
 			finalTotalBalance += finalBalances[asset].native_currency_value || 0;
 			totalDeposits += netInflowFromDepositsPerAsset[asset] || 0;
 			totalWithdrawals += netOutflowFromWithdrawalsPerAsset[asset] || 0;
-             
+
 
 			totalDay1Assets += initialBalances[asset].native_currency_value;
 			totalInflow += netInflowFromDepositsPerAsset[asset] || 0;
 
 		});
 
-     
+
 		let cumulativePNL =
-            finalTotalBalance -
-            initalTotalBalance - 
-            totalDeposits - 
-            totalWithdrawals;
+			finalTotalBalance -
+			initalTotalBalance -
+			totalDeposits -
+			totalWithdrawals;
 
 		const cumulativePNLPercentage =
-        cumulativePNL / (totalDay1Assets + totalInflow) * 100; 
+			cumulativePNL / (totalDay1Assets + totalInflow) * 100;
 
 
 		results[interval].total = cumulativePNL?.toFixed(2) || 0;
@@ -3428,11 +3507,11 @@ const createPaymentDetail = async (data) => {
 	const { user_id, name, label, details, is_p2p, is_fiat_control, status } = data;
 
 	const user = await getUserByKitId(user_id);
-   
+
 	if (!user) {
 		throw new Error(USER_NOT_FOUND);
 	}
-	
+
 	const adminAccount = await getUserByKitId(1);
 
 	sendEmail(
@@ -3499,10 +3578,10 @@ const deletePaymentDetail = async (id, user_id) => {
 const getOracleIndex = async () => {
 	const coins = getKitCoins();
 	const data = await getAssetsPrices(
-	  coins,
-	  getKitConfig().native_currency
+		coins,
+		getKitConfig().native_currency
 	);
-  
+
 	return data;
 };
 
@@ -3517,11 +3596,11 @@ const fetchUserTradingVolume = async (user_id, opts = {
 
 	const { getAllUserTradesByKitId } = require('./order');
 
-	if(from && to) {
+	if (from && to) {
 		let volume = {};
 
 		const oracleIndex = await getOracleIndex();
-	
+
 		const trades = await getAllUserTradesByKitId(
 			user_id,
 			null,
@@ -3533,14 +3612,14 @@ const fetchUserTradingVolume = async (user_id, opts = {
 			to,
 			'all'
 		);
-	
+
 		if (trades.data && trades.data.length > 0) {
 			for (const trade of trades.data) {
 				const { symbol } = trade;
 				let size = trade.size;
-	
+
 				const basePair = symbol.split('-')[0];
-	
+
 				if (basePair !== getKitConfig().native_currency) {
 					if (!isNumber(oracleIndex[basePair]) || oracleIndex[basePair] <= 0) {
 						continue;
@@ -3550,11 +3629,11 @@ const fetchUserTradingVolume = async (user_id, opts = {
 				volume[basePair] = addAmounts(volume[basePair] || 0, size);
 			}
 		}
-	
+
 		return { user_id, volume };
 	} else {
 		const data = await client.getAsync(`${user_id}-asset-volumes`);
-		if(data) return JSON.parse(data);
+		if (data) return JSON.parse(data);
 		let volume = {
 			1: {},
 			7: {},
@@ -3568,10 +3647,10 @@ const fetchUserTradingVolume = async (user_id, opts = {
 			30: {},
 			90: {},
 		};
-		
+
 		const to = moment(currentTime).toISOString();
 		const from90Days = moment(currentTime).subtract(90, 'days').toISOString();
-		
+
 		const oracleIndex = await getOracleIndex();
 		const trades = await getAllUserTradesByKitId(
 			user_id,
@@ -3584,24 +3663,24 @@ const fetchUserTradingVolume = async (user_id, opts = {
 			to,
 			'all'
 		);
-		
+
 		if (trades.data && trades.data.length > 0) {
 			for (const trade of trades.data) {
 				const { symbol, timestamp } = trade;
 				let size = trade.size;
 				let nativeSize = trade.size;
 				const basePair = symbol.split('-')[0];
-		
+
 				if (basePair !== getKitConfig().native_currency) {
 					if (!isNumber(oracleIndex[basePair]) || oracleIndex[basePair] <= 0) {
 						continue;
 					}
 					size = multiplyAmounts(oracleIndex[basePair], size);
 				}
-		
+
 				const tradeDate = moment(timestamp);
 				const daysDiff = moment(currentTime).diff(tradeDate, 'days');
-		
+
 				if (daysDiff <= 1) {
 					volume[1][basePair] = addAmounts(volume[1][basePair] || 0, size);
 					volumeNative[1][basePair] = addAmounts(volumeNative[1][basePair] || 0, nativeSize);
@@ -3623,13 +3702,13 @@ const fetchUserTradingVolume = async (user_id, opts = {
 			const periodData = volume[period];
 			let totalGain = 0;
 
-			for(const coin in periodData) {
+			for (const coin in periodData) {
 				totalGain += periodData[coin];
 			}
-			
+
 			volume[period].total = totalGain;
 		}
-		
+
 		const sortedVolumes = sortTopVolumes(volume);
 
 		await client.setexAsync(`${user_id}-asset-volumes`, 60 * 60 * 2, JSON.stringify({ user_id, volume: sortedVolumes, volumeNative }));
@@ -3638,7 +3717,7 @@ const fetchUserTradingVolume = async (user_id, opts = {
 
 	}
 
-	
+
 };
 const fetchUserAutoTrades = async (user_id, opts = {
 	limit: null,
@@ -3697,8 +3776,8 @@ const createUserAutoTrade = async (user_id, {
 		}
 	};
 	await getUserQuickTrade(
-		spend_coin, spend_amount, null, buy_coin, 
-		null, ip, opts, { headers: { 'api-key': null } }, { user_id: user_id, network_id: null}
+		spend_coin, spend_amount, null, buy_coin,
+		null, ip, opts, { headers: { 'api-key': null } }, { user_id: user_id, network_id: null }
 	);
 
 	const quickTrades = getQuickTrades();
@@ -3709,7 +3788,7 @@ const createUserAutoTrade = async (user_id, {
 	}
 
 	if (!quickTradeConfig) {
-	    throw new Error(INVALID_AUTOTRADE_CONFIG);
+		throw new Error(INVALID_AUTOTRADE_CONFIG);
 	}
 
 	if (week_days && !week_days.every(day => day >= 0 && day <= 6)) {
@@ -3763,7 +3842,7 @@ const updateUserAutoTrade = async (user_id, {
 	active,
 	description
 }, ip) => {
-	
+
 	if (!subscribedToCoin(buy_coin)) {
 		throw new Error('Invalid coin ' + buy_coin);
 	}
@@ -3783,7 +3862,7 @@ const updateUserAutoTrade = async (user_id, {
 	}
 
 	if (!quickTradeConfig) {
-	    throw new Error(INVALID_AUTOTRADE_CONFIG);
+		throw new Error(INVALID_AUTOTRADE_CONFIG);
 	}
 
 	if (spend_amount) {
@@ -3794,8 +3873,8 @@ const updateUserAutoTrade = async (user_id, {
 			}
 		};
 		await getUserQuickTrade(
-			spend_coin, spend_amount, null, buy_coin, 
-			null, ip, opts, { headers: { 'api-key': null } }, { user_id: user_id, network_id: null}
+			spend_coin, spend_amount, null, buy_coin,
+			null, ip, opts, { headers: { 'api-key': null } }, { user_id: user_id, network_id: null }
 		);
 	}
 
@@ -3819,7 +3898,7 @@ const updateUserAutoTrade = async (user_id, {
 	const trade = await getModel('AutoTradeConfig').findOne({
 		where: {
 			id,
-			user_id  
+			user_id
 		}
 	});
 
@@ -3832,7 +3911,7 @@ const updateUserAutoTrade = async (user_id, {
 	if (balance[`${spend_coin}_available`] < spend_amount) {
 		throw new Error(`Balance insufficient for auto trade: ${spend_coin} size: ${spend_amount}`);
 	}
-	
+
 	return await trade.update({
 		spend_coin,
 		buy_coin,
@@ -3850,7 +3929,7 @@ const deleteUserAutoTrade = async (removed_ids, user_id) => {
 	const trades = await getModel('AutoTradeConfig').findAll({
 		where: {
 			id: removed_ids,
-			user_id  
+			user_id
 		}
 	});
 
@@ -4051,5 +4130,9 @@ module.exports = {
 	getAnnouncements,
 	createAnnouncement,
 	deleteAnnouncement,
-	updateAnnouncement
+	updateAnnouncement,
+	confirmUserLogin,
+	findUserLastLogins,
+	freezeUserByCode,
+	createSuspiciousLogin
 };

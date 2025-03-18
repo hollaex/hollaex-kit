@@ -1,176 +1,180 @@
 {
-    "de": {
-        "LOGIN": {
-            "html": "<div> <p> Sehr geehrte/r ${name} </p> <p> Wir haben eine Anmeldung zu Ihrem Konto mit den folgenden Daten aufgezeichnet </p> <div> <div>Zeit: ${time}</div> <div>Land: ${country}</div> <div>IP-Adresse: ${ip}</div> </div> <p> If this was not you, please change your password, set up two-factor authentication, and contact us immediately. </p> <p> Mit freundlichen Grüßen<br> ${api_name} team </p> </div>",
-            "title": "Login"
-        },
-        "SIGNUP": {
-            "html": "<div> <p> Sehr geehrte/r ${name} </p> <p> Sie müssen Ihr E-Mail-Konto bestätigen, indem Sie auf die unten angezeigte Taste klicken.<br> Wenn Sie Fragen haben, können Sie uns gerne kontaktieren, indem Sie einfach auf diese E-Mail antworten.</p><p>Bitte klicken Sie auf die Schaltfläche unten, um mit Ihrer Registrierung fortzufahren.</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Bestätigen</Button></a></div><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
-            "title": "Sign Up"
-        },
-        "WELCOME": {
-            "html": "<div><p> Sehr geehrte/r ${name} </p><p>Vielen Dank, dass Sie sich bei to ${api_name} angemeldet haben..</p><p>Um mit dem Trading zu beginnen, müssen Sie zunächst Kryptowährungen oder Geld auf Ihr Konto einzahlen.Bitte gehen Sie zu Ihrem <a href=\"${link_account}\" target='_blank'>Konto</a> und besuchen Sie die <a href=\"${link_deposit}\" target='_blank'>Einzahlung</a> Seite.,</p><p>Wenn Sie Fragen oder Bedenken haben, kontaktieren Sie uns bitte einfach durch Beantwortung dieser E-Mail.</p><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
-            "title": "Willkommen"
-        },
-        "RESET_PASSWORD": {
-            "html": "<div><p> Sehr geehrte/r ${name} </p><p>YSie haben eine Anfrage zum Zurücksetzen des Passworts für Ihr Konto gestellt.<br />Um Ihr Passwort zu aktualisieren, klicken Sie auf den unten stehenden Link.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Mein Passwort zurücksetzen</Button></a></div><p>Wenn diese Anfrage fälschlicherweise gestellt wurde, können Sie sie getrost ignorieren; es werden keine Änderungen an Ihrem Konto vorgenommen.</p><p>Anfrage initiiert von: ${ip}</p><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
-            "title": "Passwort zurücksetzen"
-        },
-        "ACCOUNT_VERIFY": {
-            "html": "<div><p> Sehr geehrte/r ${name} </p><p>Herzlichen Glückwunsch! Ihr Konto wurde erfolgreich verifiziert.</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Jetzt handeln</Button></a></div><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
-            "title": "Konto verifiziert"
-        },
-        "ACCOUNT_UPGRADE": {
-            "html": "<div><p> Sehr geehrte/r ${name} </p><p>Herzlichen Glückwunsch. Ihre Kontozugriffsstufe wird auf Stufe ${tier} hochgestuft. Sie profitieren von niedrigeren Gebühren, höheren Auszahlungslimits und anderen Premium-Funktionen.</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Jetzt handeln</Button></a></div><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
-            "title": "Konto aktualisiert"
-        },
-        "DEPOSIT_CANCEL": {
-            "html": "<div><p> Sehr geehrte/r ${name} </p><p>Wir waren nicht in der Lage, Ihre ${currency} Einzahlung zu finden oder zu bearbeiten, die am ${date} für ${amount}. gemacht wurde. Daher wird die Transaktion von unserem System abgelehnt.</p><p>Wenn Sie weitere Fragen haben, können Sie auf diese E-Mail </p><p>Transaktionsnummer: ${txid}<br />Betrag: ${amount}<br />Status: Rejected</p><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
-            "title": "${currency} Einzahlung rejected"
-        },
-        "WITHDRAWAL_CANCEL": {
-            "html": "<div><p> Sehr geehrte/r ${name} </p><p>Wir waren nicht in der Lage, Ihre ${currency} Auszahlung zu finden oder zu bearbeiten, die am ${date} für ${amount}. gemacht wurde. Dadurch wird die Transaktion von unserem System abgelehnt und Ihr ausstehender Abhebungsbetrag wird Ihrer ${api_name} Geldbörse wieder gutgeschrieben.</p><p>Wenn Sie weitere Fragen haben, können Sie auf diese E-Mail antworten</p><p>Transaktionsnummer: ${txid}<br />Betrag: ${amount}<br />Status: Rejected</p><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
-            "title": "${currency} Abbuchung rejected"
-        },
-        "WITHDRAWAL_REQUEST": {
-            "html": "<div><p> Sehr geehrte/r ${name} </p><p>Sie haben einen ${currency} Auszahlungsantrag von ${amount} an die Adresse ${address} gemacht<br /><br />Betrag: ${amount}<br />Gebühr: ${fee} ${currency}<br />Adresse: ${address}<br /><span id='network'>Netzwerk: ${network}</span><br /><br />Um diese Auszahlung zu bestätigen, klicken Sie bitte auf die Taste unten.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Bestätigen</Button></a></div><p>Wenn diese Anfrage fälschlicherweise gestellt wurde, können Sie sie getrost ignorieren; es werden keine Änderungen an Ihrem Konto vorgenommen.</p><p>Anfrage initiiert von: ${ip}</p><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
-            "title": "${currency} Abbuchung Anfrage"
-        },
-        "USER_VERIFICATION": {
-            "html": "<div><h3>Benutzerverifizierung erforderlich</h3><div>Der Benutzer '${email}' hat seine Dokumente zur Überprüfung hochgeladen. Bitte verifizieren Sie seine Dokumente.</div></div>",
-            "title": "Benutzerverifizierung"
-        },
-        "SUSPICIOUS_DEPOSIT": {
-            "html": "<div><h3>Verdächtige Einzahlung</h3><div>Der Client mit der E-Mail ${email} hat eine ${currency} Einzahlung erhalten, die verdächtig ist.<br />Transaktionsnummer: ${txid}<h4>Transaktionsdaten:</h4><div>${data}</div></div></div>",
-            "title": "Verdächtige Einzahlung"
-        },
-        "INVALID_ADDRESS": {
-            "html": "<div><p> Sehr geehrte/r ${name} </p><p>Ihre ${currency} Auszahlung für ${amount} wurde an eine ungültige Adresse gesendet und wurde abgelehnt.</p><p>Adresse: ${address}</p><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
-            "title": "Ungültige Auszahlungsadresse"
-        },
-        "USER_DEACTIVATED": {
-            "html": "<div><p>Ihr Konto ${email} wurde deaktiviert. Sie können Ihr Konto erst wieder verwenden, wenn es vom Administrator aktiviert wurde.</p><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
-            "title": "Konto ${type}"
-        },
-        "USER_ACTIVATED": {
-            "html": "<div><p>Ihr Konto ${email} wurde aktiviert. Sie können nun Ihr Konto verwenden.</p><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
-            "title": "Konto ${type}"
-        },
-        "DISCOUNT_UPDATE": {
-            "html": "<div><p> Sehr geehrte/r ${name} </p><p>Ihr Rabattsatz wurde auf ${rate}% geändert. Dieser Satz wird auf Ihre Bestellgebühren angewendet.</p><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
-            "title": "Diskontsatzänderung"
-        },
-        "BANK_VERIFIED": {
-            "html": "<div><p> Sehr geehrte/r ${name} </p><p>Ein ausstehendes Bankkonto wurde bestätigt. Ihr gültiges Konto kann jetzt für Umtauschoperationen verwendet werden, die ein Bankkonto erfordern.</p><div><strong>Verifizierte Bankkonten:</strong>${list_detail_bank_account}</div><p><a href=\"${link_verification}\">Um Ihre aktuellen Bankkonten anzuzeigen, besuchen Sie bitte die Registerkarte „Verifizierung“ der Börse</a></p><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
-            "title": "Bank verifiziert"
-        },
-        "USER_ID_VERIFICATION_REJECT": {
-            "html": "<div><p> Sehr geehrte/r ${name} </p><p>Ihre aktuelle ID-Verifizierung wurde bearbeitet und ist leider abgelehnt worden. Für weitere Aktionen lesen Sie die Nachricht unseres Experten unten:</p><p>Nachricht: ${message}</p><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
-            "title": "ID-Verifizierung abgelehnt"
-        },
-        "USER_BANK_VERIFICATION_REJECT": {
-            "html": "<div><p> Sehr geehrte/r ${name} </p><p>Ihre neue Bankanmeldung wurde bearbeitet und ist leider abgelehnt worden. Für weitere Aktionen lesen Sie die Nachricht unseres Experten unten:</p><p>Nachricht: ${message}</p><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
-            "title": "Neuer Bankantrag abgelehnt"
-        },
-        "PASSWORD_CHANGED": {
-            "html": "<div><p> Sehr geehrte/r ${name} </p><p>Diese E-Mail bestätigt, dass Sie kürzlich das Passwort für Ihr Konto geändert haben. Sind keine weiteren Maßnahmen erforderlich.<br />Wenn Sie diese Änderung nicht autorisiert haben, kontaktieren Sie uns bitte umgehend.<br /></p><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
-            "title": "Passwort geändert"
-        },
-        "CHANGE_PASSWORD": {
-            "html": "<div><p> Sehr geehrte/r ${name} </p><p>Sie haben eine Anfrage gestellt, um das Passwort für Ihr Konto zu ändern.<br />Um Ihr geändertes Passwort zu bestätigen, klicken Sie auf den unten stehenden Link.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Bestätigen Sie Mein Passwort ändern</Button></a></div><p>Wenn diese Anfrage irrtümlich gestellt wurde, können Sie sie ignorieren; Es werden keine Änderungen an Ihrem Konto vorgenommen.</p><p>Request initiated from: ${ip}</p><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
-            "title": "Passwortbestätigung ändern"
-        },
-        "DEPOSIT_PENDING": {
-            "html": "<div><div><p>Sehr geehrte/r ${name} </p><p> Sie haben eine neue Einzahlung von ${amount} ${currency} in Ihrer ${api_name} Geldbörse ausstehend. Bitte warten Sie, bis die Transaktion bestätigt ist und Ihr Guthaben in Ihrer Geldbörse verfügbar ist. Ihre Transaktion erfordert ${confirmation} Bestätigung(en) in der Blockchain.</p><p>Betrag: ${amount} ${currency}<br />Status: ${status}<br />Adresse: ${address}<br />Transaktionsnummer: ${transaction_id}<br /><span id='network'>Netzwerk: ${network}</span><br />Gebühr: ${fee} ${currency}<br /><ul>${explorers}</ul></div><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
-            "title": "${currency} Einzahlung pending"
-        },
-        "DEPOSIT_COMPLETED": {
-            "html": "<div><div><p> Sehr geehrte/r ${name} </p><p> Ihre ${currency} Anzahlung für ${amount} ${currency} ist bestätigt und abgeschlossen und steht in Ihrer ${currency} Geldbörse zur Verfügung.</p><p>Betrag: ${amount} ${currency}<br />Status: ${status}<br />Adresse: ${address}<br />Transaktionsnummer: ${transaction_id}<br /><span id='network'>Netzwerk: ${network}</span><br />Gebühr: ${fee} ${currency}<br /><ul>${explorers}</ul></div><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
-            "title": "${currency} Einzahlung completed"
-        },
-        "WITHDRAWAL_PENDING": {
-            "html": "<div><p> Sehr geehrte/r ${name} </p><p>Sie haben eine Auszahlungsanforderung für ${amount} ${currency} gemacht. Ihr Auszahlungsstatus ist ausstehend und wird in Kürze bearbeitet.</p><p>Betrag: ${amount} ${currency}<br />Gebühr: ${fee} ${currency}<br />Status: ${status}<br />Adresse: ${address}<br />Transaktionsnummer: ${transaction_id}<br /><span id='network'>Netzwerk: ${network}</span><br /><ul>${explorers}</ul><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
-            "title": "${currency} Abbuchung request"
-        },
-        "WITHDRAWAL_COMPLETED": {
-            "html": "<div><p> Sehr geehrte/r ${name} </p><p>Ihr Auszahlungsantrag für ${amount} ${currency} wurde bearbeitet.</p><p>Betrag: ${amount} ${currency}<br />Gebühr: ${fee} ${currency}<br />Status: ${status}<br />Adresse: ${address}<br />Transaktionsnummer: ${transaction_id}<br /><span id='network'>Netzwerk: ${network}</span><br /><ul>${explorers}</ul><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
-            "title": "${currency} Abbuchung completed"
-        },
-        "DOC_REJECTED": {
-            "html": "<div><p>Dear ${email} </p><p>Unfortunately, your uploaded KYC documents have been rejected.<br>The reasons for your documents being rejected are listed below.<br></p><div><ul>${doc_information}</ul></div><p>If you feel these reasons are invalid, please feel free to reply to this email.<br>Otherwise, please reupload valid documents in order to verify your identity.</p><p> Regards<br> ${api_name} team </p</div>",
-            "title": "KYC Documents Rejected"
-        },
-        "DOC_VERIFIED": {
-            "html": "<div><p>Dear ${email} </p><p>Your uploaded KYC documents have been approved.<br>You now have access to all exchange features that require identity verification.</p><ul>${doc_information}</ul><p>To view your approved documents, visit your <a href=\"${link}\" target=\"_blank\">Verification page</a></p><p> Regards<br> ${api_name} team </p></div>",
-            "title": "KYC Documents Approved"
-        },
-        "CONFIRM_EMAIL": {
-            "html": "<div><p><p>Dear ${name} </p></p><p>You have made sensitive request related to your accounts security. To verify the operation you would require to use to code below to authorize this operation.<br /><p style=\"font-size: 1.2rem; text-align: center;\">${code}</p>If you did not make this request, report this immediately and proceed to change your credentials as soon as possible.</p><p> Regards<br> ${api_name} team </p></div>",
-            "title": "Security Verification"
-        },
-        "LOCKED_ACCOUNT": {
+	"de": {
+		"LOGIN": {
+			"html": "<div> <p> Sehr geehrte/r ${name} </p> <p> Wir haben eine Anmeldung zu Ihrem Konto mit den folgenden Daten aufgezeichnet </p> <div> <div>Zeit: ${time}</div> <div>Land: ${country}</div> <div>IP-Adresse: ${ip}</div> </div> <p> If this was not you, please change your password, set up two-factor authentication, and contact us immediately. </p> <p> Mit freundlichen Grüßen<br> ${api_name} team </p> </div>",
+			"title": "Login"
+		},
+		"SIGNUP": {
+			"html": "<div> <p> Sehr geehrte/r ${name} </p> <p> Sie müssen Ihr E-Mail-Konto bestätigen, indem Sie auf die unten angezeigte Taste klicken.<br> Wenn Sie Fragen haben, können Sie uns gerne kontaktieren, indem Sie einfach auf diese E-Mail antworten.</p><p>Bitte klicken Sie auf die Schaltfläche unten, um mit Ihrer Registrierung fortzufahren.</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Bestätigen</Button></a></div><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
+			"title": "Sign Up"
+		},
+		"WELCOME": {
+			"html": "<div><p> Sehr geehrte/r ${name} </p><p>Vielen Dank, dass Sie sich bei to ${api_name} angemeldet haben..</p><p>Um mit dem Trading zu beginnen, müssen Sie zunächst Kryptowährungen oder Geld auf Ihr Konto einzahlen.Bitte gehen Sie zu Ihrem <a href=\"${link_account}\" target='_blank'>Konto</a> und besuchen Sie die <a href=\"${link_deposit}\" target='_blank'>Einzahlung</a> Seite.,</p><p>Wenn Sie Fragen oder Bedenken haben, kontaktieren Sie uns bitte einfach durch Beantwortung dieser E-Mail.</p><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
+			"title": "Willkommen"
+		},
+		"RESET_PASSWORD": {
+			"html": "<div><p> Sehr geehrte/r ${name} </p><p>YSie haben eine Anfrage zum Zurücksetzen des Passworts für Ihr Konto gestellt.<br />Um Ihr Passwort zu aktualisieren, klicken Sie auf den unten stehenden Link.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Mein Passwort zurücksetzen</Button></a></div><p>Wenn diese Anfrage fälschlicherweise gestellt wurde, können Sie sie getrost ignorieren; es werden keine Änderungen an Ihrem Konto vorgenommen.</p><p>Anfrage initiiert von: ${ip}</p><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
+			"title": "Passwort zurücksetzen"
+		},
+		"ACCOUNT_VERIFY": {
+			"html": "<div><p> Sehr geehrte/r ${name} </p><p>Herzlichen Glückwunsch! Ihr Konto wurde erfolgreich verifiziert.</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Jetzt handeln</Button></a></div><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
+			"title": "Konto verifiziert"
+		},
+		"ACCOUNT_UPGRADE": {
+			"html": "<div><p> Sehr geehrte/r ${name} </p><p>Herzlichen Glückwunsch. Ihre Kontozugriffsstufe wird auf Stufe ${tier} hochgestuft. Sie profitieren von niedrigeren Gebühren, höheren Auszahlungslimits und anderen Premium-Funktionen.</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Jetzt handeln</Button></a></div><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
+			"title": "Konto aktualisiert"
+		},
+		"DEPOSIT_CANCEL": {
+			"html": "<div><p> Sehr geehrte/r ${name} </p><p>Wir waren nicht in der Lage, Ihre ${currency} Einzahlung zu finden oder zu bearbeiten, die am ${date} für ${amount}. gemacht wurde. Daher wird die Transaktion von unserem System abgelehnt.</p><p>Wenn Sie weitere Fragen haben, können Sie auf diese E-Mail </p><p>Transaktionsnummer: ${txid}<br />Betrag: ${amount}<br />Status: Rejected</p><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
+			"title": "${currency} Einzahlung rejected"
+		},
+		"WITHDRAWAL_CANCEL": {
+			"html": "<div><p> Sehr geehrte/r ${name} </p><p>Wir waren nicht in der Lage, Ihre ${currency} Auszahlung zu finden oder zu bearbeiten, die am ${date} für ${amount}. gemacht wurde. Dadurch wird die Transaktion von unserem System abgelehnt und Ihr ausstehender Abhebungsbetrag wird Ihrer ${api_name} Geldbörse wieder gutgeschrieben.</p><p>Wenn Sie weitere Fragen haben, können Sie auf diese E-Mail antworten</p><p>Transaktionsnummer: ${txid}<br />Betrag: ${amount}<br />Status: Rejected</p><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
+			"title": "${currency} Abbuchung rejected"
+		},
+		"WITHDRAWAL_REQUEST": {
+			"html": "<div><p> Sehr geehrte/r ${name} </p><p>Sie haben einen ${currency} Auszahlungsantrag von ${amount} an die Adresse ${address} gemacht<br /><br />Betrag: ${amount}<br />Gebühr: ${fee} ${currency}<br />Adresse: ${address}<br /><span id='network'>Netzwerk: ${network}</span><br /><br />Um diese Auszahlung zu bestätigen, klicken Sie bitte auf die Taste unten.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Bestätigen</Button></a></div><p>Wenn diese Anfrage fälschlicherweise gestellt wurde, können Sie sie getrost ignorieren; es werden keine Änderungen an Ihrem Konto vorgenommen.</p><p>Anfrage initiiert von: ${ip}</p><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
+			"title": "${currency} Abbuchung Anfrage"
+		},
+		"USER_VERIFICATION": {
+			"html": "<div><h3>Benutzerverifizierung erforderlich</h3><div>Der Benutzer '${email}' hat seine Dokumente zur Überprüfung hochgeladen. Bitte verifizieren Sie seine Dokumente.</div></div>",
+			"title": "Benutzerverifizierung"
+		},
+		"SUSPICIOUS_DEPOSIT": {
+			"html": "<div><h3>Verdächtige Einzahlung</h3><div>Der Client mit der E-Mail ${email} hat eine ${currency} Einzahlung erhalten, die verdächtig ist.<br />Transaktionsnummer: ${txid}<h4>Transaktionsdaten:</h4><div>${data}</div></div></div>",
+			"title": "Verdächtige Einzahlung"
+		},
+		"INVALID_ADDRESS": {
+			"html": "<div><p> Sehr geehrte/r ${name} </p><p>Ihre ${currency} Auszahlung für ${amount} wurde an eine ungültige Adresse gesendet und wurde abgelehnt.</p><p>Adresse: ${address}</p><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
+			"title": "Ungültige Auszahlungsadresse"
+		},
+		"USER_DEACTIVATED": {
+			"html": "<div><p>Ihr Konto ${email} wurde deaktiviert. Sie können Ihr Konto erst wieder verwenden, wenn es vom Administrator aktiviert wurde.</p><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
+			"title": "Konto ${type}"
+		},
+		"USER_ACTIVATED": {
+			"html": "<div><p>Ihr Konto ${email} wurde aktiviert. Sie können nun Ihr Konto verwenden.</p><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
+			"title": "Konto ${type}"
+		},
+		"DISCOUNT_UPDATE": {
+			"html": "<div><p> Sehr geehrte/r ${name} </p><p>Ihr Rabattsatz wurde auf ${rate}% geändert. Dieser Satz wird auf Ihre Bestellgebühren angewendet.</p><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
+			"title": "Diskontsatzänderung"
+		},
+		"BANK_VERIFIED": {
+			"html": "<div><p> Sehr geehrte/r ${name} </p><p>Ein ausstehendes Bankkonto wurde bestätigt. Ihr gültiges Konto kann jetzt für Umtauschoperationen verwendet werden, die ein Bankkonto erfordern.</p><div><strong>Verifizierte Bankkonten:</strong>${list_detail_bank_account}</div><p><a href=\"${link_verification}\">Um Ihre aktuellen Bankkonten anzuzeigen, besuchen Sie bitte die Registerkarte „Verifizierung“ der Börse</a></p><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
+			"title": "Bank verifiziert"
+		},
+		"USER_ID_VERIFICATION_REJECT": {
+			"html": "<div><p> Sehr geehrte/r ${name} </p><p>Ihre aktuelle ID-Verifizierung wurde bearbeitet und ist leider abgelehnt worden. Für weitere Aktionen lesen Sie die Nachricht unseres Experten unten:</p><p>Nachricht: ${message}</p><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
+			"title": "ID-Verifizierung abgelehnt"
+		},
+		"USER_BANK_VERIFICATION_REJECT": {
+			"html": "<div><p> Sehr geehrte/r ${name} </p><p>Ihre neue Bankanmeldung wurde bearbeitet und ist leider abgelehnt worden. Für weitere Aktionen lesen Sie die Nachricht unseres Experten unten:</p><p>Nachricht: ${message}</p><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
+			"title": "Neuer Bankantrag abgelehnt"
+		},
+		"PASSWORD_CHANGED": {
+			"html": "<div><p> Sehr geehrte/r ${name} </p><p>Diese E-Mail bestätigt, dass Sie kürzlich das Passwort für Ihr Konto geändert haben. Sind keine weiteren Maßnahmen erforderlich.<br />Wenn Sie diese Änderung nicht autorisiert haben, kontaktieren Sie uns bitte umgehend.<br /></p><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
+			"title": "Passwort geändert"
+		},
+		"CHANGE_PASSWORD": {
+			"html": "<div><p> Sehr geehrte/r ${name} </p><p>Sie haben eine Anfrage gestellt, um das Passwort für Ihr Konto zu ändern.<br />Um Ihr geändertes Passwort zu bestätigen, klicken Sie auf den unten stehenden Link.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Bestätigen Sie Mein Passwort ändern</Button></a></div><p>Wenn diese Anfrage irrtümlich gestellt wurde, können Sie sie ignorieren; Es werden keine Änderungen an Ihrem Konto vorgenommen.</p><p>Request initiated from: ${ip}</p><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
+			"title": "Passwortbestätigung ändern"
+		},
+		"DEPOSIT_PENDING": {
+			"html": "<div><div><p>Sehr geehrte/r ${name} </p><p> Sie haben eine neue Einzahlung von ${amount} ${currency} in Ihrer ${api_name} Geldbörse ausstehend. Bitte warten Sie, bis die Transaktion bestätigt ist und Ihr Guthaben in Ihrer Geldbörse verfügbar ist. Ihre Transaktion erfordert ${confirmation} Bestätigung(en) in der Blockchain.</p><p>Betrag: ${amount} ${currency}<br />Status: ${status}<br />Adresse: ${address}<br />Transaktionsnummer: ${transaction_id}<br /><span id='network'>Netzwerk: ${network}</span><br />Gebühr: ${fee} ${currency}<br /><ul>${explorers}</ul></div><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
+			"title": "${currency} Einzahlung pending"
+		},
+		"DEPOSIT_COMPLETED": {
+			"html": "<div><div><p> Sehr geehrte/r ${name} </p><p> Ihre ${currency} Anzahlung für ${amount} ${currency} ist bestätigt und abgeschlossen und steht in Ihrer ${currency} Geldbörse zur Verfügung.</p><p>Betrag: ${amount} ${currency}<br />Status: ${status}<br />Adresse: ${address}<br />Transaktionsnummer: ${transaction_id}<br /><span id='network'>Netzwerk: ${network}</span><br />Gebühr: ${fee} ${currency}<br /><ul>${explorers}</ul></div><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
+			"title": "${currency} Einzahlung completed"
+		},
+		"WITHDRAWAL_PENDING": {
+			"html": "<div><p> Sehr geehrte/r ${name} </p><p>Sie haben eine Auszahlungsanforderung für ${amount} ${currency} gemacht. Ihr Auszahlungsstatus ist ausstehend und wird in Kürze bearbeitet.</p><p>Betrag: ${amount} ${currency}<br />Gebühr: ${fee} ${currency}<br />Status: ${status}<br />Adresse: ${address}<br />Transaktionsnummer: ${transaction_id}<br /><span id='network'>Netzwerk: ${network}</span><br /><ul>${explorers}</ul><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
+			"title": "${currency} Abbuchung request"
+		},
+		"WITHDRAWAL_COMPLETED": {
+			"html": "<div><p> Sehr geehrte/r ${name} </p><p>Ihr Auszahlungsantrag für ${amount} ${currency} wurde bearbeitet.</p><p>Betrag: ${amount} ${currency}<br />Gebühr: ${fee} ${currency}<br />Status: ${status}<br />Adresse: ${address}<br />Transaktionsnummer: ${transaction_id}<br /><span id='network'>Netzwerk: ${network}</span><br /><ul>${explorers}</ul><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
+			"title": "${currency} Abbuchung completed"
+		},
+		"DOC_REJECTED": {
+			"html": "<div><p>Dear ${email} </p><p>Unfortunately, your uploaded KYC documents have been rejected.<br>The reasons for your documents being rejected are listed below.<br></p><div><ul>${doc_information}</ul></div><p>If you feel these reasons are invalid, please feel free to reply to this email.<br>Otherwise, please reupload valid documents in order to verify your identity.</p><p> Regards<br> ${api_name} team </p</div>",
+			"title": "KYC Documents Rejected"
+		},
+		"DOC_VERIFIED": {
+			"html": "<div><p>Dear ${email} </p><p>Your uploaded KYC documents have been approved.<br>You now have access to all exchange features that require identity verification.</p><ul>${doc_information}</ul><p>To view your approved documents, visit your <a href=\"${link}\" target=\"_blank\">Verification page</a></p><p> Regards<br> ${api_name} team </p></div>",
+			"title": "KYC Documents Approved"
+		},
+		"CONFIRM_EMAIL": {
+			"html": "<div><p><p>Dear ${name} </p></p><p>You have made sensitive request related to your accounts security. To verify the operation you would require to use to code below to authorize this operation.<br /><p style=\"font-size: 1.2rem; text-align: center;\">${code}</p>If you did not make this request, report this immediately and proceed to change your credentials as soon as possible.</p><p> Regards<br> ${api_name} team </p></div>",
+			"title": "Security Verification"
+		},
+		"LOCKED_ACCOUNT": {
 			"html": "<div><p><p>Lieber ${name} </p></p><p>Ihr Konto wurde wegen zu vieler Anmeldeversuche für ${login_timeout} Minuten gesperrt.<br />Wenn ja Machen Sie diese Anmeldeversuche nicht, melden Sie dies sofort und ändern Sie Ihre Anmeldeinformationen so schnell wie möglich.</p><p> Grüße<br> ${api_name} Team </p></div>",
 			"title": "Ihr Konto ist gesperrt"
 		},
-        "USER_DELETED": {
+		"USER_DELETED": {
 			"html": "<div><p><p>Lieber ${name} </p></p><p>Der Antrag auf Kontolöschung wird derzeit bearbeitet. Die Informationen in Ihrem Konto werden gemäß den Nutzungsbedingungen entfernt.</p><p> Grüße<br> ${api_name} Team </p></div>",
 			"title": "Antrag auf Kontolöschung"
 		},
-        "OTP_DISABLED": {
-            "html": "<div> <p> Lieber/Liebe ${name} </p> <p> Wir haben festgestellt, dass Ihre <b>Zwei-Faktor-Authentifizierung (2FA) deaktiviert wurde</b> auf Ihrem Konto. Es wird dringend empfohlen, die 2FA erneut zu aktivieren, um Ihr Konto zu sichern.</p> <div> <div>Zeit: ${time}</div> <div>Land: ${country}</div> <div>IP-Adresse: ${ip}</div> </div> <p> Wenn dies nicht Sie waren, kontaktieren Sie uns bitte sofort. </p> <p> Mit freundlichen Grüßen<br> Team ${api_name} </p> </div>",
-            "title": "OTP Deaktiviert"
-          },
-        "OTP_ENABLED": {
-            "html": "<div> <p> Lieber/Liebe ${name} </p> <p> Wir haben festgestellt, dass Ihre <b>Zwei-Faktor-Authentifizierung (2FA) aktiviert wurde</b> auf Ihrem Konto.</p> <div> <div>Zeit: ${time}</div> <div>Land: ${country}</div> <div>IP-Adresse: ${ip}</div> </div> <p> Mit freundlichen Grüßen<br> Team ${api_name} </p> </div>",
-            "title": "OTP Aktiviert"
-        },
-        "P2P_MERCHANT_IN_PROGRESS": {
-            "html": "<div><p> Lieber ${name} </p><p>Wir haben Aktivitäten auf Ihrem P2P-Geschäft festgestellt, was darauf hinweisen könnte, dass ein Kunde eine Transaktion mit Ihnen anfordert. Um den Status Ihres Geschäfts zu überprüfen, klicken Sie bitte auf den untenstehenden Link:<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Überprüfen Sie den Geschäftsstatus</Button></a></div><p>Vielen Dank, dass Sie unsere Plattform nutzen.</p><p>Anfrage eingeleitet von: ${ip}</p><p>Mit freundlichen Grüßen<br> Ihr ${api_name} Team </p></div>",
-            "title": "Aktualisierung zu Ihrem P2P-Geschäft"
-        },
-        "P2P_BUYER_PAID_ORDER": {
-            "html": "<div><p> Lieber ${name} </p><p>Sie haben Ihre Bestellung als bezahlt markiert. Warten auf den Verkäufer, um zu überprüfen, zu bestätigen und die Gelder freizugeben<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Gehen Sie zu Ihrer Bestellung</Button></a></div><p>Vielen Dank, dass Sie unsere Plattform nutzen.</p><p>Anfrage eingeleitet von: ${ip}</p><p>Mit freundlichen Grüßen<br> Ihr ${api_name} Team </p></div>",
-            "title": "Aktivität auf Ihrer P2P-Bestellung festgestellt"
-        },
-        "P2P_ORDER_EXPIRED": {
-            "html": "<div><p> Lieber ${name} </p><p>Ihre Bestellung ist aufgrund von Inaktivität innerhalb der gegebenen Zeit abgelaufen.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Gehen Sie zu Ihrer Bestellung</Button></a></div><p>Vielen Dank, dass Sie unsere Plattform nutzen.</p><p>Anfrage eingeleitet von: ${ip}</p><p>Mit freundlichen Grüßen<br> Ihr ${api_name} Team </p></div>",
-            "title": "Aktivität auf Ihrer P2P-Bestellung festgestellt"
-        },
-        "P2P_ORDER_CLOSED": {
-            "html": "<div><p> Lieber ${name} </p><p>Ihre Bestellung wurde von unserem Support-Team geschlossen, nachdem eine Entscheidung über den Einspruchsantrag getroffen wurde<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Gehen Sie zu Ihrer Bestellung</Button></a></div><p>Vielen Dank, dass Sie unsere Plattform nutzen.</p><p>Mit freundlichen Grüßen<br> Ihr ${api_name} Team </p></div>",
-            "title": "Aktivität auf Ihrer P2P-Bestellung festgestellt"
-        },
-        "P2P_BUYER_CANCELLED_ORDER": {
-            "html": "<div><p> Lieber ${name} </p><p>Sie haben Ihre Bestellung storniert. Die Transaktion ist abgeschlossen.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Gehen Sie zu Ihrer Bestellung</Button></a></div><p>Vielen Dank, dass Sie unsere Plattform nutzen.</p><p>Anfrage eingeleitet von: ${ip}</p><p>Mit freundlichen Grüßen<br> Ihr ${api_name} Team </p></div>",
-            "title": "Aktivität auf Ihrer P2P-Bestellung festgestellt"
-        },
-        "P2P_BUYER_APPEALED_ORDER": {
-            "html": "<div><p> Lieber ${name} </p><p>Sie haben Ihre Bestellung angefochten. Bitte kontaktieren Sie den Support, um das Problem zu lösen.</p><p>Anfrage eingeleitet von: ${ip}</p><p>Mit freundlichen Grüßen<br> Ihr ${api_name} Team </p></div>",
-            "title": "Aktivität auf Ihrer P2P-Bestellung festgestellt"
-        },
-        "P2P_VENDOR_CONFIRMED_ORDER": {
-            "html": "<div><p> Lieber ${name} </p><p>Sie haben die Transaktion bestätigt und die Gelder freigegeben.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Gehen Sie zu Ihrer Bestellung</Button></a></div><p>Vielen Dank, dass Sie unsere Plattform nutzen.</p><p>Anfrage eingeleitet von: ${ip}</p><p>Mit freundlichen Grüßen<br> Ihr ${api_name} Team </p></div>",
-            "title": "Aktivität auf Ihrer P2P-Bestellung festgestellt"
-        },
-        "P2P_VENDOR_CANCELLED_ORDER": {
-            "html": "<div><p> Lieber ${name} </p><p>Sie haben Ihre Bestellung storniert. Die Transaktion ist abgeschlossen.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Gehen Sie zu Ihrer Bestellung</Button></a></div><p>Vielen Dank, dass Sie unsere Plattform nutzen.</p><p>Anfrage eingeleitet von: ${ip}</p><p>Mit freundlichen Grüßen<br> Ihr ${api_name} Team </p></div>",
-            "title": "Aktivität auf Ihrer P2P-Bestellung festgestellt"
-        },
-        "P2P_VENDOR_APPEALED_ORDER": {
-            "html": "<div><p> Lieber ${name} </p><p>Sie haben Ihre Bestellung angefochten. Bitte kontaktieren Sie den Support, um das Problem zu lösen.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Gehen Sie zu Ihrer Bestellung</Button></a></div><p>Vielen Dank, dass Sie unsere Plattform nutzen.</p><p>Anfrage eingeleitet von: ${ip}</p><p>Mit freundlichen Grüßen<br> Ihr ${api_name} Team </p></div>",
-            "title": "Aktivität auf Ihrer P2P-Bestellung festgestellt"
-        }, 
-        "AUTO_TRADE_ERROR": {
-            "html": "<div><p>Lieber ${name},</p><p>Wir haben festgestellt, dass Ihre automatische Handelskonfiguration aufgrund unzureichender Mittel für den folgenden Handel fehlgeschlagen ist. Bitte überprüfen und aktualisieren Sie Ihr Guthaben. Ausgabebetrag: ${spend_amount}, Ausgabewährung: ${spend_coin}, Kaufwährung: ${buy_coin}.</p><p>Vielen Dank, dass Sie unsere Plattform nutzen.</p><p>Mit freundlichen Grüßen, das ${api_name} Team</p></div>",
-            "title": "Fehler in Ihrer Auto-Handelskonfiguration"
-          },
-        "AUTO_TRADE_REMINDER": {
-			"html":"<div><p>Sehr geehrter ${name},</p><p>Dies ist eine Erinnerung, dass Ihr wiederkehrender Handel von <b>${spend_amount} ${spend_coin} für ${buy_coin}</b> in 12 Stunden aktiviert wird. Stellen Sie sicher, dass Ihr Wallet über ausreichende Mittel für eine erfolgreiche Ausführung verfügt:</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">WALLET ANSEHEN</Button></a></div><p>Vielen Dank, dass Sie unsere Plattform nutzen.</p><p>Mit freundlichen Grüßen,<br />Das ${api_name} Team</p></div>",
+		"OTP_DISABLED": {
+			"html": "<div> <p> Lieber/Liebe ${name} </p> <p> Wir haben festgestellt, dass Ihre <b>Zwei-Faktor-Authentifizierung (2FA) deaktiviert wurde</b> auf Ihrem Konto. Es wird dringend empfohlen, die 2FA erneut zu aktivieren, um Ihr Konto zu sichern.</p> <div> <div>Zeit: ${time}</div> <div>Land: ${country}</div> <div>IP-Adresse: ${ip}</div> </div> <p> Wenn dies nicht Sie waren, kontaktieren Sie uns bitte sofort. </p> <p> Mit freundlichen Grüßen<br> Team ${api_name} </p> </div>",
+			"title": "OTP Deaktiviert"
+		},
+		"OTP_ENABLED": {
+			"html": "<div> <p> Lieber/Liebe ${name} </p> <p> Wir haben festgestellt, dass Ihre <b>Zwei-Faktor-Authentifizierung (2FA) aktiviert wurde</b> auf Ihrem Konto.</p> <div> <div>Zeit: ${time}</div> <div>Land: ${country}</div> <div>IP-Adresse: ${ip}</div> </div> <p> Mit freundlichen Grüßen<br> Team ${api_name} </p> </div>",
+			"title": "OTP Aktiviert"
+		},
+		"P2P_MERCHANT_IN_PROGRESS": {
+			"html": "<div><p> Lieber ${name} </p><p>Wir haben Aktivitäten auf Ihrem P2P-Geschäft festgestellt, was darauf hinweisen könnte, dass ein Kunde eine Transaktion mit Ihnen anfordert. Um den Status Ihres Geschäfts zu überprüfen, klicken Sie bitte auf den untenstehenden Link:<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Überprüfen Sie den Geschäftsstatus</Button></a></div><p>Vielen Dank, dass Sie unsere Plattform nutzen.</p><p>Anfrage eingeleitet von: ${ip}</p><p>Mit freundlichen Grüßen<br> Ihr ${api_name} Team </p></div>",
+			"title": "Aktualisierung zu Ihrem P2P-Geschäft"
+		},
+		"P2P_BUYER_PAID_ORDER": {
+			"html": "<div><p> Lieber ${name} </p><p>Sie haben Ihre Bestellung als bezahlt markiert. Warten auf den Verkäufer, um zu überprüfen, zu bestätigen und die Gelder freizugeben<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Gehen Sie zu Ihrer Bestellung</Button></a></div><p>Vielen Dank, dass Sie unsere Plattform nutzen.</p><p>Anfrage eingeleitet von: ${ip}</p><p>Mit freundlichen Grüßen<br> Ihr ${api_name} Team </p></div>",
+			"title": "Aktivität auf Ihrer P2P-Bestellung festgestellt"
+		},
+		"P2P_ORDER_EXPIRED": {
+			"html": "<div><p> Lieber ${name} </p><p>Ihre Bestellung ist aufgrund von Inaktivität innerhalb der gegebenen Zeit abgelaufen.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Gehen Sie zu Ihrer Bestellung</Button></a></div><p>Vielen Dank, dass Sie unsere Plattform nutzen.</p><p>Anfrage eingeleitet von: ${ip}</p><p>Mit freundlichen Grüßen<br> Ihr ${api_name} Team </p></div>",
+			"title": "Aktivität auf Ihrer P2P-Bestellung festgestellt"
+		},
+		"P2P_ORDER_CLOSED": {
+			"html": "<div><p> Lieber ${name} </p><p>Ihre Bestellung wurde von unserem Support-Team geschlossen, nachdem eine Entscheidung über den Einspruchsantrag getroffen wurde<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Gehen Sie zu Ihrer Bestellung</Button></a></div><p>Vielen Dank, dass Sie unsere Plattform nutzen.</p><p>Mit freundlichen Grüßen<br> Ihr ${api_name} Team </p></div>",
+			"title": "Aktivität auf Ihrer P2P-Bestellung festgestellt"
+		},
+		"P2P_BUYER_CANCELLED_ORDER": {
+			"html": "<div><p> Lieber ${name} </p><p>Sie haben Ihre Bestellung storniert. Die Transaktion ist abgeschlossen.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Gehen Sie zu Ihrer Bestellung</Button></a></div><p>Vielen Dank, dass Sie unsere Plattform nutzen.</p><p>Anfrage eingeleitet von: ${ip}</p><p>Mit freundlichen Grüßen<br> Ihr ${api_name} Team </p></div>",
+			"title": "Aktivität auf Ihrer P2P-Bestellung festgestellt"
+		},
+		"P2P_BUYER_APPEALED_ORDER": {
+			"html": "<div><p> Lieber ${name} </p><p>Sie haben Ihre Bestellung angefochten. Bitte kontaktieren Sie den Support, um das Problem zu lösen.</p><p>Anfrage eingeleitet von: ${ip}</p><p>Mit freundlichen Grüßen<br> Ihr ${api_name} Team </p></div>",
+			"title": "Aktivität auf Ihrer P2P-Bestellung festgestellt"
+		},
+		"P2P_VENDOR_CONFIRMED_ORDER": {
+			"html": "<div><p> Lieber ${name} </p><p>Sie haben die Transaktion bestätigt und die Gelder freigegeben.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Gehen Sie zu Ihrer Bestellung</Button></a></div><p>Vielen Dank, dass Sie unsere Plattform nutzen.</p><p>Anfrage eingeleitet von: ${ip}</p><p>Mit freundlichen Grüßen<br> Ihr ${api_name} Team </p></div>",
+			"title": "Aktivität auf Ihrer P2P-Bestellung festgestellt"
+		},
+		"P2P_VENDOR_CANCELLED_ORDER": {
+			"html": "<div><p> Lieber ${name} </p><p>Sie haben Ihre Bestellung storniert. Die Transaktion ist abgeschlossen.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Gehen Sie zu Ihrer Bestellung</Button></a></div><p>Vielen Dank, dass Sie unsere Plattform nutzen.</p><p>Anfrage eingeleitet von: ${ip}</p><p>Mit freundlichen Grüßen<br> Ihr ${api_name} Team </p></div>",
+			"title": "Aktivität auf Ihrer P2P-Bestellung festgestellt"
+		},
+		"P2P_VENDOR_APPEALED_ORDER": {
+			"html": "<div><p> Lieber ${name} </p><p>Sie haben Ihre Bestellung angefochten. Bitte kontaktieren Sie den Support, um das Problem zu lösen.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Gehen Sie zu Ihrer Bestellung</Button></a></div><p>Vielen Dank, dass Sie unsere Plattform nutzen.</p><p>Anfrage eingeleitet von: ${ip}</p><p>Mit freundlichen Grüßen<br> Ihr ${api_name} Team </p></div>",
+			"title": "Aktivität auf Ihrer P2P-Bestellung festgestellt"
+		},
+		"AUTO_TRADE_ERROR": {
+			"html": "<div><p>Lieber ${name},</p><p>Wir haben festgestellt, dass Ihre automatische Handelskonfiguration aufgrund unzureichender Mittel für den folgenden Handel fehlgeschlagen ist. Bitte überprüfen und aktualisieren Sie Ihr Guthaben. Ausgabebetrag: ${spend_amount}, Ausgabewährung: ${spend_coin}, Kaufwährung: ${buy_coin}.</p><p>Vielen Dank, dass Sie unsere Plattform nutzen.</p><p>Mit freundlichen Grüßen, das ${api_name} Team</p></div>",
+			"title": "Fehler in Ihrer Auto-Handelskonfiguration"
+		},
+		"AUTO_TRADE_REMINDER": {
+			"html": "<div><p>Sehr geehrter ${name},</p><p>Dies ist eine Erinnerung, dass Ihr wiederkehrender Handel von <b>${spend_amount} ${spend_coin} für ${buy_coin}</b> in 12 Stunden aktiviert wird. Stellen Sie sicher, dass Ihr Wallet über ausreichende Mittel für eine erfolgreiche Ausführung verfügt:</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">WALLET ANSEHEN</Button></a></div><p>Vielen Dank, dass Sie unsere Plattform nutzen.</p><p>Mit freundlichen Grüßen,<br />Das ${api_name} Team</p></div>",
 			"title": "Wiederkehrende Bestellung wird bald aktiviert"
 		},
 		"AUTO_TRADE_FILLED": {
 			"html": "<div><p>Sehr geehrte/r ${name},</p><p>Ihre automatische Bestellorder von <b>${spend_amount} ${spend_coin} für ${buy_coin}</b> wurde erfolgreich verarbeitet.</p><div>Sie können Ihre Handelsgeschichte unten einsehen:</div><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">HANDELSGESCHICHTE ANZEIGEN</Button></a></div><p>Vielen Dank, dass Sie unsere Plattform nutzen.</p><p>Mit freundlichen Grüßen,<br />Das ${api_name}-Team</p></div>",
 			"title": "Ihre automatische Bestellorder wurde erfolgreich ausgeführt"
+		},
+		"SUSPICIOUS_LOGIN": {
+			"html": "<div><p>Sehr geehrte/r ${name},</p><p>Wir haben einen kürzlichen Anmeldeversuch auf Ihrem Konto von einem neuen Gerät oder Standort festgestellt. Wenn Sie das waren, bestätigen Sie bitte die Anmeldung, um Ihr Konto zu sichern. Wenn nicht, ergreifen Sie sofortige Maßnahmen, um Ihr Konto zu schützen.</p><p><strong>Anmeldedetails:</strong><br />IP-Adresse: ${ip}<br />Standort: ${location}<br />Gerät: ${device}<br />Zeit: ${time}</p><p>Wählen Sie eine der folgenden Optionen, um fortzufahren:</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${confirmation_link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Anmeldung bestätigen</Button></a></div><p>Wenn Sie diesen Anmeldeversuch nicht veranlasst haben, empfehlen wir Ihnen, <a href=\"${freeze_account_link}\" style=\"color: #FF0000; text-decoration: underline;\">Ihr Konto zu sperren</a>, um unbefugten Zugriff zu verhindern.</p><p>Mit freundlichen Grüßen,<br />Das Team von ${api_name}</p></div>",
+			"title": "Verdächtige Anmeldebenachrichtigung"
 		}
-    }
+	}
 }
