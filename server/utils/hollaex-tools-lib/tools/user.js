@@ -499,18 +499,17 @@ const findUserLastLogins = (user, status) => {
 /* Public Endpoints*/
 
 const confirmUserLogin = async (token, freezeAccount = false) => {
-	let data = await client.getAsync(token);
+	let data = await client.getAsync(`user:confirm-login:${token}`);
+	data = data && JSON.parse(data);
 
-	if (!data) {
-		throw new Error('Token expired');
+	if (!data || !data.id) {
+		throw new Error('Token is expired');
 	};
-
-	data = JSON.parse(data);
 
 	const loginData = await getModel('login').findOne({
 		order: [['id', 'DESC']],
 		where: {
-			...(data.id != null && { id: data.id }),
+			id: data.id,
 			user_id: data.user_id,
 			status: false,
 		}

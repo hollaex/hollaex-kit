@@ -344,7 +344,7 @@ const loginPost = (req, res) => {
 					country: geoip.lookup(ip)?.country,
 					user_id: user.id
 				}
-				await toolsLib.database.client.setexAsync(verification_code, 5 * 60, JSON.stringify(data));
+				await toolsLib.database.client.setexAsync(`user:confirm-login:${verification_code}`, 5 * 60, JSON.stringify(data));
 
 				sendEmail(MAILTYPE.SUSPICIOUS_LOGIN, email, data, user.settings, domain);
 				throw new Error('Suspicious login detected, please check your email.');
