@@ -481,7 +481,7 @@ const createSuspiciousLogin = async (user, ip, device, country, domain, origin, 
 			device,
 			country
 		}
-	})
+	});
 
 	if (!loginData) {
 		return registerUserLogin(user.id, ip, {
@@ -523,7 +523,7 @@ const findUserLastLogins = (user, status) => {
 			user_id: user.id,
 			...(status != null && { status }),
 		}
-	})
+	});
 };
 
 /* Public Endpoints*/
@@ -534,7 +534,7 @@ const confirmUserLogin = async (token) => {
 
 	if (!data || !data.id) {
 		throw new Error('Token is expired');
-	};
+	}
 
 	const loginData = await getModel('login').findOne({
 		order: [['id', 'DESC']],
@@ -543,12 +543,12 @@ const confirmUserLogin = async (token) => {
 			user_id: data.user_id,
 			status: false,
 		}
-	})
+	});
 
 	if (loginData && new Date().getTime() - new Date(loginData.updated_at).getTime() < LOGIN_TIME_OUT) {
 		return loginData.update({
 			status: true
-		})
+		});
 	}
 
 	throw new Error('Login record not found');
@@ -560,7 +560,7 @@ const freezeUserByCode = async (token) => {
 
 	if (!data || !data.id) {
 		throw new Error('Token is expired');
-	};
+	}
 
 	return freezeUserById(data.user_id);
 };
@@ -591,7 +591,7 @@ const checkAffiliation = (affiliationCode, user_id) => {
 					earning_rate: referrer.earning_rate,
 					code: affiliationCode,
 				}),
-					referrer,
+				referrer,
 				getModel('referralCode').increment('referral_count', { by: 1, where: { id: referrer.id } })
 				]);
 			} else {
