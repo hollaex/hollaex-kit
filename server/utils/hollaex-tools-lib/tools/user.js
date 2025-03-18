@@ -498,7 +498,7 @@ const findUserLastLogins = (user, status) => {
 
 /* Public Endpoints*/
 
-const confirmUserLogin = async (token, freezeAccount = false) => {
+const confirmUserLogin = async (token) => {
 	let data = await client.getAsync(`user:confirm-login:${token}`);
 	data = data && JSON.parse(data);
 
@@ -515,11 +515,6 @@ const confirmUserLogin = async (token, freezeAccount = false) => {
 		}
 	})
 
-
-	if (loginData && freezeAccount) {
-		return freezeUserById(data.user_id);
-	}
-
 	if (loginData && new Date().getTime() - new Date(loginData.updated_at).getTime() < LOGIN_TIME_OUT) {
 		return loginData.update({
 			status: true
@@ -527,6 +522,17 @@ const confirmUserLogin = async (token, freezeAccount = false) => {
 	}
 
 	throw new Error('Login record not found');
+};
+
+const freezeUserByCode = async (token) => {
+	let data = await client.getAsync(`user:freeze-account:${token}`);
+	data = data && JSON.parse(data);
+
+	if (!data || !data.id) {
+		throw new Error('Token is expired');
+	};
+
+	return freezeUserById(data.user_id);
 };
 
 const generateAffiliationCode = () => {
@@ -4096,5 +4102,6 @@ module.exports = {
 	deleteAnnouncement,
 	updateAnnouncement,
 	confirmUserLogin,
-	findUserLastLogins
+	findUserLastLogins,
+	freezeUserByCode
 };

@@ -341,6 +341,7 @@ const loginPost = (req, res) => {
 					user_id: user.id
 				}
 				await toolsLib.database.client.setexAsync(`user:confirm-login:${verification_code}`, 5 * 60, JSON.stringify(data));
+				await toolsLib.database.client.setexAsync(`user:freeze-account:${verification_code}`, 60 * 60 * 6, JSON.stringify(data));
 
 				sendEmail(MAILTYPE.SUSPICIOUS_LOGIN, email, data, user.settings, domain);
 				throw new Error('Suspicious login detected, please check your email.');
@@ -429,7 +430,7 @@ const confirmLogin = (req, res) => {
 		req.auth
 	);
 
-	toolsLib.user.confirmUserLogin(req.swagger.params.data.value.token, req.swagger.params.data.value.freeze_account)
+	toolsLib.user.confirmUserLogin(req.swagger.params.data.value.token)
 		.then(() => {
 			return res.json({ message: 'Success' });
 		})
@@ -437,6 +438,27 @@ const confirmLogin = (req, res) => {
 			loggerUser.error(
 				req.uuid,
 				'controllers/user/confirmLogin err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+		});
+}
+
+const freezeUserByCode = (req, res) => {
+	loggerUser.verbose(
+		req.uuid,
+		'controllers/user/freezeUserByCode auth',
+		req.auth
+	);
+
+	toolsLib.user.freezeUserByCode(req.swagger.params.data.value.token)
+		.then(() => {
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerUser.error(
+				req.uuid,
+				'controllers/user/freezeUserByCode err',
 				err.message
 			);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
@@ -1895,5 +1917,6 @@ module.exports = {
 	updateUserAutoTrade,
 	deleteUserAutoTrade,
 	fetchAnnouncements,
-	confirmLogin
+	confirmLogin,
+	freezeUserByCode
 };

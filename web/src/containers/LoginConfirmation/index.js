@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 
 import { IconTitle, Button, Loader } from 'components';
-import { performConfirmLogin } from './actions/loginConfirmation';
+import {
+	performConfirmLogin,
+	freezeAccount,
+} from './actions/loginConfirmation';
 import { FLEX_CENTER_CLASSES } from 'config/constants';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
@@ -39,18 +42,33 @@ class ConfirmLogin extends Component {
 	confirmLogin = () => {
 		this.setState({ loading: true });
 		const token = this.state.prompt ? this.state.inputToken : this.state.token;
-		return performConfirmLogin(token, this.state.freeze_account)
-			.then((response) => {
-				this.setState({ is_success: true, error_txt: '', loading: false });
-				return response;
-			})
-			.catch((err) => {
-				this.setState({
-					is_success: false,
-					error_txt: err.response.data.message || err.message,
-					loading: false,
+		if (this.state.freeze_account) {
+			return freezeAccount(token)
+				.then((response) => {
+					this.setState({ is_success: true, error_txt: '', loading: false });
+					return response;
+				})
+				.catch((err) => {
+					this.setState({
+						is_success: false,
+						error_txt: err.response.data.message || err.message,
+						loading: false,
+					});
 				});
-			});
+		} else {
+			return performConfirmLogin(token)
+				.then((response) => {
+					this.setState({ is_success: true, error_txt: '', loading: false });
+					return response;
+				})
+				.catch((err) => {
+					this.setState({
+						is_success: false,
+						error_txt: err.response.data.message || err.message,
+						loading: false,
+					});
+				});
+		}
 	};
 
 	handleTransaction = () => {
