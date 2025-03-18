@@ -472,6 +472,36 @@ const createUserLogin = async (user, ip, device, domain, origin, referer, token,
 	return null;
 };
 
+const createSuspiciousLogin = async (user, ip, device, country, domain, origin, referer, token, long_term, status) => {
+	const loginData = await getModel('login').findOne({
+		order: [['id', 'DESC'], ['status', 'ASC']],
+		where: {
+			user_id: user.id,
+			status: false,
+			device,
+			country
+		}
+	})
+
+	if (!loginData) {
+		return registerUserLogin(user.id, ip, {
+			device,
+			domain,
+			origin,
+			referer,
+			token,
+			status,
+			expiry: long_term ? TOKEN_TIME_LONG : TOKEN_TIME_NORMAL
+		});
+	}
+	else if (loginData.status == false) {
+		await updateLoginAttempt(loginData.id);
+		return loginData;
+	}
+
+	return null;
+};
+
 
 const findUserLatestLogin = (user, status) => {
 	return getModel('login').findOne({
@@ -517,9 +547,7 @@ const confirmUserLogin = async (token) => {
 
 	if (loginData && new Date().getTime() - new Date(loginData.updated_at).getTime() < LOGIN_TIME_OUT) {
 		return loginData.update({
-			status: true,
-			country: data.country,
-			device: data.device,
+			status: true
 		})
 	}
 
@@ -4105,5 +4133,6 @@ module.exports = {
 	updateAnnouncement,
 	confirmUserLogin,
 	findUserLastLogins,
-	freezeUserByCode
+	freezeUserByCode,
+	createSuspiciousLogin
 };
