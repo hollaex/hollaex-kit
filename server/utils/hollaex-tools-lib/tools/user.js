@@ -494,12 +494,11 @@ const createSuspiciousLogin = async (user, ip, device, country, domain, origin, 
 			expiry: long_term ? TOKEN_TIME_LONG : TOKEN_TIME_NORMAL
 		});
 	}
-	else if (loginData.status == false) {
+	else {
 		await updateLoginAttempt(loginData.id);
 		return loginData;
 	}
 
-	return null;
 };
 
 
