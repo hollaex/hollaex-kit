@@ -517,7 +517,8 @@ const confirmUserLogin = async (token) => {
 
 	if (loginData && new Date().getTime() - new Date(loginData.updated_at).getTime() < LOGIN_TIME_OUT) {
 		return loginData.update({
-			status: true
+			status: true,
+			country: data.country
 		})
 	}
 
