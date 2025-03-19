@@ -42,7 +42,7 @@ const sendEmail = (
 		}
 		case MAILTYPE.LOGIN: {
 			if (data.time) data.time = formatDate(data.time, language);
-			if (data.ip) data.country = getCountryFromIp(data.ip);
+			if (data.ip && !data.country) data.country = getCountryFromIp(data.ip);
 			break;
 		}
 		case MAILTYPE.SIGNUP:

@@ -348,7 +348,7 @@ const loginPost = (req, res) => {
 			}
 
 			if (!user.otp_enabled) {
-				return all([user, toolsLib.security.checkCaptcha(captcha, ip)]);
+				return all([user, toolsLib.security.checkCaptcha(captcha, ip), country]);
 			} else {
 				return all([
 					user,
@@ -369,15 +369,17 @@ const loginPost = (req, res) => {
 							} else {
 								throw new Error(err.message + message);
 							}
-						})
+						}),
+					country
 				]);
 			}
 		})
-		.then(([user]) => {
+		.then(([user, otp, country]) => {
 			const data = {
 				ip,
 				time,
-				device
+				device,
+				country
 			};
 
 			publisher.publish(EVENTS_CHANNEL, JSON.stringify({
