@@ -92,7 +92,7 @@ const WithdrawalLimits = ({
 									iconPath={ICONS['FEES_AND_LIMITS_WITHDRAWAL_LIMITS']}
 									className="fees-limits-title"
 								/>
-								<div className="d-flex justify-content-between">
+								<div className="d-flex justify-content-between independent-limit-description">
 									<div className="py-4">
 										<div>
 											<EditWrapper stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_2.SUBTITLE">
@@ -121,17 +121,15 @@ const WithdrawalLimits = ({
 										/>
 									</div>
 								</div>
-								<div className="wallet-assets_block">
-									<LimitsBlock
-										coins={coins}
-										level={selectedLevel}
-										title={''}
-										tiers={config_level}
-										transaction_limits={transaction_limits}
-										type={'individual'}
-										search={search}
-									/>
-								</div>
+								<LimitsBlock
+									coins={coins}
+									level={selectedLevel}
+									title={''}
+									tiers={config_level}
+									transaction_limits={transaction_limits}
+									type={'individual'}
+									search={search}
+								/>
 							</div>
 							<div>
 								<IconTitle
@@ -145,7 +143,7 @@ const WithdrawalLimits = ({
 									iconPath={ICONS['FEES_AND_LIMITS_WITHDRAWAL_LIMITS']}
 									className="fees-limits-title"
 								/>
-								<div className="py-4">
+								<div className={isMobile ? 'py-4 px-3' : 'py-4'}>
 									<div>
 										<EditWrapper stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_3.SUBTITLE">
 											{
@@ -156,16 +154,14 @@ const WithdrawalLimits = ({
 										</EditWrapper>
 									</div>
 								</div>
-								<div className="wallet-assets_block">
-									<LimitsBlock
-										coins={coins}
-										level={selectedLevel}
-										title={''}
-										tiers={config_level}
-										transaction_limits={transaction_limits}
-										type={'default'}
-									/>
-								</div>
+								<LimitsBlock
+									coins={coins}
+									level={selectedLevel}
+									title={''}
+									tiers={config_level}
+									transaction_limits={transaction_limits}
+									type={'default'}
+								/>
 							</div>
 						</div>
 					</div>

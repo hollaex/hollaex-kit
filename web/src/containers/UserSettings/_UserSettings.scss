@@ -83,9 +83,43 @@
 			.settings-form {
 				margin: 15px 0 25px !important;
 				padding: 10px;
+				.ant-select {
+					.ant-select-selector {
+						font-size: 1.2rem !important;
+					}
+				}
 				.field-wrapper {
 					.field-label-wrapper {
 						flex-direction: column;
+					}
+				}
+				.fees-limits-title {
+					gap: 1%;
+					align-items: center;
+					.icon_title-svg {
+						width: 4rem;
+						svg {
+							width: 4rem;
+							height: 4rem;
+						}
+					}
+				}
+				.independent-limit-description {
+					gap: 3%;
+					padding: 2%;
+				}
+				.ant-input-affix-wrapper {
+					width: 17rem !important;
+					border-bottom: 1px solid $colors-black;
+				}
+				.ant-input {
+					font-size: 1.4rem;
+				}
+				.wallet-assets_block {
+					.wallet-assets_block-table {
+						tr {
+							font-size: 1.2rem !important;
+						}
 					}
 				}
 			}

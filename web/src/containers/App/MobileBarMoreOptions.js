@@ -188,6 +188,27 @@ const MobileBarMoreOptions = ({
 		}
 	}, [isSearchActive]);
 
+	useEffect(() => {
+		const handleKeyDown = (event) => {
+			if (event.key === '/') {
+				event.preventDefault();
+				setIsSearchActive(true);
+				if (inputRef.current) {
+					inputRef.current.focus();
+				}
+			} else if (event.key === 'Escape') {
+				setIsSearchActive(false);
+				setSearch('');
+			}
+		};
+
+		window.addEventListener('keydown', handleKeyDown);
+
+		return () => {
+			window.removeEventListener('keydown', handleKeyDown);
+		};
+	}, []);
+
 	const requestLogins = useCallback((page = 1) => {
 		getLogins({ page })
 			.then(({ data: { count, data } }) => {
@@ -1188,6 +1209,7 @@ const MobileBarMoreOptions = ({
 			<Dialog
 				isOpen={isDialogOpen}
 				onCloseDialog={() => setIsDialogOpen(false)}
+				label="helpful-resources-popup"
 			>
 				<HelpfulResourcesForm
 					onSubmitSuccess={() => setIsDialogOpen(false)}

@@ -23,15 +23,15 @@
 .notifications_list-wrapper {
 	height: 100%;
 	color: $colors-main-black;
-	.view-announcement-link {
-		background-color: var(--base_background);
-		width: 100%;
-		text-align: center;
-		position: sticky;
-		bottom: 0;
-		padding: 2%;
-		border-top: 1px solid var(--calculated_secondary-border);
-	}
+}
+.view-announcement-link {
+	background-color: var(--base_background);
+	width: 100%;
+	text-align: center;
+	position: sticky;
+	bottom: 0;
+	padding: 2%;
+	border-top: 1px solid var(--calculated_secondary-border);
 }
 .announcement-notification-list-item {
 	color: $colors-main-black;
