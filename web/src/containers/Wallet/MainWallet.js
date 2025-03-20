@@ -323,7 +323,7 @@ class Wallet extends Component {
 		}
 		return (
 			<div className="apply_rtl">
-				{isMobile ? (
+				{isMobile && !showDustSection ? (
 					<div>
 						{isNotWalletHistory && (
 							<MobileBarTabs
@@ -345,7 +345,8 @@ class Wallet extends Component {
 							'presentation_container',
 							'apply_rtl',
 							'wallet-wrapper',
-							{ settings_container: showDustSection }
+							{ settings_container: showDustSection },
+							{ dust_container: showDustSection }
 						)}
 					>
 						<IconTitle
@@ -390,6 +391,7 @@ class Wallet extends Component {
 					</div>
 				)}
 				{isMobile &&
+					!showDustSection &&
 					router?.location?.pathname === '/wallet' &&
 					this.state.activeTab === 0 && (
 						<div

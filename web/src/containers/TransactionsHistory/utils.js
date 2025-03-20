@@ -79,7 +79,7 @@ export const generateOrderHistoryHeaders = (
 	return [
 		{
 			key: 'icon',
-			className: 'sticky-col',
+			className: '',
 			renderCell: (
 				{ display_name, icon_id },
 				key,
@@ -88,7 +88,7 @@ export const generateOrderHistoryHeaders = (
 				isExpanded
 			) => {
 				return (
-					<td key={index}>
+					<td key={index} className="expand-icon">
 						<div className="d-flex">
 							{isExpanded ? <MinusSquareOutlined /> : <PlusSquareOutlined />}
 						</div>
@@ -732,7 +732,7 @@ export const generateWithdrawalsHeaders = (
 		// },
 		{
 			key: 'icon',
-			className: 'sticky-col',
+			className: '',
 			renderCell: (
 				{ display_name, icon_id },
 				key,
@@ -741,7 +741,7 @@ export const generateWithdrawalsHeaders = (
 				isExpanded
 			) => {
 				return (
-					<td key={index}>
+					<td key={index} className="expand-icon">
 						<div className="d-flex">
 							{isExpanded ? <MinusSquareOutlined /> : <PlusSquareOutlined />}
 						</div>
