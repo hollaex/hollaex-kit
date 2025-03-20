@@ -337,7 +337,7 @@ const loginPost = (req, res) => {
 					ip,
 					time,
 					device,
-					country: geoip.lookup(ip)?.country,
+					country,
 					user_id: user.id
 				};
 				await toolsLib.database.client.setexAsync(`user:confirm-login:${verification_code}`, 5 * 60, JSON.stringify(data));
