@@ -478,10 +478,10 @@ class UserSettings extends Component {
 				)}
 				<HeaderSection
 					stringId="ACCOUNTS.TAB_SETTINGS"
-					title={STRINGS['ACCOUNTS.TAB_SETTINGS']}
+					title={isMobile && STRINGS['ACCOUNTS.TAB_SETTINGS']}
 					openContactForm={openContactForm}
 				>
-					<div className="header-content">
+					<div className={isMobile ? 'header-content' : 'header-content mt-3'}>
 						<div>
 							<EditWrapper stringId="USER_SETTINGS.TITLE_TEXT">
 								{STRINGS['USER_SETTINGS.TITLE_TEXT']}
