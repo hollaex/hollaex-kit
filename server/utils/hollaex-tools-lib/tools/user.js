@@ -400,6 +400,7 @@ const registerUserLogin = (
 		token: null,
 		expiry: null,
 		status: true,
+		country: null
 	}
 ) => {
 	const login = {
@@ -430,8 +431,12 @@ const registerUserLogin = (
 	if (opts.status === false) {
 		login.attempt = 1;
 	}
+	if (isString(opts.country)) {
+		login.country = opts.country;
+	}
+
 	const geo = geoip.lookup(ip);
-	if (geo?.country) login.country = geo.country;
+	if (geo?.country && !opts?.country) login.country = geo.country;
 	return getModel('login').create(login)
 		.then((loginData) => {
 			if (opts.token && opts.status) {
@@ -491,7 +496,8 @@ const createSuspiciousLogin = async (user, ip, device, country, domain, origin, 
 			referer,
 			token,
 			status: false,
-			expiry: long_term ? TOKEN_TIME_LONG : TOKEN_TIME_NORMAL
+			expiry: long_term ? TOKEN_TIME_LONG : TOKEN_TIME_NORMAL,
+			country
 		});
 	}
 
@@ -588,7 +594,7 @@ const checkAffiliation = (affiliationCode, user_id) => {
 					earning_rate: referrer.earning_rate,
 					code: affiliationCode,
 				}),
-				referrer,
+					referrer,
 				getModel('referralCode').increment('referral_count', { by: 1, where: { id: referrer.id } })
 				]);
 			} else {

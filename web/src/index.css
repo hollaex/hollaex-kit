@@ -6581,7 +6581,7 @@ table th {
   justify-content: flex-start; }
 
 .settings_container .header_title-wrapper .action_notification-wrapper {
-  top: 15px; }
+  top: 0; }
 
 .settings_container .settings-form-wrapper .settings-form {
   padding: 10px 30px 30px 30px;

@@ -734,11 +734,11 @@ class UserSecurity extends Component {
 					/>
 				)}
 				<HeaderSection
-					stringId="ACCOUNTS.TAB_SETTINGS"
-					title={STRINGS['ACCOUNTS.TAB_SETTINGS']}
+					stringId="ACCOUNTS.TAB_SECURITY"
+					title={isMobile && STRINGS['ACCOUNTS.TAB_SECURITY']}
 					openContactForm={openContactForm}
 				>
-					<div className="header-content">
+					<div className={isMobile ? 'header-content' : 'header-content mt-3'}>
 						<EditWrapper stringId="ACCOUNT_SECURITY.TITLE_TEXT">
 							{STRINGS['ACCOUNT_SECURITY.TITLE_TEXT']}
 						</EditWrapper>

@@ -3963,12 +3963,6 @@ paths:
           type: number
           format: int32
         - in: query
-          name: amount
-          description: The amount staked by the user.
-          required: false
-          type: number
-          format: double
-        - in: query
           name: currency
           description: The currency in which the user staked.
           required: false
