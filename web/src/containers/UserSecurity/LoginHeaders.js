@@ -36,10 +36,10 @@ export const generateHeaders = () => {
 			label: STRINGS['LOGINS_HISTORY.CONTENT.TABLE.HEADER.FAILED_ATTEMPTS'],
 			key: 'attempt',
 			className: '',
-			renderCell: ({ timestamp, attempt }, key) => (
+			renderCell: ({ timestamp, attempt, status }, key) => (
 				<td key={`${key}-${timestamp}-attempt`} className="text-center">
 					<div className="d-flex align-center">
-						{!!attempt ? (
+						{!!attempt && status === false ? (
 							<Fragment>
 								<div className="px-1">
 									{STRINGS.formatString(
