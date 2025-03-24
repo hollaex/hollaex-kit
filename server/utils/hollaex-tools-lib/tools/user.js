@@ -711,6 +711,7 @@ const getAllUsers = () => {
 
 const getAllUsersAdmin = (opts = {
 	id: null,
+	user_id: null,
 	search: null,
 	pending: null,
 	pending_type: null,
@@ -740,6 +741,7 @@ const getAllUsersAdmin = (opts = {
 }) => {
 	const {
 		id,
+		user_id,
 		gender,
 		email_verified,
 		otp_enabled,
@@ -765,6 +767,7 @@ const getAllUsersAdmin = (opts = {
 		where: {
 			created_at: timeframe,
 			...(id != null && { id }),
+			...(user_id != null && { id: user_id }),
 			...((dob_start_date != null || dob_end_date != null) && { dob: dob_timeframe }),
 			...(email_verified != null && { email_verified }),
 			...(gender != null && { gender }),
