@@ -476,12 +476,27 @@ class UserSettings extends Component {
 						iconId={STRINGS['ACCOUNTS.TAB_SETTINGS']}
 					/>
 				)}
-				<HeaderSection
-					stringId="ACCOUNTS.TAB_SETTINGS"
-					title={isMobile && STRINGS['ACCOUNTS.TAB_SETTINGS']}
-					openContactForm={openContactForm}
-				>
-					<div className={isMobile ? 'header-content' : 'header-content mt-3'}>
+				{!isMobile ? (
+					<HeaderSection
+						stringId="ACCOUNTS.TAB_SETTINGS"
+						title={isMobile && STRINGS['ACCOUNTS.TAB_SETTINGS']}
+						openContactForm={openContactForm}
+					>
+						<div className="header-content mt-3">
+							<div>
+								<EditWrapper stringId="USER_SETTINGS.TITLE_TEXT">
+									{STRINGS['USER_SETTINGS.TITLE_TEXT']}
+								</EditWrapper>
+							</div>
+							<div className="mb-3">
+								<EditWrapper stringId="USER_SETTINGS.TITLE_TEXT_1">
+									{STRINGS['USER_SETTINGS.TITLE_TEXT_1']}
+								</EditWrapper>
+							</div>
+						</div>
+					</HeaderSection>
+				) : (
+					<div className="header-content">
 						<div>
 							<EditWrapper stringId="USER_SETTINGS.TITLE_TEXT">
 								{STRINGS['USER_SETTINGS.TITLE_TEXT']}
@@ -493,7 +508,7 @@ class UserSettings extends Component {
 							</EditWrapper>
 						</div>
 					</div>
-				</HeaderSection>
+				)}
 
 				<NotLoggedIn>
 					{!isMobile ? (

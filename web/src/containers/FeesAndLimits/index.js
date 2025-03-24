@@ -36,7 +36,7 @@ const Index = ({
 		isLoggedIn() ? verification_level?.toString() : Object.keys(config_level)[0]
 	);
 	const [tabs, setTabs] = useState([]);
-	const [activeTab, setActiveTab] = useState(0);
+	const [activeTab, setActiveTab] = useState(isMobile ? null : 0);
 	const [search, setSearch] = useState();
 
 	useEffect(() => {
@@ -104,18 +104,23 @@ const Index = ({
 	}, [selectedAccount]);
 
 	useEffect(() => {
-		if (getLimitTab) {
+		if (getLimitTab >= 0) {
 			setActiveTab(getLimitTab);
 		}
 
-		if (router.location.search.includes('withdrawal-fees')) {
-			setActiveTab(1);
-		} else if (router.location.search.includes('withdrawal-limit')) {
-			setActiveTab(2);
-		} else {
-			setActiveTab(0);
+		if (!isMobile) {
+			if (router.location.search.includes('withdrawal-fees')) {
+				setActiveTab(1);
+			} else if (router.location.search.includes('withdrawal-limit')) {
+				setActiveTab(2);
+			} else if (router.location.search.includes('trading-fees')) {
+				setActiveTab(0);
+			}
 		}
 		setRenderTab();
+		return () => {
+			setLimitTab(isMobile ? null : 0);
+		};
 		//eslint-disable-next-line
 	}, []);
 
@@ -129,7 +134,7 @@ const Index = ({
 			? router.push('/fees-and-limits?trading-fees')
 			: activeTab === 1
 			? router.push('/fees-and-limits?withdrawal-fees')
-			: router.push('/fees-and-limits?withdrawal-limits');
+			: activeTab === 2 && router.push('/fees-and-limits?withdrawal-limits');
 	};
 	const renderContent = (tabs, activeTab) =>
 		tabs[activeTab] && tabs[activeTab].content ? (

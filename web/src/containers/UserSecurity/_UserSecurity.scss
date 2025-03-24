@@ -376,6 +376,30 @@ $padding-input: 4rem;
 }
 
 .layout-mobile {
+	.user-security-container {
+		padding: 1rem;
+		.header-content {
+			font-size: 13px !important;
+			color: $colors-black;
+			margin-bottom: 2%;
+		}
+		.active_mobile_tab {
+			svg {
+				path {
+					fill: $colors-main-black !important;
+				}
+			}
+		}
+		.security-icon {
+			margin-left: 15%;
+			svg {
+				width: 2.5rem !important;
+				path {
+					fill: $colors-black;
+				}
+			}
+		}
+	}
 	.user_security-wrapper {
 		.warning_text {
 			font-size: $font-size-mobile-txt !important;

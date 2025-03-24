@@ -1790,7 +1790,7 @@ $app-menu-width: calc(100vw - 40rem);
 	.select-option-wrapper {
 		.ant-select-item,
 		.ant-select-item-option {
-			font-size: 0.9rem !important;
+			font-size: 1.2rem !important;
 		}
 	}
 }
@@ -1916,7 +1916,6 @@ $app-menu-width: calc(100vw - 40rem);
 						border: none;
 						color: $colors-main-black;
 						background-color: transparent;
-						padding: 3%;
 						height: 100%;
 						box-shadow: none;
 					}
@@ -1939,7 +1938,7 @@ $app-menu-width: calc(100vw - 40rem);
 					.search-icon-container {
 						margin-left: 1%;
 						background-color: $colors-notifications-blue;
-						padding: 1.2%;
+						padding: 1%;
 						border-radius: 5px;
 						.search-icon {
 							font-size: 30px;
