@@ -876,7 +876,7 @@ const MobileBarMoreOptions = ({
 			iconText: 'ACCOUNTS.TAB_SIGNOUT',
 			path: browserHistory?.getCurrentLocation(),
 			isDisplay: true,
-			searchContent: [STRINGS['LOGOUT']],
+			searchContent: [STRINGS['LOGOUT'], STRINGS['ACCOUNTS.TAB_SIGNOUT']],
 			toolTipText: 'DESKTOP_NAVIGATION.SIGNOUT_DESC',
 		},
 	];
@@ -1283,11 +1283,16 @@ const MobileBarMoreOptions = ({
 			{isLogout &&
 				renderConfirmSignout(isLogout, onHandleClosePopup, onHandleLogout)}
 			{isMobile ? (
-				<SearchBox
-					placeHolder={STRINGS['MORE_OPTIONS_LABEL.MORE_OPTION_SEARCH_TXT']}
-					handleSearch={(e) => onHandleSearch(e)}
-					showCross
-				/>
+				<div className="title-wrapper">
+					<span className="search-title font-weight-bold">
+						{STRINGS['DESKTOP_ULTIMATE_SEARCH.SEARCH_DESCRIPTION']}
+					</span>
+					<SearchBox
+						placeHolder={STRINGS['MORE_OPTIONS_LABEL.MORE_OPTION_SEARCH_TXT']}
+						handleSearch={(e) => onHandleSearch(e)}
+						showCross
+					/>
+				</div>
 			) : (
 				<div className="search-field">
 					{!isSearchActive ? (

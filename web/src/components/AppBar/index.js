@@ -548,24 +548,26 @@ class AppBar extends Component {
 					constants?.features?.announcement &&
 					isLoggedIn() &&
 					this.renderAnnouncementTopbar()}
-				<MobileBarWrapper
-					className={classnames(
-						'd-flex',
-						'app_bar-mobile',
-						'align-items-center',
-						'justify-content-center'
-					)}
-				>
-					<Link to="/">
-						<div
-							style={{
-								backgroundImage: `url(${constants.logo_image})`,
-							}}
-							className="homeicon-svg"
-						/>
-					</Link>
-					{isLoggedIn() && this.renderAnnouncementPopup()}
-				</MobileBarWrapper>
+				{!isLoggedIn() && (
+					<MobileBarWrapper
+						className={classnames(
+							'd-flex',
+							'app_bar-mobile',
+							'align-items-center',
+							'justify-content-center'
+						)}
+					>
+						<Link to="/">
+							<div
+								style={{
+									backgroundImage: `url(${constants.logo_image})`,
+								}}
+								className="homeicon-svg"
+							/>
+						</Link>
+					</MobileBarWrapper>
+				)}
+				{isLoggedIn() && this.renderAnnouncementPopup()}
 			</div>
 		) : (
 			<div>

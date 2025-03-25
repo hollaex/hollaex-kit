@@ -113,6 +113,7 @@
 
 .layout-mobile {
 	.verification_container {
+		padding: unset !important;
 		.verification-info-txt {
 			width: 100%;
 			font-size: $font-size-mobile-txt !important;

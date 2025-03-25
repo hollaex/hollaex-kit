@@ -228,6 +228,7 @@ export const CustomMobileTabs = ({
 	title,
 	icon,
 	statusCode = -1,
+	iconClassName = '',
 }) => {
 	const statusText = status(statusCode);
 	const statusIcon = renderStatusIcon(
@@ -237,7 +238,10 @@ export const CustomMobileTabs = ({
 	return (
 		<div className={classnames('d-flex', 'justify-content-between')}>
 			<div className="d-flex">
-				<Image icon={icon} wrapperClassName="custom_tab_icon-mobile" />
+				<Image
+					icon={icon}
+					wrapperClassName={classnames('custom_tab_icon-mobile', iconClassName)}
+				/>
 				<div
 					className={classnames(
 						FLEX_CENTER_CLASSES,
