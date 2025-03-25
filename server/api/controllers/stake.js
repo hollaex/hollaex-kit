@@ -273,7 +273,7 @@ const getExchangeStakersForAdmin = (req, res) => {
 const getExchangeStakersForUser = (req, res) => {
 	loggerStake.verbose(req.uuid, 'controllers/stake/getExchangeStakersForUser/auth', req.auth);
 
-	const { limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
+	const { currency, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
 	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1) {
 		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
@@ -290,6 +290,7 @@ const getExchangeStakersForUser = (req, res) => {
 
 	toolsLib.stake.getExchangeStakers({
 		user_id: req.auth.sub.id,
+		currency: currency.value,
 		limit: limit.value,
 		page: page.value,
 		order_by: order_by.value,

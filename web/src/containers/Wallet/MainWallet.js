@@ -11,7 +11,7 @@ import {
 	Button,
 	MobileBarBack,
 } from 'components';
-import { TransactionsHistory, Stake } from 'containers';
+import { TransactionsHistory } from 'containers';
 import { changeSymbol } from 'actions/orderbookAction';
 import {
 	BASE_CURRENCY,
@@ -26,10 +26,11 @@ import AssetsBlock from './AssetsBlock';
 import MobileWallet from './MobileWallet';
 import DustSection from './DustSection';
 import HeaderSection from './HeaderSection';
+import Index from 'containers/Stake';
+import ProfitLossSection from './ProfitLossSection';
 import { STATIC_ICONS } from 'config/icons';
 import { isStakingAvailable, STAKING_INDEX_COIN } from 'config/contracts';
 import { assetsSelector, searchAssets } from './utils';
-import ProfitLossSection from './ProfitLossSection';
 import { setPricesAndAsset } from 'actions/assetActions';
 import { setActiveBalanceHistory } from 'actions/walletActions';
 
@@ -280,7 +281,7 @@ class Wallet extends Component {
 		if (stake_page || cefi_stake) {
 			mobileTabs.push({
 				title: STRINGS['ACCOUNTS.TAB_STAKE'],
-				content: <Stake />,
+				content: <Index isFromWallet={true} />,
 			});
 		}
 

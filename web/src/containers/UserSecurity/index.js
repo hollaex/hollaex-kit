@@ -223,7 +223,8 @@ class UserSecurity extends Component {
 					<CustomMobileTabs
 						stringId={'ACCOUNT_SECURITY.OTP.TITLE'}
 						title={STRINGS['ACCOUNT_SECURITY.OTP.TITLE']}
-						icon={ICONS.SETTING_NOTIFICATION_ICON}
+						icon={ICONS.OPTION_2FA_ICON}
+						iconClassName="security-icon"
 					/>
 				) : (
 					// <CustomTabs
@@ -384,6 +385,8 @@ class UserSecurity extends Component {
 					<CustomMobileTabs
 						stringId={'SESSIONS.TAB'}
 						title={STRINGS['SESSIONS.TAB']}
+						icon={ICONS.SESSION_OPTION_ICON}
+						iconClassName="security-icon"
 					/>
 				) : (
 					<EditWrapper stringId="SESSIONS.TAB">
@@ -397,6 +400,8 @@ class UserSecurity extends Component {
 					<CustomMobileTabs
 						stringId={'LOGINS_HISTORY.TAB'}
 						title={STRINGS['LOGINS_HISTORY.TAB']}
+						icon={ICONS.LOGIN_OPTION_ICON}
+						iconClassName="security-icon"
 					/>
 				) : (
 					<EditWrapper stringId="LOGINS_HISTORY.TAB">
@@ -733,18 +738,25 @@ class UserSecurity extends Component {
 						textType="title"
 					/>
 				)}
-				<HeaderSection
-					stringId="ACCOUNTS.TAB_SECURITY"
-					title={isMobile && STRINGS['ACCOUNTS.TAB_SECURITY']}
-					openContactForm={openContactForm}
-				>
-					<div className={isMobile ? 'header-content' : 'header-content mt-3'}>
+				{!isMobile ? (
+					<HeaderSection
+						stringId="ACCOUNTS.TAB_SECURITY"
+						title={isMobile && STRINGS['ACCOUNTS.TAB_SECURITY']}
+						openContactForm={openContactForm}
+					>
+						<div className="header-content mt-3">
+							<EditWrapper stringId="ACCOUNT_SECURITY.TITLE_TEXT">
+								{STRINGS['ACCOUNT_SECURITY.TITLE_TEXT']}
+							</EditWrapper>
+						</div>
+					</HeaderSection>
+				) : (
+					<div className="header-content">
 						<EditWrapper stringId="ACCOUNT_SECURITY.TITLE_TEXT">
 							{STRINGS['ACCOUNT_SECURITY.TITLE_TEXT']}
 						</EditWrapper>
 					</div>
-				</HeaderSection>
-
+				)}
 				<Dialog
 					isOpen={dialogIsOpen && !otp.requesting}
 					label="security-modal"

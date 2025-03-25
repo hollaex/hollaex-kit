@@ -212,6 +212,12 @@ $toggle-margin: 2px;
 .layout-mobile {
 	.trade_tabs-container {
 		overflow-y: scroll;
+		padding: 2%;
+		.markets-title {
+			font-size: 20px;
+			margin-left: 2%;
+			color: $colors-main-black;
+		}
 	}
 
 	@media screen and (max-width: 1096px) {

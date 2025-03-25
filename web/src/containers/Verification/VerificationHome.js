@@ -56,7 +56,7 @@ const VerificationHome = ({
 					iconId={STRINGS['ACCOUNTS.TAB_VERIFICATION']}
 				/>
 			)}
-			<HeaderSection openContactForm={openContactForm} />
+			{!isMobile && <HeaderSection openContactForm={openContactForm} />}
 			<div
 				className={classnames('header-content', {
 					'w-50': !isMobile,
