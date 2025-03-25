@@ -6146,9 +6146,7 @@ table th {
   .digital-market-wrapper .market-list__block-table tbody tr td .asset-text,
   .digital-market-wrapper .market-list__block-table tbody tr td .last-price-label {
     font-weight: bold;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont,
- 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans',
- 'Helvetica Neue', sans-serif; }
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; }
   .digital-market-wrapper .market-list__block-table tbody tr td .asset-text {
     text-wrap: nowrap; }
   .digital-market-wrapper .market-list__block-table tbody tr td .price-change,
@@ -13189,7 +13187,8 @@ table th {
     .layout-mobile .p2p-summary-container .p2p-tab-container .crypto-assets {
       font-size: 24px;
       gap: 4%; }
-      .layout-mobile .p2p-summary-container .p2p-tab-container .crypto-assets .asset, .layout-mobile .p2p-summary-container .p2p-tab-container .crypto-assets .selected-asset {
+      .layout-mobile .p2p-summary-container .p2p-tab-container .crypto-assets .asset,
+      .layout-mobile .p2p-summary-container .p2p-tab-container .crypto-assets .selected-asset {
         padding: 0.5% 1.5% !important; }
     .layout-mobile .p2p-summary-container .p2p-tab-container .show-filter-text {
       display: flex;

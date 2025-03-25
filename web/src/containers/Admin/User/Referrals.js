@@ -370,7 +370,7 @@ const Referrals = ({
 			<div className="d-flex align-items-center m-4">
 				<div className="d-flex">
 					<div className="bold">Invited by: </div>
-					<div className="px-2">{invitedBy}</div>
+					<div className="px-2">{invitedBy.referer.email}</div>
 				</div>
 				<div className="user-info-separator" />
 				<div className="d-flex">
