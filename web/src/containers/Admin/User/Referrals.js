@@ -168,6 +168,7 @@ const Referrals = ({
 					setError(message);
 				});
 		},
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[userId, referral_history_config?.active]
 	);
 
