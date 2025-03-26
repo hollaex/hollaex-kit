@@ -107,6 +107,7 @@ const mathjs = require('mathjs');
 const { loggerUser } = require('../../../config/logger');
 const BigNumber = require('bignumber.js');
 const { INVALID_AUTOTRADE_CONFIG } = require('../../../messages');
+const sequelize = require('sequelize');
 
 let networkIdToKitId = {};
 let kitIdToNetworkId = {};
@@ -2575,7 +2576,18 @@ const getUserReferralCodes = async (
 				}
 			});
 	} else {
-		return dbQuery.findAndCountAllWithRows('referralCode', query);
+		const referralCodes = await dbQuery.findAndCountAllWithRows('referralCode', query);
+
+		const affiliations = await getModel('affiliation').findAll({
+			where: {
+				code: { [Op.in]: referralCodes?.data?.map(rc => rc.code) }
+			},
+		});
+		referralCodes.data = referralCodes.data.map(rc => ({
+			...rc,
+			affiliations: affiliations.filter(aff => aff.code === rc.code)
+		}));
+		return referralCodes;
 	}
 };
 
