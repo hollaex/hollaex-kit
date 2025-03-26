@@ -19,7 +19,7 @@ import {
 } from './actions';
 import { formatTimestampGregorian, DATETIME_FORMAT } from 'utils/date';
 import './index.css';
-
+import { PlusCircleOutlined, MinusCircleOutlined } from '@ant-design/icons';
 const AFF_COLUMNS = [
 	{
 		title: 'Time referred /signed up',
@@ -107,6 +107,16 @@ const REF_COLUMNS = [
 		},
 	},
 ];
+const renderRowContent = ({ affiliations }) => {
+	return (
+		<div>
+			<div>
+				Affiliated User Ids to this referral code:{' '}
+				{(affiliations || []).map((aff) => aff.user_id).join(', ') || 'None'}
+			</div>
+		</div>
+	);
+};
 
 const LIMIT = 50;
 
@@ -158,7 +168,7 @@ const Referrals = ({
 					setError(message);
 				});
 		},
-		[userId, referral_history_config.active]
+		[userId, referral_history_config?.active]
 	);
 
 	const onPageChange = (count, pageSize) => {
@@ -435,6 +445,31 @@ const Referrals = ({
 					pagination={{
 						current: currentTablePage,
 						onChange: onPageChange,
+					}}
+					expandable={
+						referral_history_config?.active
+							? {
+									expandedRowRender: renderRowContent,
+									expandRowByClick: referral_history_config?.active
+										? true
+										: false,
+									expandIcon: ({ expanded, onExpand, record }) =>
+										expanded ? (
+											<MinusCircleOutlined
+												onClick={(e) => onExpand(record, e)}
+												style={{ marginRight: 8 }}
+											/>
+										) : (
+											<PlusCircleOutlined
+												onClick={(e) => onExpand(record, e)}
+												style={{ marginRight: 8 }}
+											/>
+										),
+							  }
+							: false
+					}
+					rowKey={(data) => {
+						return data.id;
 					}}
 				/>
 			</div>
