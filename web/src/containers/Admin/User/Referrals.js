@@ -128,6 +128,12 @@ const Referrals = ({
 	const [referralPayload, setReferralPayload] = useState({});
 	const [referralCode, setReferralCode] = useState();
 
+	let invitedByEmail = '';
+	if (typeof invitedBy === 'object') {
+		invitedByEmail = invitedBy?.referer?.email;
+	} else {
+		invitedByEmail = invitedBy;
+	}
 	const requestAffiliations = useCallback(
 		(page, limit) => {
 			let action = referral_history_config?.active
@@ -370,7 +376,7 @@ const Referrals = ({
 			<div className="d-flex align-items-center m-4">
 				<div className="d-flex">
 					<div className="bold">Invited by: </div>
-					<div className="px-2">{invitedBy.referer.email}</div>
+					<div className="px-2">{invitedByEmail}</div>
 				</div>
 				<div className="user-info-separator" />
 				<div className="d-flex">
