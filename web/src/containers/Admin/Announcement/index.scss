@@ -226,6 +226,17 @@
 
 .admin-announcement-message-popup-wrapper {
 	.announcement-message-popup-wrapper {
+		.link-description {
+			align-items: flex-end;
+			gap: 2%;
+
+			.link-icon {
+				svg {
+					width: 1.5rem;
+					height: 1.5rem;
+				}
+			}
+		}
 		.quill {
 			background-color: #ffffff;
 
