@@ -188,6 +188,27 @@ const MobileBarMoreOptions = ({
 		}
 	}, [isSearchActive]);
 
+	useEffect(() => {
+		const handleKeyDown = (event) => {
+			if (event.key === '/') {
+				event.preventDefault();
+				setIsSearchActive(true);
+				if (inputRef.current) {
+					inputRef.current.focus();
+				}
+			} else if (event.key === 'Escape') {
+				setIsSearchActive(false);
+				setSearch('');
+			}
+		};
+
+		window.addEventListener('keydown', handleKeyDown);
+
+		return () => {
+			window.removeEventListener('keydown', handleKeyDown);
+		};
+	}, []);
+
 	const requestLogins = useCallback((page = 1) => {
 		getLogins({ page })
 			.then(({ data: { count, data } }) => {
@@ -855,7 +876,7 @@ const MobileBarMoreOptions = ({
 			iconText: 'ACCOUNTS.TAB_SIGNOUT',
 			path: browserHistory?.getCurrentLocation(),
 			isDisplay: true,
-			searchContent: [STRINGS['LOGOUT']],
+			searchContent: [STRINGS['LOGOUT'], STRINGS['ACCOUNTS.TAB_SIGNOUT']],
 			toolTipText: 'DESKTOP_NAVIGATION.SIGNOUT_DESC',
 		},
 	];
@@ -1188,6 +1209,7 @@ const MobileBarMoreOptions = ({
 			<Dialog
 				isOpen={isDialogOpen}
 				onCloseDialog={() => setIsDialogOpen(false)}
+				label="helpful-resources-popup"
 			>
 				<HelpfulResourcesForm
 					onSubmitSuccess={() => setIsDialogOpen(false)}
@@ -1261,11 +1283,16 @@ const MobileBarMoreOptions = ({
 			{isLogout &&
 				renderConfirmSignout(isLogout, onHandleClosePopup, onHandleLogout)}
 			{isMobile ? (
-				<SearchBox
-					placeHolder={STRINGS['MORE_OPTIONS_LABEL.MORE_OPTION_SEARCH_TXT']}
-					handleSearch={(e) => onHandleSearch(e)}
-					showCross
-				/>
+				<div className="title-wrapper">
+					<span className="search-title font-weight-bold">
+						{STRINGS['DESKTOP_ULTIMATE_SEARCH.SEARCH_DESCRIPTION']}
+					</span>
+					<SearchBox
+						placeHolder={STRINGS['MORE_OPTIONS_LABEL.MORE_OPTION_SEARCH_TXT']}
+						handleSearch={(e) => onHandleSearch(e)}
+						showCross
+					/>
+				</div>
 			) : (
 				<div className="search-field">
 					{!isSearchActive ? (

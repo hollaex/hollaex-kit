@@ -24,7 +24,13 @@ const MobileTabBar = ({ tabs, activeTab, setActiveTab, renderContent }) => {
 				}
 				return (
 					<div {...tabProps}>
-						{tab.title}
+						<div
+							className={
+								index === activeTab ? ' important-text' : 'secondary-text'
+							}
+						>
+							{tab.title}
+						</div>
 						{index === activeTab ? (
 							<div className="inner_container py-4">
 								{activeTab > -1 && renderContent(tabs, activeTab)}

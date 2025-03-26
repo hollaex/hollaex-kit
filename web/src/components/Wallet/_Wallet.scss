@@ -270,6 +270,17 @@ $sections-font--color: $colors-deactivate-color2;
 	}
 }
 
+.layout-mobile {
+	.dust_container {
+		padding-top: unset !important;
+		padding: 2% !important;
+		.icon_title-wrapper {
+			margin-left: unset;
+			margin-top: unset;
+		}
+	}
+}
+
 @media (min-width: 1920px) {
 	.wallet-wrapper {
 		.donut-container-empty {

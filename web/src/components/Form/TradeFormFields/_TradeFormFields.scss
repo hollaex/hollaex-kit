@@ -135,3 +135,12 @@ $padding: 0.25rem;
 	color: $colors-main-black;
 	font-weight: bold;
 }
+
+.layout-mobile {
+	.trade-form-select {
+		font-size: 12px !important;
+		.ant-select-selection-item {
+			font-size: 1.2rem !important;
+		}
+	}
+}

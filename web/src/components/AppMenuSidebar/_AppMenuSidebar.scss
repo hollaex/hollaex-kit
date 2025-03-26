@@ -20,6 +20,11 @@
 		padding: 20px 16px 0 15px;
 		.app-menu-bar-icon {
 			width: 20px;
+			svg {
+				path {
+					fill: $colors-black;
+				}
+			}
 		}
 	}
 	.app-menu-bar-side_list {

@@ -168,7 +168,7 @@ class AddTradeTab extends Component {
 			<Fragment>
 				<div id="trade-header-section"></div>
 				<div className="trade_tabs-container">
-					{!isMobile && (
+					{!isMobile ? (
 						<div className="mb-5">
 							<Image
 								iconId="EXCHANGE_LOGO"
@@ -180,6 +180,12 @@ class AddTradeTab extends Component {
 									{STRINGS['APP_SUB_TITLE']}
 								</EditWrapper>
 							</div>
+						</div>
+					) : (
+						<div className="trade-tab-app-title markets-title font-weight-bold caps">
+							<EditWrapper stringId="MARKETS_TABLE.MARKETS">
+								{STRINGS['MARKETS_TABLE.MARKETS']}
+							</EditWrapper>
 						</div>
 					)}
 					<div className="trade_tabs-content">
