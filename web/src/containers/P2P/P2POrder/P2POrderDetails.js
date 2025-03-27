@@ -141,7 +141,7 @@ const P2POrderDetails = ({
 								{selectedOrder?.deal?.spending_asset?.toUpperCase()}
 							</span>
 							<Coin
-								iconId={coins[selectedOrder?.deal?.spending_asset].icon_id}
+								iconId={coins[selectedOrder?.deal?.spending_asset]?.icon_id}
 								type={isMobile ? 'CS10' : 'CS4'}
 							/>
 						</div>
@@ -310,9 +310,9 @@ const P2POrderDetails = ({
 						<div>{selectedOrder?.payment_method_used?.system_name}</div>
 					</div>
 
-					{selectedOrder?.payment_method_used?.fields?.map((x) => {
+					{selectedOrder?.payment_method_used?.fields?.map((x, index) => {
 						return (
-							<div className="payment-methods-list">
+							<div className="payment-methods-list" key={index}>
 								<div className="font-weight-bold">{x?.name}:</div>
 								<div>{x?.value}</div>
 							</div>

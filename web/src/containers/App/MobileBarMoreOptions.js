@@ -451,7 +451,7 @@ const MobileBarMoreOptions = ({
 		{
 			icon_id: 'FEES_OPTION_ICON',
 			iconText: 'FEES',
-			path: '/fees-and-limits',
+			path: '/fees-and-limits?trading-fees',
 			isDisplay: true,
 			toolTipText: 'DESKTOP_ULTIMATE_SEARCH.FEES_INFO_TEXT',
 			searchContent: [
@@ -465,7 +465,7 @@ const MobileBarMoreOptions = ({
 		{
 			icon_id: 'LIMITS_OPTION_ICON',
 			iconText: 'MORE_OPTIONS_LABEL.ICONS.LIMITS',
-			path: '/fees-and-limits',
+			path: '/fees-and-limits?withdrawal-limits',
 			isDisplay: true,
 			toolTipText: 'DESKTOP_ULTIMATE_SEARCH.WITHDRAWAL_INFO_TEXT',
 			searchContent: [
@@ -873,7 +873,7 @@ const MobileBarMoreOptions = ({
 		},
 		{
 			icon_id: 'REVOKE_SESSION',
-			iconText: 'ACCOUNTS.TAB_SIGNOUT',
+			iconText: 'SIGN_OUT_TEXT',
 			path: browserHistory?.getCurrentLocation(),
 			isDisplay: true,
 			searchContent: [STRINGS['LOGOUT'], STRINGS['ACCOUNTS.TAB_SIGNOUT']],
@@ -886,7 +886,7 @@ const MobileBarMoreOptions = ({
 		const actions = {
 			'MORE_OPTIONS_LABEL.ICONS.CEFI_STAKE': () => setSelectedStake('cefi'),
 			'MORE_OPTIONS_LABEL.ICONS.DEFI_STAKE': () => setSelectedStake('defi'),
-			'ACCOUNTS.TAB_SIGNOUT': () => setIsLogout(true),
+			SIGN_OUT_TEXT: () => setIsLogout(true),
 			FEES: () => setLimitTab(0),
 			'MORE_OPTIONS_LABEL.ICONS.LIMITS': () => setLimitTab(2),
 			'ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE': () => setSecurityTab(1),

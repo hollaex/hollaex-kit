@@ -113,7 +113,7 @@ const Index = ({
 				setActiveTab(1);
 			} else if (router.location.search.includes('withdrawal-limit')) {
 				setActiveTab(2);
-			} else if (router.location.search.includes('trading-fees')) {
+			} else {
 				setActiveTab(0);
 			}
 		}

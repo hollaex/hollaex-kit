@@ -258,7 +258,12 @@ const Details = ({
 						<div className="chart w-100">
 							<div className="fade-area" />
 							{!isLoading ? (
-								<MiniSparkLine chartData={chartData} isArea />
+								<MiniSparkLine
+									chartData={chartData}
+									isArea
+									isActiveTooltip={true}
+									displayCoin={pair_2}
+								/>
 							) : (
 								<div className="d-flex h-100 w-100 align-items-center justify-content-center">
 									<Loading key={pair} index={0} />
