@@ -951,6 +951,8 @@ class App extends Component {
 											},
 											{
 												menu: activeNotification.type === MARKET_SELECTOR,
+												'signout-confirmation-popup-wrapper':
+													activeNotification.type === LOGOUT_CONFORMATION,
 											}
 										)}
 										onCloseDialog={this.onCloseDialog}
