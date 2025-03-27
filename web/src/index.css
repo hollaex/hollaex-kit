@@ -650,14 +650,31 @@ table th {
     width: 100% !important; }
 
 .signout-confirmation-popup-wrapper .ReactModal__Content {
-  width: 30rem; }
-  .signout-confirmation-popup-wrapper .ReactModal__Content .signout-confirmation-popup-description .signout-title .edit-wrapper__container {
-    font-size: 16px; }
-  .signout-confirmation-popup-wrapper .ReactModal__Content .signout-confirmation-popup-description .signout-confirmation-button-wrapper {
+  width: 32rem; }
+  .signout-confirmation-popup-wrapper .ReactModal__Content .signout-confirmation-popup-description .signout-confirmation-content {
     margin-top: 5%;
+    display: flex;
+    flex-direction: column;
+    align-items: center; }
+    .signout-confirmation-popup-wrapper .ReactModal__Content .signout-confirmation-popup-description .signout-confirmation-content .sign-out-icon {
+      margin: 1.5rem 0; }
+      .signout-confirmation-popup-wrapper .ReactModal__Content .signout-confirmation-popup-description .signout-confirmation-content .sign-out-icon svg {
+        width: 3.5rem;
+        height: 3.5rem; }
+    .signout-confirmation-popup-wrapper .ReactModal__Content .signout-confirmation-popup-description .signout-confirmation-content .signout-title .edit-wrapper__container {
+      font-size: 24px; }
+    .signout-confirmation-popup-wrapper .ReactModal__Content .signout-confirmation-popup-description .signout-confirmation-content .signout-description-content {
+      font-size: 12px; }
+  .signout-confirmation-popup-wrapper .ReactModal__Content .signout-confirmation-popup-description .signout-confirmation-button-wrapper {
+    margin-top: 3rem;
     display: flex;
     justify-content: space-between;
     gap: 10%; }
+
+.layout-mobile.signout-confirmation-popup-wrapper .signout-confirmation-popup-description .signout-confirmation-content {
+  justify-content: center;
+  min-height: calc(100vh - 15rem - 10rem);
+  max-height: calc(100vh - 15rem - 10rem); }
 
 .layout-mobile .footer-bar-more-options-container {
   display: flex;
@@ -4613,6 +4630,12 @@ table th {
     min-width: 3rem;
     padding-left: 0.5rem;
     padding-right: 0.5rem; }
+  .trade_active_orders-wrapper .active-icon svg {
+    fill: var(--labels_important-active-labels-text-graphics); }
+  .trade_active_orders-wrapper .inactive-icon {
+    opacity: 0.6; }
+    .trade_active_orders-wrapper .inactive-icon svg {
+      fill: var(--labels_secondary-inactive-label-text-graphics); }
 
 .quick-trade-tab {
   border: 1px solid var(--calculated_secondary-border);
@@ -15043,6 +15066,13 @@ table th {
     .admin-announcement-message-popup-wrapper .announcement-life-span-popup-container .select-announcement-wrapper .announcement-details .disabled-announcement,
     .admin-announcement-message-popup-wrapper .announcement-message-popup-wrapper .select-announcement-wrapper .announcement-details .disabled-announcement {
       color: #808080; }
+
+.admin-announcement-message-popup-wrapper .announcement-message-popup-wrapper .link-description {
+  align-items: flex-end;
+  gap: 2%; }
+  .admin-announcement-message-popup-wrapper .announcement-message-popup-wrapper .link-description .link-icon svg {
+    width: 1.5rem;
+    height: 1.5rem; }
 
 .admin-announcement-message-popup-wrapper .announcement-message-popup-wrapper .quill {
   background-color: #ffffff; }

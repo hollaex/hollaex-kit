@@ -2,10 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { isMobile } from 'react-device-detect';
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts';
+import { formatToCurrency } from 'utils/currency';
 
-const DEFAULT_CHART_OPTIONS = {
+const DEFAULT_CHART_OPTIONS = (isActiveTooltip = false, displayCoin) => ({
 	tooltip: {
-		enabled: false,
+		enabled: isActiveTooltip,
+		className: 'profit-loss-balance-tooltip',
+		formatter: function () {
+			return `<span class="tooltip-content">${formatToCurrency(this.y)} ${
+				displayCoin && displayCoin?.toUpperCase()
+			}</span>`;
+		},
 	},
 	title: {
 		text: null,
@@ -53,9 +60,15 @@ const DEFAULT_CHART_OPTIONS = {
 	pane: {
 		size: '100%',
 	},
-};
+});
 
-export const MiniSparkLine = ({ chartData, isArea, isNewAssets }) => {
+export const MiniSparkLine = ({
+	chartData,
+	isArea,
+	isNewAssets,
+	isActiveTooltip = false,
+	displayCoin,
+}) => {
 	const [finalChartData, setFinalChartData] = useState([]);
 
 	useEffect(() => {
@@ -74,7 +87,7 @@ export const MiniSparkLine = ({ chartData, isArea, isNewAssets }) => {
 		<HighchartsReact
 			highcharts={Highcharts}
 			options={{
-				...DEFAULT_CHART_OPTIONS,
+				...DEFAULT_CHART_OPTIONS(isActiveTooltip, displayCoin),
 				series: [
 					{
 						name: 'price',
