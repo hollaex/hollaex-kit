@@ -359,6 +359,9 @@ const nestedIcons = {
 	SERVER_ERROR: '/assets/images/server-error.svg',
 	SERVER_MAINTENANCE_ERROR: '/assets/images/server-maintenance-error.svg',
 	TOO_MANY_REQUEST_ERROR: '/assets/images/too-many-request-error.svg',
+
+	FROZEN_ICON: '/assets/images/frozen.svg',
+	CONFIRM_FREEZE_ICON: '/assets/images/confirm-freeze.svg',
 };
 
 const icons = flatten(nestedIcons, options);
