@@ -1,20 +1,22 @@
 import React, { Component } from 'react';
-import classnames from 'classnames';
+import { connect } from 'react-redux';
+import { Link, withRouter } from 'react-router';
+import { isMobile } from 'react-device-detect';
+import { Input, message } from 'antd';
 
-import { IconTitle, Button, Loader } from 'components';
+import classnames from 'classnames';
+import STRINGS from 'config/localizedStrings';
+import queryString from 'query-string';
+import withConfig from 'components/ConfigProvider/withConfig';
+import HelpfulResourcesForm from 'containers/HelpfulResourcesForm';
+import { Button, Loader, Dialog, Image } from 'components';
 import {
 	performConfirmLogin,
 	freezeAccount,
 } from './actions/loginConfirmation';
 import { FLEX_CENTER_CLASSES } from 'config/constants';
-import STRINGS from 'config/localizedStrings';
-import withConfig from 'components/ConfigProvider/withConfig';
 import { EditWrapper } from 'components';
-import { Button as AntBtn, message } from 'antd';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
 import './_loginConfirmation.scss';
-import queryString from 'query-string';
 
 class ConfirmLogin extends Component {
 	state = {
@@ -26,6 +28,7 @@ class ConfirmLogin extends Component {
 		inputToken: '',
 		prompt: false,
 		freeze_account: false,
+		isHelpFulResource: false,
 	};
 
 	componentDidMount() {
@@ -71,12 +74,27 @@ class ConfirmLogin extends Component {
 		}
 	};
 
-	handleTransaction = () => {
+	onHandleContactUs = () => {
+		this.setState({ isHelpFulResource: true });
+	};
+
+	onHandleNavigate = () => {
 		this.props.router.push('/login');
 	};
 
+	onCloseDialog = () => {
+		this.setState({ isHelpFulResource: false });
+	};
+
 	render() {
-		const { is_success, error_txt, loading, confirm } = this.state;
+		const {
+			is_success,
+			error_txt,
+			loading,
+			confirm,
+			freeze_account,
+			isHelpFulResource,
+		} = this.state;
 		const { icons: ICONS } = this.props;
 		let childProps = {};
 
@@ -95,27 +113,15 @@ class ConfirmLogin extends Component {
 				}
 			};
 			return (
-				<div style={{ display: 'flex', gap: '10px' }}>
+				<div className="otp-container">
 					{Array.from({ length: 6 }).map((_, index) => (
-						<input
+						<Input
 							key={index}
 							id={`otp-input-${index}`}
 							type="text"
 							maxLength="1"
-							style={{
-								width: '40px',
-								height: '40px',
-								textAlign: 'center',
-								fontSize: '20px',
-								border: '1px solid #ccc',
-								borderRadius: '5px',
-								outline: 'none',
-								transition: 'border 0.2s',
-								color: 'black',
-							}}
 							onChange={(e) => handleChange(e, index)}
-							onFocus={(e) => (e.target.style.borderColor = '#007BFF')}
-							onBlur={(e) => (e.target.style.borderColor = '#ccc')}
+							className="otp-checkbox"
 						/>
 					))}
 				</div>
@@ -124,81 +130,73 @@ class ConfirmLogin extends Component {
 
 		if (!confirm) {
 			childProps = {
+				titleIcon: {
+					iconId: freeze_account
+						? 'CONFIRM_FREEZE_ICON'
+						: 'SIDEBAR_ACCOUNT_INACTIVE',
+					icon:
+						ICONS[
+							freeze_account
+								? 'CONFIRM_FREEZE_ICON'
+								: 'SIDEBAR_ACCOUNT_INACTIVE'
+						],
+					wrapperClassName: freeze_account ? '' : 'confirm-login-icon',
+				},
+				titleContent: {
+					stringId: 'LOGIN_CONFIRMATION.LOGIN_CONFIRM_BUTTON',
+					text:
+						STRINGS[
+							freeze_account
+								? 'LOGIN_CONFIRMATION.CONFIRM_FREEZE_TITLE'
+								: 'LOGIN_CONFIRMATION.LOGIN_CONFIRM_BUTTON'
+						],
+				},
 				child: (
 					<div className="login-confirm-option">
-						<div
-							style={{
-								fontSize: 22,
-								color: 'white',
-								marginTop: 10,
-								marginBottom: 10,
-							}}
-						>
+						<div className="confirm-warning-description">
 							{this.state.freeze_account ? (
-								<EditWrapper stringId="LOGIN_CONFIRMATION.FREEZE_CONFIRM_FINAL">
-									{STRINGS['LOGIN_CONFIRMATION.FREEZE_CONFIRM_FINAL']}
-								</EditWrapper>
+								<div className="description-text">
+									<EditWrapper stringId="LOGIN_CONFIRMATION.FREEZE_CONFIRM_WARNING">
+										<span>
+											{STRINGS['LOGIN_CONFIRMATION.FREEZE_CONFIRM_WARNING']}
+										</span>
+									</EditWrapper>
+									<EditWrapper stringId="LOGIN_CONFIRMATION.CONFIRM_WARNING_FREEZE_DESC">
+										<span className="font-weight-bold">
+											{
+												STRINGS[
+													'LOGIN_CONFIRMATION.CONFIRM_WARNING_FREEZE_DESC'
+												]
+											}
+										</span>
+									</EditWrapper>
+								</div>
 							) : (
-								<EditWrapper stringId="LOGIN_CONFIRMATION.LOGIN_CONFIRM_FINAL">
-									{STRINGS['LOGIN_CONFIRMATION.LOGIN_CONFIRM_FINAL']}
-								</EditWrapper>
-							)}
-						</div>
-						<div>
-							{this.state.freeze_account ? (
-								<EditWrapper stringId="LOGIN_CONFIRMATION.FREEZE_CONFIRM_WARNING">
-									{STRINGS['LOGIN_CONFIRMATION.FREEZE_CONFIRM_WARNING']}
-								</EditWrapper>
-							) : (
-								<EditWrapper stringId="LOGIN_CONFIRMATION.LOGIN_CONFIRM_WARNING">
-									{STRINGS['LOGIN_CONFIRMATION.LOGIN_CONFIRM_WARNING']}
-								</EditWrapper>
+								<div className="description-text">
+									<EditWrapper stringId="LOGIN_CONFIRMATION.LOGIN_CONFIRM_WARNING">
+										{STRINGS['LOGIN_CONFIRMATION.LOGIN_CONFIRM_WARNING']}
+									</EditWrapper>
+								</div>
 							)}
 						</div>
 
 						<div>
 							{this.state.prompt && (
-								<div
-									style={{
-										textAlign: 'center',
-										marginTop: 10,
-										display: 'flex',
-										justifyContent: 'center',
-										alignItems: 'center',
-									}}
-								>
-									{OTPInput()}
-								</div>
+								<div className="otp-checkbox-wrapper">{OTPInput()}</div>
 							)}
 						</div>
 
-						<div
-							style={{
-								display: 'flex',
-								flexDirection: 'row',
-								gap: 15,
-								justifyContent: 'space-between',
-								marginTop: 30,
-							}}
-						>
-							<AntBtn
-								onClick={() => {
-									this.handleTransaction();
-								}}
-								style={{
-									backgroundColor: '#5D63FF',
-									color: 'white',
-									flex: 1,
-									height: 35,
-									borderWidth: 0,
-								}}
-								type="default"
-							>
-								<EditWrapper stringId="LOGIN_CONFIRMATION.LOGIN_CANCEL_BUTTON">
-									{STRINGS['LOGIN_CONFIRMATION.LOGIN_CANCEL_BUTTON']}
-								</EditWrapper>
-							</AntBtn>
-							<AntBtn
+						<div className="button-container">
+							{!this.state.freeze_account && (
+								<Button
+									onClick={() => {
+										this.onHandleContactUs();
+									}}
+									label={STRINGS['CONTACT_US_TEXT'].toUpperCase()}
+									className="confirm-btn"
+								></Button>
+							)}
+							<Button
 								onClick={async () => {
 									if (this.state.prompt && this.state.inputToken.length !== 6) {
 										message.error(
@@ -209,25 +207,15 @@ class ConfirmLogin extends Component {
 									this.setState({ confirm: true });
 									this.confirmLogin();
 								}}
-								style={{
-									backgroundColor: '#5D63FF',
-									color: 'white',
-									flex: 2,
-									height: 35,
-									borderWidth: 0,
-								}}
-								type="default"
-							>
-								{this.state.freeze_account ? (
-									<EditWrapper stringId="LOGIN_CONFIRMATION.FREEZE_CONFIRM_BUTTON">
-										{STRINGS['LOGIN_CONFIRMATION.FREEZE_CONFIRM_BUTTON']}
-									</EditWrapper>
-								) : (
-									<EditWrapper stringId="LOGIN_CONFIRMATION.LOGIN_CONFIRM_BUTTON">
-										{STRINGS['LOGIN_CONFIRMATION.LOGIN_CONFIRM_BUTTON']}
-									</EditWrapper>
-								)}
-							</AntBtn>
+								label={
+									this.state.freeze_account
+										? STRINGS['LOGIN_CONFIRMATION.FREEZE_CONFIRM_BUTTON']
+										: STRINGS[
+												'LOGIN_CONFIRMATION.LOGIN_CONFIRM_BUTTON'
+										  ]?.toUpperCase()
+								}
+								className="confirm-btn"
+							></Button>
 						</div>
 					</div>
 				),
@@ -239,53 +227,115 @@ class ConfirmLogin extends Component {
 			};
 		} else if (!is_success && error_txt) {
 			childProps = {
-				titleSection: {
+				titleIcon: {
 					iconId: 'RED_WARNING',
-					iconPath: ICONS['RED_WARNING'],
+					icon: ICONS['RED_WARNING'],
+				},
+				titleContent: {
 					stringId: 'ERROR_TEXT',
 					text: STRINGS['ERROR_TEXT'],
 				},
 				child: (
-					<div className="text-center mb-4">
-						<div>{error_txt}</div>
+					<div className="text-center mt-3 confirm-warning-description">
+						<div className="description-text">{error_txt}</div>
+						<div className="button-container">
+							<Button
+								onClick={() => this.onHandleNavigate()}
+								label={STRINGS['LOGOUT_ERROR_LOGIN_AGAIN']?.toUpperCase()}
+								className="confirm-btn"
+							></Button>
+						</div>
 					</div>
 				),
 			};
 		} else {
 			childProps = {
-				titleSection: {
-					iconId: 'GREEN_CHECK',
-					iconPath: ICONS['GREEN_CHECK'],
-					stringId: 'SUCCESS_TEXT',
-					text: STRINGS['SUCCESS_TEXT'],
+				titleIcon: {
+					iconId: freeze_account ? 'FROZEN_ICON' : 'SIDEBAR_ACCOUNT_INACTIVE',
+					icon:
+						ICONS[freeze_account ? 'FROZEN_ICON' : 'SIDEBAR_ACCOUNT_INACTIVE'],
+					wrapperClassName: freeze_account
+						? 'confirm-freeze-icon'
+						: 'confirm-login-icon',
+				},
+				titleContent: {
+					stringId: freeze_account
+						? 'LOGIN_CONFIRMATION.ACCOUNT_FROZEN'
+						: 'LOGIN_CONFIRMATION.ACCOUNT_CONFIRMED',
+					text:
+						STRINGS[
+							freeze_account
+								? 'LOGIN_CONFIRMATION.ACCOUNT_FROZEN'
+								: 'LOGIN_CONFIRMATION.ACCOUNT_CONFIRMED'
+						],
 				},
 				useSvg: true,
 				child: (
-					<div className="text-center mb-4">
-						{this.state.freeze_account ? (
-							<div>
-								<EditWrapper stringId="LOGIN_CONFIRMATION.FREEZE_CONFIRM_SUCCESS_1">
-									{STRINGS['LOGIN_CONFIRMATION.FREEZE_CONFIRM_SUCCESS_1']}
-								</EditWrapper>
-							</div>
-						) : (
-							<>
-								<div>
-									<EditWrapper stringId="LOGIN_CONFIRMATION.LOGIN_CONFIRM_SUCCESS_1">
-										{STRINGS['LOGIN_CONFIRMATION.LOGIN_CONFIRM_SUCCESS_1']}
+					<div className="mt-3 login-confirm-option">
+						<div className="confirm-warning-description">
+							{this.state.freeze_account ? (
+								<div className="description-text">
+									<EditWrapper stringId="LOGIN_CONFIRMATION.FREEZE_CONFIRM_SUCCESS_1">
+										{STRINGS['LOGIN_CONFIRMATION.FREEZE_CONFIRM_SUCCESS_1']}
+									</EditWrapper>
+									<EditWrapper stringId="LOGIN_CONFIRMATION.FREEZE_CONFIRM_SUCCESS_2">
+										<span className="font-weight-bold">
+											{STRINGS['LOGIN_CONFIRMATION.FREEZE_CONFIRM_SUCCESS_2']}
+										</span>
 									</EditWrapper>
 								</div>
-								<div>
-									<EditWrapper stringId="LOGIN_CONFIRMATION.LOGIN_CONFIRM_SUCCESS_2">
-										{STRINGS['LOGIN_CONFIRMATION.LOGIN_CONFIRM_SUCCESS_2']}
-									</EditWrapper>
-								</div>
-							</>
-						)}
+							) : (
+								<>
+									<div className="description-text">
+										<EditWrapper stringId="LOGIN_CONFIRMATION.LOGIN_CONFIRM_SUCCESS_1">
+											{STRINGS['LOGIN_CONFIRMATION.LOGIN_CONFIRM_SUCCESS_1']}
+										</EditWrapper>
+										<EditWrapper stringId="LOGIN_CONFIRMATION.LOGIN_CONFIRM_SUCCESS_2">
+											<span className="font-weight-bold">
+												{STRINGS['LOGIN_CONFIRMATION.LOGIN_CONFIRM_SUCCESS_2']}
+											</span>
+										</EditWrapper>
+									</div>
+								</>
+							)}
+						</div>
+						<div className="button-container">
+							<Button
+								onClick={() =>
+									freeze_account
+										? this.onHandleContactUs()
+										: this.onHandleNavigate()
+								}
+								label={STRINGS[
+									freeze_account
+										? 'CONTACT_US_TEXT'
+										: 'LOGOUT_ERROR_LOGIN_AGAIN'
+								]?.toUpperCase()}
+								className="confirm-btn"
+							></Button>
+						</div>
 					</div>
 				),
 			};
 		}
+
+		const BottomLink = () => (
+			<>
+				<div className={classnames('f-1', 'link_wrapper')}>
+					{STRINGS['SIGN_UP.HAVE_ACCOUNT']}
+					<Link to="/login" className={classnames('blue-link')}>
+						{STRINGS['SIGN_UP.GOTO_LOGIN']}
+					</Link>
+				</div>
+				<div className={classnames('f-1', 'link_wrapper')}>
+					{STRINGS['LOGIN.NO_ACCOUNT']}
+					<Link to="/signup" className={classnames('blue-link')}>
+						{STRINGS['LOGIN.CREATE_ACCOUNT']}
+					</Link>
+				</div>
+			</>
+		);
+
 		return (
 			<div
 				className={classnames(
@@ -303,21 +353,43 @@ class ConfirmLogin extends Component {
 						{ auth_wrapper: !loading }
 					)}
 				>
-					<IconTitle
-						textType="title"
-						className="w-100"
-						{...childProps.titleSection}
-					/>
-					{childProps.child}
-					{!loading && confirm && (
-						<Button
-							className="w-50"
-							stringId="LOGIN_CONFIRMATION.GO_LOGIN_HISTORY"
-							label={STRINGS['LOGIN_CONFIRMATION.GO_LOGIN_HISTORY']}
-							onClick={this.handleTransaction}
-						/>
+					{childProps?.titleIcon && (
+						<div className="login-security-icon-wrapper">
+							<Image
+								textType="title"
+								className="w-100"
+								{...childProps.titleIcon}
+							/>
+							{confirm && !freeze_account && !error_txt && (
+								<Image
+									icon={ICONS['GREEN_CHECK']}
+									wrapperClassName="success-icon"
+								/>
+							)}
+						</div>
 					)}
+					{childProps?.titleContent && (
+						<EditWrapper stringId={childProps?.titleContent?.stringId}>
+							<span className="login-title">
+								{STRINGS[childProps?.titleContent?.stringId]}
+							</span>
+						</EditWrapper>
+					)}
+					{childProps?.titleIcon && <div className="line-separator mt-3"></div>}
+					{childProps.child}
 				</div>
+				{!isMobile && <BottomLink />}
+				<Dialog
+					isOpen={!!isHelpFulResource}
+					onCloseDialog={this.onCloseDialog}
+					className={isMobile ? 'login-confirm-contact-popup-wrapper' : ''}
+					label="login-confirm-helpful-resource"
+				>
+					<HelpfulResourcesForm
+						onSubmitSuccess={this.onCloseDialog}
+						onClose={this.onCloseDialog}
+					/>
+				</Dialog>
 			</div>
 		);
 	}
