@@ -5155,6 +5155,116 @@ table th {
   background-color: var(--base_wallet-sidebar-and-popup);
   padding: 25px; }
 
+.login-confirm-warpper .auth_wrapper .login-security-icon-wrapper {
+  position: relative; }
+  .login-confirm-warpper .auth_wrapper .login-security-icon-wrapper svg {
+    width: 8rem;
+    height: 8rem; }
+  .login-confirm-warpper .auth_wrapper .login-security-icon-wrapper .confirm-login-icon svg path {
+    fill: var(--labels_important-active-labels-text-graphics);
+    stroke: none; }
+  .login-confirm-warpper .auth_wrapper .login-security-icon-wrapper .confirm-freeze-icon svg {
+    width: 6rem;
+    height: 6rem; }
+
+.login-confirm-warpper .auth_wrapper .icon_title-wrapper .icon_title-text {
+  margin-top: 10% !important; }
+
+.login-confirm-warpper .auth_wrapper .login-title {
+  font-size: 2.5rem; }
+
+.login-confirm-warpper .auth_wrapper .success-icon {
+  position: absolute;
+  top: 30%;
+  right: 10%; }
+  .login-confirm-warpper .auth_wrapper .success-icon svg {
+    width: 2rem; }
+
+.login-confirm-warpper .auth_wrapper .line-separator {
+  width: 100%;
+  height: 1px;
+  background-color: var(--calculated_secondary-border); }
+
+.login-confirm-warpper .auth_wrapper .login-confirm-option {
+  margin-top: 3%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%; }
+  .login-confirm-warpper .auth_wrapper .login-confirm-option .otp-checkbox-wrapper {
+    margin-top: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center; }
+    .login-confirm-warpper .auth_wrapper .login-confirm-option .otp-checkbox-wrapper .otp-container {
+      display: flex;
+      justify-content: center;
+      gap: 2%; }
+      .login-confirm-warpper .auth_wrapper .login-confirm-option .otp-checkbox-wrapper .otp-container .otp-checkbox {
+        max-width: 8%;
+        height: 15%;
+        text-align: center;
+        font-size: 1.5rem;
+        border-radius: 5px;
+        outline: none;
+        transition: border 0.2s;
+        color: var(--labels_important-active-labels-text-graphics) !important;
+        background-color: var(--base_background);
+        border: 1px solid var(--labels_secondary-inactive-label-text-graphics) !important;
+        box-shadow: none; }
+      .login-confirm-warpper .auth_wrapper .login-confirm-option .otp-checkbox-wrapper .otp-container .otp-checkbox:focus {
+        border: 1px solid var(--labels_important-active-labels-text-graphics) !important;
+        box-shadow: none; }
+
+.login-confirm-warpper .auth_wrapper .button-container {
+  margin-top: 3%;
+  display: flex;
+  justify-content: space-between;
+  gap: 3%;
+  align-items: center;
+  width: 100%; }
+
+.login-confirm-warpper .auth_wrapper .confirm-warning-description {
+  width: 90%;
+  text-align: center; }
+  .login-confirm-warpper .auth_wrapper .confirm-warning-description .description-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem; }
+
+.layout-mobile .login-confirm-warpper .auth_wrapper {
+  position: relative;
+  width: 100%; }
+  .layout-mobile .login-confirm-warpper .auth_wrapper .icon_title-wrapper {
+    margin: unset !important; }
+  .layout-mobile .login-confirm-warpper .auth_wrapper .login-security-icon-wrapper .login-title {
+    font-size: 3rem !important; }
+  .layout-mobile .login-confirm-warpper .auth_wrapper .description-text {
+    font-size: 1.4rem; }
+  .layout-mobile .login-confirm-warpper .auth_wrapper .line-separator {
+    width: 90%; }
+  .layout-mobile .login-confirm-warpper .auth_wrapper .login-confirm-option {
+    width: 85%; }
+  .layout-mobile .login-confirm-warpper .auth_wrapper .button-container {
+    position: absolute;
+    bottom: 0;
+    padding: 5%;
+    width: 85%; }
+    .layout-mobile .login-confirm-warpper .auth_wrapper .button-container .confirm-btn {
+      width: 100%; }
+  .layout-mobile .login-confirm-warpper .auth_wrapper .success-icon {
+    top: 30%; }
+  .layout-mobile .login-confirm-warpper .auth_wrapper .otp-checkbox-wrapper .otp-container .otp-checkbox {
+    font-size: 1.5rem;
+    min-width: 10%; }
+
+.login-confirm-contact-popup-wrapper .ReactModal__Content {
+  min-height: 100vh;
+  max-height: 100vh; }
+
 .direction_ltr .summary-container .trader-account-icon {
   margin-right: 1rem; }
 
