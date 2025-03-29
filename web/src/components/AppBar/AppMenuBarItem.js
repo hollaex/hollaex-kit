@@ -336,7 +336,7 @@ const DesktopDropdown = ({
 										options?.icon
 											? options?.icon
 											: options?.icon_id
-											? STRINGS[options?.string_id] === 'Onramper'
+											? options?.string_id === 'RC_ONRAMPER_MENU_ITEM'
 												? 'ONRAMPER_ICON'
 												: options?.icon_id
 											: 'NO_ICON'
@@ -372,12 +372,14 @@ const DesktopDropdown = ({
 											{STRINGS[options?.description_2]}
 										</span>
 									)}
-									{STRINGS[options?.string_id] === 'Buy crypto' ? (
+									{['RC_BANXA_ACCESS', 'RC_SOLFIN_ACCESS'].includes(
+										options?.string_id
+									) ? (
 										<span className="secondary-text">
 											{STRINGS['DESKTOP_NAVIGATION.BUY_CRYPTO_DESC']}
 										</span>
 									) : (
-										STRINGS[options?.string_id] === 'Onramper' && (
+										options?.string_id === 'RC_ONRAMPER_MENU_ITEM' && (
 											<span className="secondary-text">
 												{STRINGS['DESKTOP_NAVIGATION.ONRAMPER_DESC']}
 											</span>

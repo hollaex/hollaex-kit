@@ -19,6 +19,7 @@ import {
 	setSettingsTab,
 } from 'actions/appActions';
 import { renderConfirmSignout } from './Utils';
+import { logout } from 'actions/authAction';
 
 const AccountTab = ({
 	config_level,
@@ -32,6 +33,7 @@ const AccountTab = ({
 	setIsMarketDropdownVisible,
 	setIsToolsVisible,
 	features,
+	logout,
 }) => {
 	const [isIconActive, setIsIconActive] = useState(false);
 	const [isToolTipVisible, setIsToolTipVisible] = useState(false);
@@ -68,6 +70,7 @@ const AccountTab = ({
 					setSettingsTab={setSettingsTab}
 					onHandleRedirect={onHandleRedirect}
 					features={features}
+					logout={logout}
 				/>
 			}
 			placement="bottomRight"
@@ -117,6 +120,7 @@ const AccountList = ({
 	setSettingsTab,
 	onHandleRedirect,
 	features,
+	logout,
 }) => {
 	const [isHelpResources, setIsHelpResources] = useState(false);
 	const [currPath, setCurrpath] = useState('/summary');
@@ -169,7 +173,7 @@ const AccountList = ({
 	const optionsRoute = [
 		{
 			icon: 'REVOKE_SESSION',
-			title: 'ACCOUNTS.TAB_SIGNOUT',
+			title: 'SIGN_OUT_TEXT',
 			toolTipText: 'DESKTOP_NAVIGATION.SIGNOUT_DESC',
 			path: '/login',
 		},
@@ -216,7 +220,7 @@ const AccountList = ({
 	const onHandleRoutes = (value = '/', title = '') => {
 		const selectedTab = {
 			'LOGIN.HELP': () => setIsHelpResources(true),
-			'ACCOUNTS.TAB_SIGNOUT': () => setIsLogout(true),
+			SIGN_OUT_TEXT: () => setIsLogout(true),
 			'ACCOUNTS.TAB_SECURITY': () => setSecurityTab(0),
 			'MORE_OPTIONS_LABEL.ICONS.API': () => setSecurityTab(2),
 			'USER_SETTINGS.TITLE_LANGUAGE': () => setSettingsTab(2),
@@ -250,7 +254,7 @@ const AccountList = ({
 	const onHandlelogout = () => {
 		setIsLogout(false);
 		removeToken();
-		return browserHistory?.push('/login');
+		logout();
 	};
 
 	const onHandleclose = () => {
@@ -338,7 +342,7 @@ const AccountList = ({
 								onClick={() => onHandleRoutes(option?.path, option?.title)}
 							>
 								<Image icon={ICONS[option?.icon ? option?.icon : 'NO_ICON']} />
-								<span>
+								<span className="text-nowrap">
 									<EditWrapper>{STRINGS[option?.title]}</EditWrapper>
 								</span>
 							</div>
@@ -374,6 +378,7 @@ const mapDispatchToProps = (dispatch) => ({
 		dispatch
 	),
 	setIsToolsVisible: bindActionCreators(setIsToolsVisible, dispatch),
+	logout: bindActionCreators(logout, dispatch),
 });
 
 export default connect(

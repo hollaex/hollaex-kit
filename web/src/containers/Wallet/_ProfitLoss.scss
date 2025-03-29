@@ -148,6 +148,14 @@
 	}
 }
 
+.profit-loss-balance-tooltip {
+	path {
+		fill: var(--base_background);
+		stroke: var(--labels_secondary-inactive-label-text-graphics);
+		stroke-width: unset;
+	}
+}
+
 .layout-mobile {
 	.wallet-assets_block {
 		.balance-history {

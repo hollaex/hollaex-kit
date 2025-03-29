@@ -33,7 +33,7 @@ checkStatus()
 		app.use(logEntryRequest);
 		app.use(domainMiddleware);
 		if (process.env.NODE_ENV !== 'test') {
-   			rateLimitMiddleware(app);
+			rateLimitMiddleware(app);
 		}
 		helmetMiddleware(app);
 
@@ -102,6 +102,7 @@ checkStatus()
 
 
 			app.use('/api/explorer', swaggerUi.serve, swaggerUi.setup(swaggerDoc, options));
+			app.use('/api-explorer', swaggerUi.serve, swaggerUi.setup(swaggerDoc, options));
 
 			server.listen(PORT, () => {
 				logger.info(`Server running on port: ${PORT}`);

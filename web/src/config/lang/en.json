@@ -1,7 +1,8 @@
 {
 	"APP_TITLE": "HollaEx",
 	"APP_SUB_TITLE": "Open Crypto Exchange",
-	"LOGOUT_CONFIRM_TEXT": "Are you sure you want to logout?",
+	"LOGOUT_CONFIRM_TEXT": "You're about to sign out. Are you sure?",
+	"SIGN_OUT_TEXT": "Sign Out",
 	"ADD_TRADING_PAIR": "Select a market",
 	"TRADE_TOOLS": "Tools",
 	"CANCEL_BASE_WITHDRAWAL": "Cancel {0}",
@@ -510,7 +511,9 @@
 		"NOTIFICATION_FORM": {
 			"POPUP_ORDER_CONFIRMATION": "Ask for confirmation before submitting orders",
 			"POPUP_ORDER_COMPLETED": "Show pop up when order has been completed",
-			"POPUP_ORDER_PARTIALLY_FILLED": "Show pop up when order has partially filled"
+			"POPUP_ORDER_PARTIALLY_FILLED": "Show pop up when order has partially filled",
+			"POPUP_NEW_ORDER_CREATED": "Show pop up when a new order has been placed",
+			"POPUP_ORDER_CANCELLED": "Show pop up when canceling orders"
 		},
 		"AUDIO_CUE_FORM": {
 			"ALL_AUDIO": "All Audio cues",
@@ -1150,6 +1153,29 @@
 		"MIN_AMOUNT_WARNING_INFO": "The minimum withdrawal amount is {0}",
 		"ZERO_BALANCE": "You do not have enough available balance.",
 		"NEW_ADDRESS": "New Address"
+	},
+	"LOGIN_CONFIRMATION": {
+		"LOGIN_CONFIRM_FINAL": "Login Confirmation",
+		"FREEZE_CONFIRM_FINAL": "Freeze your account",
+		"LOGIN_CONFIRM_WARNING": "To login to your account please click the confirmation button below so that we know it is you.",
+		"FREEZE_CONFIRM_WARNING": "When frozen, your account is completely locked and protected from all access, including your own. You can easily restore access later by reaching out to our support team.",
+		"LOGIN_CANCEL_BUTTON": "CLOSE",
+		"LOGIN_CONFIRM_BUTTON": "Confirm Login",
+		"FREEZE_CONFIRM_BUTTON": "YES, FREEZE MY ACCOUNT",
+		"LOGIN_INPUT_CODE": "please input the code",
+		"LOGIN_CONFIRM_SUCCESS_1": "Your email has been verified.",
+		"FREEZE_CONFIRM_SUCCESS_1": "Your account is now locked, and withdrawals are temporarily disabled.",
+		"FREEZE_CONFIRM_SUCCESS_2": "Contact us anytime to restore your access.",
+		"LOGIN_CONFIRM_SUCCESS_2": "Please log back in to access your account.",
+		"GO_LOGIN_HISTORY": "Go To Login Page",
+		"ACCOUNT_FROZEN": "Account Frozen",
+		"CONFIRM_FREEZE_TITLE": "Confirm Freeze",
+		"CONFIRM_WARNING_FREEZE_DESC": "Are you sure you want to freeze your account?",
+		"ACCOUNT_CONFIRMED": "Account Confirmed",
+		"EMAIL_CONFIRMATION": "Email Confirmation Required",
+		"EMAIL_CONFIRMATION_DESC_1": "We sent you an email with a confirmation button.",
+		"EMAIL_CONFIRMATION_DESC_2": "Please click it {0} to proceed.",
+		"EMAIL_TEXT": "in your email"
 	},
 	"WALLET_BUTTON_BASE_DEPOSIT": "deposit",
 	"WALLET_BUTTON_BASE_WITHDRAW": "withdraw",
@@ -2548,6 +2574,7 @@
 		"RECHECK_PING": "RECHECK PING",
 		"FAST": "Fast",
 		"SLOW": "Slow",
+		"VERY_SLOW": "Very Slow",
 		"MS": "{0} ms",
 		"STATUS_NORMAL": "Connection Normal",
 		"CONNECTION_LABEL": "Connection",
@@ -2699,5 +2726,16 @@
 		"EXCHANGE_UPDATE": "Exchange update",
 		"NO_DATA_TEXT": "It appears that no announcements have been made yet",
 		"UPGRADES": "Upgrades"
+	},
+	"ERROR_TAB": {
+		"NETWORK_ERROR": "Connection Issue",
+		"NETWORK_ERROR_DESC": "Please check your internet connection.",
+		"SERVER_ERROR": "Server Error",
+		"SERVER_ERROR_DESC": "We're experiencing a temporary network or server issue. Please try again later.",
+		"SERVER_MAINTENANCE_ERROR": "Server maintenance",
+		"SERVER_MAINTENANCE_ERROR_DESC": "System maintenance is currently underway. Please try again later.",
+		"TOO_MANY_REQUEST_ERROR": "Too many requests",
+		"TOO_MANY_REQUEST_ERROR_DESC": "Wow! Slow down, you are doing too much at once",
+		"NETWORK_ERROR_MESSAGE": "Network Error"
 	}
 }

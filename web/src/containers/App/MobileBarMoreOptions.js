@@ -35,6 +35,7 @@ import {
 import { removeToken } from 'utils/token';
 import { MarketsSelector } from 'containers/Trade/utils';
 import { assetsSelector } from 'containers/Wallet/utils';
+import { logout } from 'actions/authAction';
 
 const INITIAL_LOGINS_STATE = {
 	count: 0,
@@ -55,6 +56,7 @@ const MobileBarMoreOptions = ({
 	getRemoteRoutes,
 	assets,
 	user,
+	logout,
 }) => {
 	const [search, setSearch] = useState('');
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -185,6 +187,27 @@ const MobileBarMoreOptions = ({
 			inputRef.current.focus();
 		}
 	}, [isSearchActive]);
+
+	useEffect(() => {
+		const handleKeyDown = (event) => {
+			if (event.key === '/') {
+				event.preventDefault();
+				setIsSearchActive(true);
+				if (inputRef.current) {
+					inputRef.current.focus();
+				}
+			} else if (event.key === 'Escape') {
+				setIsSearchActive(false);
+				setSearch('');
+			}
+		};
+
+		window.addEventListener('keydown', handleKeyDown);
+
+		return () => {
+			window.removeEventListener('keydown', handleKeyDown);
+		};
+	}, []);
 
 	const requestLogins = useCallback((page = 1) => {
 		getLogins({ page })
@@ -428,7 +451,7 @@ const MobileBarMoreOptions = ({
 		{
 			icon_id: 'FEES_OPTION_ICON',
 			iconText: 'FEES',
-			path: '/fees-and-limits',
+			path: '/fees-and-limits?trading-fees',
 			isDisplay: true,
 			toolTipText: 'DESKTOP_ULTIMATE_SEARCH.FEES_INFO_TEXT',
 			searchContent: [
@@ -442,7 +465,7 @@ const MobileBarMoreOptions = ({
 		{
 			icon_id: 'LIMITS_OPTION_ICON',
 			iconText: 'MORE_OPTIONS_LABEL.ICONS.LIMITS',
-			path: '/fees-and-limits',
+			path: '/fees-and-limits?withdrawal-limits',
 			isDisplay: true,
 			toolTipText: 'DESKTOP_ULTIMATE_SEARCH.WITHDRAWAL_INFO_TEXT',
 			searchContent: [
@@ -850,10 +873,10 @@ const MobileBarMoreOptions = ({
 		},
 		{
 			icon_id: 'REVOKE_SESSION',
-			iconText: 'ACCOUNTS.TAB_SIGNOUT',
+			iconText: 'SIGN_OUT_TEXT',
 			path: browserHistory?.getCurrentLocation(),
 			isDisplay: true,
-			searchContent: [STRINGS['LOGOUT']],
+			searchContent: [STRINGS['LOGOUT'], STRINGS['ACCOUNTS.TAB_SIGNOUT']],
 			toolTipText: 'DESKTOP_NAVIGATION.SIGNOUT_DESC',
 		},
 	];
@@ -863,7 +886,7 @@ const MobileBarMoreOptions = ({
 		const actions = {
 			'MORE_OPTIONS_LABEL.ICONS.CEFI_STAKE': () => setSelectedStake('cefi'),
 			'MORE_OPTIONS_LABEL.ICONS.DEFI_STAKE': () => setSelectedStake('defi'),
-			'ACCOUNTS.TAB_SIGNOUT': () => setIsLogout(true),
+			SIGN_OUT_TEXT: () => setIsLogout(true),
 			FEES: () => setLimitTab(0),
 			'MORE_OPTIONS_LABEL.ICONS.LIMITS': () => setLimitTab(2),
 			'ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE': () => setSecurityTab(1),
@@ -1186,6 +1209,7 @@ const MobileBarMoreOptions = ({
 			<Dialog
 				isOpen={isDialogOpen}
 				onCloseDialog={() => setIsDialogOpen(false)}
+				label="helpful-resources-popup"
 			>
 				<HelpfulResourcesForm
 					onSubmitSuccess={() => setIsDialogOpen(false)}
@@ -1232,7 +1256,7 @@ const MobileBarMoreOptions = ({
 	const onHandleLogout = () => {
 		removeToken();
 		setIsLogout(false);
-		return browserHistory?.push('/login');
+		logout();
 	};
 
 	const onHandleClosePopup = () => {
@@ -1259,11 +1283,16 @@ const MobileBarMoreOptions = ({
 			{isLogout &&
 				renderConfirmSignout(isLogout, onHandleClosePopup, onHandleLogout)}
 			{isMobile ? (
-				<SearchBox
-					placeHolder={STRINGS['MORE_OPTIONS_LABEL.MORE_OPTION_SEARCH_TXT']}
-					handleSearch={(e) => onHandleSearch(e)}
-					showCross
-				/>
+				<div className="title-wrapper">
+					<span className="search-title font-weight-bold">
+						{STRINGS['DESKTOP_ULTIMATE_SEARCH.SEARCH_DESCRIPTION']}
+					</span>
+					<SearchBox
+						placeHolder={STRINGS['MORE_OPTIONS_LABEL.MORE_OPTION_SEARCH_TXT']}
+						handleSearch={(e) => onHandleSearch(e)}
+						showCross
+					/>
+				</div>
 			) : (
 				<div className="search-field">
 					{!isSearchActive ? (
@@ -1418,6 +1447,7 @@ const mapDispatchToProps = (dispatch) => ({
 	setSecurityTab: bindActionCreators(setSecurityTab, dispatch),
 	setVerificationTab: bindActionCreators(setVerificationTab, dispatch),
 	setSettingsTab: bindActionCreators(setSettingsTab, dispatch),
+	logout: bindActionCreators(logout, dispatch),
 });
 
 export default connect(

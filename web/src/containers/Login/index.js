@@ -145,6 +145,13 @@ class Login extends Component {
 					} else {
 						error._error = _error;
 					}
+					if (
+						_error
+							.toLowerCase()
+							?.includes('suspicious login detected, please check your email')
+					) {
+						this.props.router.replace('/email-confirm');
+					}
 					throw new SubmissionError(error);
 				}
 			});

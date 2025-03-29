@@ -162,6 +162,17 @@ $order_entry-column--width-lg: 20rem;
 			}
 		}
 	}
+	.active-icon {
+		svg {
+			fill: $colors-main-black;
+		}
+	}
+	.inactive-icon {
+		opacity: 0.6;
+		svg {
+			fill: $colors-black;
+		}
+	}
 }
 
 .quick-trade-tab {
@@ -284,5 +295,18 @@ $order_entry-column--width-lg: 20rem;
 				padding-left: 0.25rem;
 			}
 		}
+	}
+}
+
+.markets-select-input {
+	width: 10rem !important;
+	.market-option {
+		gap: 5%;
+	}
+}
+
+.markets-select-dropdown {
+	.market-option {
+		gap: 5%;
 	}
 }

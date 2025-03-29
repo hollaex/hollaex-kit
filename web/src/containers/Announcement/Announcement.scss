@@ -199,7 +199,7 @@
 		}
 
 		.blue-link {
-			font-size: 10px;
+			font-size: 12px;
 		}
 
 		.annuoncement-title-container {
@@ -242,7 +242,7 @@
 
 				.filter-text {
 					opacity: 0.6;
-					font-size: 10px;
+					font-size: 12px;
 					padding: 1% 4% !important;
 					border: 1px solid var(--labels_secondary-inactive-label-text-graphics);
 					border-radius: 5px;
@@ -266,7 +266,7 @@
 				}
 
 				.secondary-text {
-					font-size: 1.2rem;
+					font-size: 1.4rem;
 				}
 			}
 
@@ -277,7 +277,8 @@
 
 				.no-data {
 					.empty-description {
-						font-size: 10px;
+						font-size: 12px;
+						text-align: center;
 					}
 				}
 
@@ -295,7 +296,7 @@
 					.table-wrapper {
 						.table_body-wrapper {
 							.table_body-row {
-								font-size: 1.2rem;
+								font-size: 1.4rem;
 							}
 							.announcement-type,
 							.announcement-title {
@@ -317,7 +318,7 @@
 									margin-right: 5%;
 								}
 								.announcement-message-wrapper * {
-									font-size: 10px !important;
+									font-size: 12px !important;
 								}
 							}
 						}
@@ -326,7 +327,7 @@
 			}
 
 			.selected-announcement-type {
-				font-size: 10px;
+				font-size: 12px;
 				padding: 5px 0px;
 			}
 
@@ -340,7 +341,7 @@
 
 			.selected-announcement-message {
 				width: 100%;
-				font-size: 10px;
+				font-size: 12px;
 				padding: 2% 0;
 
 				img {

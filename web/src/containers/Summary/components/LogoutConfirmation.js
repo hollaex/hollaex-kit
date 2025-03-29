@@ -1,21 +1,36 @@
 import React from 'react';
 
-import { Button } from '../../../components';
 import STRINGS from '../../../config/localizedStrings';
+import icons from 'config/icons/dark';
+import { Button, EditWrapper, Image } from '../../../components';
 
 const LogoutConfirmation = ({ onClose, onConfirm, ...rest }) => {
 	return (
-		<div className="logout-wrapper d-flex justify-content-center align-items-center flex-column">
-			<div className="mt-1 mb-2 confirm-text">
-				{STRINGS['LOGOUT_CONFIRM_TEXT']}
+		<div className="signout-confirmation-popup-description">
+			<div className="signout-confirmation-content">
+				<Image icon={icons['TAB_SIGNOUT']} wrapperClassName="sign-out-icon" />
+				<span className="signout-title">
+					<EditWrapper stringId="CONFIRM_TEXT">
+						{STRINGS['CONFIRM_TEXT']} {STRINGS['SIGN_OUT_TEXT']}
+					</EditWrapper>
+				</span>
+				<span className="signout-description-content">
+					<EditWrapper stringId="LOGOUT_CONFIRM_TEXT">
+						{STRINGS['LOGOUT_CONFIRM_TEXT']}
+					</EditWrapper>
+				</span>
 			</div>
-			<div className="d-flex mt-3">
-				<Button label={STRINGS['BACK_TEXT']} onClick={onClose} />
-				<div className="mx-2" />
+			<div className="signout-confirmation-button-wrapper">
 				<Button
-					label={STRINGS['NOTIFICATIONS.BUTTONS.OKAY']}
-					onClick={onConfirm}
-				/>
+					className="cancel-btn"
+					label={STRINGS['CANCEL']}
+					onClick={() => onClose()}
+				></Button>
+				<Button
+					className="confirm-btn"
+					label={STRINGS['CONFIRM_TEXT']}
+					onClick={() => onConfirm()}
+				></Button>
 			</div>
 		</div>
 	);

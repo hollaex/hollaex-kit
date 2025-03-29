@@ -108,14 +108,10 @@ const TradingFees = ({
 						</div>
 						<div className="w-100 pl-3">
 							<div
-								className={classnames(
-									'd-flex',
-									'justify-content-between',
-									'align-center',
-									{
-										'flex-direction-column': isMobile,
-									}
-								)}
+								className={classnames('d-flex', 'justify-content-between', {
+									'align-center': !isMobile,
+									'flex-direction-column align-items-start': isMobile,
+								})}
 							>
 								<div>
 									<IconTitle
