@@ -71,7 +71,6 @@ const setExchange = (data) => {
 		...(data.password && { 'password': data.password }),
 		options: {
 			'defaultType': 'spot',
-			...(data.exchange === 'mexc' && { createMarketBuyOrderRequiresPrice: false })
 		}
 	});
 
