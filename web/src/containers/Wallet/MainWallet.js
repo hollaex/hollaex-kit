@@ -11,7 +11,7 @@ import {
 	Button,
 	MobileBarBack,
 } from 'components';
-import { TransactionsHistory, Stake } from 'containers';
+import { TransactionsHistory } from 'containers';
 import { changeSymbol } from 'actions/orderbookAction';
 import {
 	BASE_CURRENCY,
@@ -26,10 +26,11 @@ import AssetsBlock from './AssetsBlock';
 import MobileWallet from './MobileWallet';
 import DustSection from './DustSection';
 import HeaderSection from './HeaderSection';
+import Index from 'containers/Stake';
+import ProfitLossSection from './ProfitLossSection';
 import { STATIC_ICONS } from 'config/icons';
 import { isStakingAvailable, STAKING_INDEX_COIN } from 'config/contracts';
 import { assetsSelector, searchAssets } from './utils';
-import ProfitLossSection from './ProfitLossSection';
 import { setPricesAndAsset } from 'actions/assetActions';
 import { setActiveBalanceHistory } from 'actions/walletActions';
 
@@ -280,7 +281,7 @@ class Wallet extends Component {
 		if (stake_page || cefi_stake) {
 			mobileTabs.push({
 				title: STRINGS['ACCOUNTS.TAB_STAKE'],
-				content: <Stake />,
+				content: <Index isFromWallet={true} />,
 			});
 		}
 
@@ -307,6 +308,10 @@ class Wallet extends Component {
 		this.handleBalanceHistory(false);
 	};
 
+	onHandleRefresh = () => {
+		this.props.setPricesAndAsset(this.props.balance, this.props.coins);
+	};
+
 	render() {
 		const { sections, activeTab, mobileTabs, showDustSection } = this.state;
 		const { icons: ICONS, router, assets, isFetching, pairs } = this.props;
@@ -319,7 +324,7 @@ class Wallet extends Component {
 		}
 		return (
 			<div className="apply_rtl">
-				{isMobile ? (
+				{isMobile && !showDustSection ? (
 					<div>
 						{isNotWalletHistory && (
 							<MobileBarTabs
@@ -341,7 +346,8 @@ class Wallet extends Component {
 							'presentation_container',
 							'apply_rtl',
 							'wallet-wrapper',
-							{ settings_container: showDustSection }
+							{ settings_container: showDustSection },
+							{ dust_container: showDustSection }
 						)}
 					>
 						<IconTitle
@@ -360,7 +366,12 @@ class Wallet extends Component {
 								<DustSection goToWallet={this.goToWallet} />
 							) : (
 								<>
-									<HeaderSection icons={ICONS} />
+									<HeaderSection
+										icons={ICONS}
+										onHandleRefresh={this.onHandleRefresh}
+										isLoading={isFetching}
+										activeBalanceHistory={this.state.activeBalanceHistory}
+									/>
 									<NotLoggedIn>
 										{!this.state.activeBalanceHistory ? (
 											<Accordion sections={sections} showHeader={false} />
@@ -371,6 +382,7 @@ class Wallet extends Component {
 												loading={isFetching}
 												navigate={this.goToPage}
 												pairs={pairs}
+												onHandleRefresh={this.onHandleRefresh}
 											/>
 										)}
 									</NotLoggedIn>
@@ -380,6 +392,7 @@ class Wallet extends Component {
 					</div>
 				)}
 				{isMobile &&
+					!showDustSection &&
 					router?.location?.pathname === '/wallet' &&
 					this.state.activeTab === 0 && (
 						<div

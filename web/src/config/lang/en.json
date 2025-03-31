@@ -1,7 +1,8 @@
 {
 	"APP_TITLE": "HollaEx",
 	"APP_SUB_TITLE": "Open Crypto Exchange",
-	"LOGOUT_CONFIRM_TEXT": "Are you sure you want to logout?",
+	"LOGOUT_CONFIRM_TEXT": "You're about to sign out. Are you sure?",
+	"SIGN_OUT_TEXT": "Sign Out",
 	"ADD_TRADING_PAIR": "Select a market",
 	"TRADE_TOOLS": "Tools",
 	"CANCEL_BASE_WITHDRAWAL": "Cancel {0}",
@@ -41,7 +42,7 @@
 	"PROCEED": "PROCEED",
 	"EDIT_TEXT": "Edit",
 	"BACK_TEXT": "Back",
-	"NO_OPTIONS": "No options availables",
+	"NO_OPTIONS": "No options available",
 	"SECONDS": "seconds",
 	"SECOND": "second",
 	"VIEW_MARKET": "view markets",
@@ -510,7 +511,9 @@
 		"NOTIFICATION_FORM": {
 			"POPUP_ORDER_CONFIRMATION": "Ask for confirmation before submitting orders",
 			"POPUP_ORDER_COMPLETED": "Show pop up when order has been completed",
-			"POPUP_ORDER_PARTIALLY_FILLED": "Show pop up when order has partially filled"
+			"POPUP_ORDER_PARTIALLY_FILLED": "Show pop up when order has partially filled",
+			"POPUP_NEW_ORDER_CREATED": "Show pop up when a new order has been placed",
+			"POPUP_ORDER_CANCELLED": "Show pop up when canceling orders"
 		},
 		"AUDIO_CUE_FORM": {
 			"ALL_AUDIO": "All Audio cues",
@@ -734,8 +737,8 @@
 		"MODAL_TITLE": "Stake and earn {0}",
 		"REVIEW_MODAL_TITLE": "Check and confirm stake",
 		"AVAILABLE_TOKEN": "{0} ({1}) available to stake: {2}",
-		"DEFI_TITLE": "DeFi asset staking",
-		"DEFI_TEXT": "Staking DeFi style will use your own wallet outside of the exchange. To start you are required to establish a connection, once connected you can stake and start earning directly from your wallet.",
+		"DEFI_TITLE": "Defi asset staking",
+		"DEFI_TEXT": "Staking Defi style will use your own wallet outside of the exchange. To start you are required to establish a connection, once connected you can stake and start earning directly from your wallet.",
 		"GET_STAKES": "Get stakes",
 		"CURRENT_ETH_BLOCK": "Current ETH block: {0}",
 		"ON_EXCHANGE_XHT": "On exchange {0} balance: {1} {2}",
@@ -807,8 +810,8 @@
 		},
 		"INSTALL_METAMASK_TITLE": "MetaMask not detected",
 		"EARN_REWARD": "Earn rewards for staking your digital assets",
-		"DEFI_STAKING": "DeFi Staking",
-		"CEFI_STAKING": "CeFi Staking",
+		"DEFI_STAKING": "Defi Staking",
+		"CEFI_STAKING": "Cefi Staking",
 		"REWARDS": {
 			"0": { "CARD": "Earn rewards (no bonuses)", "TEXT": "regular rewards." },
 			"1": {
@@ -905,7 +908,7 @@
 		}
 	},
 	"CEFI_STAKE": {
-		"STAKE_POOL_TITLE": "Local CeFi Staking Pools",
+		"STAKE_POOL_TITLE": "Local Cefi Staking Pools",
 		"INTRODUCTION_1": "Earn rewards on assets you have stored in your local exchange wallet. Simply, click 'STAKE', input the amount you'd like to stake and start earning.",
 		"CURRENT_STAKING_VALUE": "Current staking value",
 		"DURATION_LABEL": "Duration",
@@ -1150,6 +1153,29 @@
 		"MIN_AMOUNT_WARNING_INFO": "The minimum withdrawal amount is {0}",
 		"ZERO_BALANCE": "You do not have enough available balance.",
 		"NEW_ADDRESS": "New Address"
+	},
+	"LOGIN_CONFIRMATION": {
+		"LOGIN_CONFIRM_FINAL": "Login Confirmation",
+		"FREEZE_CONFIRM_FINAL": "Freeze your account",
+		"LOGIN_CONFIRM_WARNING": "To login to your account please click the confirmation button below so that we know it is you.",
+		"FREEZE_CONFIRM_WARNING": "When frozen, your account is completely locked and protected from all access, including your own. You can easily restore access later by reaching out to our support team.",
+		"LOGIN_CANCEL_BUTTON": "CLOSE",
+		"LOGIN_CONFIRM_BUTTON": "Confirm Login",
+		"FREEZE_CONFIRM_BUTTON": "YES, FREEZE MY ACCOUNT",
+		"LOGIN_INPUT_CODE": "please input the code",
+		"LOGIN_CONFIRM_SUCCESS_1": "Your email has been verified.",
+		"FREEZE_CONFIRM_SUCCESS_1": "Your account is now locked, and withdrawals are temporarily disabled.",
+		"FREEZE_CONFIRM_SUCCESS_2": "Contact us anytime to restore your access.",
+		"LOGIN_CONFIRM_SUCCESS_2": "Please log back in to access your account.",
+		"GO_LOGIN_HISTORY": "Go To Login Page",
+		"ACCOUNT_FROZEN": "Account Frozen",
+		"CONFIRM_FREEZE_TITLE": "Confirm Freeze",
+		"CONFIRM_WARNING_FREEZE_DESC": "Are you sure you want to freeze your account?",
+		"ACCOUNT_CONFIRMED": "Account Confirmed",
+		"EMAIL_CONFIRMATION": "Email Confirmation Required",
+		"EMAIL_CONFIRMATION_DESC_1": "We sent you an email with a confirmation button.",
+		"EMAIL_CONFIRMATION_DESC_2": "Please click it {0} to proceed.",
+		"EMAIL_TEXT": "in your email"
 	},
 	"WALLET_BUTTON_BASE_DEPOSIT": "deposit",
 	"WALLET_BUTTON_BASE_WITHDRAW": "withdraw",
@@ -1491,7 +1517,9 @@
 		"INSUFFICIENT_INFO_1": "Your earnings are currently insufficient for settlement. Please invite more members using your referral link and wait until your unsettled earnings {0} {1}",
 		"INSUFFICIENT_INFO_2": "exceed 1",
 		"GO_TO_REFERRAL": "Go To Referral",
-		"REFER_DESC": "Share a link below with friends to Start earning commissions on their trading"
+		"REFER_DESC": "Share a link below with friends to Start earning commissions on their trading",
+		"SUCCESSFULLY_SETTLED": "Successfully Settled",
+		"SETTLE_AMOUNT": "You've successfully settled the amount of {0} {1}"
 	},
 	"NOT_LOGGEDIN": {
 		"TEXT_GENERAL": "To view you must login",
@@ -1614,7 +1642,7 @@
 	"LOADING": "Loading...",
 	"CONNECT_VIA_DESKTOP": {
 		"TITLE": "Connect via desktop",
-		"SUBTITLE": "DeFi staking through your mobile devices aren't supported at this time.",
+		"SUBTITLE": "Defi staking through your mobile devices aren't supported at this time.",
 		"TEXT": "To connect your wallet please use a desktop/laptop computer."
 	},
 	"ORDER_HISTORY_CLOSED": "Closed",
@@ -2546,6 +2574,7 @@
 		"RECHECK_PING": "RECHECK PING",
 		"FAST": "Fast",
 		"SLOW": "Slow",
+		"VERY_SLOW": "Very Slow",
 		"MS": "{0} ms",
 		"STATUS_NORMAL": "Connection Normal",
 		"CONNECTION_LABEL": "Connection",
@@ -2581,7 +2610,8 @@
 		"TRANSACTION_DESC": "Review all trades, deposits & withdrawals",
 		"ONRAMPER_DESC": "Use Onramper to buy and sell crypto",
 		"AUTO_TRADER_DESC": "Recurring automatic buy & sell transactions",
-		"ANNOUNCEMENT_DESC": "Updates, listings and other news"
+		"ANNOUNCEMENT_DESC": "Updates, listings and other news",
+		"WALLET_DESCRIPTION": "View your wallet asset and balances"
 	},
 	"DESKTOP_ULTIMATE_SEARCH": {
 		"SEARCH_DESCRIPTION": "Find Functions, Coins, and More",
@@ -2696,5 +2726,16 @@
 		"EXCHANGE_UPDATE": "Exchange update",
 		"NO_DATA_TEXT": "It appears that no announcements have been made yet",
 		"UPGRADES": "Upgrades"
+	},
+	"ERROR_TAB": {
+		"NETWORK_ERROR": "Connection Issue",
+		"NETWORK_ERROR_DESC": "Please check your internet connection.",
+		"SERVER_ERROR": "Server Error",
+		"SERVER_ERROR_DESC": "We're experiencing a temporary network or server issue. Please try again later.",
+		"SERVER_MAINTENANCE_ERROR": "Server maintenance",
+		"SERVER_MAINTENANCE_ERROR_DESC": "System maintenance is currently underway. Please try again later.",
+		"TOO_MANY_REQUEST_ERROR": "Too many requests",
+		"TOO_MANY_REQUEST_ERROR_DESC": "Wow! Slow down, you are doing too much at once",
+		"NETWORK_ERROR_MESSAGE": "Network Error"
 	}
 }

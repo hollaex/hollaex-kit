@@ -136,6 +136,14 @@ const WithdrawConfirmation = Loadable({
 	loader: () => import('./containers/WithdrawConfirmation'),
 	loading: LoadingComponent,
 });
+const LoginConfirmation = Loadable({
+	loader: () => import('./containers/LoginConfirmation'),
+	loading: LoadingComponent,
+});
+const EmailConfirmation = Loadable({
+	loader: () => import('./containers/LoginConfirmation/emailConfirmation'),
+	loading: LoadingComponent,
+});
 const AddTradeTabs = Loadable({
 	loader: () => import('./containers/TradeTabs'),
 	loading: LoadingComponent,
@@ -550,6 +558,16 @@ export const generateRoutes = (routes = []) => {
 				<Route path="signup" name="signup" component={Signup} />
 			</Route>
 			<Route component={AuthContainer} {...noLoggedUserCommonProps}>
+				<Route
+					path="confirm-login"
+					name="ConfirmLogin"
+					component={LoginConfirmation}
+				/>
+				<Route
+					path="email-confirm"
+					name="EmailConfirm"
+					component={EmailConfirmation}
+				/>
 				<Route
 					path="reset-password"
 					name="Reset Password Request"

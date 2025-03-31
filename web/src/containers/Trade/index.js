@@ -24,6 +24,7 @@ import {
 	NOTIFICATIONS,
 	setTradeTab,
 	setIsProTrade,
+	setMarketRefresh,
 } from 'actions/appActions';
 import { NORMAL_CLOSURE_CODE, isIntentionalClosure } from 'utils/webSocket';
 import { isLoggedIn } from 'utils/token';
@@ -174,6 +175,12 @@ class Trade extends PureComponent {
 			symbol: '',
 			layout: LAYOUT.length > 0 ? LAYOUT : defaultLayout,
 			rowHeight,
+			refreshKey: 0,
+			refreshDepthChart: 0,
+			refreshRecentTrade: 0,
+			refreshOpenOrder: 0,
+			refreshOrderbook: 0,
+			refreshPublicSales: 0,
 		};
 		this.priceTimeOut = '';
 		this.sizeTimeOut = '';
@@ -593,6 +600,23 @@ class Trade extends PureComponent {
 		});
 	};
 
+	onHandleRefresh = (text) => {
+		const refreshMapping = {
+			'refresh chart': 'refreshKey',
+			'refresh depth chart': 'refreshDepthChart',
+			'refresh recent trade': 'refreshRecentTrade',
+			'refresh open order': 'refreshOpenOrder',
+			orderbook: 'refreshOrderbook',
+			'public sales': 'refreshPublicSales',
+		};
+
+		if (refreshMapping[text]) {
+			this.setState((prev) => ({
+				[refreshMapping[text]]: prev[refreshMapping[text]] + 1,
+			}));
+		}
+	};
+
 	getSectionByKey = (key) => {
 		const {
 			pair,
@@ -668,8 +692,15 @@ class Trade extends PureComponent {
 							pairData={pairData}
 							pair={pair}
 							tool={key}
+							selectedTool={STRINGS['TOOLS.ORDERBOOK']}
+							onHandleRefresh={() => this.onHandleRefresh('orderbook')}
 						>
-							{orderbookReady && <Orderbook {...orderbookProps} />}
+							{orderbookReady && (
+								<Orderbook
+									{...orderbookProps}
+									key={this.state.refreshOrderbook}
+								/>
+							)}
 						</TradeBlock>
 					</div>
 				);
@@ -689,9 +720,14 @@ class Trade extends PureComponent {
 							pairData={pairData}
 							pair={pair}
 							tool={key}
+							onHandleRefresh={() => this.onHandleRefresh('refresh chart')}
 						>
 							{pair && chartHeight > 0 && (
-								<TVChartContainer symbol={symbol} pairData={pairData} />
+								<TVChartContainer
+									symbol={symbol}
+									pairData={pairData}
+									key={this.state.refreshKey}
+								/>
 							)}
 						</TradeBlock>
 					</div>
@@ -706,8 +742,13 @@ class Trade extends PureComponent {
 							pairData={pairData}
 							pair={pair}
 							tool={key}
+							onHandleRefresh={() => this.onHandleRefresh('public sales')}
 						>
-							<TradeHistory pairData={pairData} language={activeLanguage} />
+							<TradeHistory
+								pairData={pairData}
+								language={activeLanguage}
+								key={this.state.refreshPublicSales}
+							/>
 						</TradeBlock>
 					</div>
 				);
@@ -752,6 +793,10 @@ class Trade extends PureComponent {
 							goToTransactionsHistory={this.goToTransactionsHistory}
 							goToPair={this.goToPair}
 							tool={key}
+							onHandleRefresh={() =>
+								this.onHandleRefresh('refresh recent trade')
+							}
+							key={this.state.refreshRecentTrade}
 						/>
 					</div>
 				);
@@ -771,6 +816,8 @@ class Trade extends PureComponent {
 							tool={key}
 							allOrderCancelNotification={this.allOrderCancelNotification}
 							orderCancelNotification={this.orderCancelNotification}
+							onHandleRefresh={() => this.onHandleRefresh('refresh open order')}
+							key={this.state.refreshOpenOrder}
 						/>
 					</div>
 				);
@@ -797,9 +844,13 @@ class Trade extends PureComponent {
 							title={STRINGS['TOOLS.DEPTH_CHART']}
 							className="f-1"
 							tool={key}
+							onHandleRefresh={() =>
+								this.onHandleRefresh('refresh depth chart')
+							}
 						>
 							<DepthChart
 								containerProps={{ className: 'w-100 h-100 zoom-in' }}
+								key={this.state.refreshDepthChart}
 							/>
 						</TradeBlock>
 					</div>
@@ -841,8 +892,14 @@ class Trade extends PureComponent {
 			icons,
 			tools,
 			activeTab,
+			isMarketRefresh,
 		} = this.props;
 		const { symbol, orderbookFetched, layout, rowHeight } = this.state;
+
+		if (isMarketRefresh) {
+			this.setSymbol(symbol);
+			this.props.setMarketRefresh(false);
+		}
 
 		if (symbol !== pair || !pairData) {
 			return <Loader background={false} />;
@@ -1018,6 +1075,7 @@ const mapStateToProps = (state) => {
 		tools: state.tools,
 		activeTab: state.app.tradeTab,
 		tickers: state.app.tickers,
+		isMarketRefresh: state.app.isMarketRefresh,
 	};
 };
 
@@ -1030,6 +1088,7 @@ const mapDispatchToProps = (dispatch) => ({
 	resetTools: bindActionCreators(resetTools, dispatch),
 	setTradeTab: bindActionCreators(setTradeTab, dispatch),
 	setIsProTrade: bindActionCreators(setIsProTrade, dispatch),
+	setMarketRefresh: bindActionCreators(setMarketRefresh, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withConfig(Trade));

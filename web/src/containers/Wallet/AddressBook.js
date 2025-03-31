@@ -324,11 +324,12 @@ const AddressBook = ({
 			{renderPopUps.step1 && (
 				<Dialog
 					className="address_book_popup_wrapper add_withdrawal_address_wrapper"
-					isOpen={renderPopUps.step1}
+					isOpen={!!renderPopUps.step1}
 					onCloseDialog={() => {
 						onHandleClose('step1');
 						setSelectedAsset((prev) => ({ ...prev, optionalTag: null }));
 					}}
+					label="address-book-popup"
 				>
 					<div className="address-book-popup-wrapper">
 						<div>
@@ -385,9 +386,10 @@ const AddressBook = ({
 			)}
 			{renderPopUps.step2 && (
 				<Dialog
-					isOpen={renderPopUps.step2}
+					isOpen={!!renderPopUps.step2}
 					onCloseDialog={() => onHandleClose('step2')}
 					className="address_book_popup_wrapper"
+					label="address-book-popup"
 				>
 					<div>
 						<div className="name-address-popup-wrapper">
@@ -449,9 +451,13 @@ const AddressBook = ({
 											) : coinLength?.length > 1 ? (
 												<div className="selected-network">
 													<span>{selectedAsset?.networkOptions}</span>
-													{networkList.map((data) =>
+													{networkList.map((data, index) =>
 														data.network === selectedAsset?.networkOptions ? (
-															<Coin iconId={data.iconId} type="CS2" />
+															<Coin
+																iconId={data.iconId}
+																type="CS2"
+																key={index}
+															/>
 														) : null
 													)}
 												</div>
@@ -558,12 +564,12 @@ const AddressBook = ({
 								{STRINGS['ADDRESS_BOOK.WITHDRAWAL_ADDRESS_BOOK']}
 							</EditWrapper>
 						</div>
-						<div className="">
+						<div className="address-book-description">
 							<EditWrapper stringId="ADDRESS_BOOK.ADDRESS_BOOK_DESC_1">
 								{STRINGS['ADDRESS_BOOK.ADDRESS_BOOK_DESC_1']}
 							</EditWrapper>
 						</div>
-						<div className="">
+						<div className="address-book-description">
 							<EditWrapper stringId="ADDRESS_BOOK.ADDRESS_BOOK_DESC_2">
 								{STRINGS['ADDRESS_BOOK.ADDRESS_BOOK_DESC_2']}
 							</EditWrapper>

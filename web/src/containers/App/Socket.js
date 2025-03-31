@@ -440,10 +440,12 @@ class Container extends Component {
 						this.props.setUserOrders(data.data);
 					} else if (data.action === 'insert') {
 						const isNotification =
+							(data?.data?.status === 'new' &&
+								this.props.settings.notification.popup_order_new) ||
 							(data?.data?.status === 'filled' &&
-								this.state.selectedPair !== data?.data?.symbol) ||
-							!this.state.isOrderStatus ||
-							data?.data?.status === 'new';
+								(this.state.selectedPair !== data?.data?.symbol ||
+									!this.state.isOrderStatus) &&
+								this.props.settings.notification.popup_order_completed);
 						if (isNotification) {
 							this.toastNotification(data);
 						}
@@ -473,11 +475,11 @@ class Container extends Component {
 								selectedPair: data?.data?.symbol,
 							});
 							this.props.updateOrder(data.data);
-							this.toastNotification(data);
 							if (
 								this.props.settings.notification &&
 								this.props.settings.notification.popup_order_partially_filled
 							) {
+								this.toastNotification(data);
 								// data.filled = data.filled - filled;
 								// if (isMobile) {
 								// 	this.props.setSnackDialog({
@@ -508,7 +510,6 @@ class Container extends Component {
 								isOrderStatus: data?.data?.status,
 								selectedPair: data?.data?.symbol,
 							});
-							this.toastNotification(data);
 							const ordersDeleted = this.props.orders.filter((order, index) => {
 								return data.data.id === order.id;
 							});
@@ -517,6 +518,7 @@ class Container extends Component {
 								this.props.settings.notification &&
 								this.props.settings.notification.popup_order_completed
 							) {
+								this.toastNotification(data);
 								ordersDeleted.forEach((orderDeleted) => {
 									// if (isMobile) {
 									// 	this.props.setSnackDialog({

@@ -102,7 +102,12 @@ $order_entry-column--width-lg: 20rem;
 .trade_active_orders-wrapper {
 	overflow-y: auto;
 	flex: 1;
-
+	.loading-anime {
+		height: 20px;
+		width: 100%;
+		border-radius: 7px;
+		animation: mymove 3s infinite;
+	}
 	.cell_box-type {
 		padding: 0.1rem;
 
@@ -155,6 +160,17 @@ $order_entry-column--width-lg: 20rem;
 				padding-left: 0.5rem;
 				padding-right: 0.5rem;
 			}
+		}
+	}
+	.active-icon {
+		svg {
+			fill: $colors-main-black;
+		}
+	}
+	.inactive-icon {
+		opacity: 0.6;
+		svg {
+			fill: $colors-black;
 		}
 	}
 }
@@ -279,5 +295,18 @@ $order_entry-column--width-lg: 20rem;
 				padding-left: 0.25rem;
 			}
 		}
+	}
+}
+
+.markets-select-input {
+	width: 10rem !important;
+	.market-option {
+		gap: 5%;
+	}
+}
+
+.markets-select-dropdown {
+	.market-option {
+		gap: 5%;
 	}
 }

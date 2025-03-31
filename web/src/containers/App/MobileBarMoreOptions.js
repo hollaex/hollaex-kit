@@ -1,10 +1,16 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, {
+	useCallback,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+} from 'react';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
 import { Input, Tooltip } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
+import { CloseOutlined, SearchOutlined } from '@ant-design/icons';
 
 import icons from 'config/icons/dark';
 import STRINGS from 'config/localizedStrings';
@@ -29,6 +35,7 @@ import {
 import { removeToken } from 'utils/token';
 import { MarketsSelector } from 'containers/Trade/utils';
 import { assetsSelector } from 'containers/Wallet/utils';
+import { logout } from 'actions/authAction';
 
 const INITIAL_LOGINS_STATE = {
 	count: 0,
@@ -49,6 +56,7 @@ const MobileBarMoreOptions = ({
 	getRemoteRoutes,
 	assets,
 	user,
+	logout,
 }) => {
 	const [search, setSearch] = useState('');
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -65,6 +73,8 @@ const MobileBarMoreOptions = ({
 		isDisplayPing: false,
 	});
 	const [isLogout, setIsLogout] = useState(false);
+	const [isSearchActive, setIsSearchActive] = useState(false);
+	const inputRef = useRef(null);
 
 	const fieldHasCoinIcon = [
 		'SUMMARY.DEPOSIT',
@@ -88,7 +98,10 @@ const MobileBarMoreOptions = ({
 			if (search?.length > 1) {
 				const lastSearchTerm = searchTerms[searchTerms?.length - 1];
 				const matches = searchTerms?.some(
-					(term) => fullname?.startsWith(term) || symbol?.startsWith(term)
+					(term) =>
+						fullname?.startsWith(term) ||
+						fullname?.includes(term) ||
+						symbol?.startsWith(term)
 				);
 				const lastMatch =
 					fullname?.startsWith(lastSearchTerm) ||
@@ -167,6 +180,33 @@ const MobileBarMoreOptions = ({
 			fetchData();
 		}
 		//eslint-disable-next-line
+	}, []);
+
+	useEffect(() => {
+		if (isSearchActive && inputRef && inputRef.current) {
+			inputRef.current.focus();
+		}
+	}, [isSearchActive]);
+
+	useEffect(() => {
+		const handleKeyDown = (event) => {
+			if (event.key === '/') {
+				event.preventDefault();
+				setIsSearchActive(true);
+				if (inputRef.current) {
+					inputRef.current.focus();
+				}
+			} else if (event.key === 'Escape') {
+				setIsSearchActive(false);
+				setSearch('');
+			}
+		};
+
+		window.addEventListener('keydown', handleKeyDown);
+
+		return () => {
+			window.removeEventListener('keydown', handleKeyDown);
+		};
 	}, []);
 
 	const requestLogins = useCallback((page = 1) => {
@@ -380,7 +420,7 @@ const MobileBarMoreOptions = ({
 			iconText: 'MORE_OPTIONS_LABEL.ICONS.CEFI_STAKE',
 			path: '/stake',
 			isDisplay: features?.cefi_stake,
-			toolTipText: 'DESKTOP_NAVIGATION.CONVERT_DESC',
+			toolTipText: 'DESKTOP_NAVIGATION.CEFI_STAKE_DESC',
 			searchContent: [
 				STRINGS['STAKE.EARN'],
 				STRINGS['MORE_OPTIONS_LABEL.HOT_FUNCTION.PASSIVE_INCOME'],
@@ -411,7 +451,7 @@ const MobileBarMoreOptions = ({
 		{
 			icon_id: 'FEES_OPTION_ICON',
 			iconText: 'FEES',
-			path: '/fees-and-limits',
+			path: '/fees-and-limits?trading-fees',
 			isDisplay: true,
 			toolTipText: 'DESKTOP_ULTIMATE_SEARCH.FEES_INFO_TEXT',
 			searchContent: [
@@ -425,7 +465,7 @@ const MobileBarMoreOptions = ({
 		{
 			icon_id: 'LIMITS_OPTION_ICON',
 			iconText: 'MORE_OPTIONS_LABEL.ICONS.LIMITS',
-			path: '/fees-and-limits',
+			path: '/fees-and-limits?withdrawal-limits',
 			isDisplay: true,
 			toolTipText: 'DESKTOP_ULTIMATE_SEARCH.WITHDRAWAL_INFO_TEXT',
 			searchContent: [
@@ -833,10 +873,10 @@ const MobileBarMoreOptions = ({
 		},
 		{
 			icon_id: 'REVOKE_SESSION',
-			iconText: 'ACCOUNTS.TAB_SIGNOUT',
+			iconText: 'SIGN_OUT_TEXT',
 			path: browserHistory?.getCurrentLocation(),
 			isDisplay: true,
-			searchContent: [STRINGS['LOGOUT']],
+			searchContent: [STRINGS['LOGOUT'], STRINGS['ACCOUNTS.TAB_SIGNOUT']],
 			toolTipText: 'DESKTOP_NAVIGATION.SIGNOUT_DESC',
 		},
 	];
@@ -846,7 +886,7 @@ const MobileBarMoreOptions = ({
 		const actions = {
 			'MORE_OPTIONS_LABEL.ICONS.CEFI_STAKE': () => setSelectedStake('cefi'),
 			'MORE_OPTIONS_LABEL.ICONS.DEFI_STAKE': () => setSelectedStake('defi'),
-			'ACCOUNTS.TAB_SIGNOUT': () => setIsLogout(true),
+			SIGN_OUT_TEXT: () => setIsLogout(true),
 			FEES: () => setLimitTab(0),
 			'MORE_OPTIONS_LABEL.ICONS.LIMITS': () => setLimitTab(2),
 			'ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE': () => setSecurityTab(1),
@@ -884,7 +924,8 @@ const MobileBarMoreOptions = ({
 				const isContent = option?.searchContent?.some((content) =>
 					searchText?.some(
 						(searchValue) =>
-							content?.toLowerCase()?.startsWith(searchValue) &&
+							(content?.toLowerCase()?.startsWith(searchValue) ||
+								content?.toLowerCase()?.includes(searchValue)) &&
 							option?.isDisplay
 					)
 				);
@@ -1168,6 +1209,7 @@ const MobileBarMoreOptions = ({
 			<Dialog
 				isOpen={isDialogOpen}
 				onCloseDialog={() => setIsDialogOpen(false)}
+				label="helpful-resources-popup"
 			>
 				<HelpfulResourcesForm
 					onSubmitSuccess={() => setIsDialogOpen(false)}
@@ -1214,11 +1256,19 @@ const MobileBarMoreOptions = ({
 	const onHandleLogout = () => {
 		removeToken();
 		setIsLogout(false);
-		return browserHistory?.push('/login');
+		logout();
 	};
 
 	const onHandleClosePopup = () => {
 		setIsLogout(false);
+	};
+
+	const onHandleInput = () => {
+		setIsSearchActive(true);
+	};
+	const onhandleCloseInput = () => {
+		setIsSearchActive(false);
+		setSearch(null);
 	};
 
 	return (
@@ -1233,18 +1283,53 @@ const MobileBarMoreOptions = ({
 			{isLogout &&
 				renderConfirmSignout(isLogout, onHandleClosePopup, onHandleLogout)}
 			{isMobile ? (
-				<SearchBox
-					placeHolder={STRINGS['MORE_OPTIONS_LABEL.MORE_OPTION_SEARCH_TXT']}
-					handleSearch={(e) => onHandleSearch(e)}
-					showCross
-				/>
+				<div className="title-wrapper">
+					<span className="search-title font-weight-bold">
+						{STRINGS['DESKTOP_ULTIMATE_SEARCH.SEARCH_DESCRIPTION']}
+					</span>
+					<SearchBox
+						placeHolder={STRINGS['MORE_OPTIONS_LABEL.MORE_OPTION_SEARCH_TXT']}
+						handleSearch={(e) => onHandleSearch(e)}
+						showCross
+					/>
+				</div>
 			) : (
 				<div className="search-field">
-					<Input
-						onChange={(e) => onHandleSearch(e)}
-						placeholder={STRINGS['DESKTOP_ULTIMATE_SEARCH.SEARCH_PLACEHOILDER']}
-						allowClear
-					/>
+					{!isSearchActive ? (
+						<div
+							className="search-field-container search w-100 pointer d-flex align-items-center"
+							onClick={() => onHandleInput()}
+						>
+							<Input
+								placeholder={
+									STRINGS['DESKTOP_ULTIMATE_SEARCH.SEARCH_PLACEHOILDER']
+								}
+								allowClear
+								readOnly
+							/>
+							<span
+								className="open-icon"
+								onClick={() => onHandleInput()}
+							></span>
+						</div>
+					) : (
+						<div className="search-field-container w-100 d-flex align-items-center">
+							<Input
+								ref={inputRef}
+								value={search}
+								onChange={(e) => onHandleSearch(e)}
+								placeholder={
+									STRINGS['DESKTOP_ULTIMATE_SEARCH.SEARCH_PLACEHOILDER']
+								}
+							/>
+							<span
+								className="close-icon pointer"
+								onClick={() => onhandleCloseInput()}
+							>
+								<CloseOutlined />
+							</span>
+						</div>
+					)}
 					<span className="search-icon-container">
 						<SearchOutlined className="search-icon" />
 					</span>
@@ -1362,6 +1447,7 @@ const mapDispatchToProps = (dispatch) => ({
 	setSecurityTab: bindActionCreators(setSecurityTab, dispatch),
 	setVerificationTab: bindActionCreators(setVerificationTab, dispatch),
 	setSettingsTab: bindActionCreators(setSettingsTab, dispatch),
+	logout: bindActionCreators(logout, dispatch),
 });
 
 export default connect(

@@ -23,6 +23,7 @@ $trade-tab--arrow-size: 0.4rem;
 
 .layout-mobile {
 	.digital-market-wrapper {
+		padding-top: 4rem !important;
 		.link-container {
 			font-size: 10px;
 		}
@@ -430,6 +431,14 @@ $trade-tab--arrow-size: 0.4rem;
 		.link-container {
 			color: $colors-notifications-blue;
 			padding-top: 5px;
+			display: flex;
+			align-items: center;
+
+			.refresh-link {
+				padding: 2% 0.5rem;
+				width: max-content;
+				align-items: flex-start;
+			}
 
 			.link-1,
 			.link-2 {

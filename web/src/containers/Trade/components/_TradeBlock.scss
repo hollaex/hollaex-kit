@@ -39,6 +39,9 @@ $tabs-title--margin: 2rem;
 				font-size: $font-size-subtext;
 			}
 		}
+		.clear-link {
+			font-size: 1.2rem;
+		}
 		.trade_block-title {
 			cursor: default;
 			background-color: inherit;
@@ -96,11 +99,27 @@ $tabs-title--margin: 2rem;
 			color: $colors-main-black;
 			font-size: 0.9rem;
 			margin-left: 0.3rem;
-			margin-top: 0.1rem;
+			margin-top: 0.3rem;
+		}
+		.refresh-link {
+			.action_notification-svg {
+				svg {
+					path {
+						fill: $colors-main-black !important;
+					}
+				}
+			}
 		}
 	}
 
 	.trade_block-content {
+		.loading-anime {
+			height: 10px;
+			width: 100%;
+			margin: 2%;
+			border-radius: 7px;
+			animation: mymove 3s infinite;
+		}
 		flex: auto;
 		padding: 0 1.2rem 1.2rem 1.2rem;
 		font-size: $font-size-subtext;
@@ -229,10 +248,23 @@ $tabs-title--margin: 2rem;
 
 .layout-mobile {
 	.trade-container {
+		.content-with-bar {
+			min-height: $max-content-double-height-mobile !important;
+			max-height: $max-content-double-height-mobile !important;
+		}
 		.orderBook-wrapper {
 			max-height: 100% !important;
 			min-height: 100% !important;
 		}
+		.trade_tabs-container {
+			margin: unset !important;
+		}
+	}
+	.trade-public-sales {
+		max-height: 25vh !important;
+	}
+	.trade-chart {
+		max-height: 75vh !important;
 	}
 	.trade_block-wrapper {
 		padding: 1.2rem;

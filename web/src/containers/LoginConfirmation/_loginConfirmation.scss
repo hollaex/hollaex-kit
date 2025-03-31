@@ -1,0 +1,196 @@
+.withdrawal-confirm-warpper {
+	.withdrawal-confirm-title {
+		font-weight: normal;
+	}
+	.withdrawal-confirm--image {
+		width: 22rem;
+	}
+	.withdrawal-confirm-option {
+		background-color: var(--base_wallet-sidebar-and-popup);
+		padding: 25px;
+	}
+}
+
+.login-confirm-warpper {
+	.auth_wrapper {
+		.login-security-icon-wrapper {
+			position: relative;
+
+			svg {
+				width: 8rem;
+				height: 8rem;
+			}
+
+			.confirm-login-icon {
+				svg {
+					path {
+						fill: var(--labels_important-active-labels-text-graphics);
+						stroke: none;
+					}
+				}
+			}
+
+			.confirm-freeze-icon {
+				svg {
+					width: 6rem;
+					height: 6rem;
+				}
+			}
+		}
+
+		.icon_title-wrapper {
+			.icon_title-text {
+				margin-top: 10% !important;
+			}
+		}
+
+		.login-title {
+			font-size: 2.5rem;
+		}
+
+		.success-icon {
+			position: absolute;
+			top: 30%;
+			right: 10%;
+
+			svg {
+				width: 2rem;
+			}
+		}
+
+		.line-separator {
+			width: 100%;
+			height: 1px;
+			background-color: var(--calculated_secondary-border);
+		}
+
+		.login-confirm-option {
+			margin-top: 3%;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			width: 100%;
+
+			.otp-checkbox-wrapper {
+				margin-top: 5%;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+
+				.otp-container {
+					display: flex;
+					justify-content: center;
+					gap: 2%;
+
+					.otp-checkbox {
+						max-width: 8%;
+						height: 15%;
+						text-align: center;
+						font-size: 1.5rem;
+						border-radius: 5px;
+						outline: none;
+						transition: border 0.2s;
+						color: var(
+							--labels_important-active-labels-text-graphics
+						) !important;
+						background-color: var(--base_background);
+						border: 1px solid
+							var(--labels_secondary-inactive-label-text-graphics) !important;
+						box-shadow: none;
+					}
+
+					.otp-checkbox:focus {
+						border: 1px solid
+							var(--labels_important-active-labels-text-graphics) !important;
+						box-shadow: none;
+					}
+				}
+			}
+		}
+
+		.button-container {
+			margin-top: 3%;
+			display: flex;
+			justify-content: space-between;
+			gap: 3%;
+			align-items: center;
+			width: 100%;
+		}
+
+		.confirm-warning-description {
+			width: 90%;
+			text-align: center;
+
+			.description-text {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				gap: 1rem;
+			}
+		}
+	}
+}
+
+.layout-mobile {
+	.login-confirm-warpper {
+		.auth_wrapper {
+			position: relative;
+			width: 100%;
+
+			.icon_title-wrapper {
+				margin: unset !important;
+			}
+
+			.login-security-icon-wrapper {
+				.login-title {
+					font-size: 3rem !important;
+				}
+			}
+
+			.description-text {
+				font-size: 1.4rem;
+			}
+
+			.line-separator {
+				width: 90%;
+			}
+
+			.login-confirm-option {
+				width: 85%;
+			}
+
+			.button-container {
+				position: absolute;
+				bottom: 0;
+				padding: 5%;
+				width: 85%;
+
+				.confirm-btn {
+					width: 100%;
+				}
+			}
+
+			.success-icon {
+				top: 30%;
+			}
+
+			.otp-checkbox-wrapper {
+				.otp-container {
+					.otp-checkbox {
+						font-size: 1.5rem;
+						min-width: 10%;
+					}
+				}
+			}
+		}
+	}
+}
+
+.login-confirm-contact-popup-wrapper {
+	.ReactModal__Content {
+		min-height: 100vh;
+		max-height: 100vh;
+	}
+}

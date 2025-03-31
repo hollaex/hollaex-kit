@@ -1,41 +1,75 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import classnames from 'classnames';
+
+import strings from 'config/localizedStrings';
+import {
+	DefaultError,
+	NetworkError,
+	ServerError,
+	ServerMaintenanceError,
+	TooManyRequestError,
+} from 'utils/utils';
+import './_ErrorBoundary.scss';
 
 class ErrorBoundary extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { hasError: false };
+		this.state = { hasError: false, error: null };
 	}
 
-	static getDerivedStateFromError() {
-		return { hasError: true };
+	static getDerivedStateFromError(error) {
+		return { hasError: true, error };
 	}
 
 	componentDidCatch(error, errorInfo) {
 		console.error(error, errorInfo);
 	}
 
+	componentDidUpdate(prevProps) {
+		if (prevProps.errorMessage !== this.props.errorMessage) {
+			this.setState({ hasError: true, error: this.props.errorMessage });
+		}
+	}
+
+	setIsError = () => {
+		this.setState({ hasError: false, error: null });
+	};
+
 	render() {
-		const { hasError } = this.state;
+		const { hasError, error } = this.state;
 		const { children } = this.props;
 
 		if (hasError) {
+			const errorMessage = error?.message || error;
+
+			const errorComponents = {
+				[strings['ERROR_TAB.NETWORK_ERROR_MESSAGE']]: <NetworkError />,
+				[strings['ERROR_TAB.TOO_MANY_REQUEST_ERROR']]: <TooManyRequestError />,
+				[strings['ERROR_TAB.SERVER_ERROR']]: <ServerError />,
+				[strings['ERROR_TAB.SERVER_MAINTENANCE_ERROR']]: (
+					<ServerMaintenanceError />
+				),
+			};
+
+			const ErrorComponent = errorComponents[errorMessage] || (
+				<DefaultError error={error} setIsError={this.setIsError} />
+			);
+
 			return (
 				<div
-					style={{
-						height: '28rem',
-					}}
 					className={classnames(
 						'important-text',
-						'd-flex ',
+						'd-flex',
 						'justify-content-between',
 						'align-center',
 						'flex-direction-column',
-						'py-5',
-						'font-title'
+						'font-title',
+						'h-100',
+						'error-boundary-wrapper'
 					)}
 				>
-					<div>Something went wrong!</div>
+					{ErrorComponent}
 				</div>
 			);
 		}
@@ -44,4 +78,8 @@ class ErrorBoundary extends Component {
 	}
 }
 
-export default ErrorBoundary;
+const mapStateToProps = (state) => ({
+	errorMessage: state.app.errorMessage,
+});
+
+export default connect(mapStateToProps)(ErrorBoundary);
