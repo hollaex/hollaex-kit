@@ -112,6 +112,8 @@ const INITIAL_STATE = {
 			popup_order_confirmation: true,
 			popup_order_completed: true,
 			popup_order_partially_filled: true,
+			popup_order_new: true,
+			popup_order_canceled: true,
 		},
 		interface: {
 			theme: THEME_DEFAULT,

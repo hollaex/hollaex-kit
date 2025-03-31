@@ -249,7 +249,7 @@ $tab-selected-line-height: 4px;
 
 // MOBILE
 $market-selector--height: 3rem;
-$navigation_bar-mobile--height: 4rem;
+$navigation_bar-mobile--height: 5rem;
 $navigation_bar-mobile--background: $app-bar-background-color;
 $bottom_bar--height: 6rem;
 $bottom-bar--background: $navigation_bar-mobile--background;
@@ -260,15 +260,24 @@ $max-content-height-double-bar-mobile: calc(
 	100vh - #{$navigation_bar-mobile--height * 2 + $bottom-bar--height +
 		$market-selector--height}
 );
+$max-content-double-height-mobile: calc(
+	100vh - #{$navigation_bar-mobile--height * 2 + $bottom-bar--height}
+);
+$max-content-height-trade-mobile: calc(
+	100vh - #{$navigation_bar-mobile--height * 2 + $navigation_bar-height}
+);
+$max-mobile-height: calc(
+	100vh - #{$market-selector--height + $navigation_bar-mobile--height}
+);
 $max-content-height-home-mobile: calc(
 	100vh - #{$navigation_bar-mobile--height}
 );
 $max-content-height-dialog-mobile: calc(
-	100vh - #{$navigation_bar-mobile--height * 2}
+	100vh - #{$navigation_bar-mobile--height * 3}
 );
 
 $market-menu-height-dialog-mobile: calc(
-	100vh - 19rem - #{$navigation_bar-mobile--height * 2}
+	100vh - 15rem - #{$navigation_bar-mobile--height * 2}
 );
 
 $max-content-width-mobile: 100vw;

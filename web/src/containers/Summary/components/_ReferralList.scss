@@ -251,7 +251,24 @@
 				height: 4rem !important;
 			}
 		}
+		.check-icon {
+			svg {
+				height: 2.5rem;
+				width: 2.5rem;
 
+				path:nth-child(1) {
+					fill: transparent;
+				}
+
+				path:nth-child(2) {
+					fill: var(--specials_checks-okay-done);
+				}
+
+				path:nth-child(3) {
+					fill: #ffffff;
+				}
+			}
+		}
 		.refer-icon {
 			fill: var(--labels_important-active-labels-text-graphics);
 		}

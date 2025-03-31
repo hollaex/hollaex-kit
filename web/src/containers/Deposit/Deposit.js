@@ -410,7 +410,7 @@ const DepositComponent = ({
 									dropdownClassName="custom-select-style"
 									suffixIcon={<CaretDownOutlined />}
 									placeholder={STRINGS['WITHDRAW_PAGE.SELECT']}
-									allowClear={true}
+									allowClear={selectedAsset ? true : false}
 									value={
 										selectedAsset &&
 										`${
@@ -511,7 +511,7 @@ const DepositComponent = ({
 										}`}
 										dropdownClassName="custom-select-style"
 										suffixIcon={<CaretDownOutlined />}
-										allowClear={true}
+										allowClear={networkData ? true : false}
 										onChange={onHandleChangeNetwork}
 										value={
 											defaultCurrency &&
@@ -688,6 +688,7 @@ const DepositComponent = ({
 												'address'
 											)}
 											value={address && address[0]}
+											readOnly
 										></Input>
 									</div>
 									<div className="warning-text d-flex mt-2">

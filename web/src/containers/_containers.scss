@@ -15,6 +15,7 @@
 @import './Account/Account';
 @import './HelpfulResourcesForm/HelpfulResourcesForm';
 @import './WithdrawConfirmation/withdrawConfirmation';
+@import './LoginConfirmation/loginConfirmation';
 @import './Summary/Summary';
 @import './TradeTabs/TradeTabs';
 @import './UserSettings/UserSettings';
@@ -34,3 +35,6 @@
 @import './P2P/P2P';
 @import './Volume/Volume';
 @import './Admin/Settings/CustomizeEmailForm.scss';
+@import './AutoTrader/AutoTrader.scss';
+@import './Announcement/Announcement.scss';
+@import './Admin/Announcement/index.scss';

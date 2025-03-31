@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import classnames from 'classnames';
 import EventListener from 'react-event-listener';
 import { Helmet } from 'react-helmet';
@@ -27,6 +28,7 @@ import {
 	RISK_PORTFOLIO_ORDER_WARING,
 	RISKY_ORDER,
 	LOGOUT_CONFORMATION,
+	setError,
 } from 'actions/appActions';
 import { storeTools } from 'actions/toolsAction';
 import STRINGS from 'config/localizedStrings';
@@ -93,6 +95,7 @@ class App extends Component {
 		isProTrade: false,
 		isQuickTrade: false,
 		isLogout: false,
+		isOnline: navigator.onLine,
 	};
 	ordersQueued = [];
 	limitTimeOut = null;
@@ -166,6 +169,8 @@ class App extends Component {
 				window.location.reload();
 			});
 		}
+		window.addEventListener('online', this.updateNetworkStatus);
+		window.addEventListener('offline', this.updateNetworkStatus);
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -174,7 +179,10 @@ class App extends Component {
 			nextProps.activeNotification.timestamp !==
 			this.props.activeNotification.timestamp
 		) {
-			if (nextProps.activeNotification.type !== '') {
+			if (
+				nextProps.activeNotification.type !== '' &&
+				nextProps.activeNotification.type !== NOTIFICATIONS.ORDERS
+			) {
 				this.onOpenDialog();
 			} else {
 				this.onCloseDialog();
@@ -242,6 +250,12 @@ class App extends Component {
 			const newUrl = `${currentUrl}?${params.toString()}`;
 			this.props.router.replace(newUrl);
 		}
+		if (!this.state.isOnline) {
+			this.props.setError({
+				message: STRINGS['ERROR_TAB.NETWORK_ERROR_MESSAGE'],
+			});
+			return;
+		}
 	}
 
 	componentWillUnmount() {
@@ -257,7 +271,13 @@ class App extends Component {
 			clearTimeout(this.state.idleTimer);
 		}
 		clearTimeout(this.limitTimeOut);
+		window.removeEventListener('online', this.updateNetworkStatus);
+		window.removeEventListener('offline', this.updateNetworkStatus);
 	}
+
+	updateNetworkStatus = () => {
+		this.setState({ isOnline: navigator.onLine });
+	};
 
 	checkPath = (path) => {
 		var sheet = document.createElement('style');
@@ -433,7 +453,7 @@ class App extends Component {
 	renderDialogContent = ({ type, data }, prices = {}) => {
 		const { icons: ICONS, config_level, openContactForm } = this.props;
 		switch (type) {
-			case NOTIFICATIONS.ORDERS:
+			// case NOTIFICATIONS.ORDERS:
 			case NOTIFICATIONS.TRADES:
 			case NOTIFICATIONS.WITHDRAWAL:
 				return (
@@ -931,6 +951,8 @@ class App extends Component {
 											},
 											{
 												menu: activeNotification.type === MARKET_SELECTOR,
+												'signout-confirmation-popup-wrapper':
+													activeNotification.type === LOGOUT_CONFORMATION,
 											}
 										)}
 										onCloseDialog={this.onCloseDialog}
@@ -947,15 +969,15 @@ class App extends Component {
 												activeNotification.type === NOTIFICATIONS.NEW_ORDER ||
 												(activeNotification.type === NOTIFICATIONS.TRADES &&
 													!isMobile) ||
-												(activeNotification.type === NOTIFICATIONS.ORDERS &&
-													!isMobile) ||
+												// (activeNotification.type === NOTIFICATIONS.ORDERS &&
+												// 	!isMobile) ||
 												activeNotification.type === NOTIFICATIONS.ERROR ||
 												activeNotification.type ===
 													NOTIFICATIONS.UNDEFINED_ERROR
 											)
 										}
 										compressed={
-											activeNotification.type === NOTIFICATIONS.ORDERS ||
+											// activeNotification.type === NOTIFICATIONS.ORDERS ||
 											activeNotification.type === NOTIFICATIONS.TRADES
 										}
 										style={{ 'z-index': 100 }}
@@ -1031,4 +1053,11 @@ const mapStateToProps = (store) => ({
 	activeTheme: store.app.theme,
 });
 
-export default connect(mapStateToProps)(withEdit(withConfig(App)));
+const mapDispatchToProps = (dispatch) => ({
+	setError: bindActionCreators(setError, dispatch),
+});
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withEdit(withConfig(App)));

@@ -126,8 +126,9 @@ const putAdminKit = (req, res) => {
 const getUsersAdmin = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getUsers/auth', req.auth);
 
-	const { 
-		id, 
+	const {
+		id,
+		user_id,
 		search,
 		type,
 		pending,
@@ -153,7 +154,7 @@ const getUsersAdmin = (req, res) => {
 		kyc,
 		bank,
 		id_number
-	
+
 	} = req.swagger.params;
 
 	if (order_by.value && typeof order_by.value !== 'string') {
@@ -171,6 +172,7 @@ const getUsersAdmin = (req, res) => {
 
 	toolsLib.user.getAllUsersAdmin({
 		id: id.value,
+		user_id: user_id.value,
 		search: search.value,
 		pending: pending.value,
 		pending_type: pending_type.value,
@@ -388,7 +390,7 @@ const activateUser = (req, res) => {
 		.then((user) => {
 			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
 			const message = `Account ${user.email} has been ${activated ? 'activated' : 'deactivated'
-			}`;
+				}`;
 			return res.json({ message });
 		})
 		.catch((err) => {
@@ -508,7 +510,7 @@ const getAdminUserLogins = (req, res) => {
 	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1) {
 		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
 	}
-	
+
 	if (start_date.value && !isDate(start_date.value)) {
 		loggerAdmin.error(
 			req.uuid,
@@ -922,7 +924,7 @@ const settleFees = (req, res) => {
 		}
 	})
 		.then((data) => {
-			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, 'post', { user_id  });
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, 'post', { user_id });
 			return res.json(data);
 		})
 		.catch((err) => {
@@ -2105,7 +2107,7 @@ const setUserBank = (req, res) => {
 					deletedBankInfoLog.push(existingBank);
 				}
 			});
-			
+
 			const newBankAccounts = bank_account.map((bank) => {
 				let existingBank = existingBankAccounts.filter((b) => b.id === bank.id);
 				existingBank = existingBank[0];
@@ -2383,7 +2385,7 @@ const createUserWalletByAdmin = (req, res) => {
 				);
 				return res.status(404).json({ message: `Invalid crypto: "${crypto}"` });
 			}
-	
+
 			return toolsLib.user.createUserCryptoAddressByKitId(user_id, crypto, {
 				network,
 				additionalHeaders: {
@@ -2391,9 +2393,9 @@ const createUserWalletByAdmin = (req, res) => {
 				}
 			});
 		})
-		.then((data) => { 
+		.then((data) => {
 			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
-			return res.status(201).json(data); 
+			return res.status(201).json(data);
 		})
 		.catch((err) => {
 			loggerAdmin.error(
@@ -2486,7 +2488,7 @@ const sendEmailByAdmin = (req, res) => {
 				user.settings
 			);
 		})
-		.then(() => { 
+		.then(() => {
 			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
 			return res.json({ message: 'Success' });
 		})
@@ -2546,7 +2548,7 @@ const getUserSessionsByAdmin = (req, res) => {
 	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1) {
 		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
 	}
-	
+
 	if (order_by.value && typeof order_by.value !== 'string') {
 		loggerAdmin.error(
 			req.uuid,
@@ -2634,7 +2636,7 @@ const getTransactionLimits = (req, res) => {
 const updateTransactionLimit = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/updateTransactionLimit/auth', req.auth);
 
-	const { 
+	const {
 		id,
 		tier,
 		amount,
@@ -2642,7 +2644,7 @@ const updateTransactionLimit = (req, res) => {
 		limit_currency,
 		type,
 		monthly_amount,
-	 } = req.swagger.params.data.value;
+	} = req.swagger.params.data.value;
 
 	toolsLib.tier.updateTransactionLimit(id, {
 		tier,
@@ -2651,7 +2653,7 @@ const updateTransactionLimit = (req, res) => {
 		limit_currency,
 		type,
 		monthly_amount,
-	 })
+	})
 		.then((data) => {
 			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
 			return res.json(data);
@@ -2688,8 +2690,8 @@ const deleteTransactionLimit = (req, res) => {
 const getBalancesAdmin = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getBalancesAdmin/auth', req.auth);
 
-	const { 
-		user_id, 
+	const {
+		user_id,
 		currency,
 		format
 	} = req.swagger.params;
@@ -2901,7 +2903,7 @@ const createTradeByAdmin = (req, res) => {
 		maker_id,
 		taker_id,
 		maker_fee,
-		taker_fee 
+		taker_fee
 	} = req.swagger.params.data.value;
 
 	loggerAdmin.info(
@@ -2914,10 +2916,10 @@ const createTradeByAdmin = (req, res) => {
 		maker_id,
 		taker_id,
 		maker_fee,
-		taker_fee 
+		taker_fee
 	);
 
-	toolsLib.order.createTrade({symbol, side, price, size, maker_id, taker_id, maker_fee, taker_fee },
+	toolsLib.order.createTrade({ symbol, side, price, size, maker_id, taker_id, maker_fee, taker_fee },
 		{
 			'x-forwarded-for': req.headers['x-forwarded-for']
 		})
@@ -2955,8 +2957,8 @@ const getUserReferralCodesByAdmin = (req, res) => {
 
 	const user_id = req.swagger.params.user_id.value;
 
-	toolsLib.user.getUserReferralCodes({ 
-		user_id, 	
+	toolsLib.user.getUserReferralCodes({
+		user_id,
 		limit: limit.value,
 		page: page.value,
 		order_by: order_by.value,
@@ -2992,8 +2994,8 @@ const createUserReferralCodeByAdmin = (req, res) => {
 
 	toolsLib.user.createUserReferralCode({
 		user_id,
-		discount, 
-		earning_rate, 
+		discount,
+		earning_rate,
 		code,
 		is_admin: true
 	})
@@ -3150,6 +3152,107 @@ const deleteUserByAdmin = (req, res) => {
 		});
 };
 
+const fetchAnnouncements = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/fetchAnnouncements/auth', req.auth.sub);
+
+	const { limit, page, order_by, order, start_date, end_date, is_popup, is_navbar, is_dropdown } = req.swagger.params;
+
+	if (order_by.value && typeof order_by.value !== 'string') {
+		loggerAdmin.error(
+			req.uuid,
+			'controllers/admin/fetchAnnouncements invalid order_by',
+			order_by.value
+		);
+		return res.status(400).json({ message: 'Invalid order by' });
+	}
+
+	toolsLib.user.getAnnouncements({
+		limit: limit.value,
+		page: page.value,
+		order_by: order_by.value,
+		order: order.value,
+		start_date: start_date.value,
+		end_date: end_date.value,
+		is_popup: is_popup.value,
+		is_navbar: is_navbar.value,
+		is_dropdown: is_dropdown.value,
+	})
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/fetchAnnouncements', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+		});
+};
+
+const createAnnouncement = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/createAnnouncement/auth', req.auth.sub);
+
+	const { title, message, type, is_popup, end_date, start_date, is_navbar, is_dropdown } = req.swagger.params.data.value;
+
+	toolsLib.user.createAnnouncement({
+		title,
+		message,
+		type,
+		user_id: req.auth.sub.id,
+		end_date,
+		start_date,
+		is_popup,
+		is_navbar,
+		is_dropdown
+	})
+		.then((announcement) => {
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, '/plugins/announcement', 'post', announcement);
+			return res.json(announcement);
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/createAnnouncement', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+		});
+};
+
+const updateAnnouncement = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/updateAnnouncement/auth', req.auth.sub);
+
+	const { id, title, message, type, is_popup, end_date, start_date, is_navbar, is_dropdown } = req.swagger.params.data.value;
+
+	toolsLib.user.updateAnnouncement(id, {
+		title,
+		message,
+		type,
+		user_id: req.auth.sub.id,
+		end_date,
+		start_date,
+		is_popup,
+		is_navbar,
+		is_dropdown
+	})
+		.then((announcement) => {
+			return res.json(announcement);
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/updateAnnouncement', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+		});
+};
+
+
+const deleteAnnouncement = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/deleteAnnouncement/auth', req.auth.sub);
+
+	const { id } = req.swagger.params.data.value;
+
+	toolsLib.user.deleteAnnouncement(id)
+		.then((result) => {
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, '/plugins/announcement', 'delete', result);
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/deleteAnnouncement', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+		});
+};
 module.exports = {
 	createInitialAdmin,
 	getAdminKit,
@@ -3229,5 +3332,9 @@ module.exports = {
 	createPaymentDetailByAdmin,
 	updatePaymentDetailByAdmin,
 	deletePaymentDetailByAdmin,
-	deleteUserByAdmin
+	deleteUserByAdmin,
+	fetchAnnouncements,
+	createAnnouncement,
+	deleteAnnouncement,
+	updateAnnouncement
 };

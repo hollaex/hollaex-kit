@@ -1,10 +1,17 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import moment from 'moment';
+import { browserHistory } from 'react-router';
 import { bindActionCreators } from 'redux';
+import moment from 'moment';
 
+import {
+	getAnnouncement,
+	setIsActiveSelectedAnnouncement,
+	setSelectedAnnouncement,
+} from '../../actions/appActions';
 import Image from '../Image';
-import { getAnnouncement } from '../../actions/appActions';
+import STRINGS from 'config/localizedStrings';
+import EditWrapper from 'components/EditWrapper';
 
 const createMarkup = (msg) => {
 	return { __html: msg };
@@ -60,20 +67,83 @@ export const NotificationItem = ({
 };
 
 // TODO create announcement item style
-const NotificationsList = ({ ICONS = {}, announcements, getAnnouncement }) => {
+const NotificationsList = ({
+	ICONS = {},
+	announcements,
+	getAnnouncement,
+	setOpen,
+	setIsActiveSelectedAnnouncement,
+	setSelectedAnnouncement,
+}) => {
 	useEffect(() => {
 		getAnnouncement();
 		//  TODO: Fix react-hooks/exhaustive-deps
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
-	if (!announcements.length) {
-		return <div className="notifications_list-wrapper">No data</div>;
+
+	const onHandleNavigate = (detail) => {
+		setSelectedAnnouncement(detail);
+		setIsActiveSelectedAnnouncement(true);
+		setOpen(false);
+		browserHistory.push('/announcement');
+	};
+
+	const filteredAnnouncement = announcements?.filter(
+		(data) => data?.is_dropdown
+	);
+
+	if (!announcements?.length || !filteredAnnouncement?.length) {
+		return (
+			<div className="notifications_list-wrapper">
+				<div className="notifications_list-wrapper text-align-center py-3">
+					No data
+				</div>
+				<div className="view-announcement-link">
+					<EditWrapper stringId="ANNOUNCEMENT_TAB.VIEW_ALL_ANNOUNCEMENT">
+						<span
+							className="blue-link text-decoration-underline"
+							onClick={() => {
+								browserHistory.push('/announcement');
+								setOpen(false);
+							}}
+						>
+							{STRINGS['ANNOUNCEMENT_TAB.VIEW_ALL_ANNOUNCEMENT'].toUpperCase()}
+						</span>
+					</EditWrapper>
+				</div>
+			</div>
+		);
 	}
+
 	return (
-		<div className="notifications_list-wrapper">
-			{announcements.map(({ id, ...rest }, index) => (
-				<NotificationItem key={id} ICONS={ICONS} {...rest} />
-			))}
+		<div className="h-100">
+			<div className="notifications_list-wrapper">
+				{filteredAnnouncement?.map((announcement, index) => (
+					<span
+						onClick={() => onHandleNavigate(announcement)}
+						className="pointer"
+					>
+						<NotificationItem
+							key={announcement?.id}
+							ICONS={ICONS}
+							{...announcement}
+						/>
+					</span>
+				))}
+			</div>
+			<div className="view-announcement-link">
+				<EditWrapper stringId="ANNOUNCEMENT_TAB.VIEW_ALL_ANNOUNCEMENT">
+					<span
+						className="blue-link text-decoration-underline"
+						onClick={() => {
+							browserHistory.push('/announcement');
+							setOpen(false);
+						}}
+					>
+						{STRINGS['ANNOUNCEMENT_TAB.VIEW_ALL_ANNOUNCEMENT'].toUpperCase()}
+					</span>
+				</EditWrapper>
+			</div>
 		</div>
 	);
 };
@@ -85,6 +155,14 @@ const mapStateToProps = (store) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 	getAnnouncement: bindActionCreators(getAnnouncement, dispatch),
+	setSelectedAnnouncement: bindActionCreators(
+		setSelectedAnnouncement,
+		dispatch
+	),
+	setIsActiveSelectedAnnouncement: bindActionCreators(
+		setIsActiveSelectedAnnouncement,
+		dispatch
+	),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NotificationsList);

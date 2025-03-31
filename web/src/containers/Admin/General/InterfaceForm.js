@@ -8,6 +8,8 @@ import { STATIC_ICONS } from 'config/icons';
 import FormButton from 'components/FormButton/Button';
 import { CloseOutlined } from '@ant-design/icons';
 import { Link } from 'react-router';
+import icons from 'config/icons/dark';
+
 const { Item } = Form;
 
 const InterfaceForm = ({
@@ -19,6 +21,7 @@ const InterfaceForm = ({
 	isFiatUpgrade,
 	coins,
 	enabledPlugins,
+	isEnterpriseUpgrade,
 }) => {
 	const [isSubmit, setIsSubmit] = useState(!buttonSubmitting);
 	const [form] = Form.useForm();
@@ -68,6 +71,7 @@ const InterfaceForm = ({
 			formValues = {
 				chat: isUpgrade ? false : !!values.chat,
 				quick_trade: !!values.quick_trade,
+				auto_trade_config: !!values.auto_trade_config,
 				pro_trade: !!values.pro_trade,
 				stake_page: !!values.stake_page,
 				cefi_stake: !!values.cefi_stake,
@@ -77,6 +81,7 @@ const InterfaceForm = ({
 				home_page: isUpgrade ? false : !!values.home_page,
 				ultimate_fiat: !!values.ultimate_fiat,
 				apps: !!values.apps,
+				announcement: !!values.announcement,
 			};
 			const balance_history_config = {
 				currency: balanceHistoryCurrency.currency || 'usdt',
@@ -98,11 +103,17 @@ const InterfaceForm = ({
 				spread: Number(chainTradeData.spread),
 				source_account: Number(chainTradeData.source_account),
 			};
+
+			const auto_trade_config = {
+				active: !!values.auto_trade_config || false,
+			};
+
 			handleSaveInterface(
 				formValues,
 				values.balance_history_config ? balance_history_config : null,
 				values.referral_history_config ? referral_history_config : null,
-				values.chain_trade_config ? chain_trade_config : null
+				values.chain_trade_config ? chain_trade_config : null,
+				values.auto_trade_config ? auto_trade_config : null
 			);
 		}
 	};
@@ -574,6 +585,26 @@ const InterfaceForm = ({
 				className="disable-button"
 			>
 				<div className="interface-box">
+					{!isEnterpriseUpgrade && (
+						<Item name="announcement" valuePropName="checked">
+							<Checkbox className="mt-3">
+								<div className="d-flex align-items-center">
+									<div className="feature-trade-box">
+										<ReactSVG
+											src={icons['ANNOUNCEMENT_ICON']}
+											className="feature-icon announcement-icon mr-1"
+										/>
+									</div>
+									<div className="ml-2 checkbox-txt">
+										Announcement
+										<div className="small-text">
+											(Announcement posts, alert popups to notify users)
+										</div>
+									</div>
+								</div>
+							</Checkbox>
+						</Item>
+					)}
 					<Item name="pro_trade" valuePropName="checked">
 						<Checkbox className="mt-3">
 							<div className="d-flex align-items-center">
@@ -614,6 +645,28 @@ const InterfaceForm = ({
 							</div>
 						</Checkbox>
 					</Item>
+					{!isEnterpriseUpgrade && (
+						<Item name="auto_trade_config" valuePropName="checked">
+							<Checkbox className="mt-3">
+								<div className="d-flex align-items-center">
+									<div className="feature-trade-box">
+										<ReactSVG
+											src={icons['AUTO_TRADER_ICON']}
+											className="feature-icon announcement-icon auto-trader-icon mr-1"
+										/>
+									</div>
+									<div className="ml-2 checkbox-txt">
+										Auto Trade
+										<div className="d-flex justify-content-between">
+											<div className="small-text">
+												(Automate your trades based on your settings)
+											</div>
+										</div>
+									</div>
+								</div>
+							</Checkbox>
+						</Item>
+					)}
 					<Item name="stake_page" valuePropName="checked">
 						<Checkbox className="mt-3">
 							<div className="d-flex align-items-center">
@@ -641,11 +694,8 @@ const InterfaceForm = ({
 							<div className="d-flex align-items-center">
 								<div className="feature-trade-box mr-1">
 									<ReactSVG
-										src={STATIC_ICONS.STAKE_FEATURE}
-										className="d-flex feature-icon justify-content-center mr-1 mt-1 ml-3 pl-1"
-										beforeInjection={(svg) => {
-											svg.setAttribute('style', 'width: 60px');
-										}}
+										src={icons['TAB_STAKE']}
+										className="feature-icon announcement-icon auto-trader-icon mr-1"
 									/>
 								</div>
 								<div className="ml-2 checkbox-txt">
@@ -764,24 +814,12 @@ const InterfaceForm = ({
 						<Item name="chain_trade_config" valuePropName="checked">
 							<Checkbox className="mt-3">
 								<div className="d-flex align-items-center">
-									<span
-										style={{
-											backgroundColor: '#050596',
-											textAlign: 'center',
-											height: 50,
-											display: 'flex',
-											justifyContent: 'center',
-											alignItems: 'center',
-										}}
-									>
+									<div className="feature-trade-box mr-1">
 										<ReactSVG
-											src={STATIC_ICONS.MPESA_ICON}
-											className="d-flex feature-icon justify-content-center mr-2 mt-3 ml-1 pl-1"
-											beforeInjection={(svg) => {
-												svg.setAttribute('style', 'width: 60px');
-											}}
+											src={STATIC_ICONS.CHAIN_TRADING}
+											className="feature-icon announcement-icon mr-1"
 										/>
-									</span>
+									</div>
 									<div className="ml-2 checkbox-txt">
 										Chain Trading{' '}
 										{chainTradeData.active && (
@@ -805,7 +843,7 @@ const InterfaceForm = ({
 											</span>
 										)}
 										<div className="small-text">
-											(Enable Chain Trading for Users)
+											(Allows users to convert any asset to another)
 										</div>
 									</div>
 								</div>

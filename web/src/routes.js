@@ -33,6 +33,10 @@ const LoadingComponent = ({ isLoading, error }) => {
 	return <Loader background={false} />;
 };
 
+const EmptyLoadingComponent = ({ isLoading, error }) => {
+	return <></>;
+};
+
 const Container = Loadable({
 	loader: () => import('./containers/App'),
 	loading: LoadingComponent,
@@ -40,7 +44,7 @@ const Container = Loadable({
 
 const Account = Loadable({
 	loader: () => import('./containers/Account'),
-	loading: LoadingComponent,
+	loading: EmptyLoadingComponent,
 });
 
 const P2P = Loadable({
@@ -50,7 +54,7 @@ const P2P = Loadable({
 
 const MainWallet = Loadable({
 	loader: () => import('./containers/Wallet/MainWallet'),
-	loading: LoadingComponent,
+	loading: EmptyLoadingComponent,
 });
 
 const Volume = Loadable({
@@ -130,6 +134,14 @@ const Chat = Loadable({
 });
 const WithdrawConfirmation = Loadable({
 	loader: () => import('./containers/WithdrawConfirmation'),
+	loading: LoadingComponent,
+});
+const LoginConfirmation = Loadable({
+	loader: () => import('./containers/LoginConfirmation'),
+	loading: LoadingComponent,
+});
+const EmailConfirmation = Loadable({
+	loader: () => import('./containers/LoginConfirmation/emailConfirmation'),
 	loading: LoadingComponent,
 });
 const AddTradeTabs = Loadable({
@@ -301,6 +313,21 @@ const MobileBarMoreOptions = Loadable({
 
 const ConfirmChangePassword = Loadable({
 	loader: () => import('./containers/ConfirmChangePassword'),
+	loading: LoadingComponent,
+});
+
+const AutoTrader = Loadable({
+	loader: () => import('./containers/AutoTrader'),
+	loading: LoadingComponent,
+});
+
+const Announcement = Loadable({
+	loader: () => import('./containers/Announcement'),
+	loading: LoadingComponent,
+});
+
+const AdminAnnouncement = Loadable({
+	loader: () => import('./containers/Admin/Announcement'),
 	loading: LoadingComponent,
 });
 
@@ -532,6 +559,16 @@ export const generateRoutes = (routes = []) => {
 			</Route>
 			<Route component={AuthContainer} {...noLoggedUserCommonProps}>
 				<Route
+					path="confirm-login"
+					name="ConfirmLogin"
+					component={LoginConfirmation}
+				/>
+				<Route
+					path="email-confirm"
+					name="EmailConfirm"
+					component={EmailConfirmation}
+				/>
+				<Route
 					path="reset-password"
 					name="Reset Password Request"
 					component={RequestResetPassword}
@@ -683,7 +720,17 @@ export const generateRoutes = (routes = []) => {
 					component={P2P}
 					onEnter={requireAuth}
 				/>
-
+				<Route
+					path="auto-trader"
+					name="Auto trader"
+					component={AutoTrader}
+					onEnter={requireAuth}
+				/>
+				<Route
+					path="announcement"
+					name="Announcement"
+					component={Announcement}
+				/>
 				<Route
 					path="wallet/:currency"
 					name="Wallet"
@@ -823,6 +870,11 @@ export const generateRoutes = (routes = []) => {
 					path="/admin/plugin/adminView/:name"
 					name="Admin Announcement"
 					component={withAdminProps(PluginConfig, 'adminView')}
+				/>
+				<Route
+					path="/admin/announcement"
+					name="Admin Announcement Details"
+					component={withAdminProps(AdminAnnouncement, 'adminView')}
 				/>
 				{/* <Route
 				path="/admin/wallets"

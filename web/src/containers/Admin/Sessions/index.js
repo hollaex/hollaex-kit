@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import { Tabs } from 'antd';
 import LoginTable from './LoginTable';
 import SessionTable from './SessionTable';
-
+import '../Trades/index.css';
+import '../../Admin/General/index.css';
 const TabPane = Tabs.TabPane;
 
 const Sessions = () => {

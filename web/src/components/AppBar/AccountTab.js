@@ -12,8 +12,14 @@ import HelpfulResourcesForm from 'containers/HelpfulResourcesForm';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { Image, EditWrapper } from 'components';
 import { isLoggedIn, removeToken } from 'utils/token';
-import { setSecurityTab, setSettingsTab } from 'actions/appActions';
+import {
+	setIsMarketDropdownVisible,
+	setIsToolsVisible,
+	setSecurityTab,
+	setSettingsTab,
+} from 'actions/appActions';
 import { renderConfirmSignout } from './Utils';
+import { logout } from 'actions/authAction';
 
 const AccountTab = ({
 	config_level,
@@ -24,6 +30,10 @@ const AccountTab = ({
 	verificationPending,
 	setSecurityTab,
 	setSettingsTab,
+	setIsMarketDropdownVisible,
+	setIsToolsVisible,
+	features,
+	logout,
 }) => {
 	const [isIconActive, setIsIconActive] = useState(false);
 	const [isToolTipVisible, setIsToolTipVisible] = useState(false);
@@ -34,6 +44,13 @@ const AccountTab = ({
 		setIsToolTipVisible(false);
 		setIsIconActive(false);
 		browserHistory.push(path);
+	};
+
+	const onHandleVisible = () => {
+		setIsIconActive(!isIconActive);
+		setIsToolTipVisible(!isToolTipVisible);
+		setIsMarketDropdownVisible(false);
+		setIsToolsVisible(false);
 	};
 
 	return (
@@ -52,14 +69,13 @@ const AccountTab = ({
 					setSecurityTab={setSecurityTab}
 					setSettingsTab={setSettingsTab}
 					onHandleRedirect={onHandleRedirect}
+					features={features}
+					logout={logout}
 				/>
 			}
 			placement="bottomRight"
 			overlayClassName="navigation-bar-wrapper account-tab-dropdown"
-			onVisibleChange={() => {
-				setIsIconActive(!isIconActive);
-				setIsToolTipVisible(!isToolTipVisible);
-			}}
+			onVisibleChange={() => onHandleVisible()}
 			mouseEnterDelay={0}
 		>
 			<div
@@ -81,7 +97,7 @@ const AccountTab = ({
 					)}
 				</div>
 				<EditWrapper stringId="ACCOUNT_TEXT">
-					{STRINGS['ACCOUNT_TEXT']}
+					<span className="account-title">{STRINGS['ACCOUNT_TEXT']}</span>
 				</EditWrapper>
 				<span className="ml-1 app-bar-dropdown-icon">
 					{!isIconActive ? <CaretDownFilled /> : <CaretUpFilled />}
@@ -103,6 +119,8 @@ const AccountList = ({
 	setSecurityTab,
 	setSettingsTab,
 	onHandleRedirect,
+	features,
+	logout,
 }) => {
 	const [isHelpResources, setIsHelpResources] = useState(false);
 	const [currPath, setCurrpath] = useState('/summary');
@@ -115,6 +133,13 @@ const AccountList = ({
 	}, [window.location.pathname]);
 
 	const accountOptions = [
+		{
+			icon: 'WALLET_OPTION_ICON',
+			title: 'ACCOUNTS.TAB_WALLET',
+			description: 'DESKTOP_NAVIGATION.WALLET_DESCRIPTION',
+			path: '/wallet',
+			isDisplay: true,
+		},
 		{
 			icon: 'OPTION_2FA_ICON',
 			title: 'ACCOUNTS.TAB_SECURITY',
@@ -136,12 +161,19 @@ const AccountList = ({
 			path: '/settings',
 			isDisplay: true,
 		},
+		{
+			icon: 'ANNOUNCEMENT_ICON',
+			title: 'TRADE_TAB_POSTS',
+			description: 'DESKTOP_NAVIGATION.ANNOUNCEMENT_DESC',
+			path: '/announcement',
+			isDisplay: features?.announcement,
+		},
 	];
 
 	const optionsRoute = [
 		{
 			icon: 'REVOKE_SESSION',
-			title: 'ACCOUNTS.TAB_SIGNOUT',
+			title: 'SIGN_OUT_TEXT',
 			toolTipText: 'DESKTOP_NAVIGATION.SIGNOUT_DESC',
 			path: '/login',
 		},
@@ -188,7 +220,7 @@ const AccountList = ({
 	const onHandleRoutes = (value = '/', title = '') => {
 		const selectedTab = {
 			'LOGIN.HELP': () => setIsHelpResources(true),
-			'ACCOUNTS.TAB_SIGNOUT': () => setIsLogout(true),
+			SIGN_OUT_TEXT: () => setIsLogout(true),
 			'ACCOUNTS.TAB_SECURITY': () => setSecurityTab(0),
 			'MORE_OPTIONS_LABEL.ICONS.API': () => setSecurityTab(2),
 			'USER_SETTINGS.TITLE_LANGUAGE': () => setSettingsTab(2),
@@ -222,7 +254,7 @@ const AccountList = ({
 	const onHandlelogout = () => {
 		setIsLogout(false);
 		removeToken();
-		return browserHistory?.push('/login');
+		logout();
 	};
 
 	const onHandleclose = () => {
@@ -252,10 +284,11 @@ const AccountList = ({
 			</div>
 			{isLogout &&
 				renderConfirmSignout(isLogout, onHandleclose, onHandlelogout)}
-			{accountOptions?.map((options) => {
+			{accountOptions?.map((options, index) => {
 				return (
 					options?.isDisplay && (
 						<div
+							key={index}
 							className={
 								currPath === options?.path
 									? 'options-container account-active main-active'
@@ -296,19 +329,20 @@ const AccountList = ({
 				);
 			})}
 			<div className="options-route-wrapper">
-				{optionsRoute?.map((option) => {
+				{optionsRoute?.map((option, index) => {
 					return (
 						<Tooltip
 							title={STRINGS[option?.toolTipText]}
 							placement="topLeft"
 							overlayClassName="account-tab-options-tooltip"
+							key={index}
 						>
 							<div
 								className="icon-option-container"
 								onClick={() => onHandleRoutes(option?.path, option?.title)}
 							>
 								<Image icon={ICONS[option?.icon ? option?.icon : 'NO_ICON']} />
-								<span>
+								<span className="text-nowrap">
 									<EditWrapper>{STRINGS[option?.title]}</EditWrapper>
 								</span>
 							</div>
@@ -333,11 +367,18 @@ const AccountList = ({
 const mapStateToProps = (state) => ({
 	config_level: state.app.config_level,
 	verification_level: state.user.verification_level,
+	features: state.app.features,
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	setSecurityTab: bindActionCreators(setSecurityTab, dispatch),
 	setSettingsTab: bindActionCreators(setSettingsTab, dispatch),
+	setIsMarketDropdownVisible: bindActionCreators(
+		setIsMarketDropdownVisible,
+		dispatch
+	),
+	setIsToolsVisible: bindActionCreators(setIsToolsVisible, dispatch),
+	logout: bindActionCreators(logout, dispatch),
 });
 
 export default connect(

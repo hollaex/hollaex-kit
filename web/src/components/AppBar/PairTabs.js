@@ -5,23 +5,33 @@ import classnames from 'classnames';
 import { browserHistory } from 'react-router';
 import { Dropdown } from 'antd';
 import { CaretDownOutlined, CaretUpOutlined } from '@ant-design/icons';
+import debounce from 'lodash.debounce';
 
 import TabList from './TabList';
 import MarketSelector from './MarketSelector';
 import ToolsSelector from './ToolsSelector';
 import STRINGS from 'config/localizedStrings';
-import { Slider, EditWrapper, PriceChange } from 'components';
+import { Slider, EditWrapper, PriceChange, Image, Coin } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { formatToCurrency } from 'utils/currency';
 import { MarketsSelector } from 'containers/Trade/utils';
 import SparkLine from 'containers/TradeTabs/components/SparkLine';
 import { getSparklines } from 'actions/chartAction';
-import { changeSparkLineChartData } from 'actions/appActions';
+import {
+	changeSparkLineChartData,
+	setIsMarketDropdownVisible,
+	setIsToolsVisible,
+	setMarketRefresh,
+} from 'actions/appActions';
+import icons from 'config/icons/dark';
+import { Loading } from 'containers/DigitalAssets/components/utils';
 
 let isMounted = false;
 class PairTabs extends Component {
 	state = {
 		activePairTab: '',
+		refreshPairTab: 0,
+		isLoading: false,
 		// sparkLine: [],
 	};
 
@@ -85,11 +95,36 @@ class PairTabs extends Component {
 		}
 	};
 
+	onHandleMarketSelector = (visible) => {
+		const { setIsToolsVisible, setIsMarketDropdownVisible } = this.props;
+		setIsMarketDropdownVisible(visible);
+		setIsToolsVisible(false);
+	};
+
+	onHandleToolsVisible = (visible) => {
+		const { setIsToolsVisible, setIsMarketDropdownVisible } = this.props;
+		setIsToolsVisible(visible);
+		setIsMarketDropdownVisible(false);
+	};
+
+	setIsLoading = debounce(() => {
+		this.setState({ isLoading: false });
+	}, 250);
+
+	marketRefreshHandler = () => {
+		this.setState((prev) => ({
+			refreshPairTab: prev.refreshPairTab + 1,
+			isLoading: true,
+		}));
+		this.props.setMarketRefresh(true);
+		this.setIsLoading();
+	};
+
 	render() {
 		const {
 			activePairTab,
-			isMarketSelectorVisible,
-			isToolsSelectorVisible,
+			// isMarketSelectorVisible,
+			// isToolsSelectorVisible,
 			// sparkLine,
 		} = this.state;
 
@@ -100,6 +135,9 @@ class PairTabs extends Component {
 			quicktrade,
 			sparkLineChartData,
 			pairs,
+			isMarketDropdownVisible,
+			setIsMarketDropdownVisible,
+			isToolsVisible,
 		} = this.props;
 		const market = markets.find(({ key }) => key === activePairTab) || {};
 		const {
@@ -107,6 +145,7 @@ class PairTabs extends Component {
 			pair: { increment_price } = {},
 			ticker: { close } = {},
 			display_name,
+			icon_id,
 		} = market;
 
 		if (activePairTab && !isMounted) {
@@ -136,19 +175,17 @@ class PairTabs extends Component {
 							)}
 						>
 							<Dropdown
+								key={this.state.refreshPairTab}
 								id="selector-nav-container"
 								className="market-selector-dropdown"
+								overlayClassName="market-selector-dropdown-wrapper"
 								overlay={
 									<MarketSelector
 										onViewMarketsClick={() => browserHistory.push('/markets')}
 										addTradePairTab={this.onTabClick}
-										closeAddTabMenu={() =>
-											this.setState((prevState) =>
-												this.setState({
-													isMarketSelectorVisible: !prevState.isMarketSelectorVisible,
-												})
-											)
-										}
+										closeAddTabMenu={() => {
+											setIsMarketDropdownVisible(!isMarketDropdownVisible);
+										}}
 										wrapperClassName="app-bar-add-tab-menu"
 									/>
 								}
@@ -156,25 +193,38 @@ class PairTabs extends Component {
 								mouseEnterDelay={0}
 								mouseLeaveDelay={0.05}
 								trigger={['click']}
-								visible={isMarketSelectorVisible}
-								onVisibleChange={(visible) => {
-									this.setState({ isMarketSelectorVisible: visible });
-								}}
+								visible={isMarketDropdownVisible}
+								onVisibleChange={(visible) =>
+									this.onHandleMarketSelector(visible)
+								}
 							>
-								<div className="selector-trigger app_bar-pair-tab d-flex align-items-center justify-content-between w-100 h-100">
+								<div
+									className={
+										activePairTab
+											? 'selected-market-tab selector-trigger market-dropdown-selector app_bar-pair-tab'
+											: 'selector-trigger market-dropdown-selector market-dropdown-selector-inactive app_bar-pair-tab'
+									}
+								>
 									{activePairTab ? (
 										<div className="app_bar-pair-font d-flex align-items-center justify-content-between">
-											<div className="app_bar-currency-txt">
-												{display_name}:
-											</div>
-											<div className="title-font ml-1">
-												{formatToCurrency(close, increment_price)}
-											</div>
-											<PriceChange
-												className="markets-drop-down"
-												market={market}
-												key={key}
-											/>
+											{!this.state.isLoading ? (
+												<span className="d-flex align-items-center justify-content-between">
+													<Coin iconId={icon_id} type="CS4" />
+													<div className="app_bar-currency-txt ml-1">
+														{display_name}:
+													</div>
+													<div className="title-font ml-1">
+														{formatToCurrency(close, increment_price)}
+													</div>
+													<PriceChange
+														className="markets-drop-down"
+														market={market}
+														key={key}
+													/>
+												</span>
+											) : (
+												<Loading index={0} />
+											)}
 											<SparkLine
 												data={
 													!sparkLineChartData[key] ||
@@ -187,19 +237,28 @@ class PairTabs extends Component {
 												containerProps={{
 													style: { height: '100%', width: '100%' },
 												}}
+												key={this.state.refreshPairTab}
 											/>
 										</div>
 									) : (
 										<div className="d-flex align-items-center">
-											<EditWrapper stringId="ADD_TRADING_PAIR">
-												{STRINGS['ADD_TRADING_PAIR']}
-											</EditWrapper>
+											<Image
+												icon={icons['FOOTER_TRADING_ACTIVE']}
+												wrapperClassName="trading-icon"
+											/>
+											<span className="ml-1">
+												<EditWrapper stringId="ADD_TRADING_PAIR">
+													<span className="market-select-text">
+														{STRINGS['ADD_TRADING_PAIR']}
+													</span>
+												</EditWrapper>
+											</span>
 										</div>
 									)}
-									{isMarketSelectorVisible ? (
-										<CaretUpOutlined style={{ fontSize: '14px' }} />
+									{!this.state.activePairTab && isMarketDropdownVisible ? (
+										<CaretUpOutlined />
 									) : (
-										<CaretDownOutlined style={{ fontSize: '14px' }} />
+										!this.state.activePairTab && <CaretDownOutlined />
 									)}
 								</div>
 							</Dropdown>
@@ -216,10 +275,35 @@ class PairTabs extends Component {
 									markets={[...filterQuickTrade, ...markets]}
 									activePairTab={activePairTab}
 									onTabClick={this.onTabClick}
+									isLoading={this.state.isLoading}
+									key={this.state.refreshPairTab}
 								/>
 							)}
 						</Slider>
 					</div>
+					{location.pathname.indexOf('/trade/') === 0 && (
+						<div className="d-flex h-100 tools-button border-left">
+							<div
+								className={classnames(
+									'app_bar-pair-content',
+									'market-trigger',
+									'd-flex',
+									'justify-content-between',
+									'px-2'
+								)}
+							>
+								<div
+									className="selector-trigger narrow app_bar-pair-tab tools w-100 h-100"
+									onClick={() => this.marketRefreshHandler()}
+								>
+									<Image
+										icon={icons['REFRESH_ICON']}
+										wrapperClassName="trading-icon"
+									/>
+								</div>
+							</div>
+						</div>
+					)}
 					{location.pathname.indexOf('/trade/') === 0 && (
 						<div className="d-flex h-100 tools-button border-left">
 							<div
@@ -237,20 +321,16 @@ class PairTabs extends Component {
 									mouseEnterDelay={0}
 									mouseLeaveDelay={0.05}
 									trigger={['click']}
-									visible={isToolsSelectorVisible}
-									onVisibleChange={(visible) => {
-										this.setState({ isToolsSelectorVisible: visible });
-									}}
+									visible={isToolsVisible}
+									onVisibleChange={(visible) =>
+										this.onHandleToolsVisible(visible)
+									}
 								>
-									<div className="selector-trigger narrow app_bar-pair-tab tools d-flex align-items-center justify-content-between w-100 h-100">
-										<div className="text_overflow">
-											{STRINGS['TRADE_TOOLS']}
-										</div>
-										{isToolsSelectorVisible ? (
-											<CaretUpOutlined style={{ fontSize: '14px' }} />
-										) : (
-											<CaretDownOutlined style={{ fontSize: '14px' }} />
-										)}
+									<div className="selector-trigger narrow app_bar-pair-tab tools w-100 h-100">
+										<Image
+											icon={icons['INTERFACE_OPTION_ICON']}
+											wrapperClassName="trading-icon"
+										/>
 									</div>
 								</Dropdown>
 							</div>
@@ -271,6 +351,9 @@ const mapStateToProps = (state) => {
 			constants,
 			quicktrade,
 			sparkLineChartData,
+			isMarketDropdownVisible,
+			isToolsVisible,
+			isMarketRefresh,
 		},
 		orderbook: { prices },
 	} = state;
@@ -284,6 +367,9 @@ const mapStateToProps = (state) => {
 		markets: MarketsSelector(state),
 		quicktrade,
 		sparkLineChartData,
+		isMarketDropdownVisible,
+		isToolsVisible,
+		isMarketRefresh,
 	};
 };
 
@@ -292,6 +378,12 @@ const mapDispatchToProps = (dispatch) => ({
 		changeSparkLineChartData,
 		dispatch
 	),
+	setIsMarketDropdownVisible: bindActionCreators(
+		setIsMarketDropdownVisible,
+		dispatch
+	),
+	setIsToolsVisible: bindActionCreators(setIsToolsVisible, dispatch),
+	setMarketRefresh: bindActionCreators(setMarketRefresh, dispatch),
 });
 
 export default connect(

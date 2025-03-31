@@ -56,7 +56,7 @@ class Stake extends Component {
 		} else {
 			currentTab = 'defi';
 		}
-		browserHistory.push(`/stake?${currentTab}`);
+		!this.props.isFromWallet && browserHistory.push(`/stake?${currentTab}`);
 	};
 
 	render() {

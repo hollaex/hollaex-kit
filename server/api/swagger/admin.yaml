@@ -1066,6 +1066,10 @@ paths:
           in: query
           required: false
           type: number
+        - name: user_id
+          in: query
+          required: false
+          type: number
         - name: search
           in: query
           required: false
@@ -3131,7 +3135,7 @@ paths:
                 maxLength: 256
               network:
                 type: string
-                minLength: 2
+                minLength: 1
                 maxLength: 10
       responses:
         201:
@@ -3963,12 +3967,6 @@ paths:
           type: number
           format: int32
         - in: query
-          name: amount
-          description: The amount staked by the user.
-          required: false
-          type: number
-          format: double
-        - in: query
           name: currency
           description: The currency in which the user staked.
           required: false
@@ -4286,7 +4284,7 @@ paths:
               network:
                 type: string
                 description: Blockchain network
-                minLength: 2
+                minLength: 1
                 maxLength: 10
       responses:
         200:
@@ -4497,6 +4495,205 @@ paths:
               user_id:
                 type: integer
                 format: int32
+              id:
+                type: integer
+                format: int32
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
+  /admin/announcements:
+    x-swagger-router-controller: admin
+    get:
+      description: Get announcements by admin
+      operationId: fetchAnnouncements
+      tags:
+        - Admin
+      parameters:
+        - in: query
+          name: is_popup
+          description: is_popup
+          required: false
+          type: boolean
+        - in: query
+          name: is_navbar
+          description: is_navbar
+          required: false
+          type: boolean
+        - in: query
+          name: is_dropdown
+          description: is_dropdown
+          required: false
+          type: boolean
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
+    post:
+      description: Create announcement by admin
+      operationId: createAnnouncement
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+              message:
+                type: string
+              end_date:
+                type: ['string', 'null']
+                format: date-time
+              start_date:
+                type: ['string', 'null']
+                format: date-time
+              type:
+                type: string
+              is_popup:
+                type: boolean
+              is_navbar:
+                type: boolean
+              is_dropdown:
+                type: boolean
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
+    put:
+      description: Update announcement by admin
+      operationId: updateAnnouncement
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              title:
+                type: string
+              message:
+                type: string
+              end_date:
+                type: ['string', 'null']
+                format: date-time
+              start_date:
+                type: ['string', 'null']
+                format: date-time
+              type:
+                type: string
+              is_popup:
+                type: boolean
+              is_navbar:
+                type: boolean
+              is_dropdown:
+                type: boolean
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
+    delete:
+      description: Delete announcement
+      operationId: deleteAnnouncement
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
               id:
                 type: integer
                 format: int32

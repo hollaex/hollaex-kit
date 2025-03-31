@@ -20,6 +20,21 @@
 .trade_announcement {
 	font-size: 1.5rem;
 }
+.notifications_list-wrapper {
+	max-height: 95%;
+	height: auto;
+	color: $colors-main-black;
+	overflow-y: auto;
+}
+.view-announcement-link {
+	background-color: var(--base_background);
+	width: 100%;
+	text-align: center;
+	position: sticky;
+	bottom: 0;
+	padding: 2%;
+	border-top: 1px solid var(--calculated_secondary-border);
+}
 .announcement-notification-list-item {
 	color: $colors-main-black;
 	border-bottom: 1px solid $colors-border;
@@ -29,10 +44,6 @@
 	.notifications_list-item-text {
 		a {
 			color: $link;
-		}
-		span,
-		p {
-			background-color: $app-sidebar-background !important;
 		}
 	}
 	.notifications_list-item-timestamp {

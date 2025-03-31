@@ -40,6 +40,10 @@ module.exports = function (sequelize, DataTypes) {
                 allowNull: false,
                 defaultValue: 0
             },
+            last_execution_date: {
+                type: DataTypes.DATE,
+                allowNull: true
+            },
             description: {
                 type: DataTypes.TEXT,
                 allowNull: true

@@ -242,7 +242,7 @@ const checkStatus = () => {
 					};
 					const defaultFees = DEFAULT_FEES[exchange.plan]
 						? DEFAULT_FEES[exchange.plan]
-						: { maker: 0.2, taker: 0.2 };
+						: { maker: 0.5, taker: 0.5 };
 
 					for (let pair of quickTradePairs) {
 						if (!isNumber(tier.fees.maker[pair])) {

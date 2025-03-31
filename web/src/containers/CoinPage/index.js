@@ -10,12 +10,20 @@ import { MarketsSelector } from 'containers/Trade/utils';
 import math from 'mathjs';
 import STRINGS from 'config/localizedStrings';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
-import { Button, EditWrapper, Image, Coin } from 'components';
+import {
+	Button,
+	EditWrapper,
+	Image,
+	Coin,
+	Dialog,
+	ActionNotification,
+} from 'components';
 import { getMiniCharts } from 'actions/chartAction';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { addToFavourites, removeFromFavourites } from 'actions/appActions';
 import Details from 'containers/QuickTrade/components/Details';
 import { formatCurrency } from 'utils';
+import { STATIC_ICONS } from 'config/icons';
 
 const TYPES = {
 	PRO: 'pro',
@@ -60,16 +68,12 @@ const CoinPage = ({
 	const [data, setData] = useState([]);
 	const [chartData, setChartData] = useState({});
 	const [lineChartData, setLineChartData] = useState({});
+	const [isDiaplayMarketDetail, setIsDisplayMarketDetail] = useState(false);
+	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		handleMarket();
-		const assetValues = Object.keys(coins)
-			.map((val) => coins[val].code)
-			.toLocaleString();
-
-		getMiniCharts(assetValues).then((chartValues) => {
-			setChartData(chartValues);
-		});
+		getChartDetails();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -77,6 +81,21 @@ const CoinPage = ({
 		handleOptions();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [data, chartData]);
+
+	const getChartDetails = async () => {
+		const assetValues = Object.keys(coins)
+			?.map((val) => coins[val]?.code)
+			?.toLocaleString();
+		try {
+			setIsLoading(true);
+			await getMiniCharts(assetValues).then((chartValues) => {
+				setChartData(chartValues);
+			});
+			setIsLoading(false);
+		} catch (error) {
+			console.error(error);
+		}
+	};
 
 	const handleOptions = () => {
 		const selectedPair = currentCoin + '-usdt';
@@ -117,10 +136,14 @@ const CoinPage = ({
 	const pairBase_fullName = coins[currentCoin]?.fullname;
 
 	const handleTrade = (pair) => {
-		if (isBroker) {
-			router.push(`/quick-trade/${pair}`);
+		if (pair) {
+			if (isBroker) {
+				router.push(`/quick-trade/${pair}`);
+			} else {
+				router.push(`/trade/${pair}`);
+			}
 		} else {
-			router.push(`/trade/${pair}`);
+			router.push('/wallet');
 		}
 	};
 
@@ -147,29 +170,67 @@ const CoinPage = ({
 								<div>
 									<span>{pairBase_fullName}</span> ({currentCoinUpper})
 								</div>
+								{!isMobile && (
+									<ActionNotification
+										stringId="REFRESH"
+										text={STRINGS['REFRESH']}
+										iconId="REFRESH"
+										iconPath={STATIC_ICONS['REFRESH']}
+										className="blue-icon refresh-link mr-3"
+										onClick={() => getChartDetails()}
+										disable={isLoading}
+									/>
+								)}
 							</div>
 						</div>
 						<div className="d-flex justify-content-between mt-3 mb-4 balance-wrapper">
-							<div></div>
+							<div className="link-wrapper">
+								<EditWrapper stringId="VIEW_MY_WALLET">
+									<span
+										className="blue-link text-decoration-underline pointer"
+										onClick={() => router.push('/wallet')}
+									>
+										{STRINGS['VIEW_MY_WALLET']}
+									</span>
+								</EditWrapper>
+								<span
+									className={
+										isMobile ? 'link-separator mx-4' : 'link-separator mx-2'
+									}
+								></span>
+								<EditWrapper stringId="VIEW_ALL_PRICES_LINK">
+									<span
+										className="blue-link text-decoration-underline pointer"
+										onClick={() => router.push('/prices')}
+									>
+										{STRINGS['VIEW_ALL_PRICES_LINK']}
+									</span>
+								</EditWrapper>
+							</div>
 							<div className="d-flex image-Wrapper">
-								<Image
-									iconId={''}
-									stringId={''}
-									icon={ICONS['TAB_WALLET']}
-									alt={'text'}
-									svgWrapperClassName="action_notification-svg"
-								/>
-								<div className="gray-text">
+								<div
+									className="d-flex align-items-start balance-link"
+									onClick={() => router.push('/wallet')}
+								>
+									<Image
+										iconId={''}
+										stringId={''}
+										icon={ICONS['TAB_WALLET']}
+										alt={'text'}
+										svgWrapperClassName="action_notification-svg"
+									/>
 									<EditWrapper stringId="HOLLAEX_TOKEN.BALANCE">
 										{STRINGS['HOLLAEX_TOKEN.BALANCE']}
-									</EditWrapper>{' '}
+									</EditWrapper>
+								</div>
+								<div className="gray-text ml-2">
 									{formatCurrency(
 										available_balance[`${currentCoin}_available`]
 									)}{' '}
 									{currentCoinUpper}{' '}
-									<Link className="link" to={'/wallet'}>
-										<EditWrapper stringId="HOLLAEX_TOKEN.OPEN_WALLET">
-											{STRINGS['HOLLAEX_TOKEN.OPEN_WALLET']}
+									<Link className="link" to={`wallet/${currentCoin}/deposit`}>
+										<EditWrapper stringId="SUMMARY.DEPOSIT">
+											({STRINGS['SUMMARY.DEPOSIT']})
 										</EditWrapper>
 									</Link>
 								</div>
@@ -181,24 +242,57 @@ const CoinPage = ({
 					<div className="info-container">
 						<Fragment>
 							{topLinks.filter(({ link }) => !!link).length !== 0 && (
-								<div className="d-flex justify-content-start pb-4">
-									{topLinks
-										.filter(({ link }) => !!link)
-										.map(({ link, key }, index) => (
-											<span
-												className={classnames('trade_tabs-link', {
-													'link-separator': index !== topLinks.length - 1,
-												})}
-											>
-												<a
-													href={link}
-													target="_blank"
-													rel="noopener noreferrer"
+								<div
+									className={
+										isMobile
+											? 'd-flex justify-content-start pb-4 trade-link-wrapper info-link-wrapper'
+											: 'd-flex justify-content-start pb-4 info-link-wrapper'
+									}
+								>
+									<span
+										className={
+											isMobile
+												? 'd-flex justify-content-start info-link-wrapper'
+												: 'info-link-wrapper'
+										}
+									>
+										{topLinks
+											?.filter(({ link }) => !!link)
+											?.map(({ link, key }, index) => (
+												<span
+													className={classnames('trade_tabs-link', {
+														'link-separator': index !== topLinks.length - 1,
+													})}
 												>
-													{STRINGS[key]}
-												</a>
+													<a
+														href={link}
+														target="_blank"
+														rel="noopener noreferrer"
+													>
+														{STRINGS[key]}
+													</a>
+												</span>
+											))}
+									</span>
+									{isMobile && (
+										<EditWrapper stringId="QUICK_TRADE_COMPONENT.VIEW_TREND">
+											<span
+												className="blue-link"
+												onClick={() => {
+													setIsDisplayMarketDetail(true);
+												}}
+											>
+												<span className="mr-2">
+													{STRINGS['QUICK_TRADE_COMPONENT.VIEW_TREND']}
+												</span>
+												<Image
+													iconId={'STAKING_VARIABLE'}
+													icon={ICONS['STAKING_VARIABLE']}
+													wrapperClassName="stake-variable"
+												/>
 											</span>
-										))}
+										</EditWrapper>
+									)}
 								</div>
 							)}
 						</Fragment>
@@ -224,7 +318,26 @@ const CoinPage = ({
 							</div>
 						)}
 
-						<div className="button-container">
+						{!isMobile && (
+							<div className="button-container">
+								<EditWrapper stringId="HOLLAEX_TOKEN.TRADE">
+									<Button
+										label={STRINGS.formatString(
+											isBroker
+												? STRINGS['HOLLAEX_TOKEN.QUICK_TRADE']
+												: STRINGS['HOLLAEX_TOKEN.PRO_TRADE'],
+											currentCoinUpper
+										)}
+										type="button"
+										onClick={() => handleTrade(currentQuicktradePair)}
+										className="w-100"
+									/>
+								</EditWrapper>
+							</div>
+						)}
+					</div>
+					{isMobile && (
+						<div className="market-button-container">
 							<EditWrapper stringId="HOLLAEX_TOKEN.TRADE">
 								<Button
 									label={STRINGS.formatString(
@@ -235,21 +348,80 @@ const CoinPage = ({
 									)}
 									type="button"
 									onClick={() => handleTrade(currentQuicktradePair)}
-									className="w-100"
+									className="market-btn"
 								/>
 							</EditWrapper>
 						</div>
-					</div>
-					<div className="trade-details-wrapper">
-						<Details
-							coinChartData={lineChartData}
-							pair={`${currentCoin}-usdt`}
-							brokerUsed={isBroker}
-							networkName={market?.display_name}
-							isNetwork={isNetwork}
-							showTradeFees
-						/>
-					</div>
+					)}
+					{!isMobile && (
+						<div className="trade-details-wrapper">
+							<Details
+								isLoading={isLoading}
+								coinChartData={lineChartData}
+								pair={`${currentCoin}-usdt`}
+								brokerUsed={isBroker}
+								networkName={market?.display_name}
+								isNetwork={isNetwork}
+								isCoinPage={true}
+								showTradeFees
+							/>
+						</div>
+					)}
+					<Dialog
+						isOpen={isDiaplayMarketDetail}
+						onCloseDialog={() => {
+							setIsDisplayMarketDetail(false);
+						}}
+						className="market-chart-details-popup-wrapper"
+					>
+						<div className="market-chart-details-popup-container">
+							<div className="price-trend-title">
+								<span>
+									<Image
+										iconId={'STAKING_VARIABLE'}
+										icon={ICONS['STAKING_VARIABLE']}
+										wrapperClassName="stake-variable"
+									/>
+									<span className="ml-3">
+										<EditWrapper stringId="QUICK_TRADE_COMPONENT.PRICE_TREND">
+											<span className="d-flex align-items-center">
+												{STRINGS['QUICK_TRADE_COMPONENT.PRICE_TREND']}
+											</span>
+										</EditWrapper>
+									</span>
+								</span>
+								<span className="d-flex align=-items-center">
+									{isMobile && (
+										<ActionNotification
+											stringId="REFRESH"
+											text={STRINGS['REFRESH']}
+											iconId="REFRESH"
+											iconPath={STATIC_ICONS['REFRESH']}
+											className="refresh-link mt-2"
+											onClick={() => getChartDetails()}
+											disable={isLoading}
+										/>
+									)}
+									<span
+										className="close-icon ml-3"
+										onClick={() => setIsDisplayMarketDetail(false)}
+									>
+										x
+									</span>
+								</span>
+							</div>
+							<Details
+								isLoading={isLoading}
+								coinChartData={lineChartData}
+								pair={`${currentCoin}-usdt`}
+								brokerUsed={isBroker}
+								networkName={market?.display_name}
+								isNetwork={isNetwork}
+								isCoinPage={true}
+								showTradeFees
+							/>
+						</div>
+					</Dialog>
 				</div>
 			</div>
 		</div>

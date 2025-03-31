@@ -24,6 +24,7 @@ import { isStakingAvailable } from 'config/contracts';
 import TradeInputGroup from './components/TradeInputGroup';
 import { unique } from 'utils/data';
 import { STATIC_ICONS } from 'config/icons';
+import TransactionsHistory from 'containers/TransactionsHistory';
 
 class Wallet extends Component {
 	state = {
@@ -180,13 +181,27 @@ class Wallet extends Component {
 						<EditWrapper stringId="CURRENCY_WALLET.WALLET_PAGE">
 							{STRINGS.formatString(
 								STRINGS['CURRENCY_WALLET.WALLET_PAGE'],
-								<Link className="link-content" to="wallet">
+								<span
+									className="blue-link text-decoration-underline pointer view-price-link"
+									onClick={() => this.props.router.push('/wallet')}
+								>
 									{STRINGS['CURRENCY_WALLET.BACK']}
-								</Link>
+								</span>
 							)}
 						</EditWrapper>
 						{!isMobile && (
-							<div className="trade-link-wrapper">
+							<div className="trade-link-wrapper d-flex">
+								<div className="d-flex align-items-center">
+									<EditWrapper stringId="VIEW_PRICES">
+										<span
+											className="no-wrap blue-link text-decoration-underline pointer view-price-link"
+											onClick={() => this.props.router.push('/prices')}
+										>
+											{STRINGS['VIEW_PRICES'].toUpperCase()}
+										</span>
+									</EditWrapper>
+									<span className="link-separator mx-2"></span>
+								</div>
 								{markets.length > 1 ? (
 									<TradeInputGroup
 										quicktrade={quicktrade}
@@ -241,7 +256,7 @@ class Wallet extends Component {
 										)
 									)
 								) : null)}
-							<p className="available-balance-wrapper">
+							<div className="available-balance-wrapper">
 								<EditWrapper stringId="CURRENCY_WALLET.AVAILABLE_BALANCE">
 									{STRINGS.formatString(
 										STRINGS['CURRENCY_WALLET.AVAILABLE_BALANCE'],
@@ -250,7 +265,7 @@ class Wallet extends Component {
 										<Help tip={STRINGS['CURRENCY_WALLET.TOOLTIP']}></Help>
 									)}
 								</EditWrapper>
-							</p>
+							</div>
 						</div>
 						{!hasEarn && (
 							<div className="link-container mb-3">
@@ -378,6 +393,13 @@ class Wallet extends Component {
 							</div>
 						)}
 					</div>
+				</div>
+				<div className="pt-4 pb-3 deposit-history-table-wrapper">
+					<TransactionsHistory
+						isFromWallet={true}
+						selectedAsset={fullname}
+						isDepositFromWallet={true}
+					/>
 				</div>
 			</div>
 		);

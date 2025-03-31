@@ -223,7 +223,9 @@ exports.KIT_CONFIG_KEYS = [
 	'referral_history_config',
 	'chain_trade_config',
 	'selectable_native_currencies',
-	'auto_trade_config'
+	'auto_trade_config',
+	'apps',
+	'timezone'
 ];
 
 exports.KIT_SECRETS_KEYS = [
@@ -366,6 +368,25 @@ const ROLES = {
 
 exports.DEFAULT_FEES = {
 	fiat: {
+		maker: 0.5,
+		taker: 0.5
+	},
+	boost: {
+		maker: 0.5,
+		taker: 0.5
+	},
+	crypto: {
+		maker: 0.5,
+		taker: 0.5
+	},
+	basic: {
+		maker: 0.5,
+		taker: 0.5
+	}
+};
+
+exports.MIN_FEES = {
+	fiat: {
 		maker: 0,
 		taker: 0
 	},
@@ -375,11 +396,11 @@ exports.DEFAULT_FEES = {
 	},
 	crypto: {
 		maker: 0.05,
-		taker: 0.1
+		taker: 0.05
 	},
 	basic: {
-		maker: 0.2,
-		taker: 0.2
+		maker: 0.05,
+		taker: 0.05
 	}
 };
 
@@ -698,7 +719,7 @@ exports.REFERRAL_HISTORY_SUPPORTED_PLANS = ['fiat', 'boost', 'enterprise'];
 
 //AUTO_TRADE CONSTANTS START
 
-exports.AUTO_TRADE_SUPPORTED_PLANS = ['boost', 'enterprise'];
+exports.AUTO_TRADE_SUPPORTED_PLANS = ['enterprise', 'fiat'];
 //AUTO_TRADE CONSTANTS END
 
 

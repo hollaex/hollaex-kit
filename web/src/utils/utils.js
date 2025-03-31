@@ -1,6 +1,13 @@
+import React from 'react';
+import { browserHistory } from 'react-router';
+import { isMobile } from 'react-device-detect';
 import moment from 'moment';
 import momentJ from 'moment-jalaali';
 import math from 'mathjs';
+import _orderBy from 'lodash/orderBy';
+
+import strings from 'config/localizedStrings';
+import icons from 'config/icons/dark';
 import _toLower from 'lodash/toLower';
 import {
 	TIMESTAMP_FORMAT,
@@ -9,7 +16,7 @@ import {
 	AUDIOS,
 } from '../config/constants';
 import { getLanguage } from './string';
-import _orderBy from 'lodash/orderBy';
+import { Button, EditWrapper, Image } from 'components';
 
 const bitcoin = {
 	COIN: 100000000,
@@ -130,6 +137,16 @@ export const constructSettings = (state = {}, settings) => {
 	) {
 		settingsData.notification.popup_order_partially_filled =
 			settings.popup_order_partially_filled;
+	}
+	if (settings.popup_order_new || settings.popup_order_new === false) {
+		settingsData.notification.popup_order_new = settings.popup_order_new;
+	}
+	if (
+		settings.popup_order_canceled ||
+		settings.popup_order_canceled === false
+	) {
+		settingsData.notification.popup_order_canceled =
+			settings.popup_order_canceled;
 	}
 
 	if (settings.theme) {
@@ -304,6 +321,14 @@ export const handleFiatUpgrade = (info = {}) => {
 	}
 };
 
+export const handleEnterpriseUpgrade = (info = {}) => {
+	if (_toLower(info.plan) !== 'fiat') {
+		return true;
+	} else {
+		return false;
+	}
+};
+
 export const filterPinnedAssets = (pinnedAssets, coins) => {
 	const coinKeys = Object.keys(coins);
 	return pinnedAssets.filter((pinnedAsset) => coinKeys.includes(pinnedAsset));
@@ -319,4 +344,113 @@ export const constractPaymentOption = (paymentsData) => {
 
 export const handlePopupContainer = (triggerNode) => {
 	return triggerNode.parentNode;
+};
+
+const ErrorDisplay = ({
+	icon,
+	statusCode,
+	errorType,
+	descText,
+	reconnectHandler,
+}) => {
+	return (
+		<div
+			className={
+				isMobile
+					? 'display-error-container display-error-container-mobile'
+					: 'display-error-container'
+			}
+		>
+			<div className="w-75 d-flex flex-column h-100 align-items-center justify-content-center">
+				<Image
+					icon={icon}
+					wrapperClassName={
+						errorType === 'ERROR_TAB.SERVER_MAINTENANCE_ERROR'
+							? 'display-error-icon server-maintenance-icon'
+							: 'display-error-icon'
+					}
+				/>
+				<div className="d-flex align-items-center flex-column justify-content-center mt-2">
+					{statusCode && <span>{statusCode}</span>}
+					<EditWrapper stringId={errorType}>
+						<span className="font-weight-bold error-title">
+							{strings[errorType]}
+						</span>
+					</EditWrapper>
+					<div className="error-description-wrapper">
+						<EditWrapper stringId={descText}>
+							<span className="error-description">{strings[descText]}</span>
+						</EditWrapper>
+					</div>
+				</div>
+				<div className="button-container">
+					<Button
+						label={strings['CONNECTIONS.RECONNECT']}
+						onClick={reconnectHandler}
+						className="mt-2"
+					/>
+				</div>
+			</div>
+		</div>
+	);
+};
+
+export const NetworkError = () => {
+	return (
+		<ErrorDisplay
+			icon={icons['NETWORK_ERROR']}
+			errorType="ERROR_TAB.NETWORK_ERROR"
+			descText="ERROR_TAB.NETWORK_ERROR_DESC"
+			reconnectHandler={() => window.location.reload()}
+		/>
+	);
+};
+
+export const ServerError = () => {
+	return (
+		<ErrorDisplay
+			icon={icons['SERVER_ERROR']}
+			statusCode="504"
+			errorType="ERROR_TAB.SERVER_ERROR"
+			descText="ERROR_TAB.SERVER_ERROR_DESC"
+			reconnectHandler={() => window.location.reload()}
+		/>
+	);
+};
+
+export const ServerMaintenanceError = () => {
+	return (
+		<ErrorDisplay
+			icon={icons['SERVER_MAINTENANCE_ERROR']}
+			statusCode="503"
+			errorType="ERROR_TAB.SERVER_MAINTENANCE_ERROR"
+			descText="ERROR_TAB.SERVER_MAINTENANCE_ERROR_DESC"
+			reconnectHandler={() => window.location.reload()}
+		/>
+	);
+};
+
+export const TooManyRequestError = () => {
+	return (
+		<ErrorDisplay
+			icon={icons['TOO_MANY_REQUEST_ERROR']}
+			statusCode="429"
+			errorType="ERROR_TAB.TOO_MANY_REQUEST_ERROR"
+			descText="ERROR_TAB.TOO_MANY_REQUEST_ERROR_DESC"
+			reconnectHandler={() => window.location.reload()}
+		/>
+	);
+};
+
+export const DefaultError = ({ setIsError }) => {
+	return (
+		<ErrorDisplay
+			icon={icons['SERVER_ERROR']}
+			errorType="USER_APPS.ALL_APPS.ADD.FAILED"
+			reconnectHandler={() => {
+				setIsError();
+				browserHistory.push('/account');
+			}}
+		/>
+	);
 };

@@ -46,7 +46,12 @@ const InputField = (props) => {
 					type={type}
 					{...input}
 					{...rest}
-					onBlur={() => {}}
+					onFocus={(e) => {
+						if (input.onFocus) input.onFocus(e);
+					}}
+					onBlur={(e) => {
+						if (input.onBlur) input.onBlur(e);
+					}}
 					autoFocus={isFocus}
 				/>
 			</div>

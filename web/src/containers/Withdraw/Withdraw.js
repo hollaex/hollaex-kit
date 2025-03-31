@@ -784,6 +784,13 @@ const RenderWithdraw = ({
 			? renderNetworkField(selectedAsset?.networkData)
 			: network;
 	const isActiveWithdrawNetwork = currencyNetwork(selectedAssetNetwork);
+
+	const getActiveWithdraw =
+		selectedMethod === STRINGS['WITHDRAW_PAGE.WITHDRAWAL_CONFIRM_ADDRESS'] ||
+		(selectedMethod && selectedMethod === 'Address')
+			? isActiveWithdrawNetwork && isActiveWithdrawNetwork?.active !== false
+			: true;
+
 	return (
 		<div
 			className={
@@ -909,7 +916,9 @@ const RenderWithdraw = ({
 											dropdownClassName="custom-select-style"
 											suffixIcon={<CaretDownOutlined />}
 											placeholder={STRINGS['WITHDRAW_PAGE.SELECT']}
-											allowClear={true}
+											allowClear={
+												selectedAsset?.selectedCurrency ? true : false
+											}
 											value={
 												selectedAsset?.selectedCurrency &&
 												`${
@@ -1023,7 +1032,7 @@ const RenderWithdraw = ({
 											}`}
 											dropdownClassName="custom-select-style withdraw-selected-network"
 											suffixIcon={<CaretDownOutlined />}
-											allowClear={true}
+											allowClear={selectedAsset?.networkData ? true : false}
 											onChange={onHandleChangeNetwork}
 											value={
 												defaultCurrency &&
@@ -1302,8 +1311,8 @@ const RenderWithdraw = ({
 						<div className="destination-field-wrapper">
 							{isEmailAndAddress &&
 								renderNetwork &&
-								isActiveWithdrawNetwork &&
-								isActiveWithdrawNetwork?.active !== false && (
+								getActiveWithdraw &&
+								getActiveWithdraw && (
 									<div
 										className={
 											isMobile
@@ -1334,7 +1343,9 @@ const RenderWithdraw = ({
 														className="custom-select-input-style elevated select-field destination-select-field"
 														dropdownClassName="custom-select-style"
 														suffixIcon={<CaretDownOutlined />}
-														allowClear={true}
+														allowClear={
+															selectedAsset?.addressField ? true : false
+														}
 														value={selectedAsset?.addressField}
 														onChange={onchangeAddressField}
 														onDropdownVisibleChange={

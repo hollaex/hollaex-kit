@@ -152,6 +152,7 @@ $close-button--margin: 1.5rem;
 	}
 
 	.ReactModal__Content {
+		top: 0 !important;
 		bottom: 0 !important;
 		left: 0 !important;
 		right: 0 !important;

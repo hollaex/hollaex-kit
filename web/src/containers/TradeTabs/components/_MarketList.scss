@@ -7,6 +7,13 @@
 			font-size: $font-size-subtext;
 			margin-bottom: 3rem;
 
+			.sparkle-icon {
+				svg {
+					width: 2rem;
+					height: 2rem;
+				}
+			}
+
 			.loading-anime {
 				height: 20px;
 				width: 100px;
@@ -190,7 +197,12 @@
 }
 
 .layout-mobile {
+	.trade_tabs-content {
+		border: unset !important;
+		padding: 3%;
+	}
 	.market-list__container {
+		margin-top: 4%;
 		.market-list__block {
 			overflow-x: auto;
 			position: relative;
@@ -202,7 +214,7 @@
 
 				.table-row {
 					td {
-						padding: 0.5rem;
+						padding: 0 0.5rem;
 						min-width: 10rem;
 					}
 
@@ -222,6 +234,7 @@
 					min-width: 12rem !important;
 					max-width: 12rem !important;
 					z-index: 1;
+					border-bottom: 1px solid $colors-border !important;
 				}
 
 				.loading-anime {
@@ -235,6 +248,7 @@
 	}
 
 	.trade_tabs-container {
+		height: 100%;
 		.sticky-col {
 			background-color: $app-background-color !important;
 		}

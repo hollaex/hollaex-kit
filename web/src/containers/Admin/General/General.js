@@ -36,7 +36,11 @@ import { COUNTRIES_OPTIONS } from '../../../utils/countries';
 import _get from 'lodash/get';
 
 import './index.css';
-import { handleFiatUpgrade, handleUpgrade } from 'utils/utils';
+import {
+	handleFiatUpgrade,
+	handleUpgrade,
+	handleEnterpriseUpgrade,
+} from 'utils/utils';
 import { checkFileSize, fileSizeError } from 'utils/icon';
 import PublishSection from './PublishSection';
 import { CloseCircleOutlined } from '@ant-design/icons';
@@ -44,6 +48,7 @@ import Coins from '../Coins';
 import { BASE_CURRENCY } from 'config/constants';
 import { isLoggedIn } from 'utils/token';
 import { setPricesAndAsset } from 'actions/assetActions';
+import { minimalTimezoneSet } from '../Settings/Utils';
 const { Option } = Select;
 
 const NameForm = AdminHocForm('NameForm');
@@ -547,7 +552,8 @@ class GeneralContent extends Component {
 		features,
 		balance_history_config = null,
 		referral_history_config = null,
-		chain_trade_config = null
+		chain_trade_config = null,
+		auto_trade_config = null
 	) => {
 		this.handleSubmitGeneral({
 			kit: {
@@ -555,6 +561,7 @@ class GeneralContent extends Component {
 				balance_history_config,
 				referral_history_config,
 				chain_trade_config,
+				auto_trade_config,
 			},
 		});
 	};
@@ -680,6 +687,65 @@ class GeneralContent extends Component {
 		}
 	};
 
+	handleInputChange = (key, value) => {
+		this.setState((prevState) => ({
+			constants: {
+				...prevState.constants,
+				kit: {
+					...prevState.constants.kit,
+					apps: {
+						...prevState.constants.kit.apps,
+						[key]: value,
+					},
+				},
+			},
+		}));
+	};
+
+	handleInputChangeTimezone = (key, value) => {
+		this.setState((prevState) => ({
+			constants: {
+				...prevState.constants,
+				secrets: {
+					...prevState.constants.secrets,
+					emails: {
+						...prevState.constants.secrets.emails,
+						[key]: value,
+					},
+				},
+				kit: {
+					...prevState.constants.kit,
+					timezone: value,
+				},
+			},
+		}));
+	};
+
+	handleSave = async () => {
+		try {
+			this.handleSubmitGeneral({
+				kit: {
+					apps: this.state.constants.kit.apps,
+				},
+			});
+		} catch (error) {
+			message.error(error.message);
+		}
+	};
+	handleSaveTimezone = async () => {
+		try {
+			this.handleSubmitGeneral({
+				secrets: {
+					emails: this.state.constants.secrets.emails,
+				},
+				kit: {
+					timezone: this.state.constants.kit.timezone,
+				},
+			});
+		} catch (error) {
+			message.error(error.message);
+		}
+	};
 	renderModalContent = () => {
 		const { screen, removeCountryLabel, selectedCountry } = this.state;
 		switch (screen) {
@@ -845,6 +911,7 @@ class GeneralContent extends Component {
 		}
 		const isUpgrade = handleUpgrade(kit.info);
 		const isFiatUpgrade = handleFiatUpgrade(kit.info);
+		const isEnterpriseUpgrade = handleEnterpriseUpgrade(kit.info);
 
 		return (
 			<div>
@@ -876,6 +943,32 @@ class GeneralContent extends Component {
 									buttonSubmitting={buttonSubmitting}
 								/>
 							</div>
+							<div className="divider"></div>
+							<div>
+								<div className="sub-title">Timezone</div>
+								<Select
+									onChange={(e) => {
+										this.handleInputChangeTimezone('timezone', e);
+									}}
+									value={this?.state?.constants?.secrets?.emails?.timezone}
+									placeholder="Select email timezone"
+								>
+									{minimalTimezoneSet.map((timezone) => {
+										return (
+											<Select.Option value={timezone.value}>
+												{timezone.label}
+											</Select.Option>
+										);
+									})}
+								</Select>
+							</div>
+							<Button
+								style={{ width: 120 }}
+								type="primary"
+								onClick={this.handleSaveTimezone}
+							>
+								Save
+							</Button>
 							<div className="divider"></div>
 							<div>
 								<div className="sub-title">Language</div>
@@ -1228,6 +1321,120 @@ class GeneralContent extends Component {
 						/>
 					</div>
 				) : null}
+				{activeTab === 'apps' ? (
+					<div className="general-wrapper">
+						<h3>Mobile Application Configurations</h3>
+						<p>
+							You can configure below fields for you mobile application. Those
+							are publicly available for the users.
+						</p>
+
+						<div style={{}}>
+							<div style={{ marginBottom: 16 }}>
+								<label
+									htmlFor="current_version"
+									style={{ display: 'block', marginBottom: -4 }}
+								>
+									Current Version
+								</label>
+								<Input
+									id="current_version"
+									value={constants?.kit?.apps?.current_version}
+									onChange={(e) =>
+										this.handleInputChange('current_version', e.target.value)
+									}
+									placeholder="Enter the current version"
+								/>
+							</div>
+
+							<div style={{ marginBottom: 16 }}>
+								<label
+									htmlFor="min_version"
+									style={{ display: 'block', marginBottom: -4 }}
+								>
+									Min Version
+								</label>
+								<Input
+									id="min_version"
+									value={constants?.kit?.apps?.min_version}
+									onChange={(e) =>
+										this.handleInputChange('min_version', e.target.value)
+									}
+									placeholder="Enter the minimum version"
+								/>
+							</div>
+
+							<div style={{ marginBottom: 16 }}>
+								<label
+									htmlFor="android_url"
+									style={{ display: 'block', marginBottom: -4 }}
+								>
+									Android URL
+								</label>
+								<Input
+									id="android_url"
+									value={constants?.kit?.apps?.android_url}
+									onChange={(e) =>
+										this.handleInputChange('android_url', e.target.value)
+									}
+									placeholder="Enter the Android URL"
+								/>
+							</div>
+
+							<div style={{ marginBottom: 16 }}>
+								<label
+									htmlFor="ios_url"
+									style={{ display: 'block', marginBottom: -4 }}
+								>
+									iOS URL
+								</label>
+								<Input
+									id="ios_url"
+									value={constants?.kit?.apps?.ios_url}
+									onChange={(e) =>
+										this.handleInputChange('ios_url', e.target.value)
+									}
+									placeholder="Enter the iOS URL"
+								/>
+							</div>
+
+							<div style={{ marginBottom: 16 }}>
+								<label
+									htmlFor="macos_url"
+									style={{ display: 'block', marginBottom: -4 }}
+								>
+									MacOS URL
+								</label>
+								<Input
+									id="macos_url"
+									value={constants?.kit?.apps?.macos_url}
+									onChange={(e) =>
+										this.handleInputChange('macos_url', e.target.value)
+									}
+									placeholder="Enter the MacOS URL"
+								/>
+							</div>
+
+							<div style={{ marginBottom: 16 }}>
+								<label htmlFor="windows_url" style={{ display: 'block' }}>
+									Windows URL
+								</label>
+								<Input
+									id="windows_url"
+									value={constants?.kit?.apps?.windows_url}
+									onChange={(e) =>
+										this.handleInputChange('windows_url', e.target.value)
+									}
+									placeholder="Enter the Windows URL"
+								/>
+							</div>
+
+							<Button type="primary" onClick={this.handleSave}>
+								Save
+							</Button>
+						</div>
+					</div>
+				) : null}
 				{activeTab === 'features' ? (
 					<InterfaceForm
 						initialValues={kit.features}
@@ -1236,6 +1443,7 @@ class GeneralContent extends Component {
 						isUpgrade={isUpgrade}
 						buttonSubmitting={buttonSubmitting}
 						isFiatUpgrade={isFiatUpgrade}
+						isEnterpriseUpgrade={isEnterpriseUpgrade}
 						coins={coins}
 						enabledPlugins={enabledPlugins}
 					/>
@@ -1309,56 +1517,28 @@ class GeneralContent extends Component {
 						<div className="divider"></div>
 						<div className="general-wrapper mb-5">
 							<div className="sub-title">API keys</div>
-							{isUpgrade ? (
-								<div className="d-flex">
-									<div className="d-flex align-items-center justify-content-between upgrade-section my-4">
-										<div>
-											<div className="font-weight-bold">
-												Gnerate your API keys
-											</div>
-											<div>Allow your users to create API keys</div>
-										</div>
-										<div className="ml-5 button-wrapper">
-											<a
-												href="https://dash.hollaex.com/billing"
-												target="_blank"
-												rel="noopener noreferrer"
-											>
-												<Button type="primary" className="w-100">
-													Upgrade Now
-												</Button>
-											</a>
-										</div>
-									</div>
-								</div>
-							) : (
-								<>
-									<div className="description d-flex flex-column">
-										<span>
-											Generate API keys for programmatic access to your
-											exchange.
-										</span>
-										<span>
-											Note, in order to generate API keys it is required to add
-											a{' '}
-											<a
-												href="https://www.techtarget.com/whatis/definition/whitelist"
-												target={'_blank'}
-												rel="noopener noreferrer"
-											>
-												white listed IP address.
-											</a>
-										</span>
-									</div>
-									<GenerateAPiKeys
-										tokenRevoked={this.props.tokenRevoked}
-										tokenGenerated={tokenGenerated}
-										tokens={this.props.tokens}
-										requestTokens={this.props.requestTokens}
-										user={this.props.user}
-									/>
-								</>
-							)}
+							<div className="description d-flex flex-column">
+								<span>
+									Generate API keys for programmatic access to your exchange.
+								</span>
+								<span>
+									Note, in order to generate API keys it is required to add a{' '}
+									<a
+										href="https://www.techtarget.com/whatis/definition/whitelist"
+										target={'_blank'}
+										rel="noopener noreferrer"
+									>
+										white listed IP address.
+									</a>
+								</span>
+							</div>
+							<GenerateAPiKeys
+								tokenRevoked={this.props.tokenRevoked}
+								tokenGenerated={tokenGenerated}
+								tokens={this.props.tokens}
+								requestTokens={this.props.requestTokens}
+								user={this.props.user}
+							/>
 						</div>
 					</div>
 				) : null}

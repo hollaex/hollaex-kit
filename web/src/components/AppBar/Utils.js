@@ -15,7 +15,7 @@ import icons from 'config/icons/dark';
 import STRINGS from 'config/localizedStrings';
 import { Button, Coin, EditWrapper, Image } from 'components';
 import { getCountry } from 'containers/Verification/utils';
-import { getFormatTimestamp } from 'utils/utils';
+import { getFormatTimestamp, handlePopupContainer } from 'utils/utils';
 import { Loading } from 'containers/DigitalAssets/components/utils';
 import { updateUserSettings } from 'actions/userAction';
 import { isLoggedIn } from 'utils/token';
@@ -374,11 +374,19 @@ export const renderConfirmSignout = (
 			onCloseDialog={() => onHandleclose()}
 		>
 			<div className="signout-confirmation-popup-description">
-				<span className="signout-title">
-					<EditWrapper stringId="LOGOUT_CONFIRM_TEXT">
-						{STRINGS['LOGOUT_CONFIRM_TEXT']}
-					</EditWrapper>
-				</span>
+				<div className="signout-confirmation-content">
+					<Image icon={icons['TAB_SIGNOUT']} wrapperClassName="sign-out-icon" />
+					<span className="signout-title">
+						<EditWrapper stringId="CONFIRM_TEXT">
+							{STRINGS['CONFIRM_TEXT']} {STRINGS['SIGN_OUT_TEXT']}
+						</EditWrapper>
+					</span>
+					<span className="signout-description-content">
+						<EditWrapper stringId="LOGOUT_CONFIRM_TEXT">
+							{STRINGS['LOGOUT_CONFIRM_TEXT']}
+						</EditWrapper>
+					</span>
+				</div>
 				<div className="signout-confirmation-button-wrapper">
 					<Button
 						className="cancel-btn"
@@ -514,13 +522,14 @@ export const LanguageDisplayPopup = ({
 							size="small"
 							onChange={(value) => setSelectedLanguage(value)}
 							bordered={false}
-							onClick={() => setIsOpen((prev) => !prev)}
-							onBlur={() => {
-								if (isOpen) setIsOpen(false);
-							}}
 							suffixIcon={isOpen ? <CaretUpOutlined /> : <CaretDownOutlined />}
-							className="custom-select-input-style appbar elevated"
-							dropdownClassName="custom-select-style select-option-wrapper"
+							className="custom-select-input-style appbar select-language-wrapper"
+							dropdownClassName="custom-select-style select-option-wrapper language-select-dropdown-wrapper"
+							getPopupContainer={handlePopupContainer}
+							virtual={false}
+							open={isOpen}
+							onDropdownVisibleChange={(open) => setIsOpen(open)}
+							listHeight={165}
 						>
 							{languageFormValue?.map(({ value, icon, label }) => (
 								<Option value={value} key={value} className="capitalize">
@@ -528,7 +537,7 @@ export const LanguageDisplayPopup = ({
 										<Image
 											icon={icon}
 											alt={label}
-											wrapperClassName="flag-icon mr-2"
+											wrapperClassName="flag-icon"
 										/>
 										<span className="caps important-text">{label}</span>
 									</div>
@@ -552,14 +561,10 @@ export const LanguageDisplayPopup = ({
 					</EditWrapper>
 					<Select
 						value={selectedCurrency}
-						className="custom-select-input-style appbar elevated"
+						className="custom-select-input-style appbar select-language-wrapper"
 						dropdownClassName="custom-select-style select-currency-wrapper"
 						onChange={(value) => setSelectedCurrency(value)}
 						placeholder={STRINGS['CURRENCY']}
-						onClick={() => setIsDisplayCurrencyOpen((prev) => !prev)}
-						onBlur={() => {
-							if (isOpen) setIsDisplayCurrencyOpen(false);
-						}}
 						suffixIcon={
 							isDisplayCurrencyOpen ? (
 								<CaretUpOutlined />
@@ -567,6 +572,11 @@ export const LanguageDisplayPopup = ({
 								<CaretDownOutlined />
 							)
 						}
+						getPopupContainer={handlePopupContainer}
+						virtual={false}
+						open={isDisplayCurrencyOpen}
+						onDropdownVisibleChange={(open) => setIsDisplayCurrencyOpen(open)}
+						listHeight={90}
 					>
 						{selectable_native_currencies?.map((data) => {
 							return (
@@ -606,4 +616,36 @@ export const LanguageDisplayPopup = ({
 			</div>
 		</Dialog>
 	);
+};
+
+export const renderAnnouncementMessage = (message, maxLength = 100) => {
+	const announcementMessage = message?.replace(/(<([^>]+)>)/gi, ' ');
+	const maxAnnouncementMessage =
+		announcementMessage?.length > maxLength
+			? announcementMessage?.substring(0, maxLength)?.trim() + '...'
+			: announcementMessage;
+
+	return (
+		<div
+			className="announcement-message-wrapper"
+			dangerouslySetInnerHTML={{
+				__html: maxAnnouncementMessage,
+			}}
+		></div>
+	);
+};
+
+export const renderRemoveEmptyTag = (html) => {
+	const selectedTag = document.createElement('div');
+	selectedTag.innerHTML = html;
+
+	const removeTag = selectedTag?.querySelectorAll('*:not(img)');
+	removeTag &&
+		removeTag.forEach((data) => {
+			if (data?.innerHTML.trim() === '<br>' || data?.innerHTML === '') {
+				data.remove();
+			}
+		});
+
+	return selectedTag?.innerHTML;
 };

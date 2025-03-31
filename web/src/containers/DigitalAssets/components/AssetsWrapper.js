@@ -5,6 +5,7 @@ import { reset } from 'redux-form';
 import { withRouter } from 'react-router';
 import { isMobile } from 'react-device-detect';
 import { CloseOutlined, SearchOutlined } from '@ant-design/icons';
+import { throttle } from 'lodash';
 
 import AssetsCards from './AssetsCards';
 import STRINGS from 'config/localizedStrings';
@@ -16,7 +17,7 @@ import {
 	countDecimals,
 } from 'utils/currency';
 import { SearchBox } from 'components';
-import { setCoinsData } from 'actions/appActions';
+import { setCoinsData, setIsRefreshAssets } from 'actions/appActions';
 import { quicktradePairSelector } from 'containers/QuickTrade/components/utils';
 import { getMiniCharts } from 'actions/chartAction';
 
@@ -37,7 +38,9 @@ class AssetsWrapper extends Component {
 			searchValue: '',
 			isLoading: true,
 			isSearchActive: false,
-			selectedButton: !isMobile ? 'Market Cap' : '',
+			selectedButton: !isMobile
+				? STRINGS['DIGITAL_ASSETS.CARDS.MARKET_CAP']
+				: '',
 			isSelectedSort: false,
 			isInputFocus: false,
 		};
@@ -117,9 +120,15 @@ class AssetsWrapper extends Component {
 		// const remainingAssets = [];
 		const coinsData = coinsList
 			.map((name) => {
-				const { code, icon_id, symbol, fullname, type, created_at } = coins[
-					name
-				];
+				const {
+					code,
+					icon_id,
+					symbol,
+					fullname,
+					type,
+					created_at,
+					increment_unit,
+				} = coins[name];
 
 				const key = `${code}-usdt`;
 				const pricingData = this.getPricingData(chartValues[key]);
@@ -133,6 +142,7 @@ class AssetsWrapper extends Component {
 					fullname,
 					type,
 					key,
+					increment_unit,
 					networkType: quicktradePairs[key]?.type,
 					created_at,
 				};
@@ -162,17 +172,29 @@ class AssetsWrapper extends Component {
 		setCoinsData(coinsData);
 	};
 
-	async componentDidMount() {
+	getMinicharData = async () => {
 		const { coins } = this.props;
+		const coinsList = Object.keys(coins).map((val) => coins[val].code);
+		try {
+			this.setState({ isLoading: true });
+			await getMiniCharts(coinsList.toLocaleString()).then((chartValues) => {
+				this.setState({ chartData: chartValues });
+				this.getCoinsData(coinsList, chartValues);
+			});
+			this.setState({ isLoading: false });
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
+	throttledGetMinicharData = throttle(this.getMinicharData, 1000);
+
+	async componentDidMount() {
 		const { page, searchValue } = this.state;
 		this.constructData(page, searchValue);
 
-		const coinsList = Object.keys(coins).map((val) => coins[val].code);
-
-		getMiniCharts(coinsList.toLocaleString()).then((chartValues) => {
-			this.setState({ chartData: chartValues });
-			this.getCoinsData(coinsList, chartValues);
-		});
+		this.getMinicharData();
+		this.interval = setInterval(this.throttledGetMinicharData, 60000);
 		await onHandleInitialLoading(15 * 100);
 		this.setState({ isLoading: false });
 		window.addEventListener('keydown', this.handleKeyPress);
@@ -188,6 +210,7 @@ class AssetsWrapper extends Component {
 	}
 
 	componentWillUnmount() {
+		clearInterval(this.interval);
 		window.removeEventListener('keydown', this.handleKeyPress);
 	}
 
@@ -268,13 +291,13 @@ class AssetsWrapper extends Component {
 		const { coinsData, coins } = this.props;
 
 		const sortFunctions = {
-			'Market Cap': (data) =>
+			[STRINGS['DIGITAL_ASSETS.CARDS.MARKET_CAP']]: (data) =>
 				data.sort(
 					(a, b) =>
 						(coins[b?.symbol]?.market_cap || 0) -
 						(coins[a?.symbol]?.market_cap || 0)
 				),
-			Gainers: (data) =>
+			[STRINGS['DIGITAL_ASSETS.CARDS.GAINERS']]: (data) =>
 				data
 					?.filter(
 						({ oneDayPriceDifferencePercenVal }) =>
@@ -285,7 +308,7 @@ class AssetsWrapper extends Component {
 							(b.oneDayPriceDifferencePercenVal || 0) -
 							(a.oneDayPriceDifferencePercenVal || 0)
 					),
-			Losers: (data) =>
+			[STRINGS['DIGITAL_ASSETS.CARDS.LOSERS']]: (data) =>
 				data
 					?.filter(
 						({ oneDayPriceDifferencePercenVal }) =>
@@ -296,7 +319,7 @@ class AssetsWrapper extends Component {
 							(a.oneDayPriceDifferencePercenVal || 0) -
 							(b.oneDayPriceDifferencePercenVal || 0)
 					),
-			New: (data) =>
+			[STRINGS['DEPOSIT_STATUS.NEW']]: (data) =>
 				data?.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)),
 		};
 
@@ -365,6 +388,16 @@ class AssetsWrapper extends Component {
 			STRINGS['DIGITAL_ASSETS.CARDS.LOSERS'],
 			STRINGS['DEPOSIT_STATUS.NEW'],
 		];
+
+		if (this.props.isRefreshAssets) {
+			this.getMinicharData();
+			this.props.setIsRefreshAssets(false);
+			this.setState({
+				selectedButton: !isMobile
+					? STRINGS['DIGITAL_ASSETS.CARDS.MARKET_CAP']
+					: '',
+			});
+		}
 
 		return (
 			<div>
@@ -510,11 +543,13 @@ const mapStateToProps = (state, props) => ({
 	quicktradePairs: quicktradePairSelector(state),
 	coinsData: state.app.coinsData,
 	pinned_assets: state.app.pinned_assets,
+	isRefreshAssets: state.app.isRefreshAssets,
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	setCoinsData: bindActionCreators(setCoinsData, dispatch),
 	dispatch,
+	setIsRefreshAssets: bindActionCreators(setIsRefreshAssets, dispatch),
 });
 
 export default connect(

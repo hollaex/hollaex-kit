@@ -120,6 +120,19 @@ export const SET_SECURITY_TAB = 'SET_SECURITY_TAB';
 export const SET_VERIFICATION_TAB = 'SET_VERIFICATION_TAB';
 export const SET_SETTINGS_TAB = 'SET_SETTINGS_TAB';
 export const SET_ACTIVE_CHAT = 'SET_ACTIVE_CHAT';
+export const SET_ACTIVE_MARKET_SELECTOR = 'SET_ACTIVE_MARKET_SELECTOR';
+export const SET_TOOLS_VISIBLE = 'SET_TOOLS_VISIBLE';
+export const SET_ACTIVE_PRO_TRADE = 'SET_ACTIVE_PRO_TRADE';
+export const SET_ACTIVE_QUICK_TRADE = 'SET_ACTIVE_QUICK_TRADE';
+export const SET_SELECTED_ANNOUNCEMENT = 'SET_SELECTED_ANNOUNCEMENT';
+export const SET_ACTIVE_SELECTED_ANNOUNCEMENT =
+	'SET_ACTIVE_SELECTED_ANNOUNCEMENT';
+export const SET_EXCHANGE_TIMEZONE = 'SET_EXCHANGE_TIMEZONE';
+export const SET_IS_ADMIN_ANNOUNCEMENT_FEATURE =
+	'SET_IS_ADMIN_ANNOUNCEMENT_FEATURE';
+export const SET_IS_REFRESH_ASSETS = 'SET_IS_REFRESH_ASSETS';
+export const SET_MARKET_REFRESH = 'SET_MARKET_REFRESH';
+export const SET_ERROR = 'SET_ERROR';
 
 export const SORT = {
 	VOL: 'volume',
@@ -352,6 +365,29 @@ export const setAnnouncements = (announcements) => ({
 	type: SET_ANNOUNCEMENT,
 	payload: {
 		announcements,
+	},
+});
+
+export const setAppAnnouncements = (announcements) => ({
+	type: SET_APP_ANNOUNCEMENT,
+	payload: {
+		announcements,
+	},
+});
+
+export const setSelectedAnnouncement = (selectedAnnouncement) => ({
+	type: SET_SELECTED_ANNOUNCEMENT,
+	payload: {
+		selectedAnnouncement,
+	},
+});
+
+export const setIsActiveSelectedAnnouncement = (
+	isActiveSelectedAnnouncement
+) => ({
+	type: SET_ACTIVE_SELECTED_ANNOUNCEMENT,
+	payload: {
+		isActiveSelectedAnnouncement,
 	},
 });
 
@@ -606,9 +642,23 @@ export const getExchangeInfo = () => {
 	};
 };
 
+// export const getAnnouncement = () => (dispatch) => {
+// 	return axios
+// 		.get(`${PLUGIN_URL}/plugins/announcements`)
+// 		.then((res) => {
+// 			if (res.data && res.data.data) {
+// 				dispatch({
+// 					type: SET_APP_ANNOUNCEMENT,
+// 					payload: { announcements: res.data.data },
+// 				});
+// 			}
+// 		})
+// 		.catch((err) => {});
+// };
+
 export const getAnnouncement = () => (dispatch) => {
 	return axios
-		.get(`${PLUGIN_URL}/plugins/announcements`)
+		.get('/announcements')
 		.then((res) => {
 			if (res.data && res.data.data) {
 				dispatch({
@@ -809,3 +859,67 @@ export const setIsChat = (setIsChat) => ({
 	type: SET_ACTIVE_CHAT,
 	payload: setIsChat,
 });
+
+export const setIsMarketDropdownVisible = (setIsMarketDropdownVisible) => ({
+	type: SET_ACTIVE_MARKET_SELECTOR,
+	payload: setIsMarketDropdownVisible,
+});
+
+export const setIsToolsVisible = (setIsToolsVisible) => ({
+	type: SET_TOOLS_VISIBLE,
+	payload: setIsToolsVisible,
+});
+
+export const setIsProTrade = (setIsProTrade) => ({
+	type: SET_ACTIVE_PRO_TRADE,
+	payload: setIsProTrade,
+});
+export const setIsQuickTrade = (setIsQuickTrade) => ({
+	type: SET_ACTIVE_QUICK_TRADE,
+	payload: setIsQuickTrade,
+});
+
+export const setExchangeTimeZone = (exchangeTimeZone) => {
+	return {
+		type: SET_EXCHANGE_TIMEZONE,
+		payload: {
+			exchangeTimeZone,
+		},
+	};
+};
+
+export const setIsAdminAnnouncementFeature = (isAdminAnnouncementFeature) => {
+	return {
+		type: SET_IS_ADMIN_ANNOUNCEMENT_FEATURE,
+		payload: {
+			isAdminAnnouncementFeature,
+		},
+	};
+};
+
+export const setIsRefreshAssets = (isRefreshAssets) => {
+	return {
+		type: SET_IS_REFRESH_ASSETS,
+		payload: {
+			isRefreshAssets,
+		},
+	};
+};
+
+export const setMarketRefresh = (isMarketRefresh) => {
+	return {
+		type: SET_MARKET_REFRESH,
+		payload: {
+			isMarketRefresh,
+		},
+	};
+};
+
+export const setError = (errorMessage) => {
+	return {
+		type: SET_ERROR,
+		payload: {
+			errorMessage,
+		},
+	};
+};

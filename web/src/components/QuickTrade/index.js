@@ -10,7 +10,7 @@ import { withRouter, browserHistory } from 'react-router';
 import debounce from 'lodash.debounce';
 import { SwapOutlined } from '@ant-design/icons';
 
-import { changePair } from 'actions/appActions';
+import { changePair, setIsQuickTrade } from 'actions/appActions';
 import { isLoggedIn } from 'utils/token';
 import { Button, EditWrapper, Dialog, Image } from 'components';
 import STRINGS from 'config/localizedStrings';
@@ -61,6 +61,8 @@ const QuickTrade = ({
 	changePair,
 	icons: ICONS,
 	chain_trade_config,
+	constants,
+	setIsQuickTrade,
 }) => {
 	const getTargetOptions = (source) =>
 		sourceOptions.filter((key) => {
@@ -302,16 +304,21 @@ const QuickTrade = ({
 	};
 
 	const debouncedQuote = useRef(debounce(getQuote, 1000));
+	const activeQuickTradePair =
+		quicktradePairs[pair]?.symbol || quicktradePairs[flipPair(pair)]?.symbol;
 
 	useEffect(() => {
 		setTimeout(() => {
-			const pairBase = pair.split('-')[1];
+			const pairBase = activeQuickTradePair
+				? activeQuickTradePair?.split('-')[1]
+				: pair.split('-')[1];
 			const assetValues = Object.keys(coins)
 				.map((val) => coins[val].code)
 				.toLocaleString();
+			const chartValue = allChartsData[pairBase];
 
-			if (allChartsData[pairBase]) {
-				setChartData(allChartsData[pairBase]);
+			if (chartValue) {
+				setChartData(chartValue);
 			} else {
 				getMiniCharts(assetValues, pairBase).then((chartValues) => {
 					setChartData(chartValues);
@@ -330,8 +337,12 @@ const QuickTrade = ({
 	useEffect(() => {
 		if (mounted) {
 			const options = getTargetOptions(selectedSource);
+			const selectedOption =
+				selectedSource !== sourceOptions[0]
+					? sourceOptions[0]
+					: sourceOptions[1];
 			if (chain_trade_config?.active) {
-				setSelectedTarget(sourceOptions[0]);
+				setSelectedTarget(selectedOption);
 			} else {
 				setTargetOptions(options);
 				setSelectedTarget(options[0]);
@@ -367,6 +378,13 @@ const QuickTrade = ({
 
 	useEffect(() => {
 		setMounted(true);
+		if (window.location.pathname.includes(`/quick-trade`)) {
+			setIsQuickTrade(true);
+		}
+		return () => {
+			setIsQuickTrade(false);
+		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	useEffect(() => {
@@ -385,14 +403,16 @@ const QuickTrade = ({
 
 	useEffect(() => {
 		setTimeout(() => {
-			const lineData = { ...chartData[`${pair}`] };
+			const lineData = {
+				...chartData[`${activeQuickTradePair ? activeQuickTradePair : pair}`],
+			};
 			setLineChartData({
 				...lineData,
 				name: 'Line',
 				type: 'line',
 			});
 		}, 0);
-	}, [pair, chartData]);
+	}, [pair, chartData, activeQuickTradePair]);
 
 	const isExpired = time.isAfter(moment(expiry));
 
@@ -443,7 +463,7 @@ const QuickTrade = ({
 				<div className={classnames('quick_trade-wrapper', 'd-flex')}>
 					<Details
 						coinChartData={lineChartData}
-						pair={pair}
+						pair={activeQuickTradePair ? activeQuickTradePair : pair}
 						brokerUsed={isUseBroker}
 						networkName={display_name}
 						isNetwork={isNetwork}
@@ -478,7 +498,7 @@ const QuickTrade = ({
 							</div>
 							<Details
 								coinChartData={lineChartData}
-								pair={pair}
+								pair={activeQuickTradePair ? activeQuickTradePair : pair}
 								brokerUsed={isUseBroker}
 								networkName={display_name}
 								isNetwork={isNetwork}
@@ -700,6 +720,7 @@ const QuickTrade = ({
 
 const mapDispatchToProps = (dispatch) => ({
 	changePair: bindActionCreators(changePair, dispatch),
+	setIsQuickTrade: bindActionCreators(setIsQuickTrade, dispatch),
 });
 
 const mapStateToProps = (store) => {

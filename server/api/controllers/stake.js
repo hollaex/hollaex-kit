@@ -1,20 +1,22 @@
 'use strict';
 
 const { loggerStake } = require('../../config/logger');
-const { INIT_CHANNEL } = require('../../constants');
+const { INIT_CHANNEL, ROLES } = require('../../constants');
 const { publisher } = require('../../db/pubsub');
+const { API_KEY_NOT_PERMITTED } = require('../../messages');
+
 const toolsLib = require('hollaex-tools-lib');
 const { errorMessageConverter } = require('../../utils/conversion');
 
 const getExchangeStakes = (req, res) => {
 	loggerStake.verbose(req.uuid, 'controllers/stake/getExchangeStakes/auth', req.auth);
 
-	const {  limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
+	const { limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
 	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1) {
 		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
 	}
-	
+
 	if (order_by.value && typeof order_by.value !== 'string') {
 		loggerStake.error(
 			req.uuid,
@@ -53,7 +55,7 @@ const getExchangeStakes = (req, res) => {
 const createExchangeStakes = (req, res) => {
 	loggerStake.verbose(req.uuid, 'controllers/stake/createExchangeStakes/auth', req.auth);
 
-	const {  
+	const {
 		name,
 		currency,
 		reward_currency,
@@ -69,7 +71,7 @@ const createExchangeStakes = (req, res) => {
 		onboarding,
 		disclaimer,
 		status
-	 } = req.swagger.params.data.value;
+	} = req.swagger.params.data.value;
 
 	loggerStake.verbose(
 		req.uuid,
@@ -125,7 +127,7 @@ const createExchangeStakes = (req, res) => {
 }
 
 const updateExchangeStakes = (req, res) => {
-loggerStake.verbose(req.uuid, 'controllers/stake/updateExchangeStakes/auth', req.auth);
+	loggerStake.verbose(req.uuid, 'controllers/stake/updateExchangeStakes/auth', req.auth);
 
 	const {
 		id,
@@ -144,7 +146,7 @@ loggerStake.verbose(req.uuid, 'controllers/stake/updateExchangeStakes/auth', req
 		onboarding,
 		disclaimer,
 		status
-	 } = req.swagger.params.data.value;
+	} = req.swagger.params.data.value;
 
 	loggerStake.verbose(
 		req.uuid,
@@ -225,12 +227,12 @@ const deleteExchangeStakes = (req, res) => {
 const getExchangeStakersForAdmin = (req, res) => {
 	loggerStake.verbose(req.uuid, 'controllers/stake/getExchangeStakersAdmin/auth', req.auth);
 
-	const { user_id, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
+	const { user_id, stake_id, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
 	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1) {
 		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
 	}
-	
+
 	if (order_by.value && typeof order_by.value !== 'string') {
 		loggerStake.error(
 			req.uuid,
@@ -242,6 +244,7 @@ const getExchangeStakersForAdmin = (req, res) => {
 
 	toolsLib.stake.getExchangeStakers({
 		user_id: user_id.value,
+		stake_id: stake_id.value,
 		limit: limit.value,
 		page: page.value,
 		order_by: order_by.value,
@@ -270,12 +273,12 @@ const getExchangeStakersForAdmin = (req, res) => {
 const getExchangeStakersForUser = (req, res) => {
 	loggerStake.verbose(req.uuid, 'controllers/stake/getExchangeStakersForUser/auth', req.auth);
 
-	const { limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
+	const { currency, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
 	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1) {
 		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
 	}
-	
+
 	if (order_by.value && typeof order_by.value !== 'string') {
 		loggerStake.error(
 			req.uuid,
@@ -287,6 +290,7 @@ const getExchangeStakersForUser = (req, res) => {
 
 	toolsLib.stake.getExchangeStakers({
 		user_id: req.auth.sub.id,
+		currency: currency.value,
 		limit: limit.value,
 		page: page.value,
 		order_by: order_by.value,
@@ -314,10 +318,10 @@ const getExchangeStakersForUser = (req, res) => {
 const createStaker = (req, res) => {
 	loggerStake.verbose(req.uuid, 'controllers/stake/createStaker/auth', req.auth);
 
-	const {  
+	const {
 		stake_id,
 		amount
-	 } = req.swagger.params.data.value;
+	} = req.swagger.params.data.value;
 
 	loggerStake.verbose(
 		req.uuid,
@@ -330,7 +334,7 @@ const createStaker = (req, res) => {
 		stake_id,
 		amount,
 		req.auth.sub.id
-		)
+	)
 		.then((data) => {
 			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
 			return res.json(data);

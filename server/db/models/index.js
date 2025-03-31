@@ -72,6 +72,8 @@ model = require(path.join(__dirname, './paymentDetail'))(sequelize, Sequelize.Da
 db[model.name] = model;
 model = require(path.join(__dirname, './autoTradeConfig'))(sequelize, Sequelize.DataTypes);
 db[model.name] = model;
+model = require(path.join(__dirname, './announcement'))(sequelize, Sequelize.DataTypes);
+db[model.name] = model;
 
 Object.keys(db).forEach(function (modelName) {
 	if ('associate' in db[modelName]) {
