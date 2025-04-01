@@ -133,6 +133,7 @@ export const SET_IS_ADMIN_ANNOUNCEMENT_FEATURE =
 export const SET_IS_REFRESH_ASSETS = 'SET_IS_REFRESH_ASSETS';
 export const SET_MARKET_REFRESH = 'SET_MARKET_REFRESH';
 export const SET_ERROR = 'SET_ERROR';
+export const SET_ERROR_COUNT = 'SET_ERROR_COUNT';
 
 export const SORT = {
 	VOL: 'volume',
@@ -920,6 +921,15 @@ export const setError = (errorMessage) => {
 		type: SET_ERROR,
 		payload: {
 			errorMessage,
+		},
+	};
+};
+
+export const setErrorCount = (errorCount) => {
+	return {
+		type: SET_ERROR_COUNT,
+		payload: {
+			errorCount,
 		},
 	};
 };
