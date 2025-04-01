@@ -309,10 +309,12 @@ const loginPost = (req, res) => {
 				throw new Error(INVALID_CREDENTIALS + message);
 			}
 
-			const lastLogins = await toolsLib.user.findUserLastLogins(user, true);
+			const lastLogins = await toolsLib.user.findUserLastLogins(user);
 			let suspiciousLogin = false;
 
-			if (isArray(lastLogins) && !lastLogins.find(login => login.device === device)) {
+			const successfulRecords = lastLogins.filter(login => login.status);
+
+			if (isArray(lastLogins) && lastLogins.length > 0 && !successfulRecords?.find(login => login.device === device)) {
 				suspiciousLogin = true;
 			}
 
@@ -321,7 +323,7 @@ const loginPost = (req, res) => {
 
 			const country = geo?.country || '';
 
-			if (isArray(lastLogins) && !lastLogins.find(login => login.country === country)) {
+			if (isArray(lastLogins) && lastLogins.length > 0 && !successfulRecords?.find(login => login.country === country)) {
 				suspiciousLogin = true;
 			}
 
