@@ -93,6 +93,7 @@ import {
 	SET_IS_REFRESH_ASSETS,
 	SET_MARKET_REFRESH,
 	SET_ERROR,
+	SET_ERROR_COUNT,
 } from 'actions/appActions';
 import { THEME_DEFAULT } from 'config/constants';
 import { getLanguage } from 'utils/string';
@@ -239,6 +240,7 @@ const INITIAL_STATE = {
 	isRefreshAssets: false,
 	isMarketRefresh: false,
 	errorMessage: null,
+	errorCount: 0,
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -981,6 +983,12 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				errorMessage: payload.errorMessage,
+			};
+		}
+		case SET_ERROR_COUNT: {
+			return {
+				...state,
+				errorCount: payload.errorCount,
 			};
 		}
 		default:
