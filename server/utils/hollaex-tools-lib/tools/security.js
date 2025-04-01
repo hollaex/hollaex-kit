@@ -800,7 +800,7 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 					scopes.push(ROLES.ADMIN);
 				}
 
-				if(token.role !== ROLES.ADMIN && scopes.includes(ROLES.ADMIN)) {
+				if (token.role !== ROLES.ADMIN && scopes.includes(ROLES.ADMIN)) {
 					throw new Error(NOT_AUTHORIZED);
 				}
 				if (token.whitelisting_enabled && token.whitelisted_ips.length > 0) {
@@ -901,14 +901,14 @@ const verifySession = async (token) => {
 		throw new Error(TOKEN_REVOKED);
 	}
 
-	if(new Date(session.expiry_date).getTime() < new Date().getTime()) {
+	if (new Date(session.expiry_date).getTime() < new Date().getTime()) {
 		throw new Error(TOKEN_EXPIRED);
 	}
 
-	if(new Date(session.last_seen).getTime() + 1000 * 60 * 5 < new Date().getTime()) {
+	if (new Date(session.last_seen).getTime() + 1000 * 60 * 5 < new Date().getTime()) {
 		const hashedToken = crypto.createHash('md5').update(token).digest('hex');
 		const sessionData = await dbQuery.findOne('session', { where: { token: hashedToken } });
-		const updatedSession =  await sessionData.update(
+		const updatedSession = await sessionData.update(
 			{ last_seen: new Date() }
 		);
 		const expirationInSeconds = getExpirationDateInSeconds(updatedSession.dataValues.expiry_date);
@@ -923,7 +923,7 @@ const findSession = async (token) => {
 	const hashedToken = crypto.createHash('md5').update(token).digest('hex');
 
 	let session = await client.getAsync(hashedToken);
-	
+
 	if (!session) {
 		loggerAuth.verbose(
 			'security/findSession jwt token not found in redis',
@@ -936,7 +936,7 @@ const findSession = async (token) => {
 			}
 		});
 
-		if(session && session.status && new Date(session.expiry_date).getTime() > new Date().getTime()) {
+		if (session && session.status && new Date(session.expiry_date).getTime() > new Date().getTime()) {
 			const expirationInSeconds = getExpirationDateInSeconds(session.expiry_date);
 			client.setexAsync(hashedToken, expirationInSeconds, JSON.stringify(session));
 
@@ -945,7 +945,7 @@ const findSession = async (token) => {
 				hashedToken
 			);
 		}
-			
+
 		return session;
 	} else {
 		loggerAuth.debug(
@@ -1110,15 +1110,15 @@ const createUserKitHmacToken = async (userId, otpCode, ip, name, role = ROLES.US
 	const secret = crypto.randomBytes(25).toString('hex');
 	const expiry = Date.now() + HMAC_TOKEN_EXPIRY;
 	const user = await getModel('user').findOne({ where: { id: userId } });
-	if(role !== ROLES.USER && !user.is_admin) {
+	if (role !== ROLES.USER && !user.is_admin) {
 		throw new Error(NOT_AUTHORIZED);
 	}
-	if(role !== ROLES.USER && role !== ROLES.ADMIN) {
+	if (role !== ROLES.USER && role !== ROLES.ADMIN) {
 		// role can only be admin or user
 		throw new Error(NOT_AUTHORIZED);
 	}
 
-	if(!whitelisted_ips && role === ROLES.ADMIN) {
+	if (!whitelisted_ips && role === ROLES.ADMIN) {
 		throw new Error(WHITELIST_NOT_PROVIDED);
 	}
 
@@ -1146,7 +1146,7 @@ const createUserKitHmacToken = async (userId, otpCode, ip, name, role = ROLES.US
 
 async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permissions, whitelisted_ips, whitelisting_enabled) {
 	await checkUserOtpActive(userId, otpCode);
-	const token = await findToken({ where: { id: token_id , user_id: userId } });
+	const token = await findToken({ where: { id: token_id, user_id: userId } });
 
 	if (!token) {
 		throw new Error(TOKEN_NOT_FOUND);
@@ -1154,11 +1154,11 @@ async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permi
 		throw new Error(TOKEN_REVOKED);
 	}
 
-	if(whitelisted_ips && whitelisted_ips.length == 0 && token.role === ROLES.ADMIN) {
+	if (whitelisted_ips && whitelisted_ips.length == 0 && token.role === ROLES.ADMIN) {
 		throw new Error(WHITELIST_DISABLE_ADMIN);
 	}
 
-	if(whitelisting_enabled == false && token.role === ROLES.ADMIN) {
+	if (whitelisting_enabled == false && token.role === ROLES.ADMIN) {
 		throw new Error(WHITELIST_DISABLE_ADMIN);
 	}
 
@@ -1316,6 +1316,53 @@ const generateDashToken = (opts = {
 }) => {
 	return getNodeLib().generateDashToken({ additionalHeaders: opts.additionalHeaders });
 };
+
+const checkPermission = (req) => {
+	try {
+		// Extract path and method from request
+		const apiPath = req?.swagger?.apiPath; // admin/user/role
+		const method = req.method.toLowerCase(); // "get", "post", etc.
+
+		// Convert path to permission key
+		// ["admin", "user", "role"]
+		const pathParts = apiPath.split('/').filter(Boolean);
+
+		// Navigate through permissions object
+		let currentLevel = ROLE_PERMISSIONS;
+		for (const part of pathParts) {
+			currentLevel = currentLevel[part];
+			if (!currentLevel) break;
+		}
+
+		//Get required permission string
+		const requiredPermission = currentLevel?.[method];
+
+		if (!requiredPermission) {
+			return req.res.status(403).json({
+				error: 'Unautorized',
+				message: `No permission configured for ${apiPath} ${method.toUpperCase()}`
+			});
+		}
+
+		// Check if user has permission
+		const userHasPermission = checkUserPermission(req.user, requiredPermission);
+
+		if (!userHasPermission) {
+			return req.res.status(403).json({
+				error: 'Unautorized',
+				message: `Required permission: ${requiredPermission}`
+			});
+		}
+
+		return;
+	} catch (error) {
+		throw new Error(error.message);
+	}
+}
+
+const checkUserPermission = (user, requiredPermission) => {
+	return user?.role?.permissions?.includes(requiredPermission);
+}
 
 module.exports = {
 	checkCaptcha,

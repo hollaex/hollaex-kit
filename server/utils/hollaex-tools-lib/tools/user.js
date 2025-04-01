@@ -87,7 +87,8 @@ const {
 	TOKEN_TIME_NORMAL,
 	VERIFY_STATUS,
 	EVENTS_CHANNEL,
-	BALANCE_HISTORY_SUPPORTED_PLANS
+	BALANCE_HISTORY_SUPPORTED_PLANS,
+	ROLE_PERMISSIONS
 } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
@@ -4060,6 +4061,288 @@ const deleteAnnouncement = async (id) => {
 	return { message: 'Success' };
 };
 
+const getExchangeUserRoles = async (opts = {
+	limit: null,
+	page: null,
+	order_by: null,
+	order: null,
+	search: null,
+	start_date: null,
+	end_date: null,
+}) => {
+	const pagination = paginationQuery(opts.limit, opts.page);
+	const ordering = orderingQuery(opts.order_by, opts.order);
+	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
+
+	const queryOptions = {
+		where: {
+			...(opts.search && {
+				[Op.or]: [
+					{ name: { [Op.iLike]: `%${opts.search}%` } },
+					{ description: { [Op.iLike]: `%${opts.search}%` } }
+				]
+			})
+		},
+		order: [ordering],
+		...pagination
+	};
+
+	if (timeframe) queryOptions.where.created_at = timeframe;
+	queryOptions.include = [{
+		model: User,
+		as: 'users',
+		attributes: ['id', 'email']
+	}];
+
+	return dbQuery.findAndCountAllWithRows('role', queryOptions)
+};
+
+
+setTimeout(async () => {
+	try {
+		const userId = 1;
+		const newRole = await createRole({
+			name: 'Account Manager',
+			description: 'Can manage user accounts and KYC',
+			permissions: [
+				ROLE_PERMISSIONS.admin.user.get,
+				ROLE_PERMISSIONS.admin.user.put,
+				ROLE_PERMISSIONS.admin.user.role.get,
+				ROLE_PERMISSIONS.admin.user.role.put,
+				ROLE_PERMISSIONS.admin.user.email.put,
+				ROLE_PERMISSIONS.admin.user.activate.post
+			],
+			user_id: userId
+		});
+		await assignExchangeUserRole(userId, newRole.id);
+	} catch (error) {
+	}
+}, 10000)
+
+const validatePermissions = (inputPermissions) => {
+	if (!isArray(inputPermissions)) {
+		throw new Error('Permissions must be an array');
+	}
+
+	// Check for duplicates in input
+	const uniquePermissions = [...new Set(inputPermissions)];
+	if (uniquePermissions.length !== inputPermissions.length) {
+		const duplicates = findDuplicates(inputPermissions);
+		throw new Error(
+			`Duplicate permissions found: ${duplicates.join(', ')}\n` +
+			`Unique permissions would be: ${uniquePermissions.join(', ')}`
+		);
+	}
+
+	// Flatten all valid permissions from our structure
+	const allValidPermissions = flattenPermissionStructure(ROLE_PERMISSIONS);
+
+	//Check for invalid permissions
+	const invalidPerms = inputPermissions.filter(
+		perm => !allValidPermissions.includes(perm)
+	);
+
+	if (invalidPerms.length > 0) {
+		throw new Error(
+			`Invalid permissions detected:\n` +
+			`- Invalid: ${invalidPerms.join(', ')}\n` +
+			`- Valid options: ${allValidPermissions.slice(0, 5).join(', ')}...` +
+			`(showing 5 of ${allValidPermissions.length})`
+		);
+	}
+
+
+	return true;
+}
+
+const findDuplicates = (arr) => {
+	return arr.filter((item, index) => arr.indexOf(item) !== index);
+}
+
+const flattenPermissionStructure = (permStructure, path = []) => {
+	let results = [];
+
+	for (const [key, value] of Object.entries(permStructure)) {
+		const currentPath = [...path, key];
+
+		if (typeof value === 'object' && ('get' in value || 'post' in value)) {
+			results.push(...Object.values(value));
+		} else if (typeof value === 'object') {
+			results.push(...flattenPermissionStructure(value, currentPath));
+		}
+	}
+
+	return results;
+}
+
+
+const createExchangeUserRole = async ({ name, description, rolePermissions, user_id }) => {
+	const Role = getModel('role');
+	if (!name) throw new Error('Role name is required');
+	if (!isArray(rolePermissions)) throw new Error('Permissions must be an array');
+
+	validatePermissions(rolePermissions);
+
+	// Create the role
+	return await Role.create({
+		name,
+		description,
+		permissions: rolePermissions,
+		created_by: user_id
+	});
+};
+
+const updateExchangeUserRole = async (roleId, { name, description, inputPermissions, user_id }) => {
+	const Role = getModel('role');
+
+
+	const role = await Role.findOne({
+		where: { id: roleId },
+		attributes: ['id', 'name', 'permissions'],
+	});
+
+	if (!role) {
+		throw new Error('Role not found');
+	}
+
+	const updates = {};
+	if (name !== undefined && name !== role.name) {
+		updates.name = name;
+	}
+	if (description !== undefined) {
+		updates.description = description;
+	}
+	if (user_id !== undefined) {
+		updates.updated_by = user_id;
+	}
+
+	//Handle permission updates
+	if (inputPermissions !== undefined) {
+		// Normalize and validate
+		const newPermissions = [...new Set(inputPermissions)]; // Deduplicate
+		validatePermissions(newPermissions);
+
+		// Check if permissions changed
+		const currentPermissions = role.permissions || [];
+		const permissionsChanged = (
+			currentPermissions.length !== newPermissions.length ||
+			!currentPermissions.every(p => newPermissions.includes(p))
+		);
+
+		if (permissionsChanged) {
+			// Check for conflicting roles using array containment
+			const conflictingRole = await Role.findOne({
+				where: {
+					id: { [Op.ne]: roleId },
+					permissions: { [Op.contained]: newPermissions }
+				},
+				attributes: ['id', 'name'],
+				raw: true
+			});
+
+			if (conflictingRole) {
+				throw new Error(`Permissions conflict with role: ${conflictingRole.name}`);
+			}
+
+			updates.permissions = newPermissions;
+		}
+	}
+
+	// Execute update only if changes exist
+	if (Object.keys(updates).length > 0) {
+		const [affectedRows] = await Role.update(updates, {
+			where: { id: roleId }
+		});
+
+		if (affectedRows === 0) {
+			throw new Error('Update failed - no rows affected');
+		}
+	}
+
+	const updatedRole = await Role.findByPk(roleId, {
+		attributes: { exclude: ['created_at', 'updated_at'] },
+		raw: true
+	});
+
+	return updatedRole;
+
+};
+
+const deleteExchangeUserRole = async (id) => {
+	const Role = getModel('role');
+	const role = await Role.findOne({
+		where: { id },
+		include: [{
+			model: User,
+			as: 'users',
+			attributes: ['id']
+		}]
+	});
+
+	if (!role) {
+		throw new Error('Role not found');
+	}
+
+	if (role.users && role.users.length > 0) {
+		throw new Error('Cannot delete role with assigned users');
+	}
+
+	await role.destroy();
+	return { message: 'Role deleted successfully' };
+};
+
+const assignExchangeUserRole = async (user_id, role_id) => {
+	const Role = getModel('role');
+	const User = getModel('user');
+
+	const user = await User.findOne({ where: { id: user_id } });
+	if (!user) throw new Error('User not found');
+
+	const role = await Role.findOne({ where: { id: role_id } });
+	if (!role) throw new Error('Role not found');
+
+	user.role_id = role_id;
+	await user.save();
+
+	return user;
+};
+
+const fetchExchangeUserRole = async (user_id) => {
+	const User = getModel('user');
+	const user = await User.findOne({
+		where: { id: user_id },
+		include: [{
+			model: Role,
+			as: 'role',
+			attributes: ['id', 'name', 'permissions']
+		}],
+		attributes: ['id', 'email']
+	});
+
+	if (!user) throw new Error('User not found');
+
+	return {
+		user_id: user.id,
+		role: user.role
+	};
+};
+
+const hasPermission = async (user_id, permission) => {
+	const User = getModel('user');
+	const user = await User.findOne({
+		where: { id: user_id },
+		include: [{
+			model: Role,
+			as: 'role',
+			required: true
+		}]
+	});
+
+	if (!user || !user.role) return false;
+
+	return user.role.permissions.includes(permission);
+};
+
 module.exports = {
 	loginUser,
 	getUserTier,
@@ -4152,5 +4435,12 @@ module.exports = {
 	confirmUserLogin,
 	findUserLastLogins,
 	freezeUserByCode,
-	createSuspiciousLogin
+	createSuspiciousLogin,
+	getExchangeUserRoles,
+	createExchangeUserRole,
+	updateExchangeUserRole,
+	deleteExchangeUserRole,
+	assignExchangeUserRole,
+	fetchExchangeUserRole,
+	hasPermission
 };
