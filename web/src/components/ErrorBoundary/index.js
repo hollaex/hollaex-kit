@@ -37,7 +37,7 @@ class ErrorBoundary extends Component {
 	};
 
 	render() {
-		const { hasError, error } = this.state;
+		const { hasError, error, errorCount } = this.state;
 		const { children } = this.props;
 
 		if (hasError) {
@@ -47,7 +47,7 @@ class ErrorBoundary extends Component {
 				[strings['ERROR_TAB.NETWORK_ERROR_MESSAGE']]: <NetworkError />,
 				[strings['ERROR_TAB.TOO_MANY_REQUEST_ERROR']]: <TooManyRequestError />,
 				[strings['ERROR_TAB.SERVER_ERROR']]: <ServerError />,
-				[strings['ERROR_TAB.SERVER_MAINTENANCE_ERROR']]: (
+				[strings['ERROR_TAB.SERVER_MAINTENANCE_ERROR']]: errorCount >= 3 && (
 					<ServerMaintenanceError />
 				),
 			};
@@ -80,6 +80,7 @@ class ErrorBoundary extends Component {
 
 const mapStateToProps = (state) => ({
 	errorMessage: state.app.errorMessage,
+	errorCount: state.app.errorCount,
 });
 
 export default connect(mapStateToProps)(ErrorBoundary);

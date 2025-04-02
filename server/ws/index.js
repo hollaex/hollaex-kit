@@ -15,6 +15,9 @@ const { connect, hubConnected } = require('./hub');
 const { setWsHeartbeat } = require('ws-heartbeat/server');
 const WebSocket = require('ws');
 
+const clientMessageCounts = new Map();
+const MAX_MESSAGES_PER_SECOND = 10;
+
 wss.on('connection', (ws, req) => {
 	// attaching unique id and authorization to the socket
 	ws.id = uuid();
@@ -42,6 +45,22 @@ wss.on('connection', (ws, req) => {
 			} catch (err) {
 				throw new Error(WS_WRONG_INPUT);
 			}
+
+			const now = Date.now();
+			let clientData = clientMessageCounts.get(ws.id) || { count: 0, timestamp: now };
+
+			if (now - clientData.timestamp >= 1000) {
+				clientData = { count: 0, timestamp: now };
+			}
+			// Increment message count
+			clientData.count += 1;
+
+			if (clientData.count > MAX_MESSAGES_PER_SECOND) {
+				// Rate limit exceeded
+				throw new Error(`Error: Rate limit exceeded for ${ws.id}. Please slow down. Maximum message per second: ${MAX_MESSAGES_PER_SECOND}. Your current rate: ${clientData.count}`);
+			}
+
+			clientMessageCounts.set(ws.id, clientData);
 
 			const { op, args } = message;
 			if (op === 'ping') {
@@ -91,6 +110,7 @@ wss.on('connection', (ws, req) => {
 	});
 
 	ws.on('close', () => {
+		clientMessageCounts.delete(ws.id);
 		if (hubConnected()) {
 			terminateClosedChannels(ws);
 		}
