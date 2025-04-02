@@ -79,6 +79,7 @@ import {
 	DIGITAL_ASSETS_SORT,
 	setExchangeTimeZone,
 	setAppAnnouncements,
+	setErrorCount,
 } from 'actions/appActions';
 // import { setPricesAndAsset } from 'actions/assetActions';
 import { hasTheme } from 'utils/theme';
@@ -97,7 +98,14 @@ import {
 	setLoadingImage,
 	setLoadingStyle,
 } from 'helpers/boot';
-import { filterPinnedAssets, handleUpgrade, NetworkError } from 'utils/utils';
+import {
+	filterPinnedAssets,
+	handleUpgrade,
+	NetworkError,
+	ServerError,
+	ServerMaintenanceError,
+	TooManyRequestError,
+} from 'utils/utils';
 import { isLoggedIn } from 'utils/token';
 import { getAnnouncementDetails } from 'containers/Announcement/actions';
 import { ErrorBoundary } from 'components';
@@ -339,7 +347,8 @@ const bootstrapApp = (
 	);
 };
 
-const renderInitialError = () => {
+const renderInitialError = (err) => {
+	const getErrorCount = store.getState()?.app.errorCount || 0;
 	render(
 		<Provider store={store}>
 			<EditProvider>
@@ -356,7 +365,15 @@ const renderInitialError = () => {
 							'h-100'
 						)}
 					>
-						<NetworkError />
+						{!navigator.onLine ? (
+							<NetworkError />
+						) : err?.response?.status === 504 ? (
+							<ServerError />
+						) : err?.response?.status === 429 ? (
+							<TooManyRequestError />
+						) : (
+							getErrorCount >= 3 && <ServerMaintenanceError />
+						)}
 					</div>
 				</ThemeProvider>
 			</EditProvider>
@@ -365,6 +382,7 @@ const renderInitialError = () => {
 	);
 };
 const initialize = async () => {
+	const getErrorCount = store.getState()?.app.errorCount || 0;
 	try {
 		const [
 			configs,
@@ -382,8 +400,10 @@ const initialize = async () => {
 	} catch (err) {
 		console.error('Initialization failed!\n', err);
 		setTimeout(initialize, 3000);
-		if (!navigator.onLine) {
-			renderInitialError();
+		if (!navigator.onLine || getErrorCount >= 3 || err?.response?.status) {
+			renderInitialError(err);
+		} else {
+			store.dispatch(setErrorCount(getErrorCount + 1));
 		}
 	}
 };

@@ -5,7 +5,7 @@ import strings from 'config/localizedStrings';
 import { overwriteLocale } from './string';
 import { API_URL, LAST_BUILD } from 'config/constants';
 import { version } from '../../package.json';
-import { setError } from 'actions/appActions';
+import { setError, setErrorCount } from 'actions/appActions';
 
 export const getLocalVersions = () => {
 	const versions = localStorage.getItem('versions') || '{}';
@@ -113,7 +113,7 @@ export const modifySections = (sections = {}) => {
 	return modifiedSections;
 };
 
-export const onHandleError = (error = '') => {
+export const onHandleError = (error) => {
 	if (!navigator.onLine) {
 		store.dispatch(
 			setError({ message: strings['ERROR_TAB.NETWORK_ERROR_MESSAGE'] })
@@ -127,9 +127,19 @@ export const onHandleError = (error = '') => {
 		504: strings['ERROR_TAB.SERVER_ERROR'],
 	};
 
+	const state = store.getState();
+	const getErrorCount = state?.app.errorCount || 0;
 	const errorMessage = displayError[error?.response?.status];
 	if (errorMessage) {
-		store.dispatch(setError({ message: errorMessage }));
+		if (errorMessage === strings['ERROR_TAB.SERVER_MAINTENANCE_ERROR']) {
+			store.dispatch(setErrorCount(getErrorCount + 1));
+		}
+		if (
+			getErrorCount >= 3 ||
+			errorMessage !== strings['ERROR_TAB.SERVER_MAINTENANCE_ERROR']
+		) {
+			store.dispatch(setError({ message: errorMessage }));
+		}
 	}
 };
 
