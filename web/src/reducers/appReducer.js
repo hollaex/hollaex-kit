@@ -90,6 +90,10 @@ import {
 	SET_ACTIVE_SELECTED_ANNOUNCEMENT,
 	SET_EXCHANGE_TIMEZONE,
 	SET_IS_ADMIN_ANNOUNCEMENT_FEATURE,
+	SET_IS_REFRESH_ASSETS,
+	SET_MARKET_REFRESH,
+	SET_ERROR,
+	SET_ERROR_COUNT,
 } from 'actions/appActions';
 import { THEME_DEFAULT } from 'config/constants';
 import { getLanguage } from 'utils/string';
@@ -233,6 +237,10 @@ const INITIAL_STATE = {
 	isActiveSelectedAnnouncement: false,
 	exchangeTimeZone: '',
 	isAdminAnnouncementFeature: false,
+	isRefreshAssets: false,
+	isMarketRefresh: false,
+	errorMessage: null,
+	errorCount: 0,
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -957,6 +965,30 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				isAdminAnnouncementFeature: payload.isAdminAnnouncementFeature,
+			};
+		}
+		case SET_IS_REFRESH_ASSETS: {
+			return {
+				...state,
+				isRefreshAssets: payload.isRefreshAssets,
+			};
+		}
+		case SET_MARKET_REFRESH: {
+			return {
+				...state,
+				isMarketRefresh: payload.isMarketRefresh,
+			};
+		}
+		case SET_ERROR: {
+			return {
+				...state,
+				errorMessage: payload.errorMessage,
+			};
+		}
+		case SET_ERROR_COUNT: {
+			return {
+				...state,
+				errorCount: payload.errorCount,
 			};
 		}
 		default:

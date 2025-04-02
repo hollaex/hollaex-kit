@@ -64,6 +64,11 @@ export const WithdrawConfirmation = Loadable({
 	loading: LoadingComponent,
 });
 
+export const LoginConfirmation = Loadable({
+	loader: () => import('./LoginConfirmation'),
+	loading: LoadingComponent,
+});
+
 export const TransactionsHistory = Loadable({
 	loader: () => import('./TransactionsHistory'),
 	loading: LoadingComponent,

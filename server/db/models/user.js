@@ -18,7 +18,9 @@ const SETTINGS_DATA_DEFAULT = {
 	notification: {
 		popup_order_confirmation: true,
 		popup_order_completed: true,
-		popup_order_partially_filled: true
+		popup_order_partially_filled: true,
+		popup_order_new: true,
+		popup_order_canceled: true
 	},
 	interface: {
 		order_book_levels: 10,

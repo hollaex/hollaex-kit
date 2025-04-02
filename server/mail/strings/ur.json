@@ -119,7 +119,7 @@
 		"OTP_DISABLED": {
 			"html": "<div> <p> عزیز ${name} </p> <p> ہم نے ریکارڈ کیا ہے کہ آپ کی <b>دو مرحلی تصدیق (2FA) غیر فعال کردی گئی ہے</b> آپ کے اکاؤنٹ پر۔ آپ کے اکاؤنٹ کی حفاظت کے لئے 2FA کو دوبارہ فعال کرنا بہت زیادہ مشورہ دیا گیا ہے۔</p> <div> <div>وقت: ${time}</div> <div>ملک: ${country}</div> <div>IP پتہ: ${ip}</div> </div> <p> اگر یہ آپ نہیں تھے تو براہ کرم فوراً ہم سے رابطہ کریں۔ </p> <p> خیریت واحترام<br> ${api_name} ٹیم </p> </div>",
 			"title": "OTP غیر فعال"
-		  },
+		},
 		"OTP_ENABLED": {
 			"html": "<div> <p> عزیز ${name} </p> <p> ہم نے ریکارڈ کیا ہے کہ آپ کی <b>دو مرحلی تصدیق (2FA) فعال کردی گئی ہے</b> آپ کے اکاؤنٹ پر۔</p> <div> <div>وقت: ${time}</div> <div>ملک: ${country}</div> <div>IP پتہ: ${ip}</div> </div> <p> خیریت واحترام<br> ${api_name} ٹیم </p> </div>",
 			"title": "OTP فعال"
@@ -160,19 +160,21 @@
 			"html": "<div><p> محترم ${name} </p><p>آپ نے اپنے آرڈر پر اپیل کی ہے۔ مسئلہ حل کرنے کے لئے برائے مہربانی سپورٹ سے رابطہ کریں۔<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">اپنے آرڈر پر جائیں</Button></a></div><p>ہمارا پلیٹ فارم استعمال کرنے کا شکریہ۔</p><p>درخواست شروع کی گئی IP: ${ip}</p><p>نیک تمنائیں<br> ${api_name} ٹیم </p></div>",
 			"title": "آپ کے P2P آرڈر میں سرگرمی کا پتہ چلا ہے"
 		},
-        "AUTO_TRADE_ERROR":{
+		"AUTO_TRADE_ERROR": {
 			"html": "<div><p>محترم ${name},</p><p>ہم نے دیکھا کہ آپ کی خودکار تجارتی ترتیب درج ذیل تجارت کے لیے ناکافی بیلنس کی وجہ سے ناکام ہوگئی ہے۔ براہ کرم اپنے بیلنس کو چیک کریں اور اپ ڈیٹ کریں۔ خرچ کی رقم: ${spend_amount}, خرچ کی گئی کرنسی: ${spend_coin}, خریدی گئی کرنسی: ${buy_coin}۔</p><p>ہمارا پلیٹ فارم استعمال کرنے کے لئے آپ کا شکریہ۔</p><p>نیک تمنائیں،<br /> ${api_name} ٹیم</p></div>",
 			"title": "آپ کی خودکار تجارتی ترتیب میں خرابی"
-		  },
+		},
 		"AUTO_TRADE_REMINDER": {
 			"html": "<div><p>محترم ${name},</p><p>یہ یاد دہانی ہے کہ آپ کا خودکار تجارت جو <b>${spend_amount} ${spend_coin} کے بدلے ${buy_coin}</b> ہے، 12 گھنٹے میں فعال ہو جائے گا۔ براہ کرم اپنے بٹوے میں کافی رقم ہونے کو یقینی بنائیں تاکہ کامیاب عملدرآمد ہو سکے:</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">والٹ دیکھیں</Button></a></div><p>ہماری پلیٹ فارم کو استعمال کرنے کے لیے شکریہ</p><p>خلوص کے ساتھ,<br />${api_name} ٹیم</p></div>",
 			"title": "پ کی خودکار تجارت جلد فعال ہو گی"
 		},
 		"AUTO_TRADE_FILLED": {
-			"html":  "<div><p>محترم ${name}،</p><p>آپ کا خودکار آرڈر <b>${spend_amount} ${spend_coin} کے بدلے ${buy_coin}</b> کامیابی کے ساتھ عمل میں لایا گیا ہے۔</p><div>آپ نیچے اپنے تجارتی تاریخ کو دیکھ سکتے ہیں:</div><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">تجارت کی تاریخ دیکھیں</Button></a></div><p>ہماری پلیٹ فارم کا استعمال کرنے کے لیے شکریہ۔</p><p>خیرمقدم،<br />${api_name} ٹیم</p></div>",
+			"html": "<div><p>محترم ${name}،</p><p>آپ کا خودکار آرڈر <b>${spend_amount} ${spend_coin} کے بدلے ${buy_coin}</b> کامیابی کے ساتھ عمل میں لایا گیا ہے۔</p><div>آپ نیچے اپنے تجارتی تاریخ کو دیکھ سکتے ہیں:</div><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">تجارت کی تاریخ دیکھیں</Button></a></div><p>ہماری پلیٹ فارم کا استعمال کرنے کے لیے شکریہ۔</p><p>خیرمقدم،<br />${api_name} ٹیم</p></div>",
 			"title": "آپ کا خودکار آرڈر کامیابی کے ساتھ مکمل ہوگیا ہے"
+		},
+		"SUSPICIOUS_LOGIN": {
+			"html": "<div><p>محترم ${name}،</p><p>ہمیں آپ کے اکاؤنٹ میں ایک نئے آلہ یا مقام سے لاگ ان کی کوشش نظر آئی ہے۔ اگر یہ آپ تھے، تو براہ کرم لاگ ان کی تصدیق کرکے اپنے اکاؤنٹ کو محفوظ بنائیں۔ اگر نہیں، تو فوری طور پر اپنے اکاؤنٹ کو تحفظ فراہم کرنے کے لیے اقدامات کریں۔</p><p><strong>لاگ ان کی تفصیلات:</strong><br />آئی پی ایڈریس: ${ip}<br />مقام: ${location}<br />آلہ: ${device}<br />وقت: ${time}</p><p>آگے بڑھنے کے لیے درج ذیل اختیارات میں سے ایک کو منتخب کریں:</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${confirmation_link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">لاگ ان کی تصدیق کریں</Button></a></div><p>اگر یہ لاگ ان کی کوشش آپ نے نہیں کی ہے، تو ہم تجویز کرتے ہیں کہ <a href=\"${freeze_account_link}\" style=\"color: #FF0000; text-decoration: underline;\">اپنے اکاؤنٹ کو منجمد کریں</a> تاکہ غیر مجاز رسائی کو روکا جا سکے۔</p><p>شکریہ،<br />${api_name} ٹیم</p></div>",
+			"title": "مشکوک لاگ ان انتباہ"
 		}
-		
-		  
 	}
 }

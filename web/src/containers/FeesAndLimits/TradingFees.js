@@ -7,6 +7,7 @@ import { SearchOutlined } from '@ant-design/icons';
 import classnames from 'classnames';
 import { isMobile } from 'react-device-detect';
 import { Image, IconTitle, EditWrapper } from 'components';
+import { quicktradePairSelector } from 'containers/QuickTrade/components/utils';
 import withConfig from 'components/ConfigProvider/withConfig';
 import STRINGS from 'config/localizedStrings';
 import FeesBlock from './FeesBlock';
@@ -22,6 +23,7 @@ const TradingFees = ({
 	search,
 	setSearch,
 	user,
+	quicktradePairs,
 }) => {
 	const accountData = config_level[selectedLevel] || {};
 	const description =
@@ -59,8 +61,8 @@ const TradingFees = ({
 								<div>
 									<div>
 										<Select
-											defaultValue={selectedLevel}
-											value={selectedLevel}
+											defaultValue={selectedLevel?.toString()}
+											value={selectedLevel?.toString()}
 											style={{ width: '20rem' }}
 											className="coin-select custom-select-input-style elevated"
 											dropdownClassName="custom-select-style"
@@ -106,14 +108,10 @@ const TradingFees = ({
 						</div>
 						<div className="w-100 pl-3">
 							<div
-								className={classnames(
-									'd-flex',
-									'justify-content-between',
-									'align-center',
-									{
-										'flex-direction-column': isMobile,
-									}
-								)}
+								className={classnames('d-flex', 'justify-content-between', {
+									'align-center': !isMobile,
+									'flex-direction-column align-items-start': isMobile,
+								})}
 							>
 								<div>
 									<IconTitle
@@ -159,6 +157,7 @@ const TradingFees = ({
 								discount={0}
 								tiers={config_level}
 								search={search}
+								quicktradePairs={quicktradePairs}
 							/>
 						</div>
 					</div>
@@ -171,11 +170,11 @@ const TradingFees = ({
 const mapStateToProps = (state) => {
 	const setQuickTradePairs = (inputArray) => {
 		const transformedData = {};
-	
+
 		inputArray.forEach((item, index) => {
-			const [pair_base, pair_2] = item.symbol.split("-");
+			const [pair_base, pair_2] = item.symbol.split('-');
 			transformedData[item.symbol] = {
-				id: index, 
+				id: index,
 				name: item.symbol,
 				pair_base: pair_base,
 				pair_2: pair_2,
@@ -187,12 +186,13 @@ const mapStateToProps = (state) => {
 				icon_id: item.icon_id,
 			};
 		});
-	
+
 		return transformedData;
-	}
+	};
 	return {
 		coins: state.app.coins,
 		pairs: setQuickTradePairs(state.app.quicktrade),
+		quicktradePairs: quicktradePairSelector(state),
 		config_level: state.app.config_level,
 		options: Object.entries(state.app.config_level).map(([key, { name }]) => ({
 			value: key,

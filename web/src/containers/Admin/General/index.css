@@ -190,8 +190,17 @@
 }
 
 .feature-trade-box .announcement-icon svg {
-	width: 3rem;
-	height: 3rem;
+	width: 2rem;
+	height: 2rem;
+}
+
+.feature-trade-box .auto-trader-icon svg {
+	width: 2.5rem !important;
+	height: 2.5rem !important;
+}
+
+.feature-trade-box .announcement-icon svg path {
+	fill: #ffffff;
 }
 
 .interface-box .feature-chat-icon {

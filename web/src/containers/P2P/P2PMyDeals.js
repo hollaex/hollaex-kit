@@ -41,7 +41,7 @@ const P2PMyDeals = ({
 	}, [refresh]);
 
 	const formatAmount = (currency, amount) => {
-		const min = coins[currency].min;
+		const min = coins[currency]?.min;
 		const formattedAmount = formatToCurrency(amount, min);
 		return formattedAmount;
 	};
@@ -119,7 +119,11 @@ const P2PMyDeals = ({
 								setCheks([]);
 							}
 						}}
-						className={isMobile ? 'fs-24 whiteTextP2P' : 'whiteTextP2P'}
+						className={
+							isMobile
+								? 'fs-24 whiteTextP2P deals-checkbox-wrapper'
+								: 'whiteTextP2P deals-checkbox-wrapper'
+						}
 					>
 						{myDeals.length === 0 ? (
 							<EditWrapper stringId="P2P.NO_DEALS">
@@ -127,7 +131,9 @@ const P2PMyDeals = ({
 							</EditWrapper>
 						) : (
 							<EditWrapper stringId="P2P.NUM_DEALS">
-								{myDeals.length} {STRINGS['P2P.NUM_DEALS']}
+								<span className="text-nowrap">
+									{myDeals.length} {STRINGS['P2P.NUM_DEALS']}
+								</span>
 							</EditWrapper>
 						)}
 					</Checkbox>

@@ -374,11 +374,19 @@ export const renderConfirmSignout = (
 			onCloseDialog={() => onHandleclose()}
 		>
 			<div className="signout-confirmation-popup-description">
-				<span className="signout-title">
-					<EditWrapper stringId="LOGOUT_CONFIRM_TEXT">
-						{STRINGS['LOGOUT_CONFIRM_TEXT']}
-					</EditWrapper>
-				</span>
+				<div className="signout-confirmation-content">
+					<Image icon={icons['TAB_SIGNOUT']} wrapperClassName="sign-out-icon" />
+					<span className="signout-title">
+						<EditWrapper stringId="CONFIRM_TEXT">
+							{STRINGS['CONFIRM_TEXT']} {STRINGS['SIGN_OUT_TEXT']}
+						</EditWrapper>
+					</span>
+					<span className="signout-description-content">
+						<EditWrapper stringId="LOGOUT_CONFIRM_TEXT">
+							{STRINGS['LOGOUT_CONFIRM_TEXT']}
+						</EditWrapper>
+					</span>
+				</div>
 				<div className="signout-confirmation-button-wrapper">
 					<Button
 						className="cancel-btn"
@@ -529,7 +537,7 @@ export const LanguageDisplayPopup = ({
 										<Image
 											icon={icon}
 											alt={label}
-											wrapperClassName="flag-icon mr-2"
+											wrapperClassName="flag-icon"
 										/>
 										<span className="caps important-text">{label}</span>
 									</div>

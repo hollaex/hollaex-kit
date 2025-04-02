@@ -4,6 +4,7 @@ $header-margin: 2rem;
 
 .wallet-hover:hover {
 	opacity: 0.5;
+	cursor: pointer;
 }
 
 .layout-mobile {
@@ -118,8 +119,9 @@ $header-margin: 2rem;
 						.mobile-balance-header {
 							text-align: end !important;
 						}
-						th:nth-child(3) {
-							text-align: end;
+						th,
+						td {
+							padding: 1rem 0.5rem !important;
 						}
 					}
 				}
@@ -285,7 +287,7 @@ $header-margin: 2rem;
 		.currency-wallet-wrapper {
 			.wallet-content-wrapper {
 				flex-direction: column;
-				height: 100% !important;
+				height: 70% !important;
 				.wallet-details-wrapper {
 					width: 100% !important;
 				}
@@ -380,6 +382,15 @@ $header-margin: 2rem;
 
 	.header-wrapper {
 		border-top: 1px solid $colors-main-black;
+		.refresh-link {
+			.notification-info {
+				text-decoration: none !important;
+			}
+			.action_notification-svg {
+				position: relative;
+				bottom: 3px;
+			}
+		}
 		.image-Wrapper {
 			.action_notification-svg svg {
 				width: 1.25rem;
@@ -684,6 +695,14 @@ $header-margin: 2rem;
 .wallet-search-improvement {
 	border-bottom: 1px solid $dark-app-line-divider;
 	color: $dark-font-sub-text-color !important;
+	.asset-price {
+		opacity: 1;
+	}
+	.asset-price:hover {
+		opacity: 0.6;
+		cursor: pointer;
+		text-decoration: underline;
+	}
 }
 
 .dust-estimated-balance {
@@ -713,7 +732,9 @@ $header-margin: 2rem;
 	.ant-dropdown-menu {
 		background-color: $app-background-color;
 		max-height: 10rem;
-		overflow-y: scroll;
+		overflow-y: auto;
+		scrollbar-width: thin;
+		scrollbar-color: $colors-black $app-background-color;
 	}
 
 	.app_bar-pair-font {
@@ -827,12 +848,21 @@ $header-margin: 2rem;
 			.animation-wrapper {
 				display: flex;
 				justify-content: center;
+				align-items: center;
+				height: 100%;
 			}
 		}
 	}
 }
 
 .layout-mobile {
+	.wallet-container {
+		.wallet-assets_block {
+			.view-price-link {
+				margin-bottom: 4rem;
+			}
+		}
+	}
 	.bottom-bar-button {
 		padding: 3%;
 		position: fixed;
@@ -856,6 +886,26 @@ $header-margin: 2rem;
 				border-radius: 5px;
 				border-color: $colors-main-black !important;
 			}
+		}
+	}
+}
+
+.wallet-asset-dropdown {
+	.ant-dropdown-menu-item,
+	.app_bar-pair-font {
+		font-size: 10px !important;
+	}
+	.ant-dropdown-menu-item {
+		div:first-child {
+			gap: 4%;
+		}
+	}
+	.arrow-icon {
+		background-color: $colors-notifications-blue;
+		padding: 3% 1.5%;
+		svg {
+			width: 8px;
+			height: 8px;
 		}
 	}
 }

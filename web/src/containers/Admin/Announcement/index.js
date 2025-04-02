@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import ReactQuill from 'react-quill';
@@ -103,6 +103,22 @@ const announcementHeader = (
 ];
 
 const Editor = ({ announcement, onHandleChange }) => {
+	const quillRef = useRef(null);
+
+	useEffect(() => {
+		if (quillRef.current) {
+			const quill = quillRef.current.getEditor();
+
+			quill.on('selection-change', function (range, oldRange, source) {
+				const inputLink = document.querySelector('.ql-tooltip input');
+				if (inputLink && inputLink.type === 'text') {
+					inputLink.setAttribute('data-link', 'https://website.here');
+					inputLink.value = '';
+				}
+			});
+		}
+	}, []);
+
 	const modules = {
 		toolbar: [
 			[{ header: [1, 2, 3, 4, 5, false] }],
@@ -137,6 +153,7 @@ const Editor = ({ announcement, onHandleChange }) => {
 	return (
 		<>
 			<ReactQuill
+				ref={quillRef}
 				theme="snow"
 				value={announcement?.message}
 				onChange={(value) => onHandleChange(value, 'message')}
@@ -826,7 +843,9 @@ const AnnouncementDetails = ({
 				footer={null}
 			>
 				<div className="announcement-message-popup-wrapper">
-					<div className="title font-weight-bold">Add Announcement Details</div>
+					<div className="title font-weight-bold">
+						{isDisplayAddDetailPopup ? 'Add' : 'Edit'} Announcement Details
+					</div>
 					<div className="mt-3 ">
 						<span className="font-weight-bold">Title:</span>
 						<Input
@@ -837,8 +856,17 @@ const AnnouncementDetails = ({
 							placeholder="Input Announcement Title"
 						/>
 					</div>
-					<div className="mt-3">
+					<div className="mt-3 d-flex flex-column">
 						<span className="font-weight-bold">Message/Content:</span>
+						<div className="d-flex link-description">
+							<ReactSVG
+								src={STATIC_ICONS.BLUE_SCREEN_LINK}
+								className="link-icon"
+							/>
+							<span className="mt-2">
+								(Note: Adding links will require adding https://)
+							</span>
+						</div>
 						<Editor
 							announcement={selectedAnnouncementDetail}
 							onHandleChange={onHandleChange}

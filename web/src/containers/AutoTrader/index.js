@@ -605,8 +605,10 @@ const Autotrader = ({
 			? getTargetOptions(autoTradeDetails?.spend_coin).includes(coin)
 			: coin
 	);
-	const filteredBuyOptions = sourceOptions?.filter(
-		(coin) => coin !== autoTradeDetails?.buy_coin
+	const filteredBuyOptions = sourceOptions?.filter((coin) =>
+		autoTradeDetails?.buy_coin
+			? getTargetOptions(autoTradeDetails?.buy_coin).includes(coin)
+			: coin !== autoTradeDetails?.buy_coin
 	);
 	const getSpendAssetAval =
 		user?.balance[`${autoTradeDetails?.spend_coin?.toLowerCase()}_available`];
@@ -644,11 +646,16 @@ const Autotrader = ({
 	const onHandleAsset = (text, asset) => {
 		if (text === 'spend') {
 			getTargetOptions(asset);
-			setAutoTradeDetails((prev) => ({
-				...prev,
-				spend_coin: asset,
-				buy_coin: getTargetOptions(asset) && getTargetOptions(asset)[0],
-			}));
+			autoTradeDetails?.buy_coin
+				? setAutoTradeDetails((prev) => ({
+						...prev,
+						spend_coin: asset,
+				  }))
+				: setAutoTradeDetails((prev) => ({
+						...prev,
+						spend_coin: asset,
+						buy_coin: getTargetOptions(asset) && getTargetOptions(asset)[0],
+				  }));
 		} else if (text === 'buy') {
 			setAutoTradeDetails((prev) => ({
 				...prev,
@@ -662,11 +669,14 @@ const Autotrader = ({
 			setAutoTradeDetails((prev) => ({
 				...prev,
 				spend_coin: null,
+				buy_coin: null,
+				spend_amount: null,
 			}));
 		} else if (text === 'buy') {
 			setAutoTradeDetails((prev) => ({
 				...prev,
 				buy_coin: null,
+				spend_amount: null,
 			}));
 		}
 	};
@@ -750,6 +760,7 @@ const Autotrader = ({
 					onHandleClose();
 				}}
 				className="auto-trader-popup-wrapper"
+				label="auto-trader-popup"
 			>
 				<div className="auto-trader-popup-container">
 					<EditWrapper stringId="AUTO_TRADER.AUTO_TRADER_TITLE">
@@ -808,7 +819,8 @@ const Autotrader = ({
 										: 'custom-select-style auto-trader-select-option-dropdown'
 								}
 								onChange={(value) => onHandleAsset('spend', value)}
-								allowClear={() => onHandleClear('spend')}
+								allowClear
+								onClear={() => onHandleClear('spend')}
 								getPopupContainer={handlePopupContainer}
 								virtual={false}
 							>
@@ -881,7 +893,8 @@ const Autotrader = ({
 								}
 								className="auto-trader-select-dropdown mt-2"
 								showSearch
-								allowClear={() => onHandleClear('buy')}
+								allowClear
+								onClear={() => onHandleClear('buy')}
 								size="medium"
 								dropdownClassName={
 									isMobile
@@ -1008,7 +1021,7 @@ const Autotrader = ({
 					onHandleClose();
 				}}
 				className="auto-trader-popup-wrapper auto-trader-frequency-trade-popup-wrapper"
-				s
+				label="auto-trader-frequency-trade-popup"
 			>
 				<div className="auto-trader-popup-container auto-trader-frequency-trade-popup-container">
 					<EditWrapper stringId="AUTO_TRADER.AUTO_TRADER_TITLE">
@@ -1252,6 +1265,7 @@ const Autotrader = ({
 					onHandleClose();
 				}}
 				className="auto-trader-popup-wrapper auto-trader-description-popup-wrapper"
+				label="auto-trader-description-popup"
 			>
 				<div className="auto-trader-popup-container auto-trader-description-popup-container">
 					<EditWrapper stringId="AUTO_TRADER.AUTO_TRADER_TITLE">
@@ -1377,6 +1391,7 @@ const Autotrader = ({
 					}));
 				}}
 				className="auto-trader-popup-wrapper auto-trader-pause-popup-wrapper"
+				label="auto-trader-pause-popup"
 			>
 				<div className="auto-trader-popup-container auto-trader-pause-popup-container">
 					<EditWrapper stringId="AUTO_TRADER.PAUSE">
@@ -1441,6 +1456,7 @@ const Autotrader = ({
 					}));
 				}}
 				className="auto-trader-popup-wrapper auto-trader-remove-popup-wrapper"
+				label="auto-trader-remove-popup"
 			>
 				<div className="auto-trader-popup-container auto-trader-remove-popup-container">
 					<EditWrapper stringId="AUTO_TRADER.DELETE_TEXT">
@@ -1511,6 +1527,7 @@ const Autotrader = ({
 					}));
 				}}
 				className="auto-trader-popup-wrapper auto-trader-maximum-limit-popup-wrapper"
+				label="auto-trader-maximum-limit-popup"
 			>
 				<div className="auto-trader-popup-container auto-trader-maximum-limit-popup-container">
 					<EditWrapper stringId="AUTO_TRADER.MAXIMUM_TRADE_LIMIT">
@@ -1589,28 +1606,36 @@ const Autotrader = ({
 			</div>
 			<div className="auto-trader-content-wrapper">
 				<span className="auto-trader-content-description">
-					<EditWrapper stringId="AUTO_TRADER.RECURRING_TRANSACTION">
-						<span>{STRINGS['AUTO_TRADER.RECURRING_TRANSACTION']}</span>
-					</EditWrapper>
-					<EditWrapper stringId="AUTO_TRADER.SETUP_TRANSACTION">
-						<span
-							className="blue-link text-decoration-underline"
-							onClick={() => {
-								if (tradeDetails?.length <= 19) {
-									setIsRenderPopup((prev) => ({
-										...prev,
-										isDisplayAutoTrader: true,
-									}));
-								} else {
-									setIsRenderPopup((prev) => ({
-										...prev,
-										isDisplayMaximumTrade: true,
-									}));
-								}
-							}}
-						>
-							{STRINGS['AUTO_TRADER.SETUP_TRANSACTION']?.toUpperCase()}
+					<div className="d-flex flex-column align-items-start">
+						<EditWrapper stringId="AUTO_TRADER.RECURRING_TRANSACTION">
+							<span>{STRINGS['AUTO_TRADER.RECURRING_TRANSACTION']}</span>
+						</EditWrapper>
+						<EditWrapper stringId="AUTO_TRADER.SETUP_TRANSACTION">
+							<span
+								className="blue-link text-decoration-underline"
+								onClick={() => {
+									if (tradeDetails?.length <= 19) {
+										setIsRenderPopup((prev) => ({
+											...prev,
+											isDisplayAutoTrader: true,
+										}));
+									} else {
+										setIsRenderPopup((prev) => ({
+											...prev,
+											isDisplayMaximumTrade: true,
+										}));
+									}
+								}}
+							>
+								{STRINGS['AUTO_TRADER.SETUP_TRANSACTION']?.toUpperCase()}
+							</span>
+						</EditWrapper>
+					</div>
+					<EditWrapper stringId="AUTO_TRADER.TIME_ZONE">
+						<span className="time-zone-text">
+							{STRINGS['AUTO_TRADER.TIME_ZONE']}
 						</span>
+						<span className="ml-2 time-zone-text">{exchangeTimeZone}</span>
 					</EditWrapper>
 				</span>
 				<div>

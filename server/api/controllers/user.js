@@ -7,6 +7,7 @@ const { sendEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
 const { loggerUser } = require('../../config/logger');
 const { errorMessageConverter } = require('../../utils/conversion');
+const randomString = require('random-string');
 const {
 	USER_VERIFIED,
 	PROVIDE_VALID_EMAIL_CODE,
@@ -32,12 +33,13 @@ const {
 } = require('../../messages');
 const { DEFAULT_ORDER_RISK_PERCENTAGE, EVENTS_CHANNEL, API_HOST, DOMAIN, TOKEN_TIME_NORMAL, TOKEN_TIME_LONG, HOLLAEX_NETWORK_BASE_URL, NUMBER_OF_ALLOWED_ATTEMPTS } = require('../../constants');
 const { all } = require('bluebird');
-const { each, isInteger } = require('lodash');
+const { each, isInteger, isArray } = require('lodash');
 const { publisher } = require('../../db/pubsub');
 const { isDate } = require('moment');
 const moment = require('moment');
 const DeviceDetector = require('node-device-detector');
 const uuid = require('uuid/v4');
+const geoip = require('geoip-lite');
 
 const VERIFY_STATUS = {
 	EMPTY: 0,
@@ -58,7 +60,9 @@ const INITIAL_SETTINGS = () => {
 		notification: {
 			popup_order_confirmation: true,
 			popup_order_completed: true,
-			popup_order_partially_filled: true
+			popup_order_partially_filled: true,
+			popup_order_new: true,
+			popup_order_canceled: true
 		},
 		interface: {
 			order_book_levels: 10,
@@ -305,8 +309,48 @@ const loginPost = (req, res) => {
 				throw new Error(INVALID_CREDENTIALS + message);
 			}
 
+			const lastLogins = await toolsLib.user.findUserLastLogins(user);
+			let suspiciousLogin = false;
+
+			const successfulRecords = lastLogins.filter(login => login.status);
+
+			if (isArray(lastLogins) && lastLogins.length > 0 && !successfulRecords?.find(login => login.device === device)) {
+				suspiciousLogin = true;
+			}
+
+
+			const geo = geoip.lookup(ip);
+
+			const country = geo?.country || '';
+
+			if (isArray(lastLogins) && lastLogins.length > 0 && !successfulRecords?.find(login => login.country === country)) {
+				suspiciousLogin = true;
+			}
+
+			if (suspiciousLogin) {
+				const verification_code = crypto.randomBytes(9).toString('base64').replace(/[^a-zA-Z0-9]/g, '').substring(0, 12);
+
+				const loginData = await toolsLib.user.createSuspiciousLogin(user, ip, device, country, domain, origin, referer, null, long_term);
+
+				const data = {
+					id: loginData.id,
+					email,
+					verification_code,
+					ip,
+					time,
+					device,
+					country,
+					user_id: user.id
+				};
+				await toolsLib.database.client.setexAsync(`user:confirm-login:${verification_code}`, 5 * 60, JSON.stringify(data));
+				await toolsLib.database.client.setexAsync(`user:freeze-account:${verification_code}`, 60 * 60 * 6, JSON.stringify(data));
+
+				sendEmail(MAILTYPE.SUSPICIOUS_LOGIN, email, data, user.settings, domain);
+				throw new Error('Suspicious login detected, please check your email.');
+			}
+
 			if (!user.otp_enabled) {
-				return all([user, toolsLib.security.checkCaptcha(captcha, ip)]);
+				return all([user, toolsLib.security.checkCaptcha(captcha, ip), country]);
 			} else {
 				return all([
 					user,
@@ -327,15 +371,17 @@ const loginPost = (req, res) => {
 							} else {
 								throw new Error(err.message + message);
 							}
-						})
+						}),
+					country
 				]);
 			}
 		})
-		.then(([user]) => {
+		.then(([user, otp, country]) => {
 			const data = {
 				ip,
 				time,
-				device
+				device,
+				country
 			};
 
 			publisher.publish(EVENTS_CHANNEL, JSON.stringify({
@@ -377,6 +423,49 @@ const loginPost = (req, res) => {
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/loginPost catch', err.message);
 			return res.status(err.statusCode || 401).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+		});
+};
+
+
+const confirmLogin = (req, res) => {
+	loggerUser.verbose(
+		req.uuid,
+		'controllers/user/confirmLogin auth',
+		req.auth
+	);
+
+	toolsLib.user.confirmUserLogin(req.swagger.params.data.value.token)
+		.then(() => {
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerUser.error(
+				req.uuid,
+				'controllers/user/confirmLogin err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+		});
+};
+
+const freezeUserByCode = (req, res) => {
+	loggerUser.verbose(
+		req.uuid,
+		'controllers/user/freezeUserByCode auth',
+		req.auth
+	);
+
+	toolsLib.user.freezeUserByCode(req.swagger.params.data.value.token)
+		.then(() => {
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerUser.error(
+				req.uuid,
+				'controllers/user/freezeUserByCode err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
 
@@ -1056,7 +1145,7 @@ const addUserBank = (req, res) => {
 				{
 					type: 'New bank added by a user',
 					data: `<div><p>User email ${email} just added a new bank.<br>Details:<br>${Object.keys(bank_account).map(key => {
-						return `${key}: ${bank_account[key]} <br>`
+						return `${key}: ${bank_account[key]} <br>`;
 					}).join('')}</div></p>`
 				},
 				{}
@@ -1634,7 +1723,7 @@ const deletePaymentDetail = (req, res) => {
 	toolsLib.user.deletePaymentDetail(id, user_id)
 		.then(() => {
 			return res.json({
-				message: "Success"
+				message: 'Success'
 			});
 		})
 		.catch((err) => {
@@ -1831,5 +1920,7 @@ module.exports = {
 	createUserAutoTrade,
 	updateUserAutoTrade,
 	deleteUserAutoTrade,
-	fetchAnnouncements
+	fetchAnnouncements,
+	confirmLogin,
+	freezeUserByCode
 };

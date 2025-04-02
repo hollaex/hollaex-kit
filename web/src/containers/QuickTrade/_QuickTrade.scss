@@ -102,8 +102,8 @@
 	.quote-container {
 		background-color: transparent;
 		overflow-y: scroll;
-		min-height: $max-content-height-double-bar-mobile;
-		max-height: $max-content-height-double-bar-mobile;
+		min-height: $max-content-height-trade-mobile;
+		max-height: $max-content-height-trade-mobile;
 		.quick_trade-wrapper {
 			flex: 1 1;
 			flex-direction: column;

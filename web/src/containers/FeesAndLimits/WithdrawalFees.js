@@ -58,8 +58,8 @@ const WithdrawalFees = ({
 								<div>
 									<div>
 										<Select
-											defaultValue={selectedLevel}
-											value={selectedLevel}
+											defaultValue={selectedLevel?.toString()}
+											value={selectedLevel?.toString()}
 											style={{ width: '20rem' }}
 											className="coin-select custom-select-input-style elevated"
 											dropdownClassName="custom-select-style"
@@ -80,16 +80,12 @@ const WithdrawalFees = ({
 								</div>
 							</div>
 						</div>
-						<div className="w-100 pl-3">
+						<div className={isMobile ? 'w-100 pl-2' : 'w-100 pl-3'}>
 							<div
-								className={classnames(
-									'd-flex',
-									'justify-content-between',
-									'align-center',
-									{
-										'flex-direction-column': isMobile,
-									}
-								)}
+								className={classnames('d-flex', 'justify-content-between', {
+									'flex-direction-column align-items-start': isMobile,
+									'align-items-center': !isMobile,
+								})}
 							>
 								<div>
 									<IconTitle
