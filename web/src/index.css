@@ -6960,19 +6960,24 @@ table th {
   padding: 5px;
   overflow: hidden; }
 
+.operator-controls__details {
+  width: 100vw !important; }
+
 .operator-controls__wrapper {
   position: fixed;
   bottom: -106px;
-  width: 100vw;
+  width: max-content;
   transition: all 0.25s ease-out 0s;
-  color: #ffffff; }
+  color: #ffffff;
+  z-index: 10 !important; }
   .operator-controls__wrapper.open {
     bottom: 0;
     z-index: 10002 !important; }
 
 .operator-controls__buttons-wrapper {
   display: flex;
-  margin-left: 57px; }
+  margin-left: 57px;
+  width: max-content; }
 
 .operator-controls__button {
   height: 31px;

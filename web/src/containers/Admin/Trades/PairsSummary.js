@@ -751,7 +751,7 @@ class PairsSummary extends Component {
 		const pendingPairs =
 			allPairs &&
 			allPairs.filter((data) => pairs.includes(data.name) && !data.verified);
-		if (!this.state.pairs || !this.state.pairs.length) {
+		if (!allPairs.length) {
 			return <Spin size="large" className="m-top" />;
 		}
 		return (
