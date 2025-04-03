@@ -87,7 +87,10 @@ const {
 	TOKEN_TIME_NORMAL,
 	VERIFY_STATUS,
 	EVENTS_CHANNEL,
-	BALANCE_HISTORY_SUPPORTED_PLANS
+	BALANCE_HISTORY_SUPPORTED_PLANS,
+	ROLE_PERMISSIONS,
+	KIT_CONFIG_KEYS,
+	KIT_SECRETS_KEYS,
 } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
@@ -4060,6 +4063,371 @@ const deleteAnnouncement = async (id) => {
 	return { message: 'Success' };
 };
 
+const validateRoutePermissions = (inputPermissions) => {
+	if (!isArray(inputPermissions)) {
+		throw new Error('Permissions must be an array');
+	}
+
+	// Check for duplicates in input
+	const uniquePermissions = [...new Set(inputPermissions)];
+	if (uniquePermissions.length !== inputPermissions.length) {
+		const duplicates = findDuplicates(inputPermissions);
+		throw new Error(
+			`Duplicate permissions found: ${duplicates.join(', ')}\n` +
+			`Unique permissions would be: ${uniquePermissions.join(', ')}`
+		);
+	}
+
+	// Flatten all valid permissions from our structure
+	const allValidPermissions = flattenPermissionStructure(ROLE_PERMISSIONS);
+
+	//Check for invalid permissions
+	const invalidPerms = inputPermissions.filter(
+		perm => !allValidPermissions.includes(perm)
+	);
+
+	if (invalidPerms.length > 0) {
+		throw new Error(
+			`Invalid permissions detected:\n` +
+			`- Invalid: ${invalidPerms.join(', ')}\n` +
+			`- Valid options: ${allValidPermissions.slice(0, 5).join(', ')}...` +
+			`(showing 5 of ${allValidPermissions.length})`
+		);
+	}
+
+
+	return true;
+}
+
+const findDuplicates = (arr) => {
+	return arr.filter((item, index) => arr.indexOf(item) !== index);
+}
+
+const flattenPermissionStructure = (permStructure, path = []) => {
+	let results = [];
+
+	for (const [key, value] of Object.entries(permStructure)) {
+		const currentPath = [...path, key];
+
+		if (typeof value === 'object' && ('get' in value || 'post' in value)) {
+			results.push(...Object.values(value));
+		} else if (typeof value === 'object') {
+			results.push(...flattenPermissionStructure(value, currentPath));
+		}
+	}
+
+	return results;
+}
+
+const getExchangeUserRoles = async (opts = {
+	limit: null,
+	page: null,
+	order_by: null,
+	order: null,
+	search: null,
+	start_date: null,
+	end_date: null,
+}) => {
+	const pagination = paginationQuery(opts.limit, opts.page);
+	const ordering = orderingQuery(opts.order_by, opts.order);
+	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
+
+	const queryOptions = {
+		where: {
+			...(opts.search && {
+				[Op.or]: [
+					{ name: { [Op.iLike]: `%${opts.search}%` } },
+					{ description: { [Op.iLike]: `%${opts.search}%` } }
+				]
+			})
+		},
+		order: [ordering],
+		...pagination
+	};
+
+	if (timeframe) queryOptions.where.created_at = timeframe;
+	// queryOptions.include = [{
+	// 	model: getModel('user'),
+	// 	as: 'users',
+	// 	attributes: ['id', 'email']
+	// }];
+
+	return dbQuery.findAndCountAllWithRows('Role', {})
+};
+const validateConfigPermissions = (configPermissions) => {
+
+	configPermissions.forEach(permission => {
+		if (!KIT_CONFIG_KEYS.includes(permission)) {
+			throw new Error(`Invalid config permission: ${permission}`);
+		}
+	});
+}
+
+const validateSecretPermissions = (secretPermissions) => {
+	secretPermissions.forEach(permission => {
+		if (!KIT_SECRETS_KEYS.includes(permission)) {
+			throw new Error(`Invalid secret permission: ${permission}`);
+		}
+	});
+}
+const createExchangeUserRole = async ({ name, description, rolePermissions, user_id }) => {
+	const Role = getModel('role');
+	if (!name) throw new Error('Role name is required');
+	if (!isArray(rolePermissions)) throw new Error('Permissions must be an array');
+
+	const validationGroups = {
+		route: [],
+		config: [],
+		secret: []
+	};
+
+	const permissionsToStore = [];
+
+	// Categorize and validate permissions
+	rolePermissions.forEach(permission => {
+		if (typeof permission !== 'string') {
+			throw new Error(`Invalid permission type: ${permission}`);
+		}
+
+		// Extract the base permission without prefix
+		let basePermission, permissionType;
+
+		if (permission.startsWith('route:')) {
+			const withoutPrefix = permission.replace('route:', '');
+			const lastDotIndex = withoutPrefix.lastIndexOf('.');
+
+			if (lastDotIndex === -1) {
+				throw new Error(`Invalid route permission format: ${permission}`);
+			}
+
+			const path = withoutPrefix.substring(0, lastDotIndex);
+			const method = withoutPrefix.substring(lastDotIndex + 1);
+
+			basePermission = `/admin/${path.replace(/\./g, '/')}:${method}`;
+			permissionType = 'route';
+		}
+		else if (permission.startsWith('config:')) {
+			basePermission = permission.replace('config:', '');
+			permissionType = 'config';
+		}
+		else if (permission.startsWith('secret:')) {
+			basePermission = permission.replace('secret:', '');
+			permissionType = 'secret';
+		}
+		else {
+			throw new Error(`Invalid permission prefix: ${permission}. Must start with route:, config:, or secret:`);
+		}
+
+		// Add to validation group
+		validationGroups[permissionType].push(basePermission);
+		// Add to storage array (without prefix)
+		permissionsToStore.push(basePermission);
+	});
+
+	// Validate each permission type
+	try {
+		if (validationGroups.route.length > 0) {
+			validateRoutePermissions(validationGroups.route);
+		}
+
+		if (validationGroups.config.length > 0) {
+			validateConfigPermissions(validationGroups.config);
+		}
+
+		if (validationGroups.secret.length > 0) {
+			validateSecretPermissions(validationGroups.secret);
+		}
+	} catch (error) {
+		throw new Error(`Permission validation failed: ${error.message}`);
+	}
+
+
+	return Role.create({
+		role_name: name,
+		description,
+		permissions: permissionsToStore,
+	});
+};
+
+const updateExchangeUserRole = async (roleId, { name, description, rolePermissions, user_id }) => {
+	const Role = getModel('role');
+
+	const role = await Role.findOne({
+		where: { id: roleId },
+		attributes: ['id', 'role_name', 'description', 'permissions'],
+	});
+
+	if (!role) {
+		throw new Error('Role not found');
+	}
+
+	const updates = {};
+	if (name !== undefined && name !== role.role_name) {
+		updates.role_name = name;
+	}
+	if (description !== undefined && description !== role.description) {
+		updates.description = description;
+	}
+
+	if (rolePermissions !== undefined) {
+		if (!isArray(rolePermissions)) {
+			throw new Error('Permissions must be an array');
+		}
+
+		const validationGroups = {
+			route: [],
+			config: [],
+			secret: []
+		};
+
+		const permissionsToStore = [];
+
+		rolePermissions.forEach(permission => {
+			if (typeof permission !== 'string') {
+				throw new Error(`Invalid permission type: ${permission}`);
+			}
+
+			let basePermission, permissionType;
+
+			if (permission.startsWith('route:')) {
+				const withoutPrefix = permission.replace('route:', '');
+				const lastDotIndex = withoutPrefix.lastIndexOf('.');
+
+				if (lastDotIndex === -1) {
+					throw new Error(`Invalid route permission format: ${permission}`);
+				}
+
+				const path = withoutPrefix.substring(0, lastDotIndex);
+				const method = withoutPrefix.substring(lastDotIndex + 1);
+
+				basePermission = `/admin/${path.replace(/\./g, '/')}:${method}`;
+				permissionType = 'route';
+			}
+			else if (permission.startsWith('config:')) {
+				basePermission = permission.replace('config:', '');
+				permissionType = 'config';
+			}
+			else if (permission.startsWith('secret:')) {
+				basePermission = permission.replace('secret:', '');
+				permissionType = 'secret';
+			}
+			else {
+				throw new Error(`Invalid permission prefix: ${permission}. Must start with route:, config:, or secret:`);
+			}
+
+			validationGroups[permissionType].push(basePermission);
+			permissionsToStore.push(basePermission);
+		});
+
+		try {
+			if (validationGroups.route.length > 0) {
+				validateRoutePermissions(validationGroups.route);
+			}
+			if (validationGroups.config.length > 0) {
+				validateConfigPermissions(validationGroups.config);
+			}
+			if (validationGroups.secret.length > 0) {
+				validateSecretPermissions(validationGroups.secret);
+			}
+		} catch (error) {
+			throw new Error(`Permission validation failed: ${error.message}`);
+		}
+
+		const currentPermissions = role.permissions || [];
+		const permissionsChanged = (
+			currentPermissions.length !== permissionsToStore.length ||
+			!currentPermissions.every(p => permissionsToStore.includes(p))
+		);
+
+		if (permissionsChanged) {
+			updates.permissions = permissionsToStore;
+		}
+	}
+
+	if (Object.keys(updates).length > 0) {
+		const [affectedRows] = await Role.update(updates, {
+			where: { id: roleId }
+		});
+
+		if (affectedRows === 0) {
+			throw new Error('Update failed - no rows affected');
+		}
+	}
+
+	const updatedRole = await Role.findByPk(roleId);
+	return updatedRole;
+};
+
+const deleteExchangeUserRole = async (id) => {
+	const Role = getModel('role');
+	const role = await Role.findOne({
+		where: { id },
+	});
+
+	if (!role) {
+		throw new Error('Role not found');
+	}
+
+	if (role.users && role.users.length > 0) {
+		throw new Error('Cannot delete role with assigned users');
+	}
+
+	await role.destroy();
+	return { message: 'Role deleted successfully' };
+};
+
+const assignExchangeUserRole = async (user_id, role_id) => {
+	const Role = getModel('role');
+	const User = getModel('user');
+
+	const user = await User.findOne({ where: { id: user_id } });
+	if (!user) throw new Error('User not found');
+
+	const role = await Role.findOne({ where: { id: role_id } });
+	if (!role) throw new Error('Role not found');
+
+	user.role_id = role_id;
+	await user.save();
+
+	return user;
+};
+
+const fetchExchangeUserRole = async (user_id) => {
+	const User = getModel('user');
+	const user = await User.findOne({
+		where: { id: user_id },
+		include: [{
+			model: Role,
+			as: 'role',
+			attributes: ['id', 'name', 'permissions']
+		}],
+		attributes: ['id', 'email']
+	});
+
+	if (!user) throw new Error('User not found');
+
+	return {
+		user_id: user.id,
+		role: user.role
+	};
+};
+
+const hasPermission = async (user_id, permission) => {
+	const User = getModel('user');
+	const user = await User.findOne({
+		where: { id: user_id },
+		include: [{
+			model: Role,
+			as: 'role',
+			required: true
+		}]
+	});
+
+	if (!user || !user.role) return false;
+
+	return user.role.permissions.includes(permission);
+};
+
 module.exports = {
 	loginUser,
 	getUserTier,
@@ -4152,5 +4520,12 @@ module.exports = {
 	confirmUserLogin,
 	findUserLastLogins,
 	freezeUserByCode,
-	createSuspiciousLogin
+	createSuspiciousLogin,
+	getExchangeUserRoles,
+	createExchangeUserRole,
+	updateExchangeUserRole,
+	deleteExchangeUserRole,
+	assignExchangeUserRole,
+	fetchExchangeUserRole,
+	hasPermission
 };

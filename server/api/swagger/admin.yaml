@@ -4713,3 +4713,165 @@ paths:
         - hmac
       x-security-scopes:
         - admin
+  /admin/roles:
+    x-swagger-router-controller: admin
+    get:
+      description: Get roles by admin
+      operationId: getExchangeUserRoles
+      tags:
+        - Admin
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
+    post:
+      description: Create role by admin
+      operationId: createExchangeUserRole
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                maxLength: 256
+              description:
+                type: string
+                maxLength: 256
+              permissions:
+                type: array
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
+    put:
+      description: Update role by admin
+      operationId: updateExchangeUserRole
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+                maxLength: 256
+              description:
+                type: string
+                maxLength: 256
+              permissions:
+                type: array
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
+    delete:
+      description: Delete role
+      operationId: deleteExchangeUserRole
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                format: int32
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
+  /admin/roles/assign:
+    x-swagger-router-controller: admin
+    post:
+      description: Assign role by admin
+      operationId: assignExchangeUserRole
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              user_id:
+                type: integer
+              role_id:
+                type: integer
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin

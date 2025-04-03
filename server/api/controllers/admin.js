@@ -113,7 +113,7 @@ const putAdminKit = (req, res) => {
 	}
 
 	const auditInfo = { userEmail: req?.auth?.sub?.email, sessionId: req?.session_id, apiPath: req?.swagger?.apiPath, method: req?.swagger?.operationPath?.[2] };
-	toolsLib.updateKitConfigSecrets(data, req.auth.scopes, auditInfo)
+	toolsLib.updateKitConfigSecrets(data, req.auth.scopes, auditInfo, req.auth?.sub?.permissions, req.auth.sub.id)
 		.then((result) => {
 			return res.json(result);
 		})
@@ -3253,6 +3253,94 @@ const deleteAnnouncement = (req, res) => {
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
+
+
+const getExchangeUserRoles = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/getExchangeUserRoles/auth', req.auth.sub);
+
+	toolsLib.user.getExchangeUserRoles()
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/getExchangeUserRoles', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+		});
+};
+
+const createExchangeUserRole = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/createExchangeUserRole/auth', req.auth.sub);
+
+	const { name, description, permissions } = req.swagger.params.data.value;
+
+	toolsLib.user.createExchangeUserRole({
+		name,
+		description,
+		rolePermissions: permissions,
+		user_id: req.auth.sub.id
+	})
+		.then((role) => {
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, 'controllers/admin/createExchangeUserRole', 'post', role);
+			return res.json(role);
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/createExchangeUserRole', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+		});
+};
+
+const updateExchangeUserRole = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/updateExchangeUserRole/auth', req.auth.sub);
+
+	const { id, name, description, permissions } = req.swagger.params.data.value;
+
+	toolsLib.user.updateExchangeUserRole(id, {
+		name,
+		description,
+		rolePermissions: permissions,
+		user_id: req.auth.sub.id
+	})
+		.then((role) => {
+			return res.json(role);
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/updateExchangeUserRole', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+		});
+};
+
+
+const deleteExchangeUserRole = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/deleteExchangeUserRole/auth', req.auth.sub);
+
+	const { id } = req.swagger.params.data.value;
+
+	toolsLib.user.deleteExchangeUserRole(id)
+		.then((result) => {
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, 'controllers/admin/deleteExchangeUserRole', 'delete', result);
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/deleteExchangeUserRole', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+		});
+};
+const assignExchangeUserRole = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/assignExchangeUserRole/auth', req.auth.sub);
+
+	const { user_id, role_id } = req.swagger.params.data.value;
+
+	toolsLib.user.assignExchangeUserRole(user_id, role_id)
+		.then((result) => {
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, 'controllers/admin/assignExchangeUserRole', 'delete', result);
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/assignExchangeUserRole', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+		});
+};
+
 module.exports = {
 	createInitialAdmin,
 	getAdminKit,
@@ -3336,5 +3424,10 @@ module.exports = {
 	fetchAnnouncements,
 	createAnnouncement,
 	deleteAnnouncement,
-	updateAnnouncement
+	updateAnnouncement,
+	getExchangeUserRoles,
+	createExchangeUserRole,
+	updateExchangeUserRole,
+	deleteExchangeUserRole,
+	assignExchangeUserRole
 };

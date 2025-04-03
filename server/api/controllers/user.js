@@ -376,7 +376,7 @@ const loginPost = (req, res) => {
 				]);
 			}
 		})
-		.then(([user, otp, country]) => {
+		.then(async ([user, otp, country]) => {
 			const data = {
 				ip,
 				time,
@@ -396,6 +396,11 @@ const loginPost = (req, res) => {
 				sendEmail(MAILTYPE.LOGIN, email, data, user.settings, domain);
 			}
 
+			let userRole
+			if (user.role_id) {
+				userRole = await toolsLib.database.getModel('role').findOne({ id: user.role_id });
+			}
+
 			return all([
 				user,
 				toolsLib.security.issueToken(
@@ -409,7 +414,8 @@ const loginPost = (req, res) => {
 					user.is_kyc,
 					user.is_communicator,
 					long_term ? TOKEN_TIME_LONG : TOKEN_TIME_NORMAL,
-					user.settings.language
+					user.settings.language,
+					userRole?.permissions
 				)
 			]);
 		})
