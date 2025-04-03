@@ -248,7 +248,7 @@ const Roles = ({ constants }) => {
 	};
 
 	return (
-		<Tabs defaultActiveKey="1" style={{ width: '100%' }}>
+		<Tabs defaultActiveKey="0" style={{ width: '100%' }}>
 			<TabPane tab="Operator" key="0">
 				<div className="admin-roles-wrapper w-100 my-4">
 					<div className="d-flex justify-content-between">
