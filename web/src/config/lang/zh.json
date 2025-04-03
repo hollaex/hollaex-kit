@@ -573,7 +573,9 @@
 			"TRADE_POPUPS": "交易弹窗",
 			"POPUP_ORDER_CONFIRMATION": "实施交易时确认弹窗",
 			"POPUP_ORDER_COMPLETED": "订单完成时弹窗",
-			"POPUP_ORDER_PARTIALLY_FILLED": "部分订单已满时弹窗"
+			"POPUP_ORDER_PARTIALLY_FILLED": "部分订单已满时弹窗",
+			"POPUP_NEW_ORDER_CREATED": "下达新订单时显示弹出窗口",
+			"POPUP_ORDER_CANCELLED": "取消订单时显示弹窗"
 		},
 		"AUDIO_CUE_FORM": {
 			"ALL_AUDIO": "所有声音提示",
@@ -1305,7 +1307,9 @@
 		"INSUFFICIENT_INFO_1": "您的收入目前不足以结算。请使用您的推荐链接邀请更多会员，并等待您的未结算收入{0} {1}",
 		"INSUFFICIENT_INFO_2": "超过 1",
 		"GO_TO_REFERRAL": "前往推荐",
-		"REFER_DESC": "与朋友分享以下链接，开始从他们的交易中赚取佣金"
+		"REFER_DESC": "与朋友分享以下链接，开始从他们的交易中赚取佣金",
+		"SUCCESSFULLY_SETTLED": "成功入驻",
+		"SETTLE_AMOUNT": "您已成功结算金额为 {0} {1}"
 	},
 	"USER_LEVEL": "用户级别",
 	"LIMIT_AMOUNT": "限额",
@@ -2708,7 +2712,8 @@
 		"MS": "{0} 毫秒",
 		"STATUS_NORMAL": "連線正常",
 		"CONNECTION_LABEL": "联系",
-		"CONNECTION_ISSUE_DETECTED": "检测到连接问题"
+		"CONNECTION_ISSUE_DETECTED": "检测到连接问题",
+		"VERY_SLOW": "非常慢"
 	},
 	"DESKTOP_NAVIGATION": {
 		"OTHERS": "其他的",
@@ -2740,7 +2745,8 @@
 		"TRANSACTION_DESC": "查看所有交易、存款和取款",
 		"ONRAMPER_DESC": "使用 Onramper 购买和出售加密货币",
 		"AUTO_TRADER_DESC": "定期自动买卖交易",
-		"ANNOUNCEMENT_DESC": "更新、列表和其他新闻"
+		"ANNOUNCEMENT_DESC": "更新、列表和其他新闻",
+		"WALLET_DESCRIPTION": "查看您的钱包资产和余额"
 	},
 	"VIEW_PRICES": "查看价格",
 	"VIEW_MY_WALLET": "查看我的钱包",
@@ -2829,7 +2835,7 @@
 		"SATURDAY": "在。",
 		"SUNDAY": "是的。",
 		"MONTHLY_TRADE_TITLE": "设置日期",
-		"MONTHLY_TRADE_TOOLTIP_DESC": "您的交易每月自动执行的日期",
+		"MONTHLY_TRADE_TOOLTIP_DESC": "您的交易每月自动执行的日期（第 1 天 - {0} 天）",
 		"DESCTIPTION_TEXT": "为本次预定的交易添加清晰的描述。",
 		"DESCRIPTION_PLACEHOLDER": "描述此重复顺序（策略、来源等）",
 		"REVIEW_AND_CONFIRM": "审查您的汽车交易",
@@ -2852,7 +2858,8 @@
 		"MIN_AMOUNT": "最低消费金额为 {0}",
 		"MAX_AMOUNT": "此金额超出了您的最高消费金额限制",
 		"MAXIMUM_TRADE_LIMIT": "您已达到 20 个重复订单的最大限制",
-		"SUCCESSFULLY_CREATED": "自动交易创建成功"
+		"SUCCESSFULLY_CREATED": "自动交易创建成功",
+		"SELECT_DAY": "选择日期"
 	},
 	"ANNOUNCEMENT_TAB": {
 		"ANNOUNCEMENT_TITLE": "公告",
@@ -2868,5 +2875,40 @@
 		"EXCHANGE_UPDATE": "交易所更新",
 		"NO_DATA_TEXT": "似乎尚未发布任何公告",
 		"UPGRADES": "升级"
+	},
+	"SIGN_OUT_TEXT": "登出",
+	"LOGIN_CONFIRMATION": {
+		"LOGIN_CONFIRM_FINAL": "登录确认",
+		"FREEZE_CONFIRM_FINAL": "冻结您的账户",
+		"LOGIN_CONFIRM_WARNING": "要登录您的帐户，请单击下面的确认按钮，以便我们知道是您本人。",
+		"FREEZE_CONFIRM_WARNING": "冻结后，您的帐户将被完全锁定，并且无法访问，包括您自己的帐户。您可以稍后联系我们的支持团队，轻松恢复访问权限。",
+		"LOGIN_CANCEL_BUTTON": "关闭",
+		"LOGIN_CONFIRM_BUTTON": "确认登录",
+		"FREEZE_CONFIRM_BUTTON": "是的，冻结我的账户",
+		"LOGIN_INPUT_CODE": "请输入代码",
+		"LOGIN_CONFIRM_SUCCESS_1": "您的電子郵件已經註釋。",
+		"FREEZE_CONFIRM_SUCCESS_1": "您的帐户现已锁定，并且暂时无法提款。",
+		"FREEZE_CONFIRM_SUCCESS_2": "随时联系我们以恢复您的访问权限。",
+		"LOGIN_CONFIRM_SUCCESS_2": "请重新登录以访问您的帐户。",
+		"GO_LOGIN_HISTORY": "转至登录页面",
+		"ACCOUNT_FROZEN": "账户冻结",
+		"CONFIRM_FREEZE_TITLE": "确认冻结",
+		"CONFIRM_WARNING_FREEZE_DESC": "您确定要冻结您的账户吗？",
+		"ACCOUNT_CONFIRMED": "账户已确认",
+		"EMAIL_CONFIRMATION": "需要确认电子邮件",
+		"EMAIL_CONFIRMATION_DESC_1": "我们向您发送了一封带有确认按钮的电子邮件。",
+		"EMAIL_CONFIRMATION_DESC_2": "请单击它{0}继续。",
+		"EMAIL_TEXT": "在您的电子邮件中"
+	},
+	"ERROR_TAB": {
+		"NETWORK_ERROR": "连接问题",
+		"NETWORK_ERROR_DESC": "请检查您的互联网连接。",
+		"SERVER_ERROR": "服务器错误",
+		"SERVER_ERROR_DESC": "我们遇到了暂时的网络或服务器问题。请稍后重试。",
+		"SERVER_MAINTENANCE_ERROR": "服务器维护",
+		"SERVER_MAINTENANCE_ERROR_DESC": "系统正在维护。请稍后重试。",
+		"TOO_MANY_REQUEST_ERROR": "请求过多",
+		"TOO_MANY_REQUEST_ERROR_DESC": "哇！慢点，你一次做太多事情了",
+		"NETWORK_ERROR_MESSAGE": "网络错误"
 	}
 }

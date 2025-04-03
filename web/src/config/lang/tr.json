@@ -515,7 +515,9 @@
 		"NOTIFICATION_FORM": {
 			"POPUP_ORDER_CONFIRMATION": "Emirleri göndermeden onay sor.",
 			"POPUP_ORDER_COMPLETED": "Emir gerçekleştiğinde bir pop up mesajı göster.",
-			"POPUP_ORDER_PARTIALLY_FILLED": "Emir kısmen gerçekleştiğinde bir pop up mesajı göster."
+			"POPUP_ORDER_PARTIALLY_FILLED": "Emir kısmen gerçekleştiğinde bir pop up mesajı göster.",
+			"POPUP_NEW_ORDER_CREATED": "Yeni bir sipariş verildiğinde açılır pencereyi göster",
+			"POPUP_ORDER_CANCELLED": "Siparişleri iptal ederken açılır pencereyi göster"
 		},
 		"AUDIO_CUE_FORM": {
 			"ALL_AUDIO": "Tüm Sesli Uyarılar",
@@ -1422,7 +1424,9 @@
 		"INSUFFICIENT_INFO_1": "Kazançlarınız şu anda ödeme için yeterli değil. Lütfen yönlendirme bağlantınızı kullanarak daha fazla üye davet edin ve henüz ödenmemiş kazançlarınız elde edilene kadar bekleyin {0} {1}",
 		"INSUFFICIENT_INFO_2": "1'i aş",
 		"GO_TO_REFERRAL": "Yönlendirmeye Git",
-		"REFER_DESC": "Aşağıdaki bağlantıyı arkadaşlarınızla paylaşın ve onların ticaretinden komisyon kazanmaya başlayın"
+		"REFER_DESC": "Aşağıdaki bağlantıyı arkadaşlarınızla paylaşın ve onların ticaretinden komisyon kazanmaya başlayın",
+		"SUCCESSFULLY_SETTLED": "Başarıyla Yerleşti",
+		"SETTLE_AMOUNT": "{0} {1} tutarını başarıyla ödediniz"
 	},
 	"NOT_LOGGEDIN": {
 		"TXT_1": "İşlem yapmak için giriş yapmanız gerekmektedir",
@@ -2588,7 +2592,8 @@
 		"MS": "{0} ms",
 		"STATUS_NORMAL": "Bağlantı Normal",
 		"CONNECTION_LABEL": "Bağlantı",
-		"CONNECTION_ISSUE_DETECTED": "Bağlantı sorunu algılandı"
+		"CONNECTION_ISSUE_DETECTED": "Bağlantı sorunu algılandı",
+		"VERY_SLOW": "Çok yavaş"
 	},
 	"DESKTOP_NAVIGATION": {
 		"OTHERS": "Diğerleri",
@@ -2620,7 +2625,8 @@
 		"TRANSACTION_DESC": "Tüm işlemleri, para yatırma ve çekme işlemlerini inceleyin",
 		"ONRAMPER_DESC": "Kripto para alıp satmak için Onramper'ı kullanın",
 		"AUTO_TRADER_DESC": "Tekrarlayan otomatik alım ve satım işlemleri",
-		"ANNOUNCEMENT_DESC": "Güncellemeler, listelemeler ve diğer haberler"
+		"ANNOUNCEMENT_DESC": "Güncellemeler, listelemeler ve diğer haberler",
+		"WALLET_DESCRIPTION": "Cüzdan varlıklarınızı ve bakiyelerinizi görüntüleyin"
 	},
 	"VIEW_PRICES": "Fiyatları Görüntüle",
 	"VIEW_MY_WALLET": "Cüzdanımı görüntüle",
@@ -2709,7 +2715,7 @@
 		"SATURDAY": "İçinde.",
 		"SUNDAY": "Bunlar.",
 		"MONTHLY_TRADE_TITLE": "Gün-Tarih Ayarla",
-		"MONTHLY_TRADE_TOOLTIP_DESC": "İşleminizin her ay otomatik olarak gerçekleştirileceği gün",
+		"MONTHLY_TRADE_TOOLTIP_DESC": "İşleminizin her ay otomatik olarak yürütüleceği gün (1. Gün-{0})",
 		"DESCTIPTION_TEXT": "Bu planlanmış işlem için net bir açıklama ekleyin.",
 		"DESCRIPTION_PLACEHOLDER": "Bu tekrar eden siparişi (strateji, kaynak, vb.) açıklayın.",
 		"REVIEW_AND_CONFIRM": "Oto Ticaretinizi inceleyin",
@@ -2732,7 +2738,8 @@
 		"MIN_AMOUNT": "Minimum harcama tutarı {0}",
 		"MAX_AMOUNT": "Bu miktar, maksimum harcama limitinizi aşıyor",
 		"MAXIMUM_TRADE_LIMIT": "20 tekrarlayan siparişin maksimum sınırına ulaştınız",
-		"SUCCESSFULLY_CREATED": "Otomatik ticaret başarıyla oluşturuldu"
+		"SUCCESSFULLY_CREATED": "Otomatik ticaret başarıyla oluşturuldu",
+		"SELECT_DAY": "Gün Seçin"
 	},
 	"ANNOUNCEMENT_TAB": {
 		"ANNOUNCEMENT_TITLE": "Duyuru",
@@ -2748,5 +2755,40 @@
 		"EXCHANGE_UPDATE": "Borsa güncellemesi",
 		"NO_DATA_TEXT": "Henüz herhangi bir duyuru yapılmamış gibi görünüyor",
 		"UPGRADES": "Yükseltmeler"
+	},
+	"SIGN_OUT_TEXT": "Oturumu Kapat",
+	"LOGIN_CONFIRMATION": {
+		"LOGIN_CONFIRM_FINAL": "Giriş Onayı",
+		"FREEZE_CONFIRM_FINAL": "Hesabınızı dondurun",
+		"LOGIN_CONFIRM_WARNING": "Hesabınıza giriş yapmak için lütfen aşağıdaki onay butonuna tıklayın, böylece siz olduğunuzu anlayalım.",
+		"FREEZE_CONFIRM_WARNING": "Dondurulduğunda, hesabınız tamamen kilitlenir ve kendi hesabınız da dahil olmak üzere tüm erişimlerden korunur. Destek ekibimize ulaşarak daha sonra erişimi kolayca geri yükleyebilirsiniz.",
+		"LOGIN_CANCEL_BUTTON": "KAPALI",
+		"LOGIN_CONFIRM_BUTTON": "Girişi Onayla",
+		"FREEZE_CONFIRM_BUTTON": "EVET, HESABIMI DONDUR",
+		"LOGIN_INPUT_CODE": "Lütfen kodu girin",
+		"LOGIN_CONFIRM_SUCCESS_1": "E-postanız doğrulandı.",
+		"FREEZE_CONFIRM_SUCCESS_1": "Hesabınız artık kilitlendi ve çekim işlemleri geçici olarak devre dışı bırakıldı.",
+		"FREEZE_CONFIRM_SUCCESS_2": "Erişiminizi tekrar sağlamak için istediğiniz zaman bizimle iletişime geçebilirsiniz.",
+		"LOGIN_CONFIRM_SUCCESS_2": "Hesabınıza erişmek için lütfen tekrar giriş yapın.",
+		"GO_LOGIN_HISTORY": "Giriş Sayfasına Git",
+		"ACCOUNT_FROZEN": "Hesap Donduruldu",
+		"CONFIRM_FREEZE_TITLE": "Dondurmayı Onayla",
+		"CONFIRM_WARNING_FREEZE_DESC": "Hesabınızı dondurmak istediğinizden emin misiniz?",
+		"ACCOUNT_CONFIRMED": "Hesap Onaylandı",
+		"EMAIL_CONFIRMATION": "E-posta Onayı Gerekli",
+		"EMAIL_CONFIRMATION_DESC_1": "Size onay butonunu içeren bir e-posta gönderdik.",
+		"EMAIL_CONFIRMATION_DESC_2": "Devam etmek için lütfen {0} öğesine tıklayın.",
+		"EMAIL_TEXT": "e-postanızda"
+	},
+	"ERROR_TAB": {
+		"NETWORK_ERROR": "Bağlantı Sorunu",
+		"NETWORK_ERROR_DESC": "Lütfen internet bağlantınızı kontrol edin.",
+		"SERVER_ERROR": "Sunucu Hatası",
+		"SERVER_ERROR_DESC": "Geçici bir ağ veya sunucu sorunu yaşıyoruz. Lütfen daha sonra tekrar deneyin.",
+		"SERVER_MAINTENANCE_ERROR": "Sunucu bakımı",
+		"SERVER_MAINTENANCE_ERROR_DESC": "Sistem bakımı şu anda devam ediyor. Lütfen daha sonra tekrar deneyin.",
+		"TOO_MANY_REQUEST_ERROR": "Çok fazla istek",
+		"TOO_MANY_REQUEST_ERROR_DESC": "Vay canına! Yavaşla, aynı anda çok fazla şey yapıyorsun",
+		"NETWORK_ERROR_MESSAGE": "Ağ Hatası"
 	}
 }

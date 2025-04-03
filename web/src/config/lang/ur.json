@@ -496,7 +496,9 @@
 		"NOTIFICATION_FORM": {
 			"POPUP_ORDER_CONFIRMATION": "آرڈر جمع کرانے سے پہلے تصدیق طلب کریں۔",
 			"POPUP_ORDER_COMPLETED": "آرڈر مکمل ہونے پر پاپ اپ دکھائیں۔",
-			"POPUP_ORDER_PARTIALLY_FILLED": "جب آرڈر جزوی طور پر بھر جائے تو پاپ اپ دکھائیں۔"
+			"POPUP_ORDER_PARTIALLY_FILLED": "جب آرڈر جزوی طور پر بھر جائے تو پاپ اپ دکھائیں۔",
+			"POPUP_NEW_ORDER_CREATED": "جب نیا آرڈر دیا جائے تو پاپ اپ دکھائیں۔",
+			"POPUP_ORDER_CANCELLED": "آرڈرز کینسل کرتے وقت پاپ اپ دکھائیں۔"
 		},
 		"AUDIO_CUE_FORM": {
 			"ALL_AUDIO": "تمام آڈیو اشارے",
@@ -1451,7 +1453,9 @@
 		"INSUFFICIENT_INFO_1": "آپ کی کمائی فی الحال تصفیہ کے لیے ناکافی ہے۔ براہ کرم اپنے ریفرل لنک کا استعمال کرتے ہوئے مزید ممبران کو مدعو کریں اور اپنی غیر طے شدہ آمدنی تک انتظار کریں {0} {1}",
 		"INSUFFICIENT_INFO_2": "1 سے زیادہ",
 		"GO_TO_REFERRAL": "ریفرل پر جائیں۔",
-		"REFER_DESC": "دوستوں کے ساتھ نیچے دیے گئے لنک کا اشتراک کرکے ان کی ٹریڈنگ پر کمیشن کمانا شروع کریں۔"
+		"REFER_DESC": "دوستوں کے ساتھ نیچے دیے گئے لنک کا اشتراک کرکے ان کی ٹریڈنگ پر کمیشن کمانا شروع کریں۔",
+		"SUCCESSFULLY_SETTLED": "کامیابی سے طے پا گیا۔",
+		"SETTLE_AMOUNT": "آپ نے کامیابی سے {0} {1} کی رقم طے کر لی ہے"
 	},
 	"NOT_LOGGEDIN": {
 		"TXT_1": "ٹریڈنگ شروع کرنے کے لیے آپ کو لاگ ان کرنا ہوگا۔",
@@ -2556,7 +2560,8 @@
 		"MS": "{0} ms",
 		"STATUS_NORMAL": "کنکشن نارمل",
 		"CONNECTION_LABEL": "کنکشن",
-		"CONNECTION_ISSUE_DETECTED": "کنکشن کے مسئلے کا پتہ چلا"
+		"CONNECTION_ISSUE_DETECTED": "کنکشن کے مسئلے کا پتہ چلا",
+		"VERY_SLOW": "بہت سست"
 	},
 	"DESKTOP_NAVIGATION": {
 		"OTHERS": "دوسرے",
@@ -2588,7 +2593,8 @@
 		"TRANSACTION_DESC": "تمام تجارت، جمع اور نکالنے کا جائزہ لیں۔",
 		"ONRAMPER_DESC": "کرپٹو خریدنے اور بیچنے کے لیے Onramper استعمال کریں۔",
 		"AUTO_TRADER_DESC": "بار بار چلنے والی خودکار خرید و فروخت کے لین دین",
-		"ANNOUNCEMENT_DESC": "اپ ڈیٹس، لسٹنگ اور دیگر خبریں۔"
+		"ANNOUNCEMENT_DESC": "اپ ڈیٹس، لسٹنگ اور دیگر خبریں۔",
+		"WALLET_DESCRIPTION": "اپنے بٹوے کا اثاثہ اور بیلنس دیکھیں"
 	},
 	"VIEW_PRICES": "قیمتیں دیکھیں",
 	"VIEW_MY_WALLET": "میرا پرس دیکھیں",
@@ -2677,7 +2683,7 @@
 		"SATURDAY": "میں",
 		"SUNDAY": "وہ ہیں۔",
 		"MONTHLY_TRADE_TITLE": "دن کی تاریخ مقرر کریں۔",
-		"MONTHLY_TRADE_TOOLTIP_DESC": "جس دن آپ کی تجارت ہر ماہ خود بخود چل جائے گی۔",
+		"MONTHLY_TRADE_TOOLTIP_DESC": "جس دن آپ کی تجارت ہر ماہ خود بخود مکمل ہو جائے گی (دن 1-{0})",
 		"DESCTIPTION_TEXT": "اس طے شدہ لین دین کے لیے واضح وضاحت شامل کریں۔",
 		"DESCRIPTION_PLACEHOLDER": "اس اعادی ترتیب کی وضاحت کریں (حکمت عملی، ذریعہ، وغیرہ)",
 		"REVIEW_AND_CONFIRM": "اپنی آٹو ٹریڈ کا جائزہ لیں۔",
@@ -2700,7 +2706,8 @@
 		"MIN_AMOUNT": "کم از کم خرچ کی رقم {0} ہے",
 		"MAX_AMOUNT": "یہ رقم آپ کے خرچ کی زیادہ سے زیادہ رقم کی حد سے زیادہ ہے۔",
 		"MAXIMUM_TRADE_LIMIT": "آپ 20 اعادی آرڈرز کی زیادہ سے زیادہ حد تک پہنچ گئے ہیں۔",
-		"SUCCESSFULLY_CREATED": "خودکار تجارت کامیابی کے ساتھ بنائی گئی۔"
+		"SUCCESSFULLY_CREATED": "خودکار تجارت کامیابی کے ساتھ بنائی گئی۔",
+		"SELECT_DAY": "دن منتخب کریں۔"
 	},
 	"ANNOUNCEMENT_TAB": {
 		"ANNOUNCEMENT_TITLE": "اعلان",
@@ -2716,5 +2723,40 @@
 		"EXCHANGE_UPDATE": "ایکسچینج اپ ڈیٹ",
 		"NO_DATA_TEXT": "ایسا لگتا ہے کہ ابھی تک کوئی اعلان نہیں ہوا ہے۔",
 		"UPGRADES": "اپ گریڈ"
+	},
+	"SIGN_OUT_TEXT": "سائن آؤٹ کریں۔",
+	"LOGIN_CONFIRMATION": {
+		"LOGIN_CONFIRM_FINAL": "لاگ ان کی تصدیق",
+		"FREEZE_CONFIRM_FINAL": "اپنا اکاؤنٹ منجمد کریں۔",
+		"LOGIN_CONFIRM_WARNING": "اپنے اکاؤنٹ میں لاگ ان کرنے کے لیے نیچے دیے گئے تصدیقی بٹن پر کلک کریں تاکہ ہمیں معلوم ہو کہ یہ آپ ہی ہیں۔",
+		"FREEZE_CONFIRM_WARNING": "منجمد ہونے پر، آپ کا اکاؤنٹ مکمل طور پر مقفل ہو جاتا ہے اور آپ کے اکاؤنٹ سمیت تمام رسائی سے محفوظ رہتا ہے۔ آپ ہماری سپورٹ ٹیم سے رابطہ کر کے بعد میں آسانی سے رسائی بحال کر سکتے ہیں۔",
+		"LOGIN_CANCEL_BUTTON": "بند",
+		"LOGIN_CONFIRM_BUTTON": "لاگ ان کی تصدیق کریں۔",
+		"FREEZE_CONFIRM_BUTTON": "ہاں، میرا اکاؤنٹ منجمد کر دیں۔",
+		"LOGIN_INPUT_CODE": "براہ کرم کوڈ داخل کریں۔",
+		"LOGIN_CONFIRM_SUCCESS_1": "آپ کے ای میل کی تصدیق ہو چکی ہے۔",
+		"FREEZE_CONFIRM_SUCCESS_1": "آپ کا اکاؤنٹ اب مقفل ہے، اور نکالنے کو عارضی طور پر غیر فعال کر دیا گیا ہے۔",
+		"FREEZE_CONFIRM_SUCCESS_2": "اپنی رسائی بحال کرنے کے لیے کسی بھی وقت ہم سے رابطہ کریں۔",
+		"LOGIN_CONFIRM_SUCCESS_2": "اپنے اکاؤنٹ تک رسائی کے لیے براہ کرم دوبارہ لاگ ان کریں۔",
+		"GO_LOGIN_HISTORY": "لاگ ان پیج پر جائیں۔",
+		"ACCOUNT_FROZEN": "اکاؤنٹ منجمد",
+		"CONFIRM_FREEZE_TITLE": "منجمد کی تصدیق کریں۔",
+		"CONFIRM_WARNING_FREEZE_DESC": "کیا آپ واقعی اپنا اکاؤنٹ منجمد کرنا چاہتے ہیں؟",
+		"ACCOUNT_CONFIRMED": "اکاؤنٹ کی تصدیق ہو گئی۔",
+		"EMAIL_CONFIRMATION": "ای میل کی تصدیق درکار ہے۔",
+		"EMAIL_CONFIRMATION_DESC_1": "ہم نے آپ کو تصدیقی بٹن کے ساتھ ایک ای میل بھیجا ہے۔",
+		"EMAIL_CONFIRMATION_DESC_2": "آگے بڑھنے کے لیے براہ کرم {0} پر کلک کریں۔",
+		"EMAIL_TEXT": "آپ کے ای میل میں"
+	},
+	"ERROR_TAB": {
+		"NETWORK_ERROR": "کنکشن کا مسئلہ",
+		"NETWORK_ERROR_DESC": "براہ کرم اپنا انٹرنیٹ کنکشن چیک کریں۔",
+		"SERVER_ERROR": "سرور کی خرابی۔",
+		"SERVER_ERROR_DESC": "ہم ایک عارضی نیٹ ورک یا سرور کے مسئلے کا سامنا کر رہے ہیں۔ براہ کرم بعد میں دوبارہ کوشش کریں۔",
+		"SERVER_MAINTENANCE_ERROR": "سرور کی دیکھ بھال",
+		"SERVER_MAINTENANCE_ERROR_DESC": "سسٹم کی بحالی کا کام فی الحال جاری ہے۔ براہ کرم بعد میں دوبارہ کوشش کریں۔",
+		"TOO_MANY_REQUEST_ERROR": "بہت زیادہ درخواستیں",
+		"TOO_MANY_REQUEST_ERROR_DESC": "واہ! آہستہ کرو، آپ ایک ساتھ بہت زیادہ کر رہے ہیں۔",
+		"NETWORK_ERROR_MESSAGE": "نیٹ ورک کی خرابی۔"
 	}
 }
