@@ -12,7 +12,6 @@ import {
 	Tree,
 	Typography,
 	Tabs,
-	Checkbox,
 	Collapse,
 } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
@@ -887,6 +886,7 @@ const RoleManagement = ({ userId }) => {
 	]);
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [currentRole, setCurrentRole] = useState(null);
+	// eslint-disable-next-line
 	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
@@ -955,7 +955,7 @@ const RoleManagement = ({ userId }) => {
 		try {
 			setLoading(true);
 			if (currentRole) {
-				const updatedRole = await updateRoles({
+				await updateRoles({
 					...values,
 					id: currentRole.id,
 					user_id: userId,
@@ -963,7 +963,7 @@ const RoleManagement = ({ userId }) => {
 				// setRoles(roles.map(role => role.id === currentRole.id ? updatedRole : role));
 				message.success('Role updated successfully');
 			} else {
-				const newRole = await createRoles({
+				await createRoles({
 					...values,
 					user_id: userId,
 				});

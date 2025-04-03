@@ -1,19 +1,5 @@
-import React, { useState, useEffect, Fragment, useRef } from 'react';
-import {
-	Table,
-	Button,
-	Spin,
-	Switch,
-	Modal,
-	Input,
-	Checkbox,
-	Radio,
-	Space,
-	Select,
-	message,
-	Tooltip,
-	InputNumber,
-} from 'antd';
+import React, { useState } from 'react';
+import { Button, Modal, Select, message } from 'antd';
 import _debounce from 'lodash/debounce';
 import { CloseOutlined } from '@ant-design/icons';
 
