@@ -735,11 +735,18 @@ const Otcdeskpopup = ({
 								<div>Minimum - amount that can be traded for this market.</div>
 							</div>
 							<div className="full-width">
-								<InputNumber
+								<Input
 									name="max"
 									min={0}
-									onChange={(val) => handlePreviewChange(val, 'min_size')}
+									onChange={(e) =>
+										handlePreviewChange(e.target.value, 'min_size')
+									}
 									value={previewData && previewData.min_size}
+									suffix={
+										previewData &&
+										previewData?.symbol.split('-')[0]?.toUpperCase()
+									}
+									type="number"
 								/>
 							</div>
 						</div>
@@ -749,11 +756,18 @@ const Otcdeskpopup = ({
 								<div>Maximum - amount that can be traded for this market.</div>
 							</div>
 							<div className="full-width">
-								<InputNumber
+								<Input
 									name="max"
 									min={0}
-									onChange={(val) => handlePreviewChange(val, 'max_size')}
+									onChange={(e) =>
+										handlePreviewChange(e.target.value, 'max_size')
+									}
 									value={previewData && previewData.max_size}
+									suffix={
+										previewData &&
+										previewData?.symbol.split('-')[0]?.toUpperCase()
+									}
+									type="number"
 								/>
 							</div>
 						</div>
