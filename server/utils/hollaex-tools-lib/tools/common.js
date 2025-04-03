@@ -173,7 +173,7 @@ const maskSecrets = (secrets) => {
 	return secrets;
 };
 
-const updateKitConfigSecrets = (data = {}, scopes, auditInfo) => {
+const updateKitConfigSecrets = (data = {}, scopes, auditInfo, permissions, userId) => {
 	let role = 'admin';
 
 	if (!data.kit && !data.secrets) {
@@ -202,10 +202,10 @@ const updateKitConfigSecrets = (data = {}, scopes, auditInfo) => {
 		.then((status) => {
 			const updatedKitConfig = {};
 			if (data.kit && Object.keys(data.kit).length > 0) {
-				updatedKitConfig.kit = joinKitConfig(status.dataValues.kit, data.kit, role);
+				updatedKitConfig.kit = joinKitConfig(status.dataValues.kit, data.kit, scopes, permissions, userId);
 			}
 			if (data.secrets && Object.keys(data.secrets).length > 0) {
-				updatedKitConfig.secrets = joinKitSecrets(status.dataValues.secrets, data.secrets, role);
+				updatedKitConfig.secrets = joinKitSecrets(status.dataValues.secrets, data.secrets, scopes, permissions, userId);
 			}
 			const { createAuditLog } = require('./user');
 			if (updatedKitConfig?.kit && Object.keys(updatedKitConfig?.kit).length > 0) {
@@ -245,10 +245,22 @@ const updateKitSecrets = (secrets, scopes) => {
 	return updateKitConfigSecrets({ secrets }, scopes);
 };
 
-const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
-	const newKeys = difference(Object.keys(newKitConfig), KIT_CONFIG_KEYS);
+const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}, scopes, permissions, userId) => {
+	const keyConfig = Object.keys(newKitConfig);
+
+	const newKeys = difference(keyConfig, KIT_CONFIG_KEYS);
 	if (newKeys.length > 0) {
 		throw new Error(`Invalid kit keys given: ${newKeys}`);
+	}
+
+	if (userId !== 1) {
+		const unauthorizedPermissions = keyConfig.filter(
+			perm => !permissions.includes(perm)
+		);
+
+		if (unauthorizedPermissions.length > 0) {
+			throw new Error(`Unauthorized permissions: ${unauthorizedPermissions.join(", ")}`);
+		};
 	}
 
 	if (newKitConfig.user_meta) {
@@ -267,8 +279,8 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 	}
 
 	if (newKitConfig.coin_customizations) {
-		for(let coin of Object.values(newKitConfig.coin_customizations)) {
-			if(!coin.hasOwnProperty('fee_markup')) {
+		for (let coin of Object.values(newKitConfig.coin_customizations)) {
+			if (!coin.hasOwnProperty('fee_markup')) {
 				throw new Error('Fee markup key does not exist');
 			}
 
@@ -283,8 +295,8 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 	}
 
 	if (newKitConfig.fiat_fees) {
-		for(let coin of Object.values(newKitConfig.fiat_fees)) {
-		
+		for (let coin of Object.values(newKitConfig.fiat_fees)) {
+
 			if (coin.withdrawal_fee && coin.withdrawal_fee < 0) {
 				throw new Error('withdrawal fee cannot be negative');
 			}
@@ -300,7 +312,7 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 			if (coin.deposit_fee && !isNumber(coin.deposit_fee)) {
 				throw new Error('deposit fee is not a number');
 			}
-			
+
 			if (coin.min && coin.min < 0) {
 				throw new Error('min amount cannot be negative');
 			}
@@ -346,16 +358,16 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 			throw new Error('date cannot be changed');
 		}
 
-		if(!newKitConfig.balance_history_config.hasOwnProperty('active')) {
+		if (!newKitConfig.balance_history_config.hasOwnProperty('active')) {
 			throw new Error('active does not exist');
 		}
 
-		if(!newKitConfig.balance_history_config.hasOwnProperty('date_enabled')) {
+		if (!newKitConfig.balance_history_config.hasOwnProperty('date_enabled')) {
 			throw new Error('date enabled does not exist');
 		}
 	}
 
-	if (newKitConfig.p2p_config) {
+	if (newKitConfig.p2p_config && user.permisison) {
 
 		const exchangeInfo = getKitConfig().info;
 
@@ -364,34 +376,34 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 
 		if (newKitConfig.p2p_config.enable == null) {
 			throw new Error('enable cannot be null');
-		} 
+		}
 		if (newKitConfig.p2p_config.bank_payment_methods == null) {
 			throw new Error('bank_payment_methods cannot be null');
-		} 
+		}
 		if (newKitConfig.p2p_config.starting_merchant_tier == null) {
 			throw new Error('starting_merchant_tier cannot be null');
-		} 
+		}
 		if (newKitConfig.p2p_config.starting_user_tier == null) {
 			throw new Error('starting_user_tier cannot be null');
-		} 
+		}
 		if (newKitConfig.p2p_config.digital_currencies == null) {
 			throw new Error('digital_currencies cannot be null');
-		} 
+		}
 		if (newKitConfig.p2p_config.fiat_currencies == null) {
 			throw new Error('fiat_currencies cannot be null');
-		} 
+		}
 		if (newKitConfig.p2p_config.side == null) {
 			throw new Error('side cannot be null');
-		} 
+		}
 		if (newKitConfig.p2p_config.source_account == null) {
 			throw new Error('source_account cannot be null');
-		} 
+		}
 		if (newKitConfig.p2p_config.merchant_fee == null) {
 			throw new Error('merchant_fee cannot be null');
-		} 
+		}
 		if (newKitConfig.p2p_config.user_fee == null) {
 			throw new Error('buyer_fee cannot be null');
-		} 
+		}
 
 		const percentagePattern = /^(100(\.00?)?|(\d{1,2})(\.\d{1,2})?)$/;
 
@@ -429,7 +441,7 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 		if (!newKitConfig.referral_history_config.hasOwnProperty('minimum_amount')) {
 			throw new Error('minimum amount key does not exist');
 		}
-		
+
 		if (!newKitConfig.referral_history_config.hasOwnProperty('earning_period')) {
 			throw new Error('earning_period key does not exist');
 		}
@@ -437,20 +449,20 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 		if (!newKitConfig.referral_history_config.hasOwnProperty('distributor_id')) {
 			throw new Error('distributor_id key does not exist');
 		}
-	
+
 		if (!existingKitConfig?.referral_history_config?.date_enabled && !newKitConfig.referral_history_config.hasOwnProperty('date_enabled')) {
 			newKitConfig.referral_history_config.date_enabled = new Date();
 		}
 
-		if (!isNumber( newKitConfig?.referral_history_config?.earning_rate)) {
+		if (!isNumber(newKitConfig?.referral_history_config?.earning_rate)) {
 			throw new Error('Earning rate with data type number required for plugin');
-		} else if ( newKitConfig?.referral_history_config?.earning_rate < 1 ||  newKitConfig?.referral_history_config?.earning_rate > 100) {
+		} else if (newKitConfig?.referral_history_config?.earning_rate < 1 || newKitConfig?.referral_history_config?.earning_rate > 100) {
 			throw new Error('Earning rate must be within the range of 1 ~ 100');
-		} else if (!isNumber( newKitConfig?.referral_history_config?.minimum_amount)) {
+		} else if (!isNumber(newKitConfig?.referral_history_config?.minimum_amount)) {
 			throw new Error('Minimum amount must be integer');
-		} else if ( newKitConfig?.referral_history_config?.minimum_amount < 0 ) {
+		} else if (newKitConfig?.referral_history_config?.minimum_amount < 0) {
 			throw new Error('Minimum amount must be bigger than 0');
-		} else if ( newKitConfig?.referral_history_config?.earning_rate % 10 !== 0) {
+		} else if (newKitConfig?.referral_history_config?.earning_rate % 10 !== 0) {
 			throw new Error('Earning rate must be in increments of 10');
 		} else if (!isNumber(newKitConfig?.referral_history_config?.earning_period)) {
 			throw new Error('Earning period with data type number required for plugin');
@@ -482,7 +494,7 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 		if (!newKitConfig.chain_trade_config.hasOwnProperty('spread')) {
 			throw new Error('spread does not exist');
 		}
-		
+
 	}
 
 	if (newKitConfig.selectable_native_currencies) {
@@ -493,7 +505,7 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 			}
 		}
 	}
-	
+
 	if (newKitConfig.auto_trade_config) {
 		const exchangeInfo = getKitConfig().info;
 
@@ -535,10 +547,23 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 	return joinedKitConfig;
 };
 
-const joinKitSecrets = (existingKitSecrets = {}, newKitSecrets = {}) => {
-	const newKeys = difference(Object.keys(newKitSecrets), KIT_SECRETS_KEYS);
+const joinKitSecrets = (existingKitSecrets = {}, newKitSecrets = {}, permissions, userId) => {
+
+	const keySecret = Object.keys(newKitSecrets);
+
+	const newKeys = difference(keySecret, KIT_SECRETS_KEYS);
 	if (newKeys.length > 0) {
 		throw new Error(`Invalid secret keys given: ${newKeys}`);
+	}
+
+	if (userId !== 1) {
+		const unauthorizedPermissions = keySecret.filter(
+			perm => !permissions.includes(perm)
+		);
+
+		if (unauthorizedPermissions.length > 0) {
+			throw new Error(`Unauthorized permissions: ${unauthorizedPermissions.join(", ")}`);
+		};
 	}
 
 	const flattenedNewKitSecrets = flatten(newKitSecrets);
@@ -709,8 +734,8 @@ const getCharts = (from, to, resolution, opts = {
 };
 
 const getMiniCharts = (assets, opts = {
-	from: null, 
-	to: null, 
+	from: null,
+	to: null,
 	quote: null,
 	period: null,
 	additionalHeaders: null
@@ -1080,8 +1105,8 @@ const removeRepeatingDecimals = (num) => {
 		decimalPart = decimalPart.replace(/(\d)\1{2,}$/, '$1');
 		return parseFloat(`${integerPart}.${decimalPart}`);
 	}
-	
-	return parseFloat(num); 
+
+	return parseFloat(num);
 };
 
 module.exports = {

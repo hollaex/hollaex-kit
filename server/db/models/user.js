@@ -175,7 +175,16 @@ module.exports = function (sequelize, DataTypes) {
 			meta: {
 				type: DataTypes.JSONB,
 				defaultValue: {}
-			}
+			},
+			role_id: {
+				type: DataTypes.INTEGER,
+				onDelete: 'CASCADE',
+				allowNull: false,
+				references: {
+					model: 'Roles',
+					key: 'id'
+				}
+			},
 		},
 		{
 			underscored: true,

@@ -88,7 +88,9 @@ const {
 	VERIFY_STATUS,
 	EVENTS_CHANNEL,
 	BALANCE_HISTORY_SUPPORTED_PLANS,
-	ROLE_PERMISSIONS
+	ROLE_PERMISSIONS,
+	KIT_CONFIG_KEYS,
+	KIT_SECRETS_KEYS,
 } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
@@ -4061,65 +4063,7 @@ const deleteAnnouncement = async (id) => {
 	return { message: 'Success' };
 };
 
-const getExchangeUserRoles = async (opts = {
-	limit: null,
-	page: null,
-	order_by: null,
-	order: null,
-	search: null,
-	start_date: null,
-	end_date: null,
-}) => {
-	const pagination = paginationQuery(opts.limit, opts.page);
-	const ordering = orderingQuery(opts.order_by, opts.order);
-	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
-
-	const queryOptions = {
-		where: {
-			...(opts.search && {
-				[Op.or]: [
-					{ name: { [Op.iLike]: `%${opts.search}%` } },
-					{ description: { [Op.iLike]: `%${opts.search}%` } }
-				]
-			})
-		},
-		order: [ordering],
-		...pagination
-	};
-
-	if (timeframe) queryOptions.where.created_at = timeframe;
-	queryOptions.include = [{
-		model: User,
-		as: 'users',
-		attributes: ['id', 'email']
-	}];
-
-	return dbQuery.findAndCountAllWithRows('role', queryOptions)
-};
-
-
-setTimeout(async () => {
-	try {
-		const userId = 1;
-		const newRole = await createRole({
-			name: 'Account Manager',
-			description: 'Can manage user accounts and KYC',
-			permissions: [
-				ROLE_PERMISSIONS.admin.user.get,
-				ROLE_PERMISSIONS.admin.user.put,
-				ROLE_PERMISSIONS.admin.user.role.get,
-				ROLE_PERMISSIONS.admin.user.role.put,
-				ROLE_PERMISSIONS.admin.user.email.put,
-				ROLE_PERMISSIONS.admin.user.activate.post
-			],
-			user_id: userId
-		});
-		await assignExchangeUserRole(userId, newRole.id);
-	} catch (error) {
-	}
-}, 10000)
-
-const validatePermissions = (inputPermissions) => {
+const validateRoutePermissions = (inputPermissions) => {
 	if (!isArray(inputPermissions)) {
 		throw new Error('Permissions must be an array');
 	}
@@ -4175,30 +4119,142 @@ const flattenPermissionStructure = (permStructure, path = []) => {
 	return results;
 }
 
+const getExchangeUserRoles = async (opts = {
+	limit: null,
+	page: null,
+	order_by: null,
+	order: null,
+	search: null,
+	start_date: null,
+	end_date: null,
+}) => {
+	const pagination = paginationQuery(opts.limit, opts.page);
+	const ordering = orderingQuery(opts.order_by, opts.order);
+	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
 
+	const queryOptions = {
+		where: {
+			...(opts.search && {
+				[Op.or]: [
+					{ name: { [Op.iLike]: `%${opts.search}%` } },
+					{ description: { [Op.iLike]: `%${opts.search}%` } }
+				]
+			})
+		},
+		order: [ordering],
+		...pagination
+	};
+
+	if (timeframe) queryOptions.where.created_at = timeframe;
+	// queryOptions.include = [{
+	// 	model: getModel('user'),
+	// 	as: 'users',
+	// 	attributes: ['id', 'email']
+	// }];
+
+	return dbQuery.findAndCountAllWithRows('Role', {})
+};
+const validateConfigPermissions = (configPermissions) => {
+
+	configPermissions.forEach(permission => {
+		if (!KIT_CONFIG_KEYS.includes(permission)) {
+			throw new Error(`Invalid config permission: ${permission}`);
+		}
+	});
+}
+
+const validateSecretPermissions = (secretPermissions) => {
+	secretPermissions.forEach(permission => {
+		if (!KIT_SECRETS_KEYS.includes(permission)) {
+			throw new Error(`Invalid secret permission: ${permission}`);
+		}
+	});
+}
 const createExchangeUserRole = async ({ name, description, rolePermissions, user_id }) => {
 	const Role = getModel('role');
 	if (!name) throw new Error('Role name is required');
 	if (!isArray(rolePermissions)) throw new Error('Permissions must be an array');
 
-	validatePermissions(rolePermissions);
+	const validationGroups = {
+		route: [],
+		config: [],
+		secret: []
+	};
 
-	// Create the role
-	return await Role.create({
-		name,
+	const permissionsToStore = [];
+
+	// Categorize and validate permissions
+	rolePermissions.forEach(permission => {
+		if (typeof permission !== 'string') {
+			throw new Error(`Invalid permission type: ${permission}`);
+		}
+
+		// Extract the base permission without prefix
+		let basePermission, permissionType;
+
+		if (permission.startsWith('route:')) {
+			const withoutPrefix = permission.replace('route:', '');
+			const lastDotIndex = withoutPrefix.lastIndexOf('.');
+
+			if (lastDotIndex === -1) {
+				throw new Error(`Invalid route permission format: ${permission}`);
+			}
+
+			const path = withoutPrefix.substring(0, lastDotIndex);
+			const method = withoutPrefix.substring(lastDotIndex + 1);
+
+			basePermission = `/admin/${path.replace(/\./g, '/')}:${method}`;
+			permissionType = 'route';
+		}
+		else if (permission.startsWith('config:')) {
+			basePermission = permission.replace('config:', '');
+			permissionType = 'config';
+		}
+		else if (permission.startsWith('secret:')) {
+			basePermission = permission.replace('secret:', '');
+			permissionType = 'secret';
+		}
+		else {
+			throw new Error(`Invalid permission prefix: ${permission}. Must start with route:, config:, or secret:`);
+		}
+
+		// Add to validation group
+		validationGroups[permissionType].push(basePermission);
+		// Add to storage array (without prefix)
+		permissionsToStore.push(basePermission);
+	});
+
+	// Validate each permission type
+	try {
+		if (validationGroups.route.length > 0) {
+			validateRoutePermissions(validationGroups.route);
+		}
+
+		if (validationGroups.config.length > 0) {
+			validateConfigPermissions(validationGroups.config);
+		}
+
+		if (validationGroups.secret.length > 0) {
+			validateSecretPermissions(validationGroups.secret);
+		}
+	} catch (error) {
+		throw new Error(`Permission validation failed: ${error.message}`);
+	}
+
+
+	return Role.create({
+		role_name: name,
 		description,
-		permissions: rolePermissions,
-		created_by: user_id
+		permissions: permissionsToStore,
 	});
 };
 
-const updateExchangeUserRole = async (roleId, { name, description, inputPermissions, user_id }) => {
+const updateExchangeUserRole = async (roleId, { name, description, rolePermissions, user_id }) => {
 	const Role = getModel('role');
-
 
 	const role = await Role.findOne({
 		where: { id: roleId },
-		attributes: ['id', 'name', 'permissions'],
+		attributes: ['id', 'role_name', 'description', 'permissions'],
 	});
 
 	if (!role) {
@@ -4206,49 +4262,88 @@ const updateExchangeUserRole = async (roleId, { name, description, inputPermissi
 	}
 
 	const updates = {};
-	if (name !== undefined && name !== role.name) {
-		updates.name = name;
+	if (name !== undefined && name !== role.role_name) {
+		updates.role_name = name;
 	}
-	if (description !== undefined) {
+	if (description !== undefined && description !== role.description) {
 		updates.description = description;
 	}
-	if (user_id !== undefined) {
-		updates.updated_by = user_id;
-	}
 
-	//Handle permission updates
-	if (inputPermissions !== undefined) {
-		// Normalize and validate
-		const newPermissions = [...new Set(inputPermissions)]; // Deduplicate
-		validatePermissions(newPermissions);
+	if (rolePermissions !== undefined) {
+		if (!isArray(rolePermissions)) {
+			throw new Error('Permissions must be an array');
+		}
 
-		// Check if permissions changed
+		const validationGroups = {
+			route: [],
+			config: [],
+			secret: []
+		};
+
+		const permissionsToStore = [];
+
+		rolePermissions.forEach(permission => {
+			if (typeof permission !== 'string') {
+				throw new Error(`Invalid permission type: ${permission}`);
+			}
+
+			let basePermission, permissionType;
+
+			if (permission.startsWith('route:')) {
+				const withoutPrefix = permission.replace('route:', '');
+				const lastDotIndex = withoutPrefix.lastIndexOf('.');
+
+				if (lastDotIndex === -1) {
+					throw new Error(`Invalid route permission format: ${permission}`);
+				}
+
+				const path = withoutPrefix.substring(0, lastDotIndex);
+				const method = withoutPrefix.substring(lastDotIndex + 1);
+
+				basePermission = `/admin/${path.replace(/\./g, '/')}:${method}`;
+				permissionType = 'route';
+			}
+			else if (permission.startsWith('config:')) {
+				basePermission = permission.replace('config:', '');
+				permissionType = 'config';
+			}
+			else if (permission.startsWith('secret:')) {
+				basePermission = permission.replace('secret:', '');
+				permissionType = 'secret';
+			}
+			else {
+				throw new Error(`Invalid permission prefix: ${permission}. Must start with route:, config:, or secret:`);
+			}
+
+			validationGroups[permissionType].push(basePermission);
+			permissionsToStore.push(basePermission);
+		});
+
+		try {
+			if (validationGroups.route.length > 0) {
+				validateRoutePermissions(validationGroups.route);
+			}
+			if (validationGroups.config.length > 0) {
+				validateConfigPermissions(validationGroups.config);
+			}
+			if (validationGroups.secret.length > 0) {
+				validateSecretPermissions(validationGroups.secret);
+			}
+		} catch (error) {
+			throw new Error(`Permission validation failed: ${error.message}`);
+		}
+
 		const currentPermissions = role.permissions || [];
 		const permissionsChanged = (
-			currentPermissions.length !== newPermissions.length ||
-			!currentPermissions.every(p => newPermissions.includes(p))
+			currentPermissions.length !== permissionsToStore.length ||
+			!currentPermissions.every(p => permissionsToStore.includes(p))
 		);
 
 		if (permissionsChanged) {
-			// Check for conflicting roles using array containment
-			const conflictingRole = await Role.findOne({
-				where: {
-					id: { [Op.ne]: roleId },
-					permissions: { [Op.contained]: newPermissions }
-				},
-				attributes: ['id', 'name'],
-				raw: true
-			});
-
-			if (conflictingRole) {
-				throw new Error(`Permissions conflict with role: ${conflictingRole.name}`);
-			}
-
-			updates.permissions = newPermissions;
+			updates.permissions = permissionsToStore;
 		}
 	}
 
-	// Execute update only if changes exist
 	if (Object.keys(updates).length > 0) {
 		const [affectedRows] = await Role.update(updates, {
 			where: { id: roleId }
@@ -4259,24 +4354,14 @@ const updateExchangeUserRole = async (roleId, { name, description, inputPermissi
 		}
 	}
 
-	const updatedRole = await Role.findByPk(roleId, {
-		attributes: { exclude: ['created_at', 'updated_at'] },
-		raw: true
-	});
-
+	const updatedRole = await Role.findByPk(roleId);
 	return updatedRole;
-
 };
 
 const deleteExchangeUserRole = async (id) => {
 	const Role = getModel('role');
 	const role = await Role.findOne({
 		where: { id },
-		include: [{
-			model: User,
-			as: 'users',
-			attributes: ['id']
-		}]
 	});
 
 	if (!role) {

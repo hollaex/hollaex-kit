@@ -14,7 +14,11 @@ import { requestRole, inviteOperator, updateRole } from './action';
 import './index.css';
 import '../Trades/index.css';
 import '../../Admin/General/index.css';
+import Role from './Roles';
 import { handleUpgrade } from 'utils/utils';
+import { Tabs } from 'antd';
+
+const TabPane = Tabs.TabPane;
 
 const getColumns = (handleEdit = () => {}) => [
 	{
@@ -244,86 +248,95 @@ const Roles = ({ constants }) => {
 	};
 
 	return (
-		<div className="admin-roles-wrapper w-100 my-4">
-			<div className="d-flex justify-content-between">
-				<div>
-					<h3>Designate operator roles</h3>
-					<div className="description">
-						Invite other exchange operators and specify their roles to help
-						manage exchange.
-					</div>
-				</div>
-				<div>
-					<Button type="primary" className="green-btn" onClick={handleAdd}>
-						Add operator
-					</Button>
-				</div>
-			</div>
-			<div className="d-flex my-4">
-				<div>{renderRoleImage()}</div>
-				<div className="ml-4">
-					<div>{renderItems()}</div>
-					<div className="sub-title">Role types:</div>
-					<div className="mt-4">
-						<div className="description text-nowrap">
-							<span className="sub-title">1. Administrator</span> can access all
-							areas. Coin creation, minting & burning, trading pair and
-							designate operator roles
+		<Tabs defaultActiveKey="1" style={{ width: '100%' }}>
+			<TabPane tab="Operator" key="0">
+				<div className="admin-roles-wrapper w-100 my-4">
+					<div className="d-flex justify-content-between">
+						<div>
+							<h3>Designate operator roles</h3>
+							<div className="description">
+								Invite other exchange operators and specify their roles to help
+								manage exchange.
+							</div>
 						</div>
-						<div className="description text-nowrap">
-							<span className="sub-title">2. Supervisor</span> can access all
-							deposit, withdrawals and approval settings
-						</div>
-						<div className="description text-nowrap">
-							<span className="sub-title">3. KYC</span> role can access some
-							user data to review KYC requirements
-						</div>
-						<div className="description text-nowrap">
-							<span className="sub-title">4. Communications</span> can access to
-							website direct editing for content management and communications
-						</div>
-						<div className="description text-nowrap">
-							<span className="sub-title">5. Support</span> can access some user
-							information for user verification
+						<div>
+							<Button type="primary" className="green-btn" onClick={handleAdd}>
+								Add operator
+							</Button>
 						</div>
 					</div>
-					<div className="description mt-4">
-						Learn more about{' '}
-						<span className="pointer admin-link" onClick={handleRoleAccess}>
-							operator role access.
-						</span>
+					<div className="d-flex my-4">
+						<div>{renderRoleImage()}</div>
+						<div className="ml-4">
+							<div>{renderItems()}</div>
+							<div className="sub-title">Role types:</div>
+							<div className="mt-4">
+								<div className="description text-nowrap">
+									<span className="sub-title">1. Administrator</span> can access
+									all areas. Coin creation, minting & burning, trading pair and
+									designate operator roles
+								</div>
+								<div className="description text-nowrap">
+									<span className="sub-title">2. Supervisor</span> can access
+									all deposit, withdrawals and approval settings
+								</div>
+								<div className="description text-nowrap">
+									<span className="sub-title">3. KYC</span> role can access some
+									user data to review KYC requirements
+								</div>
+								<div className="description text-nowrap">
+									<span className="sub-title">4. Communications</span> can
+									access to website direct editing for content management and
+									communications
+								</div>
+								<div className="description text-nowrap">
+									<span className="sub-title">5. Support</span> can access some
+									user information for user verification
+								</div>
+							</div>
+							<div className="description mt-4">
+								Learn more about{' '}
+								<span className="pointer admin-link" onClick={handleRoleAccess}>
+									operator role access.
+								</span>
+							</div>
+						</div>
 					</div>
+					<div className="table-wrapper">
+						<Table
+							columns={getColumns(handleEdit)}
+							dataSource={operatorList}
+							rowKey={(data) => {
+								return data.id;
+							}}
+							pagination={{
+								current: currentTablePage,
+								onChange: pageChange,
+							}}
+							loading={isLoading}
+						/>
+					</div>
+					<Modal
+						visible={isOpen}
+						footer={null}
+						onCancel={handleClose}
+						width={
+							modalType === 'role-access'
+								? 600
+								: modalType === 'operator-role'
+								? 500
+								: 350
+						}
+					>
+						{renderContent(modalType, onTypeChange, isUpgrade)}
+					</Modal>
 				</div>
-			</div>
-			<div className="table-wrapper">
-				<Table
-					columns={getColumns(handleEdit)}
-					dataSource={operatorList}
-					rowKey={(data) => {
-						return data.id;
-					}}
-					pagination={{
-						current: currentTablePage,
-						onChange: pageChange,
-					}}
-					loading={isLoading}
-				/>
-			</div>
-			<Modal
-				visible={isOpen}
-				footer={null}
-				onCancel={handleClose}
-				width={
-					modalType === 'role-access'
-						? 600
-						: modalType === 'operator-role'
-						? 500
-						: 350
-				}
-			>
-				{renderContent(modalType, onTypeChange, isUpgrade)}
-			</Modal>
-		</div>
+			</TabPane>
+
+			<TabPane tab="Roles" key="1">
+				<Role constants={constants} />
+			</TabPane>
+		</Tabs>
 	);
 };
 

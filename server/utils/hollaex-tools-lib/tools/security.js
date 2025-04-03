@@ -51,6 +51,7 @@ const {
 	TOKEN_TYPES,
 	HMAC_TOKEN_EXPIRY,
 	HMAC_TOKEN_KEY,
+	ROLE_PERMISSIONS
 } = require(`${SERVER_PATH}/constants`);
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { resolve, reject, promisify } = require('bluebird');
@@ -581,6 +582,13 @@ const verifyBearerTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = fa
 					} catch (err) {
 						return sendError(err.message);
 					}
+
+					try {
+						checkPermission(req, decodedToken);
+					} catch (err) {
+						return sendError(err.message);
+					}
+
 					req.auth = decodedToken;
 					return cb(null);
 				} else {
@@ -723,6 +731,13 @@ const verifyBearerTokenExpressMiddleware = (scopes = BASE_SCOPES) => (req, res, 
 				} catch (err) {
 					return sendError(err.message);
 				}
+
+				try {
+					checkPermission(req, decodedToken);
+				} catch (err) {
+					return sendError(err.message);
+				}
+
 				req.auth = decodedToken;
 				return next();
 			} else {
@@ -1003,7 +1018,8 @@ const issueToken = (
 	isKYC = false,
 	isCommunicator = false,
 	expiresIn = getKitSecrets().security.token_time, // 24 hours by default
-	lang = 'en'
+	lang = 'en',
+	permissions = []
 ) => {
 	// Default scope is ['user']
 	let scopes = [].concat(BASE_SCOPES);
@@ -1032,7 +1048,8 @@ const issueToken = (
 				id,
 				email,
 				networkId,
-				lang
+				lang,
+				permissions
 			},
 			scopes,
 			ip,
@@ -1317,51 +1334,43 @@ const generateDashToken = (opts = {
 	return getNodeLib().generateDashToken({ additionalHeaders: opts.additionalHeaders });
 };
 
-const checkPermission = (req) => {
-	try {
-		// Extract path and method from request
-		const apiPath = req?.swagger?.apiPath; // admin/user/role
-		const method = req.method.toLowerCase(); // "get", "post", etc.
+const checkPermission = (req, user) => {
+	// Extract path and method from request
+	const apiPath = req?.swagger?.apiPath; // admin/user/role
+	const method = req.method.toLowerCase(); // "get", "post", etc.
 
-		// Convert path to permission key
-		// ["admin", "user", "role"]
-		const pathParts = apiPath.split('/').filter(Boolean);
+	if (!apiPath) return;
+	if (!apiPath.includes('admin')) return;
+	if (apiPath.includes('admin') && user.sub.id === 1) return;
 
-		// Navigate through permissions object
-		let currentLevel = ROLE_PERMISSIONS;
-		for (const part of pathParts) {
-			currentLevel = currentLevel[part];
-			if (!currentLevel) break;
-		}
+	// Convert path to permission key
+	// ["admin", "user", "role"]
+	const pathParts = apiPath.split('/').filter(Boolean);
 
-		//Get required permission string
-		const requiredPermission = currentLevel?.[method];
+	// Navigate through permissions object
+	let currentLevel = ROLE_PERMISSIONS;
+	for (const part of pathParts) {
+		currentLevel = currentLevel[part];
+		if (!currentLevel) break;
+	}
 
-		if (!requiredPermission) {
-			return req.res.status(403).json({
-				error: 'Unautorized',
-				message: `No permission configured for ${apiPath} ${method.toUpperCase()}`
-			});
-		}
+	//Get required permission string
+	const requiredPermission = currentLevel?.[method];
 
-		// Check if user has permission
-		const userHasPermission = checkUserPermission(req.user, requiredPermission);
+	if (!requiredPermission) {
+		throw new Error(`No permission configured for ${apiPath} ${method.toUpperCase()}`)
+	}
 
-		if (!userHasPermission) {
-			return req.res.status(403).json({
-				error: 'Unautorized',
-				message: `Required permission: ${requiredPermission}`
-			});
-		}
+	// Check if user has permission
+	const userHasPermission = checkUserPermission(user, requiredPermission);
 
-		return;
-	} catch (error) {
-		throw new Error(error.message);
+	if (!userHasPermission) {
+		throw new Error(`Required permission: ${requiredPermission}`)
 	}
 }
 
 const checkUserPermission = (user, requiredPermission) => {
-	return user?.role?.permissions?.includes(requiredPermission);
+	return user?.sub?.permissions?.includes(requiredPermission);
 }
 
 module.exports = {
