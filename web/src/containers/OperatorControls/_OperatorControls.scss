@@ -7,12 +7,16 @@ $operator-controls__panel-border-color: #a7a7a7;
 
 @import './components/ImageUpload';
 
+.operator-controls__details {
+	width: 100vw !important;
+}
 .operator-controls__wrapper {
 	position: fixed;
 	bottom: -106px;
-	width: 100vw;
+	width: max-content;
 	transition: all 0.25s ease-out 0s;
 	color: $operator-controls__panel-text-color;
+	z-index: 10 !important;
 
 	&.open {
 		bottom: 0;
@@ -23,6 +27,7 @@ $operator-controls__panel-border-color: #a7a7a7;
 .operator-controls__buttons-wrapper {
 	display: flex;
 	margin-left: 57px;
+	width: max-content;
 }
 
 .operator-controls__button {

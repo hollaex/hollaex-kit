@@ -571,7 +571,9 @@
 			"TRADE_POPUPS": "النوافذ المنبثقة للتداول",
 			"POPUP_ORDER_CONFIRMATION": "اطلب التأكيد قبل تقديم الطلبات",
 			"POPUP_ORDER_COMPLETED": "أظهر نافذة منبثقة عند اكتمال الطلب",
-			"POPUP_ORDER_PARTIALLY_FILLED": "أظهر نافذة منبثقة عند تنفيذ الطلب جزئيًا"
+			"POPUP_ORDER_PARTIALLY_FILLED": "أظهر نافذة منبثقة عند تنفيذ الطلب جزئيًا",
+			"POPUP_NEW_ORDER_CREATED": "إظهار النافذة المنبثقة عند تقديم طلب جديد",
+			"POPUP_ORDER_CANCELLED": "إظهار النافذة المنبثقة عند إلغاء الطلبات"
 		},
 		"AUDIO_CUE_FORM": {
 			"ALL_AUDIO": "جميع إشارات الصوت",
@@ -1313,7 +1315,9 @@
 		"INSUFFICIENT_INFO_1": "أرباحك غير كافية حاليًا للتسوية. يُرجى دعوة المزيد من الأعضاء باستخدام رابط الإحالة الخاص بك والانتظار حتى يتم تسوية أرباحك غير المستقرة {0} {1}",
 		"INSUFFICIENT_INFO_2": "تجاوز 1",
 		"GO_TO_REFERRAL": "انتقل إلى الإحالة",
-		"REFER_DESC": "شارك الرابط أدناه مع الأصدقاء لبدء كسب العمولات على تداولاتهم"
+		"REFER_DESC": "شارك الرابط أدناه مع الأصدقاء لبدء كسب العمولات على تداولاتهم",
+		"SUCCESSFULLY_SETTLED": "تمت التسوية بنجاح",
+		"SETTLE_AMOUNT": "لقد قمت بتسوية المبلغ بنجاح {0} {1}"
 	},
 	"NOT_LOGGEDIN": {
 		"TXT_1": "لبدء التداول يجب عليك تسجيل الدخول",
@@ -2692,7 +2696,8 @@
 		"MS": "{0} مللي ثانية",
 		"STATUS_NORMAL": "اتصال عادي",
 		"CONNECTION_LABEL": "اتصال",
-		"CONNECTION_ISSUE_DETECTED": "تم اكتشاف مشكلة في الاتصال"
+		"CONNECTION_ISSUE_DETECTED": "تم اكتشاف مشكلة في الاتصال",
+		"VERY_SLOW": "بطيئ جدًا"
 	},
 	"DESKTOP_NAVIGATION": {
 		"OTHERS": "آحرون",
@@ -2724,7 +2729,8 @@
 		"TRANSACTION_DESC": "مراجعة جميع الصفقات والإيداعات والسحوبات",
 		"ONRAMPER_DESC": "استخدم Onramper لشراء وبيع العملات المشفرة",
 		"AUTO_TRADER_DESC": "عمليات البيع والشراء الآلية المتكررة",
-		"ANNOUNCEMENT_DESC": "التحديثات والقوائم والأخبار الأخرى"
+		"ANNOUNCEMENT_DESC": "التحديثات والقوائم والأخبار الأخرى",
+		"WALLET_DESCRIPTION": "عرض أصول محفظتك وأرصدتها"
 	},
 	"VIEW_PRICES": "عرض الأسعار",
 	"VIEW_MY_WALLET": "عرض محفظتي",
@@ -2813,7 +2819,7 @@
 		"SATURDAY": "في.",
 		"SUNDAY": "إنهم كذلك.",
 		"MONTHLY_TRADE_TITLE": "تعيين اليوم والتاريخ",
-		"MONTHLY_TRADE_TOOLTIP_DESC": "اليوم الذي سيتم فيه تنفيذ تداولاتك تلقائيًا كل شهر",
+		"MONTHLY_TRADE_TOOLTIP_DESC": "اليوم الذي سيتم فيه تنفيذ تداولاتك تلقائيًا كل شهر (اليوم 1-{0})",
 		"DESCTIPTION_TEXT": "أضف وصفًا واضحًا لهذه المعاملة المجدولة.",
 		"DESCRIPTION_PLACEHOLDER": "وصف هذا الترتيب المتكرر (الإستراتيجية، المصدر، وما إلى ذلك)",
 		"REVIEW_AND_CONFIRM": "قم بمراجعة التداول التلقائي الخاص بك",
@@ -2836,7 +2842,8 @@
 		"MIN_AMOUNT": "الحد الأدنى لمبلغ الإنفاق هو {0}",
 		"MAX_AMOUNT": "يتجاوز هذا المبلغ الحد الأقصى لمبلغ الإنفاق الخاص بك",
 		"MAXIMUM_TRADE_LIMIT": "لقد وصلت إلى الحد الأقصى وهو 20 طلبًا متكررًا",
-		"SUCCESSFULLY_CREATED": "تم إنشاء التجارة التلقائية بنجاح"
+		"SUCCESSFULLY_CREATED": "تم إنشاء التجارة التلقائية بنجاح",
+		"SELECT_DAY": "اختر اليوم"
 	},
 	"ANNOUNCEMENT_TAB": {
 		"ANNOUNCEMENT_TITLE": "إعلان",
@@ -2852,5 +2859,40 @@
 		"EXCHANGE_UPDATE": "تحديث التبادل",
 		"NO_DATA_TEXT": "يبدو أنه لم يتم الإعلان عن أي شيء حتى الآن",
 		"UPGRADES": "الترقيات"
+	},
+	"SIGN_OUT_TEXT": "تسجيل الخروج",
+	"LOGIN_CONFIRMATION": {
+		"LOGIN_CONFIRM_FINAL": "تأكيد تسجيل الدخول",
+		"FREEZE_CONFIRM_FINAL": "تجميد حسابك",
+		"LOGIN_CONFIRM_WARNING": "لتسجيل الدخول إلى حسابك، يرجى النقر على زر التأكيد أدناه حتى نتأكد من أنك أنت.",
+		"FREEZE_CONFIRM_WARNING": "عند تجميد حسابك، يكون مغلقًا تمامًا ومحميًا من أي وصول، بما في ذلك وصولك الشخصي. يمكنك استعادة الوصول إليه بسهولة لاحقًا بالتواصل مع فريق الدعم لدينا.",
+		"LOGIN_CANCEL_BUTTON": "يغلق",
+		"LOGIN_CONFIRM_BUTTON": "تأكيد تسجيل الدخول",
+		"FREEZE_CONFIRM_BUTTON": "نعم، قم بتجميد حسابي",
+		"LOGIN_INPUT_CODE": "الرجاء إدخال الكود",
+		"LOGIN_CONFIRM_SUCCESS_1": "لقد تم التحقق من بريدك الإلكتروني.",
+		"FREEZE_CONFIRM_SUCCESS_1": "تم الآن قفل حسابك، وتم تعطيل عمليات السحب مؤقتًا.",
+		"FREEZE_CONFIRM_SUCCESS_2": "يمكنك الاتصال بنا في أي وقت لاستعادة وصولك.",
+		"LOGIN_CONFIRM_SUCCESS_2": "يرجى تسجيل الدخول مرة أخرى للوصول إلى حسابك.",
+		"GO_LOGIN_HISTORY": "انتقل إلى صفحة تسجيل الدخول",
+		"ACCOUNT_FROZEN": "تم تجميد الحساب",
+		"CONFIRM_FREEZE_TITLE": "تأكيد التجميد",
+		"CONFIRM_WARNING_FREEZE_DESC": "هل أنت متأكد أنك تريد تجميد حسابك؟",
+		"ACCOUNT_CONFIRMED": "تم تأكيد الحساب",
+		"EMAIL_CONFIRMATION": "مطلوب تأكيد البريد الإلكتروني",
+		"EMAIL_CONFIRMATION_DESC_1": "لقد أرسلنا لك بريدًا إلكترونيًا يحتوي على زر التأكيد.",
+		"EMAIL_CONFIRMATION_DESC_2": "الرجاء الضغط عليه {0} للمتابعة.",
+		"EMAIL_TEXT": "في بريدك الإلكتروني"
+	},
+	"ERROR_TAB": {
+		"NETWORK_ERROR": "مشكلة الاتصال",
+		"NETWORK_ERROR_DESC": "يرجى التحقق من اتصالك بالإنترنت.",
+		"SERVER_ERROR": "خطأ في الخادم",
+		"SERVER_ERROR_DESC": "نواجه مشكلة مؤقتة في الشبكة أو الخادم. يُرجى المحاولة لاحقًا.",
+		"SERVER_MAINTENANCE_ERROR": "صيانة الخادم",
+		"SERVER_MAINTENANCE_ERROR_DESC": "جاري حاليًا صيانة النظام. يُرجى المحاولة لاحقًا.",
+		"TOO_MANY_REQUEST_ERROR": "طلبات كثيرة جدًا",
+		"TOO_MANY_REQUEST_ERROR_DESC": "واو! تمهل، أنت تفعل الكثير في آن واحد.",
+		"NETWORK_ERROR_MESSAGE": "خطأ في الشبكة"
 	}
 }
