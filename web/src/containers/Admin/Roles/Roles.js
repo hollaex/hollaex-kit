@@ -37,7 +37,6 @@ const Role = ({ constants }) => {
 				}
 			});
 		setSelectedEmailData(emailData);
-		console.log(emailData);
 		setRolePayload({
 			...rolePayload,
 			user_id: emailData.value,
@@ -85,7 +84,6 @@ const Role = ({ constants }) => {
 									const transformedRoles = response.data.map((role) => {
 										return { value: role.id, label: role.role_name };
 									});
-									console.log(transformedRoles);
 									setRoles(transformedRoles);
 								})
 								.catch((err) => {
