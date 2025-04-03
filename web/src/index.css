@@ -673,8 +673,8 @@ table th {
 
 .layout-mobile.signout-confirmation-popup-wrapper .signout-confirmation-popup-description .signout-confirmation-content {
   justify-content: center;
-  min-height: calc(100vh - 15rem - 10rem);
-  max-height: calc(100vh - 15rem - 10rem); }
+  min-height: calc( 100vh - 15rem - 10rem);
+  max-height: calc( 100vh - 15rem - 10rem); }
 
 .layout-mobile .footer-bar-more-options-container {
   display: flex;
