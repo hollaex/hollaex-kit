@@ -577,7 +577,9 @@
 			"TRADE_POPUPS": "Pop up Perdagangan",
 			"POPUP_ORDER_CONFIRMATION": "Minta konfirmasi sebelum mengirim pesan",
 			"POPUP_ORDER_COMPLETED": "Tunjukkan pop up apabila pesan telah selesai",
-			"POPUP_ORDER_PARTIALLY_FILLED": "Tunjukkan pop up apabila sebagian pesan telah terisi"
+			"POPUP_ORDER_PARTIALLY_FILLED": "Tunjukkan pop up apabila sebagian pesan telah terisi",
+			"POPUP_NEW_ORDER_CREATED": "Tampilkan pop up saat pesanan baru telah dilakukan",
+			"POPUP_ORDER_CANCELLED": "Tampilkan pop up saat membatalkan pesanan"
 		},
 		"AUDIO_CUE_FORM": {
 			"ALL_AUDIO": "Semua Audio cue",
@@ -1208,7 +1210,9 @@
 		"INSUFFICIENT_INFO_1": "Penghasilan Anda saat ini tidak mencukupi untuk penyelesaian. Silakan undang lebih banyak anggota menggunakan tautan rujukan Anda dan tunggu hingga penghasilan Anda belum ditetapkan {0} {1}",
 		"INSUFFICIENT_INFO_2": "melebihi 1",
 		"GO_TO_REFERRAL": "Pergi ke Referensi",
-		"REFER_DESC": "Bagikan tautan di bawah ini dengan teman-teman Anda untuk Mulai mendapatkan komisi atas perdagangan mereka"
+		"REFER_DESC": "Bagikan tautan di bawah ini dengan teman-teman Anda untuk Mulai mendapatkan komisi atas perdagangan mereka",
+		"SUCCESSFULLY_SETTLED": "Berhasil diselesaikan",
+		"SETTLE_AMOUNT": "Anda telah berhasil menyelesaikan jumlah {0} {1}"
 	},
 	"NOT_LOGGEDIN": {
 		"TXT_1": "Untuk mulai perdagangan, harap masuk terlebih dahulu",
@@ -2688,7 +2692,8 @@
 		"MS": "{0} md",
 		"STATUS_NORMAL": "Koneksi Normal",
 		"CONNECTION_LABEL": "Koneksi",
-		"CONNECTION_ISSUE_DETECTED": "Masalah koneksi terdeteksi"
+		"CONNECTION_ISSUE_DETECTED": "Masalah koneksi terdeteksi",
+		"VERY_SLOW": "Sangat Lambat"
 	},
 	"DESKTOP_NAVIGATION": {
 		"OTHERS": "Yang lain",
@@ -2720,7 +2725,8 @@
 		"TRANSACTION_DESC": "Tinjau semua perdagangan, setoran & penarikan",
 		"ONRAMPER_DESC": "Gunakan Onramper untuk membeli dan menjual kripto",
 		"AUTO_TRADER_DESC": "Transaksi beli & jual otomatis berulang",
-		"ANNOUNCEMENT_DESC": "Pembaruan, daftar, dan berita lainnya"
+		"ANNOUNCEMENT_DESC": "Pembaruan, daftar, dan berita lainnya",
+		"WALLET_DESCRIPTION": "Lihat aset dan saldo dompet Anda"
 	},
 	"VIEW_PRICES": "Lihat Harga",
 	"VIEW_MY_WALLET": "Lihat Dompet saya",
@@ -2809,7 +2815,7 @@
 		"SATURDAY": "Di dalam.",
 		"SUNDAY": "Mereka adalah.",
 		"MONTHLY_TRADE_TITLE": "Tetapkan Hari-Tanggal",
-		"MONTHLY_TRADE_TOOLTIP_DESC": "Hari di mana perdagangan Anda akan secara otomatis dieksekusi setiap bulan",
+		"MONTHLY_TRADE_TOOLTIP_DESC": "Hari di mana perdagangan Anda akan secara otomatis dieksekusi setiap bulan (Hari 1-{0})",
 		"DESCTIPTION_TEXT": "Tambahkan deskripsi yang jelas untuk transaksi terjadwal ini.",
 		"DESCRIPTION_PLACEHOLDER": "Jelaskan pesanan berulang ini (strategi, sumber, dll.)",
 		"REVIEW_AND_CONFIRM": "Tinjau Perdagangan Otomatis Anda",
@@ -2832,7 +2838,8 @@
 		"MIN_AMOUNT": "Jumlah pengeluaran minimum adalah {0}",
 		"MAX_AMOUNT": "Jumlah ini melebihi batas jumlah pengeluaran maksimum Anda",
 		"MAXIMUM_TRADE_LIMIT": "Anda telah mencapai batas maksimum 20 pesanan berulang",
-		"SUCCESSFULLY_CREATED": "Perdagangan otomatis berhasil dibuat"
+		"SUCCESSFULLY_CREATED": "Perdagangan otomatis berhasil dibuat",
+		"SELECT_DAY": "Pilih Hari"
 	},
 	"ANNOUNCEMENT_TAB": {
 		"ANNOUNCEMENT_TITLE": "Pengumuman",
@@ -2848,5 +2855,40 @@
 		"EXCHANGE_UPDATE": "Pembaruan pertukaran",
 		"NO_DATA_TEXT": "Sepertinya belum ada pengumuman yang dibuat",
 		"UPGRADES": "Peningkatan"
+	},
+	"SIGN_OUT_TEXT": "Keluar",
+	"LOGIN_CONFIRMATION": {
+		"LOGIN_CONFIRM_FINAL": "Konfirmasi Masuk",
+		"FREEZE_CONFIRM_FINAL": "Bekukan akun Anda",
+		"LOGIN_CONFIRM_WARNING": "Untuk masuk ke akun Anda, silakan klik tombol konfirmasi di bawah ini agar kami tahu bahwa itu memang Anda.",
+		"FREEZE_CONFIRM_WARNING": "Jika dibekukan, akun Anda akan terkunci sepenuhnya dan terlindungi dari semua akses, termasuk akses Anda sendiri. Anda dapat dengan mudah memulihkan akses nanti dengan menghubungi tim dukungan kami.",
+		"LOGIN_CANCEL_BUTTON": "MENUTUP",
+		"LOGIN_CONFIRM_BUTTON": "Konfirmasi Login",
+		"FREEZE_CONFIRM_BUTTON": "YA, BEKUKAN AKUN SAYA",
+		"LOGIN_INPUT_CODE": "silahkan masukkan kodenya",
+		"LOGIN_CONFIRM_SUCCESS_1": "Email Anda telah diverifikasi.",
+		"FREEZE_CONFIRM_SUCCESS_1": "Akun Anda sekarang terkunci, dan penarikan dinonaktifkan sementara.",
+		"FREEZE_CONFIRM_SUCCESS_2": "Hubungi kami kapan saja untuk memulihkan akses Anda.",
+		"LOGIN_CONFIRM_SUCCESS_2": "Silakan masuk kembali untuk mengakses akun Anda.",
+		"GO_LOGIN_HISTORY": "Buka Halaman Login",
+		"ACCOUNT_FROZEN": "Akun Dibekukan",
+		"CONFIRM_FREEZE_TITLE": "Konfirmasi Pembekuan",
+		"CONFIRM_WARNING_FREEZE_DESC": "Apakah Anda yakin ingin membekukan akun Anda?",
+		"ACCOUNT_CONFIRMED": "Akun Dikonfirmasi",
+		"EMAIL_CONFIRMATION": "Konfirmasi Email Diperlukan",
+		"EMAIL_CONFIRMATION_DESC_1": "Kami telah mengirimi Anda email dengan tombol konfirmasi.",
+		"EMAIL_CONFIRMATION_DESC_2": "Silakan klik {0} untuk melanjutkan.",
+		"EMAIL_TEXT": "di email Anda"
+	},
+	"ERROR_TAB": {
+		"NETWORK_ERROR": "Masalah Koneksi",
+		"NETWORK_ERROR_DESC": "Silakan periksa koneksi internet Anda.",
+		"SERVER_ERROR": "Kesalahan Server",
+		"SERVER_ERROR_DESC": "Kami mengalami masalah jaringan atau server sementara. Silakan coba lagi nanti.",
+		"SERVER_MAINTENANCE_ERROR": "Pemeliharaan server",
+		"SERVER_MAINTENANCE_ERROR_DESC": "Pemeliharaan sistem saat ini sedang berlangsung. Silakan coba lagi nanti.",
+		"TOO_MANY_REQUEST_ERROR": "Terlalu banyak permintaan",
+		"TOO_MANY_REQUEST_ERROR_DESC": "Wah! Pelan-pelan saja, kamu melakukan terlalu banyak hal sekaligus",
+		"NETWORK_ERROR_MESSAGE": "Kesalahan Jaringan"
 	}
 }
