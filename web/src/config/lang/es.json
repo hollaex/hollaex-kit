@@ -582,7 +582,9 @@
 			"TRADE_POPUPS": "Pop ups de Cambio",
 			"POPUP_ORDER_CONFIRMATION": "Pedir confirmación antes de presentar los pedidos",
 			"POPUP_ORDER_COMPLETED": "Mostrar pop up cuando el pedido se ha completado",
-			"POPUP_ORDER_PARTIALLY_FILLED": "Mostrar pop up cuando el pedido se ha llenado parcialmente"
+			"POPUP_ORDER_PARTIALLY_FILLED": "Mostrar pop up cuando el pedido se ha llenado parcialmente",
+			"POPUP_NEW_ORDER_CREATED": "Mostrar ventana emergente cuando se haya realizado un nuevo pedido",
+			"POPUP_ORDER_CANCELLED": "Mostrar ventana emergente al cancelar pedidos"
 		},
 		"AUDIO_CUE_FORM": {
 			"ALL_AUDIO": "Todas las señales de audio",
@@ -1321,7 +1323,9 @@
 		"INSUFFICIENT_INFO_1": "Actualmente sus ingresos no son suficientes para la liquidación. Invita a más miembros utilizando tu enlace de referencia y espera hasta que tus ganancias pendientes de pago {0} {1}",
 		"INSUFFICIENT_INFO_2": "exceder 1",
 		"GO_TO_REFERRAL": "Ir a referencia",
-		"REFER_DESC": "Comparte el enlace a continuación con tus amigos para comenzar a ganar comisiones por sus operaciones."
+		"REFER_DESC": "Comparte el enlace a continuación con tus amigos para comenzar a ganar comisiones por sus operaciones.",
+		"SUCCESSFULLY_SETTLED": "Resuelto con éxito",
+		"SETTLE_AMOUNT": "Has liquidado con éxito la cantidad de {0} {1}"
 	},
 	"NOT_LOGGEDIN": {
 		"TXT_1": "Para empezar a comerciar tiene que iniciar sesión",
@@ -2715,7 +2719,8 @@
 		"MS": "{0} ms",
 		"STATUS_NORMAL": "Conexión normal",
 		"CONNECTION_LABEL": "Conexión",
-		"CONNECTION_ISSUE_DETECTED": "Problema de conexión detectado"
+		"CONNECTION_ISSUE_DETECTED": "Problema de conexión detectado",
+		"VERY_SLOW": "Muy lento"
 	},
 	"DESKTOP_NAVIGATION": {
 		"OTHERS": "Otros",
@@ -2747,7 +2752,8 @@
 		"TRANSACTION_DESC": "Revisar todas las transacciones, depósitos y retiros",
 		"ONRAMPER_DESC": "Utilice Onramper para comprar y vender criptomonedas",
 		"AUTO_TRADER_DESC": "Transacciones automáticas recurrentes de compra y venta",
-		"ANNOUNCEMENT_DESC": "Actualizaciones, listados y otras noticias"
+		"ANNOUNCEMENT_DESC": "Actualizaciones, listados y otras noticias",
+		"WALLET_DESCRIPTION": "Ver los activos y saldos de su billetera"
 	},
 	"VIEW_PRICES": "Ver precios",
 	"VIEW_MY_WALLET": "Ver mi billetera",
@@ -2836,7 +2842,7 @@
 		"SATURDAY": "En.",
 		"SUNDAY": "Ellos son.",
 		"MONTHLY_TRADE_TITLE": "Establecer día y fecha",
-		"MONTHLY_TRADE_TOOLTIP_DESC": "El día en que su operación se ejecutará automáticamente cada mes",
+		"MONTHLY_TRADE_TOOLTIP_DESC": "El día en que su operación se ejecutará automáticamente cada mes (Día 1-{0})",
 		"DESCTIPTION_TEXT": "Agregue una descripción clara para esta transacción programada.",
 		"DESCRIPTION_PLACEHOLDER": "Describe este orden recurrente (estrategia, fuente, etc.)",
 		"REVIEW_AND_CONFIRM": "Revise su Auto Trade",
@@ -2859,7 +2865,8 @@
 		"MIN_AMOUNT": "El monto mínimo de gasto es {0}",
 		"MAX_AMOUNT": "Esta cantidad excede su límite máximo de gasto",
 		"MAXIMUM_TRADE_LIMIT": "Has alcanzado el límite máximo de 20 pedidos recurrentes",
-		"SUCCESSFULLY_CREATED": "Comercio de autos creado exitosamente"
+		"SUCCESSFULLY_CREATED": "Comercio de autos creado exitosamente",
+		"SELECT_DAY": "Seleccione el día"
 	},
 	"ANNOUNCEMENT_TAB": {
 		"ANNOUNCEMENT_TITLE": "Anuncio",
@@ -2875,5 +2882,40 @@
 		"EXCHANGE_UPDATE": "Actualización de Exchange",
 		"NO_DATA_TEXT": "Parece que todavía no se ha hecho ningún anuncio.",
 		"UPGRADES": "Actualizaciones"
+	},
+	"SIGN_OUT_TEXT": "Desconectar",
+	"LOGIN_CONFIRMATION": {
+		"LOGIN_CONFIRM_FINAL": "Confirmación de inicio de sesión",
+		"FREEZE_CONFIRM_FINAL": "Congela tu cuenta",
+		"LOGIN_CONFIRM_WARNING": "Para iniciar sesión en su cuenta, haga clic en el botón de confirmación a continuación para que sepamos que es usted.",
+		"FREEZE_CONFIRM_WARNING": "Al congelarse, su cuenta queda completamente bloqueada y protegida contra todo acceso, incluido el suyo. Puede restablecer el acceso fácilmente más tarde contactando con nuestro equipo de soporte.",
+		"LOGIN_CANCEL_BUTTON": "CERCA",
+		"LOGIN_CONFIRM_BUTTON": "Confirmar inicio de sesión",
+		"FREEZE_CONFIRM_BUTTON": "SÍ, CONGELAR MI CUENTA",
+		"LOGIN_INPUT_CODE": "Por favor ingrese el código",
+		"LOGIN_CONFIRM_SUCCESS_1": "Su correo electrónico ha sido verificado.",
+		"FREEZE_CONFIRM_SUCCESS_1": "Su cuenta ahora está bloqueada y los retiros están deshabilitados temporalmente.",
+		"FREEZE_CONFIRM_SUCCESS_2": "Contáctenos en cualquier momento para restaurar su acceso.",
+		"LOGIN_CONFIRM_SUCCESS_2": "Por favor, vuelva a iniciar sesión para acceder a su cuenta.",
+		"GO_LOGIN_HISTORY": "Ir a la página de inicio de sesión",
+		"ACCOUNT_FROZEN": "Cuenta congelada",
+		"CONFIRM_FREEZE_TITLE": "Confirmar congelación",
+		"CONFIRM_WARNING_FREEZE_DESC": "¿Estás seguro de que deseas congelar tu cuenta?",
+		"ACCOUNT_CONFIRMED": "Cuenta confirmada",
+		"EMAIL_CONFIRMATION": "Se requiere confirmación de correo electrónico",
+		"EMAIL_CONFIRMATION_DESC_1": "Le enviamos un correo electrónico con un botón de confirmación.",
+		"EMAIL_CONFIRMATION_DESC_2": "Haga clic {0} para continuar.",
+		"EMAIL_TEXT": "en tu correo electrónico"
+	},
+	"ERROR_TAB": {
+		"NETWORK_ERROR": "Problema de conexión",
+		"NETWORK_ERROR_DESC": "Por favor verifique su conexión a Internet.",
+		"SERVER_ERROR": "Error del servidor",
+		"SERVER_ERROR_DESC": "Tenemos un problema temporal con la red o el servidor. Inténtalo de nuevo más tarde.",
+		"SERVER_MAINTENANCE_ERROR": "Mantenimiento del servidor",
+		"SERVER_MAINTENANCE_ERROR_DESC": "El sistema está en mantenimiento. Inténtelo más tarde.",
+		"TOO_MANY_REQUEST_ERROR": "Demasiadas solicitudes",
+		"TOO_MANY_REQUEST_ERROR_DESC": "¡Vaya! ¡Más despacio! Estás haciendo demasiadas cosas a la vez.",
+		"NETWORK_ERROR_MESSAGE": "Error de red"
 	}
 }

@@ -578,7 +578,9 @@
 			"TRADE_POPUPS": "Handel Pop-ups",
 			"POPUP_ORDER_CONFIRMATION": "Vor dem Absenden von Bestellungen um Bestätigung bitten",
 			"POPUP_ORDER_COMPLETED": "Pop-up anzeigen, wenn die Bestellung abgeschlossen ist",
-			"POPUP_ORDER_PARTIALLY_FILLED": "Pop-up anzeigen, wenn der Auftrag teilweise gefüllt ist"
+			"POPUP_ORDER_PARTIALLY_FILLED": "Pop-up anzeigen, wenn der Auftrag teilweise gefüllt ist",
+			"POPUP_NEW_ORDER_CREATED": "Popup anzeigen, wenn eine neue Bestellung aufgegeben wurde",
+			"POPUP_ORDER_CANCELLED": "Beim Stornieren von Bestellungen ein Popup anzeigen"
 		},
 		"AUDIO_CUE_FORM": {
 			"ALL_AUDIO": "Alle Audio-Cues",
@@ -1306,7 +1308,9 @@
 		"INSUFFICIENT_INFO_1": "Ihre Einnahmen reichen derzeit nicht für eine Abrechnung. Bitte laden Sie über Ihren Empfehlungslink weitere Mitglieder ein und warten Sie, bis Ihre offenen Einnahmen {0} {1}",
 		"INSUFFICIENT_INFO_2": "übersteigen 1",
 		"GO_TO_REFERRAL": "Zur Empfehlung",
-		"REFER_DESC": "Teilen Sie den untenstehenden Link mit Freunden, um Provisionen für deren Handel zu verdienen"
+		"REFER_DESC": "Teilen Sie den untenstehenden Link mit Freunden, um Provisionen für deren Handel zu verdienen",
+		"SUCCESSFULLY_SETTLED": "Erfolgreich erledigt",
+		"SETTLE_AMOUNT": "Sie haben den Betrag von {0} {1} erfolgreich beglichen"
 	},
 	"NOT_LOGGEDIN": {
 		"TXT_1": "Um den Handel zu starten, müssen Sie sich anmelden",
@@ -2712,7 +2716,8 @@
 		"MS": "{0} ms",
 		"STATUS_NORMAL": "Verbindung Normal",
 		"CONNECTION_LABEL": "Verbindung",
-		"CONNECTION_ISSUE_DETECTED": "Verbindungsproblem erkannt"
+		"CONNECTION_ISSUE_DETECTED": "Verbindungsproblem erkannt",
+		"VERY_SLOW": "Sehr langsam"
 	},
 	"DESKTOP_NAVIGATION": {
 		"OTHERS": "Sonstiges",
@@ -2744,7 +2749,8 @@
 		"TRANSACTION_DESC": "Überprüfen Sie alle Trades, Einzahlungen und Abhebungen",
 		"ONRAMPER_DESC": "Verwenden Sie Onramper, um Krypto zu kaufen und zu verkaufen",
 		"AUTO_TRADER_DESC": "Wiederkehrende automatische Kauf- und Verkaufstransaktionen",
-		"ANNOUNCEMENT_DESC": "Updates, Listings und andere Neuigkeiten"
+		"ANNOUNCEMENT_DESC": "Updates, Listings und andere Neuigkeiten",
+		"WALLET_DESCRIPTION": "Zeigen Sie Ihr Wallet-Guthaben und Ihre Guthaben an"
 	},
 	"VIEW_PRICES": "Preise anzeigen",
 	"VIEW_MY_WALLET": "Meine Brieftasche anzeigen",
@@ -2833,7 +2839,7 @@
 		"SATURDAY": "In.",
 		"SUNDAY": "Sie sind.",
 		"MONTHLY_TRADE_TITLE": "Tag-Datum einstellen",
-		"MONTHLY_TRADE_TOOLTIP_DESC": "Der Tag, an dem Ihr Handel jeden Monat automatisch ausgeführt wird",
+		"MONTHLY_TRADE_TOOLTIP_DESC": "Der Tag, an dem Ihr Handel jeden Monat automatisch ausgeführt wird (Tag 1-{0})",
 		"DESCTIPTION_TEXT": "Fügen Sie eine klare Beschreibung für diese geplante Transaktion hinzu.",
 		"DESCRIPTION_PLACEHOLDER": "Beschreiben Sie diesen wiederkehrenden Auftrag (Strategie, Quelle usw.)",
 		"REVIEW_AND_CONFIRM": "Überprüfen Sie Ihren Autohandel",
@@ -2856,7 +2862,8 @@
 		"MIN_AMOUNT": "Der Mindestausgabebetrag beträgt {0}",
 		"MAX_AMOUNT": "Dieser Betrag überschreitet Ihr maximales Ausgabenlimit",
 		"MAXIMUM_TRADE_LIMIT": "Sie haben das maximale Limit von 20 wiederkehrenden Bestellungen erreicht",
-		"SUCCESSFULLY_CREATED": "Autohandel erfolgreich erstellt"
+		"SUCCESSFULLY_CREATED": "Autohandel erfolgreich erstellt",
+		"SELECT_DAY": "Tag auswählen"
 	},
 	"ANNOUNCEMENT_TAB": {
 		"ANNOUNCEMENT_TITLE": "Bekanntmachung",
@@ -2872,5 +2879,40 @@
 		"EXCHANGE_UPDATE": "Exchange-Update",
 		"NO_DATA_TEXT": "Es scheint, dass noch keine Ankündigungen gemacht wurden",
 		"UPGRADES": "Verbesserungen"
+	},
+	"SIGN_OUT_TEXT": "Abmelden",
+	"LOGIN_CONFIRMATION": {
+		"LOGIN_CONFIRM_FINAL": "Anmeldebestätigung",
+		"FREEZE_CONFIRM_FINAL": "Sperren Sie Ihr Konto",
+		"LOGIN_CONFIRM_WARNING": "Um sich bei Ihrem Konto anzumelden, klicken Sie bitte unten auf die Bestätigungsschaltfläche, damit wir wissen, dass Sie es sind.",
+		"FREEZE_CONFIRM_WARNING": "Wenn Ihr Konto gesperrt ist, ist es vollständig gesperrt und vor jeglichem Zugriff, auch Ihrem eigenen, geschützt. Sie können den Zugriff später problemlos wiederherstellen, indem Sie sich an unser Support-Team wenden.",
+		"LOGIN_CANCEL_BUTTON": "SCHLIESSEN",
+		"LOGIN_CONFIRM_BUTTON": "Anmeldung bestätigen",
+		"FREEZE_CONFIRM_BUTTON": "JA, MEIN KONTO EINFRIEREN",
+		"LOGIN_INPUT_CODE": "Bitte geben Sie den Code ein",
+		"LOGIN_CONFIRM_SUCCESS_1": "Ihre E-Mail wurde bestätigt.",
+		"FREEZE_CONFIRM_SUCCESS_1": "Ihr Konto ist jetzt gesperrt und Abhebungen sind vorübergehend deaktiviert.",
+		"FREEZE_CONFIRM_SUCCESS_2": "Kontaktieren Sie uns jederzeit, um Ihren Zugriff wiederherzustellen.",
+		"LOGIN_CONFIRM_SUCCESS_2": "Bitte melden Sie sich erneut an, um auf Ihr Konto zuzugreifen.",
+		"GO_LOGIN_HISTORY": "Zur Anmeldeseite",
+		"ACCOUNT_FROZEN": "Konto eingefroren",
+		"CONFIRM_FREEZE_TITLE": "Einfrieren bestätigen",
+		"CONFIRM_WARNING_FREEZE_DESC": "Möchten Sie Ihr Konto wirklich sperren?",
+		"ACCOUNT_CONFIRMED": "Konto bestätigt",
+		"EMAIL_CONFIRMATION": "E-Mail-Bestätigung erforderlich",
+		"EMAIL_CONFIRMATION_DESC_1": "Wir haben Ihnen eine E-Mail mit einer Bestätigungsschaltfläche gesendet.",
+		"EMAIL_CONFIRMATION_DESC_2": "Klicken Sie bitte darauf {0}, um fortzufahren.",
+		"EMAIL_TEXT": "in Ihrer E-Mail"
+	},
+	"ERROR_TAB": {
+		"NETWORK_ERROR": "Verbindungsproblem",
+		"NETWORK_ERROR_DESC": "Bitte überprüfen Sie Ihre Internetverbindung.",
+		"SERVER_ERROR": "Serverfehler",
+		"SERVER_ERROR_DESC": "Es liegt ein vorübergehendes Netzwerk- oder Serverproblem vor. Bitte versuchen Sie es später erneut.",
+		"SERVER_MAINTENANCE_ERROR": "Serverwartung",
+		"SERVER_MAINTENANCE_ERROR_DESC": "Derzeit werden Systemwartungen durchgeführt. Bitte versuchen Sie es später noch einmal.",
+		"TOO_MANY_REQUEST_ERROR": "Zu viele Anfragen",
+		"TOO_MANY_REQUEST_ERROR_DESC": "Wow! Mach langsam, du machst zu viel auf einmal",
+		"NETWORK_ERROR_MESSAGE": "Netzwerkfehler"
 	}
 }

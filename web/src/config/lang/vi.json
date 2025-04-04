@@ -584,7 +584,9 @@
 			"TRADE_POPUPS": "Cửa sổ thông báo giao dịch",
 			"POPUP_ORDER_CONFIRMATION": "Yêu cầu xác nhận trước khi gửi đơn đặt hàng",
 			"POPUP_ORDER_COMPLETED": "Hiển thị cửa sổ thông báo sau khi đặt hàng thành công.",
-			"POPUP_ORDER_PARTIALLY_FILLED": "Hiển thị cửa sổ thông báo khi đơn đặt hàng được tiến hành từng phần"
+			"POPUP_ORDER_PARTIALLY_FILLED": "Hiển thị cửa sổ thông báo khi đơn đặt hàng được tiến hành từng phần",
+			"POPUP_NEW_ORDER_CREATED": "Hiển thị cửa sổ bật lên khi có đơn hàng mới được đặt",
+			"POPUP_ORDER_CANCELLED": "Hiển thị cửa sổ bật lên khi hủy đơn hàng"
 		},
 		"AUDIO_CUE_FORM": {
 			"ALL_AUDIO": "Bật âm thanh cho tất cả",
@@ -1331,7 +1333,9 @@
 		"INSUFFICIENT_INFO_1": "Thu nhập của bạn hiện không đủ để thanh toán. Vui lòng mời thêm thành viên bằng liên kết giới thiệu của bạn và đợi cho đến khi thu nhập chưa thanh toán của bạn {0} {1}",
 		"INSUFFICIENT_INFO_2": "vượt quá 1",
 		"GO_TO_REFERRAL": "Đi tới giới thiệu",
-		"REFER_DESC": "Chia sẻ liên kết bên dưới với bạn bè để bắt đầu kiếm hoa hồng từ giao dịch của họ"
+		"REFER_DESC": "Chia sẻ liên kết bên dưới với bạn bè để bắt đầu kiếm hoa hồng từ giao dịch của họ",
+		"SUCCESSFULLY_SETTLED": "Đã giải quyết thành công",
+		"SETTLE_AMOUNT": "Bạn đã thanh toán thành công số tiền {0} {1}"
 	},
 	"USER_LEVEL": "Cấp bậc người dùng",
 	"LIMIT_AMOUNT": "Khối lượng hạn mức",
@@ -2734,7 +2738,8 @@
 		"MS": "{0} giây",
 		"STATUS_NORMAL": "Kết nối bình thường",
 		"CONNECTION_LABEL": "Sự liên quan",
-		"CONNECTION_ISSUE_DETECTED": "Đã phát hiện sự cố kết nối"
+		"CONNECTION_ISSUE_DETECTED": "Đã phát hiện sự cố kết nối",
+		"VERY_SLOW": "Rất chậm"
 	},
 	"DESKTOP_NAVIGATION": {
 		"OTHERS": "Người khác",
@@ -2766,7 +2771,8 @@
 		"TRANSACTION_DESC": "Xem lại tất cả các giao dịch, tiền gửi và rút tiền",
 		"ONRAMPER_DESC": "Sử dụng Onramper để mua và bán tiền điện tử",
 		"AUTO_TRADER_DESC": "Giao dịch mua và bán tự động định kỳ",
-		"ANNOUNCEMENT_DESC": "Cập nhật, danh sách và tin tức khác"
+		"ANNOUNCEMENT_DESC": "Cập nhật, danh sách và tin tức khác",
+		"WALLET_DESCRIPTION": "Xem tài sản và số dư trong ví của bạn"
 	},
 	"VIEW_PRICES": "Xem giá",
 	"VIEW_MY_WALLET": "Xem Ví của tôi",
@@ -2855,7 +2861,7 @@
 		"SATURDAY": "TRONG.",
 		"SUNDAY": "Họ là vậy.",
 		"MONTHLY_TRADE_TITLE": "Đặt Ngày-Ngày",
-		"MONTHLY_TRADE_TOOLTIP_DESC": "Ngày giao dịch của bạn sẽ tự động thực hiện mỗi tháng",
+		"MONTHLY_TRADE_TOOLTIP_DESC": "Ngày giao dịch của bạn sẽ tự động thực hiện mỗi tháng (Ngày 1-{0})",
 		"DESCTIPTION_TEXT": "Thêm mô tả rõ ràng cho giao dịch theo lịch trình này.",
 		"DESCRIPTION_PLACEHOLDER": "Mô tả thứ tự lặp lại này (chiến lược, nguồn, v.v.)",
 		"REVIEW_AND_CONFIRM": "Xem lại Giao dịch Tự động của bạn",
@@ -2878,7 +2884,8 @@
 		"MIN_AMOUNT": "Số tiền chi tiêu tối thiểu là {0}",
 		"MAX_AMOUNT": "Số tiền này vượt quá giới hạn chi tiêu tối đa của bạn",
 		"MAXIMUM_TRADE_LIMIT": "Bạn đã đạt đến giới hạn tối đa là 20 đơn hàng định kỳ",
-		"SUCCESSFULLY_CREATED": "Giao dịch tự động được tạo thành công"
+		"SUCCESSFULLY_CREATED": "Giao dịch tự động được tạo thành công",
+		"SELECT_DAY": "Chọn ngày"
 	},
 	"ANNOUNCEMENT_TAB": {
 		"ANNOUNCEMENT_TITLE": "Thông báo",
@@ -2894,5 +2901,40 @@
 		"EXCHANGE_UPDATE": "Cập nhật trao đổi",
 		"NO_DATA_TEXT": "Có vẻ như chưa có thông báo nào được đưa ra",
 		"UPGRADES": "Nâng cấp"
+	},
+	"SIGN_OUT_TEXT": "Đăng xuất",
+	"LOGIN_CONFIRMATION": {
+		"LOGIN_CONFIRM_FINAL": "Xác nhận đăng nhập",
+		"FREEZE_CONFIRM_FINAL": "Đóng băng tài khoản của bạn",
+		"LOGIN_CONFIRM_WARNING": "Để đăng nhập vào tài khoản của bạn, vui lòng nhấp vào nút xác nhận bên dưới để chúng tôi biết đó là bạn.",
+		"FREEZE_CONFIRM_WARNING": "Khi bị đóng băng, tài khoản của bạn sẽ bị khóa hoàn toàn và được bảo vệ khỏi mọi quyền truy cập, bao gồm cả quyền truy cập của bạn. Bạn có thể dễ dàng khôi phục quyền truy cập sau bằng cách liên hệ với nhóm hỗ trợ của chúng tôi.",
+		"LOGIN_CANCEL_BUTTON": "ĐÓNG",
+		"LOGIN_CONFIRM_BUTTON": "Xác nhận đăng nhập",
+		"FREEZE_CONFIRM_BUTTON": "CÓ, ĐÓNG BĂNG TÀI KHOẢN CỦA TÔI",
+		"LOGIN_INPUT_CODE": "vui lòng nhập mã",
+		"LOGIN_CONFIRM_SUCCESS_1": "Email của bạn đã được xác minh.",
+		"FREEZE_CONFIRM_SUCCESS_1": "Tài khoản của bạn hiện đã bị khóa và việc rút tiền tạm thời bị vô hiệu hóa.",
+		"FREEZE_CONFIRM_SUCCESS_2": "Hãy liên hệ với chúng tôi bất cứ lúc nào để khôi phục quyền truy cập của bạn.",
+		"LOGIN_CONFIRM_SUCCESS_2": "Vui lòng đăng nhập lại để truy cập tài khoản của bạn.",
+		"GO_LOGIN_HISTORY": "Đi đến trang đăng nhập",
+		"ACCOUNT_FROZEN": "Tài khoản bị đóng băng",
+		"CONFIRM_FREEZE_TITLE": "Xác nhận đóng băng",
+		"CONFIRM_WARNING_FREEZE_DESC": "Bạn có chắc chắn muốn đóng băng tài khoản của mình không?",
+		"ACCOUNT_CONFIRMED": "Tài khoản đã được xác nhận",
+		"EMAIL_CONFIRMATION": "Yêu cầu xác nhận email",
+		"EMAIL_CONFIRMATION_DESC_1": "Chúng tôi đã gửi cho bạn email có nút xác nhận.",
+		"EMAIL_CONFIRMATION_DESC_2": "Vui lòng nhấp vào {0} để tiếp tục.",
+		"EMAIL_TEXT": "trong email của bạn"
+	},
+	"ERROR_TAB": {
+		"NETWORK_ERROR": "Vấn đề kết nối",
+		"NETWORK_ERROR_DESC": "Vui lòng kiểm tra kết nối internet của bạn.",
+		"SERVER_ERROR": "Lỗi máy chủ",
+		"SERVER_ERROR_DESC": "Chúng tôi đang gặp sự cố tạm thời về mạng hoặc máy chủ. Vui lòng thử lại sau.",
+		"SERVER_MAINTENANCE_ERROR": "Bảo trì máy chủ",
+		"SERVER_MAINTENANCE_ERROR_DESC": "Hệ thống hiện đang được bảo trì. Vui lòng thử lại sau.",
+		"TOO_MANY_REQUEST_ERROR": "Quá nhiều yêu cầu",
+		"TOO_MANY_REQUEST_ERROR_DESC": "Wow! Chậm lại đi, bạn đang làm quá nhiều việc cùng một lúc",
+		"NETWORK_ERROR_MESSAGE": "Lỗi mạng"
 	}
 }
