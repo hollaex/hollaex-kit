@@ -179,7 +179,7 @@ module.exports = function (sequelize, DataTypes) {
 			role_id: {
 				type: DataTypes.INTEGER,
 				onDelete: 'CASCADE',
-				allowNull: false,
+				allowNull: true,
 				references: {
 					model: 'Roles',
 					key: 'id'
