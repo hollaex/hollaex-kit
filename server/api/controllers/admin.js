@@ -3281,6 +3281,7 @@ const createExchangeUserRole = (req, res) => {
 	})
 		.then((role) => {
 			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, 'controllers/admin/createExchangeUserRole', 'post', role);
+			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
 			return res.json(role);
 		})
 		.catch((err) => {
@@ -3301,6 +3302,7 @@ const updateExchangeUserRole = (req, res) => {
 		user_id: req.auth.sub.id
 	})
 		.then((role) => {
+			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
 			return res.json(role);
 		})
 		.catch((err) => {
@@ -3318,6 +3320,7 @@ const deleteExchangeUserRole = (req, res) => {
 	toolsLib.user.deleteExchangeUserRole(id)
 		.then((result) => {
 			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, 'controllers/admin/deleteExchangeUserRole', 'delete', result);
+			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
 			return res.json({ message: 'Success' });
 		})
 		.catch((err) => {

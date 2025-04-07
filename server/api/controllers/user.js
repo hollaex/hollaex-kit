@@ -396,7 +396,8 @@ const loginPost = (req, res) => {
 
 			let userRole
 			if (user.role_id) {
-				userRole = await toolsLib.database.getModel('role').findOne({ id: user.role_id });
+				const roles = toolsLib.getRoles();
+				userRole = roles.find(role => role.id === user.role_id);
 			}
 
 			return all([

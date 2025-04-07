@@ -4412,21 +4412,6 @@ const fetchExchangeUserRole = async (user_id) => {
 	};
 };
 
-const hasPermission = async (user_id, permission) => {
-	const User = getModel('user');
-	const user = await User.findOne({
-		where: { id: user_id },
-		include: [{
-			model: Role,
-			as: 'role',
-			required: true
-		}]
-	});
-
-	if (!user || !user.role) return false;
-
-	return user.role.permissions.includes(permission);
-};
 
 module.exports = {
 	loginUser,
@@ -4526,6 +4511,5 @@ module.exports = {
 	updateExchangeUserRole,
 	deleteExchangeUserRole,
 	assignExchangeUserRole,
-	fetchExchangeUserRole,
-	hasPermission
+	fetchExchangeUserRole
 };

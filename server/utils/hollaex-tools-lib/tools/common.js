@@ -15,6 +15,7 @@ const {
 	GET_COINS,
 	GET_PAIRS,
 	GET_TRANSACTION_LIMITS,
+	GET_ROLES,
 	GET_TIERS,
 	GET_KIT_CONFIG,
 	GET_KIT_SECRETS,
@@ -1090,6 +1091,9 @@ const getTransactionLimits = () => {
 	return GET_TRANSACTION_LIMITS();
 };
 
+const getRoles = () => {
+	return GET_ROLES();
+};
 
 const getNetworkQuickTrades = () => {
 	return GET_NETWORK_QUICKTRADE();
@@ -1178,6 +1182,7 @@ module.exports = {
 	parseNumber,
 	getQuickTradePairs,
 	getTransactionLimits,
+	getRoles,
 	getTradePaths,
 	removeRepeatingDecimals
 };
