@@ -729,6 +729,18 @@ const verifyBearerTokenPromise = (token, ip, scopes = BASE_SCOPES) => {
 					decodedToken.sub
 				);
 
+				// Check set of permissions that are available with the token and set of acceptable permissions set on swagger endpoint
+				if (intersection(decodedToken.scopes, scopes).length === 0) {
+					loggerAuth.error(
+						'verifyToken',
+						'not permission',
+						decodedToken.sub.email,
+						decodedToken.scopes,
+						scopes
+					);
+
+					throw new Error(NOT_AUTHORIZED);
+				}
 
 				if (decodedToken.iss !== ISSUER) {
 					loggerAuth.error(
@@ -765,7 +777,14 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 	} else {
 		return findTokenByApiKey(apiKey)
 			.then((token) => {
-	
+				if (originalUrl?.includes('/admin') && !scopes?.includes(ROLES.ADMIN)) {
+					scopes.push(ROLES.ADMIN);
+				}
+
+				if (token.role !== ROLES.ADMIN && scopes.includes(ROLES.ADMIN)) {
+					throw new Error(NOT_AUTHORIZED);
+				}
+
 				if (token.whitelisting_enabled && token.whitelisted_ips.length > 0) {
 					const found = token.whitelisted_ips.find((wlip) => {
 						return ipRangeCheck(ip, wlip);
