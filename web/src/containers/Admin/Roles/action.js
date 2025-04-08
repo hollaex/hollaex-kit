@@ -29,6 +29,13 @@ export const fetchRoles = (params) => {
 	);
 };
 
+export const fetchEndpoints = () => {
+	const options = {
+		method: 'GET',
+	};
+	return requestAuthenticated(`/admin/endpoints`, options);
+};
+
 export const createRoles = (values, params) => {
 	const options = {
 		method: 'POST',

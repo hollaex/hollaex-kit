@@ -17,9 +17,12 @@ const {
 	WS_HUB_CHANNEL,
 	HOLLAEX_NETWORK_ENDPOINT,
 	HOLLAEX_NETWORK_BASE_URL,
-	HOLLAEX_NETWORK_PATH_ACTIVATE
+	HOLLAEX_NETWORK_PATH_ACTIVATE,
+	setEndpoints
 } = require('./constants');
 const { isNumber, difference } = require('lodash');
+const yaml = require('js-yaml');
+const fs = require('fs');
 
 let nodeLib;
 
@@ -153,6 +156,12 @@ const checkStatus = () => {
 				exchangePairs.push(pair.name);
 				configuration.pairs[pair.name] = pair;
 			}
+
+			const swaggerYaml = fs.readFileSync('./api/swagger/admin.yaml', 'utf8');
+			const swaggerObj = yaml.load(swaggerYaml);
+
+			const endpoints = extractEndpoints(swaggerObj);
+			setEndpoints(endpoints);
 
 			configuration.transaction_limits = transactionLimits;
 			configuration.roles = roles;
@@ -364,6 +373,35 @@ const checkActivation = (name, url, activation_code, version, constants = {}) =>
 	};
 	return rp(options);
 };
+
+function extractEndpoints(swaggerObj) {
+	const result = {};
+
+	if (!swaggerObj.paths) {
+		return result;
+	}
+
+	for (const [path, methods] of Object.entries(swaggerObj.paths)) {
+		const parts = path.replace(/^\/|\/$/g, '').split('/');
+
+		let currentLevel = result;
+
+		for (const part of parts) {
+			if (!currentLevel[part]) {
+				currentLevel[part] = {};
+			}
+			currentLevel = currentLevel[part];
+		}
+
+		for (const [method, _] of Object.entries(methods)) {
+			if (!method.startsWith('x-')) {  // Skip x-* properties
+				currentLevel[method.toLowerCase()] = `${path}:${method.toLowerCase()}`;
+			}
+		}
+	}
+
+	return result;
+}
 
 module.exports = {
 	checkStatus,

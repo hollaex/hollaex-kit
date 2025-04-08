@@ -4,7 +4,7 @@ const { loggerAdmin } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
 const { cloneDeep, pick } = require('lodash');
 const { all } = require('bluebird');
-const { INIT_CHANNEL, ROLES } = require('../../constants');
+const { INIT_CHANNEL, ROLES, ROLE_PERMISSIONS } = require('../../constants');
 const { USER_NOT_FOUND, API_KEY_NOT_PERMITTED, PROVIDE_VALID_EMAIL, INVALID_PASSWORD, USER_EXISTS, NO_DATA_FOR_CSV, INVALID_VERIFICATION_CODE, INVALID_OTP_CODE, REFERRAL_HISTORY_NOT_ACTIVE } = require('../../messages');
 const { sendEmail, testSendSMTPEmail, sendRawEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
@@ -3255,6 +3255,13 @@ const deleteAnnouncement = (req, res) => {
 };
 
 
+const getExchangeEndpoints = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/getExchangeEndpoints/auth', req.auth.sub);
+	return res.json({
+		data: ROLE_PERMISSIONS
+	})
+};
+
 const getExchangeUserRoles = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getExchangeUserRoles/auth', req.auth.sub);
 
@@ -3432,5 +3439,6 @@ module.exports = {
 	createExchangeUserRole,
 	updateExchangeUserRole,
 	deleteExchangeUserRole,
-	assignExchangeUserRole
+	assignExchangeUserRole,
+	getExchangeEndpoints
 };

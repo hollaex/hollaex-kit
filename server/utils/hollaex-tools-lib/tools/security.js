@@ -517,11 +517,6 @@ const verifyBearerTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = fa
 		return sendError(MULTIPLE_API_KEY);
 	} else if (!has(req.headers, 'api-key') && has(req.headers, 'authorization')) {
 
-		// Swagger endpoint scopes
-		const endpointScopes = (req.swagger
-			? req.swagger.operation['x-security-scopes']
-			: BASE_SCOPES) || [];
-
 		let ip = req.headers ? req.headers['x-real-ip'] : undefined;
 
 		//validate the 'Authorization' header. it should have the following format:
@@ -540,23 +535,6 @@ const verifyBearerTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = fa
 						decodedToken.ip,
 						decodedToken.sub
 					);
-
-					if (req?.path?.includes('/admin') && !endpointScopes?.includes(ROLES.ADMIN)) {
-						endpointScopes.push(ROLES.ADMIN);
-					}
-
-					// Check set of permissions that are available with the token and set of acceptable permissions set on swagger endpoint
-					if (intersection(decodedToken.scopes, endpointScopes).length === 0) {
-						loggerAuth.error(
-							'verifyToken',
-							'not permission',
-							decodedToken.sub.email,
-							decodedToken.scopes,
-							endpointScopes
-						);
-
-						return sendError(NOT_AUTHORIZED);
-					}
 
 					if (decodedToken.iss !== ISSUER) {
 						loggerAuth.error(
@@ -704,18 +682,6 @@ const verifyBearerTokenExpressMiddleware = (scopes = BASE_SCOPES) => (req, res, 
 					return sendError(TOKEN_EXPIRED);
 				}
 
-				if (intersection(decodedToken.scopes, scopes).length === 0) {
-					loggerAuth.error(
-						'verifyToken',
-						'not permission',
-						decodedToken.sub.email,
-						decodedToken.scopes,
-						scopes
-					);
-
-					return sendError(NOT_AUTHORIZED);
-				}
-
 				if (getFrozenUsers()[decodedToken.sub.id]) {
 					loggerAuth.error(
 						'helpers/auth/verifyToken deactivated account',
@@ -763,18 +729,6 @@ const verifyBearerTokenPromise = (token, ip, scopes = BASE_SCOPES) => {
 					decodedToken.sub
 				);
 
-				// Check set of permissions that are available with the token and set of acceptable permissions set on swagger endpoint
-				if (intersection(decodedToken.scopes, scopes).length === 0) {
-					loggerAuth.error(
-						'verifyToken',
-						'not permission',
-						decodedToken.sub.email,
-						decodedToken.scopes,
-						scopes
-					);
-
-					throw new Error(NOT_AUTHORIZED);
-				}
 
 				if (decodedToken.iss !== ISSUER) {
 					loggerAuth.error(
@@ -811,13 +765,7 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 	} else {
 		return findTokenByApiKey(apiKey)
 			.then((token) => {
-				if (originalUrl?.includes('/admin') && !scopes?.includes(ROLES.ADMIN)) {
-					scopes.push(ROLES.ADMIN);
-				}
-
-				if (token.role !== ROLES.ADMIN && scopes.includes(ROLES.ADMIN)) {
-					throw new Error(NOT_AUTHORIZED);
-				}
+	
 				if (token.whitelisting_enabled && token.whitelisted_ips.length > 0) {
 					const found = token.whitelisted_ips.find((wlip) => {
 						return ipRangeCheck(ip, wlip);

@@ -109,7 +109,9 @@ const roles = {
 		"/admin/roles:post",
 		"/admin/roles:put",
 		"/admin/roles:delete",
-		"/admin/roles/assign:post"
+		"/admin/roles/assign:post",
+		"/admin/endpoints:get",
+		"/admin/signup:post"
 	],
 	"is_supervisor": [
 		"/admin/exchange:get",
