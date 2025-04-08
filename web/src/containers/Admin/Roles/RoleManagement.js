@@ -92,25 +92,20 @@ function transformPermissions(role, configKeys = [], secretKeys = []) {
 }
 
 const convertRoutesToTree = (routes, parentPath = '') => {
-	return Object.entries(routes).map(([key, value]) => {
-		const path = parentPath ? `${parentPath}.${key}` : key;
-		if (
-			typeof value === 'object' &&
-			!value.get &&
-			!value.post &&
-			!value.put &&
-			!value.delete
-		) {
-			return {
-				title: key.replace(/-/g, ' '),
-				key: `route:${path}`,
-				children: convertRoutesToTree(value, path),
-			};
-		} else {
-			return {
-				title: key.replace(/-/g, ' '),
-				key: `route:${path}`,
-				children: Object.entries(value)
+	return Object.entries(routes)
+		.map(([key, value]) => {
+			const path = parentPath ? `${parentPath}.${key}` : key;
+			const hasHttpMethods =
+				value.get || value.post || value.put || value.delete;
+
+			if (typeof value === 'object' && !hasHttpMethods) {
+				return {
+					title: key.replace(/-/g, ' '),
+					key: `route:${path}`,
+					children: convertRoutesToTree(value, path),
+				};
+			} else if (typeof value === 'object' && hasHttpMethods) {
+				const httpMethodChildren = Object.entries(value)
 					.filter(([method]) =>
 						['get', 'post', 'put', 'delete'].includes(method)
 					)
@@ -118,10 +113,26 @@ const convertRoutesToTree = (routes, parentPath = '') => {
 						title: method.toUpperCase(),
 						key: `route:${path}.${method}`,
 						isLeaf: true,
-					})),
-			};
-		}
-	});
+					}));
+
+				// Check for nested routes in the same object
+				const nestedRoutes = Object.entries(value)
+					.filter(
+						([k, v]) =>
+							typeof v === 'object' &&
+							!['get', 'post', 'put', 'delete'].includes(k)
+					)
+					.flatMap(([k, v]) => convertRoutesToTree({ [k]: v }, path));
+
+				return {
+					title: key.replace(/-/g, ' '),
+					key: `route:${path}`,
+					children: [...httpMethodChildren, ...nestedRoutes],
+				};
+			}
+			return null;
+		})
+		.filter(Boolean);
 };
 
 const routes = {

@@ -4103,22 +4103,28 @@ const findDuplicates = (arr) => {
 	return arr.filter((item, index) => arr.indexOf(item) !== index);
 }
 
-const flattenPermissionStructure = (permStructure, path = []) => {
+const flattenPermissionStructure = (permStructure) => {
 	let results = [];
 
-	for (const [key, value] of Object.entries(permStructure)) {
-		const currentPath = [...path, key];
-
-		if (typeof value === 'object' && ('get' in value || 'post' in value)) {
-			results.push(...Object.values(value));
-		} else if (typeof value === 'object') {
-			results.push(...flattenPermissionStructure(value, currentPath));
+	const traverse = (obj) => {
+		for (const [key, value] of Object.entries(obj)) {
+			if (typeof value === 'object') {
+				// If it has HTTP methods, add them to results
+				if ('get' in value || 'post' in value || 'put' in value || 'delete' in value) {
+					if (value.get) results.push(value.get);
+					if (value.post) results.push(value.post);
+					if (value.put) results.push(value.put);
+					if (value.delete) results.push(value.delete);
+				}
+				// Always keep traversing nested objects
+				traverse(value);
+			}
 		}
-	}
+	};
 
+	traverse(permStructure);
 	return results;
-}
-
+};
 const getExchangeUserRoles = async (opts = {
 	limit: null,
 	page: null,
