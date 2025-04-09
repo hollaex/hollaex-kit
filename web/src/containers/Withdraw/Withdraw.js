@@ -45,7 +45,7 @@ import { email, validAddress } from 'components/Form/validations';
 import { getAddressBookDetails } from 'containers/Wallet/actions';
 import { getDecimals, handlePopupContainer } from 'utils/utils';
 import { roundNumber, toFixed } from 'utils/currency';
-import { BASE_CURRENCY } from 'config/constants';
+import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 import { setScannedAddress } from 'actions/walletActions';
 
 const RenderWithdraw = ({
@@ -152,7 +152,7 @@ const RenderWithdraw = ({
 		coin_customizations?.[selectedAsset?.selectedCurrency]?.fee_markup;
 	if (feeMarkup) {
 		const incrementUnit =
-			coins?.[selectedAsset?.selectedCurrency]?.increment_unit;
+			coins?.[selectedAsset?.selectedCurrency]?.increment_unit || 0.0001;
 		const decimalPoint = new BigNumber(incrementUnit).dp();
 		const roundedMarkup = new BigNumber(feeMarkup)
 			.decimalPlaces(decimalPoint)
@@ -477,8 +477,8 @@ const RenderWithdraw = ({
 			const curr = defaultCurrency
 				? defaultCurrency
 				: selectedAsset?.selectedCurrency;
-			const { increment_unit, min } = coins[curr];
-			let decimal = getDecimals(increment_unit);
+			const { increment_unit = 0.0001, min } = coins[curr] || DEFAULT_COIN_DATA;
+			let decimal = increment_unit && getDecimals(increment_unit);
 			let decValue = toFixed(val);
 			let valueDecimal = getDecimals(decValue);
 			let result = val;
@@ -672,7 +672,7 @@ const RenderWithdraw = ({
 					(getWithdrawCurrency || currency) && feeCoin?.toUpperCase()
 			  }`;
 
-	const incrementUnit = coins[BASE_CURRENCY].increment_unit;
+	const incrementUnit = coins[BASE_CURRENCY]?.increment_unit || 0.0001;
 	const decimalPoint = new BigNumber(incrementUnit).dp();
 	const estimatedFormat = `≈ ${new BigNumber(estimatedWithdrawValue)
 		.decimalPlaces(decimalPoint)
