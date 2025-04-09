@@ -548,7 +548,7 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}, scopes, permis
 	return joinedKitConfig;
 };
 
-const joinKitSecrets = (existingKitSecrets = {}, newKitSecrets = {}, permissions, userId) => {
+const joinKitSecrets = (existingKitSecrets = {}, newKitSecrets = {}, scopes, permissions, userId) => {
 
 	const keySecret = Object.keys(newKitSecrets);
 
