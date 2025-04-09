@@ -1330,7 +1330,7 @@ class HollaExNetwork {
 			data.meta = opts.meta;
 		}
 
-		if (isNumber(opts.stop)) {
+		if (opts.stop) {
 			data.stop = opts.stop;
 		}
 
