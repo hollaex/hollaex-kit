@@ -9,7 +9,7 @@ module.exports = {
 				model: 'Roles',
 				key: 'id'
 			},
-			onDelete: 'CASCADE'
+			onDelete: 'SET NULL' 
 		});
 	},
 

@@ -174,7 +174,7 @@ const maskSecrets = (secrets) => {
 	return secrets;
 };
 
-const updateKitConfigSecrets = (data = {}, scopes, auditInfo, permissions, userId) => {
+const updateKitConfigSecrets = (data = {}, scopes, auditInfo, configs, userId) => {
 	let role = 'admin';
 
 	if (!data.kit && !data.secrets) {
@@ -203,10 +203,10 @@ const updateKitConfigSecrets = (data = {}, scopes, auditInfo, permissions, userI
 		.then((status) => {
 			const updatedKitConfig = {};
 			if (data.kit && Object.keys(data.kit).length > 0) {
-				updatedKitConfig.kit = joinKitConfig(status.dataValues.kit, data.kit, scopes, permissions, userId);
+				updatedKitConfig.kit = joinKitConfig(status.dataValues.kit, data.kit, scopes, configs, userId);
 			}
 			if (data.secrets && Object.keys(data.secrets).length > 0) {
-				updatedKitConfig.secrets = joinKitSecrets(status.dataValues.secrets, data.secrets, scopes, permissions, userId);
+				updatedKitConfig.secrets = joinKitSecrets(status.dataValues.secrets, data.secrets, scopes, configs, userId);
 			}
 			const { createAuditLog } = require('./user');
 			if (updatedKitConfig?.kit && Object.keys(updatedKitConfig?.kit).length > 0) {

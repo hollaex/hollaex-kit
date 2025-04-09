@@ -986,7 +986,8 @@ const issueToken = (
 	isCommunicator = false,
 	expiresIn = getKitSecrets().security.token_time, // 24 hours by default
 	lang = 'en',
-	permissions = []
+	permissions = [],
+	configs = []
 ) => {
 	// Default scope is ['user']
 	let scopes = [].concat(BASE_SCOPES);
@@ -1016,7 +1017,8 @@ const issueToken = (
 				email,
 				networkId,
 				lang,
-				permissions
+				permissions,
+				configs
 			},
 			scopes,
 			ip,

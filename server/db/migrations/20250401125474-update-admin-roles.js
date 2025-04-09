@@ -4,49 +4,6 @@ const models = require('../models');
 
 const roles = {
 	"is_admin": [
-		'captcha',
-		'api_name',
-		'description',
-		'color',
-		'title',
-		'links',
-		'defaults',
-		'native_currency',
-		'logo_image',
-		'valid_languages',
-		'new_user_is_activated',
-		'interface',
-		'icons',
-		'strings',
-		'meta',
-		'features',
-		'setup_completed',
-		'email_verification_required',
-		'injected_values',
-		'injected_html',
-		'user_meta',
-		'black_list_countries',
-		'onramp',
-		'offramp',
-		'user_payments',
-		'dust',
-		'coin_customizations',
-		'fiat_fees',
-		'balance_history_config',
-		'transaction_limits',
-		'p2p_config',
-		'referral_history_config',
-		'chain_trade_config',
-		'selectable_native_currencies',
-		'auto_trade_config',
-		'apps',
-		'timezone',
-		'allowed_domains',
-		'admin_whitelist',
-		'emails',
-		'security',
-		'captcha',
-		'smtp',
 		"/admin/exchange:get",
 		"/admin/exchange:put",
 		"/admin/tier:post",
@@ -234,6 +191,52 @@ const roles = {
 	]
 }
 
+const configRoles = {
+	"is_admin": [
+		'captcha',
+		'api_name',
+		'description',
+		'color',
+		'title',
+		'links',
+		'defaults',
+		'native_currency',
+		'logo_image',
+		'valid_languages',
+		'new_user_is_activated',
+		'interface',
+		'icons',
+		'strings',
+		'meta',
+		'features',
+		'setup_completed',
+		'email_verification_required',
+		'injected_values',
+		'injected_html',
+		'user_meta',
+		'black_list_countries',
+		'onramp',
+		'offramp',
+		'user_payments',
+		'dust',
+		'coin_customizations',
+		'fiat_fees',
+		'balance_history_config',
+		'transaction_limits',
+		'p2p_config',
+		'referral_history_config',
+		'chain_trade_config',
+		'selectable_native_currencies',
+		'auto_trade_config',
+		'apps',
+		'timezone',
+		'allowed_domains',
+		'admin_whitelist',
+		'emails',
+		'security',
+		'smtp',
+	]
+}
 module.exports = {
 	async up(queryInterface) {
 		const userModel = models['User'];
@@ -251,7 +254,8 @@ module.exports = {
 				defaults: {
 					role_name: roleName,
 					description: `${roleName} role with specific permissions`,
-					permissions: permissions
+					permissions: permissions,
+					...(roleFlag === "is_admin" && { configs: configRoles.is_admin })
 				}
 			});
 

@@ -414,7 +414,8 @@ const loginPost = (req, res) => {
 					user.is_communicator,
 					long_term ? TOKEN_TIME_LONG : TOKEN_TIME_NORMAL,
 					user.settings.language,
-					userRole?.permissions
+					userRole?.permissions,
+					userRole?.configs,
 				)
 			]);
 		})

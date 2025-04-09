@@ -72,7 +72,6 @@ const KIT_SECRETS_KEYS = [
 	'admin_whitelist',
 	'emails',
 	'security',
-	'captcha',
 	'smtp',
 ];
 
@@ -83,7 +82,12 @@ function transformPermissions(role, configKeys = [], secretKeys = []) {
 			const [path, method] = permission.split(':');
 			const routePath = path.replace('/admin/', '').replace(/\//g, '.');
 			return `route:${routePath}.${method}`;
-		} else if (configKeys.includes(permission)) {
+		}
+		return permission;
+	});
+
+	const transformedConfigs = role?.configs?.map((permission) => {
+		if (configKeys.includes(permission)) {
 			return `config:${permission}`;
 		} else if (secretKeys.includes(permission)) {
 			return `secret:${permission}`;
@@ -94,6 +98,7 @@ function transformPermissions(role, configKeys = [], secretKeys = []) {
 	return {
 		...role,
 		permissions: transformedPermissions,
+		configs: transformedConfigs,
 	};
 }
 
@@ -262,13 +267,30 @@ const RoleForm = ({
 	const [form] = Form.useForm();
 	const [checkedKeys, setCheckedKeys] = useState([]);
 
+	function separateKeys(keys) {
+		const configAndSecretKeys = [];
+		const otherKeys = [];
+
+		for (const key of keys) {
+			if (key.startsWith('config:') || key.startsWith('secret:')) {
+				configAndSecretKeys.push(key);
+			} else {
+				otherKeys.push(key);
+			}
+		}
+
+		return [configAndSecretKeys, otherKeys];
+	}
+
 	useEffect(() => {
 		if (initialValues) {
 			form.setFieldsValue({
 				role_name: initialValues.role_name,
 				description: initialValues.description,
 			});
-			setCheckedKeys(initialValues.permissions || []);
+			setCheckedKeys(
+				[...initialValues.permissions, ...initialValues.configs] || []
+			);
 		}
 	}, [initialValues, form]);
 
@@ -276,10 +298,12 @@ const RoleForm = ({
 		form
 			.validateFields()
 			.then((values) => {
+				const [configSecretKeys, restKeys] = separateKeys(checkedKeys);
 				const payload = {
 					name: values.role_name,
 					description: values.description,
-					permissions: checkedKeys,
+					permissions: restKeys,
+					configs: configSecretKeys,
 				};
 				onSubmit(payload);
 			})
@@ -349,87 +373,7 @@ const RoleForm = ({
 };
 
 const RoleManagement = ({ userId }) => {
-	const [roles, setRoles] = useState([
-		// {
-		//     id: 1,
-		//     role_name: "Super Admin",
-		//     description: "Has full access to all system features and configurations",
-		//     permissions: [
-		//         "route:user.get",
-		//         "route:user.post",
-		//         "route:user.put",
-		//         "route:user.delete",
-		//         "route:user.role.get",
-		//         "route:user.role.put",
-		//         "route:email.types.get",
-		//         "route:email.types.post",
-		//         "config:api_name",
-		//         "config:description",
-		//         "config:color",
-		//         "config:title",
-		//         "config:logo_image",
-		//         "config:features",
-		//         "secret:allowed_domains",
-		//         "secret:admin_whitelist",
-		//         "secret:emails",
-		//         "secret:security"
-		//     ]
-		// },
-		// {
-		//     id: 2,
-		//     role_name: "Support Agent",
-		//     description: "Can view user accounts and perform basic support actions",
-		//     permissions: [
-		//         "route:user.get",
-		//         "route:user.email.get",
-		//         "route:user.meta.get",
-		//         "route:user.note.post",
-		//         "config:interface",
-		//         "config:strings"
-		//     ]
-		// },
-		// {
-		//     id: 3,
-		//     role_name: "Content Manager",
-		//     description: "Can manage system content and configurations",
-		//     permissions: [
-		//         "route:announcements.get",
-		//         "route:announcements.post",
-		//         "route:announcements.put",
-		//         "config:title",
-		//         "config:links",
-		//         "config:strings",
-		//         "config:meta",
-		//         "config:injected_html"
-		//     ]
-		// },
-		// {
-		//     id: 4,
-		//     role_name: "Security Auditor",
-		//     description: "Can view security logs and audit trails",
-		//     permissions: [
-		//         "route:logins.get",
-		//         "route:audits.get",
-		//         "route:user.sessions.get",
-		//         "secret:security",
-		//         "secret:captcha"
-		//     ]
-		// },
-		// {
-		//     id: 5,
-		//     role_name: "Financial Operator",
-		//     description: "Can process financial transactions and view balances",
-		//     permissions: [
-		//         "route:deposits.get",
-		//         "route:withdrawals.get",
-		//         "route:transfer.post",
-		//         "route:balance.get",
-		//         "config:fiat_fees",
-		//         "config:transaction_limits",
-		//         "config:balance_history_config"
-		//     ]
-		// }
-	]);
+	const [roles, setRoles] = useState([]);
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [currentRole, setCurrentRole] = useState(null);
 	// eslint-disable-next-line
@@ -607,21 +551,30 @@ const RoleManagement = ({ userId }) => {
 										style={{ backgroundColor: ' #27339D' }}
 										header={
 											<span style={{ color: 'white' }}>
-												Permissions ({role.permissions.length})
+												Permissions (
+												{role.permissions.length + (role?.configs?.length || 0)}
+												)
 											</span>
 										}
 										key="1"
 									>
 										<ul style={{ paddingLeft: 20 }}>
-											{role.permissions.slice(0, 5).map((perm, i) => (
-												<li style={{ color: 'white' }} key={i}>
-													<strong>{formatPermissionType(perm)}:</strong>{' '}
-													{formatPermissionName(perm)}
-												</li>
-											))}
-											{role.permissions.length > 5 && (
+											{[...role.permissions, ...role.configs]
+												.slice(0, 5)
+												.map((perm, i) => (
+													<li style={{ color: 'white' }} key={i}>
+														<strong>{formatPermissionType(perm)}:</strong>{' '}
+														{formatPermissionName(perm)}
+													</li>
+												))}
+											{role.permissions.length + (role?.configs?.length || 0) >
+												5 && (
 												<li style={{ color: 'white' }}>
-													...and {role.permissions.length - 5} more
+													...and{' '}
+													{role.permissions.length +
+														(role?.configs?.length || 0) -
+														5}{' '}
+													more
 												</li>
 											)}
 										</ul>

@@ -4485,6 +4485,8 @@ paths:
                 maxLength: 256
               permissions:
                 type: array
+              configs:
+                type: array
       responses:
         200:
           description: Success
@@ -4520,6 +4522,8 @@ paths:
                 type: string
                 maxLength: 256
               permissions:
+                type: array
+              configs:
                 type: array
       responses:
         200:

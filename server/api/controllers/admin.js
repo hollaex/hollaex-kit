@@ -113,7 +113,7 @@ const putAdminKit = (req, res) => {
 	}
 
 	const auditInfo = { userEmail: req?.auth?.sub?.email, sessionId: req?.session_id, apiPath: req?.swagger?.apiPath, method: req?.swagger?.operationPath?.[2] };
-	toolsLib.updateKitConfigSecrets(data, req.auth.scopes, auditInfo, req.auth?.sub?.permissions, req.auth.sub.id)
+	toolsLib.updateKitConfigSecrets(data, req.auth.scopes, auditInfo, req.auth?.sub?.configs, req.auth.sub.id)
 		.then((result) => {
 			return res.json(result);
 		})
@@ -3278,12 +3278,13 @@ const getExchangeUserRoles = (req, res) => {
 const createExchangeUserRole = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/createExchangeUserRole/auth', req.auth.sub);
 
-	const { name, description, permissions } = req.swagger.params.data.value;
+	const { name, description, permissions, configs } = req.swagger.params.data.value;
 
 	toolsLib.user.createExchangeUserRole({
 		name,
 		description,
 		rolePermissions: permissions,
+		configs,
 		user_id: req.auth.sub.id
 	})
 		.then((role) => {
@@ -3300,12 +3301,13 @@ const createExchangeUserRole = (req, res) => {
 const updateExchangeUserRole = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/updateExchangeUserRole/auth', req.auth.sub);
 
-	const { id, name, description, permissions } = req.swagger.params.data.value;
+	const { id, name, description, permissions, configs } = req.swagger.params.data.value;
 
 	toolsLib.user.updateExchangeUserRole(id, {
 		name,
 		description,
 		rolePermissions: permissions,
+		configs,
 		user_id: req.auth.sub.id
 	})
 		.then((role) => {

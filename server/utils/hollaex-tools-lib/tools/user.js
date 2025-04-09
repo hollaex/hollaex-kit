@@ -4176,10 +4176,11 @@ const validateSecretPermissions = (secretPermissions) => {
 		}
 	});
 }
-const createExchangeUserRole = async ({ name, description, rolePermissions, user_id }) => {
+const createExchangeUserRole = async ({ name, description, rolePermissions, configs, user_id }) => {
 	const Role = getModel('role');
 	if (!name) throw new Error('Role name is required');
 	if (!isArray(rolePermissions)) throw new Error('Permissions must be an array');
+	if (!isArray(configs)) throw new Error('Permissions must be an array');
 
 	const validationGroups = {
 		route: [],
@@ -4188,6 +4189,7 @@ const createExchangeUserRole = async ({ name, description, rolePermissions, user
 	};
 
 	const permissionsToStore = [];
+	const configsToStore = [];
 
 	// Categorize and validate permissions
 	rolePermissions.forEach(permission => {
@@ -4212,7 +4214,25 @@ const createExchangeUserRole = async ({ name, description, rolePermissions, user
 			basePermission = `/admin/${path.replace(/\./g, '/')}:${method}`;
 			permissionType = 'route';
 		}
-		else if (permission.startsWith('config:')) {
+		else {
+			throw new Error(`Invalid permission prefix: ${permission}. Must start with route:, config:, or secret:`);
+		}
+
+		// Add to validation group
+		validationGroups[permissionType].push(basePermission);
+		// Add to storage array (without prefix)
+		permissionsToStore.push(basePermission);
+	});
+
+	configs.forEach(permission => {
+		if (typeof permission !== 'string') {
+			throw new Error(`Invalid permission type: ${permission}`);
+		}
+
+		// Extract the base permission without prefix
+		let basePermission, permissionType;
+
+		if (permission.startsWith('config:')) {
 			basePermission = permission.replace('config:', '');
 			permissionType = 'config';
 		}
@@ -4227,7 +4247,7 @@ const createExchangeUserRole = async ({ name, description, rolePermissions, user
 		// Add to validation group
 		validationGroups[permissionType].push(basePermission);
 		// Add to storage array (without prefix)
-		permissionsToStore.push(basePermission);
+		configsToStore.push(basePermission);
 	});
 
 	// Validate each permission type
@@ -4252,15 +4272,16 @@ const createExchangeUserRole = async ({ name, description, rolePermissions, user
 		role_name: name,
 		description,
 		permissions: permissionsToStore,
+		configs: configsToStore,
 	});
 };
 
-const updateExchangeUserRole = async (roleId, { name, description, rolePermissions, user_id }) => {
+const updateExchangeUserRole = async (roleId, { name, description, rolePermissions, configs,  user_id }) => {
 	const Role = getModel('role');
 
 	const role = await Role.findOne({
 		where: { id: roleId },
-		attributes: ['id', 'role_name', 'description', 'permissions'],
+		attributes: ['id', 'role_name', 'description', 'permissions', 'configs'],
 	});
 
 	if (!role) {
@@ -4279,6 +4300,9 @@ const updateExchangeUserRole = async (roleId, { name, description, rolePermissio
 		if (!isArray(rolePermissions)) {
 			throw new Error('Permissions must be an array');
 		}
+		if (!isArray(configs)) {
+			throw new Error('Permissions must be an array');
+		}
 
 		const validationGroups = {
 			route: [],
@@ -4287,6 +4311,7 @@ const updateExchangeUserRole = async (roleId, { name, description, rolePermissio
 		};
 
 		const permissionsToStore = [];
+		const configsToStore = [];
 
 		rolePermissions.forEach(permission => {
 			if (typeof permission !== 'string') {
@@ -4309,7 +4334,22 @@ const updateExchangeUserRole = async (roleId, { name, description, rolePermissio
 				basePermission = `/admin/${path.replace(/\./g, '/')}:${method}`;
 				permissionType = 'route';
 			}
-			else if (permission.startsWith('config:')) {
+			else {
+				throw new Error(`Invalid permission prefix: ${permission}. Must start with route:, config:, or secret:`);
+			}
+
+			validationGroups[permissionType].push(basePermission);
+			permissionsToStore.push(basePermission);
+		});
+
+		configs.forEach(permission => {
+			if (typeof permission !== 'string') {
+				throw new Error(`Invalid permission type: ${permission}`);
+			}
+
+			let basePermission, permissionType;
+
+			if (permission.startsWith('config:')) {
 				basePermission = permission.replace('config:', '');
 				permissionType = 'config';
 			}
@@ -4322,7 +4362,7 @@ const updateExchangeUserRole = async (roleId, { name, description, rolePermissio
 			}
 
 			validationGroups[permissionType].push(basePermission);
-			permissionsToStore.push(basePermission);
+			configsToStore.push(basePermission);
 		});
 
 		try {
@@ -4347,6 +4387,16 @@ const updateExchangeUserRole = async (roleId, { name, description, rolePermissio
 
 		if (permissionsChanged) {
 			updates.permissions = permissionsToStore;
+		}
+
+		const currentConfigs = role.configs || [];
+		const configsChanged = (
+			currentConfigs.length !== configsToStore.length ||
+			!currentConfigs.every(p => configsToStore.includes(p))
+		);
+
+		if (configsChanged) {
+			updates.configs = configsToStore;
 		}
 	}
 

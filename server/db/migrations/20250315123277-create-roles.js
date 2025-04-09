@@ -28,6 +28,11 @@ module.exports = {
 					allowNull: false,
 					defaultValue: []
 				},
+				configs: {
+					type: Sequelize.ARRAY(Sequelize.STRING),
+					allowNull: false,
+					defaultValue: []
+				},
 				created_at: {
 					allowNull: false,
 					type: Sequelize.DATE,
