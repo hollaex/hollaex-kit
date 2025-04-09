@@ -354,7 +354,8 @@ exports.OMITTED_USER_FIELDS = [
 	'is_supervisor',
 	'is_kyc',
 	'is_communicator',
-	'flagged'
+	'flagged',
+	'role_id'
 ];
 
 const ROLES = {
