@@ -94,7 +94,7 @@ const {
 } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
-const { getKitConfig, isValidTierLevel, getKitTier, isDatetime, getAssetsPrices, getKitSecrets, sendCustomEmail, emailHtmlBoilerplate, getDomain, updateKitConfigSecrets, sleep, getKitCoins, getKitCoin, subscribedToCoin, getQuickTrades } = require('./common');
+const { getKitConfig, isValidTierLevel, getKitTier, isDatetime, getAssetsPrices, getRoles, getKitSecrets, sendCustomEmail, emailHtmlBoilerplate, getDomain, updateKitConfigSecrets, sleep, getKitCoins, getKitCoin, subscribedToCoin, getQuickTrades } = require('./common');
 const { isValidPassword, createSession } = require('./security');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { all, reject } = require('bluebird');
@@ -267,28 +267,17 @@ const createUser = (
 		return dbQuery.findOne('user', {
 			where: { email }
 		})
-			.then((user) => {
+			.then(async (user) => {
 				if (user) {
 					throw new Error(USER_EXISTS);
 				}
-				const roles = {
-					is_admin: false,
-					is_supervisor: false,
-					is_support: false,
-					is_kyc: false,
-					is_communicator: false
-				};
 
-				if (opts.role !== 'user') {
-					const userRole = 'is_' + opts.role.toLowerCase();
-					if (roles[userRole] === undefined) {
-						throw new Error('Role does not exist');
-					}
-					each(roles, (value, key) => {
-						if (key === userRole) {
-							roles[key] = true;
-						}
-					});
+				let role = null;
+				if (opts.role === 'admin') {
+					const Role = getModel('role');
+					const role = await Role.findOne({ where: { role_name: 'Admin' } });
+					if (!role) throw new Error('Role not found');
+					role = adminRole.role_name;
 				}
 
 				const options = {
@@ -296,7 +285,7 @@ const createUser = (
 					password,
 					settings: INITIAL_SETTINGS(),
 					email_verified: opts.email_verified,
-					...roles
+					role
 				};
 
 				if (isNumber(opts.id)) {
@@ -1148,72 +1137,31 @@ const getUserRole = (opts = {}) => {
 		});
 };
 
-const updateUserRole = (user_id, role) => {
+const updateUserRole = async (user_id, role_name) => {
+
 	if (user_id === 1) {
 		return reject(new Error(CANNOT_CHANGE_ADMIN_ROLE));
 	}
-	return dbQuery.findOne('user', {
-		where: {
-			id: user_id
-		},
-		attributes: [
-			'id',
-			'email',
-			'is_admin',
-			'is_support',
-			'is_supervisor',
-			'is_kyc',
-			'is_communicator'
-		]
-	})
-		.then((user) => {
-			if (!user) {
-				throw new Error(USER_NOT_FOUND);
-			}
-			const roles = pick(
-				user.dataValues,
-				'is_admin',
-				'is_supervisor',
-				'is_support',
-				'is_kyc',
-				'is_communicator'
-			);
+	const Role = getModel('role');
+	const User = getModel('user');
 
-			const roleChange = 'is_' + role.toLowerCase();
+	const user = await User.findOne({ where: { id: user_id } });
+	if (!user) throw new Error('User not found');
 
-			if (roles[roleChange]) {
-				throw new Error(`User already has role ${role}`);
-			}
+	if(role_name === 'user') {
+		user.role = null;
+		await user.save();
+		return user;
+	} else{
+		const role = await Role.findOne({ where: { role_name } });
+		if (!role) throw new Error('Role not found');
 
-			each(roles, (value, key) => {
-				if (key === roleChange) {
-					roles[key] = true;
-				} else {
-					roles[key] = false;
-				}
-			});
+		user.role = role.role_name;
+		await user.save();
 
-			return all([user, roles]);
-		})
-		.then(([user, roles]) => {
-			return user.update(
-				roles,
-				{ fields: ['is_admin', 'is_support', 'is_supervisor', 'is_kyc', 'is_communicator'], returning: true }
-			);
-		})
-		.then((user) => {
-			const result = pick(
-				user,
-				'id',
-				'email',
-				'is_admin',
-				'is_support',
-				'is_supervisor',
-				'is_kyc',
-				'is_communicator'
-			);
-			return result;
-		});
+		return user;
+	}
+
 };
 
 const DEFAULT_SETTINGS = {
@@ -1810,17 +1758,14 @@ const getExchangeOperators = (opts = {
 	const pagination = paginationQuery(opts.limit, opts.page);
 	const ordering = orderingQuery(opts.orderBy, opts.order);
 
+	const operatorRoleNames = getRoles().map(role => role.role_name);
 	const options = {
 		where: {
-			[Op.or]: [
-				{ is_admin: true },
-				{ is_supervisor: true },
-				{ is_support: true },
-				{ is_kyc: true },
-				{ is_communicator: true }
-			]
+			role: {
+				[Op.in]: operatorRoleNames
+			}
 		},
-		attributes: ['id', 'email', 'is_admin', 'is_supervisor', 'is_support', 'is_kyc', 'is_communicator'],
+		attributes: ['id', 'email', 'role'], 
 		order: [ordering],
 		...pagination
 	};
@@ -4432,42 +4377,6 @@ const deleteExchangeUserRole = async (id) => {
 	return { message: 'Role deleted successfully' };
 };
 
-const assignExchangeUserRole = async (user_id, role_id) => {
-	const Role = getModel('role');
-	const User = getModel('user');
-
-	const user = await User.findOne({ where: { id: user_id } });
-	if (!user) throw new Error('User not found');
-
-	const role = await Role.findOne({ where: { id: role_id } });
-	if (!role) throw new Error('Role not found');
-
-	user.role_id = role_id;
-	await user.save();
-
-	return user;
-};
-
-const fetchExchangeUserRole = async (user_id) => {
-	const User = getModel('user');
-	const user = await User.findOne({
-		where: { id: user_id },
-		include: [{
-			model: Role,
-			as: 'role',
-			attributes: ['id', 'name', 'permissions']
-		}],
-		attributes: ['id', 'email']
-	});
-
-	if (!user) throw new Error('User not found');
-
-	return {
-		user_id: user.id,
-		role: user.role
-	};
-};
-
 
 module.exports = {
 	loginUser,
@@ -4565,7 +4474,5 @@ module.exports = {
 	getExchangeUserRoles,
 	createExchangeUserRole,
 	updateExchangeUserRole,
-	deleteExchangeUserRole,
-	assignExchangeUserRole,
-	fetchExchangeUserRole
+	deleteExchangeUserRole
 };

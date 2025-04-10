@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         role_name: {
             type: DataTypes.STRING,
+            unique: true,
             allowNull: false,
             unique: true
         },
@@ -29,13 +30,6 @@ module.exports = (sequelize, DataTypes) => {
         tableName: 'Roles',
         timestamps: true
     });
-
-    Role.associate = (models) => {
-        Role.hasMany(models.User, {
-            foreignKey: 'role_id',
-            as: 'users'
-        });
-    };
 
     return Role;
 };

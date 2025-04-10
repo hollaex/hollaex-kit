@@ -109,7 +109,6 @@ const roles = {
 		"/admin/roles:post",
 		"/admin/roles:put",
 		"/admin/roles:delete",
-		"/admin/roles/assign:post",
 		"/admin/endpoints:get",
 		"/admin/signup:post"
 	],
@@ -301,7 +300,7 @@ module.exports = {
 				}
 			});
 
-			createdRoles[roleFlag] = role.id;
+			createdRoles[roleFlag] = role.role_name;
 		}
 
 		// Fetch users with their current role 
@@ -320,23 +319,23 @@ module.exports = {
 
 		// Assign roles to users 
 		for (const user of users) {
-			let roleId = null;
+			let roleName = null;
 
 			if (user.is_admin) {
-				roleId = createdRoles['is_admin'];
+				roleName = createdRoles['is_admin'];
 			} else if (user.is_supervisor) {
-				roleId = createdRoles['is_supervisor'];
+				roleName = createdRoles['is_supervisor'];
 			} else if (user.is_support) {
-				roleId = createdRoles['is_support'];
+				roleName = createdRoles['is_support'];
 			} else if (user.is_kyc) {
-				roleId = createdRoles['is_kyc'];
+				roleName = createdRoles['is_kyc'];
 			} else if (user.is_communicator) {
-				roleId = createdRoles['is_communicator'];
+				roleName = createdRoles['is_communicator'];
 			}
 
-			if (roleId) {
+			if (roleName) {
 				await userModel.update(
-					{ role_id: roleId },
+					{ role: roleName },
 					{ where: { id: user.id } }
 				);
 			}

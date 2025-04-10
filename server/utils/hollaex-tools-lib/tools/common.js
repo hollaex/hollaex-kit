@@ -254,15 +254,13 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}, scopes, permis
 		throw new Error(`Invalid kit keys given: ${newKeys}`);
 	}
 
-	if (userId !== 1) {
-		const unauthorizedPermissions = keyConfig.filter(
-			perm => !permissions.includes(perm)
-		);
+	const unauthorizedPermissions = keyConfig.filter(
+		perm => !permissions.includes(perm)
+	);
 
-		if (unauthorizedPermissions.length > 0) {
-			throw new Error(`Unauthorized permissions: ${unauthorizedPermissions.join(", ")}`);
-		};
-	}
+	if (unauthorizedPermissions.length > 0) {
+		throw new Error(`Unauthorized permissions: ${unauthorizedPermissions.join(", ")}`);
+	};
 
 	if (newKitConfig.user_meta) {
 		for (let metaKey in newKitConfig.user_meta) {
@@ -557,15 +555,13 @@ const joinKitSecrets = (existingKitSecrets = {}, newKitSecrets = {}, scopes, per
 		throw new Error(`Invalid secret keys given: ${newKeys}`);
 	}
 
-	if (userId !== 1) {
-		const unauthorizedPermissions = keySecret.filter(
-			perm => !permissions.includes(perm)
-		);
+	const unauthorizedPermissions = keySecret.filter(
+		perm => !permissions.includes(perm)
+	);
 
-		if (unauthorizedPermissions.length > 0) {
-			throw new Error(`Unauthorized permissions: ${unauthorizedPermissions.join(", ")}`);
-		};
-	}
+	if (unauthorizedPermissions.length > 0) {
+		throw new Error(`Unauthorized permissions: ${unauthorizedPermissions.join(", ")}`);
+	};
 
 	const flattenedNewKitSecrets = flatten(newKitSecrets);
 	if (Object.values(flattenedNewKitSecrets).includes(SECRET_MASK)) {

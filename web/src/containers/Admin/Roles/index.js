@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Table, Modal, message } from 'antd';
+import { Button, Table, Select, Modal, message } from 'antd';
 import { connect } from 'react-redux';
-
+import { CloseOutlined } from '@ant-design/icons';
 import { checkRole } from '../../../utils/token';
 import {
 	OperatorRole,
@@ -10,7 +10,9 @@ import {
 	RevokeRole,
 	renderRoleImage,
 } from './ModalForm';
-import { requestRole, inviteOperator, updateRole } from './action';
+import { requestRole, inviteOperator, updateRole, fetchRoles } from './action';
+import { requestUsers } from '../Stakes/actions';
+import _debounce from 'lodash/debounce';
 import './index.css';
 import '../Trades/index.css';
 import '../../Admin/General/index.css';
@@ -28,17 +30,7 @@ const getColumns = (handleEdit = () => {}) => [
 	{
 		title: 'Role',
 		render: (data) => {
-			if (data.is_admin) {
-				return <div>Lead Operator</div>;
-			} else if (data.is_supervisor) {
-				return <div>Supervisor</div>;
-			} else if (data.is_kyc) {
-				return <div>KYC</div>;
-			} else if (data.is_communicator) {
-				return <div>Communicator</div>;
-			} else if (data.is_support) {
-				return <div>Support</div>;
-			}
+			return <div>{data.role}</div>;
 		},
 	},
 	{
@@ -122,6 +114,11 @@ const Roles = ({ constants }) => {
 	const [isOpen, setOpen] = useState(false);
 	const [buttonSubmitting, setButtonSubmitting] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
+	const [roles, setRoles] = useState([]);
+	const [selectedEmailData, setSelectedEmailData] = useState({});
+	const [emailOptions, setEmailOptions] = useState([]);
+	const [rolePayload, setRolePayload] = useState({});
+	const [displayAssignRole, setDisplayAssignRole] = useState(false);
 
 	const isUpgrade = handleUpgrade(constants.info);
 	const requestInitRole = (pageNo = 1) => {
@@ -144,6 +141,18 @@ const Roles = ({ constants }) => {
 	};
 	useEffect(() => {
 		requestInitRole();
+		fetchRoles()
+			.then((response) => {
+				const roleNames = response.data.map((role) => ({
+					label: role.role_name,
+					value: role.role_name,
+				}));
+				setRoles(roleNames);
+			})
+			.catch((err) => {
+				message.error('Error fetching roles:', err);
+			});
+
 		//  TODO: Fix react-hooks/exhaustive-deps
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -186,6 +195,7 @@ const Roles = ({ constants }) => {
 						handleInvite={handleInvite}
 						isUpgrade={isUpgrade}
 						buttonSubmitting={buttonSubmitting}
+						roles={roles}
 					/>
 				);
 			case 'role-access':
@@ -196,6 +206,7 @@ const Roles = ({ constants }) => {
 						editData={editData}
 						onTypeChange={onTypeChange}
 						handleUpdateRole={handleUpdateRole}
+						roles={roles}
 					/>
 				);
 			case 'revoke-role':
@@ -246,7 +257,43 @@ const Roles = ({ constants }) => {
 		}
 		setCurrentTablePage(count);
 	};
+	const handleEmailChange = (value) => {
+		let emailId = parseInt(value);
+		let emailData = {};
+		emailOptions &&
+			emailOptions.forEach((item) => {
+				if (item.value === emailId) {
+					emailData = item;
+				}
+			});
+		setSelectedEmailData(emailData);
+		setRolePayload({
+			...rolePayload,
+			user_id: emailData.value,
+		});
+		handleSearch(emailData.label);
+	};
 
+	const getAllUserData = async (params = {}) => {
+		try {
+			const res = await requestUsers(params);
+			if (res && res.data) {
+				const userData = res.data.map((user) => ({
+					label: user.email,
+					value: user.id,
+				}));
+				setEmailOptions(userData);
+			}
+		} catch (error) {
+			console.log('error', error);
+		}
+	};
+
+	const searchUser = (searchText, type) => {
+		getAllUserData({ search: searchText }, type);
+	};
+
+	const handleSearch = _debounce(searchUser, 1000);
 	return (
 		<Tabs defaultActiveKey="0" style={{ width: '100%' }}>
 			<TabPane tab="Operator" key="0">
@@ -260,7 +307,13 @@ const Roles = ({ constants }) => {
 							</div>
 						</div>
 						<div>
-							<Button type="primary" className="green-btn" onClick={handleAdd}>
+							<Button
+								type="primary"
+								className="green-btn"
+								onClick={() => {
+									setDisplayAssignRole(true);
+								}}
+							>
 								Add operator
 							</Button>
 						</div>
@@ -316,6 +369,134 @@ const Roles = ({ constants }) => {
 							loading={isLoading}
 						/>
 					</div>
+					{displayAssignRole && (
+						<Modal
+							maskClosable={false}
+							closeIcon={<CloseOutlined style={{ color: 'white' }} />}
+							bodyStyle={{
+								backgroundColor: '#27339D',
+								marginTop: 60,
+							}}
+							visible={displayAssignRole}
+							footer={null}
+							onCancel={() => {
+								setDisplayAssignRole(false);
+							}}
+						>
+							<h2 style={{ fontWeight: '600', color: 'white' }}>
+								Assign a role to user
+							</h2>
+							<div style={{ fontWeight: '400', color: 'white' }}>
+								You can assign roles to users below
+							</div>
+							<div style={{ marginBottom: 30, marginTop: 10 }}>
+								<div style={{ marginBottom: 10 }}>
+									<div className="mb-2">User</div>
+									<div className="d-flex align-items-center">
+										<Select
+											showSearch
+											placeholder="user@exchange.com"
+											className="user-search-field"
+											onSearch={(text) => handleSearch(text)}
+											filterOption={() => true}
+											style={{ width: '100%' }}
+											value={selectedEmailData && selectedEmailData.label}
+											onChange={(text) => handleEmailChange(text)}
+											showAction={['focus', 'click']}
+										>
+											{emailOptions &&
+												emailOptions.map((email) => (
+													<Select.Option key={email.value}>
+														{email.label}
+													</Select.Option>
+												))}
+										</Select>
+									</div>
+								</div>
+
+								<div style={{ marginBottom: 10 }}>
+									<div className="mb-1">Role</div>
+									<Select
+										onChange={(value) =>
+											setRolePayload({
+												...rolePayload,
+												role_id: value,
+											})
+										}
+										value={rolePayload?.role_id}
+										style={{ width: '100%' }}
+										placeholder="Select Role Type"
+									>
+										{roles.map((role) => (
+											<Select.Option value={role.value}>
+												{role.label}
+											</Select.Option>
+										))}
+									</Select>
+								</div>
+							</div>
+
+							<div
+								style={{
+									display: 'flex',
+									flexDirection: 'row',
+									gap: 15,
+									justifyContent: 'space-between',
+								}}
+							>
+								<Button
+									onClick={() => {
+										setRolePayload({});
+										setDisplayAssignRole(false);
+									}}
+									style={{
+										backgroundColor: '#288500',
+										color: 'white',
+										flex: 1,
+										height: 35,
+									}}
+									type="default"
+								>
+									Back
+								</Button>
+								<Button
+									onClick={async () => {
+										try {
+											if (!rolePayload.user_id || !rolePayload.role_id) {
+												message.error('Please select all the inputs');
+												return;
+											}
+											await updateRole(
+												{ role: rolePayload.role_id },
+												{ user_id: rolePayload.user_id }
+											);
+											setRolePayload({});
+											setDisplayAssignRole(false);
+											requestInitRole();
+											message.success('Role Assigned');
+										} catch (error) {
+											let errMsg = '';
+											if (error.response) {
+												errMsg = error.response.data.message;
+											} else {
+												errMsg = error.message;
+											}
+											message.error(errMsg);
+										}
+									}}
+									style={{
+										backgroundColor: '#288500',
+										color: 'white',
+										flex: 1,
+										height: 35,
+									}}
+									type="default"
+								>
+									Proceed
+								</Button>
+							</div>
+						</Modal>
+					)}
 					<Modal
 						visible={isOpen}
 						footer={null}

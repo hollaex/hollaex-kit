@@ -566,7 +566,7 @@ paths:
         200:
           description: Success
           schema:
-            $ref: "#/definitions/OperatorsResponse"
+            $ref: "#/definitions/ObjectResponse"
         default:
           description: Error
           schema:
@@ -1307,7 +1307,7 @@ paths:
         200:
           description: Success
           schema:
-            $ref: "#/definitions/UserRolePutResponse"
+            $ref: "#/definitions/ObjectResponse"
         default:
           description: Error
           schema:
@@ -4554,59 +4554,6 @@ paths:
               id:
                 type: integer
                 format: int32
-      responses:
-        200:
-          description: Success
-          schema:
-            $ref: "#/definitions/ObjectResponse"
-        default:
-          description: Error
-          schema:
-            $ref: "#/definitions/MessageResponse"
-      security:
-        - Token: []
-      x-security-types:
-        - bearer
-        - hmac
-  /admin/roles/assign:
-    x-swagger-router-controller: admin
-    post:
-      description: Assign role by admin
-      operationId: assignExchangeUserRole
-      tags:
-        - Admin
-      parameters:
-        - name: data
-          in: body
-          required: true
-          schema:
-            type: object
-            properties:
-              user_id:
-                type: integer
-              role_id:
-                type: integer
-      responses:
-        200:
-          description: Success
-          schema:
-            $ref: "#/definitions/ObjectResponse"
-        default:
-          description: Error
-          schema:
-            $ref: "#/definitions/MessageResponse"
-      security:
-        - Token: []
-      x-security-types:
-        - bearer
-        - hmac
-  /admin/endpoints:
-    x-swagger-router-controller: admin
-    get:
-      description: Get endpoints by admin
-      operationId: getExchangeEndpoints
-      tags:
-        - Admin
       responses:
         200:
           description: Success

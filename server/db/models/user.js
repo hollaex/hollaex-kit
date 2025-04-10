@@ -176,14 +176,9 @@ module.exports = function (sequelize, DataTypes) {
 				type: DataTypes.JSONB,
 				defaultValue: {}
 			},
-			role_id: {
-				type: DataTypes.INTEGER,
-				onDelete: 'SET NULL',
+			role: {
+				type: DataTypes.STRING,
 				allowNull: true,
-				references: {
-					model: 'Roles',
-					key: 'id'
-				}
 			},
 		},
 		{
@@ -227,10 +222,6 @@ module.exports = function (sequelize, DataTypes) {
 		});
 		User.hasMany(models.Affiliation, {
 			foreignKey: 'referer_id'
-		});
-		User.belongsTo(models.Role, {
-			foreignKey: 'role_id',
-			as: 'role'
 		});
 	};
 

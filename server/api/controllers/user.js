@@ -395,9 +395,9 @@ const loginPost = (req, res) => {
 			}
 
 			let userRole
-			if (user.role_id) {
+			if (user.role) {
 				const roles = toolsLib.getRoles();
-				userRole = roles.find(role => role.id === user.role_id);
+				userRole = roles.find(role => role.role_name === user.role);
 			}
 
 			return all([

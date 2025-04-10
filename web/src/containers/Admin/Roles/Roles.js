@@ -63,7 +63,7 @@ const Role = ({ constants }) => {
 					</div>
 				</div>
 				<div>
-					<Button
+					{/* <Button
 						onClick={() => {
 							fetchRoles()
 								.then((response) => {
@@ -87,7 +87,7 @@ const Role = ({ constants }) => {
 						type="default"
 					>
 						Assign Role to Users
-					</Button>
+					</Button> */}
 				</div>
 			</div>
 

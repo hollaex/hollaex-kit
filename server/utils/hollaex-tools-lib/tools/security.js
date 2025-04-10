@@ -562,7 +562,9 @@ const verifyBearerTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = fa
 					}
 
 					try {
-						checkPermission(req, decodedToken);
+						if (!isSocket) {
+							checkPermission(req, decodedToken);
+						}
 					} catch (err) {
 						return sendError(err.message);
 					}
@@ -1308,9 +1310,11 @@ const checkPermission = (req, user) => {
 	const apiPath = req?.swagger?.apiPath; // admin/user/role
 	const method = req.method.toLowerCase(); // "get", "post", etc.
 
-	if (!apiPath) return;
+	if (!apiPath) {
+		throw new Error(NOT_AUTHORIZED);
+	};
+
 	if (!apiPath.includes('admin')) return;
-	if (apiPath.includes('admin') && user.sub.id === 1) return;
 
 	// Convert path to permission key
 	// ["admin", "user", "role"]

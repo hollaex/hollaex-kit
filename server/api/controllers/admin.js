@@ -3337,21 +3337,6 @@ const deleteExchangeUserRole = (req, res) => {
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
-const assignExchangeUserRole = (req, res) => {
-	loggerAdmin.verbose(req.uuid, 'controllers/admin/assignExchangeUserRole/auth', req.auth.sub);
-
-	const { user_id, role_id } = req.swagger.params.data.value;
-
-	toolsLib.user.assignExchangeUserRole(user_id, role_id)
-		.then((result) => {
-			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, 'controllers/admin/assignExchangeUserRole', 'delete', result);
-			return res.json({ message: 'Success' });
-		})
-		.catch((err) => {
-			loggerAdmin.error(req.uuid, 'controllers/admin/assignExchangeUserRole', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
-		});
-};
 
 module.exports = {
 	createInitialAdmin,
@@ -3441,6 +3426,5 @@ module.exports = {
 	createExchangeUserRole,
 	updateExchangeUserRole,
 	deleteExchangeUserRole,
-	assignExchangeUserRole,
 	getExchangeEndpoints
 };
