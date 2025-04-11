@@ -989,7 +989,8 @@ const issueToken = (
 	expiresIn = getKitSecrets().security.token_time, // 24 hours by default
 	lang = 'en',
 	permissions = [],
-	configs = []
+	configs = [],
+	role = 'user'
 ) => {
 	// Default scope is ['user']
 	let scopes = [].concat(BASE_SCOPES);
@@ -1020,7 +1021,8 @@ const issueToken = (
 				networkId,
 				lang,
 				permissions,
-				configs
+				configs,
+				role
 			},
 			scopes,
 			ip,
@@ -1338,7 +1340,7 @@ const checkPermission = (req, user) => {
 	const userHasPermission = checkUserPermission(user, requiredPermission);
 
 	if (!userHasPermission) {
-		throw new Error(`Required permission: ${requiredPermission}`)
+		throw new Error(`${NOT_AUTHORIZED} Required permission: ${requiredPermission}`)
 	}
 }
 

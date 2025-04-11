@@ -34,7 +34,8 @@ import { storeTools } from 'actions/toolsAction';
 import STRINGS from 'config/localizedStrings';
 
 import { getChatMinimized, setChatMinimized } from 'utils/theme';
-import { isLoggedIn, isAdmin } from 'utils/token';
+// eslint-disable-next-line
+import { isLoggedIn, isAdmin, hasPermissions } from 'utils/token';
 import {
 	AppBar,
 	AppMenuBar,
@@ -1027,7 +1028,7 @@ class App extends Component {
 						{showFooter && !isChartEmbed && <AppFooter constants={constants} />}
 					</div>
 				</div>
-				{isAdmin() && isBrowser && !isChartEmbed && (
+				{hasPermissions() && isBrowser && !isChartEmbed && (
 					<OperatorControls initialData={this.props.location} />
 				)}
 				<Dialog

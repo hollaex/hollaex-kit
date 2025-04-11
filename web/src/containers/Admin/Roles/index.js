@@ -222,7 +222,7 @@ const Roles = ({ constants }) => {
 				return <div></div>;
 		}
 	};
-
+	// eslint-disable-next-line
 	const handleAdd = () => {
 		setOpen(true);
 		setType('operator-role');

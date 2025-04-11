@@ -416,6 +416,7 @@ const loginPost = (req, res) => {
 					user.settings.language,
 					userRole?.permissions,
 					userRole?.configs,
+					user.role
 				)
 			]);
 		})

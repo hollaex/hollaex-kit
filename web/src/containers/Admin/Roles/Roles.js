@@ -5,12 +5,14 @@ import { CloseOutlined } from '@ant-design/icons';
 
 import RoleManagement from './RoleManagement';
 import { requestUsers } from '../Stakes/actions';
+// eslint-disable-next-line
 import { assignRole, fetchRoles } from './action';
 const Role = ({ constants }) => {
 	const [selectedEmailData, setSelectedEmailData] = useState({});
 	const [emailOptions, setEmailOptions] = useState([]);
 	const [rolePayload, setRolePayload] = useState({});
 	const [displayAssignRole, setDisplayAssignRole] = useState(false);
+	// eslint-disable-next-line
 	const [roles, setRoles] = useState([]);
 
 	const handleEmailChange = (value) => {
