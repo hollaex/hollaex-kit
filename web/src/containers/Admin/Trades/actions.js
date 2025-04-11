@@ -45,13 +45,13 @@ export const storePair = (values) => {
 	return requestAuthenticated('/admin/pair', options);
 };
 
-export const getBroker = () => requestAuthenticated('/broker');
+export const getBroker = () => requestAuthenticated('/admin/broker');
 
 export const getWithoutAuthBroker = () => {
 	let headers = {
 		'Content-Type': 'application/json',
 	};
-	return axios.get('/broker', headers);
+	return axios.get('/admin/broker', headers);
 };
 
 export const createBroker = (values) => {
@@ -60,10 +60,10 @@ export const createBroker = (values) => {
 		body: JSON.stringify(values),
 	};
 
-	return requestAuthenticated('/broker', options);
+	return requestAuthenticated('/admin/broker', options);
 };
 export const createTestBroker = (values) => {
-	return axios.post('/broker/test', { ...values });
+	return axios.post('/admin/broker/test', { ...values });
 };
 
 export const createTestUniswap = (values) => {
@@ -72,14 +72,14 @@ export const createTestUniswap = (values) => {
 		body: JSON.stringify(values),
 	};
 
-	return requestAuthenticated('/broker/uniswap/test', options);
+	return requestAuthenticated('/admin/broker/uniswap/test', options);
 };
 
 export const getBrokerUniswapTokens = () =>
-	requestAuthenticated(`/broker/uniswap`);
+	requestAuthenticated(`/admin/broker/uniswap`);
 
 export const getTrackedExchangeMarkets = (exchange_name) =>
-	requestAuthenticated(`/broker/markets?exchange_name=${exchange_name}`);
+	requestAuthenticated(`/admin/broker/markets?exchange_name=${exchange_name}`);
 
 export const updateBroker = (values) => {
 	const options = {
@@ -87,7 +87,7 @@ export const updateBroker = (values) => {
 		body: JSON.stringify(values),
 	};
 
-	return requestAuthenticated('/broker', options);
+	return requestAuthenticated('/admin/broker', options);
 };
 
 export const updateQuickTradeConfig = (values) => {
@@ -104,7 +104,7 @@ export const deleteBroker = (id) => {
 		method: 'DELETE',
 		body: JSON.stringify(id),
 	};
-	return requestAuthenticated('/broker', options);
+	return requestAuthenticated('/admin/broker', options);
 };
 
 export const updateConstants = (values) => {
@@ -132,7 +132,7 @@ export const getBrokerConnect = (
 	api_secret,
 	password
 ) => {
-	let urlString = `/broker/connect?exchange_id=${encodeURIComponent(
+	let urlString = `/admin/broker/connect?exchange_id=${encodeURIComponent(
 		exchange_id
 	)}&api_key=${encodeURIComponent(api_key)}&api_secret=${encodeURIComponent(
 		api_secret

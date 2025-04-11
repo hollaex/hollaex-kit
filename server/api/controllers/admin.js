@@ -4,7 +4,7 @@ const { loggerAdmin } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
 const { cloneDeep, pick } = require('lodash');
 const { all } = require('bluebird');
-const { INIT_CHANNEL, ROLES } = require('../../constants');
+const { INIT_CHANNEL, ROLES, ROLE_PERMISSIONS } = require('../../constants');
 const { USER_NOT_FOUND, API_KEY_NOT_PERMITTED, PROVIDE_VALID_EMAIL, INVALID_PASSWORD, USER_EXISTS, NO_DATA_FOR_CSV, INVALID_VERIFICATION_CODE, INVALID_OTP_CODE, REFERRAL_HISTORY_NOT_ACTIVE } = require('../../messages');
 const { sendEmail, testSendSMTPEmail, sendRawEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
@@ -113,7 +113,7 @@ const putAdminKit = (req, res) => {
 	}
 
 	const auditInfo = { userEmail: req?.auth?.sub?.email, sessionId: req?.session_id, apiPath: req?.swagger?.apiPath, method: req?.swagger?.operationPath?.[2] };
-	toolsLib.updateKitConfigSecrets(data, req.auth.scopes, auditInfo)
+	toolsLib.updateKitConfigSecrets(data, req.auth.scopes, auditInfo, req.auth?.sub?.configs, req.auth.sub.id)
 		.then((result) => {
 			return res.json(result);
 		})
@@ -3253,6 +3253,91 @@ const deleteAnnouncement = (req, res) => {
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
 		});
 };
+
+
+const getExchangeEndpoints = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/getExchangeEndpoints/auth', req.auth.sub);
+	return res.json({
+		data: ROLE_PERMISSIONS
+	})
+};
+
+const getExchangeUserRoles = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/getExchangeUserRoles/auth', req.auth.sub);
+
+	toolsLib.user.getExchangeUserRoles()
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/getExchangeUserRoles', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+		});
+};
+
+const createExchangeUserRole = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/createExchangeUserRole/auth', req.auth.sub);
+
+	const { name, description, permissions, configs } = req.swagger.params.data.value;
+
+	toolsLib.user.createExchangeUserRole({
+		name,
+		description,
+		rolePermissions: permissions,
+		configs,
+		user_id: req.auth.sub.id
+	})
+		.then((role) => {
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, 'controllers/admin/createExchangeUserRole', 'post', role);
+			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
+			return res.json(role);
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/createExchangeUserRole', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+		});
+};
+
+const updateExchangeUserRole = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/updateExchangeUserRole/auth', req.auth.sub);
+
+	const { id, name, description, permissions, configs } = req.swagger.params.data.value;
+
+	toolsLib.user.updateExchangeUserRole(id, {
+		name,
+		description,
+		rolePermissions: permissions,
+		configs,
+		user_id: req.auth.sub.id
+	})
+		.then((role) => {
+			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
+			return res.json(role);
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/updateExchangeUserRole', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+		});
+};
+
+
+const deleteExchangeUserRole = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/deleteExchangeUserRole/auth', req.auth.sub);
+
+	const { id } = req.swagger.params.data.value;
+
+	toolsLib.user.deleteExchangeUserRole(id)
+		.then((result) => {
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, 'controllers/admin/deleteExchangeUserRole', 'delete', result);
+			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/deleteExchangeUserRole', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+		});
+};
+
 module.exports = {
 	createInitialAdmin,
 	getAdminKit,
@@ -3336,5 +3421,10 @@ module.exports = {
 	fetchAnnouncements,
 	createAnnouncement,
 	deleteAnnouncement,
-	updateAnnouncement
+	updateAnnouncement,
+	getExchangeUserRoles,
+	createExchangeUserRole,
+	updateExchangeUserRole,
+	deleteExchangeUserRole,
+	getExchangeEndpoints
 };
