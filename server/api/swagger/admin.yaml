@@ -4568,3 +4568,24 @@ paths:
       x-security-types:
         - bearer
         - hmac
+  /admin/endpoints:
+    x-swagger-router-controller: admin
+    get:
+      description: Get endpoints by admin
+      operationId: getExchangeEndpoints
+      tags:
+        - Admin
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
