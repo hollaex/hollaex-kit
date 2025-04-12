@@ -275,8 +275,8 @@ const createUser = (
 				let role = null;
 				if (opts.role === 'admin') {
 					const Role = getModel('role');
-					const role = await Role.findOne({ where: { role_name: 'Admin' } });
-					if (!role) throw new Error('Role not found');
+					const adminRole = await Role.findOne({ where: { role_name: 'Admin' } });
+					if (!adminRole) throw new Error('Role not found');
 					role = adminRole.role_name;
 				}
 
