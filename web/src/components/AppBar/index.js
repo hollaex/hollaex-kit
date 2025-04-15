@@ -503,6 +503,11 @@ class AppBar extends Component {
 		);
 	};
 
+	onHandleNavigate = () => {
+		const { router } = this.props;
+		return isLoggedIn() ? router.push('/summary') : router.push('/login');
+	};
+
 	render() {
 		const {
 			user,
@@ -531,195 +536,223 @@ class AppBar extends Component {
 		} = this.state;
 		const languageFormValue = generateLanguageFormValues(valid_languages)
 			?.language?.options;
-		return isHome ? (
-			<div className="home_app_bar d-flex justify-content-between align-items-center">
-				<div className="d-flex align-items-center justify-content-center h-100 ml-2">
-					{this.renderHomeIcon()}
-				</div>
-				<div className="mr-2">
-					{isLoggedIn()
-						? this.renderAccountButton()
-						: this.renderButtonSection()}
-				</div>
-			</div>
-		) : isMobile ? (
-			<div className="d-flex flex-column app-mobile-bar-wrapper">
-				{isTopbarAnnouncement &&
-					constants?.features?.announcement &&
-					isLoggedIn() &&
-					this.renderAnnouncementTopbar()}
-				{!isLoggedIn() && (
-					<MobileBarWrapper
-						className={classnames(
-							'd-flex',
-							'app_bar-mobile',
-							'align-items-center',
-							'justify-content-center'
-						)}
-					>
-						<Link to="/">
-							<div
-								style={{
-									backgroundImage: `url(${constants.logo_image})`,
-								}}
-								className="homeicon-svg"
-							/>
-						</Link>
-					</MobileBarWrapper>
+		return (
+			<>
+				{this.state?.isDisplayLanguagePopup && (
+					<LanguageDisplayPopup
+						selected={activeLanguage}
+						valid_languages={valid_languages}
+						changeLanguage={changeLanguage}
+						isVisible={this.state?.isDisplayLanguagePopup}
+						onHandleClose={this.onHandleClose}
+						selectable_native_currencies={selectable_native_currencies}
+						setUserData={setUserData}
+						user={user}
+						coins={coins}
+					/>
 				)}
-				{isLoggedIn() && this.renderAnnouncementPopup()}
-			</div>
-		) : (
-			<div>
-				{isTopbarAnnouncement &&
-					constants?.features?.announcement &&
-					isLoggedIn() &&
-					this.renderAnnouncementTopbar()}
-				<div
-					className={classnames('app_bar d-flex justify-content-between', {
-						'no-borders': false,
-					})}
-				>
-					<div className="d-flex align-items-center">
-						<div
-							id="home-nav-container"
-							className="d-flex align-items-center justify-content-center h-100"
-						>
-							{this.renderIcon()}
-						</div>
-
-						<Fragment>{children}</Fragment>
-					</div>
-					{!isLoggedIn() && (
-						<div id="trade-nav-container" className="mx-2">
-							{languageFormValue
-								?.filter(({ value }) => value === activeLanguage)
-								?.map(({ value, icon, label }, index) => (
+				{isMobile ? (
+					<div className="d-flex flex-column app-mobile-bar-wrapper">
+						{isTopbarAnnouncement &&
+							constants?.features?.announcement &&
+							isLoggedIn() &&
+							this.renderAnnouncementTopbar()}
+						{(!isLoggedIn() || isHome) && (
+							<MobileBarWrapper
+								className={classnames(
+									'd-flex',
+									'app_bar-mobile',
+									'align-items-center',
+									!isHome
+										? 'justify-content-center'
+										: 'justify-content-between px-4'
+								)}
+							>
+								<Link to="/">
 									<div
-										key={index}
-										className="language_option"
-										onClick={() => this.onHandleOpenPopup()}
+										style={{
+											backgroundImage: `url(${constants.logo_image})`,
+										}}
+										className="homeicon-svg"
+									/>
+								</Link>
+								{isHome && (
+									<div className="app-navbar-wrapper">
+										{languageFormValue
+											?.filter(({ value }) => value === activeLanguage)
+											?.map(({ value, icon, label }, index) => (
+												<div
+													key={index}
+													className="language_option"
+													onClick={() => this.onHandleOpenPopup()}
+												>
+													<Image
+														icon={icon}
+														alt={label}
+														wrapperClassName="flag-icon mr-2"
+													/>
+													<span className="caps">
+														{value}
+														{user?.settings?.interface?.display_currency && (
+															<span>
+																{' '}
+																/ {user?.settings?.interface?.display_currency}
+															</span>
+														)}
+													</span>
+												</div>
+											))}
+										<div
+											className={
+												isHome ? 'login-container ml-3' : 'login-container'
+											}
+											onClick={() => this.onHandleNavigate()}
+										>
+											<EditWrapper
+												stringId={!isLoggedIn() ? 'LOGIN_TEXT' : 'ACCOUNT_TEXT'}
+											>
+												{!isLoggedIn()
+													? STRINGS['LOGIN_TEXT'].toUpperCase()
+													: STRINGS['ACCOUNT_TEXT']}
+											</EditWrapper>
+										</div>
+									</div>
+								)}
+							</MobileBarWrapper>
+						)}
+						{isLoggedIn() && this.renderAnnouncementPopup()}
+					</div>
+				) : (
+					<div>
+						{isTopbarAnnouncement &&
+							constants?.features?.announcement &&
+							isLoggedIn() &&
+							this.renderAnnouncementTopbar()}
+						<div
+							className={classnames('app_bar d-flex justify-content-between', {
+								'no-borders': false,
+							})}
+						>
+							<div className="d-flex align-items-center">
+								<div
+									id="home-nav-container"
+									className="d-flex align-items-center justify-content-center h-100"
+								>
+									{this.renderIcon()}
+								</div>
+
+								<Fragment>{children}</Fragment>
+							</div>
+							{!isLoggedIn() && (
+								<div id="trade-nav-container" className="mx-2">
+									{languageFormValue
+										?.filter(({ value }) => value === activeLanguage)
+										?.map(({ value, icon, label }, index) => (
+											<div
+												key={index}
+												className="language_option"
+												onClick={() => this.onHandleOpenPopup()}
+											>
+												<Image
+													icon={icon}
+													alt={label}
+													wrapperClassName="flag-icon mr-2"
+												/>
+												<span className="caps">
+													{value}
+													{user?.settings?.interface?.display_currency && (
+														<span>
+															{' '}
+															/ {user?.settings?.interface?.display_currency}
+														</span>
+													)}
+												</span>
+											</div>
+										))}
+									{!isHome && (
+										<ThemeSwitcher
+											selected={selected}
+											options={themeOptions}
+											toggle={this.onToggle}
+										/>
+									)}
+									<div
+										className={
+											isHome ? 'login-container ml-3' : 'login-container'
+										}
+										onClick={() => router.push('/login')}
+									>
+										{STRINGS['LOGIN_TEXT'].toUpperCase()}
+									</div>
+									<div
+										className={
+											activePath === '/details'
+												? 'active-menu app-bar-search-icon mx-3'
+												: 'app-bar-search-icon mx-3'
+										}
+										onClick={() => onMenuChange('/details')}
+									>
+										<SearchOutlined />
+									</div>
+								</div>
+							)}
+							{isLoggedIn() && (
+								<div
+									id="trade-nav-container"
+									className="d-flex app-bar-account justify-content-end trade-navbar-wrapper"
+								>
+									{this.renderAnnouncementPopup()}
+									<div
+										className="app-bar-deposit-btn d-flex"
+										onClick={this.onHandleDeposit}
 									>
 										<Image
-											icon={icon}
-											alt={label}
-											wrapperClassName="flag-icon mr-2"
+											iconId={'DEPOSIT_TITLE'}
+											icon={icons['DEPOSIT_TITLE']}
+											wrapperClassName="form_currency-ball margin-aligner"
 										/>
-										<span className="caps">
-											{value}
-											{user?.settings?.interface?.display_currency && (
-												<span>
-													{' '}
-													/ {user?.settings?.interface?.display_currency}
-												</span>
-											)}
+										<span className="ml-2">
+											{STRINGS['ACCORDIAN.DEPOSIT_LABEL']}
 										</span>
 									</div>
-								))}
-							{this.state?.isDisplayLanguagePopup && (
-								<LanguageDisplayPopup
-									selected={activeLanguage}
-									valid_languages={valid_languages}
-									changeLanguage={changeLanguage}
-									isVisible={this.state?.isDisplayLanguagePopup}
-									onHandleClose={this.onHandleClose}
-									selectable_native_currencies={selectable_native_currencies}
-									setUserData={setUserData}
-									user={user}
-									coins={coins}
-								/>
-							)}
-							<ThemeSwitcher
-								selected={selected}
-								options={themeOptions}
-								toggle={this.onToggle}
-							/>
-							<div
-								className="login-container"
-								onClick={() => router.push('/login')}
-							>
-								{STRINGS['LOGIN_TEXT'].toUpperCase()}
-							</div>
-							<div
-								className={
-									activePath === '/details'
-										? 'active-menu app-bar-search-icon mx-3'
-										: 'app-bar-search-icon mx-3'
-								}
-								onClick={() => onMenuChange('/details')}
-							>
-								<SearchOutlined />
-							</div>
-						</div>
-					)}
-					{isLoggedIn() && (
-						<div
-							id="trade-nav-container"
-							className="d-flex app-bar-account justify-content-end trade-navbar-wrapper"
-						>
-							{this.renderAnnouncementPopup()}
-							<div
-								className="app-bar-deposit-btn d-flex"
-								onClick={this.onHandleDeposit}
-							>
-								<Image
-									iconId={'DEPOSIT_TITLE'}
-									icon={icons['DEPOSIT_TITLE']}
-									wrapperClassName="form_currency-ball margin-aligner"
-								/>
-								<span className="ml-2">
-									{STRINGS['ACCORDIAN.DEPOSIT_LABEL']}
-								</span>
-							</div>
-							<div className="d-flex app_bar-quicktrade-container language-content">
-								{languageFormValue
-									?.filter(({ value }) => value === activeLanguage)
-									?.map(({ value, icon, label }) => (
-										<div
-											key={value}
-											className="language_option"
-											onClick={() => this.onHandleOpenPopup()}
-										>
-											<Image
-												icon={icon}
-												alt={label}
-												wrapperClassName="flag-icon mr-2"
-											/>
-											<span className="caps">
-												{value}
-												{user?.settings?.interface?.display_currency && (
-													<span>
-														/{user?.settings?.interface?.display_currency}
+									<div className="d-flex app_bar-quicktrade-container language-content">
+										{languageFormValue
+											?.filter(({ value }) => value === activeLanguage)
+											?.map(({ value, icon, label }) => (
+												<div
+													key={value}
+													className="language_option"
+													onClick={() => this.onHandleOpenPopup()}
+												>
+													<Image
+														icon={icon}
+														alt={label}
+														wrapperClassName="flag-icon mr-2"
+													/>
+													<span className="caps">
+														{value}
+														{user?.settings?.interface?.display_currency && (
+															<span>
+																/{user?.settings?.interface?.display_currency}
+															</span>
+														)}
 													</span>
-												)}
-											</span>
+												</div>
+											))}
+									</div>
+									{!isHome && (
+										<div className="d-flex app_bar-quicktrade-container">
+											<ThemeSwitcher
+												selected={selected}
+												options={themeOptions}
+												toggle={this.onToggle}
+											/>
 										</div>
-									))}
-								{this.state.isDisplayLanguagePopup && (
-									<LanguageDisplayPopup
-										selected={activeLanguage}
-										valid_languages={valid_languages}
-										changeLanguage={changeLanguage}
-										isVisible={this.state.isDisplayLanguagePopup}
-										onHandleClose={this.onHandleClose}
-										selectable_native_currencies={selectable_native_currencies}
-										setUserData={setUserData}
-										user={user}
-										coins={coins}
-									/>
-								)}
-							</div>
-							<div className="d-flex app_bar-quicktrade-container">
-								<ThemeSwitcher
-									selected={selected}
-									options={themeOptions}
-									toggle={this.onToggle}
-								/>
-							</div>
-							{constants?.features?.announcement && (
-								<AnnouncementList user={user.email} />
-							)}
-							{/* <MenuList
+									)}
+									{constants?.features?.announcement && (
+										<AnnouncementList user={user.email} />
+									)}
+									{/* <MenuList
 							menuItems={menuItems}
 							securityPending={securityPending}
 							verificationPending={verificationPending}
@@ -728,26 +761,28 @@ class AppBar extends Component {
 							activePath={activePath}
 							onMenuChange={onMenuChange}
 						/> */}
-							<AccountTab
-								user={user}
-								securityPending={securityPending}
-								verificationPending={verificationPending}
-							/>
-							<Connections />
-							<div
-								className={
-									activePath === '/details'
-										? 'active-menu app-bar-search-icon'
-										: 'app-bar-search-icon'
-								}
-								onClick={() => onMenuChange('/details')}
-							>
-								<SearchOutlined />
-							</div>
+									<AccountTab
+										user={user}
+										securityPending={securityPending}
+										verificationPending={verificationPending}
+									/>
+									<Connections />
+									<div
+										className={
+											activePath === '/details'
+												? 'active-menu app-bar-search-icon'
+												: 'app-bar-search-icon'
+										}
+										onClick={() => onMenuChange('/details')}
+									>
+										<SearchOutlined />
+									</div>
+								</div>
+							)}
 						</div>
-					)}
-				</div>
-			</div>
+					</div>
+				)}
+			</>
 		);
 	}
 }
