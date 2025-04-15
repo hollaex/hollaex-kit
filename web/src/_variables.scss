@@ -276,6 +276,10 @@ $max-content-height-dialog-mobile: calc(
 	100vh - #{$navigation_bar-mobile--height * 3}
 );
 
+$language-option-dialog-height-mobile: calc(
+	100vh - #{$navigation_bar-mobile--height * 2}
+);
+
 $market-menu-height-dialog-mobile: calc(
 	100vh - 15rem - #{$navigation_bar-mobile--height * 2}
 );

@@ -175,7 +175,7 @@ const AccountList = ({
 			icon: 'REVOKE_SESSION',
 			title: 'SIGN_OUT_TEXT',
 			toolTipText: 'DESKTOP_NAVIGATION.SIGNOUT_DESC',
-			path: '/login',
+			path: browserHistory.getCurrentLocation().pathname,
 		},
 		{
 			icon: 'API_OPTION_ICON',
