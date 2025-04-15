@@ -4234,7 +4234,7 @@ const updateExchangeUserRole = async (roleId, { name, description, rolePermissio
 	}
 
 	const updates = {};
-	if (name !== undefined && name !== role.role_name) {
+	if (name !== undefined && name !== role.role_name && role.role_name !== 'Admin') {
 		updates.role_name = name;
 	}
 	if (description !== undefined && description !== role.description) {
@@ -4369,8 +4369,8 @@ const deleteExchangeUserRole = async (id) => {
 		throw new Error('Role not found');
 	}
 
-	if (role.users && role.users.length > 0) {
-		throw new Error('Cannot delete role with assigned users');
+	if (role.role_name === 'Admin') {
+		throw new Error('Cannot delete admin role');
 	}
 
 	await role.destroy();
