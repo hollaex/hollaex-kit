@@ -110,7 +110,14 @@ const roles = {
 		"/admin/roles:put",
 		"/admin/roles:delete",
 		"/admin/endpoints:get",
-		"/admin/signup:post"
+		"/admin/signup:post",
+		"/admin/broker:get",
+		"/admin/broker:post",
+		"/admin/broker:delete",
+		"/admin/broker:put",
+		"/admin/broker/markets:get",
+		"/admin/broker/test:post",
+		"/admin/broker/connect:get",
 	],
 	"is_supervisor": [
 		"/admin/exchange:get",

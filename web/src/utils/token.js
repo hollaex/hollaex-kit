@@ -51,6 +51,11 @@ export const getPermissions = () => {
 	if (!token || token === undefined) return '';
 	return jwtDecode(token)?.sub?.permissions;
 };
+export const getConfigs = () => {
+	const token = getToken();
+	if (!token || token === undefined) return '';
+	return jwtDecode(token)?.sub?.configs;
+};
 
 export const isUser = () => {
 	return checkRole() === '';
