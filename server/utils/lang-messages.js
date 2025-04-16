@@ -4167,6 +4167,19 @@ const functionMessages = {
     },
 }
 
-exports.getMessage = (message_type, lang) => messages?.[message_type]?.[lang];
+exports.getMessage = (message_type, lang = 'en') => {
+    
+    const message = messages?.[message_type]?.[lang];
+    let code;
+    if (messages?.[message_type]) {
+        const messageTypes = Object.keys(messages);
+        code = messageTypes.indexOf(message_type);
+    }
+    return {
+        message,
+        code,
+        lang
+    }
+}
 
 exports.functionMessages = functionMessages;

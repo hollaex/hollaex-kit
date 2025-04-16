@@ -9,7 +9,7 @@ const getTiers = (req, res) => {
 		return res.json(toolsLib.getKitTiers());
 	} catch (err) {
 		loggerTier.error(req.uuid, 'controllers/tier/getTiers err', err.message);
-		return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+		return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang)?.message, lang: errorMessageConverter(err, req?.auth?.sub?.lang)?.lang, code: errorMessageConverter(err, req?.auth?.sub?.lang)?.code });
 	}
 };
 
@@ -28,7 +28,7 @@ const postTier = (req, res) => {
 		})
 		.catch((err) => {
 			loggerTier.error(req.uuid, 'controllers/tier/postTier err', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang)?.message, lang: errorMessageConverter(err, req?.auth?.sub?.lang)?.lang, code: errorMessageConverter(err, req?.auth?.sub?.lang)?.code });
 		});
 };
 
@@ -53,7 +53,7 @@ const putTier = (req, res) => {
 		})
 		.catch((err) => {
 			loggerTier.error(req.uuid, 'controllers/tier/postTier err', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang)?.message, lang: errorMessageConverter(err, req?.auth?.sub?.lang)?.lang, code: errorMessageConverter(err, req?.auth?.sub?.lang)?.code });
 		});
 };
 
@@ -87,7 +87,7 @@ const updatePairFees = (req, res) => {
 				'controllers/tier/updatePairFees err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang)?.message, lang: errorMessageConverter(err, req?.auth?.sub?.lang)?.lang, code: errorMessageConverter(err, req?.auth?.sub?.lang)?.code });
 		});
 };
 

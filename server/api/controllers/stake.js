@@ -48,7 +48,7 @@ const getExchangeStakes = (req, res) => {
 		})
 		.catch((err) => {
 			loggerStake.error(req.uuid, 'controllers/stake/getExchangeStakes', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang)?.message, lang: errorMessageConverter(err, req?.auth?.sub?.lang)?.lang, code: errorMessageConverter(err, req?.auth?.sub?.lang)?.code });
 		});
 };
 
@@ -122,7 +122,7 @@ const createExchangeStakes = (req, res) => {
 				'controllers/stake/createExchangeStakes err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang)?.message, lang: errorMessageConverter(err, req?.auth?.sub?.lang)?.lang, code: errorMessageConverter(err, req?.auth?.sub?.lang)?.code });
 		});
 }
 
@@ -197,7 +197,7 @@ const updateExchangeStakes = (req, res) => {
 				'controllers/stake/updateExchangeStakes err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang)?.message, lang: errorMessageConverter(err, req?.auth?.sub?.lang)?.lang, code: errorMessageConverter(err, req?.auth?.sub?.lang)?.code });
 		});
 }
 
@@ -220,7 +220,7 @@ const deleteExchangeStakes = (req, res) => {
 				'controllers/broker/deleteExchangeStakes err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang)?.message, lang: errorMessageConverter(err, req?.auth?.sub?.lang)?.lang, code: errorMessageConverter(err, req?.auth?.sub?.lang)?.code });
 		});
 }
 
@@ -266,7 +266,7 @@ const getExchangeStakersForAdmin = (req, res) => {
 		})
 		.catch((err) => {
 			loggerStake.error(req.uuid, 'controllers/stake/getExchangeStakersAdmin', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang)?.message, lang: errorMessageConverter(err, req?.auth?.sub?.lang)?.lang, code: errorMessageConverter(err, req?.auth?.sub?.lang)?.code });
 		});
 }
 
@@ -311,7 +311,7 @@ const getExchangeStakersForUser = (req, res) => {
 		})
 		.catch((err) => {
 			loggerStake.error(req.uuid, 'controllers/stake/getExchangeStakersForUser', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang)?.message, lang: errorMessageConverter(err, req?.auth?.sub?.lang)?.lang, code: errorMessageConverter(err, req?.auth?.sub?.lang)?.code });
 		});
 }
 
@@ -345,7 +345,7 @@ const createStaker = (req, res) => {
 				'controllers/stake/createStaker err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang)?.message, lang: errorMessageConverter(err, req?.auth?.sub?.lang)?.lang, code: errorMessageConverter(err, req?.auth?.sub?.lang)?.code });
 		});
 }
 
@@ -367,7 +367,7 @@ const deleteExchangeStaker = (req, res) => {
 				'controllers/broker/stake err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang)?.message, lang: errorMessageConverter(err, req?.auth?.sub?.lang)?.lang, code: errorMessageConverter(err, req?.auth?.sub?.lang)?.code });
 		});
 }
 
@@ -382,7 +382,7 @@ const unstakeEstimateSlash = (req, res) => {
 		})
 		.catch((err) => {
 			loggerStake.error(req.uuid, 'controllers/stake/unstakeEstimateSlash', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang)?.message, lang: errorMessageConverter(err, req?.auth?.sub?.lang)?.lang, code: errorMessageConverter(err, req?.auth?.sub?.lang)?.code });
 		});
 }
 
@@ -397,7 +397,7 @@ const unstakeEstimateSlashAdmin = (req, res) => {
 		})
 		.catch((err) => {
 			loggerStake.error(req.uuid, 'controllers/stake/unstakeEstimateSlashAdmin', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang)?.message, lang: errorMessageConverter(err, req?.auth?.sub?.lang)?.lang, code: errorMessageConverter(err, req?.auth?.sub?.lang)?.code });
 		});
 }
 
@@ -411,7 +411,7 @@ const fetchStakeAnalytics = (req, res) => {
 		})
 		.catch((err) => {
 			loggerStake.error(req.uuid, 'controllers/stake/fetchStakeAnalytics', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang)?.message, lang: errorMessageConverter(err, req?.auth?.sub?.lang)?.lang, code: errorMessageConverter(err, req?.auth?.sub?.lang)?.code });
 		});
 }
 

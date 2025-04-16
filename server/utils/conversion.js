@@ -35,17 +35,17 @@ const errorMessageConverter = (error, lang = 'en') => {
 
 	let response = getMessage(message, lang);
 
-	if (response) return response;
+	if (response?.message) return response;
 	else {
 		try {
 			const messageKeys = Object.keys(functionMessages);
 			const Index = Object.keys(functionMessages).findIndex(x => message.startsWith(x))
 			if (Index > -1) {
 				let difference = message.split(' ').filter(x => !(functionMessages[messageKeys[Index]]('')['en'].split(' ')).includes(x));
-				return response = functionMessages[messageKeys[Index]](difference)[lang];
-			} else return response = message;
+				return response = { message: functionMessages[messageKeys[Index]](difference)[lang] };
+			} else return response = { message };
 		} catch (error) {
-			return message;
+			return { message };
 		}
 	}
 };

@@ -110,7 +110,7 @@ const signUpUser = (req, res) => {
 		.then(() => res.status(201).json({ message: USER_REGISTERED }))
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/signUpUser', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang)?.message, lang: errorMessageConverter(err, req?.auth?.sub?.lang)?.lang, code: errorMessageConverter(err, req?.auth?.sub?.lang)?.code });
 		});
 };
 
@@ -171,7 +171,7 @@ const verifyUser = (req, res) => {
 		})
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/verifyUser', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang)?.message, lang: errorMessageConverter(err, req?.auth?.sub?.lang)?.lang, code: errorMessageConverter(err, req?.auth?.sub?.lang)?.code });
 		});
 };
 
@@ -422,7 +422,7 @@ const loginPost = (req, res) => {
 		})
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/loginPost catch', err.message);
-			return res.status(err.statusCode || 401).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			return res.status(err.statusCode || 401).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang)?.message, lang: errorMessageConverter(err, req?.auth?.sub?.lang)?.lang, code: errorMessageConverter(err, req?.auth?.sub?.lang)?.code });
 		});
 };
 
@@ -444,7 +444,7 @@ const confirmLogin = (req, res) => {
 				'controllers/user/confirmLogin err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang)?.message, lang: errorMessageConverter(err, req?.auth?.sub?.lang)?.lang, code: errorMessageConverter(err, req?.auth?.sub?.lang)?.code });
 		});
 };
 
@@ -465,7 +465,7 @@ const freezeUserByCode = (req, res) => {
 				'controllers/user/freezeUserByCode err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang)?.message, lang: errorMessageConverter(err, req?.auth?.sub?.lang)?.lang, code: errorMessageConverter(err, req?.auth?.sub?.lang)?.code });
 		});
 };
 
@@ -497,7 +497,7 @@ function requestEmailConfirmation(req, res) {
 			return res.json({ message: `Confirmation email sent to: ${email}` });
 		})
 		.catch((err) => {
-			let errorMessage = errorMessageConverter(err, req?.auth?.sub?.lang);
+			let errorMessage = errorMessageConverter(err, req?.auth?.sub?.lang)?.message;
 
 			if (errorMessage === USER_NOT_FOUND) {
 				errorMessage = 'User not found';
@@ -544,7 +544,7 @@ const requestResetPassword = (req, res) => {
 			return res.json({ message: `Password request sent to: ${email}` });
 		})
 		.catch((err) => {
-			let errorMessage = errorMessageConverter(err, req?.auth?.sub?.lang);
+			let errorMessage = errorMessageConverter(err, req?.auth?.sub?.lang)?.message;
 
 			if (errorMessage === USER_NOT_FOUND) {
 				errorMessage = `Password request sent to: ${email}`;
@@ -563,7 +563,7 @@ const resetPassword = (req, res) => {
 		})
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/resetPassword', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang)?.message, lang: errorMessageConverter(err, req?.auth?.sub?.lang)?.lang, code: errorMessageConverter(err, req?.auth?.sub?.lang)?.code });
 		});
 };
 
@@ -584,7 +584,7 @@ const getUser = (req, res) => {
 		})
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/getUser', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang)?.message, lang: errorMessageConverter(err, req?.auth?.sub?.lang)?.lang, code: errorMessageConverter(err, req?.auth?.sub?.lang)?.code });
 		});
 };
 
@@ -602,7 +602,7 @@ const updateSettings = (req, res) => {
 		.then((user) => res.json(user))
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/updateSettings', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang)?.message, lang: errorMessageConverter(err, req?.auth?.sub?.lang)?.lang, code: errorMessageConverter(err, req?.auth?.sub?.lang)?.code });
 		});
 };
 
@@ -624,7 +624,7 @@ const changePassword = (req, res) => {
 		.then(() => res.json({ message: `Verification email to change password is sent to: ${email}` }))
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/changePassword', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang)?.message, lang: errorMessageConverter(err, req?.auth?.sub?.lang)?.lang, code: errorMessageConverter(err, req?.auth?.sub?.lang)?.code });
 		});
 };
 
@@ -643,7 +643,7 @@ const confirmChangePassword = (req, res) => {
 		.then(() => res.redirect(301, `${DOMAIN}/change-password-confirm/${code}?isSuccess=true`))
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/confirmChangeUserPassword', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang)?.message, lang: errorMessageConverter(err, req?.auth?.sub?.lang)?.lang, code: errorMessageConverter(err, req?.auth?.sub?.lang)?.code });
 		});
 };
 
@@ -657,7 +657,7 @@ const setUsername = (req, res) => {
 		.then(() => res.json({ message: 'Username successfully changed' }))
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/setUsername', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang)?.message, lang: errorMessageConverter(err, req?.auth?.sub?.lang)?.lang, code: errorMessageConverter(err, req?.auth?.sub?.lang)?.code });
 		});
 };
 
@@ -716,7 +716,7 @@ const getUserLogins = (req, res) => {
 		})
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/getUserLogins', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang)?.message, lang: errorMessageConverter(err, req?.auth?.sub?.lang)?.lang, code: errorMessageConverter(err, req?.auth?.sub?.lang)?.code });
 		});
 };
 
@@ -742,7 +742,7 @@ const affiliationCount = (req, res) => {
 		})
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/affiliationCount', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang)?.message, lang: errorMessageConverter(err, req?.auth?.sub?.lang)?.lang, code: errorMessageConverter(err, req?.auth?.sub?.lang)?.code });
 		});
 };
 
@@ -760,7 +760,7 @@ const getUserBalance = (req, res) => {
 		})
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/getUserBalance', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang)?.message, lang: errorMessageConverter(err, req?.auth?.sub?.lang)?.lang, code: errorMessageConverter(err, req?.auth?.sub?.lang)?.code });
 		});
 };
 
@@ -782,7 +782,7 @@ const deactivateUser = (req, res) => {
 				'controllers/user/deactivateUser',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang)?.message, lang: errorMessageConverter(err, req?.auth?.sub?.lang)?.lang, code: errorMessageConverter(err, req?.auth?.sub?.lang)?.code });
 		});
 };
 
@@ -829,7 +829,7 @@ const createCryptoAddress = (req, res) => {
 				'controllers/user/createCryptoAddress',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang)?.message, lang: errorMessageConverter(err, req?.auth?.sub?.lang)?.lang, code: errorMessageConverter(err, req?.auth?.sub?.lang)?.code });
 		});
 };
 
@@ -848,7 +848,7 @@ const getHmacToken = (req, res) => {
 				'controllers/user/getHmacToken err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang)?.message, lang: errorMessageConverter(err, req?.auth?.sub?.lang)?.lang, code: errorMessageConverter(err, req?.auth?.sub?.lang)?.code });
 		});
 };
 
@@ -898,7 +898,7 @@ const createHmacToken = (req, res) => {
 				'controllers/user/createHmacToken',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang)?.message, lang: errorMessageConverter(err, req?.auth?.sub?.lang)?.lang, code: errorMessageConverter(err, req?.auth?.sub?.lang)?.code });
 		});
 };
 
@@ -950,7 +950,7 @@ function updateHmacToken(req, res) {
 				err.message,
 				err.stack
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang)?.message, lang: errorMessageConverter(err, req?.auth?.sub?.lang)?.lang, code: errorMessageConverter(err, req?.auth?.sub?.lang)?.code });
 		});
 }
 
@@ -991,7 +991,7 @@ const deleteHmacToken = (req, res) => {
 				'controllers/user/deleteHmacToken',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang)?.message, lang: errorMessageConverter(err, req?.auth?.sub?.lang)?.lang, code: errorMessageConverter(err, req?.auth?.sub?.lang)?.code });
 		});
 };
 
@@ -1013,7 +1013,7 @@ const getUserStats = (req, res) => {
 		})
 		.catch((err) => {
 			loggerUser.error('controllers/user/getUserStats', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang)?.message, lang: errorMessageConverter(err, req?.auth?.sub?.lang)?.lang, code: errorMessageConverter(err, req?.auth?.sub?.lang)?.code });
 		});
 };
 
@@ -1082,7 +1082,7 @@ const userCheckTransaction = (req, res) => {
 				'controllers/user/userCheckTransaction catch',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang)?.message, lang: errorMessageConverter(err, req?.auth?.sub?.lang)?.lang, code: errorMessageConverter(err, req?.auth?.sub?.lang)?.code });
 		});
 };
 
@@ -1199,7 +1199,7 @@ const getUserSessions = (req, res) => {
 		})
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/getUserSessions', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang)?.message, lang: errorMessageConverter(err, req?.auth?.sub?.lang)?.lang, code: errorMessageConverter(err, req?.auth?.sub?.lang)?.code });
 		});
 };
 
@@ -1216,7 +1216,7 @@ const revokeUserSession = (req, res) => {
 		})
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/revokeUserSession', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang)?.message, lang: errorMessageConverter(err, req?.auth?.sub?.lang)?.lang, code: errorMessageConverter(err, req?.auth?.sub?.lang)?.code });
 		});
 };
 
@@ -1237,7 +1237,7 @@ const userLogout = (req, res) => {
 		})
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/userLogout', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang)?.message, lang: errorMessageConverter(err, req?.auth?.sub?.lang)?.lang, code: errorMessageConverter(err, req?.auth?.sub?.lang)?.code });
 		});
 };
 
@@ -1275,7 +1275,7 @@ const userDelete = (req, res) => {
 		})
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/userDelete', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang)?.message, lang: errorMessageConverter(err, req?.auth?.sub?.lang)?.lang, code: errorMessageConverter(err, req?.auth?.sub?.lang)?.code });
 		});
 };
 
@@ -1349,7 +1349,7 @@ const getUserBalanceHistory = (req, res) => {
 				'controllers/user/getUserBalanceHistory',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang)?.message, lang: errorMessageConverter(err, req?.auth?.sub?.lang)?.lang, code: errorMessageConverter(err, req?.auth?.sub?.lang)?.code });
 		});
 };
 
@@ -1867,7 +1867,7 @@ const fetchAnnouncements = (req, res) => {
 		})
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/fetchAnnouncements', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang)?.message, lang: errorMessageConverter(err, req?.auth?.sub?.lang)?.lang, code: errorMessageConverter(err, req?.auth?.sub?.lang)?.code });
 		});
 };
 
