@@ -11,6 +11,7 @@ import OtcDeskContainer from './otcdesk';
 import QuickTradeTab from './QuickTradeConfig';
 import ExchangeOrdersContainer from '../Orders';
 import P2P from './p2p';
+import { getPermissions } from 'utils/token';
 import './index.css';
 
 const TabPane = Tabs.TabPane;
@@ -88,57 +89,67 @@ const PairsTab = (props) => {
 				onChange={handleTabChange}
 				renderTabBar={renderTabBar}
 			>
-				<TabPane tab="Public markets" key="0">
-					<PairsSummary
-						router={props.router}
-						location={props.location}
-						handleHide={handleHide}
-						getMyExchange={getMyExchange}
-					/>
-				</TabPane>
-				<TabPane tab="Orders" key="1">
-					<ExchangeOrdersContainer />
-				</TabPane>
-				<TabPane tab="OTC desk" key="2">
-					<OtcDeskContainer
-						coins={coinData}
-						pairs={pairData}
-						allCoins={props.coins}
-						exchange={props.exchange}
-						user={props.user}
-						balanceData={props.user && props.user.balance}
-					/>
-				</TabPane>
-				<TabPane tab="P2P" key="3">
-					<P2P
-						coins={props.coinObjects}
-						pairs={pairData}
-						allCoins={props.coins}
-						exchange={props.exchange}
-						user={props.user}
-						balanceData={props.user && props.user.balance}
-						quickTradeData={quickTradeData}
-						features={props.features}
-						brokers={props.broker}
-						networkQuickTrades={props.networkQuickTrades}
-						handleTabChange={handleTabChange}
-					/>
-				</TabPane>
-				<TabPane tab="Quick Trade" key="4">
-					<QuickTradeTab
-						coins={props.coinObjects}
-						pairs={pairData}
-						allCoins={props.coins}
-						exchange={props.exchange}
-						user={props.user}
-						balanceData={props.user && props.user.balance}
-						quickTradeData={quickTradeData}
-						features={props.features}
-						brokers={props.broker}
-						networkQuickTrades={props.networkQuickTrades}
-						handleTabChange={handleTabChange}
-					/>
-				</TabPane>
+				{getPermissions().includes('/admin/pairs/network:get') && (
+					<TabPane tab="Public markets" key="0">
+						<PairsSummary
+							router={props.router}
+							location={props.location}
+							handleHide={handleHide}
+							getMyExchange={getMyExchange}
+						/>
+					</TabPane>
+				)}
+				{getPermissions().includes('/admin/orders:get') && (
+					<TabPane tab="Orders" key="1">
+						<ExchangeOrdersContainer />
+					</TabPane>
+				)}
+				{getPermissions().includes('/admin/broker:get') && (
+					<TabPane tab="OTC desk" key="2">
+						<OtcDeskContainer
+							coins={coinData}
+							pairs={pairData}
+							allCoins={props.coins}
+							exchange={props.exchange}
+							user={props.user}
+							balanceData={props.user && props.user.balance}
+						/>
+					</TabPane>
+				)}
+				{getPermissions().includes('/admin/p2p/dispute:get') && (
+					<TabPane tab="P2P" key="3">
+						<P2P
+							coins={props.coinObjects}
+							pairs={pairData}
+							allCoins={props.coins}
+							exchange={props.exchange}
+							user={props.user}
+							balanceData={props.user && props.user.balance}
+							quickTradeData={quickTradeData}
+							features={props.features}
+							brokers={props.broker}
+							networkQuickTrades={props.networkQuickTrades}
+							handleTabChange={handleTabChange}
+						/>
+					</TabPane>
+				)}
+				{getPermissions().includes('/admin/exchange:put') && (
+					<TabPane tab="Quick Trade" key="4">
+						<QuickTradeTab
+							coins={props.coinObjects}
+							pairs={pairData}
+							allCoins={props.coins}
+							exchange={props.exchange}
+							user={props.user}
+							balanceData={props.user && props.user.balance}
+							quickTradeData={quickTradeData}
+							features={props.features}
+							brokers={props.broker}
+							networkQuickTrades={props.networkQuickTrades}
+							handleTabChange={handleTabChange}
+						/>
+					</TabPane>
+				)}
 			</Tabs>
 		</div>
 	);
