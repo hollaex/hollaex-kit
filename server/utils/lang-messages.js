@@ -4268,7 +4268,7 @@ exports.getMessage = (message_type, lang = 'en') => {
     let code;
     if (messages?.[message_type]) {
         const messageTypes = Object.keys(messages);
-        code = messageTypes.indexOf(message_type);
+        code = messageTypes.indexOf(message_type) + 10;
     }
     return {
         message,
