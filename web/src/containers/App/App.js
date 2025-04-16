@@ -841,7 +841,7 @@ class App extends Component {
 										onMenuChange={this.handleMenuChange}
 										isHome={isHome}
 									>
-										{isBrowser && isMenubar && (
+										{isBrowser && (
 											<AppMenuBar
 												menuItems={menuItems}
 												activePath={this.state.activeMenu}

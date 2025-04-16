@@ -106,6 +106,8 @@ class InputGroup extends React.PureComponent {
 			loading,
 			expired,
 			disabled,
+			isMiniCalculator = false,
+			inputRef,
 		} = this.props;
 
 		const suffix = loading ? (
@@ -158,7 +160,9 @@ class InputGroup extends React.PureComponent {
 									)
 								}
 								onSelect={() => {
-									this.onHandleSearch.current.focus();
+									isMiniCalculator
+										? inputRef.current.focus()
+										: this.onHandleSearch.current.focus();
 								}}
 							>
 								{options.map((symbol, index) => {
@@ -188,7 +192,9 @@ class InputGroup extends React.PureComponent {
 													<Coin
 														iconId={icon_id}
 														type={
-															window.innerWidth > 768 && !isOpen
+															isMiniCalculator
+																? 'CS8'
+																: window.innerWidth > 768 && !isOpen
 																? 'CS8'
 																: isOpen
 																? 'CS6'
@@ -205,7 +211,7 @@ class InputGroup extends React.PureComponent {
 						</div>
 						<div>
 							<Input
-								ref={this.onHandleSearch}
+								ref={isMiniCalculator ? inputRef : this.onHandleSearch}
 								type="number"
 								placeholder={loading ? '' : '0'}
 								style={{}}
@@ -214,7 +220,7 @@ class InputGroup extends React.PureComponent {
 										? 'input-group__input active-input'
 										: 'input-group__input'
 								}
-								value={inputValue || ''}
+								value={(!loading && inputValue) || ''}
 								onChange={this.onChangeEvent}
 								bordered={false}
 								step={limits.MIN}

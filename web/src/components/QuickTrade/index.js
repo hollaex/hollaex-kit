@@ -35,12 +35,12 @@ import { translateError } from 'components/QuickTrade/utils';
 import QuoteExpiredBlock from './QuoteExpiredBlock';
 import withConfig from 'components/ConfigProvider/withConfig';
 
-const PAIR2_STATIC_SIZE = 0.000001;
-const SPENDING = {
+export const PAIR2_STATIC_SIZE = 0.000001;
+export const SPENDING = {
 	SOURCE: 'SOURCE',
 	TARGET: 'TARGET',
 };
-const TYPES = {
+export const TYPES = {
 	PRO: 'pro',
 	BROKER: 'broker',
 	NETWORK: 'network',
