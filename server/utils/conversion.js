@@ -42,7 +42,7 @@ const errorMessageConverter = (error, lang = 'en') => {
 			const Index = Object.keys(functionMessages).findIndex(x => message.startsWith(x))
 			if (Index > -1) {
 				let difference = message.split(' ').filter(x => !(functionMessages[messageKeys[Index]]('')['en'].split(' ')).includes(x));
-				return response = { message: functionMessages[messageKeys[Index]](difference)[lang], code: Index };
+				return response = { message: functionMessages[messageKeys[Index]](difference)[lang], lang, code: Index };
 			} else return response = { message, lang };
 		} catch (error) {
 			return { message, lang };
