@@ -23,7 +23,8 @@ const applyKitChanges = (req, res) => {
 		})
 		.catch((err) => {
 			loggerNotification.verbose('controller/notification/applyKitChanges', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang)?.message, lang: errorMessageConverter(err, req?.auth?.sub?.lang)?.lang, code: errorMessageConverter(err, req?.auth?.sub?.lang)?.code });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
