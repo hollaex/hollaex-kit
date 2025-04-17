@@ -224,12 +224,21 @@ class AppBar extends Component {
 		this.setState({ walletPending: walletPending ? 1 : 0 });
 	};
 
+	updateUrlAndTheme = (theme) => {
+		const { router, changeTheme } = this.props;
+		const params = new URLSearchParams(window.location.search);
+		params.set('theme', theme);
+		const currentUrl = window.location.href.split('?')[0];
+		const newUrl = `${currentUrl}?${params.toString()}`;
+		router.replace(newUrl);
+		changeTheme(theme);
+		localStorage.setItem('theme', theme);
+	};
+
 	handleTheme = (selected) => {
 		const { isEditMode, themeOptions } = this.props;
-		const params = new URLSearchParams(window.location.search);
 		if (!isLoggedIn() || isEditMode) {
-			this.props.changeTheme(selected);
-			localStorage.setItem('theme', selected);
+			this.updateUrlAndTheme(selected);
 		} else {
 			const { settings = { interface: {} } } = this.props.user;
 			const settingsObj = { interface: { ...settings.interface } };
@@ -241,12 +250,7 @@ class AppBar extends Component {
 				.then(({ data }) => {
 					this.props.setUserData(data);
 					if (data.settings && data.settings.interface) {
-						params.set('theme', data.settings.interface.theme);
-						const currentUrl = window.location.href.split('?')[0];
-						const newUrl = `${currentUrl}?${params.toString()}`;
-						this.props.router.replace(newUrl);
-						this.props.changeTheme(data.settings.interface.theme);
-						localStorage.setItem('theme', data.settings.interface.theme);
+						this.updateUrlAndTheme(data.settings.interface.theme);
 					}
 				})
 				.catch((err) => {

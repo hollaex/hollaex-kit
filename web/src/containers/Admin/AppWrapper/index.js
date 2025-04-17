@@ -9,9 +9,9 @@ import { ReactSVG } from 'react-svg';
 import MobileDetect from 'mobile-detect';
 // eslint-disable-next-line
 import {
-	PATHS,
+	// PATHS,
 	ADMIN_PATHS,
-	SUPERVISOR_PATH,
+	// SUPERVISOR_PATH,
 	pathToPermissionMap,
 } from '../paths';
 import SetupWizard from '../SetupWizard';

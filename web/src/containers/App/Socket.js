@@ -144,6 +144,20 @@ class Container extends Component {
 		this.props.requestTiers();
 	};
 
+	setTheme = () => {
+		const { themeOptions, activeTheme } = this.props;
+		const isValidTheme = themeOptions.some(
+			(option) => option.value === this.props?.router?.location?.query?.theme
+		);
+		if (
+			activeTheme !== this.props?.router?.location?.query?.theme &&
+			isValidTheme
+		) {
+			this.props.changeTheme(this.props?.router?.location?.query?.theme);
+			localStorage.setItem('theme', this.props?.router?.location?.query?.theme);
+		}
+	};
+
 	getUserDetails = () => {
 		const { themeOptions } = this.props;
 		const isValidTheme = themeOptions.some(
@@ -201,6 +215,13 @@ class Container extends Component {
 										},
 									},
 								};
+							}
+							if (
+								!this.props.router.location.query.theme &&
+								data.settings.interface.theme
+							) {
+								this.props.changeTheme(data.settings.interface.theme);
+								localStorage.setItem('theme', data.settings.interface.theme);
 							}
 							if (
 								data.settings.interface.theme !== this.props.activeTheme &&
@@ -385,6 +406,10 @@ class Container extends Component {
 
 		if (isLoggedIn() && !isUserFetched) {
 			this.getUserDetails();
+		}
+
+		if (!isLoggedIn()) {
+			this.setTheme();
 		}
 
 		privateSocket.onopen = (evt) => {
