@@ -2345,6 +2345,12 @@ paths:
           type: string
           maxLength: 256
         - in: query
+          name: description
+          description: description of the transaction
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
           name: address
           description: Address of the deposit
           required: false
@@ -2462,6 +2468,12 @@ paths:
         - in: query
           name: transaction_id
           description: unique transaction id
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: description
+          description: description of the transaction
           required: false
           type: string
           maxLength: 256

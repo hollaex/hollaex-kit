@@ -29,6 +29,7 @@ const getAdminDeposits = (req, res) => {
 		waiting,
 		transaction_id,
 		address,
+		description,
 		format
 	} = req.swagger.params;
 
@@ -52,6 +53,7 @@ const getAdminDeposits = (req, res) => {
 		end_date.value,
 		transaction_id.value,
 		address.value,
+		description.value,
 		format.value,
 		{
 			additionalHeaders: {

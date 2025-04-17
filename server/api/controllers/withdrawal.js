@@ -304,7 +304,8 @@ const getAdminWithdrawals = (req, res) => {
 		waiting,
 		format,
 		transaction_id,
-		address
+		address,
+		description
 	} = req.swagger.params;
 
 	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1 && !user_id.value) {
@@ -327,6 +328,7 @@ const getAdminWithdrawals = (req, res) => {
 		end_date.value,
 		transaction_id.value,
 		address.value,
+		description.value,
 		format.value,
 		{
 			additionalHeaders: {
