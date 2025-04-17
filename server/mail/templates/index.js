@@ -4,6 +4,8 @@ const { CONFIRMATION, EXPLORERS, DOMAIN, GET_KIT_CONFIG, GET_EMAIL, LOGIN_TIME_O
 const DEFAULT_LANGUAGE = () => GET_KIT_CONFIG().defaults.language;
 const API_NAME = () => GET_KIT_CONFIG().api_name;
 const { TemplateEmail } = require('./helpers/common');
+const LINKS = () => GET_KIT_CONFIG().links;
+const LOGO_IMAGE = () => GET_KIT_CONFIG().logo_image;
 const { MAILTYPE, languageFile } = require('../strings');
 
 String.prototype.format = function () {
@@ -46,7 +48,7 @@ const generateMessageContent = (
 
 		result = {
 			subject: subject,
-			html: TemplateEmail({ title }, message.html, language, domain),
+			html: message.html,
 			text: message.text
 		};
 
@@ -70,7 +72,7 @@ const generateMessageContent = (
 
 		result = {
 			subject: subject,
-			html: (TemplateEmail({ title }, message.html, language, domain)).replace(/\r?\n|\t|\r/g, ''),
+			html: message.html.replace(/\r?\n|\t|\r/g, ''),
 			text: message.text
 		};
 	}
@@ -79,6 +81,12 @@ const generateMessageContent = (
 };
 
 const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
+
+	html = html.replace(/\$\{domain\}/g, domain || '');
+	html = html.replace(/\$\{logoPath\}/g, LOGO_IMAGE() || '');
+	html = html.replace(/\$\{referral_link\}/g, LINKS().referral_link || '');
+	html = html.replace(/\$\{referral_label\}/g, LINKS().referral_label || '');
+
 	if (type === MAILTYPE.LOGIN) { // ok
 		html = html.replace(/\$\{time\}/g, data.time || '');
 		html = html.replace(/\$\{country\}/g, data.country || '');
