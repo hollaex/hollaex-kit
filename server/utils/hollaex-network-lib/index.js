@@ -724,6 +724,7 @@ class HollaExNetwork {
 			transactionId: null,
 			description: null,
 			address: null,
+			description: null,
 			format: null,
 			additionalHeaders: null
 		}
@@ -758,6 +759,9 @@ class HollaExNetwork {
 
 		if (isString(opts.address)) {
 			path += `&address=${opts.address}`;
+		}
+		if (isString(opts.description)) {
+			path += `&description=${opts.description}`;
 		}
 
 		if (isString(opts.transactionId)) {
@@ -979,6 +983,7 @@ class HollaExNetwork {
 			transactionId: null,
 			description: null,
 			address: null,
+			description: null,
 			format: null,
 			additionalHeaders: null
 		}
@@ -1009,6 +1014,10 @@ class HollaExNetwork {
 
 		if (isString(opts.order)) {
 			path += `&order=${opts.order}`;
+		}
+
+		if (isString(opts.address)) {
+			path += `&address=${opts.address}`;
 		}
 
 		if (isString(opts.address)) {
