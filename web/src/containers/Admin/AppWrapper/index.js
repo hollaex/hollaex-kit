@@ -7,8 +7,13 @@ import { Layout, Menu, Row, Col, Spin, message, Tooltip } from 'antd';
 import { debounce, capitalize } from 'lodash';
 import { ReactSVG } from 'react-svg';
 import MobileDetect from 'mobile-detect';
-
-import { PATHS, ADMIN_PATHS, SUPERVISOR_PATH } from '../paths';
+// eslint-disable-next-line
+import {
+	// PATHS,
+	ADMIN_PATHS,
+	// SUPERVISOR_PATH,
+	pathToPermissionMap,
+} from '../paths';
 import SetupWizard from '../SetupWizard';
 import {
 	removeToken,
@@ -16,7 +21,10 @@ import {
 	isSupport,
 	isSupervisor,
 	isAdmin,
+	// eslint-disable-next-line
 	checkRole,
+	getRole,
+	getPermissions,
 } from 'utils/token';
 import { getExchangeInitialized, getSetupCompleted } from 'utils/initialize';
 import { logout } from 'actions/authAction';
@@ -445,7 +453,7 @@ class AppWrapper extends React.Component {
 	};
 
 	renderItems = () => {
-		switch (checkRole()) {
+		switch (getRole()) {
 			case 'supervisor':
 				return (
 					<div className="role-section bg-black">
@@ -563,13 +571,26 @@ class AppWrapper extends React.Component {
 			isConfigure,
 		} = this.state;
 		let pathNames = [];
-		if (checkRole() === 'admin') {
-			pathNames = ADMIN_PATHS;
-		} else if (checkRole() === 'supervisor') {
-			pathNames = [...PATHS, ...SUPERVISOR_PATH];
-		} else {
-			pathNames = PATHS;
-		}
+
+		const userPermissions = getPermissions();
+
+		pathNames = ADMIN_PATHS.filter((item) => {
+			if (item.path === '/admin') return true;
+			const requiredPrefixes = pathToPermissionMap[item.path] || [
+				`${item.path}:`,
+			];
+			return requiredPrefixes.some((prefix) =>
+				userPermissions.some((p) => p.startsWith(prefix))
+			);
+		});
+
+		// if (checkRole() === 'admin') {
+		// 	pathNames = ADMIN_PATHS;
+		// } else if (checkRole() === 'supervisor') {
+		// 	pathNames = [...PATHS, ...SUPERVISOR_PATH];
+		// } else {
+		// 	pathNames = PATHS;
+		// }
 
 		if (features.apps) {
 			pathNames = [
