@@ -759,6 +759,7 @@ class HollaExNetwork {
 		if (isString(opts.address)) {
 			path += `&address=${opts.address}`;
 		}
+
 		if (isString(opts.transactionId)) {
 			path += `&transaction_id=${opts.transactionId}`;
 		}
