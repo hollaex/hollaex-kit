@@ -248,6 +248,101 @@ const messages = {
         "vi": "Thông tin đăng nhập không đúng.",
         "zh": "凭证不正确。"
     },
+    "Incorrect credentials. You have 5 more attempts left": {
+        "en": "Incorrect credentials. You have 5 more attempts left",
+        "de": "Falsche Anmeldeinformationen. Sie haben noch 5 Versuche übrig",
+        "es": "Credenciales incorrectas. Te quedan 5 intentos más",
+        "fa": "اطلاعات ورود نادرست است. ۵ تلاش دیگر باقی مانده",
+        "fr": "Identifiants incorrects. Il vous reste 5 tentatives",
+        "id": "Kredensial salah. Anda memiliki 5 percobaan lagi",
+        "it": "Credenziali errate. Hai ancora 5 tentativi",
+        "ja": "認証情報が間違っています。あと5回試せます",
+        "ko": "잘못된 자격 증명입니다. 5번 더 시도할 수 있습니다",
+        "mn": "Буруу нэвтрэх мэдээлэл. Танд 5 оролдлого үлдсэн",
+        "nl": "Onjuiste inloggegevens. U heeft nog 5 pogingen over",
+        "pt": "Credenciais incorretas. Você tem mais 5 tentativas",
+        "ru": "Неправильные учетные данные. У вас осталось 5 попыток",
+        "tr": "Hatalı kimlik bilgileri. 5 deneme hakkınız kaldı",
+        "ur": "غلط تصدیق نامہ۔ آپ کے پاس مزید 5 کوششیں باقی ہیں",
+        "vi": "Thông tin đăng nhập không đúng. Bạn còn 5 lần thử nữa",
+        "zh": "凭证不正确。您还有5次尝试机会"
+    },
+    "Incorrect credentials. You have 4 more attempts left": {
+        "en": "Incorrect credentials. You have 4 more attempts left",
+        "de": "Falsche Anmeldeinformationen. Sie haben noch 4 Versuche übrig",
+        "es": "Credenciales incorrectas. Te quedan 4 intentos más",
+        "fa": "اطلاعات ورود نادرست است. ۵ تلاش دیگر باقی مانده",
+        "fr": "Identifiants incorrects. Il vous reste 4 tentatives",
+        "id": "Kredensial salah. Anda memiliki 4 percobaan lagi",
+        "it": "Credenziali errate. Hai ancora 4 tentativi",
+        "ja": "認証情報が間違っています。あと4回試せます",
+        "ko": "잘못된 자격 증명입니다. 4번 더 시도할 수 있습니다",
+        "mn": "Буруу нэвтрэх мэдээлэл. Танд 4 оролдлого үлдсэн",
+        "nl": "Onjuiste inloggegevens. U heeft nog 4 pogingen over",
+        "pt": "Credenciais incorretas. Você tem mais 4 tentativas",
+        "ru": "Неправильные учетные данные. У вас осталось 4 попыток",
+        "tr": "Hatalı kimlik bilgileri. 4 deneme hakkınız kaldı",
+        "ur": "غلط تصدیق نامہ۔ آپ کے پاس مزید 4 کوششیں باقی ہیں",
+        "vi": "Thông tin đăng nhập không đúng. Bạn còn 4 lần thử nữa",
+        "zh": "凭证不正确。您还有4次尝试机会"
+    },
+    "Incorrect credentials. You have 3 more attempts left": {
+        "en": "Incorrect credentials. You have 3 more attempts left",
+        "de": "Falsche Anmeldeinformationen. Sie haben noch 3 Versuche übrig",
+        "es": "Credenciales incorrectas. Te quedan 3 intentos más",
+        "fa": "اطلاعات ورود نادرست است. ۵ تلاش دیگر باقی مانده",
+        "fr": "Identifiants incorrects. Il vous reste 3 tentatives",
+        "id": "Kredensial salah. Anda memiliki 3 percobaan lagi",
+        "it": "Credenziali errate. Hai ancora 3 tentativi",
+        "ja": "認証情報が間違っています。あと3回試せます",
+        "ko": "잘못된 자격 증명입니다. 3번 더 시도할 수 있습니다",
+        "mn": "Буруу нэвтрэх мэдээлэл. Танд 3 оролдлого үлдсэн",
+        "nl": "Onjuiste inloggegevens. U heeft nog 3 pogingen over",
+        "pt": "Credenciais incorretas. Você tem mais 3 tentativas",
+        "ru": "Неправильные учетные данные. У вас осталось 3 попыток",
+        "tr": "Hatalı kimlik bilgileri. 3 deneme hakkınız kaldı",
+        "ur": "غلط تصدیق نامہ۔ آپ کے پاس مزید 3 کوششیں باقی ہیں",
+        "vi": "Thông tin đăng nhập không đúng. Bạn còn 3 lần thử nữa",
+        "zh": "凭证不正确。您还有3次尝试机会"
+    },
+    "Incorrect credentials. You have 2 more attempts left": {
+        "en": "Incorrect credentials. You have 2 more attempts left",
+        "de": "Falsche Anmeldeinformationen. Sie haben noch 2 Versuche übrig",
+        "es": "Credenciales incorrectas. Te quedan 2 intentos más",
+        "fa": "اطلاعات ورود نادرست است. ۵ تلاش دیگر باقی مانده",
+        "fr": "Identifiants incorrects. Il vous reste 2 tentatives",
+        "id": "Kredensial salah. Anda memiliki 2 percobaan lagi",
+        "it": "Credenziali errate. Hai ancora 2 tentativi",
+        "ja": "認証情報が間違っています。あと2回試せます",
+        "ko": "잘못된 자격 증명입니다. 2번 더 시도할 수 있습니다",
+        "mn": "Буруу нэвтрэх мэдээлэл. Танд 2 оролдлого үлдсэн",
+        "nl": "Onjuiste inloggegevens. U heeft nog 2 pogingen over",
+        "pt": "Credenciais incorretas. Você tem mais 2 tentativas",
+        "ru": "Неправильные учетные данные. У вас осталось 2 попыток",
+        "tr": "Hatalı kimlik bilgileri. 2 deneme hakkınız kaldı",
+        "ur": "غلط تصدیق نامہ۔ آپ کے پاس مزید 2 کوششیں باقی ہیں",
+        "vi": "Thông tin đăng nhập không đúng. Bạn còn 2 lần thử nữa",
+        "zh": "凭证不正确。您还有2次尝试机会"
+    },
+    "Incorrect credentials. You have 1 more attempt left": {
+        "en": "Incorrect credentials. You have 1 more attempt left",
+        "de": "Falsche Anmeldeinformationen. Sie haben noch 1 Versuche übrig",
+        "es": "Credenciales incorrectas. Te quedan 1 intentos más",
+        "fa": "اطلاعات ورود نادرست است. ۵ تلاش دیگر باقی مانده",
+        "fr": "Identifiants incorrects. Il vous reste 1 tentatives",
+        "id": "Kredensial salah. Anda memiliki 1 percobaan lagi",
+        "it": "Credenziali errate. Hai ancora 1 tentativi",
+        "ja": "認証情報が間違っています。あと1回試せます",
+        "ko": "잘못된 자격 증명입니다. 1번 더 시도할 수 있습니다",
+        "mn": "Буруу нэвтрэх мэдээлэл. Танд 1 оролдлого үлдсэн",
+        "nl": "Onjuiste inloggegevens. U heeft nog 1 pogingen over",
+        "pt": "Credenciais incorretas. Você tem mais 1 tentativas",
+        "ru": "Неправильные учетные данные. У вас осталось 1 попыток",
+        "tr": "Hatalı kimlik bilgileri. 1 deneme hakkınız kaldı",
+        "ur": "غلط تصدیق نامہ۔ آپ کے پاس مزید 1 کوششیں باقی ہیں",
+        "vi": "Thông tin đăng nhập không đúng. Bạn còn 1 lần thử nữa",
+        "zh": "凭证不正确。您还有1次尝试机会"
+    },
     "User is now verified": {
         "en": "User is now verified",
         "de": "Benutzer ist jetzt verifiziert",
@@ -4167,6 +4262,19 @@ const functionMessages = {
     },
 }
 
-exports.getMessage = (message_type, lang) => messages?.[message_type]?.[lang];
+exports.getMessage = (message_type, lang = 'en') => {
+    
+    const message = messages?.[message_type]?.[lang];
+    let code;
+    if (messages?.[message_type]) {
+        const messageTypes = Object.keys(messages);
+        code = messageTypes.indexOf(message_type) + 10;
+    }
+    return {
+        message,
+        code,
+        lang
+    }
+}
 
 exports.functionMessages = functionMessages;
