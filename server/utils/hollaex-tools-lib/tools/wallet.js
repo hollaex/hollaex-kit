@@ -689,6 +689,7 @@ const getUserTransactionsByKitId = (
 	endDate,
 	transactionId,
 	address,
+	description,
 	format,
 	opts = {
 		additionalHeaders: null
@@ -719,6 +720,7 @@ const getUserTransactionsByKitId = (
 						endDate,
 						transactionId,
 						address,
+						description,
 						format: (format && (format === 'csv' || format === 'all')) ? 'all' : null, // for csv get all data
 						...opts
 					});
@@ -746,6 +748,7 @@ const getUserTransactionsByKitId = (
 						endDate,
 						transactionId,
 						address,
+						description,
 						format: (format && (format === 'csv' || format === 'all')) ? 'all' : null, // for csv get all data
 						...opts
 					});
@@ -846,6 +849,7 @@ const getUserDepositsByKitId = (
 	endDate,
 	transactionId,
 	address,
+	description,
 	format,
 	opts = {
 		additionalHeaders: null
@@ -868,6 +872,7 @@ const getUserDepositsByKitId = (
 		endDate,
 		transactionId,
 		address,
+		description,
 		format,
 		opts
 	);
@@ -889,6 +894,7 @@ const getUserWithdrawalsByKitId = (
 	endDate,
 	transactionId,
 	address,
+	description,
 	format,
 	opts = {
 		additionalHeaders: null
@@ -911,6 +917,7 @@ const getUserWithdrawalsByKitId = (
 		endDate,
 		transactionId,
 		address,
+		description,
 		format,
 		opts
 	);
