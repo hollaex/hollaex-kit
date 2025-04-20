@@ -275,7 +275,7 @@ const createUser = (
 				let role = null;
 				if (opts.role === 'admin') {
 					const Role = getModel('role');
-					const adminRole = await Role.findOne({ where: { role_name: 'Admin' } });
+					const adminRole = await Role.findOne({ where: { role_name: 'admin' } });
 					if (!adminRole) throw new Error('Role not found');
 					role = adminRole.role_name;
 				}
@@ -4214,7 +4214,7 @@ const createExchangeUserRole = async ({ name, description, rolePermissions, conf
 
 
 	return Role.create({
-		role_name: name,
+		role_name: name.toLowerCase(),
 		description,
 		permissions: permissionsToStore,
 		configs: configsToStore,
@@ -4234,7 +4234,7 @@ const updateExchangeUserRole = async (roleId, { name, description, rolePermissio
 	}
 
 	const updates = {};
-	if (name !== undefined && name !== role.role_name && role.role_name !== 'Admin') {
+	if (name !== undefined && name !== role.role_name && role.role_name !== 'admin') {
 		updates.role_name = name;
 	}
 	if (description !== undefined && description !== role.description) {
@@ -4369,7 +4369,7 @@ const deleteExchangeUserRole = async (id) => {
 		throw new Error('Role not found');
 	}
 
-	if (role.role_name === 'Admin') {
+	if (role.role_name === 'admin') {
 		throw new Error('Cannot delete admin role');
 	}
 

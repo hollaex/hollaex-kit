@@ -684,6 +684,18 @@ const verifyBearerTokenExpressMiddleware = (scopes = BASE_SCOPES) => (req, res, 
 					return sendError(TOKEN_EXPIRED);
 				}
 
+				if (intersection(decodedToken.scopes, scopes).length === 0) {
+					loggerAuth.error(
+						'verifyToken',
+						'not permission',
+						decodedToken.sub.email,
+						decodedToken.scopes,
+						scopes
+					);
+
+					return sendError(NOT_AUTHORIZED);
+				}
+
 				if (getFrozenUsers()[decodedToken.sub.id]) {
 					loggerAuth.error(
 						'helpers/auth/verifyToken deactivated account',
@@ -981,11 +993,6 @@ const issueToken = (
 	networkId,
 	email,
 	ip,
-	isAdmin = false,
-	isSupport = false,
-	isSupervisor = false,
-	isKYC = false,
-	isCommunicator = false,
 	expiresIn = getKitSecrets().security.token_time, // 24 hours by default
 	lang = 'en',
 	permissions = [],
@@ -994,23 +1001,13 @@ const issueToken = (
 ) => {
 	// Default scope is ['user']
 	let scopes = [].concat(BASE_SCOPES);
+	let userPermissions = [];
+	let userConfigs = [];
 
 	if (checkAdminIp(getKitSecrets().admin_whitelist, ip)) {
-		if (isAdmin) {
-			scopes = scopes.concat(ROLES.ADMIN);
-		}
-		if (isSupport) {
-			scopes = scopes.concat(ROLES.SUPPORT);
-		}
-		if (isSupervisor) {
-			scopes = scopes.concat(ROLES.SUPERVISOR);
-		}
-		if (isKYC) {
-			scopes = scopes.concat(ROLES.KYC);
-		}
-		if (isCommunicator) {
-			scopes = scopes.concat(ROLES.COMMUNICATOR);
-		}
+		userPermissions = permissions;
+		userConfigs = configs;
+		scopes.push(role);
 	}
 
 	const token = jwt.sign(
@@ -1020,8 +1017,8 @@ const issueToken = (
 				email,
 				networkId,
 				lang,
-				permissions,
-				configs,
+				permissions: userPermissions,
+				configs: userConfigs,
 				role
 			},
 			scopes,

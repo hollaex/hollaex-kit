@@ -291,9 +291,12 @@ module.exports = {
 
 		// Create roles first
 		const createdRoles = {};
-
+		await roleModel.destroy({
+			where: {}
+		})
+		
 		for (const [roleFlag, permissions] of Object.entries(roles)) {
-			const roleName = roleFlag.replace('is_', '').charAt(0).toUpperCase() +
+			const roleName = roleFlag.replace('is_', '').charAt(0).toLowerCase() +
 				roleFlag.replace('is_', '').slice(1);
 
 			const [role] = await roleModel.findOrCreate({
