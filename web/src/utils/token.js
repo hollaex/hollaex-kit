@@ -30,7 +30,7 @@ export const decodeToken = (token) => jwtDecode(token);
 export const checkRole = () => {
 	const token = getToken();
 	if (!token || token === undefined) return '';
-	const roles = jwtDecode(token).scopes;
+	const roles = [jwtDecode(token)?.sub?.role?.toLowerCase()];
 	let role = '';
 	if (roles.includes('admin')) {
 		role = 'admin';
