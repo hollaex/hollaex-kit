@@ -476,12 +476,22 @@ const createSuspiciousLogin = async (user, ip, device, country, domain, origin, 
 		where: {
 			user_id: user.id,
 			status: false,
-			device,
+			// device,
 			country
 		}
 	});
 
 	if (!loginData) {
+		loggerUser.verbose(
+			'tools/user/loginPost creating suspicious login record',
+			'user id',
+			user.id,
+			'country',
+			country,
+			'device',
+			device,
+
+		);
 		return registerUserLogin(user.id, ip, {
 			device,
 			domain,
@@ -493,7 +503,16 @@ const createSuspiciousLogin = async (user, ip, device, country, domain, origin, 
 			country
 		});
 	}
+	loggerUser.verbose(
+		'tools/user/loginPost existing suspicious login record found, updating attempt counter',
+		'user id',
+		user.id,
+		'country',
+		country,
+		'device',
+		device,
 
+	);
 	await updateLoginAttempt(loginData.id);
 	return loginData;
 };

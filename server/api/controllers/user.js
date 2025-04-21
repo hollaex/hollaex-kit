@@ -316,9 +316,9 @@ const loginPost = (req, res) => {
 
 			const successfulRecords = lastLogins.filter(login => login.status);
 
-			if (isArray(lastLogins) && lastLogins.length > 0 && !successfulRecords?.find(login => login.device === device)) {
-				suspiciousLogin = true;
-			}
+			// if (isArray(lastLogins) && lastLogins.length > 0 && !successfulRecords?.find(login => login.device === device)) {
+			// 	suspiciousLogin = true;
+			// }
 
 
 			const geo = geoip.lookup(ip);
@@ -326,6 +326,18 @@ const loginPost = (req, res) => {
 			const country = geo?.country || '';
 
 			if (isArray(lastLogins) && lastLogins.length > 0 && !successfulRecords?.find(login => login.country === country)) {
+				loggerUser.verbose(
+					req.uuid,
+					'controllers/user/loginPost suspicious login detected',
+					'user id',
+					user.id,
+					'country',
+					country,
+					'login records length',
+					lastLogins.length,
+					'successful records length',
+					successfulRecords.length
+				);
 				suspiciousLogin = true;
 			}
 
