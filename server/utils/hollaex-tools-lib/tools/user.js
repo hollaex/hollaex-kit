@@ -1016,7 +1016,7 @@ const freezeUserById = (userId) => {
 			if (!user.activated) {
 				throw new Error(USER_ALREADY_DEACTIVATED);
 			}
-			if (user.is_admin) {
+			if (user.is_admin || user.role === 'admin') {
 				throw new Error(CANNOT_DEACTIVATE_ADMIN);
 			}
 			return user.update({ activated: false }, { fields: ['activated'], returning: true });
@@ -1043,7 +1043,7 @@ const freezeUserByEmail = (email) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
 			}
-			if (user.is_admin) {
+			if (user.is_admin || user.role === 'admin') {
 				throw new Error(CANNOT_DEACTIVATE_ADMIN);
 			}
 			if (!user.activated) {
@@ -1773,85 +1773,6 @@ const getExchangeOperators = (opts = {
 	return dbQuery.findAndCountAllWithRows('user', options);
 };
 
-const inviteExchangeOperator = (invitingEmail, email, role, opts = {
-	additionalHeaders: null
-}) => {
-	const roles = {
-		is_admin: false,
-		is_supervisor: false,
-		is_support: false,
-		is_kyc: false,
-		is_communicator: false
-	};
-
-	if (!email || !isEmail(email)) {
-		return reject(new Error(PROVIDE_VALID_EMAIL));
-	}
-
-	role = role.toLowerCase();
-	const roleToUpdate = `is_${role}`;
-
-	if (role === 'user') {
-		return reject(new Error('Must invite user as an operator role'));
-	} else {
-		if (roles[roleToUpdate] === undefined) {
-			return reject(new Error('Invalid role'));
-		} else {
-			roles[roleToUpdate] = true;
-		}
-	}
-
-	const tempPassword = uuid();
-
-	return getModel('sequelize').transaction((transaction) => {
-		return getModel('user').findOrCreate({
-			defaults: {
-				email,
-				email_verified: true,
-				password: tempPassword,
-				...roles,
-				settings: INITIAL_SETTINGS()
-			},
-			where: { email },
-			transaction
-		})
-			.then(async ([user, created]) => {
-				if (created) {
-					const networkUser = await getNodeLib().createUser(email, opts);
-					return all([
-						user.update(
-							{ network_id: networkUser.id },
-							{ returning: true, fields: ['network_id'], transaction }
-						),
-						created
-					]);
-				} else {
-					if (user.is_admin || user.is_supervisor || user.is_support || user.is_kyc || user.is_communicator) {
-						throw new Error('User is already an operator');
-					}
-					return all([
-						user.update({ ...roles }, { returning: true, fields: Object.keys(roles), transaction }),
-						created
-					]);
-				}
-			});
-	})
-		.then(async ([user, created]) => {
-			sendEmail(
-				MAILTYPE.INVITED_OPERATOR,
-				user.email,
-				{
-					invitingEmail,
-					created,
-					password: created ? tempPassword : undefined,
-					role
-				},
-				user.settings
-			);
-			return;
-		});
-};
-
 const updateUserMeta = async (id, givenMeta = {}, opts = { overwrite: null }, auditInfo) => {
 	const { user_meta: referenceMeta } = getKitConfig();
 
@@ -2317,12 +2238,16 @@ const deleteKitUser = async (userId, sendEmail = true) => {
 		attributes: [
 			'id',
 			'email',
-			'activated'
+			'activated',
+			'role'
 		]
 	});
 
 	if (!user) {
 		throw new Error(USER_NOT_FOUND);
+	}
+	if (user.role === 'admin') {
+		throw new Error(CANNOT_CHANGE_ADMIN_EMAIL);
 	}
 	await revokeAllUserSessions(userId);
 	// we simply add _deleted at the end of users email. This way he won't be able to login anymore and he can create another account.
@@ -2381,13 +2306,14 @@ const changeKitUserEmail = async (userId, newEmail, auditInfo) => {
 			'id',
 			'email',
 			'is_admin',
+			'role'
 		]
 	});
 
 	if (!user) {
 		throw new Error(USER_NOT_FOUND);
 	}
-	if (user.is_admin) {
+	if (user.is_admin || user.role === 'admin') {
 		throw new Error(CANNOT_CHANGE_ADMIN_EMAIL);
 	}
 
@@ -4413,7 +4339,6 @@ module.exports = {
 	getUserStatsByKitId,
 	disableUserWithdrawal,
 	getExchangeOperators,
-	inviteExchangeOperator,
 	createUserOnNetwork,
 	getUserNetwork,
 	getUsersNetwork,

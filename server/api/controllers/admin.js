@@ -844,53 +844,6 @@ const getOperators = (req, res) => {
 		});
 };
 
-const inviteNewOperator = (req, res) => {
-	loggerAdmin.verbose(
-		req.uuid,
-		'controllers/admin/inviteNewOperator auth',
-		req.auth
-	);
-
-	const invitingEmail = req.auth.sub.email;
-	const { email, role } = req.swagger.params;
-
-	if (!email.value || typeof email.value !== 'string' || !isEmail(email.value)) {
-		loggerAdmin.error(
-			req.uuid,
-			'controllers/admin/inviteNewOperator invalid email',
-			email.value
-		);
-		return res.status(400).json({ message: 'Invalid Email' });
-	}
-
-	if (!role.value || typeof role.value !== 'string') {
-		loggerAdmin.error(
-			req.uuid,
-			'controllers/admin/inviteNewOperator invalid role',
-			role.value
-		);
-		return res.status(400).json({ message: 'Invalid role' });
-	}
-
-	toolsLib.user.inviteExchangeOperator(invitingEmail, email.value, role.value, {
-		additionalHeaders: {
-			'x-forwarded-for': req.headers['x-forwarded-for']
-		}
-	})
-		.then(() => {
-			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
-			return res.json({ message: 'Success' });
-		})
-		.catch((err) => {
-			loggerAdmin.error(
-				req.uuid,
-				'controllers/admin/inviteNewOperator err',
-				err.message
-			);
-			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
-			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
-		});
-};
 
 const getExchangeGeneratedFees = (req, res) => {
 	loggerAdmin.verbose(
@@ -3434,7 +3387,6 @@ module.exports = {
 	putNetworkCredentials,
 	uploadImage,
 	getOperators,
-	inviteNewOperator,
 	getExchangeGeneratedFees,
 	mintAsset,
 	burnAsset,
