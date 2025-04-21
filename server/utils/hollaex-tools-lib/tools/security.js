@@ -1347,7 +1347,6 @@ const checkPermission = (req, user) => {
 }
 
 const checkUserPermission = (user, requiredPermission) => {
-	console.log({ GG: user })
 	return user?.sub?.permissions?.includes(requiredPermission);
 }
 
