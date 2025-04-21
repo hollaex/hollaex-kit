@@ -4456,7 +4456,7 @@ paths:
       x-security-types:
         - bearer
         - hmac
-  /admin/roles:
+  /admin/role:
     x-swagger-router-controller: admin
     get:
       description: Get roles by admin
