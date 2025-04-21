@@ -494,14 +494,12 @@ const Roles = ({ constants, user }) => {
 											setDisplayAssignRole(false);
 											requestInitRole();
 											message.success('Role Assigned');
-										} catch (error) {
-											let errMsg = '';
-											if (error.response) {
-												errMsg = error.response.data.message;
-											} else {
-												errMsg = error.message;
-											}
-											message.error(errMsg);
+										} catch (err) {
+											const _error =
+												err.data && err.data.message
+													? err.data.message
+													: err.message;
+											message.error(_error);
 										}
 									}}
 									style={{
