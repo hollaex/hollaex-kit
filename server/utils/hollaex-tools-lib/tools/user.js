@@ -1138,21 +1138,22 @@ const getUserRole = (opts = {}) => {
 };
 
 const updateUserRole = async (user_id, role_name) => {
-
-	if (user_id === 1) {
-		return reject(new Error(CANNOT_CHANGE_ADMIN_ROLE));
-	}
 	const Role = getModel('role');
 	const User = getModel('user');
 
 	const user = await User.findOne({ where: { id: user_id } });
 	if (!user) throw new Error('User not found');
 
+	if (user.role == 'admin') {
+		throw new Error(CANNOT_CHANGE_ADMIN_ROLE);
+	}
+
 	if(role_name === 'user') {
 		user.role = null;
 		await user.save();
+		await revokeAllUserSessions(user_id);
 		return user;
-	} else{
+	} else {
 		const role = await Role.findOne({ where: { role_name } });
 		if (!role) throw new Error('Role not found');
 
