@@ -55,7 +55,7 @@ const {
 } = require(`${SERVER_PATH}/constants`);
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { resolve, reject, promisify } = require('bluebird');
-const { getKitSecrets, getKitConfig, getFrozenUsers, getNetworkKeySecret } = require('./common');
+const { getKitSecrets, getKitConfig, getFrozenUsers, getNetworkKeySecret, getRoles } = require('./common');
 const bcrypt = require('bcryptjs');
 const { all } = require('bluebird');
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
@@ -830,6 +830,17 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 					if (!isSignatureValid) {
 						throw new Error(API_SIGNATURE_INVALID);
 					} else {
+						const roles = getRoles();
+						const userRole = roles.find(role => role.role_name === token.role);
+						if (userRole) {
+							token = {
+								...token,
+								sub: {
+									permissions: userRole.permissions,
+									configs: userRole.configs,
+								}
+							}
+						}
 						checkPermission({ swagger: { apiPath: originalUrl }, method }, token);
 						return {
 							sub: { id: token.user.id, email: token.user.email, networkId: token.user.network_id },
@@ -1298,12 +1309,14 @@ const generateDashToken = (opts = {
 
 const checkPermission = (req, user) => {
 	// Extract path and method from request
-	const apiPath = req?.swagger?.apiPath; // admin/user/role
+	let apiPath = req?.swagger?.apiPath; // admin/user/role
 	const method = req.method.toLowerCase(); // "get", "post", etc.
 
 	if (!apiPath) {
 		throw new Error(NOT_AUTHORIZED);
 	};
+
+	apiPath = apiPath.replace(/^\/v[0-9]+\//, '/');
 
 	if (!apiPath.includes('admin')) return;
 
@@ -1334,6 +1347,7 @@ const checkPermission = (req, user) => {
 }
 
 const checkUserPermission = (user, requiredPermission) => {
+	console.log({ GG: user })
 	return user?.sub?.permissions?.includes(requiredPermission);
 }
 
