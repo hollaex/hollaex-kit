@@ -4235,7 +4235,7 @@ const updateExchangeUserRole = async (roleId, { name, description, rolePermissio
 
 	const updates = {};
 	if (name !== undefined && name !== role.role_name && role.role_name !== 'admin') {
-		updates.role_name = name;
+		updates.role_name = name.toLowerCase()
 	}
 	if (description !== undefined && description !== role.description) {
 		updates.description = description;

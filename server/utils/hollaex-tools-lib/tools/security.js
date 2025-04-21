@@ -596,7 +596,6 @@ const verifyHmacTokenMiddleware = (req, definition, apiKey, cb, isSocket = false
 		}
 	};
 	// Swagger endpoint scopes
-	const endpointScopes = req.swagger ? req.swagger.operation['x-security-scopes'] : BASE_SCOPES;
 	const endpointPermissions = req.swagger ? req.swagger.operation['x-token-permissions'] : ['can_read'];
 
 	const apiSignature = req.headers ? req.headers['api-signature'] : undefined;
@@ -616,7 +615,6 @@ const verifyHmacTokenMiddleware = (req, definition, apiKey, cb, isSocket = false
 			req.method,
 			req.originalUrl,
 			req.body,
-			endpointScopes,
 			endpointPermissions,
 			ip)
 			.then((auth) => {
@@ -781,7 +779,7 @@ const verifyBearerTokenPromise = (token, ip, scopes = BASE_SCOPES) => {
 	}
 };
 
-const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, originalUrl, body, scopes = BASE_SCOPES, permissions = [], ip = undefined) => {
+const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, originalUrl, body, permissions = [], ip = undefined) => {
 	if (!apiKey) {
 		return reject(new Error(API_KEY_NULL));
 	} else if (!apiSignature) {
@@ -791,13 +789,6 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 	} else {
 		return findTokenByApiKey(apiKey)
 			.then((token) => {
-				if (originalUrl?.includes('/admin') && !scopes?.includes(ROLES.ADMIN)) {
-					scopes.push(ROLES.ADMIN);
-				}
-
-				if (token.role !== ROLES.ADMIN && scopes.includes(ROLES.ADMIN)) {
-					throw new Error(NOT_AUTHORIZED);
-				}
 
 				if (token.whitelisting_enabled && token.whitelisted_ips.length > 0) {
 					const found = token.whitelisted_ips.find((wlip) => {
@@ -839,6 +830,7 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 					if (!isSignatureValid) {
 						throw new Error(API_SIGNATURE_INVALID);
 					} else {
+						checkPermission({ swagger: { apiPath: originalUrl }, method }, token);
 						return {
 							sub: { id: token.user.id, email: token.user.email, networkId: token.user.network_id },
 							scopes: [token.role]
