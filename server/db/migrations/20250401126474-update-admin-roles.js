@@ -23,7 +23,6 @@ const roles = {
 		"/admin/kit/user-meta:post",
 		"/admin/kit/user-meta:put",
 		"/admin/kit/user-meta:delete",
-		"/admin/operator/invite:get",
 		"/admin/upload:post",
 		"/admin/pair:post",
 		"/admin/pair:put",
