@@ -51,6 +51,7 @@ const {
 	TOKEN_TYPES,
 	HMAC_TOKEN_EXPIRY,
 	HMAC_TOKEN_KEY,
+	ROLE_PERMISSIONS
 } = require(`${SERVER_PATH}/constants`);
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { resolve, reject, promisify } = require('bluebird');
@@ -516,11 +517,6 @@ const verifyBearerTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = fa
 		return sendError(MULTIPLE_API_KEY);
 	} else if (!has(req.headers, 'api-key') && has(req.headers, 'authorization')) {
 
-		// Swagger endpoint scopes
-		const endpointScopes = (req.swagger
-			? req.swagger.operation['x-security-scopes']
-			: BASE_SCOPES) || [];
-
 		let ip = req.headers ? req.headers['x-real-ip'] : undefined;
 
 		//validate the 'Authorization' header. it should have the following format:
@@ -539,23 +535,6 @@ const verifyBearerTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = fa
 						decodedToken.ip,
 						decodedToken.sub
 					);
-
-					if (req?.path?.includes('/admin') && !endpointScopes?.includes(ROLES.ADMIN)) {
-						endpointScopes.push(ROLES.ADMIN);
-					}
-
-					// Check set of permissions that are available with the token and set of acceptable permissions set on swagger endpoint
-					if (intersection(decodedToken.scopes, endpointScopes).length === 0) {
-						loggerAuth.error(
-							'verifyToken',
-							'not permission',
-							decodedToken.sub.email,
-							decodedToken.scopes,
-							endpointScopes
-						);
-
-						return sendError(NOT_AUTHORIZED);
-					}
 
 					if (decodedToken.iss !== ISSUER) {
 						loggerAuth.error(
@@ -581,6 +560,15 @@ const verifyBearerTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = fa
 					} catch (err) {
 						return sendError(err.message);
 					}
+
+					try {
+						if (!isSocket) {
+							checkPermission(req, decodedToken);
+						}
+					} catch (err) {
+						return sendError(err.message);
+					}
+
 					req.auth = decodedToken;
 					return cb(null);
 				} else {
@@ -696,18 +684,6 @@ const verifyBearerTokenExpressMiddleware = (scopes = BASE_SCOPES) => (req, res, 
 					return sendError(TOKEN_EXPIRED);
 				}
 
-				if (intersection(decodedToken.scopes, scopes).length === 0) {
-					loggerAuth.error(
-						'verifyToken',
-						'not permission',
-						decodedToken.sub.email,
-						decodedToken.scopes,
-						scopes
-					);
-
-					return sendError(NOT_AUTHORIZED);
-				}
-
 				if (getFrozenUsers()[decodedToken.sub.id]) {
 					loggerAuth.error(
 						'helpers/auth/verifyToken deactivated account',
@@ -723,6 +699,13 @@ const verifyBearerTokenExpressMiddleware = (scopes = BASE_SCOPES) => (req, res, 
 				} catch (err) {
 					return sendError(err.message);
 				}
+
+				try {
+					checkPermission(req, decodedToken);
+				} catch (err) {
+					return sendError(err.message);
+				}
+
 				req.auth = decodedToken;
 				return next();
 			} else {
@@ -800,9 +783,10 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 					scopes.push(ROLES.ADMIN);
 				}
 
-				if(token.role !== ROLES.ADMIN && scopes.includes(ROLES.ADMIN)) {
+				if (token.role !== ROLES.ADMIN && scopes.includes(ROLES.ADMIN)) {
 					throw new Error(NOT_AUTHORIZED);
 				}
+
 				if (token.whitelisting_enabled && token.whitelisted_ips.length > 0) {
 					const found = token.whitelisted_ips.find((wlip) => {
 						return ipRangeCheck(ip, wlip);
@@ -901,14 +885,14 @@ const verifySession = async (token) => {
 		throw new Error(TOKEN_REVOKED);
 	}
 
-	if(new Date(session.expiry_date).getTime() < new Date().getTime()) {
+	if (new Date(session.expiry_date).getTime() < new Date().getTime()) {
 		throw new Error(TOKEN_EXPIRED);
 	}
 
-	if(new Date(session.last_seen).getTime() + 1000 * 60 * 5 < new Date().getTime()) {
+	if (new Date(session.last_seen).getTime() + 1000 * 60 * 5 < new Date().getTime()) {
 		const hashedToken = crypto.createHash('md5').update(token).digest('hex');
 		const sessionData = await dbQuery.findOne('session', { where: { token: hashedToken } });
-		const updatedSession =  await sessionData.update(
+		const updatedSession = await sessionData.update(
 			{ last_seen: new Date() }
 		);
 		const expirationInSeconds = getExpirationDateInSeconds(updatedSession.dataValues.expiry_date);
@@ -923,7 +907,7 @@ const findSession = async (token) => {
 	const hashedToken = crypto.createHash('md5').update(token).digest('hex');
 
 	let session = await client.getAsync(hashedToken);
-	
+
 	if (!session) {
 		loggerAuth.verbose(
 			'security/findSession jwt token not found in redis',
@@ -936,7 +920,7 @@ const findSession = async (token) => {
 			}
 		});
 
-		if(session && session.status && new Date(session.expiry_date).getTime() > new Date().getTime()) {
+		if (session && session.status && new Date(session.expiry_date).getTime() > new Date().getTime()) {
 			const expirationInSeconds = getExpirationDateInSeconds(session.expiry_date);
 			client.setexAsync(hashedToken, expirationInSeconds, JSON.stringify(session));
 
@@ -945,7 +929,7 @@ const findSession = async (token) => {
 				hashedToken
 			);
 		}
-			
+
 		return session;
 	} else {
 		loggerAuth.debug(
@@ -1003,7 +987,10 @@ const issueToken = (
 	isKYC = false,
 	isCommunicator = false,
 	expiresIn = getKitSecrets().security.token_time, // 24 hours by default
-	lang = 'en'
+	lang = 'en',
+	permissions = [],
+	configs = [],
+	role = 'user'
 ) => {
 	// Default scope is ['user']
 	let scopes = [].concat(BASE_SCOPES);
@@ -1032,7 +1019,10 @@ const issueToken = (
 				id,
 				email,
 				networkId,
-				lang
+				lang,
+				permissions,
+				configs,
+				role
 			},
 			scopes,
 			ip,
@@ -1110,15 +1100,15 @@ const createUserKitHmacToken = async (userId, otpCode, ip, name, role = ROLES.US
 	const secret = crypto.randomBytes(25).toString('hex');
 	const expiry = Date.now() + HMAC_TOKEN_EXPIRY;
 	const user = await getModel('user').findOne({ where: { id: userId } });
-	if(role !== ROLES.USER && !user.is_admin) {
+	if (role !== ROLES.USER && !user.is_admin) {
 		throw new Error(NOT_AUTHORIZED);
 	}
-	if(role !== ROLES.USER && role !== ROLES.ADMIN) {
+	if (role !== ROLES.USER && role !== ROLES.ADMIN) {
 		// role can only be admin or user
 		throw new Error(NOT_AUTHORIZED);
 	}
 
-	if(!whitelisted_ips && role === ROLES.ADMIN) {
+	if (!whitelisted_ips && role === ROLES.ADMIN) {
 		throw new Error(WHITELIST_NOT_PROVIDED);
 	}
 
@@ -1146,7 +1136,7 @@ const createUserKitHmacToken = async (userId, otpCode, ip, name, role = ROLES.US
 
 async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permissions, whitelisted_ips, whitelisting_enabled) {
 	await checkUserOtpActive(userId, otpCode);
-	const token = await findToken({ where: { id: token_id , user_id: userId } });
+	const token = await findToken({ where: { id: token_id, user_id: userId } });
 
 	if (!token) {
 		throw new Error(TOKEN_NOT_FOUND);
@@ -1154,11 +1144,11 @@ async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permi
 		throw new Error(TOKEN_REVOKED);
 	}
 
-	if(whitelisted_ips && whitelisted_ips.length == 0 && token.role === ROLES.ADMIN) {
+	if (whitelisted_ips && whitelisted_ips.length == 0 && token.role === ROLES.ADMIN) {
 		throw new Error(WHITELIST_DISABLE_ADMIN);
 	}
 
-	if(whitelisting_enabled == false && token.role === ROLES.ADMIN) {
+	if (whitelisting_enabled == false && token.role === ROLES.ADMIN) {
 		throw new Error(WHITELIST_DISABLE_ADMIN);
 	}
 
@@ -1316,6 +1306,47 @@ const generateDashToken = (opts = {
 }) => {
 	return getNodeLib().generateDashToken({ additionalHeaders: opts.additionalHeaders });
 };
+
+const checkPermission = (req, user) => {
+	// Extract path and method from request
+	const apiPath = req?.swagger?.apiPath; // admin/user/role
+	const method = req.method.toLowerCase(); // "get", "post", etc.
+
+	if (!apiPath) {
+		throw new Error(NOT_AUTHORIZED);
+	};
+
+	if (!apiPath.includes('admin')) return;
+
+	// Convert path to permission key
+	// ["admin", "user", "role"]
+	const pathParts = apiPath.split('/').filter(Boolean);
+
+	// Navigate through permissions object
+	let currentLevel = ROLE_PERMISSIONS;
+	for (const part of pathParts) {
+		currentLevel = currentLevel[part];
+		if (!currentLevel) break;
+	}
+
+	//Get required permission string
+	const requiredPermission = currentLevel?.[method];
+
+	if (!requiredPermission) {
+		throw new Error(`No permission configured for ${apiPath} ${method.toUpperCase()}`)
+	}
+
+	// Check if user has permission
+	const userHasPermission = checkUserPermission(user, requiredPermission);
+
+	if (!userHasPermission) {
+		throw new Error(`${NOT_AUTHORIZED} Required permission: ${requiredPermission}`)
+	}
+}
+
+const checkUserPermission = (user, requiredPermission) => {
+	return user?.sub?.permissions?.includes(requiredPermission);
+}
 
 module.exports = {
 	checkCaptcha,

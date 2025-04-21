@@ -573,7 +573,9 @@
 			"TRADE_POPUPS": "주문 알림창",
 			"POPUP_ORDER_CONFIRMATION": "주문 실행시 확인알림창",
 			"POPUP_ORDER_COMPLETED": "주문 완료시 알림창",
-			"POPUP_ORDER_PARTIALLY_FILLED": "주문이 부분적으로 채워질 경우 알림창"
+			"POPUP_ORDER_PARTIALLY_FILLED": "주문이 부분적으로 채워질 경우 알림창",
+			"POPUP_NEW_ORDER_CREATED": "새로운 주문이 접수되면 팝업을 표시합니다.",
+			"POPUP_ORDER_CANCELLED": "주문 취소 시 팝업 표시"
 		},
 		"AUDIO_CUE_FORM": {
 			"ALL_AUDIO": "모든 사운드",
@@ -1305,7 +1307,9 @@
 		"INSUFFICIENT_INFO_1": "귀하의 수입은 현재 정산하기에 부족합니다. 추천 링크를 사용하여 더 많은 회원을 초대하고 수입이 정산되지 않을 때까지 기다려 주세요. {0} {1}",
 		"INSUFFICIENT_INFO_2": "1을 초과하다",
 		"GO_TO_REFERRAL": "추천으로 이동",
-		"REFER_DESC": "아래 링크를 친구와 공유하여 거래 수수료를 받으세요."
+		"REFER_DESC": "아래 링크를 친구와 공유하여 거래 수수료를 받으세요.",
+		"SUCCESSFULLY_SETTLED": "성공적으로 정착되었습니다",
+		"SETTLE_AMOUNT": "{0} {1} 금액을 성공적으로 정산했습니다."
 	},
 	"NOT_LOGGEDIN": {
 		"TXT_1": "로그인이 필요합니다",
@@ -2704,7 +2708,8 @@
 		"MS": "{0}밀리초",
 		"STATUS_NORMAL": "연결 정상",
 		"CONNECTION_LABEL": "연결",
-		"CONNECTION_ISSUE_DETECTED": "연결 문제가 감지되었습니다"
+		"CONNECTION_ISSUE_DETECTED": "연결 문제가 감지되었습니다",
+		"VERY_SLOW": "매우 느림"
 	},
 	"DESKTOP_NAVIGATION": {
 		"OTHERS": "기타",
@@ -2736,7 +2741,8 @@
 		"TRANSACTION_DESC": "모든 거래, 입금 및 출금을 검토하세요",
 		"ONRAMPER_DESC": "Onramper를 사용하여 암호화폐를 사고 파세요",
 		"AUTO_TRADER_DESC": "반복되는 자동 매수 및 매도 거래",
-		"ANNOUNCEMENT_DESC": "업데이트, 목록 및 기타 뉴스"
+		"ANNOUNCEMENT_DESC": "업데이트, 목록 및 기타 뉴스",
+		"WALLET_DESCRIPTION": "지갑 자산 및 잔액을 확인하세요"
 	},
 	"VIEW_PRICES": "가격 보기",
 	"VIEW_MY_WALLET": "내 지갑 보기",
@@ -2825,7 +2831,7 @@
 		"SATURDAY": "안에.",
 		"SUNDAY": "그렇습니다.",
 		"MONTHLY_TRADE_TITLE": "일자 설정",
-		"MONTHLY_TRADE_TOOLTIP_DESC": "매달 거래가 자동으로 실행되는 날짜",
+		"MONTHLY_TRADE_TOOLTIP_DESC": "매월 거래가 자동으로 실행되는 날짜(Day 1-{0})",
 		"DESCTIPTION_TEXT": "이 예정된 거래에 대한 명확한 설명을 추가하세요.",
 		"DESCRIPTION_PLACEHOLDER": "반복되는 순서(전략, 출처 등)를 설명해 주세요.",
 		"REVIEW_AND_CONFIRM": "자동차 거래를 검토하세요",
@@ -2848,7 +2854,8 @@
 		"MIN_AMOUNT": "최소 지출 금액은 {0}입니다.",
 		"MAX_AMOUNT": "이 금액은 최대 지출 금액 한도를 초과합니다.",
 		"MAXIMUM_TRADE_LIMIT": "최대 20개의 반복 주문 한도에 도달했습니다.",
-		"SUCCESSFULLY_CREATED": "자동거래가 성공적으로 생성되었습니다"
+		"SUCCESSFULLY_CREATED": "자동거래가 성공적으로 생성되었습니다",
+		"SELECT_DAY": "요일 선택"
 	},
 	"ANNOUNCEMENT_TAB": {
 		"ANNOUNCEMENT_TITLE": "발표",
@@ -2864,5 +2871,40 @@
 		"EXCHANGE_UPDATE": "교환 업데이트",
 		"NO_DATA_TEXT": "아직 아무런 발표가 없었던 것 같습니다.",
 		"UPGRADES": "업그레이드"
+	},
+	"SIGN_OUT_TEXT": "로그아웃",
+	"LOGIN_CONFIRMATION": {
+		"LOGIN_CONFIRM_FINAL": "로그인 확인",
+		"FREEZE_CONFIRM_FINAL": "계정을 동결하세요",
+		"LOGIN_CONFIRM_WARNING": "계정에 로그인하려면 아래 확인 버튼을 클릭하여 본인 확인 절차를 거쳐주세요.",
+		"FREEZE_CONFIRM_WARNING": "동결되면 귀하의 계정은 완전히 잠기고 귀하 자신을 포함한 모든 액세스로부터 보호됩니다. 나중에 지원팀에 연락하여 쉽게 액세스를 복원할 수 있습니다.",
+		"LOGIN_CANCEL_BUTTON": "닫다",
+		"LOGIN_CONFIRM_BUTTON": "로그인 확인",
+		"FREEZE_CONFIRM_BUTTON": "네, 내 계정을 동결합니다.",
+		"LOGIN_INPUT_CODE": "코드를 입력해주세요",
+		"LOGIN_CONFIRM_SUCCESS_1": "이메일이 확인되었습니다.",
+		"FREEZE_CONFIRM_SUCCESS_1": "현재 귀하의 계정은 잠겼으며 출금은 일시적으로 중단되었습니다.",
+		"FREEZE_CONFIRM_SUCCESS_2": "언제든지 저희에게 연락하여 접속 권한을 복구하세요.",
+		"LOGIN_CONFIRM_SUCCESS_2": "계정에 다시 접속하려면 로그인하세요.",
+		"GO_LOGIN_HISTORY": "로그인 페이지로 이동",
+		"ACCOUNT_FROZEN": "계정 동결",
+		"CONFIRM_FREEZE_TITLE": "동결 확인",
+		"CONFIRM_WARNING_FREEZE_DESC": "정말로 계정을 동결하시겠습니까?",
+		"ACCOUNT_CONFIRMED": "계정 확인됨",
+		"EMAIL_CONFIRMATION": "이메일 확인이 필요합니다",
+		"EMAIL_CONFIRMATION_DESC_1": "확인 버튼이 포함된 이메일을 보냈습니다.",
+		"EMAIL_CONFIRMATION_DESC_2": "계속하려면 {0}을 클릭해 주세요.",
+		"EMAIL_TEXT": "당신의 이메일에"
+	},
+	"ERROR_TAB": {
+		"NETWORK_ERROR": "연결 문제",
+		"NETWORK_ERROR_DESC": "인터넷 연결을 확인하세요.",
+		"SERVER_ERROR": "서버 오류",
+		"SERVER_ERROR_DESC": "일시적인 네트워크 또는 서버 문제가 발생했습니다. 나중에 다시 시도하세요.",
+		"SERVER_MAINTENANCE_ERROR": "서버 유지 관리",
+		"SERVER_MAINTENANCE_ERROR_DESC": "현재 시스템 유지 관리가 진행 중입니다. 나중에 다시 시도하세요.",
+		"TOO_MANY_REQUEST_ERROR": "요청이 너무 많습니다",
+		"TOO_MANY_REQUEST_ERROR_DESC": "와! 천천히 하세요, 한 번에 너무 많은 일을 하고 있어요",
+		"NETWORK_ERROR_MESSAGE": "네트워크 오류"
 	}
 }

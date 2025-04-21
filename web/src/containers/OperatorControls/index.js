@@ -1032,6 +1032,7 @@ class OperatorControls extends Component {
 			<div
 				className={classnames('operator-controls__wrapper', {
 					open: isEditMode || isInjectMode,
+					'operator-controls__details': isEditMode || isInjectMode,
 				})}
 			>
 				<div className="operator-controls__buttons-wrapper">

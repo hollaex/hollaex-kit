@@ -46,7 +46,7 @@ import PublishSection from './PublishSection';
 import { CloseCircleOutlined } from '@ant-design/icons';
 import Coins from '../Coins';
 import { BASE_CURRENCY } from 'config/constants';
-import { isLoggedIn } from 'utils/token';
+import { getConfigs, isLoggedIn } from 'utils/token';
 import { setPricesAndAsset } from 'actions/assetActions';
 import { minimalTimezoneSet } from '../Settings/Utils';
 const { Option } = Select;
@@ -916,7 +916,7 @@ class GeneralContent extends Component {
 		return (
 			<div>
 				<div className="general-wrapper">
-					{activeTab === 'branding' ? (
+					{getConfigs().includes('api_name') && activeTab === 'branding' ? (
 						<div>
 							<div className="sub-title">Exchange Name</div>
 							<NameForm
@@ -930,7 +930,7 @@ class GeneralContent extends Component {
 							<div className="divider"></div>
 						</div>
 					) : null}
-					{activeTab === 'localization' ? (
+					{getConfigs().includes('defaults') && activeTab === 'localization' ? (
 						<div>
 							<div>
 								<div className="sub-title">Country</div>
@@ -944,184 +944,205 @@ class GeneralContent extends Component {
 								/>
 							</div>
 							<div className="divider"></div>
-							<div>
-								<div className="sub-title">Timezone</div>
-								<Select
-									onChange={(e) => {
-										this.handleInputChangeTimezone('timezone', e);
-									}}
-									value={this?.state?.constants?.secrets?.emails?.timezone}
-									placeholder="Select email timezone"
-								>
-									{minimalTimezoneSet.map((timezone) => {
-										return (
-											<Select.Option value={timezone.value}>
-												{timezone.label}
-											</Select.Option>
-										);
-									})}
-								</Select>
-							</div>
-							<Button
-								style={{ width: 120 }}
-								type="primary"
-								onClick={this.handleSaveTimezone}
-							>
-								Save
-							</Button>
+
+							{getConfigs().includes('timezone') && (
+								<>
+									<div>
+										<div className="sub-title">Timezone</div>
+										<Select
+											onChange={(e) => {
+												this.handleInputChangeTimezone('timezone', e);
+											}}
+											value={this?.state?.constants?.secrets?.emails?.timezone}
+											placeholder="Select email timezone"
+										>
+											{minimalTimezoneSet.map((timezone) => {
+												return (
+													<Select.Option value={timezone.value}>
+														{timezone.label}
+													</Select.Option>
+												);
+											})}
+										</Select>
+									</div>
+									<Button
+										style={{ width: 120 }}
+										type="primary"
+										onClick={this.handleSaveTimezone}
+									>
+										Save
+									</Button>
+								</>
+							)}
 							<div className="divider"></div>
-							<div>
-								<div className="sub-title">Language</div>
-								<div className="description">
-									You can edit language and strings{' '}
+
+							{getConfigs().includes('valid_languages') && (
+								<div>
+									<div className="sub-title">Language</div>
+									<div className="description">
+										You can edit language and strings{' '}
+										<span
+											onClick={() =>
+												browserHistory.push('/account?stringSettings=true')
+											}
+											className="general-edit-link"
+										>
+											here
+										</span>
+										.
+									</div>
 									<span
 										onClick={() =>
 											browserHistory.push('/account?stringSettings=true')
 										}
-										className="general-edit-link"
+										className="general-edit-link general-edit-link-position"
 									>
-										here
+										Edit
 									</span>
-									.
+									<LanguageForm
+										initialValues={initialLanguageValues}
+										onSubmit={this.handleSubmitDefault}
+										buttonText={'Save'}
+										buttonClass="green-btn minimal-btn"
+										fields={generalFields.section_2}
+										buttonSubmitting={buttonSubmitting}
+									/>
 								</div>
-								<span
-									onClick={() =>
-										browserHistory.push('/account?stringSettings=true')
-									}
-									className="general-edit-link general-edit-link-position"
-								>
-									Edit
-								</span>
-								<LanguageForm
-									initialValues={initialLanguageValues}
-									onSubmit={this.handleSubmitDefault}
-									buttonText={'Save'}
-									buttonClass="green-btn minimal-btn"
-									fields={generalFields.section_2}
-									buttonSubmitting={buttonSubmitting}
-								/>
-							</div>
+							)}
 							<div className="divider" />
-							<div>
-								<div className="sub-title">Theme</div>
-								<div className="description">
-									You can edit theme and create new themes{' '}
+							{getConfigs().includes('strings') && (
+								<div>
+									<div className="sub-title">Theme</div>
+									<div className="description">
+										You can edit theme and create new themes{' '}
+										<span
+											onClick={() =>
+												browserHistory.push('/account?themeSettings=true')
+											}
+											className="general-edit-link"
+										>
+											here
+										</span>
+										.
+									</div>
 									<span
 										onClick={() =>
 											browserHistory.push('/account?themeSettings=true')
 										}
-										className="general-edit-link"
+										className="general-edit-link general-edit-link-position"
 									>
-										here
+										Edit
 									</span>
-									.
-								</div>
-								<span
-									onClick={() =>
-										browserHistory.push('/account?themeSettings=true')
-									}
-									className="general-edit-link general-edit-link-position"
-								>
-									Edit
-								</span>
-								<ThemeForm
-									initialValues={initialThemeValues}
-									onSubmit={this.handleSubmitDefault}
-									buttonText={'Save'}
-									buttonClass="green-btn minimal-btn"
-									fields={generalFields.section_3}
-									buttonSubmitting={buttonSubmitting}
-								/>
-							</div>
-							<div className="divider"></div>
-							<div className="mb-5">
-								<div className="sub-title">Native currency</div>
-								<div className="description">
-									This currency unit will be used for valuing
-									deposits/withdrawals and other important areas.
-								</div>
-								<div className="coins-list">
-									<NativeCurrencyForm
-										initialValues={{
-											native_currency: kit.native_currency,
-										}}
-										onSubmit={this.handleSubmitName}
+									<ThemeForm
+										initialValues={initialThemeValues}
+										onSubmit={this.handleSubmitDefault}
 										buttonText={'Save'}
 										buttonClass="green-btn minimal-btn"
-										fields={generalFields.section_4}
+										fields={generalFields.section_3}
 										buttonSubmitting={buttonSubmitting}
 									/>
 								</div>
-							</div>
+							)}
 							<div className="divider"></div>
-							<div className="mb-5">
-								<div className="sub-title">Other currency display options</div>
-								<div className="description">
-									The user can select these other currencies as alternative
-									valuation options to the 'default' above.
-								</div>
-								<div className="coins-list">
-									{this.state.nativeCurrencies?.map((coin) => {
-										return (
-											<div
-												className="d-flex"
-												style={{ fontSize: '1rem', marginBottom: 5 }}
-											>
-												<Coins type={coin} />
-												<span style={{ position: 'relative', left: 5, top: 8 }}>
-													{coins?.[coin]?.fullname}
-												</span>
-												<span
-													onClick={() => {
-														this.setState({
-															nativeCurrencies: this.state.nativeCurrencies.filter(
-																(c) => c !== coin
-															),
-														});
-													}}
-													style={{
-														cursor: 'pointer',
-														position: 'relative',
-														top: 10,
-														left: 12,
-													}}
-												>
-													<CloseCircleOutlined style={{ fontSize: 16 }} />
-												</span>
-											</div>
-										);
-									})}
-
-									<div>
-										<Select
-											placeholder="Add alternative currency"
-											style={{ marginTop: 20 }}
-											onChange={(e) => {
-												if (this.state.nativeCurrencies.includes(e)) return;
-												this.setState({
-													nativeCurrencies: [...this.state.nativeCurrencies, e],
-												});
-											}}
-										>
-											{Object.keys(coins).map((key) => (
-												<Option value={key}>{coins[key].fullname}</Option>
-											))}
-										</Select>
+							{getConfigs().includes('selectable_native_currencies') && (
+								<div className="mb-5">
+									<div className="sub-title">Native currency</div>
+									<div className="description">
+										This currency unit will be used for valuing
+										deposits/withdrawals and other important areas.
 									</div>
-
-									<Button
-										style={{ width: 120, marginTop: 10 }}
-										type="primary"
-										className={`green-btn btn-48`}
-										onClick={() => this.onHandleSubmit()}
-									>
-										SAVE
-									</Button>
+									<div className="coins-list">
+										<NativeCurrencyForm
+											initialValues={{
+												native_currency: kit.native_currency,
+											}}
+											onSubmit={this.handleSubmitName}
+											buttonText={'Save'}
+											buttonClass="green-btn minimal-btn"
+											fields={generalFields.section_4}
+											buttonSubmitting={buttonSubmitting}
+										/>
+									</div>
 								</div>
-							</div>
+							)}
+							<div className="divider"></div>
+							{getConfigs().includes('selectable_native_currencies') && (
+								<div className="mb-5">
+									<div className="sub-title">
+										Other currency display options
+									</div>
+									<div className="description">
+										The user can select these other currencies as alternative
+										valuation options to the 'default' above.
+									</div>
+									<div className="coins-list">
+										{this.state.nativeCurrencies?.map((coin) => {
+											return (
+												<div
+													className="d-flex"
+													style={{ fontSize: '1rem', marginBottom: 5 }}
+												>
+													<Coins type={coin} />
+													<span
+														style={{ position: 'relative', left: 5, top: 8 }}
+													>
+														{coins?.[coin]?.fullname}
+													</span>
+													<span
+														onClick={() => {
+															this.setState({
+																nativeCurrencies: this.state.nativeCurrencies.filter(
+																	(c) => c !== coin
+																),
+															});
+														}}
+														style={{
+															cursor: 'pointer',
+															position: 'relative',
+															top: 10,
+															left: 12,
+														}}
+													>
+														<CloseCircleOutlined style={{ fontSize: 16 }} />
+													</span>
+												</div>
+											);
+										})}
+
+										<div>
+											<Select
+												placeholder="Add alternative currency"
+												style={{ marginTop: 20 }}
+												onChange={(e) => {
+													if (this.state.nativeCurrencies.includes(e)) return;
+													this.setState({
+														nativeCurrencies: [
+															...this.state.nativeCurrencies,
+															e,
+														],
+													});
+												}}
+											>
+												{Object.keys(coins).map((key) => (
+													<Option value={key}>{coins[key].fullname}</Option>
+												))}
+											</Select>
+										</div>
+
+										<Button
+											style={{ width: 120, marginTop: 10 }}
+											type="primary"
+											className={`green-btn btn-48`}
+											onClick={() => this.onHandleSubmit()}
+										>
+											SAVE
+										</Button>
+									</div>
+								</div>
+							)}
 						</div>
 					) : null}
-					{activeTab === 'branding' ? (
+					{getConfigs().includes('defaults') && activeTab === 'branding' ? (
 						<div>
 							{publishJSON.map((item, key) => {
 								return (
@@ -1158,7 +1179,8 @@ class GeneralContent extends Component {
 							</div>
 						</div>
 					) : null}
-					{activeTab === 'onboarding' ? (
+					{getConfigs().includes('new_user_is_activated') &&
+					activeTab === 'onboarding' ? (
 						<div>
 							<h2>Onboarding</h2>
 							<div className="description">
@@ -1225,7 +1247,7 @@ class GeneralContent extends Component {
 							/>
 						</div>
 					) : null}
-					{activeTab === 'email' ? (
+					{getConfigs().includes('emails') && activeTab === 'email' ? (
 						<div>
 							<div className="form-wrapper">
 								<div className="disable-button">
@@ -1245,7 +1267,7 @@ class GeneralContent extends Component {
 						</div>
 					) : null}
 				</div>
-				{activeTab === 'footer' ? (
+				{getConfigs().includes('description') && activeTab === 'footer' ? (
 					<div>
 						<div className="general-wrapper">
 							<Description
@@ -1281,7 +1303,7 @@ class GeneralContent extends Component {
 						<div className="mb-5"></div>
 					</div>
 				) : null}
-				{activeTab === 'help_info' ? (
+				{getConfigs().includes('links') && activeTab === 'help_info' ? (
 					<div className="general-wrapper">
 						<h3>Help pop up</h3>
 						<p>
@@ -1321,7 +1343,7 @@ class GeneralContent extends Component {
 						/>
 					</div>
 				) : null}
-				{activeTab === 'apps' ? (
+				{getConfigs().includes('apps') && activeTab === 'apps' ? (
 					<div className="general-wrapper">
 						<h3>Mobile Application Configurations</h3>
 						<p>
@@ -1435,7 +1457,7 @@ class GeneralContent extends Component {
 						</div>
 					</div>
 				) : null}
-				{activeTab === 'features' ? (
+				{getConfigs().includes('features') && activeTab === 'features' ? (
 					<InterfaceForm
 						initialValues={kit.features}
 						constants={constants}
@@ -1448,7 +1470,7 @@ class GeneralContent extends Component {
 						enabledPlugins={enabledPlugins}
 					/>
 				) : null}
-				{activeTab === 'security' ? (
+				{getConfigs().includes('security') && activeTab === 'security' ? (
 					<div>
 						<div className="general-wrapper">
 							<div className="sub-title">Geofencing</div>

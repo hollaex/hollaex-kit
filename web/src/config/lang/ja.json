@@ -584,7 +584,9 @@
 			"TRADE_POPUPS": "注文アラート",
 			"POPUP_ORDER_CONFIRMATION": "注文を入れる前に確認する時",
 			"POPUP_ORDER_COMPLETED": "注文が完了した時",
-			"POPUP_ORDER_PARTIALLY_FILLED": "注文が一部成立した時"
+			"POPUP_ORDER_PARTIALLY_FILLED": "注文が一部成立した時",
+			"POPUP_NEW_ORDER_CREATED": "新しい注文があったときにポップアップを表示する",
+			"POPUP_ORDER_CANCELLED": "注文をキャンセルするときにポップアップを表示する"
 		},
 		"AUDIO_CUE_FORM": {
 			"ALL_AUDIO": "全てのサウンド",
@@ -1250,7 +1252,9 @@
 		"INSUFFICIENT_INFO_1": "現在、収益は決済に十分ではありません。紹介リンクを使用してさらにメンバーを招待し、未決済の収益が{0} {1}になるまでお待ちください。",
 		"INSUFFICIENT_INFO_2": "1を超える",
 		"GO_TO_REFERRAL": "紹介へ進む",
-		"REFER_DESC": "以下のリンクを友達と共有して、彼らの取引で手数料を獲得しましょう"
+		"REFER_DESC": "以下のリンクを友達と共有して、彼らの取引で手数料を獲得しましょう",
+		"SUCCESSFULLY_SETTLED": "無事解決",
+		"SETTLE_AMOUNT": "{0} {1} の金額が正常に決済されました"
 	},
 	"NOT_LOGGEDIN": {
 		"TXT_1": "取引を始めるにはログインしてください。",
@@ -2724,7 +2728,8 @@
 		"MS": "{0} ミリ秒",
 		"STATUS_NORMAL": "接続正常",
 		"CONNECTION_LABEL": "繋がり",
-		"CONNECTION_ISSUE_DETECTED": "接続の問題が検出されました"
+		"CONNECTION_ISSUE_DETECTED": "接続の問題が検出されました",
+		"VERY_SLOW": "非常に遅い"
 	},
 	"DESKTOP_NAVIGATION": {
 		"OTHERS": "その他",
@@ -2756,7 +2761,8 @@
 		"TRANSACTION_DESC": "すべての取引、入金、出金を確認する",
 		"ONRAMPER_DESC": "Onramperを使用して暗号通貨を売買する",
 		"AUTO_TRADER_DESC": "定期的な自動売買取引",
-		"ANNOUNCEMENT_DESC": "最新情報、リスト、その他のニュース"
+		"ANNOUNCEMENT_DESC": "最新情報、リスト、その他のニュース",
+		"WALLET_DESCRIPTION": "ウォレットの資産と残高を表示する"
 	},
 	"VIEW_PRICES": "価格を見る",
 	"VIEW_MY_WALLET": "ウォレットを見る",
@@ -2845,7 +2851,7 @@
 		"SATURDAY": "で。",
 		"SUNDAY": "彼らです。",
 		"MONTHLY_TRADE_TITLE": "日付と曜日を設定する",
-		"MONTHLY_TRADE_TOOLTIP_DESC": "毎月自動的に取引が実行される日",
+		"MONTHLY_TRADE_TOOLTIP_DESC": "毎月取引が自動的に実行される日（1日目～{0}日目）",
 		"DESCTIPTION_TEXT": "このスケジュールされたトランザクションの明確な説明を追加します。",
 		"DESCRIPTION_PLACEHOLDER": "この定期的な注文について説明します（戦略、ソースなど）",
 		"REVIEW_AND_CONFIRM": "オートトレードを確認する",
@@ -2868,7 +2874,8 @@
 		"MIN_AMOUNT": "最低支出額は{0}です",
 		"MAX_AMOUNT": "この金額は最大支出額の制限を超えています",
 		"MAXIMUM_TRADE_LIMIT": "定期注文の上限数 20 件に達しました",
-		"SUCCESSFULLY_CREATED": "自動取引が正常に作成されました"
+		"SUCCESSFULLY_CREATED": "自動取引が正常に作成されました",
+		"SELECT_DAY": "日を選択"
 	},
 	"ANNOUNCEMENT_TAB": {
 		"ANNOUNCEMENT_TITLE": "発表",
@@ -2884,5 +2891,40 @@
 		"EXCHANGE_UPDATE": "交換アップデート",
 		"NO_DATA_TEXT": "まだ発表はないようです",
 		"UPGRADES": "アップグレード"
+	},
+	"SIGN_OUT_TEXT": "サインアウト",
+	"LOGIN_CONFIRMATION": {
+		"LOGIN_CONFIRM_FINAL": "ログイン確認",
+		"FREEZE_CONFIRM_FINAL": "アカウントを凍結する",
+		"LOGIN_CONFIRM_WARNING": "アカウントにログインするには、本人確認のため、以下の確認ボタンをクリックしてください。",
+		"FREEZE_CONFIRM_WARNING": "アカウントが凍結されると、アカウントは完全にロックされ、自分自身のアクセスも含め、すべてのアクセスから保護されます。サポート チームに問い合わせることで、後で簡単にアクセスを復元できます。",
+		"LOGIN_CANCEL_BUTTON": "近い",
+		"LOGIN_CONFIRM_BUTTON": "ログインの確認",
+		"FREEZE_CONFIRM_BUTTON": "はい、アカウントを凍結します",
+		"LOGIN_INPUT_CODE": "コードを入力してください",
+		"LOGIN_CONFIRM_SUCCESS_1": "あなたのメールは確認されました。",
+		"FREEZE_CONFIRM_SUCCESS_1": "アカウントは現在ロックされており、引き出しは一時的に無効になっています。",
+		"FREEZE_CONFIRM_SUCCESS_2": "アクセスを復元するには、いつでもお問い合わせください。",
+		"LOGIN_CONFIRM_SUCCESS_2": "アカウントにアクセスするには再度ログインしてください。",
+		"GO_LOGIN_HISTORY": "ログインページへ",
+		"ACCOUNT_FROZEN": "アカウントが凍結されました",
+		"CONFIRM_FREEZE_TITLE": "凍結を確認",
+		"CONFIRM_WARNING_FREEZE_DESC": "本当にアカウントを凍結しますか?",
+		"ACCOUNT_CONFIRMED": "アカウントが確認されました",
+		"EMAIL_CONFIRMATION": "メールの確認が必要です",
+		"EMAIL_CONFIRMATION_DESC_1": "確認ボタンを記載したメールを送信しました。",
+		"EMAIL_CONFIRMATION_DESC_2": "続行するには{0}をクリックしてください。",
+		"EMAIL_TEXT": "あなたのメールに"
+	},
+	"ERROR_TAB": {
+		"NETWORK_ERROR": "接続の問題",
+		"NETWORK_ERROR_DESC": "インターネット接続を確認してください。",
+		"SERVER_ERROR": "サーバーエラー",
+		"SERVER_ERROR_DESC": "一時的なネットワークまたはサーバーの問題が発生しています。しばらくしてからもう一度お試しください。",
+		"SERVER_MAINTENANCE_ERROR": "サーバーメンテナンス",
+		"SERVER_MAINTENANCE_ERROR_DESC": "現在システムメンテナンス中です。しばらくしてからもう一度お試しください。",
+		"TOO_MANY_REQUEST_ERROR": "リクエストが多すぎます",
+		"TOO_MANY_REQUEST_ERROR_DESC": "わあ！ゆっくりしてください、一度にやりすぎです",
+		"NETWORK_ERROR_MESSAGE": "ネットワークエラー"
 	}
 }

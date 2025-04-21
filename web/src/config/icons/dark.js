@@ -362,6 +362,17 @@ const nestedIcons = {
 
 	FROZEN_ICON: '/assets/images/frozen.svg',
 	CONFIRM_FREEZE_ICON: '/assets/images/confirm-freeze.svg',
+
+	HOME_PAGE_TRADE_ICON: '/assets/images/home-page-trade.png',
+	DI_LANDING_PAGE_SECTION_QUESTION_SECTION: '/assets/images/faq-background.png',
+	DI_LANDING_PAGE_SECTION_QUICK_TRADE_CALCULATOR:
+		'/assets/images/global-background.png',
+	DI_LANDING_PAGE_SECTION_CREATE_ACCOUNT_SECTION:
+		'/assets/images/world-dots-lines.png',
+	ACCOUNT_FUNDING: '/assets/images/account-funding.svg',
+	WORLD_TRADE: '/assets/images/world-trade.svg',
+	API_BUILDER: '/assets/images/api-builder.svg',
+	LIVE_TRADE_ICON: '/assets/images/live-trade-icon.svg',
 };
 
 const icons = flatten(nestedIcons, options);

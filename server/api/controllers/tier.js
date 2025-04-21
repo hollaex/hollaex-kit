@@ -9,7 +9,8 @@ const getTiers = (req, res) => {
 		return res.json(toolsLib.getKitTiers());
 	} catch (err) {
 		loggerTier.error(req.uuid, 'controllers/tier/getTiers err', err.message);
-		return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+		const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+		return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 	}
 };
 
@@ -28,7 +29,8 @@ const postTier = (req, res) => {
 		})
 		.catch((err) => {
 			loggerTier.error(req.uuid, 'controllers/tier/postTier err', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -53,7 +55,8 @@ const putTier = (req, res) => {
 		})
 		.catch((err) => {
 			loggerTier.error(req.uuid, 'controllers/tier/postTier err', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -87,7 +90,8 @@ const updatePairFees = (req, res) => {
 				'controllers/tier/updatePairFees err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 

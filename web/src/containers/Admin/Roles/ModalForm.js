@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Button, Form, Select, Input } from 'antd';
 import classnames from 'classnames';
 
-import { OPERATORS, getOperatorFields } from './Utils';
 import { STATIC_ICONS } from 'config/icons';
 import { AdminHocForm } from '../../../components';
 import { checkRole } from '../../../utils/token';
@@ -12,20 +11,8 @@ const EditOperatorFrom = AdminHocForm('EditOperatorFrom');
 
 const { Item } = Form;
 
-const operatorFields = getOperatorFields();
-
 export const getRoleType = (data) => {
-	if (data.is_admin) {
-		return 'admin';
-	} else if (data.is_communicator) {
-		return 'communicator';
-	} else if (data.is_kyc) {
-		return 'kyc';
-	} else if (data.is_supervisor) {
-		return 'supervisor';
-	} else if (data.is_support) {
-		return 'support';
-	}
+	return data.role;
 };
 
 export const renderRoleImage = (
@@ -33,7 +20,7 @@ export const renderRoleImage = (
 	type = checkRole()
 ) => {
 	switch (type) {
-		case 'supervisor':
+		case 'Supervisor':
 			return (
 				<img
 					src={STATIC_ICONS.BLUE_SCREEN_SUPERVISOR}
@@ -41,7 +28,7 @@ export const renderRoleImage = (
 					alt="role-icon"
 				/>
 			);
-		case 'kyc':
+		case 'Kyc':
 			return (
 				<img
 					src={STATIC_ICONS.BLUE_SCREEN_KYC}
@@ -49,7 +36,7 @@ export const renderRoleImage = (
 					alt="role-icon"
 				/>
 			);
-		case 'communicator':
+		case 'Communicator':
 			return (
 				<img
 					src={STATIC_ICONS.BLUE_SCREEN_COMMUNICATON_SUPPORT_ROLE}
@@ -57,7 +44,7 @@ export const renderRoleImage = (
 					alt="role-icon"
 				/>
 			);
-		case 'support':
+		case 'Support':
 			return (
 				<img
 					src={STATIC_ICONS.BLUE_SCREEN_EXCHANGE_SUPPORT_ROLE}
@@ -100,8 +87,13 @@ export const renderUpgrade = () => {
 	);
 };
 
-export const OperatorRole = ({ handleInvite, isUpgrade, buttonSubmitting }) => {
-	const [selectedRole, setRole] = useState(OPERATORS[0].value);
+export const OperatorRole = ({
+	handleInvite,
+	isUpgrade,
+	buttonSubmitting,
+	roles,
+}) => {
+	const [selectedRole, setRole] = useState(roles[0].value);
 
 	const handleSelect = (values) => {
 		setRole(values);
@@ -121,12 +113,12 @@ export const OperatorRole = ({ handleInvite, isUpgrade, buttonSubmitting }) => {
 					<div className="sub-title">Role</div>
 					<Item name="role">
 						<Select
-							defaultValue={OPERATORS[0].value}
+							defaultValue={roles[0].value}
 							onChange={handleSelect}
 							size="small"
 							value={selectedRole}
 						>
-							{OPERATORS.map((option, index) => (
+							{roles.map((option, index) => (
 								<Select.Option key={index} value={option.value}>
 									{option.label}
 								</Select.Option>
@@ -284,7 +276,12 @@ export const RoleAccess = ({ handleClose, isUpgrade }) => {
 	);
 };
 
-export const EditModal = ({ onTypeChange, handleUpdateRole, editData }) => {
+export const EditModal = ({
+	onTypeChange,
+	handleUpdateRole,
+	editData,
+	roles,
+}) => {
 	const handleSubmitEdit = (values) => {
 		handleUpdateRole(values, editData.id);
 	};
@@ -304,7 +301,13 @@ export const EditModal = ({ onTypeChange, handleUpdateRole, editData }) => {
 				}}
 				buttonText={'Save'}
 				buttonClass="green-btn mini-btn mt-2"
-				fields={operatorFields.section_2}
+				fields={{
+					role: {
+						type: 'select',
+						label: 'Change roles',
+						options: roles,
+					},
+				}}
 			/>
 			<div className="divider"></div>
 			<div>Revoke role from operator</div>

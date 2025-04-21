@@ -499,7 +499,9 @@
 		"NOTIFICATION_FORM": {
 			"POPUP_ORDER_CONFIRMATION": "Vraag om bevestiging voordat u bestellingen indient",
 			"POPUP_ORDER_COMPLETED": "Toon pop-up wanneer de bestelling is voltooid",
-			"POPUP_ORDER_PARTIALLY_FILLED": "Toon pop-up wanneer de bestelling gedeeltelijk is gevuld"
+			"POPUP_ORDER_PARTIALLY_FILLED": "Toon pop-up wanneer de bestelling gedeeltelijk is gevuld",
+			"POPUP_NEW_ORDER_CREATED": "Pop-up weergeven wanneer er een nieuwe bestelling is geplaatst",
+			"POPUP_ORDER_CANCELLED": "Pop-up weergeven bij het annuleren van bestellingen"
 		},
 		"AUDIO_CUE_FORM": {
 			"ALL_AUDIO": "Alle audiosignalen",
@@ -1452,7 +1454,9 @@
 		"INSUFFICIENT_INFO_1": "Uw inkomsten zijn momenteel onvoldoende voor verrekening. Nodig meer leden uit via uw verwijzingslink en wacht tot uw niet-verrekende inkomsten {0} {1}",
 		"INSUFFICIENT_INFO_2": "groter zijn dan 1",
 		"GO_TO_REFERRAL": "Ga naar verwijzing",
-		"REFER_DESC": "Deel hieronder een link met vrienden om commissies te verdienen op hun handel"
+		"REFER_DESC": "Deel hieronder een link met vrienden om commissies te verdienen op hun handel",
+		"SUCCESSFULLY_SETTLED": "Succesvol geregeld",
+		"SETTLE_AMOUNT": "U hebt het bedrag van {0} {1} succesvol vereffend"
 	},
 	"NOT_LOGGEDIN": {
 		"TEXT_GENERAL": "Om te bekijken moet u inloggen",
@@ -2530,7 +2534,8 @@
 		"MS": "{0} ms",
 		"STATUS_NORMAL": "Verbinding Normaal",
 		"CONNECTION_LABEL": "Verbinding",
-		"CONNECTION_ISSUE_DETECTED": "Verbindingsprobleem gedetecteerd"
+		"CONNECTION_ISSUE_DETECTED": "Verbindingsprobleem gedetecteerd",
+		"VERY_SLOW": "Zeer langzaam"
 	},
 	"DESKTOP_NAVIGATION": {
 		"OTHERS": "Anderen",
@@ -2562,7 +2567,8 @@
 		"TRANSACTION_DESC": "Bekijk alle transacties, stortingen en opnames",
 		"ONRAMPER_DESC": "Gebruik Onramper om crypto te kopen en verkopen",
 		"AUTO_TRADER_DESC": "Terugkerende automatische koop- en verkooptransacties",
-		"ANNOUNCEMENT_DESC": "Updates, aanbiedingen en ander nieuws"
+		"ANNOUNCEMENT_DESC": "Updates, aanbiedingen en ander nieuws",
+		"WALLET_DESCRIPTION": "Bekijk uw portemonnee-activa en saldo's"
 	},
 	"VIEW_PRICES": "Bekijk prijzen",
 	"VIEW_MY_WALLET": "Bekijk mijn portemonnee",
@@ -2651,7 +2657,7 @@
 		"SATURDAY": "In.",
 		"SUNDAY": "Dat zijn ze.",
 		"MONTHLY_TRADE_TITLE": "Dag-Datum instellen",
-		"MONTHLY_TRADE_TOOLTIP_DESC": "De dag waarop uw transactie elke maand automatisch wordt uitgevoerd",
+		"MONTHLY_TRADE_TOOLTIP_DESC": "De dag waarop uw transactie automatisch elke maand wordt uitgevoerd (dag 1-{0})",
 		"DESCTIPTION_TEXT": "Voeg een duidelijke beschrijving toe voor deze geplande transactie.",
 		"DESCRIPTION_PLACEHOLDER": "Beschrijf deze terugkerende volgorde (strategie, bron, enz.)",
 		"REVIEW_AND_CONFIRM": "Controleer uw autohandel",
@@ -2674,7 +2680,8 @@
 		"MIN_AMOUNT": "Het minimale bestedingsbedrag is {0}",
 		"MAX_AMOUNT": "Dit bedrag overschrijdt uw maximale bestedingslimiet",
 		"MAXIMUM_TRADE_LIMIT": "U hebt de maximale limiet van 20 terugkerende bestellingen bereikt",
-		"SUCCESSFULLY_CREATED": "Autohandel succesvol aangemaakt"
+		"SUCCESSFULLY_CREATED": "Autohandel succesvol aangemaakt",
+		"SELECT_DAY": "Selecteer dag"
 	},
 	"ANNOUNCEMENT_TAB": {
 		"ANNOUNCEMENT_TITLE": "Aankondiging",
@@ -2690,5 +2697,40 @@
 		"EXCHANGE_UPDATE": "Wissel update",
 		"NO_DATA_TEXT": "Het lijkt erop dat er nog geen aankondigingen zijn gedaan",
 		"UPGRADES": "Verbeteringen"
+	},
+	"SIGN_OUT_TEXT": "Afmelden",
+	"LOGIN_CONFIRMATION": {
+		"LOGIN_CONFIRM_FINAL": "Bevestiging van inloggen",
+		"FREEZE_CONFIRM_FINAL": "Bevries uw account",
+		"LOGIN_CONFIRM_WARNING": "Om in te loggen op uw account klikt u op de onderstaande bevestigingsknop, zodat wij weten dat u het bent.",
+		"FREEZE_CONFIRM_WARNING": "Wanneer bevroren, is uw account volledig geblokkeerd en beschermd tegen alle toegang, inclusief uw eigen toegang. U kunt later eenvoudig de toegang herstellen door contact op te nemen met ons supportteam.",
+		"LOGIN_CANCEL_BUTTON": "DICHTBIJ",
+		"LOGIN_CONFIRM_BUTTON": "Bevestig Login",
+		"FREEZE_CONFIRM_BUTTON": "JA, BEVRIEZ MIJN ACCOUNT",
+		"LOGIN_INPUT_CODE": "Voer de code in",
+		"LOGIN_CONFIRM_SUCCESS_1": "Uw e-mailadres is geverifieerd.",
+		"FREEZE_CONFIRM_SUCCESS_1": "Uw account is nu geblokkeerd en opnames zijn tijdelijk uitgeschakeld.",
+		"FREEZE_CONFIRM_SUCCESS_2": "Neem op elk gewenst moment contact met ons op om uw toegang te herstellen.",
+		"LOGIN_CONFIRM_SUCCESS_2": "Meld u opnieuw aan om toegang te krijgen tot uw account.",
+		"GO_LOGIN_HISTORY": "Ga naar de inlogpagina",
+		"ACCOUNT_FROZEN": "Account bevroren",
+		"CONFIRM_FREEZE_TITLE": "Bevestig bevriezing",
+		"CONFIRM_WARNING_FREEZE_DESC": "Weet u zeker dat u uw account wilt bevriezen?",
+		"ACCOUNT_CONFIRMED": "Account bevestigd",
+		"EMAIL_CONFIRMATION": "E-mailbevestiging vereist",
+		"EMAIL_CONFIRMATION_DESC_1": "Wij hebben u een e-mail gestuurd met een bevestigingsknop.",
+		"EMAIL_CONFIRMATION_DESC_2": "Klik erop {0} om verder te gaan.",
+		"EMAIL_TEXT": "in uw e-mail"
+	},
+	"ERROR_TAB": {
+		"NETWORK_ERROR": "Verbindingsprobleem",
+		"NETWORK_ERROR_DESC": "Controleer uw internetverbinding.",
+		"SERVER_ERROR": "Serverfout",
+		"SERVER_ERROR_DESC": "Er is een tijdelijk netwerk- of serverprobleem. Probeer het later opnieuw.",
+		"SERVER_MAINTENANCE_ERROR": "Serveronderhoud",
+		"SERVER_MAINTENANCE_ERROR_DESC": "Er wordt momenteel onderhoud aan het systeem gepleegd. Probeer het later opnieuw.",
+		"TOO_MANY_REQUEST_ERROR": "Te veel verzoeken",
+		"TOO_MANY_REQUEST_ERROR_DESC": "Wauw! Doe het rustig aan, je doet teveel tegelijk.",
+		"NETWORK_ERROR_MESSAGE": "Netwerkfout"
 	}
 }

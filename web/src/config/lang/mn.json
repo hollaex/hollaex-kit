@@ -689,9 +689,7 @@
 		"CHANGE_PASSWORD": {
 			"TITLE": "Нууц үг солих",
 			"ACTIVE": "ИДЭВХИТЭЙ",
-			"DIALOG": { 
-				"EMAIL_CONFIRMATION": "Баталгаажуулах и-мэйл явууллаа." 
-			},
+			"DIALOG": { "EMAIL_CONFIRMATION": "Баталгаажуулах и-мэйл явууллаа." },
 			"FORM": {
 				"BUTTON": "Нууц үг",
 				"CURRENT_PASSWORD": {
@@ -1887,17 +1885,13 @@
 		"TITLE": "Хуудас автоматаар нээгдэхгүй байна уу?",
 		"TEXT": "Таны хөтөч хуудсыг хааж байж магадгүй. Доорх холбоосыг хуулж тавиад үзээрэй."
 	},
-	"TERMS_OF_SERVICES": { 
-		"TO_GET_ACCESS": "Хандах эрх авахын тулд холбогдоно уу" 
+	"TERMS_OF_SERVICES": {
+		"TO_GET_ACCESS": "Хандах эрх авахын тулд холбогдоно уу"
 	},
 	"FEES_AND_LIMITS": {
 		"LINK": "Миний хураамж, хязгаарлалт",
 		"COIN_PAGE_LINK": "Арилжааны хураамж ба хязгаарлалт",
-		"BACK": { 
-			"PLACEHOLDER": "{0} {1}", 
-			"BACK": "Буцах", 
-			"TO": "хураангуйлах" 
-		},
+		"BACK": { "PLACEHOLDER": "{0} {1}", "BACK": "Буцах", "TO": "хураангуйлах" },
 		"TITLE": "Хураамж, лимит",
 		"SEARCH_PLACEHOLDER": "Хайх...",
 		"TABS": {
@@ -2578,7 +2572,8 @@
 		"MS": "{0} мс",
 		"STATUS_NORMAL": "Холболт энгийн",
 		"CONNECTION_LABEL": "Холболт",
-		"CONNECTION_ISSUE_DETECTED": "Холболтын асуудал илэрсэн"
+		"CONNECTION_ISSUE_DETECTED": "Холболтын асуудал илэрсэн",
+		"VERY_SLOW": "Маш удаан"
 	},
 	"DESKTOP_NAVIGATION": {
 		"OTHERS": "Бусад",
@@ -2687,7 +2682,7 @@
 		"SUNDAY": "Ням",
 		"SELECT_DAY": "Өдөр сонгох",
 		"MONTHLY_TRADE_TITLE": "Өдөр/Огноо тохируулах",
-		"MONTHLY_TRADE_TOOLTIP_DESC": "Сар бүр арилжаа автоматаар гүйцэтгэх өдөр",
+		"MONTHLY_TRADE_TOOLTIP_DESC": "Таны арилжаа сар бүр автоматаар хийгдэх өдөр (1-{0} өдөр)",
 		"DESCTIPTION_TEXT": "Энэ төлөвлөгөөт гүйлгээнд тодорхой тайлбар нэмэх.",
 		"DESCRIPTION_PLACEHOLDER": "Энэ давтагдах захиалгын тайлбар (стратеги, эх үүсвэр гэх мэт)",
 		"REVIEW_AND_CONFIRM": "Автомат арилжааг хянаж баталгаажуулах",
@@ -2727,15 +2722,39 @@
 		"NO_DATA_TEXT": "Одоогоор ямар нэгэн мэдэгдэл байхгүй байна",
 		"UPGRADES": "Сайжруулалт"
 	},
+	"SIGN_OUT_TEXT": "Гарах",
+	"LOGIN_CONFIRMATION": {
+		"LOGIN_CONFIRM_FINAL": "Нэвтрэх баталгаажуулалт",
+		"FREEZE_CONFIRM_FINAL": "Бүртгэлээ царцаах",
+		"LOGIN_CONFIRM_WARNING": "Бүртгэлдээ нэвтрэхийн тулд доорх баталгаажуулах товчийг дарснаар бид таныг мөн гэдгийг мэдэх болно.",
+		"FREEZE_CONFIRM_WARNING": "Царцаасан үед таны бүртгэлийг бүхэлд нь түгжиж, өөрийн гэсэн бүх хандалтаас хамгаална. Та манай тусламжийн багтай холбогдож дараа нь хандалтыг хялбархан сэргээх боломжтой.",
+		"LOGIN_CANCEL_BUTTON": "ХААХ",
+		"LOGIN_CONFIRM_BUTTON": "Нэвтрэхийг баталгаажуулна уу",
+		"FREEZE_CONFIRM_BUTTON": "ТИЙМ, МИНИЙ БҮРТГЭЛИЙГ ЦАРЦГААЧ",
+		"LOGIN_INPUT_CODE": "кодыг оруулна уу",
+		"LOGIN_CONFIRM_SUCCESS_1": "Таны имэйлийг баталгаажууллаа.",
+		"FREEZE_CONFIRM_SUCCESS_1": "Таны данс одоо түгжигдсэн бөгөөд мөнгө авах үйлдлийг түр хаасан.",
+		"FREEZE_CONFIRM_SUCCESS_2": "Хандалтыг сэргээхийн тулд бидэнтэй хэзээ ч холбогдоно уу.",
+		"LOGIN_CONFIRM_SUCCESS_2": "Бүртгэлдээ нэвтрэхийн тулд дахин нэвтэрнэ үү.",
+		"GO_LOGIN_HISTORY": "Нэвтрэх хуудас руу очно уу",
+		"ACCOUNT_FROZEN": "Бүртгэлийг царцаасан",
+		"CONFIRM_FREEZE_TITLE": "Хөлдөхийг баталгаажуулна уу",
+		"CONFIRM_WARNING_FREEZE_DESC": "Та бүртгэлээ царцаахдаа итгэлтэй байна уу?",
+		"ACCOUNT_CONFIRMED": "Бүртгэлийг баталгаажуулсан",
+		"EMAIL_CONFIRMATION": "Имэйл баталгаажуулах шаардлагатай",
+		"EMAIL_CONFIRMATION_DESC_1": "Бид танд баталгаажуулах товчлуур бүхий имэйл илгээсэн.",
+		"EMAIL_CONFIRMATION_DESC_2": "Үүнийг {0} дарж үргэлжлүүлнэ үү.",
+		"EMAIL_TEXT": "таны имэйлд"
+	},
 	"ERROR_TAB": {
-		"NETWORK_ERROR": "Connection Issue",
-		"NETWORK_ERROR_DESC": "Please check your internet connection.",
-		"SERVER_ERROR": "Server Error",
-		"SERVER_ERROR_DESC": "We're experiencing a temporary network or server issue. Please try again later.",
-		"SERVER_MAINTENANCE_ERROR": "Server maintenance",
-		"SERVER_MAINTENANCE_ERROR_DESC": "System maintenance is currently underway. Please try again later.",
-		"TOO_MANY_REQUEST_ERROR": "Too many requests",
-		"TOO_MANY_REQUEST_ERROR_DESC": "Wow! Slow down, you are doing too much at once",
-		"NETWORK_ERROR_MESSAGE": "Network Error"
+		"NETWORK_ERROR": "Холболтын асуудал",
+		"NETWORK_ERROR_DESC": "Интернэт холболтоо шалгана уу.",
+		"SERVER_ERROR": "Серверийн алдаа",
+		"SERVER_ERROR_DESC": "Бид түр зуурын сүлжээ эсвэл серверийн асуудалтай тулгарлаа. Дараа дахин оролдоно уу.",
+		"SERVER_MAINTENANCE_ERROR": "Серверийн засвар үйлчилгээ",
+		"SERVER_MAINTENANCE_ERROR_DESC": "Одоогоор системийн засвар үйлчилгээ хийгдэж байна. Дараа дахин оролдоно уу.",
+		"TOO_MANY_REQUEST_ERROR": "Хэт олон хүсэлт",
+		"TOO_MANY_REQUEST_ERROR_DESC": "Хөөх! Удаашраарай, та нэг дор хэт их зүйлийг хийж байна",
+		"NETWORK_ERROR_MESSAGE": "Сүлжээний алдаа"
 	}
 }

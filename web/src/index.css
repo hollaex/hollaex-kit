@@ -386,6 +386,9 @@ table th {
   top: unset;
   right: unset; }
 
+.font-raleway {
+  font-family: Raleway; }
+
 .app_container {
   min-height: 100vh;
   background-color: var(--base_background);
@@ -673,8 +676,8 @@ table th {
 
 .layout-mobile.signout-confirmation-popup-wrapper .signout-confirmation-popup-description .signout-confirmation-content {
   justify-content: center;
-  min-height: calc(100vh - 15rem - 10rem);
-  max-height: calc(100vh - 15rem - 10rem); }
+  min-height: calc( 100vh - 15rem - 10rem);
+  max-height: calc( 100vh - 15rem - 10rem); }
 
 .layout-mobile .footer-bar-more-options-container {
   display: flex;
@@ -1602,8 +1605,38 @@ table th {
 .layout-mobile .home_container .quick_trade-wrapper {
   flex-direction: column; }
 
+.layout-mobile .home_container .signup-field-wrapper .signup-field {
+  width: 100%; }
+
+.layout-mobile .home_container .main-section-wrapper::after {
+  background: transparent; }
+
+.layout-mobile .home_container .main-section-wrapper .section_1-content .title-description {
+  text-align: center;
+  min-height: 35rem;
+  justify-content: center;
+  align-items: center; }
+
+.layout-mobile .home_container .main-section-wrapper .section_1-content .btn-wrapper .start-trade-btn {
+  width: 100%;
+  padding: 5%; }
+
+.layout-mobile .home_container .mini-quick-trade-section .mini-quick-trade-calculator-wrapper {
+  padding: 6% 2% 15%; }
+
+.layout-mobile .home_container .question-answer-wrapper {
+  padding: 0 2%; }
+
 .layout-mobile .html_card_section {
-  flex-direction: column; }
+  flex-direction: column;
+  padding: 5% 0; }
+  .layout-mobile .html_card_section .card-description-text {
+    width: 90%; }
+  .layout-mobile .html_card_section .cards-wrapper {
+    width: unset;
+    margin-top: 10%;
+    flex-direction: column;
+    gap: 2rem; }
   .layout-mobile .html_card_section .card-section-wrapper {
     padding: 2rem; }
     .layout-mobile .html_card_section .card-section-wrapper .card-section .header_txt {
@@ -1614,7 +1647,35 @@ table th {
   padding-bottom: 60px !important; }
 
 .layout-mobile .home_carousel_section .slideshow-wrapper {
-  height: 12rem; }
+  margin-top: 2%; }
+
+.layout-mobile .home_carousel_section .loading-anime {
+  height: 1.4rem;
+  width: 6rem; }
+
+.layout-mobile .faq-container .question-answer-wrapper .faq-details {
+  width: 95%; }
+
+.layout-mobile .faq-container .question-answer-wrapper .more-btn {
+  padding: 2.5%; }
+
+.layout-mobile .create-account-section .create-account-wrapper {
+  width: 80%;
+  padding: 30% 0 !important; }
+  .layout-mobile .create-account-section .create-account-wrapper .home-title {
+    line-height: normal; }
+  .layout-mobile .create-account-section .create-account-wrapper .input-wrapper {
+    margin-top: 10%;
+    width: 90%; }
+
+.layout-mobile .section_1-content {
+  flex-wrap: wrap;
+  gap: 5rem; }
+  .layout-mobile .section_1-content .title-description,
+  .layout-mobile .section_1-content .home-page-icon-wrapper {
+    width: 94vw !important; }
+  .layout-mobile .section_1-content .home-page-icon-wrapper .home-page-icon {
+    width: 100vw !important; }
 
 .home_container {
   background-repeat: no-repeat;
@@ -1623,8 +1684,15 @@ table th {
     color: var(--specials_buttons-links-and-highlights) !important;
     background-color: var(--labels_important-active-labels-text-graphics) !important; }
   .home_container .main-section_button {
-    color: var(--labels_important-active-labels-text-graphics) !important;
-    background-color: var(--specials_buttons-links-and-highlights) !important; }
+    color: #ffffff !important;
+    background-color: var(--specials_buttons-links-and-highlights) !important;
+    border-radius: 2px;
+    transition: all 0.3s ease; }
+    .home_container .main-section_button a {
+      color: inherit !important;
+      text-decoration: none !important; }
+    .home_container .main-section_button:hover {
+      opacity: 0.8; }
   .home_container .quick_trade-wrapper {
     background-color: var(--calculated_quick_trade-bg); }
   .home_container .exchange-expired {
@@ -1640,7 +1708,23 @@ table th {
     height: 100% !important;
     background: linear-gradient(to bottom, var(--calculated_landing_background), var(--calculated_landing_background)); }
   .home_container .section_1-content {
-    position: relative; }
+    position: relative;
+    display: flex;
+    justify-content: center;
+    gap: 2%;
+    align-items: center;
+    width: 80%; }
+    .home_container .section_1-content .title-description {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 50%;
+      min-height: 20rem; }
+    .home_container .section_1-content .home-page-icon-wrapper {
+      width: 45%; }
+      .home_container .section_1-content .home-page-icon-wrapper .home-page-icon {
+        width: 70rem;
+        position: relative; }
     .home_container .section_1-content .scroll-button {
       position: absolute;
       bottom: 1rem;
@@ -1679,16 +1763,35 @@ table th {
         text-transform: uppercase; }
   .home_container .home-title,
   .home_container .features-title {
-    font-size: 4rem;
+    font-size: 4.5rem;
     line-height: normal;
-    font-weight: bold;
-    text-align: center; }
+    font-weight: 900;
+    -webkit-text-stroke: 1px #ffffff;
+    letter-spacing: 3px; }
+  .home_container .home-title {
+    color: #ffffff; }
   .home_container .text-section,
   .home_container .buttons-section {
-    margin: 0.5rem; }
+    margin: 0.5rem;
+    color: #ffffff; }
+  .home_container .signup-field-wrapper {
+    margin-top: 5%;
+    display: flex;
+    gap: 3%; }
+    .home_container .signup-field-wrapper .signup-field {
+      background-color: transparent;
+      border-radius: 25px;
+      width: 50%;
+      color: var(--labels_important-active-labels-text-graphics); }
+    .home_container .signup-field-wrapper .signup-field:focus,
+    .home_container .signup-field-wrapper .signup-field:hover {
+      border: 1px solid var(--calculated_important-border) !important;
+      box-shadow: none; }
+    .home_container .signup-field-wrapper .signup-btn {
+      width: max-content;
+      border-radius: 25px; }
   .home_container .text-section {
-    font-size: 1.4rem;
-    font-weight: bold; }
+    font-size: 1.4rem; }
   .home_container .buttons-section--button {
     width: 15rem;
     height: 4rem;
@@ -1701,8 +1804,10 @@ table th {
     .home_container .buttons-section--button.contrast {
       background-color: var(--labels_important-active-labels-text-graphics); }
 
-.home-page_content .alice-carousel__stage-item {
-  border-right: 1px var(--calculated_secondary-border) solid; }
+.home-page_content {
+  background-color: #18181B; }
+  .home-page_content .alice-carousel__stage-item {
+    border-right: 1px var(--calculated_secondary-border) solid; }
 
 .live-markets_header {
   font-size: 1.4rem;
@@ -1716,14 +1821,35 @@ table th {
 .home-page_section-wrapper {
   margin-left: auto;
   margin-right: auto;
-  padding-top: 148px;
-  padding-bottom: 335px !important;
-  max-width: 100rem; }
-  .home-page_section-wrapper:not(.main-section-wrapper) {
-    padding-top: 5rem;
-    padding-bottom: 5rem; }
+  padding: 12% 0;
+  max-width: 100rem;
+  min-height: 65rem; }
   .home-page_section-wrapper.main-section-wrapper {
-    padding-bottom: 5rem; }
+    min-height: 50rem !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: unset;
+    margin-left: unset;
+    margin-right: unset;
+    max-width: 100%;
+    overflow: hidden; }
+    .home-page_section-wrapper.main-section-wrapper::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      min-width: 15rem;
+      min-height: 50rem;
+      background: linear-gradient(to left, #18181B 15%, transparent 100%);
+      pointer-events: none; }
+    .home-page_section-wrapper.main-section-wrapper .btn-wrapper div {
+      width: 100%; }
+    .home-page_section-wrapper.main-section-wrapper .btn-wrapper .start-trade-btn {
+      min-width: 16rem;
+      width: 100%;
+      display: block;
+      padding: 2%; }
   .home-page_section-wrapper .quick_trade-container {
     display: flex;
     justify-content: center;
@@ -1739,53 +1865,219 @@ table th {
 .html_card_section {
   overflow: auto;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-around;
   align-items: center;
-  background-color: transparent;
-  border-bottom: 1px var(--calculated_secondary-border) solid;
-  opacity: 0.8; }
-  .html_card_section .card-section-wrapper {
+  gap: 2%;
+  background-color: rgba(43, 43, 43, 0.5);
+  min-height: 32rem;
+  padding: 2% 0; }
+  .html_card_section .card-description-text {
+    opacity: 0.8; }
+  .html_card_section .cards-wrapper {
+    margin: 3%;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 5rem 3rem; }
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 1.5%; }
+  .html_card_section .card-section-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 1.5rem;
+    background: linear-gradient(to top, #000000, #2a2a2a);
+    min-height: 20rem;
+    border-radius: 15px;
+    box-shadow: 2px 2px #000000;
+    transition: transform 0.3s ease-in-out; }
+    .html_card_section .card-section-wrapper:hover {
+      transform: translateY(-10px);
+      cursor: pointer; }
     .html_card_section .card-section-wrapper .card-section {
       display: flex;
       flex-direction: column;
       align-items: center;
       width: 20rem;
-      margin-right: 1rem; }
-      .html_card_section .card-section-wrapper .card-section .card_section_logo {
-        width: 50px;
-        height: 50px; }
-        .html_card_section .card-section-wrapper .card-section .card_section_logo svg {
-          width: 50px;
-          height: 50px; }
-          .html_card_section .card-section-wrapper .card-section .card_section_logo svg path {
-            fill: var(--labels_important-active-labels-text-graphics); }
-      .html_card_section .card-section-wrapper .card-section .fill-none {
-        width: 50px;
-        height: 50px; }
-        .html_card_section .card-section-wrapper .card-section .fill-none svg {
-          width: 50px;
-          height: 50px; }
-          .html_card_section .card-section-wrapper .card-section .fill-none svg path:not(:first-child) {
-            fill: var(--labels_important-active-labels-text-graphics); }
+      color: #ffffff;
+      padding: 2%; }
+      .html_card_section .card-section-wrapper .card-section .card_section_logo_wrapper {
+        padding: 3%; }
+      .html_card_section .card-section-wrapper .card-section .card_section_logo, .html_card_section .card-section-wrapper .card-section .fill-none {
+        width: 4rem;
+        height: 4rem; }
+        .html_card_section .card-section-wrapper .card-section .card_section_logo svg, .html_card_section .card-section-wrapper .card-section .fill-none svg {
+          width: 4rem;
+          height: 4rem; }
       .html_card_section .card-section-wrapper .card-section .header_txt {
         font-weight: bold;
-        font-size: 18px; }
+        font-size: 18px;
+        margin: 3% 0; }
       .html_card_section .card-section-wrapper .card-section .card_section_main {
-        text-align: center; }
+        text-align: center;
+        opacity: 0.8; }
         .html_card_section .card-section-wrapper .card-section .card_section_main .edit-wrapper__icons-container {
           transform: translate(-20px, 0px) !important; }
 
+.faq-container,
+.create-account-section,
+.mini-quick-trade-section {
+  background-size: cover;
+  background-position-x: center;
+  background-position-y: center; }
+  .faq-container .question-answer-wrapper,
+  .create-account-section .question-answer-wrapper,
+  .mini-quick-trade-section .question-answer-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%; }
+    .faq-container .question-answer-wrapper .faq-details,
+    .create-account-section .question-answer-wrapper .faq-details,
+    .mini-quick-trade-section .question-answer-wrapper .faq-details {
+      width: 50%; }
+      .faq-container .question-answer-wrapper .faq-details .questions-container,
+      .create-account-section .question-answer-wrapper .faq-details .questions-container,
+      .mini-quick-trade-section .question-answer-wrapper .faq-details .questions-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 3%;
+        width: 100%; }
+        .faq-container .question-answer-wrapper .faq-details .questions-container .question-row,
+        .create-account-section .question-answer-wrapper .faq-details .questions-container .question-row,
+        .mini-quick-trade-section .question-answer-wrapper .faq-details .questions-container .question-row {
+          width: 100%;
+          display: flex;
+          justify-content: space-between; }
+        .faq-container .question-answer-wrapper .faq-details .questions-container .question-row:hover,
+        .create-account-section .question-answer-wrapper .faq-details .questions-container .question-row:hover,
+        .mini-quick-trade-section .question-answer-wrapper .faq-details .questions-container .question-row:hover {
+          cursor: pointer;
+          opacity: 0.8; }
+      .faq-container .question-answer-wrapper .faq-details .text-section,
+      .create-account-section .question-answer-wrapper .faq-details .text-section,
+      .mini-quick-trade-section .question-answer-wrapper .faq-details .text-section {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 3%;
+        border-bottom: 1px solid var(--calculated_important-border);
+        gap: 5%; }
+        .faq-container .question-answer-wrapper .faq-details .text-section .answer-section,
+        .create-account-section .question-answer-wrapper .faq-details .text-section .answer-section,
+        .mini-quick-trade-section .question-answer-wrapper .faq-details .text-section .answer-section {
+          margin-top: 2%;
+          font-size: 1.2rem;
+          opacity: 0.8; }
+    .faq-container .question-answer-wrapper .faq-description-text,
+    .create-account-section .question-answer-wrapper .faq-description-text,
+    .mini-quick-trade-section .question-answer-wrapper .faq-description-text {
+      width: 60%; }
+    .faq-container .question-answer-wrapper .more-btn,
+    .create-account-section .question-answer-wrapper .more-btn,
+    .mini-quick-trade-section .question-answer-wrapper .more-btn {
+      margin-top: 4%;
+      padding: 1% 2%;
+      min-width: 8rem;
+      text-align: center;
+      border-radius: 25px; }
+
+.mini-quick-trade-section {
+  background-size: contain !important;
+  background-position: 80% 0% !important; }
+  .mini-quick-trade-section .mini-quick-trade-calculator-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 6% 0 15% 0; }
+    .mini-quick-trade-section .mini-quick-trade-calculator-wrapper .mini-quicktrade-description-text {
+      width: 60%; }
+    .mini-quick-trade-section .mini-quick-trade-calculator-wrapper .mini-quick-trade-converter {
+      background-color: #333333 !important; }
+      .mini-quick-trade-section .mini-quick-trade-calculator-wrapper .mini-quick-trade-converter .header-wrapper .title {
+        color: #ffffff !important; }
+      .mini-quick-trade-section .mini-quick-trade-calculator-wrapper .mini-quick-trade-converter .header-wrapper div {
+        padding: unset !important; }
+      .mini-quick-trade-section .mini-quick-trade-calculator-wrapper .mini-quick-trade-converter .input-holder .currency-dropdown,
+      .mini-quick-trade-section .mini-quick-trade-calculator-wrapper .mini-quick-trade-converter .input-holder .ant-select-arrow,
+      .mini-quick-trade-section .mini-quick-trade-calculator-wrapper .mini-quick-trade-converter .input-holder .ant-select {
+        color: #ffffff !important; }
+      .mini-quick-trade-section .mini-quick-trade-calculator-wrapper .mini-quick-trade-converter .input-holder .ant-select {
+        border-color: #ffffff !important; }
+      .mini-quick-trade-section .mini-quick-trade-calculator-wrapper .mini-quick-trade-converter .input-holder .ant-input {
+        color: #beb3b3 !important;
+        font-size: 1.8rem;
+        height: 3rem; }
+      .mini-quick-trade-section .mini-quick-trade-calculator-wrapper .mini-quick-trade-converter .input-holder .ant-input:focus {
+        background-color: #2B2B2B !important; }
+    .mini-quick-trade-section .mini-quick-trade-calculator-wrapper .mini-quick-trade-converter:hover {
+      border-color: #ffffff; }
+  .mini-quick-trade-section .swap-wrapper .swap-container {
+    border-color: #beb3b3 !important; }
+
+.create-account-section .create-account-wrapper {
+  padding: 15% 0 !important; }
+  .create-account-section .create-account-wrapper .home-title {
+    line-height: 5rem; }
+  .create-account-section .create-account-wrapper .input-wrapper {
+    margin-top: 3%;
+    display: flex;
+    gap: 3%;
+    align-items: center;
+    width: 35%; }
+    .create-account-section .create-account-wrapper .input-wrapper .create-account-field {
+      background-color: transparent;
+      border-radius: 25px;
+      width: 70%;
+      color: var(--labels_important-active-labels-text-graphics); }
+    .create-account-section .create-account-wrapper .input-wrapper .create-account-field:focus,
+    .create-account-section .create-account-wrapper .input-wrapper .create-account-field:hover {
+      border: 1px solid var(--calculated_important-border);
+      box-shadow: none; }
+    .create-account-section .create-account-wrapper .input-wrapper .signup-btn {
+      border-radius: 25px;
+      width: max-content; }
+  .create-account-section .create-account-wrapper .start-trade-btn {
+    min-width: 18rem;
+    display: block;
+    padding: 5%; }
+
+.price-carousel::before,
+.price-carousel::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 35%;
+  z-index: 2;
+  pointer-events: none; }
+
+.price-carousel::before {
+  left: 0;
+  background: linear-gradient(to right, #18181B 15%, transparent 100%); }
+
+.price-carousel::after {
+  right: 0;
+  background: linear-gradient(to left, #18181B 15%, transparent 100%); }
+
 .home_carousel_section {
-  border-top: 1px var(--calculated_secondary-border) solid;
-  border-bottom: 1px var(--calculated_secondary-border) solid; }
+  position: relative;
+  overflow: hidden;
+  padding: 10% 0; }
+  .home_carousel_section .loading-anime {
+    height: 15px;
+    width: 60px;
+    border-radius: 7px;
+    animation: mymove 3s infinite; }
   .home_carousel_section .slideshow-wrapper {
-    height: 11rem;
+    min-height: 6.6rem;
     margin: 0 auto;
     position: relative;
+    margin-top: 0.8%;
     overflow: hidden;
     transform: translate3d(0, 0, 0); }
   .home_carousel_section .slideshow-wrapper > div {
@@ -1794,22 +2086,58 @@ table th {
     left: 0;
     height: 100%;
     transform: translate3d(0, 0, 0); }
+  .home_carousel_section .parent-slider {
+    gap: 10px; }
+    .home_carousel_section .parent-slider:hover {
+      animation-play-state: paused !important; }
+    .home_carousel_section .parent-slider .price-card-wrapper {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      gap: 4%;
+      overflow: hidden; }
+      .home_carousel_section .parent-slider .price-card-wrapper .price-card-header,
+      .home_carousel_section .parent-slider .price-card-wrapper .price-card-content {
+        display: flex;
+        align-items: center;
+        gap: 5%;
+        line-height: 1.5rem; }
+        .home_carousel_section .parent-slider .price-card-wrapper .price-card-header .asset-name,
+        .home_carousel_section .parent-slider .price-card-wrapper .price-card-content .asset-name {
+          max-width: 6rem;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          text-wrap: nowrap;
+          font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; }
+      .home_carousel_section .parent-slider .price-card-wrapper .price-card-content {
+        justify-content: space-between; }
+        .home_carousel_section .parent-slider .price-card-wrapper .price-card-content .last-price-label {
+          display: flex;
+          gap: 2px; }
   .home_carousel_section .slideshow-wrapper .parent-slider {
     animation: moveSlideshow 50s linear infinite; }
   .home_carousel_section .parent-slider:hover {
     animation-play-state: paused; }
   .home_carousel_section .section {
-    opacity: 0.8;
-    border-right: 1px solid #60605d;
-    padding: 1.5rem 30px;
+    padding: 0.5rem 0.8rem;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 30rem; }
-  .home_carousel_section .section:hover {
+    justify-content: space-between;
+    min-width: 15rem;
+    background-color: #202020;
+    border: 1px solid #313131;
+    border-radius: 8px;
     opacity: 1;
+    font-size: 1.2rem !important;
+    color: #ffffff !important; }
+    .home_carousel_section .section .price-diff,
+    .home_carousel_section .section .asset-symbol {
+      color: #beb3b3; }
+    .home_carousel_section .section .asset-symbol {
+      margin-top: 2%; }
+  .home_carousel_section .section:hover {
     cursor: pointer;
-    background-color: var(--base_wallet-sidebar-and-popup); }
+    background-color: #333333 !important; }
   .home_carousel_section .height-40 {
     height: 40px;
     width: 16rem; }
@@ -1823,8 +2151,10 @@ table th {
     opacity: 0.5; }
 
 @keyframes moveSlideshow {
+  0% {
+    transform: translateX(-66.6666%); }
   100% {
-    transform: translateX(-66.6666%); } }
+    transform: translateX(0); } }
 
 @media (max-width: 767px) {
   .home_container .home-card-container {
@@ -1842,9 +2172,7 @@ table th {
     .home_container .html_card_section .card-section-wrapper {
       padding: 2rem; }
       .home_container .html_card_section .card-section-wrapper .card-section .header_txt {
-        font-size: 14px; }
-  .home_container .home_carousel_section .section {
-    padding: 0 30px !important; } }
+        font-size: 14px; } }
 
 @media (max-width: 1199px) {
   .home_container .html_card_section {
@@ -1853,6 +2181,31 @@ table th {
       padding: 2rem; }
       .home_container .html_card_section .card-section-wrapper .card-section .header_txt {
         font-size: 14px; } }
+
+@media screen and (min-width: 767px) and (max-width: 1199px) {
+  .main-section-wrapper .section_1-content .title-description .signup-field-wrapper {
+    width: 60%; } }
+
+@media (min-width: 1920px) {
+  .home_container .home-page_section-wrapper {
+    min-height: 70rem; }
+  .home_container .main-section-wrapper {
+    min-height: 56rem !important;
+    padding: 5% 0; }
+    .home_container .main-section-wrapper .section_1-content {
+      padding: unset;
+      width: 65%; }
+  .home_container .mini-quick-trade-section {
+    background-position: 70% 0 !important; }
+  .home_container .home_carousel_section {
+    padding: 5% 0; }
+  .home_container .mini-quick-trade-calculator-wrapper {
+    padding: 5% 0;
+    padding-bottom: 8%; }
+  .home_container .question-answer-wrapper {
+    padding: 6% 0; }
+  .home_container .create-account-section .create-account-wrapper {
+    padding: 15% 0 !important; } }
 
 .wallet-hover:hover {
   opacity: 0.5;
@@ -6279,7 +6632,7 @@ table th {
   .digital-market-wrapper .market-list__block-table tbody tr td .asset-text,
   .digital-market-wrapper .market-list__block-table tbody tr td .last-price-label {
     font-weight: bold;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; }
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; }
   .digital-market-wrapper .market-list__block-table tbody tr td .asset-text {
     text-wrap: nowrap; }
   .digital-market-wrapper .market-list__block-table tbody tr td .price-change,
@@ -6960,19 +7313,24 @@ table th {
   padding: 5px;
   overflow: hidden; }
 
+.operator-controls__details {
+  width: 100vw !important; }
+
 .operator-controls__wrapper {
   position: fixed;
   bottom: -106px;
-  width: 100vw;
+  width: max-content;
   transition: all 0.25s ease-out 0s;
-  color: #ffffff; }
+  color: #ffffff;
+  z-index: 10 !important; }
   .operator-controls__wrapper.open {
     bottom: 0;
     z-index: 10002 !important; }
 
 .operator-controls__buttons-wrapper {
   display: flex;
-  margin-left: 57px; }
+  margin-left: 57px;
+  width: max-content; }
 
 .operator-controls__button {
   height: 31px;
@@ -15581,12 +15939,14 @@ table th {
   .app_bar .app_bar-quicktrade-container .toggle_button-wrapper .toggle-content .toggle-action_button.left {
     opacity: 1 !important; }
   .app_bar .language_option {
-    display: flex; }
+    display: flex;
+    color: var(--calculated_base_top-bar-navigation_text-inactive); }
     .app_bar .language_option .flag-icon {
       width: 1.5rem;
       height: 1rem; }
   .app_bar .language_option:hover {
-    cursor: pointer; }
+    cursor: pointer;
+    color: var(--calculated_base_top-bar-navigation_text); }
   .app_bar .app_bar-quicktrade {
     border: 1px solid var(--calculated_base_top-bar-navigation_text-inactive);
     border-radius: 0.35rem;
@@ -15887,19 +16247,24 @@ table th {
       font-weight: bold; }
   .app_bar .login-container {
     background-color: var(--specials_buttons-links-and-highlights);
+    color: #ffffff;
     padding: 2px 20px;
     border-radius: 3px;
     cursor: pointer;
     font-size: 11px; }
   .app_bar .app-bar-search-icon {
     padding: 2%;
-    font-size: 16px;
-    opacity: 0.6; }
+    font-size: 16px; }
     .app_bar .app-bar-search-icon svg {
       transform: scale(1.3); }
+      .app_bar .app-bar-search-icon svg path {
+        fill: var(--calculated_base_top-bar-navigation_text-inactive); }
+  .app_bar .active-menu.app-bar-search-icon svg path {
+    fill: var(--calculated_base_top-bar-navigation_text) !important; }
   .app_bar .app-bar-search-icon:hover {
-    cursor: pointer;
-    opacity: 1; }
+    cursor: pointer; }
+    .app_bar .app-bar-search-icon:hover path {
+      fill: var(--calculated_base_top-bar-navigation_text) !important; }
 
 .capitalize {
   text-transform: capitalize; }
@@ -16587,6 +16952,24 @@ table th {
   fill: #ffffff;
   stroke-miterlimit: 10; }
 
+.layout-mobile .mobile-bar .app-navbar-wrapper {
+  display: flex;
+  align-items: center;
+  font-size: 11px;
+  gap: 1%; }
+  .layout-mobile .mobile-bar .app-navbar-wrapper .language_option {
+    display: flex;
+    color: var(--calculated_base_top-bar-navigation_text);
+    align-items: center; }
+    .layout-mobile .mobile-bar .app-navbar-wrapper .language_option img {
+      width: 2.5rem; }
+  .layout-mobile .mobile-bar .app-navbar-wrapper .login-container {
+    background-color: var(--specials_buttons-links-and-highlights);
+    color: #ffffff;
+    padding: 2px 20px;
+    border-radius: 3px;
+    cursor: pointer; }
+
 .layout-mobile .app-bar-add-tab-menu {
   width: 36rem;
   position: absolute;
@@ -16895,44 +17278,60 @@ table th {
   .desktop-search-wrapper .crypto-link .blue-link:hover {
     cursor: pointer; }
 
+.layout-mobile.language-popup-wrapper .ReactModal__Content {
+  min-height: unset;
+  max-height: unset; }
+  .layout-mobile.language-popup-wrapper .ReactModal__Content .language-popup-container {
+    min-height: calc( 100vh - 10rem);
+    max-height: calc( 100vh - 10rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; }
+    .layout-mobile.language-popup-wrapper .ReactModal__Content .language-popup-container .custom-select-input-style .ant-select-selection-item, .layout-mobile.language-popup-wrapper .ReactModal__Content .language-popup-container .custom-select-input-style .ant-select-selector, .layout-mobile.language-popup-wrapper .ReactModal__Content .language-popup-container .custom-select-input-style .ant-select-selection-placeholder {
+      font-size: 10px; }
+    .layout-mobile.language-popup-wrapper .ReactModal__Content .language-popup-container .language-select-dropdown-wrapper-mobile,
+    .layout-mobile.language-popup-wrapper .ReactModal__Content .language-popup-container .select-currency-wrapper-mobile {
+      height: unset !important; }
+
 .language-popup-wrapper .ReactModal__Content {
   width: 35rem;
   font-size: 12px; }
 
-.language-popup-wrapper .language-popup-container .title-container {
+.language-popup-wrapper .language-popup-container .language-popup-details-wrapper {
   display: flex;
-  align-items: center;
-  gap: 2%;
-  font-size: 16px; }
-  .language-popup-wrapper .language-popup-container .title-container .icon-logo svg {
-    position: relative;
-    top: 2px; }
-
-.language-popup-wrapper .language-popup-container .language-field {
-  margin-top: 7%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 5px; }
-  .language-popup-wrapper .language-popup-container .language-field .custom-select-input-style {
-    margin: unset !important;
-    max-width: 100% !important;
-    width: 100% !important; }
-    .language-popup-wrapper .language-popup-container .language-field .custom-select-input-style .ant-select-selector {
-      border-color: var(--labels_important-active-labels-text-graphics) !important;
-      height: 25px !important; }
-    .language-popup-wrapper .language-popup-container .language-field .custom-select-input-style .ant-select-selection-item {
-      color: var(--labels_important-active-labels-text-graphics) !important;
-      display: flex;
-      align-items: center;
-      gap: 1%; }
-    .language-popup-wrapper .language-popup-container .language-field .custom-select-input-style .ant-select-selection-placeholder {
-      line-height: 22px; }
-    .language-popup-wrapper .language-popup-container .language-field .custom-select-input-style .ant-select-arrow svg {
-      color: var(--labels_important-active-labels-text-graphics) !important; }
-
-.language-popup-wrapper .language-popup-container .blue-link:hover {
-  cursor: pointer; }
+  flex-direction: column; }
+  .language-popup-wrapper .language-popup-container .language-popup-details-wrapper .title-container {
+    display: flex;
+    align-items: center;
+    gap: 2%;
+    font-size: 16px; }
+    .language-popup-wrapper .language-popup-container .language-popup-details-wrapper .title-container .icon-logo svg {
+      position: relative;
+      top: 2px; }
+  .language-popup-wrapper .language-popup-container .language-popup-details-wrapper .language-field {
+    margin-top: 7%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px; }
+    .language-popup-wrapper .language-popup-container .language-popup-details-wrapper .language-field .custom-select-input-style {
+      margin: unset !important;
+      max-width: 100% !important;
+      width: 100% !important; }
+      .language-popup-wrapper .language-popup-container .language-popup-details-wrapper .language-field .custom-select-input-style .ant-select-selector {
+        border-color: var(--labels_important-active-labels-text-graphics) !important;
+        height: 25px !important; }
+      .language-popup-wrapper .language-popup-container .language-popup-details-wrapper .language-field .custom-select-input-style .ant-select-selection-item {
+        color: var(--labels_important-active-labels-text-graphics) !important;
+        display: flex;
+        align-items: center;
+        gap: 1%; }
+      .language-popup-wrapper .language-popup-container .language-popup-details-wrapper .language-field .custom-select-input-style .ant-select-selection-placeholder {
+        line-height: 22px; }
+      .language-popup-wrapper .language-popup-container .language-popup-details-wrapper .language-field .custom-select-input-style .ant-select-arrow svg {
+        color: var(--labels_important-active-labels-text-graphics) !important; }
+  .language-popup-wrapper .language-popup-container .language-popup-details-wrapper .blue-link:hover {
+    cursor: pointer; }
 
 .language-popup-wrapper .language-popup-container .button-container {
   margin-top: 5%;
@@ -21216,6 +21615,102 @@ table th {
 
 .display-error-container-mobile .button-container {
   margin-top: 3%; }
+
+.mini-quick-trade-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; }
+  .mini-quick-trade-container .mini-quick-trade-converter {
+    width: 32%;
+    padding: 1.5%;
+    border-radius: 10px;
+    background-color: var(--base_wallet-sidebar-and-popup);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+    border: 2px solid var(--calculated_super-pale_label-text-graphics); }
+    .mini-quick-trade-container .mini-quick-trade-converter:focus-within {
+      background: var(--base_wallet-sidebar-and-popup);
+      border: 2px solid #5d63ff !important; }
+    .mini-quick-trade-container .mini-quick-trade-converter .header-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: unset; }
+      .mini-quick-trade-container .mini-quick-trade-converter .header-wrapper .balance-text .balance-value-text {
+        color: var(--specials_buttons-links-and-highlights); }
+    .mini-quick-trade-container .mini-quick-trade-converter .field-error-content {
+      margin-top: 3%; }
+      .mini-quick-trade-container .mini-quick-trade-converter .field-error-content .field-error-text {
+        color: var(--specials_notifications-alerts-warnings); }
+    .mini-quick-trade-container .mini-quick-trade-converter .title {
+      font-size: 1.3rem; }
+    .mini-quick-trade-container .mini-quick-trade-converter .currency-dropdown .ant-select {
+      border: 1px solid var(--calculated_important-border);
+      border-radius: 25px;
+      min-width: 10rem; }
+    .mini-quick-trade-container .mini-quick-trade-converter .currency-dropdown .ant-select,
+    .mini-quick-trade-container .mini-quick-trade-converter .currency-dropdown .ant-select-arrow {
+      color: var(--labels_important-active-labels-text-graphics); }
+    .mini-quick-trade-container .mini-quick-trade-converter .currency-dropdown .ant-select-focused {
+      padding: unset !important; }
+    .mini-quick-trade-container .mini-quick-trade-converter .input-group__input,
+    .mini-quick-trade-container .mini-quick-trade-converter .active-input {
+      text-align: right;
+      color: var(--labels_secondary-inactive-label-text-graphics);
+      margin-left: 1rem; }
+      .mini-quick-trade-container .mini-quick-trade-converter .input-group__input:focus, .mini-quick-trade-container .mini-quick-trade-converter .input-group__input:active,
+      .mini-quick-trade-container .mini-quick-trade-converter .active-input:focus,
+      .mini-quick-trade-container .mini-quick-trade-converter .active-input:active {
+        background-color: var(--base_secondary-navigation-bar) !important;
+        box-shadow: inset 1px 1px 3px #00000029;
+        border-radius: 5px;
+        border-bottom: 1px solid #ffffff; }
+      .mini-quick-trade-container .mini-quick-trade-converter .input-group__input:hover,
+      .mini-quick-trade-container .mini-quick-trade-converter .active-input:hover {
+        color: var(--labels_important-active-labels-text-graphics); }
+  .mini-quick-trade-container .active-border {
+    border: 1px solid var(--labels_important-active-labels-text-graphics) !important; }
+    .mini-quick-trade-container .active-border:focus-within {
+      background: var(--base_wallet-sidebar-and-popup);
+      border: 1px solid var(--labels_important-active-labels-text-graphics) !important; }
+  .mini-quick-trade-container .mini-quick-trade-converter:hover {
+    border-color: var(--labels_important-active-labels-text-graphics); }
+  .mini-quick-trade-container .swap-wrapper-wrapper {
+    width: 100%; }
+    .mini-quick-trade-container .swap-wrapper-wrapper .swap-wrapper {
+      width: 28% !important; }
+
+.layout-mobile .mini-quick-trade-container .mini-quick-trade-converter {
+  width: 85%;
+  padding: 4%;
+  font-size: 1.6rem !important; }
+  .layout-mobile .mini-quick-trade-container .mini-quick-trade-converter .title {
+    font-size: 2rem !important; }
+  .layout-mobile .mini-quick-trade-container .mini-quick-trade-converter .currency-dropdown .ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
+    height: 4.6rem; }
+  .layout-mobile .mini-quick-trade-container .mini-quick-trade-converter .input-holder > div {
+    align-items: center;
+    justify-content: space-between;
+    width: 100%; }
+  .layout-mobile .mini-quick-trade-container .mini-quick-trade-converter .input-holder .ant-input {
+    height: unset; }
+
+.layout-mobile .swap-wrapper-wrapper {
+  width: 80% !important;
+  margin: 2% 0; }
+  .layout-mobile .swap-wrapper-wrapper .swap-wrapper {
+    width: 100% !important; }
+  .layout-mobile .swap-wrapper-wrapper .blue-link {
+    font-size: 1.8rem !important; }
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .mini-quick-trade-container .mini-quick-trade-converter .currency-dropdown .ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
+    height: 3rem !important; } }
 
 html {
   font-size: 12px !important;

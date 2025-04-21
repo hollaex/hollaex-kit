@@ -27,7 +27,7 @@ const Footer = ({ brokerUsed, name, isNetwork, pair }) => {
 								{name}
 							</span>
 						</Link>
-						<span>
+						<span className="text-capitalize">
 							<EditWrapper stringId="TYPES_VALUES.market">
 								{STRINGS['TYPES_VALUES.market']}
 							</EditWrapper>

@@ -1,5 +1,5 @@
 paths:
-  /broker:
+  /admin/broker:
     x-swagger-router-controller: broker
     post:
       operationId: createBrokerPair
@@ -25,8 +25,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-      x-security-scopes:
-        - admin
     put:
       operationId: updateBrokerPair
       description: Edit a broker deal
@@ -51,8 +49,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-      x-security-scopes:
-        - admin
     get:
       operationId: getBrokerPairs
       description: Get all broker deals
@@ -78,8 +74,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-      x-security-scopes:
-        - admin
     delete:
       operationId: deleteBrokerPair
       description: Delete a broker deal
@@ -104,9 +98,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-      x-security-scopes:
-        - admin
-  /broker/markets:
+  /admin/broker/markets:
     x-swagger-router-controller: broker
     get:
       operationId: getTrackedExchangeMarkets
@@ -135,9 +127,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-      x-security-scopes:
-        - admin
-  /broker/test:
+  /admin/broker/test:
     x-swagger-router-controller: broker
     post:
       operationId: testBroker
@@ -172,9 +162,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-      x-security-scopes:
-        - user
-  /broker/connect:
+  /admin/broker/connect:
     x-swagger-router-controller: broker
     get:
       operationId: testRebalance
@@ -219,6 +207,4 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-      x-security-scopes:
-        - admin
   

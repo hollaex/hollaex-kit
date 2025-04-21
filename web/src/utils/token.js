@@ -46,6 +46,17 @@ export const checkRole = () => {
 	return role;
 };
 
+export const getPermissions = () => {
+	const token = getToken();
+	if (!token || token === undefined) return '';
+	return jwtDecode(token)?.sub?.permissions;
+};
+export const getConfigs = () => {
+	const token = getToken();
+	if (!token || token === undefined) return '';
+	return jwtDecode(token)?.sub?.configs;
+};
+
 export const isUser = () => {
 	return checkRole() === '';
 };
@@ -70,6 +81,16 @@ export const isAdmin = () => {
 		role === 'supervisor' ||
 		role === 'communicator'
 	);
+};
+
+export const hasPermissions = () => {
+	return getPermissions()?.length > 0;
+};
+
+export const getRole = () => {
+	const token = getToken();
+	if (!token || token === undefined) return '';
+	return jwtDecode(token)?.sub?.role?.toLowerCase();
 };
 
 export const getDashToken = () => {
