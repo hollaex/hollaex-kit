@@ -1158,7 +1158,7 @@ const updateUserRole = async (user_id, role_name) => {
 
 		user.role = role.role_name;
 		await user.save();
-
+		await revokeAllUserSessions(user_id);
 		return user;
 	}
 
