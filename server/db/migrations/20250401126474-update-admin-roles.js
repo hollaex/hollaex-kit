@@ -23,7 +23,6 @@ const roles = {
 		"/admin/kit/user-meta:post",
 		"/admin/kit/user-meta:put",
 		"/admin/kit/user-meta:delete",
-		"/admin/operator/invite:get",
 		"/admin/upload:post",
 		"/admin/pair:post",
 		"/admin/pair:put",
@@ -105,10 +104,10 @@ const roles = {
 		"/admin/announcements:post",
 		"/admin/announcements:put",
 		"/admin/announcements:delete",
-		"/admin/roles:get",
-		"/admin/roles:post",
-		"/admin/roles:put",
-		"/admin/roles:delete",
+		"/admin/role:get",
+		"/admin/role:post",
+		"/admin/role:put",
+		"/admin/role:delete",
 		"/admin/endpoints:get",
 		"/admin/signup:post",
 		"/admin/broker:get",
@@ -291,9 +290,12 @@ module.exports = {
 
 		// Create roles first
 		const createdRoles = {};
-
+		await roleModel.destroy({
+			where: {}
+		})
+		
 		for (const [roleFlag, permissions] of Object.entries(roles)) {
-			const roleName = roleFlag.replace('is_', '').charAt(0).toUpperCase() +
+			const roleName = roleFlag.replace('is_', '').charAt(0).toLowerCase() +
 				roleFlag.replace('is_', '').slice(1);
 
 			const [role] = await roleModel.findOrCreate({

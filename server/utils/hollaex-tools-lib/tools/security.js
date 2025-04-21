@@ -55,7 +55,7 @@ const {
 } = require(`${SERVER_PATH}/constants`);
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { resolve, reject, promisify } = require('bluebird');
-const { getKitSecrets, getKitConfig, getFrozenUsers, getNetworkKeySecret } = require('./common');
+const { getKitSecrets, getKitConfig, getFrozenUsers, getNetworkKeySecret, getRoles } = require('./common');
 const bcrypt = require('bcryptjs');
 const { all } = require('bluebird');
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
@@ -596,7 +596,6 @@ const verifyHmacTokenMiddleware = (req, definition, apiKey, cb, isSocket = false
 		}
 	};
 	// Swagger endpoint scopes
-	const endpointScopes = req.swagger ? req.swagger.operation['x-security-scopes'] : BASE_SCOPES;
 	const endpointPermissions = req.swagger ? req.swagger.operation['x-token-permissions'] : ['can_read'];
 
 	const apiSignature = req.headers ? req.headers['api-signature'] : undefined;
@@ -616,7 +615,6 @@ const verifyHmacTokenMiddleware = (req, definition, apiKey, cb, isSocket = false
 			req.method,
 			req.originalUrl,
 			req.body,
-			endpointScopes,
 			endpointPermissions,
 			ip)
 			.then((auth) => {
@@ -684,6 +682,18 @@ const verifyBearerTokenExpressMiddleware = (scopes = BASE_SCOPES) => (req, res, 
 					return sendError(TOKEN_EXPIRED);
 				}
 
+				if (intersection(decodedToken.scopes, scopes).length === 0) {
+					loggerAuth.error(
+						'verifyToken',
+						'not permission',
+						decodedToken.sub.email,
+						decodedToken.scopes,
+						scopes
+					);
+
+					return sendError(NOT_AUTHORIZED);
+				}
+
 				if (getFrozenUsers()[decodedToken.sub.id]) {
 					loggerAuth.error(
 						'helpers/auth/verifyToken deactivated account',
@@ -701,11 +711,11 @@ const verifyBearerTokenExpressMiddleware = (scopes = BASE_SCOPES) => (req, res, 
 				}
 
 				try {
-					checkPermission(req, decodedToken);
+					checkPermission({ swagger: { apiPath: req.originalUrl || req?.swagger?.apiPath }, method: req.method }, decodedToken);
 				} catch (err) {
 					return sendError(err.message);
 				}
-
+		
 				req.auth = decodedToken;
 				return next();
 			} else {
@@ -769,7 +779,7 @@ const verifyBearerTokenPromise = (token, ip, scopes = BASE_SCOPES) => {
 	}
 };
 
-const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, originalUrl, body, scopes = BASE_SCOPES, permissions = [], ip = undefined) => {
+const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, originalUrl, body, permissions = [], ip = undefined) => {
 	if (!apiKey) {
 		return reject(new Error(API_KEY_NULL));
 	} else if (!apiSignature) {
@@ -779,13 +789,6 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 	} else {
 		return findTokenByApiKey(apiKey)
 			.then((token) => {
-				if (originalUrl?.includes('/admin') && !scopes?.includes(ROLES.ADMIN)) {
-					scopes.push(ROLES.ADMIN);
-				}
-
-				if (token.role !== ROLES.ADMIN && scopes.includes(ROLES.ADMIN)) {
-					throw new Error(NOT_AUTHORIZED);
-				}
 
 				if (token.whitelisting_enabled && token.whitelisted_ips.length > 0) {
 					const found = token.whitelisted_ips.find((wlip) => {
@@ -827,6 +830,18 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 					if (!isSignatureValid) {
 						throw new Error(API_SIGNATURE_INVALID);
 					} else {
+						const roles = getRoles();
+						const userRole = roles.find(role => role.role_name === token.role);
+						if (userRole) {
+							token = {
+								...token,
+								sub: {
+									permissions: userRole.permissions,
+									configs: userRole.configs,
+								}
+							}
+						}
+						checkPermission({ swagger: { apiPath: originalUrl }, method }, token);
 						return {
 							sub: { id: token.user.id, email: token.user.email, networkId: token.user.network_id },
 							scopes: [token.role]
@@ -981,11 +996,6 @@ const issueToken = (
 	networkId,
 	email,
 	ip,
-	isAdmin = false,
-	isSupport = false,
-	isSupervisor = false,
-	isKYC = false,
-	isCommunicator = false,
 	expiresIn = getKitSecrets().security.token_time, // 24 hours by default
 	lang = 'en',
 	permissions = [],
@@ -994,23 +1004,13 @@ const issueToken = (
 ) => {
 	// Default scope is ['user']
 	let scopes = [].concat(BASE_SCOPES);
+	let userPermissions = [];
+	let userConfigs = [];
 
 	if (checkAdminIp(getKitSecrets().admin_whitelist, ip)) {
-		if (isAdmin) {
-			scopes = scopes.concat(ROLES.ADMIN);
-		}
-		if (isSupport) {
-			scopes = scopes.concat(ROLES.SUPPORT);
-		}
-		if (isSupervisor) {
-			scopes = scopes.concat(ROLES.SUPERVISOR);
-		}
-		if (isKYC) {
-			scopes = scopes.concat(ROLES.KYC);
-		}
-		if (isCommunicator) {
-			scopes = scopes.concat(ROLES.COMMUNICATOR);
-		}
+		userPermissions = permissions;
+		userConfigs = configs;
+		scopes.push(role);
 	}
 
 	const token = jwt.sign(
@@ -1020,8 +1020,8 @@ const issueToken = (
 				email,
 				networkId,
 				lang,
-				permissions,
-				configs,
+				permissions: userPermissions,
+				configs: userConfigs,
 				role
 			},
 			scopes,
@@ -1309,12 +1309,14 @@ const generateDashToken = (opts = {
 
 const checkPermission = (req, user) => {
 	// Extract path and method from request
-	const apiPath = req?.swagger?.apiPath; // admin/user/role
+	let apiPath = req?.swagger?.apiPath; // admin/user/role
 	const method = req.method.toLowerCase(); // "get", "post", etc.
 
 	if (!apiPath) {
 		throw new Error(NOT_AUTHORIZED);
 	};
+
+	apiPath = apiPath.replace(/^\/v[0-9]+\//, '/');
 
 	if (!apiPath.includes('admin')) return;
 

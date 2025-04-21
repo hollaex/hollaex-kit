@@ -324,7 +324,12 @@ const RoleForm = ({
 					{ max: 50, message: 'Role name cannot exceed 50 characters!' },
 				]}
 			>
-				<Input placeholder="Enter role name" />
+				<Input
+					onChange={(e) => {
+						form.setFieldsValue({ role_name: e.target.value.toLowerCase() });
+					}}
+					placeholder="Enter role name"
+				/>
 			</Form.Item>
 
 			<Form.Item

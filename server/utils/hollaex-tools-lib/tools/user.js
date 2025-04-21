@@ -275,7 +275,7 @@ const createUser = (
 				let role = null;
 				if (opts.role === 'admin') {
 					const Role = getModel('role');
-					const adminRole = await Role.findOne({ where: { role_name: 'Admin' } });
+					const adminRole = await Role.findOne({ where: { role_name: 'admin' } });
 					if (!adminRole) throw new Error('Role not found');
 					role = adminRole.role_name;
 				}
@@ -476,12 +476,22 @@ const createSuspiciousLogin = async (user, ip, device, country, domain, origin, 
 		where: {
 			user_id: user.id,
 			status: false,
-			device,
+			// device,
 			country
 		}
 	});
 
 	if (!loginData) {
+		loggerUser.verbose(
+			'tools/user/loginPost creating suspicious login record',
+			'user id',
+			user.id,
+			'country',
+			country,
+			'device',
+			device,
+
+		);
 		return registerUserLogin(user.id, ip, {
 			device,
 			domain,
@@ -493,7 +503,16 @@ const createSuspiciousLogin = async (user, ip, device, country, domain, origin, 
 			country
 		});
 	}
+	loggerUser.verbose(
+		'tools/user/loginPost existing suspicious login record found, updating attempt counter',
+		'user id',
+		user.id,
+		'country',
+		country,
+		'device',
+		device,
 
+	);
 	await updateLoginAttempt(loginData.id);
 	return loginData;
 };
@@ -1016,7 +1035,7 @@ const freezeUserById = (userId) => {
 			if (!user.activated) {
 				throw new Error(USER_ALREADY_DEACTIVATED);
 			}
-			if (user.is_admin) {
+			if (user.is_admin || user.role === 'admin') {
 				throw new Error(CANNOT_DEACTIVATE_ADMIN);
 			}
 			return user.update({ activated: false }, { fields: ['activated'], returning: true });
@@ -1043,7 +1062,7 @@ const freezeUserByEmail = (email) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
 			}
-			if (user.is_admin) {
+			if (user.is_admin || user.role === 'admin') {
 				throw new Error(CANNOT_DEACTIVATE_ADMIN);
 			}
 			if (!user.activated) {
@@ -1138,28 +1157,31 @@ const getUserRole = (opts = {}) => {
 };
 
 const updateUserRole = async (user_id, role_name) => {
-
-	if (user_id === 1) {
-		return reject(new Error(CANNOT_CHANGE_ADMIN_ROLE));
-	}
 	const Role = getModel('role');
 	const User = getModel('user');
 
 	const user = await User.findOne({ where: { id: user_id } });
 	if (!user) throw new Error('User not found');
 
+	if (user.role == 'admin') {
+		throw new Error(CANNOT_CHANGE_ADMIN_ROLE);
+	}
+	if (!user.otp_enabled) {
+		throw new Error('OTP is not enabled');
+	}
 	if(role_name === 'user') {
 		user.role = null;
 		await user.save();
+		await revokeAllUserSessions(user_id);
 		return user;
-	} else{
+	} else {
 		const role = await Role.findOne({ where: { role_name } });
 		if (!role) throw new Error('Role not found');
 
 		user.role = role.role_name;
 		await user.save();
-
-		return user;
+		await revokeAllUserSessions(user_id);
+		return { message: "Success" };
 	}
 
 };
@@ -1773,85 +1795,6 @@ const getExchangeOperators = (opts = {
 	return dbQuery.findAndCountAllWithRows('user', options);
 };
 
-const inviteExchangeOperator = (invitingEmail, email, role, opts = {
-	additionalHeaders: null
-}) => {
-	const roles = {
-		is_admin: false,
-		is_supervisor: false,
-		is_support: false,
-		is_kyc: false,
-		is_communicator: false
-	};
-
-	if (!email || !isEmail(email)) {
-		return reject(new Error(PROVIDE_VALID_EMAIL));
-	}
-
-	role = role.toLowerCase();
-	const roleToUpdate = `is_${role}`;
-
-	if (role === 'user') {
-		return reject(new Error('Must invite user as an operator role'));
-	} else {
-		if (roles[roleToUpdate] === undefined) {
-			return reject(new Error('Invalid role'));
-		} else {
-			roles[roleToUpdate] = true;
-		}
-	}
-
-	const tempPassword = uuid();
-
-	return getModel('sequelize').transaction((transaction) => {
-		return getModel('user').findOrCreate({
-			defaults: {
-				email,
-				email_verified: true,
-				password: tempPassword,
-				...roles,
-				settings: INITIAL_SETTINGS()
-			},
-			where: { email },
-			transaction
-		})
-			.then(async ([user, created]) => {
-				if (created) {
-					const networkUser = await getNodeLib().createUser(email, opts);
-					return all([
-						user.update(
-							{ network_id: networkUser.id },
-							{ returning: true, fields: ['network_id'], transaction }
-						),
-						created
-					]);
-				} else {
-					if (user.is_admin || user.is_supervisor || user.is_support || user.is_kyc || user.is_communicator) {
-						throw new Error('User is already an operator');
-					}
-					return all([
-						user.update({ ...roles }, { returning: true, fields: Object.keys(roles), transaction }),
-						created
-					]);
-				}
-			});
-	})
-		.then(async ([user, created]) => {
-			sendEmail(
-				MAILTYPE.INVITED_OPERATOR,
-				user.email,
-				{
-					invitingEmail,
-					created,
-					password: created ? tempPassword : undefined,
-					role
-				},
-				user.settings
-			);
-			return;
-		});
-};
-
 const updateUserMeta = async (id, givenMeta = {}, opts = { overwrite: null }, auditInfo) => {
 	const { user_meta: referenceMeta } = getKitConfig();
 
@@ -2317,12 +2260,16 @@ const deleteKitUser = async (userId, sendEmail = true) => {
 		attributes: [
 			'id',
 			'email',
-			'activated'
+			'activated',
+			'role'
 		]
 	});
 
 	if (!user) {
 		throw new Error(USER_NOT_FOUND);
+	}
+	if (user.role === 'admin') {
+		throw new Error(CANNOT_CHANGE_ADMIN_EMAIL);
 	}
 	await revokeAllUserSessions(userId);
 	// we simply add _deleted at the end of users email. This way he won't be able to login anymore and he can create another account.
@@ -2381,13 +2328,14 @@ const changeKitUserEmail = async (userId, newEmail, auditInfo) => {
 			'id',
 			'email',
 			'is_admin',
+			'role'
 		]
 	});
 
 	if (!user) {
 		throw new Error(USER_NOT_FOUND);
 	}
-	if (user.is_admin) {
+	if (user.is_admin || user.role === 'admin') {
 		throw new Error(CANNOT_CHANGE_ADMIN_EMAIL);
 	}
 
@@ -4214,7 +4162,7 @@ const createExchangeUserRole = async ({ name, description, rolePermissions, conf
 
 
 	return Role.create({
-		role_name: name,
+		role_name: name.toLowerCase(),
 		description,
 		permissions: permissionsToStore,
 		configs: configsToStore,
@@ -4234,8 +4182,8 @@ const updateExchangeUserRole = async (roleId, { name, description, rolePermissio
 	}
 
 	const updates = {};
-	if (name !== undefined && name !== role.role_name && role.role_name !== 'Admin') {
-		updates.role_name = name;
+	if (name !== undefined && name !== role.role_name && role.role_name !== 'admin') {
+		updates.role_name = name.toLowerCase()
 	}
 	if (description !== undefined && description !== role.description) {
 		updates.description = description;
@@ -4369,7 +4317,7 @@ const deleteExchangeUserRole = async (id) => {
 		throw new Error('Role not found');
 	}
 
-	if (role.role_name === 'Admin') {
+	if (role.role_name === 'admin') {
 		throw new Error('Cannot delete admin role');
 	}
 
@@ -4413,7 +4361,6 @@ module.exports = {
 	getUserStatsByKitId,
 	disableUserWithdrawal,
 	getExchangeOperators,
-	inviteExchangeOperator,
 	createUserOnNetwork,
 	getUserNetwork,
 	getUsersNetwork,

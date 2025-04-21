@@ -9,9 +9,12 @@ import { ReactSVG } from 'react-svg';
 import MobileDetect from 'mobile-detect';
 // eslint-disable-next-line
 import {
-	// PATHS,
+	// eslint-disable-next-line
+	PATHS,
 	ADMIN_PATHS,
-	// SUPERVISOR_PATH,
+	// eslint-disable-next-line
+	SUPERVISOR_PATH,
+	// eslint-disable-next-line
 	pathToPermissionMap,
 } from '../paths';
 import SetupWizard from '../SetupWizard';
@@ -24,6 +27,7 @@ import {
 	// eslint-disable-next-line
 	checkRole,
 	getRole,
+	// eslint-disable-next-line
 	getPermissions,
 } from 'utils/token';
 import { getExchangeInitialized, getSetupCompleted } from 'utils/initialize';
