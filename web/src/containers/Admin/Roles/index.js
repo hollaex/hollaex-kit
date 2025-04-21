@@ -19,7 +19,8 @@ import '../../Admin/General/index.css';
 import Role from './Roles';
 import { handleUpgrade } from 'utils/utils';
 import { Tabs } from 'antd';
-
+import { WarningOutlined } from '@ant-design/icons';
+import { Link } from 'react-router';
 const TabPane = Tabs.TabPane;
 
 const getColumns = (handleEdit = () => {}) => [
@@ -103,7 +104,7 @@ const renderItems = () => {
 	}
 };
 
-const Roles = ({ constants }) => {
+const Roles = ({ constants, user }) => {
 	const limit = 50;
 	const [operatorList, setOperatorList] = useState([]);
 	const [page, setPage] = useState(1);
@@ -389,52 +390,71 @@ const Roles = ({ constants }) => {
 							<div style={{ fontWeight: '400', color: 'white' }}>
 								You can assign roles to users below
 							</div>
-							<div style={{ marginBottom: 30, marginTop: 10 }}>
-								<div style={{ marginBottom: 10 }}>
-									<div className="mb-2">User</div>
-									<div className="d-flex align-items-center">
+							{!user.otp_enabled && (
+								<div
+									className="authentication-wrapper"
+									style={{ marginBottom: 15 }}
+								>
+									<div>
+										<p>
+											<WarningOutlined />
+										</p>
+										<p>
+											To assign roles, you need to enable the 2-factor
+											authentication.
+										</p>
+									</div>
+									<Link to="/security">Enable 2FA</Link>
+								</div>
+							)}
+							{user.otp_enabled && (
+								<div style={{ marginBottom: 30, marginTop: 10 }}>
+									<div style={{ marginBottom: 10 }}>
+										<div className="mb-2">User</div>
+										<div className="d-flex align-items-center">
+											<Select
+												showSearch
+												placeholder="user@exchange.com"
+												className="user-search-field"
+												onSearch={(text) => handleSearch(text)}
+												filterOption={() => true}
+												style={{ width: '100%' }}
+												value={selectedEmailData && selectedEmailData.label}
+												onChange={(text) => handleEmailChange(text)}
+												showAction={['focus', 'click']}
+											>
+												{emailOptions &&
+													emailOptions.map((email) => (
+														<Select.Option key={email.value}>
+															{email.label}
+														</Select.Option>
+													))}
+											</Select>
+										</div>
+									</div>
+
+									<div style={{ marginBottom: 10 }}>
+										<div className="mb-1">Role</div>
 										<Select
-											showSearch
-											placeholder="user@exchange.com"
-											className="user-search-field"
-											onSearch={(text) => handleSearch(text)}
-											filterOption={() => true}
+											onChange={(value) =>
+												setRolePayload({
+													...rolePayload,
+													role_id: value,
+												})
+											}
+											value={rolePayload?.role_id}
 											style={{ width: '100%' }}
-											value={selectedEmailData && selectedEmailData.label}
-											onChange={(text) => handleEmailChange(text)}
-											showAction={['focus', 'click']}
+											placeholder="Select Role Type"
 										>
-											{emailOptions &&
-												emailOptions.map((email) => (
-													<Select.Option key={email.value}>
-														{email.label}
-													</Select.Option>
-												))}
+											{roles.map((role) => (
+												<Select.Option value={role.value}>
+													{role.label}
+												</Select.Option>
+											))}
 										</Select>
 									</div>
 								</div>
-
-								<div style={{ marginBottom: 10 }}>
-									<div className="mb-1">Role</div>
-									<Select
-										onChange={(value) =>
-											setRolePayload({
-												...rolePayload,
-												role_id: value,
-											})
-										}
-										value={rolePayload?.role_id}
-										style={{ width: '100%' }}
-										placeholder="Select Role Type"
-									>
-										{roles.map((role) => (
-											<Select.Option value={role.value}>
-												{role.label}
-											</Select.Option>
-										))}
-									</Select>
-								</div>
-							</div>
+							)}
 
 							<div
 								style={{
@@ -523,6 +543,7 @@ const Roles = ({ constants }) => {
 
 const mapStateToProps = (state) => ({
 	constants: state.app.constants,
+	user: state.user,
 });
 
 export default connect(mapStateToProps)(Roles);

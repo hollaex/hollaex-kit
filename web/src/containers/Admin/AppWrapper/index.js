@@ -12,6 +12,7 @@ import {
 	PATHS,
 	ADMIN_PATHS,
 	SUPERVISOR_PATH,
+	// eslint-disable-next-line
 	pathToPermissionMap,
 } from '../paths';
 import SetupWizard from '../SetupWizard';
@@ -24,6 +25,7 @@ import {
 	// eslint-disable-next-line
 	checkRole,
 	getRole,
+	// eslint-disable-next-line
 	getPermissions,
 } from 'utils/token';
 import { getExchangeInitialized, getSetupCompleted } from 'utils/initialize';

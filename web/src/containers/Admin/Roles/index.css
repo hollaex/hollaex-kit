@@ -178,3 +178,28 @@
 .ant-collapse > .ant-collapse-item > .ant-collapse-header .ant-collapse-arrow {
 	color: white !important;
 }
+.authentication-wrapper {
+	color: red;
+}
+
+.authentication-wrapper a {
+	color: white;
+	text-decoration: underline;
+}
+
+.authentication-wrapper div {
+	display: flex;
+	align-items: center;
+}
+
+.authentication-wrapper div p {
+	margin-right: 5px;
+}
+
+.authentication-wrapper button {
+	margin-top: 0px;
+}
+
+.authentication-wrapper p {
+	margin-bottom: 0px;
+}
