@@ -24,7 +24,7 @@ export const fetchRoles = (params) => {
 		method: 'GET',
 	};
 	return requestAuthenticated(
-		`/admin/roles?${querystring.stringify(params)}`,
+		`/admin/role?${querystring.stringify(params)}`,
 		options
 	);
 };
@@ -42,7 +42,7 @@ export const createRoles = (values, params) => {
 		body: JSON.stringify(values),
 	};
 	return requestAuthenticated(
-		`/admin/roles?${querystring.stringify(params)}`,
+		`/admin/role?${querystring.stringify(params)}`,
 		options
 	);
 };
@@ -53,7 +53,7 @@ export const updateRoles = (values, params) => {
 		body: JSON.stringify(values),
 	};
 	return requestAuthenticated(
-		`/admin/roles?${querystring.stringify(params)}`,
+		`/admin/role?${querystring.stringify(params)}`,
 		options
 	);
 };
@@ -64,7 +64,7 @@ export const deleteRoles = (values, params) => {
 		body: JSON.stringify(values),
 	};
 	return requestAuthenticated(
-		`/admin/roles?${querystring.stringify(params)}`,
+		`/admin/role?${querystring.stringify(params)}`,
 		options
 	);
 };
@@ -75,7 +75,7 @@ export const assignRole = (values, params) => {
 		body: JSON.stringify(values),
 	};
 	return requestAuthenticated(
-		`/admin/roles/assign?${querystring.stringify(params)}`,
+		`/admin/role/assign?${querystring.stringify(params)}`,
 		options
 	);
 };
