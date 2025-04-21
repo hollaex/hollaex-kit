@@ -9,9 +9,9 @@ import { ReactSVG } from 'react-svg';
 import MobileDetect from 'mobile-detect';
 // eslint-disable-next-line
 import {
-	// PATHS,
+	PATHS,
 	ADMIN_PATHS,
-	// SUPERVISOR_PATH,
+	SUPERVISOR_PATH,
 	pathToPermissionMap,
 } from '../paths';
 import SetupWizard from '../SetupWizard';
@@ -572,25 +572,25 @@ class AppWrapper extends React.Component {
 		} = this.state;
 		let pathNames = [];
 
-		const userPermissions = getPermissions();
+		// const userPermissions = getPermissions();
 
-		pathNames = ADMIN_PATHS.filter((item) => {
-			if (item.path === '/admin') return true;
-			const requiredPrefixes = pathToPermissionMap[item.path] || [
-				`${item.path}:`,
-			];
-			return requiredPrefixes.some((prefix) =>
-				userPermissions.some((p) => p.startsWith(prefix))
-			);
-		});
+		// pathNames = ADMIN_PATHS.filter((item) => {
+		// 	if (item.path === '/admin') return true;
+		// 	const requiredPrefixes = pathToPermissionMap[item.path] || [
+		// 		`${item.path}:`,
+		// 	];
+		// 	return requiredPrefixes.some((prefix) =>
+		// 		userPermissions.some((p) => p.startsWith(prefix))
+		// 	);
+		// });
 
-		// if (checkRole() === 'admin') {
-		// 	pathNames = ADMIN_PATHS;
-		// } else if (checkRole() === 'supervisor') {
-		// 	pathNames = [...PATHS, ...SUPERVISOR_PATH];
-		// } else {
-		// 	pathNames = PATHS;
-		// }
+		if (checkRole() === 'admin') {
+			pathNames = ADMIN_PATHS;
+		} else if (checkRole() === 'supervisor') {
+			pathNames = [...PATHS, ...SUPERVISOR_PATH];
+		} else {
+			pathNames = PATHS;
+		}
 
 		if (features.apps) {
 			pathNames = [
