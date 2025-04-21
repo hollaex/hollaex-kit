@@ -711,11 +711,11 @@ const verifyBearerTokenExpressMiddleware = (scopes = BASE_SCOPES) => (req, res, 
 				}
 
 				try {
-					checkPermission(req, decodedToken);
+					checkPermission({ swagger: { apiPath: req.originalUrl || req?.swagger?.apiPath }, method: req.method }, decodedToken);
 				} catch (err) {
 					return sendError(err.message);
 				}
-
+		
 				req.auth = decodedToken;
 				return next();
 			} else {
