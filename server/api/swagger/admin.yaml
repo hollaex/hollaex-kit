@@ -4601,3 +4601,212 @@ paths:
       x-security-types:
         - bearer
         - hmac
+  /admin/broker:
+    x-swagger-router-controller: broker
+    post:
+      operationId: createBrokerPair
+      description: Create a broker deal
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/BrokerPair"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+    put:
+      operationId: updateBrokerPair
+      description: Edit a broker deal
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/BrokerPairUpdate"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+    get:
+      operationId: getBrokerPairs
+      description: Get all broker deals
+      tags:
+        - Broker
+      responses:
+        200:
+          description: Success
+          schema:
+            type: array
+            items:
+              allOf:
+                - $ref: "#/definitions/BrokerPair"
+                - type: object
+                  properties:
+                    id:
+                      type: integer
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+    delete:
+      operationId: deleteBrokerPair
+      description: Delete a broker deal
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/IdObject"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+  /admin/broker/markets:
+    x-swagger-router-controller: broker
+    get:
+      operationId: getTrackedExchangeMarkets
+      description: Get tracked exchange markets
+      tags:
+        - Broker
+      parameters:
+        - in: query
+          name: exchange_name
+          description: exchange name
+          required: true
+          type: string
+          maxLength: 256
+      responses:
+        200:
+          description: Success
+          schema:
+            type: array
+            items:
+              type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+  /admin/broker/test:
+    x-swagger-router-controller: broker
+    post:
+      operationId: testBroker
+      description: test broker
+      tags:
+        - Broker
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              spread:
+                type: number
+              increment_size:
+                type: number
+                format: double
+              formula:
+                type: string
+                maxLength: 1024
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+  /admin/broker/connect:
+    x-swagger-router-controller: broker
+    get:
+      operationId: testRebalance
+      description: test connecting rebalance exchange
+      tags:
+        - Broker
+      parameters:
+        - in: query
+          name: exchange_id
+          description: exchange to connect to
+          required: true
+          type: string
+          maxLength: 256
+        - in: query
+          name: api_key
+          description: exchang api key
+          required: true
+          type: string
+          maxLength: 256
+        - in: query
+          name: api_secret
+          description: exchang api scret
+          required: true
+          type: string
+          maxLength: 256
+        - in: query
+          name: password
+          description: exchange password
+          required: false
+          type: string
+          maxLength: 256
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+  
