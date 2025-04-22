@@ -20,7 +20,11 @@ import QuoteResult from 'containers/QuickTrade/QuoteResult';
 import ReviewOrder from 'containers/QuickTrade/components/ReviewOrder';
 import QuoteExpiredBlock from './QuoteExpiredBlock';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { changePair, setIsQuickTrade } from 'actions/appActions';
+import {
+	changePair,
+	setIsActiveFavQuickTrade,
+	setIsQuickTrade,
+} from 'actions/appActions';
 import { isLoggedIn } from 'utils/token';
 import { Button, EditWrapper, Dialog, Image } from 'components';
 import { getMiniCharts } from 'actions/chartAction';
@@ -66,8 +70,9 @@ const QuickTrade = ({
 	changePair,
 	icons: ICONS,
 	chain_trade_config,
-	constants,
 	setIsQuickTrade,
+	isActiveFavQuickTrade,
+	setIsActiveFavQuickTrade,
 }) => {
 	const getTargetOptions = (source) =>
 		sourceOptions.filter((key) => {
@@ -114,6 +119,7 @@ const QuickTrade = ({
 	const [isOpenBottomField, setIsOpenBottomField] = useState(false);
 	const [isHighSlippageDetected, setIsHighSlippageDetected] = useState(false);
 	const [slippagePercentage, setSlippagePercentage] = useState(0);
+	const [isSwap, setSwap] = useState(true);
 
 	const resetForm = () => {
 		setTargetAmount();
@@ -180,12 +186,14 @@ const QuickTrade = ({
 		setSourceAmount();
 		setTargetAmount();
 		setSelectedSource(value);
+		setIsActiveFavQuickTrade(false);
 	};
 
 	const onSelectTarget = (value) => {
 		setSpending();
 		setSourceAmount();
 		setTargetAmount();
+		setIsActiveFavQuickTrade(true);
 		setSelectedTarget(value);
 	};
 
@@ -413,15 +421,26 @@ const QuickTrade = ({
 				selectedSource !== sourceOptions[0]
 					? sourceOptions[0]
 					: sourceOptions[1];
+			const [baseCurrency = '', quoteCurrency = ''] = pair?.split('-') || [];
 			if (chain_trade_config?.active) {
-				setSelectedTarget(selectedOption);
+				if (isSwap) {
+					if (isActiveFavQuickTrade) {
+						setSelectedSource(baseCurrency);
+						setSelectedTarget(quoteCurrency);
+						resetForm();
+					} else {
+						setSelectedTarget(selectedOption);
+					}
+				} else {
+					setSwap(true);
+				}
 			} else {
 				setTargetOptions(options);
 				setSelectedTarget(options[0]);
 			}
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [selectedSource]);
+	}, [selectedSource, pair]);
 
 	useEffect(() => {
 		if (selectedSource === selectedTarget) return;
@@ -507,6 +526,7 @@ const QuickTrade = ({
 		onSelectSource(selectedTarget);
 		// ToDo: to remove that jump issue from the swap, the use Effect logic shuold be integrated to the select function
 		setTimeout(() => onSelectTarget(selectedSource), 0.1);
+		setSwap(false);
 	};
 
 	const onRequoteClick = () => {
@@ -532,6 +552,11 @@ const QuickTrade = ({
 		setIsReview(true);
 		setShowModal(true);
 	};
+
+	const activeProTradePair =
+		Object.keys(pairs).filter(
+			(data) => data === pair || data === flipPair(pair)
+		) || [];
 
 	return (
 		<Fragment>
@@ -796,6 +821,7 @@ const QuickTrade = ({
 								name={display_name}
 								isNetwork={isNetwork}
 								pair={pair}
+								activeProTradePair={activeProTradePair[0]}
 							/>
 						</div>
 					</div>
@@ -849,6 +875,10 @@ const QuickTrade = ({
 const mapDispatchToProps = (dispatch) => ({
 	changePair: bindActionCreators(changePair, dispatch),
 	setIsQuickTrade: bindActionCreators(setIsQuickTrade, dispatch),
+	setIsActiveFavQuickTrade: bindActionCreators(
+		setIsActiveFavQuickTrade,
+		dispatch
+	),
 });
 
 const mapStateToProps = (store) => {
@@ -867,6 +897,7 @@ const mapStateToProps = (store) => {
 		markets: MarketsSelector(store),
 		user: store.user,
 		chain_trade_config: store.app.constants.chain_trade_config,
+		isActiveFavQuickTrade: store.app.isActiveFavQuickTrade,
 	};
 };
 

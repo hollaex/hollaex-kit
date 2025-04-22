@@ -59,6 +59,7 @@ export const ConnectionPopup = ({
 			isOpen={isDisplayPopup?.isDisplayConnection}
 			onCloseDialog={() => onHandleClose('connection')}
 			className="check-connection-popup-wrapper"
+			label="check-connection-popup"
 		>
 			<div className="check-connection-popup-container">
 				<div className="connection-title-wrapper">
@@ -324,6 +325,7 @@ export const ReconnectPopup = ({ isDisplayPopup, onHandleClose }) => {
 			isOpen={isDisplayPopup?.isDisplayReconnect}
 			onCloseDialog={() => onHandleClose('reconnect')}
 			className="reconnect-popup-wrapper"
+			label="reconnect-popup"
 		>
 			<div className="reconnect-popup-container">
 				<div className="reconnect-title-wrapper">
@@ -372,6 +374,7 @@ export const renderConfirmSignout = (
 			isOpen={isVisible}
 			className="signout-confirmation-popup-wrapper"
 			onCloseDialog={() => onHandleclose()}
+			label="signout-confirmation-popup"
 		>
 			<div className="signout-confirmation-popup-description">
 				<div className="signout-confirmation-content">
@@ -489,6 +492,7 @@ export const LanguageDisplayPopup = ({
 			isOpen={isVisible}
 			onCloseDialog={() => onHandleClose()}
 			className="language-popup-wrapper"
+			label="language-popup"
 		>
 			<div className="language-popup-container">
 				<div className="language-popup-details-wrapper">

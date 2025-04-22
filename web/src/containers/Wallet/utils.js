@@ -248,6 +248,7 @@ export const AddressBookDialog = ({
 					  setRenderPopUps((prev) => ({ ...prev, remove: false }));
 			}}
 			className="address_book_popup_wrapper"
+			label="address-book-popup"
 		>
 			<div className="confirm-popup-wrapper">
 				<div className="confirm-header-wrapper">

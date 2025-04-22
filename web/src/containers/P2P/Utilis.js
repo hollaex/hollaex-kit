@@ -44,6 +44,7 @@ export const renderFeedback = (
 			onCloseDialog={() => {
 				setDisplayUserFeedback(false);
 			}}
+			label="display-user-feedback-popup"
 		>
 			<div className="display-user-feedback-popup-container">
 				<div className="user-feedback">
