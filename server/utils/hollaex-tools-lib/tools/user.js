@@ -1156,9 +1156,27 @@ const getUserRole = (opts = {}) => {
 		});
 };
 
-const updateUserRole = async (user_id, role_name) => {
+const updateUserRole = async (user_id, role_name, admin_id, otp_code) => {
 	const Role = getModel('role');
 	const User = getModel('user');
+
+	const admin = await User.findOne({ where: { id: admin_id } });
+	if (!admin) throw new Error('User not found');
+
+	if (!admin.otp_enabled) { 
+		throw new Error('OTP is not enabled');
+	} else {
+		try {
+			const validOtp = await verifyOtpBeforeAction(admin_id, otp_code);
+			if (!validOtp) {
+				throw new Error(INVALID_OTP_CODE);
+			}
+		} catch (error) {
+			if (!otp_code) {
+				throw new Error(INVALID_OTP_CODE);
+			}
+		}
+	}
 
 	const user = await User.findOne({ where: { id: user_id } });
 	if (!user) throw new Error('User not found');
@@ -1166,9 +1184,7 @@ const updateUserRole = async (user_id, role_name) => {
 	if (user.role == 'admin') {
 		throw new Error(CANNOT_CHANGE_ADMIN_ROLE);
 	}
-	if (!user.otp_enabled) {
-		throw new Error('OTP is not enabled');
-	}
+
 	if(role_name === 'user') {
 		user.role = null;
 		await user.save();
@@ -4070,6 +4086,12 @@ const validateSecretPermissions = (secretPermissions) => {
 	});
 };
 const createExchangeUserRole = async ({ name, description, rolePermissions, configs, user_id }) => {
+
+	const exchangeInfo = getKitConfig().info;
+
+	if (exchangeInfo.plan !== 'enterprise')
+		throw new Error('Exchange plan does not support this feature');
+
 	const Role = getModel('role');
 	if (!name) throw new Error('Role name is required');
 	if (!isArray(rolePermissions)) throw new Error('Permissions must be an array');
@@ -4170,6 +4192,12 @@ const createExchangeUserRole = async ({ name, description, rolePermissions, conf
 };
 
 const updateExchangeUserRole = async (roleId, { name, description, rolePermissions, configs,  user_id }) => {
+	
+	const exchangeInfo = getKitConfig().info;
+
+	if (exchangeInfo.plan !== 'enterprise')
+		throw new Error('Exchange plan does not support this feature');
+
 	const Role = getModel('role');
 
 	const role = await Role.findOne({
@@ -4308,7 +4336,15 @@ const updateExchangeUserRole = async (roleId, { name, description, rolePermissio
 };
 
 const deleteExchangeUserRole = async (id) => {
+
+	const exchangeInfo = getKitConfig().info;
+
+	if (exchangeInfo.plan !== 'enterprise')
+		throw new Error('Exchange plan does not support this feature');
+	
 	const Role = getModel('role');
+	const User = getModel('user');
+
 	const role = await Role.findOne({
 		where: { id },
 	});
@@ -4319,6 +4355,11 @@ const deleteExchangeUserRole = async (id) => {
 
 	if (role.role_name === 'admin') {
 		throw new Error('Cannot delete admin role');
+	}
+
+	const usersWithRole = await User.count({ where: { role: role.role_name } });
+	if (usersWithRole > 0) {
+		throw new Error('Cannot delete role: it is assigned to one or more users');
 	}
 
 	await role.destroy();
